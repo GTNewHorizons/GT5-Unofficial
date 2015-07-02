@@ -67,3 +67,18 @@ processResources
         exclude 'mcmod.info'
     }
 }
+
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'deobf'
+}
+
+task sourceJar(type: Jar, dependsOn:classes) {
+    classifier = 'sources'
+    from sourceSets.main.allJava
+}
+
+artifacts {
+    archives deobfJar
+    archives sourceJar
+}
