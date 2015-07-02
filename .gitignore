@@ -1,0 +1,9 @@
+/bin/
+eclipse/
+.gradle/
+.classpath
+.settings/
+gradlew.bat - Verknüpfung.lnk
+gradle/
+gradlew.bat
+.project
