@@ -85,6 +85,8 @@ public class GalacticGreg {
 			
 			GalacticConfig.serverPostInit();
 		}		
+		else
+			GalacticGreg.Logger.error("GalacticGreg will NOT continue to load. Please read the warnings and configure your config file!");
 		Logger.trace("Leaving POSTLOAD");
 	}
 	
