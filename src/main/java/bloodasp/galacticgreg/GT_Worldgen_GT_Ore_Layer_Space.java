@@ -122,10 +122,10 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 	public boolean executeWorldgen(World pWorld, Random pRandom, String pBiome, int pDimensionType, int pChunkX, int pChunkZ, IChunkProvider pChunkGenerator, IChunkProvider pChunkProvider)
 	{
 		GalacticGreg.Logger.trace("Entering executeWorldgen for [%s]", mWorldGenName);
-		ModDimensionDef tMDD = GalacticGregRegistry.getDimensionTypeByChunkGenerator(pChunkProvider);
+		ModDimensionDef tMDD = GalacticGregRegistry.getDimensionTypeByChunkGenerator(pChunkGenerator);
 		if (tMDD == null)
 		{
-			GalacticGreg.Logger.trace("Can't find dimension definition for ChunkProvider %s, skipping", pChunkProvider.toString());
+			GalacticGreg.Logger.trace("Can't find dimension definition for ChunkProvider %s, skipping", pChunkGenerator.toString());
 			return false;
 		}			
 		

@@ -289,9 +289,9 @@ public class ModDimensionDef {
 	 * @param pDimensionName The human-readable. Spaces will be removed
 	 * @param pChunkProvider The chunkprovider class that shall be observed for the oregen
 	 */
-	public ModDimensionDef(String pDimensionName, Class <? extends IChunkProvider> pChunkProvider)
+	public ModDimensionDef(String pDimensionName, Class <? extends IChunkProvider> pChunkProvider, DimensionType pDimType)
 	{
-		this(pDimensionName, pChunkProvider.toString().substring(6), null);
+		this(pDimensionName, pChunkProvider.toString().substring(6), pDimType, null);
 	}
 	
 	/** Define a new dimension
@@ -299,18 +299,18 @@ public class ModDimensionDef {
 	 * @param pChunkProvider The chunkprovider class that shall be observed for the oregen
 	 * @param pBlockDefinitions The list of predefined blocks to be replaced by ores 
 	 */	
-	public ModDimensionDef(String pDimensionName, Class <? extends IChunkProvider> pChunkProvider, List<ModDBMDef> pBlockDefinitions)
+	public ModDimensionDef(String pDimensionName, Class <? extends IChunkProvider> pChunkProvider, DimensionType pDimType, List<ModDBMDef> pBlockDefinitions)
 	{
-		this(pDimensionName, pChunkProvider.toString().substring(6), pBlockDefinitions);
+		this(pDimensionName, pChunkProvider.toString().substring(6), pDimType, pBlockDefinitions);
 	}
 	
 	/** Define a new dimension
 	 * @param pDimensionName The human-readable DimensionName. Spaces will be removed
 	 * @param pChunkProviderName The human-readable, full-qualified classname for the chunkprovider
 	 */
-	public ModDimensionDef(String pDimensionName, String pChunkProviderName)
+	public ModDimensionDef(String pDimensionName, String pChunkProviderName, DimensionType pDimType)
 	{
-		this(pDimensionName, pChunkProviderName, null);
+		this(pDimensionName, pChunkProviderName, pDimType, null);
 	}
 	
 	/** Define a new dimension
@@ -318,11 +318,12 @@ public class ModDimensionDef {
 	 * @param pChunkProviderName The human-readable, full-qualified classname for the chunkprovider
 	 * @param pBlockDefinitions The list of predefined blocks to be replaced by ores 
 	 */
-	public ModDimensionDef(String pDimensionName, String pChunkProviderName, List<ModDBMDef> pBlockDefinitions)
+	public ModDimensionDef(String pDimensionName, String pChunkProviderName, DimensionType pDimType, List<ModDBMDef> pBlockDefinitions)
 	{
 		_mInternalDimIdentifier = STR_NOTDEFINED;
 		_mDimensionName = pDimensionName;
 		_mChunkProvider = pChunkProviderName;
+		_mDimensionType = pDimType;
 		
 		_mReplaceableBlocks = new ArrayList<ModDBMDef>();
 		if (pBlockDefinitions != null)
@@ -463,6 +464,8 @@ public class ModDimensionDef {
 			try
 			{
 				rpb.updateBlockName(pParentModName);
+				if (_mStoneType == null)
+					_mStoneType = GTOreTypes.NormalOres;
 			}
 			catch(Exception e)
 			{

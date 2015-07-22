@@ -74,58 +74,64 @@ public class GT_TileEntity_Ores_Space {
 			GalacticGreg.Logger.warn("Unknown DimensionID: %d. Will not set anything here", pWorld.provider.dimensionId);
 			return false;
 		}
-		
-		Block tBlock = pWorld.getBlock(pX, pY, pZ);
-		// If the meta is non-zero, and the target block is either non-air or the air-override is active
-		if ((pMetaData > 0) && ((tBlock != Blocks.air) || pAir)) 
+		try
 		{
-			// make sure we're either going with normal ore-metas, or small ores.
-			// Probably should do another check for <= 1700
-			if (pMetaData < 1000 || pMetaData >= 16000)
+			Block tBlock = pWorld.getBlock(pX, pY, pZ);
+			// If the meta is non-zero, and the target block is either non-air or the air-override is active
+			if ((pMetaData > 0) && ((tBlock != Blocks.air) || pAir)) 
 			{
-				ReplaceState tRS = CheckForReplaceableBlock(pWorld, pX, pY, pZ, pDimensionDef);
-
-				// Unable to lookup replacement state. Means: The block is unknown, and shall not be replaced
-				if (tRS == ReplaceState.Unknown) 
+				// make sure we're either going with normal ore-metas, or small ores.
+				// Probably should do another check for <= 1700
+				if (pMetaData < 1000 || pMetaData >= 16000)
 				{
-					GalacticGreg.Logger.trace("Not placing ore Meta %d, as target block is unknown", pMetaData);
-					return false;
+					ReplaceState tRS = CheckForReplaceableBlock(pWorld, pX, pY, pZ, pDimensionDef);
+	
+					// Unable to lookup replacement state. Means: The block is unknown, and shall not be replaced
+					if (tRS == ReplaceState.Unknown) 
+					{
+						GalacticGreg.Logger.trace("Not placing ore Meta %d, as target block is unknown", pMetaData);
+						return false;
+					}
+					else if(tRS == ReplaceState.Airblock && !pAir)
+					{
+						GalacticGreg.Logger.trace("Not placing ore Meta %d in midair, as AIR is FALSE", pMetaData);
+						return false;
+					}
+					if (tRS == ReplaceState.CannotReplace)
+					{
+						// wrong metaData ID for target block
+						GalacticGreg.Logger.trace("Not placing ore Meta %d, as the state is CANNOTREPLACE", pMetaData);
+						return false;
+					}
+					
+					if (pCustomGTOreOffset == -1)
+						pMetaData += pDimensionDef.getStoneType().getOffset();
+					else
+						pMetaData += pCustomGTOreOffset;
+					
+					pWorld.setBlock(pX, pY, pZ, GregTech_API.sBlockOres1, GT_TileEntity_Ores.getHarvestData((short) pMetaData), 0);
+					TileEntity tTileEntity = pWorld.getTileEntity(pX, pY, pZ);
+					if ((tTileEntity instanceof GT_TileEntity_Ores)) {
+						((GT_TileEntity_Ores) tTileEntity).mMetaData = ((short) pMetaData);
+						((GT_TileEntity_Ores) tTileEntity).mNatural = true;
+					}
+					else
+					{
+						// This is somehow triggered randomly, and most times the target block is air, which should never happen as we check for air...
+						// That's why I put this behind a debug config option. If you ever find the reason for it, please tell me what caused this
+						if (GalacticGreg.GalacticConfig.ReportOreGenFailures)
+							GalacticGreg.Logger.warn("Something went wrong while placing GT OreTileEntity. Meta: %d X [%d] Y [%d] Z [%d]", pMetaData, pX, pY, pZ);
+					}
+					
+					return true;
 				}
-				else if(tRS == ReplaceState.Airblock && !pAir)
-				{
-					GalacticGreg.Logger.trace("Not placing ore Meta %d in midair, as AIR is FALSE", pMetaData);
-					return false;
-				}
-				if (tRS == ReplaceState.CannotReplace)
-				{
-					// wrong metaData ID for target block
-					GalacticGreg.Logger.trace("Not placing ore Meta %d, as the state is CANNOTREPLACE", pMetaData);
-					return false;
-				}
-				
-				if (pCustomGTOreOffset == -1)
-					pMetaData += pDimensionDef.getStoneType().getOffset();
 				else
-					pMetaData += pCustomGTOreOffset;
-				
-				pWorld.setBlock(pX, pY, pZ, GregTech_API.sBlockOres1, GT_TileEntity_Ores.getHarvestData((short) pMetaData), 0);
-				TileEntity tTileEntity = pWorld.getTileEntity(pX, pY, pZ);
-				if ((tTileEntity instanceof GT_TileEntity_Ores)) {
-					((GT_TileEntity_Ores) tTileEntity).mMetaData = ((short) pMetaData);
-					((GT_TileEntity_Ores) tTileEntity).mNatural = true;
-				}
-				else
-				{
-					// This is somehow triggered randomly, and most times the target block is air, which should never happen as we check for air...
-					// That's why I put this behind a debug config option. If you ever find the reason for it, please tell me what caused this
-					if (GalacticGreg.GalacticConfig.ReportOreGenFailures)
-						GalacticGreg.Logger.warn("Something went wrong while placing GT OreTileEntity. Meta: %d X [%d] Y [%d] Z [%d]", pMetaData, pX, pY, pZ);
-				}
-				
-				return true;
+					GalacticGreg.Logger.warn("Not replacing block at pos %d %d %d due unexpected metaData for OreBlock: %d", pX, pY, pZ, pMetaData);
 			}
-			else
-				GalacticGreg.Logger.warn("Not replacing block at pos %d %d %d due unexpected metaData for OreBlock: %d", pX, pY, pZ, pMetaData);
+		} catch (Exception e)
+		{
+			if (GalacticGreg.GalacticConfig.ReportOreGenFailures)
+				e.printStackTrace();
 		}
 		return false;
 	}
