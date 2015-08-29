@@ -165,22 +165,28 @@ public class GT_Worldgenerator_Space implements IWorldGenerator {
 				int tNumLootItems = 0;
 				if (tAConf.LootChestChance > 0)
 				{
+					GalacticGreg.Logger.trace("Random loot chest enabled, flipping the coin");
 					int tChance = pRandom.nextInt(1000); // Loot chest is 1 in 1000
 					if (tAConf.LootChestChance >= tChance)
 					{
+						GalacticGreg.Logger.debug("We got a match. Preparing to generate the loot chest");
 						// Get amount of items for the loot chests, randomize it (1-num) if enabled 
 						if (tAConf.RandomizeNumLootItems)
 							tNumLootItems = pRandom.nextInt(tAConf.NumLootItems - 1) + 1;
 						else
 							tNumLootItems = tAConf.NumLootItems;
 						
+						GalacticGreg.Logger.debug(String.format("Loot chest random item count will be: %d", tNumLootItems));
+						
 						// try to find any block that is not on the asteroids outer-shell
+						GalacticGreg.Logger.trace("Starting lookup for valid asteroid-block for the chest");
 						for(int x = 0; x < 64; x++) // 64 enough? Should be
 						{
 							int tRndBlock = pRandom.nextInt(aGen.getStructure().size());
 							StructureInformation tChestSI = aGen.getStructure().get(tRndBlock);
 							if(tChestSI.getBlockPosition() != TargetBlockPosition.AsteroidShell)
 							{
+								GalacticGreg.Logger.debug(String.format("Chest position found [x:%d y:%d z:%d]", tChestSI.getX(), tChestSI.getY(), tChestSI.getZ()));
 								// Found valid position "Somewhere" in the asteroid, set position...
 								tChestPosition = Vec3.createVectorHelper(tChestSI.getX(), tChestSI.getY(), tChestSI.getZ());
 								// .. and set CreateFlag to true
@@ -192,6 +198,7 @@ public class GT_Worldgenerator_Space implements IWorldGenerator {
 				}
 				
 				// Now build the structure 
+				GalacticGreg.Logger.trace("Now generating Space-Structure");
 				for (StructureInformation si : aGen.getStructure())
 				{
 					// Only replace airblocks
@@ -203,6 +210,7 @@ public class GT_Worldgenerator_Space implements IWorldGenerator {
 							// Check if current x/y/z is the location where the chest shall be created
 							if ((int)tChestPosition.xCoord == si.getX() && (int)tChestPosition.yCoord == si.getY() && (int)tChestPosition.zCoord == si.getZ())
 							{
+								GalacticGreg.Logger.trace("Now generating LootChest and contents");
 								// Get items for the configured loot-table
 								WeightedRandomChestContent[] tRandomLoot = ChestGenHooks.getItems(DynamicDimensionConfig.getLootChestTable(tAConf), pRandom);
 								
@@ -224,6 +232,7 @@ public class GT_Worldgenerator_Space implements IWorldGenerator {
 									if (!pWorld.isRemote) {
 										// Fill the chest with stuffz!
 										WeightedRandomChestContent.generateChestContents(pRandom, tRandomLoot, entityChestInventory, tNumLootItems);
+										GalacticGreg.Logger.trace("Loot chest successfully generated");
 									}
 								}
 								else
@@ -246,6 +255,7 @@ public class GT_Worldgenerator_Space implements IWorldGenerator {
 						// If a valid oregroup has been selected (more than 0 ore-veins are enabled for this dim)
 						if (tOreGroup != null)
 						{
+							//GalacticGreg.Logger.trace("tOreGoup is populated, continuing");
 							// Choose a number between 0 and 100
 							int ranOre = pRandom.nextInt(100);
 							int tFinalOreMeta = 0;
@@ -285,10 +295,16 @@ public class GT_Worldgenerator_Space implements IWorldGenerator {
 							}
 
 							// if the final oreMeta has been found...
+							//GalacticGreg.Logger.info("tFinalOreMeta is %d", tFinalOreMeta);
 							if (tFinalOreMeta > 0)
 							{
 								// make sure we obey the configured "HiddenOres" setting (No ores on the shell)
-								if (tAConf.HiddenOres && si.getBlockPosition() != TargetBlockPosition.AsteroidShell)
+								if (tAConf.HiddenOres && (si.getBlockPosition() == TargetBlockPosition.AsteroidShell))
+								{
+									// Ore would be placed around the shell, which is disabled (hiddenores)
+									GalacticGreg.Logger.trace("Skipping ore-placement event (HiddenOres=true; TargetBlockPosition=AsteroidShell)");
+								}
+								else
 								{
 									// try to place the ore block. The result is stored in tPlacedOreBlock
 									tPlacedOreBlock = GT_TileEntity_Ores_Space.setOuterSpaceOreBlock(pDimensionDef, pWorld, si.getX(), si.getY(), si.getZ(), tOreGroup.SecondaryMeta, true, tFinalOreOffset);
