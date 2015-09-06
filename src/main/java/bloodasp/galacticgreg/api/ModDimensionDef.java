@@ -6,7 +6,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.world.chunk.IChunkProvider;
-import bloodasp.galacticgreg.GalacticGreg;
+//import bloodasp.galacticgreg.GalacticGreg;
 import bloodasp.galacticgreg.api.Enums.AirReplaceRule;
 import bloodasp.galacticgreg.api.Enums.DimensionType;
 import bloodasp.galacticgreg.api.Enums.ReplaceState;
@@ -87,7 +87,7 @@ public class ModDimensionDef {
 			_mSpaceObjectsGenerators.add(pSpaceObjectGenerator);
 			break;
 		default:
-			GalacticGreg.Logger.error("registerSpaceObjectGenerator() found unhandled generator type %s. Please report asap, the author was lazy!", tType.toString());
+			//GalacticGreg.Logger.error("registerSpaceObjectGenerator() found unhandled generator type %s. Please report asap, the author was lazy!", tType.toString());
 			break;
 		
 		}
@@ -257,7 +257,7 @@ public class ModDimensionDef {
 	{
 		if (_mReplaceableBlocks.contains(pBlockDef))
 		{
-			GalacticGreg.Logger.error("Cannot add Block %s:%d, as it is already existing!", pBlockDef.getBlockName(), pBlockDef.getMeta());
+			//GalacticGreg.Logger.error("Cannot add Block %s:%d, as it is already existing!", pBlockDef.getBlockName(), pBlockDef.getMeta());
 			return false;
 		}
 		else
@@ -347,7 +347,7 @@ public class ModDimensionDef {
 		else
 		{
 			_mInternalDimIdentifier = String.format("%s_%s", pModName, _mDimensionName);
-			GalacticGreg.Logger.debug("Set Internal Identifier for Dimension %s to %s", _mDimensionName, _mInternalDimIdentifier);
+			//GalacticGreg.Logger.debug("Set Internal Identifier for Dimension %s to %s", _mDimensionName, _mInternalDimIdentifier);
 		}
 	}
 	
@@ -370,12 +370,12 @@ public class ModDimensionDef {
 			
 			if (tResult == ReplaceState.CanReplace)
 			{
-				GalacticGreg.Logger.trace("Targetblock found and metadata match. Replacement allowed");
+				//GalacticGreg.Logger.trace("Targetblock found and metadata match. Replacement allowed");
 				tFlag = ReplaceState.CanReplace;						
 			}
 			else if (tResult == ReplaceState.CannotReplace)
 			{
-				GalacticGreg.Logger.trace("Targetblock found but metadata mismatch. Replacement denied");
+				//GalacticGreg.Logger.trace("Targetblock found but metadata mismatch. Replacement denied");
 				tFlag = ReplaceState.CannotReplace;						
 			}
 			break;
@@ -469,7 +469,7 @@ public class ModDimensionDef {
 			}
 			catch(Exception e)
 			{
-				GalacticGreg.Logger.error("Unable to finalize replaceable block with modname for block %s. Dimension %s will probably have problems generating ores", rpb.getBlockName(), _mDimensionName);
+				//GalacticGreg.Logger.error("Unable to finalize replaceable block with modname for block %s. Dimension %s will probably have problems generating ores", rpb.getBlockName(), _mDimensionName);
 				continue;
 			}
 		}

@@ -1,7 +1,7 @@
 package bloodasp.galacticgreg.api;
 
 import net.minecraft.block.Block;
-import bloodasp.galacticgreg.GalacticGreg;
+//import bloodasp.galacticgreg.GalacticGreg;
 import bloodasp.galacticgreg.api.Enums.ReplaceState;
 
 /**
@@ -145,10 +145,10 @@ public class ModDBMDef {
 		// Do we already have a FQBN? then do nothing
 		if (_targetBlockName.contains(":"))
 		{
-			GalacticGreg.Logger.trace("Not updating blockname, as it already contains a mods name: %s", _targetBlockName);
+			//GalacticGreg.Logger.trace("Not updating blockname, as it already contains a mods name: %s", _targetBlockName);
 			return;
 		}
-		GalacticGreg.Logger.trace("Updating blockname: Old: %s new: %s:%s", _targetBlockName, pParentModName, _targetBlockName);
+		//GalacticGreg.Logger.trace("Updating blockname: Old: %s new: %s:%s", _targetBlockName, pParentModName, _targetBlockName);
 		_targetBlockName = String.format("%s:%s", pParentModName, _targetBlockName);
 	}
 }
