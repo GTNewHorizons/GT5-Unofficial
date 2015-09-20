@@ -60,13 +60,18 @@ public class AsteroidBlockComb extends BlockMetaComb {
 	    boolean tFlag = true;
 	    String otherName = Block.blockRegistry.getNameForObject(otherObj.getBlock());
 	    String thisName = Block.blockRegistry.getNameForObject(this.getBlock());
-	    if (!otherName.equals(thisName))
-	    	tFlag = false;
-	    
-	    if (!(otherObj.getMeta() == this.getMeta()))
-	    	tFlag = false;
-	    
-	    if (!(otherObj.getOreMaterial() == this.getOreMaterial()))
+	    if (otherName != null && thisName != null)
+	    {
+		    if (!otherName.equals(thisName))
+		    	tFlag = false;
+		    
+		    if (!(otherObj.getMeta() == this.getMeta()))
+		    	tFlag = false;
+		    
+		    if (!(otherObj.getOreMaterial() == this.getOreMaterial()))
+		    	tFlag = false;
+	    }
+	    else
 	    	tFlag = false;
 	    
 	    return tFlag;
