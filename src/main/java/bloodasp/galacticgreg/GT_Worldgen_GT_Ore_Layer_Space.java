@@ -6,6 +6,9 @@ import gregtech.api.util.GT_Log;
 import gregtech.api.world.GT_Worldgen;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import net.minecraft.world.World;
@@ -26,12 +29,12 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 	public final short mSecondaryMeta;
 	public final short mBetweenMeta;
 	public final short mSporadicMeta;
-	
+
 	private long mProfilingStart;
 	private long mProfilingEnd;
-	
+
 	private DynamicOreMixWorldConfig _mDynWorldConfig = null;
-	
+
 	public GT_Worldgen_GT_Ore_Layer_Space(String pName, boolean pDefault, int pMinY, int pMaxY, int pWeight, int pDensity, int pSize, Materials pPrimary, Materials pSecondary, Materials pBetween, Materials pSporadic)
 	{
 		super(pName, GalacticGreg.oreVeinWorldgenList, pDefault);
@@ -44,12 +47,12 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 		mSecondaryMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "OreSecondaryLayer", pSecondary.mMetaItemSubID));
 		mBetweenMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "OreSporadiclyInbetween", pBetween.mMetaItemSubID));
 		mSporadicMeta = ((short) GregTech_API.sWorldgenFile.get("worldgen." + this.mWorldGenName, "OreSporaticlyAround", pSporadic.mMetaItemSubID));
-	
+
 		_mDynWorldConfig = new DynamicOreMixWorldConfig(mWorldGenName);
 		_mDynWorldConfig.InitDynamicConfig();
-	
+
 		GalacticGreg.Logger.trace("Initialized new OreLayer: %s", pName);
-		
+
 		if (mEnabled)
 			sWeight += this.mWeight;
 
@@ -64,7 +67,68 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 	{
 		return _mDynWorldConfig.isEnabledInDim(pDimensionDef);
 	}
+
+	private static Map<String, Integer> _mBufferedVeinCountList = new HashMap<String, Integer>(); 
 	
+	/**
+	 * Get the number of enabled OreMixes for given Dimension.
+	 * This query is buffered and will only consume calculation time on the first run for each dimension
+	 * @param pDimensionDef
+	 * @return
+	 */
+	private static int getNumOremixedForDim(ModDimensionDef pDimensionDef)
+	{
+		int tVal = 0;
+		if (_mBufferedVeinCountList.containsKey(pDimensionDef.getDimIdentifier()))
+			tVal = _mBufferedVeinCountList.get(pDimensionDef.getDimIdentifier());
+		else
+		{
+			for (GT_Worldgen_GT_Ore_Layer_Space tWorldGen : GalacticGreg.oreVeinWorldgenList)
+				if (tWorldGen.isEnabledForDim(pDimensionDef))
+					tVal++;
+			
+			_mBufferedVeinCountList.put(pDimensionDef.getDimIdentifier(), tVal);
+		}
+		
+		return tVal;
+	}
+	
+	
+	private static Map<String, List<String>> _mBufferedVeinList = new HashMap<String, List<String>>();
+	/**
+	 * Get a List of all Veins which are enabled for given Dim. Query is buffered
+	 * @param pDimensionDef
+	 * @return null if nothing is found or error
+	 */
+	private static List<String> getOreMixIDsForDim(ModDimensionDef pDimensionDef)
+	{
+		List<String> tReturn = null;
+		
+		if (_mBufferedVeinList.containsKey(pDimensionDef.getDimIdentifier()))
+			tReturn = _mBufferedVeinList.get(pDimensionDef.getDimIdentifier());
+		else
+		{
+			tReturn = new ArrayList<String>();
+			for (GT_Worldgen_GT_Ore_Layer_Space tWorldGen : GalacticGreg.oreVeinWorldgenList)
+				if (tWorldGen.isEnabledForDim(pDimensionDef))
+					tReturn.add(tWorldGen.mWorldGenName);
+			
+			_mBufferedVeinList.put(pDimensionDef.getDimIdentifier(), tReturn);
+		}
+		
+		return tReturn;
+	}
+	
+	private static short getMaxWeightForDim(ModDimensionDef pDimensionDef)
+	{
+		short tVal = 0;
+		for (GT_Worldgen_GT_Ore_Layer_Space tWorldGen : GalacticGreg.oreVeinWorldgenList)
+			if (tWorldGen.isEnabledForDim(pDimensionDef) && tVal < tWorldGen.mWeight)
+				tVal = tWorldGen.mWeight;
+
+		return tVal;
+	}
+
 	/**
 	 * Select a random ore-vein from the list
 	 * 
@@ -72,41 +136,70 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 	 * @param pRandom
 	 * @return
 	 */
-	public static GTOreGroup getRandomOreGroup(ModDimensionDef pDimensionDef, Random pRandom)
+	public static GTOreGroup getRandomOreGroup(ModDimensionDef pDimensionDef, Random pRandom, boolean pIgnoreWeight)
 	{
 		short primaryMeta = 0;
 		short secondaryMeta = 0;
 		short betweenMeta = 0;
 		short sporadicMeta = 0;
-		if ((GT_Worldgen_GT_Ore_Layer_Space.sWeight > 0) && (GalacticGreg.oreVeinWorldgenList.size() > 0))
+
+		//int tRangeSplit = getMaxWeightForDim(pDimensionDef) / 2;
+
+		if (pIgnoreWeight)
 		{
-			GalacticGreg.Logger.trace("About to select oremix");
-			boolean temp = true;
-			int tRandomWeight;
-			for (int i = 0; (i < 256) && (temp); i++)
+			List<String> tEnabledVeins = getOreMixIDsForDim(pDimensionDef);
+			int tRnd = pRandom.nextInt(tEnabledVeins.size());
+			String tVeinName = tEnabledVeins.get(tRnd);
+			
+			// No lambda in Java 1.6 and 1.7 :(
+			//GT_Worldgen_GT_Ore_Layer_Space tGen = GalacticGreg.oreVeinWorldgenList.stream().filter(p -> p.mWorldGenName == tVeinName).findFirst();
+			
+			GT_Worldgen_GT_Ore_Layer_Space tGen = null;
+			for (GT_Worldgen_GT_Ore_Layer_Space tWorldGen : GalacticGreg.oreVeinWorldgenList)
+				if (tWorldGen.mWorldGenName.equals(tVeinName))
+					tGen = tWorldGen;
+			
+			if (tGen != null)
 			{
-				tRandomWeight = pRandom.nextInt(GT_Worldgen_GT_Ore_Layer_Space.sWeight);
-				for (GT_Worldgen_GT_Ore_Layer_Space tWorldGen : GalacticGreg.oreVeinWorldgenList)
+				//GT_Worldgen_GT_Ore_Layer_Space tGen = GalacticGreg.oreVeinWorldgenList.get(tRndMix);
+				GalacticGreg.Logger.trace("Using Oremix %s for asteroid", tGen.mWorldGenName);
+				primaryMeta = tGen.mPrimaryMeta;
+				secondaryMeta = tGen.mSecondaryMeta;
+				betweenMeta = tGen.mBetweenMeta;
+				sporadicMeta = tGen.mSporadicMeta;
+			}
+		}
+		else
+		{
+			if ((GT_Worldgen_GT_Ore_Layer_Space.sWeight > 0) && (GalacticGreg.oreVeinWorldgenList.size() > 0))
+			{
+				GalacticGreg.Logger.trace("About to select oremix");
+				boolean temp = true;
+				int tRandomWeight;
+				for (int i = 0; (i < 256) && (temp); i++)
 				{
-					tRandomWeight -= ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).mWeight;
-					if (tRandomWeight <= 0)
+					tRandomWeight = pRandom.nextInt(GT_Worldgen_GT_Ore_Layer_Space.sWeight);
+					for (GT_Worldgen_GT_Ore_Layer_Space tWorldGen : GalacticGreg.oreVeinWorldgenList)
 					{
-						
-						try
+						tRandomWeight -= ((GT_Worldgen_GT_Ore_Layer_Space) tWorldGen).mWeight;
+						if (tRandomWeight <= 0)
 						{
-							if (tWorldGen.isEnabledForDim(pDimensionDef))
+							try
 							{
-								GalacticGreg.Logger.trace("Using Oremix %s for asteroid", tWorldGen.mWorldGenName);
-								primaryMeta = tWorldGen.mPrimaryMeta;
-								secondaryMeta = tWorldGen.mSecondaryMeta;
-								betweenMeta = tWorldGen.mBetweenMeta;
-								sporadicMeta = tWorldGen.mSporadicMeta;
-								
-								temp = false;
-								break;
+								if (tWorldGen.isEnabledForDim(pDimensionDef))
+								{
+									GalacticGreg.Logger.trace("Using Oremix %s for asteroid", tWorldGen.mWorldGenName);
+									primaryMeta = tWorldGen.mPrimaryMeta;
+									secondaryMeta = tWorldGen.mSecondaryMeta;
+									betweenMeta = tWorldGen.mBetweenMeta;
+									sporadicMeta = tWorldGen.mSporadicMeta;
+
+									temp = false;
+									break;
+								}
+							} catch (Throwable e) {
+								e.printStackTrace(GT_Log.err);
 							}
-						} catch (Throwable e) {
-							e.printStackTrace(GT_Log.err);
 						}
 					}
 				}
@@ -117,7 +210,7 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 		else
 			return null;
 	}
-	
+
 	@Override
 	public boolean executeWorldgen(World pWorld, Random pRandom, String pBiome, int pDimensionType, int pChunkX, int pChunkZ, IChunkProvider pChunkGenerator, IChunkProvider pChunkProvider)
 	{
@@ -128,7 +221,7 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 			GalacticGreg.Logger.trace("Can't find dimension definition for ChunkProvider %s, skipping", pChunkGenerator.toString());
 			return false;
 		}			
-		
+
 		if (!_mDynWorldConfig.isEnabledInDim(tMDD))
 		{
 			GalacticGreg.Logger.trace("OreGen for %s is disallowed in dimension %s, skipping", mWorldGenName, tMDD.getDimensionName());
@@ -185,8 +278,8 @@ public class GT_Worldgen_GT_Ore_Layer_Space extends GT_Worldgen {
 				GalacticGreg.Logger.debug("Done with OreLayer-Worldgen in DimensionType %s. Generation took %d ms", tMDD.getDimensionName(), tTotalTime);
 			} catch (Exception e) { } // Silently ignore errors
 		}
-	
-		
+
+
 		GalacticGreg.Logger.trace("Leaving executeWorldgen");
 		return true;
 	}

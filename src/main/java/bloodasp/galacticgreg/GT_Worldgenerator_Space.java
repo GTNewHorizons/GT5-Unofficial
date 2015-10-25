@@ -134,7 +134,7 @@ public class GT_Worldgenerator_Space implements IWorldGenerator {
 				int tGraniteMeta = 0;
 				
 				// Select Random OreGroup and Asteroid Material
-				GTOreGroup tOreGroup = GT_Worldgen_GT_Ore_Layer_Space.getRandomOreGroup(pDimensionDef, pRandom);
+				GTOreGroup tOreGroup = GT_Worldgen_GT_Ore_Layer_Space.getRandomOreGroup(pDimensionDef, pRandom, true);
 				AsteroidBlockComb tABComb = pDimensionDef.getRandomAsteroidMaterial();
 				if (tABComb == null)
 					return;
@@ -166,7 +166,7 @@ public class GT_Worldgenerator_Space implements IWorldGenerator {
 				if (tAConf.LootChestChance > 0)
 				{
 					GalacticGreg.Logger.trace("Random loot chest enabled, flipping the coin");
-					int tChance = pRandom.nextInt(1000); // Loot chest is 1 in 1000
+					int tChance = pRandom.nextInt(100); // Loot chest is 1 in 100 (Was: 1:1000 which actually never happend)
 					if (tAConf.LootChestChance >= tChance)
 					{
 						GalacticGreg.Logger.debug("We got a match. Preparing to generate the loot chest");
