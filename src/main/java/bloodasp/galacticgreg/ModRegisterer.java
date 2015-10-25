@@ -163,8 +163,7 @@ public class ModRegisterer
 		ModDBMDef DBMDeimos = new ModDBMDef("deimossubgrunt");    
 		ModDBMDef DBMCeres = new ModDBMDef("ceressubgrunt");     
 		ModDBMDef DBMIO = new ModDBMDef("iorock", 4); // This meta-4 is a copy&paste bug in GSpace and might not work in further versions            
-		ModDBMDef DBMEurpoa = new ModDBMDef("europaice");         
-		ModDBMDef DBMGanymede = new ModDBMDef("ganymedesubgrunt");  
+		ModDBMDef DBMGanymede = new ModDBMDef("ganymedesubgrunt");
 		ModDBMDef DBMCallisto = new ModDBMDef("callistosubice");    
 		ModDBMDef DBMVenus = new ModDBMDef("venussubgrunt");     
 		ModDBMDef DBMMercury = new ModDBMDef("mercurycore");       
@@ -191,7 +190,6 @@ public class ModRegisterer
 		modCGalaxySpace.addDimensionDef(new ModDimensionDef("Deimos", "blessentumble.moons.SolarSystem.deimos.dimension.ChunkProviderDeimos", DimensionType.Planet, singleToList(DBMDeimos)));
 		modCGalaxySpace.addDimensionDef(new ModDimensionDef("Enceladus", "blessentumble.moons.SolarSystem.enceladus.dimension.ChunkProviderEnceladus", DimensionType.Planet, singleToList(DBMEnceladus)));
 		modCGalaxySpace.addDimensionDef(new ModDimensionDef("Io", "blessentumble.moons.io.dimension.ChunkProviderIo", DimensionType.Planet, singleToList(DBMIO)));
-		modCGalaxySpace.addDimensionDef(new ModDimensionDef("Europa", "blessentumble.moons.SolarSystem.europa.dimension.ChunkProviderEuropa", DimensionType.Planet, singleToList(DBMEurpoa)));
 		modCGalaxySpace.addDimensionDef(new ModDimensionDef("Phobos", "blessentumble.moons.phobos.dimension.ChunkProviderPhobos", DimensionType.Planet, singleToList(DBMPhobos)));
 		modCGalaxySpace.addDimensionDef(new ModDimensionDef("Venus", "blessentumble.planets.SolarSystem.venus.dimension.ChunkProviderVenus", DimensionType.Planet, singleToList(DBMVenus)));
 		modCGalaxySpace.addDimensionDef(new ModDimensionDef("Mercury", "blessentumble.planets.SolarSystem.mercury.dimension.ChunkProviderMercury", DimensionType.Planet, singleToList(DBMMercury)));
