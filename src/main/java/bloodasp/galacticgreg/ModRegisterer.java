@@ -179,6 +179,8 @@ public class ModRegisterer
 		// But it's better to use the actual ChunkProvider class. The Name is used for the GalacticGreg config file.
 		// The resulting config setting will be: <ModID>_<Name you give here as arg0>_false = false
 		// make sure to never change this name once you've generated your config files, as it will overwrite everything!
+		
+		// 25.10.2015 GSpace v2.5
 		modCGalaxySpace.addDimensionDef(new ModDimensionDef("Pluto", "blessentumble.planets.SolarSystem.pluto.dimension.ChunkProviderPluto", DimensionType.Planet, singleToList(DBMPluto)));
 		modCGalaxySpace.addDimensionDef(new ModDimensionDef("Triton", "blessentumble.moons.triton.dimension.ChunkProviderTriton", DimensionType.Planet, singleToList(DBMTriton)));
 		modCGalaxySpace.addDimensionDef(new ModDimensionDef("Proteus", "blessentumble.moons.proteus.dimension.ChunkProviderProteus", DimensionType.Planet, singleToList(DBMProteus)));
