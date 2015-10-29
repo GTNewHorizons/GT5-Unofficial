@@ -1,7 +1,5 @@
 package bloodasp.galacticgreg;
 
-import gregtech.api.GregTech_API;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -12,8 +10,6 @@ import bloodasp.galacticgreg.auxiliary.ProfilingStorage;
 import bloodasp.galacticgreg.command.AEStorageCommand;
 import bloodasp.galacticgreg.command.ProfilingCommand;
 import bloodasp.galacticgreg.registry.GalacticGregRegistry;
-import bloodasp.galacticgreg.schematics.SpaceSchematic;
-import bloodasp.galacticgreg.schematics.SpaceSchematicFactory;
 import bloodasp.galacticgreg.schematics.SpaceSchematicHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -50,15 +46,10 @@ public class GalacticGreg {
 		if (!GalacticConfig.LoadConfig())
 			GalacticGreg.Logger.warn("Something went wrong while reading GalacticGregs config file. Things will be wonky..");
 		
-		if (GalacticConfig.ProperConfigured)
-		{
-			GalacticRandom = new Random(System.currentTimeMillis());
-			
-			if (GalacticConfig.SchematicsEnabled)
-				SchematicHandler = new SpaceSchematicHandler(aEvent.getModConfigurationDirectory());			
-		}
-		else
-			GalacticGreg.Logger.error("GalacticGreg will NOT continue to load. Please read the warnings and configure your config file!");
+		GalacticRandom = new Random(System.currentTimeMillis());
+		
+		if (GalacticConfig.SchematicsEnabled)
+			SchematicHandler = new SpaceSchematicHandler(aEvent.getModConfigurationDirectory());			
 
 		Logger.trace("Leaving PRELOAD");
 	}
@@ -72,21 +63,14 @@ public class GalacticGreg {
 	@EventHandler
 	public void onPostLoad(FMLPostInitializationEvent aEvent) {
 		Logger.trace("Entering POSTLOAD");
-		if (GalacticConfig.ProperConfigured)
-		{
-			ModRegisterer atc = new ModRegisterer();
-			if (atc.Init())
-				atc.Register();
-			
-			if (!GalacticGregRegistry.InitRegistry())
-				throw new RuntimeException("GalacticGreg registry has been finalized from a 3rd-party mod, this is forbidden!");
+
+		if (!GalacticGregRegistry.InitRegistry())
+			throw new RuntimeException("GalacticGreg registry has been finalized from a 3rd-party mod, this is forbidden!");
+	
+		new WorldGenGaGT().run();
 		
-			new WorldGenGaGT().run();
-			
-			GalacticConfig.serverPostInit();
-		}		
-		else
-			GalacticGreg.Logger.error("GalacticGreg will NOT continue to load. Please read the warnings and configure your config file!");
+		GalacticConfig.serverPostInit();
+		
 		Logger.trace("Leaving POSTLOAD");
 	}
 	
@@ -98,14 +82,13 @@ public class GalacticGreg {
 	public void serverLoad(FMLServerStartingEvent pEvent)
 	{
 		Logger.trace("Entering SERVERLOAD");
-		if (GalacticConfig.ProperConfigured)
-		{
-			if (GalacticConfig.ProfileOreGen)
-				pEvent.registerServerCommand(new ProfilingCommand());
-			
-			if (Loader.isModLoaded("appliedenergistics2") && GalacticConfig.EnableAEExportCommand && GalacticConfig.SchematicsEnabled)
-				pEvent.registerServerCommand(new AEStorageCommand());
-		}
+		
+		if (GalacticConfig.ProfileOreGen)
+			pEvent.registerServerCommand(new ProfilingCommand());
+		
+		if (Loader.isModLoaded("appliedenergistics2") && GalacticConfig.EnableAEExportCommand && GalacticConfig.SchematicsEnabled)
+			pEvent.registerServerCommand(new AEStorageCommand());
+		
 		Logger.trace("Leaving SERVERLOAD");
 	}
 }

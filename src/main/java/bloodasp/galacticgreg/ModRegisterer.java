@@ -40,11 +40,13 @@ public class ModRegisterer
 	 */
 	public static void registerModContainer(ModContainer pModContainer)
 	{
+		/*
 		try {
 			registerModContainer.invoke(null, pModContainer);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		*/
 	}
 
 	/**
@@ -53,6 +55,8 @@ public class ModRegisterer
 	 */
 	public boolean Init()
 	{
+		return false;
+		/*
 		try
 		{
 			Class gGregRegistry = Class.forName("bloodasp.galacticgreg.registry.GalacticGregRegistry");
@@ -65,10 +69,12 @@ public class ModRegisterer
 			// GalacticGreg is not installed or something is wrong
 			return false;
 		}
+		*/
 	}
 	
 	public void Register()
 	{
+		/*
 		if (GalacticGreg.GalacticConfig.RegisterVanillaDim)
 			registerModContainer(Setup_Vanilla());
 		
@@ -80,6 +86,7 @@ public class ModRegisterer
 		
 		if (GalacticGreg.GalacticConfig.RegisterGalaxySpace)
 			registerModContainer(Setup_GalaxySpace());
+			*/
 	}
 
 	/**
