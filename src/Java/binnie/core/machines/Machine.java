@@ -1,27 +1,11 @@
 package binnie.core.machines;
 
-import binnie.core.BinnieCore;
-import binnie.core.machines.component.IInteraction.RightClick;
-import binnie.core.machines.component.IRender.DisplayTick;
-import binnie.core.machines.network.INetwork.GuiNBT;
-import binnie.core.machines.network.INetwork.RecieveGuiNBT;
-import binnie.core.machines.network.INetwork.SendGuiNBT;
-import binnie.core.machines.network.INetwork.TilePacketSync;
-import binnie.core.machines.power.ITankMachine;
-import binnie.core.network.BinnieCorePacketID;
-import binnie.core.network.INetworkedEntity;
-import binnie.core.network.packet.MessageTileNBT;
-import binnie.core.network.packet.PacketPayload;
-import binnie.core.proxy.BinnieProxy;
-import com.mojang.authlib.GameProfile;
-import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import cpw.mods.fml.relauncher.Side;
-import forestry.api.core.INBTTagable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,6 +13,20 @@ import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import binnie.core.BinnieCore;
+import binnie.core.machines.component.IInteraction;
+import binnie.core.machines.component.IRender;
+import binnie.core.machines.network.INetwork;
+import binnie.core.machines.power.ITankMachine;
+import binnie.core.network.BinnieCorePacketID;
+import binnie.core.network.INetworkedEntity;
+import binnie.core.network.packet.MessageTileNBT;
+import binnie.core.network.packet.PacketPayload;
+
+import com.mojang.authlib.GameProfile;
+
+import cpw.mods.fml.relauncher.Side;
+import forestry.api.core.INBTTagable;
 
 public class Machine
   implements INetworkedEntity, INBTTagable, INetwork.TilePacketSync, IMachine, INetwork.GuiNBT
@@ -67,7 +65,7 @@ public class Machine
     return this.componentMap.values();
   }
   
-  public <T extends MachineComponent> T getComponent(Class<T> componentClass)
+  public <T extends MachineComponent> MachineComponent getComponent(Class<T> componentClass)
   {
     return hasComponent(componentClass) ? (MachineComponent)componentClass.cast(this.componentMap.get(componentClass)) : null;
   }

@@ -1,7 +1,7 @@
 package binnie.core.machines.power;
 
-import forestry.api.core.INBTTagable;
 import net.minecraft.nbt.NBTTagCompound;
+import forestry.api.core.INBTTagable;
 
 public class ErrorState
   implements INBTTagable
@@ -54,7 +54,7 @@ public class ErrorState
   {
     public Item(String name, String desc, int[] slots)
     {
-      super(desc, slots);
+      super(name, desc, slots);
     }
   }
   
@@ -63,7 +63,7 @@ public class ErrorState
   {
     public Tank(String name, String desc, int[] slots)
     {
-      super(desc, slots);
+      super(name, desc, slots);
     }
   }
   
@@ -77,7 +77,7 @@ public class ErrorState
     
     public NoItem(String desc, int[] slots)
     {
-      super(desc, slots);
+      super("null", desc, slots);
     }
   }
   
@@ -91,7 +91,7 @@ public class ErrorState
     
     public InvalidItem(String name, String desc, int slot)
     {
-      super(desc, new int[] { slot });
+      super(name, desc, new int[] { slot });
     }
   }
   
@@ -100,7 +100,7 @@ public class ErrorState
   {
     public NoSpace(String desc, int[] slots)
     {
-      super(desc, slots);
+      super("null", desc, slots);
     }
   }
   
@@ -109,7 +109,7 @@ public class ErrorState
   {
     public InsufficientPower()
     {
-      super("Not enough power to operate");
+      super("Not enough power to operate", ".");
     }
   }
   
@@ -118,7 +118,7 @@ public class ErrorState
   {
     public TankSpace(String desc, int tank)
     {
-      super(desc, new int[] { tank });
+      super("null", desc, new int[] { tank });
     }
   }
   
@@ -127,7 +127,7 @@ public class ErrorState
   {
     public InsufficientLiquid(String desc, int tank)
     {
-      super(desc, new int[] { tank });
+      super("null", desc, new int[] { tank });
     }
   }
   
@@ -136,7 +136,7 @@ public class ErrorState
   {
     public InvalidRecipe(String string, int[] slots)
     {
-      super(string, slots);
+      super("null", string, slots);
     }
   }
   

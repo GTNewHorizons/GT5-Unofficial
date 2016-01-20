@@ -1,5 +1,13 @@
 package binnie.core.machines.base;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidTank;
 import binnie.core.machines.Machine;
 import binnie.core.machines.inventory.IInventoryMachine;
 import binnie.core.machines.inventory.TankSlot;
@@ -8,16 +16,6 @@ import binnie.core.machines.power.ITankMachine;
 import binnie.core.machines.power.PowerInfo;
 import binnie.core.machines.power.PowerInterface;
 import binnie.core.machines.power.TankInfo;
-import cpw.mods.fml.common.Optional.Method;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidTank;
 
 public class TileEntityMachineBase
   extends TileEntity
@@ -206,25 +204,21 @@ public class TileEntityMachineBase
     return getTankContainer().getTanks();
   }
   
-  @Optional.Method(modid="IC2")
   public double getDemandedEnergy()
   {
     return getPower().getDemandedEnergy();
   }
   
-  @Optional.Method(modid="IC2")
   public int getSinkTier()
   {
     return getPower().getSinkTier();
   }
   
-  @Optional.Method(modid="IC2")
   public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage)
   {
     return getPower().injectEnergy(directionFrom, amount, voltage);
   }
   
-  @Optional.Method(modid="IC2")
   public boolean acceptsEnergyFrom(TileEntity emitter, ForgeDirection direction)
   {
     return getPower().acceptsEnergyFrom(emitter, direction);

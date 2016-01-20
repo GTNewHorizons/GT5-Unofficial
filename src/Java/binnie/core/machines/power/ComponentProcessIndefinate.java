@@ -1,10 +1,9 @@
 package binnie.core.machines.power;
 
+import net.minecraft.nbt.NBTTagCompound;
 import binnie.core.machines.IMachine;
 import binnie.core.machines.MachineComponent;
-import binnie.core.machines.MachineUtil;
-import binnie.core.machines.network.INetwork.TilePacketSync;
-import net.minecraft.nbt.NBTTagCompound;
+import binnie.core.machines.network.INetwork;
 
 public abstract class ComponentProcessIndefinate
   extends MachineComponent

@@ -1,13 +1,12 @@
 package binnie.core.machines;
 
-import binnie.Binnie;
-import binnie.core.machines.base.TileEntityMachineBase;
-import binnie.core.machines.component.IInteraction.ChunkUnload;
-import binnie.core.machines.component.IInteraction.Invalidation;
-import binnie.core.network.INetworkedEntity;
-import binnie.core.network.packet.PacketPayload;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
+import binnie.Binnie;
+import binnie.core.machines.base.TileEntityMachineBase;
+import binnie.core.machines.component.IInteraction;
+import binnie.core.network.INetworkedEntity;
+import binnie.core.network.packet.PacketPayload;
 
 public class TileEntityMachine
   extends TileEntityMachineBase

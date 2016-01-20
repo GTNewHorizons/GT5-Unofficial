@@ -1,28 +1,24 @@
 package binnie.core.machines.power;
 
-import binnie.core.Mods;
-import binnie.core.Mods.Mod;
-import binnie.core.machines.IMachine;
-import binnie.core.machines.MachineComponent;
-import binnie.core.machines.component.IBuildcraft.TriggerProvider;
-import binnie.core.machines.component.IInteraction.ChunkUnload;
-import binnie.core.machines.component.IInteraction.Invalidation;
-import binnie.core.triggers.TriggerData;
-import binnie.core.triggers.TriggerPower;
-import cpw.mods.fml.common.Optional.Interface;
-import cpw.mods.fml.common.Optional.Method;
-import cpw.mods.fml.common.eventhandler.EventBus;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergyTile;
+
 import java.util.LinkedList;
 import java.util.List;
+
+import miscutil.core.lib.LoadedMods;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
+import binnie.core.machines.IMachine;
+import binnie.core.machines.MachineComponent;
+import binnie.core.machines.component.IBuildcraft;
+import binnie.core.machines.component.IInteraction;
+import binnie.core.triggers.TriggerData;
+import binnie.core.triggers.TriggerPower;
 
-@Optional.Interface(iface="binnie.core.machines.component.IBuildcraft.TriggerProvider", modid="BuildCraft|Silicon")
 public class ComponentPowerReceptor
   extends MachineComponent
   implements IPoweredMachine, IBuildcraft.TriggerProvider, IInteraction.ChunkUnload, IInteraction.Invalidation
@@ -74,7 +70,6 @@ public class ComponentPowerReceptor
     return new PowerInfo(this, 0.0F);
   }
   
-  @Optional.Method(modid="BuildCraft|Silicon")
   public final void getTriggers(List<TriggerData> triggers)
   {
     triggers.add(TriggerPower.powerNone(this));
@@ -84,26 +79,25 @@ public class ComponentPowerReceptor
     triggers.add(TriggerPower.powerFull(this));
   }
   
-  @Optional.Method(modid="IC2")
   public double getDemandedEnergy()
   {
     return this.container.getEnergySpace(PowerSystem.EU);
   }
   
-  @Optional.Method(modid="IC2")
+
   public int getSinkTier()
   {
     return 1;
   }
   
-  @Optional.Method(modid="IC2")
+
   public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage)
   {
     this.container.addEnergy(PowerSystem.EU, amount, true);
     return 0.0D;
   }
   
-  @Optional.Method(modid="IC2")
+
   public boolean acceptsEnergyFrom(TileEntity emitter, ForgeDirection direction)
   {
     return acceptsPowerSystem(PowerSystem.EU);
@@ -160,7 +154,7 @@ public class ComponentPowerReceptor
     if (getMachine().getWorld() == null) {
       return;
     }
-    if (Mods.IC2.active()) {
+    if (LoadedMods.IndustrialCraft2) {
       do_addToEnergyNet();
     }
   }
@@ -170,19 +164,17 @@ public class ComponentPowerReceptor
     if (getMachine().getWorld() == null) {
       return;
     }
-    if (Mods.IC2.active()) {
+    if (LoadedMods.IndustrialCraft2) {
       do_removeFromEnergyNet();
     }
   }
   
-  @Optional.Method(modid="IC2")
   private void do_addToEnergyNet()
   {
     MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent((IEnergyTile)getMachine().getTileEntity()));
     this.registeredToIC2EnergyNet = true;
   }
   
-  @Optional.Method(modid="IC2")
   private void do_removeFromEnergyNet()
   {
     MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent((IEnergyTile)getMachine().getTileEntity()));

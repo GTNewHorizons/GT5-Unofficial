@@ -1,16 +1,15 @@
 package binnie.core.machines.storage;
 
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import binnie.core.BinnieCore;
 import binnie.core.machines.IMachineType;
 import binnie.core.machines.Machine;
-import binnie.core.machines.MachineGroup;
 import binnie.core.machines.MachinePackage;
 import binnie.core.machines.TileEntityMachine;
 import binnie.core.resource.BinnieResource;
 import binnie.core.resource.IBinnieTexture;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 
  enum Compartment
   implements IMachineType
@@ -36,7 +35,7 @@ import net.minecraft.tileentity.TileEntity;
     
     protected PackageCompartment(String uid, IBinnieTexture renderTexture)
     {
-      super(false);
+      super(uid, false);
       this.renderTexture = renderTexture.getTexture();
     }
     

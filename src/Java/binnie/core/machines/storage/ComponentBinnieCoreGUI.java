@@ -1,13 +1,12 @@
 package binnie.core.machines.storage;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 import binnie.core.BinnieCore;
 import binnie.core.gui.BinnieCoreGUI;
 import binnie.core.machines.Machine;
 import binnie.core.machines.MachineComponent;
-import binnie.core.machines.component.IInteraction.RightClick;
-import binnie.core.proxy.BinnieProxy;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
+import binnie.core.machines.component.IInteraction;
 
 class ComponentBinnieCoreGUI
   extends MachineComponent

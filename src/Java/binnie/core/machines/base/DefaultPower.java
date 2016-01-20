@@ -1,11 +1,10 @@
 package binnie.core.machines.base;
 
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 import binnie.core.machines.power.IPoweredMachine;
 import binnie.core.machines.power.PowerInfo;
 import binnie.core.machines.power.PowerInterface;
-import cpw.mods.fml.common.Optional.Method;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 
 class DefaultPower
   implements IPoweredMachine
@@ -15,25 +14,25 @@ class DefaultPower
     return new PowerInfo(this, 0.0F);
   }
   
-  @Optional.Method(modid="IC2")
+ 
   public double getDemandedEnergy()
   {
     return 0.0D;
   }
   
-  @Optional.Method(modid="IC2")
+
   public int getSinkTier()
   {
     return 0;
   }
   
-  @Optional.Method(modid="IC2")
+
   public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage)
   {
     return 0.0D;
   }
   
-  @Optional.Method(modid="IC2")
+
   public boolean acceptsEnergyFrom(TileEntity emitter, ForgeDirection direction)
   {
     return false;

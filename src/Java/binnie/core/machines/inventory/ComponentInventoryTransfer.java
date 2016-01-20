@@ -1,12 +1,13 @@
 package binnie.core.machines.inventory;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import binnie.core.machines.IMachine;
 import binnie.core.machines.MachineComponent;
 import binnie.core.machines.transfer.TransferRequest;
-import java.util.ArrayList;
-import java.util.List;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 
 public class ComponentInventoryTransfer
   extends MachineComponent
@@ -62,7 +63,7 @@ public class ComponentInventoryTransfer
     
     private Restock(IMachine machine, int[] buffer, int destination, int limit)
     {
-      super(machine, null);
+      super(machine);
       this.buffer = buffer;
       this.destination = destination;
       this.limit = limit;
@@ -99,7 +100,7 @@ public class ComponentInventoryTransfer
     
     private Storage(IMachine machine, int source, int[] destination)
     {
-      super(machine, null);
+      super(machine);
       this.source = source;
       this.destination = destination;
     }
@@ -122,22 +123,22 @@ public class ComponentInventoryTransfer
   
   public void addRestock(int[] buffer, int destination, int limit)
   {
-    this.transfers.add(new Restock(getMachine(), buffer, destination, limit, null));
+    this.transfers.add(new Restock(getMachine(), buffer, destination, limit));
   }
   
   public void addRestock(int[] buffer, int destination)
   {
-    this.transfers.add(new Restock(getMachine(), buffer, destination, null));
+    this.transfers.add(new Restock(getMachine(), buffer, destination));
   }
   
   public void addStorage(int source, int[] destination)
   {
-    this.transfers.add(new Storage(getMachine(), source, destination, null));
+    this.transfers.add(new Storage(getMachine(), source, destination));
   }
   
   public void performTransfer(int source, int[] destination)
   {
-    new Storage(getMachine(), source, destination, null).transfer((IInventory)getMachine().getInterface(IInventoryMachine.class));
+    new Storage(getMachine(), source, destination).transfer((IInventory)getMachine().getInterface(IInventoryMachine.class));
   }
   
   public void onUpdate()
@@ -149,7 +150,7 @@ public class ComponentInventoryTransfer
   
   public void addStorage(int source, int[] destination, Condition condition)
   {
-    this.transfers.add(new Storage(getMachine(), source, destination, null).setCondition(condition));
+    this.transfers.add(new Storage(getMachine(), source, destination).setCondition(condition));
   }
   
   public static abstract class Condition
