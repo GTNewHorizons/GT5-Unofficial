@@ -1,0 +1,43 @@
+ buildscript {
+repositories
+{
+mavenCentral()
+maven {
+name = "forge"
+url = "http://files.minecraftforge.net/maven"
+}
+maven {
+name = "sonatype"
+url = "https://oss.sonatype.org/content/repositories/snapshots/"
+}
+}
+dependencies
+{
+classpath "net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT"
+}
+}
+
+apply plugin: "forge"
+
+sourceSets
+{
+main
+{
+java { srcDirs = ["$projectDir/src/java"] }
+resources { srcDirs = ["$projectDir/src/resources"] }
+}
+}
+
+dependencies {
+    compile files('mods/gregtech_1.7.10-5.08.30.jar')
+	compile files('mods/industrialcraft-2-2.2.720-experimental-dev.jar')
+}
+
+sourceCompatibility = JavaVersion.VERSION_1_7
+targetCompatibility = JavaVersion.VERSION_1_7
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+archivesBaseName = "MiscUtils"
+version = "0.7.8gtu"
+minecraft.version = "1.7.10-10.13.4.1448-1.7.10"

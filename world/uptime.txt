@@ -1,0 +1,21 @@
+#Server Uptime
+#Tue Aug 25 03:25:20 AEST 2015
+played_time_0=296771
+players=1
+world_days=1
+first_joined_0=1440431379671
+server_lastday=1440431342088
+longest_life_0=195190
+player_lastday_0=1440431379671
+last_death_0=1440432474018
+number_of_deaths_0=2
+server_ondays=1
+server_uptime=810889
+shortest_life_0=60643
+name_0=Draknyte1
+player_ondays_0=1
+last_world_time=16214
+last_active_0=1440432512670
+alive_time_0=30091
+this_death_0=1440432474018
+last_life_0=195190
