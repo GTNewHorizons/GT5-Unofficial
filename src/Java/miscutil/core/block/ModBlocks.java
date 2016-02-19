@@ -1,6 +1,7 @@
 package miscutil.core.block;
 
-import static miscutil.core.creativetabs.AddToCreativeTab.tabBlock;
+import miscutil.core.block.antigrief.TowerDevice;
+import miscutil.core.creativetabs.AddToCreativeTab;
 import miscutil.core.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -13,6 +14,7 @@ public final class ModBlocks {
 	public static Block blockStaballoy;
 	public static Block blockToolBuilder;
 	public static Block blockGriefSaver;
+	
 	//public static Block blockBloodSteelChest;
 
 	//BloodSteelorial Furnace
@@ -32,6 +34,8 @@ public final class ModBlocks {
 
 	public static void init() {
 		Utils.LOG_INFO("Initializing Blocks.");
+		blockGriefSaver = new TowerDevice().setBlockName("blockGriefSaver").setCreativeTab(AddToCreativeTab.tabBlock).setBlockTextureName("blockDefault");
+		
 		//BloodSteelorial Furnace - Must Init blocks first as they're not static.  
 		/** if (Strings.DEBUG){
 			FMLLog.info("Loading Furnace.");}
@@ -89,8 +93,8 @@ public final class ModBlocks {
 		//GameRegistry.registerBlock(emxBlockStorage, emxBlockStorage.getUnlocalizedName());
 		
 		//blockGriefSaver Block
-				GameRegistry.registerBlock(blockGriefSaver = new AdvancedBlock("blockGriefSaver", Material.circuits, tabBlock, 2.0F, 10.0F, 0, "axe", 2, Block.soundTypeMetal), "blockGriefSaver");
-		
+		//GameRegistry.registerBlock(blockGriefSaver = new AdvancedBlock("blockGriefSaver", Material.circuits, tabBlock, 2.0F, 10.0F, 0, "axe", 2, Block.soundTypeMetal), "blockGriefSaver");
+		GameRegistry.registerBlock(blockGriefSaver, "blockGriefSaver");
 	}
 
 }
