@@ -1,6 +1,7 @@
 package miscutil.core.item;
 
-import miscutil.core.creativetabs.TMCreativeTabs;
+import static miscutil.core.creativetabs.AddToCreativeTab.tabMisc;
+import miscutil.core.creativetabs.AddToCreativeTab;
 import miscutil.core.item.effects.RarityUncommon;
 import miscutil.core.item.tool.staballoy.StaballoyPickaxe;
 import miscutil.core.lib.Strings;
@@ -13,7 +14,7 @@ import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public final class ModItems {
-/*    A name for the material. This should be the same as the name of the variable we use to store the material (in this case "TUTORIAL").
+	/*    A name for the material. This should be the same as the name of the variable we use to store the material (in this case "TUTORIAL").
     A harvest level for pickaxes. This is a value between 0 and 3 and defines which blocks can be mined with this tool. Its also possible to create blocks which need a higher harvest level than 3, but then you are not able to mine them with vanilla tools.
     Common values for the harvest level are:
         Wood/Gold Tool: 0
@@ -103,17 +104,16 @@ public final class ModItems {
 	//Misc Items
 	public static Item itemIngotBloodSteel;
 	public static Item itemPlateBloodSteel;
-	
+
 	//Staballoy
 	public static Item itemStaballoyPickaxe;
 	public static Item itemPlateStaballoy;
 	public static Item itemIngotStaballoy;
-	
+
 
 
 
 	//@SuppressWarnings("unused")
-	@SuppressWarnings("unused")
 	public static final void init(){
 
 		/*
@@ -170,14 +170,14 @@ public final class ModItems {
 		if (Loader.isModLoaded("EnderIO") == true || Strings.LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("EnderIO Found - Loading Resources.");
 			//Item Init
-			itemPlateSoularium = new Item().setUnlocalizedName("itemPlateSoularium").setCreativeTab(TMCreativeTabs.tabMisc).setTextureName(Strings.MODID + ":itemPlateSoularium");;
-			itemPlateRedstoneAlloy = new Item().setUnlocalizedName("itemPlateRedstoneAlloy").setCreativeTab(TMCreativeTabs.tabMisc).setTextureName(Strings.MODID + ":itemPlateRedstoneAlloy");;
-			itemPlateElectricalSteel = new Item().setUnlocalizedName("itemPlateElectricalSteel").setCreativeTab(TMCreativeTabs.tabMisc).setTextureName(Strings.MODID + ":itemPlateElectricalSteel");;
-			itemPlatePulsatingIron = new Item().setUnlocalizedName("itemPlatePulsatingIron").setCreativeTab(TMCreativeTabs.tabMisc).setTextureName(Strings.MODID + ":itemPlatePulsatingIron");;
-			itemPlateEnergeticAlloy = new Item().setUnlocalizedName("itemPlateEnergeticAlloy").setCreativeTab(TMCreativeTabs.tabMisc).setTextureName(Strings.MODID + ":itemPlateEnergeticAlloy");;
-			itemPlateVibrantAlloy = new Item().setUnlocalizedName("itemPlateVibrantAlloy").setCreativeTab(TMCreativeTabs.tabMisc).setTextureName(Strings.MODID + ":itemPlateVibrantAlloy");;
-			itemPlateConductiveIron = new Item().setUnlocalizedName("itemPlateConductiveIron").setCreativeTab(TMCreativeTabs.tabMisc).setTextureName(Strings.MODID + ":itemPlateConductiveIron");;
-			itemPlateDarkSteel = new Item().setUnlocalizedName("itemPlateDarkSteel").setCreativeTab(TMCreativeTabs.tabMisc).setTextureName(Strings.MODID + ":itemPlateDarkSteel");;
+			itemPlateSoularium = new Item().setUnlocalizedName("itemPlateSoularium").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateSoularium");;
+			itemPlateRedstoneAlloy = new Item().setUnlocalizedName("itemPlateRedstoneAlloy").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateRedstoneAlloy");;
+			itemPlateElectricalSteel = new Item().setUnlocalizedName("itemPlateElectricalSteel").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateElectricalSteel");;
+			itemPlatePulsatingIron = new Item().setUnlocalizedName("itemPlatePulsatingIron").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlatePulsatingIron");;
+			itemPlateEnergeticAlloy = new Item().setUnlocalizedName("itemPlateEnergeticAlloy").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateEnergeticAlloy");;
+			itemPlateVibrantAlloy = new Item().setUnlocalizedName("itemPlateVibrantAlloy").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateVibrantAlloy");;
+			itemPlateConductiveIron = new Item().setUnlocalizedName("itemPlateConductiveIron").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateConductiveIron");;
+			itemPlateDarkSteel = new Item().setUnlocalizedName("itemPlateDarkSteel").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateDarkSteel");;
 
 
 			//Registry
@@ -198,9 +198,9 @@ public final class ModItems {
 		if (Loader.isModLoaded("BigReactors") == true || Strings.LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("BigReactors Found - Loading Resources.");
 			//Item Init
-			itemPlateBlutonium = new Item().setUnlocalizedName("itemPlateBlutonium").setCreativeTab(TMCreativeTabs.tabMisc).setTextureName(Strings.MODID + ":itemPlateBlutonium");;
-			itemPlateCyanite = new Item().setUnlocalizedName("itemPlateCyanite").setCreativeTab(TMCreativeTabs.tabMisc).setTextureName(Strings.MODID + ":itemPlateCyanite");;
-			itemPlateLudicrite = new Item().setUnlocalizedName("itemPlateLudicrite").setCreativeTab(TMCreativeTabs.tabMisc).setTextureName(Strings.MODID + ":itemPlateLudicrite");;
+			itemPlateBlutonium = new Item().setUnlocalizedName("itemPlateBlutonium").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateBlutonium");;
+			itemPlateCyanite = new Item().setUnlocalizedName("itemPlateCyanite").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateCyanite");;
+			itemPlateLudicrite = new Item().setUnlocalizedName("itemPlateLudicrite").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateLudicrite");;
 
 			//Registry
 			GameRegistry.registerItem(itemPlateBlutonium, "itemPlateBlutonium");
@@ -216,7 +216,7 @@ public final class ModItems {
 		if (Loader.isModLoaded("Thaumcraft") == true || Strings.LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("Thaumcraft Found - Loading Resources.");
 			//Item Init
-			itemPlateVoidMetal = new Item().setUnlocalizedName("itemPlateVoidMetal").setCreativeTab(TMCreativeTabs.tabMisc).setTextureName(Strings.MODID + ":itemPlateVoidMetal");;
+			itemPlateVoidMetal = new Item().setUnlocalizedName("itemPlateVoidMetal").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateVoidMetal");;
 
 			//Registry
 			GameRegistry.registerItem(itemPlateVoidMetal, "itemPlateVoidMetal");
@@ -230,7 +230,7 @@ public final class ModItems {
 		if (Loader.isModLoaded("ExtraUtilities") == true || Strings.LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("ExtraUtilities Found - Loading Resources.");
 			//Item Init
-			itemPlateBedrockium = new Item().setUnlocalizedName("itemPlateBedrockium").setCreativeTab(TMCreativeTabs.tabMisc).setTextureName(Strings.MODID + ":itemPlateBedrockium");;
+			itemPlateBedrockium = new Item().setUnlocalizedName("itemPlateBedrockium").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateBedrockium");;
 
 			//Registry
 			GameRegistry.registerItem(itemPlateBedrockium, "itemPlateBedrockium");
@@ -244,7 +244,7 @@ public final class ModItems {
 		if (Loader.isModLoaded("PneumaticCraft") == true || Strings.LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("PneumaticCraft Found - Loading Resources.");
 			//Item Init
-			itemPlateCompressedIron = new Item().setUnlocalizedName("itemPlateCompressedIron").setCreativeTab(TMCreativeTabs.tabMisc).setTextureName(Strings.MODID + ":itemPlateCompressedIron");;
+			itemPlateCompressedIron = new Item().setUnlocalizedName("itemPlateCompressedIron").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateCompressedIron");;
 
 			//Registry
 			GameRegistry.registerItem(itemPlateCompressedIron, "itemPlateCompressedIron");
@@ -258,7 +258,7 @@ public final class ModItems {
 		if (Loader.isModLoaded("simplyjetpacks") == true || Strings.LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("SimplyJetpacks Found - Loading Resources.");
 			//Item Init
-			itemPlateEnrichedSoularium = new RarityUncommon().setUnlocalizedName("itemPlateEnrichedSoularium").setCreativeTab(TMCreativeTabs.tabMisc).setTextureName(Strings.MODID + ":itemPlateSoularium");;
+			itemPlateEnrichedSoularium = new RarityUncommon().setUnlocalizedName("itemPlateEnrichedSoularium").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateSoularium");;
 
 			//Registry
 			GameRegistry.registerItem(itemPlateEnrichedSoularium, "itemPlateEnrichedSoularium");
@@ -273,7 +273,7 @@ public final class ModItems {
 		if (Loader.isModLoaded("rftools") == true || Strings.LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("rfTools Found - Loading Resources.");
 			//Item Init
-			itemPlateDimensionShard = new Item().setUnlocalizedName("itemPlateDimensionShard").setCreativeTab(TMCreativeTabs.tabMisc).setTextureName(Strings.MODID + ":itemPlateDimensionShard");;
+			itemPlateDimensionShard = new Item().setUnlocalizedName("itemPlateDimensionShard").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateDimensionShard");;
 
 			//Registry
 			GameRegistry.registerItem(itemPlateDimensionShard, "itemPlateDimensionShard");
@@ -290,20 +290,22 @@ public final class ModItems {
 		//Staballoy Equipment
 		Utils.LOG_INFO("Interest in Stablloy Found - Loading Resources.");
 		//Pickaxe
-		itemStaballoyPickaxe = new StaballoyPickaxe("itemStaballoyPickaxe", STABALLOY).setCreativeTab(TMCreativeTabs.tabTools);
+		itemStaballoyPickaxe = new StaballoyPickaxe("itemStaballoyPickaxe", STABALLOY).setCreativeTab(AddToCreativeTab.tabTools);
 		GameRegistry.registerItem(itemStaballoyPickaxe, itemStaballoyPickaxe.getUnlocalizedName());
 		//Staballoy Ingot/Plate
-		itemIngotStaballoy = new Item().setUnlocalizedName("itemIngotStaballoy").setCreativeTab(TMCreativeTabs.tabMisc).setTextureName(Strings.MODID + ":itemIngotStaballoy");;
+		itemIngotStaballoy = new Item().setUnlocalizedName("itemIngotStaballoy").setCreativeTab(tabMisc).setTextureName(Strings.MODID + ":itemIngotStaballoy");;
 		GameRegistry.registerItem(itemIngotStaballoy, "itemIngotStaballoy");
-		itemPlateStaballoy = new Item().setUnlocalizedName("itemPlateStaballoy").setCreativeTab(TMCreativeTabs.tabMisc).setTextureName(Strings.MODID + ":itemPlateStaballoy");;
+		itemPlateStaballoy = new Item().setUnlocalizedName("itemPlateStaballoy").setCreativeTab(tabMisc).setTextureName(Strings.MODID + ":itemPlateStaballoy");;
 		GameRegistry.registerItem(itemPlateStaballoy, "itemPlateStaballoy");
 		//GregTech_API.sRecipeAdder.addAlloySmelterRecipe(, aInput2, aOutput1, aDuration, aEUt)
-		
-		
-		
+
+
 		//Blood Steel Ingot
-		itemIngotBloodSteel = new Item().setUnlocalizedName("itemIngotBloodSteel").setCreativeTab(TMCreativeTabs.tabMisc).setTextureName(Strings.MODID + ":itemIngotBloodSteel");;
+		itemIngotBloodSteel = new Item().setUnlocalizedName("itemIngotBloodSteel").setCreativeTab(tabMisc).setTextureName(Strings.MODID + ":itemIngotBloodSteel");;
 		GameRegistry.registerItem(itemIngotBloodSteel, "itemIngotBloodSteel");
+		//Blood Steel Plate
+		itemPlateBloodSteel = new Item().setUnlocalizedName("itemPlateBloodSteel").setCreativeTab(tabMisc).setTextureName(Strings.MODID + ":itemPlateBloodSteel");;
+		GameRegistry.registerItem(itemPlateBloodSteel, "itemPlateBloodSteel");
 
 
 	}

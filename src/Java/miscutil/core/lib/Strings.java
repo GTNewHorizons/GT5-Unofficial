@@ -1,5 +1,7 @@
 package miscutil.core.lib;
 
+import miscutil.core.creativetabs.AddToCreativeTab;
+
 public class Strings {
 
 	public static final String name = "Misc. Utils";	
@@ -9,6 +11,9 @@ public class Strings {
 	public static boolean GREGTECH;	
 	public static final boolean LOAD_ALL_CONTENT = false;
 	public static final int GREG_FIRST_ID = 760;
+	
+	
+	public static final Class<AddToCreativeTab> TAB = AddToCreativeTab.class;
 	
 	//GUIS
 	public enum GUI_ENUM 

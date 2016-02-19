@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src/Java"/>
+	<classpathentry excluding="conduits/|miscutil/enderio/" kind="src" path="src/Java"/>
 	<classpathentry kind="src" path="src/resources"/>
-	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Forge"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Gregtech"/>
-	<classpathentry kind="lib" path="/Gregtech/libs/dev/industrialcraft-2-2.2.720-experimental-dev.jar"/>
-	<classpathentry kind="lib" path="mods/GlassPane-1.0.jar"/>
-	<classpathentry kind="lib" path="mods/GUIAPI-1.0.5.jar"/>
-	<classpathentry kind="lib" path="mods/buildcraft-6.4.15.jar"/>
-	<classpathentry kind="lib" path="mods/forestry_1.7.10-3.5.6.15.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="libs/industrialcraft-2-2.2.720-experimental-dev.jar"/>
+	<classpathentry kind="lib" path="libs/gregtech_1.7.10-5.08.30-dev.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

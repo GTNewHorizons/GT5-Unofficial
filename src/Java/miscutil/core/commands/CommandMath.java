@@ -15,14 +15,14 @@ import net.minecraft.world.World;
 
 public class CommandMath implements ICommand
 { 
-	private final List aliases;
+	private final List<String> aliases;
 
 	protected String fullEntityName; 
 	protected Entity conjuredEntity; 
 
 	public CommandMath() 
 	{ 
-		aliases = new ArrayList(); 
+		aliases = new ArrayList<String>(); 
 
 		aliases.add("hometele"); 
 
@@ -52,7 +52,7 @@ public class CommandMath implements ICommand
 	} 
 
 	@Override 
-	public List getCommandAliases() 
+	public List<String> getCommandAliases() 
 	{ 
 		return this.aliases;
 
@@ -167,7 +167,7 @@ public class CommandMath implements ICommand
 	} 
 
 	@Override  
-	public List addTabCompletionOptions(ICommandSender var1, String[] var2) 
+	public List<?> addTabCompletionOptions(ICommandSender var1, String[] var2) 
 	{ 
 		// TODO Auto-generated method stub 
 

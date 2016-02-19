@@ -1,6 +1,6 @@
 package miscutil.core.proxy;
 
-import miscutil.core.CommonProxy;
+import miscutil.core.common.CommonProxy;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;

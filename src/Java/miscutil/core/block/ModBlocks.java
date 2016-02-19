@@ -1,5 +1,6 @@
 package miscutil.core.block;
 
+import static miscutil.core.creativetabs.AddToCreativeTab.tabBlock;
 import miscutil.core.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -11,6 +12,7 @@ public final class ModBlocks {
 	public static Block blockBloodSteel;
 	public static Block blockStaballoy;
 	public static Block blockToolBuilder;
+	public static Block blockGriefSaver;
 	//public static Block blockBloodSteelChest;
 
 	//BloodSteelorial Furnace
@@ -85,6 +87,10 @@ public final class ModBlocks {
 		
 		//Block Storage
 		//GameRegistry.registerBlock(emxBlockStorage, emxBlockStorage.getUnlocalizedName());
+		
+		//blockGriefSaver Block
+				GameRegistry.registerBlock(blockGriefSaver = new AdvancedBlock("blockGriefSaver", Material.circuits, tabBlock, 2.0F, 10.0F, 0, "axe", 2, Block.soundTypeMetal), "blockGriefSaver");
+		
 	}
 
 }

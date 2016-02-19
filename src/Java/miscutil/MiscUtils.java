@@ -2,13 +2,15 @@ package miscutil;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.InvocationTargetException;
 
-import miscutil.core.CommonProxy;
 import miscutil.core.commands.CommandMath;
-import miscutil.core.creativetabs.TMCreativeTabs;
+import miscutil.core.common.CommonProxy;
+import miscutil.core.creativetabs.AddToCreativeTab;
 import miscutil.core.handler.CraftingManager;
 import miscutil.core.lib.Strings;
 import miscutil.core.util.Utils;
+import miscutil.gregtech.enums.MaterialsNew;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -26,8 +28,8 @@ implements ActionListener
 { 
 
 	//Vars
-
-
+	//EnumBuster EB = new EnumBuster(gregtech.api.enums.Materials, null);
+	
 	@Mod.Instance(Strings.MODID)
 	public static MiscUtils instance;
 
@@ -39,9 +41,16 @@ implements ActionListener
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-
+		try {
+			MaterialsNew.getGregMaterials();
+		} catch (IllegalAccessException | IllegalArgumentException
+				| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//java.lang.reflect.Array.get(Materials, index)
 		Utils.LOG_INFO("Doing some house cleaning.");
-		TMCreativeTabs.initialiseTabs();
+		AddToCreativeTab.initialiseTabs();
 		//TMEntity.mainRegistry();
 		CraftingManager.mainRegistry();
 		//TMWorld.mainRegistry();

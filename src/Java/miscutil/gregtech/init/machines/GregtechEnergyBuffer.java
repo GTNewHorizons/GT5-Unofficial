@@ -4,7 +4,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
-import miscutil.core.creativetabs.TMCreativeTabs;
+import miscutil.core.creativetabs.AddToCreativeTab;
 import miscutil.core.lib.Strings;
 import miscutil.gregtech.enums.ExtraOreDictNames;
 import miscutil.gregtech.enums.GregtechItemList;
@@ -34,7 +34,7 @@ public class GregtechEnergyBuffer
 	private static void run1()
 	{
 		
-		itemBufferCore = new Item().setUnlocalizedName("itemBufferCore").setCreativeTab(TMCreativeTabs.tabMisc).setTextureName(Strings.MODID + ":itemBufferCore");;
+		itemBufferCore = new Item().setUnlocalizedName("itemBufferCore").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemBufferCore");;
 
 		//Registry
 		GameRegistry.registerItem(itemBufferCore, "itemBufferCore");

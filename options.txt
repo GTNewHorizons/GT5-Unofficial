@@ -85,6 +85,19 @@ key_key.hotbar.6:7
 key_key.hotbar.7:8
 key_key.hotbar.8:9
 key_key.hotbar.9:10
+key_ALT Key:56
+key_Boost Key:29
+key_Mode Switch Key:50
+key_Side Inventory Key:46
+key_Hub Expand Key:45
+key_Glider Toggle:34
+key_Sound Locator:38
+key_Night Vision:25
+key_Goggles of Revealing:19
+key_Step Assist:0
+key_Speed:0
+key_Yeta Wrench Mode:21
+key_Baubles Inventory:48
 soundCategory_master:1.0
 soundCategory_music:1.0
 soundCategory_record:1.0

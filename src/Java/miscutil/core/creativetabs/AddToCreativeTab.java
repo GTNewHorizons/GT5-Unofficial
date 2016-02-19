@@ -2,7 +2,7 @@ package miscutil.core.creativetabs;
 
 import net.minecraft.creativetab.CreativeTabs;
 
-public class TMCreativeTabs {
+public class AddToCreativeTab {
 	
 	public static CreativeTabs tabBlock;
 	public static CreativeTabs tabMisc;
