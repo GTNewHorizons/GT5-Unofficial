@@ -35,6 +35,9 @@ item.itemPlateDimensionShard.name=Dimensional Plate
 item.itemIngotBloodSteel.name=Blood Steel Ingot
 item.itemPlateBloodSteel.name=Blood Steel Plate
 
+tile.blockGriefSaver.name=Anti-Griefer [WIP]
+tile.blockStaballoy.name=Block of Staballoy
+
 
 tile.blockBloodSteel.name=Block of Blood Steel
 tile.BloodSteelFurnace.name=Blood Steel Industrial Furnace

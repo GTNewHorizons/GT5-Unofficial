@@ -6,7 +6,7 @@ import crazypants.enderio.conduit.AbstractConduitNetwork;
 public class AbstractGtTankConduitNetwork<T extends AbstractGtTankConduit> extends AbstractConduitNetwork<IGtConduit, T> {
 
   protected GasStack gasType;
-
+ private int test;
   protected AbstractGtTankConduitNetwork(Class<T> cl) {
     super(cl);
   }
