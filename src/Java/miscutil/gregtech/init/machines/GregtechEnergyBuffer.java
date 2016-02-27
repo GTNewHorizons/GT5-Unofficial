@@ -24,10 +24,11 @@ public class GregtechEnergyBuffer
 	
 	public static void run()
 	{
-		if (Strings.GREGTECH){
+		if (miscutil.core.lib.LoadedMods.Gregtech){
 			Utils.LOG_INFO("MiscUtils: Gregtech5u Content | Registering Energy Buffer Blocks.");
+			run1();
 		}
-		run1();
+		
 	}
 
 	@SuppressWarnings("deprecation")

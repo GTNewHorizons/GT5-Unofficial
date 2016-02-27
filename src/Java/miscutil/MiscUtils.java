@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import miscutil.core.commands.CommandMath;
 import miscutil.core.common.CommonProxy;
 import miscutil.core.creativetabs.AddToCreativeTab;
-import miscutil.core.handler.CraftingManager;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.lib.Strings;
 import miscutil.core.util.Utils;
@@ -40,7 +39,7 @@ implements ActionListener
 		LoadedMods.checkLoaded();
 		Utils.LOG_INFO("Doing some house cleaning.");
 		AddToCreativeTab.initialiseTabs();
-		CraftingManager.mainRegistry();
+		//CraftingManager.mainRegistry();
 		proxy.registerTileEntities();
 		proxy.registerRenderThings();
 		proxy.preInit(event);

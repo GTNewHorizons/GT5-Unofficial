@@ -5,7 +5,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
-import miscutil.core.lib.Strings;
 import miscutil.gregtech.enums.GregtechItemList;
 import miscutil.gregtech.metatileentity.implementations.GregtechSteelBoiler;
 import cpw.mods.fml.common.FMLLog;
@@ -14,10 +13,11 @@ public class GregtechCobbleGenerator
 {
 	public static void run()
 	{
-		if (Strings.GREGTECH){
+		if (miscutil.core.lib.LoadedMods.Gregtech){
 			FMLLog.info("MiscUtils: Registering Cobblestone Powered Engines.");
+			run1();
 		}
-		run1();
+		
 	}
 
 	private static void run1()

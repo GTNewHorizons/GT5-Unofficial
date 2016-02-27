@@ -288,6 +288,12 @@ public final class ModItems {
 		GameRegistry.registerItem(itemPlateBloodSteel, "itemPlateBloodSteel");
 
 
+		//Try some New Tools from GT
+		//ItemStack x = null;
+		//GregTech_API.constructHardHammerItem("unlocalalizedName", "Full name", 500 /**Max Damage**/,500 /**Entity Damage**/);
+		//GregTech_API.registerHardHammer(x);
+		
+		
 	}
 
 }
