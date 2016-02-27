@@ -1,8 +1,5 @@
 package crazypants.enderio.conduit.gas;
 
-import com.enderio.core.common.util.BlockCoord;
-import com.enderio.core.common.util.DyeColor;
-import cpw.mods.fml.common.Optional.Method;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -10,6 +7,8 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.reservoir.TileReservoir;
+import crazypants.util.BlockCoord;
+import crazypants.util.DyeColor;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,14 +30,12 @@ public abstract class AbstractGasConduit
   protected final Map<ForgeDirection, Integer> externalRedstoneSignals = new HashMap();
   protected boolean redstoneStateDirty = true;
   
-  @Optional.Method(modid="MekanismAPI|gas")
   public IGasHandler getExternalHandler(ForgeDirection direction)
   {
     IGasHandler con = GasUtil.getExternalGasHandler(getBundle().getWorld(), getLocation().getLocation(direction));
     return (con != null) && (!(con instanceof IConduitBundle)) ? con : null;
   }
   
-  @Optional.Method(modid="MekanismAPI|gas")
   public IGasHandler getTankContainer(BlockCoord bc)
   {
     return GasUtil.getGasHandler(getBundle().getWorld(), bc);

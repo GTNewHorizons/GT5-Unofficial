@@ -1,6 +1,5 @@
 package crazypants.enderio.conduit.gas;
 
-import cpw.mods.fml.common.Optional.Method;
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
 import mekanism.api.gas.GasTank;
@@ -64,7 +63,6 @@ public class ConduitGasTank
     }
   }
   
-  @Optional.Method(modid="MekanismAPI|gas")
   public int receive(GasStack resource, boolean doReceive)
   {
     if ((resource == null) || (resource.getGas().getID() < 0)) {
@@ -103,7 +101,6 @@ public class ConduitGasTank
     return space;
   }
   
-  @Optional.Method(modid="MekanismAPI|gas")
   public GasStack draw(int maxDrain, boolean doDraw)
   {
     if ((this.stored == null) || (this.stored.getGas().getID() < 0)) {

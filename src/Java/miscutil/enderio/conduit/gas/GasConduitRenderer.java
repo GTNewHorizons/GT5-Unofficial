@@ -1,11 +1,5 @@
 package crazypants.enderio.conduit.gas;
 
-import com.enderio.core.client.render.BoundingBox;
-import com.enderio.core.client.render.CubeRenderer;
-import com.enderio.core.client.render.RenderUtil;
-import com.enderio.core.common.vecmath.Vector2f;
-import com.enderio.core.common.vecmath.Vector3d;
-import com.enderio.core.common.vecmath.Vertex;
 import crazypants.enderio.EnderIO;
 import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -16,6 +10,12 @@ import crazypants.enderio.conduit.geom.ConnectionModeGeometry;
 import crazypants.enderio.conduit.geom.Offset;
 import crazypants.enderio.conduit.render.ConduitBundleRenderer;
 import crazypants.enderio.conduit.render.DefaultConduitRenderer;
+import crazypants.render.BoundingBox;
+import crazypants.render.CubeRenderer;
+import crazypants.render.RenderUtil;
+import crazypants.vecmath.Vector2f;
+import crazypants.vecmath.Vector3d;
+import crazypants.vecmath.Vertex;
 import java.util.List;
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
@@ -112,14 +112,14 @@ public class GasConduitRenderer
       if (conduit.getConnectionMode(component.dir) == ConnectionMode.DISABLED)
       {
         tex = EnderIO.blockConduitBundle.getConnectorIcon(component.data);
-        Object corners = component.bound.getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
+        List<Vertex> corners = component.bound.getCornersWithUvForFace(component.dir, tex.getMinU(), tex.getMaxU(), tex.getMinV(), tex.getMaxV());
         Tessellator tessellator = Tessellator.instance;
-        for (Vertex c : (List)corners) {
+        for (Vertex c : corners) {
           CubeRenderer.addVecWithUV(c.xyz, c.uv.x, c.uv.y);
         }
-        for (int i = ((List)corners).size() - 1; i >= 0; i--)
+        for (int i = corners.size() - 1; i >= 0; i--)
         {
-          Vertex c = (Vertex)((List)corners).get(i);
+          Vertex c = (Vertex)corners.get(i);
           CubeRenderer.addVecWithUV(c.xyz, c.uv.x, c.uv.y);
         }
       }

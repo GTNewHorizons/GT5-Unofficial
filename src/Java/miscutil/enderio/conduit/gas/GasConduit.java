@@ -1,9 +1,5 @@
 package crazypants.enderio.conduit.gas;
 
-import com.enderio.core.client.render.IconUtil;
-import com.enderio.core.client.render.IconUtil.IIconProvider;
-import com.enderio.core.common.util.BlockCoord;
-import cpw.mods.fml.common.Optional.Method;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import crazypants.enderio.EnderIO;
@@ -13,6 +9,9 @@ import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.config.Config;
+import crazypants.render.IconUtil;
+import crazypants.render.IconUtil.IIconProvider;
+import crazypants.util.BlockCoord;
 import java.util.HashMap;
 import java.util.Map;
 import mekanism.api.gas.Gas;
@@ -216,39 +215,22 @@ public class GasConduit
     return null;
   }
   
-  @Deprecated
-  @Optional.Method(modid="MekanismAPI|gas")
-  public int receiveGas(ForgeDirection side, GasStack stack)
+  public int receiveGas(ForgeDirection from, GasStack resource)
   {
-    return receiveGas(side, stack, true);
-  }
-  
-  @Optional.Method(modid="MekanismAPI|gas")
-  public int receiveGas(ForgeDirection side, GasStack stack, boolean doTransfer)
-  {
-    if ((this.network == null) || (!getConnectionMode(side).acceptsInput())) {
+    if ((this.network == null) || (!getConnectionMode(from).acceptsInput())) {
       return 0;
     }
-    return this.network.fill(side, stack, doTransfer);
+    return this.network.fill(from, resource, true);
   }
   
-  @Deprecated
-  @Optional.Method(modid="MekanismAPI|gas")
-  public GasStack drawGas(ForgeDirection side, int amount)
+  public GasStack drawGas(ForgeDirection from, int maxDrain)
   {
-    return drawGas(side, amount, true);
-  }
-  
-  @Optional.Method(modid="MekanismAPI|gas")
-  public GasStack drawGas(ForgeDirection side, int amount, boolean doTransfer)
-  {
-    if ((this.network == null) || (!getConnectionMode(side).acceptsOutput())) {
+    if ((this.network == null) || (!getConnectionMode(from).acceptsOutput())) {
       return null;
     }
-    return this.network.drain(side, amount, doTransfer);
+    return this.network.drain(from, maxDrain, true);
   }
   
-  @Optional.Method(modid="MekanismAPI|gas")
   public boolean canReceiveGas(ForgeDirection from, Gas gas)
   {
     if (this.network == null) {
@@ -257,7 +239,6 @@ public class GasConduit
     return (getConnectionMode(from).acceptsInput()) && (GasConduitNetwork.areGassCompatable(getGasType(), new GasStack(gas, 0)));
   }
   
-  @Optional.Method(modid="MekanismAPI|gas")
   public boolean canDrawGas(ForgeDirection from, Gas gas)
   {
     if (this.network == null) {

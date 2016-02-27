@@ -1,9 +1,12 @@
 package crazypants.enderio.conduit.gas;
 
-import com.enderio.core.common.util.BlockCoord;
+import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
+import crazypants.enderio.conduit.ConduitNetworkTickHandler;
+import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.util.BlockCoord;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -23,10 +26,17 @@ public class GasConduitNetwork
   private int ticksActiveUnsynced;
   private boolean lastSyncedActive = false;
   private int lastSyncedVolume = -1;
+  private long timeAtLastApply;
+  private final InnerTickHandler tickHandler = new InnerTickHandler(null);
   
   public GasConduitNetwork()
   {
     super(GasConduit.class);
+  }
+  
+  public Class<IGasConduit> getBaseConduitType()
+  {
+    return IGasConduit.class;
   }
   
   public void addConduit(GasConduit con)
@@ -87,7 +97,24 @@ public class GasConduitNetwork
     }
   }
   
-  public void doNetworkTick()
+  public void onUpdateEntity(IConduit conduit)
+  {
+    World world = conduit.getBundle().getEntity().getWorldObj();
+    if (world == null) {
+      return;
+    }
+    if (world.isRemote) {
+      return;
+    }
+    long curTime = world.getTotalWorldTime();
+    if ((curTime > 0L) && (curTime != this.timeAtLastApply))
+    {
+      this.timeAtLastApply = curTime;
+      ConduitNetworkTickHandler.instance.addListener(this.tickHandler);
+    }
+  }
+  
+  private void doTick()
   {
     if ((this.gasType == null) || (this.outputs.isEmpty()) || (!this.tank.containsValidGas()) || (this.tank.isEmpty()))
     {
@@ -276,5 +303,18 @@ public class GasConduitNetwork
     }
     setConduitVolumes();
     this.lastSyncedVolume = this.tank.getStored();
+  }
+  
+  private class InnerTickHandler
+    implements ConduitNetworkTickHandler.TickListener
+  {
+    private InnerTickHandler() {}
+    
+    public void tickStart(TickEvent.ServerTickEvent evt) {}
+    
+    public void tickEnd(TickEvent.ServerTickEvent evt)
+    {
+      GasConduitNetwork.this.doTick();
+    }
   }
 }

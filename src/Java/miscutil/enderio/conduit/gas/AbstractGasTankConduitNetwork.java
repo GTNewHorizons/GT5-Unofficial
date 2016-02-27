@@ -10,12 +10,17 @@ public class AbstractGasTankConduitNetwork<T extends AbstractGasTankConduit>
   
   protected AbstractGasTankConduitNetwork(Class<T> cl)
   {
-    super(cl, IGasConduit.class);
+    super(cl);
   }
   
   public GasStack getGasType()
   {
     return this.gasType;
+  }
+  
+  public Class<IGasConduit> getBaseConduitType()
+  {
+    return IGasConduit.class;
   }
   
   public void addConduit(T con)

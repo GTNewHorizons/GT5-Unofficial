@@ -1,6 +1,6 @@
 package crazypants.enderio.conduit.gas;
 
-import com.enderio.core.common.util.BlockCoord;
+import crazypants.util.BlockCoord;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class GasOutput

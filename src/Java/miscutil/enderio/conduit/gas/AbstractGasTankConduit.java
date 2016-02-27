@@ -1,7 +1,5 @@
 package crazypants.enderio.conduit.gas;
 
-import com.enderio.core.common.util.BlockCoord;
-import cpw.mods.fml.common.Optional.Method;
 import crazypants.enderio.conduit.AbstractConduitNetwork;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -9,6 +7,7 @@ import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.conduit.RaytraceResult;
 import crazypants.enderio.conduit.geom.CollidableComponent;
 import crazypants.enderio.tool.ToolUtil;
+import crazypants.util.BlockCoord;
 import java.util.List;
 import mekanism.api.gas.GasStack;
 import mekanism.api.gas.IGasHandler;
@@ -101,7 +100,6 @@ public abstract class AbstractGasTankConduit
   
   public abstract AbstractGasTankConduitNetwork<? extends AbstractGasTankConduit> getTankNetwork();
   
-  @Optional.Method(modid="MekanismAPI|gas")
   public void setGasType(GasStack gasType)
   {
     if ((this.tank.getGas() != null) && (this.tank.getGas().isGasEqual(gasType))) {
@@ -121,7 +119,6 @@ public abstract class AbstractGasTankConduit
     return this.tank;
   }
   
-  @Optional.Method(modid="MekanismAPI|gas")
   public GasStack getGasType()
   {
     GasStack result = null;
