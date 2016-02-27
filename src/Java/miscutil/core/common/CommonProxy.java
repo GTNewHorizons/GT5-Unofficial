@@ -1,6 +1,7 @@
 package miscutil.core.common;
 
 import static miscutil.core.lib.LoadedMods.Gregtech;
+import static miscutil.core.lib.Strings.DEBUG;
 import gregtech.api.util.GT_OreDictUnificator;
 import miscutil.core.block.ModBlocks;
 import miscutil.core.gui.ModGUI;
@@ -18,6 +19,24 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 public class CommonProxy {
 
 	public void preInit(FMLPreInitializationEvent e) {
+		/*
+		 * 
+		 * Strings.DEBUG Parameters area
+		 * 
+		 */
+		//Logs
+		if (!DEBUG){
+			Utils.LOG_INFO("Development mode not enabled.");
+		}
+		else if (DEBUG){
+			Utils.LOG_INFO("Development mode enabled.");
+		}
+		else {
+			Utils.LOG_WARNING("Development mode not set.");
+		}
+		/*
+		 * End Strings.DEBUG
+		 */		
 		ModItems.init();
 		ModBlocks.init();
 

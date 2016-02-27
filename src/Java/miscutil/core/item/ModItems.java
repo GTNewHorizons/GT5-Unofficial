@@ -1,16 +1,17 @@
 package miscutil.core.item;
 
 import static miscutil.core.creativetabs.AddToCreativeTab.tabMisc;
+import static miscutil.core.lib.Strings.LOAD_ALL_CONTENT;
 import miscutil.core.creativetabs.AddToCreativeTab;
 import miscutil.core.item.effects.RarityUncommon;
 import miscutil.core.item.tool.staballoy.StaballoyPickaxe;
+import miscutil.core.lib.LoadedMods;
 import miscutil.core.lib.Strings;
 import miscutil.core.util.Utils;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraftforge.common.util.EnumHelper;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public final class ModItems {
@@ -116,27 +117,6 @@ public final class ModItems {
 	//@SuppressWarnings("unused")
 	public static final void init(){
 
-		/*
-		 * 
-		 * Strings.DEBUG Parameters area
-		 * 
-		 */
-		//Logs
-		if (!Strings.DEBUG){
-			Utils.LOG_INFO("Development mode not enabled.");
-		}
-		else if (Strings.DEBUG){
-			Utils.LOG_INFO("Development mode enabled.");
-		}
-		else {
-			Utils.LOG_WARNING("Development mode not set.");
-		}
-		/*
-		 * End Strings.DEBUG
-		 */
-
-
-
 		/*		//Blood Steel Equipment
 
 		//Item Init
@@ -167,7 +147,7 @@ public final class ModItems {
 
 
 		//EnderIO Resources
-		if (Loader.isModLoaded("EnderIO") == true || Strings.LOAD_ALL_CONTENT){
+		if (LoadedMods.EnderIO || LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("EnderIO Found - Loading Resources.");
 			//Item Init
 			itemPlateSoularium = new Item().setUnlocalizedName("itemPlateSoularium").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateSoularium");;
@@ -195,7 +175,7 @@ public final class ModItems {
 		}
 
 		//Big Reactors
-		if (Loader.isModLoaded("BigReactors") == true || Strings.LOAD_ALL_CONTENT){
+		if (LoadedMods.Big_Reactors|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("BigReactors Found - Loading Resources.");
 			//Item Init
 			itemPlateBlutonium = new Item().setUnlocalizedName("itemPlateBlutonium").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateBlutonium");;
@@ -213,7 +193,7 @@ public final class ModItems {
 		}
 
 		//Thaumcraft
-		if (Loader.isModLoaded("Thaumcraft") == true || Strings.LOAD_ALL_CONTENT){
+		if (LoadedMods.Thaumcraft|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("Thaumcraft Found - Loading Resources.");
 			//Item Init
 			itemPlateVoidMetal = new Item().setUnlocalizedName("itemPlateVoidMetal").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateVoidMetal");;
@@ -227,7 +207,7 @@ public final class ModItems {
 		}
 
 		//ExtraUtils
-		if (Loader.isModLoaded("ExtraUtilities") == true || Strings.LOAD_ALL_CONTENT){
+		if (LoadedMods.Extra_Utils|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("ExtraUtilities Found - Loading Resources.");
 			//Item Init
 			itemPlateBedrockium = new Item().setUnlocalizedName("itemPlateBedrockium").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateBedrockium");;
@@ -241,7 +221,7 @@ public final class ModItems {
 		}
 
 		//Pneumaticraft
-		if (Loader.isModLoaded("PneumaticCraft") == true || Strings.LOAD_ALL_CONTENT){
+		if (LoadedMods.PneumaticCraft|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("PneumaticCraft Found - Loading Resources.");
 			//Item Init
 			itemPlateCompressedIron = new Item().setUnlocalizedName("itemPlateCompressedIron").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateCompressedIron");;
@@ -255,7 +235,7 @@ public final class ModItems {
 		}
 
 		//Simply Jetpacks
-		if (Loader.isModLoaded("simplyjetpacks") == true || Strings.LOAD_ALL_CONTENT){
+		if (LoadedMods.Simply_Jetpacks|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("SimplyJetpacks Found - Loading Resources.");
 			//Item Init
 			itemPlateEnrichedSoularium = new RarityUncommon().setUnlocalizedName("itemPlateEnrichedSoularium").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateSoularium");;
@@ -270,7 +250,7 @@ public final class ModItems {
 
 
 		//rfTools
-		if (Loader.isModLoaded("rftools") == true || Strings.LOAD_ALL_CONTENT){
+		if (LoadedMods.RFTools|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("rfTools Found - Loading Resources.");
 			//Item Init
 			itemPlateDimensionShard = new Item().setUnlocalizedName("itemPlateDimensionShard").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateDimensionShard");;
