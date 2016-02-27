@@ -1,14 +1,14 @@
 package miscutil.gregtech.init;
 
-import miscutil.core.lib.Strings;
+import static miscutil.core.lib.LoadedMods.Gregtech;
+import miscutil.core.util.Utils;
 import miscutil.gregtech.init.machines.GregtechEnergyBuffer;
-import cpw.mods.fml.common.FMLLog;
 
 public class InitGregtech {
 
 	public static void run() {
-		if (Strings.GREGTECH) {
-			FMLLog.info("MiscUtils|Gregtech5u Content: Registering MetaTileEntities.");
+		if (Gregtech) {
+			Utils.LOG_INFO("MiscUtils: Gregtech5u Content | Registering MetaTileEntities.");
 		}
 
 		/***

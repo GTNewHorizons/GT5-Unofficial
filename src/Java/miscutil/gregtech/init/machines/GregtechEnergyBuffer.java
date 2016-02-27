@@ -6,13 +6,13 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import miscutil.core.creativetabs.AddToCreativeTab;
 import miscutil.core.lib.Strings;
+import miscutil.core.util.Utils;
 import miscutil.gregtech.enums.ExtraOreDictNames;
 import miscutil.gregtech.enums.GregtechItemList;
 import miscutil.gregtech.metatileentity.implementations.GregtechMetaCreativeEnergyBuffer;
 import miscutil.gregtech.metatileentity.implementations.GregtechMetaEnergyBuffer;
 import net.minecraft.item.Item;
 import net.minecraftforge.oredict.OreDictionary;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -25,7 +25,7 @@ public class GregtechEnergyBuffer
 	public static void run()
 	{
 		if (Strings.GREGTECH){
-			FMLLog.info("MiscUtils: Registering Energy Buffer Blocks.");
+			Utils.LOG_INFO("MiscUtils: Gregtech5u Content | Registering Energy Buffer Blocks.");
 		}
 		run1();
 	}

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="conduits/" kind="src" path="src/Java"/>
+	<classpathentry excluding="conduits/|miscutil/enderio/conduit/GregTech/" kind="src" path="src/Java"/>
 	<classpathentry kind="src" path="src/resources"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Forge"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>

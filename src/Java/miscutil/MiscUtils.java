@@ -7,6 +7,7 @@ import miscutil.core.commands.CommandMath;
 import miscutil.core.common.CommonProxy;
 import miscutil.core.creativetabs.AddToCreativeTab;
 import miscutil.core.handler.CraftingManager;
+import miscutil.core.lib.LoadedMods;
 import miscutil.core.lib.Strings;
 import miscutil.core.util.Utils;
 import net.minecraftforge.common.MinecraftForge;
@@ -24,9 +25,6 @@ import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 public class MiscUtils
 implements ActionListener
 { 
-
-	//Vars
-	//EnumBuster EB = new EnumBuster(gregtech.api.enums.Materials, null);
 	
 	@Mod.Instance(Strings.MODID)
 	public static MiscUtils instance;
@@ -39,52 +37,21 @@ implements ActionListener
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		/*try {
-			MaterialsNew.getGregMaterials();
-		} catch (IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException | NoSuchMethodException | SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-		//java.lang.reflect.Array.get(Materials, index)
+		LoadedMods.checkLoaded();
 		Utils.LOG_INFO("Doing some house cleaning.");
 		AddToCreativeTab.initialiseTabs();
-		//TMEntity.mainRegistry();
 		CraftingManager.mainRegistry();
-		//TMWorld.mainRegistry();
-		//TMHooks.mainRegistry();
 		proxy.registerTileEntities();
 		proxy.registerRenderThings();
 		proxy.preInit(event);
-
-
-
 	}
 
 	//Init
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event)
 	{
-		/*		Utils.LOG_INFO("Double checking floating point precision.");
-		try {
-			Thread.sleep(100);
-			Benchmark GammeRayBurst = new Benchmark();
-			GammeRayBurst.math();
-		} catch (InterruptedException | ParseException | NumberFormatException | UnknownFormatConversionException | MissingFormatArgumentException e) {
-			if (Strings.DEBUG){
-				e.printStackTrace();
-				Utils.LOG_INFO("Math went wrong somewhere.");
-			}
-			;
-		}*/
 		proxy.init(event);
-		/*if (Strings.DEBUG){
-			Benchmark GammeRayBurst = new Benchmark();
-			String Insight = GammeRayBurst.superhash("This is Absolution");
-			FMLLog.info(Insight);
-			Utils.LOG_INFO("Math is ok.");
-		}*/
-
+		proxy.registerOreDict();
 		MinecraftForge.EVENT_BUS.register(this);
 		FMLCommonHandler.instance().bus().register(this);
 		proxy.registerNetworkStuff();
@@ -100,12 +67,7 @@ implements ActionListener
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event)
 	{
-
 		event.registerServerCommand(new CommandMath());
-		
-		//while (Strings.DEBUG){
-		//Thread.setDefaultUncaughtExceptionHandler(null);
-		//}
 
 	}
 
