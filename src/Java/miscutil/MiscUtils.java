@@ -61,7 +61,7 @@ implements ActionListener
 	//Post-Init
 	@Mod.EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		Utils.LOG_INFO("Tidying things up.");
+		Utils.LOG_INFO("Cleaning up the banana on the floor.");
 		proxy.postInit(event);
 	}
 

@@ -1,4 +1,4 @@
-package miscutil.gregtech.metatileentity.implementations;
+package miscutil.gregtech.metatileentity.implementations.base;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;

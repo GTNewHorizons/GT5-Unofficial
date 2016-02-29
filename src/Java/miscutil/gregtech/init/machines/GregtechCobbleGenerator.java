@@ -6,7 +6,7 @@ import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import miscutil.gregtech.enums.GregtechItemList;
-import miscutil.gregtech.metatileentity.implementations.GregtechSteelBoiler;
+import miscutil.gregtech.metatileentity.implementations.base.GregtechSteelBoiler;
 import cpw.mods.fml.common.FMLLog;
 
 public class GregtechCobbleGenerator

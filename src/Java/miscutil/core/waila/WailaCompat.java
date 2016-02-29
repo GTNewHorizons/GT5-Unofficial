@@ -1,27 +1,7 @@
-package crazypants.enderio.waila;
+package miscutil.core.waila;
 
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.TileEntityEio;
-import crazypants.enderio.block.BlockDarkSteelAnvil;
-import crazypants.enderio.conduit.ConduitUtil;
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.conduit.liquid.AbstractTankConduit;
-import crazypants.enderio.conduit.liquid.ConduitTank;
-import crazypants.enderio.conduit.power.IPowerConduit;
-import crazypants.enderio.fluid.Fluids;
-import crazypants.enderio.gui.IAdvancedTooltipProvider;
-import crazypants.enderio.gui.IResourceTooltipProvider;
-import crazypants.enderio.gui.TooltipAddera;
-import crazypants.enderio.machine.IIoConfigurable;
-import crazypants.enderio.machine.IoMode;
-import crazypants.enderio.machine.capbank.TileCapBank;
-import crazypants.enderio.machine.power.TileCapacitorBank;
-import crazypants.enderio.power.IInternalPoweredTile;
-import crazypants.util.IFacade;
-import crazypants.util.Lang;
-import java.text.NumberFormat;
 import java.util.List;
+
 import mcp.mobius.waila.api.ITaggedList;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -42,9 +22,27 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings;
 import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.TileEntityEio;
+import crazypants.enderio.block.BlockDarkSteelAnvil;
+import crazypants.enderio.conduit.ConduitUtil;
+import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.IConduitBundle;
+import crazypants.enderio.conduit.liquid.AbstractTankConduit;
+import crazypants.enderio.conduit.liquid.ConduitTank;
+import crazypants.enderio.conduit.power.IPowerConduit;
+import crazypants.enderio.fluid.Fluids;
+import crazypants.enderio.gui.IAdvancedTooltipProvider;
+import crazypants.enderio.gui.IResourceTooltipProvider;
+import crazypants.enderio.gui.TooltipAddera;
+import crazypants.enderio.machine.IIoConfigurable;
+import crazypants.enderio.machine.IoMode;
+import crazypants.enderio.machine.capbank.TileCapBank;
+import crazypants.enderio.machine.power.TileCapacitorBank;
+import crazypants.enderio.power.IInternalPoweredTile;
+import crazypants.util.IFacade;
+import crazypants.util.Lang;
 
 public class WailaCompat
   implements IWailaDataProvider
@@ -56,7 +54,7 @@ public class WailaCompat
     
     private WailaWorldWrapper(World wrapped)
     {
-      super(wrapped.getWorldInfo().getWorldName(), wrapped.provider, new WorldSettings(wrapped.getWorldInfo()), wrapped.theProfiler);
+      super(null, wrapped.getWorldInfo().getWorldName(), wrapped.provider, new WorldSettings(wrapped.getWorldInfo()), wrapped.theProfiler);
       this.wrapped = wrapped;
       this.isRemote = wrapped.isRemote;
     }
@@ -133,7 +131,7 @@ public class WailaCompat
 
 
 
-    ConfigHandler.instance().addConfig("Ender IO", "facades.hidden", Lang.localize("waila.config.hiddenfacades"));
+    ConfigHandler.instance().addConfig("MiscUtils", "facades.hidden", Lang.localize("waila.config.hiddenfacades"));
     IWailaInfoProvider.fmt.setMaximumFractionDigits(1);
   }
   
@@ -151,7 +149,7 @@ public class WailaCompat
         Block facade = bundle.getFacade(accessor.getWorld(), pos.blockX, pos.blockY, pos.blockZ, accessor.getSide().ordinal());
         if (facade != null)
         {
-          ItemStack ret = facade.getPickBlock(pos, new WailaWorldWrapper(accessor.getWorld(), null), pos.blockX, pos.blockY, pos.blockZ);
+          ItemStack ret = facade.getPickBlock(pos, new WailaWorldWrapper(accessor.getWorld()), pos.blockX, pos.blockY, pos.blockZ);
           return ret;
         }
       }

@@ -24,6 +24,7 @@ import java.util.List;
 import miscutil.core.handler.GuiHandler;
 import miscutil.core.util.Utils;
 import miscutil.core.waila.IWailaInfoProvider;
+import miscutil.gregtech.metatileentity.implementations.base.GregtechMetaTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;

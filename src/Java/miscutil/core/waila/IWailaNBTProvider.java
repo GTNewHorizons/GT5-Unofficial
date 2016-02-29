@@ -1,4 +1,4 @@
-package crazypants.enderio.waila;
+package miscutil.core.waila;
 
 import net.minecraft.nbt.NBTTagCompound;
 

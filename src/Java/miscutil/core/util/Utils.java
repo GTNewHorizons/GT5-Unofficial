@@ -3,6 +3,7 @@ package miscutil.core.util;
 import static gregtech.api.enums.GT_Values.F;
 
 import java.awt.Graphics;
+import java.util.Random;
 
 import miscutil.core.lib.Strings;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,6 +15,50 @@ import cpw.mods.fml.common.FMLLog;
 public class Utils {
 
 	public static final int WILDCARD_VALUE = Short.MAX_VALUE;
+	
+	/**
+	 * Returns a psuedo-random number between min and max, inclusive.
+	 * The difference between min and max can be at most
+	 * <code>Integer.MAX_VALUE - 1</code>.
+	 *
+	 * @param min Minimim value
+	 * @param max Maximim value.  Must be greater than min.
+	 * @return Integer between min and max, inclusive.
+	 * @see java.util.Random#nextInt(int)
+	 */
+	public static int randInt(int min, int max) {
+
+	    // Usually this can be a field rather than a method variable
+	    Random rand = new Random();
+
+	    // nextInt is normally exclusive of the top value,
+	    // so add 1 to make it inclusive
+	    int randomNum = rand.nextInt((max - min) + 1) + min;
+
+	    return randomNum;
+	}
+	
+	public static long randLong(long min, long max) {
+		 // Usually this can be a field rather than a method variable
+	    Random rand = new Random();
+
+	    // nextInt is normally exclusive of the top value,
+	    // so add 1 to make it inclusive
+	    long randomNum = nextLong(rand,(max - min) + 1) + min;
+
+	    return randomNum;
+	}
+	
+	private static long nextLong(Random rng, long n) {
+		   // error checking and 2^x checking removed for simplicity.
+		   long bits, val;
+		   do {
+		      bits = (rng.nextLong() << 1) >>> 1;
+		      val = bits % n;
+		   } while (bits-val+(n-1) < 0L);
+		   return val;
+		}
+	
     public static boolean containsMatch(boolean strict, ItemStack[] inputs, ItemStack... targets)
     {
         for (ItemStack input : inputs)
@@ -81,5 +126,7 @@ public class Utils {
 	public static FluidStack getIC2Steam(long aAmount) {
 		return FluidRegistry.getFluidStack("ic2steam", (int)aAmount);
 	}
+
+	
     
 }

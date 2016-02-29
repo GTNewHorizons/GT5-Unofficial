@@ -12,7 +12,7 @@ import gregtech.api.util.GT_Utility;
 import ic2.api.item.IElectricItem;
 import miscutil.core.handler.GuiHandler;
 import miscutil.core.util.Utils;
-import miscutil.gregtech.metatileentity.implementations.GregtechMetaTileEntity;
+import miscutil.gregtech.metatileentity.implementations.base.GregtechMetaTileEntity;
 import miscutil.gregtech.util.IMessage;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

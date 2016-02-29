@@ -1,8 +1,9 @@
-package miscutil.gregtech.metatileentity.implementations;
+package miscutil.gregtech.metatileentity.implementations.base;
 
 import static gregtech.api.enums.GT_Values.GT;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.metatileentity.MetaTileEntity;
+import net.minecraft.util.EnumChatFormatting;
 
 public abstract class GregtechMetaTileEntity extends MetaTileEntity {
 	/**
@@ -54,7 +55,7 @@ public abstract class GregtechMetaTileEntity extends MetaTileEntity {
     
 	@Override
 	public String[] getDescription() {
-		return new String[] {mDescription};
+		return new String[] {mDescription, "Added by: "	+ EnumChatFormatting.DARK_GREEN+"Alkalus"};
 	}
 	
 	/**
