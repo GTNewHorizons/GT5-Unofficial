@@ -15,6 +15,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
@@ -43,6 +44,7 @@ implements ActionListener
 		proxy.registerTileEntities();
 		proxy.registerRenderThings();
 		proxy.preInit(event);
+		FMLInterModComms.sendMessage("Waila", "register", "miscutil.core.waila.WailaCompat.load");
 	}
 
 	//Init

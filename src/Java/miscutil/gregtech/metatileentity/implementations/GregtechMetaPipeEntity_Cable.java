@@ -222,7 +222,7 @@ public class GregtechMetaPipeEntity_Cable extends GT_MetaPipeEntity_Cable implem
 				"Max Voltage: "			+ EnumChatFormatting.GREEN	+ mVoltage + " (" + VN[GT_Utility.getTier(mVoltage)]	+ ")" + EnumChatFormatting.GRAY,
 				"Max Amperage: "		+ EnumChatFormatting.YELLOW	+ mAmperage + EnumChatFormatting.GRAY,
 				"Loss/Meter/Ampere: "	+ EnumChatFormatting.RED	+ mCableLossPerMeter + EnumChatFormatting.GRAY + " EU-Volt",
-				"Added by: "	+ EnumChatFormatting.RED+" Alkalus"
+				"Added by:"	+ EnumChatFormatting.DARK_GREEN+" Alkalus"
 		};
 	}
 

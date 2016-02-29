@@ -34,6 +34,7 @@ public abstract class GregtechMetaTileEntity extends MetaTileEntity {
 		mTier = (byte)aTier;
 		mDescription = aDescription;
 		mTextures = aTextures;
+		
 	}
 	
 	@Override

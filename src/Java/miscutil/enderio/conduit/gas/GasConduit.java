@@ -1,19 +1,8 @@
-package crazypants.enderio.conduit.gas;
+package miscutil.enderio.conduit.gas;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.EnderIO;
-import crazypants.enderio.conduit.AbstractConduitNetwork;
-import crazypants.enderio.conduit.ConnectionMode;
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.enderio.conduit.geom.CollidableComponent;
-import crazypants.enderio.config.Config;
-import crazypants.render.IconUtil;
-import crazypants.render.IconUtil.IIconProvider;
-import crazypants.util.BlockCoord;
 import java.util.HashMap;
 import java.util.Map;
+
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -21,6 +10,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import crazypants.enderio.EnderIO;
+import crazypants.enderio.conduit.AbstractConduitNetwork;
+import crazypants.enderio.conduit.ConnectionMode;
+import crazypants.enderio.conduit.IConduit;
+import crazypants.enderio.conduit.geom.CollidableComponent;
+import crazypants.enderio.config.Config;
+import crazypants.render.IconUtil;
+import crazypants.util.BlockCoord;
 
 public class GasConduit
   extends AbstractGasTankConduit

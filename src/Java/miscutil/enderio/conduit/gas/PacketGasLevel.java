@@ -1,15 +1,13 @@
-package crazypants.enderio.conduit.gas;
+package miscutil.enderio.conduit.gas;
 
+import io.netty.buffer.ByteBuf;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.network.MessageTileEntity;
-import crazypants.util.ClientUtil;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 
 public class PacketGasLevel
   extends MessageTileEntity<TileEntity>
@@ -40,7 +38,7 @@ public class PacketGasLevel
   
   public IMessage onMessage(PacketGasLevel message, MessageContext ctx)
   {
-    ClientUtil.doGasLevelUpdate(message.x, message.y, message.z, message);
+    //ClientUtil.doGasLevelUpdate(message.x, message.y, message.z, message);
     return null;
   }
 }

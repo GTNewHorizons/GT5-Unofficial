@@ -1,5 +1,14 @@
-package crazypants.enderio.conduit.gas;
+package miscutil.enderio.conduit.gas;
 
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
+
+import mekanism.api.gas.IGasHandler;
+import net.minecraft.block.Block;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.conduit.AbstractConduit;
 import crazypants.enderio.conduit.ConduitUtil;
 import crazypants.enderio.conduit.ConnectionMode;
@@ -9,17 +18,6 @@ import crazypants.enderio.machine.RedstoneControlMode;
 import crazypants.enderio.machine.reservoir.TileReservoir;
 import crazypants.util.BlockCoord;
 import crazypants.util.DyeColor;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import mekanism.api.gas.IGasHandler;
-import net.minecraft.block.Block;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class AbstractGasConduit
   extends AbstractConduit

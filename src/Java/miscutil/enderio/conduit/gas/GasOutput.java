@@ -1,7 +1,7 @@
-package crazypants.enderio.conduit.gas;
+package miscutil.enderio.conduit.gas;
 
-import crazypants.util.BlockCoord;
 import net.minecraftforge.common.util.ForgeDirection;
+import crazypants.util.BlockCoord;
 
 public class GasOutput
 {

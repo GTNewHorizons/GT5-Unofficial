@@ -18,14 +18,21 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import ic2.api.item.IElectricItem;
+
+import java.util.List;
+
 import miscutil.core.handler.GuiHandler;
 import miscutil.core.util.Utils;
-import miscutil.gregtech.util.IMessage;
+import miscutil.core.waila.IWailaInfoProvider;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import crazypants.enderio.gui.TooltipAddera;
+import crazypants.util.Lang;
+import crazypants.util.Util;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -33,7 +40,7 @@ import net.minecraft.world.World;
  * This is the main construct for my Basic Machines such as the Automatic Extractor
  * Extend this class to make a simple Machine
  */
-public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
+public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity implements IWailaInfoProvider{
 
 	/*
 	 * public GregtechMetaEnergyBuffer() { super.this
@@ -45,6 +52,7 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 
 	public GregtechMetaEnergyBuffer(int aID, String aName, String aNameRegional, int aTier, String aDescription, int aSlotCount) {
 		super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
+		//setCreativeTab(AddToCreativeTab.tabMachines);
 	}
 
 	public GregtechMetaEnergyBuffer(String aName, int aTier, String aDescription, ITexture[][][] aTextures, int aSlotCount) {
@@ -53,7 +61,7 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 
 	@Override
 	public String[] getDescription() {
-		return new String[] {mDescription, mInventory.length + " Slots"};
+		return new String[] {mDescription, "Added by: "	+ EnumChatFormatting.DARK_GREEN+"Alkalus"};
 	}
 
 	/*
@@ -64,10 +72,10 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 		ITexture[][][] rTextures = new ITexture[2][17][];
 		for (byte i = -1; i < 16; i++) {
 			rTextures[0][i + 1] = new ITexture[] { new GT_RenderedTexture(
-					Textures.BlockIcons.MACHINE_CASING_FROST_PROOF) };
+					Textures.BlockIcons.MACHINE_HEATPROOFCASING) };
 			rTextures[1][i + 1] = new ITexture[] {
 					new GT_RenderedTexture(
-							Textures.BlockIcons.MACHINE_CASING_FROST_PROOF),
+							Textures.BlockIcons.MACHINE_HEATPROOFCASING),
 					mInventory.length > 4 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier]
 							: Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
 		}
@@ -171,7 +179,7 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 		final double c = ((double) getProgresstime() / maxProgresstime()) * 100;
 		Utils.LOG_WARNING(""+c);
 		final double roundOff = Math.round(c * 100.0) / 100.0;
-		IMessage.messageThePlayer("Energy: " + getProgresstime() + " EU at "+V[mTier]+"v ("+roundOff+"%)");
+		Utils.messagePlayer(playerIn, "Energy: " + getProgresstime() + " EU at "+V[mTier]+"v ("+roundOff+"%)");
 		Utils.LOG_WARNING("Making new instance of Guihandler");
 		GuiHandler block = new GuiHandler();
 		Utils.LOG_WARNING("Guihandler.toString(): "+block.toString());
@@ -397,5 +405,41 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 	public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void getWailaInfo(List<String> tooltip, EntityPlayer player, World world, int x, int y, int z) {
+	        String format = Util.TAB + Util.ALIGNRIGHT + EnumChatFormatting.WHITE;
+	        if(TooltipAddera.showAdvancedTooltips()) {
+	          tooltip.add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxIO"), format, fmt.format(this.maxEUStore()), Util.TAB + Util.ALIGNRIGHT));
+	          tooltip
+	              .add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxIn"), format, fmt.format(this.maxEUInput()), Util.TAB + Util.ALIGNRIGHT));
+	          tooltip
+	              .add(String.format("%s : %s%s%sRF/t ", Lang.localize("capbank.maxOut"), format, fmt.format(this.maxEUOutput()), Util.TAB + Util.ALIGNRIGHT));
+
+	          tooltip.add("");
+	        }
+
+	        long stored = this.getProgresstime();
+	        long max = this.maxEUStore();
+	        tooltip.add(String.format("%s%s%s / %s%s%s RF", EnumChatFormatting.WHITE, fmt.format(stored), EnumChatFormatting.RESET, EnumChatFormatting.WHITE,
+	            fmt.format(max),
+	            EnumChatFormatting.RESET));
+
+	        //int change = Math.round(nw.getAverageChangePerTick());
+	        String color = EnumChatFormatting.WHITE.toString();
+	       /* if(change > 0) {
+	          color = EnumChatFormatting.GREEN.toString() + "+";
+	        } else if(change < 0) {
+	          color = EnumChatFormatting.RED.toString();
+	        }*/
+	        tooltip
+	            .add(String.format("%s%s%sRF/t ", color, fmt.format("null"), " " + EnumChatFormatting.RESET.toString()));
+
+	      }
+
+	@Override
+	public int getDefaultDisplayMask(World paramWorld, int paramInt1, int paramInt2, int paramInt3) {
+		return IWailaInfoProvider.BIT_DETAILED;
 	}
 }

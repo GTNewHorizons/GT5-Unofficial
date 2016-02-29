@@ -1,6 +1,5 @@
-package crazypants.enderio.conduit.gas;
+package miscutil.enderio.conduit.gas;
 
-import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
 import mekanism.api.gas.GasTank;
 import net.minecraft.nbt.NBTTagCompound;

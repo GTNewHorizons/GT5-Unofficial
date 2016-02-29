@@ -1,21 +1,18 @@
-package crazypants.enderio.conduit.gas;
+package miscutil.enderio.conduit.gas;
 
-import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
-import crazypants.enderio.conduit.ConduitNetworkTickHandler;
-import crazypants.enderio.conduit.ConduitNetworkTickHandler.TickListener;
-import crazypants.enderio.conduit.ConnectionMode;
-import crazypants.enderio.conduit.IConduit;
-import crazypants.enderio.conduit.IConduitBundle;
-import crazypants.util.BlockCoord;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
+
 import mekanism.api.gas.GasStack;
 import mekanism.api.gas.IGasHandler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import crazypants.enderio.conduit.ConduitNetworkTickHandler;
+import crazypants.enderio.conduit.IConduit;
+import crazypants.util.BlockCoord;
 
 public class GasConduitNetwork
   extends AbstractGasTankConduitNetwork<GasConduit>
@@ -27,7 +24,7 @@ public class GasConduitNetwork
   private boolean lastSyncedActive = false;
   private int lastSyncedVolume = -1;
   private long timeAtLastApply;
-  private final InnerTickHandler tickHandler = new InnerTickHandler(null);
+  private final InnerTickHandler tickHandler = new InnerTickHandler();
   
   public GasConduitNetwork()
   {

@@ -1,16 +1,14 @@
-package crazypants.enderio.conduit.gas;
+package miscutil.enderio.conduit.gas;
 
+import mekanism.api.gas.GasStack;
+import mekanism.api.gas.IGasHandler;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import crazypants.enderio.conduit.IConduitBundle;
 import crazypants.enderio.config.Config;
 import crazypants.util.BlockCoord;
-import java.util.Map;
-import mekanism.api.gas.Gas;
-import mekanism.api.gas.GasStack;
-import mekanism.api.gas.IGasHandler;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
 
 public final class GasUtil
 {

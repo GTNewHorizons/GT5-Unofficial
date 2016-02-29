@@ -31,7 +31,8 @@ public enum GregtechItemList implements GregtechItemContainer {
  Energy_Buffer_CREATIVE,
 	//Energy Buffes
 	Energy_Buffer_1by1_ULV, Energy_Buffer_1by1_LV, Energy_Buffer_1by1_MV, Energy_Buffer_1by1_HV, Energy_Buffer_1by1_EV, Energy_Buffer_1by1_IV, Energy_Buffer_1by1_LuV, Energy_Buffer_1by1_ZPM, Energy_Buffer_1by1_UV, Energy_Buffer_1by1_MAX,
-	Cobble_Generator_ULV, Cobble_Generator_LV, Cobble_Generator_MV, Cobble_Generator_HV, Cobble_Generator_EV, Cobble_Generator_IV, Cobble_Generator_LuV, Cobble_Generator_ZPM, Cobble_Generator_UV, Cobble_Generator_MAX;
+	Cobble_Generator_ULV, Cobble_Generator_LV, Cobble_Generator_MV, Cobble_Generator_HV, Cobble_Generator_EV, Cobble_Generator_IV, Cobble_Generator_LuV, Cobble_Generator_ZPM, Cobble_Generator_UV, Cobble_Generator_MAX,
+	Condensor_MAX;
 
 	public static final GregtechItemList[]
  DYE_ONLY_ITEMS = {

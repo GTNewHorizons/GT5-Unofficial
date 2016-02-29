@@ -1,7 +1,13 @@
-package crazypants.enderio.conduit.gas;
+package miscutil.enderio.conduit.gas;
 
+import java.util.List;
+
+import mekanism.api.gas.GasStack;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
 import crazypants.enderio.EnderIO;
-import crazypants.enderio.conduit.BlockConduitBundle;
 import crazypants.enderio.conduit.ConnectionMode;
 import crazypants.enderio.conduit.IConduit;
 import crazypants.enderio.conduit.IConduitBundle;
@@ -13,16 +19,8 @@ import crazypants.enderio.conduit.render.DefaultConduitRenderer;
 import crazypants.render.BoundingBox;
 import crazypants.render.CubeRenderer;
 import crazypants.render.RenderUtil;
-import crazypants.vecmath.Vector2f;
 import crazypants.vecmath.Vector3d;
 import crazypants.vecmath.Vertex;
-import java.util.List;
-import mekanism.api.gas.Gas;
-import mekanism.api.gas.GasStack;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class GasConduitRenderer
   extends DefaultConduitRenderer
@@ -146,7 +144,7 @@ public class GasConduitRenderer
   {
     int[] res = { -1, -1 };
     boolean highest = (edge.offsetX > 0) || (edge.offsetY > 0) || (edge.offsetZ > 0);
-    double minMax = highest ? -1.797693134862316E+308D : 1.7976931348623157E+308D;
+    double minMax = /*highest ? -1.797693134862316E+308D :*/ 1.7976931348623157E+308D;
     int index = 0;
     for (Vertex v : vertices)
     {

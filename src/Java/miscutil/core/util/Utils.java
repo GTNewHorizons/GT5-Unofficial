@@ -1,9 +1,14 @@
 package miscutil.core.util;
 
+import static gregtech.api.enums.GT_Values.F;
+
 import java.awt.Graphics;
 
 import miscutil.core.lib.Strings;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.common.FMLLog;
 
 public class Utils {
@@ -57,5 +62,24 @@ public class Utils {
     public static void paintBox(Graphics g, int MinA, int MinB, int MaxA, int MaxB){
     	    g.drawRect (MinA, MinB, MaxA, MaxB);  
     }
+    
+    public static void messagePlayer(EntityPlayer P, String S){
+    	gregtech.api.util.GT_Utility.sendChatToPlayer(P, S);
+    }
+    
+	/**
+	 * Returns if that Liquid is IC2Steam.
+	 */
+	public static boolean isIC2Steam(FluidStack aFluid) {
+		if (aFluid == null) return F;
+		return aFluid.isFluidEqual(getIC2Steam(1));
+	}
+	
+	/**
+	 * Returns a Liquid Stack with given amount of IC2Steam.
+	 */
+	public static FluidStack getIC2Steam(long aAmount) {
+		return FluidRegistry.getFluidStack("ic2steam", (int)aAmount);
+	}
     
 }

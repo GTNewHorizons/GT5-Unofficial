@@ -71,7 +71,7 @@ public class GregtechEnergyBuffer
 		GT_ModHandler.addCraftingRecipe(GregtechItemList.Energy_Buffer_1by1_ZPM.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "WTW", "WMW", Character.valueOf('M'), ItemList.Hull_ZPM, Character.valueOf('W'), OrePrefixes.wireGt08.get(Materials.Osmium), Character.valueOf('T'), ExtraOreDictNames.buffer_core });
 		GT_ModHandler.addCraftingRecipe(GregtechItemList.Energy_Buffer_1by1_UV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "WTW", "WMW", Character.valueOf('M'), ItemList.Hull_UV, Character.valueOf('W'), OrePrefixes.wireGt08.get(Materials.Osmium), Character.valueOf('T'), ExtraOreDictNames.buffer_core });
 		GT_ModHandler.addCraftingRecipe(GregtechItemList.Energy_Buffer_1by1_MAX.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "WTW", "WMW", Character.valueOf('M'), ItemList.Hull_MAX, Character.valueOf('W'), OrePrefixes.wireGt08.get(Materials.Superconductor), Character.valueOf('T'), ExtraOreDictNames.buffer_core });
-		GT_ModHandler.addCraftingRecipe(
+		/*GT_ModHandler.addCraftingRecipe(
 				GregtechItemList.Energy_Buffer_1by1_MAX.get(1L, new Object[0]),
 				GT_ModHandler.RecipeBits.DISMANTLEABLE
 						| GT_ModHandler.RecipeBits.NOT_REMOVABLE
@@ -80,7 +80,7 @@ public class GregtechEnergyBuffer
 						"WTW", "WMW", Character.valueOf('M'),
 						ItemList.Hull_MAX, Character.valueOf('W'),
 						OrePrefixes.wireGt08.get(Materials.Superconductor),
-						Character.valueOf('T'), ExtraOreDictNames.buffer_core });
+						Character.valueOf('T'), ExtraOreDictNames.buffer_core });*/
 		
 		
 		
