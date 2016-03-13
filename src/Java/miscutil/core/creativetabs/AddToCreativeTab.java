@@ -13,7 +13,7 @@ public class AddToCreativeTab {
 	public static void initialiseTabs(){
 		tabBlock = new MiscUtilCreativeTabBlock("MiscUtilBlockTab");
 		tabMisc = new MiscUtilCreativeTabMisc("MiscUtilMiscTab");
-		//tabMachines = new MiscUtilCreativeTabMachines("MiscUtilMachineTab");
+		tabMachines = new MiscUtilCreativeTabMachines("MiscUtilMachineTab");
 		//tabCombat = new MiscUtilCreativeTabCombat("MiscUtilCombatTab");
 		tabTools = new MiscUtilCreativeTabTools("MiscUtilToolsTab");
 	}

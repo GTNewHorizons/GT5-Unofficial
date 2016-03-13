@@ -7,8 +7,10 @@ import miscutil.core.block.ModBlocks;
 import miscutil.core.gui.ModGUI;
 import miscutil.core.item.ModItems;
 import miscutil.core.lib.LoadedMods;
+import miscutil.core.lib.Strings;
 import miscutil.core.tileentities.ModTileEntities;
 import miscutil.core.util.Utils;
+import miscutil.enderio.init.InitEnderIO;
 import miscutil.gregtech.init.InitGregtech;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -26,7 +28,7 @@ public class CommonProxy {
 		 */
 		//Logs
 		if (!DEBUG){
-			Utils.LOG_INFO("Development mode not enabled.");
+			Utils.LOG_WARNING("Development mode not enabled.");
 		}
 		else if (DEBUG){
 			Utils.LOG_INFO("Development mode enabled.");
@@ -40,11 +42,17 @@ public class CommonProxy {
 		ModItems.init();
 		ModBlocks.init();
 
+		/**
+		 * Enable Dev mode related content
+		 */
+		if (Strings.DEBUG){
+			InitEnderIO.run();
+		}
 
 		//Register Gregtech related items
 		if (Gregtech) {
 			Utils.LOG_INFO("Gregtech Found - Loading Resources.");
-			Utils.LOG_INFO("Begining initialization of Gregtech related content.");
+			//Utils.LOG_INFO("Begining initialization of Gregtech related content.");
 			// Init Gregtech
 			InitGregtech.run();
 
@@ -133,7 +141,7 @@ public class CommonProxy {
 
 
 		//Blocks
-		OreDictionary.registerOre("ingotBloodSteel", new ItemStack(ModItems.itemIngotBloodSteel));
+		//OreDictionary.registerOre("blockBloodSteel", new ItemStack(ModBlocks.blockBloodSteel.ge)));
 
 
 		//Misc

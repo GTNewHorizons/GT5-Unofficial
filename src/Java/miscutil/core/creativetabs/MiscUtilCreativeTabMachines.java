@@ -12,7 +12,7 @@ public class MiscUtilCreativeTabMachines extends CreativeTabs {
 
 	@Override
 	public Item getTabIconItem() {
-		return Item.getItemFromBlock(ModBlocks.blockToolBuilder);
+		return Item.getItemFromBlock(ModBlocks.blockGriefSaver);
 	}
 
 }
