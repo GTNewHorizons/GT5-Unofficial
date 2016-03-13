@@ -1,12 +1,12 @@
 package miscutil.core.item;
 
 import static miscutil.core.creativetabs.AddToCreativeTab.tabMisc;
-import static miscutil.core.lib.Strings.LOAD_ALL_CONTENT;
+import static miscutil.core.lib.CORE.LOAD_ALL_CONTENT;
 import miscutil.core.creativetabs.AddToCreativeTab;
 import miscutil.core.item.effects.RarityUncommon;
 import miscutil.core.item.tool.staballoy.StaballoyPickaxe;
 import miscutil.core.lib.LoadedMods;
-import miscutil.core.lib.Strings;
+import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
@@ -120,15 +120,15 @@ public final class ModItems {
 		/*		//Blood Steel Equipment
 
 		//Item Init
-		tutPickaxe = new BloodSteelPickaxe(tutMaterial).setUnlocalizedName("BloodSteelPickaxe").setCreativeTab(TMCreativeTabs.tabTools).setTextureName(Strings.MODID + ":BloodSteelPickaxe");
-		tutAxe = new BloodSteelAxe(tutMaterial).setUnlocalizedName("BloodSteelAxe").setCreativeTab(TMCreativeTabs.tabTools).setTextureName(Strings.MODID + ":BloodSteelAxe");
-		tutSword = new BloodSteelSword(tutMaterial).setUnlocalizedName("BloodSteelSword").setCreativeTab(TMCreativeTabs.tabCombat).setTextureName(Strings.MODID + ":BloodSteelSword");
-		tutHoe = new BloodSteelHoe(tutMaterial).setUnlocalizedName("BloodSteelHoe").setCreativeTab(TMCreativeTabs.tabTools).setTextureName(Strings.MODID + ":BloodSteelHoe");
-		tutSpade = new BloodSteelSpade(tutMaterial).setUnlocalizedName("BloodSteelSpade").setCreativeTab(TMCreativeTabs.tabTools).setTextureName(Strings.MODID + ":BloodSteelSpade");
-		tutHelmet = new BloodSteelArmor(tutArmorMaterial, MiscUtils.proxy.addArmor("BloodSteelArmor"), 0).setUnlocalizedName("BloodSteelHelmet").setCreativeTab(TMCreativeTabs.tabCombat).setTextureName(Strings.MODID + ":BloodSteelHelmet");
-		tutPlate = new BloodSteelArmor(tutArmorMaterial, MiscUtils.proxy.addArmor("BloodSteelArmor"), 1).setUnlocalizedName("BloodSteelPlate").setCreativeTab(TMCreativeTabs.tabCombat).setTextureName(Strings.MODID + ":BloodSteelPlate");
-		tutPants = new BloodSteelArmor(tutArmorMaterial, MiscUtils.proxy.addArmor("BloodSteelArmor"), 2).setUnlocalizedName("BloodSteelPants").setCreativeTab(TMCreativeTabs.tabCombat).setTextureName(Strings.MODID + ":BloodSteelPants");
-		tutBoots = new BloodSteelArmor(tutArmorMaterial, MiscUtils.proxy.addArmor("BloodSteelArmor"), 3).setUnlocalizedName("BloodSteelBoots").setCreativeTab(TMCreativeTabs.tabCombat).setTextureName(Strings.MODID + ":BloodSteelBoots");
+		tutPickaxe = new BloodSteelPickaxe(tutMaterial).setUnlocalizedName("BloodSteelPickaxe").setCreativeTab(TMCreativeTabs.tabTools).setTextureName(CORE.MODID + ":BloodSteelPickaxe");
+		tutAxe = new BloodSteelAxe(tutMaterial).setUnlocalizedName("BloodSteelAxe").setCreativeTab(TMCreativeTabs.tabTools).setTextureName(CORE.MODID + ":BloodSteelAxe");
+		tutSword = new BloodSteelSword(tutMaterial).setUnlocalizedName("BloodSteelSword").setCreativeTab(TMCreativeTabs.tabCombat).setTextureName(CORE.MODID + ":BloodSteelSword");
+		tutHoe = new BloodSteelHoe(tutMaterial).setUnlocalizedName("BloodSteelHoe").setCreativeTab(TMCreativeTabs.tabTools).setTextureName(CORE.MODID + ":BloodSteelHoe");
+		tutSpade = new BloodSteelSpade(tutMaterial).setUnlocalizedName("BloodSteelSpade").setCreativeTab(TMCreativeTabs.tabTools).setTextureName(CORE.MODID + ":BloodSteelSpade");
+		tutHelmet = new BloodSteelArmor(tutArmorMaterial, MiscUtils.proxy.addArmor("BloodSteelArmor"), 0).setUnlocalizedName("BloodSteelHelmet").setCreativeTab(TMCreativeTabs.tabCombat).setTextureName(CORE.MODID + ":BloodSteelHelmet");
+		tutPlate = new BloodSteelArmor(tutArmorMaterial, MiscUtils.proxy.addArmor("BloodSteelArmor"), 1).setUnlocalizedName("BloodSteelPlate").setCreativeTab(TMCreativeTabs.tabCombat).setTextureName(CORE.MODID + ":BloodSteelPlate");
+		tutPants = new BloodSteelArmor(tutArmorMaterial, MiscUtils.proxy.addArmor("BloodSteelArmor"), 2).setUnlocalizedName("BloodSteelPants").setCreativeTab(TMCreativeTabs.tabCombat).setTextureName(CORE.MODID + ":BloodSteelPants");
+		tutBoots = new BloodSteelArmor(tutArmorMaterial, MiscUtils.proxy.addArmor("BloodSteelArmor"), 3).setUnlocalizedName("BloodSteelBoots").setCreativeTab(TMCreativeTabs.tabCombat).setTextureName(CORE.MODID + ":BloodSteelBoots");
 
 		//Registry
 		GameRegistry.registerItem(tutPickaxe, tutPickaxe.getUnlocalizedName());
@@ -150,14 +150,14 @@ public final class ModItems {
 		if (LoadedMods.EnderIO || LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("EnderIO Found - Loading Resources.");
 			//Item Init
-			itemPlateSoularium = new Item().setUnlocalizedName("itemPlateSoularium").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateSoularium");;
-			itemPlateRedstoneAlloy = new Item().setUnlocalizedName("itemPlateRedstoneAlloy").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateRedstoneAlloy");;
-			itemPlateElectricalSteel = new Item().setUnlocalizedName("itemPlateElectricalSteel").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateElectricalSteel");;
-			itemPlatePulsatingIron = new Item().setUnlocalizedName("itemPlatePulsatingIron").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlatePulsatingIron");;
-			itemPlateEnergeticAlloy = new Item().setUnlocalizedName("itemPlateEnergeticAlloy").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateEnergeticAlloy");;
-			itemPlateVibrantAlloy = new Item().setUnlocalizedName("itemPlateVibrantAlloy").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateVibrantAlloy");;
-			itemPlateConductiveIron = new Item().setUnlocalizedName("itemPlateConductiveIron").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateConductiveIron");;
-			itemPlateDarkSteel = new Item().setUnlocalizedName("itemPlateDarkSteel").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateDarkSteel");;
+			itemPlateSoularium = new Item().setUnlocalizedName("itemPlateSoularium").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateSoularium");;
+			itemPlateRedstoneAlloy = new Item().setUnlocalizedName("itemPlateRedstoneAlloy").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateRedstoneAlloy");;
+			itemPlateElectricalSteel = new Item().setUnlocalizedName("itemPlateElectricalSteel").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateElectricalSteel");;
+			itemPlatePulsatingIron = new Item().setUnlocalizedName("itemPlatePulsatingIron").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlatePulsatingIron");;
+			itemPlateEnergeticAlloy = new Item().setUnlocalizedName("itemPlateEnergeticAlloy").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateEnergeticAlloy");;
+			itemPlateVibrantAlloy = new Item().setUnlocalizedName("itemPlateVibrantAlloy").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateVibrantAlloy");;
+			itemPlateConductiveIron = new Item().setUnlocalizedName("itemPlateConductiveIron").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateConductiveIron");;
+			itemPlateDarkSteel = new Item().setUnlocalizedName("itemPlateDarkSteel").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateDarkSteel");;
 
 
 			//Registry
@@ -178,9 +178,9 @@ public final class ModItems {
 		if (LoadedMods.Big_Reactors|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("BigReactors Found - Loading Resources.");
 			//Item Init
-			itemPlateBlutonium = new Item().setUnlocalizedName("itemPlateBlutonium").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateBlutonium");;
-			itemPlateCyanite = new Item().setUnlocalizedName("itemPlateCyanite").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateCyanite");;
-			itemPlateLudicrite = new Item().setUnlocalizedName("itemPlateLudicrite").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateLudicrite");;
+			itemPlateBlutonium = new Item().setUnlocalizedName("itemPlateBlutonium").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateBlutonium");;
+			itemPlateCyanite = new Item().setUnlocalizedName("itemPlateCyanite").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateCyanite");;
+			itemPlateLudicrite = new Item().setUnlocalizedName("itemPlateLudicrite").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateLudicrite");;
 
 			//Registry
 			GameRegistry.registerItem(itemPlateBlutonium, "itemPlateBlutonium");
@@ -196,7 +196,7 @@ public final class ModItems {
 		if (LoadedMods.Thaumcraft|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("Thaumcraft Found - Loading Resources.");
 			//Item Init
-			itemPlateVoidMetal = new Item().setUnlocalizedName("itemPlateVoidMetal").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateVoidMetal");;
+			itemPlateVoidMetal = new Item().setUnlocalizedName("itemPlateVoidMetal").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateVoidMetal");;
 
 			//Registry
 			GameRegistry.registerItem(itemPlateVoidMetal, "itemPlateVoidMetal");
@@ -210,7 +210,7 @@ public final class ModItems {
 		if (LoadedMods.Extra_Utils|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("ExtraUtilities Found - Loading Resources.");
 			//Item Init
-			itemPlateBedrockium = new Item().setUnlocalizedName("itemPlateBedrockium").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateBedrockium");;
+			itemPlateBedrockium = new Item().setUnlocalizedName("itemPlateBedrockium").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateBedrockium");;
 
 			//Registry
 			GameRegistry.registerItem(itemPlateBedrockium, "itemPlateBedrockium");
@@ -224,7 +224,7 @@ public final class ModItems {
 		if (LoadedMods.PneumaticCraft|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("PneumaticCraft Found - Loading Resources.");
 			//Item Init
-			itemPlateCompressedIron = new Item().setUnlocalizedName("itemPlateCompressedIron").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateCompressedIron");;
+			itemPlateCompressedIron = new Item().setUnlocalizedName("itemPlateCompressedIron").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateCompressedIron");;
 
 			//Registry
 			GameRegistry.registerItem(itemPlateCompressedIron, "itemPlateCompressedIron");
@@ -238,7 +238,7 @@ public final class ModItems {
 		if (LoadedMods.Simply_Jetpacks|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("SimplyJetpacks Found - Loading Resources.");
 			//Item Init
-			itemPlateEnrichedSoularium = new RarityUncommon().setUnlocalizedName("itemPlateEnrichedSoularium").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateSoularium");;
+			itemPlateEnrichedSoularium = new RarityUncommon().setUnlocalizedName("itemPlateEnrichedSoularium").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateSoularium");;
 
 			//Registry
 			GameRegistry.registerItem(itemPlateEnrichedSoularium, "itemPlateEnrichedSoularium");
@@ -253,7 +253,7 @@ public final class ModItems {
 		if (LoadedMods.RFTools|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("rfTools Found - Loading Resources.");
 			//Item Init
-			itemPlateDimensionShard = new Item().setUnlocalizedName("itemPlateDimensionShard").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(Strings.MODID + ":itemPlateDimensionShard");;
+			itemPlateDimensionShard = new Item().setUnlocalizedName("itemPlateDimensionShard").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateDimensionShard");;
 
 			//Registry
 			GameRegistry.registerItem(itemPlateDimensionShard, "itemPlateDimensionShard");
@@ -273,18 +273,18 @@ public final class ModItems {
 		itemStaballoyPickaxe = new StaballoyPickaxe("itemStaballoyPickaxe", STABALLOY).setCreativeTab(AddToCreativeTab.tabTools);
 		GameRegistry.registerItem(itemStaballoyPickaxe, itemStaballoyPickaxe.getUnlocalizedName());
 		//Staballoy Ingot/Plate
-		itemIngotStaballoy = new Item().setUnlocalizedName("itemIngotStaballoy").setCreativeTab(tabMisc).setTextureName(Strings.MODID + ":itemIngotStaballoy");;
+		itemIngotStaballoy = new Item().setUnlocalizedName("itemIngotStaballoy").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemIngotStaballoy");;
 		GameRegistry.registerItem(itemIngotStaballoy, "itemIngotStaballoy");
-		itemPlateStaballoy = new Item().setUnlocalizedName("itemPlateStaballoy").setCreativeTab(tabMisc).setTextureName(Strings.MODID + ":itemPlateStaballoy");;
+		itemPlateStaballoy = new Item().setUnlocalizedName("itemPlateStaballoy").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemPlateStaballoy");;
 		GameRegistry.registerItem(itemPlateStaballoy, "itemPlateStaballoy");
 		//GregTech_API.sRecipeAdder.addAlloySmelterRecipe(, aInput2, aOutput1, aDuration, aEUt)
 
 
 		//Blood Steel Ingot
-		itemIngotBloodSteel = new Item().setUnlocalizedName("itemIngotBloodSteel").setCreativeTab(tabMisc).setTextureName(Strings.MODID + ":itemIngotBloodSteel");;
+		itemIngotBloodSteel = new Item().setUnlocalizedName("itemIngotBloodSteel").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemIngotBloodSteel");;
 		GameRegistry.registerItem(itemIngotBloodSteel, "itemIngotBloodSteel");
 		//Blood Steel Plate
-		itemPlateBloodSteel = new Item().setUnlocalizedName("itemPlateBloodSteel").setCreativeTab(tabMisc).setTextureName(Strings.MODID + ":itemPlateBloodSteel");;
+		itemPlateBloodSteel = new Item().setUnlocalizedName("itemPlateBloodSteel").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemPlateBloodSteel");;
 		GameRegistry.registerItem(itemPlateBloodSteel, "itemPlateBloodSteel");
 
 

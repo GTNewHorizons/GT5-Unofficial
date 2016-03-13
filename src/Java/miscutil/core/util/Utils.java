@@ -5,7 +5,7 @@ import static gregtech.api.enums.GT_Values.F;
 import java.awt.Graphics;
 import java.util.Random;
 
-import miscutil.core.lib.Strings;
+import miscutil.core.lib.CORE;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -85,21 +85,21 @@ public class Utils {
     
     //Non-Dev Comments 
     public static void LOG_INFO(String s){
-    	//if (Strings.DEBUG){
+    	//if (CORE.DEBUG){
 			FMLLog.info("MiscUtils: "+s);
 		//}
     }
     
     //Developer Comments
     public static void LOG_WARNING(String s){
-    	if (Strings.DEBUG){
+    	if (CORE.DEBUG){
 			FMLLog.warning("MiscUtils: "+s);
 		}
     }
     
     //Errors
     public static void LOG_ERROR(String s){
-    	if (Strings.DEBUG){
+    	if (CORE.DEBUG){
 			FMLLog.severe("MiscUtils: "+s);
 		}
     }

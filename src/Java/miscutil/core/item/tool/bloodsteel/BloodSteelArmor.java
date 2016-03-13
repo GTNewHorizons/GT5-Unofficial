@@ -1,7 +1,7 @@
 package miscutil.core.item.tool.bloodsteel;
 
 import miscutil.core.item.ModItems;
-import miscutil.core.lib.Strings;
+import miscutil.core.lib.CORE;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
@@ -19,9 +19,9 @@ public class BloodSteelArmor extends ItemArmor {
 
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
 		if (stack.getItem() == ModItems.tutHelmet || stack.getItem() == ModItems.tutPlate || stack.getItem() == ModItems.tutBoots) {
-			return Strings.MODID + ":textures/armor/BloodSteelArmor1.png";
+			return CORE.MODID + ":textures/armor/BloodSteelArmor1.png";
 		} else if (stack.getItem() == ModItems.tutPants) {
-			return Strings.MODID + ":textures/armor/BloodSteelArmor2.png";
+			return CORE.MODID + ":textures/armor/BloodSteelArmor2.png";
 		} else {
 			return null;
 		}

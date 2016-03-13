@@ -1,5 +1,6 @@
 package miscutil.core.creativetabs;
 
+import miscutil.core.lib.CORE;
 import net.minecraft.creativetab.CreativeTabs;
 
 public class AddToCreativeTab {
@@ -13,8 +14,10 @@ public class AddToCreativeTab {
 	public static void initialiseTabs(){
 		tabBlock = new MiscUtilCreativeTabBlock("MiscUtilBlockTab");
 		tabMisc = new MiscUtilCreativeTabMisc("MiscUtilMiscTab");
-		tabMachines = new MiscUtilCreativeTabMachines("MiscUtilMachineTab");
 		//tabCombat = new MiscUtilCreativeTabCombat("MiscUtilCombatTab");
 		tabTools = new MiscUtilCreativeTabTools("MiscUtilToolsTab");
+		if (CORE.DEBUG){
+			tabMachines = new MiscUtilCreativeTabMachines("MiscUtilMachineTab");			
+		}
 	}
 }

@@ -7,7 +7,7 @@ import miscutil.core.commands.CommandMath;
 import miscutil.core.common.CommonProxy;
 import miscutil.core.creativetabs.AddToCreativeTab;
 import miscutil.core.lib.LoadedMods;
-import miscutil.core.lib.Strings;
+import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -21,12 +21,12 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 
-@Mod(modid=Strings.MODID, name="Misc. Utils", version=Strings.VERSION, dependencies="required-after:gregtech")
+@Mod(modid=CORE.MODID, name="Misc. Utils", version=CORE.VERSION, dependencies="required-after:gregtech")
 public class MiscUtils
 implements ActionListener
 { 
 	
-	@Mod.Instance(Strings.MODID)
+	@Mod.Instance(CORE.MODID)
 	public static MiscUtils instance;
 
 	@SidedProxy(clientSide="miscutil.core.proxy.ClientProxy", serverSide="miscutil.core.proxy.ServerProxy")

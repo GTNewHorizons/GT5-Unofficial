@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import miscutil.core.creativetabs.AddToCreativeTab;
-import miscutil.core.lib.Strings;
+import miscutil.core.lib.CORE;
 import miscutil.core.tileentities.TileEntityReverter;
 import miscutil.core.util.Utils;
 import net.minecraft.block.Block;
@@ -50,7 +50,7 @@ public class TowerDevice extends Block {
   @SideOnly(Side.CLIENT)
   public void registerBlockIcons(IIconRegister par1IconRegister)
   {
-    TEX_ANTIBUILDER = par1IconRegister.registerIcon(Strings.MODID + ":" + "blockAntiGrief");
+    TEX_ANTIBUILDER = par1IconRegister.registerIcon(CORE.MODID + ":" + "blockAntiGrief");
   }
   
   public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)

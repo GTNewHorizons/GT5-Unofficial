@@ -1,16 +1,15 @@
 package miscutil.core.common;
 
+import static miscutil.core.lib.CORE.DEBUG;
 import static miscutil.core.lib.LoadedMods.Gregtech;
-import static miscutil.core.lib.Strings.DEBUG;
 import gregtech.api.util.GT_OreDictUnificator;
 import miscutil.core.block.ModBlocks;
 import miscutil.core.gui.ModGUI;
 import miscutil.core.item.ModItems;
+import miscutil.core.lib.CORE;
 import miscutil.core.lib.LoadedMods;
-import miscutil.core.lib.Strings;
 import miscutil.core.tileentities.ModTileEntities;
 import miscutil.core.util.Utils;
-import miscutil.enderio.init.InitEnderIO;
 import miscutil.gregtech.init.InitGregtech;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -23,7 +22,7 @@ public class CommonProxy {
 	public void preInit(FMLPreInitializationEvent e) {
 		/*
 		 * 
-		 * Strings.DEBUG Parameters area
+		 * CORE.DEBUG Parameters area
 		 * 
 		 */
 		//Logs
@@ -37,7 +36,7 @@ public class CommonProxy {
 			Utils.LOG_WARNING("Development mode not set.");
 		}
 		/*
-		 * End Strings.DEBUG
+		 * End CORE.DEBUG
 		 */		
 		ModItems.init();
 		ModBlocks.init();
@@ -45,8 +44,8 @@ public class CommonProxy {
 		/**
 		 * Enable Dev mode related content
 		 */
-		if (Strings.DEBUG){
-			InitEnderIO.run();
+		if (CORE.DEBUG){
+			//InitEnderIO.run();
 		}
 
 		//Register Gregtech related items
@@ -83,7 +82,7 @@ public class CommonProxy {
 		ModTileEntities.init();
 		//GameRegistry.registerTileEntity(TileEntityBloodSteelChest.class, "tileEntityBloodSteelChest");
 		//GameRegistry.registerTileEntity(TileEntityBloodSteelFurnace.class, "tileEntityBloodSteelFurnace");
-		//GameRegistry.registerTileEntity(TileEntityBloodSteelChest.class, Strings.MODID);
+		//GameRegistry.registerTileEntity(TileEntityBloodSteelChest.class, CORE.MODID);
 		//GameRegistry.registerTileEntity(TileEntityArcaneInfuser.class, "TileEntityArcaneInfuser");
 	}
 

@@ -37,19 +37,19 @@ public final class ModBlocks {
 		blockGriefSaver = new TowerDevice().setBlockName("blockGriefSaver").setCreativeTab(AddToCreativeTab.tabBlock).setBlockTextureName("blockDefault");
 		
 		//BloodSteelorial Furnace - Must Init blocks first as they're not static.  
-		/** if (Strings.DEBUG){
+		/** if (CORE.DEBUG){
 			FMLLog.info("Loading Furnace.");}
 		tutFurnace= new BloodSteelFurnace(false).setBlockName("BloodSteelFurnace").setCreativeTab(TMCreativeTabs.tabBlock);
 		tutFurnaceActive= new BloodSteelFurnace(true).setBlockName("BloodSteelFurnaceActive");
 
 		//Arcane Infuser - Must Init blocks first as they're not static.
-		if (Strings.DEBUG){
+		if (CORE.DEBUG){
 			FMLLog.info("Loading Arcane Infuser.");}
 		arcaneInfuser = new ArcaneInfuser(false).setBlockName("ArcaneInfuser").setCreativeTab(TMCreativeTabs.tabBlock);
 		arcaneInfuserActive = new ArcaneInfuser(true).setBlockName("ArcaneInfuserActive");
 
 		//Blood Steel Chest
-		if (Strings.DEBUG){
+		if (CORE.DEBUG){
 			FMLLog.info("Loading Blood Steel Chest.");}
 		tutChest = new BloodSteelChest(0).setBlockName("BloodSteelChest").setCreativeTab(TMCreativeTabs.tabBlock);
 

@@ -1,6 +1,6 @@
 package miscutil.core.gui;
 
-import miscutil.core.lib.Strings;
+import miscutil.core.lib.CORE;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -34,15 +34,15 @@ public class GUI_Bat_Buf extends GuiScreen
 
         bookPageTextures[0] = new ResourceLocation(
 
-              Strings.MODID+":textures/gui/book_cover.png");
+              CORE.MODID+":textures/gui/book_cover.png");
 
         bookPageTextures[1] = new ResourceLocation(
 
-        		Strings.MODID+":textures/gui/book.png");
+        		CORE.MODID+":textures/gui/book.png");
 
         bookPageTextures[2] = new ResourceLocation(
 
-        		Strings.MODID+":textures/gui/book.png");
+        		CORE.MODID+":textures/gui/book.png");
 
         stringPageText[0] = "";
 

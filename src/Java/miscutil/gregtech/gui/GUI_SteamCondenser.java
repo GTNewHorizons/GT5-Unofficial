@@ -2,7 +2,7 @@ package miscutil.gregtech.gui;
 
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import miscutil.core.lib.Strings;
+import miscutil.core.lib.CORE;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GUI_SteamCondenser extends GT_GUIContainerMetaTile_Machine
@@ -11,13 +11,13 @@ public class GUI_SteamCondenser extends GT_GUIContainerMetaTile_Machine
 	
   public GUI_SteamCondenser(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aTextureName, int aSteamCapacity)
   {
-    super(new CONTAINER_SteamCondenser(aInventoryPlayer, aTileEntity, aSteamCapacity), Strings.MODID + ":" + "textures/gui/" + aTextureName);
+    super(new CONTAINER_SteamCondenser(aInventoryPlayer, aTileEntity, aSteamCapacity), CORE.MODID + ":" + "textures/gui/" + aTextureName);
   }
   
   protected void drawGuiContainerForegroundLayer(int par1, int par2)
   {
     this.fontRendererObj.drawString("Condenser", 8, 4, 4210752);
-    if (!Strings.DEBUG){
+    if (!CORE.DEBUG){
         tickTime = ((CONTAINER_SteamCondenser)this.mContainer).mTickingTime;
         this.fontRendererObj.drawString("Tick Time: "+tickTime, 8, 12, 4210752);
     }

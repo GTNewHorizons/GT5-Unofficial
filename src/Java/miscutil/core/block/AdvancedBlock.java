@@ -1,6 +1,6 @@
 package miscutil.core.block;
 
-import miscutil.core.lib.Strings;
+import miscutil.core.lib.CORE;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -13,7 +13,7 @@ public class AdvancedBlock extends Block {
     		String blockHarvestTool, int blockHarvestLevel, SoundType BlockSound) {
         super(material);
         this.setBlockName(unlocalizedName);
-        this.setBlockTextureName(Strings.MODID + ":" + unlocalizedName);
+        this.setBlockTextureName(CORE.MODID + ":" + unlocalizedName);
         this.setCreativeTab(x);
         this.setHardness(blockHardness); //block Hardness
         this.setResistance(blockResistance);
