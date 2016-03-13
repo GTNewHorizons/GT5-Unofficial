@@ -28,8 +28,9 @@ public class GregtechConduits {
 	
 	private static void run1(){
 		wireFactory("Blutonium", 8196, 30600, 1, 8, 2);
-		wireFactory("Helium", 8, 30615, 3,6,9);
-		wireFactory("HSLA", 128, 30630, 4, 8, 1);
+		wireFactory("RedstoneAlloy", 32, 30615, 3,6,9);
+		wireFactory("Cyanite", 512, 30630, 4, 8, 1);
+		wireFactory("Yellorium", 2048, 30645, 4, 8, 1);
 	}	
 	
 	private static void wireFactory(String Material, int Voltage, int ID, long insulatedLoss, long uninsulatedLoss, long Amps){
