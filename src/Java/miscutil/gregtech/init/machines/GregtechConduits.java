@@ -5,6 +5,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
+import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.Utils;
 import miscutil.gregtech.metatileentity.implementations.GregtechMetaPipeEntity_Cable;
 
@@ -27,10 +28,15 @@ public class GregtechConduits {
 	}
 	
 	private static void run1(){
-		wireFactory("Blutonium", 8196, 30600, 1, 8, 2);
-		wireFactory("RedstoneAlloy", 32, 30615, 3,6,9);
-		wireFactory("Cyanite", 512, 30630, 4, 8, 1);
-		wireFactory("Yellorium", 2048, 30645, 4, 8, 1);
+		if (LoadedMods.Big_Reactors){
+			wireFactory("Blutonium", 8196, 30600, 8, 32, 2);
+			wireFactory("Cyanite", 512, 30615, 2, 16, 4);
+			wireFactory("Yellorium", 2048, 30630, 4, 16, 2);
+		}
+		if (LoadedMods.EnderIO){
+			wireFactory("RedstoneAlloy", 32, 30645, 1, 4, 1);
+		}
+		
 	}	
 	
 	private static void wireFactory(String Material, int Voltage, int ID, long insulatedLoss, long uninsulatedLoss, long Amps){
