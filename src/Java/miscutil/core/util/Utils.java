@@ -7,10 +7,12 @@ import java.util.Random;
 
 import miscutil.core.lib.CORE;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class Utils {
 
@@ -127,6 +129,11 @@ public class Utils {
 		return FluidRegistry.getFluidStack("ic2steam", (int)aAmount);
 	}
 
+	public static Item getItem(String fqrn) // fqrn = fully qualified resource name
+	{
+	 String[] fqrnSplit = fqrn.split(":");
+	 return GameRegistry.findItem(fqrnSplit[0], fqrnSplit[1]);
+	}
 	
     
 }

@@ -4,6 +4,7 @@ import static miscutil.core.lib.LoadedMods.Gregtech;
 import miscutil.core.util.Utils;
 import miscutil.gregtech.init.machines.GregtechConduits;
 import miscutil.gregtech.init.machines.GregtechEnergyBuffer;
+import miscutil.gregtech.init.machines.GregtechSafeBlock;
 import miscutil.gregtech.init.machines.GregtechSteamCondenser;
 
 public class InitGregtech {
@@ -24,6 +25,7 @@ public class InitGregtech {
 		GregtechEnergyBuffer.run();
 		GregtechConduits.run();
 		GregtechSteamCondenser.run();
+		GregtechSafeBlock.run();
 
 	}
 }

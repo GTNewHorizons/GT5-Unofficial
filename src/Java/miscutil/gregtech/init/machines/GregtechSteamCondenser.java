@@ -25,8 +25,8 @@ public class GregtechSteamCondenser
 	private static void run1()
 	{
 		//Steam Condensors
-		GregtechItemList.Condensor_MAX.set(new GregtechMetaCondensor(780, "steamcondensor.01.tier.single", "Steam Condensor").getStackForm(1L));
-		GT_ModHandler.addCraftingRecipe(GregtechItemList.Condensor_MAX.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "WTW", "WMW", Character.valueOf('M'), ItemList.Hull_HV, Character.valueOf('W'),OrePrefixes.wireGt04.get(Materials.Nickel),Character.valueOf('T'), ItemList.Pump_MV });
+		GregtechItemList.Condensor_MAX.set(new GregtechMetaCondensor(769, "steamcondensor.01.tier.single", "Steam Condensor").getStackForm(1L));
+		GT_ModHandler.addCraftingRecipe(GregtechItemList.Condensor_MAX.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "WTW", "WMW", Character.valueOf('M'), ItemList.Hull_HV, Character.valueOf('W'),OrePrefixes.wireGt04.get(Materials.ElectricalSteel),Character.valueOf('T'), ItemList.Electric_Pump_MV });
 		/*Steam Condensors
 		GregtechItemList.Condensor_MAX.set(new GregtechMetaCondensorII(780, "steamcondensor.01.tier.single", "Steam CondensorII").getStackForm(1L));
 		GT_ModHandler.addCraftingRecipe(GregtechItemList.Condensor_MAX.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "WTW", "WMW", Character.valueOf('M'), ItemList.Hull_HV, Character.valueOf('W'),OrePrefixes.wireGt04.get(Materials.Nickel),Character.valueOf('T'), ItemList.Pump_MV });

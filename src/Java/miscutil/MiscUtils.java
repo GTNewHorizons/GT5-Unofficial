@@ -6,8 +6,8 @@ import java.awt.event.ActionListener;
 import miscutil.core.commands.CommandMath;
 import miscutil.core.common.CommonProxy;
 import miscutil.core.creativetabs.AddToCreativeTab;
-import miscutil.core.lib.LoadedMods;
 import miscutil.core.lib.CORE;
+import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.Utils;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -21,7 +21,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 
-@Mod(modid=CORE.MODID, name="Misc. Utils", version=CORE.VERSION, dependencies="required-after:gregtech")
+@Mod(modid=CORE.MODID, name="Misc. Utils", version=CORE.VERSION, dependencies="required-after:gregtech; after:Thaumcraft;")
 public class MiscUtils
 implements ActionListener
 { 
