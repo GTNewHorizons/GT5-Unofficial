@@ -17,7 +17,7 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
         INSTANCE = this;
         addTool(0, "ProPick", "", new DetravToolProPick(), new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)});
         setCreativeTab(DetravScannerMod.TAB_DETRAV);
-        addItemBehavior(0,new BehaviourDetravToolProPick());
+        //addItemBehavior(0,new BehaviourDetravToolProPick());
     }
 
 

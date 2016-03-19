@@ -167,6 +167,7 @@ public class DetravToolProPick implements IToolStats {
     }
 
     public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
+        aItem.addItemBehavior(aID, new BehaviourDetravToolProPick(getToolDamagePerBlockBreak()));
     }
 
     public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer) {
