@@ -1,5 +1,7 @@
 package com.detrav.tools;
 
+import com.detrav.enums.DetravSimpleItems;
+import com.detrav.enums.Textures01;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.damagesources.GT_DamageSources;
@@ -155,7 +157,9 @@ public class DetravToolProPick implements IToolStats {
     }
 
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ? GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.toolHeadPickaxe.mTextureIndex] : GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.stick.mTextureIndex];
+        return aIsToolHead ?
+                Textures01.mTextures[DetravSimpleItems.toolProPickHead.mTextureIndex] :
+                GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.stick.mTextureIndex];
     }
 
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
