@@ -18,6 +18,8 @@ buildscript {
 apply plugin: 'forge'
 apply plugin: 'idea'
 
+idea.module.inheritOutputDirs = true
+
 file "build.properties" withReader {
     def prop = new Properties()
     prop.load(it)
@@ -84,7 +86,7 @@ dependencies {
     provided "codechicken:NotEnoughItems:${config.minecraft.version}-${config.nei.version}:dev"
     provided "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"
     provided "net.sengir.forestry:forestry_${config.minecraft.version}:${config.forestry.version}:dev"
-    //provided "applecore:AppleCore:${config.applecore.version}:api"
+    provided "applecore:AppleCore:${config.applecore.version}:api"
     //provided "com.enderio.core:EnderCore:${config.enderiocore.version}:dev"
     //provided ("com.enderio:EnderIO:${config.enderio.version}:dev") {transitive = false }
     provided name: 'buildcraft', version: config.buildcraft.version, classifier: "dev", ext: 'jar'
@@ -99,16 +101,36 @@ processResources
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
 
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
+    ext.srcFiles = "$projectDir/src/main/resources"
+    ext.destDir = "$projectDir/build/classes/main"
+
+    // registering inputs & outputs allow gradle to skip if UP-TO-DATE
+    inputs.files srcFiles
+    outputs.dir destDir
+
+    println 'starting processResources'
+    println 'srcFiles: ' + srcFiles
+    println 'destDir: ' + destDir
+
+
+    copy {
+        // replace stuff in mcmod.info, nothing else
+        from(srcFiles)
+        into(destDir)
         include 'mcmod.info'
-                
-        // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+            // replace version and mcversion
+        expand 'version': project.version, 'mcversion': project.minecraft.version
+
     }
-        
-    // copy everything else, thats not the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
+
+
+    copy {
+        // copy everything else, thats not the mcmod.info
+        from(srcFiles)
+        into(destDir)
         exclude 'mcmod.info'
+
     }
 }
+
+    
