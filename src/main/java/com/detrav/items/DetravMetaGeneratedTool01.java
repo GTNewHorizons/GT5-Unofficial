@@ -1,6 +1,7 @@
 package com.detrav.items;
 
 import com.detrav.DetravScannerMod;
+import com.detrav.enums.DetravToolDictNames;
 import com.detrav.tools.BehaviourDetravToolProPick;
 import com.detrav.tools.DetravToolProPick;
 import gregtech.api.enums.TC_Aspects;
@@ -15,7 +16,7 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
     public DetravMetaGeneratedTool01() {
         super("detrav.metatool.01");
         INSTANCE = this;
-        addTool(0, "ProPick", "", new DetravToolProPick(), new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)});
+        addTool(0, "Prospector's Pick", "", new DetravToolProPick(), new Object[]{DetravToolDictNames.craftingToolProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)});
         setCreativeTab(DetravScannerMod.TAB_DETRAV);
         //addItemBehavior(0,new BehaviourDetravToolProPick());
     }
