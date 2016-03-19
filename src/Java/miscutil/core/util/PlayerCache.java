@@ -19,12 +19,26 @@ public class PlayerCache {
 
 	private static final File cache = new File("PlayerCache.dat");
 
+	public static final void initCache() {
+		if (CORE.PlayerCache == null || CORE.PlayerCache.equals(null)){
+			try {
+				CORE.PlayerCache = PlayerCache.readPropertiesFileAsMap();
+				Utils.LOG_INFO("Loaded PlayerCache.dat");
+			} catch (Exception e) {
+				Utils.LOG_INFO("Failed to initialise PlayerCache.dat");
+				PlayerCache.createPropertiesFile("CACHE FILE - ", "THIS CONTAINS PLAYERDATA");
+				//e.printStackTrace();
+			}
+		}
+	}
+	
 	public static void createPropertiesFile(String playerName, String playerUUIDasString) {
 		try {
 			Properties props = new Properties();
 			props.setProperty(playerName, playerUUIDasString);
 			OutputStream out = new FileOutputStream(cache);
 			props.store(out, "Player Cache.");
+			Utils.LOG_INFO("Created an empty PlayerCache.dat for future use.");
 		}
 		catch (Exception e ) {
 			e.printStackTrace();
@@ -66,7 +80,7 @@ public class PlayerCache {
 	 * @return The Map that contains the key/value pairs.
 	 * @throws Exception
 	 */
-	private static Map<String, String> readPropertiesFileAsMap() throws Exception {
+	public static Map<String, String> readPropertiesFileAsMap() throws Exception {
 		String filename = cache.getName();
 		String delimiter = ":";
 		@SuppressWarnings({ "rawtypes", "unchecked" })

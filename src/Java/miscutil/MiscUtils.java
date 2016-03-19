@@ -9,6 +9,7 @@ import miscutil.core.creativetabs.AddToCreativeTab;
 import miscutil.core.handler.XEventHandler;
 import miscutil.core.lib.CORE;
 import miscutil.core.lib.LoadedMods;
+import miscutil.core.util.PlayerCache;
 import miscutil.core.util.Utils;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -63,7 +64,8 @@ implements ActionListener
 	//Post-Init
 	@Mod.EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		Utils.LOG_INFO("Cleaning up the banana on the floor.");
+		Utils.LOG_INFO("Cleaning up, doing postInit.");
+		PlayerCache.initCache();
 		proxy.postInit(event);
 	}
 
