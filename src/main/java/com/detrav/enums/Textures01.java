@@ -13,6 +13,9 @@ import net.minecraft.util.ResourceLocation;
 public class Textures01 {
     public static final IIconContainer[] mTextures = new IIconContainer[]
             {
-                    new Textures.ItemIcons.CustomIcon("iconsets/PRO_PICK_HEAD")
+                    new Textures.ItemIcons.CustomIcon("gt.detrav.metaitem.01/PRO_PICK_HEAD"),
+                    new Textures.ItemIcons.CustomIcon("gt.detrav.metatool.01/ELECTRIC_LV_PRO_PICK_HEAD"),
+                    new Textures.ItemIcons.CustomIcon("gt.detrav.metatool.01/ELECTRIC_MV_PRO_PICK_HEAD"),
+                    new Textures.ItemIcons.CustomIcon("gt.detrav.metatool.01/ELECTRIC_HV_PRO_PICK_HEAD")
             };
 }

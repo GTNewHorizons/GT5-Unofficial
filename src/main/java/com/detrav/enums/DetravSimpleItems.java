@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
  * Created by wital_000 on 19.03.2016.
  */
 public enum DetravSimpleItems {
-    toolProPickHead(OrePrefixes.toolHeadPickaxe,"Prospector's Pick Heads",""," Prospector's Pick Head",0);
+    toolHeadProPick(OrePrefixes.toolHeadPickaxe,"Prospector's Pick Heads",""," Prospector's Pick Head",0);
 
     static {
 

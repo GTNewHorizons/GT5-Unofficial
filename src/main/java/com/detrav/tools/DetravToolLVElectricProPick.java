@@ -6,8 +6,8 @@ import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.damagesources.GT_DamageSources;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.interfaces.IToolStats;
+import gregtech.api.items.GT_MetaGenerated_Tool;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.Enchantment;
@@ -25,9 +25,9 @@ import net.minecraftforge.event.world.BlockEvent;
 import java.util.List;
 
 /**
- * Created by wital_000 on 18.03.2016.
+ * Created by wital_000 on 19.03.2016.
  */
-public class DetravToolProPick implements IToolStats {
+public class DetravToolLVElectricProPick implements IToolStats {
     public int getToolDamagePerBlockBreak() {
         return GT_Mod.gregtechproxy.mHardRock ? 50 : 100;
     }
@@ -41,7 +41,7 @@ public class DetravToolProPick implements IToolStats {
     }
 
     public int getToolDamagePerEntityAttack() {
-        return 200;
+        return 2000;
     }
 
     public int getBaseQuality() {
@@ -58,7 +58,7 @@ public class DetravToolProPick implements IToolStats {
     }
 
     public float getSpeedMultiplier() {
-        return 0.5F;
+        return 1.0F;
     }
 
     public float getMaxDurabilityMultiplier() {
@@ -131,13 +131,12 @@ public class DetravToolProPick implements IToolStats {
 
     @Override
     public boolean isMiningTool() {
-        return true;
+        return false;
     }
 
     public boolean isMinableBlock(Block aBlock, byte aMetaData) {
 
-        String tTool = aBlock.getHarvestTool(aMetaData);
-        return tTool != null && tTool.equals("pickaxe") || aBlock.getMaterial() == Material.rock || aBlock.getMaterial() == Material.iron || aBlock.getMaterial() == Material.anvil || aBlock.getMaterial() == Material.glass;
+        return false;
     }
 
     @Override
@@ -160,9 +159,7 @@ public class DetravToolProPick implements IToolStats {
     }
 
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ?
-                Textures01.mTextures[DetravSimpleItems.toolHeadProPick.mTextureIndex] :
-                GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.stick.mTextureIndex];
+        return Textures01.mTextures[1];
     }
 
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
@@ -170,7 +167,7 @@ public class DetravToolProPick implements IToolStats {
     }
 
     public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
-        aItem.addItemBehavior(aID, new BehaviourDetravToolProPick(getToolDamagePerBlockBreak()));
+        aItem.addItemBehavior(aID, new BehaviourDetravToolElectricProPick(getToolDamagePerBlockBreak()));
     }
 
     public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer) {
@@ -181,6 +178,6 @@ public class DetravToolProPick implements IToolStats {
     }
 
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
-        return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " got ProPicked by " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
+        return new ChatComponentText(EnumChatFormatting.RED + aEntity.getCommandSenderName() + EnumChatFormatting.WHITE + " got Pick Up'ed by " + EnumChatFormatting.GREEN + aPlayer.getCommandSenderName() + EnumChatFormatting.WHITE);
     }
 }
