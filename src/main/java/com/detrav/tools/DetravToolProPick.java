@@ -9,6 +9,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.interfaces.IToolStats;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -28,7 +29,7 @@ import java.util.List;
  */
 public class DetravToolProPick implements IToolStats {
     public int getToolDamagePerBlockBreak() {
-        return GT_Mod.gregtechproxy.mHardRock ? 25 : 50;
+        return GT_Mod.gregtechproxy.mHardRock ? 50 : 100;
     }
 
     public int getToolDamagePerDropConversion() {
@@ -48,7 +49,7 @@ public class DetravToolProPick implements IToolStats {
     }
 
     public float getBaseDamage() {
-        return 1.5F;
+        return 1.0F;
     }
 
     @Override
@@ -57,7 +58,7 @@ public class DetravToolProPick implements IToolStats {
     }
 
     public float getSpeedMultiplier() {
-        return 1.0F;
+        return 0.5F;
     }
 
     public float getMaxDurabilityMultiplier() {
@@ -134,7 +135,9 @@ public class DetravToolProPick implements IToolStats {
     }
 
     public boolean isMinableBlock(Block aBlock, byte aMetaData) {
-        return false;
+
+        String tTool = aBlock.getHarvestTool(aMetaData);
+        return tTool != null && tTool.equals("pickaxe") || aBlock.getMaterial() == Material.rock || aBlock.getMaterial() == Material.iron || aBlock.getMaterial() == Material.anvil || aBlock.getMaterial() == Material.glass;
     }
 
     @Override
