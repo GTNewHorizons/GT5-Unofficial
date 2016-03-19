@@ -1,0 +1,16 @@
+[
+{
+  "modid": "detravscannermod",
+  "name": "Detrav Scanner Mod",
+  "description": "Example placeholder mod.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Detrav"],
+  "credits": "From Detrav ^_^",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

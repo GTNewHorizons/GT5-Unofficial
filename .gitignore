@@ -50,3 +50,24 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+### Intellij IDEA ###
+
+*.iml
+*.ipr
+*.iws
+
+.idea/
+.idea_modules/
+
+
+#Folders
+
+eclipse/
+gradle/
+.gradle/
+
+*.log
