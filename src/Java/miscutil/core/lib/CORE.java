@@ -1,5 +1,7 @@
 package miscutil.core.lib;
 
+import java.util.Map;
+
 import miscutil.core.creativetabs.AddToCreativeTab;
 
 public class CORE {
@@ -10,6 +12,7 @@ public class CORE {
 	public static final boolean DEBUG = true;	
 	public static final boolean LOAD_ALL_CONTENT = false;
 	public static final int GREG_FIRST_ID = 760;
+	public static Map PlayerCache;
 	
 	
 	public static final Class<AddToCreativeTab> TAB = AddToCreativeTab.class;
