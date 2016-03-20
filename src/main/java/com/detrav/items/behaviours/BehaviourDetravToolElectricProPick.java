@@ -1,7 +1,10 @@
 package com.detrav.items.behaviours;
 
+import com.detrav.utils.DetravNetwork;
+import com.detrav.utils.DetravProPickPacket01;
 import gregtech.api.items.GT_MetaBase_Item;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
@@ -22,11 +25,7 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
             //aPlayer.openGui();
 
             aPlayer.addChatMessage(new ChatComponentText("Scanning Begin"));
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            DetravNetwork.INSTANCE.sendToPlayer(new DetravProPickPacket01(),(EntityPlayerMP)aPlayer);
         }
         return super.onItemRightClick(aItem,aStack,aWorld,aPlayer);
     }

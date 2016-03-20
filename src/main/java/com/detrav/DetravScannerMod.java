@@ -3,6 +3,7 @@ package com.detrav;
 import com.detrav.proxies.CommonProxy;
 import com.detrav.commands.DetravScannerCommand;
 import com.detrav.utils.DetravCreativeTab;
+import com.detrav.utils.DetravNetwork;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
@@ -24,6 +25,7 @@ public class DetravScannerMod
     public  DetravScannerMod()
     {
         GregTech_API.sAfterGTPreload.add(new DetravLoader());
+        new DetravNetwork();
     }
 
     @SidedProxy(clientSide = "com.detrav.proxies.ClientProxy", serverSide = "com.detrav.proxies.ServerProxy")
