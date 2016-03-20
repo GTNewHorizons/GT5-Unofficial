@@ -73,7 +73,8 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
             }
             packet.level = ((DetravMetaGeneratedTool01) aItem).getHarvestLevel(aStack, "");
             DetravNetwork.INSTANCE.sendToPlayer(packet, (EntityPlayerMP) aPlayer);
-            tool.doDamage(aStack, this.mCosts * chunks.size());
+            if (!aPlayer.capabilities.isCreativeMode)
+                tool.doDamage(aStack, this.mCosts * chunks.size());
         }
         return super.onItemRightClick(aItem, aStack, aWorld, aPlayer);
     }

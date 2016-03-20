@@ -60,7 +60,8 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
                 GT_TileEntity_Ores gt_entity = (GT_TileEntity_Ores) aTileEntity;
                 String name = GT_LanguageManager.getTranslation("gt.blockores." + gt_entity.getMetaData() + ".name");
                 aPlayer.addChatMessage(new ChatComponentText(foundTexts[6] + name));
-                aItem.doDamage(aStack, this.mCosts);
+                if (!aPlayer.capabilities.isCreativeMode)
+                    aItem.doDamage(aStack, this.mCosts);
                 return;
             }
         }
@@ -88,21 +89,21 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
                         }
                     }
                 }
-            for(String key : ores.keySet())
-            {
+            for (String key : ores.keySet()) {
                 int value = ores.get(key);
-                if(value<10)
+                if (value < 10)
                     aPlayer.addChatMessage(new ChatComponentText(foundTexts[1] + key));
-                else if(value<30)
+                else if (value < 30)
                     aPlayer.addChatMessage(new ChatComponentText(foundTexts[2] + key));
-                else if(value<60)
+                else if (value < 60)
                     aPlayer.addChatMessage(new ChatComponentText(foundTexts[3] + key));
-                else if(value<100)
+                else if (value < 100)
                     aPlayer.addChatMessage(new ChatComponentText(foundTexts[4] + key));
                 else
                     aPlayer.addChatMessage(new ChatComponentText(foundTexts[5] + key));
             }
-            aItem.doDamage(aStack, this.mCosts);
+            if (!aPlayer.capabilities.isCreativeMode)
+                aItem.doDamage(aStack, this.mCosts);
             return;
         }
         aPlayer.addChatMessage(new ChatComponentText(foundTexts[0]));
