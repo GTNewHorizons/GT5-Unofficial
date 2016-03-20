@@ -2,7 +2,10 @@ package com.detrav.items;
 
 import com.detrav.DetravScannerMod;
 import com.detrav.enums.DetravToolDictNames;
-import com.detrav.tools.*;
+import com.detrav.items.tools.DetravToolHVElectricProPick;
+import com.detrav.items.tools.DetravToolLVElectricProPick;
+import com.detrav.items.tools.DetravToolMVElectricProPick;
+import com.detrav.items.tools.DetravToolProPick;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 

@@ -1,4 +1,4 @@
-package com.detrav.tools;
+package com.detrav.items.tools;
 
 import com.detrav.enums.Textures01;
 import gregtech.api.interfaces.IIconContainer;
@@ -7,16 +7,15 @@ import net.minecraft.item.ItemStack;
 /**
  * Created by wital_000 on 19.03.2016.
  */
-public class DetravToolHVElectricProPick extends DetravToolMVElectricProPick {
+public class DetravToolMVElectricProPick extends DetravToolLVElectricProPick {
     public int getBaseQuality() {
-        return 2;
+        return 1;
     }
-
     public float getMaxDurabilityMultiplier() {
-        return 4.0F;
+        return 2.0F;
     }
 
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return Textures01.mTextures[3];
+        return Textures01.mTextures[2];
     }
 }

@@ -1,4 +1,4 @@
-package com.detrav.tools;
+package com.detrav.items.behaviours;
 
 import com.detrav.items.DetravMetaGeneratedTool01;
 import gregtech.api.GregTech_API;

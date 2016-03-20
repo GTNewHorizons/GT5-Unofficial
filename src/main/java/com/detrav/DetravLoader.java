@@ -2,8 +2,8 @@ package com.detrav;
 
 import com.detrav.items.DetravMetaGeneratedItem01;
 import com.detrav.items.DetravMetaGeneratedTool01;
-import com.detrav.tools.ProcessingDetravShaping;
-import com.detrav.tools.ProcessingDetravToolProPick;
+import com.detrav.items.processing.ProcessingDetravShaping;
+import com.detrav.items.processing.ProcessingDetravToolProPick;
 
 /**
  * Created by wital_000 on 18.03.2016.

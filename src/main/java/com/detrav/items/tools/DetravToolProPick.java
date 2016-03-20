@@ -1,7 +1,8 @@
-package com.detrav.tools;
+package com.detrav.items.tools;
 
 import com.detrav.enums.DetravSimpleItems;
 import com.detrav.enums.Textures01;
+import com.detrav.items.behaviours.BehaviourDetravToolProPick;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
 import gregtech.api.damagesources.GT_DamageSources;

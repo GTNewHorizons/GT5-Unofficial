@@ -1,4 +1,4 @@
-package com.detrav.tools;
+package com.detrav.items.processing;
 
 import com.detrav.enums.DetravItemList;
 import com.detrav.enums.DetravSimpleItems;
