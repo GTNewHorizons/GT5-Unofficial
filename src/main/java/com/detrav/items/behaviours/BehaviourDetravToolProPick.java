@@ -32,7 +32,7 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
             "Found a very large sample of ",    //100-**
             "Found "
     };
-    private final int mCosts;
+    protected final int mCosts;
 
     public BehaviourDetravToolProPick(int aCosts)
     {
