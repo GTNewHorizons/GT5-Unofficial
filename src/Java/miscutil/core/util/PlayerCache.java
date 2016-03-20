@@ -26,7 +26,7 @@ public class PlayerCache {
 				Utils.LOG_INFO("Loaded PlayerCache.dat");
 			} catch (Exception e) {
 				Utils.LOG_INFO("Failed to initialise PlayerCache.dat");
-				PlayerCache.createPropertiesFile("CACHE FILE - ", "THIS CONTAINS PLAYERDATA");
+				PlayerCache.createPropertiesFile("CACHE_FILE_=", "THIS_CONTAINS_PLAYERDATA");
 				//e.printStackTrace();
 			}
 		}
@@ -35,7 +35,7 @@ public class PlayerCache {
 	public static void createPropertiesFile(String playerName, String playerUUIDasString) {
 		try {
 			Properties props = new Properties();
-			props.setProperty(playerName, playerUUIDasString);
+			props.setProperty(playerName+" ", playerUUIDasString);
 			OutputStream out = new FileOutputStream(cache);
 			props.store(out, "Player Cache.");
 			Utils.LOG_INFO("Created an empty PlayerCache.dat for future use.");
@@ -46,25 +46,25 @@ public class PlayerCache {
 	}
 
 	public static void appendParamChanges(String playerName, String playerUUIDasString) {
-		try {
-
 			Properties properties = new Properties();
 			try {
 				Utils.LOG_WARNING("Attempting to load "+cache.getName());
 				properties.load(new FileInputStream(cache));
+				if (properties == null || properties.equals(null)){
+					Utils.LOG_WARNING("Null properties");
+				}
+				else {
+					Utils.LOG_WARNING("Loaded PlayerCache.dat");
+					properties.setProperty(playerName+"_", playerUUIDasString);
+					FileOutputStream fr=new FileOutputStream(cache);
+					properties.store(fr, "Player Cache.");
+					fr.close();
+				}
+				
 			} catch (IOException e) {
 				Utils.LOG_WARNING("No PlayerCache file found, creating one.");
 				createPropertiesFile(playerName, playerUUIDasString);
-			}
-
-			properties.setProperty(playerName, playerUUIDasString);
-			FileOutputStream fr=new FileOutputStream(cache);
-			properties.store(fr, "Player Cache.");
-			fr.close();
-		}
-		catch (Exception e ) {
-			e.printStackTrace();
-		}
+			}			
 	}
 
 	/**
@@ -81,11 +81,10 @@ public class PlayerCache {
 	 * @throws Exception
 	 */
 	public static Map<String, String> readPropertiesFileAsMap() throws Exception {
-		String filename = cache.getName();
-		String delimiter = ":";
+		String delimiter = "=";
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		Map<String, String> map = new HashMap();
-		BufferedReader reader = new BufferedReader(new FileReader(filename));
+		BufferedReader reader = new BufferedReader(new FileReader(cache));
 		String line;
 		while ((line = reader.readLine()) != null)
 		{
@@ -104,12 +103,13 @@ public class PlayerCache {
 	}
 
 	public static String lookupPlayerByUUID(String UUID){
+		try {
 		Map<String, String> map = null;
 		try {
 			map = readPropertiesFileAsMap();
 		} catch (Exception e) {
-			Utils.LOG_ERROR("Caught Exception"+e.toString());
-			e.printStackTrace();
+			Utils.LOG_ERROR("With "+e.getCause()+" as cause, Caught Exception: "+e.toString());
+			//e.printStackTrace();
 		}
 		for (Entry<String, String> entry : map.entrySet()) {
 			if (Objects.equals(UUID, entry.getValue())) {
@@ -117,5 +117,10 @@ public class PlayerCache {
 			}
 		}
 		return null;
+	} catch (NullPointerException e) {
+		Utils.LOG_ERROR("With "+e.getCause()+" as cause, Caught Exception: "+e.toString());
+		//e.printStackTrace();
 	}
+		return null;
+}
 }

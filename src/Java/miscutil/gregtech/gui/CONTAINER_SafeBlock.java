@@ -3,8 +3,9 @@ package miscutil.gregtech.gui;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.util.GT_Utility;
-import miscutil.core.util.PlayerCache;
+import miscutil.core.util.Utils;
 import miscutil.gregtech.metatileentity.implementations.GregtechMetaSafeBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -17,8 +18,9 @@ public class CONTAINER_SafeBlock
         super(aInventoryPlayer, aTileEntity);
     }
     
-    public String UUID = ((GregtechMetaSafeBlock)this.mTileEntity.getMetaTileEntity()).ownerUUID;
+    public String UUID = ((BaseMetaTileEntity)mTileEntity).getMetaTileEntity().getBaseMetaTileEntity().getOwnerName();
     public String ownerUUID = ((GregtechMetaSafeBlock)this.mTileEntity.getMetaTileEntity()).ownerUUID;
+    public boolean blockStatus = ((GregtechMetaSafeBlock)this.mTileEntity.getMetaTileEntity()).bUnbreakable;
 
     @Override
 	public void addSlots(InventoryPlayer aInventoryPlayer) {
@@ -64,9 +66,13 @@ public class CONTAINER_SafeBlock
                 ((GregtechMetaSafeBlock) this.mTileEntity.getMetaTileEntity()).bUnbreakable = (!((GregtechMetaSafeBlock) this.mTileEntity.getMetaTileEntity()).bUnbreakable);
                 if (((GregtechMetaSafeBlock) this.mTileEntity.getMetaTileEntity()).bUnbreakable) {
                     GT_Utility.sendChatToPlayer(aPlayer, "Block is now unbreakable.");
-                    PlayerCache.appendParamChanges(aPlayer.getDisplayName(), aPlayer.getUniqueID().toString());
+                   // World world;
+                    //world.markBlockForUpdate(x, y, z);
+                    //this.updateProgressBar(par1, par2);
+                    //PlayerCache.appendParamChanges(aPlayer.getDisplayName(), aPlayer.getUniqueID().toString());
                 } else {
                     GT_Utility.sendChatToPlayer(aPlayer, "Block is now breakable.");
+                    Utils.LOG_WARNING("Owner Name - From GT Values: "+UUID);
                 }
                 return null;
             }

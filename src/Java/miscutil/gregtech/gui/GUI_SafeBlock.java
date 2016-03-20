@@ -12,15 +12,29 @@ public class GUI_SafeBlock
         super(new CONTAINER_SafeBlock(aInventoryPlayer, aTileEntity), CORE.MODID + ":" + "textures/gui/" + "SafeBlock.png");
     }
     
-    String UUID = ((CONTAINER_SafeBlock)this.mContainer).UUID;
+    String UUID = ((CONTAINER_SafeBlock)this.mContainer).ownerUUID;
+    boolean blockStatus = ((CONTAINER_SafeBlock)this.mContainer).blockStatus;
     private String tempPlayer = PlayerCache.lookupPlayerByUUID(UUID);
     
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
       {
-        this.fontRendererObj.drawString("Safe", 64, 64, 4210752);
+    	
+    	UUID = ((CONTAINER_SafeBlock)this.mContainer).ownerUUID;
+        blockStatus = ((CONTAINER_SafeBlock)this.mContainer).blockStatus;
+        tempPlayer = PlayerCache.lookupPlayerByUUID(UUID);
+    	
+    	if (blockStatus){
+    		this.fontRendererObj.drawString("Safe Status: Locked", 64, 62, 4210752);
+    	}
+    	else {
+    		this.fontRendererObj.drawString("Safe Status: Unlocked", 64, 62, 4210752);
+    	}
+        
+    	this.fontRendererObj.drawString("Owner: "+ tempPlayer, 64, 72, 4210752);
+    	
         if (!CORE.DEBUG){
-            this.fontRendererObj.drawString("Owner: "+ tempPlayer, 120, 80, 4210752);
+            
         }
       }
     

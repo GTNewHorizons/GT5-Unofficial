@@ -1,6 +1,7 @@
 package miscutil.core.handler;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import miscutil.core.util.Utils;
@@ -17,7 +18,7 @@ public class XEventHandler {
 		EntityPlayer playerInternal = event.getPlayer();
 
 		try{
-			if (entity instanceof BaseTileEntity){
+			if (entity instanceof BaseTileEntity && !(entity instanceof BaseMetaPipeEntity)){
 				IMetaTileEntity X = ((BaseMetaTileEntity)entity).getMetaTileEntity();
 				if (X instanceof GregtechMetaSafeBlockBase){
 					

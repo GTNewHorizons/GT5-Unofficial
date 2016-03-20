@@ -39,7 +39,7 @@ public class GregtechMetaSafeBlock
 
     @Override
 	public ITexture getOverlayIcon() {
-        return new GT_RenderedTexture(Textures.BlockIcons.AUTOMATION_SUPERBUFFER);
+        return new GT_RenderedTexture(Textures.BlockIcons.VOID);
     }
 
     @Override

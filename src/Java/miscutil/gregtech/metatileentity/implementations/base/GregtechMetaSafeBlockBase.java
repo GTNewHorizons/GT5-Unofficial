@@ -7,6 +7,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
+import miscutil.core.util.PlayerCache;
 import miscutil.core.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -28,16 +29,17 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 	@Override
 	public ITexture[][][] getTextureSet(ITexture[] aTextures) {
 		ITexture[][][] rTextures = new ITexture[6][17][];
-		ITexture tIcon = getOverlayIcon(), tOut = new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT), tUp = new GT_RenderedTexture(Textures.BlockIcons.ARROW_UP), tDown = new GT_RenderedTexture(Textures.BlockIcons.ARROW_DOWN), tLeft = new GT_RenderedTexture(Textures.BlockIcons.ARROW_LEFT), tRight = new GT_RenderedTexture(Textures.BlockIcons.ARROW_RIGHT);
+		ITexture tIcon = getOverlayIcon(), tOut = new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_QCHEST), tUp = new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_VENT), tShitGoesWrong = new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_FLUID_SIDE_ACTIVE);
 		for (byte i = -1; i < 16; i++) {
-			rTextures[0][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1], tOut};
-			rTextures[1][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1], tRight, tIcon};
-			rTextures[2][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1], tDown, tIcon};
-			rTextures[3][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1], tLeft, tIcon};
-			rTextures[4][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1], tUp, tIcon};
-			rTextures[5][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1], tIcon};
+			rTextures[0][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1], tUp, tIcon}; //Back
+			rTextures[1][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1], tIcon}; // Right, Strangely The top side as well when facing East?
+			rTextures[2][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1], tIcon}; // Top  And Bottom, When Facing South (What the hell?)
+			rTextures[3][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1], tIcon}; // Left, Top if facing West and Bottom if facing east?
+			rTextures[4][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1], tIcon}; // Top and Bottom when Facing North..
+			rTextures[5][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1], tOut}; // Front
 		}
 		return rTextures;
+
 	}
 
 	@Override
@@ -176,20 +178,22 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 
 	@Override
 	public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-		String tempUUID = aPlayer.getUniqueID().toString();
+
 		if (aBaseMetaTileEntity.isClientSide()) {			
 			//Utils.LOG_WARNING("Clicky Clicky.");			
 			return true;
 
 		}
 		if (!aPlayer.equals(null)) {
+			String tempUUID = aPlayer.getUniqueID().toString();
+			PlayerCache.appendParamChanges(aPlayer.getDisplayName(), aPlayer.getUniqueID().toString());
 			if (ownerUUID.equals("")){
 				Utils.LOG_WARNING("No owner yet for this block.");
 			}
 			else {
-				Utils.LOG_WARNING("Current stored UUID : "+ownerUUID);
+				Utils.LOG_WARNING("Current Owner: "+PlayerCache.lookupPlayerByUUID(ownerUUID)+" - UUID: "+ownerUUID);
 			}
-			Utils.LOG_WARNING("Check if ownerUUID is Null");
+			Utils.LOG_WARNING("Is ownerUUID Null");
 			if (ownerUUID.equals("")){
 				Utils.LOG_WARNING("OwnerUUID is Null, let's set it.");
 				Utils.LOG_WARNING("Accessing Players UUID is: "+tempUUID);
@@ -197,18 +201,20 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 				Utils.messagePlayer(aPlayer, "Owner of this safe, now set. Try accessing it again.");
 				Utils.LOG_WARNING("Block Owner is now set to: "+ownerUUID);
 			}
-			Utils.LOG_WARNING("Check who ownerUUID is if not Null");
+			Utils.LOG_WARNING("No, it is not.");
+			Utils.LOG_WARNING("Checking ownerUUID.");
 			if (!ownerUUID.equals(null)){
-				Utils.LOG_WARNING("ownerUUID is not Null, let's see if the player clicking can access the GUI.");
-				Utils.LOG_WARNING("Accessing Players UUID is: "+tempUUID);
+				Utils.LOG_WARNING("ownerUUID != Null, if accessor == owner.");
+				Utils.LOG_WARNING("Accessing is: "+PlayerCache.lookupPlayerByUUID(tempUUID));
 				if (ownerUUID.equals(tempUUID)){
-					Utils.LOG_WARNING("Clicking player is the owner, with a UUID of: "+ownerUUID);
+					Utils.LOG_WARNING("Owner's UUID: "+ownerUUID);
 					aBaseMetaTileEntity.openGUI(aPlayer);
-					Utils.LOG_WARNING("GUI should now be open for you sir.");
+					//Utils.LOG_WARNING("GUI should now be open for you sir.");
 				}
 				else {
 					Utils.messagePlayer(aPlayer, "Access Denied, This does not belong to you.");
-					Utils.LOG_WARNING("Expecting UUID : "+ownerUUID);
+					Utils.messagePlayer(aPlayer, "it is owned by: "+PlayerCache.lookupPlayerByUUID(ownerUUID));
+					Utils.LOG_WARNING("Expecting Player : "+PlayerCache.lookupPlayerByUUID(ownerUUID));
 					Utils.LOG_ERROR("Access Denied.");
 					return true;
 				}
@@ -272,7 +278,7 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 				//this.
 			}
 			else {
-				
+
 			}
 
 

@@ -41,8 +41,8 @@ public class GregtechMetaCondensor extends GregtechMetaBoilerBase{
 	      rTextures[0][(i + 1)] = new ITexture [] { new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_VENT, Dyes.getModulation(i, Dyes.MACHINE_METAL.mRGBa))};
 	      rTextures[1][(i + 1)] = new ITexture [] { new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_VENT, Dyes.getModulation(i, Dyes.MACHINE_METAL.mRGBa)), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE) };
 	      rTextures[2][(i + 1)] = new ITexture [] { new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_VENT, Dyes.getModulation(i, Dyes.MACHINE_METAL.mRGBa)), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE) };
-	      rTextures[3][(i + 1)] = new ITexture [] { new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_VENT, Dyes.getModulation(i, Dyes.MACHINE_METAL.mRGBa)), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_MASSFAB) };
-	      rTextures[4][(i + 1)] = new ITexture [] { new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_VENT, Dyes.getModulation(i, Dyes.MACHINE_METAL.mRGBa)), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_MASSFAB_ACTIVE) };
+	      rTextures[3][(i + 1)] = new ITexture [] { new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_VENT, Dyes.getModulation(i, Dyes.MACHINE_METAL.mRGBa)), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TOP_POTIONBREWER) };
+	      rTextures[4][(i + 1)] = new ITexture [] { new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_VENT, Dyes.getModulation(i, Dyes.MACHINE_METAL.mRGBa)), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TOP_POTIONBREWER_ACTIVE) };
 	    }
 	    return rTextures;
 	  }
