@@ -1,5 +1,6 @@
 package com.detrav.items.behaviours;
 
+import com.detrav.items.DetravMetaGeneratedTool01;
 import com.detrav.utils.DetravNetwork;
 import com.detrav.utils.DetravProPickPacket01;
 import gregtech.api.items.GT_MetaBase_Item;
@@ -25,7 +26,9 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
             //aPlayer.openGui();
 
             aPlayer.addChatMessage(new ChatComponentText("Scanning Begin"));
-            DetravNetwork.INSTANCE.sendToPlayer(new DetravProPickPacket01(),(EntityPlayerMP)aPlayer);
+            DetravProPickPacket01 packet = new DetravProPickPacket01();
+            packet.level = ((DetravMetaGeneratedTool01) aItem).getHarvestLevel(aStack,"");
+            DetravNetwork.INSTANCE.sendToPlayer(packet,(EntityPlayerMP)aPlayer);
         }
         return super.onItemRightClick(aItem,aStack,aWorld,aPlayer);
     }
