@@ -3,18 +3,12 @@ package miscutil.gregtech.gui;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.BaseMetaTileEntity;
-import gregtech.api.util.GT_Utility;
-import miscutil.core.handler.UnbreakableBlockManager;
-import miscutil.core.util.Utils;
+import miscutil.core.util.PlayerCache;
 import miscutil.gregtech.metatileentity.implementations.GregtechMetaSafeBlock;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-
-import org.lwjgl.Sys;
 
 public class CONTAINER_SafeBlock
 extends GT_ContainerMetaTile_Machine {
@@ -24,6 +18,7 @@ extends GT_ContainerMetaTile_Machine {
 
 	//public String UUID = ((BaseMetaTileEntity)mTileEntity).getMetaTileEntity().getBaseMetaTileEntity().getOwnerName();
 	public String ownerUUID = ((GregtechMetaSafeBlock)this.mTileEntity.getMetaTileEntity()).ownerUUID;
+	public String tempPlayer = PlayerCache.lookupPlayerByUUID(ownerUUID);
 	public boolean blockStatus = ((GregtechMetaSafeBlock)this.mTileEntity.getMetaTileEntity()).bUnbreakable;
 
 	@Override
@@ -52,7 +47,7 @@ extends GT_ContainerMetaTile_Machine {
 			 if (aSlotIndex == 27) {
 				 
 			 
-                ((GregtechMetaSafeBlock) this.mTileEntity.getMetaTileEntity()).bOutput = (!((GregtechMetaSafeBlock) this.mTileEntity.getMetaTileEntity()).bOutput);
+                /*((GregtechMetaSafeBlock) this.mTileEntity.getMetaTileEntity()).bOutput = (!((GregtechMetaSafeBlock) this.mTileEntity.getMetaTileEntity()).bOutput);
                 if (((GregtechMetaSafeBlock) this.mTileEntity.getMetaTileEntity()).bOutput) {
                 	if (aPlayer != null && aPlayer instanceof EntityPlayerMP && (((GregtechMetaSafeBlock)this.mTileEntity.getMetaTileEntity()).bOutput != false)) {
                     	
@@ -64,7 +59,9 @@ extends GT_ContainerMetaTile_Machine {
                 } else {
                     GT_Utility.sendChatToPlayer(aPlayer, "Don't emit Energy");
                 }
-                return null;
+                return null;*/
+				 
+				 
             } 
             if (aSlotIndex == 28) {}
               /*  ((GregtechMetaSafeBlock) this.mTileEntity.getMetaTileEntity()).bRedstoneIfFull = (!((GregtechMetaSafeBlock) this.mTileEntity.getMetaTileEntity()).bRedstoneIfFull);
@@ -91,14 +88,17 @@ extends GT_ContainerMetaTile_Machine {
 
 			{
 				((GregtechMetaSafeBlock) this.mTileEntity.getMetaTileEntity()).bUnbreakable = (!((GregtechMetaSafeBlock) this.mTileEntity.getMetaTileEntity()).bUnbreakable);
-				if (aPlayer != null && aPlayer instanceof EntityPlayerMP && (((GregtechMetaSafeBlock)this.mTileEntity.getMetaTileEntity()).bUnbreakable != false)) {
+				blockStatus = ((GregtechMetaSafeBlock)this.mTileEntity.getMetaTileEntity()).bUnbreakable;
+				ownerUUID = ((GregtechMetaSafeBlock)this.mTileEntity.getMetaTileEntity()).ownerUUID;
+				//Utils.messagePlayer(aPlayer, "Is the safe locked? "+String.valueOf(((GregtechMetaSafeBlock) this.mTileEntity.getMetaTileEntity()).bUnbreakable).toUpperCase());
+				/*if (aPlayer != null && aPlayer instanceof EntityPlayerMP && (((GregtechMetaSafeBlock)this.mTileEntity.getMetaTileEntity()).bUnbreakable != false)) {
 				UnbreakableBlockManager Xasda = new UnbreakableBlockManager();
 				Xasda.setmTileEntity((BaseMetaTileEntity) mTileEntity, aPlayer);
 				}
 				else {
 					UnbreakableBlockManager Xasda = new UnbreakableBlockManager();
 					Xasda.setmTileEntity((BaseMetaTileEntity) mTileEntity, aPlayer);
-				}
+				}*/
 				return null;
 			}
 

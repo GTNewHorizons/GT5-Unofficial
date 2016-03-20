@@ -3,10 +3,10 @@
  * @author Alkalus
  * In-game info for project: Hello World.
  */
-[ { "modid"        : "miscutil"
+[ { "modid"        : "miscutils"
   , "name"         : "miscutils"
   , "description"  : "Adds a few various things. Supported mods include GregTech, EnderIO, Big Reactors, Thaumcraft, ExtraUtils, Pnuematicraft & Simply Jetpacks."
-  , "version"      : "0.9.8"
+  , "version"      : "0.9.4_public_gregtech5u"
   , "mcversion"    : "1.7.10"
   , "url"          : ""
   , "updateUrl"    : ""

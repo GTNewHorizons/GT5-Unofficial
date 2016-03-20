@@ -15,33 +15,39 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 public class XEventHandler {
 	@SubscribeEvent
 	public void onBreakBlock(BreakEvent event) {
-		TileEntity entity = event.world.getTileEntity(event.x, event.y, event.z);
-		EntityPlayer playerInternal = event.getPlayer();
-
 		try{
-			if (entity instanceof BaseTileEntity && !(entity instanceof BaseMetaPipeEntity)){
-				IMetaTileEntity X = ((BaseMetaTileEntity)entity).getMetaTileEntity();
-				Block ThisBlock = X.getBaseMetaTileEntity().getBlock(event.x, event.y, event.z);
-				if (X instanceof GregtechMetaSafeBlockBase){
-					
-					String ownerUUID = ((GregtechMetaSafeBlockBase)X).ownerUUID;
-					String accessorUUID = playerInternal.getUniqueID().toString();
-					Utils.LOG_WARNING("Owner UUID: "+ownerUUID);
-					Utils.LOG_WARNING("Accessor UUID: "+accessorUUID);					
-					
-					if (((GregtechMetaSafeBlockBase)X).bUnbreakable){
-						if (accessorUUID.equals(ownerUUID)){							
-							Utils.messagePlayer(playerInternal, "Since you own this block, it has been destroyed.");
-							event.setCanceled(false);
+			TileEntity entity = event.world.getTileEntity(event.x, event.y, event.z);
+			if (entity != null && !entity.equals(null)){
+				EntityPlayer playerInternal = event.getPlayer();
+				Utils.LOG_WARNING(entity.getClass().getSimpleName());
+				if (entity.getClass().getSimpleName().equals("")){
+
+				}
+				if (entity instanceof BaseTileEntity && !(entity instanceof BaseMetaPipeEntity)){
+					IMetaTileEntity X = ((BaseMetaTileEntity)entity).getMetaTileEntity();
+					Block ThisBlock = X.getBaseMetaTileEntity().getBlock(event.x, event.y, event.z);
+					if (X instanceof GregtechMetaSafeBlockBase){
+
+						String ownerUUID = ((GregtechMetaSafeBlockBase)X).ownerUUID;
+						String accessorUUID = playerInternal.getUniqueID().toString();
+						Utils.LOG_WARNING("Owner UUID: "+ownerUUID);
+						Utils.LOG_WARNING("Accessor UUID: "+accessorUUID);					
+
+						if (((GregtechMetaSafeBlockBase)X).bUnbreakable){
+							if (accessorUUID.equals(ownerUUID)){							
+								Utils.messagePlayer(playerInternal, "Since you own this block, it has been destroyed.");
+								event.setCanceled(false);
+							}
+							else {
+								event.setCanceled(true);
+								Utils.messagePlayer(playerInternal, "Since you do not own this block, it has not been destroyed.");
+							}
+							//
 						}
-						else {
-							event.setCanceled(true);
-							Utils.messagePlayer(playerInternal, "Since you do not own this block, it has not been destroyed.");
-						}
-						//
 					}
 				}
 			}
+
 		}
 		catch (NullPointerException e) {
 			System.out.print("Caught a NullPointerException involving Safe Blocks. Cause: "+e.getCause());

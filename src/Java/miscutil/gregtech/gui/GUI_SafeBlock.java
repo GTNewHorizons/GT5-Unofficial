@@ -3,7 +3,6 @@ package miscutil.gregtech.gui;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import miscutil.core.lib.CORE;
-import miscutil.core.util.PlayerCache;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GUI_SafeBlock
@@ -12,31 +11,29 @@ public class GUI_SafeBlock
         super(new CONTAINER_SafeBlock(aInventoryPlayer, aTileEntity), CORE.MODID + ":" + "textures/gui/" + "SafeBlock.png");
     }
     
-    String UUID = ((CONTAINER_SafeBlock)this.mContainer).ownerUUID;
+   //String UUID = ((CONTAINER_SafeBlock)this.mContainer).ownerUUID.toString();
     boolean blockStatus = ((CONTAINER_SafeBlock)this.mContainer).blockStatus;
-    String tempPlayer = PlayerCache.lookupPlayerByUUID(UUID);
+    //String tempPlayer;
+    
+    private void updateVars(){
+    	//UUID = ((CONTAINER_SafeBlock)this.mContainer).ownerUUID;
+        blockStatus = ((CONTAINER_SafeBlock)this.mContainer).blockStatus;
+       // tempPlayer = PlayerCache.lookupPlayerByUUID(UUID);
+    }
     
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
       {
-    	
-    	UUID = ((CONTAINER_SafeBlock)this.mContainer).ownerUUID;
-        blockStatus = ((CONTAINER_SafeBlock)this.mContainer).blockStatus;
-        tempPlayer = PlayerCache.lookupPlayerByUUID(UUID);
-    	
+    	updateVars();   
+    	//this.fontRendererObj.drawString("Owner: "+ tempPlayer, 64, 72, 4210752);
+    	//this.fontRendererObj.drawString(": "+ UUID.toLowerCase(), 44, 82, 4210752);
+    	this.fontRendererObj.drawString("Safe Status", 76, 61, 4210752);
     	if (blockStatus){
-    		this.fontRendererObj.drawString("Safe Status: Locked", 64, 62, 4210752);
+    		this.fontRendererObj.drawString("Locked", 88, 73, 4210752);
     	}
     	else {
-    		this.fontRendererObj.drawString("Safe Status: Unlocked", 64, 62, 4210752);
+    		this.fontRendererObj.drawString("Unlocked", 82, 73, 4210752);
     	}
-        
-    	this.fontRendererObj.drawString("Owner: "+ tempPlayer, 64, 72, 4210752);
-    	this.fontRendererObj.drawString(": "+ tempPlayer, 64, 82, 4210752);
-    	
-        if (!CORE.DEBUG){
-            
-        }
       }
     
     @Override

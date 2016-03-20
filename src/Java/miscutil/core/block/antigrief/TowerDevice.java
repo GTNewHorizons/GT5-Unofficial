@@ -18,6 +18,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -28,6 +29,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class TowerDevice extends Block {
   private static IIcon TEX_ANTIBUILDER;
   public static final int META_ANTIBUILDER = 9;
+  private boolean bUnbreakable;
+  
   public TowerDevice()
   {
     super(Material.wood);
@@ -41,6 +44,14 @@ public class TowerDevice extends Block {
   {
     return 15;
   }
+  
+  public void saveNBTData(NBTTagCompound aNBT) {
+		aNBT.setBoolean("bUnbreakable", bUnbreakable);
+	}
+
+	public void loadNBTData(NBTTagCompound aNBT) {
+		bUnbreakable = aNBT.getBoolean("bUnbreakable");
+	}
   
   public IIcon getIcon(int side, int meta)
   {

@@ -40,5 +40,5 @@ sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 archivesBaseName = "MiscUtils"
-version = "0.9.6"
+version = "0.9.8"
 minecraft.version = "1.7.10-10.13.4.1448-1.7.10"

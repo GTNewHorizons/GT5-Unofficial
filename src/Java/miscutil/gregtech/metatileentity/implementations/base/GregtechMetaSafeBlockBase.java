@@ -7,6 +7,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
+import miscutil.core.handler.UnbreakableBlockManager;
 import miscutil.core.util.PlayerCache;
 import miscutil.core.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,6 +18,8 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 	public boolean bOutput = false, bRedstoneIfFull = false, bInvert = false, bUnbreakable = false;
 	public int mSuccess = 0, mTargetStackSize = 0;
 	public String ownerUUID = "";
+	UnbreakableBlockManager Xasda = new UnbreakableBlockManager();
+	private boolean value_last = false, value_current = false;
 
 	public GregtechMetaSafeBlockBase(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription) {
 		super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
@@ -198,7 +201,7 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 				Utils.LOG_WARNING("OwnerUUID is Null, let's set it.");
 				Utils.LOG_WARNING("Accessing Players UUID is: "+tempUUID);
 				ownerUUID = tempUUID;
-				Utils.messagePlayer(aPlayer, "Owner of this safe, now set. Try accessing it again.");
+				//Utils.messagePlayer(aPlayer, "Owner of this safe, now set. Try accessing it again.");
 				Utils.LOG_WARNING("Block Owner is now set to: "+ownerUUID);
 			}
 			Utils.LOG_WARNING("No, it is not.");
@@ -273,13 +276,28 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 		/*if (aBaseMetaTileEntity.isAllowedToWork() && aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isUniversalEnergyStored(getMinimumStoredEU()) && (aBaseMetaTileEntity.hasWorkJustBeenEnabled() || aBaseMetaTileEntity.hasInventoryBeenModified() || aTimer % 200 == 0 || mSuccess > 0)) {
 		 */
 		if (aBaseMetaTileEntity.isServerSide()  && (aBaseMetaTileEntity.hasWorkJustBeenEnabled() || aBaseMetaTileEntity.hasInventoryBeenModified() || aTimer % 200 == 0 || mSuccess > 0)) {
-
-			if (bUnbreakable = true){
-			
+			value_last = value_current;
+			value_current = bUnbreakable;
+			if (value_last != value_current){
+				Utils.LOG_WARNING("VALUE CHANGE - Ticking for a moment.");
+				if (bUnbreakable == true){				
+					//Xasda.setmTileEntity((BaseMetaTileEntity) aBaseMetaTileEntity);
+					//Utils.LOG_ERROR("Safe is Indestructible.");
+					this.getBaseMetaTileEntity().getBlock(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord()).setResistance(Float.MAX_VALUE);
+					this.getBaseMetaTileEntity().getBlock(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord()).setBlockUnbreakable();
+				}
+				else {
+					//Xasda.setmTileEntity((BaseMetaTileEntity) aBaseMetaTileEntity);
+					//Utils.LOG_ERROR("Safe is not Indestructible.");
+					this.getBaseMetaTileEntity().getBlock(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord()).setResistance(1F);
+					this.getBaseMetaTileEntity().getBlock(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord()).setHardness(2);
+					
+				}
 			}
 			else {
-
+				
 			}
+			
 
 
 
