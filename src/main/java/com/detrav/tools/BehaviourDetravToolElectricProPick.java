@@ -17,10 +17,10 @@ import java.util.List;
 /**
  * Created by wital_000 on 19.03.2016.
  */
-public class BehaviourDetravToolElectricProPick extends Behaviour_None
+public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPick
 {
 
     public BehaviourDetravToolElectricProPick(int aCosts) {
-
+        super(aCosts);
     }
 }

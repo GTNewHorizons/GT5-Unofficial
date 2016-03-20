@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
  */
 public class DetravToolHVElectricProPick extends DetravToolMVElectricProPick {
     public int getBaseQuality() {
-        return 1;
+        return 2;
     }
 
     public float getMaxDurabilityMultiplier() {

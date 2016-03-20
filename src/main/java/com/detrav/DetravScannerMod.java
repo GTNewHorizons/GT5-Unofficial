@@ -17,7 +17,7 @@ import net.minecraft.init.Blocks;
 public class DetravScannerMod
 {
     public static final String MODID = "detravscannermod";
-    public static final String VERSION = "0.5";
+    public static final String VERSION = "0.6";
 
     public static final CreativeTabs TAB_DETRAV = new DetravCreativeTab();
 

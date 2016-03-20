@@ -1,6 +1,8 @@
 package com.detrav.tools;
 
+import com.detrav.enums.DetravItemList;
 import com.detrav.enums.DetravSimpleItems;
+import com.detrav.items.DetravMetaGeneratedItem01;
 import com.detrav.items.DetravMetaGeneratedTool01;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -33,5 +35,8 @@ public class ProcessingDetravToolProPick implements gregtech.api.interfaces.IOre
         GT_ModHandler.addCraftingRecipe(DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(6, 1, aMaterial, Materials.TungstenSteel, new long[]{1600000L, 512L, 3L, -1L}), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"EHR", "CSC", "PBP", Character.valueOf('S'), ItemList.Cover_Screen, Character.valueOf('R'), ItemList.Sensor_HV,Character.valueOf('E'), ItemList.Emitter_HV,Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Advanced), Character.valueOf('H'), DetravSimpleItems.toolHeadProPick.get(aMaterial), Character.valueOf('P'), OrePrefixes.plate.get(Materials.TungstenSteel),  Character.valueOf('B'), ItemList.Battery_RE_HV_Lithium.get(1L, new Object[0])});
         GT_ModHandler.addCraftingRecipe(DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(6, 1, aMaterial, Materials.TungstenSteel, new long[]{1200000L, 512L, 3L, -1L}), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"EHR", "CSC", "PBP", Character.valueOf('S'), ItemList.Cover_Screen, Character.valueOf('R'), ItemList.Sensor_HV,Character.valueOf('E'), ItemList.Emitter_HV,Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Advanced), Character.valueOf('H'), DetravSimpleItems.toolHeadProPick.get(aMaterial), Character.valueOf('P'), OrePrefixes.plate.get(Materials.TungstenSteel),  Character.valueOf('B'), ItemList.Battery_RE_HV_Cadmium.get(1L, new Object[0])});
         GT_ModHandler.addCraftingRecipe(DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(6, 1, aMaterial, Materials.TungstenSteel, new long[]{800000L, 512L, 3L, -1L}), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"EHR", "CSC", "PBP", Character.valueOf('S'), ItemList.Cover_Screen, Character.valueOf('R'), ItemList.Sensor_HV,Character.valueOf('E'), ItemList.Emitter_HV,Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Advanced), Character.valueOf('H'), DetravSimpleItems.toolHeadProPick.get(aMaterial), Character.valueOf('P'), OrePrefixes.plate.get(Materials.TungstenSteel), Character.valueOf('B'), ItemList.Battery_RE_HV_Sodium.get(1L, new Object[0])});
+
+        GT_ModHandler.addCraftingRecipe(DetravItemList.Shape_Extruder_ProPick.get(1L,new Object[0]),
+                new Object[]{"h","X","M", Character.valueOf('X'),DetravSimpleItems.toolHeadProPick.get(aMaterial),Character.valueOf('M'),ItemList.Shape_Empty});
     }
 }

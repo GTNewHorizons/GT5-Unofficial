@@ -2,6 +2,7 @@ package com.detrav;
 
 import com.detrav.items.DetravMetaGeneratedItem01;
 import com.detrav.items.DetravMetaGeneratedTool01;
+import com.detrav.tools.ProcessingDetravShaping;
 import com.detrav.tools.ProcessingDetravToolProPick;
 
 /**
@@ -14,6 +15,7 @@ public class DetravLoader implements Runnable {
         new DetravMetaGeneratedItem01();
         new DetravMetaGeneratedTool01();
         new ProcessingDetravToolProPick();
+        new ProcessingDetravShaping();
         //new Detrav_MetaGenerated_Tool_01();
         //new ProcessingDetravToolProPick();
     }
