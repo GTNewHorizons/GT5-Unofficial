@@ -6,6 +6,7 @@ import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import miscutil.core.util.Utils;
 import miscutil.gregtech.metatileentity.implementations.base.GregtechMetaSafeBlockBase;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
@@ -20,6 +21,7 @@ public class XEventHandler {
 		try{
 			if (entity instanceof BaseTileEntity && !(entity instanceof BaseMetaPipeEntity)){
 				IMetaTileEntity X = ((BaseMetaTileEntity)entity).getMetaTileEntity();
+				Block ThisBlock = X.getBaseMetaTileEntity().getBlock(event.x, event.y, event.z);
 				if (X instanceof GregtechMetaSafeBlockBase){
 					
 					String ownerUUID = ((GregtechMetaSafeBlockBase)X).ownerUUID;
@@ -33,8 +35,8 @@ public class XEventHandler {
 							event.setCanceled(false);
 						}
 						else {
-							Utils.messagePlayer(playerInternal, "Since you do not own this block, it has not been destroyed.");
 							event.setCanceled(true);
+							Utils.messagePlayer(playerInternal, "Since you do not own this block, it has not been destroyed.");
 						}
 						//
 					}

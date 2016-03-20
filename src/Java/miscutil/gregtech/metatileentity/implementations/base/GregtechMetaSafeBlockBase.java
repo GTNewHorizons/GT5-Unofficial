@@ -275,7 +275,7 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 		if (aBaseMetaTileEntity.isServerSide()  && (aBaseMetaTileEntity.hasWorkJustBeenEnabled() || aBaseMetaTileEntity.hasInventoryBeenModified() || aTimer % 200 == 0 || mSuccess > 0)) {
 
 			if (bUnbreakable = true){
-				//this.
+			
 			}
 			else {
 

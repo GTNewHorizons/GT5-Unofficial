@@ -14,7 +14,7 @@ public class GUI_SafeBlock
     
     String UUID = ((CONTAINER_SafeBlock)this.mContainer).ownerUUID;
     boolean blockStatus = ((CONTAINER_SafeBlock)this.mContainer).blockStatus;
-    private String tempPlayer = PlayerCache.lookupPlayerByUUID(UUID);
+    String tempPlayer = PlayerCache.lookupPlayerByUUID(UUID);
     
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
@@ -32,6 +32,7 @@ public class GUI_SafeBlock
     	}
         
     	this.fontRendererObj.drawString("Owner: "+ tempPlayer, 64, 72, 4210752);
+    	this.fontRendererObj.drawString(": "+ tempPlayer, 64, 82, 4210752);
     	
         if (!CORE.DEBUG){
             
