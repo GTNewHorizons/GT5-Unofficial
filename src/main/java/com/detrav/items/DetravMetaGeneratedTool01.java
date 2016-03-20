@@ -30,9 +30,9 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
         super("detrav.metatool.01");
         INSTANCE = this;
         addTool(0, "Prospector's Pick", "", new DetravToolProPick(), new Object[]{DetravToolDictNames.craftingToolProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)});
-        addTool(2, "Electric Prospector's Pick (LV)", "", new DetravToolLVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
-        addTool(4, "Electric Prospector's Pick (MV)", "", new DetravToolMVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
-        addTool(6, "Electric Prospector's Pick (HV)", "", new DetravToolHVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
+        addTool(100, "Electric Prospector's Pick (LV)", "", new DetravToolLVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
+        addTool(102, "Electric Prospector's Pick (MV)", "", new DetravToolMVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
+        addTool(104, "Electric Prospector's Pick (HV)", "", new DetravToolHVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
         setCreativeTab(DetravScannerMod.TAB_DETRAV);
         //addItemBehavior(0,new BehaviourDetravToolProPick());
         if (GT_Values.GT.isClientSide()) {
@@ -59,7 +59,6 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
     }*/
 
 
-
     public void addAdditionalToolTips(List aList, ItemStack aStack) {
         //super.addAdditionalToolTips();
         long tMaxDamage = getToolMaxDamage(aStack);
@@ -70,22 +69,22 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
             String name = aStack.getUnlocalizedName();
             //if (name.equals("gt.detrav.metatool.01.0")) {
 
-            if(name.equals("gt.detrav.metatool.01.0"))
-            {
+            String num = name.substring("gt.detrav.metatool.01.".length());
+            int meta = Integer.parseInt(num);
+            if (meta < 100) {
                 aList.add(tOffset + 0, EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + EnumChatFormatting.GRAY);
                 aList.add(tOffset + 1, EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName + EnumChatFormatting.YELLOW + " lvl " + getHarvestLevel(aStack, "") + EnumChatFormatting.GRAY);
                 aList.add(tOffset + 2, "Right click on rock for prospecting current chunk!");
-            } else
-            if(name.equals("gt.detrav.metatool.01.2")||name.equals("gt.detrav.metatool.01.4")||name.equals("gt.detrav.metatool.01.6")) {
+            } else {
                 aList.add(tOffset + 0, EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + EnumChatFormatting.GRAY);
                 aList.add(tOffset + 1, EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName + EnumChatFormatting.GRAY);
-                aList.add(tOffset + 2, EnumChatFormatting.WHITE + "Chunks: " + EnumChatFormatting.YELLOW + getHarvestLevel(aStack, "") + "x" + getHarvestLevel(aStack, "") + EnumChatFormatting.GRAY);
+                aList.add(tOffset + 2, EnumChatFormatting.WHITE + "Chunks: " + EnumChatFormatting.YELLOW + (getHarvestLevel(aStack, "")*2+1) + "x" + (getHarvestLevel(aStack, "")*2+1) + EnumChatFormatting.GRAY);
                 aList.add(tOffset + 3, "Right click on rock for prospecting current chunk!");
                 aList.add(tOffset + 4, "Right click for scanning!");
             }
             //Right click on rock for prospecting current chunk!|Right click for scanning!
-                //aList.add(tOffset + 2, EnumChatFormatting.WHITE + "Attack Damage: " + EnumChatFormatting.BLUE + getToolCombatDamage(aStack) + EnumChatFormatting.GRAY);
-                //aList.add(tOffset + 3, EnumChatFormatting.WHITE + "Mining Speed: " + EnumChatFormatting.LIGHT_PURPLE + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed) + EnumChatFormatting.GRAY);
+            //aList.add(tOffset + 2, EnumChatFormatting.WHITE + "Attack Damage: " + EnumChatFormatting.BLUE + getToolCombatDamage(aStack) + EnumChatFormatting.GRAY);
+            //aList.add(tOffset + 3, EnumChatFormatting.WHITE + "Mining Speed: " + EnumChatFormatting.LIGHT_PURPLE + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed) + EnumChatFormatting.GRAY);
                 /*NBTTagCompound aNBT = aStack.getTagCompound();
                 if (aNBT != null) {
                     aNBT = aNBT.getCompoundTag("GT.ToolStats");
@@ -105,7 +104,7 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
                         aList.add(tOffset + 3, EnumChatFormatting.RED + "Heat: " + aNBT.getInteger("Heat")+" K" + EnumChatFormatting.GRAY);
                     }
                 }*/
-           // }
+            // }
         }
     }
 }
