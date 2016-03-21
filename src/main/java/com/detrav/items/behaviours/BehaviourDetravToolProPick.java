@@ -34,19 +34,17 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
     };
     protected final int mCosts;
 
-    public BehaviourDetravToolProPick(int aCosts)
-    {
+    public BehaviourDetravToolProPick(int aCosts) {
         mCosts = aCosts;
     }
 
     public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
 
-        if(aWorld.getBlock(aX,aY,aZ).getMaterial() == Material.rock || aWorld.getBlock(aX,aY,aZ) == GregTech_API.sBlockOres1) {
+        if (aWorld.getBlock(aX, aY, aZ).getMaterial() == Material.rock || aWorld.getBlock(aX, aY, aZ) == GregTech_API.sBlockOres1) {
             if (!aWorld.isRemote) {
-                processOreProspecting((DetravMetaGeneratedTool01) aItem,aStack,aPlayer,aWorld.getChunkFromBlockCoords(aX,aZ), aWorld.getTileEntity(aX,aY,aZ), new Random(aWorld.getSeed() + 3547*aX + 1327 * aZ + 9973* aY));
+                processOreProspecting((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld.getChunkFromBlockCoords(aX, aZ), aWorld.getTileEntity(aX, aY, aZ), new Random(aWorld.getSeed() + 3547 * aX + 1327 * aZ + 9973 * aY));
                 return true;
             }
-            //aPlayer.addChatMessage(new ChatComponentText("Tested"));
             return true;
         }
         return false;
@@ -55,17 +53,16 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
     private void processOreProspecting(DetravMetaGeneratedTool01 aItem, ItemStack aStack, EntityPlayer aPlayer, Chunk aChunk, TileEntity aTileEntity, Random aRandom)//TileEntity aTileEntity)
     {
         aRandom.nextInt();
-        if(aTileEntity != null) {
+        if (aTileEntity != null) {
             if (aTileEntity instanceof GT_TileEntity_Ores) {
                 GT_TileEntity_Ores gt_entity = (GT_TileEntity_Ores) aTileEntity;
                 String name = GT_LanguageManager.getTranslation("gt.blockores." + gt_entity.getMetaData() + ".name");
-                aPlayer.addChatMessage(new ChatComponentText(foundTexts[6] + name));
+                addChatMassageByValue(aPlayer, -1, name);
                 if (!aPlayer.capabilities.isCreativeMode)
                     aItem.doDamage(aStack, this.mCosts);
                 return;
             }
-        }
-        else if(aRandom.nextInt(10)<4) {
+        } else if (aRandom.nextInt(10) < 4) {
             HashMap<String, Integer> ores = new HashMap<String, Integer>();
             for (int x = 0; x < 16; x++)
                 for (int z = 0; z < 16; z++) {
@@ -91,31 +88,29 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
                 }
             for (String key : ores.keySet()) {
                 int value = ores.get(key);
-                if (value < 10)
-                    aPlayer.addChatMessage(new ChatComponentText(foundTexts[1] + key));
-                else if (value < 30)
-                    aPlayer.addChatMessage(new ChatComponentText(foundTexts[2] + key));
-                else if (value < 60)
-                    aPlayer.addChatMessage(new ChatComponentText(foundTexts[3] + key));
-                else if (value < 100)
-                    aPlayer.addChatMessage(new ChatComponentText(foundTexts[4] + key));
-                else
-                    aPlayer.addChatMessage(new ChatComponentText(foundTexts[5] + key));
+               addChatMassageByValue(aPlayer,value,key);
             }
             if (!aPlayer.capabilities.isCreativeMode)
                 aItem.doDamage(aStack, this.mCosts);
             return;
         }
-        aPlayer.addChatMessage(new ChatComponentText(foundTexts[0]));
+        addChatMassageByValue(aPlayer,0,null);
+    }
 
-        /*//aPlayer.addChatMessage(new ChatComponentText());
-        if(aTileEntity != null && aTileEntity instanceof GT_TileEntity_Ores)
-        {
-                GT_TileEntity_Ores gt_entity = (GT_TileEntity_Ores)aTileEntity;
-
-                /*String name = GT_LanguageManager.getTranslation(
-                        b.getUnlocalizedName() + "." + gt_entity.getMetaData() + ".name");
-                if(name.startsWith("Small")) continue;
-        }*/
+    void addChatMassageByValue(EntityPlayer aPlayer, int value, String name) {
+        if (value < 0) {
+            aPlayer.addChatMessage(new ChatComponentText(foundTexts[6] + name));
+        } else if (value < 1) {
+            aPlayer.addChatMessage(new ChatComponentText(foundTexts[0]));
+        } else if (value < 10)
+            aPlayer.addChatMessage(new ChatComponentText(foundTexts[1] + name));
+        else if (value < 30)
+            aPlayer.addChatMessage(new ChatComponentText(foundTexts[2] + name));
+        else if (value < 60)
+            aPlayer.addChatMessage(new ChatComponentText(foundTexts[3] + name));
+        else if (value < 100)
+            aPlayer.addChatMessage(new ChatComponentText(foundTexts[4] + name));
+        else
+            aPlayer.addChatMessage(new ChatComponentText(foundTexts[5] + name));
     }
 }

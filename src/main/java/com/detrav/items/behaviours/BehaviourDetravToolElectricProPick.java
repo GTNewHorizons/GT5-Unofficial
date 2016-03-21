@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 
@@ -74,5 +75,14 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
                 tool.doDamage(aStack, this.mCosts * chunks.size());
         }
         return super.onItemRightClick(aItem, aStack, aWorld, aPlayer);
+    }
+
+    void addChatMassageByValue(EntityPlayer aPlayer, int value, String name) {
+        if (value < 0) {
+            aPlayer.addChatMessage(new ChatComponentText(foundTexts[6] + name));
+        } else if (value < 1) {
+            aPlayer.addChatMessage(new ChatComponentText(foundTexts[0]));
+        } else
+            aPlayer.addChatMessage(new ChatComponentText(foundTexts[6] + name +": "+value));
     }
 }
