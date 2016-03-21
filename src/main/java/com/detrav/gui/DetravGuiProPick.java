@@ -73,7 +73,7 @@ public class DetravGuiProPick extends GuiScreen {
 
             map.glBindTexture();
             map.draw(aX,aY);
-            ores.drawScreen(0,0,f);
+            ores.drawScreen(x,y,f);
         }
     }
 
