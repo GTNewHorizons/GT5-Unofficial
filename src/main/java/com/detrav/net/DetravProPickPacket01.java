@@ -131,6 +131,12 @@ public class DetravProPickPacket01 extends DetravPacket {
                         raster.setSample(i,j,2,rgba[0]);
                     }
                 }
+                if((i-15)%16 == 0 || (j-15)%16 == 0)
+                {
+                    raster.setSample(i,j,0,raster.getSample(i,j,0)/2);
+                    raster.setSample(i,j,1,raster.getSample(i,j,1)/2);
+                    raster.setSample(i,j,2,raster.getSample(i,j,2)/2);
+                }
             }
         /*try {
             File outputfile = new File("saved.png");
