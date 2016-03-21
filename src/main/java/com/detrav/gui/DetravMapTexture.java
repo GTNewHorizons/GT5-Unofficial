@@ -9,6 +9,8 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by wital_000 on 21.03.2016.
@@ -24,6 +26,7 @@ public class DetravMapTexture extends AbstractTexture {
 
     public int width = -1;
     public int height = -1;
+    public HashMap<String,Integer> ores = null;
 
     @Override
     public void loadTexture(IResourceManager p_110551_1_){
@@ -36,6 +39,7 @@ public class DetravMapTexture extends AbstractTexture {
             TextureUtil.uploadTextureImageAllocate(this.getGlTextureId(), bufferedimage, false, false);
             width = packet.getSize();
             height = packet.getSize();
+            ores = packet.getOres();
         }
         //GL11.glDrawPixels();
     }
