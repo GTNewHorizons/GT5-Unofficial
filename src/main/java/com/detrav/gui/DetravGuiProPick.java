@@ -33,7 +33,8 @@ public class DetravGuiProPick extends GuiScreen {
             int aX = (this.width - map.width)/2;
             int aY = (this.height - map.height)/2;
             map.glBindTexture();
-            this.drawTexturedModalRect(aX,aY,0,0,map.width,map.height);
+            map.draw(aX,aY);
+            //this.drawTexturedModalRect(aX,aY,0,0,map.width,map.height);
         }
         //TextureUtil.glGenTextures()
         //this.mc.renderEngine.bindTexture();
