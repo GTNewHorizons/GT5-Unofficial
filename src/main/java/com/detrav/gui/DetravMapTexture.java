@@ -1,6 +1,7 @@
 package com.detrav.gui;
 
 import com.detrav.net.DetravProPickPacket01;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.resources.IResourceManager;
@@ -33,8 +34,8 @@ public class DetravMapTexture extends AbstractTexture {
             if(tId <0) return;
             BufferedImage bufferedimage = packet.getImage();
             TextureUtil.uploadTextureImageAllocate(this.getGlTextureId(), bufferedimage, false, false);
-            width = bufferedimage.getWidth();
-            height = bufferedimage.getHeight();
+            width = packet.getSize();
+            height = packet.getSize();
         }
         //GL11.glDrawPixels();
     }
@@ -43,6 +44,21 @@ public class DetravMapTexture extends AbstractTexture {
         if (this.glTextureId < 0) return this.glTextureId;
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.getGlTextureId());
         return this.glTextureId;
+    }
+
+    public void draw(int x, int y)
+    {
+        float f = 1F / (float)width;
+        float f1 = 1F / (float)height;
+        int u = 0;
+        int v = 0;
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+        tessellator.addVertexWithUV((double)(x), (double)(y + height), 0, (double)((float)(u) * f), (double)((float)(v + height) * f1));
+        tessellator.addVertexWithUV((double)(x + width), (double)(y + height), 0, (double)((float)(u + width) * f), (double)((float)(v + height) * f1));
+        tessellator.addVertexWithUV((double)(x + width), (double)(y), 0, (double)((float)(u + width) * f), (double)((float)(v) * f1));
+        tessellator.addVertexWithUV((double)(x), (double)(y), 0, (double)((float)(u) * f), (double)((float)(v) * f1));
+        tessellator.draw();
     }
 
 }

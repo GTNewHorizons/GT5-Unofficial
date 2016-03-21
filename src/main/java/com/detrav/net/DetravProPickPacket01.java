@@ -12,9 +12,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
+import java.io.File;
 import java.util.HashMap;
 
 /**
@@ -106,6 +108,8 @@ public class DetravProPickPacket01 extends DetravPacket {
 
     public BufferedImage getImage() {
         int wh = (size*2+1)*16;
+        //int aWh = 1024;
+        //while (aWh<wh) aWh*=2;
         BufferedImage image = new BufferedImage(wh,wh,BufferedImage.TYPE_3BYTE_BGR );
         WritableRaster raster = image.getRaster();
         for(int i =0; i<wh; i++)
@@ -128,10 +132,20 @@ public class DetravProPickPacket01 extends DetravPacket {
                     }
                 }
             }
+        /*try {
+            File outputfile = new File("saved.png");
+            ImageIO.write(image, "png", outputfile);
+        }
+        catch (Exception e) {}*/
+
         return image;
 
 
         //image.set
         //return null;
+    }
+
+    public int getSize() {
+        return (size*2+1)*16;
     }
 }
