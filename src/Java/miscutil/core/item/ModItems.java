@@ -5,8 +5,8 @@ import static miscutil.core.lib.CORE.LOAD_ALL_CONTENT;
 import miscutil.core.creativetabs.AddToCreativeTab;
 import miscutil.core.item.effects.RarityUncommon;
 import miscutil.core.item.tool.staballoy.StaballoyPickaxe;
-import miscutil.core.lib.LoadedMods;
 import miscutil.core.lib.CORE;
+import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.Utils;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
@@ -196,8 +196,12 @@ public final class ModItems {
 		if (LoadedMods.Thaumcraft|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("Thaumcraft Found - Loading Resources.");
 			//Item Init
+			try {
 			itemPlateVoidMetal = new Item().setUnlocalizedName("itemPlateVoidMetal").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateVoidMetal");;
-
+			} catch (NullPointerException e){
+				e.getClass();
+			}
+			
 			//Registry
 			GameRegistry.registerItem(itemPlateVoidMetal, "itemPlateVoidMetal");
 
@@ -210,8 +214,11 @@ public final class ModItems {
 		if (LoadedMods.Extra_Utils|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("ExtraUtilities Found - Loading Resources.");
 			//Item Init
+			try {
 			itemPlateBedrockium = new Item().setUnlocalizedName("itemPlateBedrockium").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateBedrockium");;
-
+			} catch (NullPointerException e){
+				e.getClass();
+			}
 			//Registry
 			GameRegistry.registerItem(itemPlateBedrockium, "itemPlateBedrockium");
 
