@@ -1,9 +1,8 @@
 package com.detrav;
 
 import com.detrav.proxies.CommonProxy;
-import com.detrav.commands.DetravScannerCommand;
 import com.detrav.utils.DetravCreativeTab;
-import com.detrav.utils.DetravNetwork;
+import com.detrav.net.DetravNetwork;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;

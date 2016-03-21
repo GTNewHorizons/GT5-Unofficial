@@ -1,4 +1,4 @@
-package com.detrav.utils;
+package com.detrav.net;
 
 import com.google.common.io.ByteArrayDataInput;
 

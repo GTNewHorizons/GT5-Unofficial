@@ -1,8 +1,8 @@
 package com.detrav.items.behaviours;
 
 import com.detrav.items.DetravMetaGeneratedTool01;
-import com.detrav.utils.DetravNetwork;
-import com.detrav.utils.DetravProPickPacket01;
+import com.detrav.net.DetravNetwork;
+import com.detrav.net.DetravProPickPacket01;
 import gregtech.api.GregTech_API;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_LanguageManager;
@@ -12,11 +12,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.storage.ChunkLoader;
-import net.minecraftforge.common.ForgeChunkManager;
 
 import java.util.ArrayList;
 import java.util.List;
