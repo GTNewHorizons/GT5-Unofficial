@@ -75,6 +75,11 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
                 aList.add(tOffset + 0, EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + EnumChatFormatting.GRAY);
                 aList.add(tOffset + 1, EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName + EnumChatFormatting.YELLOW + " lvl " + getHarvestLevel(aStack, "") + EnumChatFormatting.GRAY);
                 aList.add(tOffset + 2, "Right click on rock for prospecting current chunk!");
+                aList.add(tOffset + 3, "Traces: 1-9");
+                aList.add(tOffset + 4, "Small: 10-29");
+                aList.add(tOffset + 5, "Medium: 30-59");
+                aList.add(tOffset + 6, "Large: 60-99");
+                aList.add(tOffset + 7, "Very large: 100-***");
             } else {
                 aList.add(tOffset + 0, EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + EnumChatFormatting.GRAY);
                 aList.add(tOffset + 1, EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName + EnumChatFormatting.GRAY);
