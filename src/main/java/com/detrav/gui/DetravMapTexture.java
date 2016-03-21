@@ -1,6 +1,7 @@
 package com.detrav.gui;
 
 import com.detrav.net.DetravProPickPacket01;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.client.renderer.texture.TextureUtil;
@@ -35,7 +36,7 @@ public class DetravMapTexture extends AbstractTexture {
         {
             int tId = getGlTextureId();
             if(tId <0) return;
-            BufferedImage bufferedimage = packet.getImage();
+            BufferedImage bufferedimage = packet.getImage((int)Minecraft.getMinecraft().thePlayer.posX,(int)Minecraft.getMinecraft().thePlayer.posZ);
             TextureUtil.uploadTextureImageAllocate(this.getGlTextureId(), bufferedimage, false, false);
             width = packet.getSize();
             height = packet.getSize();

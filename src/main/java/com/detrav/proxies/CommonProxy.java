@@ -44,4 +44,9 @@ public class CommonProxy implements IGuiHandler {
             return new DetravGuiProPick();
         return null;
     }
+
+    public void openProPickGui()
+    {
+
+    }
 }

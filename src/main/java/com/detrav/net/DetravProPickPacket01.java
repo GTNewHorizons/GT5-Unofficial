@@ -9,17 +9,11 @@ import com.google.common.io.ByteStreams;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_LanguageManager;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
-import java.io.File;
 import java.util.HashMap;
-import java.util.List;
+
 
 /**
  * Created by wital_000 on 20.03.2016.
@@ -91,12 +85,11 @@ public class DetravProPickPacket01 extends DetravPacket {
         return packet;
     }
 
+
     @Override
     public void process() {
         DetravGuiProPick.newMap(new DetravMapTexture(this));
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        player.openGui(DetravScannerMod.instance, DetravGuiProPick.GUI_ID,player.worldObj,(int)player.posX,(int)player.posY,(int)player.posZ);
-        Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("NetworkTested: " + Integer.toString(level)));
+
     }
 
     public void addBlock(int x, int y, int z, short metaData) {
@@ -110,15 +103,15 @@ public class DetravProPickPacket01 extends DetravPacket {
 
     private HashMap<String,Integer> ores = null;
 
-    public BufferedImage getImage() {
+    public BufferedImage getImage(int posX,int posZ) {
         int wh = (size*2+1)*16;
         //int aWh = 1024;
         //while (aWh<wh) aWh*=2;
         BufferedImage image = new BufferedImage(wh,wh,BufferedImage.TYPE_INT_ARGB );
         WritableRaster raster = image.getRaster();
 
-        int playerI = (int)Minecraft.getMinecraft().thePlayer.posX - (chunkX-size)*16;
-        int playerJ = (int)Minecraft.getMinecraft().thePlayer.posZ - (chunkZ-size)*16;
+        int playerI = posX - (chunkX-size)*16;
+        int playerJ = posZ - (chunkZ-size)*16;
 
         if(ores == null) ores = new HashMap<String, Integer>();
 
