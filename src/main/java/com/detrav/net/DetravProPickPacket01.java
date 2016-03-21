@@ -1,11 +1,18 @@
 package com.detrav.net;
 
+import com.detrav.DetravScannerMod;
+import com.detrav.gui.DetravGuiProPick;
+import com.detrav.gui.DetravMapTexture;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
 import java.util.HashMap;
 
 /**
@@ -80,6 +87,9 @@ public class DetravProPickPacket01 extends DetravPacket {
 
     @Override
     public void process() {
+        DetravGuiProPick.newMap(new DetravMapTexture(this));
+        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        player.openGui(DetravScannerMod.instance, DetravGuiProPick.GUI_ID,player.worldObj,(int)player.posX,(int)player.posY,(int)player.posZ);
         Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("NetworkTested: " + Integer.toString(level)));
     }
 
@@ -90,5 +100,34 @@ public class DetravProPickPacket01 extends DetravPacket {
         if(map[aX][aZ] == null) map[aX][aZ] = new HashMap<Byte, Short>();
         map[aX][aZ].put((byte)y,metaData);
         //String key = String.format(("x_y"))
+    }
+
+    public BufferedImage getImage() {
+        int wh = (size*2+1)*16;
+        BufferedImage image = new BufferedImage(wh,wh,BufferedImage.TYPE_3BYTE_BGR );
+        WritableRaster raster = image.getRaster();
+        for(int i =0; i<wh; i++)
+            for(int j =0; j<wh; j++) {
+                if (map[i][j] == null)
+                {
+                    raster.setSample(i,j,0,255);
+                    raster.setSample(i,j,1,255);
+                    raster.setSample(i,j,2,255);
+                }
+                else
+                {
+                    raster.setSample(i,j,0,0);
+                    raster.setSample(i,j,1,0);
+                    raster.setSample(i,j,2,0);
+                    for(byte key : map[i][j].keySet()) {
+                        //Пока только по одному буду
+                    }
+                }
+            }
+        return image;
+
+
+        //image.set
+        //return null;
     }
 }

@@ -1,16 +1,20 @@
 package com.detrav.proxies;
 
 import com.detrav.enums.DetravSimpleItems;
+import com.detrav.gui.DetravGuiProPick;
+import cpw.mods.fml.common.network.IGuiHandler;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 
 /**
  * Created by wital_000 on 19.03.2016.
  */
-public class CommonProxy {
+public class CommonProxy implements IGuiHandler {
 
     public void onLoad() {
 
@@ -27,5 +31,17 @@ public class CommonProxy {
                 }
             }
         }
+    }
+
+    @Override
+    public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+        return null;
+    }
+
+    @Override
+    public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+        if(ID == DetravGuiProPick.GUI_ID)
+            return new DetravGuiProPick();
+        return null;
     }
 }
