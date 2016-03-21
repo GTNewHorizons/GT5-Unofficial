@@ -6,6 +6,8 @@ import com.detrav.gui.DetravMapTexture;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
@@ -116,11 +118,13 @@ public class DetravProPickPacket01 extends DetravPacket {
                 }
                 else
                 {
-                    raster.setSample(i,j,0,0);
-                    raster.setSample(i,j,1,0);
-                    raster.setSample(i,j,2,0);
-                    for(byte key : map[i][j].keySet()) {
+                    for(short meta : map[i][j].values()) {
                         //Пока только по одному буду
+                        Materials tMaterial = GregTech_API.sGeneratedMaterials[meta% 1000];
+                        short[] rgba = tMaterial.getRGBA();
+                        raster.setSample(i,j,0,rgba[2]);
+                        raster.setSample(i,j,1,rgba[1]);
+                        raster.setSample(i,j,2,rgba[0]);
                     }
                 }
             }
