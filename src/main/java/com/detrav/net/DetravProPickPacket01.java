@@ -89,7 +89,7 @@ public class DetravProPickPacket01 extends DetravPacket {
     @Override
     public void process() {
         DetravGuiProPick.newMap(new DetravMapTexture(this));
-
+        DetravScannerMod.proxy.openProPickGui();
     }
 
     public void addBlock(int x, int y, int z, short metaData) {
