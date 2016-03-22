@@ -2,18 +2,24 @@ package com.detrav.items.behaviours;
 
 import com.detrav.items.DetravMetaGeneratedTool01;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_LanguageManager;
+import gregtech.common.GT_Proxy;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 import gregtech.common.items.behaviors.Behaviour_None;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -40,6 +46,16 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
 
     public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
 
+        if(aWorld.getBlock(aX,aY,aZ) == Blocks.bedrock)
+        {
+            if (!aWorld.isRemote) {
+                FluidStack fStack = getUndergroundOil(aWorld,aX,aZ);
+                addChatMassageByValue(aPlayer,fStack.amount/5000,fStack.getLocalizedName());
+                if (!aPlayer.capabilities.isCreativeMode)
+                    ((DetravMetaGeneratedTool01)aItem).doDamage(aStack, this.mCosts);
+            }
+            return true;
+        }
         if (aWorld.getBlock(aX, aY, aZ).getMaterial() == Material.rock || aWorld.getBlock(aX, aY, aZ) == GregTech_API.sBlockOres1) {
             if (!aWorld.isRemote) {
                 processOreProspecting((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld.getChunkFromBlockCoords(aX, aZ), aWorld.getTileEntity(aX, aY, aZ), new Random(aWorld.getSeed() + 3547 * aX + 1327 * aZ + 9973 * aY));
@@ -112,5 +128,39 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
             aPlayer.addChatMessage(new ChatComponentText(foundTexts[4] + name));
         else
             aPlayer.addChatMessage(new ChatComponentText(foundTexts[5] + name));
+    }
+
+    public static FluidStack getUndergroundOil(World aWorld, int aX, int aZ) {
+        Random tRandom = new Random(aWorld.getSeed() + (long)(aX / 96) + (long)(7 * (aZ / 96)));
+        int oil = tRandom.nextInt(3);
+        double amount = (double)tRandom.nextInt(50) + tRandom.nextDouble();
+        Fluid tFluid = null;
+        switch(oil) {
+            case 0:
+                tFluid = Materials.NatruralGas.mGas;
+                break;
+            case 1:
+                tFluid = Materials.OilLight.mFluid;
+                break;
+            case 2:
+                tFluid = Materials.OilMedium.mFluid;
+                break;
+            case 3:
+                tFluid = Materials.OilHeavy.mFluid;
+                break;
+            default:
+                tFluid = Materials.Oil.mFluid;
+        }
+
+        int tAmount = (int)(Math.pow(amount, 5.0D) / 100.0D);
+        ChunkPosition tPos = new ChunkPosition(aX / 16, 1, aZ / 16);
+        if(GT_Proxy.chunkData.containsKey(tPos)) {
+            int[] tInts = (int[])GT_Proxy.chunkData.get(tPos);
+            if(tInts.length > 0 && tInts[0] >= 0) {
+                tAmount = tInts[0];
+            }
+        }
+        tAmount -= 5;
+        return new FluidStack(tFluid, tAmount);
     }
 }

@@ -75,17 +75,19 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
                 aList.add(tOffset + 0, EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + EnumChatFormatting.GRAY);
                 aList.add(tOffset + 1, EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName + EnumChatFormatting.YELLOW + " lvl " + getHarvestLevel(aStack, "") + EnumChatFormatting.GRAY);
                 aList.add(tOffset + 2, "Right click on rock for prospecting current chunk!");
-                aList.add(tOffset + 3, "Traces: 1-9");
-                aList.add(tOffset + 4, "Small: 10-29");
-                aList.add(tOffset + 5, "Medium: 30-59");
-                aList.add(tOffset + 6, "Large: 60-99");
-                aList.add(tOffset + 7, "Very large: 100-***");
+                aList.add(tOffset + 3, "Right click on bedrock for prospecting oil!");
+                aList.add(tOffset + 4, "Traces: 1-9");
+                aList.add(tOffset + 5, "Small: 10-29");
+                aList.add(tOffset + 6, "Medium: 30-59");
+                aList.add(tOffset + 7, "Large: 60-99");
+                aList.add(tOffset + 8, "Very large: 100-***");
             } else {
                 aList.add(tOffset + 0, EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + EnumChatFormatting.GRAY);
                 aList.add(tOffset + 1, EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName + EnumChatFormatting.GRAY);
                 aList.add(tOffset + 2, EnumChatFormatting.WHITE + "Chunks: " + EnumChatFormatting.YELLOW + (getHarvestLevel(aStack, "")*2+1) + "x" + (getHarvestLevel(aStack, "")*2+1) + EnumChatFormatting.GRAY);
                 aList.add(tOffset + 3, "Right click on rock for prospecting current chunk!");
-                aList.add(tOffset + 4, "Right click for scanning!");
+                aList.add(tOffset + 4, "Right click on bedrock for prospecting oil!");
+                aList.add(tOffset + 5, "Right click for scanning!");
             }
             //Right click on rock for prospecting current chunk!|Right click for scanning!
             //aList.add(tOffset + 2, EnumChatFormatting.WHITE + "Attack Damage: " + EnumChatFormatting.BLUE + getToolCombatDamage(aStack) + EnumChatFormatting.GRAY);
