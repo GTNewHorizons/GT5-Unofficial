@@ -7,7 +7,9 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureUtil;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,39 +43,52 @@ public class DetravGuiProPick extends GuiScreen {
     int prevH;
 
 
+    private static int minHeight = 128;
+    private static int minWidth = 128;
+
+    private static final ResourceLocation back = new ResourceLocation("gregtech:textures/gui/propick.png");
+
     @Override
     public void  drawScreen(int x, int y, float f) {
         this.drawDefaultBackground();
         if(map!=null)
         {
-            List<String> keys = new ArrayList(map.ores.keySet());
-            Collections.sort(keys);
-            int w = 0;
-            for(String item : keys)
-            {
-                w = Math.max(fontRendererObj.getStringWidth(item),w);
-            }
-            w+=10;
-
-            int aX = (this.width - map.width-100)/2;
-            int aY = (this.height - map.height)/2;
+            int currentWidth = Math.max(map.width,minWidth);
+            int currentHeight = Math.max(map.height,minHeight);
+            int aX = (this.width - currentWidth-100)/2;
+            int aY = (this.height - currentHeight)/2;
 
             if(ores == null)
             {
-                ores = new ListOres(this,100,map.height,aY,aY+map.height,aX+map.width,10,map.ores);
+                ores = new ListOres(this,100,currentHeight,aY,aY+currentHeight,aX+currentWidth,10,map.ores);
                 prevW = width;
                 prevH = height;
             }
             if(prevW!=width || prevH !=height)
             {
-                ores = new ListOres(this,100,map.height,aY,aY+map.height,aX+map.width,10,map.ores);
+                ores = new ListOres(this,100,currentHeight,aY,aY+currentHeight,aX+currentWidth,10,map.ores);
                 prevW = width;
                 prevH = height;
             }
 
+
+            //dradback for ores
+            drawRect(aX,aY,aX+currentWidth+100,aY+currentHeight,0xFFC6C6C6);
             map.glBindTexture();
             map.draw(aX,aY);
             ores.drawScreen(x,y,f);
+            mc.getTextureManager().bindTexture(back);
+            GL11.glColor4f(0xFF, 0xFF, 0xFF, 0xFF);
+            //drawcorners
+            drawTexturedModalRect(aX-5,aY-5,0,0,5,5);//leftTop
+            drawTexturedModalRect(aX+currentWidth+100,aY-5,171,0,5,5);//RightTop
+            drawTexturedModalRect(aX-5,aY+currentHeight,0,161,5,5);//leftDown
+            drawTexturedModalRect(aX+currentWidth+100,aY+currentHeight,171,161,5,5);//RightDown
+            //draw edges
+            for(int i = aX;i<aX+currentWidth+100;i+=128) drawTexturedModalRect(i,aY-5,5,0,Math.min(128,aX+currentWidth+100-i),5); //top
+            for(int i = aX;i<aX+currentWidth+100;i+=128) drawTexturedModalRect(i,aY+currentHeight,5,161,Math.min(128,aX+currentWidth+100-i),5); //down
+            for(int i = aY;i<aY+currentHeight;i+=128) drawTexturedModalRect(aX-5,i,0,5,5,Math.min(128,aY + currentHeight-i)); //left
+            for(int i = aY;i<aY+currentHeight;i+=128) drawTexturedModalRect(aX+currentWidth+100,i,171,5,5,Math.min(128,aY+currentHeight-i)); //right
         }
     }
 
