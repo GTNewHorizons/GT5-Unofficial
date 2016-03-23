@@ -131,9 +131,12 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
     }
 
     public static FluidStack getUndergroundOil(World aWorld, int aX, int aZ) {
-        Random tRandom = new Random(aWorld.getSeed() + (long)(aX / 96) + (long)(7 * (aZ / 96)));
+        Random tRandom = new Random((aWorld.getSeed() + (aX / 96) + (7 * (aZ / 96))));
         int oil = tRandom.nextInt(3);
-        double amount = (double)tRandom.nextInt(50) + tRandom.nextDouble();
+        double amount = tRandom.nextInt(50) + tRandom.nextDouble();
+        oil = tRandom.nextInt(4);
+//		System.out.println("Oil: "+(aX/96)+" "+(aZ/96)+" "+oil+" "+amount);
+//		amount = 40;
         Fluid tFluid = null;
         switch(oil) {
             case 0:
