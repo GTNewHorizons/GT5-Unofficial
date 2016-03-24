@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import miscutil.core.commands.CommandMath;
 import miscutil.core.common.CommonProxy;
 import miscutil.core.creativetabs.AddToCreativeTab;
+import miscutil.core.handler.DebugRenderManager;
 import miscutil.core.handler.XEventHandler;
 import miscutil.core.lib.CORE;
 import miscutil.core.lib.LoadedMods;
@@ -56,6 +57,7 @@ implements ActionListener
 		proxy.registerOreDict();
 		MinecraftForge.EVENT_BUS.register(this);
 		MinecraftForge.EVENT_BUS.register(new XEventHandler());
+		MinecraftForge.EVENT_BUS.register(new DebugRenderManager());
 		FMLCommonHandler.instance().bus().register(this);
 		proxy.registerNetworkStuff();
 	}
