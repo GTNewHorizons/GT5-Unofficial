@@ -1,5 +1,6 @@
 package com.detrav;
 
+import com.detrav.commands.DetravBiomeScannerCommand;
 import com.detrav.proxies.CommonProxy;
 import com.detrav.utils.DetravCreativeTab;
 import com.detrav.net.DetravNetwork;
@@ -58,5 +59,6 @@ public class DetravScannerMod
     public void serverLoad(FMLServerStartingEvent event)
     {
         //event.registerServerCommand(new DetravScannerCommand());
+        event.registerServerCommand(new DetravBiomeScannerCommand());
     }
 }
