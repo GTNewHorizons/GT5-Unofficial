@@ -2,6 +2,7 @@ package miscutil.core.util;
 
 import static gregtech.api.enums.GT_Values.F;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
 
@@ -138,6 +139,12 @@ public class Utils {
 		return GameRegistry.findItem(fqrnSplit[0], fqrnSplit[1]);
 	}
 
+	public static ItemStack getItemStack(String fqrn, int Size) // fqrn = fully qualified resource name
+	{
+		String[] fqrnSplit = fqrn.split(":");
+		return GameRegistry.findItemStack(fqrnSplit[0], fqrnSplit[1], Size);
+	}
+
 	public static Item getItemInPlayersHand(){
 		Minecraft mc = Minecraft.getMinecraft();
 		Item heldItem = null;
@@ -146,28 +153,21 @@ public class Utils {
 		}catch(NullPointerException e){return null;}
 
 		if (heldItem != null){
-				return heldItem;
-			}
+			return heldItem;
+		}
 
 		return null;
-		}
-	
-	public static void recipeBuilderBlock(ItemStack slot_1, ItemStack slot_2, ItemStack slot_3, ItemStack slot_4, ItemStack slot_5, ItemStack slot_6, ItemStack slot_7, ItemStack slot_8, ItemStack slot_9, Block resultBlock){
-		GameRegistry.addRecipe(
-				new ItemStack(resultBlock),
-				slot_1, slot_2, slot_3,
-				slot_4, slot_5, slot_6,
-				slot_7, slot_8, slot_9);		
 	}
-	
-	public static void recipeBuilderItem(ItemStack slot_1, ItemStack slot_2, ItemStack slot_3, ItemStack slot_4, ItemStack slot_5, ItemStack slot_6, ItemStack slot_7, ItemStack slot_8, ItemStack slot_9, Item resultItem){
-		GameRegistry.addRecipe(
-				new ItemStack(resultItem),
-				slot_1, slot_2, slot_3,
-				slot_4, slot_5, slot_6,
-				slot_7, slot_8, slot_9);		
-	}
-	
+
+	/*public static void recipeBuilderBlock(ItemStack slot_1, ItemStack slot_2, ItemStack slot_3, ItemStack slot_4, ItemStack slot_5, ItemStack slot_6, ItemStack slot_7, ItemStack slot_8, ItemStack slot_9, Block resultBlock){
+		GameRegistry.addRecipe(new ItemStack(resultBlock),
+				new Object[] {"ABC", "DEF", "GHI",
+			'A',slot_1,'B',slot_2,'C',slot_3,
+			'D',slot_4,'E',slot_5,'F',slot_6,
+			'G',slot_7,'H',slot_8,'I',slot_9
+		});			
+	}*/
+
 	public static String checkCorrectMiningToolForBlock(Block currentBlock, World currentWorld){
 		String correctTool = "";
 		if (!currentWorld.isRemote){			
@@ -181,5 +181,27 @@ public class Utils {
 		}
 
 		return correctTool;
+	}
+	
+	/**
+	* 
+	* @param colorStr e.g. "#FFFFFF"
+	* @return String - formatted "rgb(0,0,0)"
+	*/
+	public static String hex2Rgb(String hexString) {
+	    Color c = new Color(
+	        Integer.valueOf(hexString.substring(1, 3), 16), 
+	        Integer.valueOf(hexString.substring(3, 5), 16), 
+	        Integer.valueOf(hexString.substring(5, 7), 16));
+
+	    StringBuffer sb = new StringBuffer();
+	    sb.append("rgb(");
+	    sb.append(c.getRed());
+	    sb.append(",");
+	    sb.append(c.getGreen());
+	    sb.append(",");
+	    sb.append(c.getBlue());
+	    sb.append(")");
+	    return sb.toString();
 	}
 }

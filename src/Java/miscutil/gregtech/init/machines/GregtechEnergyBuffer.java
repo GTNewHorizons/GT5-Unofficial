@@ -4,23 +4,17 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
-import miscutil.core.creativetabs.AddToCreativeTab;
-import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
 import miscutil.gregtech.enums.ExtraOreDictNames;
 import miscutil.gregtech.enums.GregtechItemList;
 import miscutil.gregtech.metatileentity.implementations.GregtechMetaCreativeEnergyBuffer;
 import miscutil.gregtech.metatileentity.implementations.GregtechMetaEnergyBuffer;
-import net.minecraft.item.Item;
-import net.minecraftforge.oredict.OreDictionary;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class GregtechEnergyBuffer
 {
 	
 	//Misc Items
-	public static Item itemBufferCore;
+	//public static Item itemBufferCore;
 	
 	public static void run()
 	{
@@ -35,12 +29,12 @@ public class GregtechEnergyBuffer
 	private static void run1()
 	{
 		
-		itemBufferCore = new Item().setUnlocalizedName("itemBufferCore").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemBufferCore");;
+		//itemBufferCore = new Item().setUnlocalizedName("itemBufferCore").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemBufferCore");
 
 		//Registry
-		GameRegistry.registerItem(itemBufferCore, "itemBufferCore");
-		LanguageRegistry.addName(itemBufferCore, "Buffer Core");
-		OreDictionary.registerOre("itemBufferCore", itemBufferCore);
+		//GameRegistry.registerItem(itemBufferCore, "itemBufferCore");
+		//LanguageRegistry.addName(itemBufferCore, "Buffer Core");
+		//OreDictionary.registerOre("itemBufferCore", itemBufferCore);
 		
 
 		//Energy Buffers

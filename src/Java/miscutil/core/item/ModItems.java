@@ -4,6 +4,9 @@ import static miscutil.core.creativetabs.AddToCreativeTab.tabMisc;
 import static miscutil.core.lib.CORE.LOAD_ALL_CONTENT;
 import miscutil.core.creativetabs.AddToCreativeTab;
 import miscutil.core.item.effects.RarityUncommon;
+import miscutil.core.item.general.BufferCore;
+import miscutil.core.item.tool.misc.SandstoneHammer;
+import miscutil.core.item.tool.staballoy.StaballoyAxe;
 import miscutil.core.item.tool.staballoy.StaballoyPickaxe;
 import miscutil.core.lib.CORE;
 import miscutil.core.lib.LoadedMods;
@@ -102,16 +105,22 @@ public final class ModItems {
 	//rfTools
 	public static Item itemPlateDimensionShard;
 
-	//Misc Items
+	//Blood Steel Items
 	public static Item itemIngotBloodSteel;
 	public static Item itemPlateBloodSteel;
 
 	//Staballoy
 	public static Item itemStaballoyPickaxe;
+	public static Item itemStaballoyAxe;
 	public static Item itemPlateStaballoy;
 	public static Item itemIngotStaballoy;
+	
+	//Tools
+	public static Item itemSandstoneHammer;
 
 
+	//Machine Related
+	public static Item itemBufferCore0;
 
 
 	//@SuppressWarnings("unused")
@@ -197,11 +206,11 @@ public final class ModItems {
 			Utils.LOG_INFO("Thaumcraft Found - Loading Resources.");
 			//Item Init
 			try {
-			itemPlateVoidMetal = new Item().setUnlocalizedName("itemPlateVoidMetal").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateVoidMetal");;
+				itemPlateVoidMetal = new Item().setUnlocalizedName("itemPlateVoidMetal").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateVoidMetal");;
 			} catch (NullPointerException e){
 				e.getClass();
 			}
-			
+
 			//Registry
 			GameRegistry.registerItem(itemPlateVoidMetal, "itemPlateVoidMetal");
 
@@ -215,7 +224,7 @@ public final class ModItems {
 			Utils.LOG_INFO("ExtraUtilities Found - Loading Resources.");
 			//Item Init
 			try {
-			itemPlateBedrockium = new Item().setUnlocalizedName("itemPlateBedrockium").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateBedrockium");;
+				itemPlateBedrockium = new Item().setUnlocalizedName("itemPlateBedrockium").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateBedrockium");;
 			} catch (NullPointerException e){
 				e.getClass();
 			}
@@ -279,6 +288,9 @@ public final class ModItems {
 		//Pickaxe
 		itemStaballoyPickaxe = new StaballoyPickaxe("itemStaballoyPickaxe", STABALLOY).setCreativeTab(AddToCreativeTab.tabTools);
 		GameRegistry.registerItem(itemStaballoyPickaxe, itemStaballoyPickaxe.getUnlocalizedName());
+		//Axe
+		itemStaballoyAxe = new StaballoyAxe("itemStaballoyAxe", STABALLOY).setCreativeTab(AddToCreativeTab.tabTools);
+		GameRegistry.registerItem(itemStaballoyAxe, itemStaballoyAxe.getUnlocalizedName());
 		//Staballoy Ingot/Plate
 		itemIngotStaballoy = new Item().setUnlocalizedName("itemIngotStaballoy").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemIngotStaballoy");;
 		GameRegistry.registerItem(itemIngotStaballoy, "itemIngotStaballoy");
@@ -294,13 +306,29 @@ public final class ModItems {
 		itemPlateBloodSteel = new Item().setUnlocalizedName("itemPlateBloodSteel").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemPlateBloodSteel");;
 		GameRegistry.registerItem(itemPlateBloodSteel, "itemPlateBloodSteel");
 
-
+		//Sandstone Hammer
+		itemSandstoneHammer = new SandstoneHammer("itemSandstoneHammer").setCreativeTab(AddToCreativeTab.tabTools);
+		GameRegistry.registerItem(itemSandstoneHammer, itemSandstoneHammer.getUnlocalizedName());
+		
+		/*itemBufferCore0 = new BufferCore("itemBufferCore", 1).setCreativeTab(AddToCreativeTab.tabMisc);
+		GameRegistry.registerItem(itemBufferCore0, itemBufferCore0.getUnlocalizedName()+((BufferCore) itemBufferCore0).getCoreTier());*/
+		
+		
+		Item itemBufferCore;
+		for(int i=1; i<=10; i++){
+			Utils.LOG_INFO(""+i);
+			itemBufferCore = new BufferCore("itemBufferCore", i).setCreativeTab(AddToCreativeTab.tabMisc);
+			GameRegistry.registerItem(itemBufferCore, itemBufferCore.getUnlocalizedName()+i);
+            System.out.println("Buffer Core registration count is: "+i);
+       }
+		
+		
 		//Try some New Tools from GT
-		//ItemStack x = null;
-		//GregTech_API.constructHardHammerItem("unlocalalizedName", "Full name", 500 /**Max Damage**/,500 /**Entity Damage**/);
+		//GT_Tool_Item x = null;
+		//x = GregTech_API.constructHardHammerItem("rockBelter", "Sandstone Hammer", 5000 /**Max Damage**/,50 /**Entity Damage**/);
 		//GregTech_API.registerHardHammer(x);
-		
-		
+
+
 	}
 
 }

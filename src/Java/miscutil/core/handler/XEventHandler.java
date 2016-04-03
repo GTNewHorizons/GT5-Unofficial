@@ -9,6 +9,7 @@ import miscutil.gregtech.metatileentity.implementations.base.GregtechMetaSafeBlo
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
@@ -52,19 +53,13 @@ public class XEventHandler {
 		catch (NullPointerException e) {
 			System.out.print("Caught a NullPointerException involving Safe Blocks. Cause: "+e.getCause());
 		}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	}
+	
+	
+	@SubscribeEvent
+	public void onPlayerInteraction(PlayerInteractEvent aEvent) {
+	   if (aEvent.entityPlayer != null && aEvent.entityPlayer.worldObj != null && aEvent.action != null && aEvent.world.provider != null && !aEvent.entityPlayer.worldObj.isRemote && aEvent.action != null && aEvent.action != PlayerInteractEvent.Action.RIGHT_CLICK_AIR) {
+		   Utils.LOG_ERROR("Test");
+	   }
+	  }
 }

@@ -5,7 +5,9 @@ import static miscutil.core.lib.LoadedMods.Gregtech;
 import gregtech.api.util.GT_OreDictUnificator;
 import miscutil.core.block.ModBlocks;
 import miscutil.core.gui.ModGUI;
+import miscutil.core.handler.registration.RECIPES_Machines;
 import miscutil.core.item.ModItems;
+import miscutil.core.item.tool.Loader_TOOLS;
 import miscutil.core.lib.CORE;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.tileentities.ModTileEntities;
@@ -65,12 +67,15 @@ public class CommonProxy {
 
 	public void init(FMLInitializationEvent e) {
 
-
+		Loader_TOOLS.run();
+		RECIPES_Machines.RECIPES_LOAD();
 
 	}
 
 	public void postInit(FMLPostInitializationEvent e) {
 
+		
+		
 	}
 
 	public void registerNetworkStuff(){
@@ -95,7 +100,13 @@ public class CommonProxy {
 
 		Utils.LOG_INFO("Registering Ingots & Plates with OreDict.");
 		//In-house
+		
+		//tools
+		GT_OreDictUnificator.registerOre("craftingToolSandHammer", new ItemStack(ModItems.itemSandstoneHammer));
+		
 		//Ingots
+		
+		
 		//OreDictionary.registerOre("ingotBloodSteel", new ItemStack(ModItems.itemIngotBloodSteel));
 		GT_OreDictUnificator.registerOre("ingotBloodSteel", new ItemStack(ModItems.itemIngotBloodSteel));
 		//OreDictionary.registerOre("ingotStaballoy", new ItemStack(ModItems.itemIngotStaballoy));
@@ -108,6 +119,11 @@ public class CommonProxy {
 		//Blocks
 		GT_OreDictUnificator.registerOre("blockStaballoy", new ItemStack(Item.getItemFromBlock(ModBlocks.blockStaballoy)));
 		OreDictionary.registerOre("blockBloodSteel", new ItemStack(ModBlocks.blockBloodSteel));
+		
+		
+		for(int i=1; i<=10; i++){
+		GT_OreDictUnificator.registerOre("bufferCore_"+CORE.VOLTAGES[i-1], new ItemStack(Utils.getItem("miscutils:item.itemBufferCore"+i)));
+		}
 
 
 		//InterMod

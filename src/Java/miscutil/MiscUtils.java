@@ -57,7 +57,9 @@ implements ActionListener
 		proxy.registerOreDict();
 		MinecraftForge.EVENT_BUS.register(this);
 		MinecraftForge.EVENT_BUS.register(new XEventHandler());
-		MinecraftForge.EVENT_BUS.register(new DebugRenderManager());
+		if (CORE.DEBUG){
+			MinecraftForge.EVENT_BUS.register(new DebugRenderManager());	
+		}
 		FMLCommonHandler.instance().bus().register(this);
 		proxy.registerNetworkStuff();
 	}

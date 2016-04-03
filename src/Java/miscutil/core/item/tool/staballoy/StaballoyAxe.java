@@ -1,5 +1,7 @@
 package miscutil.core.item.tool.staballoy;
 
+import java.util.List;
+
 import miscutil.core.lib.CORE;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
@@ -17,24 +19,22 @@ import net.minecraft.block.BlockSnow;
 import net.minecraft.block.BlockSnowBlock;
 import net.minecraft.block.BlockTallGrass;
 import net.minecraft.block.BlockVine;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 public class StaballoyAxe extends ItemAxe{
 	public String mat;
 
-	public StaballoyAxe(ToolMaterial material, String materialName) {
+	public StaballoyAxe(String unlocalizedName, ToolMaterial material) {
 		super(material);
-		mat=materialName;
-		setCreativeTab(CreativeTabs.tabTools);
-		setUnlocalizedName("lumberaxe"+mat);
-		setTextureName(CORE.MODID+":lumberaxe_"+mat);
+		this.setUnlocalizedName(unlocalizedName);
+		this.setTextureName(CORE.MODID + ":" + unlocalizedName);
 	}
 	
 	//   EXPLODE TREE
@@ -49,6 +49,14 @@ public class StaballoyAxe extends ItemAxe{
 		int o=x+z*20+y*400;
 		if (tre[o]==unchecked) tre[o]=needcheck;
 		return true;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
+		list.add(EnumChatFormatting.GOLD+"Fells entire trees in a single swipe!..");
+		list.add(EnumChatFormatting.GRAY+"Ask Alkalus for new trees to be supported.");
+		super.addInformation(stack, aPlayer, list, bool);
 	}
 	
 	public boolean canIgnore(Block bit){

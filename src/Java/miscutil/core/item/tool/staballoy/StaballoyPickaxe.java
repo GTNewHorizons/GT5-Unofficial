@@ -68,6 +68,7 @@ public class StaballoyPickaxe extends ItemPickaxe{
 		return super.onBlockDestroyed(stack, world, block, X, Y, Z, entity);
 	}
 
+	@SuppressWarnings("static-method")
 	private float calculateDurabilityLoss(World world, int X, int Y, int Z){
 		float bDurabilityLoss = 0;
 		Boolean correctTool = false;
@@ -173,7 +174,6 @@ public class StaballoyPickaxe extends ItemPickaxe{
 	}
 
 	//Should clear up blocks quicker if I chain it.
-	@SuppressWarnings("static-method")
 	private void removeBlockAndDropAsItem(World world, int X, int Y, int Z, ItemStack heldItem){
 		localWorld = world;
 		try {
@@ -273,16 +273,8 @@ public class StaballoyPickaxe extends ItemPickaxe{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
-		String facing;
-		thisPickaxe = stack;
-		
-		if (FACING_HORIZONTAL){
-			facing = "Horizontal";
-		}
-		else {
-			facing = "Vertical";
-		}
-		list.add(EnumChatFormatting.GOLD+"Mines a 3x3 area on an axis. Currently Facing:"+facing);
+		thisPickaxe = stack;	
+		list.add(EnumChatFormatting.GOLD+"Mines a 3x3 area in the direction you are facing.");
 		super.addInformation(stack, aPlayer, list, bool);
 	}
 

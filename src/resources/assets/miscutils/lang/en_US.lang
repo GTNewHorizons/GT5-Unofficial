@@ -46,7 +46,9 @@ tile.ArcaneInfuser.name=Arcane Infuser
 
 tile.blockToolBuilder.name=GregTech Tool Constructor
 item.itemBufferCore.name=Buffer Core
-item.itemStaballoyPickaxe.name=Pick of the Ages
+item.itemStaballoyPickaxe.name=Tunnel Digger
+item.itemStaballoyAxe.name=Tree Feller
+item.itemSandstoneHammer.name=Cobblestone Breaker
 item.itemIngotStaballoy.name=Staballoy Ingot
 item.itemPlateStaballoy.name=Staballoy Plate
 
