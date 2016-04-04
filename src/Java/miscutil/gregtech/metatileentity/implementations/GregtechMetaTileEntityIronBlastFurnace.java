@@ -44,7 +44,7 @@ public class GregtechMetaTileEntityIronBlastFurnace
 
     @Override
 	public String[] getDescription() {
-        return new String[]{"Skip the Bronze age, Get some Steel!", "Multiblock: 3x3x4 hollow with opening on top", "32 Iron Plated Bricks required"};
+        return new String[]{"Slowly, Skip the Bronze age, Get some Steel!", "Multiblock: 3x3x5 hollow with opening on top", "40 Iron Plated Bricks required"};
     }
 
     @Override
@@ -205,7 +205,7 @@ public class GregtechMetaTileEntityIronBlastFurnace
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
         if ((aBaseMetaTileEntity.isClientSide()) &&
                 (aBaseMetaTileEntity.isActive())) {
-            aBaseMetaTileEntity.getWorld().spawnParticle("largesmoke", aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1) + Math.random(), aBaseMetaTileEntity.getOffsetY(aBaseMetaTileEntity.getBackFacing(), 1), aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1) + Math.random(), 0.0D, 0.3D, 0.0D);
+            aBaseMetaTileEntity.getWorld().spawnParticle("cloud", aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1) + Math.random(), aBaseMetaTileEntity.getOffsetY(aBaseMetaTileEntity.getBackFacing(), 1), aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1) + Math.random(), 0.0D, 0.3D, 0.0D);
         }
         if (aBaseMetaTileEntity.isServerSide()) {
             if (this.mUpdate-- == 0) {
@@ -284,58 +284,58 @@ public class GregtechMetaTileEntityIronBlastFurnace
             if ((GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[0], "dustIron")) || (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[0], "ingotIron"))) {
                 if ((this.mInventory[1].getItem() == Items.coal) && (this.mInventory[1].stackSize >= 4) && (spaceForOutput(this.mOutputItem1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L), this.mOutputItem2 = GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 4L)))) {
                     getBaseMetaTileEntity().decrStackSize(0, 1);
-                    getBaseMetaTileEntity().decrStackSize(1, 4);
+                    getBaseMetaTileEntity().decrStackSize(1, 4*3);
                     this.mMaxProgresstime = 36000;
                     return true;
                 }
                 if ((GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[1], "fuelCoke")) && (this.mInventory[1].stackSize >= 2) && (spaceForOutput(this.mOutputItem1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L), this.mOutputItem2 = GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 4L)))) {
                     getBaseMetaTileEntity().decrStackSize(0, 1);
-                    getBaseMetaTileEntity().decrStackSize(1, 2);
-                    this.mMaxProgresstime = 4800;
+                    getBaseMetaTileEntity().decrStackSize(1, 2*3);
+                    this.mMaxProgresstime = 4800*5;
                     return true;
                 }
                 if ((this.mInventory[0].stackSize >= 9) && ((GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[1], "blockCoal")) || (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[1], "blockCharcoal"))) && (this.mInventory[1].stackSize >= 4) && (spaceForOutput(this.mOutputItem1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 9L), this.mOutputItem2 = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 4L)))) {
                     getBaseMetaTileEntity().decrStackSize(0, 9);
-                    getBaseMetaTileEntity().decrStackSize(1, 4);
-                    this.mMaxProgresstime = 64800;
+                    getBaseMetaTileEntity().decrStackSize(1, 4*3);
+                    this.mMaxProgresstime = 64800*5;
                     return true;
                 }
             } else if (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[0], "dustSteel")) {
                 if ((this.mInventory[1].getItem() == Items.coal) && (this.mInventory[1].stackSize >= 2) && (spaceForOutput(this.mOutputItem1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L), this.mOutputItem2 = GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2L)))) {
                     getBaseMetaTileEntity().decrStackSize(0, 1);
-                    getBaseMetaTileEntity().decrStackSize(1, 2);
-                    this.mMaxProgresstime = 3600;
+                    getBaseMetaTileEntity().decrStackSize(1, 2*3);
+                    this.mMaxProgresstime = 3600*5;
                     return true;
                 }
                 if ((GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[1], "fuelCoke")) && (this.mInventory[1].stackSize >= 1) && (spaceForOutput(this.mOutputItem1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L), this.mOutputItem2 = GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 2L)))) {
                     getBaseMetaTileEntity().decrStackSize(0, 1);
-                    getBaseMetaTileEntity().decrStackSize(1, 1);
-                    this.mMaxProgresstime = 2400;
+                    getBaseMetaTileEntity().decrStackSize(1, 1*3);
+                    this.mMaxProgresstime = 2400*5;
                     return true;
                 }
                 if ((this.mInventory[0].stackSize >= 9) && ((GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[1], "blockCoal")) || (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[1], "blockCharcoal"))) && (this.mInventory[1].stackSize >= 2) && (spaceForOutput(this.mOutputItem1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 9L), this.mOutputItem2 = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 2L)))) {
                     getBaseMetaTileEntity().decrStackSize(0, 9);
-                    getBaseMetaTileEntity().decrStackSize(1, 2);
-                    this.mMaxProgresstime = 32400;
+                    getBaseMetaTileEntity().decrStackSize(1, 2*3);
+                    this.mMaxProgresstime = 32400*5;
                     return true;
                 }
             } else if (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[0], "blockIron")) {
                 if ((this.mInventory[1].getItem() == Items.coal) && (this.mInventory[1].stackSize >= 36) && (spaceForOutput(this.mOutputItem1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 9L), this.mOutputItem2 = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 4L)))) {
                     getBaseMetaTileEntity().decrStackSize(0, 1);
-                    getBaseMetaTileEntity().decrStackSize(1, 36);
-                    this.mMaxProgresstime = 64800;
+                    getBaseMetaTileEntity().decrStackSize(1, 64);
+                    this.mMaxProgresstime = 64800*9;
                     return true;
                 }
                 if ((GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[1], "fuelCoke")) && (this.mInventory[1].stackSize >= 18) && (spaceForOutput(this.mOutputItem1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 9L), this.mOutputItem2 = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 4L)))) {
                     getBaseMetaTileEntity().decrStackSize(0, 1);
-                    getBaseMetaTileEntity().decrStackSize(1, 18);
-                    this.mMaxProgresstime = 43200;
+                    getBaseMetaTileEntity().decrStackSize(1, 18*3);
+                    this.mMaxProgresstime = 43200*5;
                     return true;
                 }
                 if (((GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[1], "blockCoal")) || (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[1], "blockCharcoal"))) && (this.mInventory[1].stackSize >= 4) && (spaceForOutput(this.mOutputItem1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 9L), this.mOutputItem2 = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 4L)))) {
                     getBaseMetaTileEntity().decrStackSize(0, 1);
-                    getBaseMetaTileEntity().decrStackSize(1, 4);
-                    this.mMaxProgresstime = 64800;
+                    getBaseMetaTileEntity().decrStackSize(1, 4*3);
+                    this.mMaxProgresstime = 64800*5;
                     return true;
                 }
             }
