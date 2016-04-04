@@ -8,7 +8,7 @@ public class CORE {
 
 	public static final String name = "Misc. Utils";	
 	public static final String MODID = "miscutils";
-	public static final String VERSION = "0.9.8";
+	public static final String VERSION = "1.0.0";
 	public static final boolean DEBUG = false;	
 	public static final boolean LOAD_ALL_CONTENT = false;
 	public static final int GREG_FIRST_ID = 760;
