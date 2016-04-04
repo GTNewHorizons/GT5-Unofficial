@@ -11,6 +11,8 @@ public class RECIPES_Machines {
 	//Outputs
 	//static ItemStack RECIPE_BufferCore_ULV = new ItemStack(GregtechEnergyBuffer.itemBufferCore);
 	static ItemStack RECIPE_SteamCondenser = GregtechItemList.Condensor_MAX.get(1);
+	static ItemStack RECIPE_IronBlastFurnace = GregtechItemList.Machine_Iron_BlastFurnace.get(1);
+	static ItemStack RECIPE_IronPlatedBricks = GregtechItemList.Casing_IronPlatedBricks.get(1);
 	static ItemStack RECIPE_Buffer_ULV = GregtechItemList.Energy_Buffer_1by1_ULV.get(1);
 	static ItemStack RECIPE_Buffer_LV = GregtechItemList.Energy_Buffer_1by1_LV.get(1);
 	static ItemStack RECIPE_Buffer_MV = GregtechItemList.Energy_Buffer_1by1_MV.get(1);
@@ -21,6 +23,7 @@ public class RECIPES_Machines {
 	static ItemStack RECIPE_Buffer_ZPM = GregtechItemList.Energy_Buffer_1by1_ZPM.get(1);
 	static ItemStack RECIPE_Buffer_UV = GregtechItemList.Energy_Buffer_1by1_UV.get(1);
 	static ItemStack RECIPE_Buffer_MAX = GregtechItemList.Energy_Buffer_1by1_MAX.get(1);
+	
 
 	//Buffer Cores
 	static ItemStack RECIPE_BufferCore_ULV = Utils.getItemStack("miscutils:item.itemBufferCore1", 1);
@@ -102,6 +105,10 @@ public class RECIPES_Machines {
 	//gregtech:gt.metaitem.01:32611
 	static ItemStack pump_MV = ItemList.Electric_Pump_MV.get(1);
 
+	//Lava Boiler
+	static ItemStack boiler_Coal = ItemList.Machine_Bronze_Boiler.get(1);
+	static ItemStack blockBricks = Utils.getItemStack("minecraft:brick_block", 1);
+
 	//Batteries
 	static String batteryBasic = "batteryBasic";
 	static String batteryAdvanced = "batteryAdvanced";
@@ -152,7 +159,7 @@ public class RECIPES_Machines {
 				circuitData, batteryElite, circuitData,
 				plateTier5, cableTier5, plateTier5,
 				RECIPE_BufferCore_EV);
-		
+
 		ItemUtils.recipeBuilder(
 				plateTier6, cableTier6, plateTier6,
 				circuitData, batteryElite, circuitElite,
@@ -253,12 +260,27 @@ public class RECIPES_Machines {
 				RECIPE_Buffer_MAX);
 
 
-
+		//Steam Condenser
 		ItemUtils.recipeBuilder(
 				pipeLargeCopper, pipeHugeSteel, pipeLargeCopper,
 				plateEnergeticAlloy, pump_MV, plateEnergeticAlloy,
 				plateEnergeticAlloy, pipeLargeCopper, plateEnergeticAlloy,
 				RECIPE_SteamCondenser);
+
+		//Iron BF
+		ItemUtils.recipeBuilder(
+				"plateDoubleAnyIron", "craftingFurnace", "plateDoubleAnyIron",
+				boiler_Coal, machineCasing_ULV, boiler_Coal,
+				"plateDoubleAnyIron", "bucketLava", "plateDoubleAnyIron",
+				RECIPE_IronBlastFurnace);
+
+		//Iron plated Bricks
+		ItemUtils.recipeBuilder(
+				"plateAnyIron", RECIPES_Tools.craftingToolHardHammer, "plateAnyIron",
+				"plateAnyIron", blockBricks, "plateAnyIron",
+				"plateAnyIron", RECIPES_Tools.craftingToolWrench, "plateAnyIron",
+				RECIPE_IronPlatedBricks);
+
 
 		Utils.LOG_INFO("Done loading recipes for the Various machine blocks.");
 

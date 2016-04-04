@@ -2,6 +2,7 @@ package miscutil.core.util;
 
 import java.util.ArrayList;
 
+import miscutil.core.handler.registration.RegistrationHandler;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -12,35 +13,35 @@ public class ItemUtils {
 	public static ItemStack getItemStackOfItem(Boolean modToCheck, String mod_itemname_meta){
 		if (modToCheck){
 			try{
-			Item em = null;
-			
-			Item em1 = Utils.getItem(mod_itemname_meta);
-			Utils.LOG_WARNING("Found: "+em1.toString());
-			if (!em1.equals(null)){
-				em = em1;
-			}			
-			else {
-				em = null;
+				Item em = null;
+
+				Item em1 = Utils.getItem(mod_itemname_meta);
+				Utils.LOG_WARNING("Found: "+em1.toString());
+				if (!em1.equals(null)){
+					em = em1;
+				}			
+				else {
+					em = null;
+					return null;
+				}			
+				if (!em.equals(null)){
+					ItemStack returnStack = new ItemStack(em,1,16);				
+					return returnStack;
+				}
+				Utils.LOG_WARNING(mod_itemname_meta+" not found.");
 				return null;
-			}			
-			if (!em.equals(null)){
-				ItemStack returnStack = new ItemStack(em,1,16);				
-			return returnStack;
-			}
-			Utils.LOG_WARNING(mod_itemname_meta+" not found.");
-			return null;
 			} catch (NullPointerException e) {
 				Utils.LOG_ERROR(mod_itemname_meta+" not found. [NULL]");
 				return null;
-	        }
+			}
 		}
 		return null;
 	}
 
 	public static void recipeBuilder(Object slot_1, Object slot_2, Object slot_3, Object slot_4, Object slot_5, Object slot_6, Object slot_7, Object slot_8, Object slot_9, ItemStack resultItem){	
-	
+
 		ArrayList<Object> validSlots = new ArrayList<Object>();
-	
+
 		//, String lineFirst, String lineSecond, String lineThird
 		Utils.LOG_INFO("Trying to add a recipe for "+resultItem.toString());
 		String a,b,c,d,e,f,g,h,i;		
@@ -63,8 +64,8 @@ public class ItemUtils {
 		Utils.LOG_WARNING(h);
 		if (slot_9 == null){ i = " ";} else { i = "9";validSlots.add('9');validSlots.add(slot_9);}
 		Utils.LOG_WARNING(i);
-	
-	
+
+
 		Utils.LOG_ERROR("_______");
 		String lineOne = a+b+c;
 		Utils.LOG_ERROR("|"+a+"|"+b+"|"+c+"|");
@@ -75,7 +76,7 @@ public class ItemUtils {
 		String lineThree = g+h+i;
 		Utils.LOG_ERROR("|"+g+"|"+h+"|"+i+"|");
 		Utils.LOG_ERROR("_______");
-	
+
 		validSlots.add(0, lineOne);
 		validSlots.add(1, lineTwo);
 		validSlots.add(2, lineThree);
@@ -111,46 +112,52 @@ public class ItemUtils {
 				}
 			}	
 		}
-	
+
 		try {
-			Utils.LOG_WARNING("validSlots to array: "+validSlots.toArray());
+			/*Utils.LOG_WARNING("validSlots to array: "+validSlots.toArray());
 			Object[] validSlotsArray = (Object[]) validSlots.toArray();
-	
+
 			for(int j = 0; j < validSlotsArray.length; j++)
 			{
 				Utils.LOG_ERROR(""+validSlotsArray[j]);
-			}
+			}*/
+			
+			GameRegistry.addRecipe(new ShapedOreRecipe(resultItem.copy(), (Object[]) validSlots.toArray()));		
+			Utils.LOG_INFO("Success! Added a recipe for "+resultItem.toString());
+			RegistrationHandler.recipesSuccess++;
+			/*try {
 			try {
 				try {
-					try {
-						GameRegistry.addRecipe(new ShapedOreRecipe(resultItem.copy(), (Object[]) validSlots.toArray()));		
-						Utils.LOG_INFO("Success! Added a recipe for "+resultItem.toString());
-					}
-					catch (ClassCastException r){
+				//Code
+				}
+					catch (NullPointerException | ClassCastException r){
 						Utils.LOG_WARNING("@@@: Invalid Recipe detected for: "+resultItem.getUnlocalizedName());
+						RegistrationHandler.recipesFailed++;
 						r.printStackTrace();
-						System.exit(1);
+						//System.exit(1);
 					}
 				}
 				catch (NullPointerException o){
-	
+
 					Utils.LOG_WARNING("@@@: Invalid Recipe detected for: "+resultItem.getUnlocalizedName());
 					o.printStackTrace();
-					System.exit(1);
+					RegistrationHandler.recipesFailed++;
+					//System.exit(1);
 				}
 			}
 			catch (ClassCastException r){
 				Utils.LOG_WARNING("@@@: Casting to ObjectArray Failed :(");
-			}
+			}*/
 		}
-		catch(NullPointerException k){
+		catch(NullPointerException | ClassCastException k){
 			k.getMessage();
 			k.getClass();
 			k.printStackTrace();
 			k.getLocalizedMessage();
 			Utils.LOG_WARNING("@@@: Invalid Recipe detected for: "+resultItem.getUnlocalizedName());
-			System.exit(1);
+			RegistrationHandler.recipesFailed++;
+			//System.exit(1);
 		}
 	}
-	
+
 }

@@ -42,3 +42,21 @@ targetCompatibility = 1.7
 archivesBaseName = "MiscUtils"
 version = "0.9.8"
 minecraft.version = "1.7.10-10.13.4.1448-1.7.10"
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+task devJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'dev'
+    manifest {
+        //attributes 'FMLCorePlugin': 'WhateverLoaderClass'
+        //attributes 'FMLCorePluginContainsFMLMod': 'true'
+    }
+}
+
+artifacts {
+    archives devJar
+}

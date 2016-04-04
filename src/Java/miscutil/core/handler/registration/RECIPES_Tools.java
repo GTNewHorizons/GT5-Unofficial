@@ -1,4 +1,4 @@
-package miscutil.core.item.tool;
+package miscutil.core.handler.registration;
 
 import miscutil.core.item.ModItems;
 import miscutil.core.util.ItemUtils;
@@ -10,7 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class Loader_TOOLS {
+public class RECIPES_Tools {
 	
 	//Outputs
 	static ItemStack RECIPE_StaballoyPickaxe = new ItemStack(ModItems.itemStaballoyPickaxe);
@@ -118,17 +118,17 @@ public class Loader_TOOLS {
 	static ItemStack sandHammer = new ItemStack (ModItems.itemSandstoneHammer, 1, OreDictionary.WILDCARD_VALUE);
 	static String craftingToolSandHammer = "craftingToolSandHammer";
 	
-	public static final void run(){		
+	public static final void RECIPES_LOAD(){		
 		
 			//plateStaballoy = new ItemStack(ModItems.itemPlateStaballoy);
 			//ingotStaballoy = new ItemStack(ModItems.itemIngotStaballoy);
 			
 			//Pickaxes
-			registerPickaxes();
+			run();
 		
 	}
 	
-	private static void registerPickaxes(){
+	private static void run(){
 		//Staballoy Pickaxe
 		ItemUtils.recipeBuilder(
 				plateStaballoy, plateStaballoy, ingotStaballoy,

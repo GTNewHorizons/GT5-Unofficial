@@ -3,6 +3,7 @@ package miscutil.core.block;
 import miscutil.core.block.antigrief.TowerDevice;
 import miscutil.core.creativetabs.AddToCreativeTab;
 import miscutil.core.util.Utils;
+import miscutil.gregtech.metatileentity.implementations.GregtechMetaCasingBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -12,8 +13,10 @@ public final class ModBlocks {
 	//Blood Steel
 	public static Block blockBloodSteel;
 	public static Block blockStaballoy;
+	//public static Block blockIronPlatedBricks;
 	public static Block blockToolBuilder;
 	public static Block blockGriefSaver;
+	public static Block blockCasingsMisc;
 	
 	//public static Block blockBloodSteelChest;
 
@@ -70,6 +73,9 @@ public final class ModBlocks {
 		
 		//Staballoy Block
 		GameRegistry.registerBlock(blockStaballoy = new BasicBlock("blockStaballoy", Material.iron), "blockStaballoy");
+		
+		//Casing Blocks
+		blockCasingsMisc = new GregtechMetaCasingBlocks();
 
 		//Blood Steel Block //Name, Material, Hardness, Resistance, Light level, Tool, tool level, sound
 		//GameRegistry.registerBlock(blockToolBuilder = new AdvancedBlock("blockToolBuilder", Material.circuits, TMCreativeTabs.tabMachines, 1F, 5F, 0F, "pickaxe", 1, Block.soundTypeWood), "blockToolBuilder");

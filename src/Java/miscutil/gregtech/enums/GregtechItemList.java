@@ -29,14 +29,24 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Credit_Greg_Osmium,
 	Credit_Greg_Naquadah,
 	Energy_Buffer_CREATIVE,
-	//Energy Buffes
+	
+	//Energy Buffers
 	Energy_Buffer_1by1_ULV, Energy_Buffer_1by1_LV, Energy_Buffer_1by1_MV, Energy_Buffer_1by1_HV, Energy_Buffer_1by1_EV, Energy_Buffer_1by1_IV, Energy_Buffer_1by1_LuV, Energy_Buffer_1by1_ZPM, Energy_Buffer_1by1_UV, Energy_Buffer_1by1_MAX,
+	
 	//Cobble Generators
 	Cobble_Generator_ULV, Cobble_Generator_LV, Cobble_Generator_MV, Cobble_Generator_HV, Cobble_Generator_EV, Cobble_Generator_IV, Cobble_Generator_LuV, Cobble_Generator_ZPM, Cobble_Generator_UV, Cobble_Generator_MAX,
+	
 	//The max Steam condenser
 	Condensor_MAX, 
+	
 	//Player owned Safes
-	GT_Safe_ULV, GT_Safe_LV, GT_Safe_MV, GT_Safe_HV, GT_Safe_EV, GT_Safe_IV, GT_Safe_LuV, GT_Safe_ZPM, GT_Safe_UV, GT_Safe_MAX;
+	GT_Safe_ULV, GT_Safe_LV, GT_Safe_MV, GT_Safe_HV, GT_Safe_EV, GT_Safe_IV, GT_Safe_LuV, GT_Safe_ZPM, GT_Safe_UV, GT_Safe_MAX,
+	
+	//IronBlastFurnace Machine_Bronze_BlastFurnace
+	Machine_Iron_BlastFurnace, Casing_IronPlatedBricks,
+	
+	//Machine Casings
+	Casing_Shielding;
 
 	public static final GregtechItemList[]
 			DYE_ONLY_ITEMS = {
