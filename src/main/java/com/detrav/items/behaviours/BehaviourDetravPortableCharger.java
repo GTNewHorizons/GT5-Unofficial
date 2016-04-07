@@ -32,7 +32,7 @@ public class BehaviourDetravPortableCharger extends Behaviour_None {
                 if(player.openContainer instanceof DetravPortableChargerContainer)
                 {
                     DetravPortableChargerContainer container = (DetravPortableChargerContainer)player.openContainer;
-                    container.onUpdate(aItem,aStack,aWorld,aPlayer,aTimer);
+                    container.onUpdate(aItem,aStack,aWorld,aPlayer,1);
                 }
             }
         }
