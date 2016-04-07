@@ -23,7 +23,7 @@ public class DetravPortableChargerGui extends GuiContainer {
     public static final int GUI_ID = 30;
 
     ResourceLocation location = null;
-    private String mName = "testName";
+    private String mName = "Portable Charger";
     ItemStack mItem = null;
 
     public DetravPortableChargerGui(InventoryPlayer player, World aWorld, ItemStack aStack) {
@@ -38,9 +38,12 @@ public class DetravPortableChargerGui extends GuiContainer {
         if(mItem!=null) {
             //GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             //EnumChatFormatting.AQUA + "" +  + EnumChatFormatting.GRAY);
-            Long[] tStats = getElectricStats(mItem);
-            long tCharge = getRealCharge(mItem);
-            fontRendererObj.drawString(GT_Utility.formatNumbers(tCharge) + " / " + GT_Utility.formatNumbers(Math.abs(tStats[0])) + " EU - Voltage: " + V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)], 8, 15, 4210752);
+
+            Long[] tStats = DetravMetaGeneratedTool01.INSTANCE.getElectricStats(mItem);
+            long tCharge = DetravMetaGeneratedTool01.INSTANCE.getRealCharge(mItem);
+            long loss = DetravMetaGeneratedTool01.INSTANCE.getElectricStatsLoss(mItem);
+            fontRendererObj.drawString(GT_Utility.formatNumbers(tCharge) + " / " + GT_Utility.formatNumbers(Math.abs(tStats[0])) + " EU", 8, 14, 4210752);
+            fontRendererObj.drawString("Voltage/Loss: " + V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)] + " / "+ loss, 8, 24, 4210752);
         }
     }
 
