@@ -46,6 +46,7 @@ public class DetravPortableChargerGui extends GuiContainer {
             //EnumChatFormatting.AQUA + "" +  + EnumChatFormatting.GRAY);
 
             Long[] tStats = DetravMetaGeneratedTool01.INSTANCE.getElectricStats(mItem);
+            if(tStats==null) return;
             //long tCharge = DetravMetaGeneratedTool01.INSTANCE.getRealCharge(mItem);
             long loss = DetravMetaGeneratedTool01.INSTANCE.getElectricStatsLoss(mItem);
             fontRendererObj.drawString(GT_Utility.formatNumbers(charge) + " / " + GT_Utility.formatNumbers(Math.abs(tStats[0])) + " EU", 8, 14, 4210752);
