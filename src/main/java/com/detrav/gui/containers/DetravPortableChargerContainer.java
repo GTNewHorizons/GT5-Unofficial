@@ -78,14 +78,35 @@ public class DetravPortableChargerContainer extends Container {
     }
 
     public void onUpdate(GT_MetaBase_Item aItem, ItemStack aStack, World aWorld, Entity aPlayer, int aTimer) {
-        ItemStack item = this.slots.getStackInSlotOnClosing(0);
+        if(mItem==null) return;
+
+        ItemStack item = this.slots.getStackInSlot(0);
         if(item == null) return;
+
         Long[] itemStats = DetravMetaGeneratedTool01.INSTANCE.getElectricStats(item);
         if(itemStats == null) return;
-        long tCharge = DetravMetaGeneratedTool01.INSTANCE.getRealCharge(mItem);
-        if(tCharge <=0) return;
+        long itemCharge = DetravMetaGeneratedTool01.INSTANCE.getRealCharge(item);
+        if(itemCharge <=0) return;
+        long needEnergy = itemStats[1] - itemCharge;
+        if(needEnergy == 0) return;
+
+        Long[] selfStats = DetravMetaGeneratedTool01.INSTANCE.getElectricStats(mItem);
+        if(selfStats == null) return;
+
+        long selfCharge = DetravMetaGeneratedTool01.INSTANCE.getRealCharge(mItem);
+        if(selfCharge <=0) return;
+
         long loss = DetravMetaGeneratedTool01.INSTANCE.getElectricStatsLoss(mItem);
         if(loss<0) return;
+
+        long energyToTransfer = (Math.min(selfStats[1],itemStats[1]) - loss)*aTimer ;
+
+        if(needEnergy<energyToTransfer)
+            energyToTransfer = needEnergy;
+        long removeEnergy = Math.min(energyToTransfer+loss*aTimer,selfCharge);
+
+        DetravMetaGeneratedTool01.INSTANCE.setCharge(item,itemCharge+energyToTransfer);
+        DetravMetaGeneratedTool01.INSTANCE.setCharge(mItem,selfCharge-removeEnergy);
     }
 
     /*@Override
