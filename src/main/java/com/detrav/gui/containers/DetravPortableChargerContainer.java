@@ -2,6 +2,7 @@ package com.detrav.gui.containers;
 
 import com.detrav.items.DetravMetaGeneratedTool01;
 import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.common.items.armor.SlotLocked;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -83,12 +84,10 @@ public class DetravPortableChargerContainer extends Container {
         ItemStack item = this.slots.getStackInSlot(0);
         if(item == null) return;
 
-        Long[] itemStats = DetravMetaGeneratedTool01.INSTANCE.getElectricStats(item);
-        if(itemStats == null) return;
-        long itemCharge = DetravMetaGeneratedTool01.INSTANCE.getRealCharge(item);
-        if(itemCharge <=0) return;
-        long needEnergy = itemStats[1] - itemCharge;
-        if(needEnergy == 0) return;
+        if(GT_ModHandler.isElectricItem(item));
+
+        //GT_ModHandler.ch
+
 
         Long[] selfStats = DetravMetaGeneratedTool01.INSTANCE.getElectricStats(mItem);
         if(selfStats == null) return;
@@ -99,14 +98,11 @@ public class DetravPortableChargerContainer extends Container {
         long loss = DetravMetaGeneratedTool01.INSTANCE.getElectricStatsLoss(mItem);
         if(loss<0) return;
 
-        long energyToTransfer = (Math.min(selfStats[1],itemStats[1]) - loss)*aTimer ;
+        long energyToTransfer = (selfStats[1] - loss)*aTimer ;
 
-        if(needEnergy<energyToTransfer)
-            energyToTransfer = needEnergy;
-        long removeEnergy = Math.min(energyToTransfer+loss*aTimer,selfCharge);
-
-        DetravMetaGeneratedTool01.INSTANCE.setCharge(item,itemCharge+energyToTransfer);
-        DetravMetaGeneratedTool01.INSTANCE.setCharge(mItem,selfCharge-removeEnergy);
+        int removeEnergy = GT_ModHandler.chargeElectricItem(item, (int) energyToTransfer, Integer.MAX_VALUE, false, false);
+        if(removeEnergy==0) return;
+        GT_ModHandler.dischargeElectricItem(mItem,(int)(removeEnergy+loss*aTimer),Integer.MAX_VALUE,false,false,true);
     }
 
     /*@Override
