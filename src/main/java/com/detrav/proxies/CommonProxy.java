@@ -1,7 +1,10 @@
 package com.detrav.proxies;
 
+import com.detrav.DetravScannerMod;
 import com.detrav.enums.DetravSimpleItems;
 import com.detrav.gui.DetravGuiProPick;
+import com.detrav.gui.containers.DetravPortableChargerContainer;
+import com.detrav.gui.DetravPortableChargerGui;
 import cpw.mods.fml.common.network.IGuiHandler;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -35,18 +38,35 @@ public class CommonProxy implements IGuiHandler {
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        return null;
+        switch (ID) {
+            case DetravGuiProPick.GUI_ID:
+                return null;
+            case DetravPortableChargerGui.GUI_ID:
+                return new DetravPortableChargerContainer(player.inventory,world);
+            default:
+                return null;
+        }
     }
 
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-        if(ID == DetravGuiProPick.GUI_ID)
-            return new DetravGuiProPick();
-        return null;
+        switch (ID) {
+            case DetravGuiProPick.GUI_ID:
+                return new DetravGuiProPick();
+            case DetravPortableChargerGui.GUI_ID:
+                return new DetravPortableChargerGui(player.inventory,world);
+            default:
+                return null;
+        }
     }
 
     public void openProPickGui()
     {
 
+    }
+
+    public void openPortableChargerGui(EntityPlayer player)
+    {
+        player.openGui(DetravScannerMod.instance, DetravPortableChargerGui.GUI_ID,player.worldObj,(int)player.posX,(int)player.posY,(int)player.posZ);
     }
 }

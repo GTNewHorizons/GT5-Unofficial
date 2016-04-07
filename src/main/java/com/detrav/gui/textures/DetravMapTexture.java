@@ -1,4 +1,4 @@
-package com.detrav.gui;
+package com.detrav.gui.textures;
 
 import com.detrav.net.DetravProPickPacket01;
 import net.minecraft.client.Minecraft;

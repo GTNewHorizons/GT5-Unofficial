@@ -2,6 +2,7 @@ package com.detrav.items.tools;
 
 import com.detrav.enums.DetravSimpleItems;
 import com.detrav.enums.Textures01;
+import com.detrav.items.behaviours.BehaviourDetravPortableCharger;
 import com.detrav.items.behaviours.BehaviourDetravToolProPick;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
@@ -169,7 +170,7 @@ public class DetravToolPortableCharger implements IToolStats {
     }
 
     public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
-        //aItem.addItemBehavior(aID, new BehaviourDetravToolProPick(getToolDamagePerBlockBreak()));
+        aItem.addItemBehavior(aID, new BehaviourDetravPortableCharger());
     }
 
     public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer) {

@@ -2,7 +2,7 @@ package com.detrav.net;
 
 import com.detrav.DetravScannerMod;
 import com.detrav.gui.DetravGuiProPick;
-import com.detrav.gui.DetravMapTexture;
+import com.detrav.gui.textures.DetravMapTexture;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
