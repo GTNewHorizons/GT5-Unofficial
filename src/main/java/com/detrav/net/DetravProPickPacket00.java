@@ -18,7 +18,7 @@ import java.util.HashMap;
 /**
  * Created by wital_000 on 20.03.2016.
  */
-public class DetravProPickPacket01 extends DetravPacket {
+public class DetravProPickPacket00 extends DetravPacket {
     public int chunkX;
     public int chunkZ;
     public int size;
@@ -62,7 +62,7 @@ public class DetravProPickPacket01 extends DetravPacket {
 
     @Override
     public Object decode(ByteArrayDataInput aData) {
-        DetravProPickPacket01 packet = new DetravProPickPacket01();
+        DetravProPickPacket00 packet = new DetravProPickPacket00();
         packet.level = aData.readInt();
         packet.chunkX = aData.readInt();
         packet.chunkZ = aData.readInt();
@@ -81,7 +81,7 @@ public class DetravProPickPacket01 extends DetravPacket {
                 }
             }
         int checkOut2 = aData.readInt();
-        if(checkOut != checkOut2) return new DetravProPickPacket01();
+        if(checkOut != checkOut2) return new DetravProPickPacket00();
         return packet;
     }
 

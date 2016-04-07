@@ -1,6 +1,6 @@
 package com.detrav.gui.textures;
 
-import com.detrav.net.DetravProPickPacket01;
+import com.detrav.net.DetravProPickPacket00;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.AbstractTexture;
@@ -9,18 +9,16 @@ import net.minecraft.client.resources.IResourceManager;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by wital_000 on 21.03.2016.
  */
 public class DetravMapTexture extends AbstractTexture {
 
-    private DetravProPickPacket01 packet;
+    private DetravProPickPacket00 packet;
 
-    public DetravMapTexture(DetravProPickPacket01 aPacket)
+    public DetravMapTexture(DetravProPickPacket00 aPacket)
     {
         packet = aPacket;
     }

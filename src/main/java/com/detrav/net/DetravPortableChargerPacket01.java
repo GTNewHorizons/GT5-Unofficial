@@ -8,7 +8,7 @@ import com.google.common.io.ByteStreams;
 /**
  * Created by wital_000 on 07.04.2016.
  */
-public class DetravPortableChargerPacker02 extends DetravPacket {
+public class DetravPortableChargerPacket01 extends DetravPacket {
     public long charge = 0;
     @Override
     public int getPacketID() {
@@ -24,7 +24,7 @@ public class DetravPortableChargerPacker02 extends DetravPacket {
 
     @Override
     public Object decode(ByteArrayDataInput aData) {
-        DetravPortableChargerPacker02 packet = new DetravPortableChargerPacker02();
+        DetravPortableChargerPacket01 packet = new DetravPortableChargerPacket01();
         packet.charge = aData.readLong();
         return packet;
     }

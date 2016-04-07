@@ -2,7 +2,7 @@ package com.detrav.gui.containers;
 
 import com.detrav.items.DetravMetaGeneratedTool01;
 import com.detrav.net.DetravNetwork;
-import com.detrav.net.DetravPortableChargerPacker02;
+import com.detrav.net.DetravPortableChargerPacket01;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.common.items.armor.SlotLocked;
@@ -16,7 +16,6 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import org.lwjgl.Sys;
 
 /**
  * Created by wital_000 on 07.04.2016.
@@ -107,7 +106,7 @@ public class DetravPortableChargerContainer extends Container {
 
         if(aWorld.isRemote) return;
         if(aPlayer instanceof EntityPlayerMP) {
-            DetravPortableChargerPacker02 packet = new DetravPortableChargerPacker02();
+            DetravPortableChargerPacket01 packet = new DetravPortableChargerPacket01();
             packet.charge = selfCharge - removeEnergy + loss * aTimer;
             DetravNetwork.INSTANCE.sendToPlayer(packet, (EntityPlayerMP)aPlayer);
             //crafters
