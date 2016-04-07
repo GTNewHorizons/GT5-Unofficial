@@ -110,8 +110,13 @@ public class DetravPortableChargerContainer extends Container {
             DetravPortableChargerPacket01 packet = new DetravPortableChargerPacket01();
             packet.charge = selfCharge - removeEnergy + loss * aTimer;
             DetravNetwork.INSTANCE.sendToPlayer(packet, (EntityPlayerMP)aPlayer);
+
             //crafters
         }
+        //long max = DetravMetaGeneratedTool01.getToolMaxDamage(mItem);
+        //double p = ((double)selfCharge)/((double)selfStats[0]);
+        //DetravMetaGeneratedTool01.setToolDamage(mItem,(long) (max * p) + 200);
+        //long
     }
 
     /*@Override

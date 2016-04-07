@@ -2,6 +2,7 @@ package com.detrav.items.behaviours;
 
 import com.detrav.DetravScannerMod;
 import com.detrav.gui.containers.DetravPortableChargerContainer;
+import com.detrav.items.DetravMetaGeneratedTool01;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.common.items.behaviors.Behaviour_None;
 import net.minecraft.entity.Entity;
@@ -34,6 +35,15 @@ public class BehaviourDetravPortableCharger extends Behaviour_None {
                     DetravPortableChargerContainer container = (DetravPortableChargerContainer)player.openContainer;
                     container.onUpdate(aItem,aStack,aWorld,aPlayer,1);
                 }
+                Long[] selfStats = DetravMetaGeneratedTool01.INSTANCE.getElectricStats(aStack);
+                if(selfStats == null) return;
+
+                long selfCharge = DetravMetaGeneratedTool01.INSTANCE.getRealCharge(aStack);
+                if(selfCharge <0) return;
+                //update info
+                long max = DetravMetaGeneratedTool01.getToolMaxDamage(aStack);
+                double p = ((double)selfCharge)/((double)selfStats[0]);
+                DetravMetaGeneratedTool01.setToolDamage(aStack,(long) (max * p) + 200);
             }
         }
     }
