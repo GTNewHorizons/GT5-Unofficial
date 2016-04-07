@@ -36,6 +36,7 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
 
 
     public void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
+        //getElectricStats()
         //super.addAdditionalToolTips();
         long tMaxDamage = getToolMaxDamage(aStack);
         Materials tMaterial = getPrimaryMaterial(aStack);

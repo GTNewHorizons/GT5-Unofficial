@@ -12,6 +12,7 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 /**
@@ -42,7 +43,7 @@ public class CommonProxy implements IGuiHandler {
             case DetravGuiProPick.GUI_ID:
                 return null;
             case DetravPortableChargerGui.GUI_ID:
-                return new DetravPortableChargerContainer(player.inventory,world);
+                return new DetravPortableChargerContainer(player.inventory,world,player.getCurrentEquippedItem());
             default:
                 return null;
         }
@@ -54,7 +55,7 @@ public class CommonProxy implements IGuiHandler {
             case DetravGuiProPick.GUI_ID:
                 return new DetravGuiProPick();
             case DetravPortableChargerGui.GUI_ID:
-                return new DetravPortableChargerGui(player.inventory,world);
+                return new DetravPortableChargerGui(player.inventory,world,player.getCurrentEquippedItem());
             default:
                 return null;
         }

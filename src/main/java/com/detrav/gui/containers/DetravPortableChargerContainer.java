@@ -1,5 +1,6 @@
 package com.detrav.gui.containers;
 
+import gregtech.common.items.armor.SlotLocked;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -14,11 +15,13 @@ import net.minecraft.world.World;
  */
 public class DetravPortableChargerContainer extends Container {
     public IInventory slots = new InventoryCrafting(this, 1, 1);
+    public ItemStack mItem;
     private World worldObj;
 
-    public DetravPortableChargerContainer(InventoryPlayer inventoryPlayer, World aWorld) {
+    public DetravPortableChargerContainer(InventoryPlayer inventoryPlayer, World aWorld,ItemStack aStack) {
         this.worldObj = aWorld;
-        this.addSlotToContainer(new Slot(slots, 0, 62, 17));
+        this.addSlotToContainer(new Slot(slots, 0, 80, 35));
+        mItem = aStack;
         //new Slot()
         bindPlayerInventory(inventoryPlayer);
     }
@@ -31,8 +34,14 @@ public class DetravPortableChargerContainer extends Container {
             }
         }
 
+
         for (int i = 0; i < 9; i++) {
-            addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 18, 142));
+            ItemStack stackInSlot = inventoryPlayer.getStackInSlot(i);
+            if (mItem!=null && stackInSlot!=null && mItem.getItem() == stackInSlot.getItem()) {
+                addSlotToContainer(new SlotLocked(inventoryPlayer, i, 8 + i * 18, 142));
+            } else {
+                addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 18, 142));
+            }
         }
     }
 
