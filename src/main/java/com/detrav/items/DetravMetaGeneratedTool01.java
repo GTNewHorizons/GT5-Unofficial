@@ -73,7 +73,8 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
                     break;
                 case 106:
                 case 107:
-                    aList.add(tOffset + 0, EnumChatFormatting.WHITE + "Loss energy: " + EnumChatFormatting.GREEN + getElectricStatsLoss(aStack) + EnumChatFormatting.GRAY);
+                    aList.add(tOffset + 0, EnumChatFormatting.WHITE + "Loss/Tick EU: " + EnumChatFormatting.GREEN + getElectricStatsLoss(aStack) + EnumChatFormatting.GRAY);
+                    aList.add(tOffset + 0, EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + EnumChatFormatting.GRAY);
                     aList.add(tOffset + 1, "Right click to open GUI");
                     break;
             }

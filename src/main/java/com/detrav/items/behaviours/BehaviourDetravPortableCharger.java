@@ -41,9 +41,9 @@ public class BehaviourDetravPortableCharger extends Behaviour_None {
                 long selfCharge = DetravMetaGeneratedTool01.INSTANCE.getRealCharge(aStack);
                 if(selfCharge <0) return;
                 //update info
-                long max = DetravMetaGeneratedTool01.getToolMaxDamage(aStack);
-                double p = ((double)selfCharge)/((double)selfStats[0]);
-                DetravMetaGeneratedTool01.setToolDamage(aStack,(long) (max * p) + 200);
+                //long max = DetravMetaGeneratedTool01.getToolMaxDamage(aStack);
+                //double p = ((double)selfCharge)/((double)selfStats[0]);
+                //DetravMetaGeneratedTool01.setToolDamage(aStack,(long) (max * p) + 200);
             }
         }
     }

@@ -35,15 +35,15 @@ public class DetravToolPortableCharger implements IToolStats {
     }
 
     public int getToolDamagePerDropConversion() {
-        return 100;
+        return 1000;
     }
 
     public int getToolDamagePerContainerCraft() {
-        return 100;
+        return 1000;
     }
 
     public int getToolDamagePerEntityAttack() {
-        return 200;
+        return 1000;
     }
 
     public int getBaseQuality() {
@@ -51,7 +51,7 @@ public class DetravToolPortableCharger implements IToolStats {
     }
 
     public float getBaseDamage() {
-        return 1.0F;
+        return 2.5F;
     }
 
     @Override
@@ -123,7 +123,7 @@ public class DetravToolPortableCharger implements IToolStats {
 
     @Override
     public boolean isWeapon() {
-        return false;
+        return true;
     }
 
     @Override
