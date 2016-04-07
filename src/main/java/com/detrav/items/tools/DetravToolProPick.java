@@ -63,7 +63,7 @@ public class DetravToolProPick implements IToolStats {
     }
 
     public float getMaxDurabilityMultiplier() {
-        return 1.0F;
+        return 0.5F;
     }
 
     @Override
