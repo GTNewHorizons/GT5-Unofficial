@@ -34,32 +34,13 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
         addTool(102, "Electric Prospector's Scanner (MV)", "", new DetravToolMVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
         addTool(104, "Electric Prospector's Scanner (HV)", "", new DetravToolHVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
         setCreativeTab(DetravScannerMod.TAB_DETRAV);
-        //addItemBehavior(0,new BehaviourDetravToolProPick());
-        if (GT_Values.GT.isClientSide()) {
-            //new Information
-
-        }
     }
 
 
-    /*public void addDetravInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-        if (getMaxDamage() > 0 && !getHasSubtypes())
-            aList.add((aStack.getMaxDamage() - getDamage(aStack)) + " / " + aStack.getMaxDamage());
-        String mTooltip = getUnlocalizedName(aStack) + ".tooltip";
-        if (mTooltip != null) {
-            String lTooltip = GT_LanguageManager.getTranslation(mTooltip);
-            String[] lTooltips = lTooltip.split("|");
-            if(lTooltips!=null)
-            for(String str : lTooltips) {
-                aList.add(aList.size(),str);
-            }
-        }
-        //if (GT_ModHandler.isElectricItem(aStack)) aList.add("Tier: " + getTier(aStack));
-        addAdditionalToolTips(aList, aStack, aPlayer);
-    }*/
 
 
-    public void addAdditionalToolTips(List aList, ItemStack aStack) {
+
+    public void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
         //super.addAdditionalToolTips();
         long tMaxDamage = getToolMaxDamage(aStack);
         Materials tMaterial = getPrimaryMaterial(aStack);
@@ -67,8 +48,6 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
         int tOffset = aList.size(); //getElectricStats(aStack) != null ? 2 : 1;
         if (tStats != null) {
             String name = aStack.getUnlocalizedName();
-            //if (name.equals("gt.detrav.metatool.01.0")) {
-
             String num = name.substring("gt.detrav.metatool.01.".length());
             int meta = Integer.parseInt(num);
             if (meta < 100) {
@@ -89,29 +68,6 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
                 aList.add(tOffset + 4, "Right click on bedrock for prospecting oil!");
                 aList.add(tOffset + 5, "Right click for scanning!");
             }
-            //Right click on rock for prospecting current chunk!|Right click for scanning!
-            //aList.add(tOffset + 2, EnumChatFormatting.WHITE + "Attack Damage: " + EnumChatFormatting.BLUE + getToolCombatDamage(aStack) + EnumChatFormatting.GRAY);
-            //aList.add(tOffset + 3, EnumChatFormatting.WHITE + "Mining Speed: " + EnumChatFormatting.LIGHT_PURPLE + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed) + EnumChatFormatting.GRAY);
-                /*NBTTagCompound aNBT = aStack.getTagCompound();
-                if (aNBT != null) {
-                    aNBT = aNBT.getCompoundTag("GT.ToolStats");
-                    if (aNBT != null && aNBT.hasKey("Heat")){
-                        int tHeat = aNBT.getInteger("Heat");
-                        long tWorldTime = aPlayer.getEntityWorld().getWorldTime();
-                        if(aNBT.hasKey("HeatTime")){
-                            long tHeatTime = aNBT.getLong("HeatTime");
-                            if(tWorldTime>(tHeatTime+10)){
-                                tHeat = (int) (tHeat - ((tWorldTime-tHeatTime)/10));
-                                if(tHeat<300&&tHeat>-10000)tHeat=300;
-                            }
-                            aNBT.setLong("HeatTime", tWorldTime);
-                            if(tHeat>-10000)aNBT.setInteger("Heat", tHeat);
-                        }
-
-                        aList.add(tOffset + 3, EnumChatFormatting.RED + "Heat: " + aNBT.getInteger("Heat")+" K" + EnumChatFormatting.GRAY);
-                    }
-                }*/
-            // }
         }
     }
 }
