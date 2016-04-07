@@ -39,7 +39,7 @@ public class DetravBiomeScannerCommand implements ICommand {
 
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "DetravBiomeScanner radius";
+        return "DetravBiomeScanner radius name";
     }
 
     @Override
@@ -50,8 +50,9 @@ public class DetravBiomeScannerCommand implements ICommand {
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
         try {
-            if(args.length==1) {
+            if(args.length==2) {
                 int aXaZ = Integer.parseInt(args[0]);
+                String name = args[1].toLowerCase();
                 int step = aXaZ * 2 / 512;
                 if (step < 1) step = 1;
                 World w = sender.getEntityWorld();
@@ -62,12 +63,14 @@ public class DetravBiomeScannerCommand implements ICommand {
                 for (int i = cor.posX - aXaZ, ii = 0; ii < 512; i += step, ii++)
                     for (int j = cor.posZ - aXaZ, jj = 0; jj < 512; j += step, jj++) {
                         BiomeGenBase biome = w.getBiomeGenForCoords(i, j);
-                        r.setSample(ii, jj, 0, biome.color & 0xFF);
-                        r.setSample(ii, jj, 1, (biome.color >> 8) & 0xFF);
-                        r.setSample(ii, jj, 2, (biome.color >> 16) & 0xFF);
-                        r.setSample(ii, jj, 3, 0xFF);
-                        if (!colors.containsKey(biome.biomeName))
-                            colors.put(biome.biomeName, biome.color);
+                        if(biome.biomeName.toLowerCase().contains(name)) {
+                            r.setSample(ii, jj, 0, biome.color & 0xFF);
+                            r.setSample(ii, jj, 1, (biome.color >> 8) & 0xFF);
+                            r.setSample(ii, jj, 2, (biome.color >> 16) & 0xFF);
+                            r.setSample(ii, jj, 3, 0xFF);
+                            if (!colors.containsKey(biome.biomeName))
+                                colors.put(biome.biomeName, biome.color);
+                        }
                     }
                 File outfile = new File("biomes.png");
                 ImageIO.write(image, "png", outfile);
