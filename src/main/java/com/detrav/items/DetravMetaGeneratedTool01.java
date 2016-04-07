@@ -2,10 +2,7 @@ package com.detrav.items;
 
 import com.detrav.DetravScannerMod;
 import com.detrav.enums.DetravToolDictNames;
-import com.detrav.items.tools.DetravToolHVElectricProPick;
-import com.detrav.items.tools.DetravToolLVElectricProPick;
-import com.detrav.items.tools.DetravToolMVElectricProPick;
-import com.detrav.items.tools.DetravToolProPick;
+import com.detrav.items.tools.*;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TC_Aspects;
@@ -33,6 +30,7 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
         addTool(100, "Electric Prospector's Scanner (LV)", "", new DetravToolLVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
         addTool(102, "Electric Prospector's Scanner (MV)", "", new DetravToolMVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
         addTool(104, "Electric Prospector's Scanner (HV)", "", new DetravToolHVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
+        addTool(106, "Portable Charger","", new DetravToolPortableCharger(), new Object[]{DetravToolDictNames.craftingToolPortableCharger, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.AURAM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
         setCreativeTab(DetravScannerMod.TAB_DETRAV);
     }
 
@@ -72,7 +70,33 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
                     aList.add(tOffset + 4, "Right click on bedrock for prospecting oil!");
                     aList.add(tOffset + 5, "Right click for scanning!");
                     break;
+                case 106:
+                case 107:
+                    aList.add(tOffset + 0, EnumChatFormatting.WHITE + "Loss energy: " + EnumChatFormatting.GREEN + getElectricStatsLoss(aStack) + EnumChatFormatting.GRAY);
+                    aList.add(tOffset + 1, "Right click to open GUI");
+                    break;
             }
         }
+    }
+
+    public Long getElectricStatsLoss(ItemStack aStack) {
+        NBTTagCompound aNBT = aStack.getTagCompound();
+        if (aNBT != null) {
+            aNBT = aNBT.getCompoundTag("GT.ToolStats");
+            if (aNBT != null && aNBT.getBoolean("Electric"))
+                return aNBT.getLong("Loss");
+        }
+        return 0L;
+    }
+
+    public final ItemStack getToolWithStatsPlus(int aToolID, int aAmount, Materials aPrimaryMaterial, Materials aSecondaryMaterial, long[] aElectricArray,long aLoss) {
+        ItemStack result = getToolWithStats(aToolID,aAmount,aPrimaryMaterial,aSecondaryMaterial,aElectricArray);
+        NBTTagCompound aNBT = result.getTagCompound();
+        if (aNBT != null) {
+            aNBT = aNBT.getCompoundTag("GT.ToolStats");
+            if (aNBT != null && aNBT.getBoolean("Electric"))
+                aNBT.setLong("Loss",aLoss);
+        }
+        return result;
     }
 }
