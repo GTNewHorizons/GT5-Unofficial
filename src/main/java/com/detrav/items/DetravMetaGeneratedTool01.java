@@ -96,8 +96,10 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
         NBTTagCompound aNBT = result.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("GT.ToolStats");
-            if (aNBT != null && aNBT.getBoolean("Electric"))
-                aNBT.setLong("Loss",aLoss);
+            if (aNBT != null && aNBT.getBoolean("Electric")) {
+                aNBT.setLong("Loss", aLoss);
+                aNBT.setLong("MaxDamage", 10000L);
+            }
         }
         return result;
     }
