@@ -78,6 +78,7 @@ public class DetravPortableChargerContainer extends Container {
         return null;
     }
 
+
     public void onUpdate(GT_MetaBase_Item aItem, ItemStack aStack, World aWorld, Entity aPlayer, int aTimer) {
         if(mItem==null) return;
 
