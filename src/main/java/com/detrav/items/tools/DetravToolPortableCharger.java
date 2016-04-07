@@ -160,9 +160,10 @@ public class DetravToolPortableCharger implements IToolStats {
     }
 
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return aIsToolHead ?
+        return Textures01.mTextures[4];
+        /*return aIsToolHead ?
                 Textures01.mTextures[DetravSimpleItems.toolHeadProPick.mTextureIndex] :
-                GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.stick.mTextureIndex];
+                GT_MetaGenerated_Tool.getSecondaryMaterial(aStack).mIconSet.mTextures[gregtech.api.enums.OrePrefixes.stick.mTextureIndex];*/
     }
 
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
