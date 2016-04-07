@@ -1,19 +1,20 @@
 package com.detrav.gui.containers;
 
 import com.detrav.items.DetravMetaGeneratedTool01;
+import com.detrav.net.DetravNetwork;
+import com.detrav.net.DetravPortableChargerPacker02;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.common.items.armor.SlotLocked;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import org.lwjgl.Sys;
 
@@ -103,6 +104,14 @@ public class DetravPortableChargerContainer extends Container {
         int removeEnergy = GT_ModHandler.chargeElectricItem(item, (int) energyToTransfer, Integer.MAX_VALUE, false, false);
         if(removeEnergy==0) return;
         GT_ModHandler.dischargeElectricItem(mItem,(int)(removeEnergy+loss*aTimer),Integer.MAX_VALUE,false,false,true);
+
+        if(aWorld.isRemote) return;
+        if(aPlayer instanceof EntityPlayerMP) {
+            DetravPortableChargerPacker02 packet = new DetravPortableChargerPacker02();
+            packet.charge = selfCharge - removeEnergy + loss * aTimer;
+            DetravNetwork.INSTANCE.sendToPlayer(packet, (EntityPlayerMP)aPlayer);
+            //crafters
+        }
     }
 
     /*@Override
