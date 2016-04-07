@@ -1,14 +1,20 @@
 package com.detrav.gui.containers;
 
+import com.detrav.items.DetravMetaGeneratedTool01;
+import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.common.items.armor.SlotLocked;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
+import org.lwjgl.Sys;
 
 /**
  * Created by wital_000 on 07.04.2016.
@@ -24,6 +30,8 @@ public class DetravPortableChargerContainer extends Container {
         mItem = aStack;
         //new Slot()
         bindPlayerInventory(inventoryPlayer);
+
+        //DetravMetaGeneratedTool01.INSTANCE.getToolStats(mItem).
     }
 
     protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
@@ -37,7 +45,7 @@ public class DetravPortableChargerContainer extends Container {
 
         for (int i = 0; i < 9; i++) {
             ItemStack stackInSlot = inventoryPlayer.getStackInSlot(i);
-            if (mItem!=null && stackInSlot!=null && mItem.getItem() == stackInSlot.getItem()) {
+            if (mItem!=null && stackInSlot!=null && mItem == stackInSlot) {
                 addSlotToContainer(new SlotLocked(inventoryPlayer, i, 8 + i * 18, 142));
             } else {
                 addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 18, 142));
@@ -63,4 +71,28 @@ public class DetravPortableChargerContainer extends Container {
             //}
         }
     }
+
+    @Override
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
+        return null;
+    }
+
+    public void onUpdate(GT_MetaBase_Item aItem, ItemStack aStack, World aWorld, Entity aPlayer, int aTimer) {
+        ItemStack item = this.slots.getStackInSlotOnClosing(0);
+        if(item == null) return;
+        Long[] itemStats = DetravMetaGeneratedTool01.INSTANCE.getElectricStats(item);
+        if(itemStats == null) return;
+        long tCharge = DetravMetaGeneratedTool01.INSTANCE.getRealCharge(mItem);
+        if(tCharge <=0) return;
+        long loss = DetravMetaGeneratedTool01.INSTANCE.getElectricStatsLoss(mItem);
+        if(loss<0) return;
+    }
+
+    /*@Override
+    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
+        ItemStack result = super.transferStackInSlot(par1EntityPlayer,par2);
+        par1EntityPlayer.addChatMessage(new ChatComponentText(result.getDisplayName()));
+
+        return result;
+    }*/
 }

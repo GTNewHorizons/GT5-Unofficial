@@ -6,9 +6,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
@@ -45,24 +43,6 @@ public class DetravPortableChargerGui extends GuiContainer {
             fontRendererObj.drawString(GT_Utility.formatNumbers(tCharge) + " / " + GT_Utility.formatNumbers(Math.abs(tStats[0])) + " EU", 8, 14, 4210752);
             fontRendererObj.drawString("Voltage/Loss: " + V[(int) (tStats[2] >= 0 ? tStats[2] < V.length ? tStats[2] : V.length - 1 : 1)] + " / "+ loss, 8, 24, 4210752);
         }
-    }
-
-    public Long[] getElectricStats(ItemStack aStack) {
-        NBTTagCompound aNBT = aStack.getTagCompound();
-        if (aNBT != null) {
-            aNBT = aNBT.getCompoundTag("GT.ToolStats");
-            if (aNBT != null && aNBT.getBoolean("Electric"))
-                return new Long[]{aNBT.getLong("MaxCharge"), aNBT.getLong("Voltage"), aNBT.getLong("Tier"), aNBT.getLong("SpecialData")};
-        }
-        return null;
-    }
-
-    public final long getRealCharge(ItemStack aStack) {
-        Long[] tStats = getElectricStats(aStack);
-        if (tStats == null) return 0;
-        if (tStats[3] > 0) return (int) (long) tStats[3];
-        NBTTagCompound tNBT = aStack.getTagCompound();
-        return tNBT == null ? 0 : tNBT.getLong("GT.ItemCharge");
     }
 
     @Override
