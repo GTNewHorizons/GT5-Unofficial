@@ -8,6 +8,7 @@ import gregtech.api.enums.TC_Aspects;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -24,11 +25,11 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
         super("detrav.metatool.01");
         INSTANCE = this;
         addTool(0, "Prospector's Pick", "", new DetravToolProPick(), new Object[]{DetravToolDictNames.craftingToolProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)});
-        addTool(2, "Repair tools","",new DetravRepairTool(),new Object[]{DetravToolDictNames.craftingRepairTool, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 8L)});
+        addTool(2, "Repair tools", "", new DetravRepairTool(), new Object[]{DetravToolDictNames.craftingRepairTool, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 8L)});
         addTool(100, "Electric Prospector's Scanner (LV)", "", new DetravToolLVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
         addTool(102, "Electric Prospector's Scanner (MV)", "", new DetravToolMVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
         addTool(104, "Electric Prospector's Scanner (HV)", "", new DetravToolHVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
-        addTool(106, "Portable Charger","", new DetravToolPortableCharger(), new Object[]{DetravToolDictNames.craftingToolPortableCharger, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.AURAM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
+        addTool(106, "Portable Charger", "", new DetravToolPortableCharger(), new Object[]{DetravToolDictNames.craftingToolPortableCharger, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.AURAM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
 
         setCreativeTab(DetravScannerMod.TAB_DETRAV);
     }
@@ -96,12 +97,13 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
         }
         return 0L;
     }
-    public final ItemStack getToolWithStatsPlus(int aToolID, int aAmount, Materials aPrimaryMaterial, Materials aSecondaryMaterial, long[] aElectricArray,long aLoss) {
-        return getToolWithStatsPlus(aToolID,aAmount,aPrimaryMaterial,aSecondaryMaterial,aElectricArray,aLoss,10000L);
+
+    public final ItemStack getToolWithStatsPlus(int aToolID, int aAmount, Materials aPrimaryMaterial, Materials aSecondaryMaterial, long[] aElectricArray, long aLoss) {
+        return getToolWithStatsPlus(aToolID, aAmount, aPrimaryMaterial, aSecondaryMaterial, aElectricArray, aLoss, 10000L);
     }
 
-    public final ItemStack getToolWithStatsPlus(int aToolID, int aAmount, Materials aPrimaryMaterial, Materials aSecondaryMaterial, long[] aElectricArray,long aLoss,long durability) {
-        ItemStack result = getToolWithStats(aToolID,aAmount,aPrimaryMaterial,aSecondaryMaterial,aElectricArray);
+    public final ItemStack getToolWithStatsPlus(int aToolID, int aAmount, Materials aPrimaryMaterial, Materials aSecondaryMaterial, long[] aElectricArray, long aLoss, long durability) {
+        ItemStack result = getToolWithStats(aToolID, aAmount, aPrimaryMaterial, aSecondaryMaterial, aElectricArray);
         NBTTagCompound aNBT = result.getTagCompound();
         if (aNBT != null) {
             aNBT = aNBT.getCompoundTag("GT.ToolStats");
@@ -111,5 +113,27 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
             aNBT.setLong("MaxDamage", durability);
         }
         return result;
+    }
+
+    public Long getToolGTDetravData(ItemStack aStack) {
+        NBTTagCompound aNBT = aStack.getTagCompound();
+        if (aNBT != null) {
+            aNBT = aNBT.getCompoundTag("GT.ToolStats");
+            if (aNBT != null)
+                return aNBT.getLong("DetravData");
+        }
+        return 0L;
+    }
+
+    public boolean setToolGTDetravData(ItemStack aStack, long data) {
+        NBTTagCompound aNBT = aStack.getTagCompound();
+        if (aNBT != null) {
+            aNBT = aNBT.getCompoundTag("GT.ToolStats");
+            if (aNBT != null) {
+                aNBT.setLong("DetravData", data);
+                return true;
+            }
+        }
+        return false;
     }
 }

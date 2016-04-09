@@ -15,6 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,19 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
     public ItemStack onItemRightClick(GT_MetaBase_Item aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
 
         if (!aWorld.isRemote) {
+            //Проверяем если нажат шифт
+            if (aPlayer.isSneaking()) {
+                long data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack);
+                if (data == 0) {
+                    aPlayer.addChatMessage(new ChatComponentText("Set Mode: Oil, Any Block"));
+                    DetravMetaGeneratedTool01.INSTANCE.setToolGTDetravData(aStack, 1);
+                } else {
+                    aPlayer.addChatMessage(new ChatComponentText("Set Mode: Ore, Any Rock Block"));
+                    DetravMetaGeneratedTool01.INSTANCE.setToolGTDetravData(aStack, 0);
+                }
+                return super.onItemRightClick(aItem, aStack, aWorld, aPlayer);
+            }
+
             //aPlayer.openGui();
             DetravMetaGeneratedTool01 tool = (DetravMetaGeneratedTool01) aItem;
             //aWorld.getChunkFromBlockCoords()
@@ -83,6 +97,19 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
         } else if (value < 1) {
             aPlayer.addChatMessage(new ChatComponentText(foundTexts[0]));
         } else
-            aPlayer.addChatMessage(new ChatComponentText(foundTexts[6] + name +": "+value));
+            aPlayer.addChatMessage(new ChatComponentText(foundTexts[6] + name + ": " + value));
+    }
+
+    public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+        long data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack);
+        if (data == 0)
+            return super.onItemUse(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ);
+        if (!aWorld.isRemote) {
+            FluidStack fStack = getUndergroundOil(aWorld,aX,aZ);
+            addChatMassageByValue(aPlayer,fStack.amount/5000,fStack.getLocalizedName());
+            if (!aPlayer.capabilities.isCreativeMode)
+                ((DetravMetaGeneratedTool01)aItem).doDamage(aStack, this.mCosts);
+        }
+        return true;
     }
 }
