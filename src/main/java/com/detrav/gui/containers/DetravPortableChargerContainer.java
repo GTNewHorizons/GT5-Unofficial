@@ -89,30 +89,31 @@ public class DetravPortableChargerContainer extends Container {
 
         //GT_ModHandler.ch
 
+        for(int forTry = 0; forTry<4;forTry++){
+            Long[] selfStats = DetravMetaGeneratedTool01.INSTANCE.getElectricStats(mItem);
+            if (selfStats == null) return;
 
-        Long[] selfStats = DetravMetaGeneratedTool01.INSTANCE.getElectricStats(mItem);
-        if(selfStats == null) return;
+            long selfCharge = DetravMetaGeneratedTool01.INSTANCE.getRealCharge(mItem);
+            if (selfCharge <= 0) return;
 
-        long selfCharge = DetravMetaGeneratedTool01.INSTANCE.getRealCharge(mItem);
-        if(selfCharge <=0) return;
+            long loss = DetravMetaGeneratedTool01.INSTANCE.getElectricStatsLoss(mItem);
+            if (loss < 0) return;
 
-        long loss = DetravMetaGeneratedTool01.INSTANCE.getElectricStatsLoss(mItem);
-        if(loss<0) return;
+            long energyToTransfer = (selfStats[1] - loss) * aTimer;
 
-        long energyToTransfer = (selfStats[1] - loss)*aTimer ;
+            int removeEnergy = GT_ModHandler.chargeElectricItem(item, (int) energyToTransfer, Integer.MAX_VALUE, false, false);
+            if (removeEnergy == 0) return;
+            GT_ModHandler.dischargeElectricItem(mItem, (int) (removeEnergy + loss * aTimer), Integer.MAX_VALUE, false, false, true);
 
-        int removeEnergy = GT_ModHandler.chargeElectricItem(item, (int) energyToTransfer, Integer.MAX_VALUE, false, false);
-        if(removeEnergy==0) return;
-        GT_ModHandler.dischargeElectricItem(mItem,(int)(removeEnergy+loss*aTimer),Integer.MAX_VALUE,false,false,true);
+            if (aWorld.isRemote) return;
+            if (aPlayer instanceof EntityPlayerMP) {
+                DetravPortableChargerPacket01 packet = new DetravPortableChargerPacket01();
+                packet.charge = selfCharge - removeEnergy + loss * aTimer;
+                DetravNetwork.INSTANCE.sendToPlayer(packet, (EntityPlayerMP) aPlayer);
 
-        if(aWorld.isRemote) return;
-        if(aPlayer instanceof EntityPlayerMP) {
-            DetravPortableChargerPacket01 packet = new DetravPortableChargerPacket01();
-            packet.charge = selfCharge - removeEnergy + loss * aTimer;
-            DetravNetwork.INSTANCE.sendToPlayer(packet, (EntityPlayerMP)aPlayer);
-
-            //crafters
-        }
+                //crafters
+            }
+        };
         //long max = DetravMetaGeneratedTool01.getToolMaxDamage(mItem);
         //double p = ((double)selfCharge)/((double)selfStats[0]);
         //DetravMetaGeneratedTool01.setToolDamage(mItem,(long) (max * p) + 200);
