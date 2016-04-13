@@ -39,7 +39,7 @@ public class DetravBiomeScannerCommand implements ICommand {
 
     @Override
     public String getCommandUsage(ICommandSender sender) {
-        return "DetravBiomeScanner radius name";
+        return "DetravBiomeScanner radius [name]";
     }
 
     @Override
