@@ -20,6 +20,7 @@ public class ProcessingDetravToolProPick implements gregtech.api.interfaces.IOre
     }
 
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+        if(!aPrefix.doGenerateItem(aMaterial)) return;;
         GT_ModHandler.
                 addShapelessCraftingRecipe(
                         DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(0, 1, aMaterial, aMaterial.mHandleMaterial, null),
