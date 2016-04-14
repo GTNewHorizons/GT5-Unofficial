@@ -16,6 +16,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.GregTech_API;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraft.client.settings.KeyBinding;
 
 @Mod(modid = DetravScannerMod.MODID, version = DetravScannerMod.VERSION,dependencies = "required-after:IC2;required-after:gregtech")
 public class DetravScannerMod
@@ -46,6 +47,8 @@ public class DetravScannerMod
         if (Config.hasChanged()){
             Config.save();
         }
+
+        proxy.onPreInit();
     }
 
         @EventHandler

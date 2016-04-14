@@ -2,6 +2,7 @@ package com.detrav.proxies;
 
 import com.detrav.DetravScannerMod;
 import com.detrav.enums.Textures01;
+import com.detrav.events.DetravKeyHandler;
 import com.detrav.gui.DetravGuiProPick;
 import gregtech.api.enums.Textures;
 import net.minecraft.client.Minecraft;
@@ -36,5 +37,11 @@ public class ClientProxy extends CommonProxy {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         player.openGui(DetravScannerMod.instance, DetravGuiProPick.GUI_ID,player.worldObj,(int)player.posX,(int)player.posY,(int)player.posZ);
         //Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("NetworkTested: " + Integer.toString(level)));
+    }
+    @Override
+    public void onPreInit()
+    {
+        super.onPreInit();
+        DetravKeyHandler.register();
     }
 }

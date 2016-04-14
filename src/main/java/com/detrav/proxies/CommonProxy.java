@@ -89,4 +89,9 @@ public class CommonProxy implements IGuiHandler {
     {
         player.openGui(DetravScannerMod.instance, DetravRepairToolGui.GUI_ID,player.worldObj,(int)player.posX,(int)player.posY,(int)player.posZ);
     }
+
+    public void onPreInit()
+    {
+
+    }
 }

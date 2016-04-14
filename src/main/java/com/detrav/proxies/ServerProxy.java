@@ -13,4 +13,9 @@ public class ServerProxy extends CommonProxy {
     public void onLoad() {
         super.onLoad();
     }
+    @Override
+    public void onPreInit()
+    {
+        super.onPreInit();
+    }
 }
