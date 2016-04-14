@@ -86,7 +86,10 @@ public class BlockBreakEventHandler {
         if(stack == null ) return false;
         World theWorld = event2.world;
         Block block = theWorld.getBlock(x, y, z);
-        if (!stack.getItem().canHarvestBlock(block, stack))
+        // dirt and pickaxe -> if(true && false) -> exit
+        // dirt and shovel -> if(true && false) -> exit
+
+        if (!stack.func_150998_b(block))
             return false;
 
         BlockEvent.BreakEvent event = onDetravBlockBreakEvent(event2.world, WorldSettings.GameType.SURVIVAL, (EntityPlayerMP) event2.getPlayer(), x, y, z);
