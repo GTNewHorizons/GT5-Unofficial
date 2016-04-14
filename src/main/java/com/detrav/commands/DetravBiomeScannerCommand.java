@@ -50,10 +50,10 @@ public class DetravBiomeScannerCommand implements ICommand {
     @Override
     public void processCommand(ICommandSender sender, String[] args) {
         try {
-            if(args.length>1) {
+            if(args.length>0) {
                 int aXaZ = Integer.parseInt(args[0]);
                 String name = null;
-                if(args.length==2)
+                if(args.length>1)
                 name = args[1].toLowerCase();
                 else
                 name = "";
@@ -68,9 +68,9 @@ public class DetravBiomeScannerCommand implements ICommand {
                     for (int j = cor.posZ - aXaZ, jj = 0; jj < 512; j += step, jj++) {
                         BiomeGenBase biome = w.getBiomeGenForCoords(i, j);
                         if(name.length()==0 || biome.biomeName.toLowerCase().contains(name)) {
-                            r.setSample(ii, jj, 0, biome.color & 0xFF);
+                            r.setSample(ii, jj, 0, (biome.color  >> 16) & 0xFF );
                             r.setSample(ii, jj, 1, (biome.color >> 8) & 0xFF);
-                            r.setSample(ii, jj, 2, (biome.color >> 16) & 0xFF);
+                            r.setSample(ii, jj, 2, biome.color & 0xFF);
                             r.setSample(ii, jj, 3, 0xFF);
                             if (!colors.containsKey(biome.biomeName))
                                 colors.put(biome.biomeName, biome.color);
