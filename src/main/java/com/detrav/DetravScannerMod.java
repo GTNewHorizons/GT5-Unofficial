@@ -1,6 +1,7 @@
 package com.detrav;
 
 import com.detrav.commands.DetravBiomeScannerCommand;
+import com.detrav.events.BlockBreakEventHandler;
 import com.detrav.proxies.CommonProxy;
 import com.detrav.utils.DetravCreativeTab;
 import com.detrav.net.DetravNetwork;
@@ -13,7 +14,6 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.GregTech_API;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
 
 @Mod(modid = DetravScannerMod.MODID, version = DetravScannerMod.VERSION,dependencies = "required-after:IC2;required-after:gregtech")
 public class DetravScannerMod
@@ -50,9 +50,9 @@ public class DetravScannerMod
     }
 
     @EventHandler
-    public void onPostLoad(FMLPostInitializationEvent aEvent)
-    {
+    public void onPostLoad(FMLPostInitializationEvent aEvent) {
         proxy.onPostLoad();
+        BlockBreakEventHandler.register();
     }
 
     @EventHandler

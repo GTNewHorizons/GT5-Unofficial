@@ -10,8 +10,7 @@ public class ServerProxy extends CommonProxy {
         super.onPostLoad();
     }
     @Override
-    public void onLoad()
-    {
+    public void onLoad() {
         super.onLoad();
     }
 }
