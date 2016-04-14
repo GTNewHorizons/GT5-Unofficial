@@ -10,10 +10,12 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gregtech.api.GregTech_API;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraftforge.common.config.Configuration;
 
 @Mod(modid = DetravScannerMod.MODID, version = DetravScannerMod.VERSION,dependencies = "required-after:IC2;required-after:gregtech")
 public class DetravScannerMod
@@ -34,8 +36,19 @@ public class DetravScannerMod
         GregTech_API.sAfterGTPreload.add(new DetravLoader());
         new DetravNetwork();
     }
-    
+
     @EventHandler
+    public void preInit(FMLPreInitializationEvent event) {
+        Configuration Config = new Configuration(event.getSuggestedConfigurationFile());
+        Config.load();
+
+
+        if (Config.hasChanged()){
+            Config.save();
+        }
+    }
+
+        @EventHandler
     public void init(FMLInitializationEvent event)
     {
 		// some example code
