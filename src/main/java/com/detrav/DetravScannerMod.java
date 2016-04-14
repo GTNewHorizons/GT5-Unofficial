@@ -22,7 +22,7 @@ import net.minecraft.client.settings.KeyBinding;
 public class DetravScannerMod
 {
     public static final String MODID = "detravscannermod";
-    public static final String VERSION = "0.9";
+    public static final String VERSION = "0.10";
 
     public static final CreativeTabs TAB_DETRAV = new DetravCreativeTab();
 
