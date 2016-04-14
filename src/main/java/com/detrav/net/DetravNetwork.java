@@ -31,7 +31,7 @@ public class DetravNetwork extends MessageToMessageCodec<FMLProxyPacket, DetravP
     {
         INSTANCE = this;
         this.mChannel = NetworkRegistry.INSTANCE.newChannel("DetravScanner", new ChannelHandler[]{this, new HandlerShared()});
-        this.mSubChannels = new DetravPacket[]{new DetravProPickPacket00(),new DetravPortableChargerPacket01()};
+        this.mSubChannels = new DetravPacket[]{new DetravProPickPacket00(),new DetravPortableChargerPacket01(), new DetravModeSwitchPacket02()};
     }
 
     @Override
@@ -49,6 +49,10 @@ public class DetravNetwork extends MessageToMessageCodec<FMLProxyPacket, DetravP
         ((FMLEmbeddedChannel) this.mChannel.get(Side.SERVER)).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.PLAYER);
         ((FMLEmbeddedChannel) this.mChannel.get(Side.SERVER)).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(aPlayer);
         ((FMLEmbeddedChannel) this.mChannel.get(Side.SERVER)).writeAndFlush(aPacket);
+    }
+    public void sendToServer(DetravPacket aPacket) {
+        ((FMLEmbeddedChannel) this.mChannel.get(Side.CLIENT)).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.TOSERVER);
+        ((FMLEmbeddedChannel) this.mChannel.get(Side.CLIENT)).writeAndFlush(aPacket);
     }
 
     @ChannelHandler.Sharable

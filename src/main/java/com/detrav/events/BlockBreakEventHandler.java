@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S23PacketBlockChange;
 import net.minecraft.tileentity.TileEntity;
@@ -37,6 +38,8 @@ public class BlockBreakEventHandler {
                     return;
                 if(player.capabilities.isCreativeMode)
                     return;
+                NBTTagCompound entityData = player.getEntityData();
+                if(entityData.getLong("detrav.minning.mode")==0) return;
                 Vec3 vec3 = Vec3.createVectorHelper(player.posX, player.posY + 1.62f, player.posZ);
                 Vec3 vec31 = ev.getPlayer().getLook(1.0F);
                 Vec3 vec32 = vec3.addVector(vec31.xCoord * 4.5F, vec31.yCoord * 4.5F, vec31.zCoord * 4.5F);
