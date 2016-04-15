@@ -3,10 +3,12 @@ package com.detrav.items;
 import com.detrav.DetravScannerMod;
 import com.detrav.enums.DetravToolDictNames;
 import com.detrav.items.tools.*;
+import com.detrav.utils.DetravCreativeTab;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.interfaces.IToolStats;
 import gregtech.api.items.GT_MetaGenerated_Tool;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -137,5 +139,43 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
             }
         }
         return false;
+    }
+
+    public void getDetravSubItems(Item item, CreativeTabs detravCreativeTab, List list) {
+
+        ItemStack dStack;
+
+        dStack = getToolWithStatsPlus(106, 1, Materials.Tin, Materials.StainlessSteel, new long[]{4 * 100000L, 32L, 1L, -3L}, 1);
+        setCharge(dStack,4 * 100000L);
+        list.add(dStack);
+        dStack = getToolWithStatsPlus(106, 1, Materials.Tin, Materials.StainlessSteel, new long[]{4 * 75000L, 32L, 1L, -3L}, 1);
+        setCharge(dStack,4 * 75000L);
+        list.add(dStack);
+        dStack = getToolWithStatsPlus(106, 1, Materials.Tin, Materials.StainlessSteel, new long[]{4 * 50000L, 32L, 1L, -3L}, 1);
+        setCharge(dStack,4 * 50000L);
+        list.add(dStack);
+        dStack = getToolWithStatsPlus(106, 1, Materials.AnnealedCopper, Materials.Titanium, new long[]{4 * 400000L, 128L, 2L, -3L}, 1);
+        setCharge(dStack,4 * 400000L);
+        list.add(dStack);
+        dStack = getToolWithStatsPlus(106, 1, Materials.AnnealedCopper, Materials.Titanium, new long[]{4 * 300000L, 128L, 2L, -3L}, 1);
+        setCharge(dStack,4 * 300000L);
+        list.add(dStack);
+        dStack = getToolWithStatsPlus(106, 1, Materials.AnnealedCopper, Materials.Titanium, new long[]{4 * 200000L, 128L, 2L, -3L}, 1);
+        setCharge(dStack,4 * 200000L);
+        list.add(dStack);
+        dStack = getToolWithStatsPlus(106, 1, Materials.Silver, Materials.TungstenSteel, new long[]{4 * 1600000L, 512L, 3L, -3L}, 1);
+        setCharge(dStack,4 * 1600000L);
+        list.add(dStack);
+        dStack = getToolWithStatsPlus(106, 1, Materials.Silver, Materials.TungstenSteel, new long[]{4 * 1200000L, 512L, 3L, -3L}, 1);
+        setCharge(dStack,4 * 1200000L);
+        list.add(dStack);
+        dStack = getToolWithStatsPlus(106, 1, Materials.Silver, Materials.TungstenSteel, new long[]{4 * 800000L, 512L, 3L, -3L}, 1);
+        setCharge(dStack,4 * 800000L);
+        list.add(dStack);
+
+        dStack = getToolWithStats(104, 1, Materials.Neutronium, Materials.TungstenSteel, new long[]{1600000L, 512L, 3L, -1L});
+        setCharge(dStack,1600000L);
+        list.add(dStack);
+
     }
 }
