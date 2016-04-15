@@ -2,6 +2,7 @@ package com.detrav.events;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import gregtech.api.items.GT_Generic_Item;
 import net.minecraft.block.Block;
 //import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,8 +20,11 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
+
+import java.lang.reflect.Method;
 
 /**
  * Created by wital_000 on 13.04.2016.
@@ -80,16 +84,25 @@ public class BlockBreakEventHandler {
 
     static private boolean tryHarvestBlock(int x, int y, int z,BlockEvent.BreakEvent event2) {
         if (!(event2.getPlayer() instanceof EntityPlayerMP))
-            return false;
+            return false;//если это не игрок то выходим
         EntityPlayer thisPlayerMP = event2.getPlayer();
         ItemStack stack = thisPlayerMP.getCurrentEquippedItem();
+        //получаем текущий тулс
         if(stack == null ) return false;
+        //выходим если в руках ничего нет
         World theWorld = event2.world;
         Block block = theWorld.getBlock(x, y, z);
+        //int blockMetadata = theWorld.getBlockMetadata(x, y, z);
         // dirt and pickaxe -> if(true && false) -> exit
         // dirt and shovel -> if(true && false) -> exit
 
-        if (!stack.func_150998_b(block))
+        //чекаем может ли предмет добыть блок
+        //херня какаято с этими названиями функций
+
+        //thisPlayerMP.addChatMessage(new ChatComponentText("Mining Speed: " + stack.getItem().getDigSpeed(stack,block,blockMetadata)));
+        if(!isToolEffective(stack,theWorld,x,y,z))
+            return false;
+        if ((stack.getItem() instanceof GT_Generic_Item) && !stack.func_150998_b(block))
             return false;
 
         BlockEvent.BreakEvent event = onDetravBlockBreakEvent(event2.world, WorldSettings.GameType.SURVIVAL, (EntityPlayerMP) event2.getPlayer(), x, y, z);
@@ -212,5 +225,29 @@ public class BlockBreakEventHandler {
             MinecraftForge.EVENT_BUS.register(handler);
             FMLCommonHandler.instance().bus().register(handler);
         }
+    }
+
+
+    public static boolean isToolEffective(ItemStack stack, World world, int x, int y, int z){
+        Block block = world.getBlock(x, y, z);
+        if(block.getBlockHardness(world, x, y, z) < 0) //unbreakable
+            return false;
+        else
+            return isToolEffective(stack, block, world.getBlockMetadata(x, y, z)) || block.getBlockHardness(world, x, y, z) == 0;
+    }
+
+    public static boolean isToolEffective(ItemStack stack, Block block, int meta){
+        if(block == null)
+            return false;
+
+        if(stack != null) {
+            for (String toolClass : stack.getItem().getToolClasses(stack)) {
+                if (toolClass.equals(block.getHarvestTool(meta)))
+                    return stack.getItem().getHarvestLevel(stack, toolClass) >= block.getHarvestLevel(meta);
+            }
+
+            return stack.getItem().canHarvestBlock(block, stack);
+        }
+        return false;
     }
 }
