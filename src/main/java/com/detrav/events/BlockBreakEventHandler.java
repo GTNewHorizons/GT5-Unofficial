@@ -102,7 +102,8 @@ public class BlockBreakEventHandler {
                     for (int j = ev.y - 1; j <= ev.y + 1; j++)
                         for (int k = ev.z - 1; k <= ev.z + 1; k++)
                             if (i != ev.x || j != ev.y || k != ev.z)
-                                tryHarvestBlock(i, j, k, ev);
+                                if (ev.block == ev.world.getBlock(i, j, k) && (ev.blockMetadata == ev.world.getBlockMetadata(i, j, k)))
+                                    tryHarvestBlock(i, j, k, ev);
             }
         }
     }
