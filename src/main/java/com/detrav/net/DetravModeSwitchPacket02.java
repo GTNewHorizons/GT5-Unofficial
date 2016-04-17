@@ -18,15 +18,15 @@ import java.util.ListIterator;
 public class DetravModeSwitchPacket02 extends DetravPacket {
 
     EntityPlayer player;
+    boolean back;
 
-    public DetravModeSwitchPacket02()
-    {
+    public DetravModeSwitchPacket02() {
         player = null;
     }
 
-    public DetravModeSwitchPacket02(EntityPlayer aPlayer)
-    {
+    public DetravModeSwitchPacket02(EntityPlayer aPlayer, boolean aBack) {
         player = aPlayer;
+        back = aBack;
     }
 
     @Override
@@ -40,6 +40,7 @@ public class DetravModeSwitchPacket02 extends DetravPacket {
         if (player != null)
             tOut.writeInt(player.getEntityId());
         else tOut.writeInt(Integer.MIN_VALUE);
+        tOut.writeBoolean(back);
         return tOut.toByteArray();
     }
 
@@ -48,35 +49,53 @@ public class DetravModeSwitchPacket02 extends DetravPacket {
         int id = aData.readInt();
         if (id == Integer.MIN_VALUE)
             return new DetravModeSwitchPacket02();
+        boolean aBack = aData.readBoolean();
         //ArrayList<EntityPlayerMP> allp = new ArrayList<EntityPlayerMP>();
         ListIterator itl;
         EntityPlayerMP temp = null;
-        for(int i = 0; i<MinecraftServer.getServer().worldServers.length; i++) {
+        for (int i = 0; i < MinecraftServer.getServer().worldServers.length; i++) {
             itl = MinecraftServer.getServer().worldServers[i].playerEntities.listIterator();
-            while(itl.hasNext()) {
+            while (itl.hasNext()) {
                 temp = (EntityPlayerMP) itl.next();
-                if(temp.getEntityId() == id)
-                    return new DetravModeSwitchPacket02(temp);
+                if (temp.getEntityId() == id)
+                    return new DetravModeSwitchPacket02(temp, aBack);
                 temp = null;
             }
         }
-        return new DetravModeSwitchPacket02(temp);
+        return new DetravModeSwitchPacket02(temp, aBack);
     }
 
     @Override
     public void process() {
-        if(player!=null) {
+        if (player != null) {
             NBTTagCompound aData = player.getEntityData();
             //aData.hasNoTags()
             long minningMode = aData.getLong("detrav.minning.mode");
-            if(minningMode == 0) {
-                aData.setLong("detrav.minning.mode", 1);
-                player.addChatMessage(new ChatComponentText("Mining mode 3x3 block"));
+            if (back) {
+                if (--minningMode < 0)
+                    minningMode = 4;
+            } else {
+                if (++minningMode > 4)
+                    minningMode = 0;
             }
-            else {
-                aData.setLong("detrav.minning.mode", 0);
-                player.addChatMessage(new ChatComponentText("Mining mode 1x1 block"));
+            switch ((int) minningMode) {
+                case 0:
+                    player.addChatMessage(new ChatComponentText("Mining mode 1x1, just one block"));
+                    break;
+                case 1:
+                    player.addChatMessage(new ChatComponentText("Mining mode 3x3 by side, nine blocks"));
+                    break;
+                case 2:
+                    player.addChatMessage(new ChatComponentText("Mining mode 3x3 horizontal, nine blocks"));
+                    break;
+                case 3:
+                    player.addChatMessage(new ChatComponentText("Mining mode 3x3 vertical, nine blocks"));
+                    break;
+                case 4:
+                    player.addChatMessage(new ChatComponentText("Mining mode 3x3x3 vein, twenty seven blocks by type"));
+                    break;
             }
+            aData.setLong("detrav.minning.mode", minningMode);
         }
     }
 }

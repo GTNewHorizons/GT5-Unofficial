@@ -20,19 +20,21 @@ public class DetravKeyHandler {
 
     @SubscribeEvent
     public void onKeyInput(InputEvent.KeyInputEvent event) {
-        if(modeSwitchKey.isPressed())
-        {
-            DetravNetwork.INSTANCE.sendToServer(new DetravModeSwitchPacket02(Minecraft.getMinecraft().thePlayer));
+        if (modeSwitchKey.isPressed()) {
+            if (Minecraft.getMinecraft().thePlayer.isSneaking())
+                DetravNetwork.INSTANCE.sendToServer(new DetravModeSwitchPacket02(Minecraft.getMinecraft().thePlayer, true));
+            else
+                DetravNetwork.INSTANCE.sendToServer(new DetravModeSwitchPacket02(Minecraft.getMinecraft().thePlayer, false));
             //Minecraft.getMinecraft().thePlayer.getEntityData().
         }
     }
 
     static boolean inited = false;
-    public static void register()
-    {
-        if(!inited) {
+
+    public static void register() {
+        if (!inited) {
             inited = true;
-            modeSwitchKey = new KeyBinding("key.detrav.modeSwitch", Keyboard.KEY_GRAVE,"key.categories.misc");
+            modeSwitchKey = new KeyBinding("key.detrav.modeSwitch", Keyboard.KEY_GRAVE, "key.categories.misc");
             ClientRegistry.registerKeyBinding(modeSwitchKey);
             DetravKeyHandler handler = new DetravKeyHandler();
             MinecraftForge.EVENT_BUS.register(handler);
