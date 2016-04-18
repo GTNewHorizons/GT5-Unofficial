@@ -128,7 +128,8 @@ public class BlockBreakEventHandler {
         //thisPlayerMP.addChatMessage(new ChatComponentText("Mining Speed: " + stack.getItem().getDigSpeed(stack,block,blockMetadata)));
         if (!isToolEffective(stack, theWorld, x, y, z))
             return false;
-        if ((stack.getItem() instanceof GT_Generic_Item) && !stack.func_150998_b(block))
+        int blockMetadata = theWorld.getBlockMetadata(x, y, z);
+        if ((stack.getItem() instanceof GT_Generic_Item) && !(stack.getItem().getDigSpeed(stack, block, blockMetadata) > 0.0F))
             return false;
 
         BlockEvent.BreakEvent event = onDetravBlockBreakEvent(event2.world, WorldSettings.GameType.SURVIVAL, (EntityPlayerMP) event2.getPlayer(), x, y, z);
@@ -138,11 +139,11 @@ public class BlockBreakEventHandler {
         if (stack != null && stack.getItem().onBlockStartBreak(stack, x, y, z, thisPlayerMP)) {
             return false;
         }
-        int l = theWorld.getBlockMetadata(x, y, z);
+
         theWorld.playAuxSFXAtEntity(thisPlayerMP, 2001, x, y, z, Block.getIdFromBlock(block) + (theWorld.getBlockMetadata(x, y, z) << 12));
         boolean flag = false;
         ItemStack itemstack = thisPlayerMP.getCurrentEquippedItem();
-        boolean flag1 = block.canHarvestBlock(thisPlayerMP, l);
+        boolean flag1 = block.canHarvestBlock(thisPlayerMP, blockMetadata);
 
         if (itemstack != null) {
             itemstack.func_150999_a(theWorld, block, x, y, z, thisPlayerMP);
@@ -152,7 +153,7 @@ public class BlockBreakEventHandler {
         }
         flag = removeBlock(x, y, z, flag1, event);
         if (flag && flag1) {
-            block.harvestBlock(theWorld, thisPlayerMP, x, y, z, l);
+            block.harvestBlock(theWorld, thisPlayerMP, x, y, z, blockMetadata);
         }
         if (flag && event != null) {
             block.dropXpOnBlockBreak(theWorld, x, y, z, event.getExpToDrop());
