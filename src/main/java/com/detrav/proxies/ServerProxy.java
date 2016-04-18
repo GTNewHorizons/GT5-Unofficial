@@ -5,17 +5,17 @@ package com.detrav.proxies;
  */
 public class ServerProxy extends CommonProxy {
     @Override
-    public void onPostLoad()
-    {
+    public void onPostLoad() {
         super.onPostLoad();
     }
+
     @Override
     public void onLoad() {
         super.onLoad();
     }
+
     @Override
-    public void onPreInit()
-    {
+    public void onPreInit() {
         super.onPreInit();
     }
 }
