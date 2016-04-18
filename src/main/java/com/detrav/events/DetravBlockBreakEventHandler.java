@@ -14,22 +14,17 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S23PacketBlockChange;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
-
-import java.lang.reflect.Method;
 
 /**
  * Created by wital_000 on 13.04.2016.
  */
-public class BlockBreakEventHandler {
+public class DetravBlockBreakEventHandler {
     @SubscribeEvent
     public void onBreakBlock(BlockEvent.BreakEvent ev) {
         if (ev.isCanceled())
@@ -238,7 +233,7 @@ public class BlockBreakEventHandler {
     public static void register() {
         if (!inited) {
             inited = true;
-            BlockBreakEventHandler handler = new BlockBreakEventHandler();
+            DetravBlockBreakEventHandler handler = new DetravBlockBreakEventHandler();
             MinecraftForge.EVENT_BUS.register(handler);
             FMLCommonHandler.instance().bus().register(handler);
         }

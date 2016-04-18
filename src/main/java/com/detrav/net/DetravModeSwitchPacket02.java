@@ -96,6 +96,9 @@ public class DetravModeSwitchPacket02 extends DetravPacket {
                     break;
             }
             aData.setLong("detrav.minning.mode", minningMode);
+
+            if (player instanceof EntityPlayerMP)
+                DetravNetwork.INSTANCE.sendToPlayer(new DetravModePacket03(player), (EntityPlayerMP) player);
         }
     }
 }

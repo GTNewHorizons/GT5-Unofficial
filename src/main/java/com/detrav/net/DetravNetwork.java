@@ -31,7 +31,13 @@ public class DetravNetwork extends MessageToMessageCodec<FMLProxyPacket, DetravP
     {
         INSTANCE = this;
         this.mChannel = NetworkRegistry.INSTANCE.newChannel("DetravScanner", new ChannelHandler[]{this, new HandlerShared()});
-        this.mSubChannels = new DetravPacket[]{new DetravProPickPacket00(),new DetravPortableChargerPacket01(), new DetravModeSwitchPacket02()};
+        this.mSubChannels = new DetravPacket[]
+                {
+                        new DetravProPickPacket00(),
+                        new DetravPortableChargerPacket01(),
+                        new DetravModeSwitchPacket02(),
+                        new DetravModePacket03()
+                };
     }
 
     @Override
