@@ -1,12 +1,10 @@
 package com.detrav.net;
 
-import com.detrav.DetravScannerMod;
-import com.detrav.events.DetravBlockSideRenderEventHandler;
+import com.detrav.events.DetravDrawBlockHighlightEventHandler;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
 
 /**
  * Created by wital_000 on 18.04.2016.
@@ -54,6 +52,6 @@ public class DetravModePacket03 extends DetravPacket {
 
     @Override
     public void process() {
-        DetravBlockSideRenderEventHandler.modeBlockBreak = mode;
+        DetravDrawBlockHighlightEventHandler.modeBlockBreak = mode;
     }
 }

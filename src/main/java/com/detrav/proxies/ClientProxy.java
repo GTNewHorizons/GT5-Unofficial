@@ -2,6 +2,7 @@ package com.detrav.proxies;
 
 import com.detrav.DetravScannerMod;
 import com.detrav.enums.Textures01;
+import com.detrav.events.DetravDrawBlockHighlightEventHandler;
 import com.detrav.events.DetravKeyHandler;
 import com.detrav.gui.DetravGuiProPick;
 import gregtech.api.enums.Textures;
@@ -22,6 +23,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void onPostLoad() {
         super.onPostLoad();
+        DetravDrawBlockHighlightEventHandler.register();
         //Textures.ItemIcons.CustomIcon test = new Textures.ItemIcons.CustomIcon("iconsets/PRO_PICK_HEAD");
         //test.run();
 
