@@ -52,9 +52,12 @@ public class DetravBlockBreakEventHandler {
                     side = 0;
                     break;
                 case 3:
-                    if ((-135 <= ev.getPlayer().rotationYaw && ev.getPlayer().rotationYaw <= -45) || (-315 <= ev.getPlayer().rotationYaw && ev.getPlayer().rotationYaw <= -225))
+                    float rotationYaw = ev.getPlayer().rotationYaw;
+                    while (rotationYaw > 0) rotationYaw -= 360F;
+                    while (rotationYaw < -360) rotationYaw += 360F;
+                    if ((-135 <= rotationYaw && rotationYaw <= -45) || (-315 <= rotationYaw && rotationYaw <= -225))
                         side = 4;
-                    else if ((-225 <= ev.getPlayer().rotationYaw && ev.getPlayer().rotationYaw <= -135) || -45 <= ev.getPlayer().rotationYaw || ev.getPlayer().rotationYaw <= -315)
+                    else if ((-225 <= rotationYaw && rotationYaw <= -135) || -45 <= rotationYaw || rotationYaw <= -315)
                         side = 2;
                     else side = -1;
                     break;
