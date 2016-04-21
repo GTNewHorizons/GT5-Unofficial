@@ -15,8 +15,10 @@ public class LoadedMods {
 	public static boolean Thaumcraft = false;
 	public static boolean Extra_Utils = false;
 	public static boolean PneumaticCraft = false;
-	private static int totalMods;
+	public static boolean MorePlanets = false;
 
+	
+	private static int totalMods;
 	public static void checkLoaded(){
 		Utils.LOG_INFO("Looking for optional mod prereqs.");
 		if (Loader.isModLoaded("gregtech") == true ){
@@ -53,6 +55,10 @@ public class LoadedMods {
 		}
 		if (Loader.isModLoaded("PneumaticCraft") == true){
 			PneumaticCraft = true;
+			totalMods++;
+		}
+		if (Loader.isModLoaded("MorePlanet") == true){
+			MorePlanets  = true;
 			totalMods++;
 		}
 	

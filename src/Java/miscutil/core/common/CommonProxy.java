@@ -4,6 +4,14 @@ import static miscutil.core.lib.CORE.DEBUG;
 import static miscutil.core.lib.LoadedMods.Gregtech;
 import gregtech.api.util.GT_OreDictUnificator;
 import miscutil.core.block.ModBlocks;
+import miscutil.core.common.compat.COMPAT_BigReactors;
+import miscutil.core.common.compat.COMPAT_EnderIO;
+import miscutil.core.common.compat.COMPAT_ExtraUtils;
+import miscutil.core.common.compat.COMPAT_MorePlanets;
+import miscutil.core.common.compat.COMPAT_PneumaticCraft;
+import miscutil.core.common.compat.COMPAT_RFTools;
+import miscutil.core.common.compat.COMPAT_SimplyJetpacks;
+import miscutil.core.common.compat.COMPAT_Thaumcraft;
 import miscutil.core.gui.ModGUI;
 import miscutil.core.handler.registration.RegistrationHandler;
 import miscutil.core.item.ModItems;
@@ -72,8 +80,8 @@ public class CommonProxy {
 
 	public void postInit(FMLPostInitializationEvent e) {
 
-		
-		
+
+
 	}
 
 	public void registerNetworkStuff(){
@@ -94,20 +102,15 @@ public class CommonProxy {
 
 	}
 
+	@SuppressWarnings("static-method")
 	public void registerOreDict(){
 
 		Utils.LOG_INFO("Registering Ingots & Plates with OreDict.");
 		//In-house
-		
+
 		//tools
 		GT_OreDictUnificator.registerOre("craftingToolSandHammer", new ItemStack(ModItems.itemSandstoneHammer));
-		
-		//Ingots
-		
-		
-		//OreDictionary.registerOre("ingotBloodSteel", new ItemStack(ModItems.itemIngotBloodSteel));
 		GT_OreDictUnificator.registerOre("ingotBloodSteel", new ItemStack(ModItems.itemIngotBloodSteel));
-		//OreDictionary.registerOre("ingotStaballoy", new ItemStack(ModItems.itemIngotStaballoy));
 		GT_OreDictUnificator.registerOre("ingotStaballoy", new ItemStack(ModItems.itemIngotStaballoy));
 
 		//Plates
@@ -117,43 +120,66 @@ public class CommonProxy {
 		//Blocks
 		GT_OreDictUnificator.registerOre("blockStaballoy", new ItemStack(Item.getItemFromBlock(ModBlocks.blockStaballoy)));
 		OreDictionary.registerOre("blockBloodSteel", new ItemStack(ModBlocks.blockBloodSteel));
-		
-		
+
+
 		for(int i=1; i<=10; i++){
-		GT_OreDictUnificator.registerOre("bufferCore_"+CORE.VOLTAGES[i-1], new ItemStack(Utils.getItem("miscutils:item.itemBufferCore"+i)));
+			GT_OreDictUnificator.registerOre("bufferCore_"+CORE.VOLTAGES[i-1], new ItemStack(Utils.getItem("miscutils:item.itemBufferCore"+i)));
 		}
 
 
 		//InterMod
 		if (LoadedMods.Big_Reactors){
-			GT_OreDictUnificator.registerOre("plateBlutonium", new ItemStack(ModItems.itemPlateBlutonium));
-			GT_OreDictUnificator.registerOre("plateCyanite", new ItemStack(ModItems.itemPlateCyanite));
-			GT_OreDictUnificator.registerOre("plateLudicrite", new ItemStack(ModItems.itemPlateLudicrite));
+			COMPAT_BigReactors.OreDict();
 		}
 		if (LoadedMods.EnderIO){
-			GT_OreDictUnificator.registerOre("plateConductiveIron", new ItemStack(ModItems.itemPlateConductiveIron));
-			GT_OreDictUnificator.registerOre("plateDarkSteel", new ItemStack(ModItems.itemPlateDarkSteel));
-			GT_OreDictUnificator.registerOre("plateElectricalSteel", new ItemStack(ModItems.itemPlateElectricalSteel));
-			GT_OreDictUnificator.registerOre("plateEnergeticAlloy", new ItemStack(ModItems.itemPlateEnergeticAlloy));
-			GT_OreDictUnificator.registerOre("platePulsatingIron", new ItemStack(ModItems.itemPlatePulsatingIron));
-			GT_OreDictUnificator.registerOre("plateRedstoneAlloy", new ItemStack(ModItems.itemPlateRedstoneAlloy));
-			GT_OreDictUnificator.registerOre("plateSoularium", new ItemStack(ModItems.itemPlateSoularium));
-			GT_OreDictUnificator.registerOre("plateVibrantAlloy", new ItemStack(ModItems.itemPlateVibrantAlloy));
+			COMPAT_EnderIO.OreDict();
+		}
+		if (LoadedMods.MorePlanets){
+			COMPAT_MorePlanets.OreDict();
 		}
 		if (LoadedMods.Simply_Jetpacks){
-			GT_OreDictUnificator.registerOre("plateEnrichedSoularium", new ItemStack(ModItems.itemPlateEnrichedSoularium));
-
+			COMPAT_SimplyJetpacks.OreDict();
 		}
 		if (LoadedMods.RFTools){
-			GT_OreDictUnificator.registerOre("plateDimensionShard", new ItemStack(ModItems.itemPlateDimensionShard));
-
+			COMPAT_RFTools.OreDict();
 		}
 		if (LoadedMods.Thaumcraft){
-			try{
+			COMPAT_Thaumcraft.OreDict();
+		}
+		if (LoadedMods.Extra_Utils){
+			COMPAT_ExtraUtils.OreDict();
+		}
+		if (LoadedMods.PneumaticCraft){
+			COMPAT_PneumaticCraft.OreDict();
+		}
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@SuppressWarnings("static-method")
+	public int addArmor(String armor) {
+		return 0;
+	}
+
+}
+
+
+/*
+ * 
+ * try{
 			Item em = null;
 			//Item em1 = GameRegistry.findItem("ThaumCraft", "ItemResource:16");
 			//Item em2 = GameRegistry.findItem("ThaumCraft", "<ItemResource:16>");
-			
+
 			Item em1 = Utils.getItem("Thaumcraft:ItemResource:16");
 			Utils.LOG_WARNING("Found: "+em1.toString());
 			if (!em1.equals(null)){
@@ -174,38 +200,20 @@ public class CommonProxy {
 			} catch (NullPointerException e) {
 				Utils.LOG_ERROR("Void Metal Ingot not found. [NULL]");
 	        }
-			GT_OreDictUnificator.registerOre("plateVoidMetal", new ItemStack(ModItems.itemPlateVoidMetal));
-			//System.exit(0);
-			
-		}
-		if (LoadedMods.Extra_Utils){
-			try {
-			Item em = null;			
-			Item em1 = Utils.getItem("ExtraUtilities:bedrockiumIngot");
-			Utils.LOG_WARNING("Found: "+em1.toString());
-			if (!em1.equals(null)){
-				em = em1;
-			}
-			if (!em.equals(null)){
-				GT_OreDictUnificator.registerOre("ingotBedrockium", new ItemStack(em));
-			}
-			else {
-				Utils.LOG_WARNING("Bedrockium Ingot not found.");
-			}
-			} catch (NullPointerException e) {
-				Utils.LOG_ERROR("Bedrockium Ingot not found. [NULL]");
-	        }
-			
-			GT_OreDictUnificator.registerOre("plateBedrockium", new ItemStack(ModItems.itemPlateBedrockium));
-		}
-		if (LoadedMods.PneumaticCraft){
-			GT_OreDictUnificator.registerOre("plateCompressedIron", new ItemStack(ModItems.itemPlateCompressedIron));
-		}
-		//Misc
-	}
 
-	public int addArmor(String armor) {
-		return 0;
-	}
-
+  try {
+Item em = null;			
+Item em1 = Utils.getItem("ExtraUtilities:bedrockiumIngot");
+Utils.LOG_WARNING("Found: "+em1.toString());
+if (!em1.equals(null)){
+	em = em1;
 }
+if (!em.equals(null)){
+	GT_OreDictUnificator.registerOre("ingotBedrockium", new ItemStack(em));
+}
+else {
+	Utils.LOG_WARNING("Bedrockium Ingot not found.");
+}
+} catch (NullPointerException e) {
+	Utils.LOG_ERROR("Bedrockium Ingot not found. [NULL]");
+}*/

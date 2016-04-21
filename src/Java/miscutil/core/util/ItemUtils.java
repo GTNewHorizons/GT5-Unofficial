@@ -1,5 +1,7 @@
 package miscutil.core.util;
 
+import gregtech.api.util.GT_OreDictUnificator;
+
 import java.util.ArrayList;
 
 import miscutil.core.handler.registration.RegistrationHandler;
@@ -36,6 +38,27 @@ public class ItemUtils {
 			}
 		}
 		return null;
+	}
+	
+	public static void getItemForOreDict(String FQRN, String oreDictName, String itemName, int meta){
+		try {
+			Item em = null;			
+			Item em1 = Utils.getItem(FQRN);
+			Utils.LOG_WARNING("Found: "+em1.getUnlocalizedName()+":"+meta);
+			if (em1 != null){
+				em = em1;
+			}
+			if (em != null){
+				
+				ItemStack metaStack = new ItemStack(em,1,meta);
+				GT_OreDictUnificator.registerOre(oreDictName, metaStack);
+				
+				/*ItemStack itemStackWithMeta = new ItemStack(em,1,meta);
+				GT_OreDictUnificator.registerOre(oreDictName, new ItemStack(itemStackWithMeta.getItem()));*/
+			}
+			} catch (NullPointerException e) {
+				Utils.LOG_ERROR(itemName+" not found. [NULL]");
+	        }
 	}
 
 	public static void recipeBuilder(Object slot_1, Object slot_2, Object slot_3, Object slot_4, Object slot_5, Object slot_6, Object slot_7, Object slot_8, Object slot_9, ItemStack resultItem){	
