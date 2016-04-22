@@ -60,8 +60,8 @@ extends GT_Block_Casings_Abstract {
                 return Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
             case 2:
                 return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
-			case 11:
-				return Textures.BlockIcons.MACHINE_HEATPROOFCASING.getIcon();
+			case 10:
+				return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
 			case 12:
 				return Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL.getIcon();
 			case 13:

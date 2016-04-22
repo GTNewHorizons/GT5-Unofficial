@@ -18,21 +18,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GT_MetaTileEntity_LargeIndustrialCentrifuge
+public class GregtechMetaLargeIndustrialCentrifuge
         extends GT_MetaTileEntity_MultiBlockBase {
     private static boolean controller;
 
-    public GT_MetaTileEntity_LargeIndustrialCentrifuge(int aID, String aName, String aNameRegional) {
+    public GregtechMetaLargeIndustrialCentrifuge(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public GT_MetaTileEntity_LargeIndustrialCentrifuge(String aName) {
+    public GregtechMetaLargeIndustrialCentrifuge(String aName) {
         super(aName);
     }
 
     @Override
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_LargeIndustrialCentrifuge(this.mName);
+        return new GregtechMetaLargeIndustrialCentrifuge(this.mName);
     }
 
     @Override
