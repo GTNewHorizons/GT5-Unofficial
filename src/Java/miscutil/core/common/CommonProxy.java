@@ -19,7 +19,7 @@ import miscutil.core.lib.CORE;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.tileentities.ModTileEntities;
 import miscutil.core.util.Utils;
-import miscutil.gregtech.init.InitGregtech;
+import miscutil.gregtech.api.init.InitGregtech;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;

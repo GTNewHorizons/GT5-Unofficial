@@ -3,7 +3,7 @@ package miscutil.core.block;
 import miscutil.core.block.antigrief.TowerDevice;
 import miscutil.core.creativetabs.AddToCreativeTab;
 import miscutil.core.util.Utils;
-import miscutil.gregtech.metatileentity.implementations.GregtechMetaCasingBlocks;
+import miscutil.gregtech.api.metatileentity.implementations.GregtechMetaCasingBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import cpw.mods.fml.common.registry.GameRegistry;

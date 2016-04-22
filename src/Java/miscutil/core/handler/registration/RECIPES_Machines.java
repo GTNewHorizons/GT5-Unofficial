@@ -3,7 +3,7 @@ package miscutil.core.handler.registration;
 import gregtech.api.enums.ItemList;
 import miscutil.core.util.ItemUtils;
 import miscutil.core.util.Utils;
-import miscutil.gregtech.enums.GregtechItemList;
+import miscutil.gregtech.api.enums.GregtechItemList;
 import net.minecraft.item.ItemStack;
 
 public class RECIPES_Machines {
@@ -23,7 +23,10 @@ public class RECIPES_Machines {
 	static ItemStack RECIPE_Buffer_ZPM = GregtechItemList.Energy_Buffer_1by1_ZPM.get(1);
 	static ItemStack RECIPE_Buffer_UV = GregtechItemList.Energy_Buffer_1by1_UV.get(1);
 	static ItemStack RECIPE_Buffer_MAX = GregtechItemList.Energy_Buffer_1by1_MAX.get(1);
-	
+	static ItemStack RECIPE_IndustrialCentrifuge = GregtechItemList.Industrial_Centrifuge.get(1);
+	static ItemStack RECIPE_IndustrialCentrifugeCasing = GregtechItemList.Casing_Centrifuge1.get(1);
+	static ItemStack RECIPE_IndustrialCentrifugeCasingVibration = GregtechItemList.Casing_Centrifuge2.get(1);
+
 
 	//Buffer Cores
 	static ItemStack RECIPE_BufferCore_ULV = Utils.getItemStack("miscutils:item.itemBufferCore1", 1);
@@ -100,10 +103,8 @@ public class RECIPES_Machines {
 	//Pipes
 	static String pipeLargeCopper="pipeLargeCopper";
 	static String pipeHugeSteel="pipeHugeSteel";
-
-	//Pumps
-	//gregtech:gt.metaitem.01:32611
-	static ItemStack pump_MV = ItemList.Electric_Pump_MV.get(1);
+	static String pipeHugeStainlessSteel="pipeHugeStainlessSteel";
+	static String pipeHugeTitanium="pipeHugeTitanium";
 
 	//Lava Boiler
 	static ItemStack boiler_Coal = ItemList.Machine_Bronze_Boiler.get(1);
@@ -125,6 +126,52 @@ public class RECIPES_Machines {
 	static String circuitElite = "circuitElite";
 	static String circuitMaster = "circuitMaster";
 	static String circuitUltimate = "circuitUltimate";
+	
+	//Machine Components
+	static ItemStack electricMotor_LV = ItemList.Electric_Motor_LV.get(1);
+	static ItemStack electricMotor_MV = ItemList.Electric_Motor_MV.get(1);
+	static ItemStack electricMotor_HV = ItemList.Electric_Motor_HV.get(1);
+	static ItemStack electricMotor_EV = ItemList.Electric_Motor_EV.get(1);
+	static ItemStack electricMotor_IV = ItemList.Electric_Motor_IV.get(1);
+	static ItemStack electricPump_LV = ItemList.Electric_Pump_LV.get(1);
+	static ItemStack electricPump_MV = ItemList.Electric_Pump_MV.get(1);
+	static ItemStack electricPump_HV = ItemList.Electric_Pump_HV.get(1);
+	static ItemStack electricPump_EV = ItemList.Electric_Pump_EV.get(1);
+	static ItemStack electricPump_IV = ItemList.Electric_Pump_IV.get(1);
+	static ItemStack electricPiston_LV = ItemList.Electric_Piston_LV.get(1);
+	static ItemStack electricPiston_MV = ItemList.Electric_Piston_MV.get(1);
+	static ItemStack electricPiston_HV = ItemList.Electric_Piston_HV.get(1);
+	static ItemStack electricPiston_EV = ItemList.Electric_Piston_EV.get(1);
+	static ItemStack electricPiston_IV = ItemList.Electric_Piston_IV.get(1);
+	static ItemStack robotArm_LV = ItemList.Robot_Arm_LV.get(1);
+	static ItemStack robotArm_MV = ItemList.Robot_Arm_MV.get(1);
+	static ItemStack robotArm_HV = ItemList.Robot_Arm_HV.get(1);
+	static ItemStack robotArm_EV = ItemList.Robot_Arm_EV.get(1);
+	static ItemStack robotArm_IV = ItemList.Robot_Arm_IV.get(1);
+	static ItemStack conveyorModule_LV = ItemList.Conveyor_Module_LV.get(1);
+	static ItemStack conveyorModule_MV = ItemList.Conveyor_Module_MV.get(1);
+	static ItemStack conveyorModule_HV = ItemList.Conveyor_Module_HV.get(1);
+	static ItemStack conveyorModule_EV = ItemList.Conveyor_Module_EV.get(1);
+	static ItemStack conveyorModule_IV = ItemList.Conveyor_Module_IV.get(1);
+	static ItemStack emitter_LV = ItemList.Emitter_LV.get(1);
+	static ItemStack emitter_MV = ItemList.Emitter_MV.get(1);
+	static ItemStack emitter_HV = ItemList.Emitter_HV.get(1);
+	static ItemStack emitter_EV = ItemList.Emitter_EV.get(1);
+	static ItemStack emitter_IV = ItemList.Emitter_IV.get(1);
+	static ItemStack fieldGenerator_LV = ItemList.Field_Generator_LV.get(1);
+	static ItemStack fieldGenerator_MV = ItemList.Field_Generator_MV.get(1);
+	static ItemStack fieldGenerator_HV = ItemList.Field_Generator_HV.get(1);
+	static ItemStack fieldGenerator_EV = ItemList.Field_Generator_EV.get(1);
+	static ItemStack fieldGenerator_IV = ItemList.Field_Generator_IV.get(1);
+	static ItemStack sensor_LV = ItemList.Sensor_LV.get(1);
+	static ItemStack sensor_MV = ItemList.Sensor_MV.get(1);
+	static ItemStack sensor_HV = ItemList.Sensor_HV.get(1);
+	static ItemStack sensor_EV = ItemList.Sensor_EV.get(1);
+	static ItemStack sensor_IV = ItemList.Sensor_IV.get(1);
+	
+	
+	
+	//RobotArm, Conveyor, Emitter, Sensor, Field Generator
 
 
 	public static final void RECIPES_LOAD(){
@@ -263,7 +310,7 @@ public class RECIPES_Machines {
 		//Steam Condenser
 		ItemUtils.recipeBuilder(
 				pipeLargeCopper, pipeHugeSteel, pipeLargeCopper,
-				plateEnergeticAlloy, pump_MV, plateEnergeticAlloy,
+				plateEnergeticAlloy, electricPump_HV, plateEnergeticAlloy,
 				plateEnergeticAlloy, pipeLargeCopper, plateEnergeticAlloy,
 				RECIPE_SteamCondenser);
 
@@ -280,6 +327,23 @@ public class RECIPES_Machines {
 				"plateAnyIron", blockBricks, "plateAnyIron",
 				"plateAnyIron", RECIPES_Tools.craftingToolWrench, "plateAnyIron",
 				RECIPE_IronPlatedBricks);
+
+		
+		
+		
+		//Industrial Centrifuge
+		ItemUtils.recipeBuilder(
+				circuitElite, pipeHugeStainlessSteel, circuitElite,
+				plateTier6, electricPump_EV, plateTier6,
+				plateTier8, machineCasing_EV, plateTier8,
+				RECIPE_IndustrialCentrifuge);
+
+		//Steam Condenser
+		ItemUtils.recipeBuilder(
+				plateTier6, "stickElectrum", plateTier6,
+				plateTier8, "stickElectrum", plateTier8,
+				plateTier6, "stickElectrum", plateTier6,
+				RECIPE_IndustrialCentrifugeCasing);
 
 
 		Utils.LOG_INFO("Done loading recipes for the Various machine blocks.");
