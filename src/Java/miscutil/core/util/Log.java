@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 public final class Log
 {
-  public static final Logger LOGGER = LogManager.getLogger("EnderIO");
+  public static final Logger LOGGER = LogManager.getLogger("MiscUtils");
   
   public static void warn(String msg)
   {

@@ -1,4 +1,4 @@
-package miscutil.gregtech.api.metatileentity.implementations;
+package miscutil.gregtech.common.machines.multi;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;

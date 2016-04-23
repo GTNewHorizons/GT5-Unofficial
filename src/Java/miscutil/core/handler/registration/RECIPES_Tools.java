@@ -1,7 +1,7 @@
 package miscutil.core.handler.registration;
 
 import miscutil.core.item.ModItems;
-import miscutil.core.util.ItemUtils;
+import miscutil.core.util.UtilsItems;
 import miscutil.core.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -130,42 +130,42 @@ public class RECIPES_Tools {
 	
 	private static void run(){
 		//Staballoy Pickaxe
-		ItemUtils.recipeBuilder(
+		UtilsItems.recipeBuilder(
 				plateStaballoy, plateStaballoy, ingotStaballoy,
 				craftingToolFile, stickTungsten, craftingToolHardHammer,
 				craftingToolWrench, stickTungsten, craftingToolHardHammer,
 				RECIPE_StaballoyPickaxe);
 		
 		//Staballoy Axe
-		ItemUtils.recipeBuilder(
+		UtilsItems.recipeBuilder(
 				plateStaballoy, ingotStaballoy, craftingToolHardHammer,
 				plateStaballoy, stickTungsten, craftingToolHardHammer,
 				craftingToolFile, stickTungsten, craftingToolWrench,
 				RECIPE_StaballoyAxe);
 		
 		//Cobble to Sand
-		ItemUtils.recipeBuilder(
+		UtilsItems.recipeBuilder(
 				CobbleStone, CobbleStone, CobbleStone,
 				CobbleStone, sandHammer, CobbleStone,
 				CobbleStone, CobbleStone, CobbleStone,
 				RECIPE_Sand);
 		
 		//Sand to Sandstone
-		ItemUtils.recipeBuilder(
+		UtilsItems.recipeBuilder(
 				Sand, Sand, Sand,
 				Sand, sandHammer, Sand,
 				Sand, Sand, Sand,
 				RECIPE_SandStone);
 		
 		//Sandstone Hammer
-		ItemUtils.recipeBuilder(
+		UtilsItems.recipeBuilder(
 				plateElectrum, ingotElectrum, plateElectrum,
 				craftingToolScrewdriver, stickBronze, craftingToolHardHammer,
 				null, stickSteel, null,
 				RECIPE_SandstoneHammer);
 		
 		//Division Sigil
-		ItemUtils.recipeBuilder(
+		UtilsItems.recipeBuilder(
 				"plateNetherStar", "gemIridium", "plateNetherStar",
 				"plateIridium", craftingToolHardHammer, "plateIridium",
 				"plateNetherStar", "gemIridium", "plateNetherStar",

@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public class ItemUtils {
+public class UtilsItems {
 
 	public static ItemStack getItemStackOfItem(Boolean modToCheck, String mod_itemname_meta){
 		if (modToCheck){

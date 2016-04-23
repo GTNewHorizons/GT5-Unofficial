@@ -1,4 +1,4 @@
-package miscutil.gregtech.api.util;
+package miscutil.core.util;
 
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.IChatComponent;

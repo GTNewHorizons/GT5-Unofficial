@@ -3,7 +3,7 @@ package miscutil.core.item.tool.staballoy;
 import java.util.List;
 
 import miscutil.core.lib.CORE;
-import miscutil.core.util.MiningMethods;
+import miscutil.core.util.UtilsMining;
 import miscutil.core.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
@@ -104,7 +104,7 @@ public class StaballoyPickaxe extends ItemPickaxe{
 			try {
 				correctTool = currentBlock.getHarvestTool(0);
 				//Utils.LOG_WARNING(correctTool);
-				if (MiningMethods.getBlockType(currentBlock) || correctTool.equals("pickaxe")){
+				if (UtilsMining.getBlockType(currentBlock) || correctTool.equals("pickaxe")){
 					return true;}
 			} catch (NullPointerException e){
 				return false;}
@@ -183,7 +183,7 @@ public class StaballoyPickaxe extends ItemPickaxe{
 			String removalTool = "";
 			removalTool = block.getHarvestTool(1);
 			
-			if (removalTool.equals("pickaxe") || MiningMethods.getBlockType(block)){				
+			if (removalTool.equals("pickaxe") || UtilsMining.getBlockType(block)){				
 				if (canPickaxeBlock(block, world)){
 					if((block != Blocks.bedrock) && (block.getBlockHardness(world, X, Y, Z) != -1) && (block.getBlockHardness(world, X, Y, Z) <= 100) && (block != Blocks.water) && (block != Blocks.lava)){
 						

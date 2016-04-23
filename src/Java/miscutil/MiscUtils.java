@@ -42,7 +42,6 @@ implements ActionListener
 		LoadedMods.checkLoaded();
 		Utils.LOG_INFO("Doing some house cleaning.");
 		AddToCreativeTab.initialiseTabs();
-		//CraftingManager.mainRegistry();
 		proxy.registerTileEntities();
 		proxy.registerRenderThings();
 		proxy.preInit(event);

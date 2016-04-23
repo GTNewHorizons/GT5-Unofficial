@@ -1,106 +1,82 @@
 package miscutil.core.block;
 
-import miscutil.core.block.antigrief.TowerDevice;
-import miscutil.core.creativetabs.AddToCreativeTab;
+import miscutil.core.block.fluids.BlocktestFluid;
+import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
 import miscutil.gregtech.api.metatileentity.implementations.GregtechMetaCasingBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public final class ModBlocks {
 
-	//Blood Steel
+	//Blocks
 	public static Block blockBloodSteel;
 	public static Block blockStaballoy;
-	//public static Block blockIronPlatedBricks;
-	public static Block blockToolBuilder;
+	// WIP TODO public static Block blockToolBuilder;
 	public static Block blockGriefSaver;
 	public static Block blockCasingsMisc;
+
 	
-	//public static Block blockBloodSteelChest;
-
-	//BloodSteelorial Furnace
-	//public static Block tutFurnace;
-	//public static Block tutFurnaceActive;
-
-	//BloodSteelorial Chest
-	//public static Block tutChest;
-
-	//Arcane Infuser
-	//public static Block arcaneInfuser;
-	//public static Block arcaneInfuserActive;
 	
-	//Block Storage
-	//public static Block emxBlockStorage;
+	
+	//Fluids
+	/**
+	 * 
+	 * Luminosity .setLuminosity(luminosity)
+ 		How much light does the fluid emit. Default: 0, Lava uses 15
+		Density .setDensity(density)
+		How dense is the fluid, the only effect is whether or not a fluid replaces another fluid when they flow into each other. Default: 1000, the density of water at 4 degrees Celsius in kg/m³
+		Temperature .setTemperature(temp)
+		How hot, or cold is the fluid. Has currently no effect. Default: 295, the "normal" room temperature in degrees Kelvin, this is approximately 72°F or 22°C.
+		Viscosity .setViscosity(viscosity)
+		How thick the fluid is. Determines how fast it flows. Default: 1000 for water, lava uses 6000
+		Is Gaseous .setGaseous(boolean)
+		Indicates if the fluid is gaseous. Used for rendering. Default: false
+	 * 
+	 */
+
+	public static Fluid testFluid = new Fluid("testFluid");
+	public static Block testFluidBlock; 
+
 
 
 	public static void init() {
 		Utils.LOG_INFO("Initializing Blocks.");
-		blockGriefSaver = new TowerDevice().setBlockName("blockGriefSaver").setCreativeTab(AddToCreativeTab.tabBlock).setBlockTextureName("blockDefault");
-		
-		//BloodSteelorial Furnace - Must Init blocks first as they're not static.  
-		/** if (CORE.DEBUG){
-			FMLLog.info("Loading Furnace.");}
-		tutFurnace= new BloodSteelFurnace(false).setBlockName("BloodSteelFurnace").setCreativeTab(TMCreativeTabs.tabBlock);
-		tutFurnaceActive= new BloodSteelFurnace(true).setBlockName("BloodSteelFurnaceActive");
+		//blockGriefSaver = new TowerDevice().setBlockName("blockGriefSaver").setCreativeTab(AddToCreativeTab.tabBlock).setBlockTextureName("blockDefault");
 
-		//Arcane Infuser - Must Init blocks first as they're not static.
-		if (CORE.DEBUG){
-			FMLLog.info("Loading Arcane Infuser.");}
-		arcaneInfuser = new ArcaneInfuser(false).setBlockName("ArcaneInfuser").setCreativeTab(TMCreativeTabs.tabBlock);
-		arcaneInfuserActive = new ArcaneInfuser(true).setBlockName("ArcaneInfuserActive");
-
-		//Blood Steel Chest
-		if (CORE.DEBUG){
-			FMLLog.info("Loading Blood Steel Chest.");}
-		tutChest = new BloodSteelChest(0).setBlockName("BloodSteelChest").setCreativeTab(TMCreativeTabs.tabBlock);
-
-		 */
-		//BlockStorage
-		//emxBlockStorage = new BlockStorage();
-		
-		//Register Blocks next - TODO
 		registerBlocks(); 
 	}
 
 	public static void registerBlocks(){
-		
+
 		Utils.LOG_INFO("Registering Blocks.");
 
 		//Blood Steel Block
 		GameRegistry.registerBlock(blockBloodSteel = new BasicBlock("blockBloodSteel", Material.iron), "blockBloodSteel");
-		
+
 		//Staballoy Block
 		GameRegistry.registerBlock(blockStaballoy = new BasicBlock("blockStaballoy", Material.iron), "blockStaballoy");
-		
+
 		//Casing Blocks
 		blockCasingsMisc = new GregtechMetaCasingBlocks();
 
-		//Blood Steel Block //Name, Material, Hardness, Resistance, Light level, Tool, tool level, sound
-		//GameRegistry.registerBlock(blockToolBuilder = new AdvancedBlock("blockToolBuilder", Material.circuits, TMCreativeTabs.tabMachines, 1F, 5F, 0F, "pickaxe", 1, Block.soundTypeWood), "blockToolBuilder");
+		//Fluids
+		//testFluid
+		testFluid.setLuminosity(12);
+		testFluid.setDensity(1200);
+		testFluid.setTemperature(420);
+		testFluid.setViscosity(750);
+		testFluid.setGaseous(true);
+		FluidRegistry.registerFluid(testFluid);
+		testFluidBlock = new BlocktestFluid(testFluid, Material.water).setBlockName("yourFluid");
+		GameRegistry.registerBlock(testFluidBlock, CORE.MODID + "_" + testFluidBlock.getUnlocalizedName().substring(5));
+		testFluid.setUnlocalizedName(testFluidBlock.getUnlocalizedName());
 
-		/** TODO re-enable blocks when working.
-
-
-		//Blood Steel Chest
-		GameRegistry.registerBlock(tutChest, tutChest.getUnlocalizedName());
-
-		//BloodSteelorial Furnace
-		GameRegistry.registerBlock(tutFurnace, tutFurnace.getUnlocalizedName());
-		GameRegistry.registerBlock(tutFurnaceActive, tutFurnaceActive.getUnlocalizedName());
-
-		//Arcane Infuser
-		GameRegistry.registerBlock(arcaneInfuser, arcaneInfuser.getUnlocalizedName());
-		GameRegistry.registerBlock(arcaneInfuserActive, arcaneInfuserActive.getUnlocalizedName());
-		 **/
-		
-		//Block Storage
-		//GameRegistry.registerBlock(emxBlockStorage, emxBlockStorage.getUnlocalizedName());
-		
-		//blockGriefSaver Block
-		//GameRegistry.registerBlock(blockGriefSaver = new AdvancedBlock("blockGriefSaver", Material.circuits, tabBlock, 2.0F, 10.0F, 0, "axe", 2, Block.soundTypeMetal), "blockGriefSaver");
-		GameRegistry.registerBlock(blockGriefSaver, "blockGriefSaver");
+		//WIP TODO
+		//GameRegistry.registerBlock(blockGriefSaver, "blockGriefSaver");
 	}
 
 }
