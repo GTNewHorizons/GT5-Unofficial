@@ -19,8 +19,8 @@ extends GT_Block_Casings_Abstract {
 		for (byte i = 0; i < 16; i = (byte) (i + 1)) {
 			GregtechTextures.BlockIcons.GT_CASING_BLOCKS[i] = new GT_CopiedBlockTexture(this, 6, i);
 		}
-		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Centrifuge Anti-Vibration Casing");
-		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Centrifuge Casing");
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Centrifuge Casing");
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Centrifuge Casing II");
 		//GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "MV Machine Casing");
 		//GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "HV Machine Casing");
 		//GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "EV Machine Casing");
@@ -56,9 +56,9 @@ extends GT_Block_Casings_Abstract {
 	public IIcon getIcon(int aSide, int aMeta) {
 		if ((aMeta >= 0) && (aMeta < 16)) {
 			switch (aMeta) {
+            case 0:
+                return Textures.BlockIcons.MACHINE_CASING_TURBINE.getIcon();
             case 1:
-                return Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
-            case 2:
                 return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
 			case 10:
 				return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
@@ -70,12 +70,6 @@ extends GT_Block_Casings_Abstract {
 				return Textures.BlockIcons.MACHINE_COIL_NICHROME.getIcon();
 			case 15:
 				return Textures.BlockIcons.MACHINE_COIL_SUPERCONDUCTOR.getIcon();
-			}
-			if (aSide == 0) {
-				return Textures.BlockIcons.MACHINECASINGS_BOTTOM[aMeta].getIcon();
-			}
-			if (aSide == 1) {
-				return Textures.BlockIcons.MACHINECASINGS_TOP[aMeta].getIcon();
 			}
 			return Textures.BlockIcons.MACHINECASINGS_SIDE[aMeta].getIcon();
 		}
