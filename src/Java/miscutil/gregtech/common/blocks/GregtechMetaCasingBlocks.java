@@ -1,4 +1,4 @@
-package miscutil.gregtech.api.metatileentity.implementations;
+package miscutil.gregtech.common.blocks;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.objects.GT_CopiedBlockTexture;

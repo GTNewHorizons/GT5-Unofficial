@@ -7,7 +7,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
-import miscutil.core.handler.UnbreakableBlockManager;
+import miscutil.core.handler.events.UnbreakableBlockManager;
 import miscutil.core.util.PlayerCache;
 import miscutil.core.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;

@@ -300,7 +300,6 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity implements 
 
 		return new String[] {
 				getLocalName(),
-				"Stored Items:",
 				GT_Utility.formatNumbers(mStored)+" EU /",
 				GT_Utility.formatNumbers(mMax)+" EU"};
 	}

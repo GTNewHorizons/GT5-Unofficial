@@ -5,7 +5,7 @@ import static miscutil.core.block.ModBlocks.blockGriefSaver;
 import java.util.List;
 import java.util.Random;
 
-import miscutil.core.creativetabs.AddToCreativeTab;
+import miscutil.core.creative.AddToCreativeTab;
 import miscutil.core.lib.CORE;
 import miscutil.core.tileentities.TileEntityReverter;
 import miscutil.core.util.Utils;

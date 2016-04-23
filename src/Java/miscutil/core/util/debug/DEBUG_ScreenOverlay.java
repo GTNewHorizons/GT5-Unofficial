@@ -1,4 +1,4 @@
-package miscutil.core.handler;
+package miscutil.core.util.debug;
 
 import miscutil.core.item.tool.staballoy.StaballoyPickaxe;
 import net.minecraft.client.Minecraft;
@@ -9,7 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-public class DebugRenderManager extends Gui {
+public class DEBUG_ScreenOverlay extends Gui {
 
 	int width, height;
 	Minecraft mc = Minecraft.getMinecraft();

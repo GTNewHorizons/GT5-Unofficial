@@ -1,6 +1,6 @@
 package miscutil.core.block.fluids;
 
-import miscutil.core.creativetabs.AddToCreativeTab;
+import miscutil.core.creative.AddToCreativeTab;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;

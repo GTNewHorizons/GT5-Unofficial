@@ -1,4 +1,4 @@
-package miscutil.core.creativetabs;
+package miscutil.core.creative;
 
 import miscutil.core.lib.CORE;
 import net.minecraft.creativetab.CreativeTabs;

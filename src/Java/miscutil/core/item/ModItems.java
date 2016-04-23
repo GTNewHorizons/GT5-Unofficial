@@ -1,8 +1,8 @@
 package miscutil.core.item;
 
-import static miscutil.core.creativetabs.AddToCreativeTab.tabMisc;
+import static miscutil.core.creative.AddToCreativeTab.tabMisc;
 import static miscutil.core.lib.CORE.LOAD_ALL_CONTENT;
-import miscutil.core.creativetabs.AddToCreativeTab;
+import miscutil.core.creative.AddToCreativeTab;
 import miscutil.core.item.effects.RarityUncommon;
 import miscutil.core.item.general.BufferCore;
 import miscutil.core.item.tool.misc.SandstoneHammer;

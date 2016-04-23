@@ -1,4 +1,4 @@
-package miscutil.gregtech.api.metatileentity.implementations;
+package miscutil.gregtech.api.metatileentity.implementations.creative;
 
 import static gregtech.api.enums.GT_Values.V;
 import gregtech.api.enums.Textures;
@@ -18,10 +18,12 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import ic2.api.item.IElectricItem;
+import miscutil.gregtech.api.metatileentity.implementations.GregtechMetaEnergyBuffer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -46,6 +48,11 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 	public boolean mCharge = false, mDecharge = false;
 	public int mBatteryCount = 1, mChargeableCount = 1;
 
+	@Override
+	public String[] getDescription() {
+		return new String[] {mDescription, "Added by: "	+ EnumChatFormatting.DARK_GREEN+"Alkalus"};
+	}
+
 	/*
 	 * MACHINE_STEEL_SIDE
 	 */
@@ -54,10 +61,10 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 		ITexture[][][] rTextures = new ITexture[2][17][];
 		for (byte i = -1; i < 16; i++) {
 			rTextures[0][i + 1] = new ITexture[] { new GT_RenderedTexture(
-					Textures.BlockIcons.MACHINE_STEEL_SIDE) };
+					Textures.BlockIcons.MACHINE_CASING_MAGIC_FRONT) };
 			rTextures[1][i + 1] = new ITexture[] {
 					new GT_RenderedTexture(
-							Textures.BlockIcons.MACHINE_STEEL_SIDE),
+							Textures.BlockIcons.MACHINE_CASING_MAGIC_FRONT),
 							mInventory.length > 4 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier]
 									: Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
 		}
@@ -249,7 +256,7 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 
 		return new String[] {
 				getLocalName(),
-				"Stored Items:",
+				"THIS IS A CREATIVE ITEM - FOR TESTING",
 				GT_Utility.formatNumbers(mStored)+" EU /",
 				GT_Utility.formatNumbers(mMax)+" EU"};
 	}

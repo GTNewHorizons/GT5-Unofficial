@@ -1,4 +1,4 @@
-package miscutil.core.handler;
+package miscutil.core.handler.events;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
@@ -13,7 +13,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-public class XEventHandler {
+public class PickaxeBlockBreakEventHandler {
 	@SubscribeEvent
 	public void onBreakBlock(BreakEvent event) {
 		try{

@@ -5,13 +5,13 @@ import java.awt.event.ActionListener;
 
 import miscutil.core.commands.CommandMath;
 import miscutil.core.common.CommonProxy;
-import miscutil.core.creativetabs.AddToCreativeTab;
-import miscutil.core.handler.DebugRenderManager;
-import miscutil.core.handler.XEventHandler;
+import miscutil.core.creative.AddToCreativeTab;
+import miscutil.core.handler.events.PickaxeBlockBreakEventHandler;
 import miscutil.core.lib.CORE;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.PlayerCache;
 import miscutil.core.util.Utils;
+import miscutil.core.util.debug.DEBUG_ScreenOverlay;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -55,9 +55,9 @@ implements ActionListener
 		proxy.init(event);
 		proxy.registerOreDict();
 		MinecraftForge.EVENT_BUS.register(this);
-		MinecraftForge.EVENT_BUS.register(new XEventHandler());
+		MinecraftForge.EVENT_BUS.register(new PickaxeBlockBreakEventHandler());
 		if (CORE.DEBUG){
-			MinecraftForge.EVENT_BUS.register(new DebugRenderManager());	
+			MinecraftForge.EVENT_BUS.register(new DEBUG_ScreenOverlay());	
 		}
 		FMLCommonHandler.instance().bus().register(this);
 		proxy.registerNetworkStuff();

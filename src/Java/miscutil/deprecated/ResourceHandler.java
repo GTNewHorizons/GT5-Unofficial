@@ -1,4 +1,4 @@
-package miscutil.core.handler;
+package miscutil.deprecated;
 
 import org.apache.commons.lang3.Validate;
 

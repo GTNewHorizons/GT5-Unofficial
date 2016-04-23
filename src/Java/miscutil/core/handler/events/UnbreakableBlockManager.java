@@ -1,4 +1,4 @@
-package miscutil.core.handler;
+package miscutil.core.handler.events;
 
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;

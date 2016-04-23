@@ -3,7 +3,7 @@ package miscutil.core.block;
 import miscutil.core.block.fluids.BlocktestFluid;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
-import miscutil.gregtech.api.metatileentity.implementations.GregtechMetaCasingBlocks;
+import miscutil.gregtech.common.blocks.GregtechMetaCasingBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.Fluid;

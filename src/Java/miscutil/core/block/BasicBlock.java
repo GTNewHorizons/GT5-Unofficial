@@ -1,6 +1,6 @@
 package miscutil.core.block;
 
-import miscutil.core.creativetabs.AddToCreativeTab;
+import miscutil.core.creative.AddToCreativeTab;
 import miscutil.core.lib.CORE;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

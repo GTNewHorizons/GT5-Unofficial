@@ -2,7 +2,7 @@ package miscutil.core.lib;
 
 import java.util.Map;
 
-import miscutil.core.creativetabs.AddToCreativeTab;
+import miscutil.core.creative.AddToCreativeTab;
 
 public class CORE {
 
