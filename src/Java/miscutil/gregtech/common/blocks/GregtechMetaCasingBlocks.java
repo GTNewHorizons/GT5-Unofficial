@@ -3,8 +3,6 @@ package miscutil.gregtech.common.blocks;
 import gregtech.api.enums.Textures;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Block_Casings_Abstract;
-import gregtech.common.blocks.GT_Item_Casings1;
 import gregtech.common.blocks.GT_Material_Casings;
 import miscutil.gregtech.api.enums.GregtechItemList;
 import miscutil.gregtech.api.enums.GregtechTextures;
@@ -13,9 +11,9 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 public class GregtechMetaCasingBlocks
-extends GT_Block_Casings_Abstract {
+extends GregtechMetaCasingBlocksAbstract {
 	public GregtechMetaCasingBlocks() {
-		super(GT_Item_Casings1.class, "miscutils.blockcasings", GT_Material_Casings.INSTANCE);
+		super(GregtechMetaCasingItems.class, "miscutils.blockcasings", GT_Material_Casings.INSTANCE);
 		for (byte i = 0; i < 16; i = (byte) (i + 1)) {
 			GregtechTextures.BlockIcons.GT_CASING_BLOCKS[i] = new GT_CopiedBlockTexture(this, 6, i);
 		}
@@ -53,11 +51,12 @@ extends GT_Block_Casings_Abstract {
         ItemList.Casing_Coil_Superconductor.set(new ItemStack(this, 1, 15));*/
 	}
 
+	@Override
 	public IIcon getIcon(int aSide, int aMeta) {
 		if ((aMeta >= 0) && (aMeta < 16)) {
 			switch (aMeta) {
             case 0:
-                return Textures.BlockIcons.MACHINE_CASING_TURBINE.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_FROST_PROOF.getIcon();
             case 1:
                 return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
 			case 10:
@@ -76,6 +75,7 @@ extends GT_Block_Casings_Abstract {
 		return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
 	}
 
+	@Override
 	public int colorMultiplier(IBlockAccess aWorld, int aX, int aY, int aZ) {
 		return aWorld.getBlockMetadata(aX, aY, aZ) > 9 ? super.colorMultiplier(aWorld, aX, aY, aZ) : gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[0] << 16 | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[1] << 8 | gregtech.api.enums.Dyes.MACHINE_METAL.mRGBa[2];
 	}
