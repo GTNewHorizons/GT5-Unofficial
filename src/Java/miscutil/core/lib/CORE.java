@@ -25,6 +25,24 @@ public class CORE {
 	    ENERGYBUFFER, TOOLBUILDER, NULL, NULL1, NULL2
 	}
 	
+	/**
+     * File Paths and Resource Paths
+     */
+    public static final String
+            TEX_DIR = "textures/", 
+            TEX_DIR_GUI = TEX_DIR + "gui/", 
+            TEX_DIR_ITEM = TEX_DIR + "items/", 
+            TEX_DIR_BLOCK = TEX_DIR + "blocks/",
+            TEX_DIR_ENTITY = TEX_DIR + "entity/", 
+            TEX_DIR_ASPECTS = TEX_DIR + "aspects/", 
+            RES_PATH = MODID + ":" + TEX_DIR, 
+            RES_PATH_GUI = MODID + ":" + TEX_DIR_GUI, 
+            RES_PATH_ITEM = MODID + ":" + TEX_DIR_ITEM, 
+            RES_PATH_BLOCK = MODID + ":" + TEX_DIR_BLOCK, 
+            RES_PATH_ENTITY = MODID + ":" + TEX_DIR_ENTITY,
+            RES_PATH_ASPECTS = MODID + ":" + TEX_DIR_ASPECTS;
+   
+	
 	//public static final Materials2[] MiscGeneratedMaterials = new Materials2[1000];
 	
 }

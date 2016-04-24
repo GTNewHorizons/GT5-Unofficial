@@ -6,6 +6,8 @@ import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
@@ -17,6 +19,7 @@ import java.util.List;
 
 import miscutil.core.block.ModBlocks;
 import miscutil.core.util.Utils;
+import miscutil.gregtech.api.enums.GregtechTextures;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -69,7 +72,7 @@ extends GT_MetaTileEntity_MultiBlockBase {
 
 	@Override
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex + 1], aFacing == aSide ? aActive ? new GT_RenderedTexture(Textures.BlockIcons.LARGETURBINE_ACTIVE5) : new GT_RenderedTexture(Textures.BlockIcons.LARGETURBINE5) : Textures.BlockIcons.CASING_BLOCKS[57]};
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex + 1], aFacing == aSide ? aActive ? new GT_RenderedTexture(GregtechTextures.BlockIcons.LARGECENTRIFUGE_ACTIVE5) : new GT_RenderedTexture(GregtechTextures.BlockIcons.LARGECENTRIFUGE5) : Textures.BlockIcons.CASING_BLOCKS[57]};
 	}
 
 	@Override
@@ -237,7 +240,7 @@ extends GT_MetaTileEntity_MultiBlockBase {
 		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
 		int yDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetY;
 		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-		Utils.LOG_INFO("X:"+xDir+" Y:"+yDir+" Z:"+zDir);
+		//Utils.LOG_WARNING("X:"+xDir+" Y:"+yDir+" Z:"+zDir);
 		if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {
 			return false;
 		}
@@ -245,10 +248,28 @@ extends GT_MetaTileEntity_MultiBlockBase {
 		for (int i = -1; i < 2; i++) { //X-Dir
 			for (int j = -1; j < 2; j++) { //Z-Dir
 				for (int h = -1; h < 2; h++) { //Y-Dir
-					if ((h != 0) || (((xDir + i != 0) || (zDir + j != 0)) && ((i != 0) || (j != 0)))) {
+					if ((h != 0) || (((xDir + i != 0) || (zDir + j != 0)) && ((i != 0) || (j != 0)))) {			
+
 						IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
 						//Utils.LOG_INFO("X:"+tTileEntity.getXCoord()+" Y:"+tTileEntity.getYCoord()+" Z:"+tTileEntity.getZCoord());
 						if ((!addMaintenanceToMachineList(tTileEntity, 57)) && (!addInputToMachineList(tTileEntity, 57)) && (!addOutputToMachineList(tTileEntity, 57)) && (!addEnergyInputToMachineList(tTileEntity, 57))) {
+
+							//Maintenance Hatch
+							if ((tTileEntity != null) && (tTileEntity.getMetaTileEntity() != null)) {
+								if (tTileEntity.getXCoord() == aBaseMetaTileEntity.getXCoord() && tTileEntity.getYCoord() == aBaseMetaTileEntity.getYCoord() && tTileEntity.getZCoord() == (aBaseMetaTileEntity.getZCoord()+2)) {
+									if ((tTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Maintenance)) {
+										Utils.LOG_INFO("MAINT HATCH IN CORRECT PLACE");
+										this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) tTileEntity.getMetaTileEntity());
+										((GT_MetaTileEntity_Hatch) tTileEntity.getMetaTileEntity()).mMachineBlock = getCasingTextureIndex();
+									} else {
+										return false;
+									}
+								}	
+								else {
+									Utils.LOG_INFO("MAINT HATCH IN WRONG PLACE");
+								}
+							}
+
 							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
 								return false;
 							}
@@ -351,7 +372,7 @@ extends GT_MetaTileEntity_MultiBlockBase {
 				return false;
 			}
 		}*/
-		
+
 		/*//Energy Hatch
 		IGregTechTileEntity tTileEntityEnergyHatch = getBaseMetaTileEntity().getIGregTechTileEntity(i, h+1, j+2);
 		if ((tTileEntityEnergyHatch != null) && (tTileEntityEnergyHatch.getMetaTileEntity() != null)) {
