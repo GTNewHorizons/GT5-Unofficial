@@ -11,7 +11,7 @@ public class GUI_SteamCondenser extends GT_GUIContainerMetaTile_Machine
 	
   public GUI_SteamCondenser(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aTextureName, int aSteamCapacity)
   {
-    super(new CONTAINER_SteamCondenser(aInventoryPlayer, aTileEntity, aSteamCapacity), CORE.MODID + ":" + "textures/gui/" + aTextureName);
+    super(new CONTAINER_SteamCondenser(aInventoryPlayer, aTileEntity, aSteamCapacity), CORE.RES_PATH_GUI + aTextureName);
   }
   
   @Override

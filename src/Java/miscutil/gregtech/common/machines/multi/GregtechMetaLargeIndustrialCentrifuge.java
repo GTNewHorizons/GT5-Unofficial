@@ -9,7 +9,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 
@@ -19,7 +18,7 @@ import java.util.List;
 
 import miscutil.core.block.ModBlocks;
 import miscutil.core.util.Utils;
-import miscutil.gregtech.api.enums.GregtechTextures;
+import miscutil.gregtech.api.objects.GregtechRenderedTexture;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -72,7 +71,7 @@ extends GT_MetaTileEntity_MultiBlockBase {
 
 	@Override
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex + 1], aFacing == aSide ? aActive ? new GT_RenderedTexture(GregtechTextures.BlockIcons.LARGECENTRIFUGE_ACTIVE5) : new GT_RenderedTexture(GregtechTextures.BlockIcons.LARGECENTRIFUGE5) : Textures.BlockIcons.CASING_BLOCKS[57]};
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex + 1], aFacing == aSide ? aActive ? new GregtechRenderedTexture(Textures.BlockIcons.LARGETURBINE_ACTIVE5) : new GregtechRenderedTexture(Textures.BlockIcons.LARGETURBINE5) : Textures.BlockIcons.CASING_BLOCKS[57]};
 	}
 
 	@Override

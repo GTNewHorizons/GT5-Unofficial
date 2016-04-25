@@ -8,7 +8,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 public class GUI_IronBlastFurnace
         extends GT_GUIContainerMetaTile_Machine {
     public GUI_IronBlastFurnace(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
-        super(new CONTAINER_IronBlastFurnace(aInventoryPlayer, aTileEntity), CORE.MODID+":textures/gui/IronBlastFurnace.png");
+        super(new CONTAINER_IronBlastFurnace(aInventoryPlayer, aTileEntity), CORE.RES_PATH_GUI+"IronBlastFurnace.png");
     }
 
     @Override

@@ -8,7 +8,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 public class GUI_SafeBlock
         extends GT_GUIContainerMetaTile_Machine {
     public GUI_SafeBlock(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
-        super(new CONTAINER_SafeBlock(aInventoryPlayer, aTileEntity), CORE.MODID + ":" + "textures/gui/" + "SafeBlock.png");
+        super(new CONTAINER_SafeBlock(aInventoryPlayer, aTileEntity), CORE.RES_PATH_GUI + "SafeBlock.png");
     }
     
    //String UUID = ((CONTAINER_SafeBlock)this.mContainer).ownerUUID.toString();
