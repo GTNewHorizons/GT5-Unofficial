@@ -12,6 +12,7 @@ import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.PlayerCache;
 import miscutil.core.util.Utils;
 import miscutil.core.util.debug.DEBUG_ScreenOverlay;
+import miscutil.core.util.uptime.Uptime;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -45,6 +46,7 @@ implements ActionListener
 		proxy.registerTileEntities();
 		proxy.registerRenderThings();
 		proxy.preInit(event);
+		Uptime.preInit(event); //Integration of Uptime.
 		//FMLInterModComms.sendMessage("Waila", "register", "miscutil.core.waila.WailaCompat.load");
 	}
 

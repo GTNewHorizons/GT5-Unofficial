@@ -45,7 +45,7 @@ public class Uptime {
 	@Mod.Instance("Uptime")
 	public static Uptime instance;
 
-	public void preInit(FMLPreInitializationEvent event)
+	public static void preInit(FMLPreInitializationEvent event)
 	{
 		UptimeLog.log("INFO", "Conjumbobulating Time Synthesis.");
 		UptimeLog.initLogger();
@@ -285,4 +285,6 @@ public class Uptime {
 	{
 		uptime_data.playerRespawned(event.player.getCommandSenderName());
 	}
+	
+	
 }
