@@ -45,7 +45,7 @@ public class Uptime {
 	@Mod.Instance("Uptime")
 	public static Uptime instance;
 
-	public static void preInit(FMLPreInitializationEvent event)
+	public void preInit(FMLPreInitializationEvent event)
 	{
 		UptimeLog.log("INFO", "Conjumbobulating Time Synthesis.");
 		UptimeLog.initLogger();

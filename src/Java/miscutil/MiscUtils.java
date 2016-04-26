@@ -31,6 +31,7 @@ implements ActionListener
 	
 	@Mod.Instance(CORE.MODID)
 	public static MiscUtils instance;
+	public static Uptime Uptime = new Uptime();
 
 	@SidedProxy(clientSide="miscutil.core.proxy.ClientProxy", serverSide="miscutil.core.proxy.ServerProxy")
 	public static CommonProxy proxy;
@@ -63,6 +64,7 @@ implements ActionListener
 		}
 		FMLCommonHandler.instance().bus().register(this);
 		proxy.registerNetworkStuff();
+		Uptime.init(event); //Integration of Uptime.
 	}
 
 	//Post-Init
@@ -77,19 +79,20 @@ implements ActionListener
 	public void serverStarting(FMLServerStartingEvent event)
 	{
 		event.registerServerCommand(new CommandMath());
+		Uptime.serverStarting(event); //Integration of Uptime.
 
 	}
 
 	@Mod.EventHandler
 	public void serverStopping(FMLServerStoppingEvent event)
 	{
-
+		Uptime.serverStopping(event); //Integration of Uptime.
 
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
+		Uptime.actionPerformed(arg0); //Integration of Uptime.
 
 	}
 
