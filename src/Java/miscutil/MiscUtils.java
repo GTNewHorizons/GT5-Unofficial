@@ -14,6 +14,7 @@ import miscutil.core.util.Utils;
 import miscutil.core.util.debug.DEBUG_ScreenOverlay;
 import miscutil.core.util.uptime.Uptime;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -23,6 +24,9 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
+import cpw.mods.fml.common.eventhandler.EventPriority;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent;
 
 @Mod(modid=CORE.MODID, name="Misc. Utils", version=CORE.VERSION, dependencies="required-after:gregtech;")
 public class MiscUtils
@@ -47,7 +51,7 @@ implements ActionListener
 		proxy.registerTileEntities();
 		proxy.registerRenderThings();
 		proxy.preInit(event);
-		Uptime.preInit(event); //Integration of Uptime.
+		Uptime.preInit(); //Integration of Uptime.
 		//FMLInterModComms.sendMessage("Waila", "register", "miscutil.core.waila.WailaCompat.load");
 	}
 
@@ -64,7 +68,7 @@ implements ActionListener
 		}
 		FMLCommonHandler.instance().bus().register(this);
 		proxy.registerNetworkStuff();
-		Uptime.init(event); //Integration of Uptime.
+		Uptime.init(); //Integration of Uptime.
 	}
 
 	//Post-Init
@@ -79,14 +83,14 @@ implements ActionListener
 	public void serverStarting(FMLServerStartingEvent event)
 	{
 		event.registerServerCommand(new CommandMath());
-		Uptime.serverStarting(event); //Integration of Uptime.
+		Uptime.serverStarting(); //Integration of Uptime.
 
 	}
 
 	@Mod.EventHandler
 	public void serverStopping(FMLServerStoppingEvent event)
 	{
-		Uptime.serverStopping(event); //Integration of Uptime.
+		Uptime.serverStopping(); //Integration of Uptime.
 
 	}
 
@@ -94,6 +98,30 @@ implements ActionListener
 	public void actionPerformed(ActionEvent arg0) {
 		Uptime.actionPerformed(arg0); //Integration of Uptime.
 
+	}
+	
+	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
+	public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event)
+	{
+		Uptime.onPlayerLogin(event);
+	}
+
+	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
+	public void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event)
+	{
+		Uptime.onPlayerLogout(event);
+	}
+	
+	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
+	public void onPlayerDeath(LivingDeathEvent lde)
+	{
+		Uptime.onPlayerDeath(lde);
+	}
+
+	@SubscribeEvent(priority=EventPriority.NORMAL, receiveCanceled=true)
+	public void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event)
+	{
+		Uptime.onPlayerRespawn(event);
 	}
 
 }
