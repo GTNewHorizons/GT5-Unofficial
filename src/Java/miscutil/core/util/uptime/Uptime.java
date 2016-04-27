@@ -25,7 +25,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 
-public class Uptime {
+public class Uptime implements ActionListener {
 	private static MinecraftServer server;
 	//public static CommonProxy proxy;
 	private static Timer updater;
@@ -71,7 +71,7 @@ public class Uptime {
 		this.uptime_file = new File(file_path + "/uptime.txt");
 		if (this.uptime_backup.exists())
 		{
-			UptimeLog.log("INFO","Uptime: Uptime has found a backup of the uptime file, trying to restore it.", new Object[0]);
+			UptimeLog.log("INFO","Uptime has found a backup of the uptime file, trying to restore it.", new Object[0]);
 			try
 			{
 				this.uptime_file.delete();
@@ -81,24 +81,24 @@ public class Uptime {
 
 				uptime_data = new UptimeData(this.uptime_file, false);
 
-				UptimeLog.log("INFO","Uptime: Uptime restored the backup.", new Object[0]);
+				UptimeLog.log("INFO","Uptime restored the backup.", new Object[0]);
 			}
 			catch (IOException ioe)
 			{
-				UptimeLog.log("WARNING","Uptime: Failed to restore backup of uptime file, uptime has been reset and the backup removed.", new Object[] { ioe });
+				UptimeLog.log("WARNING","Failed to restore backup of uptime file, uptime has been reset and the backup removed.", new Object[] { ioe });
 				this.uptime_backup.delete();
 				uptime_data = new UptimeData(this.uptime_file, true);
 			}
 			catch (NumberFormatException npe)
 			{
-				UptimeLog.log("WARNING","Uptime: Backup file is corrupt, uptime has been reset and the backup removed.", new Object[0]);
+				UptimeLog.log("WARNING","Backup file is corrupt, uptime has been reset and the backup removed.", new Object[0]);
 				this.uptime_backup.delete();
 				uptime_data = new UptimeData(this.uptime_file, true);
 			}
 		}
 		else if (this.uptime_file.exists())
 		{
-			UptimeLog.log("INFO","Uptime: Found uptime file, restoring it.", new Object[0]);
+			UptimeLog.log("INFO","Found uptime file, restoring it.", new Object[0]);
 			if (this.uptime_file.length() > 1L)
 			{
 				try
@@ -107,24 +107,24 @@ public class Uptime {
 				}
 				catch (NumberFormatException npe)
 				{
-					UptimeLog.log("WARNING","Uptime: Uptime file is corrupt, uptime has been reset.", new Object[0]);
+					UptimeLog.log("WARNING","Uptime file is corrupt, uptime has been reset.", new Object[0]);
 					uptime_data = new UptimeData(this.uptime_file, true);
 				}
 			}
 			else
 			{
-				UptimeLog.log("WARNING","Uptime: Uptime file is empty, uptime has been reset.", new Object[0]);
+				UptimeLog.log("WARNING","Uptime file is empty, uptime has been reset.", new Object[0]);
 				uptime_data = new UptimeData(this.uptime_file, true);
 			}
 		}
 		else
 		{
-			UptimeLog.log("INFO","Uptime: No uptime or backup found, creating a new one.", new Object[0]);
+			UptimeLog.log("INFO","No uptime or backup found, creating a new one.", new Object[0]);
 
 
 			uptime_data = new UptimeData(this.uptime_file, true);
 		}
-		updater = new Timer(60000, (ActionListener) this);
+		updater = new Timer(60000, this);
 		updater.setRepeats(true);
 		updater.start();
 
@@ -163,7 +163,7 @@ public class Uptime {
 	{
 		updateUptime();
 
-		FMLLog.finer("Uptime: Uptime is currently saving its data.", new Object[0]);
+		FMLLog.finer("Uptime is currently saving its data.", new Object[0]);
 		try
 		{
 			this.uptime_backup.delete();
@@ -181,9 +181,9 @@ public class Uptime {
 		}
 		catch (IOException ioe)
 		{
-			UptimeLog.log("WARNING","Uptime: Failed while perpairing to save uptime file.", new Object[] { ioe });
+			UptimeLog.log("WARNING","Failed while perpairing to save uptime file.", new Object[] { ioe });
 		}
-		FMLLog.finer("Uptime: Uptime has finished saving it's data.", new Object[0]);
+		FMLLog.finer("Uptime has finished saving it's data.", new Object[0]);
 	}
 
 	@SuppressWarnings("static-method")
@@ -251,6 +251,7 @@ public class Uptime {
 		}
 	}
 
+	@Override
 	public void actionPerformed(ActionEvent event)
 	{
 		if (event.getSource() == updater) {

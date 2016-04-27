@@ -18,7 +18,7 @@ public class UtilsItems {
 			try{
 				Item em = null;
 
-				Item em1 = UtilsItems.getItem(mod_itemname_meta);
+				Item em1 = getItem(mod_itemname_meta);
 				Utils.LOG_WARNING("Found: "+em1.toString());
 				if (!em1.equals(null)){
 					em = em1;
@@ -44,7 +44,7 @@ public class UtilsItems {
 	public static void getItemForOreDict(String FQRN, String oreDictName, String itemName, int meta){
 		try {
 			Item em = null;			
-			Item em1 = UtilsItems.getItem(FQRN);
+			Item em1 = getItem(FQRN);
 			Utils.LOG_WARNING("Found: "+em1.getUnlocalizedName()+":"+meta);
 			if (em1 != null){
 				em = em1;

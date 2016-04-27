@@ -12,7 +12,7 @@ public class MiscUtilCreativeTabBlock extends CreativeTabs {
 
 	@Override
 	public Item getTabIconItem() {
-		return Item.getItemFromBlock(ModBlocks.blockBloodSteel);
+		return Item.getItemFromBlock(ModBlocks.blockStaballoy);
 	}
 
 }

@@ -1,7 +1,7 @@
 package miscutil.core.creative;
 
-import miscutil.core.block.ModBlocks;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 
 public class MiscUtilCreativeTabMachines extends CreativeTabs {
@@ -12,7 +12,7 @@ public class MiscUtilCreativeTabMachines extends CreativeTabs {
 
 	@Override
 	public Item getTabIconItem() {
-		return Item.getItemFromBlock(ModBlocks.blockGriefSaver);
+		return Items.experience_bottle;
 	}
 
 }
