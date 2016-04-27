@@ -5,6 +5,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import java.util.ArrayList;
 
 import miscutil.core.handler.registration.RegistrationHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -17,7 +18,7 @@ public class UtilsItems {
 			try{
 				Item em = null;
 
-				Item em1 = Utils.getItem(mod_itemname_meta);
+				Item em1 = UtilsItems.getItem(mod_itemname_meta);
 				Utils.LOG_WARNING("Found: "+em1.toString());
 				if (!em1.equals(null)){
 					em = em1;
@@ -43,7 +44,7 @@ public class UtilsItems {
 	public static void getItemForOreDict(String FQRN, String oreDictName, String itemName, int meta){
 		try {
 			Item em = null;			
-			Item em1 = Utils.getItem(FQRN);
+			Item em1 = UtilsItems.getItem(FQRN);
 			Utils.LOG_WARNING("Found: "+em1.getUnlocalizedName()+":"+meta);
 			if (em1 != null){
 				em = em1;
@@ -181,6 +182,32 @@ public class UtilsItems {
 			RegistrationHandler.recipesFailed++;
 			//System.exit(1);
 		}
+	}
+
+	public static Item getItem(String fqrn) // fqrn = fully qualified resource name
+	{
+		String[] fqrnSplit = fqrn.split(":");
+		return GameRegistry.findItem(fqrnSplit[0], fqrnSplit[1]);
+	}
+
+	public static ItemStack getItemStack(String fqrn, int Size) // fqrn = fully qualified resource name
+	{
+		String[] fqrnSplit = fqrn.split(":");
+		return GameRegistry.findItemStack(fqrnSplit[0], fqrnSplit[1], Size);
+	}
+
+	public static Item getItemInPlayersHand(){
+		Minecraft mc = Minecraft.getMinecraft();
+		Item heldItem = null;
+	
+		try{heldItem = mc.thePlayer.getHeldItem().getItem();
+		}catch(NullPointerException e){return null;}
+	
+		if (heldItem != null){
+			return heldItem;
+		}
+	
+		return null;
 	}
 
 }

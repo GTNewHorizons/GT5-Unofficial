@@ -19,6 +19,7 @@ import miscutil.core.lib.CORE;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.tileentities.ModTileEntities;
 import miscutil.core.util.Utils;
+import miscutil.core.util.UtilsItems;
 import miscutil.gregtech.api.init.InitGregtech;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -123,7 +124,7 @@ public class CommonProxy {
 
 
 		for(int i=1; i<=10; i++){
-			GT_OreDictUnificator.registerOre("bufferCore_"+CORE.VOLTAGES[i-1], new ItemStack(Utils.getItem("miscutils:item.itemBufferCore"+i)));
+			GT_OreDictUnificator.registerOre("bufferCore_"+CORE.VOLTAGES[i-1], new ItemStack(UtilsItems.getItem("miscutils:item.itemBufferCore"+i)));
 		}
 
 

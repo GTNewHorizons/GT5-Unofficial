@@ -29,16 +29,16 @@ public class RECIPES_Machines {
 
 
 	//Buffer Cores
-	static ItemStack RECIPE_BufferCore_ULV = Utils.getItemStack("miscutils:item.itemBufferCore1", 1);
-	static ItemStack RECIPE_BufferCore_LV = Utils.getItemStack("miscutils:item.itemBufferCore2", 1);
-	static ItemStack RECIPE_BufferCore_MV = Utils.getItemStack("miscutils:item.itemBufferCore3", 1);
-	static ItemStack RECIPE_BufferCore_HV = Utils.getItemStack("miscutils:item.itemBufferCore4", 1);
-	static ItemStack RECIPE_BufferCore_EV = Utils.getItemStack("miscutils:item.itemBufferCore5", 1);
-	static ItemStack RECIPE_BufferCore_IV = Utils.getItemStack("miscutils:item.itemBufferCore6", 1);
-	static ItemStack RECIPE_BufferCore_LuV = Utils.getItemStack("miscutils:item.itemBufferCore7", 1);
-	static ItemStack RECIPE_BufferCore_ZPM = Utils.getItemStack("miscutils:item.itemBufferCore8", 1);
-	static ItemStack RECIPE_BufferCore_UV = Utils.getItemStack("miscutils:item.itemBufferCore9", 1);
-	static ItemStack RECIPE_BufferCore_MAX = Utils.getItemStack("miscutils:item.itemBufferCore10", 1);
+	static ItemStack RECIPE_BufferCore_ULV = UtilsItems.getItemStack("miscutils:item.itemBufferCore1", 1);
+	static ItemStack RECIPE_BufferCore_LV = UtilsItems.getItemStack("miscutils:item.itemBufferCore2", 1);
+	static ItemStack RECIPE_BufferCore_MV = UtilsItems.getItemStack("miscutils:item.itemBufferCore3", 1);
+	static ItemStack RECIPE_BufferCore_HV = UtilsItems.getItemStack("miscutils:item.itemBufferCore4", 1);
+	static ItemStack RECIPE_BufferCore_EV = UtilsItems.getItemStack("miscutils:item.itemBufferCore5", 1);
+	static ItemStack RECIPE_BufferCore_IV = UtilsItems.getItemStack("miscutils:item.itemBufferCore6", 1);
+	static ItemStack RECIPE_BufferCore_LuV = UtilsItems.getItemStack("miscutils:item.itemBufferCore7", 1);
+	static ItemStack RECIPE_BufferCore_ZPM = UtilsItems.getItemStack("miscutils:item.itemBufferCore8", 1);
+	static ItemStack RECIPE_BufferCore_UV = UtilsItems.getItemStack("miscutils:item.itemBufferCore9", 1);
+	static ItemStack RECIPE_BufferCore_MAX = UtilsItems.getItemStack("miscutils:item.itemBufferCore10", 1);
 
 
 	//Wire
@@ -108,7 +108,7 @@ public class RECIPES_Machines {
 
 	//Lava Boiler
 	static ItemStack boiler_Coal = ItemList.Machine_Bronze_Boiler.get(1);
-	static ItemStack blockBricks = Utils.getItemStack("minecraft:brick_block", 1);
+	static ItemStack blockBricks = UtilsItems.getItemStack("minecraft:brick_block", 1);
 
 	//Batteries
 	static String batteryBasic = "batteryBasic";

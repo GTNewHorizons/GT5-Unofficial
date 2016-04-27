@@ -2,7 +2,6 @@ package miscutil.core.handler.registration;
 
 import miscutil.core.item.ModItems;
 import miscutil.core.util.UtilsItems;
-import miscutil.core.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -20,7 +19,7 @@ public class RECIPES_Tools {
 	static ItemStack RECIPE_SandStone = new ItemStack(Blocks.sandstone, 2);
 	static ItemStack RECIPE_Sand = new ItemStack(Blocks.sand, 4);
 	
-	static ItemStack RECIPE_DivisionSigil = new ItemStack(Utils.getItem("ExtraUtilities:divisionSigil"));
+	static ItemStack RECIPE_DivisionSigil = new ItemStack(UtilsItems.getItem("ExtraUtilities:divisionSigil"));
 	
 	//MC Items
 	static Item Apple = Items.apple;

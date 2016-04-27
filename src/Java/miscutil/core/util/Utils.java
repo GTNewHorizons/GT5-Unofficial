@@ -8,15 +8,12 @@ import java.util.Random;
 
 import miscutil.core.lib.CORE;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class Utils {
 
@@ -133,31 +130,7 @@ public class Utils {
 		return FluidRegistry.getFluidStack("ic2steam", (int)aAmount);
 	}
 
-	public static Item getItem(String fqrn) // fqrn = fully qualified resource name
-	{
-		String[] fqrnSplit = fqrn.split(":");
-		return GameRegistry.findItem(fqrnSplit[0], fqrnSplit[1]);
-	}
-
-	public static ItemStack getItemStack(String fqrn, int Size) // fqrn = fully qualified resource name
-	{
-		String[] fqrnSplit = fqrn.split(":");
-		return GameRegistry.findItemStack(fqrnSplit[0], fqrnSplit[1], Size);
-	}
-
-	public static Item getItemInPlayersHand(){
-		Minecraft mc = Minecraft.getMinecraft();
-		Item heldItem = null;
-
-		try{heldItem = mc.thePlayer.getHeldItem().getItem();
-		}catch(NullPointerException e){return null;}
-
-		if (heldItem != null){
-			return heldItem;
-		}
-
-		return null;
-	}
+	
 
 	/*public static void recipeBuilderBlock(ItemStack slot_1, ItemStack slot_2, ItemStack slot_3, ItemStack slot_4, ItemStack slot_5, ItemStack slot_6, ItemStack slot_7, ItemStack slot_8, ItemStack slot_9, Block resultBlock){
 		GameRegistry.addRecipe(new ItemStack(resultBlock),
