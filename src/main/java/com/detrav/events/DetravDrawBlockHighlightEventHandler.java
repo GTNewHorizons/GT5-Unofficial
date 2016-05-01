@@ -40,6 +40,7 @@ public class DetravDrawBlockHighlightEventHandler {
             //case 0: Просто рисуем без экспанда
             case 0:
                 drawSelectionBox(player, mouseHit.typeOfHit, mouseHit.blockX , mouseHit.blockY, mouseHit.blockZ , par3, par4ItemStack, par5);
+                break;
             case 1:
                 switch (mouseHit.sideHit) {//Рисуеи по моусхиту
                     case 0:
