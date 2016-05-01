@@ -31,12 +31,70 @@ public class DetravDrawBlockHighlightEventHandler {
 
     @SubscribeEvent
     public void onDrawBlockHighlight(DrawBlockHighlightEvent e) {
-        drawSelectionBox(e.player, e.target, 0, e.currentItem, e.partialTicks);
+        drawMoreSelectionBox(e.player, e.target, 0, e.currentItem, e.partialTicks);
         e.setCanceled(true);
     }
 
-    public static void drawSelectionBox(EntityPlayer player, MovingObjectPosition mouseHit, int par3, ItemStack par4ItemStack, float par5) {
-        if ((par3 == 0) && (mouseHit.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)) {
+    public static void drawMoreSelectionBox(EntityPlayer player, MovingObjectPosition mouseHit, int par3, ItemStack par4ItemStack, float par5) {
+        switch ((int) modeBlockBreak) {
+            //case 0: Просто рисуем без экспанда
+            case 0:
+                drawSelectionBox(player, mouseHit.typeOfHit, mouseHit.blockX , mouseHit.blockY, mouseHit.blockZ , par3, par4ItemStack, par5);
+            case 1:
+                switch (mouseHit.sideHit) {//Рисуеи по моусхиту
+                    case 0:
+                    case 1://x,z
+                        for (int i = -1; i <= 1; i++)
+                            for (int j = -1; j <= 1; j++)
+                                drawSelectionBox(player, mouseHit.typeOfHit, mouseHit.blockX + i, mouseHit.blockY, mouseHit.blockZ + j, par3, par4ItemStack, par5);
+                        break;
+                    case 2:
+                    case 3://x,y
+                        for (int i = -1; i <= 1; i++)
+                            for (int j = -1; j <= 1; j++)
+                                drawSelectionBox(player, mouseHit.typeOfHit, mouseHit.blockX + i, mouseHit.blockY + j, mouseHit.blockZ, par3, par4ItemStack, par5);
+                        break;
+                    case 4:
+                    case 5://y,z
+                        for (int i = -1; i <= 1; i++)
+                            for (int j = -1; j <= 1; j++)
+                                drawSelectionBox(player, mouseHit.typeOfHit, mouseHit.blockX, mouseHit.blockY + i, mouseHit.blockZ + j, par3, par4ItemStack, par5);
+                        break;
+                }
+                break;
+            case 2://x,z
+                for (int i = -1; i <= 1; i++)
+                    for (int j = -1; j <= 1; j++)
+                        drawSelectionBox(player, mouseHit.typeOfHit, mouseHit.blockX + i, mouseHit.blockY, mouseHit.blockZ + j, par3, par4ItemStack, par5);
+                break;
+            case 3:
+                float rotationYaw = player.rotationYaw;
+                while (rotationYaw > 0) rotationYaw -= 360F;
+                while (rotationYaw < -360) rotationYaw += 360F;
+                if ((-135 <= rotationYaw && rotationYaw <= -45) || (-315 <= rotationYaw && rotationYaw <= -225)) {
+                    //y,z
+                    for (int i = -1; i <= 1; i++)
+                        for (int j = -1; j <= 1; j++)
+                            drawSelectionBox(player, mouseHit.typeOfHit, mouseHit.blockX, mouseHit.blockY + i, mouseHit.blockZ + j, par3, par4ItemStack, par5);
+                } else if ((-225 <= rotationYaw && rotationYaw <= -135) || -45 <= rotationYaw || rotationYaw <= -315) {
+                    //x,y
+                    for (int i = -1; i <= 1; i++)
+                        for (int j = -1; j <= 1; j++)
+                            drawSelectionBox(player, mouseHit.typeOfHit, mouseHit.blockX + i, mouseHit.blockY + j, mouseHit.blockZ, par3, par4ItemStack, par5);
+                }
+                break;
+            case 4:
+                //x,y,z
+                for (int i = -1; i <= 1; i++)
+                    for (int j = -1; j <= 1; j++)
+                        for (int k = -1; k <= 1; k++)
+                            drawSelectionBox(player, mouseHit.typeOfHit, mouseHit.blockX + i, mouseHit.blockY + j, mouseHit.blockZ + k, par3, par4ItemStack, par5);
+                break;
+        }
+    }
+
+    public static void drawSelectionBox(EntityPlayer player,MovingObjectPosition.MovingObjectType typeOfHit, int blockX,int blockY, int blockZ, int par3, ItemStack par4ItemStack, float par5) {
+        if ((par3 == 0) && (typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)) {
             //float breakProgress = getBlockDamage(player, block);
             if (disableDepthBuffer) {
                 GL11.glDisable(2929);
@@ -49,9 +107,9 @@ public class DetravDrawBlockHighlightEventHandler {
             float f1 = offset;
 
             Minecraft mc = Minecraft.getMinecraft();
-            Block b = mc.theWorld.getBlock(mouseHit.blockX, mouseHit.blockY, mouseHit.blockZ);
+            Block b = mc.theWorld.getBlock(blockX, blockY, blockZ);
             if (b != Blocks.air) {
-                b.setBlockBoundsBasedOnState(mc.theWorld, mouseHit.blockX, mouseHit.blockY, mouseHit.blockZ);
+                b.setBlockBoundsBasedOnState(mc.theWorld, blockX, blockY, blockZ);
 
                 double xOffset = player.lastTickPosX + (player.posX - player.lastTickPosX) * par5;
                 double yOffset = player.lastTickPosY + (player.posY - player.lastTickPosY) * par5;
@@ -61,50 +119,9 @@ public class DetravDrawBlockHighlightEventHandler {
                 float yExpand = 0F;
                 float zExpand = 0F;
 
-                switch ((int) modeBlockBreak) {
-                    case 1:
-                        switch (mouseHit.sideHit) {
-                            case 0:
-                            case 1:
-                                xExpand = 1F;
-                                zExpand = 1F;
-                                break;
-                            case 2:
-                            case 3:
-                                xExpand = 1F;
-                                yExpand = 1F;
-                                break;
-                            case 4:
-                            case 5:
-                                yExpand = 1F;
-                                zExpand = 1F;
-                                break;
-                        }
-                        break;
-                    case 2:
-                        xExpand = 1F;
-                        zExpand = 1F;
-                        break;
-                    case 3:
-                        float rotationYaw = player.rotationYaw;
-                        while (rotationYaw > 0) rotationYaw -= 360F;
-                        while (rotationYaw < -360) rotationYaw += 360F;
-                        if ((-135 <= rotationYaw && rotationYaw <= -45) || (-315 <= rotationYaw && rotationYaw <= -225)) {
-                            yExpand = 1F;
-                            zExpand = 1F;
-                        } else if ((-225 <= rotationYaw && rotationYaw <= -135) || -45 <= rotationYaw || rotationYaw <= -315) {
-                            xExpand = 1F;
-                            yExpand = 1F;
-                        }
-                        break;
-                    case 4:
-                        xExpand = 1F;
-                        yExpand = 1F;
-                        zExpand = 1F;
-                        break;
-                }
 
-                AxisAlignedBB bb = b.getSelectedBoundingBoxFromPool(mc.theWorld, mouseHit.blockX, mouseHit.blockY, mouseHit.blockZ).expand(xExpand + f1, yExpand + f1, zExpand + f1).getOffsetBoundingBox(-xOffset, -yOffset, -zOffset);
+
+                AxisAlignedBB bb = b.getSelectedBoundingBoxFromPool(mc.theWorld, blockX, blockY, blockZ).expand(xExpand + f1, yExpand + f1, zExpand + f1).getOffsetBoundingBox(-xOffset, -yOffset, -zOffset);
                 GL11.glColor4f(red, green, blue, alpha);
                 drawOutlinedBoundingBox(bb);
             }
