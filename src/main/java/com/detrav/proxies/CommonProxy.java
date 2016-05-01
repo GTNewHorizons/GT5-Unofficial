@@ -43,7 +43,7 @@ public class CommonProxy implements IGuiHandler {
         GT_ModHandler.addCraftingRecipe(
                 DetravMetaGeneratedTool01.INSTANCE.getToolWithStatsPlus(2,1,Materials._NULL,Materials._NULL,null,0),
                 GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[]{"dwx", "hMc", "fsr", Character.valueOf('M'), ItemList.Hatch_Maintenance});
+                new Object[]{"dwx", "hMc", "fsr", Character.valueOf('M'), OrePrefixes.ingot.get(Materials.Steel)});
     }
 
     @Override
