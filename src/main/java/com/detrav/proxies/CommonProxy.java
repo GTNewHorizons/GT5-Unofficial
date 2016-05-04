@@ -1,6 +1,7 @@
 package com.detrav.proxies;
 
 import com.detrav.DetravScannerMod;
+import com.detrav.enums.DetravItemList;
 import com.detrav.enums.DetravSimpleItems;
 import com.detrav.gui.DetravGuiProPick;
 import com.detrav.gui.DetravRepairToolGui;
@@ -14,6 +15,7 @@ import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -47,6 +49,12 @@ public class CommonProxy implements IGuiHandler {
         if (!GregTech_API.sSpecialFile.get(ConfigCategories.general, "DisableFlintTools", false)) {
             GT_ModHandler.addCraftingRecipe(DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(0, 1, Materials.Flint, Materials.Wood, null), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"FF", "SS", Character.valueOf('S'), OrePrefixes.stick.get(Materials.Wood), Character.valueOf('F'), new ItemStack(Items.flint, 1)});
         }
+
+        //boiler recipes
+
+        GT_ModHandler.addCraftingRecipe(DetravItemList.Solar_Boiler_Low.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"GGG", "BBB", "PMP", Character.valueOf('M'), ItemList.Machine_Bronze_Boiler, Character.valueOf('P'), OrePrefixes.pipeSmall.get(Materials.Bronze), Character.valueOf('B'), OrePrefixes.dye.get(Materials.Black), Character.valueOf('G'), new ItemStack(Blocks.glass, 1)});
+        GT_ModHandler.addCraftingRecipe(DetravItemList.Solar_Boiler_Medium.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"GGG", "NNN", "PMP", Character.valueOf('M'), ItemList.Machine_Steel_Boiler, Character.valueOf('P'), OrePrefixes.pipeSmall.get(Materials.Steel), Character.valueOf('N'), OrePrefixes.dust.get(Materials.Nickel), Character.valueOf('G'), new ItemStack(Blocks.glass, 1)});
+        GT_ModHandler.addCraftingRecipe(DetravItemList.Solar_Boiler_High.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"GGG", "RRR", "PMP", Character.valueOf('M'), ItemList.Hull_HV, Character.valueOf('P'), OrePrefixes.pipeSmall.get(Materials.StainlessSteel), Character.valueOf('R'), OrePrefixes.dust.get(Materials.Rutile), Character.valueOf('G'), new ItemStack(Blocks.glass, 1)});
 
     }
 
