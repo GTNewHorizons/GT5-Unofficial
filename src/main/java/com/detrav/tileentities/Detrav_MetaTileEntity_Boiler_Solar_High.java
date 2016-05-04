@@ -32,13 +32,13 @@ public class Detrav_MetaTileEntity_Boiler_Solar_High extends GT_MetaTileEntity_B
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[4][17][];
         for (byte i = -1; i < 16; i = (byte) (i + 1)) {
-            ITexture[] tmp0 = {new GT_RenderedTexture(Textures.BlockIcons.MACHINE_BRONZEBRICKS_BOTTOM, Dyes.getModulation(i, Dyes._NULL.mRGBa))};
+            ITexture[] tmp0 = {new GT_RenderedTexture(Textures.BlockIcons.MACHINE_LV_BOTTOM, Dyes.getModulation(i, Dyes._NULL.mRGBa))};
             rTextures[0][(i + 1)] = tmp0;
-            ITexture[] tmp1 = {new GT_RenderedTexture(Textures.BlockIcons.MACHINE_BRONZEBRICKS_TOP, Dyes.getModulation(i, Dyes._NULL.mRGBa)), new GT_RenderedTexture(Textures.BlockIcons.BOILER_SOLAR)};
+            ITexture[] tmp1 = {new GT_RenderedTexture(Textures.BlockIcons.MACHINE_LV_TOP, Dyes.getModulation(i, Dyes._NULL.mRGBa)), new GT_RenderedTexture(Textures.BlockIcons.BOILER_SOLAR,Dyes.dyeYellow.getRGBA())};
             rTextures[1][(i + 1)] = tmp1;
-            ITexture[] tmp2 = {new GT_RenderedTexture(Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE, Dyes.getModulation(i, Dyes._NULL.mRGBa))};
+            ITexture[] tmp2 = {new GT_RenderedTexture(Textures.BlockIcons.MACHINE_LV_SIDE, Dyes.getModulation(i, Dyes._NULL.mRGBa))};
             rTextures[2][(i + 1)] = tmp2;
-            ITexture[] tmp3 = {new GT_RenderedTexture(Textures.BlockIcons.MACHINE_BRONZEBRICKS_SIDE, Dyes.getModulation(i, Dyes._NULL.mRGBa)), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE)};
+            ITexture[] tmp3 = {new GT_RenderedTexture(Textures.BlockIcons.MACHINE_LV_SIDE, Dyes.getModulation(i, Dyes._NULL.mRGBa)), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE)};
             rTextures[3][(i + 1)] = tmp3;
         }
         return rTextures;
