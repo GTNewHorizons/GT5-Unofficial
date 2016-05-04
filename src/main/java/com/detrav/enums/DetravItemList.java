@@ -14,7 +14,11 @@ import static gregtech.api.enums.GT_Values.W;
  * Created by wital_000 on 20.03.2016.
  */
 public enum DetravItemList implements IItemContainer {
-    Shape_Extruder_ProPick;
+    Shape_Extruder_ProPick,
+    Solar_Boiler_Low,
+    Solar_Boiler_Medium,
+    Solar_Boiler_High;
+
 
     private ItemStack mStack;
     private boolean mHasNotBeenSet = true;
