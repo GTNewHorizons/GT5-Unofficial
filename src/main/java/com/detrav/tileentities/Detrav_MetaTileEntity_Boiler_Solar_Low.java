@@ -112,10 +112,10 @@ public class Detrav_MetaTileEntity_Boiler_Solar_Low extends GT_MetaTileEntity_Bo
                         }
                         this.mFluid.amount -= 1;
                         mRunTime += 1;
-                        int tOutput = 150;
-                        if(mRunTime > 10000){
+                        int tOutput = 150;//6 steam/tick
+                        /*if(mRunTime > 10000){
                             tOutput = Math.max(50, 150 - ((mRunTime-10000)/100));
-                        }
+                        }*/
                         if (this.mSteam == null) {
                             this.mSteam = GT_ModHandler.getSteam(tOutput);
                         } else if (GT_ModHandler.isSteam(this.mSteam)) {
