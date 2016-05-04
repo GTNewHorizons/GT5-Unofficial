@@ -9,13 +9,12 @@ import com.detrav.gui.DetravPortableChargerGui;
 import com.detrav.gui.containers.DetravRepairToolContainer;
 import com.detrav.items.DetravMetaGeneratedTool01;
 import cpw.mods.fml.common.network.IGuiHandler;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
+import gregtech.api.GregTech_API;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -44,6 +43,11 @@ public class CommonProxy implements IGuiHandler {
                 DetravMetaGeneratedTool01.INSTANCE.getToolWithStatsPlus(2,1,Materials._NULL,Materials._NULL,null,0),
                 GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
                 new Object[]{"dwx", "hMc", "fsr", Character.valueOf('M'), OrePrefixes.ingot.get(Materials.Steel)});
+
+        if (!GregTech_API.sSpecialFile.get(ConfigCategories.general, "DisableFlintTools", false)) {
+            GT_ModHandler.addCraftingRecipe(DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(0, 1, Materials.Flint, Materials.Wood, null), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"FF", "SS", Character.valueOf('S'), OrePrefixes.stick.get(Materials.Wood), Character.valueOf('F'), new ItemStack(Items.flint, 1)});
+        }
+
     }
 
     @Override
