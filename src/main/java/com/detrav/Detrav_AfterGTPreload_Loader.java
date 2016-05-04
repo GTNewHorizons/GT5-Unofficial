@@ -29,8 +29,8 @@ public class Detrav_AfterGTPreload_Loader implements Runnable {
         //new ProcessingDetravToolProPick();
 
         //ItemList.Machine_Bronze_Boiler_Solar.set(new GT_MetaTileEntity_Boiler_Solar(105, "boiler.solar", "Simple Solar Boiler").getStackForm(1L));
-        DetravItemList.Solar_Boiler_Low.set(new Detrav_MetaTileEntity_Boiler_Solar_Low(1,"boiler.bronze.solar", "Bronze Solar Boiler").getStackForm(1L));
-        DetravItemList.Solar_Boiler_Medium.set(new Detrav_MetaTileEntity_Boiler_Solar_Medium(1,"boiler.steel.solar", "Steel Solar Boiler").getStackForm(1L));
-        DetravItemList.Solar_Boiler_High.set(new Detrav_MetaTileEntity_Boiler_Solar_High(1,"boiler.stainless.steel.solar", "Stainless Steel Solar Boiler").getStackForm(1L));
+        DetravItemList.Solar_Boiler_Low.set(new Detrav_MetaTileEntity_Boiler_Solar_Low(2051,"boiler.bronze.solar", "Bronze Solar Boiler").getStackForm(1L));
+        DetravItemList.Solar_Boiler_Medium.set(new Detrav_MetaTileEntity_Boiler_Solar_Medium(2052,"boiler.steel.solar", "Steel Solar Boiler").getStackForm(1L));
+        DetravItemList.Solar_Boiler_High.set(new Detrav_MetaTileEntity_Boiler_Solar_High(2053,"boiler.stainless.steel.solar", "Stainless Steel Solar Boiler").getStackForm(1L));
     }
 }
