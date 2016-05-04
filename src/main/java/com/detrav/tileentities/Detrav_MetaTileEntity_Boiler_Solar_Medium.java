@@ -61,7 +61,7 @@ public class Detrav_MetaTileEntity_Boiler_Solar_Medium extends GT_MetaTileEntity
     }
 
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new Detrav_MetaTileEntity_Boiler_Solar_Low(this.mName, this.mTier, this.mDescription, this.mTextures);
+        return new Detrav_MetaTileEntity_Boiler_Solar_Medium(this.mName, this.mTier, this.mDescription, this.mTextures);
     }
 
     private int mRunTime = 0;
