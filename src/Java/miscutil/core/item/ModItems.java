@@ -124,8 +124,8 @@ public final class ModItems {
 	
 	//Material related
 	public static Item itemStickyRubber;
-	public static Item item_PLEASE_FACTOR_ME_1;
-	public static Item item_PLEASE_FACTOR_ME_2;
+	public static Item itemIngotBatteryAlloy;
+	public static Item itemPlateBatteryAlloy;
 	public static Item item_PLEASE_FACTOR_ME_3;
 	public static Item item_PLEASE_FACTOR_ME_4;
 
@@ -324,11 +324,15 @@ public final class ModItems {
 		//Dev Items
 		itemStickyRubber = new Item().setUnlocalizedName("itemStickyRubber").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemDefault");
 		GameRegistry.registerItem(itemStickyRubber, "itemStickyRubber");
+		
+		//Battery Alloy For cheap Niggers
+		itemIngotBatteryAlloy = new Item().setUnlocalizedName("itemIngotBatteryAlloy").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemDefault");
+		GameRegistry.registerItem(itemIngotBatteryAlloy, "itemIngotBatteryAlloy");
+		itemPlateBatteryAlloy = new Item().setUnlocalizedName("itemPlateBatteryAlloy").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemDefault");
+		GameRegistry.registerItem(itemPlateBatteryAlloy, "itemPlateBatteryAlloy");
+		
+		
 		/*
-		item_PLEASE_FACTOR_ME_1 = new Item().setUnlocalizedName("unlocalName1").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemDefault");
-		GameRegistry.registerItem(item_PLEASE_FACTOR_ME_1, "localName1");
-		item_PLEASE_FACTOR_ME_2 = new Item().setUnlocalizedName("unlocalName2").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemDefault");
-		GameRegistry.registerItem(item_PLEASE_FACTOR_ME_2, "localName2");
 		item_PLEASE_FACTOR_ME_3 = new Item().setUnlocalizedName("unlocalName3").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemDefault");
 		GameRegistry.registerItem(item_PLEASE_FACTOR_ME_3, "localName3");
 		item_PLEASE_FACTOR_ME_4 = new Item().setUnlocalizedName("unlocalName4").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemDefault");

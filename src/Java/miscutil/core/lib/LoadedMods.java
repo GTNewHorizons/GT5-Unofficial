@@ -16,6 +16,7 @@ public class LoadedMods {
 	public static boolean Extra_Utils = false;
 	public static boolean PneumaticCraft = false;
 	public static boolean MorePlanets = false;
+	public static boolean ForbiddenMagic = false;
 
 	
 	private static int totalMods;
@@ -59,6 +60,10 @@ public class LoadedMods {
 		}
 		if (Loader.isModLoaded("MorePlanet") == true){
 			MorePlanets  = true;
+			totalMods++;
+		}
+		if (Loader.isModLoaded("ForbiddenMagic") == true){
+			ForbiddenMagic  = true;
 			totalMods++;
 		}
 	
