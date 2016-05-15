@@ -21,6 +21,8 @@ public class CORE {
 	public static Map PlayerCache;
 	public static final String[] VOLTAGES = {"ULV","LV","MV","HV","EV","IV","LuV","ZPM","UV","MAX"};
 	public static IGregtech_RecipeAdder RA;
+	@Deprecated
+    public static IGregtech_RecipeAdder sRecipeAdder;
 	
 	@SideOnly(Side.CLIENT)
     public static IIconRegister GT_BlockIcons, GT_ItemIcons;	

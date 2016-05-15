@@ -14,6 +14,7 @@ import miscutil.core.util.PlayerCache;
 import miscutil.core.util.Utils;
 import miscutil.core.util.debug.DEBUG_ScreenOverlay;
 import miscutil.core.util.uptime.Uptime;
+import miscutil.gregtech.common.GregtechRecipeAdder;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -48,6 +49,15 @@ implements ActionListener
 	{
 		LoadedMods.checkLoaded();
 		Utils.LOG_INFO("Doing some house cleaning.");
+		
+		if (LoadedMods.Gregtech){
+			try {
+				CORE.sRecipeAdder = CORE.RA = new GregtechRecipeAdder();
+			} catch (NullPointerException e){
+				
+			}
+		}
+		
 		AddToCreativeTab.initialiseTabs();
 		proxy.registerTileEntities();
 		proxy.registerRenderThings();
