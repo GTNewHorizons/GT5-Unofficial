@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="libs/Waila-1.5.10_1.7.10-deobf.jar"/>
 	<classpathentry kind="lib" path="libs/EnderIO-1.7.10-2.2.8.381-dev.jar" sourcepath="libsrc/EnderIO-1.7.10-2.2.8.381-sources.jar"/>
 	<classpathentry kind="lib" path="libs/gregtech-5.8.50UX-dev.jar"/>
+	<classpathentry kind="lib" path="libs/API.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -3,11 +3,15 @@ package miscutil.core.util;
 import gregtech.api.util.GT_OreDictUnificator;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import miscutil.core.handler.registration.RegistrationHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -40,7 +44,7 @@ public class UtilsItems {
 		}
 		return null;
 	}
-	
+
 	public static void getItemForOreDict(String FQRN, String oreDictName, String itemName, int meta){
 		try {
 			Item em = null;			
@@ -50,16 +54,16 @@ public class UtilsItems {
 				em = em1;
 			}
 			if (em != null){
-				
+
 				ItemStack metaStack = new ItemStack(em,1,meta);
 				GT_OreDictUnificator.registerOre(oreDictName, metaStack);
-				
+
 				/*ItemStack itemStackWithMeta = new ItemStack(em,1,meta);
 				GT_OreDictUnificator.registerOre(oreDictName, new ItemStack(itemStackWithMeta.getItem()));*/
 			}
-			} catch (NullPointerException e) {
-				Utils.LOG_ERROR(itemName+" not found. [NULL]");
-	        }
+		} catch (NullPointerException e) {
+			Utils.LOG_ERROR(itemName+" not found. [NULL]");
+		}
 	}
 
 	public static void recipeBuilder(Object slot_1, Object slot_2, Object slot_3, Object slot_4, Object slot_5, Object slot_6, Object slot_7, Object slot_8, Object slot_9, ItemStack resultItem){	
@@ -145,7 +149,7 @@ public class UtilsItems {
 			{
 				Utils.LOG_ERROR(""+validSlotsArray[j]);
 			}*/
-			
+
 			GameRegistry.addRecipe(new ShapedOreRecipe(resultItem.copy(), (Object[]) validSlots.toArray()));		
 			Utils.LOG_INFO("Success! Added a recipe for "+resultItem.toString());
 			RegistrationHandler.recipesSuccess++;
@@ -199,15 +203,85 @@ public class UtilsItems {
 	public static Item getItemInPlayersHand(){
 		Minecraft mc = Minecraft.getMinecraft();
 		Item heldItem = null;
-	
+
 		try{heldItem = mc.thePlayer.getHeldItem().getItem();
 		}catch(NullPointerException e){return null;}
-	
+
 		if (heldItem != null){
 			return heldItem;
 		}
-	
+
 		return null;
 	}
 
+	public static boolean removeCraftingRecipe(Object x){
+		if (null == x){return false;}
+		if (x instanceof String){	
+			Item R = getItem((String) x);
+			if (R != null){
+				x = R;
+			}
+			else {
+				return false;
+			}
+		}
+		if (x instanceof Item || x instanceof ItemStack){
+			if (x instanceof Item){
+				ItemStack r = new ItemStack((Item) x);
+				Utils.LOG_INFO("Removing Recipe for "+r.getUnlocalizedName());
+			}
+			else {
+				Utils.LOG_INFO("Removing Recipe for "+((ItemStack) x).getUnlocalizedName());
+			}
+			if (x instanceof ItemStack){
+				Item r = ((ItemStack) x).getItem();		
+				if (null != r){
+					x = r;
+				}
+				else {
+					Utils.LOG_INFO("Recipe removal failed - Tell Alkalus.");
+					return false;
+				}
+			}			
+			if (attemptRecipeRemoval((Item) x)){
+				Utils.LOG_INFO("Recipe removal successful");
+				return true;
+			}
+			Utils.LOG_INFO("Recipe removal failed - Tell Alkalus.");
+			return false;			
+		}
+		return false;
+	}
+
+	private static boolean attemptRecipeRemoval(Item I){
+		Utils.LOG_WARNING("Create list of recipes.");
+		List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
+		Iterator<IRecipe> items = recipes.iterator();
+		Utils.LOG_WARNING("Begin list iteration.");
+		while (items.hasNext()) {
+			ItemStack is = items.next().getRecipeOutput();
+			if (is != null && is.getItem() == I){
+				items.remove();
+				Utils.LOG_INFO("Remove a recipe with "+I.getUnlocalizedName()+" as output.");
+				continue;
+			}
+		}
+		Utils.LOG_WARNING("All recipes should be gone?");
+		if (!items.hasNext()){
+			Utils.LOG_WARNING("We iterated once, let's try again to double check.");
+			Iterator<IRecipe> items2 = recipes.iterator();
+			while (items2.hasNext()) {
+				ItemStack is = items2.next().getRecipeOutput();
+				if (is != null && is.getItem() == I){
+					items.remove();
+					Utils.LOG_WARNING("REMOVING MISSED RECIPE - RECHECK CONSTRUCTORS");
+					return true;
+				}
+			}
+			Utils.LOG_WARNING("Should be all gone now after double checking, so return true.");
+			return true;
+		}
+		Utils.LOG_INFO("Return false, because something went wrong.");
+		return false;
+	}
 }

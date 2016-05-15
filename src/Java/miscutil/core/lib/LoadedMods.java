@@ -17,6 +17,7 @@ public class LoadedMods {
 	public static boolean PneumaticCraft = false;
 	public static boolean MorePlanets = false;
 	public static boolean ForbiddenMagic = false;
+	public static boolean CompactWindmills = false;
 
 	
 	private static int totalMods;
@@ -64,6 +65,10 @@ public class LoadedMods {
 		}
 		if (Loader.isModLoaded("ForbiddenMagic") == true){
 			ForbiddenMagic  = true;
+			totalMods++;
+		}
+		if (Loader.isModLoaded("CompactWindmills") == true){
+			CompactWindmills  = true;
 			totalMods++;
 		}
 	

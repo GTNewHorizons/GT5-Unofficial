@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import miscutil.core.commands.CommandMath;
 import miscutil.core.common.CommonProxy;
+import miscutil.core.common.compat.COMPAT_HANDLER;
 import miscutil.core.creative.AddToCreativeTab;
 import miscutil.core.handler.events.PickaxeBlockBreakEventHandler;
 import miscutil.core.lib.CORE;
@@ -60,7 +61,6 @@ implements ActionListener
 	public void init(FMLInitializationEvent event)
 	{
 		proxy.init(event);
-		proxy.registerOreDict();
 		MinecraftForge.EVENT_BUS.register(this);
 		MinecraftForge.EVENT_BUS.register(new PickaxeBlockBreakEventHandler());
 		if (CORE.DEBUG){
@@ -84,6 +84,7 @@ implements ActionListener
 	{
 		event.registerServerCommand(new CommandMath());
 		Uptime.serverStarting(); //Integration of Uptime.
+		COMPAT_HANDLER.ServerStartedEvent();
 
 	}
 

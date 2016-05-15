@@ -18,7 +18,7 @@ public class GUI_SteamCondenser extends GT_GUIContainerMetaTile_Machine
 protected void drawGuiContainerForegroundLayer(int par1, int par2)
   {
     this.fontRendererObj.drawString("Condenser", 8, 4, 4210752);
-    if (!CORE.DEBUG){
+    if (CORE.DEBUG){
         tickTime = ((CONTAINER_SteamCondenser)this.mContainer).mTickingTime;
         this.fontRendererObj.drawString("Tick Time: "+tickTime, 8, 12, 4210752);
     }

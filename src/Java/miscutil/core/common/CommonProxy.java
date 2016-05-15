@@ -4,19 +4,11 @@ import static miscutil.core.lib.CORE.DEBUG;
 import static miscutil.core.lib.LoadedMods.Gregtech;
 import gregtech.api.util.GT_OreDictUnificator;
 import miscutil.core.block.ModBlocks;
-import miscutil.core.common.compat.COMPAT_BigReactors;
-import miscutil.core.common.compat.COMPAT_EnderIO;
-import miscutil.core.common.compat.COMPAT_ExtraUtils;
-import miscutil.core.common.compat.COMPAT_MorePlanets;
-import miscutil.core.common.compat.COMPAT_PneumaticCraft;
-import miscutil.core.common.compat.COMPAT_RFTools;
-import miscutil.core.common.compat.COMPAT_SimplyJetpacks;
-import miscutil.core.common.compat.COMPAT_Thaumcraft;
+import miscutil.core.common.compat.COMPAT_HANDLER;
 import miscutil.core.gui.ModGUI;
 import miscutil.core.handler.registration.RegistrationHandler;
 import miscutil.core.item.ModItems;
 import miscutil.core.lib.CORE;
-import miscutil.core.lib.LoadedMods;
 import miscutil.core.tileentities.ModTileEntities;
 import miscutil.core.util.Utils;
 import miscutil.core.util.UtilsItems;
@@ -80,9 +72,7 @@ public class CommonProxy {
 	}
 
 	public void postInit(FMLPostInitializationEvent e) {
-
-
-
+		registerOreDict();
 	}
 
 	public void registerNetworkStuff(){
@@ -104,9 +94,9 @@ public class CommonProxy {
 	}
 
 	@SuppressWarnings("static-method")
-	public void registerOreDict(){
+	private void registerOreDict(){
 
-		Utils.LOG_INFO("Registering Ingots & Plates with OreDict.");
+		Utils.LOG_INFO("Registering Materials with OreDict.");
 		//In-house
 
 		//tools
@@ -127,94 +117,13 @@ public class CommonProxy {
 			GT_OreDictUnificator.registerOre("bufferCore_"+CORE.VOLTAGES[i-1], new ItemStack(UtilsItems.getItem("miscutils:item.itemBufferCore"+i)));
 		}
 
-
-		//InterMod
-		if (LoadedMods.Big_Reactors){
-			COMPAT_BigReactors.OreDict();
-		}
-		if (LoadedMods.EnderIO){
-			COMPAT_EnderIO.OreDict();
-		}
-		if (LoadedMods.MorePlanets){
-			COMPAT_MorePlanets.OreDict();
-		}
-		if (LoadedMods.Simply_Jetpacks){
-			COMPAT_SimplyJetpacks.OreDict();
-		}
-		if (LoadedMods.RFTools){
-			COMPAT_RFTools.OreDict();
-		}
-		if (LoadedMods.Thaumcraft){
-			COMPAT_Thaumcraft.OreDict();
-		}
-		if (LoadedMods.Extra_Utils){
-			COMPAT_ExtraUtils.OreDict();
-		}
-		if (LoadedMods.PneumaticCraft){
-			COMPAT_PneumaticCraft.OreDict();
-		}
+		//Do Inter-Mod Compatibility
+		COMPAT_HANDLER.run();
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	@SuppressWarnings("static-method")
 	public int addArmor(String armor) {
 		return 0;
 	}
 
 }
-
-
-/*
- * 
- * try{
-			Item em = null;
-			//Item em1 = GameRegistry.findItem("ThaumCraft", "ItemResource:16");
-			//Item em2 = GameRegistry.findItem("ThaumCraft", "<ItemResource:16>");
-
-			Item em1 = Utils.getItem("Thaumcraft:ItemResource:16");
-			Utils.LOG_WARNING("Found: "+em1.toString());
-			if (!em1.equals(null)){
-				em = em1;
-			}			
-			else {
-				em = null;
-			}			
-			if (!em.equals(null)){
-				ItemStack voidIngot = new ItemStack(em,1,16);
-				//GT_OreDictUnificator.registerOre("ingotVoidMetal", new ItemStack(em));
-				//GameRegistry.registerCustomItemStack("ingotVoidMetal", voidIngot);
-				GT_OreDictUnificator.registerOre("ingotVoidMetal", voidIngot);
-			}
-			else {
-				Utils.LOG_WARNING("Void Metal Ingot not found.");
-			}
-			} catch (NullPointerException e) {
-				Utils.LOG_ERROR("Void Metal Ingot not found. [NULL]");
-	        }
-
-  try {
-Item em = null;			
-Item em1 = Utils.getItem("ExtraUtilities:bedrockiumIngot");
-Utils.LOG_WARNING("Found: "+em1.toString());
-if (!em1.equals(null)){
-	em = em1;
-}
-if (!em.equals(null)){
-	GT_OreDictUnificator.registerOre("ingotBedrockium", new ItemStack(em));
-}
-else {
-	Utils.LOG_WARNING("Bedrockium Ingot not found.");
-}
-} catch (NullPointerException e) {
-	Utils.LOG_ERROR("Bedrockium Ingot not found. [NULL]");
-}*/
