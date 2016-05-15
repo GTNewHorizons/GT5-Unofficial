@@ -73,6 +73,7 @@ public class CommonProxy {
 
 	public void postInit(FMLPostInitializationEvent e) {
 		registerOreDict();
+		COMPAT_HANDLER.loadGregAPIRecipes();
 	}
 
 	public void registerNetworkStuff(){

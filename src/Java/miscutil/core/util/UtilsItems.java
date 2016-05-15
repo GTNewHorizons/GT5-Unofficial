@@ -199,6 +199,16 @@ public class UtilsItems {
 		String[] fqrnSplit = fqrn.split(":");
 		return GameRegistry.findItemStack(fqrnSplit[0], fqrnSplit[1], Size);
 	}
+	
+	// TODO
+	/*public static FluidStack getFluidStack(Materials m, int Size) // fqrn = fully qualified resource name
+	{
+		String[] fqrnSplit = fqrn.split(":");
+		
+		FluidStack x = (FluidStack) "Materials."+m+".getFluid"(Size);
+		
+		return GameRegistry.findItemStack(fqrnSplit[0], fqrnSplit[1], Size);
+	}*/
 
 	public static Item getItemInPlayersHand(){
 		Minecraft mc = Minecraft.getMinecraft();

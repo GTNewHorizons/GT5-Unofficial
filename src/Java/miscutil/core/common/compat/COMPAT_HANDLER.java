@@ -5,6 +5,7 @@ import static miscutil.core.util.UtilsItems.removeCraftingRecipe;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import miscutil.core.handler.registration.RECIPES_GREGTECH;
 import miscutil.core.lib.LoadedMods;
 
 public class COMPAT_HANDLER {
@@ -59,5 +60,9 @@ public class COMPAT_HANDLER {
 		for(Object item : AddRecipeQueue){
 			removeCraftingRecipe(item);
 		}
+	}
+	
+	public static void loadGregAPIRecipes(){
+		RECIPES_GREGTECH.run();
 	}
 }

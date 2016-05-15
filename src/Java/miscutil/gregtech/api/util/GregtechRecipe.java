@@ -1,6 +1,5 @@
 package miscutil.gregtech.api.util;
 
-import static gregtech.api.enums.GT_Values.D1;
 import static gregtech.api.enums.GT_Values.E;
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 import static gregtech.api.enums.GT_Values.W;
@@ -10,7 +9,6 @@ import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
@@ -258,7 +256,7 @@ public class GregtechRecipe {
 		 */
 		public static final Collection<Gregtech_Recipe_Map> sMappings = new ArrayList<Gregtech_Recipe_Map>();
 		//public static final GT_Recipe_Map sChemicalBathRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(200), "gt.recipe.chemicalbath", "Chemical Bath", null, RES_PATH_GUI + "basicmachines/ChemicalBath", 1, 3, 1, 1, 1, E, 1, E, true, true);
-		public static final GT_Recipe_Map sCokeOvenRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(200), "mu.recipe.cokeoven", "Coke Oven", null, RES_PATH_GUI + "basicmachines/ChemicalBath", 1, 3, 1, 1, 1, E, 1, E, true, true);
+		public static final GT_Recipe_Map sCokeOvenRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(200), "gt.recipe.cokeoven", "Coke Oven", null, RES_PATH_GUI + "basicmachines/ChemicalBath", 1, 3, 1, 1, 1, E, 1, E, true, true);
 		//public static final Gregtech_Recipe_Map sCokeOvenRecipes = new Gregtech_Recipe_Map(new HashSet<GregtechRecipe>(200), "mu.recipe.cokeoven", "Coke Oven", null, RES_PATH_GUI + "basicmachines/E_Furnace", 1, 1, 1, 1, 1, E, 1, E, true, true);
 
 
@@ -604,79 +602,4 @@ public class GregtechRecipe {
 			return null;
 		}
 	}
-
-	/**
-	 * Special Class for Furnace Recipe handling.
-	 */
-	public static class GT_Recipe_Map_Furnace extends GT_Recipe_Map_NonGTRecipes {
-		public GT_Recipe_Map_Furnace(Collection<GregtechRecipe> aRecipeList, String aUnlocalizedName, String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre, int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI, boolean aNEIAllowed) {
-			super(aRecipeList, aUnlocalizedName, aLocalName, aNEIName, aNEIGUIPath, aUsualInputCount, aUsualOutputCount, aMinimalInputItems, aMinimalInputFluids, aAmperage, aNEISpecialValuePre, aNEISpecialValueMultiplier, aNEISpecialValuePost, aShowVoltageAmperageInNEI, aNEIAllowed);
-		}
-
-		@Override
-		public GregtechRecipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GregtechRecipe aRecipe, boolean aNotUnificated, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot, ItemStack... aInputs) {
-			if (aInputs == null || aInputs.length <= 0 || aInputs[0] == null) return null;
-			if (aRecipe != null && aRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) return aRecipe;
-
-			try {
-				ItemStack tRecipeOutputs = mods.railcraft.api.crafting.RailcraftCraftingManager.cokeOven.getRecipe(GT_Utility.copyAmount(1, aInputs[0])).getOutput();
-				if (tRecipeOutputs != null) {
-					//aRecipe = new GregtechRecipe(false, new ItemStack[]{GT_Utility.copyAmount(1, aInputs[0])}, tRecipeOutputs(new ItemStack[tRecipeOutputs.size()]), null, null, null, null, 800, 2, 0);
-					aRecipe.mCanBeBuffered = false;
-					aRecipe.mNeedsEmptyOutput = true;
-					return aRecipe;
-				}
-			} catch (NoClassDefFoundError e) {
-				if (D1) GT_Log.err.println("Railcraft Not loaded");
-			} catch (NullPointerException e) {/**/}
-
-
-			ItemStack tOutput = GT_ModHandler.getSmeltingOutput(aInputs[0], false, null);
-			return tOutput == null ? null : new GregtechRecipe(false, new ItemStack[]{GT_Utility.copyAmount(1, aInputs[0])}, new ItemStack[]{tOutput}, null, null, null, null, 128, 4, 0);
-		}
-
-		@Override
-		public boolean containsInput(ItemStack aStack) {
-			return GT_ModHandler.getSmeltingOutput(aStack, false, null) != null;
-		}
-	}
 }
-
-
-/**
- * Special Class for Macerator/RockCrusher Recipe handling.
- */
-/*public static class GT_Recipe_Map_Macerator extends GT_Recipe_Map {
-	public GT_Recipe_Map_Macerator(Collection<GregtechRecipe> aRecipeList, String aUnlocalizedName, String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre, int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI, boolean aNEIAllowed) {
-		super(aRecipeList, aUnlocalizedName, aLocalName, aNEIName, aNEIGUIPath, aUsualInputCount, aUsualOutputCount, aMinimalInputItems, aMinimalInputFluids, aAmperage, aNEISpecialValuePre, aNEISpecialValueMultiplier, aNEISpecialValuePost, aShowVoltageAmperageInNEI, aNEIAllowed);
-	}
-
-	@Override
-	public GregtechRecipe findRecipe(IHasWorldObjectAndCoords aTileEntity, GregtechRecipe aRecipe, boolean aNotUnificated, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot, ItemStack... aInputs) {
-		if (aInputs == null || aInputs.length <= 0 || aInputs[0] == null || !GregTech_API.sPostloadFinished)
-			return super.findRecipe(aTileEntity, aRecipe, aNotUnificated, aVoltage, aFluids, aSpecialSlot, aInputs);
-		aRecipe = super.findRecipe(aTileEntity, aRecipe, aNotUnificated, aVoltage, aFluids, aSpecialSlot, aInputs);
-		if (aRecipe != null) return aRecipe;
-
-		try {
-			ItemStack tRecipeOutputs = mods.railcraft.api.crafting.RailcraftCraftingManager.cokeOven.getRecipe(GT_Utility.copyAmount(1, aInputs[0])).getOutput();
-			if (tRecipeOutputs != null) {
-				aRecipe = new GregtechRecipe(false, new ItemStack[]{GT_Utility.copyAmount(1, aInputs[0])}, tRecipeOutputs(new ItemStack[tRecipeOutputs.size()]), null, null, null, null, 800, 2, 0);
-				aRecipe.mCanBeBuffered = false;
-				aRecipe.mNeedsEmptyOutput = true;
-				return aRecipe;
-			}
-		} catch (NoClassDefFoundError e) {
-			if (D1) GT_Log.err.println("Railcraft Not loaded");
-		} catch (NullPointerException e) {}
-
-		ItemStack tComparedInput = GT_Utility.copy(aInputs[0]);
-		ItemStack[] tOutputItems = GT_ModHandler.getMachineOutput(tComparedInput, ic2.api.recipe.Recipes.macerator.getRecipes(), true, new NBTTagCompound(), null, null, null);
-		return GT_Utility.arrayContainsNonNull(tOutputItems) ? new GregtechRecipe(false, new ItemStack[]{GT_Utility.copyAmount(aInputs[0].stackSize - tComparedInput.stackSize, aInputs[0])}, tOutputItems, null, null, null, null, 400, 2, 0) : null;
-	}
-
-	@Override
-	public boolean containsInput(ItemStack aStack) {
-		return super.containsInput(aStack) || GT_Utility.arrayContainsNonNull(GT_ModHandler.getMachineOutput(GT_Utility.copyAmount(64, aStack), ic2.api.recipe.Recipes.macerator.getRecipes(), false, new NBTTagCompound(), null, null, null));
-	}
-}*/
