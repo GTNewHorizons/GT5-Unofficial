@@ -130,7 +130,7 @@ public class Utils {
 		return FluidRegistry.getFluidStack("ic2steam", (int)aAmount);
 	}
 
-	
+
 
 	/*public static void recipeBuilderBlock(ItemStack slot_1, ItemStack slot_2, ItemStack slot_3, ItemStack slot_4, ItemStack slot_5, ItemStack slot_6, ItemStack slot_7, ItemStack slot_8, ItemStack slot_9, Block resultBlock){
 		GameRegistry.addRecipe(new ItemStack(resultBlock),
@@ -155,26 +155,42 @@ public class Utils {
 
 		return correctTool;
 	}
-	
-	/**
-	* 
-	* @param colorStr e.g. "#FFFFFF"
-	* @return String - formatted "rgb(0,0,0)"
-	*/
-	public static String hex2Rgb(String hexString) {
-	    Color c = new Color(
-	        Integer.valueOf(hexString.substring(1, 3), 16), 
-	        Integer.valueOf(hexString.substring(3, 5), 16), 
-	        Integer.valueOf(hexString.substring(5, 7), 16));
 
-	    StringBuffer sb = new StringBuffer();
-	    sb.append("rgb(");
-	    sb.append(c.getRed());
-	    sb.append(",");
-	    sb.append(c.getGreen());
-	    sb.append(",");
-	    sb.append(c.getBlue());
-	    sb.append(")");
-	    return sb.toString();
+	/**
+	 * 
+	 * @param colorStr e.g. "#FFFFFF"
+	 * @return String - formatted "rgb(0,0,0)"
+	 */
+	public static String hex2Rgb(String hexString) {
+		Color c = new Color(
+				Integer.valueOf(hexString.substring(1, 3), 16), 
+				Integer.valueOf(hexString.substring(3, 5), 16), 
+				Integer.valueOf(hexString.substring(5, 7), 16));
+
+		StringBuffer sb = new StringBuffer();
+		sb.append("rgb(");
+		sb.append(c.getRed());
+		sb.append(",");
+		sb.append(c.getGreen());
+		sb.append(",");
+		sb.append(c.getBlue());
+		sb.append(")");
+		return sb.toString();
+	}
+
+	//Smooth Rounding Function
+	public static double decimalRounding(double d) {
+		return Math.round(d * 2) / 2.0;
+	}
+
+	//Smooth Rounding Function (Nearest 5)
+	public static double decimalRoundingToWholes(double d) {
+		return 5*(Math.round(d/5));
+	}
+
+	//Converts temps for GT machines, then rounds for ease of use.
+	public static float celsiusToKelvin(int i){
+		double f = i + 273.15F;
+		return (int)decimalRoundingToWholes(f);
 	}
 }

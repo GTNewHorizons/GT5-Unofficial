@@ -1,8 +1,8 @@
 package miscutil.core.handler.registration;
 
 import gregtech.api.enums.ItemList;
-import miscutil.core.util.UtilsItems;
 import miscutil.core.util.Utils;
+import miscutil.core.util.UtilsItems;
 import miscutil.gregtech.api.enums.GregtechItemList;
 import net.minecraft.item.ItemStack;
 
@@ -25,7 +25,7 @@ public class RECIPES_Machines {
 	static ItemStack RECIPE_Buffer_MAX = GregtechItemList.Energy_Buffer_1by1_MAX.get(1);
 	static ItemStack RECIPE_IndustrialCentrifuge = GregtechItemList.Industrial_Centrifuge.get(1);
 	static ItemStack RECIPE_IndustrialCentrifugeCasing = GregtechItemList.Casing_Centrifuge1.get(1);
-	static ItemStack RECIPE_IndustrialCentrifugeCasingVibration = GregtechItemList.Casing_Centrifuge2.get(1);
+	static ItemStack RECIPE_IndustrialCokeOvenFrame = GregtechItemList.Casing_CokeOven.get(1);
 
 
 	//Buffer Cores

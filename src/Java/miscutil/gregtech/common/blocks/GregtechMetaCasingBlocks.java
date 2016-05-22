@@ -23,9 +23,9 @@ extends GregtechMetaCasingBlocksAbstract {
 			Textures.BlockIcons.CASING_BLOCKS[i] = new GT_CopiedBlockTexture(this, 6, i);
 		}
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Centrifuge Casing");
-		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Centrifuge Top Blocks");
-		//GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "MV Machine Casing");
-		//GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "HV Machine Casing");
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Structural Coke Oven Casing");
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Heat Resistant Coke Oven Casing");
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Heat Proof Coke Oven Casing");
 		//GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "EV Machine Casing");
 		//GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "IV Machine Casing");
 		//GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "LuV Machine Casing");
@@ -39,10 +39,10 @@ extends GregtechMetaCasingBlocksAbstract {
 		//GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Nichrome Coil Block");
 		//GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Superconducting Coil Block");
 		GregtechItemList.Casing_Centrifuge1.set(new ItemStack(this, 1, 0));
-		GregtechItemList.Casing_Centrifuge2.set(new ItemStack(this, 1, 1));
-        /*ItemList.Casing_MV.set(new ItemStack(this, 1, 2));
-        ItemList.Casing_HV.set(new ItemStack(this, 1, 3));
-        ItemList.Casing_EV.set(new ItemStack(this, 1, 4));
+		GregtechItemList.Casing_CokeOven.set(new ItemStack(this, 1, 1));
+		GregtechItemList.Casing_CokeOven_Coil1.set(new ItemStack(this, 1, 2));
+		GregtechItemList.Casing_CokeOven_Coil2.set(new ItemStack(this, 1, 3));
+        /*ItemList.Casing_EV.set(new ItemStack(this, 1, 4));
         ItemList.Casing_IV.set(new ItemStack(this, 1, 5));
         ItemList.Casing_LuV.set(new ItemStack(this, 1, 6));
         ItemList.Casing_ZPM.set(new ItemStack(this, 1, 7));
@@ -60,10 +60,14 @@ extends GregtechMetaCasingBlocksAbstract {
 	public IIcon getIcon(int aSide, int aMeta) {
 		if ((aMeta >= 0) && (aMeta < 16)) {
 			switch (aMeta) {
-            case 0:
+            case 0: //Centrifuge
                 return Textures.BlockIcons.MACHINE_CASING_TURBINE.getIcon();
-            case 1:
-                return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();
+            case 1: //Coke Oven Frame
+                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_STEEL.getIcon();
+            case 2: //Coke Oven Casing Tier 1
+                return Textures.BlockIcons.MACHINE_CASING_FIREBOX_BRONZE.getIcon();
+            case 3: //Coke Oven Casing Tier 2
+                return Textures.BlockIcons.MACHINE_CASING_FIREBOX_STEEL.getIcon();
 			case 10:
 				return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
 			case 12:

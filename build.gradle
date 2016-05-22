@@ -40,7 +40,7 @@ sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 archivesBaseName = "MiscUtils"
-version = "1.0.3"
+version = "1.0.4"
 minecraft.version = "1.7.10-10.13.4.1448-1.7.10"
 
 task sourceJar(type: Jar) {
@@ -59,4 +59,16 @@ task devJar(type: Jar) {
 
 artifacts {
     archives devJar
+}
+
+processResources {
+from(sourceSets.main.resources.srcDirs) {
+    include 'mcmod.info'
+    include 'pack.mcmeta'
+    expand 'version':project.version, 'mcversion':project.minecraft.version
+}
+from(sourceSets.main.resources.srcDirs) {
+    exclude 'mcmod.info'
+    exclude 'pack.mcmeta'
+}
 }

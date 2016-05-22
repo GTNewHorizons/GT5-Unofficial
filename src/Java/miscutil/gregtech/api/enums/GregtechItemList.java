@@ -46,10 +46,13 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Machine_Iron_BlastFurnace, Casing_IronPlatedBricks,
 	
 	//Machine Casings
-	Casing_Shielding, Casing_Centrifuge1, Casing_Centrifuge2,
+	Casing_Shielding, 
 	
 	//Large Centrifuge
-	Industrial_Centrifuge;
+	Industrial_Centrifuge, Casing_Centrifuge1,
+	
+	//Coke Oven
+	Industrial_CokeOven, Casing_CokeOven, Casing_CokeOven_Coil1, Casing_CokeOven_Coil2;
 
 	public static final GregtechItemList[]
 			DYE_ONLY_ITEMS = {

@@ -1,8 +1,8 @@
 package miscutil.gregtech.common.blocks;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.common.blocks.GT_Block_Casings_Abstract;
 
 import java.util.Random;
 
@@ -22,7 +22,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class GregtechMetaCasingBlocksAbstract
-        extends GT_Block_Casings_Abstract {
+        extends GT_Generic_Block {
     public GregtechMetaCasingBlocksAbstract(Class<? extends ItemBlock> aItemClass, String aName, Material aMaterial) {
         super(aItemClass, aName, aMaterial);
         setStepSound(soundTypeMetal);

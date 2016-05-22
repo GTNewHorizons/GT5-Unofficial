@@ -85,8 +85,10 @@ implements ActionListener
 	@Mod.EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		Utils.LOG_INFO("Cleaning up, doing postInit.");
+		COMPAT_HANDLER.ServerStartedEvent();
 		PlayerCache.initCache();
 		proxy.postInit(event);
+		
 	}
 
 	@EventHandler
@@ -94,7 +96,6 @@ implements ActionListener
 	{
 		event.registerServerCommand(new CommandMath());
 		Uptime.serverStarting(); //Integration of Uptime.
-		COMPAT_HANDLER.ServerStartedEvent();
 
 	}
 
