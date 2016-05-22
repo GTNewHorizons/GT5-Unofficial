@@ -57,13 +57,13 @@ extends GregtechMetaCasingBlocksAbstract {
 	}
 
 	@Override
-	public IIcon getIcon(int aSide, int aMeta) {
+	public IIcon getIcon(int aSide, int aMeta) { //Texture ID's. case 0 == ID[56]
 		if ((aMeta >= 0) && (aMeta < 16)) {
 			switch (aMeta) {
-            case 0: //Centrifuge
+            case 0: //Centrifuge 
                 return Textures.BlockIcons.MACHINE_CASING_TURBINE.getIcon();
             case 1: //Coke Oven Frame
-                return Textures.BlockIcons.MACHINE_CASING_GEARBOX_STEEL.getIcon();
+                return Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF.getIcon();
             case 2: //Coke Oven Casing Tier 1
                 return Textures.BlockIcons.MACHINE_CASING_FIREBOX_BRONZE.getIcon();
             case 3: //Coke Oven Casing Tier 2

@@ -9,7 +9,7 @@ public interface IGregtech_RecipeAdder {
 	 *
 	 * @param aInput1       = first Input (not null, and respects StackSize)
 	 * @param aInputb       = second Input (can be null, and respects StackSize)
-	 * @param aOutput1      = Output of the Creosote (not null, and respects StackSize)
+	 * @param aFluidOutput      = Output of the Creosote (not null, and respects StackSize)
 	 * @param aFluidInput   = fluid Input (can be null, and respects StackSize)
 	 * @param aOutput       = Output of the Coal/coke (can be null, and respects StackSize)
 	 * @param aDuration 	= Duration (must be >= 0)
