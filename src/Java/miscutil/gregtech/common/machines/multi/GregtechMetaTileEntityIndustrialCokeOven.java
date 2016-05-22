@@ -55,9 +55,9 @@ public class GregtechMetaTileEntityIndustrialCokeOven
     @Override
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[57], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER)};
+            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[58], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER)};
         }
-        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[57]};
+        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[58]};
     }
 
     @Override
