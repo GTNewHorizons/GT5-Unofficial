@@ -18,7 +18,6 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import ic2.api.item.IElectricItem;
-import miscutil.core.handler.GuiHandler;
 import miscutil.core.util.Utils;
 import miscutil.gregtech.api.metatileentity.implementations.base.GregtechMetaTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -169,15 +168,15 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 	}
 
 	private void showEnergy(World worldIn, EntityPlayer playerIn){
-		Utils.LOG_WARNING("Begin Show Energy");
+		//Utils.LOG_WARNING("Begin Show Energy");
 		final double c = ((double) getProgresstime() / maxProgresstime()) * 100;
-		Utils.LOG_WARNING(""+c);
+		//Utils.LOG_WARNING(""+c);
 		final double roundOff = Math.round(c * 100.0) / 100.0;
 		Utils.messagePlayer(playerIn, "Energy: " + getProgresstime() + " EU at "+V[mTier]+"v ("+roundOff+"%)");
-		Utils.LOG_WARNING("Making new instance of Guihandler");
+		/*Utils.LOG_WARNING("Making new instance of Guihandler");
 		GuiHandler block = new GuiHandler();
 		Utils.LOG_WARNING("Guihandler.toString(): "+block.toString());
-		block.getClientGuiElement(1, playerIn, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);
+		block.getClientGuiElement(1, playerIn, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);*/
 		
 	}
 

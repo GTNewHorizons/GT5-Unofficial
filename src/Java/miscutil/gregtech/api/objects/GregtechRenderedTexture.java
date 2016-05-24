@@ -118,34 +118,34 @@ public class GregtechRenderedTexture implements ITexture, IColorModulationContai
             aRenderer.renderFaceZPos(aBlock, aX, aY, aZ, mIconContainer.getOverlayIcon());
         }
     	} catch (NullPointerException e){
-    		Utils.LOG_INFO("renderZPos failed.");
+    		Utils.LOG_WARNING("renderZPos failed.");
     	}
     }
 
     @Override
     public void renderZNeg(RenderBlocks aRenderer, Block aBlock, int aX, int aY, int aZ) {
     	try {
-    	Utils.LOG_INFO("renderZNeg Method();.");
-    	Utils.LOG_INFO("Setting RGBA of instance.");
+    	Utils.LOG_WARNING("renderZNeg Method();.");
+    	Utils.LOG_WARNING("Setting RGBA of instance.");
         Tessellator.instance.setColorRGBA((int) (mRGBa[0] * 0.8F), (int) (mRGBa[1] * 0.8F), (int) (mRGBa[2] * 0.8F), mAllowAlpha ? 255 - mRGBa[3] : 255);
         aRenderer.renderFaceZNeg(aBlock, aX, aY, aZ, mIconContainer.getIcon());
-        Utils.LOG_INFO("Is mIconContainer null? "+mIconContainer.toString());
-        Utils.LOG_INFO("mIconContainer.getIcon.getIconName(): "+mIconContainer.getIcon().getIconName());
-        Utils.LOG_INFO("mIconContainer.getTextureFile().getResourceDomain()"+mIconContainer.getTextureFile().getResourceDomain());
-        Utils.LOG_INFO("mIconContainer.getTextureFile().getResourcePath()"+mIconContainer.getTextureFile().getResourcePath());
+        Utils.LOG_WARNING("Is mIconContainer null? "+mIconContainer.toString());
+        Utils.LOG_WARNING("mIconContainer.getIcon.getIconName(): "+mIconContainer.getIcon().getIconName());
+        Utils.LOG_WARNING("mIconContainer.getTextureFile().getResourceDomain()"+mIconContainer.getTextureFile().getResourceDomain());
+        Utils.LOG_WARNING("mIconContainer.getTextureFile().getResourcePath()"+mIconContainer.getTextureFile().getResourcePath());
         if (mIconContainer.getOverlayIcon() != null) {
             Tessellator.instance.setColorRGBA(204, 204, 204, 255);
             aRenderer.renderFaceZNeg(aBlock, aX, aY, aZ, mIconContainer.getOverlayIcon());
-            Utils.LOG_INFO("Is miconContainer.getOverlayIcon null? "+mIconContainer.getOverlayIcon().toString());
-            Utils.LOG_INFO("mIconContainer.getIcon.getIconName(): "+mIconContainer.getOverlayIcon().getIconName());
-            Utils.LOG_INFO("mIconContainer.getTextureFile().getResourceDomain()"+mIconContainer.getTextureFile().getResourceDomain());
-            Utils.LOG_INFO("mIconContainer.getTextureFile().getResourcePath()"+mIconContainer.getTextureFile().getResourcePath());
+            Utils.LOG_WARNING("Is miconContainer.getOverlayIcon null? "+mIconContainer.getOverlayIcon().toString());
+            Utils.LOG_WARNING("mIconContainer.getIcon.getIconName(): "+mIconContainer.getOverlayIcon().getIconName());
+            Utils.LOG_WARNING("mIconContainer.getTextureFile().getResourceDomain()"+mIconContainer.getTextureFile().getResourceDomain());
+            Utils.LOG_WARNING("mIconContainer.getTextureFile().getResourcePath()"+mIconContainer.getTextureFile().getResourcePath());
         }
     	} catch (NullPointerException e){
     		
     		
     		e.printStackTrace();
-    		Utils.LOG_INFO("renderZNeg failed."+e.getMessage()+"|"+e.getClass()+"|"+e.getLocalizedMessage());
+    		Utils.LOG_WARNING("renderZNeg failed."+e.getMessage()+"|"+e.getClass()+"|"+e.getLocalizedMessage());
     		Minecraft.getMinecraft().shutdown();
     	}
     }

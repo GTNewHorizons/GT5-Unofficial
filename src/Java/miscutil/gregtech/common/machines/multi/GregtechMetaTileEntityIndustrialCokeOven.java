@@ -1,7 +1,6 @@
 package miscutil.gregtech.common.machines.multi;
 
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -14,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import miscutil.core.block.ModBlocks;
+import miscutil.gregtech.api.gui.GUI_MultiMachine;
 import miscutil.gregtech.api.util.GregtechRecipe;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -62,7 +62,7 @@ public class GregtechMetaTileEntityIndustrialCokeOven
 
     @Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MultiFurnace.png");
+        return new GUI_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "CokeOven.png");
     }
 
     @Override
@@ -115,7 +115,7 @@ public class GregtechMetaTileEntityIndustrialCokeOven
         if (tInputList.size() > 0) {
             long tVoltage = getMaxInputVoltage();
             byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
+            GT_Recipe tRecipe = GregtechRecipe.Gregtech_Recipe_Map.sCokeOvenRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
             if ((tRecipe != null) && (this.mLevel >= tRecipe.mSpecialValue) && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
                 this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
@@ -134,7 +134,8 @@ public class GregtechMetaTileEntityIndustrialCokeOven
                     this.mEUt = (-this.mEUt);
                 }
                 this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-                this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0), tRecipe.getOutput(1)};
+                this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0)};
+                this.mOutputFluids = new FluidStack[]{tRecipe.getFluidOutput(0)};
                 updateSlots();
                 return true;
             }
@@ -170,7 +171,6 @@ public class GregtechMetaTileEntityIndustrialCokeOven
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
         int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-        //this.mOutputItems = new ItemStack[12 * this.mLevel];
         this.mLevel = 0;
         if (!aBaseMetaTileEntity.getAirOffset(xDir, 1, zDir)) {
             return false;
@@ -188,6 +188,7 @@ public class GregtechMetaTileEntityIndustrialCokeOven
             default:
                 return false;
         }
+        this.mOutputItems = new ItemStack[12 * this.mLevel];
         for (int i = -1; i < 2; i++) {
             for (int j = -1; j < 2; j++) {
                 if ((i != 0) || (j != 0)) {

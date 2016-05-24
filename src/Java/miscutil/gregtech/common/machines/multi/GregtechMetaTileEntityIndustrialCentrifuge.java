@@ -2,7 +2,6 @@ package miscutil.gregtech.common.machines.multi;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
-import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -18,6 +17,7 @@ import java.util.List;
 
 import miscutil.core.block.ModBlocks;
 import miscutil.core.util.Utils;
+import miscutil.gregtech.api.gui.GUI_MultiMachine;
 import miscutil.gregtech.api.objects.GregtechRenderedTexture;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -27,21 +27,21 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-public class GregtechMetaLargeIndustrialCentrifuge
+public class GregtechMetaTileEntityIndustrialCentrifuge
 extends GT_MetaTileEntity_MultiBlockBase {
 	private static boolean controller;
 
-	public GregtechMetaLargeIndustrialCentrifuge(int aID, String aName, String aNameRegional) {
+	public GregtechMetaTileEntityIndustrialCentrifuge(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}
 
-	public GregtechMetaLargeIndustrialCentrifuge(String aName) {
+	public GregtechMetaTileEntityIndustrialCentrifuge(String aName) {
 		super(aName);
 	}
 
 	@Override
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GregtechMetaLargeIndustrialCentrifuge(this.mName);
+		return new GregtechMetaTileEntityIndustrialCentrifuge(this.mName);
 	}
 
 	@Override
@@ -76,7 +76,7 @@ extends GT_MetaTileEntity_MultiBlockBase {
 
 	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "VacuumFreezer.png");
+		return new GUI_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "CokeOven.png");
 	}
 
 	@Override
@@ -86,8 +86,8 @@ extends GT_MetaTileEntity_MultiBlockBase {
 
 	@Override
 	public boolean isCorrectMachinePart(ItemStack aStack) {
-		return true;
-	}
+        return true;
+    }
 
 	@Override
 	public boolean isFacingValid(byte aFacing) {
