@@ -98,16 +98,16 @@ public class HeliumGenerator extends BlockContainer {
             int l = MathHelper.floor_double((double) (player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 
             if (l == 0)
-                machine.setFacing(2);
+                machine.setFacing((short) 2);
 
             if (l == 1)
-                machine.setFacing(5);
+                machine.setFacing((short) 5);
 
             if (l == 2)
-                machine.setFacing(3);
+                machine.setFacing((short) 3);
 
             if (l == 3)
-                machine.setFacing(4);
+                machine.setFacing((short) 4);
         }
 
     }

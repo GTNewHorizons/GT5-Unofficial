@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="conduits/|miscutil/enderio/conduit/GregTech/|miscutil/gregtech/enums/Materials2.java|miscutil/gregtech/objects/GregMaterialStack.java|miscutil/core/util/Log.java|miscutil/enderio/|miscutil/core/item/tool/bloodsteel/" kind="src" path="src/Java"/>
+	<classpathentry excluding="conduits/|miscutil/enderio/conduit/GregTech/|miscutil/gregtech/enums/Materials2.java|miscutil/gregtech/objects/GregMaterialStack.java|miscutil/core/util/Log.java|miscutil/enderio/|miscutil/core/item/tool/bloodsteel/|miscutil/core/block/reactor/" kind="src" path="src/Java"/>
 	<classpathentry kind="src" path="src/resources"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Forge"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>

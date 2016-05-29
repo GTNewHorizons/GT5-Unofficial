@@ -4,6 +4,7 @@ import miscutil.core.lib.CORE;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
+@Deprecated
 public class BaseItemGeneric extends Item
 {
 	public BaseItemGeneric(String s, CreativeTabs c, int stackSize, int maxDmg)
