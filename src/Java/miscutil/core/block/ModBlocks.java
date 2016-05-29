@@ -2,6 +2,7 @@ package miscutil.core.block;
 
 import miscutil.core.block.fluids.BlocktestFluid;
 import miscutil.core.lib.CORE;
+import miscutil.core.tileentities.TileEntityHeliumGenerator;
 import miscutil.core.util.Utils;
 import miscutil.gregtech.common.blocks.GregtechMetaCasingBlocks;
 import net.minecraft.block.Block;
@@ -18,6 +19,7 @@ public final class ModBlocks {
 	// WIP TODO public static Block blockToolBuilder;
 	public static Block blockGriefSaver;
 	public static Block blockCasingsMisc;
+    public static Block blockHeliumGenerator;
 
 	
 	
@@ -74,6 +76,9 @@ public final class ModBlocks {
 		testFluidBlock = new BlocktestFluid(testFluid, Material.water).setBlockName("yourFluid");
 		GameRegistry.registerBlock(testFluidBlock, CORE.MODID + "_" + testFluidBlock.getUnlocalizedName().substring(5));
 		testFluid.setUnlocalizedName(testFluidBlock.getUnlocalizedName());
+		
+		blockHeliumGenerator = GameRegistry.registerBlock(new HeliumGenerator(), "Helium_Collector");
+        GameRegistry.registerTileEntity(TileEntityHeliumGenerator.class, "Helium");
 
 		//WIP TODO
 		//GameRegistry.registerBlock(blockGriefSaver, "blockGriefSaver");

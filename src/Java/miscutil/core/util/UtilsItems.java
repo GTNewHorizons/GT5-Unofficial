@@ -24,15 +24,15 @@ public class UtilsItems {
 
 				Item em1 = getItem(mod_itemname_meta);
 				Utils.LOG_WARNING("Found: "+em1.toString());
-				if (!em1.equals(null)){
+				if (em1 != null){
 					em = em1;
 				}			
 				else {
 					em = null;
 					return null;
 				}			
-				if (!em.equals(null)){
-					ItemStack returnStack = new ItemStack(em,1,16);				
+				if (em != null ){
+					ItemStack returnStack = new ItemStack(em,1);				
 					return returnStack;
 				}
 				Utils.LOG_WARNING(mod_itemname_meta+" not found.");
@@ -43,6 +43,11 @@ public class UtilsItems {
 			}
 		}
 		return null;
+	}
+	
+	public static ItemStack getSimpleStack(Item x){
+		ItemStack r = new ItemStack(x, 1);
+		return r;
 	}
 
 	public static void getItemForOreDict(String FQRN, String oreDictName, String itemName, int meta){
