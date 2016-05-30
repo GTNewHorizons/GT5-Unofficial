@@ -31,6 +31,31 @@ public class GUIHeliumGenerator extends GuiContainer
         String s = StatCollector.translateToLocal("container.radiation_collector");
         this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
         this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+        
+        this.fontRendererObj.drawString(StatCollector.translateToLocal("|"+-1), 80, 35, 2);
+        
+        short sr = 3;
+        int size = sr;
+        int startX = 16;
+        int startY = 16;
+        int i = 0;
+        for (i = 0; i < 9; i++)
+        {
+          int x = i % size;
+          int y = i / size;
+          this.fontRendererObj.drawString(StatCollector.translateToLocal("|"+i), startX + 18 * x, startY + 18 * y, 4210752);
+          //addSlotToContainer(new SlotInvSlot(machine.reactorSlot, i, startX + 18 * x, startY + 18 * y));
+        }
+        startX = 108;
+        startY = 16;
+        for (i = 9; i < 18; i++)
+        {
+          int x = i % size;
+          int y = (i-9) / size;
+          this.fontRendererObj.drawString(StatCollector.translateToLocal("|"+i), startX + 18 * x, startY + 18 * y, 4210752);
+         // addSlotToContainer(new SlotInvSlot(machine.reactorSlot, i, startX + 18 * x, startY + 18 * y));
+        }
+        
     }
 
     @Override
