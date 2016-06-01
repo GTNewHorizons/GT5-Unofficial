@@ -12,7 +12,7 @@ import miscutil.core.lib.CORE;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.PlayerCache;
 import miscutil.core.util.Utils;
-import miscutil.core.util.debug.DEBUG_ScreenOverlay;
+import miscutil.core.util.debug.DEBUG_INIT;
 import miscutil.gregtech.common.GregtechRecipeAdder;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -29,7 +29,7 @@ import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 public class MiscUtils
 implements ActionListener
 { 
-	
+
 	@Mod.Instance(CORE.MODID)
 	public static MiscUtils instance;
 
@@ -43,15 +43,15 @@ implements ActionListener
 	{
 		LoadedMods.checkLoaded();
 		Utils.LOG_INFO("Doing some house cleaning.");
-		
+
 		if (LoadedMods.Gregtech){
 			try {
 				CORE.sRecipeAdder = CORE.RA = new GregtechRecipeAdder();
 			} catch (NullPointerException e){
-				
+
 			}
 		}
-		
+
 		AddToCreativeTab.initialiseTabs();
 		proxy.registerTileEntities();
 		proxy.registerRenderThings();
@@ -65,8 +65,9 @@ implements ActionListener
 		proxy.init(event);
 		MinecraftForge.EVENT_BUS.register(this);
 		MinecraftForge.EVENT_BUS.register(new PickaxeBlockBreakEventHandler());
+		//Debug Loading
 		if (CORE.DEBUG){
-			MinecraftForge.EVENT_BUS.register(new DEBUG_ScreenOverlay());	
+			DEBUG_INIT.registerHandlers();
 		}
 		FMLCommonHandler.instance().bus().register(this);
 		proxy.registerNetworkStuff();
@@ -79,7 +80,7 @@ implements ActionListener
 		COMPAT_HANDLER.ServerStartedEvent();
 		PlayerCache.initCache();
 		proxy.postInit(event);
-		
+
 	}
 
 	@EventHandler

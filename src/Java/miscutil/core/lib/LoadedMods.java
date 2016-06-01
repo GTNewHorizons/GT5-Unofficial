@@ -5,6 +5,7 @@ import cpw.mods.fml.common.Loader;
 
 public class LoadedMods {
 
+	
 	//Initialize Variables
 	public static boolean Gregtech = false;
 	public static boolean EnderIO = false;
@@ -18,6 +19,8 @@ public class LoadedMods {
 	public static boolean MorePlanets = false;
 	public static boolean ForbiddenMagic = false;
 	public static boolean CompactWindmills = false;
+	public static boolean Railcraft = false;
+	public static boolean MiscUtils = true; //Dummy For MetaData Lookups in MT Wrapper
 
 	
 	private static int totalMods;
@@ -69,6 +72,10 @@ public class LoadedMods {
 		}
 		if (Loader.isModLoaded("CompactWindmills") == true){
 			CompactWindmills  = true;
+			totalMods++;
+		}
+		if (Loader.isModLoaded("Railcraft") == true){
+			Railcraft  = true;
 			totalMods++;
 		}
 	

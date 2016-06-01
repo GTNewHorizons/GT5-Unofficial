@@ -1,6 +1,7 @@
 package miscutil.core.handler.registration;
 
 import gregtech.api.enums.ItemList;
+import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.Utils;
 import miscutil.core.util.UtilsItems;
 import miscutil.gregtech.api.enums.GregtechItemList;
@@ -23,9 +24,14 @@ public class RECIPES_Machines {
 	static ItemStack RECIPE_Buffer_ZPM = GregtechItemList.Energy_Buffer_1by1_ZPM.get(1);
 	static ItemStack RECIPE_Buffer_UV = GregtechItemList.Energy_Buffer_1by1_UV.get(1);
 	static ItemStack RECIPE_Buffer_MAX = GregtechItemList.Energy_Buffer_1by1_MAX.get(1);
-	static ItemStack RECIPE_IndustrialCentrifuge = GregtechItemList.Industrial_Centrifuge.get(1);
+	//Industrial Centrifuge
+	static ItemStack RECIPE_IndustrialCentrifugeController = GregtechItemList.Industrial_Centrifuge.get(1);
 	static ItemStack RECIPE_IndustrialCentrifugeCasing = GregtechItemList.Casing_Centrifuge1.get(1);
+	//Industrial Coke Oven
+	static ItemStack RECIPE_IndustrialCokeOvenController = GregtechItemList.Industrial_CokeOven.get(1);
 	static ItemStack RECIPE_IndustrialCokeOvenFrame = GregtechItemList.Casing_CokeOven.get(1);
+	static ItemStack RECIPE_IndustrialCokeOvenCasingA = GregtechItemList.Casing_CokeOven_Coil1.get(1);
+	static ItemStack RECIPE_IndustrialCokeOvenCasingB = GregtechItemList.Casing_CokeOven_Coil2.get(1);
 
 
 	//Buffer Cores
@@ -79,6 +85,19 @@ public class RECIPES_Machines {
 	static String plateTier10 = "plateNaquadah";
 	static String plateTier11 = "plateNeutronium";
 
+	//rods
+	static String rodTier1 = "stickLead";
+	static String rodTier2 = "stickTin";
+	static String rodTier3 = "stickCopper";
+	static String rodTier4 = "stickGold";
+	static String rodTier5 = "stickAluminium";
+	static String rodTier6 = "stickThorium";
+	static String rodTier7 = "stickTungsten";
+	static String rodTier8 = "stickTungstenSteel";
+	static String rodTier9 = "stickOsmium";
+	static String rodTier10 = "stickNaquadah";
+	static String rodTier11 = "stickNeutronium";
+
 
 	//Machine Casings
 	static ItemStack machineCasing_ULV = ItemList.Casing_ULV.get(1);
@@ -91,6 +110,12 @@ public class RECIPES_Machines {
 	static ItemStack machineCasing_ZPM = ItemList.Casing_ZPM.get(1);
 	static ItemStack machineCasing_UV = ItemList.Casing_UV.get(1);
 	static ItemStack machineCasing_MAX = ItemList.Casing_MAX.get(1);
+	
+	//Gearbox Casings
+	static ItemStack gearboxCasing_Tier_1 = ItemList.Casing_Gearbox_Bronze.get(1);
+	static ItemStack gearboxCasing_Tier_2 = ItemList.Casing_Gearbox_Steel.get(1);
+	static ItemStack gearboxCasing_Tier_3 = ItemList.Casing_Gearbox_Titanium.get(1);
+	static ItemStack gearboxCasing_Tier_4 = ItemList.Casing_Gearbox_TungstenSteel.get(1);
 
 	//Cables
 	static String cableGt02Electrum = "cableGt02Electrum";
@@ -99,6 +124,9 @@ public class RECIPES_Machines {
 	//Plates
 	static String plateElectricalSteel= "plateElectricalSteel";	
 	static String plateEnergeticAlloy= "plateEnergeticAlloy";
+	static String plateCobalt = "plateCobalt";
+	static String plateBronze = "plateBronze";
+	static String plateSteel = "plateSteel";
 
 	//Pipes
 	static String pipeLargeCopper="pipeLargeCopper";
@@ -126,7 +154,7 @@ public class RECIPES_Machines {
 	static String circuitElite = "circuitElite";
 	static String circuitMaster = "circuitMaster";
 	static String circuitUltimate = "circuitUltimate";
-	
+
 	//Machine Components
 	static ItemStack electricMotor_LV = ItemList.Electric_Motor_LV.get(1);
 	static ItemStack electricMotor_MV = ItemList.Electric_Motor_MV.get(1);
@@ -169,8 +197,11 @@ public class RECIPES_Machines {
 	static ItemStack sensor_EV = ItemList.Sensor_EV.get(1);
 	static ItemStack sensor_IV = ItemList.Sensor_IV.get(1);
 	
-	
-	
+	//Misc
+	static ItemStack INPUT_RCCokeOvenBlock = UtilsItems.getItemStackWithMeta(LoadedMods.Railcraft, "Railcraft:machine.alpha", "Coke_Oven_RC", 7, 1);
+
+
+
 	//RobotArm, Conveyor, Emitter, Sensor, Field Generator
 
 
@@ -328,22 +359,69 @@ public class RECIPES_Machines {
 				"plateAnyIron", RECIPES_Tools.craftingToolWrench, "plateAnyIron",
 				RECIPE_IronPlatedBricks);
 
-		
-		
-		
+
+
+
 		//Industrial Centrifuge
 		UtilsItems.recipeBuilder(
 				circuitElite, pipeHugeStainlessSteel, circuitElite,
 				plateTier6, electricPump_EV, plateTier6,
 				plateTier8, machineCasing_EV, plateTier8,
-				RECIPE_IndustrialCentrifuge);
+				RECIPE_IndustrialCentrifugeController);
 
-		//Steam Condenser
+		//Centrifuge Casing
 		UtilsItems.recipeBuilder(
 				plateTier6, "stickElectrum", plateTier6,
 				plateTier8, "stickElectrum", plateTier8,
 				plateTier6, "stickElectrum", plateTier6,
 				RECIPE_IndustrialCentrifugeCasing);
+
+		//Industrial Coke Oven
+		UtilsItems.recipeBuilder(
+				plateCobalt, circuitAdvanced, plateCobalt,
+				machineCasing_HV, INPUT_RCCokeOvenBlock, machineCasing_HV,
+				plateCobalt, circuitAdvanced, plateCobalt,
+				RECIPE_IndustrialCokeOvenController);
+
+		//Coke Oven Frame Casing
+		UtilsItems.recipeBuilder(
+				plateTier8, rodTier8, plateTier8,
+				rodTier8, "frameGtCobalt", rodTier8,
+				plateTier8, rodTier8, plateTier8,
+				RECIPE_IndustrialCokeOvenFrame);
+
+		//Coke Oven Coil 1
+		UtilsItems.recipeBuilder(
+				plateBronze, plateBronze, plateBronze,
+				"frameGtBronze", gearboxCasing_Tier_1, "frameGtBronze",
+				plateBronze, plateBronze, plateBronze,
+				RECIPE_IndustrialCokeOvenCasingA);
+
+		//Coke Oven Coil 2
+		UtilsItems.recipeBuilder(
+				plateSteel, plateSteel, plateSteel,
+				"frameGtSteel", gearboxCasing_Tier_2, "frameGtSteel",
+				plateSteel, plateSteel, plateSteel,
+				RECIPE_IndustrialCokeOvenCasingB);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 		Utils.LOG_INFO("Done loading recipes for the Various machine blocks.");

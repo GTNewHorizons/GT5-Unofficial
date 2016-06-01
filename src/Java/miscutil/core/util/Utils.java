@@ -5,6 +5,8 @@ import static gregtech.api.enums.GT_Values.F;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import miscutil.core.lib.CORE;
 import net.minecraft.block.Block;
@@ -18,6 +20,13 @@ import cpw.mods.fml.common.FMLLog;
 public class Utils {
 
 	public static final int WILDCARD_VALUE = Short.MAX_VALUE;
+	
+	static class ShortTimerTask extends TimerTask {
+		@Override
+		public void run() {
+			Utils.LOG_WARNING("Timer expired.");
+		}
+	}
 
 	/**
 	 * Returns a psuedo-random number between min and max, inclusive.
@@ -193,4 +202,15 @@ public class Utils {
 		double f = i + 273.15F;
 		return (int)decimalRoundingToWholes(f);
 	}
+	
+	public static Timer ShortTimer(int seconds) {
+		Timer timer;
+		timer = new Timer();
+		timer.schedule(new ShortTimerTask(), seconds * 1000);
+		return timer;
+	}
+
+	
 }
+
+

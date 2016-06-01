@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import miscutil.core.block.ModBlocks;
+import miscutil.core.util.Utils;
 import miscutil.gregtech.api.gui.GUI_MultiMachine;
 import miscutil.gregtech.api.util.GregtechRecipe;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -171,6 +172,9 @@ public class GregtechMetaTileEntityIndustrialCokeOven
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
         int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+        int xr = aBaseMetaTileEntity.getXCoord();
+    	int yr = aBaseMetaTileEntity.getYCoord();
+    	int zr = aBaseMetaTileEntity.getZCoord();
         this.mLevel = 0;
         if (!aBaseMetaTileEntity.getAirOffset(xDir, 1, zDir)) {
             return false;
@@ -208,8 +212,20 @@ public class GregtechMetaTileEntityIndustrialCokeOven
             }
         }
         for (int i = -1; i < 2; i++) {
+        	xr = aBaseMetaTileEntity.getXCoord();
+        	yr = aBaseMetaTileEntity.getYCoord();
+        	zr = aBaseMetaTileEntity.getZCoord();
+        	Utils.LOG_INFO("STEP 1 - x ["+xr+"]  y ["+yr+"]  z ["+zr+"]");
             for (int j = -1; j < 2; j++) {
+            	xr = aBaseMetaTileEntity.getXCoord();
+            	yr = aBaseMetaTileEntity.getYCoord();
+            	zr = aBaseMetaTileEntity.getZCoord();
+            	Utils.LOG_INFO("STEP 2 - x ["+xr+"]  y ["+yr+"]  z ["+zr+"]");
                 if ((xDir + i != 0) || (zDir + j != 0)) {
+                	xr = aBaseMetaTileEntity.getXCoord();
+                	yr = aBaseMetaTileEntity.getYCoord();
+                	zr = aBaseMetaTileEntity.getZCoord();
+                	Utils.LOG_INFO("STEP 3 - x ["+xr+"]  y ["+yr+"]  z ["+zr+"]");
                     IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 0, zDir + j);
                     if ((!addMaintenanceToMachineList(tTileEntity, 1)) && (!addInputToMachineList(tTileEntity, 1)) && (!addOutputToMachineList(tTileEntity, 1)) && (!addEnergyInputToMachineList(tTileEntity, 1))) {
                         if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j) != ModBlocks.blockCasingsMisc) {

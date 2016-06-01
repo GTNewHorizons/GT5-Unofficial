@@ -43,7 +43,7 @@ public class RECIPES_GREGTECH {
 			CORE.RA.addCokeOvenRecipe(
 					GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 2L), //Input 1
 					GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1L), //Input 2
-					Materials.SulfuricAcid.getFluid(80L), //Fluid Input
+					Materials.SulfuricAcid.getFluid(60L), //Fluid Input
 					Materials.Creosote.getFluid(250L), //Fluid Output
 					UtilsItems.getItemStack("Railcraft:fuel.coke", 2), //Item Output 
 					600,  //Time in ticks
@@ -56,7 +56,7 @@ public class RECIPES_GREGTECH {
 			CORE.RA.addCokeOvenRecipe(
 					GT_OreDictUnificator.get(OrePrefixes.log, Materials.Wood, 2L), //Input 1
 					GT_OreDictUnificator.get(OrePrefixes.log, Materials.Wood, 1L), //Input 2
-					Materials.Water.getFluid(160L), //Fluid Input
+					Materials.SaltWater.getFluid(85L), //Fluid Input
 					Materials.Creosote.getFluid(145L), //Fluid Output
 					GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 2L), //Item Output 
 					1200,  //Time in ticks
@@ -69,7 +69,7 @@ public class RECIPES_GREGTECH {
 			CORE.RA.addCokeOvenRecipe(
 					GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 2L), //Input 1
 					GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1L), //Input 2
-					null, //Fluid Input
+					Materials.SaltWater.getFluid(185L), //Fluid Input
 					Materials.Creosote.getFluid(200L), //Fluid Output
 					UtilsItems.getItemStack("Railcraft:fuel.coke", 2), //Item Output 
 					900,  //Time in ticks

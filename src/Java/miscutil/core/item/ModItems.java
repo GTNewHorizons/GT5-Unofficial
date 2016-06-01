@@ -10,6 +10,7 @@ import miscutil.core.item.tool.staballoy.StaballoyPickaxe;
 import miscutil.core.lib.CORE;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.Utils;
+import miscutil.core.util.debug.DEBUG_INIT;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraftforge.common.util.EnumHelper;
@@ -54,6 +55,8 @@ Gold Tool: 22*/
 	//public static ToolMaterial TUTORIAL = EnumHelper.addToolMaterial("TUTORIAL", harvestLevel, durability, miningSpeed, damageVsEntities, enchantability);
 	public static ToolMaterial STABALLOY = EnumHelper.addToolMaterial("Staballoy", 3, 2500, 7, 1.0F, 18);
 	
+	public static Item itemDebugShapeSpawner;
+	
 	//EnderIO
 	public static Item itemPlateSoularium;
 	public static Item itemPlateRedstoneAlloy;
@@ -97,6 +100,11 @@ Gold Tool: 22*/
 	public static Item item_PLEASE_FACTOR_ME_4;
 	//@SuppressWarnings("unused")
 	public static final void init(){
+		
+		//Debug Loading
+		if (CORE.DEBUG){
+			DEBUG_INIT.registerItems();
+		}		
 
 		//EnderIO Resources
 		if (LoadedMods.EnderIO || LOAD_ALL_CONTENT){
@@ -231,15 +239,16 @@ Gold Tool: 22*/
 			System.out.println("Buffer Core registration count is: "+i);
 		}
 		//Dev Items
-		itemStickyRubber = new Item().setUnlocalizedName("itemStickyRubber").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemDefault");
+		itemStickyRubber = new Item().setUnlocalizedName("itemStickyRubber").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemStickyRubber");
 		GameRegistry.registerItem(itemStickyRubber, "itemStickyRubber");
 		//Battery Alloy For cheap Niggers
-		itemIngotBatteryAlloy = new Item().setUnlocalizedName("itemIngotBatteryAlloy").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemDefault");
+		itemIngotBatteryAlloy = new Item().setUnlocalizedName("itemIngotBatteryAlloy").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemIngotBatteryAlloy");
 		GameRegistry.registerItem(itemIngotBatteryAlloy, "itemIngotBatteryAlloy");
-		itemPlateBatteryAlloy = new Item().setUnlocalizedName("itemPlateBatteryAlloy").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemDefault");
+		itemPlateBatteryAlloy = new Item().setUnlocalizedName("itemPlateBatteryAlloy").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemPlateBatteryAlloy");
 		GameRegistry.registerItem(itemPlateBatteryAlloy, "itemPlateBatteryAlloy");
 		itemHeliumBlob = new Item().setUnlocalizedName("itemHeliumBlob").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemHeliumBlob");
 		GameRegistry.registerItem(itemHeliumBlob, "itemHeliumBlob");
+		
 		
 		/*
 		item_PLEASE_FACTOR_ME_4 = new Item().setUnlocalizedName("unlocalName4").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemDefault");
