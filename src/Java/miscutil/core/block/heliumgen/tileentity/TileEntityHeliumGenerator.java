@@ -1,4 +1,4 @@
-package miscutil.core.tileentities;
+package miscutil.core.block.heliumgen.tileentity;
 
 import ic2.api.Direction;
 import ic2.api.reactor.IReactor;
@@ -16,7 +16,7 @@ import ic2.core.util.ConfigUtil;
 import java.util.List;
 
 import miscutil.core.block.ModBlocks;
-import miscutil.core.handler.InvSlotRadiation;
+import miscutil.core.block.heliumgen.slots.InvSlotRadiation;
 import miscutil.core.item.ModItems;
 import miscutil.core.util.Utils;
 import miscutil.core.util.UtilsItems;

@@ -1,4 +1,4 @@
-package miscutil.core.tileentities;
+package miscutil.core.tileentities.base;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;

@@ -1,7 +1,9 @@
 package miscutil.core.gui;
 
 import miscutil.MiscUtils;
-import miscutil.core.tileentities.TileEntityHeliumGenerator;
+import miscutil.core.block.heliumgen.container.ContainerHeliumGenerator;
+import miscutil.core.block.heliumgen.gui.GUIHeliumGenerator;
+import miscutil.core.block.heliumgen.tileentity.TileEntityHeliumGenerator;
 import miscutil.core.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;

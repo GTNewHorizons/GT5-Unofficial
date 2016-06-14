@@ -1,7 +1,7 @@
-package miscutil.core.handler;
+package miscutil.core.block.heliumgen.slots;
 
 import ic2.core.block.invslot.InvSlot;
-import miscutil.core.tileentities.TileEntityHeliumGenerator;
+import miscutil.core.block.heliumgen.tileentity.TileEntityHeliumGenerator;
 import net.minecraft.item.ItemStack;
 
 public class InvSlotRadiation extends InvSlot

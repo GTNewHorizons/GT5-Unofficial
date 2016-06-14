@@ -1,7 +1,8 @@
-package miscutil.core.gui;
+package miscutil.core.block.heliumgen.gui;
 
+import miscutil.core.block.heliumgen.container.ContainerHeliumGenerator;
+import miscutil.core.block.heliumgen.tileentity.TileEntityHeliumGenerator;
 import miscutil.core.lib.CORE;
-import miscutil.core.tileentities.TileEntityHeliumGenerator;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;

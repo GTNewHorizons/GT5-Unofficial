@@ -211,6 +211,12 @@ public class RECIPES_Machines {
 	}
 
 	private static void run(){
+		//Staballoy Dust - TEMP
+		UtilsItems.recipeBuilder("dustTitanium", "dustUranium", "dustUranium",
+				"dustUranium", "dustUranium", "dustUranium",
+				"dustUranium", "dustUranium", "dustUranium",
+				RECIPES_Shapeless.dustStaballoy);
+		
 		//Buffer Core
 		UtilsItems.recipeBuilder(
 				plateTier1, cableTier1, plateTier1,

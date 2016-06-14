@@ -22,7 +22,7 @@ public class RECIPES_Shapeless {
 		static ItemStack gearboxCasing_Tier_1 = ItemList.Casing_Gearbox_Bronze.get(1);
 	
 	public static final void RECIPES_LOAD(){
-		run();
+		//run();
 		Utils.LOG_INFO("Loading Shapeless Recipes.");
 	}
 

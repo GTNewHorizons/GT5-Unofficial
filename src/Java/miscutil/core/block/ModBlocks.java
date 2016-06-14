@@ -1,8 +1,9 @@
 package miscutil.core.block;
 
 import miscutil.core.block.fluids.BlocktestFluid;
+import miscutil.core.block.heliumgen.block.HeliumGenerator;
+import miscutil.core.block.heliumgen.tileentity.TileEntityHeliumGenerator;
 import miscutil.core.lib.CORE;
-import miscutil.core.tileentities.TileEntityHeliumGenerator;
 import miscutil.core.util.Utils;
 import miscutil.gregtech.common.blocks.GregtechMetaCasingBlocks;
 import net.minecraft.block.Block;

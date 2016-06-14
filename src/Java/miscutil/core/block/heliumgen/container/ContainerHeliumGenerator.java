@@ -1,11 +1,11 @@
-package miscutil.core.gui;
+package miscutil.core.block.heliumgen.container;
 
 import ic2.core.ContainerBase;
 import ic2.core.slot.SlotInvSlot;
 
 import java.util.List;
 
-import miscutil.core.tileentities.TileEntityHeliumGenerator;
+import miscutil.core.block.heliumgen.tileentity.TileEntityHeliumGenerator;
 import miscutil.core.util.Utils;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
