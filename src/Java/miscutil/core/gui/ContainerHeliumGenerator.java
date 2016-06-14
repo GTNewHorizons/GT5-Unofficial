@@ -19,7 +19,7 @@ extends ContainerBase<TileEntityHeliumGenerator>
 	public ContainerHeliumGenerator(InventoryPlayer player, TileEntityHeliumGenerator machine)
 	{
 		super(machine);
-		Utils.LOG_INFO("containerHeliumGenerator");
+		Utils.LOG_WARNING("containerHeliumGenerator");
 		short sr = machine.getReactorSize();
 		this.addSlotToContainer(new SlotFurnace(player.player, machine, 2, 80, 35));
 		this.size = sr;

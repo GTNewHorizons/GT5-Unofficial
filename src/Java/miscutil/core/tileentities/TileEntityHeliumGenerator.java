@@ -46,7 +46,7 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 
 	@Override
 	public void updateEntity(){
-		Utils.LOG_INFO("updateEntity");
+		Utils.LOG_WARNING("updateEntity");
 		if(++progress >= 40){
 			//if(++progress >= 300){
 			if(heliumStack == null)
@@ -105,6 +105,7 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 		this.facing = nbttagcompound.getShort("Facing");
 		this.heat = nbttagcompound.getInteger("heat");
 		this.output = nbttagcompound.getShort("output");
+		this.prevActive = (this.active = nbttagcompound.getBoolean("active"));
 	}
 
 	@Override
@@ -116,6 +117,7 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 		nbttagcompound.setShort("Facing", (short) this.facing);
 		nbttagcompound.setInteger("heat", this.heat);
 		nbttagcompound.setShort("output", (short)(int)getReactorEnergyOutput());
+		nbttagcompound.setBoolean("active", this.active);
 		if(heliumStack != null) {
 			NBTTagCompound produce = new NBTTagCompound();
 			heliumStack.writeToNBT(produce);
@@ -153,7 +155,7 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 
 	@Override
 	public ItemStack decrStackSize(int slot, int decrement){
-		Utils.LOG_INFO("decrStackSize");
+		Utils.LOG_WARNING("decrStackSize");
 		if(heliumStack == null)
 			return null;
 		if(decrement < heliumStack.stackSize){
@@ -205,7 +207,7 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 	public String getInventoryName()
 	{
 		//return  "container.helium_collector";
-		return  "container.radiation_collector";
+		return  "container.helium_collector";
 	}
 
 	/**
@@ -237,28 +239,28 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 
 	public short getReactorSize()
 	{
-		//Utils.LOG_INFO("getReactorSize");
+		//Utils.LOG_WARNING("getReactorSize");
 		if (this.worldObj == null) {
-			Utils.LOG_INFO("getReactorSize == 9");
+			Utils.LOG_WARNING("getReactorSize == 9");
 			return 9;
 		}
 		short cols = 3;
-		//Utils.LOG_INFO("getReactorSize == "+cols);
+		//Utils.LOG_WARNING("getReactorSize == "+cols);
 		for (Direction direction : Direction.directions)
 		{
 			TileEntity target = direction.applyToTileEntity(this);
 			if ((target instanceof TileEntityHeliumGenerator)) {
 				cols = (short)(cols + 1);
-				Utils.LOG_INFO("getReactorSize =1= "+cols);
+				Utils.LOG_WARNING("getReactorSize =1= "+cols);
 			}
 		}
-		//Utils.LOG_INFO("getReactorSize == "+cols);
+		//Utils.LOG_WARNING("getReactorSize == "+cols);
 		return cols;
 	}
 
 	protected void updateEntityServer()
 	{
-		Utils.LOG_INFO("updateEntityServer");
+		Utils.LOG_WARNING("updateEntityServer");
 		super.updateEntity();
 
 		if (this.updateTicker++ % getTickRate() != 0) {
@@ -292,7 +294,7 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 	@Override
 	public void setActive(boolean active1)
 	{
-		Utils.LOG_INFO("setActive");
+		Utils.LOG_WARNING("setActive");
 		this.active = active1;
 		if (this.prevActive != active1) {
 			((NetworkManager)IC2.network.get()).updateTileEntityField(this, "active");
@@ -302,7 +304,7 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 
 	public void dropAllUnfittingStuff()
 	{
-		Utils.LOG_INFO("dropAllUnfittingStuff");
+		Utils.LOG_WARNING("dropAllUnfittingStuff");
 		for (int i = 0; i < this.reactorSlot.size(); i++)
 		{
 			ItemStack stack = this.reactorSlot.get(i);
@@ -323,7 +325,7 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 
 	public void eject(ItemStack drop)
 	{
-		Utils.LOG_INFO("eject");
+		Utils.LOG_WARNING("eject");
 		if ((!IC2.platform.isSimulating()) || (drop == null)) {
 			return;
 		}
@@ -338,7 +340,7 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 
 	public boolean isUsefulItem(ItemStack stack, boolean forInsertion)
 	{
-		Utils.LOG_INFO("isUsefulItem");
+		Utils.LOG_WARNING("isUsefulItem");
 		Item item = stack.getItem();
 		if ((forInsertion) && (this.fluidcoolreactor) && 
 				((item instanceof ItemReactorHeatStorage)) && 
@@ -353,7 +355,7 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 
 	public boolean calculateHeatEffects()
 	{
-		Utils.LOG_INFO("calculateHeatEffects");
+		Utils.LOG_WARNING("calculateHeatEffects");
 		if ((this.heat < 4000) || (!IC2.platform.isSimulating()) || (ConfigUtil.getFloat(MainConfig.get(), "protection/reactorExplosionPowerLimit") <= 0.0F)) {
 			return false;
 		}
@@ -437,7 +439,7 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 
 	public void processChambers()
 	{
-		Utils.LOG_INFO("processChambers");
+		Utils.LOG_WARNING("processChambers");
 		int size = getReactorSize();
 		for (int pass = 0; pass < 2; pass++) {
 			for (int y = 0; y < 6; y++) {
@@ -539,7 +541,7 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 	@Override
 	public ItemStack getItemAt(int x, int y)
 	{
-		Utils.LOG_INFO("getItemAt");
+		Utils.LOG_WARNING("getItemAt");
 		if ((x < 0) || (x >= getReactorSize()) || (y < 0) || (y >= 6)) {
 			return null;
 		}
@@ -549,7 +551,7 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 	@Override
 	public void setItemAt(int x, int y, ItemStack item)
 	{
-		Utils.LOG_INFO("setItemAt");
+		Utils.LOG_WARNING("setItemAt");
 		if ((x < 0) || (x >= getReactorSize()) || (y < 0) || (y >= 6)) {
 			return;
 		}
@@ -563,7 +565,7 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 
 	@Override
 	public void explode() {
-		Utils.LOG_INFO("Explosion");
+		Utils.LOG_WARNING("Explosion");
 		//TODO
 	}
 
@@ -575,7 +577,7 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 
 	public boolean receiveredstone()
 	{
-		Utils.LOG_INFO("receiveRedstone");
+		Utils.LOG_WARNING("receiveRedstone");
 		if ((this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord)) || (this.redstone)) {
 			return true;
 		}
@@ -585,7 +587,7 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 	@Override
 	public boolean produceEnergy()
 	{
-		Utils.LOG_INFO("produceEnergy");
+		Utils.LOG_WARNING("produceEnergy");
 		return (receiveredstone()) && (ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/generator") > 0.0F);
 	}
 
@@ -597,7 +599,7 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 
 	@Override
 	public boolean isFluidCooled() {
-		Utils.LOG_INFO("isFluidCooled");
+		Utils.LOG_WARNING("isFluidCooled");
 		return false;
 	}
 

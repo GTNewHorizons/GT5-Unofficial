@@ -2,17 +2,10 @@ itemGroup.MiscUtilBlockTab=Misc. Utils Blocks
 itemGroup.MiscUtilMiscTab=Misc. Utils Items
 itemGroup.MiscUtilCombatTab=Misc. Utils Combat
 itemGroup.MiscUtilToolsTab=Misc. Utils Tools
+itemGroup.MiscUtilMachinesTab=Misc. Utils Machines
 
 
-item.BloodSteelPickaxe.name=Blood Steel Pickaxe
-item.BloodSteelAxe.name=Blood Steel Hatchet
-item.BloodSteelSword.name=Blood Steel Blade
-item.BloodSteelHoe.name=Blood Steel Hoe
-item.BloodSteelSpade.name=Blood Steel Shovel
-item.BloodSteelHelmet.name=Blood Steel Battle Helmet
-item.BloodSteelPlate.name=Blood Steel Battle Plate
-item.BloodSteelPants.name=Blood Steel War Casings
-item.BloodSteelBoots.name=Blood Steel War Treads
+
 
 
 
@@ -34,25 +27,25 @@ item.itemPlateEnrichedSoularium.name=Enriched Soularium Plate
 item.itemPlateDimensionShard.name=Dimensional Plate
 item.itemIngotBloodSteel.name=Blood Steel Ingot
 item.itemPlateBloodSteel.name=Blood Steel Plate
+item.itemIngotStaballoy.name=Staballoy Ingot
+item.itemPlateStaballoy.name=Staballoy Plate
+item.itemHeliumBlob.name=Blob of solid Helium
+item.itemPlateBatteryAlloy=Plate of Battery Alloy
+item.itemIngotBatteryAlloy=Ingot of Battery Alloy
+item.itemStickyRubber=Gumlet of Sticky Rubber
+item.miscutils_itemDebugShapeSpawner.name=[Debug] Shapes
 
+tile.yourFluid.name=Jack Daniels
 tile.blockGriefSaver.name=Anti-Griefer [WIP]
+tile.helium_collector.name=Helium Collector
 tile.blockStaballoy.name=Block of Staballoy
-
-
 tile.blockBloodSteel.name=Block of Blood Steel
-tile.BloodSteelFurnace.name=Blood Steel Industrial Furnace
-tile.BloodSteelChest.name=Blood Steel Chest
-tile.ArcaneInfuser.name=Arcane Infuser
+
 
 tile.blockToolBuilder.name=GregTech Tool Constructor
 item.itemBufferCore.name=Buffer Core
 item.itemStaballoyPickaxe.name=Tunnel Digger
 item.itemStaballoyAxe.name=Tree Feller
 item.itemSandstoneHammer.name=Cobblestone Breaker
-item.itemIngotStaballoy.name=Staballoy Ingot
-item.itemPlateStaballoy.name=Staballoy Plate
 
-entity.BloodSteelMob.name=Friendly Fellow [WIP]
-entity.BloodSteelHostileMob.name=Hostile Mob [WIP]
 
-tile.storage.name=[WIP] Storage Block

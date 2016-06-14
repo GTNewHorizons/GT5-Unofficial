@@ -1,7 +1,5 @@
 package miscutil.core.block;
 
-import gregtech.api.enums.Textures;
-
 import java.util.Random;
 
 import miscutil.MiscUtils;
@@ -43,9 +41,9 @@ public class HeliumGenerator extends BlockContainer {
     @Override
     public void registerBlockIcons (IIconRegister iconRegister)
     {
-        this.top = iconRegister.registerIcon(CORE.MODID+":blockDefault");
-        this.sides = iconRegister.registerIcon(CORE.MODID+":blockDefault");
-        this.front = iconRegister.registerIcon(Textures.BlockIcons.MACHINE_CASING_VENT.getTextureFile().getResourcePath());
+        this.top = iconRegister.registerIcon(CORE.MODID+":blockHeliumCollector_SIDE");
+        this.sides = iconRegister.registerIcon(CORE.MODID+":blockHeliumCollector_SIDE");
+        this.front = iconRegister.registerIcon(CORE.MODID+":blockHeliumCollector_FRONT");
     }
 
     @Override
