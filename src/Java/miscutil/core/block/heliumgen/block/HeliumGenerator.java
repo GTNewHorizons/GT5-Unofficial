@@ -119,7 +119,10 @@ public class HeliumGenerator extends BlockContainer {
 
             if (collector != null)
             {
-                ItemStack itemstack = collector.getStackInSlot(0);
+            	int i = 0;
+            	for (i = 0; i < collector.getSizeInventory(); i++){ 		
+           
+                ItemStack itemstack = collector.getStackInSlot(i);
 
                 if (itemstack != null)
                 {
@@ -153,6 +156,7 @@ public class HeliumGenerator extends BlockContainer {
                 }
 
                 world.func_147453_f(x, y, z, block);
+            }
             }
 
         super.breakBlock(world, x, y, z, block, wut);

@@ -1,4 +1,4 @@
-package miscutil.core.block;
+package miscutil.core.block.base;
 
 import miscutil.core.lib.CORE;
 import net.minecraft.block.Block;

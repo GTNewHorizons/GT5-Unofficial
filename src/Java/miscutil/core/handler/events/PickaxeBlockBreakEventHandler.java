@@ -59,7 +59,7 @@ public class PickaxeBlockBreakEventHandler {
 	@SubscribeEvent
 	public void onPlayerInteraction(PlayerInteractEvent aEvent) {
 	   if (aEvent.entityPlayer != null && aEvent.entityPlayer.worldObj != null && aEvent.action != null && aEvent.world.provider != null && !aEvent.entityPlayer.worldObj.isRemote && aEvent.action != null && aEvent.action != PlayerInteractEvent.Action.RIGHT_CLICK_AIR) {
-		   Utils.LOG_ERROR("Test");
+		   //Utils.LOG_ERROR("Test");
 	   }
 	  }
 }

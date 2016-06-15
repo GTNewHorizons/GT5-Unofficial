@@ -84,10 +84,6 @@ public class CommonProxy {
 
 	public void registerTileEntities(){
 		ModTileEntities.init();
-		//GameRegistry.registerTileEntity(TileEntityBloodSteelChest.class, "tileEntityBloodSteelChest");
-		//GameRegistry.registerTileEntity(TileEntityBloodSteelFurnace.class, "tileEntityBloodSteelFurnace");
-		//GameRegistry.registerTileEntity(TileEntityBloodSteelChest.class, CORE.MODID);
-		//GameRegistry.registerTileEntity(TileEntityArcaneInfuser.class, "TileEntityArcaneInfuser");
 	}
 
 	public void registerRenderThings() {

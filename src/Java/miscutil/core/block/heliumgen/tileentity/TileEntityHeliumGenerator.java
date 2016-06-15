@@ -31,6 +31,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
@@ -100,7 +101,13 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 	{
 		super.readFromNBT(nbttagcompound);
 
-		this.heliumStack = ItemStack.loadItemStackFromNBT(nbttagcompound.getCompoundTag("Helium"));
+		//this.heliumStack = ItemStack.loadItemStackFromNBT(nbttagcompound.getCompoundTag("Helium"));
+		NBTTagList list = nbttagcompound.getTagList("Items", 10);
+	    for (int i = 0; i < list.tagCount(); ++i) {
+	        NBTTagCompound stackTag = list.getCompoundTagAt(i);
+	        int slot = stackTag.getByte("Slot") & 255;
+	        this.setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(stackTag));
+	    }
 		this.progress = nbttagcompound.getInteger("Progress");
 		this.facing = nbttagcompound.getShort("Facing");
 		this.heat = nbttagcompound.getInteger("heat");
@@ -118,13 +125,23 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 		nbttagcompound.setInteger("heat", this.heat);
 		nbttagcompound.setShort("output", (short)(int)getReactorEnergyOutput());
 		nbttagcompound.setBoolean("active", this.active);
-		if(heliumStack != null) {
+		/*if(heliumStack != null) {
 			NBTTagCompound produce = new NBTTagCompound();
 			heliumStack.writeToNBT(produce);
 			nbttagcompound.setTag("Helium", produce);
 		}
 		else
-			nbttagcompound.removeTag("Helium");
+			nbttagcompound.removeTag("Helium");*/
+		NBTTagList list = new NBTTagList();
+	    for (int i = 0; i < this.getSizeInventory(); ++i) {
+	        if (this.getStackInSlot(i) != null) {
+	            NBTTagCompound stackTag = new NBTTagCompound();
+	            stackTag.setByte("Slot", (byte) i);
+	            this.getStackInSlot(i).writeToNBT(stackTag);
+	            list.appendTag(stackTag);
+	        }
+	    }
+	    nbttagcompound.setTag("Items", list);
 	}
 
 
@@ -227,7 +244,7 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 	public float output = 0.0F;
 	public int updateTicker;
 	public int heat = 5000;
-	public int maxHeat = 10000;
+	public int maxHeat = 100000;
 	public float hem = 1.0F;
 	private int EmitHeatbuffer = 0;
 	public int EmitHeat = 0;
@@ -340,7 +357,7 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 
 	public boolean isUsefulItem(ItemStack stack, boolean forInsertion)
 	{
-		Utils.LOG_WARNING("isUsefulItem");
+		//Utils.LOG_WARNING("isUsefulItem");
 		Item item = stack.getItem();
 		if ((forInsertion) && (this.fluidcoolreactor) && 
 				((item instanceof ItemReactorHeatStorage)) && 
@@ -356,7 +373,7 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 	public boolean calculateHeatEffects()
 	{
 		Utils.LOG_WARNING("calculateHeatEffects");
-		if ((this.heat < 4000) || (!IC2.platform.isSimulating()) || (ConfigUtil.getFloat(MainConfig.get(), "protection/reactorExplosionPowerLimit") <= 0.0F)) {
+		if ((this.heat < 8000) || (!IC2.platform.isSimulating()) || (ConfigUtil.getFloat(MainConfig.get(), "protection/reactorExplosionPowerLimit") <= 0.0F)) {
 			return false;
 		}
 		float power = this.heat / this.maxHeat;
@@ -441,8 +458,8 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 	{
 		Utils.LOG_WARNING("processChambers");
 		int size = getReactorSize();
-		for (int pass = 0; pass < 2; pass++) {
-			for (int y = 0; y < 6; y++) {
+		for (int pass = 0; pass < 6; pass++) {
+			for (int y = 0; y < 3; y++) {
 				for (int x = 0; x < size; x++)
 				{
 					ItemStack stack = this.reactorSlot.get(x, y);
@@ -560,7 +577,7 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 
 	public TileEntityHeliumGenerator() {
 		this.updateTicker = IC2.random.nextInt(getTickRate());	    
-		this.reactorSlot = new InvSlotRadiation(this, "collector", 0, 54); //TODO
+		this.reactorSlot = new InvSlotRadiation(this, "helium_collector", 0, 54); //TODO
 	}
 
 	@Override
@@ -579,6 +596,7 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 	{
 		Utils.LOG_WARNING("receiveRedstone");
 		if ((this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord)) || (this.redstone)) {
+			decrStackSize(-1, 1);
 			return true;
 		}
 		return false;

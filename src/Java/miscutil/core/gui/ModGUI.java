@@ -4,6 +4,7 @@ import miscutil.MiscUtils;
 import miscutil.core.block.heliumgen.container.ContainerHeliumGenerator;
 import miscutil.core.block.heliumgen.gui.GUIHeliumGenerator;
 import miscutil.core.block.heliumgen.tileentity.TileEntityHeliumGenerator;
+import miscutil.core.handler.GuiHandler;
 import miscutil.core.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
@@ -16,7 +17,7 @@ public class ModGUI {
 	public static void init(){
 		
 		Utils.LOG_INFO("Registering GUIs.");
-		NetworkRegistry.INSTANCE.registerGuiHandler(MiscUtils.instance, new GUI_HANDLER());
+		NetworkRegistry.INSTANCE.registerGuiHandler(MiscUtils.instance, new GuiHandler());
 		//Register GuiHandler
 		//NetworkRegistry.INSTANCE.registerGuiHandler(MiscUtils.instance, new GuiHandler());
 	}

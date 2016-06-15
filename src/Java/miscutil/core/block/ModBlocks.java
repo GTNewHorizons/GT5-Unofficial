@@ -1,8 +1,9 @@
 package miscutil.core.block;
 
+import miscutil.core.block.base.BasicBlock;
 import miscutil.core.block.fluids.BlocktestFluid;
 import miscutil.core.block.heliumgen.block.HeliumGenerator;
-import miscutil.core.block.heliumgen.tileentity.TileEntityHeliumGenerator;
+import miscutil.core.block.machine.Machine_NHG;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
 import miscutil.gregtech.common.blocks.GregtechMetaCasingBlocks;
@@ -21,6 +22,7 @@ public final class ModBlocks {
 	public static Block blockGriefSaver;
 	public static Block blockCasingsMisc;
     public static Block blockHeliumGenerator;
+    public static Block blockNHG;
 
 	
 	
@@ -79,7 +81,8 @@ public final class ModBlocks {
 		testFluid.setUnlocalizedName(testFluidBlock.getUnlocalizedName());
 		
 		blockHeliumGenerator = GameRegistry.registerBlock(new HeliumGenerator(), "Helium_Collector");
-        GameRegistry.registerTileEntity(TileEntityHeliumGenerator.class, "Helium");
+        blockNHG = GameRegistry.registerBlock(new Machine_NHG("blockNuclearFueledHeliumGenerator"), "blockNuclearFueledHeliumGenerator");
+        
 
 		//WIP TODO
 		//GameRegistry.registerBlock(blockGriefSaver, "blockGriefSaver");

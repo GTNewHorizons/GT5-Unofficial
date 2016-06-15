@@ -29,7 +29,7 @@ public class GUIHeliumGenerator extends GuiContainer
     @Override
 	protected void drawGuiContainerForegroundLayer(int p_146979_1_, int p_146979_2_)
     {
-        String s = StatCollector.translateToLocal("container.helium_collector");
+        String s = StatCollector.translateToLocal("Helium Collector");
         this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
         this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
         

@@ -4,6 +4,7 @@ import static miscutil.core.lib.CORE.LOAD_ALL_CONTENT;
 import miscutil.core.creative.AddToCreativeTab;
 import miscutil.core.item.effects.RarityUncommon;
 import miscutil.core.item.general.BufferCore;
+import miscutil.core.item.general.fuelrods.FuelRod_Base;
 import miscutil.core.item.tool.misc.SandstoneHammer;
 import miscutil.core.item.tool.staballoy.StaballoyAxe;
 import miscutil.core.item.tool.staballoy.StaballoyPickaxe;
@@ -98,6 +99,12 @@ Gold Tool: 22*/
 	public static Item itemPlateBatteryAlloy;
 	public static Item itemHeliumBlob;
 	public static Item item_PLEASE_FACTOR_ME_4;
+	
+	public static Item FuelRod_Empty;
+	public static Item FuelRod_Thorium;
+	public static Item FuelRod_Uranium;
+	public static Item FuelRod_Plutonium;
+	
 	//@SuppressWarnings("unused")
 	public static final void init(){
 		
@@ -208,6 +215,23 @@ Gold Tool: 22*/
 		}
 		else {
 			Utils.LOG_WARNING("rfTools not Found - Skipping Resources.");
+		}
+		//IC2 Exp
+		if (LoadedMods.IndustrialCraft2|| LOAD_ALL_CONTENT){
+			Utils.LOG_INFO("IndustrialCraft2 Found - Loading Resources.");
+			//Item Init
+			FuelRod_Empty = new FuelRod_Base("itemFuelRod_Empty", "Empty", 0, 1000);
+			FuelRod_Thorium = new FuelRod_Base("itemFuelRod_Thorium", "Thorium", 1000, 1000);
+			FuelRod_Uranium = new FuelRod_Base("itemFuelRod_Uranium", "Uranium", 2500, 2500);
+			FuelRod_Plutonium = new FuelRod_Base("itemFuelRod_Plutonium", "Plutonium", 5000, 5000);
+			//Registry
+			GameRegistry.registerItem(FuelRod_Empty, "itemFuelRod_Empty");
+			GameRegistry.registerItem(FuelRod_Thorium, "itemFuelRod_Thorium");
+			GameRegistry.registerItem(FuelRod_Uranium, "itemFuelRod_Uranium");
+			GameRegistry.registerItem(FuelRod_Plutonium, "itemFuelRod_Plutonium");
+		}
+		else {
+			Utils.LOG_WARNING("IndustrialCraft2 not Found - Skipping Resources.");
 		}
 		/*
 		 * Misc Items

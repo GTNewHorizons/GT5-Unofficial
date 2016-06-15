@@ -2,7 +2,7 @@ itemGroup.MiscUtilBlockTab=Misc. Utils Blocks
 itemGroup.MiscUtilMiscTab=Misc. Utils Items
 itemGroup.MiscUtilCombatTab=Misc. Utils Combat
 itemGroup.MiscUtilToolsTab=Misc. Utils Tools
-itemGroup.MiscUtilMachinesTab=Misc. Utils Machines
+itemGroup.MiscUtilMachineTab=Misc. Utils Machines
 
 
 
@@ -30,14 +30,21 @@ item.itemPlateBloodSteel.name=Blood Steel Plate
 item.itemIngotStaballoy.name=Staballoy Ingot
 item.itemPlateStaballoy.name=Staballoy Plate
 item.itemHeliumBlob.name=Blob of solid Helium
-item.itemPlateBatteryAlloy=Plate of Battery Alloy
-item.itemIngotBatteryAlloy=Ingot of Battery Alloy
-item.itemStickyRubber=Gumlet of Sticky Rubber
+item.itemPlateBatteryAlloy.name=Plate of Battery Alloy
+item.itemIngotBatteryAlloy.name=Ingot of Battery Alloy
+item.itemStickyRubber.name=Gumlet of Sticky Rubber
+item.itemFuelRod_Empty.name=Empty Fuel Rod
+item.itemFuelRod_Thorium.name=Thorium Fuel Rod
+item.itemFuelRod_Uranium.name=Uranium Fuel Rod
+item.itemFuelRod_Plutonium.name=Plutonium Fuel Rod
 item.miscutils_itemDebugShapeSpawner.name=[Debug] Shapes
 
 tile.yourFluid.name=Jack Daniels
 tile.blockGriefSaver.name=Anti-Griefer [WIP]
 tile.helium_collector.name=Helium Collector
+tile.blockNuclearFueledHeliumGenerator.name=Nuclear Fueled Helium Generator [NFHG]
+container.NHG=Nuclear Fueled Helium Generator
+container.helium_collector.name=Helium Collector
 tile.blockStaballoy.name=Block of Staballoy
 tile.blockBloodSteel.name=Block of Blood Steel
 

@@ -6,7 +6,6 @@ import ic2.core.slot.SlotInvSlot;
 import java.util.List;
 
 import miscutil.core.block.heliumgen.tileentity.TileEntityHeliumGenerator;
-import miscutil.core.util.Utils;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnace;
@@ -19,7 +18,7 @@ extends ContainerBase<TileEntityHeliumGenerator>
 	public ContainerHeliumGenerator(InventoryPlayer player, TileEntityHeliumGenerator machine)
 	{
 		super(machine);
-		Utils.LOG_WARNING("containerHeliumGenerator");
+		//Utils.LOG_WARNING("containerHeliumGenerator");
 		short sr = machine.getReactorSize();
 		this.addSlotToContainer(new SlotFurnace(player.player, machine, 2, 80, 35));
 		this.size = sr;

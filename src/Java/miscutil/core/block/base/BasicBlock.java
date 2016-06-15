@@ -1,4 +1,4 @@
-package miscutil.core.block;
+package miscutil.core.block.base;
 
 import miscutil.core.creative.AddToCreativeTab;
 import miscutil.core.lib.CORE;
@@ -7,7 +7,7 @@ import net.minecraft.block.material.Material;
 
 public class BasicBlock extends Block {
 
-    protected BasicBlock(String unlocalizedName, Material material) {
+    public BasicBlock(String unlocalizedName, Material material) {
         super(material);
         this.setBlockName(unlocalizedName);
         this.setBlockTextureName(CORE.MODID + ":" + unlocalizedName);

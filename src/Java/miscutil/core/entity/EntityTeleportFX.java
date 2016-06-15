@@ -1,4 +1,4 @@
-package miscutil.core.item;
+package miscutil.core.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
