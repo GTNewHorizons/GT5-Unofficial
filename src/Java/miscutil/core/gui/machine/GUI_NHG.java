@@ -43,6 +43,7 @@ public class GUI_NHG extends GuiContainer
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         fontRendererObj.drawString(I18n.format(te.getInventoryName()), (xSize / 2) - (fontRendererObj.getStringWidth(I18n.format(te.getInventoryName())) / 2), 6, 4210752, false);
-        fontRendererObj.drawString(I18n.format(inventory.getInventoryName()), 8, ySize - 96 + 2, 4210752);
+        //fontRendererObj.drawString(I18n.format(inventory.getInventoryName()), 8, ySize - 96 + 2, 4210752);
+        fontRendererObj.drawString(I18n.format("CoreTemp:"+te.getCoreTemp()+"K"), 8, ySize - 96 + 2, 4210752);
     }
 }

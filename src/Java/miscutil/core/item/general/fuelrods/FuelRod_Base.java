@@ -4,11 +4,13 @@ import java.util.List;
 
 import miscutil.core.creative.AddToCreativeTab;
 import miscutil.core.lib.CORE;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 
 public class FuelRod_Base extends Item{
 
@@ -16,10 +18,8 @@ public class FuelRod_Base extends Item{
 	public int maximumFuel = 0;
 	public String fuelType = "";
 	public float heat = 0;
-	public float maxHeat = 5000;
+	public float maxHeat = getMaxHeat();
 	private ItemStack thisStack = null;
-	private int internalClock = 0;
-
 	public FuelRod_Base(String unlocalizedName, String type, int fuelLeft, int maxFuel) {
 		this.setUnlocalizedName(unlocalizedName);
 		this.setTextureName(CORE.MODID + ":" + unlocalizedName);
@@ -30,35 +30,56 @@ public class FuelRod_Base extends Item{
 		this.fuelType = type;
 		this.setCreativeTab(AddToCreativeTab.tabMachines);
 	}
-	@Override
-	public boolean onEntityItemUpdate(EntityItem entityItem) {
-		if (internalClock <= 200){
-			internalClock++;
-		}
-		else {
-			if (heat < maxHeat){
-				heat++;
-			}
-			if (fuelRemaining <= maximumFuel){
-				fuelRemaining--;
-			}
-			internalClock = 0;
-		}
-		return super.onEntityItemUpdate(entityItem);
-	}
-	@Override
+
+	/*@Override
 	public void setDamage(ItemStack stack, int damage) {
 		this.heat=heat+5;
 		super.setDamage(stack, damage);
-	}	
+	}*/	
+	
+	private float getMaxHeat(){
+		float tempvar;
+		if (fuelType == "Thorium"){
+			tempvar = 2500;
+		}
+		
+		if (fuelType == "Uranium"){
+			tempvar = 5000;
+		}
+		
+		if (fuelType == "Plutonium"){
+			tempvar = 10000;
+		}
+		
+		else {
+			tempvar = 5000;
+		}
+		return tempvar;
+		
+	}
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
+
+		Float NBT_Heat = heat;
+		Float NBT_MaxHeat = maxHeat;
+		int NBT_Fuel = fuelRemaining;
+		String NBT_Type= fuelType;
+
 		thisStack = stack;
-		String tempHeat = String.valueOf(heat);
-		String tempFuel = String.valueOf(fuelRemaining);
-		String formattedType = EnumChatFormatting.DARK_RED+fuelType+EnumChatFormatting.GRAY;
+		if (stack.stackTagCompound != null) {
+			NBT_Heat = stack.stackTagCompound.getFloat("heat");
+			NBT_MaxHeat = stack.stackTagCompound.getFloat("maxHeat");
+			NBT_Fuel = stack.stackTagCompound.getInteger("fuelRemaining");
+			NBT_Type = stack.stackTagCompound.getString("fuelType");}
+
+		String tempHeat = String.valueOf(NBT_Heat);
+		String tempMaxHeat = String.valueOf(NBT_MaxHeat);
+		String tempFuel = String.valueOf(NBT_Fuel);
+		String formattedType = EnumChatFormatting.DARK_RED+NBT_Type+EnumChatFormatting.GRAY;
 		String formattedHeat = EnumChatFormatting.RED+tempHeat+EnumChatFormatting.GRAY;
+		String formattedMaxHeat = EnumChatFormatting.RED+tempMaxHeat+EnumChatFormatting.GRAY;
 		String formattedFuelLeft = tempFuel+EnumChatFormatting.GRAY;
 
 		int tempMax = maximumFuel;
@@ -89,9 +110,9 @@ public class FuelRod_Base extends Item{
 			formattedHeat = EnumChatFormatting.BLUE+tempHeat+EnumChatFormatting.GRAY;
 		}
 
-		list.add(EnumChatFormatting.GRAY+"A "+formattedType+" fuel rod.");
-		list.add(EnumChatFormatting.GRAY+"Running at "+formattedHeat+"K.");
-		list.add(EnumChatFormatting.GRAY+"Currently there is: "+formattedFuelLeft+"L of fuel left.");
+		list.add(EnumChatFormatting.GRAY+"A "+formattedType+" Fuel Rod.");
+		list.add(EnumChatFormatting.GRAY+"Running at "+formattedHeat+"/"+formattedMaxHeat+" Kelvin.");
+		list.add(EnumChatFormatting.GRAY+"Fuel Remaining: "+formattedFuelLeft+"L.");
 		super.addInformation(stack, aPlayer, list, bool);
 	}
 
@@ -145,6 +166,39 @@ public class FuelRod_Base extends Item{
 			return true;
 		}		
 		return false;
+	}
+
+
+	//Ticking and NBT Handling
+	/* Called each tick as long the item is on a player inventory. Uses by maps to check if is on a player hand and
+	 * update it's contents.
+	 * 
+	 *  public int fuelRemaining = 0;
+	public int maximumFuel = 0;
+	public String fuelType = "";
+	public float heat = 0;
+	public float maxHeat = 5000;
+	 *  
+	 */
+	@Override
+	public void onCreated(ItemStack itemStack, World world, EntityPlayer player) { 
+		itemStack.stackTagCompound = new NBTTagCompound();
+		itemStack.stackTagCompound.setInteger("fuelRemaining", fuelRemaining);
+		itemStack.stackTagCompound.setInteger("maximumFuel", maximumFuel);
+		itemStack.stackTagCompound.setFloat("heat", heat);
+		itemStack.stackTagCompound.setFloat("maxHeat", maxHeat);
+		itemStack.stackTagCompound.setString("fuelType", fuelType);
+	}
+
+	@Override
+	public void onUpdate(ItemStack itemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
+		itemStack.stackTagCompound = new NBTTagCompound();
+		itemStack.stackTagCompound.setInteger("fuelRemaining", fuelRemaining);
+		itemStack.stackTagCompound.setInteger("maximumFuel", maximumFuel);
+		itemStack.stackTagCompound.setFloat("heat", heat);
+		itemStack.stackTagCompound.setFloat("maxHeat", maxHeat);
+		itemStack.stackTagCompound.setString("fuelType", fuelType);
+
 	}
 
 }
