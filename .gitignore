@@ -4,6 +4,8 @@ eclipse/
 .classpath
 .settings/
 gradlew.bat - Verknüpfung.lnk
+gradle/
+gradlew.bat
 .project
 out/
 build.bat
@@ -12,3 +14,5 @@ GalacticGregU.iml
 GalacticGregU.ipr
 GalacticGregU.iws
 *.bat
+gradlew
+libs/
