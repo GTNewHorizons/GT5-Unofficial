@@ -1,4 +1,4 @@
-package miscutil.gregtech.api.init.machines;
+package miscutil.core.handler.registration.gregtech;
 
 import miscutil.gregtech.api.enums.GregtechItemList;
 import miscutil.gregtech.common.machines.multi.GregtechMetaTileEntityIndustrialPlatePress;

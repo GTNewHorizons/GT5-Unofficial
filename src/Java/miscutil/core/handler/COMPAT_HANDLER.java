@@ -1,5 +1,6 @@
-package miscutil.core.common.compat;
+package miscutil.core.handler;
 
+import static miscutil.core.lib.LoadedMods.Gregtech;
 import static miscutil.core.util.UtilsItems.removeCraftingRecipe;
 import gregtech.api.util.GT_OreDictUnificator;
 
@@ -7,8 +8,25 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import miscutil.core.block.ModBlocks;
+import miscutil.core.common.compat.COMPAT_BigReactors;
+import miscutil.core.common.compat.COMPAT_CompactWindmills;
+import miscutil.core.common.compat.COMPAT_EnderIO;
+import miscutil.core.common.compat.COMPAT_ExtraUtils;
+import miscutil.core.common.compat.COMPAT_IC2;
+import miscutil.core.common.compat.COMPAT_MorePlanets;
+import miscutil.core.common.compat.COMPAT_PneumaticCraft;
+import miscutil.core.common.compat.COMPAT_RFTools;
+import miscutil.core.common.compat.COMPAT_SimplyJetpacks;
+import miscutil.core.common.compat.COMPAT_Thaumcraft;
 import miscutil.core.handler.registration.LateRegistrationHandler;
 import miscutil.core.handler.registration.RegistrationHandler;
+import miscutil.core.handler.registration.gregtech.GregtechConduits;
+import miscutil.core.handler.registration.gregtech.GregtechEnergyBuffer;
+import miscutil.core.handler.registration.gregtech.GregtechIndustrialCentrifuge;
+import miscutil.core.handler.registration.gregtech.GregtechIndustrialCokeOven;
+import miscutil.core.handler.registration.gregtech.GregtechIndustrialPlatePress;
+import miscutil.core.handler.registration.gregtech.GregtechSafeBlock;
+import miscutil.core.handler.registration.gregtech.GregtechSteamCondenser;
 import miscutil.core.item.ModItems;
 import miscutil.core.lib.CORE;
 import miscutil.core.lib.LoadedMods;
@@ -51,6 +69,18 @@ public class COMPAT_HANDLER {
 		}
 	}
 	
+	public static void registerGregtechMachines() {
+		if (Gregtech) {
+		GregtechEnergyBuffer.run();
+		GregtechConduits.run();
+		GregtechSteamCondenser.run();
+		GregtechSafeBlock.run();
+		GregtechIndustrialCentrifuge.run();
+		GregtechIndustrialCokeOven.run();
+		GregtechIndustrialPlatePress.run();
+		}
+
+	}
 	
 	//InterMod
 	public static void intermodOreDictionarySupport(){

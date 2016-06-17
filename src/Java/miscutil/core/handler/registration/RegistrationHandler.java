@@ -1,6 +1,6 @@
 package miscutil.core.handler.registration;
 
-import miscutil.core.common.compat.COMPAT_HANDLER;
+import miscutil.core.handler.COMPAT_HANDLER;
 import miscutil.core.util.Utils;
 import miscutil.core.util.recipe.RECIPES_Machines;
 import miscutil.core.util.recipe.RECIPES_Shapeless;

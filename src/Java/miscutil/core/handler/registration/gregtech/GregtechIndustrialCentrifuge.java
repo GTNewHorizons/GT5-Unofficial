@@ -1,4 +1,4 @@
-package miscutil.gregtech.api.init.machines;
+package miscutil.core.handler.registration.gregtech;
 
 import miscutil.core.util.Utils;
 import miscutil.gregtech.api.enums.GregtechItemList;

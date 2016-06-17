@@ -1,8 +1,8 @@
 package miscutil.core.common.compat;
 
 
-import static miscutil.core.common.compat.COMPAT_HANDLER.AddRecipeQueue;
-import static miscutil.core.common.compat.COMPAT_HANDLER.RemoveRecipeQueue;
+import static miscutil.core.handler.COMPAT_HANDLER.AddRecipeQueue;
+import static miscutil.core.handler.COMPAT_HANDLER.RemoveRecipeQueue;
 import miscutil.core.util.UtilsItems;
 import miscutil.core.util.recipe.ShapedRecipeObject;
 import net.minecraft.item.ItemStack;

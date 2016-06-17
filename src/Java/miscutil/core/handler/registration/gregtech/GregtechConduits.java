@@ -1,4 +1,4 @@
-package miscutil.gregtech.api.init.machines;
+package miscutil.core.handler.registration.gregtech;
 
 import static miscutil.core.lib.LoadedMods.Gregtech;
 import gregtech.api.enums.GT_Values;

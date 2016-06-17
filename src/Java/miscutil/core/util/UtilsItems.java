@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import miscutil.core.common.compat.COMPAT_HANDLER;
+import miscutil.core.handler.COMPAT_HANDLER;
 import miscutil.core.handler.registration.LateRegistrationHandler;
 import miscutil.core.handler.registration.RegistrationHandler;
 import miscutil.core.lib.CORE;
