@@ -2,20 +2,20 @@ package miscutil.core.common;
 
 import static miscutil.core.lib.CORE.DEBUG;
 import static miscutil.core.lib.LoadedMods.Gregtech;
-import gregtech.api.util.GT_OreDictUnificator;
 import miscutil.core.block.ModBlocks;
 import miscutil.core.common.compat.COMPAT_HANDLER;
+import miscutil.core.creative.AddToCreativeTab;
 import miscutil.core.gui.ModGUI;
-import miscutil.core.handler.registration.RegistrationHandler;
+import miscutil.core.handler.events.PickaxeBlockBreakEventHandler;
 import miscutil.core.item.ModItems;
 import miscutil.core.lib.CORE;
+import miscutil.core.lib.LoadedMods;
 import miscutil.core.tileentities.ModTileEntities;
+import miscutil.core.util.PlayerCache;
 import miscutil.core.util.Utils;
-import miscutil.core.util.UtilsItems;
+import miscutil.core.util.debug.DEBUG_INIT;
 import miscutil.gregtech.api.init.InitGregtech;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -23,12 +23,8 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 public class CommonProxy {
 
 	public void preInit(FMLPreInitializationEvent e) {
-		/*
-		 * 
-		 * CORE.DEBUG Parameters area
-		 * 
-		 */
-		//Logs
+		Utils.LOG_INFO("Doing some house cleaning.");
+		Utils.LOG_INFO("Making sure we're ready to party!");
 		if (!DEBUG){
 			Utils.LOG_WARNING("Development mode not enabled.");
 		}
@@ -38,48 +34,44 @@ public class CommonProxy {
 		else {
 			Utils.LOG_WARNING("Development mode not set.");
 		}
-		/*
-		 * End CORE.DEBUG
-		 */		
+		
 		ModItems.init();
 		ModBlocks.init();
-
-		/**
-		 * Enable Dev mode related content
-		 */
-		if (CORE.DEBUG){
-			//InitEnderIO.run();
-		}
-
-		//Register Gregtech related items
 		if (Gregtech) {
 			Utils.LOG_INFO("Gregtech Found - Loading Resources.");
-			//Utils.LOG_INFO("Begining initialization of Gregtech related content.");
-			// Init Gregtech
 			InitGregtech.run();
-
 		}
 		else { 
 			Utils.LOG_WARNING("Gregtech not Found - Skipping Resources.");
 		}
-
+		LoadedMods.checkLoaded();		
+		AddToCreativeTab.initialiseTabs();
 	}
 
 	public void init(FMLInitializationEvent e) {
-
-		RegistrationHandler.run();
-
+		//Debug Loading
+		if (CORE.DEBUG){
+					DEBUG_INIT.registerHandlers();
+		}
+		MinecraftForge.EVENT_BUS.register(new PickaxeBlockBreakEventHandler());
+		
+		//Compat Handling
+		COMPAT_HANDLER.InitialiseHandlerThenAddRecipes();
+		COMPAT_HANDLER.registerMyModsOreDictEntries();
+		COMPAT_HANDLER.intermodOreDictionarySupport();
 	}
 
 	public void postInit(FMLPostInitializationEvent e) {
-		registerOreDict();
-		COMPAT_HANDLER.loadGregAPIRecipes();
+		Utils.LOG_INFO("Cleaning up, doing postInit.");
+		PlayerCache.initCache();		
+		//Compat Handling
+		COMPAT_HANDLER.RemoveRecipesFromOtherMods();
+		COMPAT_HANDLER.InitialiseLateHandlerThenAddRecipes();
+		COMPAT_HANDLER.startLoadingGregAPIBasedRecipes();
 	}
 
 	public void registerNetworkStuff(){
 		ModGUI.init();
-		//NetworkRegistry.INSTANCE.registerGuiHandler(MiscUtils.instance, new BloodSteelFurnaceGuiHandler());
-
 	}
 
 	public void registerTileEntities(){
@@ -88,34 +80,6 @@ public class CommonProxy {
 
 	public void registerRenderThings() {
 
-	}
-
-	@SuppressWarnings("static-method")
-	private void registerOreDict(){
-
-		Utils.LOG_INFO("Registering Materials with OreDict.");
-		//In-house
-
-		//tools
-		GT_OreDictUnificator.registerOre("craftingToolSandHammer", new ItemStack(ModItems.itemSandstoneHammer));
-		GT_OreDictUnificator.registerOre("ingotBloodSteel", new ItemStack(ModItems.itemIngotBloodSteel));
-		GT_OreDictUnificator.registerOre("ingotStaballoy", new ItemStack(ModItems.itemIngotStaballoy));
-
-		//Plates
-		GT_OreDictUnificator.registerOre("plateBloodSteel", new ItemStack(ModItems.itemPlateBloodSteel));
-		GT_OreDictUnificator.registerOre("plateStaballoy", new ItemStack(ModItems.itemPlateStaballoy));
-
-		//Blocks
-		GT_OreDictUnificator.registerOre("blockStaballoy", new ItemStack(Item.getItemFromBlock(ModBlocks.blockStaballoy)));
-		OreDictionary.registerOre("blockBloodSteel", new ItemStack(ModBlocks.blockBloodSteel));
-
-
-		for(int i=1; i<=10; i++){
-			GT_OreDictUnificator.registerOre("bufferCore_"+CORE.VOLTAGES[i-1], new ItemStack(UtilsItems.getItem("miscutils:item.itemBufferCore"+i)));
-		}
-
-		//Do Inter-Mod Compatibility
-		COMPAT_HANDLER.run();
 	}
 
 	@SuppressWarnings("static-method")

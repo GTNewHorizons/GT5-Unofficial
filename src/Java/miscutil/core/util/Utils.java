@@ -115,6 +115,13 @@ public class Utils {
 			FMLLog.severe("MiscUtils: "+s);
 		}
 	}
+	
+	//Developer Logger
+		public static void LOG_SPECIFIC_WARNING(String whatToLog, String msg, int line){
+			if (CORE.DEBUG){		
+				FMLLog.warning("MiscUtils |"+line+"| "+whatToLog+" | "+msg);
+			}			
+		}
 
 	public static void paintBox(Graphics g, int MinA, int MinB, int MaxA, int MaxB){
 		g.drawRect (MinA, MinB, MaxA, MaxB);  
@@ -195,6 +202,15 @@ public class Utils {
 	//Smooth Rounding Function (Nearest 5)
 	public static double decimalRoundingToWholes(double d) {
 		return 5*(Math.round(d/5));
+	}
+	
+	//Can be divided by
+	public static boolean divideXintoY(int x, int y){
+		if ((x % y) == 0)
+		{
+		    return true;
+		}
+		return false;
 	}
 
 	//Converts temps for GT machines, then rounds for ease of use.

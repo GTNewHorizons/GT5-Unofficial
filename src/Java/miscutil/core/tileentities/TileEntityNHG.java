@@ -15,7 +15,8 @@ public class TileEntityNHG extends TileEntity implements IInventory
 {
 	private ItemStack[] items = new ItemStack[19]; //18
 	private int progress = 1;
-	private int maxProgress = 100;
+	private int maxProgress = 1800;
+	private int heatCycleProgress = 120;
 	public float coreTemp;
 	public float maxTemp = 10000;
 	private boolean fuelrod_1 = false;
@@ -41,44 +42,67 @@ public class TileEntityNHG extends TileEntity implements IInventory
 		return coreTemp;
 	}
 
-	public boolean isValidFuelRod(ItemStack input){
-		if (input != null){
-			if (input.getItem() instanceof FuelRod_Base){
-				int fuelRodFuelLevel = getRodFuelValue(input);
-				float fuelRodHeatLevel = getRodHeatValue(input);
-				if((fuelRodHeatLevel <= 0 || fuelRodHeatLevel == 0) && fuelRodFuelLevel > 0){	
+	public int getProgress(){
+		return progress;
+	}
 
-					if(fuelRodFuelLevel <= 0 || fuelRodFuelLevel == 0){
-						return false;
+	public boolean isValidFuelRod(ItemStack input){
+		if(!this.worldObj.isRemote){
+			if (input != null){
+				if (input.getItem() instanceof FuelRod_Base){
+					int fuelRodFuelLevel = getRodFuelValue(input);
+					float fuelRodHeatLevel = getRodHeatValue(input);
+					Utils.LOG_WARNING("Fuel Left: "+fuelRodFuelLevel+" Current Temp: "+fuelRodHeatLevel);	
+					return true;
+					//return input.stackTagCompound.getInteger("code");
+				}
+			}
+
+		}
+		return false;
+	}
+
+	public ItemStack doFuelRodHeatDamage(ItemStack input){
+		if(!this.worldObj.isRemote){
+			if (input != null){
+				if (isValidFuelRod(input)){
+					int fuelRodFuelLevel = getRodFuelValue(input);
+					float fuelRodHeatLevel = getRodHeatValue(input);
+					if((fuelRodHeatLevel <= 0 || fuelRodHeatLevel == 0) && fuelRodFuelLevel > 0){	
+
+						if(fuelRodFuelLevel <= 0 || fuelRodFuelLevel == 0){
+							return null;
+						}
+						else if(fuelRodFuelLevel >= 5){
+							int tempInt=fuelRodFuelLevel;
+							float tempFloat=fuelRodHeatLevel;
+							ItemStack output = input.copy();
+							output.stackTagCompound.setInteger("fuelRemaining", tempInt-5);
+							output.stackTagCompound.setFloat("heat", tempFloat+5);
+
+							return output;
+						} 
+						else {
+							return null;
+						}
 					}
-					else if(fuelRodFuelLevel >= 5){
-						input.stackTagCompound.setInteger("fuelRemaining", fuelRodFuelLevel-5);
-						input.stackTagCompound.setFloat("heat", fuelRodHeatLevel+5);
-						return true;
+					else if(fuelRodHeatLevel >= 5 && fuelRodFuelLevel == 0){
+						input.stackTagCompound.setInteger("heat", -5);
+						return input;
 					} 
 					else {
-						return false;
+						return null;
 					}
 				}
-				else if(fuelRodHeatLevel >= 5 && fuelRodFuelLevel == 0){
-					input.stackTagCompound.setInteger("heat", -5);
-					return true;
-				} 
-				else {
-					return false;
-				}			
-				//return input.stackTagCompound.getInteger("code");
 			}
 		}
-
-
-		return false;
+		return null;
 	}
 
 	public float getRodHeatValue(ItemStack value){
 		if (value != null){
 			if (value.stackTagCompound.getFloat("heat") != 0){
-			return value.stackTagCompound.getFloat("heat");
+				return value.stackTagCompound.getFloat("heat");
 			}
 			return 0f;
 		}
@@ -88,7 +112,7 @@ public class TileEntityNHG extends TileEntity implements IInventory
 	public int getRodFuelValue(ItemStack value){
 		if (value != null){
 			if (value.stackTagCompound.getInteger("fuelRemaining") != 0){
-			return value.stackTagCompound.getInteger("fuelRemaining");
+				return value.stackTagCompound.getInteger("fuelRemaining");
 			}
 			return 0;
 		}
@@ -96,100 +120,118 @@ public class TileEntityNHG extends TileEntity implements IInventory
 	}
 
 	public void checkFuelRods(){
-		for (int i = 0; i < getSizeInventory(); i++){
-			if (items[i] != null){
-				if (items[i].getItem() instanceof FuelRod_Base){
-					
-					
-					ItemStack fuelRodStack = getStackInSlot(i);					
-					isValidFuelRod(fuelRodStack);
-					
 
-					if (i == 0){
-						fuelrod_1 = true;
-						isValidFuelRod(fuelRodStack);
+		if(!this.worldObj.isRemote){
+			for (int i = 0; i < getSizeInventory(); i++){
+				if (items[i] != null){
+					if (items[i].getItem() instanceof FuelRod_Base){				
+						ItemStack fuelRodStack = getStackInSlot(i);					
+						//setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+						if (i == 0){
+							fuelrod_1 = true;
+							FuelRod_Base x = (FuelRod_Base) fuelRodStack.getItem();
+							x.addHeat(5);
+							x.addFuel(-5);
+							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));							
+						}
+						else if (i == 1){
+							fuelrod_2 = true;
+							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+						}
+						else if (i == 2){
+							fuelrod_3 = true;
+							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+						}
+						else if (i == 3){
+							fuelrod_4 = true;
+							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+						}
+						else if (i == 4){
+							fuelrod_5 = true;
+							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+						}
+						else if (i == 5){
+							fuelrod_6 = true;
+							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+						}
+						else if (i == 6){
+							fuelrod_7 = true;
+							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+						}
+						else if (i == 7){
+							fuelrod_8 = true;
+							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+						}
+						else if (i == 8){
+							fuelrod_9 = true;
+							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+						}
+						else if (i == 9){
+							fuelrod_10 = true;
+							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+						}
+						else if (i == 10){
+							fuelrod_11 = true;
+							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+						}
+						else if (i == 11){
+							fuelrod_12 = true;
+							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+						}
+						else if (i == 12){
+							fuelrod_13 = true;
+							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+						}
+						else if (i == 13){
+							fuelrod_14 = true;
+							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+						}
+						else if (i == 14){
+							fuelrod_15 = true;
+							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+						}
+						else if (i == 15){
+							fuelrod_16 = true;
+							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+						}
+						else if (i == 16){
+							fuelrod_17 = true;
+							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+						}
+						else if (i == 17){
+							fuelrod_18 = true;
+							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+						}
+
+
 					}
-					else if (i == 1){
-						fuelrod_2 = true;
-						isValidFuelRod(fuelRodStack);
-					}
-					else if (i == 2){
-						fuelrod_3 = true;
-						isValidFuelRod(fuelRodStack);
-					}
-					else if (i == 3){
-						fuelrod_4 = true;
-						isValidFuelRod(fuelRodStack);
-					}
-					else if (i == 4){
-						fuelrod_5 = true;
-						isValidFuelRod(fuelRodStack);
-					}
-					else if (i == 5){
-						fuelrod_6 = true;
-						isValidFuelRod(fuelRodStack);
-					}
-					else if (i == 6){
-						fuelrod_7 = true;
-						isValidFuelRod(fuelRodStack);
-					}
-					else if (i == 7){
-						fuelrod_8 = true;
-						isValidFuelRod(fuelRodStack);
-					}
-					else if (i == 8){
-						fuelrod_9 = true;
-						isValidFuelRod(fuelRodStack);
-					}
-					else if (i == 9){
-						fuelrod_10 = true;
-						isValidFuelRod(fuelRodStack);
-					}
-					else if (i == 10){
-						fuelrod_11 = true;
-						isValidFuelRod(fuelRodStack);
-					}
-					else if (i == 11){
-						fuelrod_12 = true;
-						isValidFuelRod(fuelRodStack);
-					}
-					else if (i == 12){
-						fuelrod_13 = true;
-						isValidFuelRod(fuelRodStack);
-					}
-					else if (i == 13){
-						fuelrod_14 = true;
-						isValidFuelRod(fuelRodStack);
-					}
-					else if (i == 14){
-						fuelrod_15 = true;
-						isValidFuelRod(fuelRodStack);
-					}
-					else if (i == 15){
-						fuelrod_16 = true;
-						isValidFuelRod(fuelRodStack);
-					}
-					else if (i == 16){
-						fuelrod_17 = true;
-						isValidFuelRod(fuelRodStack);
-					}
-					else if (i == 17){
-						fuelrod_18 = true;
-						isValidFuelRod(fuelRodStack);
-					}
-					
-					
 				}
 			}
-		}
 
+		}
 
 	}
 
 	public boolean calculateHeat(){
-		if (!fuelrod_1 || !fuelrod_2 ||  !fuelrod_3 ||  !fuelrod_4 ||  !fuelrod_5 ||  !fuelrod_6 ||  !fuelrod_7 || !fuelrod_8 || !fuelrod_9 || !fuelrod_10 || !fuelrod_11 || !fuelrod_12 || !fuelrod_13 || !fuelrod_14 || !fuelrod_15 || !fuelrod_16 || !fuelrod_17 || !fuelrod_18){
+		/*if (!fuelrod_1 || !fuelrod_2 ||  !fuelrod_3 ||  !fuelrod_4 ||  !fuelrod_5 ||  !fuelrod_6 ||  !fuelrod_7 || !fuelrod_8 || !fuelrod_9 || !fuelrod_10 || !fuelrod_11 || !fuelrod_12 || !fuelrod_13 || !fuelrod_14 || !fuelrod_15 || !fuelrod_16 || !fuelrod_17 || !fuelrod_18){
 			coreTemp = 0;
 		}
+		else {*/
+		if(!this.worldObj.isRemote){
+			for (int i = 0; i < getSizeInventory(); i++){
+				if (items[i] != null){
+					if (items[i].getItem() instanceof FuelRod_Base){				
+						ItemStack fuelRodStack = getStackInSlot(i);	
+						//if (fuelRodStack.stackTagCompound.getFloat("heat") != 0){
+						doFuelRodHeatDamage(fuelRodStack);
+						coreTemp = coreTemp+fuelRodStack.stackTagCompound.getFloat("heat");
+						return true;
+						//}
+					}
+				}
+			}
+		}
+		//}
 
 
 
@@ -333,47 +375,73 @@ public class TileEntityNHG extends TileEntity implements IInventory
 	private ItemStack neutrons;
 
 	@Override
-	public void updateEntity() {		
-		if(++progress >= maxProgress){
-			Utils.LOG_WARNING("Updating Entity "+this.getInventoryName());
-			if (items[18] != null){
-				if(neutrons == null){
+	public void updateEntity() {
+
+		if(!this.worldObj.isRemote){	
+
+			if(progress >= heatCycleProgress){
+				//Utils.LOG_SPECIFIC_WARNING("NFHG", "Updating Entity "+this.getBlockType().getUnlocalizedName(), 376);
+				if (Utils.divideXintoY(heatCycleProgress, maxProgress)){
+					Utils.LOG_SPECIFIC_WARNING("NFHG", "Updating Entity "+this.getBlockType().getUnlocalizedName(), 378);
+					calculateHeat();
+					heatCycleProgress=0;
+				}
+			}	
+
+			if(++progress >= maxProgress){
+
+
+				Utils.LOG_SPECIFIC_WARNING("NFHG", "Updating Entity "+this.getBlockType().getUnlocalizedName(), 338);
+				if (items[18] != null){
+					ItemStack checkOutput = getStackInSlot(18);
+					if(neutrons == null){
+						neutrons = new ItemStack(ModItems.itemHeliumBlob, 1);					
+						if (checkOutput == null){
+							Utils.LOG_WARNING("ItemStack in Output slot is definitely null, making a new ItemStack.");
+							setInventorySlotContents(18, neutrons);
+							progress = 0;
+							markDirty();
+						}
+						else {
+							checkOutput.stackSize++;
+							Utils.LOG_WARNING("Found an ItemStack to increase the size of. Current size is "+neutrons.stackSize);
+
+							progress = 0;
+							markDirty();
+						}
+					}
+					else if(checkOutput.getItem() == ModItems.itemHeliumBlob && checkOutput.stackSize < 64){
+						checkOutput.stackSize++;
+						Utils.LOG_WARNING("Found an ItemStack to increase size of. Current size is "+checkOutput.stackSize);
+						progress = 0;
+						markDirty();
+					}
+					else if(checkOutput.getItem() == ModItems.itemHeliumBlob && checkOutput.stackSize == 64){
+						Utils.LOG_WARNING("Output stack is full.");
+						progress = 0;
+						markDirty();
+					}
+				}
+				else if (items[18] == null){
+					Utils.LOG_WARNING("ItemStack in Output slot is null");
 					neutrons = new ItemStack(ModItems.itemHeliumBlob, 1);
 					ItemStack checkOutput = getStackInSlot(18);
 					if (checkOutput == null){
 						Utils.LOG_WARNING("ItemStack in Output slot is definitely null, making a new ItemStack.");
 						setInventorySlotContents(18, neutrons);
-						checkFuelRods();
+						progress = 0;
+						markDirty();
 					}
 					else {
 						Utils.LOG_WARNING("Found an ItemStack to increase the size of.");
-						checkOutput.stackSize++;
-						checkFuelRods();
+						checkOutput.stackSize++;						
+						progress = 0;
+						markDirty();
 					}
 				}
-				else if(neutrons.getItem() == ModItems.itemHeliumBlob && neutrons.stackSize < 64){
-					Utils.LOG_WARNING("Found an ItemStack to increase size of.");
-					neutrons.stackSize++;
-					checkFuelRods();
-					progress = 0;					
-				}
+				checkFuelRods();
 			}
-			else if (items[18] == null){
-				Utils.LOG_WARNING("ItemStack in Output slot is null");
-				neutrons = new ItemStack(ModItems.itemHeliumBlob, 1);
-				ItemStack checkOutput = getStackInSlot(18);
-				if (checkOutput == null){
-					Utils.LOG_WARNING("ItemStack in Output slot is definitely null, making a new ItemStack.");
-					setInventorySlotContents(18, neutrons);
-					checkFuelRods();
-				}
-				else {
-					Utils.LOG_WARNING("Found an ItemStack to increase the size of.");
-					checkOutput.stackSize++;
-					checkFuelRods();
-				}
-			}
-			markDirty();
+			progress++;
 		}
 	}
 
@@ -381,11 +449,13 @@ public class TileEntityNHG extends TileEntity implements IInventory
 	{
 		this.neutrons = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("Neutrons"));
 		this.progress = tag.getInteger("Progress");
+		this.coreTemp = tag.getFloat("coreTemp");
 	}
 
 	public void writeCustomNBT(NBTTagCompound tag)
 	{
 		tag.setInteger("Progress", this.progress);
+		tag.setFloat("coreTemp", this.coreTemp);
 		if(neutrons != null) {
 			NBTTagCompound produce = new NBTTagCompound();
 			neutrons.writeToNBT(produce);

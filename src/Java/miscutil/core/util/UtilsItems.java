@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import miscutil.core.common.compat.COMPAT_HANDLER;
+import miscutil.core.handler.registration.LateRegistrationHandler;
 import miscutil.core.handler.registration.RegistrationHandler;
 import miscutil.core.lib.CORE;
 import miscutil.core.lib.LoadedMods;
@@ -30,11 +32,7 @@ public class UtilsItems {
 				Utils.LOG_WARNING("Found: "+em1.toString());
 				if (em1 != null){
 					em = em1;
-				}			
-				else {
-					em = null;
-					return null;
-				}			
+				}						
 				if (em != null ){
 					ItemStack returnStack = new ItemStack(em,1);				
 					return returnStack;
@@ -211,7 +209,12 @@ public class UtilsItems {
 		try {
 			GameRegistry.addRecipe(new ShapedOreRecipe(resultItem.copy(), (Object[]) validSlots.toArray()));		
 			Utils.LOG_INFO("Success! Added a recipe for "+resultItem.toString());
-			RegistrationHandler.recipesSuccess++;		
+			if (!COMPAT_HANDLER.areInitItemsLoaded){
+			RegistrationHandler.recipesSuccess++;
+			}
+			else {
+				LateRegistrationHandler.recipesSuccess++;
+			}
 		}
 		catch(NullPointerException | ClassCastException k){
 			k.getMessage();
@@ -219,7 +222,12 @@ public class UtilsItems {
 			k.printStackTrace();
 			k.getLocalizedMessage();
 			Utils.LOG_WARNING("@@@: Invalid Recipe detected for: "+resultItem.getUnlocalizedName());
-			RegistrationHandler.recipesFailed++;
+			if (!COMPAT_HANDLER.areInitItemsLoaded){
+				RegistrationHandler.recipesFailed++;
+				}
+				else {
+					LateRegistrationHandler.recipesFailed++;
+				}			
 		}
 	}
 
@@ -251,19 +259,22 @@ public class UtilsItems {
 
 
 		Utils.LOG_ERROR("_______");
-		String lineOne = a+b+c;
 		Utils.LOG_ERROR("|"+a+"|"+b+"|"+c+"|");
 		Utils.LOG_ERROR("_______");
-		String lineTwo = d+e+f;
 		Utils.LOG_ERROR("|"+d+"|"+e+"|"+f+"|");
 		Utils.LOG_ERROR("_______");
-		String lineThree = g+h+i;
 		Utils.LOG_ERROR("|"+g+"|"+h+"|"+i+"|");
 		Utils.LOG_ERROR("_______");
 
-		validSlots.add(0, lineOne);
-		validSlots.add(1, lineTwo);
-		validSlots.add(2, lineThree);
+		validSlots.add(0, a);
+		validSlots.add(1, b);
+		validSlots.add(2, c);
+		validSlots.add(3, d);
+		validSlots.add(4, e);
+		validSlots.add(5, f);
+		validSlots.add(6, g);
+		validSlots.add(7, h);
+		validSlots.add(8, i);
 
 		try {
 			//GameRegistry.addRecipe(new ShapelessOreRecipe(Output, outputAmount), (Object[]) validSlots.toArray());
@@ -393,6 +404,7 @@ public class UtilsItems {
 	}
 
 	public static void recipeBuilder(Object[] array, ItemStack outPut) {
+		Utils.LOG_SPECIFIC_WARNING("object Array - recipeBuilder", "Attempting to build a recipe using an object array as an input, splitting it, then running the normal recipeBuilder() method.", 396);
 		Object a=null;
 		Object b=null;
 		Object c=null;
@@ -402,7 +414,7 @@ public class UtilsItems {
 		Object g=null;
 		Object h=null;
 		Object i=null;
-		for(int z =0; z < array.length; z++){
+		for(int z =0; z <= array.length; z++){
 			array[z].toString();
 			switch(z)
 			{

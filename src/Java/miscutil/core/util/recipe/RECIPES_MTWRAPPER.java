@@ -1,4 +1,4 @@
-package miscutil.core.handler.registration;
+package miscutil.core.util.recipe;
 
 import java.util.ArrayList;
 

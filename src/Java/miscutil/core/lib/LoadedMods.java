@@ -1,6 +1,7 @@
 package miscutil.core.lib;
 
 import miscutil.core.util.Utils;
+import miscutil.gregtech.common.GregtechRecipeAdder;
 import cpw.mods.fml.common.Loader;
 
 public class LoadedMods {
@@ -24,10 +25,19 @@ public class LoadedMods {
 
 	
 	private static int totalMods;
+	@SuppressWarnings("deprecation")
 	public static void checkLoaded(){
 		Utils.LOG_INFO("Looking for optional mod prereqs.");
 		if (Loader.isModLoaded("gregtech") == true ){
 			Gregtech = true;
+			if (Gregtech){
+				try {
+					CORE.sRecipeAdder = CORE.RA = new GregtechRecipeAdder();
+				} catch (NullPointerException e){
+
+				}
+			}
+			
 			totalMods++;
 		}
 		if (Loader.isModLoaded("EnderIO") == true){

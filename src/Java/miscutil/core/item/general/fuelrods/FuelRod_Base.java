@@ -196,9 +196,11 @@ public class FuelRod_Base extends Item{
 		itemStack.stackTagCompound.setInteger("fuelRemaining", fuelRemaining);
 		itemStack.stackTagCompound.setInteger("maximumFuel", maximumFuel);
 		itemStack.stackTagCompound.setFloat("heat", heat);
-		itemStack.stackTagCompound.setFloat("maxHeat", maxHeat);
+		itemStack.stackTagCompound.setFloat("maxHeat", getMaxHeat());
 		itemStack.stackTagCompound.setString("fuelType", fuelType);
 
 	}
+	
+	
 
 }
