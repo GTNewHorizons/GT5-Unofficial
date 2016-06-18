@@ -3,8 +3,8 @@ package miscutil.core.item.tool.staballoy;
 import java.util.List;
 
 import miscutil.core.lib.CORE;
-import miscutil.core.util.UtilsMining;
 import miscutil.core.util.Utils;
+import miscutil.core.util.player.UtilsMining;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;

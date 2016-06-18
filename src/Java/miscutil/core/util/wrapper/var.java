@@ -2,7 +2,7 @@ package miscutil.core.util.wrapper;
 
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.Utils;
-import miscutil.core.util.UtilsItems;
+import miscutil.core.util.item.UtilsItems;
 import net.minecraft.item.ItemStack;
 
 public class var{

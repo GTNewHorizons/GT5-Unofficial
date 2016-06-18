@@ -43,11 +43,11 @@ public class FuelRod_Base extends Item{
 			tempvar = 2500;
 		}
 		
-		if (fuelType == "Uranium"){
+		else if (fuelType == "Uranium"){
 			tempvar = 5000;
 		}
 		
-		if (fuelType == "Plutonium"){
+		else if (fuelType == "Plutonium"){
 			tempvar = 10000;
 		}
 		
@@ -193,9 +193,9 @@ public class FuelRod_Base extends Item{
 	@Override
 	public void onUpdate(ItemStack itemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
 		itemStack.stackTagCompound = new NBTTagCompound();
-		itemStack.stackTagCompound.setInteger("fuelRemaining", fuelRemaining);
+		itemStack.stackTagCompound.setInteger("fuelRemaining", getFuelRemaining());
 		itemStack.stackTagCompound.setInteger("maximumFuel", maximumFuel);
-		itemStack.stackTagCompound.setFloat("heat", heat);
+		itemStack.stackTagCompound.setFloat("heat", getHeat());
 		itemStack.stackTagCompound.setFloat("maxHeat", getMaxHeat());
 		itemStack.stackTagCompound.setString("fuelType", fuelType);
 

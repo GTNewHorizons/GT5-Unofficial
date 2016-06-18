@@ -1,9 +1,10 @@
-package miscutil.core.util.recipe;
+package miscutil.core.recipe;
 
 import java.util.ArrayList;
 
 import miscutil.core.util.Utils;
-import miscutil.core.util.UtilsItems;
+import miscutil.core.util.item.UtilsItems;
+import miscutil.core.util.recipe.UtilsRecipe;
 import miscutil.core.util.wrapper.var;
 import net.minecraft.item.ItemStack;
 
@@ -90,7 +91,7 @@ public class RECIPES_MTWRAPPER {
 		validSlots.add(2, lineThree);
 
 		try {
-			UtilsItems.recipeBuilder((Object[]) validSlots.toArray(), outputItem.copy());
+			UtilsRecipe.recipeBuilder((Object[]) validSlots.toArray(), outputItem.copy());
 			MT_RECIPES_LOADED++;		
 		}
 		catch(NullPointerException | ClassCastException k){

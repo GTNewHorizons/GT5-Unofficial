@@ -19,7 +19,7 @@ import miscutil.core.block.ModBlocks;
 import miscutil.core.block.heliumgen.slots.InvSlotRadiation;
 import miscutil.core.item.ModItems;
 import miscutil.core.util.Utils;
-import miscutil.core.util.UtilsItems;
+import miscutil.core.util.item.UtilsItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;

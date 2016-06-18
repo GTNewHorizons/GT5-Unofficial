@@ -1,6 +1,6 @@
 package miscutil.core.common.compat;
 
-import miscutil.core.util.UtilsItems;
+import miscutil.core.util.item.UtilsItems;
 
 public class COMPAT_MorePlanets {
 

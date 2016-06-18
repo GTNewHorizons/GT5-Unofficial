@@ -1,7 +1,6 @@
 package miscutil.core.handler;
 
 import static miscutil.core.lib.LoadedMods.Gregtech;
-import static miscutil.core.util.UtilsItems.removeCraftingRecipe;
 import gregtech.api.util.GT_OreDictUnificator;
 
 import java.util.LinkedList;
@@ -30,10 +29,11 @@ import miscutil.core.handler.registration.gregtech.GregtechSteamCondenser;
 import miscutil.core.item.ModItems;
 import miscutil.core.lib.CORE;
 import miscutil.core.lib.LoadedMods;
+import miscutil.core.recipe.RECIPES_GREGTECH;
+import miscutil.core.recipe.ShapedRecipeObject;
 import miscutil.core.util.Utils;
-import miscutil.core.util.UtilsItems;
-import miscutil.core.util.recipe.RECIPES_GREGTECH;
-import miscutil.core.util.recipe.ShapedRecipeObject;
+import miscutil.core.util.item.UtilsItems;
+import miscutil.core.util.recipe.UtilsRecipe;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -120,7 +120,7 @@ public class COMPAT_HANDLER {
 	public static void RemoveRecipesFromOtherMods(){
 		//Removal of Recipes
 		for(Object item : RemoveRecipeQueue){
-			removeCraftingRecipe(item);
+			UtilsRecipe.removeCraftingRecipe(item);
 		}		
 	}
 	

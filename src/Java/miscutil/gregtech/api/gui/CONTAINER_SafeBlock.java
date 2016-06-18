@@ -3,7 +3,7 @@ package miscutil.gregtech.api.gui;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import miscutil.core.util.PlayerCache;
+import miscutil.core.util.player.PlayerCache;
 import miscutil.gregtech.api.metatileentity.implementations.GregtechMetaSafeBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

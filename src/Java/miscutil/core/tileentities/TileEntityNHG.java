@@ -15,8 +15,8 @@ public class TileEntityNHG extends TileEntity implements IInventory
 {
 	private ItemStack[] items = new ItemStack[19]; //18
 	private int progress = 1;
-	private int maxProgress = 1800;
-	private int heatCycleProgress = 120;
+	private int maxProgress = 180;
+	private int heatCycleProgress = 12;
 	public float coreTemp;
 	public float maxTemp = 10000;
 	private boolean fuelrod_1 = false;
@@ -49,7 +49,7 @@ public class TileEntityNHG extends TileEntity implements IInventory
 	public boolean isValidFuelRod(ItemStack input){
 		if(!this.worldObj.isRemote){
 			if (input != null){
-				if (input.getItem() instanceof FuelRod_Base){
+				if (input.copy().getItem() instanceof FuelRod_Base){
 					int fuelRodFuelLevel = getRodFuelValue(input);
 					float fuelRodHeatLevel = getRodHeatValue(input);
 					Utils.LOG_WARNING("Fuel Left: "+fuelRodFuelLevel+" Current Temp: "+fuelRodHeatLevel);	
@@ -64,10 +64,10 @@ public class TileEntityNHG extends TileEntity implements IInventory
 
 	public ItemStack doFuelRodHeatDamage(ItemStack input){
 		if(!this.worldObj.isRemote){
-			if (input != null){
-				if (isValidFuelRod(input)){
-					int fuelRodFuelLevel = getRodFuelValue(input);
-					float fuelRodHeatLevel = getRodHeatValue(input);
+			if (input.copy() != null){
+				if (isValidFuelRod(input.copy())){
+					int fuelRodFuelLevel = getRodFuelValue(input.copy());
+					float fuelRodHeatLevel = getRodHeatValue(input.copy());
 					if((fuelRodHeatLevel <= 0 || fuelRodHeatLevel == 0) && fuelRodFuelLevel > 0){	
 
 						if(fuelRodFuelLevel <= 0 || fuelRodFuelLevel == 0){
@@ -100,21 +100,20 @@ public class TileEntityNHG extends TileEntity implements IInventory
 	}
 
 	public float getRodHeatValue(ItemStack value){
-		if (value != null){
-			if (value.stackTagCompound.getFloat("heat") != 0){
-				return value.stackTagCompound.getFloat("heat");
+		if (value.copy() != null){
+			if (value.copy().stackTagCompound != null){
+				return value.copy().stackTagCompound.getFloat("heat");
 			}
-			return 0f;
 		}
 		return 0f;
 	}
 
 	public int getRodFuelValue(ItemStack value){
-		if (value != null){
-			if (value.stackTagCompound.getInteger("fuelRemaining") != 0){
-				return value.stackTagCompound.getInteger("fuelRemaining");
+		if (value.copy() != null){
+			if (value.copy().stackTagCompound != null){
+				int tempInt = value.copy().stackTagCompound.getInteger("fuelRemaining");
+				return tempInt;
 			}
-			return 0;
 		}
 		return 0;
 	}
@@ -124,83 +123,101 @@ public class TileEntityNHG extends TileEntity implements IInventory
 		if(!this.worldObj.isRemote){
 			for (int i = 0; i < getSizeInventory(); i++){
 				if (items[i] != null){
-					if (items[i].getItem() instanceof FuelRod_Base){				
-						ItemStack fuelRodStack = getStackInSlot(i);					
+					if (items[i].copy().getItem() instanceof FuelRod_Base){				
+						ItemStack fuelRodStack = getStackInSlot(i).copy();					
 						//setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
 						if (i == 0){
 							fuelrod_1 = true;
 							FuelRod_Base x = (FuelRod_Base) fuelRodStack.getItem();
 							x.addHeat(5);
 							x.addFuel(-5);
-							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));							
+							ItemStack r = doFuelRodHeatDamage(fuelRodStack);
+							setInventorySlotContents(i, r);							
 						}
 						else if (i == 1){
 							fuelrod_2 = true;
-							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+							ItemStack r = doFuelRodHeatDamage(fuelRodStack);
+							setInventorySlotContents(i, r);	
 						}
 						else if (i == 2){
 							fuelrod_3 = true;
-							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+							ItemStack r = doFuelRodHeatDamage(fuelRodStack);
+							setInventorySlotContents(i, r);	
 						}
 						else if (i == 3){
 							fuelrod_4 = true;
-							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+							ItemStack r = doFuelRodHeatDamage(fuelRodStack);
+							setInventorySlotContents(i, r);	
 						}
 						else if (i == 4){
 							fuelrod_5 = true;
-							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+							ItemStack r = doFuelRodHeatDamage(fuelRodStack);
+							setInventorySlotContents(i, r);	
 						}
 						else if (i == 5){
 							fuelrod_6 = true;
-							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+							ItemStack r = doFuelRodHeatDamage(fuelRodStack);
+							setInventorySlotContents(i, r);
 						}
 						else if (i == 6){
 							fuelrod_7 = true;
-							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+							ItemStack r = doFuelRodHeatDamage(fuelRodStack);
+							setInventorySlotContents(i, r);
 						}
 						else if (i == 7){
 							fuelrod_8 = true;
-							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+							ItemStack r = doFuelRodHeatDamage(fuelRodStack);
+							setInventorySlotContents(i, r);
 						}
 						else if (i == 8){
 							fuelrod_9 = true;
-							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+							ItemStack r = doFuelRodHeatDamage(fuelRodStack);
+							setInventorySlotContents(i, r);
 						}
 						else if (i == 9){
 							fuelrod_10 = true;
-							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+							ItemStack r = doFuelRodHeatDamage(fuelRodStack);
+							setInventorySlotContents(i, r);
 						}
 						else if (i == 10){
 							fuelrod_11 = true;
-							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+							ItemStack r = doFuelRodHeatDamage(fuelRodStack);
+							setInventorySlotContents(i, r);
 						}
 						else if (i == 11){
 							fuelrod_12 = true;
-							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+							ItemStack r = doFuelRodHeatDamage(fuelRodStack);
+							setInventorySlotContents(i, r);
 						}
 						else if (i == 12){
 							fuelrod_13 = true;
-							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+							ItemStack r = doFuelRodHeatDamage(fuelRodStack);
+							setInventorySlotContents(i, r);
 						}
 						else if (i == 13){
 							fuelrod_14 = true;
-							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+							ItemStack r = doFuelRodHeatDamage(fuelRodStack);
+							setInventorySlotContents(i, r);
 						}
 						else if (i == 14){
 							fuelrod_15 = true;
-							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+							ItemStack r = doFuelRodHeatDamage(fuelRodStack);
+							setInventorySlotContents(i, r);
 						}
 						else if (i == 15){
 							fuelrod_16 = true;
-							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+							ItemStack r = doFuelRodHeatDamage(fuelRodStack);
+							setInventorySlotContents(i, r);
 						}
 						else if (i == 16){
 							fuelrod_17 = true;
-							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+							ItemStack r = doFuelRodHeatDamage(fuelRodStack);
+							setInventorySlotContents(i, r);
 						}
 						else if (i == 17){
 							fuelrod_18 = true;
-							setInventorySlotContents(i, doFuelRodHeatDamage(fuelRodStack));
+							ItemStack r = doFuelRodHeatDamage(fuelRodStack);
+							setInventorySlotContents(i, r);
 						}
 
 
@@ -220,8 +237,8 @@ public class TileEntityNHG extends TileEntity implements IInventory
 		if(!this.worldObj.isRemote){
 			for (int i = 0; i < getSizeInventory(); i++){
 				if (items[i] != null){
-					if (items[i].getItem() instanceof FuelRod_Base){				
-						ItemStack fuelRodStack = getStackInSlot(i);	
+					if (items[i].copy().getItem() instanceof FuelRod_Base){				
+						ItemStack fuelRodStack = getStackInSlot(i).copy();	
 						//if (fuelRodStack.stackTagCompound.getFloat("heat") != 0){
 						doFuelRodHeatDamage(fuelRodStack);
 						coreTemp = coreTemp+fuelRodStack.stackTagCompound.getFloat("heat");

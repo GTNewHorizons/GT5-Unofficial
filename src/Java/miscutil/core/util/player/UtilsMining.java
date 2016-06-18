@@ -1,5 +1,6 @@
-package miscutil.core.util;
+package miscutil.core.util.player;
 
+import miscutil.core.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;

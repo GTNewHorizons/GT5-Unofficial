@@ -1,8 +1,8 @@
 package miscutil.core.handler.registration;
 
 import miscutil.core.handler.COMPAT_HANDLER;
+import miscutil.core.recipe.ShapedRecipeObject;
 import miscutil.core.util.Utils;
-import miscutil.core.util.recipe.ShapedRecipeObject;
 
 public class LateRegistrationHandler {
 
@@ -22,7 +22,7 @@ public class LateRegistrationHandler {
 		} catch (InterruptedException e) {
 			Utils.LOG_INFO(e.toString());
 		}
-		Utils.LOG_INFO("Loaded: "+recipesSuccess+" Failed: "+recipesFailed);
+		Utils.LOG_INFO("Late Recipes Loaded: "+recipesSuccess+" Failed: "+recipesFailed);
 	}
 	
 }

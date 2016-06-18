@@ -1,11 +1,11 @@
-package miscutil.core.util.recipe;
+package miscutil.core.recipe;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
-import miscutil.core.util.UtilsItems;
+import miscutil.core.util.item.UtilsItems;
 
 public class RECIPES_GREGTECH {
 

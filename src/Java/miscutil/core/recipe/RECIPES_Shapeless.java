@@ -1,9 +1,10 @@
-package miscutil.core.util.recipe;
+package miscutil.core.recipe;
 
 import gregtech.api.enums.ItemList;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.Utils;
-import miscutil.core.util.UtilsItems;
+import miscutil.core.util.item.UtilsItems;
+import miscutil.core.util.recipe.UtilsRecipe;
 import net.minecraft.item.ItemStack;
 
 public class RECIPES_Shapeless {
@@ -27,12 +28,12 @@ public class RECIPES_Shapeless {
 	}
 
 	private static void run(){
-		UtilsItems.shapelessBuilder(dustStaballoy, 
+		UtilsRecipe.shapelessBuilder(dustStaballoy, 
 				"dustTitanium", "dustUranium", "dustUranium",
 				"dustUranium", "dustUranium", "dustUranium",
 				"dustUranium", "dustUranium", "dustUranium");
 		
-		UtilsItems.shapelessBuilder(gearboxCasing_Tier_1, 
+		UtilsRecipe.shapelessBuilder(gearboxCasing_Tier_1, 
 				circuitPrimitive, circuitPrimitive, circuitPrimitive,
 				circuitPrimitive, circuitPrimitive, circuitPrimitive,
 				circuitPrimitive, circuitPrimitive, circuitPrimitive);

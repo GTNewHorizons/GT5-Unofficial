@@ -8,8 +8,8 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachi
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import miscutil.core.handler.events.UnbreakableBlockManager;
-import miscutil.core.util.PlayerCache;
 import miscutil.core.util.Utils;
+import miscutil.core.util.player.PlayerCache;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

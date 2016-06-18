@@ -2,7 +2,7 @@ package miscutil.core.common.compat;
 
 import gregtech.api.util.GT_OreDictUnificator;
 import miscutil.core.item.ModItems;
-import miscutil.core.util.UtilsItems;
+import miscutil.core.util.item.UtilsItems;
 import net.minecraft.item.ItemStack;
 
 public class COMPAT_EnderIO {

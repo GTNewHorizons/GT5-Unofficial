@@ -1,7 +1,7 @@
-package miscutil.core.util.recipe;
+package miscutil.core.recipe;
 
 import miscutil.core.util.Utils;
-import miscutil.core.util.UtilsItems;
+import miscutil.core.util.recipe.UtilsRecipe;
 import net.minecraft.item.ItemStack;
 
 public class ShapedRecipeObject {
@@ -21,7 +21,7 @@ public class ShapedRecipeObject {
 			Object input_A,Object input_B,Object input_C,
 			Object input_D,Object input_E,Object input_F,
 			Object input_G,Object input_H,Object input_I,
-			Object input_Output){
+			ItemStack input_Output){
 		this.object_A = input_A;
 		this.object_B = input_B;
 		this.object_C = input_C;
@@ -31,13 +31,12 @@ public class ShapedRecipeObject {
 		this.object_G = input_G;
 		this.object_H = input_H;
 		this.object_I = input_I;
-		ItemStack output_A = (ItemStack) input_Output;
-		this.object_OUTPUT = output_A;
+		this.object_OUTPUT = input_Output;
 		Utils.LOG_SPECIFIC_WARNING("ShapedRecipeObject", "New object created.", 36);
 	}
 	
 	public void buildRecipe(){
-		UtilsItems.recipeBuilder(object_A, object_B, object_C, object_D, object_E, object_F, object_G, object_H, object_I, object_OUTPUT);
+		UtilsRecipe.recipeBuilder(object_A, object_B, object_C, object_D, object_E, object_F, object_G, object_H, object_I, object_OUTPUT);
 	}
 	
 }
