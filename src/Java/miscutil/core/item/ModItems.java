@@ -241,13 +241,6 @@ Gold Tool: 22*/
 		 * Misc Items
 		 */
 		
-		
-		//itemBedLocator_Base = new BedLocator_Base("itemBedLocator_Base");
-		//GameRegistry.registerItem(itemBedLocator_Base, "itemBedLocator_Base");
-		
-		//itemBaseItemWithCharge = new BaseItemWithCharge("itemBaseItemWithCharge", 0, 1000);
-		//GameRegistry.registerItem(itemBaseItemWithCharge, "itemBaseItemWithCharge");
-		
 		//Staballoy Equipment
 		itemStaballoyPickaxe = new StaballoyPickaxe("itemStaballoyPickaxe", STABALLOY).setCreativeTab(AddToCreativeTab.tabTools);
 		GameRegistry.registerItem(itemStaballoyPickaxe, itemStaballoyPickaxe.getUnlocalizedName());
