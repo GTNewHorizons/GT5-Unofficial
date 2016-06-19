@@ -17,6 +17,7 @@ import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
 public class CommonProxy {
 
@@ -57,8 +58,13 @@ public class CommonProxy {
 		//Compat Handling
 		COMPAT_HANDLER.InitialiseHandlerThenAddRecipes();
 		COMPAT_HANDLER.RemoveRecipesFromOtherMods();
-		COMPAT_HANDLER.InitialiseLateHandlerThenAddRecipes();
 		COMPAT_HANDLER.startLoadingGregAPIBasedRecipes();
+	}
+	
+	
+	public void serverStarting(FMLServerStartingEvent e)
+	{
+		COMPAT_HANDLER.InitialiseLateHandlerThenAddRecipes();
 	}
 
 	public void registerNetworkStuff(){

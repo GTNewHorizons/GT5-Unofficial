@@ -2,7 +2,7 @@ package miscutil.core.handler.registration.gregtech;
 
 import miscutil.core.util.Utils;
 import miscutil.gregtech.api.enums.GregtechItemList;
-import miscutil.gregtech.common.machines.multi.GregtechMetaTileEntityIndustrialCentrifuge;
+import miscutil.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntityIndustrialCentrifuge;
 
 public class GregtechIndustrialCentrifuge
 {

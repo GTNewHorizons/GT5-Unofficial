@@ -7,7 +7,7 @@ import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.GT_Material_Casings;
 import miscutil.gregtech.api.enums.GregtechItemList;
-import miscutil.gregtech.common.machines.multi.GregtechMetaTileEntityIndustrialCentrifuge;
+import miscutil.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntityIndustrialCentrifuge;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;

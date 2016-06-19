@@ -19,7 +19,6 @@ public class FuelRod_Base extends Item{
 	public String fuelType = "";
 	public float heat = 0;
 	public float maxHeat = getMaxHeat();
-	private ItemStack thisStack = null;
 	public FuelRod_Base(String unlocalizedName, String type, int fuelLeft, int maxFuel) {
 		this.setUnlocalizedName(unlocalizedName);
 		this.setTextureName(CORE.MODID + ":" + unlocalizedName);
@@ -30,12 +29,6 @@ public class FuelRod_Base extends Item{
 		this.fuelType = type;
 		this.setCreativeTab(AddToCreativeTab.tabMachines);
 	}
-
-	/*@Override
-	public void setDamage(ItemStack stack, int damage) {
-		this.heat=heat+5;
-		super.setDamage(stack, damage);
-	}*/	
 	
 	private float getMaxHeat(){
 		float tempvar;
@@ -58,6 +51,13 @@ public class FuelRod_Base extends Item{
 		
 	}
 	
+	private void updateVars(ItemStack stack){
+		if (stack.stackTagCompound != null) {
+			heat = stack.stackTagCompound.getFloat("heat");
+			fuelRemaining = stack.stackTagCompound.getInteger("fuelRemaining");
+			}
+	}
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
@@ -67,12 +67,12 @@ public class FuelRod_Base extends Item{
 		int NBT_Fuel = fuelRemaining;
 		String NBT_Type= fuelType;
 
-		thisStack = stack;
 		if (stack.stackTagCompound != null) {
 			NBT_Heat = stack.stackTagCompound.getFloat("heat");
 			NBT_MaxHeat = stack.stackTagCompound.getFloat("maxHeat");
 			NBT_Fuel = stack.stackTagCompound.getInteger("fuelRemaining");
-			NBT_Type = stack.stackTagCompound.getString("fuelType");}
+			NBT_Type = stack.stackTagCompound.getString("fuelType");
+			}
 
 		String tempHeat = String.valueOf(NBT_Heat);
 		String tempMaxHeat = String.valueOf(NBT_MaxHeat);
@@ -85,6 +85,8 @@ public class FuelRod_Base extends Item{
 		int tempMax = maximumFuel;
 		float tempCurrentHeat = heat;
 		int tempFuelLeft = fuelRemaining;
+		
+		//Fuel Usage Formatting
 		if (tempFuelLeft <= maximumFuel/3){
 			formattedFuelLeft = EnumChatFormatting.RED+tempFuel+EnumChatFormatting.GRAY;
 		}
@@ -97,44 +99,54 @@ public class FuelRod_Base extends Item{
 		else {
 			formattedFuelLeft = EnumChatFormatting.GRAY+tempFuel+EnumChatFormatting.GRAY;
 		}
-		if (tempCurrentHeat <= maxHeat/3 && tempCurrentHeat != 0){
+		
+		//Heat Formatting
+		if (tempCurrentHeat <= 200 && tempCurrentHeat >= 0){
 			formattedHeat = EnumChatFormatting.GRAY+tempHeat+EnumChatFormatting.GRAY;
 		}
-		else if (tempCurrentHeat >= maxHeat/3 && tempMax <= (maxHeat/3)*2 && tempCurrentHeat != 0){
+		else if (tempCurrentHeat <= maxHeat/3 && tempCurrentHeat > 200){
 			formattedHeat = EnumChatFormatting.YELLOW+tempHeat+EnumChatFormatting.GRAY;
 		}
-		else if (tempCurrentHeat <= (maxHeat/3)*2 && tempMax <= maxHeat && tempCurrentHeat != 0){
+		else if (tempCurrentHeat >= maxHeat/3 && tempMax < (maxHeat/3)*2 && tempCurrentHeat != 0){
+			formattedHeat = EnumChatFormatting.GOLD+tempHeat+EnumChatFormatting.GRAY;
+		}
+		else if (tempCurrentHeat >= ((maxHeat/3)*2) && tempMax <= maxHeat && tempCurrentHeat != 0){
 			formattedHeat = EnumChatFormatting.RED+tempHeat+EnumChatFormatting.GRAY;
 		}
 		else {
 			formattedHeat = EnumChatFormatting.BLUE+tempHeat+EnumChatFormatting.GRAY;
 		}
-
 		list.add(EnumChatFormatting.GRAY+"A "+formattedType+" Fuel Rod.");
 		list.add(EnumChatFormatting.GRAY+"Running at "+formattedHeat+"/"+formattedMaxHeat+" Kelvin.");
 		list.add(EnumChatFormatting.GRAY+"Fuel Remaining: "+formattedFuelLeft+"L.");
 		super.addInformation(stack, aPlayer, list, bool);
 	}
 
-	public String getType(){
-		return fuelType;
+	public String getType(ItemStack stack){
+		if (stack.stackTagCompound != null){
+			return stack.stackTagCompound.getString("fuelType");
+			}
+			return fuelType;
 	}
 
-	public int getFuelRemaining(){
-		return fuelRemaining;
+	public int getFuelRemaining(ItemStack stack){
+		if (stack.stackTagCompound != null){
+			return stack.stackTagCompound.getInteger("fuelRemaining");
+			}
+			return 0;
 	}
 
 	public int getMaxFuel(){
 		return maximumFuel;
 	}
 
-	public int getFuel(){
-		if (thisStack != null){
-			int i = thisStack.getItemDamage();
+	public int getFuel(ItemStack stack){
+		if (stack != null){
+			int i = stack.getItemDamage();
 			int r = maximumFuel - i;
 			return r;
 		}
-		return fuelRemaining;
+		return getFuelRemaining(stack);
 	}
 
 	public boolean setFuelRemainingExplicitly(int i){
@@ -155,8 +167,11 @@ public class FuelRod_Base extends Item{
 		return false;
 	}
 
-	public float getHeat(){
-		return heat;
+	public float getHeat(ItemStack value){
+		if (value.stackTagCompound != null){
+		return value.stackTagCompound.getFloat("heat");
+		}
+		return 0f;
 	}
 
 	public boolean addHeat(float i){
@@ -183,22 +198,23 @@ public class FuelRod_Base extends Item{
 	@Override
 	public void onCreated(ItemStack itemStack, World world, EntityPlayer player) { 
 		itemStack.stackTagCompound = new NBTTagCompound();
-		itemStack.stackTagCompound.setInteger("fuelRemaining", fuelRemaining);
+		itemStack.stackTagCompound.setInteger("fuelRemaining", getFuelRemaining(itemStack));
 		itemStack.stackTagCompound.setInteger("maximumFuel", maximumFuel);
-		itemStack.stackTagCompound.setFloat("heat", heat);
-		itemStack.stackTagCompound.setFloat("maxHeat", maxHeat);
-		itemStack.stackTagCompound.setString("fuelType", fuelType);
+		itemStack.stackTagCompound.setFloat("heat", getHeat(itemStack));
+		itemStack.stackTagCompound.setFloat("maxHeat", getMaxHeat());
+		itemStack.stackTagCompound.setString("fuelType", getType(itemStack));
+		updateVars(itemStack);
 	}
 
 	@Override
 	public void onUpdate(ItemStack itemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
 		itemStack.stackTagCompound = new NBTTagCompound();
-		itemStack.stackTagCompound.setInteger("fuelRemaining", getFuelRemaining());
+		itemStack.stackTagCompound.setInteger("fuelRemaining", getFuelRemaining(itemStack));
 		itemStack.stackTagCompound.setInteger("maximumFuel", maximumFuel);
-		itemStack.stackTagCompound.setFloat("heat", getHeat());
+		itemStack.stackTagCompound.setFloat("heat", getHeat(itemStack));
 		itemStack.stackTagCompound.setFloat("maxHeat", getMaxHeat());
-		itemStack.stackTagCompound.setString("fuelType", fuelType);
-
+		itemStack.stackTagCompound.setString("fuelType", getType(itemStack));
+		updateVars(itemStack);
 	}
 	
 	

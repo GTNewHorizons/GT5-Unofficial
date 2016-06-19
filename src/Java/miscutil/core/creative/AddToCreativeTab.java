@@ -1,5 +1,9 @@
 package miscutil.core.creative;
 
+import miscutil.core.creative.tabs.MiscUtilCreativeTabBlock;
+import miscutil.core.creative.tabs.MiscUtilCreativeTabMachines;
+import miscutil.core.creative.tabs.MiscUtilCreativeTabMisc;
+import miscutil.core.creative.tabs.MiscUtilCreativeTabTools;
 import miscutil.core.lib.CORE;
 import net.minecraft.creativetab.CreativeTabs;
 

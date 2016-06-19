@@ -42,6 +42,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	//Player owned Safes
 	GT_Safe_ULV, GT_Safe_LV, GT_Safe_MV, GT_Safe_HV, GT_Safe_EV, GT_Safe_IV, GT_Safe_LuV, GT_Safe_ZPM, GT_Safe_UV, GT_Safe_MAX,
 	
+	//Rocket Engines
+	Rocket_Engine_EV, Rocket_Engine_IV, Rocket_Engine_LuV,
+	
 	//IronBlastFurnace Machine_Bronze_BlastFurnace
 	Machine_Iron_BlastFurnace, Casing_IronPlatedBricks,
 	
@@ -55,7 +58,19 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Industrial_CokeOven, Casing_CokeOven, Casing_CokeOven_Coil1, Casing_CokeOven_Coil2, 
 	
 	//Bending Maching // Plate Press // Press
-	Industrial_PlatePress;
+	Industrial_PlatePress, 
+	
+	//Gregtech Machine Parts
+	Electric_Motor_LuV, Electric_Motor_ZPM, Electric_Motor_UV, Electric_Motor_MAX, 
+	Electric_Pump_LuV, Electric_Pump_ZPM, Electric_Pump_UV, Electric_Pump_MAX,
+	Conveyor_Module_LuV, Conveyor_Module_ZPM, Conveyor_Module_UV, Conveyor_Module_MAX, 
+	Electric_Piston_LuV, Electric_Piston_ZPM, Electric_Piston_UV, Electric_Piston_MAX,
+	Robot_Arm_LuV, Robot_Arm_ZPM, Robot_Arm_UV, Robot_Arm_MAX, 
+	Field_Generator_LuV, Field_Generator_ZPM, Field_Generator_UV, Field_Generator_MAX, 
+	Emitter_LuV, Emitter_ZPM, Emitter_UV, Emitter_MAX, 
+	Sensor_LuV, Sensor_ZPM, Sensor_UV, Sensor_MAX, 
+	Circuit_Primitive, Circuit_Basic, Circuit_Good, Circuit_Advanced,	
+	Circuit_Data, Circuit_Elite, Circuit_Master;
 
 	public static final GregtechItemList[]
 			DYE_ONLY_ITEMS = {

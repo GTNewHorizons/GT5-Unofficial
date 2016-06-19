@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import miscutil.MiscUtils;
 import miscutil.core.creative.AddToCreativeTab;
 import miscutil.core.lib.CORE;
-import miscutil.core.tileentities.TileEntityNHG;
+import miscutil.core.tileentities.machines.TileEntityNHG;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;

@@ -2,7 +2,7 @@ package miscutil.core.gui.machine;
 
 import miscutil.core.container.Container_NHG;
 import miscutil.core.lib.CORE;
-import miscutil.core.tileentities.TileEntityNHG;
+import miscutil.core.tileentities.machines.TileEntityNHG;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;

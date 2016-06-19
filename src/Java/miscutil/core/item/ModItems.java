@@ -105,6 +105,9 @@ Gold Tool: 22*/
 	public static Item FuelRod_Uranium;
 	public static Item FuelRod_Plutonium;
 	
+	public static Item itemBedLocator_Base;
+	public static Item itemBaseItemWithCharge;
+	
 	//@SuppressWarnings("unused")
 	public static final void init(){
 		
@@ -225,10 +228,10 @@ Gold Tool: 22*/
 			FuelRod_Uranium = new FuelRod_Base("itemFuelRod_Uranium", "Uranium", 2500, 2500);
 			FuelRod_Plutonium = new FuelRod_Base("itemFuelRod_Plutonium", "Plutonium", 5000, 5000);
 			//Registry
-			GameRegistry.registerItem(FuelRod_Empty, "itemFuelRod_Empty");
-			GameRegistry.registerItem(FuelRod_Thorium, "itemFuelRod_Thorium");
-			GameRegistry.registerItem(FuelRod_Uranium, "itemFuelRod_Uranium");
-			GameRegistry.registerItem(FuelRod_Plutonium, "itemFuelRod_Plutonium");
+			//GameRegistry.registerItem(FuelRod_Empty, "itemFuelRod_Empty");
+			//GameRegistry.registerItem(FuelRod_Thorium, "itemFuelRod_Thorium");
+			//GameRegistry.registerItem(FuelRod_Uranium, "itemFuelRod_Uranium");
+			//GameRegistry.registerItem(FuelRod_Plutonium, "itemFuelRod_Plutonium");
 		}
 		else {
 			Utils.LOG_WARNING("IndustrialCraft2 not Found - Skipping Resources.");
@@ -236,6 +239,14 @@ Gold Tool: 22*/
 		/*
 		 * Misc Items
 		 */
+		
+		
+		//itemBedLocator_Base = new BedLocator_Base("itemBedLocator_Base");
+		//GameRegistry.registerItem(itemBedLocator_Base, "itemBedLocator_Base");
+		
+		//itemBaseItemWithCharge = new BaseItemWithCharge("itemBaseItemWithCharge", 0, 1000);
+		//GameRegistry.registerItem(itemBaseItemWithCharge, "itemBaseItemWithCharge");
+		
 		//Staballoy Equipment
 		itemStaballoyPickaxe = new StaballoyPickaxe("itemStaballoyPickaxe", STABALLOY).setCreativeTab(AddToCreativeTab.tabTools);
 		GameRegistry.registerItem(itemStaballoyPickaxe, itemStaballoyPickaxe.getUnlocalizedName());
@@ -257,10 +268,10 @@ Gold Tool: 22*/
 		//Buffer Cores!
 		Item itemBufferCore;
 		for(int i=1; i<=10; i++){
-			Utils.LOG_INFO(""+i);
+			//Utils.LOG_INFO(""+i);
 			itemBufferCore = new BufferCore("itemBufferCore", i).setCreativeTab(AddToCreativeTab.tabMisc);
 			GameRegistry.registerItem(itemBufferCore, itemBufferCore.getUnlocalizedName()+i);
-			System.out.println("Buffer Core registration count is: "+i);
+			//System.out.println("Buffer Core registration count is: "+i);
 		}
 		//Dev Items
 		itemStickyRubber = new Item().setUnlocalizedName("itemStickyRubber").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemStickyRubber");
@@ -270,6 +281,7 @@ Gold Tool: 22*/
 		GameRegistry.registerItem(itemIngotBatteryAlloy, "itemIngotBatteryAlloy");
 		itemPlateBatteryAlloy = new Item().setUnlocalizedName("itemPlateBatteryAlloy").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemPlateBatteryAlloy");
 		GameRegistry.registerItem(itemPlateBatteryAlloy, "itemPlateBatteryAlloy");
+		
 		itemHeliumBlob = new Item().setUnlocalizedName("itemHeliumBlob").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemHeliumBlob");
 		GameRegistry.registerItem(itemHeliumBlob, "itemHeliumBlob");
 		

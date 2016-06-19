@@ -1,8 +1,11 @@
 package miscutil.core.handler;
 
+import miscutil.core.container.Container_Charger;
 import miscutil.core.container.Container_NHG;
+import miscutil.core.gui.machine.GUI_Charger;
 import miscutil.core.gui.machine.GUI_NHG;
-import miscutil.core.tileentities.TileEntityNHG;
+import miscutil.core.tileentities.machines.TileEntityCharger;
+import miscutil.core.tileentities.machines.TileEntityNHG;
 import miscutil.core.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -12,7 +15,7 @@ import cpw.mods.fml.common.network.IGuiHandler;
 public class GuiHandler implements IGuiHandler {
 
 	private static final int GUI1 = 0;      //Nuclear Helium Gen.
-	private static final int GUI2 = 1;      //Energy Buffer
+	private static final int GUI2 = 1;      //Energy Charger
 
 
 
@@ -25,7 +28,7 @@ public class GuiHandler implements IGuiHandler {
 				return new Container_NHG((TileEntityNHG)te, player);
 			}
 			else if (ID == GUI2){
-
+				return new Container_Charger((TileEntityCharger)te, player);
 			}
 
 
@@ -44,8 +47,8 @@ public class GuiHandler implements IGuiHandler {
 			return new GUI_NHG((TileEntityNHG) te, player);
 		}
 		else  if (ID == GUI2){
-			Utils.LOG_WARNING("Opening Gui with Id: "+ID+" Energy Buffer");
-			//return new GUI_Bat_Buf();
+			Utils.LOG_WARNING("Opening Gui with Id: "+ID+" Charger");
+			return new GUI_Charger((TileEntityCharger) te, player);
 		}
 		}
 		return null;

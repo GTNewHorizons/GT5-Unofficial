@@ -1,6 +1,7 @@
 package miscutil.gregtech.common;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.util.GT_Recipe;
 import miscutil.core.util.Utils;
 import miscutil.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import miscutil.gregtech.api.util.GregtechRecipe;
@@ -11,44 +12,44 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
 	@SuppressWarnings("static-method")
 	private void debug1(){
-		Utils.LOG_INFO("==================================================================================");
-		Utils.LOG_INFO("==================================================================================");
-		Utils.LOG_INFO("==================================================================================");
-		Utils.LOG_INFO("Walking Through CokeOven Recipe Creation.");
-		Utils.LOG_INFO("My name is Ralph and I will be your humble host.");
+		Utils.LOG_WARNING("==================================================================================");
+		Utils.LOG_WARNING("==================================================================================");
+		Utils.LOG_WARNING("==================================================================================");
+		Utils.LOG_WARNING("Walking Through CokeOven Recipe Creation.");
+		Utils.LOG_WARNING("My name is Ralph and I will be your humble host.");
 	}
 	@SuppressWarnings("static-method")
 	private void debug2(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput, int aDuration, int aEUt){
-		Utils.LOG_INFO("==================================================================================");
-		Utils.LOG_INFO("Taking a step forward.");
-		Utils.LOG_INFO("aInput1 == null && aFluidInput == null || aOutput == null && aFluidOutput == null");
-		Utils.LOG_INFO("aInput1:"+aInput1.toString()+" aInput2:"+aInput2.toString()+" aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aOutput:"+aOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
-		Utils.LOG_INFO("Passed.");
+		Utils.LOG_WARNING("==================================================================================");
+		Utils.LOG_WARNING("Taking a step forward.");
+		Utils.LOG_WARNING("aInput1 == null && aFluidInput == null || aOutput == null && aFluidOutput == null");
+		Utils.LOG_WARNING("aInput1:"+aInput1.toString()+" aInput2:"+aInput2.toString()+" aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aOutput:"+aOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
+		Utils.LOG_WARNING("Passed.");
 	}
 	@SuppressWarnings("static-method")
 	private void debug3(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput, int aDuration, int aEUt){
-		Utils.LOG_INFO("==================================================================================");
-		Utils.LOG_INFO("Taking a step forward.");
-		Utils.LOG_INFO("(aOutput != null) && ((aDuration = GregTech_API.sRecipeFile.get(cokeoven, aOutput, aDuration)) <= 0)");
-		Utils.LOG_INFO("aInput1:"+aInput1.toString()+" aInput2:"+aInput2.toString()+" aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aOutput:"+aOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
-		Utils.LOG_INFO("Passed.");
+		Utils.LOG_WARNING("==================================================================================");
+		Utils.LOG_WARNING("Taking a step forward.");
+		Utils.LOG_WARNING("(aOutput != null) && ((aDuration = GregTech_API.sRecipeFile.get(cokeoven, aOutput, aDuration)) <= 0)");
+		Utils.LOG_WARNING("aInput1:"+aInput1.toString()+" aInput2:"+aInput2.toString()+" aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aOutput:"+aOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
+		Utils.LOG_WARNING("Passed.");
 	}
 	@SuppressWarnings("static-method")
 	private void debug4(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput, int aDuration, int aEUt){
-		Utils.LOG_INFO("==================================================================================");
-		Utils.LOG_INFO("Taking a step forward.");
-		Utils.LOG_INFO("(aFluidOutput != null) && ((aDuration = GregTech_API.sRecipeFile.get(cokeoven, aFluidOutput.getFluid().getName(), aDuration)) <= 0)");
-		Utils.LOG_INFO("aInput1:"+aInput1.toString()+" aInput2:"+aInput2.toString()+" aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aOutput:"+aOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
-		Utils.LOG_INFO("Passed.");
-		Utils.LOG_INFO("aInput1:"+aInput1.toString()+" aInput2:"+aInput2.toString()+" aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aOutput:"+aOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
+		Utils.LOG_WARNING("==================================================================================");
+		Utils.LOG_WARNING("Taking a step forward.");
+		Utils.LOG_WARNING("(aFluidOutput != null) && ((aDuration = GregTech_API.sRecipeFile.get(cokeoven, aFluidOutput.getFluid().getName(), aDuration)) <= 0)");
+		Utils.LOG_WARNING("aInput1:"+aInput1.toString()+" aInput2:"+aInput2.toString()+" aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aOutput:"+aOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
+		Utils.LOG_WARNING("Passed.");
+		Utils.LOG_WARNING("aInput1:"+aInput1.toString()+" aInput2:"+aInput2.toString()+" aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aOutput:"+aOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
 
 	}
 	@SuppressWarnings("static-method")
 	private void debug5(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput, int aDuration, int aEUt){
-		Utils.LOG_INFO("Successfully added a Coke Oven recipe for: "+aOutput.getDisplayName()+" & "+aFluidOutput.getFluid().getName()+", Using "+aInput1.getDisplayName()+" & "+aInput2.getDisplayName()+" & liquid "+aFluidInput.getFluid().getName()+". This took "+(aDuration/20)+" seconds for "+aEUt+"eu/t.");
-		Utils.LOG_INFO("==================================================================================");
-		Utils.LOG_INFO("==================================================================================");
-		Utils.LOG_INFO("==================================================================================");
+		Utils.LOG_INFO("Successfully added a Coke Oven recipe for: "+aOutput.getDisplayName()+" & "+aFluidOutput.getFluid().getName()+", Using "+aInput1.getDisplayName()+" & "+aInput2.getDisplayName()+" & liquid "+aFluidInput.getFluid().getName()+". This takes "+(aDuration/20)+" seconds for "+aEUt+"eu/t.");
+		Utils.LOG_WARNING("==================================================================================");
+		Utils.LOG_WARNING("==================================================================================");
+		Utils.LOG_WARNING("==================================================================================");
 	}
 
 	@Override
@@ -57,8 +58,8 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			try {
 				debug1();
 				if (((aInput1 == null) /*&& (aFluidInput == null)*/) || ((aOutput == null) || (aFluidOutput == null))) {
-					Utils.LOG_INFO("aInput1:"+aInput1.toString()+" aInput2:"+aInput2.toString()+" aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aOutput:"+aOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
-					Utils.LOG_INFO("Something was null, returning false");
+					Utils.LOG_WARNING("aInput1:"+aInput1.toString()+" aInput2:"+aInput2.toString()+" aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aOutput:"+aOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
+					Utils.LOG_WARNING("Something was null, returning false");
 					return false;
 				}
 
@@ -66,8 +67,8 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			try {
 				debug2(aInput1, aInput2, aFluidInput, aFluidOutput, aOutput, aDuration, aEUt);
 				if ((aOutput != null) && ((aDuration = GregTech_API.sRecipeFile.get("cokeoven", aOutput, aDuration)) <= 0)) {
-					Utils.LOG_INFO("aInput1:"+aInput1.toString()+" aInput2:"+aInput2.toString()+" aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aOutput:"+aOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
-					Utils.LOG_INFO("Something was null, returning false");
+					Utils.LOG_WARNING("aInput1:"+aInput1.toString()+" aInput2:"+aInput2.toString()+" aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aOutput:"+aOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
+					Utils.LOG_WARNING("Something was null, returning false");
 					return false;
 				}
 
@@ -76,8 +77,8 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
 				debug3(aInput1, aInput2, aFluidInput, aFluidOutput, aOutput, aDuration, aEUt);
 				if ((aFluidOutput == null) && ((aDuration = GregTech_API.sRecipeFile.get("cokeoven", aFluidOutput.getFluid().getName(), aDuration)) <= 0)) {
-					Utils.LOG_INFO("aInput1:"+aInput1.toString()+" aInput2:"+aInput2.toString()+" aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aOutput:"+aOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
-					Utils.LOG_INFO("Something was null, returning false");
+					Utils.LOG_WARNING("aInput1:"+aInput1.toString()+" aInput2:"+aInput2.toString()+" aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aOutput:"+aOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
+					Utils.LOG_WARNING("Something was null, returning false");
 					return false;
 				}
 
@@ -98,13 +99,20 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				return false;
 			}
 		} catch (Throwable e){
-			Utils.LOG_INFO("aInput1:"+aInput1.toString()+" aInput2:"+aInput2.toString()+" aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aOutput:"+aOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
-			Utils.LOG_INFO("Failed.");
+			Utils.LOG_WARNING("aInput1:"+aInput1.toString()+" aInput2:"+aInput2.toString()+" aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aOutput:"+aOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
+			Utils.LOG_WARNING("Failed.");
 			e.getStackTrace();
 			return false;
 		}
 	}
 
+	public boolean addFuel(ItemStack aInput1, ItemStack aOutput1, int aEU, int aType) {
+        if (aInput1 == null) {
+            return false;
+        }
+        new GT_Recipe(aInput1, aOutput1, GregTech_API.sRecipeFile.get("fuel_" + aType, aInput1, aEU), aType);
+        return true;
+    }
 
 
 }

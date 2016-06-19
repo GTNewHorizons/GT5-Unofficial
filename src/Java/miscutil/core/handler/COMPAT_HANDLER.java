@@ -24,6 +24,7 @@ import miscutil.core.handler.registration.gregtech.GregtechEnergyBuffer;
 import miscutil.core.handler.registration.gregtech.GregtechIndustrialCentrifuge;
 import miscutil.core.handler.registration.gregtech.GregtechIndustrialCokeOven;
 import miscutil.core.handler.registration.gregtech.GregtechIndustrialPlatePress;
+import miscutil.core.handler.registration.gregtech.GregtechRocketFuelGenerator;
 import miscutil.core.handler.registration.gregtech.GregtechSafeBlock;
 import miscutil.core.handler.registration.gregtech.GregtechSteamCondenser;
 import miscutil.core.item.ModItems;
@@ -34,6 +35,7 @@ import miscutil.core.recipe.ShapedRecipeObject;
 import miscutil.core.util.Utils;
 import miscutil.core.util.item.UtilsItems;
 import miscutil.core.util.recipe.UtilsRecipe;
+import miscutil.gregtech.common.items.MetaGeneratedGregtechItems;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -71,6 +73,7 @@ public class COMPAT_HANDLER {
 	
 	public static void registerGregtechMachines() {
 		if (Gregtech) {
+		new MetaGeneratedGregtechItems();
 		GregtechEnergyBuffer.run();
 		GregtechConduits.run();
 		GregtechSteamCondenser.run();
@@ -78,6 +81,7 @@ public class COMPAT_HANDLER {
 		GregtechIndustrialCentrifuge.run();
 		GregtechIndustrialCokeOven.run();
 		GregtechIndustrialPlatePress.run();
+		GregtechRocketFuelGenerator.run();
 		}
 
 	}
