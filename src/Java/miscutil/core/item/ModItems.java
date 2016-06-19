@@ -1,4 +1,5 @@
 package miscutil.core.item;
+import static miscutil.core.creative.AddToCreativeTab.tabMachines;
 import static miscutil.core.creative.AddToCreativeTab.tabMisc;
 import static miscutil.core.lib.CORE.LOAD_ALL_CONTENT;
 import miscutil.core.creative.AddToCreativeTab;
@@ -98,7 +99,7 @@ Gold Tool: 22*/
 	public static Item itemIngotBatteryAlloy;
 	public static Item itemPlateBatteryAlloy;
 	public static Item itemHeliumBlob;
-	public static Item item_PLEASE_FACTOR_ME_4;
+	public static Item itemPLACEHOLDER_Circuit;
 	
 	public static Item FuelRod_Empty;
 	public static Item FuelRod_Thorium;
@@ -269,26 +270,23 @@ Gold Tool: 22*/
 		Item itemBufferCore;
 		for(int i=1; i<=10; i++){
 			//Utils.LOG_INFO(""+i);
-			itemBufferCore = new BufferCore("itemBufferCore", i).setCreativeTab(AddToCreativeTab.tabMisc);
+			itemBufferCore = new BufferCore("itemBufferCore", i).setCreativeTab(AddToCreativeTab.tabMachines);
 			GameRegistry.registerItem(itemBufferCore, itemBufferCore.getUnlocalizedName()+i);
 			//System.out.println("Buffer Core registration count is: "+i);
 		}
-		//Dev Items
-		itemStickyRubber = new Item().setUnlocalizedName("itemStickyRubber").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemStickyRubber");
+		itemStickyRubber = new Item().setUnlocalizedName("itemStickyRubber").setCreativeTab(tabMachines).setTextureName(CORE.MODID + ":itemStickyRubber");
 		GameRegistry.registerItem(itemStickyRubber, "itemStickyRubber");
 		//Battery Alloy For cheap Niggers
-		itemIngotBatteryAlloy = new Item().setUnlocalizedName("itemIngotBatteryAlloy").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemIngotBatteryAlloy");
+		itemIngotBatteryAlloy = new Item().setUnlocalizedName("itemIngotBatteryAlloy").setCreativeTab(tabMachines).setTextureName(CORE.MODID + ":itemIngotBatteryAlloy");
 		GameRegistry.registerItem(itemIngotBatteryAlloy, "itemIngotBatteryAlloy");
-		itemPlateBatteryAlloy = new Item().setUnlocalizedName("itemPlateBatteryAlloy").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemPlateBatteryAlloy");
+		itemPlateBatteryAlloy = new Item().setUnlocalizedName("itemPlateBatteryAlloy").setCreativeTab(tabMachines).setTextureName(CORE.MODID + ":itemPlateBatteryAlloy");
 		GameRegistry.registerItem(itemPlateBatteryAlloy, "itemPlateBatteryAlloy");
 		
 		itemHeliumBlob = new Item().setUnlocalizedName("itemHeliumBlob").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemHeliumBlob");
 		GameRegistry.registerItem(itemHeliumBlob, "itemHeliumBlob");
-		
-		
-		/*
-		item_PLEASE_FACTOR_ME_4 = new Item().setUnlocalizedName("unlocalName4").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemDefault");
-		GameRegistry.registerItem(item_PLEASE_FACTOR_ME_4, "localName4");*/
+				
+		itemPLACEHOLDER_Circuit = new Item().setUnlocalizedName("itemPLACEHOLDER_Circuit").setTextureName(CORE.MODID + ":itemPLACEHOLDER_Circuit");
+		GameRegistry.registerItem(itemPLACEHOLDER_Circuit, "itemPLACEHOLDER_Circuit");
 		//Try some New Tools from GT
 		//GT_Tool_Item x = null;
 		//x = GregTech_API.constructHardHammerItem("rockBelter", "Sandstone Hammer", 5000 /**Max Damage**/,50 /**Entity Damage**/);

@@ -1,8 +1,8 @@
-itemGroup.MiscUtilBlockTab=Misc. Utils Blocks
-itemGroup.MiscUtilMiscTab=Misc. Utils Items
-itemGroup.MiscUtilCombatTab=Misc. Utils Combat
-itemGroup.MiscUtilToolsTab=Misc. Utils Tools
-itemGroup.MiscUtilMachineTab=Misc. Utils Machines
+itemGroup.MiscUtilBlockTab=[MU] Blocks
+itemGroup.MiscUtilMiscTab=[MU] Items
+itemGroup.MiscUtilCombatTab=[MU] Combat
+itemGroup.MiscUtilToolsTab=[MU] Tools
+itemGroup.MiscUtilMachineTab=[MU] Machines
 
 
 

@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import miscutil.core.util.Utils;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -171,11 +172,13 @@ public class GregtechRecipe {
 	public GregtechRecipe(ItemStack aInput1, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, int aSpecialValue, int aType) {
 		this(true, new ItemStack[]{aInput1}, new ItemStack[]{aOutput1, aOutput2, aOutput3, aOutput4}, null, null, null, null, 0, 0, Math.max(1, aSpecialValue));
 
+		Utils.LOG_INFO("Switch case method for adding fuels");
 		if (mInputs.length > 0 && aSpecialValue > 0) {
 			switch (aType) {
 			// Diesel Generator
 			case 0:
-				Gregtech_Recipe_Map.sRocketFuels.addRecipe(this);
+				Utils.LOG_INFO("Added fuel "+aInput1.getDisplayName()+" is ROCKET FUEL - continuing");
+				Gregtech_Recipe_Map.sRocketFuels.addRecipe(this);				
 				break;
 				// Gas Turbine
 			case 1:
@@ -384,16 +387,21 @@ public class GregtechRecipe {
 			}*/
 
 		public GregtechRecipe addRecipe(GregtechRecipe aRecipe) {
+			Utils.LOG_INFO("Adding Recipe Method 1");
 			return addRecipe(aRecipe, true, false, false);
 		}
 
 		protected GregtechRecipe addRecipe(GregtechRecipe aRecipe, boolean aCheckForCollisions, boolean aFakeRecipe, boolean aHidden) {
+			Utils.LOG_INFO("Adding Recipe Method 2");
 			aRecipe.mHidden = aHidden;
 			aRecipe.mFakeRecipe = aFakeRecipe;
-			if (aRecipe.mFluidInputs.length < mMinimalInputFluids && aRecipe.mInputs.length < mMinimalInputItems)
+			if (aRecipe.mFluidInputs.length < mMinimalInputFluids && aRecipe.mInputs.length < mMinimalInputItems){
+				Utils.LOG_INFO("Step 2 failed");
+				return null;}
+			if (aCheckForCollisions && findRecipe(null, false, Long.MAX_VALUE, aRecipe.mFluidInputs, aRecipe.mInputs) != null){
+				Utils.LOG_INFO("Step 2 failed - 2");
 				return null;
-			if (aCheckForCollisions && findRecipe(null, false, Long.MAX_VALUE, aRecipe.mFluidInputs, aRecipe.mInputs) != null)
-				return null;
+			}			
 			return add(aRecipe);
 		}
 
@@ -419,9 +427,11 @@ public class GregtechRecipe {
 		}
 
 		public GregtechRecipe add(GregtechRecipe aRecipe) {
+			Utils.LOG_INFO("Adding Recipe Method 3");
 			mRecipeList.add(aRecipe);
 			for (FluidStack aFluid : aRecipe.mFluidInputs)
 				if (aFluid != null) {
+					Utils.LOG_INFO("Fluid is valid - getting some kind of fluid instance to add to the recipe hashmap.");
 					Collection<GregtechRecipe> tList = mRecipeFluidMap.get(aFluid.getFluid());
 					if (tList == null) mRecipeFluidMap.put(aFluid.getFluid(), tList = new HashSet<GregtechRecipe>(1));
 					tList.add(aRecipe);
@@ -538,12 +548,22 @@ public class GregtechRecipe {
 		}
 
 		protected GregtechRecipe addToItemMap(GregtechRecipe aRecipe) {
+			Utils.LOG_INFO("Adding Recipe Method 4");
 			for (ItemStack aStack : aRecipe.mInputs)
 				if (aStack != null) {
+					Utils.LOG_INFO("Method 4 - Manipulating "+aStack.getDisplayName());
 					GT_ItemStack tStack = new GT_ItemStack(aStack);
+					Utils.LOG_INFO("Method 4 - Made gt stack of item "+tStack.toStack().getDisplayName());
 					Collection<GregtechRecipe> tList = mRecipeItemMap.get(tStack);
-					if (tList == null) mRecipeItemMap.put(tStack, tList = new HashSet<GregtechRecipe>(1));
+					if (tList != null){
+						Utils.LOG_INFO("Method 4 - Gt Recipe Hashmap: "+tList.toString());
+					}					
+					if (tList == null){ 
+						Utils.LOG_INFO("Method 4 - brrr list was NUll");	
+						mRecipeItemMap.put(tStack, tList = new HashSet<GregtechRecipe>(1));
+						}
 					tList.add(aRecipe);
+					Utils.LOG_INFO("Method 4 - Added recipe to map? I think.");					
 				}
 			return aRecipe;
 		}
@@ -629,22 +649,27 @@ public class GregtechRecipe {
 		}
 
 		public GregtechRecipe addFuel(ItemStack aInput, ItemStack aOutput, int aFuelValueInEU) {
+			Utils.LOG_INFO("Adding Fuel using method 1");
 			return addFuel(aInput, aOutput, null, null, 10000, aFuelValueInEU);
 		}
 
 		public GregtechRecipe addFuel(ItemStack aInput, ItemStack aOutput, int aChance, int aFuelValueInEU) {
+			Utils.LOG_INFO("Adding Fuel using method 2");
 			return addFuel(aInput, aOutput, null, null, aChance, aFuelValueInEU);
 		}
 
 		public GregtechRecipe addFuel(FluidStack aFluidInput, FluidStack aFluidOutput, int aFuelValueInEU) {
+			Utils.LOG_INFO("Adding Fuel using method 3");
 			return addFuel(null, null, aFluidInput, aFluidOutput, 10000, aFuelValueInEU);
 		}
 
 		public GregtechRecipe addFuel(ItemStack aInput, ItemStack aOutput, FluidStack aFluidInput, FluidStack aFluidOutput, int aFuelValueInEU) {
+			Utils.LOG_INFO("Adding Fuel using method 4");
 			return addFuel(aInput, aOutput, aFluidInput, aFluidOutput, 10000, aFuelValueInEU);
 		}
 
 		public GregtechRecipe addFuel(ItemStack aInput, ItemStack aOutput, FluidStack aFluidInput, FluidStack aFluidOutput, int aChance, int aFuelValueInEU) {
+			Utils.LOG_INFO("Adding Fuel using method 5");
 			return addRecipe(true, new ItemStack[]{aInput}, new ItemStack[]{aOutput}, null, new int[]{aChance}, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, 0, 0, aFuelValueInEU);
 		}
 	}

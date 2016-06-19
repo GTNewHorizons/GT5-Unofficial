@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import miscutil.core.creative.AddToCreativeTab;
+import miscutil.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import miscutil.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import cpw.mods.fml.relauncher.Side;
@@ -28,6 +29,10 @@ public class CORE {
     public static IIconRegister GT_BlockIcons, GT_ItemIcons;	
 	public static List<Runnable> GT_BlockIconload = new ArrayList<Runnable>();
 	public static final Class<AddToCreativeTab> TAB = AddToCreativeTab.class;
+	/**
+     * A List containing all the Materials, which are somehow in use by GT and therefor receive a specific Set of Items.
+     */
+    public static final GT_Materials[] sMU_GeneratedMaterials = new GT_Materials[1000];
 	
 	//GUIS
 	public enum GUI_ENUM 

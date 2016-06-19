@@ -31,6 +31,7 @@ import miscutil.core.item.ModItems;
 import miscutil.core.lib.CORE;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.recipe.RECIPES_GREGTECH;
+import miscutil.core.recipe.RECIPES_LaserEngraver;
 import miscutil.core.recipe.ShapedRecipeObject;
 import miscutil.core.util.Utils;
 import miscutil.core.util.item.UtilsItems;
@@ -74,6 +75,8 @@ public class COMPAT_HANDLER {
 	public static void registerGregtechMachines() {
 		if (Gregtech) {
 		new MetaGeneratedGregtechItems();
+		new RECIPES_LaserEngraver();
+		//new MetaGeneratedGregtechTools();
 		GregtechEnergyBuffer.run();
 		GregtechConduits.run();
 		GregtechSteamCondenser.run();

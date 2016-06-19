@@ -2,7 +2,6 @@ package miscutil.core.recipe;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
@@ -57,7 +56,7 @@ public class RECIPES_GREGTECH {
 			CORE.RA.addCokeOvenRecipe(
 					GT_OreDictUnificator.get(OrePrefixes.log, Materials.Wood, 2L), //Input 1
 					GT_OreDictUnificator.get(OrePrefixes.log, Materials.Wood, 1L), //Input 2
-					Materials.SaltWater.getFluid(85L), //Fluid Input
+					Materials.Oxygen.getFluid(85L), //Fluid Input
 					Materials.Creosote.getFluid(145L), //Fluid Output
 					GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 2L), //Item Output 
 					1200,  //Time in ticks
@@ -70,7 +69,7 @@ public class RECIPES_GREGTECH {
 			CORE.RA.addCokeOvenRecipe(
 					GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 2L), //Input 1
 					GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1L), //Input 2
-					Materials.SaltWater.getFluid(185L), //Fluid Input
+					Materials.Oxygen.getFluid(185L), //Fluid Input
 					Materials.Creosote.getFluid(200L), //Fluid Output
 					UtilsItems.getItemStack("Railcraft:fuel.coke", 2), //Item Output 
 					900,  //Time in ticks
@@ -86,8 +85,9 @@ public class RECIPES_GREGTECH {
 	
 	private static void addFuels(){
 		Utils.LOG_INFO("Registering New Fuels.");
-		CORE.RA.addFuel(GT_ModHandler.getModItem("EnderIO", "bucketRocket_fuel", 1L, 1), null, 2800, 0);
-		CORE.RA.addFuel(GT_ModHandler.getModItem("EnderIO", "bucketHootch", 1L, 1), null, 2800, 0);
-		CORE.RA.addFuel(GT_ModHandler.getModItem("EnderIO", "bucketFire_water", 1L, 1), null, 2800, 0);
+		//CORE.RA.addFuel(GT_ModHandler.getModItem("EnderIO", "bucketRocket_fuel", 1L, 1), null, 2800, 0);
+		//CORE.RA.addFuel(GT_ModHandler.getModItem("EnderIO", "bucketHootch", 1L, 1), null, 2800, 0);
+		//CORE.RA.addFuel(GT_ModHandler.getModItem("EnderIO", "bucketFire_water", 1L, 1), null, 2800, 0);
+		//System.exit(1);
 	}
 }

@@ -108,6 +108,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 	@Override
 	public boolean addFuel(ItemStack aInput1, ItemStack aOutput1, int aEU, int aType) {
         if (aInput1 == null) {
+        	Utils.LOG_INFO("Fuel Input is Invalid.");
             return false;
         }
         new GregtechRecipe(aInput1, aOutput1, GregTech_API.sRecipeFile.get("fuel_" + aType, aInput1, aEU), aType);

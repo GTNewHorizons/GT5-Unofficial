@@ -1,6 +1,7 @@
 package miscutil.core.handler.registration;
 
 import miscutil.core.handler.COMPAT_HANDLER;
+import miscutil.core.recipe.RECIPES_MachineComponents;
 import miscutil.core.recipe.RECIPES_Machines;
 import miscutil.core.recipe.RECIPES_Shapeless;
 import miscutil.core.recipe.RECIPES_Tools;
@@ -19,6 +20,7 @@ public class RegistrationHandler {
 		RECIPES_Tools.RECIPES_LOAD();
 		RECIPES_Machines.RECIPES_LOAD();
 		RECIPES_Shapeless.RECIPES_LOAD();
+		RECIPES_MachineComponents.RECIPES_LOAD();
 		//RECIPES_MTWRAPPER.run();		
 		Utils.LOG_INFO("Loaded: "+recipesSuccess+" Failed: "+recipesFailed);
 		COMPAT_HANDLER.areInitItemsLoaded = true;

@@ -69,8 +69,16 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Field_Generator_LuV, Field_Generator_ZPM, Field_Generator_UV, Field_Generator_MAX, 
 	Emitter_LuV, Emitter_ZPM, Emitter_UV, Emitter_MAX, 
 	Sensor_LuV, Sensor_ZPM, Sensor_UV, Sensor_MAX, 
+	
+	//Circuits
 	Circuit_Primitive, Circuit_Basic, Circuit_Good, Circuit_Advanced,	
-	Circuit_Data, Circuit_Elite, Circuit_Master;
+	Circuit_Data, Circuit_Elite, Circuit_Master, Tool_DataOrb, Circuit_Ultimate, Tool_DataStick, 
+	Circuit_IV, Circuit_LuV, Circuit_ZPM,
+	//Circuit Parts
+	Circuit_Board_IV, Circuit_Board_LuV, Circuit_Board_ZPM, 
+	Circuit_Parts_Crystal_Chip_IV, Circuit_Parts_Crystal_Chip_LuV, Circuit_Parts_Crystal_Chip_ZPM,
+	Circuit_Parts_IV, Circuit_Parts_LuV, Circuit_Parts_ZPM,
+	Circuit_Parts_Wiring_IV, Circuit_Parts_Wiring_LuV, Circuit_Parts_Wiring_ZPM;
 
 	public static final GregtechItemList[]
 			DYE_ONLY_ITEMS = {

@@ -1,7 +1,6 @@
 package miscutil.gregtech.common.items;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.Textures;
@@ -12,6 +11,8 @@ import gregtech.common.covers.GT_Cover_Arm;
 import gregtech.common.covers.GT_Cover_Conveyor;
 import gregtech.common.covers.GT_Cover_Pump;
 import miscutil.gregtech.api.enums.GregtechItemList;
+import miscutil.gregtech.api.enums.GregtechOrePrefixes;
+import miscutil.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import miscutil.gregtech.api.items.Gregtech_MetaItem_X32;
 
 public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
@@ -107,14 +108,43 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
         //GT_ModHandler.addCraftingRecipe(GregtechItemList.Sensor_MAX.get(1L, new Object[0]), //GT_ModHandler.RecipeBits.DISMANTLEABLE | //GT_ModHandler.RecipeBits.NOT_REMOVABLE | //GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"P Q", "PS ", "CPP", Character.valueOf('Q'), OrePrefixes.gem.get(Materials.EnderPearl), Character.valueOf('S'), OrePrefixes.stick.get(Materials.Platinum), Character.valueOf('P'), OrePrefixes.plate.get(Materials.Titanium), Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Elite)});
        
         
-        //GregtechItemList.Circuit_Primitive.set(addItem(tLastID = 700, "NAND Chip", "A very simple Circuit", new Object[]{OrePrefixes.circuit.get(Materials.Primitive)}));
-        //GregtechItemList.Circuit_Basic.set(addItem(tLastID = 701, "Basic Electronic Circuit", "A basic Circuit", new Object[]{OrePrefixes.circuit.get(Materials.Basic)}));
-        //GregtechItemList.Circuit_Good.set(addItem(tLastID = 702, "Good Electronic Circuit", "A good Circuit", new Object[]{OrePrefixes.circuit.get(Materials.Good)}));
-        //GregtechItemList.Circuit_Advanced.set(addItem(tLastID = 703, "Advanced Circuit", "An advanced Circuit", new Object[]{OrePrefixes.circuit.get(Materials.Advanced)}));
-        GregtechItemList.Circuit_Data.set(addItem(tLastID = 704, "Circuit I", "A Data Chip", new Object[]{OrePrefixes.circuit.get(Materials.Data)}));
-        GregtechItemList.Circuit_Elite.set(addItem(tLastID = 705, "Circuit II", "A Processor", new Object[]{OrePrefixes.circuit.get(Materials.Elite)}));
-        GregtechItemList.Circuit_Master.set(addItem(tLastID = 706, "Circuit III", "A High Voltage Processor", new Object[]{OrePrefixes.circuit.get(Materials.Master)}));
-       
+       /* GregtechItemList.Circuit_Primitive.set(addItem(tLastID = 700, "Circuit"+" "+tLastID, "A simple Circuit", new Object[]{OrePrefixes.circuit.get(Materials.Primitive)}));
+        GregtechItemList.Circuit_Basic.set(addItem(tLastID = 701, "Circuit"+" "+tLastID, "A basic Circuit", new Object[]{OrePrefixes.circuit.get(Materials.Basic)}));
+        GregtechItemList.Circuit_Good.set(addItem(tLastID = 702, "Circuit"+" "+tLastID, "A good Circuit", new Object[]{OrePrefixes.circuit.get(Materials.Good)}));
+        GregtechItemList.Circuit_Advanced.set(addItem(tLastID = 703, "Circuit"+" "+tLastID, "An advanced Circuit", new Object[]{OrePrefixes.circuit.get(Materials.Advanced)}));
+        GregtechItemList.Circuit_Data.set(addItem(tLastID = 704, "Circuit"+" "+tLastID, "A Data Chip", new Object[]{OrePrefixes.circuit.get(Materials.Data)}));
+        GregtechItemList.Circuit_Elite.set(addItem(tLastID = 705, "Circuit"+" "+tLastID, "A Processor", new Object[]{OrePrefixes.circuit.get(Materials.Elite)}));
+        GregtechItemList.Circuit_Master.set(addItem(tLastID = 706, "Circuit"+" "+tLastID, "A High Voltage Processor", new Object[]{OrePrefixes.circuit.get(Materials.Master)}));
+        GregtechItemList.Tool_DataOrb.set(addItem(tLastID = 707, "Data Orb", "A High Capacity Data Storage", new Object[]{OrePrefixes.circuit.get(Materials.Ultimate), SubTag.NO_UNIFICATION, new Behaviour_DataOrb()}));
+        GregtechItemList.Circuit_Ultimate.set(ItemList.Tool_DataOrb.get(1L, new Object[0]));
+        GT_ModHandler.addShapelessCraftingRecipe(ItemList.Tool_DataOrb.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{ItemList.Tool_DataOrb.get(1L, new Object[0])});
+        GregtechItemList.Tool_DataStick.set(addItem(tLastID = 708, "Data Stick", "A Low Capacity Data Storage", new Object[]{OrePrefixes.circuit.get(Materials.Data), SubTag.NO_UNIFICATION, new Behaviour_DataStick()}));
+        GT_ModHandler.addShapelessCraftingRecipe(ItemList.Tool_DataStick.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{ItemList.Tool_DataStick.get(1L, new Object[0])});
+
+*
+*
+	Circuit_IV, Circuit_LuV, Circuit_ZPM,
+	Circuit_Board_IV, Circuit_Board_LuV, Circuit_Board_ZPM, 
+	Circuit_Parts_Crystal_Chip_IV, Circuit_Parts_Crystal_Chip_LuV, Circuit_Parts_Crystal_Chip_ZPM,
+	Circuit_Parts_IV, Circuit_Parts_LuV, Circuit_Parts_ZPM,
+	Circuit_Parts_Wiring_IV, Circuit_Parts_Wiring_LuV, Circuit_Parts_Wiring_ZPM;
+*
+*/
+        GregtechItemList.Circuit_IV.set(addItem(tLastID = 704, "Symbiotic Circuit (IV)", "A Symbiotic Data Processor", new Object[]{GregtechOrePrefixes.circuit.get(GT_Materials.Symbiotic)}));
+        GregtechItemList.Circuit_LuV.set(addItem(tLastID = 705, "Neutronic Circuit (LuV)", "A Neutron Particle Processor", new Object[]{OrePrefixes.circuit.get(GT_Materials.Neutronic)}));
+        GregtechItemList.Circuit_ZPM.set(addItem(tLastID = 706, "Quantum Circuit (ZPM)", "A Singlularity Processor", new Object[]{OrePrefixes.circuit.get(GT_Materials.Quantum)}));
+        GregtechItemList.Circuit_Board_IV.set(addItem(tLastID = 710, "IV Circuit Board", "An IV Voltage Rated Circuit Board", new Object[0]));
+        GregtechItemList.Circuit_Board_LuV.set(addItem(tLastID = 711, "LuV Circuit Board", "An LuV Voltage Rated Circuit Board", new Object[0]));
+        GregtechItemList.Circuit_Board_ZPM.set(addItem(tLastID = 712, "ZPM Processor Board", "A ZPM Voltage Rated Processor Board", new Object[0]));
+        GregtechItemList.Circuit_Parts_Crystal_Chip_IV.set(addItem(tLastID = 713, "(IV) Energized Crystal Chip", "Needed for Circuits", new Object[0]));
+        GregtechItemList.Circuit_Parts_Crystal_Chip_LuV.set(addItem(tLastID = 714, "(LuV) Neutron based Microchip", "Needed for Circuits", new Object[0]));
+        GregtechItemList.Circuit_Parts_Crystal_Chip_ZPM.set(addItem(tLastID = 715, "(ZPM) Quantum Chip", "Needed for Circuits", new Object[0]));
+        GregtechItemList.Circuit_Parts_IV.set(addItem(tLastID = 716, "(IV) Energized Circuit Parts", "Circuit Parts", new Object[0]));
+        GregtechItemList.Circuit_Parts_LuV.set(addItem(tLastID = 717, "(LuV) Neutron-based Circuit Parts", "Circuit Parts", new Object[0]));
+        GregtechItemList.Circuit_Parts_ZPM.set(addItem(tLastID = 718, "(ZPM) Quantum Circuit Parts", "Circuit Parts", new Object[0]));        
+        GregtechItemList.Circuit_Parts_Wiring_IV.set(addItem(tLastID = 719, "Etched IV Voltage Wiring", "Part of Circuit Boards", new Object[0]));
+        GregtechItemList.Circuit_Parts_Wiring_LuV.set(addItem(tLastID = 720, "Etched LuV Voltage Wiring", "Part of Circuit Boards", new Object[0]));
+        GregtechItemList.Circuit_Parts_Wiring_ZPM.set(addItem(tLastID = 721, "Etched ZPM Voltage Wiring", "Part of Circuit Boards", new Object[0]));
         
         
         
