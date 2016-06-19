@@ -1,7 +1,6 @@
 package miscutil.gregtech.common;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.util.GT_Recipe;
 import miscutil.core.util.Utils;
 import miscutil.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import miscutil.gregtech.api.util.GregtechRecipe;
@@ -106,11 +105,12 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		}
 	}
 
+	@Override
 	public boolean addFuel(ItemStack aInput1, ItemStack aOutput1, int aEU, int aType) {
         if (aInput1 == null) {
             return false;
         }
-        new GT_Recipe(aInput1, aOutput1, GregTech_API.sRecipeFile.get("fuel_" + aType, aInput1, aEU), aType);
+        new GregtechRecipe(aInput1, aOutput1, GregTech_API.sRecipeFile.get("fuel_" + aType, aInput1, aEU), aType);
         return true;
     }
 

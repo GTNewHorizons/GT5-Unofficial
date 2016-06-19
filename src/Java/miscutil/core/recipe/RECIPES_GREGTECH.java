@@ -18,7 +18,7 @@ public class RECIPES_GREGTECH {
 	private static void execute(){
 		cokeOvenRecipes();
 		assemblerRecipes();
-
+		addFuels();
 	}
 
 	private static void cokeOvenRecipes(){
@@ -85,6 +85,9 @@ public class RECIPES_GREGTECH {
 	}
 	
 	private static void addFuels(){
-		CORE.RA.addFuel(GT_ModHandler.getModItem("ForbiddenMagic", "NetherShard", 1L, 1), null, 2800, 5);
+		Utils.LOG_INFO("Registering New Fuels.");
+		CORE.RA.addFuel(GT_ModHandler.getModItem("EnderIO", "bucketRocket_fuel", 1L, 1), null, 2800, 0);
+		CORE.RA.addFuel(GT_ModHandler.getModItem("EnderIO", "bucketHootch", 1L, 1), null, 2800, 0);
+		CORE.RA.addFuel(GT_ModHandler.getModItem("EnderIO", "bucketFire_water", 1L, 1), null, 2800, 0);
 	}
 }

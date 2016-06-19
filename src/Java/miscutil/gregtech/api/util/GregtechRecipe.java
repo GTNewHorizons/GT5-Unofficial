@@ -36,7 +36,7 @@ import net.minecraftforge.fluids.FluidStack;
  * I know this File causes some Errors, because of missing Main Functions, but if you just need to compile Stuff, then remove said erroreous Functions.
  */
 public class GregtechRecipe {
-	
+
 	public static volatile int VERSION = 508;
 	/**
 	 * If you want to change the Output, feel free to modify or even replace the whole ItemStack Array, for Inputs, please add a new Recipe, because of the HashMaps.
@@ -163,40 +163,44 @@ public class GregtechRecipe {
 		//		checkCellBalance();
 	}
 
-	// aSpecialValue = EU per Liter! If there is no Liquid for this Object, then it gets multiplied with 1000!
-		    public GregtechRecipe(ItemStack aInput1, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, int aSpecialValue, int aType) {
-		        this(true, new ItemStack[]{aInput1}, new ItemStack[]{aOutput1, aOutput2, aOutput3, aOutput4}, null, null, null, null, 0, 0, Math.max(1, aSpecialValue));
-
-		        if (mInputs.length > 0 && aSpecialValue > 0) {
-		            switch (aType) {
-		                // Diesel Generator
-		                case 0:
-		                	Gregtech_Recipe_Map.sRocketFuels.addRecipe(this);
-		                    break;
-		                // Gas Turbine
-		                case 1:
-		                	//Gregtech_Recipe_Map.sTurbineFuels.addRecipe(this);
-		                    break;
-		                // Thermal Generator
-		                case 2:
-		                	//Gregtech_Recipe_Map.sHotFuels.addRecipe(this);
-		                    break;
-		                // Plasma Generator
-		                case 4:
-		                	//Gregtech_Recipe_Map.sPlasmaFuels.addRecipe(this);
-		                    break;
-		                // Magic Generator
-		                case 5:
-		                	//Gregtech_Recipe_Map.sMagicFuels.addRecipe(this);
-		                    break;
-		                // Fluid Generator. Usually 3. Every wrong Type ends up in the Semifluid Generator
-		                default:
-		                	//Gregtech_Recipe_Map.sDenseLiquidFuels.addRecipe(this);
-		                    break;
-		            }
-		        }
-		    }
+	public GregtechRecipe(ItemStack aInput1, ItemStack aOutput1, int aFuelValue, int aType) {
+        this(aInput1, aOutput1, null, null, null, aFuelValue, aType);
+    }
 	
+	// aSpecialValue = EU per Liter! If there is no Liquid for this Object, then it gets multiplied with 1000!
+	public GregtechRecipe(ItemStack aInput1, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, int aSpecialValue, int aType) {
+		this(true, new ItemStack[]{aInput1}, new ItemStack[]{aOutput1, aOutput2, aOutput3, aOutput4}, null, null, null, null, 0, 0, Math.max(1, aSpecialValue));
+
+		if (mInputs.length > 0 && aSpecialValue > 0) {
+			switch (aType) {
+			// Diesel Generator
+			case 0:
+				Gregtech_Recipe_Map.sRocketFuels.addRecipe(this);
+				break;
+				// Gas Turbine
+			case 1:
+				//Gregtech_Recipe_Map.sTurbineFuels.addRecipe(this);
+				break;
+				// Thermal Generator
+			case 2:
+				//Gregtech_Recipe_Map.sHotFuels.addRecipe(this);
+				break;
+				// Plasma Generator
+			case 4:
+				//Gregtech_Recipe_Map.sPlasmaFuels.addRecipe(this);
+				break;
+				// Magic Generator
+			case 5:
+				//Gregtech_Recipe_Map.sMagicFuels.addRecipe(this);
+				break;
+				// Fluid Generator. Usually 3. Every wrong Type ends up in the Semifluid Generator
+			default:
+				//Gregtech_Recipe_Map.sDenseLiquidFuels.addRecipe(this);
+				break;
+			}
+		}
+	}
+
 	public static void reInit() {
 		GT_Log.out.println("GT_Mod: Re-Unificating Recipes.");
 		for (Gregtech_Recipe_Map tMapEntry : Gregtech_Recipe_Map.sMappings) tMapEntry.reInit();
@@ -271,7 +275,7 @@ public class GregtechRecipe {
 		//public static final GT_Recipe_Map sChemicalBathRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(200), "gt.recipe.chemicalbath", "Chemical Bath", null, RES_PATH_GUI + "basicmachines/ChemicalBath", 1, 3, 1, 1, 1, E, 1, E, true, true);
 		public static final GT_Recipe_Map sCokeOvenRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(200), "gt.recipe.cokeoven", "Coke Oven", null, RES_PATH_GUI + "basicmachines/ChemicalBath", 1, 3, 1, 1, 1, E, 1, E, true, true);
 		public static final Gregtech_Recipe_Map_Fuel sRocketFuels = new Gregtech_Recipe_Map_Fuel(new HashSet<GregtechRecipe>(10), "gt.recipe.rocketenginefuel", "Rocket Engine Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 3000, " EU", true, true);
-        
+
 
 		/**
 		 * HashMap of Recipes based on their Items
@@ -615,34 +619,34 @@ public class GregtechRecipe {
 			return null;
 		}		
 	}
-	
+
 	/**
-     * Just a Recipe Map with Utility specifically for Fuels.
-     */
-    public static class Gregtech_Recipe_Map_Fuel extends Gregtech_Recipe_Map {
-        public Gregtech_Recipe_Map_Fuel(Collection<GregtechRecipe> aRecipeList, String aUnlocalizedName, String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre, int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI, boolean aNEIAllowed) {
-            super(aRecipeList, aUnlocalizedName, aLocalName, aNEIName, aNEIGUIPath, aUsualInputCount, aUsualOutputCount, aMinimalInputItems, aMinimalInputFluids, aAmperage, aNEISpecialValuePre, aNEISpecialValueMultiplier, aNEISpecialValuePost, aShowVoltageAmperageInNEI, aNEIAllowed);
-        }
+	 * Just a Recipe Map with Utility specifically for Fuels.
+	 */
+	public static class Gregtech_Recipe_Map_Fuel extends Gregtech_Recipe_Map {
+		public Gregtech_Recipe_Map_Fuel(Collection<GregtechRecipe> aRecipeList, String aUnlocalizedName, String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre, int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI, boolean aNEIAllowed) {
+			super(aRecipeList, aUnlocalizedName, aLocalName, aNEIName, aNEIGUIPath, aUsualInputCount, aUsualOutputCount, aMinimalInputItems, aMinimalInputFluids, aAmperage, aNEISpecialValuePre, aNEISpecialValueMultiplier, aNEISpecialValuePost, aShowVoltageAmperageInNEI, aNEIAllowed);
+		}
 
-        public GregtechRecipe addFuel(ItemStack aInput, ItemStack aOutput, int aFuelValueInEU) {
-            return addFuel(aInput, aOutput, null, null, 10000, aFuelValueInEU);
-        }
+		public GregtechRecipe addFuel(ItemStack aInput, ItemStack aOutput, int aFuelValueInEU) {
+			return addFuel(aInput, aOutput, null, null, 10000, aFuelValueInEU);
+		}
 
-        public GregtechRecipe addFuel(ItemStack aInput, ItemStack aOutput, int aChance, int aFuelValueInEU) {
-            return addFuel(aInput, aOutput, null, null, aChance, aFuelValueInEU);
-        }
+		public GregtechRecipe addFuel(ItemStack aInput, ItemStack aOutput, int aChance, int aFuelValueInEU) {
+			return addFuel(aInput, aOutput, null, null, aChance, aFuelValueInEU);
+		}
 
-        public GregtechRecipe addFuel(FluidStack aFluidInput, FluidStack aFluidOutput, int aFuelValueInEU) {
-            return addFuel(null, null, aFluidInput, aFluidOutput, 10000, aFuelValueInEU);
-        }
+		public GregtechRecipe addFuel(FluidStack aFluidInput, FluidStack aFluidOutput, int aFuelValueInEU) {
+			return addFuel(null, null, aFluidInput, aFluidOutput, 10000, aFuelValueInEU);
+		}
 
-        public GregtechRecipe addFuel(ItemStack aInput, ItemStack aOutput, FluidStack aFluidInput, FluidStack aFluidOutput, int aFuelValueInEU) {
-            return addFuel(aInput, aOutput, aFluidInput, aFluidOutput, 10000, aFuelValueInEU);
-        }
+		public GregtechRecipe addFuel(ItemStack aInput, ItemStack aOutput, FluidStack aFluidInput, FluidStack aFluidOutput, int aFuelValueInEU) {
+			return addFuel(aInput, aOutput, aFluidInput, aFluidOutput, 10000, aFuelValueInEU);
+		}
 
-        public GregtechRecipe addFuel(ItemStack aInput, ItemStack aOutput, FluidStack aFluidInput, FluidStack aFluidOutput, int aChance, int aFuelValueInEU) {
-            return addRecipe(true, new ItemStack[]{aInput}, new ItemStack[]{aOutput}, null, new int[]{aChance}, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, 0, 0, aFuelValueInEU);
-        }
-    }
-	
+		public GregtechRecipe addFuel(ItemStack aInput, ItemStack aOutput, FluidStack aFluidInput, FluidStack aFluidOutput, int aChance, int aFuelValueInEU) {
+			return addRecipe(true, new ItemStack[]{aInput}, new ItemStack[]{aOutput}, null, new int[]{aChance}, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, 0, 0, aFuelValueInEU);
+		}
+	}
+
 }
