@@ -111,3 +111,9 @@ local.properties
 # STS (Spring Tool Suite)
 .springBeans
 /resourcepacks/Forge_GuiLibv1.0.7.2.zip
+/dont-compile/bloodsteel/BloodSteelArmor.java
+/dont-compile/bloodsteel/BloodSteelAxe.java
+/dont-compile/bloodsteel/BloodSteelHoe.java
+/dont-compile/bloodsteel/BloodSteelPickaxe.java
+/dont-compile/bloodsteel/BloodSteelSpade.java
+/dont-compile/bloodsteel/BloodSteelSword.java
