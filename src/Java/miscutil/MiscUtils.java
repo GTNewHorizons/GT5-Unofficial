@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import miscutil.core.commands.CommandMath;
 import miscutil.core.common.CommonProxy;
 import miscutil.core.lib.CORE;
+import miscutil.core.util.Utils;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -33,6 +34,7 @@ implements ActionListener
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
+		Utils.LOG_INFO("Loading "+CORE.MODID+" V"+CORE.VERSION);
 		proxy.registerTileEntities();
 		proxy.registerRenderThings();
 		proxy.preInit(event);

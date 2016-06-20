@@ -33,8 +33,9 @@ public class LoadedMods {
 			if (Gregtech){
 				try {
 					CORE.sRecipeAdder = CORE.RA = new GregtechRecipeAdder();
+					Utils.LOG_INFO("Created a Gregtech recipe handler.");
 				} catch (NullPointerException e){
-
+					Utils.LOG_INFO("Could NOT create a Gregtech recipe handler.");
 				}
 			}
 			

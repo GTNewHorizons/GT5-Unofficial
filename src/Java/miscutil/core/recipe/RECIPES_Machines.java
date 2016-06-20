@@ -101,22 +101,22 @@ public class RECIPES_Machines {
 
 
 	//Machine Casings
-	static ItemStack machineCasing_ULV = ItemList.Casing_ULV.get(1);
-	static ItemStack machineCasing_LV = ItemList.Casing_LV.get(1);
-	static ItemStack machineCasing_MV = ItemList.Casing_MV.get(1);
-	static ItemStack machineCasing_HV = ItemList.Casing_HV.get(1);
-	static ItemStack machineCasing_EV = ItemList.Casing_EV.get(1);
-	static ItemStack machineCasing_IV = ItemList.Casing_IV.get(1);
-	static ItemStack machineCasing_LuV = ItemList.Casing_LuV.get(1);
-	static ItemStack machineCasing_ZPM = ItemList.Casing_ZPM.get(1);
-	static ItemStack machineCasing_UV = ItemList.Casing_UV.get(1);
-	static ItemStack machineCasing_MAX = ItemList.Casing_MAX.get(1);
-	
+	static ItemStack machineCasing_ULV; 
+	static ItemStack machineCasing_LV; 
+	static ItemStack machineCasing_MV;
+	static ItemStack machineCasing_HV;
+	static ItemStack machineCasing_EV;
+	static ItemStack machineCasing_IV;
+	static ItemStack machineCasing_LuV; 
+	static ItemStack machineCasing_ZPM; 
+	static ItemStack machineCasing_UV;
+	static ItemStack machineCasing_MAX;
+
 	//Gearbox Casings
-	static ItemStack gearboxCasing_Tier_1 = ItemList.Casing_Gearbox_Bronze.get(1);
-	static ItemStack gearboxCasing_Tier_2 = ItemList.Casing_Gearbox_Steel.get(1);
-	static ItemStack gearboxCasing_Tier_3 = ItemList.Casing_Gearbox_Titanium.get(1);
-	static ItemStack gearboxCasing_Tier_4 = ItemList.Casing_Gearbox_TungstenSteel.get(1);
+	static ItemStack gearboxCasing_Tier_1;
+	static ItemStack gearboxCasing_Tier_2;
+	static ItemStack gearboxCasing_Tier_3;
+	static ItemStack gearboxCasing_Tier_4;
 
 	//Cables
 	static String cableGt02Electrum = "cableGt02Electrum";
@@ -136,7 +136,7 @@ public class RECIPES_Machines {
 	static String pipeHugeTitanium="pipeHugeTitanium";
 
 	//Lava Boiler
-	static ItemStack boiler_Coal = ItemList.Machine_Bronze_Boiler.get(1);
+	static ItemStack boiler_Coal;
 	static ItemStack blockBricks = UtilsItems.getItemStack("minecraft:brick_block", 1);
 
 	//Batteries
@@ -157,49 +157,49 @@ public class RECIPES_Machines {
 	static String circuitUltimate = "circuitUltimate";
 
 	//Machine Components
-	static ItemStack electricMotor_LV = ItemList.Electric_Motor_LV.get(1);
-	static ItemStack electricMotor_MV = ItemList.Electric_Motor_MV.get(1);
-	static ItemStack electricMotor_HV = ItemList.Electric_Motor_HV.get(1);
-	static ItemStack electricMotor_EV = ItemList.Electric_Motor_EV.get(1);
-	static ItemStack electricMotor_IV = ItemList.Electric_Motor_IV.get(1);
-	static ItemStack electricPump_LV = ItemList.Electric_Pump_LV.get(1);
-	static ItemStack electricPump_MV = ItemList.Electric_Pump_MV.get(1);
-	static ItemStack electricPump_HV = ItemList.Electric_Pump_HV.get(1);
-	static ItemStack electricPump_EV = ItemList.Electric_Pump_EV.get(1);
-	static ItemStack electricPump_IV = ItemList.Electric_Pump_IV.get(1);
-	static ItemStack electricPiston_LV = ItemList.Electric_Piston_LV.get(1);
-	static ItemStack electricPiston_MV = ItemList.Electric_Piston_MV.get(1);
-	static ItemStack electricPiston_HV = ItemList.Electric_Piston_HV.get(1);
-	static ItemStack electricPiston_EV = ItemList.Electric_Piston_EV.get(1);
-	static ItemStack electricPiston_IV = ItemList.Electric_Piston_IV.get(1);
-	static ItemStack robotArm_LV = ItemList.Robot_Arm_LV.get(1);
-	static ItemStack robotArm_MV = ItemList.Robot_Arm_MV.get(1);
-	static ItemStack robotArm_HV = ItemList.Robot_Arm_HV.get(1);
-	static ItemStack robotArm_EV = ItemList.Robot_Arm_EV.get(1);
-	static ItemStack robotArm_IV = ItemList.Robot_Arm_IV.get(1);
-	static ItemStack conveyorModule_LV = ItemList.Conveyor_Module_LV.get(1);
-	static ItemStack conveyorModule_MV = ItemList.Conveyor_Module_MV.get(1);
-	static ItemStack conveyorModule_HV = ItemList.Conveyor_Module_HV.get(1);
-	static ItemStack conveyorModule_EV = ItemList.Conveyor_Module_EV.get(1);
-	static ItemStack conveyorModule_IV = ItemList.Conveyor_Module_IV.get(1);
-	static ItemStack emitter_LV = ItemList.Emitter_LV.get(1);
-	static ItemStack emitter_MV = ItemList.Emitter_MV.get(1);
-	static ItemStack emitter_HV = ItemList.Emitter_HV.get(1);
-	static ItemStack emitter_EV = ItemList.Emitter_EV.get(1);
-	static ItemStack emitter_IV = ItemList.Emitter_IV.get(1);
-	static ItemStack fieldGenerator_LV = ItemList.Field_Generator_LV.get(1);
-	static ItemStack fieldGenerator_MV = ItemList.Field_Generator_MV.get(1);
-	static ItemStack fieldGenerator_HV = ItemList.Field_Generator_HV.get(1);
-	static ItemStack fieldGenerator_EV = ItemList.Field_Generator_EV.get(1);
-	static ItemStack fieldGenerator_IV = ItemList.Field_Generator_IV.get(1);
-	static ItemStack sensor_LV = ItemList.Sensor_LV.get(1);
-	static ItemStack sensor_MV = ItemList.Sensor_MV.get(1);
-	static ItemStack sensor_HV = ItemList.Sensor_HV.get(1);
-	static ItemStack sensor_EV = ItemList.Sensor_EV.get(1);
-	static ItemStack sensor_IV = ItemList.Sensor_IV.get(1);
-	
+	static ItemStack electricMotor_LV;
+	static ItemStack electricMotor_MV;
+	static ItemStack electricMotor_HV;
+	static ItemStack electricMotor_EV;
+	static ItemStack electricMotor_IV;
+	static ItemStack electricPump_LV;
+	static ItemStack electricPump_MV;
+	static ItemStack electricPump_HV;
+	static ItemStack electricPump_EV;
+	static ItemStack electricPump_IV;
+	static ItemStack electricPiston_LV;
+	static ItemStack electricPiston_MV;
+	static ItemStack electricPiston_HV;
+	static ItemStack electricPiston_EV;
+	static ItemStack electricPiston_IV;
+	static ItemStack robotArm_LV;
+	static ItemStack robotArm_MV;
+	static ItemStack robotArm_HV;
+	static ItemStack robotArm_EV;
+	static ItemStack robotArm_IV;
+	static ItemStack conveyorModule_LV;
+	static ItemStack conveyorModule_MV;
+	static ItemStack conveyorModule_HV;
+	static ItemStack conveyorModule_EV;
+	static ItemStack conveyorModule_IV;
+	static ItemStack emitter_LV;
+	static ItemStack emitter_MV;
+	static ItemStack emitter_HV;
+	static ItemStack emitter_EV;
+	static ItemStack emitter_IV;
+	static ItemStack fieldGenerator_LV;
+	static ItemStack fieldGenerator_MV;
+	static ItemStack fieldGenerator_HV;
+	static ItemStack fieldGenerator_EV;
+	static ItemStack fieldGenerator_IV;
+	static ItemStack sensor_LV;
+	static ItemStack sensor_MV;
+	static ItemStack sensor_HV;
+	static ItemStack sensor_EV;
+	static ItemStack sensor_IV;
+
 	//Misc
-	static ItemStack INPUT_RCCokeOvenBlock = UtilsItems.getItemStackWithMeta(LoadedMods.Railcraft, "Railcraft:machine.alpha", "Coke_Oven_RC", 7, 1);
+	static ItemStack INPUT_RCCokeOvenBlock;
 
 
 
@@ -210,250 +210,277 @@ public class RECIPES_Machines {
 		run();
 		Utils.LOG_INFO("Loading Recipes for the Various machine blocks.");
 	}
-
+	
 	private static void run(){
-		//Staballoy Dust - TEMP
-		UtilsRecipe.recipeBuilder("dustTitanium", "dustUranium", "dustUranium",
-				"dustUranium", "dustUranium", "dustUranium",
-				"dustUranium", "dustUranium", "dustUranium",
-				RECIPES_Shapeless.dustStaballoy);
-		
-		//Buffer Core
-		UtilsRecipe.recipeBuilder(
-				plateTier1, cableTier1, plateTier1,
-				circuitPrimitive, batteryBasic, circuitPrimitive,
-				plateTier1, cableTier1, plateTier1,
-				RECIPE_BufferCore_ULV);
-		UtilsRecipe.recipeBuilder(
-				plateTier2, cableTier2, plateTier2,
-				circuitBasic, batteryBasic, circuitBasic,
-				plateTier2, cableTier2, plateTier2,
-				RECIPE_BufferCore_LV);
-		UtilsRecipe.recipeBuilder(
-				plateTier3, cableTier3, plateTier3,
-				circuitGood, batteryAdvanced, circuitGood,
-				plateTier3, cableTier3, plateTier3,
-				RECIPE_BufferCore_MV);
-		UtilsRecipe.recipeBuilder(
-				plateTier4, cableTier4, plateTier4,
-				circuitAdvanced, batteryAdvanced, circuitAdvanced,
-				plateTier4, cableTier4, plateTier4,
-				RECIPE_BufferCore_HV);
-		UtilsRecipe.recipeBuilder(
-				plateTier5, cableTier5, plateTier5,
-				circuitData, batteryElite, circuitData,
-				plateTier5, cableTier5, plateTier5,
-				RECIPE_BufferCore_EV);
+		initModItems();
+	}	
 
-		UtilsRecipe.recipeBuilder(
-				plateTier6, cableTier6, plateTier6,
-				circuitData, batteryElite, circuitElite,
-				plateTier6, cableTier6, plateTier6,
-				RECIPE_BufferCore_IV);
-		UtilsRecipe.recipeBuilder(
-				plateTier7, cableTier7, plateTier7,
-				circuitElite, batteryMaster, circuitElite,
-				plateTier7, cableTier7, plateTier7,
-				RECIPE_BufferCore_LuV);
-		UtilsRecipe.recipeBuilder(
-				plateTier8, cableTier8, plateTier8,
-				circuitMaster, batteryMaster, circuitMaster,
-				plateTier8, cableTier8, plateTier8,
-				RECIPE_BufferCore_ZPM);
-		UtilsRecipe.recipeBuilder(
-				plateTier9, cableTier9, plateTier9,
-				circuitMaster, batteryUltimate, circuitUltimate,
-				plateTier9, cableTier9, plateTier9,
-				RECIPE_BufferCore_UV);
-		UtilsRecipe.recipeBuilder(
-				plateTier10, cableTier10, plateTier10,
-				circuitUltimate, batteryUltimate, circuitUltimate,
-				plateTier10, cableTier10, plateTier10,
-				RECIPE_BufferCore_MAX);
+	private static void initModItems(){
+		if (LoadedMods.Gregtech){
+		RECIPES_Shapeless.dustStaballoy = UtilsItems.getItemStackWithMeta(LoadedMods.Gregtech, "gregtech:gt.metaitem.01", "Staballoy Dust", 2319, 1);
+		machineCasing_ULV = ItemList.Casing_ULV.get(1);
+		machineCasing_LV = ItemList.Casing_LV.get(1);
+		machineCasing_MV = ItemList.Casing_MV.get(1);
+		machineCasing_HV = ItemList.Casing_HV.get(1);
+		machineCasing_EV = ItemList.Casing_EV.get(1);
+		machineCasing_IV = ItemList.Casing_IV.get(1);
+		machineCasing_LuV = ItemList.Casing_LuV.get(1);
+		machineCasing_ZPM = ItemList.Casing_ZPM.get(1);
+		machineCasing_UV = ItemList.Casing_UV.get(1);
+		machineCasing_MAX = ItemList.Casing_MAX.get(1);
 
+		//Gearbox Casings
+		gearboxCasing_Tier_1 = ItemList.Casing_Gearbox_Bronze.get(1);
+		gearboxCasing_Tier_2 = ItemList.Casing_Gearbox_Steel.get(1);
+		gearboxCasing_Tier_3 = ItemList.Casing_Gearbox_Titanium.get(1);
+		gearboxCasing_Tier_4 = ItemList.Casing_Gearbox_TungstenSteel.get(1);
 
+		//Lava Boiler
+		boiler_Coal = ItemList.Machine_Bronze_Boiler.get(1);
 
+		//Batteries
+		batteryBasic = "batteryBasic";
+		batteryAdvanced = "batteryAdvanced";
+		batteryElite = "batteryElite";
+		batteryMaster = "batteryMaster";
+		batteryUltimate = "batteryUltimate";
 
+		//Circuits
+		circuitPrimitive = "circuitPrimitive";
+		circuitBasic = "circuitBasic";
+		circuitGood = "circuitGood";
+		circuitAdvanced = "circuitAdvanced";
+		circuitData = "circuitData";
+		circuitElite = "circuitElite";
+		circuitMaster = "circuitMaster";
+		circuitUltimate = "circuitUltimate";
 
+		//Machine Components
+		electricMotor_LV = ItemList.Electric_Motor_LV.get(1);
+		electricMotor_MV = ItemList.Electric_Motor_MV.get(1);
+		electricMotor_HV = ItemList.Electric_Motor_HV.get(1);
+		electricMotor_EV = ItemList.Electric_Motor_EV.get(1);
+		electricMotor_IV = ItemList.Electric_Motor_IV.get(1);
+		electricPump_LV = ItemList.Electric_Pump_LV.get(1);
+		electricPump_MV = ItemList.Electric_Pump_MV.get(1);
+		electricPump_HV = ItemList.Electric_Pump_HV.get(1);
+		electricPump_EV = ItemList.Electric_Pump_EV.get(1);
+		electricPump_IV = ItemList.Electric_Pump_IV.get(1);
+		electricPiston_LV = ItemList.Electric_Piston_LV.get(1);
+		electricPiston_MV = ItemList.Electric_Piston_MV.get(1);
+		electricPiston_HV = ItemList.Electric_Piston_HV.get(1);
+		electricPiston_EV = ItemList.Electric_Piston_EV.get(1);
+		electricPiston_IV = ItemList.Electric_Piston_IV.get(1);
+		robotArm_LV = ItemList.Robot_Arm_LV.get(1);
+		robotArm_MV = ItemList.Robot_Arm_MV.get(1);
+		robotArm_HV = ItemList.Robot_Arm_HV.get(1);
+		robotArm_EV = ItemList.Robot_Arm_EV.get(1);
+		robotArm_IV = ItemList.Robot_Arm_IV.get(1);
+		conveyorModule_LV = ItemList.Conveyor_Module_LV.get(1);
+		conveyorModule_MV = ItemList.Conveyor_Module_MV.get(1);
+		conveyorModule_HV = ItemList.Conveyor_Module_HV.get(1);
+		conveyorModule_EV = ItemList.Conveyor_Module_EV.get(1);
+		conveyorModule_IV = ItemList.Conveyor_Module_IV.get(1);
+		emitter_LV = ItemList.Emitter_LV.get(1);
+		emitter_MV = ItemList.Emitter_MV.get(1);
+		emitter_HV = ItemList.Emitter_HV.get(1);
+		emitter_EV = ItemList.Emitter_EV.get(1);
+		emitter_IV = ItemList.Emitter_IV.get(1);
+		fieldGenerator_LV = ItemList.Field_Generator_LV.get(1);
+		fieldGenerator_MV = ItemList.Field_Generator_MV.get(1);
+		fieldGenerator_HV = ItemList.Field_Generator_HV.get(1);
+		fieldGenerator_EV = ItemList.Field_Generator_EV.get(1);
+		fieldGenerator_IV = ItemList.Field_Generator_IV.get(1);
+		sensor_LV = ItemList.Sensor_LV.get(1);
+		sensor_MV = ItemList.Sensor_MV.get(1);
+		sensor_HV = ItemList.Sensor_HV.get(1);
+		sensor_EV = ItemList.Sensor_EV.get(1);
+		sensor_IV = ItemList.Sensor_IV.get(1);}
 
+		if(LoadedMods.Railcraft){
+		//Misc
+		INPUT_RCCokeOvenBlock = UtilsItems.getItemStackWithMeta(LoadedMods.Railcraft, "Railcraft:machine.alpha", "Coke_Oven_RC", 7, 1);
+		}
+		runModRecipes();
+	}	
 
+	private static void runModRecipes(){
+		if (LoadedMods.Gregtech){
+			//Staballoy Dust - TEMP
+			UtilsRecipe.recipeBuilder("dustTitanium", "dustUranium", "dustUranium",
+					"dustUranium", "dustUranium", "dustUranium",
+					"dustUranium", "dustUranium", "dustUranium",
+					RECIPES_Shapeless.dustStaballoy);
+			//Buffer Core
+			UtilsRecipe.recipeBuilder(
+					plateTier1, cableTier1, plateTier1,
+					circuitPrimitive, batteryBasic, circuitPrimitive,
+					plateTier1, cableTier1, plateTier1,
+					RECIPE_BufferCore_ULV);
+			UtilsRecipe.recipeBuilder(
+					plateTier2, cableTier2, plateTier2,
+					circuitBasic, batteryBasic, circuitBasic,
+					plateTier2, cableTier2, plateTier2,
+					RECIPE_BufferCore_LV);
+			UtilsRecipe.recipeBuilder(
+					plateTier3, cableTier3, plateTier3,
+					circuitGood, batteryAdvanced, circuitGood,
+					plateTier3, cableTier3, plateTier3,
+					RECIPE_BufferCore_MV);
+			UtilsRecipe.recipeBuilder(
+					plateTier4, cableTier4, plateTier4,
+					circuitAdvanced, batteryAdvanced, circuitAdvanced,
+					plateTier4, cableTier4, plateTier4,
+					RECIPE_BufferCore_HV);
+			UtilsRecipe.recipeBuilder(
+					plateTier5, cableTier5, plateTier5,
+					circuitData, batteryElite, circuitData,
+					plateTier5, cableTier5, plateTier5,
+					RECIPE_BufferCore_EV);
+			UtilsRecipe.recipeBuilder(
+					plateTier6, cableTier6, plateTier6,
+					circuitData, batteryElite, circuitElite,
+					plateTier6, cableTier6, plateTier6,
+					RECIPE_BufferCore_IV);
+			UtilsRecipe.recipeBuilder(
+					plateTier7, cableTier7, plateTier7,
+					circuitElite, batteryMaster, circuitElite,
+					plateTier7, cableTier7, plateTier7,
+					RECIPE_BufferCore_LuV);
+			UtilsRecipe.recipeBuilder(
+					plateTier8, cableTier8, plateTier8,
+					circuitMaster, batteryMaster, circuitMaster,
+					plateTier8, cableTier8, plateTier8,
+					RECIPE_BufferCore_ZPM);
+			UtilsRecipe.recipeBuilder(
+					plateTier9, cableTier9, plateTier9,
+					circuitMaster, batteryUltimate, circuitUltimate,
+					plateTier9, cableTier9, plateTier9,
+					RECIPE_BufferCore_UV);
+			UtilsRecipe.recipeBuilder(
+					plateTier10, cableTier10, plateTier10,
+					circuitUltimate, batteryUltimate, circuitUltimate,
+					plateTier10, cableTier10, plateTier10,
+					RECIPE_BufferCore_MAX);
 
-
-
-
-
-		//Battery Buffer #1
-		UtilsRecipe.recipeBuilder(
-				wireTier1, RECIPE_BufferCore_ULV, wireTier1,
-				wireTier1, machineCasing_ULV, wireTier1,
-				circuitPrimitive, null, circuitPrimitive,
-				RECIPE_Buffer_ULV);
-
-		//Battery Buffer
-		UtilsRecipe.recipeBuilder(
-				wireTier2, RECIPE_BufferCore_LV, wireTier2,
-				wireTier2, machineCasing_LV, wireTier2,
-				circuitPrimitive, circuitBasic, circuitPrimitive,
-				RECIPE_Buffer_LV);
-		//Battery Buffer
-		UtilsRecipe.recipeBuilder(
-				wireTier3, RECIPE_BufferCore_MV, wireTier3,
-				wireTier3, machineCasing_MV, wireTier3,
-				circuitBasic, circuitGood, circuitBasic,
-				RECIPE_Buffer_MV);
-		//Battery Buffer
-		UtilsRecipe.recipeBuilder(
-				wireTier4, RECIPE_BufferCore_HV, wireTier4,
-				wireTier4, machineCasing_HV, wireTier4,
-				circuitGood, circuitAdvanced, circuitGood,
-				RECIPE_Buffer_HV);
-		//Battery Buffer
-		UtilsRecipe.recipeBuilder(
-				wireTier5, RECIPE_BufferCore_EV, wireTier5,
-				wireTier5, machineCasing_EV, wireTier5,
-				circuitAdvanced, circuitElite, circuitAdvanced,
-				RECIPE_Buffer_EV);
-		//Battery Buffer
-		UtilsRecipe.recipeBuilder(
-				wireTier6, RECIPE_BufferCore_IV, wireTier6,
-				wireTier6, machineCasing_IV, wireTier6,
-				circuitElite, circuitMaster, circuitElite,
-				RECIPE_Buffer_IV);
-		//Battery Buffer
-		UtilsRecipe.recipeBuilder(
-				wireTier7, RECIPE_BufferCore_LuV, wireTier7,
-				wireTier7, machineCasing_LuV, wireTier7,
-				circuitMaster, circuitElite, circuitMaster,
-				RECIPE_Buffer_LuV);
-		//Battery Buffer
-		UtilsRecipe.recipeBuilder(
-				wireTier8, RECIPE_BufferCore_ZPM, wireTier8,
-				wireTier8, machineCasing_ZPM, wireTier8,
-				circuitMaster, circuitUltimate, circuitMaster,
-				RECIPE_Buffer_ZPM);
-		//Battery Buffer
-		UtilsRecipe.recipeBuilder(
-				wireTier9, RECIPE_BufferCore_UV, wireTier9,
-				wireTier9, machineCasing_UV, wireTier9,
-				circuitUltimate, circuitMaster, circuitUltimate,
-				RECIPE_Buffer_UV);
-		//Battery Buffer
-		UtilsRecipe.recipeBuilder(
-				wireTier10, RECIPE_BufferCore_MAX, wireTier10,
-				wireTier10, machineCasing_MAX, wireTier10,
-				circuitUltimate, plateTier11, circuitUltimate,
-				RECIPE_Buffer_MAX);
-
-
-		//Steam Condenser
-		UtilsRecipe.recipeBuilder(
-				pipeLargeCopper, pipeHugeSteel, pipeLargeCopper,
-				plateEnergeticAlloy, electricPump_HV, plateEnergeticAlloy,
-				plateEnergeticAlloy, pipeLargeCopper, plateEnergeticAlloy,
-				RECIPE_SteamCondenser);
-
-		//Iron BF
-		UtilsRecipe.recipeBuilder(
-				"plateDoubleAnyIron", "craftingFurnace", "plateDoubleAnyIron",
-				boiler_Coal, machineCasing_ULV, boiler_Coal,
-				"plateDoubleAnyIron", "bucketLava", "plateDoubleAnyIron",
-				RECIPE_IronBlastFurnace);
-
-		//Iron plated Bricks
-		UtilsRecipe.recipeBuilder(
-				"plateAnyIron", RECIPES_Tools.craftingToolHardHammer, "plateAnyIron",
-				"plateAnyIron", blockBricks, "plateAnyIron",
-				"plateAnyIron", RECIPES_Tools.craftingToolWrench, "plateAnyIron",
-				RECIPE_IronPlatedBricks);
-
-
-
-
-		//Industrial Centrifuge
-		UtilsRecipe.recipeBuilder(
-				circuitElite, pipeHugeStainlessSteel, circuitElite,
-				plateTier6, electricPump_EV, plateTier6,
-				plateTier8, machineCasing_EV, plateTier8,
-				RECIPE_IndustrialCentrifugeController);
-
-		//Centrifuge Casing
-		UtilsRecipe.recipeBuilder(
-				plateTier6, "stickElectrum", plateTier6,
-				plateTier8, "stickElectrum", plateTier8,
-				plateTier6, "stickElectrum", plateTier6,
-				RECIPE_IndustrialCentrifugeCasing);
-
-		//Industrial Coke Oven
-		UtilsRecipe.recipeBuilder(
-				plateCobalt, circuitAdvanced, plateCobalt,
-				machineCasing_HV, INPUT_RCCokeOvenBlock, machineCasing_HV,
-				plateCobalt, circuitAdvanced, plateCobalt,
-				RECIPE_IndustrialCokeOvenController);
-
-		//Coke Oven Frame Casing
-		UtilsRecipe.recipeBuilder(
-				plateTier8, rodTier8, plateTier8,
-				rodTier8, "frameGtCobalt", rodTier8,
-				plateTier8, rodTier8, plateTier8,
-				RECIPE_IndustrialCokeOvenFrame);
-
-		//Coke Oven Coil 1
-		UtilsRecipe.recipeBuilder(
-				plateBronze, plateBronze, plateBronze,
-				"frameGtBronze", gearboxCasing_Tier_1, "frameGtBronze",
-				plateBronze, plateBronze, plateBronze,
-				RECIPE_IndustrialCokeOvenCasingA);
-
-		//Coke Oven Coil 2
-		UtilsRecipe.recipeBuilder(
-				plateSteel, plateSteel, plateSteel,
-				"frameGtSteel", gearboxCasing_Tier_2, "frameGtSteel",
-				plateSteel, plateSteel, plateSteel,
-				RECIPE_IndustrialCokeOvenCasingB);
-
-
-
-
-
-
+			
+			UtilsRecipe.recipeBuilder(
+					wireTier1, RECIPE_BufferCore_ULV, wireTier1,
+					wireTier1, machineCasing_ULV, wireTier1,
+					circuitPrimitive, null, circuitPrimitive,
+					RECIPE_Buffer_ULV);
+			UtilsRecipe.recipeBuilder(
+					wireTier2, RECIPE_BufferCore_LV, wireTier2,
+					wireTier2, machineCasing_LV, wireTier2,
+					circuitPrimitive, circuitBasic, circuitPrimitive,
+					RECIPE_Buffer_LV);
+			UtilsRecipe.recipeBuilder(
+					wireTier3, RECIPE_BufferCore_MV, wireTier3,
+					wireTier3, machineCasing_MV, wireTier3,
+					circuitBasic, circuitGood, circuitBasic,
+					RECIPE_Buffer_MV);
+			UtilsRecipe.recipeBuilder(
+					wireTier4, RECIPE_BufferCore_HV, wireTier4,
+					wireTier4, machineCasing_HV, wireTier4,
+					circuitGood, circuitAdvanced, circuitGood,
+					RECIPE_Buffer_HV);
+			UtilsRecipe.recipeBuilder(
+					wireTier5, RECIPE_BufferCore_EV, wireTier5,
+					wireTier5, machineCasing_EV, wireTier5,
+					circuitAdvanced, circuitElite, circuitAdvanced,
+					RECIPE_Buffer_EV);
+			UtilsRecipe.recipeBuilder(
+					wireTier6, RECIPE_BufferCore_IV, wireTier6,
+					wireTier6, machineCasing_IV, wireTier6,
+					circuitElite, circuitMaster, circuitElite,
+					RECIPE_Buffer_IV);
+			UtilsRecipe.recipeBuilder(
+					wireTier7, RECIPE_BufferCore_LuV, wireTier7,
+					wireTier7, machineCasing_LuV, wireTier7,
+					circuitMaster, circuitElite, circuitMaster,
+					RECIPE_Buffer_LuV);
+			UtilsRecipe.recipeBuilder(
+					wireTier8, RECIPE_BufferCore_ZPM, wireTier8,
+					wireTier8, machineCasing_ZPM, wireTier8,
+					circuitMaster, circuitUltimate, circuitMaster,
+					RECIPE_Buffer_ZPM);
+			UtilsRecipe.recipeBuilder(
+					wireTier9, RECIPE_BufferCore_UV, wireTier9,
+					wireTier9, machineCasing_UV, wireTier9,
+					circuitUltimate, circuitMaster, circuitUltimate,
+					RECIPE_Buffer_UV);
+			UtilsRecipe.recipeBuilder(
+					wireTier10, RECIPE_BufferCore_MAX, wireTier10,
+					wireTier10, machineCasing_MAX, wireTier10,
+					circuitUltimate, plateTier11, circuitUltimate,
+					RECIPE_Buffer_MAX);
 
 
+			//Steam Condenser
+			UtilsRecipe.recipeBuilder(
+					pipeLargeCopper, pipeHugeSteel, pipeLargeCopper,
+					plateEnergeticAlloy, electricPump_HV, plateEnergeticAlloy,
+					plateEnergeticAlloy, pipeLargeCopper, plateEnergeticAlloy,
+					RECIPE_SteamCondenser);
 
+			//Iron BF
+			UtilsRecipe.recipeBuilder(
+					"plateDoubleAnyIron", "craftingFurnace", "plateDoubleAnyIron",
+					boiler_Coal, machineCasing_ULV, boiler_Coal,
+					"plateDoubleAnyIron", "bucketLava", "plateDoubleAnyIron",
+					RECIPE_IronBlastFurnace);
 
+			//Iron plated Bricks
+			UtilsRecipe.recipeBuilder(
+					"plateAnyIron", RECIPES_Tools.craftingToolHardHammer, "plateAnyIron",
+					"plateAnyIron", blockBricks, "plateAnyIron",
+					"plateAnyIron", RECIPES_Tools.craftingToolWrench, "plateAnyIron",
+					RECIPE_IronPlatedBricks);
 
+			//Industrial Centrifuge
+			UtilsRecipe.recipeBuilder(
+					circuitElite, pipeHugeStainlessSteel, circuitElite,
+					plateTier6, electricPump_EV, plateTier6,
+					plateTier8, machineCasing_EV, plateTier8,
+					RECIPE_IndustrialCentrifugeController);
 
+			//Centrifuge Casing
+			UtilsRecipe.recipeBuilder(
+					plateTier6, "stickElectrum", plateTier6,
+					plateTier8, "stickElectrum", plateTier8,
+					plateTier6, "stickElectrum", plateTier6,
+					RECIPE_IndustrialCentrifugeCasing);
 
+			//Industrial Coke Oven
+			UtilsRecipe.recipeBuilder(
+					plateCobalt, circuitAdvanced, plateCobalt,
+					machineCasing_HV, INPUT_RCCokeOvenBlock, machineCasing_HV,
+					plateCobalt, circuitAdvanced, plateCobalt,
+					RECIPE_IndustrialCokeOvenController);
 
+			//Coke Oven Frame Casing
+			UtilsRecipe.recipeBuilder(
+					plateTier8, rodTier8, plateTier8,
+					rodTier8, "frameGtCobalt", rodTier8,
+					plateTier8, rodTier8, plateTier8,
+					RECIPE_IndustrialCokeOvenFrame);
 
+			//Coke Oven Coil 1
+			UtilsRecipe.recipeBuilder(
+					plateBronze, plateBronze, plateBronze,
+					"frameGtBronze", gearboxCasing_Tier_1, "frameGtBronze",
+					plateBronze, plateBronze, plateBronze,
+					RECIPE_IndustrialCokeOvenCasingA);
 
-
-
-
+			//Coke Oven Coil 2
+			UtilsRecipe.recipeBuilder(
+					plateSteel, plateSteel, plateSteel,
+					"frameGtSteel", gearboxCasing_Tier_2, "frameGtSteel",
+					plateSteel, plateSteel, plateSteel,
+					RECIPE_IndustrialCokeOvenCasingB);
+		}
 
 
 		Utils.LOG_INFO("Done loading recipes for the Various machine blocks.");
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	}			
+	}
 }

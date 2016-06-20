@@ -3,13 +3,12 @@ package miscutil.core.recipe;
 import gregtech.api.enums.ItemList;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.Utils;
-import miscutil.core.util.item.UtilsItems;
 import miscutil.core.util.recipe.UtilsRecipe;
 import net.minecraft.item.ItemStack;
 
 public class RECIPES_Shapeless {
 	
-	static ItemStack dustStaballoy = UtilsItems.getItemStackWithMeta(LoadedMods.Gregtech, "gregtech:gt.metaitem.01", "Staballoy Dust", 2319, 1);
+	static ItemStack dustStaballoy;
 	
 	//Circuits
 		static String circuitPrimitive = "circuitPrimitive";
@@ -20,7 +19,7 @@ public class RECIPES_Shapeless {
 		static String circuitElite = "circuitElite";
 		static String circuitMaster = "circuitMaster";
 		static String circuitUltimate = "circuitUltimate";
-		static ItemStack gearboxCasing_Tier_1 = ItemList.Casing_Gearbox_Bronze.get(1);
+		static ItemStack gearboxCasing_Tier_1;
 	
 	public static final void RECIPES_LOAD(){
 		//run();
@@ -28,6 +27,10 @@ public class RECIPES_Shapeless {
 	}
 
 	private static void run(){
+		//Gregtech items
+		if (LoadedMods.Gregtech){		
+		gearboxCasing_Tier_1 = ItemList.Casing_Gearbox_Bronze.get(1);
+		
 		UtilsRecipe.shapelessBuilder(dustStaballoy, 
 				"dustTitanium", "dustUranium", "dustUranium",
 				"dustUranium", "dustUranium", "dustUranium",
@@ -37,6 +40,7 @@ public class RECIPES_Shapeless {
 				circuitPrimitive, circuitPrimitive, circuitPrimitive,
 				circuitPrimitive, circuitPrimitive, circuitPrimitive,
 				circuitPrimitive, circuitPrimitive, circuitPrimitive);
+		}
 	}
 	
 }
