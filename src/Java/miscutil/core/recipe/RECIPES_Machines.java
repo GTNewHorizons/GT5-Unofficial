@@ -148,13 +148,16 @@ public class RECIPES_Machines {
 
 	//Circuits
 	static String circuitPrimitive = "circuitPrimitive";
-	static String circuitBasic = "circuitBasic";
-	static String circuitGood = "circuitGood";
-	static String circuitAdvanced = "circuitAdvanced";
-	static String circuitData = "circuitData";
-	static String circuitElite = "circuitElite";
-	static String circuitMaster = "circuitMaster";
-	static String circuitUltimate = "circuitUltimate";
+	static String circuitTier1 = "circuitBasic";
+	static String circuitTier2 = "circuitGood";
+	static String circuitTier3 = "circuitAdvanced";
+	static String circuitTier4 = "circuitData";
+	static String circuitTier5 = "circuitElite";
+	static String circuitTier6 = "circuitMaster";
+	static String circuitTier7 = "circuitUltimate";
+	static String circuitTier8 = "circuitSymbiotic";
+	static String circuitTier9 = "circuitNeutronic";
+	static String circuitTier10 = "circuitQuantum";
 
 	//Machine Components
 	static ItemStack electricMotor_LV;
@@ -238,23 +241,6 @@ public class RECIPES_Machines {
 		//Lava Boiler
 		boiler_Coal = ItemList.Machine_Bronze_Boiler.get(1);
 
-		//Batteries
-		batteryBasic = "batteryBasic";
-		batteryAdvanced = "batteryAdvanced";
-		batteryElite = "batteryElite";
-		batteryMaster = "batteryMaster";
-		batteryUltimate = "batteryUltimate";
-
-		//Circuits
-		circuitPrimitive = "circuitPrimitive";
-		circuitBasic = "circuitBasic";
-		circuitGood = "circuitGood";
-		circuitAdvanced = "circuitAdvanced";
-		circuitData = "circuitData";
-		circuitElite = "circuitElite";
-		circuitMaster = "circuitMaster";
-		circuitUltimate = "circuitUltimate";
-
 		//Machine Components
 		electricMotor_LV = ItemList.Electric_Motor_LV.get(1);
 		electricMotor_MV = ItemList.Electric_Motor_MV.get(1);
@@ -311,55 +297,56 @@ public class RECIPES_Machines {
 					"dustUranium", "dustUranium", "dustUranium",
 					"dustUranium", "dustUranium", "dustUranium",
 					RECIPES_Shapeless.dustStaballoy);
+			
 			//Buffer Core
 			UtilsRecipe.recipeBuilder(
 					plateTier1, cableTier1, plateTier1,
-					circuitPrimitive, batteryBasic, circuitPrimitive,
+					circuitTier1, batteryBasic, circuitTier1,
 					plateTier1, cableTier1, plateTier1,
 					RECIPE_BufferCore_ULV);
 			UtilsRecipe.recipeBuilder(
 					plateTier2, cableTier2, plateTier2,
-					circuitBasic, batteryBasic, circuitBasic,
+					circuitTier2, batteryBasic, circuitTier2,
 					plateTier2, cableTier2, plateTier2,
 					RECIPE_BufferCore_LV);
 			UtilsRecipe.recipeBuilder(
 					plateTier3, cableTier3, plateTier3,
-					circuitGood, batteryAdvanced, circuitGood,
+					circuitTier3, batteryAdvanced, circuitTier3,
 					plateTier3, cableTier3, plateTier3,
 					RECIPE_BufferCore_MV);
 			UtilsRecipe.recipeBuilder(
 					plateTier4, cableTier4, plateTier4,
-					circuitAdvanced, batteryAdvanced, circuitAdvanced,
+					circuitTier4, batteryAdvanced, circuitTier4,
 					plateTier4, cableTier4, plateTier4,
 					RECIPE_BufferCore_HV);
 			UtilsRecipe.recipeBuilder(
 					plateTier5, cableTier5, plateTier5,
-					circuitData, batteryElite, circuitData,
+					circuitTier5, batteryElite, circuitTier5,
 					plateTier5, cableTier5, plateTier5,
 					RECIPE_BufferCore_EV);
 			UtilsRecipe.recipeBuilder(
 					plateTier6, cableTier6, plateTier6,
-					circuitData, batteryElite, circuitElite,
+					circuitTier6, batteryElite, circuitTier6,
 					plateTier6, cableTier6, plateTier6,
 					RECIPE_BufferCore_IV);
 			UtilsRecipe.recipeBuilder(
 					plateTier7, cableTier7, plateTier7,
-					circuitElite, batteryMaster, circuitElite,
+					circuitTier7, batteryMaster, circuitTier7,
 					plateTier7, cableTier7, plateTier7,
 					RECIPE_BufferCore_LuV);
 			UtilsRecipe.recipeBuilder(
 					plateTier8, cableTier8, plateTier8,
-					circuitMaster, batteryMaster, circuitMaster,
+					circuitTier8, batteryMaster, circuitTier8,
 					plateTier8, cableTier8, plateTier8,
 					RECIPE_BufferCore_ZPM);
 			UtilsRecipe.recipeBuilder(
 					plateTier9, cableTier9, plateTier9,
-					circuitMaster, batteryUltimate, circuitUltimate,
+					circuitTier9, batteryUltimate, circuitTier9,
 					plateTier9, cableTier9, plateTier9,
 					RECIPE_BufferCore_UV);
 			UtilsRecipe.recipeBuilder(
 					plateTier10, cableTier10, plateTier10,
-					circuitUltimate, batteryUltimate, circuitUltimate,
+					circuitTier10, batteryUltimate, circuitTier10,
 					plateTier10, cableTier10, plateTier10,
 					RECIPE_BufferCore_MAX);
 
@@ -367,52 +354,52 @@ public class RECIPES_Machines {
 			UtilsRecipe.recipeBuilder(
 					wireTier1, RECIPE_BufferCore_ULV, wireTier1,
 					wireTier1, machineCasing_ULV, wireTier1,
-					circuitPrimitive, null, circuitPrimitive,
+					circuitPrimitive, circuitTier1, circuitPrimitive,
 					RECIPE_Buffer_ULV);
 			UtilsRecipe.recipeBuilder(
 					wireTier2, RECIPE_BufferCore_LV, wireTier2,
 					wireTier2, machineCasing_LV, wireTier2,
-					circuitPrimitive, circuitBasic, circuitPrimitive,
+					circuitTier1, circuitTier2, circuitTier1,
 					RECIPE_Buffer_LV);
 			UtilsRecipe.recipeBuilder(
 					wireTier3, RECIPE_BufferCore_MV, wireTier3,
 					wireTier3, machineCasing_MV, wireTier3,
-					circuitBasic, circuitGood, circuitBasic,
+					circuitTier2, circuitTier3, circuitTier2,
 					RECIPE_Buffer_MV);
 			UtilsRecipe.recipeBuilder(
 					wireTier4, RECIPE_BufferCore_HV, wireTier4,
 					wireTier4, machineCasing_HV, wireTier4,
-					circuitGood, circuitAdvanced, circuitGood,
+					circuitTier3, circuitTier4, circuitTier3,
 					RECIPE_Buffer_HV);
 			UtilsRecipe.recipeBuilder(
 					wireTier5, RECIPE_BufferCore_EV, wireTier5,
 					wireTier5, machineCasing_EV, wireTier5,
-					circuitAdvanced, circuitElite, circuitAdvanced,
+					circuitTier4, circuitTier5, circuitTier4,
 					RECIPE_Buffer_EV);
 			UtilsRecipe.recipeBuilder(
 					wireTier6, RECIPE_BufferCore_IV, wireTier6,
 					wireTier6, machineCasing_IV, wireTier6,
-					circuitElite, circuitMaster, circuitElite,
+					circuitTier5, circuitTier6, circuitTier5,
 					RECIPE_Buffer_IV);
 			UtilsRecipe.recipeBuilder(
 					wireTier7, RECIPE_BufferCore_LuV, wireTier7,
 					wireTier7, machineCasing_LuV, wireTier7,
-					circuitMaster, circuitElite, circuitMaster,
+					circuitTier6, circuitTier7, circuitTier6,
 					RECIPE_Buffer_LuV);
 			UtilsRecipe.recipeBuilder(
 					wireTier8, RECIPE_BufferCore_ZPM, wireTier8,
 					wireTier8, machineCasing_ZPM, wireTier8,
-					circuitMaster, circuitUltimate, circuitMaster,
+					circuitTier7, circuitTier8, circuitTier7,
 					RECIPE_Buffer_ZPM);
 			UtilsRecipe.recipeBuilder(
 					wireTier9, RECIPE_BufferCore_UV, wireTier9,
 					wireTier9, machineCasing_UV, wireTier9,
-					circuitUltimate, circuitMaster, circuitUltimate,
+					circuitTier8, circuitTier9, circuitTier8,
 					RECIPE_Buffer_UV);
 			UtilsRecipe.recipeBuilder(
-					wireTier10, RECIPE_BufferCore_MAX, wireTier10,
+					plateTier11, RECIPE_BufferCore_MAX, plateTier11,
 					wireTier10, machineCasing_MAX, wireTier10,
-					circuitUltimate, plateTier11, circuitUltimate,
+					circuitTier9, circuitTier10, circuitTier9,
 					RECIPE_Buffer_MAX);
 
 
@@ -439,7 +426,7 @@ public class RECIPES_Machines {
 
 			//Industrial Centrifuge
 			UtilsRecipe.recipeBuilder(
-					circuitElite, pipeHugeStainlessSteel, circuitElite,
+					circuitTier6, pipeHugeStainlessSteel, circuitTier6,
 					plateTier6, electricPump_EV, plateTier6,
 					plateTier8, machineCasing_EV, plateTier8,
 					RECIPE_IndustrialCentrifugeController);
@@ -453,9 +440,9 @@ public class RECIPES_Machines {
 
 			//Industrial Coke Oven
 			UtilsRecipe.recipeBuilder(
-					plateCobalt, circuitAdvanced, plateCobalt,
+					plateCobalt, circuitTier3, plateCobalt,
 					machineCasing_HV, INPUT_RCCokeOvenBlock, machineCasing_HV,
-					plateCobalt, circuitAdvanced, plateCobalt,
+					plateCobalt, circuitTier3, plateCobalt,
 					RECIPE_IndustrialCokeOvenController);
 
 			//Coke Oven Frame Casing
