@@ -440,9 +440,9 @@ public class RECIPES_Machines {
 
 			//Industrial Coke Oven
 			UtilsRecipe.recipeBuilder(
-					plateCobalt, circuitTier3, plateCobalt,
+					plateCobalt, circuitTier4, plateCobalt,
 					machineCasing_HV, INPUT_RCCokeOvenBlock, machineCasing_HV,
-					plateCobalt, circuitTier3, plateCobalt,
+					plateCobalt, circuitTier5, plateCobalt,
 					RECIPE_IndustrialCokeOvenController);
 
 			//Coke Oven Frame Casing

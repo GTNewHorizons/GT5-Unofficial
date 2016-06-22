@@ -5,6 +5,7 @@ import miscutil.core.block.ModBlocks;
 import miscutil.core.creative.AddToCreativeTab;
 import miscutil.core.gui.ModGUI;
 import miscutil.core.handler.COMPAT_HANDLER;
+import miscutil.core.handler.COMPAT_IntermodStaging;
 import miscutil.core.handler.events.PickaxeBlockBreakEventHandler;
 import miscutil.core.item.ModItems;
 import miscutil.core.lib.CORE;
@@ -35,13 +36,15 @@ public class CommonProxy {
 			Utils.LOG_WARNING("Development mode not set.");
 		}		
 		AddToCreativeTab.initialiseTabs();
+		//Apparently I should do this here. Might put it in Init for a test.
+		//Growthcraft_Handler.run();
 	}
 
 	public void init(FMLInitializationEvent e) {
 		//Debug Loading
 		if (CORE.DEBUG){
 					DEBUG_INIT.registerHandlers();
-		}
+		}		
 		ModItems.init();
 		ModBlocks.init();
 		MinecraftForge.EVENT_BUS.register(new PickaxeBlockBreakEventHandler());
@@ -50,6 +53,7 @@ public class CommonProxy {
 		COMPAT_HANDLER.registerMyModsOreDictEntries();
 		COMPAT_HANDLER.registerGregtechMachines();
 		COMPAT_HANDLER.intermodOreDictionarySupport();
+		COMPAT_IntermodStaging.load();
 	}
 
 	public void postInit(FMLPostInitializationEvent e) {

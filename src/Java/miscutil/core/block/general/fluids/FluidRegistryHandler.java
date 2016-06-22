@@ -40,8 +40,9 @@ public class FluidRegistryHandler {
 				fluidJackDaniels.setTemperature(420);
 				fluidJackDaniels.setViscosity(750);
 				fluidJackDaniels.setGaseous(true);
+				fluidJackDaniels.setUnlocalizedName("fluidJackDaniels");
 				FluidRegistry.registerFluid(fluidJackDaniels);
-				blockFluidJackDaniels = new BlockFluidJackDaniels(fluidJackDaniels, Material.water).setBlockName("fluidJackDaniels");
+				blockFluidJackDaniels = new BlockFluidJackDaniels(fluidJackDaniels, Material.water).setBlockName("fluidBlockJackDaniels");
 				GameRegistry.registerBlock(blockFluidJackDaniels, CORE.MODID + "_" + blockFluidJackDaniels.getUnlocalizedName().substring(5));
 				fluidJackDaniels.setUnlocalizedName(blockFluidJackDaniels.getUnlocalizedName());
 	}

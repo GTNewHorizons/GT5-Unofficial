@@ -8,7 +8,10 @@
 	<classpathentry kind="lib" path="libs/appliedenergistics2-rv2-stable-1-dev.jar"/>
 	<classpathentry kind="lib" path="libs/Waila-1.5.10_1.7.10-deobf.jar"/>
 	<classpathentry kind="lib" path="libs/EnderIO-1.7.10-2.2.8.381-dev.jar" sourcepath="libsrc/EnderIO-1.7.10-2.2.8.381-sources.jar"/>
-	<classpathentry kind="lib" path="libs/gregtech-5.8.59-logger-dev.jar"/>
 	<classpathentry kind="lib" path="libs/Railcraft_1.7.10-9.9.0.0-dev.jar"/>
+	<classpathentry kind="lib" path="libs/gregtech-5.8.61-dev.jar"/>
+	<classpathentry kind="lib" path="libs/growthcraft-1.7.10-2.3.1-complete.jar"/>
+	<classpathentry kind="lib" path="libs/Psychedelicraft-1.5.2.jar"/>
+	<classpathentry kind="lib" path="libs/IvToolkit-1.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

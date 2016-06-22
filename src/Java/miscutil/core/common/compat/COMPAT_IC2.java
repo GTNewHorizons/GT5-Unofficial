@@ -1,7 +1,6 @@
 package miscutil.core.common.compat;
 
 
-import static miscutil.core.handler.COMPAT_HANDLER.AddRecipeQueue;
 import static miscutil.core.handler.COMPAT_HANDLER.RemoveRecipeQueue;
 import miscutil.core.recipe.ShapedRecipeObject;
 import miscutil.core.util.item.UtilsItems;
@@ -43,11 +42,11 @@ public class COMPAT_IC2 {
 		RemoveRecipeQueue.add("IC2:itemCable:6");
 		RemoveRecipeQueue.add("IC2:itemCable:10");
 		RemoveRecipeQueue.add("IC2:itemCable:13");
-		RemoveRecipeQueue.add(itemCropnalyzer);		
-		RemoveRecipeQueue.add(itemSolarHelmet);
+		//RemoveRecipeQueue.add(itemCropnalyzer);		
+		//RemoveRecipeQueue.add(itemSolarHelmet);
 		
-		AddRecipeQueue.add(Cropnalyzer);
-		AddRecipeQueue.add(SolarHelmet);
+		//AddRecipeQueue.add(Cropnalyzer);
+		//AddRecipeQueue.add(SolarHelmet);
 	}
 	
 }
