@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="conduits/|miscutil/enderio/conduit/GregTech/|miscutil/gregtech/enums/Materials2.java|miscutil/gregtech/objects/GregMaterialStack.java|miscutil/core/util/Log.java|miscutil/enderio/|miscutil/core/item/tool/bloodsteel/|miscutil/core/block/reactor/|miscutil/gregtech/common/tools/GT_Tool_Turbine_Large.java|miscutil/gregtech/common/tools/GT_Tool_Turbine_Normal.java|miscutil/gregtech/common/tools/GT_Tool_Turbine_Small.java" kind="src" path="src/Java"/>
+	<classpathentry excluding="conduits/|miscutil/enderio/conduit/GregTech/|miscutil/gregtech/enums/Materials2.java|miscutil/gregtech/objects/GregMaterialStack.java|miscutil/core/util/Log.java|miscutil/enderio/|miscutil/core/item/tool/bloodsteel/|miscutil/core/block/reactor/|miscutil/gregtech/common/tools/GT_Tool_Turbine_Large.java|miscutil/gregtech/common/tools/GT_Tool_Turbine_Normal.java|miscutil/gregtech/common/tools/GT_Tool_Turbine_Small.java|miscutil/gregtech/api/enums/GregtechTextures.java|miscutil/gregtech/api/enums/GregtechTextureSet.java" kind="src" path="src/Java"/>
 	<classpathentry kind="src" path="src/resources"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Forge"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
@@ -9,9 +9,9 @@
 	<classpathentry kind="lib" path="libs/Waila-1.5.10_1.7.10-deobf.jar"/>
 	<classpathentry kind="lib" path="libs/EnderIO-1.7.10-2.2.8.381-dev.jar" sourcepath="libsrc/EnderIO-1.7.10-2.2.8.381-sources.jar"/>
 	<classpathentry kind="lib" path="libs/Railcraft_1.7.10-9.9.0.0-dev.jar"/>
-	<classpathentry kind="lib" path="libs/gregtech-5.8.61-dev.jar"/>
 	<classpathentry kind="lib" path="libs/growthcraft-1.7.10-2.3.1-complete.jar"/>
 	<classpathentry kind="lib" path="libs/Psychedelicraft-1.5.2.jar"/>
 	<classpathentry kind="lib" path="libs/IvToolkit-1.2.jar"/>
+	<classpathentry kind="lib" path="libs/gregtech-5.8.59-dev.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,7 +1,7 @@
 package miscutil.gregtech.common.tools;
 
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.IIconContainer;
-import miscutil.gregtech.api.enums.GregtechTextures;
 
 public class TOOL_Gregtech_MaxEfficiencyMultiBlockItem extends TOOL_Gregtech_BaseMultiblockItem {
     @Override
@@ -21,7 +21,7 @@ public class TOOL_Gregtech_MaxEfficiencyMultiBlockItem extends TOOL_Gregtech_Bas
 
     @Override
     public IIconContainer getTurbineIcon() {
-        return GregtechTextures.ItemIcons.TURBINE_HUGE;
+        return Textures.ItemIcons.TURBINE_HUGE;
     }
 
 }
