@@ -1,13 +1,18 @@
 package miscutil;
 
+import gregtech.api.util.GT_Config;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import miscutil.core.commands.CommandMath;
 import miscutil.core.common.CommonProxy;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
+import miscutil.gregtech.HANDLER_Gregtech;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -37,6 +42,7 @@ implements ActionListener
 		Utils.LOG_INFO("Loading "+CORE.MODID+" V"+CORE.VERSION);
 		proxy.registerTileEntities();
 		proxy.registerRenderThings();
+		HANDLER_Gregtech.mMaterialProperties = new GT_Config(new Configuration(new File(new File(event.getModConfigurationDirectory(), "MiscUtils"), "MaterialProperties.cfg")));
 		proxy.preInit(event);
 	}
 

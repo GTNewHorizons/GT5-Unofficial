@@ -36,6 +36,7 @@ public class CommonProxy {
 			Utils.LOG_WARNING("Development mode not set.");
 		}		
 		AddToCreativeTab.initialiseTabs();
+		COMPAT_IntermodStaging.preInit();
 		//Apparently I should do this here. Might put it in Init for a test.
 		//Growthcraft_Handler.run();
 	}
@@ -53,7 +54,7 @@ public class CommonProxy {
 		COMPAT_HANDLER.registerMyModsOreDictEntries();
 		COMPAT_HANDLER.registerGregtechMachines();
 		COMPAT_HANDLER.intermodOreDictionarySupport();
-		COMPAT_IntermodStaging.load();
+		COMPAT_IntermodStaging.init();
 	}
 
 	public void postInit(FMLPostInitializationEvent e) {
@@ -63,6 +64,7 @@ public class CommonProxy {
 		COMPAT_HANDLER.InitialiseHandlerThenAddRecipes();
 		COMPAT_HANDLER.RemoveRecipesFromOtherMods();
 		COMPAT_HANDLER.startLoadingGregAPIBasedRecipes();
+		COMPAT_IntermodStaging.postInit();
 	}
 	
 	

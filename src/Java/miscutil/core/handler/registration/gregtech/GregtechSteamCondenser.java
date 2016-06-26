@@ -3,6 +3,7 @@ package miscutil.core.handler.registration.gregtech;
 import miscutil.core.util.Utils;
 import miscutil.gregtech.api.enums.GregtechItemList;
 import miscutil.gregtech.api.metatileentity.implementations.GregtechMetaCondensor;
+import miscutil.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntityElectricBlastFurnace;
 import miscutil.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntityIronBlastFurnace;
 
 public class GregtechSteamCondenser
@@ -27,6 +28,7 @@ public class GregtechSteamCondenser
 
 
 		GregtechItemList.Machine_Iron_BlastFurnace.set(new GregtechMetaTileEntityIronBlastFurnace(768, "ironmachine.blastfurnace", "Iron Plated Blast Furnace").getStackForm(1L));
+		GregtechItemList.Machine_Electric_BlastFurnace.set(new GregtechMetaTileEntityElectricBlastFurnace(796, "electric.blastfurnace", "Electric Blast Furnace").getStackForm(1L));
 		
 		//ItemUtils.recipeBuilder(slot_1, slot_2, slot_3, slot_4, slot_5, slot_6, slot_7, slot_8, slot_9, resultItem);
 		

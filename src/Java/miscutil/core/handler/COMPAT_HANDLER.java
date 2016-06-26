@@ -121,7 +121,7 @@ public class COMPAT_HANDLER {
 		}
 		if (LoadedMods.IndustrialCraft2){
 			COMPAT_IC2.OreDict();
-		}
+		}		
 	}
 	
 	public static void RemoveRecipesFromOtherMods(){

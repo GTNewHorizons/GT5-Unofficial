@@ -63,3 +63,25 @@ item.itemStaballoyAxe.name=Tree Feller
 item.itemSandstoneHammer.name=Cobblestone Breaker
 
 
+item.bucket.fluid.grc.jackDanielsWhiskey0.name=Jack Daniels (0)
+item.bucket.fluid.grc.jackDanielsWhiskey1.name=Jack Daniels (1)
+item.bucket.fluid.grc.jackDanielsWhiskey2.name=Jack Daniels (2)
+item.bucket.fluid.grc.jackDanielsWhiskey3.name=Jack Daniels (3)
+item.bucket.fluid.grc.jackDanielsWhiskey4.name=Jack Daniels (4)
+fluid.grc.jackDanielsWhiskey=Jack Daniels
+fluid.grc.jackDanielsWhiskey0.Modifier=Jack Daniels (0)
+fluid.grc.jackDanielsWhiskey1.Modifier=Jack Daniels (1)
+fluid.grc.jackDanielsWhiskey2.Modifier=Jack Daniels (2)
+fluid.grc.jackDanielsWhiskey3.Modifier=Jack Daniels (3)
+fluid.grc.jackDanielsWhiskey4.Modifier=Jack Daniels (4)
+
+item.MiscUtils.bucket.bucketPyrotheum.name=Blazing Pyrotheum Bucket
+item.MiscUtils.bucket.bucketCryotheum.name=Gelid Cryotheum Bucket
+item.MiscUtils.material.dustPyrotheum.name=Pyrotheum Dust
+item.MiscUtils.material.dustCryotheum.name=Cryotheum Dust
+item.MiscUtils.material.rodBlizz.name=Blizz Rod
+item.MiscUtils.material.dustBlizz.name=Blizz Powder
+tile.MiscUtils.fluid.pyrotheum.name=Blazing Pyrotheum
+tile.MiscUtils.fluid.cryotheum.name=Gelid Cryotheum
+
+

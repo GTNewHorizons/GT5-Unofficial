@@ -7,7 +7,9 @@ import growthcraft.cellar.item.ItemBoozeBottle;
 import growthcraft.cellar.item.ItemBoozeBucketDEPRECATED;
 import growthcraft.cellar.item.ItemBucketBooze;
 import growthcraft.cellar.utils.BoozeRegistryHelper;
+import growthcraft.core.GrowthCraftCore;
 import growthcraft.hops.GrowthCraftHops;
+import miscutil.core.lib.LoadedMods;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
@@ -15,7 +17,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public class Growthcraft_Handler {
+public class HANDLER_Growthcraft {
 	
 	  public static BlockFluidBooze[] jackDanielsWhiskeyFluids;
 	  public static Item jackDaniels;
@@ -28,8 +30,10 @@ public class Growthcraft_Handler {
 	  private static int internalColour = 0000000;
 
 	  //Run me during Pre-Init
-	public static void run(){
-		start();
+	public static void preInit(){
+		if (LoadedMods.Growthcraft || GrowthCraftCore.instance != null){
+			start();			
+		}
 	}
 	
 	private static void start(){

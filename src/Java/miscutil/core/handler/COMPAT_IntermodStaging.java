@@ -1,18 +1,27 @@
 package miscutil.core.handler;
 
-import growthcraft.core.GrowthCraftCore;
-import miscutil.core.intermod.growthcraft.Growthcraft_Handler;
-import miscutil.core.lib.LoadedMods;
+import miscutil.core.intermod.growthcraft.HANDLER_Growthcraft;
+import miscutil.core.intermod.thermalfoundation.HANDLER_ThermalFoundation;
+import miscutil.gregtech.HANDLER_Gregtech;
 
 public class COMPAT_IntermodStaging {
 
-	public static void load(){
-		if (LoadedMods.Growthcraft || GrowthCraftCore.instance != null){
-			Growthcraft_Handler.run();
-		}
-		
+	public static void preInit(){
+		HANDLER_Growthcraft.preInit();	
+		HANDLER_ThermalFoundation.preInit();
+		HANDLER_Gregtech.preInit();
 		
 	}
-	
-	
+
+	public static void init(){
+		HANDLER_ThermalFoundation.Init();
+		HANDLER_Gregtech.init();
+	}
+
+	public static void postInit(){
+		HANDLER_ThermalFoundation.postInit();
+		HANDLER_Gregtech.postInit();
+	}
+
+
 }

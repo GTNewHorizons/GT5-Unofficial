@@ -13,5 +13,6 @@
 	<classpathentry kind="lib" path="libs/Psychedelicraft-1.5.2.jar"/>
 	<classpathentry kind="lib" path="libs/IvToolkit-1.2.jar"/>
 	<classpathentry kind="lib" path="libs/gregtech-5.8.59-dev.jar"/>
+	<classpathentry kind="lib" path="libs/CoFHCore-[1.7.10]3.0.3-303.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -78,7 +78,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Circuit_Board_IV, Circuit_Board_LuV, Circuit_Board_ZPM, 
 	Circuit_Parts_Crystal_Chip_IV, Circuit_Parts_Crystal_Chip_LuV, Circuit_Parts_Crystal_Chip_ZPM,
 	Circuit_Parts_IV, Circuit_Parts_LuV, Circuit_Parts_ZPM,
-	Circuit_Parts_Wiring_IV, Circuit_Parts_Wiring_LuV, Circuit_Parts_Wiring_ZPM;
+	Circuit_Parts_Wiring_IV, Circuit_Parts_Wiring_LuV, Circuit_Parts_Wiring_ZPM, 
+	
+	//Blast Furnace Test
+	Machine_Electric_BlastFurnace;
 
 	public static final GregtechItemList[]
 			DYE_ONLY_ITEMS = {
