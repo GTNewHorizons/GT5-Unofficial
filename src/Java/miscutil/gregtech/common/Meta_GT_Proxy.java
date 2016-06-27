@@ -2,10 +2,10 @@ package miscutil.gregtech.common;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.objects.GT_Fluid;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Utility;
 import miscutil.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
+import miscutil.gregtech.api.objects.GregtechFluid;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -26,7 +26,7 @@ public class Meta_GT_Proxy {
 	public static Fluid addFluid(String aName, String aTexture, String aLocalized, GT_Materials aMaterial, short[] aRGBa, int aState, int aTemperatureK,
 			ItemStack aFullContainer, ItemStack aEmptyContainer, int aFluidAmount) {
 		aName = aName.toLowerCase();
-		Fluid rFluid = new GT_Fluid(aName, aTexture, aRGBa != null ? aRGBa : Dyes._NULL.getRGBA());
+		Fluid rFluid = new GregtechFluid(aName, aTexture, aRGBa != null ? aRGBa : Dyes._NULL.getRGBA());
 		GT_LanguageManager.addStringLocalization(rFluid.getUnlocalizedName(), aLocalized == null ? aName : aLocalized);
 		if (FluidRegistry.registerFluid(rFluid)) {
 			switch (aState) {
