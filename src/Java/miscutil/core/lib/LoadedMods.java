@@ -25,6 +25,7 @@ public class LoadedMods {
 	public static boolean CoFHCore = false;
 	public static boolean Forestry = false;
 	public static boolean MagicBees = false;
+	public static boolean Psychedelicraft = false;
 	public static boolean MiscUtils = true; //Dummy For MetaData Lookups in MT Wrapper
 
 	
@@ -124,6 +125,11 @@ public class LoadedMods {
 		if (Loader.isModLoaded("MagicBees") == true){
 			MagicBees  = true;
 			Utils.LOG_INFO("Components enabled for: MagicBees");
+			totalMods++;
+		}
+		if (Loader.isModLoaded("psychedelicraft") == true){
+			Psychedelicraft  = true;
+			Utils.LOG_INFO("Components enabled for: Psychedelicraft");
 			totalMods++;
 		}
 		

@@ -28,7 +28,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.apiculture.MaterialBeehive;
 import forestry.apiculture.multiblock.TileAlveary;
-import forestry.apiculture.multiblock.TileAlvearyPlain;
 import forestry.core.blocks.BlockStructure;
 import forestry.core.render.TextureManager;
 
@@ -86,16 +85,8 @@ public class FR_BlockAlveary extends BlockStructure {
 	public TileEntity createTileEntity(World world, int metadata) {
 		if (metadata < 0 || metadata > Type.VALUES.length) {
 			return null;
-		}
-
-		Type type = Type.VALUES[metadata];
-		switch (type) {
-			case MUTATRON:
-				return new TileAlvearyMutatron();
-			case PLAIN:
-			default:
-				return new TileAlvearyPlain();
-		}
+		}	
+			return new TileAlvearyMutatron();
 	}
 
 	@Override
@@ -118,7 +109,7 @@ public class FR_BlockAlveary extends BlockStructure {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerBlockIcons(IIconRegister register) {
-		icons = new IIcon[14];
+		icons = new IIcon[7];
 		icons[0] = TextureManager.registerTex(register, "apiculture/alveary.plain");
 		icons[1] = TextureManager.registerTex(register, "apiculture/alveary.entrance");
 		icons[2] = TextureManager.registerTex(register, "apiculture/alveary.bottom");
@@ -131,22 +122,10 @@ public class FR_BlockAlveary extends BlockStructure {
 	@SideOnly(Side.CLIENT)
 	@Override
 	public IIcon getIcon(int side, int metadata) {
-		if ((metadata <= 1	|| metadata == Type.MUTATRON.ordinal())
-				&& (side == 1 || side == 0)) {
+		if ((metadata <= 1	/*|| metadata == Type.MUTATRON.ordinal()*/) && (side == 1 || side == 0)) {
 			return icons[BOTTOM];
 		}
-
-		Type type = Type.VALUES[metadata];
-
-		switch (type) {
-			case PLAIN:
-				return icons[PLAIN];
-			case MUTATRON:
-				return icons[MUTATRON_OFF];			
-			default:
-				return null;
-		}
-
+		return icons[MUTATRON_OFF];
 	}
 
 	@SideOnly(Side.CLIENT)

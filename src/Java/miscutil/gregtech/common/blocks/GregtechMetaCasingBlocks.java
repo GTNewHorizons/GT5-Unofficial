@@ -20,7 +20,7 @@ extends GregtechMetaCasingBlocksAbstract {
 	public GregtechMetaCasingBlocks() {
 		super(GregtechMetaCasingItems.class, "miscutils.blockcasings", GT_Material_Casings.INSTANCE);
 		for (byte i = 0; i < 16; i = (byte) (i + 1)) {
-			Textures.BlockIcons.CASING_BLOCKS[i] = new GT_CopiedBlockTexture(this, 6, i);
+			Textures.BlockIcons.CASING_BLOCKS[63 + i] = new GT_CopiedBlockTexture(this, 6, i);
 		}
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Centrifuge Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Structural Coke Oven Casing");
@@ -70,6 +70,8 @@ extends GregtechMetaCasingBlocksAbstract {
                 return Textures.BlockIcons.MACHINE_CASING_FIREBOX_STEEL.getIcon();
 			case 10:
 				return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+			case 11:
+				return Textures.BlockIcons.MACHINE_HEATPROOFCASING.getIcon();
 			case 12:
 				return Textures.BlockIcons.MACHINE_COIL_CUPRONICKEL.getIcon();
 			case 13:
