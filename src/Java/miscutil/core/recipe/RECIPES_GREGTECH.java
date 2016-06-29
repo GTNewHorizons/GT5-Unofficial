@@ -5,6 +5,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
+import miscutil.core.util.fluid.FluidUtils;
 import miscutil.core.util.item.UtilsItems;
 
 public class RECIPES_GREGTECH {
@@ -56,7 +57,7 @@ public class RECIPES_GREGTECH {
 			CORE.RA.addCokeOvenRecipe(
 					GT_OreDictUnificator.get(OrePrefixes.log, Materials.Wood, 2L), //Input 1
 					GT_OreDictUnificator.get(OrePrefixes.log, Materials.Wood, 1L), //Input 2
-					Materials.Oxygen.getFluid(85L), //Fluid Input
+					FluidUtils.getFluidStack("oxygen", 80), //Fluid Input
 					Materials.Creosote.getFluid(145L), //Fluid Output
 					GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 2L), //Item Output 
 					1200,  //Time in ticks
@@ -69,7 +70,7 @@ public class RECIPES_GREGTECH {
 			CORE.RA.addCokeOvenRecipe(
 					GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 2L), //Input 1
 					GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1L), //Input 2
-					Materials.Oxygen.getFluid(185L), //Fluid Input
+					FluidUtils.getFluidStack("oxygen", 185), //Fluid Input
 					Materials.Creosote.getFluid(200L), //Fluid Output
 					UtilsItems.getItemStack("Railcraft:fuel.coke", 2), //Item Output 
 					900,  //Time in ticks
