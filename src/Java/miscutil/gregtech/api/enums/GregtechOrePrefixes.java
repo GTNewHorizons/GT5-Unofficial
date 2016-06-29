@@ -1,5 +1,6 @@
 package miscutil.gregtech.api.enums;
 
+import static gregtech.api.enums.GT_Values.B;
 import static gregtech.api.enums.GT_Values.D2;
 import static gregtech.api.enums.GT_Values.M;
 import gregtech.api.enums.ConfigCategories;
@@ -28,6 +29,7 @@ import java.util.List;
 import miscutil.core.lib.CORE;
 import miscutil.gregtech.api.interfaces.internal.Interface_OreRecipeRegistrator;
 import miscutil.gregtech.api.objects.GregtechItemData;
+import miscutil.gregtech.api.objects.GregtechMaterialStack;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -47,6 +49,25 @@ public enum GregtechOrePrefixes {
 	 * Ultimate (Tier 8) : Data Orb and Lapotronic Energy Orb
 	 * Infinite (Cheaty)
 	 */
+
+	ingot("Ingots", "", " Ingot", true, true, false, false, false, false, false, true, false, false, B[1], M * 1, 64, 11), // A regular Ingot. Introduced by Eloraam
+	dustTiny("Tiny Dusts", "Tiny Pile of ", " Dust", true, true, false, false, false, false, false, true, false, false, B[0] | B[1] | B[2] | B[3], M / 9, 64, 0), // 1/9th of a Dust.
+	dustSmall("Small Dusts", "Small Pile of ", " Dust", true, true, false, false, false, false, false, true, false, false, B[0] | B[1] | B[2] | B[3], M / 4, 64, 1), // 1/4th of a Dust.
+	dustImpure("Impure Dusts", "Impure Pile of ", " Dust", true, true, false, false, false, false, false, true, false, true, B[3], M * 1, 64, 3), // Dust with impurities. 1 Unit of Main Material and 1/9 - 1/4 Unit of secondary Material
+	dustRefined("Refined Dusts", "Refined Pile of ", " Dust", true, true, false, false, false, false, false, true, false, true, B[3], M * 1, 64, 2),
+	dustPure("Purified Dusts", "Purified Pile of ", " Dust", true, true, false, false, false, false, false, true, false, true, B[3], M * 1, 64, 4),
+	dust("Dusts", "", " Dust", true, true, false, false, false, false, false, true, false, false, B[0] | B[1] | B[2] | B[3], M * 1, 64, 2), // Pure Dust worth of one Ingot or Gem. Introduced by Alblaka.
+	nugget("Nuggets", "", " Nugget", true, true, false, false, false, false, false, true, false, false, B[1], M / 9, 64, 9), // A Nugget. Introduced by Eloraam
+	plate("Plates", "", " Plate", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M * 1, 64, 17), // Regular Plate made of one Ingot/Dust. Introduced by Calclavia
+	block("Storage Blocks", "Block of ", "", true, true, false, false, false, true, true, false, false, false, 0, M * 9, 64, 71), // Storage Block consisting out of 9 Ingots/Gems/Dusts. Introduced by CovertJaguar
+	gem("Gemstones", "", "", true, true, true, false, false, false, true, true, false, false, B[2], M * 1, 64, 8), // A regular Gem worth one Dust. Introduced by Eloraam
+	gemChipped("Chipped Gemstones", "Chipped ", "", true, true, true, false, false, false, true, true, false, false, B[2], M / 4, 64, 59), // A regular Gem worth one small Dust. Introduced by TerraFirmaCraft
+	gemFlawed("Flawed Gemstones", "Flawed ", "", true, true, true, false, false, false, true, true, false, false, B[2], M / 2, 64, 60), // A regular Gem worth two small Dusts. Introduced by TerraFirmaCraft
+	gemFlawless("Flawless Gemstones", "Flawless ", "", true, true, true, false, false, false, true, true, false, false, B[2], M * 2, 32, 61), // A regular Gem worth two Dusts. Introduced by TerraFirmaCraft
+	gemExquisite("Exquisite Gemstones", "Exquisite ", "", true, true, true, false, false, false, true, true, false, false, B[2], M * 4, 16, 62), // A regular Gem worth four Dusts. Introduced by TerraFirmaCraft
+	stick("Sticks/Rods", "", " Rod", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M / 2, 64, 23), // Stick made of half an Ingot. Introduced by Eloraam
+
+
 	batterySingleuse("Single Use Batteries", "", "", false, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
 	battery("Reusable Batteries", "", "", false, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Introduced by Calclavia
 	circuit("Circuits", "", "", true, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Introduced by Calclavia
@@ -73,7 +94,7 @@ public enum GregtechOrePrefixes {
 	public ItemStack mContainerItem = null;
 	public ICondition<ISubTagContainer> mCondition = null;
 	public byte mDefaultStackSize = 64;
-	public MaterialStack mSecondaryMaterial = null;
+	public GregtechMaterialStack mSecondaryMaterial = null;
 	public GregtechOrePrefixes mPrefixInto = this;
 	public float mHeatDamage = 0.0F; // Negative for Frost Damage
 	/**
@@ -210,7 +231,7 @@ public enum GregtechOrePrefixes {
 		return true;
 	}
 
-	public boolean isIgnored(Materials aMaterial) {
+	public boolean isIgnored(GT_Materials aMaterial) {
 		if (aMaterial != null && (!aMaterial.mUnificatable || aMaterial != aMaterial.mMaterialInto)) return true;
 		return mIgnoredMaterials.contains(aMaterial);
 	}
@@ -225,8 +246,8 @@ public enum GregtechOrePrefixes {
 		return mOreProcessing.add(aRegistrator);
 	}
 
-	public void processOre(Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-		if (aMaterial != null && (aMaterial != Materials._NULL || mIsSelfReferencing || !mIsMaterialBased) && GT_Utility.isStackValid(aStack))
+	public void processOre(GT_Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+		if (aMaterial != null && (aMaterial != GT_Materials._NULL || mIsSelfReferencing || !mIsMaterialBased) && GT_Utility.isStackValid(aStack))
 			for (Interface_OreRecipeRegistrator tRegistrator : mOreProcessing) {
 				if (D2)
 					GT_Log.ore.println("Processing '" + aOreDictName + "' with the Prefix '" + name() + "' and the Material '" + aMaterial.name() + "' at " + GT_Utility.getClassName(tRegistrator));
@@ -235,11 +256,10 @@ public enum GregtechOrePrefixes {
 	}
 
 	public Object get(Object aMaterial) {
-		if (aMaterial instanceof Materials) return new GregtechItemData(this, (Materials) aMaterial);
+		if (aMaterial instanceof GT_Materials) return new GregtechItemData(this, (GT_Materials) aMaterial);
 		return name() + aMaterial;
 	}
 
-	@SuppressWarnings("incomplete-switch")
 	public String getDefaultLocalNameForItem(Materials aMaterial) {
 
 
@@ -255,13 +275,13 @@ public enum GregtechOrePrefixes {
 		 * This is the Default Material returned in case no Material has been found or a NullPointer has been inserted at a location where it shouldn't happen.
 		 * <p/>
 		 * Mainly for preventing NullPointer Exceptions and providing Default Values.
-    	 *
+		 *
 		 * Unknown Material Components. Dead End Section.
 		 * 
 		 * Alkalus Range 730-799 & 970-998
 		 * (aMetaItemSubID, TextureSet, aToolSpeed, aToolDurability, aToolQuality, aTypes, R, G, B, Alpha, aLocalName, 
 		 * aFuelType, aFuelPower, aMeltingPoint, aBlastFurnaceTemp, aBlastFurnaceRequired, aTransparent, aOreValue, aDensityMultiplier, aDensityDivider, aColor
-         *	this(aMetaItemSubID, aIconSet, aToolSpeed, aToolDurability, aToolQuality, true);
+		 *	this(aMetaItemSubID, aIconSet, aToolSpeed, aToolDurability, aToolQuality, true);
 		 *
 		 */
 		_NULL(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "NULL", 0, 0, 0, 0, false, false, 1, 1, 1, Dyes._NULL, Element._NULL, Arrays.asList(new TC_AspectStack(TC_Aspects.VACUOS, 1))),

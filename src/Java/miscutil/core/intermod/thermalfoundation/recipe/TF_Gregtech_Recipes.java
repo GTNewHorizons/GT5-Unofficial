@@ -29,7 +29,7 @@ public class TF_Gregtech_Recipes {
 
 		//Gelid Cryotheum
 		Utils.LOG_INFO("Adding Recipes for Gelid Cryotheum");
-		GT_Values.RA.addFluidExtractionRecipe(dust_Cryotheum, GT_Values.NI, getFluidStack("cryotheum", 250), 10000, 32, 2);
+		GT_Values.RA.addFluidExtractionRecipe(dust_Cryotheum, GT_Values.NI, getFluidStack("cryotheum", 250), 10000, 240, 2);
 		GT_Values.RA.addChemicalBathRecipe((GT_OreDictUnificator.get(OrePrefixes.ore, Materials.Cinnabar, 1L)), getFluidStack("cryotheum", 200), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Cinnabar, 2L), GT_Values.NI, GT_Values.NI, null, 400, 2);
 
 		//Blizz Powder
@@ -43,7 +43,7 @@ public class TF_Gregtech_Recipes {
 
 		//Blazing Pyrotheum
 		Utils.LOG_INFO("Adding Recipes for Blazing Pyrotheum");	
-		GT_Values.RA.addFluidExtractionRecipe(dust_Pyrotheum, GT_Values.NI, getFluidStack("pyrotheum", 250), 10000, 32, 2);	
+		GT_Values.RA.addFluidExtractionRecipe(dust_Pyrotheum, GT_Values.NI, getFluidStack("pyrotheum", 250), 10000, 240, 2);	
 
 	}
 
