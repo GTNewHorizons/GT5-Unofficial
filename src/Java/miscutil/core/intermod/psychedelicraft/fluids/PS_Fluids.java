@@ -18,15 +18,15 @@ public class PS_Fluids {
 	
 	public static void registerFluids(){
 		alcJD = new FluidAlcohol("psc_JD", 2, 0.45D, 1.9D, 0.15D, PSConfig.alcInfoPotato);
-	    alcJD.addName(CORE.MODID + "drinkMash", new IntegerRange(0, -1), new IntegerRange(0, 0));
-	    alcJD.addName(CORE.MODID + "drinkAgedWhisky", new IntegerRange(0, 0), new IntegerRange(1, -1));
-	    alcJD.addName(CORE.MODID + "drinkWhisky", new IntegerRange(0, -1), new IntegerRange(1, -1));
+	    alcJD.addName(CORE.MODID + ":" + "drinkMash", new IntegerRange(0, -1), new IntegerRange(0, 0));
+	    alcJD.addName(CORE.MODID + ":" + "drinkAgedWhisky", new IntegerRange(0, 0), new IntegerRange(1, -1));
+	    alcJD.addName(CORE.MODID + ":" + "drinkWhisky", new IntegerRange(0, -1), new IntegerRange(1, -1));
 	    alcJD.setColor(-1426150904);
-	    alcJD.setStillIconName(CORE.MODID + "mash_still");
-	    alcJD.setFlowingIconName(CORE.MODID + "mash_flow");
-	    alcJD.addIcon(new IntegerRange(-1, -1), new IntegerRange(0, 3), new IntegerRange(2, -1), CORE.MODID + "clear_still", CORE.MODID + "clear_flow");
-	    alcJD.addIcon(new IntegerRange(-1, -1), new IntegerRange(4, 13), new IntegerRange(0, -1), CORE.MODID + "rum_semi_mature_still", CORE.MODID + "rum_semi_mature_flow");
-	    alcJD.addIcon(new IntegerRange(-1, -1), new IntegerRange(14, -1), new IntegerRange(0, -1), CORE.MODID + "rum_mature_still", CORE.MODID + "rum_mature_flow");
+	    alcJD.setStillIconName(CORE.MODID + ":" + "mash_still");
+	    alcJD.setFlowingIconName(CORE.MODID + ":" + "mash_flow");
+	    alcJD.addIcon(new IntegerRange(-1, -1), new IntegerRange(0, 3), new IntegerRange(2, -1), CORE.MODID + ":" + "clear_still", CORE.MODID + ":" + "clear_flow");
+	    alcJD.addIcon(new IntegerRange(-1, -1), new IntegerRange(4, 13), new IntegerRange(0, -1), CORE.MODID + ":" + "rum_semi_mature_still", CORE.MODID + ":" + "rum_semi_mature_flow");
+	    alcJD.addIcon(new IntegerRange(-1, -1), new IntegerRange(14, -1), new IntegerRange(0, -1), CORE.MODID + ":" + "rum_mature_still", CORE.MODID + ":" + "rum_mature_flow");
 	    FluidRegistry.registerFluid(alcJD);
 	}
 	

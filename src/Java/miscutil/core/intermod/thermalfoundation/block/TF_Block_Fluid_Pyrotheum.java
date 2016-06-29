@@ -3,6 +3,7 @@ package miscutil.core.intermod.thermalfoundation.block;
 import java.util.Random;
 
 import miscutil.core.intermod.thermalfoundation.fluid.TF_Fluids;
+import miscutil.core.lib.CORE;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -30,7 +31,7 @@ public class TF_Block_Fluid_Pyrotheum
   
   public TF_Block_Fluid_Pyrotheum()
   {
-    super("MiscUtils", TF_Fluids.fluidPyrotheum, Material.lava, "pyrotheum");
+    super(CORE.MODID, TF_Fluids.fluidPyrotheum, Material.lava, "pyrotheum");
     setQuantaPerBlock(5);
     setTickRate(10);
     

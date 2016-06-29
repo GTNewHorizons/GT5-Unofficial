@@ -16,10 +16,21 @@ public class TF_Fluids
 
 	public static void preInit()
 	{
-		fluidPyrotheum = new Fluid("pyrotheum").setLuminosity(15).setDensity(2000).setViscosity(1200).setTemperature(4000).setRarity(EnumRarity.rare);
-		fluidCryotheum = new Fluid("cryotheum").setLuminosity(0).setDensity(4000).setViscosity(3000).setTemperature(50).setRarity(EnumRarity.rare);
-		registerFluid(fluidPyrotheum, "pyrotheum");
-		registerFluid(fluidCryotheum, "cryotheum");
+		
+		if (FluidRegistry.getFluid("pyrotheum") == null){
+			fluidPyrotheum = new Fluid("pyrotheum").setLuminosity(15).setDensity(2000).setViscosity(1200).setTemperature(4000).setRarity(EnumRarity.rare);
+			registerFluid(fluidPyrotheum, "pyrotheum");
+		}
+		else {
+			fluidPyrotheum = FluidRegistry.getFluid("pyrotheum");
+		}
+		if (FluidRegistry.getFluid("cryotheum") == null){
+			fluidCryotheum = new Fluid("cryotheum").setLuminosity(0).setDensity(4000).setViscosity(3000).setTemperature(50).setRarity(EnumRarity.rare);
+			registerFluid(fluidCryotheum, "cryotheum");	
+		}
+		else {
+			fluidCryotheum = FluidRegistry.getFluid("cryotheum");
+		}
 	}
 
 	public static void init() {}

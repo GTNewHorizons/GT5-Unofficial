@@ -22,6 +22,6 @@ public class GregtechFluid extends Fluid implements Runnable {
 
     @Override
     public void run() {
-        setIcons(GregTech_API.sBlockIcons.registerIcon(CORE.MODID + "fluids/fluid." + mTextureName));
+        setIcons(GregTech_API.sBlockIcons.registerIcon(CORE.MODID+ ":" + "fluids/fluid." + mTextureName));
     }
 }

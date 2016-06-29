@@ -10,6 +10,7 @@
  ******************************************************************************/
 package miscutil.core.intermod.forestry.apiculture.blocks;
 
+import miscutil.core.lib.CORE;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -21,14 +22,14 @@ import forestry.core.utils.StringUtil;
 public class FR_BlockRegistryApiculture extends BlockRegistry {
 
 	public static FR_BlockAlveary alveary;
-	
+
 	public static void RegistryApiculture() {
-		
-		alveary = registerBlock2(new FR_BlockAlveary(), ItemBlockForestry.class, "alveary");
+		if (CORE.DEBUG){
+			alveary = registerBlock2(new FR_BlockAlveary(), ItemBlockForestry.class, "alveary");	
+		}
 	}
-	
+
 	protected static <T extends Block> T registerBlock2(T block, Class<? extends ItemBlock> itemClass, String name, Object... itemCtorArgs) {
-		
 		block.setBlockName(name);
 		GameRegistry.registerBlock(block, itemClass, StringUtil.cleanBlockName(block), itemCtorArgs);
 		return block;

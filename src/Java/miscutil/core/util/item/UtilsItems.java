@@ -112,6 +112,28 @@ public class UtilsItems {
 				return null;
 			}		
 	}
+	
+	@SuppressWarnings("unused")
+	public static ItemStack simpleMetaStack(Item item, int meta, int itemstackSize){		
+			try {
+				Item em = item;			
+				Item em1 = item;
+				Utils.LOG_WARNING("Found: "+em1.getUnlocalizedName()+":"+meta);
+				if (em1 != null){
+					if (null == em){
+						em = em1;
+					}
+					if (em != null){
+						ItemStack metaStack = new ItemStack(em,itemstackSize,meta);
+						return metaStack;
+					}
+				}
+				return null;
+			} catch (NullPointerException e) {
+				Utils.LOG_ERROR(item.getUnlocalizedName()+" not found. [NULL]");
+				return null;
+			}		
+	}
 
 	public static ItemStack getCorrectStacktype(String fqrn, int stackSize){
 		String oreDict = "ore:";

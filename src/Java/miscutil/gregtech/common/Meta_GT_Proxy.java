@@ -18,9 +18,9 @@ public class Meta_GT_Proxy {
 		return addFluid(aName, aLocalized, aMaterial, aState, aTemperatureK, null, null, 0);
 	}
 
-	public static Fluid addFluid(String aName, String aLocalized, GT_Materials cryotheum, int aState, int aTemperatureK, ItemStack aFullContainer,
+	public static Fluid addFluid(String aName, String aLocalized, GT_Materials aMaterial, int aState, int aTemperatureK, ItemStack aFullContainer,
 			ItemStack aEmptyContainer, int aFluidAmount) {
-		return addFluid(aName, aName.toLowerCase(), aLocalized, cryotheum, null, aState, aTemperatureK, aFullContainer, aEmptyContainer, aFluidAmount);
+		return addFluid(aName, aName.toLowerCase(), aLocalized, aMaterial, null, aState, aTemperatureK, aFullContainer, aEmptyContainer, aFluidAmount);
 	}
 
 	public static Fluid addFluid(String aName, String aTexture, String aLocalized, GT_Materials aMaterial, short[] aRGBa, int aState, int aTemperatureK,

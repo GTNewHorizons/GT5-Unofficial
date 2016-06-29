@@ -19,8 +19,8 @@ public class HANDLER_ThermalFoundation {
 	public static void init(){
 		if (LoadedMods.CoFHCore){
 			TF_Fluids.init();
+			TF_Blocks.init();	
 			TF_Items.init();
-			TF_Blocks.init();					
 		}		
 	}
 

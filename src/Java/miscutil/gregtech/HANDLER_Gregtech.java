@@ -11,8 +11,8 @@ public class HANDLER_Gregtech {
 	public static void preInit(){
 		if (mMaterialProperties != null){
 			GT_Materials.init(mMaterialProperties);
-		}	
-		GregtechFluidHandler.run();
+			GregtechFluidHandler.run();
+		}			
 	}
 	
 	public static void init(){

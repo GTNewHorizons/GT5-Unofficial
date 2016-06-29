@@ -3,6 +3,7 @@ package miscutil.core.intermod.thermalfoundation.item;
 import miscutil.core.creative.AddToCreativeTab;
 import miscutil.core.intermod.thermalfoundation.block.TF_Blocks;
 import miscutil.core.intermod.thermalfoundation.fluid.TF_Fluids;
+import miscutil.core.util.item.UtilsItems;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -22,22 +23,33 @@ public class TF_Items {
 	public static ItemBucket itemBucket;
 	public static ItemStack bucketPyrotheum;
 	public static ItemStack bucketCryotheum;
+	
+	public static ItemStack itemDustBlizz;
+	public static ItemStack itemDustPyrotheum;
+	public static ItemStack itemDustCryotheum;
+	public static ItemStack itemRodBlizz;
 
 	public static void preInit(){
 
 
 		itemBucket = (ItemBucket)new ItemBucket("MiscUtils").setUnlocalizedName("bucket").setCreativeTab(AddToCreativeTab.tabMisc);
 	    itemMaterial = (ItemBase)new ItemBase("MiscUtils").setUnlocalizedName("material").setCreativeTab(AddToCreativeTab.tabMisc);
+	    
 
-		bucketPyrotheum = itemBucket.addOreDictItem(6661, "bucketPyrotheum", 2);
-		bucketCryotheum = itemBucket.addOreDictItem(6662, "bucketCryotheum", 2);
-		dustPyrotheum = itemMaterial.addOreDictItem(6663, "dustPyrotheum", 2);
-		dustCryotheum = itemMaterial.addOreDictItem(6664, "dustCryotheum", 2);
-
+		bucketPyrotheum = itemBucket.addOreDictItem(1, "bucketPyrotheum");
+		bucketCryotheum = itemBucket.addOreDictItem(2, "bucketCryotheum");
+		rodBlizz = itemMaterial.addOreDictItem(1, "rodBlizz");
+		dustBlizz = itemMaterial.addOreDictItem(2, "dustBlizz");
+		dustPyrotheum = itemMaterial.addOreDictItem(3, "dustPyrotheum");
+		dustCryotheum = itemMaterial.addOreDictItem(4, "dustCryotheum");
+		
 		FurnaceFuelHandler.registerFuel(dustPyrotheum, 2400);
 
-		rodBlizz = itemMaterial.addOreDictItem(6665, "rodBlizz");
-		dustBlizz = itemMaterial.addOreDictItem(6666, "dustBlizz");
+
+		itemRodBlizz = UtilsItems.simpleMetaStack(itemMaterial, 1, 1);
+		itemDustBlizz = UtilsItems.simpleMetaStack(itemMaterial, 2, 1);
+		itemDustPyrotheum = UtilsItems.simpleMetaStack(itemMaterial, 3, 1);
+		itemDustCryotheum = UtilsItems.simpleMetaStack(itemMaterial, 4, 1);
 
 
 
@@ -55,8 +67,9 @@ public class TF_Items {
 
 	public static void postInit(){
 
-		ItemHelper.addRecipe(ItemHelper.ShapelessRecipe(ItemHelper.cloneStack(dustPyrotheum, 1), new Object[] { "dustCoal", "dustSulfur", "dustRedstone", Items.blaze_powder }));
+		ItemHelper.addRecipe(ItemHelper.ShapelessRecipe(ItemHelper.cloneStack(dustPyrotheum, 1), new Object[] { "dustCoal", "dustSulfur", "dustRedstone", "dustBlaze" }));
 		ItemHelper.addRecipe(ItemHelper.ShapelessRecipe(ItemHelper.cloneStack(dustCryotheum, 1), new Object[] { Items.snowball, "dustSaltpeter", "dustRedstone", "dustBlizz" }));
+		ItemHelper.addRecipe(ItemHelper.ShapelessRecipe(ItemHelper.cloneStack(dustCryotheum, 1), new Object[] { Items.snowball, "dustNitor", "dustRedstone", "dustBlizz" }));
 		//ItemHelper.addRecipe(ItemHelper.ShapelessRecipe(ItemHelper.cloneStack(dustBlizz, 2), new Object[] { "rodBlizz" }));
 
 
