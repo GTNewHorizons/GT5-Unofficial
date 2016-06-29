@@ -74,6 +74,12 @@ fluid.grc.jackDanielsWhiskey1.Modifier=Jack Daniels (1)
 fluid.grc.jackDanielsWhiskey2.Modifier=Jack Daniels (2)
 fluid.grc.jackDanielsWhiskey3.Modifier=Jack Daniels (3)
 fluid.grc.jackDanielsWhiskey4.Modifier=Jack Daniels (4)
+tile.fluidBlockJackDaniels.name=Jack Daniels
+tile.fluid.grc.jackDanielsWhiskey0.name=Jack Daniels (0)
+tile.fluid.grc.jackDanielsWhiskey1.name=Jack Daniels (1)
+tile.fluid.grc.jackDanielsWhiskey2.name=Jack Daniels (2)
+tile.fluid.grc.jackDanielsWhiskey3.name=Jack Daniels (3)
+tile.fluid.grc.jackDanielsWhiskey4.name=Jack Daniels (4)
 
 item.MiscUtils.bucket.bucketPyrotheum.name=Blazing Pyrotheum Bucket
 item.MiscUtils.bucket.bucketCryotheum.name=Gelid Cryotheum Bucket
@@ -84,4 +90,6 @@ item.MiscUtils.material.dustBlizz.name=Blizz Powder
 tile.MiscUtils.fluid.pyrotheum.name=Blazing Pyrotheum
 tile.MiscUtils.fluid.cryotheum.name=Gelid Cryotheum
 
+item.frameAccelerated.name=Accelerated Frame
+item.frameVoid.name=Void Frame
 

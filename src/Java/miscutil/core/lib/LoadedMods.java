@@ -23,6 +23,8 @@ public class LoadedMods {
 	public static boolean Railcraft = false;
 	public static boolean Growthcraft = false;
 	public static boolean CoFHCore = false;
+	public static boolean Forestry = false;
+	public static boolean MagicBees = false;
 	public static boolean MiscUtils = true; //Dummy For MetaData Lookups in MT Wrapper
 
 	
@@ -112,6 +114,16 @@ public class LoadedMods {
 		if (Loader.isModLoaded("CoFHCore") == true){
 			CoFHCore  = true;
 			Utils.LOG_INFO("Components enabled for: CoFHCore");
+			totalMods++;
+		}
+		if (Loader.isModLoaded("Forestry") == true){
+			Forestry  = true;
+			Utils.LOG_INFO("Components enabled for: Forestry");
+			totalMods++;
+		}
+		if (Loader.isModLoaded("MagicBees") == true){
+			MagicBees  = true;
+			Utils.LOG_INFO("Components enabled for: MagicBees");
 			totalMods++;
 		}
 		
