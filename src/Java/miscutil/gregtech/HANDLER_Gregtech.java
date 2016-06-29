@@ -3,9 +3,6 @@ package miscutil.gregtech;
 import gregtech.api.util.GT_Config;
 import miscutil.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import miscutil.gregtech.common.blocks.fluid.GregtechFluidHandler;
-import miscutil.gregtech.loaders.Processing_Block;
-import miscutil.gregtech.loaders.Processing_Ingot1;
-import miscutil.gregtech.loaders.Processing_Plate1;
 
 public class HANDLER_Gregtech {
 	
@@ -15,19 +12,30 @@ public class HANDLER_Gregtech {
 		if (mMaterialProperties != null){
 			GT_Materials.init(mMaterialProperties);
 			GregtechFluidHandler.run();
-			new Processing_Ingot1();
-			new Processing_Plate1();
-			new Processing_Block();
+			//new Processing_Ingot1();
+			//new Processing_Plate1();
+			//new Processing_Block();
 		}
 		
 	}
 	
 	public static void init(){
-		
+		/*if (Meta_GT_Proxy.mSortToTheEnd) {
+			new GT_ItemIterator().run();
+			Meta_GT_Proxy.registerUnificationEntries();
+			new GT_FuelLoader().run();
+		}*/
 	}
 	
 	public static void postInit(){
-		
+		/*Meta_GT_Proxy.activateOreDictHandler();
+		if (Meta_GT_Proxy.mSortToTheEnd) {
+			Meta_GT_Proxy.registerUnificationEntries();
+		} else {
+			new GT_ItemIterator().run();
+			Meta_GT_Proxy.registerUnificationEntries();
+			new GT_FuelLoader().run();
+		}*/
 	}
 	
 }

@@ -12,6 +12,7 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.GT_Proxy.OreDictEventContainer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -227,7 +228,7 @@ public class GregtechOreDictUnificator {
         return false;
     }
 
-    public static boolean registerOre(OrePrefixes aPrefix, Object aMaterial, ItemStack aStack) {
+    public static boolean registerOre(GregtechOrePrefixes aPrefix, Object aMaterial, ItemStack aStack) {
         return registerOre(aPrefix.get(aMaterial), aStack);
     }
 
@@ -357,4 +358,9 @@ public class GregtechOreDictUnificator {
         if (GT_Utility.isStringValid(aName)) rList.addAll(OreDictionary.getOres(aName));
         return rList;
     }
+
+	public static void registerRecipes(OreDictEventContainer tOre) {
+		// TODO Auto-generated method stub
+		
+	}
 }

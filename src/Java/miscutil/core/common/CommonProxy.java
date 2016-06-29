@@ -1,6 +1,9 @@
 package miscutil.core.common;
 
 import static miscutil.core.lib.CORE.DEBUG;
+
+import java.util.Iterator;
+
 import miscutil.core.block.ModBlocks;
 import miscutil.core.creative.AddToCreativeTab;
 import miscutil.core.gui.ModGUI;
@@ -14,13 +17,32 @@ import miscutil.core.tileentities.ModTileEntities;
 import miscutil.core.util.Utils;
 import miscutil.core.util.debug.DEBUG_INIT;
 import miscutil.core.util.player.PlayerCache;
+import miscutil.gregtech.common.Meta_GT_Proxy;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.OreDictionary;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
 public class CommonProxy {
+	
+	public CommonProxy(){
+		//Should Register Gregtech Materials I've Made
+		MinecraftForge.EVENT_BUS.register(this);
+		FMLCommonHandler.instance().bus().register(this);
+		if (LoadedMods.Gregtech){
+			for (String tOreName : OreDictionary.getOreNames()) {
+				ItemStack tOreStack;
+				for (Iterator i$ = OreDictionary.getOres(tOreName).iterator(); i$.hasNext(); Meta_GT_Proxy.registerOre(new OreDictionary.OreRegisterEvent(tOreName, tOreStack))) {
+					Utils.LOG_INFO("Iterating Material");
+					tOreStack = (ItemStack) i$.next();
+				}
+			}
+		}
+	}
 
 	public void preInit(FMLPreInitializationEvent e) {
 		Utils.LOG_INFO("Doing some house cleaning.");		
