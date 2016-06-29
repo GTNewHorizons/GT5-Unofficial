@@ -38,6 +38,7 @@ public class TF_Gregtech_Recipes {
 
 		//Blizz Rod
 		Utils.LOG_INFO("Adding Recipes for Blizz Rod");
+		GT_Values.RA.addVacuumFreezerRecipe(new ItemStack(Items.blaze_rod), rod_Blizz, (int) Math.max((Materials.Blaze.getMass()*4) * 3L, 1L));
 		GT_ModHandler.addPulverisationRecipe(rod_Blizz, dust_Blizz3, new ItemStack(Items.snowball, 1), 50, false);
 
 		//Blazing Pyrotheum
@@ -47,7 +48,7 @@ public class TF_Gregtech_Recipes {
 	}
 
 	private static FluidStack getFluidStack(String fluidName, int amount){
-		Utils.LOG_INFO("Trying to get a fluid stack of "+fluidName);
+		Utils.LOG_WARNING("Trying to get a fluid stack of "+fluidName);
 		try {
 			return FluidRegistry.getFluidStack(fluidName, amount);
 		} 
