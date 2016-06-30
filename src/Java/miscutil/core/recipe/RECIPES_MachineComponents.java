@@ -8,7 +8,7 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.util.GT_OreDictUnificator;
 import miscutil.core.util.Utils;
 import miscutil.core.util.recipe.UtilsRecipe;
-import miscutil.gregtech.api.enums.GregtechItemList;
+import miscutil.core.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.item.ItemStack;
 
 public class RECIPES_MachineComponents {

@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import miscutil.core.creative.AddToCreativeTab;
-import miscutil.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
-import miscutil.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
+import miscutil.core.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
+import miscutil.core.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

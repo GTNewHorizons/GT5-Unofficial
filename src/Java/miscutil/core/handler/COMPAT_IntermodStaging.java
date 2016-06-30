@@ -1,10 +1,10 @@
 package miscutil.core.handler;
 
-import miscutil.core.intermod.forestry.HANDLER_Forestry;
-import miscutil.core.intermod.growthcraft.HANDLER_Growthcraft;
-import miscutil.core.intermod.psychedelicraft.HANDLER_Psychedelicraft;
-import miscutil.core.intermod.thermalfoundation.HANDLER_ThermalFoundation;
-import miscutil.gregtech.HANDLER_Gregtech;
+import miscutil.core.xmod.forestry.HANDLER_Forestry;
+import miscutil.core.xmod.gregtech.HANDLER_Gregtech;
+import miscutil.core.xmod.growthcraft.HANDLER_Growthcraft;
+import miscutil.core.xmod.psychedelicraft.HANDLER_Psychedelicraft;
+import miscutil.core.xmod.thermalfoundation.HANDLER_ThermalFoundation;
 
 public class COMPAT_IntermodStaging {
 

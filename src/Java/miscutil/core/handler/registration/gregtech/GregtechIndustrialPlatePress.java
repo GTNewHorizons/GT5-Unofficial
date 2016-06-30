@@ -1,7 +1,7 @@
 package miscutil.core.handler.registration.gregtech;
 
-import miscutil.gregtech.api.enums.GregtechItemList;
-import miscutil.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntityIndustrialPlatePress;
+import miscutil.core.xmod.gregtech.api.enums.GregtechItemList;
+import miscutil.core.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntityIndustrialPlatePress;
 
 public class GregtechIndustrialPlatePress
 {

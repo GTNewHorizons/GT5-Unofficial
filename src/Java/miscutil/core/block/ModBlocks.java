@@ -3,7 +3,7 @@ package miscutil.core.block;
 import miscutil.core.block.base.BasicBlock;
 import miscutil.core.block.general.fluids.FluidRegistryHandler;
 import miscutil.core.util.Utils;
-import miscutil.gregtech.common.blocks.GregtechMetaCasingBlocks;
+import miscutil.core.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.Fluid;

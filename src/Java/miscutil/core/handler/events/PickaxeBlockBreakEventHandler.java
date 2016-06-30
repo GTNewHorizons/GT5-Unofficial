@@ -5,7 +5,7 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import miscutil.core.util.Utils;
-import miscutil.gregtech.api.metatileentity.implementations.base.GregtechMetaSafeBlockBase;
+import miscutil.core.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaSafeBlockBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;

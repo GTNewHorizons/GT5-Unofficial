@@ -7,7 +7,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.Utils;
-import miscutil.gregtech.api.metatileentity.implementations.GregtechMetaPipeEntity_Cable;
+import miscutil.core.xmod.gregtech.api.metatileentity.implementations.GregtechMetaPipeEntity_Cable;
 
 public class GregtechConduits {
 	/**

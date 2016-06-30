@@ -6,10 +6,10 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.Utils;
-import miscutil.gregtech.api.enums.GregtechItemList;
-import miscutil.gregtech.api.enums.GregtechOrePrefixes;
-import miscutil.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
-import miscutil.gregtech.common.tileentities.generators.GregtechMetaTileEntityRocketFuelGenerator;
+import miscutil.core.xmod.gregtech.api.enums.GregtechItemList;
+import miscutil.core.xmod.gregtech.api.enums.GregtechOrePrefixes;
+import miscutil.core.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
+import miscutil.core.xmod.gregtech.common.tileentities.generators.GregtechMetaTileEntityRocketFuelGenerator;
 
 public class GregtechRocketFuelGenerator {
 	

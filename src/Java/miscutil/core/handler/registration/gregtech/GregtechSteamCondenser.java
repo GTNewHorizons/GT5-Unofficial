@@ -1,10 +1,10 @@
 package miscutil.core.handler.registration.gregtech;
 
 import miscutil.core.util.Utils;
-import miscutil.gregtech.api.enums.GregtechItemList;
-import miscutil.gregtech.api.metatileentity.implementations.GregtechMetaCondensor;
-import miscutil.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntityElectricBlastFurnace;
-import miscutil.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntityIronBlastFurnace;
+import miscutil.core.xmod.gregtech.api.enums.GregtechItemList;
+import miscutil.core.xmod.gregtech.api.metatileentity.implementations.GregtechMetaCondensor;
+import miscutil.core.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntityElectricBlastFurnace;
+import miscutil.core.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntityIronBlastFurnace;
 
 public class GregtechSteamCondenser
 {

@@ -36,7 +36,7 @@ import miscutil.core.recipe.ShapedRecipeObject;
 import miscutil.core.util.Utils;
 import miscutil.core.util.item.UtilsItems;
 import miscutil.core.util.recipe.UtilsRecipe;
-import miscutil.gregtech.common.items.MetaGeneratedGregtechItems;
+import miscutil.core.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;

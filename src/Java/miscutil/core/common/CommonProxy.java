@@ -17,7 +17,7 @@ import miscutil.core.tileentities.ModTileEntities;
 import miscutil.core.util.Utils;
 import miscutil.core.util.debug.DEBUG_INIT;
 import miscutil.core.util.player.PlayerCache;
-import miscutil.gregtech.common.Meta_GT_Proxy;
+import miscutil.core.xmod.gregtech.common.Meta_GT_Proxy;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;

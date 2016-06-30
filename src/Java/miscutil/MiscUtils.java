@@ -10,7 +10,7 @@ import miscutil.core.commands.CommandMath;
 import miscutil.core.common.CommonProxy;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
-import miscutil.gregtech.HANDLER_Gregtech;
+import miscutil.core.xmod.gregtech.HANDLER_Gregtech;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import cpw.mods.fml.common.FMLCommonHandler;
