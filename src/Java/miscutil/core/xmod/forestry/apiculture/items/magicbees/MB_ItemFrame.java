@@ -9,15 +9,16 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.apiculture.IBee;
+import forestry.api.apiculture.IBeeGenome;
 import forestry.api.apiculture.IBeeHousing;
 import forestry.api.apiculture.IBeeModifier;
 import forestry.api.apiculture.IHiveFrame;
 
-public class MB_ItemMagicHiveFrame extends Item implements IHiveFrame
+public class MB_ItemFrame extends Item implements IHiveFrame
 {
-	private MB_HiveFrameType type;
+	private MB_FrameType type;
 
-	public MB_ItemMagicHiveFrame(MB_HiveFrameType frameType)
+	public MB_ItemFrame(MB_FrameType frameType)
 	{
 		super();
 		this.type = frameType;
@@ -28,6 +29,7 @@ public class MB_ItemMagicHiveFrame extends Item implements IHiveFrame
 		GameRegistry.registerItem(this, "frame" + frameType.getName());
 	}
 	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister par1IconRegister)
 	{
@@ -48,7 +50,6 @@ public class MB_ItemMagicHiveFrame extends Item implements IHiveFrame
 		return frame;
 	}
 
-	@Override
 	public IBeeModifier getBeeModifier() {
 		return type;
 	}
@@ -57,6 +58,46 @@ public class MB_ItemMagicHiveFrame extends Item implements IHiveFrame
 	public boolean isBookEnchantable(ItemStack itemstack1, ItemStack itemstack2)
 	{
 		return false;
+	}
+	
+	public float getTerritoryModifier(IBeeGenome genome, float currentModifier) {
+		return type.getTerritoryModifier(genome, currentModifier);
+	}
+
+	public float getMutationModifier(IBeeGenome genome, IBeeGenome mate, float currentModifier) {
+		return type.getMutationModifier(genome, mate, currentModifier);
+	}
+
+	public float getLifespanModifier(IBeeGenome genome, IBeeGenome mate, float currentModifier) {
+		return type.getLifespanModifier(genome, mate, currentModifier);
+	}
+
+	public float getProductionModifier(IBeeGenome genome, float currentModifier) {
+		return type.getProductionModifier(genome, currentModifier);
+	}
+
+	public float getFloweringModifier(IBeeGenome genome, float currentModifier) {
+		return type.getFloweringModifier(genome, currentModifier);
+	}
+
+	public float getGeneticDecay(IBeeGenome genome, float currentModifier) {
+		return type.getGeneticDecay(genome, currentModifier);
+	}
+
+	public boolean isSealed() {
+		return type.isSealed();
+	}
+
+	public boolean isSelfLighted() {
+		return type.isSelfLighted();
+	}
+
+	public boolean isSunlightSimulated() {
+		return type.isSunlightSimulated();
+	}
+	
+	public boolean isHellish(){
+		return type.isHellish();
 	}
 
 }

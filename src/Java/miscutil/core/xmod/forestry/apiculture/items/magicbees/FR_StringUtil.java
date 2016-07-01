@@ -2,7 +2,7 @@ package miscutil.core.xmod.forestry.apiculture.items.magicbees;
 
 import net.minecraft.util.StatCollector;
 
-public class FR_StringManager
+public class FR_StringUtil
 {
 	public static String getLocalizedString(String key)
 	{
@@ -10,10 +10,7 @@ public class FR_StringManager
 		{
 			return StatCollector.translateToLocal(key);
 		}
-		else
-		{
-			return StatCollector.translateToFallback(key);
-		}
+		return StatCollector.translateToFallback(key);
 	}
 
 	public static String getLocalizedString(String key, Object... objects)
@@ -22,9 +19,6 @@ public class FR_StringManager
 		{
 			return String.format(StatCollector.translateToLocal(key), objects);
 		}
-		else
-		{
-			return String.format(StatCollector.translateToFallback(key), objects);
-		}
+		return String.format(StatCollector.translateToFallback(key), objects);
 	}
 }

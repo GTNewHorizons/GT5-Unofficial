@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="conduits/|miscutil/enderio/conduit/GregTech/|miscutil/gregtech/enums/Materials2.java|miscutil/gregtech/objects/GregMaterialStack.java|miscutil/core/util/Log.java|miscutil/enderio/|miscutil/core/item/tool/bloodsteel/|miscutil/core/block/reactor/|miscutil/gregtech/common/tools/GT_Tool_Turbine_Large.java|miscutil/gregtech/common/tools/GT_Tool_Turbine_Normal.java|miscutil/gregtech/common/tools/GT_Tool_Turbine_Small.java|miscutil/gregtech/api/enums/GregtechTextures.java|miscutil/gregtech/api/enums/GregtechTextureSet.java|miscutil/RTC/" kind="src" path="src/Java"/>
+	<classpathentry excluding="conduits/|miscutil/enderio/conduit/GregTech/|miscutil/gregtech/enums/Materials2.java|miscutil/gregtech/objects/GregMaterialStack.java|miscutil/core/util/Log.java|miscutil/enderio/|miscutil/core/item/tool/bloodsteel/|miscutil/core/block/reactor/|miscutil/gregtech/common/tools/GT_Tool_Turbine_Large.java|miscutil/gregtech/common/tools/GT_Tool_Turbine_Normal.java|miscutil/gregtech/common/tools/GT_Tool_Turbine_Small.java|miscutil/gregtech/api/enums/GregtechTextures.java|miscutil/gregtech/api/enums/GregtechTextureSet.java" kind="src" path="src/Java"/>
 	<classpathentry kind="src" path="src/resources"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Forge"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
@@ -15,6 +15,6 @@
 	<classpathentry kind="lib" path="libs/gregtech-5.8.59-dev.jar"/>
 	<classpathentry kind="lib" path="libs/CoFHCore-[1.7.10]3.0.3-303.jar"/>
 	<classpathentry kind="lib" path="libs/RaisinToastCore-0.1-dev.jar"/>
-	<classpathentry kind="lib" path="libs/forestry_1.7.10-4.2.2.50-deobf.jar"/>
+	<classpathentry kind="lib" path="libs/forestry_1.7.10-4.1.1.46-deobf.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

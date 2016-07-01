@@ -3,7 +3,7 @@ package miscutil.core.xmod.forestry.apiculture.items.magicbees;
 import forestry.api.apiculture.IBeeGenome;
 import forestry.api.apiculture.IBeeModifier;
 
-public enum MB_HiveFrameType implements IBeeModifier
+public enum MB_FrameType implements IBeeModifier
 {
 	ACCELERATED("Accelerated", 175, 1f, 2.5f, 0.9f, 1.8f, 1f),
 	VOID("Void", 20, 1f, 1f, 0.0001f, 10f, 1f);
@@ -22,11 +22,11 @@ public enum MB_HiveFrameType implements IBeeModifier
 	private final boolean isSunlit;
 	private final boolean isHellish;
 	
-	MB_HiveFrameType(String name, int damage, float territory, float mutation, float lifespan, float production, float geneticDecay) {
+	MB_FrameType(String name, int damage, float territory, float mutation, float lifespan, float production, float geneticDecay) {
 		this(name, damage, territory, mutation, lifespan, production, 1f, geneticDecay, false, false, false, false);
 	}
 	
-	MB_HiveFrameType(String name, int damage,
+	MB_FrameType(String name, int damage,
 						  float territory, float mutation, float lifespan, float production, float flowering, float geneticDecay,
 						  boolean sealed, boolean lit, boolean sunlit, boolean hellish)
 	{
@@ -52,7 +52,7 @@ public enum MB_HiveFrameType implements IBeeModifier
 	
 	public String getLocalizedName()
 	{
-		return FR_StringManager.getLocalizedString("frame." + this.frameName);
+		return FR_StringUtil.getLocalizedString("frame." + this.frameName);
 	}
 
 	@Override
