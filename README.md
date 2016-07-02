@@ -69,3 +69,23 @@ Some handy items, including a 3x3 pickaxe and an axe which cuts entire trees. (S
 			Railcraft  = true;
 			totalMods++;
 		}
+        if (Loader.isModLoaded("Growthcraft") == true){
+			Growthcraft  = true;
+			totalMods++;
+		}
+		if (Loader.isModLoaded("CoFHCore") == true){
+			CoFHCore  = true;
+			totalMods++;
+		}
+		if (Loader.isModLoaded("Forestry") == true){
+			Forestry  = true;
+			totalMods++;
+		}
+		if (Loader.isModLoaded("MagicBees") == true){
+			MagicBees  = true;
+			totalMods++;
+		}
+		if (Loader.isModLoaded("psychedelicraft") == true){
+			Psychedelicraft  = true;
+			totalMods++;
+		}
