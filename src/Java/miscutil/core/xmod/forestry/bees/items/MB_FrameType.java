@@ -1,4 +1,4 @@
-package miscutil.core.xmod.forestry.apiculture.items.magicbees;
+package miscutil.core.xmod.forestry.bees.items;
 
 import forestry.api.apiculture.IBeeGenome;
 import forestry.api.apiculture.IBeeModifier;
@@ -6,7 +6,8 @@ import forestry.api.apiculture.IBeeModifier;
 public enum MB_FrameType implements IBeeModifier
 {
 	ACCELERATED("Accelerated", 175, 1f, 2.5f, 0.9f, 1.8f, 1f),
-	VOID("Void", 20, 1f, 1f, 0.0001f, 10f, 1f);
+	VOID("Void", 20, 1f, 1f, 0.0001f, 10f, 1f),
+	MUTAGENIC("Mutagenic", 3, 1f, 10f, 0.0001f, 10f, 1f);
 
 	private final String frameName;
 	public final int maxDamage;

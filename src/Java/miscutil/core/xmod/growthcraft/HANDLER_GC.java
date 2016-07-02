@@ -3,7 +3,7 @@ package miscutil.core.xmod.growthcraft;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.xmod.growthcraft.booze.Register_Booze;
 
-public class HANDLER_Growthcraft {
+public class HANDLER_GC {
 	
 
 	  //Run me during Pre-Init

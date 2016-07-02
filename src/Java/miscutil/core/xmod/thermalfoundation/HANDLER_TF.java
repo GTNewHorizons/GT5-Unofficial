@@ -6,7 +6,7 @@ import miscutil.core.xmod.thermalfoundation.fluid.TF_Fluids;
 import miscutil.core.xmod.thermalfoundation.item.TF_Items;
 import miscutil.core.xmod.thermalfoundation.recipe.TF_Gregtech_Recipes;
 
-public class HANDLER_ThermalFoundation {
+public class HANDLER_TF {
 
 	public static void preInit(){		
 		if (LoadedMods.CoFHCore){

@@ -4,7 +4,7 @@ import miscutil.core.lib.LoadedMods;
 import miscutil.core.xmod.psychedelicraft.fluids.PS_Fluids;
 
 
-public class HANDLER_Psychedelicraft {
+public class HANDLER_Psych {
 
 	public static void preInit(){
 		if (LoadedMods.Psychedelicraft){

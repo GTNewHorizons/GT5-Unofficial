@@ -1,9 +1,9 @@
 package miscutil.core.xmod.forestry;
 
 import miscutil.core.lib.LoadedMods;
-import miscutil.core.xmod.forestry.apiculture.items.FR_ItemRegistry;
+import miscutil.core.xmod.forestry.bees.items.FR_ItemRegistry;
 
-public class HANDLER_Forestry {
+public class HANDLER_FR {
 
 	public static void preInit(){		
 		if (LoadedMods.Forestry){

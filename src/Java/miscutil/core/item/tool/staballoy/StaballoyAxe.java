@@ -23,10 +23,13 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class StaballoyAxe extends ItemAxe{
 	public String mat;
@@ -260,5 +263,16 @@ public class StaballoyAxe extends ItemAxe{
 			}
 		}
 		return super.onBlockDestroyed(itm, wld, blk, x, y, z, plr);
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public EnumRarity getRarity(ItemStack par1ItemStack){
+		return EnumRarity.rare;
+	}
+
+	@Override
+	public boolean hasEffect(ItemStack par1ItemStack){
+		return true;
 	}
 }

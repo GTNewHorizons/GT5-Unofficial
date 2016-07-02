@@ -9,12 +9,15 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class StaballoyPickaxe extends ItemPickaxe{
 
@@ -276,6 +279,17 @@ public class StaballoyPickaxe extends ItemPickaxe{
 		thisPickaxe = stack;	
 		list.add(EnumChatFormatting.GOLD+"Mines a 3x3 area in the direction you are facing.");
 		super.addInformation(stack, aPlayer, list, bool);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public EnumRarity getRarity(ItemStack par1ItemStack){
+		return EnumRarity.rare;
+	}
+
+	@Override
+	public boolean hasEffect(ItemStack par1ItemStack){
+		return true;
 	}
 
 

@@ -1,4 +1,4 @@
-package miscutil.core.xmod.forestry.apiculture.items.magicbees;
+package miscutil.core.xmod.forestry.bees.items;
 
 import net.minecraft.util.StatCollector;
 

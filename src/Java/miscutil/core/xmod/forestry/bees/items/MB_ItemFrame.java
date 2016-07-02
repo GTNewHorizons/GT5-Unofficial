@@ -1,8 +1,9 @@
-package miscutil.core.xmod.forestry.apiculture.items.magicbees;
+package miscutil.core.xmod.forestry.bees.items;
 
 import miscutil.core.creative.AddToCreativeTab;
 import miscutil.core.lib.CORE;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -17,8 +18,14 @@ import forestry.api.apiculture.IHiveFrame;
 public class MB_ItemFrame extends Item implements IHiveFrame
 {
 	private MB_FrameType type;
+	private EnumRarity rarity_value = EnumRarity.uncommon;
 
 	public MB_ItemFrame(MB_FrameType frameType)
+	{
+		this(frameType, EnumRarity.uncommon);
+	}
+	
+	public MB_ItemFrame(MB_FrameType frameType, EnumRarity rarity)
 	{
 		super();
 		this.type = frameType;
@@ -26,6 +33,7 @@ public class MB_ItemFrame extends Item implements IHiveFrame
 		this.setMaxStackSize(1);
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
 		this.setUnlocalizedName("frame" + frameType.getName());
+		this.rarity_value = rarity;
 		GameRegistry.registerItem(this, "frame" + frameType.getName());
 	}
 	
@@ -48,6 +56,21 @@ public class MB_ItemFrame extends Item implements IHiveFrame
 		}
 
 		return frame;
+	}
+	
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public EnumRarity getRarity(ItemStack par1ItemStack){
+		return rarity_value;
+	}
+	
+	@Override
+	public boolean hasEffect(ItemStack par1ItemStack){
+		if (rarity_value == EnumRarity.uncommon){
+			return false;
+		}
+		return true;
 	}
 
 	public IBeeModifier getBeeModifier() {

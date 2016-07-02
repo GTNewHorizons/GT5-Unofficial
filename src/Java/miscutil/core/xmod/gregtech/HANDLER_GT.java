@@ -4,7 +4,7 @@ import gregtech.api.util.GT_Config;
 import miscutil.core.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import miscutil.core.xmod.gregtech.common.blocks.fluid.GregtechFluidHandler;
 
-public class HANDLER_Gregtech {
+public class HANDLER_GT {
 	
 	public static GT_Config mMaterialProperties = null;
 
