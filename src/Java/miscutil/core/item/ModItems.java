@@ -2,7 +2,6 @@ package miscutil.core.item;
 import static miscutil.core.creative.AddToCreativeTab.tabMachines;
 import static miscutil.core.creative.AddToCreativeTab.tabMisc;
 import static miscutil.core.lib.CORE.LOAD_ALL_CONTENT;
-import gregtech.api.GregTech_API;
 import miscutil.core.creative.AddToCreativeTab;
 import miscutil.core.item.base.CoreItem;
 import miscutil.core.item.effects.RarityUncommon;
@@ -17,7 +16,6 @@ import miscutil.core.util.Utils;
 import miscutil.core.util.debug.DEBUG_INIT;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 public final class ModItems {
@@ -282,10 +280,11 @@ Gold Tool: 22*/
 		GameRegistry.registerItem(itemHeliumBlob, "itemHeliumBlob");
 				
 		itemPLACEHOLDER_Circuit = new Item().setUnlocalizedName("itemPLACEHOLDER_Circuit").setTextureName(CORE.MODID + ":itemPLACEHOLDER_Circuit");
+		GameRegistry.registerItem(itemPLACEHOLDER_Circuit, "itemPLACEHOLDER_Circuit");
 		//Try some New Tools from GT
 		//GT_Tool_Item x = null;
 		//x = GregTech_API.constructHardHammerItem("rockBelter", "Sandstone Hammer", 5000 /**Max Damage**/,50 /**Entity Damage**/);
 		//Item hardHammer = itemSandstoneHammer.
-		GregTech_API.registerHardHammer(new ItemStack(itemSandstoneHammer, 1));
+		//GregTech_API.registerHardHammer(new ItemStack(itemSandstoneHammer, 1));
 	}
 }

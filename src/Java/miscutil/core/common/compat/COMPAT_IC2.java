@@ -2,6 +2,7 @@ package miscutil.core.common.compat;
 
 
 import static miscutil.core.handler.COMPAT_HANDLER.RemoveRecipeQueue;
+import miscutil.core.lib.LoadedMods;
 import miscutil.core.recipe.ShapedRecipeObject;
 import miscutil.core.util.item.UtilsItems;
 import net.minecraft.item.ItemStack;
@@ -33,6 +34,7 @@ public class COMPAT_IC2 {
 	}
 	
 	private static final void run(){
+		if (LoadedMods.Gregtech){
 		//Fuck these right off.
 		RemoveRecipeQueue.add("IC2:itemCable");
 		RemoveRecipeQueue.add("IC2:itemCable:1");
@@ -47,6 +49,7 @@ public class COMPAT_IC2 {
 		
 		//AddRecipeQueue.add(Cropnalyzer);
 		//AddRecipeQueue.add(SolarHelmet);
+		}
 	}
 	
 }
