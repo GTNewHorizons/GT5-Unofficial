@@ -5,7 +5,6 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.GT_RenderedTexture;
 import miscutil.core.lib.CORE;
-import miscutil.core.util.Utils;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
@@ -138,28 +137,28 @@ public class GregtechTextures {
         public void run() {
             mIcon = GregTech_API.sItemIcons.registerIcon(CORE.MODID+":" + "iconsets/" + this);
             if (mIcon != null){
-            	Utils.LOG_INFO("Found Texture at "+CORE.MODID+":" + "iconsets/" + this);
+            	//Utils.LOG_INFO("Found Texture at "+CORE.MODID+":" + "iconsets/" + this);
             }
             else if (mIcon == null){
             	mIcon = GregTech_API.sItemIcons.registerIcon(CORE.RES_PATH_ITEM + "iconsets/" + this);
             	 if (mIcon != null){
-                 	Utils.LOG_INFO("Found Texture at "+CORE.RES_PATH_ITEM + "iconsets/" + this);
+                 	//Utils.LOG_INFO("Found Texture at "+CORE.RES_PATH_ITEM + "iconsets/" + this);
                  }
             	 else {
-            		 Utils.LOG_INFO("Did not find Texture at "+CORE.RES_PATH_ITEM + "iconsets/" + this);
+            		//Utils.LOG_INFO("Did not find Texture at "+CORE.RES_PATH_ITEM + "iconsets/" + this);
             	 }
             }
             mOverlay = GregTech_API.sItemIcons.registerIcon(CORE.MODID+":" + "iconsets/" + this + "_OVERLAY");
             if (mOverlay != null){
-            	Utils.LOG_INFO("Found Texture at "+CORE.MODID+":" + "iconsets/" + this+ "_OVERLAY");
+            	//Utils.LOG_INFO("Found Texture at "+CORE.MODID+":" + "iconsets/" + this+ "_OVERLAY");
             }
             else if (mOverlay == null){
             	mOverlay = GregTech_API.sItemIcons.registerIcon(CORE.RES_PATH_ITEM + "iconsets/" + this+ "_OVERLAY");
             	 if (mOverlay != null){
-                 	Utils.LOG_INFO("Found Texture at "+CORE.RES_PATH_ITEM + "iconsets/" + this+ "_OVERLAY");
+                 	//Utils.LOG_INFO("Found Texture at "+CORE.RES_PATH_ITEM + "iconsets/" + this+ "_OVERLAY");
                  }
             	 else {
-            		 Utils.LOG_INFO("Did not find Texture at "+CORE.RES_PATH_ITEM + "iconsets/" + this+ "_OVERLAY");
+            		//Utils.LOG_INFO("Did not find Texture at "+CORE.RES_PATH_ITEM + "iconsets/" + this+ "_OVERLAY");
             	 }
             }
         }

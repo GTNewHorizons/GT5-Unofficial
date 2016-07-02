@@ -318,7 +318,7 @@ extends GregtechMeta_MultiBlockBase {
 							if ((tTileEntity != null) && (tTileEntity.getMetaTileEntity() != null)) {
 								if (tTileEntity.getXCoord() == aBaseMetaTileEntity.getXCoord() && tTileEntity.getYCoord() == aBaseMetaTileEntity.getYCoord() && tTileEntity.getZCoord() == (aBaseMetaTileEntity.getZCoord()+2)) {
 									if ((tTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Maintenance)) {
-										Utils.LOG_INFO("MAINT HATCH IN CORRECT PLACE");
+										//Utils.LOG_INFO("MAINT HATCH IN CORRECT PLACE");
 										this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) tTileEntity.getMetaTileEntity());
 										((GT_MetaTileEntity_Hatch) tTileEntity.getMetaTileEntity()).mMachineBlock = getCasingTextureIndex();
 									} else {
@@ -326,7 +326,7 @@ extends GregtechMeta_MultiBlockBase {
 									}
 								}	
 								else {
-									Utils.LOG_INFO("MAINT HATCH IN WRONG PLACE");
+									//Utils.LOG_INFO("MAINT HATCH IN WRONG PLACE");
 								}
 							}
 

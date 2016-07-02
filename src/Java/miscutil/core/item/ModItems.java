@@ -282,7 +282,6 @@ Gold Tool: 22*/
 		GameRegistry.registerItem(itemHeliumBlob, "itemHeliumBlob");
 				
 		itemPLACEHOLDER_Circuit = new Item().setUnlocalizedName("itemPLACEHOLDER_Circuit").setTextureName(CORE.MODID + ":itemPLACEHOLDER_Circuit");
-		GameRegistry.registerItem(itemPLACEHOLDER_Circuit, "itemPLACEHOLDER_Circuit");
 		//Try some New Tools from GT
 		//GT_Tool_Item x = null;
 		//x = GregTech_API.constructHardHammerItem("rockBelter", "Sandstone Hammer", 5000 /**Max Damage**/,50 /**Entity Damage**/);

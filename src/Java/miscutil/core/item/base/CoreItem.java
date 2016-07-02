@@ -60,7 +60,7 @@ public class CoreItem extends Item
 	//5	
 	public CoreItem(String unlocalizedName, CreativeTabs creativeTab, int stackSize, int maxDmg, EnumRarity regRarity, String description, EnumChatFormatting colour, boolean Effect)
 	{
-		setUnlocalizedName(CORE.MODID + "_" + unlocalizedName);
+		setUnlocalizedName(unlocalizedName);
 		setTextureName(CORE.MODID + ":" + unlocalizedName);
 		setCreativeTab(creativeTab);
 		setMaxStackSize(stackSize);
