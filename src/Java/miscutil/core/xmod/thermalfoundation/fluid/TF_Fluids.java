@@ -1,5 +1,6 @@
 package miscutil.core.xmod.thermalfoundation.fluid;
 
+import miscutil.core.util.Utils;
 import miscutil.core.xmod.thermalfoundation.item.TF_Items;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.init.Items;
@@ -16,20 +17,27 @@ public class TF_Fluids
 
 	public static void preInit()
 	{
+		Utils.LOG_INFO("Loading TF Fluids");
+		Fluid pyrotheum = FluidRegistry.getFluid("pyrotheum");
+		Fluid cryotheum = FluidRegistry.getFluid("cryotheum");
 		
-		if (FluidRegistry.getFluid("pyrotheum") == null){
+		if (pyrotheum == null){
+			Utils.LOG_INFO("Registering Blazing Pyrotheum as it does not exist.");
 			fluidPyrotheum = new Fluid("pyrotheum").setLuminosity(15).setDensity(2000).setViscosity(1200).setTemperature(4000).setRarity(EnumRarity.rare);
 			registerFluid(fluidPyrotheum, "pyrotheum");
 		}
 		else {
-			fluidPyrotheum = FluidRegistry.getFluid("pyrotheum");
+			Utils.LOG_INFO("Registering Blazing Pyrotheum as it an already existing Fluid.");
+			fluidPyrotheum = pyrotheum;
 		}
-		if (FluidRegistry.getFluid("cryotheum") == null){
+		if (cryotheum == null){
+			Utils.LOG_INFO("Registering Gelid Cryotheum as it does not exist.");
 			fluidCryotheum = new Fluid("cryotheum").setLuminosity(0).setDensity(4000).setViscosity(3000).setTemperature(50).setRarity(EnumRarity.rare);
 			registerFluid(fluidCryotheum, "cryotheum");	
 		}
 		else {
-			fluidCryotheum = FluidRegistry.getFluid("cryotheum");
+			Utils.LOG_INFO("Registering Gelid Cryotheum as it an already existing Fluid.");
+			fluidCryotheum = cryotheum;
 		}
 	}
 
