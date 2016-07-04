@@ -16,11 +16,22 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.IGuiHandler;
+import cpw.mods.fml.common.network.NetworkRegistry;
 
 public class GuiHandler implements IGuiHandler {
 
 	private static final int GUI1 = 0;      //Nuclear Helium Gen.
 	private static final int GUI2 = 1;      //Energy Charger
+	
+	
+	public static void init(){ 	
+		 	
+		 Utils.LOG_INFO("Registering GUIs."); 	
+		 NetworkRegistry.INSTANCE.registerGuiHandler(MiscUtils.instance, new GuiHandler()); 	
+		 //Register GuiHandler 	
+		 //NetworkRegistry.INSTANCE.registerGuiHandler(MiscUtils.instance, new GuiHandler()); 	
+		 }
+	
 
 	@Override //ContainerModTileEntity
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {

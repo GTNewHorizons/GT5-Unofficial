@@ -6,9 +6,9 @@ import java.util.Iterator;
 
 import miscutil.core.block.ModBlocks;
 import miscutil.core.creative.AddToCreativeTab;
-import miscutil.core.gui.ModGUI;
 import miscutil.core.handler.COMPAT_HANDLER;
 import miscutil.core.handler.COMPAT_IntermodStaging;
+import miscutil.core.handler.GuiHandler;
 import miscutil.core.handler.events.PickaxeBlockBreakEventHandler;
 import miscutil.core.item.ModItems;
 import miscutil.core.lib.CORE;
@@ -96,7 +96,7 @@ public class CommonProxy {
 	}
 
 	public void registerNetworkStuff(){
-		ModGUI.init();
+		GuiHandler.init();
 	}
 
 	public void registerTileEntities(){
