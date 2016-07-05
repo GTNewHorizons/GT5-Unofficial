@@ -85,7 +85,7 @@ extends GregtechMetaCasingBlocksAbstract {
 			}
 			//return Textures.BlockIcons.MACHINECASINGS_SIDE[aMeta].getIcon();
 		}
-		return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+		return Textures.BlockIcons.MACHINE_CASING_TURBINE.getIcon();
 	}
 
 	/*@Override

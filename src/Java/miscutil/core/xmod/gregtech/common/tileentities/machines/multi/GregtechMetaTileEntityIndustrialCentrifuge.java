@@ -97,12 +97,10 @@ extends GregtechMeta_MultiBlockBase {
 	ArrayList<ItemStack> tInputList = getStoredInputs();
 	GT_Recipe mLastRecipe;
 
-	/*@Override
-	public boolean checkRecipe(ItemStack aStack) {
-		long tVoltage = getMaxInputVoltage();
-		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
-		GT_Recipe.GT_Recipe_Map map = getRecipeMap();
+	@Override
+	public boolean checkRecipe(ItemStack aStack) {
+		ArrayList<ItemStack> tInputList = getStoredInputs();
 		for (int i = 0; i < tInputList.size() - 1; i++) {
 			for (int j = i + 1; j < tInputList.size(); j++) {
 				if (GT_Utility.areStacksEqual((ItemStack) tInputList.get(i), (ItemStack) tInputList.get(j))) {
@@ -131,27 +129,11 @@ extends GregtechMeta_MultiBlockBase {
 			}
 		}
 		FluidStack[] tFluids = (FluidStack[]) Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tInputList.size()]), 0, 1);
-		if (tInputList.size() > 0 || tFluids.length > 0) {
-			GT_Recipe tRecipe = map.findRecipe(getBaseMetaTileEntity(), mLastRecipe, false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
-			if (tRecipe != null) {
-				if (tRecipe.mFluidInputs != null) {
-
-				}
-				mLastRecipe = tRecipe;
-				this.mEUt = 0;
-				this.mOutputItems = null;
-				this.mOutputFluids = null;
-				int machines = Math.min(16, mInventory[1].stackSize);
-				int i = 0;
-				for (; i < machines; i++) {
-					if (!tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
-						if (i == 0) {
-							return false;
-						}
-						break;
-					}
-				}
-				this.mMaxProgresstime = tRecipe.mDuration;
+		if (tInputList.size() > 0) {
+			long tVoltage = getMaxInputVoltage();
+			byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+			GT_Recipe tRecipe = GregtechRecipe.Gregtech_Recipe_Map.sCokeOvenRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
+			if ((tRecipe != null) && (this.mLevel >= tRecipe.mSpecialValue) && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
 				this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
 				this.mEfficiencyIncrease = 10000;
 				if (tRecipe.mEUt <= 16) {
@@ -162,124 +144,21 @@ extends GregtechMeta_MultiBlockBase {
 					this.mMaxProgresstime = tRecipe.mDuration;
 					while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
 						this.mEUt *= 4;
-						this.mMaxProgresstime /= 4;
+						this.mMaxProgresstime /= 2;
 					}
 				}
-				this.mEUt *= i;
 				if (this.mEUt > 0) {
 					this.mEUt = (-this.mEUt);
 				}
-				ItemStack[] tOut = new ItemStack[tRecipe.mOutputs.length];
-				for (int h = 0; h < tRecipe.mOutputs.length; h++) {
-					tOut[h] = tRecipe.getOutput(h).copy();
-					tOut[h].stackSize = 0;
-				}
-				FluidStack tFOut = null;
-				if (tRecipe.getFluidOutput(0) != null) tFOut = tRecipe.getFluidOutput(0).copy();
-				for (int f = 0; f < tOut.length; f++) {
-					if (tRecipe.mOutputs[f] != null && tOut[f] != null) {
-						for (int g = 0; g < i; g++) {
-							if (getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(f))
-								tOut[f].stackSize += tRecipe.mOutputs[f].stackSize;
-						}
-					}
-				}
-				if (tFOut != null) {
-					int tSize = tFOut.amount;
-					tFOut.amount = tSize * i;
-				}
 				this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-				List<ItemStack> overStacks = new ArrayList<ItemStack>();
-				for (int f = 0; f < tOut.length; f++) {
-					if (tOut[f].getMaxStackSize() < tOut[f].stackSize) {
-						while (tOut[f].getMaxStackSize() < tOut[f].stackSize) {
-							ItemStack tmp = tOut[f].copy();
-							tmp.stackSize = tmp.getMaxStackSize();
-							tOut[f].stackSize = tOut[f].stackSize - tOut[f].getMaxStackSize();
-							overStacks.add(tmp);
-						}
-					}
-				}
-				if (overStacks.size() > 0) {
-					ItemStack[] tmp = new ItemStack[overStacks.size()];
-					tmp = overStacks.toArray(tmp);
-					tOut = ArrayUtils.addAll(tOut, tmp);
-				}
-				List<ItemStack> tSList = new ArrayList<ItemStack>();
-				for (ItemStack tS : tOut) {
-					if (tS.stackSize > 0) tSList.add(tS);
-				}
-				tOut = tSList.toArray(new ItemStack[tSList.size()]);
-				this.mOutputItems = tOut;
-				this.mOutputFluids = new FluidStack[]{tFOut};
+				this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0)};
+				this.mOutputFluids = new FluidStack[]{tRecipe.getFluidOutput(0)};
 				updateSlots();
 				return true;
 			}
 		}
 		return false;
-	}*/
-	
-	 @Override
-	    public boolean checkRecipe(ItemStack aStack) {
-	        ArrayList<ItemStack> tInputList = getStoredInputs();
-	        for (int i = 0; i < tInputList.size() - 1; i++) {
-	            for (int j = i + 1; j < tInputList.size(); j++) {
-	                if (GT_Utility.areStacksEqual((ItemStack) tInputList.get(i), (ItemStack) tInputList.get(j))) {
-	                    if (((ItemStack) tInputList.get(i)).stackSize >= ((ItemStack) tInputList.get(j)).stackSize) {
-	                        tInputList.remove(j--);
-	                    } else {
-	                        tInputList.remove(i--);
-	                        break;
-	                    }
-	                }
-	            }
-	        }
-	        ItemStack[] tInputs = (ItemStack[]) Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, 2);
-
-	        ArrayList<FluidStack> tFluidList = getStoredFluids();
-	        for (int i = 0; i < tFluidList.size() - 1; i++) {
-	            for (int j = i + 1; j < tFluidList.size(); j++) {
-	                if (GT_Utility.areFluidsEqual((FluidStack) tFluidList.get(i), (FluidStack) tFluidList.get(j))) {
-	                    if (((FluidStack) tFluidList.get(i)).amount >= ((FluidStack) tFluidList.get(j)).amount) {
-	                        tFluidList.remove(j--);
-	                    } else {
-	                        tFluidList.remove(i--);
-	                        break;
-	                    }
-	                }
-	            }
-	        }
-	        FluidStack[] tFluids = (FluidStack[]) Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tInputList.size()]), 0, 1);
-	        if (tInputList.size() > 0) {
-	            long tVoltage = getMaxInputVoltage();
-	            byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-	            GT_Recipe tRecipe = GregtechRecipe.Gregtech_Recipe_Map.sCokeOvenRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
-	            if ((tRecipe != null) && (this.mLevel >= tRecipe.mSpecialValue) && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
-	                this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-	                this.mEfficiencyIncrease = 10000;
-	                if (tRecipe.mEUt <= 16) {
-	                    this.mEUt = (tRecipe.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
-	                    this.mMaxProgresstime = (tRecipe.mDuration / (1 << tTier - 1));
-	                } else {
-	                    this.mEUt = tRecipe.mEUt;
-	                    this.mMaxProgresstime = tRecipe.mDuration;
-	                    while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-	                        this.mEUt *= 4;
-	                        this.mMaxProgresstime /= 2;
-	                    }
-	                }
-	                if (this.mEUt > 0) {
-	                    this.mEUt = (-this.mEUt);
-	                }
-	                this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-	                this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0)};
-	                this.mOutputFluids = new FluidStack[]{tRecipe.getFluidOutput(0)};
-	                updateSlots();
-	                return true;
-	            }
-	        }
-	        return false;
-	    }
+	}
 
 	@SuppressWarnings("static-method")
 	public Block getCasingBlock() {
@@ -451,8 +330,8 @@ extends GregtechMeta_MultiBlockBase {
 		return false;
 	}
 
-	@Override
+	/*@Override
 	public boolean isCorrectMachinePart(ItemStack aStack) {
 		return true;
-	}
+	}*/
 }

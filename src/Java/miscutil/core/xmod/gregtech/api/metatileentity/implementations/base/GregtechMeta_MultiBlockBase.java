@@ -323,7 +323,7 @@ public abstract class GregtechMeta_MultiBlockBase extends MetaTileEntity {
     /**
      * Checks if this is a Correct Machine Part for this kind of Machine (Turbine Rotor for example)
      */
-    public abstract boolean isCorrectMachinePart(ItemStack aStack);
+    //public abstract boolean isCorrectMachinePart(ItemStack aStack);
 
     /**
      * Checks the Recipe

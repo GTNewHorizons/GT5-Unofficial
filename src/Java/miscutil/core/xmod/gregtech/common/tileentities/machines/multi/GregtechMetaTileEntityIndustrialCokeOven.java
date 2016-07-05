@@ -5,7 +5,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -15,6 +14,7 @@ import java.util.Arrays;
 
 import miscutil.core.block.ModBlocks;
 import miscutil.core.xmod.gregtech.api.gui.GUI_MultiMachine;
+import miscutil.core.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import miscutil.core.xmod.gregtech.api.util.GregtechRecipe;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -22,7 +22,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntityIndustrialCokeOven
-        extends GT_MetaTileEntity_MultiBlockBase {
+        extends GregtechMeta_MultiBlockBase {
     private int mLevel = 0;
 
     public GregtechMetaTileEntityIndustrialCokeOven(int aID, String aName, String aNameRegional) {
@@ -72,10 +72,10 @@ public class GregtechMetaTileEntityIndustrialCokeOven
         
     }
 
-    @Override
+   /* @Override
 	public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
-    }
+    }*/
 
     @Override
 	public boolean isFacingValid(byte aFacing) {
@@ -251,10 +251,10 @@ public class GregtechMetaTileEntityIndustrialCokeOven
         return 0;
     }
 
-    @Override
+   /* @Override
 	public int getDamageToComponent(ItemStack aStack) {
         return 0;
-    }
+    }*/
 
     @Override
 	public int getAmountOfOutputs() {
