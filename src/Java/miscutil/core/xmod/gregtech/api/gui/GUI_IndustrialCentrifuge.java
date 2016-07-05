@@ -9,6 +9,7 @@ import java.util.List;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -21,31 +22,48 @@ public class GUI_IndustrialCentrifuge extends GT_GUIContainerMetaTile_Machine {
 
 	String mName = "";
 	private Object tempStack;
-	private List itemSlots;
+	private List<?> itemSlots;
 	private short counter = 0;
 
 	public GUI_IndustrialCentrifuge(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile) {
 		super(new CONTAINER_IndustrialCentrifuge(aInventoryPlayer, aTileEntity), CORE.RES_PATH_GUI + (aTextureFile == null ? "MultiblockDisplay" : aTextureFile));
 		mName = aName;
 	}
+	
+	private boolean getValidInventoryItem(){
+		if (itemSlots != null){
+		ItemStack invCheck = (ItemStack) itemSlots.get(0);
+		if (invCheck == null){
+			return false;
+		}
+		else if (invCheck != null){
+			return true;
+		}
+		}		
+		return false;
+	}
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		fontRendererObj.drawString(mName, 10, 8, 16448255);
-
+		counter++;
 		if (mContainer != null) {
 			try {
-				counter++;
-				if (tempStack == null || counter > 200){
+				
+				if (tempStack == null || counter > 500){
+					itemSlots = null;
 					if (itemSlots == null){
 						itemSlots = ((CONTAINER_IndustrialCentrifuge) mContainer).inventorySlots;
 					}
 					if (itemSlots != null){
-						if (itemSlots.get(0) == null){
-							fontRendererObj.drawString("No Item in item slot.", 10, 48, 16448255);
+						if (getValidInventoryItem()){
+							tempStack = (ItemStack) itemSlots.get(0);
+							fontRendererObj.drawString("Item in item slot.", 10, 48, 16448255);
 						}
 						else {
-							tempStack = itemSlots.get(0);
+							fontRendererObj.drawString("No Item in item slot.", 10, 48, 16448255);
+							tempStack = null;
+							itemSlots = null;
 							counter = 0;
 						}
 					} 
@@ -55,7 +73,7 @@ public class GUI_IndustrialCentrifuge extends GT_GUIContainerMetaTile_Machine {
 				if (tempStack != null){
 					fontRendererObj.drawString("Item in item slot.", 10, 48, 16448255);
 				}
-
+				
 			}
 			catch (Throwable e){
 				Utils.LOG_INFO("NULL");
