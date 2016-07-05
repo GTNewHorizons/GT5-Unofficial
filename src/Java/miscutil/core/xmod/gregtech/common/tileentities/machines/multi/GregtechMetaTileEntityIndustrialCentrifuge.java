@@ -1,5 +1,6 @@
 package miscutil.core.xmod.gregtech.common.tileentities.machines.multi;
 
+import static miscutil.core.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks.GTID;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -70,7 +71,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex + 1], aFacing == aSide ? aActive ? new GregtechRenderedTexture(Textures.BlockIcons.LARGETURBINE_ACTIVE5) : new GregtechRenderedTexture(Textures.BlockIcons.LARGETURBINE5) : Textures.BlockIcons.CASING_BLOCKS[57]};
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex + 1], aFacing == aSide ? aActive ? new GregtechRenderedTexture(Textures.BlockIcons.LARGETURBINE_ACTIVE5) : new GregtechRenderedTexture(Textures.BlockIcons.LARGETURBINE5) : Textures.BlockIcons.CASING_BLOCKS[1]};
 	}
 
 	@Override
@@ -312,7 +313,7 @@ extends GregtechMeta_MultiBlockBase {
 
 						IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
 						//Utils.LOG_INFO("X:"+tTileEntity.getXCoord()+" Y:"+tTileEntity.getYCoord()+" Z:"+tTileEntity.getZCoord());
-						if ((!addMaintenanceToMachineList(tTileEntity, 57)) && (!addInputToMachineList(tTileEntity, 57)) && (!addOutputToMachineList(tTileEntity, 57)) && (!addEnergyInputToMachineList(tTileEntity, 57))) {
+						if ((!addMaintenanceToMachineList(tTileEntity, GTID+0)) && (!addInputToMachineList(tTileEntity, GTID+0)) && (!addOutputToMachineList(tTileEntity, GTID+0)) && (!addEnergyInputToMachineList(tTileEntity, GTID+0))) {
 
 							//Maintenance Hatch
 							if ((tTileEntity != null) && (tTileEntity.getMetaTileEntity() != null)) {
@@ -448,5 +449,10 @@ extends GregtechMeta_MultiBlockBase {
 
 
 		return false;
+	}
+
+	@Override
+	public boolean isCorrectMachinePart(ItemStack aStack) {
+		return true;
 	}
 }

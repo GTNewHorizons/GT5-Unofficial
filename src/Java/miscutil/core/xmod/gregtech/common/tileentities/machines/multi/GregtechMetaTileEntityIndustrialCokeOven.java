@@ -1,5 +1,6 @@
 package miscutil.core.xmod.gregtech.common.tileentities.machines.multi;
 
+import static miscutil.core.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks.GTID;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -55,9 +56,9 @@ public class GregtechMetaTileEntityIndustrialCokeOven
     @Override
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[58], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER)};
+            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[GTID+1], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER)};
         }
-        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[58]};
+        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[GTID+1]};
     }
 
     @Override
@@ -178,7 +179,7 @@ public class GregtechMetaTileEntityIndustrialCokeOven
         if (!aBaseMetaTileEntity.getAirOffset(xDir, 1, zDir)) {
             return false;
         }
-        addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 2, zDir), 1);
+        addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 2, zDir), GTID+1);
 
         byte tUsedMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, 1, zDir);
         switch (tUsedMeta) {
@@ -226,7 +227,7 @@ public class GregtechMetaTileEntityIndustrialCokeOven
                 	zr = aBaseMetaTileEntity.getZCoord();
                 	//Utils.LOG_WARNING("STEP 3 - x ["+xr+"]  y ["+yr+"]  z ["+zr+"]");
                     IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 0, zDir + j);
-                    if ((!addMaintenanceToMachineList(tTileEntity, 1)) && (!addInputToMachineList(tTileEntity, 1)) && (!addOutputToMachineList(tTileEntity, 1)) && (!addEnergyInputToMachineList(tTileEntity, 1))) {
+                    if ((!addMaintenanceToMachineList(tTileEntity, GTID+1)) && (!addInputToMachineList(tTileEntity, GTID+1)) && (!addOutputToMachineList(tTileEntity, GTID+1)) && (!addEnergyInputToMachineList(tTileEntity, GTID+1))) {
                         if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j) != ModBlocks.blockCasingsMisc) {
                             return false;
                         }
