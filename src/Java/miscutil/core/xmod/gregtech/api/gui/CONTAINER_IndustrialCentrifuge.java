@@ -2,7 +2,6 @@ package miscutil.core.xmod.gregtech.api.gui;
 
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import miscutil.core.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntityIndustrialCentrifuge;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 
@@ -12,12 +11,6 @@ import net.minecraft.inventory.Slot;
  * The Container I use for all my Basic Machines
  */
 public class CONTAINER_IndustrialCentrifuge extends GT_ContainerMetaTile_Machine {
-	
-	public double recipesCompleted = getRecipesCompleted();
-	
-	private double getRecipesCompleted(){
-		return ((GregtechMetaTileEntityIndustrialCentrifuge)this.mTileEntity.getMetaTileEntity()).recipesComplete;
-	}
 	
     public CONTAINER_IndustrialCentrifuge(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
     	

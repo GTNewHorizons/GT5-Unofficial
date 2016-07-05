@@ -3,12 +3,8 @@ package miscutil.core.xmod.gregtech.api.gui;
 
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-
-import java.util.List;
-
 import miscutil.core.lib.CORE;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
@@ -20,31 +16,11 @@ import net.minecraft.item.ItemStack;
 public class GUI_IndustrialCentrifuge extends GT_GUIContainerMetaTile_Machine {
 
 	String mName = "";
-	private Object tempStack;
-	private List<?> itemSlots;
 	private short counter = 0;
 
 	public GUI_IndustrialCentrifuge(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile) {
 		super(new CONTAINER_IndustrialCentrifuge(aInventoryPlayer, aTileEntity), CORE.RES_PATH_GUI + (aTextureFile == null ? "MultiblockDisplay" : aTextureFile));
 		mName = aName;
-	}
-
-	private boolean getValidInventoryItem(){
-		if (itemSlots != null){
-			ItemStack invCheck = (ItemStack) itemSlots.get(0);
-			if (invCheck == null){
-				return false;
-			}
-			else if (invCheck != null){
-				tempStack = invCheck;
-				return true;
-			}
-		}		
-		return false;
-	}
-	
-	private double getValueRecipes(){
-		return ((CONTAINER_IndustrialCentrifuge) mContainer).recipesCompleted;
 	}
 
 	@Override
@@ -56,9 +32,7 @@ public class GUI_IndustrialCentrifuge extends GT_GUIContainerMetaTile_Machine {
 		else {
 			counter++;
 		}
-		if (mContainer != null) {
-			
-			//double temp = ((CONTAINER_IndustrialCentrifuge) mContainer).recipesCompleted;
+		if (mContainer != null) {			
 			if ((((CONTAINER_IndustrialCentrifuge) mContainer).mDisplayErrorCode & 1) != 0)
 				fontRendererObj.drawString("Pipe is loose.", 10, 16, 16448255);
 			if ((((CONTAINER_IndustrialCentrifuge) mContainer).mDisplayErrorCode & 2) != 0)
@@ -79,12 +53,9 @@ public class GUI_IndustrialCentrifuge extends GT_GUIContainerMetaTile_Machine {
 					fontRendererObj.drawString("if it doesn't start.", 10, 32, 16448255);
 				} else {
 					fontRendererObj.drawString("Running perfectly.", 10, 16, 16448255);
-					if (CORE.DEBUG){
+					/*if (CORE.DEBUG){
 						fontRendererObj.drawString("Debug Counter: "+counter, 10, 56, 16448255);
-					}
-					else {
-							//fontRendererObj.drawString("Recipes Completed: "+getValueRecipes(), 10, 56, 16448255);
-					}
+					}*/
 				}
 			}
 		}		

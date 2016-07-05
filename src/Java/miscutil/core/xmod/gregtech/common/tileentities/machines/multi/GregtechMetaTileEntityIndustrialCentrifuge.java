@@ -30,7 +30,7 @@ import org.apache.commons.lang3.ArrayUtils;
 public class GregtechMetaTileEntityIndustrialCentrifuge
 extends GregtechMeta_MultiBlockBase {
 	private static boolean controller;
-	public static double recipesComplete = 0;
+	//public static double recipesComplete = 0;
 
 	public GregtechMetaTileEntityIndustrialCentrifuge(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -209,7 +209,7 @@ extends GregtechMeta_MultiBlockBase {
 				this.mOutputItems = tOut;
 				this.mOutputFluids = new FluidStack[]{tFOut};
 				updateSlots();
-				recipesComplete++;
+				//recipesComplete++;
 				return true;
 			}
 		}
