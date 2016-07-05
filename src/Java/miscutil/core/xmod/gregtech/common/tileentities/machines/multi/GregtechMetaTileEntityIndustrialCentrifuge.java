@@ -30,6 +30,7 @@ import org.apache.commons.lang3.ArrayUtils;
 public class GregtechMetaTileEntityIndustrialCentrifuge
 extends GregtechMeta_MultiBlockBase {
 	private static boolean controller;
+	public static double recipesComplete = 0;
 
 	public GregtechMetaTileEntityIndustrialCentrifuge(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -49,14 +50,14 @@ extends GregtechMeta_MultiBlockBase {
 		return new String[]{
 				"Controller Block for the Industrial Centrifuge",
 				"Size: 3x3x3 (Hollow)", 
-				"Controller (Front Center)",
-				"1x Maintenance Hatch (Rear Center)",
-				"The rest can be placed anywhere except the Front",
+				"Controller (Front Center) [Orange]",
+				"1x Maintenance Hatch (Rear Center) [Green]",
+				"The rest can be placed anywhere except the Front [Red]",
 				"1x Input Hatch",
 				"1x Output Hatch",
 				"1x Input Bus",
 				"1x Output Bus",
-				"1x [EV] Energy Hatch (Can be higher Tier)",
+				"1x [EV] Energy Hatch (Can be higher Tier) [Blue]",
 				"Needs a Turbine Item (inside controller GUI)",
 				"Centrifuge Casings for the rest (16 at least)",};
 	}
@@ -76,7 +77,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GUI_IndustrialCentrifuge(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "CokeOven.png");
+		return new GUI_IndustrialCentrifuge(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "IndustrialCentrifuge.png");
 	}
 
 	@Override
@@ -208,6 +209,7 @@ extends GregtechMeta_MultiBlockBase {
 				this.mOutputItems = tOut;
 				this.mOutputFluids = new FluidStack[]{tFOut};
 				updateSlots();
+				recipesComplete++;
 				return true;
 			}
 		}

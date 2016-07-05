@@ -7,7 +7,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import java.util.List;
 
 import miscutil.core.lib.CORE;
-import miscutil.core.util.Utils;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -29,57 +28,37 @@ public class GUI_IndustrialCentrifuge extends GT_GUIContainerMetaTile_Machine {
 		super(new CONTAINER_IndustrialCentrifuge(aInventoryPlayer, aTileEntity), CORE.RES_PATH_GUI + (aTextureFile == null ? "MultiblockDisplay" : aTextureFile));
 		mName = aName;
 	}
-	
+
 	private boolean getValidInventoryItem(){
 		if (itemSlots != null){
-		ItemStack invCheck = (ItemStack) itemSlots.get(0);
-		if (invCheck == null){
-			return false;
-		}
-		else if (invCheck != null){
-			return true;
-		}
+			ItemStack invCheck = (ItemStack) itemSlots.get(0);
+			if (invCheck == null){
+				return false;
+			}
+			else if (invCheck != null){
+				tempStack = invCheck;
+				return true;
+			}
 		}		
 		return false;
+	}
+	
+	private double getValueRecipes(){
+		return ((CONTAINER_IndustrialCentrifuge) mContainer).recipesCompleted;
 	}
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
 		fontRendererObj.drawString(mName, 10, 8, 16448255);
-		counter++;
+		if (counter >= 100){
+			counter = 0;				
+		}
+		else {
+			counter++;
+		}
 		if (mContainer != null) {
-			try {
-				
-				if (tempStack == null || counter > 500){
-					itemSlots = null;
-					if (itemSlots == null){
-						itemSlots = ((CONTAINER_IndustrialCentrifuge) mContainer).inventorySlots;
-					}
-					if (itemSlots != null){
-						if (getValidInventoryItem()){
-							tempStack = (ItemStack) itemSlots.get(0);
-							fontRendererObj.drawString("Item in item slot.", 10, 48, 16448255);
-						}
-						else {
-							fontRendererObj.drawString("No Item in item slot.", 10, 48, 16448255);
-							tempStack = null;
-							itemSlots = null;
-							counter = 0;
-						}
-					} 
-
-
-				}        		 
-				if (tempStack != null){
-					fontRendererObj.drawString("Item in item slot.", 10, 48, 16448255);
-				}
-				
-			}
-			catch (Throwable e){
-				Utils.LOG_INFO("NULL");
-			}
-
-			fontRendererObj.drawString("Debug Counter: "+counter, 10, 56, 16448255);
+			
+			//double temp = ((CONTAINER_IndustrialCentrifuge) mContainer).recipesCompleted;
 			if ((((CONTAINER_IndustrialCentrifuge) mContainer).mDisplayErrorCode & 1) != 0)
 				fontRendererObj.drawString("Pipe is loose.", 10, 16, 16448255);
 			if ((((CONTAINER_IndustrialCentrifuge) mContainer).mDisplayErrorCode & 2) != 0)
@@ -100,9 +79,15 @@ public class GUI_IndustrialCentrifuge extends GT_GUIContainerMetaTile_Machine {
 					fontRendererObj.drawString("if it doesn't start.", 10, 32, 16448255);
 				} else {
 					fontRendererObj.drawString("Running perfectly.", 10, 16, 16448255);
+					if (CORE.DEBUG){
+						fontRendererObj.drawString("Debug Counter: "+counter, 10, 56, 16448255);
+					}
+					else {
+							//fontRendererObj.drawString("Recipes Completed: "+getValueRecipes(), 10, 56, 16448255);
+					}
 				}
 			}
-		}
+		}		
 	}
 
 	@Override
