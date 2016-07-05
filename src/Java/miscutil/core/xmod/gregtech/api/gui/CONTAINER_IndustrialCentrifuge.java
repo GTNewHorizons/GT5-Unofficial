@@ -3,25 +3,25 @@ package miscutil.core.xmod.gregtech.api.gui;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Slot;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
  * <p/>
  * The Container I use for all my Basic Machines
  */
-public class CONTAINER_MultiMachine extends GT_ContainerMetaTile_Machine {
-    public CONTAINER_MultiMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
+public class CONTAINER_IndustrialCentrifuge extends GT_ContainerMetaTile_Machine {
+    public CONTAINER_IndustrialCentrifuge(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
     }
 
-    public CONTAINER_MultiMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, boolean bindInventory) {
+    public CONTAINER_IndustrialCentrifuge(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, boolean bindInventory) {
         super(aInventoryPlayer, aTileEntity, bindInventory);
     }
-}
 
-    /*@Override
+    @Override
     public void addSlots(InventoryPlayer aInventoryPlayer) {
-        addSlotToContainer(new Slot(mTileEntity, 1, 152, 5));
+        addSlotToContainer(new Slot(mTileEntity, 1, 154, 42));
     }
 
     @Override
@@ -31,6 +31,6 @@ public class CONTAINER_MultiMachine extends GT_ContainerMetaTile_Machine {
 
     @Override
     public int getShiftClickSlotCount() {
-        return 0;
+        return 1;
     }
-}*/
+}
