@@ -6,13 +6,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import miscutil.core.lib.CORE;
 import net.minecraft.entity.player.InventoryPlayer;
 
-/**
- * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
- * <p/>
- * The GUI-Container I use for all my Basic Machines
- * <p/>
- * As the NEI-RecipeTransferRect Handler can't handle one GUI-Class for all GUIs I needed to produce some dummy-classes which extend this class
- */
+
 public class GUI_IndustrialCentrifuge extends GT_GUIContainerMetaTile_Machine {
 
 	String mName = "";
