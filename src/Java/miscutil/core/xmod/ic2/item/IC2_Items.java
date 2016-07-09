@@ -19,9 +19,9 @@ public class IC2_Items {
 	  public static ItemStack rotor_Blade_Material_4;
 
 	public static void register(){
-		rotor_Material_1 = new ItemStack(new RotorBase(InternalName.itemsteelrotor, 9, 512000, 0.9F, 12, 80, new ResourceLocation(IC2.textureDomain, "textures/items/rotors/rotorIridiumModel.png")).setCreativeTab(AddToCreativeTab.tabMachines).setUnlocalizedName("itemEnergeticRotor"));
-		rotor_Material_2 = new ItemStack(new RotorBase(InternalName.itemsteelrotor, 11, 809600, 1.0F, 14, 120, new ResourceLocation(IC2.textureDomain, "textures/items/rotors/rotorIridiumModel.png")).setCreativeTab(AddToCreativeTab.tabMachines).setUnlocalizedName("itemTungstenSteelRotor"));
-		rotor_Material_3 = new ItemStack(new RotorBase(InternalName.itemsteelrotor, 13, 1600000, 1.2F, 16, 160, new ResourceLocation(IC2.textureDomain, "textures/items/rotors/rotorIridiumModel.png")).setCreativeTab(AddToCreativeTab.tabMachines).setUnlocalizedName("ItemVibrantRotor"));
+		rotor_Material_1 = new ItemStack(new RotorBase(InternalName.itemsteelrotor, 9, 512000, 0.9F, 12, 80, new ResourceLocation(IC2.textureDomain, "textures/items/rotors/rotorEnergeticModel.png")).setCreativeTab(AddToCreativeTab.tabMachines).setUnlocalizedName("itemEnergeticRotor"));
+		rotor_Material_2 = new ItemStack(new RotorBase(InternalName.itemsteelrotor, 11, 809600, 1.0F, 14, 120, new ResourceLocation(IC2.textureDomain, "textures/items/rotors/rotorTungstenSteelModel.png")).setCreativeTab(AddToCreativeTab.tabMachines).setUnlocalizedName("itemTungstenSteelRotor"));
+		rotor_Material_3 = new ItemStack(new RotorBase(InternalName.itemsteelrotor, 13, 1600000, 1.2F, 16, 160, new ResourceLocation(IC2.textureDomain, "textures/items/rotors/rotorVibrantModel.png")).setCreativeTab(AddToCreativeTab.tabMachines).setUnlocalizedName("itemVibrantRotor"));
 		rotor_Material_4 = new ItemStack(new RotorBase(InternalName.itemsteelrotor, 15, 3200000, 1.5F, 18, 320, new ResourceLocation(IC2.textureDomain, "textures/items/rotors/rotorIridiumModel.png")).setCreativeTab(AddToCreativeTab.tabMachines).setUnlocalizedName("itemIridiumRotor"));
 		   }
 	
