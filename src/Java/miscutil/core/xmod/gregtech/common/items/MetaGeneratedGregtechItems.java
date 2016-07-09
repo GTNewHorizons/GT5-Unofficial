@@ -1,6 +1,7 @@
 package miscutil.core.xmod.gregtech.common.items;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.Textures;
@@ -137,7 +138,9 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
         GregtechItemList.Shape_Extruder_WindmillShaft.set(addItem(tLastID = 40, "Extruder Shape (Shaft)", "Extruder Shape for making Windmill Shafts", new Object[0]));
         
         
-        
+        //Batteries
+        GregtechItemList.Battery_RE_EV_Sodium.set(addItem(tLastID = 50, "Dual Cell Sodium Battery", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L)}));
+        setElectricStats(32000 + tLastID, 5000000L, GT_Values.V[2], 4L, -3L, true);
         
         
         

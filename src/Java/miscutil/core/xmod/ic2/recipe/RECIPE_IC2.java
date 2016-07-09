@@ -7,6 +7,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import miscutil.core.util.Utils;
 import miscutil.core.util.item.UtilsItems;
 import miscutil.core.util.recipe.UtilsRecipe;
 import miscutil.core.xmod.gregtech.api.enums.GregtechItemList;
@@ -18,7 +19,7 @@ public class RECIPE_IC2 {
 	public static String plate_T1 = "plateEnergeticAlloy";
 	public static String plate_T2 = "plateTungstenSteel";
 	public static String plate_T3 = "plateVibrantAlloy";
-	public static String plate_T4 = "plateIridium";
+	public static String plate_T4 = "plateAlloyIridium";
 	
 	public static ItemStack block_T1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.EnergeticAlloy, 1L);
 	public static ItemStack block_T2 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.TungstenSteel, 1L);
@@ -74,12 +75,17 @@ public class RECIPE_IC2 {
 		
 		//Shaft Extruder Recipe
 		GT_ModHandler.addCraftingRecipe(GregtechItemList.Shape_Extruder_WindmillShaft.get(1L, new Object[0]), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hXS", "XPX", "fXd", Character.valueOf('P'), ItemList.Shape_Extruder_Rod, Character.valueOf('X'), OrePrefixes.plate.get(Materials.DarkIron), Character.valueOf('S'), OrePrefixes.screw.get(Materials.DarkIron)});
+		Utils.LOG_INFO("Added recipe item for GT5 Extruder: Shaft Shape");
 		
 		//Shaft Recipes
 		GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(9L, block_T1), GregtechItemList.Shape_Extruder_WindmillShaft.get(0L, new Object[0]), shaft_T1, 2560, 250);
+		Utils.LOG_INFO("Added recipe for GT5 Extruder: Windmill Shaft [Energetic]");
 		GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(9L, block_T2), GregtechItemList.Shape_Extruder_WindmillShaft.get(0L, new Object[0]), shaft_T2, 5120, 500);
+		Utils.LOG_INFO("Added recipe for GT5 Extruder: Windmill Shaft [TungstenSteel]");
 		GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(9L, block_T3), GregtechItemList.Shape_Extruder_WindmillShaft.get(0L, new Object[0]), shaft_T3, 10240, 2000);
+		Utils.LOG_INFO("Added recipe for GT5 Extruder: Windmill Shaft [Vibrant]");
 		GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(9L, block_T4), GregtechItemList.Shape_Extruder_WindmillShaft.get(0L, new Object[0]), shaft_T4, 20480, 4000);
+		Utils.LOG_INFO("Added recipe for GT5 Extruder: Windmill Shaft [Iridium]");
 		
 		//Rotor Recipes
 		UtilsRecipe.recipeBuilder(

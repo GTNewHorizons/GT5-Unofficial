@@ -86,7 +86,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Casing_Coil_U1, Casing_Coil_U2, Casing_Coil_U3, Casing_Coil_U4,
 	
 	//Windmill Shaft Shape for Extruder
-	Shape_Extruder_WindmillShaft;
+	Shape_Extruder_WindmillShaft, 
+	
+	//Batteries
+	Battery_RE_EV_Sodium;
 
 	public static final GregtechItemList[]
 			DYE_ONLY_ITEMS = {
