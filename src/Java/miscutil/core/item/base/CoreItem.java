@@ -9,6 +9,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -43,22 +44,22 @@ public class CoreItem extends Item
 	//4 //Not Rare + basic tooltip
 	public CoreItem(String unlocalizedName, CreativeTabs creativeTab, int stackSize, int maxDmg, String description)
 	{
-		this(unlocalizedName, creativeTab, stackSize, maxDmg, EnumRarity.common, description, EnumChatFormatting.GRAY, false); //Calls 4.5
+		this(unlocalizedName, creativeTab, stackSize, maxDmg, description, EnumRarity.common, EnumChatFormatting.GRAY, false); //Calls 4.5
 	}
 	//4.5
 	public CoreItem(String unlocalizedName, CreativeTabs creativeTab, int stackSize, int maxDmg, String description, EnumChatFormatting colour)
 	{
-		this(unlocalizedName, creativeTab, stackSize, maxDmg, EnumRarity.common, description, colour, false); //Calls 5
+		this(unlocalizedName, creativeTab, stackSize, maxDmg, description, EnumRarity.common, colour, false); //Calls 5
 	}
 
 	//4.75
 	public CoreItem(String unlocalizedName, CreativeTabs creativeTab, int stackSize, int maxDmg, String description, EnumRarity rarity)
 	{
-		this(unlocalizedName, creativeTab, stackSize, maxDmg, rarity, description, EnumChatFormatting.GRAY, false); //Calls 5
+		this(unlocalizedName, creativeTab, stackSize, maxDmg, description, rarity, EnumChatFormatting.GRAY, false); //Calls 5
 	}
 
 	//5	
-	public CoreItem(String unlocalizedName, CreativeTabs creativeTab, int stackSize, int maxDmg, EnumRarity regRarity, String description, EnumChatFormatting colour, boolean Effect)
+	public CoreItem(String unlocalizedName, CreativeTabs creativeTab, int stackSize, int maxDmg, String description, EnumRarity regRarity, EnumChatFormatting colour, boolean Effect)
 	{
 		setUnlocalizedName(unlocalizedName);
 		setTextureName(CORE.MODID + ":" + unlocalizedName);
@@ -69,6 +70,7 @@ public class CoreItem extends Item
 		this.itemDescription = description;
 		this.descColour = colour;
 		this.hasEffect = Effect;
+		GameRegistry.registerItem(this, unlocalizedName);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

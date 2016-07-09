@@ -277,7 +277,7 @@ Gold Tool: 22*/
 		GameRegistry.registerItem(itemPlateBatteryAlloy, "itemPlateBatteryAlloy");
 		
 		itemHeliumBlob = new CoreItem("itemHeliumBlob", tabMisc).setTextureName(CORE.MODID + ":itemHeliumBlob");
-		GameRegistry.registerItem(itemHeliumBlob, "itemHeliumBlob");
+		//GameRegistry.registerItem(itemHeliumBlob, "itemHeliumBlob");
 				
 		itemPLACEHOLDER_Circuit = new Item().setUnlocalizedName("itemPLACEHOLDER_Circuit").setTextureName(CORE.MODID + ":itemPLACEHOLDER_Circuit");
 		GameRegistry.registerItem(itemPLACEHOLDER_Circuit, "itemPLACEHOLDER_Circuit");
