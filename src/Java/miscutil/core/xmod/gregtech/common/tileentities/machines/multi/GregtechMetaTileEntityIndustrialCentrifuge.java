@@ -16,7 +16,7 @@ import java.util.List;
 
 import miscutil.core.block.ModBlocks;
 import miscutil.core.util.Utils;
-import miscutil.core.xmod.gregtech.api.gui.GUI_IndustrialCentrifuge;
+import miscutil.core.xmod.gregtech.api.gui.GUI_MultiMachine;
 import miscutil.core.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import miscutil.core.xmod.gregtech.api.objects.GregtechRenderedTexture;
 import net.minecraft.block.Block;
@@ -77,7 +77,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GUI_IndustrialCentrifuge(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "IndustrialCentrifuge.png");
+		return new GUI_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "IndustrialCentrifuge.png");
 	}
 
 	@Override
