@@ -106,5 +106,8 @@ item.frameAccelerated.name=Accelerated Frame
 item.frameVoid.name=Void Frame
 item.frameMutagenic.name=Mutagenic Frame
 
-item.itemIridiumRotor=Kinetic Gearbox Rotor (Iridium)
+item.itemEnergeticRotorBlade.name=Energetic Alloy Rotor Blade
+item.itemTungstenSteelRotorBlade.name=TungstenSteel Rotor Blade
+item.itemVibrantRotorBlade.name=Vibrant Alloy Rotor Blade
+item.itemIridiumRotorBlade.name=Iridium Rotor Blade
 

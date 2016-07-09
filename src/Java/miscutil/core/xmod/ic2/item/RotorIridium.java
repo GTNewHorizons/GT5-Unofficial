@@ -4,7 +4,6 @@ import ic2.api.item.IKineticRotor;
 import ic2.core.block.kineticgenerator.gui.GuiWaterKineticGenerator;
 import ic2.core.block.kineticgenerator.gui.GuiWindKineticGenerator;
 import ic2.core.init.InternalName;
-import ic2.core.item.resources.ItemWindRotor;
 import ic2.core.util.StackUtil;
 
 import java.util.List;
@@ -54,7 +53,7 @@ public class RotorIridium extends RotorBase{
 			type = IKineticRotor.GearboxType.WIND;
 		}
 		if (type != null) {
-			info.add(StatCollector.translateToLocal("ic2.itemrotor.fitsin." + isAcceptedType(itemStack, type)));
+			//info.add(StatCollector.translateToLocal("ic2.itemrotor.fitsin." + isAcceptedType(itemStack, type)));
 		}
 	}
 

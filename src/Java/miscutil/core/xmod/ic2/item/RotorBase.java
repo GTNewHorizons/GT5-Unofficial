@@ -30,7 +30,7 @@ public class RotorBase extends ItemWindRotor{
 
 
 		setMaxStackSize(1);
-		setMaxDamage(Integer.MAX_VALUE);
+		setMaxDamage(durability);
 
 		this.radius = Radius;
 		this.efficiency = efficiency;
@@ -51,7 +51,7 @@ public class RotorBase extends ItemWindRotor{
 			type = IKineticRotor.GearboxType.WIND;
 		}
 		if (type != null) {
-			info.add(StatCollector.translateToLocal("ic2.itemrotor.fitsin." + isAcceptedType(itemStack, type)));
+			//info.add(StatCollector.translateToLocal("ic2.itemrotor.fitsin." + isAcceptedType(itemStack, type)));
 		}
 	}
 
