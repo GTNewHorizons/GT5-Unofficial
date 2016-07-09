@@ -130,6 +130,25 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 	Circuit_Parts_Wiring_IV, Circuit_Parts_Wiring_LuV, Circuit_Parts_Wiring_ZPM;
 *
 */
+        
+        
+        
+        //Extruder Shape
+        GregtechItemList.Shape_Extruder_WindmillShaft.set(addItem(tLastID = 40, "Extruder Shape (Shaft)", "Extruder Shape for making Windmill Shafts", new Object[0]));
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         GregtechItemList.Circuit_IV.set(addItem(tLastID = 704, "Symbiotic Circuit (IV)", "A Symbiotic Data Processor", new Object[]{GregtechOrePrefixes.circuit.get(GT_Materials.Symbiotic)}));
         GregtechItemList.Circuit_LuV.set(addItem(tLastID = 705, "Neutronic Circuit (LuV)", "A Neutron Particle Processor", new Object[]{OrePrefixes.circuit.get(GT_Materials.Neutronic)}));
         GregtechItemList.Circuit_ZPM.set(addItem(tLastID = 706, "Quantum Circuit (ZPM)", "A Singlularity Processor", new Object[]{OrePrefixes.circuit.get(GT_Materials.Quantum)}));

@@ -14,13 +14,13 @@ public class HANDLER_IC2{
 
 	public static void init() {
 		if (LoadedMods.IndustrialCraft2){
-			RECIPE_IC2.initRecipes();
+			
 		}		
 	}
 
 	public static void postInit() {
 		if (LoadedMods.IndustrialCraft2){
-			
+			RECIPE_IC2.initRecipes();
 		}		
 	}
 
