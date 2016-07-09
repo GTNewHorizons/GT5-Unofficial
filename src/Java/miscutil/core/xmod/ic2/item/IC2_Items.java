@@ -18,6 +18,11 @@ public class IC2_Items {
 	  public static ItemStack rotor_Blade_Material_2;
 	  public static ItemStack rotor_Blade_Material_3;
 	  public static ItemStack rotor_Blade_Material_4;
+	  
+	  public static ItemStack shaft_Material_1; //Energetic Alloy
+	  public static ItemStack shaft_Material_2; //TungstenSteel
+	  public static ItemStack shaft_Material_3; //Vibrant Alloy
+	  public static ItemStack shaft_Material_4; //Iridium
 
 	public static void register(){
 		
@@ -25,6 +30,11 @@ public class IC2_Items {
 		rotor_Blade_Material_2 = new ItemStack (new CoreItem("itemTungstenSteelRotorBlade", AddToCreativeTab.tabMachines, 16, "A part for an advanced Kinetic Rotor"));
 		rotor_Blade_Material_3 = new ItemStack (new CoreItem("itemVibrantRotorBlade", AddToCreativeTab.tabMachines, 16, "A part for an advanced Kinetic Rotor"));
 		rotor_Blade_Material_4 = new ItemStack (new CoreItem("itemIridiumRotorBlade", AddToCreativeTab.tabMachines, 16, "A part for an advanced Kinetic Rotor"));
+		
+		shaft_Material_1 = new ItemStack (new CoreItem("itemEnergeticShaft", AddToCreativeTab.tabMachines, 16, "A part for an advanced Kinetic Rotor"));
+		shaft_Material_2 = new ItemStack (new CoreItem("itemTungstenSteelShaft", AddToCreativeTab.tabMachines, 16, "A part for an advanced Kinetic Rotor"));
+		shaft_Material_3 = new ItemStack (new CoreItem("itemVibrantShaft", AddToCreativeTab.tabMachines, 16, "A part for an advanced Kinetic Rotor"));
+		shaft_Material_4 = new ItemStack (new CoreItem("itemIridiumShaft", AddToCreativeTab.tabMachines, 16, "A part for an advanced Kinetic Rotor"));
 		
 		rotor_Material_1 = new ItemStack(new RotorBase(InternalName.itemwoodrotor, 9, 512000, 0.9F, 12, 80, new ResourceLocation(IC2.textureDomain, "textures/items/rotors/rotorEnergeticModel.png")).setCreativeTab(AddToCreativeTab.tabMachines).setUnlocalizedName("itemEnergeticRotor"));
 		rotor_Material_2 = new ItemStack(new RotorBase(InternalName.itemironrotor, 11, 809600, 1.0F, 14, 120, new ResourceLocation(IC2.textureDomain, "textures/items/rotors/rotorTungstenSteelModel.png")).setCreativeTab(AddToCreativeTab.tabMachines).setUnlocalizedName("itemTungstenSteelRotor"));
