@@ -67,7 +67,7 @@ public class MB_ItemFrame extends Item implements IHiveFrame
 	
 	@Override
 	public boolean hasEffect(ItemStack par1ItemStack){
-		if (rarity_value == EnumRarity.uncommon){
+		if (rarity_value == EnumRarity.uncommon || rarity_value == EnumRarity.common){
 			return false;
 		}
 		return true;

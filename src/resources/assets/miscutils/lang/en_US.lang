@@ -106,6 +106,12 @@ item.frameAccelerated.name=Accelerated Frame
 item.frameVoid.name=Void Frame
 item.frameMutagenic.name=Mutagenic Frame
 
+item.frameChocolate.name=Chocolate Frame
+item.frameRestraint.name=Restraining Frame
+item.frameSoul.name=Soul Frame
+item.frameHealing.name=Healing Frame
+item.frameNova.name=Nova Frame
+
 item.itemEnergeticRotorBlade.name=Energetic Alloy Rotor Blade
 item.itemTungstenSteelRotorBlade.name=TungstenSteel Rotor Blade
 item.itemVibrantRotorBlade.name=Vibrant Alloy Rotor Blade

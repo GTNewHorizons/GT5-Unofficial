@@ -5,9 +5,20 @@ import forestry.api.apiculture.IBeeModifier;
 
 public enum MB_FrameType implements IBeeModifier
 {
+	//ExtraBees Clone Frames
+	//Name, FrameHP, territory (1f), Mutation rate, lifespan rate, production rate, genetic decay (1f)	
+	COCOA("Chocolate", 240, 1.0f, 1.0f, 0.50f, 1.50f, 1f),
+	CAGE("Restraint",  240, 0.5f, 1.0f, 0.75f, 0.75f, 1f),
+	SOUL("Soul", 	   80,  1.0f, 1.5f, 0.75f, 0.25f, 1f),
+	CLAY("Healing",    240, 1.0f, 0.5f, 1.50f, 0.75f, 1f),
+	NOVA("Nova",       240, 1.0f, 100.0f, 0.0001f, 1.00f, 1f),
+	
+	
+	//Name, FrameHP, territory (1f), Mutation rate, lifespan rate, production rate, genetic decay (1f)	
 	ACCELERATED("Accelerated", 175, 1f, 2.5f, 0.9f, 1.8f, 1f),
 	VOID("Void", 20, 1f, 1f, 0.0001f, 10f, 1f),
-	MUTAGENIC("Mutagenic", 3, 1f, 10f, 0.0001f, 10f, 1f);
+	MUTAGENIC("Mutagenic", 3, 1f, 10f, 0.0001f, 10f, 1f),
+	BUSY("Busy", 2000, 1f, 0f, 3f, 4f, 1f);
 
 	private final String frameName;
 	public final int maxDamage;
