@@ -29,6 +29,7 @@ public class FR_ItemRegistry {
 	public static MB_ItemFrame hiveFrameAccelerated;
 	public static MB_ItemFrame hiveFrameVoid;
 	public static MB_ItemFrame hiveFrameMutagenic;
+	public static MB_ItemFrame haveFrameBusy;
 	
 	//Extra Bee Frame Items
 	public static MB_ItemFrame hiveFrameCocoa;
@@ -48,6 +49,7 @@ public class FR_ItemRegistry {
 		hiveFrameAccelerated = new MB_ItemFrame(MB_FrameType.ACCELERATED);
 		hiveFrameVoid = new MB_ItemFrame(MB_FrameType.VOID, EnumRarity.rare);
 		hiveFrameMutagenic = new MB_ItemFrame(MB_FrameType.MUTAGENIC, EnumRarity.epic);
+		haveFrameBusy = new MB_ItemFrame(MB_FrameType.BUSY);
 		ChestGenHooks.addItem(ChestGenHooks.STRONGHOLD_CORRIDOR, new WeightedRandomChestContent(new ItemStack(hiveFrameVoid), 1, 1, 18));
 		ChestGenHooks.addItem(ChestGenHooks.STRONGHOLD_LIBRARY, new WeightedRandomChestContent(new ItemStack(hiveFrameVoid), 1, 3, 23));
 		ChestGenHooks.addItem(ChestGenHooks.PYRAMID_DESERT_CHEST, new WeightedRandomChestContent(new ItemStack(hiveFrameMutagenic), 1, 1, 18));

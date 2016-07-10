@@ -105,7 +105,7 @@ tile.MiscUtils.fluid.cryotheum.name=Gelid Cryotheum
 item.frameAccelerated.name=Accelerated Frame
 item.frameVoid.name=Void Frame
 item.frameMutagenic.name=Mutagenic Frame
-
+item.frameBusy.name=Working Frame
 item.frameChocolate.name=Chocolate Frame
 item.frameRestraint.name=Restraining Frame
 item.frameSoul.name=Soul Frame
