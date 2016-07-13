@@ -1,12 +1,67 @@
 /**
- * @version 0.1
+ * @version 1.3.4
  * @author Alkalus
- * In-game info for project: Hello World.
+ * In-game info for project: MiscUtils.
  */
-[ { "modid"        : "miscutils"
-  , "name"         : "miscutils"
-  , "description"  : "Adds a few various things. Supported mods include GregTech, EnderIO, Big Reactors, Thaumcraft, ExtraUtils, Pnuematicraft & Simply Jetpacks."
-  , "version"      : "0.9.4_public_gregtech5u"
+[ { "modid"        : "miscutil"
+  , "name"         : "Misc Utils."
+  , "description"  : "  
+    if (Loader.isModLoaded("gregtech") == true ){
+        Gregtech = true;
+    }
+    if (Loader.isModLoaded("EnderIO") == true){
+        EnderIO = true;
+    }
+    if (Loader.isModLoaded("BigReactors") == true){
+        Big_Reactors = true;
+    }	
+    if (Loader.isModLoaded("IC2") == true){
+        IndustrialCraft2 = true;
+    }
+    if (Loader.isModLoaded("simplyjetpacks") == true){
+        Simply_Jetpacks = true;
+    }
+    if (Loader.isModLoaded("rftools") == true){
+        RFTools = true;
+    }
+    if (Loader.isModLoaded("Thaumcraft") == true){
+        Thaumcraft = true;
+    }
+    if (Loader.isModLoaded("ExtraUtilities") == true){
+        Extra_Utils = true;
+    }
+    if (Loader.isModLoaded("PneumaticCraft") == true){
+        PneumaticCraft = true;
+    }
+    if (Loader.isModLoaded("MorePlanet") == true){
+        MorePlanets  = true;
+    }
+    if (Loader.isModLoaded("ForbiddenMagic") == true){
+        ForbiddenMagic  = true;
+    }
+    if (Loader.isModLoaded("CompactWindmills") == true){
+        CompactWindmills  = true;
+    }
+    if (Loader.isModLoaded("Railcraft") == true){
+        Railcraft  = true;
+    }
+    if (Loader.isModLoaded("Growthcraft") == true){
+        Growthcraft  = true;
+    }
+    if (Loader.isModLoaded("CoFHCore") == true){
+        CoFHCore  = true;
+    }
+    if (Loader.isModLoaded("Forestry") == true){
+        Forestry  = true;
+    }
+    if (Loader.isModLoaded("MagicBees") == true){
+        MagicBees  = true;
+    }
+    if (Loader.isModLoaded("psychedelicraft") == true){
+        Psychedelicraft  = true;
+    }  
+  "
+  , "version"      : "1.3.4"
   , "mcversion"    : "1.7.10"
   , "url"          : ""
   , "updateUrl"    : ""
@@ -14,6 +69,6 @@
   , "credits"      : ""
   , "logoFile"     : ""
   , "screenshots"  : []
-  , "dependencies" : ["Forge10.13.0.1180"]
+  , "dependencies" : ["Forge10.13.0.1448"]
   }
 ]

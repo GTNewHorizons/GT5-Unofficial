@@ -13,7 +13,6 @@ import gregtech.api.util.GT_Utility;
 
 import java.util.ArrayList;
 
-import miscutil.core.util.Utils;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -73,7 +72,7 @@ extends GT_MetaTileEntity_MultiBlockBase {
 			long tVoltage = getMaxInputVoltage();
 			byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
-			GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sVacuumRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], null, new ItemStack[]{tInput});
+			GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sBenderRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], null, new ItemStack[]{tInput});
 			if (tRecipe != null) {
 				if (tRecipe.isRecipeInputEqual(true, null, new ItemStack[]{tInput})) {
 					this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
@@ -102,125 +101,35 @@ extends GT_MetaTileEntity_MultiBlockBase {
 		return false;
 	}
 
-	/*public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-		if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {
-			return false;
-		}
-		int stepX = 0;
-		int stepY = 0;
-		int stepZ = 0;
-
-		int tAmount = 0;
-		for (int i = -1; i < 2; i++) {
-			stepX=+i;
-			for (int j = -1; j < 2; j++) {
-				stepZ=+j;
-				for (int h = -1; h < 2; h++) {
-					stepY=+h;
-					Utils.LOG_INFO("X:"+stepX);
-					Utils.LOG_INFO("Y:"+stepY);
-					Utils.LOG_INFO("Z:"+stepZ);
-					Utils.LOG_INFO("Block Facing - X:"+xDir+"    Z:"+zDir);
-					Utils.LOG_INFO("(h != 0) || (((xDir + i != 0) || (zDir + j != 0)) && ((i != 0) || (j != 0)))");
-					Utils.LOG_INFO("  "+(h != 0)+"   ||       "+(((xDir + i != 0)+"       ||       "+(zDir + j != 0))+"       &&    "+((i != 0)+"   ||   "+(j != 0))));
-					try {
-						IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);						
-						Utils.LOG_INFO("IPP - RESULT - ? - ["+tTileEntity.getXCoord()+"]  y ["+tTileEntity.getYCoord()+"]  z ["+tTileEntity.getZCoord()+"] || i ["+i+"]  j ["+j+"]  h ["+h+"]");
-					} catch(Throwable t){Utils.LOG_INFO("Bad move");				
-					}
-					if ((h != 0) || (((xDir + i != 0) || (zDir + j != 0)) && ((i != 0) || (j != 0)))) {
-						IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-						if ((!addMaintenanceToMachineList(tTileEntity, 17)) && (!addInputToMachineList(tTileEntity, 17)) && (!addOutputToMachineList(tTileEntity, 17)) && (!addEnergyInputToMachineList(tTileEntity, 17))) {
-							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != GregTech_API.sBlockCasings2) {
-								return false;
-							}
-							if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 1) {
-								return false;
-							}
-							tAmount++;
-						}
-					}		
-
-				}
-			}
-		}
-		return tAmount >= 16;
-	}*/
-
 
 	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-		if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {
-			return false;
-		}
-		int stepX = aBaseMetaTileEntity.getXCoord();
-		int stepY = aBaseMetaTileEntity.getYCoord();
-		int stepZ = aBaseMetaTileEntity.getZCoord();
-		int temp = 0;
-
-		Utils.LOG_INFO("Starting Block located @ "+"[X:"+stepX+"][Y:"+stepY+"][Z:"+stepZ+"]");	
-
-		int tAmount = 0;
-		switch (xDir) {
-		case -1:
-			stepX++;
-			Utils.LOG_INFO("Modifying stepX + accomodate a "+xDir+" xDir - [X:"+stepX+"][Y:"+stepY+"][Z:"+stepZ+"]");	
-			break;
-
-		case 1:
-			stepX--;
-			Utils.LOG_INFO("Modifying stepX - accomodate a "+xDir+" xDir - [X:"+stepX+"][Y:"+stepY+"][Z:"+stepZ+"]");	
-			break;
-		}
-		switch (zDir) {
-		case -1:
-			stepZ++;
-			Utils.LOG_INFO("Modifying stepZ + accomodate a "+zDir+" zDir - [X:"+stepX+"][Y:"+stepY+"][Z:"+stepZ+"]");	
-			break;
-
-		case 1:
-			stepZ--;
-			Utils.LOG_INFO("Modifying stepZ - accomodate a "+zDir+" zDir - [X:"+stepX+"][Y:"+stepY+"][Z:"+stepZ+"]");	
-			break;
-		}
-
-		for (int i = stepX-1; i <= stepX+1; i++){
-			for (int j = stepZ-1; j <= stepZ+1; j++){
-				for (int h = stepY-1; h <= stepY+1; h++){	
-
-
-					Utils.LOG_INFO("Block Facing - X:"+xDir+"    Z:"+zDir);
-					Utils.LOG_INFO("(h != 0) || (((xDir + i != 0) || (zDir + j != 0)) && ((i != 0) || (j != 0)))");
-					Utils.LOG_INFO("  "+(h != 0)+"   ||       "+(((xDir + i != 0)+"       ||       "+(zDir + j != 0))+"       &&    "+((i != 0)+"   ||   "+(j != 0))));
-
-					try {
-						IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);						
-						Utils.LOG_INFO("IPP - RESULT - ? - ["+tTileEntity.getXCoord()+"]  y ["+tTileEntity.getYCoord()+"]  z ["+tTileEntity.getZCoord()+"] || i ["+i+"]  j ["+j+"]  h ["+h+"]");
-					} catch(Throwable t){Utils.LOG_INFO("Checking Non-Hatch/Bus Block/Casing");				
-					}
-					if ((h != 0) || (((xDir + i != 0) || (zDir + j != 0)) && ((i != 0) || (j != 0)))) {
-						IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-						if ((!addMaintenanceToMachineList(tTileEntity, 17)) && (!addInputToMachineList(tTileEntity, 17)) && (!addOutputToMachineList(tTileEntity, 17)) && (!addEnergyInputToMachineList(tTileEntity, 17))) {
-							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != GregTech_API.sBlockCasings2) {
-								return false;
-							}
-							if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 1) {
-								return false;
-							}
-							tAmount++;
-						}
-					}	
-				}
-			}
-		}
-
-
-		return tAmount >= 16;
-	}
+        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
+        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+        if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {
+            return false;
+        }
+        int tAmount = 0;
+        for (int i = -1; i < 2; i++) {
+            for (int j = -1; j < 2; j++) {
+                for (int h = -1; h < 2; h++) {
+                    if ((h != 0) || (((xDir + i != 0) || (zDir + j != 0)) && ((i != 0) || (j != 0)))) {
+                        IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
+                        if ((!addMaintenanceToMachineList(tTileEntity, 17)) && (!addInputToMachineList(tTileEntity, 17)) && (!addOutputToMachineList(tTileEntity, 17)) && (!addEnergyInputToMachineList(tTileEntity, 17))) {
+                            if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != GregTech_API.sBlockCasings2) {
+                                return false;
+                            }
+                            if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 1) {
+                                return false;
+                            }
+                            tAmount++;
+                        }
+                    }
+                }
+            }
+        }
+        return tAmount >= 16;
+    }
 
 	@Override
 	public int getMaxEfficiency(ItemStack aStack) {
