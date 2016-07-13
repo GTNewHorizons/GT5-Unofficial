@@ -29,7 +29,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Structural Coke Oven Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Heat Resistant Coke Oven Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Heat Proof Coke Oven Casing");
-		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Unused Casing");
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Material Press Machine Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Unused Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Unused Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Unused Casing");
@@ -45,7 +45,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GregtechItemList.Casing_CokeOven.set(new ItemStack(this, 1, 1));
 		GregtechItemList.Casing_CokeOven_Coil1.set(new ItemStack(this, 1, 2));
 		GregtechItemList.Casing_CokeOven_Coil2.set(new ItemStack(this, 1, 3));
-		GregtechItemList.Casing_U1.set(new ItemStack(this, 1, 4));
+		GregtechItemList.Casing_MaterialPress.set(new ItemStack(this, 1, 4));
 		GregtechItemList.Casing_U2.set(new ItemStack(this, 1, 5));
 		GregtechItemList.Casing_U3.set(new ItemStack(this, 1, 6));
 		GregtechItemList.Casing_U4.set(new ItemStack(this, 1, 7));
@@ -75,6 +75,9 @@ extends GregtechMetaCasingBlocksAbstract {
 				//Coke Oven Casing Tier 2
 			case 3:
 				return Textures.BlockIcons.MACHINE_CASING_FIREBOX_STEEL.getIcon();
+				//Material Press Casings
+			case 4:
+				return Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
 				//Iron Blast Fuance Textures
 			case 10:
 				return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();			
