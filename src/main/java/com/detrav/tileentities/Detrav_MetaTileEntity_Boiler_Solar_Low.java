@@ -22,7 +22,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 public class Detrav_MetaTileEntity_Boiler_Solar_Low extends GT_MetaTileEntity_Boiler {
     public Detrav_MetaTileEntity_Boiler_Solar_Low(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, "Steam Power by the Sun", new ITexture[0]);
+        super(aID, aName, aNameRegional, "Steam Power by the Sun, 6mB/t", new ITexture[0]);
     }
 
     public Detrav_MetaTileEntity_Boiler_Solar_Low(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
