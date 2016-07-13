@@ -1,5 +1,7 @@
 package miscutil.core.recipe;
 
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -18,6 +20,7 @@ public class RECIPES_GREGTECH {
 	private static void execute(){
 		cokeOvenRecipes();
 		assemblerRecipes();
+		distilleryRecipes();
 		addFuels();
 	}
 
@@ -82,6 +85,14 @@ public class RECIPES_GREGTECH {
 		//GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 6L), ItemList.Casing_Turbine.get(1L, new Object[0]), ItemList.Casing_Turbine2.get(1L, new Object[0]), 50, 16);
 		//GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 6L), ItemList.Casing_Turbine.get(1L, new Object[0]), ItemList.Casing_Turbine3.get(1L, new Object[0]), 50, 16);
 
+	}
+	
+	private static void distilleryRecipes(){
+		//Distillery
+		//OutputFluid, InputCircuit, InputFluid, Time in Ticks, EnergyUsage, isHidden
+		//mods.gregtech.Distillery.addRecipe(<liquid:helium> * 1, <gregtech:gt.integrated_circuit:4> * 0, <liquid:air> * 20000, 400, 30, false);
+		GT_Values.RA.addDistilleryRecipe(ItemList.Circuit_Integrated.getWithDamage(0L, 4L, new Object[0]), Materials.Air.getFluid(20000L), Materials.Helium.getFluid(1L), 400, 30, false);
+		
 	}
 	
 	private static void addFuels(){

@@ -79,7 +79,7 @@ extends GT_MetaTileEntity_MultiBlockBase {
 	}
 
 	@Override	
-	public boolean checkRecipe(ItemStack aStack) { //TODO - Add Check to make sure Item output isn't full
+	public boolean checkRecipe(ItemStack aStack) { //TODO - Add Check to make sure Fluid output isn't full
         ArrayList<ItemStack> tInputList = getStoredInputs();
         for (int i = 0; i < tInputList.size() - 1; i++) {
             for (int j = i + 1; j < tInputList.size(); j++) {
