@@ -31,7 +31,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Heat Proof Coke Oven Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Material Press Machine Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Electrolyzer Casing");
-		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Unused Casing");
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Maceration Stack Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Unused Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Unused Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Unused Casing");
@@ -60,7 +60,7 @@ extends GregtechMetaCasingBlocksAbstract {
 	}
 
 	@Override
-	public IIcon getIcon(int aSide, int aMeta) { //Texture ID's. case 0 == ID[56]
+	public IIcon getIcon(int aSide, int aMeta) { //Texture ID's. case 0 == ID[57]
 		if ((aMeta >= 0) && (aMeta < 16)) {
 			switch (aMeta) {
 			//Centrifuge 
@@ -81,6 +81,9 @@ extends GregtechMetaCasingBlocksAbstract {
 				//Electrolyzer Casings
 			case 5:
 				return Textures.BlockIcons.MACHINE_CASING_FUSION_2.getIcon();
+				//Maceration Stack Casings
+			case 6:
+				return Textures.BlockIcons.MACHINE_CASING_MAGIC.getIcon();
 				//Iron Blast Fuance Textures
 			case 10:
 				return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();			
@@ -89,9 +92,8 @@ extends GregtechMetaCasingBlocksAbstract {
 				return Textures.BlockIcons.MACHINE_CASING_RADIOACTIVEHAZARD.getIcon();
 
 			}
-			//return Textures.BlockIcons.MACHINECASINGS_SIDE[aMeta].getIcon();
 		}
-		return Textures.BlockIcons.MACHINE_CASING_TURBINE.getIcon();
+		return Textures.BlockIcons.MACHINE_CASING_GEARBOX_TUNGSTENSTEEL.getIcon();
 	}
 
 	/*@Override

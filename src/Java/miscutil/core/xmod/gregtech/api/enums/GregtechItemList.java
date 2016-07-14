@@ -92,7 +92,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Battery_RE_EV_Sodium, 
 	
 	//Industrial Electrolyzer
-	Industrial_Electrolyzer;
+	Industrial_Electrolyzer, 
+	
+	//Industrial Maceration Stack
+	Industrial_MacerationStack;
 
 	public static final GregtechItemList[]
 			DYE_ONLY_ITEMS = {

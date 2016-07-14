@@ -24,6 +24,7 @@ import miscutil.core.handler.registration.gregtech.GregtechEnergyBuffer;
 import miscutil.core.handler.registration.gregtech.GregtechIndustrialCentrifuge;
 import miscutil.core.handler.registration.gregtech.GregtechIndustrialCokeOven;
 import miscutil.core.handler.registration.gregtech.GregtechIndustrialElectrolyzer;
+import miscutil.core.handler.registration.gregtech.GregtechIndustrialMacerator;
 import miscutil.core.handler.registration.gregtech.GregtechIndustrialPlatePress;
 import miscutil.core.handler.registration.gregtech.GregtechIronBlastFurnace;
 import miscutil.core.handler.registration.gregtech.GregtechRocketFuelGenerator;
@@ -89,6 +90,7 @@ public class COMPAT_HANDLER {
 		GregtechIndustrialPlatePress.run();
 		GregtechRocketFuelGenerator.run();
 		GregtechIndustrialElectrolyzer.run();
+		GregtechIndustrialMacerator.run();
 		}
 
 	}
