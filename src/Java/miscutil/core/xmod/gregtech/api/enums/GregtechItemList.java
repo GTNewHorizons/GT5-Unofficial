@@ -15,19 +15,6 @@ import net.minecraftforge.fluids.Fluid;
  */
 public enum GregtechItemList implements GregtechItemContainer {
 
-	Credit_Copper,
-	Credit_Iron,
-	Credit_Silver,
-	Credit_Gold,
-	Credit_Platinum,
-	Credit_Osmium,
-	Credit_Greg_Copper,
-	Credit_Greg_Cupronickel,
-	Credit_Greg_Silver,
-	Credit_Greg_Gold,
-	Credit_Greg_Platinum,
-	Credit_Greg_Osmium,
-	Credit_Greg_Naquadah,
 	Energy_Buffer_CREATIVE,
 	
 	//Energy Buffers
@@ -58,7 +45,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Industrial_CokeOven, Casing_CokeOven, Casing_CokeOven_Coil1, Casing_CokeOven_Coil2, 
 	
 	//Bending Maching // Plate Press // Press
-	Industrial_PlatePress, 
+	Casing_MaterialPress, Industrial_PlatePress, 
 	
 	//Gregtech Machine Parts
 	Electric_Motor_LuV, Electric_Motor_ZPM, Electric_Motor_UV, Electric_Motor_MAX, 
@@ -81,7 +68,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Circuit_Parts_Wiring_IV, Circuit_Parts_Wiring_LuV, Circuit_Parts_Wiring_ZPM, 
 	
 	//Unused Machine Casings
-	Casing_MaterialPress, Casing_Electrolyzer, Casing_U3, Casing_U4, Casing_U5, Casing_U6, Casing_U7, 
+	Casing_U4, Casing_U5, Casing_U6, Casing_U7, 
 	//Unused Machine Coils
 	Casing_Coil_U1, Casing_Coil_U2, Casing_Coil_U3, Casing_Coil_U4,
 	
@@ -92,10 +79,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Battery_RE_EV_Sodium, 
 	
 	//Industrial Electrolyzer
-	Industrial_Electrolyzer, 
+	Casing_Electrolyzer, Industrial_Electrolyzer, 
 	
 	//Industrial Maceration Stack
-	Industrial_MacerationStack;
+	Casing_Macerator, Industrial_MacerationStack;
 
 	public static final GregtechItemList[]
 			DYE_ONLY_ITEMS = {

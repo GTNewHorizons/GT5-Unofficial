@@ -21,7 +21,7 @@ public class GregtechIndustrialMacerator
 	private static void run1()
 	{
 		//Industrial Electrolyzer Multiblock
-		GregtechItemList.Industrial_MacerationStack.set(new GregtechMetaTileEntityIndustrialMacerator(797, "industrialmacerator.controller.tier.single", "Industrial Maceration Stack Control Block").getStackForm(1L));
+		GregtechItemList.Industrial_MacerationStack.set(new GregtechMetaTileEntityIndustrialMacerator(797, "industrialmacerator.controller.tier.single", "Maceration Stack Control Block").getStackForm(1L));
 		
 	}
 }

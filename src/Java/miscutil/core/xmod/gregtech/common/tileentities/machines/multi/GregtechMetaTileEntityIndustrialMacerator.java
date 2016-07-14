@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import miscutil.core.block.ModBlocks;
+import miscutil.core.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -54,9 +55,9 @@ public class GregtechMetaTileEntityIndustrialMacerator
     @Override
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[63], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER)};
+            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[64], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER)};
         }
-        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[63]};
+        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[64]};
     }
 
     @Override
@@ -102,7 +103,7 @@ public class GregtechMetaTileEntityIndustrialMacerator
                 this.mEfficiencyIncrease = 10000;
 
                 this.mEUt = (-tRecipe.mEUt);
-                this.mMaxProgresstime = Math.max(1, tRecipe.mDuration);
+                this.mMaxProgresstime = Math.max(1, (tRecipe.mDuration/5));
                 this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0), tRecipe.getOutput(1)};
                 sendLoopStart((byte) 20);
                 updateSlots();
@@ -127,11 +128,13 @@ public class GregtechMetaTileEntityIndustrialMacerator
                     if (!(i == 0 && j == 0 && (h > 0 && h < 5)))//((h > 0)&&(h<5)) || (((xDir + i != 0) || (zDir + j != 0)) && ((i != 0) || (j != 0)))
                     {
                         IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-                        if ((!addMaintenanceToMachineList(tTileEntity, 63)) && (!addInputToMachineList(tTileEntity, 63)) && (!addOutputToMachineList(tTileEntity, 63)) && (!addEnergyInputToMachineList(tTileEntity, 63)) && (!ignoreController(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)))) {
+                        if ((!addMaintenanceToMachineList(tTileEntity, 64)) && (!addInputToMachineList(tTileEntity, 64)) && (!addOutputToMachineList(tTileEntity, 64)) && (!addEnergyInputToMachineList(tTileEntity, 64)) && (!ignoreController(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)))) {
                             if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
+                            	Utils.LOG_INFO("Returned False 1");
                                 return false;
                             }
-                            if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 1) {
+                            if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 7) {
+                            	Utils.LOG_INFO("Returned False 2");
                                 return false;
                             }
                             tAmount++;
@@ -140,11 +143,13 @@ public class GregtechMetaTileEntityIndustrialMacerator
                 }
             }
         }
-        if (this.mOutputHatches.size() != 1 || this.mInputHatches.size() != 0 || this.mOutputBusses.size() != 5) {
+        if (this.mOutputHatches.size() != 0 || this.mInputBusses.size() != 1 || this.mOutputBusses.size() != 5) {
+        	Utils.LOG_INFO("Returned False 3");
             return false;
         }
         int height = this.getBaseMetaTileEntity().getYCoord();
-        if (this.mInputBusses.get(0).getBaseMetaTileEntity().getYCoord() != height || this.mOutputHatches.get(0).getBaseMetaTileEntity().getYCoord() != height) {
+        if (this.mInputBusses.get(0).getBaseMetaTileEntity().getYCoord() != height) {
+        	Utils.LOG_INFO("height: "+height+" | Returned False 4");
             return false;
         }
         GT_MetaTileEntity_Hatch_OutputBus[] tmpHatches = new GT_MetaTileEntity_Hatch_OutputBus[5];
@@ -153,6 +158,7 @@ public class GregtechMetaTileEntityIndustrialMacerator
             if (tmpHatches[hatchNumber] == null) {
                 tmpHatches[hatchNumber] = this.mOutputBusses.get(i);
             } else {
+            	Utils.LOG_INFO("Returned False 5");
                 return false;
             }
         }
@@ -177,7 +183,7 @@ public class GregtechMetaTileEntityIndustrialMacerator
                     if (!(i == 0 && j == 0 && (h > 0 && h < 5)))//((h > 0)&&(h<5)) || (((xDir + i != 0) || (zDir + j != 0)) && ((i != 0) || (j != 0)))
                     {
                         IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-                        if ((!addMaintenanceToMachineList(tTileEntity, 63)) && (!addInputToMachineList(tTileEntity, 63)) && (!addOutputToMachineList(tTileEntity, 63)) && (!addEnergyInputToMachineList(tTileEntity, 63)) && (!ignoreController(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)))) {
+                        if ((!addMaintenanceToMachineList(tTileEntity, 64)) && (!addInputToMachineList(tTileEntity, 64)) && (!addOutputToMachineList(tTileEntity, 64)) && (!addEnergyInputToMachineList(tTileEntity, 64)) && (!ignoreController(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)))) {
                             if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
                                 return false;
                             }

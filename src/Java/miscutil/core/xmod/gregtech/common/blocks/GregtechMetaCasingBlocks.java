@@ -31,9 +31,9 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Heat Proof Coke Oven Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Material Press Machine Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Electrolyzer Casing");
-		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Maceration Stack Casing");
-		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Unused Casing");
-		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Unused Casing");
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "BROKEN BLUE FUSION Casing");
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Maceration Stack Casing");
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "BROKEN PINK FUSION Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Unused Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Iron Plated Bricks");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Unused Casing");
@@ -47,7 +47,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GregtechItemList.Casing_CokeOven_Coil2.set(new ItemStack(this, 1, 3));
 		GregtechItemList.Casing_MaterialPress.set(new ItemStack(this, 1, 4));
 		GregtechItemList.Casing_Electrolyzer.set(new ItemStack(this, 1, 5));
-		GregtechItemList.Casing_U3.set(new ItemStack(this, 1, 6));
+		GregtechItemList.Casing_Macerator.set(new ItemStack(this, 1, 6));
 		GregtechItemList.Casing_U4.set(new ItemStack(this, 1, 7));
 		GregtechItemList.Casing_U5.set(new ItemStack(this, 1, 8));
 		GregtechItemList.Casing_U6.set(new ItemStack(this, 1, 9));
@@ -81,9 +81,15 @@ extends GregtechMetaCasingBlocksAbstract {
 				//Electrolyzer Casings
 			case 5:
 				return Textures.BlockIcons.MACHINE_CASING_FUSION_2.getIcon();
+				//Broken Blue Fusion Casings
+			/*case 6:
+				return Textures.BlockIcons.MACHINE_CASING_FIREBOX_TITANIUM.getIcon();*/
 				//Maceration Stack Casings
-			case 6:
-				return Textures.BlockIcons.MACHINE_CASING_MAGIC.getIcon();
+			case 7:
+				return Textures.BlockIcons.MACHINE_LuV_BOTTOM.getIcon();
+				//Broken Pink Fusion Casings
+				/*case 8:
+					return Textures.BlockIcons.MACHINE_CASING_FIREBOX_TITANIUM.getIcon();*/
 				//Iron Blast Fuance Textures
 			case 10:
 				return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();			
