@@ -1,5 +1,6 @@
 package miscutil.core.xmod.gregtech.api.enums;
 
+import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -66,12 +67,12 @@ public class GregtechTextures {
 
         @Override
         public void run() {
-            mIcon = CORE.GT_BlockIcons.registerIcon(CORE.RES_PATH_BLOCK + "iconsets/" + this);
+            mIcon = GregTech_API.sBlockIcons.registerIcon(RES_PATH_BLOCK + "iconsets/" + this);
         }
-
+        
         @Override
         public ResourceLocation getTextureFile() {
-            return TextureMap.locationBlocksTexture; //TODO
+            return TextureMap.locationBlocksTexture;
         }
 
         public static class CustomIcon implements IIconContainer, Runnable {

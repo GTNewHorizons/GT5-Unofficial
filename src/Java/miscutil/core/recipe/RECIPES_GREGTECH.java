@@ -4,6 +4,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
@@ -119,6 +120,7 @@ public class RECIPES_GREGTECH {
 	
 	private static void addFuels(){
 		Utils.LOG_INFO("Registering New Fuels.");
+		CORE.RA.addFuel(GT_ModHandler.getModItem("Minecraft", "bucket_lava", 1L, 1), null, 2800, 1);
 		//CORE.RA.addFuel(GT_ModHandler.getModItem("EnderIO", "bucketRocket_fuel", 1L, 1), null, 2800, 0);
 		//CORE.RA.addFuel(GT_ModHandler.getModItem("EnderIO", "bucketHootch", 1L, 1), null, 2800, 0);
 		//CORE.RA.addFuel(GT_ModHandler.getModItem("EnderIO", "bucketFire_water", 1L, 1), null, 2800, 0);

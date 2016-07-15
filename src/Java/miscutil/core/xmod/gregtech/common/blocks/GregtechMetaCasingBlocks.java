@@ -65,7 +65,7 @@ extends GregtechMetaCasingBlocksAbstract {
 			switch (aMeta) {
 			//Centrifuge 
 			case 0: 
-				return Textures.BlockIcons.MACHINE_CASING_TURBINE.getIcon();
+				return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
 				//Coke Oven Frame
 			case 1:
 				return Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF.getIcon();
@@ -92,7 +92,7 @@ extends GregtechMetaCasingBlocksAbstract {
 				return Textures.BlockIcons.MACHINE_CASING_FUSION_2.getIcon();
 				//Matter Fabricator Casings
 			case 9:
-				return Textures.BlockIcons.MACHINE_CASING_MAGIC.getIcon();
+				return Textures.BlockIcons.MACHINE_CASING_DRAGONEGG.getIcon();
 				//Iron Blast Fuance Textures
 			case 10:
 				return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();			
