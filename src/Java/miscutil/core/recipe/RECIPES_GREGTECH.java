@@ -88,10 +88,10 @@ public class RECIPES_GREGTECH {
 	}
 	
 	private static void distilleryRecipes(){
-		Utils.LOG_INFO("Registering Distillery Recipes.");
+		Utils.LOG_INFO("Registering Distillery/Distillation Tower Recipes.");
 		//Distillery
 		GT_Values.RA.addDistilleryRecipe(ItemList.Circuit_Integrated.getWithDamage(0L, 4L, new Object[0]), FluidUtils.getFluidStack("air", 20000), FluidUtils.getFluidStack("helium", 1), 400, 30, false);
-		
+		GT_Values.RA.addDistillationTowerRecipe(FluidUtils.getFluidStack("air", 20000), FluidUtils.getFluidStackArray("helium", 1), null, 160, 60);
 	}
 	
 	private static void addFuels(){

@@ -82,7 +82,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Casing_Electrolyzer, Industrial_Electrolyzer, 
 	
 	//Industrial Maceration Stack
-	Casing_Macerator, Industrial_MacerationStack;
+	Casing_Macerator, Industrial_MacerationStack, 
+	
+	//Industrial Wire Factory
+	Industrial_WireFactory;
 
 	public static final GregtechItemList[]
 			DYE_ONLY_ITEMS = {
