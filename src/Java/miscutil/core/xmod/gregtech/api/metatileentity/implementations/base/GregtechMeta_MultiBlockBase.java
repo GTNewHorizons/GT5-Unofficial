@@ -802,4 +802,27 @@ public abstract class GregtechMeta_MultiBlockBase extends MetaTileEntity {
     public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         return false;
     }
+    
+    /**
+     * Called whenever the Machine successfully started a Process, useful for Sound Effects
+     */
+    public void startProcess() {
+        //
+    }
+
+    /**
+     * Called whenever the Machine successfully finished a Process, useful for Sound Effects
+     */
+    public void endProcess() {
+        //
+    }
+
+    /**
+     * Called whenever the Machine aborted a Process, useful for Sound Effects
+     */
+    public void abortProcess() {
+        //
+    }
+    
+    
 }

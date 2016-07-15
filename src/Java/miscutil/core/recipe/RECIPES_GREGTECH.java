@@ -90,9 +90,7 @@ public class RECIPES_GREGTECH {
 	private static void distilleryRecipes(){
 		Utils.LOG_INFO("Registering Distillery Recipes.");
 		//Distillery
-		//OutputFluid, InputCircuit, InputFluid, Time in Ticks, EnergyUsage, isHidden
-		//mods.gregtech.Distillery.addRecipe(<liquid:helium> * 1, <gregtech:gt.integrated_circuit:4> * 0, <liquid:air> * 20000, 400, 30, false);
-		GT_Values.RA.addDistilleryRecipe(ItemList.Circuit_Integrated.getWithDamage(0L, 4L, new Object[0]), Materials.Air.getFluid(20000L), Materials.Helium.getFluid(10L), 400, 30, false);
+		GT_Values.RA.addDistilleryRecipe(ItemList.Circuit_Integrated.getWithDamage(0L, 4L, new Object[0]), FluidUtils.getFluidStack("air", 20000), FluidUtils.getFluidStack("helium", 1), 400, 30, false);
 		
 	}
 	
