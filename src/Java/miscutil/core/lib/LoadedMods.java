@@ -1,7 +1,7 @@
 package miscutil.core.lib;
 
 import miscutil.core.util.Utils;
-import miscutil.core.xmod.gregtech.common.GregtechRecipeAdder;
+import miscutil.core.xmod.gregtech.recipes.GregtechRecipeAdder;
 import cpw.mods.fml.common.Loader;
 
 public class LoadedMods {

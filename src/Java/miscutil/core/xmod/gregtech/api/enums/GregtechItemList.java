@@ -68,7 +68,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Circuit_Parts_Wiring_IV, Circuit_Parts_Wiring_LuV, Circuit_Parts_Wiring_ZPM, 
 	
 	//Unused Machine Casings
-	Casing_U4, Casing_U5, Casing_U6, Casing_U7, 
+	Casing_U4, Casing_MatterGen, Casing_MatterFab, Casing_U7, 
 	//Unused Machine Coils
 	Casing_Coil_U1, Casing_Coil_U2, Casing_Coil_U3, Casing_Coil_U4,
 	
@@ -85,7 +85,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Casing_Macerator, Industrial_MacerationStack, 
 	
 	//Industrial Wire Factory
-	Industrial_WireFactory;
+	Industrial_WireFactory, 
+	
+	Industrial_MassFab;
 
 	public static final GregtechItemList[]
 			DYE_ONLY_ITEMS = {

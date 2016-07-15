@@ -4,6 +4,7 @@ import static gregtech.api.enums.GT_Values.E;
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 import static gregtech.api.enums.GT_Values.W;
 import gregtech.api.GregTech_API;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.objects.GT_ItemStack;
@@ -165,9 +166,9 @@ public class GregtechRecipe {
 	}
 
 	public GregtechRecipe(ItemStack aInput1, ItemStack aOutput1, int aFuelValue, int aType) {
-        this(aInput1, aOutput1, null, null, null, aFuelValue, aType);
-    }
-	
+		this(aInput1, aOutput1, null, null, null, aFuelValue, aType);
+	}
+
 	// aSpecialValue = EU per Liter! If there is no Liquid for this Object, then it gets multiplied with 1000!
 	public GregtechRecipe(ItemStack aInput1, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, int aSpecialValue, int aType) {
 		this(true, new ItemStack[]{aInput1}, new ItemStack[]{aOutput1, aOutput2, aOutput3, aOutput4}, null, null, null, null, 0, 0, Math.max(1, aSpecialValue));
@@ -208,6 +209,31 @@ public class GregtechRecipe {
 		GT_Log.out.println("GT_Mod: Re-Unificating Recipes.");
 		for (Gregtech_Recipe_Map tMapEntry : Gregtech_Recipe_Map.sMappings) tMapEntry.reInit();
 	}
+	
+	public ItemStack getRepresentativeInput(int aIndex) {
+        if (aIndex < 0 || aIndex >= mInputs.length) return null;
+        return GT_Utility.copy(mInputs[aIndex]);
+    }
+
+    public ItemStack getOutput(int aIndex) {
+        if (aIndex < 0 || aIndex >= mOutputs.length) return null;
+        return GT_Utility.copy(mOutputs[aIndex]);
+    }
+
+    public int getOutputChance(int aIndex) {
+        if (aIndex < 0 || aIndex >= mChances.length) return 10000;
+        return mChances[aIndex];
+    }
+
+    public FluidStack getRepresentativeFluidInput(int aIndex) {
+        if (aIndex < 0 || aIndex >= mFluidInputs.length || mFluidInputs[aIndex] == null) return null;
+        return mFluidInputs[aIndex].copy();
+    }
+
+    public FluidStack getFluidOutput(int aIndex) {
+        if (aIndex < 0 || aIndex >= mFluidOutputs.length || mFluidOutputs[aIndex] == null) return null;
+        return mFluidOutputs[aIndex].copy();
+    }
 
 	public GregtechRecipe copy() {
 		return new GregtechRecipe(this);
@@ -277,6 +303,8 @@ public class GregtechRecipe {
 		public static final Collection<Gregtech_Recipe_Map> sMappings = new ArrayList<Gregtech_Recipe_Map>();
 		//public static final GT_Recipe_Map sChemicalBathRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(200), "gt.recipe.chemicalbath", "Chemical Bath", null, RES_PATH_GUI + "basicmachines/ChemicalBath", 1, 3, 1, 1, 1, E, 1, E, true, true);
 		public static final GT_Recipe_Map sCokeOvenRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(200), "gt.recipe.cokeoven", "Coke Oven", null, RES_PATH_GUI + "basicmachines/ChemicalBath", 1, 3, 1, 1, 1, E, 1, E, true, true);
+		public static final GT_Recipe_Map sMatterFab2Recipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(200), "gt.recipe.matterfab2", "Matter Fabricator", null, RES_PATH_GUI + "basicmachines/Default", 1, 3, 1, 1, 1, E, 1, E, true, true);
+		//public static final Gregtech_Recipe_Map sMatterFabRecipes = new Gregtech_Recipe_Map(new HashSet<GregtechRecipe>(200), "gt.recipe.matterfab", "Matter Fabricator", null, RES_PATH_GUI + "basicmachines/Massfabricator", 1, 3, 1, 1, 1, E, 1, E, true, true);
 		public static final Gregtech_Recipe_Map_Fuel sRocketFuels = new Gregtech_Recipe_Map_Fuel(new HashSet<GregtechRecipe>(10), "gt.recipe.rocketenginefuel", "Rocket Engine Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 3000, " EU", true, true);
 
 
@@ -322,28 +350,8 @@ public class GregtechRecipe {
 		 * @param aNEISpecialValuePost       the String after the Special Value. Usually for a Unit or something.
 		 * @param aNEIAllowed                if NEI is allowed to display this Recipe Handler in general.
 		 */
-		public Gregtech_Recipe_Map(Collection<GregtechRecipe> aRecipeList, String aUnlocalizedName, String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre, int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI, boolean aNEIAllowed) {
-			sMappings.add(this);
-			mNEIAllowed = aNEIAllowed;
-			mShowVoltageAmperageInNEI = aShowVoltageAmperageInNEI;
-			mRecipeList = aRecipeList;
-			mNEIName = aNEIName == null ? aUnlocalizedName : aNEIName;
-			mNEIGUIPath = aNEIGUIPath.endsWith(".png") ? aNEIGUIPath : aNEIGUIPath + ".png";
-			mNEISpecialValuePre = aNEISpecialValuePre;
-			mNEISpecialValueMultiplier = aNEISpecialValueMultiplier;
-			mNEISpecialValuePost = aNEISpecialValuePost;
-			mAmperage = aAmperage;
-			mUsualInputCount = aUsualInputCount;
-			mUsualOutputCount = aUsualOutputCount;
-			mMinimalInputItems = aMinimalInputItems;
-			mMinimalInputFluids = aMinimalInputFluids;
-			GregTech_API.sFluidMappings.add(mRecipeFluidMap);
-			GregTech_API.sItemStackMappings.add(mRecipeItemMap);
-			GT_LanguageManager.addStringLocalization(mUnlocalizedName = aUnlocalizedName, aLocalName);
-		}
-
-		public Gregtech_Recipe_Map(HashSet<GregtechRecipe> hashSet,
-				String aUnlocalizedName, String aLocalName, Object aNEIName,
+		public Gregtech_Recipe_Map(Collection<GregtechRecipe> aRecipeList,
+				String aUnlocalizedName, String aLocalName, String aNEIName,
 				String aNEIGUIPath, int aUsualInputCount,
 				int aUsualOutputCount, int aMinimalInputItems,
 				int aMinimalInputFluids, int aAmperage,
@@ -353,8 +361,8 @@ public class GregtechRecipe {
 			sMappings.add(this);
 			mNEIAllowed = aNEIAllowed;
 			mShowVoltageAmperageInNEI = aShowVoltageAmperageInNEI;
-			mRecipeList = hashSet;
-			mNEIName = (String) (aNEIName == null ? aUnlocalizedName : aNEIName);
+			mRecipeList = aRecipeList;
+			mNEIName = aNEIName == null ? aUnlocalizedName : aNEIName;
 			mNEIGUIPath = aNEIGUIPath.endsWith(".png") ? aNEIGUIPath : aNEIGUIPath + ".png";
 			mNEISpecialValuePre = aNEISpecialValuePre;
 			mNEISpecialValueMultiplier = aNEISpecialValueMultiplier;
@@ -379,6 +387,10 @@ public class GregtechRecipe {
 
 		public GregtechRecipe addRecipe(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecial, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
 			return addRecipe(new GregtechRecipe(aOptimize, aInputs, aOutputs, aSpecial, null, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue));
+		}
+
+		public GregtechRecipe addRecipe(boolean aOptimize, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
+			return addRecipe(new GregtechRecipe(aOptimize, null, null, null, null, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue));
 		}
 
 		/*public GregtechRecipe addRecipe(boolean aOptimize, FluidStack aInput1, FluidStack aOutput1, ItemStack[] bInput1, ItemStack[] bOutput1, int aDuration, int aEUt, int aSpecialValue) {
@@ -561,11 +573,71 @@ public class GregtechRecipe {
 					if (tList == null){ 
 						Utils.LOG_INFO("Method 4 - brrr list was NUll");	
 						mRecipeItemMap.put(tStack, tList = new HashSet<GregtechRecipe>(1));
-						}
+					}
 					tList.add(aRecipe);
 					Utils.LOG_INFO("Method 4 - Added recipe to map? I think.");					
 				}
 			return aRecipe;
+		}
+
+		public GregtechRecipe findRecipe(IGregTechTileEntity baseMetaTileEntity, GregtechRecipe aRecipe, boolean aNotUnificated,
+				long aVoltage, FluidStack[] aFluids, FluidStack[] fluidStacks) {
+
+			ItemStack aInputs[] = null;
+			// No Recipes? Well, nothing to be found then.
+			if (mRecipeList.isEmpty()) return null;
+
+			// Some Recipe Classes require a certain amount of Inputs of certain kinds. Like "at least 1 Fluid + 1 Stack" or "at least 2 Stacks" before they start searching for Recipes.
+			// This improves Performance massively, especially if people leave things like Circuits, Molds or Shapes in their Machines to select Sub Recipes.
+			if (GregTech_API.sPostloadFinished) {
+				if (mMinimalInputFluids > 0) {
+					if (aFluids == null) return null;
+					int tAmount = 0;
+					for (FluidStack aFluid : aFluids) if (aFluid != null) tAmount++;
+					if (tAmount < mMinimalInputFluids) return null;
+				}
+				if (mMinimalInputItems > 0) {
+					if (aInputs == null) return null;
+					int tAmount = 0;
+					for (ItemStack aInput : aInputs) if (aInput != null) tAmount++;
+					if (tAmount < mMinimalInputItems) return null;
+				}
+			}
+
+			// Unification happens here in case the Input isn't already unificated.
+			if (aNotUnificated) aInputs = GT_OreDictUnificator.getStackArray(true, (Object[]) aInputs);
+
+			// Check the Recipe which has been used last time in order to not have to search for it again, if possible.
+			if (aRecipe != null)
+				if (!aRecipe.mFakeRecipe && aRecipe.mCanBeBuffered && aRecipe.isRecipeInputEqual(false, true, aFluids, aInputs))
+					return aRecipe.mEnabled && aVoltage * mAmperage >= aRecipe.mEUt ? aRecipe : null;
+
+					// Now look for the Recipes inside the Item HashMaps, but only when the Recipes usually have Items.
+					if (mUsualInputCount > 0 && aInputs != null) for (ItemStack tStack : aInputs)
+						if (tStack != null) {
+							Collection<GregtechRecipe>
+							tRecipes = mRecipeItemMap.get(new GT_ItemStack(tStack));
+							if (tRecipes != null) for (GregtechRecipe tRecipe : tRecipes)
+								if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, true, aFluids, aInputs))
+									return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt ? tRecipe : null;
+									tRecipes = mRecipeItemMap.get(new GT_ItemStack(GT_Utility.copyMetaData(W, tStack)));
+									if (tRecipes != null) for (GregtechRecipe tRecipe : tRecipes)
+										if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, true, aFluids, aInputs))
+											return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt ? tRecipe : null;
+						}
+
+					// If the minimal Amount of Items for the Recipe is 0, then it could be a Fluid-Only Recipe, so check that Map too.
+					if (mMinimalInputItems == 0 && aFluids != null) for (FluidStack aFluid : aFluids)
+						if (aFluid != null) {
+							Collection<GregtechRecipe>
+							tRecipes = mRecipeFluidMap.get(aFluid.getFluid());
+							if (tRecipes != null) for (GregtechRecipe tRecipe : tRecipes)
+								if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, true, aFluids, aInputs))
+									return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt ? tRecipe : null;
+						}
+
+					// And nothing has been found.
+					return null;
 		}
 	}
 

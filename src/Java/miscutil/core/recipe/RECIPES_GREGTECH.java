@@ -19,6 +19,7 @@ public class RECIPES_GREGTECH {
 
 	private static void execute(){
 		cokeOvenRecipes();
+		matterFabRecipes();
 		assemblerRecipes();
 		distilleryRecipes();
 		addFuels();
@@ -79,6 +80,28 @@ public class RECIPES_GREGTECH {
 					900,  //Time in ticks
 					120); //EU
 		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+	}
+	
+	private static void matterFabRecipes(){
+		Utils.LOG_INFO("Loading Recipes for Matter Fabricator.");
+
+		try {
+
+			CORE.RA.addMattrFabricatorRecipe(
+					Materials.UUAmplifier.getFluid(1L), //Fluid Input
+					Materials.UUMatter.getFluid(1L), //Fluid Output
+					800,  //Time in ticks
+					32); //EU
+		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+		try {
+
+			CORE.RA.addMattrFabricatorRecipe(
+					null, //Fluid Input
+					Materials.UUMatter.getFluid(1L), //Fluid Output
+					3200,  //Time in ticks
+					32); //EU			
+		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+
 	}
 
 	private static void assemblerRecipes(){

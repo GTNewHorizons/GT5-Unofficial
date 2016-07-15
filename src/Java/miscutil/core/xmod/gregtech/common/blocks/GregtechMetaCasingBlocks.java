@@ -28,13 +28,13 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Centrifuge Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Structural Coke Oven Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Heat Resistant Coke Oven Casing");
-		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Heat Proof Coke Oven Casing");
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Heat Proof Coke Oven Casing"); //60
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Material Press Machine Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Electrolyzer Casing");
-		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "BROKEN BLUE FUSION Casing");
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Wire Factory Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Maceration Stack Casing");
-		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "BROKEN PINK FUSION Casing");
-		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Unused Casing");
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Matter Generation Block"); //65
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Matter Fabricator Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Iron Plated Bricks");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Unused Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Unused Coil Block");
@@ -49,8 +49,8 @@ extends GregtechMetaCasingBlocksAbstract {
 		GregtechItemList.Casing_Electrolyzer.set(new ItemStack(this, 1, 5));
 		GregtechItemList.Casing_Macerator.set(new ItemStack(this, 1, 6));
 		GregtechItemList.Casing_U4.set(new ItemStack(this, 1, 7));
-		GregtechItemList.Casing_U5.set(new ItemStack(this, 1, 8));
-		GregtechItemList.Casing_U6.set(new ItemStack(this, 1, 9));
+		GregtechItemList.Casing_MatterGen.set(new ItemStack(this, 1, 8));
+		GregtechItemList.Casing_MatterFab.set(new ItemStack(this, 1, 9));
 		GregtechItemList.Casing_IronPlatedBricks.set(new ItemStack(this, 1, 10));
 		GregtechItemList.Casing_U7.set(new ItemStack(this, 1, 11));
 		GregtechItemList.Casing_Coil_U1.set(new ItemStack(this, 1, 12));
@@ -82,14 +82,17 @@ extends GregtechMetaCasingBlocksAbstract {
 			case 5:
 				return Textures.BlockIcons.MACHINE_CASING_FUSION_2.getIcon();
 				//Broken Blue Fusion Casings
-			/*case 6:
-				return Textures.BlockIcons.MACHINE_CASING_FIREBOX_TITANIUM.getIcon();*/
+			case 6:
+				return Textures.BlockIcons.MACHINE_CASING_FUSION.getIcon();
 				//Maceration Stack Casings
 			case 7:
 				return Textures.BlockIcons.MACHINE_LuV_BOTTOM.getIcon();
 				//Broken Pink Fusion Casings
-				/*case 8:
-					return Textures.BlockIcons.MACHINE_CASING_FIREBOX_TITANIUM.getIcon();*/
+			case 8:
+				return Textures.BlockIcons.MACHINE_CASING_FUSION_2.getIcon();
+				//Matter Fabricator Casings
+			case 9:
+				return Textures.BlockIcons.MACHINE_CASING_MAGIC.getIcon();
 				//Iron Blast Fuance Textures
 			case 10:
 				return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();			
