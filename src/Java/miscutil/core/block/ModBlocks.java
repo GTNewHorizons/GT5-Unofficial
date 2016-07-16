@@ -1,7 +1,9 @@
 package miscutil.core.block;
 
 import miscutil.core.block.base.BasicBlock;
+import miscutil.core.block.general.LightGlass;
 import miscutil.core.block.general.fluids.FluidRegistryHandler;
+import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
 import miscutil.core.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks;
 import net.minecraft.block.Block;
@@ -20,6 +22,8 @@ public final class ModBlocks {
     public static Block blockHeliumGenerator;
     public static Block blockNHG;
     public static Block blockCharger;
+    
+    public static Block MatterFabricatorEffectBlock;
 
 	public static Fluid fluidJackDaniels = new Fluid("fluidJackDaniels");
 	public static Block blockFluidJackDaniels; 
@@ -42,6 +46,11 @@ public final class ModBlocks {
 
 		//Staballoy Block
 		GameRegistry.registerBlock(blockStaballoy = new BasicBlock("blockStaballoy", Material.iron), "blockStaballoy");
+		
+		//GameRegistry.registerBlock(MatterFabricatorEffectBlock = new MatterFabricatorEffectBlock(), "blockMF_Effect");
+		
+		GameRegistry.registerBlock(MatterFabricatorEffectBlock = new LightGlass(Material.glass, false).setHardness(0.1F).setBlockTextureName(CORE.MODID + ":" + "blockMFEffect").setStepSound(Block.soundTypeGlass), "blockMFEffect");
+        
 
 		//Casing Blocks
 		blockCasingsMisc = new GregtechMetaCasingBlocks();
