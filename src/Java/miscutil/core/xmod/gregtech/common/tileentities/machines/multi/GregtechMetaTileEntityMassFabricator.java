@@ -49,17 +49,17 @@ public class GregtechMetaTileEntityMassFabricator extends GT_MetaTileEntity_Mult
 	@Override
 	public String[] getDescription() {
 		return new String[]{
-				"Controller Block for the Pyrolyse Oven",
-				"Industrial Charcoal producer and Oil from Plants",
+				"Controller Block for the Matter Fabricator",
+				"Produces UU-Matter from UU-Amplifier",
 				"Size(WxHxD): 5x4x5, Controller (Bottom center)",
-				"3x1x3 Kanthal Heating Coils (Inside bottom 5x1x5 layer)",
-				"9x Kanthal Heating Coils (Centered 3x1x3 area in Bottom layer)",
-				"1x Input Hatch/Bus (Centered 3x1x3 area in Top layer)",
-				"1x Output Hatch/Bus (Any bottom layer casing)",
+				"3x1x3 Matter Generation Coils (Inside bottom 5x1x5 layer)",
+				"9x Matter Generation Coils (Centered 3x1x3 area in Bottom layer)",
+				"1x Input Hatch (Any bottom layer casing)",
+				"1x Output Hatch (Any bottom layer casing)",
 				"1x Maintenance Hatch (Any bottom layer casing)",
 				"1x Muffler Hatch (Centered 3x1x3 area in Top layer)",
 				"1x Energy Hatch (Any bottom layer casing)",
-		"ULV Machine Casings for the rest (60 at least!)"};
+		"Matter Fabricator Casings for the rest (60 at least!)"};
 	}
 
 	@Override
@@ -86,12 +86,10 @@ public class GregtechMetaTileEntityMassFabricator extends GT_MetaTileEntity_Mult
 		Materials.UUAmplifier.mChemicalFormula = ("Mass Fabricator Eff/Speed Bonus: x" + sUUASpeedBonus);
 	}
 
-	/*@Override
+	@Override
 	public boolean checkRecipe(ItemStack aStack) {
-
 		ArrayList<FluidStack> tFluidList = getStoredFluids();
-		Utils.LOG_INFO("Stored Fluid Amount: "+tFluidList.size());
-		for (int i = 0; i < tFluidList.size(); i++) {
+		for (int i = 0; i < tFluidList.size() - 1; i++) {
 			for (int j = i + 1; j < tFluidList.size(); j++) {
 				if (GT_Utility.areFluidsEqual((FluidStack) tFluidList.get(i), (FluidStack) tFluidList.get(j))) {
 					if (((FluidStack) tFluidList.get(i)).amount >= ((FluidStack) tFluidList.get(j)).amount) {
@@ -104,148 +102,47 @@ public class GregtechMetaTileEntityMassFabricator extends GT_MetaTileEntity_Mult
 			}
 		}
 
-		for (FluidStack temp : tFluidList) {
-			Utils.LOG_INFO("Stored Fluid is: "+temp.getLocalizedName()+", There is "+temp.amount+"L of it.");
-		}
-
 		long tVoltage = getMaxInputVoltage();
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-		FluidStack tFluids = tFluidList.get(0);
-        FluidStack[] tFluids1 = (FluidStack[]) Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tFluidList.size()]), 0, tFluidList.size());
-		if (tFluids.amount > 0) {
-			GT_Recipe tRecipe = GregtechRecipe.Gregtech_Recipe_Map.sMatterFab2Recipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], new FluidStack[]{tFluids}, new ItemStack[]{});
-			if (tRecipe != null) {
-
-				for (FluidStack temp : tRecipe.mFluidOutputs) {
-					Utils.LOG_INFO("Variable Output Fluid is: "+temp.getLocalizedName()+", There is "+temp.amount+"L of it.");
-				}
-
-				this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-				this.mEfficiencyIncrease = 10000;
-				if (tRecipe.mEUt <= 16) {
-					this.mEUt = (tRecipe.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
-					this.mMaxProgresstime = (tRecipe.mDuration / (1 << tTier - 1));
-				} else {
-					this.mEUt = tRecipe.mEUt;
-					this.mMaxProgresstime = tRecipe.mDuration;
-					while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-						this.mEUt *= 4;
-						this.mMaxProgresstime /= 2;
+		FluidStack[] tFluids = (FluidStack[]) Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tFluidList.size()]), 0, tFluidList.size());
+		if (tFluids.length > 0) {
+			for(int i = 0;i<tFluids.length;i++){
+				GT_Recipe tRecipe = GregtechRecipe.Gregtech_Recipe_Map.sMatterFab2Recipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], new FluidStack[]{tFluids[i]}, new ItemStack[]{});
+				if (tRecipe != null) {
+					if (tRecipe.isRecipeInputEqual(true, tFluids, new ItemStack[]{})) {
+						this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+						this.mEfficiencyIncrease = 10000;
+						if (tRecipe.mEUt <= 16) {
+							this.mEUt = (tRecipe.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
+							this.mMaxProgresstime = ((tRecipe.mDuration*sDurationMultiplier) / (1 << tTier - 1));
+						} else {
+							this.mEUt = tRecipe.mEUt;
+							this.mMaxProgresstime = (tRecipe.mDuration*sDurationMultiplier);
+							while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+								this.mEUt *= 4;
+								this.mMaxProgresstime /= 2;
+							}
+						}
+						if (this.mEUt > 0) {
+							this.mEUt = (-this.mEUt);
+						}
+						this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+						this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0)};
+						this.mOutputFluids = tRecipe.mFluidOutputs.clone();
+						ArrayUtils.reverse(mOutputFluids);
+						recipeCounter++;
+						updateSlots();
+						Utils.LOG_INFO("Recipes Finished: "+recipeCounter);
+						return true;
 					}
 				}
-				if (this.mEUt > 0) {
-					this.mEUt = (-this.mEUt);
+				else {
+					Utils.LOG_INFO("Invalid Recipe");
 				}
-				this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-				this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0)};
-				this.mOutputFluids = tRecipe.mFluidOutputs.clone();
-				ArrayUtils.reverse(mOutputFluids);
-				updateSlots();
-				Utils.LOG_INFO("Good Recipe");
-				return true;
 			}
-			
-			if (tFluids1.length > 0) {
-	        	for(int i = 0;i<tFluids1.length;i++){
-	            GT_Recipe tRecipe1 = GT_Recipe.GT_Recipe_Map.sDistillationRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], new FluidStack[]{tFluids1[i]}, new ItemStack[]{});
-				
-			if (tRecipe1 != null) {
-
-				for (FluidStack temp : tRecipe1.mFluidOutputs) {
-					Utils.LOG_INFO("Variable Output Fluid is: "+temp.getLocalizedName()+", There is "+temp.amount+"L of it.");
-				}
-
-				this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-				this.mEfficiencyIncrease = 10000;
-				if (tRecipe1.mEUt <= 16) {
-					this.mEUt = (tRecipe1.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
-					this.mMaxProgresstime = (tRecipe1.mDuration / (1 << tTier - 1));
-				} else {
-					this.mEUt = tRecipe1.mEUt;
-					this.mMaxProgresstime = tRecipe1.mDuration;
-					while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-						this.mEUt *= 4;
-						this.mMaxProgresstime /= 2;
-					}
-				}
-				if (this.mEUt > 0) {
-					this.mEUt = (-this.mEUt);
-				}
-				this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-				this.mOutputItems = new ItemStack[]{tRecipe1.getOutput(0)};
-				this.mOutputFluids = tRecipe1.mFluidOutputs.clone();
-				ArrayUtils.reverse(mOutputFluids);
-				updateSlots();
-				Utils.LOG_INFO("Good Recipe");
-				return true;
-			}
-	        	}
-			}
-			Utils.LOG_INFO("Bad Recipe");
-		}
-		if (tFluids.amount <= 0) {
-			Utils.LOG_INFO("Bad Fluid amount");
 		}
 		return false;
-	}*/
-	
-	@Override
-	public boolean checkRecipe(ItemStack aStack) {
-        ArrayList<FluidStack> tFluidList = getStoredFluids();
-        for (int i = 0; i < tFluidList.size() - 1; i++) {
-            for (int j = i + 1; j < tFluidList.size(); j++) {
-                if (GT_Utility.areFluidsEqual((FluidStack) tFluidList.get(i), (FluidStack) tFluidList.get(j))) {
-                    if (((FluidStack) tFluidList.get(i)).amount >= ((FluidStack) tFluidList.get(j)).amount) {
-                        tFluidList.remove(j--);
-                    } else {
-                        tFluidList.remove(i--);
-                        break;
-                    }
-                }
-            }
-        }
-
-        long tVoltage = getMaxInputVoltage();
-        byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-        FluidStack[] tFluids = (FluidStack[]) Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tFluidList.size()]), 0, tFluidList.size());
-        if (tFluids.length > 0) {
-        	for(int i = 0;i<tFluids.length;i++){
-            GT_Recipe tRecipe = GregtechRecipe.Gregtech_Recipe_Map.sMatterFab2Recipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], new FluidStack[]{tFluids[i]}, new ItemStack[]{});
-            if (tRecipe != null) {
-                if (tRecipe.isRecipeInputEqual(true, tFluids, new ItemStack[]{})) {
-                    this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-                    this.mEfficiencyIncrease = 10000;
-                    if (tRecipe.mEUt <= 16) {
-                        this.mEUt = (tRecipe.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
-                        this.mMaxProgresstime = (tRecipe.mDuration / (1 << tTier - 1));
-                    } else {
-                        this.mEUt = tRecipe.mEUt;
-                        this.mMaxProgresstime = tRecipe.mDuration;
-                        while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-                            this.mEUt *= 4;
-                            this.mMaxProgresstime /= 2;
-                        }
-                    }
-                    if (this.mEUt > 0) {
-                        this.mEUt = (-this.mEUt);
-                    }
-                    this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-                    this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0)};
-                    this.mOutputFluids = tRecipe.mFluidOutputs.clone();
-                    ArrayUtils.reverse(mOutputFluids);
-                    recipeCounter++;
-                    updateSlots();
-                    Utils.LOG_INFO("Recipes Finished: "+recipeCounter);
-                    return true;
-                	}
-                }
-            else {
-                Utils.LOG_INFO("Invalid Recipe");
-            }
-            }
-        }
-        return false;
-    }
+	}
 
 	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
@@ -254,39 +151,42 @@ public class GregtechMetaTileEntityMassFabricator extends GT_MetaTileEntity_Mult
 		for (int i = -2; i < 3; i++) {
 			for (int j = -2; j < 3; j++) {
 				for (int h = 0; h < 4; h++) {
+
+					//Utils.LOG_INFO("Logging Variables - xDir:"+xDir+" zDir:"+zDir+" h:"+h+" i:"+i+" j:"+j);
+
 					IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-					/*if (tTileEntity == Blocks.air) {
+					/*if (tTileEntity != Block.getBlockFromItem(UtilsItems.getItem("IC2:blockAlloyGlass"))) {
 						Utils.LOG_INFO("h:"+h+" i:"+i+" j:"+j);
 						double tX = tTileEntity.getXCoord();
 						double tY = tTileEntity.getYCoord();
 						double tZ = tTileEntity.getZCoord();
-						Utils.LOG_INFO("Found Air at X:"+tX+" Y:"+tY+" Z:"+tZ);
+						Utils.LOG_INFO("Found Glass at X:"+tX+" Y:"+tY+" Z:"+tZ);
 						//return false;
 					}*/
 					if ((i != -2 && i != 2) && (j != -2 && j != 2)) {// innerer 3x3 ohne h�he
 						if (h == 0) {// innen boden (kantal coils)
 							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-								Utils.LOG_INFO("Multiblock Invalid.");
+								Utils.LOG_INFO("Matter Generation Coils missings from the bottom layer, inner 3x3.");
 								return false;
 							}
 							if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 8) {
-								Utils.LOG_INFO("Multiblock Invalid.");
+								Utils.LOG_INFO("Matter Generation Coils missings from the bottom layer, inner 3x3.");
 								return false;
 							}
 						} else if (h == 3) {// innen decke (ulv casings + input + muffler)
 							if ((!addMufflerToMachineList(tTileEntity, 66))) {
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-									Utils.LOG_INFO("Multiblock Invalid.");
+									Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the top layers inner 3x3.");
 									return false;
 								}
 								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 9) {
-									Utils.LOG_INFO("Multiblock Invalid.");
+									Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the top layers inner 3x3.");
 									return false;
 								}
 							}
 						} else {// innen air
 							if (!aBaseMetaTileEntity.getAirOffset(xDir + i, h, zDir + j)) {
-								Utils.LOG_INFO("Multiblock Invalid.");
+								Utils.LOG_INFO("Make sure the inner 3x3 of the Multiblock is Air.");
 								return false;
 							}
 						}
@@ -295,58 +195,64 @@ public class GregtechMetaTileEntityMassFabricator extends GT_MetaTileEntity_Mult
 							if ((!addMaintenanceToMachineList(tTileEntity, 66)) && (!addInputToMachineList(tTileEntity, 66)) && (!addOutputToMachineList(tTileEntity, 66)) && (!addEnergyInputToMachineList(tTileEntity, 66))) {
 								if ((xDir + i != 0) || (zDir + j != 0)) {//no controller
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-										Utils.LOG_INFO("Multiblock Invalid.");
+										Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the edges of the bottom layer.");
 										return false;
 									}
 									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 9) {
-										Utils.LOG_INFO("Multiblock Invalid.");
+										Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the edges of the bottom layer.");
 										return false;
 									}
 								}
 							}
 						} else {// au�en �ber boden (ulv casings)
+							if (h == 1) {
 
-							/*//Utils.LOG_INFO("h:"+h+" i:"+i+" j:"+j);
-							if (h == 1  || h == 2) {
-								//Utils.LOG_INFO("h:"+h+" i:"+i+" j:"+j);
-								//if ((i < 2 && i > -2) && (j == 0) || (i == 0) && (j < 2 && j > -2)){
-								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != IC2Glass) {
-									double tX = tTileEntity.getXCoord();
-									double tY = tTileEntity.getYCoord();
-									double tZ = tTileEntity.getZCoord();
-									Utils.LOG_INFO("Found Not Glass at X:"+tX+" Y:"+tY+" Z:"+tZ);
-									Utils.LOG_INFO("Multiblock Invalid. No Glass.");
-									return false;
+								if ((i == -2 || i == 2) && (j == -2 || j == 2)){
+									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
+										Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the corners in the second layer.");
+										return false;
+									}
+									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 9) {
+										Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the corners in the second layer.");
+										return false;
+									}
 								}
-								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 0) {
-									double tX = tTileEntity.getXCoord();
-									double tY = tTileEntity.getYCoord();
-									double tZ = tTileEntity.getZCoord();
-									Utils.LOG_INFO("Found Not Glass at X:"+tX+" Y:"+tY+" Z:"+tZ);
-									Utils.LOG_INFO("Multiblock Invalid.  No Glass.");
-									return false;
-								}  
-								//}
-								//Utils.LOG_INFO("h:"+h+" i:"+i+" j:"+j);
-								//if ((i == 2 || i == -2) && (j == 0) || (i == 0) && (j == 2 && j == -2)){
+
+								else if ((i != -2 || i != 2) && (j != -2 || j != 2)){
+									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != IC2Glass) {
+										Utils.LOG_INFO("Glass Casings Missing from somewhere in the second layer.");
+										return false;
+									}
+								}
+							}
+							if (h == 2) {
+								if ((i == -2 || i == 2) && (j == -2 || j == 2)){
+									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
+										Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the corners in the third layer.");
+										return false;
+									}
+									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 9) {
+										Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the corners in the third layer.");
+										return false;
+									}
+								}
+
+								else if ((i != -2 || i != 2) && (j != -2 || j != 2)){
+									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != IC2Glass) {
+										Utils.LOG_INFO("Glass Casings Missing from somewhere in the third layer.");
+										return false;
+									}
+								}
+							}
+							if (h == 3) {
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-									Utils.LOG_INFO("Multiblock Invalid. No Corner Blocks.");
+									Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the edges on the top layer.");
 									return false;
 								}
 								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 9) {
-									Utils.LOG_INFO("Multiblock Invalid.  No Corner Blocks.");
+									Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the edges on the top layer.");
 									return false;
-								}    
-								//}
-							} */                       	
-
-							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-								Utils.LOG_INFO("Multiblock Invalid. 1");
-								return false;
-							}
-							if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 9) {
-								Utils.LOG_INFO("Multiblock Invalid. 1");
-								return false;
+								}
 							}
 						}
 					}
