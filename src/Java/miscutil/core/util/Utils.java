@@ -10,11 +10,17 @@ import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 
+import miscutil.MiscUtils;
 import miscutil.core.lib.CORE;
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -228,30 +234,79 @@ public class Utils {
 		timer.schedule(new ShortTimerTask(), seconds * 1000);
 		return timer;
 	}
-	
+
 	public static String byteToHex(byte b) {
-	    int i = b & 0xFF;
-	    return Integer.toHexString(i);
-	  }
-	
+		int i = b & 0xFF;
+		return Integer.toHexString(i);
+	}
+
 	public static Object[] convertListToArray(List<Object> sourceList) {	
 		Object[] targetArray = sourceList.toArray(new Object[sourceList.size()]);
-	    return targetArray;
+		return targetArray;
 	}
-	
+
 	public static List<Object> convertArrayToListFixed(Object[] sourceArray) {
-	    List<Object> targetList = Arrays.asList(sourceArray);
-	    return targetList;
+		List<Object> targetList = Arrays.asList(sourceArray);
+		return targetList;
 	}
-	
+
 	public static List<Object> convertArrayToList(Object[] sourceArray) {
-	    List<Object> targetList = new ArrayList<Object>(Arrays.asList(sourceArray));
-	    return targetList;
+		List<Object> targetList = new ArrayList<Object>(Arrays.asList(sourceArray));
+		return targetList;
+	}
+
+	public static EntityPlayer getPlayerOnServerFromUUID(UUID parUUID){
+		if (parUUID == null) 
+		{
+			return null;
+		}
+		List<EntityPlayerMP> allPlayers = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+		for (EntityPlayerMP player : allPlayers) 
+		{
+			if (player.getUniqueID().equals(parUUID)) 
+			{
+				return player;
+			}
+		}
+		return null;
 	}
 	
+	@Deprecated
+	public static Block findBlockUnderEntityNonBoundingBox(Entity parEntity){
+		int blockX = MathHelper.floor_double(parEntity.posX);
+		int blockY = MathHelper.floor_double(parEntity.posY-0.2D - (double)parEntity.yOffset);
+		int blockZ = MathHelper.floor_double(parEntity.posZ);
+		return parEntity.worldObj.getBlock(blockX, blockY, blockZ);
+	}
+
+	public static Block findBlockUnderEntity(Entity parEntity){
+		int blockX = MathHelper.floor_double(parEntity.posX);
+		int blockY = MathHelper.floor_double(parEntity.boundingBox.minY)-1;
+		int blockZ = MathHelper.floor_double(parEntity.posZ);
+		return parEntity.worldObj.getBlock(blockX, blockY, blockZ);
+	}
 	
+	public static int getFacingDirection(Entity entity){
+		int d = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360) + 0.50) & 3;
+		return d;
+	}
 	
+	public static boolean isPlayerOP(EntityPlayer player){
+		if (player.canCommandSenderUseCommand(2, "")){
+			return true;
+		}
+		return false;
+	}
 	
+	public static void spawnCustomParticle(Entity entity){
+		MiscUtils.proxy.generateMysteriousParticles(entity);
+	}
+
+
+
+
+
+
 }
 
 
