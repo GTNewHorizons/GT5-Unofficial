@@ -419,14 +419,20 @@ public class Utils {
 		String hexChar = "0x";
 		String result;
 		if (hexAsStringOrInt.getClass() == String.class){
-			result = hexChar+hexAsStringOrInt;
-			if (result.length() != 6){
-				String temp = leftPadWithZeroes(result, 6);
+			
+			if (((String) hexAsStringOrInt).length() != 6){
+				String temp = leftPadWithZeroes((String) hexAsStringOrInt, 6);
 				result = temp;
 			}
+			result = hexChar+hexAsStringOrInt;
 			return result;
 		}
 		else if (hexAsStringOrInt.getClass() == Integer.class){
+			;
+			if (((String) hexAsStringOrInt).length() != 6){
+				String temp = leftPadWithZeroes((String) hexAsStringOrInt, 6);
+				result = temp;
+			}
 			result = hexChar+String.valueOf(hexAsStringOrInt);
 			return result;
 		}
@@ -445,20 +451,21 @@ public class Utils {
 
 	public static int generateSingularRandomHexValue(){
 		String temp;
-		int usefuleNumber = 0;
-		int tDecided = randInt(1, 5);
+		int usefulNum = 0;
+		int randomInt = randInt(1, 5);
 		final Map<Integer, String> colours = Utils.hexColourGeneratorRandom(5);
 
-			if (colours.get(tDecided) != null && colours.size() > 0){				
-					usefuleNumber = Integer.getInteger(colours.get(tDecided));		
+			if (colours.get(randomInt) != null && colours.size() > 0){				
+				temp = colours.get(randomInt);		
 			}
 			else {
-				usefuleNumber = 123456;	
+				temp = "0F0F0F";	
 			}
 
-		Utils.LOG_INFO("Operating with "+usefuleNumber);	
-		temp = Utils.appenedHexNotationToString(String.valueOf(usefuleNumber));
-		Utils.LOG_INFO("Made "+temp+" - Hopefully it's not a mess.");	
+		Utils.LOG_INFO("Operating with "+temp);	
+		temp = Utils.appenedHexNotationToString(String.valueOf(temp));
+		Utils.LOG_INFO("Made "+temp+" - Hopefully it's not a mess.");
+		Utils.LOG_INFO("It will decode into "+Integer.decode(temp)+".");
 		return Integer.decode(temp);
 	}
 
