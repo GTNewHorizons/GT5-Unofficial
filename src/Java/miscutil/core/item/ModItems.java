@@ -14,6 +14,7 @@ import miscutil.core.lib.CORE;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.Utils;
 import miscutil.core.util.debug.DEBUG_INIT;
+import miscutil.core.util.item.UtilsItems;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraftforge.common.util.EnumHelper;
@@ -57,9 +58,11 @@ Gold Tool: 22*/
 	//Tool Materials
 	//public static ToolMaterial TUTORIAL = EnumHelper.addToolMaterial("TUTORIAL", harvestLevel, durability, miningSpeed, damageVsEntities, enchantability);
 	public static ToolMaterial STABALLOY = EnumHelper.addToolMaterial("Staballoy", 3, 2500, 7, 1.0F, 18);
-	
+
 	public static Item itemDebugShapeSpawner;
-	
+
+	public static Item itemBaseSpawnEgg;
+
 	//EnderIO
 	public static Item itemPlateSoularium;
 	public static Item itemPlateRedstoneAlloy;
@@ -101,18 +104,18 @@ Gold Tool: 22*/
 	public static Item itemPlateBatteryAlloy;
 	public static Item itemHeliumBlob;
 	public static Item itemPLACEHOLDER_Circuit;
-	
+
 	public static Item FuelRod_Empty;
 	public static Item FuelRod_Thorium;
 	public static Item FuelRod_Uranium;
 	public static Item FuelRod_Plutonium;
-	
+
 	public static Item itemBedLocator_Base;
 	public static Item itemBaseItemWithCharge;
-	
+
 	//@SuppressWarnings("unused")
 	public static final void init(){
-		
+
 		//Debug Loading
 		if (CORE.DEBUG){
 			DEBUG_INIT.registerItems();
@@ -238,10 +241,17 @@ Gold Tool: 22*/
 		else {
 			Utils.LOG_WARNING("IndustrialCraft2 not Found - Skipping Resources.");
 		}
+
+
+
+		UtilsItems.generateSpawnEgg("minecraft", "villager", Utils.generateSingularRandomHexValue(), Utils.generateSingularRandomHexValue());
+
+
+
 		/*
 		 * Misc Items
 		 */
-		
+
 		//Staballoy Equipment
 		itemStaballoyPickaxe = new StaballoyPickaxe("itemStaballoyPickaxe", STABALLOY).setCreativeTab(AddToCreativeTab.tabTools);
 		GameRegistry.registerItem(itemStaballoyPickaxe, itemStaballoyPickaxe.getUnlocalizedName());
@@ -275,10 +285,10 @@ Gold Tool: 22*/
 		GameRegistry.registerItem(itemIngotBatteryAlloy, "itemIngotBatteryAlloy");
 		itemPlateBatteryAlloy = new Item().setUnlocalizedName("itemPlateBatteryAlloy").setCreativeTab(tabMachines).setTextureName(CORE.MODID + ":itemPlateBatteryAlloy");
 		GameRegistry.registerItem(itemPlateBatteryAlloy, "itemPlateBatteryAlloy");
-		
+
 		itemHeliumBlob = new CoreItem("itemHeliumBlob", tabMisc).setTextureName(CORE.MODID + ":itemHeliumBlob");
 		//GameRegistry.registerItem(itemHeliumBlob, "itemHeliumBlob");
-				
+
 		itemPLACEHOLDER_Circuit = new Item().setUnlocalizedName("itemPLACEHOLDER_Circuit").setTextureName(CORE.MODID + ":itemPLACEHOLDER_Circuit");
 		GameRegistry.registerItem(itemPLACEHOLDER_Circuit, "itemPLACEHOLDER_Circuit");
 		//Try some New Tools from GT

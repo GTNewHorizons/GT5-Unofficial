@@ -1,6 +1,8 @@
 package miscutil.core.util.item;
 
 import gregtech.api.util.GT_OreDictUnificator;
+import miscutil.core.item.base.BasicSpawnEgg;
+import miscutil.core.lib.CORE;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.Utils;
 import miscutil.core.util.wrapper.var;
@@ -196,6 +198,11 @@ public class UtilsItems {
 		}
 
 		return null;
+	}
+	
+	public static void generateSpawnEgg(String entityModID, String parSpawnName, int colourEgg, int colourOverlay){
+		Item itemSpawnEgg = new BasicSpawnEgg(entityModID, parSpawnName, colourEgg, colourOverlay).setUnlocalizedName("spawn_egg_"+parSpawnName.toLowerCase()).setTextureName(CORE.MODID+":spawn_egg");
+		GameRegistry.registerItem(itemSpawnEgg, "spawnEgg"+parSpawnName);
 	}
 
 }

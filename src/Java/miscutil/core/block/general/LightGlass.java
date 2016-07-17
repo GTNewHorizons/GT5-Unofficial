@@ -4,6 +4,7 @@ import java.util.Random;
 
 import miscutil.core.creative.AddToCreativeTab;
 import miscutil.core.lib.CORE;
+import miscutil.core.util.Utils;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -120,34 +121,7 @@ public class LightGlass extends BlockBreakable
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(World world, int posX, int posY, int posZ, Random random){
-		if (!world.isRemote){
-			int l = world.getBlockMetadata(posX, posY, posZ);
-			double d0 = (double)((float)posX + 0.5F);
-			double d1 = (double)((float)posY + 0.7F);
-			double d2 = (double)((float)posZ + 0.5F);
-			double d3 = 0.2199999988079071D;
-			double d4 = 0.27000001072883606D;
-
-			if (l == 1)
-			{
-				world.spawnParticle("smoke", d0 - d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
-			}
-			else if (l == 2)
-			{
-				world.spawnParticle("cloud", d0 + d4, d1 + d3, d2, 0.0D, 0.0D, 0.0D);
-			}
-			else if (l == 3)
-			{
-				world.spawnParticle("smoke", d0, d1 + d3, d2 - d4, 0.0D, 0.0D, 0.0D);
-			}
-			else if (l == 4)
-			{
-				world.spawnParticle("cloud", d0, d1 + d3, d2 + d4, 0.0D, 0.0D, 0.0D);
-			}
-			else
-			{
-				world.spawnParticle("smoke", d0, d1, d2, 0.0D, 0.0D, 0.0D);
-			}
-		}
+		Utils.spawnFX(world, posX, posY, posZ, "smoke", "cloud");
+		
 	}
 }
