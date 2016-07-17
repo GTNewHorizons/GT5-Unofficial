@@ -4,6 +4,9 @@ import static gregtech.api.enums.GT_Values.F;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -20,7 +23,7 @@ import cpw.mods.fml.common.FMLLog;
 public class Utils {
 
 	public static final int WILDCARD_VALUE = Short.MAX_VALUE;
-	
+
 	static class ShortTimerTask extends TimerTask {
 		@Override
 		public void run() {
@@ -115,13 +118,13 @@ public class Utils {
 			FMLLog.severe("MiscUtils: "+s);
 		}
 	}
-	
+
 	//Developer Logger
-		public static void LOG_SPECIFIC_WARNING(String whatToLog, String msg, int line){
-			if (CORE.DEBUG){		
-				FMLLog.warning("MiscUtils |"+line+"| "+whatToLog+" | "+msg);
-			}			
-		}
+	public static void LOG_SPECIFIC_WARNING(String whatToLog, String msg, int line){
+		if (CORE.DEBUG){		
+			FMLLog.warning("MiscUtils |"+line+"| "+whatToLog+" | "+msg);
+		}			
+	}
 
 	public static void paintBox(Graphics g, int MinA, int MinB, int MaxA, int MaxB){
 		g.drawRect (MinA, MinB, MaxA, MaxB);  
@@ -203,12 +206,12 @@ public class Utils {
 	public static double decimalRoundingToWholes(double d) {
 		return 5*(Math.round(d/5));
 	}
-	
+
 	//Can be divided by
 	public static boolean divideXintoY(int x, int y){
 		if ((x % y) == 0)
 		{
-		    return true;
+			return true;
 		}
 		return false;
 	}
@@ -218,14 +221,36 @@ public class Utils {
 		double f = i + 273.15F;
 		return (int)decimalRoundingToWholes(f);
 	}
-	
+
 	public static Timer ShortTimer(int seconds) {
 		Timer timer;
 		timer = new Timer();
 		timer.schedule(new ShortTimerTask(), seconds * 1000);
 		return timer;
 	}
-
+	
+	public static String byteToHex(byte b) {
+	    int i = b & 0xFF;
+	    return Integer.toHexString(i);
+	  }
+	
+	public static Object[] convertListToArray(List<Object> sourceList) {	
+		Object[] targetArray = sourceList.toArray(new Object[sourceList.size()]);
+	    return targetArray;
+	}
+	
+	public static List<Object> convertArrayToListFixed(Object[] sourceArray) {
+	    List<Object> targetList = Arrays.asList(sourceArray);
+	    return targetList;
+	}
+	
+	public static List<Object> convertArrayToList(Object[] sourceArray) {
+	    List<Object> targetList = new ArrayList<Object>(Arrays.asList(sourceArray));
+	    return targetList;
+	}
+	
+	
+	
 	
 }
 
