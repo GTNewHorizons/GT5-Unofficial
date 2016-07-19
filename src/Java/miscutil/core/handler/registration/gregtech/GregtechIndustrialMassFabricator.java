@@ -21,7 +21,7 @@ public class GregtechIndustrialMassFabricator
 	private static void run1()
 	{
 		//Industrial Electrolyzer Multiblock
-		GregtechItemList.Industrial_MassFab.set(new GregtechMetaTileEntityMassFabricator(799, "industrialmassfab.controller.tier.single", "Matter Fabrication Controller").getStackForm(1L));
+		GregtechItemList.Industrial_MassFab.set(new GregtechMetaTileEntityMassFabricator(799, "industrialmassfab.controller.tier.single", "Matter Fabrication CPU").getStackForm(1L));
 		
 	}
 }
