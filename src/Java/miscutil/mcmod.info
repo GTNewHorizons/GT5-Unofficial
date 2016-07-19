@@ -4,7 +4,7 @@
  * In-game info for project: MiscUtils.
  */
 [ { "modid"        : "miscutil"
-  , "name"         : "Misc Utils."
+  , "name"         : "GT++"
   , "description"  : "  
     if (Loader.isModLoaded("gregtech") == true ){
         Gregtech = true;
