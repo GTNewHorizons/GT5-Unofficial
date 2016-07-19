@@ -44,7 +44,7 @@ extends GregtechMeta_MultiBlockBase {
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Industrial Maceration Stack",
-				"Size(WxHxD): 3x5x3 (Hollow)", 
+				"Size(WxHxD): 3x6x3 (Hollow)", 
 				"Controller (Center Bottom)",
 				"1x Input Bus (Any bottom layer casing)",
 				"3x Output Bus (Any casing besides bottom layer)",

@@ -114,10 +114,10 @@ public class GregtechMetaTileEntityMassFabricator extends GT_MetaTileEntity_Mult
 						this.mEfficiencyIncrease = 10000;
 						if (tRecipe.mEUt <= 16) {
 							this.mEUt = (tRecipe.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
-							this.mMaxProgresstime = ((tRecipe.mDuration*sDurationMultiplier) / (1 << tTier - 1));
+							this.mMaxProgresstime = ((tRecipe.mDuration/**sDurationMultiplier*/) / (1 << tTier - 1));
 						} else {
 							this.mEUt = tRecipe.mEUt;
-							this.mMaxProgresstime = (tRecipe.mDuration*sDurationMultiplier);
+							this.mMaxProgresstime = (tRecipe.mDuration/**sDurationMultiplier*/);
 							while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
 								this.mEUt *= 4;
 								this.mMaxProgresstime /= 2;
