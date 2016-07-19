@@ -33,7 +33,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Electrolyzer Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Wire Factory Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Maceration Stack Casing");
-		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Matter Generation Block"); //65
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Matter Generation Coil"); //65
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Matter Fabricator Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Iron Plated Bricks");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Unused Casing");
