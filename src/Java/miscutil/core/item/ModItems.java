@@ -243,8 +243,7 @@ Gold Tool: 22*/
 		}
 
 
-
-		UtilsItems.generateSpawnEgg("minecraft", "villager", Utils.generateSingularRandomHexValue(), Utils.generateSingularRandomHexValue());
+		UtilsItems.generateSpawnEgg("ic2", "boatcarbon", Utils.generateSingularRandomHexValue(), Utils.generateSingularRandomHexValue());
 
 
 

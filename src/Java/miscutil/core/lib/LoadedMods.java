@@ -1,6 +1,7 @@
 package miscutil.core.lib;
 
 import miscutil.core.util.Utils;
+import miscutil.core.xmod.gregtech.api.enums.GregtechTextures;
 import miscutil.core.xmod.gregtech.recipes.GregtechRecipeAdder;
 import cpw.mods.fml.common.Loader;
 
@@ -39,7 +40,10 @@ public class LoadedMods {
 			if (Gregtech){
 				try {
 					CORE.sRecipeAdder = CORE.RA = new GregtechRecipeAdder();
-					Utils.LOG_INFO("Created a Gregtech recipe handler.");
+					Utils.LOG_INFO("Created Gregtech recipe handler.");
+					GregtechTextures.BlockIcons.VOID.name();
+					GregtechTextures.ItemIcons.VOID.name();
+					Utils.LOG_INFO("Created Gregtech texture handler.");
 				} catch (NullPointerException e){
 					Utils.LOG_INFO("Could NOT create a Gregtech recipe handler.");
 				}

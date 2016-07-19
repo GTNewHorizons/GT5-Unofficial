@@ -126,4 +126,8 @@ public class RECIPES_GREGTECH {
 		//CORE.RA.addFuel(GT_ModHandler.getModItem("EnderIO", "bucketFire_water", 1L, 1), null, 2800, 0);
 		//System.exit(1);
 	}
+	
+	private static void registerSkookumChoocher(){
+		//GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.toolHeadUniversalSpade, aMaterial, 1L), tBits, new Object[]{"fX", Character.valueOf('X'), OrePrefixes.toolHeadShovel.get(aMaterial)});
+	}
 }

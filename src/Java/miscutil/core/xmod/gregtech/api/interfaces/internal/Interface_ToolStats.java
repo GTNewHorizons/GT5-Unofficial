@@ -152,4 +152,9 @@ public interface Interface_ToolStats {
 	public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack);
 
 	public short[] getRGBa(boolean aIsToolHead, ItemStack aStack);
+	
+	/**
+	 * Called when this gets added to a Tool Item
+	 */
+	//public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID);
 }

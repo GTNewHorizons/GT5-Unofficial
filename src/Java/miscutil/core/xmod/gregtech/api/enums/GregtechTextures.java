@@ -1,18 +1,18 @@
 package miscutil.core.xmod.gregtech.api.enums;
 
-import static gregtech.api.enums.GT_Values.RES_PATH_BLOCK;
 import gregtech.api.GregTech_API;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.ITexture;
-import gregtech.api.objects.GT_RenderedTexture;
 import miscutil.core.lib.CORE;
+import miscutil.core.xmod.gregtech.api.interfaces.internal.Interface_IconContainer;
+import miscutil.core.xmod.gregtech.api.interfaces.internal.Interface_Texture;
+import miscutil.core.xmod.gregtech.api.objects.GregtechRenderedTexture;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
 public class GregtechTextures {
-	public enum BlockIcons implements IIconContainer, Runnable {	
+	public enum BlockIcons implements Interface_IconContainer, Runnable {	
 
+		VOID,
 
 		LARGECENTRIFUGE1, LARGECENTRIFUGE2, LARGECENTRIFUGE3, 
 		LARGECENTRIFUGE4, LARGECENTRIFUGE5, LARGECENTRIFUGE6, 
@@ -21,9 +21,9 @@ public class GregtechTextures {
 		LARGECENTRIFUGE_ACTIVE4, LARGECENTRIFUGE_ACTIVE5, LARGECENTRIFUGE_ACTIVE6, 
 		LARGECENTRIFUGE_ACTIVE7, LARGECENTRIFUGE_ACTIVE8, LARGECENTRIFUGE_ACTIVE9;
 
-		public static final IIconContainer[]
+		public static final Interface_IconContainer[]
 
-				CENTRIFUGE = new IIconContainer[]{
+				CENTRIFUGE = new Interface_IconContainer[]{
 			LARGECENTRIFUGE1,
 			LARGECENTRIFUGE2,
 			LARGECENTRIFUGE3,
@@ -34,7 +34,7 @@ public class GregtechTextures {
 			LARGECENTRIFUGE8,
 			LARGECENTRIFUGE9
 		},
-		CENTRIFUGE_ACTIVE = new IIconContainer[]{
+		CENTRIFUGE_ACTIVE = new Interface_IconContainer[]{
 			LARGECENTRIFUGE_ACTIVE1,
 			LARGECENTRIFUGE_ACTIVE2,
 			LARGECENTRIFUGE_ACTIVE3,
@@ -46,8 +46,8 @@ public class GregtechTextures {
 			LARGECENTRIFUGE_ACTIVE9
 		};
 
-		public static ITexture[]   
-				GT_CASING_BLOCKS = new ITexture[64];
+		public static Interface_Texture[]   
+				GT_CASING_BLOCKS = new Interface_Texture[64];
 
 		protected IIcon mIcon;
 
@@ -67,7 +67,7 @@ public class GregtechTextures {
 
         @Override
         public void run() {
-            mIcon = GregTech_API.sBlockIcons.registerIcon(RES_PATH_BLOCK + "iconsets/" + this);
+            mIcon = GregTech_API.sBlockIcons.registerIcon(CORE.MODID + ":" + "iconsets/" + this);
         }
         
         @Override
@@ -75,7 +75,7 @@ public class GregtechTextures {
             return TextureMap.locationBlocksTexture;
         }
 
-        public static class CustomIcon implements IIconContainer, Runnable {
+        public static class CustomIcon implements Interface_IconContainer, Runnable {
             protected IIcon mIcon;
             protected String mIconName;
 
@@ -96,7 +96,7 @@ public class GregtechTextures {
 
             @Override
             public void run() {
-                mIcon = CORE.GT_BlockIcons.registerIcon(CORE.RES_PATH_BLOCK + mIconName);
+                mIcon = CORE.GT_BlockIcons.registerIcon(CORE.MODID + ":" + mIconName);
             }
 
             @Override
@@ -107,11 +107,35 @@ public class GregtechTextures {
 	}
 	
 	
-	public enum ItemIcons implements IIconContainer, Runnable {
-        VOID, RENDERING_ERROR, // The Empty Texture
-        TURBINE, TURBINE_SMALL, TURBINE_LARGE, TURBINE_HUGE;
+	public enum ItemIcons implements Interface_IconContainer, Runnable {
+        VOID // The Empty Texture
+        , RENDERING_ERROR, SKOOKUMCHOOCHER, DURABILITY_BAR_0, DURABILITY_BAR_1, DURABILITY_BAR_2, DURABILITY_BAR_3, DURABILITY_BAR_4, DURABILITY_BAR_5, DURABILITY_BAR_6, DURABILITY_BAR_7, DURABILITY_BAR_8, ENERGY_BAR_0, ENERGY_BAR_1, ENERGY_BAR_2, ENERGY_BAR_3, ENERGY_BAR_4, ENERGY_BAR_5, ENERGY_BAR_6, ENERGY_BAR_7, ENERGY_BAR_8, TURBINE, TURBINE_SMALL, TURBINE_LARGE, TURBINE_HUGE;
 
-        public static final ITexture[] ERROR_RENDERING = new ITexture[]{new GT_RenderedTexture(RENDERING_ERROR)};
+        public static final Interface_IconContainer[]
+                DURABILITY_BAR = new Interface_IconContainer[]{
+                DURABILITY_BAR_0,
+                DURABILITY_BAR_1,
+                DURABILITY_BAR_2,
+                DURABILITY_BAR_3,
+                DURABILITY_BAR_4,
+                DURABILITY_BAR_5,
+                DURABILITY_BAR_6,
+                DURABILITY_BAR_7,
+                DURABILITY_BAR_8,
+        },
+                ENERGY_BAR = new Interface_IconContainer[]{
+                        ENERGY_BAR_0,
+                        ENERGY_BAR_1,
+                        ENERGY_BAR_2,
+                        ENERGY_BAR_3,
+                        ENERGY_BAR_4,
+                        ENERGY_BAR_5,
+                        ENERGY_BAR_6,
+                        ENERGY_BAR_7,
+                        ENERGY_BAR_8,
+                };
+
+        public static final Interface_Texture[] ERROR_RENDERING = new Interface_Texture[]{new GregtechRenderedTexture(RENDERING_ERROR)};
 
         protected IIcon mIcon, mOverlay;
 
@@ -136,35 +160,11 @@ public class GregtechTextures {
 
         @Override
         public void run() {
-            mIcon = GregTech_API.sItemIcons.registerIcon(CORE.MODID+":" + "iconsets/" + this);
-            if (mIcon != null){
-            	//Utils.LOG_INFO("Found Texture at "+CORE.MODID+":" + "iconsets/" + this);
-            }
-            else if (mIcon == null){
-            	mIcon = GregTech_API.sItemIcons.registerIcon(CORE.RES_PATH_ITEM + "iconsets/" + this);
-            	 if (mIcon != null){
-                 	//Utils.LOG_INFO("Found Texture at "+CORE.RES_PATH_ITEM + "iconsets/" + this);
-                 }
-            	 else {
-            		//Utils.LOG_INFO("Did not find Texture at "+CORE.RES_PATH_ITEM + "iconsets/" + this);
-            	 }
-            }
-            mOverlay = GregTech_API.sItemIcons.registerIcon(CORE.MODID+":" + "iconsets/" + this + "_OVERLAY");
-            if (mOverlay != null){
-            	//Utils.LOG_INFO("Found Texture at "+CORE.MODID+":" + "iconsets/" + this+ "_OVERLAY");
-            }
-            else if (mOverlay == null){
-            	mOverlay = GregTech_API.sItemIcons.registerIcon(CORE.RES_PATH_ITEM + "iconsets/" + this+ "_OVERLAY");
-            	 if (mOverlay != null){
-                 	//Utils.LOG_INFO("Found Texture at "+CORE.RES_PATH_ITEM + "iconsets/" + this+ "_OVERLAY");
-                 }
-            	 else {
-            		//Utils.LOG_INFO("Did not find Texture at "+CORE.RES_PATH_ITEM + "iconsets/" + this+ "_OVERLAY");
-            	 }
-            }
+            mIcon = GregTech_API.sItemIcons.registerIcon(CORE.MODID+ ":" + "iconsets/" + this);
+            mOverlay = GregTech_API.sItemIcons.registerIcon(CORE.MODID+ ":" + "iconsets/" + this + "_OVERLAY");
         }
 
-        public static class CustomIcon implements IIconContainer, Runnable {
+        public static class CustomIcon implements Interface_IconContainer, Runnable {
             protected IIcon mIcon, mOverlay;
             protected String mIconName;
 
@@ -185,8 +185,8 @@ public class GregtechTextures {
 
             @Override
             public void run() {
-                mIcon = GregTech_API.sItemIcons.registerIcon(CORE.MODID+":" + mIconName);
-                mOverlay = GregTech_API.sItemIcons.registerIcon(CORE.MODID+":" + mIconName + "_OVERLAY");
+                mIcon = GregTech_API.sItemIcons.registerIcon(CORE.MODID+ ":" + mIconName);
+                mOverlay = GregTech_API.sItemIcons.registerIcon(CORE.MODID+ ":" + mIconName + "_OVERLAY");
             }
 
             @Override

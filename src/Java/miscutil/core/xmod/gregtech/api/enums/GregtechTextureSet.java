@@ -13,7 +13,7 @@ public class GregtechTextureSet {
     public GregtechTextureSet(String aSetName) {
         mSetName = aSetName;
         mTextures[0] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/turbineBlade");
-        mTextures[1] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
+        mTextures[1] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/toolHeadSkookumChoocher");
         mTextures[2] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
         mTextures[3] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");
         mTextures[4] = new Textures.ItemIcons.CustomIcon("materialicons/" + mSetName + "/void");

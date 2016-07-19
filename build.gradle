@@ -40,7 +40,7 @@ sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 archivesBaseName = "MiscUtils"
-version = "1.3.4"
+version = "1.3.5-TestForGreg"
 minecraft.version = "1.7.10-10.13.4.1448-1.7.10"
 
 task sourceJar(type: Jar) {

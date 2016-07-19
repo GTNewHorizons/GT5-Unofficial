@@ -81,7 +81,6 @@ public class COMPAT_HANDLER {
 		if (Gregtech) {
 		new MetaGeneratedGregtechItems();
 		new RECIPES_LaserEngraver();
-		//new MetaGeneratedGregtechTools();
 		GregtechEnergyBuffer.run();
 		GregtechConduits.run();
 		GregtechSteamCondenser.run();

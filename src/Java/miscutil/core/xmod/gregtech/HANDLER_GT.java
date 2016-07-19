@@ -3,6 +3,7 @@ package miscutil.core.xmod.gregtech;
 import gregtech.api.util.GT_Config;
 import miscutil.core.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import miscutil.core.xmod.gregtech.common.blocks.fluid.GregtechFluidHandler;
+import miscutil.core.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 
 public class HANDLER_GT {
 	
@@ -12,6 +13,7 @@ public class HANDLER_GT {
 		if (mMaterialProperties != null){
 			GT_Materials.init(mMaterialProperties);
 			GregtechFluidHandler.run();
+			new MetaGeneratedGregtechTools();
 			//new Processing_Ingot1();
 			//new Processing_Plate1();
 			//new Processing_Block();
