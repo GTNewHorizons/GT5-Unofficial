@@ -7,7 +7,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
-import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 
@@ -19,6 +18,7 @@ import miscutil.core.block.ModBlocks;
 import miscutil.core.util.Utils;
 import miscutil.core.xmod.gregtech.api.gui.GUI_MultiMachine;
 import miscutil.core.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
+import miscutil.core.xmod.gregtech.api.objects.GregtechRenderedTexture;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -71,9 +71,9 @@ extends GregtechMeta_MultiBlockBase {
 	}*/
 
 	@Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex + 1], aFacing == aSide ? aActive ? new GT_RenderedTexture(Textures.BlockIcons.LARGETURBINE_ACTIVE5) : new GT_RenderedTexture(Textures.BlockIcons.LARGETURBINE5) : Textures.BlockIcons.CASING_BLOCKS[57]};
-    }
+	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex + 1], aFacing == aSide ? aActive ? new GregtechRenderedTexture(Textures.BlockIcons.LARGETURBINE_ACTIVE5) : new GregtechRenderedTexture(Textures.BlockIcons.LARGETURBINE5) : Textures.BlockIcons.CASING_BLOCKS[57]};
+	}
 
 	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
@@ -309,75 +309,5 @@ extends GregtechMeta_MultiBlockBase {
 	public boolean explodesOnComponentBreak(ItemStack aStack) {
 		return false;
 	}
-
-	private boolean checkStructure(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack){
-
-		Utils.LOG_INFO("structure checking");
-		int x = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-		int y = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetY;
-		int z = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-		Utils.LOG_INFO("X:"+x+" Y:"+y+" Z:"+z);
-
-		//North case
-		int hatchMaintainence[] = {x, y, z+2};
-		int hatchInputBus[] = {x+1, y, z+1};
-		int hatchOutputBus[] = {x-1, y, z+1};
-		int hatchInput[] = {x+1, y+1, z+1};
-		int hatchOutput[] = {x-1, y+1, z+1};
-		int hatchEnergy[] = {x, y+1, z+2};
-
-		//South case
-		int hatchMaintainence0[] = {x, y, z-2};
-		int hatchInputBus0[] = {x-1, y, z-1};
-		int hatchOutputBus0[] = {x+1, y, z-1};
-		int hatchInput0[] = {x-1, y+1, z-1};
-		int hatchOutput0[] = {x+1, y+1, z-1};
-		int hatchEnergy0[] = {x, y+1, z-2};
-
-
-		//East case
-		int hatchMaintainence1[] = {x+2, y, z};
-		int hatchInputBus1[] = {x+1, y, z+1};
-		int hatchOutputBus1[] = {x+1, y, z-1};
-		int hatchInput1[] = {x+1, y+1, z+1};
-		int hatchOutput1[] = {x+1, y+1, z-1};
-		int hatchEnergy1[] = {x+2, y+1, z};
-
-		//West case
-		int hatchMaintainence2[] = {x-2, y, z};
-		int hatchInputBus2[] = {x-1, y, z-1};
-		int hatchOutputBus2[] = {x-1, y, z+1};
-		int hatchInput2[] = {x-1, y+1, z-1};
-		int hatchOutput2[] = {x-1, y+1, z+1};
-		int hatchEnergy2[] = {x-2, y+1, z};
-
-
-
-		/*//Maintenance Hatch
-		IGregTechTileEntity tTileEntityMaintenanceHatch = getBaseMetaTileEntity().getIGregTechTileEntityAtSideAndDistance(getBaseMetaTileEntity().getBackFacing(), 2);
-		if ((tTileEntityMaintenanceHatch != null) && (tTileEntityMaintenanceHatch.getMetaTileEntity() != null)) {
-			if ((tTileEntityMaintenanceHatch.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Maintenance)) {
-				this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) tTileEntityMaintenanceHatch.getMetaTileEntity());
-				((GT_MetaTileEntity_Hatch) tTileEntityMaintenanceHatch.getMetaTileEntity()).mMachineBlock = getCasingTextureIndex();
-			} else {
-				return false;
-			}
-		}*/
-
-		/*//Energy Hatch
-		IGregTechTileEntity tTileEntityEnergyHatch = getBaseMetaTileEntity().getIGregTechTileEntity(i, h+1, j+2);
-		if ((tTileEntityEnergyHatch != null) && (tTileEntityEnergyHatch.getMetaTileEntity() != null)) {
-			if ((tTileEntityEnergyHatch.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Energy)) {
-				this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) tTileEntityEnergyHatch.getMetaTileEntity());
-				((GT_MetaTileEntity_Hatch) tTileEntityEnergyHatch.getMetaTileEntity()).mMachineBlock = getCasingTextureIndex();
-			} else {
-				return false;
-			}
-		}*/
-
-
-
-
-		return false;
-	}
+	
 }

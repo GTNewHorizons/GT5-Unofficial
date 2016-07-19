@@ -2,17 +2,17 @@ package miscutil.core.xmod.gregtech.api.objects;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.interfaces.IColorModulationContainer;
+import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.ITexture;
 import miscutil.core.util.Utils;
-import miscutil.core.xmod.gregtech.api.interfaces.internal.Interface_IconContainer;
-import miscutil.core.xmod.gregtech.api.interfaces.internal.Interface_Texture;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 
-public class GregtechRenderedTexture implements Interface_Texture, IColorModulationContainer {
-    private final Interface_IconContainer mIconContainer;
+public class GregtechRenderedTexture implements ITexture, IColorModulationContainer {
+    private final IIconContainer mIconContainer;
     private final boolean mAllowAlpha;
     /**
      * DO NOT MANIPULATE THE VALUES INSIDE THIS ARRAY!!!
@@ -22,18 +22,18 @@ public class GregtechRenderedTexture implements Interface_Texture, IColorModulat
      */
     public short[] mRGBa;
 
-    public GregtechRenderedTexture(Interface_IconContainer aIcon, short[] aRGBa, boolean aAllowAlpha) {
+    public GregtechRenderedTexture(IIconContainer aIcon, short[] aRGBa, boolean aAllowAlpha) {
         if (aRGBa.length != 4) throw new IllegalArgumentException("RGBa doesn't have 4 Values @ GT_RenderedTexture");
         mIconContainer = aIcon;
         mAllowAlpha = aAllowAlpha;
         mRGBa = aRGBa;
     }
 
-    public GregtechRenderedTexture(Interface_IconContainer aIcon, short[] aRGBa) {
+    public GregtechRenderedTexture(IIconContainer aIcon, short[] aRGBa) {
         this(aIcon, aRGBa, true);
     }
 
-    public GregtechRenderedTexture(Interface_IconContainer aIcon) {
+    public GregtechRenderedTexture(IIconContainer aIcon) {
         this(aIcon, Dyes._NULL.mRGBa);
     }
 

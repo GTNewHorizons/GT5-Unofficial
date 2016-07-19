@@ -4,7 +4,6 @@ import gregtech.api.GregTech_API;
 import miscutil.core.lib.CORE;
 import miscutil.core.xmod.gregtech.api.interfaces.internal.Interface_IconContainer;
 import miscutil.core.xmod.gregtech.api.interfaces.internal.Interface_Texture;
-import miscutil.core.xmod.gregtech.api.objects.GregtechRenderedTexture;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
@@ -135,7 +134,7 @@ public class GregtechTextures {
                         ENERGY_BAR_8,
                 };
 
-        public static final Interface_Texture[] ERROR_RENDERING = new Interface_Texture[]{new GregtechRenderedTexture(RENDERING_ERROR)};
+        //public static final Interface_Texture[] ERROR_RENDERING = new Interface_Texture[]{new GregtechRenderedTexture(RENDERING_ERROR)};
 
         protected IIcon mIcon, mOverlay;
 
