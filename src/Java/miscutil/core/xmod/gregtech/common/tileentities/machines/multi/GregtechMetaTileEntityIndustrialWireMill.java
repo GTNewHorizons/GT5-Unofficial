@@ -39,7 +39,7 @@ extends GT_MetaTileEntity_MultiBlockBase {
 	public String[] getDescription() {
 		return new String[]{			   		
 				"Controller Block for the Industrial Wire Factory",
-				"Size: 3x5x3 (Hollow)", "Controller (front centered)",
+				"Size: 3x5x3 [WxLxH] (Hollow)", "Controller (front centered)",
 				"2x Input Bus (side centered)",
 				"2x Output Bus (side centered)",
 				"1x Energy Hatch (top or bottom centered)",
