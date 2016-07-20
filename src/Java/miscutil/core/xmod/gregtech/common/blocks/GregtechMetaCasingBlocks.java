@@ -6,6 +6,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.GT_Material_Casings;
+import miscutil.core.lib.CORE;
 import miscutil.core.xmod.gregtech.api.enums.GregtechItemList;
 import miscutil.core.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntityIndustrialCentrifuge;
 import net.minecraft.item.ItemStack;
@@ -19,6 +20,90 @@ public class GregtechMetaCasingBlocks
 extends GregtechMetaCasingBlocksAbstract {
 
 	public final static int GTID = 57;
+	
+	CasingTextureHandler TextureHandler = new CasingTextureHandler();
+	
+	private static Textures.BlockIcons.CustomIcon frontFace_0;
+	private static Textures.BlockIcons.CustomIcon frontFace_1;
+	private static Textures.BlockIcons.CustomIcon frontFace_2;
+	private static Textures.BlockIcons.CustomIcon frontFace_3;
+	private static Textures.BlockIcons.CustomIcon frontFace_4;
+	private static Textures.BlockIcons.CustomIcon frontFace_5;
+	private static Textures.BlockIcons.CustomIcon frontFace_6;
+	private static Textures.BlockIcons.CustomIcon frontFace_7;
+	private static Textures.BlockIcons.CustomIcon frontFace_8;
+	private static Textures.BlockIcons.CustomIcon frontFaceActive_0;
+	private static Textures.BlockIcons.CustomIcon frontFaceActive_1;
+	private static Textures.BlockIcons.CustomIcon frontFaceActive_2;
+	private static Textures.BlockIcons.CustomIcon frontFaceActive_3;
+	private static Textures.BlockIcons.CustomIcon frontFaceActive_4;
+	private static Textures.BlockIcons.CustomIcon frontFaceActive_5;
+	private static Textures.BlockIcons.CustomIcon frontFaceActive_6;
+	private static Textures.BlockIcons.CustomIcon frontFaceActive_7;
+	private static Textures.BlockIcons.CustomIcon frontFaceActive_8;
+	
+	Textures.BlockIcons.CustomIcon[] TURBINE = new Textures.BlockIcons.CustomIcon[]{
+			frontFace_0,
+			frontFace_1,
+			frontFace_2,
+			frontFace_3,
+			frontFace_4,
+			frontFace_5,
+			frontFace_6,
+			frontFace_7,
+			frontFace_8
+    };
+	Textures.BlockIcons.CustomIcon[] TURBINE_ACTIVE = new Textures.BlockIcons.CustomIcon[]{
+    		frontFaceActive_0,
+    		frontFaceActive_1,
+    		frontFaceActive_2,
+    		frontFaceActive_3,
+    		frontFaceActive_4,
+    		frontFaceActive_5,
+    		frontFaceActive_6,
+            frontFaceActive_7,
+            frontFaceActive_8
+    };
+
+	private static Textures.BlockIcons.CustomIcon GT9_1_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST_ACTIVE1");
+	private static Textures.BlockIcons.CustomIcon GT9_1 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST1");
+	private static Textures.BlockIcons.CustomIcon GT9_2_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST_ACTIVE2");
+	private static Textures.BlockIcons.CustomIcon GT9_2 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST2");
+	private static Textures.BlockIcons.CustomIcon GT9_3_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST_ACTIVE3");
+	private static Textures.BlockIcons.CustomIcon GT9_3 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST3");
+	private static Textures.BlockIcons.CustomIcon GT9_4_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST_ACTIVE4");
+	private static Textures.BlockIcons.CustomIcon GT9_4 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST4");
+	private static Textures.BlockIcons.CustomIcon GT9_5_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST_ACTIVE5");
+	private static Textures.BlockIcons.CustomIcon GT9_5 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST5");
+	private static Textures.BlockIcons.CustomIcon GT9_6_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST_ACTIVE6");
+	private static Textures.BlockIcons.CustomIcon GT9_6 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST6");
+	private static Textures.BlockIcons.CustomIcon GT9_7_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST_ACTIVE7");
+	private static Textures.BlockIcons.CustomIcon GT9_7 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST7");
+	private static Textures.BlockIcons.CustomIcon GT9_8_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST_ACTIVE8");
+	private static Textures.BlockIcons.CustomIcon GT9_8 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST8");
+	private static Textures.BlockIcons.CustomIcon GT9_9_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST_ACTIVE9");
+	private static Textures.BlockIcons.CustomIcon GT9_9 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST9");
+	
+	private static Textures.BlockIcons.CustomIcon GT8_1_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ACTIVE1");
+	private static Textures.BlockIcons.CustomIcon GT8_1 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE1");
+	private static Textures.BlockIcons.CustomIcon GT8_2_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ACTIVE2");
+	private static Textures.BlockIcons.CustomIcon GT8_2 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE2");
+	private static Textures.BlockIcons.CustomIcon GT8_3_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ACTIVE3");
+	private static Textures.BlockIcons.CustomIcon GT8_3 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE3");
+	private static Textures.BlockIcons.CustomIcon GT8_4_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ACTIVE4");
+	private static Textures.BlockIcons.CustomIcon GT8_4 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE4.png");
+	private static Textures.BlockIcons.CustomIcon GT8_5_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ACTIVE5");
+	private static Textures.BlockIcons.CustomIcon GT8_5 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE5");
+	private static Textures.BlockIcons.CustomIcon GT8_6_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ACTIVE6");
+	private static Textures.BlockIcons.CustomIcon GT8_6 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE6");
+	private static Textures.BlockIcons.CustomIcon GT8_7_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ACTIVE7");
+	private static Textures.BlockIcons.CustomIcon GT8_7 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE7");
+	private static Textures.BlockIcons.CustomIcon GT8_8_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ACTIVE8");
+	private static Textures.BlockIcons.CustomIcon GT8_8 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE8");
+	private static Textures.BlockIcons.CustomIcon GT8_9_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ACTIVE9");
+	private static Textures.BlockIcons.CustomIcon GT8_9 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE9");
+	
+	
 
 	public GregtechMetaCasingBlocks() {
 		super(GregtechMetaCasingItems.class, "miscutils.blockcasings", GT_Material_Casings.INSTANCE);
@@ -57,6 +142,49 @@ extends GregtechMetaCasingBlocksAbstract {
 		GregtechItemList.Casing_Coil_U2.set(new ItemStack(this, 1, 13));
 		GregtechItemList.Casing_Coil_U3.set(new ItemStack(this, 1, 14));
 		GregtechItemList.Casing_Coil_U4.set(new ItemStack(this, 1, 15));
+		
+		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
+			frontFace_0 = GT9_1;
+			frontFaceActive_0 = (GT9_1_Active);
+			frontFace_1 = (GT9_2);
+			frontFaceActive_1 = (GT9_2_Active);
+			frontFace_2 = (GT9_3);
+			frontFaceActive_2 = (GT9_3_Active);
+			frontFace_3 = (GT9_4);
+			frontFaceActive_3 = (GT9_4_Active);
+			frontFace_4 = (GT9_5);
+			frontFaceActive_4 = (GT9_5_Active);
+			frontFace_5 = (GT9_6);
+			frontFaceActive_5 = (GT9_6_Active);
+			frontFace_6 = (GT9_7);
+			frontFaceActive_6 = (GT9_7_Active);
+			frontFace_7 = (GT9_8);
+			frontFaceActive_7 = (GT9_8_Active);
+			frontFace_8 = (GT9_9);
+			frontFaceActive_8 = (GT9_9_Active);
+		}
+		else{
+			frontFace_0 = (GT8_1);
+			frontFaceActive_0 = (GT8_1_Active);
+			frontFace_1 = (GT8_2);
+			frontFaceActive_1 = (GT8_2_Active);
+			frontFace_2 = (GT8_3);
+			frontFaceActive_2 = (GT8_3_Active);
+			frontFace_3 = (GT8_4);
+			frontFaceActive_3 = (GT8_4_Active);
+			frontFace_4 = (GT8_5);
+			frontFaceActive_4 = (GT8_5_Active);
+			frontFace_5 = (GT8_6);
+			frontFaceActive_5 = (GT8_6_Active);
+			frontFace_6 = (GT8_7);
+			frontFaceActive_6 = (GT8_7_Active);
+			frontFace_7 = (GT8_8);
+			frontFaceActive_7 = (GT8_8_Active);
+			frontFace_8 = (GT8_9);
+			frontFaceActive_8 = (GT8_9_Active);
+		}
+		
+		
 	}
 
 	@Override
@@ -114,8 +242,11 @@ extends GregtechMetaCasingBlocksAbstract {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int aSide) {
+		
+		GregtechMetaCasingBlocks i = this;
+		
 		int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
-		if (((tMeta != 6) && (tMeta != 8) && (tMeta != 0))/* || (!mConnectedMachineTextures)*/) {
+		if (((tMeta != 6) && (tMeta != 8) && (tMeta != 0))) {
 			return getIcon(aSide, tMeta);
 		}
 		int tStartIndex = tMeta == 6 ? 1 : 13;
@@ -125,102 +256,102 @@ extends GregtechMetaCasingBlocksAbstract {
 				IMetaTileEntity tMetaTileEntity;
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord + (aSide == 3 ? 1 : -1), yCoord - 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntityIndustrialCentrifuge))) {
 					if (((IGregTechTileEntity) tTileEntity).isActive()) {
-						return Textures.BlockIcons.TURBINE_ACTIVE[0].getIcon();
+						return TURBINE_ACTIVE[0].getIcon();
 					}
-					return Textures.BlockIcons.TURBINE[0].getIcon();
+					return TURBINE[0].getIcon();
 				}
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord + (aSide == 3 ? 1 : -1), yCoord, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntityIndustrialCentrifuge))) {
 					if (((IGregTechTileEntity) tTileEntity).isActive()) {
-						return Textures.BlockIcons.TURBINE_ACTIVE[3].getIcon();
+						return TURBINE_ACTIVE[3].getIcon();
 					}
-					return Textures.BlockIcons.TURBINE[3].getIcon();
+					return TURBINE[3].getIcon();
 				}
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord + (aSide == 3 ? 1 : -1), yCoord + 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntityIndustrialCentrifuge))) {
 					if (((IGregTechTileEntity) tTileEntity).isActive()) {
-						return Textures.BlockIcons.TURBINE_ACTIVE[6].getIcon();
+						return TURBINE_ACTIVE[6].getIcon();
 					}
-					return Textures.BlockIcons.TURBINE[6].getIcon();
+					return TURBINE[6].getIcon();
 				}
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord - 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntityIndustrialCentrifuge))) {
 					if (((IGregTechTileEntity) tTileEntity).isActive()) {
-						return Textures.BlockIcons.TURBINE_ACTIVE[1].getIcon();
+						return TURBINE_ACTIVE[1].getIcon();
 					}
-					return Textures.BlockIcons.TURBINE[1].getIcon();
+					return TURBINE[1].getIcon();
 				}
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord + 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntityIndustrialCentrifuge))) {
 					if (((IGregTechTileEntity) tTileEntity).isActive()) {
-						return Textures.BlockIcons.TURBINE_ACTIVE[7].getIcon();
+						return TURBINE_ACTIVE[7].getIcon();
 					}
-					return Textures.BlockIcons.TURBINE[7].getIcon();
+					return TURBINE[7].getIcon();
 				}
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord + (aSide == 2 ? 1 : -1), yCoord + 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntityIndustrialCentrifuge))) {
 					if (((IGregTechTileEntity) tTileEntity).isActive()) {
-						return Textures.BlockIcons.TURBINE_ACTIVE[8].getIcon();
+						return TURBINE_ACTIVE[8].getIcon();
 					}
-					return Textures.BlockIcons.TURBINE[8].getIcon();
+					return TURBINE[8].getIcon();
 				}
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord + (aSide == 2 ? 1 : -1), yCoord, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntityIndustrialCentrifuge))) {
 					if (((IGregTechTileEntity) tTileEntity).isActive()) {
-						return Textures.BlockIcons.TURBINE_ACTIVE[5].getIcon();
+						return TURBINE_ACTIVE[5].getIcon();
 					}
-					return Textures.BlockIcons.TURBINE[5].getIcon();
+					return TURBINE[5].getIcon();
 				}
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord + (aSide == 2 ? 1 : -1), yCoord - 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntityIndustrialCentrifuge))) {
 					if (((IGregTechTileEntity) tTileEntity).isActive()) {
-						return Textures.BlockIcons.TURBINE_ACTIVE[2].getIcon();
+						return TURBINE_ACTIVE[2].getIcon();
 					}
-					return Textures.BlockIcons.TURBINE[2].getIcon();
+					return TURBINE[2].getIcon();
 				}
 			} else if ((aSide == 4) || (aSide == 5)) {
 				TileEntity tTileEntity;
 				Object tMetaTileEntity;
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord - 1, zCoord + (aSide == 4 ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntityIndustrialCentrifuge))) {
 					if (((IGregTechTileEntity) tTileEntity).isActive()) {
-						return Textures.BlockIcons.TURBINE_ACTIVE[0].getIcon();
+						return TURBINE_ACTIVE[0].getIcon();
 					}
-					return Textures.BlockIcons.TURBINE[0].getIcon();
+					return TURBINE[0].getIcon();
 				}
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord, zCoord + (aSide == 4 ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntityIndustrialCentrifuge))) {
 					if (((IGregTechTileEntity) tTileEntity).isActive()) {
-						return Textures.BlockIcons.TURBINE_ACTIVE[3].getIcon();
+						return TURBINE_ACTIVE[3].getIcon();
 					}
-					return Textures.BlockIcons.TURBINE[3].getIcon();
+					return TURBINE[3].getIcon();
 				}
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord + 1, zCoord + (aSide == 4 ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntityIndustrialCentrifuge))) {
 					if (((IGregTechTileEntity) tTileEntity).isActive()) {
-						return Textures.BlockIcons.TURBINE_ACTIVE[6].getIcon();
+						return TURBINE_ACTIVE[6].getIcon();
 					}
-					return Textures.BlockIcons.TURBINE[6].getIcon();
+					return TURBINE[6].getIcon();
 				}
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord - 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntityIndustrialCentrifuge))) {
 					if (((IGregTechTileEntity) tTileEntity).isActive()) {
-						return Textures.BlockIcons.TURBINE_ACTIVE[1].getIcon();
+						return TURBINE_ACTIVE[1].getIcon();
 					}
-					return Textures.BlockIcons.TURBINE[1].getIcon();
+					return TURBINE[1].getIcon();
 				}
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord + 1, zCoord))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntityIndustrialCentrifuge))) {
 					if (((IGregTechTileEntity) tTileEntity).isActive()) {
-						return Textures.BlockIcons.TURBINE_ACTIVE[7].getIcon();
+						return TURBINE_ACTIVE[7].getIcon();
 					}
-					return Textures.BlockIcons.TURBINE[7].getIcon();
+					return TURBINE[7].getIcon();
 				}
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord + 1, zCoord + (aSide == 5 ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntityIndustrialCentrifuge))) {
 					if (((IGregTechTileEntity) tTileEntity).isActive()) {
-						return Textures.BlockIcons.TURBINE_ACTIVE[8].getIcon();
+						return TURBINE_ACTIVE[8].getIcon();
 					}
-					return Textures.BlockIcons.TURBINE[8].getIcon();
+					return TURBINE[8].getIcon();
 				}
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord, zCoord + (aSide == 5 ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntityIndustrialCentrifuge))) {
 					if (((IGregTechTileEntity) tTileEntity).isActive()) {
-						return Textures.BlockIcons.TURBINE_ACTIVE[5].getIcon();
+						return TURBINE_ACTIVE[5].getIcon();
 					}
-					return Textures.BlockIcons.TURBINE[5].getIcon();
+					return TURBINE[5].getIcon();
 				}
 				if ((null != (tTileEntity = aWorld.getTileEntity(xCoord, yCoord - 1, zCoord + (aSide == 5 ? 1 : -1)))) && ((tTileEntity instanceof IGregTechTileEntity)) && (((IGregTechTileEntity) tTileEntity).getFrontFacing() == aSide) && (null != (tMetaTileEntity = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity())) && ((tMetaTileEntity instanceof GregtechMetaTileEntityIndustrialCentrifuge))) {
 					if (((IGregTechTileEntity) tTileEntity).isActive()) {
-						return Textures.BlockIcons.TURBINE_ACTIVE[2].getIcon();
+						return TURBINE_ACTIVE[2].getIcon();
 					}
-					return Textures.BlockIcons.TURBINE[2].getIcon();
+					return TURBINE[2].getIcon();
 				}
 			}
 			return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();

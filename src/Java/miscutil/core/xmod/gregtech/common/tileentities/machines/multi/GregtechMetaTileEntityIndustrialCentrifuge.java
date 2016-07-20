@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import miscutil.core.block.ModBlocks;
+import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
 import miscutil.core.xmod.gregtech.api.gui.GUI_MultiMachine;
 import miscutil.core.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
@@ -30,10 +31,24 @@ import org.apache.commons.lang3.ArrayUtils;
 public class GregtechMetaTileEntityIndustrialCentrifuge
 extends GregtechMeta_MultiBlockBase {
 	private static boolean controller;
+	private static ITexture frontFace;
+	private static ITexture frontFaceActive;
+	private static Textures.BlockIcons.CustomIcon GT9_5_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST_ACTIVE5");
+	private static Textures.BlockIcons.CustomIcon GT9_5 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST5");
+	private static Textures.BlockIcons.CustomIcon GT8_5_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ACTIVE5");
+	private static Textures.BlockIcons.CustomIcon GT8_5 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE5");
 	//public static double recipesComplete = 0;
 
 	public GregtechMetaTileEntityIndustrialCentrifuge(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
+		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
+			frontFaceActive = new GT_RenderedTexture(GT9_5_Active);
+			frontFace = new GT_RenderedTexture(GT9_5);
+		}
+		else{
+			frontFaceActive = new GT_RenderedTexture(GT8_5_Active);
+			frontFace = new GT_RenderedTexture(GT8_5);
+		}
 	}
 
 	public GregtechMetaTileEntityIndustrialCentrifuge(String aName) {
@@ -62,19 +77,14 @@ extends GregtechMeta_MultiBlockBase {
 				"Centrifuge Casings for the rest (16 at least)",};
 	}
 
-	/*@Override
-	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-		if (aSide == aFacing) {
-			return new ITexture[]{GregtechTextures.BlockIcons.GT_CASING_BLOCKS[0], new GT_RenderedTexture(aActive ? Textures.BlockIcons.LARGETURBINE_ACTIVE5 : Textures.BlockIcons.LARGETURBINE5)};
-		}
-		return new ITexture[]{GregtechTextures.BlockIcons.GT_CASING_BLOCKS[0]};
-	}*/
+		
 
 	@Override
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex + 1], aFacing == aSide ? aActive ? new GT_RenderedTexture(Textures.BlockIcons.LARGETURBINE_ACTIVE5) : new GT_RenderedTexture(Textures.BlockIcons.LARGETURBINE5) : Textures.BlockIcons.CASING_BLOCKS[57]};
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex + 1], aFacing == aSide ? aActive ? frontFaceActive : frontFace : Textures.BlockIcons.CASING_BLOCKS[57]};
 	}
-
+	
+	
 	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
 		return new GUI_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "IndustrialCentrifuge.png");

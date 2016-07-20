@@ -382,5 +382,18 @@ public class Meta_GT_Proxy {
 			this.mModID = ((aModID == null) || (aModID.equals("UNKNOWN")) ? null : aModID);
 		}
 	}
+	
+	public static boolean areWeUsingGregtech5uExperimental(){
+		int version = GregTech_API.VERSION;
+		if (version == 508){
+			return false;
+		}
+		else if (version == 509){
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
 }

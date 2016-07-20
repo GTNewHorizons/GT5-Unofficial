@@ -49,6 +49,17 @@ public class CommonProxy {
 		Utils.LOG_INFO("Doing some house cleaning.");		
 		LoadedMods.checkLoaded();
 		Utils.LOG_INFO("Making sure we're ready to party!");
+		
+		if (LoadedMods.Gregtech){
+			if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
+				Utils.LOG_INFO("We're using Gregtech 5.09 Experimental.");
+			}
+			else {
+				Utils.LOG_INFO("We're using Gregtech 5.08 or an equivalent fork.");
+			}
+		}
+		
+		
 		if (!DEBUG){
 			Utils.LOG_WARNING("Development mode not enabled.");
 		}

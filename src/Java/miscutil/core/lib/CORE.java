@@ -7,6 +7,7 @@ import java.util.Map;
 import miscutil.core.creative.AddToCreativeTab;
 import miscutil.core.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import miscutil.core.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
+import miscutil.core.xmod.gregtech.common.Meta_GT_Proxy;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -21,6 +22,7 @@ public class CORE {
 	public static final int GREG_FIRST_ID = 760;
 	public static Map PlayerCache;
 	public static final String[] VOLTAGES = {"ULV","LV","MV","HV","EV","IV","LuV","ZPM","UV","MAX"};
+	public static final boolean MAIN_GREGTECH_5U_EXPERIMENTAL_FORK = Meta_GT_Proxy.areWeUsingGregtech5uExperimental();
 	public static IGregtech_RecipeAdder RA;
 	@Deprecated
     public static IGregtech_RecipeAdder sRecipeAdder;
