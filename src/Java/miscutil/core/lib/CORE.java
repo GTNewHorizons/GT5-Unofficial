@@ -15,7 +15,7 @@ public class CORE {
 
 	public static final String name = "GT++";	
 	public static final String MODID = "miscutils";
-	public static final String VERSION = "1.4.1.2";
+	public static final String VERSION = "1.4.1.4";
 	public static final boolean DEBUG = false;	
 	public static final boolean LOAD_ALL_CONTENT = false;
 	public static final int GREG_FIRST_ID = 760;

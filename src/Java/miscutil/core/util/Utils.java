@@ -29,6 +29,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.EntityRegistry;
 
@@ -468,6 +469,14 @@ public class Utils {
 		Utils.LOG_INFO("It will decode into "+Integer.decode(temp)+".");
 		return Integer.decode(temp);
 	}
+	
+	public static boolean doesEntryExistAlreadyInOreDictionary(String OreDictName){
+		if (OreDictionary.getOres(OreDictName).size() != 0) {
+	    return true;
+	}
+		return false;
+	}
+	
 
 }
 
