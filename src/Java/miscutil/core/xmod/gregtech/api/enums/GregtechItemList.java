@@ -87,7 +87,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	//Industrial Wire Factory
 	Industrial_WireFactory, 
 	
-	Industrial_MassFab;
+	Industrial_MassFab, 
+	
+	//Solar Generators
+	GT_Solar_ULV, GT_Solar_LV, GT_Solar_MV, GT_Solar_HV, GT_Solar_EV, GT_Solar_IV, GT_Solar_LuV, GT_Solar_ZPM, GT_Solar_UV, GT_Solar_MAX;
 
 	public static final GregtechItemList[]
 			DYE_ONLY_ITEMS = {
