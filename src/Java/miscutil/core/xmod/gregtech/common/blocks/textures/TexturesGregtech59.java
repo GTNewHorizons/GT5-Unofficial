@@ -1,33 +1,34 @@
-package miscutil.core.xmod.gregtech.common.blocks;
+package miscutil.core.xmod.gregtech.common.blocks.textures;
 
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import miscutil.core.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks;
 import miscutil.core.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntityIndustrialCentrifuge;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
-public class CasingTextureHandler {
+public class TexturesGregtech59 {
 	
-	private static Textures.BlockIcons.CustomIcon GT8_1_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ACTIVE1");
-	private static Textures.BlockIcons.CustomIcon GT8_1 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE1");
-	private static Textures.BlockIcons.CustomIcon GT8_2_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ACTIVE2");
-	private static Textures.BlockIcons.CustomIcon GT8_2 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE2");
-	private static Textures.BlockIcons.CustomIcon GT8_3_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ACTIVE3");
-	private static Textures.BlockIcons.CustomIcon GT8_3 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE3");
-	private static Textures.BlockIcons.CustomIcon GT8_4_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ACTIVE4");
-	private static Textures.BlockIcons.CustomIcon GT8_4 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE4.png");
-	private static Textures.BlockIcons.CustomIcon GT8_5_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ACTIVE5");
-	private static Textures.BlockIcons.CustomIcon GT8_5 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE5");
-	private static Textures.BlockIcons.CustomIcon GT8_6_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ACTIVE6");
-	private static Textures.BlockIcons.CustomIcon GT8_6 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE6");
-	private static Textures.BlockIcons.CustomIcon GT8_7_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ACTIVE7");
-	private static Textures.BlockIcons.CustomIcon GT8_7 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE7");
-	private static Textures.BlockIcons.CustomIcon GT8_8_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ACTIVE8");
-	private static Textures.BlockIcons.CustomIcon GT8_8 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE8");
-	private static Textures.BlockIcons.CustomIcon GT8_9_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ACTIVE9");
-	private static Textures.BlockIcons.CustomIcon GT8_9 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE9");
+	private static Textures.BlockIcons.CustomIcon GT8_1_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST_ACTIVE1");
+	private static Textures.BlockIcons.CustomIcon GT8_1 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST1");
+	private static Textures.BlockIcons.CustomIcon GT8_2_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST_ACTIVE2");
+	private static Textures.BlockIcons.CustomIcon GT8_2 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST2");
+	private static Textures.BlockIcons.CustomIcon GT8_3_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST_ACTIVE3");
+	private static Textures.BlockIcons.CustomIcon GT8_3 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST3");
+	private static Textures.BlockIcons.CustomIcon GT8_4_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST_ACTIVE4");
+	private static Textures.BlockIcons.CustomIcon GT8_4 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST4");
+	private static Textures.BlockIcons.CustomIcon GT8_5_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST_ACTIVE5");
+	private static Textures.BlockIcons.CustomIcon GT8_5 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST5");
+	private static Textures.BlockIcons.CustomIcon GT8_6_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST_ACTIVE6");
+	private static Textures.BlockIcons.CustomIcon GT8_6 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST6");
+	private static Textures.BlockIcons.CustomIcon GT8_7_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST_ACTIVE7");
+	private static Textures.BlockIcons.CustomIcon GT8_7 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST7");
+	private static Textures.BlockIcons.CustomIcon GT8_8_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST_ACTIVE8");
+	private static Textures.BlockIcons.CustomIcon GT8_8 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST8");
+	private static Textures.BlockIcons.CustomIcon GT8_9_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST_ACTIVE9");
+	private static Textures.BlockIcons.CustomIcon GT8_9 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST9");
 	
 	private static Textures.BlockIcons.CustomIcon frontFace_0 = (GT8_1);
 	private static Textures.BlockIcons.CustomIcon frontFaceActive_0 = (GT8_1_Active);
@@ -71,57 +72,17 @@ public class CasingTextureHandler {
             frontFaceActive_7,
             frontFaceActive_8
     };		
+		
 	
-	public  IIcon getIcon(int aSide, int aMeta) { //Texture ID's. case 0 == ID[57]
-		if ((aMeta >= 0) && (aMeta < 16)) {
-			switch (aMeta) {
-			//Centrifuge 
-			case 0: 
-				return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
-				//Coke Oven Frame
-			case 1:
-				return Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF.getIcon();
-				//Coke Oven Casing Tier 1
-			case 2: 
-				return Textures.BlockIcons.MACHINE_CASING_FIREBOX_BRONZE.getIcon();
-				//Coke Oven Casing Tier 2
-			case 3:
-				return Textures.BlockIcons.MACHINE_CASING_FIREBOX_STEEL.getIcon();
-				//Material Press Casings
-			case 4:
-				return Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
-				//Electrolyzer Casings
-			case 5:
-				return Textures.BlockIcons.MACHINE_CASING_FUSION_2.getIcon();
-				//Broken Blue Fusion Casings
-			case 6:
-				return Textures.BlockIcons.MACHINE_CASING_FUSION.getIcon();
-				//Maceration Stack Casings
-			case 7:
-				return Textures.BlockIcons.MACHINE_LuV_BOTTOM.getIcon();
-				//Broken Pink Fusion Casings
-			case 8:
-				return Textures.BlockIcons.MACHINE_CASING_FUSION_2.getIcon();
-				//Matter Fabricator Casings
-			case 9:
-				return Textures.BlockIcons.MACHINE_CASING_DRAGONEGG.getIcon();
-				//Iron Blast Fuance Textures
-			case 10:
-				return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();			
-
-			default:
-				return Textures.BlockIcons.MACHINE_CASING_RADIOACTIVEHAZARD.getIcon();
-
-			}
-		}
-		return Textures.BlockIcons.MACHINE_CASING_GEARBOX_TUNGSTENSTEEL.getIcon();
+	public IIcon handleCasingsGT(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int aSide, GregtechMetaCasingBlocks thisBlock) {
+			return handleCasingsGT59(aWorld, xCoord, yCoord, zCoord, aSide, thisBlock);		
 	}
 
 
-public IIcon handleCasings(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int aSide, GregtechMetaCasingBlocks thisBlock) {
+public IIcon handleCasingsGT59(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int aSide, GregtechMetaCasingBlocks thisBlock) {
 	int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
 	if (((tMeta != 6) && (tMeta != 8) && (tMeta != 0))) {
-		return getIcon(aSide, tMeta);
+		return CasingTextureHandler.getIcon(aSide, tMeta);
 	}
 	int tStartIndex = tMeta == 6 ? 1 : 13;
 	if (tMeta == 0) {
