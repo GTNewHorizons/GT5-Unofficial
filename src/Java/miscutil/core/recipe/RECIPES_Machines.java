@@ -34,8 +34,8 @@ public class RECIPES_Machines {
 	static ItemStack RECIPE_IndustrialCokeOvenCasingA = GregtechItemList.Casing_CokeOven_Coil1.get(1);
 	static ItemStack RECIPE_IndustrialCokeOvenCasingB = GregtechItemList.Casing_CokeOven_Coil2.get(1);
 	//
-	static ItemStack RECIPE_IndustrialElectrolyzerController = GregtechItemList.Industrial_CokeOven.get(1);
-	static ItemStack RECIPE_IndustrialElectrolyzerFrame = GregtechItemList.Casing_CokeOven.get(1);
+	static ItemStack RECIPE_IndustrialElectrolyzerController = GregtechItemList.Industrial_Electrolyzer.get(1);
+	static ItemStack RECIPE_IndustrialElectrolyzerFrame = GregtechItemList.Casing_Electrolyzer.get(1);
 	//
 	static ItemStack RECIPE_IndustrialMaterialPressController = GregtechItemList.Industrial_PlatePress.get(1);
 	static ItemStack RECIPE_IndustrialMaterialPressFrame = GregtechItemList.Casing_MaterialPress.get(1);
@@ -521,7 +521,7 @@ public class RECIPES_Machines {
 			UtilsRecipe.recipeBuilder(
 					"plateSterlingSilver", circuitTier6, "plateSterlingSilver",
 					machineCasing_EV, IV_MACHINE_Electrolyzer, machineCasing_EV,
-					"plateSterlingSilver", circuitTier5, "plateSterlingSilver",
+					"plateSterlingSilver", "rotorSterlingSilver", "plateSterlingSilver",
 					RECIPE_IndustrialElectrolyzerController);
 
 			//Material Press Frame Casing
