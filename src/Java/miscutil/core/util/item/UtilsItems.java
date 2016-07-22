@@ -38,8 +38,12 @@ public class UtilsItems {
 	}
 
 	public static ItemStack getSimpleStack(Item x){
+		return getSimpleStack(x, 1);
+	}
+	
+	public static ItemStack getSimpleStack(Item x, int i){
 		try {
-			ItemStack r = new ItemStack(x, 1);
+			ItemStack r = new ItemStack(x, i);
 			return r;
 		} catch(Throwable e){
 			return null;

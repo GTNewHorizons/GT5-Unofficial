@@ -2,6 +2,7 @@ package miscutil.core.item;
 import static miscutil.core.creative.AddToCreativeTab.tabMachines;
 import static miscutil.core.creative.AddToCreativeTab.tabMisc;
 import static miscutil.core.lib.CORE.LOAD_ALL_CONTENT;
+import gregtech.api.util.GT_OreDictUnificator;
 import miscutil.core.creative.AddToCreativeTab;
 import miscutil.core.item.base.CoreItem;
 import miscutil.core.item.effects.RarityUncommon;
@@ -282,8 +283,10 @@ Gold Tool: 22*/
 		//Battery Alloy For cheap Niggers
 		itemIngotBatteryAlloy = new Item().setUnlocalizedName("itemIngotBatteryAlloy").setCreativeTab(tabMachines).setTextureName(CORE.MODID + ":itemIngotBatteryAlloy");
 		GameRegistry.registerItem(itemIngotBatteryAlloy, "itemIngotBatteryAlloy");
+		GT_OreDictUnificator.registerOre("ingotBatteryAlloy", UtilsItems.getItemStack(CORE.MODID+":itemIngotBatteryAlloy", 1));
 		itemPlateBatteryAlloy = new Item().setUnlocalizedName("itemPlateBatteryAlloy").setCreativeTab(tabMachines).setTextureName(CORE.MODID + ":itemPlateBatteryAlloy");
 		GameRegistry.registerItem(itemPlateBatteryAlloy, "itemPlateBatteryAlloy");
+		GT_OreDictUnificator.registerOre("plateBatteryAlloy", UtilsItems.getItemStack(CORE.MODID+":itemPlateBatteryAlloy", 1));
 
 		itemHeliumBlob = new CoreItem("itemHeliumBlob", tabMisc).setTextureName(CORE.MODID + ":itemHeliumBlob");
 		//GameRegistry.registerItem(itemHeliumBlob, "itemHeliumBlob");

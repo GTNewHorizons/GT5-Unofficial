@@ -1,5 +1,6 @@
 package miscutil.core.xmod.forestry.bees.recipe;
 
+import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.item.UtilsItems;
 import miscutil.core.util.recipe.UtilsRecipe;
 import miscutil.core.xmod.forestry.bees.items.FR_ItemRegistry;
@@ -47,6 +48,7 @@ public class FR_Gregtech_Recipes {
 				rod_Uranium, rod_Uranium, rod_Uranium,
 				hiveFrameMutagenic);
 		
+		if (!LoadedMods.ExtraBees){
 		//Extra Bee Like Frames
 		UtilsRecipe.recipeBuilder(
 				null, itemCocoaBeans, null,
@@ -71,6 +73,7 @@ public class FR_Gregtech_Recipes {
 				itemClayDust, hiveFrameImpregnated, itemClayDust,
 				null, itemClayDust, null,
 				hiveFrameClay);
+		}
 		
 		
 		

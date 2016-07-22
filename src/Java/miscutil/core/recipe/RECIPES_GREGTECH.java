@@ -6,6 +6,9 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+
+import java.util.Arrays;
+
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
 import miscutil.core.util.fluid.FluidUtils;
@@ -23,6 +26,7 @@ public class RECIPES_GREGTECH {
 		matterFabRecipes();
 		assemblerRecipes();
 		distilleryRecipes();
+		mixerRecipes();
 		addFuels();
 	}
 
@@ -125,6 +129,13 @@ public class RECIPES_GREGTECH {
 		//CORE.RA.addFuel(GT_ModHandler.getModItem("EnderIO", "bucketHootch", 1L, 1), null, 2800, 0);
 		//CORE.RA.addFuel(GT_ModHandler.getModItem("EnderIO", "bucketFire_water", 1L, 1), null, 2800, 0);
 		//System.exit(1);
+	}
+	
+	private static void mixerRecipes(){
+		for (OrePrefixes tPrefix : Arrays.asList(new OrePrefixes[]{OrePrefixes.dust, OrePrefixes.dustSmall, OrePrefixes.dustTiny})) {
+			GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(tPrefix, Materials.Uranium, 8L), GT_OreDictUnificator.get(tPrefix, Materials.Titanium, 1L), null, null, GT_Values.NF, GT_Values.NF, UtilsItems.getSimpleStack(RECIPES_Shapeless.dustStaballoy.getItem(), (int) (9L * tPrefix.mMaterialAmount)), (int) (900L * tPrefix.mMaterialAmount / 3628800L), 8);
+			}
+		
 	}
 	
 	private static void registerSkookumChoocher(){
