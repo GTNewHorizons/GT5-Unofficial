@@ -287,11 +287,11 @@ Gold Tool: 22*/
 		GameRegistry.registerItem(itemPlateBloodSteel, "itemPlateBloodSteel");
 
 		//BloodSteel Dusts
-		itemDustBloodSteel = new BaseItemDust("itemDustBloodSteel", "BloodSteel", Utils.rgbtoHexValue(68, 75, 66), "Dust").setCreativeTab(tabMisc);
+		itemDustBloodSteel = new BaseItemDust("itemDustBloodSteel", "BloodSteel", Utils.rgbtoHexValue(142, 28, 0), "Dust").setCreativeTab(tabMisc);
 		GT_OreDictUnificator.registerOre("dustBloodSteel", UtilsItems.getItemStack(CORE.MODID+":itemDustBloodSteel", 1));
-		itemDustTinyBloodSteel = new BaseItemDust("itemDustTinyBloodSteel", "BloodSteel", Utils.rgbtoHexValue(68, 75, 66), "Tiny").setCreativeTab(tabMisc);
+		itemDustTinyBloodSteel = new BaseItemDust("itemDustTinyBloodSteel", "BloodSteel", Utils.rgbtoHexValue(142, 28, 0), "Tiny").setCreativeTab(tabMisc);
 		GT_OreDictUnificator.registerOre("dustTinyBloodSteel", UtilsItems.getItemStack(CORE.MODID+":itemDustTinyBloodSteel", 1));
-		itemDustSmallBloodSteel = new BaseItemDust("itemDustSmallBloodSteel", "BloodSteel", Utils.rgbtoHexValue(68, 75, 66), "Small").setCreativeTab(tabMisc);
+		itemDustSmallBloodSteel = new BaseItemDust("itemDustSmallBloodSteel", "BloodSteel", Utils.rgbtoHexValue(142, 28, 0), "Small").setCreativeTab(tabMisc);
 		GT_OreDictUnificator.registerOre("dustSmallBloodSteel", UtilsItems.getItemStack(CORE.MODID+":itemDustSmallBloodSteel", 1));
 
 

@@ -27,7 +27,7 @@ item.itemPlateEnrichedSoularium.name=Enriched Soularium Plate
 item.itemPlateDimensionShard.name=Dimensional Plate
 item.itemIngotBloodSteel.name=Blood Steel Ingot
 item.itemPlateBloodSteel.name=Blood Steel Plate
-item.itemIngotStaballoy.name=Staballoy Ingot
+item.itemIngotr.name=Staballoy Ingot
 item.itemPlateStaballoy.name=Staballoy Plate
 item.itemHeliumBlob.name=Blob of solid Helium
 item.itemPlateBatteryAlloy.name=Plate of Battery Alloy
@@ -126,4 +126,7 @@ item.itemIridiumShaft.name=Iridium Shaft
 item.itemDustStaballoy.name=Staballoy Dust
 item.itemDustSmallStaballoy.name=Small pile of Staballoy Dust
 item.itemDustTinyStaballoy.name=Tiny pile of Staballoy Dust
+item.itemDustBloodSteel.name=BloodSteel Dust
+item.itemDustSmallBloodSteel.name=Small pile of BloodSteel Dust
+item.itemDustTinyBloodSteel.name=Tiny pile of BloodSteel Dust
 
