@@ -132,6 +132,7 @@ public class RECIPES_Machines {
 
 	//IV MACHINES	
 	public static ItemStack IV_MACHINE_Electrolyzer;
+	public static ItemStack IV_MACHINE_Centrifuge;
 	public static ItemStack IV_MACHINE_BendingMachine;
 	public static ItemStack IV_MACHINE_Wiremill;
 	public static ItemStack IV_MACHINE_Macerator;
@@ -316,6 +317,7 @@ public class RECIPES_Machines {
 			IV_MACHINE_Wiremill= ItemList.Machine_IV_Wiremill.get(1);
 			IV_MACHINE_Macerator= ItemList.Machine_IV_Macerator.get(1);
 			IV_MACHINE_MassFabricator= ItemList.Machine_IV_Massfab.get(1);
+			IV_MACHINE_Centrifuge= ItemList.Machine_IV_Centrifuge.get(1);
 			
 			
 		}
@@ -466,8 +468,8 @@ public class RECIPES_Machines {
 			//Industrial Centrifuge
 			UtilsRecipe.recipeBuilder(
 					circuitTier6, pipeHugeStainlessSteel, circuitTier6,
-					plateTier6, electricPump_EV, plateTier6,
-					plateTier8, machineCasing_EV, plateTier8,
+					plateTier6, IV_MACHINE_Centrifuge, plateTier6,
+					plateTier8, machineCasing_IV, plateTier8,
 					RECIPE_IndustrialCentrifugeController);
 			//Centrifuge Casing
 			UtilsRecipe.recipeBuilder(
