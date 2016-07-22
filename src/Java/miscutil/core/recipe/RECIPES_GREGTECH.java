@@ -6,9 +6,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
-
-import java.util.Arrays;
-
+import miscutil.core.item.ModItems;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
 import miscutil.core.util.fluid.FluidUtils;
@@ -132,9 +130,10 @@ public class RECIPES_GREGTECH {
 	}
 	
 	private static void mixerRecipes(){
-		for (OrePrefixes tPrefix : Arrays.asList(new OrePrefixes[]{OrePrefixes.dust, OrePrefixes.dustSmall, OrePrefixes.dustTiny})) {
-			GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(tPrefix, Materials.Uranium, 8L), GT_OreDictUnificator.get(tPrefix, Materials.Titanium, 1L), null, null, GT_Values.NF, GT_Values.NF, UtilsItems.getSimpleStack(RECIPES_Shapeless.dustStaballoy.getItem(), (int) (9L * tPrefix.mMaterialAmount)), (int) (900L * tPrefix.mMaterialAmount / 3628800L), 8);
-			}
+		Utils.LOG_INFO("Registering Mixer Recipes.");
+		GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 8L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 1L), null, null, GT_Values.NF, GT_Values.NF, UtilsItems.getSimpleStack(ModItems.itemDustStaballoy, 2), 32, 8);
+		GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Uranium, 8L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Titanium, 1L), null, null, GT_Values.NF, GT_Values.NF, UtilsItems.getSimpleStack(ModItems.itemDustSmallStaballoy, 2), 32, 8);
+		GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Uranium, 8L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Titanium, 1L), null, null, GT_Values.NF, GT_Values.NF, UtilsItems.getSimpleStack(ModItems.itemDustTinyStaballoy, 2), 32, 8);
 		
 	}
 	

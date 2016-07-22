@@ -246,7 +246,7 @@ public class RECIPES_Machines {
 			IC2MFSU = UtilsItems.getItemStackWithMeta(LoadedMods.IndustrialCraft2, "IC2:blockElectric", "IC2_MFSU", 2, 1);
 		}
 		if (LoadedMods.Gregtech){
-			RECIPES_Shapeless.dustStaballoy = UtilsItems.getItemStackWithMeta(LoadedMods.Gregtech, "gregtech:gt.metaitem.01", "Staballoy Dust", 2319, 2);
+			RECIPES_Shapeless.dustStaballoy = UtilsItems.getItemStackWithMeta(LoadedMods.MiscUtils, "gregtech:gt.metaitem.01", "Staballoy Dust", 2319, 2);
 			machineCasing_ULV = ItemList.Casing_ULV.get(1);
 			machineCasing_LV = ItemList.Casing_LV.get(1);
 			machineCasing_MV = ItemList.Casing_MV.get(1);

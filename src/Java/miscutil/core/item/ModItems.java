@@ -5,6 +5,7 @@ import static miscutil.core.lib.CORE.LOAD_ALL_CONTENT;
 import gregtech.api.util.GT_OreDictUnificator;
 import miscutil.core.creative.AddToCreativeTab;
 import miscutil.core.item.base.CoreItem;
+import miscutil.core.item.base.dusts.BaseItemDust;
 import miscutil.core.item.effects.RarityUncommon;
 import miscutil.core.item.general.BufferCore;
 import miscutil.core.item.general.fuelrods.FuelRod_Base;
@@ -95,6 +96,12 @@ Gold Tool: 22*/
 	public static Item itemStaballoyAxe;
 	public static Item itemPlateStaballoy;
 	public static Item itemIngotStaballoy;
+	public static Item itemDustStaballoy;
+	public static Item itemDustTinyStaballoy;
+	public static Item itemDustSmallStaballoy;
+	public static Item itemDustBloodSteel;
+	public static Item itemDustTinyBloodSteel;
+	public static Item itemDustSmallBloodSteel;
 	//Tools
 	public static Item itemSandstoneHammer;
 	//Machine Related
@@ -262,11 +269,32 @@ Gold Tool: 22*/
 		GameRegistry.registerItem(itemIngotStaballoy, "itemIngotStaballoy");
 		itemPlateStaballoy = new Item().setUnlocalizedName("itemPlateStaballoy").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemPlateStaballoy");
 		GameRegistry.registerItem(itemPlateStaballoy, "itemPlateStaballoy");
+
+
+		//Staballoy Dusts
+		itemDustStaballoy = new BaseItemDust("itemDustStaballoy", "Staballoy", Utils.rgbtoHexValue(68, 75, 66), "Dust").setCreativeTab(tabMisc);
+		GT_OreDictUnificator.registerOre("dustStaballoy", UtilsItems.getItemStack(CORE.MODID+":itemDustStaballoy", 1));
+		itemDustTinyStaballoy = new BaseItemDust("itemDustTinyStaballoy", "Staballoy", Utils.rgbtoHexValue(68, 75, 66), "Tiny").setCreativeTab(tabMisc);
+		GT_OreDictUnificator.registerOre("dustTinyStaballoy", UtilsItems.getItemStack(CORE.MODID+":itemDustTinyStaballoy", 1));
+		itemDustSmallStaballoy = new BaseItemDust("itemDustSmallStaballoy", "Staballoy", Utils.rgbtoHexValue(68, 75, 66), "Small").setCreativeTab(tabMisc);
+		GT_OreDictUnificator.registerOre("dustSmallStaballoy", UtilsItems.getItemStack(CORE.MODID+":itemDustSmallStaballoy", 1));
+
+
 		//Blood Steel Ingot/Plate
 		itemIngotBloodSteel = new Item().setUnlocalizedName("itemIngotBloodSteel").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemIngotBloodSteel");
 		GameRegistry.registerItem(itemIngotBloodSteel, "itemIngotBloodSteel");
 		itemPlateBloodSteel = new Item().setUnlocalizedName("itemPlateBloodSteel").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemPlateBloodSteel");
 		GameRegistry.registerItem(itemPlateBloodSteel, "itemPlateBloodSteel");
+
+		//BloodSteel Dusts
+		itemDustBloodSteel = new BaseItemDust("itemDustBloodSteel", "BloodSteel", Utils.rgbtoHexValue(68, 75, 66), "Dust").setCreativeTab(tabMisc);
+		GT_OreDictUnificator.registerOre("dustBloodSteel", UtilsItems.getItemStack(CORE.MODID+":itemDustBloodSteel", 1));
+		itemDustTinyBloodSteel = new BaseItemDust("itemDustTinyBloodSteel", "BloodSteel", Utils.rgbtoHexValue(68, 75, 66), "Tiny").setCreativeTab(tabMisc);
+		GT_OreDictUnificator.registerOre("dustTinyBloodSteel", UtilsItems.getItemStack(CORE.MODID+":itemDustTinyBloodSteel", 1));
+		itemDustSmallBloodSteel = new BaseItemDust("itemDustSmallBloodSteel", "BloodSteel", Utils.rgbtoHexValue(68, 75, 66), "Small").setCreativeTab(tabMisc);
+		GT_OreDictUnificator.registerOre("dustSmallBloodSteel", UtilsItems.getItemStack(CORE.MODID+":itemDustSmallBloodSteel", 1));
+
+
 		//Sandstone Hammer
 		itemSandstoneHammer = new SandstoneHammer("itemSandstoneHammer").setCreativeTab(AddToCreativeTab.tabTools);
 		GameRegistry.registerItem(itemSandstoneHammer, itemSandstoneHammer.getUnlocalizedName());
@@ -280,6 +308,7 @@ Gold Tool: 22*/
 		}
 		itemStickyRubber = new Item().setUnlocalizedName("itemStickyRubber").setCreativeTab(tabMachines).setTextureName(CORE.MODID + ":itemStickyRubber");
 		GameRegistry.registerItem(itemStickyRubber, "itemStickyRubber");
+		GT_OreDictUnificator.registerOre("ingotRubber", UtilsItems.getItemStack(CORE.MODID+":itemStickyRubber", 1));
 		//Battery Alloy For cheap Niggers
 		itemIngotBatteryAlloy = new Item().setUnlocalizedName("itemIngotBatteryAlloy").setCreativeTab(tabMachines).setTextureName(CORE.MODID + ":itemIngotBatteryAlloy");
 		GameRegistry.registerItem(itemIngotBatteryAlloy, "itemIngotBatteryAlloy");

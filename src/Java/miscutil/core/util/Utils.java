@@ -366,6 +366,17 @@ public class Utils {
 		int result = getHexNumberFromInt(randInt(min, max));
 		return result;
 	}
+	
+	public static int rgbtoHexValue(int r, int g, int b){		    
+		      Color c = new Color(r,g,b);
+		      String temp = Integer.toHexString( c.getRGB() & 0xFFFFFF ).toUpperCase();	
+
+		      System.out.println( "hex: " + Integer.toHexString( c.getRGB() & 0xFFFFFF ) + " hex value:"+temp); 
+		      temp = Utils.appenedHexNotationToString(String.valueOf(temp));
+				Utils.LOG_INFO("Made "+temp+" - Hopefully it's not a mess.");
+				Utils.LOG_INFO("It will decode into "+Integer.decode(temp)+".");
+				return Integer.decode(temp);
+	}
 
 	/*
 	 * http://javadevnotes.com/java-left-pad-string-with-zeros-examples
