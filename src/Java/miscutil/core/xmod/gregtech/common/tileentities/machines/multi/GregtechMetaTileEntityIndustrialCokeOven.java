@@ -40,17 +40,17 @@ public class GregtechMetaTileEntityIndustrialCokeOven
 
     @Override
 	public String[] getDescription() {
-        return new String[]{"Smelts up to 6-18 Items at once",
-        		"Controller Block for the Multi Smelter",
+        return new String[]{"Processes Logs and Coal into Charcoal and Coal Coke.",
+        		"Controller Block for the Industrial Coke Oven",
         		"Size: 3x3x3 (Hollow)",
         		"Controller (front middle at bottom)",
-        		"8x Heating Coils (middle Layer, hollow)",
+        		"8x Heat Resistant/Proof Coils (middle Layer, hollow)",
         		"1x Input (one of bottom)",
         		"1x Output (one of bottom)", 
         		"1x Energy Hatch (one of bottom)",
         		"1x Maintenance Hatch (one of bottom)",
         		"1x Muffler Hatch (top middle)",
-        		"Heat Proof Machine Casings for the rest"};
+        		"Structural Coke Oven Casings for the rest"};
     }
 
     @Override

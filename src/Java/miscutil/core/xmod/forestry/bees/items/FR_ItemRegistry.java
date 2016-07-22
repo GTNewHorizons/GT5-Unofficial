@@ -9,6 +9,7 @@
  * SirSengir (original work), CovertJaguar, Player, Binnie, MysteriousAges
  ******************************************************************************/
 package miscutil.core.xmod.forestry.bees.items;
+import miscutil.core.lib.LoadedMods;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -46,21 +47,23 @@ public class FR_ItemRegistry {
 		//frameProven = registerItem(new FR_ItemHiveFrame(720, 0.3f), "frameProven");
 
 		//Magic Bee like Frames
-		hiveFrameAccelerated = new MB_ItemFrame(MB_FrameType.ACCELERATED);
-		hiveFrameVoid = new MB_ItemFrame(MB_FrameType.VOID, EnumRarity.rare);
-		hiveFrameMutagenic = new MB_ItemFrame(MB_FrameType.MUTAGENIC, EnumRarity.epic);
-		haveFrameBusy = new MB_ItemFrame(MB_FrameType.BUSY);
+		hiveFrameAccelerated = new MB_ItemFrame(MB_FrameType.ACCELERATED, "Longevity for bees isn't very common.");
+		hiveFrameVoid = new MB_ItemFrame(MB_FrameType.VOID, EnumRarity.rare, "??? (Dungeon Loot)");
+		hiveFrameMutagenic = new MB_ItemFrame(MB_FrameType.MUTAGENIC, EnumRarity.epic, "Evolution of the fitest, finest and fastest.");
+		haveFrameBusy = new MB_ItemFrame(MB_FrameType.BUSY, "Busy bee, Busy Bee, make more honey please for me.");
 		ChestGenHooks.addItem(ChestGenHooks.STRONGHOLD_CORRIDOR, new WeightedRandomChestContent(new ItemStack(hiveFrameVoid), 1, 1, 18));
 		ChestGenHooks.addItem(ChestGenHooks.STRONGHOLD_LIBRARY, new WeightedRandomChestContent(new ItemStack(hiveFrameVoid), 1, 3, 23));
 		ChestGenHooks.addItem(ChestGenHooks.PYRAMID_DESERT_CHEST, new WeightedRandomChestContent(new ItemStack(hiveFrameMutagenic), 1, 1, 18));
 		ChestGenHooks.addItem(ChestGenHooks.PYRAMID_JUNGLE_CHEST, new WeightedRandomChestContent(new ItemStack(hiveFrameMutagenic), 1, 3, 23));
 		
 		//Extra Bee like Frames
-		hiveFrameCocoa = new MB_ItemFrame(MB_FrameType.COCOA, EnumRarity.common);
-		hiveFrameCaged = new MB_ItemFrame(MB_FrameType.CAGE, EnumRarity.common);
-		hiveFrameSoul = new MB_ItemFrame(MB_FrameType.SOUL, EnumRarity.common);
-		hiveFrameClay = new MB_ItemFrame(MB_FrameType.CLAY, EnumRarity.common);
-		hiveFrameNova = new MB_ItemFrame(MB_FrameType.NOVA, EnumRarity.epic);
+		if (!LoadedMods.ExtraBees){
+		hiveFrameCocoa = new MB_ItemFrame(MB_FrameType.COCOA, EnumRarity.common, "");
+		hiveFrameCaged = new MB_ItemFrame(MB_FrameType.CAGE, EnumRarity.common, "");
+		hiveFrameSoul = new MB_ItemFrame(MB_FrameType.SOUL, EnumRarity.common, "");
+		hiveFrameClay = new MB_ItemFrame(MB_FrameType.CLAY, EnumRarity.common, "");
+		hiveFrameNova = new MB_ItemFrame(MB_FrameType.NOVA, EnumRarity.epic, "A Creative Only Frame.");
+		}
 
 
 

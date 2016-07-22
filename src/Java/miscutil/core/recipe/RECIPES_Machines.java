@@ -203,6 +203,7 @@ public class RECIPES_Machines {
 
 	//Misc
 	static ItemStack INPUT_RCCokeOvenBlock;
+	static ItemStack INPUT_IECokeOvenBlock;
 
 
 
@@ -213,79 +214,83 @@ public class RECIPES_Machines {
 		run();
 		Utils.LOG_INFO("Loading Recipes for the Various machine blocks.");
 	}
-	
+
 	private static void run(){
 		initModItems();
 	}	
 
 	private static void initModItems(){
 		if (LoadedMods.Gregtech){
-		RECIPES_Shapeless.dustStaballoy = UtilsItems.getItemStackWithMeta(LoadedMods.Gregtech, "gregtech:gt.metaitem.01", "Staballoy Dust", 2319, 2);
-		machineCasing_ULV = ItemList.Casing_ULV.get(1);
-		machineCasing_LV = ItemList.Casing_LV.get(1);
-		machineCasing_MV = ItemList.Casing_MV.get(1);
-		machineCasing_HV = ItemList.Casing_HV.get(1);
-		machineCasing_EV = ItemList.Casing_EV.get(1);
-		machineCasing_IV = ItemList.Casing_IV.get(1);
-		machineCasing_LuV = ItemList.Casing_LuV.get(1);
-		machineCasing_ZPM = ItemList.Casing_ZPM.get(1);
-		machineCasing_UV = ItemList.Casing_UV.get(1);
-		machineCasing_MAX = ItemList.Casing_MAX.get(1);
+			RECIPES_Shapeless.dustStaballoy = UtilsItems.getItemStackWithMeta(LoadedMods.Gregtech, "gregtech:gt.metaitem.01", "Staballoy Dust", 2319, 2);
+			machineCasing_ULV = ItemList.Casing_ULV.get(1);
+			machineCasing_LV = ItemList.Casing_LV.get(1);
+			machineCasing_MV = ItemList.Casing_MV.get(1);
+			machineCasing_HV = ItemList.Casing_HV.get(1);
+			machineCasing_EV = ItemList.Casing_EV.get(1);
+			machineCasing_IV = ItemList.Casing_IV.get(1);
+			machineCasing_LuV = ItemList.Casing_LuV.get(1);
+			machineCasing_ZPM = ItemList.Casing_ZPM.get(1);
+			machineCasing_UV = ItemList.Casing_UV.get(1);
+			machineCasing_MAX = ItemList.Casing_MAX.get(1);
 
-		//Gearbox Casings
-		gearboxCasing_Tier_1 = ItemList.Casing_Gearbox_Bronze.get(1);
-		gearboxCasing_Tier_2 = ItemList.Casing_Gearbox_Steel.get(1);
-		gearboxCasing_Tier_3 = ItemList.Casing_Gearbox_Titanium.get(1);
-		gearboxCasing_Tier_4 = ItemList.Casing_Gearbox_TungstenSteel.get(1);
+			//Gearbox Casings
+			gearboxCasing_Tier_1 = ItemList.Casing_Gearbox_Bronze.get(1);
+			gearboxCasing_Tier_2 = ItemList.Casing_Gearbox_Steel.get(1);
+			gearboxCasing_Tier_3 = ItemList.Casing_Gearbox_Titanium.get(1);
+			gearboxCasing_Tier_4 = ItemList.Casing_Gearbox_TungstenSteel.get(1);
 
-		//Lava Boiler
-		boiler_Coal = ItemList.Machine_Bronze_Boiler.get(1);
+			//Lava Boiler
+			boiler_Coal = ItemList.Machine_Bronze_Boiler.get(1);
 
-		//Machine Components
-		electricMotor_LV = ItemList.Electric_Motor_LV.get(1);
-		electricMotor_MV = ItemList.Electric_Motor_MV.get(1);
-		electricMotor_HV = ItemList.Electric_Motor_HV.get(1);
-		electricMotor_EV = ItemList.Electric_Motor_EV.get(1);
-		electricMotor_IV = ItemList.Electric_Motor_IV.get(1);
-		electricPump_LV = ItemList.Electric_Pump_LV.get(1);
-		electricPump_MV = ItemList.Electric_Pump_MV.get(1);
-		electricPump_HV = ItemList.Electric_Pump_HV.get(1);
-		electricPump_EV = ItemList.Electric_Pump_EV.get(1);
-		electricPump_IV = ItemList.Electric_Pump_IV.get(1);
-		electricPiston_LV = ItemList.Electric_Piston_LV.get(1);
-		electricPiston_MV = ItemList.Electric_Piston_MV.get(1);
-		electricPiston_HV = ItemList.Electric_Piston_HV.get(1);
-		electricPiston_EV = ItemList.Electric_Piston_EV.get(1);
-		electricPiston_IV = ItemList.Electric_Piston_IV.get(1);
-		robotArm_LV = ItemList.Robot_Arm_LV.get(1);
-		robotArm_MV = ItemList.Robot_Arm_MV.get(1);
-		robotArm_HV = ItemList.Robot_Arm_HV.get(1);
-		robotArm_EV = ItemList.Robot_Arm_EV.get(1);
-		robotArm_IV = ItemList.Robot_Arm_IV.get(1);
-		conveyorModule_LV = ItemList.Conveyor_Module_LV.get(1);
-		conveyorModule_MV = ItemList.Conveyor_Module_MV.get(1);
-		conveyorModule_HV = ItemList.Conveyor_Module_HV.get(1);
-		conveyorModule_EV = ItemList.Conveyor_Module_EV.get(1);
-		conveyorModule_IV = ItemList.Conveyor_Module_IV.get(1);
-		emitter_LV = ItemList.Emitter_LV.get(1);
-		emitter_MV = ItemList.Emitter_MV.get(1);
-		emitter_HV = ItemList.Emitter_HV.get(1);
-		emitter_EV = ItemList.Emitter_EV.get(1);
-		emitter_IV = ItemList.Emitter_IV.get(1);
-		fieldGenerator_LV = ItemList.Field_Generator_LV.get(1);
-		fieldGenerator_MV = ItemList.Field_Generator_MV.get(1);
-		fieldGenerator_HV = ItemList.Field_Generator_HV.get(1);
-		fieldGenerator_EV = ItemList.Field_Generator_EV.get(1);
-		fieldGenerator_IV = ItemList.Field_Generator_IV.get(1);
-		sensor_LV = ItemList.Sensor_LV.get(1);
-		sensor_MV = ItemList.Sensor_MV.get(1);
-		sensor_HV = ItemList.Sensor_HV.get(1);
-		sensor_EV = ItemList.Sensor_EV.get(1);
-		sensor_IV = ItemList.Sensor_IV.get(1);}
+			//Machine Components
+			electricMotor_LV = ItemList.Electric_Motor_LV.get(1);
+			electricMotor_MV = ItemList.Electric_Motor_MV.get(1);
+			electricMotor_HV = ItemList.Electric_Motor_HV.get(1);
+			electricMotor_EV = ItemList.Electric_Motor_EV.get(1);
+			electricMotor_IV = ItemList.Electric_Motor_IV.get(1);
+			electricPump_LV = ItemList.Electric_Pump_LV.get(1);
+			electricPump_MV = ItemList.Electric_Pump_MV.get(1);
+			electricPump_HV = ItemList.Electric_Pump_HV.get(1);
+			electricPump_EV = ItemList.Electric_Pump_EV.get(1);
+			electricPump_IV = ItemList.Electric_Pump_IV.get(1);
+			electricPiston_LV = ItemList.Electric_Piston_LV.get(1);
+			electricPiston_MV = ItemList.Electric_Piston_MV.get(1);
+			electricPiston_HV = ItemList.Electric_Piston_HV.get(1);
+			electricPiston_EV = ItemList.Electric_Piston_EV.get(1);
+			electricPiston_IV = ItemList.Electric_Piston_IV.get(1);
+			robotArm_LV = ItemList.Robot_Arm_LV.get(1);
+			robotArm_MV = ItemList.Robot_Arm_MV.get(1);
+			robotArm_HV = ItemList.Robot_Arm_HV.get(1);
+			robotArm_EV = ItemList.Robot_Arm_EV.get(1);
+			robotArm_IV = ItemList.Robot_Arm_IV.get(1);
+			conveyorModule_LV = ItemList.Conveyor_Module_LV.get(1);
+			conveyorModule_MV = ItemList.Conveyor_Module_MV.get(1);
+			conveyorModule_HV = ItemList.Conveyor_Module_HV.get(1);
+			conveyorModule_EV = ItemList.Conveyor_Module_EV.get(1);
+			conveyorModule_IV = ItemList.Conveyor_Module_IV.get(1);
+			emitter_LV = ItemList.Emitter_LV.get(1);
+			emitter_MV = ItemList.Emitter_MV.get(1);
+			emitter_HV = ItemList.Emitter_HV.get(1);
+			emitter_EV = ItemList.Emitter_EV.get(1);
+			emitter_IV = ItemList.Emitter_IV.get(1);
+			fieldGenerator_LV = ItemList.Field_Generator_LV.get(1);
+			fieldGenerator_MV = ItemList.Field_Generator_MV.get(1);
+			fieldGenerator_HV = ItemList.Field_Generator_HV.get(1);
+			fieldGenerator_EV = ItemList.Field_Generator_EV.get(1);
+			fieldGenerator_IV = ItemList.Field_Generator_IV.get(1);
+			sensor_LV = ItemList.Sensor_LV.get(1);
+			sensor_MV = ItemList.Sensor_MV.get(1);
+			sensor_HV = ItemList.Sensor_HV.get(1);
+			sensor_EV = ItemList.Sensor_EV.get(1);
+			sensor_IV = ItemList.Sensor_IV.get(1);}
 
 		if(LoadedMods.Railcraft){
-		//Misc
-		INPUT_RCCokeOvenBlock = UtilsItems.getItemStackWithMeta(LoadedMods.Railcraft, "Railcraft:machine.alpha", "Coke_Oven_RC", 7, 1);
+			//Misc
+			INPUT_RCCokeOvenBlock = UtilsItems.getItemStackWithMeta(LoadedMods.Railcraft, "Railcraft:machine.alpha", "Coke_Oven_RC", 7, 1);
+		}
+		if(LoadedMods.ImmersiveEngineering){
+			//Misc
+			INPUT_IECokeOvenBlock = UtilsItems.getItemStackWithMeta(LoadedMods.ImmersiveEngineering, "ImmersiveEngineering:stoneDecoration", "Coke_Oven_IE", 1, 1);
 		}
 		runModRecipes();
 	}	
@@ -297,7 +302,7 @@ public class RECIPES_Machines {
 					"dustUranium", "dustUranium", "dustUranium",
 					"dustUranium", "dustUranium", "dustUranium",
 					RECIPES_Shapeless.dustStaballoy);
-			
+
 			//Buffer Core
 			UtilsRecipe.recipeBuilder(
 					plateTier1, cableTier1, plateTier1,
@@ -350,7 +355,7 @@ public class RECIPES_Machines {
 					plateTier10, cableTier10, plateTier10,
 					RECIPE_BufferCore_MAX);
 
-			
+
 			UtilsRecipe.recipeBuilder(
 					wireTier1, RECIPE_BufferCore_ULV, wireTier1,
 					wireTier1, machineCasing_ULV, wireTier1,
@@ -438,13 +443,24 @@ public class RECIPES_Machines {
 					plateTier6, "stickElectrum", plateTier6,
 					RECIPE_IndustrialCentrifugeCasing);
 
+			if (LoadedMods.Railcraft){
 			//Industrial Coke Oven
 			UtilsRecipe.recipeBuilder(
 					plateCobalt, circuitTier4, plateCobalt,
 					machineCasing_HV, INPUT_RCCokeOvenBlock, machineCasing_HV,
 					plateCobalt, circuitTier5, plateCobalt,
 					RECIPE_IndustrialCokeOvenController);
-
+			}
+			
+			if (LoadedMods.ImmersiveEngineering){
+			//Industrial Coke Oven
+			UtilsRecipe.recipeBuilder(
+					plateCobalt, circuitTier4, plateCobalt,
+					machineCasing_HV, INPUT_IECokeOvenBlock, machineCasing_HV,
+					plateCobalt, circuitTier5, plateCobalt,
+					RECIPE_IndustrialCokeOvenController);
+			}
+			
 			//Coke Oven Frame Casing
 			UtilsRecipe.recipeBuilder(
 					plateTier8, rodTier8, plateTier8,

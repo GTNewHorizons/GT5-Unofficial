@@ -1,6 +1,5 @@
 package miscutil.core.handler.registration.gregtech;
 
-import miscutil.core.util.Utils;
 import miscutil.core.xmod.gregtech.api.enums.GregtechItemList;
 import miscutil.core.xmod.gregtech.common.tileentities.generators.GregtechMetaTileEntitySolarGenerator;
 
@@ -9,8 +8,8 @@ public class GregtechSolarGenerators
 	public static void run()
 	{
 		if (miscutil.core.lib.LoadedMods.Gregtech){
-			Utils.LOG_INFO("MiscUtils: Gregtech5u Content | Registering Solar Generator Blocks.");
-			run1();
+			//Utils.LOG_INFO("MiscUtils: Gregtech5u Content | Registering Solar Generator Blocks.");
+			//run1();
 		}
 		
 	}

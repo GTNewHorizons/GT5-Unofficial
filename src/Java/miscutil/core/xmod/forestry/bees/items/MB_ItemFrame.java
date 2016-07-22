@@ -1,11 +1,15 @@
 package miscutil.core.xmod.forestry.bees.items;
 
+import java.util.List;
+
 import miscutil.core.creative.AddToCreativeTab;
 import miscutil.core.lib.CORE;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -19,13 +23,14 @@ public class MB_ItemFrame extends Item implements IHiveFrame
 {
 	private MB_FrameType type;
 	private EnumRarity rarity_value = EnumRarity.uncommon;
+	private final String toolTip;
 
-	public MB_ItemFrame(MB_FrameType frameType)
+	public MB_ItemFrame(MB_FrameType frameType, String description)
 	{
-		this(frameType, EnumRarity.uncommon);
+		this(frameType, EnumRarity.uncommon, description);
 	}
 	
-	public MB_ItemFrame(MB_FrameType frameType, EnumRarity rarity)
+	public MB_ItemFrame(MB_FrameType frameType, EnumRarity rarity, String description)
 	{
 		super();
 		this.type = frameType;
@@ -34,8 +39,17 @@ public class MB_ItemFrame extends Item implements IHiveFrame
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
 		this.setUnlocalizedName("frame" + frameType.getName());
 		this.rarity_value = rarity;
+		this.toolTip = description;
 		GameRegistry.registerItem(this, "frame" + frameType.getName());
 	}
+	
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
+		if (toolTip != "" || !toolTip.equals("")){			
+		list.add(EnumChatFormatting.GRAY+toolTip);
+		}
+		super.addInformation(stack, aPlayer, list, bool);
+	}	
 	
 	@Override
 	@SideOnly(Side.CLIENT)

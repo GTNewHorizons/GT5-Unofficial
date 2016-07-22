@@ -22,10 +22,12 @@ public class LoadedMods {
 	public static boolean ForbiddenMagic = false;
 	public static boolean CompactWindmills = false;
 	public static boolean Railcraft = false;
+	public static boolean ImmersiveEngineering = false;
 	public static boolean Growthcraft = false;
 	public static boolean CoFHCore = false;
 	public static boolean Forestry = false;
 	public static boolean MagicBees = false;
+	public static boolean ExtraBees = false;
 	public static boolean Psychedelicraft = false;
 	public static boolean MiscUtils = true; //Dummy For MetaData Lookups in MT Wrapper
 
@@ -134,6 +136,16 @@ public class LoadedMods {
 		if (Loader.isModLoaded("psychedelicraft") == true){
 			Psychedelicraft  = true;
 			Utils.LOG_INFO("Components enabled for: Psychedelicraft");
+			totalMods++;
+		}
+		if (Loader.isModLoaded("ImmersiveEngineering") == true){
+			ImmersiveEngineering  = true;
+			Utils.LOG_INFO("Components enabled for: ImmersiveEngineering");
+			totalMods++;
+		}
+		if (Loader.isModLoaded("ExtraBees") == true){
+			ExtraBees  = true;
+			Utils.LOG_INFO("Components enabled for: ExtraBees");
 			totalMods++;
 		}
 		
