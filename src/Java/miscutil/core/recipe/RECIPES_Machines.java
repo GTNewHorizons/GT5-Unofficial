@@ -33,6 +33,18 @@ public class RECIPES_Machines {
 	static ItemStack RECIPE_IndustrialCokeOvenFrame = GregtechItemList.Casing_CokeOven.get(1);
 	static ItemStack RECIPE_IndustrialCokeOvenCasingA = GregtechItemList.Casing_CokeOven_Coil1.get(1);
 	static ItemStack RECIPE_IndustrialCokeOvenCasingB = GregtechItemList.Casing_CokeOven_Coil2.get(1);
+	//
+	static ItemStack RECIPE_IndustrialElectrolyzerController = GregtechItemList.Industrial_CokeOven.get(1);
+	static ItemStack RECIPE_IndustrialElectrolyzerFrame = GregtechItemList.Casing_CokeOven.get(1);
+	//
+	static ItemStack RECIPE_IndustrialMaterialPressController = GregtechItemList.Industrial_PlatePress.get(1);
+	static ItemStack RECIPE_IndustrialMaterialPressFrame = GregtechItemList.Casing_MaterialPress.get(1);
+	//
+	static ItemStack RECIPE_IndustrialMacerationStackController = GregtechItemList.Industrial_MacerationStack.get(1);
+	static ItemStack RECIPE_IndustrialMacerationStackFrame = GregtechItemList.Casing_MacerationStack.get(1);
+	//
+	static ItemStack RECIPE_IndustrialWireFactoryController = GregtechItemList.Industrial_WireFactory.get(1);
+	static ItemStack RECIPE_IndustrialWireFactoryFrame = GregtechItemList.Casing_WireFactory.get(1);
 
 
 	//Buffer Cores
@@ -118,6 +130,14 @@ public class RECIPES_Machines {
 	static ItemStack gearboxCasing_Tier_3;
 	static ItemStack gearboxCasing_Tier_4;
 
+	//IV MACHINES	
+	public static ItemStack IV_MACHINE_Electrolyzer;
+	public static ItemStack IV_MACHINE_BendingMachine;
+	public static ItemStack IV_MACHINE_Wiremill;
+	public static ItemStack IV_MACHINE_Macerator;
+	public static ItemStack IV_MACHINE_MassFabricator;
+
+
 	//Cables
 	static String cableGt02Electrum = "cableGt02Electrum";
 
@@ -145,19 +165,20 @@ public class RECIPES_Machines {
 	static String batteryElite = "batteryElite";
 	static String batteryMaster = "batteryMaster";
 	static String batteryUltimate = "batteryUltimate";
+	static ItemStack IC2MFE;
+	static ItemStack IC2MFSU;
 
 	//Circuits
-	static String circuitPrimitive = "circuitPrimitive";
-	static String circuitTier1 = "circuitBasic";
-	static String circuitTier2 = "circuitGood";
-	static String circuitTier3 = "circuitAdvanced";
-	static String circuitTier4 = "circuitData";
-	static String circuitTier5 = "circuitElite";
-	static String circuitTier6 = "circuitMaster";
-	static String circuitTier7 = "circuitUltimate";
-	static String circuitTier8 = "circuitSymbiotic";
-	static String circuitTier9 = "circuitNeutronic";
-	static String circuitTier10 = "circuitQuantum";
+	static String circuitPrimitive = "circuitBasic";
+	static String circuitTier1 = "circuitGood";
+	static String circuitTier2 = "circuitAdvanced";
+	static String circuitTier3 = "circuitData";
+	static String circuitTier4 = "circuitElite";
+	static String circuitTier5 = "circuitMaster";
+	static String circuitTier6 = "circuitUltimate";
+	static String circuitTier7 = "circuitSymbiotic";
+	static String circuitTier8 = "circuitNeutronic";
+	static String circuitTier9 = "circuitQuantum";
 
 	//Machine Components
 	static ItemStack electricMotor_LV;
@@ -220,6 +241,10 @@ public class RECIPES_Machines {
 	}	
 
 	private static void initModItems(){
+		if (LoadedMods.IndustrialCraft2){
+			IC2MFE = UtilsItems.getItemStackWithMeta(LoadedMods.IndustrialCraft2, "IC2:blockElectric", "IC2_MFE", 1, 1);
+			IC2MFSU = UtilsItems.getItemStackWithMeta(LoadedMods.IndustrialCraft2, "IC2:blockElectric", "IC2_MFSU", 2, 1);
+		}
 		if (LoadedMods.Gregtech){
 			RECIPES_Shapeless.dustStaballoy = UtilsItems.getItemStackWithMeta(LoadedMods.Gregtech, "gregtech:gt.metaitem.01", "Staballoy Dust", 2319, 2);
 			machineCasing_ULV = ItemList.Casing_ULV.get(1);
@@ -282,7 +307,18 @@ public class RECIPES_Machines {
 			sensor_MV = ItemList.Sensor_MV.get(1);
 			sensor_HV = ItemList.Sensor_HV.get(1);
 			sensor_EV = ItemList.Sensor_EV.get(1);
-			sensor_IV = ItemList.Sensor_IV.get(1);}
+			sensor_IV = ItemList.Sensor_IV.get(1);
+			
+		
+			//IV MACHINES	
+			IV_MACHINE_Electrolyzer = ItemList.Machine_IV_Electrolyzer.get(1);
+			IV_MACHINE_BendingMachine= ItemList.Machine_IV_Bender.get(1);
+			IV_MACHINE_Wiremill= ItemList.Machine_IV_Wiremill.get(1);
+			IV_MACHINE_Macerator= ItemList.Machine_IV_Macerator.get(1);
+			IV_MACHINE_MassFabricator= ItemList.Machine_IV_Massfab.get(1);
+			
+			
+		}
 
 		if(LoadedMods.Railcraft){
 			//Misc
@@ -306,52 +342,52 @@ public class RECIPES_Machines {
 			//Buffer Core
 			UtilsRecipe.recipeBuilder(
 					plateTier1, cableTier1, plateTier1,
-					circuitTier1, batteryBasic, circuitTier1,
+					circuitPrimitive, IC2MFE, circuitPrimitive,
 					plateTier1, cableTier1, plateTier1,
 					RECIPE_BufferCore_ULV);
 			UtilsRecipe.recipeBuilder(
 					plateTier2, cableTier2, plateTier2,
-					circuitTier2, batteryBasic, circuitTier2,
+					circuitTier1, IC2MFE, circuitTier1,
 					plateTier2, cableTier2, plateTier2,
 					RECIPE_BufferCore_LV);
 			UtilsRecipe.recipeBuilder(
 					plateTier3, cableTier3, plateTier3,
-					circuitTier3, batteryAdvanced, circuitTier3,
+					RECIPE_BufferCore_LV, circuitTier2, RECIPE_BufferCore_LV,
 					plateTier3, cableTier3, plateTier3,
 					RECIPE_BufferCore_MV);
 			UtilsRecipe.recipeBuilder(
 					plateTier4, cableTier4, plateTier4,
-					circuitTier4, batteryAdvanced, circuitTier4,
+					RECIPE_BufferCore_MV, circuitTier3, RECIPE_BufferCore_MV,
 					plateTier4, cableTier4, plateTier4,
 					RECIPE_BufferCore_HV);
 			UtilsRecipe.recipeBuilder(
 					plateTier5, cableTier5, plateTier5,
-					circuitTier5, batteryElite, circuitTier5,
+					RECIPE_BufferCore_HV, circuitTier4, RECIPE_BufferCore_HV,
 					plateTier5, cableTier5, plateTier5,
 					RECIPE_BufferCore_EV);
 			UtilsRecipe.recipeBuilder(
 					plateTier6, cableTier6, plateTier6,
-					circuitTier6, batteryElite, circuitTier6,
+					RECIPE_BufferCore_EV, circuitTier5, RECIPE_BufferCore_EV,
 					plateTier6, cableTier6, plateTier6,
 					RECIPE_BufferCore_IV);
 			UtilsRecipe.recipeBuilder(
 					plateTier7, cableTier7, plateTier7,
-					circuitTier7, batteryMaster, circuitTier7,
+					RECIPE_BufferCore_IV, circuitTier6, RECIPE_BufferCore_IV,
 					plateTier7, cableTier7, plateTier7,
 					RECIPE_BufferCore_LuV);
 			UtilsRecipe.recipeBuilder(
 					plateTier8, cableTier8, plateTier8,
-					circuitTier8, batteryMaster, circuitTier8,
+					RECIPE_BufferCore_LuV, circuitTier7, RECIPE_BufferCore_LuV,
 					plateTier8, cableTier8, plateTier8,
 					RECIPE_BufferCore_ZPM);
 			UtilsRecipe.recipeBuilder(
 					plateTier9, cableTier9, plateTier9,
-					circuitTier9, batteryUltimate, circuitTier9,
+					RECIPE_BufferCore_ZPM, circuitTier8, RECIPE_BufferCore_ZPM,
 					plateTier9, cableTier9, plateTier9,
 					RECIPE_BufferCore_UV);
 			UtilsRecipe.recipeBuilder(
 					plateTier10, cableTier10, plateTier10,
-					circuitTier10, batteryUltimate, circuitTier10,
+					RECIPE_BufferCore_UV, circuitTier9, RECIPE_BufferCore_UV,
 					plateTier10, cableTier10, plateTier10,
 					RECIPE_BufferCore_MAX);
 
@@ -364,49 +400,48 @@ public class RECIPES_Machines {
 			UtilsRecipe.recipeBuilder(
 					wireTier2, RECIPE_BufferCore_LV, wireTier2,
 					wireTier2, machineCasing_LV, wireTier2,
-					circuitTier1, circuitTier2, circuitTier1,
+					circuitTier1, RECIPE_BufferCore_LV, circuitTier1,
 					RECIPE_Buffer_LV);
 			UtilsRecipe.recipeBuilder(
 					wireTier3, RECIPE_BufferCore_MV, wireTier3,
 					wireTier3, machineCasing_MV, wireTier3,
-					circuitTier2, circuitTier3, circuitTier2,
+					circuitTier2, RECIPE_BufferCore_MV, circuitTier2,
 					RECIPE_Buffer_MV);
 			UtilsRecipe.recipeBuilder(
 					wireTier4, RECIPE_BufferCore_HV, wireTier4,
 					wireTier4, machineCasing_HV, wireTier4,
-					circuitTier3, circuitTier4, circuitTier3,
+					circuitTier3, RECIPE_BufferCore_HV, circuitTier3,
 					RECIPE_Buffer_HV);
 			UtilsRecipe.recipeBuilder(
 					wireTier5, RECIPE_BufferCore_EV, wireTier5,
 					wireTier5, machineCasing_EV, wireTier5,
-					circuitTier4, circuitTier5, circuitTier4,
+					circuitTier4, RECIPE_BufferCore_EV, circuitTier4,
 					RECIPE_Buffer_EV);
 			UtilsRecipe.recipeBuilder(
 					wireTier6, RECIPE_BufferCore_IV, wireTier6,
 					wireTier6, machineCasing_IV, wireTier6,
-					circuitTier5, circuitTier6, circuitTier5,
+					circuitTier5, RECIPE_BufferCore_IV, circuitTier5,
 					RECIPE_Buffer_IV);
 			UtilsRecipe.recipeBuilder(
 					wireTier7, RECIPE_BufferCore_LuV, wireTier7,
 					wireTier7, machineCasing_LuV, wireTier7,
-					circuitTier6, circuitTier7, circuitTier6,
+					circuitTier6, RECIPE_BufferCore_LuV, circuitTier6,
 					RECIPE_Buffer_LuV);
 			UtilsRecipe.recipeBuilder(
 					wireTier8, RECIPE_BufferCore_ZPM, wireTier8,
 					wireTier8, machineCasing_ZPM, wireTier8,
-					circuitTier7, circuitTier8, circuitTier7,
+					circuitTier7, RECIPE_BufferCore_ZPM, circuitTier7,
 					RECIPE_Buffer_ZPM);
 			UtilsRecipe.recipeBuilder(
 					wireTier9, RECIPE_BufferCore_UV, wireTier9,
 					wireTier9, machineCasing_UV, wireTier9,
-					circuitTier8, circuitTier9, circuitTier8,
+					circuitTier8, RECIPE_BufferCore_UV, circuitTier8,
 					RECIPE_Buffer_UV);
 			UtilsRecipe.recipeBuilder(
 					plateTier11, RECIPE_BufferCore_MAX, plateTier11,
 					wireTier10, machineCasing_MAX, wireTier10,
-					circuitTier9, circuitTier10, circuitTier9,
+					circuitTier9, RECIPE_BufferCore_MAX, circuitTier9,
 					RECIPE_Buffer_MAX);
-
 
 			//Steam Condenser
 			UtilsRecipe.recipeBuilder(
@@ -421,7 +456,6 @@ public class RECIPES_Machines {
 					boiler_Coal, machineCasing_ULV, boiler_Coal,
 					"plateDoubleAnyIron", "bucketLava", "plateDoubleAnyIron",
 					RECIPE_IronBlastFurnace);
-
 			//Iron plated Bricks
 			UtilsRecipe.recipeBuilder(
 					"plateAnyIron", RECIPES_Tools.craftingToolHardHammer, "plateAnyIron",
@@ -435,7 +469,6 @@ public class RECIPES_Machines {
 					plateTier6, electricPump_EV, plateTier6,
 					plateTier8, machineCasing_EV, plateTier8,
 					RECIPE_IndustrialCentrifugeController);
-
 			//Centrifuge Casing
 			UtilsRecipe.recipeBuilder(
 					plateTier6, "stickElectrum", plateTier6,
@@ -444,43 +477,93 @@ public class RECIPES_Machines {
 					RECIPE_IndustrialCentrifugeCasing);
 
 			if (LoadedMods.Railcraft){
-			//Industrial Coke Oven
-			UtilsRecipe.recipeBuilder(
-					plateCobalt, circuitTier4, plateCobalt,
-					machineCasing_HV, INPUT_RCCokeOvenBlock, machineCasing_HV,
-					plateCobalt, circuitTier5, plateCobalt,
-					RECIPE_IndustrialCokeOvenController);
+				//Industrial Coke Oven
+				UtilsRecipe.recipeBuilder(
+						plateCobalt, circuitTier4, plateCobalt,
+						machineCasing_HV, INPUT_RCCokeOvenBlock, machineCasing_HV,
+						plateCobalt, circuitTier5, plateCobalt,
+						RECIPE_IndustrialCokeOvenController);
 			}
-			
 			if (LoadedMods.ImmersiveEngineering){
-			//Industrial Coke Oven
-			UtilsRecipe.recipeBuilder(
-					plateCobalt, circuitTier4, plateCobalt,
-					machineCasing_HV, INPUT_IECokeOvenBlock, machineCasing_HV,
-					plateCobalt, circuitTier5, plateCobalt,
-					RECIPE_IndustrialCokeOvenController);
+				//Industrial Coke Oven
+				UtilsRecipe.recipeBuilder(
+						plateCobalt, circuitTier4, plateCobalt,
+						machineCasing_HV, INPUT_IECokeOvenBlock, machineCasing_HV,
+						plateCobalt, circuitTier5, plateCobalt,
+						RECIPE_IndustrialCokeOvenController);
 			}
-			
 			//Coke Oven Frame Casing
 			UtilsRecipe.recipeBuilder(
 					plateTier8, rodTier8, plateTier8,
 					rodTier8, "frameGtCobalt", rodTier8,
 					plateTier8, rodTier8, plateTier8,
 					RECIPE_IndustrialCokeOvenFrame);
-
 			//Coke Oven Coil 1
 			UtilsRecipe.recipeBuilder(
 					plateBronze, plateBronze, plateBronze,
 					"frameGtBronze", gearboxCasing_Tier_1, "frameGtBronze",
 					plateBronze, plateBronze, plateBronze,
 					RECIPE_IndustrialCokeOvenCasingA);
-
 			//Coke Oven Coil 2
 			UtilsRecipe.recipeBuilder(
 					plateSteel, plateSteel, plateSteel,
 					"frameGtSteel", gearboxCasing_Tier_2, "frameGtSteel",
 					plateSteel, plateSteel, plateSteel,
 					RECIPE_IndustrialCokeOvenCasingB);
+
+			//Electrolyzer Frame Casing
+			UtilsRecipe.recipeBuilder(
+					"plateSterlingSilver", "stickLongChrome", "plateSterlingSilver",
+					"stickLongSterlingSilver", "frameGtSterlingSilver", "stickLongSterlingSilver",
+					"plateSterlingSilver", "stickLongSterlingSilver", "plateSterlingSilver",
+					RECIPE_IndustrialElectrolyzerFrame);
+			//Industrial Electrolyzer
+			UtilsRecipe.recipeBuilder(
+					"plateSterlingSilver", circuitTier6, "plateSterlingSilver",
+					machineCasing_EV, IV_MACHINE_Electrolyzer, machineCasing_EV,
+					"plateSterlingSilver", circuitTier5, "plateSterlingSilver",
+					RECIPE_IndustrialElectrolyzerController);
+
+			//Material Press Frame Casing
+			UtilsRecipe.recipeBuilder(
+					"plateTitanium", "stickLongTitanium", "plateTitanium",
+					"stickMagnesium", "frameGtTitanium", "stickMagnesium",
+					"plateTitanium", "stickLongTitanium", "plateTitanium",
+					RECIPE_IndustrialMaterialPressFrame);
+			//Industrial Material Press
+			UtilsRecipe.recipeBuilder(
+					"plateTitanium", circuitTier5, "plateTitanium",
+					machineCasing_EV, IV_MACHINE_BendingMachine, machineCasing_EV,
+					"plateTitanium", circuitTier5, "plateTitanium",
+					RECIPE_IndustrialMaterialPressController);
+
+			//Maceration Frame Casing
+			UtilsRecipe.recipeBuilder(
+					"platePalladium", "platePalladium", "platePalladium",
+					"stickPlatinum", "frameGtPalladium", "stickPlatinum",
+					"platePalladium", "stickLongPalladium", "platePalladium",
+					RECIPE_IndustrialMacerationStackFrame);
+			//Industrial Maceration stack 
+			UtilsRecipe.recipeBuilder(
+					"plateDenseCarbon", IV_MACHINE_Macerator, "plateDenseCarbon",
+					IV_MACHINE_Macerator, circuitTier8, IV_MACHINE_Macerator,
+					"plateDenseCarbon", machineCasing_IV, "plateDenseCarbon",
+					RECIPE_IndustrialMacerationStackController);
+
+			//Wire Factory Frame Casing
+			UtilsRecipe.recipeBuilder(
+					"plateBlueSteel", "stickBlueSteel", "plateBlueSteel",
+					"stickBlueSteel", "frameGtBlueSteel", "stickBlueSteel",
+					"plateBlueSteel", "stickBlueSteel", "plateBlueSteel",
+					RECIPE_IndustrialWireFactoryFrame);
+			//Industrial Wire Factory
+			UtilsRecipe.recipeBuilder(
+					"plateOsmium", machineCasing_IV, "plateOsmium",
+					circuitTier6, IV_MACHINE_Wiremill, circuitTier6,
+					"plateOsmium", machineCasing_IV, "plateOsmium",
+					RECIPE_IndustrialWireFactoryController);
+
+
 		}
 
 

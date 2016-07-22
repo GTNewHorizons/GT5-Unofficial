@@ -46,8 +46,8 @@ extends GregtechMetaCasingBlocksAbstract {
 		GregtechItemList.Casing_CokeOven_Coil2.set(new ItemStack(this, 1, 3));
 		GregtechItemList.Casing_MaterialPress.set(new ItemStack(this, 1, 4));
 		GregtechItemList.Casing_Electrolyzer.set(new ItemStack(this, 1, 5));
-		GregtechItemList.Casing_Macerator.set(new ItemStack(this, 1, 6));
-		GregtechItemList.Casing_U4.set(new ItemStack(this, 1, 7));
+		GregtechItemList.Casing_WireFactory.set(new ItemStack(this, 1, 6));
+		GregtechItemList.Casing_MacerationStack.set(new ItemStack(this, 1, 7));
 		GregtechItemList.Casing_MatterGen.set(new ItemStack(this, 1, 8));
 		GregtechItemList.Casing_MatterFab.set(new ItemStack(this, 1, 9));
 		GregtechItemList.Casing_IronPlatedBricks.set(new ItemStack(this, 1, 10));

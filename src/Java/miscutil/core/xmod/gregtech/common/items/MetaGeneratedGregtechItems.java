@@ -139,8 +139,20 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
         
         
         //Batteries
-        GregtechItemList.Battery_RE_EV_Sodium.set(addItem(tLastID = 50, "Dual Cell Sodium Battery", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L)}));
+        GregtechItemList.Battery_RE_EV_Sodium.set(addItem(tLastID = 50, "Quad Cell Sodium Battery", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)}));
+        setElectricStats(32000 + tLastID, 3200000L, GT_Values.V[2], 4L, -3L, true);
+        
+        GregtechItemList.Battery_RE_EV_Sodium.set(addItem(tLastID = 51, "Quad Cell Cadmium Battery", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L)}));
+        setElectricStats(32000 + tLastID, 480000L, GT_Values.V[2], 4L, -3L, true);
+
+        GregtechItemList.Battery_RE_EV_Sodium.set(addItem(tLastID = 52, "Quad Cell Lithium Battery", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 3L)}));
+        setElectricStats(32000 + tLastID, 6400000L, GT_Values.V[2], 4L, -3L, true);
+
+        /*GregtechItemList.Battery_RE_EV_Sodium.set(addItem(tLastID = 50, "Quad Cell Acid Battery", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L)}));
         setElectricStats(32000 + tLastID, 5000000L, GT_Values.V[2], 4L, -3L, true);
+
+        GregtechItemList.Battery_RE_EV_Sodium.set(addItem(tLastID = 50, "Quad Cell Mercury Battery", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L)}));
+        setElectricStats(32000 + tLastID, 5000000L, GT_Values.V[2], 4L, -3L, true);*/
         
         
         
