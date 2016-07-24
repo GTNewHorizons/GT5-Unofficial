@@ -11,6 +11,7 @@ import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
 import miscutil.core.util.fluid.FluidUtils;
 import miscutil.core.util.item.UtilsItems;
+import miscutil.core.xmod.gregtech.api.enums.GregtechItemList;
 
 public class RECIPES_GREGTECH {
 
@@ -25,6 +26,7 @@ public class RECIPES_GREGTECH {
 		assemblerRecipes();
 		distilleryRecipes();
 		mixerRecipes();
+		extractorRecipes();
 		addFuels();
 	}
 
@@ -122,10 +124,13 @@ public class RECIPES_GREGTECH {
 	
 	private static void addFuels(){
 		Utils.LOG_INFO("Registering New Fuels.");
-		CORE.RA.addFuel(GT_ModHandler.getModItem("Minecraft", "bucket_lava", 1L, 1), null, 2800, 1);
+		//CORE.RA.addFuel(GT_ModHandler.getModItem("Minecraft", "bucket_lava", 1L, 1), null, 2800, 1);
 		//CORE.RA.addFuel(GT_ModHandler.getModItem("EnderIO", "bucketRocket_fuel", 1L, 1), null, 2800, 0);
 		//CORE.RA.addFuel(GT_ModHandler.getModItem("EnderIO", "bucketHootch", 1L, 1), null, 2800, 0);
 		//CORE.RA.addFuel(GT_ModHandler.getModItem("EnderIO", "bucketFire_water", 1L, 1), null, 2800, 0);
+		GT_Values.RA.addFuel(UtilsItems.simpleMetaStack("EnderIO:bucketFire_water", 0, 1), null, 120, 0);
+		GT_Values.RA.addFuel(UtilsItems.simpleMetaStack("EnderIO:bucketRocket_fuel", 0, 1), null, 112, 0);
+		GT_Values.RA.addFuel(UtilsItems.simpleMetaStack("EnderIO:bucketHootch", 0, 1), null, 36, 0);
 		//System.exit(1);
 	}
 	
@@ -134,7 +139,12 @@ public class RECIPES_GREGTECH {
 		GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Uranium, 8L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Titanium, 1L), null, null, GT_Values.NF, GT_Values.NF, UtilsItems.getSimpleStack(ModItems.itemDustStaballoy, 2), 32, 8);
 		GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Uranium, 8L), GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Titanium, 1L), null, null, GT_Values.NF, GT_Values.NF, UtilsItems.getSimpleStack(ModItems.itemDustSmallStaballoy, 2), 32, 8);
 		GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Uranium, 8L), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Titanium, 1L), null, null, GT_Values.NF, GT_Values.NF, UtilsItems.getSimpleStack(ModItems.itemDustTinyStaballoy, 2), 32, 8);
-		
+	}
+	
+	private static void extractorRecipes(){
+        GT_ModHandler.addExtractionRecipe(GregtechItemList.Battery_RE_EV_Sodium.get(1L, new Object[0]), ItemList.Battery_Hull_HV.get(4L, new Object[0]));
+        GT_ModHandler.addExtractionRecipe(GregtechItemList.Battery_RE_EV_Cadmium.get(1L, new Object[0]), ItemList.Battery_Hull_HV.get(4L, new Object[0]));
+        GT_ModHandler.addExtractionRecipe(GregtechItemList.Battery_RE_EV_Lithium.get(1L, new Object[0]), ItemList.Battery_Hull_HV.get(4L, new Object[0]));
 	}
 	
 	private static void registerSkookumChoocher(){

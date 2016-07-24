@@ -76,7 +76,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Shape_Extruder_WindmillShaft, 
 	
 	//Batteries
-	Battery_RE_EV_Sodium, 
+	Battery_RE_EV_Sodium, Battery_RE_EV_Cadmium, Battery_RE_EV_Lithium,
 	
 	//Industrial Electrolyzer
 	Casing_Electrolyzer, Industrial_Electrolyzer, 

@@ -109,28 +109,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
         //GT_ModHandler.addCraftingRecipe(GregtechItemList.Sensor_MAX.get(1L, new Object[0]), //GT_ModHandler.RecipeBits.DISMANTLEABLE | //GT_ModHandler.RecipeBits.NOT_REMOVABLE | //GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"P Q", "PS ", "CPP", Character.valueOf('Q'), OrePrefixes.gem.get(Materials.EnderPearl), Character.valueOf('S'), OrePrefixes.stick.get(Materials.Platinum), Character.valueOf('P'), OrePrefixes.plate.get(Materials.Titanium), Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Elite)});
        
         
-       /* GregtechItemList.Circuit_Primitive.set(addItem(tLastID = 700, "Circuit"+" "+tLastID, "A simple Circuit", new Object[]{OrePrefixes.circuit.get(Materials.Primitive)}));
-        GregtechItemList.Circuit_Basic.set(addItem(tLastID = 701, "Circuit"+" "+tLastID, "A basic Circuit", new Object[]{OrePrefixes.circuit.get(Materials.Basic)}));
-        GregtechItemList.Circuit_Good.set(addItem(tLastID = 702, "Circuit"+" "+tLastID, "A good Circuit", new Object[]{OrePrefixes.circuit.get(Materials.Good)}));
-        GregtechItemList.Circuit_Advanced.set(addItem(tLastID = 703, "Circuit"+" "+tLastID, "An advanced Circuit", new Object[]{OrePrefixes.circuit.get(Materials.Advanced)}));
-        GregtechItemList.Circuit_Data.set(addItem(tLastID = 704, "Circuit"+" "+tLastID, "A Data Chip", new Object[]{OrePrefixes.circuit.get(Materials.Data)}));
-        GregtechItemList.Circuit_Elite.set(addItem(tLastID = 705, "Circuit"+" "+tLastID, "A Processor", new Object[]{OrePrefixes.circuit.get(Materials.Elite)}));
-        GregtechItemList.Circuit_Master.set(addItem(tLastID = 706, "Circuit"+" "+tLastID, "A High Voltage Processor", new Object[]{OrePrefixes.circuit.get(Materials.Master)}));
-        GregtechItemList.Tool_DataOrb.set(addItem(tLastID = 707, "Data Orb", "A High Capacity Data Storage", new Object[]{OrePrefixes.circuit.get(Materials.Ultimate), SubTag.NO_UNIFICATION, new Behaviour_DataOrb()}));
-        GregtechItemList.Circuit_Ultimate.set(ItemList.Tool_DataOrb.get(1L, new Object[0]));
-        GT_ModHandler.addShapelessCraftingRecipe(ItemList.Tool_DataOrb.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{ItemList.Tool_DataOrb.get(1L, new Object[0])});
-        GregtechItemList.Tool_DataStick.set(addItem(tLastID = 708, "Data Stick", "A Low Capacity Data Storage", new Object[]{OrePrefixes.circuit.get(Materials.Data), SubTag.NO_UNIFICATION, new Behaviour_DataStick()}));
-        GT_ModHandler.addShapelessCraftingRecipe(ItemList.Tool_DataStick.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{ItemList.Tool_DataStick.get(1L, new Object[0])});
-
-*
-*
-	Circuit_IV, Circuit_LuV, Circuit_ZPM,
-	Circuit_Board_IV, Circuit_Board_LuV, Circuit_Board_ZPM, 
-	Circuit_Parts_Crystal_Chip_IV, Circuit_Parts_Crystal_Chip_LuV, Circuit_Parts_Crystal_Chip_ZPM,
-	Circuit_Parts_IV, Circuit_Parts_LuV, Circuit_Parts_ZPM,
-	Circuit_Parts_Wiring_IV, Circuit_Parts_Wiring_LuV, Circuit_Parts_Wiring_ZPM;
-*
-*/
+ 
         
         
         
@@ -140,13 +119,13 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
         
         //Batteries
         GregtechItemList.Battery_RE_EV_Sodium.set(addItem(tLastID = 50, "Quad Cell Sodium Battery", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 2L)}));
-        setElectricStats(32000 + tLastID, 3200000L, GT_Values.V[2], 4L, -3L, true);
+        setElectricStats(32000 + tLastID, 3200000L, GT_Values.V[4], 4L, -3L, true);
         
-        GregtechItemList.Battery_RE_EV_Sodium.set(addItem(tLastID = 51, "Quad Cell Cadmium Battery", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L)}));
-        setElectricStats(32000 + tLastID, 480000L, GT_Values.V[2], 4L, -3L, true);
+        GregtechItemList.Battery_RE_EV_Cadmium.set(addItem(tLastID = 52, "Quad Cell Cadmium Battery", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L)}));
+        setElectricStats(32000 + tLastID, 4800000L, GT_Values.V[4], 4L, -3L, true);
 
-        GregtechItemList.Battery_RE_EV_Sodium.set(addItem(tLastID = 52, "Quad Cell Lithium Battery", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 3L)}));
-        setElectricStats(32000 + tLastID, 6400000L, GT_Values.V[2], 4L, -3L, true);
+        GregtechItemList.Battery_RE_EV_Lithium.set(addItem(tLastID = 54, "Quad Cell Lithium Battery", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 3L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 3L)}));
+        setElectricStats(32000 + tLastID, 6400000L, GT_Values.V[4], 4L, -3L, true);
 
         /*GregtechItemList.Battery_RE_EV_Sodium.set(addItem(tLastID = 50, "Quad Cell Acid Battery", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L)}));
         setElectricStats(32000 + tLastID, 5000000L, GT_Values.V[2], 4L, -3L, true);
