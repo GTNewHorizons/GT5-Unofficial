@@ -342,137 +342,137 @@ public class RECIPES_Machines {
 					RECIPES_Shapeless.dustStaballoy);
 
 			//Buffer Core
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					plateTier1, cableTier1, plateTier1,
 					circuitPrimitive, IC2MFE, circuitPrimitive,
 					plateTier1, cableTier1, plateTier1,
 					RECIPE_BufferCore_ULV);
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					plateTier2, cableTier2, plateTier2,
 					circuitTier1, IC2MFE, circuitTier1,
 					plateTier2, cableTier2, plateTier2,
 					RECIPE_BufferCore_LV);
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					plateTier3, cableTier3, plateTier3,
 					RECIPE_BufferCore_LV, circuitTier2, RECIPE_BufferCore_LV,
 					plateTier3, cableTier3, plateTier3,
 					RECIPE_BufferCore_MV);
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					plateTier4, cableTier4, plateTier4,
 					RECIPE_BufferCore_MV, circuitTier3, RECIPE_BufferCore_MV,
 					plateTier4, cableTier4, plateTier4,
 					RECIPE_BufferCore_HV);
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					plateTier5, cableTier5, plateTier5,
 					RECIPE_BufferCore_HV, circuitTier4, RECIPE_BufferCore_HV,
 					plateTier5, cableTier5, plateTier5,
 					RECIPE_BufferCore_EV);
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					plateTier6, cableTier6, plateTier6,
 					RECIPE_BufferCore_EV, circuitTier5, RECIPE_BufferCore_EV,
 					plateTier6, cableTier6, plateTier6,
 					RECIPE_BufferCore_IV);
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					plateTier7, cableTier7, plateTier7,
 					RECIPE_BufferCore_IV, circuitTier6, RECIPE_BufferCore_IV,
 					plateTier7, cableTier7, plateTier7,
 					RECIPE_BufferCore_LuV);
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					plateTier8, cableTier8, plateTier8,
 					RECIPE_BufferCore_LuV, circuitTier7, RECIPE_BufferCore_LuV,
 					plateTier8, cableTier8, plateTier8,
 					RECIPE_BufferCore_ZPM);
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					plateTier9, cableTier9, plateTier9,
 					RECIPE_BufferCore_ZPM, circuitTier8, RECIPE_BufferCore_ZPM,
 					plateTier9, cableTier9, plateTier9,
 					RECIPE_BufferCore_UV);
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					plateTier10, cableTier10, plateTier10,
 					RECIPE_BufferCore_UV, circuitTier9, RECIPE_BufferCore_UV,
 					plateTier10, cableTier10, plateTier10,
 					RECIPE_BufferCore_MAX);
 
 
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					wireTier1, RECIPE_BufferCore_ULV, wireTier1,
 					wireTier1, machineCasing_ULV, wireTier1,
 					circuitPrimitive, circuitTier1, circuitPrimitive,
 					RECIPE_Buffer_ULV);
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					wireTier2, RECIPE_BufferCore_LV, wireTier2,
 					wireTier2, machineCasing_LV, wireTier2,
 					circuitTier1, RECIPE_BufferCore_LV, circuitTier1,
 					RECIPE_Buffer_LV);
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					wireTier3, RECIPE_BufferCore_MV, wireTier3,
 					wireTier3, machineCasing_MV, wireTier3,
 					circuitTier2, RECIPE_BufferCore_MV, circuitTier2,
 					RECIPE_Buffer_MV);
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					wireTier4, RECIPE_BufferCore_HV, wireTier4,
 					wireTier4, machineCasing_HV, wireTier4,
 					circuitTier3, RECIPE_BufferCore_HV, circuitTier3,
 					RECIPE_Buffer_HV);
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					wireTier5, RECIPE_BufferCore_EV, wireTier5,
 					wireTier5, machineCasing_EV, wireTier5,
 					circuitTier4, RECIPE_BufferCore_EV, circuitTier4,
 					RECIPE_Buffer_EV);
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					wireTier6, RECIPE_BufferCore_IV, wireTier6,
 					wireTier6, machineCasing_IV, wireTier6,
 					circuitTier5, RECIPE_BufferCore_IV, circuitTier5,
 					RECIPE_Buffer_IV);
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					wireTier7, RECIPE_BufferCore_LuV, wireTier7,
 					wireTier7, machineCasing_LuV, wireTier7,
 					circuitTier6, RECIPE_BufferCore_LuV, circuitTier6,
 					RECIPE_Buffer_LuV);
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					wireTier8, RECIPE_BufferCore_ZPM, wireTier8,
 					wireTier8, machineCasing_ZPM, wireTier8,
 					circuitTier7, RECIPE_BufferCore_ZPM, circuitTier7,
 					RECIPE_Buffer_ZPM);
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					wireTier9, RECIPE_BufferCore_UV, wireTier9,
 					wireTier9, machineCasing_UV, wireTier9,
 					circuitTier8, RECIPE_BufferCore_UV, circuitTier8,
 					RECIPE_Buffer_UV);
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					plateTier11, RECIPE_BufferCore_MAX, plateTier11,
 					wireTier10, machineCasing_MAX, wireTier10,
 					circuitTier9, RECIPE_BufferCore_MAX, circuitTier9,
 					RECIPE_Buffer_MAX);
 
 			//Steam Condenser
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					pipeLargeCopper, pipeHugeSteel, pipeLargeCopper,
 					plateEnergeticAlloy, electricPump_HV, plateEnergeticAlloy,
 					plateEnergeticAlloy, pipeLargeCopper, plateEnergeticAlloy,
 					RECIPE_SteamCondenser);
 
 			//Iron BF
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					"plateDoubleAnyIron", "craftingFurnace", "plateDoubleAnyIron",
 					boiler_Coal, machineCasing_ULV, boiler_Coal,
 					"plateDoubleAnyIron", "bucketLava", "plateDoubleAnyIron",
 					RECIPE_IronBlastFurnace);
 			//Iron plated Bricks
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					"plateAnyIron", RECIPES_Tools.craftingToolHardHammer, "plateAnyIron",
 					"plateAnyIron", blockBricks, "plateAnyIron",
 					"plateAnyIron", RECIPES_Tools.craftingToolWrench, "plateAnyIron",
 					RECIPE_IronPlatedBricks);
 
 			//Industrial Centrifuge
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					circuitTier6, pipeHugeStainlessSteel, circuitTier6,
 					plateTier6, IV_MACHINE_Centrifuge, plateTier6,
 					plateTier8, machineCasing_IV, plateTier8,
 					RECIPE_IndustrialCentrifugeController);
 			//Centrifuge Casing
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					plateTier6, "stickElectrum", plateTier6,
 					plateTier8, "stickElectrum", plateTier8,
 					plateTier6, "stickElectrum", plateTier6,
@@ -480,7 +480,7 @@ public class RECIPES_Machines {
 
 			if (LoadedMods.Railcraft){
 				//Industrial Coke Oven
-				UtilsRecipe.recipeBuilder(
+				UtilsRecipe.addShapedGregtechRecipe(
 						plateCobalt, circuitTier4, plateCobalt,
 						machineCasing_HV, INPUT_RCCokeOvenBlock, machineCasing_HV,
 						plateCobalt, circuitTier5, plateCobalt,
@@ -488,78 +488,78 @@ public class RECIPES_Machines {
 			}
 			if (LoadedMods.ImmersiveEngineering){
 				//Industrial Coke Oven
-				UtilsRecipe.recipeBuilder(
+				UtilsRecipe.addShapedGregtechRecipe(
 						plateCobalt, circuitTier4, plateCobalt,
 						machineCasing_HV, INPUT_IECokeOvenBlock, machineCasing_HV,
 						plateCobalt, circuitTier5, plateCobalt,
 						RECIPE_IndustrialCokeOvenController);
 			}
 			//Coke Oven Frame Casing
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					plateTier8, rodTier8, plateTier8,
 					rodTier8, "frameGtCobalt", rodTier8,
 					plateTier8, rodTier8, plateTier8,
 					RECIPE_IndustrialCokeOvenFrame);
 			//Coke Oven Coil 1
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					plateBronze, plateBronze, plateBronze,
 					"frameGtBronze", gearboxCasing_Tier_1, "frameGtBronze",
 					plateBronze, plateBronze, plateBronze,
 					RECIPE_IndustrialCokeOvenCasingA);
 			//Coke Oven Coil 2
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					plateSteel, plateSteel, plateSteel,
 					"frameGtSteel", gearboxCasing_Tier_2, "frameGtSteel",
 					plateSteel, plateSteel, plateSteel,
 					RECIPE_IndustrialCokeOvenCasingB);
 
 			//Electrolyzer Frame Casing
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					"plateSterlingSilver", "stickLongChrome", "plateSterlingSilver",
 					"stickLongSterlingSilver", "frameGtSterlingSilver", "stickLongSterlingSilver",
 					"plateSterlingSilver", "stickLongSterlingSilver", "plateSterlingSilver",
 					RECIPE_IndustrialElectrolyzerFrame);
 			//Industrial Electrolyzer
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					"plateSterlingSilver", circuitTier6, "plateSterlingSilver",
 					machineCasing_EV, IV_MACHINE_Electrolyzer, machineCasing_EV,
 					"plateSterlingSilver", "rotorSterlingSilver", "plateSterlingSilver",
 					RECIPE_IndustrialElectrolyzerController);
 
 			//Material Press Frame Casing
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					"plateTitanium", "stickLongTitanium", "plateTitanium",
 					"stickMagnesium", "frameGtTitanium", "stickMagnesium",
 					"plateTitanium", "stickLongTitanium", "plateTitanium",
 					RECIPE_IndustrialMaterialPressFrame);
 			//Industrial Material Press
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					"plateTitanium", circuitTier5, "plateTitanium",
 					machineCasing_EV, IV_MACHINE_BendingMachine, machineCasing_EV,
 					"plateTitanium", circuitTier5, "plateTitanium",
 					RECIPE_IndustrialMaterialPressController);
 
 			//Maceration Frame Casing
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					"platePalladium", "platePalladium", "platePalladium",
 					"stickPlatinum", "frameGtPalladium", "stickPlatinum",
 					"platePalladium", "stickLongPalladium", "platePalladium",
 					RECIPE_IndustrialMacerationStackFrame);
 			//Industrial Maceration stack 
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					"plateDenseCarbon", IV_MACHINE_Macerator, "plateDenseCarbon",
 					IV_MACHINE_Macerator, circuitTier8, IV_MACHINE_Macerator,
 					"plateDenseCarbon", machineCasing_IV, "plateDenseCarbon",
 					RECIPE_IndustrialMacerationStackController);
 
 			//Wire Factory Frame Casing
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					"plateBlueSteel", "stickBlueSteel", "plateBlueSteel",
 					"stickBlueSteel", "frameGtBlueSteel", "stickBlueSteel",
 					"plateBlueSteel", "stickBlueSteel", "plateBlueSteel",
 					RECIPE_IndustrialWireFactoryFrame);
 			//Industrial Wire Factory
-			UtilsRecipe.recipeBuilder(
+			UtilsRecipe.addShapedGregtechRecipe(
 					"plateOsmium", machineCasing_IV, "plateOsmium",
 					circuitTier6, IV_MACHINE_Wiremill, circuitTier6,
 					"plateOsmium", machineCasing_IV, "plateOsmium",

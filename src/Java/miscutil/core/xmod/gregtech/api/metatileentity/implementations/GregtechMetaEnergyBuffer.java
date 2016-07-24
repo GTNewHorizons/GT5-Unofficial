@@ -3,13 +3,7 @@ package miscutil.core.xmod.gregtech.api.metatileentity.implementations;
 import static gregtech.api.enums.GT_Values.V;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_Container_1by1;
-import gregtech.api.gui.GT_Container_2by2;
-import gregtech.api.gui.GT_Container_3by3;
-import gregtech.api.gui.GT_Container_4by4;
 import gregtech.api.gui.GT_GUIContainer_1by1;
-import gregtech.api.gui.GT_GUIContainer_2by2;
-import gregtech.api.gui.GT_GUIContainer_3by3;
-import gregtech.api.gui.GT_GUIContainer_4by4;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -27,12 +21,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-/**
- * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
- * 
- * This is the main construct for my Basic Machines such as the Automatic Extractor
- * Extend this class to make a simple Machine
- */
 public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 
 	/*
@@ -45,7 +33,6 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 
 	public GregtechMetaEnergyBuffer(int aID, String aName, String aNameRegional, int aTier, String aDescription, int aSlotCount) {
 		super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
-		//setCreativeTab(AddToCreativeTab.tabMachines);
 	}
 
 	public GregtechMetaEnergyBuffer(String aName, int aTier, String aDescription, ITexture[][][] aTextures, int aSlotCount) {
@@ -193,68 +180,27 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 
 
 	@Override
-	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory,
-			IGregTechTileEntity aBaseMetaTileEntity) {
-		switch (mInventory.length) {
-		case  1: return new GT_Container_1by1(aPlayerInventory, aBaseMetaTileEntity);
-		case  4: return new GT_Container_2by2(aPlayerInventory, aBaseMetaTileEntity);
-		case  9: return new GT_Container_3by3(aPlayerInventory, aBaseMetaTileEntity);
-		case 16: return new GT_Container_4by4(aPlayerInventory, aBaseMetaTileEntity);
-		}
+	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
 		return new GT_Container_1by1(aPlayerInventory, aBaseMetaTileEntity);
 	}
 
 	@Override
-	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory,
-			IGregTechTileEntity aBaseMetaTileEntity) {
-		switch (mInventory.length) {
-		case  1: return new GT_GUIContainer_1by1(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
-		case  4: return new GT_GUIContainer_2by2(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
-		case  9: return new GT_GUIContainer_3by3(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
-		case 16: return new GT_GUIContainer_4by4(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
-		}
+	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
 		return new GT_GUIContainer_1by1(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
 	}
 
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-		if (aBaseMetaTileEntity.isServerSide()) {
-			mCharge = aBaseMetaTileEntity.getStoredEU() / 2 > aBaseMetaTileEntity
-					.getEUCapacity() / 3;
-			mDecharge = aBaseMetaTileEntity.getStoredEU()     < aBaseMetaTileEntity.getEUCapacity() / 3;
-			mBatteryCount = 1;
-			mChargeableCount = 1;
-			for (ItemStack tStack : mInventory) if (GT_ModHandler.isElectricItem(tStack, mTier)) {
-				if (GT_ModHandler.isChargerItem(tStack)) mBatteryCount++;
-				mChargeableCount++;
-			}
-		}
+		
 	}
 
 	@Override
 	public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-		if(GT_ModHandler.isElectricItem(aStack)&&aStack.getUnlocalizedName().startsWith("gt.metaitem.01.")){
-			String name = aStack.getUnlocalizedName();
-			if(name.equals("gt.metaitem.01.32510")||
-					name.equals("gt.metaitem.01.32511")||
-					name.equals("gt.metaitem.01.32520")||
-					name.equals("gt.metaitem.01.32521")||
-					name.equals("gt.metaitem.01.32530")||
-					name.equals("gt.metaitem.01.32531")){
-				return true;
-			}
-		}
 		return false;
 	}
 
 	@Override
 	public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-		if(!GT_Utility.isStackValid(aStack)){
-			return false;
-		}
-		if(GT_ModHandler.isElectricItem(aStack, this.mTier)){
-			return true;
-		}
 		return false;
 	}
 
@@ -315,99 +261,77 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public boolean canInsertItem(int p_102007_1_, ItemStack p_102007_2_,
-			int p_102007_3_) {
-		// TODO Auto-generated method stub
+	public boolean canInsertItem(int p_102007_1_, ItemStack p_102007_2_, int p_102007_3_) {
 		return false;
 	}
 
 	@Override
-	public boolean canExtractItem(int p_102008_1_, ItemStack p_102008_2_,
-			int p_102008_3_) {
-		// TODO Auto-generated method stub
+	public boolean canExtractItem(int p_102008_1_, ItemStack p_102008_2_, int p_102008_3_) {
 		return false;
 	}
 
 	@Override
 	public int getSizeInventory() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int p_70301_1_) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int p_70304_1_) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public String getInventoryName() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public boolean hasCustomInventoryName() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public int getInventoryStackLimit() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public void markDirty() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public void openInventory() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void closeInventory() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

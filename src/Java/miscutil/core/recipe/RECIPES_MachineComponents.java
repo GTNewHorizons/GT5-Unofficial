@@ -148,176 +148,176 @@ public class RECIPES_MachineComponents {
 
 	private static void run(){
 		//Electric Motors
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				cableTier7, wireTier7, rodTier7a,
 				wireTier7, rodTier7b, wireTier7,
 				rodTier7a, wireTier7, cableTier7,
 				electricMotor_LuV);
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				cableTier8, wireTier8, rodTier8a,
 				wireTier8, rodTier8b, wireTier8,
 				rodTier8a, wireTier8, cableTier8,
 				electricMotor_ZPM);
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				cableTier9, wireTier9, rodTier9a,
 				wireTier9, rodTier9b, wireTier9,
 				rodTier9a, wireTier9, cableTier9,
 				electricMotor_UV);
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				cableTier10, wireTier10, rodTier10a,
 				wireTier10, rodTier10b, wireTier10,
 				rodTier10a, wireTier10, cableTier10,
 				electricMotor_MAX);
 
 		//Electric Pump
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				cableTier7, rotorTier7, itemRubberRing,
 				craftingToolScrewdriver, pipeTier7, craftingToolWrench,
 				itemRubberRing, electricMotor_LuV, cableTier7,
 				electricPump_LuV);
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				cableTier8, rotorTier8, itemRubberRing,
 				craftingToolScrewdriver, pipeTier8, craftingToolWrench,
 				itemRubberRing, electricMotor_ZPM, cableTier8,
 				electricPump_ZPM);
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				cableTier9, rotorTier9, itemRubberRing,
 				craftingToolScrewdriver, pipeTier9, craftingToolWrench,
 				itemRubberRing, electricMotor_UV, cableTier9,
 				electricPump_UV);
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				cableTier10, rotorTier10, itemRubberRing,
 				craftingToolScrewdriver, pipeTier10, craftingToolWrench,
 				itemRubberRing, electricMotor_MAX, cableTier10,
 				electricPump_MAX);
 
 		//Electric Pump
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				plateTier7, plateTier7, plateTier7,
 				cableTier7, rodTier7a, rodTier7a,
 				cableTier7, electricMotor_LuV, smallGearTier7,
 				electricPiston_LuV);
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				plateTier8, plateTier8, plateTier8,
 				cableTier8, rodTier8a, rodTier8a,
 				cableTier8, electricMotor_ZPM, smallGearTier8,
 				electricPiston_ZPM);
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				plateTier9, plateTier9, plateTier9,
 				cableTier9, rodTier9a, rodTier9a,
 				cableTier9, electricMotor_UV, smallGearTier9,
 				electricPiston_UV);
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				plateTier10, plateTier10, plateTier10,
 				cableTier10, rodTier10a, rodTier10a,
 				cableTier10, electricMotor_MAX, smallGearTier10,
 				electricPiston_MAX);
 
 		//Robot Arms
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				cableTier7, cableTier7, cableTier7,
 				electricMotor_LuV, rodTier7a, electricMotor_LuV,
 				electricPiston_LuV, circuitTier7, rodTier7a,
 				robotArm_LuV);
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				cableTier8, cableTier8, cableTier8,
 				electricMotor_ZPM, rodTier8a, electricMotor_ZPM,
 				electricPiston_ZPM, circuitTier8, rodTier8a,
 				robotArm_ZPM);
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				cableTier9, cableTier9, cableTier9,
 				electricMotor_UV, rodTier9a, electricMotor_UV,
 				electricPiston_UV, circuitTier9, rodTier9a,
 				robotArm_UV);
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				cableTier10, cableTier10, cableTier10,
 				electricMotor_MAX, rodTier10a, electricMotor_MAX,
 				electricPiston_MAX, circuitTier10, rodTier10a,
 				robotArm_MAX);
 
 		//Conveyor Modules
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				plateRubber, plateRubber, plateRubber,
 				electricMotor_LuV, cableTier7, electricMotor_LuV,
 				plateRubber, plateRubber, plateRubber,
 				conveyorModule_LuV);
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				plateRubber, plateRubber, plateRubber,
 				electricMotor_ZPM, cableTier8, electricMotor_ZPM,
 				plateRubber, plateRubber, plateRubber,
 				conveyorModule_ZPM);
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				plateRubber, plateRubber, plateRubber,
 				electricMotor_UV, cableTier9, electricMotor_UV,
 				plateRubber, plateRubber, plateRubber,
 				conveyorModule_UV);
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				plateRubber, plateRubber, plateRubber,
 				electricMotor_MAX, cableTier10, electricMotor_MAX,
 				plateRubber, plateRubber, plateRubber,
 				conveyorModule_MAX);
 
 		//Emitter Modules
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				rodTier7c, rodTier7c, circuitTier7,
 				cableTier7, circuitTier6, rodTier7c,
 				circuitTier7, cableTier7, rodTier7c,
 				emitter_LuV);
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				rodTier8c, rodTier8c, circuitTier8,
 				cableTier8, circuitTier7, rodTier8c,
 				circuitTier8, cableTier8, rodTier8c,
 				emitter_ZPM);
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				rodTier9c, rodTier9c, circuitTier9,
 				cableTier9, circuitTier8, rodTier9c,
 				circuitTier9, cableTier9, rodTier9c,
 				emitter_UV);
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				rodTier10c, rodTier10c, circuitTier10,
 				cableTier10, circuitTier9, rodTier10c,
 				circuitTier10, cableTier10, rodTier10c,
 				emitter_MAX);
 
 		//Field Generator Modules
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				wireTier7, circuitTier7, wireTier7,
 				circuitTier7, circuitTier6, circuitTier7,
 				wireTier7, circuitTier7, wireTier7,
 				fieldGenerator_LuV);
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				wireTier8, circuitTier8, wireTier8,
 				circuitTier8, circuitTier7, circuitTier8,
 				wireTier8, circuitTier8, wireTier8,
 				fieldGenerator_ZPM);
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				wireTier9, circuitTier9, wireTier9,
 				circuitTier9, circuitTier8, circuitTier9,
 				wireTier9, circuitTier9, wireTier9,
 				fieldGenerator_UV);
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				wireTier10, circuitTier10, wireTier10,
 				circuitTier10, circuitTier9, circuitTier10,
 				wireTier10, circuitTier10, wireTier10,
 				fieldGenerator_MAX);
 
 		//Sensor Modules
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				plateTier7, null, circuitTier6,
 				plateTier7, rodTier7c, null,
 				circuitTier7, plateTier7, plateTier7,
 				sensor_LuV);
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				plateTier8, null, circuitTier7,
 				plateTier8, rodTier8c, null,
 				circuitTier8, plateTier8, plateTier8,
 				sensor_ZPM);
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				plateTier9, null, circuitTier8,
 				plateTier9, rodTier9c, null,
 				circuitTier9, plateTier9, plateTier9,
 				sensor_UV);
-		UtilsRecipe.recipeBuilder(
+		UtilsRecipe.addShapedGregtechRecipe(
 				plateTier10, null, circuitTier9,
 				plateTier10, rodTier10c, null,
 				circuitTier10, plateTier10, plateTier10,
