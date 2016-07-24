@@ -69,8 +69,8 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 			rTextures[1][i + 1] = new ITexture[] {
 					new GT_RenderedTexture(
 							Textures.BlockIcons.MACHINE_HEATPROOFCASING),
-					mInventory.length > 4 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier]
-							: Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
+							mInventory.length > 4 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier]
+									: Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
 		}
 		return rTextures;
 	}
@@ -116,7 +116,7 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 	@Override public boolean isInputFacing(byte aSide)				{return aSide!=getBaseMetaTileEntity().getFrontFacing();}
 	@Override public boolean isOutputFacing(byte aSide)				{return aSide==getBaseMetaTileEntity().getFrontFacing();}
 	@Override public boolean isTeleporterCompatible()				{return false;}
-	@Override public long getMinimumStoredEU()						{return V[mTier]*16*mInventory.length;}
+	@Override public long getMinimumStoredEU()						{return V[mTier]*2;}
 	@Override public long maxEUStore()								{return V[mTier]*250000;}
 
 	@Override
@@ -161,24 +161,36 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 		Utils.LOG_WARNING("Right Click on MTE by Player");
 		if (aBaseMetaTileEntity.isClientSide()) return true;
 		//aBaseMetaTileEntity.openGUI(aPlayer);
-		
+
 		Utils.LOG_WARNING("MTE is Client-side");
 		showEnergy(aPlayer.getEntityWorld(), aPlayer);  
 		return true;
 	}
 
 	private void showEnergy(World worldIn, EntityPlayer playerIn){
+		long tempStorage = getStoredEnergy()[0];		
+		final double c = ((double) tempStorage / maxEUStore()) * 100;
+		final double roundOff = Math.round(c * 100.00) / 100.00;
+		Utils.messagePlayer(playerIn, "Energy: " + tempStorage + " EU at "+V[mTier]+"v ("+roundOff+"%)");
+
+	}
 		//Utils.LOG_WARNING("Begin Show Energy");
-		final double c = ((double) getProgresstime() / maxProgresstime()) * 100;
-		//Utils.LOG_WARNING(""+c);
-		final double roundOff = Math.round(c * 100.0) / 100.0;
-		Utils.messagePlayer(playerIn, "Energy: " + getProgresstime() + " EU at "+V[mTier]+"v ("+roundOff+"%)");
-		/*Utils.LOG_WARNING("Making new instance of Guihandler");
+		/*
+		 * 
+		//Utils.LOG_INFO("getProgresstime: "+tempStorage+"  maxProgresstime: "+maxEUStore()+"  C: "+c);
+				Utils.LOG_INFO("getProgressTime: "+getProgresstime());
+				Utils.LOG_INFO("maxProgressTime: "+maxProgresstime());
+				Utils.LOG_INFO("getMinimumStoredEU: "+getMinimumStoredEU());
+				Utils.LOG_INFO("maxEUStore: "+maxEUStore());*/
+		/*final long d = (tempStorage * 100L) / maxEUStore();
+		Utils.LOG_INFO("getProgresstime: "+tempStorage+"  maxProgresstime: "+maxEUStore()+"  D: "+d);
+		final double roundOff2 = Math.round(d * 100.00) / 100.00;
+		Utils.messagePlayer(playerIn, "Energy: " + tempStorage + " EU at "+V[mTier]+"v ("+roundOff2+"%)");
+		Utils.LOG_WARNING("Making new instance of Guihandler");
 		GuiHandler block = new GuiHandler();
 		Utils.LOG_WARNING("Guihandler.toString(): "+block.toString());
 		block.getClientGuiElement(1, playerIn, worldIn, (int) playerIn.posX, (int) playerIn.posY, (int) playerIn.posZ);*/
-		
-	}
+
 
 	@Override
 	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory,
@@ -260,15 +272,15 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 							tScale = tScale + stats[0];
 							tStored = tStored
 									+ ((GT_MetaBase_Item) aStack.getItem())
-											.getRealCharge(aStack);
+									.getRealCharge(aStack);
 						}
 					} else if (aStack.getItem() instanceof IElectricItem) {
 						tStored = tStored
 								+ (long) ic2.api.item.ElectricItem.manager
-										.getCharge(aStack);
+								.getCharge(aStack);
 						tScale = tScale
 								+ (long) ((IElectricItem) aStack.getItem())
-										.getMaxCharge(aStack);
+								.getMaxCharge(aStack);
 					}
 				}
 			}
@@ -348,7 +360,7 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 	@Override
 	public void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -372,7 +384,7 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 	@Override
 	public void markDirty() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -384,13 +396,13 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 	@Override
 	public void openInventory() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void closeInventory() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
