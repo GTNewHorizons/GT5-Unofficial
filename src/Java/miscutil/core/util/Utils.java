@@ -371,10 +371,10 @@ public class Utils {
 		      Color c = new Color(r,g,b);
 		      String temp = Integer.toHexString( c.getRGB() & 0xFFFFFF ).toUpperCase();	
 
-		      System.out.println( "hex: " + Integer.toHexString( c.getRGB() & 0xFFFFFF ) + " hex value:"+temp); 
+		      //System.out.println( "hex: " + Integer.toHexString( c.getRGB() & 0xFFFFFF ) + " hex value:"+temp); 
 		      temp = Utils.appenedHexNotationToString(String.valueOf(temp));
-				Utils.LOG_INFO("Made "+temp+" - Hopefully it's not a mess.");
-				Utils.LOG_INFO("It will decode into "+Integer.decode(temp)+".");
+				Utils.LOG_WARNING("Made "+temp+" - Hopefully it's not a mess.");
+				Utils.LOG_WARNING("It will decode into "+Integer.decode(temp)+".");
 				return Integer.decode(temp);
 	}
 
@@ -474,10 +474,10 @@ public class Utils {
 				temp = "0F0F0F";	
 			}
 
-		Utils.LOG_INFO("Operating with "+temp);	
+		Utils.LOG_WARNING("Operating with "+temp);	
 		temp = Utils.appenedHexNotationToString(String.valueOf(temp));
-		Utils.LOG_INFO("Made "+temp+" - Hopefully it's not a mess.");
-		Utils.LOG_INFO("It will decode into "+Integer.decode(temp)+".");
+		Utils.LOG_WARNING("Made "+temp+" - Hopefully it's not a mess.");
+		Utils.LOG_WARNING("It will decode into "+Integer.decode(temp)+".");
 		return Integer.decode(temp);
 	}
 	

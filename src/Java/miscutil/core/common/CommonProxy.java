@@ -13,6 +13,7 @@ import miscutil.core.handler.events.PickaxeBlockBreakEventHandler;
 import miscutil.core.item.ModItems;
 import miscutil.core.lib.CORE;
 import miscutil.core.lib.LoadedMods;
+import miscutil.core.recipe.RECIPE_CONSTANTS;
 import miscutil.core.tileentities.ModTileEntities;
 import miscutil.core.util.Utils;
 import miscutil.core.util.debug.DEBUG_INIT;
@@ -82,6 +83,7 @@ public class CommonProxy {
 		}		
 		ModItems.init();
 		ModBlocks.init();
+		RECIPE_CONSTANTS.initialise();
 		MinecraftForge.EVENT_BUS.register(new PickaxeBlockBreakEventHandler());
 		
 		//Compat Handling		

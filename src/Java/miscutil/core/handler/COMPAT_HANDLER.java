@@ -42,7 +42,6 @@ import miscutil.core.recipe.ShapedRecipeObject;
 import miscutil.core.util.Utils;
 import miscutil.core.util.item.UtilsItems;
 import miscutil.core.util.recipe.UtilsRecipe;
-import miscutil.core.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -80,7 +79,6 @@ public class COMPAT_HANDLER {
 	
 	public static void registerGregtechMachines() {
 		if (Gregtech) {
-		new MetaGeneratedGregtechItems();
 		new RECIPES_LaserEngraver();
 		GregtechEnergyBuffer.run();
 		GregtechConduits.run();

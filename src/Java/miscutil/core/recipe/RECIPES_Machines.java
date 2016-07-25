@@ -1,11 +1,15 @@
 package miscutil.core.recipe;
 
 import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.Utils;
 import miscutil.core.util.item.UtilsItems;
 import miscutil.core.util.recipe.UtilsRecipe;
 import miscutil.core.xmod.gregtech.api.enums.GregtechItemList;
+import miscutil.core.xmod.gregtech.api.enums.GregtechOrePrefixes;
+import miscutil.core.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import net.minecraft.item.ItemStack;
 
 public class RECIPES_Machines {
@@ -309,8 +313,8 @@ public class RECIPES_Machines {
 			sensor_HV = ItemList.Sensor_HV.get(1);
 			sensor_EV = ItemList.Sensor_EV.get(1);
 			sensor_IV = ItemList.Sensor_IV.get(1);
-			
-		
+
+
 			//IV MACHINES	
 			IV_MACHINE_Electrolyzer = ItemList.Machine_IV_Electrolyzer.get(1);
 			IV_MACHINE_BendingMachine= ItemList.Machine_IV_Bender.get(1);
@@ -318,8 +322,8 @@ public class RECIPES_Machines {
 			IV_MACHINE_Macerator= ItemList.Machine_IV_Macerator.get(1);
 			IV_MACHINE_MassFabricator= ItemList.Machine_IV_Massfab.get(1);
 			IV_MACHINE_Centrifuge= ItemList.Machine_IV_Centrifuge.get(1);
-			
-			
+
+
 		}
 
 		if(LoadedMods.Railcraft){
@@ -340,6 +344,22 @@ public class RECIPES_Machines {
 					"dustUranium", "dustUranium", "dustUranium",
 					"dustUranium", "dustUranium", "dustUranium",
 					RECIPES_Shapeless.dustStaballoy);
+
+			UtilsRecipe.addShapedGregtechRecipe(
+					ItemList.Electric_Piston_EV, GregtechOrePrefixes.circuit.get(Materials.Ultimate), ItemList.Electric_Piston_EV,
+					ItemList.Electric_Motor_EV, ItemList.Hull_EV, ItemList.Electric_Motor_EV,
+					OrePrefixes.gearGt.get(Materials.Titanium), OrePrefixes.cableGt02.get(Materials.Aluminium), OrePrefixes.gearGt.get(Materials.Titanium),
+					GregtechItemList.Rocket_Engine_EV.get(1L, new Object[0]));
+			UtilsRecipe.addShapedGregtechRecipe(
+					ItemList.Electric_Piston_IV, GregtechOrePrefixes.circuit.get(GT_Materials.Symbiotic), ItemList.Electric_Piston_IV,
+					ItemList.Electric_Motor_IV, ItemList.Hull_IV, ItemList.Electric_Motor_IV,
+					OrePrefixes.gearGt.get(Materials.TungstenSteel), OrePrefixes.cableGt02.get(Materials.Platinum), OrePrefixes.gearGt.get(Materials.TungstenSteel),
+					GregtechItemList.Rocket_Engine_IV.get(1L, new Object[0]));
+			UtilsRecipe.addShapedGregtechRecipe(
+					RECIPE_CONSTANTS.electricPiston_LuV, GregtechOrePrefixes.circuit.get(GT_Materials.Neutronic), RECIPE_CONSTANTS.electricPiston_LuV,
+					RECIPE_CONSTANTS.electricMotor_LuV, ItemList.Hull_LuV, RECIPE_CONSTANTS.electricMotor_LuV,
+					OrePrefixes.gearGt.get(Materials.Chrome), OrePrefixes.cableGt02.get(Materials.Tungsten), OrePrefixes.gearGt.get(Materials.Chrome),
+					GregtechItemList.Rocket_Engine_LuV.get(1L, new Object[0]));
 
 			//Buffer Core
 			UtilsRecipe.addShapedGregtechRecipe(

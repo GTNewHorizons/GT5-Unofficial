@@ -11,6 +11,8 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.common.covers.GT_Cover_Arm;
 import gregtech.common.covers.GT_Cover_Conveyor;
 import gregtech.common.covers.GT_Cover_Pump;
+import miscutil.core.lib.CORE;
+import miscutil.core.util.Utils;
 import miscutil.core.xmod.gregtech.api.enums.GregtechItemList;
 import miscutil.core.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import miscutil.core.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
@@ -23,6 +25,9 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
     	super("MU-metaitem.01", new OrePrefixes[]{null});
     	INSTANCE = this;
 	    int tLastID = 0;
+	    
+	    if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
+	    	Utils.LOG_INFO("Gregtech 5.09 not found, using fallback components. (I like how I have to add compat to something I added first and had stolen.");
         GregtechItemList.Electric_Pump_LuV.set(addItem(tLastID = 0, "Electric Pump (LuV)", "163920 L/sec (as Cover)", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L)}));
         GregtechItemList.Electric_Pump_ZPM.set(addItem(tLastID = 1, "Electric Pump (ZPM)", "655680 L/sec (as Cover)", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 2L)}));
         GregtechItemList.Electric_Pump_UV.set(addItem(tLastID = 2, "Electric Pump (UV)", "2622720 L/sec (as Cover)", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 4L)}));
@@ -107,10 +112,26 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
         //GT_ModHandler.addCraftingRecipe(GregtechItemList.Sensor_ZPM.get(1L, new Object[0]), //GT_ModHandler.RecipeBits.DISMANTLEABLE | //GT_ModHandler.RecipeBits.NOT_REMOVABLE | //GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"P Q", "PS ", "CPP", Character.valueOf('Q'), OrePrefixes.gem.get(Materials.NetherQuartz), Character.valueOf('S'), OrePrefixes.stick.get(Materials.Electrum), Character.valueOf('P'), OrePrefixes.plate.get(Materials.Aluminium), Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Good)});
         //GT_ModHandler.addCraftingRecipe(GregtechItemList.Sensor_UV.get(1L, new Object[0]), //GT_ModHandler.RecipeBits.DISMANTLEABLE | //GT_ModHandler.RecipeBits.NOT_REMOVABLE | //GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"P Q", "PS ", "CPP", Character.valueOf('Q'), OrePrefixes.gem.get(Materials.Emerald), Character.valueOf('S'), OrePrefixes.stick.get(Materials.Chrome), Character.valueOf('P'), OrePrefixes.plate.get(Materials.StainlessSteel), Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Advanced)});
         //GT_ModHandler.addCraftingRecipe(GregtechItemList.Sensor_MAX.get(1L, new Object[0]), //GT_ModHandler.RecipeBits.DISMANTLEABLE | //GT_ModHandler.RecipeBits.NOT_REMOVABLE | //GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"P Q", "PS ", "CPP", Character.valueOf('Q'), OrePrefixes.gem.get(Materials.EnderPearl), Character.valueOf('S'), OrePrefixes.stick.get(Materials.Platinum), Character.valueOf('P'), OrePrefixes.plate.get(Materials.Titanium), Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Elite)});
-       
+               
+	    }
         
- 
+        GregtechItemList.Circuit_IV.set(addItem(tLastID = 704, "Symbiotic Circuit (IV)", "A Symbiotic Data Processor", new Object[]{GregtechOrePrefixes.circuit.get(GT_Materials.Symbiotic)}));
+        GregtechItemList.Circuit_LuV.set(addItem(tLastID = 705, "Neutronic Circuit (LuV)", "A Neutron Particle Processor", new Object[]{OrePrefixes.circuit.get(GT_Materials.Neutronic)}));
+        GregtechItemList.Circuit_ZPM.set(addItem(tLastID = 706, "Quantum Circuit (ZPM)", "A Singlularity Processor", new Object[]{OrePrefixes.circuit.get(GT_Materials.Quantum)}));
+        GregtechItemList.Circuit_Board_IV.set(addItem(tLastID = 710, "IV Circuit Board", "An IV Voltage Rated Circuit Board", new Object[0]));
+        GregtechItemList.Circuit_Board_LuV.set(addItem(tLastID = 711, "LuV Circuit Board", "An LuV Voltage Rated Circuit Board", new Object[0]));
+        GregtechItemList.Circuit_Board_ZPM.set(addItem(tLastID = 712, "ZPM Processor Board", "A ZPM Voltage Rated Processor Board", new Object[0]));
+        GregtechItemList.Circuit_Parts_Crystal_Chip_IV.set(addItem(tLastID = 713, "(IV) Energized Crystal Chip", "Needed for Circuits", new Object[0]));
+        GregtechItemList.Circuit_Parts_Crystal_Chip_LuV.set(addItem(tLastID = 714, "(LuV) Neutron based Microchip", "Needed for Circuits", new Object[0]));
+        GregtechItemList.Circuit_Parts_Crystal_Chip_ZPM.set(addItem(tLastID = 715, "(ZPM) Quantum Chip", "Needed for Circuits", new Object[0]));
+        GregtechItemList.Circuit_Parts_IV.set(addItem(tLastID = 716, "(IV) Energized Circuit Parts", "Circuit Parts", new Object[0]));
+        GregtechItemList.Circuit_Parts_LuV.set(addItem(tLastID = 717, "(LuV) Neutron-based Circuit Parts", "Circuit Parts", new Object[0]));
+        GregtechItemList.Circuit_Parts_ZPM.set(addItem(tLastID = 718, "(ZPM) Quantum Circuit Parts", "Circuit Parts", new Object[0]));        
+        GregtechItemList.Circuit_Parts_Wiring_IV.set(addItem(tLastID = 719, "Etched IV Voltage Wiring", "Part of Circuit Boards", new Object[0]));
+        GregtechItemList.Circuit_Parts_Wiring_LuV.set(addItem(tLastID = 720, "Etched LuV Voltage Wiring", "Part of Circuit Boards", new Object[0]));
+        GregtechItemList.Circuit_Parts_Wiring_ZPM.set(addItem(tLastID = 721, "Etched ZPM Voltage Wiring", "Part of Circuit Boards", new Object[0]));
         
+    
         
         
         //Extruder Shape
@@ -132,37 +153,6 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 
         GregtechItemList.Battery_RE_EV_Sodium.set(addItem(tLastID = 50, "Quad Cell Mercury Battery", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L)}));
         setElectricStats(32000 + tLastID, 5000000L, GT_Values.V[2], 4L, -3L, true);*/
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        GregtechItemList.Circuit_IV.set(addItem(tLastID = 704, "Symbiotic Circuit (IV)", "A Symbiotic Data Processor", new Object[]{GregtechOrePrefixes.circuit.get(GT_Materials.Symbiotic)}));
-        GregtechItemList.Circuit_LuV.set(addItem(tLastID = 705, "Neutronic Circuit (LuV)", "A Neutron Particle Processor", new Object[]{OrePrefixes.circuit.get(GT_Materials.Neutronic)}));
-        GregtechItemList.Circuit_ZPM.set(addItem(tLastID = 706, "Quantum Circuit (ZPM)", "A Singlularity Processor", new Object[]{OrePrefixes.circuit.get(GT_Materials.Quantum)}));
-        GregtechItemList.Circuit_Board_IV.set(addItem(tLastID = 710, "IV Circuit Board", "An IV Voltage Rated Circuit Board", new Object[0]));
-        GregtechItemList.Circuit_Board_LuV.set(addItem(tLastID = 711, "LuV Circuit Board", "An LuV Voltage Rated Circuit Board", new Object[0]));
-        GregtechItemList.Circuit_Board_ZPM.set(addItem(tLastID = 712, "ZPM Processor Board", "A ZPM Voltage Rated Processor Board", new Object[0]));
-        GregtechItemList.Circuit_Parts_Crystal_Chip_IV.set(addItem(tLastID = 713, "(IV) Energized Crystal Chip", "Needed for Circuits", new Object[0]));
-        GregtechItemList.Circuit_Parts_Crystal_Chip_LuV.set(addItem(tLastID = 714, "(LuV) Neutron based Microchip", "Needed for Circuits", new Object[0]));
-        GregtechItemList.Circuit_Parts_Crystal_Chip_ZPM.set(addItem(tLastID = 715, "(ZPM) Quantum Chip", "Needed for Circuits", new Object[0]));
-        GregtechItemList.Circuit_Parts_IV.set(addItem(tLastID = 716, "(IV) Energized Circuit Parts", "Circuit Parts", new Object[0]));
-        GregtechItemList.Circuit_Parts_LuV.set(addItem(tLastID = 717, "(LuV) Neutron-based Circuit Parts", "Circuit Parts", new Object[0]));
-        GregtechItemList.Circuit_Parts_ZPM.set(addItem(tLastID = 718, "(ZPM) Quantum Circuit Parts", "Circuit Parts", new Object[0]));        
-        GregtechItemList.Circuit_Parts_Wiring_IV.set(addItem(tLastID = 719, "Etched IV Voltage Wiring", "Part of Circuit Boards", new Object[0]));
-        GregtechItemList.Circuit_Parts_Wiring_LuV.set(addItem(tLastID = 720, "Etched LuV Voltage Wiring", "Part of Circuit Boards", new Object[0]));
-        GregtechItemList.Circuit_Parts_Wiring_ZPM.set(addItem(tLastID = 721, "Etched ZPM Voltage Wiring", "Part of Circuit Boards", new Object[0]));
-        
-        
-        
-        
-        
         
     }
 }
