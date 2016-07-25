@@ -152,6 +152,7 @@ public class RECIPES_GREGTECH {
 	private static void blastFurnaceRecipes(){
 		Utils.LOG_INFO("Registering Blast Furnace Recipes.");
 		
+		if (!CORE.disableStaballoyBlastFurnaceRecipe){
 		GT_Values.RA.addBlastRecipe(
 				UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 11028, 1),
 				UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 11098, 1),
@@ -184,5 +185,6 @@ public class RECIPES_GREGTECH {
 				GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Titanium, 1L),
 				(int) Math.max(GT_Materials.Staballoy.getMass() / 80L, 1L) * GT_Materials.Staballoy.mBlastFurnaceTemp,
 				2000, GT_Materials.Staballoy.mBlastFurnaceTemp);
+	}
 	}
 }

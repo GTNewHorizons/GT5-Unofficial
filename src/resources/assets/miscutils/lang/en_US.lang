@@ -123,6 +123,13 @@ item.itemVibrantShaft.name=Vibrant Alloy Shaft
 item.itemIridiumShaft.name=Iridium Shaft
 
 
+item.itemMagnaliumRotorBlade.name=Magnalium Rotor Blade
+item.itemUltimetRotorBlade.name=Ultimet Blade
+item.itemMagnaliumShaft.name=Magnalium Shaft
+item.itemUltimetShaft.name=Ultimet Shaft
+
+
+
 item.itemDustStaballoy.name=Staballoy Dust
 item.itemDustSmallStaballoy.name=Small pile of Staballoy Dust
 item.itemDustTinyStaballoy.name=Tiny pile of Staballoy Dust

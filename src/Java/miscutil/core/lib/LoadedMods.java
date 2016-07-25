@@ -53,7 +53,7 @@ public class LoadedMods {
 			
 			totalMods++;
 		}
-		if (Loader.isModLoaded("EnderIO") == true && !CORE.cfg.disableEnderIOIntegration()){
+		if (Loader.isModLoaded("EnderIO") == true && !CORE.disableEnderIOIntegration){
 			EnderIO = true;
 			Utils.LOG_INFO("Components enabled for: EnderIO");
 			totalMods++;

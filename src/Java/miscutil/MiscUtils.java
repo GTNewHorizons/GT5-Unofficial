@@ -35,11 +35,32 @@ implements ActionListener
 	public static CommonProxy proxy;
 
 
+
+	public void handleConfigFile(FMLPreInitializationEvent event) { 
+		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
+		boolean EIO = false;
+		
+	config.load();
+	CORE.DEBUG = config.getBoolean("debugMode", "debug", false, "Enables all sorts of debug logging. (Don't use unless told to, breaks other things.)");
+	CORE.disableEnderIOIntegration = config.getBoolean("disableEnderIO", "debug", false, "Disables EnderIO Integration.");
+	CORE.disableStaballoyBlastFurnaceRecipe = config.getBoolean("disableStaballoyBlastFurnaceRecipe", "debug", false, "Disables Staballoy Blast Furnace Recipe.");
+	config.save(); 
+	}
+
+	
+	
+	
 	//Pre-Init
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		Utils.LOG_INFO("Loading "+CORE.name+" V"+CORE.VERSION);
+		/*Configuration Config = new Configuration(event.getSuggestedConfigurationFile());
+		Config.load();
+		CORE.Config = Config;
+		CORE.disableEnderIOIntegration = Config.get(Configuration.CATEGORY_GENERAL, "disableEnderIOIntegration", false).getBoolean(false);
+		CORE.disableStaballoyBlastFurnaceRecipe = Config.get(Configuration.CATEGORY_GENERAL, "disableStaballoyBlastFurnaceRecipe", false).getBoolean(false);*/
+		handleConfigFile(event);
 		proxy.registerTileEntities();
 		proxy.registerRenderThings();
 		HANDLER_GT.mMaterialProperties = new GT_Config(new Configuration(new File(new File(event.getModConfigurationDirectory(), "MiscUtils"), "MaterialProperties.cfg")));
@@ -61,7 +82,7 @@ implements ActionListener
 	public void postInit(FMLPostInitializationEvent event) {
 		proxy.postInit(event);		
 	}
-	
+
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event)
 	{
