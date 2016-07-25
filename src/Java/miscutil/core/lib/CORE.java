@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import miscutil.core.creative.AddToCreativeTab;
+import miscutil.core.util.aeonbits.owner.ConfigFactory;
 import miscutil.core.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import miscutil.core.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import miscutil.core.xmod.gregtech.common.Meta_GT_Proxy;
@@ -31,6 +32,7 @@ public class CORE {
     public static IIconRegister GT_BlockIcons, GT_ItemIcons;	
 	public static List<Runnable> GT_BlockIconload = new ArrayList<Runnable>();
 	public static final Class<AddToCreativeTab> TAB = AddToCreativeTab.class;
+	public static ConfigHandler cfg = ConfigFactory.create(ConfigHandler.class);
 	/**
      * A List containing all the Materials, which are somehow in use by GT and therefor receive a specific Set of Items.
      */
