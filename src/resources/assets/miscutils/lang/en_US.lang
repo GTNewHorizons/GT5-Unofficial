@@ -1,8 +1,10 @@
-itemGroup.MiscUtilBlockTab=[MU] Blocks
-itemGroup.MiscUtilMiscTab=[MU] Items
-itemGroup.MiscUtilCombatTab=[MU] Combat
-itemGroup.MiscUtilToolsTab=[MU] Tools
-itemGroup.MiscUtilMachineTab=[MU] Machines
+itemGroup.MiscUtilBlockTab=[GT++] Blocks
+itemGroup.MiscUtilMiscTab=[GT++] Items
+itemGroup.MiscUtilCombatTab=[GT++] Combat
+itemGroup.MiscUtilToolsTab=[GT++] Tools
+itemGroup.MiscUtilMachineTab=[GT++] Machines
+
+item.itemPLACEHOLDER_Circuit.name=Quark Manipulator (UV)
 
 
 

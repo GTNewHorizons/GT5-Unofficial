@@ -17,7 +17,7 @@ public class CORE {
 
 	public static final String name = "GT++";	
 	public static final String MODID = "miscutils";
-	public static final String VERSION = "1.4.3.2";
+	public static final String VERSION = "1.4.3.5";
 	public static boolean DEBUG = false;	
 	public static final boolean LOAD_ALL_CONTENT = false;
 	public static final int GREG_FIRST_ID = 760;
@@ -36,6 +36,8 @@ public class CORE {
 
 	public static boolean disableEnderIOIntegration = false;
 	public static boolean disableStaballoyBlastFurnaceRecipe = false;
+	public static boolean disableCentrifugeFormation = true;
+	public static boolean enableSolarGenerators = false;
 
 	/**
 	 * A List containing all the Materials, which are somehow in use by GT and therefor receive a specific Set of Items.

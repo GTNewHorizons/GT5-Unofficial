@@ -44,6 +44,8 @@ implements ActionListener
 	CORE.DEBUG = config.getBoolean("debugMode", "debug", false, "Enables all sorts of debug logging. (Don't use unless told to, breaks other things.)");
 	CORE.disableEnderIOIntegration = config.getBoolean("disableEnderIO", "debug", false, "Disables EnderIO Integration.");
 	CORE.disableStaballoyBlastFurnaceRecipe = config.getBoolean("disableStaballoyBlastFurnaceRecipe", "debug", false, "Disables Staballoy Blast Furnace Recipe.");
+	CORE.disableCentrifugeFormation = config.getBoolean("disableCentrifuge", "debug", true, "Keeps the Items around, just stops the multiblock forming. (It's broken currently, needs in depth testing)");
+	CORE.enableSolarGenerators = config.getBoolean("enableSolarGenerators", "machines", false, "These may be overpowered, Consult a local electrician.");
 	config.save(); 
 	}
 

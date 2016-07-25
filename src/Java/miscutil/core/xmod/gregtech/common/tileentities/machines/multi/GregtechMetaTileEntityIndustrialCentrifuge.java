@@ -20,14 +20,17 @@ import miscutil.core.util.Utils;
 import miscutil.core.xmod.gregtech.api.gui.GUI_MultiMachine;
 import miscutil.core.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntityIndustrialCentrifuge
 extends GregtechMeta_MultiBlockBase {
 	private static boolean controller;
+	private static boolean isDisabled = false;
 	private static ITexture frontFace;
 	private static ITexture frontFaceActive;
 	private static Textures.BlockIcons.CustomIcon GT9_5_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST_ACTIVE5");
@@ -102,6 +105,7 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
         ArrayList<ItemStack> tInputList = getStoredInputs();
+        Utils.LOG_WARNING("Stored Input Items: "+tInputList.size());
         for (int i = 0; i < tInputList.size() - 1; i++) {
             for (int j = i + 1; j < tInputList.size(); j++) {
                 if (GT_Utility.areStacksEqual((ItemStack) tInputList.get(i), (ItemStack) tInputList.get(j))) {
@@ -117,12 +121,15 @@ extends GregtechMeta_MultiBlockBase {
         ItemStack[] tInputs = (ItemStack[]) Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, 2);
 
         ArrayList<FluidStack> tFluidList = getStoredFluids();
+        Utils.LOG_WARNING("Stored Input Fluids: "+tFluidList.size());
         for (int i = 0; i < tFluidList.size() - 1; i++) {
             for (int j = i + 1; j < tFluidList.size(); j++) {
                 if (GT_Utility.areFluidsEqual((FluidStack) tFluidList.get(i), (FluidStack) tFluidList.get(j))) {
                     if (((FluidStack) tFluidList.get(i)).amount >= ((FluidStack) tFluidList.get(j)).amount) {
+                    	Utils.LOG_WARNING("Removing j from tFluidList");
                         tFluidList.remove(j--);
                     } else {
+                    	Utils.LOG_WARNING("Removing i from tFluidList");
                         tFluidList.remove(i--);
                         break;
                     }
@@ -130,11 +137,13 @@ extends GregtechMeta_MultiBlockBase {
             }
         }
         FluidStack[] tFluids = (FluidStack[]) Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tInputList.size()]), 0, 1);
-        if (tInputList.size() > 0) {
+        Utils.LOG_WARNING("Size:"+tInputList.size());
+        if (tInputList.size() > 0 || tFluidList.size() > 0) {
+        	Utils.LOG_WARNING("Input size > 0");
             long tVoltage = getMaxInputVoltage();
             byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
             GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
-            if ((tRecipe != null) && (3 >= tRecipe.mSpecialValue) && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
+            if ((tRecipe != null) && (0 >= tRecipe.mSpecialValue) && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
                 this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
                 if (tRecipe.mEUt <= 16) {
@@ -155,11 +164,11 @@ extends GregtechMeta_MultiBlockBase {
                 this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0)};
                 this.mOutputFluids = new FluidStack[]{tRecipe.getFluidOutput(0)};
                 updateSlots();
-                Utils.LOG_INFO("Centrifuge: True");
+                Utils.LOG_WARNING("Centrifuge: True");
                 return true;
             }
         }
-        Utils.LOG_INFO("Centrifuge: False");
+        Utils.LOG_WARNING("Centrifuge: False");
         return false;
     }
 
@@ -180,6 +189,13 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+		if (CORE.disableCentrifugeFormation){
+			EntityPlayerMP player = MinecraftServer.getServer().getConfigurationManager().func_152612_a(this.getBaseMetaTileEntity().getOwnerName());
+			if (!player.getEntityWorld().isRemote && isDisabled == false)
+			Utils.messagePlayer(player, "This Multiblock is disabled via the config. [Only re-enable if you're bugtesting.]");
+			isDisabled = true;
+			return false;
+		}
 		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
 		int yDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetY;
 		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
@@ -194,14 +210,14 @@ extends GregtechMeta_MultiBlockBase {
 					if ((h != 0) || (((xDir + i != 0) || (zDir + j != 0)) && ((i != 0) || (j != 0)))) {			
 
 						IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-						//Utils.LOG_INFO("X:"+tTileEntity.getXCoord()+" Y:"+tTileEntity.getYCoord()+" Z:"+tTileEntity.getZCoord());
+						//Utils.LOG_WARNING("X:"+tTileEntity.getXCoord()+" Y:"+tTileEntity.getYCoord()+" Z:"+tTileEntity.getZCoord());
 						if ((!addMaintenanceToMachineList(tTileEntity, 57)) && (!addInputToMachineList(tTileEntity, 57)) && (!addOutputToMachineList(tTileEntity, 57)) && (!addEnergyInputToMachineList(tTileEntity, 57))) {
 
 							//Maintenance Hatch
 							if ((tTileEntity != null) && (tTileEntity.getMetaTileEntity() != null)) {
 								if (tTileEntity.getXCoord() == aBaseMetaTileEntity.getXCoord() && tTileEntity.getYCoord() == aBaseMetaTileEntity.getYCoord() && tTileEntity.getZCoord() == (aBaseMetaTileEntity.getZCoord()+2)) {
 									if ((tTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Maintenance)) {
-										Utils.LOG_INFO("MAINT HATCH IN CORRECT PLACE");
+										Utils.LOG_WARNING("MAINT HATCH IN CORRECT PLACE");
 										this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) tTileEntity.getMetaTileEntity());
 										((GT_MetaTileEntity_Hatch) tTileEntity.getMetaTileEntity()).mMachineBlock = getCasingTextureIndex();
 									} else {
@@ -209,7 +225,7 @@ extends GregtechMeta_MultiBlockBase {
 									}
 								}	
 								else {
-									Utils.LOG_INFO("MAINT HATCH IN WRONG PLACE");
+									Utils.LOG_WARNING("MAINT HATCH IN WRONG PLACE");
 								}
 							}
 
