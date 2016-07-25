@@ -12,6 +12,7 @@ import miscutil.core.util.Utils;
 import miscutil.core.util.fluid.FluidUtils;
 import miscutil.core.util.item.UtilsItems;
 import miscutil.core.xmod.gregtech.api.enums.GregtechItemList;
+import miscutil.core.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 
 public class RECIPES_GREGTECH {
 
@@ -149,5 +150,25 @@ public class RECIPES_GREGTECH {
 	
 	private static void registerSkookumChoocher(){
 		//GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.toolHeadUniversalSpade, aMaterial, 1L), tBits, new Object[]{"fX", Character.valueOf('X'), OrePrefixes.toolHeadShovel.get(aMaterial)});
+	}
+	
+	private static void blastFurnaceRecipes(){
+		GT_Values.RA.addBlastRecipe(
+				UtilsItems.getItemStackOfAmountFromOreDict("ingotTitanium", 1),
+				UtilsItems.getItemStackOfAmountFromOreDict("ingotUranium", 8),
+				GT_Values.NF, GT_Values.NF,
+				GT_OreDictUnificator.get(OrePrefixes.ingotHot, GT_Materials.Staballoy, 1L),
+				GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Titanium, 1L),
+				(int) Math.max(GT_Materials.Staballoy.getMass() / 80L, 1L) * GT_Materials.Staballoy.mBlastFurnaceTemp,
+				1000, GT_Materials.Staballoy.mBlastFurnaceTemp);
+		
+		GT_Values.RA.addBlastRecipe(
+				UtilsItems.getItemStackOfAmountFromOreDict("dustStaballoy", 1),
+				null,
+				GT_Values.NF, GT_Values.NF,
+				GT_OreDictUnificator.get(OrePrefixes.ingotHot, GT_Materials.Staballoy, 1L),
+				GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Titanium, 1L),
+				(int) Math.max(GT_Materials.Staballoy.getMass() / 80L, 1L) * GT_Materials.Staballoy.mBlastFurnaceTemp,
+				2000, GT_Materials.Staballoy.mBlastFurnaceTemp);
 	}
 }

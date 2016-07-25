@@ -1,6 +1,9 @@
 package miscutil.core.util.item;
 
 import gregtech.api.util.GT_OreDictUnificator;
+
+import java.util.ArrayList;
+
 import miscutil.core.item.base.BasicSpawnEgg;
 import miscutil.core.lib.CORE;
 import miscutil.core.lib.LoadedMods;
@@ -9,6 +12,7 @@ import miscutil.core.util.wrapper.var;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class UtilsItems {
@@ -209,4 +213,11 @@ public class UtilsItems {
 		GameRegistry.registerItem(itemSpawnEgg, "spawnEgg"+parSpawnName);
 	}
 
+	public static ItemStack getItemStackOfAmountFromOreDict(String oredictName, int amount){
+		ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
+		ItemStack temp = oreDictList.get(0);
+		ItemStack returnValue = new ItemStack(temp.getItem(), amount);
+		return returnValue;
+	}
+	
 }

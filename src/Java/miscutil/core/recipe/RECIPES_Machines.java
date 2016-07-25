@@ -2,7 +2,6 @@ package miscutil.core.recipe;
 
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.Utils;
 import miscutil.core.util.item.UtilsItems;
@@ -347,19 +346,19 @@ public class RECIPES_Machines {
 
 			UtilsRecipe.addShapedGregtechRecipe(
 					ItemList.Electric_Piston_EV, GregtechOrePrefixes.circuit.get(Materials.Ultimate), ItemList.Electric_Piston_EV,
-					ItemList.Electric_Motor_EV, ItemList.Hull_EV, ItemList.Electric_Motor_EV,
-					OrePrefixes.gearGt.get(Materials.Titanium), OrePrefixes.cableGt02.get(Materials.Aluminium), OrePrefixes.gearGt.get(Materials.Titanium),
-					GregtechItemList.Rocket_Engine_EV.get(1L, new Object[0]));
+					ItemList.Electric_Motor_EV, machineCasing_EV, ItemList.Electric_Motor_EV,
+					"gearGtTitanium", "cableGt02Aluminium", "gearGtTitanium",
+					UtilsItems.simpleMetaStack("gregtech:gt.blockmachines", 793, 1));
 			UtilsRecipe.addShapedGregtechRecipe(
 					ItemList.Electric_Piston_IV, GregtechOrePrefixes.circuit.get(GT_Materials.Symbiotic), ItemList.Electric_Piston_IV,
-					ItemList.Electric_Motor_IV, ItemList.Hull_IV, ItemList.Electric_Motor_IV,
-					OrePrefixes.gearGt.get(Materials.TungstenSteel), OrePrefixes.cableGt02.get(Materials.Platinum), OrePrefixes.gearGt.get(Materials.TungstenSteel),
-					GregtechItemList.Rocket_Engine_IV.get(1L, new Object[0]));
+					ItemList.Electric_Motor_IV, machineCasing_IV, ItemList.Electric_Motor_IV,
+					"gearGtTungstenSteel", "cableGt02Platinum", "gearGtTungstenSteel",
+					UtilsItems.simpleMetaStack("gregtech:gt.blockmachines", 794, 1));
 			UtilsRecipe.addShapedGregtechRecipe(
 					RECIPE_CONSTANTS.electricPiston_LuV, GregtechOrePrefixes.circuit.get(GT_Materials.Neutronic), RECIPE_CONSTANTS.electricPiston_LuV,
-					RECIPE_CONSTANTS.electricMotor_LuV, ItemList.Hull_LuV, RECIPE_CONSTANTS.electricMotor_LuV,
-					OrePrefixes.gearGt.get(Materials.Chrome), OrePrefixes.cableGt02.get(Materials.Tungsten), OrePrefixes.gearGt.get(Materials.Chrome),
-					GregtechItemList.Rocket_Engine_LuV.get(1L, new Object[0]));
+					RECIPE_CONSTANTS.electricMotor_LuV, machineCasing_LuV, RECIPE_CONSTANTS.electricMotor_LuV,
+					"gearGtChrome", "cableGt02Tungsten", "gearGtChrome",
+					UtilsItems.simpleMetaStack("gregtech:gt.blockmachines", 795, 1));
 
 			//Buffer Core
 			UtilsRecipe.addShapedGregtechRecipe(

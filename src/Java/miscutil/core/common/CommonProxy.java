@@ -43,6 +43,7 @@ public class CommonProxy {
 					tOreStack = (ItemStack) i$.next();
 				}
 			}
+			new Meta_GT_Proxy();
 		}
 	}
 

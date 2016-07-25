@@ -49,7 +49,7 @@ public enum GregtechOrePrefixes {
 	 * Ultimate (Tier 8) : Data Orb and Lapotronic Energy Orb
 	 * Infinite (Cheaty)
 	 */
-
+	ingotHot("Hot Ingots", "Hot ", " Ingot", true, true, false, false, false, false, false, true, false, false, B[1], M * 1, 16, 12), // A hot Ingot, which has to be cooled down by a Vacuum Freezer.
 	ingot("Ingots", "", " Ingot", true, true, false, false, false, false, false, true, false, false, B[1], M * 1, 64, 11), // A regular Ingot. Introduced by Eloraam
 	dustTiny("Tiny Dusts", "Tiny Pile of ", " Dust", true, true, false, false, false, false, false, true, false, false, B[0] | B[1] | B[2] | B[3], M / 9, 64, 0), // 1/9th of a Dust.
 	dustSmall("Small Dusts", "Small Pile of ", " Dust", true, true, false, false, false, false, false, true, false, false, B[0] | B[1] | B[2] | B[3], M / 4, 64, 1), // 1/4th of a Dust.
@@ -78,7 +78,13 @@ public enum GregtechOrePrefixes {
 	chipset("Chipsets", "", "", true, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Introduced by Buildcraft
 	computer("Computers", "", "", true, true, false, false, true, false, false, false, false, false, 0, -1, 64, -1); // A whole Computer. "computerMaster" = ComputerCube
 
-	//public static volatile int VERSION = 508;
+	public static volatile int VERSION = 508;
+
+    static {
+    	
+        ingotHot.mHeatDamage = 3.0F;
+        
+    }
 
 	public final ArrayList<ItemStack> mPrefixedItems = new ArrayList<ItemStack>();
 	public final short mTextureIndex;
@@ -300,16 +306,26 @@ public enum GregtechOrePrefixes {
 		 */
 		Symbiotic(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "IV Tier", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 4), new TC_AspectStack(TC_Aspects.MACHINA, 4))),
 		Neutronic(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "LuV Tier", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 6), new TC_AspectStack(TC_Aspects.MACHINA, 6))),
-		Quantum(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "ZPM Tier", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 8), new TC_AspectStack(TC_Aspects.MACHINA, 8)));
+		Quantum(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "ZPM Tier", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 8), new TC_AspectStack(TC_Aspects.MACHINA, 8))),
 
-		/*Advanced(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "Advanced", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 4))),
-    	Data(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "Data", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 5))),
-    	Elite(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "Elite", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 6))),
-    	Master(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "Master", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 7))),
-    	Ultimate(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "Ultimate", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 8))),
-    	Superconductor(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "Superconductor", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 8))),
-    	Infinite(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "Infinite", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray);*/
+		
+		Staballoy(30, TextureSet.SET_ROUGH, 10.0F, 5120, 4, 1 | 2  | 16 | 32 | 64 | 128, 248, 255, 46, 0, "Staballoy", 0, 0, 1500, 2800, true, false, 1, 3, 1, Dyes.dyeGreen, 2, Arrays.asList(new MaterialStack(Materials.Titanium, 1), new MaterialStack(Materials.Uranium, 9)), Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 8), new TC_AspectStack(TC_Aspects.STRONTIO, 3))),
+		Bedrockium(31, TextureSet.SET_FINE, 8.0F, 8196, 3, 1 | 2 | 16 | 32 | 64 | 128, 39, 39, 39, 0, "Bedrockium", 0, 0, -1, 0, false, false, 1, 5, 1, Dyes.dyeLightGray, 2, Arrays.asList(new MaterialStack(Materials.Carbon, 63), new MaterialStack(Materials.Carbon, 56)),   Arrays.asList(new TC_AspectStack(TC_Aspects.VACUOS, 8), new TC_AspectStack(TC_Aspects.TUTAMEN, 3))),
+		BloodSteel(32, TextureSet.SET_METALLIC, 11.0F, 768, 4, 1 | 2 | 16 | 32 | 64 | 128, 142, 28, 0, 0, "Blood Steel", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeRed, 2, Arrays.asList(new MaterialStack(Materials.Steel, 3)), Arrays.asList(new TC_AspectStack(TC_Aspects.VICTUS, 8), new TC_AspectStack(TC_Aspects.IGNIS, 3))),
+		VoidMetal(33, TextureSet.SET_METALLIC, 6.0F, 1280, 3, 1 | 2 | 16 | 32 | 64 | 128, 82, 17, 82, 0, "Void Metal", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeBlack, Arrays.asList(new TC_AspectStack(TC_Aspects.PRAECANTATIO, 5), new TC_AspectStack(TC_Aspects.VACUOS, 7))),
+		ConductiveIron(34, TextureSet.SET_METALLIC, 5.0F, 256, 2, 1 | 2, 164, 109, 100, 0, "Conductive Iron", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeRed, 2, Arrays.asList(new MaterialStack(Materials.Iron, 6), new MaterialStack(Materials.Redstone, 2)), Arrays.asList(new TC_AspectStack(TC_Aspects.POTENTIA, 2), new TC_AspectStack(TC_Aspects.METALLUM, 2))),
+		ElectricalSteel(35, TextureSet.SET_METALLIC, 7.0F, 768, 3, 1 | 2 | 64 | 128, 194, 194, 194, 0, "Electrical Steel", 0, 0, 1811, 1000, true, false, 3, 1, 1, Dyes.dyeLightGray, 2, Arrays.asList(new MaterialStack(Materials.Iron, 3), new MaterialStack(Materials.Coal, 2), new MaterialStack(Materials.Silicon, 2)),   Arrays.asList(new TC_AspectStack(TC_Aspects.MAGNETO, 2), new TC_AspectStack(TC_Aspects.ELECTRUM, 5))),
+		EnergeticAlloy(36, TextureSet.SET_SHINY, 5.0F, 512, 3, 1 | 2 | 64 | 128, 252, 152, 45, 0, "Energetic Alloy", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeOrange, 2, Arrays.asList(new MaterialStack(Materials.Gold, 3), new MaterialStack(Materials.Glowstone, 2), new MaterialStack(Materials.Redstone, 2)),  Arrays.asList(new TC_AspectStack(TC_Aspects.POTENTIA, 4), new TC_AspectStack(TC_Aspects.LUX, 3))),
+		VibrantAlloy(37, TextureSet.SET_SHINY, 7.0F, 1280, 4, 1 | 2 | 64 | 128, 204, 242, 142, 0, "Vibrant Alloy", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeLime, 2, Arrays.asList(new MaterialStack(Materials.EnergeticAlloy, 1), new MaterialStack(Materials.EnderPearl, 3)), Arrays.asList(new TC_AspectStack(TC_Aspects.MACHINA, 5), new TC_AspectStack(TC_Aspects.TELUM, 4))),
+		PulsatingIron(38, TextureSet.SET_SHINY, 5.0F, 256, 2, 1 | 2 | 64 | 128, 50, 91, 21, 0, "Pulsating Iron", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeGreen, 2, Arrays.asList(new MaterialStack(Materials.Iron, 2), new MaterialStack(Materials.EnderPearl, 2)), Arrays.asList(new TC_AspectStack(TC_Aspects.ALIENIS, 3), new TC_AspectStack(TC_Aspects.METALLUM, 3))),
+		/* TODO*/ RedstoneAlloy(39, TextureSet.SET_METALLIC, 1.0F, 256, 2, 1|2|16|32|64, 178,34,34, 0, "Redstone Alloy", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeRed, 2, Arrays.asList(new MaterialStack(Materials.Iron, 2), new MaterialStack(Materials.Redstone, 4))),
 
+		//Needs more Use, I think. 
+		Tantaloy60(40, TextureSet.SET_DULL, 8.0F, 5120, 3, 1 | 2 | 16 | 32 | 64 | 128, 213, 231, 237, 0, "Tantaloy 60", 0, 0, 3035, 2200, true, false, 1, 2, 1, Dyes.dyeLightGray, 2, Arrays.asList(new MaterialStack(Materials.Tungsten, 1), new MaterialStack(Materials.Tantalum, 9)), Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 8), new TC_AspectStack(TC_Aspects.STRONTIO, 3))),
+		Tantaloy61(41, TextureSet.SET_DULL, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 193, 211, 217, 0, "Tantaloy 61", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightGray, 2, Arrays.asList(new MaterialStack(Materials.Tungsten, 1), new MaterialStack(Materials.Tantalum, 9), new MaterialStack(Materials.Titanium, 1)), Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 8), new TC_AspectStack(TC_Aspects.STRONTIO, 3)));
+
+		
+		
 		/**
 		 * List of all Materials.
 		 */

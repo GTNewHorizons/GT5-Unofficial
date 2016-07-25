@@ -73,7 +73,6 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Input Bus",
 				"1x Output Bus",
 				"1x [EV] Energy Hatch (Can be higher Tier) [Blue]",
-				"Needs a Turbine Item (inside controller GUI)",
 				"Centrifuge Casings for the rest (16 at least)",};
 	}
 
@@ -152,6 +151,7 @@ extends GregtechMeta_MultiBlockBase {
 				for (; i < machines; i++) {
 					if (!tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
 						if (i == 0) {
+							Utils.LOG_INFO("false 1");
 							return false;
 						}
 						break;
@@ -220,9 +220,11 @@ extends GregtechMeta_MultiBlockBase {
 				this.mOutputFluids = new FluidStack[]{tFOut};
 				updateSlots();
 				//recipesComplete++;
+				Utils.LOG_INFO("true 1");
 				return true;
 			}
 		}
+		Utils.LOG_INFO("false 2");
 		return false;
 	}
 

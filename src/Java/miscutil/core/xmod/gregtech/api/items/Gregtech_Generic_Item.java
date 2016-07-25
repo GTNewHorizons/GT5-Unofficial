@@ -10,6 +10,7 @@ import java.util.List;
 
 import miscutil.core.creative.AddToCreativeTab;
 import miscutil.core.lib.CORE;
+import miscutil.core.util.Utils;
 import net.minecraft.block.BlockDispenser;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
@@ -167,6 +168,15 @@ public class Gregtech_Generic_Item extends Item implements IProjectileItem {
 		}
 		else if (stack.getDisplayName().contains("MAX")){
 			HEX_OxFFFFFF = 0xff0000;
+		}
+		else if (stack.getDisplayName().contains("Sodium")){
+			HEX_OxFFFFFF = Utils.rgbtoHexValue(0, 0, 150);
+		}
+		else if (stack.getDisplayName().contains("Cadmium")){
+			HEX_OxFFFFFF = Utils.rgbtoHexValue(50, 50, 60);
+		}
+		else if (stack.getDisplayName().contains("Lithium")){
+			HEX_OxFFFFFF = Utils.rgbtoHexValue(225, 220, 255);
 		}
 		else {
 			HEX_OxFFFFFF = 0xffffff;

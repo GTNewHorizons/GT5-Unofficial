@@ -6,27 +6,13 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.util.GT_OreDictUnificator;
+import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
 import miscutil.core.util.recipe.UtilsRecipe;
 import miscutil.core.xmod.gregtech.api.enums.GregtechItemList;
-import net.minecraft.item.ItemStack;
 
 public class RECIPES_MachineComponents {
-
-	//Outputs
-	static ItemStack RECIPE_Circuit_IV = GregtechItemList.Circuit_IV.get(1);
-	static ItemStack RECIPE_Circuit_LuV = GregtechItemList.Circuit_LuV.get(1);
-	static ItemStack RECIPE_Circuit_ZPM = GregtechItemList.Circuit_ZPM.get(1);
-	static ItemStack RECIPE_Circuit_Board_IV = GregtechItemList.Circuit_Board_IV.get(1);
-	static ItemStack RECIPE_Circuit_Board_LuV = GregtechItemList.Circuit_Board_LuV.get(1);
-	static ItemStack RECIPE_Circuit_Board_ZPM = GregtechItemList.Circuit_Board_ZPM.get(1);
-	static ItemStack RECIPE_Circuit_Parts_Crystal_Chip_IV = GregtechItemList.Circuit_Parts_Crystal_Chip_IV.get(1);
-	static ItemStack RECIPE_Circuit_Parts_Crystal_Chip_LuV = GregtechItemList.Circuit_Parts_Crystal_Chip_LuV.get(1);
-	static ItemStack RECIPE_Circuit_Parts_Crystal_Chip_ZPM = GregtechItemList.Circuit_Parts_Crystal_Chip_ZPM.get(1);
-	static ItemStack RECIPE_Circuit_Parts_IV = GregtechItemList.Circuit_Parts_IV.get(1);
-	static ItemStack RECIPE_Circuit_Parts_LuV = GregtechItemList.Circuit_Parts_LuV.get(1);
-	static ItemStack RECIPE_Circuit_Parts_ZPM = GregtechItemList.Circuit_Parts_ZPM.get(1);
-
+	
 	//Wire
 	static String wireTier6 = "wireGt08NiobiumTitanium";
 	static String wireTier7 = "wireGt08Osmium";
@@ -101,8 +87,10 @@ public class RECIPES_MachineComponents {
 	static String craftingToolScrewdriver = "craftingToolScrewdriver";
 
 	public static final void RECIPES_LOAD(){	
-		Utils.LOG_INFO("Loading Recipes for the Various Circuits and their components.");	
-		run();
+		Utils.LOG_INFO("Loading Recipes for the Various Circuits and Machine components.");	
+		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
+			run();	
+		}
 		GregtechMachinePhase();
 	}
 
@@ -283,12 +271,12 @@ public class RECIPES_MachineComponents {
 				circuitTier10, plateTier10, plateTier10,
 				RECIPE_CONSTANTS.sensor_MAX);
 
-		Utils.LOG_INFO("Done loading recipes for the Various circuit content.");
+		Utils.LOG_INFO("Done loading recipes for the Various machine components.");
 
 	}		
 
 	private static void GregtechMachinePhase(){
-		Utils.LOG_INFO("Adding Gregtech machine recipes for the components.");
+		Utils.LOG_INFO("Adding Gregtech machine recipes for the circuits.");
 		GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Silicon, 1L), GregtechItemList.Circuit_Parts_Wiring_IV.get(4L, new Object[0]), GregtechItemList.Circuit_Board_IV.get(1L, new Object[0]), 32, 256);
 		GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Silicon, 1L), GregtechItemList.Circuit_Parts_Wiring_LuV.get(4L, new Object[0]), GregtechItemList.Circuit_Board_LuV.get(1L, new Object[0]), 64, 512);
 		GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Silicon, 2L), GregtechItemList.Circuit_Parts_Wiring_ZPM.get(4L, new Object[0]), GregtechItemList.Circuit_Board_ZPM.get(1L, new Object[0]), 96, 1024);

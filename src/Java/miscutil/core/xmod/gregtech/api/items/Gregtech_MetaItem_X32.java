@@ -12,6 +12,7 @@ import gregtech.api.util.GT_Utility;
 import java.util.Arrays;
 import java.util.List;
 
+import miscutil.core.util.Utils;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -173,7 +174,7 @@ public abstract class Gregtech_MetaItem_X32 extends Gregtech_MetaItem {
     }
     
     @Override
-	public int getColorFromItemStack(ItemStack stack, int HEX_OxFFFFFF) {	
+    public int getColorFromItemStack(ItemStack stack, int HEX_OxFFFFFF) {	
     	if (stack.getDisplayName().contains("LuV")){
     		HEX_OxFFFFFF = 0xffffcc;
     	}
@@ -185,6 +186,15 @@ public abstract class Gregtech_MetaItem_X32 extends Gregtech_MetaItem {
 		}
 		else if (stack.getDisplayName().contains("MAX")){
 			HEX_OxFFFFFF = 0xff6500;
+		}
+		else if (stack.getDisplayName().contains("Sodium")){
+			HEX_OxFFFFFF = Utils.rgbtoHexValue(90, 90, 255);
+		}
+		else if (stack.getDisplayName().contains("Cadmium")){
+			HEX_OxFFFFFF = Utils.rgbtoHexValue(150, 150, 80);
+		}
+		else if (stack.getDisplayName().contains("Lithium")){
+			HEX_OxFFFFFF = Utils.rgbtoHexValue(225, 220, 255);
 		}
 		else {
 			HEX_OxFFFFFF = 0xffffff;

@@ -4,10 +4,12 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.GT_Proxy.OreDictEventContainer;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -15,6 +17,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import miscutil.core.lib.CORE;
+import miscutil.core.util.Utils;
 import miscutil.core.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import miscutil.core.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import miscutil.core.xmod.gregtech.api.objects.GregtechFluid;
@@ -82,6 +85,16 @@ public class Meta_GT_Proxy {
 	public static boolean mSortToTheEnd = true;
 	public final static HashSet<ItemStack> mRegisteredOres = new HashSet(10000);
 	public final static Collection<GregtechOreDictEventContainer> mEvents = new HashSet();
+
+	public Meta_GT_Proxy() {	
+		Utils.LOG_INFO("GT_PROXY - initialized.");
+		for (String tOreName : OreDictionary.getOreNames()) {
+			ItemStack tOreStack;
+			for (Iterator i$ = OreDictionary.getOres(tOreName).iterator(); i$.hasNext(); registerOre(new OreDictionary.OreRegisterEvent(tOreName, tOreStack))) {
+				tOreStack = (ItemStack) i$.next();
+			}
+		}
+	}
 
 	public static Fluid addFluid(String aName, String aLocalized, GT_Materials aMaterial, int aState, int aTemperatureK) {
 		return addFluid(aName, aLocalized, aMaterial, aState, aTemperatureK, null, null, 0);
@@ -326,7 +339,24 @@ public class Meta_GT_Proxy {
 			//			System.out.println("Thingy Name: "+ aOre.mEvent.Name+ " !!!Unknown 'Thingy' detected!!! This Object seems to probably not follow a valid OreDictionary Convention, or I missed a Convention. Please report to GregTech Intergalactical for additional compatiblity. This is not an Error, an Issue nor a Lag Source, it is just an Information, which you should pass to me.");
 		}
 	}
-	
+
+	private static final void registerRecipes(OreDictEventContainer aOre) {
+		if ((aOre.mEvent.Ore == null) || (aOre.mEvent.Ore.getItem() == null)) {
+			return;
+		}
+		if (aOre.mEvent.Ore.stackSize != 1) {
+			aOre.mEvent.Ore.stackSize = 1;
+		}
+		if (aOre.mPrefix != null) {
+			if (!aOre.mPrefix.isIgnored(aOre.mMaterial)) {
+				aOre.mPrefix.processOre(aOre.mMaterial == null ? Materials._NULL : aOre.mMaterial, aOre.mEvent.Name, aOre.mModID,
+						GT_Utility.copyAmount(1L, new Object[]{aOre.mEvent.Ore}));
+			}
+		} else {
+			//			System.out.println("Thingy Name: "+ aOre.mEvent.Name+ " !!!Unknown 'Thingy' detected!!! This Object seems to probably not follow a valid OreDictionary Convention, or I missed a Convention. Please report to GregTech Intergalactical for additional compatiblity. This is not an Error, an Issue nor a Lag Source, it is just an Information, which you should pass to me.");
+		}
+	}
+
 	public static void registerUnificationEntries() {
 		GregTech_API.sUnification.mConfig.save();
 		GregTech_API.sUnification.mConfig.load();
@@ -334,7 +364,7 @@ public class Meta_GT_Proxy {
 		for (GregtechOreDictEventContainer tOre : mEvents) {
 			if ((!(tOre.mEvent.Ore.getItem() instanceof MetaGeneratedGregtechItems)) && (tOre.mPrefix != null) && (tOre.mPrefix.mIsUnificatable)
 					&& (tOre.mMaterial != null)) {
-				 if (GregtechOreDictUnificator.isBlacklisted(tOre.mEvent.Ore)) {
+				if (GregtechOreDictUnificator.isBlacklisted(tOre.mEvent.Ore)) {
 					GregtechOreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, true);
 				} else {
 					GregtechOreDictUnificator.addAssociation(tOre.mPrefix, tOre.mMaterial, tOre.mEvent.Ore, false);
@@ -382,7 +412,7 @@ public class Meta_GT_Proxy {
 			this.mModID = ((aModID == null) || (aModID.equals("UNKNOWN")) ? null : aModID);
 		}
 	}
-	
+
 	public static boolean areWeUsingGregtech5uExperimental(){
 		int version = GregTech_API.VERSION;
 		if (version == 508){
