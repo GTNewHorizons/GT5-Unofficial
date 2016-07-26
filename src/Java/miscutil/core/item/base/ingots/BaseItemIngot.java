@@ -41,6 +41,12 @@ public class BaseItemIngot extends Item{
 	}
 
 	@Override
+	public String getItemStackDisplayName(ItemStack p_77653_1_) {
+
+		return (materialName+ " Ingot");
+	}
+
+	@Override
 	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
 		if (materialName != null && materialName != "" && !materialName.equals("") && !unlocalName.contains("HotIngot") && !unlocalName.toLowerCase().contains("raisinbread")){
 			list.add(EnumChatFormatting.GRAY+"A solid ingot of " + materialName + ".");		

@@ -133,7 +133,7 @@ public class GregtechMetaTileEntityMassFabricator extends GT_MetaTileEntity_Mult
 						ArrayUtils.reverse(mOutputFluids);
 						recipeCounter++;
 						updateSlots();
-						Utils.LOG_INFO("Recipes Finished: "+recipeCounter);
+						//Utils.LOG_INFO("Recipes Finished: "+recipeCounter);
 						return true;
 					}
 				}

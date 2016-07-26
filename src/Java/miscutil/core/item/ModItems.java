@@ -4,8 +4,10 @@ import static miscutil.core.creative.AddToCreativeTab.tabMisc;
 import static miscutil.core.lib.CORE.LOAD_ALL_CONTENT;
 import gregtech.api.util.GT_OreDictUnificator;
 import miscutil.core.creative.AddToCreativeTab;
+import miscutil.core.item.base.BaseItemHotFood;
 import miscutil.core.item.base.CoreItem;
 import miscutil.core.item.base.dusts.BaseItemDust;
+import miscutil.core.item.base.foods.BaseItemFood;
 import miscutil.core.item.base.ingots.BaseItemIngot;
 import miscutil.core.item.base.ingots.BaseItemIngotHot;
 import miscutil.core.item.effects.RarityUncommon;
@@ -21,6 +23,8 @@ import miscutil.core.util.debug.DEBUG_INIT;
 import miscutil.core.util.item.UtilsItems;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.common.util.EnumHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 public final class ModItems {
@@ -64,7 +68,7 @@ Gold Tool: 22*/
 	public static ToolMaterial STABALLOY = EnumHelper.addToolMaterial("Staballoy", 3, 2500, 7, 1.0F, 18);
 
 	public static Item AAA_Broken;
-	
+
 	public static Item itemDebugShapeSpawner;
 
 	public static Item itemBaseSpawnEgg;
@@ -130,11 +134,16 @@ Gold Tool: 22*/
 	public static Item itemIngotRaisinBread;
 	public static Item itemHotIngotRaisinBread;
 
+	public static BaseItemIngot itemIngotTantalloy60;
+	public static BaseItemIngotHot itemHotIngotTantalloy60;
+	public static BaseItemIngot itemIngotTantalloy61;
+	public static BaseItemIngotHot itemHotIngotTantalloy61;
+
 	//@SuppressWarnings("unused")
 	public static final void init(){
 
 		AAA_Broken = new BaseItemIngot("AAA_Broken", "Errors - Tell Alkalus", Utils.rgbtoHexValue(128, 128, 0));
-		
+
 		//Debug Loading
 		if (CORE.DEBUG){
 			DEBUG_INIT.registerItems();
@@ -275,7 +284,7 @@ Gold Tool: 22*/
 		GameRegistry.registerItem(itemStaballoyPickaxe, itemStaballoyPickaxe.getUnlocalizedName());
 		itemStaballoyAxe = new StaballoyAxe("itemStaballoyAxe", STABALLOY).setCreativeTab(AddToCreativeTab.tabTools);
 		GameRegistry.registerItem(itemStaballoyAxe, itemStaballoyAxe.getUnlocalizedName());
-		
+
 		//Staballoy Ingot/Plate
 		itemIngotStaballoy = new BaseItemIngot("itemIngotStaballoy", "Staballoy", Utils.rgbtoHexValue(68, 75, 66));
 		GT_OreDictUnificator.registerOre("ingotStaballoy", UtilsItems.getItemStack(CORE.MODID+":itemIngotStaballoy", 1));
@@ -284,8 +293,8 @@ Gold Tool: 22*/
 		GT_OreDictUnificator.registerOre("plateStaballoy", UtilsItems.getItemStack(CORE.MODID+":itemPlateStaballoy", 1));
 		/*itemIngotStaballoy = new Item().setUnlocalizedName("itemIngotStaballoy").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemIngotStaballoy");
 		GameRegistry.registerItem(itemIngotStaballoy, "itemIngotStaballoy");
-		*/
-		
+		 */
+
 
 		//Staballoy Dusts
 		itemDustStaballoy = new BaseItemDust("itemDustStaballoy", "Staballoy", Utils.rgbtoHexValue(68, 75, 66), "Dust").setCreativeTab(tabMisc);
@@ -310,18 +319,30 @@ Gold Tool: 22*/
 		itemDustSmallBloodSteel = new BaseItemDust("itemDustSmallBloodSteel", "BloodSteel", Utils.rgbtoHexValue(142, 28, 0), "Small").setCreativeTab(tabMisc);
 		GT_OreDictUnificator.registerOre("dustSmallBloodSteel", UtilsItems.getItemStack(CORE.MODID+":itemDustSmallBloodSteel", 1));
 
-
 		//Hot Staballoy Ingot
 		itemHotIngotStaballoy = new BaseItemIngotHot("itemHotIngotStaballoy", "Staballoy", UtilsItems.getItemStack(CORE.MODID+":itemIngotStaballoy", 1));
 		GT_OreDictUnificator.registerOre("ingotHotStaballoy", UtilsItems.getItemStack(CORE.MODID+":itemHotIngotStaballoy", 1));
 
-		//Raisin Bread Ingot
-		itemIngotRaisinBread = new BaseItemIngot("itemIngotRaisinBread", "Raisin Bread", Utils.rgbtoHexValue(255, 255, 255));
+		//Raisin Bread		
+		itemIngotRaisinBread = new BaseItemFood("itemIngotRaisinBread", 3, 1.5f, false, new PotionEffect(Potion.weakness.id, 40, 1)).setAlwaysEdible();
 		GT_OreDictUnificator.registerOre("itemIngotRaisinBread", UtilsItems.getItemStack(CORE.MODID+":itemIngotRaisinBread", 1));
-		//Hot Raisin Bread Ingot
-		itemHotIngotRaisinBread = new BaseItemIngotHot("itemHotIngotRaisinBread", "Raisin Bread", UtilsItems.getItemStack(CORE.MODID+":itemIngotStaballoy", 1));
+		//Hot Raisin Bread 
+		itemHotIngotRaisinBread = new BaseItemHotFood("itemHotIngotRaisinBread", 1, 0.5f, "Raisin Bread", 120, itemIngotRaisinBread);
 		GT_OreDictUnificator.registerOre("itemHotIngotRaisinBread", UtilsItems.getItemStack(CORE.MODID+":itemHotIngotRaisinBread", 1));
 
+		//Tantalloy Ingot/Plate
+		itemIngotTantalloy60 = new BaseItemIngot("itemIngotTantalloy60", "Tantalloy-60", Utils.rgbtoHexValue(68, 75, 166));
+		GT_OreDictUnificator.registerOre("ingotTantalloy-60", UtilsItems.getItemStack(CORE.MODID+":itemIngotTantalloy60", 1));
+		//Hot Tantalloy Ingot
+		itemHotIngotTantalloy60 = new BaseItemIngotHot("itemHotIngotTantalloy60", "Tantalloy-60", UtilsItems.getItemStack(CORE.MODID+":itemIngotTantalloy60", 1));
+		GT_OreDictUnificator.registerOre("ingotHotTantalloy-60", UtilsItems.getItemStack(CORE.MODID+":itemHotIngotTantalloy60", 1));
+
+		//Tantalloy Ingot/Plate
+		itemIngotTantalloy61 = new BaseItemIngot("itemIngotTantalloy61", "Tantalloy-61", Utils.rgbtoHexValue(122, 135, 196));
+		GT_OreDictUnificator.registerOre("ingotTantalloy-61", UtilsItems.getItemStack(CORE.MODID+":itemIngotTantalloy61", 1));
+		//Hot Tantalloy Ingot
+		itemHotIngotTantalloy61 = new BaseItemIngotHot("itemHotIngotTantalloy61", "Tantalloy-61", UtilsItems.getItemStack(CORE.MODID+":itemIngotTantalloy61", 1));
+		GT_OreDictUnificator.registerOre("ingotHotTantalloy-61", UtilsItems.getItemStack(CORE.MODID+":itemHotIngotTantalloy61", 1));
 
 		//Sandstone Hammer
 		itemSandstoneHammer = new SandstoneHammer("itemSandstoneHammer").setCreativeTab(AddToCreativeTab.tabTools);

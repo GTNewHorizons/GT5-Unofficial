@@ -8,15 +8,18 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.GT_MultiTexture;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_FoodStat;
 import gregtech.common.covers.GT_Cover_Arm;
 import gregtech.common.covers.GT_Cover_Conveyor;
 import gregtech.common.covers.GT_Cover_Pump;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
+import miscutil.core.util.UtilsText;
 import miscutil.core.xmod.gregtech.api.enums.GregtechItemList;
 import miscutil.core.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import miscutil.core.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import miscutil.core.xmod.gregtech.api.items.Gregtech_MetaItem_X32;
+import net.minecraft.item.EnumAction;
 
 public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
     public MetaGeneratedGregtechItems INSTANCE;
@@ -27,7 +30,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 	    int tLastID = 0;
 	    
 	    if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
-	    	Utils.LOG_INFO("Gregtech 5.09 not found, using fallback components. (I like how I have to add compat to something I added first and had stolen.");
+	    	Utils.LOG_INFO("Gregtech 5.09 not found, using fallback components. (I like how I have to add compat to something I added first and had stolen.)");
         GregtechItemList.Electric_Pump_LuV.set(addItem(tLastID = 0, "Electric Pump (LuV)", "163920 L/sec (as Cover)", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L)}));
         GregtechItemList.Electric_Pump_ZPM.set(addItem(tLastID = 1, "Electric Pump (ZPM)", "655680 L/sec (as Cover)", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 2L)}));
         GregtechItemList.Electric_Pump_UV.set(addItem(tLastID = 2, "Electric Pump (UV)", "2622720 L/sec (as Cover)", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 4L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 4L)}));
@@ -132,7 +135,9 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
         GregtechItemList.Circuit_Parts_Wiring_ZPM.set(addItem(tLastID = 721, "Etched ZPM Voltage Wiring", "Part of Circuit Boards", new Object[0]));
         
     
-        
+        //FOOOOOOOOOOOOOOD
+        GregtechItemList.Food_Baked_Raisin_Bread.set(addItem(tLastID = 60, "Raisin Bread", "Extra Raisins, Just for "+UtilsText.purple.colour()+"ImQ009", new Object[]{new GT_FoodStat(5, 0.5F, EnumAction.eat, null, false, true, false, new int[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.CORPUS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)}));
+
         
         //Extruder Shape
         GregtechItemList.Shape_Extruder_WindmillShaft.set(addItem(tLastID = 40, "Extruder Shape (Shaft)", "Extruder Shape for making Windmill Shafts", new Object[0]));

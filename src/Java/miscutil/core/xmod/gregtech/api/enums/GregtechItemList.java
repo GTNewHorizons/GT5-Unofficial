@@ -90,7 +90,13 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Industrial_MassFab, 
 	
 	//Solar Generators
-	GT_Solar_ULV, GT_Solar_LV, GT_Solar_MV, GT_Solar_HV, GT_Solar_EV, GT_Solar_IV, GT_Solar_LuV, GT_Solar_ZPM, GT_Solar_UV, GT_Solar_MAX;
+	GT_Solar_ULV, GT_Solar_LV, GT_Solar_MV,
+	GT_Solar_HV, GT_Solar_EV, GT_Solar_IV,
+	GT_Solar_LuV, GT_Solar_ZPM, GT_Solar_UV, GT_Solar_MAX, 
+	
+	
+	
+	Food_Baked_Raisin_Bread;
 
 	public static final GregtechItemList[]
 			DYE_ONLY_ITEMS = {

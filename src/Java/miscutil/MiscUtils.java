@@ -8,6 +8,7 @@ import java.io.File;
 
 import miscutil.core.commands.CommandMath;
 import miscutil.core.common.CommonProxy;
+import miscutil.core.handler.events.LoginEventHandler;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
 import miscutil.core.xmod.gregtech.HANDLER_GT;
@@ -57,11 +58,10 @@ implements ActionListener
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		Utils.LOG_INFO("Loading "+CORE.name+" V"+CORE.VERSION);
-		/*Configuration Config = new Configuration(event.getSuggestedConfigurationFile());
-		Config.load();
-		CORE.Config = Config;
-		CORE.disableEnderIOIntegration = Config.get(Configuration.CATEGORY_GENERAL, "disableEnderIOIntegration", false).getBoolean(false);
-		CORE.disableStaballoyBlastFurnaceRecipe = Config.get(Configuration.CATEGORY_GENERAL, "disableStaballoyBlastFurnaceRecipe", false).getBoolean(false);*/
+		
+		FMLCommonHandler.instance().bus().register(new LoginEventHandler());        
+    	System.out.println("Login Handler Initialized");
+		
 		handleConfigFile(event);
 		proxy.registerTileEntities();
 		proxy.registerRenderThings();
