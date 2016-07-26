@@ -4,12 +4,13 @@ import static miscutil.core.creative.AddToCreativeTab.tabMisc;
 import static miscutil.core.lib.CORE.LOAD_ALL_CONTENT;
 import gregtech.api.util.GT_OreDictUnificator;
 import miscutil.core.creative.AddToCreativeTab;
-import miscutil.core.item.base.BaseItemHotFood;
 import miscutil.core.item.base.CoreItem;
 import miscutil.core.item.base.dusts.BaseItemDust;
 import miscutil.core.item.base.foods.BaseItemFood;
+import miscutil.core.item.base.foods.BaseItemHotFood;
 import miscutil.core.item.base.ingots.BaseItemIngot;
 import miscutil.core.item.base.ingots.BaseItemIngotHot;
+import miscutil.core.item.base.plates.BaseItemPlate;
 import miscutil.core.item.effects.RarityUncommon;
 import miscutil.core.item.general.BufferCore;
 import miscutil.core.item.general.fuelrods.FuelRod_Base;
@@ -137,13 +138,16 @@ Gold Tool: 22*/
 
 	public static BaseItemIngot itemIngotTantalloy60;
 	public static BaseItemIngotHot itemHotIngotTantalloy60;
+	public static BaseItemPlate itemPlateTantalloy60;
 	public static BaseItemIngot itemIngotTantalloy61;
 	public static BaseItemIngotHot itemHotIngotTantalloy61;
+	public static BaseItemPlate itemPlateTantalloy61;
 
 	public static ItemFood itemFoodRaisinToast;
 	public static BaseItemHotFood itemHotFoodRaisinToast;
 	public static BaseItemFood itemFoodCurriedSausages;
 	public static BaseItemHotFood itemHotFoodCurriedSausages;
+	
 
 	//@SuppressWarnings("unused")
 	public static final void init(){
@@ -293,13 +297,7 @@ Gold Tool: 22*/
 
 		//Staballoy Ingot/Plate
 		itemIngotStaballoy = new BaseItemIngot("itemIngotStaballoy", "Staballoy", Utils.rgbtoHexValue(68, 75, 66));
-		GT_OreDictUnificator.registerOre("ingotStaballoy", UtilsItems.getItemStack(CORE.MODID+":itemIngotStaballoy", 1));
-		itemPlateStaballoy = new Item().setUnlocalizedName("itemPlateStaballoy").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemPlateStaballoy");
-		GameRegistry.registerItem(itemPlateStaballoy, "itemPlateStaballoy");
-		GT_OreDictUnificator.registerOre("plateStaballoy", UtilsItems.getItemStack(CORE.MODID+":itemPlateStaballoy", 1));
-		/*itemIngotStaballoy = new Item().setUnlocalizedName("itemIngotStaballoy").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemIngotStaballoy");
-		GameRegistry.registerItem(itemIngotStaballoy, "itemIngotStaballoy");
-		 */
+		itemPlateStaballoy = new BaseItemPlate("itemPlateStaballoy", "Staballoy", Utils.rgbtoHexValue(68, 75, 66));
 
 
 		//Staballoy Dusts
@@ -335,14 +333,16 @@ Gold Tool: 22*/
 		//Hot Tantalloy Ingot
 		itemHotIngotTantalloy60 = new BaseItemIngotHot("itemHotIngotTantalloy60", "Tantalloy-60", UtilsItems.getItemStack(CORE.MODID+":itemIngotTantalloy60", 1));
 		GT_OreDictUnificator.registerOre("ingotHotTantalloy-60", UtilsItems.getItemStack(CORE.MODID+":itemHotIngotTantalloy60", 1));
-
+		itemPlateTantalloy60 = new BaseItemPlate("itemPlateTantalloy60", "Tantalloy-60", Utils.rgbtoHexValue(68, 75, 166));
+		
 		//Tantalloy Ingot/Plate
 		itemIngotTantalloy61 = new BaseItemIngot("itemIngotTantalloy61", "Tantalloy-61", Utils.rgbtoHexValue(122, 135, 196));
 		GT_OreDictUnificator.registerOre("ingotTantalloy-61", UtilsItems.getItemStack(CORE.MODID+":itemIngotTantalloy61", 1));
 		//Hot Tantalloy Ingot
 		itemHotIngotTantalloy61 = new BaseItemIngotHot("itemHotIngotTantalloy61", "Tantalloy-61", UtilsItems.getItemStack(CORE.MODID+":itemIngotTantalloy61", 1));
 		GT_OreDictUnificator.registerOre("ingotHotTantalloy-61", UtilsItems.getItemStack(CORE.MODID+":itemHotIngotTantalloy61", 1));
-
+		itemPlateTantalloy61 = new BaseItemPlate("itemPlateTantalloy61", "Tantalloy-61", Utils.rgbtoHexValue(122, 135, 196));
+		
 		//Sandstone Hammer
 		itemSandstoneHammer = new SandstoneHammer("itemSandstoneHammer").setCreativeTab(AddToCreativeTab.tabTools);
 		GameRegistry.registerItem(itemSandstoneHammer, itemSandstoneHammer.getUnlocalizedName());
@@ -374,24 +374,24 @@ Gold Tool: 22*/
 
 
 		//Raisin Bread		
-		itemIngotRaisinBread = new BaseItemFood("itemIngotRaisinBread", 3, 1.5f, false, new PotionEffect(Potion.weakness.id, 40, 1)).setAlwaysEdible();
+		itemIngotRaisinBread = new BaseItemFood("itemIngotRaisinBread", "Raisin Bread", 3, 1.5f, false, new PotionEffect(Potion.weakness.id, 40, 1)).setAlwaysEdible();
 		GT_OreDictUnificator.registerOre("foodRaisinBread", UtilsItems.getItemStack(CORE.MODID+":itemIngotRaisinBread", 1));
 		//Hot Raisin Bread 
 		itemHotIngotRaisinBread = new BaseItemHotFood("itemHotIngotRaisinBread", 1, 0.5f, "Raisin Bread", 120, itemIngotRaisinBread);
 		GT_OreDictUnificator.registerOre("foodHotRaisinBread", UtilsItems.getItemStack(CORE.MODID+":itemHotIngotRaisinBread", 1));
 
 		//Raisin Bread		
-		itemFoodRaisinToast = new BaseItemFood("itemFoodRaisinToast", 1, 0.5f, false).setAlwaysEdible();
+		itemFoodRaisinToast = new BaseItemFood("itemFoodRaisinToast", "Raisin Toast", 1, 0.5f, false).setAlwaysEdible();
 		GT_OreDictUnificator.registerOre("foodRaisinToast", UtilsItems.getItemStack(CORE.MODID+":itemFoodRaisinToast", 1));
 		//Hot Raisin Bread 
 		itemHotFoodRaisinToast = new BaseItemHotFood("itemHotFoodRaisinToast", 1, 0.5f, "Raisin Toast", 20, itemFoodRaisinToast);
 		GT_OreDictUnificator.registerOre("foodHotRaisinToast", UtilsItems.getItemStack(CORE.MODID+":itemHotFoodRaisinToast", 1));
 
 		//Raisin Bread		
-		itemFoodCurriedSausages = new BaseItemFood("itemFoodCurriedSausages", 5, 2f, false);
+		itemFoodCurriedSausages = new BaseItemFood("itemFoodCurriedSausages", "Curried Sausages", 5, 2f, false);
 		GT_OreDictUnificator.registerOre("foodCurriedSausages", UtilsItems.getItemStack(CORE.MODID+":itemFoodCurriedSausages", 1));
 		//Hot Raisin Bread 
-		itemHotFoodCurriedSausages = new BaseItemHotFood("itemHotFoodCurriedSausages", 1, 0.5f, "Raisin Bread", 240, itemFoodCurriedSausages);
+		itemHotFoodCurriedSausages = new BaseItemHotFood("itemHotFoodCurriedSausages", 1, 0.5f, "Curried Sausages", 240, itemFoodCurriedSausages);
 		GT_OreDictUnificator.registerOre("foodHotCurriedSausages", UtilsItems.getItemStack(CORE.MODID+":itemHotFoodCurriedSausages", 1));
 	}
 }

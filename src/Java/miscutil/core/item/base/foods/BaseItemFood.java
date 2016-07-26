@@ -12,13 +12,15 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class BaseItemFood extends ItemFood {
 
 	private PotionEffect[] effects;
+	protected String localName;
 
-	public BaseItemFood(String unlocalizedName, int healAmount, float saturationModifier, boolean wolvesFavorite, PotionEffect... effects) {
+	public BaseItemFood(String unlocalizedName, String localizedName, int healAmount, float saturationModifier, boolean wolvesFavorite, PotionEffect... effects) {
 		super(healAmount, saturationModifier, wolvesFavorite);
 		this.setUnlocalizedName(unlocalizedName);
-		this.setTextureName(CORE.MODID + ":" + unlocalizedName);
+		this.setTextureName(CORE.MODID + ":" + unlocalizedName.replace("Hot", ""));
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
 		this.effects = effects;
+		this.localName = localizedName;
 		GameRegistry.registerItem(this, unlocalizedName);
 	}
 
@@ -34,6 +36,12 @@ public class BaseItemFood extends ItemFood {
 						)
 						);
 		}
+	}
+	
+	@Override
+	public String getItemStackDisplayName(ItemStack p_77653_1_) {
+
+		return ("A Serving of "+localName);
 	}
 
 }

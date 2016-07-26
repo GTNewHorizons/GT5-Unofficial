@@ -1,8 +1,7 @@
-package miscutil.core.item.base;
+package miscutil.core.item.base.foods;
 
 import java.util.List;
 
-import miscutil.core.item.base.foods.BaseItemFood;
 import miscutil.core.util.Utils;
 import miscutil.core.util.UtilsText;
 import miscutil.core.util.item.UtilsItems;
@@ -22,7 +21,7 @@ public class BaseItemHotFood extends BaseItemFood{
 	protected Item output;
 
 	public BaseItemHotFood(String unlocalizedName, int healAmount, float healSaturation, String foodName, int timeToCoolInSeconds, Item cooledFood) {
-		super(unlocalizedName, healAmount, healSaturation, false);
+		super(unlocalizedName, "Hot "+foodName, healAmount, healSaturation, false);
 		this.unlocalName = unlocalizedName;
 		this.cooldownTime = timeToCoolInSeconds * 20;
 		this.materialName = foodName;
@@ -72,7 +71,7 @@ public class BaseItemHotFood extends BaseItemFood{
 
 	@Override
 	public int getColorFromItemStack(ItemStack stack, int HEX_OxFFFFFF) {
-		return Utils.rgbtoHexValue(255, 128, 128);
+		return Utils.rgbtoHexValue(230, 96, 96);
 
 	}
 }

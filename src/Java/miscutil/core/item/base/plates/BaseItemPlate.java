@@ -1,8 +1,7 @@
-package miscutil.core.item.base.ingots;
+package miscutil.core.item.base.plates;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
 
 import java.util.List;
 
@@ -16,49 +15,37 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public class BaseItemIngot extends Item{
+public class BaseItemPlate extends Item{
 
 	protected int colour;
 	protected String materialName;
 	protected String unlocalName;
 
-	public BaseItemIngot(String unlocalizedName, String materialName, int colour) {
+	public BaseItemPlate(String unlocalizedName, String materialName, int colour) {
 		setUnlocalizedName(unlocalizedName);
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
 		this.setUnlocalizedName(unlocalizedName);
 		this.unlocalName = unlocalizedName;
 		this.setMaxStackSize(64);
-		this.setTextureName(CORE.MODID + ":" + "itemIngot");
+		this.setTextureName(CORE.MODID + ":" + "itemPlate");
 		this.setMaxStackSize(64);
 		this.colour = colour;
 		this.materialName = materialName;
 		GameRegistry.registerItem(this, unlocalizedName);
-		String temp = "";
-		if (unlocalName.contains("itemIngot")){
-			temp = unlocalName.replace("itemI", "i");
-		}
-		if (unlocalName.contains("itemHotIngot")){
-			temp = unlocalName.replace("itemHotIngot", "ingotHot");
-		}
-		if (temp != null && temp != ""){
-			GT_OreDictUnificator.registerOre(temp, UtilsItems.getSimpleStack(this));
-		}		
-		//addBendingRecipe();
+		GT_OreDictUnificator.registerOre(unlocalName.replace("itemP", "p"), UtilsItems.getSimpleStack(this));
+		addBendingRecipe();
 	}
 
 	@Override
 	public String getItemStackDisplayName(ItemStack p_77653_1_) {
 
-		return (materialName+ " Ingot");
+		return (materialName+ " Plate");
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
-		if (materialName != null && materialName != "" && !materialName.equals("") && !unlocalName.contains("HotIngot")){
-			list.add(EnumChatFormatting.GRAY+"A solid ingot of " + materialName + ".");		
-		}
-		else if (materialName != null && materialName != "" && !materialName.equals("") && unlocalName.toLowerCase().contains("ingothot")){
-			list.add(EnumChatFormatting.GRAY+"Warning: Very hot! Avoid direct handling..");		
+		if (materialName != null && materialName != "" && !materialName.equals("")){
+			list.add(EnumChatFormatting.GRAY+"A flat plate of " + materialName + ".");		
 		}
 		super.addInformation(stack, aPlayer, list, bool);
 	}
@@ -77,11 +64,13 @@ public class BaseItemIngot extends Item{
 	}
 
 	private void addBendingRecipe(){
-		if (!unlocalName.toLowerCase().contains("ingothot")){
-			GT_Values.RA.addBenderRecipe(GT_Utility.copyAmount(1L, new Object[]{this}),
-					UtilsItems.getItemStackOfAmountFromOreDict("plate"+materialName, 1),
-					1200, 24);
-		}
+		String tempIngot = unlocalName.replace("itemPlate", "ingot");
+		ItemStack tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 1);
+		if (null != tempOutputStack){
+			GT_Values.RA.addBenderRecipe(UtilsItems.getSimpleStack(this),
+					tempOutputStack,
+					1200, 24);	
+		}				
 	}
 
 }
