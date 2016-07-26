@@ -4,6 +4,7 @@ import java.util.List;
 
 import miscutil.core.item.base.foods.BaseItemFood;
 import miscutil.core.util.Utils;
+import miscutil.core.util.UtilsText;
 import miscutil.core.util.item.UtilsItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -59,8 +60,8 @@ public class BaseItemHotFood extends BaseItemFood{
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
 		if (materialName != null && materialName != "" && !materialName.equals("")){
-			list.add(EnumChatFormatting.GRAY+"Warning: Very hot! Avoid direct handling..");	
-			list.add(EnumChatFormatting.GRAY+"This food has "+(((int) stack.getMaxDamage()-(int) stack.getItemDamage())/20)+" seconds left.");		
+			list.add(EnumChatFormatting.GRAY+"Warning: "+UtilsText.red.colour()+"Very hot!"+UtilsText.lightGray.colour()+" Avoid direct handling..");	
+			list.add(EnumChatFormatting.GRAY+"This food has "+((cooldownTime-(int) stack.getItemDamage())/20)+" seconds left, until it is cool.");		
 		}
 		super.addInformation(stack, aPlayer, list, bool);
 	}

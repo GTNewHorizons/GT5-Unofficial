@@ -31,7 +31,7 @@ public class LoginEventHandler {
 				/*Utils.LOG_INFO("Engaging Log in protection.");
 				localPlayerRef.*/
 
-				if (localPlayerRef.getCommandSenderName().toLowerCase().equalsIgnoreCase("ImQ009") || localPlayerRef.getCommandSenderName().toLowerCase().contains("player")){
+				if (localPlayerRef.getCommandSenderName().toLowerCase().equalsIgnoreCase("ImQ009")/* || localPlayerRef.getCommandSenderName().toLowerCase().contains("player")*/){
 
 
 					Utils.LOG_INFO("Spawning a new Santa Thread.");
@@ -58,7 +58,7 @@ public class LoginEventHandler {
 										Utils.messagePlayer(localPlayerRef, "Enjoy some complimentary Raisin Bread.");
 										localPlayerRef.inventory.addItemStackToInventory(UtilsItems.getSimpleStack(ModItems.itemIngotRaisinBread, Utils.randInt(1, 5)));
 									}
-									Thread.sleep(1000*60*1);
+									Thread.sleep(1000*60*Utils.randInt(15, 90));
 								} catch (InterruptedException ie) {
 									Utils.LOG_INFO("Santa Mode Disabled.");
 								}

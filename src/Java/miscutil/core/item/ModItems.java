@@ -23,6 +23,7 @@ import miscutil.core.util.debug.DEBUG_INIT;
 import miscutil.core.util.item.UtilsItems;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.item.ItemFood;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.common.util.EnumHelper;
@@ -138,6 +139,11 @@ Gold Tool: 22*/
 	public static BaseItemIngotHot itemHotIngotTantalloy60;
 	public static BaseItemIngot itemIngotTantalloy61;
 	public static BaseItemIngotHot itemHotIngotTantalloy61;
+
+	public static ItemFood itemFoodRaisinToast;
+	public static BaseItemHotFood itemHotFoodRaisinToast;
+	public static BaseItemFood itemFoodCurriedSausages;
+	public static BaseItemHotFood itemHotFoodCurriedSausages;
 
 	//@SuppressWarnings("unused")
 	public static final void init(){
@@ -323,13 +329,6 @@ Gold Tool: 22*/
 		itemHotIngotStaballoy = new BaseItemIngotHot("itemHotIngotStaballoy", "Staballoy", UtilsItems.getItemStack(CORE.MODID+":itemIngotStaballoy", 1));
 		GT_OreDictUnificator.registerOre("ingotHotStaballoy", UtilsItems.getItemStack(CORE.MODID+":itemHotIngotStaballoy", 1));
 
-		//Raisin Bread		
-		itemIngotRaisinBread = new BaseItemFood("itemIngotRaisinBread", 3, 1.5f, false, new PotionEffect(Potion.weakness.id, 40, 1)).setAlwaysEdible();
-		GT_OreDictUnificator.registerOre("itemIngotRaisinBread", UtilsItems.getItemStack(CORE.MODID+":itemIngotRaisinBread", 1));
-		//Hot Raisin Bread 
-		itemHotIngotRaisinBread = new BaseItemHotFood("itemHotIngotRaisinBread", 1, 0.5f, "Raisin Bread", 120, itemIngotRaisinBread);
-		GT_OreDictUnificator.registerOre("itemHotIngotRaisinBread", UtilsItems.getItemStack(CORE.MODID+":itemHotIngotRaisinBread", 1));
-
 		//Tantalloy Ingot/Plate
 		itemIngotTantalloy60 = new BaseItemIngot("itemIngotTantalloy60", "Tantalloy-60", Utils.rgbtoHexValue(68, 75, 166));
 		GT_OreDictUnificator.registerOre("ingotTantalloy-60", UtilsItems.getItemStack(CORE.MODID+":itemIngotTantalloy60", 1));
@@ -371,10 +370,28 @@ Gold Tool: 22*/
 
 		itemPLACEHOLDER_Circuit = new Item().setUnlocalizedName("itemPLACEHOLDER_Circuit").setTextureName(CORE.MODID + ":itemPLACEHOLDER_Circuit");
 		GameRegistry.registerItem(itemPLACEHOLDER_Circuit, "itemPLACEHOLDER_Circuit");
-		//Try some New Tools from GT
-		//GT_Tool_Item x = null;
-		//x = GregTech_API.constructHardHammerItem("rockBelter", "Sandstone Hammer", 5000 /**Max Damage**/,50 /**Entity Damage**/);
-		//Item hardHammer = itemSandstoneHammer.
-		//GregTech_API.registerHardHammer(new ItemStack(itemSandstoneHammer, 1));
+
+
+
+		//Raisin Bread		
+		itemIngotRaisinBread = new BaseItemFood("itemIngotRaisinBread", 3, 1.5f, false, new PotionEffect(Potion.weakness.id, 40, 1)).setAlwaysEdible();
+		GT_OreDictUnificator.registerOre("foodRaisinBread", UtilsItems.getItemStack(CORE.MODID+":itemIngotRaisinBread", 1));
+		//Hot Raisin Bread 
+		itemHotIngotRaisinBread = new BaseItemHotFood("itemHotIngotRaisinBread", 1, 0.5f, "Raisin Bread", 120, itemIngotRaisinBread);
+		GT_OreDictUnificator.registerOre("foodHotRaisinBread", UtilsItems.getItemStack(CORE.MODID+":itemHotIngotRaisinBread", 1));
+
+		//Raisin Bread		
+		itemFoodRaisinToast = new BaseItemFood("itemFoodRaisinToast", 1, 0.5f, false).setAlwaysEdible();
+		GT_OreDictUnificator.registerOre("foodRaisinToast", UtilsItems.getItemStack(CORE.MODID+":itemFoodRaisinToast", 1));
+		//Hot Raisin Bread 
+		itemHotFoodRaisinToast = new BaseItemHotFood("itemHotFoodRaisinToast", 1, 0.5f, "Raisin Toast", 20, itemFoodRaisinToast);
+		GT_OreDictUnificator.registerOre("foodHotRaisinToast", UtilsItems.getItemStack(CORE.MODID+":itemHotFoodRaisinToast", 1));
+
+		//Raisin Bread		
+		itemFoodCurriedSausages = new BaseItemFood("itemFoodCurriedSausages", 5, 2f, false);
+		GT_OreDictUnificator.registerOre("foodCurriedSausages", UtilsItems.getItemStack(CORE.MODID+":itemFoodCurriedSausages", 1));
+		//Hot Raisin Bread 
+		itemHotFoodCurriedSausages = new BaseItemHotFood("itemHotFoodCurriedSausages", 1, 0.5f, "Raisin Bread", 240, itemFoodCurriedSausages);
+		GT_OreDictUnificator.registerOre("foodHotCurriedSausages", UtilsItems.getItemStack(CORE.MODID+":itemHotFoodCurriedSausages", 1));
 	}
 }
