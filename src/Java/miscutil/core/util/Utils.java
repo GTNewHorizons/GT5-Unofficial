@@ -119,28 +119,28 @@ public class Utils {
 	//Non-Dev Comments 
 	public static void LOG_INFO(String s){
 		//if (CORE.DEBUG){
-		FMLLog.info("MiscUtils: "+s);
+		FMLLog.info("GT++: "+s);
 		//}
 	}
 
 	//Developer Comments
 	public static void LOG_WARNING(String s){
 		if (CORE.DEBUG){
-			FMLLog.warning("MiscUtils: "+s);
+			FMLLog.warning("GT++: "+s);
 		}
 	}
 
 	//Errors
 	public static void LOG_ERROR(String s){
 		if (CORE.DEBUG){
-			FMLLog.severe("MiscUtils: "+s);
+			FMLLog.severe("GT++: "+s);
 		}
 	}
 
 	//Developer Logger
 	public static void LOG_SPECIFIC_WARNING(String whatToLog, String msg, int line){
 		if (CORE.DEBUG){		
-			FMLLog.warning("MiscUtils |"+line+"| "+whatToLog+" | "+msg);
+			FMLLog.warning("GT++ |"+line+"| "+whatToLog+" | "+msg);
 		}			
 	}
 

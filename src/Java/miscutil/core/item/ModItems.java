@@ -6,6 +6,8 @@ import gregtech.api.util.GT_OreDictUnificator;
 import miscutil.core.creative.AddToCreativeTab;
 import miscutil.core.item.base.CoreItem;
 import miscutil.core.item.base.dusts.BaseItemDust;
+import miscutil.core.item.base.ingots.BaseItemIngot;
+import miscutil.core.item.base.ingots.BaseItemIngotHot;
 import miscutil.core.item.effects.RarityUncommon;
 import miscutil.core.item.general.BufferCore;
 import miscutil.core.item.general.fuelrods.FuelRod_Base;
@@ -61,6 +63,8 @@ Gold Tool: 22*/
 	//public static ToolMaterial TUTORIAL = EnumHelper.addToolMaterial("TUTORIAL", harvestLevel, durability, miningSpeed, damageVsEntities, enchantability);
 	public static ToolMaterial STABALLOY = EnumHelper.addToolMaterial("Staballoy", 3, 2500, 7, 1.0F, 18);
 
+	public static Item AAA_Broken;
+	
 	public static Item itemDebugShapeSpawner;
 
 	public static Item itemBaseSpawnEgg;
@@ -121,9 +125,16 @@ Gold Tool: 22*/
 	public static Item itemBedLocator_Base;
 	public static Item itemBaseItemWithCharge;
 
+	public static Item itemHotIngotStaballoy;
+
+	public static Item itemIngotRaisinBread;
+	public static Item itemHotIngotRaisinBread;
+
 	//@SuppressWarnings("unused")
 	public static final void init(){
 
+		AAA_Broken = new BaseItemIngot("AAA_Broken", "Errors - Tell Alkalus", Utils.rgbtoHexValue(128, 128, 0));
+		
 		//Debug Loading
 		if (CORE.DEBUG){
 			DEBUG_INIT.registerItems();
@@ -264,12 +275,17 @@ Gold Tool: 22*/
 		GameRegistry.registerItem(itemStaballoyPickaxe, itemStaballoyPickaxe.getUnlocalizedName());
 		itemStaballoyAxe = new StaballoyAxe("itemStaballoyAxe", STABALLOY).setCreativeTab(AddToCreativeTab.tabTools);
 		GameRegistry.registerItem(itemStaballoyAxe, itemStaballoyAxe.getUnlocalizedName());
+		
 		//Staballoy Ingot/Plate
-		itemIngotStaballoy = new Item().setUnlocalizedName("itemIngotStaballoy").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemIngotStaballoy");
-		GameRegistry.registerItem(itemIngotStaballoy, "itemIngotStaballoy");
+		itemIngotStaballoy = new BaseItemIngot("itemIngotStaballoy", "Staballoy", Utils.rgbtoHexValue(68, 75, 66));
+		GT_OreDictUnificator.registerOre("ingotStaballoy", UtilsItems.getItemStack(CORE.MODID+":itemIngotStaballoy", 1));
 		itemPlateStaballoy = new Item().setUnlocalizedName("itemPlateStaballoy").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemPlateStaballoy");
 		GameRegistry.registerItem(itemPlateStaballoy, "itemPlateStaballoy");
-
+		GT_OreDictUnificator.registerOre("plateStaballoy", UtilsItems.getItemStack(CORE.MODID+":itemPlateStaballoy", 1));
+		/*itemIngotStaballoy = new Item().setUnlocalizedName("itemIngotStaballoy").setCreativeTab(tabMisc).setTextureName(CORE.MODID + ":itemIngotStaballoy");
+		GameRegistry.registerItem(itemIngotStaballoy, "itemIngotStaballoy");
+		*/
+		
 
 		//Staballoy Dusts
 		itemDustStaballoy = new BaseItemDust("itemDustStaballoy", "Staballoy", Utils.rgbtoHexValue(68, 75, 66), "Dust").setCreativeTab(tabMisc);
@@ -293,6 +309,18 @@ Gold Tool: 22*/
 		GT_OreDictUnificator.registerOre("dustTinyBloodSteel", UtilsItems.getItemStack(CORE.MODID+":itemDustTinyBloodSteel", 1));
 		itemDustSmallBloodSteel = new BaseItemDust("itemDustSmallBloodSteel", "BloodSteel", Utils.rgbtoHexValue(142, 28, 0), "Small").setCreativeTab(tabMisc);
 		GT_OreDictUnificator.registerOre("dustSmallBloodSteel", UtilsItems.getItemStack(CORE.MODID+":itemDustSmallBloodSteel", 1));
+
+
+		//Hot Staballoy Ingot
+		itemHotIngotStaballoy = new BaseItemIngotHot("itemHotIngotStaballoy", "Staballoy", UtilsItems.getItemStack(CORE.MODID+":itemIngotStaballoy", 1));
+		GT_OreDictUnificator.registerOre("ingotHotStaballoy", UtilsItems.getItemStack(CORE.MODID+":itemHotIngotStaballoy", 1));
+
+		//Raisin Bread Ingot
+		itemIngotRaisinBread = new BaseItemIngot("itemIngotRaisinBread", "Raisin Bread", Utils.rgbtoHexValue(255, 255, 255));
+		GT_OreDictUnificator.registerOre("itemIngotRaisinBread", UtilsItems.getItemStack(CORE.MODID+":itemIngotRaisinBread", 1));
+		//Hot Raisin Bread Ingot
+		itemHotIngotRaisinBread = new BaseItemIngotHot("itemHotIngotRaisinBread", "Raisin Bread", UtilsItems.getItemStack(CORE.MODID+":itemIngotStaballoy", 1));
+		GT_OreDictUnificator.registerOre("itemHotIngotRaisinBread", UtilsItems.getItemStack(CORE.MODID+":itemHotIngotRaisinBread", 1));
 
 
 		//Sandstone Hammer

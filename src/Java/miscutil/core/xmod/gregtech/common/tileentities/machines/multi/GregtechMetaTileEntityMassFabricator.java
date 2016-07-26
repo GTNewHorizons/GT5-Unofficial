@@ -276,7 +276,7 @@ public class GregtechMetaTileEntityMassFabricator extends GT_MetaTileEntity_Mult
 
 	@Override
 	public int getPollutionPerTick(ItemStack aStack) {
-		return 20;
+		return 0;
 	}
 
 	@Override
@@ -286,7 +286,7 @@ public class GregtechMetaTileEntityMassFabricator extends GT_MetaTileEntity_Mult
 
 	@Override
 	public int getAmountOfOutputs() {
-		return 0;
+		return 1;
 	}
 
 	@Override

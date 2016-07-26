@@ -4,6 +4,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 
 import java.util.ArrayList;
 
+import miscutil.core.item.ModItems;
 import miscutil.core.item.base.BasicSpawnEgg;
 import miscutil.core.lib.CORE;
 import miscutil.core.lib.LoadedMods;
@@ -44,7 +45,7 @@ public class UtilsItems {
 	public static ItemStack getSimpleStack(Item x){
 		return getSimpleStack(x, 1);
 	}
-	
+
 	public static ItemStack getSimpleStack(Item x, int i){
 		try {
 			ItemStack r = new ItemStack(x, i);
@@ -100,49 +101,49 @@ public class UtilsItems {
 		}
 		return null;
 	}
-	
+
 	@SuppressWarnings("unused")
 	public static ItemStack simpleMetaStack(String FQRN, int meta, int itemstackSize){		
-			try {
-				Item em = null;			
-				Item em1 = getItem(FQRN);
-				Utils.LOG_WARNING("Found: "+em1.getUnlocalizedName()+":"+meta);
-				if (em1 != null){
-					if (null == em){
-						em = em1;
-					}
-					if (em != null){
-						ItemStack metaStack = new ItemStack(em,itemstackSize,meta);
-						return metaStack;
-					}
+		try {
+			Item em = null;			
+			Item em1 = getItem(FQRN);
+			Utils.LOG_WARNING("Found: "+em1.getUnlocalizedName()+":"+meta);
+			if (em1 != null){
+				if (null == em){
+					em = em1;
 				}
-				return null;
-			} catch (NullPointerException e) {
-				Utils.LOG_ERROR(FQRN+" not found. [NULL]");
-				return null;
-			}		
+				if (em != null){
+					ItemStack metaStack = new ItemStack(em,itemstackSize,meta);
+					return metaStack;
+				}
+			}
+			return null;
+		} catch (NullPointerException e) {
+			Utils.LOG_ERROR(FQRN+" not found. [NULL]");
+			return null;
+		}		
 	}
-	
+
 	@SuppressWarnings("unused")
 	public static ItemStack simpleMetaStack(Item item, int meta, int itemstackSize){		
-			try {
-				Item em = item;			
-				Item em1 = item;
-				Utils.LOG_WARNING("Found: "+em1.getUnlocalizedName()+":"+meta);
-				if (em1 != null){
-					if (null == em){
-						em = em1;
-					}
-					if (em != null){
-						ItemStack metaStack = new ItemStack(em,itemstackSize,meta);
-						return metaStack;
-					}
+		try {
+			Item em = item;			
+			Item em1 = item;
+			Utils.LOG_WARNING("Found: "+em1.getUnlocalizedName()+":"+meta);
+			if (em1 != null){
+				if (null == em){
+					em = em1;
 				}
-				return null;
-			} catch (NullPointerException e) {
-				Utils.LOG_ERROR(item.getUnlocalizedName()+" not found. [NULL]");
-				return null;
-			}		
+				if (em != null){
+					ItemStack metaStack = new ItemStack(em,itemstackSize,meta);
+					return metaStack;
+				}
+			}
+			return null;
+		} catch (NullPointerException e) {
+			Utils.LOG_ERROR(item.getUnlocalizedName()+" not found. [NULL]");
+			return null;
+		}		
 	}
 
 	public static ItemStack getCorrectStacktype(String fqrn, int stackSize){
@@ -158,7 +159,7 @@ public class UtilsItems {
 		temp = UtilsItems.getItemStackWithMeta(LoadedMods.MiscUtils, fqrn, fqrnSplit[1], Integer.parseInt(fqrnSplit[2]), stackSize);
 		return temp;			
 	}	
-	
+
 	public static ItemStack getCorrectStacktype(Object item_Input, int stackSize) {
 		if (item_Input instanceof String){
 			return getCorrectStacktype(item_Input, stackSize);
@@ -207,7 +208,7 @@ public class UtilsItems {
 
 		return null;
 	}
-	
+
 	public static void generateSpawnEgg(String entityModID, String parSpawnName, int colourEgg, int colourOverlay){
 		Item itemSpawnEgg = new BasicSpawnEgg(entityModID, parSpawnName, colourEgg, colourOverlay).setUnlocalizedName("spawn_egg_"+parSpawnName.toLowerCase()).setTextureName(CORE.MODID+":spawn_egg");
 		GameRegistry.registerItem(itemSpawnEgg, "spawnEgg"+parSpawnName);
@@ -215,9 +216,12 @@ public class UtilsItems {
 
 	public static ItemStack getItemStackOfAmountFromOreDict(String oredictName, int amount){
 		ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
-		ItemStack temp = oreDictList.get(0);
-		ItemStack returnValue = new ItemStack(temp.getItem(), amount);
+		if (!oreDictList.isEmpty()){
+		ItemStack returnValue = oreDictList.get(0).copy();
+		returnValue.stackSize = amount;
 		return returnValue;
+		}
+	 return getSimpleStack(ModItems.AAA_Broken, amount);
 	}
-	
+
 }

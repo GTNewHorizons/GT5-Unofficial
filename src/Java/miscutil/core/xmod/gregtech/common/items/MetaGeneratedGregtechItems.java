@@ -116,8 +116,8 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 	    }
         
         GregtechItemList.Circuit_IV.set(addItem(tLastID = 704, "Symbiotic Circuit (IV)", "A Symbiotic Data Processor", new Object[]{GregtechOrePrefixes.circuit.get(GT_Materials.Symbiotic)}));
-        GregtechItemList.Circuit_LuV.set(addItem(tLastID = 705, "Neutronic Circuit (LuV)", "A Neutron Particle Processor", new Object[]{OrePrefixes.circuit.get(GT_Materials.Neutronic)}));
-        GregtechItemList.Circuit_ZPM.set(addItem(tLastID = 706, "Quantum Circuit (ZPM)", "A Singlularity Processor", new Object[]{OrePrefixes.circuit.get(GT_Materials.Quantum)}));
+        GregtechItemList.Circuit_LuV.set(addItem(tLastID = 705, "Neutronic Circuit (LuV)", "A Neutron Particle Processor", new Object[]{GregtechOrePrefixes.circuit.get(GT_Materials.Neutronic)}));
+        GregtechItemList.Circuit_ZPM.set(addItem(tLastID = 706, "Quantum Circuit (ZPM)", "A Singlularity Processor", new Object[]{GregtechOrePrefixes.circuit.get(GT_Materials.Quantum)}));
         GregtechItemList.Circuit_Board_IV.set(addItem(tLastID = 710, "IV Circuit Board", "An IV Voltage Rated Circuit Board", new Object[0]));
         GregtechItemList.Circuit_Board_LuV.set(addItem(tLastID = 711, "LuV Circuit Board", "An LuV Voltage Rated Circuit Board", new Object[0]));
         GregtechItemList.Circuit_Board_ZPM.set(addItem(tLastID = 712, "ZPM Processor Board", "A ZPM Voltage Rated Processor Board", new Object[0]));
