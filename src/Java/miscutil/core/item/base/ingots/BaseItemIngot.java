@@ -37,7 +37,7 @@ public class BaseItemIngot extends Item{
 		if (unlocalName.contains("itemIngot")){
 			temp = unlocalName.replace("itemI", "i");
 		}
-		if (unlocalName.contains("itemHotIngot")){
+		else if (unlocalName.contains("itemHotIngot")){
 			temp = unlocalName.replace("itemHotIngot", "ingotHot");
 		}
 		if (temp != null && temp != ""){
