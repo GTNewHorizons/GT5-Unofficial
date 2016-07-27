@@ -9,6 +9,7 @@ import miscutil.core.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import miscutil.core.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import miscutil.core.xmod.gregtech.common.Meta_GT_Proxy;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.config.Configuration;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -33,12 +34,8 @@ public class CORE {
 	public static List<Runnable> GT_BlockIconload = new ArrayList<Runnable>();
 	public static final Class<AddToCreativeTab> TAB = AddToCreativeTab.class;
 	public static Configuration Config;
-
-	public static boolean disableEnderIOIntegration = false;
-	public static boolean disableStaballoyBlastFurnaceRecipe = false;
-	public static boolean disableCentrifugeFormation = true;
-	public static boolean enableSolarGenerators = false;
-
+	public static final String GT_Tooltip = "Added by: " + EnumChatFormatting.DARK_GREEN+"Alkalus "+EnumChatFormatting.GRAY+"- "+EnumChatFormatting.RED+"[GT++]";
+	
 	/**
 	 * A List containing all the Materials, which are somehow in use by GT and therefor receive a specific Set of Items.
 	 */
@@ -72,4 +69,19 @@ public class CORE {
 
 	//public static final Materials2[] MiscGeneratedMaterials = new Materials2[1000];
 
+	public static class configSwitches {
+
+		//Debug
+		public static boolean disableEnderIOIntegration = false;
+		public static boolean disableStaballoyBlastFurnaceRecipe = false;
+		public static boolean disableCentrifugeFormation = true;
+		
+		//Machine Related
+		public static boolean enableSolarGenerators = false;
+		public static boolean enableAlternativeBatteryAlloy = false;
+		public static boolean enableThaumcraftShardUnification = false;
+		public static boolean disableIC2Recipes = false;		
+		
+	}
+	
 }

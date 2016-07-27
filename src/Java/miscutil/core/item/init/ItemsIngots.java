@@ -20,7 +20,6 @@ public class ItemsIngots {
 		ModItems.itemIngotTantalloy60 = new BaseItemIngot("itemIngotTantalloy60", "Tantalloy-60", Utils.rgbtoHexValue(68, 75, 166));
 		ModItems.itemIngotTantalloy61 = new BaseItemIngot("itemIngotTantalloy61", "Tantalloy-61", Utils.rgbtoHexValue(122, 135, 196));
 		ModItems.itemIngotBloodSteel = new BaseItemIngot("itemIngotBloodSteel", "Blood Steel", Utils.rgbtoHexValue(142, 28, 0));
-		ModItems.itemIngotBatteryAlloy = new BaseItemIngot("itemIngotBatteryAlloy", "Battery Alloy", Utils.rgbtoHexValue(35, 228, 141));
 
 
 		//Hot Ingots

@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import miscutil.core.block.ModBlocks;
+import miscutil.core.lib.CORE;
+import miscutil.core.util.Utils;
 import miscutil.core.xmod.gregtech.api.gui.GUI_MultiMachine;
 import miscutil.core.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import miscutil.core.xmod.gregtech.api.util.GregtechRecipe;
@@ -50,7 +52,8 @@ public class GregtechMetaTileEntityIndustrialCokeOven
         		"1x Energy Hatch (one of bottom)",
         		"1x Maintenance Hatch (one of bottom)",
         		"1x Muffler Hatch (top middle)",
-        		"Structural Coke Oven Casings for the rest"};
+        		"Structural Coke Oven Casings for the rest",
+        		CORE.GT_Tooltip};
     }
 
     @Override
@@ -138,9 +141,11 @@ public class GregtechMetaTileEntityIndustrialCokeOven
                 this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0)};
                 this.mOutputFluids = new FluidStack[]{tRecipe.getFluidOutput(0)};
                 updateSlots();
+                Utils.LOG_INFO("Coke oven: True");
                 return true;
             }
         }
+        Utils.LOG_INFO("Coke oven: False");
         return false;
     }
 	/*public boolean checkRecipe(ItemStack aStack) {

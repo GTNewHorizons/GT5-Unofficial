@@ -1,5 +1,13 @@
 package miscutil;
 
+import static miscutil.core.lib.CORE.DEBUG;
+import static miscutil.core.lib.CORE.configSwitches.disableCentrifugeFormation;
+import static miscutil.core.lib.CORE.configSwitches.disableEnderIOIntegration;
+import static miscutil.core.lib.CORE.configSwitches.disableIC2Recipes;
+import static miscutil.core.lib.CORE.configSwitches.disableStaballoyBlastFurnaceRecipe;
+import static miscutil.core.lib.CORE.configSwitches.enableAlternativeBatteryAlloy;
+import static miscutil.core.lib.CORE.configSwitches.enableSolarGenerators;
+import static miscutil.core.lib.CORE.configSwitches.enableThaumcraftShardUnification;
 import gregtech.api.util.GT_Config;
 
 import java.awt.event.ActionEvent;
@@ -39,29 +47,35 @@ implements ActionListener
 
 	public void handleConfigFile(FMLPreInitializationEvent event) { 
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
-		boolean EIO = false;
+		config.load();
 		
-	config.load();
-	CORE.DEBUG = config.getBoolean("debugMode", "debug", false, "Enables all sorts of debug logging. (Don't use unless told to, breaks other things.)");
-	CORE.disableEnderIOIntegration = config.getBoolean("disableEnderIO", "debug", false, "Disables EnderIO Integration.");
-	CORE.disableStaballoyBlastFurnaceRecipe = config.getBoolean("disableStaballoyBlastFurnaceRecipe", "debug", false, "Disables Staballoy Blast Furnace Recipe.");
-	CORE.disableCentrifugeFormation = config.getBoolean("disableCentrifuge", "debug", true, "Keeps the Items around, just stops the multiblock forming. (It's broken currently, needs in depth testing)");
-	CORE.enableSolarGenerators = config.getBoolean("enableSolarGenerators", "machines", false, "These may be overpowered, Consult a local electrician.");
-	config.save(); 
+		//Debug
+		DEBUG = config.getBoolean("debugMode", "debug", false, "Enables all sorts of debug logging. (Don't use unless told to, breaks other things.)");
+		disableEnderIOIntegration = config.getBoolean("disableEnderIO", "debug", false, "Disables EnderIO Integration.");
+		disableStaballoyBlastFurnaceRecipe = config.getBoolean("disableStaballoyBlastFurnaceRecipe", "debug", false, "Disables Staballoy Blast Furnace Recipe.");
+		disableCentrifugeFormation = config.getBoolean("disableCentrifuge", "debug", true, "Keeps the Items around, just stops the multiblock forming. (It's broken currently, needs in depth testing)");
+		
+		//Machines
+		enableSolarGenerators = config.getBoolean("enableSolarGenerators", "machines", false, "These may be overpowered, Consult a local electrician.");
+		enableThaumcraftShardUnification = config.getBoolean("enableThaumcraftShardUnification", "machines", false, "Allows the use of TC shards across many recipes by oreDicting them into a common group.");
+		enableAlternativeBatteryAlloy = config.getBoolean("enableAlternativeBatteryAlloy", "machines", false, "Adds a non-Antimony using Battery Alloy. Not Balanced at all..");
+		disableIC2Recipes = config.getBoolean("disableIC2Recipes", "machines", false, "Alkaluscraft Related - Removes IC2 Cables Except glass fibre. Few other Misc Tweaks.");
+		
+		config.save(); 
 	}
 
-	
-	
-	
+
+
+
 	//Pre-Init
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		Utils.LOG_INFO("Loading "+CORE.name+" V"+CORE.VERSION);
-		
+
 		FMLCommonHandler.instance().bus().register(new LoginEventHandler());        
-    	System.out.println("Login Handler Initialized");
-		
+		System.out.println("Login Handler Initialized");
+
 		handleConfigFile(event);
 		proxy.registerTileEntities();
 		proxy.registerRenderThings();

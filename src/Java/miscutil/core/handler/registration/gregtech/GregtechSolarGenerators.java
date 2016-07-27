@@ -1,6 +1,6 @@
 package miscutil.core.handler.registration.gregtech;
 
-import miscutil.core.lib.CORE;
+import miscutil.core.lib.CORE.configSwitches;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.Utils;
 import miscutil.core.xmod.gregtech.api.enums.GregtechItemList;
@@ -10,7 +10,7 @@ public class GregtechSolarGenerators
 {
 	public static void run()
 	{
-		if (LoadedMods.Gregtech && CORE.enableSolarGenerators){
+		if (LoadedMods.Gregtech && configSwitches.enableSolarGenerators){
 			Utils.LOG_INFO("MiscUtils: Gregtech5u Content | Registering Solar Generator Blocks.");
 			run1();
 		}

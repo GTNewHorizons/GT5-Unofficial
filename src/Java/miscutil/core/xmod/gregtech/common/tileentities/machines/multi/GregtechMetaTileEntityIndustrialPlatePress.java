@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import miscutil.core.block.ModBlocks;
+import miscutil.core.lib.CORE;
 import miscutil.core.xmod.gregtech.api.gui.GUI_MultiMachine;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -47,7 +48,8 @@ extends GT_MetaTileEntity_MultiBlockBase {
 				"1x Energy Hatch (anywhere)",
 				"1x Maintenance Hatch (anywhere)",
 				"1x Muffler (anywhere)",
-				"Material Press Machine Casings for the rest (16 at least!)"};
+				"Material Press Machine Casings for the rest (16 at least!)",
+				CORE.GT_Tooltip};
 	}
 
 	@Override

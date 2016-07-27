@@ -8,6 +8,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import miscutil.core.item.ModItems;
 import miscutil.core.lib.CORE;
+import miscutil.core.lib.CORE.configSwitches;
 import miscutil.core.util.Utils;
 import miscutil.core.util.fluid.FluidUtils;
 import miscutil.core.util.item.UtilsItems;
@@ -154,7 +155,7 @@ public class RECIPES_GREGTECH {
 	private static void blastFurnaceRecipes(){
 		Utils.LOG_INFO("Registering Blast Furnace Recipes.");
 
-		if (!CORE.disableStaballoyBlastFurnaceRecipe){
+		if (!configSwitches.disableStaballoyBlastFurnaceRecipe){
 			GT_Values.RA.addBlastRecipe(
 					UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 11028, 1),
 					UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 11098, 1),

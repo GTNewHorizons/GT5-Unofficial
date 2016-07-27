@@ -12,13 +12,13 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import ic2.api.item.IElectricItem;
+import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
 import miscutil.core.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
@@ -41,7 +41,7 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 
 	@Override
 	public String[] getDescription() {
-		return new String[] {mDescription, "Added by: "	+ EnumChatFormatting.DARK_GREEN+"Alkalus"};
+		return new String[] {mDescription, CORE.GT_Tooltip};
 	}
 
 	/*

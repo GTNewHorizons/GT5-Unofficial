@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 import miscutil.core.block.ModBlocks;
+import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
 import miscutil.core.xmod.gregtech.api.gui.GUI_MultiMachine;
 import miscutil.core.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
@@ -50,7 +51,8 @@ extends GregtechMeta_MultiBlockBase {
 				"3x Output Bus (Any casing besides bottom layer)",
 				"1x Maintenance Hatch (Any casing)",
 				"1x Energy Hatch (Any casing)",
-				"Maceration Stack Casings for the rest (26 at least!)"};
+				"Maceration Stack Casings for the rest (26 at least!)",
+				CORE.GT_Tooltip};
 	}
 
 	@Override

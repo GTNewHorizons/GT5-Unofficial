@@ -21,6 +21,7 @@ import miscutil.core.item.tool.misc.SandstoneHammer;
 import miscutil.core.item.tool.staballoy.StaballoyAxe;
 import miscutil.core.item.tool.staballoy.StaballoyPickaxe;
 import miscutil.core.lib.CORE;
+import miscutil.core.lib.CORE.configSwitches;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.Utils;
 import miscutil.core.util.debug.DEBUG_INIT;
@@ -112,7 +113,7 @@ public final class ModItems {
 	public static BaseItemHotFood itemHotFoodRaisinToast;
 	public static BaseItemFood itemFoodCurriedSausages;
 	public static BaseItemHotFood itemHotFoodCurriedSausages;
-	
+
 
 	//@SuppressWarnings("unused")
 	public static final void init(){
@@ -123,7 +124,7 @@ public final class ModItems {
 		if (CORE.DEBUG){
 			DEBUG_INIT.registerItems();
 		}		
-		
+
 		ItemsDusts.load();
 		ItemsIngots.load();
 		ItemsPlates.load();
@@ -251,6 +252,13 @@ public final class ModItems {
 		}
 
 
+		//Special Item Handling Case
+		if (configSwitches.enableAlternativeBatteryAlloy) {
+			ModItems.itemIngotBatteryAlloy = new BaseItemIngot("itemIngotBatteryAlloy", "Battery Alloy", Utils.rgbtoHexValue(35, 228, 141));
+			ModItems.itemPlateBatteryAlloy = new BaseItemPlate("itemPlateBatteryAlloy", "Battery Alloy", Utils.rgbtoHexValue(35, 228, 141));
+		}
+
+
 		//UtilsItems.generateSpawnEgg("ic2", "boatcarbon", Utils.generateSingularRandomHexValue(), Utils.generateSingularRandomHexValue());
 
 
@@ -264,11 +272,11 @@ public final class ModItems {
 		GameRegistry.registerItem(itemStaballoyPickaxe, itemStaballoyPickaxe.getUnlocalizedName());
 		itemStaballoyAxe = new StaballoyAxe("itemStaballoyAxe", STABALLOY).setCreativeTab(AddToCreativeTab.tabTools);
 		GameRegistry.registerItem(itemStaballoyAxe, itemStaballoyAxe.getUnlocalizedName());
-		
+
 		//Sandstone Hammer
 		itemSandstoneHammer = new SandstoneHammer("itemSandstoneHammer").setCreativeTab(AddToCreativeTab.tabTools);
 		GameRegistry.registerItem(itemSandstoneHammer, itemSandstoneHammer.getUnlocalizedName());
-		
+
 		//Buffer Cores!
 		Item itemBufferCore;
 		for(int i=1; i<=10; i++){
@@ -277,7 +285,7 @@ public final class ModItems {
 			GameRegistry.registerItem(itemBufferCore, itemBufferCore.getUnlocalizedName()+i);
 			//System.out.println("Buffer Core registration count is: "+i);
 		}
-		
+
 		itemStickyRubber = new Item().setUnlocalizedName("itemStickyRubber").setCreativeTab(tabMachines).setTextureName(CORE.MODID + ":itemStickyRubber");
 		GameRegistry.registerItem(itemStickyRubber, "itemStickyRubber");
 		GT_OreDictUnificator.registerOre("ingotRubber", UtilsItems.getItemStack(CORE.MODID+":itemStickyRubber", 1));
@@ -290,6 +298,6 @@ public final class ModItems {
 
 
 
-	
+
 	}
 }

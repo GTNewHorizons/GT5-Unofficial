@@ -14,6 +14,7 @@ import gregtech.api.util.GT_Utility;
 import java.util.ArrayList;
 
 import miscutil.core.block.ModBlocks;
+import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
 import miscutil.core.xmod.gregtech.api.gui.GUI_MultiMachine;
 import net.minecraft.block.Block;
@@ -44,7 +45,8 @@ extends GT_MetaTileEntity_MultiBlockBase {
 				"2x Output Bus (side centered)",
 				"1x Energy Hatch (top or bottom centered)",
 				"1x Maintenance Hatch (back centered)",
-				"Wire Factory Casings for the rest (32 at least!)"
+				"Wire Factory Casings for the rest (32 at least!)",
+				CORE.GT_Tooltip
 		};
 	}
 

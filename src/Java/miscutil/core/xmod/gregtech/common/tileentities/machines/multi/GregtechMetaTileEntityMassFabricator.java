@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import miscutil.core.block.ModBlocks;
+import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
 import miscutil.core.util.item.UtilsItems;
 import miscutil.core.xmod.gregtech.api.gui.GUI_MultiMachine;
@@ -60,7 +61,8 @@ public class GregtechMetaTileEntityMassFabricator extends GT_MetaTileEntity_Mult
 				"1x Muffler Hatch (Centered 3x1x3 area in Top layer)",
 				"1x Energy Hatch (Any bottom layer casing)",				
 				"24x IC2 Reinforced Glass for the walls",
-				"Matter Fabricator Casings for the edges & top (40 at least!)"};
+				"Matter Fabricator Casings for the edges & top (40 at least!)",
+				CORE.GT_Tooltip};
 	}
 
 	@Override

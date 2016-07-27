@@ -7,12 +7,12 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
+import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
 import miscutil.core.xmod.gregtech.api.gui.CONTAINER_SteamCondenser;
 import miscutil.core.xmod.gregtech.api.gui.GUI_SteamCondenser;
 import miscutil.core.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaBoilerBase;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
@@ -31,7 +31,7 @@ public class GregtechMetaCondensor extends GregtechMetaBoilerBase{
 	  
 	  @Override
 		public String[] getDescription() {
-			return new String[] {mDescription, "Added by: "	+ EnumChatFormatting.DARK_GREEN+"Alkalus"};
+			return new String[] {mDescription, CORE.GT_Tooltip};
 		}
 	  
 	  public ITexture[][][] getTextureSet(ITexture[] aTextures)

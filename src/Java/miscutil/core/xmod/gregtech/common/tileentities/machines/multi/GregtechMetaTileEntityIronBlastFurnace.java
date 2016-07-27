@@ -12,6 +12,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import miscutil.core.block.ModBlocks;
+import miscutil.core.lib.CORE;
 import miscutil.core.xmod.gregtech.api.gui.CONTAINER_IronBlastFurnace;
 import miscutil.core.xmod.gregtech.api.gui.GUI_IronBlastFurnace;
 import net.minecraft.entity.player.EntityPlayer;
@@ -44,7 +45,10 @@ public class GregtechMetaTileEntityIronBlastFurnace
 
     @Override
 	public String[] getDescription() {
-        return new String[]{"Slowly, Skip the Bronze age, Get some Steel!", "Multiblock: 3x3x5 hollow with opening on top", "40 Iron Plated Bricks required"};
+        return new String[]{"Slowly, Skip the Bronze age, Get some Steel!",
+        		"Multiblock: 3x3x5 hollow with opening on top",
+        		"40 Iron Plated Bricks required",
+        		CORE.GT_Tooltip};
     }
 
     @Override

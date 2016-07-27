@@ -1,5 +1,6 @@
 package miscutil.core.lib;
 
+import miscutil.core.lib.CORE.configSwitches;
 import miscutil.core.util.Utils;
 import miscutil.core.xmod.gregtech.api.enums.GregtechTextures;
 import miscutil.core.xmod.gregtech.recipes.GregtechRecipeAdder;
@@ -53,7 +54,7 @@ public class LoadedMods {
 			
 			totalMods++;
 		}
-		if (Loader.isModLoaded("EnderIO") == true && !CORE.disableEnderIOIntegration){
+		if (Loader.isModLoaded("EnderIO") == true && !configSwitches.disableEnderIOIntegration){
 			EnderIO = true;
 			Utils.LOG_INFO("Components enabled for: EnderIO");
 			totalMods++;

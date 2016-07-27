@@ -6,18 +6,18 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
+import miscutil.core.lib.CORE;
 import miscutil.core.xmod.gregtech.api.gui.CONTAINER_SafeBlock;
 import miscutil.core.xmod.gregtech.api.gui.GUI_SafeBlock;
 import miscutil.core.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaSafeBlockBase;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.EnumChatFormatting;
 
 public class GregtechMetaSafeBlock
         extends GregtechMetaSafeBlockBase {
 	
 	@Override
 	public String[] getDescription() {
-		return new String[] {mDescription, "Added by: "	+ EnumChatFormatting.DARK_GREEN+"Alkalus"};
+		return new String[] {mDescription, CORE.GT_Tooltip};
 	}
 	
     public GregtechMetaSafeBlock(int aID, String aName, String aNameRegional, int aTier) {
