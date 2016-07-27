@@ -67,8 +67,8 @@ public class BaseItemPlate extends Item{
 		String tempIngot = unlocalName.replace("itemPlate", "ingot");
 		ItemStack tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 1);
 		if (null != tempOutputStack){
-			GT_Values.RA.addBenderRecipe(UtilsItems.getSimpleStack(this),
-					tempOutputStack,
+			GT_Values.RA.addBenderRecipe(tempOutputStack,
+					UtilsItems.getSimpleStack(this),
 					1200, 24);	
 		}				
 	}

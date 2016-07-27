@@ -112,58 +112,58 @@ extends GregtechMeta_MultiBlockBase {
 			return false;
 		}*/
 
-		Utils.LOG_INFO("Centrifuge Debug - 1");
+		Utils.LOG_WARNING("Centrifuge Debug - 1");
 		GT_Recipe.GT_Recipe_Map map = getRecipeMap();
 		if (map == null) {
-			Utils.LOG_INFO("Centrifuge Debug - False - No recipe map");
+			Utils.LOG_WARNING("Centrifuge Debug - False - No recipe map");
 			return false;
 		}
-		Utils.LOG_INFO("Centrifuge Debug - 2");
+		Utils.LOG_WARNING("Centrifuge Debug - 2");
 		ArrayList<ItemStack> tInputList = getStoredInputs();
 		long tVoltage = getMaxInputVoltage();
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-		Utils.LOG_INFO("Centrifuge Debug - Tier variable: "+tTier);
+		Utils.LOG_WARNING("Centrifuge Debug - Tier variable: "+tTier);
 		ItemStack[] tInputs = (ItemStack[]) tInputList.toArray(new ItemStack[tInputList.size()]);
 		ArrayList<FluidStack> tFluidList = getStoredFluids();
 		FluidStack[] tFluids = (FluidStack[]) tFluidList.toArray(new FluidStack[tFluidList.size()]);
 		if (tInputList.size() > 0 || tFluids.length > 0) {
 			GT_Recipe tRecipe = map.findRecipe(getBaseMetaTileEntity(), mLastRecipe, false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
 			if (tRecipe != null) {
-				Utils.LOG_INFO("Recipe was not invalid");
+				Utils.LOG_WARNING("Recipe was not invalid");
 				mLastRecipe = tRecipe;
 				this.mEUt = 0;
 				this.mOutputItems = null;
 				this.mOutputFluids = null;
 				if (!tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
 
-					Utils.LOG_INFO("False: 1");
+					Utils.LOG_WARNING("False: 1");
 					return false;
 				}
 
 				this.mMaxProgresstime = tRecipe.mDuration;
 				this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
 				this.mEfficiencyIncrease = 10000;
-				Utils.LOG_INFO("Centrifuge Debug - 2 - Max Progress Time: "+this.mMaxProgresstime);
+				Utils.LOG_WARNING("Centrifuge Debug - 2 - Max Progress Time: "+this.mMaxProgresstime);
 				if (tRecipe.mEUt <= 16) {
-					Utils.LOG_INFO("Centrifuge Debug - Using < 16eu/t");
+					Utils.LOG_WARNING("Centrifuge Debug - Using < 16eu/t");
 					this.mEUt = (tRecipe.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
 					this.mMaxProgresstime = (tRecipe.mDuration / (1 << tTier - 1));
-					Utils.LOG_INFO("Centrifuge Debug - 3.1 - Max Progress Time: "+this.mMaxProgresstime+" EU/t"+this.mEUt + " Obscure GT Value "+gregtech.api.enums.GT_Values.V[(tTier - 1)]);
+					Utils.LOG_WARNING("Centrifuge Debug - 3.1 - Max Progress Time: "+this.mMaxProgresstime+" EU/t"+this.mEUt + " Obscure GT Value "+gregtech.api.enums.GT_Values.V[(tTier - 1)]);
 				} else {
-					Utils.LOG_INFO("Centrifuge Debug - using > 16eu/t");
+					Utils.LOG_WARNING("Centrifuge Debug - using > 16eu/t");
 					this.mEUt = tRecipe.mEUt;
 					this.mMaxProgresstime = tRecipe.mDuration;
-					Utils.LOG_INFO("Centrifuge Debug - 3.2 - Max Progress Time: "+this.mMaxProgresstime+" EU/t"+this.mEUt + " Obscure GT Value "+gregtech.api.enums.GT_Values.V[(tTier - 1)]);
+					Utils.LOG_WARNING("Centrifuge Debug - 3.2 - Max Progress Time: "+this.mMaxProgresstime+" EU/t"+this.mEUt + " Obscure GT Value "+gregtech.api.enums.GT_Values.V[(tTier - 1)]);
 					while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
 						this.mEUt *= 4;
 						this.mMaxProgresstime /= 2;
-						Utils.LOG_INFO("Centrifuge Debug - 4 - Max Progress Time: "+this.mMaxProgresstime+" EU/t"+this.mEUt);
+						Utils.LOG_WARNING("Centrifuge Debug - 4 - Max Progress Time: "+this.mMaxProgresstime+" EU/t"+this.mEUt);
 					}
 				}
 				this.mEUt *= 1;
 				if (this.mEUt > 0) {
 					this.mEUt = (-this.mEUt);
-					Utils.LOG_INFO("Centrifuge Debug - 5 - Max Progress Time: "+this.mMaxProgresstime+" EU/t"+this.mEUt);
+					Utils.LOG_WARNING("Centrifuge Debug - 5 - Max Progress Time: "+this.mMaxProgresstime+" EU/t"+this.mEUt);
 				}
 				ItemStack[] tOut = new ItemStack[tRecipe.mOutputs.length];
 				for (int h = 0; h < tRecipe.mOutputs.length; h++) {
@@ -189,7 +189,7 @@ extends GregtechMeta_MultiBlockBase {
 				if (this.mMaxProgresstime <= 0){
 					this.mMaxProgresstime++;
 				}
-				Utils.LOG_INFO("Centrifuge Debug - 6 - Max Progress Time: "+this.mMaxProgresstime+" EU/t"+this.mEUt);
+				Utils.LOG_WARNING("Centrifuge Debug - 6 - Max Progress Time: "+this.mMaxProgresstime+" EU/t"+this.mEUt);
 				List<ItemStack> overStacks = new ArrayList<ItemStack>();
 				for (int f = 0; f < tOut.length; f++) {
 					if (tOut[f].getMaxStackSize() < tOut[f].stackSize) {
@@ -214,11 +214,11 @@ extends GregtechMeta_MultiBlockBase {
 				this.mOutputItems = tOut;
 				this.mOutputFluids = new FluidStack[]{tFOut};
 				updateSlots();
-				Utils.LOG_INFO("Centrifuge: True");
+				Utils.LOG_WARNING("Centrifuge: True");
 				return true;
 			}
 		}
-		Utils.LOG_INFO("Centrifuge: Recipe was invalid.");
+		Utils.LOG_WARNING("Centrifuge: Recipe was invalid.");
 		return false;
 	}
 
@@ -249,7 +249,7 @@ extends GregtechMeta_MultiBlockBase {
 		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
 		int yDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetY;
 		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-		//Utils.LOG_INFO("X:"+xDir+" Y:"+yDir+" Z:"+zDir);
+		//Utils.LOG_WARNING("X:"+xDir+" Y:"+yDir+" Z:"+zDir);
 		if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {
 			return false;
 		}
@@ -260,14 +260,14 @@ extends GregtechMeta_MultiBlockBase {
 					if ((h != 0) || (((xDir + i != 0) || (zDir + j != 0)) && ((i != 0) || (j != 0)))) {			
 
 						IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-						//Utils.LOG_INFO("X:"+tTileEntity.getXCoord()+" Y:"+tTileEntity.getYCoord()+" Z:"+tTileEntity.getZCoord());
+						//Utils.LOG_WARNING("X:"+tTileEntity.getXCoord()+" Y:"+tTileEntity.getYCoord()+" Z:"+tTileEntity.getZCoord());
 						if ((!addMaintenanceToMachineList(tTileEntity, 57)) && (!addInputToMachineList(tTileEntity, 57)) && (!addOutputToMachineList(tTileEntity, 57)) && (!addEnergyInputToMachineList(tTileEntity, 57))) {
 
 							//Maintenance Hatch
 							if ((tTileEntity != null) && (tTileEntity.getMetaTileEntity() != null)) {
 								if (tTileEntity.getXCoord() == aBaseMetaTileEntity.getXCoord() && tTileEntity.getYCoord() == aBaseMetaTileEntity.getYCoord() && tTileEntity.getZCoord() == (aBaseMetaTileEntity.getZCoord()+2)) {
 									if ((tTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_Maintenance)) {
-										Utils.LOG_INFO("MAINT HATCH IN CORRECT PLACE");
+										Utils.LOG_WARNING("MAINT HATCH IN CORRECT PLACE");
 										this.mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) tTileEntity.getMetaTileEntity());
 										((GT_MetaTileEntity_Hatch) tTileEntity.getMetaTileEntity()).mMachineBlock = getCasingTextureIndex();
 									} else {
@@ -275,7 +275,7 @@ extends GregtechMeta_MultiBlockBase {
 									}
 								}	
 								else {
-									Utils.LOG_INFO("MAINT HATCH IN WRONG PLACE");
+									Utils.LOG_WARNING("MAINT HATCH IN WRONG PLACE");
 								}
 							}
 

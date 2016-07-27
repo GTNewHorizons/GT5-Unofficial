@@ -3,12 +3,14 @@ import static miscutil.core.creative.AddToCreativeTab.tabMachines;
 import static miscutil.core.creative.AddToCreativeTab.tabMisc;
 import static miscutil.core.lib.CORE.LOAD_ALL_CONTENT;
 import gregtech.api.util.GT_OreDictUnificator;
+import miscutil.core.block.ModBlocks;
 import miscutil.core.creative.AddToCreativeTab;
 import miscutil.core.item.base.CoreItem;
 import miscutil.core.item.base.foods.BaseItemFood;
 import miscutil.core.item.base.foods.BaseItemHotFood;
 import miscutil.core.item.base.ingots.BaseItemIngot;
 import miscutil.core.item.base.ingots.BaseItemIngotHot;
+import miscutil.core.item.base.itemblock.ItemBlockGtFrameBox;
 import miscutil.core.item.base.plates.BaseItemPlate;
 import miscutil.core.item.effects.RarityUncommon;
 import miscutil.core.item.general.BufferCore;
@@ -28,6 +30,7 @@ import miscutil.core.util.debug.DEBUG_INIT;
 import miscutil.core.util.item.UtilsItems;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemFood;
 import net.minecraftforge.common.util.EnumHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -40,6 +43,11 @@ public final class ModItems {
 	public static Item itemDebugShapeSpawner;
 
 	public static Item itemBaseSpawnEgg;
+	
+	
+	//Tantaloy60(789, TextureSet.SET_DULL, 8.0F, 5120, 3, 1 | 2 | 16 | 32 | 64 | 128, 213, 231, 237, 0, "Tantaloy 60", 0, 0, 3035, 2200, true, false, 1, 2, 1, Dyes.dyeLightGray, 2, Arrays.asList(new MaterialStack(Tungsten, 1), new MaterialStack(Tantalum, 9)), Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 8), new TC_AspectStack(TC_Aspects.STRONTIO, 3))),
+	//Tantaloy61(790, TextureSet.SET_DULL, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 193, 211, 217, 0, "Tantaloy 61", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightGray, 2, Arrays.asList(new MaterialStack(Tungsten, 1), new MaterialStack(Tantalum, 9), new MaterialStack(Titanium, 1)), Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 8), new TC_AspectStack(TC_Aspects.STRONTIO, 3))),
+
 
 	//EnderIO
 	public static Item itemPlateSoularium;
@@ -113,6 +121,16 @@ public final class ModItems {
 	public static BaseItemHotFood itemHotFoodRaisinToast;
 	public static BaseItemFood itemFoodCurriedSausages;
 	public static BaseItemHotFood itemHotFoodCurriedSausages;
+	
+	public static Item itemDustTantalloy60;
+	public static Item itemDustSmallTantalloy60;
+	public static Item itemDustTinyTantalloy60;
+	
+	public static Item itemDustTantalloy61;
+	public static Item itemDustSmallTantalloy61;
+	public static Item itemDustTinyTantalloy61;
+	
+	public static ItemBlock ItemBlockGtFrameBox;
 
 
 	//@SuppressWarnings("unused")
@@ -125,9 +143,10 @@ public final class ModItems {
 			DEBUG_INIT.registerItems();
 		}		
 
-		ItemsDusts.load();
+		
 		ItemsIngots.load();
 		ItemsPlates.load();
+		ItemsDusts.load();
 		ItemsFoods.load();
 
 		//EnderIO Resources
@@ -296,8 +315,9 @@ public final class ModItems {
 		itemPLACEHOLDER_Circuit = new Item().setUnlocalizedName("itemPLACEHOLDER_Circuit").setTextureName(CORE.MODID + ":itemPLACEHOLDER_Circuit");
 		GameRegistry.registerItem(itemPLACEHOLDER_Circuit, "itemPLACEHOLDER_Circuit");
 
+		ItemBlockGtFrameBox = new ItemBlockGtFrameBox(ModBlocks.blockGtFrameSet1);
 
-
-
+		itemPLACEHOLDER_Circuit = new Item().setUnlocalizedName("itemPLACEHOLDER_Circuit").setTextureName(CORE.MODID + ":itemPLACEHOLDER_Circuit");
+		GameRegistry.registerItem(itemPLACEHOLDER_Circuit, "itemPLACEHOLDER_Circuit");
 	}
 }

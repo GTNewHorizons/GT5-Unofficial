@@ -6,7 +6,6 @@ import java.util.List;
 
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
-import miscutil.core.util.UtilsText;
 import miscutil.core.util.item.UtilsItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,7 +36,7 @@ public class BaseItemIngotHot extends BaseItemIngot{
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
 		if (materialName != null && materialName != "" && !materialName.equals("")){
-			list.add(EnumChatFormatting.GRAY+"A "+UtilsText.red.colour()+"burning hot"+UtilsText.lightGray.colour()+" ingot of " + materialName + ".");		
+			list.add(EnumChatFormatting.GRAY+"A "+EnumChatFormatting.RED+"burning hot"+EnumChatFormatting.GRAY+" ingot of " + materialName + ".");		
 		}
 		super.addInformation(stack, aPlayer, list, bool);
 	}

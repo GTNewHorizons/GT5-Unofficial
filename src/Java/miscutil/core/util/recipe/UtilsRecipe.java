@@ -333,43 +333,6 @@ public class UtilsRecipe {
 			return;
 		}
 
-		/*if  (InputItem1 instanceof String) {
-			String temp = (String) InputItem1;
-			InputItem1 = getItemStackFromOreDict(temp);
-		}
-		if	(InputItem2 instanceof String) {
-			String temp = (String) InputItem2;
-			InputItem2 = getItemStackFromOreDict(temp);
-		}
-		if	(InputItem3 instanceof String) {
-			String temp = (String) InputItem3;
-			InputItem3 = getItemStackFromOreDict(temp);
-		}
-		if	(InputItem4 instanceof String) {
-			String temp = (String) InputItem4;
-			InputItem4 = getItemStackFromOreDict(temp);
-		}
-		if	(InputItem5 instanceof String) {
-			String temp = (String) InputItem5;
-			InputItem5 = getItemStackFromOreDict(temp);
-		}
-		if	(InputItem6 instanceof String) {
-			String temp = (String) InputItem6;
-			InputItem6 = getItemStackFromOreDict(temp);
-		}
-		if	(InputItem7 instanceof String) {
-			String temp = (String) InputItem7;
-			InputItem7 = getItemStackFromOreDict(temp);
-		}
-		if	(InputItem8 instanceof String) { 
-			String temp = (String) InputItem8;
-			InputItem8 = getItemStackFromOreDict(temp);
-		}
-		if	(InputItem9 instanceof String) {
-			String temp = (String) InputItem9;
-			InputItem9 = getItemStackFromOreDict(temp);
-		}*/
-
 		GT_ModHandler.addCraftingRecipe(OutputItem, 
 				GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | 
 				GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
@@ -382,7 +345,21 @@ public class UtilsRecipe {
 				'F', InputItem6,  
 				'G', InputItem7,  
 				'H', InputItem8,  
-				'I', InputItem9});		
+				'I', InputItem9});	
+	}
+
+	public static void addShapelessGregtechRecipe(ItemStack OutputItem, Object... inputItems){
+
+		for(Object whatever : inputItems){
+	        if (!(whatever instanceof ItemStack) && !(whatever instanceof String)){
+				Utils.LOG_INFO("One Input item was not an ItemStack of an OreDict String.");
+	        	return;
+	        }
+	    }
+		
+		GT_ModHandler.addShapelessCraftingRecipe(OutputItem,
+				GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+				new Object[]{inputItems});
 	}
 
 	public static ItemStack getItemStackFromOreDict(String oredictName){

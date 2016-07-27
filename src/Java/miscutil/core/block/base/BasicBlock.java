@@ -19,4 +19,33 @@ public class BasicBlock extends Block {
         this.setStepSound(soundTypeMetal);
     }
 
+    
+    public static enum BlockTypes {
+    	STANDARD("block", "pickaxe", soundTypeStone),
+    	FRAME("blockGtFrame", "wrench", soundTypeMetal);
+    
+    	private String TEXTURE_NAME;
+    	private String HARVEST_TOOL;
+    	private SoundType soundOfBlock;
+    	private BlockTypes (String textureName, String harvestTool, SoundType blockSound)
+    	{
+    		this.TEXTURE_NAME = textureName;
+    		this.HARVEST_TOOL = harvestTool;
+    		this.soundOfBlock = blockSound;
+    	}
+
+    	public String getTexture() {
+    		return TEXTURE_NAME;
+    	}
+    	
+    	public String getHarvestTool(){
+    		return HARVEST_TOOL;
+    	}
+    	
+    	public SoundType getBlockSoundType(){
+    		return soundOfBlock;
+    	}
+    
+    }
+    
 }

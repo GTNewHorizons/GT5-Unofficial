@@ -156,9 +156,11 @@ public class RECIPES_GREGTECH {
 		Utils.LOG_INFO("Registering Blast Furnace Recipes.");
 
 		if (!configSwitches.disableStaballoyBlastFurnaceRecipe){
+			
+			//Staballoy
 			GT_Values.RA.addBlastRecipe(
-					UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 11028, 1),
-					UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 11098, 1),
+					UtilsItems.getItemStackOfAmountFromOreDict("ingotUranium", 8),
+					UtilsItems.getItemStackOfAmountFromOreDict("ingotTitanium", 1),
 					GT_Values.NF, GT_Values.NF,
 					UtilsItems.getSimpleStack(ModItems.itemHotIngotStaballoy, 1),
 					GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Titanium, 1L),
@@ -188,15 +190,81 @@ public class RECIPES_GREGTECH {
 					GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Titanium, 1L),
 					(int) Math.max(GT_Materials.Staballoy.getMass() / 80L, 1L) * GT_Materials.Staballoy.mBlastFurnaceTemp,
 					2000, GT_Materials.Staballoy.mBlastFurnaceTemp);
+			
+			//Tantalloy 60
+			GT_Values.RA.addBlastRecipe(
+					UtilsItems.getItemStackOfAmountFromOreDict("ingotTungsten", 1),
+					UtilsItems.getItemStackOfAmountFromOreDict("ingotTantalum", 8),
+					GT_Values.NF, GT_Values.NF,
+					UtilsItems.getSimpleStack(ModItems.itemHotIngotTantalloy60),
+					GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Tungsten, 1L), 
+					(int) Math.max(GT_Materials.Tantalloy60.getMass() / 80L, 1L) * GT_Materials.Tantalloy60.mBlastFurnaceTemp,
+					480,
+					GT_Materials.Tantalloy60.mBlastFurnaceTemp);
+			GT_Values.RA.addBlastRecipe(
+					UtilsItems.getSimpleStack(ModItems.itemDustTantalloy60, 1),
+					null,
+					GT_Values.NF, GT_Values.NF,
+					UtilsItems.getSimpleStack(ModItems.itemHotIngotTantalloy60, 1),
+					GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Tungsten, 1L),
+					(int) Math.max(GT_Materials.Tantalloy60.getMass() / 80L, 1L) * GT_Materials.Tantalloy60.mBlastFurnaceTemp,
+					2000, GT_Materials.Tantalloy60.mBlastFurnaceTemp);
+			GT_Values.RA.addBlastRecipe(
+					UtilsItems.getSimpleStack(ModItems.itemDustSmallTantalloy60, 4),
+					null,
+					GT_Values.NF, GT_Values.NF,
+					UtilsItems.getSimpleStack(ModItems.itemHotIngotTantalloy60, 1),
+					GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Tungsten, 1L),
+					(int) Math.max(GT_Materials.Tantalloy60.getMass() / 80L, 1L) * GT_Materials.Tantalloy60.mBlastFurnaceTemp,
+					2000, GT_Materials.Tantalloy60.mBlastFurnaceTemp);
+			GT_Values.RA.addBlastRecipe(
+					UtilsItems.getSimpleStack(ModItems.itemDustTinyTantalloy60, 9),
+					null,
+					GT_Values.NF, GT_Values.NF,
+					UtilsItems.getSimpleStack(ModItems.itemHotIngotTantalloy60, 1),
+					GT_OreDictUnificator.get(OrePrefixes.dustSmall, Materials.Tungsten, 1L),
+					(int) Math.max(GT_Materials.Tantalloy60.getMass() / 80L, 1L) * GT_Materials.Tantalloy60.mBlastFurnaceTemp,
+					2000, GT_Materials.Tantalloy60.mBlastFurnaceTemp);
+			
+			//Tantalloy 61
+			GT_Values.RA.addBlastRecipe(
+					UtilsItems.getItemStackOfAmountFromOreDict("ingotTitanium", 1),
+					UtilsItems.getItemStackOfAmountFromOreDict("ingotTantalloy60", 1),
+					GT_Values.NF, GT_Values.NF,
+					UtilsItems.getSimpleStack(ModItems.itemHotIngotTantalloy61),
+					UtilsItems.getItemStackOfAmountFromOreDict("dustTinyTantalloy60", 1),
+					(int) Math.max(GT_Materials.Tantalloy61.getMass() / 80L, 1L) * GT_Materials.Tantalloy61.mBlastFurnaceTemp,
+					480,
+					GT_Materials.Tantalloy61.mBlastFurnaceTemp);
+			GT_Values.RA.addBlastRecipe(
+					UtilsItems.getSimpleStack(ModItems.itemDustTantalloy61, 1),
+					null,
+					GT_Values.NF, GT_Values.NF,
+					UtilsItems.getSimpleStack(ModItems.itemHotIngotTantalloy61, 1),
+					UtilsItems.getItemStackOfAmountFromOreDict("dustTinyTantalloy60", 1),
+					(int) Math.max(GT_Materials.Tantalloy61.getMass() / 80L, 1L) * GT_Materials.Tantalloy61.mBlastFurnaceTemp,
+					2000, GT_Materials.Tantalloy61.mBlastFurnaceTemp);
+			GT_Values.RA.addBlastRecipe(
+					UtilsItems.getSimpleStack(ModItems.itemDustSmallTantalloy61, 4),
+					null,
+					GT_Values.NF, GT_Values.NF,
+					UtilsItems.getSimpleStack(ModItems.itemHotIngotTantalloy61, 1),
+					UtilsItems.getItemStackOfAmountFromOreDict("dustTinyTantalloy60", 1),
+					(int) Math.max(GT_Materials.Tantalloy61.getMass() / 80L, 1L) * GT_Materials.Tantalloy61.mBlastFurnaceTemp,
+					2000, GT_Materials.Tantalloy61.mBlastFurnaceTemp);
+			GT_Values.RA.addBlastRecipe(
+					UtilsItems.getSimpleStack(ModItems.itemDustTinyTantalloy61, 9),
+					null,
+					GT_Values.NF, GT_Values.NF,
+					UtilsItems.getSimpleStack(ModItems.itemHotIngotTantalloy61, 1),
+					UtilsItems.getItemStackOfAmountFromOreDict("dustTinyTantalloy60", 1),
+					(int) Math.max(GT_Materials.Tantalloy61.getMass() / 80L, 1L) * GT_Materials.Tantalloy61.mBlastFurnaceTemp,
+					2000, GT_Materials.Tantalloy61.mBlastFurnaceTemp);
 		}
 	}
 
 	private static void vacuumFreezerRecipes(){
-
-		GT_Values.RA.addVacuumFreezerRecipe(
-				UtilsItems.getSimpleStack(ModItems.itemHotIngotStaballoy, 1),
-				UtilsItems.getSimpleStack(ModItems.itemIngotStaballoy, 1),
-				2000);	
+				
 
 	}
 	

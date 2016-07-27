@@ -58,7 +58,7 @@ public class BaseItemIngot extends Item{
 			list.add(EnumChatFormatting.GRAY+"A solid ingot of " + materialName + ".");		
 		}
 		else if (materialName != null && materialName != "" && !materialName.equals("") && unlocalName.toLowerCase().contains("ingothot")){
-			list.add(EnumChatFormatting.GRAY+"Warning: Very hot! Avoid direct handling..");		
+			list.add(EnumChatFormatting.GRAY+"Warning: "+EnumChatFormatting.RED+"Very hot! "+EnumChatFormatting.GRAY+" Avoid direct handling..");		
 		}
 		super.addInformation(stack, aPlayer, list, bool);
 	}
