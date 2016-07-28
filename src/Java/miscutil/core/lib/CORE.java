@@ -33,7 +33,7 @@ public class CORE {
 	public static IIconRegister GT_BlockIcons, GT_ItemIcons;	
 	public static List<Runnable> GT_BlockIconload = new ArrayList<Runnable>();
 	public static final Class<AddToCreativeTab> TAB = AddToCreativeTab.class;
-	public static Configuration Config;
+	public static Configuration Config;	
 	public static final String GT_Tooltip = "Added by: " + EnumChatFormatting.DARK_GREEN+"Alkalus "+EnumChatFormatting.GRAY+"- "+EnumChatFormatting.RED+"[GT++]";
 	
 	/**
@@ -80,7 +80,8 @@ public class CORE {
 		public static boolean enableSolarGenerators = false;
 		public static boolean enableAlternativeBatteryAlloy = false;
 		public static boolean enableThaumcraftShardUnification = false;
-		public static boolean disableIC2Recipes = false;		
+		public static boolean disableIC2Recipes = false;	
+		public static boolean enableAlternativeDivisionSigilRecipe = false;
 		
 	}
 	

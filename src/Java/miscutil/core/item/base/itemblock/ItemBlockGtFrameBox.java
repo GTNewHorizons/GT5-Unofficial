@@ -1,17 +1,20 @@
 package miscutil.core.item.base.itemblock;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemBlock;
 
-public class ItemBlockGtFrameBox extends ItemBlockBase{
+public class ItemBlockGtFrameBox extends ItemBlock{
 
+	protected int blockColour;
+	
 	public ItemBlockGtFrameBox(Block block) {
 		super(block);
+		this.blockColour = block.getBlockColor();
+       // this.setCreativeTab(AddToCreativeTab.tabBlock);
 	}
 
-	@Override
-	public int getColorFromItemStack(ItemStack iStack, int colour) {
-		return super.getColorFromItemStack(iStack, colour);
-	}
+    public int getRenderColor(int aMeta) {
+        return blockColour;
+    }
 
 }

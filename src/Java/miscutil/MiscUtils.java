@@ -6,6 +6,7 @@ import static miscutil.core.lib.CORE.configSwitches.disableEnderIOIntegration;
 import static miscutil.core.lib.CORE.configSwitches.disableIC2Recipes;
 import static miscutil.core.lib.CORE.configSwitches.disableStaballoyBlastFurnaceRecipe;
 import static miscutil.core.lib.CORE.configSwitches.enableAlternativeBatteryAlloy;
+import static miscutil.core.lib.CORE.configSwitches.enableAlternativeDivisionSigilRecipe;
 import static miscutil.core.lib.CORE.configSwitches.enableSolarGenerators;
 import static miscutil.core.lib.CORE.configSwitches.enableThaumcraftShardUnification;
 import gregtech.api.util.GT_Config;
@@ -60,6 +61,8 @@ implements ActionListener
 		enableThaumcraftShardUnification = config.getBoolean("enableThaumcraftShardUnification", "machines", false, "Allows the use of TC shards across many recipes by oreDicting them into a common group.");
 		enableAlternativeBatteryAlloy = config.getBoolean("enableAlternativeBatteryAlloy", "machines", false, "Adds a non-Antimony using Battery Alloy. Not Balanced at all..");
 		disableIC2Recipes = config.getBoolean("disableIC2Recipes", "machines", false, "Alkaluscraft Related - Removes IC2 Cables Except glass fibre. Few other Misc Tweaks.");
+		enableAlternativeDivisionSigilRecipe = config.getBoolean("enableAlternativeDivisionSigilRecipe", "machines", false, "Utilizes Neutronium instead.");
+		
 		
 		config.save(); 
 	}

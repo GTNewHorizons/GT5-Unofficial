@@ -2,13 +2,13 @@ package miscutil.core.item.base.itemblock;
 
 import miscutil.core.creative.AddToCreativeTab;
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemBlockWithMetadata;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockBase extends ItemBlockWithMetadata {
+public class ItemBlockBase extends ItemBlock {
 
         public ItemBlockBase(Block block) {
-                super(block, block);
+                super(block);
                 this.setCreativeTab(AddToCreativeTab.tabBlock);
         }
 
