@@ -1,9 +1,12 @@
 package miscutil.core.block.base;
 
+import gregtech.api.util.GT_OreDictUnificator;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
+import miscutil.core.util.item.UtilsItems;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.Item;
 import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -24,6 +27,8 @@ public class BlockBaseModular extends BasicBlock{
 		this.thisBlockMaterial = blockMaterial;
 		this.setBlockName(getLocalizedName());
 		LanguageRegistry.addName(this, getLocalizedName());
+		setOreDict(unlocalizedName, blockType);
+		
 	}
 
 	/**
@@ -37,6 +42,12 @@ public class BlockBaseModular extends BasicBlock{
 			return 1;			
 		}
 		return 0;
+	}
+	
+	private void setOreDict(String unlocalizedName, BlockTypes blockType){
+		if (blockType == BlockTypes.FRAME){
+			GT_OreDictUnificator.registerOre(unlocalizedName.replace("BlockGtFrame", "frameGt"),UtilsItems.getSimpleStack(Item.getItemFromBlock(this)));
+		}
 	}
 	
 	@Override

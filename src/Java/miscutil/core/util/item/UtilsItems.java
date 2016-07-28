@@ -6,6 +6,16 @@ import java.util.ArrayList;
 
 import miscutil.core.item.ModItems;
 import miscutil.core.item.base.BasicSpawnEgg;
+import miscutil.core.item.base.bolts.BaseItemBolt;
+import miscutil.core.item.base.dusts.BaseItemDust;
+import miscutil.core.item.base.gears.BaseItemGear;
+import miscutil.core.item.base.ingots.BaseItemIngot;
+import miscutil.core.item.base.ingots.BaseItemIngotHot;
+import miscutil.core.item.base.plates.BaseItemPlate;
+import miscutil.core.item.base.rings.BaseItemRing;
+import miscutil.core.item.base.rods.BaseItemRod;
+import miscutil.core.item.base.rotors.BaseItemRotor;
+import miscutil.core.item.base.screws.BaseItemScrew;
 import miscutil.core.lib.CORE;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.Utils;
@@ -222,6 +232,25 @@ public class UtilsItems {
 		return returnValue;
 		}
 	 return getSimpleStack(ModItems.AAA_Broken, amount);
+	}
+	
+	public static void generateItemsFromMaterial(String unlocalizedName, String materialName, int Colour, boolean hotIngot){
+		Item temp;
+		temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, Colour, "Dust");
+		temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, Colour, "Tiny");
+		temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, Colour, "Small");
+		temp = new BaseItemIngot("itemIngot"+unlocalizedName, materialName, Colour);
+		if (hotIngot){
+		Item tempIngot = temp;
+		temp = new BaseItemIngotHot("itemHotIngot"+unlocalizedName, materialName, UtilsItems.getSimpleStack(tempIngot, 1));
+		}
+		temp = new BaseItemPlate("itemPlate"+unlocalizedName, materialName, Colour);
+		temp = new BaseItemRod("itemRod"+unlocalizedName, materialName, Colour);
+		temp = new BaseItemRing("itemRing"+unlocalizedName, materialName, Colour);
+		temp = new BaseItemScrew("itemScrew"+unlocalizedName, materialName, Colour);
+		temp = new BaseItemBolt("itemBolt"+unlocalizedName, materialName, Colour);
+		temp = new BaseItemRotor("itemRotor"+unlocalizedName, materialName, Colour);
+		temp = new BaseItemGear("itemGear"+unlocalizedName, materialName, Colour);
 	}
 
 }

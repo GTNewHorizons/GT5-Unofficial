@@ -1,5 +1,7 @@
 package miscutil.core.item.base.itemblock;
 
+import gregtech.api.util.GT_OreDictUnificator;
+import miscutil.core.util.item.UtilsItems;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 
@@ -10,7 +12,7 @@ public class ItemBlockGtFrameBox extends ItemBlock{
 	public ItemBlockGtFrameBox(Block block) {
 		super(block);
 		this.blockColour = block.getBlockColor();
-       // this.setCreativeTab(AddToCreativeTab.tabBlock);
+		GT_OreDictUnificator.registerOre(block.getUnlocalizedName().replace("BlockGtFrame", "frameGt"), UtilsItems.getSimpleStack(this));
 	}
 
     public int getRenderColor(int aMeta) {

@@ -38,25 +38,25 @@ public class BaseItemDust extends Item{
 		GameRegistry.registerItem(this, unlocalizedName);
 
 		String temp = "";
-		Utils.LOG_INFO("Unlocalized name for OreDict nameGen: "+getUnlocalizedName());
+		Utils.LOG_WARNING("Unlocalized name for OreDict nameGen: "+getUnlocalizedName());
 		if (getUnlocalizedName().contains("item.")){
 			temp = getUnlocalizedName().replace("item.", "");
-			Utils.LOG_INFO("Generating OreDict Name: "+temp);
+			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
 		}
 		else {
 			temp = getUnlocalizedName();
 		}
 		if (temp.contains("DustTiny")){
 			temp = temp.replace("itemD", "d");
-			Utils.LOG_INFO("Generating OreDict Name: "+temp);
+			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
 		}
 		else if (temp.contains("DustSmall")){
 			temp = temp.replace("itemD", "d");
-			Utils.LOG_INFO("Generating OreDict Name: "+temp);
+			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
 		}
 		else {
 			temp = temp.replace("itemD", "d");
-			Utils.LOG_INFO("Generating OreDict Name: "+temp);
+			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
 		}		
 		if (temp != null && temp != ""){
 			GT_OreDictUnificator.registerOre(temp, UtilsItems.getSimpleStack(this));
@@ -109,25 +109,25 @@ public class BaseItemDust extends Item{
 		ItemStack tempStack = UtilsItems.getSimpleStack(this);
 		ItemStack tempOutput = null;
 		String temp = "";
-		Utils.LOG_INFO("Unlocalized name for OreDict nameGen: "+getUnlocalizedName());
+		Utils.LOG_WARNING("Unlocalized name for OreDict nameGen: "+getUnlocalizedName());
 		if (getUnlocalizedName().contains("item.")){
 			temp = getUnlocalizedName().replace("item.", "");
-			Utils.LOG_INFO("Generating OreDict Name: "+temp);
+			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
 		}
 		else {
 			temp = getUnlocalizedName();
 		}
 		if (temp.contains("DustTiny")){
 			temp = temp.replace("itemDustTiny", "dust");
-			Utils.LOG_INFO("Generating OreDict Name: "+temp);
+			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
 		}
 		else if (temp.contains("DustSmall")){
 			temp = temp.replace("itemDustSmall", "dust");
-			Utils.LOG_INFO("Generating OreDict Name: "+temp);
+			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
 		}
 		else {
 			temp = temp.replace("itemD", "d");
-			Utils.LOG_INFO("Generating OreDict Name: "+temp);
+			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
 		}		
 		if (temp != null && temp != ""){
 			tempOutput = UtilsItems.getItemStackOfAmountFromOreDict(temp, 1);
@@ -135,21 +135,21 @@ public class BaseItemDust extends Item{
 
 		if (tempOutput != null){
 			if (getUnlocalizedName().contains("DustTiny")){
-				Utils.LOG_INFO("Generating a 9 Tiny dust to 1 Dust recipe for "+materialName);
+				Utils.LOG_WARNING("Generating a 9 Tiny dust to 1 Dust recipe for "+materialName);
 				UtilsRecipe.addShapelessGregtechRecipe(tempOutput,
 						tempStack, tempStack, tempStack,
 						tempStack, tempStack, tempStack,
 						tempStack, tempStack, tempStack);
 			}
 			else if (getUnlocalizedName().contains("DustSmall")){
-				Utils.LOG_INFO("Generating a 4 Small dust to 1 Dust recipe for "+materialName);
+				Utils.LOG_WARNING("Generating a 4 Small dust to 1 Dust recipe for "+materialName);
 				UtilsRecipe.addShapelessGregtechRecipe(tempOutput,
 						tempStack, tempStack, null,
 						tempStack, tempStack, null,
 						null, null, null);
 			}
 			else {
-				Utils.LOG_INFO("Generating a shapeless Dust recipe for "+materialName);
+				Utils.LOG_WARNING("Generating a shapeless Dust recipe for "+materialName);
 				UtilsRecipe.addShapelessGregtechRecipe(tempOutput,
 						"dustTungsten", "dustTantalum", "dustTantalum",
 						"dustTantalum", "dustTantalum", "dustTantalum",
@@ -160,6 +160,7 @@ public class BaseItemDust extends Item{
 	}
 
 	private void addMacerationRecipe(){
+		Utils.LOG_INFO("Adding recipe for "+materialName+" Dusts");
 
 		String tempIngot = getUnlocalizedName().replace("item.itemDust", "ingot");
 		String tempDust = getUnlocalizedName().replace("item.itemDust", "dust");
@@ -170,17 +171,17 @@ public class BaseItemDust extends Item{
 			return;
 		}
 
-		Utils.LOG_INFO("Unlocalized name for OreDict nameGen: "+getUnlocalizedName());
+		Utils.LOG_WARNING("Unlocalized name for OreDict nameGen: "+getUnlocalizedName());
 		if (getUnlocalizedName().contains("item.")){
 			tempIngot = getUnlocalizedName().replace("item.", "");
-			Utils.LOG_INFO("Generating OreDict Name: "+tempIngot);
+			Utils.LOG_WARNING("Generating OreDict Name: "+tempIngot);
 		}
 		else {
 			tempIngot = getUnlocalizedName();
 		}
 
 		tempIngot = tempIngot.replace("itemDust", "ingot");
-		Utils.LOG_INFO("Generating OreDict Name: "+tempIngot);
+		Utils.LOG_WARNING("Generating OreDict Name: "+tempIngot);
 
 		if (tempIngot != null && tempIngot != ""){
 			tempInputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 1);

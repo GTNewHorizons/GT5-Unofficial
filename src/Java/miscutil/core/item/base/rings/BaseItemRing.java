@@ -1,6 +1,7 @@
-package miscutil.core.item.base.plates;
+package miscutil.core.item.base.rings;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_OreDictUnificator;
 
 import java.util.List;
@@ -15,37 +16,36 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public class BaseItemPlate extends Item{
+public class BaseItemRing extends Item{
 
 	protected int colour;
 	protected String materialName;
 	protected String unlocalName;
 
-	public BaseItemPlate(String unlocalizedName, String materialName, int colour) {
+	public BaseItemRing(String unlocalizedName, String materialName, int colour) {
 		setUnlocalizedName(unlocalizedName);
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
 		this.setUnlocalizedName(unlocalizedName);
 		this.unlocalName = unlocalizedName;
 		this.setMaxStackSize(64);
-		this.setTextureName(CORE.MODID + ":" + "itemPlate");
-		this.setMaxStackSize(64);
+		this.setTextureName(CORE.MODID + ":" + "itemRing");
 		this.colour = colour;
 		this.materialName = materialName;
 		GameRegistry.registerItem(this, unlocalizedName);
-		GT_OreDictUnificator.registerOre(unlocalName.replace("itemP", "p"), UtilsItems.getSimpleStack(this));
-		addBendingRecipe();
+		GT_OreDictUnificator.registerOre(unlocalName.replace("itemR", "r"), UtilsItems.getSimpleStack(this));
+		addExtruderRecipe();
 	}
 
 	@Override
 	public String getItemStackDisplayName(ItemStack p_77653_1_) {
 
-		return (materialName+ " Plate");
+		return (materialName+ " Ring");
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
 		if (materialName != null && materialName != "" && !materialName.equals("")){
-			list.add(EnumChatFormatting.GRAY+"A flat plate of " + materialName + ".");		
+			list.add(EnumChatFormatting.GRAY+"A " + materialName + " Ring.");		
 		}
 		super.addInformation(stack, aPlayer, list, bool);
 	}
@@ -63,14 +63,12 @@ public class BaseItemPlate extends Item{
 
 	}
 
-	private void addBendingRecipe(){
-		Utils.LOG_INFO("Adding recipe for "+materialName+" Plates");
-		String tempIngot = unlocalName.replace("itemPlate", "ingot");
+	private void addExtruderRecipe(){
+		Utils.LOG_INFO("Adding recipe for "+materialName+" Rings");
+		String tempIngot = unlocalName.replace("itemRing", "ingot");
 		ItemStack tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 1);
 		if (null != tempOutputStack){
-			GT_Values.RA.addBenderRecipe(tempOutputStack,
-					UtilsItems.getSimpleStack(this),
-					1200, 24);	
+			GT_Values.RA.addExtruderRecipe(tempOutputStack, ItemList.Shape_Extruder_Ring.get(1), UtilsItems.getSimpleStack(this, 4), 1600, 96);	
 		}				
 	}
 

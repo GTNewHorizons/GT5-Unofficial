@@ -12,7 +12,7 @@ public class MiscUtilCreativeTabMisc extends CreativeTabs {
 
 	@Override
 	public Item getTabIconItem() {
-		return ModItems.itemIngotStaballoy;
+		return ModItems.itemFoodCurriedSausages;
 	}
 
 }

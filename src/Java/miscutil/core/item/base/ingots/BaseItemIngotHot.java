@@ -47,6 +47,7 @@ public class BaseItemIngotHot extends BaseItemIngot{
 	}
 
 	private void generateRecipe(){
+		Utils.LOG_INFO("Adding recipe for a Hot Ingot of "+materialName+".");
 		GT_Values.RA.addVacuumFreezerRecipe(UtilsItems.getSimpleStack(this), outputIngot.copy(), 500);
 	}
 

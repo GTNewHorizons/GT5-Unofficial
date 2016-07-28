@@ -5,18 +5,21 @@ import static miscutil.core.lib.CORE.LOAD_ALL_CONTENT;
 import gregtech.api.util.GT_OreDictUnificator;
 import miscutil.core.creative.AddToCreativeTab;
 import miscutil.core.item.base.CoreItem;
+import miscutil.core.item.base.bolts.BaseItemBolt;
 import miscutil.core.item.base.foods.BaseItemFood;
 import miscutil.core.item.base.foods.BaseItemHotFood;
+import miscutil.core.item.base.gears.BaseItemGear;
 import miscutil.core.item.base.ingots.BaseItemIngot;
 import miscutil.core.item.base.ingots.BaseItemIngotHot;
 import miscutil.core.item.base.plates.BaseItemPlate;
+import miscutil.core.item.base.rings.BaseItemRing;
+import miscutil.core.item.base.rods.BaseItemRod;
+import miscutil.core.item.base.rotors.BaseItemRotor;
+import miscutil.core.item.base.screws.BaseItemScrew;
 import miscutil.core.item.effects.RarityUncommon;
 import miscutil.core.item.general.BufferCore;
 import miscutil.core.item.general.fuelrods.FuelRod_Base;
-import miscutil.core.item.init.ItemsDusts;
 import miscutil.core.item.init.ItemsFoods;
-import miscutil.core.item.init.ItemsIngots;
-import miscutil.core.item.init.ItemsPlates;
 import miscutil.core.item.tool.misc.SandstoneHammer;
 import miscutil.core.item.tool.staballoy.StaballoyAxe;
 import miscutil.core.item.tool.staballoy.StaballoyPickaxe;
@@ -28,7 +31,6 @@ import miscutil.core.util.debug.DEBUG_INIT;
 import miscutil.core.util.item.UtilsItems;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemFood;
 import net.minecraftforge.common.util.EnumHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -128,13 +130,41 @@ public final class ModItems {
 	public static Item itemDustSmallTantalloy61;
 	public static Item itemDustTinyTantalloy61;
 	
-	public static ItemBlock ItemBlockGtFrameBox;
+	public static BaseItemGear itemGearStaballoy;
+	public static BaseItemGear itemGearBloodSteel;
+	public static BaseItemGear itemGearTantalloy60;
+	public static BaseItemGear itemGearTantalloy61;
+	
+	public static BaseItemRotor itemRotorStaballoy;
+	public static BaseItemRotor itemRotorBloodSteel;
+	public static BaseItemRotor itemRotorTantalloy60;
+	public static BaseItemRotor itemRotorTantalloy61;
+	
+	public static BaseItemRod itemRodStaballoy;
+	public static BaseItemRod itemRodBloodSteel;
+	public static BaseItemRod itemRodTantalloy60;
+	public static BaseItemRod itemRodTantalloy61;
+
+	public static BaseItemScrew itemScrewStaballoy;
+	public static BaseItemScrew itemScrewBloodSteel;
+	public static BaseItemScrew itemScrewTantalloy60;
+	public static BaseItemScrew itemScrewTantalloy61;
+
+	public static BaseItemRing itemRingStaballoy;
+	public static BaseItemRing itemRingBloodSteel;
+	public static BaseItemRing itemRingTantalloy60;
+	public static BaseItemRing itemRingTantalloy61;
+
+	public static BaseItemBolt itemBoltStaballoy;
+	public static BaseItemBolt itemBoltBloodSteel;
+	public static BaseItemBolt itemBoltTantalloy60;
+	public static BaseItemBolt itemBoltTantalloy61;
 
 
 	//@SuppressWarnings("unused")
 	public static final void init(){
 
-		AAA_Broken = new BaseItemIngot("AAA_Broken", "Errors - Tell Alkalus", Utils.rgbtoHexValue(128, 128, 0));
+		AAA_Broken = new BaseItemIngot("AAA_Broken", "Errors - Tell Alkalus", Utils.rgbtoHexValue(128, 128, 128));
 
 		//Debug Loading
 		if (CORE.DEBUG){
@@ -142,11 +172,28 @@ public final class ModItems {
 		}		
 
 		
-		ItemsIngots.load();
+		/*ItemsIngots.load();
 		ItemsPlates.load();
 		ItemsDusts.load();
+		ItemsRods.load();
+		ItemsGears.load();
+		ItemsRotors.load();
+		ItemsRings.load();
+		ItemsBolts.load();
+		ItemsScrews.load();*/
+	
+		
+		//Start meta Item Generation
 		ItemsFoods.load();
 
+		UtilsItems.generateItemsFromMaterial("EnergyCrystal", "Energy Crystal", Utils.rgbtoHexValue(228, 175, 0), true);
+		UtilsItems.generateItemsFromMaterial("BloodSteel", "Blood Steel", Utils.rgbtoHexValue(142, 28, 0), false);
+		UtilsItems.generateItemsFromMaterial("Staballoy", "Staballoy", Utils.rgbtoHexValue(68, 75, 66), true);
+		UtilsItems.generateItemsFromMaterial("Tantalloy60", "Tantalloy-60", Utils.rgbtoHexValue(68, 75, 166), true);
+		UtilsItems.generateItemsFromMaterial("Tantalloy61", "Tantalloy-61", Utils.rgbtoHexValue(122, 135, 196), true);
+		UtilsItems.generateItemsFromMaterial("Bedrockium", "Bedrockium", Utils.rgbtoHexValue(32, 32, 32), false);
+		UtilsItems.generateItemsFromMaterial("Quantum", "Quantum", Utils.rgbtoHexValue(128, 128, 128), true);
+		
 		//EnderIO Resources
 		if (LoadedMods.EnderIO || LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("EnderIO Found - Loading Resources.");
@@ -207,12 +254,12 @@ public final class ModItems {
 			Utils.LOG_INFO("ExtraUtilities Found - Loading Resources.");
 			//Item Init
 			try {
-				itemPlateBedrockium = new Item().setUnlocalizedName("itemPlateBedrockium").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateBedrockium");
+				//itemPlateBedrockium = new Item().setUnlocalizedName("itemPlateBedrockium").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateBedrockium");
 			} catch (NullPointerException e){
 				e.getClass();
 			}
 			//Registry
-			GameRegistry.registerItem(itemPlateBedrockium, "itemPlateBedrockium");
+			//GameRegistry.registerItem(itemPlateBedrockium, "itemPlateBedrockium");
 		}
 		else {
 			Utils.LOG_WARNING("ExtraUtilities not Found - Skipping Resources.");
