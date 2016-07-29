@@ -21,8 +21,8 @@ public class BasicBlock extends Block {
 
     
     public static enum BlockTypes {
-    	STANDARD("block", "pickaxe", soundTypeStone),
-    	FRAME("blockGtFrame", "wrench", soundTypeMetal);
+    	STANDARD("blockBlock", "pickaxe", soundTypeStone),
+    	FRAME("blockFrameGt", "wrench", soundTypeMetal);
     
     	private String TEXTURE_NAME;
     	private String HARVEST_TOOL;

@@ -19,11 +19,13 @@ public class BaseItemIngotHot extends BaseItemIngot{
 	private ItemStack outputIngot;
 	private int tickCounter = 0;
 	private int tickCounterMax = 200;
+	private int mTier;
 
-	public BaseItemIngotHot(String unlocalizedName, String materialName, ItemStack coldIngot) {
+	public BaseItemIngotHot(String unlocalizedName, String materialName, ItemStack coldIngot, int tier) {
 		super(unlocalizedName, materialName, Utils.rgbtoHexValue(225, 225, 225));
 		this.setTextureName(CORE.MODID + ":" + "itemIngotHot");
 		this.outputIngot = coldIngot;
+		this.mTier = tier;
 		generateRecipe();
 	}
 	
@@ -47,9 +49,11 @@ public class BaseItemIngotHot extends BaseItemIngot{
 	}
 
 	private void generateRecipe(){
-		Utils.LOG_INFO("Adding recipe for a Hot Ingot of "+materialName+".");
-		GT_Values.RA.addVacuumFreezerRecipe(UtilsItems.getSimpleStack(this), outputIngot.copy(), 500);
-	}
+		Utils.LOG_INFO("Adding Vacuum Freezer recipe for a Hot Ingot of "+materialName+".");
+		GT_Values.RA.addVacuumFreezerRecipe(UtilsItems.getSimpleStack(this), outputIngot.copy(), 60*mTier);
+
+		
+	}	
 
 	@Override
 	public void onUpdate(ItemStack iStack, World world, Entity entityHolding, int p_77663_4_, boolean p_77663_5_) {

@@ -22,8 +22,9 @@ public class BaseItemRod extends Item{
 	protected int colour;
 	protected String materialName;
 	protected String unlocalName;
+	private int mTier;
 
-	public BaseItemRod(String unlocalizedName, String materialName, int colour) {
+	public BaseItemRod(String unlocalizedName, String materialName, int colour, int tier) {
 		setUnlocalizedName(unlocalizedName);
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
 		this.setUnlocalizedName(unlocalizedName);
@@ -31,6 +32,7 @@ public class BaseItemRod extends Item{
 		this.setTextureName(CORE.MODID + ":" + "itemRod");
 		this.setMaxStackSize(64);
 		this.colour = colour;
+		this.mTier = tier;
 		this.materialName = materialName;
 		GameRegistry.registerItem(this, unlocalizedName);
 		GT_OreDictUnificator.registerOre(unlocalName.replace("itemR", "r"), UtilsItems.getSimpleStack(this));
@@ -69,14 +71,17 @@ public class BaseItemRod extends Item{
 		String tempIngot = unlocalName.replace("itemRod", "ingot");
 		ItemStack tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 1);
 		if (null != tempOutputStack){
-			GT_Values.RA.addExtruderRecipe(tempOutputStack, ItemList.Shape_Extruder_Rod.get(1), UtilsItems.getSimpleStack(this, 2), 1200, 24);	
+			GT_Values.RA.addExtruderRecipe(tempOutputStack,
+					ItemList.Shape_Extruder_Rod.get(1),
+					UtilsItems.getSimpleStack(this, 2),
+					12*mTier*20, 24*mTier);	
 		}	
 		ItemStack rods = UtilsItems.getSimpleStack(this, 1);
 		UtilsRecipe.addShapedGregtechRecipe(
 				rods, rods, rods,
 				rods, "craftingToolWrench", rods,
 				rods, rods, rods,
-				UtilsItems.getItemStackOfAmountFromOreDict(unlocalName.replace("itemR", "frameGt"), 1));
+				UtilsItems.getItemStackOfAmountFromOreDict(unlocalName.replace("itemRod", "frameGt"), 2));
 	}
 
 }

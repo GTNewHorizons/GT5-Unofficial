@@ -21,8 +21,9 @@ public class BaseItemBolt extends Item{
 	protected int colour;
 	protected String materialName;
 	protected String unlocalName;
+	private int mTier;
 
-	public BaseItemBolt(String unlocalizedName, String materialName, int colour) {
+	public BaseItemBolt(String unlocalizedName, String materialName, int colour, int tier) {
 		setUnlocalizedName(unlocalizedName);
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
 		this.setUnlocalizedName(unlocalizedName);
@@ -30,6 +31,7 @@ public class BaseItemBolt extends Item{
 		this.setMaxStackSize(64);
 		this.setTextureName(CORE.MODID + ":" + "itemBolt");
 		this.colour = colour;
+		this.mTier = tier;
 		this.materialName = materialName;
 		GameRegistry.registerItem(this, unlocalizedName);
 		GT_OreDictUnificator.registerOre(unlocalName.replace("itemB", "b"), UtilsItems.getSimpleStack(this));
@@ -68,7 +70,11 @@ public class BaseItemBolt extends Item{
 		String tempIngot = unlocalName.replace("itemBolt", "ingot");
 		ItemStack tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 1);
 		if (null != tempOutputStack){
-			GT_Values.RA.addExtruderRecipe(tempOutputStack, ItemList.Shape_Extruder_Bolt.get(1), UtilsItems.getSimpleStack(this, 8), 10*20, 24);	
+			GT_Values.RA.addExtruderRecipe(tempOutputStack, 
+					ItemList.Shape_Extruder_Bolt.get(1), 
+					UtilsItems.getSimpleStack(this, 8),
+					30*mTier*20,
+					24*mTier);	
 		}				
 	}
 

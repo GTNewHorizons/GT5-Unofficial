@@ -1,8 +1,6 @@
 package miscutil.core.item.base.ingots;
 
-import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
 
 import java.util.List;
 
@@ -74,14 +72,6 @@ public class BaseItemIngot extends Item{
 		}
 		return colour;
 
-	}
-
-	private void addBendingRecipe(){
-		if (!unlocalName.toLowerCase().contains("ingothot")){
-			GT_Values.RA.addBenderRecipe(GT_Utility.copyAmount(1L, new Object[]{this}),
-					UtilsItems.getItemStackOfAmountFromOreDict("plate"+materialName, 1),
-					1200, 24);
-		}
 	}
 
 }

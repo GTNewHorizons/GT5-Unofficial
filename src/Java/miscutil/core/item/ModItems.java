@@ -186,13 +186,21 @@ public final class ModItems {
 		//Start meta Item Generation
 		ItemsFoods.load();
 
-		UtilsItems.generateItemsFromMaterial("EnergyCrystal", "Energy Crystal", Utils.rgbtoHexValue(228, 175, 0), true);
-		UtilsItems.generateItemsFromMaterial("BloodSteel", "Blood Steel", Utils.rgbtoHexValue(142, 28, 0), false);
-		UtilsItems.generateItemsFromMaterial("Staballoy", "Staballoy", Utils.rgbtoHexValue(68, 75, 66), true);
-		UtilsItems.generateItemsFromMaterial("Tantalloy60", "Tantalloy-60", Utils.rgbtoHexValue(68, 75, 166), true);
-		UtilsItems.generateItemsFromMaterial("Tantalloy61", "Tantalloy-61", Utils.rgbtoHexValue(122, 135, 196), true);
-		UtilsItems.generateItemsFromMaterial("Bedrockium", "Bedrockium", Utils.rgbtoHexValue(32, 32, 32), false);
-		UtilsItems.generateItemsFromMaterial("Quantum", "Quantum", Utils.rgbtoHexValue(128, 128, 128), true);
+		UtilsItems.generateItemsFromMaterial("EnergyCrystal", "Energy Crystal", 8, Utils.rgbtoHexValue(228, 225, 0), true);
+		UtilsItems.generateItemsFromMaterial("BloodSteel", "Blood Steel", 3, Utils.rgbtoHexValue(142, 28, 0), false);
+		UtilsItems.generateItemsFromMaterial("Staballoy", "Staballoy", 6, Utils.rgbtoHexValue(68, 75, 66), true);
+		UtilsItems.generateItemsFromMaterial("Tantalloy60", "Tantalloy-60", 5, Utils.rgbtoHexValue(68, 75, 166), true);
+		UtilsItems.generateItemsFromMaterial("Tantalloy61", "Tantalloy-61", 6, Utils.rgbtoHexValue(122, 135, 196), true);
+		UtilsItems.generateItemsFromMaterial("Bedrockium", "Bedrockium", 9, Utils.rgbtoHexValue(32, 32, 32), false);
+		UtilsItems.generateItemsFromMaterial("Quantum", "Quantum", 10, Utils.rgbtoHexValue(128, 128, 128), true);
+		
+
+		UtilsItems.generateItemsFromMaterial("Inconel625", "Inconel-625", 4, Utils.rgbtoHexValue(128, 200, 128), true); //Inconel 625: Acid resistant, good weldability. The LCF version is typically used in bellows.
+		UtilsItems.generateItemsFromMaterial("Inconel690", "Inconel-690", 6, Utils.rgbtoHexValue(118, 220, 138), true); //Inconel 690: Low cobalt content for nuclear applications, and low resistivity.
+		UtilsItems.generateItemsFromMaterial("Inconel792", "Inconel-792", 5, Utils.rgbtoHexValue(108, 240, 118), true); //Inconel 792: Increased aluminium content for improved high temperature corrosion properties, used especially in gas turbines.
+		
+		UtilsItems.generateItemsFromMaterial("Tumbaga", "Tumbaga", 2, Utils.rgbtoHexValue(255,178,15), false); //Tumbaga was the name given by Spaniards to a non-specific alloy of gold and copper 
+		UtilsItems.generateItemsFromMaterial("Potin", "Potin", 4, Utils.rgbtoHexValue(201,151,129), false); //Potin is traditionally an alloy of bronze, tin and lead, with varying quantities of each possible
 		
 		//EnderIO Resources
 		if (LoadedMods.EnderIO || LOAD_ALL_CONTENT){
@@ -319,7 +327,7 @@ public final class ModItems {
 		//Special Item Handling Case
 		if (configSwitches.enableAlternativeBatteryAlloy) {
 			ModItems.itemIngotBatteryAlloy = new BaseItemIngot("itemIngotBatteryAlloy", "Battery Alloy", Utils.rgbtoHexValue(35, 228, 141));
-			ModItems.itemPlateBatteryAlloy = new BaseItemPlate("itemPlateBatteryAlloy", "Battery Alloy", Utils.rgbtoHexValue(35, 228, 141));
+			ModItems.itemPlateBatteryAlloy = new BaseItemPlate("itemPlateBatteryAlloy", "Battery Alloy", Utils.rgbtoHexValue(35, 228, 141), 2);
 		}
 
 

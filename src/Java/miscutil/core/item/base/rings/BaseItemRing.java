@@ -21,8 +21,9 @@ public class BaseItemRing extends Item{
 	protected int colour;
 	protected String materialName;
 	protected String unlocalName;
+	private int mTier;
 
-	public BaseItemRing(String unlocalizedName, String materialName, int colour) {
+	public BaseItemRing(String unlocalizedName, String materialName, int colour, int tier) {
 		setUnlocalizedName(unlocalizedName);
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
 		this.setUnlocalizedName(unlocalizedName);
@@ -30,6 +31,7 @@ public class BaseItemRing extends Item{
 		this.setMaxStackSize(64);
 		this.setTextureName(CORE.MODID + ":" + "itemRing");
 		this.colour = colour;
+		this.mTier = tier;
 		this.materialName = materialName;
 		GameRegistry.registerItem(this, unlocalizedName);
 		GT_OreDictUnificator.registerOre(unlocalName.replace("itemR", "r"), UtilsItems.getSimpleStack(this));
@@ -68,7 +70,11 @@ public class BaseItemRing extends Item{
 		String tempIngot = unlocalName.replace("itemRing", "ingot");
 		ItemStack tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 1);
 		if (null != tempOutputStack){
-			GT_Values.RA.addExtruderRecipe(tempOutputStack, ItemList.Shape_Extruder_Ring.get(1), UtilsItems.getSimpleStack(this, 4), 1600, 96);	
+			GT_Values.RA.addExtruderRecipe(tempOutputStack,
+					ItemList.Shape_Extruder_Ring.get(1),
+					UtilsItems.getSimpleStack(this, 4),
+					160*mTier,
+					32*mTier);	
 		}				
 	}
 

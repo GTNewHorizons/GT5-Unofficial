@@ -1,6 +1,7 @@
 package miscutil.core.item.base.dusts;
 
 import static miscutil.core.creative.AddToCreativeTab.tabMisc;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 
@@ -21,9 +22,11 @@ public class BaseItemDust extends Item{
 	protected int colour;
 	protected String materialName;
 	protected String pileType;
+	protected boolean useBlastFurnace;
 	String name = "";
+	private int mTier;
 
-	public BaseItemDust(String unlocalizedName, String materialName, int colour, String pileSize) {
+	public BaseItemDust(String unlocalizedName, String materialName, int colour, String pileSize, boolean blastFurnaceRequired, int tier) {
 		setUnlocalizedName(unlocalizedName);
 		this.setUnlocalizedName(unlocalizedName);
 		this.setMaxStackSize(64);	
@@ -34,7 +37,9 @@ public class BaseItemDust extends Item{
 		this.setMaxStackSize(64);
 		this.setCreativeTab(tabMisc);
 		this.colour = colour;
+		this.mTier = tier;
 		this.materialName = materialName;
+		this.useBlastFurnace = blastFurnaceRequired;
 		GameRegistry.registerItem(this, unlocalizedName);
 
 		String temp = "";
@@ -61,6 +66,7 @@ public class BaseItemDust extends Item{
 		if (temp != null && temp != ""){
 			GT_OreDictUnificator.registerOre(temp, UtilsItems.getSimpleStack(this));
 		}
+		addFurnaceRecipe();
 		addMacerationRecipe();
 	}
 
@@ -166,7 +172,7 @@ public class BaseItemDust extends Item{
 		String tempDust = getUnlocalizedName().replace("item.itemDust", "dust");
 		ItemStack tempInputStack;
 		ItemStack tempOutputStack;
-		
+
 		if (getUnlocalizedName().contains("DustSmall") || getUnlocalizedName().contains("DustTiny")){
 			return;
 		}
@@ -190,6 +196,53 @@ public class BaseItemDust extends Item{
 				GT_ModHandler.addPulverisationRecipe(tempInputStack, tempOutputStack);
 			}
 		}						
+	}
+
+	private void addFurnaceRecipe(){		
+
+		String temp = "";
+		if (getUnlocalizedName().contains("item.")){
+			temp = getUnlocalizedName().replace("item.", "");
+		}
+		else {
+			temp = getUnlocalizedName();
+		}
+		if (temp.contains("DustTiny") || temp.contains("DustSmall")){
+			return;
+		}
+		temp = temp.replace("itemDust", "ingot");		
+		if (temp != null && temp != ""){
+
+			if (this.useBlastFurnace){
+				Utils.LOG_INFO("Adding recipe for Hot "+materialName+" Ingots in a Blast furnace.");
+				String tempIngot = temp.replace("ingot", "ingotHot");
+				ItemStack tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 1);
+				Utils.LOG_INFO("This will produce "+tempOutputStack.getDisplayName() + " Debug: "+tempIngot);
+				if (null != tempOutputStack){
+					addBlastFurnaceRecipe(UtilsItems.getSimpleStack(this), null, tempOutputStack, null, 350*mTier);		
+				}				
+				return;
+			}
+			Utils.LOG_INFO("Adding recipe for "+materialName+" Ingots in a furnace.");
+			ItemStack tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(temp, 1);
+			Utils.LOG_INFO("This will produce an ingot of "+tempOutputStack.getDisplayName() + " Debug: "+temp);
+			if (null != tempOutputStack){
+				GT_ModHandler.addSmeltingAndAlloySmeltingRecipe(UtilsItems.getSimpleStack(this), tempOutputStack);			
+			}			
+		}	
+	}
+
+	private void addBlastFurnaceRecipe(ItemStack input1, ItemStack input2, ItemStack output1, ItemStack output2, int tempRequired){
+		//Utils.LOG_INFO("Adding Blast Furnace recipe for a Hot Ingot of "+materialName+".");
+		GT_Values.RA.addBlastRecipe(
+				input1,
+				input2,
+				GT_Values.NF, GT_Values.NF,
+				output1,
+				output2,
+				250*mTier*20,
+				mTier*64, 
+				tempRequired);
 	}
 
 }

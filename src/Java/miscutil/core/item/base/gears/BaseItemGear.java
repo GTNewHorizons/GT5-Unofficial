@@ -21,8 +21,9 @@ public class BaseItemGear extends Item{
 	protected int colour;
 	protected String materialName;
 	protected String unlocalName;
+	private int mTier;
 
-	public BaseItemGear(String unlocalizedName, String materialName, int colour) {
+	public BaseItemGear(String unlocalizedName, String materialName, int colour, int tier) {
 		setUnlocalizedName(unlocalizedName);
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
 		this.setUnlocalizedName(unlocalizedName);
@@ -30,6 +31,7 @@ public class BaseItemGear extends Item{
 		this.setMaxStackSize(64);
 		this.setTextureName(CORE.MODID + ":" + "itemGear");
 		this.colour = colour;
+		this.mTier = tier;
 		this.materialName = materialName;
 		GameRegistry.registerItem(this, unlocalizedName);
 		GT_OreDictUnificator.registerOre(unlocalName.replace("itemG", "g"), UtilsItems.getSimpleStack(this));
@@ -68,7 +70,11 @@ public class BaseItemGear extends Item{
 		String tempIngot = unlocalName.replace("itemGear", "ingot");
 		ItemStack tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 8);
 		if (null != tempOutputStack){
-			GT_Values.RA.addExtruderRecipe(tempOutputStack, ItemList.Shape_Extruder_Gear.get(1), UtilsItems.getSimpleStack(this), 15*20, 24);	
+			GT_Values.RA.addExtruderRecipe(tempOutputStack,
+					ItemList.Shape_Extruder_Gear.get(1),
+					UtilsItems.getSimpleStack(this),
+					40*mTier*20,
+					24*mTier);	
 		}				
 	}
 

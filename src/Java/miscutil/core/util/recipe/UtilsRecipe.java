@@ -318,17 +318,17 @@ public class UtilsRecipe {
 			Object InputItem1, Object InputItem2, Object InputItem3,
 			Object InputItem4, Object InputItem5, Object InputItem6,
 			Object InputItem7, Object InputItem8, Object InputItem9,
-			ItemStack OutputItem){
+			ItemStack OutputItem){	
 
-		if ((!(InputItem1 instanceof ItemStack) && !(InputItem1 instanceof String)) || 
-				(!(InputItem2 instanceof ItemStack) && !(InputItem2 instanceof String)) || 
-				(!(InputItem3 instanceof ItemStack) && !(InputItem3 instanceof String)) || 
-				(!(InputItem4 instanceof ItemStack) && !(InputItem4 instanceof String)) || 
-				(!(InputItem5 instanceof ItemStack) && !(InputItem5 instanceof String)) || 
-				(!(InputItem6 instanceof ItemStack) && !(InputItem6 instanceof String)) || 
-				(!(InputItem7 instanceof ItemStack) && !(InputItem7 instanceof String)) || 
-				(!(InputItem8 instanceof ItemStack) && !(InputItem8 instanceof String)) || 
-				(!(InputItem9 instanceof ItemStack) && !(InputItem9 instanceof String))){
+		if ((!(InputItem1 instanceof ItemStack) && !(InputItem1 instanceof String) && (InputItem1 != null)) || 
+				(!(InputItem2 instanceof ItemStack) && !(InputItem2 instanceof String) && (InputItem2 != null)) || 
+				(!(InputItem3 instanceof ItemStack) && !(InputItem3 instanceof String) && (InputItem3 != null)) || 
+				(!(InputItem4 instanceof ItemStack) && !(InputItem4 instanceof String) && (InputItem4 != null)) || 
+				(!(InputItem5 instanceof ItemStack) && !(InputItem5 instanceof String) && (InputItem5 != null)) || 
+				(!(InputItem6 instanceof ItemStack) && !(InputItem6 instanceof String) && (InputItem6 != null)) || 
+				(!(InputItem7 instanceof ItemStack) && !(InputItem7 instanceof String) && (InputItem7 != null)) || 
+				(!(InputItem8 instanceof ItemStack) && !(InputItem8 instanceof String) && (InputItem8 != null)) || 
+				(!(InputItem9 instanceof ItemStack) && !(InputItem9 instanceof String) && (InputItem9 != null))){
 			Utils.LOG_INFO("One Input item was not an ItemStack of an OreDict String.");
 			return;
 		}

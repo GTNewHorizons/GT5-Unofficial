@@ -488,6 +488,13 @@ public class Utils {
 		return false;
 	}
 	
+	public static boolean invertBoolean(boolean booleans){
+		if (booleans == true){
+			return false;
+		}
+		return true;
+	}
+	
 
 }
 

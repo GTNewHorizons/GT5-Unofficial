@@ -1,11 +1,8 @@
 package miscutil.core.block;
 
 import miscutil.core.block.base.BasicBlock;
-import miscutil.core.block.base.BasicBlock.BlockTypes;
-import miscutil.core.block.base.BlockBaseModular;
 import miscutil.core.block.general.LightGlass;
 import miscutil.core.block.general.fluids.FluidRegistryHandler;
-import miscutil.core.item.base.itemblock.ItemBlockGtFrameBox;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
 import miscutil.core.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks;
@@ -74,9 +71,9 @@ public final class ModBlocks {
 
 		//GtFrames
 		//GameRegistry.registerBlock(blockGtFrameSet1 = new BlockGtFrameBox("blockGtFrameSet1", Material.iron ,BlockTypes.FRAME, true, Utils.rgbtoHexValue(68, 75, 66), Utils.rgbtoHexValue(68, 75, 166), Utils.rgbtoHexValue(122, 135, 196)), "blockGtFrameSet1");
-		GameRegistry.registerBlock(blockGtFrameTantalloy60 = new BlockBaseModular("blockGtFrameStaballoy", "Staballoy", BlockTypes.FRAME, Utils.rgbtoHexValue(68, 75, 66)), ItemBlockGtFrameBox.class, "blockGtFrameStaballoy");
-		GameRegistry.registerBlock(blockGtFrameTantalloy60 = new BlockBaseModular("blockGtFrameTantalloy60", "Tantalloy-60", BlockTypes.FRAME, Utils.rgbtoHexValue(68, 75, 166)), ItemBlockGtFrameBox.class, "blockGtFrameTantalloy60");
-		GameRegistry.registerBlock(blockGtFrameTantalloy61 = new BlockBaseModular("blockGtFrameTantalloy61", "Tantalloy-61", BlockTypes.FRAME, Utils.rgbtoHexValue(122, 135, 196)), ItemBlockGtFrameBox.class, "blockGtFrameTantalloy61");
+		//GameRegistry.registerBlock(blockGtFrameTantalloy60 = new BlockBaseModular("blockGtFrameStaballoy", "Staballoy", BlockTypes.FRAME, Utils.rgbtoHexValue(68, 75, 66)), ItemBlockGtFrameBox.class, "blockGtFrameStaballoy");
+		//GameRegistry.registerBlock(blockGtFrameTantalloy60 = new BlockBaseModular("blockGtFrameTantalloy60", "Tantalloy-60", BlockTypes.FRAME, Utils.rgbtoHexValue(68, 75, 166)), ItemBlockGtFrameBox.class, "blockGtFrameTantalloy60");
+		//GameRegistry.registerBlock(blockGtFrameTantalloy61 = new BlockBaseModular("blockGtFrameTantalloy61", "Tantalloy-61", BlockTypes.FRAME, Utils.rgbtoHexValue(122, 135, 196)), ItemBlockGtFrameBox.class, "blockGtFrameTantalloy61");
 	}
 
 }

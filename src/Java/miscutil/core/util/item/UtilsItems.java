@@ -4,6 +4,8 @@ import gregtech.api.util.GT_OreDictUnificator;
 
 import java.util.ArrayList;
 
+import miscutil.core.block.base.BasicBlock.BlockTypes;
+import miscutil.core.block.base.BlockBaseModular;
 import miscutil.core.item.ModItems;
 import miscutil.core.item.base.BasicSpawnEgg;
 import miscutil.core.item.base.bolts.BaseItemBolt;
@@ -20,6 +22,7 @@ import miscutil.core.lib.CORE;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.Utils;
 import miscutil.core.util.wrapper.var;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -234,23 +237,30 @@ public class UtilsItems {
 	 return getSimpleStack(ModItems.AAA_Broken, amount);
 	}
 	
-	public static void generateItemsFromMaterial(String unlocalizedName, String materialName, int Colour, boolean hotIngot){
+	public static void generateItemsFromMaterial(String unlocalizedName, String materialName, int materialTier, int Colour, boolean hotIngot){
+		if (materialTier > 10 || materialTier <= 0){
+			materialTier = 2;
+		}
 		Item temp;
-		temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, Colour, "Dust");
-		temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, Colour, "Tiny");
-		temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, Colour, "Small");
+		Block tempBlock;
+		tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
+		tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.FRAME, Colour);
 		temp = new BaseItemIngot("itemIngot"+unlocalizedName, materialName, Colour);
 		if (hotIngot){
-		Item tempIngot = temp;
-		temp = new BaseItemIngotHot("itemHotIngot"+unlocalizedName, materialName, UtilsItems.getSimpleStack(tempIngot, 1));
-		}
-		temp = new BaseItemPlate("itemPlate"+unlocalizedName, materialName, Colour);
-		temp = new BaseItemRod("itemRod"+unlocalizedName, materialName, Colour);
-		temp = new BaseItemRing("itemRing"+unlocalizedName, materialName, Colour);
-		temp = new BaseItemScrew("itemScrew"+unlocalizedName, materialName, Colour);
-		temp = new BaseItemBolt("itemBolt"+unlocalizedName, materialName, Colour);
+			Item tempIngot = temp;
+			temp = new BaseItemIngotHot("itemHotIngot"+unlocalizedName, materialName, UtilsItems.getSimpleStack(tempIngot, 1), materialTier);
+			}
+		temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, Colour, "Dust", hotIngot, materialTier);
+		temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, Colour, "Tiny", hotIngot, materialTier);
+		temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, Colour, "Small", hotIngot, materialTier);
+		
+		temp = new BaseItemPlate("itemPlate"+unlocalizedName, materialName, Colour, materialTier);
+		temp = new BaseItemRod("itemRod"+unlocalizedName, materialName, Colour, materialTier);
+		temp = new BaseItemRing("itemRing"+unlocalizedName, materialName, Colour, materialTier);
+		temp = new BaseItemBolt("itemBolt"+unlocalizedName, materialName, Colour, materialTier);
+		temp = new BaseItemScrew("itemScrew"+unlocalizedName, materialName, Colour, materialTier);
 		temp = new BaseItemRotor("itemRotor"+unlocalizedName, materialName, Colour);
-		temp = new BaseItemGear("itemGear"+unlocalizedName, materialName, Colour);
+		temp = new BaseItemGear("itemGear"+unlocalizedName, materialName, Colour, materialTier);
 	}
 
 }

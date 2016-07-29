@@ -1,13 +1,13 @@
 package miscutil.core.block.base;
 
-import gregtech.api.util.GT_OreDictUnificator;
+import miscutil.core.item.base.itemblock.ItemBlockGtBlock;
+import miscutil.core.item.base.itemblock.ItemBlockGtFrameBox;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
-import miscutil.core.util.item.UtilsItems;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.item.Item;
 import net.minecraft.world.IBlockAccess;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -19,7 +19,7 @@ public class BlockBaseModular extends BasicBlock{
 	protected String thisBlockMaterial;
 
 	public BlockBaseModular(String unlocalizedName, String blockMaterial,  BlockTypes blockType, int colour) {
-		super(unlocalizedName, Material.iron);
+		super(blockType.getTexture()+unlocalizedName, Material.iron);
 		this.setHarvestLevel(blockType.getHarvestTool(), 2);
 		this.setBlockTextureName(CORE.MODID+":"+blockType.getTexture());
 		this.blockColour = colour;
@@ -27,7 +27,14 @@ public class BlockBaseModular extends BasicBlock{
 		this.thisBlockMaterial = blockMaterial;
 		this.setBlockName(getLocalizedName());
 		LanguageRegistry.addName(this, getLocalizedName());
-		setOreDict(unlocalizedName, blockType);
+		//setOreDict(unlocalizedName, blockType);
+		if (thisBlock == BlockTypes.STANDARD){
+			GameRegistry.registerBlock(this, ItemBlockGtBlock.class, blockType.getTexture()+unlocalizedName);			
+		}
+		else if (thisBlock == BlockTypes.FRAME){
+			GameRegistry.registerBlock(this, ItemBlockGtFrameBox.class, blockType.getTexture()+unlocalizedName);			
+		}
+		
 		
 	}
 
@@ -44,16 +51,13 @@ public class BlockBaseModular extends BasicBlock{
 		return 0;
 	}
 	
-	private void setOreDict(String unlocalizedName, BlockTypes blockType){
-		if (blockType == BlockTypes.FRAME){
-			GT_OreDictUnificator.registerOre(unlocalizedName.replace("BlockGtFrame", "frameGt"),UtilsItems.getSimpleStack(Item.getItemFromBlock(this)));
-		}
-	}
-	
 	@Override
 	public String getLocalizedName() {
-		String tempIngot = getUnlocalizedName().replace("tile.blockGtFrame", "");	
-		if (thisBlock == BlockTypes.FRAME){
+		String tempIngot;	
+		if (thisBlock == BlockTypes.STANDARD){
+			tempIngot = "Block of "+thisBlockMaterial;
+		}
+		else if (thisBlock == BlockTypes.FRAME){
 			tempIngot = thisBlockMaterial + " Frame Box";
 		}
 		else {

@@ -20,8 +20,9 @@ public class BaseItemPlate extends Item{
 	protected int colour;
 	protected String materialName;
 	protected String unlocalName;
+	private int mTier;
 
-	public BaseItemPlate(String unlocalizedName, String materialName, int colour) {
+	public BaseItemPlate(String unlocalizedName, String materialName, int colour, int tier) {
 		setUnlocalizedName(unlocalizedName);
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
 		this.setUnlocalizedName(unlocalizedName);
@@ -30,6 +31,7 @@ public class BaseItemPlate extends Item{
 		this.setTextureName(CORE.MODID + ":" + "itemPlate");
 		this.setMaxStackSize(64);
 		this.colour = colour;
+		this.mTier = tier;
 		this.materialName = materialName;
 		GameRegistry.registerItem(this, unlocalizedName);
 		GT_OreDictUnificator.registerOre(unlocalName.replace("itemP", "p"), UtilsItems.getSimpleStack(this));
@@ -70,7 +72,8 @@ public class BaseItemPlate extends Item{
 		if (null != tempOutputStack){
 			GT_Values.RA.addBenderRecipe(tempOutputStack,
 					UtilsItems.getSimpleStack(this),
-					1200, 24);	
+					14*mTier*20,
+					64*mTier);	
 		}				
 	}
 

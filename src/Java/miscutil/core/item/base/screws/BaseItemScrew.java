@@ -21,8 +21,9 @@ public class BaseItemScrew extends Item{
 	protected int colour;
 	protected String materialName;
 	protected String unlocalName;
+	private int mTier;
 
-	public BaseItemScrew(String unlocalizedName, String materialName, int colour) {
+	public BaseItemScrew(String unlocalizedName, String materialName, int colour, int tier) {
 		setUnlocalizedName(unlocalizedName);
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
 		this.setUnlocalizedName(unlocalizedName);
@@ -31,6 +32,7 @@ public class BaseItemScrew extends Item{
 		this.setTextureName(CORE.MODID + ":" + "itemScrew");
 		this.setMaxStackSize(64);
 		this.colour = colour;
+		this.mTier = tier;
 		this.materialName = materialName;
 		GameRegistry.registerItem(this, unlocalizedName);
 		GT_OreDictUnificator.registerOre(unlocalName.replace("itemS", "s"), UtilsItems.getSimpleStack(this));
@@ -70,7 +72,7 @@ public class BaseItemScrew extends Item{
 		if (null != boltStack){
 			GT_Values.RA.addLatheRecipe(boltStack,
 					UtilsItems.getSimpleStack(this), null,
-					60, 16);	
+					60*mTier, 16*mTier);	
 			UtilsRecipe.addShapedGregtechRecipe(
 					"craftingToolFile", boltStack, null,
 					boltStack, null, null,
