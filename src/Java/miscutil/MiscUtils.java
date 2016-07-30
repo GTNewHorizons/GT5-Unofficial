@@ -1,7 +1,6 @@
 package miscutil;
 
 import static miscutil.core.lib.CORE.DEBUG;
-import static miscutil.core.lib.CORE.configSwitches.disableCentrifugeFormation;
 import static miscutil.core.lib.CORE.configSwitches.disableEnderIOIntegration;
 import static miscutil.core.lib.CORE.configSwitches.disableIC2Recipes;
 import static miscutil.core.lib.CORE.configSwitches.disableStaballoyBlastFurnaceRecipe;
@@ -54,7 +53,7 @@ implements ActionListener
 		DEBUG = config.getBoolean("debugMode", "debug", false, "Enables all sorts of debug logging. (Don't use unless told to, breaks other things.)");
 		disableEnderIOIntegration = config.getBoolean("disableEnderIO", "debug", false, "Disables EnderIO Integration.");
 		disableStaballoyBlastFurnaceRecipe = config.getBoolean("disableStaballoyBlastFurnaceRecipe", "debug", false, "Disables Staballoy Blast Furnace Recipe.");
-		disableCentrifugeFormation = config.getBoolean("disableCentrifuge", "debug", true, "Keeps the Items around, just stops the multiblock forming. (It's broken currently, needs in depth testing)");
+		//disableCentrifugeFormation = config.getBoolean("disableCentrifuge", "debug", false, "Keeps the Items around, just stops the multiblock forming. (It's broken currently, needs in depth testing)");
 		
 		//Machines
 		enableSolarGenerators = config.getBoolean("enableSolarGenerators", "machines", false, "These may be overpowered, Consult a local electrician.");

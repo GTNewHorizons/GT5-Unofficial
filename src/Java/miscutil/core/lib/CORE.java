@@ -75,7 +75,7 @@ public class CORE {
 		//Debug
 		public static boolean disableEnderIOIntegration = false;
 		public static boolean disableStaballoyBlastFurnaceRecipe = false;
-		public static boolean disableCentrifugeFormation = true;
+		public static boolean disableCentrifugeFormation = false;
 		
 		//Machine Related
 		public static boolean enableSolarGenerators = false;
