@@ -70,8 +70,8 @@ public class RECIPES_Machines {
 	static String wireTier4 = "wireGt08Gold";
 	static String wireTier5 = "wireGt08Aluminium";
 	static String wireTier6 = "wireGt08Tungsten";
-	static String wireTier7 = "wireGt08Osmium";
-	static String wireTier8 = "wireGt08Naquadah";
+	static String wireTier7 = "wireGt08Naquadah";
+	static String wireTier8 = "wireGt08Osmium";
 	static String wireTier9 = "wireGt08Superconductor";
 	static String wireTier10 = "wireGt16Superconductor";
 
@@ -82,8 +82,8 @@ public class RECIPES_Machines {
 	static String cableTier4 = "cableGt04Gold";
 	static String cableTier5 = "cableGt04Aluminium";
 	static String cableTier6 = "cableGt04Tungsten";
-	static String cableTier7 = "cableGt04Osmium";
-	static String cableTier8 = "cableGt04Naquadah";
+	static String cableTier7 = "cableGt04Naquadah";
+	static String cableTier8 = "cableGt04Osmium";
 	static String cableTier9 = "cableGt04NiobiumTitanium";
 	static String cableTier10 = "cableGt08NiobiumTitanium";
 
@@ -94,10 +94,10 @@ public class RECIPES_Machines {
 	static String plateTier3 = "plateCopper";
 	static String plateTier4 = "plateGold";
 	static String plateTier5 = "plateAluminium";
-	static String plateTier6 = "plateThorium";
+	static String plateTier6 = "plateMaragingSteel250";
 	static String plateTier7 = "plateTungsten";
 	static String plateTier8 = "plateTungstenSteel";
-	static String plateTier9 = "plateOsmium";
+	static String plateTier9 = "plateZeron100";
 	static String plateTier10 = "plateNaquadah";
 	static String plateTier11 = "plateNeutronium";
 
@@ -107,10 +107,10 @@ public class RECIPES_Machines {
 	static String rodTier3 = "stickCopper";
 	static String rodTier4 = "stickGold";
 	static String rodTier5 = "stickAluminium";
-	static String rodTier6 = "stickThorium";
+	static String rodTier6 = "stickMaragingSteel250";
 	static String rodTier7 = "stickTungsten";
 	static String rodTier8 = "stickTungstenSteel";
-	static String rodTier9 = "stickOsmium";
+	static String rodTier9 = "stickZeron100";
 	static String rodTier10 = "stickNaquadah";
 	static String rodTier11 = "stickNeutronium";
 
@@ -337,12 +337,7 @@ public class RECIPES_Machines {
 	}	
 
 	private static void runModRecipes(){
-		if (LoadedMods.Gregtech){
-			//Staballoy Dust - TEMP
-			UtilsRecipe.recipeBuilder("dustTitanium", "dustUranium", "dustUranium",
-					"dustUranium", "dustUranium", "dustUranium",
-					"dustUranium", "dustUranium", "dustUranium",
-					RECIPES_Shapeless.dustStaballoy);
+		if (LoadedMods.Gregtech){			
 
 			UtilsRecipe.addShapedGregtechRecipe(
 					ItemList.Electric_Piston_EV, GregtechOrePrefixes.circuit.get(Materials.Ultimate), ItemList.Electric_Piston_EV,
@@ -484,6 +479,19 @@ public class RECIPES_Machines {
 					"plateAnyIron", RECIPES_Tools.craftingToolWrench, "plateAnyIron",
 					RECIPE_IronPlatedBricks);
 
+			/*//Electrolyzer Frame Casing
+			UtilsRecipe.addShapedGregtechRecipe(
+					"platePotin", "stickLongChrome", "platePotin",
+					"stickLongPotin", "frameGtPotin", "stickLongPotin",
+					"platePotin", "stickLongPotin", "platePotin",
+					RECIPE_IndustrialCentrifugeCasing);
+			//Industrial Electrolyzer
+			UtilsRecipe.addShapedGregtechRecipe(
+					"plateStellite", circuitTier6, "plateStellite",
+					machineCasing_EV, IV_MACHINE_Electrolyzer, machineCasing_EV,
+					"plateStellite", "rotorStellite", "plateStellite",
+					RECIPE_IndustrialCentrifugeController);*/
+			
 			//Industrial Centrifuge
 			UtilsRecipe.addShapedGregtechRecipe(
 					circuitTier6, pipeHugeStainlessSteel, circuitTier6,
@@ -492,9 +500,9 @@ public class RECIPES_Machines {
 					RECIPE_IndustrialCentrifugeController);
 			//Centrifuge Casing
 			UtilsRecipe.addShapedGregtechRecipe(
-					plateTier6, "stickElectrum", plateTier6,
-					plateTier8, "stickElectrum", plateTier8,
-					plateTier6, "stickElectrum", plateTier6,
+					plateTier6, "stickTumbaga", plateTier6,
+					plateTier8, "stickTumbaga", plateTier8,
+					plateTier6, "stickTumbaga", plateTier6,
 					RECIPE_IndustrialCentrifugeCasing);
 
 			if (LoadedMods.Railcraft){
@@ -516,7 +524,7 @@ public class RECIPES_Machines {
 			//Coke Oven Frame Casing
 			UtilsRecipe.addShapedGregtechRecipe(
 					plateTier8, rodTier8, plateTier8,
-					rodTier8, "frameGtCobalt", rodTier8,
+					rodTier8, "frameGtTantalloy61", rodTier8,
 					plateTier8, rodTier8, plateTier8,
 					RECIPE_IndustrialCokeOvenFrame);
 			//Coke Oven Coil 1
@@ -534,22 +542,22 @@ public class RECIPES_Machines {
 
 			//Electrolyzer Frame Casing
 			UtilsRecipe.addShapedGregtechRecipe(
-					"plateSterlingSilver", "stickLongChrome", "plateSterlingSilver",
-					"stickLongSterlingSilver", "frameGtSterlingSilver", "stickLongSterlingSilver",
-					"plateSterlingSilver", "stickLongSterlingSilver", "plateSterlingSilver",
+					"platePotin", "stickLongChrome", "platePotin",
+					"stickLongPotin", "frameGtPotin", "stickLongPotin",
+					"platePotin", "stickLongPotin", "platePotin",
 					RECIPE_IndustrialElectrolyzerFrame);
 			//Industrial Electrolyzer
 			UtilsRecipe.addShapedGregtechRecipe(
-					"plateSterlingSilver", circuitTier6, "plateSterlingSilver",
+					"plateStellite", circuitTier6, "plateStellite",
 					machineCasing_EV, IV_MACHINE_Electrolyzer, machineCasing_EV,
-					"plateSterlingSilver", "rotorSterlingSilver", "plateSterlingSilver",
+					"plateStellite", "rotorStellite", "plateStellite",
 					RECIPE_IndustrialElectrolyzerController);
 
 			//Material Press Frame Casing
 			UtilsRecipe.addShapedGregtechRecipe(
-					"plateTitanium", "stickLongTitanium", "plateTitanium",
-					"stickMagnesium", "frameGtTitanium", "stickMagnesium",
-					"plateTitanium", "stickLongTitanium", "plateTitanium",
+					"plateTitanium", "stickLongTumbaga", "plateTitanium",
+					"stickTantalloy60", "frameGtTumbaga", "stickTantalloy60",
+					"plateTitanium", "stickLongTumbaga", "plateTitanium",
 					RECIPE_IndustrialMaterialPressFrame);
 			//Industrial Material Press
 			UtilsRecipe.addShapedGregtechRecipe(
@@ -561,14 +569,14 @@ public class RECIPES_Machines {
 			//Maceration Frame Casing
 			UtilsRecipe.addShapedGregtechRecipe(
 					"platePalladium", "platePalladium", "platePalladium",
-					"stickPlatinum", "frameGtPalladium", "stickPlatinum",
+					"stickPlatinum", "frameGtInconel625", "stickPlatinum",
 					"platePalladium", "stickLongPalladium", "platePalladium",
 					RECIPE_IndustrialMacerationStackFrame);
 			//Industrial Maceration stack 
 			UtilsRecipe.addShapedGregtechRecipe(
-					"plateDenseCarbon", IV_MACHINE_Macerator, "plateDenseCarbon",
+					"plateTungstenCarbide", IV_MACHINE_Macerator, "plateTungstenCarbide",
 					IV_MACHINE_Macerator, circuitTier8, IV_MACHINE_Macerator,
-					"plateDenseCarbon", machineCasing_IV, "plateDenseCarbon",
+					"plateTungstenCarbide", machineCasing_IV, "plateTungstenCarbide",
 					RECIPE_IndustrialMacerationStackController);
 
 			//Wire Factory Frame Casing
@@ -579,9 +587,9 @@ public class RECIPES_Machines {
 					RECIPE_IndustrialWireFactoryFrame);
 			//Industrial Wire Factory
 			UtilsRecipe.addShapedGregtechRecipe(
-					"plateOsmium", machineCasing_IV, "plateOsmium",
+					"plateZeron100", machineCasing_IV, "plateZeron100",
 					circuitTier6, IV_MACHINE_Wiremill, circuitTier6,
-					"plateOsmium", machineCasing_IV, "plateOsmium",
+					"plateZeron100", machineCasing_IV, "plateZeron100",
 					RECIPE_IndustrialWireFactoryController);
 
 

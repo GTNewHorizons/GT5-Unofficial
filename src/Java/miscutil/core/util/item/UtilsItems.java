@@ -16,10 +16,12 @@ import miscutil.core.item.base.ingots.BaseItemIngotHot;
 import miscutil.core.item.base.plates.BaseItemPlate;
 import miscutil.core.item.base.rings.BaseItemRing;
 import miscutil.core.item.base.rods.BaseItemRod;
+import miscutil.core.item.base.rods.BaseItemRodLong;
 import miscutil.core.item.base.rotors.BaseItemRotor;
 import miscutil.core.item.base.screws.BaseItemScrew;
 import miscutil.core.lib.CORE;
 import miscutil.core.lib.LoadedMods;
+import miscutil.core.lib.MaterialInfo;
 import miscutil.core.util.Utils;
 import miscutil.core.util.wrapper.var;
 import net.minecraft.block.Block;
@@ -237,7 +239,7 @@ public class UtilsItems {
 	 return getSimpleStack(ModItems.AAA_Broken, amount);
 	}
 	
-	public static void generateItemsFromMaterial(String unlocalizedName, String materialName, int materialTier, int Colour, boolean hotIngot){
+	public static void generateItemsFromMaterial(String unlocalizedName, String materialName, int materialTier, MaterialInfo matInfo, int Colour, boolean hotIngot){
 		if (materialTier > 10 || materialTier <= 0){
 			materialTier = 2;
 		}
@@ -250,12 +252,13 @@ public class UtilsItems {
 			Item tempIngot = temp;
 			temp = new BaseItemIngotHot("itemHotIngot"+unlocalizedName, materialName, UtilsItems.getSimpleStack(tempIngot, 1), materialTier);
 			}
-		temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, Colour, "Dust", hotIngot, materialTier);
-		temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, Colour, "Tiny", hotIngot, materialTier);
-		temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, Colour, "Small", hotIngot, materialTier);
+		temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", hotIngot, materialTier);
+		temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", hotIngot, materialTier);
+		temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", hotIngot, materialTier);
 		
 		temp = new BaseItemPlate("itemPlate"+unlocalizedName, materialName, Colour, materialTier);
 		temp = new BaseItemRod("itemRod"+unlocalizedName, materialName, Colour, materialTier);
+		temp = new BaseItemRodLong("itemRodLong"+unlocalizedName, materialName, Colour, materialTier);
 		temp = new BaseItemRing("itemRing"+unlocalizedName, materialName, Colour, materialTier);
 		temp = new BaseItemBolt("itemBolt"+unlocalizedName, materialName, Colour, materialTier);
 		temp = new BaseItemScrew("itemScrew"+unlocalizedName, materialName, Colour, materialTier);

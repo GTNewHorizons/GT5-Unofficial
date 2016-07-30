@@ -35,6 +35,7 @@ public class CORE {
 	public static final Class<AddToCreativeTab> TAB = AddToCreativeTab.class;
 	public static Configuration Config;	
 	public static final String GT_Tooltip = "Added by: " + EnumChatFormatting.DARK_GREEN+"Alkalus "+EnumChatFormatting.GRAY+"- "+EnumChatFormatting.RED+"[GT++]";
+	public static final String noItem = "";
 	
 	/**
 	 * A List containing all the Materials, which are somehow in use by GT and therefor receive a specific Set of Items.

@@ -2,12 +2,15 @@ package miscutil.core.item.base.dusts;
 
 import static miscutil.core.creative.AddToCreativeTab.tabMisc;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 
 import java.util.List;
 
 import miscutil.core.lib.CORE;
+import miscutil.core.lib.MaterialInfo;
 import miscutil.core.util.Utils;
 import miscutil.core.util.item.UtilsItems;
 import miscutil.core.util.recipe.UtilsRecipe;
@@ -25,8 +28,9 @@ public class BaseItemDust extends Item{
 	protected boolean useBlastFurnace;
 	String name = "";
 	private int mTier;
+	private MaterialInfo dustInfo;
 
-	public BaseItemDust(String unlocalizedName, String materialName, int colour, String pileSize, boolean blastFurnaceRequired, int tier) {
+	public BaseItemDust(String unlocalizedName, String materialName, MaterialInfo matInfo, int colour, String pileSize, boolean blastFurnaceRequired, int tier) {
 		setUnlocalizedName(unlocalizedName);
 		this.setUnlocalizedName(unlocalizedName);
 		this.setMaxStackSize(64);	
@@ -40,6 +44,7 @@ public class BaseItemDust extends Item{
 		this.mTier = tier;
 		this.materialName = materialName;
 		this.useBlastFurnace = blastFurnaceRequired;
+		this.dustInfo = matInfo;
 		GameRegistry.registerItem(this, unlocalizedName);
 
 		String temp = "";
@@ -66,6 +71,7 @@ public class BaseItemDust extends Item{
 		if (temp != null && temp != ""){
 			GT_OreDictUnificator.registerOre(temp, UtilsItems.getSimpleStack(this));
 		}
+		addMixerRecipe();
 		addFurnaceRecipe();
 		addMacerationRecipe();
 	}
@@ -114,6 +120,8 @@ public class BaseItemDust extends Item{
 	private void addMixerRecipe(){
 		ItemStack tempStack = UtilsItems.getSimpleStack(this);
 		ItemStack tempOutput = null;
+		ItemStack[] inputStacks = dustInfo.getInputs();
+		ItemStack[] outputStacks = dustInfo.getOutputs();
 		String temp = "";
 		Utils.LOG_WARNING("Unlocalized name for OreDict nameGen: "+getUnlocalizedName());
 		if (getUnlocalizedName().contains("item.")){
@@ -136,7 +144,21 @@ public class BaseItemDust extends Item{
 			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
 		}		
 		if (temp != null && temp != ""){
-			tempOutput = UtilsItems.getItemStackOfAmountFromOreDict(temp, 1);
+			
+			if (getUnlocalizedName().contains("DustTiny") || getUnlocalizedName().contains("DustSmall")){
+				tempOutput = UtilsItems.getItemStackOfAmountFromOreDict(temp, 1);
+			}
+			else {				
+				if (outputStacks[0] != null){
+					Utils.LOG_INFO("Getting output dusts for mixer recipe. Checking ENUM, got: "+outputStacks[0].toString());
+					tempOutput = outputStacks[0];
+				}
+				else {
+					Utils.LOG_INFO("Getting output dusts for mixer recipe. Enum check failed, failback item is: "+temp);
+					tempOutput = UtilsItems.getItemStackOfAmountFromOreDict(temp, 1);
+				}
+			}
+			
 		}
 
 		if (tempOutput != null){
@@ -155,11 +177,14 @@ public class BaseItemDust extends Item{
 						null, null, null);
 			}
 			else {
-				Utils.LOG_WARNING("Generating a shapeless Dust recipe for "+materialName);
-				UtilsRecipe.addShapelessGregtechRecipe(tempOutput,
-						"dustTungsten", "dustTantalum", "dustTantalum",
-						"dustTantalum", "dustTantalum", "dustTantalum",
-						"dustTantalum", "dustTantalum", "dustTantalum");
+				Utils.LOG_WARNING("Generating a shapeless Dust recipe for "+materialName);		
+
+				GT_Values.RA.addMixerRecipe(
+						inputStacks[0], inputStacks[1],
+						inputStacks[2], inputStacks[3],
+						null, null,
+						tempOutput,
+						8*mTier*20, 8*mTier*2);
 			}
 		}
 
@@ -188,14 +213,21 @@ public class BaseItemDust extends Item{
 
 		tempIngot = tempIngot.replace("itemDust", "ingot");
 		Utils.LOG_WARNING("Generating OreDict Name: "+tempIngot);
-
+		ItemStack[] outputStacks = dustInfo.getOutputs();
+		if (tempIngot != null && tempIngot != "" && outputStacks[1] != null){
+			tempInputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 1);
+			tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempDust, 1);
+			if (null != tempOutputStack && null != tempInputStack){
+				GT_ModHandler.addPulverisationRecipe(tempInputStack, outputStacks[0], outputStacks[1], mTier*10/Utils.randInt(10, 20));
+			}
+		}	
 		if (tempIngot != null && tempIngot != ""){
 			tempInputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 1);
 			tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempDust, 1);
 			if (null != tempOutputStack && null != tempInputStack){
 				GT_ModHandler.addPulverisationRecipe(tempInputStack, tempOutputStack);
 			}
-		}						
+		}
 	}
 
 	private void addFurnaceRecipe(){		
@@ -227,13 +259,32 @@ public class BaseItemDust extends Item{
 			ItemStack tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(temp, 1);
 			Utils.LOG_INFO("This will produce an ingot of "+tempOutputStack.getDisplayName() + " Debug: "+temp);
 			if (null != tempOutputStack){
-				GT_ModHandler.addSmeltingAndAlloySmeltingRecipe(UtilsItems.getSimpleStack(this), tempOutputStack);			
-			}			
+				if (mTier < 5){
+					if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
+						addSmeltingAndAlloySmeltingRecipe(UtilsItems.getSimpleStack(this), tempOutputStack, false);						
+					}
+					else {
+						GT_ModHandler.addSmeltingAndAlloySmeltingRecipe(UtilsItems.getSimpleStack(this), tempOutputStack);						
+					}		
+				}	
+				else if (mTier >= 5){
+					Utils.LOG_INFO("Adding recipe for "+materialName+" Ingots in a Blast furnace.");
+					Utils.LOG_INFO("This will produce "+tempOutputStack.getDisplayName());
+					if (null != tempOutputStack){
+						addBlastFurnaceRecipe(UtilsItems.getSimpleStack(this), null, tempOutputStack, null, 350*mTier);		
+					}				
+					return;				
+				}
+			}
+
 		}	
 	}
 
 	private void addBlastFurnaceRecipe(ItemStack input1, ItemStack input2, ItemStack output1, ItemStack output2, int tempRequired){
-		//Utils.LOG_INFO("Adding Blast Furnace recipe for a Hot Ingot of "+materialName+".");
+		//Special Cases
+		if (input1.getUnlocalizedName().toLowerCase().contains("tantalloy61")){
+			input2 = UtilsItems.getItemStackOfAmountFromOreDict("dustTantalloy60", 2);
+		}
 		GT_Values.RA.addBlastRecipe(
 				input1,
 				input2,
@@ -243,6 +294,19 @@ public class BaseItemDust extends Item{
 				250*mTier*20,
 				mTier*64, 
 				tempRequired);
+		
+		
+		
+	}
+
+	private boolean addSmeltingAndAlloySmeltingRecipe(ItemStack aInput, ItemStack aOutput, boolean hidden) {
+		if (aInput == null || aOutput == null) return false;
+		boolean temp = false;
+		if (aInput.stackSize == 1 && GT_ModHandler.addSmeltingRecipe(aInput, aOutput)) temp = true;
+		if (GT_Values.RA.addAlloySmelterRecipe(aInput, OrePrefixes.ingot.contains(aOutput) ? ItemList.Shape_Mold_Ingot.get(0) : OrePrefixes.block.contains(aOutput) ? ItemList.Shape_Mold_Block.get(0) : OrePrefixes.nugget.contains(aOutput) ? ItemList.Shape_Mold_Nugget.get(0) : null, aOutput, 130, 3))
+			temp = true;
+		if (GT_ModHandler.addInductionSmelterRecipe(aInput, null, aOutput, null, aOutput.stackSize * 1600, 0)) temp = true;
+		return temp;
 	}
 
 }

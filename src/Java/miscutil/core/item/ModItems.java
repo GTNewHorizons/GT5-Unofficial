@@ -26,6 +26,7 @@ import miscutil.core.item.tool.staballoy.StaballoyPickaxe;
 import miscutil.core.lib.CORE;
 import miscutil.core.lib.CORE.configSwitches;
 import miscutil.core.lib.LoadedMods;
+import miscutil.core.lib.MaterialInfo;
 import miscutil.core.util.Utils;
 import miscutil.core.util.debug.DEBUG_INIT;
 import miscutil.core.util.item.UtilsItems;
@@ -186,21 +187,31 @@ public final class ModItems {
 		//Start meta Item Generation
 		ItemsFoods.load();
 
-		UtilsItems.generateItemsFromMaterial("EnergyCrystal", "Energy Crystal", 8, Utils.rgbtoHexValue(228, 225, 0), true);
-		UtilsItems.generateItemsFromMaterial("BloodSteel", "Blood Steel", 3, Utils.rgbtoHexValue(142, 28, 0), false);
-		UtilsItems.generateItemsFromMaterial("Staballoy", "Staballoy", 6, Utils.rgbtoHexValue(68, 75, 66), true);
-		UtilsItems.generateItemsFromMaterial("Tantalloy60", "Tantalloy-60", 5, Utils.rgbtoHexValue(68, 75, 166), true);
-		UtilsItems.generateItemsFromMaterial("Tantalloy61", "Tantalloy-61", 6, Utils.rgbtoHexValue(122, 135, 196), true);
-		UtilsItems.generateItemsFromMaterial("Bedrockium", "Bedrockium", 9, Utils.rgbtoHexValue(32, 32, 32), false);
-		UtilsItems.generateItemsFromMaterial("Quantum", "Quantum", 10, Utils.rgbtoHexValue(128, 128, 128), true);
+		UtilsItems.generateItemsFromMaterial("EnergyCrystal", "Energy Crystal", 8, MaterialInfo.ENERGYCRYSTAL, Utils.rgbtoHexValue(228, 225, 0), true);
+		UtilsItems.generateItemsFromMaterial("BloodSteel", "Blood Steel", 3, MaterialInfo.BLOODSTEEL, Utils.rgbtoHexValue(142, 28, 0), false);
+		UtilsItems.generateItemsFromMaterial("Staballoy", "Staballoy", 6, MaterialInfo.STABALLOY, Utils.rgbtoHexValue(68, 75, 66), true);
+		UtilsItems.generateItemsFromMaterial("Tantalloy60", "Tantalloy-60", 5, MaterialInfo.TANTALLOY60, Utils.rgbtoHexValue(68, 75, 166), true);
+		UtilsItems.generateItemsFromMaterial("Tantalloy61", "Tantalloy-61", 6, MaterialInfo.TANTALLOY61, Utils.rgbtoHexValue(122, 135, 196), true);
+		UtilsItems.generateItemsFromMaterial("Bedrockium", "Bedrockium", 9, MaterialInfo.BEDROCKIUM, Utils.rgbtoHexValue(32, 32, 32), false);
+		UtilsItems.generateItemsFromMaterial("Quantum", "Quantum", 10, MaterialInfo.QUANTUM, Utils.rgbtoHexValue(128, 128, 128), true);
 		
 
-		UtilsItems.generateItemsFromMaterial("Inconel625", "Inconel-625", 4, Utils.rgbtoHexValue(128, 200, 128), true); //Inconel 625: Acid resistant, good weldability. The LCF version is typically used in bellows.
-		UtilsItems.generateItemsFromMaterial("Inconel690", "Inconel-690", 6, Utils.rgbtoHexValue(118, 220, 138), true); //Inconel 690: Low cobalt content for nuclear applications, and low resistivity.
-		UtilsItems.generateItemsFromMaterial("Inconel792", "Inconel-792", 5, Utils.rgbtoHexValue(108, 240, 118), true); //Inconel 792: Increased aluminium content for improved high temperature corrosion properties, used especially in gas turbines.
+		UtilsItems.generateItemsFromMaterial("Inconel625", "Inconel-625", 4, MaterialInfo.INCONEL625, Utils.rgbtoHexValue(128, 200, 128), true); //Inconel 625: Acid resistant, good weldability. The LCF version is typically used in bellows.
+		UtilsItems.generateItemsFromMaterial("Inconel690", "Inconel-690", 6, MaterialInfo.INCONEL690, Utils.rgbtoHexValue(118, 220, 138), true); //Inconel 690: Low cobalt content for nuclear applications, and low resistivity.
+		UtilsItems.generateItemsFromMaterial("Inconel792", "Inconel-792", 5, MaterialInfo.INCONEL792, Utils.rgbtoHexValue(108, 240, 118), true); //Inconel 792: Increased aluminium content for improved high temperature corrosion properties, used especially in gas turbines.
 		
-		UtilsItems.generateItemsFromMaterial("Tumbaga", "Tumbaga", 2, Utils.rgbtoHexValue(255,178,15), false); //Tumbaga was the name given by Spaniards to a non-specific alloy of gold and copper 
-		UtilsItems.generateItemsFromMaterial("Potin", "Potin", 4, Utils.rgbtoHexValue(201,151,129), false); //Potin is traditionally an alloy of bronze, tin and lead, with varying quantities of each possible
+
+		UtilsItems.generateItemsFromMaterial("TungstenCarbide", "Tungsten Carbide", 5, MaterialInfo.TUNGSTENCARBIDE, Utils.rgbtoHexValue(44, 44, 44), true);
+		UtilsItems.generateItemsFromMaterial("SiliconCarbide", "Silicon Carbide", 4, MaterialInfo.SILICONCARBIDE, Utils.rgbtoHexValue(32, 32, 32), false);
+		UtilsItems.generateItemsFromMaterial("Zeron100", "Zeron-100", 8, MaterialInfo.ZERON100, Utils.rgbtoHexValue(180, 180, 20), true);
+		UtilsItems.generateItemsFromMaterial("MaragingSteel250", "Maraging Steel 250", 4, MaterialInfo.MARAGING250, Utils.rgbtoHexValue(140, 140, 140), true);
+		UtilsItems.generateItemsFromMaterial("MaragingSteel300", "Maraging Steel 300", 5, MaterialInfo.MARAGING300, Utils.rgbtoHexValue(150, 150, 150), true);
+		UtilsItems.generateItemsFromMaterial("MaragingSteel350", "Maraging Steel 350", 6, MaterialInfo.MARAGING350, Utils.rgbtoHexValue(160, 160, 160), true);
+		UtilsItems.generateItemsFromMaterial("Stellite", "Stellite", 7, MaterialInfo.STELLITE, Utils.rgbtoHexValue(129, 75, 120), true);
+		UtilsItems.generateItemsFromMaterial("Talonite", "Talonite", 8, MaterialInfo.TALONITE, Utils.rgbtoHexValue(228, 75, 120), false);
+		
+		UtilsItems.generateItemsFromMaterial("Tumbaga", "Tumbaga", 2, MaterialInfo.TUMBAGA, Utils.rgbtoHexValue(255,178,15), false); //Tumbaga was the name given by Spaniards to a non-specific alloy of gold and copper 
+		UtilsItems.generateItemsFromMaterial("Potin", "Potin", 4, MaterialInfo.POTIN, Utils.rgbtoHexValue(201,151,129), false); //Potin is traditionally an alloy of bronze, tin and lead, with varying quantities of each possible
 		
 		//EnderIO Resources
 		if (LoadedMods.EnderIO || LOAD_ALL_CONTENT){
