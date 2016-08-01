@@ -12,7 +12,7 @@ public class GregtechIndustrialWiremill
 	public static void run()
 	{
 		if (miscutil.core.lib.LoadedMods.Gregtech){
-			Utils.LOG_INFO("MiscUtils: Gregtech5u Content | Registering Industrial Wire Factory Multiblock.");
+			Utils.LOG_INFO("Gregtech5u Content | Registering Industrial Wire Factory Multiblock.");
 			run1();
 		}
 

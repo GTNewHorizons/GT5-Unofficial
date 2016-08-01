@@ -10,7 +10,7 @@ public class GregtechRocketFuelGenerator {
 	public static void run()
 	{
 		if (LoadedMods.Gregtech){
-			Utils.LOG_INFO("MiscUtils: Gregtech5u Content | Registering Industrial Rocket Engines.");
+			Utils.LOG_INFO("Gregtech5u Content | Registering Industrial Rocket Engines.");
 			run1();
 		}
 

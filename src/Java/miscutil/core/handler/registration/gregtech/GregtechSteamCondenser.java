@@ -12,7 +12,7 @@ public class GregtechSteamCondenser
 	public static void run()
 	{
 		if (miscutil.core.lib.LoadedMods.Gregtech){
-			Utils.LOG_INFO("MiscUtils: Gregtech5u Content | Registering Steam Condensor.");
+			Utils.LOG_INFO("Gregtech5u Content | Registering Steam Condensor.");
 			run1();
 		}
 

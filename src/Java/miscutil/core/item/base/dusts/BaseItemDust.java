@@ -214,26 +214,20 @@ public class BaseItemDust extends Item{
 		tempIngot = tempIngot.replace("itemDust", "ingot");
 		Utils.LOG_WARNING("Generating OreDict Name: "+tempIngot);
 		ItemStack[] outputStacks = dustInfo.getOutputs();
-		if (tempIngot != null && tempIngot != "" && outputStacks[1] != null){
+		if (tempIngot != null && tempIngot != ""){
 			tempInputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 1);
 			tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempDust, 1);
 			ItemStack tempStackOutput2;
 			int chance = mTier*10/Utils.randInt(10, 20);
 			if (outputStacks[1] != null && !outputStacks[1].getUnlocalizedName().toLowerCase().contains("aaa_broken")){
 				tempStackOutput2 = outputStacks[1];
+				tempOutputStack = outputStacks[0];
 			}
 			else {
 				tempStackOutput2 = null;
 			}
 			if (null != tempOutputStack && null != tempInputStack){
-				GT_ModHandler.addPulverisationRecipe(tempInputStack, outputStacks[0], tempStackOutput2, chance);
-			}
-		}	
-		if (tempIngot != null && tempIngot != ""){
-			tempInputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 1);
-			tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempDust, 1);
-			if (null != tempOutputStack && null != tempInputStack){
-				GT_ModHandler.addPulverisationRecipe(tempInputStack, tempOutputStack);
+				GT_ModHandler.addPulverisationRecipe(tempInputStack, tempOutputStack.splitStack(1), tempStackOutput2, chance);
 			}
 		}
 	}
@@ -290,7 +284,7 @@ public class BaseItemDust extends Item{
 
 	private void addBlastFurnaceRecipe(ItemStack input1, ItemStack input2, ItemStack output1, ItemStack output2, int tempRequired){
 		//Special Cases
-		if (input1.getUnlocalizedName().toLowerCase().contains("tantalloy61")){
+		/*if (input1.getUnlocalizedName().toLowerCase().contains("tantalloy61")){
 			Utils.LOG_INFO("Adding Special handler for Staballoy-61 in the Blast Furnace");
 			input2 = UtilsItems.getItemStackOfAmountFromOreDict("dustTantalloy60", 2);
 			if (input2 == null){
@@ -299,7 +293,7 @@ public class BaseItemDust extends Item{
 			else {
 				Utils.LOG_INFO("Found "+input2.getDisplayName());
 			}
-		}
+		}*/
 		GT_Values.RA.addBlastRecipe(
 				input1,
 				input2,

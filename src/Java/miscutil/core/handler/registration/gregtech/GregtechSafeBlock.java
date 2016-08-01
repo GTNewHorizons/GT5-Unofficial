@@ -14,7 +14,7 @@ public class GregtechSafeBlock
 	public static void run()
 	{
 		if (miscutil.core.lib.LoadedMods.Gregtech){
-			Utils.LOG_INFO("MiscUtils: Gregtech5u Content | Registering Lockable Safe Blocks.");
+			Utils.LOG_INFO("Gregtech5u Content | Registering Lockable Safe Blocks.");
 			run1();
 		}
 		

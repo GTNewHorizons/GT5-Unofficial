@@ -12,7 +12,7 @@ public class GregtechIronBlastFurnace
 	public static void run()
 	{
 		if (miscutil.core.lib.LoadedMods.Gregtech){
-			Utils.LOG_INFO("MiscUtils: Gregtech5u Content | Registering Iron Blast Furnace.");
+			Utils.LOG_INFO("Gregtech5u Content | Registering Iron Blast Furnace.");
 			run1();
 		}
 

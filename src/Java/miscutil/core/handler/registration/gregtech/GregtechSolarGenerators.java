@@ -11,7 +11,7 @@ public class GregtechSolarGenerators
 	public static void run()
 	{
 		if (LoadedMods.Gregtech && configSwitches.enableSolarGenerators){
-			Utils.LOG_INFO("MiscUtils: Gregtech5u Content | Registering Solar Generator Blocks.");
+			Utils.LOG_INFO("Gregtech5u Content | Registering Solar Generator Blocks.");
 			run1();
 		}
 		

@@ -12,7 +12,7 @@ public class GregtechIndustrialCentrifuge
 	public static void run()
 	{
 		if (miscutil.core.lib.LoadedMods.Gregtech){
-			Utils.LOG_INFO("MiscUtils: Gregtech5u Content | Registering Industrial Centrifuge Multiblock.");
+			Utils.LOG_INFO("Gregtech5u Content | Registering Industrial Centrifuge Multiblock.");
 			run1();
 		}
 

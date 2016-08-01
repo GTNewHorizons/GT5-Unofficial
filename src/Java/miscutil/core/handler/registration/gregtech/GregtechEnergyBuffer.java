@@ -19,7 +19,7 @@ public class GregtechEnergyBuffer
 	public static void run()
 	{
 		if (miscutil.core.lib.LoadedMods.Gregtech){
-			Utils.LOG_INFO("MiscUtils: Gregtech5u Content | Registering Energy Buffer Blocks.");
+			Utils.LOG_INFO("Gregtech5u Content | Registering Energy Buffer Blocks.");
 			run1();
 		}
 		

@@ -14,7 +14,7 @@ public class GregtechCobbleGenerator
 	public static void run()
 	{
 		if (miscutil.core.lib.LoadedMods.Gregtech){
-			FMLLog.info("MiscUtils: Registering Cobblestone Powered Engines.");
+			FMLLog.info("Registering Cobblestone Powered Engines.");
 			run1();
 		}
 		
