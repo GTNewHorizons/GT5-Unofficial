@@ -17,6 +17,7 @@ import java.io.File;
 import miscutil.core.commands.CommandMath;
 import miscutil.core.common.CommonProxy;
 import miscutil.core.handler.events.LoginEventHandler;
+import miscutil.core.item.general.RF2EU_Battery;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
 import miscutil.core.xmod.gregtech.HANDLER_GT;
@@ -61,6 +62,9 @@ implements ActionListener
 		enableAlternativeBatteryAlloy = config.getBoolean("enableAlternativeBatteryAlloy", "machines", false, "Adds a non-Antimony using Battery Alloy. Not Balanced at all..");
 		disableIC2Recipes = config.getBoolean("disableIC2Recipes", "machines", false, "Alkaluscraft Related - Removes IC2 Cables Except glass fibre. Few other Misc Tweaks.");
 		enableAlternativeDivisionSigilRecipe = config.getBoolean("enableAlternativeDivisionSigilRecipe", "machines", false, "Utilizes Neutronium instead.");
+		
+		//Options
+		RF2EU_Battery.rfPerEU = config.getInt("rfUsedPerEUForUniversalBatteries", "configurables", 4, 1, 1000, "How much RF is a single unit of EU worth? (Most mods use 4:1 ratio)");
 		
 		
 		config.save(); 

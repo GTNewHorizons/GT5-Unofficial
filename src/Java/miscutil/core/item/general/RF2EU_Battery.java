@@ -27,11 +27,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class RF2EU_Battery extends ItemEnergyContainer implements IElectricItem, IElectricItemManager, IFuelHandler{
 
+	public static int rfPerEU = 4;
 	private final String unlocalizedName = "rfEUBattery";
 	private final ItemStack thisStack;
 	private final static int maxValueEU = 100000000;
-	private final static int maxValueRF = maxValueEU * 4;
-	private double chargeEU = 0;
+	private final static int maxValueRF = maxValueEU * rfPerEU;
+	protected double chargeEU = 0;
 
 	public RF2EU_Battery(){
 		super(maxValueRF, maxValueRF, maxValueRF);
@@ -194,7 +195,7 @@ public class RF2EU_Battery extends ItemEnergyContainer implements IElectricItem,
 			energy += energyReceived;
 			stack.stackTagCompound.setInteger("Energy", energy);
 			ElectricItem.manager.discharge(stack, ElectricItem.manager.getCharge(stack), 3, true, true, false);
-			ElectricItem.manager.charge(stack, energy/4, 3, true, false);
+			ElectricItem.manager.charge(stack, energy/rfPerEU, 3, true, false);
 			
 		}
 		return ElectricItem.manager.charge(stack, amount, tier, ignoreTransferLimit, simulate);
@@ -213,7 +214,7 @@ public class RF2EU_Battery extends ItemEnergyContainer implements IElectricItem,
 			energy -= energyExtracted;
 			stack.stackTagCompound.setInteger("Energy", energy);
 			ElectricItem.manager.discharge(stack, ElectricItem.manager.getCharge(stack), 3, true, true, false);
-			ElectricItem.manager.charge(stack, energy/4, 3, true, false);
+			ElectricItem.manager.charge(stack, energy/rfPerEU, 3, true, false);
 		}
 		
 		return ElectricItem.manager.discharge(stack, amount, tier, ignoreTransferLimit, externally, simulate);
@@ -257,7 +258,7 @@ public class RF2EU_Battery extends ItemEnergyContainer implements IElectricItem,
 			energy += energyReceived;
 			container.stackTagCompound.setInteger("Energy", energy);
 			ElectricItem.manager.discharge(container, ElectricItem.manager.getCharge(container), 3, true, true, false);
-			ElectricItem.manager.charge(container, energy/4, 3, true, false);
+			ElectricItem.manager.charge(container, energy/rfPerEU, 3, true, false);
 			
 		}
 		return energyReceived;
@@ -276,7 +277,7 @@ public class RF2EU_Battery extends ItemEnergyContainer implements IElectricItem,
 			energy -= energyExtracted;
 			container.stackTagCompound.setInteger("Energy", energy);
 			ElectricItem.manager.discharge(container, ElectricItem.manager.getCharge(container), 3, true, true, false);
-			ElectricItem.manager.charge(container, energy/4, 3, true, false);
+			ElectricItem.manager.charge(container, energy/rfPerEU, 3, true, false);
 		}
 		return energyExtracted;
 	}
@@ -289,7 +290,7 @@ public class RF2EU_Battery extends ItemEnergyContainer implements IElectricItem,
 		}
 		int energy = container.stackTagCompound.getInteger("Energy");
 		ElectricItem.manager.discharge(container, ElectricItem.manager.getCharge(container), 3, true, true, false);
-		ElectricItem.manager.charge(container, energy/4, 3, true, false);
+		ElectricItem.manager.charge(container, energy/rfPerEU, 3, true, false);
 		return energy;
 	}
 
