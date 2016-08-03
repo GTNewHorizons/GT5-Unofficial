@@ -21,8 +21,13 @@ import miscutil.core.item.general.RF2EU_Battery;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
 import miscutil.core.xmod.gregtech.HANDLER_GT;
+import net.minecraft.client.Minecraft;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+
+import org.lwjgl.opengl.GL11;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -32,6 +37,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 @Mod(modid=CORE.MODID, name=CORE.name, version=CORE.VERSION, dependencies="required-after:Forge; after:IC2; after:psychedelicraft; after:gregtech; after:Forestry; after:MagicBees; after:CoFHCore; after:Growthcraft; after:Railcraft; after:CompactWindmills; after:ForbiddenMagic; after:MorePlanet; after:PneumaticCraft; after:ExtraUtilities; after:Thaumcraft; after:rftools; after:simplyjetpacks; after:BigReactors; after:EnderIO;")
 public class MiscUtils
@@ -46,7 +52,7 @@ implements ActionListener
 
 
 
-	public void handleConfigFile(FMLPreInitializationEvent event) { 
+	public static void handleConfigFile(FMLPreInitializationEvent event) { 
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
 		
@@ -93,10 +99,31 @@ implements ActionListener
 	@Mod.EventHandler
 	public void init(FMLInitializationEvent event)
 	{
-		proxy.init(event);		
+		proxy.init(event);				
 		MinecraftForge.EVENT_BUS.register(this);
 		FMLCommonHandler.instance().bus().register(this);
 		proxy.registerNetworkStuff();
+	}
+	
+	@SubscribeEvent
+	public void renderWorldLastEvent(RenderWorldLastEvent evt){
+	double doubleX = Minecraft.getMinecraft().thePlayer.posX - 0.5;
+	double doubleY = Minecraft.getMinecraft().thePlayer.posY + 0.1;
+	double doubleZ = Minecraft.getMinecraft().thePlayer.posZ - 0.5;
+
+	GL11.glPushMatrix();
+	GL11.glTranslated(-doubleX, -doubleY, -doubleZ);
+	GL11.glColor3ub((byte)255,(byte)0,(byte)0);
+	float mx = (float) Minecraft.getMinecraft().thePlayer.posX;
+	float my = (float) Minecraft.getMinecraft().thePlayer.posY;
+	float mz = (float) Minecraft.getMinecraft().thePlayer.posZ;
+	GL11.glBegin(GL11.GL_LINES);
+	GL11.glVertex3f(mx+0.4f,my,mz+0.4f);
+	GL11.glVertex3f(mx-0.4f,my,mz-0.4f);
+	GL11.glVertex3f(mx+0.4f,my,mz-0.4f);
+	GL11.glVertex3f(mx-0.4f,my,mz+0.4f);
+	GL11.glEnd();
+	GL11.glPopMatrix();
 	}
 
 	//Post-Init

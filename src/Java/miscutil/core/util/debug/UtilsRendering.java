@@ -2,6 +2,9 @@ package miscutil.core.util.debug;
 
 import javax.vecmath.Point3d;
 
+import libshapedraw.LibShapeDraw;
+import libshapedraw.primitive.Color;
+import libshapedraw.shape.WireframeCuboid;
 import miscutil.core.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -27,16 +30,34 @@ public class UtilsRendering {
 	static Tessellator drawBlock =  Tessellator.instance;
 
 	public static void drawBlockInWorld(int x, int y, int z){
-		//drawBlock = new Tessellator();
-		Utils.LOG_INFO("Drawing Debug Block in world..");
-		/*drawBlock.startDrawingQuads();
-		drawBlock.setTranslation(x, y, z);
-		drawBlock.addVertexWithUV(x+1, y-1, z, 0.0, 0.1);
-		drawBlock.addVertexWithUV(x+1, y+1, z, 0.1, 0.0);
-		drawBlock.addVertexWithUV(x-1, y+1, z, 0.1, 0.0);
-		drawBlock.addVertexWithUV(x-1, y-1, z, 0.0, 0.1);
-		drawBlock.draw();*/
-		Block_Render(null, x, y, z);
+		Utils.LOG_INFO("Drawing Debug Block in world...");
+		
+		LibShapeDraw libShapeDraw = new LibShapeDraw();
+        WireframeCuboid box = new WireframeCuboid(x,y,z, x+1,y+1,z+1);
+        box.setLineStyle(Color.CYAN.copy(), 2.0F, true);
+        libShapeDraw.addShape(box);
+	
+	}
+	
+	public static void renderStuff (int x, int y, int z){
+		Utils.LOG_INFO("Doing Some Debug Rendering.");
+		double doubleX = Minecraft.getMinecraft().thePlayer.posX - 0.5;
+		double doubleY = Minecraft.getMinecraft().thePlayer.posY + 0.1;
+		double doubleZ = Minecraft.getMinecraft().thePlayer.posZ - 0.5;
+
+		GL11.glPushMatrix();
+		GL11.glTranslated(-doubleX, -doubleY, -doubleZ);
+		GL11.glColor3ub((byte)255,(byte)0,(byte)0);
+		float mx = x;
+		float my = y;
+		float mz = z;
+		GL11.glBegin(GL11.GL_LINES);
+		GL11.glVertex3f(mx+0.4f,my,mz+0.4f);
+		GL11.glVertex3f(mx-0.4f,my,mz-0.4f);
+		GL11.glVertex3f(mx+0.4f,my,mz-0.4f);
+		GL11.glVertex3f(mx-0.4f,my,mz+0.4f);
+		GL11.glEnd();
+		GL11.glPopMatrix();
 	}
 	
 		

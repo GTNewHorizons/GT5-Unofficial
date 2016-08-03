@@ -25,6 +25,10 @@ import net.minecraft.item.ItemStack;
 
 public class GregtechMetaTileEntityIndustrialSinter
 extends GT_MetaTileEntity_MultiBlockBase {
+	
+
+	RenderBlocks asdasd = RenderBlocks.getInstance();
+	
 	public GregtechMetaTileEntityIndustrialSinter(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}
@@ -121,7 +125,6 @@ extends GT_MetaTileEntity_MultiBlockBase {
 		int controllerX = aBaseMetaTileEntity.getXCoord();
 		int controllerY = aBaseMetaTileEntity.getYCoord();
 		int controllerZ = aBaseMetaTileEntity.getZCoord();
-		RenderBlocks asdasd = RenderBlocks.getInstance();
 
 		byte tSide = getBaseMetaTileEntity().getBackFacing();
 		if ((getBaseMetaTileEntity().getAirAtSideAndDistance(getBaseMetaTileEntity().getBackFacing(), 1)) && (getBaseMetaTileEntity().getAirAtSideAndDistance(getBaseMetaTileEntity().getBackFacing(), 2) && (getBaseMetaTileEntity().getAirAtSideAndDistance(getBaseMetaTileEntity().getBackFacing(), 3)))) {
@@ -131,9 +134,10 @@ extends GT_MetaTileEntity_MultiBlockBase {
 					for (byte k = -1; k < 2; k = (byte) (k + 1)) {
 						if (getBaseMetaTileEntity().getAirOffset(i, j, k)) {
 							Utils.LOG_INFO("Found Air at: "+(controllerX+i)+" "+(controllerY+k)+" "+(controllerZ+k));
-							if (aBaseMetaTileEntity.getWorld().isRemote){
-							UtilsRendering.renderBoxAt((controllerX+i), (controllerY+k), (controllerZ+k));
-							}
+							//if (aBaseMetaTileEntity.getWorld().isRemote){
+								//asdasd.renderStandardBlock(ModBlocks.MatterFabricatorEffectBlock, (controllerX+i), (controllerY+k), (controllerZ+k));
+								UtilsRendering.drawBlockInWorld((controllerX+i), (controllerY+k), (controllerZ+k));
+							//}
 							tAirCount++;
 						}
 					}
@@ -144,6 +148,7 @@ extends GT_MetaTileEntity_MultiBlockBase {
 				return false;
 			}
 			for (byte i = 2; i < 6; i = (byte) (i + 1)) {
+				UtilsRendering.drawBlockInWorld((controllerX+i), (controllerY), (controllerZ));
 				IGregTechTileEntity tTileEntity;
 				if ((null != (tTileEntity = getBaseMetaTileEntity().getIGregTechTileEntityAtSideAndDistance(i, 2))) &&
 						(tTileEntity.getFrontFacing() == getBaseMetaTileEntity().getFrontFacing()) && (tTileEntity.getMetaTileEntity() != null) &&
@@ -159,6 +164,7 @@ extends GT_MetaTileEntity_MultiBlockBase {
 				for (byte j = -1; j < 2; j = (byte) (j + 1)) {
 					if ((i != 0) || (j != 0)) {
 						for (byte k = 0; k < 5; k = (byte) (k + 1)) {
+							UtilsRendering.drawBlockInWorld((controllerX+i), (controllerY+k), (controllerZ+k));
 							if (((i == 0) || (j == 0)) && ((k == 1) || (k == 2) || (k == 3))) {
 								if (getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)) == getCasingBlock() && getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)) == getCasingMeta()) {
 								} 
