@@ -110,7 +110,7 @@ public class RF2EU_Battery extends ItemEnergyContainer implements IElectricItem,
 	@Override
 	public String getItemStackDisplayName(ItemStack p_77653_1_) {
 
-		return ("Conversion Device");
+		return ("Universally chargeable battery");
 	}
 
 	@Override
