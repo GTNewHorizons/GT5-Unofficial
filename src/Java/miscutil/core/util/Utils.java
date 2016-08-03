@@ -129,6 +129,12 @@ public class Utils {
 			FMLLog.warning("GT++: "+s);
 		}
 	}
+	
+	public static double findPercentage(double currentNumber, double maxNumber){
+		double c = ((double) currentNumber / maxNumber) * 100;
+		double roundOff = Math.round(c * 100.00) / 100.00;
+		return roundOff;
+	}
 
 	//Errors
 	public static void LOG_ERROR(String s){

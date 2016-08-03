@@ -18,6 +18,7 @@ import miscutil.core.item.base.rotors.BaseItemRotor;
 import miscutil.core.item.base.screws.BaseItemScrew;
 import miscutil.core.item.effects.RarityUncommon;
 import miscutil.core.item.general.BufferCore;
+import miscutil.core.item.general.RF2EU_Battery;
 import miscutil.core.item.general.fuelrods.FuelRod_Base;
 import miscutil.core.item.init.ItemsFoods;
 import miscutil.core.item.tool.misc.SandstoneHammer;
@@ -160,6 +161,8 @@ public final class ModItems {
 	public static BaseItemBolt itemBoltBloodSteel;
 	public static BaseItemBolt itemBoltTantalloy60;
 	public static BaseItemBolt itemBoltTantalloy61;
+	
+	public static Item RfEuBattery;
 
 
 	//@SuppressWarnings("unused")
@@ -324,6 +327,7 @@ public final class ModItems {
 			FuelRod_Thorium = new FuelRod_Base("itemFuelRod_Thorium", "Thorium", 1000, 1000);
 			FuelRod_Uranium = new FuelRod_Base("itemFuelRod_Uranium", "Uranium", 2500, 2500);
 			FuelRod_Plutonium = new FuelRod_Base("itemFuelRod_Plutonium", "Plutonium", 5000, 5000);
+			RfEuBattery = new RF2EU_Battery();
 			//Registry
 			//GameRegistry.registerItem(FuelRod_Empty, "itemFuelRod_Empty");
 			//GameRegistry.registerItem(FuelRod_Thorium, "itemFuelRod_Thorium");
