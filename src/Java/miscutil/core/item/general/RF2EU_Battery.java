@@ -40,7 +40,7 @@ public class RF2EU_Battery extends ItemEnergyContainer implements IElectricItem,
 		GameRegistry.registerFuelHandler(this);
 		//this.setMaxDamage(Integer.MAX_VALUE);
 		//this.setDamage(UtilsItems.getSimpleStack(this), 0);
-		this.setCreativeTab(AddToCreativeTab.tabMisc);
+		this.setCreativeTab(AddToCreativeTab.tabMachines);
 		this.setUnlocalizedName(unlocalizedName);
 		this.setMaxStackSize(1);
 		this.setTextureName(CORE.MODID + ":" + "itemIngot");

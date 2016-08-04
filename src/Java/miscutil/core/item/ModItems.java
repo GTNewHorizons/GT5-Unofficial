@@ -204,7 +204,9 @@ public final class ModItems {
 		UtilsItems.generateItemsFromMaterial("Inconel792", "Inconel-792", 5, MaterialInfo.INCONEL792, Utils.rgbtoHexValue(108, 240, 118), true); //Inconel 792: Increased aluminium content for improved high temperature corrosion properties, used especially in gas turbines.
 		
 
-		UtilsItems.generateItemsFromMaterial("TungstenCarbide", "Tungsten Carbide", 5, MaterialInfo.TUNGSTENCARBIDE, Utils.rgbtoHexValue(44, 44, 44), true);
+		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
+			UtilsItems.generateItemsFromMaterial("TungstenCarbide", "Tungsten Carbide", 5, MaterialInfo.TUNGSTENCARBIDE, Utils.rgbtoHexValue(44, 44, 44), true);
+		}
 		UtilsItems.generateItemsFromMaterial("SiliconCarbide", "Silicon Carbide", 4, MaterialInfo.SILICONCARBIDE, Utils.rgbtoHexValue(32, 32, 32), false);
 		UtilsItems.generateItemsFromMaterial("Zeron100", "Zeron-100", 8, MaterialInfo.ZERON100, Utils.rgbtoHexValue(180, 180, 20), true);
 		UtilsItems.generateItemsFromMaterial("MaragingSteel250", "Maraging Steel 250", 4, MaterialInfo.MARAGING250, Utils.rgbtoHexValue(140, 140, 140), true);

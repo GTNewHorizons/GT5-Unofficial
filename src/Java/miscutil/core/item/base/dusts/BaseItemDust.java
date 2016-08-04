@@ -6,7 +6,6 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
 
 import java.util.List;
 
@@ -183,12 +182,7 @@ public class BaseItemDust extends Item{
 			else {
 				Utils.LOG_INFO("Generating a Dust recipe for "+materialName+" in the mixer.");		
 
-				/*GT_Values.RA.addMixerRecipe(
-						inputStacks[0], inputStacks[1],
-						inputStacks[2], inputStacks[3],
-						null, null,
-						tempOutput,
-						8*mTier*20, 8*mTier*2);*/
+				
 				int i = 0;
 				for (ItemStack is : inputStacks){
 					i++;
@@ -201,11 +195,18 @@ public class BaseItemDust extends Item{
 				}
 				
 				GT_Values.RA.addMixerRecipe(
+						inputStacks[0], inputStacks[1],
+						inputStacks[2], inputStacks[3],
+						null, null,
+						tempOutput,
+						8*mTier*20, 8*mTier*2);
+				
+				/*GT_Values.RA.addMixerRecipe(
 						GT_Utility.copyAmount(inputStacks[0].stackSize, new Object[]{inputStacks[0]}), GT_Utility.copyAmount(inputStacks[1].stackSize, new Object[]{inputStacks[1]}),
 						GT_Utility.copyAmount(inputStacks[2].stackSize, new Object[]{inputStacks[2]}), GT_Utility.copyAmount(inputStacks[3].stackSize, new Object[]{inputStacks[3]}), 
 						null, null,
 						tempOutput,
-						8*mTier*20, 8*mTier*2);
+						8*mTier*20, 8*mTier*2);*/
 
 			}
 		}
