@@ -8,8 +8,8 @@ import java.util.List;
 
 import miscutil.core.creative.AddToCreativeTab;
 import miscutil.core.lib.CORE;
-import miscutil.core.util.Utils;
 import miscutil.core.util.item.UtilsItems;
+import miscutil.core.util.math.MathUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -117,7 +117,7 @@ public class RF2EU_Battery extends ItemEnergyContainer implements IElectricItem,
 	public double getDurabilityForDisplay(ItemStack stack)
 	{
 		//return 1.0D - getEnergyStored(stack) / this.capacity;
-		return Utils.findPercentage(getEnergyStored(stack), getMaxEnergyStored(stack));
+		return MathUtils.findPercentage(getEnergyStored(stack), getMaxEnergyStored(stack));
 	}
 
 	@Override
@@ -155,7 +155,7 @@ public class RF2EU_Battery extends ItemEnergyContainer implements IElectricItem,
 		list.add("");
 		list.add("RF Information");
 		list.add("Extraction Rate: [" + this.maxExtract + "Rf/t]" + " Insert Rate: [" + this.maxReceive+"Rf/t]");
-		list.add("Current Charge: ["+getEnergyStored(stack) + "Rf / " + getMaxEnergyStored(stack)+"Rf] "+Utils.findPercentage(getEnergyStored(stack), getMaxEnergyStored(stack))+"%");
+		list.add("Current Charge: ["+getEnergyStored(stack) + "Rf / " + getMaxEnergyStored(stack)+"Rf] "+MathUtils.findPercentage(getEnergyStored(stack), getMaxEnergyStored(stack))+"%");
 		super.addInformation(stack, aPlayer, list, bool);
 	}
 

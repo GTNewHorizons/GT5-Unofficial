@@ -9,6 +9,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
+import miscutil.core.util.math.MathUtils;
 import miscutil.core.xmod.gregtech.api.gui.CONTAINER_SteamCondenser;
 import miscutil.core.xmod.gregtech.api.gui.GUI_SteamCondenser;
 import miscutil.core.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaBoilerBase;
@@ -69,7 +70,7 @@ public class GregtechMetaCondensor extends GregtechMetaBoilerBase{
 	  
 	  public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick)
 	  {
-		  this.RI = Utils.randLong(5L, 30L);
+		  this.RI = MathUtils.randLong(5L, 30L);
 	    if ((aBaseMetaTileEntity.isServerSide()) && (aTick > 20L))
 	    {
 	      if (this.mTemperature <= 5)

@@ -3,7 +3,7 @@ package miscutil.core.util.debug;
 import javax.vecmath.Point3d;
 
 import libshapedraw.LibShapeDraw;
-import libshapedraw.primitive.Color;
+import libshapedraw.primitive.ReadonlyColor;
 import libshapedraw.shape.WireframeCuboid;
 import miscutil.core.util.Utils;
 import net.minecraft.block.Block;
@@ -29,14 +29,28 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 public class UtilsRendering {
 	static Tessellator drawBlock =  Tessellator.instance;
 
-	public static void drawBlockInWorld(int x, int y, int z){
-		Utils.LOG_INFO("Drawing Debug Block in world...");
-		
-		LibShapeDraw libShapeDraw = new LibShapeDraw();
-        WireframeCuboid box = new WireframeCuboid(x,y,z, x+1,y+1,z+1);
-        box.setLineStyle(Color.CYAN.copy(), 2.0F, true);
-        libShapeDraw.addShape(box);
-	
+	public static void drawBlockInWorld(final int x, final int y, final int z, final ReadonlyColor colours){
+        Thread t = new Thread() {        	
+			@Override
+			public void run() {
+				LibShapeDraw drawThing = new LibShapeDraw();				
+		        WireframeCuboid box = new WireframeCuboid(x,y,z, x+1,y+1,z+1);
+		        box.setLineStyle(colours.copy(), 2.0F, false);
+		        drawThing.addShape(box);
+
+				Utils.LOG_INFO("Drawing wireframe at: ["+x+"] ["+y+"] ["+z+"]");
+				if(true) {
+					try {						
+						Thread.sleep(1000*10*1);
+						drawThing.removeShape(box);
+					} catch (Throwable ie) {
+						Utils.LOG_INFO("Failed creating render removal timer.");
+						drawThing.removeShape(box);
+					}
+				}
+			}
+		};
+		t.start();		
 	}
 	
 	public static void renderStuff (int x, int y, int z){

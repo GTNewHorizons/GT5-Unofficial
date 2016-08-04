@@ -5,6 +5,7 @@ import java.util.UUID;
 import miscutil.core.item.ModItems;
 import miscutil.core.util.Utils;
 import miscutil.core.util.item.UtilsItems;
+import miscutil.core.util.math.MathUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -50,15 +51,15 @@ public class LoginEventHandler {
 									//ImQ009 is a legend.
 									if (localPlayerRef.getCommandSenderName().toLowerCase().equalsIgnoreCase("ImQ009")){
 										Utils.messagePlayer(localPlayerRef, "Enjoy some complimentary Raisin Bread.");
-										localPlayerRef.inventory.addItemStackToInventory(UtilsItems.getSimpleStack(ModItems.itemIngotRaisinBread, Utils.randInt(1, 5)));
+										localPlayerRef.inventory.addItemStackToInventory(UtilsItems.getSimpleStack(ModItems.itemIngotRaisinBread, MathUtils.randInt(1, 5)));
 									}
 
 
 									if (localPlayerRef.getCommandSenderName().toLowerCase().contains("player")){
 										Utils.messagePlayer(localPlayerRef, "Enjoy some complimentary Raisin Bread.");
-										localPlayerRef.inventory.addItemStackToInventory(UtilsItems.getSimpleStack(ModItems.itemIngotRaisinBread, Utils.randInt(1, 5)));
+										localPlayerRef.inventory.addItemStackToInventory(UtilsItems.getSimpleStack(ModItems.itemIngotRaisinBread, MathUtils.randInt(1, 5)));
 									}
-									Thread.sleep(1000*60*Utils.randInt(15, 90));
+									Thread.sleep(1000*60*MathUtils.randInt(15, 90));
 								} catch (InterruptedException ie) {
 									Utils.LOG_INFO("Santa Mode Disabled.");
 								}
@@ -68,7 +69,7 @@ public class LoginEventHandler {
 
 						}
 					};
-					t.start();		
+					//t.start();		
 
 
 				}

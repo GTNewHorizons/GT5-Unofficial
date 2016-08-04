@@ -9,13 +9,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
 import miscutil.MiscUtils;
 import miscutil.core.lib.CORE;
+import miscutil.core.util.math.MathUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -42,49 +42,6 @@ public class Utils {
 		public void run() {
 			Utils.LOG_WARNING("Timer expired.");
 		}
-	}
-
-	/**
-	 * Returns a psuedo-random number between min and max, inclusive.
-	 * The difference between min and max can be at most
-	 * Integer.MAX_VALUE - 1.
-	 *
-	 * @param min Minimim value
-	 * @param max Maximim value.  Must be greater than min.
-	 * @return Integer between min and max, inclusive.
-	 * @see java.util.Random#nextInt(int)
-	 */
-	public static int randInt(int min, int max) {
-
-		// Usually this can be a field rather than a method variable
-		Random rand = new Random();
-
-		// nextInt is normally exclusive of the top value,
-		// so add 1 to make it inclusive
-		int randomNum = rand.nextInt((max - min) + 1) + min;
-
-		return randomNum;
-	}
-
-	public static long randLong(long min, long max) {
-		// Usually this can be a field rather than a method variable
-		Random rand = new Random();
-
-		// nextInt is normally exclusive of the top value,
-		// so add 1 to make it inclusive
-		long randomNum = nextLong(rand,(max - min) + 1) + min;
-
-		return randomNum;
-	}
-
-	private static long nextLong(Random rng, long n) {
-		// error checking and 2^x checking removed for simplicity.
-		long bits, val;
-		do {
-			bits = (rng.nextLong() << 1) >>> 1;
-			val = bits % n;
-		} while (bits-val+(n-1) < 0L);
-		return val;
 	}
 
 	public static boolean containsMatch(boolean strict, ItemStack[] inputs, ItemStack... targets)
@@ -130,12 +87,6 @@ public class Utils {
 		}
 	}
 	
-	public static double findPercentage(double currentNumber, double maxNumber){
-		double c = ((double) currentNumber / maxNumber) * 100;
-		double roundOff = Math.round(c * 100.00) / 100.00;
-		return roundOff;
-	}
-
 	//Errors
 	public static void LOG_ERROR(String s){
 		if (CORE.DEBUG){
@@ -221,31 +172,6 @@ public class Utils {
 		return sb.toString();
 	}
 
-	//Smooth Rounding Function
-	public static double decimalRounding(double d) {
-		return Math.round(d * 2) / 2.0;
-	}
-
-	//Smooth Rounding Function (Nearest 5)
-	public static double decimalRoundingToWholes(double d) {
-		return 5*(Math.round(d/5));
-	}
-
-	//Can be divided by
-	public static boolean divideXintoY(int x, int y){
-		if ((x % y) == 0)
-		{
-			return true;
-		}
-		return false;
-	}
-
-	//Converts temps for GT machines, then rounds for ease of use.
-	public static float celsiusToKelvin(int i){
-		double f = i + 273.15F;
-		return (int)decimalRoundingToWholes(f);
-	}
-
 	public static Timer ShortTimer(int seconds) {
 		Timer timer;
 		timer = new Timer();
@@ -329,7 +255,7 @@ public class Utils {
 			if (particleName2 == null || particleName2.equals("")){
 				particleName2 = particleName;
 			}
-			int l = randInt(0, 4);
+			int l = MathUtils.randInt(0, 4);
 			double d0 = (double)((float)x + 0.5F);
 			double d1 = (double)((float)y + 0.7F);
 			double d2 = (double)((float)z + 0.5F);
@@ -362,17 +288,6 @@ public class Utils {
 		}
 	}
 
-	public static int getHexNumberFromInt(int myRandomNumber){
-		String result = Integer.toHexString(myRandomNumber);
-		int resultINT = Integer.getInteger(result);
-		return resultINT;
-	}
-
-	public static int generateRandomHexValue(int min, int max){
-		int result = getHexNumberFromInt(randInt(min, max));
-		return result;
-	}
-	
 	public static int rgbtoHexValue(int r, int g, int b){		    
 		      Color c = new Color(r,g,b);
 		      String temp = Integer.toHexString( c.getRGB() & 0xFFFFFF ).toUpperCase();	
@@ -467,26 +382,6 @@ public class Utils {
 		return Integer.getInteger(result);
 	}
 
-	public static int generateSingularRandomHexValue(){
-		String temp;
-		int usefulNum = 0;
-		int randomInt = randInt(1, 5);
-		final Map<Integer, String> colours = Utils.hexColourGeneratorRandom(5);
-
-			if (colours.get(randomInt) != null && colours.size() > 0){				
-				temp = colours.get(randomInt);		
-			}
-			else {
-				temp = "0F0F0F";	
-			}
-
-		Utils.LOG_WARNING("Operating with "+temp);	
-		temp = Utils.appenedHexNotationToString(String.valueOf(temp));
-		Utils.LOG_WARNING("Made "+temp+" - Hopefully it's not a mess.");
-		Utils.LOG_WARNING("It will decode into "+Integer.decode(temp)+".");
-		return Integer.decode(temp);
-	}
-	
 	public static boolean doesEntryExistAlreadyInOreDictionary(String OreDictName){
 		if (OreDictionary.getOres(OreDictName).size() != 0) {
 	    return true;

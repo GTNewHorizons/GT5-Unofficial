@@ -3,6 +3,7 @@ package miscutil.core.tileentities.machines;
 import miscutil.core.item.ModItems;
 import miscutil.core.item.general.fuelrods.FuelRod_Base;
 import miscutil.core.util.Utils;
+import miscutil.core.util.math.MathUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -412,7 +413,7 @@ public class TileEntityNHG extends TileEntity implements IInventory
 
 			if(progress >= heatCycleProgress){
 				//Utils.LOG_SPECIFIC_WARNING("NFHG", "Updating Entity "+this.getBlockType().getUnlocalizedName(), 376);
-				if (Utils.divideXintoY(heatCycleProgress, maxProgress)){
+				if (MathUtils.divideXintoY(heatCycleProgress, maxProgress)){
 					Utils.LOG_SPECIFIC_WARNING("NFHG", "Updating Entity "+this.getBlockType().getUnlocalizedName(), 378);
 					calculateHeat();
 					heatCycleProgress=0;

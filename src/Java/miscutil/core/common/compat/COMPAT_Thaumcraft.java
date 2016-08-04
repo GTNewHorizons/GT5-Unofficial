@@ -10,14 +10,14 @@ import net.minecraft.item.ItemStack;
 public class COMPAT_Thaumcraft {
 
 	public static void OreDict(){
+		UtilsItems.getItemForOreDict("Thaumcraft:ItemResource", "ingotVoidMetal", "Void Metal Ingot", 16);
+		GT_OreDictUnificator.registerOre("plateVoidMetal", new ItemStack(ModItems.itemPlateVoidMetal));
 		if (configSwitches.enableThaumcraftShardUnification){
 			run();
 		}
 	}
 
 	private static final void run(){
-		UtilsItems.getItemForOreDict("Thaumcraft:ItemResource", "ingotVoidMetal", "Void Metal Ingot", 16);
-		GT_OreDictUnificator.registerOre("plateVoidMetal", new ItemStack(ModItems.itemPlateVoidMetal));
 
 		for(int i=0; i<=6; i++){
 			//Utils.LOG_INFO(""+i);

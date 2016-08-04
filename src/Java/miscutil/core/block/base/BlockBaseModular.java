@@ -3,7 +3,7 @@ package miscutil.core.block.base;
 import miscutil.core.item.base.itemblock.ItemBlockGtBlock;
 import miscutil.core.item.base.itemblock.ItemBlockGtFrameBox;
 import miscutil.core.lib.CORE;
-import miscutil.core.util.Utils;
+import miscutil.core.util.math.MathUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.world.IBlockAccess;
@@ -84,7 +84,7 @@ public class BlockBaseModular extends BasicBlock{
 	public int colorMultiplier(IBlockAccess par1IBlockAccess, int par2, int par3, int par4){		
 		
 		if (this.blockColour == 0){
-			return Utils.generateSingularRandomHexValue();
+			return MathUtils.generateSingularRandomHexValue();
 		}
 		
 		return this.blockColour;
@@ -93,7 +93,7 @@ public class BlockBaseModular extends BasicBlock{
     @Override
 	public int getRenderColor(int aMeta) {
     	if (this.blockColour == 0){
-			return Utils.generateSingularRandomHexValue();
+			return MathUtils.generateSingularRandomHexValue();
 		}
 		
 		return this.blockColour;

@@ -9,6 +9,7 @@ import miscutil.core.creative.AddToCreativeTab;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
 import miscutil.core.util.item.UtilsItems;
+import miscutil.core.util.math.MathUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -59,7 +60,7 @@ public class BaseItemPlate extends Item{
 	@Override
 	public int getColorFromItemStack(ItemStack stack, int HEX_OxFFFFFF) {
 		if (colour == 0){
-			return Utils.generateSingularRandomHexValue();
+			return MathUtils.generateSingularRandomHexValue();
 		}
 		return colour;
 

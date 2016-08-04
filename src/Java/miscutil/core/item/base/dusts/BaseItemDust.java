@@ -13,6 +13,7 @@ import miscutil.core.lib.CORE;
 import miscutil.core.lib.MaterialInfo;
 import miscutil.core.util.Utils;
 import miscutil.core.util.item.UtilsItems;
+import miscutil.core.util.math.MathUtils;
 import miscutil.core.util.recipe.UtilsRecipe;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -111,7 +112,7 @@ public class BaseItemDust extends Item{
 	@Override
 	public int getColorFromItemStack(ItemStack stack, int HEX_OxFFFFFF) {
 		if (colour == 0){
-			return Utils.generateSingularRandomHexValue();
+			return MathUtils.generateSingularRandomHexValue();
 		}
 		return colour;
 
@@ -218,7 +219,7 @@ public class BaseItemDust extends Item{
 			tempInputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 1);
 			tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempDust, 1);
 			ItemStack tempStackOutput2;
-			int chance = mTier*10/Utils.randInt(10, 20);
+			int chance = mTier*10/MathUtils.randInt(10, 20);
 			if (outputStacks[1] != null && !outputStacks[1].getUnlocalizedName().toLowerCase().contains("aaa_broken")){
 				tempStackOutput2 = outputStacks[1];
 				tempOutputStack = outputStacks[0];

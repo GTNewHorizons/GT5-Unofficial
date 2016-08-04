@@ -10,7 +10,7 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import miscutil.core.util.Utils;
+import miscutil.core.util.math.MathUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -26,7 +26,7 @@ public abstract class GregtechMetaBoilerBase  extends GT_MetaTileEntity_BasicTan
   public int mLossTimer = 0;
   public FluidStack mSteam = null;
   public boolean mHadNoWater = false;
-  public long RI = Utils.randLong(5L, 30L);
+  public long RI = MathUtils.randLong(5L, 30L);
   
   public GregtechMetaBoilerBase(int aID, String aName, String aNameRegional, String aDescription, ITexture... aTextures)
   {

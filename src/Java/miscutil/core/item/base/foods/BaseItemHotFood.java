@@ -4,6 +4,7 @@ import java.util.List;
 
 import miscutil.core.util.Utils;
 import miscutil.core.util.item.UtilsItems;
+import miscutil.core.util.math.MathUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -46,7 +47,7 @@ public class BaseItemHotFood extends BaseItemFood{
 		}else if(iStack.getItemDamage() < cooldownTime){
 			iStack.setItemDamage(iStack.getItemDamage() + 1);
 		}	
-		if(Utils.divideXintoY(iStack.getItemDamage(), 150)){
+		if(MathUtils.divideXintoY(iStack.getItemDamage(), 150)){
 			entityHolding.attackEntityFrom(DamageSource.onFire, 1);
 		}	
 
