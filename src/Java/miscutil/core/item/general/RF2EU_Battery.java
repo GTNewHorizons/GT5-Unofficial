@@ -17,6 +17,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import cofh.api.energy.ItemEnergyContainer;
@@ -110,7 +111,7 @@ public class RF2EU_Battery extends ItemEnergyContainer implements IElectricItem,
 	@Override
 	public String getItemStackDisplayName(ItemStack p_77653_1_) {
 
-		return ("Universally chargeable battery");
+		return ("Universally Chargeable Battery");
 	}
 
 	@Override
@@ -149,13 +150,13 @@ public class RF2EU_Battery extends ItemEnergyContainer implements IElectricItem,
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {			
-		list.add("IC2/EU Information");	
-		list.add("Tier: ["+getTier(thisStack)+"]"+" Current Power: ["+(long) getCharge(stack)+"/EU]");
-		list.add("Transfer Limit: ["+getTransferLimit(thisStack)+"Eu/t]"+" Burn Time: ["+getBurnTime(stack)/20+"s]");
+		list.add(EnumChatFormatting.YELLOW+"IC2/EU Information"+EnumChatFormatting.GRAY);	
+		list.add(EnumChatFormatting.GRAY+"Tier: ["+EnumChatFormatting.YELLOW+getTier(thisStack)+EnumChatFormatting.GRAY+"] Current Power: ["+EnumChatFormatting.YELLOW+(long) getCharge(stack)+EnumChatFormatting.GRAY+"/EU]");
+		list.add(EnumChatFormatting.GRAY+"Transfer Limit: ["+EnumChatFormatting.YELLOW+getTransferLimit(thisStack)+ EnumChatFormatting.GRAY +"Eu/t]" +"Burn Time: ["+EnumChatFormatting.YELLOW+getBurnTime(stack)/20+EnumChatFormatting.GRAY+"s]");
 		list.add("");
-		list.add("RF Information");
-		list.add("Extraction Rate: [" + this.maxExtract + "Rf/t]" + " Insert Rate: [" + this.maxReceive+"Rf/t]");
-		list.add("Current Charge: ["+getEnergyStored(stack) + "Rf / " + getMaxEnergyStored(stack)+"Rf] "+MathUtils.findPercentage(getEnergyStored(stack), getMaxEnergyStored(stack))+"%");
+		list.add(EnumChatFormatting.RED+"RF Information");
+		list.add(EnumChatFormatting.GRAY+"Extraction Rate: [" +EnumChatFormatting.RED+ this.maxExtract + EnumChatFormatting.GRAY + "Rf/t]" + " Insert Rate: [" +EnumChatFormatting.RED+ this.maxReceive+EnumChatFormatting.GRAY+"Rf/t]");
+		list.add(EnumChatFormatting.GRAY+"Current Charge: ["+EnumChatFormatting.RED+getEnergyStored(stack) + EnumChatFormatting.GRAY + "Rf / " + getMaxEnergyStored(stack)+"Rf] "+EnumChatFormatting.RED+MathUtils.findPercentage(getEnergyStored(stack), getMaxEnergyStored(stack))+EnumChatFormatting.GRAY+"%");
 		super.addInformation(stack, aPlayer, list, bool);
 	}
 
@@ -205,6 +206,10 @@ public class RF2EU_Battery extends ItemEnergyContainer implements IElectricItem,
 	public double discharge(ItemStack stack, double amount, int tier,
 			boolean ignoreTransferLimit, boolean externally, boolean simulate) {
 		if ((stack.stackTagCompound == null) || (!stack.stackTagCompound.hasKey("Energy"))) {
+			double euCharge = getCharge(UtilsItems.getSimpleStack(this));
+			if (euCharge != 0 && euCharge >= 1){
+				return (int) (MathUtils.decimalRoundingToWholes(euCharge*rfPerEU));
+			}
 			return 0;
 		}
 		int energy = stack.stackTagCompound.getInteger("Energy");
@@ -248,8 +253,12 @@ public class RF2EU_Battery extends ItemEnergyContainer implements IElectricItem,
 	@Override
 	public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate)
 	{
-		if (container.stackTagCompound == null) {
-			container.stackTagCompound = new NBTTagCompound();
+		if ((container.stackTagCompound == null) || (!container.stackTagCompound.hasKey("Energy"))) {
+			double euCharge = getCharge(UtilsItems.getSimpleStack(this));
+			if (euCharge != 0 && euCharge >= 1){
+				return (int) (MathUtils.decimalRoundingToWholes(euCharge*rfPerEU));
+			}
+			return 0;
 		}
 		int energy = container.stackTagCompound.getInteger("Energy");
 		int energyReceived = Math.min(this.capacity - energy, Math.min(this.maxReceive, maxReceive));
@@ -268,6 +277,10 @@ public class RF2EU_Battery extends ItemEnergyContainer implements IElectricItem,
 	public int extractEnergy(ItemStack container, int maxExtract, boolean simulate)
 	{
 		if ((container.stackTagCompound == null) || (!container.stackTagCompound.hasKey("Energy"))) {
+			double euCharge = getCharge(UtilsItems.getSimpleStack(this));
+			if (euCharge != 0 && euCharge >= 1){
+				return (int) (MathUtils.decimalRoundingToWholes(euCharge*rfPerEU));
+			}
 			return 0;
 		}
 		int energy = container.stackTagCompound.getInteger("Energy");
@@ -286,6 +299,10 @@ public class RF2EU_Battery extends ItemEnergyContainer implements IElectricItem,
 	public int getEnergyStored(ItemStack container)
 	{
 		if ((container.stackTagCompound == null) || (!container.stackTagCompound.hasKey("Energy"))) {
+			double euCharge = getCharge(UtilsItems.getSimpleStack(this));
+			if (euCharge != 0 && euCharge >= 1){
+				return (int) (MathUtils.decimalRoundingToWholes(euCharge*rfPerEU));
+			}
 			return 0;
 		}
 		int energy = container.stackTagCompound.getInteger("Energy");

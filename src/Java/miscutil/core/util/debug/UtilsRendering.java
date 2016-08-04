@@ -2,9 +2,6 @@ package miscutil.core.util.debug;
 
 import javax.vecmath.Point3d;
 
-import libshapedraw.LibShapeDraw;
-import libshapedraw.primitive.ReadonlyColor;
-import libshapedraw.shape.WireframeCuboid;
 import miscutil.core.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -29,7 +26,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 public class UtilsRendering {
 	static Tessellator drawBlock =  Tessellator.instance;
 
-	public static void drawBlockInWorld(final int x, final int y, final int z, final ReadonlyColor colours){
+	/*public static void drawBlockInWorld(final int x, final int y, final int z, final ReadonlyColor colours){
         Thread t = new Thread() {        	
 			@Override
 			public void run() {
@@ -51,7 +48,7 @@ public class UtilsRendering {
 			}
 		};
 		t.start();		
-	}
+	}*/
 	
 	public static void renderStuff (int x, int y, int z){
 		Utils.LOG_INFO("Doing Some Debug Rendering.");

@@ -6,6 +6,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 
 import java.util.List;
 
@@ -39,7 +40,6 @@ public class BaseItemDust extends Item{
 			this.setTextureName(CORE.MODID + ":" + "dust");}
 		else{
 			this.setTextureName(CORE.MODID + ":" + "dust"+pileSize);}
-		this.setMaxStackSize(64);
 		this.setCreativeTab(tabMisc);
 		this.colour = colour;
 		this.mTier = tier;
@@ -94,14 +94,17 @@ public class BaseItemDust extends Item{
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
-		if (pileType != null && materialName != null && pileType != "" && materialName != "" && !pileType.equals("") && !materialName.equals("")){
-			if (this.pileType == "dust"){
-				list.add(EnumChatFormatting.GRAY+"A pile of " + materialName + " dust.");		
+		//if (pileType != null && materialName != null && pileType != "" && materialName != "" && !pileType.equals("") && !materialName.equals("")){
+			if (getUnlocalizedName().contains("DustTiny")){
+				list.add(EnumChatFormatting.GRAY+"A tiny pile of " + materialName + " dust.");	
 			}
-			else{
-				list.add(EnumChatFormatting.GRAY+"A "+this.pileType.toLowerCase()+" pile of " + materialName + " dust.");		
+			else if (getUnlocalizedName().contains("DustSmall")){
+				list.add(EnumChatFormatting.GRAY+"A small pile of " + materialName + " dust.");	
 			}
-		}
+			else {
+				list.add(EnumChatFormatting.GRAY+"A pile of " + materialName + " dust.");
+			}
+		//}
 		super.addInformation(stack, aPlayer, list, bool);
 	}
 
@@ -151,11 +154,11 @@ public class BaseItemDust extends Item{
 			}
 			else {				
 				if (outputStacks[0] != null){
-					Utils.LOG_INFO("Getting output dusts for mixer recipe. Checking ENUM, got: "+outputStacks[0].toString());
+					Utils.LOG_WARNING("Getting output dusts for mixer recipe. Checking ENUM, got: "+outputStacks[0].toString());
 					tempOutput = outputStacks[0];
 				}
 				else {
-					Utils.LOG_INFO("Getting output dusts for mixer recipe. Enum check failed, failback item is: "+temp);
+					Utils.LOG_WARNING("Getting output dusts for mixer recipe. Enum check failed, failback item is: "+temp);
 					tempOutput = UtilsItems.getItemStackOfAmountFromOreDict(temp, 1);
 				}
 			}
@@ -178,14 +181,32 @@ public class BaseItemDust extends Item{
 						null, null, null);
 			}
 			else {
-				Utils.LOG_WARNING("Generating a shapeless Dust recipe for "+materialName);		
+				Utils.LOG_INFO("Generating a Dust recipe for "+materialName+" in the mixer.");		
 
-				GT_Values.RA.addMixerRecipe(
+				/*GT_Values.RA.addMixerRecipe(
 						inputStacks[0], inputStacks[1],
 						inputStacks[2], inputStacks[3],
 						null, null,
 						tempOutput,
+						8*mTier*20, 8*mTier*2);*/
+				int i = 0;
+				for (ItemStack is : inputStacks){
+					i++;
+					if (is != null){
+						Utils.LOG_INFO("Found "+is.getDisplayName()+" as an input for mixer recipe.");						
+					}
+					else {
+						Utils.LOG_INFO("Input "+i+" was null.");						
+					}
+				}
+				
+				GT_Values.RA.addMixerRecipe(
+						GT_Utility.copyAmount(inputStacks[0].stackSize, new Object[]{inputStacks[0]}), GT_Utility.copyAmount(inputStacks[1].stackSize, new Object[]{inputStacks[1]}),
+						GT_Utility.copyAmount(inputStacks[2].stackSize, new Object[]{inputStacks[2]}), GT_Utility.copyAmount(inputStacks[3].stackSize, new Object[]{inputStacks[3]}), 
+						null, null,
+						tempOutput,
 						8*mTier*20, 8*mTier*2);
+
 			}
 		}
 

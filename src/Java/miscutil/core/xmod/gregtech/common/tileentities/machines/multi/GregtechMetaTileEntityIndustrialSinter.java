@@ -13,11 +13,9 @@ import gregtech.api.util.GT_Utility;
 
 import java.util.ArrayList;
 
-import libshapedraw.primitive.Color;
 import miscutil.core.block.ModBlocks;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
-import miscutil.core.util.debug.UtilsRendering;
 import miscutil.core.xmod.gregtech.api.gui.GUI_MultiMachine;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -137,7 +135,7 @@ extends GT_MetaTileEntity_MultiBlockBase {
 							Utils.LOG_INFO("Found Air at: "+(controllerX+i)+" "+(controllerY+k)+" "+(controllerZ+k));
 							//if (aBaseMetaTileEntity.getWorld().isRemote){
 								//asdasd.renderStandardBlock(ModBlocks.MatterFabricatorEffectBlock, (controllerX+i), (controllerY+k), (controllerZ+k));
-								UtilsRendering.drawBlockInWorld((controllerX+i), (controllerY+k), (controllerZ+k), Color.YELLOW_GREEN);
+								//UtilsRendering.drawBlockInWorld((controllerX+i), (controllerY+k), (controllerZ+k), Color.YELLOW_GREEN);
 							//}
 							tAirCount++;
 						}
@@ -149,7 +147,7 @@ extends GT_MetaTileEntity_MultiBlockBase {
 				//return false;
 			}
 			for (byte i = 2; i < 6; i = (byte) (i + 1)) {
-				UtilsRendering.drawBlockInWorld((controllerX+i), (controllerY), (controllerZ), Color.LIME_GREEN);
+				//UtilsRendering.drawBlockInWorld((controllerX+i), (controllerY), (controllerZ), Color.LIME_GREEN);
 				IGregTechTileEntity tTileEntity;
 				if ((null != (tTileEntity = getBaseMetaTileEntity().getIGregTechTileEntityAtSideAndDistance(i, 2))) &&
 						(tTileEntity.getFrontFacing() == getBaseMetaTileEntity().getFrontFacing()) && (tTileEntity.getMetaTileEntity() != null) &&
@@ -165,9 +163,9 @@ extends GT_MetaTileEntity_MultiBlockBase {
 				for (byte j = -1; j < 2; j = (byte) (j + 1)) {
 					if ((i != 0) || (j != 0)) {
 						for (byte k = 0; k < 5; k = (byte) (k + 1)) {
-							UtilsRendering.drawBlockInWorld((controllerX+i), (controllerY+k), (controllerZ+k), Color.ORANGE);
+							//UtilsRendering.drawBlockInWorld((controllerX+i), (controllerY+k), (controllerZ+k), Color.ORANGE);
 							if (((i == 0) || (j == 0)) && ((k == 1) || (k == 2) || (k == 3))) {
-								UtilsRendering.drawBlockInWorld((controllerX+i), (controllerY+k), (controllerZ+k), Color.TOMATO);
+								//UtilsRendering.drawBlockInWorld((controllerX+i), (controllerY+k), (controllerZ+k), Color.TOMATO);
 								if (getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)) == getCasingBlock() && getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i)) == getCasingMeta()) {
 								} 
 								else if (!addToMachineList(getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i))) && (!addEnergyInputToMachineList(getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide == 4 ? -k : i), tY + j, tZ + (tSide == 2 ? -k : tSide == 3 ? k : i))))) {

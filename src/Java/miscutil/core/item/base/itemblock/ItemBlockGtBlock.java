@@ -12,7 +12,7 @@ public class ItemBlockGtBlock extends ItemBlock{
 	public ItemBlockGtBlock(Block block) {
 		super(block);
 		this.blockColour = block.getBlockColor();
-		GT_OreDictUnificator.registerOre("block"+block.getUnlocalizedName().replace("tile.block", "").replace("tile.", "").replace("of", "").replace("Block", "").replace("-", "").replace("_", "").replace(" ", ""), UtilsItems.getSimpleStack(this));
+		GT_OreDictUnificator.registerOre("block"+block.getUnlocalizedName().replace("tile.block", "").replace("tile.", "").replace("of", "").replace("Of", "").replace("Block", "").replace("-", "").replace("_", "").replace(" ", ""), UtilsItems.getSimpleStack(this));
 	}
 
     public int getRenderColor(int aMeta) {

@@ -26,7 +26,7 @@ public class BlockBaseModular extends BasicBlock{
 		this.thisBlock = blockType;
 		this.thisBlockMaterial = blockMaterial;
 		this.setBlockName(getLocalizedName());
-		LanguageRegistry.addName(this, getLocalizedName());
+		LanguageRegistry.addName(this, unlocalizedName);
 		//setOreDict(unlocalizedName, blockType);
 		if (thisBlock == BlockTypes.STANDARD){
 			GameRegistry.registerBlock(this, ItemBlockGtBlock.class, blockType.getTexture()+unlocalizedName);			
