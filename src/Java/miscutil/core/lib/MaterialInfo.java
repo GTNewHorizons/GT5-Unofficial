@@ -2,49 +2,75 @@ package miscutil.core.lib;
 
 import static miscutil.core.lib.CORE.noItem;
 import static miscutil.core.util.item.UtilsItems.getItemStackOfAmountFromOreDict;
+
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 
 public enum MaterialInfo {
 		
-	ENERGYCRYSTAL(getStack("dustInfusedFire", 8), getStack("dustInfusedEarth", 8), getStack("dustInfusedEntropy", 8), getStack("dustInfusedOrder", 8), "dustEnergyCrystal", 1, noItem, 0),
-	BLOODSTEEL(null, null, null, null, noItem, 0, noItem, 0),
-	STABALLOY(getStack("dustTitanium", 1), getStack("dustUranium", 8), null, null, "dustStaballoy", 1, noItem, 0),
-	TANTALLOY60(getStack("dustTungsten", 1), getStack("dustTantalum", 8), getStack("dustTinyTitanium", 5), null,	"dustTantalloy60", 1, noItem, 0),
-	TANTALLOY61(getStack("dustTungsten", 1), getStack("dustSmallTitanium", 3),	getStack("dustSmallYttrium", 2), getStack("dustTantalum", 9),	"dustTantalloy61", 1, noItem, 0),
-	QUANTUM(null, null,	null, null, noItem, 0, noItem, 0),
-	TUMBAGA(getStack("dustGold", 6), getStack("dustCopper", 3),	null, null,	"dustTumbaga", 2, noItem, 0),
-	POTIN(getStack("dustBronze", 3), getStack("dustTin", 2), getStack("dustLead", 4), null, "dustPotin", 3, noItem, 0),	
-	BEDROCKIUM(null, null, null, null, noItem, 0, noItem, 0),
-	INCONEL625(getStack("dustNickel", 5), getStack("dustChrome", 2), getStack("dustWroughtIron", 1), getStack("dustMolybdenum", 1), "dustInconel625", 4, "dustTinyDarkAsh", 1),
-	INCONEL690(getStack("dustNickel", 5), getStack("dustChrome", 2), getStack("dustNiobium", 1), getStack("dustMolybdenum", 1), "dustInconel690", 2, "dustTinyDarkAsh", 1),
-	INCONEL792(getStack("dustNickel", 5), getStack("dustChrome", 1), getStack("dustAluminium", 2), getStack("dustNiobium", 1), "dustInconel792", 2, "dustTinyDarkAsh", 1),
-	TUNGSTENCARBIDE(getStack("dustTungsten", 16), getStack("dustCarbon", 16), null, null, "dustTungstenCarbide", 4, noItem, 0),
-	SILICONCARBIDE(getStack("dustSilicon", 16), getStack("dustCarbon", 16), null, null, "dustSiliconCarbide", 4, noItem, 0),
-	ZERON100(getStack("dustChrome", 5), getStack("dustSmallNickel", 6), getStack("dustSmallMolybdenum", 3), getStack("dustSteel", 14), "dustZeron100", 5, noItem, 0),
-	MARAGING250(getStack("dustSteel", 4), getStack("dustNickel", 2), getStack("dustCobalt", 1), getStack("dustTinyTitanium", 1), "dustMaragingSteel250", 6, noItem, 0),
-	MARAGING300(getStack("dustSteel", 5), getStack("dustNickel", 2), getStack("dustCobalt", 2), getStack("dustSmallTitanium", 1), "dustMaragingSteel300", 5, noItem, 0),
-	MARAGING350(getStack("dustSteel", 6), getStack("dustNickel", 3), getStack("dustCobalt", 3), getStack("dustTitanium", 1), "dustMaragingSteel350", 4, noItem, 0),
-	STELLITE(getStack("dustCobalt", 4), getStack("dustChrome", 4), getStack("dustManganese", 2), getStack("dustTitanium", 1), "dustStellite", 2, noItem, 0),
-	TALONITE(getStack("dustCobalt", 4), getStack("dustChrome", 4), getStack("dustPhosphorus", 1), getStack("dustMolybdenum", 1), "dustTalonite", 2, noItem, 0);
-
-	private ItemStack input1;
-	private ItemStack input2;
-	private ItemStack input3;
-	private ItemStack input4;
+	ENERGYCRYSTAL("dustInfusedFire", 8, "dustInfusedEarth", 8, "dustInfusedEntropy", 8, "dustInfusedOrder", 8, "dustEnergyCrystal", 1, noItem, 0),
+	BLOODSTEEL(noItem, 0, noItem, 0, noItem, 0, noItem, 0, noItem, 0, noItem, 0),
+	STABALLOY("dustTitanium", 1, "dustUranium", 8, noItem, 0, noItem, 0, "dustStaballoy", 1, noItem, 0),
+	TANTALLOY60("dustTungsten", 1, "dustTantalum", 8, "dustTinyTitanium", 5, noItem, 0,	"dustTantalloy60", 1, noItem, 0),
+	TANTALLOY61("dustTungsten", 1, "dustSmallTitanium", 3,	"dustSmallYttrium", 2, "dustTantalum", 9,	"dustTantalloy61", 1, noItem, 0),
+	QUANTUM(noItem, 0, noItem, 0,	noItem, 0, noItem, 0, noItem, 0, noItem, 0),
+	TUMBAGA("dustGold", 6, "dustCopper", 3,	noItem, 0, noItem, 0, "dustTumbaga", 2, noItem, 0),
+	POTIN("dustBronze", 3, "dustTin", 2, "dustLead", 4, noItem, 0, "dustPotin", 3, noItem, 0),	
+	BEDROCKIUM(noItem, 0, noItem, 0, noItem, 0, noItem, 0, noItem, 0, noItem, 0),
+	INCONEL625("dustNickel", 5, "dustChrome", 2, "dustWroughtIron", 1, "dustMolybdenum", 1, "dustInconel625", 4, "dustTinyDarkAsh", 1),
+	INCONEL690("dustNickel", 5, "dustChrome", 2, "dustNiobium", 1, "dustMolybdenum", 1, "dustInconel690", 2, "dustTinyDarkAsh", 1),
+	INCONEL792("dustNickel", 5, "dustChrome", 1, "dustAluminium", 2, "dustNiobium", 1, "dustInconel792", 2, "dustTinyDarkAsh", 1),
+	TUNGSTENCARBIDE("dustTungsten", 16, "dustCarbon", 16, noItem, 0, noItem, 0, "dustTungstenCarbide", 4, noItem, 0),
+	SILICONCARBIDE("dustSilicon", 16, "dustCarbon", 16, noItem, 0, noItem, 0, "dustSiliconCarbide", 4, noItem, 0),
+	ZERON100("dustChrome", 5, "dustSmallNickel", 6, "dustSmallMolybdenum", 3, "dustSteel", 14, "dustZeron100", 5, noItem, 0),
+	MARAGING250("dustSteel", 4, "dustNickel", 2, "dustCobalt", 1, "dustTinyTitanium", 1, "dustMaragingSteel250", 6, noItem, 0),
+	MARAGING300("dustSteel", 5, "dustNickel", 2, "dustCobalt", 2, "dustSmallTitanium", 1, "dustMaragingSteel300", 5, noItem, 0),
+	MARAGING350("dustSteel", 6, "dustNickel", 3, "dustCobalt", 3, "dustTitanium", 1, "dustMaragingSteel350", 4, noItem, 0),
+	STELLITE("dustCobalt", 4, "dustChrome", 4, "dustManganese", 2, "dustTitanium", 1, "dustStellite", 2, noItem, 0),
+	TALONITE("dustCobalt", 4, "dustChrome", 4, "dustPhosphorus", 1, "dustMolybdenum", 1, "dustTalonite", 2, noItem, 0),
+	HASTELLOY_W("dustSmallCobalt", 1, "dustSmallChrome", 4, "dustMolybdenum", 2, "dustNickel", 6, "dustHastelloyW", 2, noItem, 0),
+	HASTELLOY_X("dustTinyCobalt", 6, "dustChrome", 2, "dustMolybdenum", 1, "dustNickel", 5, "dustHastelloyX", 2, noItem, 0),
+	HASTELLOY_C276("dustSmallCobalt", 1, "dustSmallChrome", 14, "dustSmallMolybdenum", 14, "dustNickel", 5, "dustHastelloyC276", 2, noItem, 0),
+	INCOLOY020("dustIron", 4, "dustChrome", 2, "dustTinyCarbon", 2, "dustSmallCopper", 4, "dustIncoloy020", 1, noItem, 0),
+	INCOLOYDS("dustIron", 4, "dustChrome", 2, "dustTinyTitanium", 2, "dustSmallManganese", 1, "dustIncoloyDS", 1, noItem, 0),
+	INCOLOYMA956("dustIron", 6, "dustChrome", 2, "dustSmallAluminium", 5, "dustTinyYttrium", 1, "dustIncoloyMA956", 1, noItem, 0),
+	TANTALUMCARBIDE("dustTantalum", 4, "dustCarbon", 2, noItem, 0, noItem, 0, "dustTantalumCarbide", 1, noItem, 0),
+	ZIRCONIUM(noItem, 0, noItem, 0, noItem, 0, noItem, 0, "dustZirconium", 1, noItem, 0),
+	ZIRCONIUMCARBIDE("dustZirconium", 2, "dustCarbon", 2, noItem, 0, noItem, 0, "dustZirconiumCarbide", 1, noItem, 0),
+	NIOMBIUMCARBIDE("dustNiobium", 2, "dustCarbon", 2, noItem, 0, noItem, 0, "dustNiobiumCarbide", 1, noItem, 0);
+	
+	
+	
+	private String input1;
+	private String input2;
+	private String input3;
+	private String input4;
+	private int inputAmount1;
+	private int inputAmount2;
+	private int inputAmount3;
+	private int inputAmount4;
 	private String out1;
 	private String out2;
 	private int outAmount1;
 	private int outAmount2;
+	public static List<String> nonLoadedInputs;
 	
 	private MaterialInfo (
-			ItemStack inputMaterial_1, ItemStack inputMaterial_2,
-			ItemStack inputMaterial_3, ItemStack inputMaterial_4,
+			String inputMaterial_1, int amountIn1,
+			String inputMaterial_2, int amountIn2,
+			String inputMaterial_3, int amountIn3,
+			String inputMaterial_4, int amountIn4,
 			String output_A,int amount1, String output_B, int amount2)
 	{
 		this.input1 = inputMaterial_1;
 		this.input2 = inputMaterial_2;
 		this.input3 = inputMaterial_3;
 		this.input4 = inputMaterial_4;
+		this.inputAmount1 = amountIn1;
+		this.inputAmount2 = amountIn2;
+		this.inputAmount3 = amountIn3;
+		this.inputAmount4 = amountIn4;
 		this.out1 = output_A;
 		this.out2 = output_B;
 		this.outAmount1 = amount1;
@@ -52,15 +78,50 @@ public enum MaterialInfo {
 	}
 
 	public ItemStack[] getInputs() {
-		return new ItemStack[]{input1, input2, input3, input4};
+		return new ItemStack[]{
+				getStack(input1, inputAmount1),
+				getStack(input2, inputAmount2), 
+				getStack(input3, inputAmount3),
+				getStack(input4, inputAmount4)
+				};
 	}
 	
 	public ItemStack[] getOutputs() {
-		return new ItemStack[]{getStack(out1, outAmount1), getStack(out2, outAmount2)};
+		return new ItemStack[]{
+				getStack(out1, outAmount1), 
+				getStack(out2, outAmount2)
+				};
+	}
+	
+	public String[] getInputItemsAsList(){
+		String[] inputArray = {
+				input1,
+				input2,
+				input3,
+				input4
+		};
+		return inputArray;
+	}
+	
+	public int[] getInputStackSizesAsList(){
+		int[] inputArray = {
+				inputAmount1,
+				inputAmount2,
+				inputAmount3,
+				inputAmount4
+		};
+		return inputArray;
 	}
 	
 	public static ItemStack getStack(String i, int r){
-		return getItemStackOfAmountFromOreDict(i,r);
+		if (i == ""){
+			return null;
+		}
+		ItemStack temp = getItemStackOfAmountFromOreDict(i,r);
+		if (temp.getDisplayName().toLowerCase().contains("tell alkalus")){
+			//temp = null;
+		}
+		return temp;
 	}
 
 

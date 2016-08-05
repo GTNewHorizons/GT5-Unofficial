@@ -180,18 +180,30 @@ public class BaseItemDust extends Item{
 						null, null, null);
 			}
 			else {
-				Utils.LOG_INFO("Generating a Dust recipe for "+materialName+" in the mixer.");		
+				Utils.LOG_WARNING("Generating a Dust recipe for "+materialName+" in the mixer.");		
 
 				
 				int i = 0;
+				if (inputStacks.length >= 2){
 				for (ItemStack is : inputStacks){
-					i++;
 					if (is != null){
-						Utils.LOG_INFO("Found "+is.getDisplayName()+" as an input for mixer recipe.");						
+						Utils.LOG_INFO("Found "+is.getDisplayName()+" as an input for mixer recipe.");		
+						if (is.getDisplayName().toLowerCase().contains("tell alkalus")){
+							ItemStack tempStackForAName = inputStacks[i];
+							String[] inputList = dustInfo.getInputItemsAsList();
+							int[] inputSizes = dustInfo.getInputStackSizesAsList();
+							inputStacks[i] = UtilsItems.getItemStackOfAmountFromOreDict(inputList[i], inputSizes[i]);
+							Utils.LOG_INFO("Swapping input slot "+i+" which contains "+tempStackForAName.getDisplayName()+" with "+inputStacks[i].getDisplayName()+".");	
+						}
+						
 					}
+					
 					else {
 						Utils.LOG_INFO("Input "+i+" was null.");						
 					}
+
+					i++;
+				}
 				}
 				
 				GT_Values.RA.addMixerRecipe(

@@ -218,6 +218,22 @@ public final class ModItems {
 		UtilsItems.generateItemsFromMaterial("Tumbaga", "Tumbaga", 2, MaterialInfo.TUMBAGA, Utils.rgbtoHexValue(255,178,15), false); //Tumbaga was the name given by Spaniards to a non-specific alloy of gold and copper 
 		UtilsItems.generateItemsFromMaterial("Potin", "Potin", 4, MaterialInfo.POTIN, Utils.rgbtoHexValue(201,151,129), false); //Potin is traditionally an alloy of bronze, tin and lead, with varying quantities of each possible
 		
+
+		UtilsItems.generateItemsFromMaterial("HastelloyW", "Hastelloy-W", 6, MaterialInfo.HASTELLOY_W, Utils.rgbtoHexValue(218, 165, 32), false);
+		UtilsItems.generateItemsFromMaterial("HastelloyX", "Hastelloy-X", 6, MaterialInfo.HASTELLOY_X, Utils.rgbtoHexValue(255, 193, 37), false);
+		UtilsItems.generateItemsFromMaterial("HastelloyC276", "Hastelloy-C276", 7, MaterialInfo.HASTELLOY_C276, Utils.rgbtoHexValue(238, 180, 34), true);
+		
+		UtilsItems.generateItemsFromMaterial("Incoloy020", "Incoloy-020", 7, MaterialInfo.INCOLOY020, Utils.rgbtoHexValue(81, 81, 81), false);
+		UtilsItems.generateItemsFromMaterial("IncoloyDS", "Incoloy-DS", 7, MaterialInfo.INCOLOYDS, Utils.rgbtoHexValue(91, 91, 91), false);
+		UtilsItems.generateItemsFromMaterial("IncoloyMA956", "Incoloy-MA956", 8, MaterialInfo.INCOLOYMA956, Utils.rgbtoHexValue(101, 101, 101), true);
+		
+		
+		UtilsItems.generateItemsFromMaterial("Zirconium", "Zirconium", 6, MaterialInfo.ZIRCONIUM, Utils.rgbtoHexValue(255, 250, 205), false);
+		UtilsItems.generateItemsFromMaterial("ZirconiumCarbide", "Zirconium Carbide", 7, MaterialInfo.ZIRCONIUMCARBIDE, Utils.rgbtoHexValue(222, 202, 180), true);
+		UtilsItems.generateItemsFromMaterial("TantalumCarbide", "Tantalum Carbide", 7, MaterialInfo.TANTALUMCARBIDE, Utils.rgbtoHexValue(139, 136, 120), true);
+		UtilsItems.generateItemsFromMaterial("NiobiumCarbide", "Niobium Carbide", 6, MaterialInfo.NIOMBIUMCARBIDE, Utils.rgbtoHexValue(205, 197, 191), true);
+		
+		
 		//EnderIO Resources
 		if (LoadedMods.EnderIO || LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("EnderIO Found - Loading Resources.");

@@ -82,11 +82,11 @@ public class StaballoyAxe extends ItemAxe{
 	
 	private int check(World par1World, int x, int y, int z, int xo, int yo,int zo) {
 		int f=0;
-		int o=x+z*20+y*400;
+		int o=x+z*40+y*400;
 		if (tre[o]==needcheck){
 			tre[o]=ignore;
 			Block bit = par1World.getBlock(x+xo, y+yo, z+zo);
-			if ((bit instanceof BlockLog)||(bit instanceof BlockLeavesBase)||(bit instanceof BlockHugeMushroom)){
+			if ((bit instanceof BlockLog)||(bit instanceof BlockLeavesBase)||(bit instanceof BlockHugeMushroom) || (bit.getUnlocalizedName().toLowerCase().contains("log")) || (bit.getUnlocalizedName().toLowerCase().contains("wood"))){
 				f=1;
 				tre[o]=harvest;
 				//if (bit instanceof BlockLog){
@@ -107,18 +107,18 @@ public class StaballoyAxe extends ItemAxe{
 		boolean f;
 		for (f=true;f==true;){
 			f=false;
-			for (int y=0;y<80;y++)
-				for(int z=0;z<20;z++)
-					for(int x=0;x<20;x++){
+			for (int y=-10;y<110;y++)
+				for(int z=0;z<40;z++)
+					for(int x=0;x<40;x++){
 						int r=check(par1World,x,y,z,xo,yo,zo);
 						if (r==3) return 3;
 						if (r==2) return 2;
 						if (r==1) f=true;
 					}
 			
-			for (int y=79;y>=0;y--)
-				for(int z=19;z>=0;z--)
-					for(int x=19;x>=0;x--){
+			for (int y=109;y>=-10;y--)
+				for(int z=39;z>=0;z--)
+					for(int x=39;x>=0;x--){
 						int r=check(par1World,x,y,z,xo,yo,zo);
 						if (r==2) return 3;
 						if (r==2) return 2;
@@ -130,11 +130,11 @@ public class StaballoyAxe extends ItemAxe{
 	
 	private int check2(World par1World, int x, int y, int z, int xo, int yo,int zo) {
 		int f=0;
-		int o=x+z*20+y*400;
+		int o=x+z*40+y*400;
 		if (tre[o]==needcheck){
 			tre[o]=ignore;
 			Block bit = par1World.getBlock(x+xo, y+yo, z+zo);
-			if (bit instanceof BlockLog){
+			if (bit instanceof BlockLog  || (bit.getUnlocalizedName().toLowerCase().contains("log")) || (bit.getUnlocalizedName().toLowerCase().contains("wood"))){
 				f=1;
 				tre[o]=harvest;
 				//if (bit instanceof BlockLog){
@@ -156,18 +156,18 @@ public class StaballoyAxe extends ItemAxe{
 		boolean f;
 		for (f=true;f==true;){
 			f=false;
-			for (int y=0;y<80;y++)
-				for(int z=0;z<20;z++)
-					for(int x=0;x<20;x++){
+			for (int y=-10;y<110;y++)
+				for(int z=0;z<40;z++)
+					for(int x=0;x<40;x++){
 						int r=check2(par1World,x,y,z,xo,yo,zo);
 						if (r==3) return 3;
 						if (r==2) return 2;
 						if (r==1) f=true;
 					}
 			
-			for (int y=79;y>=0;y--)
-				for(int z=19;z>=0;z--)
-					for(int x=19;x>=0;x--){
+			for (int y=109;y>=-10;y--)
+				for(int z=39;z>=0;z--)
+					for(int x=39;x>=0;x--){
 						int r=check2(par1World,x,y,z,xo,yo,zo);
 						if (r==2) return 3;
 						if (r==2) return 2;
@@ -178,15 +178,15 @@ public class StaballoyAxe extends ItemAxe{
 	}
 	
 	public void exploadTree(World par1World,int xo,int yo,int zo, EntityPlayer plr){
-		for (int y=0;y<80;y++)
-			for(int z=0;z<20;z++)
-				for(int x=0;x<20;x++){
-					int o=x+z*20+y*400;
+		for (int y=-10;y<110;y++)
+			for(int z=0;z<40;z++)
+				for(int x=0;x<40;x++){
+					int o=x+z*40+y*400;
 					if (tre[o]==harvest){
 						Block bit = par1World.getBlock(x+xo, y+yo, z+zo);
 						int met = par1World.getBlockMetadata(x+xo, y+yo, z+zo);
 						
-						if ((bit instanceof BlockLog)||(bit instanceof BlockLeavesBase)){
+						if ((bit instanceof BlockLog)||(bit instanceof BlockLeavesBase)  || (bit.getUnlocalizedName().toLowerCase().contains("log")) || (bit.getUnlocalizedName().toLowerCase().contains("wood"))){
 							bit.harvestBlock(par1World, plr, x+xo, y+yo, z+zo,met);
 							par1World.setBlockToAir(x+xo, y+yo, z+zo);
 						}
@@ -244,7 +244,7 @@ public class StaballoyAxe extends ItemAxe{
 				}
 			}
 			
-			if (bit instanceof BlockLog){
+			if (bit instanceof BlockLog  || (bit.getUnlocalizedName().toLowerCase().contains("log")) || (bit.getUnlocalizedName().toLowerCase().contains("wood"))){
 				//LoonTools.log("cutting tree @ "+x+" "+y+" "+z+" ");
 				for (int n=0;n<32000;n++) tre[n]=unchecked;
 				int met = wld.getBlockMetadata(x, y, z);

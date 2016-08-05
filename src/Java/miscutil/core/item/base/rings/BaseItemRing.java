@@ -74,8 +74,8 @@ public class BaseItemRing extends Item{
 			GT_Values.RA.addExtruderRecipe(tempOutputStack,
 					ItemList.Shape_Extruder_Ring.get(1),
 					UtilsItems.getSimpleStack(this, 4),
-					160*mTier,
-					32*mTier);	
+					12*mTier*20,
+					24*mTier);	
 		}				
 	}
 

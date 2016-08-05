@@ -25,6 +25,7 @@ public class RECIPES_GREGTECH {
 		assemblerRecipes();
 		distilleryRecipes();
 		extractorRecipes();
+		chemicalBathRecipes();
 		addFuels();
 	}
 
@@ -132,6 +133,17 @@ public class RECIPES_GREGTECH {
 		GT_ModHandler.addExtractionRecipe(GregtechItemList.Battery_RE_EV_Sodium.get(1L, new Object[0]), ItemList.Battery_Hull_HV.get(4L, new Object[0]));
 		GT_ModHandler.addExtractionRecipe(GregtechItemList.Battery_RE_EV_Cadmium.get(1L, new Object[0]), ItemList.Battery_Hull_HV.get(4L, new Object[0]));
 		GT_ModHandler.addExtractionRecipe(GregtechItemList.Battery_RE_EV_Lithium.get(1L, new Object[0]), ItemList.Battery_Hull_HV.get(4L, new Object[0]));
+	}
+	
+	private static void chemicalBathRecipes(){
+		int[] chances = {10000, 5000, 2500};
+		GT_Values.RA.addChemicalBathRecipe(UtilsItems.getItemStackOfAmountFromOreDict("dustTin", 12), FluidUtils.getFluidStack("chlorine", 2400),
+				UtilsItems.getItemStackOfAmountFromOreDict("dustZirconium", 1),
+				UtilsItems.getItemStackOfAmountFromOreDict("dustZirconium", 1),
+				UtilsItems.getItemStackOfAmountFromOreDict("dustZirconium", 1), 
+				chances,
+				30*20,
+				240);
 	}
 
 	private static void registerSkookumChoocher(){
