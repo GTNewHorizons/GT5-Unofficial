@@ -48,7 +48,7 @@ extends GregtechMeta_MultiBlockBase {
 				"Size[WxHxL]: 3x6x3 (Hollow)", 
 				"Controller (Center Bottom)",
 				"1x Input Bus (Any bottom layer casing)",
-				"3x Output Bus (Any casing besides bottom layer)",
+				"5x Output Bus (Any casing besides bottom layer)",
 				"1x Maintenance Hatch (Any casing)",
 				"1x Energy Hatch (Any casing)",
 				"Maceration Stack Casings for the rest (26 at least!)",
