@@ -17,5 +17,6 @@
 	<classpathentry kind="lib" path="libs/forestry_1.7.10-4.1.1.46-deobf.jar"/>
 	<classpathentry kind="lib" path="libs/Psychedelicraft-1.5.2.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/VillageWipe"/>
+	<classpathentry kind="lib" path="libs/Baubles-deobf-1.7.10-1.0.1.10.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

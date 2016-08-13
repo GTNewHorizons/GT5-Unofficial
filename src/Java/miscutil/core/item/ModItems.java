@@ -18,6 +18,8 @@ import miscutil.core.item.base.rotors.BaseItemRotor;
 import miscutil.core.item.base.screws.BaseItemScrew;
 import miscutil.core.item.effects.RarityUncommon;
 import miscutil.core.item.general.BufferCore;
+import miscutil.core.item.general.ItemCloakingDevice;
+import miscutil.core.item.general.ItemHealingDevice;
 import miscutil.core.item.general.RF2EU_Battery;
 import miscutil.core.item.general.fuelrods.FuelRod_Base;
 import miscutil.core.item.init.ItemsFoods;
@@ -163,6 +165,8 @@ public final class ModItems {
 	public static BaseItemBolt itemBoltTantalloy61;
 	
 	public static Item RfEuBattery;
+	public static Item itemPersonalCloakingDevice;
+	public static Item itemPersonalHealingDevice;
 
 
 	//@SuppressWarnings("unused")
@@ -346,6 +350,8 @@ public final class ModItems {
 			FuelRod_Uranium = new FuelRod_Base("itemFuelRod_Uranium", "Uranium", 2500, 2500);
 			FuelRod_Plutonium = new FuelRod_Base("itemFuelRod_Plutonium", "Plutonium", 5000, 5000);
 			RfEuBattery = new RF2EU_Battery();
+			itemPersonalCloakingDevice = new ItemCloakingDevice();
+			itemPersonalHealingDevice = new ItemHealingDevice();
 			//Registry
 			//GameRegistry.registerItem(FuelRod_Empty, "itemFuelRod_Empty");
 			//GameRegistry.registerItem(FuelRod_Thorium, "itemFuelRod_Thorium");
