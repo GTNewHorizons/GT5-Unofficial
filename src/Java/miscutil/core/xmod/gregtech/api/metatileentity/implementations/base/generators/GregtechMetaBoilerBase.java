@@ -1,4 +1,4 @@
-package miscutil.core.xmod.gregtech.api.metatileentity.implementations.base;
+package miscutil.core.xmod.gregtech.api.metatileentity.implementations.base.generators;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;

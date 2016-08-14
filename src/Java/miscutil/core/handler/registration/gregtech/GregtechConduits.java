@@ -7,7 +7,9 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.Utils;
+import miscutil.core.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import miscutil.core.xmod.gregtech.api.metatileentity.implementations.GregtechMetaPipeEntity_Cable;
+import miscutil.core.xmod.gregtech.api.metatileentity.implementations.GregtechMetaPipeEntity_SuperConductor;
 
 public class GregtechConduits {
 	/**
@@ -36,6 +38,9 @@ public class GregtechConduits {
 		if (LoadedMods.EnderIO){
 			wireFactory("RedstoneAlloy", 32, 30645, 1, 4, 1);
 		}
+		
+		superConductorFactory("Superconductor", 524288, 30660, 0, 0, 8);
+		superConductorFactory("VoidMetal", 512, 30661, 0, 0, 8);
 		
 	}	
 	
@@ -99,5 +104,55 @@ public class GregtechConduits {
 			GT_OreDictUnificator.registerOre(OrePrefixes.cableGt08, aMaterial, new GregtechMetaPipeEntity_Cable(aStartID + 9, "cable." + aMaterial.name().toLowerCase() + ".08", "8x " + aMaterial.mDefaultLocalName + " Cable", 0.75F, aMaterial, aLossInsulated, 8L * aAmperage, aVoltage, true, false).getStackForm(1L));
 			GT_OreDictUnificator.registerOre(OrePrefixes.cableGt12, aMaterial, new GregtechMetaPipeEntity_Cable(aStartID + 10, "cable." + aMaterial.name().toLowerCase() + ".12", "12x " + aMaterial.mDefaultLocalName + " Cable", 1.0F, aMaterial, aLossInsulated, 12L * aAmperage, aVoltage, true, false).getStackForm(1L));
 		}
+	}
+	
+	private static void superConductorFactory(String Material, int Voltage, int ID, long insulatedLoss, long uninsulatedLoss, long Amps){
+		GT_Materials T = GT_Materials.valueOf(Material);
+		int V = 0;
+		if (Voltage == 8){
+			V = 0;
+		}
+		else if (Voltage == 32){
+			V = 1;
+		}
+		else if (Voltage == 128){
+			V = 2;
+		}
+		else if (Voltage == 512){
+			V = 3;
+		}
+		else if (Voltage == 2048){
+			V = 4;
+		}
+		else if (Voltage == 8196){
+			V = 5;
+		}
+		else if (Voltage == 32768){
+			V = 6;
+		}
+		else if (Voltage == 131072){
+			V = 7;
+		}
+		else if (Voltage == 524288){
+			V = 8;
+		}
+		else if (Voltage == Integer.MAX_VALUE){
+			V = 9;
+		}
+		else {
+			Utils.LOG_ERROR("Failed to set voltage on "+Material+". Invalid voltage of "+Voltage+"V set.");
+			Utils.LOG_ERROR(Material+" has defaulted to 8v.");
+			V = 0;
+		}
+		//makeWires(T, ID, 2L, 4L, 2L, GT_Values.V[V], true, false);	 
+		makeSuperConductors(T, ID, insulatedLoss, uninsulatedLoss, Amps, GT_Values.V[V], true, false);	 
+		//makeWires(T, ID, bEC ? 2L : 2L, bEC ? 4L : 4L, 2L, gregtech.api.enums.GT_Values.V[V], true, false);	 
+	}	
+	
+	private static void makeSuperConductors(GT_Materials aMaterial, int aStartID, long aLossInsulated, long aLoss, long aAmperage, long aVoltage, boolean aInsulatable, boolean aAutoInsulated)
+	{
+		Utils.LOG_WARNING("Gregtech5u Content | Registered "+aMaterial.name() +" as a new Super Conductor.");
+		GT_OreDictUnificator.registerOre(OrePrefixes.wireGt16, aMaterial, new GregtechMetaPipeEntity_SuperConductor(aStartID + 5, "wire." + aMaterial.name().toLowerCase() + ".16", "16x " + aMaterial.mDefaultLocalName + " Wire", 1.0F, aMaterial, aLoss, 16L * aAmperage, aVoltage, false, !aAutoInsulated).getStackForm(1L));
+		
 	}
 }

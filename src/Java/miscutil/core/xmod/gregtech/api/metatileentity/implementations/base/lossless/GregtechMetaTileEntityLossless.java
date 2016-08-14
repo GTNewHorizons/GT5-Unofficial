@@ -1,11 +1,10 @@
-package miscutil.core.xmod.gregtech.api.metatileentity.implementations.base;
+package miscutil.core.xmod.gregtech.api.metatileentity.implementations.base.lossless;
 
 import static gregtech.api.enums.GT_Values.GT;
 import gregtech.api.interfaces.ITexture;
-import gregtech.api.metatileentity.MetaTileEntity;
 import miscutil.core.lib.CORE;
 
-public abstract class GregtechMetaTileEntity extends MetaTileEntity {
+public abstract class GregtechMetaTileEntityLossless extends MetaTileEntityLossless {
 	/**
 	 * Value between [0 - 9] to describe the Tier of this Machine.
 	 */
@@ -21,7 +20,7 @@ public abstract class GregtechMetaTileEntity extends MetaTileEntity {
 	 */
 	public final ITexture[][][] mTextures;
 	
-	public GregtechMetaTileEntity(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription, ITexture... aTextures) {
+	public GregtechMetaTileEntityLossless(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription, ITexture... aTextures) {
 		super(aID, aName, aNameRegional, aInvSlotCount);
 		mTier = (byte)Math.max(0, Math.min(aTier, 9));
 		mDescription = aDescription;
@@ -30,7 +29,7 @@ public abstract class GregtechMetaTileEntity extends MetaTileEntity {
 		if (GT.isClientSide()) mTextures = getTextureSet(aTextures); else mTextures = null;
 	}
 	
-	public GregtechMetaTileEntity(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
+	public GregtechMetaTileEntityLossless(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
 		super(aName, aInvSlotCount);
 		mTier = (byte)aTier;
 		mDescription = aDescription;

@@ -1,28 +1,28 @@
-package miscutil.core.xmod.gregtech.api.metatileentity.implementations.base;
+package miscutil.core.xmod.gregtech.api.metatileentity.implementations;
 
 import static gregtech.api.enums.GT_Values.V;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 
 import java.util.Collection;
 
+import miscutil.core.lib.CORE;
+import miscutil.core.xmod.gregtech.api.metatileentity.implementations.base.lossless.GregtechMetaTileEntityLosslessBasicTank;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
-public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_BasicTank {
-    public GregtechRocketFuelGeneratorBase(int aID, String aName, String aNameRegional, int aTier, String aDescription, ITexture... aTextures) {
+public abstract class GregtechMetaSuperConductorNodeBase extends GregtechMetaTileEntityLosslessBasicTank {
+    public GregtechMetaSuperConductorNodeBase(int aID, String aName, String aNameRegional, int aTier, String aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, 3, aDescription, aTextures);
     }
 
-    public GregtechRocketFuelGeneratorBase(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GregtechMetaSuperConductorNodeBase(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 3, aDescription, aTextures);
     }
 
@@ -49,12 +49,10 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
         return mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0 : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex + 1];
     }
 
-    String formattedName = "Added by: "	+ EnumChatFormatting.DARK_GREEN+"Alkalus";
     @Override
     public String[] getDescription() {
-        return new String[]{mDescription, "Fuel Efficiency: " + getEfficiency() + "%", formattedName};
+        return new String[]{mDescription, "Cooling Efficiency: " + getEfficiency() + "%", CORE.GT_Tooltip};
     }
-    
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
@@ -117,6 +115,11 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
     public boolean isValidSlot(int aIndex) {
         return aIndex < 2;
     }
+    
+    @Override
+    public boolean isEnetInput() {
+        return true;
+    }
 
     @Override
     public boolean isEnetOutput() {
@@ -132,15 +135,35 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
     public boolean isAccessAllowed(EntityPlayer aPlayer) {
         return true;
     }
-
+    
     @Override
-    public long maxEUOutput() {
-        return getBaseMetaTileEntity().isAllowedToWork() ? V[mTier] : 0;
+    public long getMinimumStoredEU() {
+        return V[mTier] * 16 * mInventory.length;
     }
 
     @Override
     public long maxEUStore() {
-        return Math.max(getEUVar(), V[mTier] * 80 + getMinimumStoredEU());
+        return V[mTier] * 64;
+    }
+
+    @Override
+    public long maxEUInput() {
+        return V[mTier];
+    }
+
+    @Override
+    public long maxEUOutput() {
+        return V[mTier];
+    }
+
+    @Override
+    public long maxAmperesIn() {
+        return 16;
+    }
+
+    @Override
+    public long maxAmperesOut() {
+        return 16;
     }
 
     @Override
@@ -180,6 +203,12 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+    	if (getEUVar() == maxEUStore() || mFluid == null){
+    		aBaseMetaTileEntity.disableWorking();
+    	}
+    	else {
+    		aBaseMetaTileEntity.enableWorking();            		
+    	}
         if (aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isAllowedToWork() && aTick % 10 == 0) {
             if (mFluid == null) {
                 if (aBaseMetaTileEntity.getUniversalEnergyStored() < maxEUOutput() + getMinimumStoredEU()) {
@@ -189,20 +218,20 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
                         mInventory[getStackDisplaySlot()] = new ItemStack(Blocks.fire, 1);
                     mInventory[getStackDisplaySlot()].setStackDisplayName("Generating: " + (aBaseMetaTileEntity.getUniversalEnergyStored() - getMinimumStoredEU()) + " EU");
                 }
-            } else {
+            } else {            	
                 int tFuelValue = getFuelValue(mFluid), tConsumed = consumedFluidPerOperation(mFluid);
-                if (tFuelValue > 0 && tConsumed > 0 && mFluid.amount > tConsumed) {
-                    long tFluidAmountToUse = Math.min(mFluid.amount / tConsumed, (maxEUOutput() * 20 + getMinimumStoredEU() - aBaseMetaTileEntity.getUniversalEnergyStored()) / tFuelValue);
-                    if (tFluidAmountToUse > 0 && aBaseMetaTileEntity.increaseStoredEnergyUnits(tFluidAmountToUse * tFuelValue, true))
+                if (tConsumed > 0 && mFluid.amount > tConsumed) {
+                    long tFluidAmountToUse = Math.min(mFluid.amount / tConsumed, (maxEUOutput() * 20 + getMinimumStoredEU() - aBaseMetaTileEntity.getUniversalEnergyStored()));
+                    if (tFluidAmountToUse > 0 /*&& aBaseMetaTileEntity.increaseStoredEnergyUnits(tFluidAmountToUse * tFuelValue, true)*/)
                         mFluid.amount -= tFluidAmountToUse * tConsumed;
                 }
             }
             if (mInventory[getInputSlot()] != null && aBaseMetaTileEntity.getUniversalEnergyStored() < (maxEUOutput() * 20 + getMinimumStoredEU()) && GT_Utility.getFluidForFilledItem(mInventory[getInputSlot()], true) == null) {
                 int tFuelValue = getFuelValue(mInventory[getInputSlot()]);
-                if (tFuelValue > 0) {
+                if (tFuelValue >= 0) {
                     ItemStack tEmptyContainer = getEmptyContainer(mInventory[getInputSlot()]);
                     if (aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), tEmptyContainer)) {
-                        aBaseMetaTileEntity.increaseStoredEnergyUnits(tFuelValue, true);
+                        //aBaseMetaTileEntity.increaseStoredEnergyUnits(tFuelValue, true);
                         aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
                     }
                 }
@@ -228,14 +257,17 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
         if (tRecipeList != null) for (GT_Recipe tFuel : tRecipeList)
             if ((tLiquid = GT_Utility.getFluidForFilledItem(tFuel.getRepresentativeInput(0), true)) != null)
                 if (aLiquid.isFluidEqual(tLiquid))
-                    return (int) (((long) tFuel.mSpecialValue * getEfficiency() * consumedFluidPerOperation(tLiquid)) / 100);
+                	return 0;
+                    //return (int) (((long) tFuel.mSpecialValue * getEfficiency() * consumedFluidPerOperation(tLiquid)) / 100);
         return 0;
     }
 
     public int getFuelValue(ItemStack aStack) {
         if (GT_Utility.isStackInvalid(aStack) || getRecipes() == null) return 0;
         GT_Recipe tFuel = getRecipes().findRecipe(getBaseMetaTileEntity(), false, Long.MAX_VALUE, null, aStack);
-        if (tFuel != null) return (int) ((tFuel.mSpecialValue * 1000L * getEfficiency()) / 100);
+        if (tFuel != null)
+        	return 0;
+        	//return (int) ((tFuel.mSpecialValue * 1000L * getEfficiency()) / 100);
         return 0;
     }
 
@@ -253,11 +285,13 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
 
     @Override
     public int getCapacity() {
-        return 32000;
+        return 16000;
     }
 
     @Override
     public int getTankPressure() {
         return -100;
     }
+    
+    
 }

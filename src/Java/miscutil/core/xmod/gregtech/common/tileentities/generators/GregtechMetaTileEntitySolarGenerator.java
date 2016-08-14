@@ -11,7 +11,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import miscutil.core.util.Utils;
 import miscutil.core.xmod.gregtech.api.gui.CONTAINER_SolarGenerator;
 import miscutil.core.xmod.gregtech.api.gui.GUI_SolarGenerator;
-import miscutil.core.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaSolarGenerator;
+import miscutil.core.xmod.gregtech.api.metatileentity.implementations.base.generators.GregtechMetaSolarGenerator;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GregtechMetaTileEntitySolarGenerator extends GregtechMetaSolarGenerator {

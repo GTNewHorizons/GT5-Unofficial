@@ -27,7 +27,7 @@ public class ItemCloakingDevice extends Item implements IElectricItem, IElectric
 
 	private final String unlocalizedName = "personalCloakingDevice";
 	private final ItemStack thisStack;
-	private final static int maxValueEU = 100000000;
+	private final static int maxValueEU = 8196*20*5*60;
 	protected double chargeEU = 0;
 
 	public ItemCloakingDevice(){
@@ -131,7 +131,7 @@ public class ItemCloakingDevice extends Item implements IElectricItem, IElectric
 		list.add("");			
 		list.add(EnumChatFormatting.GOLD+"IC2/EU Information"+EnumChatFormatting.GRAY);	
 		list.add(EnumChatFormatting.GRAY+"Tier: ["+EnumChatFormatting.YELLOW+getTier(thisStack)+EnumChatFormatting.GRAY+"] Transfer Limit: ["+EnumChatFormatting.YELLOW+getTransferLimit(thisStack)+EnumChatFormatting.GRAY +"Eu/t]");
-		list.add(EnumChatFormatting.GRAY+"Current Power: ["+EnumChatFormatting.YELLOW+(long) getCharge(stack)+EnumChatFormatting.GRAY+"Eu]");
+		list.add(EnumChatFormatting.GRAY+"Current Power: ["+EnumChatFormatting.YELLOW+(long) getCharge(stack)+EnumChatFormatting.GRAY+"Eu] ["+EnumChatFormatting.YELLOW+MathUtils.findPercentage(getCharge(stack), getMaxCharge(stack))+EnumChatFormatting.GRAY +"%]");
 		list.add(EnumChatFormatting.GRAY+"Time Remaining: ["+EnumChatFormatting.YELLOW+secondsLeft(stack)+ EnumChatFormatting.GRAY +" seconds]");
 		super.addInformation(stack, aPlayer, list, bool);
 	}

@@ -308,6 +308,7 @@ public enum GregtechOrePrefixes {
 		Neutronic(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "LuV Tier", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 6), new TC_AspectStack(TC_Aspects.MACHINA, 6))),
 		Quantum(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "ZPM Tier", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 8), new TC_AspectStack(TC_Aspects.MACHINA, 8))),
 
+		Superconductor(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 190, 240, 190, 0, "Superconductor", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeGreen, Arrays.asList(new TC_AspectStack(TC_Aspects.ELECTRUM, 8))),
 		
 		Staballoy(30, TextureSet.SET_ROUGH, 10.0F, 5120, 4, 1 | 2  | 16 | 32 | 64 | 128, 248, 255, 46, 0, "Staballoy", 0, 0, 1500, 2800, true, false, 1, 3, 1, Dyes.dyeGreen, 2, Arrays.asList(new MaterialStack(Materials.Titanium, 1), new MaterialStack(Materials.Uranium, 9)), Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 8), new TC_AspectStack(TC_Aspects.STRONTIO, 3))),
 		Bedrockium(31, TextureSet.SET_FINE, 8.0F, 8196, 3, 1 | 2 | 16 | 32 | 64 | 128, 39, 39, 39, 0, "Bedrockium", 0, 0, -1, 0, false, false, 1, 5, 1, Dyes.dyeLightGray, 2, Arrays.asList(new MaterialStack(Materials.Carbon, 63), new MaterialStack(Materials.Carbon, 56)),   Arrays.asList(new TC_AspectStack(TC_Aspects.VACUOS, 8), new TC_AspectStack(TC_Aspects.TUTAMEN, 3))),

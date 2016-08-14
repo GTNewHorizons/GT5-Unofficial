@@ -1,4 +1,4 @@
-package miscutil.core.xmod.gregtech.api.metatileentity.implementations.base;
+package miscutil.core.xmod.gregtech.api.metatileentity.implementations.base.machines;
 
 import static gregtech.api.enums.GT_Values.V;
 import gregtech.api.enums.Textures;

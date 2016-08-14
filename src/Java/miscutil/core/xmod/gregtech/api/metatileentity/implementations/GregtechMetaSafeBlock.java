@@ -9,7 +9,7 @@ import gregtech.api.util.GT_Utility;
 import miscutil.core.lib.CORE;
 import miscutil.core.xmod.gregtech.api.gui.CONTAINER_SafeBlock;
 import miscutil.core.xmod.gregtech.api.gui.GUI_SafeBlock;
-import miscutil.core.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaSafeBlockBase;
+import miscutil.core.xmod.gregtech.api.metatileentity.implementations.base.machines.GregtechMetaSafeBlockBase;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GregtechMetaSafeBlock

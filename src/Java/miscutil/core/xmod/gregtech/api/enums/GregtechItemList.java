@@ -97,7 +97,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	
 	
 	Food_Baked_Raisin_Bread, 
-	Industrial_SinterFurnace;
+	Industrial_SinterFurnace, 
+	
+	SuperConductorInputNode;
 
 	public static final GregtechItemList[]
 			DYE_ONLY_ITEMS = {

@@ -5,7 +5,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 
 import java.util.Iterator;
 
-import miscutil.core.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaBoilerBase;
+import miscutil.core.xmod.gregtech.api.metatileentity.implementations.base.generators.GregtechMetaBoilerBase;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;

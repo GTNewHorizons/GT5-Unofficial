@@ -8,6 +8,7 @@ import java.util.List;
 
 import miscutil.core.creative.AddToCreativeTab;
 import miscutil.core.lib.CORE;
+import miscutil.core.util.Utils;
 import miscutil.core.util.item.UtilsItems;
 import miscutil.core.util.math.MathUtils;
 import net.minecraft.entity.Entity;
@@ -25,7 +26,7 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 
 	private final String unlocalizedName = "personalHealingDevice";
 	private final ItemStack thisStack;
-	private final static int maxValueEU = 100000000;
+	private final static int maxValueEU = 1000000000;
 	protected double chargeEU = 0;
 
 	public ItemHealingDevice(){
@@ -88,18 +89,18 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 
 	@Override
 	public int getTier(ItemStack itemStack) {
-		return 4;
+		return 5;
 	}
 
 	@Override
 	public double getTransferLimit(ItemStack itemStack) {
-		return 8196;
+		return 32784;
 	}
 
 	@Override
 	public String getItemStackDisplayName(ItemStack p_77653_1_) {
 
-		return (EnumChatFormatting.WHITE+"Personal Healing NanoBooster"+EnumChatFormatting.GRAY);
+		return (EnumChatFormatting.BLUE+"Personal Healing NanoBooster"+EnumChatFormatting.RESET);
 	}
 
 	@Override
@@ -118,8 +119,8 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 	public double secondsLeft(ItemStack stack){
 		
 		double r = 0;
-		r = getCharge(stack)/(8196*20);
-		return MathUtils.decimalRounding(r);
+		r = getCharge(stack)/(1638400/4);
+		return (int) r;
 	}
 
 	@Override
@@ -130,7 +131,7 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 		list.add("");			
 		list.add(EnumChatFormatting.GOLD+"IC2/EU Information"+EnumChatFormatting.GRAY);	
 		list.add(EnumChatFormatting.GRAY+"Tier: ["+EnumChatFormatting.YELLOW+getTier(thisStack)+EnumChatFormatting.GRAY+"] Transfer Limit: ["+EnumChatFormatting.YELLOW+getTransferLimit(thisStack)+EnumChatFormatting.GRAY +"Eu/t]");
-		list.add(EnumChatFormatting.GRAY+"Current Power: ["+EnumChatFormatting.YELLOW+(long) getCharge(stack)+EnumChatFormatting.GRAY+"Eu]");
+		list.add(EnumChatFormatting.GRAY+"Current Power: ["+EnumChatFormatting.YELLOW+(long) getCharge(stack)+EnumChatFormatting.GRAY+"Eu] ["+EnumChatFormatting.YELLOW+MathUtils.findPercentage(getCharge(stack), getMaxCharge(stack))+EnumChatFormatting.GRAY +"%]");
 		list.add(EnumChatFormatting.GRAY+"Uses Remaining: ["+EnumChatFormatting.YELLOW+secondsLeft(stack)+ EnumChatFormatting.GRAY +"]");
 		super.addInformation(stack, aPlayer, list, bool);
 	}
@@ -211,11 +212,15 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 	@Override //TODO
 	public void onWornTick(ItemStack arg0, EntityLivingBase arg1) {
 		if (!arg1.worldObj.isRemote){
-			if (getCharge(arg0) >= 1638400){
-				if (arg1.getHealth() < arg1.getMaxHealth()-2){
-				arg1.heal(2);
+			if (getCharge(arg0) >= 1638400/4){
+				if (arg1.getHealth() < arg1.getMaxHealth()){
+					float rx = arg1.getMaxHealth()-arg1.getHealth();
+					Utils.LOG_INFO("rx:"+rx);
+				arg1.heal(rx*2);
+				discharge(arg0, (1638400/4)*rx, 6, true, true, false);
+				Utils.messagePlayer((EntityPlayer) arg1, "Your NanoBooster Whirs! Leaving you feeling stronger. It Healed "+rx+" hp.");
+				Utils.messagePlayer((EntityPlayer) arg1, "You check it's remaining uses, it has "+secondsLeft(arg0)+".");
 				}
-				discharge(arg0, 1638400, 6, true, true, false);
 			}
 		}
 	}

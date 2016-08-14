@@ -213,6 +213,7 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 	public long[] getStoredEnergy(){
 		long tScale = getBaseMetaTileEntity().getEUCapacity();
 		long tStored = getBaseMetaTileEntity().getStoredEU();
+		this.setEUVar(Long.MAX_VALUE);
 		if (mInventory != null) {
 			for (ItemStack aStack : mInventory) {
 				if (GT_ModHandler.isElectricItem(aStack)) {
@@ -247,7 +248,7 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 
 	@Override
 	public String[] getInfoData() {
-		count++;
+		count++;		
 		if(mMax==0||count%20==0){
 			long[] tmp = getStoredEnergy();
 			mStored=tmp[0];

@@ -28,13 +28,13 @@ public class BlockBaseModular extends BasicBlock{
 		this.setBlockName(getLocalizedName());
 		
 		if (thisBlock == BlockTypes.STANDARD){
-			LanguageRegistry.addName(this, "Block of "+unlocalizedName);
+			LanguageRegistry.addName(this, "Block of "+blockMaterial);
 		}
 		else if (thisBlock == BlockTypes.FRAME){
-			LanguageRegistry.addName(this, unlocalizedName+ " Frame Box");
+			LanguageRegistry.addName(this, blockMaterial+ " Frame Box");
 		}
 		else {
-			LanguageRegistry.addName(this, unlocalizedName);
+			LanguageRegistry.addName(this, blockMaterial);
 		}		
 		
 		//setOreDict(unlocalizedName, blockType);

@@ -12,7 +12,7 @@ import miscutil.core.util.Utils;
 import miscutil.core.util.math.MathUtils;
 import miscutil.core.xmod.gregtech.api.gui.CONTAINER_SteamCondenser;
 import miscutil.core.xmod.gregtech.api.gui.GUI_SteamCondenser;
-import miscutil.core.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaBoilerBase;
+import miscutil.core.xmod.gregtech.api.metatileentity.implementations.base.generators.GregtechMetaBoilerBase;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;

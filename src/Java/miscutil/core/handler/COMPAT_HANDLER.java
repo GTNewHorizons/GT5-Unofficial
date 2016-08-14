@@ -33,6 +33,7 @@ import miscutil.core.handler.registration.gregtech.GregtechRocketFuelGenerator;
 import miscutil.core.handler.registration.gregtech.GregtechSafeBlock;
 import miscutil.core.handler.registration.gregtech.GregtechSolarGenerators;
 import miscutil.core.handler.registration.gregtech.GregtechSteamCondenser;
+import miscutil.core.handler.registration.gregtech.GregtechSuperConductionPoint;
 import miscutil.core.item.ModItems;
 import miscutil.core.lib.CORE;
 import miscutil.core.lib.LoadedMods;
@@ -84,6 +85,7 @@ public class COMPAT_HANDLER {
 		GregtechConduits.run();
 		GregtechSteamCondenser.run();
 		GregtechSafeBlock.run();
+		GregtechSuperConductionPoint.run();
 		GregtechIronBlastFurnace.run();
 		GregtechIndustrialCentrifuge.run();
 		GregtechIndustrialCokeOven.run();
