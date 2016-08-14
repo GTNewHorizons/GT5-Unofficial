@@ -7,9 +7,11 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.Utils;
+import miscutil.core.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import miscutil.core.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import miscutil.core.xmod.gregtech.api.metatileentity.implementations.GregtechMetaPipeEntity_Cable;
 import miscutil.core.xmod.gregtech.api.metatileentity.implementations.GregtechMetaPipeEntity_SuperConductor;
+import net.minecraft.item.ItemStack;
 
 public class GregtechConduits {
 	/**
@@ -152,7 +154,11 @@ public class GregtechConduits {
 	private static void makeSuperConductors(GT_Materials aMaterial, int aStartID, long aLossInsulated, long aLoss, long aAmperage, long aVoltage, boolean aInsulatable, boolean aAutoInsulated)
 	{
 		Utils.LOG_WARNING("Gregtech5u Content | Registered "+aMaterial.name() +" as a new Super Conductor.");
-		GT_OreDictUnificator.registerOre(OrePrefixes.wireGt16, aMaterial, new GregtechMetaPipeEntity_SuperConductor(aStartID + 5, "wire." + aMaterial.name().toLowerCase() + ".16", "16x " + aMaterial.mDefaultLocalName + " Wire", 1.0F, aMaterial, aLoss, 16L * aAmperage, aVoltage, false, !aAutoInsulated).getStackForm(1L));
+		registerOre(GregtechOrePrefixes.type2, aMaterial, new GregtechMetaPipeEntity_SuperConductor(aStartID + 5, "wire." + aMaterial.name().toLowerCase() + ".16", "16x " + aMaterial.mDefaultLocalName + " Wire", 1.0F, aMaterial, aLoss, 16L * aAmperage, aVoltage, false, !aAutoInsulated).getStackForm(1L));
 		
 	}
+	
+	private static boolean registerOre(GregtechOrePrefixes aPrefix, Object aMaterial, ItemStack aStack) {
+        return GT_OreDictUnificator.registerOre(aPrefix.get(aMaterial), aStack);
+    }
 }
