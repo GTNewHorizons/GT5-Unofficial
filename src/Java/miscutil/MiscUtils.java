@@ -21,13 +21,9 @@ import miscutil.core.item.general.RF2EU_Battery;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
 import miscutil.core.xmod.gregtech.HANDLER_GT;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
-
-import org.lwjgl.opengl.GL11;
-
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -107,7 +103,7 @@ implements ActionListener
 	
 	@SubscribeEvent
 	public void renderWorldLastEvent(RenderWorldLastEvent evt){
-	double doubleX = Minecraft.getMinecraft().thePlayer.posX - 0.5;
+	/*double doubleX = Minecraft.getMinecraft().thePlayer.posX - 0.5;
 	double doubleY = Minecraft.getMinecraft().thePlayer.posY + 0.1;
 	double doubleZ = Minecraft.getMinecraft().thePlayer.posZ - 0.5;
 
@@ -123,7 +119,7 @@ implements ActionListener
 	GL11.glVertex3f(mx+0.4f,my,mz-0.4f);
 	GL11.glVertex3f(mx-0.4f,my,mz+0.4f);
 	GL11.glEnd();
-	GL11.glPopMatrix();
+	GL11.glPopMatrix();*/
 	}
 
 	//Post-Init

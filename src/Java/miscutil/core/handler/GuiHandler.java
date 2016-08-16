@@ -2,15 +2,15 @@ package miscutil.core.handler;
 
 import miscutil.MiscUtils;
 import miscutil.core.container.Container_Charger;
-import miscutil.core.container.Container_NHG;
 import miscutil.core.gui.beta.Gui_ID_Registry;
 import miscutil.core.gui.beta.MU_GuiId;
 import miscutil.core.gui.machine.GUI_Charger;
-import miscutil.core.gui.machine.GUI_NHG;
 import miscutil.core.interfaces.IGuiManager;
 import miscutil.core.tileentities.machines.TileEntityCharger;
-import miscutil.core.tileentities.machines.TileEntityNHG;
 import miscutil.core.util.Utils;
+import miscutil.core.xmod.forestry.bees.alveary.TileAlvearyFrameHousing;
+import miscutil.core.xmod.forestry.bees.alveary.gui.CONTAINER_FrameHousing;
+import miscutil.core.xmod.forestry.bees.alveary.gui.GUI_FrameHousing;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
@@ -39,7 +39,7 @@ public class GuiHandler implements IGuiHandler {
 
 		if (te != null){
 			if (ID == GUI1){
-				return new Container_NHG((TileEntityNHG)te, player);
+				return new CONTAINER_FrameHousing((TileAlvearyFrameHousing)te, player);
 			}
 			else if (ID == GUI2){
 				return new Container_Charger((TileEntityCharger)te, player);
@@ -58,7 +58,7 @@ public class GuiHandler implements IGuiHandler {
 		if (te != null){
 			if (ID == GUI1){
 				Utils.LOG_WARNING("Opening Gui with Id: "+ID+" NHG");
-				return new GUI_NHG((TileEntityNHG) te, player);
+				return new GUI_FrameHousing((TileAlvearyFrameHousing) te, player);
 			}
 			else  if (ID == GUI2){
 				Utils.LOG_WARNING("Opening Gui with Id: "+ID+" Charger");

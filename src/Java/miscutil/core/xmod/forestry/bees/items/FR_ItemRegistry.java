@@ -10,12 +10,16 @@
  ******************************************************************************/
 package miscutil.core.xmod.forestry.bees.items;
 import miscutil.core.lib.LoadedMods;
+import miscutil.core.xmod.forestry.bees.alveary.FR_BlockAlveary;
+import net.minecraft.block.Block;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
 import cpw.mods.fml.common.registry.GameRegistry;
+import forestry.core.items.ItemBlockForestry;
 import forestry.core.utils.StringUtil;
 
 public class FR_ItemRegistry {
@@ -38,6 +42,9 @@ public class FR_ItemRegistry {
 	public static MB_ItemFrame hiveFrameSoul;
 	public static MB_ItemFrame hiveFrameClay;
 	public static MB_ItemFrame hiveFrameNova;
+	
+	//Alveary Stuff
+	public static FR_BlockAlveary alveary;
 
 	public static void Register() {		
 
@@ -63,6 +70,8 @@ public class FR_ItemRegistry {
 		hiveFrameSoul = new MB_ItemFrame(MB_FrameType.SOUL, EnumRarity.common, "");
 		hiveFrameClay = new MB_ItemFrame(MB_FrameType.CLAY, EnumRarity.common, "");
 		hiveFrameNova = new MB_ItemFrame(MB_FrameType.NOVA, EnumRarity.epic, "A Creative Only Frame.");
+		
+		alveary = registerBlock(new FR_BlockAlveary(), ItemBlockForestry.class, "alveary");
 		}
 
 
@@ -75,6 +84,12 @@ public class FR_ItemRegistry {
 		GameRegistry.registerItem(item, StringUtil.cleanItemName(item));
 		return item;
 	}
+	
+	protected static <T extends Block> T registerBlock(T block, Class<? extends ItemBlock> itemClass, String name, Object... itemCtorArgs) {
+		block.setBlockName("for." + name);
+		GameRegistry.registerBlock(block, itemClass, StringUtil.cleanBlockName(block), itemCtorArgs);
+		return block;
+		}
 }
 
 
