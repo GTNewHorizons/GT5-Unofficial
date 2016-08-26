@@ -9,9 +9,6 @@ import miscutil.core.util.Utils;
 import miscutil.xmod.forestry.bees.alveary.TileAlvearyFrameHousing;
 import miscutil.xmod.forestry.bees.alveary.gui.CONTAINER_FrameHousing;
 import miscutil.xmod.forestry.bees.alveary.gui.GUI_FrameHousing;
-import miscutil.xmod.ic2.block.RTGGenerator.TileEntityRTG;
-import miscutil.xmod.ic2.block.RTGGenerator.gui.CONTAINER_RadioThermalGenerator;
-import miscutil.xmod.ic2.block.RTGGenerator.gui.GUI_RadioThermalGenerator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
@@ -23,6 +20,7 @@ public class GuiHandler implements IGuiHandler {
 
 	private static final int GUI1 = 0;      //Frame Alveary
 	private static final int GUI2 = 1;      //RTG
+	
 
 
 	public static void init(){ 	
@@ -45,7 +43,7 @@ public class GuiHandler implements IGuiHandler {
 				}
 			}
 			else if (ID == GUI2){
-				return new CONTAINER_RadioThermalGenerator((TileEntityRTG)te, player);
+				//return new CONTAINER_RTG(player, (TileEntityRTG)te);
 			}
 
 
@@ -67,7 +65,7 @@ public class GuiHandler implements IGuiHandler {
 			}
 			else  if (ID == GUI2){
 				Utils.LOG_WARNING("Opening Gui with Id: "+ID+" RTG");
-				return new GUI_RadioThermalGenerator((TileEntityRTG) te, player);
+				//return new GUI_RTG((TileEntityRTG) te.);
 			}
 		}
 		return null;

@@ -1,24 +1,26 @@
 package miscutil.xmod.ic2.block.RTGGenerator;
 
 import ic2.core.ContainerBase;
-import ic2.core.block.generator.tileentity.TileEntityBaseGenerator;
-import ic2.core.block.invslot.InvSlot;
-import miscutil.core.util.Utils;
-import miscutil.xmod.ic2.block.RTGGenerator.gui.CONTAINER_RadioThermalGenerator;
-import miscutil.xmod.ic2.block.RTGGenerator.gui.GUI_RadioThermalGenerator;
+import ic2.core.Ic2Items;
+import ic2.core.block.generator.tileentity.TileEntityRTGenerator;
+import ic2.core.block.invslot.InvSlotConsumable;
+import ic2.core.block.invslot.InvSlotConsumableId;
+import miscutil.xmod.ic2.block.RTGGenerator.gui.CONTAINER_RTG;
+import miscutil.xmod.ic2.block.RTGGenerator.gui.GUI_RTG;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileEntityRTG
-extends TileEntityBaseGenerator
+extends TileEntityRTGenerator
 {
-	public final InvSlot fuelSlot;
+	public final InvSlotConsumable fuelSlot;
 
 	public TileEntityRTG()
 	{
-		super(Math.round(16.0F * efficiency), 1, 20000);
-
-		this.fuelSlot = this.invSlots.get(0);
+		this.fuelSlot = new InvSlotConsumableId(this, "fuelSlot", 0, 12, new Item[] { Ic2Items.RTGPellets.getItem() });
 	}
 
 	@Override
@@ -28,22 +30,20 @@ extends TileEntityBaseGenerator
 	}
 
 	@Override
-	public boolean gainEnergy()
-	{
-		int counter = 0;
-		for (int i = 0; i < this.fuelSlot.size(); i++) {
-			if (this.fuelSlot.get(i) != null) {
-				counter++;
-			}
-		}
-		if (counter == 0) {
-			return false;
-		}
-		double tempInt = (this.storage += (int)(Math.pow(2.0D, counter - 1) * efficiency));
-		Utils.LOG_INFO("int of some sort: "+tempInt);
-		this.storage += (int)(Math.pow(2.0D, counter - 1) * efficiency);
-		return true;
-	}
+	 public boolean gainEnergy()
+	  {
+	    int counter = 0;
+	    for (int i = 0; i < this.fuelSlot.size(); i++) {
+	      if (this.fuelSlot.get(i) != null) {
+	        counter++;
+	      }
+	    }
+	    if (counter == 0) {
+	      return false;
+	    }
+	    this.storage += (int)Math.pow(2.0D, counter - 1);
+	    return true;
+	  }
 
 	@Override
 	public boolean gainFuel()
@@ -60,19 +60,20 @@ extends TileEntityBaseGenerator
 	@Override
 	public String getInventoryName()
 	{
-		return "RTGenerator";
+		return "RTG";
+	}
+	
+	@Override
+	public ContainerBase<TileEntityRTGenerator> getGuiContainer(EntityPlayer entityPlayer)
+	{
+		return new CONTAINER_RTG(entityPlayer, this);
 	}
 
-
-	public Object getGui(EntityPlayer player, int data)
+	@Override
+	@SideOnly(Side.CLIENT)
+	public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin)
 	{
-		return new GUI_RadioThermalGenerator(this, player);
-	}
-
-
-	public Object getGuiContainer(EntityPlayer player, int data)
-	{
-		return new CONTAINER_RadioThermalGenerator(this, player);
+		return new GUI_RTG(new CONTAINER_RTG(entityPlayer, this));
 	}
 
 	@Override
@@ -81,17 +82,5 @@ extends TileEntityBaseGenerator
 		return true;
 	}
 
-	private static final float efficiency = 100;
-
-	@Override
-	public GuiScreen getGui(EntityPlayer arg0, boolean arg1) {
-		getGui(arg0, 1);
-		return null;
-	}
-
-	@Override
-	public ContainerBase<?> getGuiContainer(EntityPlayer arg0) {
-		getGuiContainer(arg0, 1);
-		return null;
-	}
+	
 }

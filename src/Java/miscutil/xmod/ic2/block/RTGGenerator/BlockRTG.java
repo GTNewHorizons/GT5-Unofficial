@@ -10,6 +10,7 @@ import ic2.core.init.InternalName;
 import java.util.List;
 import java.util.Random;
 
+import miscutil.core.creative.AddToCreativeTab;
 import miscutil.xmod.ic2.block.kieticgenerator.tileentity.TileEntityKineticWindGenerator;
 import miscutil.xmod.ic2.item.IC2_Items;
 import miscutil.xmod.ic2.item.ItemGenerators;
@@ -34,7 +35,7 @@ extends BlockMultiID
 	public BlockRTG(InternalName internalName1)
 	{
 		super(internalName1, Material.iron, ItemGenerators.class);
-
+		setCreativeTab(AddToCreativeTab.tabMachines);
 		setHardness(3.0F);
 		setStepSound(soundTypeMetal);
 

@@ -9,7 +9,7 @@ public class HANDLER_IC2{
 	public static void preInit() {
 		if (LoadedMods.IndustrialCraft2){
 			IC2_Items.register();
-		    //new BlockRTG(InternalName.beer);
+		    //new BlockRTG(InternalName.blockGenerator);
 		}		
 	}
 
