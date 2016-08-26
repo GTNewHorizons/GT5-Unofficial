@@ -7,6 +7,9 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
+
+import java.util.UUID;
+
 import miscutil.core.handler.events.UnbreakableBlockManager;
 import miscutil.core.util.Utils;
 import miscutil.core.util.player.PlayerCache;
@@ -17,7 +20,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_TieredMachineBlock {
 	public boolean bOutput = false, bRedstoneIfFull = false, bInvert = false, bUnbreakable = false;
 	public int mSuccess = 0, mTargetStackSize = 0;
-	public String ownerUUID = "";
+	public UUID ownerUUID;
 	UnbreakableBlockManager Xasda = new UnbreakableBlockManager();
 	private boolean value_last = false, value_current = false;
 
@@ -188,7 +191,7 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 
 		}
 		if (!aPlayer.equals(null)) {
-			String tempUUID = aPlayer.getUniqueID().toString();
+			UUID tempUUID = aPlayer.getUniqueID();
 			PlayerCache.appendParamChanges(aPlayer.getDisplayName(), aPlayer.getUniqueID().toString());
 			if (ownerUUID.equals("")){
 				Utils.LOG_WARNING("No owner yet for this block.");
@@ -241,7 +244,7 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 		aNBT.setBoolean("bOutput", bOutput);
 		aNBT.setBoolean("bRedstoneIfFull", bRedstoneIfFull);
 		aNBT.setInteger("mTargetStackSize", mTargetStackSize);
-		aNBT.setString("ownerUUID", ownerUUID);
+		aNBT.setString("ownerUUID", ownerUUID.toString());
 	}
 
 	@Override
@@ -250,7 +253,7 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 		bOutput = aNBT.getBoolean("bOutput");
 		bRedstoneIfFull = aNBT.getBoolean("bRedstoneIfFull");
 		mTargetStackSize = aNBT.getInteger("mTargetStackSize");
-		ownerUUID = aNBT.getString("ownerUUID");
+		ownerUUID = UUID.fromString(aNBT.getString("ownerUUID"));
 	}
 
 	@Override

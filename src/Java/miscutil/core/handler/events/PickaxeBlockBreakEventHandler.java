@@ -4,6 +4,9 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
+
+import java.util.UUID;
+
 import miscutil.core.util.Utils;
 import miscutil.core.xmod.gregtech.api.metatileentity.implementations.base.machines.GregtechMetaSafeBlockBase;
 import net.minecraft.block.Block;
@@ -29,7 +32,7 @@ public class PickaxeBlockBreakEventHandler {
 					Block ThisBlock = X.getBaseMetaTileEntity().getBlock(event.x, event.y, event.z);
 					if (X instanceof GregtechMetaSafeBlockBase){
 
-						String ownerUUID = ((GregtechMetaSafeBlockBase)X).ownerUUID;
+						UUID ownerUUID = ((GregtechMetaSafeBlockBase)X).ownerUUID;
 						String accessorUUID = playerInternal.getUniqueID().toString();
 						Utils.LOG_WARNING("Owner UUID: "+ownerUUID);
 						Utils.LOG_WARNING("Accessor UUID: "+accessorUUID);					

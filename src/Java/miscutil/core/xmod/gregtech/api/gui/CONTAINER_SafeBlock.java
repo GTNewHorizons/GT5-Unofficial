@@ -3,6 +3,9 @@ package miscutil.core.xmod.gregtech.api.gui;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+
+import java.util.UUID;
+
 import miscutil.core.util.player.PlayerCache;
 import miscutil.core.xmod.gregtech.api.metatileentity.implementations.GregtechMetaSafeBlock;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,7 +20,7 @@ extends GT_ContainerMetaTile_Machine {
 	}
 
 	//public String UUID = ((BaseMetaTileEntity)mTileEntity).getMetaTileEntity().getBaseMetaTileEntity().getOwnerName();
-	public String ownerUUID = ((GregtechMetaSafeBlock)this.mTileEntity.getMetaTileEntity()).ownerUUID;
+	public UUID ownerUUID = ((GregtechMetaSafeBlock)this.mTileEntity.getMetaTileEntity()).ownerUUID;
 	public String tempPlayer = PlayerCache.lookupPlayerByUUID(ownerUUID);
 	public boolean blockStatus = ((GregtechMetaSafeBlock)this.mTileEntity.getMetaTileEntity()).bUnbreakable;
 

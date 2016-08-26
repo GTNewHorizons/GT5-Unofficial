@@ -2,11 +2,8 @@ package miscutil.core.handler.events;
 
 import java.util.UUID;
 
-import miscutil.core.item.ModItems;
 import miscutil.core.util.Utils;
-import miscutil.core.util.item.UtilsItems;
-import miscutil.core.util.math.MathUtils;
-import net.minecraft.client.Minecraft;
+import miscutil.core.util.player.PlayerCache;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -29,14 +26,13 @@ public class LoginEventHandler {
 
 
 			if (localPlayerRef instanceof EntityPlayerMP && localPlayerRef != null){
-				/*Utils.LOG_INFO("Engaging Log in protection.");
-				localPlayerRef.*/
 
-				if (localPlayerRef.getCommandSenderName().toLowerCase().equalsIgnoreCase("ImQ009")/* || localPlayerRef.getCommandSenderName().toLowerCase().contains("player")*/){
+				//Populates player cache
+				PlayerCache.appendParamChanges(localPlayersName, localPlayersUUID.toString());
 
 
+				/*if (localPlayerRef.getCommandSenderName().toLowerCase().equalsIgnoreCase("ImQ009") || localPlayerRef.getCommandSenderName().toLowerCase().contains("player")){
 					Utils.LOG_INFO("Spawning a new Santa Thread.");
-
 					Thread t = new Thread() {
 						UUID threadHandlerIDthing = localPlayersUUID;
 						@Override
@@ -72,7 +68,7 @@ public class LoginEventHandler {
 					//t.start();		
 
 
-				}
+				}*/
 
 
 			}			
