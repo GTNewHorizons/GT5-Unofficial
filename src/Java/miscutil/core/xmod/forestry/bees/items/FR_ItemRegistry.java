@@ -9,6 +9,7 @@
  * SirSengir (original work), CovertJaguar, Player, Binnie, MysteriousAges
  ******************************************************************************/
 package miscutil.core.xmod.forestry.bees.items;
+import miscutil.core.lib.CORE;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.xmod.forestry.bees.alveary.FR_BlockAlveary;
 import net.minecraft.block.Block;
@@ -29,20 +30,20 @@ public class FR_ItemRegistry {
 	//public static FR_ItemHiveFrame frameUntreated;
 	//public static FR_ItemHiveFrame frameImpregnated;
 	//public static FR_ItemHiveFrame frameProven;
-	
+
 	//Magic Bee Frame Items
 	public static MB_ItemFrame hiveFrameAccelerated;
 	public static MB_ItemFrame hiveFrameVoid;
 	public static MB_ItemFrame hiveFrameMutagenic;
 	public static MB_ItemFrame haveFrameBusy;
-	
+
 	//Extra Bee Frame Items
 	public static MB_ItemFrame hiveFrameCocoa;
 	public static MB_ItemFrame hiveFrameCaged;
 	public static MB_ItemFrame hiveFrameSoul;
 	public static MB_ItemFrame hiveFrameClay;
 	public static MB_ItemFrame hiveFrameNova;
-	
+
 	//Alveary Stuff
 	public static FR_BlockAlveary alveary;
 
@@ -62,16 +63,17 @@ public class FR_ItemRegistry {
 		ChestGenHooks.addItem(ChestGenHooks.STRONGHOLD_LIBRARY, new WeightedRandomChestContent(new ItemStack(hiveFrameVoid), 1, 3, 23));
 		ChestGenHooks.addItem(ChestGenHooks.PYRAMID_DESERT_CHEST, new WeightedRandomChestContent(new ItemStack(hiveFrameMutagenic), 1, 1, 18));
 		ChestGenHooks.addItem(ChestGenHooks.PYRAMID_JUNGLE_CHEST, new WeightedRandomChestContent(new ItemStack(hiveFrameMutagenic), 1, 3, 23));
-		
+
 		//Extra Bee like Frames
 		if (!LoadedMods.ExtraBees){
-		hiveFrameCocoa = new MB_ItemFrame(MB_FrameType.COCOA, EnumRarity.common, "");
-		hiveFrameCaged = new MB_ItemFrame(MB_FrameType.CAGE, EnumRarity.common, "");
-		hiveFrameSoul = new MB_ItemFrame(MB_FrameType.SOUL, EnumRarity.common, "");
-		hiveFrameClay = new MB_ItemFrame(MB_FrameType.CLAY, EnumRarity.common, "");
-		hiveFrameNova = new MB_ItemFrame(MB_FrameType.NOVA, EnumRarity.epic, "A Creative Only Frame.");
-		
-		alveary = registerBlock(new FR_BlockAlveary(), ItemBlockForestry.class, "alveary");
+			hiveFrameCocoa = new MB_ItemFrame(MB_FrameType.COCOA, EnumRarity.common, "");
+			hiveFrameCaged = new MB_ItemFrame(MB_FrameType.CAGE, EnumRarity.common, "");
+			hiveFrameSoul = new MB_ItemFrame(MB_FrameType.SOUL, EnumRarity.common, "");
+			hiveFrameClay = new MB_ItemFrame(MB_FrameType.CLAY, EnumRarity.common, "");
+			hiveFrameNova = new MB_ItemFrame(MB_FrameType.NOVA, EnumRarity.epic, "A Creative Only Frame.");
+			if (CORE.configSwitches.enableCustomAlvearyBlocks){
+				alveary = registerBlock(new FR_BlockAlveary(), ItemBlockForestry.class, "alveary");
+			}
 		}
 
 
@@ -84,12 +86,12 @@ public class FR_ItemRegistry {
 		GameRegistry.registerItem(item, StringUtil.cleanItemName(item));
 		return item;
 	}
-	
+
 	protected static <T extends Block> T registerBlock(T block, Class<? extends ItemBlock> itemClass, String name, Object... itemCtorArgs) {
 		block.setBlockName("for." + name);
 		GameRegistry.registerBlock(block, itemClass, StringUtil.cleanBlockName(block), itemCtorArgs);
 		return block;
-		}
+	}
 }
 
 

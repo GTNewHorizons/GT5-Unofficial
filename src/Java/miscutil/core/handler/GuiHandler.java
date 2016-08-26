@@ -6,6 +6,7 @@ import miscutil.core.gui.beta.Gui_ID_Registry;
 import miscutil.core.gui.beta.MU_GuiId;
 import miscutil.core.gui.machine.GUI_Charger;
 import miscutil.core.interfaces.IGuiManager;
+import miscutil.core.lib.CORE;
 import miscutil.core.tileentities.machines.TileEntityCharger;
 import miscutil.core.util.Utils;
 import miscutil.core.xmod.forestry.bees.alveary.TileAlvearyFrameHousing;
@@ -22,16 +23,16 @@ public class GuiHandler implements IGuiHandler {
 
 	private static final int GUI1 = 0;      //Nuclear Helium Gen.
 	private static final int GUI2 = 1;      //Energy Charger
-	
-	
+
+
 	public static void init(){ 	
-		 	
-		 Utils.LOG_INFO("Registering GUIs."); 	
-		 NetworkRegistry.INSTANCE.registerGuiHandler(MiscUtils.instance, new GuiHandler()); 	
-		 //Register GuiHandler 	
-		 //NetworkRegistry.INSTANCE.registerGuiHandler(MiscUtils.instance, new GuiHandler()); 	
-		 }
-	
+
+		Utils.LOG_INFO("Registering GUIs."); 	
+		NetworkRegistry.INSTANCE.registerGuiHandler(MiscUtils.instance, new GuiHandler()); 	
+		//Register GuiHandler 	
+		//NetworkRegistry.INSTANCE.registerGuiHandler(MiscUtils.instance, new GuiHandler()); 	
+	}
+
 
 	@Override //ContainerModTileEntity
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
@@ -39,7 +40,9 @@ public class GuiHandler implements IGuiHandler {
 
 		if (te != null){
 			if (ID == GUI1){
-				return new CONTAINER_FrameHousing((TileAlvearyFrameHousing)te, player);
+				if (CORE.configSwitches.enableCustomAlvearyBlocks){
+					return new CONTAINER_FrameHousing((TileAlvearyFrameHousing)te, player);
+				}
 			}
 			else if (ID == GUI2){
 				return new Container_Charger((TileEntityCharger)te, player);
@@ -57,8 +60,10 @@ public class GuiHandler implements IGuiHandler {
 		TileEntity te = world.getTileEntity(x, y, z);
 		if (te != null){
 			if (ID == GUI1){
-				Utils.LOG_WARNING("Opening Gui with Id: "+ID+" NHG");
-				return new GUI_FrameHousing((TileAlvearyFrameHousing) te, player);
+				if (CORE.configSwitches.enableCustomAlvearyBlocks){
+					Utils.LOG_WARNING("Opening Gui with Id: "+ID+" Alveary Frame Housing");
+					return new GUI_FrameHousing((TileAlvearyFrameHousing) te, player);
+				}
 			}
 			else  if (ID == GUI2){
 				Utils.LOG_WARNING("Opening Gui with Id: "+ID+" Charger");
@@ -67,9 +72,9 @@ public class GuiHandler implements IGuiHandler {
 		}
 		return null;
 	}
-	
-	
-	
+
+
+
 	//New Methods
 	public static void openGui(EntityPlayer entityplayer, IGuiManager guiHandler)
 	{
@@ -94,10 +99,10 @@ public class GuiHandler implements IGuiHandler {
 		int guiId = guiData & 0xFF;
 		return Gui_ID_Registry.getGuiId(guiId);
 	}
-	
+
 	private static short decodeGuiData(int guiId)
-	  {
-	    return (short)(guiId >> 16);
-	  }
+	{
+		return (short)(guiId >> 16);
+	}
 
 }

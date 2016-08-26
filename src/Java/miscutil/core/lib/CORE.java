@@ -84,6 +84,9 @@ public class CORE {
 		public static boolean disableIC2Recipes = false;	
 		public static boolean enableAlternativeDivisionSigilRecipe = false;
 		
+		//Feature Related
+		public static boolean enableCustomAlvearyBlocks = false;
+		
 	}
 	
 }

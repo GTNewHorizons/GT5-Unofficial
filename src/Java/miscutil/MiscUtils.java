@@ -6,6 +6,7 @@ import static miscutil.core.lib.CORE.configSwitches.disableIC2Recipes;
 import static miscutil.core.lib.CORE.configSwitches.disableStaballoyBlastFurnaceRecipe;
 import static miscutil.core.lib.CORE.configSwitches.enableAlternativeBatteryAlloy;
 import static miscutil.core.lib.CORE.configSwitches.enableAlternativeDivisionSigilRecipe;
+import static miscutil.core.lib.CORE.configSwitches.enableCustomAlvearyBlocks;
 import static miscutil.core.lib.CORE.configSwitches.enableSolarGenerators;
 import static miscutil.core.lib.CORE.configSwitches.enableThaumcraftShardUnification;
 import gregtech.api.util.GT_Config;
@@ -68,6 +69,8 @@ implements ActionListener
 		//Options
 		RF2EU_Battery.rfPerEU = config.getInt("rfUsedPerEUForUniversalBatteries", "configurables", 4, 1, 1000, "How much RF is a single unit of EU worth? (Most mods use 4:1 ratio)");
 		
+		//Features
+		enableCustomAlvearyBlocks = config.getBoolean("enableCustomAlvearyBlocks", "features", false, "Enables Custom Alveary Blocks.");
 		
 		config.save(); 
 	}

@@ -1,5 +1,6 @@
 package miscutil.core.xmod.forestry;
 
+import miscutil.core.lib.CORE;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.xmod.forestry.bees.alveary.TileAlvearyFrameHousing;
 import miscutil.core.xmod.forestry.bees.items.FR_ItemRegistry;
@@ -11,8 +12,9 @@ public class HANDLER_FR {
 	public static void preInit(){		
 		if (LoadedMods.Forestry){
 			FR_ItemRegistry.Register();
-
-			GameRegistry.registerTileEntity(TileAlvearyFrameHousing.class, "FrameHousing");
+			if (CORE.configSwitches.enableCustomAlvearyBlocks){
+				GameRegistry.registerTileEntity(TileAlvearyFrameHousing.class, "FrameHousing");
+			}
 			//FR_BlockRegistryApiculture.RegistryApiculture();
 		}		
 	}
