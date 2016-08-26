@@ -3,6 +3,7 @@ package miscutil.xmod.ic2.block.RTGGenerator;
 import ic2.core.ContainerBase;
 import ic2.core.block.generator.tileentity.TileEntityBaseGenerator;
 import ic2.core.block.invslot.InvSlot;
+import miscutil.core.util.Utils;
 import miscutil.xmod.ic2.block.RTGGenerator.gui.CONTAINER_RadioThermalGenerator;
 import miscutil.xmod.ic2.block.RTGGenerator.gui.GUI_RadioThermalGenerator;
 import net.minecraft.client.gui.GuiScreen;
@@ -38,6 +39,8 @@ extends TileEntityBaseGenerator
 		if (counter == 0) {
 			return false;
 		}
+		double tempInt = (this.storage += (int)(Math.pow(2.0D, counter - 1) * efficiency));
+		Utils.LOG_INFO("int of some sort: "+tempInt);
 		this.storage += (int)(Math.pow(2.0D, counter - 1) * efficiency);
 		return true;
 	}

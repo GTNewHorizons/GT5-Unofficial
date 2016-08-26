@@ -4,8 +4,6 @@ import ic2.core.IC2;
 import ic2.core.Ic2Items;
 import ic2.core.block.BlockMultiID;
 import ic2.core.block.TileEntityBlock;
-import ic2.core.block.generator.tileentity.TileEntityKineticGenerator;
-import ic2.core.block.generator.tileentity.TileEntityRTGenerator;
 import ic2.core.block.reactor.tileentity.TileEntityNuclearReactorElectric;
 import ic2.core.init.InternalName;
 
@@ -43,8 +41,8 @@ extends BlockMultiID
 		IC2_Items.blockRTG = new ItemStack(this, 1, 0);
 		IC2_Items.blockKineticGenerator = new ItemStack(this, 1, 1);
 
-		GameRegistry.registerTileEntity(TileEntityRTG.class, "Radioisotope Thermoelectric Generator Mach II");
-		GameRegistry.registerTileEntity(TileEntityKineticWindGenerator.class, "Kinetic Wind Generator Mach II");
+		GameRegistry.registerTileEntity(TileEntityRTG.class, "RTG Mach II");
+		GameRegistry.registerTileEntity(TileEntityKineticWindGenerator.class, "Wind Ripper Mach II");
 	}
 
 	@Override
@@ -90,9 +88,9 @@ extends BlockMultiID
 			switch (meta)
 			{      
 			case 0: 
-				return TileEntityRTGenerator.class;    
+				return TileEntityRTG.class;    
 			case 1: 
-				return TileEntityKineticGenerator.class;
+				return TileEntityKineticWindGenerator.class;
 			}
 		}
 		catch (Exception e)
