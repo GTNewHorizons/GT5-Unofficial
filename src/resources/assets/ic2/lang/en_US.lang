@@ -6,3 +6,12 @@ ic2.itemIridiumRotor=Kinetic Gearbox Rotor (Iridium)
 ic2.itemMagnaliumRotor=Kinetic Gearbox Rotor (Magnalium)
 ic2.itemUltimetRotor=Kinetic Gearbox Rotor (Ultimet)
 
+ic2.blockGenerator=RTG POWARZ
+ic2.blockGenerator.0=RTG POWA
+ic2.blockGenerator.1=KINETIC POWA
+ic2.blockGenerator.2=ERROR POWA
+ic2.blockGenerator.3=MOAR ERROR POWA
+
+ic2.blockRTGenerator2=RTG POWARZ 2
+ic2.blockKineticGenerator2=KINETIC POWA 2
+
