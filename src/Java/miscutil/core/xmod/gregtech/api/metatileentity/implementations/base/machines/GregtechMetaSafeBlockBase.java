@@ -192,15 +192,19 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 		}
 		if (!aPlayer.equals(null)) {
 			UUID tempUUID = aPlayer.getUniqueID();
-			PlayerCache.appendParamChanges(aPlayer.getDisplayName(), aPlayer.getUniqueID().toString());
-			if (ownerUUID.equals("")){
-				Utils.LOG_WARNING("No owner yet for this block.");
+			/*if (!aPlayer.worldObj.isRemote){
+			//PlayerCache.appendParamChanges(aPlayer.getDisplayName(), aPlayer.getUniqueID().toString());
+			}*/
+			//Utils.LOG_INFO("test");
+			if (ownerUUID == null){
+				Utils.LOG_INFO("No owner yet for this block.");
 			}
 			else {
-				Utils.LOG_WARNING("Current Owner: "+PlayerCache.lookupPlayerByUUID(ownerUUID)+" - UUID: "+ownerUUID);
+				//Utils.LOG_INFO("test");
+				Utils.LOG_INFO("Current Owner: "+PlayerCache.lookupPlayerByUUID(ownerUUID)+" - UUID: "+ownerUUID);
 			}
 			Utils.LOG_WARNING("Is ownerUUID Null");
-			if (ownerUUID.equals("")){
+			if (ownerUUID == null){
 				Utils.LOG_WARNING("OwnerUUID is Null, let's set it.");
 				Utils.LOG_WARNING("Accessing Players UUID is: "+tempUUID);
 				ownerUUID = tempUUID;
@@ -209,7 +213,7 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 			}
 			Utils.LOG_WARNING("No, it is not.");
 			Utils.LOG_WARNING("Checking ownerUUID.");
-			if (!ownerUUID.equals(null)){
+			if (ownerUUID != null){
 				Utils.LOG_WARNING("ownerUUID != Null, if accessor == owner.");
 				Utils.LOG_WARNING("Accessing is: "+PlayerCache.lookupPlayerByUUID(tempUUID));
 				if (ownerUUID.equals(tempUUID)){

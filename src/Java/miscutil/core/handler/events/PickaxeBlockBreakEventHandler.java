@@ -33,12 +33,15 @@ public class PickaxeBlockBreakEventHandler {
 					if (X instanceof GregtechMetaSafeBlockBase){
 
 						UUID ownerUUID = ((GregtechMetaSafeBlockBase)X).ownerUUID;
-						String accessorUUID = playerInternal.getUniqueID().toString();
+						UUID accessorUUID = playerInternal.getUniqueID();
 						Utils.LOG_WARNING("Owner UUID: "+ownerUUID);
 						Utils.LOG_WARNING("Accessor UUID: "+accessorUUID);					
 
 						if (((GregtechMetaSafeBlockBase)X).bUnbreakable){
-							if (accessorUUID.equals(ownerUUID)){							
+							
+							Utils.LOG_INFO("UUID info. Accessor: "+accessorUUID + " | Owner: "+ownerUUID);
+							
+							if (accessorUUID == ownerUUID){							
 								Utils.messagePlayer(playerInternal, "Since you own this block, it has been destroyed.");
 								event.setCanceled(false);
 							}

@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +18,8 @@ import java.util.UUID;
 
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.World;
 
 public class PlayerCache {
 
@@ -46,7 +49,7 @@ public class PlayerCache {
 			props.setProperty(playerName+" ", playerUUIDasString);
 			OutputStream out = new FileOutputStream(cache);
 			props.store(out, "Player Cache.");
-			Utils.LOG_INFO("Created an empty PlayerCache.dat for future use.");
+			Utils.LOG_INFO("PlayerCache.dat created for future use.");
 		}
 		catch (Exception e ) {
 			e.printStackTrace();
@@ -54,12 +57,14 @@ public class PlayerCache {
 	}
 
 	public static void appendParamChanges(String playerName, String playerUUIDasString) {
-		Properties properties = new Properties();
-		try {
+		HashMap<String, UUID> playerInfo = new HashMap<String, UUID>();
+		playerInfo.put(playerName, UUID.fromString(playerUUIDasString));
+		
+		/*try {
 			Utils.LOG_INFO("Attempting to load "+cache.getName());
 			properties.load(new FileInputStream(cache));
 			if (properties == null || properties.equals(null)){
-				Utils.LOG_WARNING("Null properties");
+				Utils.LOG_INFO("Please wait.");
 			}
 			else {
 				Utils.LOG_INFO("Loaded PlayerCache.dat");
@@ -69,7 +74,19 @@ public class PlayerCache {
 				fr.close();
 			}
 
-		} catch (IOException e) {
+		} */
+		
+		try
+        {
+               FileOutputStream fos = new FileOutputStream("PlayerCache.dat");
+               ObjectOutputStream oos = new ObjectOutputStream(fos);
+               oos.writeObject(playerInfo);
+               oos.close();
+               fos.close();
+               Utils.LOG_INFO("Serialized Player data saved in PlayerCache.dat");
+        }
+		
+		catch (IOException e) {
 			Utils.LOG_INFO("No PlayerCache file found, creating one.");
 			createPropertiesFile(playerName, playerUUIDasString);
 		}			
@@ -92,7 +109,7 @@ public class PlayerCache {
 	public static Map<String, String> readPropertiesFileAsMapOld() throws Exception {
 		String delimiter = "=";
 		@SuppressWarnings({ "rawtypes", "unchecked" })
-		Map<String, String> map = new HashMap();
+		Map<String, String> map = new HashMap<String, String>();
 		BufferedReader reader = new BufferedReader(new FileReader(cache));
 		String line;
 		while ((line = reader.readLine()) != null)
@@ -117,7 +134,7 @@ public class PlayerCache {
 	      {
 	         FileInputStream fis = new FileInputStream(cache);
 	         ObjectInputStream ois = new ObjectInputStream(fis);
-	         map = (HashMap) ois.readObject();
+	         map = (HashMap<String, UUID>) ois.readObject();
 	         ois.close();
 	         fis.close();
 	      }catch(IOException ioe)
@@ -126,33 +143,47 @@ public class PlayerCache {
 	         return null;
 	      }catch(ClassNotFoundException c)
 	      {
-	         System.out.println("Class not found");
+	    	  Utils.LOG_INFO("Class not found");
 	         c.printStackTrace();
 	         return null;
 	      }
-	      System.out.println("Deserialized HashMap..");
+	      Utils.LOG_WARNING("Deserialized PlayerCache..");
 	     return map;
 	}
 
 	public static String lookupPlayerByUUID(UUID UUID){
+		
 		try {
-			Map<String, UUID> map = null;
-			try {
-				map = readPropertiesFileAsMap();
-			} catch (Exception e) {
-				Utils.LOG_ERROR("With "+e.getCause()+" as cause, Caught Exception: "+e.toString());
-				//e.printStackTrace();
-			}
-			for (Entry<String, UUID> entry : map.entrySet()) {
-				if (Objects.equals(UUID, entry.getValue())) {
-					return entry.getKey();
-				}
-			}
-			return null;
-		} catch (NullPointerException e) {
-			Utils.LOG_ERROR("With "+e.getCause()+" as cause, Caught Exception: "+e.toString());
-			//e.printStackTrace();
-		}
+			World worldw = Minecraft.getMinecraft().thePlayer.worldObj;
+			//if (!worldw.isRemote){
+				
+				
+				try {
+					Map<String, UUID> map = null;
+					try {
+						map = readPropertiesFileAsMap();
+					} catch (Exception e) {
+						Utils.LOG_INFO("With "+e.getCause()+" as cause, Caught Exception: "+e.toString());
+						//e.printStackTrace();
+					}
+					for (Entry<String, UUID> entry : map.entrySet()) {
+						if (Objects.equals(UUID, entry.getValue())) {
+							return entry.getKey();
+						}
+					}
+					return null;
+				} catch (NullPointerException e) {
+					Utils.LOG_INFO("With "+e.getCause()+" as cause, Caught Exception: "+e.toString());
+					//e.printStackTrace();
+				}			
+			
+			
+			//}
+				
+				
+		} catch (Throwable r){
+			Utils.LOG_INFO("With "+r.getCause()+" as cause, Caught Exception: "+r.toString());			
+		}		
 		return null;
 	}
 }

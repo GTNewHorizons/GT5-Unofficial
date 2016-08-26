@@ -4,7 +4,6 @@ import gregtech.api.util.GT_Config;
 import miscutil.core.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import miscutil.core.xmod.gregtech.common.blocks.fluid.GregtechFluidHandler;
 import miscutil.core.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
-import miscutil.core.xmod.gregtech.loaders.Processing_HotIngots;
 
 public class HANDLER_GT {
 	
@@ -20,7 +19,7 @@ public class HANDLER_GT {
 			//new Processing_Plate1();
 			//new Processing_Block();
 		}
-		new Processing_HotIngots();
+		//new Processing_HotIngots();
 	}
 	
 	public static void init(){

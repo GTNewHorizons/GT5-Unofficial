@@ -28,7 +28,9 @@ public class LoginEventHandler {
 			if (localPlayerRef instanceof EntityPlayerMP && localPlayerRef != null){
 
 				//Populates player cache
+				if (!localPlayerRef.worldObj.isRemote){
 				PlayerCache.appendParamChanges(localPlayersName, localPlayersUUID.toString());
+				}
 
 
 				/*if (localPlayerRef.getCommandSenderName().toLowerCase().equalsIgnoreCase("ImQ009") || localPlayerRef.getCommandSenderName().toLowerCase().contains("player")){
