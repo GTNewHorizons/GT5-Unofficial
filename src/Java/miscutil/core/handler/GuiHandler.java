@@ -1,17 +1,17 @@
 package miscutil.core.handler;
 
 import miscutil.MiscUtils;
-import miscutil.core.container.Container_Charger;
 import miscutil.core.gui.beta.Gui_ID_Registry;
 import miscutil.core.gui.beta.MU_GuiId;
-import miscutil.core.gui.machine.GUI_Charger;
 import miscutil.core.interfaces.IGuiManager;
 import miscutil.core.lib.CORE;
-import miscutil.core.tileentities.machines.TileEntityCharger;
 import miscutil.core.util.Utils;
-import miscutil.core.xmod.forestry.bees.alveary.TileAlvearyFrameHousing;
-import miscutil.core.xmod.forestry.bees.alveary.gui.CONTAINER_FrameHousing;
-import miscutil.core.xmod.forestry.bees.alveary.gui.GUI_FrameHousing;
+import miscutil.xmod.forestry.bees.alveary.TileAlvearyFrameHousing;
+import miscutil.xmod.forestry.bees.alveary.gui.CONTAINER_FrameHousing;
+import miscutil.xmod.forestry.bees.alveary.gui.GUI_FrameHousing;
+import miscutil.xmod.ic2.block.RTGGenerator.TileEntityRTG;
+import miscutil.xmod.ic2.block.RTGGenerator.gui.CONTAINER_RadioThermalGenerator;
+import miscutil.xmod.ic2.block.RTGGenerator.gui.GUI_RadioThermalGenerator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
@@ -21,8 +21,8 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 
 public class GuiHandler implements IGuiHandler {
 
-	private static final int GUI1 = 0;      //Nuclear Helium Gen.
-	private static final int GUI2 = 1;      //Energy Charger
+	private static final int GUI1 = 0;      //Frame Alveary
+	private static final int GUI2 = 1;      //RTG
 
 
 	public static void init(){ 	
@@ -45,7 +45,7 @@ public class GuiHandler implements IGuiHandler {
 				}
 			}
 			else if (ID == GUI2){
-				return new Container_Charger((TileEntityCharger)te, player);
+				return new CONTAINER_RadioThermalGenerator((TileEntityRTG)te, player);
 			}
 
 
@@ -66,8 +66,8 @@ public class GuiHandler implements IGuiHandler {
 				}
 			}
 			else  if (ID == GUI2){
-				Utils.LOG_WARNING("Opening Gui with Id: "+ID+" Charger");
-				return new GUI_Charger((TileEntityCharger) te, player);
+				Utils.LOG_WARNING("Opening Gui with Id: "+ID+" RTG");
+				return new GUI_RadioThermalGenerator((TileEntityRTG) te, player);
 			}
 		}
 		return null;

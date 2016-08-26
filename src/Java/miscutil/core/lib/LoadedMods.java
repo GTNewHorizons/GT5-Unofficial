@@ -2,8 +2,8 @@ package miscutil.core.lib;
 
 import miscutil.core.lib.CORE.configSwitches;
 import miscutil.core.util.Utils;
-import miscutil.core.xmod.gregtech.api.enums.GregtechTextures;
-import miscutil.core.xmod.gregtech.recipes.GregtechRecipeAdder;
+import miscutil.xmod.gregtech.api.enums.GregtechTextures;
+import miscutil.xmod.gregtech.recipes.GregtechRecipeAdder;
 import cpw.mods.fml.common.Loader;
 
 public class LoadedMods {

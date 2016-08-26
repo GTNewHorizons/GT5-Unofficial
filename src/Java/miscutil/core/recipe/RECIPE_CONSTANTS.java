@@ -2,7 +2,7 @@ package miscutil.core.recipe;
 
 import miscutil.core.lib.CORE;
 import miscutil.core.util.item.UtilsItems;
-import miscutil.core.xmod.gregtech.api.enums.GregtechItemList;
+import miscutil.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.item.ItemStack;
 
 public class RECIPE_CONSTANTS {

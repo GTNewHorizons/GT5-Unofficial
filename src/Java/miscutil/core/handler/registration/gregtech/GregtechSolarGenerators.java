@@ -3,8 +3,8 @@ package miscutil.core.handler.registration.gregtech;
 import miscutil.core.lib.CORE.configSwitches;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.Utils;
-import miscutil.core.xmod.gregtech.api.enums.GregtechItemList;
-import miscutil.core.xmod.gregtech.common.tileentities.generators.GregtechMetaTileEntitySolarGenerator;
+import miscutil.xmod.gregtech.api.enums.GregtechItemList;
+import miscutil.xmod.gregtech.common.tileentities.generators.GregtechMetaTileEntitySolarGenerator;
 
 public class GregtechSolarGenerators
 {

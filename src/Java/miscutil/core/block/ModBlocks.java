@@ -5,7 +5,7 @@ import miscutil.core.block.general.LightGlass;
 import miscutil.core.block.general.fluids.FluidRegistryHandler;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
-import miscutil.core.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks;
+import miscutil.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.Fluid;

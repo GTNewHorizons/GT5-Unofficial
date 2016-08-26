@@ -21,7 +21,7 @@ import miscutil.core.handler.events.LoginEventHandler;
 import miscutil.core.item.general.RF2EU_Battery;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
-import miscutil.core.xmod.gregtech.HANDLER_GT;
+import miscutil.xmod.gregtech.HANDLER_GT;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;

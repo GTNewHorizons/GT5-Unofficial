@@ -1,8 +1,8 @@
 package miscutil.core.handler.registration.gregtech;
 
 import miscutil.core.util.Utils;
-import miscutil.core.xmod.gregtech.api.enums.GregtechItemList;
-import miscutil.core.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntityIndustrialMacerator;
+import miscutil.xmod.gregtech.api.enums.GregtechItemList;
+import miscutil.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntityIndustrialMacerator;
 
 public class GregtechIndustrialMacerator
 {

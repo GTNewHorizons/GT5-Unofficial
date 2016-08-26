@@ -6,8 +6,8 @@ import gregtech.api.enums.OreDictNames;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import miscutil.core.util.Utils;
-import miscutil.core.xmod.gregtech.api.enums.GregtechItemList;
-import miscutil.core.xmod.gregtech.api.metatileentity.implementations.GregtechMetaSafeBlock;
+import miscutil.xmod.gregtech.api.enums.GregtechItemList;
+import miscutil.xmod.gregtech.api.metatileentity.implementations.GregtechMetaSafeBlock;
 
 public class GregtechSafeBlock
 {

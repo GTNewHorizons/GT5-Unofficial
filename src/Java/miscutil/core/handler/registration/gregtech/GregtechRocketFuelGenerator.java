@@ -2,8 +2,8 @@ package miscutil.core.handler.registration.gregtech;
 
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.Utils;
-import miscutil.core.xmod.gregtech.api.enums.GregtechItemList;
-import miscutil.core.xmod.gregtech.common.tileentities.generators.GregtechMetaTileEntityRocketFuelGenerator;
+import miscutil.xmod.gregtech.api.enums.GregtechItemList;
+import miscutil.xmod.gregtech.common.tileentities.generators.GregtechMetaTileEntityRocketFuelGenerator;
 
 public class GregtechRocketFuelGenerator {
 	

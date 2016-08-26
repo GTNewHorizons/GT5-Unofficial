@@ -166,6 +166,7 @@ public final class ModItems {
 	
 	public static Item RfEuBattery;
 	public static Item itemPersonalCloakingDevice;
+	public static Item itemPersonalCloakingDeviceCharged;
 	public static Item itemPersonalHealingDevice;
 
 
@@ -350,7 +351,8 @@ public final class ModItems {
 			FuelRod_Uranium = new FuelRod_Base("itemFuelRod_Uranium", "Uranium", 2500, 2500);
 			FuelRod_Plutonium = new FuelRod_Base("itemFuelRod_Plutonium", "Plutonium", 5000, 5000);
 			RfEuBattery = new RF2EU_Battery();
-			itemPersonalCloakingDevice = new ItemCloakingDevice();
+			itemPersonalCloakingDevice = new ItemCloakingDevice(0);
+			//itemPersonalCloakingDeviceCharged = new ItemCloakingDevice(0).set;
 			itemPersonalHealingDevice = new ItemHealingDevice();
 			//Registry
 			//GameRegistry.registerItem(FuelRod_Empty, "itemFuelRod_Empty");

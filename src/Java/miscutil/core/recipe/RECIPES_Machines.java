@@ -6,9 +6,9 @@ import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.Utils;
 import miscutil.core.util.item.UtilsItems;
 import miscutil.core.util.recipe.UtilsRecipe;
-import miscutil.core.xmod.gregtech.api.enums.GregtechItemList;
-import miscutil.core.xmod.gregtech.api.enums.GregtechOrePrefixes;
-import miscutil.core.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
+import miscutil.xmod.gregtech.api.enums.GregtechItemList;
+import miscutil.xmod.gregtech.api.enums.GregtechOrePrefixes;
+import miscutil.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import net.minecraft.item.ItemStack;
 
 public class RECIPES_Machines {

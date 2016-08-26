@@ -7,10 +7,10 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.Utils;
-import miscutil.core.xmod.gregtech.api.enums.GregtechOrePrefixes;
-import miscutil.core.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
-import miscutil.core.xmod.gregtech.api.metatileentity.implementations.GregtechMetaPipeEntity_Cable;
-import miscutil.core.xmod.gregtech.api.metatileentity.implementations.GregtechMetaPipeEntity_SuperConductor;
+import miscutil.xmod.gregtech.api.enums.GregtechOrePrefixes;
+import miscutil.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
+import miscutil.xmod.gregtech.api.metatileentity.implementations.GregtechMetaPipeEntity_Cable;
+import miscutil.xmod.gregtech.api.metatileentity.implementations.GregtechMetaPipeEntity_SuperConductor;
 import net.minecraft.item.ItemStack;
 
 public class GregtechConduits {

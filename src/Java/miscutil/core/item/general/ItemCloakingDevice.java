@@ -27,16 +27,21 @@ public class ItemCloakingDevice extends Item implements IElectricItem, IElectric
 
 	private final String unlocalizedName = "personalCloakingDevice";
 	private final ItemStack thisStack;
-	private final static int maxValueEU = 8196*20*5*60;
+	private final static int maxValueEU = 10000*20*500;
 	protected double chargeEU = 0;
 
-	public ItemCloakingDevice(){
+	public ItemCloakingDevice(double charge){
+		this.chargeEU = charge;
 		this.setCreativeTab(AddToCreativeTab.tabMachines);
 		this.setUnlocalizedName(unlocalizedName);
 		this.setMaxStackSize(1);
 		this.setTextureName(CORE.MODID + ":" + "personalCloakingDevice");
 		this.thisStack = UtilsItems.getSimpleStack(this);
-		GameRegistry.registerItem(this, unlocalizedName);
+		this.charge(thisStack, charge, 3, true, false);
+		if (charge == 10000*20*500){
+			this.setDamage(thisStack, 13);	
+		}
+		GameRegistry.registerItem(this, unlocalizedName+"-"+charge);
 	}
 
 	@Override
@@ -119,7 +124,7 @@ public class ItemCloakingDevice extends Item implements IElectricItem, IElectric
 	
 	public int secondsLeft(ItemStack stack){
 		double r = 0;
-		r = getCharge(stack)/(8196*20);
+		r = getCharge(stack)/(10000*20);
 		return (int) MathUtils.decimalRounding(r);
 	}
 
@@ -127,10 +132,10 @@ public class ItemCloakingDevice extends Item implements IElectricItem, IElectric
 	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {				
 		list.add("");				
 		list.add(EnumChatFormatting.GREEN+"Worn as a Belt within Baubles."+EnumChatFormatting.GRAY);	
-		list.add(EnumChatFormatting.GREEN+"Drains 8196Eu/t to provide invisibility."+EnumChatFormatting.GRAY);			
+		list.add(EnumChatFormatting.GREEN+"Drains 10,000Eu/t to provide invisibility."+EnumChatFormatting.GRAY);			
 		list.add("");			
 		list.add(EnumChatFormatting.GOLD+"IC2/EU Information"+EnumChatFormatting.GRAY);	
-		list.add(EnumChatFormatting.GRAY+"Tier: ["+EnumChatFormatting.YELLOW+getTier(thisStack)+EnumChatFormatting.GRAY+"] Transfer Limit: ["+EnumChatFormatting.YELLOW+getTransferLimit(thisStack)+EnumChatFormatting.GRAY +"Eu/t]");
+		list.add(EnumChatFormatting.GRAY+"Tier: ["+EnumChatFormatting.YELLOW+getTier(thisStack)+EnumChatFormatting.GRAY+"] Input Limit: ["+EnumChatFormatting.YELLOW+getTransferLimit(thisStack)+EnumChatFormatting.GRAY +"Eu/t]");
 		list.add(EnumChatFormatting.GRAY+"Current Power: ["+EnumChatFormatting.YELLOW+(long) getCharge(stack)+EnumChatFormatting.GRAY+"Eu] ["+EnumChatFormatting.YELLOW+MathUtils.findPercentage(getCharge(stack), getMaxCharge(stack))+EnumChatFormatting.GRAY +"%]");
 		list.add(EnumChatFormatting.GRAY+"Time Remaining: ["+EnumChatFormatting.YELLOW+secondsLeft(stack)+ EnumChatFormatting.GRAY +" seconds]");
 		super.addInformation(stack, aPlayer, list, bool);
@@ -236,9 +241,9 @@ public class ItemCloakingDevice extends Item implements IElectricItem, IElectric
 	public void onWornTick(ItemStack arg0, EntityLivingBase arg1) {
 		//Utils.LOG_INFO("Trying to Tick Belt. 1");
 		if (!arg1.worldObj.isRemote){
-			if (getCharge(arg0) >= 2048){
+			if (getCharge(arg0) >= 10000){
 				arg1.addPotionEffect(new PotionEffect(Potion.invisibility.id, 10, 2));
-				discharge(arg0, 2048, 5, true, true, false);
+				discharge(arg0, 10000, 5, true, true, false);
 			}
 			else {
 				if (arg1.isPotionActive((Potion.invisibility))){

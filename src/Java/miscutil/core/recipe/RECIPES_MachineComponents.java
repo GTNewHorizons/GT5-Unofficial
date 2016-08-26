@@ -9,7 +9,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
 import miscutil.core.util.recipe.UtilsRecipe;
-import miscutil.core.xmod.gregtech.api.enums.GregtechItemList;
+import miscutil.xmod.gregtech.api.enums.GregtechItemList;
 
 public class RECIPES_MachineComponents {
 	

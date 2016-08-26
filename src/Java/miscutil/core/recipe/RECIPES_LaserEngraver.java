@@ -7,7 +7,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
-import miscutil.core.xmod.gregtech.api.enums.GregtechItemList;
+import miscutil.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.item.ItemStack;
 
 public class RECIPES_LaserEngraver implements IOreRecipeRegistrator {

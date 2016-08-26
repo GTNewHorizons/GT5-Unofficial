@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import miscutil.core.creative.AddToCreativeTab;
-import miscutil.core.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
-import miscutil.core.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
-import miscutil.core.xmod.gregtech.common.Meta_GT_Proxy;
+import miscutil.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
+import miscutil.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
+import miscutil.xmod.gregtech.common.Meta_GT_Proxy;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.config.Configuration;
@@ -18,8 +18,8 @@ public class CORE {
 
 	public static final String name = "GT++";	
 	public static final String MODID = "miscutils";
-	public static final String VERSION = "1.4.3.9-release";
-	public static boolean DEBUG = true;	
+	public static final String VERSION = "1.4.3.11-release";
+	public static boolean DEBUG = false;	
 	public static final boolean LOAD_ALL_CONTENT = false;
 	public static final int GREG_FIRST_ID = 760;
 	public static Map PlayerCache;

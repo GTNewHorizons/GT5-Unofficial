@@ -8,7 +8,7 @@ import gregtech.api.metatileentity.BaseTileEntity;
 import java.util.UUID;
 
 import miscutil.core.util.Utils;
-import miscutil.core.xmod.gregtech.api.metatileentity.implementations.base.machines.GregtechMetaSafeBlockBase;
+import miscutil.xmod.gregtech.api.metatileentity.implementations.base.machines.GregtechMetaSafeBlockBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
