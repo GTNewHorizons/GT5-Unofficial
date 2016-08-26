@@ -1,6 +1,7 @@
 package miscutil.core.recipe;
 
 import miscutil.core.item.ModItems;
+import miscutil.core.util.item.UtilsItems;
 import miscutil.core.util.recipe.UtilsRecipe;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -117,6 +118,10 @@ public class RECIPES_Tools {
 	public static ItemStack sandHammer = new ItemStack (ModItems.itemSandstoneHammer, 1, OreDictionary.WILDCARD_VALUE);
 	public static String craftingToolSandHammer = "craftingToolSandHammer";
 	
+	public static ItemStack personalCloakingDevice = UtilsItems.getSimpleStack(ModItems.itemPersonalCloakingDevice);
+	public static String plateDoubleNiChrome = "plateDoubleNichrome";
+	public static String plateIridiumAlloy = "plateAlloyIridium";
+	
 	public static final void RECIPES_LOAD(){		
 		
 			
@@ -145,6 +150,13 @@ public class RECIPES_Tools {
 				CobbleStone, sandHammer, CobbleStone,
 				CobbleStone, CobbleStone, CobbleStone,
 				RECIPE_Sand);
+
+		//Cloaking Device
+		UtilsRecipe.recipeBuilder(
+				plateDoubleNiChrome, plateIridiumAlloy, plateDoubleNiChrome,
+				plateIridiumAlloy, batteryUltimate, plateIridiumAlloy,
+				plateDoubleNiChrome, plateIridiumAlloy, plateDoubleNiChrome,
+				personalCloakingDevice);
 		
 		//Sand to Sandstone
 		UtilsRecipe.recipeBuilder(
