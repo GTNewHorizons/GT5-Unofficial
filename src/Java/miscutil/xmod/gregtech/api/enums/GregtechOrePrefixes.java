@@ -130,7 +130,9 @@ public enum GregtechOrePrefixes {
 		mDefaultStackSize = (byte) aDefaultStackSize;
 		mTextureIndex = (short) aTextureindex;
 
-		if (name().startsWith("ore")) {
+		
+		//TODO - Utilise some form of way to check if it's gt 5.9 if so, use string switch.
+		/*if (name().startsWith("ore")) {
 			new TC_AspectStack(TC_Aspects.TERRA, 1).addToAspectList(mAspects);
 		} else if (name().startsWith("wire") || name().startsWith("cable")) {
 			new TC_AspectStack(TC_Aspects.ELECTRUM, 1).addToAspectList(mAspects);
@@ -163,7 +165,7 @@ public enum GregtechOrePrefixes {
 			new TC_AspectStack(TC_Aspects.COGNITIO, 4).addToAspectList(mAspects);
 		} else if (name().startsWith("battery")) {
 			new TC_AspectStack(TC_Aspects.ELECTRUM, 1).addToAspectList(mAspects);
-		}
+		}*/
 	}
 
 	public static GregtechOrePrefixes getOrePrefix(String aOre) {
