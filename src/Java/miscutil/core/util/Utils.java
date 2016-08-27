@@ -55,6 +55,7 @@ public class Utils {
 			try {
 				returnValue = new TC_AspectStack(TC_Aspects.COGNITIO, size);
 			} catch (NoSuchFieldError r){
+				Utils.LOG_INFO("Fallback TC Aspect found - "+aspect.name()+" - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
 				returnValue = new TC_AspectStack(TC_Aspects.valueOf("COGNITO"), size);
 				
 			}
@@ -64,6 +65,7 @@ public class Utils {
 			try {
 				returnValue = new TC_AspectStack(TC_Aspects.EXANIMUS, size);
 			} catch (NoSuchFieldError r){
+				Utils.LOG_INFO("Fallback TC Aspect found - "+aspect.name()+" - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
 				returnValue = new TC_AspectStack(TC_Aspects.valueOf("EXAMINIS"), size);
 			}
 		}
@@ -72,6 +74,7 @@ public class Utils {
 			try {
 				returnValue = new TC_AspectStack(TC_Aspects.PRAECANTATIO, size);
 			} catch (NoSuchFieldError r){
+				Utils.LOG_INFO("Fallback TC Aspect found - "+aspect.name()+" - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
 				returnValue = new TC_AspectStack(TC_Aspects.valueOf("PRAECANTIO"), size);
 			}
 		}
