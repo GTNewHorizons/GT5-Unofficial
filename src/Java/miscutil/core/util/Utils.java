@@ -1,6 +1,8 @@
 package miscutil.core.util;
 
 import static gregtech.api.enums.GT_Values.F;
+import gregtech.api.enums.TC_Aspects;
+import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -42,6 +44,42 @@ public class Utils {
 		public void run() {
 			Utils.LOG_WARNING("Timer expired.");
 		}
+	}
+
+	public static TC_AspectStack getTcAspectStack (TC_Aspects aspect, int size){
+
+		TC_AspectStack returnValue = null;
+		
+		if (aspect == TC_Aspects.COGNITIO){
+			//Adds in Compat for older GT Versions which Misspell aspects.
+			try {
+				returnValue = new TC_AspectStack(TC_Aspects.COGNITIO, size);
+			} catch (NoSuchFieldError r){
+				returnValue = new TC_AspectStack(TC_Aspects.valueOf("COGNITO"), size);
+				
+			}
+		}
+		else if (aspect == TC_Aspects.EXANIMUS){
+			//Adds in Compat for older GT Versions which Misspell aspects.
+			try {
+				returnValue = new TC_AspectStack(TC_Aspects.EXANIMUS, size);
+			} catch (NoSuchFieldError r){
+				returnValue = new TC_AspectStack(TC_Aspects.valueOf("EXAMINIS"), size);
+			}
+		}
+		else if (aspect == TC_Aspects.PRAECANTATIO){
+			//Adds in Compat for older GT Versions which Misspell aspects.
+			try {
+				returnValue = new TC_AspectStack(TC_Aspects.PRAECANTATIO, size);
+			} catch (NoSuchFieldError r){
+				returnValue = new TC_AspectStack(TC_Aspects.valueOf("PRAECANTIO"), size);
+			}
+		}
+		else {
+			returnValue = new TC_AspectStack(aspect, size);
+		}
+
+		return returnValue;
 	}
 
 	public static boolean containsMatch(boolean strict, ItemStack[] inputs, ItemStack... targets)
@@ -86,7 +124,7 @@ public class Utils {
 			FMLLog.warning("GT++: "+s);
 		}
 	}
-	
+
 	//Errors
 	public static void LOG_ERROR(String s){
 		if (CORE.DEBUG){
@@ -289,14 +327,14 @@ public class Utils {
 	}
 
 	public static int rgbtoHexValue(int r, int g, int b){		    
-		      Color c = new Color(r,g,b);
-		      String temp = Integer.toHexString( c.getRGB() & 0xFFFFFF ).toUpperCase();	
+		Color c = new Color(r,g,b);
+		String temp = Integer.toHexString( c.getRGB() & 0xFFFFFF ).toUpperCase();	
 
-		      //System.out.println( "hex: " + Integer.toHexString( c.getRGB() & 0xFFFFFF ) + " hex value:"+temp); 
-		      temp = Utils.appenedHexNotationToString(String.valueOf(temp));
-				Utils.LOG_WARNING("Made "+temp+" - Hopefully it's not a mess.");
-				Utils.LOG_WARNING("It will decode into "+Integer.decode(temp)+".");
-				return Integer.decode(temp);
+		//System.out.println( "hex: " + Integer.toHexString( c.getRGB() & 0xFFFFFF ) + " hex value:"+temp); 
+		temp = Utils.appenedHexNotationToString(String.valueOf(temp));
+		Utils.LOG_WARNING("Made "+temp+" - Hopefully it's not a mess.");
+		Utils.LOG_WARNING("It will decode into "+Integer.decode(temp)+".");
+		return Integer.decode(temp);
 	}
 
 	/*
@@ -352,7 +390,7 @@ public class Utils {
 		String hexChar = "0x";
 		String result;
 		if (hexAsStringOrInt.getClass() == String.class){
-			
+
 			if (((String) hexAsStringOrInt).length() != 6){
 				String temp = leftPadWithZeroes((String) hexAsStringOrInt, 6);
 				result = temp;
@@ -384,18 +422,18 @@ public class Utils {
 
 	public static boolean doesEntryExistAlreadyInOreDictionary(String OreDictName){
 		if (OreDictionary.getOres(OreDictName).size() != 0) {
-	    return true;
-	}
+			return true;
+		}
 		return false;
 	}
-	
+
 	public static boolean invertBoolean(boolean booleans){
 		if (booleans == true){
 			return false;
 		}
 		return true;
 	}
-	
+
 
 }
 
