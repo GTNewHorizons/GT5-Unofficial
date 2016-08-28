@@ -27,10 +27,10 @@ public class BlockBaseModular extends BasicBlock{
 		this.thisBlockMaterial = blockMaterial;
 		this.setBlockName(getLocalizedName());
 		
-		if (thisBlock == BlockTypes.STANDARD){
+		if (thisBlock.name().toLowerCase() == BlockTypes.STANDARD.name().toLowerCase()){
 			LanguageRegistry.addName(this, "Block of "+blockMaterial);
 		}
-		else if (thisBlock == BlockTypes.FRAME){
+		else if (thisBlock.name().toLowerCase() == BlockTypes.FRAME.name().toLowerCase()){
 			LanguageRegistry.addName(this, blockMaterial+ " Frame Box");
 		}
 		else {
@@ -38,10 +38,10 @@ public class BlockBaseModular extends BasicBlock{
 		}		
 		
 		//setOreDict(unlocalizedName, blockType);
-		if (thisBlock == BlockTypes.STANDARD){
+		if (thisBlock.name().toLowerCase() == BlockTypes.STANDARD.name().toLowerCase()){
 			GameRegistry.registerBlock(this, ItemBlockGtBlock.class, blockType.getTexture()+unlocalizedName);			
 		}
-		else if (thisBlock == BlockTypes.FRAME){
+		else if (thisBlock.name().toLowerCase() == BlockTypes.FRAME.name().toLowerCase()){
 			GameRegistry.registerBlock(this, ItemBlockGtFrameBox.class, blockType.getTexture()+unlocalizedName);			
 		}
 		

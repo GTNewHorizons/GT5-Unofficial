@@ -6,6 +6,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import miscutil.core.item.ModItems;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
 import miscutil.core.util.fluid.FluidUtils;
@@ -117,7 +118,7 @@ public class RECIPES_GREGTECH {
 	private static void distilleryRecipes(){
 		Utils.LOG_INFO("Registering Distillery/Distillation Tower Recipes.");
 		GT_Values.RA.addDistilleryRecipe(ItemList.Circuit_Integrated.getWithDamage(0L, 4L, new Object[0]), FluidUtils.getFluidStack("air", 1000), FluidUtils.getFluidStack("helium", 1), 400, 30, false);
-		GT_Values.RA.addDistillationTowerRecipe(FluidUtils.getFluidStack("air", 20000), FluidUtils.getFluidStackArray("helium", 25), null, 200, 60);
+		GT_Values.RA.addDistillationTowerRecipe(FluidUtils.getFluidStack("air", 20000), FluidUtils.getFluidStackArray("helium", 25), UtilsItems.getSimpleStack(ModItems.itemHeliumBlob, 1), 200, 60);
 	}
 
 	private static void addFuels(){
