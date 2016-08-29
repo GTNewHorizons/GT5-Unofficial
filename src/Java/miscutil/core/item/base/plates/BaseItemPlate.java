@@ -30,7 +30,6 @@ public class BaseItemPlate extends Item{
 		this.unlocalName = unlocalizedName;
 		this.setMaxStackSize(64);
 		this.setTextureName(CORE.MODID + ":" + "itemPlate");
-		this.setMaxStackSize(64);
 		this.colour = colour;
 		this.mTier = tier;
 		this.materialName = materialName;

@@ -132,11 +132,11 @@ public class ItemCloakingDevice extends Item implements IElectricItem, IElectric
 	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {				
 		list.add("");				
 		list.add(EnumChatFormatting.GREEN+"Worn as a Belt within Baubles."+EnumChatFormatting.GRAY);	
-		list.add(EnumChatFormatting.GREEN+"Drains 10,000Eu/t to provide invisibility."+EnumChatFormatting.GRAY);			
+		list.add(EnumChatFormatting.GREEN+"Drains 10,000EU/t to provide invisibility."+EnumChatFormatting.GRAY);			
 		list.add("");			
 		list.add(EnumChatFormatting.GOLD+"IC2/EU Information"+EnumChatFormatting.GRAY);	
-		list.add(EnumChatFormatting.GRAY+"Tier: ["+EnumChatFormatting.YELLOW+getTier(thisStack)+EnumChatFormatting.GRAY+"] Input Limit: ["+EnumChatFormatting.YELLOW+getTransferLimit(thisStack)+EnumChatFormatting.GRAY +"Eu/t]");
-		list.add(EnumChatFormatting.GRAY+"Current Power: ["+EnumChatFormatting.YELLOW+(long) getCharge(stack)+EnumChatFormatting.GRAY+"Eu] ["+EnumChatFormatting.YELLOW+MathUtils.findPercentage(getCharge(stack), getMaxCharge(stack))+EnumChatFormatting.GRAY +"%]");
+		list.add(EnumChatFormatting.GRAY+"Tier: ["+EnumChatFormatting.YELLOW+getTier(thisStack)+EnumChatFormatting.GRAY+"] Input Limit: ["+EnumChatFormatting.YELLOW+getTransferLimit(thisStack)+EnumChatFormatting.GRAY +"EU/t]");
+		list.add(EnumChatFormatting.GRAY+"Current Power: ["+EnumChatFormatting.YELLOW+(long) getCharge(stack)+EnumChatFormatting.GRAY+"EU] ["+EnumChatFormatting.YELLOW+MathUtils.findPercentage(getCharge(stack), getMaxCharge(stack))+EnumChatFormatting.GRAY +"%]");
 		list.add(EnumChatFormatting.GRAY+"Time Remaining: ["+EnumChatFormatting.YELLOW+secondsLeft(stack)+ EnumChatFormatting.GRAY +" seconds]");
 		super.addInformation(stack, aPlayer, list, bool);
 	}

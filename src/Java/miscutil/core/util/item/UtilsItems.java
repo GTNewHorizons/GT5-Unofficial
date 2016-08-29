@@ -69,6 +69,16 @@ public class UtilsItems {
 			return null;
 		}
 	}
+	
+	public static ItemStack getSimpleStack(ItemStack x, int i){
+		try {
+			ItemStack r = x.copy();
+			r.stackSize = i;
+			return r;
+		} catch(Throwable e){
+			return null;
+		}
+	}
 
 
 	public static void getItemForOreDict(String FQRN, String oreDictName, String itemName, int meta){

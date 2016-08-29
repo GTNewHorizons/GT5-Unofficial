@@ -14,14 +14,12 @@ import miscutil.core.item.ModItems;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.Utils;
 import miscutil.core.util.item.UtilsItems;
-import miscutil.core.util.math.MathUtils;
 import miscutil.core.util.recipe.UtilsRecipe;
 import miscutil.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import miscutil.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import miscutil.xmod.gregtech.api.metatileentity.implementations.GregtechMetaPipeEntityFluid;
 import miscutil.xmod.gregtech.api.metatileentity.implementations.GregtechMetaPipeEntity_Cable;
 import miscutil.xmod.gregtech.api.metatileentity.implementations.GregtechMetaPipeEntity_SuperConductor;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -32,6 +30,9 @@ public class GregtechConduits {
 	 * public static final long[] V = new long[] {0=8, 1=32, 2=128, 3=512, 4=2048, 5=8192, 6=32768, 7=131072, 8=524288, 9=Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE};
 	 * 
 	 */
+	
+	
+	private static int BasePipeID = 30700;
 	
 	
 	public static void run()
@@ -56,11 +57,18 @@ public class GregtechConduits {
 		superConductorFactory("Superconductor", 524288, 30660, 0, 0, 8);
 		superConductorFactory("VoidMetal", 512, 30661, 0, 0, 8);
 		
-		generateNonGTFluidPipes(GT_Materials.Staballoy, 30700, 150, 7500, true);
-		generateNonGTFluidPipes(GT_Materials.Tantalloy60, 30705, 120, 4250, true);
-		generateNonGTFluidPipes(GT_Materials.Tantalloy61, 30710, 135, 5800, true);
-		generateNonGTFluidPipes(GT_Materials.VoidMetal, 30715, 50, 25000, true);
-		generateGTFluidPipes(Materials.Europium, 30720, 175, 7500, true);
+		generateNonGTFluidPipes(GT_Materials.Staballoy, BasePipeID, 6250, 7500, true);
+		generateNonGTFluidPipes(GT_Materials.Tantalloy60, BasePipeID+5, 5000, 4250, true);
+		generateNonGTFluidPipes(GT_Materials.Tantalloy61, BasePipeID+10, 6000, 5800, true);
+		generateNonGTFluidPipes(GT_Materials.VoidMetal, BasePipeID+15, 250, 25000, true);
+		generateGTFluidPipes(Materials.Europium, BasePipeID+20, 12000, 7500, true);
+		
+		generateNonGTFluidPipes(GT_Materials.Potin, BasePipeID+25, 375, 2000, true);
+		generateNonGTFluidPipes(GT_Materials.MaragingSteel300, BasePipeID+30, 7000, 2500, true);
+		generateNonGTFluidPipes(GT_Materials.MaragingSteel350, BasePipeID+35, 8000, 2500, true);
+		generateNonGTFluidPipes(GT_Materials.Inconel690, BasePipeID+40, 7500, 4800, true);
+		generateNonGTFluidPipes(GT_Materials.Inconel792, BasePipeID+45, 8000, 5500, true);
+		generateNonGTFluidPipes(GT_Materials.HastelloyX, BasePipeID+50, 10000, 4200, true);
 		
 	}	
 	
@@ -181,62 +189,44 @@ public class GregtechConduits {
     }
 	
 	
-	private static void generateGTFluidPipes(Materials material, int startID, int transferRatePerTick, int heatResistance, boolean isGasProof){
-		long magicNumber = material.mDensity;
-		GT_OreDictUnificator.registerOre(OrePrefixes.pipeTiny.get(material), new GT_MetaPipeEntity_Fluid(startID, "GT_Pipe_"+material.name()+"_Tiny", "Tiny "+material.name()+" Fluid Pipe", 0.25F, material, transferRatePerTick*2, heatResistance, isGasProof).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(OrePrefixes.pipeSmall.get(material), new GT_MetaPipeEntity_Fluid(startID+1, "GT_Pipe_"+material.name()+"_Small", "Small "+material.name()+" Fluid Pipe", 0.375F, material, transferRatePerTick*4, heatResistance, isGasProof).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(OrePrefixes.pipeMedium.get(material), new GT_MetaPipeEntity_Fluid(startID+2, "GT_Pipe_"+material.name()+"", ""+material.name()+" Fluid Pipe", 0.5F, material, transferRatePerTick*6, heatResistance, isGasProof).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(OrePrefixes.pipeLarge.get(material), new GT_MetaPipeEntity_Fluid(startID+3, "GT_Pipe_"+material.name()+"_Large", "Large "+material.name()+" Fluid Pipe", 0.75F, material, transferRatePerTick*8, heatResistance, isGasProof).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(OrePrefixes.pipeHuge.get(material), new GT_MetaPipeEntity_Fluid(startID+4, "GT_Pipe_"+material.name()+"_Huge", "Huge "+material.name()+" Fluid Pipe", 1.0F, material, transferRatePerTick*10, heatResistance, isGasProof).getStackForm(1L));
-        generatePipeRecipes(material.name(), magicNumber, startID);
+	private static void generateGTFluidPipes(Materials material, int startID, int transferRatePerSec, int heatResistance, boolean isGasProof){
+		int transferRatePerTick = transferRatePerSec/20;
+		GT_OreDictUnificator.registerOre(OrePrefixes.pipeTiny.get(material), new GT_MetaPipeEntity_Fluid(startID, "GT_Pipe_"+material.mDefaultLocalName+"_Tiny", "Tiny "+material.mDefaultLocalName+" Fluid Pipe", 0.25F, material, transferRatePerTick*2, heatResistance, isGasProof).getStackForm(1L));
+        GT_OreDictUnificator.registerOre(OrePrefixes.pipeSmall.get(material), new GT_MetaPipeEntity_Fluid(startID+1, "GT_Pipe_"+material.mDefaultLocalName+"_Small", "Small "+material.mDefaultLocalName+" Fluid Pipe", 0.375F, material, transferRatePerTick*4, heatResistance, isGasProof).getStackForm(1L));
+        GT_OreDictUnificator.registerOre(OrePrefixes.pipeMedium.get(material), new GT_MetaPipeEntity_Fluid(startID+2, "GT_Pipe_"+material.mDefaultLocalName+"", ""+material.mDefaultLocalName+" Fluid Pipe", 0.5F, material, transferRatePerTick*6, heatResistance, isGasProof).getStackForm(1L));
+        GT_OreDictUnificator.registerOre(OrePrefixes.pipeLarge.get(material), new GT_MetaPipeEntity_Fluid(startID+3, "GT_Pipe_"+material.mDefaultLocalName+"_Large", "Large "+material.mDefaultLocalName+" Fluid Pipe", 0.75F, material, transferRatePerTick*8, heatResistance, isGasProof).getStackForm(1L));
+        GT_OreDictUnificator.registerOre(OrePrefixes.pipeHuge.get(material), new GT_MetaPipeEntity_Fluid(startID+4, "GT_Pipe_"+material.mDefaultLocalName+"_Huge", "Huge "+material.mDefaultLocalName+" Fluid Pipe", 1.0F, material, transferRatePerTick*10, heatResistance, isGasProof).getStackForm(1L));
+        generatePipeRecipes(material.mDefaultLocalName);
 	}
 	
-	private static void generateNonGTFluidPipes(GT_Materials material, int startID, int transferRatePerTick, int heatResistance, boolean isGasProof){
-		long magicNumber = material.mDensity;
-    	GT_OreDictUnificator.registerOre(OrePrefixes.pipeTiny.get(material), new GregtechMetaPipeEntityFluid(startID, "GT_Pipe_"+material.name()+"_Tiny", "Tiny "+material.name()+" Fluid Pipe", 0.25F, material, transferRatePerTick*2, heatResistance, isGasProof).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(OrePrefixes.pipeSmall.get(material), new GregtechMetaPipeEntityFluid(startID+1, "GT_Pipe_"+material.name()+"_Small", "Small "+material.name()+" Fluid Pipe", 0.375F, material, transferRatePerTick*4, heatResistance, isGasProof).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(OrePrefixes.pipeMedium.get(material), new GregtechMetaPipeEntityFluid(startID+2, "GT_Pipe_"+material.name()+"", ""+material.name()+" Fluid Pipe", 0.5F, material, transferRatePerTick*6, heatResistance, isGasProof).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(OrePrefixes.pipeLarge.get(material), new GregtechMetaPipeEntityFluid(startID+3, "GT_Pipe_"+material.name()+"_Large", "Large "+material.name()+" Fluid Pipe", 0.75F, material, transferRatePerTick*8, heatResistance, isGasProof).getStackForm(1L));
-        GT_OreDictUnificator.registerOre(OrePrefixes.pipeHuge.get(material), new GregtechMetaPipeEntityFluid(startID+4, "GT_Pipe_"+material.name()+"_Huge", "Huge "+material.name()+" Fluid Pipe", 1.0F, material, transferRatePerTick*10, heatResistance, isGasProof).getStackForm(1L));
-        generatePipeRecipes(material.name(), magicNumber, startID);
+	private static void generateNonGTFluidPipes(GT_Materials material, int startID, int transferRatePerSec, int heatResistance, boolean isGasProof){
+		int transferRatePerTick = transferRatePerSec/20;
+    	GT_OreDictUnificator.registerOre(OrePrefixes.pipeTiny.get(material), new GregtechMetaPipeEntityFluid(startID, "GT_Pipe_"+material.mDefaultLocalName+"_Tiny", "Tiny "+material.mDefaultLocalName+" Fluid Pipe", 0.25F, material, transferRatePerTick*2, heatResistance, isGasProof).getStackForm(1L));
+        GT_OreDictUnificator.registerOre(OrePrefixes.pipeSmall.get(material), new GregtechMetaPipeEntityFluid(startID+1, "GT_Pipe_"+material.mDefaultLocalName+"_Small", "Small "+material.mDefaultLocalName+" Fluid Pipe", 0.375F, material, transferRatePerTick*4, heatResistance, isGasProof).getStackForm(1L));
+        GT_OreDictUnificator.registerOre(OrePrefixes.pipeMedium.get(material), new GregtechMetaPipeEntityFluid(startID+2, "GT_Pipe_"+material.mDefaultLocalName+"", ""+material.mDefaultLocalName+" Fluid Pipe", 0.5F, material, transferRatePerTick*6, heatResistance, isGasProof).getStackForm(1L));
+        GT_OreDictUnificator.registerOre(OrePrefixes.pipeLarge.get(material), new GregtechMetaPipeEntityFluid(startID+3, "GT_Pipe_"+material.mDefaultLocalName+"_Large", "Large "+material.mDefaultLocalName+" Fluid Pipe", 0.75F, material, transferRatePerTick*8, heatResistance, isGasProof).getStackForm(1L));
+        GT_OreDictUnificator.registerOre(OrePrefixes.pipeHuge.get(material), new GregtechMetaPipeEntityFluid(startID+4, "GT_Pipe_"+material.mDefaultLocalName+"_Huge", "Huge "+material.mDefaultLocalName+" Fluid Pipe", 1.0F, material, transferRatePerTick*10, heatResistance, isGasProof).getStackForm(1L));
+        generatePipeRecipes(material.mDefaultLocalName);
 	
 	}
 	
-	private static void generatePipeRecipes(String materialName, long multiplier, int ID){
-		Utils.LOG_INFO("Logging Generation of Pipe Recipes.");
-		int multi = (int) MathUtils.decimalRoundingToWholes(multiplier)/100000;
-		Utils.LOG_INFO("Magic Multiplier is "+multi);
-		
-		if (multi <= 0){
-			multi = MathUtils.randInt(2, 8);
-		}
+	private static void generatePipeRecipes(String materialName){
 		
 		String output = materialName.substring(0, 1).toUpperCase() + materialName.substring(1);
-		Utils.LOG_INFO("materialName: "+materialName+" outputName: "+output);
-		Item pipeIngot = UtilsItems.getItemStackOfAmountFromOreDict("ingot"+output, 1).getItem();
-		Utils.LOG_INFO("Found "+pipeIngot.getUnlocalizedName()+" to use in extruder recipes.");
-		ItemStack pipePlate = UtilsItems.getItemStackOfAmountFromOreDict("plate"+output, 1);
-		Utils.LOG_INFO("Plates for recipes: "+" Expected:"+"plate"+output+" Got:"+pipePlate.getUnlocalizedName());
+		output = output.replace("-", "").replace("_", "").replace(" ", "");
 		
-		//Get the five Pipes
-		//Item pipeTiny = UtilsItems.getItemStackWithMeta(LoadedMods.MiscUtils, "gregtech:gt.blockmachines", "Pipe Tiny", ID, 1).getItem();
-		//Item pipeSmall = UtilsItems.getItemStackWithMeta(LoadedMods.MiscUtils, "gregtech:gt.blockmachines", "Pipe Small", ID+1, 1).getItem();
-		//Item pipeNormal = UtilsItems.getItemStackWithMeta(LoadedMods.MiscUtils, "gregtech:gt.blockmachines", "Pipe Normal", ID+2, 1).getItem();
-		//Item pipeLarge = UtilsItems.getItemStackWithMeta(LoadedMods.MiscUtils, "gregtech:gt.blockmachines", "Pipe Large", ID+3, 1).getItem();
-		//Item pipeHuge = UtilsItems.getItemStackWithMeta(LoadedMods.MiscUtils, "gregtech:gt.blockmachines", "Pipe Huge", ID+4, 1).getItem();
+		Utils.LOG_INFO("Generating "+output+" pipes & respective recipes.");
+		int multi = 5;		
 		
-		/*Item pipeTiny = UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Tiny"+output, 1).getItem();
-		Item pipeSmall = UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Small"+output, 1).getItem();
-		Item pipeNormal = UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Medium"+output, 1).getItem();
-		Item pipeLarge = UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Large"+output, 1).getItem();
-		Item pipeHuge = UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1).getItem();*/
+		ItemStack pipeIngot = UtilsItems.getItemStackOfAmountFromOreDict("ingot"+output, 1).copy();
+		ItemStack pipePlate = UtilsItems.getItemStackOfAmountFromOreDict("plate"+output, 1).copy();
 		
 		//Check all pipes are not null
-		Utils.LOG_INFO("Does pipeTiny == null? " + ((UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Tiny"+output, 1) == null) ? true : false));
-		Utils.LOG_INFO("Does pipeSmall == null? " + ((UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Small"+output, 1) == null) ? true : false));
-		Utils.LOG_INFO("Does pipeNormal == null? " + ((UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Medium"+output, 1) == null) ? true : false));
-		Utils.LOG_INFO("Does pipeLarge == null? " + ((UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Large"+output, 1) == null) ? true : false));
-		Utils.LOG_INFO("Does pipeHuge == null? " + ((UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1) == null) ? true : false));
+		Utils.LOG_INFO("Generated pipeTiny from "+ materialName +"? "+ ((UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Tiny"+output, 1) != null) ? true : false));
+		Utils.LOG_INFO("Generated pipeSmall from "+ materialName +"? "+ ((UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Small"+output, 1) != null) ? true : false));
+		Utils.LOG_INFO("Generated pipeNormal from "+ materialName +"? "+ ((UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Medium"+output, 1) != null) ? true : false));
+		Utils.LOG_INFO("Generated pipeLarge from "+ materialName +"? "+ ((UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Large"+output, 1) != null) ? true : false));
+		Utils.LOG_INFO("Generated pipeHuge from "+ materialName +"? "+ ((UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1) != null) ? true : false));
 		
 		//Add the Three Shaped Recipes First		
 		UtilsRecipe.recipeBuilder(
@@ -262,21 +252,25 @@ public class GregtechConduits {
 				ItemList.Shape_Extruder_Pipe_Tiny.get(0),
 				UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Tiny"+output, 2),
 				32*multi, 8*multi);
+		
 		GT_Values.RA.addExtruderRecipe(
 				UtilsItems.getSimpleStack(pipeIngot, 1),
 				ItemList.Shape_Extruder_Pipe_Small.get(0),
 				UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Small"+output, 1),
 				32*multi, 16*multi);
+		
 		GT_Values.RA.addExtruderRecipe(
 				UtilsItems.getSimpleStack(pipeIngot, 3),
 				ItemList.Shape_Extruder_Pipe_Medium.get(0),
 				UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Medium"+output, 1),
 				32*multi, 32*multi);
+		
 		GT_Values.RA.addExtruderRecipe(
 				UtilsItems.getSimpleStack(pipeIngot, 6),
 				ItemList.Shape_Extruder_Pipe_Large.get(0),
 				UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Large"+output, 1),
 				32*multi, 64*multi);
+		
 		GT_Values.RA.addExtruderRecipe(
 				UtilsItems.getSimpleStack(pipeIngot, 12),
 				ItemList.Shape_Extruder_Pipe_Huge.get(0),

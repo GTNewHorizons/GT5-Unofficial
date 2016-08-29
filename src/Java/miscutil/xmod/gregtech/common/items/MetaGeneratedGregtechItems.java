@@ -14,12 +14,12 @@ import gregtech.common.covers.GT_Cover_Conveyor;
 import gregtech.common.covers.GT_Cover_Pump;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
-import miscutil.core.util.UtilsText;
 import miscutil.xmod.gregtech.api.enums.GregtechItemList;
 import miscutil.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import miscutil.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import miscutil.xmod.gregtech.api.items.Gregtech_MetaItem_X32;
 import net.minecraft.item.EnumAction;
+import net.minecraft.util.EnumChatFormatting;
 
 public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
     public MetaGeneratedGregtechItems INSTANCE;
@@ -136,7 +136,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
         
     
         //FOOOOOOOOOOOOOOD
-        GregtechItemList.Food_Baked_Raisin_Bread.set(addItem(tLastID = 60, "Raisin Bread", "Extra Raisins, Just for "+UtilsText.purple.colour()+"ImQ009", new Object[]{new GT_FoodStat(5, 0.5F, EnumAction.eat, null, false, true, false, new int[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.CORPUS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)}));
+        GregtechItemList.Food_Baked_Raisin_Bread.set(addItem(tLastID = 60, "Raisin Bread", "Extra Raisins, Just for "+EnumChatFormatting.DARK_PURPLE+"ImQ009", new Object[]{new GT_FoodStat(5, 0.5F, EnumAction.eat, null, false, true, false, new int[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.CORPUS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)}));
 
         
         //Extruder Shape
