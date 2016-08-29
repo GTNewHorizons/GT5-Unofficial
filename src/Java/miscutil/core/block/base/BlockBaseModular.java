@@ -3,6 +3,7 @@ package miscutil.core.block.base;
 import miscutil.core.item.base.itemblock.ItemBlockGtBlock;
 import miscutil.core.item.base.itemblock.ItemBlockGtFrameBox;
 import miscutil.core.lib.CORE;
+import miscutil.core.util.Utils;
 import miscutil.core.util.math.MathUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -17,6 +18,7 @@ public class BlockBaseModular extends BasicBlock{
 	protected int blockColour;
 	protected BlockTypes thisBlock;
 	protected String thisBlockMaterial;
+	protected final String thisBlockType;
 
 	public BlockBaseModular(String unlocalizedName, String blockMaterial,  BlockTypes blockType, int colour) {
 		super(blockType.getTexture()+unlocalizedName, Material.iron);
@@ -25,24 +27,44 @@ public class BlockBaseModular extends BasicBlock{
 		this.blockColour = colour;
 		this.thisBlock = blockType;
 		this.thisBlockMaterial = blockMaterial;
+		this.thisBlockType = blockType.name().toUpperCase();
 		this.setBlockName(getLocalizedName());
 		
-		if (thisBlock.name().toLowerCase() == BlockTypes.STANDARD.name().toLowerCase()){
-			LanguageRegistry.addName(this, "Block of "+blockMaterial);
+		if (!CORE.DEBUG){
+			Utils.LOG_INFO("=============Block Info Dump=============");
+			Utils.LOG_INFO("thisBlock.name().toLowerCase() - "+thisBlock.name().toLowerCase());
+			Utils.LOG_INFO("This Blocks Type - "+thisBlockType);
+			Utils.LOG_INFO("BlockTypes.STANDARD.name().toLowerCase() - "+BlockTypes.STANDARD.name().toLowerCase());
+			Utils.LOG_INFO("BlockTypes.FRAME.name().toLowerCase() - "+BlockTypes.FRAME.name().toLowerCase());
+			Utils.LOG_INFO("blockMaterial - "+blockMaterial);
+			Utils.LOG_INFO("==========================================");
 		}
-		else if (thisBlock.name().toLowerCase() == BlockTypes.FRAME.name().toLowerCase()){
+		
+		if (thisBlockType == BlockTypes.STANDARD.name().toUpperCase()){
+			LanguageRegistry.addName(this, "Block of "+blockMaterial);
+			Utils.LOG_INFO("Registered Block in Language Registry as: "+"Block of "+blockMaterial);
+		}
+		else if (thisBlockType == BlockTypes.FRAME.name().toUpperCase()){
 			LanguageRegistry.addName(this, blockMaterial+ " Frame Box");
+			Utils.LOG_INFO("Registered Block in Language Registry as: "+blockMaterial+ " Frame Box");
 		}
 		else {
 			LanguageRegistry.addName(this, blockMaterial);
+			Utils.LOG_INFO("Registered Block in Language Registry as: "+blockMaterial);
 		}		
 		
 		//setOreDict(unlocalizedName, blockType);
-		if (thisBlock.name().toLowerCase() == BlockTypes.STANDARD.name().toLowerCase()){
-			GameRegistry.registerBlock(this, ItemBlockGtBlock.class, blockType.getTexture()+unlocalizedName);			
+		if (thisBlockType == BlockTypes.STANDARD.name().toUpperCase()){
+			GameRegistry.registerBlock(this, ItemBlockGtBlock.class, blockType.getTexture()+unlocalizedName);	
+			Utils.LOG_INFO("Registered Block in Block Registry as: "+"Block of "+blockMaterial);		
 		}
-		else if (thisBlock.name().toLowerCase() == BlockTypes.FRAME.name().toLowerCase()){
-			GameRegistry.registerBlock(this, ItemBlockGtFrameBox.class, blockType.getTexture()+unlocalizedName);			
+		else if (thisBlockType == BlockTypes.FRAME.name().toUpperCase()){
+			GameRegistry.registerBlock(this, ItemBlockGtFrameBox.class, blockType.getTexture()+unlocalizedName);
+			Utils.LOG_INFO("Registered Block in Block Registry as: "+blockMaterial+" Frame Box");			
+		}
+		else {
+			GameRegistry.registerBlock(this, ItemBlockGtBlock.class, blockType.getTexture()+unlocalizedName);
+			Utils.LOG_INFO("Registered Block in Block Registry as: "+blockMaterial);	
 		}
 		
 		
