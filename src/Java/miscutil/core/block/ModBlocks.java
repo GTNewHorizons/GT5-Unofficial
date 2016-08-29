@@ -1,6 +1,5 @@
 package miscutil.core.block;
 
-import miscutil.core.block.base.BasicBlock;
 import miscutil.core.block.general.LightGlass;
 import miscutil.core.block.general.fluids.FluidRegistryHandler;
 import miscutil.core.lib.CORE;
@@ -14,8 +13,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public final class ModBlocks {
 
 	//Blocks
-	public static Block blockBloodSteel;
-	public static Block blockStaballoy;
+	//public static Block blockBloodSteel;
+	//public static Block blockStaballoy;
 	// WIP TODO public static Block blockToolBuilder;
 	public static Block blockGriefSaver;
 	public static Block blockCasingsMisc;
@@ -45,10 +44,10 @@ public final class ModBlocks {
 		Utils.LOG_INFO("Registering Blocks.");
 
 		//Blood Steel Block
-		GameRegistry.registerBlock(blockBloodSteel = new BasicBlock("blockBloodSteel", Material.iron), "blockBloodSteel");
+		//GameRegistry.registerBlock(blockBloodSteel = new BasicBlock("blockBloodSteel", Material.iron), "blockBloodSteel");
 
 		//Staballoy Block
-		GameRegistry.registerBlock(blockStaballoy = new BasicBlock("blockStaballoy", Material.iron), "blockStaballoy");
+		//GameRegistry.registerBlock(blockStaballoy = new BasicBlock("blockStaballoy", Material.iron), "blockStaballoy");
 
 		//GameRegistry.registerBlock(MatterFabricatorEffectBlock = new MatterFabricatorEffectBlock(), "blockMF_Effect");
 

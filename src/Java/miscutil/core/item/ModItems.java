@@ -4,6 +4,7 @@ import static miscutil.core.creative.AddToCreativeTab.tabMisc;
 import static miscutil.core.lib.CORE.LOAD_ALL_CONTENT;
 import gregtech.api.util.GT_OreDictUnificator;
 import miscutil.core.creative.AddToCreativeTab;
+import miscutil.core.item.base.BaseItemBackpack;
 import miscutil.core.item.base.CoreItem;
 import miscutil.core.item.base.bolts.BaseItemBolt;
 import miscutil.core.item.base.foods.BaseItemFood;
@@ -168,6 +169,13 @@ public final class ModItems {
 	public static Item itemPersonalCloakingDevice;
 	public static Item itemPersonalCloakingDeviceCharged;
 	public static Item itemPersonalHealingDevice;
+	
+	public static BaseItemBackpack backpack_Red;
+	public static BaseItemBackpack backpack_Green;
+	public static BaseItemBackpack backpack_Blue;
+	public static BaseItemBackpack backpack_Yellow;
+	public static BaseItemBackpack backpack_Purple;
+	public static BaseItemBackpack backpack_Cyan;
 
 
 	//@SuppressWarnings("unused")
@@ -179,6 +187,15 @@ public final class ModItems {
 		if (CORE.DEBUG){
 			DEBUG_INIT.registerItems();
 		}		
+		
+		
+		//Make some backpacks
+		backpack_Red = new BaseItemBackpack("backpackRed", Utils.rgbtoHexValue(255, 0, 0));
+		backpack_Green = new BaseItemBackpack("backpackGreen", Utils.rgbtoHexValue(0, 255, 0));
+		backpack_Blue = new BaseItemBackpack("backpackBlue", Utils.rgbtoHexValue(0, 0, 255));
+		backpack_Yellow = new BaseItemBackpack("backpackYellow", Utils.rgbtoHexValue(255, 255, 0));
+		backpack_Purple = new BaseItemBackpack("backpackPurple", Utils.rgbtoHexValue(255, 0, 255));
+		backpack_Cyan = new BaseItemBackpack("backpackCyan", Utils.rgbtoHexValue(0, 255, 255));
 
 		
 		/*ItemsIngots.load();

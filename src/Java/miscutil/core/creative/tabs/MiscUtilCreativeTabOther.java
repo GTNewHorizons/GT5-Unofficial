@@ -12,7 +12,7 @@ public class MiscUtilCreativeTabOther extends CreativeTabs {
 
 	@Override
 	public Item getTabIconItem() {
-		return ModItems.itemHeliumBlob;
+		return ModItems.backpack_Green;
 	}
 
 }

@@ -6,7 +6,6 @@ import gregtech.api.util.GT_OreDictUnificator;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import miscutil.core.block.ModBlocks;
 import miscutil.core.common.compat.COMPAT_BigReactors;
 import miscutil.core.common.compat.COMPAT_CompactWindmills;
 import miscutil.core.common.compat.COMPAT_EnderIO;
@@ -43,9 +42,7 @@ import miscutil.core.recipe.ShapedRecipeObject;
 import miscutil.core.util.Utils;
 import miscutil.core.util.item.UtilsItems;
 import miscutil.core.util.recipe.UtilsRecipe;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class COMPAT_HANDLER {
 	
@@ -69,8 +66,8 @@ public class COMPAT_HANDLER {
 		GT_OreDictUnificator.registerOre("plateStaballoy", new ItemStack(ModItems.itemPlateStaballoy));
 
 		//Blocks
-		GT_OreDictUnificator.registerOre("blockStaballoy", new ItemStack(Item.getItemFromBlock(ModBlocks.blockStaballoy)));
-		OreDictionary.registerOre("blockBloodSteel", new ItemStack(ModBlocks.blockBloodSteel));
+		//GT_OreDictUnificator.registerOre("blockStaballoy", new ItemStack(Item.getItemFromBlock(ModBlocks.blockStaballoy)));
+		//OreDictionary.registerOre("blockBloodSteel", new ItemStack(ModBlocks.blockBloodSteel));
 
 
 		for(int i=1; i<=10; i++){

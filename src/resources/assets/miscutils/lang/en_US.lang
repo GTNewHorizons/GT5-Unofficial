@@ -3,6 +3,7 @@ itemGroup.MiscUtilMiscTab=[GT++] Items
 itemGroup.MiscUtilCombatTab=[GT++] Combat
 itemGroup.MiscUtilToolsTab=[GT++] Tools
 itemGroup.MiscUtilMachineTab=[GT++] Machines
+itemGroup.MiscUtilOtherTab=[GT++] Items II
 
 item.itemPLACEHOLDER_Circuit.name=Quark Manipulator (UV)
 

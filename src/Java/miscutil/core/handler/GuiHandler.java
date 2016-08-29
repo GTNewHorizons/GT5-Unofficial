@@ -1,9 +1,12 @@
 package miscutil.core.handler;
 
 import miscutil.MiscUtils;
+import miscutil.core.container.Container_BackpackBase;
 import miscutil.core.gui.beta.Gui_ID_Registry;
 import miscutil.core.gui.beta.MU_GuiId;
+import miscutil.core.gui.item.GuiBaseBackpack;
 import miscutil.core.interfaces.IGuiManager;
+import miscutil.core.inventories.BaseInventoryBackpack;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
 import miscutil.xmod.forestry.bees.alveary.TileAlvearyFrameHousing;
@@ -18,8 +21,14 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 
 public class GuiHandler implements IGuiHandler {
 
-	private static final int GUI1 = 0;      //Frame Alveary
-	private static final int GUI2 = 1;      //RTG
+	public static final int GUI1 = 0;      //Frame Alveary
+	public static final int GUI2 = 1;      //RTG
+	public static final int GUI3 = 2;      //BackpackHandler
+	public static final int GUI4 = 3;      //
+	public static final int GUI5 = 4;      //
+	public static final int GUI6 = 5;      //
+	public static final int GUI7 = 6;      //
+	public static final int GUI8 = 7;      //
 	
 
 
@@ -47,7 +56,12 @@ public class GuiHandler implements IGuiHandler {
 			}
 
 
-
+		}
+		
+		if (ID == GUI3)
+		{
+			// Use the player's held item to create the inventory
+			return new Container_BackpackBase(player, player.inventory, new BaseInventoryBackpack(player.getHeldItem()));
 		}
 		return null;
 	}
@@ -68,6 +82,14 @@ public class GuiHandler implements IGuiHandler {
 				//return new GUI_RTG((TileEntityRTG) te.);
 			}
 		}
+		
+		if (ID == GUI3)
+		{
+			// We have to cast the new container as our custom class
+			// and pass in currently held item for the inventory
+			return new GuiBaseBackpack((Container_BackpackBase) new Container_BackpackBase(player, player.inventory, new BaseInventoryBackpack(player.getHeldItem())));
+		}
+		
 		return null;
 	}
 
