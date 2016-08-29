@@ -18,7 +18,6 @@ import miscutil.core.common.compat.COMPAT_SimplyJetpacks;
 import miscutil.core.common.compat.COMPAT_Thaumcraft;
 import miscutil.core.handler.registration.LateRegistrationHandler;
 import miscutil.core.handler.registration.RegistrationHandler;
-import miscutil.core.handler.registration.gregtech.GregtechConduits;
 import miscutil.core.handler.registration.gregtech.GregtechEnergyBuffer;
 import miscutil.core.handler.registration.gregtech.GregtechIndustrialCentrifuge;
 import miscutil.core.handler.registration.gregtech.GregtechIndustrialCokeOven;
@@ -79,7 +78,6 @@ public class COMPAT_HANDLER {
 		if (Gregtech) {
 		new RECIPES_LaserEngraver();
 		GregtechEnergyBuffer.run();
-		GregtechConduits.run();
 		GregtechSteamCondenser.run();
 		GregtechSafeBlock.run();
 		GregtechSuperConductionPoint.run();

@@ -1,6 +1,7 @@
 package miscutil.xmod.gregtech;
 
 import gregtech.api.util.GT_Config;
+import miscutil.core.handler.registration.gregtech.GregtechConduits;
 import miscutil.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import miscutil.xmod.gregtech.common.blocks.fluid.GregtechFluidHandler;
 import miscutil.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
@@ -23,6 +24,10 @@ public class HANDLER_GT {
 	}
 	
 	public static void init(){
+		
+		//Add Custom Pipes, Wires and Cables.
+		GregtechConduits.run();
+		
 		/*if (Meta_GT_Proxy.mSortToTheEnd) {
 			new GT_ItemIterator().run();
 			Meta_GT_Proxy.registerUnificationEntries();
