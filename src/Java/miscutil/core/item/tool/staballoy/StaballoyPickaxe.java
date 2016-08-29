@@ -122,8 +122,8 @@ public class StaballoyPickaxe extends ItemPickaxe{
 
 			if (FACING.equals("below") || FACING.equals("above")){
 				DURABILITY_LOSS = 0;
-				for(int i = -2; i < 3; i++) {
-					for(int j = -2; j < 3; j++) {
+				for(int i = -1; i < 2; i++) {
+					for(int j = -1; j < 2; j++) {
 						float dur = calculateDurabilityLoss(world, X + i, Y, Z + j);
 						DURABILITY_LOSS = (DURABILITY_LOSS + calculateDurabilityLoss(world, X + i, Y, Z + j));	
 						Utils.LOG_WARNING("Added Loss: "+dur);
