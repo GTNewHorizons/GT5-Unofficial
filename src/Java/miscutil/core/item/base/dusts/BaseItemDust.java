@@ -187,19 +187,19 @@ public class BaseItemDust extends Item{
 				if (inputStacks.length >= 2){
 				for (ItemStack is : inputStacks){
 					if (is != null){
-						Utils.LOG_INFO("Found "+is.getDisplayName()+" as an input for mixer recipe.");		
+						Utils.LOG_WARNING("Found "+is.getDisplayName()+" as an input for mixer recipe.");		
 						if (is.getDisplayName().toLowerCase().contains("tell alkalus")){
 							ItemStack tempStackForAName = inputStacks[i];
 							String[] inputList = dustInfo.getInputItemsAsList();
 							int[] inputSizes = dustInfo.getInputStackSizesAsList();
 							inputStacks[i] = UtilsItems.getItemStackOfAmountFromOreDict(inputList[i], inputSizes[i]);
-							Utils.LOG_INFO("Swapping input slot "+i+" which contains "+tempStackForAName.getDisplayName()+" with "+inputStacks[i].getDisplayName()+".");	
+							Utils.LOG_WARNING("Swapping input slot "+i+" which contains "+tempStackForAName.getDisplayName()+" with "+inputStacks[i].getDisplayName()+".");	
 						}
 						
 					}
 					
 					else {
-						Utils.LOG_INFO("Input "+i+" was null.");						
+						Utils.LOG_WARNING("Input "+i+" was null.");						
 					}
 
 					i++;
@@ -226,7 +226,7 @@ public class BaseItemDust extends Item{
 	}
 
 	private void addMacerationRecipe(){
-		Utils.LOG_INFO("Adding recipe for "+materialName+" Dusts");
+		Utils.LOG_WARNING("Adding recipe for "+materialName+" Dusts");
 
 		String tempIngot = getUnlocalizedName().replace("item.itemDust", "ingot");
 		String tempDust = getUnlocalizedName().replace("item.itemDust", "dust");
@@ -283,18 +283,18 @@ public class BaseItemDust extends Item{
 		if (temp != null && temp != ""){
 
 			if (this.useBlastFurnace){
-				Utils.LOG_INFO("Adding recipe for Hot "+materialName+" Ingots in a Blast furnace.");
+				Utils.LOG_WARNING("Adding recipe for Hot "+materialName+" Ingots in a Blast furnace.");
 				String tempIngot = temp.replace("ingot", "ingotHot");
 				ItemStack tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 1);
-				Utils.LOG_INFO("This will produce "+tempOutputStack.getDisplayName() + " Debug: "+tempIngot);
+				Utils.LOG_WARNING("This will produce "+tempOutputStack.getDisplayName() + " Debug: "+tempIngot);
 				if (null != tempOutputStack){
 					addBlastFurnaceRecipe(UtilsItems.getSimpleStack(this), null, tempOutputStack, null, 350*mTier);		
 				}				
 				return;
 			}
-			Utils.LOG_INFO("Adding recipe for "+materialName+" Ingots in a furnace.");
+			Utils.LOG_WARNING("Adding recipe for "+materialName+" Ingots in a furnace.");
 			ItemStack tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(temp, 1);
-			Utils.LOG_INFO("This will produce an ingot of "+tempOutputStack.getDisplayName() + " Debug: "+temp);
+			Utils.LOG_WARNING("This will produce an ingot of "+tempOutputStack.getDisplayName() + " Debug: "+temp);
 			if (null != tempOutputStack){
 				if (mTier < 5){
 					if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
@@ -305,8 +305,8 @@ public class BaseItemDust extends Item{
 					}		
 				}	
 				else if (mTier >= 5){
-					Utils.LOG_INFO("Adding recipe for "+materialName+" Ingots in a Blast furnace.");
-					Utils.LOG_INFO("This will produce "+tempOutputStack.getDisplayName());
+					Utils.LOG_WARNING("Adding recipe for "+materialName+" Ingots in a Blast furnace.");
+					Utils.LOG_WARNING("This will produce "+tempOutputStack.getDisplayName());
 					if (null != tempOutputStack){
 						addBlastFurnaceRecipe(UtilsItems.getSimpleStack(this), null, tempOutputStack, null, 350*mTier);		
 					}				

@@ -284,6 +284,10 @@ public final class ModItems {
 		UtilsItems.generateItemsFromMaterial("NiobiumCarbide", "Niobium Carbide", 6, MaterialInfo.NIOMBIUMCARBIDE, Utils.rgbtoHexValue(205, 197, 191), true);
 		
 		
+		//Uranium-233
+		UtilsItems.generateItemsFromMaterial("Uranium233", "Uranium 233", 2, MaterialInfo.INCONEL792, Utils.rgbtoHexValue(73, 220, 83), true); //Uranium-233 is a fissile isotope of uranium that is bred from thorium-232 as part of the thorium fuel cycle. 
+		
+		
 		//EnderIO Resources
 		if (LoadedMods.EnderIO || LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("EnderIO Found - Loading Resources.");

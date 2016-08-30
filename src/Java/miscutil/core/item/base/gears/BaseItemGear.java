@@ -67,7 +67,7 @@ public class BaseItemGear extends Item{
 	}
 
 	private void addExtruderRecipe(){
-		Utils.LOG_INFO("Adding recipe for "+materialName+" Gears");
+		Utils.LOG_WARNING("Adding recipe for "+materialName+" Gears");
 		String tempIngot = unlocalName.replace("itemGear", "ingot");
 		ItemStack tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 8);
 		if (null != tempOutputStack){

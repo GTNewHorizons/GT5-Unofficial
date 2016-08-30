@@ -67,7 +67,7 @@ public class BaseItemRing extends Item{
 	}
 
 	private void addExtruderRecipe(){
-		Utils.LOG_INFO("Adding recipe for "+materialName+" Rings");
+		Utils.LOG_WARNING("Adding recipe for "+materialName+" Rings");
 		String tempIngot = unlocalName.replace("itemRing", "ingot");
 		ItemStack tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 1);
 		if (null != tempOutputStack){

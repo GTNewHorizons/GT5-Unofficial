@@ -72,7 +72,7 @@ public class BaseItemRotor extends Item{
 	
 	public void generateRecipe(){
 		
-		Utils.LOG_INFO("Adding recipe for "+materialName+" Rotors");
+		Utils.LOG_WARNING("Adding recipe for "+materialName+" Rotors");
 		String tempIngot = unlocalName.replace("itemRotor", "plate");
 		ItemStack tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 1);
 		Utils.LOG_WARNING("Found for recipe:"+tempIngot+ "isValidStack()="+getValidItemStack(tempOutputStack));

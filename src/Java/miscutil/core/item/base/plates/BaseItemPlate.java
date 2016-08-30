@@ -66,7 +66,7 @@ public class BaseItemPlate extends Item{
 	}
 
 	private void addBendingRecipe(){
-		Utils.LOG_INFO("Adding recipe for "+materialName+" Plates");
+		Utils.LOG_WARNING("Adding recipe for "+materialName+" Plates");
 		String tempIngot = unlocalName.replace("itemPlate", "ingot");
 		ItemStack tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 1);
 		if (null != tempOutputStack){

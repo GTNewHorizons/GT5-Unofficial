@@ -67,7 +67,7 @@ public class BaseItemBolt extends Item{
 	}
 
 	private void addExtruderRecipe(){
-		Utils.LOG_INFO("Adding recipe for "+materialName+" Bolts");
+		Utils.LOG_WARNING("Adding recipe for "+materialName+" Bolts");
 		String tempIngot = unlocalName.replace("itemBolt", "ingot");
 		ItemStack tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 1);
 		if (null != tempOutputStack){

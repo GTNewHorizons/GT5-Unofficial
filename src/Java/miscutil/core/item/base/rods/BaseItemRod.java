@@ -68,7 +68,7 @@ public class BaseItemRod extends Item{
 	}
 	
 	private void addExtruderRecipe(){
-		Utils.LOG_INFO("Adding recipe for "+materialName+" Rods");
+		Utils.LOG_WARNING("Adding recipe for "+materialName+" Rods");
 		String tempIngot = unlocalName.replace("itemRod", "ingot");
 		ItemStack tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 1);
 		if (null != tempOutputStack){
