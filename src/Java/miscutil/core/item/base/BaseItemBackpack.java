@@ -5,7 +5,6 @@ import miscutil.MiscUtils;
 import miscutil.core.creative.AddToCreativeTab;
 import miscutil.core.handler.GuiHandler;
 import miscutil.core.lib.CORE;
-import miscutil.core.util.Utils;
 import miscutil.core.util.item.UtilsItems;
 import miscutil.core.util.math.MathUtils;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -20,15 +19,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BaseItemBackpack extends Item{
 	
 	protected final int colourValue;
+	protected final String unlocalName;
 	
 	
 	public BaseItemBackpack(String unlocalizedName, int colour){
-	
+	this.unlocalName = unlocalizedName;
 	this.setUnlocalizedName(unlocalizedName);
 	this.setTextureName(CORE.MODID + ":" + "itemBackpack");
 	this.colourValue = colour;
 	GameRegistry.registerItem(this, unlocalizedName);
-	GT_OreDictUnificator.registerOre(unlocalizedName.replace("itemB", "b"), UtilsItems.getSimpleStack(this));
+	GT_OreDictUnificator.registerOre("storageBackpack", UtilsItems.getSimpleStack(this));
 	setMaxStackSize(1);
 	setCreativeTab(AddToCreativeTab.tabOther);
 	}
@@ -44,10 +44,8 @@ public class BaseItemBackpack extends Item{
 	{
 		if (!world.isRemote)
 		{
-			Utils.LOG_INFO("Tried to use a Backpack.");
 			// If player not sneaking, open the inventory gui
 			if (!player.isSneaking()) {
-				Utils.LOG_INFO("Player is not sneaking.");
 				player.openGui(MiscUtils.instance, GuiHandler.GUI3, world, 0, 0, 0);
 			}
 			
@@ -72,8 +70,14 @@ public class BaseItemBackpack extends Item{
     	
     @Override
     	public String getItemStackDisplayName(ItemStack p_77653_1_) {
-
-    		return ("Backpack");
+    	//Name Formatting.
+    	String temp = unlocalName.replace("backpack", "");
+    	//Lets find the colour.
+    	if (temp.toLowerCase().contains("dark")){
+    		temp = unlocalName.substring(12, unlocalName.length());
+    		temp = "Dark "+ temp;
+    	}
+    		return (temp+" Backpack");
     	}
 
 	@Override

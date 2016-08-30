@@ -3,6 +3,7 @@ package miscutil.xmod.gregtech.common.blocks.fluid;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
+import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.Utils;
 import miscutil.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import miscutil.xmod.gregtech.common.Meta_GT_Proxy;
@@ -29,11 +30,13 @@ public class GregtechFluidHandler {
         Meta_GT_Proxy.addFluid("mcguffium", "Mc Guffium 239", Materials.McGuffium239, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.McGuffium239, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
         Meta_GT_Proxy.addFluid("glue", "Glue", Materials.Glue, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Glue, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
         */
+		
+		if (!LoadedMods.ThermalFoundation){
 		Utils.LOG_INFO("Adding Gregtech versions of Gelic Cryotheum and Blazing Pyrotheum.");
 		
 		Meta_GT_Proxy.addFluid("cryotheum", "Gelid Cryotheum", GT_Materials.Cryotheum, 4, -1200, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.Cryotheum, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
 		Meta_GT_Proxy.addFluid("pyrotheum", "Blazing Pyrotheum", GT_Materials.Pyrotheum, 4, 4000, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.Pyrotheum, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
-
+		}
 	}
 	
 }

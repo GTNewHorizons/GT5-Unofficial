@@ -1,5 +1,6 @@
 package miscutil.xmod.thermalfoundation.fluid;
 
+import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.Utils;
 import miscutil.xmod.thermalfoundation.item.TF_Items;
 import net.minecraft.block.BlockDispenser;
@@ -17,7 +18,8 @@ public class TF_Fluids
 
 	public static void preInit()
 	{
-		Utils.LOG_INFO("Loading TF Fluids");
+		if (!LoadedMods.ThermalFoundation){
+		Utils.LOG_INFO("Adding in our own versions of Thermal Foundation Fluids");
 		Fluid pyrotheum = FluidRegistry.getFluid("pyrotheum");
 		Fluid cryotheum = FluidRegistry.getFluid("cryotheum");
 		
@@ -38,6 +40,10 @@ public class TF_Fluids
 		else {
 			Utils.LOG_INFO("Registering Gelid Cryotheum as it an already existing Fluid.");
 			fluidCryotheum = cryotheum;
+		}
+		}
+		else {
+			Utils.LOG_INFO("Thermal Foundation is already loaded, no need to add our own Cryotheum/Pyrotheum.");
 		}
 	}
 

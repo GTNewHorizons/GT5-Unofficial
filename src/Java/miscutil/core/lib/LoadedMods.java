@@ -31,6 +31,8 @@ public class LoadedMods {
 	public static boolean ExtraBees = false;
 	public static boolean Psychedelicraft = false;
 	public static boolean MiscUtils = true; //Dummy For MetaData Lookups in MT Wrapper
+	public static boolean ThermalFoundation = false;
+	
 
 	
 	private static int totalMods;
@@ -148,6 +150,16 @@ public class LoadedMods {
 			ExtraBees  = true;
 			Utils.LOG_INFO("Components enabled for: ExtraBees");
 			totalMods++;
+		}
+		if (Loader.isModLoaded("ThermalFoundation") == false){
+			ThermalFoundation  = false;
+			Utils.LOG_INFO("Components enabled for: ThermalFoundation");
+			totalMods++;
+		}
+		else if (Loader.isModLoaded("ThermalFoundation") == true){
+			ThermalFoundation  = true;
+			Utils.LOG_INFO("Components disabled for: ThermalFoundation");
+			//totalMods++;
 		}
 		
 	
