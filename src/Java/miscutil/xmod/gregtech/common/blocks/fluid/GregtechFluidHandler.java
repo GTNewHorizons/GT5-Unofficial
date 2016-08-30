@@ -32,8 +32,8 @@ public class GregtechFluidHandler {
         */
 		
 		if (!LoadedMods.ThermalFoundation){
-		Utils.LOG_INFO("Adding Gregtech versions of Gelic Cryotheum and Blazing Pyrotheum.");
-		
+
+		Utils.LOG_INFO("Adding in our own GT versions of Thermal Foundation Fluids");		
 		Meta_GT_Proxy.addFluid("cryotheum", "Gelid Cryotheum", GT_Materials.Cryotheum, 4, -1200, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.Cryotheum, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
 		Meta_GT_Proxy.addFluid("pyrotheum", "Blazing Pyrotheum", GT_Materials.Pyrotheum, 4, 4000, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.Pyrotheum, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
 		}

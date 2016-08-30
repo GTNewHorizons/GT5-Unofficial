@@ -46,7 +46,14 @@ public class CasingTextureHandler {
 				return Textures.BlockIcons.MACHINE_CASING_DRAGONEGG.getIcon();
 				//Iron Blast Fuance Textures
 			case 10:
-				return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();			
+				return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();		
+				
+				//Reactor Casing I
+			case 12:
+				return Textures.BlockIcons.MACHINE_CASING_CLEAN_STAINLESSSTEEL.getIcon();	
+				//Reactor Casing II
+			case 13:
+				return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();	
 
 			default:
 				return Textures.BlockIcons.MACHINE_CASING_RADIOACTIVEHAZARD.getIcon();

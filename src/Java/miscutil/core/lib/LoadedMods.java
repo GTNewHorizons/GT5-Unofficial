@@ -153,12 +153,12 @@ public class LoadedMods {
 		}
 		if (Loader.isModLoaded("ThermalFoundation") == false){
 			ThermalFoundation  = false;
-			Utils.LOG_INFO("Components enabled for: ThermalFoundation");
+			Utils.LOG_INFO("Components enabled for: ThermalFoundation - This feature will disable itself if you add TF.");
 			totalMods++;
 		}
 		else if (Loader.isModLoaded("ThermalFoundation") == true){
 			ThermalFoundation  = true;
-			Utils.LOG_INFO("Components disabled for: ThermalFoundation");
+			Utils.LOG_INFO("Components disabled for: ThermalFoundation - This feature will enable itself if you remove TF.");
 			//totalMods++;
 		}
 		

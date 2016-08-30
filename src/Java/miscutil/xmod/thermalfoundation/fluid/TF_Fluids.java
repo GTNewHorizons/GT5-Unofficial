@@ -19,7 +19,7 @@ public class TF_Fluids
 	public static void preInit()
 	{
 		if (!LoadedMods.ThermalFoundation){
-		Utils.LOG_INFO("Adding in our own versions of Thermal Foundation Fluids");
+		Utils.LOG_INFO("Adding in our own versions of Thermal Foundation Fluids - Non-GT");
 		Fluid pyrotheum = FluidRegistry.getFluid("pyrotheum");
 		Fluid cryotheum = FluidRegistry.getFluid("cryotheum");
 		
