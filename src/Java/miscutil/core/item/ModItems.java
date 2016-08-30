@@ -272,6 +272,7 @@ public final class ModItems {
 		UtilsItems.generateItemsFromMaterial("HastelloyW", "Hastelloy-W", 6, MaterialInfo.HASTELLOY_W, Utils.rgbtoHexValue(218, 165, 32), false);
 		UtilsItems.generateItemsFromMaterial("HastelloyX", "Hastelloy-X", 6, MaterialInfo.HASTELLOY_X, Utils.rgbtoHexValue(255, 193, 37), false);
 		UtilsItems.generateItemsFromMaterial("HastelloyC276", "Hastelloy-C276", 7, MaterialInfo.HASTELLOY_C276, Utils.rgbtoHexValue(238, 180, 34), true);
+		UtilsItems.generateItemsFromMaterial("HastelloyN", "Hastelloy-N", 8, MaterialInfo.HASTELLOY_N, Utils.rgbtoHexValue(155, 223, 237), true);
 		
 		UtilsItems.generateItemsFromMaterial("Incoloy020", "Incoloy-020", 7, MaterialInfo.INCOLOY020, Utils.rgbtoHexValue(81, 81, 81), false);
 		UtilsItems.generateItemsFromMaterial("IncoloyDS", "Incoloy-DS", 7, MaterialInfo.INCOLOYDS, Utils.rgbtoHexValue(91, 91, 91), false);

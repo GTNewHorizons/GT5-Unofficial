@@ -333,8 +333,14 @@ public enum GregtechOrePrefixes {
 		Inconel690(44, TextureSet.SET_DULL, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 118, 220, 138, 0, "Inconel-690", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2, Arrays.asList(new MaterialStack(Materials.Tungsten, 1), new MaterialStack(Materials.Tantalum, 9), new MaterialStack(Materials.Titanium, 1)), Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
 		MaragingSteel300(45, TextureSet.SET_METALLIC, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 150, 150, 150, 0, "Maraging Steel 300", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2, Arrays.asList(new MaterialStack(Materials.Tungsten, 1), new MaterialStack(Materials.Tantalum, 9), new MaterialStack(Materials.Titanium, 1)), Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
 		MaragingSteel350(46, TextureSet.SET_METALLIC, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 160, 160, 160, 0, "Maraging Steel 350", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2, Arrays.asList(new MaterialStack(Materials.Tungsten, 1), new MaterialStack(Materials.Tantalum, 9), new MaterialStack(Materials.Titanium, 1)), Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
-		HastelloyX(47, TextureSet.SET_SHINY, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 255, 193, 37, 0, "Hastelloy-X", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2, Arrays.asList(new MaterialStack(Materials.Tungsten, 1), new MaterialStack(Materials.Tantalum, 9), new MaterialStack(Materials.Titanium, 1)), Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3)));
+		HastelloyX(47, TextureSet.SET_SHINY, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 255, 193, 37, 0, "Hastelloy-X", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2, Arrays.asList(new MaterialStack(Materials.Tungsten, 1), new MaterialStack(Materials.Tantalum, 9), new MaterialStack(Materials.Titanium, 1)), Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
 
+
+		
+		//Radioactive Materials
+		UraniumHexaFluoride(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 73, 220, 83, 0, "Uranium HexaFluoride", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeLime, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1))),
+		UraniumTetraFluoride(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 73, 220, 83, 0, "Uranium TetraFluoride", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeLime, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1)));
+		
 		
 		
 		/**
