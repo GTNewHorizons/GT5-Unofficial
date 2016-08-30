@@ -22,7 +22,7 @@ public class BaseItemIngotHot extends BaseItemIngot{
 	private int mTier;
 
 	public BaseItemIngotHot(String unlocalizedName, String materialName, ItemStack coldIngot, int tier) {
-		super(unlocalizedName, materialName, Utils.rgbtoHexValue(225, 225, 225));
+		super(unlocalizedName, materialName, Utils.rgbtoHexValue(225, 225, 225), 0);
 		this.setTextureName(CORE.MODID + ":" + "itemIngotHot");
 		this.outputIngot = coldIngot;
 		this.mTier = tier;

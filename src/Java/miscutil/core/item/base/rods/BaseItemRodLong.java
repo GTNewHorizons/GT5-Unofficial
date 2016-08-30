@@ -2,6 +2,8 @@ package miscutil.core.item.base.rods;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_OreDictUnificator;
+import ic2.core.IC2Potion;
+import ic2.core.item.armor.ItemArmorHazmat;
 
 import java.util.List;
 
@@ -11,10 +13,13 @@ import miscutil.core.util.Utils;
 import miscutil.core.util.item.UtilsItems;
 import miscutil.core.util.math.MathUtils;
 import miscutil.core.util.recipe.UtilsRecipe;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BaseItemRodLong extends Item{
@@ -24,7 +29,7 @@ public class BaseItemRodLong extends Item{
 	protected String unlocalName;
 	private int mTier;
 
-	public BaseItemRodLong(String unlocalizedName, String materialName, int colour, int tier) {
+	public BaseItemRodLong(String unlocalizedName, String materialName, int colour, int tier, int sRadioactivity) {
 		setUnlocalizedName(unlocalizedName);
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
 		this.setUnlocalizedName(unlocalizedName);
@@ -34,6 +39,7 @@ public class BaseItemRodLong extends Item{
 		this.colour = colour;
 		this.mTier = tier;
 		this.materialName = materialName;
+		this.sRadiation = sRadioactivity;
 		GameRegistry.registerItem(this, unlocalizedName);
 		GT_OreDictUnificator.registerOre(unlocalName.replace("itemRod", "stick"), UtilsItems.getSimpleStack(this));
 		addExtruderRecipe();
@@ -50,6 +56,9 @@ public class BaseItemRodLong extends Item{
 		if (materialName != null && materialName != "" && !materialName.equals("")){
 			list.add(EnumChatFormatting.GRAY+"A 80cm Rod of " + materialName + ".");		
 		}
+		if (sRadiation > 0){
+			list.add(EnumChatFormatting.GRAY+"Warning: "+EnumChatFormatting.GREEN+"Radioactive! "+EnumChatFormatting.GOLD+" Avoid direct handling without hazmat protection.");
+		}
 		super.addInformation(stack, aPlayer, list, bool);
 	}
 
@@ -65,6 +74,19 @@ public class BaseItemRodLong extends Item{
 		return colour;
 
 	}
+
+	protected final int sRadiation;
+	 @Override
+		public void onUpdate(ItemStack iStack, World world, Entity entityHolding, int p_77663_4_, boolean p_77663_5_) {
+			if (!world.isRemote){
+				if (this.sRadiation > 0 && (entityHolding instanceof EntityLivingBase)) {
+			         EntityLivingBase entityLiving = (EntityLivingBase) entityHolding;
+			         if (!ItemArmorHazmat.hasCompleteHazmat(entityLiving)) {
+			             IC2Potion.radiation.applyTo(entityLiving, sRadiation * 20, sRadiation * 10);
+			         }
+			     }
+			}
+		}
 	
 	private void addExtruderRecipe(){
 		Utils.LOG_WARNING("Adding recipe for Long "+materialName+" Rods");

@@ -6,6 +6,8 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import ic2.core.IC2Potion;
+import ic2.core.item.armor.ItemArmorHazmat;
 
 import java.util.List;
 
@@ -15,10 +17,13 @@ import miscutil.core.util.Utils;
 import miscutil.core.util.item.UtilsItems;
 import miscutil.core.util.math.MathUtils;
 import miscutil.core.util.recipe.UtilsRecipe;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BaseItemDust extends Item{
@@ -31,7 +36,7 @@ public class BaseItemDust extends Item{
 	private int mTier;
 	private MaterialInfo dustInfo;
 
-	public BaseItemDust(String unlocalizedName, String materialName, MaterialInfo matInfo, int colour, String pileSize, boolean blastFurnaceRequired, int tier) {
+	public BaseItemDust(String unlocalizedName, String materialName, MaterialInfo matInfo, int colour, String pileSize, boolean blastFurnaceRequired, int tier, int sRadioactivity) {
 		setUnlocalizedName(unlocalizedName);
 		this.setUnlocalizedName(unlocalizedName);
 		this.setMaxStackSize(64);	
@@ -45,6 +50,7 @@ public class BaseItemDust extends Item{
 		this.materialName = materialName;
 		this.useBlastFurnace = blastFurnaceRequired;
 		this.dustInfo = matInfo;
+		this.sRadiation = sRadioactivity;
 		GameRegistry.registerItem(this, unlocalizedName);
 
 		String temp = "";
@@ -90,6 +96,19 @@ public class BaseItemDust extends Item{
 		}
 		return name;
 	}
+	
+	protected final int sRadiation;
+	 @Override
+		public void onUpdate(ItemStack iStack, World world, Entity entityHolding, int p_77663_4_, boolean p_77663_5_) {
+			if (!world.isRemote){
+				if (this.sRadiation > 0 && (entityHolding instanceof EntityLivingBase)) {
+			         EntityLivingBase entityLiving = (EntityLivingBase) entityHolding;
+			         if (!ItemArmorHazmat.hasCompleteHazmat(entityLiving)) {
+			             IC2Potion.radiation.applyTo(entityLiving, sRadiation * 20, sRadiation * 10);
+			         }
+			     }
+			}
+		}
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
@@ -102,6 +121,9 @@ public class BaseItemDust extends Item{
 			}
 			else {
 				list.add(EnumChatFormatting.GRAY+"A pile of " + materialName + " dust.");
+			}
+			if (sRadiation > 0){
+				list.add(EnumChatFormatting.GRAY+"Warning: "+EnumChatFormatting.GREEN+"Radioactive! "+EnumChatFormatting.GOLD+" Avoid direct handling without hazmat protection.");
 			}
 		//}
 		super.addInformation(stack, aPlayer, list, bool);

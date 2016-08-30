@@ -253,22 +253,27 @@ public class UtilsItems {
 		if (materialTier > 10 || materialTier <= 0){
 			materialTier = 2;
 		}
+		int sRadiation = 0;
+		
+		if (materialName.toLowerCase().contains("uranium") || materialName.toLowerCase().contains("plutonium") || materialName.toLowerCase().contains("thorium")){
+			sRadiation = 2;
+		}
 		Item temp;
 		Block tempBlock;
 		tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
 		tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.FRAME, Colour);
-		temp = new BaseItemIngot("itemIngot"+unlocalizedName, materialName, Colour);
+		temp = new BaseItemIngot("itemIngot"+unlocalizedName, materialName, Colour, sRadiation);
 		if (hotIngot){
 			Item tempIngot = temp;
 			temp = new BaseItemIngotHot("itemHotIngot"+unlocalizedName, materialName, UtilsItems.getSimpleStack(tempIngot, 1), materialTier);
 			}
-		temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", hotIngot, materialTier);
-		temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", hotIngot, materialTier);
-		temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", hotIngot, materialTier);
+		temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", hotIngot, materialTier, sRadiation);
+		temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", hotIngot, materialTier, sRadiation);
+		temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", hotIngot, materialTier, sRadiation);
 		
-		temp = new BaseItemPlate("itemPlate"+unlocalizedName, materialName, Colour, materialTier);
-		temp = new BaseItemRod("itemRod"+unlocalizedName, materialName, Colour, materialTier);
-		temp = new BaseItemRodLong("itemRodLong"+unlocalizedName, materialName, Colour, materialTier);
+		temp = new BaseItemPlate("itemPlate"+unlocalizedName, materialName, Colour, materialTier, sRadiation);
+		temp = new BaseItemRod("itemRod"+unlocalizedName, materialName, Colour, materialTier, sRadiation);
+		temp = new BaseItemRodLong("itemRodLong"+unlocalizedName, materialName, Colour, materialTier, sRadiation);
 		temp = new BaseItemRing("itemRing"+unlocalizedName, materialName, Colour, materialTier);
 		temp = new BaseItemBolt("itemBolt"+unlocalizedName, materialName, Colour, materialTier);
 		temp = new BaseItemScrew("itemScrew"+unlocalizedName, materialName, Colour, materialTier);

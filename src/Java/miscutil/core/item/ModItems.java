@@ -195,7 +195,7 @@ public final class ModItems {
 	//@SuppressWarnings("unused")
 	public static final void init(){
 
-		AAA_Broken = new BaseItemIngot("AAA_Broken", "Errors - Tell Alkalus", Utils.rgbtoHexValue(128, 128, 128));
+		AAA_Broken = new BaseItemIngot("AAA_Broken", "Errors - Tell Alkalus", Utils.rgbtoHexValue(128, 128, 128), 0);
 
 		//Debug Loading
 		if (CORE.DEBUG){
@@ -284,8 +284,8 @@ public final class ModItems {
 		UtilsItems.generateItemsFromMaterial("NiobiumCarbide", "Niobium Carbide", 6, MaterialInfo.NIOMBIUMCARBIDE, Utils.rgbtoHexValue(205, 197, 191), true);
 		
 		
-		//Uranium-233
-		UtilsItems.generateItemsFromMaterial("Uranium233", "Uranium 233", 2, MaterialInfo.INCONEL792, Utils.rgbtoHexValue(73, 220, 83), true); //Uranium-233 is a fissile isotope of uranium that is bred from thorium-232 as part of the thorium fuel cycle. 
+		//Uranium-233if
+		UtilsItems.generateItemsFromMaterial("Uranium233", "Uranium 233", 4, MaterialInfo.INCONEL792, Utils.rgbtoHexValue(73, 220, 83), false); //Uranium-233 is a fissile isotope of uranium that is bred from thorium-232 as part of the thorium fuel cycle. 
 		
 		
 		//EnderIO Resources
@@ -416,8 +416,8 @@ public final class ModItems {
 
 		//Special Item Handling Case
 		if (configSwitches.enableAlternativeBatteryAlloy) {
-			ModItems.itemIngotBatteryAlloy = new BaseItemIngot("itemIngotBatteryAlloy", "Battery Alloy", Utils.rgbtoHexValue(35, 228, 141));
-			ModItems.itemPlateBatteryAlloy = new BaseItemPlate("itemPlateBatteryAlloy", "Battery Alloy", Utils.rgbtoHexValue(35, 228, 141), 2);
+			ModItems.itemIngotBatteryAlloy = new BaseItemIngot("itemIngotBatteryAlloy", "Battery Alloy", Utils.rgbtoHexValue(35, 228, 141), 0);
+			ModItems.itemPlateBatteryAlloy = new BaseItemPlate("itemPlateBatteryAlloy", "Battery Alloy", Utils.rgbtoHexValue(35, 228, 141), 2, 0);
 		}
 
 
