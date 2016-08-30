@@ -3,6 +3,8 @@ package miscutil.core.util;
 import static gregtech.api.enums.GT_Values.F;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
+import ic2.core.IC2Potion;
+import ic2.core.item.armor.ItemArmorHazmat;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -21,6 +23,7 @@ import miscutil.core.util.math.MathUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -49,7 +52,7 @@ public class Utils {
 	public static TC_AspectStack getTcAspectStack (TC_Aspects aspect, int size){
 
 		TC_AspectStack returnValue = null;
-		
+
 		if (aspect.name().toUpperCase() == "COGNITIO"){
 			//Adds in Compat for older GT Versions which Misspell aspects.
 			try {
@@ -57,7 +60,7 @@ public class Utils {
 			} catch (NoSuchFieldError r){
 				Utils.LOG_INFO("Fallback TC Aspect found - "+aspect.name()+" - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
 				returnValue = new TC_AspectStack(TC_Aspects.valueOf("COGNITO"), size);
-				
+
 			}
 		}
 		else if (aspect.name().toUpperCase() == "EXANIMUS"){
@@ -435,6 +438,28 @@ public class Utils {
 			return false;
 		}
 		return true;
+	}
+
+	public static boolean applyRadiationDamageToEntity(int damage, World world, Entity entityHolding){
+		if (!world.isRemote){				
+			if (damage > 0 && (entityHolding instanceof EntityLivingBase)) {
+				EntityLivingBase entityLiving = (EntityLivingBase) entityHolding;
+				if (!ItemArmorHazmat.hasCompleteHazmat(entityLiving)) {
+					int duration;
+					if (entityLiving.getActivePotionEffect(IC2Potion.radiation) != null){
+						//Utils.LOG_INFO("t");
+						duration = (damage*5)+entityLiving.getActivePotionEffect(IC2Potion.radiation).getDuration();
+					}
+					else {
+						//Utils.LOG_INFO("f");
+						duration = damage*30;
+					}					
+					IC2Potion.radiation.applyTo(entityLiving, duration, damage * 15);
+				}
+			}
+			return true;
+		}
+		return false;		
 	}
 
 

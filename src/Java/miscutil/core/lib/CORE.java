@@ -35,6 +35,7 @@ public class CORE {
 	public static final Class<AddToCreativeTab> TAB = AddToCreativeTab.class;
 	public static Configuration Config;	
 	public static final String GT_Tooltip = "Added by: " + EnumChatFormatting.DARK_GREEN+"Alkalus "+EnumChatFormatting.GRAY+"- "+EnumChatFormatting.RED+"[GT++]";
+	public static final String GT_Tooltip_Radioactive = EnumChatFormatting.GRAY+"Warning: "+EnumChatFormatting.GREEN+"Radioactive! "+EnumChatFormatting.GOLD+" Avoid direct handling without hazmat protection.";
 	public static final String noItem = "";
 	
 	/**

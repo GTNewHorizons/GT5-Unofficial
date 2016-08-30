@@ -2,8 +2,6 @@ package miscutil.core.item.base.rods;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_OreDictUnificator;
-import ic2.core.IC2Potion;
-import ic2.core.item.armor.ItemArmorHazmat;
 
 import java.util.List;
 
@@ -14,7 +12,6 @@ import miscutil.core.util.item.UtilsItems;
 import miscutil.core.util.math.MathUtils;
 import miscutil.core.util.recipe.UtilsRecipe;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -57,7 +54,7 @@ public class BaseItemRodLong extends Item{
 			list.add(EnumChatFormatting.GRAY+"A 80cm Rod of " + materialName + ".");		
 		}
 		if (sRadiation > 0){
-			list.add(EnumChatFormatting.GRAY+"Warning: "+EnumChatFormatting.GREEN+"Radioactive! "+EnumChatFormatting.GOLD+" Avoid direct handling without hazmat protection.");
+			list.add(CORE.GT_Tooltip_Radioactive);
 		}
 		super.addInformation(stack, aPlayer, list, bool);
 	}
@@ -76,18 +73,11 @@ public class BaseItemRodLong extends Item{
 	}
 
 	protected final int sRadiation;
-	 @Override
-		public void onUpdate(ItemStack iStack, World world, Entity entityHolding, int p_77663_4_, boolean p_77663_5_) {
-			if (!world.isRemote){
-				if (this.sRadiation > 0 && (entityHolding instanceof EntityLivingBase)) {
-			         EntityLivingBase entityLiving = (EntityLivingBase) entityHolding;
-			         if (!ItemArmorHazmat.hasCompleteHazmat(entityLiving)) {
-			             IC2Potion.radiation.applyTo(entityLiving, sRadiation * 20, sRadiation * 10);
-			         }
-			     }
-			}
-		}
-	
+	@Override
+	public void onUpdate(ItemStack iStack, World world, Entity entityHolding, int p_77663_4_, boolean p_77663_5_) {
+		Utils.applyRadiationDamageToEntity(sRadiation, world, entityHolding);
+	}
+
 	private void addExtruderRecipe(){
 		Utils.LOG_WARNING("Adding recipe for Long "+materialName+" Rods");
 		String tempIngot = unlocalName.replace("itemRodLong", "stick");
