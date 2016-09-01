@@ -2,8 +2,6 @@ package miscutil.core.item.base.dusts;
 
 import static miscutil.core.creative.AddToCreativeTab.tabMisc;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 
@@ -12,6 +10,7 @@ import java.util.List;
 import miscutil.core.lib.CORE;
 import miscutil.core.lib.MaterialInfo;
 import miscutil.core.util.Utils;
+import miscutil.core.util.gregtech.five.GregtechVersionRecipeHandler;
 import miscutil.core.util.item.UtilsItems;
 import miscutil.core.util.math.MathUtils;
 import miscutil.core.util.recipe.UtilsRecipe;
@@ -93,28 +92,28 @@ public class BaseItemDust extends Item{
 		}
 		return name;
 	}
-	
+
 	protected final int sRadiation;
-	 @Override
-		public void onUpdate(ItemStack iStack, World world, Entity entityHolding, int p_77663_4_, boolean p_77663_5_) {
-		 Utils.applyRadiationDamageToEntity(sRadiation, world, entityHolding);
-		}
+	@Override
+	public void onUpdate(ItemStack iStack, World world, Entity entityHolding, int p_77663_4_, boolean p_77663_5_) {
+		Utils.applyRadiationDamageToEntity(sRadiation, world, entityHolding);
+	}
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
 		//if (pileType != null && materialName != null && pileType != "" && materialName != "" && !pileType.equals("") && !materialName.equals("")){
-			if (getUnlocalizedName().contains("DustTiny")){
-				list.add(EnumChatFormatting.GRAY+"A tiny pile of " + materialName + " dust.");	
-			}
-			else if (getUnlocalizedName().contains("DustSmall")){
-				list.add(EnumChatFormatting.GRAY+"A small pile of " + materialName + " dust.");	
-			}
-			else {
-				list.add(EnumChatFormatting.GRAY+"A pile of " + materialName + " dust.");
-			}
-			if (sRadiation > 0){
-				list.add(CORE.GT_Tooltip_Radioactive);
-				}
+		if (getUnlocalizedName().contains("DustTiny")){
+			list.add(EnumChatFormatting.GRAY+"A tiny pile of " + materialName + " dust.");	
+		}
+		else if (getUnlocalizedName().contains("DustSmall")){
+			list.add(EnumChatFormatting.GRAY+"A small pile of " + materialName + " dust.");	
+		}
+		else {
+			list.add(EnumChatFormatting.GRAY+"A pile of " + materialName + " dust.");
+		}
+		if (sRadiation > 0){
+			list.add(CORE.GT_Tooltip_Radioactive);
+		}
 		//}
 		super.addInformation(stack, aPlayer, list, bool);
 	}
@@ -131,8 +130,8 @@ public class BaseItemDust extends Item{
 		return colour;
 
 	}
-	
-	
+
+
 
 	private void addMixerRecipe(){
 		ItemStack tempStack = UtilsItems.getSimpleStack(this);
@@ -161,7 +160,7 @@ public class BaseItemDust extends Item{
 			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
 		}		
 		if (temp != null && temp != ""){
-			
+
 			if (getUnlocalizedName().contains("DustTiny") || getUnlocalizedName().contains("DustSmall")){
 				tempOutput = UtilsItems.getItemStackOfAmountFromOreDict(temp, 1);
 			}
@@ -175,7 +174,7 @@ public class BaseItemDust extends Item{
 					tempOutput = UtilsItems.getItemStackOfAmountFromOreDict(temp, 1);
 				}
 			}
-			
+
 		}
 
 		if (tempOutput != null){
@@ -196,37 +195,37 @@ public class BaseItemDust extends Item{
 			else {
 				Utils.LOG_WARNING("Generating a Dust recipe for "+materialName+" in the mixer.");		
 
-				
+
 				int i = 0;
 				if (inputStacks.length >= 2){
-				for (ItemStack is : inputStacks){
-					if (is != null){
-						Utils.LOG_WARNING("Found "+is.getDisplayName()+" as an input for mixer recipe.");		
-						if (is.getDisplayName().toLowerCase().contains("tell alkalus")){
-							ItemStack tempStackForAName = inputStacks[i];
-							String[] inputList = dustInfo.getInputItemsAsList();
-							int[] inputSizes = dustInfo.getInputStackSizesAsList();
-							inputStacks[i] = UtilsItems.getItemStackOfAmountFromOreDict(inputList[i], inputSizes[i]);
-							Utils.LOG_WARNING("Swapping input slot "+i+" which contains "+tempStackForAName.getDisplayName()+" with "+inputStacks[i].getDisplayName()+".");	
-						}
-						
-					}
-					
-					else {
-						Utils.LOG_WARNING("Input "+i+" was null.");						
-					}
+					for (ItemStack is : inputStacks){
+						if (is != null){
+							Utils.LOG_WARNING("Found "+is.getDisplayName()+" as an input for mixer recipe.");		
+							if (is.getDisplayName().toLowerCase().contains("tell alkalus")){
+								ItemStack tempStackForAName = inputStacks[i];
+								String[] inputList = dustInfo.getInputItemsAsList();
+								int[] inputSizes = dustInfo.getInputStackSizesAsList();
+								inputStacks[i] = UtilsItems.getItemStackOfAmountFromOreDict(inputList[i], inputSizes[i]);
+								Utils.LOG_WARNING("Swapping input slot "+i+" which contains "+tempStackForAName.getDisplayName()+" with "+inputStacks[i].getDisplayName()+".");	
+							}
 
-					i++;
+						}
+
+						else {
+							Utils.LOG_WARNING("Input "+i+" was null.");						
+						}
+
+						i++;
+					}
 				}
-				}
-				
+
 				GT_Values.RA.addMixerRecipe(
 						inputStacks[0], inputStacks[1],
 						inputStacks[2], inputStacks[3],
 						null, null,
 						tempOutput,
 						8*mTier*20, 8*mTier*2);
-				
+
 				/*GT_Values.RA.addMixerRecipe(
 						GT_Utility.copyAmount(inputStacks[0].stackSize, new Object[]{inputStacks[0]}), GT_Utility.copyAmount(inputStacks[1].stackSize, new Object[]{inputStacks[1]}),
 						GT_Utility.copyAmount(inputStacks[2].stackSize, new Object[]{inputStacks[2]}), GT_Utility.copyAmount(inputStacks[3].stackSize, new Object[]{inputStacks[3]}), 
@@ -310,14 +309,9 @@ public class BaseItemDust extends Item{
 			ItemStack tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(temp, 1);
 			Utils.LOG_WARNING("This will produce an ingot of "+tempOutputStack.getDisplayName() + " Debug: "+temp);
 			if (null != tempOutputStack){
-				if (mTier < 5){
-					if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
-						addSmeltingAndAlloySmeltingRecipe(UtilsItems.getSimpleStack(this), tempOutputStack, false);						
-					}
-					else {
-						GT_ModHandler.addSmeltingAndAlloySmeltingRecipe(UtilsItems.getSimpleStack(this), tempOutputStack);						
-					}		
-				}	
+				if (mTier < 5){					
+					GregtechVersionRecipeHandler.addSmeltingAndAlloySmeltingRecipe(UtilsItems.getSimpleStack(this), tempOutputStack);						
+				}				
 				else if (mTier >= 5){
 					Utils.LOG_WARNING("Adding recipe for "+materialName+" Ingots in a Blast furnace.");
 					Utils.LOG_WARNING("This will produce "+tempOutputStack.getDisplayName());
@@ -352,19 +346,8 @@ public class BaseItemDust extends Item{
 				250*mTier*20,
 				mTier*64, 
 				tempRequired);
-		
-		
-		
-	}
 
-	private boolean addSmeltingAndAlloySmeltingRecipe(ItemStack aInput, ItemStack aOutput, boolean hidden) {
-		if (aInput == null || aOutput == null) return false;
-		boolean temp = false;
-		if (aInput.stackSize == 1 && GT_ModHandler.addSmeltingRecipe(aInput, aOutput)) temp = true;
-		if (GT_Values.RA.addAlloySmelterRecipe(aInput, OrePrefixes.ingot.contains(aOutput) ? ItemList.Shape_Mold_Ingot.get(0) : OrePrefixes.block.contains(aOutput) ? ItemList.Shape_Mold_Block.get(0) : OrePrefixes.nugget.contains(aOutput) ? ItemList.Shape_Mold_Nugget.get(0) : null, aOutput, 130, 3))
-			temp = true;
-		if (GT_ModHandler.addInductionSmelterRecipe(aInput, null, aOutput, null, aOutput.stackSize * 1600, 0)) temp = true;
-		return temp;
-	}
 
+
+	}
 }

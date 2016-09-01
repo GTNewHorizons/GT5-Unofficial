@@ -1,6 +1,5 @@
 package miscutil.core.util;
 
-import static gregtech.api.enums.GT_Values.F;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import ic2.core.IC2Potion;
@@ -157,7 +156,7 @@ public class Utils {
 	 * Returns if that Liquid is IC2Steam.
 	 */
 	public static boolean isIC2Steam(FluidStack aFluid) {
-		if (aFluid == null) return F;
+		if (aFluid == null) return false;
 		return aFluid.isFluidEqual(getIC2Steam(1));
 	}
 

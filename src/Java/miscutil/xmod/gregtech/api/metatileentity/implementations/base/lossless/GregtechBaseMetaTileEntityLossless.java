@@ -1004,15 +1004,6 @@ public class GregtechBaseMetaTileEntityLossless extends BaseTileEntity implement
         return 0;
     }
 
-    @Override
-    public ITexture[] getTexture(byte aSide) {
-        ITexture rIcon = getCoverTexture(aSide);
-        if (rIcon != null) return new ITexture[]{rIcon};
-        if (hasValidMetaTileEntity())
-            return mMetaTileEntity.getTexture(this, aSide, mFacing, (byte) (mColor - 1), mActive, getOutputRedstoneSignal(aSide) > 0);
-        return Textures.BlockIcons.ERROR_RENDERING;
-    }
-
     private boolean isEnergyInputSide(byte aSide) {
         if (aSide >= 0 && aSide < 6) {
             if (!getCoverBehaviorAtSide(aSide).letsEnergyIn(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this))
@@ -1845,5 +1836,22 @@ public class GregtechBaseMetaTileEntityLossless extends BaseTileEntity implement
     @Override
     public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity collider) {
         mMetaTileEntity.onEntityCollidedWithBlock(aWorld, aX, aY, aZ, collider);
+    }
+
+    
+    public ITexture[] getTexture(Block arg0, byte aSide) {
+        ITexture rIcon = getCoverTexture(aSide);
+        if (rIcon != null) return new ITexture[]{rIcon};
+        if (hasValidMetaTileEntity())
+            return mMetaTileEntity.getTexture(this, aSide, mFacing, (byte) (mColor - 1), mActive, getOutputRedstoneSignal(aSide) > 0);
+        return Textures.BlockIcons.ERROR_RENDERING;
+    }
+	
+	public ITexture[] getTexture(byte aSide) {
+        ITexture rIcon = getCoverTexture(aSide);
+        if (rIcon != null) return new ITexture[]{rIcon};
+        if (hasValidMetaTileEntity())
+            return mMetaTileEntity.getTexture(this, aSide, mFacing, (byte) (mColor - 1), mActive, getOutputRedstoneSignal(aSide) > 0);
+        return Textures.BlockIcons.ERROR_RENDERING;
     }
 }

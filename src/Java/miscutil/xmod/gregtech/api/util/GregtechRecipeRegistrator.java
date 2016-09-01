@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import miscutil.core.util.gregtech.five.GregtechVersionRecipeHandler;
 import miscutil.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import miscutil.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import miscutil.xmod.gregtech.api.objects.GregtechItemData;
@@ -171,7 +172,7 @@ public class GregtechRecipeRegistrator {
         aMaterialAmount /= aStack.stackSize;
        
         if (aAllowAlloySmelter)
-            GT_ModHandler.addSmeltingAndAlloySmeltingRecipe(GT_Utility.copyAmount(1, aStack), GregtechOreDictUnificator.getIngot(aMaterial.mSmeltInto, aMaterialAmount));
+        	GregtechVersionRecipeHandler.addSmeltingAndAlloySmeltingRecipe(GT_Utility.copyAmount(1, aStack), GregtechOreDictUnificator.getIngot(aMaterial.mSmeltInto, aMaterialAmount));
         else
             GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1, aStack), GregtechOreDictUnificator.getIngot(aMaterial.mSmeltInto, aMaterialAmount));
     }
