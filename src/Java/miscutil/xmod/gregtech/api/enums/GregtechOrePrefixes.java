@@ -338,8 +338,10 @@ public enum GregtechOrePrefixes {
 
 		
 		//Radioactive Materials
-		UraniumHexaFluoride(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 73, 220, 83, 0, "Uranium HexaFluoride", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeLime, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1))),
-		UraniumTetraFluoride(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 73, 220, 83, 0, "Uranium TetraFluoride", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeLime, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1)));
+		HydrofluoricAcid(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 200, 200, 200, 0, "Hydrofluoric Acid", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeWhite, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1))),
+		UraniumHexaFluoride(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 73, 220, 83, 0, "Uranium Hexafluoride", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeLime, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1))),
+		UraniumTetraFluoride(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 73, 220, 83, 0, "Uranium Tetrafluoride", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeLime, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1))),
+		ThoriumTetraFluoride(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 15, 120, 15, 0, "Thorium Tetrafluoride", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeGreen, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1)));
 		
 		
 		

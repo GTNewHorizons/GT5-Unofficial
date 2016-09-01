@@ -1,10 +1,13 @@
 package miscutil.xmod.gregtech.common.blocks.fluid;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.Utils;
+import miscutil.core.util.fluid.FluidUtils;
+import miscutil.core.util.item.UtilsItems;
 import miscutil.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import miscutil.xmod.gregtech.common.Meta_GT_Proxy;
 
@@ -39,10 +42,25 @@ public class GregtechFluidHandler {
 		}
 		
 		if (LoadedMods.IndustrialCraft2){
-			Utils.LOG_INFO("Adding in GT Fluids for Molten Salt, Cooled Salt and Various other Nuclide related content.");		
-			Meta_GT_Proxy.addFluid("uraniumHexafluoride", "Uranium Hexafluoride", GT_Materials.UraniumHexaFluoride, 2, 100, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.UraniumHexaFluoride, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
-			Meta_GT_Proxy.addFluid("UraniumTetrafluoride", "Uranium Tetrafluoride", GT_Materials.UraniumTetraFluoride, 2, 950, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.UraniumTetraFluoride, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
-			}
+			Utils.LOG_INFO("Adding in GT Fluids for Molten Salt, Cooled Salt and Various other Nuclide related content.");	
+			Meta_GT_Proxy.addFluid("hydrofluoricAcid", "Hydrofluoric Acid", GT_Materials.HydrofluoricAcid, 1, 120, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.HydrofluoricAcid, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+			Meta_GT_Proxy.addFluid("uraniumHexafluoride", "Uranium Hexafluoride", GT_Materials.UraniumHexaFluoride, 4, 200, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.UraniumHexaFluoride, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+			Meta_GT_Proxy.addFluid("uraniumTetrafluoride", "Uranium Tetrafluoride", GT_Materials.UraniumTetraFluoride, 4, 950, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.UraniumTetraFluoride, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+			Meta_GT_Proxy.addFluid("thoriumTetrafluoride", "Thorium Tetrafluoride", GT_Materials.ThoriumTetraFluoride, 4, 1250, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.ThoriumTetraFluoride, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+			
+			/*GT_Values.RA.addChemicalBathRecipe(
+					UtilsItems.getItemStackOfAmountFromOreDict("gemApatite", 1), 
+					FluidUtils.getFluidStack("sulfuricacid", 1500), 
+					aOutput1,
+					aOutput2,
+					aOutput3,
+					aChances, 
+					aDuration,
+					aEUt)*/
+			
+			GT_Values.RA.addMixerRecipe(UtilsItems.getItemStackOfAmountFromOreDict("dustUranium235", 1), UtilsItems.getItemStackOfAmountFromOreDict("dustUranium235", 1), null, null, FluidUtils.getFluidStack("hydrofluoricacid", 2000), FluidUtils.getFluidStack("uraniumtetrafluoride", 266), null, 3000, 500);
+			GT_Values.RA.addMixerRecipe(UtilsItems.getItemStackOfAmountFromOreDict("cellFluorine", 1), UtilsItems.getItemStackOfAmountFromOreDict("cellFluorine", 1), null, null, FluidUtils.getFluidStack("uraniumtetrafluoride", 665), FluidUtils.getFluidStack("uraniumhexafluoride", 266), null, 5000, 2000);
+		}
 	}
 	
 }

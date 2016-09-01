@@ -1,12 +1,13 @@
 package miscutil.xmod.ic2.block.kieticgenerator.tileentity;
 
 import ic2.api.energy.tile.IKineticSource;
-import ic2.api.item.IKineticWindRotor;
+import ic2.api.item.IKineticRotor;
+import ic2.api.item.IKineticRotor.GearboxType;
 import ic2.core.ContainerBase;
 import ic2.core.IC2;
 import ic2.core.IHasGui;
 import ic2.core.WorldData;
-import ic2.core.block.invslot.InvSlotConsumableIKineticWindRotor;
+import ic2.core.block.invslot.InvSlotConsumableKineticRotor;
 import ic2.core.block.kineticgenerator.container.ContainerWindKineticGenerator;
 import ic2.core.block.kineticgenerator.gui.GuiWindKineticGenerator;
 import ic2.core.block.kineticgenerator.tileentity.TileEntityWindKineticGenerator;
@@ -31,7 +32,7 @@ public class TileEntityKineticWindGenerator
 extends TileEntityWindKineticGenerator
 implements IKineticSource, IHasGui
 {
-	public final InvSlotConsumableIKineticWindRotor rotorSlot;
+	public final InvSlotConsumableKineticRotor rotorSlot;
 	private double windStrength;
 	private int obstructedCrossSection;
 	private int crossSection;
@@ -43,11 +44,11 @@ implements IKineticSource, IHasGui
 	public TileEntityKineticWindGenerator()
 	{
 		this.updateTicker = IC2.random.nextInt(getTickRate());
-		this.rotorSlot = new InvSlotConsumableIKineticWindRotor(this, "rotorslot", 0, 1);
+		this.rotorSlot = new InvSlotConsumableKineticRotor(this, "rotorslot", 0, null, 1, null, GearboxType.WIND);
 	}
 
-	@Override
-	public void updateEntity()
+	
+	public void update2Entity()
 	{
 		super.updateEntity();
 
@@ -155,7 +156,6 @@ implements IKineticSource, IHasGui
 		super.setFacing(side);
 	}
 
-	@Override
 	public boolean enableUpdateEntity()
 	{
 		return IC2.platform.isSimulating();
@@ -314,8 +314,8 @@ implements IKineticSource, IHasGui
 	public float getefficiency()
 	{
 		ItemStack stack = this.rotorSlot.get();
-		if ((stack != null) && ((stack.getItem() instanceof IKineticWindRotor))) {
-			return (float) (((IKineticWindRotor)stack.getItem()).getEfficiency(stack)*1.5);
+		if ((stack != null) && ((stack.getItem() instanceof IKineticRotor))) {
+			return (float) (((IKineticRotor)stack.getItem()).getEfficiency(stack)*1.5);
 		}
 		return 0.0F;
 	}
@@ -324,8 +324,8 @@ implements IKineticSource, IHasGui
 	public int getMinWindStrength()
 	{
 		ItemStack stack = this.rotorSlot.get();
-		if ((stack != null) && ((stack.getItem() instanceof IKineticWindRotor))) {
-			return ((IKineticWindRotor)stack.getItem()).getMinWindStrength(stack)/2;
+		if ((stack != null) && ((stack.getItem() instanceof IKineticRotor))) {
+			return ((IKineticRotor)stack.getItem()).getMinWindStrength(stack)/2;
 		}
 		return 0;
 	}
@@ -334,8 +334,8 @@ implements IKineticSource, IHasGui
 	public int getMaxWindStrength()
 	{
 		ItemStack stack = this.rotorSlot.get();
-		if ((stack != null) && ((stack.getItem() instanceof IKineticWindRotor))) {
-			return ((IKineticWindRotor)stack.getItem()).getMaxWindStrength(stack)*2;
+		if ((stack != null) && ((stack.getItem() instanceof IKineticRotor))) {
+			return ((IKineticRotor)stack.getItem()).getMaxWindStrength(stack)*2;
 		}
 		return 0;
 	}
@@ -344,8 +344,8 @@ implements IKineticSource, IHasGui
 	public int getRotorDiameter()
 	{
 		ItemStack stack = this.rotorSlot.get();
-		if ((stack != null) && ((stack.getItem() instanceof IKineticWindRotor))) {
-			return ((IKineticWindRotor)stack.getItem()).getDiameter(stack)/2;
+		if ((stack != null) && ((stack.getItem() instanceof IKineticRotor))) {
+			return ((IKineticRotor)stack.getItem()).getDiameter(stack)/2;
 		}
 		return 0;
 	}
@@ -354,8 +354,8 @@ implements IKineticSource, IHasGui
 	public ResourceLocation getRotorRenderTexture()
 	{
 		ItemStack stack = this.rotorSlot.get();
-		if ((stack != null) && ((stack.getItem() instanceof IKineticWindRotor))) {
-			return ((IKineticWindRotor)stack.getItem()).getRotorRenderTexture(stack);
+		if ((stack != null) && ((stack.getItem() instanceof IKineticRotor))) {
+			return ((IKineticRotor)stack.getItem()).getRotorRenderTexture(stack);
 		}
 		return new ResourceLocation(IC2.textureDomain, "textures/items/rotors/rotorWoodmodel.png");
 	}

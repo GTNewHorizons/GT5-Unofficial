@@ -29,7 +29,7 @@ public class TF_Fluids
 			registerFluid(fluidPyrotheum, "pyrotheum");
 		}
 		else {
-			Utils.LOG_INFO("Registering Blazing Pyrotheum as it an already existing Fluid.");
+			Utils.LOG_INFO("Registering Blazing Pyrotheum as it is an already existing Fluid.");
 			fluidPyrotheum = pyrotheum;
 		}
 		if (cryotheum == null){
@@ -38,7 +38,7 @@ public class TF_Fluids
 			registerFluid(fluidCryotheum, "cryotheum");	
 		}
 		else {
-			Utils.LOG_INFO("Registering Gelid Cryotheum as it an already existing Fluid.");
+			Utils.LOG_INFO("Registering Gelid Cryotheum as it is an already existing Fluid.");
 			fluidCryotheum = cryotheum;
 		}
 		}

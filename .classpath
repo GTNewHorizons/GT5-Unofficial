@@ -4,7 +4,6 @@
 	<classpathentry kind="src" path="src/resources"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Forge"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="libs/industrialcraft-2-2.2.720-experimental-dev.jar"/>
 	<classpathentry kind="lib" path="libs/appliedenergistics2-rv2-stable-1-dev.jar"/>
 	<classpathentry kind="lib" path="libs/Waila-1.5.10_1.7.10-deobf.jar"/>
 	<classpathentry kind="lib" path="libs/EnderIO-1.7.10-2.2.8.381-dev.jar" sourcepath="libsrc/EnderIO-1.7.10-2.2.8.381-sources.jar"/>
@@ -15,8 +14,8 @@
 	<classpathentry kind="lib" path="libs/CoFHCore-[1.7.10]3.0.3-303.jar"/>
 	<classpathentry kind="lib" path="libs/RaisinToastCore-0.1-dev.jar"/>
 	<classpathentry kind="lib" path="libs/Psychedelicraft-1.5.2.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/VillageWipe"/>
 	<classpathentry kind="lib" path="libs/Baubles-deobf-1.7.10-1.0.1.10.jar"/>
 	<classpathentry kind="lib" path="libs/forestry_1.7.10-4.2.2.50-deobf.jar"/>
+	<classpathentry kind="lib" path="libs/industrialcraft-2-2.2.783-experimental-deobf.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

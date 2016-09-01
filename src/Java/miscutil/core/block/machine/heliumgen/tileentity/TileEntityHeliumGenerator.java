@@ -45,8 +45,8 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 	private int facing = 2;
 	private int progress;
 
-	@Override
-	public void updateEntity(){
+	
+	public void update2Entity(){
 		Utils.LOG_WARNING("updateEntity");
 		if(++progress >= 40){
 			//if(++progress >= 300){

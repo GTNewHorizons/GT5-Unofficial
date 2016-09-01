@@ -2,7 +2,7 @@ package miscutil.xmod.ic2.block.RTGGenerator.gui;
 
 import ic2.core.IC2;
 import ic2.core.block.generator.gui.GuiRTGenerator;
-import ic2.core.util.GuiTooltiphelper;
+import ic2.core.util.GuiTooltipHelper;
 import miscutil.xmod.ic2.block.RTGGenerator.TileEntityRTG;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -32,7 +32,7 @@ protected void drawGuiContainerForegroundLayer(int par1, int par2)
   {
     this.fontRendererObj.drawString(this.name, (this.xSize - this.fontRendererObj.getStringWidth(this.name)) / 2, 4, 4210752);
     
-    GuiTooltiphelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, StatCollector.translateToLocalFormatted("ic2.generic.text.bufferEU", new Object[] { Double.valueOf(((TileEntityRTG)this.container.base).storage) }), 117, 38, 150, 48);
+    GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, StatCollector.translateToLocalFormatted("ic2.generic.text.bufferEU", new Object[] { Double.valueOf(((TileEntityRTG)this.container.base).storage) }), 117, 38, 150, 48);
   }
   
   @Override

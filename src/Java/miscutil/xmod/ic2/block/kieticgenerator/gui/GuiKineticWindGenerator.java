@@ -3,7 +3,7 @@ package miscutil.xmod.ic2.block.kieticgenerator.gui;
 import ic2.core.IC2;
 import ic2.core.block.kineticgenerator.container.ContainerWindKineticGenerator;
 import ic2.core.block.kineticgenerator.tileentity.TileEntityWindKineticGenerator;
-import ic2.core.util.GuiTooltiphelper;
+import ic2.core.util.GuiTooltipHelper;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -48,8 +48,8 @@ public class GuiKineticWindGenerator
         this.fontRendererObj.drawString(((TileEntityWindKineticGenerator)this.container.base).getRotorhealth() + " %", 46, 70, 2157374);
         if (((TileEntityWindKineticGenerator)this.container.base).guiisoverload())
         {
-          GuiTooltiphelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, StatCollector.translateToLocal("ic2.WindKineticGenerator.error.overload"), 44, 20, 79, 45);
-          GuiTooltiphelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, StatCollector.translateToLocal("ic2.WindKineticGenerator.error.overload2"), 102, 20, 131, 45);
+          GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, StatCollector.translateToLocal("ic2.WindKineticGenerator.error.overload"), 44, 20, 79, 45);
+          GuiTooltipHelper.drawAreaTooltip(par1 - this.guiLeft, par2 - this.guiTop, StatCollector.translateToLocal("ic2.WindKineticGenerator.error.overload2"), 102, 20, 131, 45);
         }
       }
     }
