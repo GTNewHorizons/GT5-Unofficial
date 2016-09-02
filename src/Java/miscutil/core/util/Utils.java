@@ -472,11 +472,12 @@ public class Utils {
 		try
 		{
 			Class<? extends ItemCell> clz = item.getClass();
-			Method methode = clz.getMethod("addCell", int.class, InternalName.class, Block[].class);
+			Method methode = clz.getDeclaredMethod("addCell", int.class, InternalName.class, Block[].class);
 			methode.setAccessible(true);
 			return (ItemStack) methode.invoke(item, 1000, yourName, new Block[0]);
 		}
 		catch(Exception e){
+			
 		}
 		return null;
 	}
