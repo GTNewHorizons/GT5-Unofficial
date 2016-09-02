@@ -101,7 +101,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	
 	SuperConductorInputNode, 
 	
-	Casing_Reactor_I, Casing_Reactor_II;
+	Casing_Reactor_I, Casing_Reactor_II, 
+	
+	PowerSubStation;
 
 	public static final GregtechItemList[]
 			DYE_ONLY_ITEMS = {

@@ -486,7 +486,7 @@ public class Utils {
 			methode.setAccessible(true);
 			Utils.LOG_WARNING("7 "+methode.isAccessible());
 			ItemStack temp = (ItemStack) methode.invoke(item, cellID++, yourName, new Block[0]);
-			Utils.LOG_INFO("8 "+temp.getDisplayName());
+			Utils.LOG_INFO("Successfully created "+temp.getDisplayName()+"s.");
 			FluidContainerRegistry.registerFluidContainer(FluidUtils.getFluidStack(s.toLowerCase(), 0), temp.copy(), Ic2Items.cell.copy());
 			UtilsItems.addItemToOreDictionary(temp.copy(), "cell"+s);
 			return temp;
