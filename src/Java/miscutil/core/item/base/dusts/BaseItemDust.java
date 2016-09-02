@@ -10,7 +10,6 @@ import java.util.List;
 import miscutil.core.lib.CORE;
 import miscutil.core.lib.MaterialInfo;
 import miscutil.core.util.Utils;
-import miscutil.core.util.gregtech.five.GregtechVersionRecipeHandler;
 import miscutil.core.util.item.UtilsItems;
 import miscutil.core.util.math.MathUtils;
 import miscutil.core.util.recipe.UtilsRecipe;
@@ -310,7 +309,7 @@ public class BaseItemDust extends Item{
 			Utils.LOG_WARNING("This will produce an ingot of "+tempOutputStack.getDisplayName() + " Debug: "+temp);
 			if (null != tempOutputStack){
 				if (mTier < 5){					
-					GregtechVersionRecipeHandler.addSmeltingAndAlloySmeltingRecipe(UtilsItems.getSimpleStack(this), tempOutputStack);						
+					CORE.GT_Recipe.addSmeltingAndAlloySmeltingRecipe(UtilsItems.getSimpleStack(this), tempOutputStack);						
 				}				
 				else if (mTier >= 5){
 					Utils.LOG_WARNING("Adding recipe for "+materialName+" Ingots in a Blast furnace.");

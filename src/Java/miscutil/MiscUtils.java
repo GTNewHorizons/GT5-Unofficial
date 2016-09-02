@@ -21,7 +21,10 @@ import miscutil.core.handler.events.LoginEventHandler;
 import miscutil.core.item.general.RF2EU_Battery;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
+import miscutil.core.util.item.UtilsItems;
 import miscutil.xmod.gregtech.HANDLER_GT;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -111,6 +114,12 @@ implements ActionListener
 	public void serverStarting(FMLServerStartingEvent event)
 	{
 		event.registerServerCommand(new CommandMath());
+		ItemStack input = UtilsItems.getSimpleStack(Items.poisonous_potato);
+		ItemStack output = UtilsItems.getSimpleStack(Items.baked_potato);
+		CORE.GT_Recipe.addSmeltingAndAlloySmeltingRecipe(input, output);
+		input = UtilsItems.getSimpleStack(Items.slime_ball);
+		output = UtilsItems.getSimpleStack(Items.nether_star);
+		CORE.GT_Recipe.addSmeltingAndAlloySmeltingRecipe(input, output);
 	}
 
 	@Mod.EventHandler

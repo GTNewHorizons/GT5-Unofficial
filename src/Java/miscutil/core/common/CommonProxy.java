@@ -36,6 +36,14 @@ public class CommonProxy {
 		MinecraftForge.EVENT_BUS.register(this);
 		FMLCommonHandler.instance().bus().register(this);
 		if (LoadedMods.Gregtech){
+			if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
+				Utils.LOG_INFO("We're using Gregtech 5.09 Experimental.");
+			}
+			else {
+				Utils.LOG_INFO("We're using Gregtech 5.08 or an equivalent fork.");
+			}
+		}
+		if (LoadedMods.Gregtech){
 			for (String tOreName : OreDictionary.getOreNames()) {
 				ItemStack tOreStack;
 				for (Iterator i$ = OreDictionary.getOres(tOreName).iterator(); i$.hasNext(); Meta_GT_Proxy.registerOre(new OreDictionary.OreRegisterEvent(tOreName, tOreStack))) {
@@ -51,15 +59,6 @@ public class CommonProxy {
 		Utils.LOG_INFO("Doing some house cleaning.");		
 		LoadedMods.checkLoaded();
 		Utils.LOG_INFO("Making sure we're ready to party!");
-		
-		if (LoadedMods.Gregtech){
-			if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
-				Utils.LOG_INFO("We're using Gregtech 5.09 Experimental.");
-			}
-			else {
-				Utils.LOG_INFO("We're using Gregtech 5.08 or an equivalent fork.");
-			}
-		}
 		
 		
 		if (!DEBUG){

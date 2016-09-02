@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import miscutil.core.creative.AddToCreativeTab;
+import miscutil.core.util.gregtech.recipehandlers.GregtechRecipe;
 import miscutil.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import miscutil.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import miscutil.xmod.gregtech.common.Meta_GT_Proxy;
@@ -28,6 +29,7 @@ public class CORE {
 	public static IGregtech_RecipeAdder RA;
 	@Deprecated
 	public static IGregtech_RecipeAdder sRecipeAdder;
+	public static GregtechRecipe GT_Recipe = new GregtechRecipe();
 
 	@SideOnly(Side.CLIENT)
 	public static IIconRegister GT_BlockIcons, GT_ItemIcons;	
