@@ -4,7 +4,6 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
-import ic2.api.item.IC2Items;
 import ic2.core.Ic2Items;
 import ic2.core.init.InternalName;
 import ic2.core.item.resources.ItemCell;
@@ -25,7 +24,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class GregtechFluidHandler {
 
@@ -98,11 +96,11 @@ public class GregtechFluidHandler {
 			}
 
 			GT_Values.RA.addChemicalRecipe(
-					UtilsItems.getItemStackOfAmountFromOreDict("cellEmpty", 1), 
-					UtilsItems.getItemStackOfAmountFromOreDict("dustApatite", 1),
-					FluidUtils.getFluidStack("sulfuricacid", 1500), 
+					UtilsItems.getItemStackOfAmountFromOreDict("dustApatite", 16),
+					null,
+					FluidUtils.getFluidStack("sulfuricacid", 133*32), 
 					FluidUtils.getFluidStack("sulfuricapatite", 133*4),
-					UtilsItems.getItemStackOfAmountFromOreDict("dustTinySulfur", 1), 
+					UtilsItems.getItemStackOfAmountFromOreDict("dustSmallSulfur", 1), 
 					20*20);
 
 			GT_Values.RA.addMixerRecipe(UtilsItems.getItemStackOfAmountFromOreDict("dustSulfur", 1), null, null, null, FluidUtils.getFluidStack("oxygen", 266), FluidUtils.getFluidStack("sulfurdioxide", 399), null, 600, 60);
@@ -119,12 +117,13 @@ public class GregtechFluidHandler {
 
 			FluidStack[] apatiteOutput = {
 					FluidUtils.getFluidStack("sulfurousacid", 3800),
+					FluidUtils.getFluidStack("hydrogenchloride", 1000),
 					FluidUtils.getFluidStack("hydrofluoricacid", 400)
 			};
 			GT_Values.RA.addDistillationTowerRecipe(
 					FluidUtils.getFluidStack("sulfuricapatite", 5200),
 					apatiteOutput,
-					UtilsItems.getItemStackOfAmountFromOreDict("cellHydrogenChloride", 1),
+					null,
 					45*20,
 					256);
 
@@ -170,19 +169,7 @@ public class GregtechFluidHandler {
 	private static void generateIC2FluidCell(String fluidNameWithCaps){
 		Utils.LOG_INFO("Adding a Cell for "+fluidNameWithCaps);
 		if (LoadedMods.IndustrialCraft2){
-			ItemStack emptyCell = IC2Items.getItem("cell");
-			ItemStack filledCell = FluidContainerRegistry.fillFluidContainer(FluidUtils.getFluidStack(fluidNameWithCaps.toLowerCase(), 1000), emptyCell.copy());
-			if (filledCell != null){
-				OreDictionary.registerOre("cell"+fluidNameWithCaps, filledCell);
-				FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(FluidUtils.getFluidStack(fluidNameWithCaps.toLowerCase(), 1000), filledCell, emptyCell.copy()));
-			}
-			else {
-
-				Utils.LOG_INFO("Failed to create a cell for "+fluidNameWithCaps+". Trying seconday method.");
-				Utils.createInternalNameAndFluidCell(fluidNameWithCaps);
-				//setUpNewFluidCell(cellID++, fluidNameWithCaps);
-
-			}
+			Utils.createInternalNameAndFluidCell(fluidNameWithCaps);
 		}
 	}
 
@@ -198,8 +185,8 @@ public class GregtechFluidHandler {
 			InternalName fluidName = EnumHelper.addEnum(InternalName.class, name, new Class[0], new Object[0]);
 			//EnumHelper.addEnum(InternalName.class, "InternalName", name);
 			if (fluidName.valueOf(name) != null){
-			addRegisterCell(meta, fluidName);
-			return true;
+				addRegisterCell(meta, fluidName);
+				return true;
 			}
 			Utils.LOG_INFO("Secondary Cell Method failed.");
 			return false;

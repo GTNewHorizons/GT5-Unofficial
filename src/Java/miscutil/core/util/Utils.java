@@ -22,6 +22,8 @@ import java.util.UUID;
 
 import miscutil.MiscUtils;
 import miscutil.core.lib.CORE;
+import miscutil.core.util.fluid.FluidUtils;
+import miscutil.core.util.item.UtilsItems;
 import miscutil.core.util.math.MathUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -36,6 +38,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -466,18 +469,30 @@ public class Utils {
 		return false;		
 	}
 
+	private static short cellID = 15;
 	public static ItemStack createInternalNameAndFluidCell(String s){
+		Utils.LOG_WARNING("1");
 		InternalName yourName = EnumHelper.addEnum(InternalName.class, s, new Class[0], new Object[0]);
+		Utils.LOG_WARNING("2 "+yourName.name());
 		ItemCell item = (ItemCell)Ic2Items.cell.getItem();
+		Utils.LOG_WARNING("3 "+item.getUnlocalizedName());
 		try
 		{
+			Utils.LOG_WARNING("4");
 			Class<? extends ItemCell> clz = item.getClass();
+			Utils.LOG_WARNING("5 "+clz.getSimpleName());
 			Method methode = clz.getDeclaredMethod("addCell", int.class, InternalName.class, Block[].class);
+			Utils.LOG_WARNING("6 "+methode.getName());
 			methode.setAccessible(true);
-			return (ItemStack) methode.invoke(item, 1000, yourName, new Block[0]);
+			Utils.LOG_WARNING("7 "+methode.isAccessible());
+			ItemStack temp = (ItemStack) methode.invoke(item, cellID++, yourName, new Block[0]);
+			Utils.LOG_INFO("8 "+temp.getDisplayName());
+			FluidContainerRegistry.registerFluidContainer(FluidUtils.getFluidStack(s.toLowerCase(), 0), temp.copy(), Ic2Items.cell.copy());
+			UtilsItems.addItemToOreDictionary(temp.copy(), "cell"+s);
+			return temp;
 		}
 		catch(Exception e){
-			
+			e.printStackTrace();
 		}
 		return null;
 	}

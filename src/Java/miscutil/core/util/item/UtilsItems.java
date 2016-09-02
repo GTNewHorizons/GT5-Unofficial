@@ -101,6 +101,14 @@ public class UtilsItems {
 			Utils.LOG_ERROR(itemName+" not found. [NULL]");
 		}
 	}
+	
+	public static void addItemToOreDictionary(ItemStack stack, String oreDictName){
+		try {
+				GT_OreDictUnificator.registerOre(oreDictName, stack);
+		} catch (NullPointerException e) {
+			Utils.LOG_ERROR(stack.getDisplayName()+" not registered. [NULL]");
+		}
+	}
 
 	@SuppressWarnings("unused")
 	public static ItemStack getItemStackWithMeta(boolean MOD, String FQRN, String itemName, int meta, int itemstackSize){
