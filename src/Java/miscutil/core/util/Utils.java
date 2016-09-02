@@ -3,10 +3,14 @@ package miscutil.core.util;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import ic2.core.IC2Potion;
+import ic2.core.Ic2Items;
+import ic2.core.init.InternalName;
 import ic2.core.item.armor.ItemArmorHazmat;
+import ic2.core.item.resources.ItemCell;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -31,6 +35,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -459,6 +464,21 @@ public class Utils {
 			return true;
 		}
 		return false;		
+	}
+
+	public static ItemStack createInternalNameAndFluidCell(String s){
+		InternalName yourName = EnumHelper.addEnum(InternalName.class, s, new Class[0], new Object[0]);
+		ItemCell item = (ItemCell)Ic2Items.cell.getItem();
+		try
+		{
+			Class<? extends ItemCell> clz = item.getClass();
+			Method methode = clz.getMethod("addCell", int.class, InternalName.class, Block[].class);
+			methode.setAccessible(true);
+			return (ItemStack) methode.invoke(item, 1000, yourName, new Block[0]);
+		}
+		catch(Exception e){
+		}
+		return null;
 	}
 
 

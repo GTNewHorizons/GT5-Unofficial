@@ -21,10 +21,7 @@ import miscutil.core.handler.events.LoginEventHandler;
 import miscutil.core.item.general.RF2EU_Battery;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
-import miscutil.core.util.item.UtilsItems;
 import miscutil.xmod.gregtech.HANDLER_GT;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -36,7 +33,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 
-@Mod(modid=CORE.MODID, name=CORE.name, version=CORE.VERSION, dependencies="required-after:Forge; after:IC2; after:psychedelicraft; after:gregtech; after:Forestry; after:MagicBees; after:CoFHCore; after:Growthcraft; after:Railcraft; after:CompactWindmills; after:ForbiddenMagic; after:MorePlanet; after:PneumaticCraft; after:ExtraUtilities; after:Thaumcraft; after:rftools; after:simplyjetpacks; after:BigReactors; after:EnderIO;")
+@Mod(modid=CORE.MODID, name=CORE.name, version=CORE.VERSION, dependencies="required-after:Forge; after:IC2; after:ihl; after:psychedelicraft; after:gregtech; after:Forestry; after:MagicBees; after:CoFHCore; after:Growthcraft; after:Railcraft; after:CompactWindmills; after:ForbiddenMagic; after:MorePlanet; after:PneumaticCraft; after:ExtraUtilities; after:Thaumcraft; after:rftools; after:simplyjetpacks; after:BigReactors; after:EnderIO;")
 public class MiscUtils
 implements ActionListener
 { 
@@ -114,12 +111,6 @@ implements ActionListener
 	public void serverStarting(FMLServerStartingEvent event)
 	{
 		event.registerServerCommand(new CommandMath());
-		ItemStack input = UtilsItems.getSimpleStack(Items.poisonous_potato);
-		ItemStack output = UtilsItems.getSimpleStack(Items.baked_potato);
-		CORE.GT_Recipe.addSmeltingAndAlloySmeltingRecipe(input, output);
-		input = UtilsItems.getSimpleStack(Items.slime_ball);
-		output = UtilsItems.getSimpleStack(Items.nether_star);
-		CORE.GT_Recipe.addSmeltingAndAlloySmeltingRecipe(input, output);
 	}
 
 	@Mod.EventHandler
