@@ -32,6 +32,7 @@ public class LoadedMods {
 	public static boolean Psychedelicraft = false;
 	public static boolean MiscUtils = true; //Dummy For MetaData Lookups in MT Wrapper
 	public static boolean ThermalFoundation = false;
+	public static boolean IHL = false;
 	
 
 	
@@ -161,7 +162,11 @@ public class LoadedMods {
 			Utils.LOG_INFO("Components disabled for: ThermalFoundation - This feature will enable itself if you remove TF.");
 			//totalMods++;
 		}
-		
+		if (Loader.isModLoaded("ihl") == true){
+			IHL  = true;
+			Utils.LOG_INFO("Components enabled for: IHL");
+			totalMods++;
+		}
 	
 		Utils.LOG_INFO("Content found for "+totalMods+" mods");
 		
