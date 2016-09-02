@@ -70,18 +70,19 @@ public class GregtechFluidHandler {
 			generateIC2FluidCell("ThoriumTetraFluoride");
 			
 			
-			if (!LoadedMods.IHL || FluidUtils.getFluidStack("hydrogenchloride", 1) == null){
+			if (!LoadedMods.IHL || UtilsItems.getItemStackOfAmountFromOreDict("cellHydrogenChloride", 1) == null){
 				
+				if (FluidUtils.getFluidStack("hydrogenchloride", 1) == null){
 				if (LoadedMods.IHL){
 					Utils.LOG_INFO("IHL Loaded but hydrogen chloride could not be found for some reason. Adding our own.");
-				}
+					}
 				else {
 					Utils.LOG_INFO("No Suitable versions of Hydrogen Chloride available, adding our own.");
 				}
-				
 				Meta_GT_Proxy.addFluid("hydrogenChloride", "Hydrogen Chloride", GT_Materials.HydrogenChloride, 4, 75, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.HydrogenChloride, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
 				generateIC2FluidCell("HydrogenChloride");
 				}
+			}
 
 			GT_Values.RA.addChemicalRecipe(
 					UtilsItems.getItemStackOfAmountFromOreDict("cellEmpty", 1), 
@@ -91,7 +92,7 @@ public class GregtechFluidHandler {
 					UtilsItems.getItemStackOfAmountFromOreDict("dustTinySulfur", 1), 
 					20*20);
 
-			GT_Values.RA.addMixerRecipe(UtilsItems.getItemStackOfAmountFromOreDict("dustUranium235", 1), UtilsItems.getItemStackOfAmountFromOreDict("dustSulfur", 1), null, null, FluidUtils.getFluidStack("oxygen", 266), FluidUtils.getFluidStack("sulfurdioxide", 399), null, 600, 60);
+			GT_Values.RA.addMixerRecipe(UtilsItems.getItemStackOfAmountFromOreDict("dustSulfur", 1), null, null, null, FluidUtils.getFluidStack("oxygen", 266), FluidUtils.getFluidStack("sulfurdioxide", 399), null, 600, 60);
 			GT_Values.RA.addMixerRecipe(UtilsItems.getItemStackOfAmountFromOreDict("dustUranium235", 1), UtilsItems.getItemStackOfAmountFromOreDict("dustUranium235", 1), null, null, FluidUtils.getFluidStack("hydrofluoricacid", 2000), FluidUtils.getFluidStack("uraniumtetrafluoride", 266), null, 3000, 500);
 			GT_Values.RA.addMixerRecipe(UtilsItems.getItemStackOfAmountFromOreDict("cellFluorine", 1), UtilsItems.getItemStackOfAmountFromOreDict("cellFluorine", 1), null, null, FluidUtils.getFluidStack("uraniumtetrafluoride", 665), FluidUtils.getFluidStack("uraniumhexafluoride", 266), null, 5000, 2000);
 
@@ -104,15 +105,14 @@ public class GregtechFluidHandler {
 			
 			
 			FluidStack[] apatiteOutput = {
-					FluidUtils.getFluidStack("sulfurousacid", 1900),
-					FluidUtils.getFluidStack("hydrogenchloride", 500),
-					FluidUtils.getFluidStack("hydrofluoricacid", 200)
+					FluidUtils.getFluidStack("sulfurousacid", 3800),
+					FluidUtils.getFluidStack("hydrofluoricacid", 400)
 			};
 			GT_Values.RA.addDistillationTowerRecipe(
-					FluidUtils.getFluidStack("sulfuricapatite", 2600),
+					FluidUtils.getFluidStack("sulfuricapatite", 5200),
 					apatiteOutput,
-					UtilsItems.getItemStackOfAmountFromOreDict("dustTinySulfur", 1),
-					30*20,
+					UtilsItems.getItemStackOfAmountFromOreDict("cellHydrogenChloride", 1),
+					45*20,
 					256);
 			
 			FluidStack[] sulfurousacidOutput = {
@@ -155,17 +155,16 @@ public class GregtechFluidHandler {
 
 
 	private static void generateIC2FluidCell(String fluidNameWithCaps){
+		Utils.LOG_INFO("Adding a Cell for "+fluidNameWithCaps);
 		if (LoadedMods.IndustrialCraft2){
 			ItemStack emptyCell = IC2Items.getItem("cell");
 			ItemStack filledCell = FluidContainerRegistry.fillFluidContainer(FluidUtils.getFluidStack(fluidNameWithCaps.toLowerCase(), 1000), emptyCell.copy());
-			if (filledCell == null){
+			if (filledCell != null){
 				OreDictionary.registerOre("cell"+fluidNameWithCaps, filledCell);
 				FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(FluidUtils.getFluidStack(fluidNameWithCaps.toLowerCase(), 1000), filledCell, emptyCell.copy()));
 			}
 			else {
-				OreDictionary.registerOre("cell"+fluidNameWithCaps, filledCell);
-				FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(FluidUtils.getFluidStack(fluidNameWithCaps.toLowerCase(), 1000), filledCell, emptyCell.copy()));
-				
+				Utils.LOG_INFO("Failed to create a cell for "+fluidNameWithCaps);
 			}
 		}
 	}
