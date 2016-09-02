@@ -70,7 +70,15 @@ public class GregtechFluidHandler {
 			generateIC2FluidCell("ThoriumTetraFluoride");
 			
 			
-			if (!LoadedMods.IHL){
+			if (!LoadedMods.IHL || FluidUtils.getFluidStack("hydrogenchloride", 1) == null){
+				
+				if (LoadedMods.IHL){
+					Utils.LOG_INFO("IHL Loaded but hydrogen chloride could not be found for some reason. Adding our own.");
+				}
+				else {
+					Utils.LOG_INFO("No Suitable versions of Hydrogen Chloride available, adding our own.");
+				}
+				
 				Meta_GT_Proxy.addFluid("hydrogenChloride", "Hydrogen Chloride", GT_Materials.HydrogenChloride, 4, 75, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.HydrogenChloride, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
 				generateIC2FluidCell("HydrogenChloride");
 				}
@@ -96,17 +104,37 @@ public class GregtechFluidHandler {
 			
 			
 			FluidStack[] apatiteOutput = {
-					FluidUtils.getFluidStack("sulfurousacid", 1850),
+					FluidUtils.getFluidStack("sulfurousacid", 1900),
 					FluidUtils.getFluidStack("hydrogenchloride", 500),
 					FluidUtils.getFluidStack("hydrofluoricacid", 200)
 			};
-
 			GT_Values.RA.addDistillationTowerRecipe(
-					FluidUtils.getFluidStack("sulfuricapatite", 133*4),
+					FluidUtils.getFluidStack("sulfuricapatite", 2600),
 					apatiteOutput,
 					UtilsItems.getItemStackOfAmountFromOreDict("dustTinySulfur", 1),
 					30*20,
 					256);
+			
+			FluidStack[] sulfurousacidOutput = {
+					FluidUtils.getFluidStack("sulfurdioxide", 500),
+					FluidUtils.getFluidStack("water", 500)
+			};
+			GT_Values.RA.addDistillationTowerRecipe(
+					FluidUtils.getFluidStack("sulfurousacid", 1000),
+					sulfurousacidOutput,
+					null,
+					10*20,
+					60);
+			
+			FluidStack[] sulfurdioxideOutput = {
+					FluidUtils.getFluidStack("oxygen", 133*2)
+			};
+			GT_Values.RA.addDistillationTowerRecipe(
+					FluidUtils.getFluidStack("sulfurdioxide", 133*3),
+					sulfurdioxideOutput,
+					UtilsItems.getItemStackOfAmountFromOreDict("dustSulfur", 1),
+					5*20,
+					30);
 
 
 
@@ -129,12 +157,15 @@ public class GregtechFluidHandler {
 	private static void generateIC2FluidCell(String fluidNameWithCaps){
 		if (LoadedMods.IndustrialCraft2){
 			ItemStack emptyCell = IC2Items.getItem("cell");
-			int meta = 0;
 			ItemStack filledCell = FluidContainerRegistry.fillFluidContainer(FluidUtils.getFluidStack(fluidNameWithCaps.toLowerCase(), 1000), emptyCell.copy());
 			if (filledCell == null){
-				ItemStack stack = new ItemStack(emptyCell.getItem(), 1, meta);
-				OreDictionary.registerOre("cell", stack);
-				FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(FluidUtils.getFluidStack(fluidNameWithCaps.toLowerCase(), 1000), stack, emptyCell.copy()));
+				OreDictionary.registerOre("cell"+fluidNameWithCaps, filledCell);
+				FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(FluidUtils.getFluidStack(fluidNameWithCaps.toLowerCase(), 1000), filledCell, emptyCell.copy()));
+			}
+			else {
+				OreDictionary.registerOre("cell"+fluidNameWithCaps, filledCell);
+				FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(FluidUtils.getFluidStack(fluidNameWithCaps.toLowerCase(), 1000), filledCell, emptyCell.copy()));
+				
 			}
 		}
 	}

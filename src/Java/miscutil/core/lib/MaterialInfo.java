@@ -39,7 +39,7 @@ public enum MaterialInfo {
 	ZIRCONIUM(noItem, 0, noItem, 0, noItem, 0, noItem, 0, "dustZirconium", 1, noItem, 0),
 	ZIRCONIUMCARBIDE("dustZirconium", 2, "dustCarbon", 2, noItem, 0, noItem, 0, "dustZirconiumCarbide", 1, noItem, 0),
 	NIOMBIUMCARBIDE("dustNiobium", 2, "dustCarbon", 2, noItem, 0, noItem, 0, "dustNiobiumCarbide", 1, noItem, 0), 
-	HASTELLOY_N("dustIron", 1, "dustSmallChrome", 7, "dustSmallMolybdenum", 12, "dustNickel", 4, "dustHastelloyX", 1, noItem, 0);
+	HASTELLOY_N("dustIron", 1, "dustSmallChrome", 7, "dustSmallMolybdenum", 12, "dustNickel", 4, "dustHastelloyN", 1, noItem, 0);
 	
 	
 	
