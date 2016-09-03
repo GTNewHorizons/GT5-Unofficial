@@ -1,4 +1,4 @@
-package gregtech.api.enums;
+zpackage gregtech.api.enums;
 
 import gregtech.api.interfaces.internal.IGT_Mod;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
@@ -61,7 +61,7 @@ public class GT_Values {
     /**
      * The Voltage Tiers. Use this Array instead of the old named Voltage Variables
      */
-    public static final long[] V = new long[]{8, 32, 128, 512, 2048, 8192, 32768, 131072, 524288, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE};
+    public static final long[] V = new long[]{8L, 32L, 128L, 512L, 2048L, 8192L, 32768L, 131072L, 524288L, 536870912L, 536870912L, 536870912L, 536870912L, 536870912L, 536870912L, 536870912L};
 
     /**
      * The short Names for the Voltages
