@@ -204,6 +204,22 @@ public class GregtechRecipe {
 			}
 		}
 	}
+	
+	//Custom Recipe Handlers
+	public GregtechRecipe(ItemStack aInput, FluidStack aFluid, ItemStack[] aOutput, int aDuration, int aEUt) {
+        this(true, new ItemStack[]{aInput}, aOutput.clone(), null, null, new FluidStack[]{aFluid}, null, aDuration, aEUt, 0);
+        if (mInputs.length > 0 && mOutputs[0] != null) {
+            Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(this);
+        }
+    }
+	
+	/*public GregtechRecipe(ItemStack aInput, FluidStack aFluid, ItemStack[] aOutput, int aDuration, int aEUt) {
+        this(true, new ItemStack[]{aInput}, aOutput.clone(), null, null, new FluidStack[]{aFluid}, null, aDuration, aEUt, 0);
+        if (mInputs.length > 0 && mOutputs[0] != null) {
+            Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(this);
+        }
+    }*/
+	
 
 	public static void reInit() {
 		GT_Log.out.println("GT_Mod: Re-Unificating Recipes.");
@@ -307,7 +323,8 @@ public class GregtechRecipe {
 		//public static final Gregtech_Recipe_Map sMatterFabRecipes = new Gregtech_Recipe_Map(new HashSet<GregtechRecipe>(200), "gt.recipe.matterfab", "Matter Fabricator", null, RES_PATH_GUI + "basicmachines/Massfabricator", 1, 3, 1, 1, 1, E, 1, E, true, true);
 		public static final Gregtech_Recipe_Map_Fuel sRocketFuels = new Gregtech_Recipe_Map_Fuel(new HashSet<GregtechRecipe>(10), "gt.recipe.rocketenginefuel", "Rocket Engine Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 3000, " EU", true, true);
 		public static final Gregtech_Recipe_Map_Fuel sGeoThermalFuels = new Gregtech_Recipe_Map_Fuel(new HashSet<GregtechRecipe>(10), "gt.recipe.geothermalfuel", "GeoThermal Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
-
+		public static final Gregtech_Recipe_Map sChemicalDehydratorRecipes = new Gregtech_Recipe_Map(new HashSet<GregtechRecipe>(200), "gt.recipe.chemicaldehydrator", "Chemical Dehydrator", null, RES_PATH_GUI + "basicmachines/Sifter", 1, 1, 0, 0, 1, E, 1, E, true, true);
+		
 		/**
 		 * HashMap of Recipes based on their Items
 		 */

@@ -31,6 +31,24 @@ public interface IGregtech_RecipeAdder {
 	 * @param aEUt			= EU needed for heating up (must be >= 0)
 	 * @return true if the Recipe got added, otherwise false.
 	 */
-	public boolean addMattrFabricatorRecipe(FluidStack aFluidInput, FluidStack aFluidOutput, int aDuration, int aEUt);
-
+	public boolean addMatterFabricatorRecipe(FluidStack aFluidInput, FluidStack aFluidOutput, int aDuration, int aEUt);
+	
+	
+	
+	
+	/**
+     * Adds a Recipe for the Sifter. (up to 9 Outputs)
+     *
+	 * @param aFluidOutput   = Output of the UU-Matter (not null, and respects StackSize)
+	 * @param aFluidInput   = fluid Input (can be UU_Amp or null, and respects StackSize)
+	 * @param aDuration 	= Duration (must be >= 0)
+	 * @param aEUt			= EU needed for heating up (must be >= 0)
+	 * @return true if the Recipe got added, otherwise false.
+     */
+    
+    public boolean addDehydratorRecipe(ItemStack aInput, FluidStack aFluid, ItemStack[] aOutputItems, int aDuration, int aEUt);
+    public boolean addDehydratorRecipe(ItemStack aItemA, ItemStack aItemB, ItemStack[] aOutputItems, int aDuration, int aEUt);
+    public boolean addDehydratorRecipe(ItemStack aItemA, ItemStack aItemB, FluidStack aFluid, ItemStack[] aOutputItems, FluidStack aOutputFluid, int aDuration, int aEUt);
+    
+    
 }

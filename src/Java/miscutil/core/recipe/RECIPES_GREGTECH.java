@@ -12,6 +12,7 @@ import miscutil.core.util.Utils;
 import miscutil.core.util.fluid.FluidUtils;
 import miscutil.core.util.item.UtilsItems;
 import miscutil.xmod.gregtech.api.enums.GregtechItemList;
+import net.minecraft.item.ItemStack;
 
 public class RECIPES_GREGTECH {
 
@@ -27,6 +28,7 @@ public class RECIPES_GREGTECH {
 		distilleryRecipes();
 		extractorRecipes();
 		chemicalBathRecipes();
+		dehydratorRecipes();
 		addFuels();
 	}
 
@@ -92,7 +94,7 @@ public class RECIPES_GREGTECH {
 
 		try {
 
-			CORE.RA.addMattrFabricatorRecipe(
+			CORE.RA.addMatterFabricatorRecipe(
 					Materials.UUAmplifier.getFluid(1L), //Fluid Input
 					Materials.UUMatter.getFluid(1L), //Fluid Output
 					800,  //Time in ticks
@@ -100,12 +102,45 @@ public class RECIPES_GREGTECH {
 		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 		try {
 
-			CORE.RA.addMattrFabricatorRecipe(
+			CORE.RA.addMatterFabricatorRecipe(
 					null, //Fluid Input
 					Materials.UUMatter.getFluid(1L), //Fluid Output
 					3200,  //Time in ticks
 					32); //EU			
 		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+
+	}
+	
+	private static void dehydratorRecipes(){
+		Utils.LOG_INFO("Loading Recipes for Chemical Dehydrator.");
+
+		try {
+
+			CORE.RA.addDehydratorRecipe(
+					UtilsItems.getItemStackOfAmountFromOreDict("dustSteel", 8), //Item input (slot 1)
+					FluidUtils.getFluidStack("oxygen", 1000), //Fluid Input
+					new ItemStack[]{UtilsItems.getItemStackOfAmountFromOreDict("dustDiamond", 1)}, //Output Array of Items - Upto 9
+					10*20, //Time in ticks
+					30); //EU	
+			
+			CORE.RA.addDehydratorRecipe(
+					UtilsItems.getItemStackOfAmountFromOreDict("dustSteel", 8), //Item input (slot 1)
+					UtilsItems.getItemStackOfAmountFromOreDict("dustRedstone", 8), //Item input (slot 2)
+					new ItemStack[]{UtilsItems.getItemStackOfAmountFromOreDict("dustDiamond", 1)}, //Output Array of Items - Upto 9
+					10*20, //Time in ticks
+					30); //EU	
+			
+			CORE.RA.addDehydratorRecipe(
+					UtilsItems.getItemStackOfAmountFromOreDict("dustSteel", 8),
+					UtilsItems.getItemStackOfAmountFromOreDict("dustRedstone", 8),
+					FluidUtils.getFluidStack("oxygen", 1000),
+					new ItemStack[]{UtilsItems.getItemStackOfAmountFromOreDict("dustDiamond", 1)}, //Output Array of Items - Upto 9
+					FluidUtils.getFluidStack("lava", 1000),
+					10*20, //Time in ticks
+					30); //EU	
+			
+		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+	
 
 	}
 

@@ -29,4 +29,16 @@ public class FluidUtils {
 
 	}
 	
+	public static FluidStack[] getFluidStackArray(FluidStack fluidName, int amount){
+		Utils.LOG_WARNING("Trying to get a fluid stack of "+fluidName);
+		try {
+			FluidStack[] singleFluid = {FluidRegistry.getFluidStack(fluidName.getLocalizedName(), amount)};
+			return singleFluid;
+		} 
+		catch (Throwable e){
+			return null;
+		}
+
+	}
+	
 }
