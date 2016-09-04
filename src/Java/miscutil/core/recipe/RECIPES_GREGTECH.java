@@ -110,7 +110,7 @@ public class RECIPES_GREGTECH {
 		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 
 	}
-	
+
 	private static void dehydratorRecipes(){
 		Utils.LOG_INFO("Loading Recipes for Chemical Dehydrator.");
 
@@ -122,14 +122,16 @@ public class RECIPES_GREGTECH {
 					new ItemStack[]{UtilsItems.getItemStackOfAmountFromOreDict("dustDiamond", 1)}, //Output Array of Items - Upto 9
 					10*20, //Time in ticks
 					30); //EU	
-			
+		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+		try {
 			CORE.RA.addDehydratorRecipe(
 					UtilsItems.getItemStackOfAmountFromOreDict("dustSteel", 8), //Item input (slot 1)
 					UtilsItems.getItemStackOfAmountFromOreDict("dustRedstone", 8), //Item input (slot 2)
 					new ItemStack[]{UtilsItems.getItemStackOfAmountFromOreDict("dustDiamond", 1)}, //Output Array of Items - Upto 9
 					10*20, //Time in ticks
 					30); //EU	
-			
+		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+		try {
 			CORE.RA.addDehydratorRecipe(
 					UtilsItems.getItemStackOfAmountFromOreDict("dustSteel", 8),
 					UtilsItems.getItemStackOfAmountFromOreDict("dustRedstone", 8),
@@ -138,9 +140,9 @@ public class RECIPES_GREGTECH {
 					FluidUtils.getFluidStack("lava", 1000),
 					10*20, //Time in ticks
 					30); //EU	
-			
+
 		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
-	
+
 
 	}
 
@@ -170,7 +172,7 @@ public class RECIPES_GREGTECH {
 		GT_ModHandler.addExtractionRecipe(GregtechItemList.Battery_RE_EV_Cadmium.get(1L, new Object[0]), ItemList.Battery_Hull_HV.get(4L, new Object[0]));
 		GT_ModHandler.addExtractionRecipe(GregtechItemList.Battery_RE_EV_Lithium.get(1L, new Object[0]), ItemList.Battery_Hull_HV.get(4L, new Object[0]));
 	}
-	
+
 	private static void chemicalBathRecipes(){
 		int[] chances = {10000, 5000, 2500};
 		GT_Values.RA.addChemicalBathRecipe(UtilsItems.getItemStackOfAmountFromOreDict("dustTin", 12), FluidUtils.getFluidStack("chlorine", 2400),

@@ -23,6 +23,7 @@ import java.util.HashSet;
 import java.util.Map;
 
 import miscutil.core.util.Utils;
+import miscutil.core.util.item.UtilsItems;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -163,6 +164,8 @@ public class GregtechRecipe {
 		mEUt = aEUt;
 
 		//		checkCellBalance();
+		
+		Utils.LOG_SPECIFIC_WARNING(this.getClass().getName()+" | [GregtechRecipe]", "Created new recipe instance for "+UtilsItems.getArrayStackNames(aInputs), 167);
 	}
 
 	public GregtechRecipe(ItemStack aInput1, ItemStack aOutput1, int aFuelValue, int aType) {
@@ -318,12 +321,12 @@ public class GregtechRecipe {
 		 */
 		public static final Collection<Gregtech_Recipe_Map> sMappings = new ArrayList<Gregtech_Recipe_Map>();
 		//public static final GT_Recipe_Map sChemicalBathRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(200), "gt.recipe.chemicalbath", "Chemical Bath", null, RES_PATH_GUI + "basicmachines/ChemicalBath", 1, 3, 1, 1, 1, E, 1, E, true, true);
-		public static final GT_Recipe_Map sCokeOvenRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(200), "gt.recipe.cokeoven", "Coke Oven", null, RES_PATH_GUI + "basicmachines/ChemicalBath", 2, 2, 1, 0, 1, E, 1, E, true, true);
+		public static final GT_Recipe_Map sCokeOvenRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(200), "gt.recipe.cokeoven", "Coke Oven", null, RES_PATH_GUI + "basicmachines/Dehydrator", 2, 2, 1, 0, 1, E, 1, E, true, true);
 		public static final GT_Recipe_Map sMatterFab2Recipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(200), "gt.recipe.matterfab2", "Matter Fabricator", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, E, 1, E, true, true);
 		//public static final Gregtech_Recipe_Map sMatterFabRecipes = new Gregtech_Recipe_Map(new HashSet<GregtechRecipe>(200), "gt.recipe.matterfab", "Matter Fabricator", null, RES_PATH_GUI + "basicmachines/Massfabricator", 1, 3, 1, 1, 1, E, 1, E, true, true);
 		public static final Gregtech_Recipe_Map_Fuel sRocketFuels = new Gregtech_Recipe_Map_Fuel(new HashSet<GregtechRecipe>(10), "gt.recipe.rocketenginefuel", "Rocket Engine Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 3000, " EU", true, true);
 		public static final Gregtech_Recipe_Map_Fuel sGeoThermalFuels = new Gregtech_Recipe_Map_Fuel(new HashSet<GregtechRecipe>(10), "gt.recipe.geothermalfuel", "GeoThermal Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
-		public static final Gregtech_Recipe_Map sChemicalDehydratorRecipes = new Gregtech_Recipe_Map(new HashSet<GregtechRecipe>(200), "gt.recipe.chemicaldehydrator", "Chemical Dehydrator", null, RES_PATH_GUI + "basicmachines/Sifter", 1, 1, 0, 0, 1, E, 1, E, true, true);
+		public static final Gregtech_Recipe_Map sChemicalDehydratorRecipes = new Gregtech_Recipe_Map(new HashSet<GregtechRecipe>(200), "gt.recipe.chemicaldehydrator", "Chemical Dehydrator", null, RES_PATH_GUI + "basicmachines/Dehydrator", 1, 1, 0, 0, 1, E, 1, E, true, true);
 		
 		/**
 		 * HashMap of Recipes based on their Items
@@ -421,12 +424,16 @@ public class GregtechRecipe {
 		}
 
 		protected GregtechRecipe addRecipe(GregtechRecipe aRecipe, boolean aCheckForCollisions, boolean aFakeRecipe, boolean aHidden) {
-			Utils.LOG_INFO("Adding Recipe Method 2");
+			Utils.LOG_INFO("Adding Recipe Method 2 - This Checks if hidden, fake or if duplicate recipes exists, I think.");
 			aRecipe.mHidden = aHidden;
 			aRecipe.mFakeRecipe = aFakeRecipe;
+			Utils.LOG_INFO("Logging some data about this method: GregtechRecipe["+aRecipe.toString()+"] | aCheckForCollisions["+aCheckForCollisions+"] | aFakeRecipe["+aFakeRecipe+"] | aHidden["+aHidden+"]");
+			Utils.LOG_INFO("Logging some data about this method: mMinimalInputFluids["+mMinimalInputFluids+"] | mMinimalInputItems["+mMinimalInputItems+"] | aRecipe.mFluidInputs.length["+aRecipe.mFluidInputs.length+"] | aRecipe.mInputs.length["+aRecipe.mInputs.length+"]");
 			if (aRecipe.mFluidInputs.length < mMinimalInputFluids && aRecipe.mInputs.length < mMinimalInputItems){
 				Utils.LOG_INFO("Step 2 failed");
 				return null;}
+
+			Utils.LOG_INFO("Logging some data about this method: aCheckForCollisions["+aCheckForCollisions+"] | findRecipe != null ["+(findRecipe(null, false, Long.MAX_VALUE, aRecipe.mFluidInputs, aRecipe.mInputs) != null)+"]");
 			if (aCheckForCollisions && findRecipe(null, false, Long.MAX_VALUE, aRecipe.mFluidInputs, aRecipe.mInputs) != null){
 				Utils.LOG_INFO("Step 2 failed - 2");
 				return null;
@@ -592,6 +599,12 @@ public class GregtechRecipe {
 					if (tList == null){ 
 						Utils.LOG_INFO("Method 4 - brrr list was NUll");	
 						mRecipeItemMap.put(tStack, tList = new HashSet<GregtechRecipe>(1));
+						Utils.LOG_INFO("Method 4 - Attemping backup method for Gt Recipe Hashmap:");
+						
+						while (tList.iterator().hasNext()){
+							Utils.LOG_INFO(tList.iterator().next().toString());
+						}
+						
 					}
 					tList.add(aRecipe);
 					Utils.LOG_INFO("Method 4 - Added recipe to map? I think.");					

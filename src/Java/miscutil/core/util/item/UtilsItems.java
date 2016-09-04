@@ -312,5 +312,15 @@ public class UtilsItems {
 		}
 		
 	}
+	
+	public static String getArrayStackNames(ItemStack[] aStack){
+		String itemNames = "Item Array: ";
+		for (ItemStack alph : aStack){
+			String temp = itemNames;
+			itemNames = temp + ", " + alph.getDisplayName() + " x" + alph.stackSize;
+		}
+		return itemNames;
+		
+	}
 
 }

@@ -5,6 +5,7 @@ import miscutil.core.util.Utils;
 import miscutil.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import miscutil.xmod.gregtech.api.util.GregtechRecipe;
 import miscutil.xmod.gregtech.recipes.machines.RECIPEHANDLER_CokeOven;
+import miscutil.xmod.gregtech.recipes.machines.RECIPEHANDLER_Dehydrator;
 import miscutil.xmod.gregtech.recipes.machines.RECIPEHANDLER_MatterFabricator;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -143,6 +144,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
                     return false;
                 }
                 GregtechRecipe.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, new ItemStack[]{aItemA, aItemB}, aOutputItems.clone(), null, null, null, aDuration, aEUt, 0);
+                RECIPEHANDLER_Dehydrator.debug5(aItemA, aItemB, aFluid, aOutputFluid, aOutputItems, aDuration, aEUt);
                 return true;
             }
         }
@@ -158,6 +160,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
             return false;
         }
         GregtechRecipe.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, new ItemStack[]{aItemA, aItemB}, aOutputItems.clone(), null, null, null, aDuration, aEUt, 0);
+        RECIPEHANDLER_Dehydrator.debug5(aItemA, aItemB, null, null, aOutputItems, aDuration, aEUt);
         return true;
     }
 	
@@ -170,6 +173,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
             return false;
         }
         GregtechRecipe.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, new ItemStack[]{aInput}, aOutput.clone(), null, new FluidStack[]{aFluid}, null, aDuration, aEUt, 0);
+        RECIPEHANDLER_Dehydrator.debug5(aInput, null, aFluid, null, aOutput, aDuration, aEUt);
         return true;
     }
 
