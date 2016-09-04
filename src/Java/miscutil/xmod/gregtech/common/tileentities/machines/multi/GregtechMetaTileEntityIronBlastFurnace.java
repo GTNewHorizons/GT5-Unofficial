@@ -45,9 +45,16 @@ public class GregtechMetaTileEntityIronBlastFurnace
 
     @Override
 	public String[] getDescription() {
-        return new String[]{"Slowly, Skip the Bronze age, Get some Steel!",
+        return new String[]{"Sloooowly, Skip the Bronze age, Get some Steel!",
         		"Multiblock: 3x3x5 hollow with opening on top",
         		"40 Iron Plated Bricks required",
+        		"----",
+        		"Even though Iron melts hotter than bronze,",
+        		"this machine is to help players skip looking",
+        		"for tin and copper, which are not as common",
+        		"as Iron is. This machine takes 5x longer than the bronze",
+        		"blast furnace as a result.",
+        		"----",
         		CORE.GT_Tooltip};
     }
 
