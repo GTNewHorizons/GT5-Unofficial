@@ -116,28 +116,54 @@ public class RECIPES_GREGTECH {
 
 		try {
 
+			//Makes Lithium Carbonate
 			CORE.RA.addDehydratorRecipe(
-					UtilsItems.getItemStackOfAmountFromOreDict("dustSteel", 8), //Item input (slot 1)
-					FluidUtils.getFluidStack("oxygen", 1000), //Fluid Input
-					new ItemStack[]{UtilsItems.getItemStackOfAmountFromOreDict("dustDiamond", 1)}, //Output Array of Items - Upto 9
+					FluidUtils.getFluidStack("sulfuriclithium", 1000), //Item input (slot 1)
+					null, //Fluid Input
+					new ItemStack[]{
+						UtilsItems.getItemStackOfAmountFromOreDict("dustSodium", 1),
+						UtilsItems.getItemStackOfAmountFromOreDict("dustCarbon", 1),
+						UtilsItems.getItemStackOfAmountFromOreDict("dustLithium", 1)
+						}, //Output Array of Items - Upto 9
+					10*20, //Time in ticks
+					30); //EU	
+		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+		try {
+
+			CORE.RA.addDehydratorRecipe(
+					UtilsItems.getItemStackOfAmountFromOreDict("cellEmpty", 1), //Item input (slot 1)
+					FluidUtils.getFluidStack("sulfuriclithium", 1000), //Fluid Input
+					new ItemStack[]{
+						UtilsItems.getItemStackOfAmountFromOreDict("dustSodium", 1),
+						UtilsItems.getItemStackOfAmountFromOreDict("dustCarbon", 1),
+						UtilsItems.getItemStackOfAmountFromOreDict("dustLithium", 1)
+						}, //Output Array of Items - Upto 9
 					10*20, //Time in ticks
 					30); //EU	
 		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 		try {
 			CORE.RA.addDehydratorRecipe(
-					UtilsItems.getItemStackOfAmountFromOreDict("dustSteel", 8), //Item input (slot 1)
-					UtilsItems.getItemStackOfAmountFromOreDict("dustRedstone", 8), //Item input (slot 2)
-					new ItemStack[]{UtilsItems.getItemStackOfAmountFromOreDict("dustDiamond", 1)}, //Output Array of Items - Upto 9
+					UtilsItems.getItemStackOfAmountFromOreDict("cellEmpty", 1), //Item input (slot 1)
+					UtilsItems.getItemStackOfAmountFromOreDict("cellWater", 1), //Item input (slot 2)
+					new ItemStack[]{
+						UtilsItems.getItemStackOfAmountFromOreDict("dustSodium", 1),
+						UtilsItems.getItemStackOfAmountFromOreDict("dustCarbon", 1),
+						UtilsItems.getItemStackOfAmountFromOreDict("dustLithium", 1)
+						}, //Output Array of Items - Upto 9
 					10*20, //Time in ticks
 					30); //EU	
 		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 		try {
 			CORE.RA.addDehydratorRecipe(
-					UtilsItems.getItemStackOfAmountFromOreDict("dustSteel", 8),
-					UtilsItems.getItemStackOfAmountFromOreDict("dustRedstone", 8),
-					FluidUtils.getFluidStack("oxygen", 1000),
-					new ItemStack[]{UtilsItems.getItemStackOfAmountFromOreDict("dustDiamond", 1)}, //Output Array of Items - Upto 9
-					FluidUtils.getFluidStack("lava", 1000),
+					UtilsItems.getItemStackOfAmountFromOreDict("cellEmpty", 1),
+					null,
+					FluidUtils.getFluidStack("sulfuriclithium", 1000),
+					new ItemStack[]{
+						UtilsItems.getItemStackOfAmountFromOreDict("dustSodium", 1),
+						UtilsItems.getItemStackOfAmountFromOreDict("dustCarbon", 1),
+						UtilsItems.getItemStackOfAmountFromOreDict("dustLithium", 1)
+						}, //Output Array of Items - Upto 9
+					FluidUtils.getFluidStack("water", 1000),
 					10*20, //Time in ticks
 					30); //EU	
 

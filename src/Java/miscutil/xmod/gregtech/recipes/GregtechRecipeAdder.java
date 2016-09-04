@@ -176,6 +176,18 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
         RECIPEHANDLER_Dehydrator.debug5(aInput, null, aFluid, null, aOutput, aDuration, aEUt);
         return true;
     }
-
+	
+	@Override
+	public boolean addDehydratorRecipe(FluidStack aFluid, FluidStack aOutputFluid, ItemStack[] aOutputItems, int aDuration, int aEUt){
+    if ((aFluid == null) || (aOutputFluid == null || aOutputItems == null)) {
+        return false;
+    }
+    if ((aDuration = GregTech_API.sRecipeFile.get("dehydrator", aFluid.getUnlocalizedName(), aDuration)) <= 0) {
+        return false;
+    }
+    Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, null, aOutputItems.clone(), null, new FluidStack[]{aFluid}, new FluidStack[]{aOutputFluid}, aDuration, aEUt, 0);
+    RECIPEHANDLER_Dehydrator.debug5(null, null, aFluid, aOutputFluid, aOutputItems, aDuration, aEUt);
+    return true;
+}
 
 }

@@ -56,7 +56,7 @@ public class GregtechFluidHandler {
 			Meta_GT_Proxy.addFluid("sulfurousAcid", "Sulfurous Acid", GT_Materials.SulfurousAcid, 4, 75, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfurousAcid, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
 			generateIC2FluidCell("SulfurousAcid");
 
-			Meta_GT_Proxy.addFluid("sulfuricApatite", "Sulfuric Apatite", GT_Materials.SulfuricApatite, 4, 500, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfuricApatite, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+			Meta_GT_Proxy.addFluid("sulfuricApatite", "Sulfuric Apatite Mix", GT_Materials.SulfuricApatite, 4, 500, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfuricApatite, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
 			generateIC2FluidCell("SulfuricApatite");
 
 			Meta_GT_Proxy.addFluid("uraniumHexafluoride", "Uranium Hexafluoride", GT_Materials.UraniumHexaFluoride, 4, 200, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.UraniumHexaFluoride, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
@@ -84,7 +84,7 @@ public class GregtechFluidHandler {
 			}
 			
 
-			Meta_GT_Proxy.addFluid("sulfuricLithium", "Sulfuric Lithium", GT_Materials.SulfuricLithium, 4, 280, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfuricLithium, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+			Meta_GT_Proxy.addFluid("sulfuricLithium", "Sulfuric Lithium Mix", GT_Materials.SulfuricLithium, 4, 280, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfuricLithium, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
 			generateIC2FluidCell("SulfuricLithium");
 
 			Meta_GT_Proxy.addFluid("lithiumHydroxide", "Lithium Hydroxide", GT_Materials.LithiumHydroxide, 4, 500, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.LithiumHydroxide, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
