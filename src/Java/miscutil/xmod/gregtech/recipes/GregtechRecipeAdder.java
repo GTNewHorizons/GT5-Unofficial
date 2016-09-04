@@ -143,7 +143,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
                 if ((aDuration = GregTech_API.sRecipeFile.get("dehydrator", aItemA, aDuration)) <= 0) {
                     return false;
                 }
-                Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, new ItemStack[]{aItemA, aItemB}, aOutputItems.clone(), null, null, null, aDuration, aEUt, 0);
+                Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, new ItemStack[]{aItemA, aItemB}, aOutputItems, null, null, null, aDuration, aEUt, 0);
                 RECIPEHANDLER_Dehydrator.debug5(aItemA, aItemB, aFluid, aOutputFluid, aOutputItems, aDuration, aEUt);
                 return true;
             }
@@ -159,7 +159,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
         if ((aDuration = GregTech_API.sRecipeFile.get("dehydrator", aItemA, aDuration)) <= 0) {
             return false;
         }
-        Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, new ItemStack[]{aItemA, aItemB}, aOutputItems.clone(), null, null, null, aDuration, aEUt, 0);
+        Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, new ItemStack[]{aItemA, aItemB}, aOutputItems, null, null, null, aDuration, aEUt, 0);
         RECIPEHANDLER_Dehydrator.debug5(aItemA, aItemB, null, null, aOutputItems, aDuration, aEUt);
         return true;
     }
@@ -172,7 +172,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
         if ((aDuration = GregTech_API.sRecipeFile.get("dehydrator", aInput, aDuration)) <= 0) {
             return false;
         }
-        Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, new ItemStack[]{aInput}, aOutput.clone(), null, new FluidStack[]{aFluid}, null, aDuration, aEUt, 0);
+        Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, new ItemStack[]{aInput}, aOutput, null, new FluidStack[]{aFluid}, null, aDuration, aEUt, 0);
         RECIPEHANDLER_Dehydrator.debug5(aInput, null, aFluid, null, aOutput, aDuration, aEUt);
         return true;
     }
@@ -185,7 +185,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
     if ((aDuration = GregTech_API.sRecipeFile.get("dehydrator", aFluid.getUnlocalizedName(), aDuration)) <= 0) {
         return false;
     }
-    Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, null, aOutputItems.clone(), null, new FluidStack[]{aFluid}, new FluidStack[]{aOutputFluid}, aDuration, aEUt, 0);
+    Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, null, aOutputItems, null, new FluidStack[]{aFluid}, new FluidStack[]{aOutputFluid}, aDuration, aEUt, 0);
     RECIPEHANDLER_Dehydrator.debug5(null, null, aFluid, aOutputFluid, aOutputItems, aDuration, aEUt);
     return true;
 }
