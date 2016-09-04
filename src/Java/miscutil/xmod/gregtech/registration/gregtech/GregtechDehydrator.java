@@ -1,11 +1,11 @@
 package miscutil.xmod.gregtech.registration.gregtech;
 
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
+import gregtech.api.util.Recipe_GT;
 import miscutil.core.lib.CORE;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.util.Utils;
 import miscutil.xmod.gregtech.api.enums.GregtechItemList;
-import miscutil.xmod.gregtech.api.metatileentity.implementations.base.GT_MTE_BasicMachine_Custom_Recipe;
-import miscutil.xmod.gregtech.api.util.GregtechRecipe;
 
 public class GregtechDehydrator
 {
@@ -38,10 +38,10 @@ public class GregtechDehydrator
 
 		 */
 
-		GregtechItemList.GT_Dehydrator_EV.set(new GT_MTE_BasicMachine_Custom_Recipe(
+		GregtechItemList.GT_Dehydrator_EV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(
 				813, "advancedmachine.dehydrator.tier.01", "Chemical Dehydrator I", 4,
 				"Remind Alkalus to add something here."+System.getProperty("line.separator")+CORE.GT_Tooltip,
-				GregtechRecipe.Gregtech_Recipe_Map.sChemicalDehydratorRecipes,
+				Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes,
 				2, 9,
 				10000,
 				2, 5, 
@@ -50,10 +50,10 @@ public class GregtechDehydrator
 				0,
 				"UNBOXINATOR",
 				null).getStackForm(1L));
-		GregtechItemList.GT_Dehydrator_IV.set(new GT_MTE_BasicMachine_Custom_Recipe(
+		GregtechItemList.GT_Dehydrator_IV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(
 				814, "advancedmachine.dehydrator.tier.02", "Chemical Dehydrator II", 5,
 				"Remind Alkalus to add something here."+System.getProperty("line.separator")+CORE.GT_Tooltip,
-				GregtechRecipe.Gregtech_Recipe_Map.sChemicalDehydratorRecipes,
+				Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes,
 				2, 9,
 				10000,
 				2, 5, 
@@ -62,10 +62,10 @@ public class GregtechDehydrator
 				0,
 				"UNBOXINATOR",
 				null).getStackForm(1L));
-		GregtechItemList.GT_Dehydrator_LuV.set(new GT_MTE_BasicMachine_Custom_Recipe(
+		GregtechItemList.GT_Dehydrator_LuV.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(
 				815, "advancedmachine.dehydrator.tier.03", "Chemical Dehydrator III", 6,
 				"Remind Alkalus to add something here."+System.getProperty("line.separator")+CORE.GT_Tooltip,
-				GregtechRecipe.Gregtech_Recipe_Map.sChemicalDehydratorRecipes,
+				Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes,
 				2, 9,
 				10000,
 				2, 5, 
@@ -74,10 +74,10 @@ public class GregtechDehydrator
 				0,
 				"UNBOXINATOR",
 				null).getStackForm(1L));
-		GregtechItemList.GT_Dehydrator_ZPM.set(new GT_MTE_BasicMachine_Custom_Recipe(
+		GregtechItemList.GT_Dehydrator_ZPM.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(
 				816, "advancedmachine.dehydrator.tier.04", "Chemical Dehydrator IV", 7,
 				"Remind Alkalus to add something here."+System.getProperty("line.separator")+CORE.GT_Tooltip,
-				GregtechRecipe.Gregtech_Recipe_Map.sChemicalDehydratorRecipes,
+				Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes,
 				2, 9,
 				10000,
 				2, 5, 

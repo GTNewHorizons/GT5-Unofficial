@@ -8,6 +8,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.Recipe_GT;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +17,6 @@ import miscutil.core.block.ModBlocks;
 import miscutil.core.lib.CORE;
 import miscutil.xmod.gregtech.api.gui.GUI_MultiMachine;
 import miscutil.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
-import miscutil.xmod.gregtech.api.util.GregtechRecipe;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -70,7 +70,7 @@ public class GregtechMetaTileEntityIndustrialCokeOven
 
     @Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return GregtechRecipe.Gregtech_Recipe_Map.sCokeOvenRecipes;
+        return Recipe_GT.Gregtech_Recipe_Map.sCokeOvenRecipes;
         
     }
 
@@ -118,7 +118,7 @@ public class GregtechMetaTileEntityIndustrialCokeOven
         if (tInputList.size() > 0) {
             long tVoltage = getMaxInputVoltage();
             byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-            GT_Recipe tRecipe = GregtechRecipe.Gregtech_Recipe_Map.sCokeOvenRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
+            GT_Recipe tRecipe = Recipe_GT.Gregtech_Recipe_Map.sCokeOvenRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
             if ((tRecipe != null) && (this.mLevel >= tRecipe.mSpecialValue) && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
                 this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;

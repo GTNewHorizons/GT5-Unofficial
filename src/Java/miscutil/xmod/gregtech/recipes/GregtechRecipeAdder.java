@@ -1,9 +1,9 @@
 package miscutil.xmod.gregtech.recipes;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.util.Recipe_GT;
 import miscutil.core.util.Utils;
 import miscutil.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
-import miscutil.xmod.gregtech.api.util.GregtechRecipe;
 import miscutil.xmod.gregtech.recipes.machines.RECIPEHANDLER_CokeOven;
 import miscutil.xmod.gregtech.recipes.machines.RECIPEHANDLER_Dehydrator;
 import miscutil.xmod.gregtech.recipes.machines.RECIPEHANDLER_MatterFabricator;
@@ -47,10 +47,10 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			try {
 				RECIPEHANDLER_CokeOven.debug4(aInput1, aInput2, aFluidInput, aFluidOutput, aOutput, aDuration, aEUt);
 				if (aFluidInput == null){
-					GregtechRecipe.Gregtech_Recipe_Map.sCokeOvenRecipes.addRecipe(true, new ItemStack[]{aInput1, aInput2}, new ItemStack[]{aOutput}, null, null, null, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
+					Recipe_GT.Gregtech_Recipe_Map.sCokeOvenRecipes.addRecipe(true, new ItemStack[]{aInput1, aInput2}, new ItemStack[]{aOutput}, null, null, null, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
 				}
 				else {
-					GregtechRecipe.Gregtech_Recipe_Map.sCokeOvenRecipes.addRecipe(true, new ItemStack[]{aInput1, aInput2}, new ItemStack[]{aOutput}, null, null, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
+					Recipe_GT.Gregtech_Recipe_Map.sCokeOvenRecipes.addRecipe(true, new ItemStack[]{aInput1, aInput2}, new ItemStack[]{aOutput}, null, null, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
 				}
 				RECIPEHANDLER_CokeOven.debug5(aInput1, aInput2, aFluidInput, aFluidOutput, aOutput, aDuration, aEUt);
 
@@ -101,12 +101,12 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			try {
 				RECIPEHANDLER_MatterFabricator.debug4(aFluidInput, aFluidOutput, aDuration, aEUt);
 				if (aFluidInput == null){
-					//GregtechRecipe.Gregtech_Recipe_Map.sMatterFabRecipes.addRecipe(true, null, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
-					GregtechRecipe.Gregtech_Recipe_Map.sMatterFab2Recipes.addRecipe(true, null, null, null, null, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
+					//Recipe_GT.Gregtech_Recipe_Map.sMatterFabRecipes.addRecipe(true, null, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
+					Recipe_GT.Gregtech_Recipe_Map.sMatterFab2Recipes.addRecipe(true, null, null, null, null, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
 				}
 				else {
-					//GregtechRecipe.Gregtech_Recipe_Map.sMatterFabRecipes.addRecipe(true, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
-					GregtechRecipe.Gregtech_Recipe_Map.sMatterFab2Recipes.addRecipe(true, null, null, null, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
+					//Recipe_GT.Gregtech_Recipe_Map.sMatterFabRecipes.addRecipe(true, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
+					Recipe_GT.Gregtech_Recipe_Map.sMatterFab2Recipes.addRecipe(true, null, null, null, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
 				}
 				RECIPEHANDLER_MatterFabricator.debug5(aFluidInput, aFluidOutput, aDuration, aEUt);
 
@@ -129,7 +129,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
         	Utils.LOG_INFO("Fuel Input is Invalid.");
             return false;
         }
-        new GregtechRecipe(aInput1, aOutput1, GregTech_API.sRecipeFile.get("fuel_" + aType, aInput1, aEU), aType);
+        //new GregtechRecipe(aInput1, aOutput1, GregTech_API.sRecipeFile.get("fuel_" + aType, aInput1, aEU), aType);
         return true;
     }
 
@@ -143,7 +143,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
                 if ((aDuration = GregTech_API.sRecipeFile.get("dehydrator", aItemA, aDuration)) <= 0) {
                     return false;
                 }
-                GregtechRecipe.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, new ItemStack[]{aItemA, aItemB}, aOutputItems.clone(), null, null, null, aDuration, aEUt, 0);
+                Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, new ItemStack[]{aItemA, aItemB}, aOutputItems.clone(), null, null, null, aDuration, aEUt, 0);
                 RECIPEHANDLER_Dehydrator.debug5(aItemA, aItemB, aFluid, aOutputFluid, aOutputItems, aDuration, aEUt);
                 return true;
             }
@@ -159,7 +159,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
         if ((aDuration = GregTech_API.sRecipeFile.get("dehydrator", aItemA, aDuration)) <= 0) {
             return false;
         }
-        GregtechRecipe.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, new ItemStack[]{aItemA, aItemB}, aOutputItems.clone(), null, null, null, aDuration, aEUt, 0);
+        Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, new ItemStack[]{aItemA, aItemB}, aOutputItems.clone(), null, null, null, aDuration, aEUt, 0);
         RECIPEHANDLER_Dehydrator.debug5(aItemA, aItemB, null, null, aOutputItems, aDuration, aEUt);
         return true;
     }
@@ -172,7 +172,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
         if ((aDuration = GregTech_API.sRecipeFile.get("dehydrator", aInput, aDuration)) <= 0) {
             return false;
         }
-        GregtechRecipe.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, new ItemStack[]{aInput}, aOutput.clone(), null, new FluidStack[]{aFluid}, null, aDuration, aEUt, 0);
+        Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, new ItemStack[]{aInput}, aOutput.clone(), null, new FluidStack[]{aFluid}, null, aDuration, aEUt, 0);
         RECIPEHANDLER_Dehydrator.debug5(aInput, null, aFluid, null, aOutput, aDuration, aEUt);
         return true;
     }

@@ -16,8 +16,8 @@ import gregtech.api.util.GT_Utility;
 
 import java.util.Arrays;
 
-import miscutil.xmod.gregtech.api.util.GregtechRecipe;
-import miscutil.xmod.gregtech.api.util.GregtechRecipe.Gregtech_Recipe_Map;
+import miscutil.xmod.gregtech.api.util.GregtechRecipe_OLD;
+import miscutil.xmod.gregtech.api.util.GregtechRecipe_OLD.Gregtech_Recipe_Map;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -52,7 +52,7 @@ public abstract class GT_MTE_CustomRecipe_BasicMachine extends GT_MetaTileEntity
     /**
      * Contains the Recipe which has been previously used, or null if there was no previous Recipe, which could have been buffered
      */
-    protected GregtechRecipe mLastRecipe = null;
+    protected GregtechRecipe_OLD mLastRecipe = null;
     private FluidStack mFluidOut;
 
     /**
@@ -514,7 +514,7 @@ public abstract class GT_MTE_CustomRecipe_BasicMachine extends GT_MetaTileEntity
         return getBaseMetaTileEntity().decreaseStoredEnergyUnits(aEUt, false);
     }
 
-    protected void calculateOverclockedNess(GregtechRecipe tRecipe) {
+    protected void calculateOverclockedNess(GregtechRecipe_OLD tRecipe) {
         calculateOverclockedNess(tRecipe.mEUt, tRecipe.mDuration);
     }
 
@@ -546,7 +546,7 @@ public abstract class GT_MTE_CustomRecipe_BasicMachine extends GT_MetaTileEntity
         return rOutputs;
     }
 
-    protected boolean canOutput(GregtechRecipe tRecipe) {
+    protected boolean canOutput(GregtechRecipe_OLD tRecipe) {
         return tRecipe != null && (tRecipe.mNeedsEmptyOutput ? isOutputEmpty() && getDrainableStack() == null : canOutput(tRecipe.getFluidOutput(0)) && canOutput(tRecipe.mOutputs));
     }
 
@@ -723,7 +723,7 @@ public abstract class GT_MTE_CustomRecipe_BasicMachine extends GT_MetaTileEntity
     public int checkRecipe() {
     	Gregtech_Recipe_Map tMap = getRecipeList();
         if (tMap == null) return DID_NOT_FIND_RECIPE;
-        GregtechRecipe tRecipe = tMap.findRecipe(getBaseMetaTileEntity(), mLastRecipe, false, V[mTier], new FluidStack[]{getFillableStack()}, getSpecialSlot(), getAllInputs());
+        GregtechRecipe_OLD tRecipe = tMap.findRecipe(getBaseMetaTileEntity(), mLastRecipe, false, V[mTier], new FluidStack[]{getFillableStack()}, getSpecialSlot(), getAllInputs());
         if (tRecipe == null) return DID_NOT_FIND_RECIPE;
         if (tRecipe.mCanBeBuffered) mLastRecipe = tRecipe;
         if (!canOutput(tRecipe)) {

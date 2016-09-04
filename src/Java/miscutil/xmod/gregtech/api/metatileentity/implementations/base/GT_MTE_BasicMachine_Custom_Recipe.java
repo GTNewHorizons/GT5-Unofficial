@@ -19,7 +19,7 @@ import gregtech.api.util.GT_Utility;
 
 import java.util.Random;
 
-import miscutil.xmod.gregtech.api.util.GregtechRecipe.Gregtech_Recipe_Map;
+import miscutil.xmod.gregtech.api.util.GregtechRecipe_OLD.Gregtech_Recipe_Map;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;

@@ -9,6 +9,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.Recipe_GT;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +19,6 @@ import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
 import miscutil.core.util.item.UtilsItems;
 import miscutil.xmod.gregtech.api.gui.GUI_MultiMachine;
-import miscutil.xmod.gregtech.api.util.GregtechRecipe;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -102,7 +102,7 @@ public class GregtechMTENuclearReactor extends GT_MetaTileEntity_MultiBlockBase 
 		FluidStack[] tFluids = (FluidStack[]) Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tFluidList.size()]), 0, tFluidList.size());
 		if (tFluids.length > 0) {
 			for(int i = 0;i<tFluids.length;i++){
-				GT_Recipe tRecipe = GregtechRecipe.Gregtech_Recipe_Map.sMatterFab2Recipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], new FluidStack[]{tFluids[i]}, new ItemStack[]{});
+				GT_Recipe tRecipe = Recipe_GT.Gregtech_Recipe_Map.sMatterFab2Recipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], new FluidStack[]{tFluids[i]}, new ItemStack[]{});
 				if (tRecipe != null) {
 					if (tRecipe.isRecipeInputEqual(true, tFluids, new ItemStack[]{})) {
 						this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
