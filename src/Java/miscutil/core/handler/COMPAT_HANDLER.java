@@ -16,23 +16,8 @@ import miscutil.core.common.compat.COMPAT_PneumaticCraft;
 import miscutil.core.common.compat.COMPAT_RFTools;
 import miscutil.core.common.compat.COMPAT_SimplyJetpacks;
 import miscutil.core.common.compat.COMPAT_Thaumcraft;
-import miscutil.core.handler.registration.LateRegistrationHandler;
-import miscutil.core.handler.registration.RegistrationHandler;
-import miscutil.core.handler.registration.gregtech.GregtechEnergyBuffer;
-import miscutil.core.handler.registration.gregtech.GregtechIndustrialCentrifuge;
-import miscutil.core.handler.registration.gregtech.GregtechIndustrialCokeOven;
-import miscutil.core.handler.registration.gregtech.GregtechIndustrialElectrolyzer;
-import miscutil.core.handler.registration.gregtech.GregtechIndustrialMacerator;
-import miscutil.core.handler.registration.gregtech.GregtechIndustrialMassFabricator;
-import miscutil.core.handler.registration.gregtech.GregtechIndustrialPlatePress;
-import miscutil.core.handler.registration.gregtech.GregtechIndustrialWiremill;
-import miscutil.core.handler.registration.gregtech.GregtechIronBlastFurnace;
-import miscutil.core.handler.registration.gregtech.GregtechPowerSubStation;
-import miscutil.core.handler.registration.gregtech.GregtechRocketFuelGenerator;
-import miscutil.core.handler.registration.gregtech.GregtechSafeBlock;
-import miscutil.core.handler.registration.gregtech.GregtechSolarGenerators;
-import miscutil.core.handler.registration.gregtech.GregtechSteamCondenser;
-import miscutil.core.handler.registration.gregtech.GregtechSuperConductionPoint;
+import miscutil.core.handler.Recipes.LateRegistrationHandler;
+import miscutil.core.handler.Recipes.RegistrationHandler;
 import miscutil.core.item.ModItems;
 import miscutil.core.lib.CORE;
 import miscutil.core.lib.LoadedMods;
@@ -42,6 +27,22 @@ import miscutil.core.recipe.ShapedRecipeObject;
 import miscutil.core.util.Utils;
 import miscutil.core.util.item.UtilsItems;
 import miscutil.core.util.recipe.UtilsRecipe;
+import miscutil.xmod.gregtech.registration.gregtech.GregtechDehydrator;
+import miscutil.xmod.gregtech.registration.gregtech.GregtechEnergyBuffer;
+import miscutil.xmod.gregtech.registration.gregtech.GregtechIndustrialCentrifuge;
+import miscutil.xmod.gregtech.registration.gregtech.GregtechIndustrialCokeOven;
+import miscutil.xmod.gregtech.registration.gregtech.GregtechIndustrialElectrolyzer;
+import miscutil.xmod.gregtech.registration.gregtech.GregtechIndustrialMacerator;
+import miscutil.xmod.gregtech.registration.gregtech.GregtechIndustrialMassFabricator;
+import miscutil.xmod.gregtech.registration.gregtech.GregtechIndustrialPlatePress;
+import miscutil.xmod.gregtech.registration.gregtech.GregtechIndustrialWiremill;
+import miscutil.xmod.gregtech.registration.gregtech.GregtechIronBlastFurnace;
+import miscutil.xmod.gregtech.registration.gregtech.GregtechPowerSubStation;
+import miscutil.xmod.gregtech.registration.gregtech.GregtechRocketFuelGenerator;
+import miscutil.xmod.gregtech.registration.gregtech.GregtechSafeBlock;
+import miscutil.xmod.gregtech.registration.gregtech.GregtechSolarGenerators;
+import miscutil.xmod.gregtech.registration.gregtech.GregtechSteamCondenser;
+import miscutil.xmod.gregtech.registration.gregtech.GregtechSuperConductionPoint;
 import net.minecraft.item.ItemStack;
 
 public class COMPAT_HANDLER {
@@ -94,6 +95,7 @@ public class COMPAT_HANDLER {
 		//GregtechIndustrialSinter.run();
 		GregtechSolarGenerators.run();
 		GregtechPowerSubStation.run();
+		GregtechDehydrator.run();
 		}
 
 	}

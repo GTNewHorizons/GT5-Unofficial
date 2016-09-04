@@ -346,7 +346,12 @@ public enum GregtechOrePrefixes {
 		SulfurousAcid(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 110, 220, 30, 0, "Sulfurous Acid", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeWhite, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1))),
 		SulfurDioxide(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 150, 200, 50, 0, "Sulfur Dioxide", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeWhite, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1))),
 		HydrogenChloride(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 150, 240, 90, 0, "Hydrogen Chloride", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeWhite, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1))),
-		SulfuricApatite(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 0, 105, 105, 0, "Sulfuric Apatite Solution", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeWhite, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1)));
+		SulfuricApatite(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 0, 105, 105, 0, "Sulfuric Apatite Solution", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeWhite, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1))), 
+		
+		SulfuricLithium(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 0, 105, 105, 0, "Sulfuric Lithium Solution", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeWhite, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1))), 
+		LithiumHydroxide(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 0, 105, 105, 0, "Lithium Hydroxide", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeWhite, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1))), 
+		 
+		;
 		
 		
 		

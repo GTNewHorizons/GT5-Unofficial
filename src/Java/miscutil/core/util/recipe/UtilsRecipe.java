@@ -7,8 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import miscutil.core.handler.COMPAT_HANDLER;
-import miscutil.core.handler.registration.LateRegistrationHandler;
-import miscutil.core.handler.registration.RegistrationHandler;
+import miscutil.core.handler.Recipes.LateRegistrationHandler;
+import miscutil.core.handler.Recipes.RegistrationHandler;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
 import miscutil.core.util.item.UtilsItems;

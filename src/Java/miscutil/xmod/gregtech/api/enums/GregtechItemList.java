@@ -97,13 +97,17 @@ public enum GregtechItemList implements GregtechItemContainer {
 	
 	
 	Food_Baked_Raisin_Bread, 
+	
+	
 	Industrial_SinterFurnace, 
 	
 	SuperConductorInputNode, 
 	
 	Casing_Reactor_I, Casing_Reactor_II, 
 	
-	PowerSubStation;
+	PowerSubStation, 
+	
+	GT_Dehydrator_EV, GT_Dehydrator_IV, GT_Dehydrator_LuV, GT_Dehydrator_ZPM;
 
 	public static final GregtechItemList[]
 			DYE_ONLY_ITEMS = {

@@ -1,4 +1,4 @@
-package miscutil.core.handler.registration.gregtech;
+package miscutil.xmod.gregtech.registration.gregtech;
 
 import miscutil.core.util.Utils;
 import miscutil.xmod.gregtech.api.enums.GregtechItemList;

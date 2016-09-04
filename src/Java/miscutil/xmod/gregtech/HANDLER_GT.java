@@ -1,10 +1,10 @@
 package miscutil.xmod.gregtech;
 
 import gregtech.api.util.GT_Config;
-import miscutil.core.handler.registration.gregtech.GregtechConduits;
 import miscutil.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import miscutil.xmod.gregtech.common.blocks.fluid.GregtechFluidHandler;
 import miscutil.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
+import miscutil.xmod.gregtech.registration.gregtech.GregtechConduits;
 
 public class HANDLER_GT {
 	

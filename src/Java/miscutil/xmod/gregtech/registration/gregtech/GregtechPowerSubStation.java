@@ -1,4 +1,4 @@
-package miscutil.core.handler.registration.gregtech;
+package miscutil.xmod.gregtech.registration.gregtech;
 
 import miscutil.core.util.Utils;
 import miscutil.xmod.gregtech.api.enums.GregtechItemList;
@@ -21,7 +21,7 @@ public class GregtechPowerSubStation
 	private static void run1()
 	{
 		//Steam Condensors
-		GregtechItemList.PowerSubStation.set(new GregtechMetaTileEntityPowerSubStationController(802, "substation.01.input.single", "Power Substation Node").getStackForm(1L));
+		GregtechItemList.PowerSubStation.set(new GregtechMetaTileEntityPowerSubStationController(812, "substation.01.input.single", "Power Substation Node").getStackForm(1L));
 		
 	}
 }

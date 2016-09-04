@@ -1,4 +1,4 @@
-package miscutil.core.handler.registration.gregtech;
+package miscutil.xmod.gregtech.registration.gregtech;
 
 import miscutil.core.util.Utils;
 import miscutil.xmod.gregtech.api.enums.GregtechItemList;
@@ -21,7 +21,7 @@ public class GregtechSuperConductionPoint
 	private static void run1()
 	{
 		//Steam Condensors
-		GregtechItemList.SuperConductorInputNode.set(new GregtechMetaTileEntitySuperCondensor(801, "superconductor.01.input.single", "Power Phase Shifting Station", 8).getStackForm(1L));
+		GregtechItemList.SuperConductorInputNode.set(new GregtechMetaTileEntitySuperCondensor(811, "superconductor.01.input.single", "Power Phase Shifting Station", 8).getStackForm(1L));
 		
 	}
 }

@@ -1,4 +1,4 @@
-package miscutil.core.handler.registration.gregtech;
+package miscutil.xmod.gregtech.registration.gregtech;
 
 import miscutil.core.util.Utils;
 import miscutil.xmod.gregtech.api.enums.GregtechItemList;
@@ -18,7 +18,7 @@ public class GregtechIndustrialSinter{
 	private static void run1()
 	{
 		//Industrial Electrolyzer Multiblock
-		GregtechItemList.Industrial_SinterFurnace.set(new GregtechMetaTileEntityIndustrialSinter(800, "industrialsinterfurnace.controller.tier.single", "Sinter Furnace").getStackForm(1L));
+		GregtechItemList.Industrial_SinterFurnace.set(new GregtechMetaTileEntityIndustrialSinter(810, "industrialsinterfurnace.controller.tier.single", "Sinter Furnace").getStackForm(1L));
 		
 	}
 }

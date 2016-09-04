@@ -83,6 +83,22 @@ public class GregtechFluidHandler {
 				}
 			}
 			
+
+			Meta_GT_Proxy.addFluid("sulfuricLithium", "Sulfuric Lithium", GT_Materials.SulfuricLithium, 4, 280, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfuricLithium, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+			generateIC2FluidCell("SulfuricLithium");
+
+			Meta_GT_Proxy.addFluid("lithiumHydroxide", "Lithium Hydroxide", GT_Materials.LithiumHydroxide, 4, 500, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.LithiumHydroxide, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+			generateIC2FluidCell("SulfuricApatite");
+
+			Meta_GT_Proxy.addFluid("sulfuricApatite", "Sulfuric Apatite", GT_Materials.SulfuricApatite, 4, 500, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfuricApatite, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+			generateIC2FluidCell("SulfuricApatite");
+
+			Meta_GT_Proxy.addFluid("sulfuricApatite", "Sulfuric Apatite", GT_Materials.SulfuricApatite, 4, 500, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfuricApatite, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+			generateIC2FluidCell("SulfuricApatite");
+
+			Meta_GT_Proxy.addFluid("sulfuricApatite", "Sulfuric Apatite", GT_Materials.SulfuricApatite, 4, 500, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfuricApatite, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+			generateIC2FluidCell("SulfuricApatite");
+
 			
 			//Chemical Bath Recipes
 			GT_Values.RA.addChemicalRecipe(
@@ -92,6 +108,22 @@ public class GregtechFluidHandler {
 					FluidUtils.getFluidStack("sulfuricapatite", 133*4),
 					UtilsItems.getItemStackOfAmountFromOreDict("dustSmallSulfur", 1), 
 					20*20);
+			
+			GT_Values.RA.addChemicalRecipe(
+					UtilsItems.getItemStackOfAmountFromOreDict("dustLithium", 8),
+					null,
+					FluidUtils.getFluidStack("sulfuricacid", 133*32), 
+					FluidUtils.getFluidStack("sulfuriclithium", 133*4),
+					UtilsItems.getItemStackOfAmountFromOreDict("dustSmallLithium", 2), 
+					20*20);
+			
+			GT_Values.RA.addChemicalRecipe(
+					UtilsItems.getItemStackOfAmountFromOreDict("cellOxygen", 1),
+					UtilsItems.getItemStackOfAmountFromOreDict("dustLithium", 16),
+					FluidUtils.getFluidStack("water", 1000), 
+					FluidUtils.getFluidStack("lithiumhydroxide", 133*4),
+					null, 
+					300*20);
 
 			
 			

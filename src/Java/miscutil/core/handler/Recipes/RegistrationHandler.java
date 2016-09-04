@@ -1,4 +1,4 @@
-package miscutil.core.handler.registration;
+package miscutil.core.handler.Recipes;
 
 import miscutil.core.handler.COMPAT_HANDLER;
 import miscutil.core.recipe.RECIPES_MachineComponents;
