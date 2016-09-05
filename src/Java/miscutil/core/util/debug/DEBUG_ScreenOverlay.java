@@ -1,6 +1,5 @@
 package miscutil.core.util.debug;
 
-import miscutil.core.item.tool.staballoy.StaballoyPickaxe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -30,7 +29,7 @@ public class DEBUG_ScreenOverlay extends Gui {
 		try{heldItem = mc.thePlayer.getHeldItem().getItem();
 
 		if (heldItem != null){
-			if (heldItem instanceof StaballoyPickaxe){
+			/*if (heldItem instanceof StaballoyPickaxe){
 
 				int dmg =((StaballoyPickaxe) heldItem).getDamage(((StaballoyPickaxe) heldItem).thisPickaxe);
 
@@ -38,7 +37,7 @@ public class DEBUG_ScreenOverlay extends Gui {
 				str = "DAMAGE: "+ dmg +" | FACING: "+((StaballoyPickaxe) heldItem).FACING+" | FACING_HORIZONTAL: "+((StaballoyPickaxe) heldItem).FACING_HORIZONTAL+" | LOOKING DIRECTION: "+((StaballoyPickaxe) heldItem).lookingDirection;
 
 				drawString(fontRender, str, (this.width - fontRender.getStringWidth(str)) / 2, this.height / 10, 0xFFAA00);
-			}
+			}*/
 		}
 		}catch(NullPointerException e){}
 

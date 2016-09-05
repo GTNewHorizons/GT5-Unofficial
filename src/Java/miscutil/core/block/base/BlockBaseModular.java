@@ -3,6 +3,7 @@ package miscutil.core.block.base;
 import miscutil.core.item.base.itemblock.ItemBlockGtBlock;
 import miscutil.core.item.base.itemblock.ItemBlockGtFrameBox;
 import miscutil.core.lib.CORE;
+import miscutil.core.util.Utils;
 import miscutil.core.util.math.MathUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -27,7 +28,7 @@ public class BlockBaseModular extends BasicBlock{
 		this.thisBlock = blockType;
 		this.thisBlockMaterial = blockMaterial;
 		this.thisBlockType = blockType.name().toUpperCase();
-		this.setBlockName(getLocalizedName());
+		this.setBlockName(GetProperName());
 		
 		if (!CORE.DEBUG){
 			//Utils.LOG_INFO("=============Block Info Dump=============");
@@ -54,15 +55,15 @@ public class BlockBaseModular extends BasicBlock{
 		
 		//setOreDict(unlocalizedName, blockType);
 		if (thisBlockType == BlockTypes.STANDARD.name().toUpperCase()){
-			GameRegistry.registerBlock(this, ItemBlockGtBlock.class, blockType.getTexture()+unlocalizedName);	
+			GameRegistry.registerBlock(this, ItemBlockGtBlock.class, Utils.sanitizeString(blockType.getTexture()+unlocalizedName));	
 			//Utils.LOG_INFO("Registered Block in Block Registry as: "+"Block of "+blockMaterial);		
 		}
 		else if (thisBlockType == BlockTypes.FRAME.name().toUpperCase()){
-			GameRegistry.registerBlock(this, ItemBlockGtFrameBox.class, blockType.getTexture()+unlocalizedName);
+			GameRegistry.registerBlock(this, ItemBlockGtFrameBox.class, Utils.sanitizeString(blockType.getTexture()+unlocalizedName));
 			//Utils.LOG_INFO("Registered Block in Block Registry as: "+blockMaterial+" Frame Box");			
 		}
 		else {
-			GameRegistry.registerBlock(this, ItemBlockGtBlock.class, blockType.getTexture()+unlocalizedName);
+			GameRegistry.registerBlock(this, ItemBlockGtBlock.class, Utils.sanitizeString(blockType.getTexture()+unlocalizedName));
 			//Utils.LOG_INFO("Registered Block in Block Registry as: "+blockMaterial);	
 		}
 		
@@ -82,8 +83,23 @@ public class BlockBaseModular extends BasicBlock{
 		return 0;
 	}
 	
-	@Override
+	/*@Override
 	public String getLocalizedName() {
+		String tempIngot;	
+		if (thisBlock == BlockTypes.STANDARD){
+			tempIngot = "Block of "+thisBlockMaterial;
+		}
+		else if (thisBlock == BlockTypes.FRAME){
+			tempIngot = thisBlockMaterial + " Frame Box";
+		}
+		else {
+
+			tempIngot = getUnlocalizedName().replace("tile.blockGt", "ingot");
+		}
+		return tempIngot;
+	}*/
+	
+	public String GetProperName() {
 		String tempIngot;	
 		if (thisBlock == BlockTypes.STANDARD){
 			tempIngot = "Block of "+thisBlockMaterial;

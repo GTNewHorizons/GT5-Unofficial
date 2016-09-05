@@ -31,11 +31,11 @@ public class StaballoyPickaxe extends ItemPickaxe{
 		return 0;
 	}
 
-	public Boolean FACING_HORIZONTAL = true;
-	public String FACING = "north";
-	public EntityPlayer localPlayer;
-	public String lookingDirection;
-	public World localWorld;
+	protected Boolean FACING_HORIZONTAL = true;
+	protected String FACING = "north";
+	protected EntityPlayer localPlayer;
+	protected String lookingDirection;
+	protected World localWorld;
 	public ItemStack thisPickaxe = null;
 
 	/*
@@ -101,7 +101,7 @@ public class StaballoyPickaxe extends ItemPickaxe{
 		return bDurabilityLoss;
 	}
 
-	public static Boolean canPickaxeBlock(Block currentBlock, World currentWorld){
+	public Boolean canPickaxeBlock(Block currentBlock, World currentWorld){
 		String correctTool = "";
 		if (!currentWorld.isRemote){			
 			try {
@@ -170,14 +170,12 @@ public class StaballoyPickaxe extends ItemPickaxe{
 		}
 	}
 
-	public static int doDurabilityDamage(int x){
-
-
+	public int doDurabilityDamage(int x){
 		return x;
 	}
 
 	//Should clear up blocks quicker if I chain it.
-	private void removeBlockAndDropAsItem(World world, int X, int Y, int Z, ItemStack heldItem){
+	public void removeBlockAndDropAsItem(World world, int X, int Y, int Z, ItemStack heldItem){
 		localWorld = world;
 		try {
 			Block block = world.getBlock(X, Y, Z);

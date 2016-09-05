@@ -1,5 +1,6 @@
 package miscutil.core.util;
 
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import ic2.core.IC2Potion;
@@ -32,6 +33,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.MathHelper;
@@ -495,6 +497,40 @@ public class Utils {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public static String sanitizeString(String input){
+		String temp;
+		String output;
+		
+		temp = input.replace(" ", "");
+		temp = temp.replace("-", "");
+		temp = temp.replace("_", "");
+		temp = temp.replace("?", "");
+		temp = temp.replace("!", "");
+		temp = temp.replace("@", "");
+		temp = temp.replace("#", "");
+		temp = temp.replace("(", "");
+		temp = temp.replace(")", "");
+		temp = temp.replace("{", "");
+		temp = temp.replace("}", "");
+		temp = temp.replace("[", "");
+		temp = temp.replace("]", "");
+		output = temp;		
+		return output;
+		
+	}
+	
+	public static ToolMaterial generateMaterialFromGT(Materials gtMaterial){
+		String name = gtMaterial.name();
+		int harvestLevel = gtMaterial.mToolQuality;
+		int durability = gtMaterial.mDurability;
+		float damage = gtMaterial.mToolQuality;
+		int efficiency = (int) gtMaterial.mToolSpeed;
+		int enchantability = gtMaterial.mEnchantmentToolsLevel;
+		ToolMaterial temp = EnumHelper.addToolMaterial(name, harvestLevel, durability, efficiency, damage, enchantability);
+		return temp;
+		
 	}
 
 

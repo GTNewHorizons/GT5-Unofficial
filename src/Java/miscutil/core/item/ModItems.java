@@ -2,6 +2,7 @@ package miscutil.core.item;
 import static miscutil.core.creative.AddToCreativeTab.tabMachines;
 import static miscutil.core.creative.AddToCreativeTab.tabMisc;
 import static miscutil.core.lib.CORE.LOAD_ALL_CONTENT;
+import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_OreDictUnificator;
 import miscutil.core.creative.AddToCreativeTab;
 import miscutil.core.item.base.BaseItemBackpack;
@@ -25,6 +26,7 @@ import miscutil.core.item.general.RF2EU_Battery;
 import miscutil.core.item.general.fuelrods.FuelRod_Base;
 import miscutil.core.item.init.ItemsFoods;
 import miscutil.core.item.tool.misc.SandstoneHammer;
+import miscutil.core.item.tool.staballoy.MultiPickaxeBase;
 import miscutil.core.item.tool.staballoy.StaballoyAxe;
 import miscutil.core.item.tool.staballoy.StaballoyPickaxe;
 import miscutil.core.lib.CORE;
@@ -170,6 +172,16 @@ public final class ModItems {
 	public static Item itemPersonalCloakingDeviceCharged;
 	public static Item itemPersonalHealingDevice;
 	
+	public static MultiPickaxeBase MP_Iron;
+	public static MultiPickaxeBase MP_Gold;
+	public static MultiPickaxeBase MP_Diamond;
+	public static MultiPickaxeBase MP_Wood;
+	public static MultiPickaxeBase MP_Stone;
+	public static MultiPickaxeBase MP_Quartz;
+	public static MultiPickaxeBase MP_Obsidian;
+	public static MultiPickaxeBase MP_Redstone;
+	
+	
 	public static BaseItemBackpack backpack_Red;
 	public static BaseItemBackpack backpack_Green;
 	public static BaseItemBackpack backpack_Blue;
@@ -288,6 +300,17 @@ public final class ModItems {
 		//Uranium-233if
 		UtilsItems.generateItemsFromMaterial("Uranium233", "Uranium 233", 4, MaterialInfo.INCONEL792, Utils.rgbtoHexValue(73, 220, 83), false); //Uranium-233 is a fissile isotope of uranium that is bred from thorium-232 as part of the thorium fuel cycle. 
 		
+		MP_Wood = new MultiPickaxeBase("Wooden Multipick", ToolMaterial.WOOD, ToolMaterial.WOOD.getMaxUses(), Utils.rgbtoHexValue(139,90,43));
+		MP_Stone = new MultiPickaxeBase("Cobblestone Multipick", ToolMaterial.STONE, ToolMaterial.STONE.getMaxUses(), Utils.rgbtoHexValue(161,161,161));
+		MP_Iron = new MultiPickaxeBase("Iron Multipick", ToolMaterial.IRON, ToolMaterial.IRON.getMaxUses(), Utils.rgbtoHexValue(110,123,139));
+		MP_Gold = new MultiPickaxeBase("Gold Multipick", ToolMaterial.GOLD, ToolMaterial.GOLD.getMaxUses(), Utils.rgbtoHexValue(238,221,130));
+		MP_Diamond = new MultiPickaxeBase("Diamond Multipick", ToolMaterial.EMERALD, ToolMaterial.EMERALD.getMaxUses(), Utils.rgbtoHexValue(191,239,255));
+		
+		MP_Redstone = UtilsItems.generateMultiPick(Materials.Redstone);
+		MP_Obsidian = UtilsItems.generateMultiPick(Materials.Obsidian);
+		MP_Obsidian = UtilsItems.generateMultiPick(Materials.Abyssal);
+		MP_Obsidian = UtilsItems.generateMultiPick(Materials.NetherStar);
+		MP_Obsidian = UtilsItems.generateMultiPick(Materials.Neutronium);
 		
 		//EnderIO Resources
 		if (LoadedMods.EnderIO || LOAD_ALL_CONTENT){

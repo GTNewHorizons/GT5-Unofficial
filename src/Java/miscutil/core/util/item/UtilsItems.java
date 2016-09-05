@@ -1,5 +1,6 @@
 package miscutil.core.util.item;
 
+import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_OreDictUnificator;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import miscutil.core.item.base.rods.BaseItemRod;
 import miscutil.core.item.base.rods.BaseItemRodLong;
 import miscutil.core.item.base.rotors.BaseItemRotor;
 import miscutil.core.item.base.screws.BaseItemScrew;
+import miscutil.core.item.tool.staballoy.MultiPickaxeBase;
 import miscutil.core.lib.CORE;
 import miscutil.core.lib.LoadedMods;
 import miscutil.core.lib.MaterialInfo;
@@ -27,6 +29,7 @@ import miscutil.core.util.wrapper.var;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
+import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -310,6 +313,27 @@ public class UtilsItems {
 			temp = new BaseItemRotor("itemRotor"+unlocalizedName, materialName, Colour);
 			temp = new BaseItemGear("itemGear"+unlocalizedName, materialName, Colour, materialTier);
 		}
+		
+	}
+	
+	public static MultiPickaxeBase generateMultiPick(Materials material){
+		ToolMaterial customMaterial = Utils.generateMaterialFromGT(material);
+		short[] rgb;
+		rgb = material.getRGBA();
+		int dur = customMaterial.getMaxUses();
+		
+		if (dur <= 0){
+			dur = material.mDurability;
+		}
+		
+		MultiPickaxeBase MP_Redstone = new MultiPickaxeBase(
+				material.name()+" Multipick",
+				(customMaterial),
+				dur,
+				Utils.rgbtoHexValue(rgb[0],rgb[1],rgb[2])
+				);
+		
+		return MP_Redstone;
 		
 	}
 	

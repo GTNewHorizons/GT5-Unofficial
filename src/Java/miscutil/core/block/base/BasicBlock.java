@@ -2,6 +2,7 @@ package miscutil.core.block.base;
 
 import miscutil.core.creative.AddToCreativeTab;
 import miscutil.core.lib.CORE;
+import miscutil.core.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
@@ -9,7 +10,7 @@ public class BasicBlock extends Block {
 
     public BasicBlock(String unlocalizedName, Material material) {
         super(material);
-        this.setBlockName(unlocalizedName);
+        this.setBlockName(Utils.sanitizeString(unlocalizedName));
         this.setBlockTextureName(CORE.MODID + ":" + unlocalizedName);
         this.setCreativeTab(AddToCreativeTab.tabBlock);
         this.setHardness(2.0F);
