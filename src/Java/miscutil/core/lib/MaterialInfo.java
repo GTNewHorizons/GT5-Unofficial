@@ -5,11 +5,12 @@ import static miscutil.core.util.item.UtilsItems.getItemStackOfAmountFromOreDict
 
 import java.util.List;
 
+import miscutil.MiscUtils;
 import net.minecraft.item.ItemStack;
 
 public enum MaterialInfo {
 		
-	ENERGYCRYSTAL("dustInfusedFire", 8, "dustInfusedEarth", 8, "dustInfusedEntropy", 8, "dustInfusedOrder", 8, "dustEnergyCrystal", 1, noItem, 0),
+	ENERGYCRYSTAL(MiscUtils.randomDust_A, 8, MiscUtils.randomDust_B, 8, MiscUtils.randomDust_C, 8, MiscUtils.randomDust_D, 8, "dustEnergyCrystal", 1, noItem, 0),
 	BLOODSTEEL(noItem, 0, noItem, 0, noItem, 0, noItem, 0, noItem, 0, noItem, 0),
 	STABALLOY("dustTitanium", 1, "dustUranium", 8, noItem, 0, noItem, 0, "dustStaballoy", 1, noItem, 0),
 	TANTALLOY60("dustTungsten", 1, "dustTantalum", 8, "dustTinyTitanium", 5, noItem, 0,	"dustTantalloy60", 1, noItem, 0),

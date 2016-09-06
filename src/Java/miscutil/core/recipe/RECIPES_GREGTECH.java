@@ -169,7 +169,22 @@ public class RECIPES_GREGTECH {
 
 		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 
+		try {
+			CORE.RA.addDehydratorRecipe(
+					null, //Item input (slot 1)
+					null, //Item input (slot 2)
+					FluidUtils.getFluidStack("sulfuriclithium", 1000), //Fluid input (slot 1)
+					null, //Fluid output (slot 1)
+					new ItemStack[]{
+							UtilsItems.getItemStackOfAmountFromOreDict("dustSodium", 1),
+							UtilsItems.getItemStackOfAmountFromOreDict("dustCarbon", 1),
+							UtilsItems.getItemStackOfAmountFromOreDict("dustLithium", 1)
+							}, //Output Array of Items - Upto 9,
+					new int[]{0},
+					10*20, //Time in ticks
+					30); //EU	
 
+		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 	}
 
 	private static void assemblerRecipes(){

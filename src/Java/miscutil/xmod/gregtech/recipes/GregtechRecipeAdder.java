@@ -3,6 +3,7 @@ package miscutil.xmod.gregtech.recipes;
 import gregtech.api.GregTech_API;
 import gregtech.api.util.Recipe_GT;
 import miscutil.core.util.Utils;
+import miscutil.core.util.item.UtilsItems;
 import miscutil.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import miscutil.xmod.gregtech.recipes.machines.RECIPEHANDLER_CokeOven;
 import miscutil.xmod.gregtech.recipes.machines.RECIPEHANDLER_Dehydrator;
@@ -189,5 +190,51 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
     RECIPEHANDLER_Dehydrator.debug5(null, null, aFluid, aOutputFluid, aOutputItems, aDuration, aEUt);
     return true;
 }
+	
+	
+	
+	
+	@Override
+	public boolean addDehydratorRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack[] aOutputItems, int[] aChances, int aDuration, int aEUt) {
+		Utils.LOG_INFO("Trying to add a Dehydrator recipe.");
+		 if (aInput1 != null){
+	        	Utils.LOG_INFO("Recipe requires input: "+aInput1.getDisplayName()+" x"+aInput1.stackSize);
+	     }
+		 if (aInput2 != null){
+	        	Utils.LOG_INFO("Recipe requires input: "+aInput2.getDisplayName()+" x"+aInput2.stackSize);
+	     }
+		 if (aFluidInput != null){
+	        	Utils.LOG_INFO("Recipe requires input: "+aFluidInput.getFluid().getName()+" "+aFluidInput.amount+"mb");
+	     }
+		if (((aInput1 == null) && (aFluidInput == null)) || ((aOutputItems == null) && (aFluidOutput == null))) {
+            return false;
+        }
+        if ((aOutputItems != null) && ((aDuration = GregTech_API.sRecipeFile.get("dehydrator", aOutputItems[0], aDuration)) <= 0)) {
+            return false;
+        }
+        if (aOutputItems != null){
+        	Utils.LOG_INFO("Recipe will output: "+UtilsItems.getArrayStackNames(aOutputItems));
+        }
+        if ((aFluidOutput != null) && ((aDuration = GregTech_API.sRecipeFile.get("dehydrator", aFluidOutput.getFluid().getName(), aDuration)) <= 0)) {
+            return false;
+        }
+        if (aFluidOutput != null){
+        	Utils.LOG_INFO("Recipe will output: "+aFluidOutput.getFluid().getName());
+        }
+        Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, new ItemStack[]{aInput1, aInput2}, aOutputItems, null, aChances, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
+        return true;
+    }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

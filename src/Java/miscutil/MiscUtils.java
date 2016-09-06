@@ -21,6 +21,7 @@ import miscutil.core.handler.events.LoginEventHandler;
 import miscutil.core.item.general.RF2EU_Battery;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
+import miscutil.core.util.math.MathUtils;
 import miscutil.xmod.gregtech.HANDLER_GT;
 import net.minecraftforge.common.config.Configuration;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -71,6 +72,37 @@ implements ActionListener
 		
 		config.save(); 
 	}
+	
+	public static String randomDust_A;
+	public static String randomDust_B;
+	public static String randomDust_C;
+	public static String randomDust_D;
+	
+	protected void FirstCall(){
+		Utils.LOG_WARNING("Summoning up mystic powers.");
+		String[] infusedDusts = {"Fire", "Water", "Earth", "Air", "Order", "Entropy"};
+		int a = MathUtils.randInt(0, 5);
+		int b = MathUtils.randInt(0, 5);
+		int c = MathUtils.randInt(0, 5);
+		int d = MathUtils.randInt(0, 5);
+		String infusedDust1 = "dustInfused"+infusedDusts[a];
+		String infusedDust2 = "dustInfused"+infusedDusts[b];
+		String infusedDust3 = "dustInfused"+infusedDusts[c];
+		String infusedDust4 = "dustInfused"+infusedDusts[d];
+		Utils.LOG_INFO("Found the aspect of "+infusedDust1+" to embody into energy crystals.");
+		Utils.LOG_INFO("Found the aspect of "+infusedDust2+" to embody into energy crystals.");
+		Utils.LOG_INFO("Found the aspect of "+infusedDust3+" to embody into energy crystals.");
+		Utils.LOG_INFO("Found the aspect of "+infusedDust4+" to embody into energy crystals.");
+		randomDust_A = infusedDust1;
+		randomDust_B = infusedDust2;
+		randomDust_C = infusedDust3;
+		randomDust_D = infusedDust4;
+		//ItemStack a1 = UtilsItems.getItemStackOfAmountFromOreDict("dustInfused"+infusedDusts[a], 8);
+		//ItemStack b1 = UtilsItems.getItemStackOfAmountFromOreDict("dustInfused"+infusedDusts[b], 8);
+		//ItemStack c1 = UtilsItems.getItemStackOfAmountFromOreDict("dustInfused"+infusedDusts[c], 8);
+		//ItemStack d1 = UtilsItems.getItemStackOfAmountFromOreDict("dustInfused"+infusedDusts[d], 8);
+		
+	}
 
 
 
@@ -80,7 +112,7 @@ implements ActionListener
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		Utils.LOG_INFO("Loading "+CORE.name+" V"+CORE.VERSION);
-
+		FirstCall();
 		FMLCommonHandler.instance().bus().register(new LoginEventHandler());        
 		Utils.LOG_INFO("Login Handler Initialized");
 
