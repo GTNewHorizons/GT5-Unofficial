@@ -40,7 +40,7 @@ public class RECIPES_GREGTECH {
 			//GT Logs to Charcoal Recipe	
 			//With Sulfuric Acid
 			CORE.RA.addCokeOvenRecipe(
-					GT_OreDictUnificator.get(OrePrefixes.log, Materials.Wood, 2L), //Input 1
+					GT_OreDictUnificator.get(OrePrefixes.log, Materials.Wood, 1L), //Input 1
 					GT_OreDictUnificator.get(OrePrefixes.log, Materials.Wood, 1L), //Input 2
 					Materials.SulfuricAcid.getFluid(20L), //Fluid Input
 					Materials.Creosote.getFluid(175L), //Fluid Output
@@ -53,7 +53,7 @@ public class RECIPES_GREGTECH {
 			//Coal -> Coke Recipe
 			//With Sulfuric Acid
 			CORE.RA.addCokeOvenRecipe(
-					GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 2L), //Input 1
+					GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1L), //Input 1
 					GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1L), //Input 2
 					Materials.SulfuricAcid.getFluid(60L), //Fluid Input
 					Materials.Creosote.getFluid(250L), //Fluid Output
@@ -66,7 +66,7 @@ public class RECIPES_GREGTECH {
 			//GT Logs to Charcoal Recipe	
 			//Without Sulfuric Acid
 			CORE.RA.addCokeOvenRecipe(
-					GT_OreDictUnificator.get(OrePrefixes.log, Materials.Wood, 2L), //Input 1
+					GT_OreDictUnificator.get(OrePrefixes.log, Materials.Wood, 1L), //Input 1
 					GT_OreDictUnificator.get(OrePrefixes.log, Materials.Wood, 1L), //Input 2
 					FluidUtils.getFluidStack("oxygen", 80), //Fluid Input
 					Materials.Creosote.getFluid(145L), //Fluid Output
@@ -79,7 +79,7 @@ public class RECIPES_GREGTECH {
 			//Coal -> Coke Recipe
 			//Without Sulfuric Acid
 			CORE.RA.addCokeOvenRecipe(
-					GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 2L), //Input 1
+					GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1L), //Input 1
 					GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1L), //Input 2
 					FluidUtils.getFluidStack("oxygen", 185), //Fluid Input
 					Materials.Creosote.getFluid(200L), //Fluid Output

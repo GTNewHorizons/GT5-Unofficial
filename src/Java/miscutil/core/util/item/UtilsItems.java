@@ -31,6 +31,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -342,6 +343,16 @@ public class UtilsItems {
 		for (ItemStack alph : aStack){
 			String temp = itemNames;
 			itemNames = temp + ", " + alph.getDisplayName() + " x" + alph.stackSize;
+		}
+		return itemNames;
+		
+	}
+	
+	public static String getFluidArrayStackNames(FluidStack[] aStack){
+		String itemNames = "Fluid Array: ";
+		for (FluidStack alph : aStack){
+			String temp = itemNames;
+			itemNames = temp + ", " + alph.getFluid().getName() + " x" + alph.amount;
 		}
 		return itemNames;
 		

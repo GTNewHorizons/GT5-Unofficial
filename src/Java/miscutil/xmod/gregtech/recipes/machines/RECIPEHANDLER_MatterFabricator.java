@@ -36,7 +36,17 @@ public class RECIPEHANDLER_MatterFabricator {
 
 	}
 	public static void debug5(FluidStack aFluidInput, FluidStack aFluidOutput, int aDuration, int aEUt){
-		Utils.LOG_INFO("Successfully added a Matter Fabrication recipe for: "+aFluidOutput.getFluid().getName()+", Using "+" liquid "+aFluidInput.getFluid().getName()+". This takes "+(aDuration/20)+" seconds for "+aEUt+"eu/t.");
+		String a = "nothing";
+		String b = "";
+		
+		if (aFluidInput != null){
+			a = aFluidInput.getFluid().getName();
+		}
+		if (aFluidOutput != null){
+			b = aFluidOutput.getFluid().getName();
+		}
+		
+		Utils.LOG_INFO("Successfully added a Matter Fabrication recipe for: "+b+", Using "+" liquid "+a+". This takes "+(aDuration/20)+" seconds for "+aEUt+"eu/t.");
 		Utils.LOG_WARNING("==================================================================================");
 		Utils.LOG_WARNING("==================================================================================");
 		Utils.LOG_WARNING("==================================================================================");

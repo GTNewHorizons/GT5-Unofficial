@@ -19,6 +19,7 @@ import java.util.Arrays;
 import miscutil.core.block.ModBlocks;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
+import miscutil.core.util.fluid.FluidUtils;
 import miscutil.core.util.item.UtilsItems;
 import miscutil.xmod.gregtech.api.gui.GUI_MultiMachine;
 import net.minecraft.block.Block;
@@ -37,6 +38,8 @@ public class GregtechMetaTileEntityMassFabricator extends GT_MetaTileEntity_Mult
 	public static boolean sRequiresUUA = false;
 	private int recipeCounter = 0;
 	private static Block IC2Glass = Block.getBlockFromItem(UtilsItems.getItem("IC2:blockAlloyGlass"));
+	FluidStack tempFake = FluidUtils.getFluidStack("uuamplifier", 1);
+	GT_Recipe fakeRecipe;
 	//public FluidStack mFluidOut = Materials.UUMatter.getFluid(1L);
 
 	public GregtechMetaTileEntityMassFabricator(int aID, String aName, String aNameRegional) {
@@ -109,6 +112,7 @@ public class GregtechMetaTileEntityMassFabricator extends GT_MetaTileEntity_Mult
 		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 		FluidStack[] tFluids = (FluidStack[]) Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tFluidList.size()]), 0, tFluidList.size());
 		if (tFluids.length > 0) {
+			//Utils.LOG_INFO("Input fluid found");
 			for(int i = 0;i<tFluids.length;i++){
 				GT_Recipe tRecipe = Recipe_GT.Gregtech_Recipe_Map.sMatterFab2Recipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], new FluidStack[]{tFluids[i]}, new ItemStack[]{});
 				if (tRecipe != null) {
@@ -141,8 +145,51 @@ public class GregtechMetaTileEntityMassFabricator extends GT_MetaTileEntity_Mult
 				}
 				else {
 					Utils.LOG_INFO("Invalid Recipe");
+					return false;
 				}
 			}
+		}
+		else if (tFluids.length == 0) {
+			//Utils.LOG_INFO("Input fluid not found");
+			fakeRecipe = Recipe_GT.Gregtech_Recipe_Map.sMatterFab2Recipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], new FluidStack[]{tempFake}, new ItemStack[]{});
+			
+			this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+			this.mEfficiencyIncrease = 10000;
+
+			this.mEUt = 32;
+			this.mMaxProgresstime = (160*20);
+			while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+				this.mEUt *= 4;
+				this.mMaxProgresstime /= 2;
+			}
+
+			if (this.mEUt > 0) {
+				this.mEUt = (-this.mEUt);
+			}
+			
+			if (fakeRecipe != null) {
+				this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+				this.mOutputItems = new ItemStack[]{fakeRecipe.getOutput(0)};
+				this.mOutputFluids = fakeRecipe.mFluidOutputs.clone();
+				ArrayUtils.reverse(mOutputFluids);
+				recipeCounter++;
+				updateSlots();
+				//Utils.LOG_INFO("Recipes Finished: "+recipeCounter);
+				return true;
+			}
+			Utils.LOG_INFO("fakeRecipe was Null");
+			
+			this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+			this.mOutputItems = new ItemStack[]{null};
+			this.mOutputFluids = new FluidStack[] {FluidUtils.getFluidStack("uumatter", 1)};
+			ArrayUtils.reverse(mOutputFluids);
+			recipeCounter++;
+			updateSlots();
+			Utils.LOG_INFO("Recipes Finished: "+recipeCounter);
+			return true;
+		}
+		else {
+			Utils.LOG_INFO("Invalid no input Recipe");
 		}
 		return false;
 	}

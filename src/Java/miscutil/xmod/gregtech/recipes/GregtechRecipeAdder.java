@@ -72,35 +72,17 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 	public boolean addMatterFabricatorRecipe(FluidStack aFluidInput, FluidStack aFluidOutput, int aDuration, int aEUt) {
 		try {
 			try {
-				RECIPEHANDLER_MatterFabricator.debug1();
+				//RECIPEHANDLER_MatterFabricator.debug1();
 				if (aFluidOutput == null) {
-					Utils.LOG_WARNING("aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
+					//Utils.LOG_WARNING("aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
 					Utils.LOG_WARNING("Something was null, returning false");
 					return false;
 				}
 
 			} catch (NullPointerException e){e.getStackTrace();}
-			try {
-				RECIPEHANDLER_MatterFabricator.debug2(aFluidInput, aFluidOutput, aDuration, aEUt);
-				if ((aFluidOutput == null)/* && ((aDuration = GregTech_API.sRecipeFile.get("matterfab", null, aDuration)) <= 0)*/) {
-					Utils.LOG_WARNING("aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
-					Utils.LOG_WARNING("Something was null, returning false");
-					return false;
-				}
-
-			} catch (NullPointerException e){e.getStackTrace();}
-			/*try {
-
-				RECIPEHANDLER_MatterFabricator.debug3(aFluidInput, aFluidOutput, aDuration, aEUt);
-				if ((aFluidOutput == null) && ((aDuration = GregTech_API.sRecipeFile.get("matterfab", aFluidOutput.getFluid().getName(), aDuration)) <= 0)) {
-					Utils.LOG_WARNING("aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
-					Utils.LOG_WARNING("Something was null, returning false");
-					return false;
-				}
-
-			} catch (NullPointerException e){e.getStackTrace();}*/
-			try {
-				RECIPEHANDLER_MatterFabricator.debug4(aFluidInput, aFluidOutput, aDuration, aEUt);
+			try{
+				
+				//RECIPEHANDLER_MatterFabricator.debug4(aFluidInput, aFluidOutput, aDuration, aEUt);
 				if (aFluidInput == null){
 					//Recipe_GT.Gregtech_Recipe_Map.sMatterFabRecipes.addRecipe(true, null, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
 					Recipe_GT.Gregtech_Recipe_Map.sMatterFab2Recipes.addRecipe(true, null, null, null, null, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
@@ -117,7 +99,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				return false;
 			}
 		} catch (Throwable e){
-			Utils.LOG_WARNING("aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
+			//Utils.LOG_WARNING("aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
 			Utils.LOG_WARNING("Failed.");
 			e.getStackTrace();
 			return false;
@@ -204,7 +186,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 	        	Utils.LOG_INFO("Recipe requires input: "+aInput2.getDisplayName()+" x"+aInput2.stackSize);
 	     }
 		 if (aFluidInput != null){
-	        	Utils.LOG_INFO("Recipe requires input: "+aFluidInput.getFluid().getName()+" "+aFluidInput.amount+"mb");
+	        	Utils.LOG_INFO("Recipe requires input: "+aFluidInput.getFluid().getName()+" "+aFluidInput.amount+"mbst");
 	     }
 		if (((aInput1 == null) && (aFluidInput == null)) || ((aOutputItems == null) && (aFluidOutput == null))) {
             return false;

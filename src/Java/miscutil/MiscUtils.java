@@ -10,10 +10,14 @@ import static miscutil.core.lib.CORE.configSwitches.enableCustomAlvearyBlocks;
 import static miscutil.core.lib.CORE.configSwitches.enableSolarGenerators;
 import static miscutil.core.lib.CORE.configSwitches.enableThaumcraftShardUnification;
 import gregtech.api.util.GT_Config;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Collection;
 
 import miscutil.core.commands.CommandMath;
 import miscutil.core.common.CommonProxy;
@@ -21,6 +25,7 @@ import miscutil.core.handler.events.LoginEventHandler;
 import miscutil.core.item.general.RF2EU_Battery;
 import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
+import miscutil.core.util.item.UtilsItems;
 import miscutil.core.util.math.MathUtils;
 import miscutil.xmod.gregtech.HANDLER_GT;
 import net.minecraftforge.common.config.Configuration;
@@ -136,7 +141,12 @@ implements ActionListener
 	//Post-Init
 	@Mod.EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
-		proxy.postInit(event);		
+		proxy.postInit(event);	
+		
+		dumpGtRecipeMap(Gregtech_Recipe_Map.sChemicalDehydratorRecipes);
+		dumpGtRecipeMap(Gregtech_Recipe_Map.sCokeOvenRecipes);
+		dumpGtRecipeMap(Gregtech_Recipe_Map.sMatterFab2Recipes);
+		
 	}
 
 	@EventHandler
@@ -154,6 +164,21 @@ implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 
+	}
+	
+	protected void dumpGtRecipeMap(GT_Recipe_Map r){	
+			Collection<GT_Recipe> x = r.mRecipeList;
+			   Utils.LOG_INFO("Dumping "+r.mUnlocalizedName+" Recipes for Debug.");
+			for(GT_Recipe newBo : x){
+				   Utils.LOG_INFO("========================");
+				   Utils.LOG_INFO("Dumping Input: "+UtilsItems.getArrayStackNames(newBo.mInputs));
+				   Utils.LOG_INFO("Dumping Inputs "+UtilsItems.getFluidArrayStackNames(newBo.mFluidInputs));
+				   Utils.LOG_INFO("Dumping Duration: "+newBo.mDuration);
+				   Utils.LOG_INFO("Dumping EU/t: "+newBo.mEUt);
+				   Utils.LOG_INFO("Dumping Output: "+UtilsItems.getArrayStackNames(newBo.mOutputs));
+				   Utils.LOG_INFO("Dumping Output: "+UtilsItems.getFluidArrayStackNames(newBo.mFluidOutputs));
+				   Utils.LOG_INFO("========================");
+			}
 	}
 
 }
