@@ -21,7 +21,7 @@ import miscutil.core.lib.CORE;
 import miscutil.core.util.Utils;
 import miscutil.core.util.fluid.FluidUtils;
 import miscutil.core.util.item.UtilsItems;
-import miscutil.xmod.gregtech.api.gui.GUI_MultiMachine;
+import miscutil.xmod.gregtech.api.gui.GUI_MatterFab;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -36,10 +36,20 @@ public class GregtechMetaTileEntityMassFabricator extends GT_MetaTileEntity_Mult
 	public static int sUUASpeedBonus = 4;
 	public static int sDurationMultiplier = 3215;
 	public static boolean sRequiresUUA = false;
-	private int recipeCounter = 0;
+	private int mAmplifierUsed = 0;
+	private int mMatterProduced = 0;
 	private static Block IC2Glass = Block.getBlockFromItem(UtilsItems.getItem("IC2:blockAlloyGlass"));
 	FluidStack tempFake = FluidUtils.getFluidStack("uuamplifier", 1);
 	GT_Recipe fakeRecipe;
+	
+	public int getAmplifierUsed(){
+		return mAmplifierUsed;
+	}
+	
+	public int getMatterProduced(){
+		return mMatterProduced;
+	}
+	
 	//public FluidStack mFluidOut = Materials.UUMatter.getFluid(1L);
 
 	public GregtechMetaTileEntityMassFabricator(int aID, String aName, String aNameRegional) {
@@ -79,7 +89,7 @@ public class GregtechMetaTileEntityMassFabricator extends GT_MetaTileEntity_Mult
 
 	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GUI_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MatterFabricator.png");
+		return new GUI_MatterFab(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MatterFabricator.png");
 	}
 
 	@Override
@@ -137,7 +147,8 @@ public class GregtechMetaTileEntityMassFabricator extends GT_MetaTileEntity_Mult
 						this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0)};
 						this.mOutputFluids = tRecipe.mFluidOutputs.clone();
 						ArrayUtils.reverse(mOutputFluids);
-						recipeCounter++;
+						mMatterProduced++;
+						mAmplifierUsed++;
 						updateSlots();
 						//Utils.LOG_INFO("Recipes Finished: "+recipeCounter);
 						return true;
@@ -172,24 +183,14 @@ public class GregtechMetaTileEntityMassFabricator extends GT_MetaTileEntity_Mult
 				this.mOutputItems = new ItemStack[]{fakeRecipe.getOutput(0)};
 				this.mOutputFluids = fakeRecipe.mFluidOutputs.clone();
 				ArrayUtils.reverse(mOutputFluids);
-				recipeCounter++;
+				mMatterProduced++;
 				updateSlots();
 				//Utils.LOG_INFO("Recipes Finished: "+recipeCounter);
 				return true;
 			}
-			Utils.LOG_INFO("fakeRecipe was Null");
-			
-			this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-			this.mOutputItems = new ItemStack[]{null};
-			this.mOutputFluids = new FluidStack[] {FluidUtils.getFluidStack("uumatter", 1)};
-			ArrayUtils.reverse(mOutputFluids);
-			recipeCounter++;
-			updateSlots();
-			Utils.LOG_INFO("Recipes Finished: "+recipeCounter);
-			return true;
 		}
 		else {
-			Utils.LOG_INFO("Invalid no input Recipe");
+			//Utils.LOG_INFO("Invalid no input Recipe");
 		}
 		return false;
 	}
