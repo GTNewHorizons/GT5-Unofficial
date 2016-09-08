@@ -232,10 +232,10 @@ public class GT_MetaTileEntity_DieselEngine extends GT_MetaTileEntity_MultiBlock
         return new String[]{
                 EnumChatFormatting.BLUE+"Diesel Engine"+EnumChatFormatting.RESET,
                 "Current Output: "+EnumChatFormatting.RED+mEUt+EnumChatFormatting.RESET+" EU/t",
-                "Fuel Consumption: "+EnumChatFormatting.YELLOW+fuelConsumption+EnumChatFormatting.RESET+"L/t",
+                "Fuel Consumption: "+EnumChatFormatting.YELLOW+fuelConsumption+EnumChatFormatting.RESET+" L/t",
                 "Fuel Value: "+EnumChatFormatting.YELLOW+fuelValue+EnumChatFormatting.RESET+" EU/L",
                 "Fuel Remaining: "+EnumChatFormatting.GOLD+fuelRemaining+EnumChatFormatting.RESET+" L",
-                "Current Efficiency: "+EnumChatFormatting.YELLOW+(mEfficiency/100F)+EnumChatFormatting.YELLOW+"%"};
+                "Current Efficiency: "+EnumChatFormatting.YELLOW+(mEfficiency/100F)+EnumChatFormatting.YELLOW+" %"};
     }
 
     @Override
