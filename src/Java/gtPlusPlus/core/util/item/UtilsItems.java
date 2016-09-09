@@ -2,8 +2,8 @@ package gtPlusPlus.core.util.item;
 
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_OreDictUnificator;
-import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
+import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.BasicSpawnEgg;
 import gtPlusPlus.core.item.base.bolts.BaseItemBolt;
@@ -259,6 +259,16 @@ public class UtilsItems {
 		return returnValue;
 		}
 	 return getSimpleStack(ModItems.AAA_Broken, amount);
+	}
+	
+	public static ItemStack getItemStackOfAmountFromOreDictNoBroken(String oredictName, int amount){
+		ItemStack returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);
+		
+		if (returnValue.getItem().getClass() != ModItems.AAA_Broken.getClass() || returnValue.getItem() != ModItems.AAA_Broken){		
+		return returnValue;
+		}
+		
+	 return null;
 	}
 	
 	public static void generateItemsFromMaterial(String unlocalizedName, String materialName, int materialTier, MaterialInfo matInfo, int Colour, boolean hotIngot){

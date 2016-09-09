@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.growthcraft;
 
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.xmod.growthcraft.booze.Register_Booze;
+import gtPlusPlus.xmod.growthcraft.fishtrap.FishTrapHandler;
 
 public class HANDLER_GC {
 
@@ -15,13 +16,12 @@ public class HANDLER_GC {
 
 	public static void init(){
 		if (LoadedMods.Growthcraft){
-
 		}
 	}
 
 	public static void postInit(){
 		if (LoadedMods.Growthcraft){
-
+			FishTrapHandler.pamsHarvestCraftCompat();
 		}
 	}
 
