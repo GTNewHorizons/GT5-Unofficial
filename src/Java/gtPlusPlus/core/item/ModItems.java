@@ -110,9 +110,7 @@ public final class ModItems {
 	public static MultiPickaxeBase MP_Diamond;
 	public static MultiPickaxeBase MP_Wood;
 	public static MultiPickaxeBase MP_Stone;
-	public static MultiPickaxeBase MP_Quartz;
-	public static MultiPickaxeBase MP_Obsidian;
-	public static MultiPickaxeBase MP_Redstone;	
+	public static MultiPickaxeBase MP_GTMATERIAL;	
 	
 	public static BaseItemBackpack backpack_Red;
 	public static BaseItemBackpack backpack_Green;
@@ -239,11 +237,27 @@ public final class ModItems {
 		MP_Gold = new MultiPickaxeBase("Gold Multipick", ToolMaterial.GOLD, ToolMaterial.GOLD.getMaxUses(), Utils.rgbtoHexValue(238,221,130));
 		MP_Diamond = new MultiPickaxeBase("Diamond Multipick", ToolMaterial.EMERALD, ToolMaterial.EMERALD.getMaxUses(), Utils.rgbtoHexValue(191,239,255));
 		
-		MP_Redstone = UtilsItems.generateMultiPick(Materials.Redstone);
-		MP_Obsidian = UtilsItems.generateMultiPick(Materials.Obsidian);
-		MP_Obsidian = UtilsItems.generateMultiPick(Materials.Abyssal);
-		MP_Obsidian = UtilsItems.generateMultiPick(Materials.NetherStar);
-		MP_Obsidian = UtilsItems.generateMultiPick(Materials.Neutronium);
+	
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Tin);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Copper);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Bronze);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Steel);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Lead);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Silver);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Titanium);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Tungsten);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Platinum);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Chrome);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.TungstenSteel);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Aluminium);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Thaumium);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Cobalt);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Iridium);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Ultimet);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Osmiridium);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.NetherStar);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Europium);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Neutronium);
 		
 		//EnderIO Resources
 		if (LoadedMods.EnderIO || LOAD_ALL_CONTENT){

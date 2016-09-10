@@ -347,12 +347,19 @@ public class UtilsItems {
 	
 	public static MultiPickaxeBase generateMultiPick(Materials material){
 		ToolMaterial customMaterial = Utils.generateMaterialFromGT(material);
+		Utils.LOG_INFO("Generating a Multi-Pick out of "+material.name());
 		short[] rgb;
 		rgb = material.getRGBA();
 		int dur = customMaterial.getMaxUses();
-		
+		Utils.LOG_INFO("Determined durability for "+material.name()+" is "+dur);
 		if (dur <= 0){
 			dur = material.mDurability;
+			Utils.LOG_INFO("Determined durability too low, "+material.name()+" is now "+dur+" based on the GT material durability.");
+		}
+		
+		if (dur <= 0){
+			Utils.LOG_INFO("Still too low, "+material.name()+" will now go unused.");
+			return null;
 		}
 		
 		MultiPickaxeBase MP_Redstone = new MultiPickaxeBase(

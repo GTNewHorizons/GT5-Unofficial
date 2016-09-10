@@ -29,7 +29,7 @@ extends GregtechMetaItemCasingsAbstract {
 			aList.add(this.mCasing_CokeCoil2);
 			break;
 		default:
-			aList.add(this.mNoMobsToolTip);
+			aList.add(this.mCasing_CokeCoil2);
 			break;      
 		}
 	}
