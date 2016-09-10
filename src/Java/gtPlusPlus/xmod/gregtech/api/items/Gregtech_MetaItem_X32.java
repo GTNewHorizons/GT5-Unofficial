@@ -197,6 +197,18 @@ public abstract class Gregtech_MetaItem_X32 extends Gregtech_MetaItem {
 		else if (stack.getDisplayName().contains("Lithium")){
 			HEX_OxFFFFFF = Utils.rgbtoHexValue(225, 220, 255);
 		}
+		else if (stack.getDisplayName().contains("Wrought")){
+			HEX_OxFFFFFF = Utils.rgbtoHexValue(200, 180, 180);
+		}
+		else if (stack.getDisplayName().contains("Bronze")){
+			HEX_OxFFFFFF = Utils.rgbtoHexValue(255, 128, 0);
+		}
+		else if (stack.getDisplayName().contains("Brass")){
+			HEX_OxFFFFFF = Utils.rgbtoHexValue(255, 180, 0);
+		}
+		else if (stack.getDisplayName().contains("Invar")){
+			HEX_OxFFFFFF = Utils.rgbtoHexValue(180, 180, 120);
+		}
 		else {
 			HEX_OxFFFFFF = 0xffffff;
 		}		

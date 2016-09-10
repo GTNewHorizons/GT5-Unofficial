@@ -2,12 +2,15 @@ package gtPlusPlus.xmod.gregtech.common.items;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.GT_MultiTexture;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.objects.ItemData;
+import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_FoodStat;
 import gregtech.common.covers.GT_Cover_Arm;
 import gregtech.common.covers.GT_Cover_Conveyor;
@@ -170,6 +173,18 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 
         GregtechItemList.Battery_RE_EV_Sodium.set(addItem(tLastID = 50, "Quad Cell Mercury Battery", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L)}));
         setElectricStats(32000 + tLastID, 5000000L, GT_Values.V[2], 4L, -3L, true);*/
+        
+        GregtechItemList.Fluid_Cell_144L.set(addItem(tLastID = 61, "144L Invar Fluid Cell", "Holds exactly one dust worth of liquid.", new Object[]{new ItemData(Materials.Invar, OrePrefixes.plate.mMaterialAmount * 8L + 4L * OrePrefixes.ring.mMaterialAmount, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L)}));
+        setFluidContainerStats(32000 + tLastID, 144L, 64L);
+        
+        GregtechItemList.Fluid_Cell_36L.set(addItem(tLastID = 62, "36L Brass Fluid Cell", "Holds exactly one small dust worth of liquid.", new Object[]{new ItemData(Materials.Brass, OrePrefixes.plate.mMaterialAmount * 8L + 4L * OrePrefixes.ring.mMaterialAmount, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L)}));
+        setFluidContainerStats(32000 + tLastID, 36L, 64L);
+        
+        GregtechItemList.Fluid_Cell_16L.set(addItem(tLastID = 63, "16L Bronze Fluid Cell", "Holds exactly one tiny dust / nugget worth of liquid.", new Object[]{new ItemData(Materials.Bronze, OrePrefixes.plate.mMaterialAmount * 8L + 4L * OrePrefixes.ring.mMaterialAmount, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L)}));
+        setFluidContainerStats(32000 + tLastID, 16L, 64L);
+        
+        GregtechItemList.Fluid_Cell_1L.set(addItem(tLastID = 64, "1L Wrought Iron Fluid Cell", "Holds exactly one litre worth of liquid.", new Object[]{new ItemData(Materials.WroughtIron, OrePrefixes.plate.mMaterialAmount * 8L + 4L * OrePrefixes.ring.mMaterialAmount, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L)}));
+        setFluidContainerStats(32000 + tLastID, 1L, 64L);
         
     }
 }

@@ -111,7 +111,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	
 	//Fluid Storage Tanks
 	GT_FluidTank_ULV, GT_FluidTank_LV, GT_FluidTank_MV, GT_FluidTank_HV, GT_FluidTank_EV,
-	GT_FluidTank_IV, GT_FluidTank_LuV, GT_FluidTank_ZPM, GT_FluidTank_UV, GT_FluidTank_MAX;
+	GT_FluidTank_IV, GT_FluidTank_LuV, GT_FluidTank_ZPM, GT_FluidTank_UV, GT_FluidTank_MAX, 
+	
+	//Fluid Cells to regulate flows.
+	Fluid_Cell_1L, Fluid_Cell_16L, Fluid_Cell_36L, Fluid_Cell_144L;
 
 	public static final GregtechItemList[]
 			DYE_ONLY_ITEMS = {

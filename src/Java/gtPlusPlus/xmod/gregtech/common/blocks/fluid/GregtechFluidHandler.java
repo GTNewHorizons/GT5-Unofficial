@@ -104,8 +104,8 @@ public class GregtechFluidHandler {
 			GT_Values.RA.addChemicalRecipe(
 					UtilsItems.getItemStackOfAmountFromOreDict("dustApatite", 16),
 					null,
-					FluidUtils.getFluidStack("sulfuricacid", 133*32), 
-					FluidUtils.getFluidStack("sulfuricapatite", 133*4),
+					FluidUtils.getFluidStack("sulfuricacid", 144*32), 
+					FluidUtils.getFluidStack("sulfuricapatite", 144*4),
 					UtilsItems.getItemStackOfAmountFromOreDict("dustSmallSulfur", 1), 
 					20*20);
 			
@@ -121,7 +121,7 @@ public class GregtechFluidHandler {
 					UtilsItems.getItemStackOfAmountFromOreDict("cellOxygen", 1),
 					UtilsItems.getItemStackOfAmountFromOreDict("dustLithium", 16),
 					FluidUtils.getFluidStack("water", 1000), 
-					FluidUtils.getFluidStack("lithiumhydroxide", 133*4),
+					FluidUtils.getFluidStack("lithiumhydroxide", 144*4),
 					null, 
 					300*20);
 
@@ -133,9 +133,9 @@ public class GregtechFluidHandler {
 			
 			
 			//Mixer Recipes
-			GT_Values.RA.addMixerRecipe(UtilsItems.getItemStackOfAmountFromOreDict("dustSulfur", 1), null, null, null, FluidUtils.getFluidStack("oxygen", 266), FluidUtils.getFluidStack("sulfurdioxide", 399), null, 600, 60);
-			GT_Values.RA.addMixerRecipe(UtilsItems.getItemStackOfAmountFromOreDict("dustUranium235", 1), UtilsItems.getItemStackOfAmountFromOreDict("dustUranium235", 1), null, null, FluidUtils.getFluidStack("hydrofluoricacid", 2000), FluidUtils.getFluidStack("uraniumtetrafluoride", 266), null, 3000, 500);
-			GT_Values.RA.addMixerRecipe(UtilsItems.getItemStackOfAmountFromOreDict("cellFluorine", 1), UtilsItems.getItemStackOfAmountFromOreDict("cellFluorine", 1), null, null, FluidUtils.getFluidStack("uraniumtetrafluoride", 665), FluidUtils.getFluidStack("uraniumhexafluoride", 266), null, 5000, 2000);
+			GT_Values.RA.addMixerRecipe(UtilsItems.getItemStackOfAmountFromOreDict("dustSulfur", 1), null, null, null, FluidUtils.getFluidStack("oxygen", 288), FluidUtils.getFluidStack("sulfurdioxide", 432), null, 600, 60);
+			GT_Values.RA.addMixerRecipe(UtilsItems.getItemStackOfAmountFromOreDict("dustUranium235", 1), UtilsItems.getItemStackOfAmountFromOreDict("dustUranium235", 1), null, null, FluidUtils.getFluidStack("hydrofluoricacid", 2000), FluidUtils.getFluidStack("uraniumtetrafluoride", 288), null, 3000, 500);
+			GT_Values.RA.addMixerRecipe(UtilsItems.getItemStackOfAmountFromOreDict("cellFluorine", 1), UtilsItems.getItemStackOfAmountFromOreDict("cellFluorine", 1), null, null, FluidUtils.getFluidStack("uraniumtetrafluoride", 720), FluidUtils.getFluidStack("uraniumhexafluoride", 288), null, 5000, 2000);
 
 			
 			
@@ -173,10 +173,10 @@ public class GregtechFluidHandler {
 					60);
 
 			FluidStack[] sulfurdioxideOutput = {
-					FluidUtils.getFluidStack("oxygen", 133*2)
+					FluidUtils.getFluidStack("oxygen", 144*2)
 			};
 			GT_Values.RA.addDistillationTowerRecipe(
-					FluidUtils.getFluidStack("sulfurdioxide", 133*3),
+					FluidUtils.getFluidStack("sulfurdioxide", 144*3),
 					sulfurdioxideOutput,
 					UtilsItems.getItemStackOfAmountFromOreDict("dustSulfur", 1),
 					5*20,

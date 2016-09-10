@@ -9,6 +9,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_TieredTank
         extends GT_MetaTileEntity_BasicTank {
@@ -30,9 +31,24 @@ public class GT_MetaTileEntity_TieredTank
         return aSide == 1 ? new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER_ACTIVE)} : new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER)};
     }
 
-    @Override
+   /* @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
+    }
+    
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+    }*/
+    
+    @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        if (mFluid != null) aNBT.setTag("mFluid", mFluid.writeToNBT(new NBTTagCompound()));
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        mFluid = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mFluid"));
     }
 
     @Override
@@ -55,11 +71,6 @@ public class GT_MetaTileEntity_TieredTank
     @Override
     public boolean isAccessAllowed(EntityPlayer aPlayer) {
         return true;
-    }
-
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
     }
 
     @Override
