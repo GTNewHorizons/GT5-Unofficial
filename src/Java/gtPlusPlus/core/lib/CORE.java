@@ -1,5 +1,6 @@
 package gtPlusPlus.core.lib;
 
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.gregtech.recipehandlers.GregtechRecipe;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
@@ -20,6 +21,7 @@ public class CORE {
 	public static final String name = "GT++";	
 	public static final String MODID = "miscutils";
 	public static final String VERSION = "1.4.6.5-release";
+	public static boolean isModUpToDate = Utils.isModUpToDate();
 	public static boolean DEBUG = false;	
 	public static final boolean LOAD_ALL_CONTENT = false;
 	public static final int GREG_FIRST_ID = 760;

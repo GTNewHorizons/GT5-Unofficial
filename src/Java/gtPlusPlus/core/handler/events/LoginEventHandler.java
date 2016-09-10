@@ -1,5 +1,6 @@
 package gtPlusPlus.core.handler.events;
 
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.player.PlayerCache;
 
@@ -31,6 +32,12 @@ public class LoginEventHandler {
 				//Populates player cache
 				if (!localPlayerRef.worldObj.isRemote){
 				PlayerCache.appendParamChanges(localPlayersName, localPlayersUUID.toString());
+				
+				if (!CORE.isModUpToDate){
+					Utils.LOG_INFO("You're not using the latest version of GT++, consider updating.");
+					Utils.messagePlayer(localPlayerRef, "You're not using the latest version of GT++, consider updating.");
+				}
+				
 				}
 
 

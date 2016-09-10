@@ -4,8 +4,6 @@ import gregtech.api.util.GT_Config;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.common.blocks.fluid.GregtechFluidHandler;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
-import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
-import gtPlusPlus.xmod.gregtech.loaders.ProcessingToolHeadChoocher;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
 
 public class HANDLER_GT {
@@ -28,8 +26,8 @@ public class HANDLER_GT {
 		
 		//Add Custom Pipes, Wires and Cables.
 		GregtechConduits.run();
-		new ProcessingToolHeadChoocher();
-		new MetaGeneratedGregtechTools();
+		//new ProcessingToolHeadChoocher();
+		//new MetaGeneratedGregtechTools();
 		/*if (Meta_GT_Proxy.mSortToTheEnd) {
 			new GT_ItemIterator().run();
 			Meta_GT_Proxy.registerUnificationEntries();
