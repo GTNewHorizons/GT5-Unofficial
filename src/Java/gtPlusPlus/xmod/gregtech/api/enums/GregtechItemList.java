@@ -107,7 +107,11 @@ public enum GregtechItemList implements GregtechItemContainer {
 	
 	PowerSubStation, 
 	
-	GT_Dehydrator_EV, GT_Dehydrator_IV, GT_Dehydrator_LuV, GT_Dehydrator_ZPM;
+	GT_Dehydrator_EV, GT_Dehydrator_IV, GT_Dehydrator_LuV, GT_Dehydrator_ZPM,
+	
+	//Fluid Storage Tanks
+	GT_FluidTank_ULV, GT_FluidTank_LV, GT_FluidTank_MV, GT_FluidTank_HV, GT_FluidTank_EV,
+	GT_FluidTank_IV, GT_FluidTank_LuV, GT_FluidTank_ZPM, GT_FluidTank_UV, GT_FluidTank_MAX;
 
 	public static final GregtechItemList[]
 			DYE_ONLY_ITEMS = {

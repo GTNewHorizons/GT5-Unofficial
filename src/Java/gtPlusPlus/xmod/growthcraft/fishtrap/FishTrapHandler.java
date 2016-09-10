@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.growthcraft.fishtrap;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.UtilsItems;
 import net.minecraft.item.ItemStack;
@@ -12,18 +13,28 @@ public class FishTrapHandler {
 	private static final String[] fishTypes = {"fish", "junk", "treasure"};
 
 	protected static void addFish(String lootType, ItemStack lootStack, int lootChance){
-		if (lootType == fishTypes[0]){
-			Growthcraft_Old.addTrapFish(lootStack, lootChance);
+		if (LoadedMods.getModVersion("Growthcraft").contains("2.3.1")){
+			if (lootType == fishTypes[0]){
+				Growthcraft_Old.addTrapFish(lootStack, lootChance);
+				Utils.LOG_INFO("Added "+lootStack.getDisplayName()+" as an extra Fish for Growthcraft Fishtraps.");
+			}
+			else if (lootType == fishTypes[1]){
+				Growthcraft_Old.addTrapJunk(lootStack, lootChance);
+				Utils.LOG_INFO("Added "+lootStack.getDisplayName()+" as extra Junk for Growthcraft Fishtraps.");
+			}
+			else if (lootType == fishTypes[2]){
+				Growthcraft_Old.addTrapTreasure(lootStack, lootChance);
+				Utils.LOG_INFO("Added "+lootStack.getDisplayName()+" as extra Treasure for Growthcraft Fishtraps.");
+			}
+			else {
+				return;
+			}
 		}
-		else if (lootType == fishTypes[1]){
-			Growthcraft_Old.addTrapJunk(lootStack, lootChance);
-		}
-		else if (lootType == fishTypes[2]){
-			Growthcraft_Old.addTrapTreasure(lootStack, lootChance);
-		}
+		
 		else {
-			return;
+			Utils.LOG_INFO("Extra Fish loot for Growthcraft Fishtraps disabled. Found V."+LoadedMods.getModVersion("Growthcraft"));
 		}
+		
 	}
 	
 	final static String prefix = "food";

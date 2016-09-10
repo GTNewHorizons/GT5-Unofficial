@@ -171,4 +171,10 @@ public class LoadedMods {
 		Utils.LOG_INFO("Content found for "+totalMods+" mods");
 		
 	}
+	
+	public static String getModVersion(String modName){
+		final String ver = cpw.mods.fml.common.FMLCommonHandler.instance().findContainerFor(modName).getVersion();
+		return ver;
+	}
+	
 }

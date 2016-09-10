@@ -39,6 +39,7 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSafeBlock;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSolarGenerators;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSteamCondenser;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSuperConductionPoint;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechTieredFluidTanks;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -96,6 +97,7 @@ public class COMPAT_HANDLER {
 		GregtechSolarGenerators.run();
 		GregtechPowerSubStation.run();
 		GregtechDehydrator.run();
+		GregtechTieredFluidTanks.run();
 		}
 
 	}
