@@ -16,7 +16,7 @@ public class RECIPES_Tools {
 	public static ItemStack RECIPE_StaballoyPickaxe = new ItemStack(ModItems.itemStaballoyPickaxe);
 	public static ItemStack RECIPE_StaballoyAxe = new ItemStack(ModItems.itemStaballoyAxe);
 	public static ItemStack RECIPE_SandstoneHammer = new ItemStack(ModItems.itemSandstoneHammer);
-	public static ItemStack RECIPE_StaballoyIngot = new ItemStack(ModItems.itemIngotStaballoy);
+	//public static ItemStack RECIPE_StaballoyIngot = new ItemStack(ModItems.itemIngotStaballoy);
 	public static ItemStack RECIPE_SandStone = new ItemStack(Blocks.sandstone, 2);
 	public static ItemStack RECIPE_Sand = new ItemStack(Blocks.sand, 4);
 	

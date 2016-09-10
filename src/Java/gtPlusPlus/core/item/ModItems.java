@@ -7,17 +7,10 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.BaseItemBackpack;
 import gtPlusPlus.core.item.base.CoreItem;
-import gtPlusPlus.core.item.base.bolts.BaseItemBolt;
 import gtPlusPlus.core.item.base.foods.BaseItemFood;
 import gtPlusPlus.core.item.base.foods.BaseItemHotFood;
-import gtPlusPlus.core.item.base.gears.BaseItemGear;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngot;
-import gtPlusPlus.core.item.base.ingots.BaseItemIngotHot;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate;
-import gtPlusPlus.core.item.base.rings.BaseItemRing;
-import gtPlusPlus.core.item.base.rods.BaseItemRod;
-import gtPlusPlus.core.item.base.rotors.BaseItemRotor;
-import gtPlusPlus.core.item.base.screws.BaseItemScrew;
 import gtPlusPlus.core.item.effects.RarityUncommon;
 import gtPlusPlus.core.item.general.BufferCore;
 import gtPlusPlus.core.item.general.ItemCloakingDevice;
@@ -30,9 +23,9 @@ import gtPlusPlus.core.item.tool.staballoy.MultiPickaxeBase;
 import gtPlusPlus.core.item.tool.staballoy.StaballoyAxe;
 import gtPlusPlus.core.item.tool.staballoy.StaballoyPickaxe;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.CORE.configSwitches;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.lib.MaterialInfo;
-import gtPlusPlus.core.lib.CORE.configSwitches;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.debug.DEBUG_INIT;
 import gtPlusPlus.core.util.item.UtilsItems;
@@ -71,28 +64,15 @@ public final class ModItems {
 	public static Item itemPlateLudicrite;
 	//Thaumcraft
 	public static Item itemPlateVoidMetal;
-	//ExtraUtils
-	public static Item itemPlateBedrockium;
 	//Pneumaticraft
 	public static Item itemPlateCompressedIron;
 	//SimplyJetpacks
 	public static Item itemPlateEnrichedSoularium;
 	//rfTools
 	public static Item itemPlateDimensionShard;
-	//Blood Steel Items
-	public static Item itemIngotBloodSteel;
-	public static Item itemPlateBloodSteel;
 	//Staballoy
 	public static Item itemStaballoyPickaxe;
 	public static Item itemStaballoyAxe;
-	public static Item itemPlateStaballoy;
-	public static Item itemIngotStaballoy;
-	public static Item itemDustStaballoy;
-	public static Item itemDustTinyStaballoy;
-	public static Item itemDustSmallStaballoy;
-	public static Item itemDustBloodSteel;
-	public static Item itemDustTinyBloodSteel;
-	public static Item itemDustSmallBloodSteel;
 	//Tools
 	public static Item itemSandstoneHammer;
 	//Machine Related
@@ -112,60 +92,13 @@ public final class ModItems {
 	public static Item itemBedLocator_Base;
 	public static Item itemBaseItemWithCharge;
 
-	public static Item itemHotIngotStaballoy;
-
 	public static Item itemIngotRaisinBread;
 	public static Item itemHotIngotRaisinBread;
-
-	public static BaseItemIngot itemIngotTantalloy60;
-	public static BaseItemIngotHot itemHotIngotTantalloy60;
-	public static BaseItemPlate itemPlateTantalloy60;
-	public static BaseItemIngot itemIngotTantalloy61;
-	public static BaseItemIngotHot itemHotIngotTantalloy61;
-	public static BaseItemPlate itemPlateTantalloy61;
 
 	public static ItemFood itemFoodRaisinToast;
 	public static BaseItemHotFood itemHotFoodRaisinToast;
 	public static BaseItemFood itemFoodCurriedSausages;
 	public static BaseItemHotFood itemHotFoodCurriedSausages;
-	
-	public static Item itemDustTantalloy60;
-	public static Item itemDustSmallTantalloy60;
-	public static Item itemDustTinyTantalloy60;
-	
-	public static Item itemDustTantalloy61;
-	public static Item itemDustSmallTantalloy61;
-	public static Item itemDustTinyTantalloy61;
-	
-	public static BaseItemGear itemGearStaballoy;
-	public static BaseItemGear itemGearBloodSteel;
-	public static BaseItemGear itemGearTantalloy60;
-	public static BaseItemGear itemGearTantalloy61;
-	
-	public static BaseItemRotor itemRotorStaballoy;
-	public static BaseItemRotor itemRotorBloodSteel;
-	public static BaseItemRotor itemRotorTantalloy60;
-	public static BaseItemRotor itemRotorTantalloy61;
-	
-	public static BaseItemRod itemRodStaballoy;
-	public static BaseItemRod itemRodBloodSteel;
-	public static BaseItemRod itemRodTantalloy60;
-	public static BaseItemRod itemRodTantalloy61;
-
-	public static BaseItemScrew itemScrewStaballoy;
-	public static BaseItemScrew itemScrewBloodSteel;
-	public static BaseItemScrew itemScrewTantalloy60;
-	public static BaseItemScrew itemScrewTantalloy61;
-
-	public static BaseItemRing itemRingStaballoy;
-	public static BaseItemRing itemRingBloodSteel;
-	public static BaseItemRing itemRingTantalloy60;
-	public static BaseItemRing itemRingTantalloy61;
-
-	public static BaseItemBolt itemBoltStaballoy;
-	public static BaseItemBolt itemBoltBloodSteel;
-	public static BaseItemBolt itemBoltTantalloy60;
-	public static BaseItemBolt itemBoltTantalloy61;
 	
 	public static Item RfEuBattery;
 	public static Item itemPersonalCloakingDevice;
@@ -179,8 +112,7 @@ public final class ModItems {
 	public static MultiPickaxeBase MP_Stone;
 	public static MultiPickaxeBase MP_Quartz;
 	public static MultiPickaxeBase MP_Obsidian;
-	public static MultiPickaxeBase MP_Redstone;
-	
+	public static MultiPickaxeBase MP_Redstone;	
 	
 	public static BaseItemBackpack backpack_Red;
 	public static BaseItemBackpack backpack_Green;
@@ -188,20 +120,18 @@ public final class ModItems {
 	public static BaseItemBackpack backpack_Yellow;
 	public static BaseItemBackpack backpack_Purple;
 	public static BaseItemBackpack backpack_Cyan;
-	
-
 	public static BaseItemBackpack backpack_Maroon;
 	public static BaseItemBackpack backpack_Olive;
 	public static BaseItemBackpack backpack_DarkGreen;
 	public static BaseItemBackpack backpack_DarkPurple;
 	public static BaseItemBackpack backpack_Teal;
 	public static BaseItemBackpack backpack_Navy;
-	
-
 	public static BaseItemBackpack backpack_Silver;
 	public static BaseItemBackpack backpack_Gray;
 	public static BaseItemBackpack backpack_Black;
 	public static BaseItemBackpack backpack_White;
+	
+	public static Item dustLithiumCarbonate;
 
 
 	//@SuppressWarnings("unused")
@@ -299,6 +229,9 @@ public final class ModItems {
 		
 		//Uranium-233if
 		UtilsItems.generateItemsFromMaterial("Uranium233", "Uranium 233", 4, MaterialInfo.INCONEL792, Utils.rgbtoHexValue(73, 220, 83), false); //Uranium-233 is a fissile isotope of uranium that is bred from thorium-232 as part of the thorium fuel cycle. 
+		dustLithiumCarbonate = UtilsItems.generateSpecialUseDusts("LithiumCarbonate", "Lithium Carbonate", Utils.rgbtoHexValue(137, 139, 142))[0];
+		
+		
 		
 		MP_Wood = new MultiPickaxeBase("Wooden Multipick", ToolMaterial.WOOD, ToolMaterial.WOOD.getMaxUses(), Utils.rgbtoHexValue(139,90,43));
 		MP_Stone = new MultiPickaxeBase("Cobblestone Multipick", ToolMaterial.STONE, ToolMaterial.STONE.getMaxUses(), Utils.rgbtoHexValue(161,161,161));

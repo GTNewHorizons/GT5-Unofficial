@@ -1,7 +1,5 @@
 package gtPlusPlus.core.common.compat;
 
-import gregtech.api.util.GT_OreDictUnificator;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE.configSwitches;
 import gtPlusPlus.core.recipe.RECIPES_Tools;
 import gtPlusPlus.core.util.item.UtilsItems;
@@ -18,7 +16,7 @@ public class COMPAT_ExtraUtils {
 
 	private static final void run(){
 		UtilsItems.getItemForOreDict("ExtraUtilities:bedrockiumIngot", "ingotBedrockium", "Bedrockium Ingot", 0);
-		GT_OreDictUnificator.registerOre("plateBedrockium", new ItemStack(ModItems.itemPlateBedrockium));
+		//GT_OreDictUnificator.registerOre("plateBedrockium", new ItemStack(ModItems.itemPlateBedrockium));
 
 		if (configSwitches.enableAlternativeDivisionSigilRecipe){
 			//Division Sigil

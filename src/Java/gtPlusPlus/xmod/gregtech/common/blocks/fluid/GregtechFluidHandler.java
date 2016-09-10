@@ -109,13 +109,13 @@ public class GregtechFluidHandler {
 					UtilsItems.getItemStackOfAmountFromOreDict("dustSmallSulfur", 1), 
 					20*20);
 			
-			GT_Values.RA.addChemicalRecipe(
+			/*GT_Values.RA.addChemicalRecipe(
 					UtilsItems.getItemStackOfAmountFromOreDict("dustLithium", 8),
 					null,
 					FluidUtils.getFluidStack("sulfuricacid", 133*32), 
 					FluidUtils.getFluidStack("sulfuriclithium", 133*4),
 					UtilsItems.getItemStackOfAmountFromOreDict("dustSmallLithium", 2), 
-					20*20);
+					20*20);*/
 			
 			GT_Values.RA.addChemicalRecipe(
 					UtilsItems.getItemStackOfAmountFromOreDict("cellOxygen", 1),

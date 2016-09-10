@@ -8,6 +8,7 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.BasicSpawnEgg;
 import gtPlusPlus.core.item.base.bolts.BaseItemBolt;
 import gtPlusPlus.core.item.base.dusts.BaseItemDust;
+import gtPlusPlus.core.item.base.dusts.BaseItemDustSpecialUse;
 import gtPlusPlus.core.item.base.gears.BaseItemGear;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngot;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngotHot;
@@ -327,6 +328,23 @@ public class UtilsItems {
 		
 	}
 	
+	public static Item[] generateDusts(String unlocalizedName, String materialName, int materialTier, MaterialInfo matInfo, int Colour, boolean hotIngot){
+		int radioactive = getRadioactivityLevel(materialName);
+		Item[] output = {
+		new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", hotIngot, materialTier, radioactive),
+		new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", hotIngot, materialTier, radioactive),
+		new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", hotIngot, materialTier, radioactive)};
+		return output;
+	}
+	
+	public static Item[] generateSpecialUseDusts(String unlocalizedName, String materialName, int Colour){
+		Item[] output = {
+		new BaseItemDustSpecialUse("itemDust"+unlocalizedName, materialName, Colour, "Dust"),
+		new BaseItemDustSpecialUse("itemDustSmall"+unlocalizedName, materialName, Colour, "Small"),
+		new BaseItemDustSpecialUse("itemDustTiny"+unlocalizedName, materialName, Colour, "Tiny")};
+		return output;
+	}
+	
 	public static MultiPickaxeBase generateMultiPick(Materials material){
 		ToolMaterial customMaterial = Utils.generateMaterialFromGT(material);
 		short[] rgb;
@@ -346,6 +364,37 @@ public class UtilsItems {
 		
 		return MP_Redstone;
 		
+	}
+	
+	public static boolean isRadioactive(String materialName){
+		int sRadiation = 0;		
+		if (materialName.toLowerCase().contains("uranium")){
+			sRadiation = 2;
+		}
+		else if (materialName.toLowerCase().contains("plutonium")){
+			sRadiation = 4;
+		}
+		else if (materialName.toLowerCase().contains("thorium")){
+			sRadiation = 1;
+		}
+		if (sRadiation >= 1){
+			return true;
+		}
+		return false;
+	}
+	
+	public static int getRadioactivityLevel(String materialName){
+		int sRadiation = 0;		
+		if (materialName.toLowerCase().contains("uranium")){
+			sRadiation = 2;
+		}
+		else if (materialName.toLowerCase().contains("plutonium")){
+			sRadiation = 4;
+		}
+		else if (materialName.toLowerCase().contains("thorium")){
+			sRadiation = 1;
+		}
+		return sRadiation;
 	}
 	
 	public static String getArrayStackNames(ItemStack[] aStack){

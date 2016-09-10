@@ -32,8 +32,8 @@ public class TF_Items {
 	public static void preInit(){
 
 
-		itemBucket = (ItemBucket)new ItemBucket("GTplusplus").setUnlocalizedName("bucket").setCreativeTab(AddToCreativeTab.tabMisc);
-	    itemMaterial = (ItemBase)new ItemBase("GTplusplus").setUnlocalizedName("material").setCreativeTab(AddToCreativeTab.tabMisc);
+		itemBucket = (ItemBucket)new ItemBucket("MiscUtils").setUnlocalizedName("bucket").setCreativeTab(AddToCreativeTab.tabMisc);
+	    itemMaterial = (ItemBase)new ItemBase("MiscUtils").setUnlocalizedName("material").setCreativeTab(AddToCreativeTab.tabMisc);
 	    
 
 		bucketPyrotheum = itemBucket.addOreDictItem(1, "bucketPyrotheum");
