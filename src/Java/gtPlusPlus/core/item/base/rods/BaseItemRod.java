@@ -90,11 +90,13 @@ public class BaseItemRod extends Item{
 					12*mTier*20, 24*mTier);	
 		}	
 		ItemStack rods = UtilsItems.getSimpleStack(this, 1);
-		UtilsRecipe.addShapedGregtechRecipe(
-				rods, rods, rods,
-				rods, "craftingToolWrench", rods,
-				rods, rods, rods,
-				UtilsItems.getItemStackOfAmountFromOreDict(unlocalName.replace("itemRod", "frameGt"), 2));
+		if (sRadiation == 0){
+			UtilsRecipe.addShapedGregtechRecipe(
+					rods, rods, rods,
+					rods, "craftingToolWrench", rods,
+					rods, rods, rods,
+					UtilsItems.getItemStackOfAmountFromOreDict(unlocalName.replace("itemRod", "frameGt"), 2));
+		}
 	}
 
 }

@@ -12,6 +12,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_FoodStat;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.covers.GT_Cover_Arm;
 import gregtech.common.covers.GT_Cover_Conveyor;
 import gregtech.common.covers.GT_Cover_Pump;
@@ -150,9 +151,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
         GregtechItemList.Circuit_Parts_Wiring_ZPM.set(addItem(tLastID = 721, "Etched ZPM Voltage Wiring", "Part of Circuit Boards", new Object[0]));
         
     
-        //FOOOOOOOOOOOOOOD
-        GregtechItemList.Food_Baked_Raisin_Bread.set(addItem(tLastID = 60, "Raisin Bread", "Extra Raisins, Just for "+EnumChatFormatting.DARK_PURPLE+"ImQ009", new Object[]{new GT_FoodStat(5, 0.5F, EnumAction.eat, null, false, true, false, new int[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.CORPUS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)}));
-
+        
         
         //Extruder Shape
         GregtechItemList.Shape_Extruder_WindmillShaft.set(addItem(tLastID = 40, "Extruder Shape (Shaft)", "Extruder Shape for making Windmill Shafts", new Object[0]));
@@ -174,6 +173,12 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
         GregtechItemList.Battery_RE_EV_Sodium.set(addItem(tLastID = 50, "Quad Cell Mercury Battery", "Reusable", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.POTENTIA, 1L)}));
         setElectricStats(32000 + tLastID, 5000000L, GT_Values.V[2], 4L, -3L, true);*/
         
+        
+      //FOOOOOOOOOOOOOOD
+        GregtechItemList.Food_Baked_Raisin_Bread.set(addItem(tLastID = 60, "Raisin Bread", "Extra Raisins, Just for "+EnumChatFormatting.DARK_PURPLE+"ImQ009", new Object[]{new GT_FoodStat(5, 0.5F, EnumAction.eat, null, false, true, false, new int[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.CORPUS, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.FAMES, 1L), new TC_Aspects.TC_AspectStack(TC_Aspects.IGNIS, 1L)}));
+
+        
+        
         GregtechItemList.Fluid_Cell_144L.set(addItem(tLastID = 61, "144L Invar Fluid Cell", "Holds exactly one dust worth of liquid.", new Object[]{new ItemData(Materials.Invar, OrePrefixes.plate.mMaterialAmount * 8L + 4L * OrePrefixes.ring.mMaterialAmount, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L)}));
         setFluidContainerStats(32000 + tLastID, 144L, 64L);
         
@@ -186,5 +191,10 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
         GregtechItemList.Fluid_Cell_1L.set(addItem(tLastID = 64, "1L Wrought Iron Fluid Cell", "Holds exactly one litre worth of liquid.", new Object[]{new ItemData(Materials.WroughtIron, OrePrefixes.plate.mMaterialAmount * 8L + 4L * OrePrefixes.ring.mMaterialAmount, new MaterialStack[0]), new TC_Aspects.TC_AspectStack(TC_Aspects.VACUOS, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 1L)}));
         setFluidContainerStats(32000 + tLastID, 1L, 64L);
         
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.WroughtIron, 8L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.WroughtIron, 4L), GregtechItemList.Fluid_Cell_1L.get(1L, new Object[0]), 50, 32);
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Bronze, 8L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Bronze, 4L), GregtechItemList.Fluid_Cell_16L.get(1L, new Object[0]), 50, 32);
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Brass, 8L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Brass, 4L), GregtechItemList.Fluid_Cell_36L.get(1L, new Object[0]), 75, 32);
+        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Invar, 8L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Invar, 4L), GregtechItemList.Fluid_Cell_144L.get(1L, new Object[0]), 75, 32);
+
     }
 }

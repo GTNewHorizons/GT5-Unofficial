@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.interfaces.internal;
 
+import gregtech.api.enums.Materials;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import net.minecraft.item.ItemStack;
@@ -13,4 +14,6 @@ public interface Interface_OreRecipeRegistrator {
      * @param aStack    always != null
      */
     public void registerOre(GregtechOrePrefixes aPrefix, GT_Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack);
+
+	public void registerOre(GregtechOrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack copyAmount);
 }

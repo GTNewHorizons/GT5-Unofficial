@@ -104,12 +104,7 @@ public final class ModItems {
 	public static Item itemPersonalCloakingDevice;
 	public static Item itemPersonalCloakingDeviceCharged;
 	public static Item itemPersonalHealingDevice;
-	
-	public static MultiPickaxeBase MP_Iron;
-	public static MultiPickaxeBase MP_Gold;
-	public static MultiPickaxeBase MP_Diamond;
-	public static MultiPickaxeBase MP_Wood;
-	public static MultiPickaxeBase MP_Stone;
+
 	public static MultiPickaxeBase MP_GTMATERIAL;	
 	
 	public static BaseItemBackpack backpack_Red;
@@ -142,7 +137,6 @@ public final class ModItems {
 			DEBUG_INIT.registerItems();
 		}		
 		
-		
 		//Make some backpacks
 		//Primary colours
 		backpack_Red = new BaseItemBackpack("backpackRed", Utils.rgbtoHexValue(200, 0, 0));
@@ -164,18 +158,6 @@ public final class ModItems {
 		backpack_Gray = new BaseItemBackpack("backpackGray", Utils.rgbtoHexValue(128, 128, 128));
 		backpack_Black = new BaseItemBackpack("backpackBlack", Utils.rgbtoHexValue(20, 20, 20));
 		backpack_White = new BaseItemBackpack("backpackWhite", Utils.rgbtoHexValue(240, 240, 240));
-
-		
-		/*ItemsIngots.load();
-		ItemsPlates.load();
-		ItemsDusts.load();
-		ItemsRods.load();
-		ItemsGears.load();
-		ItemsRotors.load();
-		ItemsRings.load();
-		ItemsBolts.load();
-		ItemsScrews.load();*/
-	
 		
 		//Start meta Item Generation
 		ItemsFoods.load();
@@ -228,14 +210,8 @@ public final class ModItems {
 		//Uranium-233if
 		UtilsItems.generateItemsFromMaterial("Uranium233", "Uranium 233", 4, MaterialInfo.INCONEL792, Utils.rgbtoHexValue(73, 220, 83), false); //Uranium-233 is a fissile isotope of uranium that is bred from thorium-232 as part of the thorium fuel cycle. 
 		dustLithiumCarbonate = UtilsItems.generateSpecialUseDusts("LithiumCarbonate", "Lithium Carbonate", Utils.rgbtoHexValue(137, 139, 142))[0];
+
 		
-		
-		
-		//MP_Wood = new MultiPickaxeBase("Wooden Multipick", ToolMaterial.WOOD, ToolMaterial.WOOD.getMaxUses(), Utils.rgbtoHexValue(139,90,43));
-		//MP_Stone = new MultiPickaxeBase("Cobblestone Multipick", ToolMaterial.STONE, ToolMaterial.STONE.getMaxUses(), Utils.rgbtoHexValue(161,161,161));
-		//MP_Iron = new MultiPickaxeBase("Iron Multipick", ToolMaterial.IRON, ToolMaterial.IRON.getMaxUses(), Utils.rgbtoHexValue(110,123,139));
-		//MP_Gold = new MultiPickaxeBase("Gold Multipick", ToolMaterial.GOLD, ToolMaterial.GOLD.getMaxUses(), Utils.rgbtoHexValue(238,221,130));
-		//MP_Diamond = new MultiPickaxeBase("Diamond Multipick", ToolMaterial.EMERALD, ToolMaterial.EMERALD.getMaxUses(), Utils.rgbtoHexValue(191,239,255));
 		
 		boolean gtStyleTools = true;
 

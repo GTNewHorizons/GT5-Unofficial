@@ -42,16 +42,19 @@ public class CommonProxy {
 			else {
 				Utils.LOG_INFO("We're using Gregtech 5.08 or an equivalent fork.");
 			}
+			handleGtIntegrationInit();
 		}
-		if (LoadedMods.Gregtech){
-			for (String tOreName : OreDictionary.getOreNames()) {
-				ItemStack tOreStack;
-				for (Iterator i$ = OreDictionary.getOres(tOreName).iterator(); i$.hasNext(); Meta_GT_Proxy.registerOre(new OreDictionary.OreRegisterEvent(tOreName, tOreStack))) {
-					Utils.LOG_INFO("Iterating Material");
-					tOreStack = (ItemStack) i$.next();
-				}
+	}
+	private static void handleGtIntegrationInit(){
+		Utils.LOG_INFO("Setting up our own GT_Proxy.");
+		Meta_GT_Proxy GtProxy = new Meta_GT_Proxy();	
+		for (String tOreName : OreDictionary.getOreNames()) {
+			ItemStack tOreStack;
+			Utils.LOG_INFO("Iterating list of GT materials for custom tool parts.");
+			for (Iterator i$ = OreDictionary.getOres(tOreName).iterator(); i$.hasNext(); GtProxy.registerOre(new OreDictionary.OreRegisterEvent(tOreName, tOreStack))) {
+				Utils.LOG_INFO("Iterating Material");
+				tOreStack = (ItemStack) i$.next();
 			}
-			new Meta_GT_Proxy();
 		}
 	}
 

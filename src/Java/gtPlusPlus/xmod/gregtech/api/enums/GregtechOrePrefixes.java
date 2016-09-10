@@ -102,6 +102,7 @@ public enum GregtechOrePrefixes {
 	public final long mMaterialAmount;
 	private final Collection<Materials> mNotGeneratedItems = new HashSet<Materials>(), mIgnoredMaterials = new HashSet<Materials>(), mGeneratedItems = new HashSet<Materials>();
 	private final ArrayList<Interface_OreRecipeRegistrator> mOreProcessing = new ArrayList<Interface_OreRecipeRegistrator>();
+	private final ArrayList<Interface_OreRecipeRegistrator> mOreProcessingFake = new ArrayList<Interface_OreRecipeRegistrator>();
 	public ItemStack mContainerItem = null;
 	public ICondition<ISubTagContainer> mCondition = null;
 	public byte mDefaultStackSize = 64;
@@ -228,6 +229,7 @@ public enum GregtechOrePrefixes {
 		return true;
 	}
 
+
 	public boolean contains(ItemStack aStack) {
 		if (aStack == null) return false;
 		for (ItemStack tStack : mPrefixedItems)
@@ -267,6 +269,16 @@ public enum GregtechOrePrefixes {
 				tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GT_Utility.copyAmount(1, aStack));
 			}
 	}
+	
+	//TODO
+	 public void processOre(Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
+	        if (aMaterial != null && (aMaterial != Materials._NULL || mIsSelfReferencing || !mIsMaterialBased) && GT_Utility.isStackValid(aStack))
+	            for (Interface_OreRecipeRegistrator tRegistrator : mOreProcessingFake) {
+	                if (D2)
+	                    GT_Log.ore.println("Processing '" + aOreDictName + "' with the Prefix '" + name() + "' and the Material '" + aMaterial.name() + "' at " + GT_Utility.getClassName(tRegistrator));
+	                tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GT_Utility.copyAmount(1, aStack));
+	            }
+	    }
 
 	public Object get(Object aMaterial) {
 		if (aMaterial instanceof GT_Materials) return new GregtechItemData(this, (GT_Materials) aMaterial);
@@ -823,4 +835,5 @@ public enum GregtechOrePrefixes {
 
 	}
 
+	
 }

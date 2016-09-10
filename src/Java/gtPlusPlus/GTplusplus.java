@@ -22,6 +22,7 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.UtilsItems;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.HANDLER_GT;
+import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -46,6 +47,8 @@ implements ActionListener
 
 	@Mod.Instance(CORE.MODID)
 	public static GTplusplus instance;
+	
+	protected static Meta_GT_Proxy gregtechproxy;
 
 	@SidedProxy(clientSide="gtPlusPlus.core.proxy.ClientProxy", serverSide="gtPlusPlus.core.proxy.ServerProxy")
 	public static CommonProxy proxy;
@@ -148,6 +151,11 @@ implements ActionListener
 		dumpGtRecipeMap(Gregtech_Recipe_Map.sCokeOvenRecipes);
 		dumpGtRecipeMap(Gregtech_Recipe_Map.sMatterFab2Recipes);
 		}
+		
+		Utils.LOG_INFO("Activating GT OreDictionary Handler, this can take some time.");
+		Utils.LOG_INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		Meta_GT_Proxy.activateOreDictHandler();
+		Utils.LOG_INFO("Congratulations, a second cake has been baked for you.");
 	}
 
 	@EventHandler

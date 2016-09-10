@@ -2,10 +2,11 @@ package gtPlusPlus.xmod.gregtech.common.tools;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Textures;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.xmod.gregtech.api.enums.CustomGtTextures;
 import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaTool;
 import gtPlusPlus.xmod.gregtech.api.items.types.ToolType_HardHammer;
 import gtPlusPlus.xmod.gregtech.api.items.types.ToolType_Wrench;
@@ -156,10 +157,14 @@ public class TOOL_Gregtech_Choocher
         return null;
     }
 
-    @Override
+    public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
+        return aIsToolHead ? CustomGtTextures.ItemIcons.SKOOKUMCHOOCHER : Gregtech_MetaTool.getSecondaryMaterial(aStack).mIconSet.mTextures[OrePrefixes.stick.mTextureIndex];
+    }
+    
+   /* @Override
 	public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
 		return aIsToolHead ? Textures.ItemIcons.WIRE_CUTTER : Textures.ItemIcons.VOID;
-	}
+	}*/
 
     
 /*    @Override
