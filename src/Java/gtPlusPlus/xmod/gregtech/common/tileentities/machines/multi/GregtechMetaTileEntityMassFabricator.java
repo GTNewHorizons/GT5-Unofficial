@@ -150,12 +150,12 @@ public class GregtechMetaTileEntityMassFabricator extends GT_MetaTileEntity_Mult
 						mMatterProduced++;
 						mAmplifierUsed++;
 						updateSlots();
-						Utils.LOG_INFO("Recipes Finished: "+mMatterProduced);
+						//Utils.LOG_INFO("Recipes Finished: "+mMatterProduced);
 						return true;
 					}
 				}
 				else {
-					Utils.LOG_INFO("Invalid Recipe");
+					//Utils.LOG_INFO("Invalid Recipe");
 					return false;
 				}
 			}
@@ -185,7 +185,7 @@ public class GregtechMetaTileEntityMassFabricator extends GT_MetaTileEntity_Mult
 				ArrayUtils.reverse(mOutputFluids);
 				mMatterProduced++;
 				updateSlots();
-				Utils.LOG_INFO("Recipes Finished: "+mMatterProduced);
+				//Utils.LOG_INFO("Recipes Finished: "+mMatterProduced);
 				return true;
 			}
 		}

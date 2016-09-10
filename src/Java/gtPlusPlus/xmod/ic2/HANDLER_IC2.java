@@ -1,17 +1,15 @@
 package gtPlusPlus.xmod.ic2;
 
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.xmod.ic2.block.RTGGenerator.BlockRTG;
 import gtPlusPlus.xmod.ic2.item.IC2_Items;
 import gtPlusPlus.xmod.ic2.recipe.RECIPE_IC2;
-import ic2.core.init.InternalName;
 
 public class HANDLER_IC2{
 
 	public static void preInit() {
 		if (LoadedMods.IndustrialCraft2){
 			IC2_Items.register();
-		    new BlockRTG(InternalName.beer);
+		    //new BlockRTG(InternalName.beer);
 		}		
 	}
 

@@ -36,8 +36,8 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Matter Fabricator Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Iron Plated Bricks");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Unused Casing");
-		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Reactor Casing Tier I");
-		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Reactor Casing Tier II");
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Hastelloy-N Reactor Casing");
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Zeron-100 Reactor Shielding");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Unused Coil Block");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Unused Coil Block");
 		GregtechItemList.Casing_Centrifuge1.set(new ItemStack(this, 1, 0));
