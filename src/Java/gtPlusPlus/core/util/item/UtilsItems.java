@@ -8,7 +8,7 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.BasicSpawnEgg;
 import gtPlusPlus.core.item.base.bolts.BaseItemBolt;
 import gtPlusPlus.core.item.base.dusts.BaseItemDust;
-import gtPlusPlus.core.item.base.dusts.BaseItemDustSpecialUse;
+import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
 import gtPlusPlus.core.item.base.gears.BaseItemGear;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngot;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngotHot;
@@ -339,9 +339,9 @@ public class UtilsItems {
 	
 	public static Item[] generateSpecialUseDusts(String unlocalizedName, String materialName, int Colour){
 		Item[] output = {
-		new BaseItemDustSpecialUse("itemDust"+unlocalizedName, materialName, Colour, "Dust"),
-		new BaseItemDustSpecialUse("itemDustSmall"+unlocalizedName, materialName, Colour, "Small"),
-		new BaseItemDustSpecialUse("itemDustTiny"+unlocalizedName, materialName, Colour, "Tiny")};
+		new BaseItemDustUnique("itemDust"+unlocalizedName, materialName, Colour, "Dust"),
+		new BaseItemDustUnique("itemDustSmall"+unlocalizedName, materialName, Colour, "Small"),
+		new BaseItemDustUnique("itemDustTiny"+unlocalizedName, materialName, Colour, "Tiny")};
 		return output;
 	}
 	

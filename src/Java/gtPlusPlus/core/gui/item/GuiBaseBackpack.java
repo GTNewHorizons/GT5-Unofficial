@@ -14,8 +14,6 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import com.sun.org.apache.xml.internal.security.utils.I18n;
-
 public class GuiBaseBackpack extends GuiContainer
 {
 	/** x and y size of the inventory window in pixels. Defined as float, passed as int
@@ -60,7 +58,7 @@ public class GuiBaseBackpack extends GuiContainer
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
-		String s = this.inventory.hasCustomInventoryName() ? this.inventory.getInventoryName() : I18n.translate(this.inventory.getInventoryName());
+		String s = this.inventory.hasCustomInventoryName() ? this.inventory.getInventoryName() : this.inventory.getInventoryName();
 		//this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 0, 4210752);
 		//this.fontRenderer.drawString(I18n.translate("container.inventory"), 26, this.ySize - 96 + 4, 4210752);
 	}

@@ -17,14 +17,14 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public class BaseItemDustSpecialUse extends Item{
+public class BaseItemDustUnique extends Item{
 
 	protected int colour;
 	protected String materialName;
 	protected String pileType;
 	String name = "";
 
-	public BaseItemDustSpecialUse(String unlocalizedName, String materialName, int colour, String pileSize) {
+	public BaseItemDustUnique(String unlocalizedName, String materialName, int colour, String pileSize) {
 		setUnlocalizedName(unlocalizedName);
 		this.setUnlocalizedName(unlocalizedName);
 		this.setMaxStackSize(64);	

@@ -1,6 +1,5 @@
 package gtPlusPlus.core.lib;
 
-import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.gregtech.recipehandlers.GregtechRecipe;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
@@ -20,7 +19,7 @@ public class CORE {
 
 	public static final String name = "GT++";	
 	public static final String MODID = "miscutils";
-	public static final String VERSION = "1.4.6.1-release";
+	public static final String VERSION = "1.4.6.3-release";
 	public static boolean DEBUG = false;	
 	public static final boolean LOAD_ALL_CONTENT = false;
 	public static final int GREG_FIRST_ID = 760;
@@ -35,7 +34,6 @@ public class CORE {
 	@SideOnly(Side.CLIENT)
 	public static IIconRegister GT_BlockIcons, GT_ItemIcons;	
 	public static List<Runnable> GT_BlockIconload = new ArrayList<Runnable>();
-	public static final Class<AddToCreativeTab> TAB = AddToCreativeTab.class;
 	public static Configuration Config;	
 	public static final String GT_Tooltip = "Added by: " + EnumChatFormatting.DARK_GREEN+"Alkalus "+EnumChatFormatting.GRAY+"- "+EnumChatFormatting.RED+"[GT++]";
 	public static final String GT_Tooltip_Radioactive = EnumChatFormatting.GRAY+"Warning: "+EnumChatFormatting.GREEN+"Radioactive! "+EnumChatFormatting.GOLD+" Avoid direct handling without hazmat protection.";
