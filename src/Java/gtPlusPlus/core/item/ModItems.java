@@ -231,33 +231,60 @@ public final class ModItems {
 		
 		
 		
-		MP_Wood = new MultiPickaxeBase("Wooden Multipick", ToolMaterial.WOOD, ToolMaterial.WOOD.getMaxUses(), Utils.rgbtoHexValue(139,90,43));
-		MP_Stone = new MultiPickaxeBase("Cobblestone Multipick", ToolMaterial.STONE, ToolMaterial.STONE.getMaxUses(), Utils.rgbtoHexValue(161,161,161));
-		MP_Iron = new MultiPickaxeBase("Iron Multipick", ToolMaterial.IRON, ToolMaterial.IRON.getMaxUses(), Utils.rgbtoHexValue(110,123,139));
-		MP_Gold = new MultiPickaxeBase("Gold Multipick", ToolMaterial.GOLD, ToolMaterial.GOLD.getMaxUses(), Utils.rgbtoHexValue(238,221,130));
-		MP_Diamond = new MultiPickaxeBase("Diamond Multipick", ToolMaterial.EMERALD, ToolMaterial.EMERALD.getMaxUses(), Utils.rgbtoHexValue(191,239,255));
+		//MP_Wood = new MultiPickaxeBase("Wooden Multipick", ToolMaterial.WOOD, ToolMaterial.WOOD.getMaxUses(), Utils.rgbtoHexValue(139,90,43));
+		//MP_Stone = new MultiPickaxeBase("Cobblestone Multipick", ToolMaterial.STONE, ToolMaterial.STONE.getMaxUses(), Utils.rgbtoHexValue(161,161,161));
+		//MP_Iron = new MultiPickaxeBase("Iron Multipick", ToolMaterial.IRON, ToolMaterial.IRON.getMaxUses(), Utils.rgbtoHexValue(110,123,139));
+		//MP_Gold = new MultiPickaxeBase("Gold Multipick", ToolMaterial.GOLD, ToolMaterial.GOLD.getMaxUses(), Utils.rgbtoHexValue(238,221,130));
+		//MP_Diamond = new MultiPickaxeBase("Diamond Multipick", ToolMaterial.EMERALD, ToolMaterial.EMERALD.getMaxUses(), Utils.rgbtoHexValue(191,239,255));
 		
-	
-		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Tin);
-		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Copper);
-		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Bronze);
-		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Steel);
-		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Lead);
-		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Silver);
-		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Titanium);
-		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Tungsten);
-		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Platinum);
-		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Chrome);
-		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.TungstenSteel);
-		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Aluminium);
-		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Thaumium);
-		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Cobalt);
-		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Iridium);
-		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Ultimet);
-		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Osmiridium);
-		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.NetherStar);
-		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Europium);
-		MP_GTMATERIAL = UtilsItems.generateMultiPick(Materials.Neutronium);
+		boolean gtStyleTools = true;
+
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Wood);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Cobblestone);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Iron);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.WroughtIron);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.DarkIron);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Gold);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Silver);
+		
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Diamond);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Emerald);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Ruby);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Sapphire);
+
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Cupronickel);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Brass);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Bronze);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Steel);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Lead);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Titanium);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Tungsten);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Platinum);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Chrome);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.TungstenSteel);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Aluminium);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Thaumium);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Cobalt);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Iridium);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Ultimet);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Osmiridium);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.NetherStar);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Naquadah);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.NaquadahAlloy);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.NaquadahEnriched);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Neutronium);
+		
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Thorium);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.DamascusSteel);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Magnalium);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.BlackSteel);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Invar);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.MeteoricSteel);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.StainlessSteel);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.BlueSteel);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Neodymium);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Desh);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.ElectrumFlux);
 		
 		//EnderIO Resources
 		if (LoadedMods.EnderIO || LOAD_ALL_CONTENT){

@@ -345,14 +345,18 @@ public class UtilsItems {
 		return output;
 	}
 	
-	public static MultiPickaxeBase generateMultiPick(Materials material){
+	public static MultiPickaxeBase generateMultiPick(boolean GT_Durability, Materials material){
 		ToolMaterial customMaterial = Utils.generateMaterialFromGT(material);
 		Utils.LOG_INFO("Generating a Multi-Pick out of "+material.name());
 		short[] rgb;
 		rgb = material.getRGBA();
 		int dur = customMaterial.getMaxUses();
 		Utils.LOG_INFO("Determined durability for "+material.name()+" is "+dur);
-		if (dur <= 0){
+		if (GT_Durability){
+			dur = material.mDurability*100;
+			Utils.LOG_INFO("Using gregtech durability value, "+material.name()+" is now "+dur+".");
+		}
+		else if (dur <= 0){
 			dur = material.mDurability;
 			Utils.LOG_INFO("Determined durability too low, "+material.name()+" is now "+dur+" based on the GT material durability.");
 		}

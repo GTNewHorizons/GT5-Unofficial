@@ -126,7 +126,7 @@ public class StaballoyPickaxe extends ItemPickaxe{
 				for(int i = -1; i < 2; i++) {
 					for(int j = -1; j < 2; j++) {
 						float dur = calculateDurabilityLoss(world, X + i, Y, Z + j);
-						DURABILITY_LOSS = (DURABILITY_LOSS + calculateDurabilityLoss(world, X + i, Y, Z + j));	
+						DURABILITY_LOSS = (DURABILITY_LOSS + dur);	
 						Utils.LOG_WARNING("Added Loss: "+dur);
 						removeBlockAndDropAsItem(world, X + i, Y, Z + j, heldItem);
 					}
@@ -138,7 +138,7 @@ public class StaballoyPickaxe extends ItemPickaxe{
 				for(int i = -1; i < 2; i++) {
 					for(int j = -1; j < 2; j++) {
 						float dur = calculateDurabilityLoss(world, X, Y + i, Z + j);
-						DURABILITY_LOSS = (DURABILITY_LOSS + calculateDurabilityLoss(world, X, Y + i, Z + j));
+						DURABILITY_LOSS = (DURABILITY_LOSS + dur);
 						Utils.LOG_WARNING("Added Loss: "+dur);
 						removeBlockAndDropAsItem(world, X , Y + i, Z + j, heldItem);
 					}
@@ -162,17 +162,20 @@ public class StaballoyPickaxe extends ItemPickaxe{
 			//heldItem.setDamage(heldStack, DURABILITY_LOSS);
 			//Utils.LOG_WARNING("|GID|Durability: "+heldItem.getItemDamage());			
 			//Utils.LOG_WARNING("Durability: "+heldStack.getDamage(heldStack));
-			if (heldItem.getItemDamage() < (heldItem.getMaxDamage()-DURABILITY_LOSS)){
-				heldItem.damageItem((int) DURABILITY_LOSS, localPlayer);
+			if (heldItem.getItemDamage() <= (heldItem.getMaxDamage()-DURABILITY_LOSS)){
+				damageItem(heldItem, (int) DURABILITY_LOSS, localPlayer);
+			}
+			else {
+				damageItem(heldItem, heldItem.getMaxDamage()-heldItem.getItemDamage(), localPlayer);
 			}
 			//Utils.LOG_WARNING("|GID|Durability: "+heldItem.getItemDamage());
 			DURABILITY_LOSS = 0;
 
 		}
 	}
-
-	public int doDurabilityDamage(int x){
-		return x;
+	
+	public void damageItem(ItemStack item, int damage, EntityPlayer localPlayer){
+		item.damageItem(damage, localPlayer);
 	}
 
 	//Should clear up blocks quicker if I chain it.

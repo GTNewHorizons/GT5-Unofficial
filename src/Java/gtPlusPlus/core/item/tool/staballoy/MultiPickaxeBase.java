@@ -107,10 +107,10 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 				Block removalist = world.getBlock(X, Y, Z);
 				//Utils.LOG_WARNING(removalist.toString());
 
-				bHardness = removalist.getBlockHardness(world, X, Y, Z);
+				bHardness = removalist.getBlockHardness(world, X, Y, Z)*100;
 				Utils.LOG_WARNING("Hardness: "+bHardness);
 
-				bDurabilityLoss = (bDurabilityLoss + bHardness);
+				bDurabilityLoss = bHardness;
 				//Utils.LOG_WARNING("Durability Loss: "+bDurabilityLoss);
 
 				correctTool = canPickaxeBlock(removalist, world);
@@ -125,11 +125,6 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 			}
 		}
 		return bDurabilityLoss;
-	}
-
-	@Override
-	public int doDurabilityDamage(int x){
-		return x;
 	}
 
 	//Should clear up blocks quicker if I chain it.
@@ -153,6 +148,9 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 						world.setBlockToAir(X, Y, Z);
 					
 						}
+						else {
+							return;
+						}
 					
 					}
 				}
@@ -164,6 +162,13 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 
 		}
 	}
+	
+	
+	@Override
+	public void damageItem(ItemStack item, int damage, EntityPlayer localPlayer){
+		item.damageItem(damage*100, localPlayer);
+	}
+	
 
 	@Override
 	@SideOnly(Side.CLIENT)
