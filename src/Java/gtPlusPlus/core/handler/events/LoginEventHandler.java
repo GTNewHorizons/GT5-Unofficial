@@ -34,8 +34,13 @@ public class LoginEventHandler {
 				PlayerCache.appendParamChanges(localPlayersName, localPlayersUUID.toString());
 				
 				if (!CORE.isModUpToDate){
-					Utils.LOG_INFO("You're not using the latest version of GT++, consider updating.");
-					Utils.messagePlayer(localPlayerRef, "You're not using the latest version of GT++, consider updating.");
+					Utils.LOG_INFO("You're not using the latest recommended version of GT++, consider updating.");
+					Utils.LOG_INFO("Latest version is: "+CORE.MASTER_VERSION);
+					Utils.LOG_INFO("You currently have: "+CORE.VERSION);
+					Utils.messagePlayer(localPlayerRef, "You're not using the latest recommended version of GT++, consider updating.");
+				}
+				else {
+					Utils.LOG_INFO("You're using the latest recommended version of GT++.");					
 				}
 				
 				}

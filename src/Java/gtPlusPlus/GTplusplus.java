@@ -120,6 +120,7 @@ implements ActionListener
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		Utils.LOG_INFO("Loading "+CORE.name+" V"+CORE.VERSION);
+		Utils.LOG_INFO("Latest is V"+CORE.MASTER_VERSION+". Updated? "+Utils.isModUpToDate());
 		FirstCall();
 		FMLCommonHandler.instance().bus().register(new LoginEventHandler());        
 		Utils.LOG_INFO("Login Handler Initialized");

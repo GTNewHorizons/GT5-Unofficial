@@ -8,7 +8,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.UtilsItems;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.networking.NetworkUtils;
 import ic2.core.IC2Potion;
 import ic2.core.Ic2Items;
 import ic2.core.init.InternalName;
@@ -60,7 +59,8 @@ public class Utils {
 	}
 	
 	public static boolean isModUpToDate(){
-		if (NetworkUtils.getContentFromURL("https://raw.githubusercontent.com/draknyte1/GTplusplus/master/Recommended.txt") == CORE.VERSION){
+		
+		if (CORE.MASTER_VERSION.equals(CORE.VERSION.toLowerCase())){
 			return true;
 		}		
 		return false;
