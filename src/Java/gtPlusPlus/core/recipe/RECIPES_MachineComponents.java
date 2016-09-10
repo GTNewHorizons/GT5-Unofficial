@@ -91,6 +91,9 @@ public class RECIPES_MachineComponents {
 		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
 			run();	
 		}
+		else {
+			onlyMaxComponents();
+		}
 		GregtechMachinePhase();
 	}
 
@@ -274,6 +277,49 @@ public class RECIPES_MachineComponents {
 		Utils.LOG_INFO("Done loading recipes for the Various machine components.");
 
 	}		
+	
+	private static void onlyMaxComponents(){
+		UtilsRecipe.addShapedGregtechRecipe(
+				cableTier10, wireTier10, rodTier10a,
+				wireTier10, rodTier10b, wireTier10,
+				rodTier10a, wireTier10, cableTier10,
+				RECIPE_CONSTANTS.electricMotor_MAX);
+		UtilsRecipe.addShapedGregtechRecipe(
+				cableTier10, rotorTier10, itemRubberRing,
+				craftingToolScrewdriver, pipeTier10, craftingToolWrench,
+				itemRubberRing, RECIPE_CONSTANTS.electricMotor_MAX, cableTier10,
+				RECIPE_CONSTANTS.electricPump_MAX);
+		UtilsRecipe.addShapedGregtechRecipe(
+				plateTier10, plateTier10, plateTier10,
+				cableTier10, rodTier10a, rodTier10a,
+				cableTier10, RECIPE_CONSTANTS.electricMotor_MAX, smallGearTier10,
+				RECIPE_CONSTANTS.electricPiston_MAX);
+		UtilsRecipe.addShapedGregtechRecipe(
+				cableTier10, cableTier10, cableTier10,
+				RECIPE_CONSTANTS.electricMotor_MAX, rodTier10a, RECIPE_CONSTANTS.electricMotor_MAX,
+				RECIPE_CONSTANTS.electricPiston_MAX, circuitTier10, rodTier10a,
+				RECIPE_CONSTANTS.robotArm_MAX);
+		UtilsRecipe.addShapedGregtechRecipe(
+				plateRubber, plateRubber, plateRubber,
+				RECIPE_CONSTANTS.electricMotor_MAX, cableTier10, RECIPE_CONSTANTS.electricMotor_MAX,
+				plateRubber, plateRubber, plateRubber,
+				RECIPE_CONSTANTS.conveyorModule_MAX);
+		UtilsRecipe.addShapedGregtechRecipe(
+				rodTier10c, rodTier10c, circuitTier10,
+				cableTier10, circuitTier9, rodTier10c,
+				circuitTier10, cableTier10, rodTier10c,
+				RECIPE_CONSTANTS.emitter_MAX);
+		UtilsRecipe.addShapedGregtechRecipe(
+				wireTier10, circuitTier10, wireTier10,
+				circuitTier10, circuitTier9, circuitTier10,
+				wireTier10, circuitTier10, wireTier10,
+				RECIPE_CONSTANTS.fieldGenerator_MAX);
+		UtilsRecipe.addShapedGregtechRecipe(
+				plateTier10, null, circuitTier9,
+				plateTier10, rodTier10c, null,
+				circuitTier10, plateTier10, plateTier10,
+				RECIPE_CONSTANTS.sensor_MAX);
+	}
 
 	private static void GregtechMachinePhase(){
 		Utils.LOG_INFO("Adding Gregtech machine recipes for the circuits.");

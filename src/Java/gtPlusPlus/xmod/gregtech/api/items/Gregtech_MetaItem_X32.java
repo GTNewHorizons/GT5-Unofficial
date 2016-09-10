@@ -9,6 +9,7 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.math.MathUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -185,7 +186,7 @@ public abstract class Gregtech_MetaItem_X32 extends Gregtech_MetaItem {
 			HEX_OxFFFFFF = 0xffb300;
 		}
 		else if (stack.getDisplayName().contains("MAX")){
-			HEX_OxFFFFFF = 0xff6500;
+			HEX_OxFFFFFF = Utils.rgbtoHexValue(MathUtils.randInt(220, 250), MathUtils.randInt(221, 251), MathUtils.randInt(220, 250));
 		}
 		else if (stack.getDisplayName().contains("Sodium")){
 			HEX_OxFFFFFF = Utils.rgbtoHexValue(90, 90, 255);

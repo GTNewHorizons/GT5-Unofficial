@@ -2,6 +2,8 @@ package gtPlusPlus.core.item.general;
 
 import gtPlusPlus.core.item.base.BaseItemWithDamageValue;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.math.MathUtils;
 
 import java.util.List;
 
@@ -79,8 +81,11 @@ public class BufferCore extends BaseItemWithDamageValue{
 		else if (coreTier == 9){
 			HEX_OxFFFFFF = 0xffff00;
 		}
-		else if (coreTier == 10){
+		/*else if (coreTier == 10){
 			HEX_OxFFFFFF = 0xff0000;
+		}*/
+		else if (coreTier == 10){
+			HEX_OxFFFFFF = Utils.rgbtoHexValue(MathUtils.randInt(220, 250), MathUtils.randInt(221, 251), MathUtils.randInt(220, 250));
 		}
 		else {
 			HEX_OxFFFFFF = 0xffffff;

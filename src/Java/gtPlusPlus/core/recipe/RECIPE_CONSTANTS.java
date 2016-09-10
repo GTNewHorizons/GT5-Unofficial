@@ -76,6 +76,16 @@ public class RECIPE_CONSTANTS {
 		sensor_LuV = UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 32695, 1);
 		sensor_ZPM = UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 32696, 1);
 		sensor_UV = UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 32697, 1);
+		
+		//Max Tier Components Blood Never added... Useless, lol.
+		electricMotor_MAX = GregtechItemList.Electric_Motor_MAX.get(1);
+		electricPump_MAX = GregtechItemList.Electric_Pump_MAX.get(1);
+		electricPiston_MAX = GregtechItemList.Electric_Piston_MAX.get(1);
+		robotArm_MAX = GregtechItemList.Robot_Arm_MAX.get(1);
+		conveyorModule_MAX = GregtechItemList.Conveyor_Module_MAX.get(1);
+		emitter_MAX = GregtechItemList.Emitter_MAX.get(1);
+		fieldGenerator_MAX = GregtechItemList.Field_Generator_MAX.get(1);
+		sensor_MAX = GregtechItemList.Sensor_MAX.get(1);
 	}
 	
 	private static void registerGTStandardComponents(){

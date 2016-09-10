@@ -117,6 +117,18 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
         //GT_ModHandler.addCraftingRecipe(GregtechItemList.Sensor_MAX.get(1L, new Object[0]), //GT_ModHandler.RecipeBits.DISMANTLEABLE | //GT_ModHandler.RecipeBits.NOT_REMOVABLE | //GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"P Q", "PS ", "CPP", Character.valueOf('Q'), OrePrefixes.gem.get(Materials.EnderPearl), Character.valueOf('S'), OrePrefixes.stick.get(Materials.Platinum), Character.valueOf('P'), OrePrefixes.plate.get(Materials.Titanium), Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Elite)});
                
 	    }
+	    
+	    else {
+	    	 GregtechItemList.Electric_Pump_MAX.set(addItem(tLastID = 3, "Electric Pump (MAX)", "", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.AQUA, 8L)}));
+	    	 GregtechItemList.Electric_Motor_MAX.set(addItem(tLastID = 7, "Electric Motor (MAX)", "", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 8L)}));
+	    	 GregtechItemList.Conveyor_Module_MAX.set(addItem(tLastID = 11, "Conveyor Module (MAX)", "", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.ITER, 8L)}));
+	    	 GregtechItemList.Electric_Piston_MAX.set(addItem(tLastID = 15, "Electric Piston (MAX)", "", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 8L)}));
+	    	 GregtechItemList.Robot_Arm_MAX.set(addItem(tLastID = 19, "Robot Arm (MAX)", "", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.MOTUS, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO, 8L)}));
+	    	 GregtechItemList.Field_Generator_MAX.set(addItem(tLastID = 23, "Field Generator (MAX)", "", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 16L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.TUTAMEN, 8L)}));
+	    	 GregtechItemList.Emitter_MAX.set(addItem(tLastID = 27, "Emitter (MAX)", "", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.LUX, 8L)}));
+	    	 GregtechItemList.Sensor_MAX.set(addItem(tLastID = 31, "Sensor (MAX)", "", new Object[]{new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.MACHINA, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.SENSUS, 8L)}));
+	         
+	    }
         
         GregtechItemList.Circuit_IV.set(addItem(tLastID = 704, "Symbiotic Circuit (IV)", "A Symbiotic Data Processor", new Object[]{GregtechOrePrefixes.circuit.get(GT_Materials.Symbiotic)}));
         GregtechItemList.Circuit_LuV.set(addItem(tLastID = 705, "Neutronic Circuit (LuV)", "A Neutron Particle Processor", new Object[]{GregtechOrePrefixes.circuit.get(GT_Materials.Neutronic)}));
