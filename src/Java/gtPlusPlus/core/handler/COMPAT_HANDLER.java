@@ -87,6 +87,7 @@ public class COMPAT_HANDLER {
 		GregtechPowerSubStation.run();
 		GregtechDehydrator.run();
 		GregtechTieredFluidTanks.run();
+		//GregtechIndustrialMultiTank.run();
 		}
 
 	}

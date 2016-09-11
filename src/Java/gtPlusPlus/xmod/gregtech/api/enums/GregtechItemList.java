@@ -96,17 +96,22 @@ public enum GregtechItemList implements GregtechItemContainer {
 	
 	
 	
+	//Cooked Raisin Toast for ImQ009
 	Food_Baked_Raisin_Bread, 
 	
-	
+	//For sintering TODO
 	Industrial_SinterFurnace, 
 	
+	//Block that enables uplink to a superconductor network
 	SuperConductorInputNode, 
 	
+	//The two tiers of reactor casings
 	Casing_Reactor_I, Casing_Reactor_II, 
 	
+	//Power sub-station for mass storage. 3 hatches for input and output, whatever voltages you desire.
 	PowerSubStation, 
 	
+	//Chemical Dehydrators for nuclear fuels
 	GT_Dehydrator_EV, GT_Dehydrator_IV, GT_Dehydrator_LuV, GT_Dehydrator_ZPM,
 	
 	//Fluid Storage Tanks
@@ -114,7 +119,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	GT_FluidTank_IV, GT_FluidTank_LuV, GT_FluidTank_ZPM, GT_FluidTank_UV, GT_FluidTank_MAX, 
 	
 	//Fluid Cells to regulate flows.
-	Fluid_Cell_1L, Fluid_Cell_16L, Fluid_Cell_36L, Fluid_Cell_144L;
+	Fluid_Cell_1L, Fluid_Cell_16L, Fluid_Cell_36L, Fluid_Cell_144L, 
+	
+	//Multitank
+	Industrial_MultiTank;
 
 	public static final GregtechItemList[]
 			DYE_ONLY_ITEMS = {
