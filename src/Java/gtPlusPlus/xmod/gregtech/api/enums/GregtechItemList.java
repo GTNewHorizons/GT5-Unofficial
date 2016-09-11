@@ -122,7 +122,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Fluid_Cell_1L, Fluid_Cell_16L, Fluid_Cell_36L, Fluid_Cell_144L, 
 	
 	//Multitank
-	Industrial_MultiTank;
+	Industrial_MultiTank, Industrial_MultiTankDense;
 
 	public static final GregtechItemList[]
 			DYE_ONLY_ITEMS = {

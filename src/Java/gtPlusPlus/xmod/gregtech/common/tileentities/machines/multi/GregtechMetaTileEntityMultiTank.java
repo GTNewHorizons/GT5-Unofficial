@@ -27,8 +27,8 @@ public class GregtechMetaTileEntityMultiTank
         super(aID, aName, aNameRegional);
     }
 
-    private long fluidStored;
-    private short multiblockCasingCount;
+    private long fluidStored = 0;
+    private short multiblockCasingCount = 0;
     private short storageMultiplier = getStorageMultiplier();
     private long maximumFluidStorage = getMaximumTankStorage();
     
@@ -76,9 +76,12 @@ public class GregtechMetaTileEntityMultiTank
     }
 
     private long getMaximumTankStorage(){
-    	long tempTankStorageMax = (64000*getStorageMultiplier());
+    	int multiplier = getStorageMultiplier();
+    	Utils.LOG_INFO("x = "+multiplier+" * 96000");
+    	long tempTankStorageMax = (96000*multiplier);
+    	Utils.LOG_INFO("x = "+tempTankStorageMax);
     	if (tempTankStorageMax <= 0){
-    		return 64000;
+    		return 96000;
     	}
     	return tempTankStorageMax;
     }
@@ -123,8 +126,10 @@ public class GregtechMetaTileEntityMultiTank
     @Override
 	public String[] getDescription() {
         return new String[]{
-        		"Controller Block for the Vacuum Freezer",
-        		"Size: 3x4x3 (Hollow) LxHxW", 
+        		"Controller Block for the Multitank",
+        		"Size: 3xHx3 (Block behind controller must be air)", 
+        		"Structure must be at least 4 blocks tall, maximum 20.",
+        		"Each casing within the structure adds 96000L storage.",
         		"Controller (front centered)",
         		"1x Input hatch (anywhere)", 
         		"1x Output hatch (anywhere)",
@@ -218,7 +223,7 @@ public class GregtechMetaTileEntityMultiTank
                                     return false;
                             	}
                             	else if (h >= 3){
-                                	Utils.LOG_INFO("Your Multitank can be 20 blocks tall.");
+                                	//Utils.LOG_INFO("Your Multitank can be 20 blocks tall.");
                             	}
                             }
                             if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 1) {
@@ -227,7 +232,7 @@ public class GregtechMetaTileEntityMultiTank
                                     return false;
                             	}
                             	else if (h >= 3){
-                                	Utils.LOG_INFO("Your Multitank can be 20 blocks tall.");
+                                	//Utils.LOG_INFO("Your Multitank can be 20 blocks tall.");
                             	}
                             }
                             if (h < 3){
@@ -248,7 +253,8 @@ public class GregtechMetaTileEntityMultiTank
             }
         }
         multiblockCasingCount = (short) tAmount;
-        Utils.LOG_INFO("Casings Count: "+tAmount+" Valid Multiblock: "+(tAmount >= 16)+" Tank Storage Capacity:"+maximumFluidStorage+"L");
+        Utils.LOG_INFO("Your Multitank can be 20 blocks tall.");
+        Utils.LOG_INFO("Casings Count: "+tAmount+" Valid Multiblock: "+(tAmount >= 16)+" Tank Storage Capacity:"+getMaximumTankStorage()+"L");
         return tAmount >= 16;
     }
 

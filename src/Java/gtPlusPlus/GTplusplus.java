@@ -156,7 +156,7 @@ implements ActionListener
 		Utils.LOG_INFO("Activating GT OreDictionary Handler, this can take some time.");
 		Utils.LOG_INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		Meta_GT_Proxy.activateOreDictHandler();
-		Utils.LOG_INFO("Congratulations, a second cake has been baked for you.");
+		Utils.LOG_INFO("Finally, we are finished. Have some cripsy bacon as a reward.");
 	}
 
 	@EventHandler

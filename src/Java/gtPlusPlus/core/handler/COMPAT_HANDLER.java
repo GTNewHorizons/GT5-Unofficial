@@ -30,6 +30,7 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialCokeOven
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialElectrolyzer;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialMacerator;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialMassFabricator;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialMultiTank;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialPlatePress;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialWiremill;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIronBlastFurnace;
@@ -87,7 +88,7 @@ public class COMPAT_HANDLER {
 		GregtechPowerSubStation.run();
 		GregtechDehydrator.run();
 		GregtechTieredFluidTanks.run();
-		//GregtechIndustrialMultiTank.run();
+		GregtechIndustrialMultiTank.run();
 		}
 
 	}

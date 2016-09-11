@@ -60,9 +60,9 @@ public class GregtechConduits {
 		generateNonGTFluidPipes(GT_Materials.Staballoy, BasePipeID, 6250, 7500, true);
 		generateNonGTFluidPipes(GT_Materials.Tantalloy60, BasePipeID+5, 5000, 4250, true);
 		generateNonGTFluidPipes(GT_Materials.Tantalloy61, BasePipeID+10, 6000, 5800, true);
-		generateNonGTFluidPipes(GT_Materials.VoidMetal, BasePipeID+15, 250, 25000, true);
+		if (LoadedMods.Thaumcraft){
+		generateNonGTFluidPipes(GT_Materials.VoidMetal, BasePipeID+15, 250, 25000, true);}
 		generateGTFluidPipes(Materials.Europium, BasePipeID+20, 12000, 7500, true);
-		
 		generateNonGTFluidPipes(GT_Materials.Potin, BasePipeID+25, 375, 2000, true);
 		generateNonGTFluidPipes(GT_Materials.MaragingSteel300, BasePipeID+30, 7000, 2500, true);
 		generateNonGTFluidPipes(GT_Materials.MaragingSteel350, BasePipeID+35, 8000, 2500, true);
@@ -215,8 +215,7 @@ public class GregtechConduits {
 		String output = materialName.substring(0, 1).toUpperCase() + materialName.substring(1);
 		output = output.replace("-", "").replace("_", "").replace(" ", "");
 		
-		Utils.LOG_INFO("Generating "+output+" pipes & respective recipes.");
-		int multi = 5;		
+		Utils.LOG_INFO("Generating "+output+" pipes & respective recipes.");		
 		
 		ItemStack pipeIngot = UtilsItems.getItemStackOfAmountFromOreDict("ingot"+output, 1).copy();
 		ItemStack pipePlate = UtilsItems.getItemStackOfAmountFromOreDict("plate"+output, 1).copy();
@@ -227,6 +226,17 @@ public class GregtechConduits {
 		Utils.LOG_WARNING("Generated pipeNormal from "+ materialName +"? "+ ((UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Medium"+output, 1) != null) ? true : false));
 		Utils.LOG_WARNING("Generated pipeLarge from "+ materialName +"? "+ ((UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Large"+output, 1) != null) ? true : false));
 		Utils.LOG_WARNING("Generated pipeHuge from "+ materialName +"? "+ ((UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1) != null) ? true : false));
+				
+		int eut = 128;
+		if (materialName.toLowerCase().contains("hastelloy") ||
+				materialName.toLowerCase().contains("staballoy") ||
+				materialName.toLowerCase().contains("tantalloy") ||
+				materialName.toLowerCase().contains("europium")){
+			eut = 512;
+		}
+		else {
+			eut = 128;
+		}
 		
 		//Add the Three Shaped Recipes First		
 		UtilsRecipe.recipeBuilder(
@@ -251,31 +261,31 @@ public class GregtechConduits {
 				UtilsItems.getSimpleStack(pipeIngot, 1),
 				ItemList.Shape_Extruder_Pipe_Tiny.get(0),
 				UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Tiny"+output, 2),
-				32*multi, 8*multi);
+				5, eut);
 		
 		GT_Values.RA.addExtruderRecipe(
 				UtilsItems.getSimpleStack(pipeIngot, 1),
 				ItemList.Shape_Extruder_Pipe_Small.get(0),
 				UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Small"+output, 1),
-				32*multi, 16*multi);
+				10, eut);
 		
 		GT_Values.RA.addExtruderRecipe(
 				UtilsItems.getSimpleStack(pipeIngot, 3),
 				ItemList.Shape_Extruder_Pipe_Medium.get(0),
 				UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Medium"+output, 1),
-				32*multi, 32*multi);
+				20, eut);
 		
 		GT_Values.RA.addExtruderRecipe(
 				UtilsItems.getSimpleStack(pipeIngot, 6),
 				ItemList.Shape_Extruder_Pipe_Large.get(0),
 				UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Large"+output, 1),
-				32*multi, 64*multi);
+				2*20, eut);
 		
 		GT_Values.RA.addExtruderRecipe(
 				UtilsItems.getSimpleStack(pipeIngot, 12),
 				ItemList.Shape_Extruder_Pipe_Huge.get(0),
 				UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1),
-				32*multi, 128*multi);
+				4*20, eut);
 		
 	}
 	
