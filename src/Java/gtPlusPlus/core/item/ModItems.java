@@ -208,7 +208,7 @@ public final class ModItems {
 		
 		
 		//Uranium-233if
-		UtilsItems.generateItemsFromMaterial("Uranium233", "Uranium 233", 4, MaterialInfo.INCONEL792, Utils.rgbtoHexValue(73, 220, 83), false); //Uranium-233 is a fissile isotope of uranium that is bred from thorium-232 as part of the thorium fuel cycle. 
+		UtilsItems.generateItemsFromMaterial("Uranium233", "Uranium 233", 4, MaterialInfo.URANIUM233, Utils.rgbtoHexValue(73, 220, 83), false); //Uranium-233 is a fissile isotope of uranium that is bred from thorium-232 as part of the thorium fuel cycle. 
 		dustLithiumCarbonate = UtilsItems.generateSpecialUseDusts("LithiumCarbonate", "Lithium Carbonate", Utils.rgbtoHexValue(137, 139, 142))[0];
 
 		

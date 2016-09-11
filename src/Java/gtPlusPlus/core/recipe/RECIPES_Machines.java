@@ -119,7 +119,7 @@ public class RECIPES_Machines {
 	static String pipeTier3 = "pipeHuge"+"StainlessSteel";
 	static String pipeTier4 = "pipeHuge"+"Titanium";
 	static String pipeTier5 = "pipeHuge"+"TungstenSteel";
-	static String pipeTier6 = "pipeHuge"+"MaragingSteel250";
+	static String pipeTier6 = "pipeHuge"+"MaragingSteel300";
 	static String pipeTier7 = "pipeHuge"+"Tantalloy60";
 	static String pipeTier8 = "pipeHuge"+"Tantalloy61";
 	static String pipeTier9 = "pipeHuge"+"Inconel792";
@@ -610,7 +610,7 @@ public class RECIPES_Machines {
 			UtilsRecipe.addShapedGregtechRecipe(
 					plateTier1, plateTier1, plateTier1,
 					plateTier1, pipeTier1, plateTier1,
-					plateTier1, UtilsItems.getItemStackWithMeta(LoadedMods.Gregtech, "gregtech:gt.metaitem.01:32405", "Steel Cell", 32405, 1), plateTier1,
+					plateTier1, GregtechItemList.Fluid_Cell_144L.get(1), plateTier1,
 					GregtechItemList.GT_FluidTank_ULV.get(1));
 			UtilsRecipe.addShapedGregtechRecipe(
 					plateTier2, plateTier2, plateTier2,
