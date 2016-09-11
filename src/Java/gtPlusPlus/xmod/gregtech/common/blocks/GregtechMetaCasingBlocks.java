@@ -35,7 +35,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Matter Generation Coil"); //65
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Matter Fabricator Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Iron Plated Bricks");
-		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Unused Casing");
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Multitank Exterior Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Hastelloy-N Reactor Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Zeron-100 Reactor Shielding");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Unused Coil Block");
@@ -51,7 +51,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GregtechItemList.Casing_MatterGen.set(new ItemStack(this, 1, 8));
 		GregtechItemList.Casing_MatterFab.set(new ItemStack(this, 1, 9));
 		GregtechItemList.Casing_IronPlatedBricks.set(new ItemStack(this, 1, 10));
-		GregtechItemList.Casing_U7.set(new ItemStack(this, 1, 11));
+		GregtechItemList.Casing_MultitankExterior.set(new ItemStack(this, 1, 11));
 		GregtechItemList.Casing_Reactor_I.set(new ItemStack(this, 1, 12));
 		GregtechItemList.Casing_Reactor_II.set(new ItemStack(this, 1, 13));
 		GregtechItemList.Casing_Coil_U3.set(new ItemStack(this, 1, 14));

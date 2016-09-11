@@ -47,7 +47,9 @@ public class CasingTextureHandler {
 				//Iron Blast Fuance Textures
 			case 10:
 				return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();		
-				
+				//Multitank Exterior Casing
+			case 11:
+				return Textures.BlockIcons.MACHINE_CASING_GRATE.getIcon();	
 				//Reactor Casing I
 			case 12:
 				return Textures.BlockIcons.MACHINE_CASING_CLEAN_STAINLESSSTEEL.getIcon();	

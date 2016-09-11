@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
@@ -9,6 +8,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 
@@ -135,16 +135,16 @@ public class GregtechMetaTileEntityMultiTank
         		"1x Output hatch (anywhere)",
         		"1x Energy Hatch (anywhere)",
         		"1x Maintenance Hatch (anywhere)",
-        		"Frost Proof Casings for the rest (16 at least!)",
+        		"Multitank Exterior Casings for the rest (16 at least!)",
         		"Stored Fluid: "+fluidStored};
     }
 
     @Override
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[17], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER)};
+            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[68], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_STEAM_EXTRACTOR)};
         }
-        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[17]};
+        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[68]};
     }
 
     @Override
@@ -217,7 +217,7 @@ public class GregtechMetaTileEntityMultiTank
                     if ((h != 0) || (((xDir + i != 0) || (zDir + j != 0)) && ((i != 0) || (j != 0)))) {
                         IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
                         if ((!addMaintenanceToMachineList(tTileEntity, 17)) && (!addInputToMachineList(tTileEntity, 17)) && (!addOutputToMachineList(tTileEntity, 17)) && (!addEnergyInputToMachineList(tTileEntity, 17))) {
-                            if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != GregTech_API.sBlockCasings2) {
+                            if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
                             	if (h < 3){
                                 	Utils.LOG_INFO("Casing Expected.");
                                     return false;
@@ -226,7 +226,7 @@ public class GregtechMetaTileEntityMultiTank
                                 	//Utils.LOG_INFO("Your Multitank can be 20 blocks tall.");
                             	}
                             }
-                            if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 1) {
+                            if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 11) {
                             	if (h < 3){
                                 	Utils.LOG_INFO("Wrong Meta.");
                                     return false;
