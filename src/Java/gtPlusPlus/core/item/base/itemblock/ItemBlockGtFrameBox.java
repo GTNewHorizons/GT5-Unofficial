@@ -1,6 +1,7 @@
 package gtPlusPlus.core.item.base.itemblock;
 
 import gregtech.api.util.GT_OreDictUnificator;
+import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.util.item.UtilsItems;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
@@ -11,7 +12,8 @@ public class ItemBlockGtFrameBox extends ItemBlock{
 	
 	public ItemBlockGtFrameBox(Block block) {
 		super(block);
-		this.blockColour = block.getBlockColor();
+		BlockBaseModular baseBlock = (BlockBaseModular) block;
+		this.blockColour = baseBlock.getRenderColor(1);
 		GT_OreDictUnificator.registerOre("frameGt"+block.getUnlocalizedName().replace("tile.", "").replace("tile.BlockGtFrame", "").replace("-", "").replace("_", "").replace(" ", "").replace("FrameBox", ""), UtilsItems.getSimpleStack(this));
 	}
 

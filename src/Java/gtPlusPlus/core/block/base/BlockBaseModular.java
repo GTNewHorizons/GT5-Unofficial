@@ -146,9 +146,4 @@ public class BlockBaseModular extends BasicBlock{
 		return this.blockColour;
     }
 
-	@Override
-	public int getBlockColor() {
-		return this.blockColour;
-	}
-
 }

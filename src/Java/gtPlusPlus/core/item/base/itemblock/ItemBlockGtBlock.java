@@ -1,6 +1,7 @@
 package gtPlusPlus.core.item.base.itemblock;
 
 import gregtech.api.util.GT_OreDictUnificator;
+import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.UtilsItems;
@@ -21,7 +22,8 @@ public class ItemBlockGtBlock extends ItemBlock{
 	
 	public ItemBlockGtBlock(Block block) {
 		super(block);
-		this.blockColour = block.getBlockColor();
+		BlockBaseModular baseBlock = (BlockBaseModular) block;
+		this.blockColour = baseBlock.getRenderColor(0);
 		if (block.getLocalizedName().toLowerCase().contains("uranium") || block.getLocalizedName().toLowerCase().contains("plutonium") || block.getLocalizedName().toLowerCase().contains("thorium")){
 			sRadiation = 2;
 		}
