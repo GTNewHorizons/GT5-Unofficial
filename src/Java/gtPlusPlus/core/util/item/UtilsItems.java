@@ -13,6 +13,7 @@ import gtPlusPlus.core.item.base.gears.BaseItemGear;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngot;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngotHot;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate;
+import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
 import gtPlusPlus.core.item.base.rings.BaseItemRing;
 import gtPlusPlus.core.item.base.rods.BaseItemRod;
 import gtPlusPlus.core.item.base.rods.BaseItemRodLong;
@@ -317,6 +318,7 @@ public class UtilsItems {
 			temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", hotIngot, materialTier, sRadiation);
 			
 			temp = new BaseItemPlate("itemPlate"+unlocalizedName, materialName, Colour, materialTier, sRadiation);
+			temp = new BaseItemPlateDouble("itemPlateDouble"+unlocalizedName, materialName, Colour, materialTier, sRadiation);
 			temp = new BaseItemRod("itemRod"+unlocalizedName, materialName, Colour, materialTier, sRadiation);
 			temp = new BaseItemRodLong("itemRodLong"+unlocalizedName, materialName, Colour, materialTier, sRadiation);
 			temp = new BaseItemRing("itemRing"+unlocalizedName, materialName, Colour, materialTier);

@@ -228,10 +228,15 @@ public class GregtechConduits {
 		Utils.LOG_WARNING("Generated pipeHuge from "+ materialName +"? "+ ((UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1) != null) ? true : false));
 				
 		int eut = 128;
-		if (materialName.toLowerCase().contains("hastelloy") ||
+		if (
+				materialName.toLowerCase().contains("hastelloy") ||
 				materialName.toLowerCase().contains("staballoy") ||
 				materialName.toLowerCase().contains("tantalloy") ||
-				materialName.toLowerCase().contains("europium")){
+				materialName.toLowerCase().contains("europium") ||
+				materialName.toLowerCase().contains("crystal") ||
+				materialName.toLowerCase().contains("zeron") ||
+				materialName.toLowerCase().contains("inconel")
+				){
 			eut = 512;
 		}
 		else {
@@ -286,6 +291,16 @@ public class GregtechConduits {
 				ItemList.Shape_Extruder_Pipe_Huge.get(0),
 				UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1),
 				4*20, eut);
+		
+		if (eut < 512){
+			ItemStack pipePlateDouble = UtilsItems.getItemStackOfAmountFromOreDict("plateDouble"+output, 1).copy();
+			UtilsRecipe.recipeBuilder(
+					pipePlateDouble, "craftingToolHardHammer", pipePlateDouble,
+					pipePlateDouble, null, pipePlateDouble,
+					pipePlateDouble, "craftingToolWrench", pipePlateDouble,
+					UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1));
+		}
+		
 		
 	}
 	
