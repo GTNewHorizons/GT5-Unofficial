@@ -30,6 +30,7 @@ public class FluidRegistryHandler {
 		run();
 	}
 	
+	@SuppressWarnings("unused")
 	private static void run(){
 		fluidJackDaniels();
 	}
