@@ -1,7 +1,7 @@
 package gtPlusPlus.core.block;
 
 import gtPlusPlus.core.block.general.LightGlass;
-import gtPlusPlus.core.block.general.fluids.FluidRegistryHandler;
+import gtPlusPlus.core.fluids.FluidRegistryHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks;
@@ -25,10 +25,7 @@ public final class ModBlocks {
 	public static Block MatterFabricatorEffectBlock;
 
 	public static Fluid fluidJackDaniels = new Fluid("fluidJackDaniels");
-	public static Block blockFluidJackDaniels; 
-	public static Block blockGtFrameStaballoy;
-	public static Block blockGtFrameTantalloy60;
-	public static Block blockGtFrameTantalloy61;
+	public static Block blockFluidJackDaniels;
 
 
 

@@ -12,7 +12,6 @@ import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
@@ -23,7 +22,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
-import gtPlusPlus.xmod.gregtech.api.objects.GregtechFluid;
 import gtPlusPlus.xmod.gregtech.api.util.GregtechOreDictUnificator;
 import gtPlusPlus.xmod.gregtech.api.util.GregtechRecipeRegistrator;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
@@ -38,10 +36,6 @@ import java.util.List;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
@@ -108,7 +102,7 @@ public class Meta_GT_Proxy {
 		}
 	}
 
-	public static Fluid addFluid(String aName, String aLocalized, GT_Materials aMaterial, int aState, int aTemperatureK) {
+	/*public static Fluid addFluid(String aName, String aLocalized, GT_Materials aMaterial, int aState, int aTemperatureK) {
 		return addFluid(aName, aLocalized, aMaterial, aState, aTemperatureK, null, null, 0);
 	}
 
@@ -173,7 +167,7 @@ public class Meta_GT_Proxy {
 			GT_Values.RA.addFluidCannerRecipe(aFullContainer, GT_Utility.getContainerItem(aFullContainer, false), null, new FluidStack(rFluid, aFluidAmount));
 		}
 		return rFluid;
-	}
+	}*/
 
 	@SubscribeEvent
 	public static void registerOre2(OreDictionary.OreRegisterEvent aEvent) {

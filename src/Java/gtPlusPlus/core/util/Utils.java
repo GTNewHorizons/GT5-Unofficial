@@ -213,10 +213,10 @@ public class Utils {
 
 	/**
 	 * 
-	 * @param colorStr e.g. "#FFFFFF"
+	 * @param colourStr e.g. "#FFFFFF"
 	 * @return String - formatted "rgb(0,0,0)"
 	 */
-	public static String hex2Rgb(String hexString) {
+	public static String hex2RgbFormatted(String hexString) {
 		Color c = new Color(
 				Integer.valueOf(hexString.substring(1, 3), 16), 
 				Integer.valueOf(hexString.substring(3, 5), 16), 
@@ -231,6 +231,38 @@ public class Utils {
 		sb.append(c.getBlue());
 		sb.append(")");
 		return sb.toString();
+	}
+	
+	/**
+	 * 
+	 * @param colourStr e.g. "#FFFFFF"
+	 * @return 
+	 */
+	public static Color hex2Rgb(String colorStr) {
+	    return new Color(
+	            Integer.valueOf( colorStr.substring( 1, 3 ), 16 ),
+	            Integer.valueOf( colorStr.substring( 3, 5 ), 16 ),
+	            Integer.valueOf( colorStr.substring( 5, 7 ), 16 ) );
+	}
+	
+	/**
+	 * 
+	 * @param colourInt e.g. 0XFFFFFF
+	 * @return Colour
+	 */
+	public static Color hex2Rgb(int colourInt) {		
+	    return Color.decode(String.valueOf(colourInt));
+	}
+	
+	/**
+	 * 
+	 * @param colourInt e.g. 0XFFFFFF
+	 * @return short[]
+	 */
+	public static short[] hex2RgbShort(int colourInt) {
+		Color rgb = Color.decode(String.valueOf(colourInt));
+		short[] rgba = {(short) rgb.getRed(), (short) rgb.getGreen(), (short) rgb.getBlue(), (short) rgb.getAlpha()};
+		return rgba;
 	}
 
 	public static Timer ShortTimer(int seconds) {
@@ -256,6 +288,11 @@ public class Utils {
 	}
 
 	public static List<Object> convertArrayToList(Object[] sourceArray) {
+		List<Object> targetList = new ArrayList<Object>(Arrays.asList(sourceArray));
+		return targetList;
+	}
+	
+	public static List<Object> convertArrayListToList(ArrayList sourceArray) {
 		List<Object> targetList = new ArrayList<Object>(Arrays.asList(sourceArray));
 		return targetList;
 	}
@@ -524,6 +561,7 @@ public class Utils {
 		temp = temp.replace("}", "");
 		temp = temp.replace("[", "");
 		temp = temp.replace("]", "");
+		temp = temp.replace(" ", "");
 		output = temp;		
 		return output;
 		
