@@ -4,7 +4,7 @@ package gtPlusPlus.core.material;
 public class ALLOY {
 
 	public static final Material ENERGYCRYSTAL = new Material(
-			"name", //Material Name
+			"Energy Crystal", //Material Name
 			new short[]{228, 255, 0, 0}, //Material Colour
 			5660, //Melting Point in C
 			0, //Boiling Point in C
@@ -12,10 +12,7 @@ public class ALLOY {
 			100, //Neutrons
 			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.GOLD, 50),
-					new MaterialStack(ELEMENT.SILVER, 50)
-			});
+			null);
 
 	public static final Material BLOODSTEEL = new Material(
 			"Blood Steel", //Material Name
@@ -26,10 +23,7 @@ public class ALLOY {
 			100, //Neutrons
 			false, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
-			new MaterialStack[]{
-					new MaterialStack(ELEMENT.GOLD, 50),
-					new MaterialStack(ELEMENT.SILVER, 50)
-			});
+			null);
 
 	public static final Material STABALLOY = new Material(
 			"Staballoy", //Material Name

@@ -3,8 +3,8 @@ package gtPlusPlus.core.material;
 import gregtech.api.enums.Materials;
 import gtPlusPlus.core.util.materials.MaterialUtils;
 
-public class ELEMENT {
-
+public final class ELEMENT {
+	
 
 	//First 50 Elements
 	public static final Material HYDROGEN = MaterialUtils.generateMaterialFromGtENUM(Materials.Hydrogen);

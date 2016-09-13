@@ -10,7 +10,7 @@ public class Material {
 	final String unlocalizedName;
 	final String localizedName;
 
-	final MaterialStack[] materialInput = null;
+	final MaterialStack[] materialInput = new MaterialStack[4];
 
 	final short[] RGBA;
 
@@ -94,7 +94,7 @@ public class Material {
 	}
 	
 	public ItemStack[] getMaterialComposites(){
-		ItemStack[] temp = {};
+		ItemStack[] temp = new ItemStack[materialInput.length];
 		for (int i=0;i<materialInput.length;i++){
 			temp[i] = materialInput[i].getDustStack();
 		}		
@@ -102,7 +102,7 @@ public class Material {
 	}
 	
 	public int[] getMaterialCompositeStackSizes(){
-		int[] temp = {};
+		int[] temp = new int[materialInput.length];
 		for (int i=0;i<materialInput.length;i++){
 			temp[i] = materialInput[i].getDustStack().stackSize;
 		}		
