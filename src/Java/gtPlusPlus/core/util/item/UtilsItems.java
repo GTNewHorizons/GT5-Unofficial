@@ -22,7 +22,7 @@ import gtPlusPlus.core.item.base.screws.BaseItemScrew;
 import gtPlusPlus.core.item.tool.staballoy.MultiPickaxeBase;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.lib.MaterialInfo;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.materials.MaterialUtils;
@@ -260,21 +260,26 @@ public class UtilsItems {
 	 return null;
 	}
 	
-	public static void generateItemsFromMaterial(String unlocalizedName, String materialName, int materialTier, MaterialInfo matInfo, int Colour, boolean hotIngot){
+	public static void generateItemsFromMaterial(Material matInfo){
+		
+		String unlocalizedName = matInfo.getUnlocalizedName();
+		String materialName = matInfo.getLocalizedName();
+		short[] C = matInfo.getRGBA();
+		int Colour = Utils.rgbtoHexValue(C[0], C[1], C[2]);
+		boolean hotIngot = matInfo.requiresBlastFurnace();
+		int materialTier = 0; //TODO
+		
 		if (materialTier > 10 || materialTier <= 0){
 			materialTier = 2;
 		}
-		int sRadiation = 0;
 		
-		if (materialName.toLowerCase().contains("uranium")){
-			sRadiation = 2;
+		
+		
+		int sRadiation = 0;
+		if (isRadioactive(materialName)){
+			sRadiation = getRadioactivityLevel(materialName);
 		}
-		else if (materialName.toLowerCase().contains("plutonium")){
-			sRadiation = 4;
-		}
-		else if (materialName.toLowerCase().contains("thorium")){
-			sRadiation = 1;
-		}
+	
 		if (sRadiation >= 1){
 			Item temp;
 			Block tempBlock;
@@ -319,7 +324,7 @@ public class UtilsItems {
 		
 	}
 	
-	public static Item[] generateDusts(String unlocalizedName, String materialName, int materialTier, MaterialInfo matInfo, int Colour, boolean hotIngot){
+	public static Item[] generateDusts(String unlocalizedName, String materialName, int materialTier, Material matInfo, int Colour, boolean hotIngot){
 		int radioactive = getRadioactivityLevel(materialName);
 		Item[] output = {
 		new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", hotIngot, materialTier, radioactive),
@@ -404,6 +409,17 @@ public class UtilsItems {
 		for (ItemStack alph : aStack){
 			String temp = itemNames;
 			itemNames = temp + ", " + alph.getDisplayName() + " x" + alph.stackSize;
+		}
+		return itemNames;
+		
+	}
+	
+	public static String[] getArrayStackNamesAsArray(ItemStack[] aStack){
+		String[] itemNames = {};
+		int arpos = 0;
+		for (ItemStack alph : aStack){
+			itemNames[arpos] = alph.getDisplayName();
+			arpos++;
 		}
 		return itemNames;
 		

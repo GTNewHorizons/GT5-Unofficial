@@ -10,9 +10,9 @@ public class Material {
 	final String unlocalizedName;
 	final String localizedName;
 
-	final public MaterialStack[] materialInput = null;
+	final MaterialStack[] materialInput = null;
 
-	final public short[] RGBA;
+	final short[] RGBA;
 
 	final boolean usesBlastFurnace;
 
@@ -49,6 +49,18 @@ public class Material {
 
 	}
 	
+	public String getLocalizedName(){
+		return localizedName;
+	}
+	
+	public String getUnlocalizedName(){
+		return unlocalizedName;
+	}
+	
+	public short[] getRGBA(){
+		return RGBA;
+	}
+	
 	public long getProtons() {
         return vProtons;
     }
@@ -68,6 +80,10 @@ public class Material {
     public int getBoilingPoint_C() {
         return boilingPointC;
     }
+    
+    public boolean requiresBlastFurnace(){
+    	return usesBlastFurnace;
+    }
 
 	public ItemStack getDust(){
 		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("dust"+unlocalizedName, 1);
@@ -75,6 +91,22 @@ public class Material {
 
 	public ItemStack[] getValidInputStacks(){
 		return UtilsItems.validItemsForOreDict(unlocalizedName);
+	}
+	
+	public ItemStack[] getMaterialComposites(){
+		ItemStack[] temp = {};
+		for (int i=0;i<materialInput.length;i++){
+			temp[i] = materialInput[i].getDustStack();
+		}		
+		return temp;
+	}
+	
+	public int[] getMaterialCompositeStackSizes(){
+		int[] temp = {};
+		for (int i=0;i<materialInput.length;i++){
+			temp[i] = materialInput[i].getDustStack().stackSize;
+		}		
+		return temp;
 	}
 	
 }

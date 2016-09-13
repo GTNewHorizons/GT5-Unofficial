@@ -5,7 +5,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.MaterialInfo;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.UtilsItems;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -29,9 +29,9 @@ public class BaseItemDust extends Item{
 	protected boolean useBlastFurnace;
 	String name = "";
 	private int mTier;
-	private MaterialInfo dustInfo;
+	private Material dustInfo;
 
-	public BaseItemDust(String unlocalizedName, String materialName, MaterialInfo matInfo, int colour, String pileSize, boolean blastFurnaceRequired, int tier, int sRadioactivity) {
+	public BaseItemDust(String unlocalizedName, String materialName, Material matInfo, int colour, String pileSize, boolean blastFurnaceRequired, int tier, int sRadioactivity) {
 		setUnlocalizedName(unlocalizedName);
 		this.setUnlocalizedName(unlocalizedName);
 		this.setMaxStackSize(64);	
@@ -135,8 +135,8 @@ public class BaseItemDust extends Item{
 	private void addMixerRecipe(){
 		ItemStack tempStack = UtilsItems.getSimpleStack(this);
 		ItemStack tempOutput = null;
-		ItemStack[] inputStacks = dustInfo.getInputs();
-		ItemStack[] outputStacks = dustInfo.getOutputs();
+		ItemStack[] inputStacks = dustInfo.getMaterialComposites();
+		ItemStack[] outputStacks = {dustInfo.getDust()};
 		String temp = "";
 		Utils.LOG_WARNING("Unlocalized name for OreDict nameGen: "+getUnlocalizedName());
 		if (getUnlocalizedName().contains("item.")){
@@ -202,8 +202,8 @@ public class BaseItemDust extends Item{
 							Utils.LOG_WARNING("Found "+is.getDisplayName()+" as an input for mixer recipe.");		
 							if (is.getDisplayName().toLowerCase().contains("tell alkalus")){
 								ItemStack tempStackForAName = inputStacks[i];
-								String[] inputList = dustInfo.getInputItemsAsList();
-								int[] inputSizes = dustInfo.getInputStackSizesAsList();
+								String[] inputList = UtilsItems.getArrayStackNamesAsArray(dustInfo.getMaterialComposites());
+								int[] inputSizes = dustInfo.getMaterialCompositeStackSizes();
 								inputStacks[i] = UtilsItems.getItemStackOfAmountFromOreDict(inputList[i], inputSizes[i]);
 								Utils.LOG_WARNING("Swapping input slot "+i+" which contains "+tempStackForAName.getDisplayName()+" with "+inputStacks[i].getDisplayName()+".");	
 							}
@@ -260,7 +260,7 @@ public class BaseItemDust extends Item{
 
 		tempIngot = tempIngot.replace("itemDust", "ingot");
 		Utils.LOG_WARNING("Generating OreDict Name: "+tempIngot);
-		ItemStack[] outputStacks = dustInfo.getOutputs();
+		ItemStack[] outputStacks = {dustInfo.getDust()};
 		if (tempIngot != null && tempIngot != ""){
 			tempInputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 1);
 			tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempDust, 1);
