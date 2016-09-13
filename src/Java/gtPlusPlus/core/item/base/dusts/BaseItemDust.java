@@ -218,12 +218,19 @@ public class BaseItemDust extends Item{
 					}
 				}
 
-				GT_Values.RA.addMixerRecipe(
-						inputStacks[0], inputStacks[1],
-						inputStacks[2], inputStacks[3],
-						null, null,
-						tempOutput,
-						8*mTier*20, 8*mTier*2);
+				if (inputStacks.length != 0){
+					GT_Values.RA.addMixerRecipe(
+							inputStacks[0], inputStacks[1],
+							inputStacks[2], inputStacks[3],
+							null, null,
+							tempOutput,
+							8*mTier*20, 8*mTier*2);
+				}
+				else {
+					return;
+				}
+
+
 
 				/*GT_Values.RA.addMixerRecipe(
 						GT_Utility.copyAmount(inputStacks[0].stackSize, new Object[]{inputStacks[0]}), GT_Utility.copyAmount(inputStacks[1].stackSize, new Object[]{inputStacks[1]}),
@@ -264,11 +271,21 @@ public class BaseItemDust extends Item{
 		if (tempIngot != null && tempIngot != ""){
 			tempInputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 1);
 			tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempDust, 1);
-			ItemStack tempStackOutput2;
+			ItemStack tempStackOutput2 = null;
 			int chance = mTier*10/MathUtils.randInt(10, 20);
-			if (outputStacks[1] != null && !outputStacks[1].getUnlocalizedName().toLowerCase().contains("aaa_broken")){
-				tempStackOutput2 = outputStacks[1];
-				tempOutputStack = outputStacks[0];
+			if (outputStacks.length != 0){
+				if (outputStacks.length == 1){
+					tempStackOutput2 = null;
+				}
+				else {
+					if (!outputStacks[1].getUnlocalizedName().toLowerCase().contains("aaa_broken")){
+						tempStackOutput2 = outputStacks[1];
+						tempOutputStack = outputStacks[0];
+					}
+					else {
+						tempStackOutput2 = null;
+					}
+				}								
 			}
 			else {
 				tempStackOutput2 = null;

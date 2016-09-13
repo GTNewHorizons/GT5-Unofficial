@@ -2,6 +2,7 @@ package gtPlusPlus.core.item;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMachines;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 import static gtPlusPlus.core.lib.CORE.LOAD_ALL_CONTENT;
+import static gtPlusPlus.core.util.item.UtilsItems.generateItemsFromMaterial;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.creative.AddToCreativeTab;
@@ -163,56 +164,65 @@ public final class ModItems {
 		//Start meta Item Generation
 		ItemsFoods.load();
 
-		UtilsItems.generateItemsFromMaterial(ALLOY.ENERGYCRYSTAL);
-		UtilsItems.generateItemsFromMaterial(ALLOY.BLOODSTEEL);
-		UtilsItems.generateItemsFromMaterial(ALLOY.STABALLOY);
-		UtilsItems.generateItemsFromMaterial(ALLOY.TANTALLOY_60);
-		UtilsItems.generateItemsFromMaterial(ALLOY.TANTALLOY_61);
-		UtilsItems.generateItemsFromMaterial(ALLOY.BEDROCKIUM);
-		UtilsItems.generateItemsFromMaterial(ALLOY.QUANTUM);
+		try{
+		generateItemsFromMaterial(ALLOY.ENERGYCRYSTAL);
+		generateItemsFromMaterial(ALLOY.BLOODSTEEL);
+		generateItemsFromMaterial(ALLOY.STABALLOY);
+		generateItemsFromMaterial(ALLOY.TANTALLOY_60);
+		generateItemsFromMaterial(ALLOY.TANTALLOY_61);
+		generateItemsFromMaterial(ALLOY.BEDROCKIUM);
+		generateItemsFromMaterial(ALLOY.QUANTUM);
 		
 
-		UtilsItems.generateItemsFromMaterial(ALLOY.INCONEL_625);
-		UtilsItems.generateItemsFromMaterial(ALLOY.INCONEL_690);
-		UtilsItems.generateItemsFromMaterial(ALLOY.INCONEL_792);
+		generateItemsFromMaterial(ALLOY.INCONEL_625);
+		generateItemsFromMaterial(ALLOY.INCONEL_690);
+		generateItemsFromMaterial(ALLOY.INCONEL_792);
 
 		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
-			UtilsItems.generateItemsFromMaterial(ALLOY.TUNGSTEN_CARBIDE);
+			generateItemsFromMaterial(ALLOY.TUNGSTEN_CARBIDE);
 		}
-		UtilsItems.generateItemsFromMaterial(ALLOY.SILICON_CARBIDE);
-		UtilsItems.generateItemsFromMaterial(ALLOY.ZERON_100);
-		UtilsItems.generateItemsFromMaterial(ALLOY.MARAGING250);
-		UtilsItems.generateItemsFromMaterial(ALLOY.MARAGING300);
-		UtilsItems.generateItemsFromMaterial(ALLOY.MARAGING350);
-		UtilsItems.generateItemsFromMaterial(ALLOY.STELLITE);
-		UtilsItems.generateItemsFromMaterial(ALLOY.TALONITE);
+		generateItemsFromMaterial(ALLOY.SILICON_CARBIDE);
+		generateItemsFromMaterial(ALLOY.ZERON_100);
+		generateItemsFromMaterial(ALLOY.MARAGING250);
+		generateItemsFromMaterial(ALLOY.MARAGING300);
+		generateItemsFromMaterial(ALLOY.MARAGING350);
+		generateItemsFromMaterial(ALLOY.STELLITE);
+		generateItemsFromMaterial(ALLOY.TALONITE);
 		
 		//Tumbaga was the name given by Spaniards to a non-specific alloy of gold and copper 
-		UtilsItems.generateItemsFromMaterial(ALLOY.TUMBAGA);
+		generateItemsFromMaterial(ALLOY.TUMBAGA);
 		//Potin is traditionally an alloy of bronze, tin and lead, with varying quantities of each possible
-		UtilsItems.generateItemsFromMaterial(ALLOY.POTIN);
+		generateItemsFromMaterial(ALLOY.POTIN);
 		
 
-		UtilsItems.generateItemsFromMaterial(ALLOY.HASTELLOY_W);
-		UtilsItems.generateItemsFromMaterial(ALLOY.HASTELLOY_X);
-		UtilsItems.generateItemsFromMaterial(ALLOY.HASTELLOY_C276);
-		UtilsItems.generateItemsFromMaterial(ALLOY.HASTELLOY_N);
+		generateItemsFromMaterial(ALLOY.HASTELLOY_W);
+		generateItemsFromMaterial(ALLOY.HASTELLOY_X);
+		generateItemsFromMaterial(ALLOY.HASTELLOY_C276);
+		generateItemsFromMaterial(ALLOY.HASTELLOY_N);
 		
-		UtilsItems.generateItemsFromMaterial(ALLOY.INCOLOY_020);
-		UtilsItems.generateItemsFromMaterial(ALLOY.INCOLOY_DS);
-		UtilsItems.generateItemsFromMaterial(ALLOY.INCOLOY_MA956);
+		generateItemsFromMaterial(ALLOY.INCOLOY_020);
+		generateItemsFromMaterial(ALLOY.INCOLOY_DS);
+		generateItemsFromMaterial(ALLOY.INCOLOY_MA956);
 		
 		
-		UtilsItems.generateItemsFromMaterial(ELEMENT.ZIRCONIUM);
-		UtilsItems.generateItemsFromMaterial(ALLOY.ZIRCONIUM_CARBIDE);
-		UtilsItems.generateItemsFromMaterial(ALLOY.TANTALUM_CARBIDE);
-		UtilsItems.generateItemsFromMaterial(ALLOY.NIOBIUM_CARBIDE);
+		generateItemsFromMaterial(ELEMENT.ZIRCONIUM);
+		generateItemsFromMaterial(ALLOY.ZIRCONIUM_CARBIDE);
+		generateItemsFromMaterial(ALLOY.TANTALUM_CARBIDE);
+		generateItemsFromMaterial(ALLOY.NIOBIUM_CARBIDE);
 		
 		
 		
 		//Uranium-233 is a fissile isotope of uranium that is bred from thorium-232 as part of the thorium fuel cycle.
 		UtilsItems.generateItemsFromMaterial(ELEMENT.URANIUM233);
 		
+		} catch (Throwable r){
+			Utils.LOG_INFO("Failed to Generated a Material. "+r.getMessage());
+			//Utils.LOG_INFO("Failed to Generated a Material. "+r.getCause().getMessage());
+			Utils.LOG_INFO("Failed to Generated a Material. "+r.getStackTrace()[0].getMethodName());
+			Utils.LOG_INFO("Failed to Generated a Material. "+r.getStackTrace()[1].getMethodName());
+			r.printStackTrace();
+			System.exit(1);
+		}
 		
 		
 		dustLithiumCarbonate = UtilsItems.generateSpecialUseDusts("LithiumCarbonate", "Lithium Carbonate", Utils.rgbtoHexValue(137, 139, 142))[0];

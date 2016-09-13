@@ -1,7 +1,7 @@
 package gtPlusPlus.core.material;
 
 
-public class ALLOY {
+public final class ALLOY {
 
 	public static final Material ENERGYCRYSTAL = new Material(
 			"Energy Crystal", //Material Name
