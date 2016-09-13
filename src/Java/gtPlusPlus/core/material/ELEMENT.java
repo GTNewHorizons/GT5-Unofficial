@@ -30,7 +30,7 @@ public final class ELEMENT {
 	public static final Material SCANDIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Scandium);
 	public static final Material TITANIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Titanium);
 	public static final Material VANADIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Vanadium);
-	public static final Material CHROMIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Chromium);
+	public static final Material CHROMIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Chrome);
 	public static final Material MANGANESE = MaterialUtils.generateMaterialFromGtENUM(Materials.Manganese);
 	public static final Material IRON = MaterialUtils.generateMaterialFromGtENUM(Materials.Iron);
 	public static final Material COBALT = MaterialUtils.generateMaterialFromGtENUM(Materials.Cobalt);

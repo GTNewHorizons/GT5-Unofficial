@@ -330,12 +330,12 @@ public final class ALLOY {
 			new short[]{236, 213, 48, 0}, //Material Colour
 			1350, //Melting Point in C
 			0, //Boiling Point in C
-			((ELEMENT.IRON.getProtons()*5)+(ELEMENT.MOLYBDENUM.getProtons()*16)+(ELEMENT.CHROMIUM.getProtons()*7)+(ELEMENT.NICKEL.getProtons()*72))/100, //Protons
-			((ELEMENT.IRON.getNeutrons()*5)+(ELEMENT.MOLYBDENUM.getNeutrons()*16)+(ELEMENT.CHROMIUM.getNeutrons()*7)+(ELEMENT.NICKEL.getNeutrons()*72))/100, //Neutrons
+			((ELEMENT.YTTRIUM.getProtons()*5)+(ELEMENT.MOLYBDENUM.getProtons()*16)+(ELEMENT.CHROMIUM.getProtons()*7)+(ELEMENT.NICKEL.getProtons()*72))/100, //Protons
+			((ELEMENT.YTTRIUM.getNeutrons()*5)+(ELEMENT.MOLYBDENUM.getNeutrons()*16)+(ELEMENT.CHROMIUM.getNeutrons()*7)+(ELEMENT.NICKEL.getNeutrons()*72))/100, //Neutrons
 			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(ELEMENT.IRON, 05),
+					new MaterialStack(ELEMENT.YTTRIUM, 05),
 					new MaterialStack(ELEMENT.MOLYBDENUM, 16),
 					new MaterialStack(ELEMENT.CHROMIUM, 7),
 					new MaterialStack(ELEMENT.NICKEL, 72)

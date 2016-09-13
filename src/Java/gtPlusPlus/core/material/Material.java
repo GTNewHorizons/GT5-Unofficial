@@ -25,7 +25,7 @@ public class Material {
 	final long vMass;
 
 	public Material(String materialName, short[] rgba, int meltingPoint, int boilingPoint, long protons, long neutrons, boolean blastFurnace, MaterialStack[] inputs){
-
+		
 		this.unlocalizedName = Utils.sanitizeString(materialName);
 		this.localizedName = materialName;
 		this.RGBA = rgba;
@@ -53,6 +53,12 @@ public class Material {
 				}
 			}
 		}
+		Utils.LOG_INFO("Creating a Material instance for "+materialName);
+		Utils.LOG_INFO("Protons: "+vProtons);
+		Utils.LOG_INFO("Neutrons: "+vNeutrons);
+		Utils.LOG_INFO("Mass: "+vMass+"/units");
+		Utils.LOG_INFO("Melting Point: "+meltingPointC+"C.");
+		Utils.LOG_INFO("Boiling Point: "+boilingPointC+"C.");
 	}
 
 	public String getLocalizedName(){
@@ -91,8 +97,8 @@ public class Material {
 		return usesBlastFurnace;
 	}
 
-	public ItemStack getDust(){
-		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("dust"+unlocalizedName, 1);
+	public ItemStack getDust(int stacksize){
+		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("dust"+unlocalizedName, stacksize);
 	}
 
 	public ItemStack[] getValidInputStacks(){
@@ -100,14 +106,25 @@ public class Material {
 	}
 
 	public ItemStack[] getMaterialComposites(){
+		//Utils.LOG_INFO("Something requested the materials needed for "+localizedName);
 		if (materialInput != null && materialInput.length >= 1){
 			ItemStack[] temp = new ItemStack[materialInput.length];
 			for (int i=0;i<materialInput.length;i++){
-				Utils.LOG_INFO("i:"+i);
-				ItemStack testNull = materialInput[i].getDustStack();
+				//Utils.LOG_INFO("i:"+i);
+				ItemStack testNull = null;
+				try {
+				testNull = materialInput[i].getDustStack();
+				} catch (Throwable r){
+					Utils.LOG_INFO("Failed gathering material stack for "+localizedName+".");
+					Utils.LOG_INFO("What Failed: Length:"+materialInput.length+" current:"+i);
+				}
+				try {
 				if (testNull != null){
-					Utils.LOG_INFO("not null");
+					//Utils.LOG_INFO("not null");
 					temp[i] = materialInput[i].getDustStack();
+				}
+				} catch (Throwable r){
+					Utils.LOG_INFO("Failed setting slot "+i+", using "+localizedName);
 				}
 			}		
 			return temp;

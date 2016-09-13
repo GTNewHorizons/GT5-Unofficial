@@ -8,7 +8,7 @@ public class MaterialStack {
 	final Material materialInput;
 	final double percentageToUse;
 	
-	public MaterialStack(Material inputs, int percentage){
+	public MaterialStack(Material inputs, double percentage){
 
 		this.materialInput = inputs;
 		this.percentageToUse = percentage;
@@ -21,19 +21,25 @@ public class MaterialStack {
 		int amount = 0;
 		if (percentageToUse >= 0 && percentageToUse <= 0.99){
 			caseStatus = 1;
-			amount = Integer.valueOf(String.valueOf(percentageToUse).charAt(2));
+			amount = (int) (1/percentageToUse);
+			//amount = Integer.valueOf(String.valueOf(percentageToUse).charAt(2));
 		}
 		else if (percentageToUse >= 1 && percentageToUse <= 9.99){
 			caseStatus = 2;
-			amount = Integer.valueOf(String.valueOf(percentageToUse).charAt(0));
+			amount = (int) (percentageToUse);
+			//amount = Integer.valueOf(String.valueOf(percentageToUse).charAt(0));
 		}
 		else if (percentageToUse >= 10 && percentageToUse <= 99.99){
 			caseStatus = 3;
-			amount = Integer.valueOf(String.valueOf(percentageToUse).charAt(0));
+			amount = (int) (percentageToUse/10);
+			//amount = Integer.valueOf(String.valueOf(percentageToUse).charAt(0));
 		}
 		else if (percentageToUse == 100){
 			caseStatus = 4;
 			amount = 10;
+		}
+		else {
+			amount = 0;
 		}
 		switch (caseStatus) {		
 		case 1:	{

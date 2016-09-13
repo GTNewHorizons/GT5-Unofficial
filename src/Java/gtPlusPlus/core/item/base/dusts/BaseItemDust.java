@@ -136,21 +136,21 @@ public class BaseItemDust extends Item{
 		ItemStack tempStack = UtilsItems.getSimpleStack(this);
 		ItemStack tempOutput = null;
 		ItemStack[] inputStacks = dustInfo.getMaterialComposites();
-		ItemStack[] outputStacks = {dustInfo.getDust()};
+		ItemStack[] outputStacks = {dustInfo.getDust(10)};
 		String temp = "";
 		Utils.LOG_WARNING("Unlocalized name for OreDict nameGen: "+getUnlocalizedName());
-		if (getUnlocalizedName().contains("item.")){
+		if (getUnlocalizedName().toLowerCase().contains("item.")){
 			temp = getUnlocalizedName().replace("item.", "");
 			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
 		}
 		else {
 			temp = getUnlocalizedName();
 		}
-		if (temp.contains("DustTiny")){
+		if (temp.toLowerCase().contains("dusttiny")){
 			temp = temp.replace("itemDustTiny", "dust");
 			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
 		}
-		else if (temp.contains("DustSmall")){
+		else if (temp.toLowerCase().contains("dustsmall")){
 			temp = temp.replace("itemDustSmall", "dust");
 			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
 		}
@@ -158,9 +158,9 @@ public class BaseItemDust extends Item{
 			temp = temp.replace("itemD", "d");
 			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
 		}		
-		if (temp != null && temp != ""){
+		if (temp != null && temp != "" && !temp.equals("")){
 
-			if (getUnlocalizedName().contains("DustTiny") || getUnlocalizedName().contains("DustSmall")){
+			if (getUnlocalizedName().toLowerCase().contains("dusttiny") || getUnlocalizedName().toLowerCase().contains("dustsmall")){
 				tempOutput = UtilsItems.getItemStackOfAmountFromOreDict(temp, 1);
 			}
 			else {				
@@ -174,6 +174,10 @@ public class BaseItemDust extends Item{
 				}
 			}
 
+		}
+		
+		if (tempOutput == null){
+			tempOutput = dustInfo.getDust(1);
 		}
 
 		if (tempOutput != null){
@@ -204,7 +208,7 @@ public class BaseItemDust extends Item{
 								ItemStack tempStackForAName = inputStacks[i];
 								String[] inputList = UtilsItems.getArrayStackNamesAsArray(dustInfo.getMaterialComposites());
 								int[] inputSizes = dustInfo.getMaterialCompositeStackSizes();
-								inputStacks[i] = UtilsItems.getItemStackOfAmountFromOreDict(inputList[i], inputSizes[i]);
+								inputStacks[i] = UtilsItems.getItemStackOfAmountFromOreDict(inputList[i], 1);
 								Utils.LOG_WARNING("Swapping input slot "+i+" which contains "+tempStackForAName.getDisplayName()+" with "+inputStacks[i].getDisplayName()+".");	
 							}
 
@@ -267,7 +271,7 @@ public class BaseItemDust extends Item{
 
 		tempIngot = tempIngot.replace("itemDust", "ingot");
 		Utils.LOG_WARNING("Generating OreDict Name: "+tempIngot);
-		ItemStack[] outputStacks = {dustInfo.getDust()};
+		ItemStack[] outputStacks = {dustInfo.getDust(1)};
 		if (tempIngot != null && tempIngot != ""){
 			tempInputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 1);
 			tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempDust, 1);
