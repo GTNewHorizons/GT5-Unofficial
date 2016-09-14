@@ -256,7 +256,7 @@ public class UtilsItems {
 		if (returnValue.getItem().getClass() != ModItems.AAA_Broken.getClass() || returnValue.getItem() != ModItems.AAA_Broken){		
 		return returnValue;
 		}
-		
+	Utils.LOG_INFO(oredictName+" was not valid.");	
 	 return null;
 	}
 	
@@ -320,7 +320,7 @@ public class UtilsItems {
 			temp = new BaseItemGear("itemGear"+unlocalizedName, materialName, Colour, materialTier);
 		}		
 
-		FluidUtils.generateFluid(matInfo, sRadiation);
+		FluidUtils.generateFluid(matInfo, 1);
 		
 	}
 	

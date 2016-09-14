@@ -32,7 +32,7 @@ public class BlockFluidBase extends BlockFluidClassic {
             short[] tempColour = material.getRGBA(); 
             this.colour = Utils.rgbtoHexValue(tempColour[0], tempColour[1], tempColour[2]);
             this.fluidMaterial = material;
-            setCreativeTab(AddToCreativeTab.tabMisc);
+            setCreativeTab(AddToCreativeTab.tabOther);
             this.displayName = material.getLocalizedName();
             LanguageRegistry.addName(this, "Molten "+displayName+" ["+MathUtils.celsiusToKelvin(fluidMaterial.getBoilingPoint_C())+"K]");
     		this.setBlockName(GetProperName());
@@ -43,7 +43,7 @@ public class BlockFluidBase extends BlockFluidClassic {
             super(fluid, net.minecraft.block.material.Material.water);
             short[] tempColour = colour; 
             this.colour = Utils.rgbtoHexValue(tempColour[0], tempColour[1], tempColour[2]);
-            setCreativeTab(AddToCreativeTab.tabMisc);
+            setCreativeTab(AddToCreativeTab.tabOther);
             this.displayName = fluidName;
             LanguageRegistry.addName(this, "Molten "+displayName);
     		this.setBlockName(GetProperName());
@@ -99,5 +99,9 @@ public class BlockFluidBase extends BlockFluidClassic {
 
 		return tempIngot;
 	}
+    
+    public Material getFluidMaterial(){
+    	return fluidMaterial;
+    }
     
 }		

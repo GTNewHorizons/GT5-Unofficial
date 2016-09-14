@@ -100,6 +100,14 @@ public class Material {
 	public ItemStack getDust(int stacksize){
 		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("dust"+unlocalizedName, stacksize);
 	}
+	
+	public ItemStack getSmallDust(int stacksize){
+		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("dustSmall"+unlocalizedName, stacksize);
+	}
+	
+	public ItemStack getTinyDust(int stacksize){
+		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("dustTiny"+unlocalizedName, stacksize);
+	}
 
 	public ItemStack[] getValidInputStacks(){
 		return UtilsItems.validItemsForOreDict(unlocalizedName);
