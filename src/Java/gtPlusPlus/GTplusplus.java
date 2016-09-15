@@ -23,6 +23,7 @@ import gtPlusPlus.core.util.item.UtilsItems;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.HANDLER_GT;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -120,7 +121,7 @@ implements ActionListener
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		Utils.LOG_INFO("Loading "+CORE.name+" V"+CORE.VERSION);
-		//Utils.LOG_INFO("Test String for Debug: "+TexturesGtTools.SKOOKUM_CHOOCHER.getTextureFile().getResourcePath());
+		Utils.LOG_INFO("Test String for Debug: "+TexturesGtTools.SKOOKUM_CHOOCHER.getTextureFile().getResourcePath());
 		Utils.LOG_INFO("Latest is V"+CORE.MASTER_VERSION+". Updated? "+Utils.isModUpToDate());
 		FirstCall();
 		FMLCommonHandler.instance().bus().register(new LoginEventHandler());        

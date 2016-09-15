@@ -6,10 +6,8 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.items.behaviors.Behaviour_Prospecting;
-import gregtech.common.items.behaviors.Behaviour_Wrench;
-import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaTool;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
+import gtPlusPlus.xmod.gregtech.common.items.behaviours.Behaviour_Choocher;
 
 import java.util.Arrays;
 import java.util.List;
@@ -83,12 +81,12 @@ public class TOOL_Gregtech_Choocher
 
     @Override
 	public String getCraftingSound() {
-        return null;
+    	 return (String) GregTech_API.sSoundList.get(Integer.valueOf(1));
     }
 
     @Override
 	public String getEntityHitSound() {
-        return null;
+    	 return (String) GregTech_API.sSoundList.get(Integer.valueOf(2));
     }
 
     @Override
@@ -163,29 +161,15 @@ public class TOOL_Gregtech_Choocher
         return TexturesGtTools.SKOOKUM_CHOOCHER;
     }
     
-   /* @Override
-	public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-		return aIsToolHead ? Textures.ItemIcons.WIRE_CUTTER : Textures.ItemIcons.VOID;
-	}*/
-
-    
-/*    @Override
-	public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-		return aIsToolHead ? Textures.class..ItemIcons.SKOOKUMCHOOCHER : null;
-	}
-*/
-    //
-    
     @Override
 	public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
 		return GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa;
 	}
 
-    @Override
+    /*@Override
 	public void onStatsAddedToTool(Gregtech_MetaTool aItem, int aID) {
-        aItem.addItemBehavior(aID, new Behaviour_Wrench(150));
-        aItem.addItemBehavior(aID, new Behaviour_Prospecting(1, 1250));
-    }
+        aItem.addItemBehavior(aID, new Behaviour_Choocher());
+    }*/
 
     @Override
 	public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer) {
@@ -205,7 +189,7 @@ public class TOOL_Gregtech_Choocher
 
 	@Override
 	public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
-		
+        aItem.addItemBehavior(aID, new Behaviour_Choocher());		
 	}
 
 	@Override
