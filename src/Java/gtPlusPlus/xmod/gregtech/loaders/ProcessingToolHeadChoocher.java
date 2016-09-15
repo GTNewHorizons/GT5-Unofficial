@@ -50,13 +50,14 @@ public class ProcessingToolHeadChoocher implements Interface_OreRecipeRegistrato
 	        		//Input 1
 	        		ItemStack plate = GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L);
 	        		ItemStack ingot = GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L);
+	        		ItemStack longrod = GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L);
 	        		ItemStack hammerhead = GT_OreDictUnificator.get(OrePrefixes.toolHeadHammer, aMaterial, 1L);
 	        		
-	        		if (null != plate && null != ingot && null != hammerhead){
+	        		if (null != plate && null != ingot && null != hammerhead && null != longrod){
 	        			UtilsRecipe.recipeBuilder(
 		        				plate, null, hammerhead,
 		        				plate, plate, ingot,
-		        				null, ingot, null,
+		        				null, null, longrod,
 		        				MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(MetaGeneratedGregtechTools.SKOOKUM_CHOOCHER, 1, aMaterial, null, null));
 		        		used++;
 	        		}    

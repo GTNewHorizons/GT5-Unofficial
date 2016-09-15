@@ -99,7 +99,7 @@ implements ActionListener
 		String infusedDust3 = "dustInfused"+infusedDusts[c];
 		String infusedDust4 = "dustInfused"+infusedDusts[d];
 		Utils.LOG_INFO("Found the aspect of "+infusedDusts[a]+" to embody into energy crystals.");
-		Utils.LOG_INFO("Found the aspect of "+infusedDusts[b]+" to embody into energy crystals.");
+		Utils.LOG_INFO("Found the aspect of "+infusedDusts[b]+" to embody into eshonergy crystals.");
 		Utils.LOG_INFO("Found the aspect of "+infusedDusts[c]+" to embody into energy crystals.");
 		Utils.LOG_INFO("Found the aspect of "+infusedDusts[d]+" to embody into energy crystals.");
 		randomDust_A = infusedDust1;
@@ -109,7 +109,12 @@ implements ActionListener
 		//ItemStack a1 = UtilsItems.getItemStackOfAmountFromOreDict("dustInfused"+infusedDusts[a], 8);
 		//ItemStack b1 = UtilsItems.getItemStackOfAmountFromOreDict("dustInfused"+infusedDusts[b], 8);
 		//ItemStack c1 = UtilsItems.getItemStackOfAmountFromOreDict("dustInfused"+infusedDusts[c], 8);
-		//ItemStack d1 = UtilsItems.getItemStackOfAmountFromOreDict("dustInfused"+infusedDusts[d], 8);
+		//ItemStack d1 = UtilsItems.getItemStackOfAmountFromOreDict("dustInfused"+infusedDusts[d], 8);		
+
+		
+		//Do this weird things for textures.
+		Utils.LOG_WARNING("Processing texture: "+TexturesGtTools.SKOOKUM_CHOOCHER.getTextureFile().getResourcePath());
+		
 		
 	}
 
@@ -121,7 +126,6 @@ implements ActionListener
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		Utils.LOG_INFO("Loading "+CORE.name+" V"+CORE.VERSION);
-		Utils.LOG_INFO("Test String for Debug: "+TexturesGtTools.SKOOKUM_CHOOCHER.getTextureFile().getResourcePath());
 		Utils.LOG_INFO("Latest is V"+CORE.MASTER_VERSION+". Updated? "+Utils.isModUpToDate());
 		FirstCall();
 		FMLCommonHandler.instance().bus().register(new LoginEventHandler());        
