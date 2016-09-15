@@ -3,17 +3,18 @@ package gtPlusPlus.xmod.gregtech.api.recipe;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.ToolDictNames;
+import gregtech.api.interfaces.IOreRecipeRegistrator;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import net.minecraft.item.ItemStack;
 
-public class ProcessingSkookumChoocherToolRecipes implements gregtech.api.interfaces.IOreRecipeRegistrator {
+public class ProcessingSkookumChoocherToolRecipes implements IOreRecipeRegistrator {
     public ProcessingSkookumChoocherToolRecipes() {
         //GregtechOrePrefixes.toolSkookumChoocher.add(this);
     }
 
     @Override
 	public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-        GT_ModHandler.addShapelessCraftingRecipe(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(32, 1, aMaterial, aMaterial, null), new Object[]{aOreDictName, OrePrefixes.stick.get(aMaterial), OrePrefixes.screw.get(aMaterial), ToolDictNames.craftingToolScrewdriver});
+        GT_ModHandler.addShapelessCraftingRecipe(MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(7734, 1, aMaterial, aMaterial, null), new Object[]{aOreDictName, OrePrefixes.stick.get(aMaterial), OrePrefixes.screw.get(aMaterial), ToolDictNames.craftingToolScrewdriver});
     }
 }

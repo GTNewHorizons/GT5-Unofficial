@@ -34,6 +34,7 @@ import gtPlusPlus.core.util.item.UtilsItems;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 public final class ModItems {
@@ -107,7 +108,9 @@ public final class ModItems {
 	public static Item itemPersonalCloakingDeviceCharged;
 	public static Item itemPersonalHealingDevice;
 
-	public static MultiPickaxeBase MP_GTMATERIAL;	
+	public static MultiPickaxeBase MP_GTMATERIAL;
+	
+	public static ItemStack FluidCell;
 	
 	public static BaseItemBackpack backpack_Red;
 	public static BaseItemBackpack backpack_Green;
@@ -398,6 +401,10 @@ public final class ModItems {
 			//GameRegistry.registerItem(FuelRod_Thorium, "itemFuelRod_Thorium");
 			//GameRegistry.registerItem(FuelRod_Uranium, "itemFuelRod_Uranium");
 			//GameRegistry.registerItem(FuelRod_Plutonium, "itemFuelRod_Plutonium");
+			
+			//FluidCell = new ItemStack(new IC2_ItemFluidCell("itemGT++FluidCell"));
+			
+			
 		}
 		else {
 			Utils.LOG_WARNING("IndustrialCraft2 not Found - Skipping Resources.");

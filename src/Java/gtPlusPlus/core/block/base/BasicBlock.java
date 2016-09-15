@@ -8,7 +8,7 @@ import net.minecraft.block.material.Material;
 
 public class BasicBlock extends Block {
 
-    public BasicBlock(String unlocalizedName, Material material) {
+    public BasicBlock(final String unlocalizedName, final Material material) {
         super(material);
         this.setBlockName(Utils.sanitizeString(unlocalizedName));
         this.setBlockTextureName(CORE.MODID + ":" + unlocalizedName);
@@ -28,7 +28,7 @@ public class BasicBlock extends Block {
     	private String TEXTURE_NAME;
     	private String HARVEST_TOOL;
     	private SoundType soundOfBlock;
-    	private BlockTypes (String textureName, String harvestTool, SoundType blockSound)
+    	private BlockTypes (final String textureName, final String harvestTool, final SoundType blockSound)
     	{
     		this.TEXTURE_NAME = textureName;
     		this.HARVEST_TOOL = harvestTool;
