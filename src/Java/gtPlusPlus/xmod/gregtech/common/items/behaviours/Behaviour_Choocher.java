@@ -38,22 +38,6 @@ public class Behaviour_Choocher
         return false;
     }
 
-    /*@Override
-	public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
-    	 if (aWorld.isRemote) {
-             return false;
-         }
-         if (!aPlayer.isSneaking()){
-         	Utils.LOG_INFO("Using Choocher as a wrench.");
-         	wrench.onItemUseFirst(aItem, aStack, aPlayer, aWorld, aSide, aSide, aSide, aSide, hitZ, hitZ, hitZ);
-         	return false;
-         }
-     	Utils.LOG_INFO("Using Choocher as a hard hammer.");
- 		prospecting.onItemUseFirst(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ);
-         
-         return false;
-	}*/
-
 	public List<String> getAdditionalToolTips(GT_MetaBase_Item aItem, List<String> aList, ItemStack aStack) {
         aList.add(this.mTooltip);
         return aList;
