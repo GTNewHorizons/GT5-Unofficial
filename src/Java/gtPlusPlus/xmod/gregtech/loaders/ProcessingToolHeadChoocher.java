@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.loaders;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
+import gregtech.api.enums.ToolDictNames;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.util.Utils;
@@ -50,14 +51,15 @@ public class ProcessingToolHeadChoocher implements Interface_OreRecipeRegistrato
 	        		//Input 1
 	        		ItemStack plate = GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L);
 	        		ItemStack ingot = GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L);
+	        		ItemStack screw = GT_OreDictUnificator.get(OrePrefixes.screw, aMaterial, 1L);
 	        		ItemStack longrod = GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L);
 	        		ItemStack hammerhead = GT_OreDictUnificator.get(OrePrefixes.toolHeadHammer, aMaterial, 1L);
 	        		
-	        		if (null != plate && null != ingot && null != hammerhead && null != longrod){
+	        		if (null != plate && null != ingot && null != hammerhead && null != longrod && null != screw){
 	        			UtilsRecipe.recipeBuilder(
-		        				plate, null, hammerhead,
-		        				plate, plate, ingot,
-		        				null, null, longrod,
+		        				hammerhead, ToolDictNames.craftingToolScrewdriver.name(), plate,
+		        				ingot, plate, plate,
+		        				longrod, screw, null,		        				
 		        				MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(MetaGeneratedGregtechTools.SKOOKUM_CHOOCHER, 1, aMaterial, null, null));
 		        		used++;
 	        		}    
