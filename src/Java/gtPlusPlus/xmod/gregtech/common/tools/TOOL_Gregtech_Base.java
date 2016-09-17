@@ -115,8 +115,17 @@ implements IToolStats {
 	public boolean isMiningTool() {
 		return true;
 	}
-
+	
+	public boolean isChainsaw(){
+		return false;
+	}
+	
 	@Override
+	public boolean isGrafter(){
+		return false;
+	}
+
+	
 	public DamageSource getDamageSource(EntityLivingBase aPlayer, Entity aEntity) {
 		return GT_DamageSources.getCombatDamage((aPlayer instanceof EntityPlayer) ? "player" : "mob", aPlayer, (aEntity instanceof EntityLivingBase) ? getDeathMessage(aPlayer, (EntityLivingBase) aEntity) : null);
 	}

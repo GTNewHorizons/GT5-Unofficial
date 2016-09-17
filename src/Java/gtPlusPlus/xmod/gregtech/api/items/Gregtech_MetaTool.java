@@ -125,7 +125,7 @@ public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool implements
 		return super.onItemRightClick(aStack, aWorld, aPlayer);
 	}
 
-	@Override
+	
 	public void addAdditionalToolTips(List aList, ItemStack aStack) {
 		long tMaxDamage = getToolMaxDamage(aStack);
 		Materials tMaterial = getPrimaryMaterial(aStack);
