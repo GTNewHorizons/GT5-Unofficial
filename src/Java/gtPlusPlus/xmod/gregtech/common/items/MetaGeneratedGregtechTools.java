@@ -13,7 +13,7 @@ public class MetaGeneratedGregtechTools extends GT_MetaGenerated_Tool {
 	public static MetaGeneratedGregtechTools INSTANCE;
 
 	public MetaGeneratedGregtechTools() {
-		super("++.metatool.01");
+		super("plusplus.metatool.01");
 		INSTANCE = this;       
 		GregTech_API.registerTool(
 				addTool(
