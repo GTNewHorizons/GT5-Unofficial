@@ -149,6 +149,49 @@ public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool implements
 			}
 		}
 	}
+	
+	public void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
+        long tMaxDamage = getToolMaxDamage(aStack);
+        Materials tMaterial = getPrimaryMaterial(aStack);
+        IToolStats tStats = getToolStats(aStack);
+        int tOffset = getElectricStats(aStack) != null ? 2 : 1;
+        if (tStats != null) {
+            String name = aStack.getUnlocalizedName();
+            if (name.equals("gt.metatool.01.170") || name.equals("gt.metatool.01.172") || name.equals("gt.metatool.01.174") || name.equals("gt.metatool.01.176")) {
+                aList.add(tOffset + 0, EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + EnumChatFormatting.GRAY);
+                aList.add(tOffset + 1, EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName + EnumChatFormatting.YELLOW + " lvl " + getHarvestLevel(aStack, "") + EnumChatFormatting.GRAY);
+                aList.add(tOffset + 2, EnumChatFormatting.WHITE + "Turbine Efficency: " + EnumChatFormatting.BLUE + (50.0F + (10.0F * getToolCombatDamage(aStack))) + EnumChatFormatting.GRAY);
+                aList.add(tOffset + 3, EnumChatFormatting.WHITE + "Optimal Steam flow: " + EnumChatFormatting.LIGHT_PURPLE + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed * 1000) + EnumChatFormatting.GRAY + "L/sec");
+                aList.add(tOffset + 3, EnumChatFormatting.WHITE + "Optimal Gas flow(EU burnvalue per tick): " + EnumChatFormatting.LIGHT_PURPLE + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed * 50) + EnumChatFormatting.GRAY + "EU/t");
+                aList.add(tOffset + 3, EnumChatFormatting.WHITE + "Optimal Plasma flow(Plasma energyvalue per tick): " + EnumChatFormatting.LIGHT_PURPLE + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed * 1000) + EnumChatFormatting.GRAY + "EU/t");
+
+            } else {
+                aList.add(tOffset + 0, EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + EnumChatFormatting.GRAY);
+                aList.add(tOffset + 1, EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName + EnumChatFormatting.YELLOW + " lvl " + getHarvestLevel(aStack, "") + EnumChatFormatting.GRAY);
+                aList.add(tOffset + 2, EnumChatFormatting.WHITE + "Attack Damage: " + EnumChatFormatting.BLUE + getToolCombatDamage(aStack) + EnumChatFormatting.GRAY);
+                aList.add(tOffset + 3, EnumChatFormatting.WHITE + "Mining Speed: " + EnumChatFormatting.LIGHT_PURPLE + Math.max(Float.MIN_NORMAL, tStats.getSpeedMultiplier() * getPrimaryMaterial(aStack).mToolSpeed) + EnumChatFormatting.GRAY);
+                NBTTagCompound aNBT = aStack.getTagCompound();
+                if (aNBT != null) {
+                    aNBT = aNBT.getCompoundTag("GT.ToolStats");
+                    if (aNBT != null && aNBT.hasKey("Heat")){
+                    	int tHeat = aNBT.getInteger("Heat");
+                    	long tWorldTime = aPlayer.getEntityWorld().getWorldTime();
+                    	if(aNBT.hasKey("HeatTime")){
+                    		long tHeatTime = aNBT.getLong("HeatTime");
+                    		if(tWorldTime>(tHeatTime+10)){
+                    			tHeat = (int) (tHeat - ((tWorldTime-tHeatTime)/10));
+                    			if(tHeat<300&&tHeat>-10000)tHeat=300;
+                    		}
+                    		aNBT.setLong("HeatTime", tWorldTime);
+                    		if(tHeat>-10000)aNBT.setInteger("Heat", tHeat);
+                    	}
+                    	
+                    	 aList.add(tOffset + 3, EnumChatFormatting.RED + "Heat: " + aNBT.getInteger("Heat")+" K" + EnumChatFormatting.GRAY);
+                    }
+                }
+            }
+        }
+    }
 
 	@Override
 	public Long[] getFluidContainerStats(ItemStack aStack) {

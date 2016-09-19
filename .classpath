@@ -16,6 +16,6 @@
 	<classpathentry kind="lib" path="libs/Baubles-deobf-1.7.10-1.0.1.10.jar"/>
 	<classpathentry kind="lib" path="libs/forestry_1.7.10-4.2.2.50-deobf.jar"/>
 	<classpathentry kind="lib" path="libs/industrialcraft-2-2.2.783-experimental-deobf.jar"/>
-	<classpathentry kind="lib" path="libs/gregtech-5.8.61-dev.jar" sourcepath="/Gregtech"/>
+	<classpathentry kind="lib" path="GT VERSIONS/gregtech-5.09.23-NoTC-dev.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
