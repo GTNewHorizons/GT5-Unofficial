@@ -2,7 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.tools;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.damagesources.GT_DamageSources;
-import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_ToolStats;
+import gregtech.api.interfaces.IToolStats;
 import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaTool;
 
 import java.util.List;
@@ -20,7 +20,7 @@ import net.minecraft.util.IChatComponent;
 import net.minecraftforge.event.world.BlockEvent;
 
 public abstract class TOOL_Gregtech_Base
-implements Interface_ToolStats {
+implements IToolStats {
 	public static final Enchantment[] FORTUNE_ENCHANTMENT = {Enchantment.fortune};
 	public static final Enchantment[] LOOTING_ENCHANTMENT = {Enchantment.looting};
 	public static final Enchantment[] ZERO_ENCHANTMENTS = new Enchantment[0];
@@ -115,8 +115,17 @@ implements Interface_ToolStats {
 	public boolean isMiningTool() {
 		return true;
 	}
-
+	
+	public boolean isChainsaw(){
+		return false;
+	}
+	
 	@Override
+	public boolean isGrafter(){
+		return false;
+	}
+
+	
 	public DamageSource getDamageSource(EntityLivingBase aPlayer, Entity aEntity) {
 		return GT_DamageSources.getCombatDamage((aPlayer instanceof EntityPlayer) ? "player" : "mob", aPlayer, (aEntity instanceof EntityLivingBase) ? getDeathMessage(aPlayer, (EntityLivingBase) aEntity) : null);
 	}
@@ -152,7 +161,6 @@ implements Interface_ToolStats {
 		aPlayer.triggerAchievement(AchievementList.buildWorkBench);
 	}
 	
-	@Override
 	public void onStatsAddedToTool(Gregtech_MetaTool aItem, int aID) {
 	}
 

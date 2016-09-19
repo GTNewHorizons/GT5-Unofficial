@@ -2,6 +2,7 @@ package gtPlusPlus.core.item;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMachines;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 import static gtPlusPlus.core.lib.CORE.LOAD_ALL_CONTENT;
+import static gtPlusPlus.core.util.item.UtilsItems.generateItemsFromMaterial;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.creative.AddToCreativeTab;
@@ -25,13 +26,15 @@ import gtPlusPlus.core.item.tool.staballoy.StaballoyPickaxe;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.CORE.configSwitches;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.lib.MaterialInfo;
+import gtPlusPlus.core.material.ALLOY;
+import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.debug.DEBUG_INIT;
 import gtPlusPlus.core.util.item.UtilsItems;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 public final class ModItems {
@@ -105,7 +108,9 @@ public final class ModItems {
 	public static Item itemPersonalCloakingDeviceCharged;
 	public static Item itemPersonalHealingDevice;
 
-	public static MultiPickaxeBase MP_GTMATERIAL;	
+	public static MultiPickaxeBase MP_GTMATERIAL;
+	
+	public static ItemStack FluidCell;
 	
 	public static BaseItemBackpack backpack_Red;
 	public static BaseItemBackpack backpack_Green;
@@ -162,53 +167,65 @@ public final class ModItems {
 		//Start meta Item Generation
 		ItemsFoods.load();
 
-		UtilsItems.generateItemsFromMaterial("EnergyCrystal", "Energy Crystal", 8, MaterialInfo.ENERGYCRYSTAL, Utils.rgbtoHexValue(228, 225, 0), true);
-		UtilsItems.generateItemsFromMaterial("BloodSteel", "Blood Steel", 3, MaterialInfo.BLOODSTEEL, Utils.rgbtoHexValue(142, 28, 0), false);
-		UtilsItems.generateItemsFromMaterial("Staballoy", "Staballoy", 6, MaterialInfo.STABALLOY, Utils.rgbtoHexValue(68, 75, 66), true);
-		UtilsItems.generateItemsFromMaterial("Tantalloy60", "Tantalloy-60", 5, MaterialInfo.TANTALLOY60, Utils.rgbtoHexValue(68, 75, 166), true);
-		UtilsItems.generateItemsFromMaterial("Tantalloy61", "Tantalloy-61", 6, MaterialInfo.TANTALLOY61, Utils.rgbtoHexValue(122, 135, 196), true);
-		UtilsItems.generateItemsFromMaterial("Bedrockium", "Bedrockium", 9, MaterialInfo.BEDROCKIUM, Utils.rgbtoHexValue(32, 32, 32), false);
-		UtilsItems.generateItemsFromMaterial("Quantum", "Quantum", 10, MaterialInfo.QUANTUM, Utils.rgbtoHexValue(128, 128, 128), true);
+		try{
+		generateItemsFromMaterial(ALLOY.ENERGYCRYSTAL);
+		generateItemsFromMaterial(ALLOY.BLOODSTEEL);
+		generateItemsFromMaterial(ALLOY.STABALLOY);
+		generateItemsFromMaterial(ALLOY.TANTALLOY_60);
+		generateItemsFromMaterial(ALLOY.TANTALLOY_61);
+		generateItemsFromMaterial(ALLOY.BEDROCKIUM);
+		generateItemsFromMaterial(ALLOY.QUANTUM);
 		
 
-		UtilsItems.generateItemsFromMaterial("Inconel625", "Inconel-625", 4, MaterialInfo.INCONEL625, Utils.rgbtoHexValue(128, 200, 128), true); //Inconel 625: Acid resistant, good weldability. The LCF version is typically used in bellows.
-		UtilsItems.generateItemsFromMaterial("Inconel690", "Inconel-690", 6, MaterialInfo.INCONEL690, Utils.rgbtoHexValue(118, 220, 138), true); //Inconel 690: Low cobalt content for nuclear applications, and low resistivity.
-		UtilsItems.generateItemsFromMaterial("Inconel792", "Inconel-792", 5, MaterialInfo.INCONEL792, Utils.rgbtoHexValue(108, 240, 118), true); //Inconel 792: Increased aluminium content for improved high temperature corrosion properties, used especially in gas turbines.
-		
+		generateItemsFromMaterial(ALLOY.INCONEL_625);
+		generateItemsFromMaterial(ALLOY.INCONEL_690);
+		generateItemsFromMaterial(ALLOY.INCONEL_792);
 
 		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
-			UtilsItems.generateItemsFromMaterial("TungstenCarbide", "Tungsten Carbide", 5, MaterialInfo.TUNGSTENCARBIDE, Utils.rgbtoHexValue(44, 44, 44), true);
+			generateItemsFromMaterial(ALLOY.TUNGSTEN_CARBIDE);
 		}
-		UtilsItems.generateItemsFromMaterial("SiliconCarbide", "Silicon Carbide", 4, MaterialInfo.SILICONCARBIDE, Utils.rgbtoHexValue(32, 32, 32), false);
-		UtilsItems.generateItemsFromMaterial("Zeron100", "Zeron-100", 8, MaterialInfo.ZERON100, Utils.rgbtoHexValue(180, 180, 20), true);
-		UtilsItems.generateItemsFromMaterial("MaragingSteel250", "Maraging Steel 250", 4, MaterialInfo.MARAGING250, Utils.rgbtoHexValue(140, 140, 140), true);
-		UtilsItems.generateItemsFromMaterial("MaragingSteel300", "Maraging Steel 300", 5, MaterialInfo.MARAGING300, Utils.rgbtoHexValue(150, 150, 150), true);
-		UtilsItems.generateItemsFromMaterial("MaragingSteel350", "Maraging Steel 350", 6, MaterialInfo.MARAGING350, Utils.rgbtoHexValue(160, 160, 160), true);
-		UtilsItems.generateItemsFromMaterial("Stellite", "Stellite", 7, MaterialInfo.STELLITE, Utils.rgbtoHexValue(129, 75, 120), true);
-		UtilsItems.generateItemsFromMaterial("Talonite", "Talonite", 8, MaterialInfo.TALONITE, Utils.rgbtoHexValue(228, 75, 120), false);
+		generateItemsFromMaterial(ALLOY.SILICON_CARBIDE);
+		generateItemsFromMaterial(ALLOY.ZERON_100);
+		generateItemsFromMaterial(ALLOY.MARAGING250);
+		generateItemsFromMaterial(ALLOY.MARAGING300);
+		generateItemsFromMaterial(ALLOY.MARAGING350);
+		generateItemsFromMaterial(ALLOY.STELLITE);
+		generateItemsFromMaterial(ALLOY.TALONITE);
 		
-		UtilsItems.generateItemsFromMaterial("Tumbaga", "Tumbaga", 2, MaterialInfo.TUMBAGA, Utils.rgbtoHexValue(255,178,15), false); //Tumbaga was the name given by Spaniards to a non-specific alloy of gold and copper 
-		UtilsItems.generateItemsFromMaterial("Potin", "Potin", 4, MaterialInfo.POTIN, Utils.rgbtoHexValue(201,151,129), false); //Potin is traditionally an alloy of bronze, tin and lead, with varying quantities of each possible
+		//Tumbaga was the name given by Spaniards to a non-specific alloy of gold and copper 
+		generateItemsFromMaterial(ALLOY.TUMBAGA);
+		//Potin is traditionally an alloy of bronze, tin and lead, with varying quantities of each possible
+		generateItemsFromMaterial(ALLOY.POTIN);
 		
 
-		UtilsItems.generateItemsFromMaterial("HastelloyW", "Hastelloy-W", 6, MaterialInfo.HASTELLOY_W, Utils.rgbtoHexValue(218, 165, 32), false);
-		UtilsItems.generateItemsFromMaterial("HastelloyX", "Hastelloy-X", 6, MaterialInfo.HASTELLOY_X, Utils.rgbtoHexValue(255, 193, 37), false);
-		UtilsItems.generateItemsFromMaterial("HastelloyC276", "Hastelloy-C276", 7, MaterialInfo.HASTELLOY_C276, Utils.rgbtoHexValue(238, 180, 34), true);
-		UtilsItems.generateItemsFromMaterial("HastelloyN", "Hastelloy-N", 8, MaterialInfo.HASTELLOY_N, Utils.rgbtoHexValue(155, 223, 237), true);
+		generateItemsFromMaterial(ALLOY.HASTELLOY_W);
+		generateItemsFromMaterial(ALLOY.HASTELLOY_X);
+		generateItemsFromMaterial(ALLOY.HASTELLOY_C276);
+		generateItemsFromMaterial(ALLOY.HASTELLOY_N);
 		
-		UtilsItems.generateItemsFromMaterial("Incoloy020", "Incoloy-020", 7, MaterialInfo.INCOLOY020, Utils.rgbtoHexValue(81, 81, 81), false);
-		UtilsItems.generateItemsFromMaterial("IncoloyDS", "Incoloy-DS", 7, MaterialInfo.INCOLOYDS, Utils.rgbtoHexValue(91, 91, 91), false);
-		UtilsItems.generateItemsFromMaterial("IncoloyMA956", "Incoloy-MA956", 8, MaterialInfo.INCOLOYMA956, Utils.rgbtoHexValue(101, 101, 101), true);
-		
-		
-		UtilsItems.generateItemsFromMaterial("Zirconium", "Zirconium", 6, MaterialInfo.ZIRCONIUM, Utils.rgbtoHexValue(255, 250, 205), false);
-		UtilsItems.generateItemsFromMaterial("ZirconiumCarbide", "Zirconium Carbide", 7, MaterialInfo.ZIRCONIUMCARBIDE, Utils.rgbtoHexValue(222, 202, 180), true);
-		UtilsItems.generateItemsFromMaterial("TantalumCarbide", "Tantalum Carbide", 7, MaterialInfo.TANTALUMCARBIDE, Utils.rgbtoHexValue(139, 136, 120), true);
-		UtilsItems.generateItemsFromMaterial("NiobiumCarbide", "Niobium Carbide", 6, MaterialInfo.NIOMBIUMCARBIDE, Utils.rgbtoHexValue(205, 197, 191), true);
+		generateItemsFromMaterial(ALLOY.INCOLOY_020);
+		generateItemsFromMaterial(ALLOY.INCOLOY_DS);
+		generateItemsFromMaterial(ALLOY.INCOLOY_MA956);
 		
 		
-		//Uranium-233if
-		UtilsItems.generateItemsFromMaterial("Uranium233", "Uranium 233", 4, MaterialInfo.URANIUM233, Utils.rgbtoHexValue(73, 220, 83), false); //Uranium-233 is a fissile isotope of uranium that is bred from thorium-232 as part of the thorium fuel cycle. 
+		generateItemsFromMaterial(ELEMENT.ZIRCONIUM);
+		generateItemsFromMaterial(ALLOY.ZIRCONIUM_CARBIDE);
+		generateItemsFromMaterial(ALLOY.TANTALUM_CARBIDE);
+		generateItemsFromMaterial(ALLOY.NIOBIUM_CARBIDE);		
+		
+		//Uranium-233 is a fissile isotope of uranium that is bred from thorium-232 as part of the thorium fuel cycle.
+		UtilsItems.generateItemsFromMaterial(ELEMENT.URANIUM233);
+		
+		} catch (Throwable r){
+			Utils.LOG_INFO("Failed to Generated a Material. "+r.getMessage());
+			//Utils.LOG_INFO("Failed to Generated a Material. "+r.getCause().getMessage());
+			Utils.LOG_INFO("Failed to Generated a Material. "+r.getStackTrace()[0].getMethodName());
+			Utils.LOG_INFO("Failed to Generated a Material. "+r.getStackTrace()[1].getMethodName());
+			r.printStackTrace();
+			System.exit(1);
+		}
+		
+		
 		dustLithiumCarbonate = UtilsItems.generateSpecialUseDusts("LithiumCarbonate", "Lithium Carbonate", Utils.rgbtoHexValue(137, 139, 142))[0];
 
 		
@@ -382,6 +399,10 @@ public final class ModItems {
 			//GameRegistry.registerItem(FuelRod_Thorium, "itemFuelRod_Thorium");
 			//GameRegistry.registerItem(FuelRod_Uranium, "itemFuelRod_Uranium");
 			//GameRegistry.registerItem(FuelRod_Plutonium, "itemFuelRod_Plutonium");
+			
+			//FluidCell = new ItemStack(new IC2_ItemFluidCell("itemGT++FluidCell"));
+			
+			
 		}
 		else {
 			Utils.LOG_WARNING("IndustrialCraft2 not Found - Skipping Resources.");

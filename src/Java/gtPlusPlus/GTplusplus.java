@@ -23,6 +23,7 @@ import gtPlusPlus.core.util.item.UtilsItems;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.HANDLER_GT;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -98,7 +99,7 @@ implements ActionListener
 		String infusedDust3 = "dustInfused"+infusedDusts[c];
 		String infusedDust4 = "dustInfused"+infusedDusts[d];
 		Utils.LOG_INFO("Found the aspect of "+infusedDusts[a]+" to embody into energy crystals.");
-		Utils.LOG_INFO("Found the aspect of "+infusedDusts[b]+" to embody into energy crystals.");
+		Utils.LOG_INFO("Found the aspect of "+infusedDusts[b]+" to embody into eshonergy crystals.");
 		Utils.LOG_INFO("Found the aspect of "+infusedDusts[c]+" to embody into energy crystals.");
 		Utils.LOG_INFO("Found the aspect of "+infusedDusts[d]+" to embody into energy crystals.");
 		randomDust_A = infusedDust1;
@@ -108,7 +109,12 @@ implements ActionListener
 		//ItemStack a1 = UtilsItems.getItemStackOfAmountFromOreDict("dustInfused"+infusedDusts[a], 8);
 		//ItemStack b1 = UtilsItems.getItemStackOfAmountFromOreDict("dustInfused"+infusedDusts[b], 8);
 		//ItemStack c1 = UtilsItems.getItemStackOfAmountFromOreDict("dustInfused"+infusedDusts[c], 8);
-		//ItemStack d1 = UtilsItems.getItemStackOfAmountFromOreDict("dustInfused"+infusedDusts[d], 8);
+		//ItemStack d1 = UtilsItems.getItemStackOfAmountFromOreDict("dustInfused"+infusedDusts[d], 8);		
+
+		
+		//Do this weird things for textures.
+		Utils.LOG_WARNING("Processing texture: "+TexturesGtTools.SKOOKUM_CHOOCHER.getTextureFile().getResourcePath());
+		
 		
 	}
 

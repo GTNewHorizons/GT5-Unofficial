@@ -22,11 +22,14 @@ import gtPlusPlus.core.item.base.screws.BaseItemScrew;
 import gtPlusPlus.core.item.tool.staballoy.MultiPickaxeBase;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.lib.MaterialInfo;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.fluid.FluidUtils;
+import gtPlusPlus.core.util.materials.MaterialUtils;
 import gtPlusPlus.core.util.wrapper.var;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -39,34 +42,9 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class UtilsItems {
 
-	public static ItemStack getItemStackOfItem(Boolean modToCheck, String mod_itemname_meta){
-		if (modToCheck){
-			try{
-				Item em = null;
-
-				Item em1 = getItem(mod_itemname_meta);
-				Utils.LOG_WARNING("Found: "+em1.toString());
-				if (em1 != null){
-					em = em1;
-				}						
-				if (em != null ){
-					ItemStack returnStack = new ItemStack(em,1);				
-					return returnStack;
-				}
-				Utils.LOG_WARNING(mod_itemname_meta+" not found.");
-				return null;
-			} catch (NullPointerException e) {
-				Utils.LOG_ERROR(mod_itemname_meta+" not found. [NULL]");
-				return null;
-			}
-		}
-		return null;
-	}
-
 	public static ItemStack getSimpleStack(Item x){
 		return getSimpleStack(x, 1);
 	}
-
 	public static ItemStack getSimpleStack(Item x, int i){
 		try {
 			ItemStack r = new ItemStack(x, i);
@@ -75,7 +53,6 @@ public class UtilsItems {
 			return null;
 		}
 	}
-	
 	public static ItemStack getSimpleStack(ItemStack x, int i){
 		try {
 			ItemStack r = x.copy();
@@ -252,6 +229,16 @@ public class UtilsItems {
 		Item itemSpawnEgg = new BasicSpawnEgg(entityModID, parSpawnName, colourEgg, colourOverlay).setUnlocalizedName("spawn_egg_"+parSpawnName.toLowerCase()).setTextureName(CORE.MODID+":spawn_egg");
 		GameRegistry.registerItem(itemSpawnEgg, "spawnEgg"+parSpawnName);
 	}
+	
+
+	public static ItemStack[] validItemsForOreDict(String oredictName){
+		List<?> validNames = MaterialUtils.oreDictValuesForEntry(oredictName);
+		ItemStack[] inputs = null;
+		for (int i=0; i<validNames.size();i++){
+			inputs[i] = (ItemStack) validNames.get(i);
+		}
+		return inputs;		
+	}
 
 	public static ItemStack getItemStackOfAmountFromOreDict(String oredictName, int amount){
 		ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
@@ -269,25 +256,30 @@ public class UtilsItems {
 		if (returnValue.getItem().getClass() != ModItems.AAA_Broken.getClass() || returnValue.getItem() != ModItems.AAA_Broken){		
 		return returnValue;
 		}
-		
+	Utils.LOG_INFO(oredictName+" was not valid.");	
 	 return null;
 	}
 	
-	public static void generateItemsFromMaterial(String unlocalizedName, String materialName, int materialTier, MaterialInfo matInfo, int Colour, boolean hotIngot){
+	public static void generateItemsFromMaterial(Material matInfo){
+		
+		String unlocalizedName = matInfo.getUnlocalizedName();
+		String materialName = matInfo.getLocalizedName();
+		short[] C = matInfo.getRGBA();
+		int Colour = Utils.rgbtoHexValue(C[0], C[1], C[2]);
+		boolean hotIngot = matInfo.requiresBlastFurnace();
+		int materialTier = 0; //TODO
+		
 		if (materialTier > 10 || materialTier <= 0){
 			materialTier = 2;
 		}
-		int sRadiation = 0;
 		
-		if (materialName.toLowerCase().contains("uranium")){
-			sRadiation = 2;
+		
+		
+		int sRadiation = 0;
+		if (isRadioactive(materialName)){
+			sRadiation = getRadioactivityLevel(materialName);
 		}
-		else if (materialName.toLowerCase().contains("plutonium")){
-			sRadiation = 4;
-		}
-		else if (materialName.toLowerCase().contains("thorium")){
-			sRadiation = 1;
-		}
+	
 		if (sRadiation >= 1){
 			Item temp;
 			Block tempBlock;
@@ -326,11 +318,13 @@ public class UtilsItems {
 			temp = new BaseItemScrew("itemScrew"+unlocalizedName, materialName, Colour, materialTier);
 			temp = new BaseItemRotor("itemRotor"+unlocalizedName, materialName, Colour);
 			temp = new BaseItemGear("itemGear"+unlocalizedName, materialName, Colour, materialTier);
-		}
+		}		
+
+		FluidUtils.generateFluid(matInfo, 1);
 		
 	}
 	
-	public static Item[] generateDusts(String unlocalizedName, String materialName, int materialTier, MaterialInfo matInfo, int Colour, boolean hotIngot){
+	public static Item[] generateDusts(String unlocalizedName, String materialName, int materialTier, Material matInfo, int Colour, boolean hotIngot){
 		int radioactive = getRadioactivityLevel(materialName);
 		Item[] output = {
 		new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", hotIngot, materialTier, radioactive),
@@ -415,6 +409,17 @@ public class UtilsItems {
 		for (ItemStack alph : aStack){
 			String temp = itemNames;
 			itemNames = temp + ", " + alph.getDisplayName() + " x" + alph.stackSize;
+		}
+		return itemNames;
+		
+	}
+	
+	public static String[] getArrayStackNamesAsArray(ItemStack[] aStack){
+		String[] itemNames = {};
+		int arpos = 0;
+		for (ItemStack alph : aStack){
+			itemNames[arpos] = alph.getDisplayName();
+			arpos++;
 		}
 		return itemNames;
 		

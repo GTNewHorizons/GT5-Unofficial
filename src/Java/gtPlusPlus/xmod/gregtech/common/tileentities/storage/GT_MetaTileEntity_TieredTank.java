@@ -5,14 +5,20 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.objects.GT_RenderedTexture;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GregtechMetaBasicTank;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_TieredTank
-        extends GT_MetaTileEntity_BasicTank {
+        extends GregtechMetaBasicTank {
+	
+	protected FluidStack internalTank = getInternalStack();
+	protected String fluidName = internalTank.getFluid().getName();
+	protected int fluidAmount = internalTank.amount;
+	
     public GT_MetaTileEntity_TieredTank(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 3, "Stores " + ((int) (Math.pow(2, aTier) * 32000)) + "L of fluid");
     }
@@ -43,12 +49,20 @@ public class GT_MetaTileEntity_TieredTank
     
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        Utils.LOG_INFO("Dumping Fluid data. Name: "+mFluid.getFluid().getName()+" Amount: "+mFluid.amount+"L");
         if (mFluid != null) aNBT.setTag("mFluid", mFluid.writeToNBT(new NBTTagCompound()));
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
         mFluid = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mFluid"));
+        if (getInternalStack() != null){
+        Utils.LOG_INFO("Dumping Fluid data. Name: "+mFluid.getFluid().getName()+" Amount: "+mFluid.amount+"L");}
+        else{
+        //Utils.LOG_INFO("Loaded FluidStack was NULL");
+        	}
     }
 
     @Override

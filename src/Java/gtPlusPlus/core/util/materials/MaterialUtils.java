@@ -5,12 +5,15 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.objects.MaterialStack;
-import gtPlusPlus.core.lib.MaterialInfo;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class MaterialUtils {
 	
@@ -31,6 +34,27 @@ public class MaterialUtils {
 				aColor, aExtraData, aMaterialList, aAspects);
 		}
 	
+	public static List<?> oreDictValuesForEntry(String oredictName){
+		List<?> oredictItemNames;
+		if(OreDictionary.doesOreNameExist(oredictName)){
+			ArrayList<ItemStack> oredictItems = OreDictionary.getOres(oredictName);
+			oredictItemNames = Utils.convertArrayListToList(oredictItems);
+			return oredictItemNames;
+		}		
+		return null;
+	}
+	
+	public static Material generateMaterialFromGtENUM(Materials material){
+		String name = material.name();
+		short[] rgba = material.mRGBa;
+		int melting = material.mMeltingPoint;
+		int boiling = material.mBlastFurnaceTemp;
+		long protons = material.getProtons();
+		long neutrons = material.getNeutrons();
+		boolean blastFurnace = material.mBlastFurnaceRequired;		
+		return new Material(name, rgba, melting, boiling, protons, neutrons, blastFurnace, null);
+	}
+	
 
 	/*
 	 * That's shown, many times, in the EnumHelper code, all the add functions just wrap the addEnum function.
@@ -50,7 +74,7 @@ public class MaterialUtils {
 
 	
 
-	public static Materials GenerateGtMaterialForSingleUse(MaterialInfo s){
+	/*public static Materials GenerateGtMaterialForSingleUse(MaterialInfo s){
 
 		Materials yourName = EnumHelper.addEnum(
 
@@ -66,10 +90,10 @@ public class MaterialUtils {
 
 
 
-			/*Class<? extends ItemCell> clz = item.getClass();
+			Class<? extends ItemCell> clz = item.getClass();
 			Method methode = clz.getDeclaredMethod("addCell", int.class, InternalName.class, Block[].class);
 			methode.setAccessible(true);
-			ItemStack temp = (ItemStack) methode.invoke(item, cellID++, yourName, new Block[0]);*/
+			ItemStack temp = (ItemStack) methode.invoke(item, cellID++, yourName, new Block[0]);
 
 
 
@@ -82,6 +106,6 @@ public class MaterialUtils {
 			e.printStackTrace();
 		}
 		return null;
-	}
+	}*/
 
 }

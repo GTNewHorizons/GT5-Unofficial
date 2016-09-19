@@ -5,7 +5,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.MaterialInfo;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.UtilsItems;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -29,9 +29,10 @@ public class BaseItemDust extends Item{
 	protected boolean useBlastFurnace;
 	String name = "";
 	private int mTier;
-	private MaterialInfo dustInfo;
+	private Material dustInfo;
+	private String oredictName;
 
-	public BaseItemDust(String unlocalizedName, String materialName, MaterialInfo matInfo, int colour, String pileSize, boolean blastFurnaceRequired, int tier, int sRadioactivity) {
+	public BaseItemDust(String unlocalizedName, String materialName, Material matInfo, int colour, String pileSize, boolean blastFurnaceRequired, int tier, int sRadioactivity) {
 		setUnlocalizedName(unlocalizedName);
 		this.setUnlocalizedName(unlocalizedName);
 		this.setMaxStackSize(64);	
@@ -70,6 +71,7 @@ public class BaseItemDust extends Item{
 			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
 		}		
 		if (temp != null && temp != ""){
+			oredictName = temp;
 			GT_OreDictUnificator.registerOre(temp, UtilsItems.getSimpleStack(this));
 		}
 		addMixerRecipe();
@@ -133,109 +135,75 @@ public class BaseItemDust extends Item{
 
 
 	private void addMixerRecipe(){
-		ItemStack tempStack = UtilsItems.getSimpleStack(this);
-		ItemStack tempOutput = null;
-		ItemStack[] inputStacks = dustInfo.getInputs();
-		ItemStack[] outputStacks = dustInfo.getOutputs();
-		String temp = "";
-		Utils.LOG_WARNING("Unlocalized name for OreDict nameGen: "+getUnlocalizedName());
-		if (getUnlocalizedName().contains("item.")){
-			temp = getUnlocalizedName().replace("item.", "");
-			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
+		
+		ItemStack thisItem;		
+		ItemStack normalDust = dustInfo.getDust(1);
+		ItemStack smallDust = dustInfo.getSmallDust(1);
+		ItemStack tinyDust = dustInfo.getTinyDust(1);
+		
+		ItemStack[] inputStacks = dustInfo.getMaterialComposites();
+		ItemStack outputStacks = dustInfo.getDust(10);
+		
+		if (oredictName.contains("dustTiny")){
+			thisItem = tinyDust;
+			ItemStack normalStack = dustInfo.getDust(1);
+			ItemStack tinyStack = dustInfo.getTinyDust(9);
+			Utils.LOG_INFO("Generating a 9 Tiny dust to 1 Dust recipe for "+materialName);
+			UtilsRecipe.recipeBuilder(
+					thisItem,	thisItem, thisItem, 
+					thisItem, thisItem, thisItem, 
+					thisItem, thisItem, thisItem,
+					normalStack);
+			
+			Utils.LOG_INFO("Generating a 9 Tiny dust from 1 Dust recipe for "+materialName);
+			UtilsRecipe.recipeBuilder(
+					normalStack, null, null, 
+					null, null, null, 
+					null, null, null,
+					tinyStack);
+			
+		}
+		else if (oredictName.contains("dustSmall")){
+			thisItem = smallDust;
+			ItemStack normalStack = dustInfo.getDust(1);
+			ItemStack smallStack = dustInfo.getSmallDust(4);
+			
+			Utils.LOG_INFO("Generating a 4 Small dust to 1 Dust recipe for "+materialName);
+			UtilsRecipe.recipeBuilder(
+					thisItem, thisItem, null, 
+					thisItem, thisItem, null, 
+					null, null, null,
+					normalStack);
+			
+			Utils.LOG_INFO("Generating a 4 Small dust from 1 Dust recipe for "+materialName);
+			UtilsRecipe.recipeBuilder(
+					null, normalStack, null, 
+					null, null, null, 
+					null, null, null,
+					smallStack);
+			
 		}
 		else {
-			temp = getUnlocalizedName();
-		}
-		if (temp.contains("DustTiny")){
-			temp = temp.replace("itemDustTiny", "dust");
-			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
-		}
-		else if (temp.contains("DustSmall")){
-			temp = temp.replace("itemDustSmall", "dust");
-			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
-		}
-		else {
-			temp = temp.replace("itemD", "d");
-			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
-		}		
-		if (temp != null && temp != ""){
+			thisItem = normalDust;
+		}			
 
-			if (getUnlocalizedName().contains("DustTiny") || getUnlocalizedName().contains("DustSmall")){
-				tempOutput = UtilsItems.getItemStackOfAmountFromOreDict(temp, 1);
-			}
-			else {				
-				if (outputStacks[0] != null){
-					Utils.LOG_WARNING("Getting output dusts for mixer recipe. Checking ENUM, got: "+outputStacks[0].toString());
-					tempOutput = outputStacks[0];
+		if (thisItem == normalDust){				
+				Utils.LOG_WARNING("Generating a Dust recipe for "+materialName+" in the mixer.");
+
+				if (inputStacks.length != 0){
+					GT_Values.RA.addMixerRecipe(
+							inputStacks[0], inputStacks[1],
+							inputStacks[2], inputStacks[3],
+							null, null,
+							outputStacks,
+							8*mTier*20, 8*mTier*2);
 				}
 				else {
-					Utils.LOG_WARNING("Getting output dusts for mixer recipe. Enum check failed, failback item is: "+temp);
-					tempOutput = UtilsItems.getItemStackOfAmountFromOreDict(temp, 1);
+					return;
 				}
-			}
-
-		}
-
-		if (tempOutput != null){
-			if (getUnlocalizedName().contains("DustTiny")){
-				Utils.LOG_WARNING("Generating a 9 Tiny dust to 1 Dust recipe for "+materialName);
-				UtilsRecipe.addShapelessGregtechRecipe(tempOutput,
-						tempStack, tempStack, tempStack,
-						tempStack, tempStack, tempStack,
-						tempStack, tempStack, tempStack);
-			}
-			else if (getUnlocalizedName().contains("DustSmall")){
-				Utils.LOG_WARNING("Generating a 4 Small dust to 1 Dust recipe for "+materialName);
-				UtilsRecipe.addShapelessGregtechRecipe(tempOutput,
-						tempStack, tempStack, null,
-						tempStack, tempStack, null,
-						null, null, null);
-			}
-			else {
-				Utils.LOG_WARNING("Generating a Dust recipe for "+materialName+" in the mixer.");		
-
-
-				int i = 0;
-				if (inputStacks.length >= 2){
-					for (ItemStack is : inputStacks){
-						if (is != null){
-							Utils.LOG_WARNING("Found "+is.getDisplayName()+" as an input for mixer recipe.");		
-							if (is.getDisplayName().toLowerCase().contains("tell alkalus")){
-								ItemStack tempStackForAName = inputStacks[i];
-								String[] inputList = dustInfo.getInputItemsAsList();
-								int[] inputSizes = dustInfo.getInputStackSizesAsList();
-								inputStacks[i] = UtilsItems.getItemStackOfAmountFromOreDict(inputList[i], inputSizes[i]);
-								Utils.LOG_WARNING("Swapping input slot "+i+" which contains "+tempStackForAName.getDisplayName()+" with "+inputStacks[i].getDisplayName()+".");	
-							}
-
-						}
-
-						else {
-							Utils.LOG_WARNING("Input "+i+" was null.");						
-						}
-
-						i++;
-					}
-				}
-
-				GT_Values.RA.addMixerRecipe(
-						inputStacks[0], inputStacks[1],
-						inputStacks[2], inputStacks[3],
-						null, null,
-						tempOutput,
-						8*mTier*20, 8*mTier*2);
-
-				/*GT_Values.RA.addMixerRecipe(
-						GT_Utility.copyAmount(inputStacks[0].stackSize, new Object[]{inputStacks[0]}), GT_Utility.copyAmount(inputStacks[1].stackSize, new Object[]{inputStacks[1]}),
-						GT_Utility.copyAmount(inputStacks[2].stackSize, new Object[]{inputStacks[2]}), GT_Utility.copyAmount(inputStacks[3].stackSize, new Object[]{inputStacks[3]}), 
-						null, null,
-						tempOutput,
-						8*mTier*20, 8*mTier*2);*/
-
 			}
 		}
 
-	}
 
 	private void addMacerationRecipe(){
 		Utils.LOG_WARNING("Adding recipe for "+materialName+" Dusts");
@@ -260,15 +228,25 @@ public class BaseItemDust extends Item{
 
 		tempIngot = tempIngot.replace("itemDust", "ingot");
 		Utils.LOG_WARNING("Generating OreDict Name: "+tempIngot);
-		ItemStack[] outputStacks = dustInfo.getOutputs();
+		ItemStack[] outputStacks = {dustInfo.getDust(1)};
 		if (tempIngot != null && tempIngot != ""){
 			tempInputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 1);
 			tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempDust, 1);
-			ItemStack tempStackOutput2;
+			ItemStack tempStackOutput2 = null;
 			int chance = mTier*10/MathUtils.randInt(10, 20);
-			if (outputStacks[1] != null && !outputStacks[1].getUnlocalizedName().toLowerCase().contains("aaa_broken")){
-				tempStackOutput2 = outputStacks[1];
-				tempOutputStack = outputStacks[0];
+			if (outputStacks.length != 0){
+				if (outputStacks.length == 1){
+					tempStackOutput2 = null;
+				}
+				else {
+					if (!outputStacks[1].getUnlocalizedName().toLowerCase().contains("aaa_broken")){
+						tempStackOutput2 = outputStacks[1];
+						tempOutputStack = outputStacks[0];
+					}
+					else {
+						tempStackOutput2 = null;
+					}
+				}								
 			}
 			else {
 				tempStackOutput2 = null;

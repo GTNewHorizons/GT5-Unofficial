@@ -1,7 +1,8 @@
-package gtPlusPlus.core.block.general.fluids;
+package gtPlusPlus.core.fluids;
 
 import static gtPlusPlus.core.block.ModBlocks.blockFluidJackDaniels;
 import static gtPlusPlus.core.block.ModBlocks.fluidJackDaniels;
+import gtPlusPlus.core.block.general.fluids.BlockFluidJackDaniels;
 import gtPlusPlus.core.lib.CORE;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -29,6 +30,7 @@ public class FluidRegistryHandler {
 		run();
 	}
 	
+	@SuppressWarnings("unused")
 	private static void run(){
 		fluidJackDaniels();
 	}

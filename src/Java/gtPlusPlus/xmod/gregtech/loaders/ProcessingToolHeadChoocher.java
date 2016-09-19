@@ -1,19 +1,20 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
+import gregtech.api.enums.ToolDictNames;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.recipe.UtilsRecipe;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_OreRecipeRegistrator;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
-public class ProcessingToolHeadChoocher implements Interface_OreRecipeRegistrator {
+public class ProcessingToolHeadChoocher implements Interface_OreRecipeRegistrator, Runnable {
     public ProcessingToolHeadChoocher() {
         GregtechOrePrefixes.toolSkookumChoocher.add(this);
     }
@@ -21,30 +22,10 @@ public class ProcessingToolHeadChoocher implements Interface_OreRecipeRegistrato
     @Override
 	public void registerOre(GregtechOrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         if ((aMaterial != Materials.Stone) && (aMaterial != Materials.Flint)) {
-            GT_ModHandler.addShapelessCraftingRecipe(MetaGeneratedGregtechTools.INSTANCE.getToolWithStats((aMaterial.contains(SubTag.BOUNCY)) || (aMaterial.contains(SubTag.WOOD)) ? 14 : 12, 1, aMaterial, aMaterial.mHandleMaterial, null), GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
-            GT_ModHandler.addCraftingRecipe(MetaGeneratedGregtechTools.INSTANCE.getToolWithStats((aMaterial.contains(SubTag.BOUNCY)) || (aMaterial.contains(SubTag.WOOD)) ? 14 : 12, 1, aMaterial, aMaterial.mHandleMaterial, null), GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"XX ", "XXS", "XX ", Character.valueOf('X'), aMaterial == Materials.Wood ? OrePrefixes.plank.get(Materials.Wood) : OrePrefixes.ingot.get(aMaterial), Character.valueOf('S'), OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
-            GT_ModHandler.addCraftingRecipe(MetaGeneratedGregtechTools.INSTANCE.getToolWithStats((aMaterial.contains(SubTag.BOUNCY)) || (aMaterial.contains(SubTag.WOOD)) ? 14 : 12, 1, aMaterial, aMaterial.mHandleMaterial, null), GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"XX ", "XXS", "XX ", Character.valueOf('X'), aMaterial == Materials.Wood ? OrePrefixes.plank.get(Materials.Wood) : OrePrefixes.gem.get(aMaterial), Character.valueOf('S'), OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
             if (aMaterial != Materials.Rubber)
-                GT_ModHandler.addCraftingRecipe(MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(44, 1, aMaterial, aMaterial, null), GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"xRR", " SR", "S f", Character.valueOf('S'), OrePrefixes.stick.get(aMaterial), Character.valueOf('R'), OrePrefixes.plate.get(Materials.Rubber)});
             if ((!aMaterial.contains(SubTag.WOOD)) && (!aMaterial.contains(SubTag.BOUNCY)) && (!aMaterial.contains(SubTag.NO_SMASHING))) {
                 GT_ModHandler.addCraftingRecipe(MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(16, 1, aMaterial, aMaterial, null), GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"IhI", "III", " I ", Character.valueOf('I'), OrePrefixes.ingot.get(aMaterial)});
-                GT_ModHandler.addCraftingRecipe(MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(20, 1, aMaterial, aMaterial, null), GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"hDS", "DSD", "SDf", Character.valueOf('S'), OrePrefixes.stick.get(aMaterial), Character.valueOf('D'), Dyes.dyeBlue});
-                GT_ModHandler.addCraftingRecipe(MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(22, 1, aMaterial, aMaterial.mHandleMaterial, null), GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{" fS", " Sh", "W  ", Character.valueOf('S'), OrePrefixes.stick.get(aMaterial), Character.valueOf('W'), OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
-                GT_ModHandler.addCraftingRecipe(MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(26, 1, aMaterial, aMaterial, null), GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"PfP", "hPd", "STS", Character.valueOf('S'), OrePrefixes.stick.get(aMaterial), Character.valueOf('P'), OrePrefixes.plate.get(aMaterial), Character.valueOf('T'), OrePrefixes.screw.get(aMaterial)});
-                GT_ModHandler.addCraftingRecipe(MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(28, 1, aMaterial, aMaterial, null), GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"SWS", "SSS", "xSh", Character.valueOf('S'), OrePrefixes.stick.get(aMaterial), Character.valueOf('W'), new ItemStack(Blocks.wool, 1, 32767)});
-                GT_ModHandler.addCraftingRecipe(MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(30, 1, aMaterial, aMaterial, null), GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"PfP", "PdP", "STS", Character.valueOf('S'), OrePrefixes.stick.get(aMaterial), Character.valueOf('P'), OrePrefixes.plate.get(aMaterial), Character.valueOf('T'), OrePrefixes.screw.get(aMaterial)});
-                GT_ModHandler.addCraftingRecipe(MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(34, 1, aMaterial, aMaterial, null), GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"fPh", " S ", Character.valueOf('S'), OrePrefixes.stick.get(aMaterial), Character.valueOf('P'), OrePrefixes.plate.get(aMaterial)});
-                GT_ModHandler.addCraftingRecipe(MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(36, 1, aMaterial, aMaterial, null), GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"PPf", "PP ", "Sh ", Character.valueOf('S'), OrePrefixes.stick.get(aMaterial), Character.valueOf('P'), OrePrefixes.plate.get(aMaterial)});
-                GT_ModHandler.addCraftingRecipe(MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(160, 1, aMaterial, Materials.Rubber, new long[]{100000L, 32L, 1L, -1L}), GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"LBf", "Sd ", "P  ", 'B', OrePrefixes.bolt.get(aMaterial), 'P', OrePrefixes.plate.get(Materials.Rubber), 'S', OrePrefixes.stick.get(Materials.Iron), 'L', ItemList.Battery_RE_LV_Lithium.get(1L, new Object[0])});
-
-//				GT_ModHandler.addCraftingRecipe(GT_Utility.copyAmount(1L,OrePrefixes.turbineBlade.get(aMaterial)), gregtech.api.util.GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "B", "B", "B", 'S', OrePrefixes.screw.get(aMaterial), 'B', OrePrefixes.plate.get(aMaterial) });     
-
-
-                //GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 4L), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Magnalium, 1L), MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(170, 1, aMaterial, aMaterial, null), 160, 100);
-                //GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 8L), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Titanium, 1L), MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(172, 1, aMaterial, aMaterial, null), 320, 400);
-                //GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 12L), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.TungstenSteel, 1L), MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(174, 1, aMaterial, aMaterial, null), 640, 1600);
-                //GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.turbineBlade, aMaterial, 16L), GT_OreDictUnificator.get(OrePrefixes.stickLong, Materials.Americium, 1L), MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(176, 1, aMaterial, aMaterial, null), 1280, 6400);
-            }
+              }
         }
     }
 
@@ -55,4 +36,57 @@ public class ProcessingToolHeadChoocher implements Interface_OreRecipeRegistrato
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void materialsLoops(){
+		Materials[] i = Materials.values();
+		int size = i.length;
+		Utils.LOG_WARNING("Materials to attempt tool gen. with: "+size);
+		int used = 0;
+		Materials aMaterial = null;
+		for (int r=0;r<size;r++){
+			aMaterial = i[r];			
+			if ((aMaterial != Materials.Stone) && (aMaterial != Materials.Flint) && (aMaterial != Materials.Rubber) && (aMaterial != Materials._NULL)) {	     
+	            if ((!aMaterial.contains(SubTag.WOOD)) && (!aMaterial.contains(SubTag.BOUNCY)) && (!aMaterial.contains(SubTag.NO_SMASHING))&& (!aMaterial.contains(SubTag.TRANSPARENT))&& (!aMaterial.contains(SubTag.FLAMMABLE))&& (!aMaterial.contains(SubTag.MAGICAL))&& (!aMaterial.contains(SubTag.NO_SMELTING))) {
+	        		Utils.LOG_WARNING("Found "+aMaterial.name()+" as a valid Skookum Choocher Material.");
+	        		//Input 1
+	        		ItemStack plate = GT_OreDictUnificator.get(OrePrefixes.plate, aMaterial, 1L);
+	        		ItemStack ingot = GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L);
+	        		ItemStack screw = GT_OreDictUnificator.get(OrePrefixes.screw, aMaterial, 1L);
+	        		ItemStack longrod = GT_OreDictUnificator.get(OrePrefixes.stickLong, aMaterial, 1L);
+	        		ItemStack hammerhead = GT_OreDictUnificator.get(OrePrefixes.toolHeadHammer, aMaterial, 1L);
+	        		
+	        		if (null != plate && null != ingot && null != hammerhead && null != longrod && null != screw){
+	        			UtilsRecipe.recipeBuilder(
+		        				hammerhead, ToolDictNames.craftingToolScrewdriver.name(), plate,
+		        				ingot, plate, plate,
+		        				longrod, screw, null,		        				
+		        				MetaGeneratedGregtechTools.INSTANCE.getToolWithStats(MetaGeneratedGregtechTools.SKOOKUM_CHOOCHER, 1, aMaterial, null, null));
+		        		used++;
+	        		}    
+	        		else {
+	        			Utils.LOG_WARNING(""+aMaterial.name()+" could not be used for all input compoenents. [3x"+aMaterial.name()+" plates, 2x"+aMaterial.name()+" ingots, 1x"+aMaterial.name()+" Hard Hammer Head.");
+	        		}
+	                //GT_ModHandler.addCraftingRecipe(, GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"P H", "PIP", " I ", Character.valueOf('I'), OrePrefixes.ingot.get(aMaterial), Character.valueOf('P'), OrePrefixes.plate.get(aMaterial), Character.valueOf('H'), OrePrefixes.toolHeadHammer.get(aMaterial)});
+	              }
+	            else {
+					Utils.LOG_WARNING(""+aMaterial.name()+" was not a valid Skookum Choocher Material.");			
+				}
+	        }
+			else {
+				Utils.LOG_WARNING(""+aMaterial.name()+" was not a valid Skookum Choocher Material.");			
+			}
+			
+			
+		}
+		
+		Utils.LOG_INFO("Materials used for tool gen: "+used);
+	}
+
+	@Override
+	public void run() {
+		Utils.LOG_INFO("Generating Skookum Choochers of all GT Materials.");
+		materialsLoops();		
+	}
+	
+	
 }
