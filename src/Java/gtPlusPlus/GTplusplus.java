@@ -30,6 +30,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Collection;
 
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.config.Configuration;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -115,7 +116,9 @@ implements ActionListener
 
 		
 		//Do this weird things for textures.
+		if (Minecraft.getMinecraft().theWorld.isRemote){
 		loadTextures();
+		}
 		
 		
 	}
