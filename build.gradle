@@ -40,7 +40,7 @@ sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 archivesBaseName = "GT-PlusPlus"
-version = "1.4.8-prerelease"
+version = "1.4.8.2-prerelease"
 minecraft.version = "1.7.10-10.13.4.1448-1.7.10"
 
 task sourceJar(type: Jar) {
