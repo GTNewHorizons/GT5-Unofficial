@@ -16,8 +16,30 @@ public class GT_MetaTileEntity_TieredTank
         extends GregtechMetaBasicTank {
 	
 	protected FluidStack internalTank = getInternalStack();
-	protected String fluidName = internalTank.getFluid().getName();
-	protected int fluidAmount = internalTank.amount;
+	protected String fluidName = getFluidName();
+	protected int fluidAmount = getInternalFluidAmount();
+	
+	private String getFluidName(){
+		String x;
+		if (internalTank != null){
+			x = internalTank.getFluid().getName();
+		}
+		else {
+			x = "null";
+		}
+		return x;
+	}
+	
+	private int getInternalFluidAmount(){
+		int x;
+		if (internalTank != null){
+			x = internalTank.amount;
+		}
+		else {
+			x = 0;
+		}
+		return x;
+	}
 	
     public GT_MetaTileEntity_TieredTank(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 3, "Stores " + ((int) (Math.pow(2, aTier) * 32000)) + "L of fluid");

@@ -17,6 +17,7 @@ public class LoadedMods {
 	public static boolean Simply_Jetpacks = false;
 	public static boolean RFTools = false;
 	public static boolean Thaumcraft = false;
+	public static boolean Baubles = false;
 	public static boolean Extra_Utils = false;
 	public static boolean PneumaticCraft = false;
 	public static boolean MorePlanets = false;
@@ -165,6 +166,11 @@ public class LoadedMods {
 		if (Loader.isModLoaded("ihl") == true){
 			IHL  = true;
 			Utils.LOG_INFO("Components enabled for: IHL");
+			totalMods++;
+		} 
+		if (Loader.isModLoaded("Baubles") == true){
+			Baubles  = true;
+			Utils.LOG_INFO("Components enabled for: Baubles");
 			totalMods++;
 		}
 	

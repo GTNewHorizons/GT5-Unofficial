@@ -41,7 +41,7 @@ public final class ALLOY {
 
 	public static final Material TANTALLOY_60 = new Material(
 			"Tantalloy-60", //Material Name
-			new short[]{66, 75, 166, 0}, //Material Colour
+			new short[]{213, 231, 237, 0}, //Material Colour
 			3025, //Melting Point in C
 			((ELEMENT.TUNGSTEN.getBoilingPoint_C()*1)+(ELEMENT.TANTALUM.getBoilingPoint_C()*8)+(ELEMENT.TITANIUM.getBoilingPoint_C()*1))/10, //Boiling Point in C
 			((ELEMENT.TUNGSTEN.getProtons()*1)+(ELEMENT.TANTALUM.getProtons()*8)+(ELEMENT.TITANIUM.getProtons()*1))/10, //Protons
@@ -56,7 +56,7 @@ public final class ALLOY {
 
 	public static final Material TANTALLOY_61 = new Material(
 			"Tantalloy-61", //Material Name
-			new short[]{122, 135, 196, 0}, //Material Colour
+			new short[]{193, 211, 217, 0}, //Material Colour
 			3030, //Melting Point in C
 			((ELEMENT.TUNGSTEN.getBoilingPoint_C()*1)+(ELEMENT.TANTALUM.getBoilingPoint_C()*7)+(ELEMENT.TITANIUM.getBoilingPoint_C()*1)+(ELEMENT.YTTRIUM.getBoilingPoint_C()*1))/10, //Boiling Point in C
 			((ELEMENT.TUNGSTEN.getProtons()*1)+(ELEMENT.TANTALUM.getProtons()*7)+(ELEMENT.TITANIUM.getProtons()*1)+(ELEMENT.YTTRIUM.getProtons()*1))/10, //Protons

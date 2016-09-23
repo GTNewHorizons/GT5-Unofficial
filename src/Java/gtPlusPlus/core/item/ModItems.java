@@ -391,9 +391,12 @@ public final class ModItems {
 			FuelRod_Uranium = new FuelRod_Base("itemFuelRod_Uranium", "Uranium", 2500, 2500);
 			FuelRod_Plutonium = new FuelRod_Base("itemFuelRod_Plutonium", "Plutonium", 5000, 5000);
 			RfEuBattery = new RF2EU_Battery();
+			
+			if (LoadedMods.Baubles){
 			itemPersonalCloakingDevice = new ItemCloakingDevice(0);
 			//itemPersonalCloakingDeviceCharged = new ItemCloakingDevice(0).set;
 			itemPersonalHealingDevice = new ItemHealingDevice();
+			}
 			//Registry
 			//GameRegistry.registerItem(FuelRod_Empty, "itemFuelRod_Empty");
 			//GameRegistry.registerItem(FuelRod_Thorium, "itemFuelRod_Thorium");

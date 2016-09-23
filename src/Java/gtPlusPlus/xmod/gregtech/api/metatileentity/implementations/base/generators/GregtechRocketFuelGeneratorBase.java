@@ -18,6 +18,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_BasicTank {
+	
+	private boolean useFuel = false;
+	
     public GregtechRocketFuelGeneratorBase(int aID, String aName, String aNameRegional, int aTier, String aDescription, ITexture... aTextures) {
         super(aID, aName, aNameRegional, aTier, 3, aDescription, aTextures);
     }
@@ -193,8 +196,15 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
                 int tFuelValue = getFuelValue(mFluid), tConsumed = consumedFluidPerOperation(mFluid);
                 if (tFuelValue > 0 && tConsumed > 0 && mFluid.amount > tConsumed) {
                     long tFluidAmountToUse = Math.min(mFluid.amount / tConsumed, (maxEUOutput() * 20 + getMinimumStoredEU() - aBaseMetaTileEntity.getUniversalEnergyStored()) / tFuelValue);
-                    if (tFluidAmountToUse > 0 && aBaseMetaTileEntity.increaseStoredEnergyUnits(tFluidAmountToUse * tFuelValue, true))
-                        mFluid.amount -= tFluidAmountToUse * tConsumed;
+                    if (tFluidAmountToUse > 0 && aBaseMetaTileEntity.increaseStoredEnergyUnits(tFluidAmountToUse * tFuelValue, true)){
+                        if (useFuel){
+                        	mFluid.amount -= tFluidAmountToUse * tConsumed;
+                        	useFuel = false;
+                        }
+                        else {
+                        	useFuel = true;
+                        }
+                    }
                 }
             }
             if (mInventory[getInputSlot()] != null && aBaseMetaTileEntity.getUniversalEnergyStored() < (maxEUOutput() * 20 + getMinimumStoredEU()) && GT_Utility.getFluidForFilledItem(mInventory[getInputSlot()], true) == null) {
