@@ -1,17 +1,14 @@
 package gtPlusPlus.core.common.compat;
 
 import gregtech.api.util.GT_OreDictUnificator;
-import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.lib.CORE.configSwitches;
+import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.item.UtilsItems;
-import net.minecraft.item.ItemStack;
 
 public class COMPAT_Thaumcraft {
 
 	public static void OreDict(){
-		UtilsItems.getItemForOreDict("Thaumcraft:ItemResource", "ingotVoidMetal", "Void Metal Ingot", 16);
-		GT_OreDictUnificator.registerOre("plateVoidMetal", new ItemStack(ModItems.itemPlateVoidMetal));
+		
 		if (configSwitches.enableThaumcraftShardUnification){
 			run();
 		}

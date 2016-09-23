@@ -3,8 +3,10 @@ package gtPlusPlus.core.item.tool.staballoy;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.item.UtilsItems;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.player.UtilsMining;
+import gtPlusPlus.core.util.recipe.UtilsRecipe;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -47,6 +49,7 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 		this.materialName = material.name();
 		GameRegistry.registerItem(this, Utils.sanitizeString(unlocalizedName));
 		this.setCreativeTab(AddToCreativeTab.tabTools);
+		try {addRecipe();} catch (Throwable e){}
 	}
 	
 	/*
@@ -58,6 +61,20 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 	 * 
 	 * 
 	 */
+	
+	private void addRecipe(){
+		String plateDense = "plateDense"+materialName;
+		String rodLong = "stickLong"+materialName;
+		String toolHammer = "craftingToolHardHammer";
+		String toolWrench = "craftingToolWrench";
+		String toolFile = "craftingToolFile";
+		String toolScrewDriver = "craftingToolScrewdriver";
+		UtilsRecipe.recipeBuilder(
+				plateDense, plateDense, plateDense,
+				toolFile, rodLong, toolHammer,
+				toolWrench, rodLong, toolScrewDriver,
+				UtilsItems.getSimpleStack(this));
+	}
 	
 	public final String getMaterialName() {
 		return materialName;

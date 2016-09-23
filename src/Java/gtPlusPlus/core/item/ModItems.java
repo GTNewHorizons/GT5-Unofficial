@@ -230,7 +230,7 @@ public final class ModItems {
 
 		
 		
-		boolean gtStyleTools = true;
+		boolean gtStyleTools = LoadedMods.Gregtech;
 
 		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Wood);
 		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Cobblestone);
@@ -283,23 +283,14 @@ public final class ModItems {
 		if (LoadedMods.EnderIO || LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("EnderIO Found - Loading Resources.");
 			//Item Init
-			itemPlateSoularium = new Item().setUnlocalizedName("itemPlateSoularium").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateSoularium");
-			itemPlateRedstoneAlloy = new Item().setUnlocalizedName("itemPlateRedstoneAlloy").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateRedstoneAlloy");
-			itemPlateElectricalSteel = new Item().setUnlocalizedName("itemPlateElectricalSteel").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateElectricalSteel");
-			itemPlatePulsatingIron = new Item().setUnlocalizedName("itemPlatePulsatingIron").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlatePulsatingIron");
-			itemPlateEnergeticAlloy = new Item().setUnlocalizedName("itemPlateEnergeticAlloy").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateEnergeticAlloy");
-			itemPlateVibrantAlloy = new Item().setUnlocalizedName("itemPlateVibrantAlloy").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateVibrantAlloy");
-			itemPlateConductiveIron = new Item().setUnlocalizedName("itemPlateConductiveIron").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateConductiveIron");
-			itemPlateDarkSteel = new Item().setUnlocalizedName("itemPlateDarkSteel").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateDarkSteel");
-			//Registry
-			GameRegistry.registerItem(itemPlateSoularium, "itemPlateSoularium");
-			GameRegistry.registerItem(itemPlateRedstoneAlloy, "itemPlateRedstoneAlloy");
-			GameRegistry.registerItem(itemPlateElectricalSteel, "itemPlateElectricalSteel");
-			GameRegistry.registerItem(itemPlatePulsatingIron, "itemPlatePulsatingIron");
-			GameRegistry.registerItem(itemPlateEnergeticAlloy, "itemPlateEnergeticAlloy");
-			GameRegistry.registerItem(itemPlateVibrantAlloy, "itemPlateVibrantAlloy");
-			GameRegistry.registerItem(itemPlateConductiveIron, "itemPlateConductiveIron");
-			GameRegistry.registerItem(itemPlateDarkSteel, "itemPlateDarkSteel");
+			itemPlateSoularium = new BaseItemPlate("itemPlate"+"Soularium", "Soularium", Utils.rgbtoHexValue(95, 90, 54), 2, 0);
+			itemPlateRedstoneAlloy = new BaseItemPlate("itemPlate"+"RedstoneAlloy", "Redstone Alloy", Utils.rgbtoHexValue(178,34,34), 2, 0);
+			itemPlateElectricalSteel =new BaseItemPlate("itemPlate"+"ElectricalSteel", "Electrical Steel", Utils.rgbtoHexValue(194, 194, 194), 2, 0);
+			itemPlatePulsatingIron = new BaseItemPlate("itemPlate"+"PhasedIron", "Pulsating Iron", Utils.rgbtoHexValue(50, 91, 21), 2, 0);
+			itemPlateEnergeticAlloy = new BaseItemPlate("itemPlate"+"EnergeticAlloy", "Energetic Alloy", Utils.rgbtoHexValue(252, 152, 45), 2, 0);
+			itemPlateVibrantAlloy = new BaseItemPlate("itemPlate"+"VibrantAlloy", "Vibrant Alloy", Utils.rgbtoHexValue(204, 242, 142), 2, 0);
+			itemPlateConductiveIron = new BaseItemPlate("itemPlate"+"ConductiveIron", "Conductive Iron", Utils.rgbtoHexValue(164, 109, 100), 2, 0);
+					
 		}
 		else {
 			Utils.LOG_WARNING("EnderIO not Found - Skipping Resources.");
@@ -308,13 +299,10 @@ public final class ModItems {
 		if (LoadedMods.Big_Reactors|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("BigReactors Found - Loading Resources.");
 			//Item Init
-			itemPlateBlutonium = new Item().setUnlocalizedName("itemPlateBlutonium").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateBlutonium");
-			itemPlateCyanite = new Item().setUnlocalizedName("itemPlateCyanite").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateCyanite");
-			itemPlateLudicrite = new Item().setUnlocalizedName("itemPlateLudicrite").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateLudicrite");
-			//Registry
-			GameRegistry.registerItem(itemPlateBlutonium, "itemPlateBlutonium");
-			GameRegistry.registerItem(itemPlateCyanite, "itemPlateCyanite");
-			GameRegistry.registerItem(itemPlateLudicrite, "itemPlateLudicrite");
+			itemPlateBlutonium = new BaseItemPlate("itemPlate"+"Blutonium", "Blutonium", Utils.rgbtoHexValue(0, 0, 255), 2, 0);
+			itemPlateCyanite = new BaseItemPlate("itemPlate"+"Cyanite", "Cyanite", Utils.rgbtoHexValue(0, 191, 255), 2, 0);
+			itemPlateLudicrite = new BaseItemPlate("itemPlate"+"Ludicrite", "Ludicrite", Utils.rgbtoHexValue(167, 5, 179), 2, 0);
+			
 		}
 		else {
 			Utils.LOG_WARNING("BigReactors not Found - Skipping Resources.");
@@ -324,12 +312,15 @@ public final class ModItems {
 			Utils.LOG_INFO("Thaumcraft Found - Loading Resources.");
 			//Item Init
 			try {
-				itemPlateVoidMetal = new Item().setUnlocalizedName("itemPlateVoidMetal").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateVoidMetal");
+				
+				UtilsItems.getItemForOreDict("Thaumcraft:ItemResource", "ingotVoidMetal", "Void Metal Ingot", 16);
+				GT_OreDictUnificator.registerOre("plateVoidMetal", new ItemStack(ModItems.itemPlateVoidMetal));
+				
+				itemPlateVoidMetal = new BaseItemPlate("itemPlate"+"Void", "Void Metal", Utils.rgbtoHexValue(82, 17, 82), 2, 0);
 			} catch (NullPointerException e){
 				e.getClass();
 			}
-			//Registry
-			GameRegistry.registerItem(itemPlateVoidMetal, "itemPlateVoidMetal");
+			
 		}
 		else {
 			Utils.LOG_WARNING("Thaumcraft not Found - Skipping Resources.");
@@ -353,9 +344,7 @@ public final class ModItems {
 		if (LoadedMods.PneumaticCraft|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("PneumaticCraft Found - Loading Resources.");
 			//Item Init
-			itemPlateCompressedIron = new Item().setUnlocalizedName("itemPlateCompressedIron").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateCompressedIron");
-			//Registry
-			GameRegistry.registerItem(itemPlateCompressedIron, "itemPlateCompressedIron");
+			itemPlateCompressedIron = new BaseItemPlate("itemPlate"+"CompressedIron", "Compressed Iron", Utils.rgbtoHexValue(128, 128, 128), 2, 0);
 		}
 		else {
 			Utils.LOG_WARNING("PneumaticCraft not Found - Skipping Resources.");
@@ -375,9 +364,7 @@ public final class ModItems {
 		if (LoadedMods.RFTools|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("rfTools Found - Loading Resources.");
 			//Item Init
-			itemPlateDimensionShard = new Item().setUnlocalizedName("itemPlateDimensionShard").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateDimensionShard");
-			//Registry
-			GameRegistry.registerItem(itemPlateDimensionShard, "itemPlateDimensionShard");
+			itemPlateDimensionShard = new BaseItemPlate("itemPlate"+"DimensionShard", "Dimensional Shard", Utils.rgbtoHexValue(170, 230, 230), 2, 0);
 		}
 		else {
 			Utils.LOG_WARNING("rfTools not Found - Skipping Resources.");
@@ -393,9 +380,13 @@ public final class ModItems {
 			RfEuBattery = new RF2EU_Battery();
 			
 			if (LoadedMods.Baubles){
+				Utils.LOG_INFO("Baubles Found - Loading Wearables.");
 			itemPersonalCloakingDevice = new ItemCloakingDevice(0);
 			//itemPersonalCloakingDeviceCharged = new ItemCloakingDevice(0).set;
 			itemPersonalHealingDevice = new ItemHealingDevice();
+			}
+			else {
+				Utils.LOG_INFO("Baubles Not Found - Skipping Resources.");
 			}
 			//Registry
 			//GameRegistry.registerItem(FuelRod_Empty, "itemFuelRod_Empty");
