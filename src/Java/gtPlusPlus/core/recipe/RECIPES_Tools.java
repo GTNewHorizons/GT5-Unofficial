@@ -1,6 +1,7 @@
 package gtPlusPlus.core.recipe;
 
 import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.item.UtilsItems;
 import gtPlusPlus.core.util.recipe.UtilsRecipe;
 import net.minecraft.block.Block;
@@ -151,6 +152,7 @@ public class RECIPES_Tools {
 				CobbleStone, CobbleStone, CobbleStone,
 				RECIPE_Sand);
 
+		if (LoadedMods.Baubles){
 		//Cloaking Device
 		UtilsRecipe.recipeBuilder(
 				plateDoubleNiChrome, plateIridiumAlloy, plateDoubleNiChrome,
@@ -158,6 +160,7 @@ public class RECIPES_Tools {
 				plateDoubleNiChrome, plateIridiumAlloy, plateDoubleNiChrome,
 				personalCloakingDevice);
 		
+		}
 		//Sand to Sandstone
 		UtilsRecipe.recipeBuilder(
 				Sand, Sand, Sand,
