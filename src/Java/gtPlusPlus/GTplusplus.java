@@ -30,7 +30,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Collection;
 
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.config.Configuration;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -112,19 +111,13 @@ implements ActionListener
 		//ItemStack a1 = UtilsItems.getItemStackOfAmountFromOreDict("dustInfused"+infusedDusts[a], 8);
 		//ItemStack b1 = UtilsItems.getItemStackOfAmountFromOreDict("dustInfused"+infusedDusts[b], 8);
 		//ItemStack c1 = UtilsItems.getItemStackOfAmountFromOreDict("dustInfused"+infusedDusts[c], 8);
-		//ItemStack d1 = UtilsItems.getItemStackOfAmountFromOreDict("dustInfused"+infusedDusts[d], 8);		
-
-		
-		//Do this weird things for textures.
-		if (Minecraft.getMinecraft().theWorld.isRemote){
-		loadTextures();
-		}
+		//ItemStack d1 = UtilsItems.getItemStackOfAmountFromOreDict("dustInfused"+infusedDusts[d], 8);	
 		
 		
 	}
 	
 	@SideOnly(value=Side.CLIENT)
-	private void loadTextures(){
+	public static void loadTextures(){
 		Utils.LOG_INFO("Loading some textures on the client.");
 		Utils.LOG_WARNING("Processing texture: "+TexturesGtTools.SKOOKUM_CHOOCHER.getTextureFile().getResourcePath());
 	}

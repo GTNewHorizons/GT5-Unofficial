@@ -1,5 +1,6 @@
 package gtPlusPlus.core.proxy;
 
+import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.util.particles.EntityParticleFXMysterious;
 import net.minecraft.client.Minecraft;
@@ -17,6 +18,8 @@ public class ClientProxy extends CommonProxy{
 	public void preInit(FMLPreInitializationEvent e) {
 		// TODO Auto-generated method stub
 		super.preInit(e);
+		//Do this weird things for textures.
+		GTplusplus.loadTextures();		
 	}
 
 	@Override
