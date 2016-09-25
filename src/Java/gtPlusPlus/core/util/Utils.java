@@ -44,12 +44,17 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.EntityRegistry;
 
 public class Utils {
 
 	public static final int WILDCARD_VALUE = Short.MAX_VALUE;
+	
+	public static final boolean isServer(){
+		return FMLCommonHandler.instance().getEffectiveSide().isServer();
+	}
 
 	static class ShortTimerTask extends TimerTask {
 		@Override
@@ -282,7 +287,7 @@ public class Utils {
 		return targetArray;
 	}
 
-	public static List<Object> convertArrayToListFixed(Object[] sourceArray) {
+	public static List<Object> convertArrayToFixedSizeList(Object[] sourceArray) {
 		List<Object> targetList = Arrays.asList(sourceArray);
 		return targetList;
 	}

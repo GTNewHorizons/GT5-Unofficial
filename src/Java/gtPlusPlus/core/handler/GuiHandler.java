@@ -2,12 +2,15 @@ package gtPlusPlus.core.handler;
 
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.container.Container_BackpackBase;
+import gtPlusPlus.core.container.Container_Workbench;
 import gtPlusPlus.core.gui.beta.Gui_ID_Registry;
 import gtPlusPlus.core.gui.beta.MU_GuiId;
 import gtPlusPlus.core.gui.item.GuiBaseBackpack;
+import gtPlusPlus.core.gui.machine.GUI_Workbench;
 import gtPlusPlus.core.interfaces.IGuiManager;
 import gtPlusPlus.core.inventories.BaseInventoryBackpack;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.forestry.bees.alveary.TileAlvearyFrameHousing;
 import gtPlusPlus.xmod.forestry.bees.alveary.gui.CONTAINER_FrameHousing;
@@ -24,7 +27,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int GUI1 = 0;      //Frame Alveary
 	public static final int GUI2 = 1;      //RTG
 	public static final int GUI3 = 2;      //BackpackHandler
-	public static final int GUI4 = 3;      //
+	public static final int GUI4 = 3;      //Workbench
 	public static final int GUI5 = 4;      //
 	public static final int GUI6 = 5;      //
 	public static final int GUI7 = 6;      //
@@ -63,6 +66,19 @@ public class GuiHandler implements IGuiHandler {
 			// Use the player's held item to create the inventory
 			return new Container_BackpackBase(player, player.inventory, new BaseInventoryBackpack(player.getHeldItem()));
 		}
+		
+		if (te != null){
+			if (ID == GUI4){
+				return new Container_Workbench(player.inventory, (TileEntityWorkbench)te);
+			}
+		}
+		
+		
+		
+		
+		
+		
+		
 		return null;
 	}
 
@@ -88,6 +104,12 @@ public class GuiHandler implements IGuiHandler {
 			// We have to cast the new container as our custom class
 			// and pass in currently held item for the inventory
 			return new GuiBaseBackpack((Container_BackpackBase) new Container_BackpackBase(player, player.inventory, new BaseInventoryBackpack(player.getHeldItem())));
+		}
+		
+		if (te != null){
+			if (ID == GUI4){
+				return new GUI_Workbench(player.inventory, (TileEntityWorkbench)te);
+			}
 		}
 		
 		return null;
