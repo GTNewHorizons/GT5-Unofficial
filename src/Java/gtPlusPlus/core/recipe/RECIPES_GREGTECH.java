@@ -8,6 +8,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.UtilsItems;
@@ -129,9 +130,17 @@ public class RECIPES_GREGTECH {
 					30); //EU	
 		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}*/
 		try {
+			
+			ItemStack cells = UtilsItems.getItemStackWithMeta(LoadedMods.IndustrialCraft2, "IC2:itemCellEmpty", "Empty Fluid Cells", 0, 12);
+			
+			if (cells == null){
+				cells = UtilsItems.getItemStackOfAmountFromOreDictNoBroken("cellEmpty", 12);
+			}
+			
+			ItemStack[] input = {cells, UtilsItems.getItemStackOfAmountFromOreDict("dustLepidolite", 20)};
+			
 			CORE.RA.addDehydratorRecipe(
-					UtilsItems.getItemStackOfAmountFromOreDict("dustLepidolite", 20), //Item input (slot 1)
-					UtilsItems.getItemStackOfAmountFromOreDict("cellEmpty", 12), //Item input (slot 2)
+					input, //Item input (Array, up to 2)
 					FluidUtils.getFluidStack("sulfuricacid", 10000), //Fluid input (slot 1)
 					FluidUtils.getFluidStack("sulfuriclithium", 10000), //Fluid output (slot 1)
 					new ItemStack[]{
@@ -146,6 +155,7 @@ public class RECIPES_GREGTECH {
 					2000); //EU	
 
 		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+		
 	}
 
 	private static void assemblerRecipes(){

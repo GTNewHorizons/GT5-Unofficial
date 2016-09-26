@@ -6,7 +6,6 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.UtilsItems;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import gtPlusPlus.xmod.gregtech.recipes.machines.RECIPEHANDLER_CokeOven;
-import gtPlusPlus.xmod.gregtech.recipes.machines.RECIPEHANDLER_Dehydrator;
 import gtPlusPlus.xmod.gregtech.recipes.machines.RECIPEHANDLER_MatterFabricator;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -116,7 +115,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
         return true;
     }
 
-	@Override
+	/*@Override
 	public boolean addDehydratorRecipe(ItemStack aItemA, ItemStack aItemB, FluidStack aFluid, ItemStack[] aOutputItems, FluidStack aOutputFluid, int aDuration, int aEUt) {
 		if ((aItemA == null) || (aItemB == null) || (aOutputItems == null)) {
             return false;
@@ -171,24 +170,24 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
     Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, null, aOutputItems, null, new FluidStack[]{aFluid}, new FluidStack[]{aOutputFluid}, aDuration, aEUt, 0);
     RECIPEHANDLER_Dehydrator.debug5(null, null, aFluid, aOutputFluid, aOutputItems, aDuration, aEUt);
     return true;
-}
+}*/
 	
 	
 	
 	
 	@Override
-	public boolean addDehydratorRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack[] aOutputItems, int[] aChances, int aDuration, int aEUt) {
+	public boolean addDehydratorRecipe(ItemStack[] aInput, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack[] aOutputItems, int[] aChances, int aDuration, int aEUt) {
 		Utils.LOG_INFO("Trying to add a Dehydrator recipe.");
-		 if (aInput1 != null){
-	        	Utils.LOG_INFO("Recipe requires input: "+aInput1.getDisplayName()+" x"+aInput1.stackSize);
+		 if (aInput[0] != null){
+	        	Utils.LOG_INFO("Recipe requires input: "+aInput[0].getDisplayName()+" x"+aInput[0].stackSize);
 	     }
-		 if (aInput2 != null){
-	        	Utils.LOG_INFO("Recipe requires input: "+aInput2.getDisplayName()+" x"+aInput2.stackSize);
+		 if (aInput[1] != null){
+	        	Utils.LOG_INFO("Recipe requires input: "+aInput[1].getDisplayName()+" x"+aInput[1].stackSize);
 	     }
 		 if (aFluidInput != null){
 	        	Utils.LOG_INFO("Recipe requires input: "+aFluidInput.getFluid().getName()+" "+aFluidInput.amount+"mbst");
 	     }
-		if (((aInput1 == null) && (aFluidInput == null)) || ((aOutputItems == null) && (aFluidOutput == null))) {
+		if (((aInput[0] == null) && (aFluidInput == null)) || ((aOutputItems == null) && (aFluidOutput == null))) {
             return false;
         }
         if ((aOutputItems != null) && ((aDuration = GregTech_API.sRecipeFile.get("dehydrator", aOutputItems[0], aDuration)) <= 0)) {
@@ -203,7 +202,20 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
         if (aFluidOutput != null){
         	Utils.LOG_INFO("Recipe will output: "+aFluidOutput.getFluid().getName());
         }
-        Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, new ItemStack[]{aInput1, aInput2}, aOutputItems, null, aChances, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
+        
+       
+        
+        if (aInput[1] == null){
+        	Utils.LOG_INFO("Dehydrator recipe only has a single input item.");
+        	 Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, aInput, aOutputItems, null, aChances, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
+             
+        }
+        else {
+        	Utils.LOG_INFO("Dehydrator recipe has two input items.");
+        	 Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, aInput, aOutputItems, null, aChances, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
+             
+        }
+        
         return true;
     }
 	
