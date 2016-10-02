@@ -29,6 +29,11 @@ public class Detrav_MetaTileEntity_Boiler_Solar_High extends GT_MetaTileEntity_B
         super(aName, aTier, aDescription, aTextures);
     }
 
+    @Override
+    public String[] getDescription() {
+        return new String[]{mDescription, "This machine can not explode!"};
+    }
+
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[4][17][];
         for (byte i = -1; i < 16; i = (byte) (i + 1)) {
@@ -49,7 +54,7 @@ public class Detrav_MetaTileEntity_Boiler_Solar_High extends GT_MetaTileEntity_B
     }
 
     public int maxProgresstime() {
-        return 500;
+        return 200;
     }
 
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
@@ -85,7 +90,7 @@ public class Detrav_MetaTileEntity_Boiler_Solar_High extends GT_MetaTileEntity_B
                 this.mLossTimer = 0;
             }
             if (++this.mLossTimer > 45) {
-                this.mTemperature -= 1;
+                this.mTemperature -= 5;
                 this.mLossTimer = 0;
             }
             if (this.mSteam != null) {
@@ -107,7 +112,7 @@ public class Detrav_MetaTileEntity_Boiler_Solar_High extends GT_MetaTileEntity_B
                         this.mHadNoWater = true;
                     } else {
                         if (this.mHadNoWater) {
-                            aBaseMetaTileEntity.doExplosion(2048L);
+                            //aBaseMetaTileEntity.doExplosion(2048L);
                             return;
                         }
                         this.mFluid.amount -= 1;
@@ -137,9 +142,9 @@ public class Detrav_MetaTileEntity_Boiler_Solar_High extends GT_MetaTileEntity_B
                 boolean bRain = aBaseMetaTileEntity.getWorld().isRaining() && aBaseMetaTileEntity.getBiome().rainfall > 0.0F;
                 mProcessingEnergy += bRain && aBaseMetaTileEntity.getWorld().skylightSubtracted >= 4 || !aBaseMetaTileEntity.getSkyAtSide((byte) 1) ? 0 : !bRain && aBaseMetaTileEntity.getWorld().isDaytime() ? 8 : 1;
             }
-            if ((this.mTemperature < 500) && (this.mProcessingEnergy > 0) && (aTick % 12L == 0L)) {
+            if ((this.mTemperature < 200) && (this.mProcessingEnergy > 0) && (aTick % 12L == 0L)) {
                 this.mProcessingEnergy -= 1;
-                this.mTemperature += 1;
+                this.mTemperature += 5;
             }
             aBaseMetaTileEntity.setActive(this.mProcessingEnergy > 0);
         }

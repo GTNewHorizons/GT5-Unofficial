@@ -79,6 +79,7 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
                 return;
             }
         } else if (aRandom.nextInt(10) < 4) {
+            long data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack);
             HashMap<String, Integer> ores = new HashMap<String, Integer>();
             for (int x = 0; x < 16; x++)
                 for (int z = 0; z < 16; z++) {
@@ -91,7 +92,7 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
                                 GT_TileEntity_Ores gt_entity = (GT_TileEntity_Ores) entity;
                                 String name = GT_LanguageManager.getTranslation(
                                         b.getUnlocalizedName() + "." + gt_entity.getMetaData() + ".name");
-                                if (name.startsWith("Small")) continue;
+                                if (name.startsWith("Small")) if(data!=1) continue;
                                 if (!ores.containsKey(name))
                                     ores.put(name, 1);
                                 else {
@@ -102,10 +103,13 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
                         }
                     }
                 }
+            int total = 0;
             for (String key : ores.keySet()) {
                 int value = ores.get(key);
+                total+=value;
                addChatMassageByValue(aPlayer,value,key);
             }
+            addChatMassageByValue(aPlayer,total,"Total");
             if (!aPlayer.capabilities.isCreativeMode)
                 aItem.doDamage(aStack, this.mCosts);
             return;
@@ -114,6 +118,7 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
     }
 
     void addChatMassageByValue(EntityPlayer aPlayer, int value, String name) {
+        if(name == "Total") return;
         if (value < 0) {
             aPlayer.addChatMessage(new ChatComponentText(foundTexts[6] + name));
         } else if (value < 1) {

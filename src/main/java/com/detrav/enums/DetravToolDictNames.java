@@ -6,6 +6,5 @@ package com.detrav.enums;
 public enum  DetravToolDictNames {
     craftingToolProPick,
     craftingToolElectricProPick,
-    craftingToolPortableCharger,
-    craftingRepairTool
+    craftingToolPortableCharger
 }

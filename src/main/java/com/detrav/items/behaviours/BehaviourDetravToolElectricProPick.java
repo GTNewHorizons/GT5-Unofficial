@@ -35,12 +35,20 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
             long data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack);
             //Проверяем если нажат шифт
             if (aPlayer.isSneaking()) {
-                if (data == 0) {
-                    aPlayer.addChatMessage(new ChatComponentText("Set Mode: Oil, Any Block"));
-                    DetravMetaGeneratedTool01.INSTANCE.setToolGTDetravData(aStack, 1);
-                } else {
-                    aPlayer.addChatMessage(new ChatComponentText("Set Mode: Ore, Any Rock Block"));
-                    DetravMetaGeneratedTool01.INSTANCE.setToolGTDetravData(aStack, 0);
+                switch ((int)data)
+                {
+                    case 0:
+                        aPlayer.addChatMessage(new ChatComponentText("Set Mode: Ore (with small), Any Rock Block"));
+                        DetravMetaGeneratedTool01.INSTANCE.setToolGTDetravData(aStack, 1);
+                        break;
+                    case 1:
+                        aPlayer.addChatMessage(new ChatComponentText("Set Mode: Oil, Any Block"));
+                        DetravMetaGeneratedTool01.INSTANCE.setToolGTDetravData(aStack, 2);
+                        break;
+                    default:
+                        aPlayer.addChatMessage(new ChatComponentText("Set Mode: Ore, Any Rock Block"));
+                        DetravMetaGeneratedTool01.INSTANCE.setToolGTDetravData(aStack, 0);
+                        break;
                 }
                 return super.onItemRightClick(aItem, aStack, aWorld, aPlayer);
             }
@@ -69,7 +77,7 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
                     for (int z = 0; z < 16; z++) {
                         int ySize = c.getHeightValue(x, z);
                         for (int y = 1; y < ySize; y++) {
-                            if(data == 0) {
+                            if(data < 2) {
                                 Block b = c.getBlock(x, y, z);
                                 if (b == GregTech_API.sBlockOres1) {
                                     TileEntity entity = c.getTileEntityUnsafe(x, y, z);
@@ -77,7 +85,7 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
                                         GT_TileEntity_Ores gt_entity = (GT_TileEntity_Ores) entity;
                                         String name = GT_LanguageManager.getTranslation(
                                                 b.getUnlocalizedName() + "." + gt_entity.getMetaData() + ".name");
-                                        if (name.startsWith("Small")) continue;
+                                        if (name.startsWith("Small")) if(data!=1) continue;
                                         packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, gt_entity.getMetaData());
                                     }
                                 }
@@ -110,7 +118,7 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
 
     public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
         long data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack);
-        if (data == 0)
+        if (data < 2)
             return super.onItemUse(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ);
         if (!aWorld.isRemote) {
             FluidStack fStack = getUndergroundOil(aWorld,aX,aZ);

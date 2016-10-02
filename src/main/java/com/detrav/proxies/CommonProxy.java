@@ -3,11 +3,11 @@ package com.detrav.proxies;
 import com.detrav.DetravScannerMod;
 import com.detrav.enums.DetravItemList;
 import com.detrav.enums.DetravSimpleItems;
+import com.detrav.events.DetravCraftingEventHandler;
+import com.detrav.events.DetravEntityDropEvent;
 import com.detrav.gui.DetravGuiProPick;
-import com.detrav.gui.DetravRepairToolGui;
 import com.detrav.gui.containers.DetravPortableChargerContainer;
 import com.detrav.gui.DetravPortableChargerGui;
-import com.detrav.gui.containers.DetravRepairToolContainer;
 import com.detrav.items.DetravMetaGeneratedTool01;
 import cpw.mods.fml.common.network.IGuiHandler;
 import gregtech.api.GregTech_API;
@@ -40,11 +40,6 @@ public class CommonProxy implements IGuiHandler {
                 }
             }
         }
-        ;
-        GT_ModHandler.addCraftingRecipe(
-                DetravMetaGeneratedTool01.INSTANCE.getToolWithStatsPlus(2,1,Materials._NULL,Materials._NULL,null,0),
-                GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
-                new Object[]{"dwx", "hMc", "fsr", Character.valueOf('M'), OrePrefixes.ingot.get(Materials.Steel)});
 
         if (!GregTech_API.sSpecialFile.get(ConfigCategories.general, "DisableFlintTools", false)) {
             GT_ModHandler.addCraftingRecipe(DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(0, 1, Materials.Flint, Materials.Wood, null), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{"FF", "SS", Character.valueOf('S'), OrePrefixes.stick.get(Materials.Wood), Character.valueOf('F'), new ItemStack(Items.flint, 1)});
@@ -58,6 +53,8 @@ public class CommonProxy implements IGuiHandler {
         GT_ModHandler.addCraftingRecipe(DetravItemList.Solar_Boiler_Medium.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"GGG", "NNN", "PMP", Character.valueOf('M'), ItemList.Machine_Steel_Boiler, Character.valueOf('P'), OrePrefixes.pipeSmall.get(Materials.Steel), Character.valueOf('N'), OrePrefixes.dust.get(Materials.Nickel), Character.valueOf('G'), new ItemStack(Blocks.glass, 1)});
         GT_ModHandler.addCraftingRecipe(DetravItemList.Solar_Boiler_High.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"GGG", "RRR", "PMP", Character.valueOf('M'), ItemList.Casing_HV, Character.valueOf('P'), OrePrefixes.pipeSmall.get(Materials.StainlessSteel), Character.valueOf('R'), OrePrefixes.dust.get(Materials.Rutile), Character.valueOf('G'), new ItemStack(Blocks.glass, 1)});
 
+        DetravCraftingEventHandler.register();
+        DetravEntityDropEvent.register();
     }
 
     @Override
@@ -67,8 +64,6 @@ public class CommonProxy implements IGuiHandler {
                 return null;
             case DetravPortableChargerGui.GUI_ID:
                 return new DetravPortableChargerContainer(player.inventory,world,player.getCurrentEquippedItem());
-            case DetravRepairToolGui.GUI_ID:
-                return new DetravRepairToolContainer(player.inventory,world,player.getCurrentEquippedItem());
             default:
                 return null;
         }
@@ -81,8 +76,6 @@ public class CommonProxy implements IGuiHandler {
                 return new DetravGuiProPick();
             case DetravPortableChargerGui.GUI_ID:
                 return new DetravPortableChargerGui(player.inventory,world,player.getCurrentEquippedItem());
-            case DetravRepairToolGui.GUI_ID:
-                return new DetravRepairToolGui(player.inventory,world,player.getCurrentEquippedItem());
             default:
                 return null;
         }
@@ -99,10 +92,7 @@ public class CommonProxy implements IGuiHandler {
         player.openGui(DetravScannerMod.instance, DetravPortableChargerGui.GUI_ID,player.worldObj,(int)player.posX,(int)player.posY,(int)player.posZ);
     }
 
-    public void openRepairToolGui(EntityPlayer player)
-    {
-        player.openGui(DetravScannerMod.instance, DetravRepairToolGui.GUI_ID,player.worldObj,(int)player.posX,(int)player.posY,(int)player.posZ);
-    }
+
 
     public void onPreInit()
     {

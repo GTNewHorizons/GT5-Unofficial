@@ -89,7 +89,7 @@ public class DetravPortableChargerContainer extends Container {
 
         //GT_ModHandler.ch
 
-        for(int forTry = 0; forTry<4;forTry++){
+        for(int forTry = 0; forTry<20;forTry++){
             Long[] selfStats = DetravMetaGeneratedTool01.INSTANCE.getElectricStats(mItem);
             if (selfStats == null) return;
 
