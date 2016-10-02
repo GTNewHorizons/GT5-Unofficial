@@ -135,38 +135,38 @@ public enum GregtechOrePrefixes {
 		
 		//TODO - Utilise some form of way to check if it's gt 5.9 if so, use string switch.
 		if (name().startsWith("ore")) {
-			getTcAspectStack(TC_Aspects.TERRA, 1).addToAspectList(mAspects);
+			getTcAspectStack(TC_Aspects.TERRA.name(), 1).addToAspectList(mAspects);
 		} else if (name().startsWith("wire") || name().startsWith("cable")) {
-			getTcAspectStack(TC_Aspects.ELECTRUM, 1).addToAspectList(mAspects);
+			getTcAspectStack(TC_Aspects.ELECTRUM.name(), 1).addToAspectList(mAspects);
 		} else if (name().startsWith("dust")) {
-			getTcAspectStack(TC_Aspects.PERDITIO, 1).addToAspectList(mAspects);
+			getTcAspectStack(TC_Aspects.PERDITIO.name(), 1).addToAspectList(mAspects);
 		} else if (name().startsWith("crushed")) {
-			getTcAspectStack(TC_Aspects.PERFODIO, 1).addToAspectList(mAspects);
+			getTcAspectStack(TC_Aspects.PERFODIO.name(), 1).addToAspectList(mAspects);
 		} else if (name().startsWith("ingot") || name().startsWith("nugget")) {
-			getTcAspectStack(TC_Aspects.METALLUM, 1).addToAspectList(mAspects);
+			getTcAspectStack(TC_Aspects.METALLUM.name(), 1).addToAspectList(mAspects);
 		} else if (name().startsWith("armor")) {
-			getTcAspectStack(TC_Aspects.TUTAMEN, 1).addToAspectList(mAspects);
+			getTcAspectStack(TC_Aspects.TUTAMEN.name(), 1).addToAspectList(mAspects);
 		} else if (name().startsWith("stone")) {
-			getTcAspectStack(TC_Aspects.TERRA, 1).addToAspectList(mAspects);
+			getTcAspectStack(TC_Aspects.TERRA.name(), 1).addToAspectList(mAspects);
 		} else if (name().startsWith("pipe")) {
-			getTcAspectStack(TC_Aspects.ITER, 1).addToAspectList(mAspects);
+			getTcAspectStack(TC_Aspects.ITER.name(), 1).addToAspectList(mAspects);
 		} else if (name().startsWith("gear")) {
-			getTcAspectStack(TC_Aspects.MOTUS, 1).addToAspectList(mAspects);
-			getTcAspectStack(TC_Aspects.MACHINA, 1).addToAspectList(mAspects);
+			getTcAspectStack(TC_Aspects.MOTUS.name(), 1).addToAspectList(mAspects);
+			getTcAspectStack(TC_Aspects.MACHINA.name(), 1).addToAspectList(mAspects);
 		} else if (name().startsWith("frame") || name().startsWith("plate")) {
-			getTcAspectStack(TC_Aspects.FABRICO, 1).addToAspectList(mAspects);
+			getTcAspectStack(TC_Aspects.FABRICO.name(), 1).addToAspectList(mAspects);
 		} else if (name().startsWith("tool")) {
-			getTcAspectStack(TC_Aspects.INSTRUMENTUM, 2).addToAspectList(mAspects);
+			getTcAspectStack(TC_Aspects.INSTRUMENTUM.name(), 2).addToAspectList(mAspects);
 		} else if (name().startsWith("gem") || name().startsWith("crystal") || name().startsWith("lens")) {
-			getTcAspectStack(TC_Aspects.VITREUS, 1).addToAspectList(mAspects);
+			getTcAspectStack(TC_Aspects.VITREUS.name(), 1).addToAspectList(mAspects);
 		} else if (name().startsWith("crate")) {
-			getTcAspectStack(TC_Aspects.ITER, 2).addToAspectList(mAspects);
+			getTcAspectStack(TC_Aspects.ITER.name(), 2).addToAspectList(mAspects);
 		} else if (name().startsWith("circuit")) {		
-			getTcAspectStack(TC_Aspects.COGNITIO, 1);			
+			getTcAspectStack("COGNITIO", 1);			
 		} else if (name().startsWith("computer")) {
-				getTcAspectStack(TC_Aspects.COGNITIO, 4).addToAspectList(mAspects);
+				getTcAspectStack("COGNITIO", 4).addToAspectList(mAspects);
 		} else if (name().startsWith("battery")) {
-			getTcAspectStack(TC_Aspects.ELECTRUM, 1).addToAspectList(mAspects);
+			getTcAspectStack(TC_Aspects.ELECTRUM.name(), 1).addToAspectList(mAspects);
 		}
 	}
 
@@ -309,12 +309,12 @@ public enum GregtechOrePrefixes {
 		 *	this(aMetaItemSubID, aIconSet, aToolSpeed, aToolDurability, aToolQuality, true);
 		 *
 		 */
-		_NULL(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "NULL", 0, 0, 0, 0, false, false, 1, 1, 1, Dyes._NULL, Element._NULL, Arrays.asList(getTcAspectStack(TC_Aspects.VACUOS, 1))),
+		_NULL(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "NULL", 0, 0, 0, 0, false, false, 1, 1, 1, Dyes._NULL, Element._NULL, Arrays.asList(getTcAspectStack(TC_Aspects.VACUOS.name(), 1))),
 
 
 		//Lapis(526, TextureSet.SET_LAPIS, 1.0F, 0, 1, 1 | 4 | 8, 70, 70, 220, 0, "Lapis", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeBlue, 2, Arrays.asList(new MaterialStack(Materials.Lazurite, 12), new MaterialStack(Materials.Sodalite, 2), new MaterialStack(Materials.Pyrite, 1), new MaterialStack(Materials.Calcite, 1)), Arrays.asList(getTcAspectStack(TC_Aspects.SENSUS, 1))),
-		Pyrotheum(20, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 255, 128, 0, 0, "Pyrotheum", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeYellow, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1)), Arrays.asList(getTcAspectStack(TC_Aspects.PRAECANTATIO, 2), getTcAspectStack(TC_Aspects.IGNIS, 1))),
-		Cryotheum(21, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 102, 178, 255, 0, "Cryotheum", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeLightBlue, 2, Arrays.asList(new MaterialStack(Materials.Blizz, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Snow, 1), new MaterialStack(Materials.Niter, 1)), Arrays.asList(getTcAspectStack(TC_Aspects.PRAECANTATIO, 2), getTcAspectStack(TC_Aspects.GELUM, 1))),
+		Pyrotheum(20, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 255, 128, 0, 0, "Pyrotheum", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeYellow, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1)), Arrays.asList(getTcAspectStack("PRAECANTATIO", 2), getTcAspectStack(TC_Aspects.IGNIS, 1))),
+		Cryotheum(21, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 102, 178, 255, 0, "Cryotheum", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeLightBlue, 2, Arrays.asList(new MaterialStack(Materials.Blizz, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Snow, 1), new MaterialStack(Materials.Niter, 1)), Arrays.asList(getTcAspectStack("PRAECANTATIO", 2), getTcAspectStack(TC_Aspects.GELUM, 1))),
 
 		/**
 		 * Circuitry, Batteries and other Technical things
@@ -328,7 +328,7 @@ public enum GregtechOrePrefixes {
 		Staballoy(30, TextureSet.SET_ROUGH, 10.0F, 5120, 4, 1 | 2  | 16 | 32 | 64 | 128, 68, 75, 66, 0, "Staballoy", 0, 0, 1500, 2800, true, false, 1, 3, 1, Dyes.dyeGreen, 2, Arrays.asList(new MaterialStack(Materials.Titanium, 1), new MaterialStack(Materials.Uranium, 9)), Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
 		Bedrockium(31, TextureSet.SET_FINE, 8.0F, 8196, 3, 1 | 2 | 16 | 32 | 64 | 128, 39, 39, 39, 0, "Bedrockium", 0, 0, -1, 0, false, false, 1, 5, 1, Dyes.dyeLightGray, 2, Arrays.asList(new MaterialStack(Materials.Carbon, 63), new MaterialStack(Materials.Carbon, 56)),   Arrays.asList(getTcAspectStack(TC_Aspects.VACUOS, 8), getTcAspectStack(TC_Aspects.TUTAMEN, 3))),
 		BloodSteel(32, TextureSet.SET_METALLIC, 11.0F, 768, 4, 1 | 2 | 16 | 32 | 64 | 128, 142, 28, 0, 0, "Blood Steel", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeRed, 2, Arrays.asList(new MaterialStack(Materials.Steel, 3)), Arrays.asList(getTcAspectStack(TC_Aspects.VICTUS, 8), getTcAspectStack(TC_Aspects.IGNIS, 3))),
-		VoidMetal(33, TextureSet.SET_METALLIC, 6.0F, 1280, 3, 1 | 2 | 16 | 32 | 64 | 128, 82, 17, 82, 0, "Void Metal", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeBlack, Arrays.asList(getTcAspectStack(TC_Aspects.PRAECANTATIO, 5), getTcAspectStack(TC_Aspects.VACUOS, 7))),
+		VoidMetal(33, TextureSet.SET_METALLIC, 6.0F, 1280, 3, 1 | 2 | 16 | 32 | 64 | 128, 82, 17, 82, 0, "Void Metal", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeBlack, Arrays.asList(getTcAspectStack("PRAECANTATIO", 5), getTcAspectStack(TC_Aspects.VACUOS, 7))),
 		ConductiveIron(34, TextureSet.SET_METALLIC, 5.0F, 256, 2, 1 | 2, 164, 109, 100, 0, "Conductive Iron", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeRed, 2, Arrays.asList(new MaterialStack(Materials.Iron, 6), new MaterialStack(Materials.Redstone, 2)), Arrays.asList(getTcAspectStack(TC_Aspects.POTENTIA, 2), getTcAspectStack(TC_Aspects.METALLUM, 2))),
 		ElectricalSteel(35, TextureSet.SET_METALLIC, 7.0F, 768, 3, 1 | 2 | 64 | 128, 194, 194, 194, 0, "Electrical Steel", 0, 0, 1811, 1000, true, false, 3, 1, 1, Dyes.dyeLightGray, 2, Arrays.asList(new MaterialStack(Materials.Iron, 3), new MaterialStack(Materials.Coal, 2), new MaterialStack(Materials.Silicon, 2)),   Arrays.asList(getTcAspectStack(TC_Aspects.MAGNETO, 2), getTcAspectStack(TC_Aspects.ELECTRUM, 5))),
 		EnergeticAlloy(36, TextureSet.SET_SHINY, 5.0F, 512, 3, 1 | 2 | 64 | 128, 252, 152, 45, 0, "Energetic Alloy", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeOrange, 2, Arrays.asList(new MaterialStack(Materials.Gold, 3), new MaterialStack(Materials.Glowstone, 2), new MaterialStack(Materials.Redstone, 2)),  Arrays.asList(getTcAspectStack(TC_Aspects.POTENTIA, 4), getTcAspectStack(TC_Aspects.LUX, 3))),

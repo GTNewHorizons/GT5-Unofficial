@@ -70,41 +70,53 @@ public class Utils {
 		}		
 		return false;
 	}
+	
+	public static TC_AspectStack getTcAspectStack (TC_Aspects aspect, long size){
+		getTcAspectStack(aspect.name(), (int) size);
+	}
+	
+	public static TC_AspectStack getTcAspectStack (String aspect, long size){
+		getTcAspectStack(aspect, (int) size);
+	}
 
 	public static TC_AspectStack getTcAspectStack (TC_Aspects aspect, int size){
+		getTcAspectStack(aspect.name(), size);
+	}
+	
+	public static TC_AspectStack getTcAspectStack (String aspect, int size){
 
 		TC_AspectStack returnValue = null;
 
-		if (aspect.name().toUpperCase() == "COGNITIO"){
+		if (aspect.toUpperCase() == "COGNITIO"){
 			//Adds in Compat for older GT Versions which Misspell aspects.
 			try {
 				returnValue = new TC_AspectStack(TC_Aspects.valueOf("COGNITIO"), size);
 			} catch (NoSuchFieldError r){
-				Utils.LOG_INFO("Fallback TC Aspect found - "+aspect.name()+" - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
+				Utils.LOG_INFO("Fallback TC Aspect found - "+aspect+" - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
 				returnValue = new TC_AspectStack(TC_Aspects.valueOf("COGNITO"), size);
 
 			}
 		}
-		else if (aspect.name().toUpperCase() == "EXANIMUS"){
+		else if (aspect.toUpperCase() == "EXANIMUS"){
 			//Adds in Compat for older GT Versions which Misspell aspects.
 			try {
 				returnValue = new TC_AspectStack(TC_Aspects.valueOf("EXANIMUS"), size);
 			} catch (NoSuchFieldError r){
-				Utils.LOG_INFO("Fallback TC Aspect found - "+aspect.name()+" - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
+				Utils.LOG_INFO("Fallback TC Aspect found - "+aspect+" - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
 				returnValue = new TC_AspectStack(TC_Aspects.valueOf("EXAMINIS"), size);
 			}
 		}
-		else if (aspect.name().toUpperCase() == "PRAECANTATIO"){
+		else if (aspect.toUpperCase() == "PRAECANTATIO"){
 			//Adds in Compat for older GT Versions which Misspell aspects.
 			try {
 				returnValue = new TC_AspectStack(TC_Aspects.valueOf("PRAECANTATIO"), size);
 			} catch (NoSuchFieldError r){
-				Utils.LOG_INFO("Fallback TC Aspect found - "+aspect.name()+" - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
+				Utils.LOG_INFO("Fallback TC Aspect found - "+aspect+" - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
 				returnValue = new TC_AspectStack(TC_Aspects.valueOf("PRAECANTIO"), size);
 			}
 		}
 		else {
-			returnValue = new TC_AspectStack(aspect, size);
+			returnValue = new TC_AspectStack(TC_Aspects.valueOf(aspect), size);
 		}
 
 		return returnValue;

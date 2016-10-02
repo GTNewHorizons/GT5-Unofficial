@@ -10,6 +10,7 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_ToolStats;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -265,13 +266,13 @@ public abstract class GT_MetaGenTool extends GT_MetaGenerated_Tool {
 		return aStack;
 	}
 
-	public IToolStats getToolStats(ItemStack aStack) {
+	public Interface_ToolStats getToolStats(ItemStack aStack) {
 		isItemStackUsable(aStack);
 		return getToolStatsInternal(aStack);
 	}
 
-	private IToolStats getToolStatsInternal(ItemStack aStack) {
-		return aStack == null ? null : mToolStats.get((short) aStack.getItemDamage());
+	private Interface_ToolStats getToolStatsInternal(ItemStack aStack) {
+		return (Interface_ToolStats) (aStack == null ? null : mToolStats.get((short) aStack.getItemDamage()));
 	}
 
 	@Override
@@ -293,17 +294,15 @@ public abstract class GT_MetaGenTool extends GT_MetaGenerated_Tool {
 		if (tStats != null) doDamage(aStack, tStats.getToolDamagePerEntityAttack());
 	}
 
-	@Override
 	public boolean canWrench(EntityPlayer player, int x, int y, int z) {
 		System.out.println("canWrench");
 		if(player==null)return false;
 		if(player.getCurrentEquippedItem()==null)return false;
 		if (!isItemStackUsable(player.getCurrentEquippedItem())) return false;
-		IToolStats tStats = getToolStats(player.getCurrentEquippedItem());
+		Interface_ToolStats tStats = getToolStats(player.getCurrentEquippedItem());
 		return tStats != null && tStats.isWrench();
 	}
 
-	@Override
 	public void wrenchUsed(EntityPlayer player, int x, int y, int z) {
 		if(player==null)return;
 		if(player.getCurrentEquippedItem()==null)return;
@@ -311,22 +310,19 @@ public abstract class GT_MetaGenTool extends GT_MetaGenerated_Tool {
 		if (tStats != null) doDamage(player.getCurrentEquippedItem(), tStats.getToolDamagePerEntityAttack());
 	}
 
-	@Override
 	public boolean canUse(ItemStack stack, EntityPlayer player, int x, int y, int z){
 		return canWrench(player, x, y, z);
 	}
 
-	@Override
 	public void used(ItemStack stack, EntityPlayer player, int x, int y, int z){
 		wrenchUsed(player, x, y, z);
 	}
 
-	@Override
 	public boolean shouldHideFacades(ItemStack stack, EntityPlayer player) {
 		if(player==null)return false;
 		if(player.getCurrentEquippedItem()==null)return false;
 		if (!isItemStackUsable(player.getCurrentEquippedItem())) return false;
-		IToolStats tStats = getToolStats(player.getCurrentEquippedItem());
+		Interface_ToolStats tStats = getToolStats(player.getCurrentEquippedItem());
 		return tStats.isWrench();
 	}
 

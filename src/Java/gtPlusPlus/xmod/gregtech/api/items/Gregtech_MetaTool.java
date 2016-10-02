@@ -9,6 +9,7 @@ import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_ToolStats;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -249,13 +250,13 @@ public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool implements
 	}
 
 	@Override
-	public IToolStats getToolStats(ItemStack aStack) {
+	public Interface_ToolStats getToolStats(ItemStack aStack) {
 		isItemStackUsable(aStack);
 		return getToolStatsInternal(aStack);
 	}
 
-	private IToolStats getToolStatsInternal(ItemStack aStack) {
-		return aStack == null ? null : mToolStats.get((short) aStack.getItemDamage());
+	private Interface_ToolStats getToolStatsInternal(ItemStack aStack) {
+		return (Interface_ToolStats) (aStack == null ? null : mToolStats.get((short) aStack.getItemDamage()));
 	}
 
 	@Override
@@ -277,7 +278,7 @@ public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool implements
 		if(player==null)return false;
 		if(player.getCurrentEquippedItem()==null)return false;
 		if (!isItemStackUsable(player.getCurrentEquippedItem())) return false;
-		IToolStats tStats = getToolStats(player.getCurrentEquippedItem());
+		Interface_ToolStats tStats = getToolStats(player.getCurrentEquippedItem());
 		return tStats != null && tStats.isWrench();
 	}
 
