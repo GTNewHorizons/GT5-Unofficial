@@ -85,6 +85,8 @@ public class WorldGenGaGT implements Runnable {
 		new GT_Worldgen_GT_Ore_Layer_Space("ore.mix.galena", true, 30, 60, 40, 5, 16, Materials.Galena, Materials.Galena, Materials.Silver, Materials.Lead);
 		new GT_Worldgen_GT_Ore_Layer_Space("ore.mix.lapis", true, 20, 50, 40, 5, 16, Materials.Lazurite, Materials.Sodalite, Materials.Lapis, Materials.Calcite);
 		new GT_Worldgen_GT_Ore_Layer_Space("ore.mix.beryllium", true, 5, 30, 30, 3, 16, Materials.Beryllium, Materials.Beryllium, Materials.Emerald, Materials.Thorium);
+		new GT_Worldgen_GT_Ore_Layer_Space("ore.mix.oilsand", true, 50, 80, 80, 6, 32, Materials.Oilsands, Materials.Oilsands, Materials.Oilsands, Materials.Oilsands);
+
 
 		// Parse all custom ore veins
 		int i = 0;
