@@ -159,11 +159,12 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
         ChunkPosition tPos = new ChunkPosition(aX / 16, 1, aZ / 16);
         if(GT_Proxy.chunkData.containsKey(tPos)) {
             int[] tInts = (int[])GT_Proxy.chunkData.get(tPos);
-            if(tInts.length > 0 && tInts[0] >= 0) {
+            if(tInts.length > 0 && tInts[0] > 0) {
                 tAmount = tInts[0];
             }
         }
         tAmount -= 5;
+
         return new FluidStack(tFluid, tAmount);
     }
 }

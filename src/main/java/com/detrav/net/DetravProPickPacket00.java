@@ -127,15 +127,31 @@ public class DetravProPickPacket00 extends DetravPacket {
                 else
                 {
                     for(short meta : map[i][j].values()) {
-                        //Пока только по одному буду
-                        Materials tMaterial = GregTech_API.sGeneratedMaterials[meta% 1000];
-                        short[] rgba = tMaterial.getRGBA();
-                        raster.setSample(i,j,0,rgba[0]);
-                        raster.setSample(i,j,1,rgba[1]);
-                        raster.setSample(i,j,2,rgba[2]);
-                        raster.setSample(i,j,3,255);
-                        //ores.put(GT_Ore)
-                        String name = GT_LanguageManager.getTranslation("gt.blockores." + meta + ".name");
+                        String name;
+                        short[] rgba;
+                        if(meta>=0) {
+                            //Пока только по одному буду
+                            Materials tMaterial = GregTech_API.sGeneratedMaterials[meta % 1000];
+                            rgba = tMaterial.getRGBA();
+                            //ores.put(GT_Ore)
+                            name = GT_LanguageManager.getTranslation("gt.blockores." + meta + ".name");
+                        }
+                        else
+                        {
+                            name = String.valueOf(meta);
+                            rgba = new short[4];
+                            rgba[0] =(short)( 255/(-meta + 1));
+                            rgba[1] =(short)( 255/(-meta + 1));
+                            rgba[2] =(short)( 255/(-meta + 1));
+                            rgba[3] =(short)( 255 );
+
+
+                        }
+
+                        raster.setSample(i, j, 0, rgba[0]);
+                        raster.setSample(i, j, 1, rgba[1]);
+                        raster.setSample(i, j, 2, rgba[2]);
+                        raster.setSample(i, j, 3, 255);
                         if(!ores.containsKey(name))
                             ores.put(name,(0xFF << 24) + ((rgba[0]&0xFF)<<16)+((rgba[1]&0xFF)<<8)+((rgba[2]&0xFF)));
                     }
