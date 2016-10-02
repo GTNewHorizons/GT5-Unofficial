@@ -72,7 +72,7 @@ public class WorldGenGaGT implements Runnable {
 		new GT_Worldgen_GT_Ore_Layer_Space("ore.mix.nickel", true, 10, 40, 40, 3, 16, Materials.Garnierite, Materials.Nickel, Materials.Cobaltite, Materials.Pentlandite);
 		new GT_Worldgen_GT_Ore_Layer_Space("ore.mix.platinum", true, 40, 50, 5, 3, 16, Materials.Cooperite, Materials.Palladium, Materials.Platinum, Materials.Iridium);
 		new GT_Worldgen_GT_Ore_Layer_Space("ore.mix.pitchblende", true, 10, 40, 40, 3, 16, Materials.Pitchblende, Materials.Pitchblende, Materials.Uranium, Materials.Uraninite);
-		new GT_Worldgen_GT_Ore_Layer_Space("ore.mix.plutonium", true, 20, 30, 10, 3, 16, Materials.Uraninite, Materials.Uraninite, Materials.Plutonium, Materials.Uranium);
+		new GT_Worldgen_GT_Ore_Layer_Space("ore.mix.uranium", true, 20, 30, 20, 3, 16, Materials.Uraninite, Materials.Uraninite, Materials.Uranium, Materials.Uranium);
 		new GT_Worldgen_GT_Ore_Layer_Space("ore.mix.monazite", true, 20, 40, 30, 3, 16, Materials.Bastnasite, Materials.Bastnasite, Materials.Monazite, Materials.Neodymium);
 		new GT_Worldgen_GT_Ore_Layer_Space("ore.mix.molybdenum", true, 20, 50, 5, 3, 16, Materials.Wulfenite, Materials.Molybdenite, Materials.Molybdenum, Materials.Powellite);
 		new GT_Worldgen_GT_Ore_Layer_Space("ore.mix.tungstate", true, 20, 50, 10, 3, 16, Materials.Scheelite, Materials.Scheelite, Materials.Tungstate, Materials.Lithium);
