@@ -26,13 +26,12 @@ public class BaseItemDust extends Item{
 	protected int colour;
 	protected String materialName;
 	protected String pileType;
-	protected boolean useBlastFurnace;
 	String name = "";
 	private int mTier;
 	private Material dustInfo;
 	private String oredictName;
 
-	public BaseItemDust(String unlocalizedName, String materialName, Material matInfo, int colour, String pileSize, boolean blastFurnaceRequired, int tier, int sRadioactivity) {
+	public BaseItemDust(String unlocalizedName, String materialName, Material matInfo, int colour, String pileSize, int tier, int sRadioactivity) {
 		setUnlocalizedName(unlocalizedName);
 		this.setUnlocalizedName(unlocalizedName);
 		this.setMaxStackSize(64);	
@@ -44,7 +43,6 @@ public class BaseItemDust extends Item{
 		this.colour = colour;
 		this.mTier = tier;
 		this.materialName = materialName;
-		this.useBlastFurnace = blastFurnaceRequired;
 		this.dustInfo = matInfo;
 		this.sRadiation = sRadioactivity;
 		GameRegistry.registerItem(this, unlocalizedName);
@@ -272,7 +270,7 @@ public class BaseItemDust extends Item{
 		temp = temp.replace("itemDust", "ingot");		
 		if (temp != null && temp != ""){
 
-			if (this.useBlastFurnace){
+			if (dustInfo.requiresBlastFurnace()){
 				Utils.LOG_WARNING("Adding recipe for Hot "+materialName+" Ingots in a Blast furnace.");
 				String tempIngot = temp.replace("ingot", "ingotHot");
 				ItemStack tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 1);
@@ -286,10 +284,10 @@ public class BaseItemDust extends Item{
 			ItemStack tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(temp, 1);
 			Utils.LOG_WARNING("This will produce an ingot of "+tempOutputStack.getDisplayName() + " Debug: "+temp);
 			if (null != tempOutputStack){
-				if (mTier < 5){					
+				if (mTier < 5 || !dustInfo.requiresBlastFurnace()){					
 					CORE.GT_Recipe.addSmeltingAndAlloySmeltingRecipe(UtilsItems.getSimpleStack(this), tempOutputStack);						
 				}				
-				else if (mTier >= 5){
+				else if (mTier >= 5 || dustInfo.requiresBlastFurnace()){
 					Utils.LOG_WARNING("Adding recipe for "+materialName+" Ingots in a Blast furnace.");
 					Utils.LOG_WARNING("This will produce "+tempOutputStack.getDisplayName());
 					if (null != tempOutputStack){

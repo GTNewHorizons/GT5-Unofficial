@@ -5,6 +5,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.UtilsItems;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -19,22 +20,19 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BaseItemBolt extends Item{
 
-	protected int colour;
-	protected String materialName;
-	protected String unlocalName;
-	private int mTier;
+	final Material boltMaterial;
+	final String materialName;
+	final String unlocalName;
 
-	public BaseItemBolt(String unlocalizedName, String materialName, int colour, int tier) {
-		setUnlocalizedName(unlocalizedName);
+	public BaseItemBolt(Material material) {
+		this.boltMaterial = material;
+		this.unlocalName = "itemBolt"+material.getUnlocalizedName();
+		this.materialName = material.getLocalizedName();
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
-		this.setUnlocalizedName(unlocalizedName);
-		this.unlocalName = unlocalizedName;
+		this.setUnlocalizedName(unlocalName);
 		this.setMaxStackSize(64);
 		this.setTextureName(CORE.MODID + ":" + "itemBolt");
-		this.colour = colour;
-		this.mTier = tier;
-		this.materialName = materialName;
-		GameRegistry.registerItem(this, unlocalizedName);
+		GameRegistry.registerItem(this, unlocalName);
 		GT_OreDictUnificator.registerOre(unlocalName.replace("itemB", "b"), UtilsItems.getSimpleStack(this));
 		addExtruderRecipe();
 	}
@@ -59,10 +57,10 @@ public class BaseItemBolt extends Item{
 
 	@Override
 	public int getColorFromItemStack(ItemStack stack, int HEX_OxFFFFFF) {
-		if (colour == 0){
+		if (boltMaterial.getRgbAsHex() == 0){
 			return MathUtils.generateSingularRandomHexValue();
 		}
-		return colour;
+		return boltMaterial.getRgbAsHex();
 
 	}
 
@@ -74,9 +72,10 @@ public class BaseItemBolt extends Item{
 			GT_Values.RA.addExtruderRecipe(tempOutputStack, 
 					ItemList.Shape_Extruder_Bolt.get(1), 
 					UtilsItems.getSimpleStack(this, 8),
-					30*mTier*20,
-					24*mTier);	
-		}				
+					(int) Math.max(boltMaterial.getMass() * 2L * 1, 1),
+					8 * boltMaterial.vVoltageMultiplier);	
+		}	
+
 	}
 
 }

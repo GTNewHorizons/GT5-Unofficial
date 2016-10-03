@@ -5,9 +5,11 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.UtilsItems;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.recipe.UtilsRecipe;
 
 import java.util.List;
 
@@ -19,22 +21,19 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BaseItemRing extends Item{
 
-	protected int colour;
-	protected String materialName;
-	protected String unlocalName;
-	private int mTier;
+	final Material ringMaterial;
+	final String materialName;
+	final String unlocalName;
 
-	public BaseItemRing(String unlocalizedName, String materialName, int colour, int tier) {
-		setUnlocalizedName(unlocalizedName);
+	public BaseItemRing(Material material) {
+		this.ringMaterial = material;
+		this.unlocalName = "itemRing"+material.getUnlocalizedName();
+		this.materialName = material.getLocalizedName();
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
-		this.setUnlocalizedName(unlocalizedName);
-		this.unlocalName = unlocalizedName;
+		this.setUnlocalizedName(unlocalName);
 		this.setMaxStackSize(64);
 		this.setTextureName(CORE.MODID + ":" + "itemRing");
-		this.colour = colour;
-		this.mTier = tier;
-		this.materialName = materialName;
-		GameRegistry.registerItem(this, unlocalizedName);
+		GameRegistry.registerItem(this, unlocalName);
 		GT_OreDictUnificator.registerOre(unlocalName.replace("itemR", "r"), UtilsItems.getSimpleStack(this));
 		addExtruderRecipe();
 	}
@@ -59,24 +58,37 @@ public class BaseItemRing extends Item{
 
 	@Override
 	public int getColorFromItemStack(ItemStack stack, int HEX_OxFFFFFF) {
-		if (colour == 0){
+		if (ringMaterial.getRgbAsHex() == 0){
 			return MathUtils.generateSingularRandomHexValue();
 		}
-		return colour;
+		return ringMaterial.getRgbAsHex();
 
 	}
 
 	private void addExtruderRecipe(){
 		Utils.LOG_WARNING("Adding recipe for "+materialName+" Rings");
+		
+		//Extruder Recipe
 		String tempIngot = unlocalName.replace("itemRing", "ingot");
 		ItemStack tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 1);
 		if (null != tempOutputStack){
 			GT_Values.RA.addExtruderRecipe(tempOutputStack,
 					ItemList.Shape_Extruder_Ring.get(1),
 					UtilsItems.getSimpleStack(this, 4),
-					12*mTier*20,
-					24*mTier);	
-		}				
+					(int) Math.max(ringMaterial.getMass() * 2L * 1, 1),
+					6 * ringMaterial.vVoltageMultiplier);	
+		}		
+		
+		//Shaped Recipe
+		tempIngot = unlocalName.replace("itemRing", "stick");
+		tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 1);
+		if (null != tempOutputStack){
+			UtilsRecipe.addShapedGregtechRecipe(
+					"craftingToolWrench", null, null,
+					null, tempOutputStack, null,
+					null, null, null,
+					UtilsItems.getSimpleStack(this, 1));
+		}
 	}
 
 }

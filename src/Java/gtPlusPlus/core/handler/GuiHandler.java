@@ -32,7 +32,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int GUI6 = 5;      //
 	public static final int GUI7 = 6;      //
 	public static final int GUI8 = 7;      //
-	
+
 
 
 	public static void init(){ 	
@@ -60,25 +60,27 @@ public class GuiHandler implements IGuiHandler {
 
 
 		}
-		
+
 		if (ID == GUI3)
 		{
 			// Use the player's held item to create the inventory
 			return new Container_BackpackBase(player, player.inventory, new BaseInventoryBackpack(player.getHeldItem()));
 		}
-		
+
 		if (te != null){
 			if (ID == GUI4){
+
 				return new Container_Workbench(player.inventory, (TileEntityWorkbench)te);
+
 			}
 		}
-		
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
 		return null;
 	}
 
@@ -98,20 +100,20 @@ public class GuiHandler implements IGuiHandler {
 				//return new GUI_RTG((TileEntityRTG) te.);
 			}
 		}
-		
+
 		if (ID == GUI3)
 		{
 			// We have to cast the new container as our custom class
 			// and pass in currently held item for the inventory
 			return new GuiBaseBackpack((Container_BackpackBase) new Container_BackpackBase(player, player.inventory, new BaseInventoryBackpack(player.getHeldItem())));
 		}
-		
+
 		if (te != null){
 			if (ID == GUI4){
 				return new GUI_Workbench(player.inventory, (TileEntityWorkbench)te);
 			}
 		}
-		
+
 		return null;
 	}
 

@@ -146,7 +146,12 @@ public class InventoryWorkbenchChest implements IInventory{
 	{
 		for (int i = 0; i < getSizeInventory(); ++i)
 		{
-			if (getStackInSlot(i) != null && getStackInSlot(i).stackSize == 0) {
+			ItemStack temp = getStackInSlot(i);
+			if (temp != null){
+				//Utils.LOG_INFO("Slot "+i+" contains "+temp.getDisplayName()+" x"+temp.stackSize);
+			}
+			
+			if (temp != null && temp.stackSize == 0) {
 				inventory[i] = null;
 			}
 		}

@@ -1,7 +1,9 @@
 package gtPlusPlus.core.inventories;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -15,13 +17,30 @@ public class InventoryWorkbenchCrafting implements IInventory{
 
 	/** Inventory's size must be same as number of slots you add to the Container class */
 	private ItemStack[] inventory = new ItemStack[INV_SIZE];
+	public final InventoryCrafting craftMatrix;
+	public final Container parentContainer;
+	
+	public InventoryCrafting getCrafting(){
+		return craftMatrix;
+	}
 
 	/**
 	 * @param itemstack - the ItemStack to which this inventory belongs
 	 */
-	public InventoryWorkbenchCrafting()
+	public InventoryWorkbenchCrafting(Container containerR)
 	{
-
+		this.parentContainer = containerR;
+		this.craftMatrix = new InventoryCrafting(parentContainer, 3, 3);
+	}
+	
+	private ItemStack[] getArrayOfCraftingItems(){
+		ItemStack[] array = new ItemStack[9];
+		for (int i=0; i<craftMatrix.getSizeInventory();i++){
+			if(craftMatrix.getStackInSlot(i) != null){
+				array[i] = craftMatrix.getStackInSlot(i);				
+			}			
+		}		
+		return array;
 	}
 	
 	public void readFromNBT(NBTTagCompound nbt)
@@ -34,7 +53,7 @@ public class InventoryWorkbenchCrafting implements IInventory{
             int slot = data.getInteger("Slot");
             if(slot >= 0 && slot < INV_SIZE)
             {
-                inventory[slot] = ItemStack.loadItemStackFromNBT(data);
+            	getInventory()[slot] = ItemStack.loadItemStackFromNBT(data);
             }
         }
     }
@@ -44,7 +63,7 @@ public class InventoryWorkbenchCrafting implements IInventory{
         NBTTagList list = new NBTTagList();
         for(int i = 0;i<INV_SIZE;i++)
         {
-            ItemStack stack = inventory[i];
+            ItemStack stack = getInventory()[i];
             if(stack != null)
             {
                 NBTTagCompound data = new NBTTagCompound();
@@ -59,17 +78,17 @@ public class InventoryWorkbenchCrafting implements IInventory{
 	@Override
 	public int getSizeInventory()
 	{
-		return inventory.length;
+		return getInventory().length;
 	}
 	
 	public ItemStack[] getInventory(){
-		return inventory;
+		return getArrayOfCraftingItems();
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int slot)
 	{
-		return inventory[slot];
+		return getInventory()[slot];
 	}
 
 	@Override
@@ -104,7 +123,7 @@ public class InventoryWorkbenchCrafting implements IInventory{
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack)
 	{
-		inventory[slot] = stack;
+		getInventory()[slot] = stack;
 
 		if (stack != null && stack.stackSize > getInventoryStackLimit())
 		{
@@ -147,7 +166,7 @@ public class InventoryWorkbenchCrafting implements IInventory{
 		for (int i = 0; i < getSizeInventory(); ++i)
 		{
 			if (getStackInSlot(i) != null && getStackInSlot(i).stackSize == 0) {
-				inventory[i] = null;
+				getInventory()[i] = null;
 			}
 		}
 	}

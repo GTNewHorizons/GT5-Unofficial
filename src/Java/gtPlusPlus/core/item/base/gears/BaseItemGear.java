@@ -5,6 +5,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.UtilsItems;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -19,22 +20,19 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BaseItemGear extends Item{
 
-	protected int colour;
-	protected String materialName;
-	protected String unlocalName;
-	private int mTier;
+	final Material gearMaterial;
+	final String materialName;
+	final String unlocalName;
 
-	public BaseItemGear(String unlocalizedName, String materialName, int colour, int tier) {
-		setUnlocalizedName(unlocalizedName);
+	public BaseItemGear(Material material) {
+		this.gearMaterial = material;
+		this.unlocalName = "itemGear"+material.getUnlocalizedName();
+		this.materialName = material.getLocalizedName();
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
-		this.setUnlocalizedName(unlocalizedName);
-		this.unlocalName = unlocalizedName;
+		this.setUnlocalizedName(unlocalName);
 		this.setMaxStackSize(64);
 		this.setTextureName(CORE.MODID + ":" + "itemGear");
-		this.colour = colour;
-		this.mTier = tier;
-		this.materialName = materialName;
-		GameRegistry.registerItem(this, unlocalizedName);
+		GameRegistry.registerItem(this, unlocalName);
 		GT_OreDictUnificator.registerOre(unlocalName.replace("itemG", "g"), UtilsItems.getSimpleStack(this));
 		addExtruderRecipe();
 	}
@@ -42,7 +40,7 @@ public class BaseItemGear extends Item{
 	@Override
 	public String getItemStackDisplayName(ItemStack p_77653_1_) {
 
-		return (materialName+ " Gear");
+		return (gearMaterial.getLocalizedName()+ " Gear");
 	}
 
 	@Override
@@ -59,23 +57,24 @@ public class BaseItemGear extends Item{
 
 	@Override
 	public int getColorFromItemStack(ItemStack stack, int HEX_OxFFFFFF) {
-		if (colour == 0){
+		if (gearMaterial.getRgbAsHex() == 0){
 			return MathUtils.generateSingularRandomHexValue();
 		}
-		return colour;
+		return gearMaterial.getRgbAsHex();
 
 	}
 
 	private void addExtruderRecipe(){
 		Utils.LOG_WARNING("Adding recipe for "+materialName+" Gears");
-		String tempIngot = unlocalName.replace("itemGear", "ingot");
-		ItemStack tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 8);
+		ItemStack tempOutputStack = gearMaterial.getIngot(8);
 		if (null != tempOutputStack){
-			GT_Values.RA.addExtruderRecipe(tempOutputStack,
+			
+			GT_Values.RA.addExtruderRecipe(
+					tempOutputStack,
 					ItemList.Shape_Extruder_Gear.get(1),
 					UtilsItems.getSimpleStack(this),
-					40*mTier*20,
-					24*mTier);	
+					(int) Math.max(gearMaterial.getMass() * 5L, 1),
+					8 * gearMaterial.vVoltageMultiplier);
 		}				
 	}
 

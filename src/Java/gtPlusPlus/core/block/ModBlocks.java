@@ -5,7 +5,6 @@ import gtPlusPlus.core.block.machine.Machine_Workbench;
 import gtPlusPlus.core.fluids.FluidRegistryHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.Fluid;
@@ -20,6 +19,7 @@ public final class ModBlocks {
 	// WIP TODO public static Block blockToolBuilder;
 	public static Block blockGriefSaver;
 	public static Block blockCasingsMisc;
+	public static Block blockMetaTileEntity;
 	public static Block blockHeliumGenerator;
 	public static Block blockNHG;
 	public static Block blockCharger;
@@ -42,10 +42,6 @@ public final class ModBlocks {
 
 		Utils.LOG_INFO("Registering Blocks.");
 		GameRegistry.registerBlock(MatterFabricatorEffectBlock = new LightGlass(Material.glass, false).setHardness(0.1F).setBlockTextureName(CORE.MODID + ":" + "blockMFEffect").setStepSound(Block.soundTypeGlass), "blockMFEffect");
-
-
-		//Casing Blocks
-		blockCasingsMisc = new GregtechMetaCasingBlocks();
 
 		//Fluids
 		FluidRegistryHandler.registerFluids();

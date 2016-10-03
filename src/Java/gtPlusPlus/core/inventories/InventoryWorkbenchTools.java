@@ -1,6 +1,6 @@
 package gtPlusPlus.core.inventories;
 
-import gregtech.api.interfaces.IToolStats;
+import gregtech.api.items.GT_MetaGenerated_Tool;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -178,7 +178,10 @@ public class InventoryWorkbenchTools implements IInventory{
 		// Don't want to be able to store the inventory item within itself
 		// Bad things will happen, like losing your inventory
 		// Actually, this needs a custom Slot to work
-		return (itemstack.getItem() instanceof IToolStats);
+		if (itemstack.getItem() instanceof GT_MetaGenerated_Tool){
+			return true;
+		}	
+		return false;
 	}
 	
 }
