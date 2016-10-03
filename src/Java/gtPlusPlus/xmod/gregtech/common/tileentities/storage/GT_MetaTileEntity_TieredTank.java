@@ -16,10 +16,10 @@ public class GT_MetaTileEntity_TieredTank
         extends GregtechMetaBasicTank {
 	
 	protected FluidStack internalTank = getInternalStack();
-	protected String fluidName = getFluidName();
-	protected int fluidAmount = getInternalFluidAmount();
+	/*protected String fluidName = getFluidName();
+	protected int fluidAmount = getInternalFluidAmount();*/
 	
-	private String getFluidName(){
+	/*private String getFluidName(){
 		String x;
 		if (internalTank != null){
 			x = internalTank.getFluid().getName();
@@ -39,7 +39,7 @@ public class GT_MetaTileEntity_TieredTank
 			x = 0;
 		}
 		return x;
-	}
+	}*/
 	
     public GT_MetaTileEntity_TieredTank(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 3, "Stores " + ((int) (Math.pow(2, aTier) * 32000)) + "L of fluid");
@@ -89,8 +89,14 @@ public class GT_MetaTileEntity_TieredTank
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) return true;
+    	Utils.LOG_INFO("Right Click on Block");
+        if (aBaseMetaTileEntity.isClientSide()){
+        	Utils.LOG_INFO("MTE is ClientSide");
+        	return true;
+        }
+    	Utils.LOG_INFO("MTE is not ClientSide");
         aBaseMetaTileEntity.openGUI(aPlayer);
+    	Utils.LOG_INFO("MTE is now has an open GUI");
         return true;
     }
 

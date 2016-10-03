@@ -27,6 +27,7 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.materials.MaterialUtils;
 import gtPlusPlus.core.util.wrapper.var;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Plates;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -267,7 +268,7 @@ public class UtilsItems {
 		short[] C = matInfo.getRGBA();
 		int Colour = Utils.rgbtoHexValue(C[0], C[1], C[2]);
 		boolean hotIngot = matInfo.requiresBlastFurnace();
-		int materialTier = 0; //TODO
+		int materialTier = matInfo.vTier; //TODO
 		
 		if (materialTier > 10 || materialTier <= 0){
 			materialTier = 2;
@@ -286,13 +287,13 @@ public class UtilsItems {
 			tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
 			temp = new BaseItemIngot("itemIngot"+unlocalizedName, materialName, Colour, sRadiation);
 			
-			temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", hotIngot, materialTier, sRadiation);
-			temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", hotIngot, materialTier, sRadiation);
-			temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", hotIngot, materialTier, sRadiation);
+			temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, sRadiation);
+			temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, sRadiation);
+			temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier, sRadiation);
 			
 			temp = new BaseItemPlate("itemPlate"+unlocalizedName, materialName, Colour, materialTier, sRadiation);
-			temp = new BaseItemRod("itemRod"+unlocalizedName, materialName, Colour, materialTier, sRadiation);
-			temp = new BaseItemRodLong("itemRodLong"+unlocalizedName, materialName, Colour, materialTier, sRadiation);
+			temp = new BaseItemRod(matInfo, sRadiation);
+			temp = new BaseItemRodLong(matInfo, sRadiation);
 		}
 		
 		else {
@@ -305,31 +306,33 @@ public class UtilsItems {
 				Item tempIngot = temp;
 				temp = new BaseItemIngotHot("itemHotIngot"+unlocalizedName, materialName, UtilsItems.getSimpleStack(tempIngot, 1), materialTier);
 				}
-			temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", hotIngot, materialTier, sRadiation);
-			temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", hotIngot, materialTier, sRadiation);
-			temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", hotIngot, materialTier, sRadiation);
+			temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, sRadiation);
+			temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, sRadiation);
+			temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier, sRadiation);
 			
 			temp = new BaseItemPlate("itemPlate"+unlocalizedName, materialName, Colour, materialTier, sRadiation);
 			temp = new BaseItemPlateDouble("itemPlateDouble"+unlocalizedName, materialName, Colour, materialTier, sRadiation);
-			temp = new BaseItemRod("itemRod"+unlocalizedName, materialName, Colour, materialTier, sRadiation);
-			temp = new BaseItemRodLong("itemRodLong"+unlocalizedName, materialName, Colour, materialTier, sRadiation);
-			temp = new BaseItemRing("itemRing"+unlocalizedName, materialName, Colour, materialTier);
-			temp = new BaseItemBolt("itemBolt"+unlocalizedName, materialName, Colour, materialTier);
-			temp = new BaseItemScrew("itemScrew"+unlocalizedName, materialName, Colour, materialTier);
+			temp = new BaseItemBolt(matInfo);
+			temp = new BaseItemRod(matInfo, sRadiation);
+			temp = new BaseItemRodLong(matInfo, sRadiation);
+			temp = new BaseItemRing(matInfo);
+			temp = new BaseItemScrew(matInfo);
 			temp = new BaseItemRotor("itemRotor"+unlocalizedName, materialName, Colour);
-			temp = new BaseItemGear("itemGear"+unlocalizedName, materialName, Colour, materialTier);
+			temp = new BaseItemGear(matInfo);
 		}		
-
+		
+		RecipeGen_Plates.generateRecipes(matInfo);
+		
 		FluidUtils.generateFluid(matInfo, 1);
 		
 	}
 	
-	public static Item[] generateDusts(String unlocalizedName, String materialName, int materialTier, Material matInfo, int Colour, boolean hotIngot){
+	public static Item[] generateDusts(String unlocalizedName, String materialName, int materialTier, Material matInfo, int Colour){
 		int radioactive = getRadioactivityLevel(materialName);
 		Item[] output = {
-		new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", hotIngot, materialTier, radioactive),
-		new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", hotIngot, materialTier, radioactive),
-		new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", hotIngot, materialTier, radioactive)};
+		new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, radioactive),
+		new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier, radioactive),
+		new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, radioactive)};
 		return output;
 	}
 	

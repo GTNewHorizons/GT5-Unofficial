@@ -23,9 +23,11 @@ public class Material {
 	final long vProtons;
 	final long vNeutrons;
 	final long vMass;
+	public final int vTier;
+	public final int vVoltageMultiplier;
 
 	public Material(String materialName, short[] rgba, int meltingPoint, int boilingPoint, long protons, long neutrons, boolean blastFurnace, MaterialStack[] inputs){
-		
+
 		this.unlocalizedName = Utils.sanitizeString(materialName);
 		this.localizedName = materialName;
 		this.RGBA = rgba;
@@ -39,7 +41,43 @@ public class Material {
 		this.vProtons = protons;
 		this.vNeutrons = neutrons;
 		this.vMass = getMass();
+
+		if (getMeltingPoint_K() >= 0 && getMeltingPoint_K() <= 750){
+			this.vTier = 1;
+		}
+		else if(getMeltingPoint_K() >= 751 && getMeltingPoint_K() <= 1250){
+			this.vTier = 2;
+		}
+		else if(getMeltingPoint_K() >= 1251 && getMeltingPoint_K() <= 1750){
+			this.vTier = 3;
+		}
+		else if(getMeltingPoint_K() >= 1751 && getMeltingPoint_K() <= 2250){
+			this.vTier = 4;
+		}
+		else if(getMeltingPoint_K() >= 2251 && getMeltingPoint_K() <= 2750){
+			this.vTier = 5;
+		}
+		else if(getMeltingPoint_K() >= 2751 && getMeltingPoint_K() <= 3250){
+			this.vTier = 6;
+		}
+		else if(getMeltingPoint_K() >= 3251 && getMeltingPoint_K() <= 3750){
+			this.vTier = 7;
+		}
+		else if(getMeltingPoint_K() >= 3751 && getMeltingPoint_K() <= 4250){
+			this.vTier = 8;
+		}
+		else if(getMeltingPoint_K() >= 4251 && getMeltingPoint_K() <= 4750){
+			this.vTier = 9;
+		}
+		else if(getMeltingPoint_K() >= 4751 && getMeltingPoint_K() <= 9999){
+			this.vTier = 10;
+		}
+		else {
+			this.vTier = 0;
+		}
+
 		this.usesBlastFurnace = blastFurnace;
+		this.vVoltageMultiplier = this.getMeltingPoint_K() >= 2800 ? 64 : 16;
 
 		if (inputs == null){
 			this.materialInput = null;			
@@ -72,6 +110,10 @@ public class Material {
 	public short[] getRGBA(){
 		return RGBA;
 	}
+	
+	public int getRgbAsHex(){
+		return Utils.rgbtoHexValue(RGBA[0], RGBA[1], RGBA[2]);
+	}
 
 	public long getProtons() {
 		return vProtons;
@@ -93,6 +135,14 @@ public class Material {
 		return boilingPointC;
 	}
 
+	public int getMeltingPoint_K() {
+		return meltingPointK;
+	}
+
+	public int getBoilingPoint_K() {
+		return boilingPointK;
+	}
+
 	public boolean requiresBlastFurnace(){
 		return usesBlastFurnace;
 	}
@@ -100,17 +150,29 @@ public class Material {
 	public ItemStack getDust(int stacksize){
 		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("dust"+unlocalizedName, stacksize);
 	}
-	
+
 	public ItemStack getSmallDust(int stacksize){
 		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("dustSmall"+unlocalizedName, stacksize);
 	}
-	
+
 	public ItemStack getTinyDust(int stacksize){
 		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("dustTiny"+unlocalizedName, stacksize);
 	}
 
 	public ItemStack[] getValidInputStacks(){
 		return UtilsItems.validItemsForOreDict(unlocalizedName);
+	}
+
+	public ItemStack getIngot(int stacksize){
+		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("ingot"+unlocalizedName, stacksize);
+	}
+
+	public ItemStack getPlate(int stacksize){
+		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("plate"+unlocalizedName, stacksize);
+	}
+
+	public ItemStack getPlateDouble(int stacksize){
+		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("plateDouble"+unlocalizedName, stacksize);
 	}
 
 	public ItemStack[] getMaterialComposites(){
@@ -121,16 +183,16 @@ public class Material {
 				//Utils.LOG_INFO("i:"+i);
 				ItemStack testNull = null;
 				try {
-				testNull = materialInput[i].getDustStack();
+					testNull = materialInput[i].getDustStack();
 				} catch (Throwable r){
 					Utils.LOG_INFO("Failed gathering material stack for "+localizedName+".");
 					Utils.LOG_INFO("What Failed: Length:"+materialInput.length+" current:"+i);
 				}
 				try {
-				if (testNull != null){
-					//Utils.LOG_INFO("not null");
-					temp[i] = materialInput[i].getDustStack();
-				}
+					if (testNull != null){
+						//Utils.LOG_INFO("not null");
+						temp[i] = materialInput[i].getDustStack();
+					}
 				} catch (Throwable r){
 					Utils.LOG_INFO("Failed setting slot "+i+", using "+localizedName);
 				}

@@ -77,9 +77,9 @@ public class GregtechMetaTileEntityMultiTank
 
     private long getMaximumTankStorage(){
     	int multiplier = getStorageMultiplier();
-    	Utils.LOG_INFO("x = "+multiplier+" * 96000");
+    	Utils.LOG_WARNING("x = "+multiplier+" * 96000");
     	long tempTankStorageMax = (96000*multiplier);
-    	Utils.LOG_INFO("x = "+tempTankStorageMax);
+    	Utils.LOG_WARNING("x = "+tempTankStorageMax);
     	if (tempTankStorageMax <= 0){
     		return 96000;
     	}
@@ -207,7 +207,7 @@ public class GregtechMetaTileEntityMultiTank
         int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
         int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
         if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {
-        	Utils.LOG_INFO("Must be hollow.");
+        	Utils.LOG_WARNING("Must be hollow.");
             return false;
         }
         int tAmount = 0;
@@ -219,20 +219,20 @@ public class GregtechMetaTileEntityMultiTank
                         if ((!addMaintenanceToMachineList(tTileEntity, 17)) && (!addInputToMachineList(tTileEntity, 17)) && (!addOutputToMachineList(tTileEntity, 17)) && (!addEnergyInputToMachineList(tTileEntity, 17))) {
                             if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
                             	if (h < 3){
-                                	Utils.LOG_INFO("Casing Expected.");
+                                	Utils.LOG_WARNING("Casing Expected.");
                                     return false;
                             	}
                             	else if (h >= 3){
-                                	//Utils.LOG_INFO("Your Multitank can be 20 blocks tall.");
+                                	//Utils.LOG_WARNING("Your Multitank can be 20 blocks tall.");
                             	}
                             }
                             if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 11) {
                             	if (h < 3){
-                                	Utils.LOG_INFO("Wrong Meta.");
+                                	Utils.LOG_WARNING("Wrong Meta.");
                                     return false;
                             	}
                             	else if (h >= 3){
-                                	//Utils.LOG_INFO("Your Multitank can be 20 blocks tall.");
+                                	//Utils.LOG_WARNING("Your Multitank can be 20 blocks tall.");
                             	}
                             }
                             if (h < 3){
@@ -240,10 +240,10 @@ public class GregtechMetaTileEntityMultiTank
                             }
                             else if (h >= 3){
                             	if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) == Blocks.air || aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getUnlocalizedName().contains("residual")){
-                                	Utils.LOG_INFO("Found air");
+                                	Utils.LOG_WARNING("Found air");
                             	}
                             	else {
-                            		Utils.LOG_INFO("Layer "+(h+2)+" is complete. Adding "+(64000*9)+"L storage to the tank.");
+                            		Utils.LOG_WARNING("Layer "+(h+2)+" is complete. Adding "+(64000*9)+"L storage to the tank.");
                                     tAmount++;
                             	}
                         	}
@@ -253,7 +253,7 @@ public class GregtechMetaTileEntityMultiTank
             }
         }
         multiblockCasingCount = (short) tAmount;
-        Utils.LOG_INFO("Your Multitank can be 20 blocks tall.");
+        Utils.LOG_WARNING("Your Multitank can be 20 blocks tall.");
         Utils.LOG_INFO("Casings Count: "+tAmount+" Valid Multiblock: "+(tAmount >= 16)+" Tank Storage Capacity:"+getMaximumTankStorage()+"L");
         return tAmount >= 16;
     }

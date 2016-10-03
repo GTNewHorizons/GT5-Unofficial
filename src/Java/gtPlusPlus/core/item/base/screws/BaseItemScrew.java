@@ -4,6 +4,7 @@ import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.UtilsItems;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -19,23 +20,19 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BaseItemScrew extends Item{
 
-	protected int colour;
-	protected String materialName;
-	protected String unlocalName;
-	private int mTier;
+	final Material screwMaterial;
+	final String materialName;
+	final String unlocalName;
 
-	public BaseItemScrew(String unlocalizedName, String materialName, int colour, int tier) {
-		setUnlocalizedName(unlocalizedName);
+	public BaseItemScrew(Material material) {
+		this.screwMaterial = material;
+		this.unlocalName = "itemScrew"+material.getUnlocalizedName();
+		this.materialName = material.getLocalizedName();
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
-		this.setUnlocalizedName(unlocalizedName);
-		this.unlocalName = unlocalizedName;
+		this.setUnlocalizedName(unlocalName);
 		this.setMaxStackSize(64);
 		this.setTextureName(CORE.MODID + ":" + "itemScrew");
-		this.setMaxStackSize(64);
-		this.colour = colour;
-		this.mTier = tier;
-		this.materialName = materialName;
-		GameRegistry.registerItem(this, unlocalizedName);
+		GameRegistry.registerItem(this, unlocalName);
 		GT_OreDictUnificator.registerOre(unlocalName.replace("itemS", "s"), UtilsItems.getSimpleStack(this));
 		addLatheRecipe();
 	}
@@ -60,21 +57,26 @@ public class BaseItemScrew extends Item{
 
 	@Override
 	public int getColorFromItemStack(ItemStack stack, int HEX_OxFFFFFF) {
-		if (colour == 0){
+		if (screwMaterial.getRgbAsHex() == 0){
 			return MathUtils.generateSingularRandomHexValue();
 		}
-		return colour;
+		return screwMaterial.getRgbAsHex();
 
 	}
 
 	private void addLatheRecipe(){
 		Utils.LOG_WARNING("Adding recipe for "+materialName+" Screws");
 		ItemStack boltStack = UtilsItems.getItemStackOfAmountFromOreDict(unlocalName.replace("itemScrew", "bolt"), 1);
-		if (null != boltStack){
-			GT_Values.RA.addLatheRecipe(boltStack,
-					UtilsItems.getSimpleStack(this), null,
-					60*mTier, 16*mTier);	
-			UtilsRecipe.addShapedGregtechRecipe(
+		if (null != boltStack){			
+	         GT_Values.RA.addLatheRecipe(
+	        		 boltStack,
+	        		 UtilsItems.getSimpleStack(this),
+	        		 null,
+	        		 (int) Math.max(screwMaterial.getMass() / 8L, 1L),
+	        		 4);
+	         
+			
+			UtilsRecipe.recipeBuilder(
 					"craftingToolFile", boltStack, null,
 					boltStack, null, null,
 					null, null, null,

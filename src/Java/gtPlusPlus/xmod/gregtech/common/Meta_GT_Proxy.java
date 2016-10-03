@@ -10,6 +10,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.ToolDictNames;
+import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_Log;
@@ -42,6 +43,9 @@ import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class Meta_GT_Proxy {
+	
+	//Store Some MetaTileEntity Data here, why not?
+	public static final IMetaTileEntity[] METATILEENTITIES = new IMetaTileEntity[GregTech_API.MAXIMUM_METATILE_IDS];
 
 	//Silly Vars
 	private static final Collection<String> mIgnoredItems = new HashSet<String>(Arrays.asList(new String[]{"itemGhastTear", "itemFlint", "itemClay", "itemBucketSaltWater",

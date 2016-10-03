@@ -24,7 +24,8 @@ public class Machine_Workbench extends BlockContainer
     @SideOnly(Side.CLIENT)
     private IIcon textureFront;
 
-    public Machine_Workbench()
+    @SuppressWarnings("deprecation")
+	public Machine_Workbench()
     {
         super(Material.iron);
         this.setBlockName("blockWorkbenchGT");

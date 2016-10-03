@@ -1,7 +1,6 @@
 package gtPlusPlus.core.container;
 
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.handler.workbench.Workbench_CraftingHandler;
 import gtPlusPlus.core.inventories.InventoryWorkbenchChest;
 import gtPlusPlus.core.inventories.InventoryWorkbenchTools;
 import gtPlusPlus.core.slots.SlotGtTool;
@@ -15,6 +14,7 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.World;
 
 public class Container_Workbench extends Container {
@@ -28,6 +28,9 @@ public class Container_Workbench extends Container {
 	private int posX;
 	private int posY;
 	private int posZ;
+	
+	public boolean movingChest;
+	public boolean movingCrafting;
 
 	public static int StorageSlotNumber = 12; //Number of slots in storage area
 	public static int ToolSlotNumber = 5; // Number of slots in the tool area up top
@@ -36,11 +39,42 @@ public class Container_Workbench extends Container {
 	public static int InventorySlotNumber = 36; //Inventory Slots (Inventory and Hotbar)
 	public static int InventoryOutSlotNumber = InventorySlotNumber + 1; //Inventory Slot Number + Output
 	public static int FullSlotNumber = InventorySlotNumber + InOutputSlotNumber; //All slots
+	
+	public void moveCraftingToChest(){
+		//Check Chest Space
+		for (int i=0;i<9;i++){
+			if (craftMatrix.getStackInSlot(i) != null){
+				for (int r=0;r<16;r++){
+					if (inventoryChest.getStackInSlot(r) == null || (inventoryChest.getStackInSlot(r).getItem() == craftMatrix.getStackInSlot(i).getItem() && (64-craftMatrix.getStackInSlot(i).stackSize) <= (64-craftMatrix.getStackInSlot(i).stackSize))){
+						inventoryChest.setInventorySlotContents(r, craftMatrix.getStackInSlot(i));
+						craftMatrix.setInventorySlotContents(i, null);
+						break;
+					}
+				}
+			}
+		}
+		//For Each Space or already existing itemstack, move one itemstack or fill current partial stack
+		//Remove old itemstack or partial stack from crafting grid
+	}
 
+	public void moveChestToCrafting(){
+		//Check Crafting items and slots
+		for (int i=0;i<9;i++){
+			if (craftMatrix.getStackInSlot(i) == null || craftMatrix.getStackInSlot(i).stackSize > 0){
+				for (int r=0;r<16;r++){
+					if (inventoryChest.getStackInSlot(r) != null){
+						craftMatrix.setInventorySlotContents(i, craftMatrix.getStackInSlot(r));
+						inventoryChest.setInventorySlotContents(r, null);
+					}
+				}
+			}
+		}
+		//For Each already existing itemstack, fill current partial stack
+		//Remove partial stack from chest area
+	}
 
 
 	public Container_Workbench(InventoryPlayer inventory, TileEntityWorkbench tile){
-
 		this.tile_entity = tile;
 		this.inventoryChest = tile.inventoryChest;
 		this.inventoryTool = tile.inventoryTool;
@@ -64,25 +98,7 @@ public class Container_Workbench extends Container {
 			{
 				this.addSlotToContainer(new Slot(this.craftMatrix, var7 + var6 * 3, 82 + var7 * 18, 28 + var6 * 18));
 			}
-		}            
-		
-		//Storage Side
-		for (var6 = 0; var6 < 4; ++var6)
-		{
-			for (var7 = 0; var7 < 4; ++var7)
-			{
-				this.addSlotToContainer(new Slot(inventoryChest, var7 + var6 * 3, 8 + var7 * 18, 7 + var6 * 18));
-			}
 		}
-		
-		//Tool Slots
-		for (var6 = 0; var6 < 1; ++var6)
-		{
-			for (var7 = 0; var7 < 5; ++var7)
-			{
-				this.addSlotToContainer(new SlotGtTool(inventoryTool, var7 + var6 * 3, 82 + var7 * 18, 8 + var6 * 18));
-			}
-		} 
 
 		//Player Inventory
 		for (var6 = 0; var6 < 3; ++var6)
@@ -99,6 +115,27 @@ public class Container_Workbench extends Container {
 			this.addSlotToContainer(new Slot(inventory, var6, 8 + var6 * 18, 142));
 		}
 
+
+
+		//Storage Side
+		for (var6 = 0; var6 < 4; ++var6)
+		{
+			for (var7 = 0; var7 < 4; ++var7)
+			{
+				//Utils.LOG_INFO("Adding slots at var:"+(var7 + var6 * 4)+" x:"+(8 + var7 * 18)+" y:"+(7 + var6 * 18));
+				this.addSlotToContainer(new Slot(inventoryChest, var7 + var6 * 4, 8 + var7 * 18, 7 + var6 * 18));
+			}
+		}
+
+		//Tool Slots
+		for (var6 = 0; var6 < 1; ++var6)
+		{
+			for (var7 = 0; var7 < 5; ++var7)
+			{
+				this.addSlotToContainer(new SlotGtTool(inventoryTool, var7 + var6 * 3, 82 + var7 * 18, 8 + var6 * 18));
+			}
+		} 
+
 		this.onCraftMatrixChanged(this.craftMatrix);          
 
 	}
@@ -106,7 +143,11 @@ public class Container_Workbench extends Container {
 
 	@Override
 	public void onCraftMatrixChanged(IInventory par1IInventory){
-		craftResult.setInventorySlotContents(0, Workbench_CraftingHandler.getInstance().findMatchingRecipe(craftMatrix, worldObj));
+		//Custom Recipe Handler
+		//craftResult.setInventorySlotContents(0, Workbench_CraftingHandler.getInstance().findMatchingRecipe(craftMatrix, worldObj));
+		
+		//Vanilla CraftingManager
+		craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(craftMatrix, worldObj));
 	}
 
 

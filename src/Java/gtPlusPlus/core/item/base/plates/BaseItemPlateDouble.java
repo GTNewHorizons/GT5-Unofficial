@@ -40,8 +40,8 @@ public class BaseItemPlateDouble extends Item{
 		this.sRadiation = sRadioactivity;
 		GameRegistry.registerItem(this, unlocalizedName);
 		GT_OreDictUnificator.registerOre(unlocalName.replace("itemP", "p"), UtilsItems.getSimpleStack(this));
-		addBendingRecipe();
-		addCraftingRecipe();
+		//addBendingRecipe();
+		//addCraftingRecipe();
 	}
 
 	@Override

@@ -91,7 +91,6 @@ public class CommonProxy {
 		
 		//Compat Handling		
 		COMPAT_HANDLER.registerMyModsOreDictEntries();
-		COMPAT_HANDLER.registerGregtechMachines();
 		COMPAT_HANDLER.intermodOreDictionarySupport();
 		COMPAT_IntermodStaging.init();
 	}

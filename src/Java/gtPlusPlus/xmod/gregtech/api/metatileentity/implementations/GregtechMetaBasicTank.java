@@ -5,7 +5,6 @@ import gregtech.api.gui.GT_Container_BasicTank;
 import gregtech.api.gui.GT_GUIContainer_BasicTank;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -17,7 +16,7 @@ import net.minecraftforge.fluids.FluidStack;
  * <p/>
  * This is the main construct for my generic Tanks. Filling and emptying behavior have to be implemented manually
  */
-public abstract class GregtechMetaBasicTank extends GT_MetaTileEntity_TieredMachineBlock {
+public abstract class GregtechMetaBasicTank extends GregtechMetaTieredMachineBlock {
 
     public FluidStack mFluid;
     public FluidStack mInternal;
