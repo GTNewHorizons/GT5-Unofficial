@@ -7,15 +7,15 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GregtechMetaBasicTank;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.lossless.GregtechMetaTileEntityLosslessBasicTank;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_TieredTank
-        extends GregtechMetaBasicTank {
+        extends GregtechMetaTileEntityLosslessBasicTank {
 	
-	protected FluidStack internalTank = getInternalStack();
+	//protected FluidStack internalTank = getInternalStack();
 	/*protected String fluidName = getFluidName();
 	protected int fluidAmount = getInternalFluidAmount();*/
 	
@@ -80,11 +80,11 @@ public class GT_MetaTileEntity_TieredTank
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         mFluid = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mFluid"));
-        if (getInternalStack() != null){
+        /*if (getInternalStack() != null){
         Utils.LOG_INFO("Dumping Fluid data. Name: "+mFluid.getFluid().getName()+" Amount: "+mFluid.amount+"L");}
         else{
         //Utils.LOG_INFO("Loaded FluidStack was NULL");
-        	}
+        	}*/
     }
 
     @Override

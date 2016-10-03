@@ -72,15 +72,15 @@ public class Utils {
 	}
 	
 	public static TC_AspectStack getTcAspectStack (TC_Aspects aspect, long size){
-		getTcAspectStack(aspect.name(), (int) size);
+		return getTcAspectStack(aspect.name(), (int) size);
 	}
 	
 	public static TC_AspectStack getTcAspectStack (String aspect, long size){
-		getTcAspectStack(aspect, (int) size);
+		return getTcAspectStack(aspect, (int) size);
 	}
 
 	public static TC_AspectStack getTcAspectStack (TC_Aspects aspect, int size){
-		getTcAspectStack(aspect.name(), size);
+		return getTcAspectStack(aspect.name(), size);
 	}
 	
 	public static TC_AspectStack getTcAspectStack (String aspect, int size){
