@@ -44,6 +44,9 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
+
+import org.apache.commons.lang3.EnumUtils;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.EntityRegistry;
@@ -90,32 +93,52 @@ public class Utils {
 		if (aspect.toUpperCase() == "COGNITIO"){
 			//Adds in Compat for older GT Versions which Misspell aspects.
 			try {
-				returnValue = new TC_AspectStack(TC_Aspects.valueOf("COGNITIO"), size);
+				if (EnumUtils.isValidEnum(TC_Aspects.class, "COGNITIO")){
+					Utils.LOG_WARNING("TC Aspect found - "+aspect);
+					returnValue = new TC_AspectStack(TC_Aspects.valueOf("COGNITIO"), size);
+				}
+				else {
+					Utils.LOG_INFO("Fallback TC Aspect found - "+aspect+" - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
+					returnValue = new TC_AspectStack(TC_Aspects.valueOf("COGNITO"), size);
+				}				
 			} catch (NoSuchFieldError r){
-				Utils.LOG_INFO("Fallback TC Aspect found - "+aspect+" - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
-				returnValue = new TC_AspectStack(TC_Aspects.valueOf("COGNITO"), size);
-
+				Utils.LOG_INFO("Invalid Thaumcraft Aspects - Report this issue to Alkalus");
 			}
 		}
 		else if (aspect.toUpperCase() == "EXANIMUS"){
-			//Adds in Compat for older GT Versions which Misspell aspects.
+			//Adds in Compat for older GT Versions which Misspell aspects.			
 			try {
-				returnValue = new TC_AspectStack(TC_Aspects.valueOf("EXANIMUS"), size);
+				if (EnumUtils.isValidEnum(TC_Aspects.class, "EXANIMUS")){
+					Utils.LOG_WARNING("TC Aspect found - "+aspect);
+					returnValue = new TC_AspectStack(TC_Aspects.valueOf("EXANIMUS"), size);
+				}
+				else {
+					Utils.LOG_INFO("Fallback TC Aspect found - "+aspect+" - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
+					returnValue = new TC_AspectStack(TC_Aspects.valueOf("EXAMINIS"), size);
+				}				
 			} catch (NoSuchFieldError r){
-				Utils.LOG_INFO("Fallback TC Aspect found - "+aspect+" - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
-				returnValue = new TC_AspectStack(TC_Aspects.valueOf("EXAMINIS"), size);
+				Utils.LOG_INFO("Invalid Thaumcraft Aspects - Report this issue to Alkalus");
 			}
+			
+			
 		}
 		else if (aspect.toUpperCase() == "PRAECANTATIO"){
-			//Adds in Compat for older GT Versions which Misspell aspects.
+			//Adds in Compat for older GT Versions which Misspell aspects.			
 			try {
-				returnValue = new TC_AspectStack(TC_Aspects.valueOf("PRAECANTATIO"), size);
+				if (EnumUtils.isValidEnum(TC_Aspects.class, "PRAECANTATIO")){
+					Utils.LOG_WARNING("TC Aspect found - "+aspect);
+					returnValue = new TC_AspectStack(TC_Aspects.valueOf("PRAECANTATIO"), size);
+				}
+				else {
+					Utils.LOG_INFO("Fallback TC Aspect found - "+aspect+" - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
+					returnValue = new TC_AspectStack(TC_Aspects.valueOf("PRAECANTIO"), size);
+				}				
 			} catch (NoSuchFieldError r){
-				Utils.LOG_INFO("Fallback TC Aspect found - "+aspect+" - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
-				returnValue = new TC_AspectStack(TC_Aspects.valueOf("PRAECANTIO"), size);
-			}
+				Utils.LOG_INFO("Invalid Thaumcraft Aspects - Report this issue to Alkalus");
+			}			
 		}
 		else {
+			Utils.LOG_WARNING("TC Aspect found - "+aspect);
 			returnValue = new TC_AspectStack(TC_Aspects.valueOf(aspect), size);
 		}
 
