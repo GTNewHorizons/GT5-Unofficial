@@ -61,7 +61,7 @@ public class GregtechConduits {
 		generateNonGTFluidPipes(GT_Materials.Tantalloy60, BasePipeID+5, 5000, 4250, true);
 		generateNonGTFluidPipes(GT_Materials.Tantalloy61, BasePipeID+10, 6000, 5800, true);
 		if (LoadedMods.Thaumcraft){
-		generateNonGTFluidPipes(GT_Materials.VoidMetal, BasePipeID+15, 250, 25000, true);}
+		generateNonGTFluidPipes(GT_Materials.Void, BasePipeID+15, 250, 25000, true);}
 		generateGTFluidPipes(Materials.Europium, BasePipeID+20, 12000, 7500, true);
 		generateNonGTFluidPipes(GT_Materials.Potin, BasePipeID+25, 375, 2000, true);
 		generateNonGTFluidPipes(GT_Materials.MaragingSteel300, BasePipeID+30, 7000, 2500, true);
