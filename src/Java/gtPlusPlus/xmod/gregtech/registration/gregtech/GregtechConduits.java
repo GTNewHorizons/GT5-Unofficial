@@ -55,7 +55,8 @@ public class GregtechConduits {
 		}
 		
 		superConductorFactory(GT_Materials.Superconductor, 524288, 30660, 0, 0, 8);
-		superConductorFactory(GT_Materials.Void, 512, 30661, 0, 0, 8);
+		if (LoadedMods.Thaumcraft){
+		superConductorFactory(GT_Materials.Void, 512, 30661, 0, 0, 8);}
 		
 		generateNonGTFluidPipes(GT_Materials.Staballoy, BasePipeID, 6250, 7500, true);
 		generateNonGTFluidPipes(GT_Materials.Tantalloy60, BasePipeID+5, 5000, 4250, true);
