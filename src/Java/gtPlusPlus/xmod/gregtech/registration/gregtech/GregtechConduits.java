@@ -54,8 +54,8 @@ public class GregtechConduits {
 			wireFactory("RedstoneAlloy", 32, 30645, 1, 4, 1);
 		}
 		
-		superConductorFactory("Superconductor", 524288, 30660, 0, 0, 8);
-		superConductorFactory("VoidMetal", 512, 30661, 0, 0, 8);
+		superConductorFactory(GT_Materials.Superconductor, 524288, 30660, 0, 0, 8);
+		superConductorFactory(GT_Materials.Void, 512, 30661, 0, 0, 8);
 		
 		generateNonGTFluidPipes(GT_Materials.Staballoy, BasePipeID, 6250, 7500, true);
 		generateNonGTFluidPipes(GT_Materials.Tantalloy60, BasePipeID+5, 5000, 4250, true);
@@ -134,8 +134,8 @@ public class GregtechConduits {
 		}
 	}
 	
-	private static void superConductorFactory(String Material, int Voltage, int ID, long insulatedLoss, long uninsulatedLoss, long Amps){
-		GT_Materials T = GT_Materials.valueOf(Material);
+	private static void superConductorFactory(GT_Materials Material, int Voltage, int ID, long insulatedLoss, long uninsulatedLoss, long Amps){
+		GT_Materials T = Material;
 		int V = 0;
 		if (Voltage == 8){
 			V = 0;
@@ -168,8 +168,8 @@ public class GregtechConduits {
 			V = 9;
 		}
 		else {
-			Utils.LOG_ERROR("Failed to set voltage on "+Material+". Invalid voltage of "+Voltage+"V set.");
-			Utils.LOG_ERROR(Material+" has defaulted to 8v.");
+			Utils.LOG_ERROR("Failed to set voltage on "+Material.name()+". Invalid voltage of "+Voltage+"V set.");
+			Utils.LOG_ERROR(Material.name()+" has defaulted to 8v.");
 			V = 0;
 		}
 		//makeWires(T, ID, 2L, 4L, 2L, GT_Values.V[V], true, false);	 
