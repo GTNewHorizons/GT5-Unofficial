@@ -7,15 +7,10 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.config.Configuration;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class CORE {
 
@@ -34,10 +29,7 @@ public class CORE {
 	@Deprecated
 	public static IGregtech_RecipeAdder sRecipeAdder;
 	public static GregtechRecipe GT_Recipe = new GregtechRecipe();
-
-	@SideOnly(Side.CLIENT)
-	public static IIconRegister GT_BlockIcons, GT_ItemIcons;	
-	public static List<Runnable> GT_BlockIconload = new ArrayList<Runnable>();
+	
 	public static Configuration Config;	
 	public static final String GT_Tooltip = "Added by: " + EnumChatFormatting.DARK_GREEN+"Alkalus "+EnumChatFormatting.GRAY+"- "+EnumChatFormatting.RED+"[GT++]";
 	public static final String GT_Tooltip_Radioactive = EnumChatFormatting.GRAY+"Warning: "+EnumChatFormatting.GREEN+"Radioactive! "+EnumChatFormatting.GOLD+" Avoid direct handling without hazmat protection.";

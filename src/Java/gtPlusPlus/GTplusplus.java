@@ -15,6 +15,7 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
 import gtPlusPlus.core.commands.CommandMath;
 import gtPlusPlus.core.common.CommonProxy;
+import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.handler.events.LoginEventHandler;
 import gtPlusPlus.core.item.general.RF2EU_Battery;
 import gtPlusPlus.core.lib.CORE;
@@ -164,6 +165,8 @@ implements ActionListener
 		}
 		
 		Utils.LOG_INFO("Activating GT OreDictionary Handler, this can take some time.");
+		Utils.LOG_INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		Utils.LOG_INFO("| Recipes succesfully Loaded: "+RegistrationHandler.recipesSuccess+" | Failed: "+RegistrationHandler.recipesFailed + " |");
 		Utils.LOG_INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		Meta_GT_Proxy.activateOreDictHandler();
 		Utils.LOG_INFO("Finally, we are finished. Have some cripsy bacon as a reward.");

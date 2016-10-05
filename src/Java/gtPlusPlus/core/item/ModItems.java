@@ -21,6 +21,7 @@ import gtPlusPlus.core.item.general.fuelrods.FuelRod_Base;
 import gtPlusPlus.core.item.init.ItemsFoods;
 import gtPlusPlus.core.item.tool.misc.SandstoneHammer;
 import gtPlusPlus.core.item.tool.staballoy.MultiPickaxeBase;
+import gtPlusPlus.core.item.tool.staballoy.MultiSpadeBase;
 import gtPlusPlus.core.item.tool.staballoy.StaballoyAxe;
 import gtPlusPlus.core.item.tool.staballoy.StaballoyPickaxe;
 import gtPlusPlus.core.lib.CORE;
@@ -109,6 +110,7 @@ public final class ModItems {
 	public static Item itemPersonalHealingDevice;
 
 	public static MultiPickaxeBase MP_GTMATERIAL;
+	public static MultiSpadeBase MS_GTMATERIAL;
 	
 	public static ItemStack FluidCell;
 	
@@ -231,8 +233,15 @@ public final class ModItems {
 		
 		
 		boolean gtStyleTools = LoadedMods.Gregtech;
+		
+		Materials[] rm = Materials.values();
+		for (Materials m : rm){
+			MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, m);
+			MS_GTMATERIAL = UtilsItems.generateMultiShovel(gtStyleTools, m);
+		}
+		
 
-		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Wood);
+		/*MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Wood);
 		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Cobblestone);
 		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Iron);
 		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.WroughtIron);
@@ -277,7 +286,7 @@ public final class ModItems {
 		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.BlueSteel);
 		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Neodymium);
 		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.Desh);
-		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.ElectrumFlux);
+		MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, Materials.ElectrumFlux);*/
 		
 		//EnderIO Resources
 		if (LoadedMods.EnderIO || LOAD_ALL_CONTENT){

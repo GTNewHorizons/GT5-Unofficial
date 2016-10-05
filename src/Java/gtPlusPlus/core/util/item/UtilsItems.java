@@ -20,6 +20,7 @@ import gtPlusPlus.core.item.base.rods.BaseItemRodLong;
 import gtPlusPlus.core.item.base.rotors.BaseItemRotor;
 import gtPlusPlus.core.item.base.screws.BaseItemScrew;
 import gtPlusPlus.core.item.tool.staballoy.MultiPickaxeBase;
+import gtPlusPlus.core.item.tool.staballoy.MultiSpadeBase;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
@@ -372,7 +373,45 @@ public class UtilsItems {
 				Utils.rgbtoHexValue(rgb[0],rgb[1],rgb[2])
 				);
 		
-		return MP_Redstone;
+		if (MP_Redstone.isValid){
+			return MP_Redstone;
+		}		
+		return null;
+		
+	}
+	
+	public static MultiSpadeBase generateMultiShovel(boolean GT_Durability, Materials material){
+		ToolMaterial customMaterial = Utils.generateMaterialFromGT(material);
+		Utils.LOG_INFO("Generating a Multi-Shovel out of "+material.name());
+		short[] rgb;
+		rgb = material.getRGBA();
+		int dur = customMaterial.getMaxUses();
+		Utils.LOG_INFO("Determined durability for "+material.name()+" is "+dur);
+		if (GT_Durability){
+			dur = material.mDurability*100;
+			Utils.LOG_INFO("Using gregtech durability value, "+material.name()+" is now "+dur+".");
+		}
+		else if (dur <= 0){
+			dur = material.mDurability;
+			Utils.LOG_INFO("Determined durability too low, "+material.name()+" is now "+dur+" based on the GT material durability.");
+		}
+		
+		if (dur <= 0){
+			Utils.LOG_INFO("Still too low, "+material.name()+" will now go unused.");
+			return null;
+		}
+		
+		MultiSpadeBase MP_Redstone = new MultiSpadeBase(
+				material.name()+" Multishovel",
+				(customMaterial),
+				dur,
+				Utils.rgbtoHexValue(rgb[0],rgb[1],rgb[2])
+				);
+		
+		if (MP_Redstone.isValid){
+			return MP_Redstone;
+		}		
+		return null;
 		
 	}
 	

@@ -8,9 +8,8 @@ import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_Generic_Block;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
-import gregtech.api.metatileentity.BaseMetaTileEntity;
+import gregtech.api.metatileentity.BaseMetaTileEntityEx;
 import gregtech.api.metatileentity.BaseTileEntity;
-import gregtech.api.util.GT_BaseCrop;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Item_Machines;
@@ -108,7 +107,7 @@ public class GregtechBlockMachines
 
     @Override
 	public String getUnlocalizedName() {
-        return "gt.blockmachines";
+        return "gt.plusplus.blockmachines";
     }
 
     @Override
@@ -240,12 +239,12 @@ public class GregtechBlockMachines
         super.onEntityCollidedWithBlock(aWorld, aX, aY, aZ, collider);
     }
 
-    @Override
-	@SideOnly(Side.CLIENT)
+    @Override //TODO
+	@SideOnly(Side.CLIENT) //TODO
     public void registerBlockIcons(IIconRegister aIconRegister) {
-        //if (GregTech_API.sPostloadFinished) {
+        if (GregTech_API.sPostloadFinished) {
             Utils.LOG_INFO("Setting up Icon Register for Blocks");
-            GregTech_API.sBlockIcons = aIconRegister;
+            Meta_GT_Proxy.sBlockIcons = aIconRegister;
 
             Utils.LOG_INFO("Registering MetaTileEntity specific Textures");
             for (IMetaTileEntity tMetaTileEntity : Meta_GT_Proxy.METATILEENTITIES) {
@@ -257,17 +256,10 @@ public class GregtechBlockMachines
                     e.printStackTrace(GT_Log.err);
                 }
             }
-            Utils.LOG_INFO("Registering Crop specific Textures");
-            try {
-                for (GT_BaseCrop tCrop : GT_BaseCrop.sCropList) {
-                    tCrop.registerSprites(aIconRegister);
-                }
-            } catch (Throwable e) {
-                e.printStackTrace(GT_Log.err);
-            }
+          
             Utils.LOG_INFO("Starting Block Icon Load Phase");
             System.out.println("Starting Block Icon Load Phase");
-            for (Runnable tRunnable : GregTech_API.sGTBlockIconload) {
+            for (Runnable tRunnable : Meta_GT_Proxy.GT_BlockIconload) {
                 try {
                     tRunnable.run();
                 } catch (Throwable e) {
@@ -276,7 +268,7 @@ public class GregtechBlockMachines
             }
             Utils.LOG_INFO("Finished Block Icon Load Phase");
             System.out.println("Finished Block Icon Load Phase");
-      //  }
+        }
     }
 
     @Override
@@ -287,7 +279,7 @@ public class GregtechBlockMachines
     @Override
 	public float getPlayerRelativeBlockHardness(EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if (((tTileEntity instanceof BaseMetaTileEntity)) && (((BaseMetaTileEntity) tTileEntity).privateAccess()) && (!((BaseMetaTileEntity) tTileEntity).playerOwnsThis(aPlayer, true))) {
+        if (((tTileEntity instanceof BaseMetaTileEntityEx)) && (((BaseMetaTileEntityEx) tTileEntity).privateAccess()) && (!((BaseMetaTileEntityEx) tTileEntity).playerOwnsThis(aPlayer, true))) {
             return -1.0F;
         }
         return super.getPlayerRelativeBlockHardness(aPlayer, aWorld, aX, aY, aZ);
@@ -340,8 +332,8 @@ public class GregtechBlockMachines
     @Override
 	public void onBlockExploded(World aWorld, int aX, int aY, int aZ, Explosion aExplosion) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity instanceof BaseMetaTileEntity)) {
-            ((BaseMetaTileEntity) tTileEntity).doEnergyExplosion();
+        if ((tTileEntity instanceof BaseMetaTileEntityEx)) {
+            ((BaseMetaTileEntityEx) tTileEntity).doEnergyExplosion();
         }
         super.onBlockExploded(aWorld, aX, aY, aZ, aExplosion);
     }
@@ -421,8 +413,8 @@ public class GregtechBlockMachines
         if (!aWorld.isRemote) {
             TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
             if ((tTileEntity != null) && (chance < 1.0F)) {
-                if (((tTileEntity instanceof BaseMetaTileEntity)) && (GregTech_API.sMachineNonWrenchExplosions)) {
-                    ((BaseMetaTileEntity) tTileEntity).doEnergyExplosion();
+                if (((tTileEntity instanceof BaseMetaTileEntityEx)) && (GregTech_API.sMachineNonWrenchExplosions)) {
+                    ((BaseMetaTileEntityEx) tTileEntity).doEnergyExplosion();
                 }
             } else {
                 super.dropBlockAsItemWithChance(aWorld, aX, aY, aZ, par5, chance, par7);
@@ -437,7 +429,7 @@ public class GregtechBlockMachines
         }
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (tTileEntity != null) {
-            if ((tTileEntity instanceof BaseMetaTileEntity)) {
+            if ((tTileEntity instanceof BaseMetaTileEntityEx)) {
                 return true;
             }
             if (((tTileEntity instanceof BaseMetaPipeEntity)) && ((((BaseMetaPipeEntity) tTileEntity).mConnections & 0xFFFFFFC0) != 0)) {
@@ -465,16 +457,16 @@ public class GregtechBlockMachines
     @Override
 	public int getLightValue(IBlockAccess aWorld, int aX, int aY, int aZ) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity instanceof BaseMetaTileEntity)) {
-            return ((BaseMetaTileEntity) tTileEntity).getLightValue();
+        if ((tTileEntity instanceof BaseMetaTileEntityEx)) {
+            return ((BaseMetaTileEntityEx) tTileEntity).getLightValue();
         }
         return 0;
     }
 
-    @Override
+    @Override //TODO
 	public TileEntity createTileEntity(World aWorld, int aMeta) {
         if (aMeta < 4) {
-            return GregTech_API.constructBaseMetaTileEntity();
+            return Meta_GT_Proxy.constructBaseMetaTileEntity();
         }
         return new BaseMetaPipeEntity();
     }
@@ -537,8 +529,8 @@ public class GregtechBlockMachines
     @Override
 	public ArrayList<String> getDebugInfo(EntityPlayer aPlayer, int aX, int aY, int aZ, int aLogLevel) {
         TileEntity tTileEntity = aPlayer.worldObj.getTileEntity(aX, aY, aZ);
-        if ((tTileEntity instanceof BaseMetaTileEntity)) {
-            return ((BaseMetaTileEntity) tTileEntity).getDebugInfo(aPlayer, aLogLevel);
+        if ((tTileEntity instanceof BaseMetaTileEntityEx)) {
+            return ((BaseMetaTileEntityEx) tTileEntity).getDebugInfo(aPlayer, aLogLevel);
         }
         if ((tTileEntity instanceof BaseMetaPipeEntity)) {
             return ((BaseMetaPipeEntity) tTileEntity).getDebugInfo(aPlayer, aLogLevel);
