@@ -1108,8 +1108,17 @@ public class BaseMetaTileEntityEx extends BaseTileEntity implements IGregTechTil
 		return 0;
 	}
 
-	@Override
+	
 	public ITexture[] getTexture(byte aSide) {
+		ITexture rIcon = getCoverTexture(aSide);
+		if (rIcon != null) return new ITexture[]{rIcon};
+		if (hasValidMetaTileEntity())
+			return mMetaTileEntity.getTexture(this, aSide, mFacing, (byte) (mColor - 1), mActive, getOutputRedstoneSignal(aSide) > 0);
+		return Textures.BlockIcons.ERROR_RENDERING;
+	}
+	
+	
+	public ITexture[] getTexture(Block arg0, byte aSide) {
 		ITexture rIcon = getCoverTexture(aSide);
 		if (rIcon != null) return new ITexture[]{rIcon};
 		if (hasValidMetaTileEntity())
@@ -2078,4 +2087,5 @@ public class BaseMetaTileEntityEx extends BaseTileEntity implements IGregTechTil
 	public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity collider) {
 		mMetaTileEntity.onEntityCollidedWithBlock(aWorld, aX, aY, aZ, collider);
 	}
+	
 }

@@ -3,6 +3,8 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_AdvancedCraftingTable;
+import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_BronzeCraftingTable;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_TieredTank;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_NBT_Tank;
 
@@ -31,8 +33,11 @@ public class GregtechTieredFluidTanks
         GregtechItemList.GT_FluidTank_ZPM.set(new GT_MetaTileEntity_TieredTank(ID++, "fluidtank.tier.07", "ZPM Voltage Fluid Tank", 7).getStackForm(1L));
         GregtechItemList.GT_FluidTank_UV.set(new GT_MetaTileEntity_TieredTank(ID++, "fluidtank.tier.08", "Ultimate Voltage Fluid Tank", 8).getStackForm(1L));
         GregtechItemList.GT_FluidTank_MAX.set(new GT_MetaTileEntity_TieredTank(ID++, "fluidtank.tier.09", "MAX Voltage Fluid Tank", 9).getStackForm(1L));
-		
-
+        ID = 900;
+		GregtechItemList.GT4_Workbench_Bronze.set(new GT_MetaTileEntity_BronzeCraftingTable(ID++, "workbench.bronze", "Bronze Workbench", 0).getStackForm(1L));
+		GregtechItemList.GT4_Workbench_Advanced.set(new GT_MetaTileEntity_AdvancedCraftingTable(ID++, "workbench.advanced", "Advanced Workbench", 1).getStackForm(1L));
+        
+        
 	}
 	
 	private static void run2()

@@ -1,8 +1,10 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import net.minecraft.item.ItemStack;
@@ -20,47 +22,79 @@ public class RecipeGen_Plates {
 		ItemStack plate_SingleTwo = material.getPlate(2);
 		ItemStack plate_Double = material.getPlateDouble(1);
 
+		Utils.LOG_INFO("Generating Plate recipes for "+material.getLocalizedName());
+		
 		//Forge Hammer
-		GT_Values.RA.addForgeHammerRecipe(
+		if (addForgeHammerRecipe(
 				ingotStackTwo,
 				plate_Single,
 				(int) Math.max(material.getMass(), 1L),
-				16);
+				16)){
+			Utils.LOG_INFO("Forge Hammer Recipe: "+material.getLocalizedName()+" - Success");
+		}
+		else {
+			Utils.LOG_INFO("Forge Hammer Recipe: "+material.getLocalizedName()+" - Failed");			
+		}
 		//Bender
-		GT_Values.RA.addBenderRecipe(
+		if (addBenderRecipe(
 				ingotStackOne,
 				plate_Single,
 				(int) Math.max(material.getMass() * 1L, 1L),
-				24);
+				24)){
+			Utils.LOG_INFO("Bender Recipe: "+material.getLocalizedName()+" - Success");
+		}
+		else {
+			Utils.LOG_INFO("Bender Recipe: "+material.getLocalizedName()+" - Failed");			
+		}
 		//Extruder
-		GT_Values.RA.addExtruderRecipe(
+		if (addExtruderRecipe(
 				ingotStackOne,
 				shape_Extruder,
 				plate_Single,
-				10, 4 * tVoltageMultiplier);
+				10, 4 * tVoltageMultiplier)){
+			Utils.LOG_INFO("Extruder Recipe: "+material.getLocalizedName()+" - Success");
+		}
+		else {
+			Utils.LOG_INFO("Extruder Recipe: "+material.getLocalizedName()+" - Failed");			
+		}
 		//Alloy Smelter
-		GT_Values.RA.addAlloySmelterRecipe(
+		if (GT_Values.RA.addAlloySmelterRecipe(
 				ingotStackTwo,
 				shape_Mold,
 				plate_Single,
 				(int) Math.max(material.getMass() * 2L, 1L),
-				2 * tVoltageMultiplier);
+				2 * tVoltageMultiplier)){
+			Utils.LOG_INFO("Alloy Smelter Recipe: "+material.getLocalizedName()+" - Success");
+		}
+		else {
+			Utils.LOG_INFO("Alloy Smelter Recipe: "+material.getLocalizedName()+" - Failed");			
+		}
 
 
 		//Making Double Plates
-		GT_Values.RA.addBenderRecipe(
+		if (addBenderRecipe(
 				ingotStackTwo,
 				plate_Double,
 				(int) Math.max(material.getMass() * 2L, 1L),
-				96);
-		GT_Values.RA.addBenderRecipe(
+				96)){
+			Utils.LOG_INFO("Bender Recipe: "+material.getLocalizedName()+" - Success");
+		}
+		else {
+			Utils.LOG_INFO("Bender Recipe: "+material.getLocalizedName()+" - Failed");			
+		}
+		if (addBenderRecipe(
 				plate_SingleTwo,
 				plate_Double,
 				(int) Math.max(material.getMass() * 2L, 1L),
-				96);
+				96)){
+			Utils.LOG_INFO("Bender Recipe: "+material.getLocalizedName()+" - Success");
+		}
+		else {
+			Utils.LOG_INFO("Bender Recipe: "+material.getLocalizedName()+" - Failed");			
+		}
 
 
-		Utils.LOG_WARNING("Adding crafting recipes for "+material.getLocalizedName()+" Plates - Single & Double");
+		Utils.LOG_INFO("Adding crafting recipes for "+material.getLocalizedName()+" Plates - Single & Double");
 
 		//Single Plate Shaped/Shapeless
 		GT_ModHandler.addCraftingRecipe(
@@ -92,6 +126,39 @@ public class RecipeGen_Plates {
 				new Object[]{gregtech.api.enums.ToolDictNames.craftingToolForgeHammer,
 						plate_Single,
 						plate_Single});	     
+	}
+
+	public static boolean addBenderRecipe(ItemStack aInput1, ItemStack aOutput1, int aDuration, int aEUt) {
+		if ((aInput1 == null) || (aOutput1 == null)) {
+			return false;
+		}
+		if ((aDuration = GregTech_API.sRecipeFile.get("bender", aInput1, aDuration)) <= 0) {
+			return false;
+		}
+		new GT_Recipe(aEUt, aDuration, aInput1, aOutput1);
+		return true;
+	}
+
+	public static boolean addExtruderRecipe(ItemStack aInput, ItemStack aShape, ItemStack aOutput, int aDuration, int aEUt) {
+		if ((aInput == null) || (aShape == null) || (aOutput == null)) {
+			return false;
+		}
+		if ((aDuration = GregTech_API.sRecipeFile.get("extruder", aOutput, aDuration)) <= 0) {
+			return false;
+		}
+		GT_Recipe.GT_Recipe_Map.sExtruderRecipes.addRecipe(true, new ItemStack[]{aInput, aShape}, new ItemStack[]{aOutput}, null, null, null, aDuration, aEUt, 0);
+		return true;
+	}
+
+	public static boolean addForgeHammerRecipe(ItemStack aInput1, ItemStack aOutput1, int aDuration, int aEUt) {
+		if ((aInput1 == null) || (aOutput1 == null)) {
+			return false;
+		}
+		if (!GregTech_API.sRecipeFile.get("forgehammer", aOutput1, true)) {
+			return false;
+		}
+		GT_Recipe.GT_Recipe_Map.sHammerRecipes.addRecipe(true, new ItemStack[]{aInput1}, new ItemStack[]{aOutput1}, null, null, null, aDuration, aEUt, 0);
+		return true;
 	}
 
 
