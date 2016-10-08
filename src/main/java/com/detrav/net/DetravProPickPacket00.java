@@ -9,6 +9,9 @@ import com.google.common.io.ByteStreams;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Utility;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
@@ -22,6 +25,7 @@ public class DetravProPickPacket00 extends DetravPacket {
     public int chunkX;
     public int chunkZ;
     public int size;
+    public int ptype;
     HashMap<Byte,Short>[][] map = null;
 
     @Override
@@ -34,6 +38,7 @@ public class DetravProPickPacket00 extends DetravPacket {
     @Override
     public byte[] encode() {
         ByteArrayDataOutput tOut = ByteStreams.newDataOutput(1);
+        tOut.writeInt(ptype);
         tOut.writeInt(level);
         tOut.writeInt(chunkX);
         tOut.writeInt(chunkZ);
@@ -63,6 +68,7 @@ public class DetravProPickPacket00 extends DetravPacket {
     @Override
     public Object decode(ByteArrayDataInput aData) {
         DetravProPickPacket00 packet = new DetravProPickPacket00();
+        packet.ptype = aData.readInt();
         packet.level = aData.readInt();
         packet.chunkX = aData.readInt();
         packet.chunkZ = aData.readInt();
@@ -115,61 +121,126 @@ public class DetravProPickPacket00 extends DetravPacket {
 
         if(ores == null) ores = new HashMap<String, Integer>();
         int exception = 0;
-        for(int i =0; i<wh; i++)
-            for(int j =0; j<wh; j++) {
-                if (map[i][j] == null)
-                {
-                    raster.setSample(i,j,0,255);
-                    raster.setSample(i,j,1,255);
-                    raster.setSample(i,j,2,255);
-                    raster.setSample(i,j,3,255);
-                }
-                else
-                {
-                    for(short meta : map[i][j].values()) {
-                        String name;
-                        short[] rgba;
-                        if(meta>=0) {
-                            //Пока только по одному буду
-                            Materials tMaterial = GregTech_API.sGeneratedMaterials[meta % 1000];
-                            if(tMaterial == null) { exception++; continue;}
-                            rgba = tMaterial.getRGBA();
-                            //ores.put(GT_Ore)
-                            name = GT_LanguageManager.getTranslation("gt.blockores." + meta + ".name");
-                        }
-                        else
-                        {
-                            name = String.valueOf(meta);
-                            rgba = new short[4];
-                            rgba[0] =(short)( 255/(-meta + 1));
-                            rgba[1] =(short)( 255/(-meta + 1));
-                            rgba[2] =(short)( 255/(-meta + 1));
-                            rgba[3] =(short)( 255 );
-
-
-                        }
-
-                        raster.setSample(i, j, 0, rgba[0]);
-                        raster.setSample(i, j, 1, rgba[1]);
-                        raster.setSample(i, j, 2, rgba[2]);
+        switch (ptype) {
+            case 0:
+            case 1:
+            for (int i = 0; i < wh; i++)
+                for (int j = 0; j < wh; j++) {
+                    if (map[i][j] == null) {
+                        raster.setSample(i, j, 0, 255);
+                        raster.setSample(i, j, 1, 255);
+                        raster.setSample(i, j, 2, 255);
                         raster.setSample(i, j, 3, 255);
-                        if(!ores.containsKey(name))
-                            ores.put(name,(0xFF << 24) + ((rgba[0]&0xFF)<<16)+((rgba[1]&0xFF)<<8)+((rgba[2]&0xFF)));
+                    } else {
+                        for (short meta : map[i][j].values()) {
+                            String name;
+                            short[] rgba;
+                                //Пока только по одному буду
+                                Materials tMaterial = GregTech_API.sGeneratedMaterials[meta % 1000];
+                                if (tMaterial == null) {
+                                    exception++;
+                                    continue;
+                                }
+                                rgba = tMaterial.getRGBA();
+                                //ores.put(GT_Ore)
+                                name = GT_LanguageManager.getTranslation("gt.blockores." + meta + ".name");
+
+                            raster.setSample(i, j, 0, rgba[0]);
+                            raster.setSample(i, j, 1, rgba[1]);
+                            raster.setSample(i, j, 2, rgba[2]);
+                            raster.setSample(i, j, 3, 255);
+                            if (!ores.containsKey(name))
+                                ores.put(name, (0xFF << 24) + ((rgba[0] & 0xFF) << 16) + ((rgba[1] & 0xFF) << 8) + ((rgba[2] & 0xFF)));
+                        }
+                    }
+                    if (playerI == i || playerJ == j) {
+                        raster.setSample(i, j, 0, (raster.getSample(i, j, 0) + 255) / 2);
+                        raster.setSample(i, j, 1, raster.getSample(i, j, 1) / 2);
+                        raster.setSample(i, j, 2, raster.getSample(i, j, 2) / 2);
+                    }
+                    if ((i - 15) % 16 == 0 || (j - 15) % 16 == 0) {
+                        raster.setSample(i, j, 0, raster.getSample(i, j, 0) / 2);
+                        raster.setSample(i, j, 1, raster.getSample(i, j, 1) / 2);
+                        raster.setSample(i, j, 2, raster.getSample(i, j, 2) / 2);
                     }
                 }
-                if(playerI == i || playerJ == j)
-                {
-                    raster.setSample(i,j,0,(raster.getSample(i,j,0)+255)/2);
-                    raster.setSample(i,j,1,raster.getSample(i,j,1)/2);
-                    raster.setSample(i,j,2,raster.getSample(i,j,2)/2);
-                }
-                if((i-15)%16 == 0 || (j-15)%16 == 0)
-                {
-                    raster.setSample(i,j,0,raster.getSample(i,j,0)/2);
-                    raster.setSample(i,j,1,raster.getSample(i,j,1)/2);
-                    raster.setSample(i,j,2,raster.getSample(i,j,2)/2);
-                }
-            }
+                break;
+            case 2:
+                int gasId = Materials.NatruralGas.mGas.getID();
+                short[] gas_rgba = new short[]{ 0,0xFF,0xFF};
+                int oilLightId =  Materials.OilLight.mFluid.getID();
+                short[] oilLight_rgba = new short[]{ 0xFF,0xFF,0};
+                int oilMediumId = Materials.OilMedium.mFluid.getID();
+                short[] oilMedium_rgba = new short[]{ 0,0xFF,0};
+                int oilHeavyId = Materials.OilHeavy.mFluid.getID();
+                short[] oilHeavy_rgba = new short[]{ 0xFF,0,0xFF};
+                int oilId = Materials.Oil.mFluid.getID();
+                short[] oil_rgba = new short[]{ 0,0,0};
+                short[] metas = new short[2];
+                for (int i = 0; i < wh; i++)
+                    for (int j = 0; j < wh; j++) {
+                        if (map[i][j] == null) {
+                            raster.setSample(i, j, 0, 255);
+                            raster.setSample(i, j, 1, 255);
+                            raster.setSample(i, j, 2, 255);
+                            raster.setSample(i, j, 3, 255);
+                        } else {
+                            metas[0] = map[i][j].get(Byte.valueOf((byte)1));
+                            metas[1] = map[i][j].get(Byte.valueOf((byte)2));
+                            metas[1] = (short)(metas[1]/2 + 20);
+                            if(metas[1] >0xFF) metas[1] = 0xFF;
+                            String name = null;
+                            short[] rgba = null;
+                            if (metas[0] == gasId) {
+                                name = "NatruralGas";
+                                rgba = gas_rgba.clone();
+                            } else if (metas[0] == oilLightId) {
+                                name = "OilLight";
+                                rgba = oilLight_rgba.clone();
+                            } else if (metas[0] == oilMediumId) {
+                                name = "OilMedium";
+                                rgba = oilMedium_rgba.clone();
+                            } else if (metas[0] == oilHeavyId) {
+                                name = "OilHeavy";
+                                rgba = oilHeavy_rgba.clone();
+                            } else if (metas[0] == oilId) {
+                                name = "Oil";
+                                rgba = oil_rgba.clone();
+                            }
+                            if (rgba == null) continue;
+                            if (name == null) continue;
+
+                            if (!ores.containsKey(name))
+                                ores.put(name, (0xFF << 24) + ((rgba[0] & 0xFF) << 16) + ((rgba[1] & 0xFF) << 8) + ((rgba[2] & 0xFF)));
+
+                            for( int z = 0; z<3; z++) {
+                                rgba[z] = (short) (rgba[z] + (0xFF - metas[1]));
+                                if(rgba[z]>0xFF) rgba[z] = 0xFF;
+                            }
+
+                            raster.setSample(i, j, 0, rgba[0]);
+                            raster.setSample(i, j, 1, rgba[1]);
+                            raster.setSample(i, j, 2, rgba[2]);
+                            raster.setSample(i, j, 3, 255);
+
+
+                        }
+                        if (playerI == i || playerJ == j) {
+                            raster.setSample(i, j, 0, (raster.getSample(i, j, 0) + 255) / 2);
+                            raster.setSample(i, j, 1, raster.getSample(i, j, 1) / 2);
+                            raster.setSample(i, j, 2, raster.getSample(i, j, 2) / 2);
+                        }
+                        if ((i - 15) % 16 == 0 || (j - 15) % 16 == 0) {
+                            raster.setSample(i, j, 0, raster.getSample(i, j, 0) / 2);
+                            raster.setSample(i, j, 1, raster.getSample(i, j, 1) / 2);
+                            raster.setSample(i, j, 2, raster.getSample(i, j, 2) / 2);
+                        }
+                    }
+                break;
+            default:
+                DetravScannerMod.proxy.sendPlayerExeption("Not been realized YET!");
+                break;
+        }
             DetravScannerMod.proxy.sendPlayerExeption("null matertial exception: " + exception);
         /*try {
             File outputfile = new File("saved.png");

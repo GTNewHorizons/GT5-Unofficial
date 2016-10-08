@@ -32,24 +32,30 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
     public ItemStack onItemRightClick(GT_MetaBase_Item aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
 
         if (!aWorld.isRemote) {
-            long data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack);
+            int data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack).intValue();
             //Проверяем если нажат шифт
             if (aPlayer.isSneaking()) {
-                switch ((int)data)
+                data++;
+                if(data>3) data = 0;
+                switch (data)
                 {
                     case 0:
-                        aPlayer.addChatMessage(new ChatComponentText("Set Mode: Ore (with small), Any Rock Block"));
-                        DetravMetaGeneratedTool01.INSTANCE.setToolGTDetravData(aStack, 1);
+                        aPlayer.addChatMessage(new ChatComponentText("Set Mode: Ore, Any Rock Block"));
                         break;
                     case 1:
+                        aPlayer.addChatMessage(new ChatComponentText("Set Mode: Ore (with small), Any Rock Block"));
+                        break;
+                    case 2:
                         aPlayer.addChatMessage(new ChatComponentText("Set Mode: Oil, Any Block"));
-                        DetravMetaGeneratedTool01.INSTANCE.setToolGTDetravData(aStack, 2);
+                        break;
+                    case 3:
+                        aPlayer.addChatMessage(new ChatComponentText("Set Mode: Pollution, Any Block"));
                         break;
                     default:
-                        aPlayer.addChatMessage(new ChatComponentText("Set Mode: Ore, Any Rock Block"));
-                        DetravMetaGeneratedTool01.INSTANCE.setToolGTDetravData(aStack, 0);
+                        aPlayer.addChatMessage(new ChatComponentText("Set Mode: ERROR"));
                         break;
                 }
+                DetravMetaGeneratedTool01.INSTANCE.setToolGTDetravData(aStack, (long)data);
                 return super.onItemRightClick(aItem, aStack, aWorld, aPlayer);
             }
 
@@ -69,6 +75,7 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
             size = size - 1;
             //c.gene
             DetravProPickPacket00 packet = new DetravProPickPacket00();
+            packet.ptype = (int)data;
             packet.chunkX = cX;
             packet.chunkZ = cZ;
             packet.size = size;
@@ -77,25 +84,30 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
                     for (int z = 0; z < 16; z++) {
                         int ySize = c.getHeightValue(x, z);
                         for (int y = 1; y < ySize; y++) {
-                            if(data < 2) {
-                                Block b = c.getBlock(x, y, z);
-                                if (b == GregTech_API.sBlockOres1) {
-                                    TileEntity entity = c.getTileEntityUnsafe(x, y, z);
-                                    if (entity != null && entity instanceof GT_TileEntity_Ores) {
-                                        GT_TileEntity_Ores gt_entity = (GT_TileEntity_Ores) entity;
-                                        String name = GT_LanguageManager.getTranslation(
-                                                b.getUnlocalizedName() + "." + gt_entity.getMetaData() + ".name");
-                                        if (name.startsWith("Small")) if(data!=1) continue;
-                                        packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, gt_entity.getMetaData());
+                            switch (data) {
+                                case 0:
+                                case 1:
+                                    Block b = c.getBlock(x, y, z);
+                                    if (b == GregTech_API.sBlockOres1) {
+                                        TileEntity entity = c.getTileEntityUnsafe(x, y, z);
+                                        if (entity != null && entity instanceof GT_TileEntity_Ores) {
+                                            GT_TileEntity_Ores gt_entity = (GT_TileEntity_Ores) entity;
+                                            String name = GT_LanguageManager.getTranslation(
+                                                    b.getUnlocalizedName() + "." + gt_entity.getMetaData() + ".name");
+                                            if (name.startsWith("Small")) if (data != 1) continue;
+                                            packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, gt_entity.getMetaData());
+                                        }
                                     }
-                                }
+                                    break;
+                                case 2:
+                                    FluidStack fStack = getUndergroundOil(aWorld, c.xPosition * 16 + x, c.zPosition * 16 + z);
+                                    if (fStack.amount > 10000) {
+                                        packet.addBlock(c.xPosition * 16 + x, 2, c.zPosition * 16 + z, (short) (fStack.amount/5000));
+                                        packet.addBlock(c.xPosition * 16 + x, 1, c.zPosition * 16 + z, (short) fStack.getFluidID());
+                                    }
+                                    break;
                             }
-                            else {
-                                FluidStack fStack = getUndergroundOil(aWorld, c.xPosition * 16 + x, c.zPosition * 16 + z);
-                                if (fStack.amount > 50000)
-                                    packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, (short)-fStack.getFluidID());
-                                break;
-                            }
+                            if(data > 1 ) break;;
                         }
                     }
             }

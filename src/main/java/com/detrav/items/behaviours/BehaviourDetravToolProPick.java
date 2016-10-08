@@ -79,7 +79,7 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
                 return;
             }
         } else if (aRandom.nextInt(10) < 4) {
-            long data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack);
+            int data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack).intValue();
             HashMap<String, Integer> ores = new HashMap<String, Integer>();
             for (int x = 0; x < 16; x++)
                 for (int z = 0; z < 16; z++) {
