@@ -6,6 +6,7 @@ import com.detrav.net.DetravProPickPacket00;
 import gregtech.api.GregTech_API;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,9 +37,8 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
             //Проверяем если нажат шифт
             if (aPlayer.isSneaking()) {
                 data++;
-                if(data>3) data = 0;
-                switch (data)
-                {
+                if (data > 3) data = 0;
+                switch (data) {
                     case 0:
                         aPlayer.addChatMessage(new ChatComponentText("Set Mode: Ore, Any Rock Block"));
                         break;
@@ -55,7 +55,7 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
                         aPlayer.addChatMessage(new ChatComponentText("Set Mode: ERROR"));
                         break;
                 }
-                DetravMetaGeneratedTool01.INSTANCE.setToolGTDetravData(aStack, (long)data);
+                DetravMetaGeneratedTool01.INSTANCE.setToolGTDetravData(aStack, (long) data);
                 return super.onItemRightClick(aItem, aStack, aWorld, aPlayer);
             }
 
@@ -75,7 +75,7 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
             size = size - 1;
             //c.gene
             DetravProPickPacket00 packet = new DetravProPickPacket00();
-            packet.ptype = (int)data;
+            packet.ptype = (int) data;
             packet.chunkX = cX;
             packet.chunkZ = cZ;
             packet.size = size;
@@ -102,12 +102,21 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
                                 case 2:
                                     FluidStack fStack = getUndergroundOil(aWorld, c.xPosition * 16 + x, c.zPosition * 16 + z);
                                     if (fStack.amount > 10000) {
-                                        packet.addBlock(c.xPosition * 16 + x, 2, c.zPosition * 16 + z, (short) (fStack.amount/5000));
+                                        packet.addBlock(c.xPosition * 16 + x, 2, c.zPosition * 16 + z, (short) (fStack.amount / 5000));
                                         packet.addBlock(c.xPosition * 16 + x, 1, c.zPosition * 16 + z, (short) fStack.getFluidID());
                                     }
                                     break;
+                                case 3:
+                                    float polution = (float) getPolution(aWorld, c.xPosition * 16 + x, c.zPosition * 16 + z);
+                                    polution /= 2000000;
+                                    polution *= -0xFF;
+                                    if (polution > 0xFF)
+                                        polution = 0xFF;
+                                    polution = 0xFF - polution;
+                                    packet.addBlock(c.xPosition * 16 + x, 1, c.zPosition * 16 + z, (short) polution);
+                                    break;
                             }
-                            if(data > 1 ) break;;
+                            if (data > 1) break;
                         }
                     }
             }
@@ -132,11 +141,17 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
         long data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack);
         if (data < 2)
             return super.onItemUse(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ);
+        if (data < 3)
+            if (!aWorld.isRemote) {
+                FluidStack fStack = getUndergroundOil(aWorld, aX, aZ);
+                addChatMassageByValue(aPlayer, fStack.amount / 5000, fStack.getLocalizedName());
+                if (!aPlayer.capabilities.isCreativeMode)
+                    ((DetravMetaGeneratedTool01) aItem).doDamage(aStack, this.mCosts);
+                return true;
+            }
         if (!aWorld.isRemote) {
-            FluidStack fStack = getUndergroundOil(aWorld,aX,aZ);
-            addChatMassageByValue(aPlayer,fStack.amount/5000,fStack.getLocalizedName());
-            if (!aPlayer.capabilities.isCreativeMode)
-                ((DetravMetaGeneratedTool01)aItem).doDamage(aStack, this.mCosts);
+            int polution = getPolution(aWorld, aX, aZ);
+            addChatMassageByValue(aPlayer, polution, "Pollution");
         }
         return true;
     }

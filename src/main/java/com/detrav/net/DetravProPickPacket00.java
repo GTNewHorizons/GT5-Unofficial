@@ -237,10 +237,40 @@ public class DetravProPickPacket00 extends DetravPacket {
                         }
                     }
                 break;
+            case 3:
+                    ores.put("Pollution", (0xFF << 24) + ((0 & 0xFF) << 16) + ((0 & 0xFF) << 8) + ((0 & 0xFF)));
+                for (int i = 0; i < wh; i++)
+                    for (int j = 0; j < wh; j++) {
+                        if (map[i][j] == null) {
+                            raster.setSample(i, j, 0, 255);
+                            raster.setSample(i, j, 1, 255);
+                            raster.setSample(i, j, 2, 255);
+                            raster.setSample(i, j, 3, 255);
+                        } else {
+                            for (short meta : map[i][j].values()) {
+                                raster.setSample(i, j, 0, meta);
+                                raster.setSample(i, j, 1, meta);
+                                raster.setSample(i, j, 2, meta);
+                                raster.setSample(i, j, 3, 255);
+                            }
+                        }
+                        if (playerI == i || playerJ == j) {
+                            raster.setSample(i, j, 0, (raster.getSample(i, j, 0) + 255) / 2);
+                            raster.setSample(i, j, 1, raster.getSample(i, j, 1) / 2);
+                            raster.setSample(i, j, 2, raster.getSample(i, j, 2) / 2);
+                        }
+                        if ((i - 15) % 16 == 0 || (j - 15) % 16 == 0) {
+                            raster.setSample(i, j, 0, raster.getSample(i, j, 0) / 2);
+                            raster.setSample(i, j, 1, raster.getSample(i, j, 1) / 2);
+                            raster.setSample(i, j, 2, raster.getSample(i, j, 2) / 2);
+                        }
+                    }
+                break;
             default:
                 DetravScannerMod.proxy.sendPlayerExeption("Not been realized YET!");
                 break;
         }
+        if(exception > 0)
             DetravScannerMod.proxy.sendPlayerExeption("null matertial exception: " + exception);
         /*try {
             File outputfile = new File("saved.png");

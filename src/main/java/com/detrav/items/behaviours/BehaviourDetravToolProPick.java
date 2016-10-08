@@ -172,4 +172,16 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
 
         return new FluidStack(tFluid, tAmount);
     }
+
+    public static int getPolution(World aWorld, int aX, int aZ)
+    {
+        ChunkPosition tPos = new ChunkPosition(aX / 16, 1, aZ / 16);
+        if(GT_Proxy.chunkData.containsKey(tPos)) {
+            int[] tInts = (int[])GT_Proxy.chunkData.get(tPos);
+            if(tInts.length > 1 && tInts[1] > 0) {
+                return tInts[1];
+            }
+        }
+        return 0;
+    }
 }
