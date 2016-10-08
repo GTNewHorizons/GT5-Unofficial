@@ -114,7 +114,7 @@ public class DetravProPickPacket00 extends DetravPacket {
         int playerJ = posZ - (chunkZ-size)*16;
 
         if(ores == null) ores = new HashMap<String, Integer>();
-
+        int exception = 0;
         for(int i =0; i<wh; i++)
             for(int j =0; j<wh; j++) {
                 if (map[i][j] == null)
@@ -132,6 +132,7 @@ public class DetravProPickPacket00 extends DetravPacket {
                         if(meta>=0) {
                             //Пока только по одному буду
                             Materials tMaterial = GregTech_API.sGeneratedMaterials[meta % 1000];
+                            if(tMaterial == null) { exception++; continue;}
                             rgba = tMaterial.getRGBA();
                             //ores.put(GT_Ore)
                             name = GT_LanguageManager.getTranslation("gt.blockores." + meta + ".name");
@@ -169,6 +170,7 @@ public class DetravProPickPacket00 extends DetravPacket {
                     raster.setSample(i,j,2,raster.getSample(i,j,2)/2);
                 }
             }
+            DetravScannerMod.proxy.sendPlayerExeption("null matertial exception: " + exception);
         /*try {
             File outputfile = new File("saved.png");
             ImageIO.write(image, "png", outputfile);

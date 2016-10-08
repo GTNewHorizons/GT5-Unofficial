@@ -46,4 +46,9 @@ public class ClientProxy extends CommonProxy {
         super.onPreInit();
         //DetravKeyHandler.register();
     }
+
+    @Override
+    public void sendPlayerExeption(String s) {
+        Minecraft.getMinecraft().thePlayer.sendChatMessage("DetravScannerMod: " + s);
+    }
 }
