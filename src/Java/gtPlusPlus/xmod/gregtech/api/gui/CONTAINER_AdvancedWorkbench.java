@@ -5,6 +5,7 @@ import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.slots.SlotGtTool;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_AdvancedCraftingTable;
 import net.minecraft.entity.player.EntityPlayer;
@@ -42,11 +43,11 @@ public class CONTAINER_AdvancedWorkbench extends GT_ContainerMetaTile_Machine {
 		addSlotToContainer(new Slot(mTileEntity, 14, 44, 62));
 		addSlotToContainer(new Slot(mTileEntity, 15, 62, 62));
 
-		addSlotToContainer(new Slot(mTileEntity, 16, 82, 8));
-		addSlotToContainer(new Slot(mTileEntity, 17, 100, 8));
-		addSlotToContainer(new Slot(mTileEntity, 18, 118, 8));
-		addSlotToContainer(new Slot(mTileEntity, 19, 136, 8));
-		addSlotToContainer(new Slot(mTileEntity, 20, 154, 8));
+		addSlotToContainer(new SlotGtTool(mTileEntity, 16, 82, 8));
+		addSlotToContainer(new SlotGtTool(mTileEntity, 17, 100, 8));
+		addSlotToContainer(new SlotGtTool(mTileEntity, 18, 118, 8));
+		addSlotToContainer(new SlotGtTool(mTileEntity, 19, 136, 8));
+		addSlotToContainer(new SlotGtTool(mTileEntity, 20, 154, 8));
 
 		addSlotToContainer(new Slot(mTileEntity, 21, 82, 28));
 		addSlotToContainer(new Slot(mTileEntity, 22, 100, 28));
@@ -75,14 +76,14 @@ public class CONTAINER_AdvancedWorkbench extends GT_ContainerMetaTile_Machine {
 			return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
 		}
 		if ((mTileEntity == null) || (mTileEntity.getMetaTileEntity() == null)) {
-			Utils.LOG_INFO("Returning null on Line 78");
+			Utils.LOG_INFO("Returning null on Line 79");
 			return null;
 		}
 		try
 		{
 			ItemStack tStack = ((Slot)this.inventorySlots.get(aSlotIndex)).getStack();
 			if ((tStack != null) && (tStack.stackSize <= 0) && (!GT_Utility.areStacksEqual(tStack, aPlayer.inventory.getItemStack()))) {
-				Utils.LOG_INFO("Returning null on Line 85");
+				Utils.LOG_INFO("Returning null on Line 86");
 				return null;
 			}
 			if (aSlotIndex == 32)
@@ -90,7 +91,7 @@ public class CONTAINER_AdvancedWorkbench extends GT_ContainerMetaTile_Machine {
 				if ((aMouseclick == 0) && (aShifthold == 1))
 				{
 					((GT_MetaTileEntity_AdvancedCraftingTable)mTileEntity.getMetaTileEntity()).setBluePrint(null);
-					Utils.LOG_INFO("Returning null on Line 93");
+					Utils.LOG_INFO("Returning null on Line 94");
 					return null;
 				}
 			}
@@ -110,6 +111,7 @@ public class CONTAINER_AdvancedWorkbench extends GT_ContainerMetaTile_Machine {
 										Utils.LOG_INFO("Returning aPlayer.inventory.getItemStack() for slot: "+aSlotIndex+" on line 111");
 										return aPlayer.inventory.getItemStack();
 									}
+									Utils.LOG_INFO("Doing something ~ 1");
 									aPlayer.inventory.mainInventory[i] = ((GT_MetaTileEntity_AdvancedCraftingTable)mTileEntity.getMetaTileEntity()).consumeMaterials(aPlayer, aPlayer.inventory.mainInventory[i]);
 								}
 							}
@@ -119,34 +121,39 @@ public class CONTAINER_AdvancedWorkbench extends GT_ContainerMetaTile_Machine {
 							if (aMouseclick == 0)
 							{
 								if (((GT_MetaTileEntity_AdvancedCraftingTable)mTileEntity.getMetaTileEntity()).canDoCraftingOutput()) {
+									Utils.LOG_INFO("Doing something ~ 2");
 									aPlayer.inventory.setItemStack(((GT_MetaTileEntity_AdvancedCraftingTable)mTileEntity.getMetaTileEntity()).consumeMaterials(aPlayer, aPlayer.inventory.getItemStack()));
 								}
+								Utils.LOG_INFO("Returning aPlayer.inventory.getItemStack() for slot: "+aSlotIndex+" on line 127");
 								return aPlayer.inventory.getItemStack();
 							}
 							for (int i = 0; (i < tCraftedStack.getMaxStackSize() / tCraftedStack.stackSize) && (((GT_MetaTileEntity_AdvancedCraftingTable)mTileEntity.getMetaTileEntity()).canDoCraftingOutput()); i++)
 							{
 								ItemStack tStack2;
 								if ((!GT_Utility.areStacksEqual(tStack2 = ((GT_MetaTileEntity_AdvancedCraftingTable)mTileEntity.getMetaTileEntity()).getCraftingOutput(), tCraftedStack)) || ((tStack != null) && (tStack.stackSize != tStack2.stackSize))) {
+									Utils.LOG_INFO("Returning aPlayer.inventory.getItemStack() for slot: "+aSlotIndex+" on line 134");
 									return aPlayer.inventory.getItemStack();
 								}
+								Utils.LOG_INFO("Doing something ~ 3");
 								aPlayer.inventory.setItemStack(((GT_MetaTileEntity_AdvancedCraftingTable)mTileEntity.getMetaTileEntity()).consumeMaterials(aPlayer, aPlayer.inventory.getItemStack()));
 							}
+							Utils.LOG_INFO("Returning aPlayer.inventory.getItemStack() for slot: "+aSlotIndex+" on line 140");
 							return aPlayer.inventory.getItemStack();
 						}
 					}
-					Utils.LOG_INFO("Returning null on Line 136");
+					Utils.LOG_INFO("Returning null on Line 144");
 					return null;
 				}
 				if (aSlotIndex == 34)
 				{
 					((GT_MetaTileEntity_AdvancedCraftingTable)mTileEntity.getMetaTileEntity()).mFlushMode = true;
-					Utils.LOG_INFO("Returning null on Line 142");
+					Utils.LOG_INFO("Returning null on Line 150");
 					return null;
 				}
 				if (aSlotIndex == 35)
 				{
 					((GT_MetaTileEntity_AdvancedCraftingTable)mTileEntity.getMetaTileEntity()).sortIntoTheInputSlots();
-					Utils.LOG_INFO("Returning null on Line 148");
+					Utils.LOG_INFO("Returning null on Line 156");
 					return null;
 				}
 			}
@@ -155,6 +162,7 @@ public class CONTAINER_AdvancedWorkbench extends GT_ContainerMetaTile_Machine {
 		{
 			e.printStackTrace(GT_Log.err);
 		}
+		Utils.LOG_INFO("Returning super.slotClick() on Line 162");
 		return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
 	}
 
