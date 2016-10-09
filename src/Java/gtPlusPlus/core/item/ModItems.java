@@ -5,6 +5,7 @@ import static gtPlusPlus.core.lib.CORE.LOAD_ALL_CONTENT;
 import static gtPlusPlus.core.util.item.UtilsItems.generateItemsFromMaterial;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_OreDictUnificator;
+import gtPlusPlus.core.common.compat.COMPAT_Baubles;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.BaseItemBackpack;
 import gtPlusPlus.core.item.base.CoreItem;
@@ -14,8 +15,6 @@ import gtPlusPlus.core.item.base.ingots.BaseItemIngot;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate;
 import gtPlusPlus.core.item.effects.RarityUncommon;
 import gtPlusPlus.core.item.general.BufferCore;
-import gtPlusPlus.core.item.general.ItemCloakingDevice;
-import gtPlusPlus.core.item.general.ItemHealingDevice;
 import gtPlusPlus.core.item.general.RF2EU_Battery;
 import gtPlusPlus.core.item.general.fuelrods.FuelRod_Base;
 import gtPlusPlus.core.item.init.ItemsFoods;
@@ -322,10 +321,9 @@ public final class ModItems {
 			//Item Init
 			try {
 				
-				UtilsItems.getItemForOreDict("Thaumcraft:ItemResource", "ingotVoidMetal", "Void Metal Ingot", 16);
-				GT_OreDictUnificator.registerOre("plateVoidMetal", new ItemStack(ModItems.itemPlateVoidMetal));
-				
+				UtilsItems.getItemForOreDict("Thaumcraft:ItemResource", "ingotVoidMetal", "Void Metal Ingot", 16);				
 				itemPlateVoidMetal = new BaseItemPlate("itemPlate"+"Void", "Void Metal", Utils.rgbtoHexValue(82, 17, 82), 2, 0);
+				GT_OreDictUnificator.registerOre("plateVoidMetal", new ItemStack(ModItems.itemPlateVoidMetal));
 			} catch (NullPointerException e){
 				e.getClass();
 			}
@@ -388,14 +386,15 @@ public final class ModItems {
 			FuelRod_Plutonium = new FuelRod_Base("itemFuelRod_Plutonium", "Plutonium", 5000, 5000);
 			RfEuBattery = new RF2EU_Battery();
 			
-			if (LoadedMods.Baubles){
-				Utils.LOG_INFO("Baubles Found - Loading Wearables.");
-			itemPersonalCloakingDevice = new ItemCloakingDevice(0);
-			//itemPersonalCloakingDeviceCharged = new ItemCloakingDevice(0).set;
-			itemPersonalHealingDevice = new ItemHealingDevice();
-			}
-			else {
-				Utils.LOG_INFO("Baubles Not Found - Skipping Resources.");
+			try {Class baublesTest = Class.forName("baubles.api.IBauble");
+				if (baublesTest != null){					
+					COMPAT_Baubles.run();
+				}
+				else {
+					Utils.LOG_INFO("Baubles Not Found - Skipping Resources.");					
+				}
+			} catch(Throwable T){
+				Utils.LOG_INFO("Baubles Not Found - Skipping Resources.");				
 			}
 			//Registry
 			//GameRegistry.registerItem(FuelRod_Empty, "itemFuelRod_Empty");

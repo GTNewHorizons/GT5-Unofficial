@@ -21,8 +21,10 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+@Optional.InterfaceList(value = {@Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles"), @Optional.Interface(iface = "baubles.api.BaubleType", modid = "Baubles")})
 public class ItemCloakingDevice extends Item implements IElectricItem, IElectricItemManager, IBauble{
 
 	private final String unlocalizedName = "personalCloakingDevice";
