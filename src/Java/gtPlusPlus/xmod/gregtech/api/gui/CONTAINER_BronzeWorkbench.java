@@ -5,18 +5,20 @@ import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_AdvancedCraftingTable;
+import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_BronzeCraftingTable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class CONTAINER_BronzeWorkbench
-extends GT_ContainerMetaTile_Machine
-{
-	public CONTAINER_BronzeWorkbench(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity)
-	{
+public class CONTAINER_BronzeWorkbench  extends GT_ContainerMetaTile_Machine {
+
+	public CONTAINER_BronzeWorkbench(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
 		super(aInventoryPlayer, aTileEntity);
+	}
+
+	public CONTAINER_BronzeWorkbench(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, boolean bindInventory) {
+		super(aInventoryPlayer, aTileEntity, bindInventory);
 	}
 
 	@Override
@@ -64,8 +66,7 @@ extends GT_ContainerMetaTile_Machine
 		addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 32, 136, 46, false, false, 1));
 	}
 
-	@Override
-	public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer)
+	public ItemStack func_75144_a(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer)
 	{
 		if ((aSlotIndex < 21) || (aSlotIndex > 35)) {
 			return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
@@ -83,7 +84,7 @@ extends GT_ContainerMetaTile_Machine
 			{
 				if ((aMouseclick == 0) && (aShifthold == 1))
 				{
-					((GT_MetaTileEntity_AdvancedCraftingTable)this.mTileEntity.getMetaTileEntity()).setBluePrint(null);
+					((GT_MetaTileEntity_BronzeCraftingTable)this.mTileEntity.getMetaTileEntity()).setBluePrint(null);
 					return null;
 				}
 			}
@@ -91,18 +92,18 @@ extends GT_ContainerMetaTile_Machine
 			{
 				if (aSlotIndex == 33)
 				{
-					ItemStack tCraftedStack = ((GT_MetaTileEntity_AdvancedCraftingTable)this.mTileEntity.getMetaTileEntity()).getCraftingOutput();
+					ItemStack tCraftedStack = ((GT_MetaTileEntity_BronzeCraftingTable)this.mTileEntity.getMetaTileEntity()).getCraftingOutput();
 					if (tCraftedStack != null) {
 						if (aShifthold == 1)
 						{
 							for (byte i = 0; i < aPlayer.inventory.mainInventory.length; i = (byte)(i + 1)) {
-								for (byte j = 0; (j < tCraftedStack.getMaxStackSize() / tCraftedStack.stackSize) && (((GT_MetaTileEntity_AdvancedCraftingTable)this.mTileEntity.getMetaTileEntity()).canDoCraftingOutput()); j = (byte)(j + 1))
+								for (byte j = 0; (j < tCraftedStack.getMaxStackSize() / tCraftedStack.stackSize) && (((GT_MetaTileEntity_BronzeCraftingTable)this.mTileEntity.getMetaTileEntity()).canDoCraftingOutput()); j = (byte)(j + 1))
 								{
 									ItemStack tStack2;
-									if ((!GT_Utility.areStacksEqual(tStack2 = ((GT_MetaTileEntity_AdvancedCraftingTable)this.mTileEntity.getMetaTileEntity()).getCraftingOutput(), tCraftedStack)) || ((tStack != null) && (tStack.stackSize != tStack2.stackSize))) {
+									if ((!GT_Utility.areStacksEqual(tStack2 = ((GT_MetaTileEntity_BronzeCraftingTable)this.mTileEntity.getMetaTileEntity()).getCraftingOutput(), tCraftedStack)) || ((tStack != null) && (tStack.stackSize != tStack2.stackSize))) {
 										return aPlayer.inventory.getItemStack();
 									}
-									aPlayer.inventory.mainInventory[i] = ((GT_MetaTileEntity_AdvancedCraftingTable)this.mTileEntity.getMetaTileEntity()).consumeMaterials(aPlayer, aPlayer.inventory.mainInventory[i]);
+									aPlayer.inventory.mainInventory[i] = ((GT_MetaTileEntity_BronzeCraftingTable)this.mTileEntity.getMetaTileEntity()).consumeMaterials(aPlayer, aPlayer.inventory.mainInventory[i]);
 								}
 							}
 						}
@@ -110,18 +111,18 @@ extends GT_ContainerMetaTile_Machine
 						{
 							if (aMouseclick == 0)
 							{
-								if (((GT_MetaTileEntity_AdvancedCraftingTable)this.mTileEntity.getMetaTileEntity()).canDoCraftingOutput()) {
-									aPlayer.inventory.setItemStack(((GT_MetaTileEntity_AdvancedCraftingTable)this.mTileEntity.getMetaTileEntity()).consumeMaterials(aPlayer, aPlayer.inventory.getItemStack()));
+								if (((GT_MetaTileEntity_BronzeCraftingTable)this.mTileEntity.getMetaTileEntity()).canDoCraftingOutput()) {
+									aPlayer.inventory.setItemStack(((GT_MetaTileEntity_BronzeCraftingTable)this.mTileEntity.getMetaTileEntity()).consumeMaterials(aPlayer, aPlayer.inventory.getItemStack()));
 								}
 								return aPlayer.inventory.getItemStack();
 							}
-							for (int i = 0; (i < tCraftedStack.getMaxStackSize() / tCraftedStack.stackSize) && (((GT_MetaTileEntity_AdvancedCraftingTable)this.mTileEntity.getMetaTileEntity()).canDoCraftingOutput()); i++)
+							for (int i = 0; (i < tCraftedStack.getMaxStackSize() / tCraftedStack.stackSize) && (((GT_MetaTileEntity_BronzeCraftingTable)this.mTileEntity.getMetaTileEntity()).canDoCraftingOutput()); i++)
 							{
 								ItemStack tStack2;
-								if ((!GT_Utility.areStacksEqual(tStack2 = ((GT_MetaTileEntity_AdvancedCraftingTable)this.mTileEntity.getMetaTileEntity()).getCraftingOutput(), tCraftedStack)) || ((tStack != null) && (tStack.stackSize != tStack2.stackSize))) {
+								if ((!GT_Utility.areStacksEqual(tStack2 = ((GT_MetaTileEntity_BronzeCraftingTable)this.mTileEntity.getMetaTileEntity()).getCraftingOutput(), tCraftedStack)) || ((tStack != null) && (tStack.stackSize != tStack2.stackSize))) {
 									return aPlayer.inventory.getItemStack();
 								}
-								aPlayer.inventory.setItemStack(((GT_MetaTileEntity_AdvancedCraftingTable)this.mTileEntity.getMetaTileEntity()).consumeMaterials(aPlayer, aPlayer.inventory.getItemStack()));
+								aPlayer.inventory.setItemStack(((GT_MetaTileEntity_BronzeCraftingTable)this.mTileEntity.getMetaTileEntity()).consumeMaterials(aPlayer, aPlayer.inventory.getItemStack()));
 							}
 							return aPlayer.inventory.getItemStack();
 						}
@@ -130,12 +131,12 @@ extends GT_ContainerMetaTile_Machine
 				}
 				if (aSlotIndex == 34)
 				{
-					((GT_MetaTileEntity_AdvancedCraftingTable)this.mTileEntity.getMetaTileEntity()).mFlushMode = true;
+					((GT_MetaTileEntity_BronzeCraftingTable)this.mTileEntity.getMetaTileEntity()).mFlushMode = true;
 					return null;
 				}
 				if (aSlotIndex == 35)
 				{
-					((GT_MetaTileEntity_AdvancedCraftingTable)this.mTileEntity.getMetaTileEntity()).sortIntoTheInputSlots();
+					((GT_MetaTileEntity_BronzeCraftingTable)this.mTileEntity.getMetaTileEntity()).sortIntoTheInputSlots();
 					return null;
 				}
 			}
