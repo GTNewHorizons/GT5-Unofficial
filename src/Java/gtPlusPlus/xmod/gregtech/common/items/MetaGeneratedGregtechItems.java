@@ -24,7 +24,6 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaItem_X32;
 import net.minecraft.item.EnumAction;
-import net.minecraft.util.EnumChatFormatting;
 
 public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
     public MetaGeneratedGregtechItems INSTANCE;
@@ -176,7 +175,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
         
         
       //FOOOOOOOOOOOOOOD
-        GregtechItemList.Food_Baked_Raisin_Bread.set(addItem(tLastID = 60, "Raisin Bread", "Extra Raisins, Just for "+EnumChatFormatting.DARK_PURPLE+"ImQ009", new Object[]{new GT_FoodStat(5, 0.5F, EnumAction.eat, null, false, true, false, new int[0]), getTcAspectStack(TC_Aspects.CORPUS, 1L), getTcAspectStack(TC_Aspects.FAMES, 1L), getTcAspectStack(TC_Aspects.IGNIS, 1L)}));
+        GregtechItemList.Food_Baked_Raisin_Bread.set(addItem(tLastID = 60, "Raisin Bread", "Extra Raisins, Just for ImQ009", new Object[]{new GT_FoodStat(5, 0.5F, EnumAction.eat, null, false, true, false, new int[0]), getTcAspectStack(TC_Aspects.CORPUS, 1L), getTcAspectStack(TC_Aspects.FAMES, 1L), getTcAspectStack(TC_Aspects.IGNIS, 1L)}));
 
         
         
