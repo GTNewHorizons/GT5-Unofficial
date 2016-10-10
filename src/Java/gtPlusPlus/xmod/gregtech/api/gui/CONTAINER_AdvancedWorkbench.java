@@ -1,19 +1,19 @@
 package gtPlusPlus.xmod.gregtech.api.gui;
 
-import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.slots.SlotGtTool;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.xmod.gregtech.api.gui.dev.GT_ContainerMetaTile_MachineEx;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_AdvancedCraftingTable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class CONTAINER_AdvancedWorkbench extends GT_ContainerMetaTile_Machine {
+public class CONTAINER_AdvancedWorkbench extends GT_ContainerMetaTile_MachineEx {
 	
 	public CONTAINER_AdvancedWorkbench(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);

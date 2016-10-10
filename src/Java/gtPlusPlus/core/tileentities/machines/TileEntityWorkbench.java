@@ -1,6 +1,8 @@
 package gtPlusPlus.core.tileentities.machines;
 
 import gtPlusPlus.core.inventories.InventoryWorkbenchChest;
+import gtPlusPlus.core.inventories.InventoryWorkbenchHoloCrafting;
+import gtPlusPlus.core.inventories.InventoryWorkbenchHoloSlots;
 import gtPlusPlus.core.inventories.InventoryWorkbenchTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -9,11 +11,14 @@ public class TileEntityWorkbench extends TileEntity {
 
 	public InventoryWorkbenchChest inventoryChest;
 	public InventoryWorkbenchTools inventoryTool;
-	//public InventoryWorkbenchCrafting inventoryCrafting;	
+	public InventoryWorkbenchHoloSlots inventoryHolo;	
+	public InventoryWorkbenchHoloCrafting inventoryCrafting;
 	
 	public TileEntityWorkbench(){
 		this.inventoryTool = new InventoryWorkbenchTools();//number of slots - without product slot
 		this.inventoryChest = new InventoryWorkbenchChest();//number of slots - without product slot
+		this.inventoryHolo = new InventoryWorkbenchHoloSlots();
+		this.inventoryCrafting = new InventoryWorkbenchHoloCrafting();
 		this.canUpdate();
 	}
 	
@@ -33,7 +38,8 @@ public class TileEntityWorkbench extends TileEntity {
         super.writeToNBT(nbt);
         inventoryChest.writeToNBT(getTag(nbt, "ContentsChest"));
         inventoryTool.writeToNBT(getTag(nbt, "ContentsTools"));
-        //inventoryCrafting.writeToNBT(getTag(nbt, "ContentsCrafting"));
+        inventoryCrafting.writeToNBT(getTag(nbt, "ContentsCrafting"));
+        inventoryHolo.writeToNBT(getTag(nbt, "ContentsHolo"));
         
     }
     
@@ -43,7 +49,10 @@ public class TileEntityWorkbench extends TileEntity {
         super.readFromNBT(nbt);
         inventoryChest.readFromNBT(nbt.getCompoundTag("ContentsChest"));
         inventoryTool.readFromNBT(nbt.getCompoundTag("ContentsTools"));
-        //inventoryCrafting.readFromNBT(nbt.getCompoundTag("ContentsCrafting"));
+        inventoryCrafting.readFromNBT(nbt.getCompoundTag("ContentsCrafting"));
+        inventoryHolo.readFromNBT(nbt.getCompoundTag("ContentsHolo"));
     }
+    
+    
 
 }

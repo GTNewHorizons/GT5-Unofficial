@@ -25,6 +25,7 @@ import gtPlusPlus.core.util.item.UtilsItems;
 import gtPlusPlus.core.util.recipe.UtilsRecipe;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechDehydrator;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechEnergyBuffer;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechGeothermalThermalGenerator;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialCentrifuge;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialCokeOven;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialElectrolyzer;
@@ -41,6 +42,7 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSolarGenerators;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSteamCondenser;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSuperConductionPoint;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechTieredFluidTanks;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechWorkbenches;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -89,6 +91,8 @@ public class COMPAT_HANDLER {
 		GregtechDehydrator.run();
 		GregtechTieredFluidTanks.run();
 		GregtechIndustrialMultiTank.run();
+		GregtechWorkbenches.run();
+		GregtechGeothermalThermalGenerator.run();
 		}
 
 	}

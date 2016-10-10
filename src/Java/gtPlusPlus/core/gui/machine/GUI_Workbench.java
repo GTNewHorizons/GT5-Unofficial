@@ -52,8 +52,8 @@ public class GUI_Workbench extends GuiContainer {
 		super.initGui();
 
 		//The parameters of GuiButton are(id, x, y, width, height, text);
-		this.buttonList.add(new GuiButton( 1, 367, 132, 18, 18, "X"));
-		this.buttonList.add(new GuiButton( 2, 385, 132, 18, 18, "Y"));
+		//this.buttonList.add(new GuiButton( 1, 367, 132, 18, 18, "X"));
+		//this.buttonList.add(new GuiButton( 2, 385, 132, 18, 18, "Y"));
 		//NOTE: the id always has to be different or else it might get called twice or never!
 
 		//Add any other buttons here too!
@@ -65,12 +65,12 @@ public class GUI_Workbench extends GuiContainer {
 		//If the button id is different, or you have mrs buttons, create another if block for that too!
 		if(B.id == 1){
 			System.out.println("Trying to empty crafting grid to the storage compartment.");
-			moveItemsToChest = true;
+			//moveItemsToChest = true;
 			((Container_Workbench) this.inventorySlots).moveCraftingToChest();
 		}
 		else if(B.id == 2){
 			System.out.println("Trying to move items into the crafting grid.");
-			moveItemsToCrafting = true;
+			//moveItemsToCrafting = true;
 			((Container_Workbench) this.inventorySlots).moveChestToCrafting();
 		}
 

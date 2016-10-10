@@ -13,6 +13,7 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.UtilsItems;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 public class RECIPES_GREGTECH {
@@ -175,6 +176,13 @@ public class RECIPES_GREGTECH {
 		GT_Values.RA.addFuel(UtilsItems.simpleMetaStack("EnderIO:bucketFire_water", 0, 1), null, 120, 0);
 		GT_Values.RA.addFuel(UtilsItems.simpleMetaStack("EnderIO:bucketRocket_fuel", 0, 1), null, 112, 0);
 		GT_Values.RA.addFuel(UtilsItems.simpleMetaStack("EnderIO:bucketHootch", 0, 1), null, 36, 0);
+		
+		
+		
+		//CORE.RA.addFuel(UtilsItems.simpleMetaStack("EnderIO:bucketRocket_fuel", 0, 1), null, 112, 0);
+		GT_Values.RA.addFuel(UtilsItems.getSimpleStack(Items.lava_bucket), null, 32, 2);
+		GT_Values.RA.addFuel(UtilsItems.getIC2Cell(2), null, 32, 2);
+		GT_Values.RA.addFuel(UtilsItems.getIC2Cell(11), null, 24, 2);
 		//System.exit(1);
 	}
 
@@ -194,10 +202,6 @@ public class RECIPES_GREGTECH {
 				chances,
 				30*20,
 				240);
-	}
-
-	private static void registerSkookumChoocher(){
-		//GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.toolHeadUniversalSpade, aMaterial, 1L), tBits, new Object[]{"fX", Character.valueOf('X'), OrePrefixes.toolHeadShovel.get(aMaterial)});
 	}
 
 

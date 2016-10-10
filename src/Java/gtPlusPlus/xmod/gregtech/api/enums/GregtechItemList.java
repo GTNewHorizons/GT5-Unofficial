@@ -125,7 +125,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Industrial_MultiTank, Industrial_MultiTankDense, Casing_MultitankExterior, 
 	
 	//Gt4 Workbenches
-	GT4_Workbench_Bronze, GT4_Workbench_Advanced;
+	GT4_Workbench_Bronze, GT4_Workbench_Advanced, 
+	
+	//Geothermal Engines
+	Geothermal_Engine_EV, Geothermal_Engine_IV, Geothermal_Engine_LuV;
 
 	public static final GregtechItemList[]
 			DYE_ONLY_ITEMS = {

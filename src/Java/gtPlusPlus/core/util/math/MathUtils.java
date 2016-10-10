@@ -103,6 +103,19 @@ public class MathUtils {
 	public static double decimalRoundingToWholes(double d) {
 		return 5*(Math.round(d/5));
 	}
+	
+	public static int roundToClosestMultiple(double number, int multiple) {
+        int result = multiple;
+        if (number % multiple == 0) {
+            return (int) number;
+        }
+        // If not already multiple of given number
+        if (number % multiple != 0) {
+            int division = (int) ((number / multiple) + 1);
+            result = division * multiple;
+        }
+        return result;
+    }
 
 	
 	/**

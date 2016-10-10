@@ -1,9 +1,14 @@
 package gtPlusPlus.core.container;
 
+import gregtech.api.gui.GT_Slot_Holo;
+import gregtech.api.gui.GT_Slot_Output;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.inventories.InventoryWorkbenchChest;
+import gtPlusPlus.core.inventories.InventoryWorkbenchHoloCrafting;
+import gtPlusPlus.core.inventories.InventoryWorkbenchHoloSlots;
 import gtPlusPlus.core.inventories.InventoryWorkbenchTools;
 import gtPlusPlus.core.slots.SlotGtTool;
+import gtPlusPlus.core.slots.SlotNoInput;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -12,7 +17,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.World;
@@ -23,23 +27,31 @@ public class Container_Workbench extends Container {
 	public InventoryCrafting craftMatrix = new InventoryCrafting(this, 3, 3);
 	public final InventoryWorkbenchChest inventoryChest;
 	public final InventoryWorkbenchTools inventoryTool;
+	public final InventoryWorkbenchHoloSlots inventoryHolo;
+	public final InventoryWorkbenchHoloCrafting inventoryCrafting;
+
 	public IInventory craftResult = new InventoryCraftResult();
+
 	private World worldObj;
 	private int posX;
 	private int posY;
 	private int posZ;
-	
-	public boolean movingChest;
-	public boolean movingCrafting;
 
-	public static int StorageSlotNumber = 12; //Number of slots in storage area
-	public static int ToolSlotNumber = 5; // Number of slots in the tool area up top
+	public static int HoloSlotNumber = 6;
 	public static int InputSlotNumber = 9; //Number of Slots in the Crafting Grid
-	public static int InOutputSlotNumber = InputSlotNumber + 1; //Same plus Output Slot
+	public static int StorageSlotNumber = 16; //Number of slots in storage area
+	public static int ToolSlotNumber = 5; // Number of slots in the tool area up top
+	public static int InOutputSlotNumber = InputSlotNumber + StorageSlotNumber + ToolSlotNumber + HoloSlotNumber; //Same plus Output Slot
 	public static int InventorySlotNumber = 36; //Inventory Slots (Inventory and Hotbar)
 	public static int InventoryOutSlotNumber = InventorySlotNumber + 1; //Inventory Slot Number + Output
 	public static int FullSlotNumber = InventorySlotNumber + InOutputSlotNumber; //All slots
-	
+
+	private int slotOutput = 0;
+	private int[] slotHolo = new int[5];
+	private int[] slotCrafting = new int[9];
+	private int[] slotStorage = new int[16];
+	private int[] slotTools = new int[5];
+
 	public void moveCraftingToChest(){
 		//Check Chest Space
 		for (int i=0;i<9;i++){
@@ -78,9 +90,9 @@ public class Container_Workbench extends Container {
 		this.tile_entity = tile;
 		this.inventoryChest = tile.inventoryChest;
 		this.inventoryTool = tile.inventoryTool;
-
-		int o=0;
-
+		this.inventoryHolo = tile.inventoryHolo;
+		this.inventoryCrafting = tile.inventoryCrafting;
+				
 		int var6;
 		int var7;
 		worldObj = tile.getWorldObj();
@@ -88,8 +100,24 @@ public class Container_Workbench extends Container {
 		posY = tile.yCoord;
 		posZ = tile.zCoord;
 
+		int o=0;
+
 		//Output slot
-		addSlotToContainer(new SlotCrafting(inventory.player, this.craftMatrix, craftResult, 0, 136, 64));
+		addSlotToContainer(new GT_Slot_Output(inventoryHolo, 0, 136, 64));
+		//Util Slots
+		addSlotToContainer(new SlotNoInput(inventoryHolo, 1, 136, 28));
+		addSlotToContainer(new SlotNoInput(inventoryHolo, 2, 154, 28));
+		addSlotToContainer(new SlotNoInput(inventoryHolo, 3, 154, 64));
+		//Holo Slots
+		addSlotToContainer(new GT_Slot_Holo(inventoryHolo, 4, 154, 46, false, false, 1));
+		addSlotToContainer(new GT_Slot_Holo(inventoryHolo, 5, 136, 46, false, false, 1));
+
+		for (int i=1; i<6; i++){
+			slotHolo[o] = o+1;
+			o++;
+		}
+
+		o=0;
 
 		//Crafting Grid
 		for (var6 = 0; var6 < 3; ++var6)
@@ -97,8 +125,42 @@ public class Container_Workbench extends Container {
 			for (var7 = 0; var7 < 3; ++var7)
 			{
 				this.addSlotToContainer(new Slot(this.craftMatrix, var7 + var6 * 3, 82 + var7 * 18, 28 + var6 * 18));
+				
+				if (this.inventoryCrafting.getStackInSlot(o) != null){
+					this.craftMatrix.setInventorySlotContents(o, inventoryCrafting.getStackInSlot(o));		
+					this.inventoryCrafting.setInventorySlotContents(o, null);				
+				}				
+				slotCrafting[o] = o+6;
+				o++;
 			}
 		}
+
+		o=0;
+
+		//Storage Side
+		for (var6 = 0; var6 < 4; ++var6)
+		{
+			for (var7 = 0; var7 < 4; ++var7)
+			{
+				//Utils.LOG_INFO("Adding slots at var:"+(var7 + var6 * 4)+" x:"+(8 + var7 * 18)+" y:"+(7 + var6 * 18));
+				this.addSlotToContainer(new Slot(inventoryChest, var7 + var6 * 4, 8 + var7 * 18, 7 + var6 * 18));
+				slotStorage[o] = o+15;
+				o++;
+			}
+		}
+
+		o=0;
+
+		//Tool Slots
+		for (var6 = 0; var6 < 1; ++var6)
+		{
+			for (var7 = 0; var7 < 5; ++var7)
+			{
+				this.addSlotToContainer(new SlotGtTool(inventoryTool, var7 + var6 * 3, 82 + var7 * 18, 8 + var6 * 18));
+				slotTools[o] = o+31;
+				o++;
+			}
+		} 
 
 		//Player Inventory
 		for (var6 = 0; var6 < 3; ++var6)
@@ -115,37 +177,67 @@ public class Container_Workbench extends Container {
 			this.addSlotToContainer(new Slot(inventory, var6, 8 + var6 * 18, 142));
 		}
 
-
-
-		//Storage Side
-		for (var6 = 0; var6 < 4; ++var6)
-		{
-			for (var7 = 0; var7 < 4; ++var7)
-			{
-				//Utils.LOG_INFO("Adding slots at var:"+(var7 + var6 * 4)+" x:"+(8 + var7 * 18)+" y:"+(7 + var6 * 18));
-				this.addSlotToContainer(new Slot(inventoryChest, var7 + var6 * 4, 8 + var7 * 18, 7 + var6 * 18));
-			}
-		}
-
-		//Tool Slots
-		for (var6 = 0; var6 < 1; ++var6)
-		{
-			for (var7 = 0; var7 < 5; ++var7)
-			{
-				this.addSlotToContainer(new SlotGtTool(inventoryTool, var7 + var6 * 3, 82 + var7 * 18, 8 + var6 * 18));
-			}
-		} 
-
 		this.onCraftMatrixChanged(this.craftMatrix);          
 
 	}
 
+/*	@Override
+	public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer){
+
+		if (aSlotIndex == 999 || aSlotIndex == -999){
+			Utils.LOG_INFO("??? - "+aSlotIndex);
+		}
+
+		if (aSlotIndex == slotOutput){
+			Utils.LOG_INFO("Player Clicked on the output slot");
+		}
+
+		for (int x : slotHolo){
+			if (aSlotIndex == x){
+				Utils.LOG_INFO("Player Clicked slot "+aSlotIndex+" in the Holo Grid");		
+				if (x == 1){
+					Utils.LOG_INFO("Player Clicked Blueprint slot in the Holo Grid");	
+				}
+				else if (x == 2){
+					Utils.LOG_INFO("Player Clicked Right Arrow slot in the Holo Grid");	
+				}
+				else if (x == 3){
+					Utils.LOG_INFO("Player Clicked Big [P] slot in the Holo Grid");	
+				}
+				else if (x == 4){
+					Utils.LOG_INFO("Player Clicked Transfer to Crafting Grid slot in the Holo Grid");	
+				}
+				else if (x == 5){
+					Utils.LOG_INFO("Player Clicked Transfer to Storage Grid slot in the Holo Grid");	
+				}
+			}
+		}
+
+		for (int x : slotCrafting){
+			if (aSlotIndex == x){
+				Utils.LOG_INFO("Player Clicked slot "+aSlotIndex+" in the crafting Grid");				
+			}
+		}
+		for (int x : slotStorage){
+			if (aSlotIndex == x){
+				Utils.LOG_INFO("Player Clicked slot "+aSlotIndex+" in the storage Grid");				
+			}
+		}
+		for (int x : slotTools){
+			if (aSlotIndex == x){
+				Utils.LOG_INFO("Player Clicked slot "+aSlotIndex+" in the tool Grid");				
+			}
+		}
+		//Utils.LOG_INFO("Player Clicked slot "+aSlotIndex+" in the Grid");	
+		return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
+	}
+*/
 
 	@Override
 	public void onCraftMatrixChanged(IInventory par1IInventory){
 		//Custom Recipe Handler
 		//craftResult.setInventorySlotContents(0, Workbench_CraftingHandler.getInstance().findMatchingRecipe(craftMatrix, worldObj));
-		
+
 		//Vanilla CraftingManager
 		craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(craftMatrix, worldObj));
 	}
@@ -153,11 +245,15 @@ public class Container_Workbench extends Container {
 
 	@Override
 	public void onContainerClosed(EntityPlayer par1EntityPlayer)
-	{
+	{		
+		for (int o=0; o<craftMatrix.getSizeInventory(); o++){
+			this.inventoryCrafting.setInventorySlotContents(o, craftMatrix.getStackInSlot(o));	
+			this.craftMatrix.setInventorySlotContents(o, null);				
+		}
+		
+		//super.onContainerClosed(par1EntityPlayer);
 
-		super.onContainerClosed(par1EntityPlayer);
-
-		if (worldObj.isRemote)
+		/*if (worldObj.isRemote)
 		{
 			return;
 		}
@@ -170,7 +266,7 @@ public class Container_Workbench extends Container {
 			{
 				par1EntityPlayer.dropPlayerItemWithRandomChoice(itemstack, false);
 			}
-		}
+		}*/
 
 	}
 
@@ -243,4 +339,7 @@ public class Container_Workbench extends Container {
 
 		return var3;
 	}
+	
+	
+	
 }

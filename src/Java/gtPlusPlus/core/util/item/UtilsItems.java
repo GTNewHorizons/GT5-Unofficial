@@ -1,6 +1,7 @@
 package gtPlusPlus.core.util.item;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseModular;
@@ -65,6 +66,23 @@ public class UtilsItems {
 		}
 	}
 
+	public static ItemStack getIC2Cell(String S){
+		ItemStack moreTemp = UtilsItems.getItemStackOfAmountFromOreDictNoBroken("cell"+S, 1);
+
+		if (moreTemp == null){
+			int cellID = 0;
+			ItemStack temp =GT_ModHandler.getModItem("IC2", "itemCellEmpty", 1L, cellID);
+			return temp != null ? temp : null;
+		}
+
+		return moreTemp;
+	}
+
+	public static ItemStack getIC2Cell(int meta){
+		ItemStack temp = GT_ModHandler.getModItem("IC2", "itemCellEmpty", 1L, meta);
+		return temp != null ? temp : null;
+	}
+
 
 	public static void getItemForOreDict(String FQRN, String oreDictName, String itemName, int meta){
 		try {
@@ -86,10 +104,10 @@ public class UtilsItems {
 			Utils.LOG_ERROR(itemName+" not found. [NULL]");
 		}
 	}
-	
+
 	public static void addItemToOreDictionary(ItemStack stack, String oreDictName){
 		try {
-				GT_OreDictUnificator.registerOre(oreDictName, stack);
+			GT_OreDictUnificator.registerOre(oreDictName, stack);
 		} catch (NullPointerException e) {
 			Utils.LOG_ERROR(stack.getDisplayName()+" not registered. [NULL]");
 		}
@@ -231,7 +249,7 @@ public class UtilsItems {
 		Item itemSpawnEgg = new BasicSpawnEgg(entityModID, parSpawnName, colourEgg, colourOverlay).setUnlocalizedName("spawn_egg_"+parSpawnName.toLowerCase()).setTextureName(CORE.MODID+":spawn_egg");
 		GameRegistry.registerItem(itemSpawnEgg, "spawnEgg"+parSpawnName);
 	}
-	
+
 
 	public static ItemStack[] validItemsForOreDict(String oredictName){
 		List<?> validNames = MaterialUtils.oreDictValuesForEntry(oredictName);
@@ -245,58 +263,58 @@ public class UtilsItems {
 	public static ItemStack getItemStackOfAmountFromOreDict(String oredictName, int amount){
 		ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
 		if (!oreDictList.isEmpty()){
-		ItemStack returnValue = oreDictList.get(0).copy();
-		returnValue.stackSize = amount;
-		return returnValue;
+			ItemStack returnValue = oreDictList.get(0).copy();
+			returnValue.stackSize = amount;
+			return returnValue;
 		}
-	 return getSimpleStack(ModItems.AAA_Broken, amount);
+		return getSimpleStack(ModItems.AAA_Broken, amount);
 	}
-	
+
 	public static ItemStack getItemStackOfAmountFromOreDictNoBroken(String oredictName, int amount){
 		ItemStack returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);
-		
+
 		if (returnValue.getItem().getClass() != ModItems.AAA_Broken.getClass() || returnValue.getItem() != ModItems.AAA_Broken){		
-		return returnValue;
+			return returnValue;
 		}
-	Utils.LOG_INFO(oredictName+" was not valid.");	
-	 return null;
+		Utils.LOG_INFO(oredictName+" was not valid.");	
+		return null;
 	}
-	
+
 	public static void generateItemsFromMaterial(Material matInfo){
-		
+
 		String unlocalizedName = matInfo.getUnlocalizedName();
 		String materialName = matInfo.getLocalizedName();
 		short[] C = matInfo.getRGBA();
 		int Colour = Utils.rgbtoHexValue(C[0], C[1], C[2]);
 		boolean hotIngot = matInfo.requiresBlastFurnace();
 		int materialTier = matInfo.vTier; //TODO
-		
+
 		if (materialTier > 10 || materialTier <= 0){
 			materialTier = 2;
 		}
-		
-		
-		
+
+
+
 		int sRadiation = 0;
 		if (isRadioactive(materialName)){
 			sRadiation = getRadioactivityLevel(materialName);
 		}
-	
+
 		if (sRadiation >= 1){
 			Item temp;
 			Block tempBlock;
 			tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
 			temp = new BaseItemIngot("itemIngot"+unlocalizedName, materialName, Colour, sRadiation);
-			
+
 			temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, sRadiation);
 			temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, sRadiation);
 			temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier, sRadiation);
-			
+
 			temp = new BaseItemPlate("itemPlate"+unlocalizedName, materialName, Colour, materialTier, sRadiation);
 			temp = new BaseItemRod(matInfo, sRadiation);
 			temp = new BaseItemRodLong(matInfo, sRadiation);
 		}
-		
+
 		else {
 			Item temp;
 			Block tempBlock;
@@ -306,11 +324,11 @@ public class UtilsItems {
 			if (hotIngot){
 				Item tempIngot = temp;
 				temp = new BaseItemIngotHot("itemHotIngot"+unlocalizedName, materialName, UtilsItems.getSimpleStack(tempIngot, 1), materialTier);
-				}
+			}
 			temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, sRadiation);
 			temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, sRadiation);
 			temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier, sRadiation);
-			
+
 			temp = new BaseItemPlate("itemPlate"+unlocalizedName, materialName, Colour, materialTier, sRadiation);
 			temp = new BaseItemPlateDouble("itemPlateDouble"+unlocalizedName, materialName, Colour, materialTier, sRadiation);
 			temp = new BaseItemBolt(matInfo);
@@ -321,30 +339,30 @@ public class UtilsItems {
 			temp = new BaseItemRotor("itemRotor"+unlocalizedName, materialName, Colour);
 			temp = new BaseItemGear(matInfo);
 		}		
-		
+
 		RecipeGen_Plates.generateRecipes(matInfo);
-		
+
 		FluidUtils.generateFluid(matInfo, 1);
-		
+
 	}
-	
+
 	public static Item[] generateDusts(String unlocalizedName, String materialName, int materialTier, Material matInfo, int Colour){
 		int radioactive = getRadioactivityLevel(materialName);
 		Item[] output = {
-		new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, radioactive),
-		new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier, radioactive),
-		new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, radioactive)};
+				new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, radioactive),
+				new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier, radioactive),
+				new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, radioactive)};
 		return output;
 	}
-	
+
 	public static Item[] generateSpecialUseDusts(String unlocalizedName, String materialName, int Colour){
 		Item[] output = {
-		new BaseItemDustUnique("itemDust"+unlocalizedName, materialName, Colour, "Dust"),
-		new BaseItemDustUnique("itemDustSmall"+unlocalizedName, materialName, Colour, "Small"),
-		new BaseItemDustUnique("itemDustTiny"+unlocalizedName, materialName, Colour, "Tiny")};
+				new BaseItemDustUnique("itemDust"+unlocalizedName, materialName, Colour, "Dust"),
+				new BaseItemDustUnique("itemDustSmall"+unlocalizedName, materialName, Colour, "Small"),
+				new BaseItemDustUnique("itemDustTiny"+unlocalizedName, materialName, Colour, "Tiny")};
 		return output;
 	}
-	
+
 	public static MultiPickaxeBase generateMultiPick(boolean GT_Durability, Materials material){
 		ToolMaterial customMaterial = Utils.generateMaterialFromGT(material);
 		Utils.LOG_INFO("Generating a Multi-Pick out of "+material.name());
@@ -360,26 +378,26 @@ public class UtilsItems {
 			dur = material.mDurability;
 			Utils.LOG_INFO("Determined durability too low, "+material.name()+" is now "+dur+" based on the GT material durability.");
 		}
-		
+
 		if (dur <= 0){
 			Utils.LOG_INFO("Still too low, "+material.name()+" will now go unused.");
 			return null;
 		}
-		
+
 		MultiPickaxeBase MP_Redstone = new MultiPickaxeBase(
 				material.name()+" Multipick",
 				(customMaterial),
 				dur,
 				Utils.rgbtoHexValue(rgb[0],rgb[1],rgb[2])
 				);
-		
+
 		if (MP_Redstone.isValid){
 			return MP_Redstone;
 		}		
 		return null;
-		
+
 	}
-	
+
 	public static MultiSpadeBase generateMultiShovel(boolean GT_Durability, Materials material){
 		ToolMaterial customMaterial = Utils.generateMaterialFromGT(material);
 		Utils.LOG_INFO("Generating a Multi-Shovel out of "+material.name());
@@ -395,26 +413,26 @@ public class UtilsItems {
 			dur = material.mDurability;
 			Utils.LOG_INFO("Determined durability too low, "+material.name()+" is now "+dur+" based on the GT material durability.");
 		}
-		
+
 		if (dur <= 0){
 			Utils.LOG_INFO("Still too low, "+material.name()+" will now go unused.");
 			return null;
 		}
-		
+
 		MultiSpadeBase MP_Redstone = new MultiSpadeBase(
 				material.name()+" Multishovel",
 				(customMaterial),
 				dur,
 				Utils.rgbtoHexValue(rgb[0],rgb[1],rgb[2])
 				);
-		
+
 		if (MP_Redstone.isValid){
 			return MP_Redstone;
 		}		
 		return null;
-		
+
 	}
-	
+
 	public static boolean isRadioactive(String materialName){
 		int sRadiation = 0;		
 		if (materialName.toLowerCase().contains("uranium")){
@@ -431,7 +449,7 @@ public class UtilsItems {
 		}
 		return false;
 	}
-	
+
 	public static int getRadioactivityLevel(String materialName){
 		int sRadiation = 0;		
 		if (materialName.toLowerCase().contains("uranium")){
@@ -445,7 +463,7 @@ public class UtilsItems {
 		}
 		return sRadiation;
 	}
-	
+
 	public static String getArrayStackNames(ItemStack[] aStack){
 		String itemNames = "Item Array: ";
 		for (ItemStack alph : aStack){
@@ -453,9 +471,9 @@ public class UtilsItems {
 			itemNames = temp + ", " + alph.getDisplayName() + " x" + alph.stackSize;
 		}
 		return itemNames;
-		
+
 	}
-	
+
 	public static String[] getArrayStackNamesAsArray(ItemStack[] aStack){
 		String[] itemNames = {};
 		int arpos = 0;
@@ -464,9 +482,9 @@ public class UtilsItems {
 			arpos++;
 		}
 		return itemNames;
-		
+
 	}
-	
+
 	public static String getFluidArrayStackNames(FluidStack[] aStack){
 		String itemNames = "Fluid Array: ";
 		for (FluidStack alph : aStack){
@@ -474,7 +492,7 @@ public class UtilsItems {
 			itemNames = temp + ", " + alph.getFluid().getName() + " x" + alph.amount;
 		}
 		return itemNames;
-		
+
 	}
 
 }
