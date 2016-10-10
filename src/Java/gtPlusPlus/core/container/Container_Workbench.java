@@ -1,15 +1,19 @@
 package gtPlusPlus.core.container;
 
 import gregtech.api.gui.GT_Slot_Holo;
-import gregtech.api.gui.GT_Slot_Output;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.interfaces.IItemBlueprint;
 import gtPlusPlus.core.inventories.InventoryWorkbenchChest;
 import gtPlusPlus.core.inventories.InventoryWorkbenchHoloCrafting;
 import gtPlusPlus.core.inventories.InventoryWorkbenchHoloSlots;
 import gtPlusPlus.core.inventories.InventoryWorkbenchTools;
+import gtPlusPlus.core.item.general.ItemBlueprint;
+import gtPlusPlus.core.slots.SlotBlueprint;
+import gtPlusPlus.core.slots.SlotGeneric;
 import gtPlusPlus.core.slots.SlotGtTool;
-import gtPlusPlus.core.slots.SlotNoInput;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.item.UtilsItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -103,11 +107,11 @@ public class Container_Workbench extends Container {
 		int o=0;
 
 		//Output slot
-		addSlotToContainer(new GT_Slot_Output(inventoryHolo, 0, 136, 64));
+		addSlotToContainer(new SlotGeneric(inventoryHolo, 0, 136, 64));
 		//Util Slots
-		addSlotToContainer(new SlotNoInput(inventoryHolo, 1, 136, 28));
-		addSlotToContainer(new SlotNoInput(inventoryHolo, 2, 154, 28));
-		addSlotToContainer(new SlotNoInput(inventoryHolo, 3, 154, 64));
+		addSlotToContainer(new SlotBlueprint(inventoryHolo, 1, 136, 28)); //Blueprint
+		addSlotToContainer(new GT_Slot_Holo(inventoryHolo, 2, 154, 28, false, false, 1)); //Hopper
+		addSlotToContainer(new SlotGeneric(inventoryHolo, 3, 154, 64)); //Parking
 		//Holo Slots
 		addSlotToContainer(new GT_Slot_Holo(inventoryHolo, 4, 154, 46, false, false, 1));
 		addSlotToContainer(new GT_Slot_Holo(inventoryHolo, 5, 136, 46, false, false, 1));
@@ -181,7 +185,7 @@ public class Container_Workbench extends Container {
 
 	}
 
-/*	@Override
+	@Override
 	public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer){
 
 		if (aSlotIndex == 999 || aSlotIndex == -999){
@@ -199,7 +203,32 @@ public class Container_Workbench extends Container {
 					Utils.LOG_INFO("Player Clicked Blueprint slot in the Holo Grid");	
 				}
 				else if (x == 2){
-					Utils.LOG_INFO("Player Clicked Right Arrow slot in the Holo Grid");	
+					Utils.LOG_INFO("Player Clicked Right Arrow slot in the Holo Grid");
+					if (inventoryHolo.getStackInSlot(1) != null){
+						Utils.LOG_INFO("Found an ItemStack.");
+						if (inventoryHolo.getStackInSlot(1).getItem() instanceof IItemBlueprint){
+							Utils.LOG_INFO("Found a blueprint.");
+							ItemStack tempBlueprint = inventoryHolo.getStackInSlot(1);
+							ItemBlueprint tempItemBlueprint = (ItemBlueprint) tempBlueprint.getItem();				
+							if (inventoryHolo.getStackInSlot(0) != null){
+								Utils.LOG_INFO("Output slot was not empty.");
+								Utils.LOG_INFO("Trying to manipulate NBT data on the blueprint stack, then replace it with the new one.");
+								tempItemBlueprint.setBlueprint(inventoryHolo.getStackInSlot(1), craftMatrix, inventoryHolo.getStackInSlot(0));	
+								ItemStack newTempBlueprint = UtilsItems.getSimpleStack(tempItemBlueprint);
+								inventoryHolo.setInventorySlotContents(1, newTempBlueprint);
+								Utils.LOG_INFO(UtilsItems.getArrayStackNames(tempItemBlueprint.getBlueprint(newTempBlueprint)));
+							}
+							else {
+								Utils.LOG_INFO("Output slot was empty.");
+							}
+						}
+						else {
+							Utils.LOG_INFO("ItemStack found was not a blueprint.");							
+						}
+					}
+					else {
+						Utils.LOG_INFO("No ItemStack found in Blueprint slot.");
+					}
 				}
 				else if (x == 3){
 					Utils.LOG_INFO("Player Clicked Big [P] slot in the Holo Grid");	
@@ -231,7 +260,6 @@ public class Container_Workbench extends Container {
 		//Utils.LOG_INFO("Player Clicked slot "+aSlotIndex+" in the Grid");	
 		return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
 	}
-*/
 
 	@Override
 	public void onCraftMatrixChanged(IInventory par1IInventory){
