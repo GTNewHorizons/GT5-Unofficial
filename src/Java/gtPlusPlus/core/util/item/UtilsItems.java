@@ -467,8 +467,15 @@ public class UtilsItems {
 	public static String getArrayStackNames(ItemStack[] aStack){
 		String itemNames = "Item Array: ";
 		for (ItemStack alph : aStack){
-			String temp = itemNames;
-			itemNames = temp + ", " + alph.getDisplayName() + " x" + alph.stackSize;
+			
+			if (alph != null){
+				String temp = itemNames;
+				itemNames = temp + ", " + alph.getDisplayName() + " x" + alph.stackSize;				
+			}
+			else {
+				String temp = itemNames;
+				itemNames = temp + ", " + "null" + " x" + "0";
+			}
 		}
 		return itemNames;
 

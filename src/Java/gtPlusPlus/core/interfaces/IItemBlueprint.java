@@ -29,7 +29,7 @@ public interface IItemBlueprint {
 	* @param String Blueprint Name
 	* @return N/A
 	*/
-	public void setBlueprintName(String name);
+	public void setBlueprintName(ItemStack stack, String name);
 	
 	/**
 	* Does this itemstack hold a blueprint?
@@ -43,6 +43,6 @@ public interface IItemBlueprint {
 	* @param stack yourMetaItem
 	* @return the blueprints contents
 	*/
-	public ItemStack[] getBlueprint(ItemStack stack);	
+	public ItemStack[] getBlueprint(ItemStack stack);
 
 }

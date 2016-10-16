@@ -101,7 +101,7 @@ public class UtilsRecipe {
 
 		try {
 			GameRegistry.addRecipe(new ShapedOreRecipe(resultItem.copy(), (Object[]) validSlots.toArray()));		
-			Utils.LOG_INFO("Success! Added a recipe for "+resultItem.toString());
+			Utils.LOG_INFO("Success! Added a recipe for "+resultItem.getDisplayName());
 			if (!COMPAT_HANDLER.areInitItemsLoaded){
 				RegistrationHandler.recipesSuccess++;
 			}
@@ -173,7 +173,7 @@ public class UtilsRecipe {
 			//GameRegistry.addRecipe(new ShapelessOreRecipe(Output, outputAmount), (Object[]) validSlots.toArray());
 			GameRegistry.addRecipe(new ShapelessOreRecipe(Output, (Object[]) validSlots.toArray()));
 			//GameRegistry.addShapelessRecipe(new ItemStack(output_ITEM, 1), new Object[] {slot_1, slot_2});
-			Utils.LOG_INFO("Success! Added a recipe for "+Output.toString());
+			Utils.LOG_INFO("Success! Added a recipe for "+Output.getDisplayName());
 			RegistrationHandler.recipesSuccess++;		
 		}
 		catch(RuntimeException k){
@@ -333,7 +333,7 @@ public class UtilsRecipe {
 			return;
 		}
 
-		GT_ModHandler.addCraftingRecipe(OutputItem, 
+		if (GT_ModHandler.addCraftingRecipe(OutputItem, 
 				GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | 
 				GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
 				new Object[]{"ABC", "DEF", "GHI", 
@@ -345,7 +345,10 @@ public class UtilsRecipe {
 				'F', InputItem6,  
 				'G', InputItem7,  
 				'H', InputItem8,  
-				'I', InputItem9});	
+				'I', InputItem9})){
+			Utils.LOG_INFO("Success! Added a recipe for "+OutputItem.getDisplayName());
+			RegistrationHandler.recipesSuccess++;	
+		}
 	}
 
 	public static void addShapelessGregtechRecipe(ItemStack OutputItem, Object... inputItems){

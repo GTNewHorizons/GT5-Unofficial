@@ -188,8 +188,9 @@ public class Container_Workbench extends Container {
 	@Override
 	public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer){
 
+		if (!aPlayer.worldObj.isRemote){
 		if (aSlotIndex == 999 || aSlotIndex == -999){
-			Utils.LOG_INFO("??? - "+aSlotIndex);
+			//Utils.LOG_INFO("??? - "+aSlotIndex);
 		}
 
 		if (aSlotIndex == slotOutput){
@@ -210,7 +211,7 @@ public class Container_Workbench extends Container {
 							Utils.LOG_INFO("Found a blueprint.");
 							ItemStack tempBlueprint = inventoryHolo.getStackInSlot(1);
 							ItemBlueprint tempItemBlueprint = (ItemBlueprint) tempBlueprint.getItem();				
-							if (inventoryHolo.getStackInSlot(0) != null){
+							if (inventoryHolo.getStackInSlot(0) != null && !tempItemBlueprint.hasBlueprint(tempBlueprint)){
 								Utils.LOG_INFO("Output slot was not empty.");
 								Utils.LOG_INFO("Trying to manipulate NBT data on the blueprint stack, then replace it with the new one.");
 								tempItemBlueprint.setBlueprint(inventoryHolo.getStackInSlot(1), craftMatrix, inventoryHolo.getStackInSlot(0));	
@@ -219,7 +220,12 @@ public class Container_Workbench extends Container {
 								Utils.LOG_INFO(UtilsItems.getArrayStackNames(tempItemBlueprint.getBlueprint(newTempBlueprint)));
 							}
 							else {
-								Utils.LOG_INFO("Output slot was empty.");
+								if (tempItemBlueprint.hasBlueprint(tempBlueprint)){
+									Utils.LOG_INFO("Blueprint already holds a recipe.");
+								}
+								else {
+									Utils.LOG_INFO("Output slot was empty.");									
+								}
 							}
 						}
 						else {
@@ -257,6 +263,7 @@ public class Container_Workbench extends Container {
 				Utils.LOG_INFO("Player Clicked slot "+aSlotIndex+" in the tool Grid");				
 			}
 		}
+		}
 		//Utils.LOG_INFO("Player Clicked slot "+aSlotIndex+" in the Grid");	
 		return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
 	}
@@ -267,7 +274,15 @@ public class Container_Workbench extends Container {
 		//craftResult.setInventorySlotContents(0, Workbench_CraftingHandler.getInstance().findMatchingRecipe(craftMatrix, worldObj));
 
 		//Vanilla CraftingManager
-		craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(craftMatrix, worldObj));
+		Utils.LOG_INFO("checking crafting grid for a valid output.");
+		ItemStack temp = CraftingManager.getInstance().findMatchingRecipe(craftMatrix, worldObj);
+		if (temp != null){
+			Utils.LOG_INFO("Output found. "+temp.getDisplayName()+" x"+temp.stackSize);
+			inventoryHolo.setInventorySlotContents(slotOutput, temp);
+		}
+		else {
+		Utils.LOG_INFO("No Valid output found.");
+		}
 	}
 
 

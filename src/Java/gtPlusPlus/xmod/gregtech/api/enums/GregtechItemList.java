@@ -128,7 +128,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	GT4_Workbench_Bronze, GT4_Workbench_Advanced, 
 	
 	//Geothermal Engines
-	Geothermal_Engine_EV, Geothermal_Engine_IV, Geothermal_Engine_LuV;
+	Geothermal_Engine_EV, Geothermal_Engine_IV, Geothermal_Engine_LuV, 
+	
+	//Tesseracts
+	GT4_Tesseract_Generator, GT4_Tesseract_Terminal;
 
 	public static final GregtechItemList[]
 			DYE_ONLY_ITEMS = {

@@ -6,7 +6,9 @@ import gtPlusPlus.core.util.networking.NetworkUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
+import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_TesseractGenerator;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.util.EnumChatFormatting;
@@ -39,6 +41,9 @@ public class CORE {
 	 * A List containing all the Materials, which are somehow in use by GT and therefor receive a specific Set of Items.
 	 */
 	public static final GT_Materials[] sMU_GeneratedMaterials = new GT_Materials[1000];
+	
+	//Tesseract map
+	public static final Map<Integer, GT_MetaTileEntity_TesseractGenerator> sTesseractGenerators = new HashMap<Integer, GT_MetaTileEntity_TesseractGenerator>();
 
 	//GUIS
 	public enum GUI_ENUM 

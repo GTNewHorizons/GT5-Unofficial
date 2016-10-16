@@ -16,6 +16,7 @@ import gtPlusPlus.core.lib.CORE.configSwitches;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlocks.CustomIcon;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,22 +37,14 @@ extends GregtechMeta_MultiBlockBase {
 	private static boolean isDisabled = false;
 	private static ITexture frontFace;
 	private static ITexture frontFaceActive;
-	private static Textures.BlockIcons.CustomIcon GT9_5_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST_ACTIVE5");
-	private static Textures.BlockIcons.CustomIcon GT9_5 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ST5");
-	private static Textures.BlockIcons.CustomIcon GT8_5_Active = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE_ACTIVE5");
-	private static Textures.BlockIcons.CustomIcon GT8_5 = new Textures.BlockIcons.CustomIcon("iconsets/LARGETURBINE5");
+	private static CustomIcon GT9_5_Active = new CustomIcon("iconsets/LARGECENTRIFUGE_ACTIVE5");
+	private static CustomIcon GT9_5 = new CustomIcon("iconsets/LARGECENTRIFUGE5");
 	//public static double recipesComplete = 0;
 
 	public GregtechMetaTileEntityIndustrialCentrifuge(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
-		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
 			frontFaceActive = new GT_RenderedTexture(GT9_5_Active);
 			frontFace = new GT_RenderedTexture(GT9_5);
-		}
-		else{
-			frontFaceActive = new GT_RenderedTexture(GT8_5_Active);
-			frontFace = new GT_RenderedTexture(GT8_5);
-		}
 	}
 
 	public GregtechMetaTileEntityIndustrialCentrifuge(String aName) {
