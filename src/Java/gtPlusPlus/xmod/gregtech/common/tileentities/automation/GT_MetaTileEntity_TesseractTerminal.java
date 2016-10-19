@@ -9,6 +9,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -140,7 +141,7 @@ extends GT_MetaTileEntity_BasicTank
 		sInterDimensionalTesseractAllowed = true;
 	}
 
-	public boolean onRightclick(EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ)
+	/*public boolean onRightclick(EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ)
 	{
 		if (aSide == getBaseMetaTileEntity().getFrontFacing())
 		{
@@ -156,8 +157,30 @@ extends GT_MetaTileEntity_BasicTank
 			GT_Utility.sendChatToPlayer(aPlayer, "Frequency: " + this.mFrequency + (getTesseract(this.mFrequency, false) == null ? "" : new StringBuilder().append(EnumChatFormatting.GREEN).append(" (Connected)").toString()));
 		}
 		return true;
-	}
+	}*/
 
+	@Override
+	public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ){
+		if (aSide == getBaseMetaTileEntity().getFrontFacing()){
+			float[] tCoords = GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ);
+			switch ((byte)((byte)(int)(tCoords[0] * 2.0F) + 2 * (byte)(int)(tCoords[1] * 2.0F))){
+			case 0: 
+				Utils.LOG_INFO("Freq. -1 | " + this.mFrequency);
+				this.mFrequency -= 1;
+				break;
+			case 1: 
+				Utils.LOG_INFO("Freq. +1 | " + this.mFrequency);
+				this.mFrequency += 1;
+			default:
+				//Utils.LOG_INFO("Did not click the correct place.");
+				break;
+			}
+			Utils.messagePlayer(aPlayer, "Frequency: " + this.mFrequency);
+			Utils.messagePlayer(aPlayer, (getTesseract(this.mFrequency, false) == null ? "" : new StringBuilder().append(EnumChatFormatting.GREEN).append(" (Connected)").toString()));
+		}
+		return true;
+	}
+	
 	@Override
 	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ)
 	{
