@@ -43,10 +43,10 @@ public class CasingTextureHandler {
 				return Textures.BlockIcons.MACHINE_CASING_FUSION_2.getIcon();
 				//Matter Fabricator Casings
 			case 9:
-				return Textures.BlockIcons.MACHINE_CASING_DRAGONEGG.getIcon();
+				return TexturesGtBlocks.Casing_Machine_Dimensional_Adv.getIcon();
 				//Iron Blast Fuance Textures
 			case 10:
-				return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();		
+				return TexturesGtBlocks.Casing_Machine_Simple.getIcon();		
 				//Multitank Exterior Casing
 			case 11:
 				return Textures.BlockIcons.MACHINE_CASING_GRATE.getIcon();	
