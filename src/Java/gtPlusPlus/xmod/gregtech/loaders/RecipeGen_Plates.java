@@ -16,8 +16,8 @@ public class RecipeGen_Plates {
 		int tVoltageMultiplier = material.getMeltingPoint_K() >= 2800 ? 64 : 16;
 		ItemStack ingotStackOne = material.getIngot(1);
 		ItemStack ingotStackTwo = material.getIngot(2);
-		ItemStack shape_Mold = ItemList.Shape_Mold_Plate.get(1);
-		ItemStack shape_Extruder = ItemList.Shape_Extruder_Plate.get(1);
+		ItemStack shape_Mold = ItemList.Shape_Mold_Plate.get(0);
+		ItemStack shape_Extruder = ItemList.Shape_Extruder_Plate.get(0);
 		ItemStack plate_Single = material.getPlate(1);
 		ItemStack plate_SingleTwo = material.getPlate(2);
 		ItemStack plate_Double = material.getPlateDouble(1);

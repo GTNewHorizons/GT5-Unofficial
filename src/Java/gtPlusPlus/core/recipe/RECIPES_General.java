@@ -1,6 +1,5 @@
 package gtPlusPlus.core.recipe;
 
-import gregtech.api.enums.ItemList;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.LoadedMods;
@@ -25,7 +24,7 @@ public class RECIPES_General {
 	public static void RECIPES_LOAD(){
 		
 		if (LoadedMods.Gregtech){
-			RECIPE_BasicCasingIC2 = ItemList.Casing_Gearbox_Bronze.get(1);
+			RECIPE_BasicCasingIC2 = UtilsItems.getItemStack("IC2:blockMachine", 1);
 		run();
 		}
 	}

@@ -174,6 +174,14 @@ public class Material {
 	public ItemStack getPlateDouble(int stacksize){
 		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("plateDouble"+unlocalizedName, stacksize);
 	}
+	
+	public ItemStack getGear(int stacksize){
+		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("gear"+unlocalizedName, stacksize);
+	}
+	
+	public ItemStack getRod(int stacksize){
+		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("stick"+unlocalizedName, stacksize);
+	}
 
 	public ItemStack[] getMaterialComposites(){
 		//Utils.LOG_INFO("Something requested the materials needed for "+localizedName);
