@@ -11,6 +11,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.generators.GregtechRocketFuelGeneratorBase;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlocks;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -69,51 +70,51 @@ public class GregtechMetaTileEntityRocketFuelGenerator
 
     @Override
 	public ITexture[] getFront(byte aColor) {
-        return new ITexture[]{super.getFront(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_FRONT), Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier]};
+        return new ITexture[]{super.getFront(aColor)[0], new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Simple), Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier]};
     }
 
     @Override
 	public ITexture[] getBack(byte aColor) {
-        return new ITexture[]{super.getBack(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_BACK)};
+        return new ITexture[]{super.getBack(aColor)[0], new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Vent)};
     }
 
     @Override
 	public ITexture[] getBottom(byte aColor) {
-        return new ITexture[]{super.getBottom(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_BOTTOM)};
+        return new ITexture[]{super.getBottom(aColor)[0], new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Simple)};
     }
 
     @Override
 	public ITexture[] getTop(byte aColor) {
-        return new ITexture[]{super.getTop(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_TOP)};
+        return new ITexture[]{super.getTop(aColor)[0], new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Redstone_Off)};
     }
 
     @Override
 	public ITexture[] getSides(byte aColor) {
-        return new ITexture[]{super.getSides(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_SIDE)};
+        return new ITexture[]{super.getSides(aColor)[0], new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Sound)};
     }
 
     @Override
 	public ITexture[] getFrontActive(byte aColor) {
-        return new ITexture[]{super.getFrontActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_FRONT_ACTIVE), Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier]};
+        return new ITexture[]{super.getFrontActive(aColor)[0], new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Simple), Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier]};
     }
 
     @Override
 	public ITexture[] getBackActive(byte aColor) {
-        return new ITexture[]{super.getBackActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_BACK_ACTIVE)};
+        return new ITexture[]{super.getBackActive(aColor)[0], new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Vent_Fast)};
     }
 
     @Override
 	public ITexture[] getBottomActive(byte aColor) {
-        return new ITexture[]{super.getBottomActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_BOTTOM_ACTIVE)};
+        return new ITexture[]{super.getBottomActive(aColor)[0], new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Simple)};
     }
 
     @Override
 	public ITexture[] getTopActive(byte aColor) {
-        return new ITexture[]{super.getTopActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_TOP_ACTIVE)};
+        return new ITexture[]{super.getTopActive(aColor)[0], new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Redstone_On)};
     }
 
     @Override
 	public ITexture[] getSidesActive(byte aColor) {
-        return new ITexture[]{super.getSidesActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_SIDE_ACTIVE)};
+        return new ITexture[]{super.getSidesActive(aColor)[0], new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Sound_Active)};
     }
 }

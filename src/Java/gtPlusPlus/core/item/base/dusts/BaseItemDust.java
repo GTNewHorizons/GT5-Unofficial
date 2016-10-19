@@ -285,7 +285,12 @@ public class BaseItemDust extends Item{
 			Utils.LOG_WARNING("This will produce an ingot of "+tempOutputStack.getDisplayName() + " Debug: "+temp);
 			if (null != tempOutputStack){
 				if (mTier < 5 || !dustInfo.requiresBlastFurnace()){					
-					CORE.GT_Recipe.addSmeltingAndAlloySmeltingRecipe(UtilsItems.getSimpleStack(this), tempOutputStack);						
+					if (CORE.GT_Recipe.addSmeltingAndAlloySmeltingRecipe(UtilsItems.getSimpleStack(this), tempOutputStack)){
+						Utils.LOG_WARNING("Successfully added a furnace recipe for "+materialName);
+					}
+					else {
+						Utils.LOG_WARNING("Failed to add a furnace recipe for "+materialName);
+					}
 				}				
 				else if (mTier >= 5 || dustInfo.requiresBlastFurnace()){
 					Utils.LOG_WARNING("Adding recipe for "+materialName+" Ingots in a Blast furnace.");

@@ -20,7 +20,7 @@ public class TexturesGtBlocks {
 
 		public CustomIcon(String aIconName) {
 			mIconName = aIconName;
-			Utils.LOG_INFO("Constructing a Custom Texture. " + mIconName);
+			Utils.LOG_WARNING("Constructing a Custom Texture. " + mIconName);
 			GregTech_API.sGTBlockIconload.add(this);
 		}
 
@@ -37,7 +37,7 @@ public class TexturesGtBlocks {
 		@Override
 		public void run() {
 			mIcon = GregTech_API.sBlockIcons.registerIcon(CORE.MODID + ":"  + mIconName);
-			Utils.LOG_INFO("FIND ME _ Processing texture: "+this.getTextureFile().getResourcePath());
+			Utils.LOG_WARNING("FIND ME _ Processing texture: "+this.getTextureFile().getResourcePath());
 		}
 
 		@Override
@@ -56,10 +56,30 @@ public class TexturesGtBlocks {
 
 
 	//Machine Casings
+	private static final CustomIcon Internal_Casing_Machine_Simple = new CustomIcon("TileEntities/machine_top");	
+	public static final CustomIcon Casing_Machine_Simple = Internal_Casing_Machine_Simple;
+	
 	private static final CustomIcon Internal_Casing_Machine_Dimensional = new CustomIcon("TileEntities/adv_machine_dimensional");	
 	public static final CustomIcon Casing_Machine_Dimensional = Internal_Casing_Machine_Dimensional;
 	private static final CustomIcon Internal_Casing_Machine_Dimensional_Adv = new CustomIcon("TileEntities/high_adv_machine_dimensional");	
 	public static final CustomIcon Casing_Machine_Dimensional_Adv = Internal_Casing_Machine_Dimensional_Adv;
+	
+	private static final CustomIcon Internal_Casing_Machine_Sound = new CustomIcon("TileEntities/audio_out");	
+	public static final CustomIcon Casing_Machine_Sound = Internal_Casing_Machine_Sound;
+	private static final CustomIcon Internal_Casing_Machine_Sound_Active = new CustomIcon("TileEntities/audio_out_active");	
+	public static final CustomIcon Casing_Machine_Sound_Active = Internal_Casing_Machine_Sound_Active;
+	
+	private static final CustomIcon Internal_Casing_Machine_Redstone_Off = new CustomIcon("TileEntities/cover_redstone_conductor");	
+	public static final CustomIcon Casing_Machine_Redstone_Off = Internal_Casing_Machine_Redstone_Off;
+	private static final CustomIcon Internal_Casing_Machine_Redstone_On = new CustomIcon("TileEntities/cover_redstone_emitter");	
+	public static final CustomIcon Casing_Machine_Redstone_On = Internal_Casing_Machine_Redstone_On;
+	
+	private static final CustomIcon Internal_Casing_Machine_Vent = new CustomIcon("TileEntities/machine_top_vent_rotating");	
+	public static final CustomIcon Casing_Machine_Vent = Internal_Casing_Machine_Vent;
+	private static final CustomIcon Internal_Casing_Machine_Vent_Fast = new CustomIcon("TileEntities/machine_top_vent_rotating_fast");	
+	public static final CustomIcon Casing_Machine_Vent_Fast = Internal_Casing_Machine_Vent_Fast;
+	private static final CustomIcon Internal_Casing_Machine_Vent_Adv = new CustomIcon("TileEntities/adv_machine_vent_rotating");	
+	public static final CustomIcon Casing_Machine_Vent_Adv = Internal_Casing_Machine_Vent_Adv;
 	
 	//Computer Screens
 	private static final CustomIcon Internal_Casing_Machine_Screen_1 = new CustomIcon("TileEntities/adv_machine_screen_random1");	
@@ -70,6 +90,12 @@ public class TexturesGtBlocks {
 	public static final CustomIcon Casing_Machine_Screen_3 = Internal_Casing_Machine_Screen_3;
 	private static final CustomIcon Internal_Casing_Machine_Screen_Frequency = new CustomIcon("TileEntities/adv_machine_screen_frequency");	
 	public static final CustomIcon Casing_Machine_Screen_Frequency = Internal_Casing_Machine_Screen_Frequency;
+	
+	//Overlays
+	private static final CustomIcon Internal_Overlay_Crafting_Bronze = new CustomIcon("TileEntities/bronze_top_crafting");	
+	public static final CustomIcon Overlay_Crafting_Bronze = Internal_Overlay_Crafting_Bronze;
+	private static final CustomIcon Internal_Overlay_Crafting_Steel = new CustomIcon("TileEntities/cover_crafting");	
+	public static final CustomIcon Overlay_Crafting_Steel = Internal_Overlay_Crafting_Steel;
 
 
 }

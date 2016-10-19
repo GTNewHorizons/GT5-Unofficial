@@ -23,11 +23,11 @@ public abstract class GregtechRocketFuelGeneratorBase extends GT_MetaTileEntity_
 	private boolean useFuel = false;
 
 	public GregtechRocketFuelGeneratorBase(int aID, String aName, String aNameRegional, int aTier, String aDescription, ITexture... aTextures) {
-		super(aID, aName, aNameRegional, aTier, 3, aDescription, aTextures);
+		super(aID, aName, aNameRegional, aTier, 4, aDescription, aTextures);
 	}
 
 	public GregtechRocketFuelGeneratorBase(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-		super(aName, aTier, 3, aDescription, aTextures);
+		super(aName, aTier, 4, aDescription, aTextures);
 	}
 
 	@Override
