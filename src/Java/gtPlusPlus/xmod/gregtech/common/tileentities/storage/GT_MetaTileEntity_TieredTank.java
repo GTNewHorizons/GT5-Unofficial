@@ -15,6 +15,7 @@ import net.minecraftforge.fluids.FluidStack;
 public class GT_MetaTileEntity_TieredTank
         extends GT_MetaTileEntity_BasicTank {
 	
+    private NBTTagCompound mRecipeStuff = new NBTTagCompound();
 	
 	/*protected String fluidName = getFluidName();
 	protected int fluidAmount = getInternalFluidAmount();*/
@@ -73,13 +74,22 @@ public class GT_MetaTileEntity_TieredTank
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         Utils.LOG_INFO("Dumping Fluid data. Name: "+mFluid.getFluid().getName()+" Amount: "+mFluid.amount+"L");
-        if (mFluid != null) aNBT.setTag("mFluid", mFluid.writeToNBT(new NBTTagCompound()));
+        if (mFluid != null){
+        	aNBT.setTag("mFluid", mFluid.writeToNBT(new NBTTagCompound()));
+        	 mRecipeStuff.setString("xFluidName", mFluid.getFluid().getName());
+             mRecipeStuff.setInteger("xFluidAmount", mFluid.amount);
+             aNBT.setTag("GT.CraftingComponents", mRecipeStuff);
+        }
+       
+        
+        
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        mFluid = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mFluid"));       
+        mFluid = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mFluid"));  
+        mRecipeStuff = aNBT.getCompoundTag("GT.CraftingComponents");     
     }
 
     @Override

@@ -216,17 +216,21 @@ public class GregtechConduits {
 		String output = materialName.substring(0, 1).toUpperCase() + materialName.substring(1);
 		output = output.replace("-", "").replace("_", "").replace(" ", "");
 		
+		if (output.equals("VoidMetal")){
+			output = "Void";
+		}
+		
 		Utils.LOG_INFO("Generating "+output+" pipes & respective recipes.");		
 		
 		ItemStack pipeIngot = UtilsItems.getItemStackOfAmountFromOreDict("ingot"+output, 1).copy();
 		ItemStack pipePlate = UtilsItems.getItemStackOfAmountFromOreDict("plate"+output, 1).copy();
 		
 		//Check all pipes are not null
-		Utils.LOG_WARNING("Generated pipeTiny from "+ materialName +"? "+ ((UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Tiny"+output, 1) != null) ? true : false));
-		Utils.LOG_WARNING("Generated pipeSmall from "+ materialName +"? "+ ((UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Small"+output, 1) != null) ? true : false));
-		Utils.LOG_WARNING("Generated pipeNormal from "+ materialName +"? "+ ((UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Medium"+output, 1) != null) ? true : false));
-		Utils.LOG_WARNING("Generated pipeLarge from "+ materialName +"? "+ ((UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Large"+output, 1) != null) ? true : false));
-		Utils.LOG_WARNING("Generated pipeHuge from "+ materialName +"? "+ ((UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1) != null) ? true : false));
+		Utils.LOG_INFO("Generated pipeTiny from "+ materialName +"? "+ ((UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Tiny"+output, 1) != null) ? true : false));
+		Utils.LOG_INFO("Generated pipeSmall from "+ materialName +"? "+ ((UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Small"+output, 1) != null) ? true : false));
+		Utils.LOG_INFO("Generated pipeNormal from "+ materialName +"? "+ ((UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Medium"+output, 1) != null) ? true : false));
+		Utils.LOG_INFO("Generated pipeLarge from "+ materialName +"? "+ ((UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Large"+output, 1) != null) ? true : false));
+		Utils.LOG_INFO("Generated pipeHuge from "+ materialName +"? "+ ((UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1) != null) ? true : false));
 				
 		int eut = 128;
 		if (
@@ -293,13 +297,16 @@ public class GregtechConduits {
 				UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1),
 				4*20, eut);
 		
-		if (eut < 512){
+		if (eut < 512 && !output.equals("Void")){
 			ItemStack pipePlateDouble = UtilsItems.getItemStackOfAmountFromOreDict("plateDouble"+output, 1).copy();
+			if (pipePlateDouble != null)
 			UtilsRecipe.recipeBuilder(
 					pipePlateDouble, "craftingToolHardHammer", pipePlateDouble,
 					pipePlateDouble, null, pipePlateDouble,
 					pipePlateDouble, "craftingToolWrench", pipePlateDouble,
 					UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1));
+			else
+				Utils.LOG_INFO("Failed to add a recipe for "+materialName+" Huge pipes. Double plates probably do not exist.");
 		}
 		
 		
