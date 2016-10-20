@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
-import gregtech.api.metatileentity.BaseMetaTileEntityEx;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
@@ -26,7 +26,7 @@ public class Gregtech_Blocks {
 	private static void registerDefailtGtTe(){
 		Utils.LOG_INFO("Registering new GT TileEntities.");
 
-		BaseMetaTileEntityEx tBaseMetaTileEntity = Meta_GT_Proxy.constructBaseMetaTileEntity();
+		BaseMetaTileEntity tBaseMetaTileEntity = Meta_GT_Proxy.constructBaseMetaTileEntity();
 
 		Utils.LOG_INFO("Testing BaseMetaTileEntity.");
 		if (tBaseMetaTileEntity == null) {

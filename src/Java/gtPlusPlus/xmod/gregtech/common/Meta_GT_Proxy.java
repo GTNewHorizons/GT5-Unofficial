@@ -11,7 +11,7 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
-import gregtech.api.metatileentity.BaseMetaTileEntityEx;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_Log;
@@ -914,17 +914,17 @@ public class Meta_GT_Proxy {
 	 /**
      * This gives you a new BaseMetaTileEntity. As some Interfaces are not always loaded (Buildcraft, Univeral Electricity) I have to use Invocation at the Constructor of the BaseMetaTileEntity
      */
-	private static Class<BaseMetaTileEntityEx> sBaseMetaTileEntityClass = null;
+	private static Class<BaseMetaTileEntity> sBaseMetaTileEntityClass = null;
 	
-    public static BaseMetaTileEntityEx constructBaseMetaTileEntity() {
+    public static BaseMetaTileEntity constructBaseMetaTileEntity() {
         if (sBaseMetaTileEntityClass == null) {
             try {
-                return (BaseMetaTileEntityEx) (sBaseMetaTileEntityClass = BaseMetaTileEntityEx.class).newInstance();
+                return (BaseMetaTileEntity) (sBaseMetaTileEntityClass = BaseMetaTileEntity.class).newInstance();
             } catch (Throwable e) {/*Do nothing*/}
         }
 
         try {
-            return (BaseMetaTileEntityEx) (sBaseMetaTileEntityClass.newInstance());
+            return (BaseMetaTileEntity) (sBaseMetaTileEntityClass.newInstance());
         } catch (Throwable e) {
             Utils.LOG_INFO("Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
             e.printStackTrace(GT_Log.err);

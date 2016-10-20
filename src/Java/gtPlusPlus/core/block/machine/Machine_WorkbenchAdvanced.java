@@ -1,6 +1,5 @@
 package gtPlusPlus.core.block.machine;
 
-import gregtech.api.items.GT_MetaGenerated_Tool;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
@@ -84,12 +83,12 @@ public class Machine_WorkbenchAdvanced extends BlockContainer
 			else if (heldItem.getItem() instanceof ITool){
 				holdingWrench = true;
 			}
-			else if (heldItem.getItem() instanceof GT_MetaGenerated_Tool){
+			/*else if (heldItem.getItem() instanceof GT_MetaGenerated_Tool){
 				GT_MetaGenerated_Tool testTool = (GT_MetaGenerated_Tool) heldItem.getItem();
 				if (testTool.canWrench(player, x, y, z)){
 					holdingWrench = true;
 				}
-			}
+			}*/
 			else {
 				holdingWrench = false;
 			}

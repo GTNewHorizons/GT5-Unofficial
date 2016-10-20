@@ -5,8 +5,6 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_TesseractGenerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_TesseractTerminal;
-import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_AdvancedCraftingTable;
-import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GT_MetaTileEntity_BronzeCraftingTable;
 
 public class Gregtech4Content
 {
@@ -24,8 +22,8 @@ public class Gregtech4Content
 	private static void workbenches(){
         //Gregtech 4 Workbenches
 		Utils.LOG_INFO("Gregtech 4 Content | Registering Workbenches.");
-		GregtechItemList.GT4_Workbench_Bronze.set(new GT_MetaTileEntity_BronzeCraftingTable(828, "workbench.bronze", "Bronze Workbench", 0).getStackForm(1L));
-		GregtechItemList.GT4_Workbench_Advanced.set(new GT_MetaTileEntity_AdvancedCraftingTable(829, "workbench.advanced", "Advanced Workbench", 1).getStackForm(1L));
+		//Free	//GregtechItemList.GT4_Workbench_Bronze.set(new GT_MetaTileEntity_BronzeCraftingTable(828, "workbench.bronze", "Bronze Workbench", 0).getStackForm(1L));
+		//Free	//GregtechItemList.GT4_Workbench_Advanced.set(new GT_MetaTileEntity_AdvancedCraftingTable(829, "workbench.advanced", "Advanced Workbench", 1).getStackForm(1L));
 	}
 	
 	private static void tesseracts(){
