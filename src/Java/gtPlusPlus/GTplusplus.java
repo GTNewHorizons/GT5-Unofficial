@@ -22,6 +22,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.UtilsItems;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.HANDLER_GT;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlocks;
@@ -52,7 +53,7 @@ implements ActionListener
 
 	@Mod.Instance(CORE.MODID)
 	public static GTplusplus instance;
-	
+
 	protected static Meta_GT_Proxy gregtechproxy;
 
 	@SidedProxy(clientSide="gtPlusPlus.core.proxy.ClientProxy", serverSide="gtPlusPlus.core.proxy.ServerProxy")
@@ -63,34 +64,34 @@ implements ActionListener
 	public static void handleConfigFile(FMLPreInitializationEvent event) { 
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
-		
+
 		//Debug
 		DEBUG = config.getBoolean("debugMode", "debug", false, "Enables all sorts of debug logging. (Don't use unless told to, breaks other things.)");
 		disableEnderIOIntegration = config.getBoolean("disableEnderIO", "debug", false, "Disables EnderIO Integration.");
 		disableStaballoyBlastFurnaceRecipe = config.getBoolean("disableStaballoyBlastFurnaceRecipe", "debug", false, "Disables Staballoy Blast Furnace Recipe.");
 		//disableCentrifugeFormation = config.getBoolean("disableCentrifuge", "debug", false, "Keeps the Items around, just stops the multiblock forming. (It's broken currently, needs in depth testing)");
-		
+
 		//Machines
 		enableSolarGenerators = config.getBoolean("enableSolarGenerators", "machines", false, "These may be overpowered, Consult a local electrician.");
 		enableThaumcraftShardUnification = config.getBoolean("enableThaumcraftShardUnification", "machines", false, "Allows the use of TC shards across many recipes by oreDicting them into a common group.");
 		enableAlternativeBatteryAlloy = config.getBoolean("enableAlternativeBatteryAlloy", "machines", false, "Adds a non-Antimony using Battery Alloy. Not Balanced at all..");
 		disableIC2Recipes = config.getBoolean("disableIC2Recipes", "machines", false, "Alkaluscraft Related - Removes IC2 Cables Except glass fibre. Few other Misc Tweaks.");
 		enableAlternativeDivisionSigilRecipe = config.getBoolean("enableAlternativeDivisionSigilRecipe", "machines", false, "Utilizes Neutronium instead.");
-		
+
 		//Options
 		RF2EU_Battery.rfPerEU = config.getInt("rfUsedPerEUForUniversalBatteries", "configurables", 4, 1, 1000, "How much RF is a single unit of EU worth? (Most mods use 4:1 ratio)");
-		
+
 		//Features
 		enableCustomAlvearyBlocks = config.getBoolean("enableCustomAlvearyBlocks", "features", false, "Enables Custom Alveary Blocks.");
-		
+
 		config.save(); 
 	}
-	
+
 	public static String randomDust_A;
 	public static String randomDust_B;
 	public static String randomDust_C;
 	public static String randomDust_D;
-	
+
 	protected void FirstCall(){
 		Utils.LOG_WARNING("Summoning up mystic powers.");
 		String[] infusedDusts = {"Fire", "Water", "Earth", "Air", "Order", "Entropy"};
@@ -114,16 +115,16 @@ implements ActionListener
 		//ItemStack b1 = UtilsItems.getItemStackOfAmountFromOreDict("dustInfused"+infusedDusts[b], 8);
 		//ItemStack c1 = UtilsItems.getItemStackOfAmountFromOreDict("dustInfused"+infusedDusts[c], 8);
 		//ItemStack d1 = UtilsItems.getItemStackOfAmountFromOreDict("dustInfused"+infusedDusts[d], 8);	
-		
-		
+
+
 	}
-	
+
 	@SideOnly(value=Side.CLIENT)
 	public static void loadTextures(){
 		Utils.LOG_INFO("Loading some textures on the client.");
 		//Tools
 		Utils.LOG_WARNING("Processing texture: "+TexturesGtTools.SKOOKUM_CHOOCHER.getTextureFile().getResourcePath());
-		
+
 		//Blocks
 		Utils.LOG_WARNING("Processing texture: "+TexturesGtBlocks.Casing_Machine_Dimensional.getTextureFile().getResourcePath());
 	}
@@ -162,13 +163,16 @@ implements ActionListener
 	@Mod.EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 		proxy.postInit(event);	
-		
+
 		if (DEBUG){
-		dumpGtRecipeMap(Gregtech_Recipe_Map.sChemicalDehydratorRecipes);
-		dumpGtRecipeMap(Gregtech_Recipe_Map.sCokeOvenRecipes);
-		dumpGtRecipeMap(Gregtech_Recipe_Map.sMatterFab2Recipes);
+			dumpGtRecipeMap(Gregtech_Recipe_Map.sChemicalDehydratorRecipes);
+			dumpGtRecipeMap(Gregtech_Recipe_Map.sCokeOvenRecipes);
+			dumpGtRecipeMap(Gregtech_Recipe_Map.sMatterFab2Recipes);
 		}
-		
+
+		//~
+		ReflectionUtils.becauseIWorkHard();
+
 		Utils.LOG_INFO("Activating GT OreDictionary Handler, this can take some time.");
 		Utils.LOG_INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		Utils.LOG_INFO("| Recipes succesfully Loaded: "+RegistrationHandler.recipesSuccess+" | Failed: "+RegistrationHandler.recipesFailed + " |");
@@ -193,20 +197,20 @@ implements ActionListener
 	public void actionPerformed(ActionEvent arg0) {
 
 	}
-	
+
 	protected void dumpGtRecipeMap(GT_Recipe_Map r){	
-			Collection<GT_Recipe> x = r.mRecipeList;
-			   Utils.LOG_INFO("Dumping "+r.mUnlocalizedName+" Recipes for Debug.");
-			for(GT_Recipe newBo : x){
-				   Utils.LOG_INFO("========================");
-				   Utils.LOG_INFO("Dumping Input: "+UtilsItems.getArrayStackNames(newBo.mInputs));
-				   Utils.LOG_INFO("Dumping Inputs "+UtilsItems.getFluidArrayStackNames(newBo.mFluidInputs));
-				   Utils.LOG_INFO("Dumping Duration: "+newBo.mDuration);
-				   Utils.LOG_INFO("Dumping EU/t: "+newBo.mEUt);
-				   Utils.LOG_INFO("Dumping Output: "+UtilsItems.getArrayStackNames(newBo.mOutputs));
-				   Utils.LOG_INFO("Dumping Output: "+UtilsItems.getFluidArrayStackNames(newBo.mFluidOutputs));
-				   Utils.LOG_INFO("========================");
-			}
+		Collection<GT_Recipe> x = r.mRecipeList;
+		Utils.LOG_INFO("Dumping "+r.mUnlocalizedName+" Recipes for Debug.");
+		for(GT_Recipe newBo : x){
+			Utils.LOG_INFO("========================");
+			Utils.LOG_INFO("Dumping Input: "+UtilsItems.getArrayStackNames(newBo.mInputs));
+			Utils.LOG_INFO("Dumping Inputs "+UtilsItems.getFluidArrayStackNames(newBo.mFluidInputs));
+			Utils.LOG_INFO("Dumping Duration: "+newBo.mDuration);
+			Utils.LOG_INFO("Dumping EU/t: "+newBo.mEUt);
+			Utils.LOG_INFO("Dumping Output: "+UtilsItems.getArrayStackNames(newBo.mOutputs));
+			Utils.LOG_INFO("Dumping Output: "+UtilsItems.getFluidArrayStackNames(newBo.mFluidOutputs));
+			Utils.LOG_INFO("========================");
+		}
 	}
 
 }
