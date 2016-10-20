@@ -8,7 +8,6 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -21,6 +20,8 @@ public class Machine_Workbench extends BlockContainer
 {
     @SideOnly(Side.CLIENT)
     private IIcon textureTop;
+    @SideOnly(Side.CLIENT)
+    private IIcon textureBottom;
     @SideOnly(Side.CLIENT)
     private IIcon textureFront;
 
@@ -42,16 +43,17 @@ public class Machine_Workbench extends BlockContainer
 	@SideOnly(Side.CLIENT)
     public IIcon getIcon(int p_149691_1_, int p_149691_2_)
     {
-        return p_149691_1_ == 1 ? this.textureTop : (p_149691_1_ == 0 ? Blocks.planks.getBlockTextureFromSide(p_149691_1_) : (p_149691_1_ != 2 && p_149691_1_ != 4 ? this.blockIcon : this.textureFront));
+        return p_149691_1_ == 1 ? this.textureTop : (p_149691_1_ == 0 ? this.textureBottom : (p_149691_1_ != 2 && p_149691_1_ != 4 ? this.blockIcon : this.textureFront));
     }
 
     @Override
 	@SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister p_149651_1_)
     {
-        this.blockIcon = p_149651_1_.registerIcon(CORE.MODID + ":" + "workbench");
-        this.textureTop = p_149651_1_.registerIcon(CORE.MODID + ":" + "workbench" + "_top");
-        this.textureFront = p_149651_1_.registerIcon(CORE.MODID + ":" + "workbench");
+        this.blockIcon = p_149651_1_.registerIcon(CORE.MODID + ":" + " /TileEntities/" + "bronze_side_cabinet");
+        this.textureTop = p_149651_1_.registerIcon(CORE.MODID + ":" + " /TileEntities/" + "bronze_top_crafting");
+        this.textureBottom = p_149651_1_.registerIcon(CORE.MODID + ":" + " /TileEntities/" + "bronze_side");
+        this.textureFront = p_149651_1_.registerIcon(CORE.MODID + ":" + " /TileEntities/" + "bronze_side_cabinet");
     }
 
     /**

@@ -11,6 +11,7 @@ import gtPlusPlus.core.item.general.ItemBlueprint;
 import gtPlusPlus.core.slots.SlotBlueprint;
 import gtPlusPlus.core.slots.SlotGeneric;
 import gtPlusPlus.core.slots.SlotGtTool;
+import gtPlusPlus.core.slots.SlotOutput;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.UtilsItems;
@@ -18,7 +19,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -33,8 +33,6 @@ public class Container_Workbench extends Container {
 	public final InventoryWorkbenchTools inventoryTool;
 	public final InventoryWorkbenchHoloSlots inventoryHolo;
 	public final InventoryWorkbenchHoloCrafting inventoryCrafting;
-
-	public IInventory craftResult = new InventoryCraftResult();
 
 	private World worldObj;
 	private int posX;
@@ -96,7 +94,7 @@ public class Container_Workbench extends Container {
 		this.inventoryTool = tile.inventoryTool;
 		this.inventoryHolo = tile.inventoryHolo;
 		this.inventoryCrafting = tile.inventoryCrafting;
-				
+
 		int var6;
 		int var7;
 		worldObj = tile.getWorldObj();
@@ -107,7 +105,7 @@ public class Container_Workbench extends Container {
 		int o=0;
 
 		//Output slot
-		addSlotToContainer(new SlotGeneric(inventoryHolo, 0, 136, 64));
+		addSlotToContainer(new SlotOutput(inventory.player, this.craftMatrix, tile.inventoryCraftResult, 0, 136, 64));
 		//Util Slots
 		addSlotToContainer(new SlotBlueprint(inventoryHolo, 1, 136, 28)); //Blueprint
 		addSlotToContainer(new GT_Slot_Holo(inventoryHolo, 2, 154, 28, false, false, 1)); //Hopper
@@ -123,17 +121,19 @@ public class Container_Workbench extends Container {
 
 		o=0;
 
+		updateCraftingMatrix();
+
 		//Crafting Grid
 		for (var6 = 0; var6 < 3; ++var6)
 		{
 			for (var7 = 0; var7 < 3; ++var7)
 			{
 				this.addSlotToContainer(new Slot(this.craftMatrix, var7 + var6 * 3, 82 + var7 * 18, 28 + var6 * 18));
-				
-				if (this.inventoryCrafting.getStackInSlot(o) != null){
+
+				/*if (this.inventoryCrafting.getStackInSlot(o) != null){
 					this.craftMatrix.setInventorySlotContents(o, inventoryCrafting.getStackInSlot(o));		
 					this.inventoryCrafting.setInventorySlotContents(o, null);				
-				}				
+				}	*/			
 				slotCrafting[o] = o+6;
 				o++;
 			}
@@ -189,86 +189,114 @@ public class Container_Workbench extends Container {
 	public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer){
 
 		if (!aPlayer.worldObj.isRemote){
-		if (aSlotIndex == 999 || aSlotIndex == -999){
-			//Utils.LOG_INFO("??? - "+aSlotIndex);
-		}
+			if (aSlotIndex == 999 || aSlotIndex == -999){
+				//Utils.LOG_INFO("??? - "+aSlotIndex);
+			}
 
-		if (aSlotIndex == slotOutput){
-			Utils.LOG_INFO("Player Clicked on the output slot");
-		}
+			if (aSlotIndex == slotOutput){
+				Utils.LOG_INFO("Player Clicked on the output slot");
+				//TODO
+			}
 
-		for (int x : slotHolo){
-			if (aSlotIndex == x){
-				Utils.LOG_INFO("Player Clicked slot "+aSlotIndex+" in the Holo Grid");		
-				if (x == 1){
-					Utils.LOG_INFO("Player Clicked Blueprint slot in the Holo Grid");	
-				}
-				else if (x == 2){
-					Utils.LOG_INFO("Player Clicked Right Arrow slot in the Holo Grid");
-					if (inventoryHolo.getStackInSlot(1) != null){
-						Utils.LOG_INFO("Found an ItemStack.");
-						if (inventoryHolo.getStackInSlot(1).getItem() instanceof IItemBlueprint){
-							Utils.LOG_INFO("Found a blueprint.");
-							ItemStack tempBlueprint = inventoryHolo.getStackInSlot(1);
-							ItemBlueprint tempItemBlueprint = (ItemBlueprint) tempBlueprint.getItem();				
-							if (inventoryHolo.getStackInSlot(0) != null && !tempItemBlueprint.hasBlueprint(tempBlueprint)){
-								Utils.LOG_INFO("Output slot was not empty.");
-								Utils.LOG_INFO("Trying to manipulate NBT data on the blueprint stack, then replace it with the new one.");
-								tempItemBlueprint.setBlueprint(inventoryHolo.getStackInSlot(1), craftMatrix, inventoryHolo.getStackInSlot(0));	
-								ItemStack newTempBlueprint = UtilsItems.getSimpleStack(tempItemBlueprint);
-								inventoryHolo.setInventorySlotContents(1, newTempBlueprint);
-								Utils.LOG_INFO(UtilsItems.getArrayStackNames(tempItemBlueprint.getBlueprint(newTempBlueprint)));
-							}
-							else {
-								if (tempItemBlueprint.hasBlueprint(tempBlueprint)){
-									Utils.LOG_INFO("Blueprint already holds a recipe.");
+			for (int x : slotHolo){
+				if (aSlotIndex == x){
+					Utils.LOG_INFO("Player Clicked slot "+aSlotIndex+" in the Holo Grid");		
+					if (x == 1){
+						Utils.LOG_INFO("Player Clicked Blueprint slot in the Holo Grid");	
+					}
+					else if (x == 2){
+						Utils.LOG_INFO("Player Clicked Right Arrow slot in the Holo Grid");
+						if (inventoryHolo.getStackInSlot(1) != null){
+							Utils.LOG_INFO("Found an ItemStack.");
+							if (inventoryHolo.getStackInSlot(1).getItem() instanceof IItemBlueprint){
+								Utils.LOG_INFO("Found a blueprint.");
+								ItemStack tempBlueprint = inventoryHolo.getStackInSlot(1);
+								ItemBlueprint tempItemBlueprint = (ItemBlueprint) tempBlueprint.getItem();				
+								if (inventoryHolo.getStackInSlot(0) != null && !tempItemBlueprint.hasBlueprint(tempBlueprint)){
+									Utils.LOG_INFO("Output slot was not empty.");
+									Utils.LOG_INFO("Trying to manipulate NBT data on the blueprint stack, then replace it with the new one.");
+									tempItemBlueprint.setBlueprint(inventoryHolo.getStackInSlot(1), craftMatrix, inventoryHolo.getStackInSlot(0));	
+									ItemStack newTempBlueprint = UtilsItems.getSimpleStack(tempItemBlueprint);
+									inventoryHolo.setInventorySlotContents(1, newTempBlueprint);
+									Utils.LOG_INFO(UtilsItems.getArrayStackNames(tempItemBlueprint.getBlueprint(newTempBlueprint)));
 								}
 								else {
-									Utils.LOG_INFO("Output slot was empty.");									
+									if (tempItemBlueprint.hasBlueprint(tempBlueprint)){
+										Utils.LOG_INFO("Blueprint already holds a recipe.");
+									}
+									else {
+										Utils.LOG_INFO("Output slot was empty.");									
+									}
 								}
+							}
+							else {
+								Utils.LOG_INFO("ItemStack found was not a blueprint.");							
 							}
 						}
 						else {
-							Utils.LOG_INFO("ItemStack found was not a blueprint.");							
+							Utils.LOG_INFO("No ItemStack found in Blueprint slot.");
 						}
 					}
-					else {
-						Utils.LOG_INFO("No ItemStack found in Blueprint slot.");
+					else if (x == 3){
+						Utils.LOG_INFO("Player Clicked Big [P] slot in the Holo Grid");	
+					}
+					else if (x == 4){
+						Utils.LOG_INFO("Player Clicked Transfer to Crafting Grid slot in the Holo Grid");	
+					}
+					else if (x == 5){
+						Utils.LOG_INFO("Player Clicked Transfer to Storage Grid slot in the Holo Grid");	
 					}
 				}
-				else if (x == 3){
-					Utils.LOG_INFO("Player Clicked Big [P] slot in the Holo Grid");	
-				}
-				else if (x == 4){
-					Utils.LOG_INFO("Player Clicked Transfer to Crafting Grid slot in the Holo Grid");	
-				}
-				else if (x == 5){
-					Utils.LOG_INFO("Player Clicked Transfer to Storage Grid slot in the Holo Grid");	
-				}
 			}
-		}
 
-		for (int x : slotCrafting){
-			if (aSlotIndex == x){
-				Utils.LOG_INFO("Player Clicked slot "+aSlotIndex+" in the crafting Grid");				
+			for (int x : slotCrafting){
+				if (aSlotIndex == x){
+					Utils.LOG_INFO("Player Clicked slot "+aSlotIndex+" in the crafting Grid");				
+				}
 			}
-		}
-		for (int x : slotStorage){
-			if (aSlotIndex == x){
-				Utils.LOG_INFO("Player Clicked slot "+aSlotIndex+" in the storage Grid");				
+			for (int x : slotStorage){
+				if (aSlotIndex == x){
+					Utils.LOG_INFO("Player Clicked slot "+aSlotIndex+" in the storage Grid");				
+				}
 			}
-		}
-		for (int x : slotTools){
-			if (aSlotIndex == x){
-				Utils.LOG_INFO("Player Clicked slot "+aSlotIndex+" in the tool Grid");				
+			for (int x : slotTools){
+				if (aSlotIndex == x){
+					Utils.LOG_INFO("Player Clicked slot "+aSlotIndex+" in the tool Grid");				
+				}
 			}
-		}
 		}
 		//Utils.LOG_INFO("Player Clicked slot "+aSlotIndex+" in the Grid");	
 		return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
 	}
 
+	private void updateCraftingMatrix() {
+		for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
+			craftMatrix.setInventorySlotContents(i, tile_entity.inventoryCrafting.getStackInSlot(i));
+		}
+	}
+
 	@Override
+	public void onCraftMatrixChanged(IInventory iiventory) {
+		tile_entity.inventoryCraftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(craftMatrix, worldObj));
+	}	
+
+	@Override
+	public void onContainerClosed(EntityPlayer par1EntityPlayer)
+	{
+		super.onContainerClosed(par1EntityPlayer);
+		saveCraftingMatrix();
+	}
+
+	private void saveCraftingMatrix() {
+		for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
+			tile_entity.inventoryCrafting.setInventorySlotContents(i, craftMatrix.getStackInSlot(i));
+		}
+	}	
+
+
+
+
+	/*@Override
 	public void onCraftMatrixChanged(IInventory par1IInventory){
 		//Custom Recipe Handler
 		//craftResult.setInventorySlotContents(0, Workbench_CraftingHandler.getInstance().findMatchingRecipe(craftMatrix, worldObj));
@@ -278,25 +306,25 @@ public class Container_Workbench extends Container {
 		ItemStack temp = CraftingManager.getInstance().findMatchingRecipe(craftMatrix, worldObj);
 		if (temp != null){
 			Utils.LOG_INFO("Output found. "+temp.getDisplayName()+" x"+temp.stackSize);
-			inventoryHolo.setInventorySlotContents(slotOutput, temp);
+			craftResult.setInventorySlotContents(slotOutput, temp);
 		}
 		else {
 		Utils.LOG_INFO("No Valid output found.");
+		craftResult.setInventorySlotContents(slotOutput, null);
 		}
-	}
+	}*/
 
-
-	@Override
+	/*@Override
 	public void onContainerClosed(EntityPlayer par1EntityPlayer)
 	{		
 		for (int o=0; o<craftMatrix.getSizeInventory(); o++){
 			this.inventoryCrafting.setInventorySlotContents(o, craftMatrix.getStackInSlot(o));	
 			this.craftMatrix.setInventorySlotContents(o, null);				
-		}
-		
-		//super.onContainerClosed(par1EntityPlayer);
+		}*/
 
-		/*if (worldObj.isRemote)
+	//super.onContainerClosed(par1EntityPlayer);
+
+	/*if (worldObj.isRemote)
 		{
 			return;
 		}
@@ -310,9 +338,6 @@ public class Container_Workbench extends Container {
 				par1EntityPlayer.dropPlayerItemWithRandomChoice(itemstack, false);
 			}
 		}*/
-
-	}
-
 
 	@Override
 	public boolean canInteractWith(EntityPlayer par1EntityPlayer){
@@ -382,7 +407,12 @@ public class Container_Workbench extends Container {
 
 		return var3;
 	}
-	
-	
-	
+
+	//Can merge Slot
+	@Override
+	public boolean func_94530_a(ItemStack p_94530_1_, Slot p_94530_2_) {
+		return p_94530_2_.inventory != tile_entity.inventoryCraftResult && super.func_94530_a(p_94530_1_, p_94530_2_);
+	}
+
+
 }

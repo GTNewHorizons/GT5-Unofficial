@@ -3,6 +3,7 @@ package gtPlusPlus.core.inventories;
 import gtPlusPlus.core.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -11,6 +12,9 @@ public class InventoryWorkbenchHoloSlots implements IInventory{
 
 	private String name = "Inventory Holo";
 
+	//Output Slot
+	public IInventory craftResult = new InventoryCraftResult();
+	
 	/** Defining your inventory size this way is handy */
 	public static final int INV_SIZE = 6;
 
@@ -33,7 +37,7 @@ public class InventoryWorkbenchHoloSlots implements IInventory{
 		{
 			NBTTagCompound data = list.getCompoundTagAt(i);
 			int slot = data.getInteger("Slot");
-			if(slot >= 0 && slot < INV_SIZE)
+			if(slot >= 1 && slot < INV_SIZE)
 			{
 				inventory[slot] = ItemStack.loadItemStackFromNBT(data);
 			}
@@ -46,7 +50,7 @@ public class InventoryWorkbenchHoloSlots implements IInventory{
 		for(int i = 0;i<INV_SIZE;i++)
 		{
 			ItemStack stack = inventory[i];
-			if(stack != null)
+			if(stack != null && i != 0)
 			{
 				NBTTagCompound data = new NBTTagCompound();
 				stack.writeToNBT(data);
@@ -204,7 +208,7 @@ public class InventoryWorkbenchHoloSlots implements IInventory{
 		
         if (this.stackResult[0] != null)
         {
-			Utils.LOG_INFO("this.stackResult[0] == null - Really never should be here though. - Returning "+this.stackResult[0].getDisplayName());
+			Utils.LOG_INFO("this.stackResult[0] != null - Really never should be though. - Returning "+this.stackResult[0].getDisplayName());
             ItemStack itemstack = this.stackResult[0];
             this.stackResult[0] = null;
             return itemstack;

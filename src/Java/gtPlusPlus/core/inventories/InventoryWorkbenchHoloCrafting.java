@@ -3,8 +3,6 @@ package gtPlusPlus.core.inventories;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 
 public class InventoryWorkbenchHoloCrafting implements IInventory{
 
@@ -24,7 +22,7 @@ public class InventoryWorkbenchHoloCrafting implements IInventory{
 
 	}
 
-	public void readFromNBT(NBTTagCompound nbt)
+	/*public void readFromNBT(NBTTagCompound nbt)
 	{
 		NBTTagList list = nbt.getTagList("Items", 10);
 		inventory = new ItemStack[INV_SIZE];
@@ -54,7 +52,7 @@ public class InventoryWorkbenchHoloCrafting implements IInventory{
 			}
 		}
 		nbt.setTag("Items", list);
-	}
+	}*/
 
 	@Override
 	public int getSizeInventory()

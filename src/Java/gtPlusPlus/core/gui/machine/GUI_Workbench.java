@@ -16,7 +16,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GUI_Workbench extends GuiContainer {
 
-	private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(CORE.MODID, "textures/gui/Workbench.png");
+	private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(CORE.MODID, "textures/gui/BronzeCraftingTable.png");
 	
 	public boolean moveItemsToChest = false;
 	public boolean moveItemsToCrafting = false;
