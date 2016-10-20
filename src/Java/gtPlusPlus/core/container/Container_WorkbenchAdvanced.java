@@ -6,13 +6,13 @@ import gtPlusPlus.core.interfaces.IItemBlueprint;
 import gtPlusPlus.core.inventories.InventoryWorkbenchChest;
 import gtPlusPlus.core.inventories.InventoryWorkbenchHoloCrafting;
 import gtPlusPlus.core.inventories.InventoryWorkbenchHoloSlots;
-import gtPlusPlus.core.inventories.InventoryWorkbenchTools;
+import gtPlusPlus.core.inventories.InventoryWorkbenchToolsElectric;
 import gtPlusPlus.core.item.general.ItemBlueprint;
 import gtPlusPlus.core.slots.SlotBlueprint;
-import gtPlusPlus.core.slots.SlotGtTool;
+import gtPlusPlus.core.slots.SlotGtToolElectric;
 import gtPlusPlus.core.slots.SlotNoInput;
 import gtPlusPlus.core.slots.SlotOutput;
-import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
+import gtPlusPlus.core.tileentities.machines.TileEntityWorkbenchAdvanced;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.UtilsItems;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,12 +25,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.World;
 
-public class Container_Workbench extends Container {
+public class Container_WorkbenchAdvanced extends Container {
 
-	protected TileEntityWorkbench tile_entity;
+	protected TileEntityWorkbenchAdvanced tile_entity;
 	public InventoryCrafting craftMatrix = new InventoryCrafting(this, 3, 3);
 	public final InventoryWorkbenchChest inventoryChest;
-	public final InventoryWorkbenchTools inventoryTool;
+	public final InventoryWorkbenchToolsElectric inventoryTool;
 	public final InventoryWorkbenchHoloSlots inventoryHolo;
 	public final InventoryWorkbenchHoloCrafting inventoryCrafting;
 
@@ -54,41 +54,7 @@ public class Container_Workbench extends Container {
 	private int[] slotStorage = new int[16];
 	private int[] slotTools = new int[5];
 
-	public void moveCraftingToChest(){
-		//Check Chest Space
-		for (int i=0;i<9;i++){
-			if (craftMatrix.getStackInSlot(i) != null){
-				for (int r=0;r<16;r++){
-					if (inventoryChest.getStackInSlot(r) == null || (inventoryChest.getStackInSlot(r).getItem() == craftMatrix.getStackInSlot(i).getItem() && (64-craftMatrix.getStackInSlot(i).stackSize) <= (64-craftMatrix.getStackInSlot(i).stackSize))){
-						inventoryChest.setInventorySlotContents(r, craftMatrix.getStackInSlot(i));
-						craftMatrix.setInventorySlotContents(i, null);
-						break;
-					}
-				}
-			}
-		}
-		//For Each Space or already existing itemstack, move one itemstack or fill current partial stack
-		//Remove old itemstack or partial stack from crafting grid
-	}
-
-	public void moveChestToCrafting(){
-		//Check Crafting items and slots
-		for (int i=0;i<9;i++){
-			if (craftMatrix.getStackInSlot(i) == null || craftMatrix.getStackInSlot(i).stackSize > 0){
-				for (int r=0;r<16;r++){
-					if (inventoryChest.getStackInSlot(r) != null){
-						craftMatrix.setInventorySlotContents(i, craftMatrix.getStackInSlot(r));
-						inventoryChest.setInventorySlotContents(r, null);
-					}
-				}
-			}
-		}
-		//For Each already existing itemstack, fill current partial stack
-		//Remove partial stack from chest area
-	}
-
-
-	public Container_Workbench(InventoryPlayer inventory, TileEntityWorkbench tile){
+	public Container_WorkbenchAdvanced(InventoryPlayer inventory, TileEntityWorkbenchAdvanced tile){
 		this.tile_entity = tile;
 		this.inventoryChest = tile.inventoryChest;
 		this.inventoryTool = tile.inventoryTool;
@@ -160,7 +126,7 @@ public class Container_Workbench extends Container {
 		{
 			for (var7 = 0; var7 < 5; ++var7)
 			{
-				this.addSlotToContainer(new SlotGtTool(inventoryTool, var7 + var6 * 3, 82 + var7 * 18, 8 + var6 * 18));
+				this.addSlotToContainer(new SlotGtToolElectric(inventoryTool, var7 + var6 * 3, 82 + var7 * 18, 8 + var6 * 18, 3, false));
 				slotTools[o] = o+31;
 				o++;
 			}

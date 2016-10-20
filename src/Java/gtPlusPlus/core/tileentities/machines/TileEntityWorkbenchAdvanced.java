@@ -3,7 +3,10 @@ package gtPlusPlus.core.tileentities.machines;
 import gtPlusPlus.core.inventories.InventoryWorkbenchChest;
 import gtPlusPlus.core.inventories.InventoryWorkbenchHoloCrafting;
 import gtPlusPlus.core.inventories.InventoryWorkbenchHoloSlots;
-import gtPlusPlus.core.inventories.InventoryWorkbenchTools;
+import gtPlusPlus.core.inventories.InventoryWorkbenchToolsElectric;
+import ic2.api.energy.event.EnergyTileLoadEvent;
+import ic2.api.energy.event.EnergyTileUnloadEvent;
+import ic2.api.energy.tile.IEnergySink;
 import ic2.api.network.INetworkDataProvider;
 import ic2.api.network.INetworkUpdateListener;
 import ic2.api.tile.IWrenchable;
@@ -20,24 +23,43 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityWorkbench extends TileEntity implements INetworkDataProvider, INetworkUpdateListener, IWrenchable{
+public class TileEntityWorkbenchAdvanced extends TileEntity implements IEnergySink, INetworkDataProvider, INetworkUpdateListener, IWrenchable{
 
 	//Credit to NovaViper in http://www.minecraftforge.net/forum/index.php?topic=26439.0 - Helped me restructure my Inventory system and now the crafting matrix works better.
 
 	public InventoryWorkbenchChest inventoryChest;
-	public InventoryWorkbenchTools inventoryTool;
+	public InventoryWorkbenchToolsElectric inventoryTool;
 	public InventoryWorkbenchHoloSlots inventoryHolo;	
 	public InventoryWorkbenchHoloCrafting inventoryCrafting;	
 
 	public IInventory inventoryCraftResult = new InventoryCraftResult();
 
-	public TileEntityWorkbench(){
-		this.inventoryTool = new InventoryWorkbenchTools();//number of slots - without product slot
+	//Wrench Code
+	private short facing = 0;
+	public short prevFacing = 0;
+
+	//E-Net Code
+	public double energy = 0.0D;
+	public int maxEnergy;
+	private boolean addedToEnergyNet = false;
+	private int tier;
+	private float guiChargeLevel;
+
+
+	public TileEntityWorkbenchAdvanced(int maxenergy, int tier1){
+		this.inventoryTool = new InventoryWorkbenchToolsElectric();//number of slots - without product slot
 		this.inventoryChest = new InventoryWorkbenchChest();//number of slots - without product slot
 		this.inventoryHolo = new InventoryWorkbenchHoloSlots();
 		this.inventoryCrafting = new InventoryWorkbenchHoloCrafting();
 		this.canUpdate();
+
+		//Electric Stats
+		this.maxEnergy = maxenergy;
+		this.tier = tier1;
+
 	}
 
 	@SuppressWarnings("static-method")
@@ -54,9 +76,9 @@ public class TileEntityWorkbench extends TileEntity implements INetworkDataProvi
 	public void writeToNBT(NBTTagCompound nbt)
 	{
 		super.writeToNBT(nbt);
-		
+		nbt.setDouble("energy", this.energy);
 		nbt.setShort("facing", this.facing);
-		
+
 		inventoryChest.writeToNBT(getTag(nbt, "ContentsChest"));
 		inventoryTool.writeToNBT(getTag(nbt, "ContentsTools"));
 		//inventoryCrafting.writeToNBT(getTag(nbt, "ContentsCrafting"));
@@ -84,9 +106,10 @@ public class TileEntityWorkbench extends TileEntity implements INetworkDataProvi
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
+		this.energy = nbt.getDouble("energy");
 
-	    this.prevFacing = (this.facing = nbt.getShort("facing"));
-	    
+		this.prevFacing = (this.facing = nbt.getShort("facing"));
+
 		inventoryChest.readFromNBT(nbt.getCompoundTag("ContentsChest"));
 		inventoryTool.readFromNBT(nbt.getCompoundTag("ContentsTools"));
 		//inventoryCrafting.readFromNBT(nbt.getCompoundTag("ContentsCrafting"));
@@ -111,6 +134,63 @@ public class TileEntityWorkbench extends TileEntity implements INetworkDataProvi
 	}
 
 	@Override
+	public boolean acceptsEnergyFrom(TileEntity emitter, ForgeDirection direction)
+	{
+		return true;
+	}
+
+	@Override
+	public double getDemandedEnergy()
+	{
+		return this.maxEnergy - this.energy;
+	}
+
+	@Override
+	public int getSinkTier()
+	{
+		return this.tier;
+	}
+
+	@Override
+	public double injectEnergy(ForgeDirection directionFrom, double amount, double voltage)
+	{
+		if (this.energy >= this.maxEnergy) {
+			return amount;
+		}
+		this.energy += amount;
+		return 0.0D;
+	}
+
+	public final float getChargeLevel()
+	{
+		return this.guiChargeLevel;
+	}
+
+	public void setTier(int tier1)
+	{
+		if (this.tier == tier1) {
+			return;
+		}
+		boolean addedToENet = this.addedToEnergyNet;
+		if (addedToENet)
+		{
+			MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
+			this.addedToEnergyNet = false;
+		}
+		this.tier = tier1;
+
+		for (int i=0; i<inventoryTool.getSizeInventory(); i++){
+			//this.inventoryTool..setTier(tier1); TODO
+		}
+
+		if (addedToENet)
+		{
+			MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
+			this.addedToEnergyNet = true;
+		}
+	}
+
+	@Override
 	public List<String> getNetworkedFields(){
 		List<String> ret = new Vector(2);	    
 		ret.add("facing");	    
@@ -123,9 +203,6 @@ public class TileEntityWorkbench extends TileEntity implements INetworkDataProvi
 	{
 		return false;
 	}
-
-	private short facing = 0;
-	public short prevFacing = 0;
 
 	@Override
 	public void setFacing(short facing1)
@@ -165,10 +242,8 @@ public class TileEntityWorkbench extends TileEntity implements INetworkDataProvi
 	@Override
 	public void onNetworkUpdate(String field) {
 
-	      this.prevFacing = this.facing;
-		
+		this.prevFacing = this.facing;
+
 	}
-
-
 
 }

@@ -16,7 +16,7 @@ public class RECIPES_General {
 	static ItemStack RECIPE_LapisDust = UtilsItems.getItemStackOfAmountFromOreDictNoBroken("dustLazurite", 2);
 	static ItemStack OUTPUT_Blueprint = UtilsItems.getSimpleStack(ModItems.itemBlueprintBase);
 	static ItemStack RECIPE_CraftingTable = UtilsItems.getSimpleStack(Item.getItemFromBlock(Blocks.crafting_table));
-	static ItemStack RECIPE_BronzePlate = UtilsItems.getItemStackOfAmountFromOreDictNoBroken("plateBronze", 1);
+	static ItemStack RECIPE_BronzePlate = UtilsItems.getItemStackOfAmountFromOreDictNoBrokenExcluding("ic2", "plateAnyBronze", 1);
 	static ItemStack RECIPE_BasicCasingIC2;
 	static ItemStack OUTPUT_Workbench_Bronze = UtilsItems.getSimpleStack(Item.getItemFromBlock(ModBlocks.blockWorkbench));
 	static ItemStack NULL = null;

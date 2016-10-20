@@ -95,8 +95,8 @@ public class RECIPES_Machines {
 	static String plateTier4 = "plateGold";
 	static String plateTier5 = "plateAluminium";
 	static String plateTier6 = "plateMaragingSteel250";
-	static String plateTier7 = "plateTungsten";
-	static String plateTier8 = "plateTungstenSteel";
+	static String plateTier7 = "plateTantalloy61";
+	static String plateTier8 = "plateInconel792";
 	static String plateTier9 = "plateZeron100";
 	static String plateTier10 = "plateNaquadahEnriched";
 	static String plateTier11 = "plateNeutronium";
@@ -108,8 +108,8 @@ public class RECIPES_Machines {
 	static String rodTier4 = "stickGold";
 	static String rodTier5 = "stickAluminium";
 	static String rodTier6 = "stickMaragingSteel250";
-	static String rodTier7 = "stickTungsten";
-	static String rodTier8 = "stickTungstenSteel";
+	static String rodTier7 = "stickTantalloy61";
+	static String rodTier8 = "stickInconel792";
 	static String rodTier9 = "stickZeron100";
 	static String rodTier10 = "stickNaquadahEnriched";
 	static String rodTier11 = "stickNeutronium";
@@ -528,16 +528,16 @@ public class RECIPES_Machines {
 			if (LoadedMods.ImmersiveEngineering){
 				//Industrial Coke Oven
 				UtilsRecipe.addShapedGregtechRecipe(
-						plateCobalt, circuitTier4, plateCobalt,
+						plateTier8, circuitTier4, plateTier8,
 						machineCasing_HV, INPUT_IECokeOvenBlock, machineCasing_HV,
-						plateCobalt, circuitTier5, plateCobalt,
+						plateTier8, circuitTier3, plateTier8,
 						RECIPE_IndustrialCokeOvenController);
 			}
 			//Coke Oven Frame Casing
 			UtilsRecipe.addShapedGregtechRecipe(
-					plateTier8, rodTier8, plateTier8,
-					rodTier8, "frameGtTantalloy61", rodTier8,
-					plateTier8, rodTier8, plateTier8,
+					plateTier7, rodTier7, plateTier7,
+					rodTier7, "frameGtTantalloy61", rodTier7,
+					plateTier7, rodTier7, plateTier7,
 					RECIPE_IndustrialCokeOvenFrame);
 			//Coke Oven Coil 1
 			UtilsRecipe.addShapedGregtechRecipe(

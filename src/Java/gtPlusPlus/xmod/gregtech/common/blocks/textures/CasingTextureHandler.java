@@ -16,10 +16,10 @@ public class CasingTextureHandler {
 			switch (aMeta) {
 			//Centrifuge 
 			case 0: 
-				return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+				return TexturesGtBlocks.Casing_Material_MaragingSteel.getIcon();
 				//Coke Oven Frame
 			case 1:
-				return Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF.getIcon();
+				return TexturesGtBlocks.Casing_Material_Staballoy61.getIcon();
 				//Coke Oven Casing Tier 1
 			case 2: 
 				return Textures.BlockIcons.MACHINE_CASING_FIREBOX_BRONZE.getIcon();
@@ -31,13 +31,13 @@ public class CasingTextureHandler {
 				return Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
 				//Electrolyzer Casings
 			case 5:
-				return Textures.BlockIcons.MACHINE_CASING_FUSION_2.getIcon();
+				return TexturesGtBlocks.Casing_Material_Potin.getIcon();
 				//Broken Blue Fusion Casings
 			case 6:
 				return Textures.BlockIcons.MACHINE_CASING_FUSION.getIcon();
 				//Maceration Stack Casings
 			case 7:
-				return Textures.BlockIcons.MACHINE_LuV_BOTTOM.getIcon();
+				return TexturesGtBlocks.Casing_Material_Tumbaga.getIcon();
 				//Broken Pink Fusion Casings
 			case 8:
 				return Textures.BlockIcons.MACHINE_CASING_FUSION_2.getIcon();
@@ -52,10 +52,10 @@ public class CasingTextureHandler {
 				return Textures.BlockIcons.MACHINE_CASING_GRATE.getIcon();	
 				//Reactor Casing I
 			case 12:
-				return Textures.BlockIcons.MACHINE_CASING_CLEAN_STAINLESSSTEEL.getIcon();	
+				return TexturesGtBlocks.Casing_Material_Stellite.getIcon();	
 				//Reactor Casing II
 			case 13:
-				return Textures.BlockIcons.MACHINE_CASING_ROBUST_TUNGSTENSTEEL.getIcon();	
+				return TexturesGtBlocks.Casing_Material_Zeron100.getIcon();	
 
 			default:
 				return Textures.BlockIcons.MACHINE_CASING_RADIOACTIVEHAZARD.getIcon();

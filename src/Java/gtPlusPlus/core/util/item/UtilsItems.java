@@ -244,6 +244,17 @@ public class UtilsItems {
 
 		return null;
 	}
+	
+	public static ItemStack getItemStackInPlayersHand(){
+		Minecraft mc = Minecraft.getMinecraft();
+		ItemStack heldItem = null;
+		try{heldItem = mc.thePlayer.getHeldItem();
+		}catch(NullPointerException e){return null;}
+		if (heldItem != null){
+			return heldItem;
+		}
+		return null;
+	}
 
 	public static void generateSpawnEgg(String entityModID, String parSpawnName, int colourEgg, int colourOverlay){
 		Item itemSpawnEgg = new BasicSpawnEgg(entityModID, parSpawnName, colourEgg, colourOverlay).setUnlocalizedName("spawn_egg_"+parSpawnName.toLowerCase()).setTextureName(CORE.MODID+":spawn_egg");
@@ -274,6 +285,32 @@ public class UtilsItems {
 		ItemStack returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);
 
 		if (returnValue.getItem().getClass() != ModItems.AAA_Broken.getClass() || returnValue.getItem() != ModItems.AAA_Broken){		
+			return returnValue;
+		}
+		Utils.LOG_INFO(oredictName+" was not valid.");	
+		return null;
+	}
+	
+	public static ItemStack getItemStackOfAmountFromOreDictNoBrokenExcluding(String excludeModName, String oredictName, int amount){
+		ItemStack returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);
+
+		if (returnValue.getItem().getClass() != ModItems.AAA_Broken.getClass() || returnValue.getItem() != ModItems.AAA_Broken){	
+			if (returnValue.getClass().toString().toLowerCase().contains(excludeModName.toLowerCase())){
+				ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
+				if (!oreDictList.isEmpty()){
+					returnValue = oreDictList.get(1).copy();
+					returnValue.stackSize = amount;
+					return returnValue;
+				}
+			}	
+			else {
+				ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
+				if (!oreDictList.isEmpty()){
+					returnValue = oreDictList.get(1).copy();
+					returnValue.stackSize = amount;
+					return returnValue;
+				}
+			}
 			return returnValue;
 		}
 		Utils.LOG_INFO(oredictName+" was not valid.");	

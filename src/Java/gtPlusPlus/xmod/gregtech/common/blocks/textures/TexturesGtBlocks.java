@@ -58,12 +58,28 @@ public class TexturesGtBlocks {
 	//Machine Casings
 	private static final CustomIcon Internal_Casing_Machine_Simple = new CustomIcon("TileEntities/machine_top");	
 	public static final CustomIcon Casing_Machine_Simple = Internal_Casing_Machine_Simple;
-	
 	private static final CustomIcon Internal_Casing_Machine_Dimensional = new CustomIcon("TileEntities/adv_machine_dimensional");	
 	public static final CustomIcon Casing_Machine_Dimensional = Internal_Casing_Machine_Dimensional;
 	private static final CustomIcon Internal_Casing_Machine_Dimensional_Adv = new CustomIcon("TileEntities/high_adv_machine_dimensional");	
 	public static final CustomIcon Casing_Machine_Dimensional_Adv = Internal_Casing_Machine_Dimensional_Adv;
 	
+	//Material Casings
+	private static final CustomIcon Internal_Casing_Staballoy61 = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_TANTALLOY61");	
+	public static final CustomIcon Casing_Material_Staballoy61 = Internal_Casing_Staballoy61;
+	private static final CustomIcon Internal_Casing_MaragingSteel = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_MARAGINGSTEEL");	
+	public static final CustomIcon Casing_Material_MaragingSteel = Internal_Casing_MaragingSteel;
+	private static final CustomIcon Internal_Casing_Stellite = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_STELLITE");	
+	public static final CustomIcon Casing_Material_Stellite = Internal_Casing_Stellite;
+	private static final CustomIcon Internal_Casing_Talonite = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_TALONITE");	
+	public static final CustomIcon Casing_Material_Talonite = Internal_Casing_Talonite;
+	private static final CustomIcon Internal_Casing_Tumbaga = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_TUMBAGA");	
+	public static final CustomIcon Casing_Material_Tumbaga = Internal_Casing_Tumbaga;
+	private static final CustomIcon Internal_Casing_Zeron100 = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_ZERON100");	
+	public static final CustomIcon Casing_Material_Zeron100 = Internal_Casing_Zeron100;
+	private static final CustomIcon Internal_Casing_Potin = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_POTIN");	
+	public static final CustomIcon Casing_Material_Potin = Internal_Casing_Potin;
+	
+	//Misc Casings
 	private static final CustomIcon Internal_Casing_Machine_Sound = new CustomIcon("TileEntities/audio_out");	
 	public static final CustomIcon Casing_Machine_Sound = Internal_Casing_Machine_Sound;
 	private static final CustomIcon Internal_Casing_Machine_Sound_Active = new CustomIcon("TileEntities/audio_out_active");	
