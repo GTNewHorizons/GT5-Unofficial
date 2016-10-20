@@ -39,10 +39,10 @@ public class GregtechMetaTileEntityPowerSubStationController extends GT_MetaTile
 	@Override
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[66],
+			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[67],
 					new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER)};
 		}
-		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[66]};
+		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[67]};
 	}
 
 	@Override
