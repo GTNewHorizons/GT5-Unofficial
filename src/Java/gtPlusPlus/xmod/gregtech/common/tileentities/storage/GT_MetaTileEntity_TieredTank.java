@@ -8,9 +8,9 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.objects.GT_RenderedTexture;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.fluid.FluidUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_TieredTank
         extends GT_MetaTileEntity_BasicTank {
@@ -87,9 +87,10 @@ public class GT_MetaTileEntity_TieredTank
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        super.loadNBTData(aNBT);
-        mFluid = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mFluid"));  
-        mRecipeStuff = aNBT.getCompoundTag("GT.CraftingComponents");     
+        super.loadNBTData(aNBT);  
+        mRecipeStuff = aNBT.getCompoundTag("GT.CraftingComponents");  
+        //mFluid = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mFluid"));   
+        mFluid = FluidUtils.getFluidStack(mRecipeStuff.getString("xFluidName"), mRecipeStuff.getInteger("xFluidAmount"));
     }
 
     @Override
