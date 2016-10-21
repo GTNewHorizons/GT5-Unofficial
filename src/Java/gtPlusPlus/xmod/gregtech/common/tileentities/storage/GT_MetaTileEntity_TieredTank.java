@@ -12,11 +12,12 @@ import gtPlusPlus.core.util.fluid.FluidUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class GT_MetaTileEntity_TieredTank extends GT_MetaTileEntity_BasicTank {
+public class GT_MetaTileEntity_TieredTank
+extends GT_MetaTileEntity_BasicTank {
 
 	private NBTTagCompound mRecipeStuff = new NBTTagCompound();
-	private String thisName = "";
-	private int thisAmount = 0;
+	private String mFluidName;
+	private int mFluidAmount;
 
 	public GT_MetaTileEntity_TieredTank(int aID, String aName, String aNameRegional, int aTier) {
 		super(aID, aName, aNameRegional, aTier, 3, "Stores " + ((int) (Math.pow(2, aTier) * 32000)) + "L of fluid");
@@ -24,25 +25,6 @@ public class GT_MetaTileEntity_TieredTank extends GT_MetaTileEntity_BasicTank {
 
 	public GT_MetaTileEntity_TieredTank(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
 		super(aName, aTier, 3, aDescription, aTextures);
-	}
-
-	@Override
-	public String[] getDescription() {
-		NBTTagCompound dRecipeStuff = this.mRecipeStuff;
-		if (dRecipeStuff != null){
-			this.thisName = dRecipeStuff.getString("xFluidName");
-			this.thisAmount = dRecipeStuff.getInteger("xFluidAmount");        
-			if (this.thisName.equals("")){
-				this.thisName = "Empty";
-			}            
-			if (this.thisName == "Empty" && this.thisAmount == 0){
-				//Do Nothing
-			}
-			else {
-				return new String[] {mDescription, "Stored Fluid: "+this.thisName, "Stored Amount: "+this.thisAmount+"l", CORE.GT_Tooltip};            	
-			}            
-		}
-		return new String[] {mDescription, CORE.GT_Tooltip};
 	}
 
 	@Override
@@ -55,32 +37,82 @@ public class GT_MetaTileEntity_TieredTank extends GT_MetaTileEntity_BasicTank {
 		return aSide == 1 ? new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER_ACTIVE)} : new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER)};
 	}
 
+	
+	private boolean setVars(){
+		//Utils.LOG_INFO("setting Vars.");
+		if (mFluidName.equals("") || !mFluidName.equals(null)){
+			if (mFluid != null)	mFluidName = mFluid.getFluid().getName();
+		}
+		else{
+			if (mFluid != null){
+				if (!mFluidName.equalsIgnoreCase(mFluid.getFluid().getName())){
+					mFluidName = mFluid.getFluid().getName();
+				}
+			}
+			else {
+				// Leave Values Blank.	
+				return false;
+			}
+		}
+
+		if (mFluidAmount <= 0){
+			if (mFluid != null)	mFluidAmount = mFluid.amount;
+		}
+		else {
+			if (mFluid != null){
+				if (mFluidAmount != mFluid.amount){
+					mFluidAmount = mFluid.amount;
+				}
+			}
+			else {
+				// Leave Values Blank.	
+				return false;
+			}
+		}
+		return true;
+	}
+	
+
+	@Override
+	public String[] getDescription() {
+		
+		setVars();
+
+
+		if ((mFluidName.equals("Empty")||mFluidName.equals("")) || mFluidAmount <= 0){
+			return new String[] {mDescription, CORE.GT_Tooltip};
+		}
+		return new String[] {mDescription, "Stored Fluid: "+mFluidName, "Stored Amount: "+mFluidAmount+"l", CORE.GT_Tooltip};
+	}
+
+
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 		super.saveNBTData(aNBT);
-		//Utils.LOG_INFO("Dumping Fluid data. Name: "+mFluid.getFluid().getName()+" Amount: "+mFluid.amount+"L");
-		if (mFluid != null){
-			aNBT.setTag("mFluid", mFluid.writeToNBT(new NBTTagCompound()));
-			mRecipeStuff.setString("xFluidName", mFluid.getFluid().getName());
-			mRecipeStuff.setInteger("xFluidAmount", mFluid.amount);
-			aNBT.setTag("GT.CraftingComponents", mRecipeStuff);
-			this.thisName = mRecipeStuff.getString("xFluidName");
-			this.thisAmount = mRecipeStuff.getInteger("xFluidAmount");
-		}
-
-
-
+		setVars();
+		mRecipeStuff.setString("mFluidName", mFluidName);		
+		mRecipeStuff.setInteger("mFluidAmount", mFluidAmount);
+		aNBT.setTag("GT.CraftingComponents", mRecipeStuff);
 	}
 
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);  
-		mRecipeStuff = aNBT.getCompoundTag("GT.CraftingComponents");  
-		this.thisName = mRecipeStuff.getString("xFluidName");
-		this.thisAmount = mRecipeStuff.getInteger("xFluidAmount");
-		//mFluid = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mFluid"));   
-		mFluid = FluidUtils.getFluidStack(mRecipeStuff.getString("xFluidName"), mRecipeStuff.getInteger("xFluidAmount"));
+		mRecipeStuff = aNBT.getCompoundTag("GT.CraftingComponents");
+		mFluidName = mRecipeStuff.getString("mFluidName");
+		mFluidAmount = mRecipeStuff.getInteger("mFluidAmount");
+		mFluid = FluidUtils.getFluidStack(mFluidName, mFluidAmount);
+		setItemNBT(aNBT);
 	}
+
+	@Override
+	public void setItemNBT(NBTTagCompound aNBT) {
+		super.setItemNBT(aNBT);
+		mRecipeStuff.setString("mFluidName", mFluidName);		
+		mRecipeStuff.setInteger("mFluidAmount", mFluidAmount);
+		aNBT.setTag("GT.CraftingComponents", mRecipeStuff);
+	}
+
 
 	@Override
 	public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
@@ -172,14 +204,24 @@ public class GT_MetaTileEntity_TieredTank extends GT_MetaTileEntity_BasicTank {
 
 	@Override
 	public int getCapacity() {
-		this.thisName = mRecipeStuff.getString("xFluidName");
-		this.thisAmount = mRecipeStuff.getInteger("xFluidAmount");
 		return (int) (Math.pow(2, mTier) * 32000);
 	}
 
 	@Override
 	public int getTankPressure() {
 		return 100;
+	}
+
+	@Override
+	public void onMachineBlockUpdate() {
+		this.getBaseMetaTileEntity().markDirty();
+		super.onMachineBlockUpdate();
+	}
+
+	@Override
+	public void onRemoval() {
+		this.getBaseMetaTileEntity().markDirty();
+		super.onRemoval();
 	}
 
 }
