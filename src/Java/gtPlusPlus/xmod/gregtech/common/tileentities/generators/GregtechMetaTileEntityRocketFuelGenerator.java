@@ -21,7 +21,7 @@ public class GregtechMetaTileEntityRocketFuelGenerator
     public int mEfficiency;
 
     public GregtechMetaTileEntityRocketFuelGenerator(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, "Requires liquid Fuel", new ITexture[0]);
+        super(aID, aName, aNameRegional, aTier, "Requires two liquid Fuels. Fuel A is Fastburn, Fuel B is slowburn.", new ITexture[0]);
         onConfigLoad();
     }
 
@@ -67,20 +67,36 @@ public class GregtechMetaTileEntityRocketFuelGenerator
         }
         return rValue;
     }
+    
+    private GT_RenderedTexture getCasingTexture(){
+    	if (this.mTier <= 4){
+    		return  new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Simple_Top);
+    	}
+    	else if (this.mTier == 5){
+
+    		return  new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Advanced);
+    	}
+    	else if (this.mTier >= 6){
+
+    		return  new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Ultra);
+    	}
+		return  new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Simple_Top);
+    }
+    
 
     @Override
 	public ITexture[] getFront(byte aColor) {
-        return new ITexture[]{super.getFront(aColor)[0], new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Simple), Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier]};
+        return new ITexture[]{super.getFront(aColor)[0], getCasingTexture(), Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier]};
     }
 
     @Override
 	public ITexture[] getBack(byte aColor) {
-        return new ITexture[]{super.getBack(aColor)[0], new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Vent)};
+        return new ITexture[]{super.getBack(aColor)[0], getCasingTexture(), new GT_RenderedTexture(TexturesGtBlocks.Overlay_Machine_Vent)};
     }
 
     @Override
 	public ITexture[] getBottom(byte aColor) {
-        return new ITexture[]{super.getBottom(aColor)[0], new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Simple)};
+        return new ITexture[]{super.getBottom(aColor)[0], new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Simple_Bottom)};
     }
 
     @Override
@@ -90,22 +106,22 @@ public class GregtechMetaTileEntityRocketFuelGenerator
 
     @Override
 	public ITexture[] getSides(byte aColor) {
-        return new ITexture[]{super.getSides(aColor)[0], new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Sound)};
+        return new ITexture[]{super.getSides(aColor)[0], getCasingTexture(), new GT_RenderedTexture(TexturesGtBlocks.Overlay_Machine_Diesel_Horizontal)};
     }
 
     @Override
 	public ITexture[] getFrontActive(byte aColor) {
-        return new ITexture[]{super.getFrontActive(aColor)[0], new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Simple), Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier]};
+        return new ITexture[]{super.getFrontActive(aColor)[0], getCasingTexture(), Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier]};
     }
 
     @Override
 	public ITexture[] getBackActive(byte aColor) {
-        return new ITexture[]{super.getBackActive(aColor)[0], new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Vent_Fast)};
+        return new ITexture[]{super.getBackActive(aColor)[0], getCasingTexture(), new GT_RenderedTexture(TexturesGtBlocks.Overlay_Machine_Vent_Fast)};
     }
 
     @Override
 	public ITexture[] getBottomActive(byte aColor) {
-        return new ITexture[]{super.getBottomActive(aColor)[0], new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Simple)};
+        return new ITexture[]{super.getBottomActive(aColor)[0], new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Simple_Bottom)};
     }
 
     @Override
@@ -115,6 +131,6 @@ public class GregtechMetaTileEntityRocketFuelGenerator
 
     @Override
 	public ITexture[] getSidesActive(byte aColor) {
-        return new ITexture[]{super.getSidesActive(aColor)[0], new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Sound_Active)};
+        return new ITexture[]{super.getSidesActive(aColor)[0], getCasingTexture(), new GT_RenderedTexture(TexturesGtBlocks.Overlay_Machine_Diesel_Horizontal_Active)};
     }
 }

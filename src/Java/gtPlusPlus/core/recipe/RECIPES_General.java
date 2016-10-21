@@ -13,10 +13,10 @@ import net.minecraft.item.ItemStack;
 public class RECIPES_General {
 
 	static ItemStack RECIPE_Paper = UtilsItems.getSimpleStack(Items.paper);
-	static ItemStack RECIPE_LapisDust = UtilsItems.getItemStackOfAmountFromOreDictNoBroken("dustLazurite", 2);
+	static String RECIPE_LapisDust = "dustLazurite";
 	static ItemStack OUTPUT_Blueprint = UtilsItems.getSimpleStack(ModItems.itemBlueprintBase);
 	static ItemStack RECIPE_CraftingTable = UtilsItems.getSimpleStack(Item.getItemFromBlock(Blocks.crafting_table));
-	static ItemStack RECIPE_BronzePlate = UtilsItems.getItemStackOfAmountFromOreDictNoBrokenExcluding("ic2", "plateAnyBronze", 1);
+	static String RECIPE_BronzePlate = "plateAnyBronze";
 	static ItemStack RECIPE_BasicCasingIC2;
 	static ItemStack OUTPUT_Workbench_Bronze = UtilsItems.getSimpleStack(Item.getItemFromBlock(ModBlocks.blockWorkbench));
 	static ItemStack NULL = null;

@@ -25,7 +25,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class GregtechMetaTileEntityIronBlastFurnace
         extends MetaTileEntity {
-    private static final ITexture[] FACING_SIDE = {new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Simple)};
+    private static final ITexture[] FACING_SIDE = {new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Simple_Top)};
     private static final ITexture[] FACING_FRONT = {new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Redstone_Off)};
     private static final ITexture[] FACING_ACTIVE = {new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Redstone_On)};
     public int mMaxProgresstime = 0;

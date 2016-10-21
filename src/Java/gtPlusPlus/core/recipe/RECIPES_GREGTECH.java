@@ -131,19 +131,19 @@ public class RECIPES_GREGTECH {
 					30); //EU	
 		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}*/
 		try {
-			
+
 			ItemStack cells = UtilsItems.getItemStackWithMeta(LoadedMods.IndustrialCraft2, "IC2:itemCellEmpty", "Empty Fluid Cells", 0, 12);
-			
+
 			if (cells == null){
 				cells = UtilsItems.getItemStackOfAmountFromOreDictNoBroken("cellEmpty", 12);
 			}
-			
+
 			ItemStack[] input = {cells, UtilsItems.getItemStackOfAmountFromOreDict("dustLepidolite", 20)};
-			
+
 			CORE.RA.addDehydratorRecipe(
 					input, //Item input (Array, up to 2)
 					FluidUtils.getFluidStack("sulfuricacid", 10000), //Fluid input (slot 1)
-					FluidUtils.getFluidStack("sulfuriclithium", 10000), //Fluid output (slot 1)
+					FluidUtils.getFluidStack("sulfuriclithium", 10000), //Fluid output (slot 2)
 					new ItemStack[]{
 						UtilsItems.getItemStackOfAmountFromOreDict("dustPotassium", 1),
 						UtilsItems.getItemStackOfAmountFromOreDict("dustAluminium", 4),
@@ -152,11 +152,61 @@ public class RECIPES_GREGTECH {
 						UtilsItems.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 3), //LithiumCarbonate
 					}, //Output Array of Items - Upto 9,
 					new int[]{0},
-					90*20, //Time in ticks
+					75*20, //Time in ticks
+					1000); //EU	
+
+		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+		try {
+
+			CORE.RA.addDehydratorRecipe(
+					new ItemStack[]{
+							UtilsItems.getItemStackOfAmountFromOreDict("cellWater", 10)
+					}, //Item input (Array, up to 2)
+					FluidUtils.getFluidStack("uraniumtetrafluoride", 1440), //Fluid input (slot 1)
+					null, //Fluid output (slot 2)
+					new ItemStack[]{
+						UtilsItems.getItemStackOfAmountFromOreDict("dustUraniumTetrafluoride", 10),
+						UtilsItems.getItemStackOfAmountFromOreDictNoBroken("cellEmpty", 10)
+					}, //Output Array of Items - Upto 9,
+					new int[]{0},
+					150*20, //Time in ticks
 					2000); //EU	
 
 		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
-		
+		try {
+
+			CORE.RA.addDehydratorRecipe(
+					new ItemStack[]{
+							UtilsItems.getItemStackOfAmountFromOreDict("cellWater", 10)
+					}, //Item input (Array, up to 2)
+					FluidUtils.getFluidStack("uraniumhexafluoride", 1440), //Fluid input (slot 1)
+					null, //Fluid output (slot 2)
+					new ItemStack[]{
+						UtilsItems.getItemStackOfAmountFromOreDict("dustUraniumHexafluoride", 10),
+						UtilsItems.getItemStackOfAmountFromOreDictNoBroken("cellEmpty", 10)
+					}, //Output Array of Items - Upto 9,
+					new int[]{0},
+					300*20, //Time in ticks
+					4000); //EU	
+
+		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+		try {
+			
+			CORE.RA.addDehydratorRecipe(
+					new ItemStack[]{
+							UtilsItems.getItemStackOfAmountFromOreDict("cropGrape", 1)
+					}, //Item input (Array, up to 2)
+					null, //Fluid input (slot 1)
+					null, //Fluid output (slot 2)
+					new ItemStack[]{
+						UtilsItems.getItemStackOfAmountFromOreDict("foodRaisins", 1)
+					}, //Output Array of Items - Upto 9,
+					new int[]{0},
+					10*20, //Time in ticks
+					8); //EU	
+
+		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+
 	}
 
 	private static void assemblerRecipes(){
@@ -176,9 +226,9 @@ public class RECIPES_GREGTECH {
 		GT_Values.RA.addFuel(UtilsItems.simpleMetaStack("EnderIO:bucketFire_water", 0, 1), null, 120, 0);
 		GT_Values.RA.addFuel(UtilsItems.simpleMetaStack("EnderIO:bucketRocket_fuel", 0, 1), null, 112, 0);
 		GT_Values.RA.addFuel(UtilsItems.simpleMetaStack("EnderIO:bucketHootch", 0, 1), null, 36, 0);
-		
-		
-		
+
+
+
 		//CORE.RA.addFuel(UtilsItems.simpleMetaStack("EnderIO:bucketRocket_fuel", 0, 1), null, 112, 0);
 		GT_Values.RA.addFuel(UtilsItems.getSimpleStack(Items.lava_bucket), null, 32, 2);
 		GT_Values.RA.addFuel(UtilsItems.getIC2Cell(2), null, 32, 2);
@@ -202,6 +252,16 @@ public class RECIPES_GREGTECH {
 				chances,
 				30*20,
 				240);
+		
+		GT_Values.RA.addChemicalBathRecipe(
+				UtilsItems.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 10),
+				FluidUtils.getFluidStack("hydrofluoricacid", 20000),
+				UtilsItems.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 5),
+				null,
+				null, 
+				new int[]{},
+				90*20,
+				500);
 	}
 
 

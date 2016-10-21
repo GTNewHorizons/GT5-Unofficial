@@ -132,6 +132,10 @@ public final class ModItems {
 	public static BaseItemBackpack backpack_White;
 	
 	public static Item dustLithiumCarbonate;
+
+	public static Item dustUraniumTetraFluoride;
+	public static Item dustUraniumHexaFluoride;
+	public static Item dustLithiumFluoride;
 	
 	public static ItemBlueprint itemBlueprintBase;
 
@@ -233,7 +237,11 @@ public final class ModItems {
 		
 		
 		dustLithiumCarbonate = UtilsItems.generateSpecialUseDusts("LithiumCarbonate", "Lithium Carbonate", Utils.rgbtoHexValue(137, 139, 142))[0];
-
+		
+		//Nuclear Fuel Dusts
+		dustUraniumTetraFluoride = UtilsItems.generateSpecialUseDusts("UraniumTetrafluoride", "Uranium Tetrafluoride", Utils.rgbtoHexValue(17, 179, 42))[0];
+		dustUraniumHexaFluoride = UtilsItems.generateSpecialUseDusts("UraniumHexafluoride", "Uranium Hexafluoride", Utils.rgbtoHexValue(9, 199, 32))[0];
+		dustLithiumFluoride = UtilsItems.generateSpecialUseDusts("LithiumFluoride", "Lithium Fluoride", Utils.rgbtoHexValue(245, 245, 245))[0];
 		
 		
 		boolean gtStyleTools = LoadedMods.Gregtech;
