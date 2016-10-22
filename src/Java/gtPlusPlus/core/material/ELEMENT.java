@@ -46,7 +46,7 @@ public final class ELEMENT {
 	public static final Material RUBIDIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Rubidium);
 	public static final Material STRONTIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Strontium);
 	public static final Material YTTRIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Yttrium);
-	public static final Material ZIRCONIUM = new Material("Zirconium", new short[]{255, 250, 205}, 1855, 4377, 40, 51, false, null);//Not a GT Inherited Material
+	public static final Material ZIRCONIUM = new Material("Zirconium", new short[]{255, 250, 205}, 1855, 4377, 40, 51, false, null, "Zr", 0);//Not a GT Inherited Material
 	public static final Material NIOBIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Niobium);
 	public static final Material MOLYBDENUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Molybdenum);
 	//public static final Material TECHNETIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Technetium);
@@ -79,7 +79,7 @@ public final class ELEMENT {
 	public static final Material THORIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Thorium);	
 	public static final Material URANIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Uranium);	
 	public static final Material PLUTONIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Plutonium);	
-	public static final Material URANIUM233 = new Material("Uranium-233", new short[]{73, 220, 83, 0}, 1132, 4131, 92, 141, false,	null);//Not a GT Inherited Material
+	public static final Material URANIUM233 = new Material("Uranium-233", new short[]{73, 220, 83, 0}, 1132, 4131, 92, 141, false,	null, MaterialUtils.superscript("233U"), 0);//Not a GT Inherited Material
 
 
 }

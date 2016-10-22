@@ -314,8 +314,8 @@ public class RECIPES_GREGTECH {
 				null, //Fluid Input
 				null, //Fluid Output
 				UtilsItems.getItemStackOfAmountFromOreDict("dust2LiOHCaCO3", 10), //Output Stack
-				600*20,
-				128);		
+				600*20
+				);		
 		
 		GT_Values.RA.addChemicalRecipe(
 				UtilsItems.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 5), //Input Stack 1
@@ -323,8 +323,8 @@ public class RECIPES_GREGTECH {
 				FluidUtils.getFluidStack("hydrofluoricacid", 2500), //Fluid Input
 				FluidUtils.getFluidStack("water", 2500), //Fluid Output
 				UtilsItems.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 5), //Output Stack
-				600*20,
-				128);	
+				600*20
+				);	
 	}
 	
 	private static void blastFurnaceRecipes(){

@@ -426,7 +426,10 @@ public class Utils {
 		}
 	}
 
-	public static int rgbtoHexValue(int r, int g, int b){		    
+	public static int rgbtoHexValue(int r, int g, int b){	
+		if (r > 255 || g > 255 || b > 255 || r < 0 || g < 0 || b < 0){
+			return 0;
+		}
 		Color c = new Color(r,g,b);
 		String temp = Integer.toHexString( c.getRGB() & 0xFFFFFF ).toUpperCase();	
 

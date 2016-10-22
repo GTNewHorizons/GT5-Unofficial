@@ -1,6 +1,7 @@
 package gtPlusPlus.core.util.item;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
@@ -10,6 +11,8 @@ import gtPlusPlus.core.item.base.BasicSpawnEgg;
 import gtPlusPlus.core.item.base.bolts.BaseItemBolt;
 import gtPlusPlus.core.item.base.dusts.BaseItemDust;
 import gtPlusPlus.core.item.base.dusts.BaseItemDustUnique;
+import gtPlusPlus.core.item.base.dusts.decimal.BaseItemCentidust;
+import gtPlusPlus.core.item.base.dusts.decimal.BaseItemDecidust;
 import gtPlusPlus.core.item.base.gears.BaseItemGear;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngot;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngotHot;
@@ -244,7 +247,7 @@ public class UtilsItems {
 
 		return null;
 	}
-	
+
 	public static ItemStack getItemStackInPlayersHand(){
 		Minecraft mc = Minecraft.getMinecraft();
 		ItemStack heldItem = null;
@@ -290,7 +293,7 @@ public class UtilsItems {
 		Utils.LOG_INFO(oredictName+" was not valid.");	
 		return null;
 	}
-	
+
 	public static ItemStack getItemStackOfAmountFromOreDictNoBrokenExcluding(String excludeModName, String oredictName, int amount){
 		ItemStack returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);
 
@@ -347,9 +350,9 @@ public class UtilsItems {
 			temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, sRadiation);
 			temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier, sRadiation);
 
-			temp = new BaseItemPlate("itemPlate"+unlocalizedName, materialName, Colour, materialTier, sRadiation);
-			temp = new BaseItemRod(matInfo, sRadiation);
-			temp = new BaseItemRodLong(matInfo, sRadiation);
+			temp = new BaseItemPlate(matInfo);
+			temp = new BaseItemRod(matInfo);
+			temp = new BaseItemRodLong(matInfo);
 		}
 
 		else {
@@ -366,14 +369,14 @@ public class UtilsItems {
 			temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, sRadiation);
 			temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier, sRadiation);
 
-			temp = new BaseItemPlate("itemPlate"+unlocalizedName, materialName, Colour, materialTier, sRadiation);
-			temp = new BaseItemPlateDouble("itemPlateDouble"+unlocalizedName, materialName, Colour, materialTier, sRadiation);
+			temp = new BaseItemPlate(matInfo);
+			temp = new BaseItemPlateDouble(matInfo);
 			temp = new BaseItemBolt(matInfo);
-			temp = new BaseItemRod(matInfo, sRadiation);
-			temp = new BaseItemRodLong(matInfo, sRadiation);
+			temp = new BaseItemRod(matInfo);
+			temp = new BaseItemRodLong(matInfo);
 			temp = new BaseItemRing(matInfo);
 			temp = new BaseItemScrew(matInfo);
-			temp = new BaseItemRotor("itemRotor"+unlocalizedName, materialName, Colour);
+			temp = new BaseItemRotor(matInfo);
 			temp = new BaseItemGear(matInfo);
 		}		
 
@@ -402,22 +405,22 @@ public class UtilsItems {
 
 	public static MultiPickaxeBase generateMultiPick(boolean GT_Durability, Materials material){
 		ToolMaterial customMaterial = Utils.generateMaterialFromGT(material);
-		Utils.LOG_INFO("Generating a Multi-Pick out of "+material.name());
+		Utils.LOG_WARNING("Generating a Multi-Pick out of "+material.name());
 		short[] rgb;
 		rgb = material.getRGBA();
 		int dur = customMaterial.getMaxUses();
-		Utils.LOG_INFO("Determined durability for "+material.name()+" is "+dur);
+		Utils.LOG_WARNING("Determined durability for "+material.name()+" is "+dur);
 		if (GT_Durability){
 			dur = material.mDurability*100;
-			Utils.LOG_INFO("Using gregtech durability value, "+material.name()+" is now "+dur+".");
+			Utils.LOG_WARNING("Using gregtech durability value, "+material.name()+" is now "+dur+".");
 		}
 		else if (dur <= 0){
 			dur = material.mDurability;
-			Utils.LOG_INFO("Determined durability too low, "+material.name()+" is now "+dur+" based on the GT material durability.");
+			Utils.LOG_WARNING("Determined durability too low, "+material.name()+" is now "+dur+" based on the GT material durability.");
 		}
 
 		if (dur <= 0){
-			Utils.LOG_INFO("Still too low, "+material.name()+" will now go unused.");
+			Utils.LOG_WARNING("Still too low, "+material.name()+" will now go unused.");
 			return null;
 		}
 
@@ -437,22 +440,22 @@ public class UtilsItems {
 
 	public static MultiSpadeBase generateMultiShovel(boolean GT_Durability, Materials material){
 		ToolMaterial customMaterial = Utils.generateMaterialFromGT(material);
-		Utils.LOG_INFO("Generating a Multi-Shovel out of "+material.name());
+		Utils.LOG_WARNING("Generating a Multi-Shovel out of "+material.name());
 		short[] rgb;
 		rgb = material.getRGBA();
 		int dur = customMaterial.getMaxUses();
-		Utils.LOG_INFO("Determined durability for "+material.name()+" is "+dur);
+		Utils.LOG_WARNING("Determined durability for "+material.name()+" is "+dur);
 		if (GT_Durability){
 			dur = material.mDurability*100;
-			Utils.LOG_INFO("Using gregtech durability value, "+material.name()+" is now "+dur+".");
+			Utils.LOG_WARNING("Using gregtech durability value, "+material.name()+" is now "+dur+".");
 		}
 		else if (dur <= 0){
 			dur = material.mDurability;
-			Utils.LOG_INFO("Determined durability too low, "+material.name()+" is now "+dur+" based on the GT material durability.");
+			Utils.LOG_WARNING("Determined durability too low, "+material.name()+" is now "+dur+" based on the GT material durability.");
 		}
 
 		if (dur <= 0){
-			Utils.LOG_INFO("Still too low, "+material.name()+" will now go unused.");
+			Utils.LOG_WARNING("Still too low, "+material.name()+" will now go unused.");
 			return null;
 		}
 
@@ -468,6 +471,40 @@ public class UtilsItems {
 		}		
 		return null;
 
+	}
+
+	public static BaseItemDecidust generateDecidust(Materials material){
+		if (GT_OreDictUnificator.get(OrePrefixes.dust, material, 1L) != null){
+			Material placeholder = MaterialUtils.generateMaterialFromGtENUM(material);
+			if (placeholder != null)
+			generateDecidust(placeholder);						
+		}		
+		return null;
+	}
+
+	public static BaseItemDecidust generateDecidust(Material material){
+		if (material.getDust(1) != null && MaterialUtils.hasValidRGBA(material.getRGBA())){			
+			BaseItemDecidust Decidust = new BaseItemDecidust(material);
+			return Decidust;			
+		}
+		return null;
+	}
+	
+	public static BaseItemCentidust generateCentidust(Materials material){
+		if (GT_OreDictUnificator.get(OrePrefixes.dust, material, 1L) != null){
+			Material placeholder = MaterialUtils.generateMaterialFromGtENUM(material);
+			if (placeholder != null)
+			generateCentidust(placeholder);						
+		}		
+		return null;
+	}
+
+	public static BaseItemCentidust generateCentidust(Material material){
+		if (material.getDust(1) != null && MaterialUtils.hasValidRGBA(material.getRGBA())){			
+			BaseItemCentidust Centidust = new BaseItemCentidust(material);
+			return Centidust;			
+		}
+		return null;
 	}
 
 	public static boolean isRadioactive(String materialName){
@@ -504,7 +541,7 @@ public class UtilsItems {
 	public static String getArrayStackNames(ItemStack[] aStack){
 		String itemNames = "Item Array: ";
 		for (ItemStack alph : aStack){
-			
+
 			if (alph != null){
 				String temp = itemNames;
 				itemNames = temp + ", " + alph.getDisplayName() + " x" + alph.stackSize;				

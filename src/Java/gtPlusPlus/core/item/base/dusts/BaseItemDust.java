@@ -113,6 +113,9 @@ public class BaseItemDust extends Item{
 		if (sRadiation > 0){
 			list.add(CORE.GT_Tooltip_Radioactive);
 		}
+		if (dustInfo != null){
+			list.add(dustInfo.vChemicalFormula);
+		}
 		//}
 		super.addInformation(stack, aPlayer, list, bool);
 	}

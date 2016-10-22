@@ -1,6 +1,7 @@
 package gtPlusPlus.core.util.materials;
 
 import gregtech.api.enums.Dyes;
+import gregtech.api.enums.Element;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.enums.TextureSet;
@@ -51,8 +52,83 @@ public class MaterialUtils {
 		int boiling = material.mBlastFurnaceTemp;
 		long protons = material.getProtons();
 		long neutrons = material.getNeutrons();
-		boolean blastFurnace = material.mBlastFurnaceRequired;		
-		return new Material(name, rgba, melting, boiling, protons, neutrons, blastFurnace, null);
+		boolean blastFurnace = material.mBlastFurnaceRequired;	
+		String chemicalFormula = material.mChemicalFormula;
+		Element element = material.mElement;
+		int radioactivity = 0;
+		if (material.isRadioactive()){
+			radioactivity = 1;
+		}
+		if (hasValidRGBA(rgba)){
+			return new Material(name, rgba, melting, boiling, protons, neutrons, blastFurnace, null, chemicalFormula, radioactivity);
+		}
+		return null;
+		
+	}
+	
+	public static Material generateQuickMaterial(String materialName, short[] colour, int sRadioactivity) {
+		Material temp = new Material(
+				materialName,
+				colour,
+				1000, //melting
+				3000, //boiling
+				50, //Protons
+				50, //Neutrons
+				false,
+				null,
+				sRadioactivity);
+		return temp;
+	}
+	
+	public static boolean hasValidRGBA(short[] rgba){
+		boolean test1 = false;
+		boolean test2 = false;
+		boolean test3 = false;		
+		for (int r=0;r<rgba.length;r++){
+			if (rgba[r] == 0){
+				if (r == 0){
+					test1 = true;
+				}
+				else if (r == 1){
+					test2 = true;					
+				}
+				else if (r == 2){
+					test3 = true;					
+				}
+			}
+		}		
+		if ((test1 && test2) || (test1 && test3) || (test3 && test2)){
+			return false;
+		}
+		return true;
+	}
+	
+	public static String superscript(String str) {
+	    str = str.replaceAll("0", "⁰");
+	    str = str.replaceAll("1", "¹");
+	    str = str.replaceAll("2", "²");
+	    str = str.replaceAll("3", "³");
+	    str = str.replaceAll("4", "⁴");
+	    str = str.replaceAll("5", "⁵");
+	    str = str.replaceAll("6", "⁶");
+	    str = str.replaceAll("7", "⁷");
+	    str = str.replaceAll("8", "⁸");
+	    str = str.replaceAll("9", "⁹");         
+	    return str;
+	}
+
+	public static String subscript(String str) {
+	    str = str.replaceAll("0", "₀");
+	    str = str.replaceAll("1", "₁");
+	    str = str.replaceAll("2", "₂");
+	    str = str.replaceAll("3", "₃");
+	    str = str.replaceAll("4", "₄");
+	    str = str.replaceAll("5", "₅");
+	    str = str.replaceAll("6", "₆");
+	    str = str.replaceAll("7", "₇");
+	    str = str.replaceAll("8", "₈");
+	    str = str.replaceAll("9", "₉");
+	    return str;
 	}
 	
 

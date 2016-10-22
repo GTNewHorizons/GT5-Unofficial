@@ -5,12 +5,12 @@ import net.minecraft.item.ItemStack;
 
 public class MaterialStack {
 	
-	final Material materialInput;
+	final Material stackMaterial;
 	final double percentageToUse;
 	
 	public MaterialStack(Material inputs, double percentage){
 
-		this.materialInput = inputs;
+		this.stackMaterial = inputs;
 		this.percentageToUse = percentage;
 		
 		
@@ -43,16 +43,16 @@ public class MaterialStack {
 		}
 		switch (caseStatus) {		
 		case 1:	{
-			return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("dustTiny"+materialInput.unlocalizedName, amount);
+			return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("dustTiny"+stackMaterial.unlocalizedName, amount);
 		}
 		case 2: {
-			return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("dustSmall"+materialInput.unlocalizedName, amount);
+			return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("dustSmall"+stackMaterial.unlocalizedName, amount);
 		}
 		case 3: {
-			return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("dust"+materialInput.unlocalizedName, amount);
+			return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("dust"+stackMaterial.unlocalizedName, amount);
 		}
 		case 4: {
-			return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("dust"+materialInput.unlocalizedName, amount);
+			return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("dust"+stackMaterial.unlocalizedName, amount);
 		}
 		default:
 			return null;
@@ -61,7 +61,7 @@ public class MaterialStack {
 	}
 	
 	public ItemStack[] getValidItemStacks(){
-		return UtilsItems.validItemsForOreDict(materialInput.unlocalizedName);
+		return UtilsItems.validItemsForOreDict(stackMaterial.unlocalizedName);
 	}
 	
 	

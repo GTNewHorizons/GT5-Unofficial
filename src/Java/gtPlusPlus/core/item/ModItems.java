@@ -9,6 +9,8 @@ import gtPlusPlus.core.common.compat.COMPAT_Baubles;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.BaseItemBackpack;
 import gtPlusPlus.core.item.base.CoreItem;
+import gtPlusPlus.core.item.base.dusts.decimal.BaseItemCentidust;
+import gtPlusPlus.core.item.base.dusts.decimal.BaseItemDecidust;
 import gtPlusPlus.core.item.base.foods.BaseItemFood;
 import gtPlusPlus.core.item.base.foods.BaseItemHotFood;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngot;
@@ -111,6 +113,9 @@ public final class ModItems {
 
 	public static MultiPickaxeBase MP_GTMATERIAL;
 	public static MultiSpadeBase MS_GTMATERIAL;
+	
+	public static BaseItemDecidust itemBaseDecidust;
+	public static BaseItemCentidust itemBaseCentidust;
 
 	public static ItemStack FluidCell;
 
@@ -266,7 +271,7 @@ public final class ModItems {
 		dust2LiOH_CaCO3 = UtilsItems.generateSpecialUseDusts("2LiOHCaCO3", "2LiOH & CaCO3 Compound", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_carbonate
 		
 		//FLiBe Fuel Compounds
-		dustLi2BeF4 = UtilsItems.generateSpecialUseDusts("Li2BeF4", "Li2BeF4 Fuel Compound", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_carbonate
+		dustLi2BeF4 = UtilsItems.generateSpecialUseDusts("Li2BeF4", "Li2BeF4 Fuel Compound", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/FLiBe
 
 		boolean gtStyleTools = LoadedMods.Gregtech;
 
@@ -274,19 +279,21 @@ public final class ModItems {
 		for (Materials m : rm){
 			MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, m);
 			MS_GTMATERIAL = UtilsItems.generateMultiShovel(gtStyleTools, m);
+			itemBaseDecidust = UtilsItems.generateDecidust(m);
+			itemBaseCentidust = UtilsItems.generateCentidust(m);
 		}
 
 		//EnderIO Resources
 		if (LoadedMods.EnderIO || LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("EnderIO Found - Loading Resources.");
 			//Item Init
-			itemPlateSoularium = new BaseItemPlate("itemPlate"+"Soularium", "Soularium", Utils.rgbtoHexValue(95, 90, 54), 2, 0);
-			itemPlateRedstoneAlloy = new BaseItemPlate("itemPlate"+"RedstoneAlloy", "Redstone Alloy", Utils.rgbtoHexValue(178,34,34), 2, 0);
-			itemPlateElectricalSteel =new BaseItemPlate("itemPlate"+"ElectricalSteel", "Electrical Steel", Utils.rgbtoHexValue(194, 194, 194), 2, 0);
-			itemPlatePulsatingIron = new BaseItemPlate("itemPlate"+"PhasedIron", "Pulsating Iron", Utils.rgbtoHexValue(50, 91, 21), 2, 0);
-			itemPlateEnergeticAlloy = new BaseItemPlate("itemPlate"+"EnergeticAlloy", "Energetic Alloy", Utils.rgbtoHexValue(252, 152, 45), 2, 0);
-			itemPlateVibrantAlloy = new BaseItemPlate("itemPlate"+"VibrantAlloy", "Vibrant Alloy", Utils.rgbtoHexValue(204, 242, 142), 2, 0);
-			itemPlateConductiveIron = new BaseItemPlate("itemPlate"+"ConductiveIron", "Conductive Iron", Utils.rgbtoHexValue(164, 109, 100), 2, 0);
+			itemPlateSoularium = new BaseItemPlate("itemPlate"+"Soularium", "Soularium", new short[]{95, 90, 54}, 2, 0);
+			itemPlateRedstoneAlloy = new BaseItemPlate("itemPlate"+"RedstoneAlloy", "Redstone Alloy", new short[]{178,34,34}, 2, 0);
+			itemPlateElectricalSteel =new BaseItemPlate("itemPlate"+"ElectricalSteel", "Electrical Steel", new short[]{194, 194, 194}, 2, 0);
+			itemPlatePulsatingIron = new BaseItemPlate("itemPlate"+"PhasedIron", "Phased Iron", new short[]{50, 91, 21}, 2, 0);
+			itemPlateEnergeticAlloy = new BaseItemPlate("itemPlate"+"EnergeticAlloy", "Energetic Alloy", new short[]{252, 152, 45}, 2, 0);
+			itemPlateVibrantAlloy = new BaseItemPlate("itemPlate"+"VibrantAlloy", "Vibrant Alloy", new short[]{204, 242, 142}, 2, 0);
+			itemPlateConductiveIron = new BaseItemPlate("itemPlate"+"ConductiveIron", "Conductive Iron", new short[]{164, 109, 100}, 2, 0);
 
 		}
 		else {
@@ -296,9 +303,9 @@ public final class ModItems {
 		if (LoadedMods.Big_Reactors|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("BigReactors Found - Loading Resources.");
 			//Item Init
-			itemPlateBlutonium = new BaseItemPlate("itemPlate"+"Blutonium", "Blutonium", Utils.rgbtoHexValue(0, 0, 255), 2, 0);
-			itemPlateCyanite = new BaseItemPlate("itemPlate"+"Cyanite", "Cyanite", Utils.rgbtoHexValue(0, 191, 255), 2, 0);
-			itemPlateLudicrite = new BaseItemPlate("itemPlate"+"Ludicrite", "Ludicrite", Utils.rgbtoHexValue(167, 5, 179), 2, 0);
+			itemPlateBlutonium = new BaseItemPlate("itemPlate"+"Blutonium", "Blutonium", new short[]{0, 0, 255}, 2, 0);
+			itemPlateCyanite = new BaseItemPlate("itemPlate"+"Cyanite", "Cyanite", new short[]{0, 191, 255}, 2, 0);
+			itemPlateLudicrite = new BaseItemPlate("itemPlate"+"Ludicrite", "Ludicrite", new short[]{167, 5, 179}, 2, 0);
 
 		}
 		else {
@@ -311,7 +318,7 @@ public final class ModItems {
 			try {
 
 				UtilsItems.getItemForOreDict("Thaumcraft:ItemResource", "ingotVoidMetal", "Void Metal Ingot", 16);				
-				itemPlateVoidMetal = new BaseItemPlate("itemPlate"+"Void", "Void Metal", Utils.rgbtoHexValue(82, 17, 82), 2, 0);
+				itemPlateVoidMetal = new BaseItemPlate("itemPlate"+"Void", "Void", new short[]{82, 17, 82}, 2, 0);
 				GT_OreDictUnificator.registerOre("plateVoidMetal", new ItemStack(ModItems.itemPlateVoidMetal));
 			} catch (NullPointerException e){
 				e.getClass();
@@ -340,7 +347,7 @@ public final class ModItems {
 		if (LoadedMods.PneumaticCraft|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("PneumaticCraft Found - Loading Resources.");
 			//Item Init
-			itemPlateCompressedIron = new BaseItemPlate("itemPlate"+"CompressedIron", "Compressed Iron", Utils.rgbtoHexValue(128, 128, 128), 2, 0);
+			itemPlateCompressedIron = new BaseItemPlate("itemPlate"+"CompressedIron", "Compressed Iron", new short[]{128, 128, 128}, 2, 0);
 		}
 		else {
 			Utils.LOG_WARNING("PneumaticCraft not Found - Skipping Resources.");
@@ -360,7 +367,7 @@ public final class ModItems {
 		if (LoadedMods.RFTools|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("rfTools Found - Loading Resources.");
 			//Item Init
-			itemPlateDimensionShard = new BaseItemPlate("itemPlate"+"DimensionShard", "Dimensional Shard", Utils.rgbtoHexValue(170, 230, 230), 2, 0);
+			itemPlateDimensionShard = new BaseItemPlate("itemPlate"+"DimensionShard", "Dimensional Shard", new short[]{170, 230, 230}, 2, 0);
 		}
 		else {
 			Utils.LOG_WARNING("rfTools not Found - Skipping Resources.");
@@ -402,8 +409,8 @@ public final class ModItems {
 
 		//Special Item Handling Case
 		if (configSwitches.enableAlternativeBatteryAlloy) {
-			ModItems.itemIngotBatteryAlloy = new BaseItemIngot("itemIngotBatteryAlloy", "Battery Alloy", Utils.rgbtoHexValue(35, 228, 141), 0);
-			ModItems.itemPlateBatteryAlloy = new BaseItemPlate("itemPlateBatteryAlloy", "Battery Alloy", Utils.rgbtoHexValue(35, 228, 141), 2, 0);
+			//ModItems.itemIngotBatteryAlloy = new BaseItemIngot("itemIngotBatteryAlloy", "Battery Alloy", new short[]{35, 228, 141}, 0); TODO
+			ModItems.itemPlateBatteryAlloy = new BaseItemPlate("itemPlateBatteryAlloy", "Battery Alloy", new short[]{35, 228, 141}, 2, 0);
 		}
 
 
