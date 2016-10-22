@@ -32,6 +32,7 @@ public class RECIPES_GREGTECH {
 		chemicalBathRecipes();
 		chemicalReactorRecipes();
 		dehydratorRecipes();
+		blastFurnaceRecipes();
 		addFuels();
 	}
 
@@ -324,6 +325,18 @@ public class RECIPES_GREGTECH {
 				UtilsItems.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 5), //Output Stack
 				600*20,
 				128);	
+	}
+	
+	private static void blastFurnaceRecipes(){
+		GT_Values.RA.addBlastRecipe(
+				UtilsItems.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 2),
+				UtilsItems.getItemStackOfAmountFromOreDict("dustBerylliumFluoride", 1),
+				GT_Values.NF, GT_Values.NF,
+				UtilsItems.getItemStackOfAmountFromOreDict("dustLi2BeF4", 3),
+				null,
+				60*20,
+				2000, 
+				3000);
 	}
 
 

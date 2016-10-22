@@ -147,6 +147,7 @@ public final class ModItems {
 	public static Item dustCalciumHydroxide;
 	public static Item dustCalciumCarbonate;
 	public static Item dust2LiOH_CaCO3;
+	public static Item dustLi2BeF4;
 
 
 	//@SuppressWarnings("unused")
@@ -264,6 +265,8 @@ public final class ModItems {
 		dustCalciumCarbonate = UtilsItems.generateSpecialUseDusts("CalciumCarbonate", "Calcium Carbonate", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_carbonate
 		dust2LiOH_CaCO3 = UtilsItems.generateSpecialUseDusts("2LiOHCaCO3", "2LiOH & CaCO3 Compound", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_carbonate
 		
+		//FLiBe Fuel Compounds
+		dustLi2BeF4 = UtilsItems.generateSpecialUseDusts("Li2BeF4", "Li2BeF4 Fuel Compound", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_carbonate
 
 		boolean gtStyleTools = LoadedMods.Gregtech;
 
