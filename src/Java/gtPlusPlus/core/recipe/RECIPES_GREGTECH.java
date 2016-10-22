@@ -30,6 +30,7 @@ public class RECIPES_GREGTECH {
 		distilleryRecipes();
 		extractorRecipes();
 		chemicalBathRecipes();
+		chemicalReactorRecipes();
 		dehydratorRecipes();
 		addFuels();
 	}
@@ -190,6 +191,8 @@ public class RECIPES_GREGTECH {
 					4000); //EU	
 
 		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+		
+		//Raisins from Grapes
 		try {
 			
 			CORE.RA.addDehydratorRecipe(
@@ -207,6 +210,45 @@ public class RECIPES_GREGTECH {
 
 		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 
+		//Calcium Hydroxide
+		if (UtilsItems.getItemStackOfAmountFromOreDict("dustQuicklime", 1).getItem() != ModItems.AAA_Broken || LoadedMods.IHL){
+			try {
+				
+				CORE.RA.addDehydratorRecipe(
+						new ItemStack[]{
+								UtilsItems.getItemStackOfAmountFromOreDict("dustQuicklime", 10)
+						}, //Item input (Array, up to 2)
+						FluidUtils.getFluidStack("water", 10000), //Fluid input (slot 1)
+						null, //Fluid output (slot 2)
+						new ItemStack[]{
+							UtilsItems.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 20)
+						}, //Output Array of Items - Upto 9,
+						new int[]{0},
+						120*20, //Time in ticks
+						120); //EU	
+
+			}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+			
+			//2 LiOH + CaCO3
+			try {
+				
+				CORE.RA.addDehydratorRecipe(
+						new ItemStack[]{
+								UtilsItems.getItemStackOfAmountFromOreDict("dust2LiOHCaCO3", 5)
+						}, //Item input (Array, up to 2)
+						null, //Fluid input (slot 1)
+						null, //Fluid output (slot 2)
+						new ItemStack[]{
+							UtilsItems.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 2),
+							UtilsItems.getItemStackOfAmountFromOreDict("dustCalciumCarbonate", 3)
+						}, //Output Array of Items - Upto 9,
+						new int[]{0},
+						120*20, //Time in ticks
+						1000); //EU	
+
+			}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+		}
+		
 	}
 
 	private static void assemblerRecipes(){
@@ -262,6 +304,26 @@ public class RECIPES_GREGTECH {
 				new int[]{},
 				90*20,
 				500);
+	}
+	
+	private static void chemicalReactorRecipes(){
+		GT_Values.RA.addChemicalRecipe(
+				UtilsItems.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 5), //Input Stack 1
+				UtilsItems.getItemStackOfAmountFromOreDict("dustCalciumHydroxide", 5), //Input Stack 2
+				null, //Fluid Input
+				null, //Fluid Output
+				UtilsItems.getItemStackOfAmountFromOreDict("dust2LiOHCaCO3", 10), //Output Stack
+				600*20,
+				128);		
+		
+		GT_Values.RA.addChemicalRecipe(
+				UtilsItems.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 5), //Input Stack 1
+				null, //Input Stack 2
+				FluidUtils.getFluidStack("hydrofluoricacid", 2500), //Fluid Input
+				FluidUtils.getFluidStack("water", 2500), //Fluid Output
+				UtilsItems.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 5), //Output Stack
+				600*20,
+				128);	
 	}
 
 

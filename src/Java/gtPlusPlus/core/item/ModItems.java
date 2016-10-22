@@ -47,8 +47,8 @@ public final class ModItems {
 	public static Item itemDebugShapeSpawner;
 
 	public static Item itemBaseSpawnEgg;
-	
-	
+
+
 	//Tantaloy60(789, TextureSet.SET_DULL, 8.0F, 5120, 3, 1 | 2 | 16 | 32 | 64 | 128, 213, 231, 237, 0, "Tantaloy 60", 0, 0, 3035, 2200, true, false, 1, 2, 1, Dyes.dyeLightGray, 2, Arrays.asList(new MaterialStack(Tungsten, 1), new MaterialStack(Tantalum, 9)), Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 8), new TC_AspectStack(TC_Aspects.STRONTIO, 3))),
 	//Tantaloy61(790, TextureSet.SET_DULL, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 193, 211, 217, 0, "Tantaloy 61", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightGray, 2, Arrays.asList(new MaterialStack(Tungsten, 1), new MaterialStack(Tantalum, 9), new MaterialStack(Titanium, 1)), Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 8), new TC_AspectStack(TC_Aspects.STRONTIO, 3))),
 
@@ -103,7 +103,7 @@ public final class ModItems {
 	public static BaseItemHotFood itemHotFoodRaisinToast;
 	public static BaseItemFood itemFoodCurriedSausages;
 	public static BaseItemHotFood itemHotFoodCurriedSausages;
-	
+
 	public static Item RfEuBattery;
 	public static Item itemPersonalCloakingDevice;
 	public static Item itemPersonalCloakingDeviceCharged;
@@ -111,9 +111,9 @@ public final class ModItems {
 
 	public static MultiPickaxeBase MP_GTMATERIAL;
 	public static MultiSpadeBase MS_GTMATERIAL;
-	
+
 	public static ItemStack FluidCell;
-	
+
 	public static BaseItemBackpack backpack_Red;
 	public static BaseItemBackpack backpack_Green;
 	public static BaseItemBackpack backpack_Blue;
@@ -130,14 +130,23 @@ public final class ModItems {
 	public static BaseItemBackpack backpack_Gray;
 	public static BaseItemBackpack backpack_Black;
 	public static BaseItemBackpack backpack_White;
-	
+
+	public static ItemBlueprint itemBlueprintBase;
+
 	public static Item dustLithiumCarbonate;
+	public static Item dustLithiumHydroxide;
+	public static Item dustLithiumPeroxide;
+	public static Item dustLithiumFluoride;
 
 	public static Item dustUraniumTetraFluoride;
 	public static Item dustUraniumHexaFluoride;
-	public static Item dustLithiumFluoride;
-	
-	public static ItemBlueprint itemBlueprintBase;
+
+	public static Item dustBerylliumFluoride;
+
+	public static Item dustQuicklime;
+	public static Item dustCalciumHydroxide;
+	public static Item dustCalciumCarbonate;
+	public static Item dust2LiOH_CaCO3;
 
 
 	//@SuppressWarnings("unused")
@@ -149,7 +158,7 @@ public final class ModItems {
 		if (CORE.DEBUG){
 			DEBUG_INIT.registerItems();
 		}		
-		
+
 		//Make some backpacks
 		//Primary colours
 		backpack_Red = new BaseItemBackpack("backpackRed", Utils.rgbtoHexValue(200, 0, 0));
@@ -171,61 +180,61 @@ public final class ModItems {
 		backpack_Gray = new BaseItemBackpack("backpackGray", Utils.rgbtoHexValue(128, 128, 128));
 		backpack_Black = new BaseItemBackpack("backpackBlack", Utils.rgbtoHexValue(20, 20, 20));
 		backpack_White = new BaseItemBackpack("backpackWhite", Utils.rgbtoHexValue(240, 240, 240));
-		
+
 		itemBlueprintBase = new ItemBlueprint("itemBlueprint");
-		
+
 		//Start meta Item Generation
 		ItemsFoods.load();
 
 		try{
-		generateItemsFromMaterial(ALLOY.ENERGYCRYSTAL);
-		generateItemsFromMaterial(ALLOY.BLOODSTEEL);
-		generateItemsFromMaterial(ALLOY.STABALLOY);
-		generateItemsFromMaterial(ALLOY.TANTALLOY_60);
-		generateItemsFromMaterial(ALLOY.TANTALLOY_61);
-		generateItemsFromMaterial(ALLOY.BEDROCKIUM);
-		generateItemsFromMaterial(ALLOY.QUANTUM);
-		
+			generateItemsFromMaterial(ALLOY.ENERGYCRYSTAL);
+			generateItemsFromMaterial(ALLOY.BLOODSTEEL);
+			generateItemsFromMaterial(ALLOY.STABALLOY);
+			generateItemsFromMaterial(ALLOY.TANTALLOY_60);
+			generateItemsFromMaterial(ALLOY.TANTALLOY_61);
+			generateItemsFromMaterial(ALLOY.BEDROCKIUM);
+			generateItemsFromMaterial(ALLOY.QUANTUM);
 
-		generateItemsFromMaterial(ALLOY.INCONEL_625);
-		generateItemsFromMaterial(ALLOY.INCONEL_690);
-		generateItemsFromMaterial(ALLOY.INCONEL_792);
 
-		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
-			generateItemsFromMaterial(ALLOY.TUNGSTEN_CARBIDE);
-		}
-		generateItemsFromMaterial(ALLOY.SILICON_CARBIDE);
-		generateItemsFromMaterial(ALLOY.ZERON_100);
-		generateItemsFromMaterial(ALLOY.MARAGING250);
-		generateItemsFromMaterial(ALLOY.MARAGING300);
-		generateItemsFromMaterial(ALLOY.MARAGING350);
-		generateItemsFromMaterial(ALLOY.STELLITE);
-		generateItemsFromMaterial(ALLOY.TALONITE);
-		
-		//Tumbaga was the name given by Spaniards to a non-specific alloy of gold and copper 
-		generateItemsFromMaterial(ALLOY.TUMBAGA);
-		//Potin is traditionally an alloy of bronze, tin and lead, with varying quantities of each possible
-		generateItemsFromMaterial(ALLOY.POTIN);
-		
+			generateItemsFromMaterial(ALLOY.INCONEL_625);
+			generateItemsFromMaterial(ALLOY.INCONEL_690);
+			generateItemsFromMaterial(ALLOY.INCONEL_792);
 
-		generateItemsFromMaterial(ALLOY.HASTELLOY_W);
-		generateItemsFromMaterial(ALLOY.HASTELLOY_X);
-		generateItemsFromMaterial(ALLOY.HASTELLOY_C276);
-		generateItemsFromMaterial(ALLOY.HASTELLOY_N);
-		
-		generateItemsFromMaterial(ALLOY.INCOLOY_020);
-		generateItemsFromMaterial(ALLOY.INCOLOY_DS);
-		generateItemsFromMaterial(ALLOY.INCOLOY_MA956);
-		
-		
-		generateItemsFromMaterial(ELEMENT.ZIRCONIUM);
-		generateItemsFromMaterial(ALLOY.ZIRCONIUM_CARBIDE);
-		generateItemsFromMaterial(ALLOY.TANTALUM_CARBIDE);
-		generateItemsFromMaterial(ALLOY.NIOBIUM_CARBIDE);		
-		
-		//Uranium-233 is a fissile isotope of uranium that is bred from thorium-232 as part of the thorium fuel cycle.
-		UtilsItems.generateItemsFromMaterial(ELEMENT.URANIUM233);
-		
+			if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
+				generateItemsFromMaterial(ALLOY.TUNGSTEN_CARBIDE);
+			}
+			generateItemsFromMaterial(ALLOY.SILICON_CARBIDE);
+			generateItemsFromMaterial(ALLOY.ZERON_100);
+			generateItemsFromMaterial(ALLOY.MARAGING250);
+			generateItemsFromMaterial(ALLOY.MARAGING300);
+			generateItemsFromMaterial(ALLOY.MARAGING350);
+			generateItemsFromMaterial(ALLOY.STELLITE);
+			generateItemsFromMaterial(ALLOY.TALONITE);
+
+			//Tumbaga was the name given by Spaniards to a non-specific alloy of gold and copper 
+			generateItemsFromMaterial(ALLOY.TUMBAGA);
+			//Potin is traditionally an alloy of bronze, tin and lead, with varying quantities of each possible
+			generateItemsFromMaterial(ALLOY.POTIN);
+
+
+			generateItemsFromMaterial(ALLOY.HASTELLOY_W);
+			generateItemsFromMaterial(ALLOY.HASTELLOY_X);
+			generateItemsFromMaterial(ALLOY.HASTELLOY_C276);
+			generateItemsFromMaterial(ALLOY.HASTELLOY_N);
+
+			generateItemsFromMaterial(ALLOY.INCOLOY_020);
+			generateItemsFromMaterial(ALLOY.INCOLOY_DS);
+			generateItemsFromMaterial(ALLOY.INCOLOY_MA956);
+
+
+			generateItemsFromMaterial(ELEMENT.ZIRCONIUM);
+			generateItemsFromMaterial(ALLOY.ZIRCONIUM_CARBIDE);
+			generateItemsFromMaterial(ALLOY.TANTALUM_CARBIDE);
+			generateItemsFromMaterial(ALLOY.NIOBIUM_CARBIDE);		
+
+			//Uranium-233 is a fissile isotope of uranium that is bred from thorium-232 as part of the thorium fuel cycle.
+			UtilsItems.generateItemsFromMaterial(ELEMENT.URANIUM233);
+
 		} catch (Throwable r){
 			Utils.LOG_INFO("Failed to Generated a Material. "+r.getMessage());
 			//Utils.LOG_INFO("Failed to Generated a Material. "+r.getCause().getMessage());
@@ -234,24 +243,36 @@ public final class ModItems {
 			r.printStackTrace();
 			System.exit(1);
 		}
-		
-		
-		dustLithiumCarbonate = UtilsItems.generateSpecialUseDusts("LithiumCarbonate", "Lithium Carbonate", Utils.rgbtoHexValue(137, 139, 142))[0];
-		
+
+
+
 		//Nuclear Fuel Dusts
 		dustUraniumTetraFluoride = UtilsItems.generateSpecialUseDusts("UraniumTetrafluoride", "Uranium Tetrafluoride", Utils.rgbtoHexValue(17, 179, 42))[0];
 		dustUraniumHexaFluoride = UtilsItems.generateSpecialUseDusts("UraniumHexafluoride", "Uranium Hexafluoride", Utils.rgbtoHexValue(9, 199, 32))[0];
-		dustLithiumFluoride = UtilsItems.generateSpecialUseDusts("LithiumFluoride", "Lithium Fluoride", Utils.rgbtoHexValue(245, 245, 245))[0];
+
+		dustBerylliumFluoride = UtilsItems.generateSpecialUseDusts("BerylliumFluoride", "Beryllium Fluoride", Utils.rgbtoHexValue(175, 175, 175))[0]; //https://en.wikipedia.org/wiki/Beryllium_fluoride
+
+		dustLithiumCarbonate = UtilsItems.generateSpecialUseDusts("LithiumCarbonate", "Lithium Carbonate", Utils.rgbtoHexValue(240, 240, 240))[0]; //https://en.wikipedia.org/wiki/Lithium_carbonate
+		dustLithiumFluoride = UtilsItems.generateSpecialUseDusts("LithiumFluoride", "Lithium Fluoride", Utils.rgbtoHexValue(245, 245, 245))[0]; //https://en.wikipedia.org/wiki/Lithium_fluoride
+		dustLithiumPeroxide = UtilsItems.generateSpecialUseDusts("LithiumPeroxide", "Lithium Peroxide", Utils.rgbtoHexValue(250, 250, 250))[0]; //https://en.wikipedia.org/wiki/Lithium_peroxide
+		dustLithiumHydroxide = UtilsItems.generateSpecialUseDusts("LithiumHydroxide", "Lithium Hydroxide", Utils.rgbtoHexValue(250, 250, 250))[0]; //https://en.wikipedia.org/wiki/Lithium_hydroxide
+
+		if (UtilsItems.getItemStackOfAmountFromOreDict("dustQuicklime", 1).getItem() == ModItems.AAA_Broken || !LoadedMods.IHL){
+			dustQuicklime = UtilsItems.generateSpecialUseDusts("Quicklime", "Quicklime", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_oxide
+		}
+		dustCalciumHydroxide = UtilsItems.generateSpecialUseDusts("CalciumHydroxide", "Hydrated Lime", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_hydroxide
+		dustCalciumCarbonate = UtilsItems.generateSpecialUseDusts("CalciumCarbonate", "Calcium Carbonate", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_carbonate
+		dust2LiOH_CaCO3 = UtilsItems.generateSpecialUseDusts("2LiOHCaCO3", "2LiOH & CaCO3 Compound", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_carbonate
 		
-		
+
 		boolean gtStyleTools = LoadedMods.Gregtech;
-		
+
 		Materials[] rm = Materials.values();
 		for (Materials m : rm){
 			MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, m);
 			MS_GTMATERIAL = UtilsItems.generateMultiShovel(gtStyleTools, m);
 		}
-		
+
 		//EnderIO Resources
 		if (LoadedMods.EnderIO || LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("EnderIO Found - Loading Resources.");
@@ -263,7 +284,7 @@ public final class ModItems {
 			itemPlateEnergeticAlloy = new BaseItemPlate("itemPlate"+"EnergeticAlloy", "Energetic Alloy", Utils.rgbtoHexValue(252, 152, 45), 2, 0);
 			itemPlateVibrantAlloy = new BaseItemPlate("itemPlate"+"VibrantAlloy", "Vibrant Alloy", Utils.rgbtoHexValue(204, 242, 142), 2, 0);
 			itemPlateConductiveIron = new BaseItemPlate("itemPlate"+"ConductiveIron", "Conductive Iron", Utils.rgbtoHexValue(164, 109, 100), 2, 0);
-					
+
 		}
 		else {
 			Utils.LOG_WARNING("EnderIO not Found - Skipping Resources.");
@@ -275,7 +296,7 @@ public final class ModItems {
 			itemPlateBlutonium = new BaseItemPlate("itemPlate"+"Blutonium", "Blutonium", Utils.rgbtoHexValue(0, 0, 255), 2, 0);
 			itemPlateCyanite = new BaseItemPlate("itemPlate"+"Cyanite", "Cyanite", Utils.rgbtoHexValue(0, 191, 255), 2, 0);
 			itemPlateLudicrite = new BaseItemPlate("itemPlate"+"Ludicrite", "Ludicrite", Utils.rgbtoHexValue(167, 5, 179), 2, 0);
-			
+
 		}
 		else {
 			Utils.LOG_WARNING("BigReactors not Found - Skipping Resources.");
@@ -285,14 +306,14 @@ public final class ModItems {
 			Utils.LOG_INFO("Thaumcraft Found - Loading Resources.");
 			//Item Init
 			try {
-				
+
 				UtilsItems.getItemForOreDict("Thaumcraft:ItemResource", "ingotVoidMetal", "Void Metal Ingot", 16);				
 				itemPlateVoidMetal = new BaseItemPlate("itemPlate"+"Void", "Void Metal", Utils.rgbtoHexValue(82, 17, 82), 2, 0);
 				GT_OreDictUnificator.registerOre("plateVoidMetal", new ItemStack(ModItems.itemPlateVoidMetal));
 			} catch (NullPointerException e){
 				e.getClass();
 			}
-			
+
 		}
 		else {
 			Utils.LOG_WARNING("Thaumcraft not Found - Skipping Resources.");
@@ -350,14 +371,14 @@ public final class ModItems {
 			FuelRod_Uranium = new FuelRod_Base("itemFuelRod_Uranium", "Uranium", 2500, 2500);
 			FuelRod_Plutonium = new FuelRod_Base("itemFuelRod_Plutonium", "Plutonium", 5000, 5000);
 			RfEuBattery = new RF2EU_Battery();
-			
+
 			try {Class baublesTest = Class.forName("baubles.api.IBauble");
-				if (baublesTest != null){					
-					COMPAT_Baubles.run();
-				}
-				else {
-					Utils.LOG_INFO("Baubles Not Found - Skipping Resources.");					
-				}
+			if (baublesTest != null){					
+				COMPAT_Baubles.run();
+			}
+			else {
+				Utils.LOG_INFO("Baubles Not Found - Skipping Resources.");					
+			}
 			} catch(Throwable T){
 				Utils.LOG_INFO("Baubles Not Found - Skipping Resources.");				
 			}
@@ -366,10 +387,10 @@ public final class ModItems {
 			//GameRegistry.registerItem(FuelRod_Thorium, "itemFuelRod_Thorium");
 			//GameRegistry.registerItem(FuelRod_Uranium, "itemFuelRod_Uranium");
 			//GameRegistry.registerItem(FuelRod_Plutonium, "itemFuelRod_Plutonium");
-			
+
 			//FluidCell = new ItemStack(new IC2_ItemFluidCell("itemGT++FluidCell"));
-			
-			
+
+
 		}
 		else {
 			Utils.LOG_WARNING("IndustrialCraft2 not Found - Skipping Resources.");
