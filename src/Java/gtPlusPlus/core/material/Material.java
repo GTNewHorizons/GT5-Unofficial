@@ -4,6 +4,7 @@ import static gregtech.api.enums.GT_Values.M;
 import gregtech.api.enums.OrePrefixes;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.materials.MaterialUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 
 import java.util.ArrayList;
@@ -453,7 +454,8 @@ public class Material {
 								dummyFormula = dummyFormula+"";
 							}
 						}
-						return dummyFormula;
+						return MaterialUtils.subscript(dummyFormula);
+						//return dummyFormula;
 					}
 					Utils.LOG_INFO("dummyFormulaArray <= 0");
 				}
