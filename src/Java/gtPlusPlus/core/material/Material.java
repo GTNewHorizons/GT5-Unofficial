@@ -34,6 +34,7 @@ public class Material {
 	final long vProtons;
 	final long vNeutrons;
 	final long vMass;
+	final int smallestStackSizeWhenProcessing; //Add a check for <=0 || > 64
 	public final int vTier;
 	public final int vVoltageMultiplier;
 	public final String vChemicalFormula;
@@ -64,17 +65,15 @@ public class Material {
 		this.vMass = getMass();
 
 		//List<MaterialStack> inputArray = Arrays.asList(inputs);
-		if (inputs != null){
-			if (inputs.length != 0){
-				for (int x=0;x<inputs.length;x++)
-					this.mMaterialList.add(inputs[x]);
-			}		
+		int tempSmallestSize = getSmallestStackForCrafting(inputs);
+		if (tempSmallestSize <= 64 && tempSmallestSize >= 1){
+			this.smallestStackSizeWhenProcessing = tempSmallestSize; //Valid stacksizes
+		}
+		else {
+			this.smallestStackSizeWhenProcessing = 50; //Can divide my math by 1/2 and round it~
 		}
 
-
-		this.vChemicalSymbol = chemicalSymbol;
-		this.vChemicalFormula = getToolTip(chemicalSymbol, OrePrefixes.dust.mMaterialAmount / M, true);
-
+		//Sets the Rad level
 		if (radiationLevel != 0){
 			this.isRadioactive = true;
 			this.vRadioationLevel = (byte) radiationLevel;
@@ -84,6 +83,7 @@ public class Material {
 			this.vRadioationLevel = (byte) radiationLevel;
 		}
 
+		//Sets the materials 'tier'. Will probably replace this logic.
 		if (getMeltingPoint_K() >= 0 && getMeltingPoint_K() <= 750){
 			this.vTier = 1;
 		}
@@ -132,6 +132,20 @@ public class Material {
 					}
 				}
 			}
+		}
+
+		//Makes a Fancy Chemical Tooltip
+		this.vChemicalSymbol = chemicalSymbol;
+		if (materialInput != null){
+			this.vChemicalFormula = getToolTip(chemicalSymbol, OrePrefixes.dust.mMaterialAmount / M, true);
+		}
+		else if (!this.vChemicalSymbol.equals("")){
+			Utils.LOG_INFO("materialInput is null, using a valid chemical symbol.");
+			this.vChemicalFormula = this.vChemicalSymbol;
+		}
+		else{
+			Utils.LOG_INFO("MaterialInput == null && chemicalSymbol probably equals nothing");
+			this.vChemicalFormula = "??";
 		}
 
 		dataVar = MathUtils.generateSingularRandomHexValue();
@@ -346,32 +360,108 @@ public class Material {
 
 	}
 
+	public long[] getSmallestRatio(MaterialStack[] inputs){
+		if (inputs != null){
+			if (inputs.length > 0){
+				Utils.LOG_INFO("length: "+inputs.length);
+				Utils.LOG_INFO("(inputs != null): "+(inputs != null));
+				//Utils.LOG_INFO("length: "+inputs.length);
+				double tempPercentage=0;
+				long[] tempRatio = new long[inputs.length];
+				for (int x=0;x<inputs.length;x++){
+					//tempPercentage = tempPercentage+inputs[x].percentageToUse;
+					//this.mMaterialList.add(inputs[x]);
+					if (inputs[x] != null){
+						tempRatio[x] = inputs[x].getPartsPerOneHundred();						
+					}
+				}
+				//Check if % of added materials equals roughly 100%
+				/*if (tempPercentage <= 95 || tempPercentage >= 101){
+					Utils.LOG_INFO("The compound for "+localizedName+" doesn't equal 98-100%, this isn't good.");
+				}*/
+
+				long[] smallestRatio = MathUtils.simplifyNumbersToSmallestForm(tempRatio);
+
+				if (smallestRatio.length > 0){
+					String tempRatioStringThing1 = "";
+					for (int r=0;r<tempRatio.length;r++){
+						tempRatioStringThing1 = tempRatioStringThing1 + tempRatio[r] +" : ";
+					}
+					Utils.LOG_INFO("Default Ratio: "+tempRatioStringThing1);
+
+					String tempRatioStringThing = "";
+					int tempSmallestCraftingUseSize = 0;
+					for (int r=0;r<smallestRatio.length;r++){
+						tempRatioStringThing = tempRatioStringThing + smallestRatio[r] +" : ";
+						tempSmallestCraftingUseSize = (int) (tempSmallestCraftingUseSize + smallestRatio[r]);
+					}
+					//this.smallestStackSizeWhenProcessing = tempSmallestCraftingUseSize;
+					Utils.LOG_INFO("Smallest Ratio: "+tempRatioStringThing);
+					return smallestRatio;
+				}
+			}		
+		}
+		return null;
+	}
+
+	public int getSmallestStackForCrafting(MaterialStack[] inputs){
+		if (inputs != null){
+			if (inputs.length != 0){
+				long[] smallestRatio = getSmallestRatio(inputs);
+				if (smallestRatio.length > 0){
+					int tempSmallestCraftingUseSize = 0;
+					for (int r=0;r<smallestRatio.length;r++){
+						tempSmallestCraftingUseSize = (int) (tempSmallestCraftingUseSize + smallestRatio[r]);
+					}
+					return tempSmallestCraftingUseSize;
+				}
+			}		
+		}
+		return 1;
+	}
+
 
 	public String getToolTip(String chemSymbol, long aMultiplier, boolean aShowQuestionMarks) {
 		if (!aShowQuestionMarks && (vChemicalFormula.equals("?")||vChemicalFormula.equals("??"))) return "";
-
 		Utils.LOG_INFO("===============| Calculating Atomic Formula for "+this.localizedName+" |===============");
-		Utils.LOG_INFO("aMultiplier: "+aMultiplier);
-		Utils.LOG_INFO("aMultiplier >= M * 2: "+aMultiplier+" >= "+M * 2);
-		Utils.LOG_INFO("aMultiplier >= M * 2: "+(aMultiplier >= M * 2));
-		Utils.LOG_INFO("!mMaterialList.isEmpty(): "+!mMaterialList.isEmpty());
-		Utils.LOG_INFO("mMaterialList.size(): "+mMaterialList.size());
-		Utils.LOG_INFO("mMaterialList.size() < 2: "+(mMaterialList.size() < 2));
-		if (mMaterialList.size() != 0)
-			Utils.LOG_INFO("mMaterialList.get(0).vAmount: "+mMaterialList.get(0).vAmount);
-		if (mMaterialList.size() != 0)
-			Utils.LOG_INFO("mMaterialList.get(0).vAmount == 1: "+(mMaterialList.get(0).vAmount==1));
-		Utils.LOG_INFO("===============| Finished Calculating data for "+this.localizedName+" |===============");
-		Utils.LOG_INFO("");
-
-		if (aMultiplier >= M * 2 && !mMaterialList.isEmpty()) {
-			if(((chemSymbol != null && !chemSymbol.equals("")) || (mMaterialList.size() < 2 && mMaterialList.get(0).vAmount == 1))){
-				return vChemicalFormula + aMultiplier;
-			}
-			return "(" + vChemicalFormula + ")" + aMultiplier;
-		}
 		if (!chemSymbol.equals(""))
 			return chemSymbol;
+		MaterialStack[] tempInput = materialInput;
+		if (tempInput != null){
+			if (tempInput.length >= 1){
+				String dummyFormula = "";
+				long[] dummyFormulaArray = getSmallestRatio(tempInput);
+				if (dummyFormulaArray != null){
+					if (dummyFormulaArray.length >= 1){
+						for (int e=0;e<tempInput.length;e++){
+							if (tempInput[e] != null){
+								if (!tempInput[e].stackMaterial.vChemicalSymbol.equals("??")){
+									if (dummyFormulaArray[e] > 1){
+										dummyFormula = dummyFormula + tempInput[e].stackMaterial.vChemicalSymbol + dummyFormulaArray[e];
+									}
+									else if (dummyFormulaArray[e] == 1){
+										dummyFormula = dummyFormula + tempInput[e].stackMaterial.vChemicalSymbol;
+									}
+									else if (dummyFormulaArray[e] <= 0){
+										dummyFormula = dummyFormula+"";
+									}
+
+								}else
+									dummyFormula = dummyFormula + "??";
+							}
+							else {
+								dummyFormula = dummyFormula+"";
+							}
+						}
+						return dummyFormula;
+					}
+					Utils.LOG_INFO("dummyFormulaArray <= 0");
+				}
+				Utils.LOG_INFO("dummyFormulaArray == null");
+			}
+			Utils.LOG_INFO("tempInput.length <= 0");
+		}
+		Utils.LOG_INFO("tempInput == null");
 		return "??";
 
 	}

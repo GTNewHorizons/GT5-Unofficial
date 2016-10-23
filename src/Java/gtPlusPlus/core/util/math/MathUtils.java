@@ -222,5 +222,37 @@ public class MathUtils {
 		Utils.LOG_WARNING("It will decode into "+Integer.decode(temp)+".");
 		return Integer.decode(temp);
 	}
+	
+	public static long[] simplifyNumbersToSmallestForm(long[] inputArray){
+		long GCD = gcd(inputArray);
+		long[] outputArray = new long[inputArray.length];
+		for (int i=0;i<inputArray.length;i++){
+			if (GCD != 0)
+			outputArray[i] = (inputArray[i]/GCD);
+			else
+				outputArray[i] = inputArray[i];
+		}
+		if (outputArray.length > 0)
+		return outputArray;
+		return null;
+	}
+	
+	private static long gcd(long a, long b){
+	    while (b > 0)
+	    {
+	        long temp = b;
+	        b = a % b; // % is remainder
+	        a = temp;
+	    }
+	    return a;
+	}
+	
+	private static long gcd(long[] input){
+	    long result = input[0];
+	    for(int i = 1; i < input.length; i++) result = gcd(result, input[i]);
+	    return result;
+	}
+	
+	
 
 }

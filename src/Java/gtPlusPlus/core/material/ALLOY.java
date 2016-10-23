@@ -309,6 +309,22 @@ public final class ALLOY {
 					new MaterialStack(ELEMENT.NICKEL, 65)
 			});
 
+	/*public static final Material HASTELLOY_X = new Material(
+			"Hastelloy-X", //Material Name
+			new short[]{255, 193, 37, 0}, //Material Colour
+			1350, //Melting Point in C
+			((ELEMENT.IRON.getBoilingPoint_C()*18)+(ELEMENT.MOLYBDENUM.getBoilingPoint_C()*9)+(ELEMENT.CHROMIUM.getBoilingPoint_C()*22)+(ELEMENT.NICKEL.getBoilingPoint_C()*51))/100, //Boiling Point in C
+			((ELEMENT.IRON.getProtons()*18)+(ELEMENT.MOLYBDENUM.getProtons()*9)+(ELEMENT.CHROMIUM.getProtons()*22)+(ELEMENT.NICKEL.getProtons()*51))/100, //Protons
+			((ELEMENT.IRON.getNeutrons()*18)+(ELEMENT.MOLYBDENUM.getNeutrons()*9)+(ELEMENT.CHROMIUM.getNeutrons()*22)+(ELEMENT.NICKEL.getNeutrons()*51))/100, //Neutrons
+			false, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.IRON, 18),
+					new MaterialStack(ELEMENT.MOLYBDENUM, 9),
+					new MaterialStack(ELEMENT.CHROMIUM, 22),
+					new MaterialStack(ELEMENT.NICKEL, 51)
+			});*/
+	
 	public static final Material HASTELLOY_X = new Material(
 			"Hastelloy-X", //Material Name
 			new short[]{255, 193, 37, 0}, //Material Colour
