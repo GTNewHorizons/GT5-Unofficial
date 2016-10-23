@@ -34,7 +34,7 @@ public class BaseItemComponent extends Item{
 		this.setMaxStackSize(64);
 		this.setTextureName(CORE.MODID + ":" + "item"+componentType.COMPONENT_NAME);
 		GameRegistry.registerItem(this, unlocalName);
-		GT_OreDictUnificator.registerOre(componentType.COMPONENT_NAME.toLowerCase()+material.getUnlocalizedName(), UtilsItems.getSimpleStack(this));
+		GT_OreDictUnificator.registerOre(componentType.getOreDictName()+material.getUnlocalizedName(), UtilsItems.getSimpleStack(this));
 	}
 
 	@Override
@@ -118,23 +118,25 @@ public class BaseItemComponent extends Item{
 
 
 	public static enum ComponentTypes {
-		DUST("Dust", " Dust"),
-		INGOT("Ingot", " Ingot"),
-		PLATE("Plate", " Plate"),
-		PLATEDOUBLE("PlateDouble", " Double Plate"),
-		ROD("Rod", " Rod"),
-		RODLONG("RodLong", " Long Rod"),
-		GEAR("Gear", " Gear"),
-		SCREW("Screw", " Screw"),
-		BOLT("Bolt", " Bolt"),
-		ROTOR("Rotor", " Rotor"),
-		RING("Ring", " Ring");	    
+		DUST("Dust", " Dust", "dust"),
+		INGOT("Ingot", " Ingot", "ingot"),
+		PLATE("Plate", " Plate", "plate"),
+		PLATEDOUBLE("PlateDouble", " Double Plate", "plateDouble"),
+		ROD("Rod", " Rod", "stick"),
+		RODLONG("RodLong", " Long Rod", "stickLong"),
+		GEAR("Gear", " Gear", "gear"),
+		SCREW("Screw", " Screw", "screw"),
+		BOLT("Bolt", " Bolt", "bolt"),
+		ROTOR("Rotor", " Rotor", "rotor"),
+		RING("Ring", " Ring", "ring");	    
 
 		private String COMPONENT_NAME;
 		private String DISPLAY_NAME;
-		private ComponentTypes (final String LocalName, String DisplayName){
+		private String OREDICT_NAME;
+		private ComponentTypes (final String LocalName, String DisplayName, String OreDictName){
 			this.COMPONENT_NAME = LocalName;
 			this.DISPLAY_NAME = DisplayName;
+			this.OREDICT_NAME = OreDictName;
 		}
 
 		public String getComponent(){
@@ -144,6 +146,11 @@ public class BaseItemComponent extends Item{
 		public String getName(){
 			return DISPLAY_NAME;
 		}
+		
+		public String getOreDictName(){
+		return OREDICT_NAME;
+		}
+		
 	}
 
 }

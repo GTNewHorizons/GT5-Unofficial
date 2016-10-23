@@ -314,7 +314,7 @@ public class UtilsRecipe {
 
 
 
-	public static void addShapedGregtechRecipe( 
+	public static boolean addShapedGregtechRecipe( 
 			Object InputItem1, Object InputItem2, Object InputItem3,
 			Object InputItem4, Object InputItem5, Object InputItem6,
 			Object InputItem7, Object InputItem8, Object InputItem9,
@@ -330,7 +330,7 @@ public class UtilsRecipe {
 				(!(InputItem8 instanceof ItemStack) && !(InputItem8 instanceof String) && (InputItem8 != null)) || 
 				(!(InputItem9 instanceof ItemStack) && !(InputItem9 instanceof String) && (InputItem9 != null))){
 			Utils.LOG_INFO("One Input item was not an ItemStack of an OreDict String.");
-			return;
+			return false;
 		}
 
 		if (GT_ModHandler.addCraftingRecipe(OutputItem, 
@@ -348,7 +348,9 @@ public class UtilsRecipe {
 				'I', InputItem9})){
 			Utils.LOG_INFO("Success! Added a recipe for "+OutputItem.getDisplayName());
 			RegistrationHandler.recipesSuccess++;	
+			return true;
 		}
+		return false;
 	}
 
 	public static void addShapelessGregtechRecipe(ItemStack OutputItem, Object... inputItems){

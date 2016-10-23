@@ -32,7 +32,9 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.materials.MaterialUtils;
 import gtPlusPlus.core.util.wrapper.var;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Extruder;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Plates;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_ShapedCrafting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -380,7 +382,10 @@ public class UtilsItems {
 			temp = new BaseItemGear(matInfo);
 		}		
 
+		//Add A jillion Recipes
 		RecipeGen_Plates.generateRecipes(matInfo);
+		RecipeGen_Extruder.generateRecipes(matInfo);
+		RecipeGen_ShapedCrafting.generateRecipes(matInfo);
 
 		FluidUtils.generateFluid(matInfo, 1);
 

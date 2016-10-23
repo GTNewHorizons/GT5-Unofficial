@@ -5,7 +5,6 @@ import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.UtilsItems;
-import gtPlusPlus.core.util.recipe.UtilsRecipe;
 import net.minecraft.item.ItemStack;
 
 public class BaseItemScrew extends BaseItemComponent{
@@ -24,14 +23,7 @@ public class BaseItemScrew extends BaseItemComponent{
 	        		 UtilsItems.getSimpleStack(this),
 	        		 null,
 	        		 (int) Math.max(componentMaterial.getMass() / 8L, 1L),
-	        		 4);
-	         
-			
-			UtilsRecipe.recipeBuilder(
-					"craftingToolFile", boltStack, null,
-					boltStack, null, null,
-					null, null, null,
-					UtilsItems.getSimpleStack(this));
+	        		 4);			
 		}				
 	}
 

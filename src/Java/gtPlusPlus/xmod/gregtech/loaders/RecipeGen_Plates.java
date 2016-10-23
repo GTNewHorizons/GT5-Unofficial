@@ -46,17 +46,6 @@ public class RecipeGen_Plates {
 		else {
 			Utils.LOG_INFO("Bender Recipe: "+material.getLocalizedName()+" - Failed");			
 		}
-		//Extruder
-		if (addExtruderRecipe(
-				ingotStackOne,
-				shape_Extruder,
-				plate_Single,
-				10, 4 * tVoltageMultiplier)){
-			Utils.LOG_INFO("Extruder Recipe: "+material.getLocalizedName()+" - Success");
-		}
-		else {
-			Utils.LOG_INFO("Extruder Recipe: "+material.getLocalizedName()+" - Failed");			
-		}
 		//Alloy Smelter
 		if (GT_Values.RA.addAlloySmelterRecipe(
 				ingotStackTwo,

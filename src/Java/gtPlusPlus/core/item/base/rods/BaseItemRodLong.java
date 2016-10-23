@@ -5,7 +5,6 @@ import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.UtilsItems;
-import gtPlusPlus.core.util.recipe.UtilsRecipe;
 import net.minecraft.item.ItemStack;
 
 public class BaseItemRodLong extends BaseItemComponent{
@@ -28,12 +27,6 @@ public class BaseItemRodLong extends BaseItemComponent{
 		ItemStack stackStick = UtilsItems.getItemStackOfAmountFromOreDict(tempStick, 1);
 		ItemStack stackLong = UtilsItems.getItemStackOfAmountFromOreDict(tempStickLong, 1);
 
-		UtilsRecipe.addShapedGregtechRecipe(
-				stackStick, "craftingToolHardHammer", stackStick,
-				null, null, null,
-				null, null, null,
-				stackLong);
-
 		ItemStack temp = stackStick;
 		temp.stackSize = 2;
 
@@ -48,17 +41,7 @@ public class BaseItemRodLong extends BaseItemComponent{
 				temp,
 				null,
 				(int) Math.max(componentMaterial.getMass(), 1L),
-				4);
-
-		//Shaped Recipe - Long Rod to two smalls
-		if (null != stackLong){
-			stackStick.stackSize = 2;
-			UtilsRecipe.recipeBuilder(
-					"craftingToolSaw", null, null,
-					stackLong, null, null,
-					null, null, null,
-					stackStick);
-		}
+				4);		
 	}
 
 }

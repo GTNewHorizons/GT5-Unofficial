@@ -184,15 +184,15 @@ public class Material {
 	}
 
 	public ItemStack getDust(int stacksize){
-		return UtilsItems.getItemStackOfAmountFromOreDict("dust"+unlocalizedName, stacksize);
+		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("dust"+unlocalizedName, stacksize);
 	}
 
 	public ItemStack getSmallDust(int stacksize){
-		return UtilsItems.getItemStackOfAmountFromOreDict("dustSmall"+unlocalizedName, stacksize);
+		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("dustSmall"+unlocalizedName, stacksize);
 	}
 
 	public ItemStack getTinyDust(int stacksize){
-		return UtilsItems.getItemStackOfAmountFromOreDict("dustTiny"+unlocalizedName, stacksize);
+		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("dustTiny"+unlocalizedName, stacksize);
 	}
 
 	public ItemStack[] getValidInputStacks(){
@@ -200,43 +200,47 @@ public class Material {
 	}
 
 	public ItemStack getIngot(int stacksize){
-		return UtilsItems.getItemStackOfAmountFromOreDict("ingot"+unlocalizedName, stacksize);
+		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("ingot"+unlocalizedName, stacksize);
 	}
 
 	public ItemStack getPlate(int stacksize){
-		return UtilsItems.getItemStackOfAmountFromOreDict("plate"+unlocalizedName, stacksize);
+		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("plate"+unlocalizedName, stacksize);
 	}
 
 	public ItemStack getPlateDouble(int stacksize){
-		return UtilsItems.getItemStackOfAmountFromOreDict("plateDouble"+unlocalizedName, stacksize);
+		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("plateDouble"+unlocalizedName, stacksize);
 	}
 
 	public ItemStack getGear(int stacksize){
-		return UtilsItems.getItemStackOfAmountFromOreDict("gear"+unlocalizedName, stacksize);
+		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("gear"+unlocalizedName, stacksize);
 	}
 
 	public ItemStack getRod(int stacksize){
-		return UtilsItems.getItemStackOfAmountFromOreDict("stick"+unlocalizedName, stacksize);
+		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("stick"+unlocalizedName, stacksize);
 	}
 	
 	public ItemStack getLongRod(int stacksize){
-		return UtilsItems.getItemStackOfAmountFromOreDict("stickLong"+unlocalizedName, stacksize);
+		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("stickLong"+unlocalizedName, stacksize);
 	}
 	
 	public ItemStack getBolt(int stacksize){
-		return UtilsItems.getItemStackOfAmountFromOreDict("bolt"+unlocalizedName, stacksize);
+		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("bolt"+unlocalizedName, stacksize);
 	}
 	
 	public ItemStack getScrew(int stacksize){
-		return UtilsItems.getItemStackOfAmountFromOreDict("screw"+unlocalizedName, stacksize);
+		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("screw"+unlocalizedName, stacksize);
 	}
 	
 	public ItemStack getRing(int stacksize){
-		return UtilsItems.getItemStackOfAmountFromOreDict("ring"+unlocalizedName, stacksize);
+		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("ring"+unlocalizedName, stacksize);
 	}
 	
 	public ItemStack getRotor(int stacksize){
-		return UtilsItems.getItemStackOfAmountFromOreDict("rotor"+unlocalizedName, stacksize);
+		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("rotor"+unlocalizedName, stacksize);
+	}
+	
+	public ItemStack getFrameBox(int stacksize){
+		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("frameGt"+unlocalizedName, stacksize);
 	}
 
 	public ItemStack[] getMaterialComposites(){
