@@ -60,6 +60,8 @@ public class MaterialUtils {
 			radioactivity = 1;
 		}
 		if (hasValidRGBA(rgba)){
+			//ModItems.itemBaseDecidust = UtilsItems.generateDecidust(material);
+			//ModItems.itemBaseCentidust = UtilsItems.generateCentidust(material);
 			return new Material(name, rgba, melting, boiling, protons, neutrons, blastFurnace, null, chemicalFormula, radioactivity);
 		}
 		return null;

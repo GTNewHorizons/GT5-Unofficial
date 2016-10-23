@@ -3,7 +3,6 @@ package gtPlusPlus.xmod.gregtech.loaders;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
-import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
@@ -80,41 +79,7 @@ public class RecipeGen_Plates {
 		}
 		else {
 			Utils.LOG_INFO("Bender Recipe: "+material.getLocalizedName()+" - Failed");			
-		}
-
-
-		Utils.LOG_INFO("Adding crafting recipes for "+material.getLocalizedName()+" Plates - Single & Double");
-
-		//Single Plate Shaped/Shapeless
-		GT_ModHandler.addCraftingRecipe(
-				plate_Single,
-				gregtech.api.util.GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED,
-				new Object[]{"h", "B", "I",
-						Character.valueOf('I'),
-						ingotStackOne,
-						Character.valueOf('B'),
-						ingotStackOne});
-
-		GT_ModHandler.addShapelessCraftingRecipe(
-				plate_Single,
-				new Object[]{gregtech.api.enums.ToolDictNames.craftingToolForgeHammer,
-						ingotStackOne,
-						ingotStackOne});	     
-
-		//Double Plate Shaped/Shapeless
-		GT_ModHandler.addCraftingRecipe(
-				plate_Double,
-				gregtech.api.util.GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED,
-				new Object[]{"I", "B", "h",
-						Character.valueOf('I'),
-						plate_Single,
-						Character.valueOf('B'),
-						plate_Single});
-		GT_ModHandler.addShapelessCraftingRecipe(
-				plate_Double,
-				new Object[]{gregtech.api.enums.ToolDictNames.craftingToolForgeHammer,
-						plate_Single,
-						plate_Single});	     
+		} 
 	}
 
 	public static boolean addBenderRecipe(ItemStack aInput1, ItemStack aOutput1, int aDuration, int aEUt) {

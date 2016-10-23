@@ -1,18 +1,25 @@
 package gtPlusPlus.core.material;
 
+import static gregtech.api.enums.GT_Values.M;
+import gregtech.api.enums.OrePrefixes;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.UtilsItems;
 import gtPlusPlus.core.util.math.MathUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 
 public class Material {
 
 	final String unlocalizedName;
 	final String localizedName;
-	
+
 	protected Object dataVar;
 
 	private MaterialStack[] materialInput = new MaterialStack[4];
+	final List<MaterialStack> mMaterialList = new ArrayList<MaterialStack>();
 
 	final short[] RGBA;
 
@@ -30,16 +37,17 @@ public class Material {
 	public final int vTier;
 	public final int vVoltageMultiplier;
 	public final String vChemicalFormula;
+	public final String vChemicalSymbol;
 
 	public Material(String materialName, short[] rgba, int meltingPoint, int boilingPoint, long protons, long neutrons, boolean blastFurnace, MaterialStack[] inputs){		
 		this(materialName, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, inputs, "", 0);
 	}
-	
+
 	public Material(String materialName, short[] rgba, int meltingPoint, int boilingPoint, long protons, long neutrons, boolean blastFurnace, MaterialStack[] inputs, int radiationLevel){		
 		this(materialName, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, inputs, "", radiationLevel);
 	}
 
-	public Material(String materialName, short[] rgba, int meltingPoint, int boilingPoint, long protons, long neutrons, boolean blastFurnace, MaterialStack[] inputs, String chemicalFormula, int radiationLevel){
+	public Material(String materialName, short[] rgba, int meltingPoint, int boilingPoint, long protons, long neutrons, boolean blastFurnace, MaterialStack[] inputs, String chemicalSymbol, int radiationLevel){
 
 		this.unlocalizedName = Utils.sanitizeString(materialName);
 		this.localizedName = materialName;
@@ -54,13 +62,19 @@ public class Material {
 		this.vProtons = protons;
 		this.vNeutrons = neutrons;
 		this.vMass = getMass();
-		if (chemicalFormula.equals("")){
-			this.vChemicalFormula = getChemicalFormula(inputs);
+
+		//List<MaterialStack> inputArray = Arrays.asList(inputs);
+		if (inputs != null){
+			if (inputs.length != 0){
+				for (int x=0;x<inputs.length;x++)
+					this.mMaterialList.add(inputs[x]);
+			}		
 		}
-		else{			
-			this.vChemicalFormula = chemicalFormula;
-		}
-		
+
+
+		this.vChemicalSymbol = chemicalSymbol;
+		this.vChemicalFormula = getToolTip(chemicalSymbol, OrePrefixes.dust.mMaterialAmount / M, true);
+
 		if (radiationLevel != 0){
 			this.isRadioactive = true;
 			this.vRadioationLevel = (byte) radiationLevel;
@@ -119,10 +133,11 @@ public class Material {
 				}
 			}
 		}
-		
+
 		dataVar = MathUtils.generateSingularRandomHexValue();
-		
+
 		Utils.LOG_INFO("Creating a Material instance for "+materialName);
+		Utils.LOG_INFO("Formula: "+vChemicalFormula);
 		Utils.LOG_INFO("Protons: "+vProtons);
 		Utils.LOG_INFO("Neutrons: "+vNeutrons);
 		Utils.LOG_INFO("Mass: "+vMass+"/units");
@@ -143,7 +158,7 @@ public class Material {
 	}
 
 	public int getRgbAsHex(){
-		
+
 		int returnValue = Utils.rgbtoHexValue(RGBA[0], RGBA[1], RGBA[2]);
 		if (returnValue == 0){
 			return (int) dataVar;
@@ -218,27 +233,27 @@ public class Material {
 	public ItemStack getRod(int stacksize){
 		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("stick"+unlocalizedName, stacksize);
 	}
-	
+
 	public ItemStack getLongRod(int stacksize){
 		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("stickLong"+unlocalizedName, stacksize);
 	}
-	
+
 	public ItemStack getBolt(int stacksize){
 		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("bolt"+unlocalizedName, stacksize);
 	}
-	
+
 	public ItemStack getScrew(int stacksize){
 		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("screw"+unlocalizedName, stacksize);
 	}
-	
+
 	public ItemStack getRing(int stacksize){
 		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("ring"+unlocalizedName, stacksize);
 	}
-	
+
 	public ItemStack getRotor(int stacksize){
 		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("rotor"+unlocalizedName, stacksize);
 	}
-	
+
 	public ItemStack getFrameBox(int stacksize){
 		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("frameGt"+unlocalizedName, stacksize);
 	}
@@ -284,19 +299,19 @@ public class Material {
 
 
 
-private int getInputMaterialCount(MaterialStack[] materialInput){
-	int i = 0;
-	for (int r=0;r<4;r++){
-		try {
-			if (!materialInput[r].equals(null)){
-				i++;
+	private int getInputMaterialCount(MaterialStack[] materialInput){
+		int i = 0;
+		for (int r=0;r<4;r++){
+			try {
+				if (!materialInput[r].equals(null)){
+					i++;
+				}
+			} catch(Throwable x){
+				return i;
 			}
-		} catch(Throwable x){
-			return i;
 		}
+		return i;
 	}
-	return i;
-}
 
 
 	public String getChemicalFormula(MaterialStack[] materialInput){
@@ -306,8 +321,8 @@ private int getInputMaterialCount(MaterialStack[] materialInput){
 			for (int i=0;i<f;i++){
 				try {		
 					if (materialInput[i] != null){					
-					formulaComponents[i] = materialInput[i].stackMaterial.vChemicalFormula;	
-					Utils.LOG_INFO("LOOK AT ME IN THE LOG - " + formulaComponents[i]);	
+						formulaComponents[i] = materialInput[i].stackMaterial.vChemicalFormula;	
+						Utils.LOG_INFO("LOOK AT ME IN THE LOG - " + formulaComponents[i]);	
 					}
 					else{
 						Utils.LOG_INFO("LOOK AT ME IN THE LOG - materialInput[i] was null");
@@ -327,6 +342,36 @@ private int getInputMaterialCount(MaterialStack[] materialInput){
 				return properName;
 
 		}
+		return "??";
+
+	}
+
+
+	public String getToolTip(String chemSymbol, long aMultiplier, boolean aShowQuestionMarks) {
+		if (!aShowQuestionMarks && (vChemicalFormula.equals("?")||vChemicalFormula.equals("??"))) return "";
+
+		Utils.LOG_INFO("===============| Calculating Atomic Formula for "+this.localizedName+" |===============");
+		Utils.LOG_INFO("aMultiplier: "+aMultiplier);
+		Utils.LOG_INFO("aMultiplier >= M * 2: "+aMultiplier+" >= "+M * 2);
+		Utils.LOG_INFO("aMultiplier >= M * 2: "+(aMultiplier >= M * 2));
+		Utils.LOG_INFO("!mMaterialList.isEmpty(): "+!mMaterialList.isEmpty());
+		Utils.LOG_INFO("mMaterialList.size(): "+mMaterialList.size());
+		Utils.LOG_INFO("mMaterialList.size() < 2: "+(mMaterialList.size() < 2));
+		if (mMaterialList.size() != 0)
+			Utils.LOG_INFO("mMaterialList.get(0).vAmount: "+mMaterialList.get(0).vAmount);
+		if (mMaterialList.size() != 0)
+			Utils.LOG_INFO("mMaterialList.get(0).vAmount == 1: "+(mMaterialList.get(0).vAmount==1));
+		Utils.LOG_INFO("===============| Finished Calculating data for "+this.localizedName+" |===============");
+		Utils.LOG_INFO("");
+
+		if (aMultiplier >= M * 2 && !mMaterialList.isEmpty()) {
+			if(((chemSymbol != null && !chemSymbol.equals("")) || (mMaterialList.size() < 2 && mMaterialList.get(0).vAmount == 1))){
+				return vChemicalFormula + aMultiplier;
+			}
+			return "(" + vChemicalFormula + ")" + aMultiplier;
+		}
+		if (!chemSymbol.equals(""))
+			return chemSymbol;
 		return "??";
 
 	}

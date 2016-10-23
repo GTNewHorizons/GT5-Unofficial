@@ -119,9 +119,17 @@ public class LoadedMods {
 			totalMods++;
 		}
 		if (Loader.isModLoaded("Growthcraft") == true){
-			Growthcraft  = true;
-			Utils.LOG_INFO("Components enabled for: Growthcraft");
-			totalMods++;
+			Utils.LOG_INFO("Growthcraft Version: "+getModVersion("Growthcraft"));
+			if (getModVersion("Growthcraft").equals("1.7.10-2.3.1")){
+				//Load Growthcraft Compat
+				Growthcraft  = true;
+				Utils.LOG_INFO("Components enabled for: Growthcraft");
+				totalMods++;
+			}
+			else {
+				Growthcraft = false;
+				Utils.LOG_INFO("Growthcraft found, but the version was too new. I will update GC support eventually.");
+			}
 		}
 		if (Loader.isModLoaded("CoFHCore") == true){
 			CoFHCore  = true;

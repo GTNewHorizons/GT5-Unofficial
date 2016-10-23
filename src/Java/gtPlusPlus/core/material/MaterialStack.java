@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 
 public class MaterialStack {
 	
+	final int vAmount;
 	final Material stackMaterial;
 	final double percentageToUse;
 	
@@ -12,6 +13,7 @@ public class MaterialStack {
 
 		this.stackMaterial = inputs;
 		this.percentageToUse = percentage;
+		this.vAmount = getDustCount();
 		
 		
 	}
@@ -58,6 +60,26 @@ public class MaterialStack {
 			return null;
 		}
 		
+	}
+	
+	public int getDustCount(){
+		int amount = 0;
+		if (percentageToUse >= 0 && percentageToUse <= 0.99){
+			amount = (int) (1/percentageToUse);
+		}
+		else if (percentageToUse >= 1 && percentageToUse <= 9.99){
+			amount = (int) (percentageToUse);
+		}
+		else if (percentageToUse >= 10 && percentageToUse <= 99.99){
+			amount = (int) (percentageToUse/10);
+		}
+		else if (percentageToUse == 100){
+			amount = 10;
+		}
+		else {
+			amount = 0;
+		}
+		return amount;
 	}
 	
 	public ItemStack[] getValidItemStacks(){

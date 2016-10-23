@@ -279,8 +279,8 @@ public final class ModItems {
 		for (Materials m : rm){
 			MP_GTMATERIAL = UtilsItems.generateMultiPick(gtStyleTools, m);
 			MS_GTMATERIAL = UtilsItems.generateMultiShovel(gtStyleTools, m);
-			itemBaseDecidust = UtilsItems.generateDecidust(m);
-			itemBaseCentidust = UtilsItems.generateCentidust(m);
+			/*itemBaseDecidust = UtilsItems.generateDecidust(m);
+			itemBaseCentidust = UtilsItems.generateCentidust(m);*/
 		}
 
 		//EnderIO Resources

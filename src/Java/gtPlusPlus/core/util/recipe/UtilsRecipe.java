@@ -23,7 +23,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public class UtilsRecipe {
 
-	public static void recipeBuilder(Object slot_1, Object slot_2, Object slot_3, Object slot_4, Object slot_5, Object slot_6, Object slot_7, Object slot_8, Object slot_9, ItemStack resultItem){	
+	public static boolean recipeBuilder(Object slot_1, Object slot_2, Object slot_3, Object slot_4, Object slot_5, Object slot_6, Object slot_7, Object slot_8, Object slot_9, ItemStack resultItem){	
 
 		ArrayList<Object> validSlots = new ArrayList<Object>();
 
@@ -108,6 +108,7 @@ public class UtilsRecipe {
 			else {
 				LateRegistrationHandler.recipesSuccess++;
 			}
+			return true;
 		}
 		catch(NullPointerException | ClassCastException k){
 			k.getMessage();
@@ -120,7 +121,8 @@ public class UtilsRecipe {
 			}
 			else {
 				LateRegistrationHandler.recipesFailed++;
-			}			
+			}	
+			return false;
 		}
 	}
 
