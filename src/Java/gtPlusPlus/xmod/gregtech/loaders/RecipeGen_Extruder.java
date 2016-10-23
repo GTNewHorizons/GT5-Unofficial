@@ -90,7 +90,7 @@ public class RecipeGen_Extruder {
 					shape_Bolt, 
 					material.getBolt(8),
 					(int) Math.max(material.getMass() * 2L * 1, 1),
-					8 * material.vVoltageMultiplier)){
+					6 * material.vVoltageMultiplier)){
 				Utils.LOG_INFO("Extruder Bolt Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {

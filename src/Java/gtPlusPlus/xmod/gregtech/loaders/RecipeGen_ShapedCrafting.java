@@ -48,7 +48,7 @@ public class RecipeGen_ShapedCrafting {
 		//Ring Recipe
 		if (!material.isRadioactive){
 			if (UtilsRecipe.recipeBuilder(
-					"craftingToolWrench", null, null,
+					"craftingToolHardHammer", null, null,
 					null, material.getRod(1), null,
 					null, null, null,
 					material.getRing(1))){

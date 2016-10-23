@@ -9,7 +9,6 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.UtilsItems;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.recipe.UtilsRecipe;
 
 import java.util.List;
 
@@ -72,7 +71,6 @@ public class BaseItemDust extends Item{
 			oredictName = temp;
 			GT_OreDictUnificator.registerOre(temp, UtilsItems.getSimpleStack(this));
 		}
-		addMixerRecipe();
 		addFurnaceRecipe();
 		addMacerationRecipe();
 	}
@@ -132,79 +130,6 @@ public class BaseItemDust extends Item{
 		return colour;
 
 	}
-
-
-
-	private void addMixerRecipe(){
-		
-		ItemStack thisItem;		
-		ItemStack normalDust = dustInfo.getDust(1);
-		ItemStack smallDust = dustInfo.getSmallDust(1);
-		ItemStack tinyDust = dustInfo.getTinyDust(1);
-		
-		ItemStack[] inputStacks = dustInfo.getMaterialComposites();
-		ItemStack outputStacks = dustInfo.getDust(10);
-		
-		if (oredictName.contains("dustTiny")){
-			thisItem = tinyDust;
-			ItemStack normalStack = dustInfo.getDust(1);
-			ItemStack tinyStack = dustInfo.getTinyDust(9);
-			Utils.LOG_INFO("Generating a 9 Tiny dust to 1 Dust recipe for "+materialName);
-			UtilsRecipe.recipeBuilder(
-					thisItem,	thisItem, thisItem, 
-					thisItem, thisItem, thisItem, 
-					thisItem, thisItem, thisItem,
-					normalStack);
-			
-			Utils.LOG_INFO("Generating a 9 Tiny dust from 1 Dust recipe for "+materialName);
-			UtilsRecipe.recipeBuilder(
-					normalStack, null, null, 
-					null, null, null, 
-					null, null, null,
-					tinyStack);
-			
-		}
-		else if (oredictName.contains("dustSmall")){
-			thisItem = smallDust;
-			ItemStack normalStack = dustInfo.getDust(1);
-			ItemStack smallStack = dustInfo.getSmallDust(4);
-			
-			Utils.LOG_INFO("Generating a 4 Small dust to 1 Dust recipe for "+materialName);
-			UtilsRecipe.recipeBuilder(
-					thisItem, thisItem, null, 
-					thisItem, thisItem, null, 
-					null, null, null,
-					normalStack);
-			
-			Utils.LOG_INFO("Generating a 4 Small dust from 1 Dust recipe for "+materialName);
-			UtilsRecipe.recipeBuilder(
-					null, normalStack, null, 
-					null, null, null, 
-					null, null, null,
-					smallStack);
-			
-		}
-		else {
-			thisItem = normalDust;
-		}			
-
-		if (thisItem == normalDust){				
-				Utils.LOG_WARNING("Generating a Dust recipe for "+materialName+" in the mixer.");
-
-				if (inputStacks.length != 0){
-					GT_Values.RA.addMixerRecipe(
-							inputStacks[0], inputStacks[1],
-							inputStacks[2], inputStacks[3],
-							null, null,
-							outputStacks,
-							8*mTier*20, 8*mTier*2);
-				}
-				else {
-					return;
-				}
-			}
-		}
-
 
 	private void addMacerationRecipe(){
 		Utils.LOG_WARNING("Adding recipe for "+materialName+" Dusts");

@@ -6,10 +6,6 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.UtilsItems;
 import gtPlusPlus.core.util.materials.MaterialUtils;
 import gtPlusPlus.core.util.math.MathUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.item.ItemStack;
 
 public class Material {
@@ -20,7 +16,7 @@ public class Material {
 	protected Object dataVar;
 
 	private MaterialStack[] materialInput = new MaterialStack[4];
-	final List<MaterialStack> mMaterialList = new ArrayList<MaterialStack>();
+	public final long[] vSmallestRatio;
 
 	final short[] RGBA;
 
@@ -35,7 +31,7 @@ public class Material {
 	final long vProtons;
 	final long vNeutrons;
 	final long vMass;
-	final int smallestStackSizeWhenProcessing; //Add a check for <=0 || > 64
+	public final int smallestStackSizeWhenProcessing; //Add a check for <=0 || > 64
 	public final int vTier;
 	public final int vVoltageMultiplier;
 	public final String vChemicalFormula;
@@ -65,14 +61,14 @@ public class Material {
 		this.vNeutrons = neutrons;
 		this.vMass = getMass();
 
-		//List<MaterialStack> inputArray = Arrays.asList(inputs);
+		/*//List<MaterialStack> inputArray = Arrays.asList(inputs);
 		int tempSmallestSize = getSmallestStackForCrafting(inputs);
 		if (tempSmallestSize <= 64 && tempSmallestSize >= 1){
 			this.smallestStackSizeWhenProcessing = tempSmallestSize; //Valid stacksizes
 		}
 		else {
 			this.smallestStackSizeWhenProcessing = 50; //Can divide my math by 1/2 and round it~
-		}
+		}*/
 
 		//Sets the Rad level
 		if (radiationLevel != 0){
@@ -134,6 +130,28 @@ public class Material {
 				}
 			}
 		}
+		
+		this.vSmallestRatio = getSmallestRatio(materialInput);
+		int tempSmallestSize = 0;
+		
+		if (vSmallestRatio != null){
+			for (int v=0;v<this.vSmallestRatio.length;v++){
+				tempSmallestSize=(int) (tempSmallestSize+vSmallestRatio[v]);
+			}
+			this.smallestStackSizeWhenProcessing = tempSmallestSize; //Valid stacksizes
+		}
+		else {
+			this.smallestStackSizeWhenProcessing = 1; //Valid stacksizes			
+		}
+		
+		
+		
+		/*if (tempSmallestSize <= 64 && tempSmallestSize >= 1){
+			this.smallestStackSizeWhenProcessing = tempSmallestSize; //Valid stacksizes
+		}
+		else {
+			this.smallestStackSizeWhenProcessing = 50; //Can divide my math by 1/2 and round it~
+		}*/
 
 		//Makes a Fancy Chemical Tooltip
 		this.vChemicalSymbol = chemicalSymbol;
@@ -152,7 +170,7 @@ public class Material {
 		dataVar = MathUtils.generateSingularRandomHexValue();
 
 		Utils.LOG_INFO("Creating a Material instance for "+materialName);
-		Utils.LOG_INFO("Formula: "+vChemicalFormula);
+		Utils.LOG_INFO("Formula: "+vChemicalFormula + " Smallest Stack: "+smallestStackSizeWhenProcessing+" Smallest Ratio:"+vSmallestRatio);
 		Utils.LOG_INFO("Protons: "+vProtons);
 		Utils.LOG_INFO("Neutrons: "+vNeutrons);
 		Utils.LOG_INFO("Mass: "+vMass+"/units");
@@ -405,7 +423,7 @@ public class Material {
 		return null;
 	}
 
-	public int getSmallestStackForCrafting(MaterialStack[] inputs){
+	private int getSmallestStackForCrafting(MaterialStack[] inputs){
 		if (inputs != null){
 			if (inputs.length != 0){
 				long[] smallestRatio = getSmallestRatio(inputs);
