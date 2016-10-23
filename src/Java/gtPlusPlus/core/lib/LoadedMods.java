@@ -34,6 +34,8 @@ public class LoadedMods {
 	public static boolean MiscUtils = true; //Dummy For MetaData Lookups in MT Wrapper
 	public static boolean ThermalFoundation = false;
 	public static boolean IHL = false;
+	public static boolean OpenComputers = false; //OpenComputers
+	public static boolean Computronics = false; //computronics
 	
 
 	
@@ -179,6 +181,16 @@ public class LoadedMods {
 		if (Loader.isModLoaded("Baubles") == true){
 			Baubles  = true;
 			Utils.LOG_INFO("Components enabled for: Baubles");
+			totalMods++;
+		}
+		if (Loader.isModLoaded("OpenComputers") == true){
+			OpenComputers  = true;
+			Utils.LOG_INFO("Components enabled for: OpenComputers");
+			totalMods++;
+		}
+		if (Loader.isModLoaded("computronics") == true){
+			Computronics  = true;
+			Utils.LOG_INFO("Components enabled for: Computronics");
 			totalMods++;
 		}
 	
