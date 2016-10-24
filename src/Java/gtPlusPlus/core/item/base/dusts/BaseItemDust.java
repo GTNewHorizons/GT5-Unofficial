@@ -7,6 +7,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.entity.EntityUtils;
 import gtPlusPlus.core.util.item.UtilsItems;
 import gtPlusPlus.core.util.math.MathUtils;
 
@@ -93,7 +94,7 @@ public class BaseItemDust extends Item{
 	protected final int sRadiation;
 	@Override
 	public void onUpdate(ItemStack iStack, World world, Entity entityHolding, int p_77663_4_, boolean p_77663_5_) {
-		Utils.applyRadiationDamageToEntity(sRadiation, world, entityHolding);
+		EntityUtils.applyRadiationDamageToEntity(sRadiation, world, entityHolding);
 	}
 
 	@Override

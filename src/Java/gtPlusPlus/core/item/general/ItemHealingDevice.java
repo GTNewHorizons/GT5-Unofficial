@@ -5,6 +5,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.UtilsItems;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.player.PlayerUtils;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
@@ -220,8 +221,8 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 					Utils.LOG_INFO("rx:"+rx);
 				arg1.heal(rx*2);
 				discharge(arg0, (1638400/4)*rx, 6, true, true, false);
-				Utils.messagePlayer((EntityPlayer) arg1, "Your NanoBooster Whirs! Leaving you feeling stronger. It Healed "+rx+" hp.");
-				Utils.messagePlayer((EntityPlayer) arg1, "You check it's remaining uses, it has "+secondsLeft(arg0)+".");
+				PlayerUtils.messagePlayer((EntityPlayer) arg1, "Your NanoBooster Whirs! Leaving you feeling stronger. It Healed "+rx+" hp.");
+				PlayerUtils.messagePlayer((EntityPlayer) arg1, "You check it's remaining uses, it has "+secondsLeft(arg0)+".");
 				}
 			}
 		}

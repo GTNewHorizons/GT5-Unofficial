@@ -10,6 +10,7 @@ import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.player.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -175,8 +176,8 @@ extends GT_MetaTileEntity_BasicTank
 				//Utils.LOG_INFO("Did not click the correct place.");
 				break;
 			}
-			Utils.messagePlayer(aPlayer, "Frequency: " + this.mFrequency);
-			Utils.messagePlayer(aPlayer, (getTesseract(this.mFrequency, false) == null ? "" : new StringBuilder().append(EnumChatFormatting.GREEN).append(" (Connected)").toString()));
+			PlayerUtils.messagePlayer(aPlayer, "Frequency: " + this.mFrequency);
+			PlayerUtils.messagePlayer(aPlayer, (getTesseract(this.mFrequency, false) == null ? "" : new StringBuilder().append(EnumChatFormatting.GREEN).append(" (Connected)").toString()));
 		}
 		return true;
 	}

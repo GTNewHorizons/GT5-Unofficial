@@ -8,10 +8,8 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.UtilsItems;
 import gtPlusPlus.core.util.math.MathUtils;
-import ic2.core.IC2Potion;
 import ic2.core.Ic2Items;
 import ic2.core.init.InternalName;
-import ic2.core.item.armor.ItemArmorHazmat;
 import ic2.core.item.resources.ItemCell;
 
 import java.awt.Color;
@@ -24,21 +22,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.UUID;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -49,7 +38,6 @@ import org.apache.commons.lang3.EnumUtils;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.registry.EntityRegistry;
 
 public class Utils {
 
@@ -169,11 +157,6 @@ public class Utils {
 		return (target.getItem() == input.getItem() && ((target.getItemDamage() == WILDCARD_VALUE && !strict) || target.getItemDamage() == input.getItemDamage()));
 	}
 
-	//TODO
-	public static void registerEntityToBiomeSpawns(Class<EntityLiving> classy, EnumCreatureType EntityType, BiomeGenBase baseBiomeGen){
-		EntityRegistry.addSpawn(classy, 6, 1, 5, EntityType, baseBiomeGen); //change the values to vary the spawn rarity, biome, etc. 
-	}
-
 	//Non-Dev Comments 
 	public static void LOG_INFO(String s){
 		//if (CORE.DEBUG){
@@ -204,10 +187,6 @@ public class Utils {
 
 	public static void paintBox(Graphics g, int MinA, int MinB, int MaxA, int MaxB){
 		g.drawRect (MinA, MinB, MaxA, MaxB);  
-	}
-
-	public static void messagePlayer(EntityPlayer P, String S){
-		gregtech.api.util.GT_Utility.sendChatToPlayer(P, S);
 	}
 
 	/**
@@ -335,53 +314,6 @@ public class Utils {
 	public static List<Object> convertArrayListToList(ArrayList sourceArray) {
 		List<Object> targetList = new ArrayList<Object>(Arrays.asList(sourceArray));
 		return targetList;
-	}
-
-	public static EntityPlayer getPlayerOnServerFromUUID(UUID parUUID){
-		if (parUUID == null) 
-		{
-			return null;
-		}
-		List<EntityPlayerMP> allPlayers = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
-		for (EntityPlayerMP player : allPlayers) 
-		{
-			if (player.getUniqueID().equals(parUUID)) 
-			{
-				return player;
-			}
-		}
-		return null;
-	}
-
-	@Deprecated
-	public static Block findBlockUnderEntityNonBoundingBox(Entity parEntity){
-		int blockX = MathHelper.floor_double(parEntity.posX);
-		int blockY = MathHelper.floor_double(parEntity.posY-0.2D - (double)parEntity.yOffset);
-		int blockZ = MathHelper.floor_double(parEntity.posZ);
-		return parEntity.worldObj.getBlock(blockX, blockY, blockZ);
-	}
-
-	public static Block findBlockUnderEntity(Entity parEntity){
-		int blockX = MathHelper.floor_double(parEntity.posX);
-		int blockY = MathHelper.floor_double(parEntity.boundingBox.minY)-1;
-		int blockZ = MathHelper.floor_double(parEntity.posZ);
-		return parEntity.worldObj.getBlock(blockX, blockY, blockZ);
-	}
-
-	public static int getFacingDirection(Entity entity){
-		int d = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360) + 0.50) & 3;
-		return d;
-	}
-
-	public static boolean isPlayerOP(EntityPlayer player){
-		if (player.canCommandSenderUseCommand(2, "")){
-			return true;
-		}
-		return false;
-	}
-
-	public static void setEntityOnFire(Entity entity, int length){
-		entity.setFire(length);
 	}
 
 	public static void spawnCustomParticle(Entity entity){
@@ -535,28 +467,6 @@ public class Utils {
 			return false;
 		}
 		return true;
-	}
-
-	public static boolean applyRadiationDamageToEntity(int damage, World world, Entity entityHolding){
-		if (!world.isRemote){				
-			if (damage > 0 && (entityHolding instanceof EntityLivingBase)) {
-				EntityLivingBase entityLiving = (EntityLivingBase) entityHolding;
-				if (!ItemArmorHazmat.hasCompleteHazmat(entityLiving)) {
-					int duration;
-					if (entityLiving.getActivePotionEffect(IC2Potion.radiation) != null){
-						//Utils.LOG_INFO("t");
-						duration = (damage*5)+entityLiving.getActivePotionEffect(IC2Potion.radiation).getDuration();
-					}
-					else {
-						//Utils.LOG_INFO("f");
-						duration = damage*30;
-					}					
-					IC2Potion.radiation.applyTo(entityLiving, duration, damage * 15);
-				}
-			}
-			return true;
-		}
-		return false;		
 	}
 
 	private static short cellID = 15;

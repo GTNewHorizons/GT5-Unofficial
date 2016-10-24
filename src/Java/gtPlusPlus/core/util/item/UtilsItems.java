@@ -41,7 +41,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
@@ -236,32 +235,8 @@ public class UtilsItems {
 
 		return GameRegistry.findItemStack(fqrnSplit[0], fqrnSplit[1], Size);
 	}*/
-
-	public static Item getItemInPlayersHand(){
-		Minecraft mc = Minecraft.getMinecraft();
-		Item heldItem = null;
-
-		try{heldItem = mc.thePlayer.getHeldItem().getItem();
-		}catch(NullPointerException e){return null;}
-
-		if (heldItem != null){
-			return heldItem;
-		}
-
-		return null;
-	}
-
-	public static ItemStack getItemStackInPlayersHand(){
-		Minecraft mc = Minecraft.getMinecraft();
-		ItemStack heldItem = null;
-		try{heldItem = mc.thePlayer.getHeldItem();
-		}catch(NullPointerException e){return null;}
-		if (heldItem != null){
-			return heldItem;
-		}
-		return null;
-	}
-
+	
+	
 	public static void generateSpawnEgg(String entityModID, String parSpawnName, int colourEgg, int colourOverlay){
 		Item itemSpawnEgg = new BasicSpawnEgg(entityModID, parSpawnName, colourEgg, colourOverlay).setUnlocalizedName("spawn_egg_"+parSpawnName.toLowerCase()).setTextureName(CORE.MODID+":spawn_egg");
 		GameRegistry.registerItem(itemSpawnEgg, "spawnEgg"+parSpawnName);

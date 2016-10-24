@@ -6,6 +6,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.UtilsItems;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.player.PlayerUtils;
 
 import java.util.List;
 
@@ -86,11 +87,11 @@ public class ItemBlueprint extends Item implements IItemBlueprint{
 	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer par3Entity) {
 		//Let the player know what blueprint is held
 		if (itemStack.hasTagCompound()) {
-			Utils.messagePlayer(par3Entity, "This Blueprint holds NBT data. "+"|"+getNBT(itemStack, "mID")+"|"+getNBT(itemStack, "mBlueprint")+"|"+getNBT(itemStack, "mName")+"|"+UtilsItems.getArrayStackNames(readItemsFromNBT(itemStack)));
+			PlayerUtils.messagePlayer(par3Entity, "This Blueprint holds NBT data. "+"|"+getNBT(itemStack, "mID")+"|"+getNBT(itemStack, "mBlueprint")+"|"+getNBT(itemStack, "mName")+"|"+UtilsItems.getArrayStackNames(readItemsFromNBT(itemStack)));
 		}
 		else {
 			createNBT(itemStack);
-			Utils.messagePlayer(par3Entity, "This is a placeholder. "+getNBT(itemStack, "mID"));			
+			PlayerUtils.messagePlayer(par3Entity, "This is a placeholder. "+getNBT(itemStack, "mID"));			
 		}
 
 

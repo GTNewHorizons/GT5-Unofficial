@@ -5,7 +5,7 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.player.PlayerUtils;
 import ic2.core.item.tool.ItemToolWrench;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -70,7 +70,7 @@ public class Machine_Workbench extends BlockContainer
 	{
 		if (world.isRemote) return true;
 
-		ItemStack heldItem = UtilsItems.getItemStackInPlayersHand();
+		ItemStack heldItem = PlayerUtils.getItemStackInPlayersHand();
 		boolean holdingWrench = false;
 
 		if (heldItem != null){

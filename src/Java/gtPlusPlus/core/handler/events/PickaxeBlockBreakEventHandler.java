@@ -5,6 +5,7 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.BaseTileEntity;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.player.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.machines.GregtechMetaSafeBlockBase;
 
 import java.util.UUID;
@@ -42,12 +43,12 @@ public class PickaxeBlockBreakEventHandler {
 							Utils.LOG_INFO("UUID info. Accessor: "+accessorUUID + " | Owner: "+ownerUUID);
 							
 							if (accessorUUID == ownerUUID){							
-								Utils.messagePlayer(playerInternal, "Since you own this block, it has been destroyed.");
+								PlayerUtils.messagePlayer(playerInternal, "Since you own this block, it has been destroyed.");
 								event.setCanceled(false);
 							}
 							else {
 								event.setCanceled(true);
-								Utils.messagePlayer(playerInternal, "Since you do not own this block, it has not been destroyed.");
+								PlayerUtils.messagePlayer(playerInternal, "Since you do not own this block, it has not been destroyed.");
 							}
 							//
 						}

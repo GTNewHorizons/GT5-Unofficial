@@ -10,6 +10,7 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.handler.events.UnbreakableBlockManager;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.player.PlayerCache;
+import gtPlusPlus.core.util.player.PlayerUtils;
 
 import java.util.UUID;
 
@@ -222,8 +223,8 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 					//Utils.LOG_WARNING("GUI should now be open for you sir.");
 				}
 				else {
-					Utils.messagePlayer(aPlayer, "Access Denied, This does not belong to you.");
-					Utils.messagePlayer(aPlayer, "it is owned by: "+PlayerCache.lookupPlayerByUUID(ownerUUID));
+					PlayerUtils.messagePlayer(aPlayer, "Access Denied, This does not belong to you.");
+					PlayerUtils.messagePlayer(aPlayer, "it is owned by: "+PlayerCache.lookupPlayerByUUID(ownerUUID));
 					Utils.LOG_WARNING("Expecting Player : "+PlayerCache.lookupPlayerByUUID(ownerUUID));
 					Utils.LOG_ERROR("Access Denied.");
 					return true;

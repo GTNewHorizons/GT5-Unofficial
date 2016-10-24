@@ -1,6 +1,7 @@
 package gtPlusPlus.core.commands;
 
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.player.PlayerUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,7 +102,7 @@ public class CommandMath implements ICommand
 				}
 			}
 			catch(NullPointerException e) {
-			    Utils.messagePlayer(P, "You do not have a spawn, so...");
+			    PlayerUtils.messagePlayer(P, "You do not have a spawn, so...");
 			}
 			if (Y == null || Y.equals(null)) {
 				Y = W.getSpawnPoint();

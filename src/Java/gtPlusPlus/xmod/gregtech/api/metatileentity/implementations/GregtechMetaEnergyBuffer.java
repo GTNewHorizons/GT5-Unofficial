@@ -13,6 +13,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.player.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTileEntity;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlocks;
 import ic2.api.item.IElectricItem;
@@ -233,7 +234,7 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 		long tempStorage = getStoredEnergy()[0];		
 		final double c = ((double) tempStorage / maxEUStore()) * 100;
 		final double roundOff = Math.round(c * 100.00) / 100.00;
-		Utils.messagePlayer(playerIn, "Energy: " + tempStorage + " EU at "+V[mTier]+"v ("+roundOff+"%)");
+		PlayerUtils.messagePlayer(playerIn, "Energy: " + tempStorage + " EU at "+V[mTier]+"v ("+roundOff+"%)");
 
 	}
 		//Utils.LOG_WARNING("Begin Show Energy");
