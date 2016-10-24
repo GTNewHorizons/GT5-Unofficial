@@ -2,7 +2,7 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntityIronBlastFurnace;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntity_IronBlastFurnace;
 
 public class GregtechIronBlastFurnace
 {
@@ -20,6 +20,6 @@ public class GregtechIronBlastFurnace
 
 	private static void run1()
 	{
-		GregtechItemList.Machine_Iron_BlastFurnace.set(new GregtechMetaTileEntityIronBlastFurnace(768, "ironmachine.blastfurnace", "Iron Plated Blast Furnace").getStackForm(1L));
+		GregtechItemList.Machine_Iron_BlastFurnace.set(new GregtechMetaTileEntity_IronBlastFurnace(768, "ironmachine.blastfurnace", "Iron Plated Blast Furnace").getStackForm(1L));
 	}
 }

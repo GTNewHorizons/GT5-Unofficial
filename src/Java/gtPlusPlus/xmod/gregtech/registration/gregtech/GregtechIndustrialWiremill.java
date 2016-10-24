@@ -2,7 +2,7 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntityIndustrialWireMill;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntity_IndustrialWireMill;
 
 public class GregtechIndustrialWiremill
 {
@@ -21,7 +21,7 @@ public class GregtechIndustrialWiremill
 	private static void run1()
 	{
 		//Industrial Electrolyzer Multiblock
-		GregtechItemList.Industrial_WireFactory.set(new GregtechMetaTileEntityIndustrialWireMill(798, "industrialwiremill.controller.tier.single", "Wire Factory Controller").getStackForm(1L));
+		GregtechItemList.Industrial_WireFactory.set(new GregtechMetaTileEntity_IndustrialWireMill(798, "industrialwiremill.controller.tier.single", "Wire Factory Controller").getStackForm(1L));
 		
 	}
 }

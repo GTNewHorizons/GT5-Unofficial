@@ -2,7 +2,7 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntityIndustrialSinter;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntity_IndustrialSinter;
 
 public class GregtechIndustrialSinter{
 
@@ -18,7 +18,7 @@ public class GregtechIndustrialSinter{
 	private static void run1()
 	{
 		//Industrial Electrolyzer Multiblock
-		GregtechItemList.Industrial_SinterFurnace.set(new GregtechMetaTileEntityIndustrialSinter(810, "industrialsinterfurnace.controller.tier.single", "Sinter Furnace").getStackForm(1L));
+		GregtechItemList.Industrial_SinterFurnace.set(new GregtechMetaTileEntity_IndustrialSinter(810, "industrialsinterfurnace.controller.tier.single", "Sinter Furnace").getStackForm(1L));
 		
 	}
 }

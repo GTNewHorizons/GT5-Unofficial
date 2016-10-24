@@ -2,7 +2,7 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntityPowerSubStationController;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntity_PowerSubStationController;
 
 public class GregtechPowerSubStation
 {
@@ -21,7 +21,7 @@ public class GregtechPowerSubStation
 	private static void run1()
 	{
 		//Steam Condensors
-		GregtechItemList.PowerSubStation.set(new GregtechMetaTileEntityPowerSubStationController(812, "substation.01.input.single", "Power Substation Node").getStackForm(1L));
+		GregtechItemList.PowerSubStation.set(new GregtechMetaTileEntity_PowerSubStationController(812, "substation.01.input.single", "Power Substation Node").getStackForm(1L));
 		
 	}
 }

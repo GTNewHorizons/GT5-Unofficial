@@ -22,23 +22,23 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 
-public class GregtechMetaTileEntityIndustrialSinter
+public class GregtechMetaTileEntity_IndustrialSinter
 extends GT_MetaTileEntity_MultiBlockBase {
 	
 
 	RenderBlocks asdasd = RenderBlocks.getInstance();
 	
-	public GregtechMetaTileEntityIndustrialSinter(int aID, String aName, String aNameRegional) {
+	public GregtechMetaTileEntity_IndustrialSinter(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}
 
-	public GregtechMetaTileEntityIndustrialSinter(String aName) {
+	public GregtechMetaTileEntity_IndustrialSinter(String aName) {
 		super(aName);
 	}
 
 	@Override
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GregtechMetaTileEntityIndustrialSinter(this.mName);
+		return new GregtechMetaTileEntity_IndustrialSinter(this.mName);
 	}
 
 	@Override
@@ -151,7 +151,7 @@ extends GT_MetaTileEntity_MultiBlockBase {
 				IGregTechTileEntity tTileEntity;
 				if ((null != (tTileEntity = getBaseMetaTileEntity().getIGregTechTileEntityAtSideAndDistance(i, 2))) &&
 						(tTileEntity.getFrontFacing() == getBaseMetaTileEntity().getFrontFacing()) && (tTileEntity.getMetaTileEntity() != null) &&
-						((tTileEntity.getMetaTileEntity() instanceof GregtechMetaTileEntityIndustrialSinter))) {
+						((tTileEntity.getMetaTileEntity() instanceof GregtechMetaTileEntity_IndustrialSinter))) {
 					//Utils.LOG_INFO("False 1");
 					return false;
 				}

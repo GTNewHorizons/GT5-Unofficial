@@ -21,19 +21,19 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 
-public class GregtechMetaTileEntityIndustrialWireMill
+public class GregtechMetaTileEntity_IndustrialWireMill
 extends GT_MetaTileEntity_MultiBlockBase {
-	public GregtechMetaTileEntityIndustrialWireMill(int aID, String aName, String aNameRegional) {
+	public GregtechMetaTileEntity_IndustrialWireMill(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}
 
-	public GregtechMetaTileEntityIndustrialWireMill(String aName) {
+	public GregtechMetaTileEntity_IndustrialWireMill(String aName) {
 		super(aName);
 	}
 
 	@Override
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GregtechMetaTileEntityIndustrialWireMill(this.mName);
+		return new GregtechMetaTileEntity_IndustrialWireMill(this.mName);
 	}
 
 	@Override
@@ -136,7 +136,7 @@ extends GT_MetaTileEntity_MultiBlockBase {
 				IGregTechTileEntity tTileEntity;
 				if ((null != (tTileEntity = getBaseMetaTileEntity().getIGregTechTileEntityAtSideAndDistance(i, 2))) &&
 						(tTileEntity.getFrontFacing() == getBaseMetaTileEntity().getFrontFacing()) && (tTileEntity.getMetaTileEntity() != null) &&
-						((tTileEntity.getMetaTileEntity() instanceof GregtechMetaTileEntityIndustrialWireMill))) {
+						((tTileEntity.getMetaTileEntity() instanceof GregtechMetaTileEntity_IndustrialWireMill))) {
 					//Utils.LOG_INFO("False 1");
 					return false;
 				}

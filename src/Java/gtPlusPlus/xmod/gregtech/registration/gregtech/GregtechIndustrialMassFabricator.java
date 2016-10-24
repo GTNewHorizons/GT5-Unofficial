@@ -2,7 +2,7 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntityMassFabricator;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntity_MassFabricator;
 
 public class GregtechIndustrialMassFabricator
 {
@@ -21,7 +21,7 @@ public class GregtechIndustrialMassFabricator
 	private static void run1()
 	{
 		//Industrial Electrolyzer Multiblock
-		GregtechItemList.Industrial_MassFab.set(new GregtechMetaTileEntityMassFabricator(799, "industrialmassfab.controller.tier.single", "Matter Fabrication CPU").getStackForm(1L));
+		GregtechItemList.Industrial_MassFab.set(new GregtechMetaTileEntity_MassFabricator(799, "industrialmassfab.controller.tier.single", "Matter Fabrication CPU").getStackForm(1L));
 		
 	}
 }

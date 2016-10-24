@@ -22,21 +22,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMetaTileEntityIndustrialCokeOven
+public class GregtechMetaTileEntity_IndustrialCokeOven
         extends GregtechMeta_MultiBlockBase {
     private int mLevel = 0;
 
-    public GregtechMetaTileEntityIndustrialCokeOven(int aID, String aName, String aNameRegional) {
+    public GregtechMetaTileEntity_IndustrialCokeOven(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public GregtechMetaTileEntityIndustrialCokeOven(String aName) {
+    public GregtechMetaTileEntity_IndustrialCokeOven(String aName) {
         super(aName);
     }
 
     @Override
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GregtechMetaTileEntityIndustrialCokeOven(this.mName);
+        return new GregtechMetaTileEntity_IndustrialCokeOven(this.mName);
     }
 
     @Override

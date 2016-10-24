@@ -21,9 +21,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMetaTileEntityMultiTank
+public class GregtechMetaTileEntity_MultiTank
         extends GregtechMeta_MultiBlockBase {
-    public GregtechMetaTileEntityMultiTank(int aID, String aName, String aNameRegional) {
+    public GregtechMetaTileEntity_MultiTank(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
@@ -114,13 +114,13 @@ public class GregtechMetaTileEntityMultiTank
         mCrowbar = aNBT.getBoolean("mCrowbar");
     }
     
-    public GregtechMetaTileEntityMultiTank(String aName) {
+    public GregtechMetaTileEntity_MultiTank(String aName) {
         super(aName);
     }
 
     @Override
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GregtechMetaTileEntityMultiTank(this.mName);
+        return new GregtechMetaTileEntity_MultiTank(this.mName);
     }
 
     @Override

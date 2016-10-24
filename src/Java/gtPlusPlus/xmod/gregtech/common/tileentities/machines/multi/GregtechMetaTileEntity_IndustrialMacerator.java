@@ -24,21 +24,21 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class GregtechMetaTileEntityIndustrialMacerator
+public class GregtechMetaTileEntity_IndustrialMacerator
 extends GregtechMeta_MultiBlockBase {
 	private static boolean controller;
 
-	public GregtechMetaTileEntityIndustrialMacerator(int aID, String aName, String aNameRegional) {
+	public GregtechMetaTileEntity_IndustrialMacerator(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}
 
-	public GregtechMetaTileEntityIndustrialMacerator(String aName) {
+	public GregtechMetaTileEntity_IndustrialMacerator(String aName) {
 		super(aName);
 	}
 
 	@Override
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GregtechMetaTileEntityIndustrialMacerator(this.mName);
+		return new GregtechMetaTileEntity_IndustrialMacerator(this.mName);
 	}
 
 	@Override

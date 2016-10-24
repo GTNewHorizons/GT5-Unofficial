@@ -32,7 +32,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-public class GregtechMetaTileEntityIndustrialCentrifuge
+public class GregtechMetaTileEntity_IndustrialCentrifuge
 extends GregtechMeta_MultiBlockBase {
 	private static boolean controller;
 	private static boolean isDisabled = false;
@@ -42,19 +42,19 @@ extends GregtechMeta_MultiBlockBase {
 	private static CustomIcon GT9_5 = new CustomIcon("iconsets/LARGECENTRIFUGE5");
 	//public static double recipesComplete = 0;
 
-	public GregtechMetaTileEntityIndustrialCentrifuge(int aID, String aName, String aNameRegional) {
+	public GregtechMetaTileEntity_IndustrialCentrifuge(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
 			frontFaceActive = new GT_RenderedTexture(GT9_5_Active);
 			frontFace = new GT_RenderedTexture(GT9_5);
 	}
 
-	public GregtechMetaTileEntityIndustrialCentrifuge(String aName) {
+	public GregtechMetaTileEntity_IndustrialCentrifuge(String aName) {
 		super(aName);
 	}
 
 	@Override
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GregtechMetaTileEntityIndustrialCentrifuge(this.mName);
+		return new GregtechMetaTileEntity_IndustrialCentrifuge(this.mName);
 	}
 
 	@Override

@@ -2,7 +2,7 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntityIndustrialCokeOven;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntity_IndustrialCokeOven;
 
 public class GregtechIndustrialCokeOven
 {
@@ -21,7 +21,7 @@ public class GregtechIndustrialCokeOven
 	private static void run1()
 	{
 		//Industrial Centrifuge Multiblock
-		GregtechItemList.Industrial_CokeOven.set(new GregtechMetaTileEntityIndustrialCokeOven(791, "industrialcokeoven.controller.tier.single", "Industrial Coke Oven").getStackForm(1L));
+		GregtechItemList.Industrial_CokeOven.set(new GregtechMetaTileEntity_IndustrialCokeOven(791, "industrialcokeoven.controller.tier.single", "Industrial Coke Oven").getStackForm(1L));
 		
 	}
 }

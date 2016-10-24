@@ -15,15 +15,15 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class GregtechMetaTileEntityPowerSubStationController extends GT_MetaTileEntity_MultiBlockBase {
+public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTileEntity_MultiBlockBase {
 
 	private int recipeCounter = 0;
 
-	public GregtechMetaTileEntityPowerSubStationController(int aID, String aName, String aNameRegional) {
+	public GregtechMetaTileEntity_PowerSubStationController(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}
 
-	public GregtechMetaTileEntityPowerSubStationController(String aName) {
+	public GregtechMetaTileEntity_PowerSubStationController(String aName) {
 		super(aName);
 	}
 
@@ -183,7 +183,7 @@ public class GregtechMetaTileEntityPowerSubStationController extends GT_MetaTile
 
 	@Override
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GregtechMetaTileEntityPowerSubStationController(this.mName);
+		return new GregtechMetaTileEntity_PowerSubStationController(this.mName);
 	}
 
 }

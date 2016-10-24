@@ -23,7 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class GregtechMetaTileEntityIronBlastFurnace
+public class GregtechMetaTileEntity_IronBlastFurnace
         extends MetaTileEntity {
     private static final ITexture[] FACING_SIDE = {new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Simple_Top)};
     private static final ITexture[] FACING_FRONT = {new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Redstone_Off)};
@@ -35,11 +35,11 @@ public class GregtechMetaTileEntityIronBlastFurnace
     public ItemStack mOutputItem1;
     public ItemStack mOutputItem2;
 
-    public GregtechMetaTileEntityIronBlastFurnace(int aID, String aName, String aNameRegional) {
+    public GregtechMetaTileEntity_IronBlastFurnace(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 4);
     }
 
-    public GregtechMetaTileEntityIronBlastFurnace(String aName) {
+    public GregtechMetaTileEntity_IronBlastFurnace(String aName) {
         super(aName, 4);
     }
 
@@ -139,7 +139,7 @@ public class GregtechMetaTileEntityIronBlastFurnace
 
     @Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GregtechMetaTileEntityIronBlastFurnace(this.mName);
+        return new GregtechMetaTileEntity_IronBlastFurnace(this.mName);
     }
 
     @Override
