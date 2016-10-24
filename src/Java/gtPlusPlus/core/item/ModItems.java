@@ -236,10 +236,13 @@ public final class ModItems {
 			generateItemsFromMaterial(ELEMENT.ZIRCONIUM);
 			generateItemsFromMaterial(ALLOY.ZIRCONIUM_CARBIDE);
 			generateItemsFromMaterial(ALLOY.TANTALUM_CARBIDE);
-			generateItemsFromMaterial(ALLOY.NIOBIUM_CARBIDE);		
+			generateItemsFromMaterial(ALLOY.NIOBIUM_CARBIDE);	
+			
+			//Leagrisium
+			generateItemsFromMaterial(ALLOY.LEAGRISIUM);
 
 			//Uranium-233 is a fissile isotope of uranium that is bred from thorium-232 as part of the thorium fuel cycle.
-			UtilsItems.generateItemsFromMaterial(ELEMENT.URANIUM233);
+			generateItemsFromMaterial(ELEMENT.URANIUM233);
 
 		} catch (Throwable r){
 			Utils.LOG_INFO("Failed to Generated a Material. "+r.getMessage());

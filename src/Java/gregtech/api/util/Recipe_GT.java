@@ -235,6 +235,7 @@ public class Recipe_GT extends GT_Recipe{
 		public static final Gregtech_Recipe_Map_Fuel sRocketFuels = new Gregtech_Recipe_Map_Fuel(new HashSet<GT_Recipe>(10), "gt.recipe.rocketenginefuel", "Rocket Engine Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 3000, " EU", true, true);
 		public static final Gregtech_Recipe_Map_Fuel sGeoThermalFuels = new Gregtech_Recipe_Map_Fuel(new HashSet<GT_Recipe>(10), "gt.recipe.geothermalfuel", "GeoThermal Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
 		public static final GT_Recipe_Map sChemicalDehydratorRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(200), "gt.recipe.chemicaldehydrator", "Chemical Dehydrator", null, RES_PATH_GUI + "basicmachines/Dehydrator", 2, 9, 0, 0, 1, E, 1, E, true, true);
+		public static final GT_Recipe_Map sAlloyBlastSmelterRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(200), "gt.recipe.alloyblastsmelter", "Alloy Blast Smelter", null, RES_PATH_GUI + "basicmachines/Dehydrator", 9, 1, 1, 0, 1, E, 1, E, true, true);
 		
 		/**
 		 * HashMap of Recipes based on their Items

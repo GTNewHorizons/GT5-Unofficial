@@ -169,6 +169,7 @@ implements ActionListener
 			dumpGtRecipeMap(Gregtech_Recipe_Map.sCokeOvenRecipes);
 			dumpGtRecipeMap(Gregtech_Recipe_Map.sMatterFab2Recipes);
 		}
+		dumpGtRecipeMap(Gregtech_Recipe_Map.sAlloyBlastSmelterRecipes);
 
 		//~
 		ReflectionUtils.becauseIWorkHard();

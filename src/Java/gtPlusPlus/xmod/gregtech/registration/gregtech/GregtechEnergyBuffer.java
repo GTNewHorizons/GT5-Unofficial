@@ -25,7 +25,6 @@ public class GregtechEnergyBuffer
 		
 	}
 
-	@SuppressWarnings("deprecation")
 	private static void run1()
 	{
 		

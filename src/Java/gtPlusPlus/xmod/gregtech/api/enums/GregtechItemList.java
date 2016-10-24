@@ -70,7 +70,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	//Unused Machine Casings
 	Casing_MacerationStack, Casing_MatterGen, Casing_MatterFab, Casing_U7, 
 	//Unused Machine Coils
-	Casing_Coil_U1, Casing_Coil_U2, Casing_Coil_U3, Casing_Coil_U4,
+	Casing_Coil_U1, Casing_Coil_U2, Casing_Coil_BlastSmelter, Casing_BlastSmelter,
 	
 	//Windmill Shaft Shape for Extruder
 	Shape_Extruder_WindmillShaft, 

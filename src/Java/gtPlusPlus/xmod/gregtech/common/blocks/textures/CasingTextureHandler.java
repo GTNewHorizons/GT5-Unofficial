@@ -6,11 +6,11 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 public class CasingTextureHandler {
-	
+
 	//private static final TexturesGregtech59 gregtech59 = new TexturesGregtech59();
 	//private static final TexturesGregtech58 gregtech58 = new TexturesGregtech58();
 	private static final TexturesCentrifugeMultiblock gregtechX = new TexturesCentrifugeMultiblock();
-	
+
 	public static  IIcon getIcon(int aSide, int aMeta) { //Texture ID's. case 0 == ID[57]
 		if ((aMeta >= 0) && (aMeta < 16)) {
 			switch (aMeta) {
@@ -19,7 +19,7 @@ public class CasingTextureHandler {
 				return TexturesGtBlocks.Casing_Material_MaragingSteel.getIcon();
 				//Coke Oven Frame
 			case 1:
-				return TexturesGtBlocks.Casing_Material_Staballoy61.getIcon();
+				return TexturesGtBlocks.Casing_Material_Tantalloy61.getIcon();
 				//Coke Oven Casing Tier 1
 			case 2: 
 				return Textures.BlockIcons.MACHINE_CASING_FIREBOX_BRONZE.getIcon();
@@ -56,6 +56,10 @@ public class CasingTextureHandler {
 				//Reactor Casing II
 			case 13:
 				return TexturesGtBlocks.Casing_Material_Zeron100.getIcon();	
+			case 14:
+				return TexturesGtBlocks.Casing_Staballoy_Firebox.getIcon();
+			case 15:
+				return TexturesGtBlocks.Casing_Material_Grisium.getIcon();		
 
 			default:
 				return Textures.BlockIcons.MACHINE_CASING_RADIOACTIVEHAZARD.getIcon();
@@ -64,8 +68,8 @@ public class CasingTextureHandler {
 		}
 		return Textures.BlockIcons.MACHINE_CASING_GEARBOX_TUNGSTENSTEEL.getIcon();
 	}
-	
-	
+
+
 	public static IIcon handleCasingsGT(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int aSide, GregtechMetaCasingBlocks thisBlock) {
 		/*if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
 			return gregtech59.handleCasingsGT59(aWorld, xCoord, yCoord, zCoord, aSide, thisBlock);

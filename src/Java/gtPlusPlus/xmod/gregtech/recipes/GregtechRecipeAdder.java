@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.recipes;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
 import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.UtilsItems;
@@ -166,16 +167,16 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 	public boolean addDehydratorRecipe(ItemStack aInput, FluidStack aFluid, ItemStack[] aOutput, int aDuration, int aEUt) {
 		Utils.LOG_INFO("Trying to add a Dehydrator recipe.");
 		try{
-		if ((aInput == null) || (aFluid == null) || (aOutput == null)) {
-			return false;
-		}
-		if ((aDuration = GregTech_API.sRecipeFile.get("dehydrator", aInput, aDuration)) <= 0) {
-			return false;
-		}
-		Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, new ItemStack[]{aInput}, aOutput, null, new FluidStack[]{aFluid}, null, aDuration, aEUt, 0);
-		//RECIPEHANDLER_Dehydrator.debug5(aInput, null, aFluid, null, aOutput, aDuration, aEUt);
-		return true;
-	}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");return false;}
+			if ((aInput == null) || (aFluid == null) || (aOutput == null)) {
+				return false;
+			}
+			if ((aDuration = GregTech_API.sRecipeFile.get("dehydrator", aInput, aDuration)) <= 0) {
+				return false;
+			}
+			Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, new ItemStack[]{aInput}, aOutput, null, new FluidStack[]{aFluid}, null, aDuration, aEUt, 0);
+			//RECIPEHANDLER_Dehydrator.debug5(aInput, null, aFluid, null, aOutput, aDuration, aEUt);
+			return true;
+		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");return false;}
 	}
 
 
@@ -185,47 +186,47 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 	public boolean addDehydratorRecipe(ItemStack[] aInput, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack[] aOutputItems, int[] aChances, int aDuration, int aEUt) throws IndexOutOfBoundsException{
 		Utils.LOG_INFO("Trying to add a Dehydrator recipe.");
 		try{
-		if (aInput[0] != null){
-			Utils.LOG_INFO("Recipe requires input: "+aInput[0].getDisplayName()+" x"+aInput[0].stackSize);
-		}
-		if (aInput.length > 1){
-			if (aInput[1] != null){
-				Utils.LOG_INFO("Recipe requires input: "+aInput[1].getDisplayName()+" x"+aInput[1].stackSize);
+			if (aInput[0] != null){
+				Utils.LOG_INFO("Recipe requires input: "+aInput[0].getDisplayName()+" x"+aInput[0].stackSize);
 			}
-		}
-		if (aFluidInput != null){
-			Utils.LOG_INFO("Recipe requires input: "+aFluidInput.getFluid().getName()+" "+aFluidInput.amount+"mbst");
-		}
-		if (((aInput[0] == null) && (aFluidInput == null)) || ((aOutputItems == null) && (aFluidOutput == null))) {
-			return false;
-		}
-		if ((aOutputItems != null) && ((aDuration = GregTech_API.sRecipeFile.get("dehydrator", aOutputItems[0], aDuration)) <= 0)) {
-			return false;
-		}
-		if (aOutputItems != null){
-			Utils.LOG_INFO("Recipe will output: "+UtilsItems.getArrayStackNames(aOutputItems));
-		}
-		if ((aFluidOutput != null) && ((aDuration = GregTech_API.sRecipeFile.get("dehydrator", aFluidOutput.getFluid().getName(), aDuration)) <= 0)) {
-			return false;
-		}
-		if (aFluidOutput != null){
-			Utils.LOG_INFO("Recipe will output: "+aFluidOutput.getFluid().getName());
-		}
+			if (aInput.length > 1){
+				if (aInput[1] != null){
+					Utils.LOG_INFO("Recipe requires input: "+aInput[1].getDisplayName()+" x"+aInput[1].stackSize);
+				}
+			}
+			if (aFluidInput != null){
+				Utils.LOG_INFO("Recipe requires input: "+aFluidInput.getFluid().getName()+" "+aFluidInput.amount+"mbst");
+			}
+			if (((aInput[0] == null) && (aFluidInput == null)) || ((aOutputItems == null) && (aFluidOutput == null))) {
+				return false;
+			}
+			if ((aOutputItems != null) && ((aDuration = GregTech_API.sRecipeFile.get("dehydrator", aOutputItems[0], aDuration)) <= 0)) {
+				return false;
+			}
+			if (aOutputItems != null){
+				Utils.LOG_INFO("Recipe will output: "+UtilsItems.getArrayStackNames(aOutputItems));
+			}
+			if ((aFluidOutput != null) && ((aDuration = GregTech_API.sRecipeFile.get("dehydrator", aFluidOutput.getFluid().getName(), aDuration)) <= 0)) {
+				return false;
+			}
+			if (aFluidOutput != null){
+				Utils.LOG_INFO("Recipe will output: "+aFluidOutput.getFluid().getName());
+			}
 
 
 
-		if (aInput.length == 1){
-			Utils.LOG_INFO("Dehydrator recipe only has a single input item.");
-			Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, aInput, aOutputItems, null, aChances, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
+			if (aInput.length == 1){
+				Utils.LOG_INFO("Dehydrator recipe only has a single input item.");
+				Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, aInput, aOutputItems, null, aChances, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
 
-		}
-		else {
-			Utils.LOG_INFO("Dehydrator recipe has two input items.");
-			Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, aInput, aOutputItems, null, aChances, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
+			}
+			else {
+				Utils.LOG_INFO("Dehydrator recipe has two input items.");
+				Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, aInput, aOutputItems, null, aChances, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
 
-		}
+			}
 
-		return true;
+			return true;
 		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");return false;}
 	}
 
@@ -233,12 +234,31 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
 
 
+	@Override
+	public boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aOutput, int aChance, int aDuration, int aEUt) {
+		if ((aInput == null) || (aOutput == null)) {
+			return false;
+		}
+		        
+		
+		if (aOutput.isFluidEqual(Materials.PhasedGold.getMolten(1))) {
+			aOutput = Materials.VibrantAlloy.getMolten(aOutput.amount);
+		}
+		if (aOutput.isFluidEqual(Materials.PhasedIron.getMolten(1))) {
+			aOutput = Materials.PulsatingIron.getMolten(aOutput.amount);
+		}
+		if ((aDuration = GregTech_API.sRecipeFile.get("blastsmelter", aOutput.getFluid().getName(), aDuration)) <= 0) {
+			Utils.LOG_INFO("Recipe did not register.");
+			return false;
+		}
 
-
-
-
-
-
-
+		for (int das=0;das<aInput.length;das++){
+			if (aInput[das] != null)
+			Utils.LOG_INFO("tMaterial["+das+"]: "+aInput[das].getDisplayName()+", Amount: "+aInput[das].stackSize);
+		}
+		
+		Recipe_GT.Gregtech_Recipe_Map.sAlloyBlastSmelterRecipes.addRecipe(true, aInput, new ItemStack[]{null}, null, new int[]{aChance}, null, new FluidStack[]{aOutput}, aDuration, aEUt, 0);
+		return true;
+	}
 
 }

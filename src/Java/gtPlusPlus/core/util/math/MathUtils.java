@@ -29,6 +29,11 @@ public class MathUtils {
 		return randomNum;
 	}
 	
+	public static double getChanceOfXOverYRuns(double x, double y){
+		double z = (1-Math.pow((1-x), y));
+	return z;
+	}
+	
 	
 	/**
 	 * Returns a psuedo-random number between min and max, inclusive.

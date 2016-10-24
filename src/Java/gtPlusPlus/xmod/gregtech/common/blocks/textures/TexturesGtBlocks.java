@@ -73,8 +73,8 @@ public class TexturesGtBlocks {
 	public static final CustomIcon Casing_Machine_Dimensional_Adv = Internal_Casing_Machine_Dimensional_Adv;
 	
 	//Material Casings
-	private static final CustomIcon Internal_Casing_Staballoy61 = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_TANTALLOY61");	
-	public static final CustomIcon Casing_Material_Staballoy61 = Internal_Casing_Staballoy61;
+	private static final CustomIcon Internal_Casing_Tantalloy61 = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_TANTALLOY61");	
+	public static final CustomIcon Casing_Material_Tantalloy61 = Internal_Casing_Tantalloy61;
 	private static final CustomIcon Internal_Casing_MaragingSteel = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_MARAGINGSTEEL");	
 	public static final CustomIcon Casing_Material_MaragingSteel = Internal_Casing_MaragingSteel;
 	private static final CustomIcon Internal_Casing_Stellite = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_STELLITE");	
@@ -87,6 +87,22 @@ public class TexturesGtBlocks {
 	public static final CustomIcon Casing_Material_Zeron100 = Internal_Casing_Zeron100;
 	private static final CustomIcon Internal_Casing_Potin = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_POTIN");	
 	public static final CustomIcon Casing_Material_Potin = Internal_Casing_Potin;
+	
+	private static final CustomIcon Internal_Casing_Grisium = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_GRISIUM");	
+	public static final CustomIcon Casing_Material_Grisium = Internal_Casing_Grisium;
+	private static final CustomIcon Internal_Casing_Incoloy020 = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_INCOLOY_020");	
+	public static final CustomIcon Casing_Material_Incoloy020 = Internal_Casing_Incoloy020;
+	private static final CustomIcon Internal_Casing_IncoloyDS = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_INCOLOY_DS");	
+	public static final CustomIcon Casing_Material_IncoloyDS = Internal_Casing_IncoloyDS;
+	private static final CustomIcon Internal_Casing_IncoloyMA956 = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_INCOLOY_MA956");	
+	public static final CustomIcon Casing_Material_IncoloyMA956 = Internal_Casing_IncoloyMA956;
+	private static final CustomIcon Internal_Casing_ZirconiumCarbide = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_ZIRCONIUM_CARBIDE");	
+	public static final CustomIcon Casing_Material_ZirconiumCarbide = Internal_Casing_ZirconiumCarbide;
+	
+	//Material Machine/Firebox Casings
+	private static final CustomIcon Internal_Casing_Staballoy_Firebox = new CustomIcon("TileEntities/MACHINE_CASING_FIREBOX_STABALLOY");	
+	public static final CustomIcon Casing_Staballoy_Firebox = Internal_Casing_Staballoy_Firebox;
+	
 	//Misc Casings	
 	private static final CustomIcon Internal_Casing_Machine_Redstone_Off = new CustomIcon("TileEntities/cover_redstone_conductor");	
 	public static final CustomIcon Casing_Machine_Redstone_Off = Internal_Casing_Machine_Redstone_Off;

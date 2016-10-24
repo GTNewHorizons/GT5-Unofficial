@@ -495,6 +495,22 @@ public final class ALLOY {
 					new MaterialStack(ELEMENT.CARBON, 50),
 					new MaterialStack(ELEMENT.NIOBIUM, 50)
 			});
+	
+	
+	public static final Material LEAGRISIUM = new Material(
+			"Grisium", //Material Name
+			new short[]{53, 93, 106, 0}, //Material Colour
+			9001, //Melting Point in C
+			25000, //Boiling Point in C
+			96, //Protons
+			128, //Neutrons
+			true, //Uses Blast furnace?
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.NICKEL, 25),
+					new MaterialStack(ELEMENT.CHROMIUM, 25),
+					new MaterialStack(ELEMENT.IRON, 25),
+					new MaterialStack(ELEMENT.TUNGSTEN, 25)
+			});	//Material Stacks with Percentage of required elements.
 
 
 }

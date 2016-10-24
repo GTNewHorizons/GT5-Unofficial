@@ -66,4 +66,17 @@ public interface IGregtech_RecipeAdder {
      */
     public boolean addDehydratorRecipe(ItemStack[] aInput, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack[] aOutputItems, int[] aChances, int aDuration, int aEUt);
     
+    
+    /**
+     * Adds a Recipe for the Alloy Blast Smelter. (up to 9 Inputs)
+     *
+	 * @param aInput   = ItemStack[] (not null, and respects StackSize)
+	 * @param aFluidOutput   = Output of the UU-Matter (not null, and respects StackSize)
+	 * @param aChances 	= Output Change (can be == 0)
+	 * @param aDuration 	= Duration (must be >= 0)
+	 * @param aEUt			= EU needed for heating up (must be >= 0)
+	 * @return true if the Recipe got added, otherwise false.
+     */
+    public boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aOutput, int aChance, int aDuration, int aEUt);
+    
 }

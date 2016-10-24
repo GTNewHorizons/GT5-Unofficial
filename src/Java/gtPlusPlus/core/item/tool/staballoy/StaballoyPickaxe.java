@@ -179,7 +179,7 @@ public class StaballoyPickaxe extends ItemPickaxe{
 			
 			
 			//Break Tool
-			if ((durNow-dodmg) <= (900) && itemdmg != 0){
+			if ((durNow-dodmg) <= (99) && itemdmg != 0){
 				//TODO break tool
 				Utils.LOG_INFO("Breaking Tool");
 				heldItem.stackSize = 0;
@@ -315,8 +315,9 @@ public class StaballoyPickaxe extends ItemPickaxe{
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
 		thisPickaxe = stack;	
-		list.add(EnumChatFormatting.GOLD+"Mines a 3x3 area in the direction you are facing.");
-		super.addInformation(stack, aPlayer, list, bool);
+		list.add(EnumChatFormatting.GRAY+"Mines a 3x3 at 100 durability per block mined.");
+		list.add(EnumChatFormatting.GRAY+"Durability: "+(stack.getMaxDamage()-stack.getItemDamage())+"/"+stack.getMaxDamage());
+		//super.addInformation(stack, aPlayer, list, bool);
 	}
 
 	@Override

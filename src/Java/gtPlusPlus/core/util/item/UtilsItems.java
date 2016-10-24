@@ -557,5 +557,9 @@ public class UtilsItems {
 		return itemNames;
 
 	}
+	
+	public static ItemStack getGregtechCircuit(int Meta){
+		return UtilsItems.getItemStackWithMeta(LoadedMods.Gregtech, "gregtech:gt.integrated_circuit", "Gregtech Circuit", Meta, 0);
+	}
 
 }

@@ -10,6 +10,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.Recipe_GT;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,50 +20,68 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMetaTileEntity_AlloyBlastFurnace
+public class GregtechMetaTileEntity_AlloyBlastSmelter
         extends GT_MetaTileEntity_MultiBlockBase {
     private int mHeatingCapacity = 0;
 
-    public GregtechMetaTileEntity_AlloyBlastFurnace(int aID, String aName, String aNameRegional) {
+    public GregtechMetaTileEntity_AlloyBlastSmelter(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public GregtechMetaTileEntity_AlloyBlastFurnace(String aName) {
+    public GregtechMetaTileEntity_AlloyBlastSmelter(String aName) {
         super(aName);
     }
 
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GregtechMetaTileEntity_AlloyBlastFurnace(this.mName);
+    @Override
+	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new GregtechMetaTileEntity_AlloyBlastSmelter(this.mName);
     }
 
-    public String[] getDescription() {
-        return new String[]{"Controller Block for the Blast Furnace", "Size: 3x3x4 (Hollow)", "Controller (front middle at bottom)", "16x Heating Coils (two middle Layers, hollow)", "1x Input (one of bottom)", "1x Output (one of bottom)", "1x Energy Hatch (one of bottom)", "1x Maintenance Hatch (one of bottom)", "1x Muffler Hatch (top middle)", "Heat Proof Machine Casings for the rest"};
+    @Override
+	public String[] getDescription() {
+        return new String[]{
+        		"Controller Block for the Alloy Blast Smelter", //Outputs 144mb fluid for every inputStack.stackSize; Time to use those hot metals.
+        		"Size: 3x3x4 (Hollow)",
+        		"Controller (front middle at bottom)",
+        		"16x Heating Coils (two middle Layers, hollow)",
+        		"1x Input bus (one of bottom)",
+        		"1x Output Hatch (one of bottom)",
+        		"1x Energy Hatch (one of bottom)", 
+        		"1x Maintenance Hatch (one of bottom)",
+        		"1x Muffler Hatch (top middle)",
+        		"Heat Proof Machine Casings for the rest"};
     }
 
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+    @Override
+	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[11], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)};
+            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[72], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)};
         }
-        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[11]};
+        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[72]};
     }
 
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+    @Override
+	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
         return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "ElectricBlastFurnace.png");
     }
 
-    public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-        return GT_Recipe.GT_Recipe_Map.sBlastRecipes;
+    @Override
+	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+        return Recipe_GT.Gregtech_Recipe_Map.sAlloyBlastSmelterRecipes;
     }
 
-    public boolean isCorrectMachinePart(ItemStack aStack) {
+    @Override
+	public boolean isCorrectMachinePart(ItemStack aStack) {
         return true;
     }
 
-    public boolean isFacingValid(byte aFacing) {
+    @Override
+	public boolean isFacingValid(byte aFacing) {
         return aFacing > 1;
     }
 
-    public boolean checkRecipe(ItemStack aStack) {
+    @Override
+	public boolean checkRecipe(ItemStack aStack) {
         ArrayList<ItemStack> tInputList = getStoredInputs();
         for (int i = 0; i < tInputList.size() - 1; i++) {
             for (int j = i + 1; j < tInputList.size(); j++) {
@@ -122,7 +141,8 @@ public class GregtechMetaTileEntity_AlloyBlastFurnace
         return false;
     }
 
-    public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+    @Override
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
         int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
         int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
 
@@ -192,23 +212,28 @@ public class GregtechMetaTileEntity_AlloyBlastFurnace
         return true;
     }
 
-    public int getMaxEfficiency(ItemStack aStack) {
+    @Override
+	public int getMaxEfficiency(ItemStack aStack) {
         return 10000;
     }
 
-    public int getPollutionPerTick(ItemStack aStack) {
+    @Override
+	public int getPollutionPerTick(ItemStack aStack) {
         return 10;
     }
 
-    public int getDamageToComponent(ItemStack aStack) {
+    @Override
+	public int getDamageToComponent(ItemStack aStack) {
         return 0;
     }
 
-    public int getAmountOfOutputs() {
+    @Override
+	public int getAmountOfOutputs() {
         return 2;
     }
 
-    public boolean explodesOnComponentBreak(ItemStack aStack) {
+    @Override
+	public boolean explodesOnComponentBreak(ItemStack aStack) {
         return false;
     }
 }
