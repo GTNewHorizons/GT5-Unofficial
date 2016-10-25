@@ -65,8 +65,7 @@ public final class ALLOY {
 			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(ELEMENT.TUNGSTEN, 20),
-					new MaterialStack(ELEMENT.TANTALUM, 60),
+					new MaterialStack(ALLOY.TANTALLOY_60, 2),
 					new MaterialStack(ELEMENT.TITANIUM, 12),
 					new MaterialStack(ELEMENT.YTTRIUM, 8)
 			});
@@ -212,10 +211,12 @@ public final class ALLOY {
 			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(ELEMENT.CHROMIUM, 25),
+					new MaterialStack(ELEMENT.CHROMIUM, 26),
 					new MaterialStack(ELEMENT.NICKEL, 6),
-					new MaterialStack(ELEMENT.COBALT, 9),
-					new MaterialStack(ALLOY.STEEL, 60)
+					new MaterialStack(ELEMENT.MOLYBDENUM, 4),
+					new MaterialStack(ELEMENT.COPPER, 20),
+					new MaterialStack(ELEMENT.TUNGSTEN, 4),
+					new MaterialStack(ALLOY.STEEL, 40)
 					});
 
 	public static final Material MARAGING250 = new Material(
@@ -228,10 +229,11 @@ public final class ALLOY {
 			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(ELEMENT.TITANIUM, 5),
-					new MaterialStack(ELEMENT.NICKEL, 25),
-					new MaterialStack(ELEMENT.COBALT, 10),
-					new MaterialStack(ALLOY.STEEL, 60)
+					new MaterialStack(ALLOY.STEEL, 64),
+					new MaterialStack(ELEMENT.MOLYBDENUM, 4),
+					new MaterialStack(ELEMENT.TITANIUM, 4),
+					new MaterialStack(ELEMENT.NICKEL, 16),
+					new MaterialStack(ELEMENT.COBALT, 8),
 			});
 
 	public static final Material MARAGING300 = new Material(
@@ -244,10 +246,11 @@ public final class ALLOY {
 			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(ELEMENT.TITANIUM, 10),
-					new MaterialStack(ELEMENT.NICKEL, 20),
-					new MaterialStack(ELEMENT.COBALT, 15),
-					new MaterialStack(ALLOY.STEEL, 55)
+				new MaterialStack(ALLOY.STEEL, 64),
+				new MaterialStack(ELEMENT.TITANIUM, 4),
+				new MaterialStack(ELEMENT.ALUMINIUM, 4),
+				new MaterialStack(ELEMENT.NICKEL, 16),
+				new MaterialStack(ELEMENT.COBALT, 8),
 			});
 
 	public static final Material MARAGING350 = new Material(
@@ -260,10 +263,11 @@ public final class ALLOY {
 			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(ELEMENT.TITANIUM, 15),
-					new MaterialStack(ELEMENT.NICKEL, 20),
-					new MaterialStack(ELEMENT.COBALT, 10),
-					new MaterialStack(ALLOY.STEEL, 55)
+				new MaterialStack(ALLOY.STEEL, 64),
+				new MaterialStack(ELEMENT.ALUMINIUM, 4),
+				new MaterialStack(ELEMENT.MOLYBDENUM, 4),
+				new MaterialStack(ELEMENT.NICKEL, 16),
+				new MaterialStack(ELEMENT.COBALT, 8),
 			});
 
 	public static final Material STELLITE = new Material(
@@ -450,8 +454,9 @@ public final class ALLOY {
 			false, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
+					new MaterialStack(ELEMENT.SILICON, 40),
 					new MaterialStack(ELEMENT.CARBON, 50),
-					new MaterialStack(ELEMENT.SILICON, 50)
+					new MaterialStack(ELEMENT.OXYGEN, 10)
 			});
 
 	public static final Material TANTALUM_CARBIDE = new Material(
@@ -464,8 +469,9 @@ public final class ALLOY {
 			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
+					new MaterialStack(ELEMENT.TANTALUM, 40),
 					new MaterialStack(ELEMENT.CARBON, 50),
-					new MaterialStack(ELEMENT.TANTALUM, 50)
+					new MaterialStack(ELEMENT.OXYGEN, 10)
 			});
 
 	public static final Material ZIRCONIUM_CARBIDE = new Material(
@@ -478,8 +484,9 @@ public final class ALLOY {
 			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
+					new MaterialStack(ELEMENT.ZIRCONIUM, 40),
 					new MaterialStack(ELEMENT.CARBON, 50),
-					new MaterialStack(ELEMENT.ZIRCONIUM, 50)
+					new MaterialStack(ELEMENT.OXYGEN, 10)
 			});
 
 	public static final Material NIOBIUM_CARBIDE = new Material(
@@ -492,8 +499,9 @@ public final class ALLOY {
 			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
+					new MaterialStack(ELEMENT.NIOBIUM, 40),
 					new MaterialStack(ELEMENT.CARBON, 50),
-					new MaterialStack(ELEMENT.NIOBIUM, 50)
+					new MaterialStack(ELEMENT.OXYGEN, 10)
 			});
 	
 	
@@ -506,11 +514,12 @@ public final class ALLOY {
 			128, //Neutrons
 			true, //Uses Blast furnace?
 			new MaterialStack[]{
-					new MaterialStack(ELEMENT.NICKEL, 30),
-					new MaterialStack(ELEMENT.CHROMIUM, 10),
-					new MaterialStack(ELEMENT.ZIRCONIUM, 20),
-					new MaterialStack(ELEMENT.IRON, 30),
-					new MaterialStack(ELEMENT.TUNGSTEN, 10)
+					new MaterialStack(ELEMENT.TITANIUM, 18),
+					new MaterialStack(ELEMENT.CARBON, 18),
+					new MaterialStack(ELEMENT.POTASSIUM, 18),
+					new MaterialStack(ELEMENT.LITHIUM, 18),
+					new MaterialStack(ELEMENT.SULFUR, 18),
+					new MaterialStack(ELEMENT.HYDROGEN, 10)
 			});	//Material Stacks with Percentage of required elements.
 
 

@@ -22,7 +22,7 @@ public class RecipeGen_Extruder {
 		ItemStack shape_Rod = ItemList.Shape_Extruder_Rod.get(0);
 		ItemStack shape_Bolt = ItemList.Shape_Extruder_Bolt.get(0);
 
-		Utils.LOG_INFO("Generating Extruder recipes for "+material.getLocalizedName());
+		Utils.LOG_WARNING("Generating Extruder recipes for "+material.getLocalizedName());
 
 
 		//Plate Recipe
@@ -31,10 +31,10 @@ public class RecipeGen_Extruder {
 				shape_Plate,
 				plate_Single,
 				10, 4 * tVoltageMultiplier)){
-			Utils.LOG_INFO("Extruder Plate Recipe: "+material.getLocalizedName()+" - Success");
+			Utils.LOG_WARNING("Extruder Plate Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_INFO("Extruder Plate Recipe: "+material.getLocalizedName()+" - Failed");			
+			Utils.LOG_WARNING("Extruder Plate Recipe: "+material.getLocalizedName()+" - Failed");			
 		}
 
 		//Ring Recipe
@@ -45,10 +45,10 @@ public class RecipeGen_Extruder {
 					material.getRing(4),
 					(int) Math.max(material.getMass() * 2L * 1, 1),
 					6 * material.vVoltageMultiplier)){
-				Utils.LOG_INFO("Extruder Ring Recipe: "+material.getLocalizedName()+" - Success");
+				Utils.LOG_WARNING("Extruder Ring Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_INFO("Extruder Ring Recipe: "+material.getLocalizedName()+" - Failed");			
+				Utils.LOG_WARNING("Extruder Ring Recipe: "+material.getLocalizedName()+" - Failed");			
 			}
 		}
 
@@ -61,10 +61,10 @@ public class RecipeGen_Extruder {
 					itemGear,
 					(int) Math.max(material.getMass() * 5L, 1),
 					8 * material.vVoltageMultiplier)){
-				Utils.LOG_INFO("Extruder Gear Recipe: "+material.getLocalizedName()+" - Success");
+				Utils.LOG_WARNING("Extruder Gear Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_INFO("Extruder Gear Recipe: "+material.getLocalizedName()+" - Failed");			
+				Utils.LOG_WARNING("Extruder Gear Recipe: "+material.getLocalizedName()+" - Failed");			
 			}
 		}
 
@@ -76,10 +76,10 @@ public class RecipeGen_Extruder {
 				material.getRod(2),
 				(int) Math.max(material.getMass() * 2L * 1, 1),
 				6 * material.vVoltageMultiplier)){
-			Utils.LOG_INFO("Extruder Rod Recipe: "+material.getLocalizedName()+" - Success");
+			Utils.LOG_WARNING("Extruder Rod Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_INFO("Extruder Rod Recipe: "+material.getLocalizedName()+" - Failed");			
+			Utils.LOG_WARNING("Extruder Rod Recipe: "+material.getLocalizedName()+" - Failed");			
 		}
 
 
@@ -91,10 +91,10 @@ public class RecipeGen_Extruder {
 					material.getBolt(8),
 					(int) Math.max(material.getMass() * 2L * 1, 1),
 					6 * material.vVoltageMultiplier)){
-				Utils.LOG_INFO("Extruder Bolt Recipe: "+material.getLocalizedName()+" - Success");
+				Utils.LOG_WARNING("Extruder Bolt Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_INFO("Extruder Bolt Recipe: "+material.getLocalizedName()+" - Failed");			
+				Utils.LOG_WARNING("Extruder Bolt Recipe: "+material.getLocalizedName()+" - Failed");			
 			}
 		}
 

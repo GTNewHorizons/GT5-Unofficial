@@ -21,7 +21,7 @@ public class RecipeGen_Plates {
 		ItemStack plate_SingleTwo = material.getPlate(2);
 		ItemStack plate_Double = material.getPlateDouble(1);
 
-		Utils.LOG_INFO("Generating Plate recipes for "+material.getLocalizedName());
+		Utils.LOG_WARNING("Generating Plate recipes for "+material.getLocalizedName());
 		
 		//Forge Hammer
 		if (addForgeHammerRecipe(
@@ -29,10 +29,10 @@ public class RecipeGen_Plates {
 				plate_Single,
 				(int) Math.max(material.getMass(), 1L),
 				16)){
-			Utils.LOG_INFO("Forge Hammer Recipe: "+material.getLocalizedName()+" - Success");
+			Utils.LOG_WARNING("Forge Hammer Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_INFO("Forge Hammer Recipe: "+material.getLocalizedName()+" - Failed");			
+			Utils.LOG_WARNING("Forge Hammer Recipe: "+material.getLocalizedName()+" - Failed");			
 		}
 		//Bender
 		if (addBenderRecipe(
@@ -40,10 +40,10 @@ public class RecipeGen_Plates {
 				plate_Single,
 				(int) Math.max(material.getMass() * 1L, 1L),
 				24)){
-			Utils.LOG_INFO("Bender Recipe: "+material.getLocalizedName()+" - Success");
+			Utils.LOG_WARNING("Bender Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_INFO("Bender Recipe: "+material.getLocalizedName()+" - Failed");			
+			Utils.LOG_WARNING("Bender Recipe: "+material.getLocalizedName()+" - Failed");			
 		}
 		//Alloy Smelter
 		if (GT_Values.RA.addAlloySmelterRecipe(
@@ -52,10 +52,10 @@ public class RecipeGen_Plates {
 				plate_Single,
 				(int) Math.max(material.getMass() * 2L, 1L),
 				2 * tVoltageMultiplier)){
-			Utils.LOG_INFO("Alloy Smelter Recipe: "+material.getLocalizedName()+" - Success");
+			Utils.LOG_WARNING("Alloy Smelter Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_INFO("Alloy Smelter Recipe: "+material.getLocalizedName()+" - Failed");			
+			Utils.LOG_WARNING("Alloy Smelter Recipe: "+material.getLocalizedName()+" - Failed");			
 		}
 
 
@@ -65,20 +65,20 @@ public class RecipeGen_Plates {
 				plate_Double,
 				(int) Math.max(material.getMass() * 2L, 1L),
 				96)){
-			Utils.LOG_INFO("Bender Recipe: "+material.getLocalizedName()+" - Success");
+			Utils.LOG_WARNING("Bender Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_INFO("Bender Recipe: "+material.getLocalizedName()+" - Failed");			
+			Utils.LOG_WARNING("Bender Recipe: "+material.getLocalizedName()+" - Failed");			
 		}
 		if (addBenderRecipe(
 				plate_SingleTwo,
 				plate_Double,
 				(int) Math.max(material.getMass() * 2L, 1L),
 				96)){
-			Utils.LOG_INFO("Bender Recipe: "+material.getLocalizedName()+" - Success");
+			Utils.LOG_WARNING("Bender Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_INFO("Bender Recipe: "+material.getLocalizedName()+" - Failed");			
+			Utils.LOG_WARNING("Bender Recipe: "+material.getLocalizedName()+" - Failed");			
 		} 
 	}
 

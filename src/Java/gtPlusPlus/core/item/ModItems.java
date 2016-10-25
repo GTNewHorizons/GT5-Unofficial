@@ -449,6 +449,7 @@ public final class ModItems {
 		GT_OreDictUnificator.registerOre("ingotRubber", ItemUtils.getItemStack(CORE.MODID+":itemStickyRubber", 1));
 
 		itemHeliumBlob = new CoreItem("itemHeliumBlob", tabMisc).setTextureName(CORE.MODID + ":itemHeliumBlob");
+		GT_OreDictUnificator.registerOre("dustHydrogen", new ItemStack(ModItems.itemHeliumBlob));
 		//GameRegistry.registerItem(itemHeliumBlob, "itemHeliumBlob");
 
 		itemPLACEHOLDER_Circuit = new Item().setUnlocalizedName("itemPLACEHOLDER_Circuit").setTextureName(CORE.MODID + ":itemPLACEHOLDER_Circuit");

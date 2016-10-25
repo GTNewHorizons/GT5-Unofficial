@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 public class RecipeGen_ShapedCrafting {
 
 	public static void generateRecipes(Material material){
-		Utils.LOG_INFO("Generating Shaped Crafting recipes for "+material.getLocalizedName()); //TODO
+		Utils.LOG_WARNING("Generating Shaped Crafting recipes for "+material.getLocalizedName()); //TODO
 
 		//Plates
 
@@ -52,10 +52,10 @@ public class RecipeGen_ShapedCrafting {
 					null, material.getRod(1), null,
 					null, null, null,
 					material.getRing(1))){
-				Utils.LOG_INFO("Ring Recipe: "+material.getLocalizedName()+" - Success");
+				Utils.LOG_WARNING("Ring Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_INFO("Ring Recipe: "+material.getLocalizedName()+" - Failed");			
+				Utils.LOG_WARNING("Ring Recipe: "+material.getLocalizedName()+" - Failed");			
 			}
 		}
 
@@ -68,10 +68,10 @@ public class RecipeGen_ShapedCrafting {
 					stackStick, "craftingToolWrench", stackStick,
 					stackStick, stackStick, stackStick,
 					material.getFrameBox(2))){
-				Utils.LOG_INFO("Framebox Recipe: "+material.getLocalizedName()+" - Success");
+				Utils.LOG_WARNING("Framebox Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_INFO("Framebox Recipe: "+material.getLocalizedName()+" - Failed");			
+				Utils.LOG_WARNING("Framebox Recipe: "+material.getLocalizedName()+" - Failed");			
 			}
 		}
 
@@ -81,22 +81,22 @@ public class RecipeGen_ShapedCrafting {
 		ItemStack outputStacks = material.getDust(material.smallestStackSizeWhenProcessing);
 		
 		if (inputStacks.length > 0){
-			Utils.LOG_INFO(ItemUtils.getArrayStackNames(inputStacks));
+			Utils.LOG_WARNING(ItemUtils.getArrayStackNames(inputStacks));
 			long[] inputStackSize = material.vSmallestRatio;
 			if (inputStackSize != null){
 				for (short x=0;x<inputStacks.length;x++){
 					if (inputStacks[x] != null && inputStackSize[x] != 0)
 					inputStacks[x].stackSize = (int) inputStackSize[x];
 				}
-				Utils.LOG_INFO(ItemUtils.getArrayStackNames(inputStacks));			
+				Utils.LOG_WARNING(ItemUtils.getArrayStackNames(inputStacks));			
 				if (RecipeUtils.buildShapelessRecipe(
 						outputStacks, 
 						inputStacks
 						)){
-					Utils.LOG_INFO("Shapeless Crafting Recipe: "+material.getLocalizedName()+" - Success");
+					Utils.LOG_WARNING("Shapeless Crafting Recipe: "+material.getLocalizedName()+" - Success");
 				}
 				else {
-					Utils.LOG_INFO("Shapeless Crafting Recipe: "+material.getLocalizedName()+" - Failed");			
+					Utils.LOG_WARNING("Shapeless Crafting Recipe: "+material.getLocalizedName()+" - Failed");			
 				}
 			}
 		}*/			
@@ -109,10 +109,10 @@ public class RecipeGen_ShapedCrafting {
 					null, material.getRod(1), null,
 					null, null, null,
 					material.getBolt(2))){
-				Utils.LOG_INFO("Bolt Recipe: "+material.getLocalizedName()+" - Success");
+				Utils.LOG_WARNING("Bolt Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_INFO("Bolt Recipe: "+material.getLocalizedName()+" - Failed");			
+				Utils.LOG_WARNING("Bolt Recipe: "+material.getLocalizedName()+" - Failed");			
 			}
 		}
 
@@ -123,10 +123,10 @@ public class RecipeGen_ShapedCrafting {
 				null, material.getIngot(1), null,
 				null, null, null,
 				material.getRod(1))){
-			Utils.LOG_INFO("Rod Recipe: "+material.getLocalizedName()+" - Success");
+			Utils.LOG_WARNING("Rod Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_INFO("Rod Recipe: "+material.getLocalizedName()+" - Failed");			
+			Utils.LOG_WARNING("Rod Recipe: "+material.getLocalizedName()+" - Failed");			
 		}
 
 
@@ -136,10 +136,10 @@ public class RecipeGen_ShapedCrafting {
 				material.getLongRod(1), null, null,
 				null, null, null,
 				material.getRod(2))){
-			Utils.LOG_INFO("Rod Recipe: "+material.getLocalizedName()+" - Success");
+			Utils.LOG_WARNING("Rod Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_INFO("Rod Recipe: "+material.getLocalizedName()+" - Failed");			
+			Utils.LOG_WARNING("Rod Recipe: "+material.getLocalizedName()+" - Failed");			
 		}
 
 		//Two small to long rod
@@ -148,10 +148,10 @@ public class RecipeGen_ShapedCrafting {
 				null, null, null,
 				null, null, null,
 				material.getLongRod(1))){
-			Utils.LOG_INFO("Long Rod Recipe: "+material.getLocalizedName()+" - Success");
+			Utils.LOG_WARNING("Long Rod Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_INFO("Long Rod Recipe: "+material.getLocalizedName()+" - Failed");			
+			Utils.LOG_WARNING("Long Rod Recipe: "+material.getLocalizedName()+" - Failed");			
 		}
 
 		//Rotor Recipe
@@ -161,10 +161,10 @@ public class RecipeGen_ShapedCrafting {
 					material.getScrew(1), material.getRing(1), "craftingToolFile",
 					material.getPlate(1), "craftingToolScrewdriver", material.getPlate(1),
 					material.getRotor(1))){
-				Utils.LOG_INFO("Rotor Recipe: "+material.getLocalizedName()+" - Success");
+				Utils.LOG_WARNING("Rotor Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_INFO("Rotor Recipe: "+material.getLocalizedName()+" - Failed");			
+				Utils.LOG_WARNING("Rotor Recipe: "+material.getLocalizedName()+" - Failed");			
 			}
 		}
 
@@ -175,10 +175,10 @@ public class RecipeGen_ShapedCrafting {
 					material.getBolt(1), null, null,
 					null, null, null,
 					material.getScrew(1))){
-				Utils.LOG_INFO("Screw Recipe: "+material.getLocalizedName()+" - Success");
+				Utils.LOG_WARNING("Screw Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_INFO("Screw Recipe: "+material.getLocalizedName()+" - Failed");			
+				Utils.LOG_WARNING("Screw Recipe: "+material.getLocalizedName()+" - Failed");			
 			}
 		}
 	}

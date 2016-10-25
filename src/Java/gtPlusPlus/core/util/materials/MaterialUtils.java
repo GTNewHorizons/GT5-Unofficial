@@ -59,7 +59,7 @@ public class MaterialUtils {
 		if (material.isRadioactive()){
 			radioactivity = 1;
 		}
-		if (hasValidRGBA(rgba)){
+		if (hasValidRGBA(rgba) || element == Element.H){
 			//ModItems.itemBaseDecidust = UtilsItems.generateDecidust(material);
 			//ModItems.itemBaseCentidust = UtilsItems.generateCentidust(material);
 			return new Material(name, rgba, melting, boiling, protons, neutrons, blastFurnace, null, chemicalFormula, radioactivity);

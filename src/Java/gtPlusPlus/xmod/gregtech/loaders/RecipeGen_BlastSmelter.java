@@ -55,11 +55,11 @@ public class RecipeGen_BlastSmelter {
 					ItemStack[] tItemStackTest = new ItemStack[]{circuitGT, ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dust"+M, 1)};
 					inputStackCount = 1;
 					fluidAmount = 144*inputStackCount;
-					Utils.LOG_INFO("Adding an Alloy Blast Smelter Recipe for "+M+". Gives "+fluidAmount+"L of molten metal.");
-					Utils.LOG_INFO("tMaterial.length: "+tMaterial.length+".");
+					Utils.LOG_WARNING("Adding an Alloy Blast Smelter Recipe for "+M+". Gives "+fluidAmount+"L of molten metal.");
+					Utils.LOG_WARNING("tMaterial.length: "+tMaterial.length+".");
 					for (int das=0;das<tItemStackTest.length;das++){
 						if (tItemStackTest[das] != null)
-							Utils.LOG_INFO("tMaterial["+das+"]: "+tItemStackTest[das].getDisplayName()+" Meta: "+tItemStackTest[das].getItemDamage()+", Amount: "+tItemStackTest[das].stackSize);
+							Utils.LOG_WARNING("tMaterial["+das+"]: "+tItemStackTest[das].getDisplayName()+" Meta: "+tItemStackTest[das].getItemDamage()+", Amount: "+tItemStackTest[das].stackSize);
 					}
 
 					//Generate Recipes for all singular materials that can be made molten.
@@ -80,7 +80,7 @@ public class RecipeGen_BlastSmelter {
 						for (MaterialStack ternkfsdf:M.mMaterialList){
 							mMaterialListSize++;
 						}
-						Utils.LOG_INFO("Size: "+mMaterialListSize);
+						Utils.LOG_WARNING("Size: "+mMaterialListSize);
 						//If this Material has some kind of compound list, proceed
 						if (mMaterialListSize > 1){
 							MaterialStack[] tempStack = new MaterialStack[mMaterialListSize];
@@ -91,8 +91,8 @@ public class RecipeGen_BlastSmelter {
 								//Builds me a MaterialStack[] from the MaterialList of M.
 								int ooo=0;
 								for (MaterialStack xMaterial : M.mMaterialList){
-									Utils.LOG_INFO("FOUND: "+xMaterial.mMaterial);
-									Utils.LOG_INFO("ADDING: "+xMaterial.mMaterial);
+									Utils.LOG_WARNING("FOUND: "+xMaterial.mMaterial);
+									Utils.LOG_WARNING("ADDING: "+xMaterial.mMaterial);
 									tempStack[ooo] = M.mMaterialList.get(ooo);
 									ooo++;
 								}
@@ -101,10 +101,10 @@ public class RecipeGen_BlastSmelter {
 								components = new ItemStack[tempStack.length];
 								for (MaterialStack aOutputPart : tempStack){
 									if (aOutputPart != null){
-										Utils.LOG_INFO("Finding dust: "+aOutputPart.mMaterial);
+										Utils.LOG_WARNING("Finding dust: "+aOutputPart.mMaterial);
 										ItemStack rStack = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dust"+aOutputPart.mMaterial, (int) aOutputPart.mAmount);
 										if (rStack != null){
-											Utils.LOG_INFO("Found dust: "+aOutputPart.mMaterial);
+											Utils.LOG_WARNING("Found dust: "+aOutputPart.mMaterial);
 											components[counter] = rStack;
 											inputStackCount = inputStackCount+rStack.stackSize;
 										}
@@ -138,11 +138,11 @@ public class RecipeGen_BlastSmelter {
 								fluidAmount = 144*inputStackCount;
 
 
-								Utils.LOG_INFO("Adding an Alloy Blast Smelter Recipe for "+M+" using it's compound dusts. This material has "+ inputStackCount+" parts. Gives "+fluidAmount+"L of molten metal.");
-								Utils.LOG_INFO("tMaterial.length: "+components.length+".");
+								Utils.LOG_WARNING("Adding an Alloy Blast Smelter Recipe for "+M+" using it's compound dusts. This material has "+ inputStackCount+" parts. Gives "+fluidAmount+"L of molten metal.");
+								Utils.LOG_WARNING("tMaterial.length: "+components.length+".");
 								for (int das=0;das<components.length;das++){
 									if (components[das] != null)
-										Utils.LOG_INFO("tMaterial["+das+"]: "+components[das].getDisplayName()+" Meta: "+components[das].getItemDamage()+", Amount: "+components[das].stackSize);
+										Utils.LOG_WARNING("tMaterial["+das+"]: "+components[das].getDisplayName()+" Meta: "+components[das].getItemDamage()+", Amount: "+components[das].stackSize);
 								}
 								if (M.mBlastFurnaceRequired) {
 									//CORE.RA.addBlastSmelterRecipe(components, M.getMolten(fluidAmount), 100, duration, 500);							
@@ -193,36 +193,36 @@ public class RecipeGen_BlastSmelter {
 			ItemStack[] tItemStackTest = new ItemStack[]{/*circuitGT,*/ tStack};
 			inputStackCount = 1;
 			fluidAmount = 144*inputStackCount;
-			Utils.LOG_INFO("Adding an Alloy Blast Smelter Recipe for "+M.getLocalizedName()+". Gives "+fluidAmount+"L of molten metal.");
+			Utils.LOG_WARNING("Adding an Alloy Blast Smelter Recipe for "+M.getLocalizedName()+". Gives "+fluidAmount+"L of molten metal.");
 			for (int das=0;das<tItemStackTest.length;das++){
 				if (tItemStackTest[das] != null)
-					Utils.LOG_INFO("tMaterial["+das+"]: "+tItemStackTest[das].getDisplayName()+" Meta: "+tItemStackTest[das].getItemDamage()+", Amount: "+tItemStackTest[das].stackSize);
+					Utils.LOG_WARNING("tMaterial["+das+"]: "+tItemStackTest[das].getDisplayName()+" Meta: "+tItemStackTest[das].getItemDamage()+", Amount: "+tItemStackTest[das].stackSize);
 			}
 
 			//Generate Recipes for all singular materials that can be made molten.
 			if (M.requiresBlastFurnace()) {
 				
 				if (M.getFluid(10) == null){
-					Utils.LOG_INFO("Material Fluid was Null. Why you lie gaem.");
+					Utils.LOG_WARNING("Material Fluid was Null. Why you lie gaem.");
 				}
 				else {
-					Utils.LOG_INFO("Material Fluid: "+M.getFluid(10).getFluid().getName());
+					Utils.LOG_WARNING("Material Fluid: "+M.getFluid(10).getFluid().getName());
 					
 				}
 				
 				if (CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getFluid(fluidAmount), 100, duration, 240)){
-					Utils.LOG_INFO("Success.");
+					Utils.LOG_WARNING("Success.");
 				}
 				else {
-					Utils.LOG_INFO("Failed.");
+					Utils.LOG_WARNING("Failed.");
 				}
 			}
 			else {
 				if (CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getFluid(fluidAmount), 100, duration/2, 120)){
-					Utils.LOG_INFO("Success.");
+					Utils.LOG_WARNING("Success.");
 				}	
 				else {
-					Utils.LOG_INFO("Failed.");
+					Utils.LOG_WARNING("Failed.");
 				}				
 			}
 
@@ -236,7 +236,7 @@ public class RecipeGen_BlastSmelter {
 				for (gtPlusPlus.core.material.MaterialStack ternkfsdf:M.getComposites()){
 					mMaterialListSize++;
 				}
-				Utils.LOG_INFO("Size: "+mMaterialListSize);
+				Utils.LOG_WARNING("Size: "+mMaterialListSize);
 				//If this Material has some kind of compound list, proceed
 				if (mMaterialListSize > 1){
 					gtPlusPlus.core.material.MaterialStack[] tempStack = new gtPlusPlus.core.material.MaterialStack[mMaterialListSize];
@@ -248,9 +248,14 @@ public class RecipeGen_BlastSmelter {
 						int ooo=0;
 						for (gtPlusPlus.core.material.MaterialStack xMaterial : M.getComposites()){
 							if (xMaterial != null){
-								Utils.LOG_INFO("FOUND: "+xMaterial.getStackMaterial().getLocalizedName());
-								Utils.LOG_INFO("ADDING: "+xMaterial.getStackMaterial().getLocalizedName());
+								if (xMaterial.getStackMaterial() != null){
+									Utils.LOG_WARNING("FOUND: "+xMaterial.getStackMaterial().getLocalizedName());
+									Utils.LOG_WARNING("ADDING: "+xMaterial.getStackMaterial().getLocalizedName());
+									
+								}
+								
 								tempStack[ooo] = xMaterial;
+								
 							}								
 							ooo++;
 						}
@@ -270,33 +275,33 @@ public class RecipeGen_BlastSmelter {
 						fluidAmount = 144*inputStackCount;
 
 
-						Utils.LOG_INFO("Adding an Alloy Blast Smelter Recipe for "+M.getLocalizedName()+" using it's compound dusts. This material has "+ inputStackCount+" parts. Gives "+fluidAmount+"L of molten metal.");
-						Utils.LOG_INFO("tMaterial.length: "+components.length+".");
+						Utils.LOG_WARNING("Adding an Alloy Blast Smelter Recipe for "+M.getLocalizedName()+" using it's compound dusts. This material has "+ inputStackCount+" parts. Gives "+fluidAmount+"L of molten metal.");
+						Utils.LOG_WARNING("tMaterial.length: "+components.length+".");
 						for (int das=0;das<components.length;das++){
 							if (components[das] != null)
-								Utils.LOG_INFO("tMaterial["+das+"]: "+components[das].getDisplayName()+" Meta: "+components[das].getItemDamage()+", Amount: "+components[das].stackSize);
+								Utils.LOG_WARNING("tMaterial["+das+"]: "+components[das].getDisplayName()+" Meta: "+components[das].getItemDamage()+", Amount: "+components[das].stackSize);
 						}
 						if (M.requiresBlastFurnace()) {
 							if (CORE.RA.addBlastSmelterRecipe(components, M.getFluid(fluidAmount), 100, duration, 500)){
-								Utils.LOG_INFO("Success.");
+								Utils.LOG_WARNING("Success.");
 							}
 							else {
-								Utils.LOG_INFO("Failed.");
+								Utils.LOG_WARNING("Failed.");
 							}
 						}
 						else {
 							if (CORE.RA.addBlastSmelterRecipe(components, M.getFluid(fluidAmount), 100, duration, 240)){
-								Utils.LOG_INFO("Success.");
+								Utils.LOG_WARNING("Success.");
 							}	
 							else {
-								Utils.LOG_INFO("Failed.");
+								Utils.LOG_WARNING("Failed.");
 							}						
 						}
 					}
 				}
 			}
 			else {
-				Utils.LOG_INFO("doTest: "+doTest+" | tMaterial != null: "+(tMaterial != null));
+				Utils.LOG_WARNING("doTest: "+doTest+" | tMaterial != null: "+(tMaterial != null));
 			}
 		}
 

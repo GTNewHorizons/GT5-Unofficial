@@ -12,7 +12,7 @@ public class RecipeGen_DustGeneration {
 	public static void generateRecipes(Material material){
 		int tVoltageMultiplier = material.getMeltingPoint_K() >= 2800 ? 64 : 16;
 
-		Utils.LOG_INFO("Generating Shaped Crafting recipes for "+material.getLocalizedName()); //TODO
+		Utils.LOG_WARNING("Generating Shaped Crafting recipes for "+material.getLocalizedName()); //TODO
 		//Ring Recipe
 
 		if (RecipeUtils.addShapedGregtechRecipe(
@@ -20,10 +20,10 @@ public class RecipeGen_DustGeneration {
 				null, material.getRod(1), null,
 				null, null, null,
 				material.getRing(1))){
-			Utils.LOG_INFO("Ring Recipe: "+material.getLocalizedName()+" - Success");
+			Utils.LOG_WARNING("Ring Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_INFO("Ring Recipe: "+material.getLocalizedName()+" - Failed");			
+			Utils.LOG_WARNING("Ring Recipe: "+material.getLocalizedName()+" - Failed");			
 		}
 
 
@@ -39,10 +39,10 @@ public class RecipeGen_DustGeneration {
 				tinyDust, tinyDust, tinyDust, 
 				tinyDust, tinyDust, tinyDust,
 				normalDust)){
-			Utils.LOG_INFO("9 Tiny dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Success");
+			Utils.LOG_WARNING("9 Tiny dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_INFO("9 Tiny dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");			
+			Utils.LOG_WARNING("9 Tiny dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");			
 		}
 
 		if (RecipeUtils.recipeBuilder(
@@ -50,10 +50,10 @@ public class RecipeGen_DustGeneration {
 				null, null, null, 
 				null, null, null,
 				material.getTinyDust(9))){
-			Utils.LOG_INFO("9 Tiny dust from 1 Recipe: "+material.getLocalizedName()+" - Success");
+			Utils.LOG_WARNING("9 Tiny dust from 1 Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_INFO("9 Tiny dust from 1 Recipe: "+material.getLocalizedName()+" - Failed");			
+			Utils.LOG_WARNING("9 Tiny dust from 1 Recipe: "+material.getLocalizedName()+" - Failed");			
 		}
 
 
@@ -62,10 +62,10 @@ public class RecipeGen_DustGeneration {
 				smallDust, smallDust, null, 
 				null, null, null,
 				normalDust)){
-			Utils.LOG_INFO("4 Small dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Success");
+			Utils.LOG_WARNING("4 Small dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_INFO("4 Small dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");			
+			Utils.LOG_WARNING("4 Small dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");			
 		}
 
 
@@ -74,22 +74,22 @@ public class RecipeGen_DustGeneration {
 				null, null, null, 
 				null, null, null,
 				material.getSmallDust(4))){
-			Utils.LOG_INFO("4 Small dust from 1 Dust Recipe: "+material.getLocalizedName()+" - Success");
+			Utils.LOG_WARNING("4 Small dust from 1 Dust Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_INFO("4 Small dust from 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");			
+			Utils.LOG_WARNING("4 Small dust from 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");			
 		}
 
 
-		if (inputStacks.length > 0){
-			Utils.LOG_INFO(ItemUtils.getArrayStackNames(inputStacks));
+		if (inputStacks.length > 0 && inputStacks.length <= 4){
+			Utils.LOG_WARNING(ItemUtils.getArrayStackNames(inputStacks));
 			long[] inputStackSize = material.vSmallestRatio;
 			if (inputStackSize != null){
 				for (short x=0;x<inputStacks.length;x++){
 					if (inputStacks[x] != null && inputStackSize[x] != 0)
 					inputStacks[x].stackSize = (int) inputStackSize[x];
 				}
-				Utils.LOG_INFO(ItemUtils.getArrayStackNames(inputStacks));			
+				Utils.LOG_WARNING(ItemUtils.getArrayStackNames(inputStacks));			
 				if (GT_Values.RA.addMixerRecipe(
 						inputStacks[0], inputStacks[1],
 						inputStacks[2], inputStacks[3],
@@ -97,10 +97,10 @@ public class RecipeGen_DustGeneration {
 						outputStacks,
 						(int) Math.max(material.getMass() * 2L * 1, 1),
 						6 * material.vVoltageMultiplier)){
-					Utils.LOG_INFO("Dust Mixer Recipe: "+material.getLocalizedName()+" - Success");
+					Utils.LOG_WARNING("Dust Mixer Recipe: "+material.getLocalizedName()+" - Success");
 				}
 				else {
-					Utils.LOG_INFO("Dust Mixer Recipe: "+material.getLocalizedName()+" - Failed");			
+					Utils.LOG_WARNING("Dust Mixer Recipe: "+material.getLocalizedName()+" - Failed");			
 				}
 			}
 		}

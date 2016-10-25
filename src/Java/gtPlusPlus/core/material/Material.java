@@ -167,14 +167,25 @@ public class Material {
 			Utils.LOG_WARNING("MaterialInput == null && chemicalSymbol probably equals nothing");
 			this.vChemicalFormula = "??";
 		}
-		
+
 		this.vMoltenFluid = generateFluid();
 
 
 		dataVar = MathUtils.generateSingularRandomHexValue();
 
+		String ratio = "";
+		if (vSmallestRatio != null)
+		for (int hu=0;hu<vSmallestRatio.length;hu++){
+			if (ratio.equals("")){
+				ratio = String.valueOf(vSmallestRatio[hu]);
+			}
+			else {
+				ratio = ratio + ":" +vSmallestRatio[hu];
+			}		
+		}
+		
 		Utils.LOG_INFO("Creating a Material instance for "+materialName);
-		Utils.LOG_INFO("Formula: "+vChemicalFormula + " Smallest Stack: "+smallestStackSizeWhenProcessing+" Smallest Ratio:"+vSmallestRatio);
+		Utils.LOG_INFO("Formula: "+vChemicalFormula + " Smallest Stack: "+smallestStackSizeWhenProcessing+" Smallest Ratio:"+ratio);
 		Utils.LOG_INFO("Protons: "+vProtons);
 		Utils.LOG_INFO("Neutrons: "+vNeutrons);
 		Utils.LOG_INFO("Mass: "+vMass+"/units");
@@ -296,11 +307,11 @@ public class Material {
 	}
 
 	public ItemStack[] getMaterialComposites(){
-		//Utils.LOG_INFO("Something requested the materials needed for "+localizedName);
+		//Utils.LOG_WARNING("Something requested the materials needed for "+localizedName);
 		if (vMaterialInput != null && vMaterialInput.length >= 1){
 			ItemStack[] temp = new ItemStack[vMaterialInput.length];
 			for (int i=0;i<vMaterialInput.length;i++){
-				//Utils.LOG_INFO("i:"+i);
+				//Utils.LOG_WARNING("i:"+i);
 				ItemStack testNull = null;
 				try {
 					testNull = vMaterialInput[i].getDustStack();
@@ -310,7 +321,7 @@ public class Material {
 				}
 				try {
 					if (testNull != null){
-						//Utils.LOG_INFO("not null");
+						//Utils.LOG_WARNING("not null");
 						temp[i] = vMaterialInput[i].getDustStack();
 					}
 				} catch (Throwable r){
@@ -395,7 +406,7 @@ public class Material {
 			if (inputs.length > 0){
 				Utils.LOG_WARNING("length: "+inputs.length);
 				Utils.LOG_WARNING("(inputs != null): "+(inputs != null));
-				//Utils.LOG_INFO("length: "+inputs.length);
+				//Utils.LOG_WARNING("length: "+inputs.length);
 				double tempPercentage=0;
 				long[] tempRatio = new long[inputs.length];
 				for (int x=0;x<inputs.length;x++){
@@ -407,7 +418,7 @@ public class Material {
 				}
 				//Check if % of added materials equals roughly 100%
 				/*if (tempPercentage <= 95 || tempPercentage >= 101){
-					Utils.LOG_INFO("The compound for "+localizedName+" doesn't equal 98-100%, this isn't good.");
+					Utils.LOG_WARNING("The compound for "+localizedName+" doesn't equal 98-100%, this isn't good.");
 				}*/
 
 				long[] smallestRatio = MathUtils.simplifyNumbersToSmallestForm(tempRatio);
@@ -465,19 +476,34 @@ public class Material {
 					if (dummyFormulaArray.length >= 1){
 						for (int e=0;e<tempInput.length;e++){
 							if (tempInput[e] != null){
-								if (!tempInput[e].stackMaterial.vChemicalSymbol.equals("??")){
-									if (dummyFormulaArray[e] > 1){
-										dummyFormula = dummyFormula + tempInput[e].stackMaterial.vChemicalSymbol + dummyFormulaArray[e];
-									}
-									else if (dummyFormulaArray[e] == 1){
-										dummyFormula = dummyFormula + tempInput[e].stackMaterial.vChemicalSymbol;
-									}
-									else if (dummyFormulaArray[e] <= 0){
-										dummyFormula = dummyFormula+"";
-									}
+								if (tempInput[e].stackMaterial != null){
+									if (!tempInput[e].stackMaterial.vChemicalSymbol.equals("??")){
+										if (dummyFormulaArray[e] > 1){
 
-								}else
-									dummyFormula = dummyFormula + "??";
+											if (tempInput[e].stackMaterial.vChemicalFormula.length() > 3){
+												dummyFormula = dummyFormula + "(" + tempInput[e].stackMaterial.vChemicalFormula + ")" + dummyFormulaArray[e];										
+											}
+											else {
+												dummyFormula = dummyFormula + tempInput[e].stackMaterial.vChemicalFormula + dummyFormulaArray[e];										
+											}
+										}
+										else if (dummyFormulaArray[e] == 1){
+											if (tempInput[e].stackMaterial.vChemicalFormula.length() > 3){
+												dummyFormula = dummyFormula + "(" +tempInput[e].stackMaterial.vChemicalFormula + ")";											
+											}
+											else {
+												dummyFormula = dummyFormula + "" +tempInput[e].stackMaterial.vChemicalFormula + "";											
+											}
+										}
+										else if (dummyFormulaArray[e] <= 0){
+											dummyFormula = dummyFormula+"";
+										}
+									}
+									else
+										dummyFormula = dummyFormula + "??";
+								}
+								else
+									dummyFormula = dummyFormula + "▓▓";
 							}
 							else {
 								dummyFormula = dummyFormula+"";
@@ -496,11 +522,11 @@ public class Material {
 		return "??";
 
 	}
-	
+
 	Fluid generateFluid(){
 		if (Materials.get(localizedName).mFluid == null){
-			Utils.LOG_INFO("Generating our own fluid.");
-			
+			Utils.LOG_WARNING("Generating our own fluid.");
+
 			//Generate a Cell if we need to
 			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+getUnlocalizedName(), 1) == null){
 				Item temp = new BaseItemCell(this);
@@ -515,21 +541,21 @@ public class Material {
 					ItemList.Cell_Empty.get(1L, new Object[0]),
 					1000);
 		}
-		Utils.LOG_INFO("Getting the fluid from a GT material instead.");
+		Utils.LOG_WARNING("Getting the fluid from a GT material instead.");
 		return Materials.get(localizedName).mFluid;
 	}
 
 	public FluidStack getFluid(int fluidAmount) {
-		Utils.LOG_INFO("Attempting to get "+fluidAmount+"L of "+this.vMoltenFluid.getName());
+		Utils.LOG_WARNING("Attempting to get "+fluidAmount+"L of "+this.vMoltenFluid.getName());
 
 		FluidStack moltenFluid = new FluidStack(this.vMoltenFluid, fluidAmount);
-		
-		Utils.LOG_INFO("Info: "+moltenFluid.getFluid().getName()+" Info: "+moltenFluid.amount+" Info: "+moltenFluid.getFluidID());
-		
+
+		Utils.LOG_WARNING("Info: "+moltenFluid.getFluid().getName()+" Info: "+moltenFluid.amount+" Info: "+moltenFluid.getFluidID());
+
 		//FluidStack moltenFluid = FluidUtils.getFluidStack(this.vMoltenFluid.getName(), fluidAmount);
 		/*boolean isNull = (moltenFluid == null);
-		if (isNull) Utils.LOG_INFO("Did not obtain fluid.");
-		else Utils.LOG_INFO("Found fluid.");
+		if (isNull) Utils.LOG_WARNING("Did not obtain fluid.");
+		else Utils.LOG_WARNING("Found fluid.");
 		if (isNull){
 			return null;
 		}*/
