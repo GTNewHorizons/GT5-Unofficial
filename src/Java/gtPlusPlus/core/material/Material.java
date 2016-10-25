@@ -1,19 +1,26 @@
 package gtPlusPlus.core.material;
 
 import static gregtech.api.enums.GT_Values.M;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gtPlusPlus.core.item.base.cell.BaseItemCell;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.materials.MaterialUtils;
 import gtPlusPlus.core.util.math.MathUtils;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 public class Material {
 
 	final String unlocalizedName;
 	final String localizedName;
+
+	final Fluid vMoltenFluid;
 
 	protected Object dataVar;
 
@@ -147,14 +154,6 @@ public class Material {
 		}
 
 
-
-		/*if (tempSmallestSize <= 64 && tempSmallestSize >= 1){
-			this.smallestStackSizeWhenProcessing = tempSmallestSize; //Valid stacksizes
-		}
-		else {
-			this.smallestStackSizeWhenProcessing = 50; //Can divide my math by 1/2 and round it~
-		}*/
-
 		//Makes a Fancy Chemical Tooltip
 		this.vChemicalSymbol = chemicalSymbol;
 		if (vMaterialInput != null){
@@ -168,6 +167,9 @@ public class Material {
 			Utils.LOG_WARNING("MaterialInput == null && chemicalSymbol probably equals nothing");
 			this.vChemicalFormula = "??";
 		}
+		
+		this.vMoltenFluid = generateFluid();
+
 
 		dataVar = MathUtils.generateSingularRandomHexValue();
 
@@ -319,7 +321,7 @@ public class Material {
 		}
 		return new ItemStack[]{};
 	}
-	
+
 	public MaterialStack[] getComposites(){		
 		return this.vMaterialInput;
 	}
@@ -494,11 +496,47 @@ public class Material {
 		return "??";
 
 	}
-
-	public FluidStack getMolten(int fluidAmount) {
-		Utils.LOG_INFO("Getting "+fluidAmount+"L of "+unlocalizedName.toLowerCase());
-		return FluidUtils.getFluidStack(unlocalizedName.toLowerCase(), fluidAmount);
+	
+	Fluid generateFluid(){
+		if (Materials.get(localizedName).mFluid == null){
+			Utils.LOG_INFO("Generating our own fluid.");
+			
+			//Generate a Cell if we need to
+			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+getUnlocalizedName(), 1) == null){
+				Item temp = new BaseItemCell(this);
+			}
+			return FluidUtils.addGTFluid(
+					this.getUnlocalizedName(),
+					"Molten "+this.getLocalizedName(),		
+					this.RGBA,
+					4,
+					this.getMeltingPoint_K(),
+					ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+getUnlocalizedName(), 1),
+					ItemList.Cell_Empty.get(1L, new Object[0]),
+					1000);
+		}
+		Utils.LOG_INFO("Getting the fluid from a GT material instead.");
+		return Materials.get(localizedName).mFluid;
 	}
+
+	public FluidStack getFluid(int fluidAmount) {
+		Utils.LOG_INFO("Attempting to get "+fluidAmount+"L of "+this.vMoltenFluid.getName());
+
+		FluidStack moltenFluid = new FluidStack(this.vMoltenFluid, fluidAmount);
+		
+		Utils.LOG_INFO("Info: "+moltenFluid.getFluid().getName()+" Info: "+moltenFluid.amount+" Info: "+moltenFluid.getFluidID());
+		
+		//FluidStack moltenFluid = FluidUtils.getFluidStack(this.vMoltenFluid.getName(), fluidAmount);
+		/*boolean isNull = (moltenFluid == null);
+		if (isNull) Utils.LOG_INFO("Did not obtain fluid.");
+		else Utils.LOG_INFO("Found fluid.");
+		if (isNull){
+			return null;
+		}*/
+		return moltenFluid;
+	}
+
+
 
 
 

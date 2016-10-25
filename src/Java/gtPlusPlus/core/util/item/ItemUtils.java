@@ -29,7 +29,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.materials.MaterialUtils;
 import gtPlusPlus.core.util.wrapper.var;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelter;
@@ -364,9 +363,7 @@ public class ItemUtils {
 		RecipeGen_Extruder.generateRecipes(matInfo);
 		RecipeGen_ShapedCrafting.generateRecipes(matInfo);
 		RecipeGen_DustGeneration.generateRecipes(matInfo);
-		RecipeGen_BlastSmelter.generateARecipe(matInfo);
-
-		FluidUtils.generateFluid(matInfo, 1);
+		RecipeGen_BlastSmelter.generateARecipe(matInfo);		
 
 	}
 

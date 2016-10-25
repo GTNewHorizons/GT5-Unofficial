@@ -1,30 +1,25 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
-import gtPlusPlus.core.util.recipe.RecipeUtils;
 import net.minecraft.item.ItemStack;
 
 public class RecipeGen_BlastSmelter {
 
 	public static void generateRecipes(){
-
+/*
 		Materials[] GregMaterials = Materials.values();
 
 		for (Materials M : GregMaterials){
 
 			if (M.equals(Materials.Iridium) || M.equals(Materials.Osmium) || M.equals(Materials.Osmiridium)
-					/*|| !M.equals(Materials.Osmiridium) || !M.equals(Materials.Osmiridium) || !M.equals(Materials.Osmiridium)
+					|| !M.equals(Materials.Osmiridium) || !M.equals(Materials.Osmiridium) || !M.equals(Materials.Osmiridium)
 					 || !M.equals(Materials.Osmiridium) || !M.equals(Materials.Osmiridium) || !M.equals(Materials.Osmiridium)
 					 || !M.equals(Materials.Osmiridium) || !M.equals(Materials.Osmiridium) || !M.equals(Materials.Osmiridium)
-					 || !M.equals(Materials.Osmiridium) || !M.equals(Materials.Osmiridium) || !M.equals(Materials.Osmiridium)*/
+					 || !M.equals(Materials.Osmiridium) || !M.equals(Materials.Osmiridium) || !M.equals(Materials.Osmiridium)
 					){
 
 
@@ -160,7 +155,7 @@ public class RecipeGen_BlastSmelter {
 					}
 				}
 			}
-		}
+		}*/
 	}
 
 
@@ -206,10 +201,29 @@ public class RecipeGen_BlastSmelter {
 
 			//Generate Recipes for all singular materials that can be made molten.
 			if (M.requiresBlastFurnace()) {
-				CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getMolten(fluidAmount), 100, duration, 240);
+				
+				if (M.getFluid(10) == null){
+					Utils.LOG_INFO("Material Fluid was Null. Why you lie gaem.");
+				}
+				else {
+					Utils.LOG_INFO("Material Fluid: "+M.getFluid(10).getFluid().getName());
+					
+				}
+				
+				if (CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getFluid(fluidAmount), 100, duration, 240)){
+					Utils.LOG_INFO("Success.");
+				}
+				else {
+					Utils.LOG_INFO("Failed.");
+				}
 			}
 			else {
-				CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getMolten(fluidAmount), 100, duration/2, 120);					
+				if (CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getFluid(fluidAmount), 100, duration/2, 120)){
+					Utils.LOG_INFO("Success.");
+				}	
+				else {
+					Utils.LOG_INFO("Failed.");
+				}				
 			}
 
 			if (tMaterial != null){
@@ -263,10 +277,20 @@ public class RecipeGen_BlastSmelter {
 								Utils.LOG_INFO("tMaterial["+das+"]: "+components[das].getDisplayName()+" Meta: "+components[das].getItemDamage()+", Amount: "+components[das].stackSize);
 						}
 						if (M.requiresBlastFurnace()) {
-							CORE.RA.addBlastSmelterRecipe(components, M.getMolten(fluidAmount), 100, duration, 500);							
+							if (CORE.RA.addBlastSmelterRecipe(components, M.getFluid(fluidAmount), 100, duration, 500)){
+								Utils.LOG_INFO("Success.");
+							}
+							else {
+								Utils.LOG_INFO("Failed.");
+							}
 						}
 						else {
-							CORE.RA.addBlastSmelterRecipe(components, M.getMolten(fluidAmount), 100, duration, 240);							
+							if (CORE.RA.addBlastSmelterRecipe(components, M.getFluid(fluidAmount), 100, duration, 240)){
+								Utils.LOG_INFO("Success.");
+							}	
+							else {
+								Utils.LOG_INFO("Failed.");
+							}						
 						}
 					}
 				}

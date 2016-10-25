@@ -128,7 +128,8 @@ public class BaseItemComponent extends Item{
 		SCREW("Screw", " Screw", "screw"),
 		BOLT("Bolt", " Bolt", "bolt"),
 		ROTOR("Rotor", " Rotor", "rotor"),
-		RING("Ring", " Ring", "ring");	    
+		RING("Ring", " Ring", "ring"), 
+		CELL("Cell", " Cell", "cell");	    
 
 		private String COMPONENT_NAME;
 		private String DISPLAY_NAME;

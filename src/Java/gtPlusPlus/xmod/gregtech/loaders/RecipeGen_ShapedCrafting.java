@@ -77,26 +77,30 @@ public class RecipeGen_ShapedCrafting {
 
 
 		//Add a shapeless recipe for each dust this way - Compat mode.
-		ItemStack[] shapelessInput = new ItemStack[material.getMaterialComposites().length];
-		int arrayLocation=0;
-		if (shapelessInput.length > 1){
-			for (ItemStack I : material.getMaterialComposites()){
-				if (I != null && material.vSmallestRatio != null){
-					shapelessInput[arrayLocation] = I;
-					shapelessInput[arrayLocation].stackSize = (int) material.vSmallestRatio[arrayLocation];
+		/*ItemStack[] inputStacks = material.getMaterialComposites();
+		ItemStack outputStacks = material.getDust(material.smallestStackSizeWhenProcessing);
+		
+		if (inputStacks.length > 0){
+			Utils.LOG_INFO(ItemUtils.getArrayStackNames(inputStacks));
+			long[] inputStackSize = material.vSmallestRatio;
+			if (inputStackSize != null){
+				for (short x=0;x<inputStacks.length;x++){
+					if (inputStacks[x] != null && inputStackSize[x] != 0)
+					inputStacks[x].stackSize = (int) inputStackSize[x];
+				}
+				Utils.LOG_INFO(ItemUtils.getArrayStackNames(inputStacks));			
+				if (RecipeUtils.buildShapelessRecipe(
+						outputStacks, 
+						inputStacks
+						)){
+					Utils.LOG_INFO("Shapeless Crafting Recipe: "+material.getLocalizedName()+" - Success");
+				}
+				else {
+					Utils.LOG_INFO("Shapeless Crafting Recipe: "+material.getLocalizedName()+" - Failed");			
 				}
 			}
-			if (RecipeUtils.buildShapelessRecipe(
-					material.getDust(material.smallestStackSizeWhenProcessing), 
-					shapelessInput
-					)){
-				Utils.LOG_INFO("Shapeless Recipe: "+material.getLocalizedName()+" - Success");
-			}
-			else {
-				Utils.LOG_INFO("Shapeless Recipe: "+material.getLocalizedName()+" - Failed");			
-			}
-		}
-
+		}*/			
+		
 
 		//Shaped Recipe - Bolts
 		if (!material.isRadioactive){

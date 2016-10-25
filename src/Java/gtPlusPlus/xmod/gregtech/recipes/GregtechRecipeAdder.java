@@ -237,6 +237,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 	@Override
 	public boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aOutput, int aChance, int aDuration, int aEUt) {
 		if ((aInput == null) || (aOutput == null)) {
+			Utils.LOG_INFO("Fail - Input or Output was null.");
 			return false;
 		}
 		        
