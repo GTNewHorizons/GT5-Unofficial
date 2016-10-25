@@ -100,7 +100,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Food_Baked_Raisin_Bread, 
 	
 	//For sintering TODO
-	Industrial_SinterFurnace, 
+	Industrial_AlloyBlastSmelter, 
 	
 	//Block that enables uplink to a superconductor network
 	SuperConductorInputNode, 
