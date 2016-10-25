@@ -5,7 +5,7 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.entity.EntityUtils;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class BaseItemComponent extends Item{
 		this.setMaxStackSize(64);
 		this.setTextureName(CORE.MODID + ":" + "item"+componentType.COMPONENT_NAME);
 		GameRegistry.registerItem(this, unlocalName);
-		GT_OreDictUnificator.registerOre(componentType.getOreDictName()+material.getUnlocalizedName(), UtilsItems.getSimpleStack(this));
+		GT_OreDictUnificator.registerOre(componentType.getOreDictName()+material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
 	}
 
 	@Override

@@ -6,7 +6,8 @@ import gtPlusPlus.core.handler.Recipes.LateRegistrationHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.recipe.shapeless.ShapelessUtils;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -21,7 +22,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public class UtilsRecipe {
+public class RecipeUtils {
 
 	public static boolean recipeBuilder(Object slot_1, Object slot_2, Object slot_3, Object slot_4, Object slot_5, Object slot_6, Object slot_7, Object slot_8, Object slot_9, ItemStack resultItem){	
 
@@ -243,7 +244,7 @@ public class UtilsRecipe {
 	public static boolean removeCraftingRecipe(Object x){
 		if (null == x){return false;}
 		if (x instanceof String){	
-			Item R = UtilsItems.getItem((String) x);
+			Item R = ItemUtils.getItem((String) x);
 			if (R != null){
 				x = R;
 			}
@@ -269,7 +270,7 @@ public class UtilsRecipe {
 					return false;
 				}
 			}			
-			if (UtilsRecipe.attemptRecipeRemoval((Item) x)){
+			if (RecipeUtils.attemptRecipeRemoval((Item) x)){
 				Utils.LOG_INFO("Recipe removal successful");
 				return true;
 			}
@@ -358,12 +359,12 @@ public class UtilsRecipe {
 	public static void addShapelessGregtechRecipe(ItemStack OutputItem, Object... inputItems){
 
 		for(Object whatever : inputItems){
-	        if (!(whatever instanceof ItemStack) && !(whatever instanceof String)){
+			if (!(whatever instanceof ItemStack) && !(whatever instanceof String)){
 				Utils.LOG_INFO("One Input item was not an ItemStack of an OreDict String.");
-	        	return;
-	        }
-	    }
-		
+				return;
+			}
+		}
+
 		GT_ModHandler.addShapelessCraftingRecipe(OutputItem,
 				GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
 				new Object[]{inputItems});
@@ -372,6 +373,10 @@ public class UtilsRecipe {
 	public static ItemStack getItemStackFromOreDict(String oredictName){
 		ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
 		return oreDictList.get(0);
+	}
+
+	public static boolean buildShapelessRecipe(ItemStack output, Object[] input){
+		return ShapelessUtils.addShapelessRecipe(output, input);				
 	}
 
 }

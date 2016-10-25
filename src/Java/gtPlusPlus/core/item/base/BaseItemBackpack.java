@@ -5,7 +5,7 @@ import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.GuiHandler;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,7 +28,7 @@ public class BaseItemBackpack extends Item{
 	this.setTextureName(CORE.MODID + ":" + "itemBackpack");
 	this.colourValue = colour;
 	GameRegistry.registerItem(this, unlocalizedName);
-	GT_OreDictUnificator.registerOre("storageBackpack", UtilsItems.getSimpleStack(this));
+	GT_OreDictUnificator.registerOre("storageBackpack", ItemUtils.getSimpleStack(this));
 	setMaxStackSize(1);
 	setCreativeTab(AddToCreativeTab.tabOther);
 	}

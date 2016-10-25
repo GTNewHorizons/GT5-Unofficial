@@ -4,7 +4,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.entity.EntityUtils;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class ItemBlockGtBlock extends ItemBlock{
 		else {
 			sRadiation = 0;
 		}
-		GT_OreDictUnificator.registerOre("block"+block.getUnlocalizedName().replace("tile.block", "").replace("tile.", "").replace("of", "").replace("Of", "").replace("Block", "").replace("-", "").replace("_", "").replace(" ", ""), UtilsItems.getSimpleStack(this));
+		GT_OreDictUnificator.registerOre("block"+block.getUnlocalizedName().replace("tile.block", "").replace("tile.", "").replace("of", "").replace("Of", "").replace("Block", "").replace("-", "").replace("_", "").replace(" ", ""), ItemUtils.getSimpleStack(this));
 	}
 
     public int getRenderColor(int aMeta) {

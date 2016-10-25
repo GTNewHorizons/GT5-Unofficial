@@ -1,6 +1,6 @@
 package gtPlusPlus.core.material;
 
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -14,12 +14,9 @@ public class MaterialStack {
 	final double percentageToUse;
 
 	public MaterialStack(Material inputs, double partOutOf100){
-
 		this.stackMaterial = inputs;
 		this.percentageToUse = partOutOf100;
 		this.vAmount = math(partOutOf100);
-
-
 	}
 
 	private int[] math(double val){	
@@ -37,6 +34,19 @@ public class MaterialStack {
 	public ItemStack getDustStack(){
 		return this.stackMaterial.getDust(this.vAmount[0]);
 	}
+	
+	public ItemStack getDustStack(int amount){
+		return this.stackMaterial.getDust(amount);
+	}
+	
+	public Material getStackMaterial(){
+		return this.stackMaterial;
+	}
+	
+	public long[] getSmallestStackSizes(){
+		return this.stackMaterial.getSmallestRatio(stackMaterial.getComposites());
+	}
+	
 	public int getPartsPerOneHundred(){
 		if (this.vAmount != null){
 			if (this.vAmount[0] >= 1 && this.vAmount[0] <= 100){
@@ -61,83 +71,8 @@ public class MaterialStack {
 		}		
 	}
 
-	/*public ItemStack getDustStack(){
-		int caseStatus = 0;
-		int amount = 0;
-		if (percentageToUse >= 0 && percentageToUse <= 0.99){
-			caseStatus = 1;
-			amount = (int) (1/percentageToUse);
-			//amount = Integer.valueOf(String.valueOf(percentageToUse).charAt(2));
-		}
-		else if (percentageToUse >= 1 && percentageToUse <= 9.99){
-			caseStatus = 2;
-			amount = (int) (percentageToUse);
-			//amount = Integer.valueOf(String.valueOf(percentageToUse).charAt(0));
-		}
-		else if (percentageToUse >= 10 && percentageToUse <= 99.99){
-			caseStatus = 3;
-			amount = (int) (percentageToUse/10);
-			//amount = Integer.valueOf(String.valueOf(percentageToUse).charAt(0));
-		}
-		else if (percentageToUse == 100){
-			caseStatus = 4;
-			amount = 10;
-		}
-		else {
-			amount = 0;
-		}
-		switch (caseStatus) {		
-		case 1:	{
-			return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("dustTiny"+stackMaterial.unlocalizedName, amount);
-		}
-		case 2: {
-			return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("dustSmall"+stackMaterial.unlocalizedName, amount);
-		}
-		case 3: {
-			return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("dust"+stackMaterial.unlocalizedName, amount);
-		}
-		case 4: {
-			return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("dust"+stackMaterial.unlocalizedName, amount);
-		}
-		default:
-			return null;
-		}
-
-	}*/
-
-	/*public int getDustCount(){
-		int amount = 0;
-
-		//No Dust
-		if (percentageToUse >= 0 && percentageToUse <= 11.1111111111111111111111110){
-			//amount = (int) (1/percentageToUse); 
-			amount = 0; //Less than a tiny dust.
-		}
-
-		//Tiny Dust
-		else if (percentageToUse >= 11.1111111111111111111111111 && percentageToUse <= 25){
-			amount = (int) (percentageToUse);
-		}
-
-		//Small Dust
-		else if (percentageToUse >= 10 && percentageToUse <= 99.99){
-			amount = (int) (percentageToUse/10);
-		}
-
-		//Dust
-		else if (percentageToUse == 100){
-			amount = 10;
-		}
-
-		//Error - Nothing
-		else {
-			amount = 0;
-		}
-		return amount;
-	}*/
-
 	public ItemStack[] getValidItemStacks(){
-		return UtilsItems.validItemsForOreDict(stackMaterial.unlocalizedName);
+		return ItemUtils.validItemsForOreDict(stackMaterial.unlocalizedName);
 	}
 
 

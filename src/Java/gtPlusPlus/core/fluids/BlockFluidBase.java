@@ -28,7 +28,7 @@ public class BlockFluidBase extends BlockFluidClassic {
     
     @SuppressWarnings("deprecation")
 	public BlockFluidBase(Fluid fluid, Material material) {
-            super(fluid, net.minecraft.block.material.Material.water);
+            super(fluid, net.minecraft.block.material.Material.lava);
             short[] tempColour = material.getRGBA(); 
             this.colour = Utils.rgbtoHexValue(tempColour[0], tempColour[1], tempColour[2]);
             this.fluidMaterial = material;
@@ -40,7 +40,7 @@ public class BlockFluidBase extends BlockFluidClassic {
     
     @SuppressWarnings("deprecation")
 	public BlockFluidBase(String fluidName, Fluid fluid, short[] colour) {
-            super(fluid, net.minecraft.block.material.Material.water);
+            super(fluid, net.minecraft.block.material.Material.lava);
             short[] tempColour = colour; 
             this.colour = Utils.rgbtoHexValue(tempColour[0], tempColour[1], tempColour[2]);
             setCreativeTab(AddToCreativeTab.tabOther);

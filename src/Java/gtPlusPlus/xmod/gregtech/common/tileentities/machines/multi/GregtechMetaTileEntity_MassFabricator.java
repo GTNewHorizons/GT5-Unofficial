@@ -16,7 +16,7 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MatterFab;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlocks;
 
@@ -39,7 +39,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GT_MetaTileEntity_Mul
 	public static boolean sRequiresUUA = false;
 	private int mAmplifierUsed = 0;
 	private int mMatterProduced = 0;
-	private static Block IC2Glass = Block.getBlockFromItem(UtilsItems.getItem("IC2:blockAlloyGlass"));
+	private static Block IC2Glass = Block.getBlockFromItem(ItemUtils.getItem("IC2:blockAlloyGlass"));
 	FluidStack tempFake = FluidUtils.getFluidStack("uuamplifier", 1);
 	GT_Recipe fakeRecipe;
 	

@@ -6,7 +6,7 @@ import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.fluid.FluidUtils;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import ic2.core.Ic2Items;
 import ic2.core.init.InternalName;
@@ -488,7 +488,7 @@ public class Utils {
 			ItemStack temp = (ItemStack) methode.invoke(item, cellID++, yourName, new Block[0]);
 			Utils.LOG_INFO("Successfully created "+temp.getDisplayName()+"s.");
 			FluidContainerRegistry.registerFluidContainer(FluidUtils.getFluidStack(s.toLowerCase(), 0), temp.copy(), Ic2Items.cell.copy());
-			UtilsItems.addItemToOreDictionary(temp.copy(), "cell"+s);
+			ItemUtils.addItemToOreDictionary(temp.copy(), "cell"+s);
 			return temp;
 		}
 		catch(Exception e){

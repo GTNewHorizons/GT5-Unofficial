@@ -3,7 +3,7 @@ package gtPlusPlus.core.item.general;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.player.PlayerUtils;
 import ic2.api.item.ElectricItem;
@@ -37,7 +37,7 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 		this.setUnlocalizedName(unlocalizedName);
 		this.setMaxStackSize(1);
 		this.setTextureName(CORE.MODID + ":" + "personalCloakingDevice");
-		this.thisStack = UtilsItems.getSimpleStack(this);
+		this.thisStack = ItemUtils.getSimpleStack(this);
 		GameRegistry.registerItem(this, unlocalizedName);
 	}
 

@@ -2,7 +2,7 @@ package gtPlusPlus.core.item.general;
 
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
@@ -38,7 +38,7 @@ public class ItemCloakingDevice extends Item implements IElectricItem, IElectric
 		this.setUnlocalizedName(unlocalizedName);
 		this.setMaxStackSize(1);
 		this.setTextureName(CORE.MODID + ":" + "personalCloakingDevice");
-		this.thisStack = UtilsItems.getSimpleStack(this);
+		this.thisStack = ItemUtils.getSimpleStack(this);
 		this.charge(thisStack, charge, 3, true, false);
 		if (charge == 10000*20*500){
 			this.setDamage(thisStack, 13);	

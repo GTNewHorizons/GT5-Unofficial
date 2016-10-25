@@ -3,9 +3,9 @@ package gtPlusPlus.core.item.tool.staballoy;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.recipe.UtilsRecipe;
+import gtPlusPlus.core.util.recipe.RecipeUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
@@ -60,18 +60,18 @@ public class MultiSpadeBase extends StaballoySpade{
 		String toolFile = "craftingToolFile";
 		String toolScrewDriver = "craftingToolScrewdriver";
 		
-		if (null == UtilsItems.getItemStackOfAmountFromOreDictNoBroken(rodLong, 1)){
+		if (null == ItemUtils.getItemStackOfAmountFromOreDictNoBroken(rodLong, 1)){
 			return false;
 		}
-		if (null == UtilsItems.getItemStackOfAmountFromOreDictNoBroken(plateDense, 1)){
+		if (null == ItemUtils.getItemStackOfAmountFromOreDictNoBroken(plateDense, 1)){
 			return false;
 		}		
 		
-		UtilsRecipe.recipeBuilder(
+		RecipeUtils.recipeBuilder(
 				toolFile, plateDense, toolHammer,
 				null, rodLong, null,
 				toolWrench, rodLong, toolScrewDriver,
-				UtilsItems.getSimpleStack(this));
+				ItemUtils.getSimpleStack(this));
 		
 		return true;
 	}

@@ -506,10 +506,11 @@ public final class ALLOY {
 			128, //Neutrons
 			true, //Uses Blast furnace?
 			new MaterialStack[]{
-					new MaterialStack(ELEMENT.NICKEL, 25),
-					new MaterialStack(ELEMENT.CHROMIUM, 25),
-					new MaterialStack(ELEMENT.IRON, 25),
-					new MaterialStack(ELEMENT.TUNGSTEN, 25)
+					new MaterialStack(ELEMENT.NICKEL, 30),
+					new MaterialStack(ELEMENT.CHROMIUM, 10),
+					new MaterialStack(ELEMENT.ZIRCONIUM, 20),
+					new MaterialStack(ELEMENT.IRON, 30),
+					new MaterialStack(ELEMENT.TUNGSTEN, 10)
 			});	//Material Stacks with Percentage of required elements.
 
 

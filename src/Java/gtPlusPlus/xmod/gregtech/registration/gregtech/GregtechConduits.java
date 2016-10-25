@@ -13,8 +13,8 @@ import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.UtilsItems;
-import gtPlusPlus.core.util.recipe.UtilsRecipe;
+import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.recipe.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GregtechMetaPipeEntityFluid;
@@ -241,15 +241,15 @@ public class GregtechConduits {
 
 		Utils.LOG_INFO("Generating "+output+" pipes & respective recipes.");		
 
-		ItemStack pipeIngot = UtilsItems.getItemStackOfAmountFromOreDict("ingot"+output, 1).copy();
-		ItemStack pipePlate = UtilsItems.getItemStackOfAmountFromOreDict("plate"+output, 1).copy();
+		ItemStack pipeIngot = ItemUtils.getItemStackOfAmountFromOreDict("ingot"+output, 1).copy();
+		ItemStack pipePlate = ItemUtils.getItemStackOfAmountFromOreDict("plate"+output, 1).copy();
 
 		//Check all pipes are not null
-		Utils.LOG_INFO("Generated pipeTiny from "+ materialName +"? "+ ((UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Tiny"+output, 1) != null) ? true : false));
-		Utils.LOG_INFO("Generated pipeSmall from "+ materialName +"? "+ ((UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Small"+output, 1) != null) ? true : false));
-		Utils.LOG_INFO("Generated pipeNormal from "+ materialName +"? "+ ((UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Medium"+output, 1) != null) ? true : false));
-		Utils.LOG_INFO("Generated pipeLarge from "+ materialName +"? "+ ((UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Large"+output, 1) != null) ? true : false));
-		Utils.LOG_INFO("Generated pipeHuge from "+ materialName +"? "+ ((UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1) != null) ? true : false));
+		Utils.LOG_INFO("Generated pipeTiny from "+ materialName +"? "+ ((ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Tiny"+output, 1) != null) ? true : false));
+		Utils.LOG_INFO("Generated pipeSmall from "+ materialName +"? "+ ((ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Small"+output, 1) != null) ? true : false));
+		Utils.LOG_INFO("Generated pipeNormal from "+ materialName +"? "+ ((ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Medium"+output, 1) != null) ? true : false));
+		Utils.LOG_INFO("Generated pipeLarge from "+ materialName +"? "+ ((ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Large"+output, 1) != null) ? true : false));
+		Utils.LOG_INFO("Generated pipeHuge from "+ materialName +"? "+ ((ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1) != null) ? true : false));
 
 		int eut = 128;
 		int time = 0;
@@ -260,62 +260,62 @@ public class GregtechConduits {
 
 
 		//Add the Three Shaped Recipes First		
-		UtilsRecipe.recipeBuilder(
+		RecipeUtils.recipeBuilder(
 				pipePlate, "craftingToolWrench", pipePlate,
 				pipePlate, null, pipePlate,
 				pipePlate, "craftingToolHardHammer", pipePlate,
-				UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Small"+output, 6));
+				ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Small"+output, 6));
 
-		UtilsRecipe.recipeBuilder(
+		RecipeUtils.recipeBuilder(
 				pipePlate, pipePlate, pipePlate,
 				"craftingToolWrench", null, "craftingToolHardHammer",
 				pipePlate, pipePlate, pipePlate,
-				UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Medium"+output, 2));
+				ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Medium"+output, 2));
 
-		UtilsRecipe.recipeBuilder(
+		RecipeUtils.recipeBuilder(
 				pipePlate, "craftingToolHardHammer", pipePlate,
 				pipePlate, null, pipePlate,
 				pipePlate, "craftingToolWrench", pipePlate,
-				UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Large"+output, 1));
+				ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Large"+output, 1));
 
 		GT_Values.RA.addExtruderRecipe(
-				UtilsItems.getSimpleStack(pipeIngot, 1),
+				ItemUtils.getSimpleStack(pipeIngot, 1),
 				ItemList.Shape_Extruder_Pipe_Tiny.get(0),
-				UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Tiny"+output, 2),
+				ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Tiny"+output, 2),
 				time, eut);
 
 		GT_Values.RA.addExtruderRecipe(
-				UtilsItems.getSimpleStack(pipeIngot, 1),
+				ItemUtils.getSimpleStack(pipeIngot, 1),
 				ItemList.Shape_Extruder_Pipe_Small.get(0),
-				UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Small"+output, 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Small"+output, 1),
 				time+=bonusMulti, eut);
 
 		GT_Values.RA.addExtruderRecipe(
-				UtilsItems.getSimpleStack(pipeIngot, 3),
+				ItemUtils.getSimpleStack(pipeIngot, 3),
 				ItemList.Shape_Extruder_Pipe_Medium.get(0),
-				UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Medium"+output, 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Medium"+output, 1),
 				time+=bonusMulti, eut);
 
 		GT_Values.RA.addExtruderRecipe(
-				UtilsItems.getSimpleStack(pipeIngot, 6),
+				ItemUtils.getSimpleStack(pipeIngot, 6),
 				ItemList.Shape_Extruder_Pipe_Large.get(0),
-				UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Large"+output, 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Large"+output, 1),
 				time+=bonusMulti, eut);
 
 		GT_Values.RA.addExtruderRecipe(
-				UtilsItems.getSimpleStack(pipeIngot, 12),
+				ItemUtils.getSimpleStack(pipeIngot, 12),
 				ItemList.Shape_Extruder_Pipe_Huge.get(0),
-				UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1),
 				time+=bonusMulti, eut);
 
 		if (eut < 512 && !output.equals("Void")){
-			ItemStack pipePlateDouble = UtilsItems.getItemStackOfAmountFromOreDict("plateDouble"+output, 1).copy();
+			ItemStack pipePlateDouble = ItemUtils.getItemStackOfAmountFromOreDict("plateDouble"+output, 1).copy();
 			if (pipePlateDouble != null)
-				UtilsRecipe.recipeBuilder(
+				RecipeUtils.recipeBuilder(
 						pipePlateDouble, "craftingToolHardHammer", pipePlateDouble,
 						pipePlateDouble, null, pipePlateDouble,
 						pipePlateDouble, "craftingToolWrench", pipePlateDouble,
-						UtilsItems.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1));
+						ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1));
 			else
 				Utils.LOG_INFO("Failed to add a recipe for "+materialName+" Huge pipes. Double plates probably do not exist.");
 		}
@@ -330,6 +330,6 @@ public class GregtechConduits {
 			returnValue.stackSize = amount;
 			return returnValue;
 		}
-		return UtilsItems.getSimpleStack(ModItems.AAA_Broken, amount);
+		return ItemUtils.getSimpleStack(ModItems.AAA_Broken, amount);
 	}
 }

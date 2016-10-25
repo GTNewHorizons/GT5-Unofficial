@@ -4,7 +4,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import gtPlusPlus.xmod.gregtech.recipes.machines.RECIPEHANDLER_CokeOven;
 import gtPlusPlus.xmod.gregtech.recipes.machines.RECIPEHANDLER_MatterFabricator;
@@ -204,7 +204,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				return false;
 			}
 			if (aOutputItems != null){
-				Utils.LOG_INFO("Recipe will output: "+UtilsItems.getArrayStackNames(aOutputItems));
+				Utils.LOG_INFO("Recipe will output: "+ItemUtils.getArrayStackNames(aOutputItems));
 			}
 			if ((aFluidOutput != null) && ((aDuration = GregTech_API.sRecipeFile.get("dehydrator", aFluidOutput.getFluid().getName(), aDuration)) <= 0)) {
 				return false;

@@ -3,7 +3,7 @@ package gtPlusPlus.core.item.base.itemblock;
 import gtPlusPlus.core.fluids.BlockFluidBase;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 
 import java.util.List;
@@ -26,7 +26,7 @@ public class ItemBlockFluid extends ItemBlock{
 		this.baseBlock = (BlockFluidBase) block;
 		this.blockColour = baseBlock.getRenderColor(1);
 		this.thisFluid = baseBlock.getFluidMaterial();
-		this.sRadiation=UtilsItems.getRadioactivityLevel(baseBlock.getUnlocalizedName());
+		this.sRadiation=ItemUtils.getRadioactivityLevel(baseBlock.getUnlocalizedName());
 		this.name = baseBlock.getLocalizedName().replace("tile", "").replace("fluid", "").replace("name", "").replace("block", "").replace(".", "");
 		//GT_OreDictUnificator.registerOre("frameGt"+block.getUnlocalizedName().replace("tile.", "").replace("tile.BlockGtFrame", "").replace("-", "").replace("_", "").replace(" ", "").replace("FrameBox", ""), UtilsItems.getSimpleStack(this));
 	}

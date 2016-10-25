@@ -3,7 +3,7 @@ package gtPlusPlus.core.recipe;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -35,28 +35,28 @@ public class Gregtech_Recipe_Adder {
 		
 		resetVars();
 		if (addMaceratorRecipe){
-			inputStack1 = UtilsItems.getSimpleStack(maceratorInput, maceratorInputAmount1);
-			outputStack1 = UtilsItems.getSimpleStack(maceratorOutput, maceratorOutputAmount1);
+			inputStack1 = ItemUtils.getSimpleStack(maceratorInput, maceratorInputAmount1);
+			outputStack1 = ItemUtils.getSimpleStack(maceratorOutput, maceratorOutputAmount1);
 			addMaceratorRecipe(inputStack1, outputStack1);
 		}
 		resetVars();
 		if (addCompressorRecipe){
-			inputStack1 = UtilsItems.getSimpleStack(compressorInput, compressorInputAmount1);
-			outputStack1 = UtilsItems.getSimpleStack(compressorOutput, compressorOutputAmount1);
+			inputStack1 = ItemUtils.getSimpleStack(compressorInput, compressorInputAmount1);
+			outputStack1 = ItemUtils.getSimpleStack(compressorOutput, compressorOutputAmount1);
 			addCompressorRecipe(inputStack1, outputStack1);
 		}
 		resetVars();
 		if (addBlastFurnaceRecipe){
-			inputStack1 = UtilsItems.getSimpleStack(blastFurnaceInput, blastFurnaceInputAmount1);
-			inputStack2 = UtilsItems.getSimpleStack(blastFurnaceInput2, blastFurnaceInputAmount2);
-			outputStack1 = UtilsItems.getSimpleStack(blastFurnaceOutput, blastFurnaceOutputAmount1);
-			outputStack2 = UtilsItems.getSimpleStack(blastFurnaceOutput2, blastFurnaceOutputAmount2);
+			inputStack1 = ItemUtils.getSimpleStack(blastFurnaceInput, blastFurnaceInputAmount1);
+			inputStack2 = ItemUtils.getSimpleStack(blastFurnaceInput2, blastFurnaceInputAmount2);
+			outputStack1 = ItemUtils.getSimpleStack(blastFurnaceOutput, blastFurnaceOutputAmount1);
+			outputStack2 = ItemUtils.getSimpleStack(blastFurnaceOutput2, blastFurnaceOutputAmount2);
 			addBlastFurnaceRecipe(inputStack1, inputStack2, outputStack1, outputStack2, blastFurnaceTemp);
 		}
 		resetVars();
 		if (addSmeltingRecipe){
-			inputStack1 = UtilsItems.getSimpleStack(smeltingInput, smeltingInputAmount1);
-			outputStack1 = UtilsItems.getSimpleStack(smeltingOutput, smeltingOutputAmount1);
+			inputStack1 = ItemUtils.getSimpleStack(smeltingInput, smeltingInputAmount1);
+			outputStack1 = ItemUtils.getSimpleStack(smeltingOutput, smeltingOutputAmount1);
 			addSmeltingRecipe(inputStack1, outputStack1);
 		}
 		resetVars();

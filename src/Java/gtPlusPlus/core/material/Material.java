@@ -3,10 +3,12 @@ package gtPlusPlus.core.material;
 import static gregtech.api.enums.GT_Values.M;
 import gregtech.api.enums.OrePrefixes;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.fluid.FluidUtils;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.materials.MaterialUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 public class Material {
 
@@ -15,7 +17,7 @@ public class Material {
 
 	protected Object dataVar;
 
-	private MaterialStack[] materialInput = new MaterialStack[4];
+	private MaterialStack[] vMaterialInput = new MaterialStack[9];
 	public final long[] vSmallestRatio;
 
 	final short[] RGBA;
@@ -119,21 +121,21 @@ public class Material {
 		this.vVoltageMultiplier = this.getMeltingPoint_K() >= 2800 ? 64 : 16;
 
 		if (inputs == null){
-			this.materialInput = null;			
+			this.vMaterialInput = null;			
 		}
 		else {
 			if (inputs.length != 0){
 				for (int i=0; i < inputs.length; i++){
 					if (inputs[i] != null){
-						this.materialInput[i] = inputs[i];
+						this.vMaterialInput[i] = inputs[i];
 					}
 				}
 			}
 		}
-		
-		this.vSmallestRatio = getSmallestRatio(materialInput);
+
+		this.vSmallestRatio = getSmallestRatio(vMaterialInput);
 		int tempSmallestSize = 0;
-		
+
 		if (vSmallestRatio != null){
 			for (int v=0;v<this.vSmallestRatio.length;v++){
 				tempSmallestSize=(int) (tempSmallestSize+vSmallestRatio[v]);
@@ -143,9 +145,9 @@ public class Material {
 		else {
 			this.smallestStackSizeWhenProcessing = 1; //Valid stacksizes			
 		}
-		
-		
-		
+
+
+
 		/*if (tempSmallestSize <= 64 && tempSmallestSize >= 1){
 			this.smallestStackSizeWhenProcessing = tempSmallestSize; //Valid stacksizes
 		}
@@ -155,15 +157,15 @@ public class Material {
 
 		//Makes a Fancy Chemical Tooltip
 		this.vChemicalSymbol = chemicalSymbol;
-		if (materialInput != null){
+		if (vMaterialInput != null){
 			this.vChemicalFormula = getToolTip(chemicalSymbol, OrePrefixes.dust.mMaterialAmount / M, true);
 		}
 		else if (!this.vChemicalSymbol.equals("")){
-			Utils.LOG_INFO("materialInput is null, using a valid chemical symbol.");
+			Utils.LOG_WARNING("materialInput is null, using a valid chemical symbol.");
 			this.vChemicalFormula = this.vChemicalSymbol;
 		}
 		else{
-			Utils.LOG_INFO("MaterialInput == null && chemicalSymbol probably equals nothing");
+			Utils.LOG_WARNING("MaterialInput == null && chemicalSymbol probably equals nothing");
 			this.vChemicalFormula = "??";
 		}
 
@@ -232,97 +234,104 @@ public class Material {
 	}
 
 	public ItemStack getDust(int stacksize){
-		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("dust"+unlocalizedName, stacksize);
+		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dust"+unlocalizedName, stacksize);
 	}
 
 	public ItemStack getSmallDust(int stacksize){
-		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("dustSmall"+unlocalizedName, stacksize);
+		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustSmall"+unlocalizedName, stacksize);
 	}
 
 	public ItemStack getTinyDust(int stacksize){
-		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("dustTiny"+unlocalizedName, stacksize);
+		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustTiny"+unlocalizedName, stacksize);
 	}
 
 	public ItemStack[] getValidInputStacks(){
-		return UtilsItems.validItemsForOreDict(unlocalizedName);
+		return ItemUtils.validItemsForOreDict(unlocalizedName);
 	}
 
 	public ItemStack getIngot(int stacksize){
-		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("ingot"+unlocalizedName, stacksize);
+		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingot"+unlocalizedName, stacksize);
 	}
 
 	public ItemStack getPlate(int stacksize){
-		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("plate"+unlocalizedName, stacksize);
+		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plate"+unlocalizedName, stacksize);
 	}
 
 	public ItemStack getPlateDouble(int stacksize){
-		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("plateDouble"+unlocalizedName, stacksize);
+		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateDouble"+unlocalizedName, stacksize);
 	}
 
 	public ItemStack getGear(int stacksize){
-		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("gear"+unlocalizedName, stacksize);
+		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("gear"+unlocalizedName, stacksize);
 	}
 
 	public ItemStack getRod(int stacksize){
-		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("stick"+unlocalizedName, stacksize);
+		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("stick"+unlocalizedName, stacksize);
 	}
 
 	public ItemStack getLongRod(int stacksize){
-		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("stickLong"+unlocalizedName, stacksize);
+		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("stickLong"+unlocalizedName, stacksize);
 	}
 
 	public ItemStack getBolt(int stacksize){
-		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("bolt"+unlocalizedName, stacksize);
+		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("bolt"+unlocalizedName, stacksize);
 	}
 
 	public ItemStack getScrew(int stacksize){
-		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("screw"+unlocalizedName, stacksize);
+		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("screw"+unlocalizedName, stacksize);
 	}
 
 	public ItemStack getRing(int stacksize){
-		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("ring"+unlocalizedName, stacksize);
+		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ring"+unlocalizedName, stacksize);
 	}
 
 	public ItemStack getRotor(int stacksize){
-		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("rotor"+unlocalizedName, stacksize);
+		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("rotor"+unlocalizedName, stacksize);
 	}
 
 	public ItemStack getFrameBox(int stacksize){
-		return UtilsItems.getItemStackOfAmountFromOreDictNoBroken("frameGt"+unlocalizedName, stacksize);
+		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("frameGt"+unlocalizedName, stacksize);
 	}
 
 	public ItemStack[] getMaterialComposites(){
 		//Utils.LOG_INFO("Something requested the materials needed for "+localizedName);
-		if (materialInput != null && materialInput.length >= 1){
-			ItemStack[] temp = new ItemStack[materialInput.length];
-			for (int i=0;i<materialInput.length;i++){
+		if (vMaterialInput != null && vMaterialInput.length >= 1){
+			ItemStack[] temp = new ItemStack[vMaterialInput.length];
+			for (int i=0;i<vMaterialInput.length;i++){
 				//Utils.LOG_INFO("i:"+i);
 				ItemStack testNull = null;
 				try {
-					testNull = materialInput[i].getDustStack();
+					testNull = vMaterialInput[i].getDustStack();
 				} catch (Throwable r){
-					Utils.LOG_INFO("Failed gathering material stack for "+localizedName+".");
-					Utils.LOG_INFO("What Failed: Length:"+materialInput.length+" current:"+i);
+					Utils.LOG_WARNING("Failed gathering material stack for "+localizedName+".");
+					Utils.LOG_WARNING("What Failed: Length:"+vMaterialInput.length+" current:"+i);
 				}
 				try {
 					if (testNull != null){
 						//Utils.LOG_INFO("not null");
-						temp[i] = materialInput[i].getDustStack();
+						temp[i] = vMaterialInput[i].getDustStack();
 					}
 				} catch (Throwable r){
-					Utils.LOG_INFO("Failed setting slot "+i+", using "+localizedName);
+					Utils.LOG_WARNING("Failed setting slot "+i+", using "+localizedName);
 				}
 			}		
 			return temp;
 		}
 		return new ItemStack[]{};
 	}
+	
+	public MaterialStack[] getComposites(){		
+		return this.vMaterialInput;
+	}
 
 	public int[] getMaterialCompositeStackSizes(){
-		if (materialInput != null && materialInput.length >= 1){
-			int[] temp = new int[materialInput.length];
-			for (int i=0;i<materialInput.length;i++){
-				temp[i] = materialInput[i].getDustStack().stackSize;
+		if (vMaterialInput != null && vMaterialInput.length >= 1){
+			int[] temp = new int[vMaterialInput.length];
+			for (int i=0;i<vMaterialInput.length;i++){
+				if (vMaterialInput[i] != null)
+					temp[i] = vMaterialInput[i].getDustStack().stackSize;
+				else
+					temp[i]=0;
 			}		
 			return temp;
 		}
@@ -355,13 +364,13 @@ public class Material {
 				try {		
 					if (materialInput[i] != null){					
 						formulaComponents[i] = materialInput[i].stackMaterial.vChemicalFormula;	
-						Utils.LOG_INFO("LOOK AT ME IN THE LOG - " + formulaComponents[i]);	
+						Utils.LOG_WARNING("LOOK AT ME IN THE LOG - " + formulaComponents[i]);	
 					}
 					else{
-						Utils.LOG_INFO("LOOK AT ME IN THE LOG - materialInput[i] was null");
+						Utils.LOG_WARNING("LOOK AT ME IN THE LOG - materialInput[i] was null");
 					}
 				} catch (Throwable e){
-					Utils.LOG_INFO("LOOK AT ME IN THE LOG - got an error");
+					Utils.LOG_WARNING("LOOK AT ME IN THE LOG - got an error");
 					return "??";
 				}				
 			}
@@ -369,7 +378,7 @@ public class Material {
 			String properName = "";
 			for (int r = 0; r < f; r++){
 				properName = properName + formulaComponents[r];
-				Utils.LOG_INFO("LOOK AT ME IN THE LOG - "+properName);
+				Utils.LOG_WARNING("LOOK AT ME IN THE LOG - "+properName);
 			}
 			if (!properName.equals(""))
 				return properName;
@@ -382,8 +391,8 @@ public class Material {
 	public long[] getSmallestRatio(MaterialStack[] inputs){
 		if (inputs != null){
 			if (inputs.length > 0){
-				Utils.LOG_INFO("length: "+inputs.length);
-				Utils.LOG_INFO("(inputs != null): "+(inputs != null));
+				Utils.LOG_WARNING("length: "+inputs.length);
+				Utils.LOG_WARNING("(inputs != null): "+(inputs != null));
 				//Utils.LOG_INFO("length: "+inputs.length);
 				double tempPercentage=0;
 				long[] tempRatio = new long[inputs.length];
@@ -406,7 +415,7 @@ public class Material {
 					for (int r=0;r<tempRatio.length;r++){
 						tempRatioStringThing1 = tempRatioStringThing1 + tempRatio[r] +" : ";
 					}
-					Utils.LOG_INFO("Default Ratio: "+tempRatioStringThing1);
+					Utils.LOG_WARNING("Default Ratio: "+tempRatioStringThing1);
 
 					String tempRatioStringThing = "";
 					int tempSmallestCraftingUseSize = 0;
@@ -415,7 +424,7 @@ public class Material {
 						tempSmallestCraftingUseSize = (int) (tempSmallestCraftingUseSize + smallestRatio[r]);
 					}
 					//this.smallestStackSizeWhenProcessing = tempSmallestCraftingUseSize;
-					Utils.LOG_INFO("Smallest Ratio: "+tempRatioStringThing);
+					Utils.LOG_WARNING("Smallest Ratio: "+tempRatioStringThing);
 					return smallestRatio;
 				}
 			}		
@@ -442,10 +451,10 @@ public class Material {
 
 	public String getToolTip(String chemSymbol, long aMultiplier, boolean aShowQuestionMarks) {
 		if (!aShowQuestionMarks && (vChemicalFormula.equals("?")||vChemicalFormula.equals("??"))) return "";
-		Utils.LOG_INFO("===============| Calculating Atomic Formula for "+this.localizedName+" |===============");
+		Utils.LOG_WARNING("===============| Calculating Atomic Formula for "+this.localizedName+" |===============");
 		if (!chemSymbol.equals(""))
 			return chemSymbol;
-		MaterialStack[] tempInput = materialInput;
+		MaterialStack[] tempInput = vMaterialInput;
 		if (tempInput != null){
 			if (tempInput.length >= 1){
 				String dummyFormula = "";
@@ -475,15 +484,20 @@ public class Material {
 						return MaterialUtils.subscript(dummyFormula);
 						//return dummyFormula;
 					}
-					Utils.LOG_INFO("dummyFormulaArray <= 0");
+					Utils.LOG_WARNING("dummyFormulaArray <= 0");
 				}
-				Utils.LOG_INFO("dummyFormulaArray == null");
+				Utils.LOG_WARNING("dummyFormulaArray == null");
 			}
-			Utils.LOG_INFO("tempInput.length <= 0");
+			Utils.LOG_WARNING("tempInput.length <= 0");
 		}
-		Utils.LOG_INFO("tempInput == null");
+		Utils.LOG_WARNING("tempInput == null");
 		return "??";
 
+	}
+
+	public FluidStack getMolten(int fluidAmount) {
+		Utils.LOG_INFO("Getting "+fluidAmount+"L of "+unlocalizedName.toLowerCase());
+		return FluidUtils.getFluidStack(unlocalizedName.toLowerCase(), fluidAmount);
 	}
 
 

@@ -3,8 +3,8 @@ package gtPlusPlus.xmod.gregtech.loaders;
 import gregtech.api.enums.GT_Values;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.UtilsItems;
-import gtPlusPlus.core.util.recipe.UtilsRecipe;
+import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.recipe.RecipeUtils;
 import net.minecraft.item.ItemStack;
 
 public class RecipeGen_DustGeneration {
@@ -15,7 +15,7 @@ public class RecipeGen_DustGeneration {
 		Utils.LOG_INFO("Generating Shaped Crafting recipes for "+material.getLocalizedName()); //TODO
 		//Ring Recipe
 
-		if (UtilsRecipe.addShapedGregtechRecipe(
+		if (RecipeUtils.addShapedGregtechRecipe(
 				"craftingToolWrench", null, null,
 				null, material.getRod(1), null,
 				null, null, null,
@@ -34,7 +34,7 @@ public class RecipeGen_DustGeneration {
 		ItemStack[] inputStacks = material.getMaterialComposites();
 		ItemStack outputStacks = material.getDust(material.smallestStackSizeWhenProcessing);
 
-		if (UtilsRecipe.recipeBuilder(
+		if (RecipeUtils.recipeBuilder(
 				tinyDust,	tinyDust, tinyDust, 
 				tinyDust, tinyDust, tinyDust, 
 				tinyDust, tinyDust, tinyDust,
@@ -45,7 +45,7 @@ public class RecipeGen_DustGeneration {
 			Utils.LOG_INFO("9 Tiny dust to 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");			
 		}
 
-		if (UtilsRecipe.recipeBuilder(
+		if (RecipeUtils.recipeBuilder(
 				normalDust, null, null, 
 				null, null, null, 
 				null, null, null,
@@ -57,7 +57,7 @@ public class RecipeGen_DustGeneration {
 		}
 
 
-		if (UtilsRecipe.recipeBuilder(
+		if (RecipeUtils.recipeBuilder(
 				smallDust, smallDust, null, 
 				smallDust, smallDust, null, 
 				null, null, null,
@@ -69,7 +69,7 @@ public class RecipeGen_DustGeneration {
 		}
 
 
-		if (UtilsRecipe.recipeBuilder(
+		if (RecipeUtils.recipeBuilder(
 				null, normalDust, null, 
 				null, null, null, 
 				null, null, null,
@@ -82,14 +82,14 @@ public class RecipeGen_DustGeneration {
 
 
 		if (inputStacks.length > 0){
-			Utils.LOG_INFO(UtilsItems.getArrayStackNames(inputStacks));
+			Utils.LOG_INFO(ItemUtils.getArrayStackNames(inputStacks));
 			long[] inputStackSize = material.vSmallestRatio;
 			if (inputStackSize != null){
 				for (short x=0;x<inputStacks.length;x++){
 					if (inputStacks[x] != null && inputStackSize[x] != 0)
 					inputStacks[x].stackSize = (int) inputStackSize[x];
 				}
-				Utils.LOG_INFO(UtilsItems.getArrayStackNames(inputStacks));			
+				Utils.LOG_INFO(ItemUtils.getArrayStackNames(inputStacks));			
 				if (GT_Values.RA.addMixerRecipe(
 						inputStacks[0], inputStacks[1],
 						inputStacks[2], inputStacks[3],

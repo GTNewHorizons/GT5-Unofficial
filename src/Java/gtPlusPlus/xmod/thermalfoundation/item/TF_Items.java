@@ -1,7 +1,7 @@
 package gtPlusPlus.xmod.thermalfoundation.item;
 
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.thermalfoundation.block.TF_Blocks;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TF_Fluids;
 import net.minecraft.init.Items;
@@ -46,10 +46,10 @@ public class TF_Items {
 		FurnaceFuelHandler.registerFuel(dustPyrotheum, 2400);
 
 
-		itemRodBlizz = UtilsItems.simpleMetaStack(itemMaterial, 1, 1);
-		itemDustBlizz = UtilsItems.simpleMetaStack(itemMaterial, 2, 1);
-		itemDustPyrotheum = UtilsItems.simpleMetaStack(itemMaterial, 3, 1);
-		itemDustCryotheum = UtilsItems.simpleMetaStack(itemMaterial, 4, 1);
+		itemRodBlizz = ItemUtils.simpleMetaStack(itemMaterial, 1, 1);
+		itemDustBlizz = ItemUtils.simpleMetaStack(itemMaterial, 2, 1);
+		itemDustPyrotheum = ItemUtils.simpleMetaStack(itemMaterial, 3, 1);
+		itemDustCryotheum = ItemUtils.simpleMetaStack(itemMaterial, 4, 1);
 
 
 

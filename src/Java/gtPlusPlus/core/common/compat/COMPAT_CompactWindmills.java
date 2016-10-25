@@ -3,7 +3,7 @@ package gtPlusPlus.core.common.compat;
 import static gtPlusPlus.core.handler.COMPAT_HANDLER.AddRecipeQueue;
 import static gtPlusPlus.core.handler.COMPAT_HANDLER.RemoveRecipeQueue;
 import gtPlusPlus.core.recipe.ShapedRecipeObject;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.item.ItemStack;
 
 
@@ -11,49 +11,49 @@ import net.minecraft.item.ItemStack;
 public class COMPAT_CompactWindmills {
 
 	//Change IC2 Upgrades
-	public static ItemStack kineticWind = UtilsItems.simpleMetaStack("IC2:blockKineticGenerator", 0, 1);
-	public static ItemStack shaftIron = UtilsItems.simpleMetaStack("IC2:itemRecipePart", 11, 1);
-	public static ItemStack cableCopper = UtilsItems.simpleMetaStack("gregtech:gt.blockmachines", 1367, 1);
+	public static ItemStack kineticWind = ItemUtils.simpleMetaStack("IC2:blockKineticGenerator", 0, 1);
+	public static ItemStack shaftIron = ItemUtils.simpleMetaStack("IC2:itemRecipePart", 11, 1);
+	public static ItemStack cableCopper = ItemUtils.simpleMetaStack("gregtech:gt.blockmachines", 1367, 1);
 	public static String plateRubber = "ore:plateRubber";
 
 	//Machine Casings
-	public static ItemStack elvCasing = UtilsItems.simpleMetaStack("gregtech:gt.blockcasings", 0, 1);
-	public static ItemStack lvCasing = UtilsItems.simpleMetaStack("gregtech:gt.blockcasings", 1, 1);
-	public static ItemStack mvCasing = UtilsItems.simpleMetaStack("gregtech:gt.blockcasings", 2, 1);
-	public static ItemStack hvCasing = UtilsItems.simpleMetaStack("gregtech:gt.blockcasings", 3, 1);
-	public static ItemStack evCasing = UtilsItems.simpleMetaStack("gregtech:gt.blockcasings", 4, 1);
-	public static ItemStack ivCasing = UtilsItems.simpleMetaStack("gregtech:gt.blockcasings", 5, 1);
+	public static ItemStack elvCasing = ItemUtils.simpleMetaStack("gregtech:gt.blockcasings", 0, 1);
+	public static ItemStack lvCasing = ItemUtils.simpleMetaStack("gregtech:gt.blockcasings", 1, 1);
+	public static ItemStack mvCasing = ItemUtils.simpleMetaStack("gregtech:gt.blockcasings", 2, 1);
+	public static ItemStack hvCasing = ItemUtils.simpleMetaStack("gregtech:gt.blockcasings", 3, 1);
+	public static ItemStack evCasing = ItemUtils.simpleMetaStack("gregtech:gt.blockcasings", 4, 1);
+	public static ItemStack ivCasing = ItemUtils.simpleMetaStack("gregtech:gt.blockcasings", 5, 1);
 
 	//GT Transformers
-	public static ItemStack elvTransformer = UtilsItems.simpleMetaStack("gregtech:gt.blockmachines", 20, 1);
-	public static ItemStack lvTransformer = UtilsItems.simpleMetaStack("gregtech:gt.blockmachines", 21, 1);
-	public static ItemStack mvTransformer = UtilsItems.simpleMetaStack("gregtech:gt.blockmachines", 22, 1);
-	public static ItemStack hvTransformer = UtilsItems.simpleMetaStack("gregtech:gt.blockmachines", 23, 1);
-	public static ItemStack evTransformer = UtilsItems.simpleMetaStack("gregtech:gt.blockmachines", 24, 1);
+	public static ItemStack elvTransformer = ItemUtils.simpleMetaStack("gregtech:gt.blockmachines", 20, 1);
+	public static ItemStack lvTransformer = ItemUtils.simpleMetaStack("gregtech:gt.blockmachines", 21, 1);
+	public static ItemStack mvTransformer = ItemUtils.simpleMetaStack("gregtech:gt.blockmachines", 22, 1);
+	public static ItemStack hvTransformer = ItemUtils.simpleMetaStack("gregtech:gt.blockmachines", 23, 1);
+	public static ItemStack evTransformer = ItemUtils.simpleMetaStack("gregtech:gt.blockmachines", 24, 1);
 
 	//Compact Windmills
-	public static ItemStack elvWindmill = UtilsItems.simpleMetaStack("CompactWindmills:blockCompactWindmill", 0, 1);
-	public static ItemStack lvWindmill = UtilsItems.simpleMetaStack("CompactWindmills:blockCompactWindmill", 1, 1);
-	public static ItemStack mvWindmill = UtilsItems.simpleMetaStack("CompactWindmills:blockCompactWindmill", 2, 1);
-	public static ItemStack hvWindmill = UtilsItems.simpleMetaStack("CompactWindmills:blockCompactWindmill", 3, 1);
-	public static ItemStack evWindmill = UtilsItems.simpleMetaStack("CompactWindmills:blockCompactWindmill", 4, 1);
+	public static ItemStack elvWindmill = ItemUtils.simpleMetaStack("CompactWindmills:blockCompactWindmill", 0, 1);
+	public static ItemStack lvWindmill = ItemUtils.simpleMetaStack("CompactWindmills:blockCompactWindmill", 1, 1);
+	public static ItemStack mvWindmill = ItemUtils.simpleMetaStack("CompactWindmills:blockCompactWindmill", 2, 1);
+	public static ItemStack hvWindmill = ItemUtils.simpleMetaStack("CompactWindmills:blockCompactWindmill", 3, 1);
+	public static ItemStack evWindmill = ItemUtils.simpleMetaStack("CompactWindmills:blockCompactWindmill", 4, 1);
 
 	//Compact Rotors
-	public static ItemStack rotor2 = UtilsItems.getItemStack("CompactWindmills:WOOL", 1);
-	public static ItemStack rotor1 = UtilsItems.getItemStack("CompactWindmills:WOOD", 1);
-	public static ItemStack rotor3 = UtilsItems.getItemStack("CompactWindmills:ALLOY", 1);
-	public static ItemStack rotor4 = UtilsItems.getItemStack("CompactWindmills:CARBON", 1);
-	public static ItemStack rotor5 = UtilsItems.getItemStack("CompactWindmills:IRIDIUM", 1);
+	public static ItemStack rotor2 = ItemUtils.getItemStack("CompactWindmills:WOOL", 1);
+	public static ItemStack rotor1 = ItemUtils.getItemStack("CompactWindmills:WOOD", 1);
+	public static ItemStack rotor3 = ItemUtils.getItemStack("CompactWindmills:ALLOY", 1);
+	public static ItemStack rotor4 = ItemUtils.getItemStack("CompactWindmills:CARBON", 1);
+	public static ItemStack rotor5 = ItemUtils.getItemStack("CompactWindmills:IRIDIUM", 1);
 
 	//IC2 Rotors
-	public static ItemStack rotorIC1 = UtilsItems.getItemStack("IC2:itemwoodrotor", 1);
-	public static ItemStack rotorIC2 = UtilsItems.getItemStack("IC2:itemironrotor", 1);
-	public static ItemStack rotorIC3 = UtilsItems.getItemStack("IC2:itemsteelrotor", 1);
-	public static ItemStack rotorIC4 = UtilsItems.getItemStack("IC2:itemwcarbonrotor", 1);
-	public static ItemStack rotorBlade1 = UtilsItems.simpleMetaStack("IC2:itemRecipePart", 7, 1);
-	public static ItemStack rotorBlade2 = UtilsItems.simpleMetaStack("IC2:itemRecipePart", 8, 1);
-	public static ItemStack rotorBlade3 = UtilsItems.simpleMetaStack("IC2:itemRecipePart", 10, 1);
-	public static ItemStack rotorBlade4 = UtilsItems.simpleMetaStack("IC2:itemRecipePart", 9, 1);
+	public static ItemStack rotorIC1 = ItemUtils.getItemStack("IC2:itemwoodrotor", 1);
+	public static ItemStack rotorIC2 = ItemUtils.getItemStack("IC2:itemironrotor", 1);
+	public static ItemStack rotorIC3 = ItemUtils.getItemStack("IC2:itemsteelrotor", 1);
+	public static ItemStack rotorIC4 = ItemUtils.getItemStack("IC2:itemwcarbonrotor", 1);
+	public static ItemStack rotorBlade1 = ItemUtils.simpleMetaStack("IC2:itemRecipePart", 7, 1);
+	public static ItemStack rotorBlade2 = ItemUtils.simpleMetaStack("IC2:itemRecipePart", 8, 1);
+	public static ItemStack rotorBlade3 = ItemUtils.simpleMetaStack("IC2:itemRecipePart", 10, 1);
+	public static ItemStack rotorBlade4 = ItemUtils.simpleMetaStack("IC2:itemRecipePart", 9, 1);
 
 	//Plates
 	public static String plateTier1 = "ore:plateMagnalium";

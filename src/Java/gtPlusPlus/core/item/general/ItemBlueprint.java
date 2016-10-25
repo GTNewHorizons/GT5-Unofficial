@@ -4,7 +4,7 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.interfaces.IItemBlueprint;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.player.PlayerUtils;
 
@@ -87,7 +87,7 @@ public class ItemBlueprint extends Item implements IItemBlueprint{
 	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer par3Entity) {
 		//Let the player know what blueprint is held
 		if (itemStack.hasTagCompound()) {
-			PlayerUtils.messagePlayer(par3Entity, "This Blueprint holds NBT data. "+"|"+getNBT(itemStack, "mID")+"|"+getNBT(itemStack, "mBlueprint")+"|"+getNBT(itemStack, "mName")+"|"+UtilsItems.getArrayStackNames(readItemsFromNBT(itemStack)));
+			PlayerUtils.messagePlayer(par3Entity, "This Blueprint holds NBT data. "+"|"+getNBT(itemStack, "mID")+"|"+getNBT(itemStack, "mBlueprint")+"|"+getNBT(itemStack, "mName")+"|"+ItemUtils.getArrayStackNames(readItemsFromNBT(itemStack)));
 		}
 		else {
 			createNBT(itemStack);

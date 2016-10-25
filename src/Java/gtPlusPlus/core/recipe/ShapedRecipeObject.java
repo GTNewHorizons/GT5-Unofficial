@@ -1,7 +1,7 @@
 package gtPlusPlus.core.recipe;
 
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.recipe.UtilsRecipe;
+import gtPlusPlus.core.util.recipe.RecipeUtils;
 import net.minecraft.item.ItemStack;
 
 public class ShapedRecipeObject {
@@ -36,7 +36,7 @@ public class ShapedRecipeObject {
 	}
 	
 	public void buildRecipe(){
-		UtilsRecipe.recipeBuilder(object_A, object_B, object_C, object_D, object_E, object_F, object_G, object_H, object_I, object_OUTPUT);
+		RecipeUtils.recipeBuilder(object_A, object_B, object_C, object_D, object_E, object_F, object_G, object_H, object_I, object_OUTPUT);
 	}
 	
 }

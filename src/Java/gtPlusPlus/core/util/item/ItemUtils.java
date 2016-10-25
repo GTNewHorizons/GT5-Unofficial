@@ -32,6 +32,7 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.materials.MaterialUtils;
 import gtPlusPlus.core.util.wrapper.var;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelter;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_DustGeneration;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Extruder;
 import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Plates;
@@ -48,7 +49,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public class UtilsItems {
+public class ItemUtils {
 
 	public static ItemStack getSimpleStack(Item x){
 		return getSimpleStack(x, 1);
@@ -72,7 +73,7 @@ public class UtilsItems {
 	}
 
 	public static ItemStack getIC2Cell(String S){
-		ItemStack moreTemp = UtilsItems.getItemStackOfAmountFromOreDictNoBroken("cell"+S, 1);
+		ItemStack moreTemp = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+S, 1);
 
 		if (moreTemp == null){
 			int cellID = 0;
@@ -192,12 +193,12 @@ public class UtilsItems {
 		ItemStack temp;
 		if (fqrn.toLowerCase().contains(oreDict.toLowerCase())){
 			String sanitizedName = fqrn.replace(oreDict, "");
-			temp = UtilsItems.getItemStack(sanitizedName, stackSize);
+			temp = ItemUtils.getItemStack(sanitizedName, stackSize);
 			return temp;
 		}
 		String[] fqrnSplit = fqrn.split(":");
 		if(fqrnSplit[2] == null){fqrnSplit[2] = "0";}			
-		temp = UtilsItems.getItemStackWithMeta(LoadedMods.MiscUtils, fqrn, fqrnSplit[1], Integer.parseInt(fqrnSplit[2]), stackSize);
+		temp = ItemUtils.getItemStackWithMeta(LoadedMods.MiscUtils, fqrn, fqrnSplit[1], Integer.parseInt(fqrnSplit[2]), stackSize);
 		return temp;			
 	}	
 
@@ -341,7 +342,7 @@ public class UtilsItems {
 			temp = new BaseItemIngot("itemIngot"+unlocalizedName, materialName, Colour, sRadiation);
 			if (hotIngot){
 				Item tempIngot = temp;
-				temp = new BaseItemIngotHot("itemHotIngot"+unlocalizedName, materialName, UtilsItems.getSimpleStack(tempIngot, 1), materialTier);
+				temp = new BaseItemIngotHot("itemHotIngot"+unlocalizedName, materialName, ItemUtils.getSimpleStack(tempIngot, 1), materialTier);
 			}
 			temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, sRadiation);
 			temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, sRadiation);
@@ -363,6 +364,7 @@ public class UtilsItems {
 		RecipeGen_Extruder.generateRecipes(matInfo);
 		RecipeGen_ShapedCrafting.generateRecipes(matInfo);
 		RecipeGen_DustGeneration.generateRecipes(matInfo);
+		RecipeGen_BlastSmelter.generateARecipe(matInfo);
 
 		FluidUtils.generateFluid(matInfo, 1);
 
@@ -559,7 +561,7 @@ public class UtilsItems {
 	}
 	
 	public static ItemStack getGregtechCircuit(int Meta){
-		return UtilsItems.getItemStackWithMeta(LoadedMods.Gregtech, "gregtech:gt.integrated_circuit", "Gregtech Circuit", Meta, 0);
+		return ItemUtils.getItemStackWithMeta(LoadedMods.Gregtech, "gregtech:gt.integrated_circuit", "Gregtech Circuit", Meta, 0);
 	}
 
 }

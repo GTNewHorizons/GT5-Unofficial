@@ -6,7 +6,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.thermalfoundation.item.TF_Items;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -24,7 +24,7 @@ public class TF_Gregtech_Recipes {
 		ItemStack dust_Cryotheum = TF_Items.itemDustCryotheum.copy();
 		ItemStack dust_Pyrotheum = TF_Items.itemDustPyrotheum.copy();
 		ItemStack dust_Blizz = TF_Items.itemDustBlizz.copy();
-		ItemStack dust_Blizz3 = UtilsItems.simpleMetaStack(TF_Items.itemMaterial, 2, 3);
+		ItemStack dust_Blizz3 = ItemUtils.simpleMetaStack(TF_Items.itemMaterial, 2, 3);
 		ItemStack rod_Blizz = TF_Items.itemRodBlizz.copy();	
 		FluidStack moltenRedstone = getFluidStack("molten.redstone", 250);
 

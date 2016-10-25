@@ -5,7 +5,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.entity.EntityUtils;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 
 import java.util.List;
@@ -36,7 +36,7 @@ public class BaseItemDustUnique extends Item{
 		this.setCreativeTab(tabMisc);
 		this.colour = colour;
 		this.materialName = materialName;
-		this.sRadiation = UtilsItems.getRadioactivityLevel(materialName);
+		this.sRadiation = ItemUtils.getRadioactivityLevel(materialName);
 		GameRegistry.registerItem(this, unlocalizedName);
 
 		String temp = "";
@@ -61,7 +61,7 @@ public class BaseItemDustUnique extends Item{
 			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
 		}		
 		if (temp != null && temp != ""){
-			GT_OreDictUnificator.registerOre(temp, UtilsItems.getSimpleStack(this));
+			GT_OreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
 		}
 	}
 

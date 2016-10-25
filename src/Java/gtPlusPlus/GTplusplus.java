@@ -20,7 +20,7 @@ import gtPlusPlus.core.handler.events.LoginEventHandler;
 import gtPlusPlus.core.item.general.RF2EU_Battery;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.HANDLER_GT;
@@ -204,12 +204,12 @@ implements ActionListener
 		Utils.LOG_INFO("Dumping "+r.mUnlocalizedName+" Recipes for Debug.");
 		for(GT_Recipe newBo : x){
 			Utils.LOG_INFO("========================");
-			Utils.LOG_INFO("Dumping Input: "+UtilsItems.getArrayStackNames(newBo.mInputs));
-			Utils.LOG_INFO("Dumping Inputs "+UtilsItems.getFluidArrayStackNames(newBo.mFluidInputs));
+			Utils.LOG_INFO("Dumping Input: "+ItemUtils.getArrayStackNames(newBo.mInputs));
+			Utils.LOG_INFO("Dumping Inputs "+ItemUtils.getFluidArrayStackNames(newBo.mFluidInputs));
 			Utils.LOG_INFO("Dumping Duration: "+newBo.mDuration);
 			Utils.LOG_INFO("Dumping EU/t: "+newBo.mEUt);
-			Utils.LOG_INFO("Dumping Output: "+UtilsItems.getArrayStackNames(newBo.mOutputs));
-			Utils.LOG_INFO("Dumping Output: "+UtilsItems.getFluidArrayStackNames(newBo.mFluidOutputs));
+			Utils.LOG_INFO("Dumping Output: "+ItemUtils.getArrayStackNames(newBo.mOutputs));
+			Utils.LOG_INFO("Dumping Output: "+ItemUtils.getFluidArrayStackNames(newBo.mFluidOutputs));
 			Utils.LOG_INFO("========================");
 		}
 	}

@@ -7,7 +7,7 @@ import gregtech.api.enums.ToolDictNames;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.recipe.UtilsRecipe;
+import gtPlusPlus.core.util.recipe.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_OreRecipeRegistrator;
@@ -56,7 +56,7 @@ public class ProcessingToolHeadChoocher implements Interface_OreRecipeRegistrato
 	        		ItemStack hammerhead = GT_OreDictUnificator.get(OrePrefixes.toolHeadHammer, aMaterial, 1L);
 	        		
 	        		if (null != plate && null != ingot && null != hammerhead && null != longrod && null != screw){
-	        			UtilsRecipe.recipeBuilder(
+	        			RecipeUtils.recipeBuilder(
 		        				hammerhead, ToolDictNames.craftingToolScrewdriver.name(), plate,
 		        				ingot, plate, plate,
 		        				longrod, screw, null,		        				

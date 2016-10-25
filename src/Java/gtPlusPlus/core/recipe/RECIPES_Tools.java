@@ -2,8 +2,8 @@ package gtPlusPlus.core.recipe;
 
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.util.item.UtilsItems;
-import gtPlusPlus.core.util.recipe.UtilsRecipe;
+import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.recipe.RecipeUtils;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -119,7 +119,7 @@ public class RECIPES_Tools {
 	public static ItemStack sandHammer = new ItemStack (ModItems.itemSandstoneHammer, 1, OreDictionary.WILDCARD_VALUE);
 	public static String craftingToolSandHammer = "craftingToolSandHammer";
 	
-	public static ItemStack personalCloakingDevice = UtilsItems.getSimpleStack(ModItems.itemPersonalCloakingDevice);
+	public static ItemStack personalCloakingDevice = ItemUtils.getSimpleStack(ModItems.itemPersonalCloakingDevice);
 	public static String plateDoubleNiChrome = "plateDoubleNichrome";
 	public static String plateIridiumAlloy = "plateAlloyIridium";
 	
@@ -132,21 +132,21 @@ public class RECIPES_Tools {
 	
 	private static void run(){
 		//Staballoy Pickaxe
-		UtilsRecipe.recipeBuilder(
+		RecipeUtils.recipeBuilder(
 				plateStaballoy, plateStaballoy, ingotStaballoy,
 				craftingToolFile, stickTungsten, craftingToolHardHammer,
 				craftingToolWrench, stickTungsten, craftingToolHardHammer,
 				RECIPE_StaballoyPickaxe);
 		
 		//Staballoy Axe
-		UtilsRecipe.recipeBuilder(
+		RecipeUtils.recipeBuilder(
 				plateStaballoy, ingotStaballoy, craftingToolHardHammer,
 				plateStaballoy, stickTungsten, craftingToolHardHammer,
 				craftingToolFile, stickTungsten, craftingToolWrench,
 				RECIPE_StaballoyAxe);
 		
 		//Cobble to Sand
-		UtilsRecipe.recipeBuilder(
+		RecipeUtils.recipeBuilder(
 				CobbleStone, CobbleStone, CobbleStone,
 				CobbleStone, sandHammer, CobbleStone,
 				CobbleStone, CobbleStone, CobbleStone,
@@ -154,7 +154,7 @@ public class RECIPES_Tools {
 
 		if (LoadedMods.Baubles){
 		//Cloaking Device
-		UtilsRecipe.recipeBuilder(
+		RecipeUtils.recipeBuilder(
 				plateDoubleNiChrome, plateIridiumAlloy, plateDoubleNiChrome,
 				plateIridiumAlloy, batteryUltimate, plateIridiumAlloy,
 				plateDoubleNiChrome, plateIridiumAlloy, plateDoubleNiChrome,
@@ -162,14 +162,14 @@ public class RECIPES_Tools {
 		
 		}
 		//Sand to Sandstone
-		UtilsRecipe.recipeBuilder(
+		RecipeUtils.recipeBuilder(
 				Sand, Sand, Sand,
 				Sand, sandHammer, Sand,
 				Sand, Sand, Sand,
 				RECIPE_SandStone);
 		
 		//Sandstone Hammer
-		UtilsRecipe.recipeBuilder(
+		RecipeUtils.recipeBuilder(
 				plateElectrum, ingotElectrum, plateElectrum,
 				craftingToolScrewdriver, stickBronze, craftingToolHardHammer,
 				null, stickSteel, null,

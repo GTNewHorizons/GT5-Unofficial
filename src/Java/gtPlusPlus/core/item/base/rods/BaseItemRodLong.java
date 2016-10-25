@@ -4,7 +4,7 @@ import gregtech.api.enums.GT_Values;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.item.ItemStack;
 
 public class BaseItemRodLong extends BaseItemComponent{
@@ -24,8 +24,8 @@ public class BaseItemRodLong extends BaseItemComponent{
 
 		String tempStick = unlocalName.replace("itemRodLong", "stick");
 		String tempStickLong = unlocalName.replace("itemRodLong", "stickLong");
-		ItemStack stackStick = UtilsItems.getItemStackOfAmountFromOreDict(tempStick, 1);
-		ItemStack stackLong = UtilsItems.getItemStackOfAmountFromOreDict(tempStickLong, 1);
+		ItemStack stackStick = ItemUtils.getItemStackOfAmountFromOreDict(tempStick, 1);
+		ItemStack stackLong = ItemUtils.getItemStackOfAmountFromOreDict(tempStickLong, 1);
 
 		ItemStack temp = stackStick;
 		temp.stackSize = 2;

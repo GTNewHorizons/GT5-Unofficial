@@ -5,7 +5,7 @@ import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.item.ItemStack;
 
 public class FishTrapHandler {
@@ -48,21 +48,21 @@ public class FishTrapHandler {
 		for (int i = 0; i < harvestcraftFish.length; i++){
 			String itemName = prefix+harvestcraftFish[i]+suffix;
 			int lootChance = getLootChance(harvestcraftFish[i]);
-			if (UtilsItems.getItemStackOfAmountFromOreDictNoBroken(itemName, 1) != null){
-				addFish("fish", UtilsItems.getItemStackOfAmountFromOreDict(itemName, 1), lootChance);		
-				addGregtechMaceratorRecipe(UtilsItems.getItemStackOfAmountFromOreDict(itemName, 1));
-				addGregtechCentrifugeRecipe(UtilsItems.getItemStackOfAmountFromOreDict(itemName, 1));
-				addGregtechFluidRecipe(UtilsItems.getItemStackOfAmountFromOreDict(itemName, 1));
+			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken(itemName, 1) != null){
+				addFish("fish", ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1), lootChance);		
+				addGregtechMaceratorRecipe(ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1));
+				addGregtechCentrifugeRecipe(ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1));
+				addGregtechFluidRecipe(ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1));
 			}
 		}
-		if (UtilsItems.getItemStackOfAmountFromOreDictNoBroken(greenheartFish, 1) != null){
-			addFish("fish", UtilsItems.getItemStackOfAmountFromOreDict(greenheartFish, 1), getLootChance(greenheartFish));	
-			addGregtechMaceratorRecipe(UtilsItems.getItemStackOfAmountFromOreDict(greenheartFish, 1));
-			addGregtechCentrifugeRecipe(UtilsItems.getItemStackOfAmountFromOreDict(greenheartFish, 1));
-			addGregtechFluidRecipe(UtilsItems.getItemStackOfAmountFromOreDict(greenheartFish, 1));
+		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken(greenheartFish, 1) != null){
+			addFish("fish", ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1), getLootChance(greenheartFish));	
+			addGregtechMaceratorRecipe(ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1));
+			addGregtechCentrifugeRecipe(ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1));
+			addGregtechFluidRecipe(ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1));
 		}
-		if (UtilsItems.getItemStackOfAmountFromOreDictNoBroken(seaweed, 1) != null){
-			addFish("junk", UtilsItems.getItemStackOfAmountFromOreDict(seaweed, 1), getLootChance(seaweed));				
+		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken(seaweed, 1) != null){
+			addFish("junk", ItemUtils.getItemStackOfAmountFromOreDict(seaweed, 1), getLootChance(seaweed));				
 		}
 	}
 	
@@ -155,7 +155,7 @@ public class FishTrapHandler {
 	
 	private static void addGregtechMaceratorRecipe(ItemStack input){
 		if (LoadedMods.Gregtech){
-			GT_ModHandler.addPulverisationRecipe(input, UtilsItems.getItemStackOfAmountFromOreDict("dustMeatRaw", 1), UtilsItems.getItemStackOfAmountFromOreDict("dustTinyBone", 1), 0);
+			GT_ModHandler.addPulverisationRecipe(input, ItemUtils.getItemStackOfAmountFromOreDict("dustMeatRaw", 1), ItemUtils.getItemStackOfAmountFromOreDict("dustTinyBone", 1), 0);
 		}
 	}
 	

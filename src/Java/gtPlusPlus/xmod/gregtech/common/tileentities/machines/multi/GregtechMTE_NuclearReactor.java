@@ -13,7 +13,7 @@ import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 	public static int sDurationMultiplier = 3215;
 	public static boolean sRequiresUUA = false;
 	private int recipeCounter = 0;
-	private static Block IC2Glass = Block.getBlockFromItem(UtilsItems.getItem("IC2:blockAlloyGlass"));
+	private static Block IC2Glass = Block.getBlockFromItem(ItemUtils.getItem("IC2:blockAlloyGlass"));
 	//public FluidStack mFluidOut = Materials.UUMatter.getFluid(1L);
 
 	public GregtechMTE_NuclearReactor(int aID, String aName, String aNameRegional) {

@@ -14,7 +14,7 @@ import gtPlusPlus.core.slots.SlotNoInput;
 import gtPlusPlus.core.slots.SlotOutput;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -216,9 +216,9 @@ public class Container_Workbench extends Container {
 									Utils.LOG_WARNING("Output slot was not empty.");
 									Utils.LOG_WARNING("Trying to manipulate NBT data on the blueprint stack, then replace it with the new one.");
 									tempItemBlueprint.setBlueprint(inventoryHolo.getStackInSlot(1), craftMatrix, inventoryHolo.getStackInSlot(0));	
-									ItemStack newTempBlueprint = UtilsItems.getSimpleStack(tempItemBlueprint);
+									ItemStack newTempBlueprint = ItemUtils.getSimpleStack(tempItemBlueprint);
 									inventoryHolo.setInventorySlotContents(1, newTempBlueprint);
-									Utils.LOG_WARNING(UtilsItems.getArrayStackNames(tempItemBlueprint.getBlueprint(newTempBlueprint)));
+									Utils.LOG_WARNING(ItemUtils.getArrayStackNames(tempItemBlueprint.getBlueprint(newTempBlueprint)));
 								}
 								else {
 									if (tempItemBlueprint.hasBlueprint(tempBlueprint)){
