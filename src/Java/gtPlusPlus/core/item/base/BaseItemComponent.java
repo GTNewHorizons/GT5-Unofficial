@@ -129,7 +129,8 @@ public class BaseItemComponent extends Item{
 		BOLT("Bolt", " Bolt", "bolt"),
 		ROTOR("Rotor", " Rotor", "rotor"),
 		RING("Ring", " Ring", "ring"), 
-		CELL("Cell", " Cell", "cell");	    
+		CELL("Cell", " Cell", "cell"), 
+		NUGGET("Nugget", " Nugget", "nugget");	    
 
 		private String COMPONENT_NAME;
 		private String DISPLAY_NAME;

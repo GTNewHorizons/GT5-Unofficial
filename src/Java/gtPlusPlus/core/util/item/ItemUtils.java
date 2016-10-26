@@ -16,6 +16,7 @@ import gtPlusPlus.core.item.base.dusts.decimal.BaseItemDecidust;
 import gtPlusPlus.core.item.base.gears.BaseItemGear;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngot;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngotHot;
+import gtPlusPlus.core.item.base.nugget.BaseItemNugget;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate;
 import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
 import gtPlusPlus.core.item.base.rings.BaseItemRing;
@@ -235,8 +236,8 @@ public class ItemUtils {
 
 		return GameRegistry.findItemStack(fqrnSplit[0], fqrnSplit[1], Size);
 	}*/
-	
-	
+
+
 	public static void generateSpawnEgg(String entityModID, String parSpawnName, int colourEgg, int colourOverlay){
 		Item itemSpawnEgg = new BasicSpawnEgg(entityModID, parSpawnName, colourEgg, colourOverlay).setUnlocalizedName("spawn_egg_"+parSpawnName.toLowerCase()).setTextureName(CORE.MODID+":spawn_egg");
 		GameRegistry.registerItem(itemSpawnEgg, "spawnEgg"+parSpawnName);
@@ -327,7 +328,7 @@ public class ItemUtils {
 			temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, sRadiation);
 			temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, sRadiation);
 			temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier, sRadiation);
-
+			temp = new BaseItemNugget(matInfo);
 			temp = new BaseItemPlate(matInfo);
 			temp = new BaseItemRod(matInfo);
 			temp = new BaseItemRodLong(matInfo);
@@ -346,7 +347,7 @@ public class ItemUtils {
 			temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, sRadiation);
 			temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, sRadiation);
 			temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier, sRadiation);
-
+			temp = new BaseItemNugget(matInfo);
 			temp = new BaseItemPlate(matInfo);
 			temp = new BaseItemPlateDouble(matInfo);
 			temp = new BaseItemBolt(matInfo);
@@ -458,7 +459,7 @@ public class ItemUtils {
 		if (GT_OreDictUnificator.get(OrePrefixes.dust, material, 1L) != null){
 			Material placeholder = MaterialUtils.generateMaterialFromGtENUM(material);
 			if (placeholder != null)
-			generateDecidust(placeholder);						
+				generateDecidust(placeholder);						
 		}		
 		return null;
 	}
@@ -470,12 +471,12 @@ public class ItemUtils {
 		}
 		return null;
 	}
-	
+
 	public static BaseItemCentidust generateCentidust(Materials material){
 		if (GT_OreDictUnificator.get(OrePrefixes.dust, material, 1L) != null){
 			Material placeholder = MaterialUtils.generateMaterialFromGtENUM(material);
 			if (placeholder != null)
-			generateCentidust(placeholder);						
+				generateCentidust(placeholder);						
 		}		
 		return null;
 	}
@@ -556,7 +557,7 @@ public class ItemUtils {
 		return itemNames;
 
 	}
-	
+
 	public static ItemStack getGregtechCircuit(int Meta){
 		return ItemUtils.getItemStackWithMeta(LoadedMods.Gregtech, "gregtech:gt.integrated_circuit", "Gregtech Circuit", Meta, 0);
 	}

@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
@@ -11,6 +10,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT;
+import gtPlusPlus.core.block.ModBlocks;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,13 +43,13 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter
         		"Controller Block for the Alloy Blast Smelter", //Outputs 144mb fluid for every inputStack.stackSize; Time to use those hot metals.
         		"Size: 3x3x4 (Hollow)",
         		"Controller (front middle at bottom)",
-        		"16x Heating Coils (two middle Layers, hollow)",
+        		"16x Blast Smelter Heat Containment Coils (two middle Layers, hollow)",
         		"1x Input bus (one of bottom)",
         		"1x Output Hatch (one of bottom)",
         		"1x Energy Hatch (one of bottom)", 
         		"1x Maintenance Hatch (one of bottom)",
         		"1x Muffler Hatch (top middle)",
-        		"Heat Proof Machine Casings for the rest"};
+        		"Blast Smelter Casings for the rest"};
     }
 
     @Override
@@ -146,48 +146,38 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter
         int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
         int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
 
-        this.mHeatingCapacity = 0;
+        //this.mHeatingCapacity = 0;
         if (!aBaseMetaTileEntity.getAirOffset(xDir, 1, zDir)) {
             return false;
         }
         if (!aBaseMetaTileEntity.getAirOffset(xDir, 2, zDir)) {
             return false;
         }
-        addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 3, zDir), 11);
+        addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 3, zDir), 72);
 
         byte tUsedMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, 2, zDir);
-        switch (tUsedMeta) {
-            case 12:
-                this.mHeatingCapacity = 1800;
-                break;
-            case 13:
-                this.mHeatingCapacity = 2700;
-                break;
-            case 14:
-                this.mHeatingCapacity = 3600;
-                break;
-            default:
-                return false;
-        }
+             
+        this.mHeatingCapacity = 20000;
+        
         for (int i = -1; i < 2; i++) {
             for (int j = -1; j < 2; j++) {
                 if ((i != 0) || (j != 0)) {
-                    if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 2, zDir + j) != GregTech_API.sBlockCasings1) {
+                    if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 2, zDir + j) != ModBlocks.blockCasingsMisc) {
                         return false;
                     }
-                    if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 2, zDir + j) != tUsedMeta) {
+                    if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 2, zDir + j) != 14) {
                         return false;
                     }
-                    if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j) != GregTech_API.sBlockCasings1) {
+                    if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 1, zDir + j) != ModBlocks.blockCasingsMisc) {
                         return false;
                     }
-                    if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 1, zDir + j) != tUsedMeta) {
+                    if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 1, zDir + j) != 14) {
                         return false;
                     }
-                    if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 3, zDir + j) != GregTech_API.sBlockCasings1) {
+                    if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 3, zDir + j) != ModBlocks.blockCasingsMisc) {
                         return false;
                     }
-                    if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 3, zDir + j) != 11) {
+                    if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 3, zDir + j) != 15) {
                         return false;
                     }
                 }
@@ -197,11 +187,11 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter
             for (int j = -1; j < 2; j++) {
                 if ((xDir + i != 0) || (zDir + j != 0)) {
                     IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 0, zDir + j);
-                    if ((!addMaintenanceToMachineList(tTileEntity, 11)) && (!addInputToMachineList(tTileEntity, 11)) && (!addOutputToMachineList(tTileEntity, 11)) && (!addEnergyInputToMachineList(tTileEntity, 11))) {
-                        if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j) != GregTech_API.sBlockCasings1) {
+                    if ((!addMaintenanceToMachineList(tTileEntity, 72)) && (!addInputToMachineList(tTileEntity, 72)) && (!addOutputToMachineList(tTileEntity, 72)) && (!addEnergyInputToMachineList(tTileEntity, 72))) {
+                        if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j) != ModBlocks.blockCasingsMisc) {
                             return false;
                         }
-                        if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 0, zDir + j) != 11) {
+                        if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 0, zDir + j) != 15) {
                             return false;
                         }
                     }
