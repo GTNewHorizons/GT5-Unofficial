@@ -8,7 +8,7 @@ import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import gtPlusPlus.xmod.gregtech.loaders.Gregtech_Blocks;
 import gtPlusPlus.xmod.gregtech.loaders.ProcessingToolHeadChoocher;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelter;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelterGT;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
 
 public class HANDLER_GT {
@@ -37,7 +37,7 @@ public class HANDLER_GT {
 		GregtechConduits.run();
 		new MetaGeneratedGregtechTools();
 		new ProcessingToolHeadChoocher().run();
-		RecipeGen_BlastSmelter.generateRecipes();
+		RecipeGen_BlastSmelterGT.generateRecipes();
 		
 	}
 

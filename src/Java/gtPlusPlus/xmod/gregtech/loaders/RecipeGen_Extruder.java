@@ -7,20 +7,31 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import net.minecraft.item.ItemStack;
 
-public class RecipeGen_Extruder {
+public class RecipeGen_Extruder implements Runnable{
 
-	public static void generateRecipes(Material material){
+	final Material toGenerate;
+	
+	public RecipeGen_Extruder(final Material M){
+		this.toGenerate = M;
+	}
+	
+	@Override
+	public void run() {
+		generateRecipes(toGenerate);		
+	}
 
-		int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 64 : 16;
-		ItemStack itemIngot = material.getIngot(1);
-		ItemStack plate_Single = material.getPlate(1);
-		ItemStack itemGear = material.getGear(1);
+	public static void generateRecipes(final Material material){
 
-		ItemStack shape_Plate = ItemList.Shape_Extruder_Plate.get(0);
-		ItemStack shape_Ring = ItemList.Shape_Extruder_Ring.get(0);
-		ItemStack shape_Gear = ItemList.Shape_Extruder_Gear.get(0);
-		ItemStack shape_Rod = ItemList.Shape_Extruder_Rod.get(0);
-		ItemStack shape_Bolt = ItemList.Shape_Extruder_Bolt.get(0);
+		final int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 64 : 16;
+		final ItemStack itemIngot = material.getIngot(1);
+		final ItemStack plate_Single = material.getPlate(1);
+		final ItemStack itemGear = material.getGear(1);
+
+		final ItemStack shape_Plate = ItemList.Shape_Extruder_Plate.get(0);
+		final ItemStack shape_Ring = ItemList.Shape_Extruder_Ring.get(0);
+		final ItemStack shape_Gear = ItemList.Shape_Extruder_Gear.get(0);
+		final ItemStack shape_Rod = ItemList.Shape_Extruder_Rod.get(0);
+		final ItemStack shape_Bolt = ItemList.Shape_Extruder_Bolt.get(0);
 
 		Utils.LOG_WARNING("Generating Extruder recipes for "+material.getLocalizedName());
 

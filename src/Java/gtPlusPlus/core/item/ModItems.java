@@ -156,6 +156,7 @@ public final class ModItems {
 
 
 	//@SuppressWarnings("unused")
+	@SuppressWarnings("unused")
 	public static final void init(){
 
 		AAA_Broken = new BaseItemIngot("AAA_Broken", "Errors - Tell Alkalus", Utils.rgbtoHexValue(128, 128, 128), 0);
@@ -204,61 +205,68 @@ public final class ModItems {
 
 		try{
 			//Elements generate first so they can be used in compounds.
-			
+				     		
 			//Uranium-233 is a fissile isotope of uranium that is bred from thorium-232 as part of the thorium fuel cycle.
-			MaterialGenerator.generateItemsFromMaterial(ELEMENT.getInstance().URANIUM233);
-			MaterialGenerator.generateItemsFromMaterial(ELEMENT.getInstance().ZIRCONIUM);
+	        new MaterialGenerator(ELEMENT.getInstance().URANIUM233);
+	        new MaterialGenerator(ELEMENT.getInstance().ZIRCONIUM);
 			
 			//Carbides - Tungsten Carbide exists in .09 so don't generate it. - Should still come before alloys though
 			if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
-				MaterialGenerator.generateItemsFromMaterial(ALLOY.TUNGSTEN_CARBIDE);
+				new MaterialGenerator(ALLOY.TUNGSTEN_CARBIDE);
 			}
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.SILICON_CARBIDE);
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.ZIRCONIUM_CARBIDE);
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.TANTALUM_CARBIDE);
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.NIOBIUM_CARBIDE);	
+			new MaterialGenerator(ALLOY.SILICON_CARBIDE);
+			new MaterialGenerator(ALLOY.ZIRCONIUM_CARBIDE);
+			new MaterialGenerator(ALLOY.TANTALUM_CARBIDE);
+			new MaterialGenerator(ALLOY.NIOBIUM_CARBIDE);	
 			
 			//Generate some Alloys
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.ENERGYCRYSTAL);
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.BLOODSTEEL);
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.BEDROCKIUM);
 			
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.STABALLOY);
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.TANTALLOY_60);
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.TANTALLOY_61);
-
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.INCONEL_625);
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.INCONEL_690);
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.INCONEL_792);
-
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.ZERON_100);
-			
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.MARAGING250);
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.MARAGING300);
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.MARAGING350);
-			
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.STELLITE);
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.TALONITE);
-
+			//Misc Alloys
+			new MaterialGenerator(ALLOY.ENERGYCRYSTAL);
+			new MaterialGenerator(ALLOY.BLOODSTEEL);
+			new MaterialGenerator(ALLOY.BEDROCKIUM);
+			new MaterialGenerator(ALLOY.ZERON_100);
 			//Tumbaga was the name given by Spaniards to a non-specific alloy of gold and copper 
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.TUMBAGA);
+			new MaterialGenerator(ALLOY.TUMBAGA);
 			//Potin is traditionally an alloy of bronze, tin and lead, with varying quantities of each possible
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.POTIN);
+			new MaterialGenerator(ALLOY.POTIN);
+			
+			//Staballoy & Tantalloy
+			new MaterialGenerator(ALLOY.STABALLOY);
+			new MaterialGenerator(ALLOY.TANTALLOY_60);
+			new MaterialGenerator(ALLOY.TANTALLOY_61);
 
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.HASTELLOY_W);
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.HASTELLOY_X);
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.HASTELLOY_C276);
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.HASTELLOY_N);
+			//Inconel
+			new MaterialGenerator(ALLOY.INCONEL_625);
+			new MaterialGenerator(ALLOY.INCONEL_690);
+			new MaterialGenerator(ALLOY.INCONEL_792);
 
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.INCOLOY_020);
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.INCOLOY_DS);
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.INCOLOY_MA956);
+			
+			//Maraging Steel
+			new MaterialGenerator(ALLOY.MARAGING250);
+			new MaterialGenerator(ALLOY.MARAGING300);
+			new MaterialGenerator(ALLOY.MARAGING350);
+			
+			//Composite Alloys
+			new MaterialGenerator(ALLOY.STELLITE);
+			new MaterialGenerator(ALLOY.TALONITE);			
+
+			//Hastelloy
+			new MaterialGenerator(ALLOY.HASTELLOY_W);
+			new MaterialGenerator(ALLOY.HASTELLOY_X);
+			new MaterialGenerator(ALLOY.HASTELLOY_C276);
+			new MaterialGenerator(ALLOY.HASTELLOY_N);
+
+			//Incoloy
+			new MaterialGenerator(ALLOY.INCOLOY_020);
+			new MaterialGenerator(ALLOY.INCOLOY_DS);
+			new MaterialGenerator(ALLOY.INCOLOY_MA956);
 			
 			//Leagrisium
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.LEAGRISIUM);			
-			
+			new MaterialGenerator(ALLOY.LEAGRISIUM);			
 			//Must be the final Alloy to Generate
-			MaterialGenerator.generateItemsFromMaterial(ALLOY.QUANTUM);			
+			new MaterialGenerator(ALLOY.QUANTUM);		
+			
 
 		} catch (Throwable r){
 			Utils.LOG_INFO("Failed to Generated a Material. "+r.getMessage());
