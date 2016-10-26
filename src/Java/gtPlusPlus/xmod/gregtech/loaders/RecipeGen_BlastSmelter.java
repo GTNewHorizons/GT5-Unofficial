@@ -1,6 +1,10 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.SubTag;
 import gregtech.api.objects.MaterialStack;
+import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
@@ -10,7 +14,7 @@ import net.minecraft.item.ItemStack;
 public class RecipeGen_BlastSmelter {
 
 	public static void generateRecipes(){
-/*
+
 		Materials[] GregMaterials = Materials.values();
 
 		for (Materials M : GregMaterials){
@@ -64,10 +68,10 @@ public class RecipeGen_BlastSmelter {
 
 					//Generate Recipes for all singular materials that can be made molten.
 					if (M.mBlastFurnaceRequired) {
-						//doTest = CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getMolten(fluidAmount), 100, duration, 240);
+						doTest = CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getMolten(fluidAmount), 100, duration, 240);
 					}
 					else {
-						//doTest = CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getMolten(fluidAmount), 100, duration/2, 120);					
+						doTest = CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getMolten(fluidAmount), 100, duration/2, 120);					
 					}
 
 					if (doTest){
@@ -127,10 +131,10 @@ public class RecipeGen_BlastSmelter {
 									}
 								}
 
-								//Add a shapeless recipe for each dust this way - Compat mode.
+								/*//Add a shapeless recipe for each dust this way - Compat mode.
 								ItemStack outputStack = tStack;
 								outputStack.stackSize = mMaterialListSize;
-								RecipeUtils.buildShapelessRecipe(outputStack, components);
+								RecipeUtils.buildShapelessRecipe(outputStack, components);*/
 
 
 
@@ -145,17 +149,17 @@ public class RecipeGen_BlastSmelter {
 										Utils.LOG_WARNING("tMaterial["+das+"]: "+components[das].getDisplayName()+" Meta: "+components[das].getItemDamage()+", Amount: "+components[das].stackSize);
 								}
 								if (M.mBlastFurnaceRequired) {
-									//CORE.RA.addBlastSmelterRecipe(components, M.getMolten(fluidAmount), 100, duration, 500);							
+									CORE.RA.addBlastSmelterRecipe(components, M.getMolten(fluidAmount), 100, duration, 500);							
 								}
 								else {
-									//CORE.RA.addBlastSmelterRecipe(components, M.getMolten(fluidAmount), 100, duration, 240);							
+									CORE.RA.addBlastSmelterRecipe(components, M.getMolten(fluidAmount), 100, duration, 240);							
 								}
 							}
 						}
 					}
 				}
 			}
-		}*/
+		}
 	}
 
 
@@ -190,7 +194,7 @@ public class RecipeGen_BlastSmelter {
 
 			//Make a simple one Material Materialstack[] and log it for validity.										
 			circuitGT = ItemUtils.getGregtechCircuit(1);
-			ItemStack[] tItemStackTest = new ItemStack[]{/*circuitGT,*/ tStack};
+			ItemStack[] tItemStackTest = new ItemStack[]{circuitGT, tStack};
 			inputStackCount = 1;
 			fluidAmount = 144*inputStackCount;
 			Utils.LOG_WARNING("Adding an Alloy Blast Smelter Recipe for "+M.getLocalizedName()+". Gives "+fluidAmount+"L of molten metal.");
@@ -270,16 +274,31 @@ public class RecipeGen_BlastSmelter {
 								components[irc] = M.getComposites()[irc].getDustStack(r);
 							}						
 						}
+						
+						//Adds a circuit
+						if (mMaterialListSize > 0 && mMaterialListSize < 9){
+							ItemStack[] components_NoCircuit = components;
+							//Builds me an ItemStack[] of the materials. - With a circuit
+							components = new ItemStack[components_NoCircuit.length+1];
+							for (int fr=0;fr<components.length;fr++){						
+								if (fr==0){
+									components[0] = circuitGT;
+								}
+								else {
+									components[fr] = components_NoCircuit[fr-1];
+								}								
+							}
+						}
 
 						//Set Fluid output
 						fluidAmount = 144*inputStackCount;
 
 
-						Utils.LOG_WARNING("Adding an Alloy Blast Smelter Recipe for "+M.getLocalizedName()+" using it's compound dusts. This material has "+ inputStackCount+" parts. Gives "+fluidAmount+"L of molten metal.");
-						Utils.LOG_WARNING("tMaterial.length: "+components.length+".");
+						Utils.LOG_INFO("Adding an Alloy Blast Smelter Recipe for "+M.getLocalizedName()+" using it's compound dusts. This material has "+ inputStackCount+" parts. Gives "+fluidAmount+"L of molten metal.");
+						Utils.LOG_INFO("tMaterial.length: "+components.length+".");
 						for (int das=0;das<components.length;das++){
 							if (components[das] != null)
-								Utils.LOG_WARNING("tMaterial["+das+"]: "+components[das].getDisplayName()+" Meta: "+components[das].getItemDamage()+", Amount: "+components[das].stackSize);
+								Utils.LOG_INFO("tMaterial["+das+"]: "+components[das].getDisplayName()+" Meta: "+components[das].getItemDamage()+", Amount: "+components[das].stackSize);
 						}
 						if (M.requiresBlastFurnace()) {
 							if (CORE.RA.addBlastSmelterRecipe(components, M.getFluid(fluidAmount), 100, duration, 500)){

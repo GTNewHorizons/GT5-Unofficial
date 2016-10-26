@@ -164,6 +164,16 @@ public final class ModItems {
 		if (CORE.DEBUG){
 			DEBUG_INIT.registerItems();
 		}		
+		
+		
+		//Some Simple forms of materials
+		itemStickyRubber = new Item().setUnlocalizedName("itemStickyRubber").setCreativeTab(tabMachines).setTextureName(CORE.MODID + ":itemStickyRubber");
+		GameRegistry.registerItem(itemStickyRubber, "itemStickyRubber");
+		GT_OreDictUnificator.registerOre("ingotRubber", ItemUtils.getItemStack(CORE.MODID+":itemStickyRubber", 1));
+
+		itemHeliumBlob = new CoreItem("itemHeliumBlob", tabMisc).setTextureName(CORE.MODID + ":itemHeliumBlob");
+		GT_OreDictUnificator.registerOre("dustHydrogen", new ItemStack(ModItems.itemHeliumBlob));
+		//GameRegistry.registerItem(itemHeliumBlob, "itemHeliumBlob");
 
 		//Make some backpacks
 		//Primary colours
@@ -193,27 +203,40 @@ public final class ModItems {
 		ItemsFoods.load();
 
 		try{
+			//Elements generate first so they can be used in compounds.
+			
+			//Uranium-233 is a fissile isotope of uranium that is bred from thorium-232 as part of the thorium fuel cycle.
+			generateItemsFromMaterial(ELEMENT.URANIUM233);
+			generateItemsFromMaterial(ELEMENT.ZIRCONIUM);
+			
+			//Carbides - Tungsten Carbide exists in .09 so don't generate it. - Should still come before alloys though
+			if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
+				generateItemsFromMaterial(ALLOY.TUNGSTEN_CARBIDE);
+			}
+			generateItemsFromMaterial(ALLOY.SILICON_CARBIDE);
+			generateItemsFromMaterial(ALLOY.ZIRCONIUM_CARBIDE);
+			generateItemsFromMaterial(ALLOY.TANTALUM_CARBIDE);
+			generateItemsFromMaterial(ALLOY.NIOBIUM_CARBIDE);	
+			
+			//Generate some Alloys
 			generateItemsFromMaterial(ALLOY.ENERGYCRYSTAL);
 			generateItemsFromMaterial(ALLOY.BLOODSTEEL);
+			generateItemsFromMaterial(ALLOY.BEDROCKIUM);
+			
 			generateItemsFromMaterial(ALLOY.STABALLOY);
 			generateItemsFromMaterial(ALLOY.TANTALLOY_60);
 			generateItemsFromMaterial(ALLOY.TANTALLOY_61);
-			generateItemsFromMaterial(ALLOY.BEDROCKIUM);
-			generateItemsFromMaterial(ALLOY.QUANTUM);
-
 
 			generateItemsFromMaterial(ALLOY.INCONEL_625);
 			generateItemsFromMaterial(ALLOY.INCONEL_690);
 			generateItemsFromMaterial(ALLOY.INCONEL_792);
 
-			if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
-				generateItemsFromMaterial(ALLOY.TUNGSTEN_CARBIDE);
-			}
-			generateItemsFromMaterial(ALLOY.SILICON_CARBIDE);
 			generateItemsFromMaterial(ALLOY.ZERON_100);
+			
 			generateItemsFromMaterial(ALLOY.MARAGING250);
 			generateItemsFromMaterial(ALLOY.MARAGING300);
 			generateItemsFromMaterial(ALLOY.MARAGING350);
+			
 			generateItemsFromMaterial(ALLOY.STELLITE);
 			generateItemsFromMaterial(ALLOY.TALONITE);
 
@@ -221,7 +244,6 @@ public final class ModItems {
 			generateItemsFromMaterial(ALLOY.TUMBAGA);
 			//Potin is traditionally an alloy of bronze, tin and lead, with varying quantities of each possible
 			generateItemsFromMaterial(ALLOY.POTIN);
-
 
 			generateItemsFromMaterial(ALLOY.HASTELLOY_W);
 			generateItemsFromMaterial(ALLOY.HASTELLOY_X);
@@ -231,18 +253,12 @@ public final class ModItems {
 			generateItemsFromMaterial(ALLOY.INCOLOY_020);
 			generateItemsFromMaterial(ALLOY.INCOLOY_DS);
 			generateItemsFromMaterial(ALLOY.INCOLOY_MA956);
-
-
-			generateItemsFromMaterial(ELEMENT.ZIRCONIUM);
-			generateItemsFromMaterial(ALLOY.ZIRCONIUM_CARBIDE);
-			generateItemsFromMaterial(ALLOY.TANTALUM_CARBIDE);
-			generateItemsFromMaterial(ALLOY.NIOBIUM_CARBIDE);	
 			
 			//Leagrisium
-			generateItemsFromMaterial(ALLOY.LEAGRISIUM);
-
-			//Uranium-233 is a fissile isotope of uranium that is bred from thorium-232 as part of the thorium fuel cycle.
-			generateItemsFromMaterial(ELEMENT.URANIUM233);
+			generateItemsFromMaterial(ALLOY.LEAGRISIUM);			
+			
+			//Must be the final Alloy to Generate
+			generateItemsFromMaterial(ALLOY.QUANTUM);			
 
 		} catch (Throwable r){
 			Utils.LOG_INFO("Failed to Generated a Material. "+r.getMessage());
@@ -443,14 +459,6 @@ public final class ModItems {
 			GameRegistry.registerItem(itemBufferCore, itemBufferCore.getUnlocalizedName()+i);
 			//System.out.println("Buffer Core registration count is: "+i);
 		}
-
-		itemStickyRubber = new Item().setUnlocalizedName("itemStickyRubber").setCreativeTab(tabMachines).setTextureName(CORE.MODID + ":itemStickyRubber");
-		GameRegistry.registerItem(itemStickyRubber, "itemStickyRubber");
-		GT_OreDictUnificator.registerOre("ingotRubber", ItemUtils.getItemStack(CORE.MODID+":itemStickyRubber", 1));
-
-		itemHeliumBlob = new CoreItem("itemHeliumBlob", tabMisc).setTextureName(CORE.MODID + ":itemHeliumBlob");
-		GT_OreDictUnificator.registerOre("dustHydrogen", new ItemStack(ModItems.itemHeliumBlob));
-		//GameRegistry.registerItem(itemHeliumBlob, "itemHeliumBlob");
 
 		itemPLACEHOLDER_Circuit = new Item().setUnlocalizedName("itemPLACEHOLDER_Circuit").setTextureName(CORE.MODID + ":itemPLACEHOLDER_Circuit");
 		GameRegistry.registerItem(itemPLACEHOLDER_Circuit, "itemPLACEHOLDER_Circuit");

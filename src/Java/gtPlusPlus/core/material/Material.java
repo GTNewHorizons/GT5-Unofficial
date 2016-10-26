@@ -168,22 +168,40 @@ public class Material {
 			this.vChemicalFormula = "??";
 		}
 
-		this.vMoltenFluid = generateFluid();
+		Materials isValid = Materials.get(getLocalizedName());
+		if (isValid == Materials._NULL){
+			this.vMoltenFluid = generateFluid();
+		}
+		else {
+			if (isValid.mFluid != null){
+				this.vMoltenFluid = isValid.mFluid;
+			}
+			else if (isValid.mGas != null){
+				this.vMoltenFluid = isValid.mGas;
+			}
+			else if (isValid.mPlasma != null){
+				this.vMoltenFluid = isValid.mPlasma;
+			}
+			else {
+				this.vMoltenFluid = generateFluid();
+			}
+		}
+		
 
 
-		dataVar = MathUtils.generateSingularRandomHexValue();
+		//dataVar = MathUtils.generateSingularRandomHexValue();
 
 		String ratio = "";
 		if (vSmallestRatio != null)
-		for (int hu=0;hu<vSmallestRatio.length;hu++){
-			if (ratio.equals("")){
-				ratio = String.valueOf(vSmallestRatio[hu]);
+			for (int hu=0;hu<vSmallestRatio.length;hu++){
+				if (ratio.equals("")){
+					ratio = String.valueOf(vSmallestRatio[hu]);
+				}
+				else {
+					ratio = ratio + ":" +vSmallestRatio[hu];
+				}		
 			}
-			else {
-				ratio = ratio + ":" +vSmallestRatio[hu];
-			}		
-		}
-		
+
 		Utils.LOG_INFO("Creating a Material instance for "+materialName);
 		Utils.LOG_INFO("Formula: "+vChemicalFormula + " Smallest Stack: "+smallestStackSizeWhenProcessing+" Smallest Ratio:"+ratio);
 		Utils.LOG_INFO("Protons: "+vProtons);

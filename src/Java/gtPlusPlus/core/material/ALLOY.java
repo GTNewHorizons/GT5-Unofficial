@@ -35,9 +35,8 @@ public final class ALLOY {
 			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(ELEMENT.URANIUM, 45),
-					new MaterialStack(ELEMENT.URANIUM, 45),
-					new MaterialStack(ELEMENT.TITANIUM, 10)
+					new MaterialStack(ELEMENT.URANIUM, 9),
+					new MaterialStack(ELEMENT.TITANIUM, 1)
 			});
 
 	public static final Material TANTALLOY_60 = new Material(
@@ -50,8 +49,7 @@ public final class ALLOY {
 			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(ELEMENT.TUNGSTEN, 8),
-					new MaterialStack(ELEMENT.TANTALUM, 46),
+					new MaterialStack(ELEMENT.TUNGSTEN, 4),
 					new MaterialStack(ELEMENT.TANTALUM, 46)
 			});
 
@@ -69,17 +67,6 @@ public final class ALLOY {
 					new MaterialStack(ELEMENT.TITANIUM, 12),
 					new MaterialStack(ELEMENT.YTTRIUM, 8)
 			});
-
-	public static final Material QUANTUM = new Material(
-			"Quantum", //Material Name
-			new short[]{128, 128, 128, 0}, //Material Colour
-			9999, //Melting Point in C
-			0, //Boiling Point in C
-			100, //Protons
-			100, //Neutrons
-			true, //Uses Blast furnace?
-			//Material Stacks with Percentage of required elements.
-			null);
 
 	public static final Material BRONZE = new Material(
 			"Bronze", //Material Name
@@ -522,5 +509,59 @@ public final class ALLOY {
 					new MaterialStack(ELEMENT.HYDROGEN, 10)
 			});	//Material Stacks with Percentage of required elements.
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//Quantum
+	public static final Material QUANTUM = new Material(
+			"Quantum", //Material Name
+			new short[]{128, 128, 255, 50}, //Material Colour
+			9999, //Melting Point in C
+			25000, //Boiling Point in C
+			150, //Protons
+			200, //Neutrons
+			true, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ALLOY.LEAGRISIUM, 25),
+					new MaterialStack(ALLOY.ENERGYCRYSTAL, 25),
+					new MaterialStack(ALLOY.ZIRCONIUM_CARBIDE, 25),
+					new MaterialStack(ELEMENT.MANGANESE, 5),
+					new MaterialStack(ELEMENT.MOLYBDENUM, 5),
+					new MaterialStack(ELEMENT.TUNGSTEN, 5),
+					new MaterialStack(ELEMENT.BERYLLIUM, 5),
+					new MaterialStack(ELEMENT.BISMUTH, 5)
+			});
+	
+	
 
 }
