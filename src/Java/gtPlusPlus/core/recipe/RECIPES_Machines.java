@@ -48,6 +48,10 @@ public class RECIPES_Machines {
 	//
 	static ItemStack RECIPE_IndustrialWireFactoryController = GregtechItemList.Industrial_WireFactory.get(1);
 	static ItemStack RECIPE_IndustrialWireFactoryFrame = GregtechItemList.Casing_WireFactory.get(1);
+	//Industrial Coke Oven
+	static ItemStack RECIPE_IndustrialBlastSmelterController = GregtechItemList.Industrial_AlloyBlastSmelter.get(1);
+	static ItemStack RECIPE_IndustrialBlastSmelterFrame = GregtechItemList.Casing_BlastSmelter.get(1);
+	static ItemStack RECIPE_IndustrialBlastSmelterCoil = GregtechItemList.Casing_Coil_BlastSmelter.get(1);
 
 
 	//Buffer Cores
@@ -113,7 +117,7 @@ public class RECIPES_Machines {
 	static String rodTier9 = "stickZeron100";
 	static String rodTier10 = "stickNaquadahEnriched";
 	static String rodTier11 = "stickNeutronium";
-	
+
 	static String pipeTier1 = "pipeHuge"+"Potin";
 	static String pipeTier2 = "pipeHuge"+"Steel";
 	static String pipeTier3 = "pipeHuge"+"StainlessSteel";
@@ -503,7 +507,7 @@ public class RECIPES_Machines {
 					machineCasing_EV, IV_MACHINE_Electrolyzer, machineCasing_EV,
 					"plateStellite", "rotorStellite", "plateStellite",
 					RECIPE_IndustrialCentrifugeController);*/
-			
+
 			//Industrial Centrifuge
 			RecipeUtils.addShapedGregtechRecipe(
 					circuitTier6, pipeHugeStainlessSteel, circuitTier6,
@@ -603,9 +607,9 @@ public class RECIPES_Machines {
 					circuitTier6, IV_MACHINE_Wiremill, circuitTier6,
 					"plateZeron100", machineCasing_IV, "plateZeron100",
 					RECIPE_IndustrialWireFactoryController);
-			
-			
-			
+
+
+
 			//Tiered Tanks
 			RecipeUtils.addShapedGregtechRecipe(
 					plateTier1, plateTier1, plateTier1,
@@ -657,6 +661,29 @@ public class RECIPES_Machines {
 					plateTier10, pipeTier10, plateTier10,
 					plateTier10, RECIPE_CONSTANTS.electricPump_MAX, plateTier10,
 					GregtechItemList.GT_FluidTank_MAX.get(1));
+
+
+
+
+
+			//Blast Smelter
+			RecipeUtils.addShapedGregtechRecipe(
+					"plateZirconiumCarbide", circuitTier4, "plateZirconiumCarbide",
+					cableTier4, machineCasing_EV, cableTier4,
+					"plateZirconiumCarbide", circuitTier3, "plateZirconiumCarbide",
+					RECIPE_IndustrialBlastSmelterController);
+			//Blast Smelter Frame Casing
+			RecipeUtils.addShapedGregtechRecipe(
+					"plateZirconiumCarbide", rodTier5, "plateZirconiumCarbide",
+					rodTier5, "frameGtTumbaga", rodTier5,
+					"plateZirconiumCarbide", rodTier5, "plateZirconiumCarbide",
+					RECIPE_IndustrialBlastSmelterFrame);
+			//Blast Smelter Coil 
+			RecipeUtils.addShapedGregtechRecipe(
+					"plateStaballoy", "plateStaballoy", "plateStaballoy",
+					"frameGtStaballoy", gearboxCasing_Tier_3, "frameGtStaballoy",
+					"plateStaballoy", "plateStaballoy", "plateStaballoy",
+					RECIPE_IndustrialBlastSmelterCoil);
 
 
 		}
