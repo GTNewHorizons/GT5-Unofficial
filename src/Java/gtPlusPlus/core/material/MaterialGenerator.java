@@ -25,22 +25,10 @@ import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_ShapedCrafting;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
-public class MaterialGenerator implements Runnable {
-	
-	final Material toGenerate;
-	
-	public MaterialGenerator(final Material M){
-		this.toGenerate = M;
-	}
-	
-	@Override
-	public void run() {
-		generateItemsFromMaterial(toGenerate);		
-	}
-	
+public class MaterialGenerator {	
 
 	@SuppressWarnings("unused")
-	public static void generateItemsFromMaterial(final Material matInfo){	
+	public static void generate(final Material matInfo){	
 		String unlocalizedName = matInfo.getUnlocalizedName();
 		String materialName = matInfo.getLocalizedName();
 		short[] C = matInfo.getRGBA();

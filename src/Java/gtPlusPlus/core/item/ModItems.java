@@ -207,65 +207,65 @@ public final class ModItems {
 			//Elements generate first so they can be used in compounds.
 				     		
 			//Uranium-233 is a fissile isotope of uranium that is bred from thorium-232 as part of the thorium fuel cycle.
-	        new MaterialGenerator(ELEMENT.getInstance().URANIUM233);
-	        new MaterialGenerator(ELEMENT.getInstance().ZIRCONIUM);
+	        MaterialGenerator.generate(ELEMENT.getInstance().URANIUM233);
+	        MaterialGenerator.generate(ELEMENT.getInstance().ZIRCONIUM);
 			
 			//Carbides - Tungsten Carbide exists in .09 so don't generate it. - Should still come before alloys though
 			if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
-				new MaterialGenerator(ALLOY.TUNGSTEN_CARBIDE);
+				MaterialGenerator.generate(ALLOY.TUNGSTEN_CARBIDE);
 			}
-			new MaterialGenerator(ALLOY.SILICON_CARBIDE);
-			new MaterialGenerator(ALLOY.ZIRCONIUM_CARBIDE);
-			new MaterialGenerator(ALLOY.TANTALUM_CARBIDE);
-			new MaterialGenerator(ALLOY.NIOBIUM_CARBIDE);	
+			MaterialGenerator.generate(ALLOY.SILICON_CARBIDE);
+			MaterialGenerator.generate(ALLOY.ZIRCONIUM_CARBIDE);
+			MaterialGenerator.generate(ALLOY.TANTALUM_CARBIDE);
+			MaterialGenerator.generate(ALLOY.NIOBIUM_CARBIDE);	
 			
 			//Generate some Alloys
 			
 			//Misc Alloys
-			new MaterialGenerator(ALLOY.ENERGYCRYSTAL);
-			new MaterialGenerator(ALLOY.BLOODSTEEL);
-			new MaterialGenerator(ALLOY.BEDROCKIUM);
-			new MaterialGenerator(ALLOY.ZERON_100);
+			MaterialGenerator.generate(ALLOY.ENERGYCRYSTAL);
+			MaterialGenerator.generate(ALLOY.BLOODSTEEL);
+			MaterialGenerator.generate(ALLOY.BEDROCKIUM);
+			MaterialGenerator.generate(ALLOY.ZERON_100);
 			//Tumbaga was the name given by Spaniards to a non-specific alloy of gold and copper 
-			new MaterialGenerator(ALLOY.TUMBAGA);
+			MaterialGenerator.generate(ALLOY.TUMBAGA);
 			//Potin is traditionally an alloy of bronze, tin and lead, with varying quantities of each possible
-			new MaterialGenerator(ALLOY.POTIN);
+			MaterialGenerator.generate(ALLOY.POTIN);
 			
 			//Staballoy & Tantalloy
-			new MaterialGenerator(ALLOY.STABALLOY);
-			new MaterialGenerator(ALLOY.TANTALLOY_60);
-			new MaterialGenerator(ALLOY.TANTALLOY_61);
+			MaterialGenerator.generate(ALLOY.STABALLOY);
+			MaterialGenerator.generate(ALLOY.TANTALLOY_60);
+			MaterialGenerator.generate(ALLOY.TANTALLOY_61);
 
 			//Inconel
-			new MaterialGenerator(ALLOY.INCONEL_625);
-			new MaterialGenerator(ALLOY.INCONEL_690);
-			new MaterialGenerator(ALLOY.INCONEL_792);
+			MaterialGenerator.generate(ALLOY.INCONEL_625);
+			MaterialGenerator.generate(ALLOY.INCONEL_690);
+			MaterialGenerator.generate(ALLOY.INCONEL_792);
 
 			
 			//Maraging Steel
-			new MaterialGenerator(ALLOY.MARAGING250);
-			new MaterialGenerator(ALLOY.MARAGING300);
-			new MaterialGenerator(ALLOY.MARAGING350);
+			MaterialGenerator.generate(ALLOY.MARAGING250);
+			MaterialGenerator.generate(ALLOY.MARAGING300);
+			MaterialGenerator.generate(ALLOY.MARAGING350);
 			
 			//Composite Alloys
-			new MaterialGenerator(ALLOY.STELLITE);
-			new MaterialGenerator(ALLOY.TALONITE);			
+			MaterialGenerator.generate(ALLOY.STELLITE);
+			MaterialGenerator.generate(ALLOY.TALONITE);			
 
 			//Hastelloy
-			new MaterialGenerator(ALLOY.HASTELLOY_W);
-			new MaterialGenerator(ALLOY.HASTELLOY_X);
-			new MaterialGenerator(ALLOY.HASTELLOY_C276);
-			new MaterialGenerator(ALLOY.HASTELLOY_N);
+			MaterialGenerator.generate(ALLOY.HASTELLOY_W);
+			MaterialGenerator.generate(ALLOY.HASTELLOY_X);
+			MaterialGenerator.generate(ALLOY.HASTELLOY_C276);
+			MaterialGenerator.generate(ALLOY.HASTELLOY_N);
 
 			//Incoloy
-			new MaterialGenerator(ALLOY.INCOLOY_020);
-			new MaterialGenerator(ALLOY.INCOLOY_DS);
-			new MaterialGenerator(ALLOY.INCOLOY_MA956);
+			MaterialGenerator.generate(ALLOY.INCOLOY_020);
+			MaterialGenerator.generate(ALLOY.INCOLOY_DS);
+			MaterialGenerator.generate(ALLOY.INCOLOY_MA956);
 			
 			//Leagrisium
-			new MaterialGenerator(ALLOY.LEAGRISIUM);			
+			MaterialGenerator.generate(ALLOY.LEAGRISIUM);			
 			//Must be the final Alloy to Generate
-			new MaterialGenerator(ALLOY.QUANTUM);		
+			MaterialGenerator.generate(ALLOY.QUANTUM);		
 			
 
 		} catch (Throwable r){
