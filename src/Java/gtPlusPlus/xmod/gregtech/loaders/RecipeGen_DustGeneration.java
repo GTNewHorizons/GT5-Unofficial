@@ -7,10 +7,21 @@ import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
 import net.minecraft.item.ItemStack;
 
-public class RecipeGen_DustGeneration {
+public class RecipeGen_DustGeneration  implements Runnable{
 
-	public static void generateRecipes(Material material){
-		int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 64 : 16;
+	final Material toGenerate;
+	
+	public RecipeGen_DustGeneration(final Material M){
+		this.toGenerate = M;
+	}
+	
+	@Override
+	public void run() {
+		generateRecipes(toGenerate);		
+	}
+
+	public static void generateRecipes(final Material material){
+		final int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 64 : 16;
 
 		Utils.LOG_WARNING("Generating Shaped Crafting recipes for "+material.getLocalizedName()); //TODO
 		//Ring Recipe
@@ -27,12 +38,12 @@ public class RecipeGen_DustGeneration {
 		}
 
 
-		ItemStack normalDust = material.getDust(1);
-		ItemStack smallDust = material.getSmallDust(1);
-		ItemStack tinyDust = material.getTinyDust(1);
+		final ItemStack normalDust = material.getDust(1);
+		final ItemStack smallDust = material.getSmallDust(1);
+		final ItemStack tinyDust = material.getTinyDust(1);
 
-		ItemStack[] inputStacks = material.getMaterialComposites();
-		ItemStack outputStacks = material.getDust(material.smallestStackSizeWhenProcessing);
+		final ItemStack[] inputStacks = material.getMaterialComposites();
+		final ItemStack outputStacks = material.getDust(material.smallestStackSizeWhenProcessing);
 
 		if (RecipeUtils.recipeBuilder(
 				tinyDust,	tinyDust, tinyDust, 
@@ -87,7 +98,7 @@ public class RecipeGen_DustGeneration {
 			if (inputStacks.length != 0 && inputStacks.length <= 4){								
 				//Log Input items
 				Utils.LOG_WARNING(ItemUtils.getArrayStackNames(inputStacks));
-				long[] inputStackSize = material.vSmallestRatio;
+				final long[] inputStackSize = material.vSmallestRatio;
 				Utils.LOG_INFO("mixer is stacksizeVar null? "+(inputStackSize != null));
 				//Is smallest ratio invalid?
 				if (inputStackSize != null){
@@ -98,10 +109,18 @@ public class RecipeGen_DustGeneration {
 					}
 					//Relog input values, with stack sizes
 					Utils.LOG_WARNING(ItemUtils.getArrayStackNames(inputStacks));	
+					
+					//Get us four ItemStacks to input into the mixer
+					ItemStack input1, input2, input3, input4;
+				input1 = (inputStacks.length >= 1) ? (input1 = (inputStacks[0] == null) ? null : inputStacks[0]) : null;
+				input2 = (inputStacks.length >= 2) ? (input2 = (inputStacks[1] == null) ? null : inputStacks[1]) : null;
+				input3 = (inputStacks.length >= 3) ? (input3 = (inputStacks[2] == null) ? null : inputStacks[2]) : null;
+				input4 = (inputStacks.length >= 4) ? (input4 = (inputStacks[3] == null) ? null : inputStacks[3]) : null;
+					
 					//Add mixer Recipe
 					if (GT_Values.RA.addMixerRecipe(
-							inputStacks[0], inputStacks[1],
-							inputStacks[2], inputStacks[3],
+							input1, input2,
+							input3, input4,
 							null, null,
 							outputStacks,
 							(int) Math.max(material.getMass() * 2L * 1, 1),

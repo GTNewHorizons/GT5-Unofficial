@@ -2,7 +2,6 @@ package gtPlusPlus.core.item;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMachines;
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
 import static gtPlusPlus.core.lib.CORE.LOAD_ALL_CONTENT;
-import static gtPlusPlus.core.util.item.ItemUtils.generateItemsFromMaterial;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.common.compat.COMPAT_Baubles;
@@ -31,6 +30,7 @@ import gtPlusPlus.core.lib.CORE.configSwitches;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.debug.DEBUG_INIT;
 import gtPlusPlus.core.util.item.ItemUtils;
@@ -206,59 +206,59 @@ public final class ModItems {
 			//Elements generate first so they can be used in compounds.
 			
 			//Uranium-233 is a fissile isotope of uranium that is bred from thorium-232 as part of the thorium fuel cycle.
-			generateItemsFromMaterial(ELEMENT.getInstance().URANIUM233);
-			generateItemsFromMaterial(ELEMENT.getInstance().ZIRCONIUM);
+			MaterialGenerator.generateItemsFromMaterial(ELEMENT.getInstance().URANIUM233);
+			MaterialGenerator.generateItemsFromMaterial(ELEMENT.getInstance().ZIRCONIUM);
 			
 			//Carbides - Tungsten Carbide exists in .09 so don't generate it. - Should still come before alloys though
 			if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
-				generateItemsFromMaterial(ALLOY.TUNGSTEN_CARBIDE);
+				MaterialGenerator.generateItemsFromMaterial(ALLOY.TUNGSTEN_CARBIDE);
 			}
-			generateItemsFromMaterial(ALLOY.SILICON_CARBIDE);
-			generateItemsFromMaterial(ALLOY.ZIRCONIUM_CARBIDE);
-			generateItemsFromMaterial(ALLOY.TANTALUM_CARBIDE);
-			generateItemsFromMaterial(ALLOY.NIOBIUM_CARBIDE);	
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.SILICON_CARBIDE);
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.ZIRCONIUM_CARBIDE);
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.TANTALUM_CARBIDE);
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.NIOBIUM_CARBIDE);	
 			
 			//Generate some Alloys
-			generateItemsFromMaterial(ALLOY.ENERGYCRYSTAL);
-			generateItemsFromMaterial(ALLOY.BLOODSTEEL);
-			generateItemsFromMaterial(ALLOY.BEDROCKIUM);
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.ENERGYCRYSTAL);
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.BLOODSTEEL);
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.BEDROCKIUM);
 			
-			generateItemsFromMaterial(ALLOY.STABALLOY);
-			generateItemsFromMaterial(ALLOY.TANTALLOY_60);
-			generateItemsFromMaterial(ALLOY.TANTALLOY_61);
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.STABALLOY);
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.TANTALLOY_60);
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.TANTALLOY_61);
 
-			generateItemsFromMaterial(ALLOY.INCONEL_625);
-			generateItemsFromMaterial(ALLOY.INCONEL_690);
-			generateItemsFromMaterial(ALLOY.INCONEL_792);
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.INCONEL_625);
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.INCONEL_690);
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.INCONEL_792);
 
-			generateItemsFromMaterial(ALLOY.ZERON_100);
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.ZERON_100);
 			
-			generateItemsFromMaterial(ALLOY.MARAGING250);
-			generateItemsFromMaterial(ALLOY.MARAGING300);
-			generateItemsFromMaterial(ALLOY.MARAGING350);
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.MARAGING250);
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.MARAGING300);
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.MARAGING350);
 			
-			generateItemsFromMaterial(ALLOY.STELLITE);
-			generateItemsFromMaterial(ALLOY.TALONITE);
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.STELLITE);
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.TALONITE);
 
 			//Tumbaga was the name given by Spaniards to a non-specific alloy of gold and copper 
-			generateItemsFromMaterial(ALLOY.TUMBAGA);
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.TUMBAGA);
 			//Potin is traditionally an alloy of bronze, tin and lead, with varying quantities of each possible
-			generateItemsFromMaterial(ALLOY.POTIN);
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.POTIN);
 
-			generateItemsFromMaterial(ALLOY.HASTELLOY_W);
-			generateItemsFromMaterial(ALLOY.HASTELLOY_X);
-			generateItemsFromMaterial(ALLOY.HASTELLOY_C276);
-			generateItemsFromMaterial(ALLOY.HASTELLOY_N);
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.HASTELLOY_W);
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.HASTELLOY_X);
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.HASTELLOY_C276);
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.HASTELLOY_N);
 
-			generateItemsFromMaterial(ALLOY.INCOLOY_020);
-			generateItemsFromMaterial(ALLOY.INCOLOY_DS);
-			generateItemsFromMaterial(ALLOY.INCOLOY_MA956);
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.INCOLOY_020);
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.INCOLOY_DS);
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.INCOLOY_MA956);
 			
 			//Leagrisium
-			generateItemsFromMaterial(ALLOY.LEAGRISIUM);			
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.LEAGRISIUM);			
 			
 			//Must be the final Alloy to Generate
-			generateItemsFromMaterial(ALLOY.QUANTUM);			
+			MaterialGenerator.generateItemsFromMaterial(ALLOY.QUANTUM);			
 
 		} catch (Throwable r){
 			Utils.LOG_INFO("Failed to Generated a Material. "+r.getMessage());

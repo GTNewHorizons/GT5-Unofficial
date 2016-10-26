@@ -6,9 +6,20 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
 import net.minecraft.item.ItemStack;
 
-public class RecipeGen_ShapedCrafting {
+public class RecipeGen_ShapedCrafting  implements Runnable{
 
-	public static void generateRecipes(Material material){
+	final Material toGenerate;
+	
+	public RecipeGen_ShapedCrafting(final Material M){
+		this.toGenerate = M;
+	}
+	
+	@Override
+	public void run() {
+		generateRecipes(toGenerate);		
+	}
+	
+	public static void generateRecipes(final Material material){
 		Utils.LOG_WARNING("Generating Shaped Crafting recipes for "+material.getLocalizedName()); //TODO
 
 		//Plates
@@ -62,7 +73,7 @@ public class RecipeGen_ShapedCrafting {
 
 		//Framebox Recipe
 		if (!material.isRadioactive){
-			ItemStack stackStick = material.getRod(1);
+			final ItemStack stackStick = material.getRod(1);
 			if (RecipeUtils.recipeBuilder(
 					stackStick, stackStick, stackStick,
 					stackStick, "craftingToolWrench", stackStick,

@@ -77,7 +77,7 @@ public class MaterialUtils {
 				50, //Protons
 				50, //Neutrons
 				false,
-				null,
+				"",
 				sRadioactivity);
 		return temp;
 	}

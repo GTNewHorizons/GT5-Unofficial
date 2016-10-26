@@ -116,7 +116,7 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter
         	Utils.LOG_INFO("Found some Valid Inputs.");
             long tVoltage = getMaxInputVoltage();
             byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
+            GT_Recipe tRecipe = Recipe_GT.Gregtech_Recipe_Map.sAlloyBlastSmelterRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
             if ((tRecipe != null) && (this.mHeatingCapacity >= tRecipe.mSpecialValue) && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
                 this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
@@ -135,7 +135,7 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter
                     this.mEUt = (-this.mEUt);
                 }
                 this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-                this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0), tRecipe.getOutput(1)};
+                this.mOutputFluids = new FluidStack[]{tRecipe.getFluidOutput(0)};
                 updateSlots();
                 return true;
             }

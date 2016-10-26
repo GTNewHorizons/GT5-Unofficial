@@ -8,18 +8,28 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import net.minecraft.item.ItemStack;
 
-public class RecipeGen_Plates {
+public class RecipeGen_Plates implements Runnable{
 
-	public static void generateRecipes(Material material){
+	final Material toGenerate;
+	
+	public RecipeGen_Plates(final Material M){
+		this.toGenerate = M;
+	}
+	
+	@Override
+	public void run() {
+		generateRecipes(toGenerate);		
+	}
+	
+	public static void generateRecipes(final Material material){
 
-		int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 64 : 16;
-		ItemStack ingotStackOne = material.getIngot(1);
-		ItemStack ingotStackTwo = material.getIngot(2);
-		ItemStack shape_Mold = ItemList.Shape_Mold_Plate.get(0);
-		ItemStack shape_Extruder = ItemList.Shape_Extruder_Plate.get(0);
-		ItemStack plate_Single = material.getPlate(1);
-		ItemStack plate_SingleTwo = material.getPlate(2);
-		ItemStack plate_Double = material.getPlateDouble(1);
+		final int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 64 : 16;
+		final ItemStack ingotStackOne = material.getIngot(1);
+		final ItemStack ingotStackTwo = material.getIngot(2);
+		final ItemStack shape_Mold = ItemList.Shape_Mold_Plate.get(0);
+		final ItemStack plate_Single = material.getPlate(1);
+		final ItemStack plate_SingleTwo = material.getPlate(2);
+		final ItemStack plate_Double = material.getPlateDouble(1);
 
 		Utils.LOG_WARNING("Generating Plate recipes for "+material.getLocalizedName());
 		

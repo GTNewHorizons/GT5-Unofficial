@@ -27,7 +27,7 @@ public class Material {
 
 	protected Object dataVar;
 
-	private ArrayList<MaterialStack> vMaterialInput;
+	private ArrayList<MaterialStack> vMaterialInput = new ArrayList<MaterialStack>();
 	public final long[] vSmallestRatio;
 
 	private final short[] RGBA;
@@ -98,7 +98,7 @@ public class Material {
 			if (inputs.length != 0){
 				for (int i=0; i < inputs.length; i++){
 					if (inputs[i] != null){
-						this.vMaterialInput.set(i, inputs[i]);
+						this.vMaterialInput.add(i, inputs[i]);
 					}
 				}
 			}
@@ -288,6 +288,7 @@ public class Material {
 
 	final public ItemStack[] getMaterialComposites(){
 		//Utils.LOG_WARNING("Something requested the materials needed for "+localizedName);
+		if (vMaterialInput != null){
 		if (!vMaterialInput.isEmpty()){
 			ItemStack[] temp = new ItemStack[vMaterialInput.size()];
 			for (int i=0;i<vMaterialInput.size();i++){
@@ -310,6 +311,7 @@ public class Material {
 			}		
 			return temp;
 		}
+	}
 		return new ItemStack[]{};
 	}
 
