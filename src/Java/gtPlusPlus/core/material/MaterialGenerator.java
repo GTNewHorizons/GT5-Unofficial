@@ -86,20 +86,14 @@ public class MaterialGenerator {
 		}		
 	
 	
-        //Generate some Recipes
-       new RecipeGen_Plates(matInfo);
-       new RecipeGen_Extruder(matInfo);
-       new RecipeGen_ShapedCrafting(matInfo);
-       new RecipeGen_DustGeneration(matInfo);
-       new RecipeGen_BlastSmelter(matInfo);      
-		
+        	
 		
 		//Add A jillion Recipes - old code
-		/*RecipeGen_Plates.generateRecipes(matInfo);
+		RecipeGen_Plates.generateRecipes(matInfo);
 		RecipeGen_Extruder.generateRecipes(matInfo);
 		RecipeGen_ShapedCrafting.generateRecipes(matInfo);
 		RecipeGen_DustGeneration.generateRecipes(matInfo);
-		RecipeGen_BlastSmelter.generateARecipe(matInfo);*/		
+		RecipeGen_BlastSmelter.generateARecipe(matInfo);	
 	
 	}
 
