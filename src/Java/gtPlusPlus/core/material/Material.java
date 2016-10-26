@@ -387,23 +387,23 @@ public class Material {
 					if (dummyFormulaArray.length >= 1){
 						for (int e=0;e<tempInput.size();e++){
 							if (tempInput.get(e) != null){
-								if (tempInput.get(e).stackMaterial != null){
-									if (!tempInput.get(e).stackMaterial.vChemicalSymbol.equals("??")){
+								if (tempInput.get(e).getStackMaterial() != null){
+									if (!tempInput.get(e).getStackMaterial().vChemicalSymbol.equals("??")){
 										if (dummyFormulaArray[e] > 1){
 
-											if (tempInput.get(e).stackMaterial.vChemicalFormula.length() > 3){
-												dummyFormula = dummyFormula + "(" + tempInput.get(e).stackMaterial.vChemicalFormula + ")" + dummyFormulaArray[e];										
+											if (tempInput.get(e).getStackMaterial().vChemicalFormula.length() > 3){
+												dummyFormula = dummyFormula + "(" + tempInput.get(e).getStackMaterial().vChemicalFormula + ")" + dummyFormulaArray[e];										
 											}
 											else {
-												dummyFormula = dummyFormula + tempInput.get(e).stackMaterial.vChemicalFormula + dummyFormulaArray[e];										
+												dummyFormula = dummyFormula + tempInput.get(e).getStackMaterial().vChemicalFormula + dummyFormulaArray[e];										
 											}
 										}
 										else if (dummyFormulaArray[e] == 1){
-											if (tempInput.get(e).stackMaterial.vChemicalFormula.length() > 3){
-												dummyFormula = dummyFormula + "(" +tempInput.get(e).stackMaterial.vChemicalFormula + ")";											
+											if (tempInput.get(e).getStackMaterial().vChemicalFormula.length() > 3){
+												dummyFormula = dummyFormula + "(" +tempInput.get(e).getStackMaterial().vChemicalFormula + ")";											
 											}
 											else {
-												dummyFormula = dummyFormula +tempInput.get(e).stackMaterial.vChemicalFormula;											
+												dummyFormula = dummyFormula +tempInput.get(e).getStackMaterial().vChemicalFormula;											
 											}
 										}
 									}

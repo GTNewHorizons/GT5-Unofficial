@@ -217,7 +217,7 @@ public class GregtechConduits {
 			}			
 		}
 		else {
-			mass = ELEMENT.IRON.getMass();
+			mass = ELEMENT.getInstance().IRON.getMass();
 			voltage = 8;			
 		}
 

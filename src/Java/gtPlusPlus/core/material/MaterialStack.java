@@ -9,22 +9,24 @@ import net.minecraft.item.ItemStack;
 
 public class MaterialStack {
 
-	final int[] vAmount;
-	final Material stackMaterial;
-	final double percentageToUse;
+	private transient final int[] vAmount;
+	private final Material stackMaterial;
+	private final double vPercentageToUse;
 
-	public MaterialStack(Material inputs, double partOutOf100){
+	public MaterialStack(final Material inputs, final double partOutOf100){
 		this.stackMaterial = inputs;
-		this.percentageToUse = partOutOf100;
+		this.vPercentageToUse = partOutOf100;
 		this.vAmount = math(partOutOf100);
 	}
 
-	private int[] math(double val){	
+	@SuppressWarnings("static-method")
+	private int[] math(final double val){	
+		double i;
 		//Cast to a BigDecimal to round it.
-		BigDecimal bd = new BigDecimal(val).setScale(2, RoundingMode.HALF_EVEN);
-		val = bd.doubleValue();
+		final BigDecimal bd = new BigDecimal(val).setScale(2, RoundingMode.HALF_EVEN);
+		i = bd.doubleValue();
 		//Split the string into xx.xx
-		String[] arr=String.valueOf(val).split("\\.");
+		final String[] arr=String.valueOf(i).split("\\.");
 		int[] intArr=new int[2];
 		intArr[0]=Integer.parseInt(arr[0]);
 		intArr[1]=Integer.parseInt(arr[1]);
@@ -35,12 +37,16 @@ public class MaterialStack {
 		return this.stackMaterial.getDust(this.vAmount[0]);
 	}
 	
-	public ItemStack getDustStack(int amount){
+	public ItemStack getDustStack(final int amount){
 		return this.stackMaterial.getDust(amount);
 	}
 	
 	public Material getStackMaterial(){
 		return this.stackMaterial;
+	}
+	
+	public double getvPercentageToUse(){
+		return this.vPercentageToUse;
 	}
 	
 	public long[] getSmallestStackSizes(){
@@ -56,7 +62,7 @@ public class MaterialStack {
 		return 100;
 	}
 	public ItemStack getLeftOverStacksFromDecimalValue(){
-		int temp = this.vAmount[1];
+		final int temp = this.vAmount[1];
 		int getCount;
 		if (temp >= 25 && temp <=99){
 			getCount = temp/25;
@@ -72,7 +78,7 @@ public class MaterialStack {
 	}
 
 	public ItemStack[] getValidItemStacks(){
-		return ItemUtils.validItemsForOreDict(stackMaterial.unlocalizedName);
+		return ItemUtils.validItemsForOreDict(stackMaterial.getUnlocalizedName());
 	}
 
 

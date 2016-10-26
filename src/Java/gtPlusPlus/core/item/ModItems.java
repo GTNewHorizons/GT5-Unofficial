@@ -206,8 +206,8 @@ public final class ModItems {
 			//Elements generate first so they can be used in compounds.
 			
 			//Uranium-233 is a fissile isotope of uranium that is bred from thorium-232 as part of the thorium fuel cycle.
-			generateItemsFromMaterial(ELEMENT.URANIUM233);
-			generateItemsFromMaterial(ELEMENT.ZIRCONIUM);
+			generateItemsFromMaterial(ELEMENT.getInstance().URANIUM233);
+			generateItemsFromMaterial(ELEMENT.getInstance().ZIRCONIUM);
 			
 			//Carbides - Tungsten Carbide exists in .09 so don't generate it. - Should still come before alloys though
 			if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
