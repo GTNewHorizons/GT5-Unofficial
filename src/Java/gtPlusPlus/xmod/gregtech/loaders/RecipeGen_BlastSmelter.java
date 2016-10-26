@@ -11,6 +11,9 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
+
+import java.util.ArrayList;
+
 import net.minecraft.item.ItemStack;
 
 public class RecipeGen_BlastSmelter {
@@ -173,7 +176,7 @@ public class RecipeGen_BlastSmelter {
 
 			//Prepare some Variables
 			ItemStack[] components;
-			gtPlusPlus.core.material.MaterialStack[] tMaterial;
+			ArrayList<gtPlusPlus.core.material.MaterialStack> tMaterial;
 			short counter=0;
 			int inputStackCount=0;
 			int fluidAmount=0;
@@ -186,8 +189,8 @@ public class RecipeGen_BlastSmelter {
 
 			//Set a duration
 			int duration = 0;
-			if (M.getMeltingPoint_K() > 150){
-				duration = (int) Math.max(M.getMass() / 50L, 1L) * M.getMeltingPoint_K();
+			if (M.getMeltingPointK() > 150){
+				duration = (int) Math.max(M.getMass() / 50L, 1L) * M.getMeltingPointK();
 			}
 			else {
 				duration = (int) Math.max(M.getMass() / 50L, 1L) * 150;	
@@ -229,7 +232,7 @@ public class RecipeGen_BlastSmelter {
 							if (GT_Values.RA.addFluidExtractionRecipe(M.getIngot(1), null, M.getFluid(144), 100, duration, 120)){
 								Utils.LOG_INFO("Success, Also added a Fluid Extractor recipe.");
 							}
-							if (GT_Values.RA.addFluidExtractionRecipe(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("nugget"+M.getLocalizedName(), 1), null, M.getFluid(16), 100, duration/9, 120)){
+							if (GT_Values.RA.addFluidExtractionRecipe(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("nugget"+M.getUnlocalizedName(), 1), null, M.getFluid(16), 100, duration/9, 120)){
 								Utils.LOG_INFO("Success, Also added a Fluid Extractor recipe.");
 							}
 							if (GT_Values.RA.addFluidExtractionRecipe(M.getSmallDust(1), null, M.getFluid(36), 100, duration/4, 120)){
@@ -253,7 +256,7 @@ public class RecipeGen_BlastSmelter {
 						if (GT_Values.RA.addFluidExtractionRecipe(M.getIngot(1), null, M.getFluid(144), 100, duration/2, 60)){
 							Utils.LOG_INFO("Success, Also added a Fluid Extractor recipe.");
 						}
-						ItemStack tempitem = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("nugget"+M.getLocalizedName(), 1);
+						ItemStack tempitem = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("nugget"+M.getUnlocalizedName(), 1);
 						if (tempitem != null){
 							if (GT_Values.RA.addFluidExtractionRecipe(tempitem, null, M.getFluid(16), 100, duration/2/9, 60)){
 								Utils.LOG_INFO("Success, Also added a Fluid Extractor recipe.");
@@ -302,11 +305,11 @@ public class RecipeGen_BlastSmelter {
 						//Builds me an ItemStack[] of the materials. - Without a circuit - this gets a good count for the 144L fluid multiplier
 						components = new ItemStack[9];
 						inputStackCount=0;
-						for (int irc=0;irc<M.getComposites().length;irc++){
-							if (M.getComposites()[irc] != null){
+						for (int irc=0;irc<M.getComposites().size();irc++){
+							if (M.getComposites().get(irc) != null){
 								int r = (int) M.vSmallestRatio[irc];
 								inputStackCount = inputStackCount+r;
-								components[irc] = M.getComposites()[irc].getDustStack(r);
+								components[irc] = M.getComposites().get(irc).getDustStack(r);
 							}						
 						}
 

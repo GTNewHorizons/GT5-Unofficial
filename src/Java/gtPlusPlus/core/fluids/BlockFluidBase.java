@@ -34,7 +34,7 @@ public class BlockFluidBase extends BlockFluidClassic {
             this.fluidMaterial = material;
             setCreativeTab(AddToCreativeTab.tabOther);
             this.displayName = material.getLocalizedName();
-            LanguageRegistry.addName(this, "Molten "+displayName+" ["+MathUtils.celsiusToKelvin(fluidMaterial.getBoilingPoint_C())+"K]");
+            LanguageRegistry.addName(this, "Molten "+displayName+" ["+MathUtils.celsiusToKelvin(fluidMaterial.getBoilingPointC())+"K]");
     		this.setBlockName(GetProperName());
     }
     

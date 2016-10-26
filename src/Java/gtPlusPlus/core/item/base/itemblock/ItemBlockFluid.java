@@ -60,7 +60,7 @@ public class ItemBlockFluid extends ItemBlock{
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
-		list.add("Temperature: "+MathUtils.celsiusToKelvin(thisFluid.getMeltingPoint_C())+"K");
+		list.add("Temperature: "+MathUtils.celsiusToKelvin(thisFluid.getMeltingPointC())+"K");
 		if (sRadiation > 0){
 			list.add(CORE.GT_Tooltip_Radioactive);
 		}

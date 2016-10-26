@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 public class RecipeGen_DustGeneration {
 
 	public static void generateRecipes(Material material){
-		int tVoltageMultiplier = material.getMeltingPoint_K() >= 2800 ? 64 : 16;
+		int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 64 : 16;
 
 		Utils.LOG_WARNING("Generating Shaped Crafting recipes for "+material.getLocalizedName()); //TODO
 		//Ring Recipe
@@ -80,30 +80,47 @@ public class RecipeGen_DustGeneration {
 			Utils.LOG_WARNING("4 Small dust from 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");			
 		}
 
-
-		if (inputStacks.length > 0 && inputStacks.length <= 4){
-			Utils.LOG_WARNING(ItemUtils.getArrayStackNames(inputStacks));
-			long[] inputStackSize = material.vSmallestRatio;
-			if (inputStackSize != null){
-				for (short x=0;x<inputStacks.length;x++){
-					if (inputStacks[x] != null && inputStackSize[x] != 0)
-					inputStacks[x].stackSize = (int) inputStackSize[x];
-				}
-				Utils.LOG_WARNING(ItemUtils.getArrayStackNames(inputStacks));			
-				if (GT_Values.RA.addMixerRecipe(
-						inputStacks[0], inputStacks[1],
-						inputStacks[2], inputStacks[3],
-						null, null,
-						outputStacks,
-						(int) Math.max(material.getMass() * 2L * 1, 1),
-						6 * material.vVoltageMultiplier)){
-					Utils.LOG_WARNING("Dust Mixer Recipe: "+material.getLocalizedName()+" - Success");
-				}
-				else {
-					Utils.LOG_WARNING("Dust Mixer Recipe: "+material.getLocalizedName()+" - Failed");			
+		//Is this a composite?
+		if (inputStacks != null){			
+			//Is this a composite?
+			Utils.LOG_INFO("mixer length: "+inputStacks.length);
+			if (inputStacks.length != 0 && inputStacks.length <= 4){								
+				//Log Input items
+				Utils.LOG_WARNING(ItemUtils.getArrayStackNames(inputStacks));
+				long[] inputStackSize = material.vSmallestRatio;
+				Utils.LOG_INFO("mixer is stacksizeVar null? "+(inputStackSize != null));
+				//Is smallest ratio invalid?
+				if (inputStackSize != null){
+					//set stack sizes on an input ItemStack[]
+					for (short x=0;x<inputStacks.length;x++){
+						if (inputStacks[x] != null && inputStackSize[x] != 0)
+							inputStacks[x].stackSize = (int) inputStackSize[x];
+					}
+					//Relog input values, with stack sizes
+					Utils.LOG_WARNING(ItemUtils.getArrayStackNames(inputStacks));	
+					//Add mixer Recipe
+					if (GT_Values.RA.addMixerRecipe(
+							inputStacks[0], inputStacks[1],
+							inputStacks[2], inputStacks[3],
+							null, null,
+							outputStacks,
+							(int) Math.max(material.getMass() * 2L * 1, 1),
+							6 * material.vVoltageMultiplier))
+					{
+						Utils.LOG_INFO("Dust Mixer Recipe: "+material.getLocalizedName()+" - Success");
+					}
+					else {
+						Utils.LOG_INFO("Dust Mixer Recipe: "+material.getLocalizedName()+" - Failed");			
+					}
 				}
 			}
 		}
+		
+		
+		
+		
+		
+
 	}
 }
 

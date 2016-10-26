@@ -11,6 +11,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.util.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -112,6 +113,7 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter
         }
         FluidStack[] tFluids = (FluidStack[]) Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tInputList.size()]), 0, 1);
         if (tInputList.size() > 0) {
+        	Utils.LOG_INFO("Found some Valid Inputs.");
             long tVoltage = getMaxInputVoltage();
             byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
             GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sBlastRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
@@ -138,6 +140,7 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter
                 return true;
             }
         }
+    	Utils.LOG_INFO("Failed to find some Valid Inputs.");
         return false;
     }
 

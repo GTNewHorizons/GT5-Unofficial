@@ -10,6 +10,9 @@ import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.materials.MaterialUtils;
 import gtPlusPlus.core.util.math.MathUtils;
+
+import java.util.ArrayList;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -17,67 +20,60 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class Material {
 
-	final String unlocalizedName;
-	final String localizedName;
+	private final String unlocalizedName;
+	private final String localizedName;
 
-	final Fluid vMoltenFluid;
+	private final Fluid vMoltenFluid;
 
 	protected Object dataVar;
 
-	private MaterialStack[] vMaterialInput = new MaterialStack[9];
+	private ArrayList<MaterialStack> vMaterialInput;
 	public final long[] vSmallestRatio;
 
-	final short[] RGBA;
+	private final short[] RGBA;
 
-	final boolean usesBlastFurnace;
+	private final boolean usesBlastFurnace;
 	public final boolean isRadioactive;
 	public final byte vRadioationLevel;
 
-	final int meltingPointK;
-	final int boilingPointK;
-	final int meltingPointC;
-	final int boilingPointC;
-	final long vProtons;
-	final long vNeutrons;
-	final long vMass;
+	private final int meltingPointK;
+	private final int boilingPointK;
+	private final int meltingPointC;
+	private final int boilingPointC;
+	private final long vProtons;
+	private final long vNeutrons;
+	private final long vMass;
 	public final int smallestStackSizeWhenProcessing; //Add a check for <=0 || > 64
 	public final int vTier;
 	public final int vVoltageMultiplier;
 	public final String vChemicalFormula;
 	public final String vChemicalSymbol;
 
-	public Material(String materialName, short[] rgba, int meltingPoint, int boilingPoint, long protons, long neutrons, boolean blastFurnace, MaterialStack[] inputs){		
-		this(materialName, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, inputs, "", 0);
+	public Material(final String materialName, final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final MaterialStack... inputs){		
+		this(materialName, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, "", 0, inputs);
 	}
 
-	public Material(String materialName, short[] rgba, int meltingPoint, int boilingPoint, long protons, long neutrons, boolean blastFurnace, MaterialStack[] inputs, int radiationLevel){		
-		this(materialName, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, inputs, "", radiationLevel);
+	public Material(final String materialName, final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final int radiationLevel, MaterialStack... inputs){		
+		this(materialName, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, "", radiationLevel, inputs);
 	}
 
-	public Material(String materialName, short[] rgba, int meltingPoint, int boilingPoint, long protons, long neutrons, boolean blastFurnace, MaterialStack[] inputs, String chemicalSymbol, int radiationLevel){
+	public Material(final String materialName, final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final String chemicalSymbol, final int radiationLevel, final MaterialStack... inputs){
 
 		this.unlocalizedName = Utils.sanitizeString(materialName);
 		this.localizedName = materialName;
 		this.RGBA = rgba;
 		this.meltingPointC = meltingPoint;
-		if (boilingPoint == 0){
-			boilingPoint = meltingPoint*4;
+		if (boilingPoint != 0){
+			this.boilingPointC = boilingPoint;
 		}
-		this.boilingPointC = boilingPoint;
+		else {
+			this.boilingPointC = meltingPoint*4;
+		}
 		this.meltingPointK = (int) MathUtils.celsiusToKelvin(meltingPointC);
 		this.boilingPointK = (int) MathUtils.celsiusToKelvin(boilingPointC);
 		this.vProtons = protons;
 		this.vNeutrons = neutrons;
 		this.vMass = getMass();
-
-		/*//List<MaterialStack> inputArray = Arrays.asList(inputs);
-		int tempSmallestSize = getSmallestStackForCrafting(inputs);
-		if (tempSmallestSize <= 64 && tempSmallestSize >= 1){
-			this.smallestStackSizeWhenProcessing = tempSmallestSize; //Valid stacksizes
-		}
-		else {
-			this.smallestStackSizeWhenProcessing = 50; //Can divide my math by 1/2 and round it~
-		}*/
 
 		//Sets the Rad level
 		if (radiationLevel != 0){
@@ -90,42 +86,10 @@ public class Material {
 		}
 
 		//Sets the materials 'tier'. Will probably replace this logic.
-		if (getMeltingPoint_K() >= 0 && getMeltingPoint_K() <= 750){
-			this.vTier = 1;
-		}
-		else if(getMeltingPoint_K() >= 751 && getMeltingPoint_K() <= 1250){
-			this.vTier = 2;
-		}
-		else if(getMeltingPoint_K() >= 1251 && getMeltingPoint_K() <= 1750){
-			this.vTier = 3;
-		}
-		else if(getMeltingPoint_K() >= 1751 && getMeltingPoint_K() <= 2250){
-			this.vTier = 4;
-		}
-		else if(getMeltingPoint_K() >= 2251 && getMeltingPoint_K() <= 2750){
-			this.vTier = 5;
-		}
-		else if(getMeltingPoint_K() >= 2751 && getMeltingPoint_K() <= 3250){
-			this.vTier = 6;
-		}
-		else if(getMeltingPoint_K() >= 3251 && getMeltingPoint_K() <= 3750){
-			this.vTier = 7;
-		}
-		else if(getMeltingPoint_K() >= 3751 && getMeltingPoint_K() <= 4250){
-			this.vTier = 8;
-		}
-		else if(getMeltingPoint_K() >= 4251 && getMeltingPoint_K() <= 4750){
-			this.vTier = 9;
-		}
-		else if(getMeltingPoint_K() >= 4751 && getMeltingPoint_K() <= 9999){
-			this.vTier = 10;
-		}
-		else {
-			this.vTier = 0;
-		}
+		this.vTier = MaterialUtils.getTierOfMaterial((int) MathUtils.celsiusToKelvin(meltingPoint));
 
 		this.usesBlastFurnace = blastFurnace;
-		this.vVoltageMultiplier = this.getMeltingPoint_K() >= 2800 ? 64 : 16;
+		this.vVoltageMultiplier = this.getMeltingPointK() >= 2800 ? 64 : 16;
 
 		if (inputs == null){
 			this.vMaterialInput = null;			
@@ -134,7 +98,7 @@ public class Material {
 			if (inputs.length != 0){
 				for (int i=0; i < inputs.length; i++){
 					if (inputs[i] != null){
-						this.vMaterialInput[i] = inputs[i];
+						this.vMaterialInput.set(i, inputs[i]);
 					}
 				}
 			}
@@ -186,8 +150,6 @@ public class Material {
 				this.vMoltenFluid = generateFluid();
 			}
 		}
-		
-
 
 		//dataVar = MathUtils.generateSingularRandomHexValue();
 
@@ -211,19 +173,19 @@ public class Material {
 		Utils.LOG_INFO("Boiling Point: "+boilingPointC+"C.");
 	}
 
-	public String getLocalizedName(){
+	final public String getLocalizedName(){
 		return localizedName;
 	}
 
-	public String getUnlocalizedName(){
+	final public String getUnlocalizedName(){
 		return unlocalizedName;
 	}
 
-	public short[] getRGBA(){
-		return RGBA;
+	final public short[] getRGBA(){
+		return this.RGBA;
 	}
 
-	public int getRgbAsHex(){
+	final public int getRgbAsHex(){
 
 		int returnValue = Utils.rgbtoHexValue(RGBA[0], RGBA[1], RGBA[2]);
 		if (returnValue == 0){
@@ -232,115 +194,115 @@ public class Material {
 		return Utils.rgbtoHexValue(RGBA[0], RGBA[1], RGBA[2]);
 	}
 
-	public long getProtons() {
+	final public long getProtons() {
 		return vProtons;
 	}
 
-	public long getNeutrons() {
+	final public long getNeutrons() {
 		return vNeutrons;
 	}
 
-	public long getMass() {
+	final public long getMass() {
 		return vProtons + vNeutrons;
 	}
 
-	public int getMeltingPoint_C() {
+	final public int getMeltingPointC() {
 		return meltingPointC;
 	}
 
-	public int getBoilingPoint_C() {
+	final public int getBoilingPointC() {
 		return boilingPointC;
 	}
 
-	public int getMeltingPoint_K() {
+	final public int getMeltingPointK() {
 		return meltingPointK;
 	}
 
-	public int getBoilingPoint_K() {
+	final public int getBoilingPointK() {
 		return boilingPointK;
 	}
 
-	public boolean requiresBlastFurnace(){
+	final public boolean requiresBlastFurnace(){
 		return usesBlastFurnace;
 	}
 
-	public ItemStack getDust(int stacksize){
+	final public ItemStack getDust(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dust"+unlocalizedName, stacksize);
 	}
 
-	public ItemStack getSmallDust(int stacksize){
+	final public ItemStack getSmallDust(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustSmall"+unlocalizedName, stacksize);
 	}
 
-	public ItemStack getTinyDust(int stacksize){
+	final public ItemStack getTinyDust(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustTiny"+unlocalizedName, stacksize);
 	}
 
-	public ItemStack[] getValidInputStacks(){
+	final public ItemStack[] getValidInputStacks(){
 		return ItemUtils.validItemsForOreDict(unlocalizedName);
 	}
 
-	public ItemStack getIngot(int stacksize){
+	final public ItemStack getIngot(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingot"+unlocalizedName, stacksize);
 	}
 
-	public ItemStack getPlate(int stacksize){
+	final public ItemStack getPlate(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plate"+unlocalizedName, stacksize);
 	}
 
-	public ItemStack getPlateDouble(int stacksize){
+	final public ItemStack getPlateDouble(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateDouble"+unlocalizedName, stacksize);
 	}
 
-	public ItemStack getGear(int stacksize){
+	final public ItemStack getGear(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("gear"+unlocalizedName, stacksize);
 	}
 
-	public ItemStack getRod(int stacksize){
+	final public ItemStack getRod(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("stick"+unlocalizedName, stacksize);
 	}
 
-	public ItemStack getLongRod(int stacksize){
+	final public ItemStack getLongRod(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("stickLong"+unlocalizedName, stacksize);
 	}
 
-	public ItemStack getBolt(int stacksize){
+	final public ItemStack getBolt(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("bolt"+unlocalizedName, stacksize);
 	}
 
-	public ItemStack getScrew(int stacksize){
+	final public ItemStack getScrew(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("screw"+unlocalizedName, stacksize);
 	}
 
-	public ItemStack getRing(int stacksize){
+	final public ItemStack getRing(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ring"+unlocalizedName, stacksize);
 	}
 
-	public ItemStack getRotor(int stacksize){
+	final public ItemStack getRotor(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("rotor"+unlocalizedName, stacksize);
 	}
 
-	public ItemStack getFrameBox(int stacksize){
+	final public ItemStack getFrameBox(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("frameGt"+unlocalizedName, stacksize);
 	}
 
-	public ItemStack[] getMaterialComposites(){
+	final public ItemStack[] getMaterialComposites(){
 		//Utils.LOG_WARNING("Something requested the materials needed for "+localizedName);
-		if (vMaterialInput != null && vMaterialInput.length >= 1){
-			ItemStack[] temp = new ItemStack[vMaterialInput.length];
-			for (int i=0;i<vMaterialInput.length;i++){
+		if (!vMaterialInput.isEmpty()){
+			ItemStack[] temp = new ItemStack[vMaterialInput.size()];
+			for (int i=0;i<vMaterialInput.size();i++){
 				//Utils.LOG_WARNING("i:"+i);
 				ItemStack testNull = null;
 				try {
-					testNull = vMaterialInput[i].getDustStack();
+					testNull = vMaterialInput.get(i).getDustStack();
 				} catch (Throwable r){
 					Utils.LOG_WARNING("Failed gathering material stack for "+localizedName+".");
-					Utils.LOG_WARNING("What Failed: Length:"+vMaterialInput.length+" current:"+i);
+					Utils.LOG_WARNING("What Failed: Length:"+vMaterialInput.size()+" current:"+i);
 				}
 				try {
 					if (testNull != null){
 						//Utils.LOG_WARNING("not null");
-						temp[i] = vMaterialInput[i].getDustStack();
+						temp[i] = vMaterialInput.get(i).getDustStack();
 					}
 				} catch (Throwable r){
 					Utils.LOG_WARNING("Failed setting slot "+i+", using "+localizedName);
@@ -351,16 +313,16 @@ public class Material {
 		return new ItemStack[]{};
 	}
 
-	public MaterialStack[] getComposites(){		
+	final public ArrayList<MaterialStack> getComposites(){		
 		return this.vMaterialInput;
 	}
 
-	public int[] getMaterialCompositeStackSizes(){
-		if (vMaterialInput != null && vMaterialInput.length >= 1){
-			int[] temp = new int[vMaterialInput.length];
-			for (int i=0;i<vMaterialInput.length;i++){
-				if (vMaterialInput[i] != null)
-					temp[i] = vMaterialInput[i].getDustStack().stackSize;
+	final public int[] getMaterialCompositeStackSizes(){
+		if (!vMaterialInput.isEmpty()){
+			int[] temp = new int[vMaterialInput.size()];
+			for (int i=0;i<vMaterialInput.size();i++){
+				if (vMaterialInput.get(i) != null)
+					temp[i] = vMaterialInput.get(i).getDustStack().stackSize;
 				else
 					temp[i]=0;
 			}		
@@ -370,74 +332,21 @@ public class Material {
 	}
 
 
-
-
-	private int getInputMaterialCount(MaterialStack[] materialInput){
-		int i = 0;
-		for (int r=0;r<4;r++){
-			try {
-				if (!materialInput[r].equals(null)){
-					i++;
-				}
-			} catch(Throwable x){
-				return i;
-			}
-		}
-		return i;
-	}
-
-
-	public String getChemicalFormula(MaterialStack[] materialInput){
-		if (materialInput != null && materialInput.length >= 1){
-			int f = getInputMaterialCount(materialInput);
-			String[] formulaComponents = new String[f];
-			for (int i=0;i<f;i++){
-				try {		
-					if (materialInput[i] != null){					
-						formulaComponents[i] = materialInput[i].stackMaterial.vChemicalFormula;	
-						Utils.LOG_WARNING("LOOK AT ME IN THE LOG - " + formulaComponents[i]);	
-					}
-					else{
-						Utils.LOG_WARNING("LOOK AT ME IN THE LOG - materialInput[i] was null");
-					}
-				} catch (Throwable e){
-					Utils.LOG_WARNING("LOOK AT ME IN THE LOG - got an error");
-					return "??";
-				}				
-			}
-
-			String properName = "";
-			for (int r = 0; r < f; r++){
-				properName = properName + formulaComponents[r];
-				Utils.LOG_WARNING("LOOK AT ME IN THE LOG - "+properName);
-			}
-			if (!properName.equals(""))
-				return properName;
-
-		}
-		return "??";
-
-	}
-
-	public long[] getSmallestRatio(MaterialStack[] inputs){
-		if (inputs != null){
-			if (inputs.length > 0){
-				Utils.LOG_WARNING("length: "+inputs.length);
-				Utils.LOG_WARNING("(inputs != null): "+(inputs != null));
+	@SuppressWarnings("static-method")
+	final public long[] getSmallestRatio(ArrayList<MaterialStack> tempInput){
+		if (tempInput != null){
+			if (!tempInput.isEmpty()){
+				Utils.LOG_WARNING("length: "+tempInput.size());
+				Utils.LOG_WARNING("(inputs != null): "+(tempInput != null));
 				//Utils.LOG_WARNING("length: "+inputs.length);
-				double tempPercentage=0;
-				long[] tempRatio = new long[inputs.length];
-				for (int x=0;x<inputs.length;x++){
+				long[] tempRatio = new long[tempInput.size()];
+				for (int x=0;x<tempInput.size();x++){
 					//tempPercentage = tempPercentage+inputs[x].percentageToUse;
 					//this.mMaterialList.add(inputs[x]);
-					if (inputs[x] != null){
-						tempRatio[x] = inputs[x].getPartsPerOneHundred();						
+					if (tempInput.get(x) != null){
+						tempRatio[x] = tempInput.get(x).getPartsPerOneHundred();						
 					}
 				}
-				//Check if % of added materials equals roughly 100%
-				/*if (tempPercentage <= 95 || tempPercentage >= 101){
-					Utils.LOG_WARNING("The compound for "+localizedName+" doesn't equal 98-100%, this isn't good.");
-				}*/
 
 				long[] smallestRatio = MathUtils.simplifyNumbersToSmallestForm(tempRatio);
 
@@ -463,58 +372,39 @@ public class Material {
 		return null;
 	}
 
-	private int getSmallestStackForCrafting(MaterialStack[] inputs){
-		if (inputs != null){
-			if (inputs.length != 0){
-				long[] smallestRatio = getSmallestRatio(inputs);
-				if (smallestRatio.length > 0){
-					int tempSmallestCraftingUseSize = 0;
-					for (int r=0;r<smallestRatio.length;r++){
-						tempSmallestCraftingUseSize = (int) (tempSmallestCraftingUseSize + smallestRatio[r]);
-					}
-					return tempSmallestCraftingUseSize;
-				}
-			}		
-		}
-		return 1;
-	}
-
-
-	public String getToolTip(String chemSymbol, long aMultiplier, boolean aShowQuestionMarks) {
+	@SuppressWarnings("unused")
+	final String getToolTip(String chemSymbol, long aMultiplier, boolean aShowQuestionMarks) {
 		if (!aShowQuestionMarks && (vChemicalFormula.equals("?")||vChemicalFormula.equals("??"))) return "";
 		Utils.LOG_WARNING("===============| Calculating Atomic Formula for "+this.localizedName+" |===============");
 		if (!chemSymbol.equals(""))
 			return chemSymbol;
-		MaterialStack[] tempInput = vMaterialInput;
+		ArrayList<MaterialStack> tempInput = vMaterialInput;
 		if (tempInput != null){
-			if (tempInput.length >= 1){
+			if (!tempInput.isEmpty()){
 				String dummyFormula = "";
 				long[] dummyFormulaArray = getSmallestRatio(tempInput);
 				if (dummyFormulaArray != null){
 					if (dummyFormulaArray.length >= 1){
-						for (int e=0;e<tempInput.length;e++){
-							if (tempInput[e] != null){
-								if (tempInput[e].stackMaterial != null){
-									if (!tempInput[e].stackMaterial.vChemicalSymbol.equals("??")){
+						for (int e=0;e<tempInput.size();e++){
+							if (tempInput.get(e) != null){
+								if (tempInput.get(e).stackMaterial != null){
+									if (!tempInput.get(e).stackMaterial.vChemicalSymbol.equals("??")){
 										if (dummyFormulaArray[e] > 1){
 
-											if (tempInput[e].stackMaterial.vChemicalFormula.length() > 3){
-												dummyFormula = dummyFormula + "(" + tempInput[e].stackMaterial.vChemicalFormula + ")" + dummyFormulaArray[e];										
+											if (tempInput.get(e).stackMaterial.vChemicalFormula.length() > 3){
+												dummyFormula = dummyFormula + "(" + tempInput.get(e).stackMaterial.vChemicalFormula + ")" + dummyFormulaArray[e];										
 											}
 											else {
-												dummyFormula = dummyFormula + tempInput[e].stackMaterial.vChemicalFormula + dummyFormulaArray[e];										
+												dummyFormula = dummyFormula + tempInput.get(e).stackMaterial.vChemicalFormula + dummyFormulaArray[e];										
 											}
 										}
 										else if (dummyFormulaArray[e] == 1){
-											if (tempInput[e].stackMaterial.vChemicalFormula.length() > 3){
-												dummyFormula = dummyFormula + "(" +tempInput[e].stackMaterial.vChemicalFormula + ")";											
+											if (tempInput.get(e).stackMaterial.vChemicalFormula.length() > 3){
+												dummyFormula = dummyFormula + "(" +tempInput.get(e).stackMaterial.vChemicalFormula + ")";											
 											}
 											else {
-												dummyFormula = dummyFormula + "" +tempInput[e].stackMaterial.vChemicalFormula + "";											
+												dummyFormula = dummyFormula +tempInput.get(e).stackMaterial.vChemicalFormula;											
 											}
-										}
-										else if (dummyFormulaArray[e] <= 0){
-											dummyFormula = dummyFormula+"";
 										}
 									}
 									else
@@ -522,9 +412,6 @@ public class Material {
 								}
 								else
 									dummyFormula = dummyFormula + "▓▓";
-							}
-							else {
-								dummyFormula = dummyFormula+"";
 							}
 						}
 						return MaterialUtils.subscript(dummyFormula);
@@ -541,12 +428,13 @@ public class Material {
 
 	}
 
-	Fluid generateFluid(){
+	final Fluid generateFluid(){
 		if (Materials.get(localizedName).mFluid == null){
 			Utils.LOG_WARNING("Generating our own fluid.");
 
 			//Generate a Cell if we need to
 			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+getUnlocalizedName(), 1) == null){
+				@SuppressWarnings("unused")
 				Item temp = new BaseItemCell(this);
 			}
 			return FluidUtils.addGTFluid(
@@ -554,7 +442,7 @@ public class Material {
 					"Molten "+this.getLocalizedName(),		
 					this.RGBA,
 					4,
-					this.getMeltingPoint_K(),
+					this.getMeltingPointK(),
 					ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+getUnlocalizedName(), 1),
 					ItemList.Cell_Empty.get(1L, new Object[0]),
 					1000);
@@ -563,7 +451,7 @@ public class Material {
 		return Materials.get(localizedName).mFluid;
 	}
 
-	public FluidStack getFluid(int fluidAmount) {
+	final public FluidStack getFluid(int fluidAmount) {
 		Utils.LOG_WARNING("Attempting to get "+fluidAmount+"L of "+this.vMoltenFluid.getName());
 
 		FluidStack moltenFluid = new FluidStack(this.vMoltenFluid, fluidAmount);

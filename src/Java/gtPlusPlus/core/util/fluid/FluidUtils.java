@@ -109,7 +109,7 @@ public class FluidUtils {
 	 * @return short[]
 	 */
 	public static Fluid generateFluid(Material material ,int aState){
-		int tempK = material.getMeltingPoint_C();
+		int tempK = material.getMeltingPointC();
 		Fluid generatedFluid = null;
 		switch (aState) {
 		case 0: {

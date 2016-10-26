@@ -12,7 +12,7 @@ public class RecipeGen_Plates {
 
 	public static void generateRecipes(Material material){
 
-		int tVoltageMultiplier = material.getMeltingPoint_K() >= 2800 ? 64 : 16;
+		int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 64 : 16;
 		ItemStack ingotStackOne = material.getIngot(1);
 		ItemStack ingotStackTwo = material.getIngot(2);
 		ItemStack shape_Mold = ItemList.Shape_Mold_Plate.get(0);

@@ -59,7 +59,7 @@ public class CasingTextureHandler {
 			case 14:
 				return TexturesGtBlocks.Casing_Staballoy_Firebox.getIcon();
 			case 15:
-				return TexturesGtBlocks.Casing_Material_Grisium.getIcon();		
+				return TexturesGtBlocks.Casing_Material_ZirconiumCarbide.getIcon();		
 
 			default:
 				return Textures.BlockIcons.MACHINE_CASING_RADIOACTIVEHAZARD.getIcon();

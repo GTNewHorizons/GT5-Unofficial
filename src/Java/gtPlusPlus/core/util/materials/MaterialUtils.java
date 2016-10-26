@@ -62,7 +62,7 @@ public class MaterialUtils {
 		if (hasValidRGBA(rgba) || element == Element.H){
 			//ModItems.itemBaseDecidust = UtilsItems.generateDecidust(material);
 			//ModItems.itemBaseCentidust = UtilsItems.generateCentidust(material);
-			return new Material(name, rgba, melting, boiling, protons, neutrons, blastFurnace, null, chemicalFormula, radioactivity);
+			return new Material(name, rgba, melting, boiling, protons, neutrons, blastFurnace, chemicalFormula, radioactivity);
 		}
 		return null;
 		
@@ -131,6 +131,42 @@ public class MaterialUtils {
 	    str = str.replaceAll("8", "₈");
 	    str = str.replaceAll("9", "₉");
 	    return str;
+	}
+	
+	public static int getTierOfMaterial(int M){
+		if (M >= 0 && M <= 750){
+			return 1;
+		}
+		else if(M >= 751 && M <= 1250){
+			return 2;
+		}
+		else if(M >= 1251 && M <= 1750){
+			return 3;
+		}
+		else if(M >= 1751 && M <= 2250){
+			return 4;
+		}
+		else if(M >= 2251 && M <= 2750){
+			return 5;
+		}
+		else if(M >= 2751 && M <= 3250){
+			return 6;
+		}
+		else if(M >= 3251 && M <= 3750){
+			return 7;
+		}
+		else if(M >= 3751 && M <= 4250){
+			return 8;
+		}
+		else if(M >= 4251 && M <= 4750){
+			return 9;
+		}
+		else if(M >= 4751 && M <= 9999){
+			return 10;
+		}
+		else {
+			return 0;
+		}
 	}
 	
 
