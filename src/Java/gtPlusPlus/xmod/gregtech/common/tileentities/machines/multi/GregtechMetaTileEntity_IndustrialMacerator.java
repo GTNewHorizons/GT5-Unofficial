@@ -126,6 +126,25 @@ extends GregtechMeta_MultiBlockBase {
 		ItemStack[] tInputs = (ItemStack[]) Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, 2);
 
 		boolean mOutputHatch1, mOutputHatch2, mOutputHatch3, mOutputHatch4, mOutputHatch5 = false;
+		int sizeInventory1 = this.mOutputBusses.get(0).mInventory.length;
+		int sizeInventory2 = this.mOutputBusses.get(0).mInventory.length;
+		int sizeInventory3 = this.mOutputBusses.get(0).mInventory.length;
+		int sizeInventory4 = this.mOutputBusses.get(0).mInventory.length;
+		int sizeInventory5 = this.mOutputBusses.get(0).mInventory.length;
+
+
+		int sizeBusInventory1 = this.mOutputBusses.get(0).getSizeInventory();
+		int sizeBusInventory2 = this.mOutputBusses.get(0).getSizeInventory();
+		int sizeBusInventory3 = this.mOutputBusses.get(0).getSizeInventory();
+		int sizeBusInventory4 = this.mOutputBusses.get(0).getSizeInventory();
+		int sizeBusInventory5 = this.mOutputBusses.get(0).getSizeInventory();
+
+		Utils.LOG_INFO("sizeInventory: "+sizeInventory1+" | sizeBusInventory: "+sizeBusInventory1);
+		Utils.LOG_INFO("sizeInventory: "+sizeInventory2+" | sizeBusInventory: "+sizeBusInventory2);
+		Utils.LOG_INFO("sizeInventory: "+sizeInventory3+" | sizeBusInventory: "+sizeBusInventory3);
+		Utils.LOG_INFO("sizeInventory: "+sizeInventory4+" | sizeBusInventory: "+sizeBusInventory4);
+		Utils.LOG_INFO("sizeInventory: "+sizeInventory5+" | sizeBusInventory: "+sizeBusInventory5);
+
 		mOutputHatch1 = (this.mOutputBusses.get(0).mInventory.length<=this.mOutputBusses.get(0).getSizeInventory()) ? true : false;
 		mOutputHatch2 = (this.mOutputBusses.get(1).mInventory.length<=this.mOutputBusses.get(1).getSizeInventory()) ? true : false;
 		mOutputHatch3 = (this.mOutputBusses.get(2).mInventory.length<=this.mOutputBusses.get(2).getSizeInventory()) ? true : false;
@@ -139,21 +158,32 @@ extends GregtechMeta_MultiBlockBase {
 		validHatches = mOutputHatch3 ? validHatches+1 : validHatches;
 		validHatches = mOutputHatch4 ? validHatches+1 : validHatches;
 		validHatches = mOutputHatch5 ? validHatches+1 : validHatches;
-		
+
 		Utils.LOG_INFO("Valid Output Hatches: "+validHatches);
-		
+
 		if (tInputList.size() > 0 && validHatches >= 1) {
 			GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
 			if ((tRecipe != null) && (tRecipe.isRecipeInputEqual(true, null, tInputs))) {
 				this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
 				this.mEfficiencyIncrease = 10000;
 
+				Utils.LOG_INFO("Valid Recipe Hatches: "+validHatches);
+				
 				this.mEUt = (-tRecipe.mEUt);
 				this.mMaxProgresstime = Math.max(1, (tRecipe.mDuration/5));
 				ItemStack[] outputs = new ItemStack[mOutputItems.length];
-				 for (int i = 0; i < mOutputItems.length; i++)
-			            if (getBaseMetaTileEntity().getRandomNumber(7500) < tRecipe.getOutputChance(i))
-			            	outputs[i] = tRecipe.getOutput(i);
+				for (int i = 0; i < mOutputItems.length; i++){
+					if (i==0) {
+						outputs[0] =  tRecipe.getOutput(i);
+					}
+					else if (getBaseMetaTileEntity().getRandomNumber(7500) < tRecipe.getOutputChance(i)){
+						outputs[i] = tRecipe.getOutput(i); 
+					}
+					else {
+						outputs[i] = null;
+					}
+				}
+
 				this.mOutputItems = outputs;
 				sendLoopStart((byte) 20);
 				updateSlots();
