@@ -178,7 +178,7 @@ extends GregtechMeta_MultiBlockBase {
 				else if (vUsedSlots >= vTE.getSizeInventory()-outputItemCount){		
 					//Not enough output slots
 					if (vUsedSlots > vTE.getSizeInventory()-outputItemCount){
-						if (arrayPos == 5){
+						if (arrayPos == 4){
 							Utils.LOG_INFO("Not Enough Output slots in top hatch");
 							return false;
 						}
@@ -190,6 +190,10 @@ extends GregtechMeta_MultiBlockBase {
 			if (vUsedSlots == vTE.getSizeInventory()){				
 				Utils.LOG_INFO("Not Enough Output slots in hatch - "+arrayPos+" - [0-4] - 0 = Bottom | 4 = Top");
 				mValidOutputSlots[arrayPos] = false;
+				if (arrayPos == 4){
+					Utils.LOG_INFO("Not Enough Output slots in top hatch");
+					return false;
+				}
 			}
 			//Count up a position in the boolean array.
 			arrayPos++;
