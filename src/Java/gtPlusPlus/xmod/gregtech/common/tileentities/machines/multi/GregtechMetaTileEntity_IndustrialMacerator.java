@@ -12,6 +12,7 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.array.Triplet;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -108,7 +109,8 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
-		Utils.LOG_INFO("Starting Maceration Stack.1");
+		
+		//Get inputs.
 		ArrayList<ItemStack> tInputList = getStoredInputs();
 		for (int i = 0; i < tInputList.size() - 1; i++) {
 			for (int j = i + 1; j < tInputList.size(); j++) {
@@ -122,53 +124,95 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 		}
-		Utils.LOG_INFO("Starting Maceration Stack.2");
+		
+		//Temp var
 		ItemStack[] tInputs = (ItemStack[]) Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, 2);
 
-		boolean mOutputHatch1, mOutputHatch2, mOutputHatch3, mOutputHatch4, mOutputHatch5 = false;
-		int sizeInventory1 = this.mOutputBusses.get(0).mInventory.length;
-		int sizeInventory2 = this.mOutputBusses.get(0).mInventory.length;
-		int sizeInventory3 = this.mOutputBusses.get(0).mInventory.length;
-		int sizeInventory4 = this.mOutputBusses.get(0).mInventory.length;
-		int sizeInventory5 = this.mOutputBusses.get(0).mInventory.length;
+		//Don't check the recipe if someone got around the output bus size check.
+		if (this.mOutputBusses.size() != 5){
+			return false;
+		}
+		
+		//Make a recipe instance for the rest of the method.
+		GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
+		
+		
+		//Count free slots in output hatches - return if the 4/5 hatch is full
+		ArrayList<Triplet<GT_MetaTileEntity_Hatch_OutputBus, Integer, int[]>> rList = new ArrayList<Triplet<GT_MetaTileEntity_Hatch_OutputBus, Integer, int[]>>();
+		int[] itemStackStackSizeArray = new int[mOutputBusses.size()];
+		for (GT_MetaTileEntity_Hatch_OutputBus tHatch : mOutputBusses) {
+			int hatchUsedSlotCount = 0;
+			if (isValidMetaTileEntity(tHatch)) {
+				//Loop slots in this hatch
+				for (int i = tHatch.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
+					//if slot is not null
+					if (tHatch.getBaseMetaTileEntity().getStackInSlot(i) != null){
+						//Dummy Stack
+						ItemStack temp = null;
+						Utils.LOG_INFO("Adding an itemstack to a Hatch in the Arraylist");
+						temp = (tHatch.getBaseMetaTileEntity().getStackInSlot(i));   
+						itemStackStackSizeArray[i] = temp.stackSize;
+						hatchUsedSlotCount++;
+					}					
+				}
+				//Add this hatch and its data to the ArrayList
+				rList.add(new Triplet<GT_MetaTileEntity_Hatch_OutputBus, Integer, int[]>(tHatch, hatchUsedSlotCount, itemStackStackSizeArray));
+			}
+		}
+		//Temp Vars.
+		boolean[] mValidOutputSlots = new boolean[5];
+		int arrayPos=0;
 
+		for (Triplet<GT_MetaTileEntity_Hatch_OutputBus, Integer, int[]> IE : rList) {
+			//Temp Vars.
+			GT_MetaTileEntity_Hatch_OutputBus vTE = IE.getKey();
+			int vUsedSlots = IE.getValue();
+			//Hatch is empty
+			if (vUsedSlots == 0){
+				mValidOutputSlots[arrayPos] = true;
+			}			
+			//Hatch contains at least one item
+			else if (vUsedSlots < vTE.getSizeInventory()){				
+				//Temp variable for counting amount of output items
+				int outputItemCount = tRecipe.mOutputs.length;
+				//Hatch has more slots free than output count
+				if (vUsedSlots < vTE.getSizeInventory()-outputItemCount){
+					mValidOutputSlots[arrayPos] = true;
+				}
+				//Hatch has output count free
+				else if (vUsedSlots >= vTE.getSizeInventory()-outputItemCount){					
+					//Not enough output slots
+					if (vUsedSlots > vTE.getSizeInventory()-outputItemCount){
+						return false;
+					}
+					//Exactly enough slots, return true. As soon as one fills and there is not enough anymore, it will return false above.
+					else if (vUsedSlots == vTE.getSizeInventory()-outputItemCount){
+						return true;
+					}					
+				}			
+			}
+			//Hatch is full
+			if (vUsedSlots == vTE.getSizeInventory()){
+				mValidOutputSlots[arrayPos] = false;
+			}
+			//Count up a position in the boolean array.
+			arrayPos++;
+		}
+		
+		int tValidOutputSlots = 0;
+		for (int cr=0;cr<mValidOutputSlots.length;cr++){
+			if (mValidOutputSlots[cr]){
+				tValidOutputSlots++;
+			}
+		}
 
-		int sizeBusInventory1 = this.mOutputBusses.get(0).getSizeInventory();
-		int sizeBusInventory2 = this.mOutputBusses.get(0).getSizeInventory();
-		int sizeBusInventory3 = this.mOutputBusses.get(0).getSizeInventory();
-		int sizeBusInventory4 = this.mOutputBusses.get(0).getSizeInventory();
-		int sizeBusInventory5 = this.mOutputBusses.get(0).getSizeInventory();
-
-		Utils.LOG_INFO("sizeInventory: "+sizeInventory1+" | sizeBusInventory: "+sizeBusInventory1);
-		Utils.LOG_INFO("sizeInventory: "+sizeInventory2+" | sizeBusInventory: "+sizeBusInventory2);
-		Utils.LOG_INFO("sizeInventory: "+sizeInventory3+" | sizeBusInventory: "+sizeBusInventory3);
-		Utils.LOG_INFO("sizeInventory: "+sizeInventory4+" | sizeBusInventory: "+sizeBusInventory4);
-		Utils.LOG_INFO("sizeInventory: "+sizeInventory5+" | sizeBusInventory: "+sizeBusInventory5);
-
-		mOutputHatch1 = (this.mOutputBusses.get(0).mInventory.length<=this.mOutputBusses.get(0).getSizeInventory()) ? true : false;
-		mOutputHatch2 = (this.mOutputBusses.get(1).mInventory.length<=this.mOutputBusses.get(1).getSizeInventory()) ? true : false;
-		mOutputHatch3 = (this.mOutputBusses.get(2).mInventory.length<=this.mOutputBusses.get(2).getSizeInventory()) ? true : false;
-		mOutputHatch4 = (this.mOutputBusses.get(3).mInventory.length<=this.mOutputBusses.get(3).getSizeInventory()) ? true : false;
-		mOutputHatch5 = (this.mOutputBusses.get(4).mInventory.length<=this.mOutputBusses.get(4).getSizeInventory()) ? true : false;
-
-		Utils.LOG_INFO("Starting Maceration Stack.4");
-		int validHatches=0;
-		validHatches = mOutputHatch1 ? validHatches+1 : validHatches;
-		validHatches = mOutputHatch2 ? validHatches+1 : validHatches;
-		validHatches = mOutputHatch3 ? validHatches+1 : validHatches;
-		validHatches = mOutputHatch4 ? validHatches+1 : validHatches;
-		validHatches = mOutputHatch5 ? validHatches+1 : validHatches;
-
-		Utils.LOG_INFO("Valid Output Hatches: "+validHatches);
-
-		if (tInputList.size() > 0 && validHatches >= 1) {
-			GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
+		//More than or one input
+		if (tInputList.size() > 0 && tValidOutputSlots > 1) {
 			if ((tRecipe != null) && (tRecipe.isRecipeInputEqual(true, null, tInputs))) {
 				this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
 				this.mEfficiencyIncrease = 10000;
 
-				Utils.LOG_INFO("Valid Recipe Hatches: "+validHatches);
-				
+
 				this.mEUt = (-tRecipe.mEUt);
 				this.mMaxProgresstime = Math.max(1, (tRecipe.mDuration/5));
 				ItemStack[] outputs = new ItemStack[mOutputItems.length];
