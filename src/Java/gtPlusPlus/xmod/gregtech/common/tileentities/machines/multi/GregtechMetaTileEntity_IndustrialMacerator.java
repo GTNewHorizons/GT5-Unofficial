@@ -14,6 +14,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,7 +59,7 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[64], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_STEAM_MACERATOR_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_STEAM_MACERATOR)};
+			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[64], new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_MatterFab_Active : TexturesGtBlock.Overlay_MatterFab)};
 		}
 		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[64]};
 	}
@@ -107,6 +108,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
+		Utils.LOG_INFO("Starting Maceration Stack.1");
 		ArrayList<ItemStack> tInputList = getStoredInputs();
 		for (int i = 0; i < tInputList.size() - 1; i++) {
 			for (int j = i + 1; j < tInputList.size(); j++) {
@@ -120,8 +122,27 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 		}
+		Utils.LOG_INFO("Starting Maceration Stack.2");
 		ItemStack[] tInputs = (ItemStack[]) Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, 2);
-		if (tInputList.size() > 0) {
+
+		boolean mOutputHatch1, mOutputHatch2, mOutputHatch3, mOutputHatch4, mOutputHatch5 = false;
+		mOutputHatch1 = (this.mOutputBusses.get(0).mInventory.length<=this.mOutputBusses.get(0).getSizeInventory()) ? true : false;
+		mOutputHatch2 = (this.mOutputBusses.get(1).mInventory.length<=this.mOutputBusses.get(1).getSizeInventory()) ? true : false;
+		mOutputHatch3 = (this.mOutputBusses.get(2).mInventory.length<=this.mOutputBusses.get(2).getSizeInventory()) ? true : false;
+		mOutputHatch4 = (this.mOutputBusses.get(3).mInventory.length<=this.mOutputBusses.get(3).getSizeInventory()) ? true : false;
+		mOutputHatch5 = (this.mOutputBusses.get(4).mInventory.length<=this.mOutputBusses.get(4).getSizeInventory()) ? true : false;
+
+		Utils.LOG_INFO("Starting Maceration Stack.4");
+		int validHatches=0;
+		validHatches = mOutputHatch1 ? validHatches+1 : validHatches;
+		validHatches = mOutputHatch2 ? validHatches+1 : validHatches;
+		validHatches = mOutputHatch3 ? validHatches+1 : validHatches;
+		validHatches = mOutputHatch4 ? validHatches+1 : validHatches;
+		validHatches = mOutputHatch5 ? validHatches+1 : validHatches;
+		
+		Utils.LOG_INFO("Valid Output Hatches: "+validHatches);
+		
+		if (tInputList.size() > 0 && validHatches >= 1) {
 			GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
 			if ((tRecipe != null) && (tRecipe.isRecipeInputEqual(true, null, tInputs))) {
 				this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
@@ -129,7 +150,11 @@ extends GregtechMeta_MultiBlockBase {
 
 				this.mEUt = (-tRecipe.mEUt);
 				this.mMaxProgresstime = Math.max(1, (tRecipe.mDuration/5));
-				this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0), tRecipe.getOutput(1)};
+				ItemStack[] outputs = new ItemStack[mOutputItems.length];
+				 for (int i = 0; i < mOutputItems.length; i++)
+			            if (getBaseMetaTileEntity().getRandomNumber(7500) < tRecipe.getOutputChance(i))
+			            	outputs[i] = tRecipe.getOutput(i);
+				this.mOutputItems = outputs;
 				sendLoopStart((byte) 20);
 				updateSlots();
 				return true;

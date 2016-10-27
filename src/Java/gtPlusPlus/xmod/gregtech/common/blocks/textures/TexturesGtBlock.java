@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
-public class TexturesGtBlocks {
+public class TexturesGtBlock {
 
 	/*
 	 * Handles Custom Textures.

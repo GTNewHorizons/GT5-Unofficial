@@ -25,7 +25,7 @@ import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.HANDLER_GT;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlocks;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
 
 import java.awt.event.ActionEvent;
@@ -126,7 +126,7 @@ implements ActionListener
 		Utils.LOG_WARNING("Processing texture: "+TexturesGtTools.SKOOKUM_CHOOCHER.getTextureFile().getResourcePath());
 
 		//Blocks
-		Utils.LOG_WARNING("Processing texture: "+TexturesGtBlocks.Casing_Machine_Dimensional.getTextureFile().getResourcePath());
+		Utils.LOG_WARNING("Processing texture: "+TexturesGtBlock.Casing_Machine_Dimensional.getTextureFile().getResourcePath());
 	}
 
 

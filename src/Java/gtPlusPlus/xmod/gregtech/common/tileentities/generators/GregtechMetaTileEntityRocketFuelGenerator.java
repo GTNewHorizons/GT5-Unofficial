@@ -11,7 +11,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.generators.GregtechRocketFuelGeneratorBase;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlocks;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -70,17 +70,17 @@ public class GregtechMetaTileEntityRocketFuelGenerator
     
     private GT_RenderedTexture getCasingTexture(){
     	if (this.mTier <= 4){
-    		return  new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Simple_Top);
+    		return  new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top);
     	}
     	else if (this.mTier == 5){
 
-    		return  new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Advanced);
+    		return  new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Advanced);
     	}
     	else if (this.mTier >= 6){
 
-    		return  new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Ultra);
+    		return  new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Ultra);
     	}
-		return  new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Simple_Top);
+		return  new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top);
     }
     
 
@@ -91,22 +91,22 @@ public class GregtechMetaTileEntityRocketFuelGenerator
 
     @Override
 	public ITexture[] getBack(byte aColor) {
-        return new ITexture[]{super.getBack(aColor)[0], getCasingTexture(), new GT_RenderedTexture(TexturesGtBlocks.Overlay_Machine_Vent)};
+        return new ITexture[]{super.getBack(aColor)[0], getCasingTexture(), new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Vent)};
     }
 
     @Override
 	public ITexture[] getBottom(byte aColor) {
-        return new ITexture[]{super.getBottom(aColor)[0], new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Simple_Bottom)};
+        return new ITexture[]{super.getBottom(aColor)[0], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)};
     }
 
     @Override
 	public ITexture[] getTop(byte aColor) {
-        return new ITexture[]{super.getTop(aColor)[0], new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Redstone_Off)};
+        return new ITexture[]{super.getTop(aColor)[0], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Redstone_Off)};
     }
 
     @Override
 	public ITexture[] getSides(byte aColor) {
-        return new ITexture[]{super.getSides(aColor)[0], getCasingTexture(), new GT_RenderedTexture(TexturesGtBlocks.Overlay_Machine_Diesel_Horizontal)};
+        return new ITexture[]{super.getSides(aColor)[0], getCasingTexture(), new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Diesel_Horizontal)};
     }
 
     @Override
@@ -116,21 +116,21 @@ public class GregtechMetaTileEntityRocketFuelGenerator
 
     @Override
 	public ITexture[] getBackActive(byte aColor) {
-        return new ITexture[]{super.getBackActive(aColor)[0], getCasingTexture(), new GT_RenderedTexture(TexturesGtBlocks.Overlay_Machine_Vent_Fast)};
+        return new ITexture[]{super.getBackActive(aColor)[0], getCasingTexture(), new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Vent_Fast)};
     }
 
     @Override
 	public ITexture[] getBottomActive(byte aColor) {
-        return new ITexture[]{super.getBottomActive(aColor)[0], new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Simple_Bottom)};
+        return new ITexture[]{super.getBottomActive(aColor)[0], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)};
     }
 
     @Override
 	public ITexture[] getTopActive(byte aColor) {
-        return new ITexture[]{super.getTopActive(aColor)[0], new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Redstone_On)};
+        return new ITexture[]{super.getTopActive(aColor)[0], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Redstone_On)};
     }
 
     @Override
 	public ITexture[] getSidesActive(byte aColor) {
-        return new ITexture[]{super.getSidesActive(aColor)[0], getCasingTexture(), new GT_RenderedTexture(TexturesGtBlocks.Overlay_Machine_Diesel_Horizontal_Active)};
+        return new ITexture[]{super.getSidesActive(aColor)[0], getCasingTexture(), new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Diesel_Horizontal_Active)};
     }
 }

@@ -11,7 +11,7 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.player.PlayerUtils;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlocks;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -491,7 +491,7 @@ extends GT_MetaTileEntity_BasicTank
 
 	@Override
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-		return aSide == aFacing ? new ITexture[]{new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Dimensional), new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Screen_Frequency)} : new ITexture[]{new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Dimensional), new GT_RenderedTexture(Textures.BlockIcons.VOID)};
+		return aSide == aFacing ? new ITexture[]{new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional), new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_Frequency)} : new ITexture[]{new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional), new GT_RenderedTexture(Textures.BlockIcons.VOID)};
 	}
 
 	//To-Do?

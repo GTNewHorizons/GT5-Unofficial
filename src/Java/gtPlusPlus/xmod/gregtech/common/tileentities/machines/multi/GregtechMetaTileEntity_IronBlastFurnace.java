@@ -14,7 +14,7 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_IronBlastFurnace;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_IronBlastFurnace;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlocks;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
@@ -25,9 +25,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class GregtechMetaTileEntity_IronBlastFurnace
         extends MetaTileEntity {
-    private static final ITexture[] FACING_SIDE = {new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Simple_Top)};
-    private static final ITexture[] FACING_FRONT = {new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Redstone_Off)};
-    private static final ITexture[] FACING_ACTIVE = {new GT_RenderedTexture(TexturesGtBlocks.Casing_Machine_Redstone_On)};
+    private static final ITexture[] FACING_SIDE = {new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top)};
+    private static final ITexture[] FACING_FRONT = {new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Redstone_Off)};
+    private static final ITexture[] FACING_ACTIVE = {new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Redstone_On)};
     public int mMaxProgresstime = 0;
     public int mUpdate = 30;
     public int mProgresstime = 0;

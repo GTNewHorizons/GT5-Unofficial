@@ -18,7 +18,7 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MatterFab;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlocks;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -83,7 +83,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GT_MetaTileEntity_Mul
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
 		if (aSide == aFacing) {
 			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[66],
-					new GT_RenderedTexture(aActive ? TexturesGtBlocks.Casing_Machine_Screen_3 : TexturesGtBlocks.Casing_Machine_Screen_1)};
+					new GT_RenderedTexture(aActive ? TexturesGtBlock.Casing_Machine_Screen_3 : TexturesGtBlock.Casing_Machine_Screen_1)};
 		}
 		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[66]};
 	}

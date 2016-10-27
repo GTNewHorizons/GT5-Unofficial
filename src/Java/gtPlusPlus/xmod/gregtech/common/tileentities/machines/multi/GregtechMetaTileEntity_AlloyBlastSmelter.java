@@ -112,12 +112,12 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter
             }
         }
         FluidStack[] tFluids = (FluidStack[]) Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tInputList.size()]), 0, 1);
-        if (tInputList.size() > 0) {
-        	Utils.LOG_INFO("Found some Valid Inputs.");
+        if (tInputList.size() > 1) {
             long tVoltage = getMaxInputVoltage();
             byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
             GT_Recipe tRecipe = Recipe_GT.Gregtech_Recipe_Map.sAlloyBlastSmelterRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
             if ((tRecipe != null) && (this.mHeatingCapacity >= tRecipe.mSpecialValue) && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
+            	Utils.LOG_WARNING("Found some Valid Inputs.");
                 this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
                 if (tRecipe.mEUt <= 16) {
@@ -140,7 +140,7 @@ public class GregtechMetaTileEntity_AlloyBlastSmelter
                 return true;
             }
         }
-    	Utils.LOG_INFO("Failed to find some Valid Inputs.");
+    	Utils.LOG_WARNING("Failed to find some Valid Inputs.");
         return false;
     }
 

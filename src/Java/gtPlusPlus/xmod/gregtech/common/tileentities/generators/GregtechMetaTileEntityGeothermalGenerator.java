@@ -11,7 +11,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenera
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlocks;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -82,7 +82,7 @@ extends GT_MetaTileEntity_BasicGenerator
 
 	@Override
 	public ITexture[] getBack(byte aColor) {
-		return new ITexture[]{super.getBack(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_BACK), new GT_RenderedTexture(TexturesGtBlocks.Overlay_Machine_Diesel_Vertical)};
+		return new ITexture[]{super.getBack(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_BACK), new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Diesel_Vertical)};
 	}
 
 	@Override
@@ -107,7 +107,7 @@ extends GT_MetaTileEntity_BasicGenerator
 
 	@Override
 	public ITexture[] getBackActive(byte aColor) {
-		return new ITexture[]{super.getBackActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_BACK_ACTIVE), new GT_RenderedTexture(TexturesGtBlocks.Overlay_Machine_Diesel_Vertical_Active)};
+		return new ITexture[]{super.getBackActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.DIESEL_GENERATOR_BACK_ACTIVE), new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Diesel_Vertical_Active)};
 	}
 
 	@Override
