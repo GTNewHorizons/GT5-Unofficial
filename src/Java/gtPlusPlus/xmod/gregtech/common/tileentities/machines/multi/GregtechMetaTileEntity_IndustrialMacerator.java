@@ -12,7 +12,7 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.array.Triplet;
+import gtPlusPlus.core.util.array.Pair;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -136,34 +136,29 @@ extends GregtechMeta_MultiBlockBase {
 		//Make a recipe instance for the rest of the method.
 		GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
 		
-		
 		//Count free slots in output hatches - return if the 4/5 hatch is full
-		ArrayList<Triplet<GT_MetaTileEntity_Hatch_OutputBus, Integer, int[]>> rList = new ArrayList<Triplet<GT_MetaTileEntity_Hatch_OutputBus, Integer, int[]>>();
-		int[] itemStackStackSizeArray = new int[mOutputBusses.size()];
+		ArrayList<Pair<GT_MetaTileEntity_Hatch_OutputBus, Integer>> rList = new ArrayList<Pair<GT_MetaTileEntity_Hatch_OutputBus, Integer>>();
 		for (GT_MetaTileEntity_Hatch_OutputBus tHatch : mOutputBusses) {
 			int hatchUsedSlotCount = 0;
 			if (isValidMetaTileEntity(tHatch)) {
 				//Loop slots in this hatch
-				for (int i = tHatch.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; i--) {
+				for (int i=0; i<tHatch.getBaseMetaTileEntity().getSizeInventory(); i++) {
 					//if slot is not null
 					if (tHatch.getBaseMetaTileEntity().getStackInSlot(i) != null){
-						//Dummy Stack
-						ItemStack temp = null;
-						Utils.LOG_INFO("Adding an itemstack to a Hatch in the Arraylist");
-						temp = (tHatch.getBaseMetaTileEntity().getStackInSlot(i));   
-						itemStackStackSizeArray[i] = temp.stackSize;
+						//Dummy Stack						
 						hatchUsedSlotCount++;
 					}					
 				}
 				//Add this hatch and its data to the ArrayList
-				rList.add(new Triplet<GT_MetaTileEntity_Hatch_OutputBus, Integer, int[]>(tHatch, hatchUsedSlotCount, itemStackStackSizeArray));
+				rList.add(new Pair<GT_MetaTileEntity_Hatch_OutputBus, Integer>(tHatch, hatchUsedSlotCount));
 			}
 		}
+		
 		//Temp Vars.
 		boolean[] mValidOutputSlots = new boolean[5];
 		int arrayPos=0;
 
-		for (Triplet<GT_MetaTileEntity_Hatch_OutputBus, Integer, int[]> IE : rList) {
+		for (Pair<GT_MetaTileEntity_Hatch_OutputBus, Integer> IE : rList) {
 			//Temp Vars.
 			GT_MetaTileEntity_Hatch_OutputBus vTE = IE.getKey();
 			int vUsedSlots = IE.getValue();
@@ -172,7 +167,7 @@ extends GregtechMeta_MultiBlockBase {
 				mValidOutputSlots[arrayPos] = true;
 			}			
 			//Hatch contains at least one item
-			else if (vUsedSlots < vTE.getSizeInventory()){				
+			else if (vUsedSlots < vTE.getSizeInventory()){	
 				//Temp variable for counting amount of output items
 				int outputItemCount = tRecipe.mOutputs.length;
 				//Hatch has more slots free than output count
@@ -180,19 +175,20 @@ extends GregtechMeta_MultiBlockBase {
 					mValidOutputSlots[arrayPos] = true;
 				}
 				//Hatch has output count free
-				else if (vUsedSlots >= vTE.getSizeInventory()-outputItemCount){					
+				else if (vUsedSlots >= vTE.getSizeInventory()-outputItemCount){		
 					//Not enough output slots
 					if (vUsedSlots > vTE.getSizeInventory()-outputItemCount){
-						return false;
-					}
-					//Exactly enough slots, return true. As soon as one fills and there is not enough anymore, it will return false above.
-					else if (vUsedSlots == vTE.getSizeInventory()-outputItemCount){
-						return true;
-					}					
+						if (arrayPos == 5){
+							Utils.LOG_INFO("Not Enough Output slots in top hatch");
+							return false;
+						}
+					}				
 				}			
 			}
+			
 			//Hatch is full
-			if (vUsedSlots == vTE.getSizeInventory()){
+			if (vUsedSlots == vTE.getSizeInventory()){				
+				Utils.LOG_INFO("Not Enough Output slots in hatch - "+arrayPos+" - [0-4] - 0 = Bottom | 4 = Top");
 				mValidOutputSlots[arrayPos] = false;
 			}
 			//Count up a position in the boolean array.
@@ -206,24 +202,30 @@ extends GregtechMeta_MultiBlockBase {
 			}
 		}
 
+		Utils.LOG_WARNING("Valid Output Slots: "+tValidOutputSlots);
+		
 		//More than or one input
 		if (tInputList.size() > 0 && tValidOutputSlots > 1) {
 			if ((tRecipe != null) && (tRecipe.isRecipeInputEqual(true, null, tInputs))) {
+				Utils.LOG_WARNING("Valid Recipe found - size "+tRecipe.mOutputs.length);
 				this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
 				this.mEfficiencyIncrease = 10000;
 
 
 				this.mEUt = (-tRecipe.mEUt);
 				this.mMaxProgresstime = Math.max(1, (tRecipe.mDuration/5));
-				ItemStack[] outputs = new ItemStack[mOutputItems.length];
-				for (int i = 0; i < mOutputItems.length; i++){
+				ItemStack[] outputs = new ItemStack[tRecipe.mOutputs.length];
+				for (int i = 0; i < tRecipe.mOutputs.length; i++){
 					if (i==0) {
+						Utils.LOG_WARNING("Adding the default output");
 						outputs[0] =  tRecipe.getOutput(i);
 					}
 					else if (getBaseMetaTileEntity().getRandomNumber(7500) < tRecipe.getOutputChance(i)){
+						Utils.LOG_WARNING("Adding a bonus output");
 						outputs[i] = tRecipe.getOutput(i); 
 					}
 					else {
+						Utils.LOG_WARNING("Adding null output");
 						outputs[i] = null;
 					}
 				}
@@ -293,56 +295,6 @@ extends GregtechMeta_MultiBlockBase {
 		return tAmount >= 26;
 	}
 
-	/*public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-        if (!aBaseMetaTileEntity.getAirOffset(xDir, 1, zDir)) {
-            return false;
-        }
-        int tAmount = 0;
-        controller = false;
-        for (int i = -1; i < 2; i++) {
-            for (int j = -1; j < 2; j++) {
-                for (int h = 0; h < 6; h++) {
-                    if (!(i == 0 && j == 0 && (h > 0 && h < 5)))//((h > 0)&&(h<5)) || (((xDir + i != 0) || (zDir + j != 0)) && ((i != 0) || (j != 0)))
-                    {
-                        IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-                        if ((!addMaintenanceToMachineList(tTileEntity, 64)) && (!addInputToMachineList(tTileEntity, 64)) && (!addOutputToMachineList(tTileEntity, 64)) && (!addEnergyInputToMachineList(tTileEntity, 64)) && (!ignoreController(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)))) {
-                            if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-                                return false;
-                            }
-                            if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 1) {
-                                return false;
-                            }
-                            tAmount++;
-                        }
-                    }
-                }
-            }
-        }
-        if (this.mOutputBusses.size() != 5 || this.mInputBusses.size() != 1) {
-            return false;
-        }
-        int height = this.getBaseMetaTileEntity().getYCoord();
-        if (this.mInputHatches.get(0).getBaseMetaTileEntity().getYCoord() != height) {
-            return false;
-        }
-        GT_MetaTileEntity_Hatch_OutputBus[] tmpHatches = new GT_MetaTileEntity_Hatch_OutputBus[5];
-        for (int i = 0; i < this.mOutputBusses.size(); i++) {
-            int hatchNumber = this.mOutputBusses.get(i).getBaseMetaTileEntity().getYCoord() - 1 - height;
-            if (tmpHatches[hatchNumber] == null) {
-                tmpHatches[hatchNumber] = this.mOutputBusses.get(i);
-            } else {
-                return false;
-            }
-        }
-        this.mOutputBusses.clear();
-        for (int i = 0; i < tmpHatches.length; i++) {
-            this.mOutputBusses.add(tmpHatches[i]);
-        }
-        return tAmount >= 26;
-    }*/
-
 	public boolean ignoreController(Block tTileEntity) {
 		if (!controller && tTileEntity == GregTech_API.sBlockMachines) {
 			return true;
@@ -360,18 +312,18 @@ extends GregtechMeta_MultiBlockBase {
 		return 0;
 	}
 
-	/*@Override
-	public int getDamageToComponent(ItemStack aStack) {
-		return 0;
-	}*/
-
 	@Override
 	public int getAmountOfOutputs() {
-		return 2;
+		return 16;
 	}
 
 	@Override
 	public boolean explodesOnComponentBreak(ItemStack aStack) {
 		return false;
+	}
+
+	@Override
+	public boolean isOverclockerUpgradable() {
+		return true;
 	}
 }
