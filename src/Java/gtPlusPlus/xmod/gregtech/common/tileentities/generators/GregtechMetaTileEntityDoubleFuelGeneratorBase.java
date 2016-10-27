@@ -15,17 +15,17 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public class GregtechMetaTileEntityRocketFuelGenerator
+public class GregtechMetaTileEntityDoubleFuelGeneratorBase
         extends GregtechRocketFuelGeneratorBase {
 
     public int mEfficiency;
 
-    public GregtechMetaTileEntityRocketFuelGenerator(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, "Requires liquid Fuels.", new ITexture[0]);
+    public GregtechMetaTileEntityDoubleFuelGeneratorBase(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier, "Requires two liquid Fuels. Fuel A is Fastburn, Fuel B is slowburn.", new ITexture[0]);
         onConfigLoad();
     }
 
-    public GregtechMetaTileEntityRocketFuelGenerator(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GregtechMetaTileEntityDoubleFuelGeneratorBase(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
         onConfigLoad();
     }
@@ -37,7 +37,7 @@ public class GregtechMetaTileEntityRocketFuelGenerator
 
     @Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GregtechMetaTileEntityRocketFuelGenerator(this.mName, this.mTier, this.mDescription, this.mTextures);
+        return new GregtechMetaTileEntityDoubleFuelGeneratorBase(this.mName, this.mTier, this.mDescription, this.mTextures);
     }
 
     @Override
