@@ -68,9 +68,12 @@ public class Machine_Workbench extends BlockContainer
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float lx, float ly, float lz)
 	{
-		if (world.isRemote) return true;
 
-		ItemStack heldItem = PlayerUtils.getItemStackInPlayersHand();
+		ItemStack heldItem = null;
+    	if (world.isRemote){
+    		heldItem = PlayerUtils.getItemStackInPlayersHand();
+    	}
+
 		boolean holdingWrench = false;
 
 		if (heldItem != null){
@@ -94,6 +97,7 @@ public class Machine_Workbench extends BlockContainer
 			}
 		}
 
+		if (world.isRemote) return true;
 
 		TileEntity te = world.getTileEntity(x, y, z);
 		if (te != null && te instanceof TileEntityWorkbench)

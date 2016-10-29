@@ -24,19 +24,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMetaTileEntityIndustrial_PlatePress
+public class GregtechMetaTileEntity_IndustrialPlatePress
 extends GregtechMeta_MultiBlockBase {
-	public GregtechMetaTileEntityIndustrial_PlatePress(int aID, String aName, String aNameRegional) {
+	public GregtechMetaTileEntity_IndustrialPlatePress(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}
 
-	public GregtechMetaTileEntityIndustrial_PlatePress(String aName) {
+	public GregtechMetaTileEntity_IndustrialPlatePress(String aName) {
 		super(aName);
 	}
 
 	@Override
 	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GregtechMetaTileEntityIndustrial_PlatePress(this.mName);
+		return new GregtechMetaTileEntity_IndustrialPlatePress(this.mName);
 	}
 
 	@Override

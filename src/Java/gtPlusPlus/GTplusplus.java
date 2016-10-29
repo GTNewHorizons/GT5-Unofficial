@@ -3,11 +3,9 @@ package gtPlusPlus;
 import static gtPlusPlus.core.lib.CORE.DEBUG;
 import static gtPlusPlus.core.lib.CORE.configSwitches.disableEnderIOIntegration;
 import static gtPlusPlus.core.lib.CORE.configSwitches.disableIC2Recipes;
-import static gtPlusPlus.core.lib.CORE.configSwitches.disableStaballoyBlastFurnaceRecipe;
 import static gtPlusPlus.core.lib.CORE.configSwitches.enableAlternativeBatteryAlloy;
 import static gtPlusPlus.core.lib.CORE.configSwitches.enableAlternativeDivisionSigilRecipe;
 import static gtPlusPlus.core.lib.CORE.configSwitches.enableCustomAlvearyBlocks;
-import static gtPlusPlus.core.lib.CORE.configSwitches.enableSolarGenerators;
 import static gtPlusPlus.core.lib.CORE.configSwitches.enableThaumcraftShardUnification;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Recipe;
@@ -65,19 +63,47 @@ implements ActionListener
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
 
+		
 		//Debug
 		DEBUG = config.getBoolean("debugMode", "debug", false, "Enables all sorts of debug logging. (Don't use unless told to, breaks other things.)");
 		disableEnderIOIntegration = config.getBoolean("disableEnderIO", "debug", false, "Disables EnderIO Integration.");
-		disableStaballoyBlastFurnaceRecipe = config.getBoolean("disableStaballoyBlastFurnaceRecipe", "debug", false, "Disables Staballoy Blast Furnace Recipe.");
-		//disableCentrifugeFormation = config.getBoolean("disableCentrifuge", "debug", false, "Keeps the Items around, just stops the multiblock forming. (It's broken currently, needs in depth testing)");
-
+		
+		
 		//Machines
-		enableSolarGenerators = config.getBoolean("enableSolarGenerators", "machines", false, "These may be overpowered, Consult a local electrician.");
 		enableThaumcraftShardUnification = config.getBoolean("enableThaumcraftShardUnification", "machines", false, "Allows the use of TC shards across many recipes by oreDicting them into a common group.");
 		enableAlternativeBatteryAlloy = config.getBoolean("enableAlternativeBatteryAlloy", "machines", false, "Adds a non-Antimony using Battery Alloy. Not Balanced at all..");
 		disableIC2Recipes = config.getBoolean("disableIC2Recipes", "machines", false, "Alkaluscraft Related - Removes IC2 Cables Except glass fibre. Few other Misc Tweaks.");
 		enableAlternativeDivisionSigilRecipe = config.getBoolean("enableAlternativeDivisionSigilRecipe", "machines", false, "Utilizes Neutronium instead.");
 
+		
+		//Pipes & Cables
+		CORE.configSwitches.enableCustom_Pipes = config.getBoolean("enableCustom_Pipes", "gregtech", true, "Adds Custom GT Fluid Pipes.");
+		CORE.configSwitches.enableCustom_Cables = config.getBoolean("enableCustom_Cables", "gregtech", true, "Adds Custom GT Cables.");
+				
+		
+		//Single machines
+		CORE.configSwitches.enableMachine_SolarGenerators = config.getBoolean("enableSolarGenerators", "gregtech", false, "These may be overpowered, Consult a local electrician.");
+		CORE.configSwitches.enableMachine_Dehydrators = config.getBoolean("enableMachineDehydrators", "gregtech", true, "These dehydrate stuff.");
+		CORE.configSwitches.enableMachine_SteamConverter = config.getBoolean("enableMachineSteamConverter", "gregtech", true, "Converts IC2 steam -> Railcraft steam.");
+		CORE.configSwitches.enableMachine_FluidTanks = config.getBoolean("enableMachineFluidTanks", "gregtech", true, "Portable fluid tanks.");
+		CORE.configSwitches.enableMachine_RocketEngines = config.getBoolean("enableMachineRocketEngines", "gregtech", true, "Diesel egines with different internals, they consume less fuel overall.");
+		CORE.configSwitches.enableMachine_GeothermalEngines = config.getBoolean("enableMachineGeothermalEngines", "gregtech", true, "These may be overpowered, Consult a local geologist.");
+		
+		
+		//Multi machines
+		CORE.configSwitches.enabledMultiblock_AlloyBlastSmelter = config.getBoolean("enabledMultiblockAlloyBlastSmelter", "gregtech", true, "Required to smelt most high tier materials from GT++. Also smelts everything else to molten metal.");
+		CORE.configSwitches.enabledMultiblock_IndustrialCentrifuge = config.getBoolean("enabledMultiblockIndustrialCentrifuge", "gregtech", true, "Spin, Spin, Spiiiin.");
+		CORE.configSwitches.enabledMultiblock_IndustrialCokeOven = config.getBoolean("enabledMultiblockIndustrialCokeOven", "gregtech", true, "Pyro Oven Alternative, older, more realistic, better.");
+		CORE.configSwitches.enabledMultiblock_IndustrialElectrolyzer = config.getBoolean("enabledMultiblockIndustrialElectrolyzer", "gregtech", true, "Electrolyzes things with extra bling factor.");
+		CORE.configSwitches.enabledMultiblock_IndustrialMacerationStack = config.getBoolean("enabledMultiblockIndustrialMacerationStack", "gregtech", true, "A hyper efficient maceration tower, nets more bonus outputs.");
+		CORE.configSwitches.enabledMultiblock_IndustrialPlatePress = config.getBoolean("enabledMultiblockIndustrialPlatePress", "gregtech", true, "Industrial bendering machine thingo.");
+		CORE.configSwitches.enabledMultiblock_IndustrialWireMill = config.getBoolean("enabledMultiblockIndustrialWireMill", "gregtech", true, "Produces fine wire and exotic cables.");
+		CORE.configSwitches.enabledMultiblock_IronBlastFurnace = config.getBoolean("enabledMultiblockIronBlastFurnace", "gregtech", true, "Skip the Bronze age, very slowly.");
+		CORE.configSwitches.enabledMultiblock_MatterFabricator = config.getBoolean("enabledMultiblockMatterFabricator", "gregtech", true, "?FAB?RIC?ATE MA?TT?ER.");
+		CORE.configSwitches.enabledMultiblock_MultiTank = config.getBoolean("enabledMultiblockMultiTank", "gregtech", true, "Tall tanks, each layer adds extra fluid storage.");
+		CORE.configSwitches.enabledMultiblock_PowerSubstation = config.getBoolean("enabledMultiblockPowerSubstation", "gregtech", true, "For managing large power grids.");
+				
+		
 		//Options
 		RF2EU_Battery.rfPerEU = config.getInt("rfUsedPerEUForUniversalBatteries", "configurables", 4, 1, 1000, "How much RF is a single unit of EU worth? (Most mods use 4:1 ratio)");
 
@@ -104,7 +130,7 @@ implements ActionListener
 		String infusedDust3 = "dustInfused"+infusedDusts[c];
 		String infusedDust4 = "dustInfused"+infusedDusts[d];
 		Utils.LOG_INFO("Found the aspect of "+infusedDusts[a]+" to embody into energy crystals.");
-		Utils.LOG_INFO("Found the aspect of "+infusedDusts[b]+" to embody into eshonergy crystals.");
+		Utils.LOG_INFO("Found the aspect of "+infusedDusts[b]+" to embody into energy crystals.");
 		Utils.LOG_INFO("Found the aspect of "+infusedDusts[c]+" to embody into energy crystals.");
 		Utils.LOG_INFO("Found the aspect of "+infusedDusts[d]+" to embody into energy crystals.");
 		randomDust_A = infusedDust1;

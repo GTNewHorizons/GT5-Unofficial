@@ -77,11 +77,8 @@ public class CORE {
 
 		//Debug
 		public static boolean disableEnderIOIntegration = false;
-		public static boolean disableStaballoyBlastFurnaceRecipe = false;
-		public static boolean disableCentrifugeFormation = false;
 		
 		//Machine Related
-		public static boolean enableSolarGenerators = false;
 		public static boolean enableAlternativeBatteryAlloy = false;
 		public static boolean enableThaumcraftShardUnification = false;
 		public static boolean disableIC2Recipes = false;	
@@ -89,6 +86,29 @@ public class CORE {
 		
 		//Feature Related
 		public static boolean enableCustomAlvearyBlocks = false;
+		
+		//Single Block Machines
+		public static boolean enableMachine_SolarGenerators = false;
+		public static boolean enableMachine_Dehydrators = true;
+		public static boolean enableMachine_SteamConverter = true;
+		public static boolean enableMachine_FluidTanks = true;
+		public static boolean enableMachine_RocketEngines = true;
+		public static boolean enableMachine_GeothermalEngines = true;
+		public static boolean enableCustom_Pipes = true;
+		public static boolean enableCustom_Cables = true;
+		
+		//Multiblocks
+		public static boolean enabledMultiblock_AlloyBlastSmelter = true;
+		public static boolean enabledMultiblock_IndustrialCentrifuge = true;
+		public static boolean enabledMultiblock_IndustrialCokeOven = true;
+		public static boolean enabledMultiblock_IndustrialElectrolyzer = true;
+		public static boolean enabledMultiblock_IndustrialMacerationStack = true;
+		public static boolean enabledMultiblock_IndustrialPlatePress = true;
+		public static boolean enabledMultiblock_IndustrialWireMill = true;
+		public static boolean enabledMultiblock_IronBlastFurnace = true;
+		public static boolean enabledMultiblock_MatterFabricator = true;
+		public static boolean enabledMultiblock_MultiTank = true;
+		public static boolean enabledMultiblock_PowerSubstation = true;
 		
 	}
 	
