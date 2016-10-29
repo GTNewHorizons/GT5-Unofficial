@@ -7,35 +7,15 @@ itemGroup.MiscUtilOtherTab=[GT++] Items II
 
 item.itemPLACEHOLDER_Circuit.name=Quark Manipulator (UV)
 
-
-
-
-
-
-item.itemPlateSoularium.name=Soularium Plate
-item.itemPlateRedstoneAlloy.name=Redstone Alloy Plate
-item.itemPlateElectricalSteel.name=Electrical Steel Plate
-item.itemPlatePulsatingIron.name=Pulsating Iron Plate
-item.itemPlateEnergeticAlloy.name=Energetic Alloy Plate
-item.itemPlateVibrantAlloy.name=Vibrant Alloy Plate
-item.itemPlateConductiveIron.name=Conductive Iron Plate
-item.itemPlateDarkSteel.name=Dark Steel Plate
-item.itemPlateBlutonium.name=Blutonium Plate
-item.itemPlateCyanite.name=Cyanite Plate
-item.itemPlateLudicrite.name=Ludicrite Plate
-item.itemPlateVoidMetal.name=Void Metal Plate
-item.itemPlateBedrockium.name=Bedrockium Plate
-item.itemPlateCompressedIron.name=Compressed Iron Plate
 item.itemPlateEnrichedSoularium.name=Enriched Soularium Plate
-item.itemPlateDimensionShard.name=Dimensional Plate
-item.itemIngotBloodSteel.name=Blood Steel Ingot
-item.itemPlateBloodSteel.name=Blood Steel Plate
-item.itemIngotStaballoy.name=Staballoy Ingot
-item.itemPlateStaballoy.name=Staballoy Plate
-item.itemHeliumBlob.name=Blob of solid Helium
+
+item.itemHeliumBlob.name=Mysterious Hydrogen Substance
+
 item.itemPlateBatteryAlloy.name=Plate of Battery Alloy
 item.itemIngotBatteryAlloy.name=Ingot of Battery Alloy
+
 item.itemStickyRubber.name=Gumlet of Sticky Rubber
+
 item.itemFuelRod_Empty.name=Empty Fuel Rod
 item.itemFuelRod_Thorium.name=Thorium Fuel Rod
 item.itemFuelRod_Uranium.name=Uranium Fuel Rod
@@ -125,22 +105,11 @@ item.itemTungstenSteelShaft.name=TungstenSteel Shaft
 item.itemVibrantShaft.name=Vibrant Alloy Shaft
 item.itemIridiumShaft.name=Iridium Shaft
 
-
 item.itemMagnaliumRotorBlade.name=Magnalium Rotor Blade
 item.itemUltimetRotorBlade.name=Ultimet Blade
 item.itemMagnaliumShaft.name=Magnalium Shaft
 item.itemUltimetShaft.name=Ultimet Shaft
 
-
-
-item.itemDustStaballoy.name=Staballoy Dust
-item.itemDustSmallStaballoy.name=Small pile of Staballoy Dust
-item.itemDustTinyStaballoy.name=Tiny pile of Staballoy Dust
-item.itemDustBloodSteel.name=BloodSteel Dust
-item.itemDustSmallBloodSteel.name=Small pile of BloodSteel Dust
-item.itemDustTinyBloodSteel.name=Tiny pile of BloodSteel Dust
-
-item.itemHotIngotStaballoy.name=Hot Staballoy Ingot
 item.itemHotIngotRaisinBread.name= Hot Loaf of Raisin Bread
 item.AAA_Broken.name=[Non-existent Item] Report This Recipe On Github, Please.
 item.itemIngotRaisinBread.name=§5ImQ009's §fRaisin Bread
