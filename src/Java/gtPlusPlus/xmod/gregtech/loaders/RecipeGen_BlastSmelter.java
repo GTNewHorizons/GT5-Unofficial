@@ -78,9 +78,11 @@ public class RecipeGen_BlastSmelter  implements Runnable{
 				if (tItemStackTest[das] != null)
 					Utils.LOG_WARNING("tMaterial["+das+"]: "+tItemStackTest[das].getDisplayName()+" Meta: "+tItemStackTest[das].getItemDamage()+", Amount: "+tItemStackTest[das].stackSize);
 			}
+			
+			boolean hasMoreInputThanACircuit = (tItemStackTest.length > 1);
 
 			//Generate Recipes for all singular materials that can be made molten.
-			if (mMaterialListSize >= 1){
+			if (hasMoreInputThanACircuit){
 				if (M.requiresBlastFurnace()) {
 					if (CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getFluid(fluidAmount), 100, duration, 240)){
 						Utils.LOG_WARNING("Success.");

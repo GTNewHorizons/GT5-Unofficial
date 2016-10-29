@@ -111,6 +111,7 @@ public class PlayerUtils {
 		return null;
 	}
 
+	@SideOnly(Side.CLIENT)
 	public static Item getItemInPlayersHand(){
 		Minecraft mc = Minecraft.getMinecraft();
 		Item heldItem = null;
