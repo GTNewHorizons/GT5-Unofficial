@@ -6,7 +6,6 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Recipe;
@@ -18,6 +17,7 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MatterFab;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-public class GregtechMetaTileEntity_MassFabricator extends GT_MetaTileEntity_MultiBlockBase {
+public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlockBase {
 
 	public static int sUUAperUUM = 1;
 	public static int sUUASpeedBonus = 4;
@@ -316,22 +316,12 @@ public class GregtechMetaTileEntity_MassFabricator extends GT_MetaTileEntity_Mul
 	}
 
 	@Override
-	public boolean isCorrectMachinePart(ItemStack aStack) {
-		return true;
-	}
-
-	@Override
 	public int getMaxEfficiency(ItemStack aStack) {
 		return 10000;
 	}
 
 	@Override
 	public int getPollutionPerTick(ItemStack aStack) {
-		return 0;
-	}
-
-	@Override
-	public int getDamageToComponent(ItemStack aStack) {
 		return 0;
 	}
 

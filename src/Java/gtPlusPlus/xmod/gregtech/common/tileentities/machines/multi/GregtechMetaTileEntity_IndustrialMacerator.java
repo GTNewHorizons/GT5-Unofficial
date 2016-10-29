@@ -12,7 +12,6 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.array.Pair;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -136,80 +135,12 @@ extends GregtechMeta_MultiBlockBase {
 		//Make a recipe instance for the rest of the method.
 		GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
 		
-		//Count free slots in output hatches - return if the 4/5 hatch is full
-		ArrayList<Pair<GT_MetaTileEntity_Hatch_OutputBus, Integer>> rList = new ArrayList<Pair<GT_MetaTileEntity_Hatch_OutputBus, Integer>>();
-		for (GT_MetaTileEntity_Hatch_OutputBus tHatch : mOutputBusses) {
-			int hatchUsedSlotCount = 0;
-			if (isValidMetaTileEntity(tHatch)) {
-				//Loop slots in this hatch
-				for (int i=0; i<tHatch.getBaseMetaTileEntity().getSizeInventory(); i++) {
-					//if slot is not null
-					if (tHatch.getBaseMetaTileEntity().getStackInSlot(i) != null){
-						//Dummy Stack						
-						hatchUsedSlotCount++;
-					}					
-				}
-				//Add this hatch and its data to the ArrayList
-				rList.add(new Pair<GT_MetaTileEntity_Hatch_OutputBus, Integer>(tHatch, hatchUsedSlotCount));
-			}
-		}
 		
-		//Temp Vars.
-		boolean[] mValidOutputSlots = new boolean[5];
-		int arrayPos=0;
-
-		for (Pair<GT_MetaTileEntity_Hatch_OutputBus, Integer> IE : rList) {
-			//Temp Vars.
-			GT_MetaTileEntity_Hatch_OutputBus vTE = IE.getKey();
-			int vUsedSlots = IE.getValue();
-			//Hatch is empty
-			if (vUsedSlots == 0){
-				mValidOutputSlots[arrayPos] = true;
-			}			
-			//Hatch contains at least one item
-			else if (vUsedSlots < vTE.getSizeInventory()){	
-				//Temp variable for counting amount of output items
-				int outputItemCount = tRecipe.mOutputs.length;
-				//Hatch has more slots free than output count
-				if (vUsedSlots < vTE.getSizeInventory()-outputItemCount){
-					mValidOutputSlots[arrayPos] = true;
-				}
-				//Hatch has output count free
-				else if (vUsedSlots >= vTE.getSizeInventory()-outputItemCount){		
-					//Not enough output slots
-					if (vUsedSlots > vTE.getSizeInventory()-outputItemCount){
-						if (arrayPos == 4){
-							Utils.LOG_INFO("Not Enough Output slots in top hatch");
-							return false;
-						}
-					}				
-				}			
-			}
-			
-			//Hatch is full
-			if (vUsedSlots == vTE.getSizeInventory()){				
-				Utils.LOG_INFO("Not Enough Output slots in hatch - "+arrayPos+" - [0-4] - 0 = Bottom | 4 = Top");
-				mValidOutputSlots[arrayPos] = false;
-				if (arrayPos == 4){
-					Utils.LOG_INFO("Not Enough Output slots in top hatch");
-					return false;
-				}
-			}
-			//Count up a position in the boolean array.
-			arrayPos++;
-		}
-		
-		int tValidOutputSlots = 0;
-		for (int cr=0;cr<mValidOutputSlots.length;cr++){
-			if (mValidOutputSlots[cr]){
-				tValidOutputSlots++;
-			}
-		}
-
+		int tValidOutputSlots = this.getValidOutputSlots(getRecipeMap(), tInputs);
 		Utils.LOG_WARNING("Valid Output Slots: "+tValidOutputSlots);
 		
 		//More than or one input
-		if (tInputList.size() > 0 && tValidOutputSlots > 1) {
+		if (tInputList.size() > 0 && tValidOutputSlots >= 1) {
 			if ((tRecipe != null) && (tRecipe.isRecipeInputEqual(true, null, tInputs))) {
 				Utils.LOG_WARNING("Valid Recipe found - size "+tRecipe.mOutputs.length);
 				this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);

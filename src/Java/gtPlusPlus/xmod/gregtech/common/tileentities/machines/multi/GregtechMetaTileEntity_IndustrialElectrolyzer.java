@@ -6,13 +6,14 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,7 +28,7 @@ import net.minecraftforge.fluids.FluidStack;
 import org.apache.commons.lang3.ArrayUtils;
 
 public class GregtechMetaTileEntity_IndustrialElectrolyzer
-extends GT_MetaTileEntity_MultiBlockBase {
+extends GregtechMeta_MultiBlockBase {
 	public GregtechMetaTileEntity_IndustrialElectrolyzer(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}
@@ -76,11 +77,6 @@ extends GT_MetaTileEntity_MultiBlockBase {
 	}
 
 	@Override
-	public boolean isCorrectMachinePart(ItemStack aStack) {
-		return true;
-	}
-
-	@Override
 	public boolean isFacingValid(byte aFacing) {
 		return aFacing > 1;
 	}
@@ -119,7 +115,12 @@ extends GT_MetaTileEntity_MultiBlockBase {
             }
         }
         FluidStack[] tFluids = (FluidStack[]) Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tInputList.size()]), 0, 1);
-        if (tInputList.size() > 0) {
+        
+        int tValidOutputSlots = this.getValidOutputSlots(getRecipeMap(), tInputs);
+		Utils.LOG_WARNING("Valid Output Slots: "+tValidOutputSlots);
+		
+		//More than or one input
+		if (tInputList.size() > 0 && tValidOutputSlots >= 1) {
             long tVoltage = getMaxInputVoltage();
             byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
             GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
@@ -238,11 +239,6 @@ extends GT_MetaTileEntity_MultiBlockBase {
 
 	@Override
 	public int getPollutionPerTick(ItemStack aStack) {
-		return 0;
-	}
-
-	@Override
-	public int getDamageToComponent(ItemStack aStack) {
 		return 0;
 	}
 

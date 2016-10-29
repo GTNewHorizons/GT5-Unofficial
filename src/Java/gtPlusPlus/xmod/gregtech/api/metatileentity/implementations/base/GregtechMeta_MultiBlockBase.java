@@ -22,9 +22,11 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gtPlusPlus.core.util.array.Pair;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 
@@ -822,6 +824,47 @@ public abstract class GregtechMeta_MultiBlockBase extends MetaTileEntity {
      */
     public void abortProcess() {
         //
+    }
+    
+    public int getValidOutputSlots(GT_Recipe.GT_Recipe_Map sRecipeMap, ItemStack[] sInputs){    	
+    	ArrayList<ItemStack> tInputList = getStoredInputs();
+		GT_Recipe tRecipe = sRecipeMap.findRecipe(getBaseMetaTileEntity(), false, 9223372036854775807L, null, sInputs);
+		ArrayList<Pair<GT_MetaTileEntity_Hatch_OutputBus, Integer>> rList = new ArrayList<Pair<GT_MetaTileEntity_Hatch_OutputBus, Integer>>();
+		int tTotalHatches=0;
+		for (GT_MetaTileEntity_Hatch_OutputBus tHatch : mOutputBusses) {
+			int hatchUsedSlotCount = 0;
+			if (isValidMetaTileEntity(tHatch)) {
+				tTotalHatches++;
+				for (int i=0; i<tHatch.getBaseMetaTileEntity().getSizeInventory(); i++) {
+					if (tHatch.getBaseMetaTileEntity().getStackInSlot(i) != null){hatchUsedSlotCount++;}					
+				}
+				rList.add(new Pair<GT_MetaTileEntity_Hatch_OutputBus, Integer>(tHatch, hatchUsedSlotCount));
+			}
+		}
+		boolean[] mValidOutputSlots = new boolean[tTotalHatches];
+		int arrayPos=0;
+		for (Pair<GT_MetaTileEntity_Hatch_OutputBus, Integer> IE : rList) {
+			GT_MetaTileEntity_Hatch_OutputBus vTE = IE.getKey();
+			int vUsedSlots = IE.getValue();
+			if (vUsedSlots == 0){mValidOutputSlots[arrayPos] = true;}	
+			else if (vUsedSlots < vTE.getSizeInventory()){	
+				int outputItemCount = tRecipe.mOutputs.length;
+				if (vUsedSlots < vTE.getSizeInventory()-outputItemCount){mValidOutputSlots[arrayPos] = true;}
+				else if (vUsedSlots >= vTE.getSizeInventory()-outputItemCount){		
+					if (vUsedSlots > vTE.getSizeInventory()-outputItemCount){if (arrayPos == tTotalHatches){return 0;} /*Change to Hatch total*/ }				
+				}			
+			}			
+			//Hatch is full
+			if (vUsedSlots == vTE.getSizeInventory()){
+				mValidOutputSlots[arrayPos] = false;
+				if (arrayPos == tTotalHatches){return 0;} // Change to Hatch Total
+			}
+			arrayPos++;
+		}
+		int tValidOutputSlots = 0;
+		for (int cr=0;cr<mValidOutputSlots.length;cr++){if (mValidOutputSlots[cr]){tValidOutputSlots++;}}
+		if (tValidOutputSlots >= 1) {return tValidOutputSlots;}    	
+    	return 0;	
     }
     
     

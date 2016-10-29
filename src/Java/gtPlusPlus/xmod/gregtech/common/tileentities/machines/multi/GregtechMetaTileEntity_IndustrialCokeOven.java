@@ -11,6 +11,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 
@@ -115,7 +116,12 @@ public class GregtechMetaTileEntity_IndustrialCokeOven
             }
         }
         FluidStack[] tFluids = (FluidStack[]) Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tInputList.size()]), 0, 1);
-        if (tInputList.size() > 0) {
+        
+        int tValidOutputSlots = this.getValidOutputSlots(getRecipeMap(), tInputs);
+		Utils.LOG_WARNING("Valid Output Slots: "+tValidOutputSlots);
+		
+		//More than or one input
+		if (tInputList.size() > 0 && tValidOutputSlots >= 1) {
             long tVoltage = getMaxInputVoltage();
             byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
             GT_Recipe tRecipe = Recipe_GT.Gregtech_Recipe_Map.sCokeOvenRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
