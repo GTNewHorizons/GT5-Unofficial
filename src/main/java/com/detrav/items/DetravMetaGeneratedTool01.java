@@ -135,6 +135,38 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
         return false;
     }
 
+    public boolean setItemStackToDetravData(ItemStack aStack, ItemStack what)
+    {
+        if(what == null || aStack == null) return false;
+        NBTTagCompound aNBT = aStack.getTagCompound();
+        if(aNBT ==null) {
+            aNBT = new NBTTagCompound();
+            NBTTagCompound detravData = new NBTTagCompound();
+            aNBT.setTag("DetravData", detravData);
+            aStack.setTagCompound(aNBT);
+        }
+        {
+            NBTTagCompound detravData = aNBT.getCompoundTag("DetravData");
+            if (detravData == null || detravData.getShort("id") == 0 )
+            {
+                detravData = new NBTTagCompound();
+                aNBT.setTag("DetravData", detravData);
+            }
+            what.writeToNBT(detravData);
+            return true;
+        }
+    }
+
+    public ItemStack getItemStackFromDetravData(ItemStack aStack)
+    {
+        if(aStack == null) return null;
+        NBTTagCompound aNBT = aStack.getTagCompound();
+        if(aNBT ==null) return null;
+        NBTTagCompound detravData = aNBT.getCompoundTag("DetravData");
+        if(detravData == null) return null;
+        return ItemStack.loadItemStackFromNBT(detravData);
+    }
+
     public void getDetravSubItems(Item item, CreativeTabs detravCreativeTab, List list) {
 
         ItemStack dStack;
