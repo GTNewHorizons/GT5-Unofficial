@@ -5,6 +5,8 @@ import com.detrav.enums.DetravItemList;
 import com.detrav.enums.DetravSimpleItems;
 import com.detrav.events.DetravEntityDropEvent;
 import com.detrav.gui.DetravGuiProPick;
+import com.detrav.gui.DetravPortableAnvilGui;
+import com.detrav.gui.containers.DetravPortableAnvilContainer;
 import com.detrav.gui.containers.DetravPortableChargerContainer;
 import com.detrav.gui.DetravPortableChargerGui;
 import com.detrav.items.DetravMetaGeneratedTool01;
@@ -63,6 +65,8 @@ public class CommonProxy implements IGuiHandler {
                 return null;
             case DetravPortableChargerGui.GUI_ID:
                 return new DetravPortableChargerContainer(player.inventory,world,player.getCurrentEquippedItem());
+            case DetravPortableAnvilGui.GUI_ID:
+                return new DetravPortableAnvilContainer(player.inventory,world,player.getCurrentEquippedItem());
             default:
                 return null;
         }
@@ -75,6 +79,8 @@ public class CommonProxy implements IGuiHandler {
                 return new DetravGuiProPick();
             case DetravPortableChargerGui.GUI_ID:
                 return new DetravPortableChargerGui(player.inventory,world,player.getCurrentEquippedItem());
+            case DetravPortableAnvilGui.GUI_ID:
+                return new DetravPortableAnvilGui(player.inventory,world,player.getCurrentEquippedItem());
             default:
                 return null;
         }
@@ -91,11 +97,16 @@ public class CommonProxy implements IGuiHandler {
         player.openGui(DetravScannerMod.instance, DetravPortableChargerGui.GUI_ID,player.worldObj,(int)player.posX,(int)player.posY,(int)player.posZ);
     }
 
+    public void openPortableAnvilGui(EntityPlayer player)
+    {
+        player.openGui(DetravScannerMod.instance, DetravPortableAnvilGui.GUI_ID,player.worldObj,(int)player.posX,(int)player.posY,(int)player.posZ);
+    }
+
 
 
     public void onPreInit()
     {
-        
+
     }
 
     public void sendPlayerExeption(String s) {
