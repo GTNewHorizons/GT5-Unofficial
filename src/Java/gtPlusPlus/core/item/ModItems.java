@@ -6,6 +6,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.common.compat.COMPAT_Baubles;
 import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.item.base.BaseEuItem;
 import gtPlusPlus.core.item.base.BaseItemBackpack;
 import gtPlusPlus.core.item.base.CoreItem;
 import gtPlusPlus.core.item.base.dusts.decimal.BaseItemCentidust;
@@ -34,10 +35,12 @@ import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.debug.DEBUG_INIT;
 import gtPlusPlus.core.util.item.ItemUtils;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.EnumHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 public final class ModItems {
@@ -49,11 +52,6 @@ public final class ModItems {
 	public static Item itemDebugShapeSpawner;
 
 	public static Item itemBaseSpawnEgg;
-
-
-	//Tantaloy60(789, TextureSet.SET_DULL, 8.0F, 5120, 3, 1 | 2 | 16 | 32 | 64 | 128, 213, 231, 237, 0, "Tantaloy 60", 0, 0, 3035, 2200, true, false, 1, 2, 1, Dyes.dyeLightGray, 2, Arrays.asList(new MaterialStack(Tungsten, 1), new MaterialStack(Tantalum, 9)), Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 8), new TC_AspectStack(TC_Aspects.STRONTIO, 3))),
-	//Tantaloy61(790, TextureSet.SET_DULL, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 193, 211, 217, 0, "Tantaloy 61", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightGray, 2, Arrays.asList(new MaterialStack(Tungsten, 1), new MaterialStack(Tantalum, 9), new MaterialStack(Titanium, 1)), Arrays.asList(new TC_AspectStack(TC_Aspects.METALLUM, 8), new TC_AspectStack(TC_Aspects.STRONTIO, 3))),
-
 
 	//EnderIO
 	public static Item itemPlateSoularium;
@@ -153,6 +151,8 @@ public final class ModItems {
 	public static Item dustCalciumCarbonate;
 	public static Item dust2LiOH_CaCO3;
 	public static Item dustLi2BeF4;
+	
+	public static BaseEuItem metaItem2;
 
 
 	//@SuppressWarnings("unused")
@@ -300,6 +300,18 @@ public final class ModItems {
 		//FLiBe Fuel Compounds
 		dustLi2BeF4 = ItemUtils.generateSpecialUseDusts("Li2BeF4", "Li2BeF4 Fuel Compound", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/FLiBe
 
+		metaItem2 = new BaseEuItem();
+		metaItem2.registerItem(0, EnumChatFormatting.BLACK+"Test Item 0", 0, 0, "I am 0.");
+		metaItem2.registerItem(1, EnumChatFormatting.GREEN+"Test Item 1", 1006346000, 1, "I Hold EU 1.", 500);
+		metaItem2.registerItem(2, EnumChatFormatting.GOLD+"Test Item 2", 1004630000, 2, "I Hold EU 2.", 8000);
+		metaItem2.registerItem(3, "Test Item 3", 1000765000, 4, "I Hold EU 3.", 32000);
+		metaItem2.registerItem(4, "Whirlygig", 1043644000, (short) 5, "Spin me right round.", EnumRarity.rare, EnumChatFormatting.DARK_GREEN, true);
+		metaItem2.registerItem(5, "Whirlygig 2", 2124867000, (short) 7, "Spin me right round.", EnumRarity.uncommon, EnumChatFormatting.RED, true);
+	
+		// ItemList.Battery_RE_HV_Cadmium.set(BaseEuItem.
+
+		//GameRegistry.registerItem(this, unlocalName);
+		
 		boolean gtStyleTools = LoadedMods.Gregtech;
 
 		Materials[] rm = Materials.values();

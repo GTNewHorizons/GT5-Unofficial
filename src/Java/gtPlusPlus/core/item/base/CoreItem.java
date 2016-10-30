@@ -102,7 +102,7 @@ public class CoreItem extends Item
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
 		list.add(descColour+itemDescription);
-		super.addInformation(stack, aPlayer, list, bool);
+		//super.addInformation(stack, aPlayer, list, bool);
 	}	
 
 	@Override
