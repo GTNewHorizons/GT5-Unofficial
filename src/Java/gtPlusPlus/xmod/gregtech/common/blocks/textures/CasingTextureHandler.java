@@ -49,7 +49,7 @@ public class CasingTextureHandler {
 				return TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();		
 				//Multitank Exterior Casing
 			case 11:
-				return Textures.BlockIcons.MACHINE_CASING_GRATE.getIcon();	
+				return TexturesGtBlock.Casing_Material_Grisium.getIcon();	
 				//Reactor Casing I
 			case 12:
 				return TexturesGtBlock.Casing_Material_Stellite.getIcon();	
