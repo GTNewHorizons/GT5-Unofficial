@@ -20,6 +20,7 @@ public enum DetravItemList implements IItemContainer {
     Solar_Boiler_High;
 
 
+
     private ItemStack mStack;
     private boolean mHasNotBeenSet = true;
 

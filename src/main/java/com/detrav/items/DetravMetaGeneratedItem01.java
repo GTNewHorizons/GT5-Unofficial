@@ -7,7 +7,6 @@ import com.detrav.enums.DetravItemList;
 import com.detrav.enums.DetravSimpleItems;
 import com.detrav.enums.Textures01;
 import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.IIconContainer;
 
 /**
@@ -24,6 +23,8 @@ public class DetravMetaGeneratedItem01 extends DetravMetaGeneratedItem {
         this.setCreativeTab(DetravScannerMod.TAB_DETRAV);
         int tLastID;
         DetravItemList.Shape_Extruder_ProPick.set(addItem(tLastID = 0, "Extruder Shape (Prospector's Pick Head)", "Extruder Shape for making Prospector's Picks", new Object[0]));
+        //DetravItemList.Anvil.set(addItem(tLastID = 1, "Detrav Anvil","",new Object[0]));
+        //addItemBehavior(tLastID,new BahaviourDetravAnvil());
     }
 
     @Override
