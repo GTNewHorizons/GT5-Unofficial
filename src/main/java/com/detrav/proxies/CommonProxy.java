@@ -1,10 +1,8 @@
 package com.detrav.proxies;
 
 import com.detrav.DetravScannerMod;
-import com.detrav.enums.DetravBlockList;
 import com.detrav.enums.DetravItemList;
 import com.detrav.enums.DetravSimpleItems;
-import com.detrav.events.DetravCraftingEventHandler;
 import com.detrav.events.DetravEntityDropEvent;
 import com.detrav.gui.DetravGuiProPick;
 import com.detrav.gui.containers.DetravPortableChargerContainer;
@@ -97,7 +95,7 @@ public class CommonProxy implements IGuiHandler {
 
     public void onPreInit()
     {
-        DetravBlockList.createBlocks();
+        
     }
 
     public void sendPlayerExeption(String s) {
