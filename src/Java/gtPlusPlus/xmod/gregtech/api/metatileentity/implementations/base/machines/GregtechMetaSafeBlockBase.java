@@ -258,6 +258,7 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 		bOutput = aNBT.getBoolean("bOutput");
 		bRedstoneIfFull = aNBT.getBoolean("bRedstoneIfFull");
 		mTargetStackSize = aNBT.getInteger("mTargetStackSize");
+		if (aNBT.hasKey("ownerUUID"))
 		ownerUUID = UUID.fromString(aNBT.getString("ownerUUID"));
 	}
 
