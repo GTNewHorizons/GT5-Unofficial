@@ -1,7 +1,7 @@
 package gtPlusPlus.xmod.gregtech.recipes.machines;
 
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -72,7 +72,7 @@ public class RECIPEHANDLER_Dehydrator {
 			outputFluidName = "null";
 		}
 		
-		Utils.LOG_INFO("Successfully added a Chemical Dehydrator recipe for: "+UtilsItems.getArrayStackNames(aOutput)+" & "+outputFluidName+", Using "+inputAname+" & "+inputBname+" & liquid "+inputFluidname+". This takes "+(aDuration/20)+" seconds for "+aEUt+"eu/t.");
+		Utils.LOG_INFO("Successfully added a Chemical Dehydrator recipe for: "+ItemUtils.getArrayStackNames(aOutput)+" & "+outputFluidName+", Using "+inputAname+" & "+inputBname+" & liquid "+inputFluidname+". This takes "+(aDuration/20)+" seconds for "+aEUt+"eu/t.");
 		Utils.LOG_WARNING("==================================================================================");
 		Utils.LOG_WARNING("==================================================================================");
 		Utils.LOG_WARNING("==================================================================================");

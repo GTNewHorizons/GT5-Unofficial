@@ -7,9 +7,9 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.entity.EntityUtils;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.recipe.UtilsRecipe;
 
 import java.util.List;
 
@@ -70,9 +70,8 @@ public class BaseItemDust extends Item{
 		}		
 		if (temp != null && temp != ""){
 			oredictName = temp;
-			GT_OreDictUnificator.registerOre(temp, UtilsItems.getSimpleStack(this));
+			GT_OreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
 		}
-		addMixerRecipe();
 		addFurnaceRecipe();
 		addMacerationRecipe();
 	}
@@ -95,7 +94,7 @@ public class BaseItemDust extends Item{
 	protected final int sRadiation;
 	@Override
 	public void onUpdate(ItemStack iStack, World world, Entity entityHolding, int p_77663_4_, boolean p_77663_5_) {
-		Utils.applyRadiationDamageToEntity(sRadiation, world, entityHolding);
+		EntityUtils.applyRadiationDamageToEntity(sRadiation, world, entityHolding);
 	}
 
 	@Override
@@ -113,6 +112,9 @@ public class BaseItemDust extends Item{
 		if (sRadiation > 0){
 			list.add(CORE.GT_Tooltip_Radioactive);
 		}
+		if (dustInfo != null){
+			list.add(dustInfo.vChemicalFormula);
+		}
 		//}
 		super.addInformation(stack, aPlayer, list, bool);
 	}
@@ -129,79 +131,6 @@ public class BaseItemDust extends Item{
 		return colour;
 
 	}
-
-
-
-	private void addMixerRecipe(){
-		
-		ItemStack thisItem;		
-		ItemStack normalDust = dustInfo.getDust(1);
-		ItemStack smallDust = dustInfo.getSmallDust(1);
-		ItemStack tinyDust = dustInfo.getTinyDust(1);
-		
-		ItemStack[] inputStacks = dustInfo.getMaterialComposites();
-		ItemStack outputStacks = dustInfo.getDust(10);
-		
-		if (oredictName.contains("dustTiny")){
-			thisItem = tinyDust;
-			ItemStack normalStack = dustInfo.getDust(1);
-			ItemStack tinyStack = dustInfo.getTinyDust(9);
-			Utils.LOG_INFO("Generating a 9 Tiny dust to 1 Dust recipe for "+materialName);
-			UtilsRecipe.recipeBuilder(
-					thisItem,	thisItem, thisItem, 
-					thisItem, thisItem, thisItem, 
-					thisItem, thisItem, thisItem,
-					normalStack);
-			
-			Utils.LOG_INFO("Generating a 9 Tiny dust from 1 Dust recipe for "+materialName);
-			UtilsRecipe.recipeBuilder(
-					normalStack, null, null, 
-					null, null, null, 
-					null, null, null,
-					tinyStack);
-			
-		}
-		else if (oredictName.contains("dustSmall")){
-			thisItem = smallDust;
-			ItemStack normalStack = dustInfo.getDust(1);
-			ItemStack smallStack = dustInfo.getSmallDust(4);
-			
-			Utils.LOG_INFO("Generating a 4 Small dust to 1 Dust recipe for "+materialName);
-			UtilsRecipe.recipeBuilder(
-					thisItem, thisItem, null, 
-					thisItem, thisItem, null, 
-					null, null, null,
-					normalStack);
-			
-			Utils.LOG_INFO("Generating a 4 Small dust from 1 Dust recipe for "+materialName);
-			UtilsRecipe.recipeBuilder(
-					null, normalStack, null, 
-					null, null, null, 
-					null, null, null,
-					smallStack);
-			
-		}
-		else {
-			thisItem = normalDust;
-		}			
-
-		if (thisItem == normalDust){				
-				Utils.LOG_WARNING("Generating a Dust recipe for "+materialName+" in the mixer.");
-
-				if (inputStacks.length != 0){
-					GT_Values.RA.addMixerRecipe(
-							inputStacks[0], inputStacks[1],
-							inputStacks[2], inputStacks[3],
-							null, null,
-							outputStacks,
-							8*mTier*20, 8*mTier*2);
-				}
-				else {
-					return;
-				}
-			}
-		}
-
 
 	private void addMacerationRecipe(){
 		Utils.LOG_WARNING("Adding recipe for "+materialName+" Dusts");
@@ -228,8 +157,8 @@ public class BaseItemDust extends Item{
 		Utils.LOG_WARNING("Generating OreDict Name: "+tempIngot);
 		ItemStack[] outputStacks = {dustInfo.getDust(1)};
 		if (tempIngot != null && tempIngot != ""){
-			tempInputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 1);
-			tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempDust, 1);
+			tempInputStack = ItemUtils.getItemStackOfAmountFromOreDict(tempIngot, 1);
+			tempOutputStack = ItemUtils.getItemStackOfAmountFromOreDict(tempDust, 1);
 			ItemStack tempStackOutput2 = null;
 			int chance = mTier*10/MathUtils.randInt(10, 20);
 			if (outputStacks.length != 0){
@@ -273,25 +202,30 @@ public class BaseItemDust extends Item{
 			if (dustInfo.requiresBlastFurnace()){
 				Utils.LOG_WARNING("Adding recipe for Hot "+materialName+" Ingots in a Blast furnace.");
 				String tempIngot = temp.replace("ingot", "ingotHot");
-				ItemStack tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(tempIngot, 1);
+				ItemStack tempOutputStack = ItemUtils.getItemStackOfAmountFromOreDict(tempIngot, 1);
 				Utils.LOG_WARNING("This will produce "+tempOutputStack.getDisplayName() + " Debug: "+tempIngot);
 				if (null != tempOutputStack){
-					addBlastFurnaceRecipe(UtilsItems.getSimpleStack(this), null, tempOutputStack, null, 350*mTier);		
+					addBlastFurnaceRecipe(ItemUtils.getSimpleStack(this), null, tempOutputStack, null, 350*mTier);		
 				}				
 				return;
 			}
 			Utils.LOG_WARNING("Adding recipe for "+materialName+" Ingots in a furnace.");
-			ItemStack tempOutputStack = UtilsItems.getItemStackOfAmountFromOreDict(temp, 1);
+			ItemStack tempOutputStack = ItemUtils.getItemStackOfAmountFromOreDict(temp, 1);
 			Utils.LOG_WARNING("This will produce an ingot of "+tempOutputStack.getDisplayName() + " Debug: "+temp);
 			if (null != tempOutputStack){
 				if (mTier < 5 || !dustInfo.requiresBlastFurnace()){					
-					CORE.GT_Recipe.addSmeltingAndAlloySmeltingRecipe(UtilsItems.getSimpleStack(this), tempOutputStack);						
+					if (CORE.GT_Recipe.addSmeltingAndAlloySmeltingRecipe(ItemUtils.getSimpleStack(this), tempOutputStack)){
+						Utils.LOG_WARNING("Successfully added a furnace recipe for "+materialName);
+					}
+					else {
+						Utils.LOG_WARNING("Failed to add a furnace recipe for "+materialName);
+					}
 				}				
 				else if (mTier >= 5 || dustInfo.requiresBlastFurnace()){
 					Utils.LOG_WARNING("Adding recipe for "+materialName+" Ingots in a Blast furnace.");
 					Utils.LOG_WARNING("This will produce "+tempOutputStack.getDisplayName());
 					if (null != tempOutputStack){
-						addBlastFurnaceRecipe(UtilsItems.getSimpleStack(this), null, tempOutputStack, null, 350*mTier);		
+						addBlastFurnaceRecipe(ItemUtils.getSimpleStack(this), null, tempOutputStack, null, 350*mTier);		
 					}				
 					return;				
 				}

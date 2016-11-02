@@ -28,7 +28,7 @@ public final class GregtechRecipe {
 	}
 
 	public boolean addSmeltingAndAlloySmeltingRecipe(ItemStack aInput, ItemStack aOutput) {
-		Utils.LOG_INFO("Adding a GT Furnace/Alloy Smelter Recipe");
+		Utils.LOG_WARNING("Adding a GT Furnace/Alloy Smelter Recipe"+"| Input:"+aInput.getDisplayName()+" | Output:"+aOutput.getDisplayName()+" |");
 		return ourProxy.addSmeltingAndAlloySmeltingRecipe(aInput, aOutput);
 	}
 

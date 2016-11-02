@@ -16,6 +16,7 @@ import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.GT_Proxy;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
@@ -71,13 +72,14 @@ public class GregtechMetaPipeEntityBase_Cable extends MetaPipeEntity implements 
 	}
 	
 	private int getGT5Var(){
-		Class clazz = GT_Mod.gregtechproxy.getClass();
+		Class<? extends GT_Proxy> clazz = GT_Mod.gregtechproxy.getClass();
 		String lookingForValue = "mWireHeatingTicks";
 		int temp = 4;
 		Field field;
+		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
 		try {
 			field = clazz.getClass().getField(lookingForValue);
-			Class clazzType = field.getType();           
+			Class<?> clazzType = field.getType();           
 			if (clazzType.toString().equals("int")){
 				temp = (field.getInt(clazz));
 			}
@@ -85,10 +87,12 @@ public class GregtechMetaPipeEntityBase_Cable extends MetaPipeEntity implements 
 				temp = 4;
 			}
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-			Utils.LOG_INFO("FATAL ERROR - REFLECTION FAILED FOR GT CABLES - PLEASE REPORT THIS.");
+			//Utils.LOG_INFO("FATAL ERROR - REFLECTION FAILED FOR GT CABLES - PLEASE REPORT THIS.");
 			Utils.LOG_WARNING("FATAL ERROR - REFLECTION FAILED FOR GT CABLES - PLEASE REPORT THIS.");
 			Utils.LOG_ERROR("FATAL ERROR - REFLECTION FAILED FOR GT CABLES - PLEASE REPORT THIS.");
+			temp = 4;
 			}
+		}
 		return temp;
 	}
 

@@ -5,6 +5,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.recipe.RECIPE_CONSTANTS;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -38,7 +39,7 @@ public class GregtechRocketFuelGenerator {
 					Character.valueOf('E'), ItemList.Electric_Motor_EV,
 					Character.valueOf('C'), GregtechOrePrefixes.circuit.get(Materials.Ultimate),
 					Character.valueOf('W'), OrePrefixes.cableGt02.get(Materials.Aluminium),
-					Character.valueOf('G'), OrePrefixes.gearGt.get(Materials.Titanium)});
+					Character.valueOf('G'), ALLOY.TANTALLOY_61.getGear(1)});
 		
 		GT_ModHandler.addCraftingRecipe(GregtechItemList.Rocket_Engine_IV.get(1L, new Object[0]),
 				GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
@@ -48,7 +49,7 @@ public class GregtechRocketFuelGenerator {
 			Character.valueOf('E'), ItemList.Electric_Motor_IV,
 			Character.valueOf('C'), GregtechOrePrefixes.circuit.get(GT_Materials.Symbiotic),
 			Character.valueOf('W'), OrePrefixes.cableGt02.get(Materials.Platinum),
-			Character.valueOf('G'), OrePrefixes.gearGt.get(Materials.TungstenSteel)});
+			Character.valueOf('G'), ALLOY.STELLITE.getGear(1)});
 		
 		final ItemStack INGREDIENT_1 = RECIPE_CONSTANTS.electricPiston_LuV;
 		final ItemStack INGREDIENT_2 = RECIPE_CONSTANTS.electricMotor_LuV;
@@ -60,7 +61,7 @@ public class GregtechRocketFuelGenerator {
 			Character.valueOf('E'), INGREDIENT_2, 
 			Character.valueOf('C'), GregtechOrePrefixes.circuit.get(GT_Materials.Neutronic), 
 			Character.valueOf('W'), OrePrefixes.cableGt02.get(Materials.Tungsten), 
-			Character.valueOf('G'), OrePrefixes.gearGt.get(Materials.Chrome)});
+			Character.valueOf('G'), ALLOY.ZERON_100.getGear(1)});
 	}
 
 }

@@ -11,6 +11,7 @@ import gregtech.api.enums.SubTag;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.ToolDictNames;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_Log;
@@ -34,6 +35,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -41,11 +43,21 @@ import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class Meta_GT_Proxy {
 	
 	//Store Some MetaTileEntity Data here, why not?
 	public static final IMetaTileEntity[] METATILEENTITIES = new IMetaTileEntity[GregTech_API.MAXIMUM_METATILE_IDS];
+
+	public static List<Runnable> GT_BlockIconload = new ArrayList<Runnable>();
+	public static List<Runnable> GT_ItemIconload = new ArrayList<Runnable>();
+	
+	
+	
+	@SideOnly(Side.CLIENT)
+    public static IIconRegister sBlockIcons, sItemIcons;
 
 	//Silly Vars
 	private static final Collection<String> mIgnoredItems = new HashSet<String>(Arrays.asList(new String[]{"itemGhastTear", "itemFlint", "itemClay", "itemBucketSaltWater",
@@ -899,6 +911,25 @@ public class Meta_GT_Proxy {
 	}
 	
 	
+	 /**
+     * This gives you a new BaseMetaTileEntity. As some Interfaces are not always loaded (Buildcraft, Univeral Electricity) I have to use Invocation at the Constructor of the BaseMetaTileEntity
+     */
+	private static Class<BaseMetaTileEntity> sBaseMetaTileEntityClass = null;
 	
+    public static BaseMetaTileEntity constructBaseMetaTileEntity() {
+        if (sBaseMetaTileEntityClass == null) {
+            try {
+                return (BaseMetaTileEntity) (sBaseMetaTileEntityClass = BaseMetaTileEntity.class).newInstance();
+            } catch (Throwable e) {/*Do nothing*/}
+        }
+
+        try {
+            return (BaseMetaTileEntity) (sBaseMetaTileEntityClass.newInstance());
+        } catch (Throwable e) {
+            Utils.LOG_INFO("Fatal Error ocurred while initializing TileEntities, crashing Minecraft.");
+            e.printStackTrace(GT_Log.err);
+            throw new RuntimeException(e);
+        }
+    }
 
 }

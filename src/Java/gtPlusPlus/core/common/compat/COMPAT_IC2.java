@@ -5,14 +5,14 @@ import static gtPlusPlus.core.handler.COMPAT_HANDLER.RemoveRecipeQueue;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.lib.CORE.configSwitches;
 import gtPlusPlus.core.recipe.ShapedRecipeObject;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.item.ItemStack;
 
 
 public class COMPAT_IC2 {
 
-	private static ItemStack itemCropnalyzer = UtilsItems.simpleMetaStack("IC2:itemCropnalyzer", 0, 1);
-	private static ItemStack itemSolarHelmet = UtilsItems.simpleMetaStack("IC2:itemSolarHelmet", 0, 1);
+	private static ItemStack itemCropnalyzer = ItemUtils.simpleMetaStack("IC2:itemCropnalyzer", 0, 1);
+	private static ItemStack itemSolarHelmet = ItemUtils.simpleMetaStack("IC2:itemSolarHelmet", 0, 1);
 
 	public static ShapedRecipeObject Cropnalyzer = new ShapedRecipeObject(
 			"ore:cableGt02Copper", "ore:cableGt02Copper", null, 

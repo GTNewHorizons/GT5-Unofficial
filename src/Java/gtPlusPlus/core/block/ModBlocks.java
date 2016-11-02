@@ -2,6 +2,7 @@ package gtPlusPlus.core.block;
 
 import gtPlusPlus.core.block.general.LightGlass;
 import gtPlusPlus.core.block.machine.Machine_Workbench;
+import gtPlusPlus.core.block.machine.Machine_WorkbenchAdvanced;
 import gtPlusPlus.core.fluids.FluidRegistryHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
@@ -13,6 +14,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public final class ModBlocks {
 
 	public static Block blockWorkbench;
+	public static Block blockWorkbenchAdvanced;
 	//Blocks
 	//public static Block blockBloodSteel;
 	//public static Block blockStaballoy;
@@ -48,6 +50,7 @@ public final class ModBlocks {
 
 		//Workbench
 		blockWorkbench = new Machine_Workbench().setHardness(1.5F);
+		blockWorkbenchAdvanced = new Machine_WorkbenchAdvanced().setHardness(2.5F);
 
 		
 	}

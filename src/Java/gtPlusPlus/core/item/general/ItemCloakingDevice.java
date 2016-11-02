@@ -2,7 +2,7 @@ package gtPlusPlus.core.item.general;
 
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
@@ -21,8 +21,10 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+@Optional.InterfaceList(value = {@Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles"), @Optional.Interface(iface = "baubles.api.BaubleType", modid = "Baubles")})
 public class ItemCloakingDevice extends Item implements IElectricItem, IElectricItemManager, IBauble{
 
 	private final String unlocalizedName = "personalCloakingDevice";
@@ -36,7 +38,7 @@ public class ItemCloakingDevice extends Item implements IElectricItem, IElectric
 		this.setUnlocalizedName(unlocalizedName);
 		this.setMaxStackSize(1);
 		this.setTextureName(CORE.MODID + ":" + "personalCloakingDevice");
-		this.thisStack = UtilsItems.getSimpleStack(this);
+		this.thisStack = ItemUtils.getSimpleStack(this);
 		this.charge(thisStack, charge, 3, true, false);
 		if (charge == 10000*20*500){
 			this.setDamage(thisStack, 13);	

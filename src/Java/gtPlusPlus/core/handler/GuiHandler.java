@@ -3,14 +3,17 @@ package gtPlusPlus.core.handler;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.container.Container_BackpackBase;
 import gtPlusPlus.core.container.Container_Workbench;
+import gtPlusPlus.core.container.Container_WorkbenchAdvanced;
 import gtPlusPlus.core.gui.beta.Gui_ID_Registry;
 import gtPlusPlus.core.gui.beta.MU_GuiId;
 import gtPlusPlus.core.gui.item.GuiBaseBackpack;
 import gtPlusPlus.core.gui.machine.GUI_Workbench;
+import gtPlusPlus.core.gui.machine.GUI_WorkbenchAdvanced;
 import gtPlusPlus.core.interfaces.IGuiManager;
 import gtPlusPlus.core.inventories.BaseInventoryBackpack;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
+import gtPlusPlus.core.tileentities.machines.TileEntityWorkbenchAdvanced;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.forestry.bees.alveary.TileAlvearyFrameHousing;
 import gtPlusPlus.xmod.forestry.bees.alveary.gui.CONTAINER_FrameHousing;
@@ -28,7 +31,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int GUI2 = 1;      //RTG
 	public static final int GUI3 = 2;      //BackpackHandler
 	public static final int GUI4 = 3;      //Workbench
-	public static final int GUI5 = 4;      //
+	public static final int GUI5 = 4;      //Workbench Adv
 	public static final int GUI6 = 5;      //
 	public static final int GUI7 = 6;      //
 	public static final int GUI8 = 7;      //
@@ -73,6 +76,11 @@ public class GuiHandler implements IGuiHandler {
 				return new Container_Workbench(player.inventory, (TileEntityWorkbench)te);
 
 			}
+			if (ID == GUI5){
+				Utils.LOG_INFO("sad");
+				return new Container_WorkbenchAdvanced(player.inventory, (TileEntityWorkbenchAdvanced)te);
+
+			}
 		}
 
 
@@ -111,6 +119,10 @@ public class GuiHandler implements IGuiHandler {
 		if (te != null){
 			if (ID == GUI4){
 				return new GUI_Workbench(player.inventory, (TileEntityWorkbench)te);
+			}
+			if (ID == GUI5){
+				Utils.LOG_INFO("sad");
+				return new GUI_WorkbenchAdvanced(player.inventory, (TileEntityWorkbenchAdvanced)te);
 			}
 		}
 

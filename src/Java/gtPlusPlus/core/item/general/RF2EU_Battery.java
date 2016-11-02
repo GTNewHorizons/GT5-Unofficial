@@ -2,7 +2,7 @@ package gtPlusPlus.core.item.general;
 
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
@@ -44,7 +44,7 @@ public class RF2EU_Battery extends ItemEnergyContainer implements IElectricItem,
 		this.setUnlocalizedName(unlocalizedName);
 		this.setMaxStackSize(1);
 		this.setTextureName(CORE.MODID + ":" + "itemIngot");
-		this.thisStack = UtilsItems.getSimpleStack(this);
+		this.thisStack = ItemUtils.getSimpleStack(this);
 		GameRegistry.registerItem(this, unlocalizedName);
 	}
 
@@ -206,7 +206,7 @@ public class RF2EU_Battery extends ItemEnergyContainer implements IElectricItem,
 	public double discharge(ItemStack stack, double amount, int tier,
 			boolean ignoreTransferLimit, boolean externally, boolean simulate) {
 		if ((stack.stackTagCompound == null) || (!stack.stackTagCompound.hasKey("Energy"))) {
-			double euCharge = getCharge(UtilsItems.getSimpleStack(this));
+			double euCharge = getCharge(ItemUtils.getSimpleStack(this));
 			if (euCharge != 0 && euCharge >= 1){
 				return (int) (MathUtils.decimalRoundingToWholes(euCharge*rfPerEU));
 			}
@@ -254,7 +254,7 @@ public class RF2EU_Battery extends ItemEnergyContainer implements IElectricItem,
 	public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate)
 	{
 		if ((container.stackTagCompound == null) || (!container.stackTagCompound.hasKey("Energy"))) {
-			double euCharge = getCharge(UtilsItems.getSimpleStack(this));
+			double euCharge = getCharge(ItemUtils.getSimpleStack(this));
 			if (euCharge != 0 && euCharge >= 1){
 				return (int) (MathUtils.decimalRoundingToWholes(euCharge*rfPerEU));
 			}
@@ -277,7 +277,7 @@ public class RF2EU_Battery extends ItemEnergyContainer implements IElectricItem,
 	public int extractEnergy(ItemStack container, int maxExtract, boolean simulate)
 	{
 		if ((container.stackTagCompound == null) || (!container.stackTagCompound.hasKey("Energy"))) {
-			double euCharge = getCharge(UtilsItems.getSimpleStack(this));
+			double euCharge = getCharge(ItemUtils.getSimpleStack(this));
 			if (euCharge != 0 && euCharge >= 1){
 				return (int) (MathUtils.decimalRoundingToWholes(euCharge*rfPerEU));
 			}
@@ -299,7 +299,7 @@ public class RF2EU_Battery extends ItemEnergyContainer implements IElectricItem,
 	public int getEnergyStored(ItemStack container)
 	{
 		if ((container.stackTagCompound == null) || (!container.stackTagCompound.hasKey("Energy"))) {
-			double euCharge = getCharge(UtilsItems.getSimpleStack(this));
+			double euCharge = getCharge(ItemUtils.getSimpleStack(this));
 			if (euCharge != 0 && euCharge >= 1){
 				return (int) (MathUtils.decimalRoundingToWholes(euCharge*rfPerEU));
 			}

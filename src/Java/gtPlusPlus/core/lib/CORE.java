@@ -6,22 +6,19 @@ import gtPlusPlus.core.util.networking.NetworkUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
+import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_TesseractGenerator;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.config.Configuration;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class CORE {
 
 	public static final String name = "GT++";	
 	public static final String MODID = "miscutils";
-	public static final String VERSION = "1.4.8.2-prerelease";
+	public static final String VERSION = "1.4.9-release";
 	public static final String MASTER_VERSION = NetworkUtils.getContentFromURL("https://raw.githubusercontent.com/draknyte1/GTplusplus/master/Recommended.txt").toLowerCase();
 	public static boolean isModUpToDate = Utils.isModUpToDate();
 	public static boolean DEBUG = false;	
@@ -34,10 +31,7 @@ public class CORE {
 	@Deprecated
 	public static IGregtech_RecipeAdder sRecipeAdder;
 	public static GregtechRecipe GT_Recipe = new GregtechRecipe();
-
-	@SideOnly(Side.CLIENT)
-	public static IIconRegister GT_BlockIcons, GT_ItemIcons;	
-	public static List<Runnable> GT_BlockIconload = new ArrayList<Runnable>();
+	
 	public static Configuration Config;	
 	public static final String GT_Tooltip = "Added by: " + EnumChatFormatting.DARK_GREEN+"Alkalus "+EnumChatFormatting.GRAY+"- "+EnumChatFormatting.RED+"[GT++]";
 	public static final String GT_Tooltip_Radioactive = EnumChatFormatting.GRAY+"Warning: "+EnumChatFormatting.GREEN+"Radioactive! "+EnumChatFormatting.GOLD+" Avoid direct handling without hazmat protection.";
@@ -47,6 +41,9 @@ public class CORE {
 	 * A List containing all the Materials, which are somehow in use by GT and therefor receive a specific Set of Items.
 	 */
 	public static final GT_Materials[] sMU_GeneratedMaterials = new GT_Materials[1000];
+	
+	//Tesseract map
+	public static final Map<Integer, GT_MetaTileEntity_TesseractGenerator> sTesseractGenerators = new HashMap<Integer, GT_MetaTileEntity_TesseractGenerator>();
 
 	//GUIS
 	public enum GUI_ENUM 
@@ -80,11 +77,8 @@ public class CORE {
 
 		//Debug
 		public static boolean disableEnderIOIntegration = false;
-		public static boolean disableStaballoyBlastFurnaceRecipe = false;
-		public static boolean disableCentrifugeFormation = false;
 		
 		//Machine Related
-		public static boolean enableSolarGenerators = false;
 		public static boolean enableAlternativeBatteryAlloy = false;
 		public static boolean enableThaumcraftShardUnification = false;
 		public static boolean disableIC2Recipes = false;	
@@ -92,6 +86,29 @@ public class CORE {
 		
 		//Feature Related
 		public static boolean enableCustomAlvearyBlocks = false;
+		
+		//Single Block Machines
+		public static boolean enableMachine_SolarGenerators = false;
+		public static boolean enableMachine_Dehydrators = true;
+		public static boolean enableMachine_SteamConverter = true;
+		public static boolean enableMachine_FluidTanks = true;
+		public static boolean enableMachine_RocketEngines = true;
+		public static boolean enableMachine_GeothermalEngines = true;
+		public static boolean enableCustom_Pipes = true;
+		public static boolean enableCustom_Cables = true;
+		
+		//Multiblocks
+		public static boolean enabledMultiblock_AlloyBlastSmelter = true;
+		public static boolean enabledMultiblock_IndustrialCentrifuge = true;
+		public static boolean enabledMultiblock_IndustrialCokeOven = true;
+		public static boolean enabledMultiblock_IndustrialElectrolyzer = true;
+		public static boolean enabledMultiblock_IndustrialMacerationStack = true;
+		public static boolean enabledMultiblock_IndustrialPlatePress = true;
+		public static boolean enabledMultiblock_IndustrialWireMill = true;
+		public static boolean enabledMultiblock_IronBlastFurnace = true;
+		public static boolean enabledMultiblock_MatterFabricator = true;
+		public static boolean enabledMultiblock_MultiTank = true;
+		public static boolean enabledMultiblock_PowerSubstation = true;
 		
 	}
 	

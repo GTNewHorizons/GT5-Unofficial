@@ -1,6 +1,7 @@
 package gtPlusPlus.core.tileentities;
 
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
+import gtPlusPlus.core.tileentities.machines.TileEntityWorkbenchAdvanced;
 import gtPlusPlus.core.util.Utils;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -15,6 +16,7 @@ public class ModTileEntities {
 		//GameRegistry.registerTileEntity(TileEntityCharger.class, "TE_Charger");
        // GameRegistry.registerTileEntity(TileEntityHeliumGenerator.class, "Helium");
 		GameRegistry.registerTileEntity(TileEntityWorkbench.class, "TileWorkbench");
+		GameRegistry.registerTileEntity(TileEntityWorkbenchAdvanced.class, "TileWorkbenchAdvanced");
 	}
 	
 }

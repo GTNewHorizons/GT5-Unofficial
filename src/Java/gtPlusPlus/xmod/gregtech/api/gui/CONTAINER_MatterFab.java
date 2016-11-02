@@ -2,7 +2,7 @@ package gtPlusPlus.xmod.gregtech.api.gui;
 
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntityMassFabricator;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntity_MassFabricator;
 import net.minecraft.entity.player.InventoryPlayer;
 
 /**
@@ -12,8 +12,8 @@ import net.minecraft.entity.player.InventoryPlayer;
  */
 public class CONTAINER_MatterFab extends GT_ContainerMetaTile_Machine {
 	
-	public int mUUA_USED = ((GregtechMetaTileEntityMassFabricator)this.mTileEntity.getMetaTileEntity()).getAmplifierUsed();
-	public int mUUM_MADE = ((GregtechMetaTileEntityMassFabricator)this.mTileEntity.getMetaTileEntity()).getMatterProduced();
+	public int mUUA_USED = ((GregtechMetaTileEntity_MassFabricator)this.mTileEntity.getMetaTileEntity()).getAmplifierUsed();
+	public int mUUM_MADE = ((GregtechMetaTileEntity_MassFabricator)this.mTileEntity.getMetaTileEntity()).getMatterProduced();
 	
     public CONTAINER_MatterFab(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);

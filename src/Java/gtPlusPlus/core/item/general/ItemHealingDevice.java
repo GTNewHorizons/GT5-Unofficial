@@ -3,8 +3,9 @@ package gtPlusPlus.core.item.general;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.player.PlayerUtils;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
@@ -20,8 +21,10 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+@Optional.InterfaceList(value = {@Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles"), @Optional.Interface(iface = "baubles.api.BaubleType", modid = "Baubles")})
 public class ItemHealingDevice extends Item implements IElectricItem, IElectricItemManager, IBauble{
 
 	private final String unlocalizedName = "personalHealingDevice";
@@ -34,7 +37,7 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 		this.setUnlocalizedName(unlocalizedName);
 		this.setMaxStackSize(1);
 		this.setTextureName(CORE.MODID + ":" + "personalCloakingDevice");
-		this.thisStack = UtilsItems.getSimpleStack(this);
+		this.thisStack = ItemUtils.getSimpleStack(this);
 		GameRegistry.registerItem(this, unlocalizedName);
 	}
 
@@ -218,8 +221,8 @@ public class ItemHealingDevice extends Item implements IElectricItem, IElectricI
 					Utils.LOG_INFO("rx:"+rx);
 				arg1.heal(rx*2);
 				discharge(arg0, (1638400/4)*rx, 6, true, true, false);
-				Utils.messagePlayer((EntityPlayer) arg1, "Your NanoBooster Whirs! Leaving you feeling stronger. It Healed "+rx+" hp.");
-				Utils.messagePlayer((EntityPlayer) arg1, "You check it's remaining uses, it has "+secondsLeft(arg0)+".");
+				PlayerUtils.messagePlayer((EntityPlayer) arg1, "Your NanoBooster Whirs! Leaving you feeling stronger. It Healed "+rx+" hp.");
+				PlayerUtils.messagePlayer((EntityPlayer) arg1, "You check it's remaining uses, it has "+secondsLeft(arg0)+".");
 				}
 			}
 		}

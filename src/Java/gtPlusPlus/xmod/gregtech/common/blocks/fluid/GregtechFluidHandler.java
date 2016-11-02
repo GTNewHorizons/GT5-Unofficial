@@ -7,7 +7,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -69,7 +69,7 @@ public class GregtechFluidHandler {
 
 
 			//Check for IHL Hydrogen Chloride
-			if (!LoadedMods.IHL || UtilsItems.getItemStackOfAmountFromOreDict("cellHydrogenChloride", 1) == null){
+			if (!LoadedMods.IHL || ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenChloride", 1) == null){
 				if (FluidUtils.getFluidStack("hydrogenchloride", 1) == null){
 					if (LoadedMods.IHL){
 						Utils.LOG_INFO("IHL Loaded but hydrogen chloride could not be found for some reason. How about we add our own.");
@@ -101,11 +101,11 @@ public class GregtechFluidHandler {
 			
 			//Chemical Bath Recipes
 			GT_Values.RA.addChemicalRecipe(
-					UtilsItems.getItemStackOfAmountFromOreDict("dustApatite", 16),
+					ItemUtils.getItemStackOfAmountFromOreDict("dustApatite", 16),
 					null,
 					FluidUtils.getFluidStack("sulfuricacid", 144*32), 
 					FluidUtils.getFluidStack("sulfuricapatite", 144*4),
-					UtilsItems.getItemStackOfAmountFromOreDict("dustSmallSulfur", 1), 
+					ItemUtils.getItemStackOfAmountFromOreDict("dustSmallSulfur", 1), 
 					20*20);
 			
 			/*GT_Values.RA.addChemicalRecipe(
@@ -117,8 +117,8 @@ public class GregtechFluidHandler {
 					20*20);*/
 			
 			GT_Values.RA.addChemicalRecipe(
-					UtilsItems.getItemStackOfAmountFromOreDict("cellOxygen", 1),
-					UtilsItems.getItemStackOfAmountFromOreDict("dustLithium", 16),
+					ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("dustLithium", 16),
 					FluidUtils.getFluidStack("water", 1000), 
 					FluidUtils.getFluidStack("lithiumhydroxide", 144*4),
 					null, 
@@ -132,9 +132,9 @@ public class GregtechFluidHandler {
 			
 			
 			//Mixer Recipes
-			GT_Values.RA.addMixerRecipe(UtilsItems.getItemStackOfAmountFromOreDict("dustSulfur", 1), null, null, null, FluidUtils.getFluidStack("oxygen", 288), FluidUtils.getFluidStack("sulfurdioxide", 432), null, 600, 60);
-			GT_Values.RA.addMixerRecipe(UtilsItems.getItemStackOfAmountFromOreDict("dustUranium235", 1), UtilsItems.getItemStackOfAmountFromOreDict("dustUranium235", 1), null, null, FluidUtils.getFluidStack("hydrofluoricacid", 2000), FluidUtils.getFluidStack("uraniumtetrafluoride", 288), null, 3000, 500);
-			GT_Values.RA.addMixerRecipe(UtilsItems.getItemStackOfAmountFromOreDict("cellFluorine", 1), UtilsItems.getItemStackOfAmountFromOreDict("cellFluorine", 1), null, null, FluidUtils.getFluidStack("uraniumtetrafluoride", 720), FluidUtils.getFluidStack("uraniumhexafluoride", 288), null, 5000, 2000);
+			GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 1), null, null, null, FluidUtils.getFluidStack("oxygen", 288), FluidUtils.getFluidStack("sulfurdioxide", 432), null, 600, 60);
+			GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustUranium235", 1), ItemUtils.getItemStackOfAmountFromOreDict("dustUranium235", 1), null, null, FluidUtils.getFluidStack("hydrofluoricacid", 2000), FluidUtils.getFluidStack("uraniumtetrafluoride", 288), null, 3000, 500);
+			GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("cellFluorine", 1), ItemUtils.getItemStackOfAmountFromOreDict("cellFluorine", 1), null, null, FluidUtils.getFluidStack("uraniumtetrafluoride", 720), FluidUtils.getFluidStack("uraniumhexafluoride", 288), null, 5000, 2000);
 
 			
 			
@@ -177,7 +177,7 @@ public class GregtechFluidHandler {
 			GT_Values.RA.addDistillationTowerRecipe(
 					FluidUtils.getFluidStack("sulfurdioxide", 144*3),
 					sulfurdioxideOutput,
-					UtilsItems.getItemStackOfAmountFromOreDict("dustSulfur", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 1),
 					5*20,
 					30);
 

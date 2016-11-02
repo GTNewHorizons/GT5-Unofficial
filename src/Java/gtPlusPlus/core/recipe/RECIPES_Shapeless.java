@@ -3,7 +3,7 @@ package gtPlusPlus.core.recipe;
 import gregtech.api.enums.ItemList;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.recipe.UtilsRecipe;
+import gtPlusPlus.core.util.recipe.RecipeUtils;
 import net.minecraft.item.ItemStack;
 
 public class RECIPES_Shapeless {
@@ -31,12 +31,12 @@ public class RECIPES_Shapeless {
 		if (LoadedMods.Gregtech){		
 		gearboxCasing_Tier_1 = ItemList.Casing_Gearbox_Bronze.get(1);
 		
-		UtilsRecipe.shapelessBuilder(dustStaballoy, 
+		RecipeUtils.shapelessBuilder(dustStaballoy, 
 				"dustTitanium", "dustUranium", "dustUranium",
 				"dustUranium", "dustUranium", "dustUranium",
 				"dustUranium", "dustUranium", "dustUranium");
 		
-		UtilsRecipe.shapelessBuilder(gearboxCasing_Tier_1, 
+		RecipeUtils.shapelessBuilder(gearboxCasing_Tier_1, 
 				circuitPrimitive, circuitPrimitive, circuitPrimitive,
 				circuitPrimitive, circuitPrimitive, circuitPrimitive,
 				circuitPrimitive, circuitPrimitive, circuitPrimitive);

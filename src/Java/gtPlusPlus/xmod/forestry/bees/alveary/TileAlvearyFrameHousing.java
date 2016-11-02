@@ -14,13 +14,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import forestry.api.apiculture.BeeManager;
+import forestry.api.apiculture.DefaultBeeListener;
 import forestry.api.apiculture.IBee;
 import forestry.api.apiculture.IBeeHousing;
+import forestry.api.apiculture.IBeeListener;
 import forestry.api.apiculture.IBeeModifier;
 import forestry.api.apiculture.IBeekeepingMode;
 import forestry.api.apiculture.IHiveFrame;
+import forestry.api.arboriculture.EnumGermlingType;
+import forestry.api.genetics.AlleleManager;
+import forestry.api.genetics.IIndividual;
+import forestry.api.genetics.ISpeciesRoot;
 import forestry.api.multiblock.IAlvearyComponent;
-import forestry.apiculture.ApiaryBeeModifier;
+import forestry.apiculture.AlvearyBeeModifier;
 import forestry.apiculture.multiblock.MultiblockLogicAlveary;
 import forestry.apiculture.network.packets.PacketActiveUpdate;
 import forestry.apiculture.worldgen.Hive;
@@ -32,15 +38,17 @@ import forestry.core.inventory.wrappers.InventoryIterator;
 import forestry.core.proxy.Proxies;
 import forestry.core.tiles.IActivatable;
 import forestry.core.utils.ItemStackUtil;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.forestry.bees.alveary.gui.CONTAINER_FrameHousing;
 import gtPlusPlus.xmod.forestry.bees.alveary.gui.GUI_FrameHousing;
 import gtPlusPlus.xmod.forestry.bees.alveary.gui.InventoryFrameHousing;
 
 public class TileAlvearyFrameHousing
 extends FR_TileAlveary
-implements ISidedFrameWearingInventory, IActivatable, IAlvearyComponent.Active, IAlvearyComponent.BeeModifier
+implements ISidedFrameWearingInventory, IActivatable, IAlvearyComponent.Active, IAlvearyComponent.BeeModifier, IAlvearyFrameHousing, IAlvearyComponent.BeeListener
 {
 	private final InventoryFrameHousing inventory;
+	private final IBeeListener beeListener;
 	private final Stack<ItemStack> pendingSpawns = new Stack<ItemStack>();
 	private boolean active;
 
@@ -48,6 +56,7 @@ implements ISidedFrameWearingInventory, IActivatable, IAlvearyComponent.Active, 
 	{
 		super(FR_BlockAlveary.Type.FRAME);
 		this.inventory = new InventoryFrameHousing(this);
+		this.beeListener = new AlvearyFrameHousingBeeListener(this.inventory);
 
 	}
 
@@ -66,17 +75,23 @@ implements ISidedFrameWearingInventory, IActivatable, IAlvearyComponent.Active, 
 	@Override
 	public void updateServer(int tickCount)
 	{
-		
+
 		if (getInternalInventory() == null) {
 			return;
 		}
-		
+
 		if (this.inventory.getStackInSlot(0) != null)
 		{
-			setActive(true);
-			if (tickCount % 1000 == 0) {
-				wearOutFrames(this, 1);
+			if (((MultiblockLogicAlveary)getMultiblockLogic()).getController().getBeekeepingLogic().canWork()){
+				setActive(true);
+				if (tickCount % 1000 == 0) {
+					wearOutFrames(this, 1);
+				}
 			}
+			else {
+				Utils.LOG_INFO("Cannot work - Probably no queen alive.");
+			}
+
 		}
 		else
 		{
@@ -85,7 +100,7 @@ implements ISidedFrameWearingInventory, IActivatable, IAlvearyComponent.Active, 
 		if (tickCount % 500 != 0) {
 			return;
 		}
-		
+
 	}
 
 	@Override
@@ -224,50 +239,51 @@ implements ISidedFrameWearingInventory, IActivatable, IAlvearyComponent.Active, 
 	{
 		return new CONTAINER_FrameHousing(this, player);
 	}
-	
-	private final IBeeModifier beeModifier = new ApiaryBeeModifier();
-	//private final IBeeListener beeListener = new ApiaryBeeListener(this);
+
+	private final IBeeModifier beeModifier = new AlvearyBeeModifier();
+	//private final IBeeListener beeListener = new AlvearyBeeListener(this);	
+	private final Iterable<IBeeListener> beeListenerList = ((MultiblockLogicAlveary)getMultiblockLogic()).getController().getBeeListeners();	
 
 	@Override
 	public Collection<IBeeModifier> getBeeModifiers()
-	  {
-	    List<IBeeModifier> beeModifiers = new ArrayList<IBeeModifier>();
-	    
-	    beeModifiers.add(this.beeModifier);
-	    for (IHiveFrame frame : getFrames(this.inventory)) {
-	      beeModifiers.add(frame.getBeeModifier());
-	    }
-	    return beeModifiers;
-	  }
-	
+	{
+		List<IBeeModifier> beeModifiers = new ArrayList<IBeeModifier>();
+
+		beeModifiers.add(this.beeModifier);
+		for (IHiveFrame frame : getFrames(this.inventory)) {
+			beeModifiers.add(frame.getBeeModifier());
+		}
+		return beeModifiers;
+	}
+
 	public Collection<IHiveFrame> getFrames(IInventory inventory)
-	  {
-	    Collection<IHiveFrame> hiveFrames = new ArrayList<IHiveFrame>(inventory.getSizeInventory());
-	    for (int i = 0; i < inventory.getSizeInventory(); i++)
-	    {
-	      ItemStack stackInSlot = getStackInSlot(i);
-	      if (stackInSlot != null)
-	      {
-	        Item itemInSlot = stackInSlot.getItem();
-	        if ((itemInSlot instanceof IHiveFrame)) {
-	          hiveFrames.add((IHiveFrame)itemInSlot);
-	        }
-	      }
-	    }
-	    return hiveFrames;
-	  }
+	{
+		Collection<IHiveFrame> hiveFrames = new ArrayList<IHiveFrame>(inventory.getSizeInventory());
+		for (int i = 0; i < inventory.getSizeInventory(); i++)
+		{
+			ItemStack stackInSlot = getStackInSlot(i);
+			if (stackInSlot != null)
+			{
+				Item itemInSlot = stackInSlot.getItem();
+				if ((itemInSlot instanceof IHiveFrame)) {
+					hiveFrames.add((IHiveFrame)itemInSlot);
+				}
+			}
+		}
+		return hiveFrames;
+	}
 
 	@Override
 	public IBeeModifier getBeeModifier() {
-	    List<IBeeModifier> beeModifiers = new ArrayList<IBeeModifier>();
-	    
-	    beeModifiers.add(this.beeModifier);
-	    for (IHiveFrame frame : getFrames(this.inventory)) {
-	      beeModifiers.add(frame.getBeeModifier());
-	    }
-	    return beeModifiers.get(0);
-	  }
-	
+		List<IBeeModifier> beeModifiers = new ArrayList<IBeeModifier>();
+
+		//beeModifiers.add(this.beeModifier);
+		for (IHiveFrame frame : getFrames(this.inventory)) {
+			beeModifiers.add(frame.getBeeModifier());
+		}
+		return beeModifiers.get(0);
+	}
+
 	private ItemStack getQueenStack()
 	{
 		ItemStack queenStack = ((MultiblockLogicAlveary)getMultiblockLogic()).getController().getBeeInventory().getQueen();
@@ -276,26 +292,69 @@ implements ISidedFrameWearingInventory, IActivatable, IAlvearyComponent.Active, 
 
 	@Override
 	public void wearOutFrames(IBeeHousing beeHousing, int amount)
-	  {
-	    IBeekeepingMode beekeepingMode = BeeManager.beeRoot.getBeekeepingMode(beeHousing.getWorld());
-	    int wear = Math.round(amount * beekeepingMode.getWearModifier());
-	    for (int i = 0; i < this.inventory.getSizeInventory(); i++)
-	    {
-	      ItemStack hiveFrameStack = getStackInSlot(i);
-	      if (hiveFrameStack != null)
-	      {
-	        Item hiveFrameItem = hiveFrameStack.getItem();
-	        if ((hiveFrameItem instanceof IHiveFrame))
-	        {
-	          IHiveFrame hiveFrame = (IHiveFrame)hiveFrameItem;
-	          
-	          ItemStack queenStack = getQueenStack();
-	          IBee queen = BeeManager.beeRoot.getMember(queenStack);
-	          ItemStack usedFrame = hiveFrame.frameUsed(beeHousing, hiveFrameStack, queen, wear);
-	          
-	          setInventorySlotContents(i, usedFrame);
-	        }
-	      }
-	    }
-	  }
+	{
+		IBeekeepingMode beekeepingMode = BeeManager.beeRoot.getBeekeepingMode(beeHousing.getWorld());
+		int wear = Math.round(amount * beekeepingMode.getWearModifier());
+		for (int i = 0; i < this.inventory.getSizeInventory(); i++)
+		{
+			ItemStack hiveFrameStack = getStackInSlot(i);
+			if (hiveFrameStack != null)
+			{
+				Item hiveFrameItem = hiveFrameStack.getItem();
+				if ((hiveFrameItem instanceof IHiveFrame))
+				{
+					IHiveFrame hiveFrame = (IHiveFrame)hiveFrameItem;
+					Utils.LOG_INFO("Wearing out frame by "+amount);
+					ItemStack queenStack = getQueenStack();
+					IBee queen = BeeManager.beeRoot.getMember(queenStack);
+					ItemStack usedFrame = hiveFrame.frameUsed(beeHousing, hiveFrameStack, queen, wear);
+
+					//((MultiblockLogicAlveary)getMultiblockLogic()).getController().getBeeListeners().
+					
+					setInventorySlotContents(i, usedFrame);
+				}
+			}
+		}
+	}
+
+	@Override
+	public InventoryFrameHousing getAlvearyInventory() {
+		return inventory;
+	}
+
+	@Override
+	public IBeeListener getBeeListener() {
+		return beeListener;
+	}
+	
+	static class AlvearyFrameHousingBeeListener
+    extends DefaultBeeListener
+  {
+    private final InventoryFrameHousing inventory;
+    
+    public AlvearyFrameHousingBeeListener(InventoryFrameHousing inventory)
+    {
+      this.inventory = inventory;
+    }
+    
+    @Override
+	public boolean onPollenRetrieved(IIndividual pollen)
+    {
+      /*if (!((Object) this.inventory).canStorePollen()) {
+        return false;
+      }*/
+      ISpeciesRoot speciesRoot = AlleleManager.alleleRegistry.getSpeciesRoot(pollen.getClass());
+      
+      ItemStack pollenStack = speciesRoot.getMemberStack(pollen, EnumGermlingType.POLLEN.ordinal());
+      if (pollenStack != null)
+      {
+       // ((Object) this.inventory).storePollenStack(pollenStack);
+        return true;
+      }
+      return false;
+    }
+  }
+	
+	
+	
 }

@@ -3,10 +3,10 @@ package gtPlusPlus.core.item.tool.staballoy;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.player.UtilsMining;
-import gtPlusPlus.core.util.recipe.UtilsRecipe;
+import gtPlusPlus.core.util.recipe.RecipeUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -37,6 +37,7 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 	protected ItemStack thisPickaxe = null;
 	protected final int colour;
 	protected final String materialName;
+	public boolean isValid = true;
 
 	public MultiPickaxeBase(String unlocalizedName, ToolMaterial material, int materialDurability, int colour) {
 		super(Utils.sanitizeString(unlocalizedName), material);
@@ -46,12 +47,15 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 		this.setMaxStackSize(1);
 		this.setMaxDamage(materialDurability);
 		this.colour = colour;
-		this.materialName = material.name();
-		GameRegistry.registerItem(this, Utils.sanitizeString(unlocalizedName));
+		this.materialName = material.name();		
 		this.setCreativeTab(AddToCreativeTab.tabTools);
-		try {addRecipe();} catch (Throwable e){}
+		try {isValid = addRecipe();} catch (Throwable e){}
+		if (colour != 0 && isValid){
+			GameRegistry.registerItem(this, Utils.sanitizeString(unlocalizedName));			
+		}
+
 	}
-	
+
 	/*
 	 * 
 	 * 
@@ -61,25 +65,35 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 	 * 
 	 * 
 	 */
-	
-	private void addRecipe(){
+
+	private boolean addRecipe(){
 		String plateDense = "plateDense"+materialName;
 		String rodLong = "stickLong"+materialName;
 		String toolHammer = "craftingToolHardHammer";
 		String toolWrench = "craftingToolWrench";
 		String toolFile = "craftingToolFile";
 		String toolScrewDriver = "craftingToolScrewdriver";
-		UtilsRecipe.recipeBuilder(
+
+		if (null == ItemUtils.getItemStackOfAmountFromOreDictNoBroken(rodLong, 1)){
+			return false;
+		}
+		if (null == ItemUtils.getItemStackOfAmountFromOreDictNoBroken(plateDense, 1)){
+			return false;
+		}
+
+		RecipeUtils.recipeBuilder(
 				plateDense, plateDense, plateDense,
 				toolFile, rodLong, toolHammer,
 				toolWrench, rodLong, toolScrewDriver,
-				UtilsItems.getSimpleStack(this));
+				ItemUtils.getSimpleStack(this));
+
+		return true;
 	}
-	
+
 	public final String getMaterialName() {
 		return materialName;
 	}
-	
+
 	@Override
 	public String getItemStackDisplayName(ItemStack iStack) {
 
@@ -113,7 +127,7 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 		return colour;
 
 	}
-	
+
 	@SuppressWarnings("static-method")
 	private float calculateDurabilityLoss(World world, int X, int Y, int Z){
 		float bDurabilityLoss = 0;
@@ -127,7 +141,7 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 				bHardness = removalist.getBlockHardness(world, X, Y, Z)*100;
 				Utils.LOG_WARNING("Hardness: "+bHardness);
 
-				bDurabilityLoss = bHardness;
+				bDurabilityLoss = 100;
 				//Utils.LOG_WARNING("Durability Loss: "+bDurabilityLoss);
 
 				correctTool = canPickaxeBlock(removalist, world);
@@ -154,21 +168,21 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 			Utils.LOG_WARNING(block.toString());
 			String removalTool = "";
 			removalTool = block.getHarvestTool(1);
-			
+
 			if (removalTool.equals("pickaxe") || UtilsMining.getBlockType(block)){				
 				if (canPickaxeBlock(block, world)){
 					if((block != Blocks.bedrock) && (block.getBlockHardness(world, X, Y, Z) != -1) && (block.getBlockHardness(world, X, Y, Z) <= 100) && (block != Blocks.water) && (block != Blocks.lava)){
-						
+
 						if (heldItem.getItemDamage() <= (heldItem.getMaxDamage()-dur)){
-						
-						block.dropBlockAsItem(world, X, Y, Z, world.getBlockMetadata(X, Y, Z), 0);
-						world.setBlockToAir(X, Y, Z);
-					
+
+							block.dropBlockAsItem(world, X, Y, Z, world.getBlockMetadata(X, Y, Z), 0);
+							world.setBlockToAir(X, Y, Z);
+
 						}
 						else {
 							return;
 						}
-					
+
 					}
 				}
 				else {
@@ -179,13 +193,15 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 
 		}
 	}
-	
-	
-	@Override
+
 	public void damageItem(ItemStack item, int damage, EntityPlayer localPlayer){
-		item.damageItem(damage*100, localPlayer);
+		item.damageItem(damage, localPlayer);
 	}
-	
+
+	public void setItemDamage(ItemStack item, int damage){
+		item.setItemDamage(damage-1);
+	}
+
 
 	@Override
 	@SideOnly(Side.CLIENT)

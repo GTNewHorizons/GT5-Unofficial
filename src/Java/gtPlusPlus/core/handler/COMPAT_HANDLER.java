@@ -21,10 +21,13 @@ import gtPlusPlus.core.recipe.RECIPES_GREGTECH;
 import gtPlusPlus.core.recipe.RECIPES_LaserEngraver;
 import gtPlusPlus.core.recipe.ShapedRecipeObject;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.UtilsItems;
-import gtPlusPlus.core.util.recipe.UtilsRecipe;
+import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.recipe.RecipeUtils;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.Gregtech4Content;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechDehydrator;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechEnergyBuffer;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechGeothermalThermalGenerator;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialBlastSmelter;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialCentrifuge;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialCokeOven;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialElectrolyzer;
@@ -63,7 +66,7 @@ public class COMPAT_HANDLER {
 		GT_OreDictUnificator.registerOre("craftingToolSandHammer", new ItemStack(ModItems.itemSandstoneHammer));
 
 		for(int i=1; i<=10; i++){
-			GT_OreDictUnificator.registerOre("bufferCore_"+CORE.VOLTAGES[i-1], new ItemStack(UtilsItems.getItem("miscutils:item.itemBufferCore"+i)));
+			GT_OreDictUnificator.registerOre("bufferCore_"+CORE.VOLTAGES[i-1], new ItemStack(ItemUtils.getItem("miscutils:item.itemBufferCore"+i)));
 		}
 	}
 	
@@ -83,12 +86,14 @@ public class COMPAT_HANDLER {
 		GregtechIndustrialMacerator.run();
 		GregtechIndustrialWiremill.run();
 		GregtechIndustrialMassFabricator.run();
-		//GregtechIndustrialSinter.run();
+		GregtechIndustrialBlastSmelter.run();
 		GregtechSolarGenerators.run();
 		GregtechPowerSubStation.run();
 		GregtechDehydrator.run();
 		GregtechTieredFluidTanks.run();
 		GregtechIndustrialMultiTank.run();
+		GregtechGeothermalThermalGenerator.run();
+		Gregtech4Content.run();
 		}
 
 	}
@@ -131,7 +136,7 @@ public class COMPAT_HANDLER {
 	public static void RemoveRecipesFromOtherMods(){
 		//Removal of Recipes
 		for(Object item : RemoveRecipeQueue){
-			UtilsRecipe.removeCraftingRecipe(item);
+			RecipeUtils.removeCraftingRecipe(item);
 		}		
 	}
 	

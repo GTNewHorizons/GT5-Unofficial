@@ -4,7 +4,7 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.block.machine.heliumgen.slots.InvSlotRadiation;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import ic2.api.Direction;
 import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
@@ -51,7 +51,7 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 		if(++progress >= 40){
 			//if(++progress >= 300){
 			if(heliumStack == null)
-				heliumStack = UtilsItems.getSimpleStack(ModItems.itemHeliumBlob);
+				heliumStack = ItemUtils.getSimpleStack(ModItems.itemHeliumBlob);
 			else if(heliumStack.getItem() == ModItems.itemHeliumBlob && heliumStack.stackSize < 64)
 				heliumStack.stackSize++;
 			progress = 0;

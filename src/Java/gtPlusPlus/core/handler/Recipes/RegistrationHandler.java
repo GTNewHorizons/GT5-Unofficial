@@ -1,6 +1,7 @@
 package gtPlusPlus.core.handler.Recipes;
 
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
+import gtPlusPlus.core.recipe.RECIPES_General;
 import gtPlusPlus.core.recipe.RECIPES_MachineComponents;
 import gtPlusPlus.core.recipe.RECIPES_Machines;
 import gtPlusPlus.core.recipe.RECIPES_Shapeless;
@@ -23,6 +24,7 @@ public class RegistrationHandler {
 		RECIPES_Shapeless.RECIPES_LOAD();
 		RECIPES_MachineComponents.RECIPES_LOAD();
 		RECIPE_Batteries.RECIPES_LOAD();
+		RECIPES_General.RECIPES_LOAD();
 		//RECIPES_MTWRAPPER.run();		
 		Utils.LOG_INFO("Loaded: "+recipesSuccess+" Failed: "+recipesFailed);
 		COMPAT_HANDLER.areInitItemsLoaded = true;

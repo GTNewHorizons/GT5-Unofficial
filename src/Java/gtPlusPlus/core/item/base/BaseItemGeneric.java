@@ -8,7 +8,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 
 public class BaseItemGeneric extends Item
 {
@@ -24,7 +23,6 @@ public class BaseItemGeneric extends Item
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
-		list.add(EnumChatFormatting.GOLD+"");
 		super.addInformation(stack, aPlayer, list, bool);
 	}	
 }

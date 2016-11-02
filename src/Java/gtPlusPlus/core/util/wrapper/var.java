@@ -2,7 +2,7 @@ package gtPlusPlus.core.util.wrapper;
 
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.item.ItemStack;
 
 public class var{
@@ -42,7 +42,7 @@ public class var{
 		}
 		
 		private ItemStack getOreDictStack(int stackSize){
-			ItemStack v = UtilsItems.getItemStack(sanitizedName, stackSize);
+			ItemStack v = ItemUtils.getItemStack(sanitizedName, stackSize);
 			return v;
 		}
 		
@@ -56,10 +56,10 @@ public class var{
 			String meta = "0";
 			try {
 			if(fqrnSplit[2] != null){meta = fqrnSplit[2];}
-			temp = UtilsItems.getItemStackWithMeta(LoadedMods.MiscUtils, fqrn, fqrnSplit[1], Integer.parseInt(meta), stackSize);
+			temp = ItemUtils.getItemStackWithMeta(LoadedMods.MiscUtils, fqrn, fqrnSplit[1], Integer.parseInt(meta), stackSize);
 			}
 			catch (ArrayIndexOutOfBoundsException a){
-				temp = UtilsItems.getItemStackWithMeta(LoadedMods.MiscUtils, fqrn, fqrnSplit[1], Integer.parseInt(meta), stackSize);
+				temp = ItemUtils.getItemStackWithMeta(LoadedMods.MiscUtils, fqrn, fqrnSplit[1], Integer.parseInt(meta), stackSize);
 			}
 			return temp;			
 		}		

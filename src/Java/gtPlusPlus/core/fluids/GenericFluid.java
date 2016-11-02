@@ -28,6 +28,7 @@ public class GenericFluid extends Fluid{
 		FluidRegistry.registerFluid(fluidFactory);			
 		blockFactory = new BlockFluidBase(displayName, fluidFactory, rgba).setBlockName("fluidblock"+fluidName);
 		GameRegistry.registerBlock(blockFactory, ItemBlockFluid.class, blockFactory.getUnlocalizedName().substring(5));
+		fluidFactory.setBlock(blockFactory);
 		
 		//fluidFactory.setUnlocalizedName(blockFactory.getUnlocalizedName());
 		
@@ -50,6 +51,7 @@ public class GenericFluid extends Fluid{
 		FluidRegistry.registerFluid(fluidFactory);			
 		blockFactory = new BlockFluidBase(fluidFactory, fluidMaterial).setBlockName("fluidblock"+fluidName);
 		GameRegistry.registerBlock(blockFactory, ItemBlockFluid.class, blockFactory.getUnlocalizedName().substring(5));
+		fluidFactory.setBlock(blockFactory);
 		//IC2_ItemFluidCell emptyCell = new IC2_ItemFluidCell(fluidName);
 		/*if (aFullContainer != null && aEmptyContainer != null && !FluidContainerRegistry.registerFluidContainer(new FluidStack(rFluid, aFluidAmount), aFullContainer, aEmptyContainer)) {
 			GT_Values.RA.addFluidCannerRecipe(aFullContainer, container(aFullContainer, false), null, new FluidStack(rFluid, aFluidAmount));

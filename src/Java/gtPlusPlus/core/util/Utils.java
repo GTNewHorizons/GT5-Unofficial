@@ -6,12 +6,10 @@ import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.fluid.FluidUtils;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
-import ic2.core.IC2Potion;
 import ic2.core.Ic2Items;
 import ic2.core.init.InternalName;
-import ic2.core.item.armor.ItemArmorHazmat;
 import ic2.core.item.resources.ItemCell;
 
 import java.awt.Color;
@@ -24,29 +22,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.UUID;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
+
+import org.apache.commons.lang3.EnumUtils;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.registry.EntityRegistry;
 
 public class Utils {
 
@@ -90,32 +81,52 @@ public class Utils {
 		if (aspect.toUpperCase() == "COGNITIO"){
 			//Adds in Compat for older GT Versions which Misspell aspects.
 			try {
-				returnValue = new TC_AspectStack(TC_Aspects.valueOf("COGNITIO"), size);
+				if (EnumUtils.isValidEnum(TC_Aspects.class, "COGNITIO")){
+					Utils.LOG_WARNING("TC Aspect found - "+aspect);
+					returnValue = new TC_AspectStack(TC_Aspects.valueOf("COGNITIO"), size);
+				}
+				else {
+					Utils.LOG_INFO("Fallback TC Aspect found - "+aspect+" - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
+					returnValue = new TC_AspectStack(TC_Aspects.valueOf("COGNITO"), size);
+				}				
 			} catch (NoSuchFieldError r){
-				Utils.LOG_INFO("Fallback TC Aspect found - "+aspect+" - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
-				returnValue = new TC_AspectStack(TC_Aspects.valueOf("COGNITO"), size);
-
+				Utils.LOG_INFO("Invalid Thaumcraft Aspects - Report this issue to Alkalus");
 			}
 		}
 		else if (aspect.toUpperCase() == "EXANIMUS"){
-			//Adds in Compat for older GT Versions which Misspell aspects.
+			//Adds in Compat for older GT Versions which Misspell aspects.			
 			try {
-				returnValue = new TC_AspectStack(TC_Aspects.valueOf("EXANIMUS"), size);
+				if (EnumUtils.isValidEnum(TC_Aspects.class, "EXANIMUS")){
+					Utils.LOG_WARNING("TC Aspect found - "+aspect);
+					returnValue = new TC_AspectStack(TC_Aspects.valueOf("EXANIMUS"), size);
+				}
+				else {
+					Utils.LOG_INFO("Fallback TC Aspect found - "+aspect+" - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
+					returnValue = new TC_AspectStack(TC_Aspects.valueOf("EXAMINIS"), size);
+				}				
 			} catch (NoSuchFieldError r){
-				Utils.LOG_INFO("Fallback TC Aspect found - "+aspect+" - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
-				returnValue = new TC_AspectStack(TC_Aspects.valueOf("EXAMINIS"), size);
+				Utils.LOG_INFO("Invalid Thaumcraft Aspects - Report this issue to Alkalus");
 			}
+			
+			
 		}
 		else if (aspect.toUpperCase() == "PRAECANTATIO"){
-			//Adds in Compat for older GT Versions which Misspell aspects.
+			//Adds in Compat for older GT Versions which Misspell aspects.			
 			try {
-				returnValue = new TC_AspectStack(TC_Aspects.valueOf("PRAECANTATIO"), size);
+				if (EnumUtils.isValidEnum(TC_Aspects.class, "PRAECANTATIO")){
+					Utils.LOG_WARNING("TC Aspect found - "+aspect);
+					returnValue = new TC_AspectStack(TC_Aspects.valueOf("PRAECANTATIO"), size);
+				}
+				else {
+					Utils.LOG_INFO("Fallback TC Aspect found - "+aspect+" - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
+					returnValue = new TC_AspectStack(TC_Aspects.valueOf("PRAECANTIO"), size);
+				}				
 			} catch (NoSuchFieldError r){
-				Utils.LOG_INFO("Fallback TC Aspect found - "+aspect+" - PLEASE UPDATE GREGTECH TO A NEWER VERSION TO REMOVE THIS MESSAGE - THIS IS NOT AN ERROR");
-				returnValue = new TC_AspectStack(TC_Aspects.valueOf("PRAECANTIO"), size);
-			}
+				Utils.LOG_INFO("Invalid Thaumcraft Aspects - Report this issue to Alkalus");
+			}			
 		}
 		else {
+			Utils.LOG_WARNING("TC Aspect found - "+aspect);
 			returnValue = new TC_AspectStack(TC_Aspects.valueOf(aspect), size);
 		}
 
@@ -144,11 +155,6 @@ public class Utils {
 			return false;
 		}
 		return (target.getItem() == input.getItem() && ((target.getItemDamage() == WILDCARD_VALUE && !strict) || target.getItemDamage() == input.getItemDamage()));
-	}
-
-	//TODO
-	public static void registerEntityToBiomeSpawns(Class<EntityLiving> classy, EnumCreatureType EntityType, BiomeGenBase baseBiomeGen){
-		EntityRegistry.addSpawn(classy, 6, 1, 5, EntityType, baseBiomeGen); //change the values to vary the spawn rarity, biome, etc. 
 	}
 
 	//Non-Dev Comments 
@@ -181,10 +187,6 @@ public class Utils {
 
 	public static void paintBox(Graphics g, int MinA, int MinB, int MaxA, int MaxB){
 		g.drawRect (MinA, MinB, MaxA, MaxB);  
-	}
-
-	public static void messagePlayer(EntityPlayer P, String S){
-		gregtech.api.util.GT_Utility.sendChatToPlayer(P, S);
 	}
 
 	/**
@@ -314,53 +316,6 @@ public class Utils {
 		return targetList;
 	}
 
-	public static EntityPlayer getPlayerOnServerFromUUID(UUID parUUID){
-		if (parUUID == null) 
-		{
-			return null;
-		}
-		List<EntityPlayerMP> allPlayers = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
-		for (EntityPlayerMP player : allPlayers) 
-		{
-			if (player.getUniqueID().equals(parUUID)) 
-			{
-				return player;
-			}
-		}
-		return null;
-	}
-
-	@Deprecated
-	public static Block findBlockUnderEntityNonBoundingBox(Entity parEntity){
-		int blockX = MathHelper.floor_double(parEntity.posX);
-		int blockY = MathHelper.floor_double(parEntity.posY-0.2D - (double)parEntity.yOffset);
-		int blockZ = MathHelper.floor_double(parEntity.posZ);
-		return parEntity.worldObj.getBlock(blockX, blockY, blockZ);
-	}
-
-	public static Block findBlockUnderEntity(Entity parEntity){
-		int blockX = MathHelper.floor_double(parEntity.posX);
-		int blockY = MathHelper.floor_double(parEntity.boundingBox.minY)-1;
-		int blockZ = MathHelper.floor_double(parEntity.posZ);
-		return parEntity.worldObj.getBlock(blockX, blockY, blockZ);
-	}
-
-	public static int getFacingDirection(Entity entity){
-		int d = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360) + 0.50) & 3;
-		return d;
-	}
-
-	public static boolean isPlayerOP(EntityPlayer player){
-		if (player.canCommandSenderUseCommand(2, "")){
-			return true;
-		}
-		return false;
-	}
-
-	public static void setEntityOnFire(Entity entity, int length){
-		entity.setFire(length);
-	}
-
 	public static void spawnCustomParticle(Entity entity){
 		GTplusplus.proxy.generateMysteriousParticles(entity);
 	}	
@@ -403,7 +358,10 @@ public class Utils {
 		}
 	}
 
-	public static int rgbtoHexValue(int r, int g, int b){		    
+	public static int rgbtoHexValue(int r, int g, int b){	
+		if (r > 255 || g > 255 || b > 255 || r < 0 || g < 0 || b < 0){
+			return 0;
+		}
 		Color c = new Color(r,g,b);
 		String temp = Integer.toHexString( c.getRGB() & 0xFFFFFF ).toUpperCase();	
 
@@ -511,28 +469,6 @@ public class Utils {
 		return true;
 	}
 
-	public static boolean applyRadiationDamageToEntity(int damage, World world, Entity entityHolding){
-		if (!world.isRemote){				
-			if (damage > 0 && (entityHolding instanceof EntityLivingBase)) {
-				EntityLivingBase entityLiving = (EntityLivingBase) entityHolding;
-				if (!ItemArmorHazmat.hasCompleteHazmat(entityLiving)) {
-					int duration;
-					if (entityLiving.getActivePotionEffect(IC2Potion.radiation) != null){
-						//Utils.LOG_INFO("t");
-						duration = (damage*5)+entityLiving.getActivePotionEffect(IC2Potion.radiation).getDuration();
-					}
-					else {
-						//Utils.LOG_INFO("f");
-						duration = damage*30;
-					}					
-					IC2Potion.radiation.applyTo(entityLiving, duration, damage * 15);
-				}
-			}
-			return true;
-		}
-		return false;		
-	}
-
 	private static short cellID = 15;
 	public static ItemStack createInternalNameAndFluidCell(String s){
 		Utils.LOG_WARNING("1");
@@ -552,7 +488,7 @@ public class Utils {
 			ItemStack temp = (ItemStack) methode.invoke(item, cellID++, yourName, new Block[0]);
 			Utils.LOG_INFO("Successfully created "+temp.getDisplayName()+"s.");
 			FluidContainerRegistry.registerFluidContainer(FluidUtils.getFluidStack(s.toLowerCase(), 0), temp.copy(), Ic2Items.cell.copy());
-			UtilsItems.addItemToOreDictionary(temp.copy(), "cell"+s);
+			ItemUtils.addItemToOreDictionary(temp.copy(), "cell"+s);
 			return temp;
 		}
 		catch(Exception e){

@@ -1,7 +1,7 @@
 package gtPlusPlus.core.recipe;
 
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.item.UtilsItems;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.item.ItemStack;
 
@@ -52,30 +52,30 @@ public class RECIPE_CONSTANTS {
 	
 	private static void registerGTExperimentalComponents(){
 		//Machine Components
-		electricMotor_LuV = UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 32606, 1);
-		electricMotor_ZPM = UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 32607, 1);
-		electricMotor_UV = UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 32608, 1);
-		electricPump_LuV = UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 32620, 1);
-		electricPump_ZPM = UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 32621, 1);
-		electricPump_UV = UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 32622, 1);
-		electricPiston_LuV = UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 32645, 1);
-		electricPiston_ZPM = UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 32646, 1);
-		electricPiston_UV = UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 32647, 1);
-		robotArm_LuV = UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 32655, 1);
-		robotArm_ZPM = UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 32656, 1);
-		robotArm_UV = UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 32657, 1);
-		conveyorModule_LuV = UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 32636, 1);
-		conveyorModule_ZPM = UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 32637, 1);
-		conveyorModule_UV = UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 32638, 1);
-		emitter_LuV = UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 32685, 1);
-		emitter_ZPM = UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 32686, 1);
-		emitter_UV = UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 32687, 1);
-		fieldGenerator_LuV = UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 32675, 1);
-		fieldGenerator_ZPM = UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 32676, 1);
-		fieldGenerator_UV = UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 32677, 1);
-		sensor_LuV = UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 32695, 1);
-		sensor_ZPM = UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 32696, 1);
-		sensor_UV = UtilsItems.simpleMetaStack("gregtech:gt.metaitem.01", 32697, 1);
+		electricMotor_LuV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32606, 1);
+		electricMotor_ZPM = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32607, 1);
+		electricMotor_UV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32608, 1);
+		electricPump_LuV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32620, 1);
+		electricPump_ZPM = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32621, 1);
+		electricPump_UV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32622, 1);
+		electricPiston_LuV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32645, 1);
+		electricPiston_ZPM = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32646, 1);
+		electricPiston_UV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32647, 1);
+		robotArm_LuV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32655, 1);
+		robotArm_ZPM = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32656, 1);
+		robotArm_UV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32657, 1);
+		conveyorModule_LuV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32636, 1);
+		conveyorModule_ZPM = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32637, 1);
+		conveyorModule_UV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32638, 1);
+		emitter_LuV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32685, 1);
+		emitter_ZPM = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32686, 1);
+		emitter_UV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32687, 1);
+		fieldGenerator_LuV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32675, 1);
+		fieldGenerator_ZPM = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32676, 1);
+		fieldGenerator_UV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32677, 1);
+		sensor_LuV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32695, 1);
+		sensor_ZPM = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32696, 1);
+		sensor_UV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32697, 1);
 		
 		//Max Tier Components Blood Never added... Useless, lol.
 		electricMotor_MAX = GregtechItemList.Electric_Motor_MAX.get(1);

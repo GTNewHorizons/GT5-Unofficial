@@ -28,19 +28,19 @@ public class BlockFluidBase extends BlockFluidClassic {
     
     @SuppressWarnings("deprecation")
 	public BlockFluidBase(Fluid fluid, Material material) {
-            super(fluid, net.minecraft.block.material.Material.water);
+            super(fluid, net.minecraft.block.material.Material.lava);
             short[] tempColour = material.getRGBA(); 
             this.colour = Utils.rgbtoHexValue(tempColour[0], tempColour[1], tempColour[2]);
             this.fluidMaterial = material;
             setCreativeTab(AddToCreativeTab.tabOther);
             this.displayName = material.getLocalizedName();
-            LanguageRegistry.addName(this, "Molten "+displayName+" ["+MathUtils.celsiusToKelvin(fluidMaterial.getBoilingPoint_C())+"K]");
+            LanguageRegistry.addName(this, "Molten "+displayName+" ["+MathUtils.celsiusToKelvin(fluidMaterial.getBoilingPointC())+"K]");
     		this.setBlockName(GetProperName());
     }
     
     @SuppressWarnings("deprecation")
 	public BlockFluidBase(String fluidName, Fluid fluid, short[] colour) {
-            super(fluid, net.minecraft.block.material.Material.water);
+            super(fluid, net.minecraft.block.material.Material.lava);
             short[] tempColour = colour; 
             this.colour = Utils.rgbtoHexValue(tempColour[0], tempColour[1], tempColour[2]);
             setCreativeTab(AddToCreativeTab.tabOther);

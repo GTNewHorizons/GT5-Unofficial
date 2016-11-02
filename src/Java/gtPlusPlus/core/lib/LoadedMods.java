@@ -34,6 +34,8 @@ public class LoadedMods {
 	public static boolean MiscUtils = true; //Dummy For MetaData Lookups in MT Wrapper
 	public static boolean ThermalFoundation = false;
 	public static boolean IHL = false;
+	public static boolean OpenComputers = false; //OpenComputers
+	public static boolean Computronics = false; //computronics
 	
 
 	
@@ -119,9 +121,17 @@ public class LoadedMods {
 			totalMods++;
 		}
 		if (Loader.isModLoaded("Growthcraft") == true){
-			Growthcraft  = true;
-			Utils.LOG_INFO("Components enabled for: Growthcraft");
-			totalMods++;
+			Utils.LOG_INFO("Growthcraft Version: "+getModVersion("Growthcraft"));
+			if (getModVersion("Growthcraft").equals("1.7.10-2.3.1")){
+				//Load Growthcraft Compat
+				Growthcraft  = true;
+				Utils.LOG_INFO("Components enabled for: Growthcraft");
+				totalMods++;
+			}
+			else {
+				Growthcraft = false;
+				Utils.LOG_INFO("Growthcraft found, but the version was too new. I will update GC support eventually.");
+			}
 		}
 		if (Loader.isModLoaded("CoFHCore") == true){
 			CoFHCore  = true;
@@ -171,6 +181,16 @@ public class LoadedMods {
 		if (Loader.isModLoaded("Baubles") == true){
 			Baubles  = true;
 			Utils.LOG_INFO("Components enabled for: Baubles");
+			totalMods++;
+		}
+		if (Loader.isModLoaded("OpenComputers") == true){
+			OpenComputers  = true;
+			Utils.LOG_INFO("Components enabled for: OpenComputers");
+			totalMods++;
+		}
+		if (Loader.isModLoaded("computronics") == true){
+			Computronics  = true;
+			Utils.LOG_INFO("Components enabled for: Computronics");
 			totalMods++;
 		}
 	

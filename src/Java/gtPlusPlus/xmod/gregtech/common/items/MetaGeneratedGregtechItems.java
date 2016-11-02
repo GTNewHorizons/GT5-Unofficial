@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.items;
 
+import static gtPlusPlus.core.util.Utils.getTcAspectStack;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
@@ -16,7 +17,6 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.covers.GT_Cover_Arm;
 import gregtech.common.covers.GT_Cover_Conveyor;
 import gregtech.common.covers.GT_Cover_Pump;
-import static gtPlusPlus.core.util.Utils.getTcAspectStack;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -24,7 +24,6 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaItem_X32;
 import net.minecraft.item.EnumAction;
-import net.minecraft.util.EnumChatFormatting;
 
 public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
     public MetaGeneratedGregtechItems INSTANCE;
@@ -176,7 +175,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
         
         
       //FOOOOOOOOOOOOOOD
-        GregtechItemList.Food_Baked_Raisin_Bread.set(addItem(tLastID = 60, "Raisin Bread", "Extra Raisins, Just for "+EnumChatFormatting.DARK_PURPLE+"ImQ009", new Object[]{new GT_FoodStat(5, 0.5F, EnumAction.eat, null, false, true, false, new int[0]), getTcAspectStack(TC_Aspects.CORPUS, 1L), getTcAspectStack(TC_Aspects.FAMES, 1L), getTcAspectStack(TC_Aspects.IGNIS, 1L)}));
+        GregtechItemList.Food_Baked_Raisin_Bread.set(addItem(tLastID = 60, "Raisin Bread", "Extra Raisins, Just for ImQ009", new Object[]{new GT_FoodStat(5, 0.5F, EnumAction.eat, null, false, true, false, new int[0]), getTcAspectStack(TC_Aspects.CORPUS, 1L), getTcAspectStack(TC_Aspects.FAMES, 1L), getTcAspectStack(TC_Aspects.IGNIS, 1L)}));
 
         
         
@@ -192,10 +191,18 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
         GregtechItemList.Fluid_Cell_1L.set(addItem(tLastID = 64, "1L Wrought Iron Fluid Cell", "Holds exactly one litre worth of liquid.", new Object[]{new ItemData(Materials.WroughtIron, OrePrefixes.plate.mMaterialAmount * 8L + 4L * OrePrefixes.ring.mMaterialAmount, new MaterialStack[0]), getTcAspectStack(TC_Aspects.VACUOS, 2L), getTcAspectStack(TC_Aspects.AQUA, 1L)}));
         setFluidContainerStats(32000 + tLastID, 1L, 64L);
         
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.WroughtIron, 4L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.WroughtIron, 8L), GregtechItemList.Fluid_Cell_1L.get(4L, new Object[0]), 50, 32);
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Bronze, 4L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Bronze, 8L), GregtechItemList.Fluid_Cell_16L.get(4L, new Object[0]), 50, 32);
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Brass, 4L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Brass, 8L), GregtechItemList.Fluid_Cell_36L.get(4L, new Object[0]), 75, 32);
-        GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Invar, 4L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Invar, 8L), GregtechItemList.Fluid_Cell_144L.get(4L, new Object[0]), 75, 32);
+        if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
+        	 GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.WroughtIron, 1L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.WroughtIron, 2L), GregtechItemList.Fluid_Cell_1L.get(1L, new Object[0]), 50, 32);
+             GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Bronze, 1L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Bronze, 2L), GregtechItemList.Fluid_Cell_16L.get(1L, new Object[0]), 50, 32);
+             GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Brass, 1L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Brass, 2L), GregtechItemList.Fluid_Cell_36L.get(1L, new Object[0]), 75, 32);
+             GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Invar, 1L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Invar, 2L), GregtechItemList.Fluid_Cell_144L.get(1L, new Object[0]), 75, 32);
 
+        }
+        else {
+        	 GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.WroughtIron, 8L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.WroughtIron, 4L), GregtechItemList.Fluid_Cell_1L.get(1L, new Object[0]), 50, 32);
+             GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Bronze, 8L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Bronze, 4L), GregtechItemList.Fluid_Cell_16L.get(1L, new Object[0]), 50, 32);
+             GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Brass, 8L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Brass, 4L), GregtechItemList.Fluid_Cell_36L.get(1L, new Object[0]), 75, 32);
+             GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Invar, 8L), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Invar, 4L), GregtechItemList.Fluid_Cell_144L.get(1L, new Object[0]), 75, 32);
+        }
     }
 }

@@ -99,7 +99,7 @@ public class StaballoyPickaxe extends ItemPickaxe{
 
 			}
 		}
-		return bDurabilityLoss;
+		return 100;
 	}
 
 	public Boolean canPickaxeBlock(Block currentBlock, World currentWorld){
@@ -158,16 +158,48 @@ public class StaballoyPickaxe extends ItemPickaxe{
 			}
 
 			//int heldItemDurability = heldItem.getDamage(1);
-			Utils.LOG_WARNING("Total Loss: "+(int)DURABILITY_LOSS);
+			Utils.LOG_INFO("Total Loss: "+(int)DURABILITY_LOSS);
 			//heldItem.setDamage(heldStack, DURABILITY_LOSS);
 			//Utils.LOG_WARNING("|GID|Durability: "+heldItem.getItemDamage());			
 			//Utils.LOG_WARNING("Durability: "+heldStack.getDamage(heldStack));
-			if (heldItem.getItemDamage() <= (heldItem.getMaxDamage()-DURABILITY_LOSS)){
-				damageItem(heldItem, (int) DURABILITY_LOSS, localPlayer);
+			Utils.LOG_INFO("1x: "+(heldItem.getItemDamage()));
+			int itemdmg = heldItem.getItemDamage();
+			int maxdmg = heldItem.getMaxDamage();
+			int dodmg = (int)DURABILITY_LOSS;
+			int durNow = (int) maxdmg-itemdmg;
+			int durLeft = (int) ((maxdmg-itemdmg)-DURABILITY_LOSS);
+			
+			Utils.LOG_INFO(
+					"Current Damage: " + itemdmg
+					+ " Max Damage: " + maxdmg
+					+ " Durability to be lost: " + dodmg
+					+ " Current Durability: " + durNow
+					+ " Remaining Durability: " + durLeft
+					);
+			
+			
+			//Break Tool
+			if ((durNow-dodmg) <= (99) && itemdmg != 0){
+				//TODO break tool
+				Utils.LOG_INFO("Breaking Tool");
+				heldItem.stackSize = 0;
+			}
+			//Do Damage
+			else {
+				//setItemDamage(heldItem, durLeft);
+				Utils.LOG_INFO(""+(durNow-durLeft));
+				damageItem(heldItem, (durNow-durLeft)-1, localPlayer);				
+			}
+			
+			
+			/*if (heldItem.getItemDamage() <= ((heldItem.getMaxDamage()-heldItem.getItemDamage())-DURABILITY_LOSS)){
+				Utils.LOG_INFO("2: "+DURABILITY_LOSS+" 3: "+((heldItem.getMaxDamage()-heldItem.getItemDamage())-DURABILITY_LOSS));
+				setItemDamage(heldItem, (int) (heldItem.getMaxDamage()-(heldItem.getMaxDamage()-heldItem.getItemDamage())-DURABILITY_LOSS));
 			}
 			else {
-				damageItem(heldItem, heldItem.getMaxDamage()-heldItem.getItemDamage(), localPlayer);
-			}
+				Utils.LOG_INFO("3: "+( heldItem.getMaxDamage()-(heldItem.getMaxDamage()-heldItem.getItemDamage())));
+				setItemDamage(heldItem, heldItem.getMaxDamage()-(heldItem.getMaxDamage()-heldItem.getItemDamage()));
+			}*/
 			//Utils.LOG_WARNING("|GID|Durability: "+heldItem.getItemDamage());
 			DURABILITY_LOSS = 0;
 
@@ -176,6 +208,10 @@ public class StaballoyPickaxe extends ItemPickaxe{
 	
 	public void damageItem(ItemStack item, int damage, EntityPlayer localPlayer){
 		item.damageItem(damage, localPlayer);
+	}
+	
+	public void setItemDamage(ItemStack item, int damage){
+		item.setItemDamage(damage-1);
 	}
 
 	//Should clear up blocks quicker if I chain it.
@@ -279,8 +315,9 @@ public class StaballoyPickaxe extends ItemPickaxe{
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
 		thisPickaxe = stack;	
-		list.add(EnumChatFormatting.GOLD+"Mines a 3x3 area in the direction you are facing.");
-		super.addInformation(stack, aPlayer, list, bool);
+		list.add(EnumChatFormatting.GRAY+"Mines a 3x3 at 100 durability per block mined.");
+		list.add(EnumChatFormatting.GRAY+"Durability: "+(stack.getMaxDamage()-stack.getItemDamage())+"/"+stack.getMaxDamage());
+		//super.addInformation(stack, aPlayer, list, bool);
 	}
 
 	@Override

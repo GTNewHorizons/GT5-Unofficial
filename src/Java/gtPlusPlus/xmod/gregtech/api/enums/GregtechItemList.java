@@ -70,7 +70,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	//Unused Machine Casings
 	Casing_MacerationStack, Casing_MatterGen, Casing_MatterFab, Casing_U7, 
 	//Unused Machine Coils
-	Casing_Coil_U1, Casing_Coil_U2, Casing_Coil_U3, Casing_Coil_U4,
+	Casing_Coil_U1, Casing_Coil_U2, Casing_Coil_BlastSmelter, Casing_BlastSmelter,
 	
 	//Windmill Shaft Shape for Extruder
 	Shape_Extruder_WindmillShaft, 
@@ -100,7 +100,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Food_Baked_Raisin_Bread, 
 	
 	//For sintering TODO
-	Industrial_SinterFurnace, 
+	Industrial_AlloyBlastSmelter, 
 	
 	//Block that enables uplink to a superconductor network
 	SuperConductorInputNode, 
@@ -122,7 +122,16 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Fluid_Cell_1L, Fluid_Cell_16L, Fluid_Cell_36L, Fluid_Cell_144L, 
 	
 	//Multitank
-	Industrial_MultiTank, Industrial_MultiTankDense, Casing_MultitankExterior;
+	Industrial_MultiTank, Industrial_MultiTankDense, Casing_MultitankExterior, 
+	
+	//Gt4 Workbenches
+	GT4_Workbench_Bronze, GT4_Workbench_Advanced, 
+	
+	//Geothermal Engines
+	Geothermal_Engine_EV, Geothermal_Engine_IV, Geothermal_Engine_LuV, 
+	
+	//Tesseracts
+	GT4_Tesseract_Generator, GT4_Tesseract_Terminal;
 
 	public static final GregtechItemList[]
 			DYE_ONLY_ITEMS = {

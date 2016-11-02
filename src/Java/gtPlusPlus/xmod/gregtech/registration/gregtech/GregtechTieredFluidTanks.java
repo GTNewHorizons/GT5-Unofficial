@@ -10,14 +10,13 @@ public class GregtechTieredFluidTanks
 	public static void run()
 	{
 		if (LoadedMods.Gregtech){
-			Utils.LOG_INFO("Gregtech5u Content | Registering Fluid Tanks.");
+			Utils.LOG_INFO("Gregtech5u Content | Registering Portable Fluid Tanks.");
 			run1();
 		}
 		
 	}
 
-	private static void run1()
-	{
+	private static void run1()	{
 		int ID = 817;
 		GregtechItemList.GT_FluidTank_ULV.set(new GT_MetaTileEntity_TieredTank(ID++, "fluidtank.tier.00", "Ultra Low Voltage Fluid Tank", 0).getStackForm(1L));
 		GregtechItemList.GT_FluidTank_LV.set(new GT_MetaTileEntity_TieredTank(ID++, "fluidtank.tier.01", "Low Voltage Fluid Tank", 1).getStackForm(1L));
@@ -28,8 +27,6 @@ public class GregtechTieredFluidTanks
         GregtechItemList.GT_FluidTank_LuV.set(new GT_MetaTileEntity_TieredTank(ID++, "fluidtank.tier.06", "Ludicrous Voltage Fluid Tank", 6).getStackForm(1L));
         GregtechItemList.GT_FluidTank_ZPM.set(new GT_MetaTileEntity_TieredTank(ID++, "fluidtank.tier.07", "ZPM Voltage Fluid Tank", 7).getStackForm(1L));
         GregtechItemList.GT_FluidTank_UV.set(new GT_MetaTileEntity_TieredTank(ID++, "fluidtank.tier.08", "Ultimate Voltage Fluid Tank", 8).getStackForm(1L));
-        GregtechItemList.GT_FluidTank_MAX.set(new GT_MetaTileEntity_TieredTank(ID++, "fluidtank.tier.09", "MAX Voltage Fluid Tank", 9).getStackForm(1L));
-		
-
+        GregtechItemList.GT_FluidTank_MAX.set(new GT_MetaTileEntity_TieredTank(ID++, "fluidtank.tier.09", "MAX Voltage Fluid Tank", 9).getStackForm(1L));        
 	}
 }

@@ -1,8 +1,8 @@
 package gtPlusPlus.core.recipe;
 
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.UtilsItems;
-import gtPlusPlus.core.util.recipe.UtilsRecipe;
+import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.recipe.RecipeUtils;
 import gtPlusPlus.core.util.wrapper.var;
 
 import java.util.ArrayList;
@@ -70,7 +70,7 @@ public class RECIPES_MTWRAPPER {
 		 * 
 		 */
 
-		ItemStack outputItem = UtilsItems.getCorrectStacktype(item_Output, 1);
+		ItemStack outputItem = ItemUtils.getCorrectStacktype(item_Output, 1);
 
 		ArrayList<Object> validSlots = new ArrayList<Object>();
 		String a,b,c,d,e,f,g,h,i;
@@ -92,7 +92,7 @@ public class RECIPES_MTWRAPPER {
 		validSlots.add(2, lineThree);
 
 		try {
-			UtilsRecipe.recipeBuilder((Object[]) validSlots.toArray(), outputItem.copy());
+			RecipeUtils.recipeBuilder((Object[]) validSlots.toArray(), outputItem.copy());
 			MT_RECIPES_LOADED++;		
 		}
 		catch(NullPointerException | ClassCastException k){

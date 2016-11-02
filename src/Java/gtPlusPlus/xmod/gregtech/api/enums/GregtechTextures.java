@@ -1,9 +1,9 @@
 package gtPlusPlus.xmod.gregtech.api.enums;
 
-import gregtech.api.GregTech_API;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_IconContainer;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_Texture;
+import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
@@ -51,7 +51,7 @@ public class GregtechTextures {
 		protected IIcon mIcon;
 
         private BlockIcons() {
-            CORE.GT_BlockIconload.add(this);
+        	Meta_GT_Proxy.GT_BlockIconload.add(this);
         }
 
         @Override
@@ -66,7 +66,7 @@ public class GregtechTextures {
 
         @Override
         public void run() {
-            mIcon = GregTech_API.sBlockIcons.registerIcon(CORE.MODID + ":" + "iconsets/" + this);
+            mIcon = Meta_GT_Proxy.sBlockIcons.registerIcon(CORE.MODID + ":" + "iconsets/" + this);
         }
         
         @Override
@@ -80,7 +80,7 @@ public class GregtechTextures {
 
             public CustomIcon(String aIconName) {
                 mIconName = aIconName;
-                CORE.GT_BlockIconload.add(this);
+                Meta_GT_Proxy.GT_BlockIconload.add(this);
             }
 
             @Override
@@ -95,7 +95,7 @@ public class GregtechTextures {
 
             @Override
             public void run() {
-                mIcon = CORE.GT_BlockIcons.registerIcon(CORE.MODID + ":" + mIconName);
+                mIcon = Meta_GT_Proxy.sBlockIcons.registerIcon(CORE.MODID + ":" + mIconName);
             }
 
             @Override
@@ -107,10 +107,12 @@ public class GregtechTextures {
 	
 	
 	public enum ItemIcons implements Interface_IconContainer, Runnable {
-        VOID // The Empty Texture
-        , RENDERING_ERROR, SKOOKUMCHOOCHER, DURABILITY_BAR_0, DURABILITY_BAR_1, DURABILITY_BAR_2, DURABILITY_BAR_3, DURABILITY_BAR_4, DURABILITY_BAR_5, DURABILITY_BAR_6, DURABILITY_BAR_7, DURABILITY_BAR_8, ENERGY_BAR_0, ENERGY_BAR_1, ENERGY_BAR_2, ENERGY_BAR_3, ENERGY_BAR_4, ENERGY_BAR_5, ENERGY_BAR_6, ENERGY_BAR_7, ENERGY_BAR_8, TURBINE, TURBINE_SMALL, TURBINE_LARGE, TURBINE_HUGE;
+        VOID, // The Empty Texture
+        RENDERING_ERROR, //The Purple/Black Texture
+        SKOOKUMCHOOCHER, //The Skookum Tool Texture
+        TURBINE_SMALL, TURBINE_LARGE, TURBINE_HUGE;
 
-        public static final Interface_IconContainer[]
+       /* public static final Interface_IconContainer[]
                 DURABILITY_BAR = new Interface_IconContainer[]{
                 DURABILITY_BAR_0,
                 DURABILITY_BAR_1,
@@ -132,14 +134,14 @@ public class GregtechTextures {
                         ENERGY_BAR_6,
                         ENERGY_BAR_7,
                         ENERGY_BAR_8,
-                };
+                };*/
 
         //public static final Interface_Texture[] ERROR_RENDERING = new Interface_Texture[]{new GregtechRenderedTexture(RENDERING_ERROR)};
 
         protected IIcon mIcon, mOverlay;
 
         private ItemIcons() {
-            GregTech_API.sGTItemIconload.add(this);
+        	Meta_GT_Proxy.GT_ItemIconload.add(this);
         }
 
         @Override
@@ -159,8 +161,8 @@ public class GregtechTextures {
 
         @Override
         public void run() {
-            mIcon = GregTech_API.sItemIcons.registerIcon(CORE.MODID+ ":" + "iconsets/" + this);
-            mOverlay = GregTech_API.sItemIcons.registerIcon(CORE.MODID+ ":" + "iconsets/" + this + "_OVERLAY");
+            mIcon = Meta_GT_Proxy.sItemIcons.registerIcon(CORE.MODID+ ":" + "iconsets/" + this);
+            mOverlay = Meta_GT_Proxy.sItemIcons.registerIcon(CORE.MODID+ ":" + "iconsets/" + this + "_OVERLAY");
         }
 
         public static class CustomIcon implements Interface_IconContainer, Runnable {
@@ -169,7 +171,7 @@ public class GregtechTextures {
 
             public CustomIcon(String aIconName) {
                 mIconName = aIconName;
-                GregTech_API.sGTItemIconload.add(this);
+                Meta_GT_Proxy.GT_ItemIconload.add(this);
             }
 
             @Override
@@ -184,8 +186,8 @@ public class GregtechTextures {
 
             @Override
             public void run() {
-                mIcon = GregTech_API.sItemIcons.registerIcon(CORE.MODID+ ":" + mIconName);
-                mOverlay = GregTech_API.sItemIcons.registerIcon(CORE.MODID+ ":" + mIconName + "_OVERLAY");
+                mIcon = Meta_GT_Proxy.sItemIcons.registerIcon(CORE.MODID+ ":" + mIconName);
+                mOverlay = Meta_GT_Proxy.sItemIcons.registerIcon(CORE.MODID+ ":" + mIconName + "_OVERLAY");
             }
 
             @Override

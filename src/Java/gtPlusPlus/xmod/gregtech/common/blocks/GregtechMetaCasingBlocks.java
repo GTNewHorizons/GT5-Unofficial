@@ -38,8 +38,8 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Multitank Exterior Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Hastelloy-N Reactor Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Zeron-100 Reactor Shielding");
-		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Unused Coil Block");
-		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Unused Coil Block");
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Blast Smelter Heat Containment Coil ");
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Blast Smelter Casing Block");
 		GregtechItemList.Casing_Centrifuge1.set(new ItemStack(this, 1, 0));
 		GregtechItemList.Casing_CokeOven.set(new ItemStack(this, 1, 1));
 		GregtechItemList.Casing_CokeOven_Coil1.set(new ItemStack(this, 1, 2));
@@ -54,8 +54,8 @@ extends GregtechMetaCasingBlocksAbstract {
 		GregtechItemList.Casing_MultitankExterior.set(new ItemStack(this, 1, 11));
 		GregtechItemList.Casing_Reactor_I.set(new ItemStack(this, 1, 12));
 		GregtechItemList.Casing_Reactor_II.set(new ItemStack(this, 1, 13));
-		GregtechItemList.Casing_Coil_U3.set(new ItemStack(this, 1, 14));
-		GregtechItemList.Casing_Coil_U4.set(new ItemStack(this, 1, 15));		
+		GregtechItemList.Casing_Coil_BlastSmelter.set(new ItemStack(this, 1, 14));
+		GregtechItemList.Casing_BlastSmelter.set(new ItemStack(this, 1, 15));		
 	}
 
 	@Override

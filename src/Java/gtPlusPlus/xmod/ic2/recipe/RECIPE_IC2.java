@@ -9,8 +9,8 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.UtilsItems;
-import gtPlusPlus.core.util.recipe.UtilsRecipe;
+import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.recipe.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.ic2.item.IC2_Items;
 import net.minecraft.item.ItemStack;
@@ -32,20 +32,20 @@ public class RECIPE_IC2 {
 	public static String ingot_T3 = "ingotVibrantAlloy";
 	public static String ingot_T4 = "ingotIridium";
 	
-	private static ItemStack rotor_blade_T1 = UtilsItems.getSimpleStack(IC2_Items.rotor_Blade_Material_1.getItem());
-	private static ItemStack rotor_blade_T2 = UtilsItems.getSimpleStack(IC2_Items.rotor_Blade_Material_2.getItem());
-	private static ItemStack rotor_blade_T3 = UtilsItems.getSimpleStack(IC2_Items.rotor_Blade_Material_3.getItem());
-	private static ItemStack rotor_blade_T4 = UtilsItems.getSimpleStack(IC2_Items.rotor_Blade_Material_4.getItem());
+	private static ItemStack rotor_blade_T1 = ItemUtils.getSimpleStack(IC2_Items.rotor_Blade_Material_1.getItem());
+	private static ItemStack rotor_blade_T2 = ItemUtils.getSimpleStack(IC2_Items.rotor_Blade_Material_2.getItem());
+	private static ItemStack rotor_blade_T3 = ItemUtils.getSimpleStack(IC2_Items.rotor_Blade_Material_3.getItem());
+	private static ItemStack rotor_blade_T4 = ItemUtils.getSimpleStack(IC2_Items.rotor_Blade_Material_4.getItem());
 	
-	private static ItemStack shaft_T1 = UtilsItems.getSimpleStack(IC2_Items.shaft_Material_1.getItem());
-	private static ItemStack shaft_T2 = UtilsItems.getSimpleStack(IC2_Items.shaft_Material_2.getItem());
-	private static ItemStack shaft_T3 = UtilsItems.getSimpleStack(IC2_Items.shaft_Material_3.getItem());
-	private static ItemStack shaft_T4 = UtilsItems.getSimpleStack(IC2_Items.shaft_Material_4.getItem());
+	private static ItemStack shaft_T1 = ItemUtils.getSimpleStack(IC2_Items.shaft_Material_1.getItem());
+	private static ItemStack shaft_T2 = ItemUtils.getSimpleStack(IC2_Items.shaft_Material_2.getItem());
+	private static ItemStack shaft_T3 = ItemUtils.getSimpleStack(IC2_Items.shaft_Material_3.getItem());
+	private static ItemStack shaft_T4 = ItemUtils.getSimpleStack(IC2_Items.shaft_Material_4.getItem());
 
-	private static ItemStack rotor_T1 = UtilsItems.getSimpleStack(IC2_Items.rotor_Material_1.getItem());
-	private static ItemStack rotor_T2 = UtilsItems.getSimpleStack(IC2_Items.rotor_Material_2.getItem());
-	private static ItemStack rotor_T3 = UtilsItems.getSimpleStack(IC2_Items.rotor_Material_3.getItem());
-	private static ItemStack rotor_T4 = UtilsItems.getSimpleStack(IC2_Items.rotor_Material_4.getItem());
+	private static ItemStack rotor_T1 = ItemUtils.getSimpleStack(IC2_Items.rotor_Material_1.getItem());
+	private static ItemStack rotor_T2 = ItemUtils.getSimpleStack(IC2_Items.rotor_Material_2.getItem());
+	private static ItemStack rotor_T3 = ItemUtils.getSimpleStack(IC2_Items.rotor_Material_3.getItem());
+	private static ItemStack rotor_T4 = ItemUtils.getSimpleStack(IC2_Items.rotor_Material_4.getItem());
 	
 	private static void checkForEnderIO(){
 		if(!LoadedMods.EnderIO){
@@ -69,25 +69,25 @@ public class RECIPE_IC2 {
 	public static void initRecipes(){
 		
 		//Rotor Blade Recipes
-		UtilsRecipe.recipeBuilder(
+		RecipeUtils.recipeBuilder(
 				plate_T1, ingot_T1, plate_T1,
 				plate_T1, ingot_T1, plate_T1,
 				plate_T1, ingot_T1, plate_T1,
 				rotor_blade_T1);
 		
-		UtilsRecipe.recipeBuilder(
+		RecipeUtils.recipeBuilder(
 				plate_T2, ingot_T2, plate_T2,
 				plate_T2, ingot_T2, plate_T2,
 				plate_T2, ingot_T2, plate_T2,
 				rotor_blade_T2);
 		
-		UtilsRecipe.recipeBuilder(
+		RecipeUtils.recipeBuilder(
 				plate_T3, ingot_T3, plate_T3,
 				plate_T3, ingot_T3, plate_T3,
 				plate_T3, ingot_T3, plate_T3,
 				rotor_blade_T3);
 		
-		UtilsRecipe.recipeBuilder(
+		RecipeUtils.recipeBuilder(
 				plate_T4, ingot_T4, plate_T4,
 				plate_T4, ingot_T4, plate_T4,
 				plate_T4, ingot_T4, plate_T4,
@@ -120,25 +120,25 @@ public class RECIPE_IC2 {
 		Utils.LOG_INFO("Added recipe for GT5 Extruder: Windmill Shaft [Iridium]");
 		
 		//Rotor Recipes
-		UtilsRecipe.recipeBuilder(
+		RecipeUtils.recipeBuilder(
 				null, rotor_blade_T1, null,
 				rotor_blade_T1, shaft_T1, rotor_blade_T1,
 				null, rotor_blade_T1, null,
 				rotor_T1);
 		
-		UtilsRecipe.recipeBuilder(
+		RecipeUtils.recipeBuilder(
 				null, rotor_blade_T2, null,
 				rotor_blade_T2, shaft_T2, rotor_blade_T2,
 				null, rotor_blade_T2, null,
 				rotor_T2);
 		
-		UtilsRecipe.recipeBuilder(
+		RecipeUtils.recipeBuilder(
 				null, rotor_blade_T3, null,
 				rotor_blade_T3, shaft_T3, rotor_blade_T3,
 				null, rotor_blade_T3, null,
 				rotor_T3);
 		
-		UtilsRecipe.recipeBuilder(
+		RecipeUtils.recipeBuilder(
 				null, rotor_blade_T4, null,
 				rotor_blade_T4, shaft_T4, rotor_blade_T4,
 				null, rotor_blade_T4, null,

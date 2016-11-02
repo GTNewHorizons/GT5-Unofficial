@@ -2,7 +2,7 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntityIndustrialMacerator;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntity_IndustrialMacerator;
 
 public class GregtechIndustrialMacerator
 {
@@ -21,7 +21,7 @@ public class GregtechIndustrialMacerator
 	private static void run1()
 	{
 		//Industrial Electrolyzer Multiblock
-		GregtechItemList.Industrial_MacerationStack.set(new GregtechMetaTileEntityIndustrialMacerator(797, "industrialmacerator.controller.tier.single", "Maceration Stack Controller").getStackForm(1L));
+		GregtechItemList.Industrial_MacerationStack.set(new GregtechMetaTileEntity_IndustrialMacerator(797, "industrialmacerator.controller.tier.single", "Maceration Stack Controller").getStackForm(1L));
 		
 	}
 }
