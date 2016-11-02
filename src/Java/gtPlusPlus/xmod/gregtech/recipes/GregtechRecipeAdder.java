@@ -107,6 +107,24 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 	}
 
 	@Override
+	public boolean addMatterFabricatorRecipe(ItemStack aInputStack, FluidStack aFluidInput, FluidStack aFluidOutput, int aDuration, int aEUt) {
+		try {
+			try {if (aFluidOutput == null || aInputStack == null) {return false;}} catch (NullPointerException e){}
+			try{
+				if (aFluidInput == null){
+					Recipe_GT.Gregtech_Recipe_Map.sMatterFab2Recipes.addRecipe(true, new ItemStack[]{aInputStack}, null, null, null, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
+				}
+				else {
+					Recipe_GT.Gregtech_Recipe_Map.sMatterFab2Recipes.addRecipe(true, new ItemStack[]{aInputStack}, null, null, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
+				}
+				RECIPEHANDLER_MatterFabricator.debug5(aFluidInput, aFluidOutput, aDuration, aEUt);
+				return true;
+			} catch (NullPointerException e){return false;}
+		} catch (Throwable e){return false;}
+	}
+
+	
+	@Override
 	public boolean addFuel(ItemStack aInput1, ItemStack aOutput1, int aEU, int aType) {
 		if (aInput1 == null) {
 			Utils.LOG_INFO("Fuel Input is Invalid.");

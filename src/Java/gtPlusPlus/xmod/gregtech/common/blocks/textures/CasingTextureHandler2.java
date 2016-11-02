@@ -31,13 +31,13 @@ public class CasingTextureHandler2 {
 				return TexturesGtBlock.Casing_Material_Potin.getIcon();
 				//Broken Blue Fusion Casings
 			case 6:
-				return Textures.BlockIcons.MACHINE_CASING_FUSION.getIcon();
+				return TexturesGtBlock.Casing_Material_IncoloyMA956.getIcon();
 				//Maceration Stack Casings
 			case 7:
 				return TexturesGtBlock.Casing_Material_Tumbaga.getIcon();
 				//Broken Pink Fusion Casings
 			case 8:
-				return Textures.BlockIcons.MACHINE_CASING_FUSION_2.getIcon();
+				return TexturesGtBlock.Casing_Material_IncoloyDS.getIcon();
 				//Matter Fabricator Casings
 			case 9:
 				return TexturesGtBlock.Casing_Machine_Dimensional_Adv.getIcon();

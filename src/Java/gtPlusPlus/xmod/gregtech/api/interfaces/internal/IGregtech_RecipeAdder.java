@@ -21,7 +21,7 @@ public interface IGregtech_RecipeAdder {
 
 	public boolean addFuel(ItemStack aInput1, ItemStack aOutput1, int aEU, int aType);
 
-	
+
 	/**
 	 * Adds a Matter Fabricator Recipe
 	 *
@@ -32,29 +32,41 @@ public interface IGregtech_RecipeAdder {
 	 * @return true if the Recipe got added, otherwise false.
 	 */
 	public boolean addMatterFabricatorRecipe(FluidStack aFluidInput, FluidStack aFluidOutput, int aDuration, int aEUt);
-	
-	
-	
-	
+
 	/**
-     * Adds a Recipe for the Dehydrator. (up to 9 Outputs)
-     *
+	 * Adds a Matter Fabricator Recipe
+	 *
+	 * @param aItemInput = ItemStack Input, can be null I assume.
+	 * @param aFluidInput   = fluid Input (can be UU_Amp or null, and respects StackSize)
+	 * @param aFluidOutput   = Output of the UU-Matter (not null, and respects StackSize)
+	 * @param aDuration 	= Duration (must be >= 0)
+	 * @param aEUt			= EU needed for heating up (must be >= 0)
+	 * @return true if the Recipe got added, otherwise false.
+	 */
+	public boolean addMatterFabricatorRecipe(ItemStack aItemInput, FluidStack aFluidInput, FluidStack aFluidOutput, int aDuration, int aEUt);
+
+
+
+
+	/**
+	 * Adds a Recipe for the Dehydrator. (up to 9 Outputs)
+	 *
 	 * @param aInput   = Input itemstack (not null, and respects StackSize)
 	 * @param aFluidInput   = fluid Input (can be UU_Amp or null, and respects StackSize)
 	 * @param aOutputItems   = Itemstack[] (not null, and respects StackSize)
 	 * @param aDuration 	= Duration (must be >= 0)
 	 * @param aEUt			= EU needed for heating up (must be >= 0)
 	 * @return true if the Recipe got added, otherwise false.
-     */
+	 */
 
-    public boolean addDehydratorRecipe(ItemStack aInput, FluidStack aFluid, ItemStack[] aOutputItems, int aDuration, int aEUt);
+	public boolean addDehydratorRecipe(ItemStack aInput, FluidStack aFluid, ItemStack[] aOutputItems, int aDuration, int aEUt);
 	/*public boolean addDehydratorRecipe(FluidStack aFluid, FluidStack aOutputFluid, ItemStack[] aOutputItems, int aDuration, int aEUt);*/
-    /*public boolean addDehydratorRecipe(ItemStack aItemA, ItemStack aItemB, ItemStack[] aOutputItems, int aDuration, int aEUt);
+	/*public boolean addDehydratorRecipe(ItemStack aItemA, ItemStack aItemB, ItemStack[] aOutputItems, int aDuration, int aEUt);
     public boolean addDehydratorRecipe(ItemStack aItemA, ItemStack aItemB, FluidStack aFluid, ItemStack[] aOutputItems, FluidStack aOutputFluid, int aDuration, int aEUt);*/
-   
-    /**
-     * Adds a Recipe for the Dehydrator. (up to 9 Outputs)
-     *
+
+	/**
+	 * Adds a Recipe for the Dehydrator. (up to 9 Outputs)
+	 *
 	 * @param aInput   = ItemStack[] (not null, and respects StackSize)
 	 * @param aFluidInput   = fluid Input (can be UU_Amp or null, and respects StackSize)
 	 * @param aFluidOutput   = Output of the UU-Matter (not null, and respects StackSize)
@@ -63,20 +75,20 @@ public interface IGregtech_RecipeAdder {
 	 * @param aDuration 	= Duration (must be >= 0)
 	 * @param aEUt			= EU needed for heating up (must be >= 0)
 	 * @return true if the Recipe got added, otherwise false.
-     */
-    public boolean addDehydratorRecipe(ItemStack[] aInput, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack[] aOutputItems, int[] aChances, int aDuration, int aEUt);
-    
-    
-    /**
-     * Adds a Recipe for the Alloy Blast Smelter. (up to 9 Inputs)
-     *
+	 */
+	public boolean addDehydratorRecipe(ItemStack[] aInput, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack[] aOutputItems, int[] aChances, int aDuration, int aEUt);
+
+
+	/**
+	 * Adds a Recipe for the Alloy Blast Smelter. (up to 9 Inputs)
+	 *
 	 * @param aInput   = ItemStack[] (not null, and respects StackSize)
 	 * @param aFluidOutput   = Output of the UU-Matter (not null, and respects StackSize)
 	 * @param aChances 	= Output Change (can be == 0)
 	 * @param aDuration 	= Duration (must be >= 0)
 	 * @param aEUt			= EU needed for heating up (must be >= 0)
 	 * @return true if the Recipe got added, otherwise false.
-     */
-    public boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aOutput, int aChance, int aDuration, int aEUt);
-    
+	 */
+	public boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aOutput, int aChance, int aDuration, int aEUt);
+
 }

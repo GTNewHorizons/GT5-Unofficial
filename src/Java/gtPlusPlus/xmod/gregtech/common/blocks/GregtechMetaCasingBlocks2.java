@@ -31,9 +31,9 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Placeholder Casing"); //60
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Placeholder Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Placeholder Casing");
-		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Placeholder Casing");
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Incoloy Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Placeholder Casing");
-		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Placeholder Casing"); //65
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Incoloy Casing"); //65
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Placeholder Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Placeholder Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Placeholder Casing");

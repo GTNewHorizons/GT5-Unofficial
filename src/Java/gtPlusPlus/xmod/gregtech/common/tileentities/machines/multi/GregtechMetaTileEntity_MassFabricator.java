@@ -103,6 +103,22 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
+		
+		 ArrayList<ItemStack> tInputList = getStoredInputs();
+	        for (int i = 0; i < tInputList.size() - 1; i++) {
+	            for (int j = i + 1; j < tInputList.size(); j++) {
+	                if (GT_Utility.areStacksEqual((ItemStack) tInputList.get(i), (ItemStack) tInputList.get(j))) {
+	                    if (((ItemStack) tInputList.get(i)).stackSize >= ((ItemStack) tInputList.get(j)).stackSize) {
+	                        tInputList.remove(j--);
+	                    } else {
+	                        tInputList.remove(i--);
+	                        break;
+	                    }
+	                }
+	            }
+	        }
+	        ItemStack[] tInputs = (ItemStack[]) Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, 2);
+
 		ArrayList<FluidStack> tFluidList = getStoredFluids();
 		for (int i = 0; i < tFluidList.size() - 1; i++) {
 			for (int j = i + 1; j < tFluidList.size(); j++) {
