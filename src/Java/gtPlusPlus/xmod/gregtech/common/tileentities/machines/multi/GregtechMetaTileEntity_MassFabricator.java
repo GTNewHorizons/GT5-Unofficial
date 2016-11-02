@@ -50,8 +50,6 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 	public int getMatterProduced(){
 		return mMatterProduced;
 	}
-	
-	//public FluidStack mFluidOut = Materials.UUMatter.getFluid(1L);
 
 	public GregtechMetaTileEntity_MassFabricator(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);

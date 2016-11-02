@@ -131,7 +131,16 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Geothermal_Engine_EV, Geothermal_Engine_IV, Geothermal_Engine_LuV, 
 	
 	//Tesseracts
-	GT4_Tesseract_Generator, GT4_Tesseract_Terminal;
+	GT4_Tesseract_Generator, GT4_Tesseract_Terminal, 
+	
+	//Casings Tier 2 [17-32]
+	Casing_StructuralGlass, 
+	Casing_PlaceHolder1, Casing_PlaceHolder2, Casing_PlaceHolder3,
+	Casing_PlaceHolder4, Casing_PlaceHolder5, Casing_PlaceHolder6,
+	Casing_PlaceHolder7, Casing_PlaceHolder8, Casing_PlaceHolder9,
+	Casing_PlaceHolder10, Casing_PlaceHolder11, Casing_PlaceHolder12,
+	Casing_PlaceHolder13, Casing_PlaceHolder14, Casing_PlaceHolder15,
+	;
 
 	public static final GregtechItemList[]
 			DYE_ONLY_ITEMS = {
