@@ -40,6 +40,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Placeholder Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Placeholder Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Placeholder Casing ");
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Placeholder Casing ");
 		GregtechItemList.Casing_StructuralGlass.set(new ItemStack(this, 1, 0));
 		GregtechItemList.Casing_PlaceHolder1.set(new ItemStack(this, 1, 1));
 		GregtechItemList.Casing_PlaceHolder2.set(new ItemStack(this, 1, 2));
@@ -62,15 +63,4 @@ extends GregtechMetaCasingBlocksAbstract {
 	public IIcon getIcon(int aSide, int aMeta) { //Texture ID's. case 0 == ID[57]
 		return TextureHandler.getIcon(aSide, aMeta);
 	}
-
-	
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int aSide) {
-		GregtechMetaCasingBlocks2 i = this;
-		return TextureHandler.handleCasingsGT(aWorld, xCoord, yCoord, zCoord, aSide, i);
-	}
-
-
 }

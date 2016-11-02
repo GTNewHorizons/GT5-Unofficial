@@ -13,7 +13,7 @@ public class CasingTextureHandler2 {
 			switch (aMeta) {
 			//Centrifuge 
 			case 0: 
-				return TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();
+				return TexturesGtBlock.Casing_Machine_Dimensional_Adv.getIcon();
 				//Coke Oven Frame
 			case 1:
 				return TexturesGtBlock.Casing_Material_Tantalloy61.getIcon();
@@ -65,14 +65,5 @@ public class CasingTextureHandler2 {
 		}
 		return Textures.BlockIcons.MACHINE_CASING_GEARBOX_TUNGSTENSTEEL.getIcon();
 	}
-
-
-	public static IIcon handleCasingsGT(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int aSide, GregtechMetaCasingBlocks2 thisBlock) {
-		/*if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
-			return gregtech59.handleCasingsGT59(aWorld, xCoord, yCoord, zCoord, aSide, thisBlock);
-		}
-		return gregtech58.handleCasingsGT58(aWorld, xCoord, yCoord, zCoord, aSide, thisBlock);*/
-		//return gregtechX.handleCasingsGT(aWorld, xCoord, yCoord, zCoord, aSide, thisBlock);
-		return null; //TODO
-	}
+	
 }
