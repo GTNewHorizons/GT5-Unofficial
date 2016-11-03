@@ -1,0 +1,73 @@
+# gui names
+gui.veinStat.name=Vein Stats
+gui.asteroidStat.name=Asteroid Stats
+gui.smallOreStat.name=Small Ore Stats
+
+gui.nei.veinName=Vein name
+gui.nei.primaryOre=Primary-Gen
+gui.nei.secondaryOre=Secondary-Gen
+gui.nei.betweenOre=Between-Gen
+gui.nei.sporadicOre=Sporadic-Gen
+gui.nei.genHeight=Height
+gui.nei.weightedChance=Chance
+gui.nei.worldNames=Generated world
+gui.nei.restrictBiome=Restricted biome
+
+gui.nei.asteroidPrimary=Main-Gen1
+gui.nei.asteroidSecondary=Main-Gen2
+gui.nei.asteroidBetween=Minor-Gen1
+gui.nei.asteroidSporadic=Minor-Gen2
+
+gui.nei.oreName=Ore name
+gui.nei.amount=Amount per chunk
+gui.nei.chanceDrops=Drops
+
+gui.nei.seeAll=See All
+
+
+# world names
+world.overworld.name=Overworld
+world.nether.name=Nether
+world.end.name=End
+world.moon.name=Moon
+world.mars.name=Mars
+world.asteroid.name=GalactiCraft Asteroid
+
+
+# biome names
+biome.none.name=None
+
+
+# vein names
+ore.mix.naquadah=Naquadah Vein
+ore.mix.lignite=Lignite Vein
+ore.mix.coal=Coal Vein
+ore.mix.magnetite=Magnetite Vein
+ore.mix.gold=Gold Vein
+ore.mix.iron=Iron Vein
+ore.mix.cassiterite=Cassiterite Vein
+ore.mix.tetrahedrite=Tetrahedrite Vein
+ore.mix.netherquartz=Nether Quartz Vein
+ore.mix.sulfur=Sulfur Vein
+ore.mix.copper=Copper Vein
+ore.mix.bauxite=Bauxite Vein
+ore.mix.salts=Salts Vein
+ore.mix.redstone=Redstone Vein
+ore.mix.soapstone=Soapstone Vein
+ore.mix.nickel=Nickel Vein
+ore.mix.platinum=Platinum Vein
+ore.mix.pitchblende=Pitchblends Vein
+ore.mix.uranium=Uranium Vein
+ore.mix.monazite=Monazite Vein
+ore.mix.molybdenum=Molybdenum Vein
+ore.mix.tungstate=Tungstate Vein
+ore.mix.sapphire=Sapphire Vein
+ore.mix.manganese=Manganese Vein
+ore.mix.quartz=Quartz Vein
+ore.mix.diamond=Diamond Vein
+ore.mix.olivine=Olivine Vein
+ore.mix.apatite=Apatite Vein
+ore.mix.galena=Galena Vein
+ore.mix.lapis=Lapis Vein
+ore.mix.beryllium=Beryllium Vein
+ore.mix.oilsand=Oilsand Vein
