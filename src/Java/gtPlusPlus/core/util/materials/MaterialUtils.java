@@ -106,30 +106,30 @@ public class MaterialUtils {
 	}
 	
 	public static String superscript(String str) {
-	    str = str.replaceAll("0", "⁰");
-	    str = str.replaceAll("1", "¹");
-	    str = str.replaceAll("2", "²");
-	    str = str.replaceAll("3", "³");
-	    str = str.replaceAll("4", "⁴");
-	    str = str.replaceAll("5", "⁵");
-	    str = str.replaceAll("6", "⁶");
-	    str = str.replaceAll("7", "⁷");
-	    str = str.replaceAll("8", "⁸");
-	    str = str.replaceAll("9", "⁹");         
+	    str = str.replaceAll("0", "\u2070");
+	    str = str.replaceAll("1", "\u00B9");
+	    str = str.replaceAll("2", "\u00B2");
+	    str = str.replaceAll("3", "\u00B3");
+	    str = str.replaceAll("4", "\u2074");
+	    str = str.replaceAll("5", "\u2075");
+	    str = str.replaceAll("6", "\u2076");
+	    str = str.replaceAll("7", "\u2077");
+	    str = str.replaceAll("8", "\u2078");
+	    str = str.replaceAll("9", "\u2079");      
 	    return str;
 	}
 
 	public static String subscript(String str) {
-	    str = str.replaceAll("0", "₀");
-	    str = str.replaceAll("1", "₁");
-	    str = str.replaceAll("2", "₂");
-	    str = str.replaceAll("3", "₃");
-	    str = str.replaceAll("4", "₄");
-	    str = str.replaceAll("5", "₅");
-	    str = str.replaceAll("6", "₆");
-	    str = str.replaceAll("7", "₇");
-	    str = str.replaceAll("8", "₈");
-	    str = str.replaceAll("9", "₉");
+	    str = str.replaceAll("0", "\u2080");
+	    str = str.replaceAll("1", "\u2081");
+	    str = str.replaceAll("2", "\u2082");
+	    str = str.replaceAll("3", "\u2083");
+	    str = str.replaceAll("4", "\u2084");
+	    str = str.replaceAll("5", "\u2085");
+	    str = str.replaceAll("6", "\u2086");
+	    str = str.replaceAll("7", "\u2087");
+	    str = str.replaceAll("8", "\u2088");
+	    str = str.replaceAll("9", "\u2089");
 	    return str;
 	}
 	
