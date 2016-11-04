@@ -2,7 +2,7 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GregtechMetaCondensor;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GregtechMTE_NuclearReactor;
 
 public class GregtechLFTR
 {
@@ -21,7 +21,7 @@ public class GregtechLFTR
 	private static void run1()
 	{
 		//LFTR
-		GregtechItemList.ThoriumReactor.set(new GregtechMetaCondensor(751, "lftr.controller.single", "Thorium Reactor [LFTR]").getStackForm(1L));
+		GregtechItemList.ThoriumReactor.set(new GregtechMTE_NuclearReactor(751, "lftr.controller.single", "Thorium Reactor [LFTR]").getStackForm(1L));
 		
 	}
 }
