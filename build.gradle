@@ -30,9 +30,11 @@ minecraft {
 }
 
 dependencies {
-    compile "codechicken:NotEnoughItems:1.7.10-1.0.5.120:dev"
-    compile "codechicken:CodeChickenLib:1.7.10-1.1.3.140:dev"
-    compile "codechicken:CodeChickenCore:1.7.10-1.0.7.47:dev"
+    // You should put the dev builds of NEI (with its dependencies) and GregTech5 in the /libs folder manually
+    // to make the gradlew build working properly. 	
+    // compile "codechicken:NotEnoughItems:1.7.10-1.0.5.120:dev"
+    // compile "codechicken:CodeChickenLib:1.7.10-1.1.3.140:dev"
+    // compile "codechicken:CodeChickenCore:1.7.10-1.0.7.47:dev"
 }
 
 processResources
