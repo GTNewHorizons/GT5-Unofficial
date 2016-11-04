@@ -139,7 +139,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Casing_PlaceHolder4, Casing_PlaceHolder5, Casing_PlaceHolder6,
 	Casing_PlaceHolder7, Casing_PlaceHolder8, Casing_PlaceHolder9,
 	Casing_PlaceHolder10, Casing_PlaceHolder11, Casing_PlaceHolder12,
-	Casing_PlaceHolder13, Casing_PlaceHolder14, Casing_PlaceHolder15,
+	Casing_PlaceHolder13, Casing_PlaceHolder14, Casing_PlaceHolder15, 
+	
+	//LFTR
+	ThoriumReactor,
 	;
 
 	public static final GregtechItemList[]

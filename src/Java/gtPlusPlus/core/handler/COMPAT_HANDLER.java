@@ -37,6 +37,7 @@ import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialMultiTan
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialPlatePress;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialWiremill;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIronBlastFurnace;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechLFTR;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechPowerSubStation;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRocketFuelGenerator;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSafeBlock;
@@ -74,6 +75,7 @@ public class COMPAT_HANDLER {
 		if (Gregtech) {
 		new RECIPES_LaserEngraver();
 		GregtechEnergyBuffer.run();
+		GregtechLFTR.run();
 		GregtechSteamCondenser.run();
 		GregtechSafeBlock.run();
 		GregtechSuperConductionPoint.run();
