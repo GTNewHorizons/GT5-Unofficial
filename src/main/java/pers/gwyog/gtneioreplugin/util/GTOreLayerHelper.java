@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import sun.awt.windows.WWindowPeer;
 
 public class GTOreLayerHelper {
+	public static boolean restrictBiomeSupport = false;
 	public static boolean endAsteroidSupport = false;
 	public static boolean gcBasicSupport = false;
 	public static boolean gcAsteroidSupport = false;
@@ -31,6 +32,10 @@ public class GTOreLayerHelper {
 			clazzGTOreLayer = Class.forName("gregtech.common.GT_Worldgen_GT_Ore_Layer");
 		} catch (ClassNotFoundException e) {}
 		if (clazzGTOreLayer != null) {
+			try {
+				Field fieldRestrictBiome = clazzGTOreLayer.getField("mRestrictBiome");
+				restrictBiomeSupport = true;
+			} catch (Exception e) {}
 			try {
 				Field fieldEndAsteroid = clazzGTOreLayer.getField("mEndAsteroid");
 				endAsteroidSupport = true;
@@ -72,10 +77,11 @@ public class GTOreLayerHelper {
 	    	this.sporadicMeta = worldGen.mSporadicMeta;
 	    	this.worldGenHeightRange = worldGen.mMinY + "-" + worldGen.mMaxY;
 	    	this.weightedChance = String.format("%.2f%%", (100.0f*worldGen.mWeight)/GT_Worldgen_GT_Ore_Layer.sWeight);
-			this.restrictBiome = worldGen.mRestrictBiome;
 	    	this.genOverworld = worldGen.mOverworld;
 	    	this.genNether = worldGen.mNether;
 	    	this.genEnd = worldGen.mEnd;
+	    	if (restrictBiomeSupport) 
+	    		this.restrictBiome = worldGen.mRestrictBiome;
 	    	if (GTOreLayerHelper.gcBasicSupport) {
 	    		this.genMoon = worldGen.mMoon;
 	    		this.genMars = worldGen.mMars;

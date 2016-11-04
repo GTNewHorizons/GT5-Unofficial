@@ -15,6 +15,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 
 public class GTSmallOreHelper {
+	public static boolean restrictBiomeSupport = false;
 	public static boolean gcBasicSupport = false;
 	public static List<ItemStack> smallOreList = new ArrayList<ItemStack>();
 	public static HashMap<String, SmallOreWrapper> mapSmallOreWrapper = new HashMap<String, SmallOreWrapper>();
@@ -55,14 +56,18 @@ public class GTSmallOreHelper {
 	}
 	
 	private static void checkExtraSupport() {
-		Class clazzGTOreLayer = null;
+		Class clazzGTSmallOre = null;
 		try {
-			clazzGTOreLayer = Class.forName("gregtech.common.GT_Worldgen_GT_Ore_SmallPieces");
+			clazzGTSmallOre = Class.forName("gregtech.common.GT_Worldgen_GT_Ore_SmallPieces");
 		} catch (ClassNotFoundException e) {}
-		if (clazzGTOreLayer != null) {
+		if (clazzGTSmallOre != null) {
 			try {
-				Field fieldGCMoon = clazzGTOreLayer.getField("mMoon");
-				Field fieldGCMars = clazzGTOreLayer.getField("mMars");
+				Field fieldRestrictBiome = clazzGTSmallOre.getField("mRestrictBiome");;
+				restrictBiomeSupport = true;
+			} catch (Exception e) {}
+			try {
+				Field fieldGCMoon = clazzGTSmallOre.getField("mMoon");
+				Field fieldGCMars = clazzGTSmallOre.getField("mMars");
 				gcBasicSupport = true;
 			} catch (Exception e) {}
 		}
@@ -89,11 +94,12 @@ public class GTSmallOreHelper {
 			this.oreMeta = worldGen.mMeta;
 			this.worldGenHeightRange = worldGen.mMinY + "-" + worldGen.mMaxY;
 			this.amountPerChunk = worldGen.mAmount;
-			this.restrictBiome = worldGen.mRestrictBiome;
 	    	this.genOverworld = worldGen.mOverworld;
 	    	this.genNether = worldGen.mNether;
 	    	this.genEnd = worldGen.mEnd;
-	    	if (GTOreLayerHelper.gcBasicSupport) {
+	    	if (GTSmallOreHelper.restrictBiomeSupport)
+	    		this.restrictBiome = worldGen.mRestrictBiome;
+	    	if (GTSmallOreHelper.gcBasicSupport) {
 	    		this.genMoon = worldGen.mMoon;
 	    		this.genMars = worldGen.mMars;
 	    	}

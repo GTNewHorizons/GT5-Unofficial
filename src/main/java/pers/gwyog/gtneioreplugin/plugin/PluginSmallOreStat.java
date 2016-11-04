@@ -33,11 +33,11 @@ public class PluginSmallOreStat extends PluginBase {
 		public CachedSmallOreRecipe(String oreGenName, List<ItemStack> stackList, List<ItemStack> materialDustStackList, List<ItemStack> dropStackList) {
 			this.oreGenName = oreGenName;
 			this.positionedStackSmallOre = new PositionedStack(stackList, 2, 0);
-			this.positionedStackMaterialDust = new PositionedStack(materialDustStackList, 43, 79);
+			this.positionedStackMaterialDust = new PositionedStack(materialDustStackList, 43, 79+getRestrictBiomeOffset());
 			List<PositionedStack> positionedDropStackList = new ArrayList<PositionedStack>();
 			int i = 1;
 			for (ItemStack stackDrop: dropStackList)
-				positionedDropStackList.add(new PositionedStack(stackDrop, 43+20*(i%4), 79+16*((i++)/4)));
+				positionedDropStackList.add(new PositionedStack(stackDrop, 43+20*(i%4), 79+16*((i++)/4)+getRestrictBiomeOffset()));
 			this.positionedDropStackList = positionedDropStackList;
 		}
 
@@ -66,13 +66,17 @@ public class PluginSmallOreStat extends PluginBase {
 		GuiDraw.drawString(I18n.format("gui.nei.genHeight") + ": " + smallOre.worldGenHeightRange, 2, 31, 0x404040, false);
 		GuiDraw.drawString(I18n.format("gui.nei.amount") + ": " + smallOre.amountPerChunk, 2, 44, 0x404040, false);
 		GuiDraw.drawString(I18n.format("gui.nei.worldNames") + ": " + getWorldNameTranslated(smallOre.genOverworld, smallOre.genNether, smallOre.genEnd, smallOre.genMoon, smallOre.genMars), 2, 57, 0x404040, false);
-		GuiDraw.drawString(I18n.format("gui.nei.restrictBiome") + ": " + getBiomeTranslated(smallOre.restrictBiome), 2, 70, 0x404040, false);
-		GuiDraw.drawString(I18n.format("gui.nei.chanceDrops") + ": ", 2, 83, 0x404040, false);
+		if (GTSmallOreHelper.restrictBiomeSupport) GuiDraw.drawString(I18n.format("gui.nei.restrictBiome") + ": " + getBiomeTranslated(smallOre.restrictBiome), 2, 70, 0x404040, false);
+		GuiDraw.drawString(I18n.format("gui.nei.chanceDrops") + ": ", 2, 83+getRestrictBiomeOffset(), 0x404040, false);
 		GuiDraw.drawStringR(EnumChatFormatting.BOLD + I18n.format("gui.nei.seeAll"), getGuiWidth()-3, 5, 0x404040, false);
 	}
 	
 	public String getBiomeTranslated(String unlocalizedBiome) {
 		return unlocalizedBiome.equals("None")? I18n.format("biome.none.name"): unlocalizedBiome;
+	}
+	
+	public int getRestrictBiomeOffset() {
+		return GTSmallOreHelper.restrictBiomeSupport? 0: -13;
 	}
 	
 	public String getWorldNameTranslated(boolean genOverworld, boolean genNether, boolean genEnd, boolean genMoon, boolean genMars) {

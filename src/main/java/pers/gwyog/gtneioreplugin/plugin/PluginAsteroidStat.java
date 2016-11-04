@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import pers.gwyog.gtneioreplugin.plugin.PluginVeinStat.CachedVeinStatRecipe;
 import pers.gwyog.gtneioreplugin.util.GTOreLayerHelper;
+import pers.gwyog.gtneioreplugin.util.GTSmallOreHelper;
 import pers.gwyog.gtneioreplugin.util.GTOreLayerHelper.OreLayerWrapper;
 
 public class PluginAsteroidStat extends PluginBase {

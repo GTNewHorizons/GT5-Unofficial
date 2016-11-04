@@ -124,7 +124,7 @@ public class PluginVeinStat extends PluginBase {
 		GuiDraw.drawString(I18n.format("gui.nei.genHeight") + ": " + oreLayer.worldGenHeightRange, 2, 83, 0x404040, false);
 		GuiDraw.drawString(I18n.format("gui.nei.weightedChance") + ": " + oreLayer.weightedChance, 2, 96, 0x404040, false);
 		GuiDraw.drawString(I18n.format("gui.nei.worldNames") + ": " + getWorldNameTranslated(oreLayer.genOverworld, oreLayer.genNether, oreLayer.genEnd, oreLayer.genMoon, oreLayer.genMars), 2, 109, 0x404040, false);
-		GuiDraw.drawString(I18n.format("gui.nei.restrictBiome") + ": " + getBiomeTranslated(oreLayer.restrictBiome), 2, 122, 0x404040, false);
+		if (GTOreLayerHelper.restrictBiomeSupport) GuiDraw.drawString(I18n.format("gui.nei.restrictBiome") + ": " + getBiomeTranslated(oreLayer.restrictBiome), 2, 122, 0x404040, false);
 		GuiDraw.drawStringR(EnumChatFormatting.BOLD + I18n.format("gui.nei.seeAll"), getGuiWidth()-3, 5, 0x404040, false);
 	}
 	
