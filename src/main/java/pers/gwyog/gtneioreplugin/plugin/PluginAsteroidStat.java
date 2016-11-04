@@ -56,13 +56,13 @@ public class PluginAsteroidStat extends PluginBase {
 	public void drawExtras(int recipe) {
 		CachedAsteroidStatRecipe crecipe = (CachedAsteroidStatRecipe) this.arecipes.get(recipe);
 		OreLayerWrapper oreLayer = GTOreLayerHelper.mapOreLayerWrapper.get(crecipe.veinName);
-		GuiDraw.drawString(I18n.format("gui.nei.veinName") + ": " + I18n.format(oreLayer.veinName), 2, 18, 0x404040, false);
-		GuiDraw.drawString(I18n.format("gui.nei.asteroidPrimary") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(oreLayer.primaryMeta)), 2, 31, 0x404040, false);
-		GuiDraw.drawString(I18n.format("gui.nei.asteroidSecondary") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(oreLayer.secondaryMeta)), 2, 44, 0x404040, false);
-		GuiDraw.drawString(I18n.format("gui.nei.asteroidBetween") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(oreLayer.betweenMeta)), 2, 57, 0x404040, false);
-		GuiDraw.drawString(I18n.format("gui.nei.asteroidSporadic") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(oreLayer.sporadicMeta)), 2, 70, 0x404040, false);
-		GuiDraw.drawString(I18n.format("gui.nei.worldNames") + ": " + getWorldNameTranslated(oreLayer.genEndAsteroid, oreLayer.genGCAsteroid), 2, 83, 0x404040, false);		
-		GuiDraw.drawStringR(EnumChatFormatting.BOLD + I18n.format("gui.nei.seeAll"), getGuiWidth()-3, 5, 0x404040, false);
+		GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + I18n.format("gtnop." + oreLayer.veinName) + I18n.format("gtnop.ore.asteroid.name"), 2, 18, 0x404040, false);
+		GuiDraw.drawString(I18n.format("gtnop.gui.nei.asteroidPrimary") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(oreLayer.primaryMeta)), 2, 31, 0x404040, false);
+		GuiDraw.drawString(I18n.format("gtnop.gui.nei.asteroidSecondary") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(oreLayer.secondaryMeta)), 2, 44, 0x404040, false);
+		GuiDraw.drawString(I18n.format("gtnop.gui.nei.asteroidBetween") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(oreLayer.betweenMeta)), 2, 57, 0x404040, false);
+		GuiDraw.drawString(I18n.format("gtnop.gui.nei.asteroidSporadic") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(oreLayer.sporadicMeta)), 2, 70, 0x404040, false);
+		GuiDraw.drawString(I18n.format("gtnop.gui.nei.worldNames") + ": " + getWorldNameTranslated(oreLayer.genEndAsteroid, oreLayer.genGCAsteroid), 2, 83, 0x404040, false);		
+		GuiDraw.drawStringR(EnumChatFormatting.BOLD + I18n.format("gtnop.gui.nei.seeAll"), getGuiWidth()-3, 5, 0x404040, false);
 	}
 		
 	public String getWorldNameTranslated(boolean genEndAsteroid, boolean genGCAsteroid) {
@@ -70,12 +70,12 @@ public class PluginAsteroidStat extends PluginBase {
 		if (genEndAsteroid) {
     		if (!worldNameTranslatedAsteroid.isEmpty())
     			worldNameTranslatedAsteroid += ", ";
-    		worldNameTranslatedAsteroid += I18n.format("world.end.name");
+    		worldNameTranslatedAsteroid += I18n.format("gtnop.world.end.name");
     	}
     	if (genGCAsteroid) {
     		if (!worldNameTranslatedAsteroid.isEmpty())
     			worldNameTranslatedAsteroid += ", ";
-    		worldNameTranslatedAsteroid += I18n.format("world.asteroid.name");
+    		worldNameTranslatedAsteroid += I18n.format("gtnop.world.asteroid.name");
     	}
     	return worldNameTranslatedAsteroid;
 	}
@@ -130,6 +130,6 @@ public class PluginAsteroidStat extends PluginBase {
 	
 	@Override
 	public String getRecipeName() {
-		return I18n.format("gui.asteroidStat.name");
+		return I18n.format("gtnop.gui.asteroidStat.name");
 	}
 }

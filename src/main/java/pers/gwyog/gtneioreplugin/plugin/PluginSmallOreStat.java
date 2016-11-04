@@ -62,51 +62,17 @@ public class PluginSmallOreStat extends PluginBase {
 	public void drawExtras(int recipe) {
 		CachedSmallOreRecipe crecipe = (CachedSmallOreRecipe) this.arecipes.get(recipe);
 		SmallOreWrapper smallOre = GTSmallOreHelper.mapSmallOreWrapper.get(crecipe.oreGenName);
-		GuiDraw.drawString(I18n.format("gui.nei.oreName") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName((short)(smallOre.oreMeta+16000))), 2, 18, 0x404040, false);
-		GuiDraw.drawString(I18n.format("gui.nei.genHeight") + ": " + smallOre.worldGenHeightRange, 2, 31, 0x404040, false);
-		GuiDraw.drawString(I18n.format("gui.nei.amount") + ": " + smallOre.amountPerChunk, 2, 44, 0x404040, false);
-		GuiDraw.drawString(I18n.format("gui.nei.worldNames") + ": " + getWorldNameTranslated(smallOre.genOverworld, smallOre.genNether, smallOre.genEnd, smallOre.genMoon, smallOre.genMars), 2, 57, 0x404040, false);
-		if (GTSmallOreHelper.restrictBiomeSupport) GuiDraw.drawString(I18n.format("gui.nei.restrictBiome") + ": " + getBiomeTranslated(smallOre.restrictBiome), 2, 70, 0x404040, false);
-		GuiDraw.drawString(I18n.format("gui.nei.chanceDrops") + ": ", 2, 83+getRestrictBiomeOffset(), 0x404040, false);
-		GuiDraw.drawStringR(EnumChatFormatting.BOLD + I18n.format("gui.nei.seeAll"), getGuiWidth()-3, 5, 0x404040, false);
-	}
-	
-	public String getBiomeTranslated(String unlocalizedBiome) {
-		return unlocalizedBiome.equals("None")? I18n.format("biome.none.name"): unlocalizedBiome;
+		GuiDraw.drawString(I18n.format("gtnop.gui.nei.oreName") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName((short)(smallOre.oreMeta+16000))), 2, 18, 0x404040, false);
+		GuiDraw.drawString(I18n.format("gtnop.gui.nei.genHeight") + ": " + smallOre.worldGenHeightRange, 2, 31, 0x404040, false);
+		GuiDraw.drawString(I18n.format("gtnop.gui.nei.amount") + ": " + smallOre.amountPerChunk, 2, 44, 0x404040, false);
+		GuiDraw.drawString(I18n.format("gtnop.gui.nei.worldNames") + ": " + getWorldNameTranslated(smallOre.genOverworld, smallOre.genNether, smallOre.genEnd, smallOre.genMoon, smallOre.genMars), 2, 57, 0x404040, false);
+		if (GTSmallOreHelper.restrictBiomeSupport) GuiDraw.drawString(I18n.format("gtnop.gui.nei.restrictBiome") + ": " + getBiomeTranslated(smallOre.restrictBiome), 2, 70, 0x404040, false);
+		GuiDraw.drawString(I18n.format("gtnop.gui.nei.chanceDrops") + ": ", 2, 83+getRestrictBiomeOffset(), 0x404040, false);
+		GuiDraw.drawStringR(EnumChatFormatting.BOLD + I18n.format("gtnop.gui.nei.seeAll"), getGuiWidth()-3, 5, 0x404040, false);
 	}
 	
 	public int getRestrictBiomeOffset() {
 		return GTSmallOreHelper.restrictBiomeSupport? 0: -13;
-	}
-	
-	public String getWorldNameTranslated(boolean genOverworld, boolean genNether, boolean genEnd, boolean genMoon, boolean genMars) {
-		String worldNameTranslated = "";
-    	if (genOverworld) {
-    		if (!worldNameTranslated.isEmpty())
-    			worldNameTranslated += ", ";
-    		worldNameTranslated += I18n.format("world.overworld.name");
-    	}
-    	if (genNether) {
-    		if (!worldNameTranslated.isEmpty())
-    			worldNameTranslated += ", ";
-    		worldNameTranslated += I18n.format("world.nether.name");
-    	}
-    	if (genEnd) {
-    		if (!worldNameTranslated.isEmpty())
-    			worldNameTranslated += ", ";
-    		worldNameTranslated += I18n.format("world.end.name");
-    	}
-    	if (genMoon) {
-    		if (!worldNameTranslated.isEmpty())
-    			worldNameTranslated += ", ";
-    		worldNameTranslated += I18n.format("world.moon.name");
-    	}
-    	if (genMars) {
-    		if (!worldNameTranslated.isEmpty())
-    			worldNameTranslated += ", ";
-    		worldNameTranslated += I18n.format("world.mars.name");
-    	}
-		return worldNameTranslated;
 	}
 	
 	@Override
@@ -164,6 +130,6 @@ public class PluginSmallOreStat extends PluginBase {
         
 	@Override
 	public String getRecipeName() {
-		return I18n.format("gui.smallOreStat.name");
+		return I18n.format("gtnop.gui.smallOreStat.name");
 	}
 }

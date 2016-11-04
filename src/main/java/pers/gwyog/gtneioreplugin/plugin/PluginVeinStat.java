@@ -92,7 +92,6 @@ public class PluginVeinStat extends PluginBase {
 			}
 			short baseMeta = (short)(stack.getItemDamage() % 1000);
 			for (OreLayerWrapper worldGen: GTOreLayerHelper.mapOreLayerWrapper.values()) {
-				System.out.println(worldGen.primaryMeta + "," + worldGen.secondaryMeta + "," + worldGen.betweenMeta + "," + worldGen.sporadicMeta);
 				if (worldGen.primaryMeta == baseMeta || worldGen.secondaryMeta == baseMeta || worldGen.betweenMeta == baseMeta || worldGen.sporadicMeta == baseMeta) {
 					List<ItemStack> stackListPrimary = new ArrayList<ItemStack>();
 					List<ItemStack> stackListSecondary = new ArrayList<ItemStack>();
@@ -116,50 +115,16 @@ public class PluginVeinStat extends PluginBase {
 	public void drawExtras(int recipe) {
 		CachedVeinStatRecipe crecipe = (CachedVeinStatRecipe) this.arecipes.get(recipe);
 		OreLayerWrapper oreLayer = GTOreLayerHelper.mapOreLayerWrapper.get(crecipe.veinName);
-		GuiDraw.drawString(I18n.format("gui.nei.veinName") + ": " + I18n.format(oreLayer.veinName), 2, 18, 0x404040, false);
-		GuiDraw.drawString(I18n.format("gui.nei.primaryOre") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(oreLayer.primaryMeta)), 2, 31, 0x404040, false);
-		GuiDraw.drawString(I18n.format("gui.nei.secondaryOre") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(oreLayer.secondaryMeta)), 2, 44, 0x404040, false);
-		GuiDraw.drawString(I18n.format("gui.nei.betweenOre") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(oreLayer.betweenMeta)), 2, 57, 0x404040, false);
-		GuiDraw.drawString(I18n.format("gui.nei.sporadicOre") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(oreLayer.sporadicMeta)), 2, 70, 0x404040, false);
-		GuiDraw.drawString(I18n.format("gui.nei.genHeight") + ": " + oreLayer.worldGenHeightRange, 2, 83, 0x404040, false);
-		GuiDraw.drawString(I18n.format("gui.nei.weightedChance") + ": " + oreLayer.weightedChance, 2, 96, 0x404040, false);
-		GuiDraw.drawString(I18n.format("gui.nei.worldNames") + ": " + getWorldNameTranslated(oreLayer.genOverworld, oreLayer.genNether, oreLayer.genEnd, oreLayer.genMoon, oreLayer.genMars), 2, 109, 0x404040, false);
-		if (GTOreLayerHelper.restrictBiomeSupport) GuiDraw.drawString(I18n.format("gui.nei.restrictBiome") + ": " + getBiomeTranslated(oreLayer.restrictBiome), 2, 122, 0x404040, false);
-		GuiDraw.drawStringR(EnumChatFormatting.BOLD + I18n.format("gui.nei.seeAll"), getGuiWidth()-3, 5, 0x404040, false);
-	}
-	
-	public String getBiomeTranslated(String unlocalizedBiome) {
-		return unlocalizedBiome.equals("None")? I18n.format("biome.none.name"): unlocalizedBiome;
-	}
-	
-	public String getWorldNameTranslated(boolean genOverworld, boolean genNether, boolean genEnd, boolean genMoon, boolean genMars) {
-		String worldNameTranslated = "";
-    	if (genOverworld) {
-    		if (!worldNameTranslated.isEmpty())
-    			worldNameTranslated += ", ";
-    		worldNameTranslated += I18n.format("world.overworld.name");
-    	}
-    	if (genNether) {
-    		if (!worldNameTranslated.isEmpty())
-    			worldNameTranslated += ", ";
-    		worldNameTranslated += I18n.format("world.nether.name");
-    	}
-    	if (genEnd) {
-    		if (!worldNameTranslated.isEmpty())
-    			worldNameTranslated += ", ";
-    		worldNameTranslated += I18n.format("world.end.name");
-    	}
-    	if (genMoon) {
-    		if (!worldNameTranslated.isEmpty())
-    			worldNameTranslated += ", ";
-    		worldNameTranslated += I18n.format("world.moon.name");
-    	}
-    	if (genMars) {
-    		if (!worldNameTranslated.isEmpty())
-    			worldNameTranslated += ", ";
-    		worldNameTranslated += I18n.format("world.mars.name");
-    	}
-		return worldNameTranslated;
+		GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + I18n.format("gtnop." + oreLayer.veinName) + I18n.format("gtnop.ore.vein.name"), 2, 18, 0x404040, false);
+		GuiDraw.drawString(I18n.format("gtnop.gui.nei.primaryOre") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(oreLayer.primaryMeta)), 2, 31, 0x404040, false);
+		GuiDraw.drawString(I18n.format("gtnop.gui.nei.secondaryOre") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(oreLayer.secondaryMeta)), 2, 44, 0x404040, false);
+		GuiDraw.drawString(I18n.format("gtnop.gui.nei.betweenOre") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(oreLayer.betweenMeta)), 2, 57, 0x404040, false);
+		GuiDraw.drawString(I18n.format("gtnop.gui.nei.sporadicOre") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(oreLayer.sporadicMeta)), 2, 70, 0x404040, false);
+		GuiDraw.drawString(I18n.format("gtnop.gui.nei.genHeight") + ": " + oreLayer.worldGenHeightRange, 2, 83, 0x404040, false);
+		GuiDraw.drawString(I18n.format("gtnop.gui.nei.weightedChance") + ": " + oreLayer.weightedChance, 2, 96, 0x404040, false);
+		GuiDraw.drawString(I18n.format("gtnop.gui.nei.worldNames") + ": " + getWorldNameTranslated(oreLayer.genOverworld, oreLayer.genNether, oreLayer.genEnd, oreLayer.genMoon, oreLayer.genMars), 2, 109, 0x404040, false);
+		if (GTOreLayerHelper.restrictBiomeSupport) GuiDraw.drawString(I18n.format("gtnop.gui.nei.restrictBiome") + ": " + getBiomeTranslated(oreLayer.restrictBiome), 2, 122, 0x404040, false);
+		GuiDraw.drawStringR(EnumChatFormatting.BOLD + I18n.format("gtnop.gui.nei.seeAll"), getGuiWidth()-3, 5, 0x404040, false);
 	}
 	
 	@Override
@@ -169,7 +134,7 @@ public class PluginVeinStat extends PluginBase {
 	
 	@Override
 	public String getRecipeName() {
-		return I18n.format("gui.veinStat.name");
+		return I18n.format("gtnop.gui.veinStat.name");
 	}
 	
 }

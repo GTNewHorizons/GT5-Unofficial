@@ -1,72 +1,79 @@
 ﻿# gui names
-gui.veinStat.name=矿脉信息
-gui.asteroidStat.name=小行星信息
-gui.smallOreStat.name=贫瘠矿石信息
+gtnop.gui.veinStat.name=矿脉信息
+gtnop.gui.asteroidStat.name=小行星信息
+gtnop.gui.smallOreStat.name=贫瘠矿石信息
 
-gui.nei.veinName=矿脉名称
-gui.nei.primaryOre=上层矿石
-gui.nei.secondaryOre=下层矿石
-gui.nei.betweenOre=中层矿石
-gui.nei.sporadicOre=散乱分布
-gui.nei.genHeight=生成高度
-gui.nei.weightedChance=发现几率
-gui.nei.worldNames=生成世界
-gui.nei.restrictBiome=生物群系限制
+gtnop.gui.nei.veinName=矿脉名称
+gtnop.gui.nei.primaryOre=上层矿石
+gtnop.gui.nei.secondaryOre=下层矿石
+gtnop.gui.nei.betweenOre=中层矿石
+gtnop.gui.nei.sporadicOre=散乱分布
+gtnop.gui.nei.genHeight=生成高度
+gtnop.gui.nei.weightedChance=发现几率
+gtnop.gui.nei.worldNames=生成世界
+gtnop.gui.nei.restrictBiome=生物群系限制
 
-gui.nei.asteroidPrimary=主要生成1
-gui.nei.asteroidSecondary=主要生成2
-gui.nei.asteroidBetween=次要生成1
-gui.nei.asteroidSporadic=次要生成2
+gtnop.gui.nei.asteroidPrimary=主要生成一
+gtnop.gui.nei.asteroidSecondary=主要生成二
+gtnop.gui.nei.asteroidBetween=次要生成一
+gtnop.gui.nei.asteroidSporadic=次要生成二
 
-gui.nei.oreName=矿石名称
-gui.nei.amount=每区块生成个数
-gui.nei.chanceDrops=几率掉落
+gtnop.gui.nei.oreName=矿石名称
+gtnop.gui.nei.amount=每区块生成个数
+gtnop.gui.nei.chanceDrops=几率掉落
 
-gui.nei.seeAll=查看全部
+gtnop.gui.nei.seeAll=查看全部
 
 # world names
-world.overworld.name=主世界
-world.nether.name=下界
-world.end.name=末地
-world.moon.name=月球
-world.mars.name=火星
-world.asteroid.name=星系mod小行星带
+gtnop.world.overworld.name=主世界
+gtnop.world.nether.name=下界
+gtnop.world.end.name=末地
+gtnop.world.moon.name=月球
+gtnop.world.mars.name=火星
+gtnop.world.asteroid.name=星系mod小行星带
 
 
 # biome names
-biome.none.name=无
+gtnop.biome.none.name=无
+
+
+# vein types
+gtnop.ore.vein.name=矿脉
+gtnop.ore.asteroid.name=小行星
 
 
 # vein names
-ore.mix.naquadah=硅岩矿脉
-ore.mix.lignite=褐煤矿脉
-ore.mix.coal=煤矿脉
-ore.mix.magnetite=磁铁矿脉
-ore.mix.gold=金矿脉
-ore.mix.iron=铁矿脉
-ore.mix.cassiterite=锡石矿脉
-ore.mix.tetrahedrite=黝铜矿脉
-ore.mix.netherquartz=下届石英矿脉
-ore.mix.sulfur=硫矿脉
-ore.mix.copper=铜矿脉
-ore.mix.bauxite=铝土矿脉
-ore.mix.salts=岩盐矿脉
-ore.mix.redstone=红石矿脉
-ore.mix.soapstone=皂石矿脉
-ore.mix.nickel=镍矿脉
-ore.mix.platinum=铂矿脉
-ore.mix.pitchblende=沥青铀矿脉
-ore.mix.uranium=铀矿脉
-ore.mix.monazite=独居石矿脉
-ore.mix.molybdenum=钼矿脉
-ore.mix.tungstate=钨酸盐矿脉
-ore.mix.sapphire=蓝宝石矿脉
-ore.mix.manganese=锰矿脉
-ore.mix.quartz=石英岩矿脉
-ore.mix.diamond=钻石矿脉
-ore.mix.olivine=橄榄石矿脉
-ore.mix.apatite=磷灰石矿脉
-ore.mix.galena=方铅矿矿脉
-ore.mix.lapis=青金石矿脉
-ore.mix.beryllium=铍矿脉
-ore.mix.oilsand=油砂矿脉
+gtnop.ore.mix.naquadah=硅岩
+gtnop.ore.mix.lignite=褐煤
+gtnop.ore.mix.coal=煤
+gtnop.ore.mix.magnetite=磁铁
+gtnop.ore.mix.gold=金
+gtnop.ore.mix.iron=铁
+gtnop.ore.mix.cassiterite=锡石
+gtnop.ore.mix.tetrahedrite=黝铜
+gtnop.ore.mix.netherquartz=下届石英
+gtnop.ore.mix.sulfur=硫
+gtnop.ore.mix.copper=铜
+gtnop.ore.mix.bauxite=铝土
+gtnop.ore.mix.salts=岩盐
+gtnop.ore.mix.redstone=红石
+gtnop.ore.mix.soapstone=皂石
+gtnop.ore.mix.nickel=镍
+gtnop.ore.mix.platinum=铂
+gtnop.ore.mix.pitchblende=沥青铀
+gtnop.ore.mix.uranium=铀
+gtnop.ore.mix.monazite=独居石
+gtnop.ore.mix.molybdenum=钼
+gtnop.ore.mix.tungstate=钨酸盐
+gtnop.ore.mix.sapphire=蓝宝石
+gtnop.ore.mix.manganese=锰
+gtnop.ore.mix.quartz=石英岩
+gtnop.ore.mix.diamond=钻石
+gtnop.ore.mix.olivine=橄榄石
+gtnop.ore.mix.apatite=磷灰石
+gtnop.ore.mix.galena=方铅矿
+gtnop.ore.mix.lapis=青金石
+gtnop.ore.mix.beryllium=铍
+gtnop.ore.mix.oilsand=油砂
+
+gtnop.ore.mix.plutonium=钚
