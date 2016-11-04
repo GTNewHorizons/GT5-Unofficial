@@ -62,7 +62,7 @@ public class PluginSmallOreStat extends PluginBase {
 	public void drawExtras(int recipe) {
 		CachedSmallOreRecipe crecipe = (CachedSmallOreRecipe) this.arecipes.get(recipe);
 		SmallOreWrapper smallOre = GTSmallOreHelper.mapSmallOreWrapper.get(crecipe.oreGenName);
-		GuiDraw.drawString(I18n.format("gtnop.gui.nei.oreName") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName((short)(smallOre.oreMeta+16000))), 2, 18, 0x404040, false);
+		GuiDraw.drawString(I18n.format("gtnop.gui.nei.oreName") + ": " + getGTOreLocalizedName((short)(smallOre.oreMeta+16000)), 2, 18, 0x404040, false);
 		GuiDraw.drawString(I18n.format("gtnop.gui.nei.genHeight") + ": " + smallOre.worldGenHeightRange, 2, 31, 0x404040, false);
 		GuiDraw.drawString(I18n.format("gtnop.gui.nei.amount") + ": " + smallOre.amountPerChunk, 2, 44, 0x404040, false);
 		GuiDraw.drawString(I18n.format("gtnop.gui.nei.worldNames") + ": " + getWorldNameTranslated(smallOre.genOverworld, smallOre.genNether, smallOre.genEnd, smallOre.genMoon, smallOre.genMars), 2, 57, 0x404040, false);
@@ -95,10 +95,11 @@ public class PluginSmallOreStat extends PluginBase {
 			for (SmallOreWrapper smallOreWorldGen: GTSmallOreHelper.mapSmallOreWrapper.values()) {
 				if (smallOreWorldGen.oreMeta == baseMeta) {
 					List<ItemStack> stackList = new ArrayList<ItemStack>();
-					for (int i=0;i<7;i++) 
+					int maximumIndex = getMaximumMaterialIndex(baseMeta, true);
+					for (int i=0;i<maximumIndex;i++) 
 						stackList.add(new ItemStack(GregTech_API.sBlockOres1, 1, smallOreWorldGen.oreMeta+16000+i*1000));
 					List<ItemStack> materialDustStackList = new ArrayList<ItemStack>();
-					for (int i=0;i<7;i++)
+					for (int i=0;i<maximumIndex;i++)
 						materialDustStackList.add(GT_OreDictUnificator.get(OrePrefixes.dust, GTSmallOreHelper.getDroppedDusts()[i], 1L));
 					this.arecipes.add(new CachedSmallOreRecipe(smallOreWorldGen.oreGenName, stackList, materialDustStackList, GTSmallOreHelper.mapOreMetaToOreDrops.get(baseMeta)));
 				}
