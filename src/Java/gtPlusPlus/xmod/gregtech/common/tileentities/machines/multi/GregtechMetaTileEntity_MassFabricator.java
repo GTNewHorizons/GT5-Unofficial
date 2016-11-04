@@ -203,7 +203,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		Utils.LOG_INFO("Fabricating Matter.");
+		//Utils.LOG_INFO("Fabricating Matter.");
 		if (this.mInputHatches.size() != 1) {
 			Utils.LOG_INFO("Too many input hatches. Found: " + this.mInputHatches.size() + " | Expected: 1");
 			return false;

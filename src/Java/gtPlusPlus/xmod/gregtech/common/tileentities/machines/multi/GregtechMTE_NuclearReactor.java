@@ -45,9 +45,9 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
 		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 2;
 		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 2;
-		for (int i = -3; i < 4; i++) {
+		for (int i = -3; i < 3; i++) {
 			for (int j = -3; j < 4; j++) {
-				for (int h = 0; h < 4; h++) {
+				for (int h = 0; h < 3; h++) {
 					final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i,
 							h, zDir + j);
 
@@ -60,12 +60,12 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h,
 										zDir + j) != ModBlocks.blockCasingsMisc) {
 									Utils.LOG_INFO(
-											"Matter Fabricator Casings Missing from one of the top layers inner 3x3.");
+											"Reactor Casings Missing from one of the top layers inner 3x3.");
 									return false;
 								}
 								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 12) {
 									Utils.LOG_INFO(
-											"Matter Fabricator Casings Missing from one of the top layers inner 3x3.");
+											"Reactor Casings Missing from one of the top layers inner 3x3.");
 									return false;
 								}
 							}
@@ -85,12 +85,12 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h,
 										zDir + j) != ModBlocks.blockCasingsMisc) {
 									Utils.LOG_INFO(
-											"Matter Fabricator Casings Missing from one of the top layers inner 3x3.");
+											"Reactor Casings Missing from one of the top layers inner 3x3.");
 									return false;
 								}
 								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 12) {
 									Utils.LOG_INFO(
-											"Matter Fabricator Casings Missing from one of the top layers inner 3x3.");
+											"Reactor Casings Missing from one of the top layers inner 3x3.");
 									return false;
 								}
 							}
@@ -102,13 +102,18 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 							if ((i == -3 || i == 3) && (j == -3 || j == 3)) {
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h,
 										zDir + j) != ModBlocks.blockCasingsMisc) {
+									Block temp = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
 									Utils.LOG_INFO(
-											"Matter Fabricator Casings Missing from one of the corners in the second layer.");
+											"Reactor Casings Missing from one of the corners in the second layer. Block: "+temp.getLocalizedName()
+											+" x:"+(aBaseMetaTileEntity.getXCoord()+xDir+i)
+											+" y:"+(aBaseMetaTileEntity.getYCoord()+h)
+											+" z:"+(aBaseMetaTileEntity.getZCoord()+zDir+j)
+											);
 									return false;
 								}
 								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 12) {
 									Utils.LOG_INFO(
-											"Matter Fabricator Casings Missing from one of the corners in the second layer.");
+											"Reactor Casings Missing from one of the corners in the second layer. Meta");
 									return false;
 								}
 							}
@@ -130,12 +135,12 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h,
 										zDir + j) != ModBlocks.blockCasingsMisc) {
 									Utils.LOG_INFO(
-											"Matter Fabricator Casings Missing from one of the corners in the third layer.");
+											"Reactor Casings Missing from one of the corners in the third layer.");
 									return false;
 								}
 								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 12) {
 									Utils.LOG_INFO(
-											"Matter Fabricator Casings Missing from one of the corners in the third layer.");
+											"Reactor Casings Missing from one of the corners in the third layer.");
 									return false;
 								}
 							}
@@ -156,12 +161,12 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h,
 									zDir + j) != ModBlocks.blockCasingsMisc) {
 								Utils.LOG_INFO(
-										"Matter Fabricator Casings Missing from one of the edges on the top layer.");
+										"Reactor Casings Missing from one of the edges on the top layer.");
 								return false;
 							}
 							if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 12) {
 								Utils.LOG_INFO(
-										"Matter Fabricator Casings Missing from one of the edges on the top layer.");
+										"Reactor Casings Missing from one of the edges on the top layer.");
 								return false;
 							}
 						}
@@ -272,7 +277,7 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 				"1x Input Hatch (Any bottom layer casing)", "1x Output Hatch (Any bottom layer casing)",
 				"1x Maintenance Hatch (Any bottom layer casing)", "1x Muffler Hatch (Centered 3x1x3 area in Top layer)",
 				"1x Energy Hatch (Any bottom layer casing)", "24x IC2 Reinforced Glass for the walls",
-				"Matter Fabricator Casings for the edges & top (40 at least!)", CORE.GT_Tooltip
+				"Reactor Casings for the edges, bottom & top (40 at least!)", CORE.GT_Tooltip
 		};
 	}
 
