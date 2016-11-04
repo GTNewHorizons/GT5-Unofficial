@@ -10,18 +10,7 @@ import gtPlusPlus.xmod.thermalfoundation.HANDLER_TF;
 
 public class COMPAT_IntermodStaging {
 
-	public static void preInit(){
-		HANDLER_GT.preInit();
-		HANDLER_GC.preInit();	
-		HANDLER_TF.preInit();
-		HANDLER_FR.preInit();
-		HANDLER_Psych.preInit();
-		HANDLER_IC2.preInit();
-		HANDLER_Computronics.preInit();
-		
-	}
-
-	public static void init(){
+	public static void init() {
 		HANDLER_GT.init();
 		HANDLER_GC.init();
 		HANDLER_TF.init();
@@ -31,7 +20,7 @@ public class COMPAT_IntermodStaging {
 		HANDLER_Computronics.init();
 	}
 
-	public static void postInit(){
+	public static void postInit() {
 		HANDLER_GT.postInit();
 		HANDLER_GC.postInit();
 		HANDLER_TF.postInit();
@@ -41,5 +30,15 @@ public class COMPAT_IntermodStaging {
 		HANDLER_Computronics.postInit();
 	}
 
+	public static void preInit() {
+		HANDLER_GT.preInit();
+		HANDLER_GC.preInit();
+		HANDLER_TF.preInit();
+		HANDLER_FR.preInit();
+		HANDLER_Psych.preInit();
+		HANDLER_IC2.preInit();
+		HANDLER_Computronics.preInit();
+
+	}
 
 }

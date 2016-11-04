@@ -11,24 +11,11 @@ import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks2;
 
 public class Gregtech_Blocks {
 
-	public static void run(){
-
-		//Casing Blocks
-		ModBlocks.blockCasingsMisc = new GregtechMetaCasingBlocks();
-		ModBlocks.blockCasings2Misc = new GregtechMetaCasingBlocks2();
-		//ModBlocks.blockMetaTileEntity = new GregtechBlockMachines();
-		//registerDefailtGtTe();
-
-
-		
-
-	}
-
-	//Register default Tile Entity
-	private static void registerDefailtGtTe(){
+	// Register default Tile Entity
+	private static void registerDefailtGtTe() {
 		Utils.LOG_INFO("Registering new GT TileEntities.");
 
-		BaseMetaTileEntity tBaseMetaTileEntity = Meta_GT_Proxy.constructBaseMetaTileEntity();
+		final BaseMetaTileEntity tBaseMetaTileEntity = Meta_GT_Proxy.constructBaseMetaTileEntity();
 
 		Utils.LOG_INFO("Testing BaseMetaTileEntity.");
 		if (tBaseMetaTileEntity == null) {
@@ -37,7 +24,18 @@ public class Gregtech_Blocks {
 		}
 		Utils.LOG_INFO("Registering the BaseMetaTileEntityEx.");
 		GameRegistry.registerTileEntity(tBaseMetaTileEntity.getClass(), "BaseMetaTileEntityEx");
-		FMLInterModComms.sendMessage("appliedenergistics2", "whitelist-spatial", tBaseMetaTileEntity.getClass().getName());
+		FMLInterModComms.sendMessage("appliedenergistics2", "whitelist-spatial",
+				tBaseMetaTileEntity.getClass().getName());
+	}
+
+	public static void run() {
+
+		// Casing Blocks
+		ModBlocks.blockCasingsMisc = new GregtechMetaCasingBlocks();
+		ModBlocks.blockCasings2Misc = new GregtechMetaCasingBlocks2();
+		// ModBlocks.blockMetaTileEntity = new GregtechBlockMachines();
+		// registerDefailtGtTe();
+
 	}
 
 }

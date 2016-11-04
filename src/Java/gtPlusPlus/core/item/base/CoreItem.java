@@ -11,83 +11,80 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.*;
 import net.minecraft.util.EnumChatFormatting;
 
-public class CoreItem extends Item
-{
+public class CoreItem extends Item {
 
-	private final EnumRarity rarity;
-	private final EnumChatFormatting descColour;
-	private final String itemDescription;
-	private final boolean hasEffect;
+	private final EnumRarity			rarity;
+	private final EnumChatFormatting	descColour;
+	private final String				itemDescription;
+	private final boolean				hasEffect;
 
-	//0
+	// 0
 	/*
 	 * Name, Tab - 64 Stack, 0 Dmg
 	 */
-	public CoreItem(String unlocalizedName, CreativeTabs creativeTab)
-	{
-		this(unlocalizedName, creativeTab, 64, 0); //Calls 3
+	public CoreItem(final String unlocalizedName, final CreativeTabs creativeTab) {
+		this(unlocalizedName, creativeTab, 64, 0); // Calls 3
 	}
-	//1
+
+	// 1
 	/*
 	 * Name, Tab, Stack - 0 Dmg
 	 */
-	public CoreItem(String unlocalizedName, CreativeTabs creativeTab, int stackSize)
-	{
-		this(unlocalizedName, creativeTab, stackSize, 0); //Calls 3
+	public CoreItem(final String unlocalizedName, final CreativeTabs creativeTab, final int stackSize) {
+		this(unlocalizedName, creativeTab, stackSize, 0); // Calls 3
 	}
-	//2
-	/*
-	 * Name, Tab, Stack, Description - 0 Dmg
-	 */
-	public CoreItem(String unlocalizedName, CreativeTabs creativeTab, int stackSize, String description)
-	{
-		this(unlocalizedName, creativeTab, stackSize, 0, description); //Calls 4
-	}	
-	//3
+
+	// 3
 	/*
 	 * Name, Tab, Stack, Dmg - Description
 	 */
-	public CoreItem(String unlocalizedName, CreativeTabs creativeTab, int stackSize, int maxDmg)
-	{
-		this(unlocalizedName, creativeTab, stackSize, maxDmg, ""); //Calls 4
+	public CoreItem(final String unlocalizedName, final CreativeTabs creativeTab, final int stackSize,
+			final int maxDmg) {
+		this(unlocalizedName, creativeTab, stackSize, maxDmg, ""); // Calls 4
 	}
-	//4 //Not Rare + basic tooltip
+
+	// 4 //Not Rare + basic tooltip
 	/*
 	 * Name, Tab, Stack, Dmg, Description
 	 */
-	public CoreItem(String unlocalizedName, CreativeTabs creativeTab, int stackSize, int maxDmg, String description)
-	{
-		this(unlocalizedName, creativeTab, stackSize, maxDmg, description, EnumRarity.common, EnumChatFormatting.GRAY, false); //Calls 4.5
+	public CoreItem(final String unlocalizedName, final CreativeTabs creativeTab, final int stackSize, final int maxDmg,
+			final String description) {
+		this(unlocalizedName, creativeTab, stackSize, maxDmg, description, EnumRarity.common, EnumChatFormatting.GRAY,
+				false); // Calls 4.5
 	}
-	//4.5
+
+	// 4.5
 	/*
 	 * Name, Tab, Stack, Dmg, Description, Text Colour - Common
 	 */
-	public CoreItem(String unlocalizedName, CreativeTabs creativeTab, int stackSize, int maxDmg, String description, EnumChatFormatting colour)
-	{
-		this(unlocalizedName, creativeTab, stackSize, maxDmg, description, EnumRarity.common, colour, false); //Calls 5
+	public CoreItem(final String unlocalizedName, final CreativeTabs creativeTab, final int stackSize, final int maxDmg,
+			final String description, final EnumChatFormatting colour) {
+		this(unlocalizedName, creativeTab, stackSize, maxDmg, description, EnumRarity.common, colour, false); // Calls
+																												// 5
 	}
 
-	//4.75
+	// 4.75
 	/*
 	 * Name, Tab, Stack, Dmg, Description, Rarity - Gray text
 	 */
-	public CoreItem(String unlocalizedName, CreativeTabs creativeTab, int stackSize, int maxDmg, String description, EnumRarity rarity)
-	{
-		this(unlocalizedName, creativeTab, stackSize, maxDmg, description, rarity, EnumChatFormatting.GRAY, false); //Calls 5
+	public CoreItem(final String unlocalizedName, final CreativeTabs creativeTab, final int stackSize, final int maxDmg,
+			final String description, final EnumRarity rarity) {
+		this(unlocalizedName, creativeTab, stackSize, maxDmg, description, rarity, EnumChatFormatting.GRAY, false); // Calls
+																													// 5
 	}
 
-	//5	
+	// 5
 	/*
 	 * Name, Tab, Stack, Dmg, Description, Rarity, Text Colour, Effect
 	 */
-	public CoreItem(String unlocalizedName, CreativeTabs creativeTab, int stackSize, int maxDmg, String description, EnumRarity regRarity, EnumChatFormatting colour, boolean Effect)
-	{
-		setUnlocalizedName(unlocalizedName);
-		setTextureName(CORE.MODID + ":" + unlocalizedName);
-		setCreativeTab(creativeTab);
-		setMaxStackSize(stackSize);
-		setMaxDamage(maxDmg);
+	public CoreItem(final String unlocalizedName, final CreativeTabs creativeTab, final int stackSize, final int maxDmg,
+			final String description, final EnumRarity regRarity, final EnumChatFormatting colour,
+			final boolean Effect) {
+		this.setUnlocalizedName(unlocalizedName);
+		this.setTextureName(CORE.MODID + ":" + unlocalizedName);
+		this.setCreativeTab(creativeTab);
+		this.setMaxStackSize(stackSize);
+		this.setMaxDamage(maxDmg);
 		this.rarity = regRarity;
 		this.itemDescription = description;
 		this.descColour = colour;
@@ -95,21 +92,33 @@ public class CoreItem extends Item
 		GameRegistry.registerItem(this, unlocalizedName);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
-		list.add(descColour+itemDescription);
-		//super.addInformation(stack, aPlayer, list, bool);
-	}	
+	// 2
+	/*
+	 * Name, Tab, Stack, Description - 0 Dmg
+	 */
+	public CoreItem(final String unlocalizedName, final CreativeTabs creativeTab, final int stackSize,
+			final String description) {
+		this(unlocalizedName, creativeTab, stackSize, 0, description); // Calls
+																		// 4
+	}
 
+	@SuppressWarnings({
+			"unchecked", "rawtypes"
+	})
 	@Override
-	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack){
-		return rarity;
+	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+		list.add(this.descColour + this.itemDescription);
+		// super.addInformation(stack, aPlayer, list, bool);
 	}
 
 	@Override
-	public boolean hasEffect(ItemStack par1ItemStack){
-		return hasEffect;
+	@SideOnly(Side.CLIENT)
+	public EnumRarity getRarity(final ItemStack par1ItemStack) {
+		return this.rarity;
+	}
+
+	@Override
+	public boolean hasEffect(final ItemStack par1ItemStack) {
+		return this.hasEffect;
 	}
 }

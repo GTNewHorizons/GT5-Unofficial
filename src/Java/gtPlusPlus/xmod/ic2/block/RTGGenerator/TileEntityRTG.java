@@ -13,74 +13,64 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 
-public class TileEntityRTG
-extends TileEntityRTGenerator
-{
+public class TileEntityRTG extends TileEntityRTGenerator {
 	public final InvSlotConsumable fuelSlot;
 
-	public TileEntityRTG()
-	{
-		this.fuelSlot = new InvSlotConsumableId(this, "fuelSlot", 0, 12, new Item[] { Ic2Items.RTGPellets.getItem() });
+	public TileEntityRTG() {
+		this.fuelSlot = new InvSlotConsumableId(this, "fuelSlot", 0, 12, new Item[] {
+				Ic2Items.RTGPellets.getItem()
+		});
 	}
 
 	@Override
-	public int gaugeFuelScaled(int i)
-	{
-		return i;
+	public boolean delayActiveUpdate() {
+		return true;
 	}
 
 	@Override
-	 public boolean gainEnergy()
-	  {
-	    int counter = 0;
-	    for (int i = 0; i < this.fuelSlot.size(); i++) {
-	      if (this.fuelSlot.get(i) != null) {
-	        counter++;
-	      }
-	    }
-	    if (counter == 0) {
-	      return false;
-	    }
-	    this.storage += (int)Math.pow(2.0D, counter - 1);
-	    return true;
-	  }
+	public boolean gainEnergy() {
+		int counter = 0;
+		for (int i = 0; i < this.fuelSlot.size(); i++) {
+			if (this.fuelSlot.get(i) != null) {
+				counter++;
+			}
+		}
+		if (counter == 0) {
+			return false;
+		}
+		this.storage += (int) Math.pow(2.0D, counter - 1);
+		return true;
+	}
 
 	@Override
-	public boolean gainFuel()
-	{
+	public boolean gainFuel() {
 		return false;
 	}
 
 	@Override
-	public boolean needsFuel()
-	{
-		return true;
-	}
-
-	@Override
-	public String getInventoryName()
-	{
-		return "RTG";
-	}
-	
-	@Override
-	public ContainerBase<TileEntityRTGenerator> getGuiContainer(EntityPlayer entityPlayer)
-	{
-		return new CONTAINER_RTG(entityPlayer, this);
+	public int gaugeFuelScaled(final int i) {
+		return i;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public GuiScreen getGui(EntityPlayer entityPlayer, boolean isAdmin)
-	{
+	public GuiScreen getGui(final EntityPlayer entityPlayer, final boolean isAdmin) {
 		return new GUI_RTG(new CONTAINER_RTG(entityPlayer, this));
 	}
 
 	@Override
-	public boolean delayActiveUpdate()
-	{
+	public ContainerBase<TileEntityRTGenerator> getGuiContainer(final EntityPlayer entityPlayer) {
+		return new CONTAINER_RTG(entityPlayer, this);
+	}
+
+	@Override
+	public String getInventoryName() {
+		return "RTG";
+	}
+
+	@Override
+	public boolean needsFuel() {
 		return true;
 	}
 
-	
 }

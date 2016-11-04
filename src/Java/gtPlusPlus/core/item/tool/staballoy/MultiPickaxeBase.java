@@ -17,163 +17,189 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class MultiPickaxeBase extends StaballoyPickaxe{
+public class MultiPickaxeBase extends StaballoyPickaxe {
 
-	/* (non-Javadoc)
-	 * @see net.minecraft.item.Item#getDurabilityForDisplay(net.minecraft.item.ItemStack)
-	 */
-	@Override
-	public double getDurabilityForDisplay(ItemStack stack) {
-		if (super.getDurabilityForDisplay(stack) > 0){
-			return super.getDurabilityForDisplay(stack);}
-		return 0;
-	}
+	protected Boolean		FACING_HORIZONTAL	= true;
 
-	protected Boolean FACING_HORIZONTAL = true;
-	protected String FACING = "north";
-	protected EntityPlayer localPlayer;
-	protected String lookingDirection;
-	protected World localWorld;
-	protected ItemStack thisPickaxe = null;
-	protected final int colour;
-	protected final String materialName;
-	public boolean isValid = true;
-
-	public MultiPickaxeBase(String unlocalizedName, ToolMaterial material, int materialDurability, int colour) {
+	protected String		FACING				= "north";
+	protected EntityPlayer	localPlayer;
+	protected String		lookingDirection;
+	protected World			localWorld;
+	protected ItemStack		thisPickaxe			= null;
+	protected final int		colour;
+	protected final String	materialName;
+	public boolean			isValid				= true;
+	public MultiPickaxeBase(final String unlocalizedName, final ToolMaterial material, final int materialDurability,
+			final int colour) {
 		super(Utils.sanitizeString(unlocalizedName), material);
 		this.setUnlocalizedName(Utils.sanitizeString(unlocalizedName));
 		this.setTextureName(CORE.MODID + ":" + "itemPickaxe");
-		this.FACING_HORIZONTAL=true;
+		this.FACING_HORIZONTAL = true;
 		this.setMaxStackSize(1);
 		this.setMaxDamage(materialDurability);
 		this.colour = colour;
-		this.materialName = material.name();		
+		this.materialName = material.name();
 		this.setCreativeTab(AddToCreativeTab.tabTools);
-		try {isValid = addRecipe();} catch (Throwable e){}
-		if (colour != 0 && isValid){
-			GameRegistry.registerItem(this, Utils.sanitizeString(unlocalizedName));			
+		try {
+			this.isValid = this.addRecipe();
+		}
+		catch (final Throwable e) {
+		}
+		if (colour != 0 && this.isValid) {
+			GameRegistry.registerItem(this, Utils.sanitizeString(unlocalizedName));
 		}
 
 	}
 
-	/*
-	 * 
-	 * 
-	 * 
-	 *  Methods 
-	 * 
-	 * 
-	 * 
-	 */
+	private boolean addRecipe() {
+		final String plateDense = "plateDense" + this.materialName;
+		final String rodLong = "stickLong" + this.materialName;
+		final String toolHammer = "craftingToolHardHammer";
+		final String toolWrench = "craftingToolWrench";
+		final String toolFile = "craftingToolFile";
+		final String toolScrewDriver = "craftingToolScrewdriver";
 
-	private boolean addRecipe(){
-		String plateDense = "plateDense"+materialName;
-		String rodLong = "stickLong"+materialName;
-		String toolHammer = "craftingToolHardHammer";
-		String toolWrench = "craftingToolWrench";
-		String toolFile = "craftingToolFile";
-		String toolScrewDriver = "craftingToolScrewdriver";
-
-		if (null == ItemUtils.getItemStackOfAmountFromOreDictNoBroken(rodLong, 1)){
+		if (null == ItemUtils.getItemStackOfAmountFromOreDictNoBroken(rodLong, 1)) {
 			return false;
 		}
-		if (null == ItemUtils.getItemStackOfAmountFromOreDictNoBroken(plateDense, 1)){
+		if (null == ItemUtils.getItemStackOfAmountFromOreDictNoBroken(plateDense, 1)) {
 			return false;
 		}
 
-		RecipeUtils.recipeBuilder(
-				plateDense, plateDense, plateDense,
-				toolFile, rodLong, toolHammer,
-				toolWrench, rodLong, toolScrewDriver,
-				ItemUtils.getSimpleStack(this));
+		RecipeUtils.recipeBuilder(plateDense, plateDense, plateDense, toolFile, rodLong, toolHammer, toolWrench,
+				rodLong, toolScrewDriver, ItemUtils.getSimpleStack(this));
 
 		return true;
 	}
 
-	public final String getMaterialName() {
-		return materialName;
-	}
-
-	@Override
-	public String getItemStackDisplayName(ItemStack iStack) {
-
-		String name;
-		if (getUnlocalizedName().toLowerCase().contains("wood")){
-			name = "Wooden";
-		}
-		else if (getUnlocalizedName().toLowerCase().contains("cobblestone")){
-			name = "Cobblestone";
-		}
-		else if (getUnlocalizedName().toLowerCase().contains("iron")){
-			name = "Iron";
-		}
-		else if (getUnlocalizedName().toLowerCase().contains("gold")){
-			name = "Gold";
-		}
-		else if (getUnlocalizedName().toLowerCase().contains("diamond")){
-			name = "Diamond";
-		}
-		else {
-			name = materialName;
-		}
-		return name+" Multipickaxe";
-	}
-
-	@Override
-	public int getColorFromItemStack(ItemStack stack, int HEX_OxFFFFFF) {
-		if (colour == 0){
-			return MathUtils.generateSingularRandomHexValue();
-		}
-		return colour;
-
-	}
+	/*
+	 *
+	 *
+	 *
+	 * Methods
+	 *
+	 *
+	 *
+	 */
 
 	@SuppressWarnings("static-method")
-	private float calculateDurabilityLoss(World world, int X, int Y, int Z){
+	private float calculateDurabilityLoss(final World world, final int X, final int Y, final int Z) {
 		float bDurabilityLoss = 0;
 		Boolean correctTool = false;
 		float bHardness = 0;
-		if (!world.isRemote){			
+		if (!world.isRemote) {
 			try {
-				Block removalist = world.getBlock(X, Y, Z);
-				//Utils.LOG_WARNING(removalist.toString());
+				final Block removalist = world.getBlock(X, Y, Z);
+				// Utils.LOG_WARNING(removalist.toString());
 
-				bHardness = removalist.getBlockHardness(world, X, Y, Z)*100;
-				Utils.LOG_WARNING("Hardness: "+bHardness);
+				bHardness = removalist.getBlockHardness(world, X, Y, Z) * 100;
+				Utils.LOG_WARNING("Hardness: " + bHardness);
 
 				bDurabilityLoss = 100;
-				//Utils.LOG_WARNING("Durability Loss: "+bDurabilityLoss);
+				// Utils.LOG_WARNING("Durability Loss: "+bDurabilityLoss);
 
-				correctTool = canPickaxeBlock(removalist, world);
-				Utils.LOG_WARNING(""+correctTool);
+				correctTool = this.canPickaxeBlock(removalist, world);
+				Utils.LOG_WARNING("" + correctTool);
 
-				if (!correctTool){
+				if (!correctTool) {
 					return 0;
 				}
 
-			} catch (NullPointerException e){
+			}
+			catch (final NullPointerException e) {
 
 			}
 		}
 		return bDurabilityLoss;
 	}
 
-	//Should clear up blocks quicker if I chain it.
 	@Override
-	public void removeBlockAndDropAsItem(World world, int X, int Y, int Z, ItemStack heldItem){
-		localWorld = world;
+	public void damageItem(final ItemStack item, final int damage, final EntityPlayer localPlayer) {
+		item.damageItem(damage, localPlayer);
+	}
+
+	@Override
+	public int getColorFromItemStack(final ItemStack stack, final int HEX_OxFFFFFF) {
+		if (this.colour == 0) {
+			return MathUtils.generateSingularRandomHexValue();
+		}
+		return this.colour;
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see net.minecraft.item.Item#getDurabilityForDisplay(net.minecraft.item.
+	 * ItemStack)
+	 */
+	@Override
+	public double getDurabilityForDisplay(final ItemStack stack) {
+		if (super.getDurabilityForDisplay(stack) > 0) {
+			return super.getDurabilityForDisplay(stack);
+		}
+		return 0;
+	}
+
+	@Override
+	public String getItemStackDisplayName(final ItemStack iStack) {
+
+		String name;
+		if (this.getUnlocalizedName().toLowerCase().contains("wood")) {
+			name = "Wooden";
+		}
+		else if (this.getUnlocalizedName().toLowerCase().contains("cobblestone")) {
+			name = "Cobblestone";
+		}
+		else if (this.getUnlocalizedName().toLowerCase().contains("iron")) {
+			name = "Iron";
+		}
+		else if (this.getUnlocalizedName().toLowerCase().contains("gold")) {
+			name = "Gold";
+		}
+		else if (this.getUnlocalizedName().toLowerCase().contains("diamond")) {
+			name = "Diamond";
+		}
+		else {
+			name = this.materialName;
+		}
+		return name + " Multipickaxe";
+	}
+
+	public final String getMaterialName() {
+		return this.materialName;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public EnumRarity getRarity(final ItemStack par1ItemStack) {
+		return EnumRarity.uncommon;
+	}
+
+	@Override
+	public boolean hasEffect(final ItemStack par1ItemStack) {
+		return false;
+	}
+
+	// Should clear up blocks quicker if I chain it.
+	@Override
+	public void removeBlockAndDropAsItem(final World world, final int X, final int Y, final int Z,
+			final ItemStack heldItem) {
+		this.localWorld = world;
 		try {
-			Block block = world.getBlock(X, Y, Z);
-			float dur = calculateDurabilityLoss(world, X, Y, Z);
+			final Block block = world.getBlock(X, Y, Z);
+			final float dur = this.calculateDurabilityLoss(world, X, Y, Z);
 			Utils.LOG_WARNING(block.toString());
 			String removalTool = "";
 			removalTool = block.getHarvestTool(1);
 
-			if (removalTool.equals("pickaxe") || UtilsMining.getBlockType(block)){				
-				if (canPickaxeBlock(block, world)){
-					if((block != Blocks.bedrock) && (block.getBlockHardness(world, X, Y, Z) != -1) && (block.getBlockHardness(world, X, Y, Z) <= 100) && (block != Blocks.water) && (block != Blocks.lava)){
+			if (removalTool.equals("pickaxe") || UtilsMining.getBlockType(block)) {
+				if (this.canPickaxeBlock(block, world)) {
+					if (block != Blocks.bedrock && block.getBlockHardness(world, X, Y, Z) != -1
+							&& block.getBlockHardness(world, X, Y, Z) <= 100 && block != Blocks.water
+							&& block != Blocks.lava) {
 
-						if (heldItem.getItemDamage() <= (heldItem.getMaxDamage()-dur)){
+						if (heldItem.getItemDamage() <= heldItem.getMaxDamage() - dur) {
 
 							block.dropBlockAsItem(world, X, Y, Z, world.getBlockMetadata(X, Y, Z), 0);
 							world.setBlockToAir(X, Y, Z);
@@ -189,29 +215,15 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 					Utils.LOG_WARNING("Incorrect Tool for mining this block.");
 				}
 			}
-		} catch (NullPointerException e){
+		}
+		catch (final NullPointerException e) {
 
 		}
 	}
 
-	public void damageItem(ItemStack item, int damage, EntityPlayer localPlayer){
-		item.damageItem(damage, localPlayer);
-	}
-
-	public void setItemDamage(ItemStack item, int damage){
-		item.setItemDamage(damage-1);
-	}
-
-
 	@Override
-	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack){
-		return EnumRarity.uncommon;
-	}
-
-	@Override
-	public boolean hasEffect(ItemStack par1ItemStack){
-		return false;
+	public void setItemDamage(final ItemStack item, final int damage) {
+		item.setItemDamage(damage - 1);
 	}
 
 }

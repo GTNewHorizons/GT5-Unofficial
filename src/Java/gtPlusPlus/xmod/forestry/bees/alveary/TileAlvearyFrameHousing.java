@@ -7,7 +7,6 @@ import forestry.api.arboriculture.EnumGermlingType;
 import forestry.api.genetics.*;
 import forestry.api.multiblock.IAlvearyComponent;
 import forestry.apiculture.AlvearyBeeModifier;
-import forestry.apiculture.multiblock.MultiblockLogicAlveary;
 import forestry.apiculture.network.packets.PacketActiveUpdate;
 import forestry.apiculture.worldgen.*;
 import forestry.core.inventory.IInventoryAdapter;
@@ -25,17 +24,44 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-public class TileAlvearyFrameHousing
-extends FR_TileAlveary
-implements ISidedFrameWearingInventory, IActivatable, IAlvearyComponent.Active, IAlvearyComponent.BeeModifier, IAlvearyFrameHousing, IAlvearyComponent.BeeListener
-{
-	private final InventoryFrameHousing inventory;
-	private final IBeeListener beeListener;
-	private final Stack<ItemStack> pendingSpawns = new Stack<ItemStack>();
-	private boolean active;
+public class TileAlvearyFrameHousing extends FR_TileAlveary implements ISidedFrameWearingInventory, IActivatable,
+		IAlvearyComponent.Active, IAlvearyComponent.BeeModifier, IAlvearyFrameHousing, IAlvearyComponent.BeeListener {
+	static class AlvearyFrameHousingBeeListener extends DefaultBeeListener {
+		private final InventoryFrameHousing inventory;
 
-	public TileAlvearyFrameHousing()
-	{
+		public AlvearyFrameHousingBeeListener(final InventoryFrameHousing inventory) {
+			this.inventory = inventory;
+		}
+
+		@Override
+		public boolean onPollenRetrieved(final IIndividual pollen) {
+			/*
+			 * if (!((Object) this.inventory).canStorePollen()) { return false;
+			 * }
+			 */
+			final ISpeciesRoot speciesRoot = AlleleManager.alleleRegistry.getSpeciesRoot(pollen.getClass());
+
+			final ItemStack pollenStack = speciesRoot.getMemberStack(pollen, EnumGermlingType.POLLEN.ordinal());
+			if (pollenStack != null) {
+				// ((Object) this.inventory).storePollenStack(pollenStack);
+				return true;
+			}
+			return false;
+		}
+	}
+	private final InventoryFrameHousing	inventory;
+	private final IBeeListener			beeListener;
+	private final Stack<ItemStack>		pendingSpawns	= new Stack<ItemStack>();
+
+	private boolean						active;
+
+	private final IBeeModifier				beeModifier		= new AlvearyBeeModifier();
+
+	// private final IBeeListener beeListener = new AlvearyBeeListener(this);
+	private final Iterable<IBeeListener>	beeListenerList	= this.getMultiblockLogic().getController()
+			.getBeeListeners();
+
+	public TileAlvearyFrameHousing() {
 		super(FR_BlockAlveary.Type.FRAME);
 		this.inventory = new InventoryFrameHousing(this);
 		this.beeListener = new AlvearyFrameHousingBeeListener(this.inventory);
@@ -43,113 +69,101 @@ implements ISidedFrameWearingInventory, IActivatable, IAlvearyComponent.Active, 
 	}
 
 	@Override
-	public IInventoryAdapter getInternalInventory()
-	{
-		return this.inventory;
-	}
-
-	@Override
-	public boolean allowsAutomation()
-	{
+	public boolean allowsAutomation() {
 		return true;
 	}
 
-	@Override
-	public void updateServer(int tickCount)
-	{
-
-		if (getInternalInventory() == null) {
-			return;
-		}
-
-		if (this.inventory.getStackInSlot(0) != null)
-		{
-			if (((MultiblockLogicAlveary)getMultiblockLogic()).getController().getBeekeepingLogic().canWork()){
-				setActive(true);
-				if (tickCount % 1000 == 0) {
-					wearOutFrames(this, 1);
-				}
-			}
-			else {
-				Utils.LOG_INFO("Cannot work - Probably no queen alive.");
-			}
-
-		}
-		else
-		{
-			setActive(false);
-		}
-		if (tickCount % 500 != 0) {
-			return;
-		}
-
-	}
-
-	@Override
-	public void updateClient(int tickCount) {}
-
-	private ItemStack getPrincessStack()
-	{
-		ItemStack princessStack = ((MultiblockLogicAlveary)getMultiblockLogic()).getController().getBeeInventory().getQueen();
-		if (BeeManager.beeRoot.isMated(princessStack)) {
-			return princessStack;
-		}
-		return null;
-	}
-
-	private int consumeInducerAndGetChance()
-	{
-		if (getInternalInventory() == null) {
+	private int consumeInducerAndGetChance() {
+		if (this.getInternalInventory() == null) {
 			return 0;
 		}
-		for (Iterator<?> i$ = InventoryIterator.getIterable(getInternalInventory()).iterator(); i$.hasNext();)
-		{
-			IInvSlot slot = (IInvSlot)i$.next();
-			ItemStack stack = slot.getStackInSlot();
-			for (Map.Entry<ItemStack, Integer> entry : BeeManager.inducers.entrySet()) {
-				if (ItemStackUtil.isIdenticalItem((ItemStack)entry.getKey(), stack))
-				{
+		for (final Iterator<?> i$ = InventoryIterator.getIterable(this.getInternalInventory()).iterator(); i$
+				.hasNext();) {
+			final IInvSlot slot = (IInvSlot) i$.next();
+			final ItemStack stack = slot.getStackInSlot();
+			for (final Map.Entry<ItemStack, Integer> entry : BeeManager.inducers.entrySet()) {
+				if (ItemStackUtil.isIdenticalItem(entry.getKey(), stack)) {
 					slot.decreaseStackInSlot();
-					return ((Integer)entry.getValue()).intValue();
+					return entry.getValue().intValue();
 				}
 			}
 		}
-		IInvSlot slot;
-		ItemStack stack;
+		final IInvSlot slot;
+		final ItemStack stack;
 		return 0;
 	}
 
-	private void trySpawnSwarm()
-	{
-		ItemStack toSpawn = (ItemStack)this.pendingSpawns.peek();
-		HiveDescriptionSwarmer hiveDescription = new HiveDescriptionSwarmer(new ItemStack[] { toSpawn });
-		Hive hive = new Hive(hiveDescription);
-
-		int chunkX = (this.xCoord + this.worldObj.rand.nextInt(80) - 40) / 16;
-		int chunkZ = (this.zCoord + this.worldObj.rand.nextInt(80) - 40) / 16;
-		if (HiveDecorator.genHive(this.worldObj, this.worldObj.rand, chunkX, chunkZ, hive)) {
-			this.pendingSpawns.pop();
-		}
+	@Override
+	protected void decodeDescriptionPacket(final NBTTagCompound packetData) {
+		super.decodeDescriptionPacket(packetData);
+		this.setActive(packetData.getBoolean("Active"));
 	}
 
 	@Override
-	protected void encodeDescriptionPacket(NBTTagCompound packetData)
-	{
+	protected void encodeDescriptionPacket(final NBTTagCompound packetData) {
 		super.encodeDescriptionPacket(packetData);
 		packetData.setBoolean("Active", this.active);
 	}
 
 	@Override
-	protected void decodeDescriptionPacket(NBTTagCompound packetData)
-	{
-		super.decodeDescriptionPacket(packetData);
-		setActive(packetData.getBoolean("Active"));
+	public InventoryFrameHousing getAlvearyInventory() {
+		return this.inventory;
 	}
 
 	@Override
-	public int getIcon(int side)
-	{
-		if ((side == 0) || (side == 1)) {
+	public IBeeListener getBeeListener() {
+		return this.beeListener;
+	}
+
+	@Override
+	public IBeeModifier getBeeModifier() {
+		final List<IBeeModifier> beeModifiers = new ArrayList<IBeeModifier>();
+
+		// beeModifiers.add(this.beeModifier);
+		for (final IHiveFrame frame : this.getFrames(this.inventory)) {
+			beeModifiers.add(frame.getBeeModifier());
+		}
+		return beeModifiers.get(0);
+	}
+
+	@Override
+	public Collection<IBeeModifier> getBeeModifiers() {
+		final List<IBeeModifier> beeModifiers = new ArrayList<IBeeModifier>();
+
+		beeModifiers.add(this.beeModifier);
+		for (final IHiveFrame frame : this.getFrames(this.inventory)) {
+			beeModifiers.add(frame.getBeeModifier());
+		}
+		return beeModifiers;
+	}
+
+	@Override
+	public Object getContainer(final EntityPlayer player, final int data) {
+		return new CONTAINER_FrameHousing(this, player);
+	}
+
+	public Collection<IHiveFrame> getFrames(final IInventory inventory) {
+		final Collection<IHiveFrame> hiveFrames = new ArrayList<IHiveFrame>(inventory.getSizeInventory());
+		for (int i = 0; i < inventory.getSizeInventory(); i++) {
+			final ItemStack stackInSlot = this.getStackInSlot(i);
+			if (stackInSlot != null) {
+				final Item itemInSlot = stackInSlot.getItem();
+				if (itemInSlot instanceof IHiveFrame) {
+					hiveFrames.add((IHiveFrame) itemInSlot);
+				}
+			}
+		}
+		return hiveFrames;
+	}
+
+	@Override
+	public Object getGui(final EntityPlayer player, final int data) {
+		return new GUI_FrameHousing(this, player);
+	}
+
+	@Override
+	public int getIcon(final int side) {
+		if (side == 0 || side == 1) {
 			return 2;
 		}
 		if (this.active) {
@@ -159,48 +173,41 @@ implements ISidedFrameWearingInventory, IActivatable, IAlvearyComponent.Active, 
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbttagcompound)
-	{
-		super.readFromNBT(nbttagcompound);
-		setActive(nbttagcompound.getBoolean("Active"));
+	public IInventoryAdapter getInternalInventory() {
+		return this.inventory;
+	}
 
-		NBTTagList nbttaglist = nbttagcompound.getTagList("PendingSpawns", 10);
-		for (int i = 0; i < nbttaglist.tagCount(); i++)
-		{
-			NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
+	private ItemStack getPrincessStack() {
+		final ItemStack princessStack = this.getMultiblockLogic().getController().getBeeInventory().getQueen();
+		if (BeeManager.beeRoot.isMated(princessStack)) {
+			return princessStack;
+		}
+		return null;
+	}
+	private ItemStack getQueenStack() {
+		final ItemStack queenStack = this.getMultiblockLogic().getController().getBeeInventory().getQueen();
+		return queenStack;
+	}
+
+	@Override
+	public boolean isActive() {
+		return this.active;
+	}
+
+	@Override
+	public void readFromNBT(final NBTTagCompound nbttagcompound) {
+		super.readFromNBT(nbttagcompound);
+		this.setActive(nbttagcompound.getBoolean("Active"));
+
+		final NBTTagList nbttaglist = nbttagcompound.getTagList("PendingSpawns", 10);
+		for (int i = 0; i < nbttaglist.tagCount(); i++) {
+			final NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
 			this.pendingSpawns.add(ItemStack.loadItemStackFromNBT(nbttagcompound1));
 		}
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbttagcompound)
-	{
-		super.writeToNBT(nbttagcompound);
-		nbttagcompound.setBoolean("Active", this.active);
-
-		NBTTagList nbttaglist = new NBTTagList();
-		ItemStack[] offspring = (ItemStack[])this.pendingSpawns.toArray(new ItemStack[this.pendingSpawns.size()]);
-		for (int i = 0; i < offspring.length; i++) {
-			if (offspring[i] != null)
-			{
-				NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-				nbttagcompound1.setByte("Slot", (byte)i);
-				offspring[i].writeToNBT(nbttagcompound1);
-				nbttaglist.appendTag(nbttagcompound1);
-			}
-		}
-		nbttagcompound.setTag("PendingSpawns", nbttaglist);
-	}
-
-	@Override
-	public boolean isActive()
-	{
-		return this.active;
-	}
-
-	@Override
-	public void setActive(boolean active)
-	{
+	public void setActive(final boolean active) {
 		if (this.active == active) {
 			return;
 		}
@@ -210,133 +217,91 @@ implements ISidedFrameWearingInventory, IActivatable, IAlvearyComponent.Active, 
 		}
 	}
 
-	@Override
-	public Object getGui(EntityPlayer player, int data)
-	{
-		return new GUI_FrameHousing(this, player);
-	}
+	private void trySpawnSwarm() {
+		final ItemStack toSpawn = this.pendingSpawns.peek();
+		final HiveDescriptionSwarmer hiveDescription = new HiveDescriptionSwarmer(new ItemStack[] {
+				toSpawn
+		});
+		final Hive hive = new Hive(hiveDescription);
 
-	@Override
-	public Object getContainer(EntityPlayer player, int data)
-	{
-		return new CONTAINER_FrameHousing(this, player);
-	}
-
-	private final IBeeModifier beeModifier = new AlvearyBeeModifier();
-	//private final IBeeListener beeListener = new AlvearyBeeListener(this);	
-	private final Iterable<IBeeListener> beeListenerList = ((MultiblockLogicAlveary)getMultiblockLogic()).getController().getBeeListeners();	
-
-	@Override
-	public Collection<IBeeModifier> getBeeModifiers()
-	{
-		List<IBeeModifier> beeModifiers = new ArrayList<IBeeModifier>();
-
-		beeModifiers.add(this.beeModifier);
-		for (IHiveFrame frame : getFrames(this.inventory)) {
-			beeModifiers.add(frame.getBeeModifier());
+		final int chunkX = (this.xCoord + this.worldObj.rand.nextInt(80) - 40) / 16;
+		final int chunkZ = (this.zCoord + this.worldObj.rand.nextInt(80) - 40) / 16;
+		if (HiveDecorator.genHive(this.worldObj, this.worldObj.rand, chunkX, chunkZ, hive)) {
+			this.pendingSpawns.pop();
 		}
-		return beeModifiers;
 	}
 
-	public Collection<IHiveFrame> getFrames(IInventory inventory)
-	{
-		Collection<IHiveFrame> hiveFrames = new ArrayList<IHiveFrame>(inventory.getSizeInventory());
-		for (int i = 0; i < inventory.getSizeInventory(); i++)
-		{
-			ItemStack stackInSlot = getStackInSlot(i);
-			if (stackInSlot != null)
-			{
-				Item itemInSlot = stackInSlot.getItem();
-				if ((itemInSlot instanceof IHiveFrame)) {
-					hiveFrames.add((IHiveFrame)itemInSlot);
+	@Override
+	public void updateClient(final int tickCount) {
+	}
+
+	@Override
+	public void updateServer(final int tickCount) {
+
+		if (this.getInternalInventory() == null) {
+			return;
+		}
+
+		if (this.inventory.getStackInSlot(0) != null) {
+			if (this.getMultiblockLogic().getController().getBeekeepingLogic().canWork()) {
+				this.setActive(true);
+				if (tickCount % 1000 == 0) {
+					this.wearOutFrames(this, 1);
 				}
 			}
+			else {
+				Utils.LOG_INFO("Cannot work - Probably no queen alive.");
+			}
+
 		}
-		return hiveFrames;
+		else {
+			this.setActive(false);
+		}
+		if (tickCount % 500 != 0) {
+			return;
+		}
+
 	}
 
 	@Override
-	public IBeeModifier getBeeModifier() {
-		List<IBeeModifier> beeModifiers = new ArrayList<IBeeModifier>();
+	public void wearOutFrames(final IBeeHousing beeHousing, final int amount) {
+		final IBeekeepingMode beekeepingMode = BeeManager.beeRoot.getBeekeepingMode(beeHousing.getWorld());
+		final int wear = Math.round(amount * beekeepingMode.getWearModifier());
+		for (int i = 0; i < this.inventory.getSizeInventory(); i++) {
+			final ItemStack hiveFrameStack = this.getStackInSlot(i);
+			if (hiveFrameStack != null) {
+				final Item hiveFrameItem = hiveFrameStack.getItem();
+				if (hiveFrameItem instanceof IHiveFrame) {
+					final IHiveFrame hiveFrame = (IHiveFrame) hiveFrameItem;
+					Utils.LOG_INFO("Wearing out frame by " + amount);
+					final ItemStack queenStack = this.getQueenStack();
+					final IBee queen = BeeManager.beeRoot.getMember(queenStack);
+					final ItemStack usedFrame = hiveFrame.frameUsed(beeHousing, hiveFrameStack, queen, wear);
 
-		//beeModifiers.add(this.beeModifier);
-		for (IHiveFrame frame : getFrames(this.inventory)) {
-			beeModifiers.add(frame.getBeeModifier());
-		}
-		return beeModifiers.get(0);
-	}
+					// ((MultiblockLogicAlveary)getMultiblockLogic()).getController().getBeeListeners().
 
-	private ItemStack getQueenStack()
-	{
-		ItemStack queenStack = ((MultiblockLogicAlveary)getMultiblockLogic()).getController().getBeeInventory().getQueen();
-		return queenStack;
-	}
-
-	@Override
-	public void wearOutFrames(IBeeHousing beeHousing, int amount)
-	{
-		IBeekeepingMode beekeepingMode = BeeManager.beeRoot.getBeekeepingMode(beeHousing.getWorld());
-		int wear = Math.round(amount * beekeepingMode.getWearModifier());
-		for (int i = 0; i < this.inventory.getSizeInventory(); i++)
-		{
-			ItemStack hiveFrameStack = getStackInSlot(i);
-			if (hiveFrameStack != null)
-			{
-				Item hiveFrameItem = hiveFrameStack.getItem();
-				if ((hiveFrameItem instanceof IHiveFrame))
-				{
-					IHiveFrame hiveFrame = (IHiveFrame)hiveFrameItem;
-					Utils.LOG_INFO("Wearing out frame by "+amount);
-					ItemStack queenStack = getQueenStack();
-					IBee queen = BeeManager.beeRoot.getMember(queenStack);
-					ItemStack usedFrame = hiveFrame.frameUsed(beeHousing, hiveFrameStack, queen, wear);
-
-					//((MultiblockLogicAlveary)getMultiblockLogic()).getController().getBeeListeners().
-					
-					setInventorySlotContents(i, usedFrame);
+					this.setInventorySlotContents(i, usedFrame);
 				}
 			}
 		}
 	}
 
 	@Override
-	public InventoryFrameHousing getAlvearyInventory() {
-		return inventory;
+	public void writeToNBT(final NBTTagCompound nbttagcompound) {
+		super.writeToNBT(nbttagcompound);
+		nbttagcompound.setBoolean("Active", this.active);
+
+		final NBTTagList nbttaglist = new NBTTagList();
+		final ItemStack[] offspring = this.pendingSpawns.toArray(new ItemStack[this.pendingSpawns.size()]);
+		for (int i = 0; i < offspring.length; i++) {
+			if (offspring[i] != null) {
+				final NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+				nbttagcompound1.setByte("Slot", (byte) i);
+				offspring[i].writeToNBT(nbttagcompound1);
+				nbttaglist.appendTag(nbttagcompound1);
+			}
+		}
+		nbttagcompound.setTag("PendingSpawns", nbttaglist);
 	}
 
-	@Override
-	public IBeeListener getBeeListener() {
-		return beeListener;
-	}
-	
-	static class AlvearyFrameHousingBeeListener
-    extends DefaultBeeListener
-  {
-    private final InventoryFrameHousing inventory;
-    
-    public AlvearyFrameHousingBeeListener(InventoryFrameHousing inventory)
-    {
-      this.inventory = inventory;
-    }
-    
-    @Override
-	public boolean onPollenRetrieved(IIndividual pollen)
-    {
-      /*if (!((Object) this.inventory).canStorePollen()) {
-        return false;
-      }*/
-      ISpeciesRoot speciesRoot = AlleleManager.alleleRegistry.getSpeciesRoot(pollen.getClass());
-      
-      ItemStack pollenStack = speciesRoot.getMemberStack(pollen, EnumGermlingType.POLLEN.ordinal());
-      if (pollenStack != null)
-      {
-       // ((Object) this.inventory).storePollenStack(pollenStack);
-        return true;
-      }
-      return false;
-    }
-  }
-	
-	
-	
 }

@@ -12,65 +12,73 @@ import gtPlusPlus.xmod.gregtech.api.gui.GUI_SafeBlock;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.machines.GregtechMetaSafeBlockBase;
 import net.minecraft.entity.player.InventoryPlayer;
 
-public class GregtechMetaSafeBlock
-        extends GregtechMetaSafeBlockBase {
-	
+public class GregtechMetaSafeBlock extends GregtechMetaSafeBlockBase {
+
+	public GregtechMetaSafeBlock(final int aID, final String aName, final String aNameRegional, final int aTier) {
+		super(aID, aName, aNameRegional, aTier, 28, "Protecting your items from sticky fingers.");
+	}
+
+	public GregtechMetaSafeBlock(final int aID, final String aName, final String aNameRegional, final int aTier,
+			final int aInvSlotCount, final String aDescription) {
+		super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
+	}
+
+	public GregtechMetaSafeBlock(final String aName, final int aTier, final int aInvSlotCount,
+			final String aDescription, final ITexture[][][] aTextures) {
+		super(aName, aTier, aInvSlotCount, aDescription, aTextures);
+	}
+
+	protected void fillStacksIntoFirstSlots() {
+		for (int i = 0; i < this.mInventory.length - 1; i++) {
+			for (int j = i + 1; j < this.mInventory.length - 1; j++) {
+				if (this.mInventory[j] != null && (this.mInventory[i] == null
+						|| GT_Utility.areStacksEqual(this.mInventory[i], this.mInventory[j]))) {
+					GT_Utility.moveStackFromSlotAToSlotB(this.getBaseMetaTileEntity(), this.getBaseMetaTileEntity(), j,
+							i, (byte) 64, (byte) 1, (byte) 64, (byte) 1);
+				}
+			}
+		}
+	}
+
+	@Override
+	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory,
+			final IGregTechTileEntity aBaseMetaTileEntity) {
+		return new GUI_SafeBlock(aPlayerInventory, aBaseMetaTileEntity);
+	}
+
 	@Override
 	public String[] getDescription() {
-		return new String[] {mDescription, CORE.GT_Tooltip};
+		return new String[] {
+				this.mDescription, CORE.GT_Tooltip
+		};
 	}
-	
-    public GregtechMetaSafeBlock(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 28, "Protecting your items from sticky fingers.");
-    }
 
-    public GregtechMetaSafeBlock(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription) {
-        super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
-    }
-
-    public GregtechMetaSafeBlock(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aInvSlotCount, aDescription, aTextures);
-    }
-
-    @Override
-	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GregtechMetaSafeBlock(this.mName, this.mTier, this.mInventory.length, this.mDescription, this.mTextures);
-    }
-
-    @Override
+	@Override
 	public ITexture getOverlayIcon() {
-        return new GT_RenderedTexture(Textures.BlockIcons.VOID);
-    }
+		return new GT_RenderedTexture(Textures.BlockIcons.VOID);
+	}
 
-    @Override
-	public boolean isValidSlot(int aIndex) {
-        return aIndex < this.mInventory.length - 1;
-    }
+	/*
+	 * @Override protected void moveItems(IGregTechTileEntity
+	 * aBaseMetaTileEntity, long aTimer) { fillStacksIntoFirstSlots();
+	 * super.moveItems(aBaseMetaTileEntity, aTimer); fillStacksIntoFirstSlots();
+	 * }
+	 */
 
-    /*@Override
-	protected void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        fillStacksIntoFirstSlots();
-        super.moveItems(aBaseMetaTileEntity, aTimer);
-        fillStacksIntoFirstSlots();
-    }*/
+	@Override
+	public Object getServerGUI(final int aID, final InventoryPlayer aPlayerInventory,
+			final IGregTechTileEntity aBaseMetaTileEntity) {
+		return new CONTAINER_SafeBlock(aPlayerInventory, aBaseMetaTileEntity);
+	}
 
-    protected void fillStacksIntoFirstSlots() {
-        for (int i = 0; i < this.mInventory.length - 1; i++) {
-            for (int j = i + 1; j < this.mInventory.length - 1; j++) {
-                if ((this.mInventory[j] != null) && ((this.mInventory[i] == null) || (GT_Utility.areStacksEqual(this.mInventory[i], this.mInventory[j])))) {
-                    GT_Utility.moveStackFromSlotAToSlotB(getBaseMetaTileEntity(), getBaseMetaTileEntity(), j, i, (byte) 64, (byte) 1, (byte) 64, (byte) 1);
-                }
-            }
-        }
-    }
+	@Override
+	public boolean isValidSlot(final int aIndex) {
+		return aIndex < this.mInventory.length - 1;
+	}
 
-    @Override
-	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new CONTAINER_SafeBlock(aPlayerInventory, aBaseMetaTileEntity);
-    }
-
-    @Override
-	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_SafeBlock(aPlayerInventory, aBaseMetaTileEntity);
-    }
+	@Override
+	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
+		return new GregtechMetaSafeBlock(this.mName, this.mTier, this.mInventory.length, this.mDescription,
+				this.mTextures);
+	}
 }

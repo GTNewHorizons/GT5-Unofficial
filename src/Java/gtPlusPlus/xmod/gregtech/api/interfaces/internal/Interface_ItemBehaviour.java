@@ -14,27 +14,31 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public interface Interface_ItemBehaviour<E extends Item> {
-    public boolean onLeftClickEntity(E aItem, ItemStack aStack, EntityPlayer aPlayer, Entity aEntity);
+	public boolean canDispense(E aItem, IBlockSource aSource, ItemStack aStack);
 
-    public boolean onItemUse(E aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ);
+	public List<String> getAdditionalToolTips(E aItem, List<String> aList, ItemStack aStack);
 
-    public boolean onItemUseFirst(E aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ);
+	public EntityArrow getProjectile(E aItem, SubTag aProjectileType, ItemStack aStack, World aWorld, double aX,
+			double aY, double aZ);
 
-    public ItemStack onItemRightClick(E aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer);
+	public EntityArrow getProjectile(E aItem, SubTag aProjectileType, ItemStack aStack, World aWorld,
+			EntityLivingBase aEntity, float aSpeed);
 
-    public List<String> getAdditionalToolTips(E aItem, List<String> aList, ItemStack aStack);
+	public boolean hasProjectile(Gregtech_MetaItem_Base aItem, SubTag aProjectileType, ItemStack aStack);
 
-    public void onUpdate(E aItem, ItemStack aStack, World aWorld, Entity aPlayer, int aTimer, boolean aIsInHand);
+	public boolean isItemStackUsable(E aItem, ItemStack aStack);
 
-    public boolean isItemStackUsable(E aItem, ItemStack aStack);
+	public ItemStack onDispense(E aItem, IBlockSource aSource, ItemStack aStack);
 
-    public boolean canDispense(E aItem, IBlockSource aSource, ItemStack aStack);
+	public ItemStack onItemRightClick(E aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer);
 
-    public ItemStack onDispense(E aItem, IBlockSource aSource, ItemStack aStack);
+	public boolean onItemUse(E aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
+			int aSide, float hitX, float hitY, float hitZ);
 
-    public boolean hasProjectile(Gregtech_MetaItem_Base aItem, SubTag aProjectileType, ItemStack aStack);
+	public boolean onItemUseFirst(E aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ,
+			int aSide, float hitX, float hitY, float hitZ);
 
-    public EntityArrow getProjectile(E aItem, SubTag aProjectileType, ItemStack aStack, World aWorld, double aX, double aY, double aZ);
+	public boolean onLeftClickEntity(E aItem, ItemStack aStack, EntityPlayer aPlayer, Entity aEntity);
 
-    public EntityArrow getProjectile(E aItem, SubTag aProjectileType, ItemStack aStack, World aWorld, EntityLivingBase aEntity, float aSpeed);
+	public void onUpdate(E aItem, ItemStack aStack, World aWorld, Entity aPlayer, int aTimer, boolean aIsInHand);
 }

@@ -6,13 +6,13 @@ import net.minecraft.item.ItemStack;
 
 public class COMPAT_RFTools {
 
-	public static void OreDict(){
-		run();
+	public static void OreDict() {
+		COMPAT_RFTools.run();
 	}
-	
-	private static final void run(){
+
+	private static final void run() {
 		GT_OreDictUnificator.registerOre("plateDimensionShard", new ItemStack(ModItems.itemPlateDimensionShard));
-		
+
 	}
-	
+
 }

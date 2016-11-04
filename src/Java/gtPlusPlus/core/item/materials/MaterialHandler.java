@@ -4,7 +4,5 @@ public class MaterialHandler {
 
 	@SuppressWarnings("unused")
 	private String Staballoy;
-	
-	
-	
+
 }

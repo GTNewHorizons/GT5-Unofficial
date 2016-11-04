@@ -9,23 +9,25 @@ import net.minecraft.world.World;
 
 public class AdvancedBlock extends Block {
 
-    protected AdvancedBlock(String unlocalizedName, Material material, CreativeTabs x, float blockHardness, float blockResistance, float blockLightLevel, 
-    		String blockHarvestTool, int blockHarvestLevel, SoundType BlockSound) {
-        super(material);
-        this.setBlockName(unlocalizedName);
-        this.setBlockTextureName(CORE.MODID + ":" + unlocalizedName);
-        this.setCreativeTab(x);
-        this.setHardness(blockHardness); //block Hardness
-        this.setResistance(blockResistance);
-        this.setLightLevel(blockLightLevel);
-        this.setHarvestLevel(blockHarvestTool, blockHarvestLevel);
-        this.setStepSound(BlockSound);
-    }
-    
-    @Override
-    public boolean onBlockActivated(World p_149727_1_, int p_149727_2_, int p_149727_3_, int p_149727_4_, EntityPlayer p_149727_5_, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
-    {
-        return false;
-    }
+	protected AdvancedBlock(final String unlocalizedName, final Material material, final CreativeTabs x,
+			final float blockHardness, final float blockResistance, final float blockLightLevel,
+			final String blockHarvestTool, final int blockHarvestLevel, final SoundType BlockSound) {
+		super(material);
+		this.setBlockName(unlocalizedName);
+		this.setBlockTextureName(CORE.MODID + ":" + unlocalizedName);
+		this.setCreativeTab(x);
+		this.setHardness(blockHardness); // block Hardness
+		this.setResistance(blockResistance);
+		this.setLightLevel(blockLightLevel);
+		this.setHarvestLevel(blockHarvestTool, blockHarvestLevel);
+		this.setStepSound(BlockSound);
+	}
+
+	@Override
+	public boolean onBlockActivated(final World p_149727_1_, final int p_149727_2_, final int p_149727_3_,
+			final int p_149727_4_, final EntityPlayer p_149727_5_, final int p_149727_6_, final float p_149727_7_,
+			final float p_149727_8_, final float p_149727_9_) {
+		return false;
+	}
 
 }

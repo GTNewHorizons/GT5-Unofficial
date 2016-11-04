@@ -1,7 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
-import static gregtech.api.enums.GT_Values.V;
-
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -14,117 +13,141 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class GregtechMetaTileEntityChunkLoader extends GT_MetaTileEntity_TieredMachineBlock {
 
-    public int mRange = 16;
+	public int mRange = 16;
 
-    public GregtechMetaTileEntityChunkLoader(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "Reprells nasty Creatures. Range: " + (4 + (12 * aTier)) + " unpowered / " + (16 + (48 * aTier)) + " powered");
-    }
+	public GregtechMetaTileEntityChunkLoader(final int aID, final String aName, final String aNameRegional,
+			final int aTier) {
+		super(aID, aName, aNameRegional, aTier, 0, "Reprells nasty Creatures. Range: " + (4 + 12 * aTier)
+				+ " unpowered / " + (16 + 48 * aTier) + " powered");
+	}
 
-    public GregtechMetaTileEntityChunkLoader(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aInvSlotCount, aDescription, aTextures);
-    }
+	public GregtechMetaTileEntityChunkLoader(final String aName, final int aTier, final int aInvSlotCount,
+			final String aDescription, final ITexture[][][] aTextures) {
+		super(aName, aTier, aInvSlotCount, aDescription, aTextures);
+	}
 
-    public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GregtechMetaTileEntityChunkLoader(this.mName, this.mTier, this.mInventory.length, this.mDescription, this.mTextures);
-    }
+	@Override
+	public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
+			final ItemStack aStack) {
+		return false;
+	}
 
-    @Override
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], (aSide != 1) ? null : aActive ? new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE) : new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER)};
-    }
+	@Override
+	public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
+			final ItemStack aStack) {
+		return false;
+	}
 
-    @Override
-    public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        if (aBaseMetaTileEntity.isAllowedToWork() && aBaseMetaTileEntity.isServerSide()) {
-            int[] tCoords = new int[]{aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(), aBaseMetaTileEntity.getWorld().provider.dimensionId};
-            if ((aTimer % 600 == 0) && !GT_SpawnEventHandler.mobReps.contains(tCoords)) {
-                GT_SpawnEventHandler.mobReps.add(tCoords);
-            }
-            if (aBaseMetaTileEntity.isUniversalEnergyStored(getMinimumStoredEU()) && aBaseMetaTileEntity.decreaseStoredEnergyUnits(1 << (this.mTier * 2), false)) {
-                mRange = 16 + (48 * mTier);
-            } else {
-                mRange = 4 + (12 * mTier);
-            }
-        }
-    }
+	@Override
+	public long getMinimumStoredEU() {
+		return 512;
+	}
 
-    @Override
-    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        int[] tCoords = new int[]{aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(), aBaseMetaTileEntity.getWorld().provider.dimensionId};
-        GT_SpawnEventHandler.mobReps.add(tCoords);
-    }
+	@Override
+	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+			final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+		return new ITexture[] {
+				Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1],
+				aSide != 1 ? null
+						: aActive ? new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE)
+								: new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER)
+		};
+	}
 
-    @Override
-    public void onRemoval() {
-        int[] tCoords = new int[]{this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord(), this.getBaseMetaTileEntity().getWorld().provider.dimensionId};
-        GT_SpawnEventHandler.mobReps.remove(tCoords);
-    }
+	@Override
+	public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
+		return null;
+	}
 
-    @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
+	@Override
+	public boolean isEnetInput() {
+		return true;
+	}
 
-    @Override
-    public boolean isFacingValid(byte aFacing) {
-        return true;
-    }
+	@Override
+	public boolean isFacingValid(final byte aFacing) {
+		return true;
+	}
 
-    @Override
-    public boolean isEnetInput() {
-        return true;
-    }
+	@Override
+	public boolean isInputFacing(final byte aSide) {
+		return true;
+	}
 
-    @Override
-    public boolean isInputFacing(byte aSide) {
-        return true;
-    }
+	@Override
+	public boolean isSimpleMachine() {
+		return false;
+	}
 
-    @Override
-    public boolean isTeleporterCompatible() {
-        return false;
-    }
+	@Override
+	public boolean isTeleporterCompatible() {
+		return false;
+	}
 
-    @Override
-    public long getMinimumStoredEU() {
-        return 512;
-    }
+	@Override
+	public void loadNBTData(final NBTTagCompound aNBT) {
+	}
 
-    @Override
-    public long maxEUStore() {
-        return 512 + V[mTier] * 50;
-    }
+	@Override
+	public long maxAmperesIn() {
+		return 2;
+	}
 
-    @Override
-    public long maxEUInput() {
-        return V[mTier];
-    }
+	@Override
+	public long maxEUInput() {
+		return GT_Values.V[this.mTier];
+	}
 
-    @Override
-    public long maxAmperesIn() {
-        return 2;
-    }
+	@Override
+	public long maxEUStore() {
+		return 512 + GT_Values.V[this.mTier] * 50;
+	}
 
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return false;
-    }
+	@Override
+	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
+		return new GregtechMetaTileEntityChunkLoader(this.mName, this.mTier, this.mInventory.length, this.mDescription,
+				this.mTextures);
+	}
 
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return false;
-    }
+	@Override
+	public void onFirstTick(final IGregTechTileEntity aBaseMetaTileEntity) {
+		final int[] tCoords = new int[] {
+				aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(),
+				aBaseMetaTileEntity.getWorld().provider.dimensionId
+		};
+		GT_SpawnEventHandler.mobReps.add(tCoords);
+	}
 
-    @Override
-    public ITexture[][][] getTextureSet(ITexture[] aTextures) {
-        return null;
-    }
+	@Override
+	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTimer) {
+		if (aBaseMetaTileEntity.isAllowedToWork() && aBaseMetaTileEntity.isServerSide()) {
+			final int[] tCoords = new int[] {
+					aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord(),
+					aBaseMetaTileEntity.getWorld().provider.dimensionId
+			};
+			if (aTimer % 600 == 0 && !GT_SpawnEventHandler.mobReps.contains(tCoords)) {
+				GT_SpawnEventHandler.mobReps.add(tCoords);
+			}
+			if (aBaseMetaTileEntity.isUniversalEnergyStored(this.getMinimumStoredEU())
+					&& aBaseMetaTileEntity.decreaseStoredEnergyUnits(1 << this.mTier * 2, false)) {
+				this.mRange = 16 + 48 * this.mTier;
+			}
+			else {
+				this.mRange = 4 + 12 * this.mTier;
+			}
+		}
+	}
 
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-    }
+	@Override
+	public void onRemoval() {
+		final int[] tCoords = new int[] {
+				this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(),
+				this.getBaseMetaTileEntity().getZCoord(), this.getBaseMetaTileEntity().getWorld().provider.dimensionId
+		};
+		GT_SpawnEventHandler.mobReps.remove(tCoords);
+	}
 
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-    }
+	@Override
+	public void saveNBTData(final NBTTagCompound aNBT) {
+	}
 }

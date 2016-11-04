@@ -21,169 +21,142 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.biome.BiomeGenBase;
 
-public abstract class FR_TileAlveary
-extends MultiblockTileEntityForestry<MultiblockLogicAlveary>
-implements IBeeHousing, IAlvearyComponent, IRestrictedAccess, IStreamableGui, ITitled, IClimatised, IHintSource, IGuiHandlerForestry
-{
+public abstract class FR_TileAlveary extends MultiblockTileEntityForestry<MultiblockLogicAlveary>
+		implements IBeeHousing, IAlvearyComponent, IRestrictedAccess, IStreamableGui, ITitled, IClimatised, IHintSource,
+		IGuiHandlerForestry {
 	private final String unlocalizedTitle;
 
-	protected FR_TileAlveary()
-	{
+	protected FR_TileAlveary() {
 		this(FR_BlockAlveary.Type.ERROR);
 	}
 
-	protected FR_TileAlveary(FR_BlockAlveary.Type type)
-	{
+	protected FR_TileAlveary(final FR_BlockAlveary.Type type) {
 		super(new MultiblockLogicAlveary());
-		this.unlocalizedTitle = ("advanced.tile.for.alveary." + type.ordinal() + ".name");
-		
-	}
+		this.unlocalizedTitle = "advanced.tile.for.alveary." + type.ordinal() + ".name";
 
-	public int getIcon(int side)
-	{
-		return 0;
 	}
 
 	@Override
-	public void onMachineAssembled(IMultiblockController multiblockController, ChunkCoordinates minCoord, ChunkCoordinates maxCoord)
-	{
-		if (this.worldObj.isRemote) {
-			this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-		}
-		this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, getBlockType());
-		markDirty();
+	public boolean canBlockSeeTheSky() {
+		return this.getMultiblockLogic().getController().canBlockSeeTheSky();
 	}
 
 	@Override
-	public void onMachineBroken()
-	{
-		if (this.worldObj.isRemote) {
-			this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-		}
-		this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, getBlockType());
-		markDirty();
+	public IAccessHandler getAccessHandler() {
+		return this.getMultiblockLogic().getController().getAccessHandler();
 	}
 
 	@Override
-	public BiomeGenBase getBiome()
-	{
-		return ((MultiblockLogicAlveary)getMultiblockLogic()).getController().getBiome();
+	public Vec3 getBeeFXCoordinates() {
+		return this.getMultiblockLogic().getController().getBeeFXCoordinates();
 	}
 
 	@Override
-	public Iterable<IBeeModifier> getBeeModifiers()
-	{
-		return ((MultiblockLogicAlveary)getMultiblockLogic()).getController().getBeeModifiers();
+	public IBeeHousingInventory getBeeInventory() {
+		return this.getMultiblockLogic().getController().getBeeInventory();
 	}
 
 	@Override
-	public Iterable<IBeeListener> getBeeListeners()
-	{
-		return ((MultiblockLogicAlveary)getMultiblockLogic()).getController().getBeeListeners();
+	public IBeekeepingLogic getBeekeepingLogic() {
+		return this.getMultiblockLogic().getController().getBeekeepingLogic();
 	}
 
 	@Override
-	public IBeeHousingInventory getBeeInventory()
-	{
-		return ((MultiblockLogicAlveary)getMultiblockLogic()).getController().getBeeInventory();
+	public Iterable<IBeeListener> getBeeListeners() {
+		return this.getMultiblockLogic().getController().getBeeListeners();
 	}
 
 	@Override
-	public IBeekeepingLogic getBeekeepingLogic()
-	{
-		return ((MultiblockLogicAlveary)getMultiblockLogic()).getController().getBeekeepingLogic();
+	public Iterable<IBeeModifier> getBeeModifiers() {
+		return this.getMultiblockLogic().getController().getBeeModifiers();
 	}
 
 	@Override
-	public Vec3 getBeeFXCoordinates()
-	{
-		return ((MultiblockLogicAlveary)getMultiblockLogic()).getController().getBeeFXCoordinates();
+	public BiomeGenBase getBiome() {
+		return this.getMultiblockLogic().getController().getBiome();
 	}
 
 	@Override
-	public EnumTemperature getTemperature()
-	{
-		return ((MultiblockLogicAlveary)getMultiblockLogic()).getController().getTemperature();
+	public int getBlockLightValue() {
+		return this.getMultiblockLogic().getController().getBlockLightValue();
 	}
 
 	@Override
-	public EnumHumidity getHumidity()
-	{
-		return ((MultiblockLogicAlveary)getMultiblockLogic()).getController().getHumidity();
+	public IErrorLogic getErrorLogic() {
+		return this.getMultiblockLogic().getController().getErrorLogic();
 	}
 
 	@Override
-	public int getBlockLightValue()
-	{
-		return ((MultiblockLogicAlveary)getMultiblockLogic()).getController().getBlockLightValue();
+	public float getExactHumidity() {
+		return this.getMultiblockLogic().getController().getExactHumidity();
 	}
 
 	@Override
-	public boolean canBlockSeeTheSky()
-	{
-		return ((MultiblockLogicAlveary)getMultiblockLogic()).getController().canBlockSeeTheSky();
+	public float getExactTemperature() {
+		return this.getMultiblockLogic().getController().getExactTemperature();
 	}
 
 	@Override
-	public IErrorLogic getErrorLogic()
-	{
-		return ((MultiblockLogicAlveary)getMultiblockLogic()).getController().getErrorLogic();
-	}
-
-	@Override
-	public IAccessHandler getAccessHandler()
-	{
-		return ((MultiblockLogicAlveary)getMultiblockLogic()).getController().getAccessHandler();
-	}
-
-	@Override
-	public void onSwitchAccess(EnumAccess oldAccess, EnumAccess newAccess)
-	{
-		((MultiblockLogicAlveary)getMultiblockLogic()).getController().onSwitchAccess(oldAccess, newAccess);
-	}
-
-	@Override
-	public IInventoryAdapter getInternalInventory()
-	{
-		return ((MultiblockLogicAlveary)getMultiblockLogic()).getController().getInternalInventory();
-	}
-
-	@Override
-	public String getUnlocalizedTitle()
-	{
-		return this.unlocalizedTitle;
-	}
-
-	@Override
-	public List<String> getHints()
-	{
+	public List<String> getHints() {
 		return Config.hints.get("apiary");
 	}
 
 	@Override
-	public float getExactTemperature()
-	{
-		return ((MultiblockLogicAlveary)getMultiblockLogic()).getController().getExactTemperature();
+	public EnumHumidity getHumidity() {
+		return this.getMultiblockLogic().getController().getHumidity();
+	}
+
+	public int getIcon(final int side) {
+		return 0;
 	}
 
 	@Override
-	public float getExactHumidity()
-	{
-		return ((MultiblockLogicAlveary)getMultiblockLogic()).getController().getExactHumidity();
+	public IInventoryAdapter getInternalInventory() {
+		return this.getMultiblockLogic().getController().getInternalInventory();
 	}
 
 	@Override
-	public void writeGuiData(DataOutputStreamForestry data)
-			throws IOException
-	{
-		((MultiblockLogicAlveary)getMultiblockLogic()).getController().writeGuiData(data);
+	public EnumTemperature getTemperature() {
+		return this.getMultiblockLogic().getController().getTemperature();
 	}
 
 	@Override
-	public void readGuiData(DataInputStreamForestry data)
-			throws IOException
-	{
-		((MultiblockLogicAlveary)getMultiblockLogic()).getController().readGuiData(data);
+	public String getUnlocalizedTitle() {
+		return this.unlocalizedTitle;
+	}
+
+	@Override
+	public void onMachineAssembled(final IMultiblockController multiblockController, final ChunkCoordinates minCoord,
+			final ChunkCoordinates maxCoord) {
+		if (this.worldObj.isRemote) {
+			this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+		}
+		this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
+		this.markDirty();
+	}
+
+	@Override
+	public void onMachineBroken() {
+		if (this.worldObj.isRemote) {
+			this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+		}
+		this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
+		this.markDirty();
+	}
+
+	@Override
+	public void onSwitchAccess(final EnumAccess oldAccess, final EnumAccess newAccess) {
+		this.getMultiblockLogic().getController().onSwitchAccess(oldAccess, newAccess);
+	}
+
+	@Override
+	public void readGuiData(final DataInputStreamForestry data) throws IOException {
+		this.getMultiblockLogic().getController().readGuiData(data);
+	}
+
+	@Override
+	public void writeGuiData(final DataOutputStreamForestry data) throws IOException {
+		this.getMultiblockLogic().getController().writeGuiData(data);
 	}
 
 }

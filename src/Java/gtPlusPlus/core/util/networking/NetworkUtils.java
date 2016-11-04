@@ -5,15 +5,15 @@ import java.net.*;
 
 public class NetworkUtils {
 
-	public static String getContentFromURL(String args) {
-		if (netIsAvailable()){
+	public static String getContentFromURL(final String args) {
+		if (NetworkUtils.netIsAvailable()) {
 			try {
 				URL url;
 				// get URL content
 				url = new URL(args);
-				URLConnection conn = url.openConnection();
+				final URLConnection conn = url.openConnection();
 				// open the stream and put it into BufferedReader
-				BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+				final BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 				String inputLine;
 				String tempLine = null;
 				while ((inputLine = br.readLine()) != null) {
@@ -21,26 +21,30 @@ public class NetworkUtils {
 				}
 				br.close();
 				return tempLine;
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
+			}
+			catch (final MalformedURLException e) {
 				e.printStackTrace();
 			}
-		}		
+			catch (final IOException e) {
+				e.printStackTrace();
+			}
+		}
 		return null;
 	}
 
-	private static boolean netIsAvailable() {                                                                                                                                                                                                 
-		try {                                                                                                                                                                                                                                 
-			final URL url = new URL("http://www.google.com");                                                                                                                                                                                 
-			final URLConnection conn = url.openConnection();                                                                                                                                                                                  
-			conn.connect();                                                                                                                                                                                                                   
-			return true;                                                                                                                                                                                                                      
-		} catch (MalformedURLException e) {                                                                                                                                                                                                   
-			throw new RuntimeException(e);                                                                                                                                                                                                    
-		} catch (IOException e) {                                                                                                                                                                                                             
-			return false;                                                                                                                                                                                                                     
-		}                                                                                                                                                                                                                                     
-	}  
+	private static boolean netIsAvailable() {
+		try {
+			final URL url = new URL("http://www.google.com");
+			final URLConnection conn = url.openConnection();
+			conn.connect();
+			return true;
+		}
+		catch (final MalformedURLException e) {
+			throw new RuntimeException(e);
+		}
+		catch (final IOException e) {
+			return false;
+		}
+	}
 
 }

@@ -5,63 +5,67 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.item.ItemStack;
 
-public class var{
-		
-		private ItemStack temp = null;
-		private String sanitizedName;
-		private String fqrn;
-		
-		public var(String o){
-			String t = sanitize('<', o);
-			String t2 = sanitize('>', t);
-			sanitizedName = t2;
-			o = sanitize('"', t2);
-			fqrn = o;			
-		}
-		
-		private String sanitize(char token, String input){
-			 for (int i=0;i<input.length();i++) {
-		            if (input.charAt(i) == token) {
-		            input = input.replace(input.charAt(i), ' ');
-		                Utils.LOG_WARNING("MATCH FOUND");
-		            }
-		            input = input.replaceAll(" ", "");
-			 }
-			String output = input;
-			return output;			
-		}
-		
-		public String getFQRN(){
-			String s = fqrn;
-			return s;
-		}
-		
-		public String getsanitizedName(){
-			String s = sanitizedName;
-			return s;
-		}
-		
-		private ItemStack getOreDictStack(int stackSize){
-			ItemStack v = ItemUtils.getItemStack(sanitizedName, stackSize);
+public class var {
+
+	private ItemStack		temp	= null;
+	private final String	sanitizedName;
+	private final String	fqrn;
+
+	public var(String o) {
+		final String t = this.sanitize('<', o);
+		final String t2 = this.sanitize('>', t);
+		this.sanitizedName = t2;
+		o = this.sanitize('"', t2);
+		this.fqrn = o;
+	}
+
+	public String getFQRN() {
+		final String s = this.fqrn;
+		return s;
+	}
+
+	private ItemStack getOreDictStack(final int stackSize) {
+		final ItemStack v = ItemUtils.getItemStack(this.sanitizedName, stackSize);
+		return v;
+	}
+
+	public String getsanitizedName() {
+		final String s = this.sanitizedName;
+		return s;
+	}
+
+	public ItemStack getStack(final int stackSize) {
+		final String oreDict = "ore:";
+		if (this.fqrn.toLowerCase().contains(oreDict.toLowerCase())) {
+			final ItemStack v = this.getOreDictStack(stackSize);
 			return v;
 		}
-		
-		public ItemStack getStack(int stackSize){
-			String oreDict = "ore:";
-			if (fqrn.toLowerCase().contains(oreDict.toLowerCase())){
-				ItemStack v = getOreDictStack(stackSize);
-				return v;
+		final String[] fqrnSplit = this.fqrn.split(":");
+		String meta = "0";
+		try {
+			if (fqrnSplit[2] != null) {
+				meta = fqrnSplit[2];
 			}
-			String[] fqrnSplit = fqrn.split(":");
-			String meta = "0";
-			try {
-			if(fqrnSplit[2] != null){meta = fqrnSplit[2];}
-			temp = ItemUtils.getItemStackWithMeta(LoadedMods.MiscUtils, fqrn, fqrnSplit[1], Integer.parseInt(meta), stackSize);
-			}
-			catch (ArrayIndexOutOfBoundsException a){
-				temp = ItemUtils.getItemStackWithMeta(LoadedMods.MiscUtils, fqrn, fqrnSplit[1], Integer.parseInt(meta), stackSize);
-			}
-			return temp;			
-		}		
-		
+			this.temp = ItemUtils.getItemStackWithMeta(LoadedMods.MiscUtils, this.fqrn, fqrnSplit[1],
+					Integer.parseInt(meta), stackSize);
+		}
+		catch (final ArrayIndexOutOfBoundsException a) {
+			this.temp = ItemUtils.getItemStackWithMeta(LoadedMods.MiscUtils, this.fqrn, fqrnSplit[1],
+					Integer.parseInt(meta), stackSize);
+		}
+		return this.temp;
 	}
+
+	private String sanitize(final char token, String input) {
+		for (int i = 0; i < input.length(); i++) {
+			if (input.charAt(i) == token) {
+				input = input.replace(input.charAt(i), ' ');
+				Utils.LOG_WARNING("MATCH FOUND");
+			}
+			input = input.replaceAll(" ", "");
+		}
+		final String output = input;
+		return output;
+	}
+
+}

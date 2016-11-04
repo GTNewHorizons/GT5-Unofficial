@@ -14,27 +14,28 @@ import net.minecraft.util.ResourceLocation;
 @SideOnly(Side.CLIENT)
 public class GUI_WorkbenchAdvanced extends GuiContainer {
 
-	private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(CORE.MODID, "textures/gui/AdvancedCraftingTable.png");
+	private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(CORE.MODID,
+			"textures/gui/AdvancedCraftingTable.png");
 
-	public GUI_WorkbenchAdvanced(InventoryPlayer player_inventory, TileEntityWorkbenchAdvanced tile){
+	public GUI_WorkbenchAdvanced(final InventoryPlayer player_inventory, final TileEntityWorkbenchAdvanced tile) {
 		super(new Container_WorkbenchAdvanced(player_inventory, tile));
 	}
 
-
 	@Override
-	protected void drawGuiContainerForegroundLayer(int i, int j){
-		//this.fontRendererObj.drawString(I18n.format("Workbench", new Object[0]), 28, 6, 4210752);
-		//this.fontRendererObj.drawString(I18n.format("container.inventory", new Object[0]), 8, this.ySize - 96 + 2, 4210752);
+	protected void drawGuiContainerBackgroundLayer(final float f, final int i, final int j) {
+		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+		this.mc.renderEngine.bindTexture(GUI_WorkbenchAdvanced.craftingTableGuiTextures);
+		final int x = (this.width - this.xSize) / 2;
+		final int y = (this.height - this.ySize) / 2;
+		this.drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
 	}
 
-
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int i, int j){       
-		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);       
-		this.mc.renderEngine.bindTexture(craftingTableGuiTextures);       
-		int x = (width - xSize) / 2;       
-		int y = (height - ySize) / 2;       
-		this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
+	protected void drawGuiContainerForegroundLayer(final int i, final int j) {
+		// this.fontRendererObj.drawString(I18n.format("Workbench", new
+		// Object[0]), 28, 6, 4210752);
+		// this.fontRendererObj.drawString(I18n.format("container.inventory",
+		// new Object[0]), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 }

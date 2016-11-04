@@ -21,154 +21,75 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-@Optional.InterfaceList(value = {@Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles"), @Optional.Interface(iface = "baubles.api.BaubleType", modid = "Baubles")})
-public class ItemCloakingDevice extends Item implements IElectricItem, IElectricItemManager, IBauble{
+@Optional.InterfaceList(value = {
+		@Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles"),
+		@Optional.Interface(iface = "baubles.api.BaubleType", modid = "Baubles")
+})
+public class ItemCloakingDevice extends Item implements IElectricItem, IElectricItemManager, IBauble {
 
-	private final String unlocalizedName = "personalCloakingDevice";
-	private final ItemStack thisStack;
-	private final static int maxValueEU = 10000*20*500;
-	protected double chargeEU = 0;
+	private final static int	maxValueEU		= 10000 * 20 * 500;
+	private final String		unlocalizedName	= "personalCloakingDevice";
+	private final ItemStack		thisStack;
+	protected double			chargeEU		= 0;
 
-	public ItemCloakingDevice(double charge){
+	public ItemCloakingDevice(final double charge) {
 		this.chargeEU = charge;
 		this.setCreativeTab(AddToCreativeTab.tabMachines);
-		this.setUnlocalizedName(unlocalizedName);
+		this.setUnlocalizedName(this.unlocalizedName);
 		this.setMaxStackSize(1);
 		this.setTextureName(CORE.MODID + ":" + "personalCloakingDevice");
 		this.thisStack = ItemUtils.getSimpleStack(this);
-		this.charge(thisStack, charge, 3, true, false);
-		if (charge == 10000*20*500){
-			this.setDamage(thisStack, 13);	
+		this.charge(this.thisStack, charge, 3, true, false);
+		if (charge == 10000 * 20 * 500) {
+			this.setDamage(this.thisStack, 13);
 		}
-		GameRegistry.registerItem(this, unlocalizedName+"-"+charge);
+		GameRegistry.registerItem(this, this.unlocalizedName + "-" + charge);
 	}
 
 	@Override
-	public void onUpdate(ItemStack itemStack, World worldObj, Entity player, int p_77663_4_, boolean p_77663_5_) {
-		if (worldObj.isRemote) {
-			return;
-		}
-
-		if (player instanceof EntityPlayer){
-			for (ItemStack is : ((EntityPlayer) player).inventory.mainInventory) {
-				if (is == itemStack) {
-					continue;
-				}
-				if (is != null) {
-					if (is.getItem() instanceof IElectricItem) {
-						IElectricItem electricItem = (IElectricItem) is.getItem();
-						chargeEU = ElectricItem.manager.getCharge(is);
-					}
-
-				}
-			}
-		}
-
-
-		super.onUpdate(itemStack, worldObj, player, p_77663_4_, p_77663_5_);
-	}
-
-	@Override
-	public boolean canProvideEnergy(ItemStack itemStack) {
-		return true;
-	}
-
-	@Override
-	public Item getChargedItem(ItemStack itemStack) {
-		ItemStack x = itemStack.copy();
-		x.setItemDamage(maxValueEU);
-		return x.getItem();
-	}
-
-	@Override
-	public Item getEmptyItem(ItemStack itemStack) {
-		ItemStack x = itemStack.copy();
-		x.setItemDamage(0);
-		return x.getItem();
-	}
-
-	@Override
-	public double getMaxCharge(ItemStack itemStack) {
-		return maxValueEU;
-	}
-
-	@Override
-	public int getTier(ItemStack itemStack) {
-		return 5;
-	}
-
-	@Override
-	public double getTransferLimit(ItemStack itemStack) {
-		return 8196;
-	}
-
-	@Override
-	public String getItemStackDisplayName(ItemStack p_77653_1_) {
-
-		return (EnumChatFormatting.BLUE+"Personal Cloaking Device"+EnumChatFormatting.GRAY);
-	}
-
-	@Override
-	public double getDurabilityForDisplay(ItemStack stack)
-	{
-		//return 1.0D - getEnergyStored(stack) / this.capacity;
-		return  1.0D - (double)getCharge(stack) / (double)getMaxCharge(stack);
-	}
-
-	@Override
-	public boolean showDurabilityBar(ItemStack stack)
-	{
-		return true;
-	}
-	
-	public int secondsLeft(ItemStack stack){
-		double r = 0;
-		r = getCharge(stack)/(10000*20);
-		return (int) MathUtils.decimalRounding(r);
-	}
-
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {				
-		list.add("");				
-		list.add(EnumChatFormatting.GREEN+"Worn as a Belt within Baubles."+EnumChatFormatting.GRAY);	
-		list.add(EnumChatFormatting.GREEN+"Drains 10,000EU/t to provide invisibility."+EnumChatFormatting.GRAY);			
-		list.add("");			
-		list.add(EnumChatFormatting.GOLD+"IC2/EU Information"+EnumChatFormatting.GRAY);	
-		list.add(EnumChatFormatting.GRAY+"Tier: ["+EnumChatFormatting.YELLOW+getTier(thisStack)+EnumChatFormatting.GRAY+"] Input Limit: ["+EnumChatFormatting.YELLOW+getTransferLimit(thisStack)+EnumChatFormatting.GRAY +"EU/t]");
-		list.add(EnumChatFormatting.GRAY+"Current Power: ["+EnumChatFormatting.YELLOW+(long) getCharge(stack)+EnumChatFormatting.GRAY+"EU] ["+EnumChatFormatting.YELLOW+MathUtils.findPercentage(getCharge(stack), getMaxCharge(stack))+EnumChatFormatting.GRAY +"%]");
-		list.add(EnumChatFormatting.GRAY+"Time Remaining: ["+EnumChatFormatting.YELLOW+secondsLeft(stack)+ EnumChatFormatting.GRAY +" seconds]");
+	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+		list.add("");
+		list.add(EnumChatFormatting.GREEN + "Worn as a Belt within Baubles." + EnumChatFormatting.GRAY);
+		list.add(EnumChatFormatting.GREEN + "Drains 10,000EU/t to provide invisibility." + EnumChatFormatting.GRAY);
+		list.add("");
+		list.add(EnumChatFormatting.GOLD + "IC2/EU Information" + EnumChatFormatting.GRAY);
+		list.add(EnumChatFormatting.GRAY + "Tier: [" + EnumChatFormatting.YELLOW + this.getTier(this.thisStack)
+				+ EnumChatFormatting.GRAY + "] Input Limit: [" + EnumChatFormatting.YELLOW
+				+ this.getTransferLimit(this.thisStack) + EnumChatFormatting.GRAY + "EU/t]");
+		list.add(EnumChatFormatting.GRAY + "Current Power: [" + EnumChatFormatting.YELLOW + (long) this.getCharge(stack)
+				+ EnumChatFormatting.GRAY + "EU] [" + EnumChatFormatting.YELLOW
+				+ MathUtils.findPercentage(this.getCharge(stack), this.getMaxCharge(stack)) + EnumChatFormatting.GRAY
+				+ "%]");
+		list.add(EnumChatFormatting.GRAY + "Time Remaining: [" + EnumChatFormatting.YELLOW + this.secondsLeft(stack)
+				+ EnumChatFormatting.GRAY + " seconds]");
 		super.addInformation(stack, aPlayer, list, bool);
 	}
 
-	/*@Override
-	public ItemStack getContainerItem(ItemStack itemStack)
-	{
-		ItemStack newItem = itemStack.copy();
-		newItem.stackSize = 1;
-		extractEnergy(newItem, 150000, false);
-		return newItem;
-	}*/
-
-	/*@Override
-	public boolean hasContainerItem(ItemStack stack)
-	{
+	@Override
+	public boolean canEquip(final ItemStack arg0, final EntityLivingBase arg1) {
 		return true;
-	}*/
-
-	/*@Override
-	public int getBurnTime(ItemStack fuel) {
-		if ((fuel == null) || (fuel.getItem() != this)) {
-			return 0;
-		}
-		return extractEnergy(fuel, 150000, true) / 50 / 100;
-	}*/
+	}
 
 	@Override
-	public double charge(ItemStack stack, double amount, int tier,
-			boolean ignoreTransferLimit, boolean simulate) {		 
+	public boolean canProvideEnergy(final ItemStack itemStack) {
+		return true;
+	}
 
-		if (!simulate)
-		{
+	@Override
+	public boolean canUnequip(final ItemStack arg0, final EntityLivingBase arg1) {
+		return true;
+	}
+
+	@Override
+	public boolean canUse(final ItemStack stack, final double amount) {
+		return ElectricItem.manager.canUse(stack, amount);
+	}
+
+	@Override
+	public double charge(final ItemStack stack, final double amount, final int tier, final boolean ignoreTransferLimit,
+			final boolean simulate) {
+
+		if (!simulate) {
 			ElectricItem.manager.charge(stack, amount, tier, true, simulate);
 
 		}
@@ -176,10 +97,14 @@ public class ItemCloakingDevice extends Item implements IElectricItem, IElectric
 	}
 
 	@Override
-	public double discharge(ItemStack stack, double amount, int tier,
-			boolean ignoreTransferLimit, boolean externally, boolean simulate) {		
-		if (!simulate)
-		{
+	public void chargeFromArmor(final ItemStack stack, final EntityLivingBase entity) {
+		ElectricItem.manager.chargeFromArmor(stack, entity);
+	}
+
+	@Override
+	public double discharge(final ItemStack stack, final double amount, final int tier,
+			final boolean ignoreTransferLimit, final boolean externally, final boolean simulate) {
+		if (!simulate) {
 			ElectricItem.manager.discharge(stack, amount, tier, ignoreTransferLimit, externally, simulate);
 		}
 
@@ -187,69 +112,143 @@ public class ItemCloakingDevice extends Item implements IElectricItem, IElectric
 	}
 
 	@Override
-	public double getCharge(ItemStack stack) {
+	public BaubleType getBaubleType(final ItemStack arg0) {
+		return BaubleType.BELT;
+	}
+
+	@Override
+	public double getCharge(final ItemStack stack) {
 		return ElectricItem.manager.getCharge(stack);
 	}
 
 	@Override
-	public boolean canUse(ItemStack stack, double amount) {
-		return ElectricItem.manager.canUse(stack, amount);
+	public Item getChargedItem(final ItemStack itemStack) {
+		final ItemStack x = itemStack.copy();
+		x.setItemDamage(ItemCloakingDevice.maxValueEU);
+		return x.getItem();
 	}
 
 	@Override
-	public boolean use(ItemStack stack, double amount, EntityLivingBase entity) {
-		return ElectricItem.manager.use(stack, amount, entity);
+	public double getDurabilityForDisplay(final ItemStack stack) {
+		// return 1.0D - getEnergyStored(stack) / this.capacity;
+		return 1.0D - this.getCharge(stack) / this.getMaxCharge(stack);
+	}
+
+	/*
+	 * @Override public ItemStack getContainerItem(ItemStack itemStack) {
+	 * ItemStack newItem = itemStack.copy(); newItem.stackSize = 1;
+	 * extractEnergy(newItem, 150000, false); return newItem; }
+	 */
+
+	/*
+	 * @Override public boolean hasContainerItem(ItemStack stack) { return true;
+	 * }
+	 */
+
+	/*
+	 * @Override public int getBurnTime(ItemStack fuel) { if ((fuel == null) ||
+	 * (fuel.getItem() != this)) { return 0; } return extractEnergy(fuel,
+	 * 150000, true) / 50 / 100; }
+	 */
+
+	@Override
+	public Item getEmptyItem(final ItemStack itemStack) {
+		final ItemStack x = itemStack.copy();
+		x.setItemDamage(0);
+		return x.getItem();
 	}
 
 	@Override
-	public void chargeFromArmor(ItemStack stack, EntityLivingBase entity) {
-		ElectricItem.manager.chargeFromArmor(stack, entity);
+	public String getItemStackDisplayName(final ItemStack p_77653_1_) {
+
+		return EnumChatFormatting.BLUE + "Personal Cloaking Device" + EnumChatFormatting.GRAY;
 	}
 
 	@Override
-	public String getToolTip(ItemStack stack) {
+	public double getMaxCharge(final ItemStack itemStack) {
+		return ItemCloakingDevice.maxValueEU;
+	}
+
+	@Override
+	public int getTier(final ItemStack itemStack) {
+		return 5;
+	}
+
+	@Override
+	public String getToolTip(final ItemStack stack) {
 		return ElectricItem.manager.getToolTip(stack);
 	}
 
 	@Override
-	public boolean canEquip(ItemStack arg0, EntityLivingBase arg1) {
-		return true;
+	public double getTransferLimit(final ItemStack itemStack) {
+		return 8196;
+	}
+
+	@Override // TODO
+	public void onEquipped(final ItemStack arg0, final EntityLivingBase arg1) {
+
+	}
+
+	@Override // TODO
+	public void onUnequipped(final ItemStack arg0, final EntityLivingBase arg1) {
+
 	}
 
 	@Override
-	public boolean canUnequip(ItemStack arg0, EntityLivingBase arg1) {
-		return true;
+	public void onUpdate(final ItemStack itemStack, final World worldObj, final Entity player, final int p_77663_4_,
+			final boolean p_77663_5_) {
+		if (worldObj.isRemote) {
+			return;
+		}
+
+		if (player instanceof EntityPlayer) {
+			for (final ItemStack is : ((EntityPlayer) player).inventory.mainInventory) {
+				if (is == itemStack) {
+					continue;
+				}
+				if (is != null) {
+					if (is.getItem() instanceof IElectricItem) {
+						final IElectricItem electricItem = (IElectricItem) is.getItem();
+						this.chargeEU = ElectricItem.manager.getCharge(is);
+					}
+
+				}
+			}
+		}
+
+		super.onUpdate(itemStack, worldObj, player, p_77663_4_, p_77663_5_);
 	}
 
-	@Override
-	public BaubleType getBaubleType(ItemStack arg0) {
-		return BaubleType.BELT;
-	}
-
-	@Override //TODO
-	public void onEquipped(ItemStack arg0, EntityLivingBase arg1) {
-
-	}
-
-	@Override //TODO
-	public void onUnequipped(ItemStack arg0, EntityLivingBase arg1) {
-
-	}
-
-	@Override //TODO
-	public void onWornTick(ItemStack arg0, EntityLivingBase arg1) {
-		//Utils.LOG_INFO("Trying to Tick Belt. 1");
-		if (!arg1.worldObj.isRemote){
-			if (getCharge(arg0) >= 10000){
+	@Override // TODO
+	public void onWornTick(final ItemStack arg0, final EntityLivingBase arg1) {
+		// Utils.LOG_INFO("Trying to Tick Belt. 1");
+		if (!arg1.worldObj.isRemote) {
+			if (this.getCharge(arg0) >= 10000) {
 				arg1.addPotionEffect(new PotionEffect(Potion.invisibility.id, 10, 2));
-				discharge(arg0, 10000, 5, true, true, false);
+				this.discharge(arg0, 10000, 5, true, true, false);
 			}
 			else {
-				if (arg1.isPotionActive((Potion.invisibility))){
+				if (arg1.isPotionActive(Potion.invisibility)) {
 					arg1.removePotionEffect(Potion.invisibility.id);
 				}
 			}
 		}
+	}
+
+	public int secondsLeft(final ItemStack stack) {
+		double r = 0;
+		r = this.getCharge(stack) / (10000 * 20);
+		return (int) MathUtils.decimalRounding(r);
+	}
+
+	@Override
+	public boolean showDurabilityBar(final ItemStack stack) {
+		return true;
+	}
+
+	@Override
+	public boolean use(final ItemStack stack, final double amount, final EntityLivingBase entity) {
+		return ElectricItem.manager.use(stack, amount, entity);
 	}
 
 }

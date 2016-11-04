@@ -14,33 +14,33 @@ public class HANDLER_GT {
 	public static GT_Config mMaterialProperties = null;
 
 	@SuppressWarnings("unused")
-	public static void preInit(){
-		new MetaGeneratedGregtechItems();
-		if (mMaterialProperties != null){
-			GT_Materials.init(mMaterialProperties);
-		}
-		GregtechFluidHandler.run();
-	}
+	public static void init() {
 
-	@SuppressWarnings("unused")
-	public static void init(){
-
-		//Load General Blocks and set up some Basic Meta Tile Entitie states
+		// Load General Blocks and set up some Basic Meta Tile Entitie states
 		Gregtech_Blocks.run();
-		
-		//Register Tile Entities
+
+		// Register Tile Entities
 		COMPAT_HANDLER.registerGregtechMachines();
-		
-		//Add Custom Pipes, Wires and Cables.
+
+		// Add Custom Pipes, Wires and Cables.
 		GregtechConduits.run();
 		new MetaGeneratedGregtechTools();
 		new ProcessingToolHeadChoocher().run();
 		RecipeGen_BlastSmelterGT.generateRecipes();
-		
+
 	}
 
-	public static void postInit(){
-		
+	public static void postInit() {
+
+	}
+
+	@SuppressWarnings("unused")
+	public static void preInit() {
+		new MetaGeneratedGregtechItems();
+		if (HANDLER_GT.mMaterialProperties != null) {
+			GT_Materials.init(HANDLER_GT.mMaterialProperties);
+		}
+		GregtechFluidHandler.run();
 	}
 
 }

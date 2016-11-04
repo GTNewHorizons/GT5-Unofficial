@@ -9,79 +9,78 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
 
-public class ClientProxy extends CommonProxy{
+public class ClientProxy extends CommonProxy {
 
 	@Override
-	public void preInit(FMLPreInitializationEvent e) {
-		// TODO Auto-generated method stub
-		super.preInit(e);
-		//Do this weird things for textures.
-		GTplusplus.loadTextures();		
+	public int addArmor(final String armor) {
+		return RenderingRegistry.addNewArmourRendererPrefix(armor);
 	}
 
 	@Override
-	public void init(FMLInitializationEvent e) {
+	public void generateMysteriousParticles(final Entity theEntity) {
+		final double motionX = theEntity.worldObj.rand.nextGaussian() * 0.02D;
+		final double motionY = theEntity.worldObj.rand.nextGaussian() * 0.02D;
+		final double motionZ = theEntity.worldObj.rand.nextGaussian() * 0.02D;
+		final EntityFX particleMysterious = new EntityParticleFXMysterious(
+
+				theEntity.worldObj, theEntity.posX + theEntity.worldObj.rand.nextFloat() * theEntity.width
+
+						* 2.0F - theEntity.width,
+				theEntity.posY + 0.5D + theEntity.worldObj.rand.nextFloat()
+
+						* theEntity.height,
+				theEntity.posZ + theEntity.worldObj.rand.nextFloat() * theEntity.width
+
+						* 2.0F - theEntity.width,
+
+				motionX,
+
+				motionY,
+
+				motionZ);
+		Minecraft.getMinecraft().effectRenderer.addEffect(particleMysterious);
+	}
+
+	@Override
+	public void init(final FMLInitializationEvent e) {
 		// TODO Auto-generated method stub
 		super.init(e);
 	}
 
 	@Override
-	public void postInit(FMLPostInitializationEvent e) {
+	public void postInit(final FMLPostInitializationEvent e) {
 		// TODO Auto-generated method stub
 		super.postInit(e);
 	}
 
 	@Override
-	public void registerRenderThings(){
-		//MinecraftForgeClient.registerItemRenderer(ModItems.FluidCell.getItem(), new RenderLiquidCell());
-		//RenderingRegistry.registerEntityRenderingHandler(EntityBloodSteelMob.class, new RenderBloodSteelMob(new ModelBloodSteelMob(), 0));
-		//RenderingRegistry.registerEntityRenderingHandler(EntityBloodSteelHostileMob.class, new RenderBloodSteelMobHostile(new ModelBloodSteelMob(), 0));
-		//RenderingRegistry.registerEntityRenderingHandler(EntityGrenade.class, new RenderSnowball(ModItems.tutGrenade));
-
-		//ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBloodSteelChest.class, new BloodSteelChestRenderer());
-		//MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.tutChest), new ItemRenderBloodSteelChest());
+	public void preInit(final FMLPreInitializationEvent e) {
+		// TODO Auto-generated method stub
+		super.preInit(e);
+		// Do this weird things for textures.
+		GTplusplus.loadTextures();
 	}
 
 	@Override
-	public int addArmor(String armor){
-		return RenderingRegistry.addNewArmourRendererPrefix(armor);
-	}
+	public void registerRenderThings() {
+		// MinecraftForgeClient.registerItemRenderer(ModItems.FluidCell.getItem(),
+		// new RenderLiquidCell());
+		// RenderingRegistry.registerEntityRenderingHandler(EntityBloodSteelMob.class,
+		// new RenderBloodSteelMob(new ModelBloodSteelMob(), 0));
+		// RenderingRegistry.registerEntityRenderingHandler(EntityBloodSteelHostileMob.class,
+		// new RenderBloodSteelMobHostile(new ModelBloodSteelMob(), 0));
+		// RenderingRegistry.registerEntityRenderingHandler(EntityGrenade.class,
+		// new RenderSnowball(ModItems.tutGrenade));
 
-
-
-	@Override
-	public void generateMysteriousParticles(Entity theEntity)
-	{
-		double motionX = theEntity.worldObj.rand.nextGaussian() * 0.02D;
-		double motionY = theEntity.worldObj.rand.nextGaussian() * 0.02D;
-		double motionZ = theEntity.worldObj.rand.nextGaussian() * 0.02D;
-		EntityFX particleMysterious = new EntityParticleFXMysterious(
-
-				theEntity.worldObj, 
-				theEntity.posX + theEntity.worldObj.rand.nextFloat() * theEntity.width 
-
-				* 2.0F - theEntity.width, 
-				theEntity.posY + 0.5D + theEntity.worldObj.rand.nextFloat() 
-
-				* theEntity.height, 
-				theEntity.posZ + theEntity.worldObj.rand.nextFloat() * theEntity.width 
-
-				* 2.0F - theEntity.width, 
-
-				motionX, 
-
-				motionY, 
-
-				motionZ);
-		Minecraft.getMinecraft().effectRenderer.addEffect(particleMysterious);        
+		// ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBloodSteelChest.class,
+		// new BloodSteelChestRenderer());
+		// MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.tutChest),
+		// new ItemRenderBloodSteelChest());
 	}
 
 	@Override
-	public void serverStarting(FMLServerStartingEvent e)
-	{
-		
+	public void serverStarting(final FMLServerStartingEvent e) {
+
 	}
-
-
 
 }

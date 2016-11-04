@@ -11,28 +11,30 @@ import net.minecraft.inventory.Slot;
  * The Container I use for all my Basic Machines
  */
 public class CONTAINER_IndustrialCentrifuge extends GT_ContainerMetaTile_Machine {
-	
-    public CONTAINER_IndustrialCentrifuge(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
-    	
-        super(aInventoryPlayer, aTileEntity);
-    }
 
-    public CONTAINER_IndustrialCentrifuge(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, boolean bindInventory) {
-        super(aInventoryPlayer, aTileEntity, bindInventory);
-    }
+	public CONTAINER_IndustrialCentrifuge(final InventoryPlayer aInventoryPlayer,
+			final IGregTechTileEntity aTileEntity) {
 
-    @Override
-    public void addSlots(InventoryPlayer aInventoryPlayer) {
-        addSlotToContainer(new Slot(mTileEntity, 1, 154, 42));
-    }
+		super(aInventoryPlayer, aTileEntity);
+	}
 
-    @Override
-    public int getSlotCount() {
-        return 1;
-    }
+	public CONTAINER_IndustrialCentrifuge(final InventoryPlayer aInventoryPlayer, final IGregTechTileEntity aTileEntity,
+			final boolean bindInventory) {
+		super(aInventoryPlayer, aTileEntity, bindInventory);
+	}
 
-    @Override
-    public int getShiftClickSlotCount() {
-        return 1;
-    }
+	@Override
+	public void addSlots(final InventoryPlayer aInventoryPlayer) {
+		this.addSlotToContainer(new Slot(this.mTileEntity, 1, 154, 42));
+	}
+
+	@Override
+	public int getShiftClickSlotCount() {
+		return 1;
+	}
+
+	@Override
+	public int getSlotCount() {
+		return 1;
+	}
 }

@@ -5,16 +5,16 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public class CommandUtils {
 
-	public EntityPlayer getPlayer(ICommandSender icommandsender){
+	public EntityPlayer getPlayer(final ICommandSender icommandsender) {
 		EntityPlayer player;
 
-		if(icommandsender instanceof EntityPlayer){
-			player = (EntityPlayer)icommandsender;
+		if (icommandsender instanceof EntityPlayer) {
+			player = (EntityPlayer) icommandsender;
 			return player;
 		}
 		else {
 			return null;
 		}
 	}
-	
+
 }

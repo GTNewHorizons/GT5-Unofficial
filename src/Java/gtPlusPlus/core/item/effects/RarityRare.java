@@ -7,20 +7,20 @@ import net.minecraft.item.*;
 
 public class RarityRare extends Item {
 
-	public RarityRare(int par1){
+	public RarityRare(final int par1) {
 		super();
 		this.setCreativeTab(CreativeTabs.tabMaterials);
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack){
+	public EnumRarity getRarity(final ItemStack par1ItemStack) {
 		return EnumRarity.rare;
 	}
-	
+
 	@Override
-	public boolean hasEffect(ItemStack par1ItemStack){
+	public boolean hasEffect(final ItemStack par1ItemStack) {
 		return true;
 	}
-	
+
 }

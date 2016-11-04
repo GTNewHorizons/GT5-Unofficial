@@ -22,18 +22,16 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-public class Machine_WorkbenchAdvanced extends BlockContainer
-{
+public class Machine_WorkbenchAdvanced extends BlockContainer {
 	@SideOnly(Side.CLIENT)
-	private IIcon textureTop;
+	private IIcon	textureTop;
 	@SideOnly(Side.CLIENT)
-	private IIcon textureBottom;
+	private IIcon	textureBottom;
 	@SideOnly(Side.CLIENT)
-	private IIcon textureFront;
+	private IIcon	textureFront;
 
 	@SuppressWarnings("deprecation")
-	public Machine_WorkbenchAdvanced()
-	{
+	public Machine_WorkbenchAdvanced() {
 		super(Material.iron);
 		this.setBlockName("blockWorkbenchGTAdvanced");
 		this.setCreativeTab(AddToCreativeTab.tabMachines);
@@ -42,65 +40,61 @@ public class Machine_WorkbenchAdvanced extends BlockContainer
 
 	}
 
+	@Override
+	public TileEntity createNewTileEntity(final World world, final int p_149915_2_) {
+		return new TileEntityWorkbenchAdvanced(128000, 2);
+	}
+
 	/**
 	 * Gets the block's texture. Args: side, meta
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(int p_149691_1_, int p_149691_2_)
-	{
-		return p_149691_1_ == 1 ? this.textureTop : (p_149691_1_ == 0 ? this.textureBottom : (p_149691_1_ != 2 && p_149691_1_ != 4 ? this.blockIcon : this.textureFront));
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister p_149651_1_)
-	{
-		this.blockIcon = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "machine_top");
-		this.textureTop = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "cover_crafting");
-		this.textureBottom = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "machine_top");
-		this.textureFront = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "machine_top");
+	public IIcon getIcon(final int p_149691_1_, final int p_149691_2_) {
+		return p_149691_1_ == 1 ? this.textureTop
+				: p_149691_1_ == 0 ? this.textureBottom
+						: p_149691_1_ != 2 && p_149691_1_ != 4 ? this.blockIcon : this.textureFront;
 	}
 
 	/**
 	 * Called upon block activation (right click on the block.)
 	 */
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float lx, float ly, float lz)
-	{
+	public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player,
+			final int side, final float lx, final float ly, final float lz) {
 
-		ItemStack heldItem = PlayerUtils.getItemStackInPlayersHand(player);
-		if (world.isRemote) return true;
+		final ItemStack heldItem = PlayerUtils.getItemStackInPlayersHand(player);
+		if (world.isRemote) {
+			return true;
+		}
 		boolean holdingWrench = false;
 
-		if (heldItem != null){
-			if (heldItem.getItem() instanceof ItemToolWrench){
+		if (heldItem != null) {
+			if (heldItem.getItem() instanceof ItemToolWrench) {
 				holdingWrench = true;
 			}
-			else if (heldItem.getItem() instanceof IToolWrench){
+			else if (heldItem.getItem() instanceof IToolWrench) {
 				holdingWrench = true;
 			}
-			else if (heldItem.getItem() instanceof ITool){
+			else if (heldItem.getItem() instanceof ITool) {
 				holdingWrench = true;
 			}
-			/*else if (heldItem.getItem() instanceof GT_MetaGenerated_Tool){
-				GT_MetaGenerated_Tool testTool = (GT_MetaGenerated_Tool) heldItem.getItem();
-				if (testTool.canWrench(player, x, y, z)){
-					holdingWrench = true;
-				}
-			}*/
+			/*
+			 * else if (heldItem.getItem() instanceof GT_MetaGenerated_Tool){
+			 * GT_MetaGenerated_Tool testTool = (GT_MetaGenerated_Tool)
+			 * heldItem.getItem(); if (testTool.canWrench(player, x, y, z)){
+			 * holdingWrench = true; } }
+			 */
 			else {
 				holdingWrench = false;
 			}
 		}
 
-
-		TileEntity te = world.getTileEntity(x, y, z);
-		if (te != null && te instanceof TileEntityWorkbenchAdvanced)
-		{
-			if (!holdingWrench){
+		final TileEntity te = world.getTileEntity(x, y, z);
+		if (te != null && te instanceof TileEntityWorkbenchAdvanced) {
+			if (!holdingWrench) {
 				player.openGui(GTplusplus.instance, 4, world, x, y, z);
-				return true;				
+				return true;
 			}
 			Utils.LOG_INFO("Holding a Wrench, doing wrench things instead.");
 		}
@@ -108,7 +102,11 @@ public class Machine_WorkbenchAdvanced extends BlockContainer
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int p_149915_2_) {
-		return new TileEntityWorkbenchAdvanced(128000, 2);
+	@SideOnly(Side.CLIENT)
+	public void registerBlockIcons(final IIconRegister p_149651_1_) {
+		this.blockIcon = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "machine_top");
+		this.textureTop = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "cover_crafting");
+		this.textureBottom = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "machine_top");
+		this.textureFront = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "machine_top");
 	}
 }

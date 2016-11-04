@@ -7,24 +7,21 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.item.ItemStack;
 
-public class BaseItemScrew extends BaseItemComponent{
+public class BaseItemScrew extends BaseItemComponent {
 
-	public BaseItemScrew(Material material) {
+	public BaseItemScrew(final Material material) {
 		super(material, BaseItemComponent.ComponentTypes.SCREW);
-		addLatheRecipe();
+		this.addLatheRecipe();
 	}
 
-	private void addLatheRecipe(){
-		Utils.LOG_WARNING("Adding recipe for "+materialName+" Screws");
-		ItemStack boltStack = ItemUtils.getItemStackOfAmountFromOreDict(unlocalName.replace("itemScrew", "bolt"), 1);
-		if (null != boltStack){			
-	         GT_Values.RA.addLatheRecipe(
-	        		 boltStack,
-	        		 ItemUtils.getSimpleStack(this),
-	        		 null,
-	        		 (int) Math.max(componentMaterial.getMass() / 8L, 1L),
-	        		 4);			
-		}				
+	private void addLatheRecipe() {
+		Utils.LOG_WARNING("Adding recipe for " + this.materialName + " Screws");
+		final ItemStack boltStack = ItemUtils
+				.getItemStackOfAmountFromOreDict(this.unlocalName.replace("itemScrew", "bolt"), 1);
+		if (null != boltStack) {
+			GT_Values.RA.addLatheRecipe(boltStack, ItemUtils.getSimpleStack(this), null,
+					(int) Math.max(this.componentMaterial.getMass() / 8L, 1L), 4);
+		}
 	}
 
 }

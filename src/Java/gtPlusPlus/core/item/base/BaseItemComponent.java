@@ -16,80 +16,106 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-public class BaseItemComponent extends Item{
+public class BaseItemComponent extends Item {
 
-	public final Material componentMaterial;
-	public final String materialName;
-	public final String unlocalName;
-	public final ComponentTypes componentType;
+	public static enum ComponentTypes {
+		DUST("Dust", " Dust", "dust"), INGOT("Ingot", " Ingot", "ingot"), PLATE("Plate", " Plate",
+				"plate"), PLATEDOUBLE("PlateDouble", " Double Plate", "plateDouble"), ROD("Rod", " Rod",
+						"stick"), RODLONG("RodLong", " Long Rod", "stickLong"), GEAR("Gear", " Gear", "gear"), SCREW(
+								"Screw", " Screw", "screw"), BOLT("Bolt", " Bolt", "bolt"), ROTOR("Rotor", " Rotor",
+										"rotor"), RING("Ring", " Ring", "ring"), CELL("Cell", " Cell",
+												"cell"), NUGGET("Nugget", " Nugget", "nugget");
 
-	public BaseItemComponent(Material material, ComponentTypes componentType) {
+		private String	COMPONENT_NAME;
+		private String	DISPLAY_NAME;
+		private String	OREDICT_NAME;
+
+		private ComponentTypes(final String LocalName, final String DisplayName, final String OreDictName) {
+			this.COMPONENT_NAME = LocalName;
+			this.DISPLAY_NAME = DisplayName;
+			this.OREDICT_NAME = OreDictName;
+		}
+
+		public String getComponent() {
+			return this.COMPONENT_NAME;
+		}
+
+		public String getName() {
+			return this.DISPLAY_NAME;
+		}
+
+		public String getOreDictName() {
+			return this.OREDICT_NAME;
+		}
+
+	}
+	public final Material		componentMaterial;
+	public final String			materialName;
+	public final String			unlocalName;
+
+	public final ComponentTypes	componentType;
+
+	public BaseItemComponent(final Material material, final ComponentTypes componentType) {
 		this.componentMaterial = material;
-		this.unlocalName = "item"+componentType.COMPONENT_NAME+material.getUnlocalizedName();
+		this.unlocalName = "item" + componentType.COMPONENT_NAME + material.getUnlocalizedName();
 		this.materialName = material.getLocalizedName();
 		this.componentType = componentType;
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
-		this.setUnlocalizedName(unlocalName);
+		this.setUnlocalizedName(this.unlocalName);
 		this.setMaxStackSize(64);
-		this.setTextureName(CORE.MODID + ":" + "item"+componentType.COMPONENT_NAME);
-		GameRegistry.registerItem(this, unlocalName);
-		GT_OreDictUnificator.registerOre(componentType.getOreDictName()+material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
+		this.setTextureName(CORE.MODID + ":" + "item" + componentType.COMPONENT_NAME);
+		GameRegistry.registerItem(this, this.unlocalName);
+		GT_OreDictUnificator.registerOre(componentType.getOreDictName() + material.getUnlocalizedName(),
+				ItemUtils.getSimpleStack(this));
 	}
 
+	@SuppressWarnings({
+			"unchecked", "rawtypes"
+	})
 	@Override
-	public String getItemStackDisplayName(ItemStack p_77653_1_) {
+	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
 
-		return (componentMaterial.getLocalizedName()+componentType.DISPLAY_NAME);
-	}
+		if (this.materialName != null && this.materialName != "" && !this.materialName.equals("")) {
 
-	public final String getMaterialName() {
-		return materialName;
-	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
-
-		if (materialName != null && materialName != "" && !materialName.equals("")){
-
-
-			if (componentType == ComponentTypes.DUST){			
-				list.add(EnumChatFormatting.GRAY+"A pile of " + materialName + " dust.");
+			if (this.componentType == ComponentTypes.DUST) {
+				list.add(EnumChatFormatting.GRAY + "A pile of " + this.materialName + " dust.");
 			}
-			if (componentType == ComponentTypes.INGOT){			
-				list.add(EnumChatFormatting.GRAY+"A solid ingot of " + materialName + ".");	
-				if (materialName != null && materialName != "" && !materialName.equals("") && unlocalName.toLowerCase().contains("ingothot")){
-					list.add(EnumChatFormatting.GRAY+"Warning: "+EnumChatFormatting.RED+"Very hot! "+EnumChatFormatting.GRAY+" Avoid direct handling..");		
+			if (this.componentType == ComponentTypes.INGOT) {
+				list.add(EnumChatFormatting.GRAY + "A solid ingot of " + this.materialName + ".");
+				if (this.materialName != null && this.materialName != "" && !this.materialName.equals("")
+						&& this.unlocalName.toLowerCase().contains("ingothot")) {
+					list.add(EnumChatFormatting.GRAY + "Warning: " + EnumChatFormatting.RED + "Very hot! "
+							+ EnumChatFormatting.GRAY + " Avoid direct handling..");
 				}
 			}
-			if (componentType == ComponentTypes.PLATE){			
-				list.add(EnumChatFormatting.GRAY+"A flat plate of " + materialName + ".");	
+			if (this.componentType == ComponentTypes.PLATE) {
+				list.add(EnumChatFormatting.GRAY + "A flat plate of " + this.materialName + ".");
 			}
-			if (componentType == ComponentTypes.PLATEDOUBLE){			
-				list.add(EnumChatFormatting.GRAY+"A double plate of " + materialName + ".");	
+			if (this.componentType == ComponentTypes.PLATEDOUBLE) {
+				list.add(EnumChatFormatting.GRAY + "A double plate of " + this.materialName + ".");
 			}
-			if (componentType == ComponentTypes.ROD){			
-				list.add(EnumChatFormatting.GRAY+"A 40cm Rod of " + materialName + ".");	
+			if (this.componentType == ComponentTypes.ROD) {
+				list.add(EnumChatFormatting.GRAY + "A 40cm Rod of " + this.materialName + ".");
 			}
-			if (componentType == ComponentTypes.RODLONG){			
-				list.add(EnumChatFormatting.GRAY+"A 80cm Rod of " + materialName + ".");
+			if (this.componentType == ComponentTypes.RODLONG) {
+				list.add(EnumChatFormatting.GRAY + "A 80cm Rod of " + this.materialName + ".");
 			}
-			if (componentType == ComponentTypes.ROTOR){			
-				list.add(EnumChatFormatting.GRAY+"A Rotor made out of " + materialName + ". ");	
+			if (this.componentType == ComponentTypes.ROTOR) {
+				list.add(EnumChatFormatting.GRAY + "A Rotor made out of " + this.materialName + ". ");
 			}
-			if (componentType == ComponentTypes.BOLT){			
-				list.add(EnumChatFormatting.GRAY+"A small Bolt, constructed from " + materialName + ".");	
+			if (this.componentType == ComponentTypes.BOLT) {
+				list.add(EnumChatFormatting.GRAY + "A small Bolt, constructed from " + this.materialName + ".");
 			}
-			if (componentType == ComponentTypes.SCREW){			
-				list.add(EnumChatFormatting.GRAY+"A 8mm Screw, fabricated out of some " + materialName + ".");	
+			if (this.componentType == ComponentTypes.SCREW) {
+				list.add(EnumChatFormatting.GRAY + "A 8mm Screw, fabricated out of some " + this.materialName + ".");
 			}
-			if (componentType == ComponentTypes.GEAR){			
-				list.add(EnumChatFormatting.GRAY+"A large Gear, constructed from " + materialName + ".");
+			if (this.componentType == ComponentTypes.GEAR) {
+				list.add(EnumChatFormatting.GRAY + "A large Gear, constructed from " + this.materialName + ".");
 			}
-			if (componentType == ComponentTypes.RING){			
-				list.add(EnumChatFormatting.GRAY+"A " + materialName + " Ring.");
+			if (this.componentType == ComponentTypes.RING) {
+				list.add(EnumChatFormatting.GRAY + "A " + this.materialName + " Ring.");
 			}
-			if (componentMaterial.isRadioactive){
+			if (this.componentMaterial.isRadioactive) {
 				list.add(CORE.GT_Tooltip_Radioactive);
 			}
 
@@ -98,62 +124,25 @@ public class BaseItemComponent extends Item{
 		super.addInformation(stack, aPlayer, list, bool);
 	}
 
-
 	@Override
-	public int getColorFromItemStack(ItemStack stack, int HEX_OxFFFFFF) {
-		return componentMaterial.getRgbAsHex();
+	public int getColorFromItemStack(final ItemStack stack, final int HEX_OxFFFFFF) {
+		return this.componentMaterial.getRgbAsHex();
 	}
 
 	@Override
-	public void onUpdate(ItemStack iStack, World world, Entity entityHolding, int p_77663_4_, boolean p_77663_5_) {
-		EntityUtils.applyRadiationDamageToEntity(componentMaterial.vRadioationLevel, world, entityHolding);
+	public String getItemStackDisplayName(final ItemStack p_77653_1_) {
+
+		return this.componentMaterial.getLocalizedName() + this.componentType.DISPLAY_NAME;
 	}
 
+	public final String getMaterialName() {
+		return this.materialName;
+	}
 
-
-
-
-
-
-
-	public static enum ComponentTypes {
-		DUST("Dust", " Dust", "dust"),
-		INGOT("Ingot", " Ingot", "ingot"),
-		PLATE("Plate", " Plate", "plate"),
-		PLATEDOUBLE("PlateDouble", " Double Plate", "plateDouble"),
-		ROD("Rod", " Rod", "stick"),
-		RODLONG("RodLong", " Long Rod", "stickLong"),
-		GEAR("Gear", " Gear", "gear"),
-		SCREW("Screw", " Screw", "screw"),
-		BOLT("Bolt", " Bolt", "bolt"),
-		ROTOR("Rotor", " Rotor", "rotor"),
-		RING("Ring", " Ring", "ring"), 
-		CELL("Cell", " Cell", "cell"), 
-		NUGGET("Nugget", " Nugget", "nugget");	    
-
-		private String COMPONENT_NAME;
-		private String DISPLAY_NAME;
-		private String OREDICT_NAME;
-		private ComponentTypes (final String LocalName, String DisplayName, String OreDictName){
-			this.COMPONENT_NAME = LocalName;
-			this.DISPLAY_NAME = DisplayName;
-			this.OREDICT_NAME = OreDictName;
-		}
-
-		public String getComponent(){
-			return COMPONENT_NAME;
-		}	 
-
-		public String getName(){
-			return DISPLAY_NAME;
-		}
-		
-		public String getOreDictName(){
-		return OREDICT_NAME;
-		}
-		
+	@Override
+	public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
+			final boolean p_77663_5_) {
+		EntityUtils.applyRadiationDamageToEntity(this.componentMaterial.vRadioationLevel, world, entityHolding);
 	}
 
 }
-
-

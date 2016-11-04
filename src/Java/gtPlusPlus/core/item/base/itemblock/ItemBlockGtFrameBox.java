@@ -6,19 +6,22 @@ import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 
-public class ItemBlockGtFrameBox extends ItemBlock{
+public class ItemBlockGtFrameBox extends ItemBlock {
 
 	protected int blockColour;
-	
-	public ItemBlockGtFrameBox(Block block) {
+
+	public ItemBlockGtFrameBox(final Block block) {
 		super(block);
-		BlockBaseModular baseBlock = (BlockBaseModular) block;
+		final BlockBaseModular baseBlock = (BlockBaseModular) block;
 		this.blockColour = baseBlock.getRenderColor(1);
-		GT_OreDictUnificator.registerOre("frameGt"+block.getUnlocalizedName().replace("tile.", "").replace("tile.BlockGtFrame", "").replace("-", "").replace("_", "").replace(" ", "").replace("FrameBox", ""), ItemUtils.getSimpleStack(this));
+		GT_OreDictUnificator.registerOre(
+				"frameGt" + block.getUnlocalizedName().replace("tile.", "").replace("tile.BlockGtFrame", "")
+						.replace("-", "").replace("_", "").replace(" ", "").replace("FrameBox", ""),
+				ItemUtils.getSimpleStack(this));
 	}
 
-    public int getRenderColor(int aMeta) {
-        return blockColour;
-    }
+	public int getRenderColor(final int aMeta) {
+		return this.blockColour;
+	}
 
 }

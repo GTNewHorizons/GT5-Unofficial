@@ -8,40 +8,41 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 
-public abstract class IC2_TEComponent
-{
-  protected final TileEntityBlock parent;
-  
-  public IC2_TEComponent(TileEntityBlock parent)
-  {
-    this.parent = parent;
-  }
-  
-  public abstract String getDefaultName();
-  
-  public void readFromNbt(NBTTagCompound nbt) {}
-  
-  public NBTTagCompound writeToNbt()
-  {
-    return null;
-  }
-  
-  public void onLoaded() {}
-  
-  public void onUnloaded() {}
-  
-  public void onNeighborUpdate(Block srcBlock) {}
-  
-  public void onContainerUpdate(String name, EntityPlayerMP player) {}
-  
-  public void onNetworkUpdate(DataInput is)
-    throws IOException
-  {}
-  
-  public boolean enableWorldTick()
-  {
-    return false;
-  }
-  
-  public void onWorldTick() {}
+public abstract class IC2_TEComponent {
+	protected final TileEntityBlock parent;
+
+	public IC2_TEComponent(final TileEntityBlock parent) {
+		this.parent = parent;
+	}
+
+	public boolean enableWorldTick() {
+		return false;
+	}
+
+	public abstract String getDefaultName();
+
+	public void onContainerUpdate(final String name, final EntityPlayerMP player) {
+	}
+
+	public void onLoaded() {
+	}
+
+	public void onNeighborUpdate(final Block srcBlock) {
+	}
+
+	public void onNetworkUpdate(final DataInput is) throws IOException {
+	}
+
+	public void onUnloaded() {
+	}
+
+	public void onWorldTick() {
+	}
+
+	public void readFromNbt(final NBTTagCompound nbt) {
+	}
+
+	public NBTTagCompound writeToNbt() {
+		return null;
+	}
 }

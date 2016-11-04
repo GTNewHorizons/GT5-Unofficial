@@ -6,76 +6,61 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class Container_Charger extends Container
-{
-	private TileEntityCharger te;
+public class Container_Charger extends Container {
+	public static final int			INPUT_1	= 0;
 
-	public static final int INPUT_1 = 0;
+	private final TileEntityCharger	te;
 
-	private int slotID = 0;
+	private int						slotID	= 0;
 
-	public Container_Charger(TileEntityCharger te, EntityPlayer player)
-	{
+	public Container_Charger(final TileEntityCharger te, final EntityPlayer player) {
 		this.te = te;
 
-		//Fuel Slot A
-		addSlotToContainer(new Slot(te, slotID++, 80, 53));
+		// Fuel Slot A
+		this.addSlotToContainer(new Slot(te, this.slotID++, 80, 53));
 
-
-
-		//Inventory
-		for (int i = 0; i < 3; i++)
-		{
-			for (int j = 0; j < 9; j++)
-			{
-				addSlotToContainer(new Slot(player.inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+		// Inventory
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 9; j++) {
+				this.addSlotToContainer(new Slot(player.inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
 			}
 		}
 		// Hotbar
-		for (int i = 0; i < 9; i++)
-		{
-			addSlotToContainer(new Slot(player.inventory, i, 8 + i * 18, 142));
+		for (int i = 0; i < 9; i++) {
+			this.addSlotToContainer(new Slot(player.inventory, i, 8 + i * 18, 142));
 		}
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer player, int slotRaw)
-	{
-		ItemStack stack = null;
-		Slot slot = (Slot)inventorySlots.get(slotRaw);
+	public boolean canInteractWith(final EntityPlayer player) {
+		return this.te.isUseableByPlayer(player);
+	}
 
-		if (slot != null && slot.getHasStack())
-		{
-			ItemStack stackInSlot = slot.getStack();
+	@Override
+	public ItemStack transferStackInSlot(final EntityPlayer player, final int slotRaw) {
+		ItemStack stack = null;
+		final Slot slot = (Slot) this.inventorySlots.get(slotRaw);
+
+		if (slot != null && slot.getHasStack()) {
+			final ItemStack stackInSlot = slot.getStack();
 			stack = stackInSlot.copy();
 
-			if (slotRaw < 3 * 9)
-			{
-				if (!mergeItemStack(stackInSlot, 3 * 9, inventorySlots.size(), true))
-				{
+			if (slotRaw < 3 * 9) {
+				if (!this.mergeItemStack(stackInSlot, 3 * 9, this.inventorySlots.size(), true)) {
 					return null;
 				}
 			}
-			else if (!mergeItemStack(stackInSlot, 0, 3 * 9, false))
-			{
+			else if (!this.mergeItemStack(stackInSlot, 0, 3 * 9, false)) {
 				return null;
 			}
 
-			if (stackInSlot.stackSize == 0)
-			{
-				slot.putStack((ItemStack)null);
+			if (stackInSlot.stackSize == 0) {
+				slot.putStack((ItemStack) null);
 			}
-			else
-			{
+			else {
 				slot.onSlotChanged();
 			}
 		}
 		return stack;
-	}
-
-	@Override
-	public boolean canInteractWith(EntityPlayer player)
-	{
-		return te.isUseableByPlayer(player);
 	}
 }

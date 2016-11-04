@@ -8,35 +8,34 @@ import gtPlusPlus.core.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 
-public class BaseItemCell extends BaseItemComponent{
+public class BaseItemCell extends BaseItemComponent {
 
-	private IIcon base;
-	private IIcon overlay;
-	ComponentTypes Cell = ComponentTypes.CELL;
-	
-	public BaseItemCell(Material material) {
-		super(material, BaseItemComponent.ComponentTypes.CELL);		
+	private IIcon	base;
+	private IIcon	overlay;
+	ComponentTypes	Cell	= ComponentTypes.CELL;
+
+	public BaseItemCell(final Material material) {
+		super(material, BaseItemComponent.ComponentTypes.CELL);
+	}
+
+	@Override
+	public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
+		if (pass == 0) {
+			return this.base;
+		}
+		return this.overlay;
+	}
+
+	@Override
+	public void registerIcons(final IIconRegister i) {
+		this.base = i.registerIcon(CORE.MODID + ":" + "item" + this.Cell.getComponent());
+		this.overlay = i.registerIcon(CORE.MODID + ":" + "item" + this.Cell.getComponent() + "_Overlay");
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean requiresMultipleRenderPasses(){
+	public boolean requiresMultipleRenderPasses() {
 		return true;
-	}
-
-	@Override 
-	public void registerIcons(IIconRegister i) {
-		this.base = i.registerIcon(CORE.MODID + ":" + "item"+Cell.getComponent());	
-		this.overlay = i.registerIcon(CORE.MODID + ":" + "item"+Cell.getComponent()+"_Overlay");
-	}
-	
-
-	@Override
-	public IIcon getIconFromDamageForRenderPass(int damage, int pass) {
-		if(pass == 0) {
-			return this.base;
-		}
-		return this.overlay;
 	}
 
 }

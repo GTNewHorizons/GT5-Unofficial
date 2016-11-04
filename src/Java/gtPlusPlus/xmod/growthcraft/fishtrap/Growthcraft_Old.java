@@ -6,18 +6,18 @@ import net.minecraft.item.ItemStack;
 
 public class Growthcraft_Old {
 
-	public static void addTrapJunk(ItemStack loot, int lootChance){
-	    FishTrapRegistry.instance().addTrapJunk(new FishTrapEntry(loot, lootChance));
-
-	}
-
-	public static void addTrapTreasure(ItemStack loot, int lootChance){
-	    FishTrapRegistry.instance().addTrapTreasure(new FishTrapEntry(loot, lootChance));
-
-	}
-
-	public static void addTrapFish(ItemStack loot, int lootChance){
+	public static void addTrapFish(final ItemStack loot, final int lootChance) {
 		FishTrapRegistry.instance().addTrapFish(new FishTrapEntry(loot, lootChance));
+
+	}
+
+	public static void addTrapJunk(final ItemStack loot, final int lootChance) {
+		FishTrapRegistry.instance().addTrapJunk(new FishTrapEntry(loot, lootChance));
+
+	}
+
+	public static void addTrapTreasure(final ItemStack loot, final int lootChance) {
+		FishTrapRegistry.instance().addTrapTreasure(new FishTrapEntry(loot, lootChance));
 
 	}
 

@@ -5,24 +5,16 @@ import forestry.api.core.IClimateControlled;
 import forestry.api.multiblock.IMultiblockComponent;
 import forestry.api.multiblock.IMultiblockLogicAlveary;
 
-public abstract interface IAlvearyComponentAdvanced<T extends IMultiblockLogicAlveary>
-extends IMultiblockComponent
-{
-	@Override
-	public abstract T getMultiblockLogic();
+public abstract interface IAlvearyComponentAdvanced<T extends IMultiblockLogicAlveary> extends IMultiblockComponent {
+	public static abstract interface BeeModifier extends IAlvearyComponentAdvanced {
+		public abstract IBeeModifier getBeeModifier();
+	}
 
-	
-	public static abstract interface FrameHouse
-	extends IAlvearyComponentAdvanced
-	{
+	public static abstract interface FrameHouse extends IAlvearyComponentAdvanced {
 		public abstract void changeClimate(int paramInt, IClimateControlled paramIClimateControlled);
 	}
 
-	
-	public static abstract interface BeeModifier
-	extends IAlvearyComponentAdvanced
-	{
-		public abstract IBeeModifier getBeeModifier();
-	}
+	@Override
+	public abstract T getMultiblockLogic();
 
 }

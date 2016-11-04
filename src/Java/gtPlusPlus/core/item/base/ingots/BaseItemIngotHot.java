@@ -13,60 +13,61 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-public class BaseItemIngotHot extends BaseItemIngot{
+public class BaseItemIngotHot extends BaseItemIngot {
 
-	private ItemStack outputIngot;
-	private int tickCounter = 0;
-	private int tickCounterMax = 200;
-	private int mTier;
+	private final ItemStack	outputIngot;
+	private int				tickCounter		= 0;
+	private final int		tickCounterMax	= 200;
+	private final int		mTier;
 
-	public BaseItemIngotHot(String unlocalizedName, String materialName, ItemStack coldIngot, int tier) {
+	public BaseItemIngotHot(final String unlocalizedName, final String materialName, final ItemStack coldIngot,
+			final int tier) {
 		super(unlocalizedName, materialName, Utils.rgbtoHexValue(225, 225, 225), 0);
 		this.setTextureName(CORE.MODID + ":" + "itemIngotHot");
 		this.outputIngot = coldIngot;
 		this.mTier = tier;
-		generateRecipe();
-	}
-	
-	@Override
-	public String getItemStackDisplayName(ItemStack p_77653_1_) {
-
-		return ("Hot "+materialName+ " Ingot");
+		this.generateRecipe();
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
-		if (materialName != null && materialName != "" && !materialName.equals("")){
-			list.add(EnumChatFormatting.GRAY+"A "+EnumChatFormatting.RED+"burning hot"+EnumChatFormatting.GRAY+" ingot of " + materialName + ".");		
+	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+		if (this.materialName != null && this.materialName != "" && !this.materialName.equals("")) {
+			list.add(EnumChatFormatting.GRAY + "A " + EnumChatFormatting.RED + "burning hot" + EnumChatFormatting.GRAY
+					+ " ingot of " + this.materialName + ".");
 		}
 		super.addInformation(stack, aPlayer, list, bool);
 	}
 
+	private void generateRecipe() {
+		Utils.LOG_WARNING("Adding Vacuum Freezer recipe for a Hot Ingot of " + this.materialName + ".");
+		GT_Values.RA.addVacuumFreezerRecipe(ItemUtils.getSimpleStack(this), this.outputIngot.copy(), 60 * this.mTier);
+
+	}
+
 	@Override
-	public int getColorFromItemStack(ItemStack stack, int HEX_OxFFFFFF) {
+	public int getColorFromItemStack(final ItemStack stack, final int HEX_OxFFFFFF) {
 		return Utils.rgbtoHexValue(225, 225, 225);
 	}
 
-	private void generateRecipe(){
-		Utils.LOG_WARNING("Adding Vacuum Freezer recipe for a Hot Ingot of "+materialName+".");
-		GT_Values.RA.addVacuumFreezerRecipe(ItemUtils.getSimpleStack(this), outputIngot.copy(), 60*mTier);
+	@Override
+	public String getItemStackDisplayName(final ItemStack p_77653_1_) {
 
-		
-	}	
+		return "Hot " + this.materialName + " Ingot";
+	}
 
 	@Override
-	public void onUpdate(ItemStack iStack, World world, Entity entityHolding, int p_77663_4_, boolean p_77663_5_) {
-		if (!world.isRemote){
-			if(tickCounter < tickCounterMax){
-				tickCounter++;
-			}	
-			else if(tickCounter == tickCounterMax){
+	public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_,
+			final boolean p_77663_5_) {
+		if (!world.isRemote) {
+			if (this.tickCounter < this.tickCounterMax) {
+				this.tickCounter++;
+			}
+			else if (this.tickCounter == this.tickCounterMax) {
 				entityHolding.attackEntityFrom(DamageSource.onFire, 1);
-				tickCounter = 0;
+				this.tickCounter = 0;
 			}
 			super.onUpdate(iStack, world, entityHolding, p_77663_4_, p_77663_5_);
 		}
 	}
-
 
 }
