@@ -1,12 +1,11 @@
 package gtPlusPlus.core.recipe;
 
+import java.util.ArrayList;
+
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
 import gtPlusPlus.core.util.wrapper.var;
-
-import java.util.ArrayList;
-
 import net.minecraft.item.ItemStack;
 
 public class RECIPES_MTWRAPPER {

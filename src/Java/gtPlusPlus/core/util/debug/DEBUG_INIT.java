@@ -1,12 +1,12 @@
 package gtPlusPlus.core.util.debug;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.BaseItemWithCharge;
 import gtPlusPlus.core.item.general.BedLocator_Base;
 import gtPlusPlus.core.lib.CORE;
 import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class DEBUG_INIT {
 

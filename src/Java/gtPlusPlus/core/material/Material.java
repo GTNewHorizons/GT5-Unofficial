@@ -1,18 +1,16 @@
 package gtPlusPlus.core.material;
 
 import static gregtech.api.enums.GT_Values.M;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+
+import java.util.ArrayList;
+
+import gregtech.api.enums.*;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.materials.MaterialUtils;
 import gtPlusPlus.core.util.math.MathUtils;
-
-import java.util.ArrayList;
-
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;

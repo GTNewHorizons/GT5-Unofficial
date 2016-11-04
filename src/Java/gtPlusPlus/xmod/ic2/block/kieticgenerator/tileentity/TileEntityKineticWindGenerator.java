@@ -1,22 +1,20 @@
 package gtPlusPlus.xmod.ic2.block.kieticgenerator.tileentity;
 
+import java.util.List;
+import java.util.Vector;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import ic2.api.energy.tile.IKineticSource;
 import ic2.api.item.IKineticRotor;
 import ic2.api.item.IKineticRotor.GearboxType;
-import ic2.core.ContainerBase;
-import ic2.core.IC2;
-import ic2.core.IHasGui;
-import ic2.core.WorldData;
+import ic2.core.*;
 import ic2.core.block.invslot.InvSlotConsumableKineticRotor;
 import ic2.core.block.kineticgenerator.container.ContainerWindKineticGenerator;
 import ic2.core.block.kineticgenerator.gui.GuiWindKineticGenerator;
 import ic2.core.block.kineticgenerator.tileentity.TileEntityWindKineticGenerator;
 import ic2.core.network.NetworkManager;
 import ic2.core.util.Util;
-
-import java.util.List;
-import java.util.Vector;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,8 +23,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.ChunkCache;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileEntityKineticWindGenerator
 extends TileEntityWindKineticGenerator

@@ -1,11 +1,10 @@
 package gtPlusPlus.core.commands;
 
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.player.PlayerUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.player.PlayerUtils;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;

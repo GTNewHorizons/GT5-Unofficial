@@ -1,9 +1,8 @@
 package gtPlusPlus.core.tileentities.general;
 
-import gtPlusPlus.core.block.ModBlocks;
-
 import java.util.Random;
 
+import gtPlusPlus.core.block.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;

@@ -1,7 +1,7 @@
 package gtPlusPlus.core.block.machine;
 
-import gtPlusPlus.core.block.base.MetaBlock;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
+import gtPlusPlus.core.block.base.MetaBlock;
 import gtPlusPlus.core.lib.CORE;
 import net.minecraft.block.material.Material;
 import net.minecraft.world.IBlockAccess;

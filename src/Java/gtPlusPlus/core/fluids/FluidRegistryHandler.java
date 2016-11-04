@@ -2,11 +2,12 @@ package gtPlusPlus.core.fluids;
 
 import static gtPlusPlus.core.block.ModBlocks.blockFluidJackDaniels;
 import static gtPlusPlus.core.block.ModBlocks.fluidJackDaniels;
+
+import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.block.general.fluids.BlockFluidJackDaniels;
 import gtPlusPlus.core.lib.CORE;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.FluidRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class FluidRegistryHandler {
 	

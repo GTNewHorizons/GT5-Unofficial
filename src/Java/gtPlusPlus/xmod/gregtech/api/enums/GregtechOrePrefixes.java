@@ -4,33 +4,19 @@ import static gregtech.api.enums.GT_Values.B;
 import static gregtech.api.enums.GT_Values.D2;
 import static gregtech.api.enums.GT_Values.M;
 import static gtPlusPlus.core.util.Utils.getTcAspectStack;
-import gregtech.api.enums.ConfigCategories;
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.Element;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TC_Aspects;
+
+import java.util.*;
+
+import gregtech.api.enums.*;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
-import gregtech.api.enums.TextureSet;
-import gregtech.api.interfaces.IColorModulationContainer;
-import gregtech.api.interfaces.ICondition;
-import gregtech.api.interfaces.ISubTagContainer;
+import gregtech.api.interfaces.*;
 import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.GT_Config;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.*;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_OreRecipeRegistrator;
 import gtPlusPlus.xmod.gregtech.api.objects.GregtechItemData;
 import gtPlusPlus.xmod.gregtech.api.objects.GregtechMaterialStack;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;

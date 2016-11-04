@@ -1,6 +1,9 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.machines;
 
 import static gregtech.api.enums.GT_Values.V;
+
+import java.util.UUID;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -11,9 +14,6 @@ import gtPlusPlus.core.handler.events.UnbreakableBlockManager;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.player.PlayerCache;
 import gtPlusPlus.core.util.player.PlayerUtils;
-
-import java.util.UUID;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;

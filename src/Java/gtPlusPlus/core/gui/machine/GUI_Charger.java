@@ -1,5 +1,7 @@
 package gtPlusPlus.core.gui.machine;
 
+import org.lwjgl.opengl.GL11;
+
 import gtPlusPlus.core.container.Container_Charger;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.machines.TileEntityCharger;
@@ -9,8 +11,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
 
 public class GUI_Charger extends GuiContainer
 {

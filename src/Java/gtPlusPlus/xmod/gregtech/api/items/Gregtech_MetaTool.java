@@ -1,6 +1,12 @@
 package gtPlusPlus.xmod.gregtech.api.items;
 
 import static gregtech.api.enums.GT_Values.MOD_ID_RC;
+
+import java.util.*;
+import java.util.Map.Entry;
+
+import buildcraft.api.tools.IToolWrench;
+import cpw.mods.fml.common.Optional;
 import gregtech.api.enchants.Enchantment_Radioactivity;
 import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.IDamagableItem;
@@ -10,19 +16,11 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_ToolStats;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map.Entry;
-
 import mods.railcraft.api.core.items.IToolCrowbar;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -34,8 +32,6 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
-import buildcraft.api.tools.IToolWrench;
-import cpw.mods.fml.common.Optional;
 
 /**
  * This is an example on how you can create a Tool ItemStack, in this case a Bismuth Wrench:

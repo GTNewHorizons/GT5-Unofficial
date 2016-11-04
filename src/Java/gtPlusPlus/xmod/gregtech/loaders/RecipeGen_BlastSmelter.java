@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
+import java.util.ArrayList;
+
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gtPlusPlus.core.lib.CORE;
@@ -7,9 +9,6 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
-
-import java.util.ArrayList;
-
 import net.minecraft.item.ItemStack;
 
 public class RecipeGen_BlastSmelter  implements Runnable{

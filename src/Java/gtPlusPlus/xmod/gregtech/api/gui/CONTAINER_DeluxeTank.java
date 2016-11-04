@@ -1,18 +1,15 @@
 package gtPlusPlus.xmod.gregtech.api.gui;
 
-import gregtech.api.gui.GT_Container_BasicTank;
-import gregtech.api.gui.GT_Slot_Output;
-import gregtech.api.gui.GT_Slot_Render;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_DeluxeTank;
-
 import java.util.Iterator;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.gui.*;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_DeluxeTank;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!

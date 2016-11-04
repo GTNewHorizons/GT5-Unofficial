@@ -1,10 +1,9 @@
 package gtPlusPlus.core.material;
 
-import gtPlusPlus.core.util.item.ItemUtils;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.item.ItemStack;
 
 public class MaterialStack {

@@ -1,16 +1,15 @@
 package gtPlusPlus.core.item.base.dusts.decimal;
 
+import java.util.List;
+
+import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
-
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BaseItemCentidust extends Item{
 

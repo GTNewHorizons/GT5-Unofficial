@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.forestry.bees.alveary.gui;
 
+import org.lwjgl.opengl.GL11;
+
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.forestry.bees.alveary.TileAlvearyFrameHousing;
 import net.minecraft.client.Minecraft;
@@ -8,8 +10,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
 
 public class GUI_FrameHousing extends GuiContainer
 {

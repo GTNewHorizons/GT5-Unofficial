@@ -1,5 +1,10 @@
 package gtPlusPlus.xmod.thermalfoundation.item;
 
+import cofh.core.item.ItemBase;
+import cofh.core.item.ItemBucket;
+import cofh.core.util.energy.FurnaceFuelHandler;
+import cofh.core.util.fluid.BucketHandler;
+import cofh.lib.util.helpers.ItemHelper;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.thermalfoundation.block.TF_Blocks;
@@ -7,11 +12,6 @@ import gtPlusPlus.xmod.thermalfoundation.fluid.TF_Fluids;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-import cofh.core.item.ItemBase;
-import cofh.core.item.ItemBucket;
-import cofh.core.util.energy.FurnaceFuelHandler;
-import cofh.core.util.fluid.BucketHandler;
-import cofh.lib.util.helpers.ItemHelper;
 
 public class TF_Items {
 

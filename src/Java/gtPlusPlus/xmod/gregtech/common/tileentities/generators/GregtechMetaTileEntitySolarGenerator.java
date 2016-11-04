@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
 import static gregtech.api.enums.GT_Values.V;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Textures;

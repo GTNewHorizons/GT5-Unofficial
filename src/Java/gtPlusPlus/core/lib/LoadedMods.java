@@ -1,10 +1,10 @@
 package gtPlusPlus.core.lib;
 
+import cpw.mods.fml.common.Loader;
 import gtPlusPlus.core.lib.CORE.configSwitches;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechTextures;
 import gtPlusPlus.xmod.gregtech.recipes.GregtechRecipeAdder;
-import cpw.mods.fml.common.Loader;
 
 public class LoadedMods {
 

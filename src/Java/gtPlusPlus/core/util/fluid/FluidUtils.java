@@ -1,8 +1,6 @@
 package gtPlusPlus.core.util.fluid;
 
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_LanguageManager;
 import gtPlusPlus.core.fluids.GenericFluid;
 import gtPlusPlus.core.material.Material;
@@ -10,11 +8,7 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidContainerItem;
+import net.minecraftforge.fluids.*;
 
 public class FluidUtils {
 

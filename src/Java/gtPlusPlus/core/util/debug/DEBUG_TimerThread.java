@@ -1,9 +1,8 @@
 package gtPlusPlus.core.util.debug;
 
-import gtPlusPlus.core.util.Utils;
-
 import java.util.concurrent.TimeUnit;
 
+import gtPlusPlus.core.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;

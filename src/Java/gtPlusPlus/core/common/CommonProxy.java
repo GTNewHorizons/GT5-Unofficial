@@ -1,11 +1,14 @@
 package gtPlusPlus.core.common;
 
 import static gtPlusPlus.core.lib.CORE.DEBUG;
+
+import java.util.Iterator;
+
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.event.*;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.handler.COMPAT_HANDLER;
-import gtPlusPlus.core.handler.COMPAT_IntermodStaging;
-import gtPlusPlus.core.handler.GuiHandler;
+import gtPlusPlus.core.handler.*;
 import gtPlusPlus.core.handler.events.PickaxeBlockBreakEventHandler;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
@@ -16,18 +19,10 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.debug.DEBUG_INIT;
 import gtPlusPlus.core.util.player.PlayerCache;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
-
-import java.util.Iterator;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
 public class CommonProxy {
 	

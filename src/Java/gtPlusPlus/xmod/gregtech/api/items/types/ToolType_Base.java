@@ -1,15 +1,12 @@
 package gtPlusPlus.xmod.gregtech.api.items.types;
 
+import java.util.List;
+
 import gregtech.api.enums.SubTag;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_ItemBehaviour;
 import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaItem_Base;
-
-import java.util.List;
-
 import net.minecraft.block.BlockDispenser;
-import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
-import net.minecraft.dispenser.IBlockSource;
-import net.minecraft.dispenser.IPosition;
+import net.minecraft.dispenser.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;

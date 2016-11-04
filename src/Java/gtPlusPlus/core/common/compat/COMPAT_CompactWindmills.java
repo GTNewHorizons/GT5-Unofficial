@@ -2,6 +2,7 @@ package gtPlusPlus.core.common.compat;
 
 import static gtPlusPlus.core.handler.COMPAT_HANDLER.AddRecipeQueue;
 import static gtPlusPlus.core.handler.COMPAT_HANDLER.RemoveRecipeQueue;
+
 import gtPlusPlus.core.recipe.ShapedRecipeObject;
 import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.item.ItemStack;

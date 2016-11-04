@@ -1,8 +1,5 @@
 package gtPlusPlus.core.util.reflect;
 
-import gregtech.GT_Mod;
-import gtPlusPlus.core.util.Utils;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.URL;
@@ -10,6 +7,9 @@ import java.util.HashSet;
 import java.util.Scanner;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
+
+import gregtech.GT_Mod;
+import gtPlusPlus.core.util.Utils;
 
 public class ReflectionUtils {
 

@@ -1,10 +1,8 @@
 package gtPlusPlus.core.gui.beta;
 
-import gtPlusPlus.core.interfaces.IGuiManagerMiscUtils;
+import java.util.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import gtPlusPlus.core.interfaces.IGuiManagerMiscUtils;
 
 public class Gui_ID_Registry
 {

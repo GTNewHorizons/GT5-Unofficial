@@ -1,9 +1,8 @@
 package gtPlusPlus.core.item.base;
 
-import gtPlusPlus.core.lib.CORE;
-
 import java.util.List;
 
+import gtPlusPlus.core.lib.CORE;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.machine.heliumgen.tileentity;
 
+import java.util.List;
+
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.block.machine.heliumgen.slots.InvSlotRadiation;
 import gtPlusPlus.core.item.ModItems;
@@ -9,17 +11,12 @@ import ic2.api.Direction;
 import ic2.api.reactor.IReactor;
 import ic2.api.reactor.IReactorComponent;
 import ic2.api.tile.IWrenchable;
-import ic2.core.IC2;
-import ic2.core.IC2DamageSource;
-import ic2.core.Ic2Items;
+import ic2.core.*;
 import ic2.core.block.TileEntityInventory;
 import ic2.core.init.MainConfig;
 import ic2.core.item.reactor.ItemReactorHeatStorage;
 import ic2.core.network.NetworkManager;
 import ic2.core.util.ConfigUtil;
-
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;

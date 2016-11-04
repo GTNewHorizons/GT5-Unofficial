@@ -1,11 +1,10 @@
 package gtPlusPlus.core.util.gregtech.recipehandlers;
 
+import java.lang.reflect.Method;
+
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-
-import java.lang.reflect.Method;
-
 import net.minecraft.item.ItemStack;
 
 public final class GregtechRecipe {

@@ -1,17 +1,13 @@
 package gtPlusPlus.core.util.materials;
 
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.Element;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.TC_Aspects.TC_AspectStack;
-import gregtech.api.enums.TextureSet;
-import gregtech.api.objects.MaterialStack;
-import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.util.Utils;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import gregtech.api.enums.*;
+import gregtech.api.enums.TC_Aspects.TC_AspectStack;
+import gregtech.api.objects.MaterialStack;
+import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.util.Utils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.oredict.OreDictionary;

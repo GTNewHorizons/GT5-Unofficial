@@ -1,14 +1,15 @@
 package gtPlusPlus.xmod.thermalfoundation.block;
 
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.xmod.thermalfoundation.fluid.TF_Fluids;
-
 import java.util.Random;
 
+import cofh.core.fluid.BlockFluidInteractive;
+import cofh.lib.util.BlockWrapper;
+import cofh.lib.util.helpers.ServerHelper;
+import cpw.mods.fml.common.registry.GameRegistry;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.xmod.thermalfoundation.fluid.TF_Fluids;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.MaterialLiquid;
+import net.minecraft.block.material.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,10 +17,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import cofh.core.fluid.BlockFluidInteractive;
-import cofh.lib.util.BlockWrapper;
-import cofh.lib.util.helpers.ServerHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TF_Block_Fluid_Pyrotheum
   extends BlockFluidInteractive

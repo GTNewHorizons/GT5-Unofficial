@@ -1,9 +1,8 @@
 package gtPlusPlus.core.inventories;
 
-import gtPlusPlus.core.item.base.BaseItemBackpack;
-
 import java.util.UUID;
 
+import gtPlusPlus.core.item.base.BaseItemBackpack;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;

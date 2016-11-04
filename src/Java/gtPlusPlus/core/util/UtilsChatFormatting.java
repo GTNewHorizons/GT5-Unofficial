@@ -1,9 +1,6 @@
 package gtPlusPlus.core.util;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 import cpw.mods.fml.relauncher.Side;

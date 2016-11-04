@@ -1,13 +1,12 @@
 package gtPlusPlus.core.item.base.itemblock;
 
+import java.util.List;
+
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.entity.EntityUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
-
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;

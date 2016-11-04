@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.thermalfoundation.fluid;
 
+import cofh.core.util.fluid.DispenserEmptyBucketHandler;
+import cofh.core.util.fluid.DispenserFilledBucketHandler;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.thermalfoundation.item.TF_Items;
@@ -8,8 +10,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import cofh.core.util.fluid.DispenserEmptyBucketHandler;
-import cofh.core.util.fluid.DispenserFilledBucketHandler;
 
 public class TF_Fluids
 {

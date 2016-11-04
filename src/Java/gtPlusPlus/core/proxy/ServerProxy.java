@@ -1,9 +1,7 @@
 package gtPlusPlus.core.proxy;
 
+import cpw.mods.fml.common.event.*;
 import gtPlusPlus.core.common.CommonProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 public class ServerProxy extends CommonProxy{
 

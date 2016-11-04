@@ -3,6 +3,15 @@ package gtPlusPlus.xmod.forestry.bees.alveary;
 import java.util.ArrayList;
 import java.util.List;
 
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import forestry.apiculture.MaterialBeehive;
+import forestry.apiculture.multiblock.TileAlvearyPlain;
+import forestry.core.blocks.BlockStructure;
+import forestry.core.render.TextureManager;
+import gtPlusPlus.GTplusplus;
+import gtPlusPlus.core.creative.AddToCreativeTab;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -13,15 +22,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import forestry.apiculture.MaterialBeehive;
-import forestry.apiculture.multiblock.TileAlvearyPlain;
-import forestry.core.blocks.BlockStructure;
-import forestry.core.render.TextureManager;
-import gtPlusPlus.GTplusplus;
-import gtPlusPlus.core.creative.AddToCreativeTab;
 
 public class FR_BlockAlveary extends BlockStructure
 {

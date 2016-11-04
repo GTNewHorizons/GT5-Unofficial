@@ -1,11 +1,10 @@
 package gtPlusPlus.xmod.ic2.block.kieticgenerator.container;
 
+import java.util.List;
+
 import ic2.core.ContainerFullInv;
 import ic2.core.block.kineticgenerator.tileentity.TileEntityWindKineticGenerator;
 import ic2.core.slot.SlotInvSlot;
-
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 
 public class ContainerKineticWindgenerator

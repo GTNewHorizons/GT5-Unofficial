@@ -1,10 +1,9 @@
 package gtPlusPlus.xmod.gregtech.api.interfaces.internal;
 
-import gregtech.api.enums.SubTag;
-import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaItem_Base;
-
 import java.util.List;
 
+import gregtech.api.enums.SubTag;
+import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaItem_Base;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

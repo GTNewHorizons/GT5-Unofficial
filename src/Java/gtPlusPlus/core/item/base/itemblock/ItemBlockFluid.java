@@ -1,13 +1,12 @@
 package gtPlusPlus.core.item.base.itemblock;
 
+import java.util.List;
+
 import gtPlusPlus.core.fluids.BlockFluidBase;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
-
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;

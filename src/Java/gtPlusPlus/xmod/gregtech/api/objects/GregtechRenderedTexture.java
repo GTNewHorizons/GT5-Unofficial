@@ -1,9 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.objects;
 
 import gregtech.api.enums.Dyes;
-import gregtech.api.interfaces.IColorModulationContainer;
-import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.ITexture;
+import gregtech.api.interfaces.*;
 import gtPlusPlus.core.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;

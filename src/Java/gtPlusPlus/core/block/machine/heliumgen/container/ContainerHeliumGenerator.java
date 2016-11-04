@@ -1,11 +1,10 @@
 package gtPlusPlus.core.block.machine.heliumgen.container;
 
+import java.util.List;
+
 import gtPlusPlus.core.block.machine.heliumgen.tileentity.TileEntityHeliumGenerator;
 import ic2.core.ContainerBase;
 import ic2.core.slot.SlotInvSlot;
-
-import java.util.List;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnace;

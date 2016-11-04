@@ -1,13 +1,11 @@
 package gtPlusPlus.xmod.gregtech.common.tools;
 
-import gregtech.api.GregTech_API;
-import gregtech.api.damagesources.GT_DamageSources;
-import gregtech.api.interfaces.IToolStats;
-import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_ToolStats;
-import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaTool;
-
 import java.util.List;
 
+import gregtech.api.GregTech_API;
+import gregtech.api.damagesources.GT_DamageSources;
+import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_ToolStats;
+import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaTool;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
@@ -15,9 +13,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.AchievementList;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.*;
 import net.minecraftforge.event.world.BlockEvent;
 
 public abstract class TOOL_Gregtech_Base

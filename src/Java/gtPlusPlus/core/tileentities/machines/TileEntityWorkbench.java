@@ -1,18 +1,14 @@
 package gtPlusPlus.core.tileentities.machines;
 
-import gtPlusPlus.core.inventories.InventoryWorkbenchChest;
-import gtPlusPlus.core.inventories.InventoryWorkbenchHoloCrafting;
-import gtPlusPlus.core.inventories.InventoryWorkbenchHoloSlots;
-import gtPlusPlus.core.inventories.InventoryWorkbenchTools;
+import java.util.List;
+import java.util.Vector;
+
+import gtPlusPlus.core.inventories.*;
 import ic2.api.network.INetworkDataProvider;
 import ic2.api.network.INetworkUpdateListener;
 import ic2.api.tile.IWrenchable;
 import ic2.core.IC2;
 import ic2.core.network.NetworkManager;
-
-import java.util.List;
-import java.util.Vector;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCraftResult;

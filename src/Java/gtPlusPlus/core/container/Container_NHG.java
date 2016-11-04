@@ -2,9 +2,7 @@ package gtPlusPlus.core.container;
 
 import gtPlusPlus.core.tileentities.machines.TileEntityNHG;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotFurnace;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 
 public class Container_NHG extends Container

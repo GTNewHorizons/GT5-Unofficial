@@ -1,54 +1,22 @@
 package gtPlusPlus.core.handler;
 
 import static gtPlusPlus.core.lib.LoadedMods.Gregtech;
+
+import java.util.LinkedList;
+import java.util.Queue;
+
 import gregtech.api.util.GT_OreDictUnificator;
-import gtPlusPlus.core.common.compat.COMPAT_BigReactors;
-import gtPlusPlus.core.common.compat.COMPAT_CompactWindmills;
-import gtPlusPlus.core.common.compat.COMPAT_EnderIO;
-import gtPlusPlus.core.common.compat.COMPAT_ExtraUtils;
-import gtPlusPlus.core.common.compat.COMPAT_IC2;
-import gtPlusPlus.core.common.compat.COMPAT_MorePlanets;
-import gtPlusPlus.core.common.compat.COMPAT_PneumaticCraft;
-import gtPlusPlus.core.common.compat.COMPAT_RFTools;
-import gtPlusPlus.core.common.compat.COMPAT_SimplyJetpacks;
-import gtPlusPlus.core.common.compat.COMPAT_Thaumcraft;
+import gtPlusPlus.core.common.compat.*;
 import gtPlusPlus.core.handler.Recipes.LateRegistrationHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.recipe.RECIPES_GREGTECH;
-import gtPlusPlus.core.recipe.RECIPES_LaserEngraver;
-import gtPlusPlus.core.recipe.ShapedRecipeObject;
+import gtPlusPlus.core.recipe.*;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.Gregtech4Content;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechDehydrator;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechEnergyBuffer;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechGeothermalThermalGenerator;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialBlastSmelter;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialCentrifuge;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialCokeOven;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialElectrolyzer;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialMacerator;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialMassFabricator;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialMultiTank;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialPlatePress;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIndustrialWiremill;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechIronBlastFurnace;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechLFTR;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechPowerSubStation;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechRocketFuelGenerator;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSafeBlock;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSolarGenerators;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSteamCondenser;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechSuperConductionPoint;
-import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechTieredFluidTanks;
-
-import java.util.LinkedList;
-import java.util.Queue;
-
+import gtPlusPlus.xmod.gregtech.registration.gregtech.*;
 import net.minecraft.item.ItemStack;
 
 public class COMPAT_HANDLER {

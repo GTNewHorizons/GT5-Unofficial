@@ -1,9 +1,9 @@
 package gtPlusPlus.core.util.math;
 
-import gtPlusPlus.core.util.Utils;
-
 import java.util.Map;
 import java.util.Random;
+
+import gtPlusPlus.core.util.Utils;
 
 public class MathUtils {
 
