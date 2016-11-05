@@ -3,6 +3,7 @@ package com.detrav.utils;
 import gregtech.api.enums.Materials;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.item.ItemStack;
@@ -35,6 +36,7 @@ public class PortableAnvilInventory extends InventoryBasic {
                             FluidStack fStack = recipe.getFluidOutput(0);
                             if (fStack.getFluidID() == fluidID) {
                                 ItemStack gtCopy = gtTool;
+                                //make copy
                                 float amount = fStack.amount * 2f / 1000f;
                                 long maxDamage = GT_MetaGenerated_Tool.getToolMaxDamage(gtCopy);
                                 long damage = GT_MetaGenerated_Tool.getToolDamage(gtCopy);

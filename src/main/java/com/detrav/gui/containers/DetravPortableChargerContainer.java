@@ -5,7 +5,7 @@ import com.detrav.net.DetravNetwork;
 import com.detrav.net.DetravPortableChargerPacket01;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.common.items.armor.SlotLocked;
+import gregtech.common.items.armor.gui.SlotLocked;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
