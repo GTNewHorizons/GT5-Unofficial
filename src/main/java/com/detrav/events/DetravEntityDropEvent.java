@@ -7,6 +7,7 @@ import gregtech.api.items.GT_MetaGenerated_Item_X01;
 import ic2.core.Ic2Items;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -21,13 +22,15 @@ import java.util.Random;
  */
 public class DetravEntityDropEvent {
 
-    final static int baseShance = 40;
+    final static int baseShance = 70;
     static Random random = new Random();
 
     @SubscribeEvent
     public void onLivingDropsEvent(LivingDropsEvent event) {
         if(event.entity.isCreatureType(EnumCreatureType.monster, false)) {
+
             float shance = (baseShance + event.entityLiving.getMaxHealth());
+            if(event.entity instanceof EntityEnderman) shance -= event.entityLiving.getMaxHealth()/2f;
             int count = 0;
             while (shance > 100) {
                 count++;
@@ -36,7 +39,7 @@ public class DetravEntityDropEvent {
 
             if(count>0)
             {
-                count = (int)Math.pow(count,event.lootingLevel+1) + 1;
+                count = (int)(Math.pow(count,event.lootingLevel+1)*1.57f + 1);
 
                 while (count>Ic2Items.coin.getMaxStackSize()) {
                     ItemStack itemStackToDrop = Ic2Items.coin.copy();
@@ -52,8 +55,9 @@ public class DetravEntityDropEvent {
             }
 
             count = 0;
+            shance += baseShance;
 
-            shance = shance*(event.lootingLevel +1);
+            shance = shance*(event.lootingLevel*1.57f +1);
             while (shance > 100) {
                 count++;
                 shance -= 100;
