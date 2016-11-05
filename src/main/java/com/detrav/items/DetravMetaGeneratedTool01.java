@@ -137,9 +137,9 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
 
     public boolean setItemStackToDetravData(ItemStack aStack, ItemStack what)
     {
-        if(what == null || aStack == null) return false;
+        if(aStack == null) return false;
         NBTTagCompound aNBT = aStack.getTagCompound();
-        if(aNBT ==null) {
+        if(aNBT == null) {
             aNBT = new NBTTagCompound();
             NBTTagCompound detravData = new NBTTagCompound();
             aNBT.setTag("DetravData", detravData);
@@ -147,12 +147,14 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
         }
         {
             NBTTagCompound detravData = aNBT.getCompoundTag("DetravData");
-            if (detravData == null || detravData.getShort("id") == 0 )
-            {
+            if (detravData == null || detravData.getShort("id") == 0) {
                 detravData = new NBTTagCompound();
                 aNBT.setTag("DetravData", detravData);
             }
-            what.writeToNBT(detravData);
+            if (what == null)
+                aNBT.removeTag("DetravData");
+            else
+                what.writeToNBT(detravData);
             return true;
         }
     }

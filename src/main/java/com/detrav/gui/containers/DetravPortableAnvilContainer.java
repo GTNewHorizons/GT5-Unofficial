@@ -63,10 +63,8 @@ public class DetravPortableAnvilContainer extends Container {
                 p_75134_1_.dropPlayerItemWithRandomChoice(itemstack, false);
             }
             itemstack = this.slots.getStackInSlot(1);
-            if (itemstack != null) {
-                if (stack == null || !DetravMetaGeneratedTool01.INSTANCE.setItemStackToDetravData(stack, itemstack)) {
-                    p_75134_1_.dropPlayerItemWithRandomChoice(itemstack, false);
-                }
+            if (stack == null || !DetravMetaGeneratedTool01.INSTANCE.setItemStackToDetravData(stack, itemstack)) {
+                p_75134_1_.dropPlayerItemWithRandomChoice(itemstack, false);
             }
             //itemstack.writeToNBT()
         }
