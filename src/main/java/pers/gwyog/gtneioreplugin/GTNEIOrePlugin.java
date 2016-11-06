@@ -4,12 +4,14 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.relauncher.Side;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
-import pers.gwyog.gtneioreplugin.event.ClientTickHandler;
+import pers.gwyog.gtneioreplugin.util.GTOreLayerHelper;
+import pers.gwyog.gtneioreplugin.util.GTSmallOreHelper;
 
 @Mod(modid = GTNEIOrePlugin.MODID, name = GTNEIOrePlugin.NAME, version = GTNEIOrePlugin.VERSION, dependencies = "required-after:gregtech;required-after:NotEnoughItems")
 public class GTNEIOrePlugin {
@@ -21,9 +23,11 @@ public class GTNEIOrePlugin {
     public static GTNEIOrePlugin instance;
     
     @EventHandler
-    public void init(FMLInitializationEvent event) {
-    	if (event.getSide() == Side.CLIENT)
-    		FMLCommonHandler.instance().bus().register(new ClientTickHandler());
-    }
+	public void onLoadComplete(FMLLoadCompleteEvent event) {
+    	if (event.getSide() == Side.CLIENT) {
+    		new GTOreLayerHelper();
+			new GTSmallOreHelper();
+    	}
+	}
 
 }
