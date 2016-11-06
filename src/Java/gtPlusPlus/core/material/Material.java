@@ -1,9 +1,7 @@
 package gtPlusPlus.core.material;
 
 import static gregtech.api.enums.GT_Values.M;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.*;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;

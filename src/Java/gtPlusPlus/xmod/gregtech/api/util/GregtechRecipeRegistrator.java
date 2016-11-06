@@ -1,13 +1,8 @@
 package gtPlusPlus.xmod.gregtech.api.util;
 
-import static gregtech.api.enums.GT_Values.L;
-import static gregtech.api.enums.GT_Values.M;
-import static gregtech.api.enums.GT_Values.RA;
+import static gregtech.api.enums.GT_Values.*;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TC_Aspects;
+import gregtech.api.enums.*;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.interfaces.internal.IThaumcraftCompat;
 import gregtech.api.util.GT_ModHandler;
@@ -18,9 +13,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.objects.GregtechItemData;
 import gtPlusPlus.xmod.gregtech.api.objects.GregtechMaterialStack;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;

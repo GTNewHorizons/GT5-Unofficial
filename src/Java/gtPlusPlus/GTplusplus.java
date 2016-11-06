@@ -1,14 +1,8 @@
 package gtPlusPlus;
 
 import static gtPlusPlus.core.lib.CORE.DEBUG;
-import static gtPlusPlus.core.lib.CORE.configSwitches.disableEnderIOIntegration;
-import static gtPlusPlus.core.lib.CORE.configSwitches.disableIC2Recipes;
-import static gtPlusPlus.core.lib.CORE.configSwitches.enableAlternativeBatteryAlloy;
-import static gtPlusPlus.core.lib.CORE.configSwitches.enableAlternativeDivisionSigilRecipe;
-import static gtPlusPlus.core.lib.CORE.configSwitches.enableCustomAlvearyBlocks;
-import static gtPlusPlus.core.lib.CORE.configSwitches.enableThaumcraftShardUnification;
-import gregtech.api.util.GT_Config;
-import gregtech.api.util.GT_Recipe;
+import static gtPlusPlus.core.lib.CORE.configSwitches.*;
+import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
 import gtPlusPlus.core.commands.CommandMath;
@@ -32,15 +26,9 @@ import java.io.File;
 import java.util.Collection;
 
 import net.minecraftforge.common.config.Configuration;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.event.FMLServerStoppingEvent;
+import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

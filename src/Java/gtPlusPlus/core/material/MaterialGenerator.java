@@ -17,11 +17,7 @@ import gtPlusPlus.core.item.base.rotors.BaseItemRotor;
 import gtPlusPlus.core.item.base.screws.BaseItemScrew;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelter;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_DustGeneration;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Extruder;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Plates;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_ShapedCrafting;
+import gtPlusPlus.xmod.gregtech.loaders.*;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 

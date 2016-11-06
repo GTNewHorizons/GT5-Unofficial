@@ -3,9 +3,7 @@ package gtPlusPlus.core.common;
 import static gtPlusPlus.core.lib.CORE.DEBUG;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.handler.COMPAT_HANDLER;
-import gtPlusPlus.core.handler.COMPAT_IntermodStaging;
-import gtPlusPlus.core.handler.GuiHandler;
+import gtPlusPlus.core.handler.*;
 import gtPlusPlus.core.handler.events.PickaxeBlockBreakEventHandler;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
@@ -24,10 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.*;
 
 public class CommonProxy {
 	

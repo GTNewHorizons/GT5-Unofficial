@@ -1,8 +1,6 @@
 package gregtech.api.util;
 
-import static gregtech.api.enums.GT_Values.E;
-import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
-import static gregtech.api.enums.GT_Values.W;
+import static gregtech.api.enums.GT_Values.*;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
@@ -10,11 +8,7 @@ import gregtech.api.objects.GT_ItemStack;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;

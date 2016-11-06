@@ -1,12 +1,7 @@
 package gtPlusPlus.core.handler.Recipes;
 
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
-import gtPlusPlus.core.recipe.RECIPES_General;
-import gtPlusPlus.core.recipe.RECIPES_MachineComponents;
-import gtPlusPlus.core.recipe.RECIPES_Machines;
-import gtPlusPlus.core.recipe.RECIPES_Shapeless;
-import gtPlusPlus.core.recipe.RECIPES_Tools;
-import gtPlusPlus.core.recipe.RECIPE_Batteries;
+import gtPlusPlus.core.recipe.*;
 import gtPlusPlus.core.util.Utils;
 
 public class RegistrationHandler {

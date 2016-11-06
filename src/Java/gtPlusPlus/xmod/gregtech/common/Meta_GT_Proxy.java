@@ -1,24 +1,12 @@
 package gtPlusPlus.xmod.gregtech.common;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ConfigCategories;
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OreDictNames;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
-import gregtech.api.enums.TC_Aspects;
-import gregtech.api.enums.ToolDictNames;
+import gregtech.api.enums.*;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.objects.ItemData;
 import gregtech.api.objects.MaterialStack;
-import gregtech.api.util.GT_Log;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_RecipeRegistrator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.*;
 import gregtech.common.GT_Proxy.OreDictEventContainer;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
@@ -28,12 +16,7 @@ import gtPlusPlus.xmod.gregtech.api.util.GregtechOreDictUnificator;
 import gtPlusPlus.xmod.gregtech.api.util.GregtechRecipeRegistrator;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;

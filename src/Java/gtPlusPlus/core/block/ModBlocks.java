@@ -6,7 +6,6 @@ import gtPlusPlus.core.block.machine.Machine_WorkbenchAdvanced;
 import gtPlusPlus.core.fluids.FluidRegistryHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks2;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.Fluid;

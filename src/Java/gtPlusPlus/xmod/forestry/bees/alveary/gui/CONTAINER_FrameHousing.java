@@ -1,15 +1,15 @@
 package gtPlusPlus.xmod.forestry.bees.alveary.gui;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import forestry.api.apiculture.IHiveFrame;
 import forestry.core.gui.tooltips.ToolTip;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.slots.SlotFrame;
 import gtPlusPlus.xmod.forestry.bees.alveary.TileAlvearyFrameHousing;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 public class CONTAINER_FrameHousing extends Container
 {

@@ -6,9 +6,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.common.blocks.fluid.GregtechFluidHandler;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
-import gtPlusPlus.xmod.gregtech.loaders.Gregtech_Blocks;
-import gtPlusPlus.xmod.gregtech.loaders.ProcessingToolHeadChoocher;
-import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelterGT;
+import gtPlusPlus.xmod.gregtech.loaders.*;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
 
 public class HANDLER_GT {

@@ -1,8 +1,6 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
-import gregtech.api.enums.SubTag;
+import gregtech.api.enums.*;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.lib.CORE;

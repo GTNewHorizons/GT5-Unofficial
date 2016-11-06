@@ -9,19 +9,16 @@
  * SirSengir (original work), CovertJaguar, Player, Binnie, MysteriousAges
  ******************************************************************************/
 package gtPlusPlus.xmod.forestry.bees.items;
-import net.minecraft.block.Block;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.WeightedRandomChestContent;
-import net.minecraftforge.common.ChestGenHooks;
-import cpw.mods.fml.common.registry.GameRegistry;
 import forestry.core.items.ItemBlockForestry;
 import forestry.core.utils.StringUtil;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.xmod.forestry.bees.alveary.FR_BlockAlveary;
+import net.minecraft.block.Block;
+import net.minecraft.item.*;
+import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraftforge.common.ChestGenHooks;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class FR_ItemRegistry {
 

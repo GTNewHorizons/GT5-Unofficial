@@ -1,10 +1,6 @@
 package gtPlusPlus.core.creative;
 
-import gtPlusPlus.core.creative.tabs.MiscUtilCreativeTabBlock;
-import gtPlusPlus.core.creative.tabs.MiscUtilCreativeTabMachines;
-import gtPlusPlus.core.creative.tabs.MiscUtilCreativeTabMisc;
-import gtPlusPlus.core.creative.tabs.MiscUtilCreativeTabOther;
-import gtPlusPlus.core.creative.tabs.MiscUtilCreativeTabTools;
+import gtPlusPlus.core.creative.tabs.*;
 import gtPlusPlus.core.lib.CORE;
 import net.minecraft.creativetab.CreativeTabs;
 

@@ -2,8 +2,8 @@ package gtPlusPlus.core.common.compat;
 
 
 import static gtPlusPlus.core.handler.COMPAT_HANDLER.RemoveRecipeQueue;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.lib.CORE.configSwitches;
+import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.ShapedRecipeObject;
 import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.item.ItemStack;

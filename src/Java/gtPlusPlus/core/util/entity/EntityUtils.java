@@ -2,15 +2,12 @@ package gtPlusPlus.core.util.entity;
 
 import ic2.core.IC2Potion;
 import ic2.core.item.armor.ItemArmorHazmat;
-import cpw.mods.fml.common.registry.EntityRegistry;
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.*;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import cpw.mods.fml.common.registry.EntityRegistry;
 
 public class EntityUtils {
 

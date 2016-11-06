@@ -1,7 +1,6 @@
 package gtPlusPlus.core.util;
 
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.TC_Aspects;
+import gregtech.api.enums.*;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.lib.CORE;
@@ -15,13 +14,7 @@ import ic2.core.item.resources.ItemCell;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -29,9 +22,7 @@ import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.*;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.EnumUtils;

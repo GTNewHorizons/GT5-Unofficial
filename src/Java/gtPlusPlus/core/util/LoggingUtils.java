@@ -1,9 +1,6 @@
 package gtPlusPlus.core.util;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Date;
 
 public class LoggingUtils {

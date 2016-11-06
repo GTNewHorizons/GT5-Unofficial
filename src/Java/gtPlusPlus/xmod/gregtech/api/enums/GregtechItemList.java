@@ -1,9 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.enums;
 
 import static gregtech.api.enums.GT_Values.W;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.*;
 import gtPlusPlus.xmod.gregtech.api.interfaces.GregtechItemContainer;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;

@@ -1,9 +1,7 @@
 package gtPlusPlus.core.handler;
 
 import gtPlusPlus.GTplusplus;
-import gtPlusPlus.core.container.Container_BackpackBase;
-import gtPlusPlus.core.container.Container_Workbench;
-import gtPlusPlus.core.container.Container_WorkbenchAdvanced;
+import gtPlusPlus.core.container.*;
 import gtPlusPlus.core.gui.beta.Gui_ID_Registry;
 import gtPlusPlus.core.gui.beta.MU_GuiId;
 import gtPlusPlus.core.gui.item.GuiBaseBackpack;

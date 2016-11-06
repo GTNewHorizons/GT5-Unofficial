@@ -1,8 +1,6 @@
 package gtPlusPlus.xmod.gregtech.api.gui;
 
-import gregtech.api.gui.GT_Container_BasicTank;
-import gregtech.api.gui.GT_Slot_Output;
-import gregtech.api.gui.GT_Slot_Render;
+import gregtech.api.gui.*;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_DeluxeTank;
 

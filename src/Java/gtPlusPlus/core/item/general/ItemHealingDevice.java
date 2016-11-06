@@ -6,9 +6,7 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.player.PlayerUtils;
-import ic2.api.item.ElectricItem;
-import ic2.api.item.IElectricItem;
-import ic2.api.item.IElectricItemManager;
+import ic2.api.item.*;
 
 import java.util.List;
 

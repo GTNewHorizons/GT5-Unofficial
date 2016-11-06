@@ -1,7 +1,7 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.lib.CORE.configSwitches;
+import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GregtechMetaTileEntitySolarGenerator;

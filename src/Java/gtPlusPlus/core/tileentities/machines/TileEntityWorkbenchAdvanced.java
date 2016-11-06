@@ -1,9 +1,6 @@
 package gtPlusPlus.core.tileentities.machines;
 
-import gtPlusPlus.core.inventories.InventoryWorkbenchChest;
-import gtPlusPlus.core.inventories.InventoryWorkbenchHoloCrafting;
-import gtPlusPlus.core.inventories.InventoryWorkbenchHoloSlots;
-import gtPlusPlus.core.inventories.InventoryWorkbenchToolsElectric;
+import gtPlusPlus.core.inventories.*;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergySink;

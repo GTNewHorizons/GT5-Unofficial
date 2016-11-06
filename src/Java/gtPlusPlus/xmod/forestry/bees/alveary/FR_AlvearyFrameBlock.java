@@ -4,10 +4,7 @@ import net.minecraft.util.ChunkCoordinates;
 
 import com.mojang.authlib.GameProfile;
 
-import forestry.api.multiblock.IAlvearyComponent;
-import forestry.api.multiblock.IMultiblockComponent;
-import forestry.api.multiblock.IMultiblockController;
-import forestry.api.multiblock.IMultiblockLogicAlveary;
+import forestry.api.multiblock.*;
 
 public class FR_AlvearyFrameBlock implements IAlvearyComponent, IMultiblockComponent{
 

@@ -3,9 +3,7 @@ package gtPlusPlus.xmod.gregtech.api.items.types;
 import gregtech.api.GregTech_API;
 import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.*;
 import ic2.api.tile.IWrenchable;
 
 import java.util.Arrays;
