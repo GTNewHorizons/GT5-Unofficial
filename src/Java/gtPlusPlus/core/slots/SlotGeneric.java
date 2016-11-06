@@ -4,21 +4,21 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class SlotGeneric extends Slot {
+public class SlotGeneric extends Slot{
 
-	public SlotGeneric(final IInventory inventory, final int x, final int y, final int z) {
+	public SlotGeneric(IInventory inventory, int x, int y, int z) {
 		super(inventory, x, y, z);
 
 	}
 
 	@Override
-	public int getSlotStackLimit() {
-		return 64;
+	public boolean isItemValid(ItemStack itemstack) {
+		return true;
 	}
 
 	@Override
-	public boolean isItemValid(final ItemStack itemstack) {
-		return true;
+	public int getSlotStackLimit() {
+		return 64;
 	}
 
 }

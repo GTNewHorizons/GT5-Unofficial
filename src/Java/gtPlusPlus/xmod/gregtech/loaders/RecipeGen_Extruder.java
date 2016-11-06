@@ -7,25 +7,20 @@ import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import net.minecraft.item.ItemStack;
 
-public class RecipeGen_Extruder implements Runnable {
+public class RecipeGen_Extruder implements Runnable{
 
-	public static boolean addExtruderRecipe(final ItemStack aInput, final ItemStack aShape, final ItemStack aOutput,
-			int aDuration, final int aEUt) {
-		if (aInput == null || aShape == null || aOutput == null) {
-			return false;
-		}
-		if ((aDuration = GregTech_API.sRecipeFile.get("extruder", aOutput, aDuration)) <= 0) {
-			return false;
-		}
-		GT_Recipe.GT_Recipe_Map.sExtruderRecipes.addRecipe(true, new ItemStack[] {
-				aInput, aShape
-		}, new ItemStack[] {
-				aOutput
-		}, null, null, null, aDuration, aEUt, 0);
-		return true;
+	final Material toGenerate;
+	
+	public RecipeGen_Extruder(final Material M){
+		this.toGenerate = M;
+	}
+	
+	@Override
+	public void run() {
+		generateRecipes(toGenerate);		
 	}
 
-	public static void generateRecipes(final Material material) {
+	public static void generateRecipes(final Material material){
 
 		final int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 64 : 16;
 		final ItemStack itemIngot = material.getIngot(1);
@@ -38,69 +33,96 @@ public class RecipeGen_Extruder implements Runnable {
 		final ItemStack shape_Rod = ItemList.Shape_Extruder_Rod.get(0);
 		final ItemStack shape_Bolt = ItemList.Shape_Extruder_Bolt.get(0);
 
-		Utils.LOG_WARNING("Generating Extruder recipes for " + material.getLocalizedName());
+		Utils.LOG_WARNING("Generating Extruder recipes for "+material.getLocalizedName());
 
-		// Plate Recipe
-		if (RecipeGen_Extruder.addExtruderRecipe(itemIngot, shape_Plate, plate_Single, 10, 4 * tVoltageMultiplier)) {
-			Utils.LOG_WARNING("Extruder Plate Recipe: " + material.getLocalizedName() + " - Success");
+
+		//Plate Recipe
+		if (addExtruderRecipe(
+				itemIngot,
+				shape_Plate,
+				plate_Single,
+				10, 4 * tVoltageMultiplier)){
+			Utils.LOG_WARNING("Extruder Plate Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_WARNING("Extruder Plate Recipe: " + material.getLocalizedName() + " - Failed");
+			Utils.LOG_WARNING("Extruder Plate Recipe: "+material.getLocalizedName()+" - Failed");			
 		}
 
-		// Ring Recipe
-		if (!material.isRadioactive) {
-			if (RecipeGen_Extruder.addExtruderRecipe(itemIngot, shape_Ring, material.getRing(4),
-					(int) Math.max(material.getMass() * 2L * 1, 1), 6 * material.vVoltageMultiplier)) {
-				Utils.LOG_WARNING("Extruder Ring Recipe: " + material.getLocalizedName() + " - Success");
+		//Ring Recipe
+		if (!material.isRadioactive){
+			if (addExtruderRecipe(
+					itemIngot,
+					shape_Ring,
+					material.getRing(4),
+					(int) Math.max(material.getMass() * 2L * 1, 1),
+					6 * material.vVoltageMultiplier)){
+				Utils.LOG_WARNING("Extruder Ring Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_WARNING("Extruder Ring Recipe: " + material.getLocalizedName() + " - Failed");
+				Utils.LOG_WARNING("Extruder Ring Recipe: "+material.getLocalizedName()+" - Failed");			
 			}
 		}
 
-		// Gear Recipe
-		if (!material.isRadioactive) {
-			if (RecipeGen_Extruder.addExtruderRecipe(material.getIngot(8), shape_Gear, itemGear,
-					(int) Math.max(material.getMass() * 5L, 1), 8 * material.vVoltageMultiplier)) {
-				Utils.LOG_WARNING("Extruder Gear Recipe: " + material.getLocalizedName() + " - Success");
+
+		//Gear Recipe
+		if (!material.isRadioactive){
+			if (addExtruderRecipe(
+					material.getIngot(8),
+					shape_Gear,
+					itemGear,
+					(int) Math.max(material.getMass() * 5L, 1),
+					8 * material.vVoltageMultiplier)){
+				Utils.LOG_WARNING("Extruder Gear Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_WARNING("Extruder Gear Recipe: " + material.getLocalizedName() + " - Failed");
+				Utils.LOG_WARNING("Extruder Gear Recipe: "+material.getLocalizedName()+" - Failed");			
 			}
 		}
 
-		// Rod Recipe
-		if (RecipeGen_Extruder.addExtruderRecipe(itemIngot, shape_Rod, material.getRod(2),
-				(int) Math.max(material.getMass() * 2L * 1, 1), 6 * material.vVoltageMultiplier)) {
-			Utils.LOG_WARNING("Extruder Rod Recipe: " + material.getLocalizedName() + " - Success");
+
+		//Rod Recipe
+		if (addExtruderRecipe(
+				itemIngot,
+				shape_Rod,
+				material.getRod(2),
+				(int) Math.max(material.getMass() * 2L * 1, 1),
+				6 * material.vVoltageMultiplier)){
+			Utils.LOG_WARNING("Extruder Rod Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_WARNING("Extruder Rod Recipe: " + material.getLocalizedName() + " - Failed");
+			Utils.LOG_WARNING("Extruder Rod Recipe: "+material.getLocalizedName()+" - Failed");			
 		}
 
-		// Bolt Recipe
-		if (!material.isRadioactive) {
-			if (RecipeGen_Extruder.addExtruderRecipe(itemIngot, shape_Bolt, material.getBolt(8),
-					(int) Math.max(material.getMass() * 2L * 1, 1), 6 * material.vVoltageMultiplier)) {
-				Utils.LOG_WARNING("Extruder Bolt Recipe: " + material.getLocalizedName() + " - Success");
+
+		//Bolt Recipe
+		if (!material.isRadioactive){
+			if (addExtruderRecipe(
+					itemIngot, 
+					shape_Bolt, 
+					material.getBolt(8),
+					(int) Math.max(material.getMass() * 2L * 1, 1),
+					6 * material.vVoltageMultiplier)){
+				Utils.LOG_WARNING("Extruder Bolt Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_WARNING("Extruder Bolt Recipe: " + material.getLocalizedName() + " - Failed");
+				Utils.LOG_WARNING("Extruder Bolt Recipe: "+material.getLocalizedName()+" - Failed");			
 			}
 		}
 
+	}	
+
+
+	public static boolean addExtruderRecipe(ItemStack aInput, ItemStack aShape, ItemStack aOutput, int aDuration, int aEUt) {
+		if ((aInput == null) || (aShape == null) || (aOutput == null)) {
+			return false;
+		}
+		if ((aDuration = GregTech_API.sRecipeFile.get("extruder", aOutput, aDuration)) <= 0) {
+			return false;
+		}
+		GT_Recipe.GT_Recipe_Map.sExtruderRecipes.addRecipe(true, new ItemStack[]{aInput, aShape}, new ItemStack[]{aOutput}, null, null, null, aDuration, aEUt, 0);
+		return true;
 	}
 
-	final Material toGenerate;
 
-	public RecipeGen_Extruder(final Material M) {
-		this.toGenerate = M;
-	}
-
-	@Override
-	public void run() {
-		RecipeGen_Extruder.generateRecipes(this.toGenerate);
-	}
 
 }

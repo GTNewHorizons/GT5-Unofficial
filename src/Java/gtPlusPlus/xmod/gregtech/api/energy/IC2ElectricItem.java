@@ -10,8 +10,7 @@ import net.minecraft.item.ItemStack;
  */
 public interface IC2ElectricItem {
 	/**
-	 * Determine if the item can be used in a machine or as an armor part to
-	 * supply energy.
+	 * Determine if the item can be used in a machine or as an armor part to supply energy.
 	 *
 	 * @return Whether the item can supply energy
 	 */
@@ -40,8 +39,7 @@ public interface IC2ElectricItem {
 
 	/**
 	 * Get the item's tier, lower tiers can't send energy to higher ones.
-	 * Batteries are Tier 1, Energy Crystals are Tier 2, Lapotron Crystals are
-	 * Tier 3.
+	 * Batteries are Tier 1, Energy Crystals are Tier 2, Lapotron Crystals are Tier 3.
 	 *
 	 * @return Item's tier
 	 */
@@ -54,3 +52,4 @@ public interface IC2ElectricItem {
 	 */
 	double getTransferLimit(ItemStack itemStack);
 }
+

@@ -6,12 +6,12 @@ import net.minecraft.item.ItemStack;
 
 public class COMPAT_PneumaticCraft {
 
-	public static void OreDict() {
-		COMPAT_PneumaticCraft.run();
+	public static void OreDict(){
+		run();
 	}
-
-	private static final void run() {
-		GT_OreDictUnificator.registerOre("plateCompressedIron", new ItemStack(ModItems.itemPlateCompressedIron));
+	
+	private static final void run(){
+		GT_OreDictUnificator.registerOre("plateCompressedIron", new ItemStack(ModItems.itemPlateCompressedIron));		
 	}
-
+	
 }

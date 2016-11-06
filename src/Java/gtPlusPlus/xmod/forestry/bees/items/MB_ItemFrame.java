@@ -2,23 +2,36 @@ package gtPlusPlus.xmod.forestry.bees.items;
 
 import java.util.List;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import forestry.api.apiculture.*;
+import forestry.api.apiculture.IBee;
+import forestry.api.apiculture.IBeeGenome;
+import forestry.api.apiculture.IBeeHousing;
+import forestry.api.apiculture.IBeeModifier;
+import forestry.api.apiculture.IHiveFrame;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.*;
-import net.minecraft.util.EnumChatFormatting;
 
-public class MB_ItemFrame extends Item implements IHiveFrame {
-	private final MB_FrameType	type;
-	private EnumRarity			rarity_value	= EnumRarity.uncommon;
-	private final String		toolTip;
+public class MB_ItemFrame extends Item implements IHiveFrame
+{
+	private MB_FrameType type;
+	private EnumRarity rarity_value = EnumRarity.uncommon;
+	private final String toolTip;
 
-	public MB_ItemFrame(final MB_FrameType frameType, final EnumRarity rarity, final String description) {
+	public MB_ItemFrame(MB_FrameType frameType, String description)
+	{
+		this(frameType, EnumRarity.uncommon, description);
+	}
+	
+	public MB_ItemFrame(MB_FrameType frameType, EnumRarity rarity, String description)
+	{
 		super();
 		this.type = frameType;
 		this.setMaxDamage(this.type.maxDamage);
@@ -29,21 +42,26 @@ public class MB_ItemFrame extends Item implements IHiveFrame {
 		this.toolTip = description;
 		GameRegistry.registerItem(this, "frame" + frameType.getName());
 	}
-
-	public MB_ItemFrame(final MB_FrameType frameType, final String description) {
-		this(frameType, EnumRarity.uncommon, description);
-	}
-
+	
 	@Override
-	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
-		if (this.toolTip != "" || !this.toolTip.equals("")) {
-			list.add(EnumChatFormatting.GRAY + this.toolTip);
+	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
+		if (toolTip != "" || !toolTip.equals("")){			
+		list.add(EnumChatFormatting.GRAY+toolTip);
 		}
 		super.addInformation(stack, aPlayer, list, bool);
-	}
-
+	}	
+	
 	@Override
-	public ItemStack frameUsed(final IBeeHousing housing, ItemStack frame, final IBee queen, final int wear) {
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IIconRegister par1IconRegister)
+	{
+		this.itemIcon = par1IconRegister.registerIcon(CORE.MODID + ":frame" + type.getName());
+	}
+	
+	// --------- IHiveFrame functions -----------------------------------------
+	
+	@Override
+	public ItemStack frameUsed(IBeeHousing housing, ItemStack frame, IBee queen, int wear) {
 		frame.setItemDamage(frame.getItemDamage() + wear);
 
 		if (frame.getItemDamage() >= frame.getMaxDamage()) {
@@ -53,77 +71,70 @@ public class MB_ItemFrame extends Item implements IHiveFrame {
 
 		return frame;
 	}
-
-	// --------- IHiveFrame functions -----------------------------------------
-
-	@Override
-	public IBeeModifier getBeeModifier() {
-		return this.type;
-	}
-
-	public float getFloweringModifier(final IBeeGenome genome, final float currentModifier) {
-		return this.type.getFloweringModifier(genome, currentModifier);
-	}
-
-	public float getGeneticDecay(final IBeeGenome genome, final float currentModifier) {
-		return this.type.getGeneticDecay(genome, currentModifier);
-	}
-
-	public float getLifespanModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
-		return this.type.getLifespanModifier(genome, mate, currentModifier);
-	}
-
-	public float getMutationModifier(final IBeeGenome genome, final IBeeGenome mate, final float currentModifier) {
-		return this.type.getMutationModifier(genome, mate, currentModifier);
-	}
-
-	public float getProductionModifier(final IBeeGenome genome, final float currentModifier) {
-		return this.type.getProductionModifier(genome, currentModifier);
-	}
-
+	
+	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(final ItemStack par1ItemStack) {
-		return this.rarity_value;
+	public EnumRarity getRarity(ItemStack par1ItemStack){
+		return rarity_value;
 	}
-
-	public float getTerritoryModifier(final IBeeGenome genome, final float currentModifier) {
-		return this.type.getTerritoryModifier(genome, currentModifier);
-	}
-
+	
 	@Override
-	public boolean hasEffect(final ItemStack par1ItemStack) {
-		if (this.rarity_value == EnumRarity.uncommon || this.rarity_value == EnumRarity.common) {
+	public boolean hasEffect(ItemStack par1ItemStack){
+		if (rarity_value == EnumRarity.uncommon || rarity_value == EnumRarity.common){
 			return false;
 		}
 		return true;
 	}
 
+	public IBeeModifier getBeeModifier() {
+		return type;
+	}
+	
 	@Override
-	public boolean isBookEnchantable(final ItemStack itemstack1, final ItemStack itemstack2) {
+	public boolean isBookEnchantable(ItemStack itemstack1, ItemStack itemstack2)
+	{
 		return false;
 	}
+	
+	public float getTerritoryModifier(IBeeGenome genome, float currentModifier) {
+		return type.getTerritoryModifier(genome, currentModifier);
+	}
 
-	public boolean isHellish() {
-		return this.type.isHellish();
+	public float getMutationModifier(IBeeGenome genome, IBeeGenome mate, float currentModifier) {
+		return type.getMutationModifier(genome, mate, currentModifier);
+	}
+
+	public float getLifespanModifier(IBeeGenome genome, IBeeGenome mate, float currentModifier) {
+		return type.getLifespanModifier(genome, mate, currentModifier);
+	}
+
+	public float getProductionModifier(IBeeGenome genome, float currentModifier) {
+		return type.getProductionModifier(genome, currentModifier);
+	}
+
+	public float getFloweringModifier(IBeeGenome genome, float currentModifier) {
+		return type.getFloweringModifier(genome, currentModifier);
+	}
+
+	public float getGeneticDecay(IBeeGenome genome, float currentModifier) {
+		return type.getGeneticDecay(genome, currentModifier);
 	}
 
 	public boolean isSealed() {
-		return this.type.isSealed();
+		return type.isSealed();
 	}
 
 	public boolean isSelfLighted() {
-		return this.type.isSelfLighted();
+		return type.isSelfLighted();
 	}
 
 	public boolean isSunlightSimulated() {
-		return this.type.isSunlightSimulated();
+		return type.isSunlightSimulated();
 	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(final IIconRegister par1IconRegister) {
-		this.itemIcon = par1IconRegister.registerIcon(CORE.MODID + ":frame" + this.type.getName());
+	
+	public boolean isHellish(){
+		return type.isHellish();
 	}
 
 }

@@ -12,24 +12,28 @@ package gtPlusPlus.xmod.gregtech.api.enums;
 * Master (Tier 7) : Energy Flow Circuit and Lapotron Crystal
 * Ultimate (Tier 8) : Data Orb and Lapotronic Energy Orb
 * Infinite (Cheaty)
-*
+* 
 Circuits
-	Circuit_Primitive, Circuit_Basic, Circuit_Good, Circuit_Advanced,
-	Circuit_Data, Circuit_Elite, Circuit_Master, Tool_DataOrb, Circuit_Ultimate, Tool_DataStick,
+	Circuit_Primitive, Circuit_Basic, Circuit_Good, Circuit_Advanced,	
+	Circuit_Data, Circuit_Elite, Circuit_Master, Tool_DataOrb, Circuit_Ultimate, Tool_DataStick, 
 	Circuit_IV, Circuit_LuV, Circuit_ZPM,
 Circuit Parts
-	Circuit_Board_IV, Circuit_Board_LuV, Circuit_Board_ZPM,
+	Circuit_Board_IV, Circuit_Board_LuV, Circuit_Board_ZPM, 
 	Circuit_Parts_Crystal_Chip_IV, Circuit_Parts_Crystal_Chip_LuV, Circuit_Parts_Crystal_Chip_ZPM,
 	Circuit_Parts_IV, Circuit_Parts_LuV, Circuit_Parts_ZPM,
 	Circuit_Parts_Wiring_IV, Circuit_Parts_Wiring_LuV, Circuit_Parts_Wiring_ZPM;
 */
 public enum GregtechOreDictNames {
-	buffer_core, itemGregConduit, Circuit_IV, Circuit_LuV, Circuit_ZPM, Circuit_Board_IV, Circuit_Board_LuV, Circuit_Board_ZPM, Circuit_Parts_Crystal_Chip_IV, Circuit_Parts_Crystal_Chip_LuV, Circuit_Parts_Crystal_Chip_ZPM, Circuit_Parts_IV, Circuit_Parts_LuV, Circuit_Parts_ZPM, Circuit_Parts_Wiring_IV, Circuit_Parts_Wiring_LuV, Circuit_Parts_Wiring_ZPM;
+	buffer_core, itemGregConduit, Circuit_IV, Circuit_LuV, Circuit_ZPM,
+	Circuit_Board_IV, Circuit_Board_LuV, Circuit_Board_ZPM, 
+	Circuit_Parts_Crystal_Chip_IV, Circuit_Parts_Crystal_Chip_LuV, Circuit_Parts_Crystal_Chip_ZPM,
+	Circuit_Parts_IV, Circuit_Parts_LuV, Circuit_Parts_ZPM,
+	Circuit_Parts_Wiring_IV, Circuit_Parts_Wiring_LuV, Circuit_Parts_Wiring_ZPM;
 
 	public String unlocalisedName;
 
 	private void ModObject() {
-		this.unlocalisedName = this.name();
+		unlocalisedName = name();
 	}
 
 }

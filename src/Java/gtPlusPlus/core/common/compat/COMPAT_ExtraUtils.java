@@ -8,22 +8,23 @@ import net.minecraft.item.ItemStack;
 
 public class COMPAT_ExtraUtils {
 
-	public static void OreDict() {
+	public static void OreDict(){
 		RECIPES_Tools.RECIPE_DivisionSigil = new ItemStack(ItemUtils.getItem("ExtraUtilities:divisionSigil"));
-		COMPAT_ExtraUtils.run();
+		run();
 
 	}
 
-	private static final void run() {
+	private static final void run(){
 		ItemUtils.getItemForOreDict("ExtraUtilities:bedrockiumIngot", "ingotBedrockium", "Bedrockium Ingot", 0);
-		// GT_OreDictUnificator.registerOre("plateBedrockium", new
-		// ItemStack(ModItems.itemPlateBedrockium));
+		//GT_OreDictUnificator.registerOre("plateBedrockium", new ItemStack(ModItems.itemPlateBedrockium));
 
-		if (configSwitches.enableAlternativeDivisionSigilRecipe) {
-			// Division Sigil
-			RecipeUtils.recipeBuilder("plateNetherStar", "gemIridium", "plateNetherStar", "plateIridium",
-					RECIPES_Tools.craftingToolHardHammer, "plateIridium", "plateNetherStar", "gemIridium",
-					"plateNetherStar", RECIPES_Tools.RECIPE_DivisionSigil);
+		if (configSwitches.enableAlternativeDivisionSigilRecipe){
+			//Division Sigil
+			RecipeUtils.recipeBuilder(
+					"plateNetherStar", "gemIridium", "plateNetherStar",
+					"plateIridium", RECIPES_Tools.craftingToolHardHammer, "plateIridium",
+					"plateNetherStar", "gemIridium", "plateNetherStar",
+					RECIPES_Tools.RECIPE_DivisionSigil);
 		}
 	}
 

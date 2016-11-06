@@ -7,25 +7,25 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 
 public class CONTAINER_IronBlastFurnace extends GT_ContainerMetaTile_Machine {
-	public CONTAINER_IronBlastFurnace(final InventoryPlayer aInventoryPlayer, final IGregTechTileEntity aTileEntity) {
-		super(aInventoryPlayer, aTileEntity);
-	}
+    public CONTAINER_IronBlastFurnace(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
+        super(aInventoryPlayer, aTileEntity);
+    }
 
-	@Override
-	public void addSlots(final InventoryPlayer aInventoryPlayer) {
-		this.addSlotToContainer(new Slot(this.mTileEntity, 0, 34, 16));
-		this.addSlotToContainer(new Slot(this.mTileEntity, 1, 34, 34));
-		this.addSlotToContainer(new GT_Slot_Output(this.mTileEntity, 2, 86, 25));
-		this.addSlotToContainer(new GT_Slot_Output(this.mTileEntity, 3, 104, 25));
-	}
+    @Override
+	public void addSlots(InventoryPlayer aInventoryPlayer) {
+        addSlotToContainer(new Slot(this.mTileEntity, 0, 34, 16));
+        addSlotToContainer(new Slot(this.mTileEntity, 1, 34, 34));
+        addSlotToContainer(new GT_Slot_Output(this.mTileEntity, 2, 86, 25));
+        addSlotToContainer(new GT_Slot_Output(this.mTileEntity, 3, 104, 25));
+    }
 
-	@Override
-	public int getShiftClickSlotCount() {
-		return 2;
-	}
-
-	@Override
+    @Override
 	public int getSlotCount() {
-		return 4;
-	}
+        return 4;
+    }
+
+    @Override
+	public int getShiftClickSlotCount() {
+        return 2;
+    }
 }

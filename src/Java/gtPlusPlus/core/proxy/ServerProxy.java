@@ -1,26 +1,28 @@
 package gtPlusPlus.core.proxy;
 
-import cpw.mods.fml.common.event.*;
 import gtPlusPlus.core.common.CommonProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
-public class ServerProxy extends CommonProxy {
+public class ServerProxy extends CommonProxy{
 
 	@Override
-	public void init(final FMLInitializationEvent e) {
+	public void preInit(FMLPreInitializationEvent e) {
+		// TODO Auto-generated method stub
+		super.preInit(e);
+	}
+
+	@Override
+	public void init(FMLInitializationEvent e) {
 		// TODO Auto-generated method stub
 		super.init(e);
 	}
 
 	@Override
-	public void postInit(final FMLPostInitializationEvent e) {
+	public void postInit(FMLPostInitializationEvent e) {
 		// TODO Auto-generated method stub
 		super.postInit(e);
-	}
-
-	@Override
-	public void preInit(final FMLPreInitializationEvent e) {
-		// TODO Auto-generated method stub
-		super.preInit(e);
 	}
 
 }

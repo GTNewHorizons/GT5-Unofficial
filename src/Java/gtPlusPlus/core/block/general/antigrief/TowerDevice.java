@@ -1,15 +1,14 @@
 package gtPlusPlus.core.block.general.antigrief;
 
-import java.util.List;
-import java.util.Random;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.block.ModBlocks;
+import static gtPlusPlus.core.block.ModBlocks.blockGriefSaver;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.general.TileEntityReverter;
 import gtPlusPlus.core.util.Utils;
+
+import java.util.List;
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -24,241 +23,254 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class TowerDevice extends Block {
-	private static IIcon	TEX_ANTIBUILDER;
-	public static final int	META_ANTIBUILDER	= 9;
-	public static boolean areNearbyLockBlocks(final World world, final int x, final int y, final int z) {
-		boolean locked = false;
-		for (int dx = x - 2; dx <= x + 2; dx++) {
-			for (int dy = y - 2; dy <= y + 2; dy++) {
-				for (int dz = z - 2; dz <= z + 2; dz++) {
-					if (world.getBlock(dx, dy, dz) == ModBlocks.blockGriefSaver
-							&& world.getBlockMetadata(dx, dy, dz) == 4) {
-						locked = true;
-					}
-				}
-			}
-		}
-		return locked;
+  private static IIcon TEX_ANTIBUILDER;
+  public static final int META_ANTIBUILDER = 9;
+  private boolean bUnbreakable;
+  
+  public TowerDevice()
+  {
+    super(Material.wood);
+    setHardness(10.0F);
+    setResistance(35.0F);
+    setStepSound(Block.soundTypeWood);
+    setCreativeTab(AddToCreativeTab.tabMachines);
+  }
+  
+  public int tickRate()
+  {
+    return 15;
+  }
+  
+  public void saveNBTData(NBTTagCompound aNBT) {
+		aNBT.setBoolean("bUnbreakable", bUnbreakable);
 	}
 
-	public static void changeToActiveVanishBlock(final World par1World, final int x, final int y, final int z,
-			final int meta) {
-		TowerDevice.changeToBlockMeta(par1World, x, y, z, meta);
-		par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.pop", 0.3F, 0.6F);
-
-		final Block thereBlockID = par1World.getBlock(x, y, z);
-		par1World.scheduleBlockUpdate(x, y, z, thereBlockID,
-				TowerDevice.getTickRateFor(thereBlockID, meta, par1World.rand));
+	public void loadNBTData(NBTTagCompound aNBT) {
+		bUnbreakable = aNBT.getBoolean("bUnbreakable");
 	}
-
-	private static void changeToBlockMeta(final World par1World, final int x, final int y, final int z,
-			final int meta) {
-		final Block thereBlockID = par1World.getBlock(x, y, z);
-		if (thereBlockID == ModBlocks.blockGriefSaver) {
-			par1World.setBlock(x, y, z, thereBlockID, meta, 3);
-			par1World.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
-			par1World.notifyBlocksOfNeighborChange(x, y, z, thereBlockID);
-		}
-	}
-
-	public static void checkAndActivateVanishBlock(final World world, final int x, final int y, final int z) {
-		final Block thereID = world.getBlock(x, y, z);
-		final int thereMeta = world.getBlockMetadata(x, y, z);
-	}
-
-	private static int getTickRateFor(final Block thereBlockID, final int meta, final Random rand) {
-		return 15;
-	}
-
-	public static void unlockBlock(final World par1World, final int x, final int y, final int z) {
-		final Block thereBlockID = par1World.getBlock(x, y, z);
-		final int thereBlockMeta = par1World.getBlockMetadata(x, y, z);
-		if (thereBlockID == ModBlocks.blockGriefSaver || thereBlockMeta == 4) {
-			TowerDevice.changeToBlockMeta(par1World, x, y, z, 5);
-			par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.3F, 0.6F);
-		}
-	}
-
-	private boolean			bUnbreakable;
-
-	public TowerDevice() {
-		super(Material.wood);
-		this.setHardness(10.0F);
-		this.setResistance(35.0F);
-		this.setStepSound(Block.soundTypeWood);
-		this.setCreativeTab(AddToCreativeTab.tabMachines);
-	}
-
-	@Override
-	public TileEntity createTileEntity(final World world, final int metadata) {
-		if (metadata == 0) {
-			Utils.LOG_INFO("I have been created. [Antigriefer]" + this.getLocalizedName());
-			return new TileEntityReverter();
-		}
-		return null;
-	}
-
-	@Override
-	public int damageDropped(final int meta) {
-		return meta;
-	}
-
-	@Override
-	public float getBlockHardness(final World world, final int x, final int y, final int z) {
-		final int meta = world.getBlockMetadata(x, y, z);
-		return super.getBlockHardness(world, x, y, z);
-	}
-
-	@Override
-	public float getExplosionResistance(final Entity par1Entity, final World world, final int x, final int y,
-			final int z, final double explosionX, final double explosionY, final double explosionZ) {
-		final int meta = world.getBlockMetadata(x, y, z);
-		return super.getExplosionResistance(par1Entity, world, x, y, z, explosionX, explosionY, explosionZ);
-	}
-
-	@Override
-	public IIcon getIcon(final int side, final int meta) {
-		return TowerDevice.TEX_ANTIBUILDER;
-	}
-
-	@Override
-	public Item getItemDropped(final int meta, final Random par2Random, final int par3) {
-		switch (meta) {
-			case 0:
-				return null;
-		}
-		return Item.getItemFromBlock(this);
-	}
-
-	@Override
-	public int getLightValue(final IBlockAccess world, final int x, final int y, final int z) {
-		final Block blockID = world.getBlock(x, y, z);
-		final int meta = world.getBlockMetadata(x, y, z);
-		if (blockID != this) {
-			return 0;
-		}
-		return 10;
-	}
-
-	@Override
-	public void getSubBlocks(final Item par1, final CreativeTabs par2CreativeTabs, final List par3List) {
-		par3List.add(new ItemStack(par1, 1, 9));
-	}
-
-	@Override
-	public boolean hasTileEntity(final int metadata) {
-		return metadata == 0;
-	}
-
-	private boolean isInactiveTrapCharged(final World par1World, final int x, final int y, final int z) {
-		return false;
-	}
-
-	private boolean isReactorReady(final World world, final int x, final int y, final int z) {
-		if (world.getBlock(x, y + 1, z) != Blocks.redstone_block || world.getBlock(x, y - 1, z) != Blocks.redstone_block
-				|| world.getBlock(x + 1, y, z) != Blocks.redstone_block
-				|| world.getBlock(x - 1, y, z) != Blocks.redstone_block
-				|| world.getBlock(x, y, z + 1) != Blocks.redstone_block
-				|| world.getBlock(x, y, z - 1) != Blocks.redstone_block) {
-			return false;
-		}
-		return true;
-	}
-
-	private void letsBuild(final World par1World, final int x, final int y, final int z) {
-
-	}
-
-	public void loadNBTData(final NBTTagCompound aNBT) {
-		this.bUnbreakable = aNBT.getBoolean("bUnbreakable");
-	}
-
-	@Override
-	public boolean onBlockActivated(final World par1World, final int x, final int y, final int z,
-			final EntityPlayer par5EntityPlayer, final int par6, final float par7, final float par8, final float par9) {
-		final int meta = par1World.getBlockMetadata(x, y, z);
-		return false;
-	}
-
-	@Override
-	public void onBlockAdded(final World par1World, final int x, final int y, final int z) {
-		final int meta = par1World.getBlockMetadata(x, y, z);
-		if (!par1World.isRemote) {
-
-		}
-	}
-
-	@Override
-	public void onNeighborBlockChange(final World par1World, final int x, final int y, final int z,
-			final Block myBlockID) {
-		final int meta = par1World.getBlockMetadata(x, y, z);
-		if (!par1World.isRemote) {
-
-		}
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(final World par1World, final int x, final int y, final int z,
-			final Random par5Random) {
-		final int meta = par1World.getBlockMetadata(x, y, z);
-		if (meta == 3 || meta == 1 || meta == 9) {
-			for (int i = 0; i < 1; i++) {
-				this.sparkle(par1World, x, y, z, par5Random);
-			}
-		}
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(final IIconRegister par1IconRegister) {
-		TowerDevice.TEX_ANTIBUILDER = par1IconRegister.registerIcon(CORE.MODID + ":" + "blockAntiGrief");
-	}
-
-	public void saveNBTData(final NBTTagCompound aNBT) {
-		aNBT.setBoolean("bUnbreakable", this.bUnbreakable);
-	}
-
-	public void sparkle(final World world, final int x, final int y, final int z, final Random rand) {
-		final double offset = 0.0625D;
-		for (int side = 0; side < 6; side++) {
-			double rx = x + rand.nextFloat();
-			double ry = y + rand.nextFloat();
-			double rz = z + rand.nextFloat();
-			if (side == 0 && !world.getBlock(x, y + 1, z).isOpaqueCube()) {
-				ry = y + 1 + offset;
-			}
-			if (side == 1 && !world.getBlock(x, y - 1, z).isOpaqueCube()) {
-				ry = y + 0 - offset;
-			}
-			if (side == 2 && !world.getBlock(x, y, z + 1).isOpaqueCube()) {
-				rz = z + 1 + offset;
-			}
-			if (side == 3 && !world.getBlock(x, y, z - 1).isOpaqueCube()) {
-				rz = z + 0 - offset;
-			}
-			if (side == 4 && !world.getBlock(x + 1, y, z).isOpaqueCube()) {
-				rx = x + 1 + offset;
-			}
-			if (side == 5 && !world.getBlock(x - 1, y, z).isOpaqueCube()) {
-				rx = x + 0 - offset;
-			}
-			if (rx < x || rx > x + 1 || ry < 0.0D || ry > y + 1 || rz < z || rz > z + 1) {
-				world.spawnParticle("reddust", rx, ry, rz, 0.0D, 0.0D, 0.0D);
-			}
-		}
-	}
-
-	public int tickRate() {
-		return 15;
-	}
-
-	@Override
-	public void updateTick(final World par1World, final int x, final int y, final int z, final Random par5Random) {
-		if (!par1World.isRemote) {
-			final int meta = par1World.getBlockMetadata(x, y, z);
-		}
-	}
+  
+  public IIcon getIcon(int side, int meta)
+  {
+      return TEX_ANTIBUILDER;
+  }
+  
+  @SideOnly(Side.CLIENT)
+  public void registerBlockIcons(IIconRegister par1IconRegister)
+  {
+    TEX_ANTIBUILDER = par1IconRegister.registerIcon(CORE.MODID + ":" + "blockAntiGrief");
+  }
+  
+  public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+  {
+    par3List.add(new ItemStack(par1, 1, 9));
+  }
+  
+  public boolean onBlockActivated(World par1World, int x, int y, int z, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
+  {
+    int meta = par1World.getBlockMetadata(x, y, z);
+    return false;
+  }
+  
+  public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ)
+  {
+    int meta = world.getBlockMetadata(x, y, z);
+    return super.getExplosionResistance(par1Entity, world, x, y, z, explosionX, explosionY, explosionZ);
+  }
+  
+  public float getBlockHardness(World world, int x, int y, int z)
+  {
+    int meta = world.getBlockMetadata(x, y, z);    
+    return super.getBlockHardness(world, x, y, z);
+  }
+  
+  public static boolean areNearbyLockBlocks(World world, int x, int y, int z)
+  {
+    boolean locked = false;
+    for (int dx = x - 2; dx <= x + 2; dx++) {
+      for (int dy = y - 2; dy <= y + 2; dy++) {
+        for (int dz = z - 2; dz <= z + 2; dz++) {
+          if ((world.getBlock(dx, dy, dz) == blockGriefSaver) && (world.getBlockMetadata(dx, dy, dz) == 4)) {
+            locked = true;
+          }
+        }
+      }
+    }
+    return locked;
+  }
+  
+  public static void unlockBlock(World par1World, int x, int y, int z)
+  {
+    Block thereBlockID = par1World.getBlock(x, y, z);
+    int thereBlockMeta = par1World.getBlockMetadata(x, y, z);
+    if ((thereBlockID == blockGriefSaver) || (thereBlockMeta == 4))
+    {
+      changeToBlockMeta(par1World, x, y, z, 5);
+      par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.3F, 0.6F);
+    }
+  }
+  
+  private static void changeToBlockMeta(World par1World, int x, int y, int z, int meta)
+  {
+    Block thereBlockID = par1World.getBlock(x, y, z);
+    if ((thereBlockID == blockGriefSaver))
+    {
+      par1World.setBlock(x, y, z, thereBlockID, meta, 3);
+      par1World.markBlockRangeForRenderUpdate(x, y, z, x, y, z);
+      par1World.notifyBlocksOfNeighborChange(x, y, z, thereBlockID);
+    }
+  }
+  
+  public void onBlockAdded(World par1World, int x, int y, int z)
+  {
+    int meta = par1World.getBlockMetadata(x, y, z);
+    if (!par1World.isRemote) {
+    	
+    }
+  }
+  
+  public void onNeighborBlockChange(World par1World, int x, int y, int z, Block myBlockID)
+  {
+    int meta = par1World.getBlockMetadata(x, y, z);
+    if (!par1World.isRemote)
+    {
+      
+    }
+  }
+  
+  public void updateTick(World par1World, int x, int y, int z, Random par5Random)
+  {
+    if (!par1World.isRemote)
+    {
+      int meta = par1World.getBlockMetadata(x, y, z);
+    }
+  }
+  
+  private void letsBuild(World par1World, int x, int y, int z)
+  {
+	  
+  }
+  
+  private boolean isInactiveTrapCharged(World par1World, int x, int y, int z)
+  {
+    return false;
+  }
+  
+  private boolean isReactorReady(World world, int x, int y, int z)
+  {
+    if ((world.getBlock(x, y + 1, z) != Blocks.redstone_block) || 
+      (world.getBlock(x, y - 1, z) != Blocks.redstone_block) || 
+      (world.getBlock(x + 1, y, z) != Blocks.redstone_block) || 
+      (world.getBlock(x - 1, y, z) != Blocks.redstone_block) || 
+      (world.getBlock(x, y, z + 1) != Blocks.redstone_block) || 
+      (world.getBlock(x, y, z - 1) != Blocks.redstone_block)) {
+      return false;
+    }
+    return true;
+  }
+  
+  @SideOnly(Side.CLIENT)
+  public void randomDisplayTick(World par1World, int x, int y, int z, Random par5Random)
+  {
+    int meta = par1World.getBlockMetadata(x, y, z);
+    if ((meta == 3) || (meta == 1) || (meta == 9)) {
+      for (int i = 0; i < 1; i++) {
+        sparkle(par1World, x, y, z, par5Random);
+      }
+    }
+  }
+  
+  public void sparkle(World world, int x, int y, int z, Random rand)
+  {
+    double offset = 0.0625D;
+    for (int side = 0; side < 6; side++)
+    {
+      double rx = x + rand.nextFloat();
+      double ry = y + rand.nextFloat();
+      double rz = z + rand.nextFloat();
+      if ((side == 0) && (!world.getBlock(x, y + 1, z).isOpaqueCube())) {
+        ry = y + 1 + offset;
+      }
+      if ((side == 1) && (!world.getBlock(x, y - 1, z).isOpaqueCube())) {
+        ry = y + 0 - offset;
+      }
+      if ((side == 2) && (!world.getBlock(x, y, z + 1).isOpaqueCube())) {
+        rz = z + 1 + offset;
+      }
+      if ((side == 3) && (!world.getBlock(x, y, z - 1).isOpaqueCube())) {
+        rz = z + 0 - offset;
+      }
+      if ((side == 4) && (!world.getBlock(x + 1, y, z).isOpaqueCube())) {
+        rx = x + 1 + offset;
+      }
+      if ((side == 5) && (!world.getBlock(x - 1, y, z).isOpaqueCube())) {
+        rx = x + 0 - offset;
+      }
+      if ((rx < x) || (rx > x + 1) || (ry < 0.0D) || (ry > y + 1) || (rz < z) || (rz > z + 1)) {
+        world.spawnParticle("reddust", rx, ry, rz, 0.0D, 0.0D, 0.0D);
+      }
+    }
+  }
+  
+  public static void checkAndActivateVanishBlock(World world, int x, int y, int z)
+  {
+    Block thereID = world.getBlock(x, y, z);
+    int thereMeta = world.getBlockMetadata(x, y, z);
+  }
+  
+  public static void changeToActiveVanishBlock(World par1World, int x, int y, int z, int meta)
+  {
+    changeToBlockMeta(par1World, x, y, z, meta);
+    par1World.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.pop", 0.3F, 0.6F);
+    
+    Block thereBlockID = par1World.getBlock(x, y, z);
+    par1World.scheduleBlockUpdate(x, y, z, thereBlockID, getTickRateFor(thereBlockID, meta, par1World.rand));
+  }
+  
+  private static int getTickRateFor(Block thereBlockID, int meta, Random rand)
+  {
+    return 15;
+  }
+  
+  public int getLightValue(IBlockAccess world, int x, int y, int z)
+  {
+    Block blockID = world.getBlock(x, y, z);
+    int meta = world.getBlockMetadata(x, y, z);
+    if (blockID != this) {
+      return 0;
+    }
+      return 10;
+  }
+  
+  public boolean hasTileEntity(int metadata)
+  {
+    return (metadata == 0);
+  }
+  
+  public TileEntity createTileEntity(World world, int metadata)
+  {
+    if (metadata == 0) {
+    	Utils.LOG_INFO("I have been created. [Antigriefer]"+this.getLocalizedName());
+      return new TileEntityReverter();
+    }
+    return null;
+  }
+  
+  public Item getItemDropped(int meta, Random par2Random, int par3)
+  {
+    switch (meta)
+    {
+    case 0: 
+      return null;
+    }
+    return Item.getItemFromBlock(this);
+  }
+  
+  public int damageDropped(int meta)
+  {
+    return meta;
+  }
 }

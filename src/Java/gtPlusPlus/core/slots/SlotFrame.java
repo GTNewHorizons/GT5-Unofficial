@@ -1,25 +1,25 @@
 package gtPlusPlus.core.slots;
 
-import forestry.api.apiculture.IHiveFrame;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import forestry.api.apiculture.IHiveFrame;
 
-public class SlotFrame extends Slot {
+public class SlotFrame extends Slot{
 
-	public SlotFrame(final IInventory inventory, final int x, final int y, final int z) {
+	public SlotFrame(IInventory inventory, int x, int y, int z) {
 		super(inventory, x, y, z);
 
 	}
 
 	@Override
-	public int getSlotStackLimit() {
-		return 1;
+	public boolean isItemValid(ItemStack itemstack) {
+		return itemstack.getItem() instanceof IHiveFrame;
 	}
 
 	@Override
-	public boolean isItemValid(final ItemStack itemstack) {
-		return itemstack.getItem() instanceof IHiveFrame;
+	public int getSlotStackLimit() {
+		return 1;
 	}
 
 }

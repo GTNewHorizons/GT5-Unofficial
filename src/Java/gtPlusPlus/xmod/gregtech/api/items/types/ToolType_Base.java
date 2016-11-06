@@ -1,12 +1,15 @@
 package gtPlusPlus.xmod.gregtech.api.items.types;
 
-import java.util.List;
-
 import gregtech.api.enums.SubTag;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_ItemBehaviour;
 import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaItem_Base;
+
+import java.util.List;
+
 import net.minecraft.block.BlockDispenser;
-import net.minecraft.dispenser.*;
+import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
+import net.minecraft.dispenser.IBlockSource;
+import net.minecraft.dispenser.IPosition;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,78 +19,66 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 public class ToolType_Base implements Interface_ItemBehaviour<Gregtech_MetaItem_Base> {
-	@Override
-	public boolean canDispense(final Gregtech_MetaItem_Base aItem, final IBlockSource aSource, final ItemStack aStack) {
-		return false;
-	}
+    @Override
+	public boolean onLeftClickEntity(Gregtech_MetaItem_Base aItem, ItemStack aStack, EntityPlayer aPlayer, Entity aEntity) {
+        return false;
+    }
 
-	@Override
-	public List<String> getAdditionalToolTips(final Gregtech_MetaItem_Base aItem, final List<String> aList,
-			final ItemStack aStack) {
-		return aList;
-	}
+    @Override
+	public boolean onItemUse(Gregtech_MetaItem_Base aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+        return false;
+    }
 
-	@Override
-	public EntityArrow getProjectile(final Gregtech_MetaItem_Base aItem, final SubTag aProjectileType,
-			final ItemStack aStack, final World aWorld, final double aX, final double aY, final double aZ) {
-		return null;
-	}
+    @Override
+	public boolean onItemUseFirst(Gregtech_MetaItem_Base aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
+        return false;
+    }
 
-	@Override
-	public EntityArrow getProjectile(final Gregtech_MetaItem_Base aItem, final SubTag aProjectileType,
-			final ItemStack aStack, final World aWorld, final EntityLivingBase aEntity, final float aSpeed) {
-		return null;
-	}
+    @Override
+	public ItemStack onItemRightClick(Gregtech_MetaItem_Base aItem, ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
+        return aStack;
+    }
 
-	@Override
-	public boolean hasProjectile(final Gregtech_MetaItem_Base aItem, final SubTag aProjectileType,
-			final ItemStack aStack) {
-		return false;
-	}
+    @Override
+	public List<String> getAdditionalToolTips(Gregtech_MetaItem_Base aItem, List<String> aList, ItemStack aStack) {
+        return aList;
+    }
 
-	@Override
-	public boolean isItemStackUsable(final Gregtech_MetaItem_Base aItem, final ItemStack aStack) {
-		return true;
-	}
+    @Override
+	public void onUpdate(Gregtech_MetaItem_Base aItem, ItemStack aStack, World aWorld, Entity aPlayer, int aTimer, boolean aIsInHand) {
+    }
 
-	@Override
-	public ItemStack onDispense(final Gregtech_MetaItem_Base aItem, final IBlockSource aSource,
-			final ItemStack aStack) {
-		final EnumFacing enumfacing = BlockDispenser.func_149937_b(aSource.getBlockMetadata());
-		final IPosition iposition = BlockDispenser.func_149939_a(aSource);
-		final ItemStack itemstack1 = aStack.splitStack(1);
-		BehaviorDefaultDispenseItem.doDispense(aSource.getWorld(), itemstack1, 6, enumfacing, iposition);
-		return aStack;
-	}
+    @Override
+	public boolean isItemStackUsable(Gregtech_MetaItem_Base aItem, ItemStack aStack) {
+        return true;
+    }
 
-	@Override
-	public ItemStack onItemRightClick(final Gregtech_MetaItem_Base aItem, final ItemStack aStack, final World aWorld,
-			final EntityPlayer aPlayer) {
-		return aStack;
-	}
+    @Override
+	public boolean canDispense(Gregtech_MetaItem_Base aItem, IBlockSource aSource, ItemStack aStack) {
+        return false;
+    }
 
-	@Override
-	public boolean onItemUse(final Gregtech_MetaItem_Base aItem, final ItemStack aStack, final EntityPlayer aPlayer,
-			final World aWorld, final int aX, final int aY, final int aZ, final int aSide, final float hitX,
-			final float hitY, final float hitZ) {
-		return false;
-	}
+    @Override
+	public ItemStack onDispense(Gregtech_MetaItem_Base aItem, IBlockSource aSource, ItemStack aStack) {
+        EnumFacing enumfacing = BlockDispenser.func_149937_b(aSource.getBlockMetadata());
+        IPosition iposition = BlockDispenser.func_149939_a(aSource);
+        ItemStack itemstack1 = aStack.splitStack(1);
+        BehaviorDefaultDispenseItem.doDispense(aSource.getWorld(), itemstack1, 6, enumfacing, iposition);
+        return aStack;
+    }
 
-	@Override
-	public boolean onItemUseFirst(final Gregtech_MetaItem_Base aItem, final ItemStack aStack,
-			final EntityPlayer aPlayer, final World aWorld, final int aX, final int aY, final int aZ, final int aSide,
-			final float hitX, final float hitY, final float hitZ) {
-		return false;
-	}
+    @Override
+	public boolean hasProjectile(Gregtech_MetaItem_Base aItem, SubTag aProjectileType, ItemStack aStack) {
+        return false;
+    }
 
-	@Override
-	public boolean onLeftClickEntity(final Gregtech_MetaItem_Base aItem, final ItemStack aStack,
-			final EntityPlayer aPlayer, final Entity aEntity) {
-		return false;
-	}
+    @Override
+	public EntityArrow getProjectile(Gregtech_MetaItem_Base aItem, SubTag aProjectileType, ItemStack aStack, World aWorld, double aX, double aY, double aZ) {
+        return null;
+    }
 
-	@Override
-	public void onUpdate(final Gregtech_MetaItem_Base aItem, final ItemStack aStack, final World aWorld,
-			final Entity aPlayer, final int aTimer, final boolean aIsInHand) {
-	}
+    @Override
+	public EntityArrow getProjectile(Gregtech_MetaItem_Base aItem, SubTag aProjectileType, ItemStack aStack, World aWorld, EntityLivingBase aEntity, float aSpeed) {
+        return null;
+    }
 }

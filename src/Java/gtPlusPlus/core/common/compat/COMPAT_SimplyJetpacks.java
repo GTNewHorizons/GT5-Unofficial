@@ -6,13 +6,13 @@ import net.minecraft.item.ItemStack;
 
 public class COMPAT_SimplyJetpacks {
 
-	public static void OreDict() {
-		COMPAT_SimplyJetpacks.run();
+	public static void OreDict(){
+		run();
 	}
-
-	private static final void run() {
+	
+	private static final void run(){
 		GT_OreDictUnificator.registerOre("plateEnrichedSoularium", new ItemStack(ModItems.itemPlateEnrichedSoularium));
-
+		
 	}
-
+	
 }

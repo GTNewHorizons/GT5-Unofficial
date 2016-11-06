@@ -8,24 +8,24 @@ import gtPlusPlus.core.util.Utils;
 
 public class COMPAT_Baubles {
 
-	public static void baublesLoaded() {
-		Utils.LOG_INFO("Baubles Found - Loading Wearables.");
-		ModItems.itemPersonalCloakingDevice = new ItemCloakingDevice(0);
-		// itemPersonalCloakingDeviceCharged = new ItemCloakingDevice(0).set;
-		ModItems.itemPersonalHealingDevice = new ItemHealingDevice();
-	}
-
-	public static void baublesNotLoaded() {
-		Utils.LOG_INFO("Baubles Not Found - Skipping Resources.");
-	}
-
-	public static void run() {
-		if (LoadedMods.Baubles) {
-			COMPAT_Baubles.baublesLoaded();
+	public static void run(){
+		if (LoadedMods.Baubles){
+			baublesLoaded();
 		}
 		else {
-			COMPAT_Baubles.baublesNotLoaded();
+			baublesNotLoaded();
 		}
 	}
-
+	
+	public static void baublesLoaded(){
+		Utils.LOG_INFO("Baubles Found - Loading Wearables.");
+		ModItems.itemPersonalCloakingDevice = new ItemCloakingDevice(0);
+		//itemPersonalCloakingDeviceCharged = new ItemCloakingDevice(0).set;
+		ModItems.itemPersonalHealingDevice = new ItemHealingDevice();
+	}
+	
+	public static void baublesNotLoaded(){
+		Utils.LOG_INFO("Baubles Not Found - Skipping Resources.");
+	}
+	
 }

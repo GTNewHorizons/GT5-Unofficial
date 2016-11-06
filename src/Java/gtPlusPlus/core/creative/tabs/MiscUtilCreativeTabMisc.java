@@ -6,7 +6,7 @@ import net.minecraft.item.Item;
 
 public class MiscUtilCreativeTabMisc extends CreativeTabs {
 
-	public MiscUtilCreativeTabMisc(final String lable) {
+	public MiscUtilCreativeTabMisc(String lable) {
 		super(lable);
 	}
 

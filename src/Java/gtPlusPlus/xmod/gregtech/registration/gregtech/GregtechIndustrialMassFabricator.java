@@ -4,20 +4,24 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GregtechMetaTileEntity_MassFabricator;
 
-public class GregtechIndustrialMassFabricator {
+public class GregtechIndustrialMassFabricator
+{
 
-	public static void run() {
-		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
+
+
+	public static void run()
+	{
+		if (gtPlusPlus.core.lib.LoadedMods.Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Industrial Mass Fabricator Multiblock.");
-			GregtechIndustrialMassFabricator.run1();
+			run1();
 		}
 
 	}
 
-	private static void run1() {
-		// Industrial Electrolyzer Multiblock
-		GregtechItemList.Industrial_MassFab.set(new GregtechMetaTileEntity_MassFabricator(799,
-				"industrialmassfab.controller.tier.single", "Matter Fabrication CPU").getStackForm(1L));
-
+	private static void run1()
+	{
+		//Industrial Electrolyzer Multiblock
+		GregtechItemList.Industrial_MassFab.set(new GregtechMetaTileEntity_MassFabricator(799, "industrialmassfab.controller.tier.single", "Matter Fabrication CPU").getStackForm(1L));
+		
 	}
 }

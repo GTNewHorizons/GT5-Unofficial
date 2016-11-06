@@ -6,12 +6,13 @@ import net.minecraft.item.Item;
 
 public class MiscUtilCreativeTabMachines extends CreativeTabs {
 
-	public MiscUtilCreativeTabMachines(final String lable) {
+
+	public MiscUtilCreativeTabMachines(String lable) {
 		super(lable);
 	}
 
 	@Override
-	public Item getTabIconItem() {
+	public Item getTabIconItem() {		
 		return ModItems.itemPLACEHOLDER_Circuit;
 	}
 
