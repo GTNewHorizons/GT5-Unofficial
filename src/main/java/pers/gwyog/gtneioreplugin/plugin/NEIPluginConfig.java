@@ -2,7 +2,9 @@ package pers.gwyog.gtneioreplugin.plugin;
 
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
+import cpw.mods.fml.common.Loader;
 import pers.gwyog.gtneioreplugin.GTNEIOrePlugin;
+import pers.gwyog.gtneioreplugin.util.GTOreLayerHelper;
 
 public class NEIPluginConfig implements IConfigureNEI {
 
@@ -27,6 +29,11 @@ public class NEIPluginConfig implements IConfigureNEI {
         API.registerUsageHandler(pluginAsteriodStat);
         API.registerRecipeHandler(pluginSmallOreStat);
         API.registerUsageHandler(pluginSmallOreStat);
+        if (GTOreLayerHelper.immersiveEngineeringSupport) {
+            PluginIEVeinStat pluginIEVeinStat = new PluginIEVeinStat();
+            API.registerRecipeHandler(pluginIEVeinStat);
+            API.registerUsageHandler(pluginIEVeinStat);
+        }
     }
 
 }

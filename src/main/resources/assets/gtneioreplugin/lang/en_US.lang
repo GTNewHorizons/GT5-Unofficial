@@ -2,6 +2,7 @@
 gtnop.gui.veinStat.name=Vein Stats
 gtnop.gui.asteroidStat.name=Asteroid Stats
 gtnop.gui.smallOreStat.name=Small Ore Stats
+gtnop.gui.ieVeinStat.name=IE Vein Stats
 
 gtnop.gui.nei.veinName=Vein name
 gtnop.gui.nei.primaryOre=Primary-Gen
@@ -21,6 +22,9 @@ gtnop.gui.nei.asteroidSporadic=Minor-Gen2
 gtnop.gui.nei.oreName=Ore name
 gtnop.gui.nei.amount=Amount per chunk
 gtnop.gui.nei.chanceDrops=Drops
+
+gtnop.gui.nei.ieVeinComponent=Vein components
+gtnop.gui.nei.fromMod=From mod
 
 gtnop.gui.nei.seeAll=See All
 

@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cpw.mods.fml.common.Loader;
+import gregtech.GT_Mod;
+import gregtech.api.GregTech_API;
 import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
@@ -16,9 +19,8 @@ public class GTOreLayerHelper {
     public static boolean endAsteroidSupport = false;
     public static boolean gcBasicSupport = false;
     public static boolean gcAsteroidSupport = false;
+    public static boolean immersiveEngineeringSupport = false;
     public static HashMap<String, OreLayerWrapper> mapOreLayerWrapper = new HashMap<String, OreLayerWrapper>();
-    public static List<List<Short>> listVein = new ArrayList<List<Short>>();
-    public static List<List<Short>> listAsteroid = new ArrayList<List<Short>>();
 
     public GTOreLayerHelper() {
         checkExtraSupport();
@@ -50,6 +52,26 @@ public class GTOreLayerHelper {
                 gcAsteroidSupport = true;
             } catch (Exception e) {}
         }
+        
+        // immersive engineering support for GT5.09.25+
+        if (Loader.isModLoaded("ImmersiveEngineering")) {
+            Class clazzGTMod = null;
+            Class clazzGTProxy = null;
+            Class clazzGTAPI = null;
+            try {
+                clazzGTMod = Class.forName("gregtech.GT_Mod");
+                clazzGTProxy = Class.forName("gregtech.common.GT_Proxy");
+                clazzGTAPI = Class.forName("gregtech.api.GregTech_API");
+            } catch (ClassNotFoundException e) {}
+            if (clazzGTMod!=null && clazzGTProxy!=null && clazzGTAPI!=null) {
+                try {
+                    Field fieldImmersiveEngineeringRecipes = clazzGTAPI.getField("mImmersiveEngineering");
+                    Field fieldGTProxy = clazzGTMod.getField("gregtechproxy");
+                    Field fieldImmersiveEngineering = clazzGTProxy.getField("mImmersiveEngineeringRecipes");
+                    immersiveEngineeringSupport = GregTech_API.mImmersiveEngineering && GT_Mod.gregtechproxy.mImmersiveEngineeringRecipes;
+                } catch (Exception e) {}
+            }
+        }
     }
     
     public class OreLayerWrapper {
@@ -60,6 +82,7 @@ public class GTOreLayerHelper {
         public short sporadicMeta;
         public String worldGenHeightRange;
         public String weightedChance;
+        public String weightedIEChance;
         public String restrictBiome;
         public boolean genOverworld = false;
         public boolean genNether = false;
@@ -68,6 +91,7 @@ public class GTOreLayerHelper {
         public boolean genMars = false;
         public boolean genEndAsteroid = false;
         public boolean genGCAsteroid = false;
+        public boolean genIEVein = false;
         
         public OreLayerWrapper(GT_Worldgen_GT_Ore_Layer worldGen) {
             this.veinName = worldGen.mWorldGenName;
@@ -90,14 +114,12 @@ public class GTOreLayerHelper {
                 this.genEndAsteroid = worldGen.mEndAsteroid;
             if (GTOreLayerHelper.gcAsteroidSupport) 
                 this.genGCAsteroid = worldGen.mAsteroid;
-            List<Short> list = new ArrayList<Short>();
-            list.add(primaryMeta);
-            list.add(secondaryMeta);
-            list.add(betweenMeta);
-            list.add(sporadicMeta);
-            listVein.add(list);
-            if (genEndAsteroid || genGCAsteroid) 
-                listAsteroid.add(list);
+
+            // immersive engineering support for GT5.09.25+
+            if (immersiveEngineeringSupport) {
+                this.genIEVein = true;
+                this.weightedIEChance = String.format("%.3f%%", (100.0f*worldGen.mWeight)/GT_Worldgen_GT_Ore_Layer.sWeight/8);
+            }
         }
     }
     

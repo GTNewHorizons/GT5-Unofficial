@@ -2,6 +2,7 @@
 gtnop.gui.veinStat.name=矿脉信息
 gtnop.gui.asteroidStat.name=小行星信息
 gtnop.gui.smallOreStat.name=贫瘠矿石信息
+gtnop.gui.ieVeinStat.name=IE虚拟矿脉信息
 
 gtnop.gui.nei.veinName=矿脉名称
 gtnop.gui.nei.primaryOre=上层矿石
@@ -21,6 +22,9 @@ gtnop.gui.nei.asteroidSporadic=次要生成二
 gtnop.gui.nei.oreName=矿石名称
 gtnop.gui.nei.amount=每区块生成个数
 gtnop.gui.nei.chanceDrops=几率掉落
+
+gtnop.gui.nei.ieVeinComponent=矿脉构成
+gtnop.gui.nei.fromMod=来自模组
 
 gtnop.gui.nei.seeAll=查看全部
 
