@@ -47,6 +47,10 @@ public class Utils {
 	
 	public static boolean isModUpToDate(){
 		
+		if (CORE.MASTER_VERSION.toLowerCase().equals("offline")){
+			return false;
+		}	
+		
 		if (CORE.MASTER_VERSION.equals(CORE.VERSION.toLowerCase())){
 			return true;
 		}		

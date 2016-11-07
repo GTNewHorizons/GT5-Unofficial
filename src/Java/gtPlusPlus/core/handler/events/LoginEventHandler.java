@@ -36,6 +36,7 @@ public class LoginEventHandler {
 				
 				if (!CORE.isModUpToDate){
 					Utils.LOG_INFO("You're not using the latest recommended version of GT++, consider updating.");
+					if (!CORE.MASTER_VERSION.toLowerCase().equals("offline"))
 					Utils.LOG_INFO("Latest version is: "+CORE.MASTER_VERSION);
 					Utils.LOG_INFO("You currently have: "+CORE.VERSION);
 					PlayerUtils.messagePlayer(localPlayerRef, "You're not using the latest recommended version of GT++, consider updating.");
