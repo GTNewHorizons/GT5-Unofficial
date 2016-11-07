@@ -115,7 +115,7 @@ public class PluginVeinStat extends PluginBase {
     public void drawExtras(int recipe) {
         CachedVeinStatRecipe crecipe = (CachedVeinStatRecipe) this.arecipes.get(recipe);
         OreLayerWrapper oreLayer = GTOreLayerHelper.mapOreLayerWrapper.get(crecipe.veinName);
-        GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + I18n.format("gtnop." + oreLayer.veinName) + I18n.format("gtnop.ore.vein.name"), 2, 18, 0x404040, false);
+        GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + getLocalizedVeinName(oreLayer.veinName), 2, 18, 0x404040, false);
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.primaryOre") + ": " + getGTOreLocalizedName(oreLayer.primaryMeta), 2, 31, 0x404040, false);
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.secondaryOre") + ": " + getGTOreLocalizedName(oreLayer.secondaryMeta), 2, 44, 0x404040, false);
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.betweenOre") + ": " + getGTOreLocalizedName(oreLayer.betweenMeta), 2, 57, 0x404040, false);
@@ -125,6 +125,13 @@ public class PluginVeinStat extends PluginBase {
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.worldNames") + ": " + getWorldNameTranslated(oreLayer.genOverworld, oreLayer.genNether, oreLayer.genEnd, oreLayer.genMoon, oreLayer.genMars), 2, 109, 0x404040, false);
         if (GTOreLayerHelper.restrictBiomeSupport) GuiDraw.drawString(I18n.format("gtnop.gui.nei.restrictBiome") + ": " + getBiomeTranslated(oreLayer.restrictBiome), 2, 122, 0x404040, false);
         GuiDraw.drawStringR(EnumChatFormatting.BOLD + I18n.format("gtnop.gui.nei.seeAll"), getGuiWidth()-3, 5, 0x404040, false);
+    }
+    
+    public String getLocalizedVeinName(String unlocalizedName) {
+        if (unlocalizedName.startsWith("ore.mix.custom."))
+            return I18n.format("gtnop.ore.custom.name") + I18n.format("gtnop.ore.vein.name") + unlocalizedName.substring(15);
+        else
+            return I18n.format("gtnop." + unlocalizedName) + I18n.format("gtnop.ore.vein.name");
     }
     
     @Override

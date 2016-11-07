@@ -37,9 +37,12 @@ gtnop.world.asteroid.name=GalactiCraft Asteroid
 # biome names
 gtnop.biome.none.name=None
 
+
 # vein types
-gtnop.ore.vein.name= Vein
-gtnop.ore.asteroid.name= Asteriod
+gtnop.ore.vein.name=Vein 
+gtnop.ore.asteroid.name=Asteriod
+gtnop.ore.custom.name=Custom
+
 
 # vein names
 gtnop.ore.mix.naquadah=Naquadah

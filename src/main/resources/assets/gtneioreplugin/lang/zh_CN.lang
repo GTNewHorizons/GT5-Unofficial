@@ -40,6 +40,7 @@ gtnop.biome.none.name=无
 # vein types
 gtnop.ore.vein.name=矿脉
 gtnop.ore.asteroid.name=小行星
+gtnop.ore.custom.name=自定义
 
 
 # vein names

@@ -56,7 +56,7 @@ public class PluginAsteroidStat extends PluginBase {
     public void drawExtras(int recipe) {
         CachedAsteroidStatRecipe crecipe = (CachedAsteroidStatRecipe) this.arecipes.get(recipe);
         OreLayerWrapper oreLayer = GTOreLayerHelper.mapOreLayerWrapper.get(crecipe.veinName);
-        GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + I18n.format("gtnop." + oreLayer.veinName) + I18n.format("gtnop.ore.asteroid.name"), 2, 18, 0x404040, false);
+        GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + getLocalizedAsteroidName(oreLayer.veinName), 2, 18, 0x404040, false);
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.asteroidPrimary") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(oreLayer.primaryMeta)), 2, 31, 0x404040, false);
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.asteroidSecondary") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(oreLayer.secondaryMeta)), 2, 44, 0x404040, false);
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.asteroidBetween") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(oreLayer.betweenMeta)), 2, 57, 0x404040, false);
@@ -78,6 +78,13 @@ public class PluginAsteroidStat extends PluginBase {
             worldNameTranslatedAsteroid += I18n.format("gtnop.world.asteroid.name");
         }
         return worldNameTranslatedAsteroid;
+    }
+    
+    public String getLocalizedAsteroidName(String unlocalizedName) {
+        if (unlocalizedName.startsWith("ore.mix.custom."))
+            return I18n.format("gtnop.ore.custom.name") + I18n.format("gtnop.ore.asteroid.name") + unlocalizedName.substring(15);
+        else
+            return I18n.format("gtnop." + unlocalizedName) + I18n.format("gtnop.ore.asteroid.name");
     }
     
     @Override
