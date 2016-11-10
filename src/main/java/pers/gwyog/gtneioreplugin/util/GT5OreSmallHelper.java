@@ -13,16 +13,17 @@ import gregtech.api.world.GT_Worldgen;
 import gregtech.common.GT_Worldgen_GT_Ore_SmallPieces;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import pers.gwyog.gtneioreplugin.GTNEIOrePlugin;
 
-public class GTSmallOreHelper {
+public class GT5OreSmallHelper {
     public static boolean restrictBiomeSupport = false;
     public static boolean gcBasicSupport = false;
-    public static List<ItemStack> smallOreList = new ArrayList<ItemStack>();
-    public static HashMap<String, SmallOreWrapper> mapSmallOreWrapper = new HashMap<String, SmallOreWrapper>();
+    public static List<ItemStack> oreSmallList = new ArrayList<ItemStack>();
+    public static HashMap<String, OreSmallWrapper> mapOreSmallWrapper = new HashMap<String, OreSmallWrapper>();
     public static HashMap<String, Short> mapOreDropUnlocalizedNameToOreMeta = new HashMap<String, Short>();
     public static HashMap<Short, List<ItemStack>> mapOreMetaToOreDrops = new HashMap<Short, List<ItemStack>>();    
     
-    public GTSmallOreHelper() {
+    public GT5OreSmallHelper() {
         checkExtraSupport();
         ItemStack stack;
         Materials material;
@@ -32,7 +33,7 @@ public class GTSmallOreHelper {
                 GT_Worldgen_GT_Ore_SmallPieces worldGenSmallPieces = (GT_Worldgen_GT_Ore_SmallPieces)worldGen;
                 meta = worldGenSmallPieces.mMeta;
                 material = GregTech_API.sGeneratedMaterials[meta];
-                mapSmallOreWrapper.put(worldGen.mWorldGenName, new SmallOreWrapper(worldGenSmallPieces));
+                mapOreSmallWrapper.put(worldGen.mWorldGenName, new OreSmallWrapper(worldGenSmallPieces));
                 if (!mapOreMetaToOreDrops.keySet().contains(meta)) {
                     List<ItemStack> stackList = new ArrayList<ItemStack>();
                     stack = GT_OreDictUnificator.get(OrePrefixes.gemExquisite, material, GT_OreDictUnificator.get(OrePrefixes.gem, material, 1L), 1L);
@@ -49,35 +50,37 @@ public class GTSmallOreHelper {
                     if (stack != null && !mapOreDropUnlocalizedNameToOreMeta.keySet().contains(stack.getUnlocalizedName())) {mapOreDropUnlocalizedNameToOreMeta.put(stack.getUnlocalizedName(), meta);stackList.add(stack);}
                     stack = GT_OreDictUnificator.get(OrePrefixes.dustImpure, material, 1L);
                     if (stack != null && !mapOreDropUnlocalizedNameToOreMeta.keySet().contains(stack.getUnlocalizedName())) {mapOreDropUnlocalizedNameToOreMeta.put(stack.getUnlocalizedName(), meta);stackList.add(stack);}
-                    smallOreList.add(new ItemStack(GregTech_API.sBlockOres1, 1, meta+16000));
+                    oreSmallList.add(new ItemStack(GregTech_API.sBlockOres1, 1, meta+16000));
                     mapOreMetaToOreDrops.put(meta, stackList);
                 }
             }
     }
     
     private static void checkExtraSupport() {
-        Class clazzGTSmallOre = null;
-        try {
-            clazzGTSmallOre = Class.forName("gregtech.common.GT_Worldgen_GT_Ore_SmallPieces");
-        } catch (ClassNotFoundException e) {}
-        if (clazzGTSmallOre != null) {
+        if (GTNEIOrePlugin.GTVersion.equals("GT5")) {
+            Class clazzGTOreSmall = null;
             try {
-                Field fieldRestrictBiome = clazzGTSmallOre.getField("mRestrictBiome");;
-                restrictBiomeSupport = true;
-            } catch (Exception e) {}
-            try {
-                Field fieldGCMoon = clazzGTSmallOre.getField("mMoon");
-                Field fieldGCMars = clazzGTSmallOre.getField("mMars");
-                gcBasicSupport = true;
-            } catch (Exception e) {}
-        }
+                clazzGTOreSmall = Class.forName("gregtech.common.GT_Worldgen_GT_Ore_SmallPieces");
+            } catch (ClassNotFoundException e) {}
+            if (clazzGTOreSmall != null) {
+                try {
+                    Field fieldRestrictBiome = clazzGTOreSmall.getField("mRestrictBiome");;
+                    restrictBiomeSupport = true;
+                } catch (Exception e) {}
+                try {
+                    Field fieldGCMoon = clazzGTOreSmall.getField("mMoon");
+                    Field fieldGCMars = clazzGTOreSmall.getField("mMars");
+                    gcBasicSupport = true;
+                } catch (Exception e) {}
+            }
+        }   
     }
     
     public static Materials[] getDroppedDusts() {
         return new Materials[]{Materials.Stone, Materials.Netherrack, Materials.Endstone, Materials.GraniteBlack, Materials.GraniteRed, Materials.Marble, Materials.Basalt, Materials.Stone};
     }
     
-    public class SmallOreWrapper {
+    public class OreSmallWrapper {
         public String oreGenName;
         public short oreMeta;
         public String worldGenHeightRange;
@@ -89,7 +92,7 @@ public class GTSmallOreHelper {
         public boolean genMoon = false;
         public boolean genMars = false;
         
-        public SmallOreWrapper(GT_Worldgen_GT_Ore_SmallPieces worldGen) {
+        public OreSmallWrapper(GT_Worldgen_GT_Ore_SmallPieces worldGen) {
             this.oreGenName = worldGen.mWorldGenName;
             this.oreMeta = worldGen.mMeta;
             this.worldGenHeightRange = worldGen.mMinY + "-" + worldGen.mMaxY;
@@ -97,9 +100,9 @@ public class GTSmallOreHelper {
             this.genOverworld = worldGen.mOverworld;
             this.genNether = worldGen.mNether;
             this.genEnd = worldGen.mEnd;
-            if (GTSmallOreHelper.restrictBiomeSupport)
+            if (GT5OreSmallHelper.restrictBiomeSupport)
                 this.restrictBiome = worldGen.mRestrictBiome;
-            if (GTSmallOreHelper.gcBasicSupport) {
+            if (GT5OreSmallHelper.gcBasicSupport) {
                 this.genMoon = worldGen.mMoon;
                 this.genMars = worldGen.mMars;
             }

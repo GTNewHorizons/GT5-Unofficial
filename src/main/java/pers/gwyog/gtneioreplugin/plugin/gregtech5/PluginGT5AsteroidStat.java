@@ -1,4 +1,4 @@
-package pers.gwyog.gtneioreplugin.plugin;
+package pers.gwyog.gtneioreplugin.plugin.gregtech5;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -12,12 +12,12 @@ import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import pers.gwyog.gtneioreplugin.plugin.PluginVeinStat.CachedVeinStatRecipe;
-import pers.gwyog.gtneioreplugin.util.GTOreLayerHelper;
-import pers.gwyog.gtneioreplugin.util.GTSmallOreHelper;
-import pers.gwyog.gtneioreplugin.util.GTOreLayerHelper.OreLayerWrapper;
+import pers.gwyog.gtneioreplugin.plugin.gregtech5.PluginGT5VeinStat.CachedVeinStatRecipe;
+import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
+import pers.gwyog.gtneioreplugin.util.GT5OreSmallHelper;
+import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapper;
 
-public class PluginAsteroidStat extends PluginBase {
+public class PluginGT5AsteroidStat extends PluginGT5Base {
 
     public class CachedAsteroidStatRecipe extends CachedRecipe {
         public String veinName;
@@ -55,7 +55,7 @@ public class PluginAsteroidStat extends PluginBase {
     @Override
     public void drawExtras(int recipe) {
         CachedAsteroidStatRecipe crecipe = (CachedAsteroidStatRecipe) this.arecipes.get(recipe);
-        OreLayerWrapper oreLayer = GTOreLayerHelper.mapOreLayerWrapper.get(crecipe.veinName);
+        OreLayerWrapper oreLayer = GT5OreLayerHelper.mapOreLayerWrapper.get(crecipe.veinName);
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + getLocalizedAsteroidName(oreLayer.veinName), 2, 18, 0x404040, false);
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.asteroidPrimary") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(oreLayer.primaryMeta)), 2, 31, 0x404040, false);
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.asteroidSecondary") + ": " + GT_LanguageManager.getTranslation(getGTOreUnlocalizedName(oreLayer.secondaryMeta)), 2, 44, 0x404040, false);
@@ -91,8 +91,8 @@ public class PluginAsteroidStat extends PluginBase {
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(getOutputId())) {
             OreLayerWrapper oreLayerWrapper;
-            for (String veinName: GTOreLayerHelper.mapOreLayerWrapper.keySet()) {
-                oreLayerWrapper = GTOreLayerHelper.mapOreLayerWrapper.get(veinName);
+            for (String veinName: GT5OreLayerHelper.mapOreLayerWrapper.keySet()) {
+                oreLayerWrapper = GT5OreLayerHelper.mapOreLayerWrapper.get(veinName);
                 if (oreLayerWrapper.genEndAsteroid || oreLayerWrapper.genGCAsteroid) {
                     ItemStack stackPrimary = new ItemStack(GregTech_API.sBlockOres1, 1, oreLayerWrapper.primaryMeta+2000);
                     ItemStack stackSecondary = new ItemStack(GregTech_API.sBlockOres1, 1, oreLayerWrapper.secondaryMeta+2000);
@@ -114,7 +114,7 @@ public class PluginAsteroidStat extends PluginBase {
                 return;
             }
             short baseMeta = (short)(stack.getItemDamage() % 1000);
-            for (OreLayerWrapper worldGen: GTOreLayerHelper.mapOreLayerWrapper.values()) {
+            for (OreLayerWrapper worldGen: GT5OreLayerHelper.mapOreLayerWrapper.values()) {
                 if (worldGen.primaryMeta == baseMeta || worldGen.secondaryMeta == baseMeta || worldGen.betweenMeta == baseMeta || worldGen.sporadicMeta == baseMeta) {
                     if (worldGen.genEndAsteroid || worldGen.genGCAsteroid) {
                         ItemStack stackPrimary = new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.primaryMeta+2000);

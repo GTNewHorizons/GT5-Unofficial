@@ -12,9 +12,10 @@ import gregtech.api.GregTech_API;
 import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import pers.gwyog.gtneioreplugin.GTNEIOrePlugin;
 import sun.awt.windows.WWindowPeer;
 
-public class GTOreLayerHelper {
+public class GT5OreLayerHelper {
     public static boolean restrictBiomeSupport = false;
     public static boolean endAsteroidSupport = false;
     public static boolean gcBasicSupport = false;
@@ -22,11 +23,11 @@ public class GTOreLayerHelper {
     public static boolean immersiveEngineeringSupport = false;
     public static HashMap<String, OreLayerWrapper> mapOreLayerWrapper = new HashMap<String, OreLayerWrapper>();
 
-    public GTOreLayerHelper() {
+    public GT5OreLayerHelper() {
         checkExtraSupport();
         for (GT_Worldgen_GT_Ore_Layer tWorldGen: GT_Worldgen_GT_Ore_Layer.sList)
             mapOreLayerWrapper.put(tWorldGen.mWorldGenName, new OreLayerWrapper(tWorldGen));
-    }
+  }
     
     private static void checkExtraSupport() {
         Class clazzGTOreLayer = null;
@@ -54,7 +55,7 @@ public class GTOreLayerHelper {
         }
         
         // immersive engineering support for GT5.09.25+
-        if (Loader.isModLoaded("ImmersiveEngineering")) {
+        if (Loader.instance().isModLoaded("ImmersiveEngineering")) {
             Class clazzGTMod = null;
             Class clazzGTProxy = null;
             Class clazzGTAPI = null;
@@ -106,13 +107,13 @@ public class GTOreLayerHelper {
             this.genEnd = worldGen.mEnd;
             if (restrictBiomeSupport) 
                 this.restrictBiome = worldGen.mRestrictBiome;
-            if (GTOreLayerHelper.gcBasicSupport) {
+            if (GT5OreLayerHelper.gcBasicSupport) {
                 this.genMoon = worldGen.mMoon;
                 this.genMars = worldGen.mMars;
             }
-            if (GTOreLayerHelper.endAsteroidSupport)
+            if (GT5OreLayerHelper.endAsteroidSupport)
                 this.genEndAsteroid = worldGen.mEndAsteroid;
-            if (GTOreLayerHelper.gcAsteroidSupport) 
+            if (GT5OreLayerHelper.gcAsteroidSupport) 
                 this.genGCAsteroid = worldGen.mAsteroid;
 
             // immersive engineering support for GT5.09.25+
@@ -121,6 +122,7 @@ public class GTOreLayerHelper {
                 this.weightedIEChance = String.format("%.3f%%", (100.0f*worldGen.mWeight)/GT_Worldgen_GT_Ore_Layer.sWeight/8);
             }
         }
+        
     }
     
 }

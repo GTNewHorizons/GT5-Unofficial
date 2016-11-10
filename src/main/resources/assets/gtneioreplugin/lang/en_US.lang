@@ -3,6 +3,7 @@ gtnop.gui.veinStat.name=Vein Stats
 gtnop.gui.asteroidStat.name=Asteroid Stats
 gtnop.gui.smallOreStat.name=Small Ore Stats
 gtnop.gui.ieVeinStat.name=IE Vein Stats
+gtnop.gui.bedrockOreStat.name=Bedrock Ore Stats
 
 gtnop.gui.nei.veinName=Vein name
 gtnop.gui.nei.primaryOre=Primary-Gen
@@ -28,6 +29,10 @@ gtnop.gui.nei.fromMod=From mod
 
 gtnop.gui.nei.seeAll=See All
 
+gtnop.gui.nei.oreOthers=Other ore
+gtnop.nei.genPosition=Position
+gtnop.nei.genPositionInfo=In the center of each chunk
+
 
 # world names
 gtnop.world.overworld.name=Overworld
@@ -42,6 +47,10 @@ gtnop.world.asteroid.name=GalactiCraft Asteroid
 gtnop.biome.none.name=None
 
 
+# ore names extra
+gtnop.ore.null.name=None
+
+
 # vein types
 gtnop.ore.vein.name=Vein 
 gtnop.ore.asteroid.name=Asteriod
@@ -49,6 +58,7 @@ gtnop.ore.custom.name=Custom
 
 
 # vein names
+# gregtech5.09
 gtnop.ore.mix.naquadah=Naquadah
 gtnop.ore.mix.lignite=Lignite
 gtnop.ore.mix.coal=Coal
@@ -82,4 +92,13 @@ gtnop.ore.mix.lapis=Lapis
 gtnop.ore.mix.beryllium=Beryllium
 gtnop.ore.mix.oilsand=Oilsand
 
+# gregtech5.08
 gtnop.ore.mix.plutonium=Plutonium
+
+# gregtech6
+gtnop.ore.mix.iodinesalt=Iodinesalt
+gtnop.ore.mix.rocksalt=Rocksalt
+gtnop.ore.mix.asbestos=Asbestos
+gtnop.ore.mix.titanium=Titanium
+gtnop.ore.mix.garnet=Garnet
+gtnop.ore.mix.dolamide=Dolamide

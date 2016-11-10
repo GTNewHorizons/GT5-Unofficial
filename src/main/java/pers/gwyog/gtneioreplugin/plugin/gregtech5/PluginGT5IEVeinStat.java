@@ -1,4 +1,4 @@
-package pers.gwyog.gtneioreplugin.plugin;
+package pers.gwyog.gtneioreplugin.plugin.gregtech5;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,11 +11,10 @@ import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import pers.gwyog.gtneioreplugin.plugin.PluginAsteroidStat.CachedAsteroidStatRecipe;
-import pers.gwyog.gtneioreplugin.util.GTOreLayerHelper;
-import pers.gwyog.gtneioreplugin.util.GTOreLayerHelper.OreLayerWrapper;
+import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper;
+import pers.gwyog.gtneioreplugin.util.GT5OreLayerHelper.OreLayerWrapper;
 
-public class PluginIEVeinStat extends PluginBase {
+public class PluginGT5IEVeinStat extends PluginGT5Base {
     
     public class CachedIEVeinStatRecipe extends CachedRecipe {
         public String veinName;
@@ -53,7 +52,7 @@ public class PluginIEVeinStat extends PluginBase {
     @Override
     public void drawExtras(int recipe) {
         CachedIEVeinStatRecipe crecipe = (CachedIEVeinStatRecipe) this.arecipes.get(recipe);
-        OreLayerWrapper oreLayer = GTOreLayerHelper.mapOreLayerWrapper.get(crecipe.veinName);
+        OreLayerWrapper oreLayer = GT5OreLayerHelper.mapOreLayerWrapper.get(crecipe.veinName);
         int stringLength1 = GuiDraw.getStringWidth(I18n.format("gtnop.gui.nei.weightedChance") + ": ");
         int stringLength2 = GuiDraw.getStringWidth("40%");
         int beginXCoord = (stringLength1-stringLength2)/2;
@@ -83,8 +82,8 @@ public class PluginIEVeinStat extends PluginBase {
     public void loadCraftingRecipes(String outputId, Object... results) {
         if (outputId.equals(getOutputId())) {
             OreLayerWrapper oreLayerWrapper;
-            for (String veinName: GTOreLayerHelper.mapOreLayerWrapper.keySet()) {
-                oreLayerWrapper = GTOreLayerHelper.mapOreLayerWrapper.get(veinName);
+            for (String veinName: GT5OreLayerHelper.mapOreLayerWrapper.keySet()) {
+                oreLayerWrapper = GT5OreLayerHelper.mapOreLayerWrapper.get(veinName);
                 if (oreLayerWrapper.genIEVein) {
                     ItemStack stackPrimary = new ItemStack(GregTech_API.sBlockOres1, 1, oreLayerWrapper.primaryMeta);
                     ItemStack stackSecondary = new ItemStack(GregTech_API.sBlockOres1, 1, oreLayerWrapper.secondaryMeta);
@@ -106,7 +105,7 @@ public class PluginIEVeinStat extends PluginBase {
                 return;
             }
             short baseMeta = (short)(stack.getItemDamage() % 1000);
-            for (OreLayerWrapper worldGen: GTOreLayerHelper.mapOreLayerWrapper.values()) {
+            for (OreLayerWrapper worldGen: GT5OreLayerHelper.mapOreLayerWrapper.values()) {
                 if (worldGen.primaryMeta == baseMeta || worldGen.secondaryMeta == baseMeta || worldGen.betweenMeta == baseMeta || worldGen.sporadicMeta == baseMeta) {
                     if (worldGen.genIEVein) {
                         ItemStack stackPrimary = new ItemStack(GregTech_API.sBlockOres1, 1, worldGen.primaryMeta);
