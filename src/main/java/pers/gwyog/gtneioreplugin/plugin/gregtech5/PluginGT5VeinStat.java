@@ -43,9 +43,9 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         public List<PositionedStack> getIngredients() {
             List<PositionedStack> ingredientsList = new ArrayList<PositionedStack>();
             positionedStackPrimary.setPermutationToRender((cycleticks / 20) % positionedStackPrimary.items.length);;
-            positionedStackSecondary.setPermutationToRender((3 + cycleticks / 20) % positionedStackPrimary.items.length);;
-            positionedStackBetween.setPermutationToRender((2 + cycleticks / 20) % positionedStackPrimary.items.length);;
-            positionedStackSporadic.setPermutationToRender((1 + cycleticks / 20) % positionedStackPrimary.items.length);;
+            positionedStackSecondary.setPermutationToRender((cycleticks / 20) % positionedStackPrimary.items.length);;
+            positionedStackBetween.setPermutationToRender((cycleticks / 20) % positionedStackPrimary.items.length);;
+            positionedStackSporadic.setPermutationToRender((cycleticks / 20) % positionedStackPrimary.items.length);;
             ingredientsList.add(positionedStackPrimary);
             ingredientsList.add(positionedStackSecondary);
             ingredientsList.add(positionedStackBetween);
