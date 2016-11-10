@@ -10,14 +10,11 @@ import java.util.Set;
 import gregapi.block.IBlockPlacable;
 import gregapi.block.prefixblock.PrefixBlock;
 import gregapi.data.CS;
-import gregapi.data.MT;
 import gregapi.data.OP;
-import gregapi.lang.LanguageHandler;
 import gregapi.oredict.OreDictMaterial;
 import gregapi.worldgen.WorldgenObject;
 import gregapi.worldgen.Worldgen_GT_Ore_SmallPieces;
 import gregapi.worldgen.Worldgenerator;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import pers.gwyog.gtneioreplugin.GTNEIOrePlugin;
 
@@ -26,7 +23,6 @@ public class GT6OreSmallHelper {
     public static HashMap<String, OreSmallWrapper> mapOreSmallWrapper = new HashMap<String, OreSmallWrapper>();
     public static HashMap<String, Short> mapOreDropUnlocalizedNameToOreMeta = new HashMap<String, Short>();
     public static HashMap<Short, List<ItemStack>> mapOreMetaToOreDrops = new HashMap<Short, List<ItemStack>>();    
-    public static HashMap<Short, String> mapMetaToLocalizedName = new HashMap<Short, String>();
     public static Set<PrefixBlock> setOreSmallBasicTypes = new HashSet<PrefixBlock>();
     
     public GT6OreSmallHelper() {
@@ -61,20 +57,11 @@ public class GT6OreSmallHelper {
                     oreSmallList.add(new ItemStack(oreSmall, 1, meta));
                     mapOreMetaToOreDrops.put(meta, stackList);
                 }
-                mapMetaToLocalizedName.put(meta, getLocalizedSmallOreName(meta));
                 Set<IBlockPlacable> setSmallOreBasicTypesTemp = new HashSet<IBlockPlacable>(CS.BlocksGT.stoneToSmallOres.values());
                 for (IBlockPlacable block: setSmallOreBasicTypesTemp)
                     if (block instanceof PrefixBlock)
                         setOreSmallBasicTypes.add((PrefixBlock)block);       
             }
-    }
-    
-    public static String getLocalizedSmallOreName(short meta) {
-        // meta==-1 means OreDictMaterial is MT.NULL
-        if (meta==-1)
-            return I18n.format("gtnop.ore.null.name");
-        else
-            return LanguageHandler.getLocalName(OP.oreSmall, CS.BlocksGT.oreSmall.getMetaMaterial(meta));
     }
     
     public class OreSmallWrapper {

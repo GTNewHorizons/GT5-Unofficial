@@ -16,11 +16,10 @@ import gregapi.oredict.OreDictMaterial;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import pers.gwyog.gtneioreplugin.plugin.PluginBase;
 import pers.gwyog.gtneioreplugin.util.GT6OreSmallHelper;
 import pers.gwyog.gtneioreplugin.util.GT6OreSmallHelper.OreSmallWrapper;
 
-public class PluginGT6SmallOreStat extends PluginBase {
+public class PluginGT6SmallOreStat extends PluginGT6Base {
 
     public class CachedOreSmallRecipe extends CachedRecipe {
         public String oreGenName;
@@ -60,7 +59,7 @@ public class PluginGT6SmallOreStat extends PluginBase {
     public void drawExtras(int recipe) {
         CachedOreSmallRecipe crecipe = (CachedOreSmallRecipe) this.arecipes.get(recipe);
         OreSmallWrapper oreSmall = GT6OreSmallHelper.mapOreSmallWrapper.get(crecipe.oreGenName);
-        GuiDraw.drawString(I18n.format("gtnop.gui.nei.oreName") + ": " + GT6OreSmallHelper.mapMetaToLocalizedName.get(oreSmall.oreMeta), 2, 18, 0x404040, false);
+        GuiDraw.drawString(I18n.format("gtnop.gui.nei.oreName") + ": " + getLocalizedSmallOreName(oreSmall.oreMeta), 2, 18, 0x404040, false);
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.genHeight") + ": " + oreSmall.worldGenHeightRange, 2, 31, 0x404040, false);
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.amount") + ": " + oreSmall.amountPerChunk, 2, 44, 0x404040, false);
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.worldNames") + ": " + getWorldNameTranslated(oreSmall.genOverworld, oreSmall.genNether, oreSmall.genEnd, false, false), 2, 57, 0x404040, false);

@@ -12,11 +12,10 @@ import gregapi.data.CS;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import pers.gwyog.gtneioreplugin.plugin.PluginBase;
 import pers.gwyog.gtneioreplugin.util.GT6OreLayerHelper;
 import pers.gwyog.gtneioreplugin.util.GT6OreLayerHelper.OreLayerWrapper;
 
-public class PluginGT6VeinStat extends PluginBase {
+public class PluginGT6VeinStat extends PluginGT6Base {
 
     public class CachedVeinStatRecipe extends CachedRecipe {
         public String veinName;
@@ -108,10 +107,10 @@ public class PluginGT6VeinStat extends PluginBase {
         CachedVeinStatRecipe crecipe = (CachedVeinStatRecipe) this.arecipes.get(recipe);
         OreLayerWrapper oreLayer = GT6OreLayerHelper.mapOreLayerWrapper.get(crecipe.veinName);
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.veinName") + ": " + getLocalizedVeinName(oreLayer.veinName), 2, 18, 0x404040, false);
-        GuiDraw.drawString(I18n.format("gtnop.gui.nei.primaryOre") + ": " + GT6OreLayerHelper.mapMetaToLocalizedName.get(oreLayer.primaryMeta), 2, 31, 0x404040, false);
-        GuiDraw.drawString(I18n.format("gtnop.gui.nei.secondaryOre") + ": " + GT6OreLayerHelper.mapMetaToLocalizedName.get(oreLayer.secondaryMeta), 2, 44, 0x404040, false);
-        GuiDraw.drawString(I18n.format("gtnop.gui.nei.betweenOre") + ": " + GT6OreLayerHelper.mapMetaToLocalizedName.get(oreLayer.betweenMeta), 2, 57, 0x404040, false);
-        GuiDraw.drawString(I18n.format("gtnop.gui.nei.sporadicOre") + ": " + GT6OreLayerHelper.mapMetaToLocalizedName.get(oreLayer.sporadicMeta), 2, 70, 0x404040, false);
+        GuiDraw.drawString(I18n.format("gtnop.gui.nei.primaryOre") + ": " + getLocalizedOreName(oreLayer.primaryMeta), 2, 31, 0x404040, false);
+        GuiDraw.drawString(I18n.format("gtnop.gui.nei.secondaryOre") + ": " + getLocalizedOreName(oreLayer.secondaryMeta), 2, 44, 0x404040, false);
+        GuiDraw.drawString(I18n.format("gtnop.gui.nei.betweenOre") + ": " + getLocalizedOreName(oreLayer.betweenMeta), 2, 57, 0x404040, false);
+        GuiDraw.drawString(I18n.format("gtnop.gui.nei.sporadicOre") + ": " + getLocalizedOreName(oreLayer.sporadicMeta), 2, 70, 0x404040, false);
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.genHeight") + ": " + oreLayer.worldGenHeightRange, 2, 83, 0x404040, false);
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.weightedChance") + ": " + oreLayer.weightedChance, 2, 96, 0x404040, false);
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.worldNames") + ": " + getWorldNameTranslated(oreLayer.genOverworld, oreLayer.genNether, oreLayer.genEnd, false, false), 2, 109, 0x404040, false);

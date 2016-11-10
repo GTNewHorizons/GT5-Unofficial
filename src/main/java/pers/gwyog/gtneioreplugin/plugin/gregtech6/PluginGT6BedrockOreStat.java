@@ -11,13 +11,12 @@ import gregapi.data.CS;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import pers.gwyog.gtneioreplugin.plugin.PluginBase;
 import pers.gwyog.gtneioreplugin.util.GT6OreBedrockHelper;
 import pers.gwyog.gtneioreplugin.util.GT6OreLayerHelper;
 import pers.gwyog.gtneioreplugin.util.GT6OreSmallHelper;
 import pers.gwyog.gtneioreplugin.util.GT6OreBedrockHelper.OreBedrockWrapper;
 
-public class PluginGT6BedrockOreStat extends PluginBase {
+public class PluginGT6BedrockOreStat extends PluginGT6Base {
     
     public class CachedBedrockOreStatRecipe extends CachedRecipe {
         public String oreName;
@@ -90,10 +89,10 @@ public class PluginGT6BedrockOreStat extends PluginBase {
     public void drawExtras(int recipe) {
         CachedBedrockOreStatRecipe crecipe = (CachedBedrockOreStatRecipe) this.arecipes.get(recipe);
         OreBedrockWrapper oreLayer = GT6OreBedrockHelper.mapOreBedrockWrapper.get(crecipe.oreName);
-        GuiDraw.drawString(I18n.format("gtnop.gui.nei.oreName") + ": " + GT6OreBedrockHelper.mapMetaToLocalizedName.get(oreLayer.meta), 2, 18, 0x404040, false);
-        GuiDraw.drawString(I18n.format("gtnop.gui.nei.oreOthers") + ": " + GT6OreSmallHelper.mapMetaToLocalizedName.get(oreLayer.meta), 2, 31, 0x404040, false);
-        GuiDraw.drawString(I18n.format("gtnop.gui.nei.oreOthers") + ": " + GT6OreLayerHelper.mapMetaToLocalizedName.get(oreLayer.meta), 2, 44, 0x404040, false);
-        GuiDraw.drawString(I18n.format("gtnop.gui.nei.oreOthers") + ": " + GT6OreSmallHelper.mapMetaToLocalizedName.get(oreLayer.meta), 2, 57, 0x404040, false);
+        GuiDraw.drawString(I18n.format("gtnop.gui.nei.oreName") + ": " + getLocalizedOreBedrockName(oreLayer.meta), 2, 18, 0x404040, false);
+        GuiDraw.drawString(I18n.format("gtnop.gui.nei.oreOthers") + ": " + getLocalizedSmallOreName(oreLayer.meta), 2, 31, 0x404040, false);
+        GuiDraw.drawString(I18n.format("gtnop.gui.nei.oreOthers") + ": " + getLocalizedOreName(oreLayer.meta), 2, 44, 0x404040, false);
+        GuiDraw.drawString(I18n.format("gtnop.gui.nei.oreOthers") + ": " + getLocalizedSmallOreName(oreLayer.meta), 2, 57, 0x404040, false);
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.genHeight") + ": " + "0-6", 2, 70, 0x404040, false);
         GuiDraw.drawString(I18n.format("gtnop.nei.genPosition") + ": " + I18n.format("gtnop.nei.genPositionInfo"), 2,83, 0x404040, false);
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.weightedChance") + ": " + "1/" + oreLayer.probability, 2, 96, 0x404040, false);
