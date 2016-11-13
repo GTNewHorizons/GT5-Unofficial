@@ -35,19 +35,23 @@ public class RECIPES_Machines {
 	static ItemStack RECIPE_IndustrialCokeOvenFrame = GregtechItemList.Casing_CokeOven.get(1);
 	static ItemStack RECIPE_IndustrialCokeOvenCasingA = GregtechItemList.Casing_CokeOven_Coil1.get(1);
 	static ItemStack RECIPE_IndustrialCokeOvenCasingB = GregtechItemList.Casing_CokeOven_Coil2.get(1);
-	//
+	//Industrial Electrolyzer
 	static ItemStack RECIPE_IndustrialElectrolyzerController = GregtechItemList.Industrial_Electrolyzer.get(1);
 	static ItemStack RECIPE_IndustrialElectrolyzerFrame = GregtechItemList.Casing_Electrolyzer.get(1);
-	//
+	//Industrial Material Press
 	static ItemStack RECIPE_IndustrialMaterialPressController = GregtechItemList.Industrial_PlatePress.get(1);
 	static ItemStack RECIPE_IndustrialMaterialPressFrame = GregtechItemList.Casing_MaterialPress.get(1);
-	//
+	//Industrial Maceration Stack
 	static ItemStack RECIPE_IndustrialMacerationStackController = GregtechItemList.Industrial_MacerationStack.get(1);
 	static ItemStack RECIPE_IndustrialMacerationStackFrame = GregtechItemList.Casing_MacerationStack.get(1);
-	//
+	//Industrial Wire Factory
 	static ItemStack RECIPE_IndustrialWireFactoryController = GregtechItemList.Industrial_WireFactory.get(1);
 	static ItemStack RECIPE_IndustrialWireFactoryFrame = GregtechItemList.Casing_WireFactory.get(1);
-	//Industrial Coke Oven
+	//Industrial Matter Fabricator
+	static ItemStack RECIPE_IndustrialMatterFabController = GregtechItemList.Industrial_MassFab.get(1);
+	static ItemStack RECIPE_IndustrialMatterFabFrame = GregtechItemList.Casing_MatterFab.get(1);
+	static ItemStack RECIPE_IndustrialMatterFabCoil = GregtechItemList.Casing_MatterGen.get(1);
+	//Industrial Blast Smelter
 	static ItemStack RECIPE_IndustrialBlastSmelterController = GregtechItemList.Industrial_AlloyBlastSmelter.get(1);
 	static ItemStack RECIPE_IndustrialBlastSmelterFrame = GregtechItemList.Casing_BlastSmelter.get(1);
 	static ItemStack RECIPE_IndustrialBlastSmelterCoil = GregtechItemList.Casing_Coil_BlastSmelter.get(1);
@@ -683,7 +687,26 @@ public class RECIPES_Machines {
 					"frameGtStaballoy", gearboxCasing_Tier_3, "frameGtStaballoy",
 					"plateStaballoy", "plateStaballoy", "plateStaballoy",
 					RECIPE_IndustrialBlastSmelterCoil);
-
+			
+			
+			//Matter Fabricator CPU
+			RecipeUtils.addShapedGregtechRecipe(
+					"plateDoubleQuantum", circuitTier5, "plateDoubleQuantum",
+					cableTier8, machineCasing_LuV, cableTier8,
+					"plateDoubleQuantum", circuitTier5, "plateDoubleQuantum",
+					RECIPE_IndustrialMatterFabController);
+			//Matter Fabricator Frame Casing
+			RecipeUtils.addShapedGregtechRecipe(
+					"plateNiobiumCarbide", rodTier8, "plateNiobiumCarbide",
+					rodTier8, "frameGtInconel690", rodTier8,
+					"plateNiobiumCarbide", rodTier8, "plateNiobiumCarbide",
+					RECIPE_IndustrialMatterFabFrame);
+			//Matter Fabricator Coil 
+			RecipeUtils.addShapedGregtechRecipe(
+					"plateQuantum", "plateQuantum", "plateQuantum",
+					"frameGtStellite", machineCasing_UV, "frameGtStellite",
+					"plateQuantum", "plateQuantum", "plateQuantum",
+					RECIPE_IndustrialMatterFabCoil);
 
 		}
 
