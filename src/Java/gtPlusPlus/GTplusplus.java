@@ -182,17 +182,17 @@ implements ActionListener
 			dumpGtRecipeMap(Gregtech_Recipe_Map.sChemicalDehydratorRecipes);
 			dumpGtRecipeMap(Gregtech_Recipe_Map.sCokeOvenRecipes);
 			dumpGtRecipeMap(Gregtech_Recipe_Map.sMatterFab2Recipes);
+			dumpGtRecipeMap(Gregtech_Recipe_Map.sAlloyBlastSmelterRecipes);
 		}
-		dumpGtRecipeMap(Gregtech_Recipe_Map.sAlloyBlastSmelterRecipes);
 
 		//~
 		ReflectionUtils.becauseIWorkHard();
 
-		Utils.LOG_INFO("Activating GT OreDictionary Handler, this can take some time.");
+		//Utils.LOG_INFO("Activating GT OreDictionary Handler, this can take some time.");
 		Utils.LOG_INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		Utils.LOG_INFO("| Recipes succesfully Loaded: "+RegistrationHandler.recipesSuccess+" | Failed: "+RegistrationHandler.recipesFailed + " |");
 		Utils.LOG_INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		Meta_GT_Proxy.activateOreDictHandler();
+		//Meta_GT_Proxy.activateOreDictHandler();
 		Utils.LOG_INFO("Finally, we are finished. Have some cripsy bacon as a reward.");
 	}
 
