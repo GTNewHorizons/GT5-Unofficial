@@ -41,8 +41,6 @@ public class FR_ItemRegistry {
 	public static MB_ItemFrame hiveFrameClay;
 	public static MB_ItemFrame hiveFrameNova;
 
-	//Alveary Stuff
-	public static FR_BlockAlveary alveary;
 
 	public static void Register() {		
 
@@ -68,7 +66,8 @@ public class FR_ItemRegistry {
 			hiveFrameSoul = new MB_ItemFrame(MB_FrameType.SOUL, EnumRarity.common, "");
 			hiveFrameClay = new MB_ItemFrame(MB_FrameType.CLAY, EnumRarity.common, "");
 			hiveFrameNova = new MB_ItemFrame(MB_FrameType.NOVA, EnumRarity.epic, "A Creative Only Frame.");
-			if (CORE.configSwitches.enableCustomAlvearyBlocks){
+			if (CORE.configSwitches.enableCustomAlvearyBlocks){//Alveary Stuff
+				FR_BlockAlveary alveary;
 				alveary = registerBlock(new FR_BlockAlveary(), ItemBlockForestry.class, "alveary");
 			}
 		}

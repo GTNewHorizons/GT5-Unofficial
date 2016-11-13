@@ -18,12 +18,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.apiculture.MaterialBeehive;
 import forestry.apiculture.multiblock.TileAlvearyPlain;
-import forestry.core.blocks.BlockStructure;
+import forestry.core.blocks.BlockForestry;
 import forestry.core.render.TextureManager;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 
-public class FR_BlockAlveary extends BlockStructure
+public class FR_BlockAlveary extends BlockForestry
 {
 
 	public static enum Type
