@@ -13,6 +13,8 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.opengl.GL11;
+
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 //import net.minecraftforge.client.event.RenderWorldLastEvent;
 
 /**
@@ -23,24 +25,24 @@ public class DetravDrawBlockHighlightEventHandler {
     public static long modeBlockBreak = 0L;
     public static boolean disableDepthBuffer = false;
     public static float thickness = 4F;
-    public static float offset = 0F;
-    public static float red = 0.1F;
+    public static float offset = 0.01F;
+    public static float red = 1F;//0.1F;
     public static float green = 1F;
-    public static float blue = 0.1F;
-    public static float alpha = 1F;
+    public static float blue = 1F;//0.1F;
+    public static float alpha = 0.1F;
 
     @SubscribeEvent
     public void onDrawBlockHighlight(DrawBlockHighlightEvent e) {
-        drawMoreSelectionBox(e.player, e.target, 0, e.currentItem, e.partialTicks);
-        e.setCanceled(true);
+        if (drawMoreSelectionBox(e.player, e.target, 0, e.currentItem, e.partialTicks))
+            e.setCanceled(true);
     }
 
-    public static void drawMoreSelectionBox(EntityPlayer player, MovingObjectPosition mouseHit, int par3, ItemStack par4ItemStack, float par5) {
+    public static boolean drawMoreSelectionBox(EntityPlayer player, MovingObjectPosition mouseHit, int par3, ItemStack par4ItemStack, float par5) {
         switch ((int) modeBlockBreak) {
             //case 0: Просто рисуем без экспанда
             case 0:
-                drawSelectionBox(player, mouseHit.typeOfHit, mouseHit.blockX , mouseHit.blockY, mouseHit.blockZ , par3, par4ItemStack, par5);
-                break;
+                //drawSelectionBox(player, mouseHit.typeOfHit, mouseHit.blockX , mouseHit.blockY, mouseHit.blockZ , par3, par4ItemStack, par5);
+                return false;
             case 1:
                 switch (mouseHit.sideHit) {//Рисуеи по моусхиту
                     case 0:
@@ -92,6 +94,7 @@ public class DetravDrawBlockHighlightEventHandler {
                             drawSelectionBox(player, mouseHit.typeOfHit, mouseHit.blockX + i, mouseHit.blockY + j, mouseHit.blockZ + k, par3, par4ItemStack, par5);
                 break;
         }
+        return false;
     }
 
     public static void drawSelectionBox(EntityPlayer player,MovingObjectPosition.MovingObjectType typeOfHit, int blockX,int blockY, int blockZ, int par3, ItemStack par4ItemStack, float par5) {
@@ -109,7 +112,7 @@ public class DetravDrawBlockHighlightEventHandler {
 
             Minecraft mc = Minecraft.getMinecraft();
             Block b = mc.theWorld.getBlock(blockX, blockY, blockZ);
-            if (b != Blocks.air) {
+            if (b != Blocks.air && b!= null) {
                 b.setBlockBoundsBasedOnState(mc.theWorld, blockX, blockY, blockZ);
 
                 double xOffset = player.lastTickPosX + (player.posX - player.lastTickPosX) * par5;
@@ -122,9 +125,15 @@ public class DetravDrawBlockHighlightEventHandler {
 
 
 
-                AxisAlignedBB bb = b.getSelectedBoundingBoxFromPool(mc.theWorld, blockX, blockY, blockZ).expand(xExpand + f1, yExpand + f1, zExpand + f1).getOffsetBoundingBox(-xOffset, -yOffset, -zOffset);
-                GL11.glColor4f(red, green, blue, alpha);
-                drawOutlinedBoundingBox(bb);
+                try {
+                    AxisAlignedBB bb = b.getSelectedBoundingBoxFromPool(mc.theWorld, blockX, blockY, blockZ).expand(xExpand + f1, yExpand + f1, zExpand + f1).getOffsetBoundingBox(-xOffset, -yOffset, -zOffset);
+                    GL11.glColor4f(red, green, blue, alpha);
+                    //drawOutlinedBoundingBox(bb);
+                    drawBlock(bb);
+                }catch(Exception e) {
+
+                }
+
             }
             GL11.glDepthMask(true);
             GL11.glEnable(3553);
@@ -135,6 +144,87 @@ public class DetravDrawBlockHighlightEventHandler {
         }
     }
 
+    private static void drawBlock(AxisAlignedBB par1AxisAlignedBB) {
+        //Tessellator tessellator = Tessellator.instance;
+        if(alpha > 0.0F) {
+
+
+            renderDown(par1AxisAlignedBB);
+            renderUp(par1AxisAlignedBB);
+            renderNorth(par1AxisAlignedBB);
+            renderSouth(par1AxisAlignedBB);
+            renderWest(par1AxisAlignedBB);
+            renderEast(par1AxisAlignedBB);
+        }
+
+    }
+
+
+    public static void renderUp(AxisAlignedBB par1AxisAlignedBB) {
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+        tessellator.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.minY, par1AxisAlignedBB.minZ);
+        tessellator.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.minY, par1AxisAlignedBB.minZ);
+        tessellator.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.minY, par1AxisAlignedBB.maxZ);
+        tessellator.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.minY, par1AxisAlignedBB.maxZ);
+        tessellator.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.minY, par1AxisAlignedBB.minZ);
+        tessellator.draw();
+    }
+
+    public static void renderDown(AxisAlignedBB par1AxisAlignedBB) {
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+        tessellator.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.minZ);
+        tessellator.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.maxZ);
+        tessellator.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.maxZ);
+        tessellator.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.minZ);
+        tessellator.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.minZ);
+        tessellator.draw();
+    }
+
+    public static void renderNorth(AxisAlignedBB par1AxisAlignedBB) {
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+        tessellator.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.minY, par1AxisAlignedBB.minZ);
+        tessellator.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.minZ);
+        tessellator.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.minZ);
+        tessellator.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.minY, par1AxisAlignedBB.minZ);
+        tessellator.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.minY, par1AxisAlignedBB.minZ);
+        tessellator.draw();
+    }
+
+    public static void renderSouth(AxisAlignedBB par1AxisAlignedBB) {
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+        tessellator.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.minY, par1AxisAlignedBB.maxZ);
+        tessellator.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.minY, par1AxisAlignedBB.maxZ);
+        tessellator.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.maxZ);
+        tessellator.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.maxZ);
+        tessellator.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.minY, par1AxisAlignedBB.maxZ);
+        tessellator.draw();
+    }
+
+    public static void renderWest(AxisAlignedBB par1AxisAlignedBB) {
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+        tessellator.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.minY, par1AxisAlignedBB.minZ);
+        tessellator.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.minY, par1AxisAlignedBB.maxZ);
+        tessellator.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.maxZ);
+        tessellator.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.minZ);
+        tessellator.addVertex(par1AxisAlignedBB.minX, par1AxisAlignedBB.minY, par1AxisAlignedBB.minZ);
+        tessellator.draw();
+    }
+
+    public static void renderEast(AxisAlignedBB par1AxisAlignedBB) {
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+        tessellator.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.minY, par1AxisAlignedBB.minZ);
+        tessellator.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.minZ);
+        tessellator.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.maxY, par1AxisAlignedBB.maxZ);
+        tessellator.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.minY, par1AxisAlignedBB.maxZ);
+        tessellator.addVertex(par1AxisAlignedBB.maxX, par1AxisAlignedBB.minY, par1AxisAlignedBB.minZ);
+        tessellator.draw();
+    }
 
     private static void drawOutlinedBoundingBox(AxisAlignedBB par1AxisAlignedBB) {
         Tessellator tessellator = Tessellator.instance;

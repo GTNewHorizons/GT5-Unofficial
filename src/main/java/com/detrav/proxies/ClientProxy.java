@@ -23,7 +23,7 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void onPostLoad() {
         super.onPostLoad();
-        //DetravDrawBlockHighlightEventHandler.register();
+        DetravDrawBlockHighlightEventHandler.register();
         //Textures.ItemIcons.CustomIcon test = new Textures.ItemIcons.CustomIcon("iconsets/PRO_PICK_HEAD");
         //test.run();
 
@@ -44,7 +44,7 @@ public class ClientProxy extends CommonProxy {
     public void onPreInit()
     {
         super.onPreInit();
-        //DetravKeyHandler.register();
+        DetravKeyHandler.register();
     }
 
     @Override

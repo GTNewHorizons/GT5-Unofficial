@@ -22,7 +22,7 @@ import net.minecraftforge.common.config.Configuration;
 public class DetravScannerMod
 {
     public static final String MODID = "detravscannermod";
-    public static final String VERSION = "0.27";
+    public static final String VERSION = "0.28";
 
     public static final CreativeTabs TAB_DETRAV = new DetravCreativeTab();
 
@@ -68,8 +68,8 @@ public class DetravScannerMod
     @EventHandler
     public void onPostLoad(FMLPostInitializationEvent aEvent) {
         proxy.onPostLoad();
-        //DetravBlockBreakEventHandler.register();
-        //DetravLoginEventHandler.register();
+        DetravBlockBreakEventHandler.register();
+        DetravLoginEventHandler.register();
     }
 
     @EventHandler
