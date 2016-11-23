@@ -5,7 +5,6 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_SafeBlock;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_SafeBlock;
@@ -45,23 +44,6 @@ public class GregtechMetaSafeBlock
     @Override
 	public boolean isValidSlot(int aIndex) {
         return aIndex < this.mInventory.length - 1;
-    }
-
-    /*@Override
-	protected void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        fillStacksIntoFirstSlots();
-        super.moveItems(aBaseMetaTileEntity, aTimer);
-        fillStacksIntoFirstSlots();
-    }*/
-
-    protected void fillStacksIntoFirstSlots() {
-        for (int i = 0; i < this.mInventory.length - 1; i++) {
-            for (int j = i + 1; j < this.mInventory.length - 1; j++) {
-                if ((this.mInventory[j] != null) && ((this.mInventory[i] == null) || (GT_Utility.areStacksEqual(this.mInventory[i], this.mInventory[j])))) {
-                    GT_Utility.moveStackFromSlotAToSlotB(getBaseMetaTileEntity(), getBaseMetaTileEntity(), j, i, (byte) 64, (byte) 1, (byte) 64, (byte) 1);
-                }
-            }
-        }
     }
 
     @Override
