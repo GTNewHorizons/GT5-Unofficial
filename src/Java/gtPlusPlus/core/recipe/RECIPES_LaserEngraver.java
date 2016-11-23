@@ -22,18 +22,21 @@ public class RECIPES_LaserEngraver implements IOreRecipeRegistrator {
 			}
 			else {
 				Utils.LOG_INFO("foilYttriumBariumCuprate does not exist within Gregtech, please report this issue to Blood-asp on github.");
+				Utils.LOG_INFO("This material item can be re-enabled within the gregtech configuration files, If you wish to fix this yourself.");
 			}
 			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("foilVanadiumGallium", 1) != null){
 				GT_Values.RA.addLaserEngraverRecipe(GT_OreDictUnificator.get(OrePrefixes.foil, Materials.VanadiumGallium, 2L), GT_Utility.copyAmount(0L, new Object[]{aStack}), GregtechItemList.Circuit_Parts_Wiring_IV.get(1L, new Object[0]), 64, 480);
 			}
 			else {
 				Utils.LOG_INFO("foilVanadiumGallium does not exist within Gregtech, please report this issue to Blood-asp on github.");
+				Utils.LOG_INFO("This material item can be re-enabled within the gregtech configuration files, If you wish to fix this yourself.");
 			}
 			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("foilNiobiumTitanium", 1) != null){
 				GT_Values.RA.addLaserEngraverRecipe(GT_OreDictUnificator.get(OrePrefixes.foil, Materials.NiobiumTitanium, 2L), GT_Utility.copyAmount(0L, new Object[]{aStack}), GregtechItemList.Circuit_Parts_Wiring_IV.get(1L, new Object[0]), 64, 480);
 			}
 			else {
 				Utils.LOG_INFO("foilNiobiumTitanium does not exist within Gregtech, please report this issue to Blood-asp on github.");
+				Utils.LOG_INFO("This material item can be re-enabled within the gregtech configuration files, If you wish to fix this yourself.");
 			}
 
 			
@@ -43,6 +46,7 @@ public class RECIPES_LaserEngraver implements IOreRecipeRegistrator {
 			}
 			else {
 				Utils.LOG_INFO("foilOsmium does not exist within Gregtech, please report this issue to Blood-asp on github.");
+				Utils.LOG_INFO("This material item can be re-enabled within the gregtech configuration files, If you wish to fix this yourself.");
 			}
 			
 		} else if (aOreDictName.equals(OreDictNames.craftingLensCyan.toString())) {
@@ -53,6 +57,7 @@ public class RECIPES_LaserEngraver implements IOreRecipeRegistrator {
 			}
 			else {
 				Utils.LOG_INFO("foilNaquadah does not exist within Gregtech, please report this issue to Blood-asp on github.");
+				Utils.LOG_INFO("This material item can be re-enabled within the gregtech configuration files, If you wish to fix this yourself.");
 			}
 
 		} else if (aOreDictName.equals(OreDictNames.craftingLensWhite.toString())) {
