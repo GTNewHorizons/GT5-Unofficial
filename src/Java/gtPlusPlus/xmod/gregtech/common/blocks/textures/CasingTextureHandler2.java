@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.blocks.textures;
 
-import gregtech.api.enums.Textures;
 import net.minecraft.util.IIcon;
 
 public class CasingTextureHandler2 {
@@ -13,54 +12,54 @@ public class CasingTextureHandler2 {
 				return TexturesGtBlock.Casing_Machine_Dimensional_Adv.getIcon();
 				//Coke Oven Frame
 			case 1:
-				return TexturesGtBlock.Casing_Material_Tantalloy61.getIcon();
+				return TexturesGtBlock._PlaceHolder.getIcon();
 				//Coke Oven Casing Tier 1
 			case 2: 
-				return Textures.BlockIcons.MACHINE_CASING_FIREBOX_BRONZE.getIcon();
+				return TexturesGtBlock._PlaceHolder.getIcon();
 				//Coke Oven Casing Tier 2
-			case 3:
-				return Textures.BlockIcons.MACHINE_CASING_FIREBOX_STEEL.getIcon();
+			case 3: 
+				return TexturesGtBlock._PlaceHolder.getIcon();
 				//Material Press Casings
-			case 4:
-				return Textures.BlockIcons.MACHINE_CASING_STABLE_TITANIUM.getIcon();
+			case 4: 
+				return TexturesGtBlock._PlaceHolder.getIcon();
 				//Electrolyzer Casings
-			case 5:
-				return TexturesGtBlock.Casing_Material_Potin.getIcon();
+			case 5: 
+				return TexturesGtBlock._PlaceHolder.getIcon();
 				//Broken Blue Fusion Casings
-			case 6:
-				return TexturesGtBlock.Casing_Material_IncoloyMA956.getIcon();
+			case 6: 
+				return TexturesGtBlock._PlaceHolder.getIcon();
 				//Maceration Stack Casings
-			case 7:
-				return TexturesGtBlock.Casing_Material_Tumbaga.getIcon();
+			case 7: 
+				return TexturesGtBlock._PlaceHolder.getIcon();
 				//Broken Pink Fusion Casings
-			case 8:
-				return TexturesGtBlock.Casing_Material_IncoloyDS.getIcon();
+			case 8: 
+				return TexturesGtBlock._PlaceHolder.getIcon();
 				//Matter Fabricator Casings
-			case 9:
-				return TexturesGtBlock.Casing_Machine_Dimensional_Adv.getIcon();
+			case 9: 
+				return TexturesGtBlock._PlaceHolder.getIcon();
 				//Iron Blast Fuance Textures
-			case 10:
-				return TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();		
+			case 10: 
+				return TexturesGtBlock._PlaceHolder.getIcon();		
 				//Multitank Exterior Casing
-			case 11:
-				return Textures.BlockIcons.MACHINE_CASING_GRATE.getIcon();	
+			case 11: 
+				return TexturesGtBlock._PlaceHolder.getIcon();	
 				//Reactor Casing I
-			case 12:
-				return TexturesGtBlock.Casing_Material_Stellite.getIcon();	
+			case 12: 
+				return TexturesGtBlock._PlaceHolder.getIcon();
 				//Reactor Casing II
-			case 13:
-				return TexturesGtBlock.Casing_Material_Zeron100.getIcon();	
-			case 14:
-				return TexturesGtBlock.Casing_Staballoy_Firebox.getIcon();
-			case 15:
-				return TexturesGtBlock.Casing_Material_ZirconiumCarbide.getIcon();		
+			case 13: 
+				return TexturesGtBlock._PlaceHolder.getIcon();
+			case 14: 
+				return TexturesGtBlock._PlaceHolder.getIcon();
+			case 15: 
+				return TexturesGtBlock._PlaceHolder.getIcon();		
 
-			default:
-				return Textures.BlockIcons.MACHINE_CASING_RADIOACTIVEHAZARD.getIcon();
+			default: 
+				return TexturesGtBlock.Overlay_UU_Matter.getIcon();
 
 			}
-		}
-		return Textures.BlockIcons.MACHINE_CASING_GEARBOX_TUNGSTENSTEEL.getIcon();
+		}	
+		return TexturesGtBlock._PlaceHolder.getIcon();
 	}
-	
+
 }

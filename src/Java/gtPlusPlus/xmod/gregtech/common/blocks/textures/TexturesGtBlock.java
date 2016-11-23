@@ -54,7 +54,11 @@ public class TexturesGtBlock {
 	 */
 
 
+	//PlaceHolder Texture
+	private static final CustomIcon Internal_PlaceHolder = new CustomIcon("TileEntities/_PlaceHolder");	
+	public static final CustomIcon _PlaceHolder = Internal_PlaceHolder;
 
+	
 	//Machine Casings
 	//Simple
 	private static final CustomIcon Internal_Casing_Machine_Simple_Top = new CustomIcon("TileEntities/machine_top");	
