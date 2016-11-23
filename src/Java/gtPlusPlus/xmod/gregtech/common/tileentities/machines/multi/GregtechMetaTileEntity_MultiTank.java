@@ -1,10 +1,12 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
@@ -12,6 +14,7 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.Pair;
+import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -23,6 +26,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_MultiTank
@@ -36,6 +40,35 @@ extends GregtechMeta_MultiBlockBase {
 	private short storageMultiplier = getStorageMultiplier();
 	private long maximumFluidStorage = getMaximumTankStorage();
 	private FluidStack internalStorageTank = null;
+
+	@Override
+	public String[] getInfoData() {
+		ArrayList<GT_MetaTileEntity_Hatch_Energy> mTier = this.mEnergyHatches;
+		if (!mTier.isEmpty()){
+			int temp = mTier.get(0).mTier;
+			if (internalStorageTank == null) {
+				return new String[]{
+						GT_Values.VOLTAGE_NAMES[temp]+" Large Fluid Tank",
+						"Stored Fluid:",
+						"No Fluid",
+						Integer.toString(0) + "L",
+						Integer.toString(getCapacity()) + "L"};
+			}
+			return new String[]{
+					GT_Values.VOLTAGE_NAMES[temp]+" Large Fluid Tank",
+					"Stored Fluid:",
+					internalStorageTank.getLocalizedName(),
+					Integer.toString(internalStorageTank.amount) + "L",
+					Integer.toString((int) fluidStored) + "L - fluidStored var",
+					Integer.toString(getCapacity()) + "L"};
+		}
+		return new String[]{
+				"Voltage Tier not set -" +" Large Fluid Tank",
+				"Stored Fluid:",
+				"No Fluid",
+				Integer.toString(0) + "L",
+				Integer.toString(getCapacity()) + "L"};
+	}
 
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
@@ -169,10 +202,10 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
-		Utils.LOG_INFO("Okay");
-		
-		
-		
+		//Utils.LOG_INFO("Okay");
+
+
+
 		ArrayList<ItemStack> tInputList = getStoredInputs();
 		for (int i = 0; i < tInputList.size() - 1; i++) {
 			for (int j = i + 1; j < tInputList.size(); j++) {
@@ -202,12 +235,12 @@ extends GregtechMeta_MultiBlockBase {
 			}
 		}
 		FluidStack[] tFluids = (FluidStack[]) Arrays.copyOfRange(tFluidList.toArray(new FluidStack[1]), 0, 1);
-		
+
 		if (tFluids.length >= 2){
 			Utils.LOG_INFO("Bad");
 			return false;
 		}
-		
+
 		ArrayList<Pair<GT_MetaTileEntity_Hatch_Input, Boolean>> rList = new ArrayList<Pair<GT_MetaTileEntity_Hatch_Input, Boolean>>();
 		int slotInputCount = 0;
 		for (GT_MetaTileEntity_Hatch_Input tHatch : mInputHatches) {
@@ -224,13 +257,16 @@ extends GregtechMeta_MultiBlockBase {
 			Utils.LOG_INFO("Bad");
 			return false;
 		}
-		
+
 		Utils.LOG_INFO("Okay - 2");  
 		if (internalStorageTank == null){
+			Utils.LOG_INFO("Okay - 3");  
 			if (rList.get(0).getKey().mFluid != null && rList.get(0).getKey().mFluid.amount > 0){
-				Utils.LOG_INFO("Okay - 1"+" rList.get(0).getKey().mFluid.amount: "+rList.get(0).getKey().mFluid.amount +" internalStorageTank:"+internalStorageTank.amount);  
-				internalStorageTank = rList.get(0).getKey().mFluid;
-				internalStorageTank.amount = rList.get(0).getKey().mFluid.amount;
+				Utils.LOG_INFO("Okay - 4");  
+				Utils.LOG_INFO("Okay - 1"+" rList.get(0).getKey().mFluid.amount: "+rList.get(0).getKey().mFluid.amount /*+" internalStorageTank:"+internalStorageTank.amount*/);  
+				FluidStack tempFluidStack = rList.get(0).getKey().mFluid;
+				Fluid tempFluid = tempFluidStack.getFluid();
+				internalStorageTank = FluidUtils.getFluidStack(tempFluid.getName(), tempFluidStack.amount);				
 				rList.get(0).getKey().mFluid.amount = 0;
 				Utils.LOG_INFO("Okay - 1.1"+" rList.get(0).getKey().mFluid.amount: "+rList.get(0).getKey().mFluid.amount +" internalStorageTank:"+internalStorageTank.amount);  
 				return true;
@@ -241,70 +277,98 @@ extends GregtechMeta_MultiBlockBase {
 		else if (internalStorageTank.isFluidEqual(rList.get(0).getKey().mFluid)){
 			Utils.LOG_INFO("Storing "+rList.get(0).getKey().mFluid.amount+"L");
 			Utils.LOG_INFO("Contains "+internalStorageTank.amount+"L");
-			
+
+
 			int tempAdd = 0;
 			tempAdd = rList.get(0).getKey().getFluidAmount();
 			rList.get(0).getKey().mFluid = null;		
 			Utils.LOG_INFO("adding "+tempAdd);
 			internalStorageTank.amount = internalStorageTank.amount + tempAdd;			
 			Utils.LOG_INFO("Tank now Contains "+internalStorageTank.amount+"L of "+internalStorageTank.getFluid().getName()+".");
-			
-				if (mOutputHatches.get(0).mFluid == null || mOutputHatches.isEmpty()){
-					Utils.LOG_INFO("Okay - 3");  
-					int tempCurrentStored = internalStorageTank.amount;
-					int tempSubtract = 0;
-					int tempResult = 0;
-					int tempHatchSize = mOutputHatches.get(0).getCapacity();
-					FluidStack tempOutputFluid = internalStorageTank;
-					if (tempHatchSize > tempCurrentStored){
-						Utils.LOG_INFO("Okay - 3.1.1"+" hatchCapacity: "+tempHatchSize +" tempCurrentStored:"+tempCurrentStored);  
-						tempOutputFluid.amount = tempHatchSize;
-						tempSubtract = tempHatchSize;
-						tempResult = tempCurrentStored - tempSubtract;	
-						Utils.LOG_INFO("Okay - 3.1.2"+" result: "+tempResult +" tempCurrentStored:"+tempCurrentStored);  										
-						mOutputHatches.get(0).mFluid = tempOutputFluid;			
-						internalStorageTank.amount = tempResult;
-					}
-					else if (tempCurrentStored >= 5000){
-						Utils.LOG_INFO("Okay - 3.2");  
-						tempOutputFluid.amount = tempCurrentStored;
-						tempSubtract = tempOutputFluid.amount;
-						tempResult = tempCurrentStored - tempSubtract;											
-						mOutputHatches.get(0).mFluid = tempOutputFluid;			
-						internalStorageTank.amount = tempResult;
-					}
-					Utils.LOG_INFO("Tank");
-					return true;
-				}
-				else if (mOutputHatches.get(0).mFluid.isFluidEqual(internalStorageTank)){
-					Utils.LOG_INFO("Okay - 4");  
-					int tempCurrentStored = internalStorageTank.amount;
-					int tempSubtract = 0;
-					int tempResult = 0;
-					int tempHatchSize = mOutputHatches.get(0).getCapacity();
-					FluidStack tempOutputFluid = internalStorageTank;
-					if (tempHatchSize > tempCurrentStored){
-						tempOutputFluid.amount = tempHatchSize;
-						tempSubtract = tempOutputFluid.amount;
-						tempResult = tempCurrentStored - tempSubtract;											
-						mOutputHatches.get(0).mFluid = tempOutputFluid;			
-						internalStorageTank.amount = tempResult;						
-					}
-					else if (tempCurrentStored >= 5000){
-						tempOutputFluid.amount = tempCurrentStored;
-						tempSubtract = tempOutputFluid.amount;
-						tempResult = tempCurrentStored - tempSubtract;											
-						mOutputHatches.get(0).mFluid = tempOutputFluid;			
-						internalStorageTank.amount = tempResult;
-					}
-					Utils.LOG_INFO("Tank");
-					return true;
-				}			
-				Utils.LOG_INFO("Tank");
+
+
+			//Utils.LOG_INFO("Tank");
 			return true;
 		}
 		else {
-			Utils.LOG_INFO("Tank Contains "+internalStorageTank.amount+"L of "+internalStorageTank.getFluid().getName()+".");
+			FluidStack superTempFluidStack = rList.get(0).getKey().mFluid;
+			Utils.LOG_INFO("is input fluid equal to stored fluid? "+(internalStorageTank.isFluidEqual(superTempFluidStack)));
+			if (superTempFluidStack != null)
+				Utils.LOG_INFO("Input hatch[0] Contains "+superTempFluidStack.amount+"L of "+superTempFluidStack.getFluid().getName()+".");
+			Utils.LOG_INFO("Large Multi-Tank Contains "+internalStorageTank.amount+"L of "+internalStorageTank.getFluid().getName()+".");
+
+			if (mOutputHatches.get(0).mFluid == null || mOutputHatches.isEmpty()){
+				Utils.LOG_INFO("Okay - 3");  
+				int tempCurrentStored = internalStorageTank.amount;
+				int tempResult = 0;
+				int tempHatchSize = mOutputHatches.get(0).getCapacity();
+				int tempHatchCurrentHolding = mOutputHatches.get(0).getFluidAmount();
+				int tempHatchRemainingSpace = tempHatchSize - tempHatchCurrentHolding;
+				FluidStack tempOutputFluid = internalStorageTank;
+				Utils.LOG_INFO("Okay - 3.1.x"+" hatchCapacity: "+tempHatchSize +" tempCurrentStored:"+tempCurrentStored+" output hatch holds: "+tempHatchCurrentHolding+" tank has "+tempHatchRemainingSpace+"L of space left.");  
+
+				if (tempHatchSize >= tempHatchRemainingSpace){
+					Utils.LOG_INFO("Okay - 3.1.1"+" hatchCapacity: "+tempHatchSize +" tempCurrentStored:"+tempCurrentStored+" output hatch holds: "+tempHatchCurrentHolding+" tank has "+tempHatchRemainingSpace+"L of space left.");  
+
+					int adder;
+
+					if (tempCurrentStored > 0 && tempCurrentStored <= tempHatchSize){
+						adder = tempCurrentStored;
+					}
+					else {
+						adder = 0;
+					}
+
+					tempResult = tempHatchCurrentHolding + adder;
+					tempOutputFluid.amount = tempResult;
+					Utils.LOG_INFO("Okay - 3.1.2"+" result: "+tempResult +" tempCurrentStored:"+tempCurrentStored + " filling output hatch with: "+tempOutputFluid.amount+"L of "+tempOutputFluid.getFluid().getName());  										
+					mOutputHatches.get(0).mFluid = tempOutputFluid;			
+					internalStorageTank.amount = (tempCurrentStored-tempResult);
+					Utils.LOG_INFO("Okay - 3.1.3"+" internalTankStorage: "+internalStorageTank.amount +"L | output hatch contains:"+mOutputHatches.get(0).mFluid.amount+"L of "+mOutputHatches.get(0).mFluid.getFluid().getName());  
+					/*if (internalStorageTank.amount <= 0)
+						internalStorageTank = null;*/
+				}
+				Utils.LOG_INFO("Tank");
+				return true;
+			}
+			else if (mOutputHatches.get(0).mFluid.isFluidEqual(internalStorageTank)){
+				if (internalStorageTank.amount <= 0)
+					return false;
+				Utils.LOG_INFO("Okay - 4");
+				int tempCurrentStored = internalStorageTank.amount;
+				int tempResult = 0;
+				int tempHatchSize = mOutputHatches.get(0).getCapacity();
+				int tempHatchCurrentHolding = mOutputHatches.get(0).getFluidAmount();
+				int tempHatchRemainingSpace = tempHatchSize - tempHatchCurrentHolding;
+				FluidStack tempOutputFluid = internalStorageTank;
+				Utils.LOG_INFO("Okay - 4.1.x"+" hatchCapacity: "+tempHatchSize +" tempCurrentStored:"+tempCurrentStored+" output hatch holds: "+tempHatchCurrentHolding+" tank has "+tempHatchRemainingSpace+"L of space left.");  
+
+				if (tempHatchSize >= tempHatchRemainingSpace){
+					Utils.LOG_INFO("Okay - 4.1.1"+" hatchCapacity: "+tempHatchSize +" tempCurrentStored:"+tempCurrentStored+" output hatch holds: "+tempHatchCurrentHolding+" tank has "+tempHatchRemainingSpace+"L of space left.");  
+
+					int adder;
+
+					if (tempCurrentStored > 0 && tempCurrentStored <= tempHatchSize){
+						adder = tempCurrentStored;
+					}
+					else {
+						adder = 0;
+					}
+
+					tempResult = tempHatchCurrentHolding + adder;
+					
+					tempOutputFluid.amount = tempResult;
+					Utils.LOG_INFO("Okay - 4.1.2"+" result: "+tempResult +" tempCurrentStored:"+tempCurrentStored);  										
+					mOutputHatches.get(0).mFluid = tempOutputFluid;			
+					internalStorageTank.amount = (tempCurrentStored-tempResult);
+		/*			if (internalStorageTank.amount <= 0)
+						internalStorageTank = null;*/
+				}
+
+				Utils.LOG_INFO("Tank");
+				return true;
+			}
+
 		}
 		//this.getBaseMetaTileEntity().(tFluids[0].amount, true);        
 		Utils.LOG_INFO("Tank");

@@ -87,18 +87,18 @@ public class RecipeGen_BlastSmelter  implements Runnable{
 					if (CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getFluid(fluidAmount), 100, duration, 240)){
 						Utils.LOG_WARNING("Success.");
 						if (GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Ingot.get(0), M.getFluid(144), M.getIngot(1), duration, 120)){
-							Utils.LOG_INFO("Success, Also added a Fluid solidifier recipe.");
+							Utils.LOG_WARNING("Success, Also added a Fluid solidifier recipe.");
 							if (GT_Values.RA.addFluidExtractionRecipe(M.getIngot(1), null, M.getFluid(144), 100, duration, 120)){
-								Utils.LOG_INFO("Success, Also added a Fluid Extractor recipe.");
+								Utils.LOG_WARNING("Success, Also added a Fluid Extractor recipe.");
 							}
 							if (GT_Values.RA.addFluidExtractionRecipe(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("nugget"+M.getUnlocalizedName(), 1), null, M.getFluid(16), 100, duration/9, 120)){
-								Utils.LOG_INFO("Success, Also added a Fluid Extractor recipe.");
+								Utils.LOG_WARNING("Success, Also added a Fluid Extractor recipe.");
 							}
 							if (GT_Values.RA.addFluidExtractionRecipe(M.getSmallDust(1), null, M.getFluid(36), 100, duration/4, 120)){
-								Utils.LOG_INFO("Success, Also added a Fluid Extractor recipe.");
+								Utils.LOG_WARNING("Success, Also added a Fluid Extractor recipe.");
 							}
 							if (GT_Values.RA.addFluidExtractionRecipe(M.getTinyDust(1), null, M.getFluid(16), 100, duration/9, 120)){
-								Utils.LOG_INFO("Success, Also added a Fluid Extractor recipe.");
+								Utils.LOG_WARNING("Success, Also added a Fluid Extractor recipe.");
 							}
 						}
 					}
@@ -111,21 +111,21 @@ public class RecipeGen_BlastSmelter  implements Runnable{
 				if (CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getFluid(fluidAmount), 100, duration/2, 120)){
 					Utils.LOG_WARNING("Success.");
 					if (GT_Values.RA.addFluidSolidifierRecipe(ItemList.Shape_Mold_Ingot.get(0), M.getFluid(144), M.getIngot(1), duration/2, 60)){
-						Utils.LOG_INFO("Success, Also added a Fluid solidifier recipe.");
+						Utils.LOG_WARNING("Success, Also added a Fluid solidifier recipe.");
 						if (GT_Values.RA.addFluidExtractionRecipe(M.getIngot(1), null, M.getFluid(144), 100, duration/2, 60)){
-							Utils.LOG_INFO("Success, Also added a Fluid Extractor recipe.");
+							Utils.LOG_WARNING("Success, Also added a Fluid Extractor recipe.");
 						}
 						ItemStack tempitem = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("nugget"+M.getUnlocalizedName(), 1);
 						if (tempitem != null){
 							if (GT_Values.RA.addFluidExtractionRecipe(tempitem, null, M.getFluid(16), 100, duration/2/9, 60)){
-								Utils.LOG_INFO("Success, Also added a Fluid Extractor recipe.");
+								Utils.LOG_WARNING("Success, Also added a Fluid Extractor recipe.");
 							}
 						}						
 						if (GT_Values.RA.addFluidExtractionRecipe(M.getSmallDust(1), null, M.getFluid(36), 100, duration/2/4, 60)){
-							Utils.LOG_INFO("Success, Also added a Fluid Extractor recipe.");
+							Utils.LOG_WARNING("Success, Also added a Fluid Extractor recipe.");
 						}
 						if (GT_Values.RA.addFluidExtractionRecipe(M.getTinyDust(1), null, M.getFluid(16), 100, duration/2/9, 60)){
-							Utils.LOG_INFO("Success, Also added a Fluid Extractor recipe.");
+							Utils.LOG_WARNING("Success, Also added a Fluid Extractor recipe.");
 						}
 					}
 				}	
@@ -186,20 +186,20 @@ public class RecipeGen_BlastSmelter  implements Runnable{
 									components[fr] = components_NoCircuit[fr-1];
 								}								
 							}
-							Utils.LOG_INFO("Should have added a circuit. mMaterialListSize: "+mMaterialListSize+" | circuit: "+components[0].getDisplayName());
+							Utils.LOG_WARNING("Should have added a circuit. mMaterialListSize: "+mMaterialListSize+" | circuit: "+components[0].getDisplayName());
 						}
 						else {
-							Utils.LOG_INFO("Did not add a circuit. mMaterialListSize: "+mMaterialListSize);
+							Utils.LOG_WARNING("Did not add a circuit. mMaterialListSize: "+mMaterialListSize);
 						}
 
 						//Set Fluid output
 						fluidAmount = 144*inputStackCount;
 
-						Utils.LOG_INFO("Adding an Alloy Blast Smelter Recipe for "+M.getLocalizedName()+" using it's compound dusts. This material has "+ inputStackCount+" parts. Gives "+fluidAmount+"L of molten metal.");
-						Utils.LOG_INFO("tMaterial.length: "+components.length+".");
+						Utils.LOG_WARNING("Adding an Alloy Blast Smelter Recipe for "+M.getLocalizedName()+" using it's compound dusts. This material has "+ inputStackCount+" parts. Gives "+fluidAmount+"L of molten metal.");
+						Utils.LOG_WARNING("tMaterial.length: "+components.length+".");
 						for (int das=0;das<components.length;das++){
 							if (components[das] != null)
-								Utils.LOG_INFO("tMaterial["+das+"]: "+components[das].getDisplayName()+" Meta: "+components[das].getItemDamage()+", Amount: "+components[das].stackSize);
+								Utils.LOG_WARNING("tMaterial["+das+"]: "+components[das].getDisplayName()+" Meta: "+components[das].getItemDamage()+", Amount: "+components[das].stackSize);
 						}
 
 						//Adds Recipe
