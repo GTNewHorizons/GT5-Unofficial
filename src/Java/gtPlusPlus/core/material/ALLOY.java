@@ -8,11 +8,16 @@ public final class ALLOY {
 			new short[]{228, 255, 0, 0}, //Material Colour
 			5660, //Melting Point in C
 			0, //Boiling Point in C
-			100, //Protons
-			100, //Neutrons
+			150, //Protons
+			80, //Neutrons
 			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
-			null);
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().AER, 5),
+					new MaterialStack(ELEMENT.getInstance().IGNIS, 5),
+					new MaterialStack(ELEMENT.getInstance().TERRA, 5),
+					new MaterialStack(ELEMENT.getInstance().AQUA, 5)
+			});
 
 	public static final Material BLOODSTEEL = new Material(
 			"Blood Steel", //Material Name
@@ -23,7 +28,10 @@ public final class ALLOY {
 			100, //Neutrons
 			false, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
-			null);
+			new MaterialStack[]{
+					new MaterialStack(ALLOY.STEEL, 5),
+					new MaterialStack(ELEMENT.getInstance().IGNIS, 5)
+			});
 
 	public static final Material STABALLOY = new Material(
 			"Staballoy", //Material Name

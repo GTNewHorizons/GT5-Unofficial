@@ -157,6 +157,7 @@ public class RECIPES_Machines {
 	public static ItemStack IV_MACHINE_Centrifuge;
 	public static ItemStack IV_MACHINE_BendingMachine;
 	public static ItemStack IV_MACHINE_Wiremill;
+	public static ItemStack EV_MACHINE_Macerator;
 	public static ItemStack IV_MACHINE_Macerator;
 	public static ItemStack IV_MACHINE_MassFabricator;
 
@@ -337,6 +338,7 @@ public class RECIPES_Machines {
 			IV_MACHINE_Electrolyzer = ItemList.Machine_IV_Electrolyzer.get(1);
 			IV_MACHINE_BendingMachine= ItemList.Machine_IV_Bender.get(1);
 			IV_MACHINE_Wiremill= ItemList.Machine_IV_Wiremill.get(1);
+			EV_MACHINE_Macerator= ItemList.Machine_EV_Macerator.get(1);
 			IV_MACHINE_Macerator= ItemList.Machine_IV_Macerator.get(1);
 			IV_MACHINE_MassFabricator= ItemList.Machine_IV_Massfab.get(1);
 			IV_MACHINE_Centrifuge= ItemList.Machine_IV_Centrifuge.get(1);
@@ -594,7 +596,7 @@ public class RECIPES_Machines {
 			//Industrial Maceration stack 
 			RecipeUtils.addShapedGregtechRecipe(
 					"plateTungstenCarbide", IV_MACHINE_Macerator, "plateTungstenCarbide",
-					IV_MACHINE_Macerator, circuitTier8, IV_MACHINE_Macerator,
+					EV_MACHINE_Macerator, circuitTier7, EV_MACHINE_Macerator,
 					"plateTungstenCarbide", machineCasing_IV, "plateTungstenCarbide",
 					RECIPE_IndustrialMacerationStackController);
 

@@ -1,13 +1,16 @@
 package gtPlusPlus.core.item.base;
 
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.*;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -19,6 +22,9 @@ public class CoreItem extends Item
 	private final EnumChatFormatting descColour;
 	private final String itemDescription;
 	private final boolean hasEffect;
+	
+	//Replace Item - What does this item turn into when held.
+	private final ItemStack turnsInto;
 
 	//0
 	/*
@@ -28,6 +34,17 @@ public class CoreItem extends Item
 	{
 		this(unlocalizedName, creativeTab, 64, 0); //Calls 3
 	}
+
+	//0.1
+	/*
+	 * Name, Tab - 64 Stack, 0 Dmg
+	 */
+	public CoreItem(String unlocalizedName, CreativeTabs creativeTab, ItemStack OverrideItem)
+	{
+		this(unlocalizedName, creativeTab, 64, 0, "This item will be replaced by another when helf by a player, it is old and should not be used in recipes.", EnumRarity.uncommon, EnumChatFormatting.UNDERLINE, false, OverrideItem); //Calls 5
+		
+	}
+
 	//1
 	/*
 	 * Name, Tab, Stack - 0 Dmg
@@ -58,7 +75,7 @@ public class CoreItem extends Item
 	 */
 	public CoreItem(String unlocalizedName, CreativeTabs creativeTab, int stackSize, int maxDmg, String description)
 	{
-		this(unlocalizedName, creativeTab, stackSize, maxDmg, description, EnumRarity.common, EnumChatFormatting.GRAY, false); //Calls 4.5
+		this(unlocalizedName, creativeTab, stackSize, maxDmg, description, EnumRarity.common, EnumChatFormatting.GRAY, false, null); //Calls 4.5
 	}
 	//4.5
 	/*
@@ -66,7 +83,7 @@ public class CoreItem extends Item
 	 */
 	public CoreItem(String unlocalizedName, CreativeTabs creativeTab, int stackSize, int maxDmg, String description, EnumChatFormatting colour)
 	{
-		this(unlocalizedName, creativeTab, stackSize, maxDmg, description, EnumRarity.common, colour, false); //Calls 5
+		this(unlocalizedName, creativeTab, stackSize, maxDmg, description, EnumRarity.common, colour, false, null); //Calls 5
 	}
 
 	//4.75
@@ -75,14 +92,14 @@ public class CoreItem extends Item
 	 */
 	public CoreItem(String unlocalizedName, CreativeTabs creativeTab, int stackSize, int maxDmg, String description, EnumRarity rarity)
 	{
-		this(unlocalizedName, creativeTab, stackSize, maxDmg, description, rarity, EnumChatFormatting.GRAY, false); //Calls 5
+		this(unlocalizedName, creativeTab, stackSize, maxDmg, description, rarity, EnumChatFormatting.GRAY, false, null); //Calls 5
 	}
 
 	//5	
 	/*
 	 * Name, Tab, Stack, Dmg, Description, Rarity, Text Colour, Effect
 	 */
-	public CoreItem(String unlocalizedName, CreativeTabs creativeTab, int stackSize, int maxDmg, String description, EnumRarity regRarity, EnumChatFormatting colour, boolean Effect)
+	public CoreItem(String unlocalizedName, CreativeTabs creativeTab, int stackSize, int maxDmg, String description, EnumRarity regRarity, EnumChatFormatting colour, boolean Effect, ItemStack OverrideItem)
 	{
 		setUnlocalizedName(unlocalizedName);
 		setTextureName(CORE.MODID + ":" + unlocalizedName);
@@ -93,6 +110,7 @@ public class CoreItem extends Item
 		this.itemDescription = description;
 		this.descColour = colour;
 		this.hasEffect = Effect;
+		this.turnsInto = OverrideItem;
 		GameRegistry.registerItem(this, unlocalizedName);
 	}
 
@@ -112,5 +130,18 @@ public class CoreItem extends Item
 	@Override
 	public boolean hasEffect(ItemStack par1ItemStack){
 		return hasEffect;
+	}
+	
+	@Override
+	public void onUpdate(ItemStack iStack, World world, Entity entityHolding, int p_77663_4_, boolean p_77663_5_) {
+		if (turnsInto != null){
+			if (entityHolding instanceof EntityPlayer){
+				Utils.LOG_INFO("Replacing "+iStack.getDisplayName()+" with "+turnsInto.getDisplayName()+".");
+				ItemStack tempTransform = turnsInto;
+				tempTransform.stackSize = iStack.stackSize;
+				((EntityPlayer) entityHolding).inventory.addItemStackToInventory((tempTransform));
+				((EntityPlayer) entityHolding).inventory.consumeInventoryItem(this);
+			}
+		}
 	}
 }

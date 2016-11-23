@@ -91,4 +91,10 @@ public final class ELEMENT {
 	public final Material URANIUM233 = new Material("Uranium-233", new short[]{73, 220, 83, 0}, 1132, 4131, 92, 141, false, MaterialUtils.superscript("233U"), 2);//Not a GT Inherited Material
 
 
+	//Misc
+
+	public final Material AER = MaterialUtils.generateMaterialFromGtENUM(Materials.InfusedAir);
+	public final Material IGNIS = MaterialUtils.generateMaterialFromGtENUM(Materials.InfusedFire);
+	public final Material TERRA = MaterialUtils.generateMaterialFromGtENUM(Materials.InfusedEarth);
+	public final Material AQUA = MaterialUtils.generateMaterialFromGtENUM(Materials.InfusedWater);
 }

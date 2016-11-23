@@ -73,6 +73,7 @@ public final class ModItems {
 	public static Item itemIngotBatteryAlloy;
 	public static Item itemPlateBatteryAlloy;
 	public static Item itemHeliumBlob;
+	public static Item itemHydrogenBlob;
 	public static Item itemPLACEHOLDER_Circuit;
 
 	public static Item FuelRod_Empty;
@@ -146,6 +147,7 @@ public final class ModItems {
 	@SuppressWarnings("unused")
 	public static final void init(){
 
+		//Default item used when recipes fail, handy for debugging.
 		AAA_Broken = new BaseItemIngot("AAA_Broken", "Errors - Tell Alkalus", Utils.rgbtoHexValue(128, 128, 128), 0);
 
 		//Debug Loading
@@ -159,10 +161,18 @@ public final class ModItems {
 		GameRegistry.registerItem(itemStickyRubber, "itemStickyRubber");
 		GT_OreDictUnificator.registerOre("ingotRubber", ItemUtils.getItemStack(CORE.MODID+":itemStickyRubber", 1));
 
-		itemHeliumBlob = new CoreItem("itemHeliumBlob", tabMisc).setTextureName(CORE.MODID + ":itemHeliumBlob");
-		GT_OreDictUnificator.registerOre("dustHydrogen", new ItemStack(ModItems.itemHeliumBlob));
-		//GameRegistry.registerItem(itemHeliumBlob, "itemHeliumBlob");
-
+		
+		
+		
+		
+		
+		//Register Hydrogen Blobs first, so we can replace old helium blobs.
+		itemHydrogenBlob = new CoreItem("itemHydrogenBlob", tabMisc).setTextureName(CORE.MODID + ":itemHydrogenBlob");
+		GT_OreDictUnificator.registerOre("dustHydrogen", new ItemStack(ModItems.itemHydrogenBlob));
+		//Register Old Helium Blob, this will be replaced when held by a player.
+		itemHeliumBlob = new CoreItem("itemHeliumBlob", tabMisc, ItemUtils.getSimpleStack(itemHydrogenBlob)).setTextureName(CORE.MODID + ":itemHeliumBlob");
+		
+		
 		//Make some backpacks
 		//Primary colours
 		backpack_Red = new BaseItemBackpack("backpackRed", Utils.rgbtoHexValue(200, 0, 0));
