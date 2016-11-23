@@ -294,6 +294,24 @@ public class ItemUtils {
 				new BaseItemDustUnique("itemDustTiny"+unlocalizedName, materialName, Colour, "Tiny")};
 		return output;
 	}
+	
+	public static Item[] generateSpecialUseDusts(Material material, boolean onlyLargeDust){
+		String unlocalizedName = material.getUnlocalizedName();
+		String materialName = material.getUnlocalizedName();
+		int Colour = material.getRgbAsHex();
+		Item[] output = null;
+		if (onlyLargeDust == false){
+		output = new Item[]{
+				new BaseItemDustUnique("itemDust"+unlocalizedName, materialName, Colour, "Dust"),
+				new BaseItemDustUnique("itemDustSmall"+unlocalizedName, materialName, Colour, "Small"),
+				new BaseItemDustUnique("itemDustTiny"+unlocalizedName, materialName, Colour, "Tiny")};
+		} else{
+			output = new Item[]{
+				new BaseItemDustUnique("itemDust"+unlocalizedName, materialName, Colour, "Dust")
+				};
+		}
+		return output;
+	}
 
 	public static MultiPickaxeBase generateMultiPick(boolean GT_Durability, Materials material){
 		ToolMaterial customMaterial = Utils.generateMaterialFromGT(material);

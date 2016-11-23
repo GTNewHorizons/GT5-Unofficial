@@ -140,6 +140,11 @@ public final class ModItems {
 	public static Item dust2LiOH_CaCO3;
 	public static Item dustLi2BeF4;
 	
+	public static Item dustAer;
+	public static Item dustIgnis;
+	public static Item dustTerra;
+	public static Item dustAqua;
+	
 	public static BaseEuItem metaItem2;
 
 
@@ -275,6 +280,11 @@ public final class ModItems {
 		}
 
 
+		//Energy Crystal Components
+		dustAer = ItemUtils.generateSpecialUseDusts(ELEMENT.getInstance().AER, true)[0];
+		dustIgnis = ItemUtils.generateSpecialUseDusts(ELEMENT.getInstance().IGNIS, true)[0];
+		dustTerra = ItemUtils.generateSpecialUseDusts(ELEMENT.getInstance().TERRA, true)[0];
+		dustAqua = ItemUtils.generateSpecialUseDusts(ELEMENT.getInstance().AQUA, true)[0];
 
 		//Nuclear Fuel Dusts
 		dustUraniumTetraFluoride = ItemUtils.generateSpecialUseDusts("UraniumTetrafluoride", "Uranium Tetrafluoride", Utils.rgbtoHexValue(17, 179, 42))[0];
