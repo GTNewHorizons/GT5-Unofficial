@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.thermalfoundation.item;
 
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.thermalfoundation.block.TF_Blocks;
 import gtPlusPlus.xmod.thermalfoundation.fluid.TF_Fluids;
 import net.minecraft.init.Items;
@@ -23,7 +24,7 @@ public class TF_Items {
 	public static ItemBucket itemBucket;
 	public static ItemStack bucketPyrotheum;
 	public static ItemStack bucketCryotheum;
-	
+
 	public static ItemStack itemDustBlizz;
 	public static ItemStack itemDustPyrotheum;
 	public static ItemStack itemDustCryotheum;
@@ -33,8 +34,8 @@ public class TF_Items {
 
 
 		itemBucket = (ItemBucket)new ItemBucket("MiscUtils").setUnlocalizedName("bucket").setCreativeTab(AddToCreativeTab.tabMisc);
-	    itemMaterial = (ItemBase)new ItemBase("MiscUtils").setUnlocalizedName("material").setCreativeTab(AddToCreativeTab.tabMisc);
-	    
+		itemMaterial = (ItemBase)new ItemBase("MiscUtils").setUnlocalizedName("material").setCreativeTab(AddToCreativeTab.tabMisc);
+
 
 		bucketPyrotheum = itemBucket.addOreDictItem(1, "bucketPyrotheum");
 		bucketCryotheum = itemBucket.addOreDictItem(2, "bucketCryotheum");
@@ -42,8 +43,10 @@ public class TF_Items {
 		dustBlizz = itemMaterial.addOreDictItem(2, "dustBlizz");
 		dustPyrotheum = itemMaterial.addOreDictItem(3, "dustPyrotheum");
 		dustCryotheum = itemMaterial.addOreDictItem(4, "dustCryotheum");
-		
-		FurnaceFuelHandler.registerFuel(dustPyrotheum, 2400);
+
+		if (ReflectionUtils.doesClassExist("cofh.core.util.energy.FurnaceFuelHandler")){
+			FurnaceFuelHandler.registerFuel(dustPyrotheum, 2400); //cofh.core.util.energy.FurnaceFuelHandler.registerFuel(ItemStack, int)
+		}
 
 
 		itemRodBlizz = ItemUtils.simpleMetaStack(itemMaterial, 1, 1);

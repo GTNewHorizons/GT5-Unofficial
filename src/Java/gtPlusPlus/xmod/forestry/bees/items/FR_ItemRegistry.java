@@ -9,12 +9,8 @@
  * SirSengir (original work), CovertJaguar, Player, Binnie, MysteriousAges
  ******************************************************************************/
 package gtPlusPlus.xmod.forestry.bees.items;
-import forestry.core.items.ItemBlockForestry;
 import forestry.core.utils.StringUtil;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.xmod.forestry.bees.alveary.FR_BlockAlveary;
-import net.minecraft.block.Block;
 import net.minecraft.item.*;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
@@ -65,11 +61,7 @@ public class FR_ItemRegistry {
 			hiveFrameCaged = new MB_ItemFrame(MB_FrameType.CAGE, EnumRarity.common, "");
 			hiveFrameSoul = new MB_ItemFrame(MB_FrameType.SOUL, EnumRarity.common, "");
 			hiveFrameClay = new MB_ItemFrame(MB_FrameType.CLAY, EnumRarity.common, "");
-			hiveFrameNova = new MB_ItemFrame(MB_FrameType.NOVA, EnumRarity.epic, "A Creative Only Frame.");
-			if (CORE.configSwitches.enableCustomAlvearyBlocks){//Alveary Stuff
-				FR_BlockAlveary alveary;
-				alveary = registerBlock(new FR_BlockAlveary(), ItemBlockForestry.class, "alveary");
-			}
+			hiveFrameNova = new MB_ItemFrame(MB_FrameType.NOVA, EnumRarity.epic, "A Creative Only Frame.");			
 		}
 
 
@@ -83,11 +75,6 @@ public class FR_ItemRegistry {
 		return item;
 	}
 
-	protected static <T extends Block> T registerBlock(T block, Class<? extends ItemBlock> itemClass, String name, Object... itemCtorArgs) {
-		block.setBlockName("for." + name);
-		GameRegistry.registerBlock(block, itemClass, StringUtil.cleanBlockName(block), itemCtorArgs);
-		return block;
-	}
 }
 
 
