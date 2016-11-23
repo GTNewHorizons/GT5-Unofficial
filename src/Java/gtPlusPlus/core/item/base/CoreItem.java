@@ -22,7 +22,7 @@ public class CoreItem extends Item
 	private final EnumChatFormatting descColour;
 	private final String itemDescription;
 	private final boolean hasEffect;
-	
+
 	//Replace Item - What does this item turn into when held.
 	private final ItemStack turnsInto;
 
@@ -42,7 +42,7 @@ public class CoreItem extends Item
 	public CoreItem(String unlocalizedName, CreativeTabs creativeTab, ItemStack OverrideItem)
 	{
 		this(unlocalizedName, creativeTab, 64, 0, "This item will be replaced by another when helf by a player, it is old and should not be used in recipes.", EnumRarity.uncommon, EnumChatFormatting.UNDERLINE, false, OverrideItem); //Calls 5
-		
+
 	}
 
 	//1
@@ -131,16 +131,27 @@ public class CoreItem extends Item
 	public boolean hasEffect(ItemStack par1ItemStack){
 		return hasEffect;
 	}
-	
+
 	@Override
 	public void onUpdate(ItemStack iStack, World world, Entity entityHolding, int p_77663_4_, boolean p_77663_5_) {
 		if (turnsInto != null){
 			if (entityHolding instanceof EntityPlayer){
+
 				Utils.LOG_INFO("Replacing "+iStack.getDisplayName()+" with "+turnsInto.getDisplayName()+".");
 				ItemStack tempTransform = turnsInto;
-				tempTransform.stackSize = iStack.stackSize;
-				((EntityPlayer) entityHolding).inventory.addItemStackToInventory((tempTransform));
-				((EntityPlayer) entityHolding).inventory.consumeInventoryItem(this);
+				if (iStack.stackSize == 64){
+					tempTransform.stackSize=64;
+					((EntityPlayer) entityHolding).inventory.addItemStackToInventory((tempTransform));
+					for (int l=0;l<64;l++){
+						((EntityPlayer) entityHolding).inventory.consumeInventoryItem(this);
+					}
+
+				}
+				else {
+					tempTransform.stackSize=1;
+					((EntityPlayer) entityHolding).inventory.addItemStackToInventory((tempTransform));
+					((EntityPlayer) entityHolding).inventory.consumeInventoryItem(this);
+				}
 			}
 		}
 	}

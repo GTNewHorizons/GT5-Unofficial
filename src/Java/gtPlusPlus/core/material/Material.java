@@ -23,7 +23,7 @@ public class Material {
 
 	private final Fluid vMoltenFluid;
 
-	protected Object dataVar;
+	protected Object dataVar = MathUtils.generateSingularRandomHexValue();
 
 	private ArrayList<MaterialStack> vMaterialInput = new ArrayList<MaterialStack>();
 	public final long[] vSmallestRatio;
@@ -172,15 +172,21 @@ public class Material {
 	}
 
 	final public String getLocalizedName(){
-		return localizedName;
+		if (this.localizedName != null)
+			return this.localizedName;
+		return "ERROR BAD LOCALIZED NAME";
 	}
 
 	final public String getUnlocalizedName(){
-		return unlocalizedName;
+		if (this.unlocalizedName != null)
+			return this.unlocalizedName;
+		return "ERROR.BAD.UNLOCALIZED.NAME";
 	}
 
 	final public short[] getRGBA(){
-		return this.RGBA;
+		if (this.RGBA != null)
+			return this.RGBA;
+		return new short[] {255,0,0};
 	}
 
 	final public int getRgbAsHex(){
@@ -287,29 +293,29 @@ public class Material {
 	final public ItemStack[] getMaterialComposites(){
 		//Utils.LOG_WARNING("Something requested the materials needed for "+localizedName);
 		if (vMaterialInput != null){
-		if (!vMaterialInput.isEmpty()){
-			ItemStack[] temp = new ItemStack[vMaterialInput.size()];
-			for (int i=0;i<vMaterialInput.size();i++){
-				//Utils.LOG_WARNING("i:"+i);
-				ItemStack testNull = null;
-				try {
-					testNull = vMaterialInput.get(i).getDustStack();
-				} catch (Throwable r){
-					Utils.LOG_WARNING("Failed gathering material stack for "+localizedName+".");
-					Utils.LOG_WARNING("What Failed: Length:"+vMaterialInput.size()+" current:"+i);
-				}
-				try {
-					if (testNull != null){
-						//Utils.LOG_WARNING("not null");
-						temp[i] = vMaterialInput.get(i).getDustStack();
+			if (!vMaterialInput.isEmpty()){
+				ItemStack[] temp = new ItemStack[vMaterialInput.size()];
+				for (int i=0;i<vMaterialInput.size();i++){
+					//Utils.LOG_WARNING("i:"+i);
+					ItemStack testNull = null;
+					try {
+						testNull = vMaterialInput.get(i).getDustStack();
+					} catch (Throwable r){
+						Utils.LOG_WARNING("Failed gathering material stack for "+localizedName+".");
+						Utils.LOG_WARNING("What Failed: Length:"+vMaterialInput.size()+" current:"+i);
 					}
-				} catch (Throwable r){
-					Utils.LOG_WARNING("Failed setting slot "+i+", using "+localizedName);
-				}
-			}		
-			return temp;
+					try {
+						if (testNull != null){
+							//Utils.LOG_WARNING("not null");
+							temp[i] = vMaterialInput.get(i).getDustStack();
+						}
+					} catch (Throwable r){
+						Utils.LOG_WARNING("Failed setting slot "+i+", using "+localizedName);
+					}
+				}		
+				return temp;
+			}
 		}
-	}
 		return new ItemStack[]{};
 	}
 

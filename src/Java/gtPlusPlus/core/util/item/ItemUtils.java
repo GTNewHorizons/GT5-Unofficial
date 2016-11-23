@@ -296,8 +296,8 @@ public class ItemUtils {
 	}
 	
 	public static Item[] generateSpecialUseDusts(Material material, boolean onlyLargeDust){
-		String unlocalizedName = material.getUnlocalizedName();
-		String materialName = material.getUnlocalizedName();
+		String materialName = material.getLocalizedName();
+		String unlocalizedName = Utils.sanitizeString(materialName);
 		int Colour = material.getRgbAsHex();
 		Item[] output = null;
 		if (onlyLargeDust == false){

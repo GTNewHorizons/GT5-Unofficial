@@ -411,7 +411,7 @@ public class Utils {
 			code = code+code+code;
 			int  i = Integer.parseInt(code);
 			hexColorMap.put(a,Integer.toHexString( 0x1000000 | i).substring(1).toUpperCase());
-			Utils.LOG_INFO(""+Integer.toHexString( 0x1000000 | i).substring(1).toUpperCase());
+			Utils.LOG_WARNING(""+Integer.toHexString( 0x1000000 | i).substring(1).toUpperCase());
 		}
 		return hexColorMap;
 	}
@@ -445,7 +445,7 @@ public class Utils {
 	public static Integer appenedHexNotationToInteger(int hexAsStringOrInt){
 		String hexChar = "0x";
 		String result;
-		Utils.LOG_INFO(String.valueOf(hexAsStringOrInt));
+		Utils.LOG_WARNING(String.valueOf(hexAsStringOrInt));
 		result = hexChar+String.valueOf(hexAsStringOrInt);
 		return Integer.getInteger(result);
 	}
@@ -481,7 +481,7 @@ public class Utils {
 			methode.setAccessible(true);
 			Utils.LOG_WARNING("7 "+methode.isAccessible());
 			ItemStack temp = (ItemStack) methode.invoke(item, cellID++, yourName, new Block[0]);
-			Utils.LOG_INFO("Successfully created "+temp.getDisplayName()+"s.");
+			Utils.LOG_WARNING("Successfully created "+temp.getDisplayName()+"s.");
 			FluidContainerRegistry.registerFluidContainer(FluidUtils.getFluidStack(s.toLowerCase(), 0), temp.copy(), Ic2Items.cell.copy());
 			ItemUtils.addItemToOreDictionary(temp.copy(), "cell"+s);
 			return temp;
