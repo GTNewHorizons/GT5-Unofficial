@@ -43,8 +43,6 @@ public class UnbreakableBlockManager{
 		int Z = ((BaseMetaTileEntity)mTileEntity).zCoord;
 		Utils.LOG_WARNING("Grabbing TileEntity @ [x,y,z] |"+X+"|"+Y+"|"+Z+"|");
 
-
-
 		try{	
 			GregtechMetaSafeBlock MetaSafeBlock = ((GregtechMetaSafeBlock) this.mTileEntity.getMetaTileEntity());
 			TileEntity BaseMetaTileEntity = ((BaseMetaTileEntity)mTileEntity).getTileEntity(X, Y, Z);

@@ -7,7 +7,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.core.handler.events.UnbreakableBlockManager;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.player.PlayerCache;
 import gtPlusPlus.core.util.player.PlayerUtils;
@@ -22,7 +21,7 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 	public boolean bOutput = false, bRedstoneIfFull = false, bInvert = false, bUnbreakable = false;
 	public int mSuccess = 0, mTargetStackSize = 0;
 	public UUID ownerUUID;
-	UnbreakableBlockManager Xasda = new UnbreakableBlockManager();
+	//UnbreakableBlockManager Xasda = new UnbreakableBlockManager();
 	private boolean value_last = false, value_current = false;
 
 	public GregtechMetaSafeBlockBase(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription) {
@@ -249,6 +248,7 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 		aNBT.setBoolean("bOutput", bOutput);
 		aNBT.setBoolean("bRedstoneIfFull", bRedstoneIfFull);
 		aNBT.setInteger("mTargetStackSize", mTargetStackSize);
+		if (ownerUUID != null)
 		aNBT.setString("ownerUUID", ownerUUID.toString());
 	}
 
@@ -266,18 +266,6 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 	public void setItemNBT(NBTTagCompound aNBT) {
 		super.setItemNBT(aNBT);
 		if (mTargetStackSize > 0) aNBT.setInteger("mTargetStackSize", mTargetStackSize);
-	}
-
-	@Override
-	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		if (aSide == getBaseMetaTileEntity().getBackFacing()) {
-			mTargetStackSize = (byte) ((mTargetStackSize + (aPlayer.isSneaking()? -1 : 1)) % 65);
-			if (mTargetStackSize == 0) {
-				GT_Utility.sendChatToPlayer(aPlayer, "Do not regulate Item Stack Size");
-			} else {
-				GT_Utility.sendChatToPlayer(aPlayer, "Regulate Item Stack Size to: " + mTargetStackSize);
-			}
-		}
 	}
 
 	@Override
@@ -307,42 +295,12 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 				
 			}
 			
-
-
-
-
-
-
-
-			/*mSuccess--;
-			moveItems(aBaseMetaTileEntity, aTimer);
-			aBaseMetaTileEntity.setGenericRedstoneOutput(bInvert);
-			if (bRedstoneIfFull) {
-				aBaseMetaTileEntity.setGenericRedstoneOutput(!bInvert);
-				for (int i = 0; i < mInventory.length; i++)
-					if (isValidSlot(i)) {
-						if (mInventory[i] == null) {
-							aBaseMetaTileEntity.setGenericRedstoneOutput(bInvert);
-							aBaseMetaTileEntity.decreaseStoredEnergyUnits(1, true);
-							break;
-						}
-					}
-			}
-		}*/
 		}
 	}
 
-	/*protected void moveItems(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-		int tCost = GT_Utility.moveOneItemStack(aBaseMetaTileEntity, aBaseMetaTileEntity.getTileEntityAtSide(aBaseMetaTileEntity.getBackFacing()), aBaseMetaTileEntity.getBackFacing(), aBaseMetaTileEntity.getFrontFacing(), null, false, mTargetStackSize == 0 ? 64 : (byte) mTargetStackSize, mTargetStackSize == 0 ? 1 : (byte) mTargetStackSize, (byte) 64, (byte) 1);
-		if (tCost > 0 || aBaseMetaTileEntity.hasInventoryBeenModified()) {
-			mSuccess = 50;
-			aBaseMetaTileEntity.decreaseStoredEnergyUnits(Math.abs(tCost), true);
-		}
-	}*/
-
 	@Override
 	public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-		return true;
+		return false;
 	}
 
 	@Override

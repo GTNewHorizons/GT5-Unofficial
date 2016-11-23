@@ -5,10 +5,9 @@ import gtPlusPlus.core.util.Utils;
 
 import java.io.*;
 import java.util.*;
-import java.util.Map.Entry;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.world.World;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
 
 public class PlayerCache {
 
@@ -48,7 +47,7 @@ public class PlayerCache {
 	public static void appendParamChanges(String playerName, String playerUUIDasString) {
 		HashMap<String, UUID> playerInfo = new HashMap<String, UUID>();
 		playerInfo.put(playerName, UUID.fromString(playerUUIDasString));
-		
+
 		/*try {
 			Utils.LOG_INFO("Attempting to load "+cache.getName());
 			properties.load(new FileInputStream(cache));
@@ -64,17 +63,17 @@ public class PlayerCache {
 			}
 
 		} */
-		
+
 		try
-        {
-               FileOutputStream fos = new FileOutputStream("PlayerCache.dat");
-               ObjectOutputStream oos = new ObjectOutputStream(fos);
-               oos.writeObject(playerInfo);
-               oos.close();
-               fos.close();
-               Utils.LOG_INFO("Serialized Player data saved in PlayerCache.dat");
-        }
-		
+		{
+			FileOutputStream fos = new FileOutputStream("PlayerCache.dat");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(playerInfo);
+			oos.close();
+			fos.close();
+			Utils.LOG_INFO("Serialized Player data saved in PlayerCache.dat");
+		}
+
 		catch (IOException e) {
 			Utils.LOG_INFO("No PlayerCache file found, creating one.");
 			createPropertiesFile(playerName, playerUUIDasString);
@@ -119,60 +118,36 @@ public class PlayerCache {
 
 	public static HashMap<String, UUID> readPropertiesFileAsMap() {
 		HashMap<String, UUID> map = null;
-	      try
-	      {
-	         FileInputStream fis = new FileInputStream(cache);
-	         ObjectInputStream ois = new ObjectInputStream(fis);
-	         map = (HashMap<String, UUID>) ois.readObject();
-	         ois.close();
-	         fis.close();
-	      }catch(IOException ioe)
-	      {
-	         ioe.printStackTrace();	
-	         return null;
-	      }catch(ClassNotFoundException c)
-	      {
-	    	  Utils.LOG_INFO("Class not found");
-	         c.printStackTrace();
-	         return null;
-	      }
-	      Utils.LOG_WARNING("Deserialized PlayerCache..");
-	     return map;
+		try
+		{
+			FileInputStream fis = new FileInputStream(cache);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			map = (HashMap<String, UUID>) ois.readObject();
+			ois.close();
+			fis.close();
+		}catch(IOException ioe)
+		{
+			ioe.printStackTrace();	
+			return null;
+		}catch(ClassNotFoundException c)
+		{
+			Utils.LOG_INFO("Class not found");
+			c.printStackTrace();
+			return null;
+		}
+		Utils.LOG_WARNING("Deserialized PlayerCache..");
+		return map;
 	}
 
-	public static String lookupPlayerByUUID(UUID UUID){
-		
-		try {
-			World worldw = Minecraft.getMinecraft().thePlayer.worldObj;
-			//if (!worldw.isRemote){
-				
-				
-				try {
-					Map<String, UUID> map = null;
-					try {
-						map = readPropertiesFileAsMap();
-					} catch (Exception e) {
-						Utils.LOG_INFO("With "+e.getCause()+" as cause, Caught Exception: "+e.toString());
-						//e.printStackTrace();
-					}
-					for (Entry<String, UUID> entry : map.entrySet()) {
-						if (Objects.equals(UUID, entry.getValue())) {
-							return entry.getKey();
-						}
-					}
-					return null;
-				} catch (NullPointerException e) {
-					Utils.LOG_INFO("With "+e.getCause()+" as cause, Caught Exception: "+e.toString());
-					//e.printStackTrace();
-				}			
-			
-			
-			//}
-				
-				
-		} catch (Throwable r){
-			Utils.LOG_INFO("With "+r.getCause()+" as cause, Caught Exception: "+r.toString());			
+	public static String lookupPlayerByUUID(UUID UUID){	
+		if (UUID == null)
+			return null;
+		List<EntityPlayerMP> allPlayers = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+		for (EntityPlayerMP player : allPlayers) {
+			if (player.getUniqueID().equals(UUID)) {
+				return player.getDisplayName();
+			}
 		}		
-		return null;
+		return "Offline Player.";
 	}
 }
