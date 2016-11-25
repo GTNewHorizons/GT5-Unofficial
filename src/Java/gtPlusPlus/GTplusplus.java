@@ -71,6 +71,7 @@ implements ActionListener
 		
 		//Single machines
 		CORE.configSwitches.enableMachine_SolarGenerators = config.getBoolean("enableSolarGenerators", "gregtech", false, "These may be overpowered, Consult a local electrician.");
+		CORE.configSwitches.enableMachine_Safes = config.getBoolean("enableMachineSafes", "gregtech", true, "These protect your goodies/rare stuff.");
 		CORE.configSwitches.enableMachine_Dehydrators = config.getBoolean("enableMachineDehydrators", "gregtech", true, "These dehydrate stuff.");
 		CORE.configSwitches.enableMachine_SteamConverter = config.getBoolean("enableMachineSteamConverter", "gregtech", true, "Converts IC2 steam -> Railcraft steam.");
 		CORE.configSwitches.enableMachine_FluidTanks = config.getBoolean("enableMachineFluidTanks", "gregtech", true, "Portable fluid tanks.");
@@ -79,17 +80,18 @@ implements ActionListener
 		
 		
 		//Multi machines
-		CORE.configSwitches.enabledMultiblock_AlloyBlastSmelter = config.getBoolean("enabledMultiblockAlloyBlastSmelter", "gregtech", true, "Required to smelt most high tier materials from GT++. Also smelts everything else to molten metal.");
-		CORE.configSwitches.enabledMultiblock_IndustrialCentrifuge = config.getBoolean("enabledMultiblockIndustrialCentrifuge", "gregtech", true, "Spin, Spin, Spiiiin.");
-		CORE.configSwitches.enabledMultiblock_IndustrialCokeOven = config.getBoolean("enabledMultiblockIndustrialCokeOven", "gregtech", true, "Pyro Oven Alternative, older, more realistic, better.");
-		CORE.configSwitches.enabledMultiblock_IndustrialElectrolyzer = config.getBoolean("enabledMultiblockIndustrialElectrolyzer", "gregtech", true, "Electrolyzes things with extra bling factor.");
-		CORE.configSwitches.enabledMultiblock_IndustrialMacerationStack = config.getBoolean("enabledMultiblockIndustrialMacerationStack", "gregtech", true, "A hyper efficient maceration tower, nets more bonus outputs.");
-		CORE.configSwitches.enabledMultiblock_IndustrialPlatePress = config.getBoolean("enabledMultiblockIndustrialPlatePress", "gregtech", true, "Industrial bendering machine thingo.");
-		CORE.configSwitches.enabledMultiblock_IndustrialWireMill = config.getBoolean("enabledMultiblockIndustrialWireMill", "gregtech", true, "Produces fine wire and exotic cables.");
-		CORE.configSwitches.enabledMultiblock_IronBlastFurnace = config.getBoolean("enabledMultiblockIronBlastFurnace", "gregtech", true, "Skip the Bronze age, very slowly.");
-		CORE.configSwitches.enabledMultiblock_MatterFabricator = config.getBoolean("enabledMultiblockMatterFabricator", "gregtech", true, "?FAB?RIC?ATE MA?TT?ER.");
-		CORE.configSwitches.enabledMultiblock_MultiTank = config.getBoolean("enabledMultiblockMultiTank", "gregtech", true, "Tall tanks, each layer adds extra fluid storage.");
-		CORE.configSwitches.enabledMultiblock_PowerSubstation = config.getBoolean("enabledMultiblockPowerSubstation", "gregtech", true, "For managing large power grids.");
+		CORE.configSwitches.enableMultiblock_AlloyBlastSmelter = config.getBoolean("enableMultiblockAlloyBlastSmelter", "gregtech", true, "Required to smelt most high tier materials from GT++. Also smelts everything else to molten metal.");
+		CORE.configSwitches.enableMultiblock_IndustrialCentrifuge = config.getBoolean("enableMultiblockIndustrialCentrifuge", "gregtech", true, "Spin, Spin, Spiiiin.");
+		CORE.configSwitches.enableMultiblock_IndustrialCokeOven = config.getBoolean("enableMultiblockIndustrialCokeOven", "gregtech", true, "Pyro Oven Alternative, older, more realistic, better.");
+		CORE.configSwitches.enableMultiblock_IndustrialElectrolyzer = config.getBoolean("enableMultiblockIndustrialElectrolyzer", "gregtech", true, "Electrolyzes things with extra bling factor.");
+		CORE.configSwitches.enableMultiblock_IndustrialMacerationStack = config.getBoolean("enableMultiblockIndustrialMacerationStack", "gregtech", true, "A hyper efficient maceration tower, nets more bonus outputs.");
+		CORE.configSwitches.enableMultiblock_IndustrialPlatePress = config.getBoolean("enableMultiblockIndustrialPlatePress", "gregtech", true, "Industrial bendering machine thingo.");
+		CORE.configSwitches.enableMultiblock_IndustrialWireMill = config.getBoolean("enableMultiblockIndustrialWireMill", "gregtech", true, "Produces fine wire and exotic cables.");
+		CORE.configSwitches.enableMultiblock_IronBlastFurnace = config.getBoolean("enableMultiblockIronBlastFurnace", "gregtech", true, "Skip the Bronze age, very slowly.");
+		CORE.configSwitches.enableMultiblock_MatterFabricator = config.getBoolean("enableMultiblockMatterFabricator", "gregtech", true, "?FAB?RIC?ATE MA?TT?ER.");
+		CORE.configSwitches.enableMultiblock_MultiTank = config.getBoolean("enableMultiblockMultiTank", "gregtech", true, "Tall tanks, each layer adds extra fluid storage.");
+		CORE.configSwitches.enableMultiblock_PowerSubstation = config.getBoolean("enableMultiblockPowerSubstation", "gregtech", true, "For managing large power grids.");
+		CORE.configSwitches.enableMultiblock_LiquidFluorideThoriumReactor = config.getBoolean("enableMultiblockLiquidFluorideThoriumReactor", "gregtech", true, "For supplying large power grids.");
 				
 		
 		//Options
@@ -152,7 +154,7 @@ implements ActionListener
 	{
 		Utils.LOG_INFO("Loading "+CORE.name+" V"+CORE.VERSION);
 		Utils.LOG_INFO("Latest is "+CORE.MASTER_VERSION+". Updated? "+Utils.isModUpToDate());
-		FirstCall();
+		//FirstCall();
 		FMLCommonHandler.instance().bus().register(new LoginEventHandler());        
 		Utils.LOG_INFO("Login Handler Initialized");
 

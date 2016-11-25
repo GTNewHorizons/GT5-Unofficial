@@ -1,7 +1,7 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import gtPlusPlus.core.lib.*;
 import gtPlusPlus.core.lib.CORE.configSwitches;
-import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GregtechMetaTileEntitySolarGenerator;
@@ -12,7 +12,7 @@ public class GregtechSolarGenerators
 	{
 		if (LoadedMods.Gregtech && configSwitches.enableMachine_SolarGenerators){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Solar Generator Blocks.");
-			run1();
+			if (CORE.configSwitches.enableMachine_SolarGenerators) run1();
 		}
 		
 	}

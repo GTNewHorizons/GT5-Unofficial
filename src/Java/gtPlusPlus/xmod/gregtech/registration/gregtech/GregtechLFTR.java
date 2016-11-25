@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GregtechMTE_NuclearReactor;
@@ -13,7 +14,7 @@ public class GregtechLFTR
 	{
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Liquid Fluorine Thorium Reactor [LFTR].");
-			run1();
+			if (CORE.configSwitches.enableMultiblock_LiquidFluorideThoriumReactor) run1();
 		}
 
 	}

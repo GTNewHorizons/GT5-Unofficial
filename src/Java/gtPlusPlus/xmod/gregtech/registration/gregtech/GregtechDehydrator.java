@@ -13,7 +13,7 @@ public class GregtechDehydrator
 	{
 		if (LoadedMods.Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Chemical Dehydrators.");
-			run1();
+			if (CORE.configSwitches.enableMachine_Dehydrators) run1();
 		}
 
 	}

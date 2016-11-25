@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GregtechMetaCondensor;
@@ -13,7 +14,7 @@ public class GregtechSteamCondenser
 	{
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Steam Condensor.");
-			run1();
+			if (CORE.configSwitches.enableMachine_SteamConverter) run1();
 		}
 
 	}

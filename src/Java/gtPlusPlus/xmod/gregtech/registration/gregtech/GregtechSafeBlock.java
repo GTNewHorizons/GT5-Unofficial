@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GregtechMetaSafeBlock;
@@ -12,7 +13,7 @@ public class GregtechSafeBlock
 	{
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Lockable Safe Blocks.");
-			run1();
+			if (CORE.configSwitches.enableMachine_Safes) run1();
 		}
 		
 	}
@@ -31,6 +32,7 @@ public class GregtechSafeBlock
         GregtechItemList.GT_Safe_UV.set(new GregtechMetaSafeBlock(788, "protection.playersafe.tier.08", "Ultimate Voltage Player Safe", 8).getStackForm(1L));
         GregtechItemList.GT_Safe_MAX.set(new GregtechMetaSafeBlock(789, "protection.playersafe.tier.09", "MAX Voltage Player Safe", 9).getStackForm(1L));
 
+        //To-Do Change Recipes
         GT_ModHandler.addCraftingRecipe(GregtechItemList.GT_Safe_ULV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"CMV", " X ", Character.valueOf('M'), ItemList.Hull_ULV, Character.valueOf('V'), ItemList.Circuit_Basic, Character.valueOf('C'), OreDictNames.craftingChest, Character.valueOf('X'), OrePrefixes.circuit.get(Materials.Basic)});
         GT_ModHandler.addCraftingRecipe(GregtechItemList.GT_Safe_LV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"CMV", " X ", Character.valueOf('M'), ItemList.Hull_LV, Character.valueOf('V'), ItemList.Circuit_Basic, Character.valueOf('C'), OreDictNames.craftingChest, Character.valueOf('X'), OrePrefixes.circuit.get(Materials.Basic)});
         GT_ModHandler.addCraftingRecipe(GregtechItemList.GT_Safe_MV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"CMV", " X ", Character.valueOf('M'), ItemList.Hull_MV, Character.valueOf('V'), ItemList.Circuit_Good, Character.valueOf('C'), OreDictNames.craftingChest, Character.valueOf('X'), OrePrefixes.circuit.get(Materials.Basic)});

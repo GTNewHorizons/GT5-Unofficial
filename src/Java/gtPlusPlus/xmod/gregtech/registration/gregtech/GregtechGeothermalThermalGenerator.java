@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.recipe.RECIPE_CONSTANTS;
@@ -17,7 +18,7 @@ public class GregtechGeothermalThermalGenerator {
 	{
 		if (LoadedMods.Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Industrial Geothermal Engines.");
-			run1();
+			if (CORE.configSwitches.enableMachine_GeothermalEngines) run1();
 		}
 
 	}

@@ -36,8 +36,8 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	private long fluidStored = 0;
-	private short multiblockCasingCount = 0;
-	private short storageMultiplier = getStorageMultiplier();
+	private int multiblockCasingCount = 0;
+	private int storageMultiplier = getStorageMultiplier();
 	private long maximumFluidStorage = getMaximumTankStorage();
 	private FluidStack internalStorageTank = null;
 
@@ -49,25 +49,21 @@ extends GregtechMeta_MultiBlockBase {
 			if (internalStorageTank == null) {
 				return new String[]{
 						GT_Values.VOLTAGE_NAMES[temp]+" Large Fluid Tank",
-						"Stored Fluid:",
-						"No Fluid",
-						Integer.toString(0) + "L",
-						Integer.toString(getCapacity()) + "L"};
+						"Stored Fluid: No Fluid",
+						"Internal | Current: "+Integer.toString(0) + "L",
+						"Internal | Maximum: "+Integer.toString((int) maximumFluidStorage) + "L"};
 			}
 			return new String[]{
 					GT_Values.VOLTAGE_NAMES[temp]+" Large Fluid Tank",
-					"Stored Fluid:",
-					internalStorageTank.getLocalizedName(),
-					Integer.toString(internalStorageTank.amount) + "L",
-					Integer.toString((int) fluidStored) + "L - fluidStored var",
-					Integer.toString(getCapacity()) + "L"};
+					"Stored Fluid: "+internalStorageTank.getLocalizedName(),
+					"Internal | Current: "+Integer.toString(internalStorageTank.amount) + "L",
+					"Internal | Maximum: "+Integer.toString((int) maximumFluidStorage) + "L"};
 		}
 		return new String[]{
 				"Voltage Tier not set -" +" Large Fluid Tank",
-				"Stored Fluid:",
-				"No Fluid",
-				Integer.toString(0) + "L",
-				Integer.toString(getCapacity()) + "L"};
+				"Stored Fluid: No Fluid",
+				"Internal | Current: "+Integer.toString(0) + "L",
+				"Internal | Maximum: "+Integer.toString((int) maximumFluidStorage) + "L"};
 	}
 
 	@Override
@@ -80,9 +76,9 @@ extends GregtechMeta_MultiBlockBase {
 		aNBT.setInteger("mPollution", mPollution);
 		aNBT.setInteger("mRuntime", mRuntime);
 		aNBT.setLong("mFluidStored", fluidStored);
-		aNBT.setShort("mStorageMultiplier", storageMultiplier);
+		aNBT.setInteger("mStorageMultiplier", storageMultiplier);
 		aNBT.setLong("mMaxFluidStored", maximumFluidStorage);
-		aNBT.setShort("mCasingCount", multiblockCasingCount);
+		aNBT.setInteger("mCasingCount", multiblockCasingCount);
 
 		if (mOutputItems != null) for (int i = 0; i < mOutputItems.length; i++)
 			if (mOutputItems[i] != null) {
@@ -108,6 +104,7 @@ extends GregtechMeta_MultiBlockBase {
 	private short getStorageMultiplier(){
 		int tempstorageMultiplier = (1*multiblockCasingCount);
 		if (tempstorageMultiplier <= 0){
+			Utils.LOG_INFO("Invalid Storage Multiplier. "+multiblockCasingCount);
 			return 1;
 		}
 		return (short) tempstorageMultiplier;
@@ -136,9 +133,9 @@ extends GregtechMeta_MultiBlockBase {
 		mPollution = aNBT.getInteger("mPollution");
 		mRuntime = aNBT.getInteger("mRuntime");
 		fluidStored = aNBT.getLong("mFluidStored");
-		storageMultiplier = aNBT.getShort("mStorageMultiplier");
+		storageMultiplier = aNBT.getInteger("mStorageMultiplier");
 		maximumFluidStorage = aNBT.getLong("mMaxFluidStored");
-		multiblockCasingCount = aNBT.getShort("mCasingCount");
+		multiblockCasingCount = aNBT.getInteger("mCasingCount");
 		mOutputItems = new ItemStack[getAmountOfOutputs()];
 		for (int i = 0; i < mOutputItems.length; i++) mOutputItems[i] = GT_Utility.loadItem(aNBT, "mOutputItem" + i);
 		mOutputFluids = new FluidStack[getAmountOfOutputs()];
@@ -401,7 +398,7 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 		}
-		multiblockCasingCount = (short) tAmount;
+		multiblockCasingCount = tAmount;
 		Utils.LOG_INFO("Your Multitank can be 20 blocks tall.");
 		Utils.LOG_INFO("Casings Count: "+tAmount+" Valid Multiblock: "+(tAmount >= 16)+" Tank Storage Capacity:"+getMaximumTankStorage()+"L");
 		return tAmount >= 16;

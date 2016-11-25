@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -11,7 +12,7 @@ public class GregtechTieredFluidTanks
 	{
 		if (LoadedMods.Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Portable Fluid Tanks.");
-			run1();
+			if (CORE.configSwitches.enableMachine_FluidTanks) run1();
 		}
 		
 	}

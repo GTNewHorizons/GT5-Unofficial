@@ -89,6 +89,7 @@ public class CORE {
 		
 		//Single Block Machines
 		public static boolean enableMachine_SolarGenerators = false;
+		public static boolean enableMachine_Safes = true;
 		public static boolean enableMachine_Dehydrators = true;
 		public static boolean enableMachine_SteamConverter = true;
 		public static boolean enableMachine_FluidTanks = true;
@@ -98,17 +99,18 @@ public class CORE {
 		public static boolean enableCustom_Cables = true;
 		
 		//Multiblocks
-		public static boolean enabledMultiblock_AlloyBlastSmelter = true;
-		public static boolean enabledMultiblock_IndustrialCentrifuge = true;
-		public static boolean enabledMultiblock_IndustrialCokeOven = true;
-		public static boolean enabledMultiblock_IndustrialElectrolyzer = true;
-		public static boolean enabledMultiblock_IndustrialMacerationStack = true;
-		public static boolean enabledMultiblock_IndustrialPlatePress = true;
-		public static boolean enabledMultiblock_IndustrialWireMill = true;
-		public static boolean enabledMultiblock_IronBlastFurnace = true;
-		public static boolean enabledMultiblock_MatterFabricator = true;
-		public static boolean enabledMultiblock_MultiTank = true;
-		public static boolean enabledMultiblock_PowerSubstation = true;
+		public static boolean enableMultiblock_AlloyBlastSmelter = true;
+		public static boolean enableMultiblock_IndustrialCentrifuge = true;
+		public static boolean enableMultiblock_IndustrialCokeOven = true;
+		public static boolean enableMultiblock_IndustrialElectrolyzer = true;
+		public static boolean enableMultiblock_IndustrialMacerationStack = true;
+		public static boolean enableMultiblock_IndustrialPlatePress = true;
+		public static boolean enableMultiblock_IndustrialWireMill = true;
+		public static boolean enableMultiblock_IronBlastFurnace = true;
+		public static boolean enableMultiblock_MatterFabricator = true;
+		public static boolean enableMultiblock_MultiTank = true;
+		public static boolean enableMultiblock_PowerSubstation = true;
+		public static boolean enableMultiblock_LiquidFluorideThoriumReactor = true;
 		
 	}
 	

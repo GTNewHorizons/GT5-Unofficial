@@ -5,6 +5,7 @@ import gregtech.api.enums.*;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.*;
 import gtPlusPlus.core.util.Utils;
@@ -35,7 +36,8 @@ public class GregtechConduits {
 	{
 		if (Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Custom Cables/Wires/Pipes.");
-			run1();
+			if (CORE.configSwitches.enableCustom_Cables) run1();
+			if (CORE.configSwitches.enableCustom_Pipes) run2();
 		}
 
 	}
@@ -54,6 +56,12 @@ public class GregtechConduits {
 		if (LoadedMods.Thaumcraft){
 			superConductorFactory(GT_Materials.Void, 512, 30661, 0, 0, 8);}
 
+		
+		
+
+	}	
+	
+	private static void run2(){
 		generateNonGTFluidPipes(GT_Materials.Staballoy, ALLOY.STABALLOY, BasePipeID, 6250, 7500, true);
 		generateNonGTFluidPipes(GT_Materials.Tantalloy60, ALLOY.TANTALLOY_60, BasePipeID+5, 5000, 4250, true);
 		generateNonGTFluidPipes(GT_Materials.Tantalloy61, ALLOY.TANTALLOY_61, BasePipeID+10, 6000, 5800, true);
@@ -66,8 +74,7 @@ public class GregtechConduits {
 		generateNonGTFluidPipes(GT_Materials.Inconel690, ALLOY.INCONEL_690, BasePipeID+40, 7500, 4800, true);
 		generateNonGTFluidPipes(GT_Materials.Inconel792, ALLOY.INCONEL_792, BasePipeID+45, 8000, 5500, true);
 		generateNonGTFluidPipes(GT_Materials.HastelloyX, ALLOY.HASTELLOY_X, BasePipeID+50, 10000, 4200, true);
-
-	}	
+	}
 
 	private static void wireFactory(String Material, int Voltage, int ID, long insulatedLoss, long uninsulatedLoss, long Amps){
 		Materials T = Materials.valueOf(Material);
