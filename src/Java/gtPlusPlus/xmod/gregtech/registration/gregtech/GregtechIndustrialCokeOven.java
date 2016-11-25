@@ -14,7 +14,7 @@ public class GregtechIndustrialCokeOven
 	{
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Industrial Coke Oven Multiblock.");
-			if (CORE.configSwitches.enabledMultiblock_IndustrialCokeOven) run1();
+			if (CORE.configSwitches.enableMultiblock_IndustrialCokeOven) run1();
 		}
 
 	}

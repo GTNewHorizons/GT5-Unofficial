@@ -14,7 +14,7 @@ public class GregtechIndustrialPlatePress
 	{
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Industrial Press Multiblock.");
-			if (CORE.configSwitches.enabledMultiblock_IndustrialPlatePress) run1();
+			if (CORE.configSwitches.enableMultiblock_IndustrialPlatePress) run1();
 		}
 
 	}

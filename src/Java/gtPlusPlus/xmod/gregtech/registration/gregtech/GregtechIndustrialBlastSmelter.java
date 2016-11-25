@@ -11,7 +11,7 @@ public class GregtechIndustrialBlastSmelter{
 	{
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Industrial Alloy Blast Smelter Multiblock.");
-			if (CORE.configSwitches.enabledMultiblock_AlloyBlastSmelter) run1();
+			if (CORE.configSwitches.enableMultiblock_AlloyBlastSmelter) run1();
 		}
 
 	}

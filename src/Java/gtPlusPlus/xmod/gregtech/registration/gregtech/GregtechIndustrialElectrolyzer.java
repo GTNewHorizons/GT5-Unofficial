@@ -14,7 +14,7 @@ public class GregtechIndustrialElectrolyzer
 	{
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Industrial Electrolyzer Multiblock.");
-			if (CORE.configSwitches.enabledMultiblock_IndustrialElectrolyzer) run1();
+			if (CORE.configSwitches.enableMultiblock_IndustrialElectrolyzer) run1();
 		}
 
 	}

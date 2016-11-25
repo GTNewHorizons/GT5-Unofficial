@@ -14,7 +14,7 @@ public class GregtechIndustrialCentrifuge
 	{
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Industrial Centrifuge Multiblock.");
-			if (CORE.configSwitches.enabledMultiblock_IndustrialCentrifuge) run1();
+			if (CORE.configSwitches.enableMultiblock_IndustrialCentrifuge) run1();
 		}
 
 	}

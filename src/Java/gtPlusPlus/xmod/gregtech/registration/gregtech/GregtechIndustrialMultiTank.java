@@ -14,7 +14,7 @@ public class GregtechIndustrialMultiTank
 	{
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Industrial Multitank controller blocks.");
-			if (CORE.configSwitches.enabledMultiblock_MultiTank) run1();
+			if (CORE.configSwitches.enableMultiblock_MultiTank) run1();
 		}
 
 	}

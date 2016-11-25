@@ -14,7 +14,7 @@ public class GregtechPowerSubStation
 	{
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Power Substation Node.");
-			if (CORE.configSwitches.enabledMultiblock_PowerSubstation) run1();
+			if (CORE.configSwitches.enableMultiblock_PowerSubstation) run1();
 		}
 
 	}
