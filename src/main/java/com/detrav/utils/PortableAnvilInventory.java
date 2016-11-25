@@ -1,5 +1,6 @@
 package com.detrav.utils;
 
+import com.detrav.items.DetravMetaGeneratedTool01;
 import gregtech.api.enums.Materials;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_Recipe;
@@ -13,10 +14,12 @@ import net.minecraftforge.fluids.FluidStack;
  * Created by Detrav on 30.10.2016.
  */
 public class PortableAnvilInventory extends InventoryBasic {
-    public PortableAnvilInventory(String p_i1561_1_, boolean p_i1561_2_, int p_i1561_3_) {
+    public PortableAnvilInventory(ItemStack me,String p_i1561_1_, boolean p_i1561_2_, int p_i1561_3_) {
         super(p_i1561_1_, p_i1561_2_, p_i1561_3_);
+        meStack = me;
     }
 
+    ItemStack meStack;
 
     public void setInventorySlotContents(int slot, ItemStack stack) {
         super.setInventorySlotContents(slot, stack);
@@ -37,16 +40,23 @@ public class PortableAnvilInventory extends InventoryBasic {
                             if (fStack.getFluidID() == fluidID) {
                                 ItemStack gtCopy = gtTool;
                                 //make copy
-                                float amount = fStack.amount * 2f / 1000f;
+                                float amount = fStack.amount / 1000f;
                                 long maxDamage = GT_MetaGenerated_Tool.getToolMaxDamage(gtCopy);
                                 long damage = GT_MetaGenerated_Tool.getToolDamage(gtCopy);
                                 if (damage == 0) {
                                     super.setInventorySlotContents(2, null);
                                     return;
                                 }
-                                maxDamage = (long) (maxDamage * amount);
-                                damage -= maxDamage;
-                                if (damage < 0) damage = 0;
+                                float flevel = DetravMetaGeneratedTool01.INSTANCE.getLevel(meStack,mat.mToolQuality);
+                                int level = ((int)flevel + 1)*((int)flevel + 1);
+                                long repair = (long) (maxDamage * amount * (flevel+1));
+                                repair = Math.min(repair,damage);
+                                damage -= repair;
+
+                                float delta = ((float)repair) / ((float)maxDamage) / ((float)level);
+                                flevel += delta;
+                                DetravMetaGeneratedTool01.INSTANCE.setLevelToItemStack(meStack,mat.mToolQuality,flevel);
+
                                 GT_MetaGenerated_Tool.setToolDamage(gtCopy, damage);
                                 if (gtMaterial.stackSize > 1)
                                     gtMaterial.stackSize -= 1;

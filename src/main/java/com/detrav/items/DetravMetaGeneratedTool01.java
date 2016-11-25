@@ -61,6 +61,18 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
                     aList.add(tOffset + 7, "Large: 60-99");
                     aList.add(tOffset + 8, "Very large: 100-***");
                     break;
+                case 2:
+                    int count;
+                    count = ((int)(getLevel(aStack,0)*100)); if(count > 0) {aList.add(tOffset, "Bonus 0 level: +" + count + "%");tOffset++;}
+                    count = ((int)(getLevel(aStack,1)*100)); if(count > 0) {aList.add(tOffset, "Bonus 1 level: +" + count + "%");tOffset++;}
+                    count = ((int)(getLevel(aStack,2)*100)); if(count > 0) {aList.add(tOffset, "Bonus 2 level: +" + count + "%");tOffset++;}
+                    count = ((int)(getLevel(aStack,3)*100)); if(count > 0) {aList.add(tOffset, "Bonus 3 level: +" + count + "%");tOffset++;}
+                    count = ((int)(getLevel(aStack,4)*100)); if(count > 0) {aList.add(tOffset, "Bonus 4 level: +" + count + "%");tOffset++;}
+                    count = ((int)(getLevel(aStack,5)*100)); if(count > 0) {aList.add(tOffset, "Bonus 5 level: +" + count + "%");tOffset++;}
+                    count = ((int)(getLevel(aStack,6)*100)); if(count > 0) {aList.add(tOffset, "Bonus 6 level: +" + count + "%");tOffset++;}
+                    count = ((int)(getLevel(aStack,7)*100)); if(count > 0) {aList.add(tOffset, "Bonus 7 level: +" + count + "%");tOffset++;}
+                    count = ((int)(getLevel(aStack,8)*100)); if(count > 0) {aList.add(tOffset, "Bonus 8 level: +" + count + "%");tOffset++;}
+                    break;
                 case 100:
                 case 101:
                 case 102:
@@ -133,6 +145,46 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
             }
         }
         return false;
+    }
+
+    public void setLevelToItemStack(ItemStack aStack, int level, float percent)
+    {
+        if(aStack == null) return;
+        NBTTagCompound aNBT = aStack.getTagCompound();
+        if(aNBT == null) {
+            aNBT = new NBTTagCompound();
+            NBTTagCompound detravLevel = new NBTTagCompound();
+            aNBT.setTag("DetravLevel", detravLevel);
+            aStack.setTagCompound(aNBT);
+        }
+        {
+            NBTTagCompound detravLevel = aNBT.getCompoundTag("DetravLevel");
+            if (detravLevel == null || hasnolevel(detravLevel)) {
+                detravLevel = new NBTTagCompound();
+                aNBT.setTag("DetravLevel", detravLevel);
+            }
+            detravLevel.setFloat("level"+Integer.toString(level),percent);
+        }
+    }
+
+    private boolean hasnolevel(NBTTagCompound detravLevel)
+    {
+        for(int i=0;i<9;i++)
+        {
+            detravLevel.hasKey("level"+Integer.toString(i));
+            return false;
+        }
+        return true;
+    }
+
+    public float getLevel(ItemStack aStack, int level)
+    {
+        if(aStack == null) return 0;
+        NBTTagCompound aNBT = aStack.getTagCompound();
+        if(aNBT ==null) return 0;
+        NBTTagCompound detravLevel = aNBT.getCompoundTag("DetravLevel");
+        if(detravLevel == null) return 0;
+        return detravLevel.getFloat("level"+Integer.toString(level));
     }
 
     public boolean setItemStackToDetravData(ItemStack aStack, ItemStack what)

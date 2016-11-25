@@ -24,7 +24,7 @@ public class DetravPortableAnvilContainer extends Container {
         worldObj = world;
         inventoryPlayer = inventory;
         stack = currentEquippedItem;
-        slots  = new PortableAnvilInventory("Item", false, 3);
+        slots  = new PortableAnvilInventory(stack,"Item", false, 3);
 
         this.addSlotToContainer(new Slot(this.slots, 0, 27, 47));
         this.addSlotToContainer(new Slot(this.slots, 1, 76, 47));
@@ -64,6 +64,11 @@ public class DetravPortableAnvilContainer extends Container {
             }
             itemstack = this.slots.getStackInSlot(1);
             if (stack == null || !DetravMetaGeneratedTool01.INSTANCE.setItemStackToDetravData(stack, itemstack)) {
+                p_75134_1_.dropPlayerItemWithRandomChoice(itemstack, false);
+            }
+            itemstack = this.slots.getStackInSlot(2);
+
+            if (itemstack != null) {
                 p_75134_1_.dropPlayerItemWithRandomChoice(itemstack, false);
             }
             //itemstack.writeToNBT()
