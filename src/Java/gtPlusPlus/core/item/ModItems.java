@@ -99,7 +99,7 @@ public final class ModItems {
 
 	public static MultiPickaxeBase MP_GTMATERIAL;
 	public static MultiSpadeBase MS_GTMATERIAL;
-	
+
 	public static BaseItemDecidust itemBaseDecidust;
 	public static BaseItemCentidust itemBaseCentidust;
 
@@ -139,13 +139,20 @@ public final class ModItems {
 	public static Item dustCalciumCarbonate;
 	public static Item dust2LiOH_CaCO3;
 	public static Item dustLi2BeF4;
-	
+
 	public static Item dustAer;
 	public static Item dustIgnis;
 	public static Item dustTerra;
 	public static Item dustAqua;
-	
+
 	public static BaseEuItem metaItem2;
+
+	public static BaseItemTCShard shardAer;
+	public static BaseItemTCShard shardIgnis;
+	public static BaseItemTCShard shardTerra;
+	public static BaseItemTCShard shardAqua;
+
+	public static BaseItemTCShard shardDull;
 
 
 	//@SuppressWarnings("unused")
@@ -159,25 +166,25 @@ public final class ModItems {
 		if (CORE.DEBUG){
 			DEBUG_INIT.registerItems();
 		}		
-		
-		
+
+
 		//Some Simple forms of materials
 		itemStickyRubber = new Item().setUnlocalizedName("itemStickyRubber").setCreativeTab(tabMachines).setTextureName(CORE.MODID + ":itemStickyRubber");
 		GameRegistry.registerItem(itemStickyRubber, "itemStickyRubber");
 		GT_OreDictUnificator.registerOre("ingotRubber", ItemUtils.getItemStack(CORE.MODID+":itemStickyRubber", 1));
 
-		
-		
-		
-		
-		
+
+
+
+
+
 		//Register Hydrogen Blobs first, so we can replace old helium blobs.
 		itemHydrogenBlob = new CoreItem("itemHydrogenBlob", tabMisc).setTextureName(CORE.MODID + ":itemHydrogenBlob");
 		GT_OreDictUnificator.registerOre("dustHydrogen", new ItemStack(ModItems.itemHydrogenBlob));
 		//Register Old Helium Blob, this will be replaced when held by a player.
 		itemHeliumBlob = new CoreItem("itemHeliumBlob", tabMisc, ItemUtils.getSimpleStack(itemHydrogenBlob)).setTextureName(CORE.MODID + ":itemHeliumBlob");
-		
-		
+
+
 		//Make some backpacks
 		//Primary colours
 		backpack_Red = new BaseItemBackpack("backpackRed", Utils.rgbtoHexValue(200, 0, 0));
@@ -207,11 +214,11 @@ public final class ModItems {
 
 		try{
 			//Elements generate first so they can be used in compounds.
-				     		
+
 			//Uranium-233 is a fissile isotope of uranium that is bred from thorium-232 as part of the thorium fuel cycle.
-	        MaterialGenerator.generate(ELEMENT.getInstance().URANIUM233);
-	        MaterialGenerator.generate(ELEMENT.getInstance().ZIRCONIUM);
-			
+			MaterialGenerator.generate(ELEMENT.getInstance().URANIUM233);
+			MaterialGenerator.generate(ELEMENT.getInstance().ZIRCONIUM);
+
 			//Carbides - Tungsten Carbide exists in .09 so don't generate it. - Should still come before alloys though
 			if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
 				MaterialGenerator.generate(ALLOY.TUNGSTEN_CARBIDE);
@@ -220,9 +227,9 @@ public final class ModItems {
 			MaterialGenerator.generate(ALLOY.ZIRCONIUM_CARBIDE);
 			MaterialGenerator.generate(ALLOY.TANTALUM_CARBIDE);
 			MaterialGenerator.generate(ALLOY.NIOBIUM_CARBIDE);	
-			
+
 			//Generate some Alloys
-			
+
 			//Misc Alloys
 			MaterialGenerator.generate(ALLOY.ENERGYCRYSTAL);
 			MaterialGenerator.generate(ALLOY.BLOODSTEEL);
@@ -232,7 +239,7 @@ public final class ModItems {
 			MaterialGenerator.generate(ALLOY.TUMBAGA);
 			//Potin is traditionally an alloy of bronze, tin and lead, with varying quantities of each possible
 			MaterialGenerator.generate(ALLOY.POTIN);
-			
+
 			//Staballoy & Tantalloy
 			MaterialGenerator.generate(ALLOY.STABALLOY);
 			MaterialGenerator.generate(ALLOY.TANTALLOY_60);
@@ -243,12 +250,12 @@ public final class ModItems {
 			MaterialGenerator.generate(ALLOY.INCONEL_690);
 			MaterialGenerator.generate(ALLOY.INCONEL_792);
 
-			
+
 			//Maraging Steel
 			MaterialGenerator.generate(ALLOY.MARAGING250);
 			MaterialGenerator.generate(ALLOY.MARAGING300);
 			MaterialGenerator.generate(ALLOY.MARAGING350);
-			
+
 			//Composite Alloys
 			MaterialGenerator.generate(ALLOY.STELLITE);
 			MaterialGenerator.generate(ALLOY.TALONITE);			
@@ -263,12 +270,12 @@ public final class ModItems {
 			MaterialGenerator.generate(ALLOY.INCOLOY_020);
 			MaterialGenerator.generate(ALLOY.INCOLOY_DS);
 			MaterialGenerator.generate(ALLOY.INCOLOY_MA956);
-			
+
 			//Leagrisium
 			MaterialGenerator.generate(ALLOY.LEAGRISIUM);			
 			//Must be the final Alloy to Generate
 			MaterialGenerator.generate(ALLOY.QUANTUM);		
-			
+
 
 		} catch (Throwable r){
 			Utils.LOG_INFO("Failed to Generated a Material. "+r.getMessage());
@@ -279,13 +286,24 @@ public final class ModItems {
 			System.exit(1);
 		}
 
-
-		//Energy Crystal Components
+		//TC Style Shards, for use in making energy crystal mix.
+		//A dull shard, able to be infused with an element.
+		shardDull = new BaseItemTCShard("Drained", Utils.rgbtoHexValue(25, 25, 25));
+		//Generates four elemental shards when TC is not installed.
+		if (!LoadedMods.Thaumcraft){
+			shardAer = new BaseItemTCShard("Aer", Utils.rgbtoHexValue(225, 225, 5));
+			shardIgnis = new BaseItemTCShard("Ignis", Utils.rgbtoHexValue(255, 5, 5));
+			shardTerra = new BaseItemTCShard("Terra", Utils.rgbtoHexValue(5, 255, 5));
+			shardAqua = new BaseItemTCShard("Aqua", Utils.rgbtoHexValue(5, 5, 255));
+		}
+		//Generates a set of four special dusts to be used in my recipes.
 		dustAer = ItemUtils.generateSpecialUseDusts(ELEMENT.getInstance().AER, true)[0];
 		dustIgnis = ItemUtils.generateSpecialUseDusts(ELEMENT.getInstance().IGNIS, true)[0];
 		dustTerra = ItemUtils.generateSpecialUseDusts(ELEMENT.getInstance().TERRA, true)[0];
 		dustAqua = ItemUtils.generateSpecialUseDusts(ELEMENT.getInstance().AQUA, true)[0];
 
+		
+		
 		//Nuclear Fuel Dusts
 		dustUraniumTetraFluoride = ItemUtils.generateSpecialUseDusts("UraniumTetrafluoride", "Uranium Tetrafluoride", Utils.rgbtoHexValue(17, 179, 42))[0];
 		dustUraniumHexaFluoride = ItemUtils.generateSpecialUseDusts("UraniumHexafluoride", "Uranium Hexafluoride", Utils.rgbtoHexValue(9, 199, 32))[0];
@@ -303,7 +321,7 @@ public final class ModItems {
 		dustCalciumHydroxide = ItemUtils.generateSpecialUseDusts("CalciumHydroxide", "Hydrated Lime", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_hydroxide
 		dustCalciumCarbonate = ItemUtils.generateSpecialUseDusts("CalciumCarbonate", "Calcium Carbonate", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_carbonate
 		dust2LiOH_CaCO3 = ItemUtils.generateSpecialUseDusts("2LiOHCaCO3", "2LiOH & CaCO3 Compound", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_carbonate
-		
+
 		//FLiBe Fuel Compounds
 		dustLi2BeF4 = ItemUtils.generateSpecialUseDusts("Li2BeF4", "Li2BeF4 Fuel Compound", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/FLiBe
 
@@ -314,11 +332,11 @@ public final class ModItems {
 		metaItem2.registerItem(3, "Test Item 3", 1000765000, 4, "I Hold EU 3.", 32000);
 		metaItem2.registerItem(4, "Whirlygig", 1043644000, (short) 5, "Spin me right round.", EnumRarity.rare, EnumChatFormatting.DARK_GREEN, true);
 		metaItem2.registerItem(5, "Whirlygig 2", 2124867000, (short) 7, "Spin me right round.", EnumRarity.uncommon, EnumChatFormatting.RED, true);
-	
+
 		// ItemList.Battery_RE_HV_Cadmium.set(BaseEuItem.
 
 		//GameRegistry.registerItem(this, unlocalName);
-		
+
 		boolean gtStyleTools = LoadedMods.Gregtech;
 
 		Materials[] rm = Materials.values();

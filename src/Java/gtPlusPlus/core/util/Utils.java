@@ -20,6 +20,9 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.*;
@@ -33,7 +36,7 @@ import cpw.mods.fml.common.FMLLog;
 public class Utils {
 
 	public static final int WILDCARD_VALUE = Short.MAX_VALUE;
-	
+
 	public static final boolean isServer(){
 		return FMLCommonHandler.instance().getEffectiveSide().isServer();
 	}
@@ -44,23 +47,23 @@ public class Utils {
 			Utils.LOG_WARNING("Timer expired.");
 		}
 	}
-	
+
 	public static boolean isModUpToDate(){
-		
+
 		if (CORE.MASTER_VERSION.toLowerCase().equals("offline")){
 			return false;
 		}	
-		
+
 		if (CORE.MASTER_VERSION.equals(CORE.VERSION.toLowerCase())){
 			return true;
 		}		
 		return false;
 	}
-	
+
 	public static TC_AspectStack getTcAspectStack (TC_Aspects aspect, long size){
 		return getTcAspectStack(aspect.name(), (int) size);
 	}
-	
+
 	public static TC_AspectStack getTcAspectStack (String aspect, long size){
 		return getTcAspectStack(aspect, (int) size);
 	}
@@ -68,7 +71,7 @@ public class Utils {
 	public static TC_AspectStack getTcAspectStack (TC_Aspects aspect, int size){
 		return getTcAspectStack(aspect.name(), size);
 	}
-	
+
 	public static TC_AspectStack getTcAspectStack (String aspect, int size){
 
 		TC_AspectStack returnValue = null;
@@ -102,8 +105,8 @@ public class Utils {
 			} catch (NoSuchFieldError r){
 				Utils.LOG_INFO("Invalid Thaumcraft Aspects - Report this issue to Alkalus");
 			}
-			
-			
+
+
 		}
 		else if (aspect.toUpperCase() == "PRAECANTATIO"){
 			//Adds in Compat for older GT Versions which Misspell aspects.			
@@ -184,6 +187,15 @@ public class Utils {
 		g.drawRect (MinA, MinB, MaxA, MaxB);  
 	}
 
+	// Send a message to all players on the server
+	public static void sendServerMessage(String translationKey) {
+		sendServerMessage(new ChatComponentText(translationKey));
+	}
+	// Send a message to all players on the server
+	public static void sendServerMessage(IChatComponent chatComponent) {
+		MinecraftServer.getServer().getConfigurationManager().sendChatMsg(chatComponent);
+	}
+
 	/**
 	 * Returns if that Liquid is IC2Steam.
 	 */
@@ -246,28 +258,28 @@ public class Utils {
 		sb.append(")");
 		return sb.toString();
 	}
-	
+
 	/**
 	 * 
 	 * @param colourStr e.g. "#FFFFFF"
 	 * @return 
 	 */
 	public static Color hex2Rgb(String colorStr) {
-	    return new Color(
-	            Integer.valueOf( colorStr.substring( 1, 3 ), 16 ),
-	            Integer.valueOf( colorStr.substring( 3, 5 ), 16 ),
-	            Integer.valueOf( colorStr.substring( 5, 7 ), 16 ) );
+		return new Color(
+				Integer.valueOf( colorStr.substring( 1, 3 ), 16 ),
+				Integer.valueOf( colorStr.substring( 3, 5 ), 16 ),
+				Integer.valueOf( colorStr.substring( 5, 7 ), 16 ) );
 	}
-	
+
 	/**
 	 * 
 	 * @param colourInt e.g. 0XFFFFFF
 	 * @return Colour
 	 */
 	public static Color hex2Rgb(int colourInt) {		
-	    return Color.decode(String.valueOf(colourInt));
+		return Color.decode(String.valueOf(colourInt));
 	}
-	
+
 	/**
 	 * 
 	 * @param colourInt e.g. 0XFFFFFF
@@ -305,7 +317,7 @@ public class Utils {
 		List<Object> targetList = new ArrayList<Object>(Arrays.asList(sourceArray));
 		return targetList;
 	}
-	
+
 	public static List<Object> convertArrayListToList(ArrayList sourceArray) {
 		List<Object> targetList = new ArrayList<Object>(Arrays.asList(sourceArray));
 		return targetList;
@@ -491,11 +503,11 @@ public class Utils {
 		}
 		return null;
 	}
-	
+
 	public static String sanitizeString(String input){
 		String temp;
 		String output;
-		
+
 		temp = input.replace(" ", "");
 		temp = temp.replace("-", "");
 		temp = temp.replace("_", "");
@@ -512,9 +524,9 @@ public class Utils {
 		temp = temp.replace(" ", "");
 		output = temp;		
 		return output;
-		
+
 	}
-	
+
 	public static ToolMaterial generateMaterialFromGT(Materials gtMaterial){
 		String name = gtMaterial.name();
 		int harvestLevel = gtMaterial.mToolQuality;
@@ -524,7 +536,7 @@ public class Utils {
 		int enchantability = gtMaterial.mEnchantmentToolsLevel;
 		ToolMaterial temp = EnumHelper.addToolMaterial(name, harvestLevel, durability, efficiency, damage, enchantability);
 		return temp;
-		
+
 	}
 
 
