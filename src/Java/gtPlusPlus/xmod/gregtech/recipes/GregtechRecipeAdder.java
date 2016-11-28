@@ -255,7 +255,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 	@Override
 	public boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aOutput, int aChance, int aDuration, int aEUt) {
 		if ((aInput == null) || (aOutput == null)) {
-			Utils.LOG_INFO("Fail - Input or Output was null.");
+			Utils.LOG_WARNING("Fail - Input or Output was null.");
 			return false;
 		}
 		        
@@ -267,13 +267,13 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			aOutput = Materials.PulsatingIron.getMolten(aOutput.amount);
 		}
 		if ((aDuration = GregTech_API.sRecipeFile.get("blastsmelter", aOutput.getFluid().getName(), aDuration)) <= 0) {
-			Utils.LOG_INFO("Recipe did not register.");
+			Utils.LOG_WARNING("Recipe did not register.");
 			return false;
 		}
 
 		for (int das=0;das<aInput.length;das++){
 			if (aInput[das] != null)
-			Utils.LOG_INFO("tMaterial["+das+"]: "+aInput[das].getDisplayName()+", Amount: "+aInput[das].stackSize);
+			Utils.LOG_WARNING("tMaterial["+das+"]: "+aInput[das].getDisplayName()+", Amount: "+aInput[das].stackSize);
 		}
 		
 		Recipe_GT.Gregtech_Recipe_Map.sAlloyBlastSmelterRecipes.addRecipe(true, aInput, new ItemStack[]{null}, null, new int[]{aChance}, null, new FluidStack[]{aOutput}, aDuration, aEUt, 0);
