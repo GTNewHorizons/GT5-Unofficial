@@ -1,13 +1,16 @@
-# Welcome to the GT++ wiki!
- 
+# Welcome to the GT++ wiki!  
+   
+Please read this before you submit any issues.  
+[Mod Issues] (https://github.com/draknyte1/GTplusplus/wiki/Github-Issue-Format)  
+  
 I will Happily take the form of code criticism or suggestions in the form of PRs,  
 Any bugs/issues or mod ideas/suggestions, please submit here as issues.  
-[Modpack Permissions](https://github.com/draknyte1/GTplusplus/issues/24#issuecomment-252458551)
-
-## Download  
-[Recommended Version](https://github.com/draknyte1/GTplusplus/wiki/Downloads!#click-here-to-download)
-
-### Features
+[Modpack Permissions](https://github.com/draknyte1/GTplusplus/issues/24#issuecomment-252458551)  
+  
+## Download   
+[Recommended Version](https://github.com/draknyte1/GTplusplus/wiki/Downloads!#click-here-to-download)  
+  
+### Features  
 [GT++](https://github.com/draknyte1/GTplusplus/wiki/Features#gt-1)  
 [Gregtech](https://github.com/draknyte1/GTplusplus/wiki/Features#gregtech)  
 [IC2exp](https://github.com/draknyte1/GTplusplus/wiki/Features#ic2)  
