@@ -12,6 +12,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -19,12 +20,24 @@ public class BaseItemTCShard extends Item{
 
 	public final String unlocalName;
 	public final String displayName;
+	public final String descriptionString;
+	public final String descriptionString2;
 	public final int itemColour;
-
+	
 	public BaseItemTCShard(String DisplayName, int colour) {
+		this(DisplayName, colour, "");
+	}
+	
+	public BaseItemTCShard(String DisplayName, int colour, String Description) {
+		this(DisplayName, colour, "", Description);
+	}
+
+	public BaseItemTCShard(String DisplayName, int colour, String Description, String Description2) {
 		this.unlocalName = "item"+Utils.sanitizeString(DisplayName);
 		this.displayName = DisplayName;
 		this.itemColour = colour;
+		this.descriptionString = Description;
+		this.descriptionString2 = Description2;
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
 		this.setUnlocalizedName(unlocalName);
 		this.setMaxStackSize(64);
@@ -42,7 +55,12 @@ public class BaseItemTCShard extends Item{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
-		//super.addInformation(stack, aPlayer, list, bool);
+		if (descriptionString != "" || !descriptionString.equals("")){
+			list.add(EnumChatFormatting.GRAY+descriptionString);
+		}
+		if (descriptionString2 != "" || !descriptionString2.equals("")){
+			list.add(EnumChatFormatting.GRAY+descriptionString2);
+		}
 	}
 
 

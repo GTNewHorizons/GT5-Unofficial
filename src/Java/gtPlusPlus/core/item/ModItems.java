@@ -306,7 +306,7 @@ public final class ModItems {
 
 		//TC Style Shards, for use in making energy crystal mix.
 		//A dull shard, able to be infused with an element.
-		shardDull = new BaseItemTCShard("Drained", Utils.rgbtoHexValue(25, 25, 25));
+		shardDull = new BaseItemTCShard("Drained", Utils.rgbtoHexValue(75, 75, 75), "Small chance to be mined from Stone.", "Only useful if you do not have Thaumcraft installed.");
 		//Generates four elemental shards when TC is not installed.
 		if (!LoadedMods.Thaumcraft){
 			shardAer = new BaseItemTCShard("Aer", Utils.rgbtoHexValue(225, 225, 5));
