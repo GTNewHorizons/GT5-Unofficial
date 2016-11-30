@@ -15,7 +15,6 @@ import gtPlusPlus.core.item.base.ingots.BaseItemIngot;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate;
 import gtPlusPlus.core.item.effects.RarityUncommon;
 import gtPlusPlus.core.item.general.*;
-import gtPlusPlus.core.item.general.fuelrods.FuelRod_Base;
 import gtPlusPlus.core.item.init.ItemsFoods;
 import gtPlusPlus.core.item.tool.misc.SandstoneHammer;
 import gtPlusPlus.core.item.tool.staballoy.*;
@@ -49,6 +48,13 @@ public final class ModItems {
 	public static Item itemPlateVibrantAlloy;
 	public static Item itemPlateConductiveIron;
 	public static Item itemPlateDarkSteel;
+	public static Item itemDustSoularium;
+	public static Item itemDustRedstoneAlloy;
+	public static Item itemDustElectricalSteel;
+	public static Item itemDustPulsatingIron;
+	public static Item itemDustEnergeticAlloy;
+	public static Item itemDustVibrantAlloy;
+	public static Item itemDustConductiveIron;
 	//Big Reactors
 	public static Item itemPlateBlutonium;
 	public static Item itemPlateCyanite;
@@ -213,11 +219,15 @@ public final class ModItems {
 		ItemsFoods.load();
 
 		try{
+
 			//Elements generate first so they can be used in compounds.
 
 			//Uranium-233 is a fissile isotope of uranium that is bred from thorium-232 as part of the thorium fuel cycle.
 			MaterialGenerator.generate(ELEMENT.getInstance().URANIUM233);
+			//Zirconium - Because Greg himself never added it.
 			MaterialGenerator.generate(ELEMENT.getInstance().ZIRCONIUM);
+
+
 
 			//Carbides - Tungsten Carbide exists in .09 so don't generate it. - Should still come before alloys though
 			if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
@@ -228,12 +238,14 @@ public final class ModItems {
 			MaterialGenerator.generate(ALLOY.TANTALUM_CARBIDE);
 			MaterialGenerator.generate(ALLOY.NIOBIUM_CARBIDE);	
 
+
+
 			//Generate some Alloys
 
 			//Misc Alloys
 			MaterialGenerator.generate(ALLOY.ENERGYCRYSTAL);
 			MaterialGenerator.generate(ALLOY.BLOODSTEEL);
-			MaterialGenerator.generate(ALLOY.BEDROCKIUM);
+
 			MaterialGenerator.generate(ALLOY.ZERON_100);
 			//Tumbaga was the name given by Spaniards to a non-specific alloy of gold and copper 
 			MaterialGenerator.generate(ALLOY.TUMBAGA);
@@ -272,7 +284,9 @@ public final class ModItems {
 			MaterialGenerator.generate(ALLOY.INCOLOY_MA956);
 
 			//Leagrisium
-			MaterialGenerator.generate(ALLOY.LEAGRISIUM);			
+			MaterialGenerator.generate(ALLOY.LEAGRISIUM);		
+
+
 			//Must be the final Alloy to Generate
 			MaterialGenerator.generate(ALLOY.QUANTUM);		
 
@@ -302,8 +316,8 @@ public final class ModItems {
 		dustTerra = ItemUtils.generateSpecialUseDusts(ELEMENT.getInstance().TERRA, true)[0];
 		dustAqua = ItemUtils.generateSpecialUseDusts(ELEMENT.getInstance().AQUA, true)[0];
 
-		
-		
+
+
 		//Nuclear Fuel Dusts
 		dustUraniumTetraFluoride = ItemUtils.generateSpecialUseDusts("UraniumTetrafluoride", "Uranium Tetrafluoride", Utils.rgbtoHexValue(17, 179, 42))[0];
 		dustUraniumHexaFluoride = ItemUtils.generateSpecialUseDusts("UraniumHexafluoride", "Uranium Hexafluoride", Utils.rgbtoHexValue(9, 199, 32))[0];
@@ -333,10 +347,6 @@ public final class ModItems {
 		metaItem2.registerItem(4, "Whirlygig", 1043644000, (short) 5, "Spin me right round.", EnumRarity.rare, EnumChatFormatting.DARK_GREEN, true);
 		metaItem2.registerItem(5, "Whirlygig 2", 2124867000, (short) 7, "Spin me right round.", EnumRarity.uncommon, EnumChatFormatting.RED, true);
 
-		// ItemList.Battery_RE_HV_Cadmium.set(BaseEuItem.
-
-		//GameRegistry.registerItem(this, unlocalName);
-
 		boolean gtStyleTools = LoadedMods.Gregtech;
 
 		Materials[] rm = Materials.values();
@@ -350,7 +360,16 @@ public final class ModItems {
 		//EnderIO Resources
 		if (LoadedMods.EnderIO || LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("EnderIO Found - Loading Resources.");
-			//Item Init
+			//Enderio Dusts
+			itemDustSoularium = ItemUtils.generateSpecialUseDusts("Soularium", "Soularium", Utils.rgbtoHexValue(95,90,54))[0];
+			itemDustRedstoneAlloy = ItemUtils.generateSpecialUseDusts("RedstoneAlloy", "Redstone Alloy", Utils.rgbtoHexValue(178,34,34))[0];
+			itemDustElectricalSteel = ItemUtils.generateSpecialUseDusts("ElectricalSteel", "Electrical Steel", Utils.rgbtoHexValue(194,194,194))[0];
+			itemDustPulsatingIron = ItemUtils.generateSpecialUseDusts("PulsatingIron", "Pulsating Iron", Utils.rgbtoHexValue(50,91,21))[0];
+			itemDustEnergeticAlloy = ItemUtils.generateSpecialUseDusts("EnergeticAlloy", "Energetic Alloy", Utils.rgbtoHexValue(252,151,45))[0];
+			itemDustVibrantAlloy = ItemUtils.generateSpecialUseDusts("VibrantAlloy", "Vibrant Alloy", Utils.rgbtoHexValue(204,242,142))[0];
+			itemDustConductiveIron = ItemUtils.generateSpecialUseDusts("ConductiveIron", "Conductive Iron", Utils.rgbtoHexValue(164,109,100))[0];
+
+			//EnderIO Plates
 			itemPlateSoularium = new BaseItemPlate("itemPlate"+"Soularium", "Soularium", new short[]{95, 90, 54}, 2, 0);
 			itemPlateRedstoneAlloy = new BaseItemPlate("itemPlate"+"RedstoneAlloy", "Redstone Alloy", new short[]{178,34,34}, 2, 0);
 			itemPlateElectricalSteel =new BaseItemPlate("itemPlate"+"ElectricalSteel", "Electrical Steel", new short[]{194, 194, 194}, 2, 0);
@@ -359,10 +378,16 @@ public final class ModItems {
 			itemPlateVibrantAlloy = new BaseItemPlate("itemPlate"+"VibrantAlloy", "Vibrant Alloy", new short[]{204, 242, 142}, 2, 0);
 			itemPlateConductiveIron = new BaseItemPlate("itemPlate"+"ConductiveIron", "Conductive Iron", new short[]{164, 109, 100}, 2, 0);
 
+			//Register dumb naming conventions - Who chose fucking phased Iron/Gold?
+			GT_OreDictUnificator.registerOre("dustPhasedGold", ItemUtils.getSimpleStack(itemDustVibrantAlloy));
+			GT_OreDictUnificator.registerOre("platePhasedGold", ItemUtils.getSimpleStack(itemPlateVibrantAlloy));
+			GT_OreDictUnificator.registerOre("dustPhasedIron", ItemUtils.getSimpleStack(itemDustPulsatingIron));
+			GT_OreDictUnificator.registerOre("platePhasedIron", ItemUtils.getSimpleStack(itemPlatePulsatingIron));
 		}
 		else {
 			Utils.LOG_WARNING("EnderIO not Found - Skipping Resources.");
 		}
+		
 		//Big Reactors
 		if (LoadedMods.Big_Reactors|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("BigReactors Found - Loading Resources.");
@@ -375,6 +400,7 @@ public final class ModItems {
 		else {
 			Utils.LOG_WARNING("BigReactors not Found - Skipping Resources.");
 		}
+		
 		//Thaumcraft
 		if (LoadedMods.Thaumcraft|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("Thaumcraft Found - Loading Resources.");
@@ -392,21 +418,20 @@ public final class ModItems {
 		else {
 			Utils.LOG_WARNING("Thaumcraft not Found - Skipping Resources.");
 		}
+		
 		//ExtraUtils
 		if (LoadedMods.Extra_Utils|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("ExtraUtilities Found - Loading Resources.");
-			//Item Init
 			try {
-				//itemPlateBedrockium = new Item().setUnlocalizedName("itemPlateBedrockium").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemPlateBedrockium");
+				MaterialGenerator.generate(ALLOY.BEDROCKIUM);
 			} catch (NullPointerException e){
 				e.getClass();
 			}
-			//Registry
-			//GameRegistry.registerItem(itemPlateBedrockium, "itemPlateBedrockium");
 		}
 		else {
 			Utils.LOG_WARNING("ExtraUtilities not Found - Skipping Resources.");
 		}
+		
 		//Pneumaticraft
 		if (LoadedMods.PneumaticCraft|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("PneumaticCraft Found - Loading Resources.");
@@ -416,6 +441,7 @@ public final class ModItems {
 		else {
 			Utils.LOG_WARNING("PneumaticCraft not Found - Skipping Resources.");
 		}
+		
 		//Simply Jetpacks
 		if (LoadedMods.Simply_Jetpacks|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("SimplyJetpacks Found - Loading Resources.");
@@ -427,6 +453,7 @@ public final class ModItems {
 		else {
 			Utils.LOG_WARNING("SimplyJetpacks not Found - Skipping Resources.");
 		}
+		
 		//rfTools
 		if (LoadedMods.RFTools|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("rfTools Found - Loading Resources.");
@@ -436,16 +463,13 @@ public final class ModItems {
 		else {
 			Utils.LOG_WARNING("rfTools not Found - Skipping Resources.");
 		}
+		
 		//IC2 Exp
 		if (LoadedMods.IndustrialCraft2|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("IndustrialCraft2 Found - Loading Resources.");
-			//Item Init
-			FuelRod_Empty = new FuelRod_Base("itemFuelRod_Empty", "Empty", 0, 1000);
-			FuelRod_Thorium = new FuelRod_Base("itemFuelRod_Thorium", "Thorium", 1000, 1000);
-			FuelRod_Uranium = new FuelRod_Base("itemFuelRod_Uranium", "Uranium", 2500, 2500);
-			FuelRod_Plutonium = new FuelRod_Base("itemFuelRod_Plutonium", "Plutonium", 5000, 5000);
 			RfEuBattery = new RF2EU_Battery();
 
+			//Baubles Mod Test
 			try {Class baublesTest = Class.forName("baubles.api.IBauble");
 			if (baublesTest != null){					
 				COMPAT_Baubles.run();
@@ -456,15 +480,6 @@ public final class ModItems {
 			} catch(Throwable T){
 				Utils.LOG_INFO("Baubles Not Found - Skipping Resources.");				
 			}
-			//Registry
-			//GameRegistry.registerItem(FuelRod_Empty, "itemFuelRod_Empty");
-			//GameRegistry.registerItem(FuelRod_Thorium, "itemFuelRod_Thorium");
-			//GameRegistry.registerItem(FuelRod_Uranium, "itemFuelRod_Uranium");
-			//GameRegistry.registerItem(FuelRod_Plutonium, "itemFuelRod_Plutonium");
-
-			//FluidCell = new ItemStack(new IC2_ItemFluidCell("itemGT++FluidCell"));
-
-
 		}
 		else {
 			Utils.LOG_WARNING("IndustrialCraft2 not Found - Skipping Resources.");
