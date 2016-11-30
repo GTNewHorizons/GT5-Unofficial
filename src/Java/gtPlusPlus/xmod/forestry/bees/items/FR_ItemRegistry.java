@@ -14,6 +14,7 @@ import gtPlusPlus.core.lib.LoadedMods;
 import net.minecraft.item.*;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class FR_ItemRegistry {
@@ -38,6 +39,7 @@ public class FR_ItemRegistry {
 	public static MB_ItemFrame hiveFrameNova;
 
 
+	@Optional.Method(modid = "Forestry")
 	public static void Register() {		
 
 		//Forestry Frames

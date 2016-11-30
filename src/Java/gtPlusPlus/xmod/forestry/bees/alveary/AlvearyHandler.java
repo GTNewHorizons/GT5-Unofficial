@@ -6,10 +6,12 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class AlvearyHandler {
 
+	@Optional.Method(modid = "Forestry")
 	public static void run(){
 		if (!LoadedMods.ExtraBees){
 		if (CORE.configSwitches.enableCustomAlvearyBlocks){//Alveary Stuff
