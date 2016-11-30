@@ -244,34 +244,7 @@ public class ItemUtils {
 
 	public static ItemStack getItemStackOfAmountFromOreDictNoBroken(String oredictName, int amount){
 		ItemStack returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);
-
 		if (returnValue.getItem().getClass() != ModItems.AAA_Broken.getClass() || returnValue.getItem() != ModItems.AAA_Broken){		
-			return returnValue;
-		}
-		Utils.LOG_INFO(oredictName+" was not valid.");	
-		return null;
-	}
-
-	public static ItemStack getItemStackOfAmountFromOreDictNoBrokenExcluding(String excludeModName, String oredictName, int amount){
-		ItemStack returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);
-
-		if (returnValue.getItem().getClass() != ModItems.AAA_Broken.getClass() || returnValue.getItem() != ModItems.AAA_Broken){	
-			if (returnValue.getClass().toString().toLowerCase().contains(excludeModName.toLowerCase())){
-				ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
-				if (!oreDictList.isEmpty()){
-					returnValue = oreDictList.get(1).copy();
-					returnValue.stackSize = amount;
-					return returnValue;
-				}
-			}	
-			else {
-				ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
-				if (!oreDictList.isEmpty()){
-					returnValue = oreDictList.get(1).copy();
-					returnValue.stackSize = amount;
-					return returnValue;
-				}
-			}
 			return returnValue;
 		}
 		Utils.LOG_INFO(oredictName+" was not valid.");	
