@@ -104,7 +104,15 @@ extends GregtechMeta_MultiBlockBase {
 	private short getStorageMultiplier(){
 		int tempstorageMultiplier = (1*multiblockCasingCount);
 		if (tempstorageMultiplier <= 0){
-			Utils.LOG_INFO("Invalid Storage Multiplier. "+multiblockCasingCount);
+			if (this != null){
+				if (this.getBaseMetaTileEntity() != null){
+					if (this.getBaseMetaTileEntity().getWorld() != null){
+						Utils.LOG_INFO("Invalid Storage Multiplier. "+multiblockCasingCount);
+						checkMachine(this.getBaseMetaTileEntity(), null);
+						return 0;
+					}
+				}	
+			}
 			return 1;
 		}
 		return (short) tempstorageMultiplier;
@@ -170,8 +178,8 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Output hatch (anywhere)",
 				"1x Energy Hatch (anywhere)",
 				"1x Maintenance Hatch (anywhere)",
-				"Multitank Exterior Casings for the rest (16 at least!)",
-				"Stored Fluid: "+fluidStored};
+				"Multitank Exterior Casings for the rest (16 at least!)"
+		};
 	}
 
 	@Override
@@ -298,7 +306,7 @@ extends GregtechMeta_MultiBlockBase {
 				Utils.LOG_WARNING("Internal Tank is empty, sitting idle.");
 				return false;
 			}
-			
+
 			if (mOutputHatches.get(0).mFluid == null || mOutputHatches.isEmpty() || (mOutputHatches.get(0).mFluid.isFluidEqual(internalStorageTank) && mOutputHatches.get(0).mFluid.amount < mOutputHatches.get(0).getCapacity())){
 				Utils.LOG_WARNING("Okay - 3");  
 				int tempCurrentStored = internalStorageTank.amount;

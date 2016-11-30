@@ -17,6 +17,7 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.materials.MaterialUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.core.util.wrapper.var;
 
 import java.util.ArrayList;
@@ -243,6 +244,13 @@ public class ItemUtils {
 	}
 
 	public static ItemStack getItemStackOfAmountFromOreDictNoBroken(String oredictName, int amount){
+		if (CORE.DEBUG){
+		Utils.LOG_INFO("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(1));
+		Utils.LOG_INFO("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(2));
+		Utils.LOG_INFO("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(3));
+		Utils.LOG_INFO("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(4));
+		Utils.LOG_INFO("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(5));		
+		}
 		ItemStack returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);
 		if (returnValue.getItem().getClass() != ModItems.AAA_Broken.getClass() || returnValue.getItem() != ModItems.AAA_Broken){		
 			return returnValue;

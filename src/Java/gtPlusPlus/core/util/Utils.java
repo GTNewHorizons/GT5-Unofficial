@@ -178,9 +178,9 @@ public class Utils {
 
 	//Developer Logger
 	public static void LOG_SPECIFIC_WARNING(String whatToLog, String msg, int line){
-		if (CORE.DEBUG){		
+		//if (!CORE.DEBUG){		
 			FMLLog.warning("GT++ |"+line+"| "+whatToLog+" | "+msg);
-		}			
+		//}			
 	}
 
 	public static void paintBox(Graphics g, int MinA, int MinB, int MaxA, int MaxB){

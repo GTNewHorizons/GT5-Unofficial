@@ -74,6 +74,11 @@ public class GregtechConduits {
 		generateNonGTFluidPipes(GT_Materials.Inconel690, ALLOY.INCONEL_690, BasePipeID+40, 7500, 4800, true);
 		generateNonGTFluidPipes(GT_Materials.Inconel792, ALLOY.INCONEL_792, BasePipeID+45, 8000, 5500, true);
 		generateNonGTFluidPipes(GT_Materials.HastelloyX, ALLOY.HASTELLOY_X, BasePipeID+50, 10000, 4200, true);
+
+		generateGTFluidPipes(Materials.Tungsten, BasePipeID+55, 4320, 7200, true);
+		generateGTFluidPipes(Materials.DarkSteel, BasePipeID+60, 2320, 2750, true);
+		generateGTFluidPipes(Materials.Clay, BasePipeID+65, 75, 500, false);
+		generateGTFluidPipes(Materials.Lead, BasePipeID+70, 720, 1200, true);
 	}
 
 	private static void wireFactory(String Material, int Voltage, int ID, long insulatedLoss, long uninsulatedLoss, long Amps){

@@ -47,6 +47,9 @@ public class RECIPES_Machines {
 	//Industrial Wire Factory
 	static ItemStack RECIPE_IndustrialWireFactoryController = GregtechItemList.Industrial_WireFactory.get(1);
 	static ItemStack RECIPE_IndustrialWireFactoryFrame = GregtechItemList.Casing_WireFactory.get(1);
+	//Industrial Multi Tank
+	static ItemStack RECIPE_IndustrialMultiTankController = GregtechItemList.Industrial_MultiTank.get(1);
+	static ItemStack RECIPE_IndustrialMultiTankFrame = GregtechItemList.Casing_MultitankExterior.get(1);
 	//Industrial Matter Fabricator
 	static ItemStack RECIPE_IndustrialMatterFabController = GregtechItemList.Industrial_MassFab.get(1);
 	static ItemStack RECIPE_IndustrialMatterFabFrame = GregtechItemList.Casing_MatterFab.get(1);
@@ -122,7 +125,7 @@ public class RECIPES_Machines {
 	static String rodTier11 = "stickNeutronium";
 
 	static String pipeTier1 = "pipeHuge"+"Potin";
-	static String pipeTier2 = "pipeHuge"+"Steel";
+	static String pipeTier2 = "pipeHuge"+"DarkSteel";
 	static String pipeTier3 = "pipeHuge"+"StainlessSteel";
 	static String pipeTier4 = "pipeHuge"+"Titanium";
 	static String pipeTier5 = "pipeHuge"+"TungstenSteel";
@@ -668,7 +671,18 @@ public class RECIPES_Machines {
 					GregtechItemList.GT_FluidTank_MAX.get(1));
 
 
-
+			//Industrial Multi Tank Casing
+			RecipeUtils.addShapedGregtechRecipe(
+					"stickGrisium", "plateGrisium", "stickGrisium",
+					"plateGrisium", "frameGtGrisium", "plateGrisium",
+					"plateGrisium", "plateGrisium", "plateGrisium",
+					RECIPE_IndustrialMultiTankFrame);
+			//Industrial Multi Tank
+			RecipeUtils.addShapedGregtechRecipe(
+					"pipeHugeDarkSteel", "gearGrisium", "pipeHugeDarkSteel",
+					circuitTier4, RECIPE_IndustrialMultiTankFrame, circuitTier4,
+					"plateDoubleGrisium", "rotorGrisium", "plateDoubleGrisium",
+					RECIPE_IndustrialMultiTankController);
 
 
 			//Blast Smelter

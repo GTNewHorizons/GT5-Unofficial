@@ -159,6 +159,8 @@ public final class ModItems {
 	public static BaseItemTCShard shardAqua;
 
 	public static BaseItemTCShard shardDull;
+	
+	public static Item itemBasicFireMaker;
 
 
 	//@SuppressWarnings("unused")
@@ -186,10 +188,12 @@ public final class ModItems {
 
 		//Register Hydrogen Blobs first, so we can replace old helium blobs.
 		itemHydrogenBlob = new CoreItem("itemHydrogenBlob", tabMisc).setTextureName(CORE.MODID + ":itemHydrogenBlob");
-		GT_OreDictUnificator.registerOre("dustHydrogen", new ItemStack(ModItems.itemHydrogenBlob));
+		//GT_OreDictUnificator.registerOre("dustHydrogen", new ItemStack(ModItems.itemHydrogenBlob));
 		//Register Old Helium Blob, this will be replaced when held by a player.
 		itemHeliumBlob = new CoreItem("itemHeliumBlob", tabMisc, ItemUtils.getSimpleStack(itemHydrogenBlob)).setTextureName(CORE.MODID + ":itemHeliumBlob");
 
+		//Register this neato device, for making some fires.
+		itemBasicFireMaker = new ItemBasicFirestarter();		
 
 		//Make some backpacks
 		//Primary colours
