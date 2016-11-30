@@ -24,20 +24,7 @@ public class RecipeGen_BlastSmelterGT  implements Runnable{
 		Materials[] GregMaterials = Materials.values();
 
 		GT:	for (Materials M : GregMaterials){
-
-			if (M.equals(Materials.Iridium) || M.equals(Materials.Osmium) || M.equals(Materials.Osmiridium)				
-					|| !M.equals(Materials._NULL) || !M.equals(Materials.Knightmetal) || !M.equals(Materials.Osmiridium)
-					){
-
-				for (MaterialStack xMaterial : M.mMaterialList){
-					if (xMaterial.mMaterial == Materials.Magic || xMaterial.mMaterial == Materials.Metal){
-						continue GT;						
-					}
-					if (null == GT_OreDictUnificator.get(OrePrefixes.dust, xMaterial, 1L)){
-						continue GT;						
-					}
-				}
-
+			if (!M.equals(Materials._NULL)){
 
 				//Add a Blast Smelting Recipe, Let's go!			
 				ItemStack tStack;
@@ -84,6 +71,15 @@ public class RecipeGen_BlastSmelterGT  implements Runnable{
 					}
 					else {
 						doTest = CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getMolten(fluidAmount), 100, duration/2, 120);					
+					}
+					
+					for (MaterialStack xMaterial : M.mMaterialList){
+						if (xMaterial.mMaterial == Materials.Magic || xMaterial.mMaterial == Materials.Metal){
+							continue GT;						
+						}
+						if (null == GT_OreDictUnificator.get(OrePrefixes.dust, xMaterial, 1L)){
+							continue GT;						
+						}
 					}
 
 					if (doTest){
