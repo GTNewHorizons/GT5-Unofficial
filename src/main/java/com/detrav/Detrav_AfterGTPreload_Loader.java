@@ -3,9 +3,7 @@ package com.detrav;
 import com.detrav.enums.DetravItemList;
 import com.detrav.items.DetravMetaGeneratedItem01;
 import com.detrav.items.DetravMetaGeneratedTool01;
-import com.detrav.items.processing.ProcessingDetravPortableCharger;
-import com.detrav.items.processing.ProcessingDetravShaping;
-import com.detrav.items.processing.ProcessingDetravToolProPick;
+import com.detrav.items.processing.*;
 import com.detrav.tileentities.Detrav_MetaTileEntity_Boiler_Solar_High;
 import com.detrav.tileentities.Detrav_MetaTileEntity_Boiler_Solar_Low;
 import com.detrav.tileentities.Detrav_MetaTileEntity_Boiler_Solar_Medium;
@@ -30,6 +28,7 @@ public class Detrav_AfterGTPreload_Loader implements Runnable {
         new ProcessingDetravToolProPick();
         new ProcessingDetravShaping();
         new ProcessingDetravPortableCharger();
+        new ProcessingDetravSmartPlunger();
         //new Detrav_MetaGenerated_Tool_01();
         //new ProcessingDetravToolProPick();
 

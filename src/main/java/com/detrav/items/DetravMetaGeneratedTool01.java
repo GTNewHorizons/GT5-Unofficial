@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ObjectIntIdentityMap;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
         INSTANCE = this;
         addTool(0, "Prospector's Pick", "", new DetravToolProPick(), new Object[]{DetravToolDictNames.craftingToolProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)});
         addTool(2, "Portable Anvil", "", new DetravToolPortableAnvil(), new Object[] {DetravToolDictNames.craftingToolPortableAnvil}, new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM,10));
+        addTool(4, "Smart plunger", "", new DetravToolSmartPlunger(),new Object[] {DetravToolDictNames.craftingToolSmartPlunger},new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L));
         addTool(100, "Electric Prospector's Scanner (LV)", "", new DetravToolLVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
         addTool(102, "Electric Prospector's Scanner (MV)", "", new DetravToolMVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
         addTool(104, "Electric Prospector's Scanner (HV)", "", new DetravToolHVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
@@ -72,6 +74,20 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
                     count = ((int)(getLevel(aStack,6)*100)); if(count > 0) {aList.add(tOffset, "Bonus 6 level: +" + count + "%");tOffset++;}
                     count = ((int)(getLevel(aStack,7)*100)); if(count > 0) {aList.add(tOffset, "Bonus 7 level: +" + count + "%");tOffset++;}
                     count = ((int)(getLevel(aStack,8)*100)); if(count > 0) {aList.add(tOffset, "Bonus 8 level: +" + count + "%");tOffset++;}
+                    break;
+                case 4:
+                    aList.add(tOffset + 0, EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + EnumChatFormatting.GRAY);
+                    aList.add(tOffset + 1, EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName + EnumChatFormatting.YELLOW + " lvl " + getHarvestLevel(aStack, "") + EnumChatFormatting.GRAY);
+                    aList.add(tOffset + 2, "It can suck in fluid");
+                    FluidStack stack = getFluidStackFromDetravData(aStack);
+                    if(stack!=null && stack.amount >0)
+                    {
+                        aList.add(tOffset +3, "Fluid: "+stack.getLocalizedName()+" : "+stack.amount);
+                    }
+                    else
+                    {
+                        aList.add(tOffset +3, "Fluid: empty");
+                    }
                     break;
                 case 100:
                 case 101:
@@ -167,6 +183,7 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
         }
     }
 
+
     private boolean hasnolevel(NBTTagCompound detravLevel)
     {
         for(int i=0;i<9;i++)
@@ -219,6 +236,41 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
         NBTTagCompound detravData = aNBT.getCompoundTag("DetravData");
         if(detravData == null) return null;
         return ItemStack.loadItemStackFromNBT(detravData);
+    }
+
+
+    public boolean setFluidStackToDetravData(ItemStack aStack, FluidStack what)
+    {
+        if(aStack == null) return false;
+        NBTTagCompound aNBT = aStack.getTagCompound();
+        if(aNBT == null) {
+            aNBT = new NBTTagCompound();
+            NBTTagCompound detravData = new NBTTagCompound();
+            aNBT.setTag("DetravData", detravData);
+            aStack.setTagCompound(aNBT);
+        }
+        {
+            NBTTagCompound detravData = aNBT.getCompoundTag("DetravData");
+            if (detravData == null || detravData.getShort("id") == 0) {
+                detravData = new NBTTagCompound();
+                aNBT.setTag("DetravData", detravData);
+            }
+            if (what == null)
+                aNBT.removeTag("DetravData");
+            else
+                what.writeToNBT(detravData);
+            return true;
+        }
+    }
+
+    public FluidStack getFluidStackFromDetravData(ItemStack aStack)
+    {
+        if(aStack == null) return null;
+        NBTTagCompound aNBT = aStack.getTagCompound();
+        if(aNBT ==null) return null;
+        NBTTagCompound detravData = aNBT.getCompoundTag("DetravData");
+        if(detravData == null) return null;
+        return FluidStack.loadFluidStackFromNBT(detravData);
     }
 
     public void getDetravSubItems(Item item, CreativeTabs detravCreativeTab, List list) {
