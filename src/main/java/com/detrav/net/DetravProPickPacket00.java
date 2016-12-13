@@ -135,15 +135,20 @@ public class DetravProPickPacket00 extends DetravPacket {
                         for (short meta : map[i][j].values()) {
                             String name;
                             short[] rgba;
-                                //Пока только по одному буду
-                                Materials tMaterial = GregTech_API.sGeneratedMaterials[meta % 1000];
-                                if (tMaterial == null) {
-                                    exception++;
-                                    continue;
-                                }
-                                rgba = tMaterial.getRGBA();
-                                //ores.put(GT_Ore)
-                                name = GT_LanguageManager.getTranslation("gt.blockores." + meta + ".name");
+                            //Пока только по одному буду
+                            Materials tMaterial = null;
+                            try {
+                                tMaterial = GregTech_API.sGeneratedMaterials[meta % 1000];
+                            } catch (Exception e) {
+                                tMaterial = null;
+                            }
+                            if (tMaterial == null) {
+                                exception++;
+                                continue;
+                            }
+                            rgba = tMaterial.getRGBA();
+                            //ores.put(GT_Ore)
+                            name = GT_LanguageManager.getTranslation("gt.blockores." + meta + ".name");
 
                             raster.setSample(i, j, 0, rgba[0]);
                             raster.setSample(i, j, 1, rgba[1]);
