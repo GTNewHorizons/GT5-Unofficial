@@ -17,8 +17,8 @@ public enum DetravItemList implements IItemContainer {
     Shape_Extruder_ProPick,
     Solar_Boiler_Low,
     Solar_Boiler_Medium,
-    Solar_Boiler_High;
-
+    Solar_Boiler_High,
+    DetravAdvancedMiner2;
 
 
     private ItemStack mStack;
