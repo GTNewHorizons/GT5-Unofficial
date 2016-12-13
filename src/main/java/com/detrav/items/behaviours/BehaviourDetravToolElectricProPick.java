@@ -5,21 +5,28 @@ import com.detrav.net.DetravNetwork;
 import com.detrav.net.DetravProPickPacket00;
 import gregtech.api.GregTech_API;
 import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by wital_000 on 19.03.2016.
@@ -82,20 +89,43 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
             for (Chunk c : chunks) {
                 for (int x = 0; x < 16; x++)
                     for (int z = 0; z < 16; z++) {
-                        int ySize = c.getHeightValue(x, z);
+                        int ySize = c.getHeightValue(x, z);//(int)aPlayer.posY;//c.getHeightValue(x, z);
                         for (int y = 1; y < ySize; y++) {
                             switch (data) {
                                 case 0:
                                 case 1:
-                                    Block b = c.getBlock(x, y, z);
-                                    if (b == GregTech_API.sBlockOres1) {
-                                        TileEntity entity = c.getTileEntityUnsafe(x, y, z);
-                                        if (entity != null && entity instanceof GT_TileEntity_Ores) {
-                                            GT_TileEntity_Ores gt_entity = (GT_TileEntity_Ores) entity;
-                                            String name = GT_LanguageManager.getTranslation(
-                                                    b.getUnlocalizedName() + "." + gt_entity.getMetaData() + ".name");
-                                            if (name.startsWith("Small")) if (data != 1) continue;
-                                            packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, gt_entity.getMetaData());
+                                    Block tBlock = c.getBlock(x,y,z);
+                                    short tMetaID = (short)c.getBlockMetadata(x,y,z);
+                                    if (tBlock instanceof GT_Block_Ores_Abstract) {
+                                        TileEntity tTileEntity = c.getTileEntityUnsafe(x,y,z);
+                                        if ((tTileEntity!=null)
+                                                && (tTileEntity instanceof GT_TileEntity_Ores)
+                                                && ((GT_TileEntity_Ores) tTileEntity).mNatural == true) {
+                                            tMetaID = (short)((GT_TileEntity_Ores) tTileEntity).getMetaData();
+                                            try {
+
+                                                String name = GT_LanguageManager.getTranslation(
+                                                        tBlock.getUnlocalizedName() + "." + tMetaID + ".name");
+                                                if (name.startsWith("Small")) if (data != 1) continue;
+                                                packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, tMetaID);
+                                            }
+                                            catch(Exception e) {
+                                                String name = tBlock.getUnlocalizedName() + ".";
+                                                if (name.contains(".small.")) if (data != 1) continue;
+                                                packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, tMetaID);
+                                            }
+                                        }
+                                    }
+                                    else if (data == 1) {
+                                        ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
+                                        if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {
+                                            try {
+                                                packet.addBlock(c.xPosition * 16 + x, y, c.zPosition * 16 + z, (short)tAssotiation.mMaterial.mMaterial.mMetaItemSubID);
+                                            }
+                                            catch (Exception e)
+                                            {
+
+                                            }
                                         }
                                     }
                                     break;
@@ -139,8 +169,28 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
 
     public boolean onItemUse(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
         long data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack);
-        if (data < 2)
-            return super.onItemUse(aItem, aStack, aPlayer, aWorld, aX, aY, aZ, aSide, hitX, hitY, hitZ);
+        if (data < 2) {
+            if(aWorld.getBlock(aX,aY,aZ) == Blocks.bedrock)
+            {
+                if (!aWorld.isRemote) {
+                    FluidStack fStack = getUndergroundOil(aWorld,aX,aZ);
+                    addChatMassageByValue(aPlayer,fStack.amount/5000,fStack.getLocalizedName());
+                    if (!aPlayer.capabilities.isCreativeMode)
+                        ((DetravMetaGeneratedTool01)aItem).doDamage(aStack, this.mCosts);
+                }
+                return true;
+            }
+            else {
+                //if (aWorld.getBlock(aX, aY, aZ).getMaterial() == Material.rock || aWorld.getBlock(aX, aY, aZ) == GregTech_API.sBlockOres1) {
+                if (!aWorld.isRemote) {
+                    processOreProspecting((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld.getChunkFromBlockCoords(aX, aZ), aWorld.getTileEntity(aX, aY, aZ), GT_OreDictUnificator.getAssociation(new ItemStack(aWorld.getBlock(aX, aY, aZ), 1, aWorld.getBlockMetadata(aX, aY, aZ))), new Random(aWorld.getSeed() + 3547 * aX + 1327 * aZ + 9973 * aY), 1000);
+                    return true;
+                }
+                return true;
+            }
+            //}
+            //return false;
+        }
         if (data < 3)
             if (!aWorld.isRemote) {
                 FluidStack fStack = getUndergroundOil(aWorld, aX, aZ);

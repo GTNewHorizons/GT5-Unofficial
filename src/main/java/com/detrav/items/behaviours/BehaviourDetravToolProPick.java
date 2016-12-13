@@ -4,8 +4,11 @@ import com.detrav.items.DetravMetaGeneratedTool01;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.items.GT_MetaBase_Item;
+import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.GT_Proxy;
+import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 import gregtech.common.items.behaviors.Behaviour_None;
 import net.minecraft.block.Block;
@@ -58,7 +61,7 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
         }
         if (aWorld.getBlock(aX, aY, aZ).getMaterial() == Material.rock || aWorld.getBlock(aX, aY, aZ) == GregTech_API.sBlockOres1) {
             if (!aWorld.isRemote) {
-                processOreProspecting((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld.getChunkFromBlockCoords(aX, aZ), aWorld.getTileEntity(aX, aY, aZ), new Random(aWorld.getSeed() + 3547 * aX + 1327 * aZ + 9973 * aY));
+                processOreProspecting((DetravMetaGeneratedTool01) aItem, aStack, aPlayer, aWorld.getChunkFromBlockCoords(aX, aZ), aWorld.getTileEntity(aX, aY, aZ),GT_OreDictUnificator.getAssociation(new ItemStack(aWorld.getBlock(aX, aY, aZ), 1, aWorld.getBlockMetadata(aX, aY, aZ))), new Random(aWorld.getSeed() + 3547 * aX + 1327 * aZ + 9973 * aY),40);
                 return true;
             }
             return true;
@@ -66,7 +69,7 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
         return false;
     }
 
-    private void processOreProspecting(DetravMetaGeneratedTool01 aItem, ItemStack aStack, EntityPlayer aPlayer, Chunk aChunk, TileEntity aTileEntity, Random aRandom)//TileEntity aTileEntity)
+    protected void processOreProspecting(DetravMetaGeneratedTool01 aItem, ItemStack aStack, EntityPlayer aPlayer, Chunk aChunk, TileEntity aTileEntity, ItemData tAssotiation, Random aRandom, int chance)//TileEntity aTileEntity)
     {
         aRandom.nextInt();
         if (aTileEntity != null) {
@@ -78,29 +81,94 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
                     aItem.doDamage(aStack, this.mCosts);
                 return;
             }
-        } else if (aRandom.nextInt(10) < 4) {
+        } else if (tAssotiation!=null)
+        {
+            //if (aTileEntity instanceof GT_TileEntity_Ores) {
+            try {
+                GT_TileEntity_Ores gt_entity = (GT_TileEntity_Ores) aTileEntity;
+                String name = tAssotiation.toString();
+                addChatMassageByValue(aPlayer, -1, name);
+                if (!aPlayer.capabilities.isCreativeMode)
+                    aItem.doDamage(aStack, this.mCosts);
+                return;
+            }
+            catch (Exception e)
+            {
+                addChatMassageByValue(aPlayer, -1, "ERROR, lol ^_^");
+            }
+            //}
+        }else if (aRandom.nextInt(100) < chance) {
             int data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack).intValue();
             HashMap<String, Integer> ores = new HashMap<String, Integer>();
             for (int x = 0; x < 16; x++)
                 for (int z = 0; z < 16; z++) {
                     int ySize = aChunk.getHeightValue(x, z);
                     for (int y = 1; y < ySize; y++) {
-                        Block b = aChunk.getBlock(x, y, z);
-                        if (b == GregTech_API.sBlockOres1) {
-                            TileEntity entity = aChunk.getTileEntityUnsafe(x, y, z);
-                            if (entity != null) {
-                                GT_TileEntity_Ores gt_entity = (GT_TileEntity_Ores) entity;
-                                String name = GT_LanguageManager.getTranslation(
-                                        b.getUnlocalizedName() + "." + gt_entity.getMetaData() + ".name");
-                                if (name.startsWith("Small")) if(data!=1) continue;
-                                if (!ores.containsKey(name))
-                                    ores.put(name, 1);
-                                else {
-                                    int val = ores.get(name);
-                                    ores.put(name, val + 1);
+
+                        Block tBlock = aChunk.getBlock(x,y,z);
+                        short tMetaID = (short)aChunk.getBlockMetadata(x,y,z);
+                        if (tBlock instanceof GT_Block_Ores_Abstract) {
+                            TileEntity tTileEntity = aChunk.getTileEntityUnsafe(x,y,z);
+                            if ((tTileEntity!=null)
+                                    && (tTileEntity instanceof GT_TileEntity_Ores)
+                                    && ((GT_TileEntity_Ores) tTileEntity).mNatural == true) {
+                                tMetaID = (short)((GT_TileEntity_Ores) tTileEntity).getMetaData();
+                                try {
+
+                                    String name = GT_LanguageManager.getTranslation(
+                                            tBlock.getUnlocalizedName() + "." + tMetaID + ".name");
+                                    if (name.startsWith("Small")) if (data != 1) continue;
+                                    if (name.startsWith("Small")) if(data!=1) continue;
+                                    if (!ores.containsKey(name))
+                                        ores.put(name, 1);
+                                    else {
+                                        int val = ores.get(name);
+                                        ores.put(name, val + 1);
+                                    }
+                                }
+                                catch(Exception e) {
+                                    String name = tBlock.getUnlocalizedName() + ".";
+                                    if (name.contains(".small.")) if (data != 1) continue;
+                                    if (name.startsWith("Small")) if(data!=1) continue;
+                                    if (!ores.containsKey(name))
+                                        ores.put(name, 1);
+                                    else {
+                                        int val = ores.get(name);
+                                        ores.put(name, val + 1);
+                                    }
+                                }
+                            }
+                        } else if (data == 1) {
+                            tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
+                            if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {
+                                try {
+                                    try {
+                                        tMetaID = (short)tAssotiation.mMaterial.mMaterial.mMetaItemSubID;
+                                        String name = GT_LanguageManager.getTranslation(
+                                                "gt.blockores." + tMetaID + ".name");
+                                        if (!ores.containsKey(name))
+                                            ores.put(name, 1);
+                                        else {
+                                            int val = ores.get(name);
+                                            ores.put(name, val + 1);
+                                        }
+                                    } catch (Exception e1) {
+                                        String name = tAssotiation.toString();
+                                        if (!ores.containsKey(name))
+                                            ores.put(name, 1);
+                                        else {
+                                            int val = ores.get(name);
+                                            ores.put(name, val + 1);
+                                        }
+                                    }
+                                }
+                                catch (Exception e)
+                                {
+
                                 }
                             }
                         }
+
                     }
                 }
             int total = 0;

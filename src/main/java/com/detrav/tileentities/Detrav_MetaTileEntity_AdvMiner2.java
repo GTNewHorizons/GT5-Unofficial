@@ -265,6 +265,7 @@ public class Detrav_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBloc
                 if (tStack.stackSize < 1) {
                     tStack = null;
                 }
+                return true;
             }
         }
 
