@@ -54,6 +54,7 @@ public class Detrav_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBloc
                 "1x3x1 Solid Steel Casing pillar (Center of base)",
                 "1x3x1 Steel Frame Boxes (Each Steel pillar side and on top)",
                 "1x Input Hatch (Any bottom layer casing)",
+                "1x Input Bus for Mining Pipe (Any bottom layer casing)",
                 "1x Output Bus (Any bottom layer casing)",
                 "1x Maintenance Hatch (Any bottom layer casing)",
                 "1x MV+ Energy Hatch (Any bottom layer casing)"};
