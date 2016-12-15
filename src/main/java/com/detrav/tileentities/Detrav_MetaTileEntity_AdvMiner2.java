@@ -109,9 +109,7 @@ public class Detrav_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBloc
         depleteInput(tFluid);
         long tVoltage = getMaxInputVoltage();
 
-
-
-        if (getBaseMetaTileEntity().getRandomNumber(20) == 0) {
+        if (getBaseMetaTileEntity().getRandomNumber(10) <= 4) {
             for(int i = - circuit_config; i<=circuit_config; i++)
                 for(int j = - circuit_config; j<=circuit_config; j++) {
                     Chunk c = getBaseMetaTileEntity().getWorld().getChunkFromBlockCoords(getBaseMetaTileEntity().getXCoord() + i * 16, getBaseMetaTileEntity().getZCoord() + j * 16);
@@ -173,7 +171,7 @@ public class Detrav_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBloc
                     tDrops = tMineBlock.getDrops(getBaseMetaTileEntity().getWorld(), mle.chunkPosX, mle.chunkPosY, mle.chunkPosZ, metadata, 1);
                 }
 
-                getBaseMetaTileEntity().getWorld().setBlockToAir(mle.chunkPosX, mle.chunkPosY , mle.chunkPosZ);
+                getBaseMetaTileEntity().getWorld().setBlock(mle.chunkPosX, mle.chunkPosY , mle.chunkPosZ,Blocks.dirt);
                 if (!tDrops.isEmpty()) {
                     ItemData tData = GT_OreDictUnificator.getItemData(tDrops.get(0).copy());
                     if (tData.mPrefix != OrePrefixes.crushed && tData.mMaterial.mMaterial != Materials.Oilsands) {
