@@ -2,26 +2,15 @@ package gtPlusPlus.core.handler.events;
 
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockLog;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.passive.EntityPig;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EntityDamageSource;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
-import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class BlockEventHandler {
@@ -29,7 +18,7 @@ public class BlockEventHandler {
 
 	@SubscribeEvent
 	public void onBlockLeftClicked(PlayerInteractEvent event) {
-		if (event.action != PlayerInteractEvent.Action.LEFT_CLICK_BLOCK) return;
+		/*if (event.action != PlayerInteractEvent.Action.LEFT_CLICK_BLOCK) return;
 
 		ItemStack heldItem = event.entityPlayer.getHeldItem();
 		Block block = event.world.getBlock(event.x, event.y, event.z);
@@ -43,12 +32,12 @@ public class BlockEventHandler {
 				event.world.setBlock(fireX, fireY, fireZ, Blocks.fire); // Replace it with Fire
 				event.useBlock = Event.Result.DENY; // Prevent the Fire from being extinguished (also prevents Block#onBlockClicked from being called)
 			}
-		}
+		}*/
 	}
 
 	@SubscribeEvent
 	public void onEntityDrop(LivingDropsEvent event) {
-		if (event.entityLiving instanceof EntityPig && event.source instanceof EntityDamageSource) {
+		/*if (event.entityLiving instanceof EntityPig && event.source instanceof EntityDamageSource) {
 			// getEntity will return the Entity that caused the damage,even for indirect damage sources like arrows/fireballs
 			// (where it will return the Entity that shot the projectile rather than the projectile itself)
 			Entity sourceEntity = event.source.getEntity();
@@ -60,7 +49,7 @@ public class BlockEventHandler {
 					event.drops.clear();
 					event.entityLiving.dropItem(Items.diamond, 64);
 				}
-		}
+		}*/
 	}
 
 	@SubscribeEvent
@@ -107,7 +96,7 @@ public class BlockEventHandler {
 
 	@SubscribeEvent
 	public void logsHarvest(BlockEvent.HarvestDropsEvent event) {
-		if (event.block instanceof BlockLog) {
+		/*if (event.block instanceof BlockLog) {
 			// http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/modification-development/2444501-harvestdropevent-changing-drops-of-vanilla-blocks
 
 			//			Utils.sendServerMessage("Logs! Harvester: %s Drops: %s", event.harvester != null ? event.harvester.getCommandSenderName() : "<none>", event.drops.stream().map(ItemStack.toString()).collect(Collectors.joining(", ")));
@@ -123,6 +112,6 @@ public class BlockEventHandler {
 				event.drops.clear();
 				Utils.sendServerMessage("No harvester, clearing drops");
 			}
-		}
+		}*/
 	}
 }
