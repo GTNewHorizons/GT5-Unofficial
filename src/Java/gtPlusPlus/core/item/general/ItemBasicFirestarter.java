@@ -45,6 +45,7 @@ public class ItemBasicFirestarter extends CoreItem {
 		}
 		if (thisWorld.getBlock(blockX, blockY, blockZ) instanceof FirePit){
 			thisWorld.setBlockMetadataWithNotify(blockX, blockY, blockZ, 2, 4);
+			PlayerUtils.messagePlayer(thisPlayer, "You light the fire pit. ");
 		}		
 		if (thisWorld.isAirBlock(blockX, blockY, blockZ))
 		{

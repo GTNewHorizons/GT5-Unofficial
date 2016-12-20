@@ -2,10 +2,13 @@ package gtPlusPlus.core.proxy;
 
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.common.CommonProxy;
+import gtPlusPlus.core.handler.render.FirepitRender;
+import gtPlusPlus.core.tileentities.general.TileEntityFirepit;
 import gtPlusPlus.core.util.particles.EntityParticleFXMysterious;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.*;
 
@@ -40,6 +43,8 @@ public class ClientProxy extends CommonProxy{
 
 		//ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBloodSteelChest.class, new BloodSteelChestRenderer());
 		//MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.tutChest), new ItemRenderBloodSteelChest());
+		
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFirepit.class, new FirepitRender());
 	}
 
 	@Override

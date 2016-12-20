@@ -3,10 +3,12 @@ package gtPlusPlus.core.block.base;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 
-public class BasicBlock extends Block {
+public class BasicBlock extends BlockContainer {
 
     public BasicBlock(final String unlocalizedName, final Material material) {
         super(material);
@@ -48,5 +50,11 @@ public class BasicBlock extends Block {
     	}
     
     }
+
+
+	@Override
+	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
+		return null;
+	}
     
 }
