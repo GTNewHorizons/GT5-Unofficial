@@ -78,6 +78,10 @@ public class CORE {
 		//Debug
 		public static boolean disableEnderIOIntegration = false;
 		
+		//Tools
+		public static boolean enableSkookumChoochers = true;
+		public static boolean enableMultiSizeTools = true;
+		
 		//Machine Related
 		public static boolean enableAlternativeBatteryAlloy = false;
 		public static boolean enableThaumcraftShardUnification = false;

@@ -4,6 +4,7 @@ import static gtPlusPlus.core.lib.CORE.DEBUG;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.*;
+import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.handler.events.PickaxeBlockBreakEventHandler;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
@@ -82,7 +83,10 @@ public class CommonProxy {
 		ModItems.init();
 		ModBlocks.init();
 		RECIPE_CONSTANTS.initialise();
+		//Prevents my Safes being destroyed.
 		MinecraftForge.EVENT_BUS.register(new PickaxeBlockBreakEventHandler());
+		//Block Handler for all events.
+		MinecraftForge.EVENT_BUS.register(new BlockEventHandler());
 		
 		//Compat Handling		
 		COMPAT_HANDLER.registerMyModsOreDictEntries();

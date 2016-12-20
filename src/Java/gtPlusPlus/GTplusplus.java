@@ -63,6 +63,9 @@ implements ActionListener
 		disableIC2Recipes = config.getBoolean("disableIC2Recipes", "machines", false, "Alkaluscraft Related - Removes IC2 Cables Except glass fibre. Few other Misc Tweaks.");
 		enableAlternativeDivisionSigilRecipe = config.getBoolean("enableAlternativeDivisionSigilRecipe", "machines", false, "Utilizes Neutronium instead.");
 
+		//Tools
+		CORE.configSwitches.enableSkookumChoochers = config.getBoolean("enableSkookumChoochers", "gregtech", true, "Adds Custom GT Tools, called Skookum Choochers, functioning as a hard hammer and a wrench.");
+		CORE.configSwitches.enableMultiSizeTools = config.getBoolean("enableMultiSizeTools", "gregtech", true, "Adds Custom GT Shovels and Pickaxes which mine in a 3x3 style. One of each whill be generated for each Gregtech Material which has Dense Plates and Long Rods available.");
 		
 		//Pipes & Cables
 		CORE.configSwitches.enableCustom_Pipes = config.getBoolean("enableCustom_Pipes", "gregtech", true, "Adds Custom GT Fluid Pipes.");

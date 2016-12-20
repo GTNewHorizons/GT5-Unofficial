@@ -352,13 +352,15 @@ public final class ModItems {
 		metaItem2.registerItem(5, "Whirlygig 2", 2124867000, (short) 7, "Spin me right round.", EnumRarity.uncommon, EnumChatFormatting.RED, true);
 
 		boolean gtStyleTools = LoadedMods.Gregtech;
-
+		
+		if (CORE.configSwitches.enableMultiSizeTools){
 		Materials[] rm = Materials.values();
 		for (Materials m : rm){
 			MP_GTMATERIAL = ItemUtils.generateMultiPick(gtStyleTools, m);
 			MS_GTMATERIAL = ItemUtils.generateMultiShovel(gtStyleTools, m);
 			/*itemBaseDecidust = UtilsItems.generateDecidust(m);
 			itemBaseCentidust = UtilsItems.generateCentidust(m);*/
+		}
 		}
 
 		//EnderIO Resources

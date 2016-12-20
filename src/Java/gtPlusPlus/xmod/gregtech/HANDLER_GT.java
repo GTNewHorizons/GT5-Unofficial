@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech;
 
 import gregtech.api.util.GT_Config;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.common.blocks.fluid.GregtechFluidHandler;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
@@ -33,8 +34,14 @@ public class HANDLER_GT {
 		
 		//Add Custom Pipes, Wires and Cables.
 		GregtechConduits.run();
-		new MetaGeneratedGregtechTools();
-		new ProcessingToolHeadChoocher().run();
+		
+		//Only loads if the config option is true (default: true)
+		if (CORE.configSwitches.enableSkookumChoochers){
+			new MetaGeneratedGregtechTools();
+			new ProcessingToolHeadChoocher().run();	
+		}
+		
+		//Generates recipes for all gregtech smelting and alloy smelting combinations.
 		RecipeGen_BlastSmelterGT.generateRecipes();
 		
 	}
