@@ -63,7 +63,7 @@ public class BlockEventHandler {
 		if (event.harvester != null){
 			//Spawn Dull Shards (Can spawn from Tree Logs, Grass or Stone. Stone going to be the most common source.)
 			if ((event.block == Blocks.stone || event.block == Blocks.log || event.block == Blocks.log2 || event.block == Blocks.grass) 
-					&& LoadedMods.Thaumcraft) {
+					&& !LoadedMods.Thaumcraft) {
 				//small chance for one to spawn per stone mined. 1 per 4 stacks~ //TODO MAKE A CONFIG OPTION
 				if (MathUtils.randInt(0, 256) >= 1){
 					if (event.harvester.canHarvestBlock(event.block)){
