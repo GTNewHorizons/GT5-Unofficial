@@ -1,5 +1,6 @@
 package gtPlusPlus.core.item.general;
 
+import gtPlusPlus.core.block.general.FirePit;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -42,6 +43,9 @@ public class ItemBasicFirestarter extends CoreItem {
 		if (!thisPlayer.canPlayerEdit(blockX, blockY, blockZ, p_77648_7_, thisItem)) {
 			return false;
 		}
+		if (thisWorld.getBlock(blockX, blockY, blockZ) instanceof FirePit){
+			thisWorld.setBlockMetadataWithNotify(blockX, blockY, blockZ, 2, 4);
+		}		
 		if (thisWorld.isAirBlock(blockX, blockY, blockZ))
 		{
 			int random = MathUtils.randInt(0, 3);

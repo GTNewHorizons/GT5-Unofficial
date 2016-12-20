@@ -1,5 +1,6 @@
 package gtPlusPlus.core.block;
 
+import gtPlusPlus.core.block.general.FirePit;
 import gtPlusPlus.core.block.general.LightGlass;
 import gtPlusPlus.core.block.machine.Machine_Workbench;
 import gtPlusPlus.core.block.machine.Machine_WorkbenchAdvanced;
@@ -31,6 +32,8 @@ public final class ModBlocks {
 	public static Fluid fluidJackDaniels = new Fluid("fluidJackDaniels");
 	public static Block blockFluidJackDaniels;
 	public static Block blockCasings2Misc;
+	
+	public static Block blockFirePit;
 
 
 
@@ -52,6 +55,7 @@ public final class ModBlocks {
 		//Workbench
 		blockWorkbench = new Machine_Workbench().setHardness(1.5F);
 		blockWorkbenchAdvanced = new Machine_WorkbenchAdvanced().setHardness(2.5F);
+		blockFirePit = new FirePit();
 
 		
 	}

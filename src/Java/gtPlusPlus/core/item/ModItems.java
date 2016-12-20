@@ -153,10 +153,10 @@ public final class ModItems {
 
 	public static BaseEuItem metaItem2;
 
-	public static BaseItemTCShard shardAer;
-	public static BaseItemTCShard shardIgnis;
-	public static BaseItemTCShard shardTerra;
-	public static BaseItemTCShard shardAqua;
+	public static Item shardAer;
+	public static Item shardIgnis;
+	public static Item shardTerra;
+	public static Item shardAqua;
 
 	public static BaseItemTCShard shardDull;
 	
@@ -306,13 +306,19 @@ public final class ModItems {
 
 		//TC Style Shards, for use in making energy crystal mix.
 		//A dull shard, able to be infused with an element.
-		shardDull = new BaseItemTCShard("Drained", Utils.rgbtoHexValue(75, 75, 75), "Small chance to be mined from Stone.", "Only useful if you do not have Thaumcraft installed.");
+		shardDull = new BaseItemTCShard("Drained", Utils.rgbtoHexValue(75, 75, 75), "Can be infused to create a magical shard.", "Obtained from Mining Stone/SandStone, Chopping Logs or Shovelling Dirt.");
 		//Generates four elemental shards when TC is not installed.
 		if (!LoadedMods.Thaumcraft){
 			shardAer = new BaseItemTCShard("Aer", Utils.rgbtoHexValue(225, 225, 5));
 			shardIgnis = new BaseItemTCShard("Ignis", Utils.rgbtoHexValue(255, 5, 5));
 			shardTerra = new BaseItemTCShard("Terra", Utils.rgbtoHexValue(5, 255, 5));
 			shardAqua = new BaseItemTCShard("Aqua", Utils.rgbtoHexValue(5, 5, 255));
+		}
+		else {
+			shardAer = ItemUtils.getItemStackWithMeta(LoadedMods.Thaumcraft, "Thaumcraft:ItemShard", "Air Shard", 0, 1).getItem();
+			shardIgnis = ItemUtils.getItemStackWithMeta(LoadedMods.Thaumcraft, "Thaumcraft:ItemShard", "Fire Shard", 1, 1).getItem();
+			shardAqua = ItemUtils.getItemStackWithMeta(LoadedMods.Thaumcraft, "Thaumcraft:ItemShard", "Warer Shard", 2, 1).getItem();
+			shardTerra = ItemUtils.getItemStackWithMeta(LoadedMods.Thaumcraft, "Thaumcraft:ItemShard", "Earth Shard", 3, 1).getItem();
 		}
 		//Generates a set of four special dusts to be used in my recipes.
 		dustAer = ItemUtils.generateSpecialUseDusts(ELEMENT.getInstance().AER, true)[0];
