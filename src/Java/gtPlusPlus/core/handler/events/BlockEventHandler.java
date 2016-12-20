@@ -1,6 +1,9 @@
 package gtPlusPlus.core.handler.events;
 
+import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.math.MathUtils;
 
 import java.util.Random;
 
@@ -13,7 +16,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
@@ -51,28 +53,55 @@ public class BlockEventHandler {
 			// (where it will return the Entity that shot the projectile rather than the projectile itself)
 			Entity sourceEntity = event.source.getEntity();
 			ItemStack heldItem = sourceEntity instanceof EntityLiving ? ((EntityLiving) sourceEntity).getHeldItem() :
-					sourceEntity instanceof EntityPlayer ? ((EntityPlayer) sourceEntity).getHeldItem() : null;
+				sourceEntity instanceof EntityPlayer ? ((EntityPlayer) sourceEntity).getHeldItem() : null;
 
-			if (heldItem != null && heldItem.getItem() == Items.iron_pickaxe) {
-				System.out.println("EntityPig drops event");
-				event.drops.clear();
-				event.entityLiving.dropItem(Items.diamond, 64);
-			}
+				if (heldItem != null && heldItem.getItem() == Items.iron_pickaxe) {
+					System.out.println("EntityPig drops event");
+					event.drops.clear();
+					event.entityLiving.dropItem(Items.diamond, 64);
+				}
 		}
 	}
 
 	@SubscribeEvent
 	public void onBlockBreak(BlockEvent.BreakEvent event) {
-		if (event.block == Blocks.stone) {
-			event.setCanceled(true);
-			event.world.setBlock(event.x, event.y, event.z, Blocks.flowing_lava);
-		}
+
 	}
 
+	//Used to handle Thaumcraft Shards when TC is not installed.
 	@SubscribeEvent
 	public void harvestDrops(BlockEvent.HarvestDropsEvent event) {
-		if (event.block == Blocks.cocoa && event.harvester != null) {
-			event.harvester.addChatComponentMessage(new ChatComponentText("Cocoa!"));
+		if (event.harvester != null){
+			//Spawn Dull Shards (Can spawn from Tree Logs, Grass or Stone. Stone going to be the most common source.)
+			if ((event.block == Blocks.stone || event.block == Blocks.log || event.block == Blocks.log2 || event.block == Blocks.grass) 
+					&& LoadedMods.Thaumcraft) {
+				//small chance for one to spawn per stone mined. 1 per 4 stacks~ //TODO MAKE A CONFIG OPTION
+				if (MathUtils.randInt(0, 256) >= 1){
+					if (event.harvester.canHarvestBlock(event.block)){
+						//Let's sort out a lucky charm for the player.
+						int FancyChance = MathUtils.randInt(1, 4);
+						if (MathUtils.randInt(1, 100) > 90){
+							event.drops.add(new ItemStack(ModItems.shardDull));	
+						}
+						//Make a Fire Shard
+						else if (FancyChance == 1){
+							event.drops.add(new ItemStack(ModItems.shardIgnis));	
+						}
+						//Make a Water Shard.
+						else if (FancyChance == 2){
+							event.drops.add(new ItemStack(ModItems.shardAqua));	
+						}
+						//Make an Earth Shard.
+						else if (FancyChance == 3){
+							event.drops.add(new ItemStack(ModItems.shardTerra));	
+						}
+						//Make an Air Shard.
+						else if (FancyChance == 4){
+							event.drops.add(new ItemStack(ModItems.shardAer));	
+						}						
+					}	
+				}				
+			}
 		}
 	}
 
