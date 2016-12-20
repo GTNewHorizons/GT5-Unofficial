@@ -1,7 +1,7 @@
 package gtPlusPlus.core.recipe;
 
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
+import gregtech.api.enums.*;
+import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
@@ -502,7 +502,11 @@ public class RECIPES_Machines {
 					"plateAnyIron", blockBricks, "plateAnyIron",
 					"plateAnyIron", RECIPES_Tools.craftingToolWrench, "plateAnyIron",
 					RECIPE_IronPlatedBricks);
-
+			
+			//Add recycle recipes for the Iron Plated Bricks
+			GT_ModHandler.addPulverisationRecipe(RECIPE_IronPlatedBricks, ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustIron", 6), ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustClay", 2));
+			GT_Values.RA.addArcFurnaceRecipe(RECIPE_IronPlatedBricks, new ItemStack[]{ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotWroughtIron", 6), ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustAsh", 2)}, new int[]{0}, 32*20, 32);
+			
 			/*//Electrolyzer Frame Casing
 			UtilsRecipe.addShapedGregtechRecipe(
 					"platePotin", "stickLongChrome", "platePotin",

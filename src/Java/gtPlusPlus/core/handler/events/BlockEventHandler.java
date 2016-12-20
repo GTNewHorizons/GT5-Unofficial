@@ -65,7 +65,7 @@ public class BlockEventHandler {
 			if ((event.block == Blocks.stone || event.block == Blocks.log || event.block == Blocks.log2 || event.block == Blocks.grass) 
 					&& !LoadedMods.Thaumcraft) {
 				//small chance for one to spawn per stone mined. 1 per 4 stacks~ //TODO MAKE A CONFIG OPTION
-				if (MathUtils.randInt(0, 256) >= 1){
+				if (MathUtils.randInt(1, 256) == 1){
 					if (event.harvester.canHarvestBlock(event.block)){
 						//Let's sort out a lucky charm for the player.
 						int FancyChance = MathUtils.randInt(1, 4);
