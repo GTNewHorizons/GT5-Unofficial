@@ -349,8 +349,11 @@ public final class ModItems {
 
 		//FLiBe Fuel Compounds
 		dustLi2BeF4 = ItemUtils.generateSpecialUseDusts("Li2BeF4", "Li2BeF4 Fuel Compound", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/FLiBe
-		FluidUtils.generateFluid("Li2BeF4", "Li2BeF4", 7430, new short[]{255, 255, 255, 100});
-		
+		FluidUtils.generateFluid("UraniumTetrafluoride", "Uranium Tetrafluoride", 4700, new short[]{17, 179, 42, 100});
+		FluidUtils.generateFluid("UraniumHexafluoride", "Uranium Hexafluoride", 5500, new short[]{9, 199, 32, 100});
+		FluidUtils.generateFluid("BerylliumFluoride", "Beryllium Fluoride", 3200, new short[]{175, 175, 175, 100});
+		FluidUtils.generateFluid("LithiumFluoride", "Lithium Fluoride", 2000, new short[]{235, 235, 235, 100});
+		FluidUtils.generateFluid("Li2BeF4", "Li2BeF4", 7430, new short[]{255, 255, 255, 100});		
 		
 		metaItem2 = new BaseEuItem();
 		metaItem2.registerItem(0, EnumChatFormatting.BLACK+"Test Item 0", 0, 0, "I am 0.");

@@ -253,9 +253,9 @@ public class RECIPES_GREGTECH {
 	private static void lftrRecipes(){
 		try {			
 			CORE.RA.addLFTRRecipe(
-					FluidUtils.getFluidStack("moltenUranium233", 200), //Fluid input (slot 1)
-					FluidUtils.getFluidStack("moltenLi2BeF4", 1000), //Fluid output (slot 2)
-					FluidUtils.getFluidStack("moltenUranium233", 500), //Output Array of Items - Upto 9,
+					FluidUtils.getFluidStack("uraniumtetrafluoride", 200), //Fluid input (slot 1)
+					FluidUtils.getFluidStack("molten.li2bef4", 1000), //Fluid output (slot 2)
+					FluidUtils.getFluidStack("molten.uranium233", 500), //Output Array of Items - Upto 9,
 					16000*20, //Time in ticks
 					8000); //EU	
 
