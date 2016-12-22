@@ -6,6 +6,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.entity.EntityUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.math.MathUtils;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class BaseItemComponent extends Item{
 	public final String materialName;
 	public final String unlocalName;
 	public final ComponentTypes componentType;
+	public final int componentColour;
 
 	public BaseItemComponent(Material material, ComponentTypes componentType) {
 		this.componentMaterial = material;
@@ -33,14 +35,32 @@ public class BaseItemComponent extends Item{
 		this.setUnlocalizedName(unlocalName);
 		this.setMaxStackSize(64);
 		this.setTextureName(CORE.MODID + ":" + "item"+componentType.COMPONENT_NAME);
+		this.componentColour = material.getRgbAsHex();
 		GameRegistry.registerItem(this, unlocalName);
 		GT_OreDictUnificator.registerOre(componentType.getOreDictName()+material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
+	}
+
+	//For Cell Generation
+	public BaseItemComponent(String unlocalName, String localName, short[] RGBA) {
+		this.componentMaterial = null;
+		this.unlocalName = "itemCell"+unlocalName;
+		this.materialName = localName;
+		this.componentType = ComponentTypes.CELL;
+		this.setCreativeTab(AddToCreativeTab.tabMisc);
+		this.setUnlocalizedName(unlocalName);
+		this.setMaxStackSize(64);
+		this.componentColour = MathUtils.getRgbAsHex(RGBA);
+		this.setTextureName(CORE.MODID + ":" + "item"+ComponentTypes.CELL.COMPONENT_NAME);
+		GameRegistry.registerItem(this, unlocalName);
+		GT_OreDictUnificator.registerOre(ComponentTypes.CELL.getOreDictName()+unlocalName, ItemUtils.getSimpleStack(this));
 	}
 
 	@Override
 	public String getItemStackDisplayName(ItemStack p_77653_1_) {
 
+		if (componentMaterial != null)
 		return (componentMaterial.getLocalizedName()+componentType.DISPLAY_NAME);
+		return materialName+" Cell";
 	}
 
 	public final String getMaterialName() {
@@ -51,7 +71,7 @@ public class BaseItemComponent extends Item{
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
 
-		if (materialName != null && materialName != "" && !materialName.equals("")){
+		if (materialName != null && materialName != "" && !materialName.equals("") && componentMaterial != null){
 
 
 			if (componentType == ComponentTypes.DUST){			
@@ -102,12 +122,14 @@ public class BaseItemComponent extends Item{
 
 	@Override
 	public int getColorFromItemStack(ItemStack stack, int HEX_OxFFFFFF) {
-		return componentMaterial.getRgbAsHex();
+		return componentColour;
 	}
 
 	@Override
 	public void onUpdate(ItemStack iStack, World world, Entity entityHolding, int p_77663_4_, boolean p_77663_5_) {
-		EntityUtils.applyRadiationDamageToEntity(componentMaterial.vRadioationLevel, world, entityHolding);
+		if (componentMaterial != null){
+			EntityUtils.applyRadiationDamageToEntity(componentMaterial.vRadioationLevel, world, entityHolding);
+		}
 	}
 
 
@@ -148,11 +170,11 @@ public class BaseItemComponent extends Item{
 		public String getName(){
 			return DISPLAY_NAME;
 		}
-		
+
 		public String getOreDictName(){
-		return OREDICT_NAME;
+			return OREDICT_NAME;
 		}
-		
+
 	}
 
 }

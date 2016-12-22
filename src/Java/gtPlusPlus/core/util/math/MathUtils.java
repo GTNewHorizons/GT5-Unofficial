@@ -258,6 +258,13 @@ public class MathUtils {
 	    return result;
 	}
 	
-	
+	final public static int getRgbAsHex(short[] RGBA){
+
+		int returnValue = Utils.rgbtoHexValue(RGBA[0], RGBA[1], RGBA[2]);
+		if (returnValue == 0){
+			return (int) 0;
+		}		
+		return Utils.rgbtoHexValue(RGBA[0], RGBA[1], RGBA[2]);
+	}
 
 }

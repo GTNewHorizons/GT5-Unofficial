@@ -3,10 +3,13 @@ package gtPlusPlus.core.util.fluid;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_LanguageManager;
 import gtPlusPlus.core.fluids.GenericFluid;
+import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.*;
 
@@ -335,5 +338,27 @@ public class FluidUtils {
 	public static ItemStack container(final ItemStack aStack, final boolean aCheckIFluidContainerItems, final int aStacksize) {
 		return amount(aStacksize, container(aStack, aCheckIFluidContainerItems));
 	}	
+	
+	public final static Fluid generateFluid(String unlocalizedName, String localizedName, int MeltingPoint, short[] RGBA){
+		if (FluidUtils.getFluidStack("molten"+localizedName, 1) == null){
+			Utils.LOG_WARNING("Generating our own fluid.");
+
+			//Generate a Cell if we need to
+			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+unlocalizedName, 1) == null){
+				@SuppressWarnings("unused")
+				Item temp = new BaseItemComponent(unlocalizedName, localizedName, RGBA);
+			}
+			return FluidUtils.addGTFluid(
+					unlocalizedName,
+					"Molten "+localizedName,		
+					RGBA,
+					4,
+					MeltingPoint,
+					ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+unlocalizedName, 1),
+					ItemList.Cell_Empty.get(1L, new Object[0]),
+					1000);
+		}
+		return null;
+	}
 
 }

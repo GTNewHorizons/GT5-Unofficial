@@ -30,6 +30,7 @@ public class RECIPES_GREGTECH {
 		chemicalReactorRecipes();
 		dehydratorRecipes();
 		blastFurnaceRecipes();
+		lftrRecipes();
 		addFuels();
 	}
 
@@ -247,6 +248,18 @@ public class RECIPES_GREGTECH {
 			}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 		}
 		
+	}
+	
+	private static void lftrRecipes(){
+		try {			
+			CORE.RA.addLFTRRecipe(
+					FluidUtils.getFluidStack("moltenUranium233", 200), //Fluid input (slot 1)
+					FluidUtils.getFluidStack("moltenLi2BeF4", 1000), //Fluid output (slot 2)
+					FluidUtils.getFluidStack("moltenUranium233", 500), //Output Array of Items - Upto 9,
+					16000*20, //Time in ticks
+					8000); //EU	
+
+		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 	}
 
 	private static void assemblerRecipes(){

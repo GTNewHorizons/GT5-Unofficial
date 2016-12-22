@@ -12,101 +12,108 @@ import net.minecraft.entity.Entity;
 
 public class FirepitModel extends ModelBase
 {
-  //fields
-    ModelRenderer Side_A;
-    ModelRenderer Side_B;
-    ModelRenderer Side_C;
-    ModelRenderer Side_D;
-    ModelRenderer Log1;
-    ModelRenderer Log2;
-    ModelRenderer Log3;
-    ModelRenderer Log4;
-  
-  public FirepitModel()
-  {
-    textureWidth = 16;
-    textureHeight = 16;
-    
-      Side_A = new ModelRenderer(this, 0, 0);
-      Side_A.addBox(0F, 0F, 0F, 12, 6, 1);
-      Side_A.setRotationPoint(-6F, 18F, -6F);
-      Side_A.setTextureSize(16, 16);
-      Side_A.mirror = true;
-      setRotation(Side_A, -0.3148822F, 0F, 0F);
-      Side_A.mirror = false;
-      Side_B = new ModelRenderer(this, 0, 0);
-      Side_B.addBox(0F, 0F, 0F, 12, 6, 1);
-      Side_B.setRotationPoint(-6F, 18F, 6F);
-      Side_B.setTextureSize(16, 16);
-      Side_B.mirror = true;
-      setRotation(Side_B, -0.3148822F, 1.570796F, 0F);
-      Side_C = new ModelRenderer(this, 0, 0);
-      Side_C.addBox(0F, 0F, 0F, 12, 6, 1);
-      Side_C.setRotationPoint(6F, 18F, 6F);
-      Side_C.setTextureSize(16, 16);
-      Side_C.mirror = true;
-      setRotation(Side_C, -0.3148822F, 3.141593F, 0F);
-      Side_C.mirror = false;
-      Side_D = new ModelRenderer(this, 0, 0);
-      Side_D.addBox(0F, 0F, 0F, 12, 6, 1);
-      Side_D.setRotationPoint(6F, 18F, -6F);
-      Side_D.setTextureSize(16, 16);
-      Side_D.mirror = true;
-      setRotation(Side_D, -0.3148822F, 4.712389F, 0F);
-      Log1 = new ModelRenderer(this, 0, 10);
-      Log1.addBox(0F, 0F, 0F, 14, 2, 2);
-      Log1.setRotationPoint(4F, 10F, -4F);
-      Log1.setTextureSize(16, 16);
-      Log1.mirror = true;
-      setRotation(Log1, 0F, 0F, 1.570796F);
-      Log2 = new ModelRenderer(this, -2, 10);
-      Log2.addBox(0F, 0F, 0F, 14, 2, 2);
-      Log2.setRotationPoint(-4F, 10F, -4F);
-      Log2.setTextureSize(16, 16);
-      Log2.mirror = true;
-      setRotation(Log2, 1.570796F, 0F, 1.570796F);
-      Log2.mirror = false;
-      Log3 = new ModelRenderer(this, 0, 10);
-      Log3.addBox(0F, 0F, 0F, 14, 2, 2);
-      Log3.setRotationPoint(-4F, 10F, 4F);
-      Log3.setTextureSize(16, 16);
-      Log3.mirror = true;
-      setRotation(Log3, 3.141593F, 0F, 1.570796F);
-      Log4 = new ModelRenderer(this, -2, 10);
-      Log4.addBox(0F, 0F, 0F, 14, 2, 2);
-      Log4.setRotationPoint(4F, 10F, 4F);
-      Log4.setTextureSize(16, 16);
-      Log4.mirror = true;
-      setRotation(Log4, 4.712389F, 0F, 1.570796F);
-      Log4.mirror = false;
-  }
-  
-  @Override
-public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
-  {
-    super.render(entity, f, f1, f2, f3, f4, f5);
-    setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-    Side_A.render(f5);
-    Side_B.render(f5);
-    Side_C.render(f5);
-    Side_D.render(f5);
-    Log1.render(f5);
-    Log2.render(f5);
-    Log3.render(f5);
-    Log4.render(f5);
-  }
-  
-  private void setRotation(ModelRenderer model, float x, float y, float z)
-  {
-    model.rotateAngleX = x;
-    model.rotateAngleY = y;
-    model.rotateAngleZ = z;
-  }
-  
-  @Override
-public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity)
-  {
-    super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-  }
+	//fields
+	ModelRenderer Side_A;
+	ModelRenderer Side_B;
+	ModelRenderer Side_C;
+	ModelRenderer Side_D;
+	ModelRenderer Log1;
+	ModelRenderer Log2;
+	ModelRenderer Log3;
+	ModelRenderer Log4;
+
+	public FirepitModel()
+	{
+		textureWidth = 16;
+		textureHeight = 16;
+
+		Side_A = new ModelRenderer(this, 0, 0);
+		Side_A.addBox(0F, 0F, 0F, 12, 6, 1);
+		Side_A.setRotationPoint(-6F, 18F, -6F);
+		Side_A.setTextureSize(16, 16);
+		Side_A.mirror = true;
+		setRotation(Side_A, -0.3148822F, 0F, 0F);
+		//Side_A.mirror = false;
+
+		Side_B = new ModelRenderer(this, 0, 0);
+		Side_B.addBox(0F, 0F, 0F, 12, 6, 1);
+		Side_B.setRotationPoint(-6F, 18F, 6F);
+		Side_B.setTextureSize(16, 16);
+		Side_B.mirror = true;
+		setRotation(Side_B, -0.3148822F, 1.570796F, 0F);
+
+		Side_C = new ModelRenderer(this, 0, 0);
+		Side_C.addBox(0F, 0F, 0F, 12, 6, 1);
+		Side_C.setRotationPoint(6F, 18F, 6F);
+		Side_C.setTextureSize(16, 16);
+		Side_C.mirror = true;
+		setRotation(Side_C, -0.3148822F, 3.141593F, 0F);
+		//Side_C.mirror = false;
+
+		Side_D = new ModelRenderer(this, 0, 0);
+		Side_D.addBox(0F, 0F, 0F, 12, 6, 1);
+		Side_D.setRotationPoint(6F, 18F, -6F);
+		Side_D.setTextureSize(16, 16);
+		Side_D.mirror = true;
+		setRotation(Side_D, -0.3148822F, 4.712389F, 0F);
+
+		Log1 = new ModelRenderer(this, 0, 10);
+		Log1.addBox(0F, 0F, 0F, 14, 2, 2);
+		Log1.setRotationPoint(4F, 10F, -4F);
+		Log1.setTextureSize(16, 16);
+		Log1.mirror = true;
+		setRotation(Log1, 0F, 0F, 1.570796F);
+
+		Log2 = new ModelRenderer(this, -2, 10);
+		Log2.addBox(0F, 0F, 0F, 14, 2, 2);
+		Log2.setRotationPoint(-4F, 10F, -4F);
+		Log2.setTextureSize(16, 16);
+		Log2.mirror = true;
+		setRotation(Log2, 1.570796F, 0F, 1.570796F);
+		//Log2.mirror = false;
+
+		Log3 = new ModelRenderer(this, 0, 10);
+		Log3.addBox(0F, 0F, 0F, 14, 2, 2);
+		Log3.setRotationPoint(-4F, 10F, 4F);
+		Log3.setTextureSize(16, 16);
+		Log3.mirror = true;
+		setRotation(Log3, 3.141593F, 0F, 1.570796F);
+
+		Log4 = new ModelRenderer(this, -2, 10);
+		Log4.addBox(0F, 0F, 0F, 14, 2, 2);
+		Log4.setRotationPoint(4F, 10F, 4F);
+		Log4.setTextureSize(16, 16);
+		Log4.mirror = true;
+		setRotation(Log4, 4.712389F, 0F, 1.570796F);
+		//Log4.mirror = false;
+	}
+
+	@Override
+	public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
+	{
+		super.render(entity, f, f1, f2, f3, f4, f5);
+		setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+		Side_A.render(f5);
+		Side_B.render(f5);
+		Side_C.render(f5);
+		Side_D.render(f5);
+		Log1.render(f5);
+		Log2.render(f5);
+		Log3.render(f5);
+		Log4.render(f5);
+	}
+
+	private void setRotation(ModelRenderer model, float x, float y, float z)
+	{
+		model.rotateAngleX = x;
+		model.rotateAngleY = y;
+		model.rotateAngleZ = z;
+	}
+
+	@Override
+	public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity)
+	{
+		super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+	}
 
 }

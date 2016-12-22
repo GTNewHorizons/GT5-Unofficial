@@ -280,4 +280,27 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		return true;
 	}
 
+	
+
+	@Override
+	public boolean addLFTRRecipe(ItemStack aInput1, FluidStack aInput2,
+			ItemStack aOutput1, FluidStack aOutput2, int aDuration, int aEUt) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
+	public boolean addLFTRRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, int aDuration, int aEUt) {
+        return false;
+    }
+
+    @Override
+    public boolean addLFTRRecipe(FluidStack aInput1, FluidStack aInput2, FluidStack aOutput1, int aDuration, int aEUt) {
+        if (aInput1 == null || aInput2 == null || aOutput1 == null || aDuration < 1 || aEUt < 1) {
+            return false;
+        }
+        Recipe_GT.Gregtech_Recipe_Map.sLiquidFluorineThoriumReactorRecipes.addRecipe(null, new FluidStack[]{aInput1, aInput2}, new FluidStack[]{aOutput1}, aDuration, aEUt, 16000);
+        return true;
+    }
+
 }
