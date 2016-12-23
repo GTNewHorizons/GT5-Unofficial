@@ -246,6 +246,26 @@ public class RECIPES_GREGTECH {
 						1000); //EU	
 
 			}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+			
+			//Zirconium Chloride -> TetraFluoride
+			try {
+				
+				CORE.RA.addDehydratorRecipe(
+						new ItemStack[]{
+								ItemUtils.getItemStackOfAmountFromOreDict("dustCookedZrCl4", 9),
+								ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 36)
+						}, //Item input (Array, up to 2)
+						FluidUtils.getFluidStack("hydrofluoricacid", 9*144), //Fluid input (slot 1)
+						null, //Fluid output (slot 2)
+						new ItemStack[]{
+							ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenChloride", 36),
+							ItemUtils.getItemStackOfAmountFromOreDict("dustZrF4", 9)
+						}, //Output Array of Items - Upto 9,
+						new int[]{0},
+						120*20, //Time in ticks
+						500); //EU	
+
+			}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 		}
 		
 	}
@@ -257,7 +277,7 @@ public class RECIPES_GREGTECH {
 					FluidUtils.getFluidStack("molten.li2bef4", 1000), //Fluid output (slot 2)
 					FluidUtils.getFluidStack("molten.uranium233", 500), //Output Array of Items - Upto 9,
 					16000*20, //Time in ticks
-					8000); //EU	
+					4000); //EU	
 
 		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 	}

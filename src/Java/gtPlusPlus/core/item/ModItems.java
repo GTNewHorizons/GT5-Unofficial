@@ -159,9 +159,18 @@ public final class ModItems {
 	public static Item shardTerra;
 	public static Item shardAqua;
 
+	//Tc Compat for energy crystal recipes
 	public static BaseItemTCShard shardDull;
-	
+
+	//Lighter
 	public static Item itemBasicFireMaker;
+
+	//Zirconium
+	public static Item itemZirconiumChlorideCinterPellet;
+	public static Item dustZrCl4;
+	public static Item dustCookedZrCl4;
+	public static Item dustZrF4;
+
 
 
 	//@SuppressWarnings("unused")
@@ -354,7 +363,19 @@ public final class ModItems {
 		FluidUtils.generateFluid("BerylliumFluoride", "Beryllium Fluoride", 3200, new short[]{175, 175, 175, 100});
 		FluidUtils.generateFluid("LithiumFluoride", "Lithium Fluoride", 2000, new short[]{235, 235, 235, 100});
 		FluidUtils.generateFluid("Li2BeF4", "Li2BeF4", 7430, new short[]{255, 255, 255, 100});		
+
+		//Zirconium
+		//Cinter Pellet.
+		itemZirconiumChlorideCinterPellet = new CoreItem("itemZirconiumPellet", tabMisc).setTextureName(CORE.MODID + ":itemShard");
+		GT_OreDictUnificator.registerOre("pelletZirconium", new ItemStack(itemZirconiumChlorideCinterPellet));
+		//Zirconium Chloride
+		dustZrCl4 = ItemUtils.generateSpecialUseDusts("ZrCl4", "ZrCl4 Dust", Utils.rgbtoHexValue(180, 180, 180))[0]; //http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
+		dustCookedZrCl4 = ItemUtils.generateSpecialUseDusts("CookedZrCl4", "Cooked ZrCl4 Compound", Utils.rgbtoHexValue(180, 180, 180))[0]; //http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
+		//Zirconium Tetrafluoride
+		dustZrF4 = ItemUtils.generateSpecialUseDusts("ZrF4", "ZrF4 Dust", Utils.rgbtoHexValue(170, 170, 170))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
 		
+		
+		//Test items
 		metaItem2 = new BaseEuItem();
 		metaItem2.registerItem(0, EnumChatFormatting.BLACK+"Test Item 0", 0, 0, "I am 0.");
 		metaItem2.registerItem(1, EnumChatFormatting.GREEN+"Test Item 1", 1006346000, 1, "I Hold EU 1.", 500);
@@ -364,15 +385,15 @@ public final class ModItems {
 		metaItem2.registerItem(5, "Whirlygig 2", 2124867000, (short) 7, "Spin me right round.", EnumRarity.uncommon, EnumChatFormatting.RED, true);
 
 		boolean gtStyleTools = LoadedMods.Gregtech;
-		
+
 		if (CORE.configSwitches.enableMultiSizeTools){
-		Materials[] rm = Materials.values();
-		for (Materials m : rm){
-			MP_GTMATERIAL = ItemUtils.generateMultiPick(gtStyleTools, m);
-			MS_GTMATERIAL = ItemUtils.generateMultiShovel(gtStyleTools, m);
-			/*itemBaseDecidust = UtilsItems.generateDecidust(m);
+			Materials[] rm = Materials.values();
+			for (Materials m : rm){
+				MP_GTMATERIAL = ItemUtils.generateMultiPick(gtStyleTools, m);
+				MS_GTMATERIAL = ItemUtils.generateMultiShovel(gtStyleTools, m);
+				/*itemBaseDecidust = UtilsItems.generateDecidust(m);
 			itemBaseCentidust = UtilsItems.generateCentidust(m);*/
-		}
+			}
 		}
 
 		//EnderIO Resources
@@ -405,7 +426,7 @@ public final class ModItems {
 		else {
 			Utils.LOG_WARNING("EnderIO not Found - Skipping Resources.");
 		}
-		
+
 		//Big Reactors
 		if (LoadedMods.Big_Reactors|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("BigReactors Found - Loading Resources.");
@@ -418,7 +439,7 @@ public final class ModItems {
 		else {
 			Utils.LOG_WARNING("BigReactors not Found - Skipping Resources.");
 		}
-		
+
 		//Thaumcraft
 		if (LoadedMods.Thaumcraft|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("Thaumcraft Found - Loading Resources.");
@@ -436,7 +457,7 @@ public final class ModItems {
 		else {
 			Utils.LOG_WARNING("Thaumcraft not Found - Skipping Resources.");
 		}
-		
+
 		//ExtraUtils
 		if (LoadedMods.Extra_Utils|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("ExtraUtilities Found - Loading Resources.");
@@ -449,7 +470,7 @@ public final class ModItems {
 		else {
 			Utils.LOG_WARNING("ExtraUtilities not Found - Skipping Resources.");
 		}
-		
+
 		//Pneumaticraft
 		if (LoadedMods.PneumaticCraft|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("PneumaticCraft Found - Loading Resources.");
@@ -459,7 +480,7 @@ public final class ModItems {
 		else {
 			Utils.LOG_WARNING("PneumaticCraft not Found - Skipping Resources.");
 		}
-		
+
 		//Simply Jetpacks
 		if (LoadedMods.Simply_Jetpacks|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("SimplyJetpacks Found - Loading Resources.");
@@ -471,7 +492,7 @@ public final class ModItems {
 		else {
 			Utils.LOG_WARNING("SimplyJetpacks not Found - Skipping Resources.");
 		}
-		
+
 		//rfTools
 		if (LoadedMods.RFTools|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("rfTools Found - Loading Resources.");
@@ -481,7 +502,7 @@ public final class ModItems {
 		else {
 			Utils.LOG_WARNING("rfTools not Found - Skipping Resources.");
 		}
-		
+
 		//IC2 Exp
 		if (LoadedMods.IndustrialCraft2|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("IndustrialCraft2 Found - Loading Resources.");

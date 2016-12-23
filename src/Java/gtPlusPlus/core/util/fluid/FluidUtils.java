@@ -35,6 +35,16 @@ public class FluidUtils {
 			return null;
 		}
 	}
+	
+	public static FluidStack getFluidStack(Fluid vFluid, int fluidAmount) {
+		Utils.LOG_WARNING("Trying to get a fluid stack of "+vFluid.getName());
+		try {
+			return FluidRegistry.getFluidStack(vFluid.getName(), fluidAmount).copy();
+		} 
+		catch (Throwable e){
+			return null;
+		}
+	}
 
 	public static FluidStack[] getFluidStackArray(String fluidName, int amount){
 		Utils.LOG_WARNING("Trying to get a fluid stack of "+fluidName);
@@ -340,7 +350,7 @@ public class FluidUtils {
 	}	
 	
 	public final static Fluid generateFluid(String unlocalizedName, String localizedName, int MeltingPoint, short[] RGBA){
-		if (FluidUtils.getFluidStack("molten"+localizedName, 1) == null){
+		if (FluidUtils.getFluidStack("molten"+localizedName, 1) == null && ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dust"+Utils.sanitizeString(localizedName), 1) != null){
 			Utils.LOG_WARNING("Generating our own fluid.");
 
 			//Generate a Cell if we need to
@@ -348,7 +358,8 @@ public class FluidUtils {
 				@SuppressWarnings("unused")
 				Item temp = new BaseItemComponent(unlocalizedName, localizedName, RGBA);
 			}
-			return FluidUtils.addGTFluid(
+			
+			Fluid gtFluid = FluidUtils.addGTFluid(
 					unlocalizedName,
 					"Molten "+localizedName,		
 					RGBA,
@@ -357,6 +368,16 @@ public class FluidUtils {
 					ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+unlocalizedName, 1),
 					ItemList.Cell_Empty.get(1L, new Object[0]),
 					1000);
+			
+			GT_Values.RA.addFluidExtractionRecipe(
+					ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dust"+Utils.sanitizeString(localizedName), 1), //Input
+					null, //Input 2
+					FluidUtils.getFluidStack(gtFluid, 144), //Fluid Output
+					0, //Chance
+					1*20, //Duration
+					16 //Eu Tick
+					);
+			return gtFluid;
 		}
 		return null;
 	}
