@@ -273,7 +273,25 @@ public class RECIPES_GREGTECH {
 	}
 	
 	private static void lftrRecipes(){
-		try {			
+		try {		
+			//Fli2BeF4 + Uranium233 TetraFluoride = Uranium233
+			/*CORE.RA.addLFTRRecipe(
+					FluidUtils.getFluidStack("uraniumtetrafluoride", 200), //Fluid input (slot 1)
+					FluidUtils.getFluidStack("molten.li2bef4", 1000), //Fluid output (slot 2)
+					FluidUtils.getFluidStack("molten.uranium233", 500), //Output Array of Items - Upto 9,
+					16000*20, //Time in ticks
+					4000); //EU	*/
+			
+			
+			//Fli2BeF4 + Uranium235 = 1x Uranium233
+			CORE.RA.addLFTRRecipe(
+					FluidUtils.getFluidStack("molten.uranium", 144*64), //Fluid input (slot 1)
+					FluidUtils.getFluidStack("molten.li2bef4", 144*12), //Fluid output (slot 2)
+					FluidUtils.getFluidStack("molten.uranium233", 144), //Output Array of Items - Upto 9,
+					120*60*20, //Time in ticks
+					8000); //EU	
+			
+			//Fli2BeF4 + Uranium233 TetraFluoride = Uranium233
 			CORE.RA.addLFTRRecipe(
 					FluidUtils.getFluidStack("uraniumtetrafluoride", 200), //Fluid input (slot 1)
 					FluidUtils.getFluidStack("molten.li2bef4", 1000), //Fluid output (slot 2)

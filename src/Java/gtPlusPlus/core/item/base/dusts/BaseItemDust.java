@@ -8,6 +8,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.entity.EntityUtils;
+import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 
@@ -74,6 +75,15 @@ public class BaseItemDust extends Item{
 		}
 		addFurnaceRecipe();
 		addMacerationRecipe();
+		
+		GT_Values.RA.addFluidExtractionRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dust"+Utils.sanitizeString(materialName), 1), //Input
+				null, //Input 2
+				FluidUtils.getFluidStack("molten."+Utils.sanitizeString(materialName), 144), //Fluid Output
+				0, //Chance
+				1*20, //Duration
+				16 //Eu Tick
+				);
 	}
 
 	@Override
