@@ -31,6 +31,8 @@ public class RECIPES_GREGTECH {
 		dehydratorRecipes();
 		blastFurnaceRecipes();
 		lftrRecipes();
+		autoclaveRecipes();
+		macerationRecipes();
 		addFuels();
 	}
 
@@ -317,11 +319,11 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void chemicalBathRecipes(){
-		int[] chances = {10000, 5000, 2500};
+		int[] chances = {};
 		GT_Values.RA.addChemicalBathRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 12), FluidUtils.getFluidStack("chlorine", 2400),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1), 
+				ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 3),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 3),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 3), 
 				chances,
 				30*20,
 				240);
@@ -367,6 +369,31 @@ public class RECIPES_GREGTECH {
 				60*20,
 				2000, 
 				3000);
+		GT_Values.RA.addBlastRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("dustZrCl4", 1),
+				null,
+				GT_Values.NF, GT_Values.NF,
+				ItemUtils.getItemStackOfAmountFromOreDict("dustCookedZrCl4", 1),
+				null,
+				60*20,
+				340, 
+				300);
+	}
+	
+	private static void autoclaveRecipes(){
+		GT_Values.RA.addAutoclaveRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 9),
+				FluidUtils.getFluidStack("chlorine", 9*4*144),
+				ItemUtils.getItemStackOfAmountFromOreDict("pelletZirconium", 9),
+				0,
+				120*20,
+				30);
+	}
+	
+	private static void macerationRecipes(){
+		GT_ModHandler.addPulverisationRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("pelletZirconium", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustZrCl4", 1));
 	}
 
 

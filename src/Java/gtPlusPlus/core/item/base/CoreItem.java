@@ -21,6 +21,7 @@ public class CoreItem extends Item
 	private final EnumRarity rarity;
 	private final EnumChatFormatting descColour;
 	private final String itemDescription;
+	private String itemName;
 	private final boolean hasEffect;
 
 	//Replace Item - What does this item turn into when held.
@@ -33,6 +34,16 @@ public class CoreItem extends Item
 	public CoreItem(String unlocalizedName, CreativeTabs creativeTab)
 	{
 		this(unlocalizedName, creativeTab, 64, 0); //Calls 3
+	}
+
+	//0
+	/*
+	 * Name, Tab - 64 Stack, 0 Dmg
+	 */
+	public CoreItem(String unlocalizedName, String displayName, CreativeTabs creativeTab)
+	{
+		this(unlocalizedName, creativeTab, 64, 0); //Calls 3
+		itemName = displayName;
 	}
 
 	//0.1
@@ -154,5 +165,12 @@ public class CoreItem extends Item
 				}
 			}
 		}
+	}
+
+	@Override
+	public String getItemStackDisplayName(ItemStack tItem) {
+		if (itemName == null || itemName.equals("") || itemName == "")
+		return super.getItemStackDisplayName(tItem);
+		return itemName;
 	}
 }

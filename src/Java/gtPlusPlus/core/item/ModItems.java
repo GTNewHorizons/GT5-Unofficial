@@ -366,13 +366,13 @@ public final class ModItems {
 
 		//Zirconium
 		//Cinter Pellet.
-		itemZirconiumChlorideCinterPellet = new CoreItem("itemZirconiumPellet", tabMisc).setTextureName(CORE.MODID + ":itemShard");
+		itemZirconiumChlorideCinterPellet = new CoreItem("itemZirconiumPellet", "Zirconium Pellet", tabMisc).setTextureName(CORE.MODID + ":itemShard");
 		GT_OreDictUnificator.registerOre("pelletZirconium", new ItemStack(itemZirconiumChlorideCinterPellet));
 		//Zirconium Chloride
-		dustZrCl4 = ItemUtils.generateSpecialUseDusts("ZrCl4", "ZrCl4 Dust", Utils.rgbtoHexValue(180, 180, 180))[0]; //http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
-		dustCookedZrCl4 = ItemUtils.generateSpecialUseDusts("CookedZrCl4", "Cooked ZrCl4 Compound", Utils.rgbtoHexValue(180, 180, 180))[0]; //http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
+		dustZrCl4 = ItemUtils.generateSpecialUseDusts("ZrCl4", "ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; //http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
+		dustCookedZrCl4 = ItemUtils.generateSpecialUseDusts("CookedZrCl4", "Cooked ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; //http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
 		//Zirconium Tetrafluoride
-		dustZrF4 = ItemUtils.generateSpecialUseDusts("ZrF4", "ZrF4 Dust", Utils.rgbtoHexValue(170, 170, 170))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
+		dustZrF4 = ItemUtils.generateSpecialUseDusts("ZrF4", "ZrF4", Utils.rgbtoHexValue(170, 170, 170))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
 		
 		
 		//Test items
