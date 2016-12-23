@@ -200,20 +200,32 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 		}
 		if (this.mEnergyHatches != null) {
 			for (int i = 0; i < this.mEnergyHatches.size(); i++) {
-				if (this.mEnergyHatches.get(i).mTier < 6)
+				if (this.mEnergyHatches.get(i).mTier < 5){
+					Utils.LOG_INFO("You require at LEAST V tier Energy Hatches.");
+					Utils.LOG_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
 					return false;
+				}
 			}
 		}
 		if (this.mOutputHatches != null) {
 			for (int i = 0; i < this.mOutputHatches.size(); i++) {
-				if (this.mOutputHatches.get(i).mTier < 6)
+					
+				if (this.mOutputHatches.get(i).mTier < 5 && (this.mOutputHatches.get(i).getBaseMetaTileEntity() instanceof GregtechMTE_NuclearReactor)){
+					Utils.LOG_INFO("You require at LEAST V tier Output Hatches.");
+					Utils.LOG_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
+					Utils.LOG_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getInventoryName());
 					return false;
+				}
 			}
 		}
 		if (this.mInputHatches != null) {
 			for (int i = 0; i < this.mInputHatches.size(); i++) {
-				if (this.mInputHatches.get(i).mTier < 6)
+				if (this.mInputHatches.get(i).mTier < 5){
+					Utils.LOG_INFO("You require at LEAST V tier Input Hatches.");
+					Utils.LOG_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
+					Utils.LOG_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getInventoryName());
 					return false;
+				}
 			}
 		}
 		mWrench = true;
@@ -266,19 +278,34 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 	}
 
 	public boolean turnCasingActive(boolean status) {
-		if (this.mEnergyHatches != null) {
-			for (GT_MetaTileEntity_Hatch_Energy hatch : this.mEnergyHatches) {
-				hatch.mMachineBlock = status ? (byte) 52 : (byte) 53;
+		if (this.mDynamoHatches != null) {
+			for (GT_MetaTileEntity_Hatch_Dynamo hatch : this.mDynamoHatches) {
+				hatch.mMachineBlock = status ? (byte) 70 : (byte) 71;
+			}
+		}
+		if (this.mMufflerHatches != null) {
+			for (GT_MetaTileEntity_Hatch_Muffler hatch : this.mMufflerHatches) {
+				hatch.mMachineBlock = status ? (byte) 70 : (byte) 71;
 			}
 		}
 		if (this.mOutputHatches != null) {
 			for (GT_MetaTileEntity_Hatch_Output hatch : this.mOutputHatches) {
-				hatch.mMachineBlock = status ? (byte) 52 : (byte) 53;
+				hatch.mMachineBlock = status ? (byte) 70 : (byte) 71;
 			}
 		}
 		if (this.mInputHatches != null) {
 			for (GT_MetaTileEntity_Hatch_Input hatch : this.mInputHatches) {
-				hatch.mMachineBlock = status ? (byte) 52 : (byte) 53;
+				hatch.mMachineBlock = status ? (byte) 70 : (byte) 71;
+			}
+		}
+		if (this.mOutputBusses != null) {
+			for (GT_MetaTileEntity_Hatch_OutputBus hatch : this.mOutputBusses) {
+				hatch.mMachineBlock = status ? (byte) 70 : (byte) 71;
+			}
+		}
+		if (this.mInputBusses != null) {
+			for (GT_MetaTileEntity_Hatch_InputBus hatch : this.mInputBusses) {
+				hatch.mMachineBlock = status ? (byte) 70 : (byte) 71;
 			}
 		}
 		return true;

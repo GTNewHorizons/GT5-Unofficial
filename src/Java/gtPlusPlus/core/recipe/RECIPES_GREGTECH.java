@@ -12,6 +12,7 @@ import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 public class RECIPES_GREGTECH {
 
@@ -32,6 +33,7 @@ public class RECIPES_GREGTECH {
 		blastFurnaceRecipes();
 		lftrRecipes();
 		autoclaveRecipes();
+		mixerRecipes();
 		macerationRecipes();
 		addFuels();
 	}
@@ -312,6 +314,44 @@ public class RECIPES_GREGTECH {
 		Utils.LOG_INFO("Registering Distillery/Distillation Tower Recipes.");
 		GT_Values.RA.addDistilleryRecipe(ItemList.Circuit_Integrated.getWithDamage(0L, 4L, new Object[0]), FluidUtils.getFluidStack("air", 1000), FluidUtils.getFluidStack("helium", 1), 400, 30, false);
 		GT_Values.RA.addDistillationTowerRecipe(FluidUtils.getFluidStack("air", 20000), FluidUtils.getFluidStackArray("helium", 25), ItemUtils.getSimpleStack(ModItems.itemHeliumBlob, 1), 200, 60);
+	
+		//Apatite Distillation
+		/*
+		 * so if you dissolve aparite in sulphuric acid
+		 * you'll get a mixture of SO2, H2O, HF and HCl
+		 */
+		FluidStack[] apatiteOutput = {
+				FluidUtils.getFluidStack("sulfurousacid", 3800),
+				FluidUtils.getFluidStack("hydrogenchloride", 1000),
+				FluidUtils.getFluidStack("hydrofluoricacid", 400)
+		};
+		GT_Values.RA.addDistillationTowerRecipe(
+				FluidUtils.getFluidStack("sulfuricapatite", 5200),
+				apatiteOutput,
+				null,
+				45*20,
+				256);
+
+		FluidStack[] sulfurousacidOutput = {
+				FluidUtils.getFluidStack("sulfurdioxide", 500),
+				FluidUtils.getFluidStack("water", 500)
+		};
+		GT_Values.RA.addDistillationTowerRecipe(
+				FluidUtils.getFluidStack("sulfurousacid", 1000),
+				sulfurousacidOutput,
+				null,
+				10*20,
+				60);
+
+		FluidStack[] sulfurdioxideOutput = {
+				FluidUtils.getFluidStack("oxygen", 144*2)
+		};
+		GT_Values.RA.addDistillationTowerRecipe(
+				FluidUtils.getFluidStack("sulfurdioxide", 144*3),
+				sulfurdioxideOutput,
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 1),
+				5*20,
+				30);
 	}
 
 	private static void addFuels(){
@@ -355,6 +395,14 @@ public class RECIPES_GREGTECH {
 				new int[]{},
 				90*20,
 				500);
+		
+		
+	}
+	
+	private static void mixerRecipes(){
+		GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 1), null, null, null, FluidUtils.getFluidStack("oxygen", 288), FluidUtils.getFluidStack("sulfurdioxide", 432), null, 600, 60);
+		GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustUranium233", 2), ItemUtils.getItemStackOfAmountFromOreDict("dustUranium233", 1), null, null, FluidUtils.getFluidStack("hydrofluoricacid", 2000), FluidUtils.getFluidStack("uraniumtetrafluoride", 144*3), null, 3000, 500);
+		GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("cellFluorine", 1), ItemUtils.getItemStackOfAmountFromOreDict("cellFluorine", 1), null, null, FluidUtils.getFluidStack("uraniumtetrafluoride", 720), FluidUtils.getFluidStack("uraniumhexafluoride", 288), null, 5000, 2000);
 	}
 	
 	private static void chemicalReactorRecipes(){
@@ -375,6 +423,30 @@ public class RECIPES_GREGTECH {
 				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 5), //Output Stack
 				600*20
 				);	
+		
+		GT_Values.RA.addChemicalRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("dustApatite", 16),
+				null,
+				FluidUtils.getFluidStack("sulfuricacid", 144*32), 
+				FluidUtils.getFluidStack("sulfuricapatite", 144*4),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallSulfur", 1), 
+				20*20);
+		
+		/*GT_Values.RA.addChemicalRecipe(
+				UtilsItems.getItemStackOfAmountFromOreDict("dustLithium", 8),
+				null,
+				FluidUtils.getFluidStack("sulfuricacid", 133*32), 
+				FluidUtils.getFluidStack("sulfuriclithium", 133*4),
+				UtilsItems.getItemStackOfAmountFromOreDict("dustSmallLithium", 2), 
+				20*20);*/
+		
+		GT_Values.RA.addChemicalRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustLithium", 16),
+				FluidUtils.getFluidStack("water", 1000), 
+				FluidUtils.getFluidStack("lithiumhydroxide", 144*4),
+				null, 
+				300*20);
 	}
 	
 	private static void blastFurnaceRecipes(){

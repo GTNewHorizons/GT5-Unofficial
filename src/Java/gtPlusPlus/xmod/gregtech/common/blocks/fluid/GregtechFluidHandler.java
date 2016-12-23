@@ -1,13 +1,13 @@
 package gtPlusPlus.xmod.gregtech.common.blocks.fluid;
 
-import gregtech.api.enums.*;
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechFluidHandler {
 
@@ -96,88 +96,6 @@ public class GregtechFluidHandler {
 			Meta_GT_Proxy.addFluid("sulfuricApatite", "Sulfuric Apatite", GT_Materials.SulfuricApatite, 4, 500, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfuricApatite, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
 			generateIC2FluidCell("SulfuricApatite");*/
 
-			
-			//Chemical Bath Recipes
-			GT_Values.RA.addChemicalRecipe(
-					ItemUtils.getItemStackOfAmountFromOreDict("dustApatite", 16),
-					null,
-					FluidUtils.getFluidStack("sulfuricacid", 144*32), 
-					FluidUtils.getFluidStack("sulfuricapatite", 144*4),
-					ItemUtils.getItemStackOfAmountFromOreDict("dustSmallSulfur", 1), 
-					20*20);
-			
-			/*GT_Values.RA.addChemicalRecipe(
-					UtilsItems.getItemStackOfAmountFromOreDict("dustLithium", 8),
-					null,
-					FluidUtils.getFluidStack("sulfuricacid", 133*32), 
-					FluidUtils.getFluidStack("sulfuriclithium", 133*4),
-					UtilsItems.getItemStackOfAmountFromOreDict("dustSmallLithium", 2), 
-					20*20);*/
-			
-			GT_Values.RA.addChemicalRecipe(
-					ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 1),
-					ItemUtils.getItemStackOfAmountFromOreDict("dustLithium", 16),
-					FluidUtils.getFluidStack("water", 1000), 
-					FluidUtils.getFluidStack("lithiumhydroxide", 144*4),
-					null, 
-					300*20);
-
-			
-			
-			
-			
-			
-			
-			
-			//Mixer Recipes
-			GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 1), null, null, null, FluidUtils.getFluidStack("oxygen", 288), FluidUtils.getFluidStack("sulfurdioxide", 432), null, 600, 60);
-			GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustUranium233", 2), ItemUtils.getItemStackOfAmountFromOreDict("dustUranium233", 1), null, null, FluidUtils.getFluidStack("hydrofluoricacid", 2000), FluidUtils.getFluidStack("uraniumtetrafluoride", 144*3), null, 3000, 500);
-			GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("cellFluorine", 1), ItemUtils.getItemStackOfAmountFromOreDict("cellFluorine", 1), null, null, FluidUtils.getFluidStack("uraniumtetrafluoride", 720), FluidUtils.getFluidStack("uraniumhexafluoride", 288), null, 5000, 2000);
-
-			
-			
-			
-			
-			
-			
-			//Apatite Distillation
-			/*
-			 * so if you dissolve aparite in sulphuric acid
-			 * you'll get a mixture of SO2, H2O, HF and HCl
-			 */
-
-			FluidStack[] apatiteOutput = {
-					FluidUtils.getFluidStack("sulfurousacid", 3800),
-					FluidUtils.getFluidStack("hydrogenchloride", 1000),
-					FluidUtils.getFluidStack("hydrofluoricacid", 400)
-			};
-			GT_Values.RA.addDistillationTowerRecipe(
-					FluidUtils.getFluidStack("sulfuricapatite", 5200),
-					apatiteOutput,
-					null,
-					45*20,
-					256);
-
-			FluidStack[] sulfurousacidOutput = {
-					FluidUtils.getFluidStack("sulfurdioxide", 500),
-					FluidUtils.getFluidStack("water", 500)
-			};
-			GT_Values.RA.addDistillationTowerRecipe(
-					FluidUtils.getFluidStack("sulfurousacid", 1000),
-					sulfurousacidOutput,
-					null,
-					10*20,
-					60);
-
-			FluidStack[] sulfurdioxideOutput = {
-					FluidUtils.getFluidStack("oxygen", 144*2)
-			};
-			GT_Values.RA.addDistillationTowerRecipe(
-					FluidUtils.getFluidStack("sulfurdioxide", 144*3),
-					sulfurdioxideOutput,
-					ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 1),
-					5*20,
-					30);
 
 		}
 	}
