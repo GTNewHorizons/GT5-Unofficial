@@ -136,6 +136,7 @@ public final class ModItems {
 	public static Item dustLithiumPeroxide;
 	public static Item dustLithiumFluoride;
 
+	public static Item dustUranium232;
 	public static Item dustUraniumTetraFluoride;
 	public static Item dustUraniumHexaFluoride;
 
@@ -236,8 +237,16 @@ public final class ModItems {
 
 			//Elements generate first so they can be used in compounds.
 
+			//Lithium-7 is used as a part of the molten lithium fluoride in molten salt reactors: liquid-fluoride nuclear reactors. 
+			//The large neutron-absorption cross-section of lithium-6 (about 940 barns[5]) as compared with the very small 
+			//neutron cross-section of lithium-7 (about 45 millibarns) makes high separation of lithium-7 from natural lithium a 
+			//strong requirement for the possible use in lithium fluoride reactors.
+			MaterialGenerator.generate(ELEMENT.getInstance().LITHIUM7);
+			//Production of 233U (through the neutron irradiation of 232Th) invariably produces small amounts of 232U as an impurity
+			//because of parasitic (n,2n) reactions on uranium-233 itself, or on protactinium-233, or on thorium-232:
+			MaterialGenerator.generate(ELEMENT.getInstance().URANIUM232);
 			//Uranium-233 is a fissile isotope of uranium that is bred from thorium-232 as part of the thorium fuel cycle.
-			MaterialGenerator.generate(ELEMENT.getInstance().URANIUM233);
+			MaterialGenerator.generate(ELEMENT.getInstance().URANIUM233);			
 			//Zirconium - Because Greg himself never added it.
 			MaterialGenerator.generate(ELEMENT.getInstance().ZIRCONIUM);
 
