@@ -23,7 +23,10 @@ public class RecipeUtils {
 	public static boolean recipeBuilder(Object slot_1, Object slot_2, Object slot_3, Object slot_4, Object slot_5, Object slot_6, Object slot_7, Object slot_8, Object slot_9, ItemStack resultItem){	
 
 		ArrayList<Object> validSlots = new ArrayList<Object>();
-
+		if (resultItem == null){
+			return false;
+		}
+		
 		Utils.LOG_INFO("Trying to add a recipe for "+resultItem.toString());
 		String a,b,c,d,e,f,g,h,i;
 		if (slot_1 == null){ a = " ";} else { a = "1";validSlots.add('1');validSlots.add(slot_1);}

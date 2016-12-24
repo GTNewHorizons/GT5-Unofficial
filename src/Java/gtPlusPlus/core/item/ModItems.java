@@ -241,7 +241,7 @@ public final class ModItems {
 			//The large neutron-absorption cross-section of lithium-6 (about 940 barns[5]) as compared with the very small 
 			//neutron cross-section of lithium-7 (about 45 millibarns) makes high separation of lithium-7 from natural lithium a 
 			//strong requirement for the possible use in lithium fluoride reactors.
-			MaterialGenerator.generate(ELEMENT.getInstance().LITHIUM7);
+			MaterialGenerator.generate(ELEMENT.getInstance().LITHIUM7, false);
 			//Production of 233U (through the neutron irradiation of 232Th) invariably produces small amounts of 232U as an impurity
 			//because of parasitic (n,2n) reactions on uranium-233 itself, or on protactinium-233, or on thorium-232:
 			MaterialGenerator.generate(ELEMENT.getInstance().URANIUM232);
