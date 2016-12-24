@@ -27,7 +27,7 @@ public class DetravToolSmartPlunger
     }
 
     public float getMaxDurabilityMultiplier() {
-        return 0.25F;
+        return 0.50F;
     }
 
     public String getCraftingSound() {
@@ -60,7 +60,7 @@ public class DetravToolSmartPlunger
     }
 
     public void onStatsAddedToTool(GT_MetaGenerated_Tool aItem, int aID) {
-        aItem.addItemBehavior(aID, new BehaviourDetravToolSmartPlunger(getToolDamagePerDropConversion()));
+        aItem.addItemBehavior(aID, new BehaviourDetravToolSmartPlunger(getToolDamagePerDropConversion(),1000));
     }
 
     public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {

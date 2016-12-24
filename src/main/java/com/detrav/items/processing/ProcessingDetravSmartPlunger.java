@@ -20,14 +20,29 @@ public class ProcessingDetravSmartPlunger implements IOreRecipeRegistrator {
 
     public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
         if ((aMaterial != Materials.Stone) && (aMaterial != Materials.Flint)) {
-            if (aMaterial != Materials.Rubber)
+            if (aMaterial != Materials.Rubber) {
                 GT_ModHandler.addCraftingRecipe(
-                        DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(4,1,aMaterial,aMaterial,null),
+                        DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(4, 1, aMaterial, aMaterial, null),
                         GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED,
                         new Object[]{"xRR", " CR", "S f",
                                 Character.valueOf('S'), OrePrefixes.stick.get(aMaterial),
                                 Character.valueOf('R'), OrePrefixes.plate.get(Materials.Rubber),
                                 Character.valueOf('C'), Ic2Items.cell});
+                GT_ModHandler.addCraftingRecipe(
+                        DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(6, 1, aMaterial, aMaterial, null),
+                        GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED,
+                        new Object[]{"xRR", " CR", "S f",
+                                Character.valueOf('S'), OrePrefixes.stick.get(aMaterial),
+                                Character.valueOf('R'), OrePrefixes.plate.get(Materials.Rubber),
+                                Character.valueOf('C'), ItemList.Large_Fluid_Cell_Steel.get(1)});
+                GT_ModHandler.addCraftingRecipe(
+                        DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(8, 1, aMaterial, aMaterial, null),
+                        GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED,
+                        new Object[]{"xRR", " CR", "S f",
+                                Character.valueOf('S'), OrePrefixes.stick.get(aMaterial),
+                                Character.valueOf('R'), OrePrefixes.plate.get(Materials.Rubber),
+                                Character.valueOf('C'), ItemList.Large_Fluid_Cell_TungstenSteel.get(1)});
+            }
         }
     }
 }

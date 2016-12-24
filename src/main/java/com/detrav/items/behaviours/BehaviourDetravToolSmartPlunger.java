@@ -23,9 +23,11 @@ import net.minecraftforge.fluids.IFluidHandler;
 public class BehaviourDetravToolSmartPlunger extends Behaviour_None {
 
     protected final int mCosts;
+    protected final int mFluidSpace;
 
-    public BehaviourDetravToolSmartPlunger(int aCosts) {
+    public BehaviourDetravToolSmartPlunger(int aCosts,int fluidSpace) {
         mCosts = aCosts;
+        mFluidSpace = fluidSpace;
     }
 
     public boolean onItemUseFirst(GT_MetaBase_Item aItem, ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
@@ -58,9 +60,9 @@ public class BehaviourDetravToolSmartPlunger extends Behaviour_None {
             TileEntity aTileEntity = aWorld.getTileEntity(aX, aY, aZ);
             if ((aTileEntity instanceof IFluidHandler)) {
                 for (ForgeDirection tDirection : ForgeDirection.VALID_DIRECTIONS) {
-                    if (((IFluidHandler) aTileEntity).drain(tDirection, 1000, false) != null) {
+                    if (((IFluidHandler) aTileEntity).drain(tDirection, mFluidSpace, false) != null) {
                         if ((aPlayer.capabilities.isCreativeMode) || (((GT_MetaGenerated_Tool) aItem).doDamage(aStack, this.mCosts))) {
-                            fs = ((IFluidHandler) aTileEntity).drain(tDirection, 1000, true);
+                            fs = ((IFluidHandler) aTileEntity).drain(tDirection, mFluidSpace, true);
                             GT_Utility.sendSoundToPlayers(aWorld, (String) GregTech_API.sSoundList.get(Integer.valueOf(101)), 1.0F, -1.0F, aX, aY, aZ);
                             DetravMetaGeneratedTool01.INSTANCE.setFluidStackToDetravData(aStack,fs);
                             return true;
@@ -75,8 +77,8 @@ public class BehaviourDetravToolSmartPlunger extends Behaviour_None {
                     GT_MetaTileEntity_BasicTank machine = (GT_MetaTileEntity_BasicTank) mTileEntity;
                     if (machine.mFluid != null && machine.mFluid.amount > 0) {
                         fs = machine.mFluid.copy();
-                        if (fs.amount > 1000) fs.amount = 1000;
-                        machine.mFluid.amount = machine.mFluid.amount - Math.min(machine.mFluid.amount, 1000);
+                        if (fs.amount > mFluidSpace) fs.amount = mFluidSpace;
+                        machine.mFluid.amount = machine.mFluid.amount - Math.min(machine.mFluid.amount, mFluidSpace);
                         DetravMetaGeneratedTool01.INSTANCE.setFluidStackToDetravData(aStack,fs);
                     }
                     return true;

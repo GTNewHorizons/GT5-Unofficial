@@ -30,7 +30,9 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
         INSTANCE = this;
         addTool(0, "Prospector's Pick", "", new DetravToolProPick(), new Object[]{DetravToolDictNames.craftingToolProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)});
         addTool(2, "Portable Anvil", "", new DetravToolPortableAnvil(), new Object[] {DetravToolDictNames.craftingToolPortableAnvil}, new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM,10));
-        addTool(4, "Smart plunger", "", new DetravToolSmartPlunger(),new Object[] {DetravToolDictNames.craftingToolSmartPlunger},new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L));
+        addTool(4, "Smart plunger 1 bucket", "", new DetravToolSmartPlunger(),new Object[] {DetravToolDictNames.craftingToolSmartPlunger},new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L));
+        addTool(6, "Smart plunger 16 buckets", "", new DetravToolSmartPlunger16(),new Object[] {DetravToolDictNames.craftingToolSmartPlunger},new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L));
+        addTool(8, "Smart plunger 64 buckets", "", new DetravToolSmartPlunger64(),new Object[] {DetravToolDictNames.craftingToolSmartPlunger},new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L));
         addTool(100, "Electric Prospector's Scanner (LV)", "", new DetravToolLVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
         addTool(102, "Electric Prospector's Scanner (MV)", "", new DetravToolMVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
         addTool(104, "Electric Prospector's Scanner (HV)", "", new DetravToolHVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
@@ -76,6 +78,8 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
                     count = ((int)(getLevel(aStack,8)*100)); if(count > 0) {aList.add(tOffset, "Bonus 8 level: +" + count + "%");tOffset++;}
                     break;
                 case 4:
+                case 6:
+                case 8:
                     aList.add(tOffset + 0, EnumChatFormatting.WHITE + "Durability: " + EnumChatFormatting.GREEN + (tMaxDamage - getToolDamage(aStack)) + " / " + tMaxDamage + EnumChatFormatting.GRAY);
                     aList.add(tOffset + 1, EnumChatFormatting.WHITE + tMaterial.mDefaultLocalName + EnumChatFormatting.YELLOW + " lvl " + getHarvestLevel(aStack, "") + EnumChatFormatting.GRAY);
                     aList.add(tOffset + 2, "It can suck in fluid");
@@ -188,8 +192,8 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
     {
         for(int i=0;i<9;i++)
         {
-            detravLevel.hasKey("level"+Integer.toString(i));
-            return false;
+            if(detravLevel.hasKey("level"+Integer.toString(i)))
+              return false;
         }
         return true;
     }
