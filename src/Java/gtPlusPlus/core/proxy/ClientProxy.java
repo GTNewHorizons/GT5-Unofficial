@@ -14,6 +14,14 @@ import cpw.mods.fml.common.event.*;
 
 public class ClientProxy extends CommonProxy{
 
+	/*private final HashSet<String> mCapeList = new HashSet<String>();
+	private final CapeHandler mCapeRenderer;
+	
+	ClientProxy(){
+		mCapeRenderer = new CapeHandler(mCapeList);
+	}
+	*/
+	
 	@Override
 	public void preInit(FMLPreInitializationEvent e) {
 		// TODO Auto-generated method stub
@@ -86,6 +94,11 @@ public class ClientProxy extends CommonProxy{
 	{
 		
 	}
+	
+	/*@SubscribeEvent
+    public void receiveRenderSpecialsEvent(net.minecraftforge.client.event.RenderPlayerEvent.Specials.Pre aEvent) {
+        mCapeRenderer.receiveRenderSpecialsEvent(aEvent);
+    }*/
 
 
 

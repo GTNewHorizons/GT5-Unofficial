@@ -47,13 +47,21 @@ public class CoreItem extends Item
 	}
 
 	//0.1
+		/*
+		 * Name, Tab - 64 Stack, 0 Dmg
+		 */
+		public CoreItem(String unlocalizedName, CreativeTabs creativeTab, ItemStack OverrideItem)
+		{
+			this(unlocalizedName, creativeTab, 64, 0, "This item will be replaced by another when helf by a player, it is old and should not be used in recipes.", EnumRarity.uncommon, EnumChatFormatting.UNDERLINE, false, OverrideItem); //Calls 5
+		}
+	//0.1
 	/*
 	 * Name, Tab - 64 Stack, 0 Dmg
 	 */
-	public CoreItem(String unlocalizedName, CreativeTabs creativeTab, ItemStack OverrideItem)
+	public CoreItem(String unlocalizedName, String displayName, CreativeTabs creativeTab, ItemStack OverrideItem)
 	{
 		this(unlocalizedName, creativeTab, 64, 0, "This item will be replaced by another when helf by a player, it is old and should not be used in recipes.", EnumRarity.uncommon, EnumChatFormatting.UNDERLINE, false, OverrideItem); //Calls 5
-
+		itemName = displayName;
 	}
 
 	//1

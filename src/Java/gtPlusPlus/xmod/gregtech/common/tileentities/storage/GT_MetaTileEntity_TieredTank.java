@@ -8,16 +8,19 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.objects.GT_RenderedTexture;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_TieredTank
 extends GT_MetaTileEntity_BasicTank {
 
-	private NBTTagCompound mRecipeStuff = new NBTTagCompound();
+	private NBTTagCompound mRecipeStuff;
 	private String mFluidName;
 	private int mFluidAmount;
+	private FluidStack mInternalTank;
 
 	public GT_MetaTileEntity_TieredTank(int aID, String aName, String aNameRegional, int aTier) {
 		super(aID, aName, aNameRegional, aTier, 3, "Stores " + ((int) (Math.pow(2, aTier) * 32000)) + "L of fluid");
@@ -39,12 +42,16 @@ extends GT_MetaTileEntity_BasicTank {
 
 	
 	private boolean setVars(){
-		//Utils.LOG_INFO("setting Vars.");
+		if (mRecipeStuff == null){
+			mRecipeStuff = new NBTTagCompound();
+		}
+		Utils.LOG_INFO("setting Vars.");
 		if (mFluidName.equals("") || !mFluidName.equals(null)){
 			if (mFluid != null)	mFluidName = mFluid.getFluid().getName();
 		}
 		else{
 			if (mFluid != null){
+				mInternalTank = mFluid;
 				if (!mFluidName.equalsIgnoreCase(mFluid.getFluid().getName())){
 					mFluidName = mFluid.getFluid().getName();
 				}
@@ -75,10 +82,7 @@ extends GT_MetaTileEntity_BasicTank {
 
 	@Override
 	public String[] getDescription() {
-		
-		setVars();
-
-
+		//setVars();
 		if ((mFluidName.equals("Empty")||mFluidName.equals("")) || mFluidAmount <= 0){
 			return new String[] {mDescription, CORE.GT_Tooltip};
 		}
@@ -98,18 +102,28 @@ extends GT_MetaTileEntity_BasicTank {
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);  
+		if (mRecipeStuff == null){
+			mRecipeStuff = new NBTTagCompound();
+		}
+		else {
 		mRecipeStuff = aNBT.getCompoundTag("GT.CraftingComponents");
 		mFluidName = mRecipeStuff.getString("mFluidName");
 		mFluidAmount = mRecipeStuff.getInteger("mFluidAmount");
 		mFluid = FluidUtils.getFluidStack(mFluidName, mFluidAmount);
+		}
 		setItemNBT(aNBT);
 	}
 
 	@Override
 	public void setItemNBT(NBTTagCompound aNBT) {
 		super.setItemNBT(aNBT);
+		if (mRecipeStuff == null){
+			mRecipeStuff = new NBTTagCompound();
+		}
+		else {
 		mRecipeStuff.setString("mFluidName", mFluidName);		
 		mRecipeStuff.setInteger("mFluidAmount", mFluidAmount);
+		}
 		aNBT.setTag("GT.CraftingComponents", mRecipeStuff);
 	}
 
@@ -117,9 +131,11 @@ extends GT_MetaTileEntity_BasicTank {
 	@Override
 	public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
 		if (aBaseMetaTileEntity.isClientSide()){
+			//setVars();
 			return true;
 		}
 		aBaseMetaTileEntity.openGUI(aPlayer);
+		setVars();
 		return true;
 	}
 
