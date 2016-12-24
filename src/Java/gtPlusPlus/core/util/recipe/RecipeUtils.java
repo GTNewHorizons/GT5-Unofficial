@@ -24,6 +24,15 @@ public class RecipeUtils {
 
 		ArrayList<Object> validSlots = new ArrayList<Object>();
 		if (resultItem == null){
+			Utils.LOG_INFO("Found a recipe with an invalid output, yet had a valid inputs. Skipping.");
+			return false;
+		}
+		
+		if (slot_1 == null && slot_2 == null && slot_3 == null &&
+				slot_4 == null && slot_5 == null && slot_6 == null &&
+				slot_7 == null && slot_8 == null && slot_9 == null){
+			Utils.LOG_INFO("Found a recipe with 0 inputs, yet had a valid output.");
+			Utils.LOG_INFO("Error found while adding a recipe for: "+resultItem.getDisplayName()+" | Please report this issue on Github.");
 			return false;
 		}
 		
