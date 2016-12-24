@@ -94,37 +94,37 @@ extends GT_MetaTileEntity_BasicTank {
 	public void saveNBTData(NBTTagCompound aNBT) {
 		super.saveNBTData(aNBT);
 		setVars();
-		mRecipeStuff.setString("mFluidName", mFluidName);		
-		mRecipeStuff.setInteger("mFluidAmount", mFluidAmount);
-		aNBT.setTag("GT.CraftingComponents", mRecipeStuff);
+		NBTTagCompound lRecipeStuff = new NBTTagCompound();
+		if (lRecipeStuff != null){
+			lRecipeStuff.setString("mFluidName", mFluidName);		
+			lRecipeStuff.setInteger("mFluidAmount", mFluidAmount);
+			Utils.LOG_INFO(mFluidName+" Amount: "+mFluidAmount+"L");
+			
+		}
+		//Utils.LOG_INFO(mFluidName+" Amxount: "+mFluidAmount+"L");
+		aNBT.setTag("GT.CraftingComponents", lRecipeStuff);
 	}
 
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
-		super.loadNBTData(aNBT);  
-		if (mRecipeStuff == null){
-			mRecipeStuff = new NBTTagCompound();
-		}
-		else {
+		super.loadNBTData(aNBT);  	
 		mRecipeStuff = aNBT.getCompoundTag("GT.CraftingComponents");
 		mFluidName = mRecipeStuff.getString("mFluidName");
 		mFluidAmount = mRecipeStuff.getInteger("mFluidAmount");
+		//mInternalTank = mFluid;
 		mFluid = FluidUtils.getFluidStack(mFluidName, mFluidAmount);
-		}
 		setItemNBT(aNBT);
 	}
 
 	@Override
 	public void setItemNBT(NBTTagCompound aNBT) {
 		super.setItemNBT(aNBT);
-		if (mRecipeStuff == null){
-			mRecipeStuff = new NBTTagCompound();
+		NBTTagCompound lRecipeStuff = new NBTTagCompound();
+		if (lRecipeStuff != null){
+			lRecipeStuff.setString("mFluidName", mFluidName);		
+			lRecipeStuff.setInteger("mFluidAmount", mFluidAmount);
 		}
-		else {
-		mRecipeStuff.setString("mFluidName", mFluidName);		
-		mRecipeStuff.setInteger("mFluidAmount", mFluidAmount);
-		}
-		aNBT.setTag("GT.CraftingComponents", mRecipeStuff);
+		aNBT.setTag("GT.CraftingComponents", lRecipeStuff);
 	}
 
 

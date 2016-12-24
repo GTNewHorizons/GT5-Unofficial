@@ -198,7 +198,7 @@ public final class ModItems {
 
 
 		//Register Hydrogen Blobs first, so we can replace old helium blobs.
-		itemHydrogenBlob = new CoreItem("itemHydrogenBlob", "Blob of Helium", tabMisc).setTextureName(CORE.MODID + ":itemHydrogenBlob");
+		itemHydrogenBlob = new CoreItem("itemHydrogenBlob", "Mysterious Hydrogen Blob", tabMisc).setTextureName(CORE.MODID + ":itemHydrogenBlob");
 		//GT_OreDictUnificator.registerOre("dustHydrogen", new ItemStack(ModItems.itemHydrogenBlob));
 		//Register Old Helium Blob, this will be replaced when held by a player.
 		itemHeliumBlob = new CoreItem("itemHeliumBlob", tabMisc, ItemUtils.getSimpleStack(itemHydrogenBlob)).setTextureName(CORE.MODID + ":itemHeliumBlob");
