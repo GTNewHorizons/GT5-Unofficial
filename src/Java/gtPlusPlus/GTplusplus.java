@@ -47,7 +47,7 @@ implements ActionListener
 
 
 	public static void handleConfigFile(FMLPreInitializationEvent event) { 
-		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
+		Configuration config = new Configuration(new File(event.getModConfigurationDirectory(), "GTplusplus/GTplusplus.cfg"));
 		config.load();
 
 		
