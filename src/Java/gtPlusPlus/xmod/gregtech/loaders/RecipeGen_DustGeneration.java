@@ -105,6 +105,18 @@ public class RecipeGen_DustGeneration  implements Runnable{
 		else {
 			Utils.LOG_WARNING("144l fluid extractor from 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");			
 		}	
+		if (GT_Values.RA.addFluidExtractionRecipe(material.getIngot(1), //Input
+				null, //Input 2
+				material.getFluid(144), //Fluid Output
+				0, //Chance
+				1*20, //Duration
+				16 //Eu Tick
+				)){
+			Utils.LOG_WARNING("144l fluid extractor from 1 ingot Recipe: "+material.getLocalizedName()+" - Success");
+		}
+		else {
+			Utils.LOG_WARNING("144l fluid extractor from 1 ingot Recipe: "+material.getLocalizedName()+" - Failed");			
+		}
 		if (GT_Values.RA.addFluidExtractionRecipe(material.getPlate(1), //Input
 				null, //Input 2
 				material.getFluid(144), //Fluid Output
@@ -117,6 +129,18 @@ public class RecipeGen_DustGeneration  implements Runnable{
 		else {
 			Utils.LOG_WARNING("144l fluid extractor from 1 plate Recipe: "+material.getLocalizedName()+" - Failed");			
 		}	
+		if (GT_Values.RA.addFluidExtractionRecipe(material.getPlateDouble(1), //Input
+				null, //Input 2
+				material.getFluid(288), //Fluid Output
+				0, //Chance
+				1*20, //Duration
+				16 //Eu Tick
+				)){
+			Utils.LOG_WARNING("144l fluid extractor from 1 double plate Recipe: "+material.getLocalizedName()+" - Success");
+		}
+		else {
+			Utils.LOG_WARNING("144l fluid extractor from 1 double plate Recipe: "+material.getLocalizedName()+" - Failed");			
+		}
 		if (GT_Values.RA.addFluidExtractionRecipe(material.getNugget(1), //Input
 				null, //Input 2
 				material.getFluid(16), //Fluid Output

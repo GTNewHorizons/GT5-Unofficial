@@ -408,12 +408,12 @@ public class RECIPES_GREGTECH {
 				GT_Values.NF,
 				GT_Values.NF,
 				ELEMENT.getInstance().THORIUM232.getDust(2),
-				ELEMENT.getInstance().THORIUM.getDust(5),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallThorium", 20),
 				ELEMENT.getInstance().URANIUM232.getDust(1),
 				GT_Values.NI,
 				GT_Values.NI,
 				GT_Values.NI,
-				new int[]{10000, 10000, 10},
+				new int[]{0, 0, 10},
 				500*20,
 				2000);
 		
