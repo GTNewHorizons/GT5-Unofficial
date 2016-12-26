@@ -62,7 +62,7 @@ public class RECIPES_LaserEngraver implements IOreRecipeRegistrator {
 
 		} else if (aOreDictName.equals(OreDictNames.craftingLensWhite.toString())) {
 			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateLithium", 1) != null){
-				GT_Values.RA.addLaserEngraverRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Lithium, 8L), GT_Utility.copyAmount(0L, new Object[]{aStack}), ItemUtils.getItemStackOfAmountFromOreDict("plateDoubleLithium7", 4), 6400, 2000);
+				GT_Values.RA.addLaserEngraverRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Lithium, 26L), GT_Utility.copyAmount(0L, new Object[]{aStack}), ItemUtils.getItemStackOfAmountFromOreDict("plateDoubleLithium7", 13), 600*20, 2000);
 			}
 			else {
 				Utils.LOG_INFO("plateLithium does not exist within Gregtech, please report this issue to Blood-asp on github.");

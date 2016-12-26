@@ -11,6 +11,7 @@ import gtPlusPlus.core.util.math.MathUtils;
 
 import java.util.ArrayList;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -228,6 +229,14 @@ public class Material {
 
 	final public boolean requiresBlastFurnace(){
 		return usesBlastFurnace;
+	}
+	
+	final public Block getBlock(){
+		return Block.getBlockFromItem(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("block"+unlocalizedName, 1).getItem());
+	}
+	
+	final public ItemStack getBlock(int stacksize){
+		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("block"+unlocalizedName, stacksize);
 	}
 
 	final public ItemStack getDust(int stacksize){

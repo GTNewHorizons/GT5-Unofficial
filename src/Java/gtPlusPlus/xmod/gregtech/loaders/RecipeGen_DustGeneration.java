@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.loaders;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
+import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
@@ -153,6 +154,18 @@ public class RecipeGen_DustGeneration  implements Runnable{
 		else {
 			Utils.LOG_WARNING("16l fluid extractor from 1 nugget Recipe: "+material.getLocalizedName()+" - Failed");			
 		}
+		if (GT_Values.RA.addFluidExtractionRecipe(material.getBlock(1), //Input
+				null, //Input 2
+				material.getFluid(144*9), //Fluid Output
+				0, //Chance
+				1*20, //Duration
+				16 //Eu Tick
+				)){
+			Utils.LOG_WARNING((144*9)+"l fluid extractor from 1 block Recipe: "+material.getLocalizedName()+" - Success");
+		}
+		else {
+			Utils.LOG_WARNING((144*9)+"l fluid extractor from 1 block Recipe: "+material.getLocalizedName()+" - Failed");			
+		}
 		
 		//Making Shapes from fluid
 		if (GT_Values.RA.addFluidSolidifierRecipe(
@@ -191,7 +204,22 @@ public class RecipeGen_DustGeneration  implements Runnable{
 		else {
 			Utils.LOG_WARNING("16l fluid molder for 1 nugget Recipe: "+material.getLocalizedName()+" - Failed");			
 		}
+		if (GT_Values.RA.addFluidSolidifierRecipe(
+				ItemList.Shape_Mold_Block.get(1), //Item Shape		
+				material.getFluid(144*9), //Fluid Input
+				material.getBlock(1), //output				
+				1*20, //Duration
+				16 //Eu Tick
+				)){
+			Utils.LOG_WARNING((144*9)+"l fluid molder from 1 block Recipe: "+material.getLocalizedName()+" - Success");
+		}
+		else {
+			Utils.LOG_WARNING((144*9)+"l fluid molder from 1 block Recipe: "+material.getLocalizedName()+" - Failed");			
+		}
 
+		//Macerate blocks back to dusts.
+		GT_ModHandler.addPulverisationRecipe(material.getBlock(1), material.getDust(9));
+		
 		//Is this a composite?
 		if (inputStacks != null){			
 			//Is this a composite?

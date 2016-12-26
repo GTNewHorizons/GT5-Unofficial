@@ -146,7 +146,7 @@ public final class ModItems {
 	public static Item dustQuicklime;
 	public static Item dustCalciumHydroxide;
 	public static Item dustCalciumCarbonate;
-	public static Item dust2LiOH_CaCO3;
+	public static Item dustLi2CO3CaOH2;
 	public static Item dustLi2BeF4;
 
 	public static Item dustAer;
@@ -378,7 +378,7 @@ public final class ModItems {
 		}
 		dustCalciumHydroxide = ItemUtils.generateSpecialUseDusts("CalciumHydroxide", "Hydrated Lime", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_hydroxide
 		dustCalciumCarbonate = ItemUtils.generateSpecialUseDusts("CalciumCarbonate", "Calcium Carbonate", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_carbonate
-		dust2LiOH_CaCO3 = ItemUtils.generateSpecialUseDusts("2LiOHCaCO3", "2LiOH & CaCO3 Compound", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_carbonate
+		dustLi2CO3CaOH2 = ItemUtils.generateSpecialUseDusts("Li2CO3CaOH2", "Li2CO3 + Ca(OH)2 Compound", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_carbonate
 
 		//FLiBe Fuel Compounds
 		dustLi2BeF4 = ItemUtils.generateSpecialUseDusts("Li2BeF4", "Li2BeF4 Fuel Compound", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/FLiBe
