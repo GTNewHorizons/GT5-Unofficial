@@ -166,7 +166,7 @@ public class RECIPES_GREGTECH {
 					new ItemStack[]{
 							ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 10)
 					}, //Item input (Array, up to 2)
-					FluidUtils.getFluidStack("uraniumtetrafluoride", 1440), //Fluid input (slot 1)
+					FluidUtils.getFluidStack("molten.uraniumtetrafluoride", 1440), //Fluid input (slot 1)
 					null, //Fluid output (slot 2)
 					new ItemStack[]{
 						ItemUtils.getItemStackOfAmountFromOreDict("dustUraniumTetrafluoride", 10),
@@ -183,7 +183,7 @@ public class RECIPES_GREGTECH {
 					new ItemStack[]{
 							ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 10)
 					}, //Item input (Array, up to 2)
-					FluidUtils.getFluidStack("uraniumhexafluoride", 1440), //Fluid input (slot 1)
+					FluidUtils.getFluidStack("molten.uraniumhexafluoride", 1440), //Fluid input (slot 1)
 					null, //Fluid output (slot 2)
 					new ItemStack[]{
 						ItemUtils.getItemStackOfAmountFromOreDict("dustUraniumHexafluoride", 10),
@@ -276,13 +276,13 @@ public class RECIPES_GREGTECH {
 	
 	private static void lftrRecipes(){
 		try {		
-			//Fli2BeF4 + Uranium233 TetraFluoride = Uranium233
-			/*CORE.RA.addLFTRRecipe(
-					FluidUtils.getFluidStack("uraniumtetrafluoride", 200), //Fluid input (slot 1)
-					FluidUtils.getFluidStack("molten.li2bef4", 1000), //Fluid output (slot 2)
-					FluidUtils.getFluidStack("molten.uranium233", 500), //Output Array of Items - Upto 9,
-					16000*20, //Time in ticks
-					4000); //EU	*/
+			//Fli2BeF4 + Thorium TetraFluoride = Uranium233
+			CORE.RA.addLFTRRecipe(
+					FluidUtils.getFluidStack("thoriumtetrafluoride", 400), //Fluid input (slot 1)
+					FluidUtils.getFluidStack("molten.li2bef4", 1200), //Fluid output (slot 2)
+					FluidUtils.getFluidStack("molten.uranium233", 750), //Output Array of Items - Upto 9,
+					12000*20, //Time in ticks
+					3500); //EU	
 			
 			
 			//Fli2BeF4 + Uranium235 = 1x Uranium233
@@ -295,7 +295,7 @@ public class RECIPES_GREGTECH {
 			
 			//Fli2BeF4 + Uranium233 TetraFluoride = Uranium233
 			CORE.RA.addLFTRRecipe(
-					FluidUtils.getFluidStack("uraniumtetrafluoride", 200), //Fluid input (slot 1)
+					FluidUtils.getFluidStack("molten.uraniumtetrafluoride", 200), //Fluid input (slot 1)
 					FluidUtils.getFluidStack("molten.li2bef4", 1000), //Fluid output (slot 2)
 					FluidUtils.getFluidStack("molten.uranium233", 500), //Output Array of Items - Upto 9,
 					16000*20, //Time in ticks
@@ -401,8 +401,8 @@ public class RECIPES_GREGTECH {
 	
 	private static void mixerRecipes(){
 		GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 1), null, null, null, FluidUtils.getFluidStack("oxygen", 288), FluidUtils.getFluidStack("sulfurdioxide", 432), null, 600, 60);
-		GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustUranium233", 2), ItemUtils.getItemStackOfAmountFromOreDict("dustUranium233", 1), null, null, FluidUtils.getFluidStack("hydrofluoricacid", 2000), FluidUtils.getFluidStack("uraniumtetrafluoride", 144*3), null, 3000, 500);
-		GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("cellFluorine", 1), ItemUtils.getItemStackOfAmountFromOreDict("cellFluorine", 1), null, null, FluidUtils.getFluidStack("uraniumtetrafluoride", 720), FluidUtils.getFluidStack("uraniumhexafluoride", 288), null, 5000, 2000);
+		GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustUranium233", 2), ItemUtils.getItemStackOfAmountFromOreDict("dustUranium233", 1), null, null, FluidUtils.getFluidStack("hydrofluoricacid", 2000), FluidUtils.getFluidStack("molten.uraniumtetrafluoride", 144*3), null, 3000, 500);
+		GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("cellFluorine", 1), ItemUtils.getItemStackOfAmountFromOreDict("cellFluorine", 1), null, null, FluidUtils.getFluidStack("molten.uraniumtetrafluoride", 720), FluidUtils.getFluidStack("molten.uraniumhexafluoride", 288), null, 5000, 2000);
 	}
 	
 	private static void chemicalReactorRecipes(){

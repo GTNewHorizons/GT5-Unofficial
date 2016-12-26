@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class RECIPES_Tools {
-	
+
 	//Outputs
 	public static ItemStack RECIPE_StaballoyPickaxe = new ItemStack(ModItems.itemStaballoyPickaxe);
 	public static ItemStack RECIPE_StaballoyAxe = new ItemStack(ModItems.itemStaballoyAxe);
@@ -20,29 +20,30 @@ public class RECIPES_Tools {
 	//public static ItemStack RECIPE_StaballoyIngot = new ItemStack(ModItems.itemIngotStaballoy);
 	public static ItemStack RECIPE_SandStone = new ItemStack(Blocks.sandstone, 2);
 	public static ItemStack RECIPE_Sand = new ItemStack(Blocks.sand, 4);
-	
+	public static ItemStack RECIPE_FireStarter = ItemUtils.getSimpleStack(ModItems.itemBasicFireMaker);
+
 	public static ItemStack RECIPE_DivisionSigil;
-	
+
 	//MC Items
 	public static Item Apple = Items.apple;
-	
+
 	//MC Blocks
 	public static Block CobbleStone = Blocks.cobblestone;
 	public static Block Dirt = Blocks.dirt;
 	public static Block Sand = Blocks.sand;
 	public static Block Gravel = Blocks.gravel;
 	public static Block Sandstone = Blocks.sandstone;
-	
+
 	//null
 	public static String empty = " ";
-	
+
 	//Batteries
 	public static String batteryBasic = "batteryBasic";
 	public static String batteryAdvanced = "batteryAdvanced";
 	public static String batteryElite = "batteryElite";
 	public static String batteryMaster = "batteryMaster";
 	public static String batteryUltimate = "batteryUltimate";
-	
+
 	//Circuits
 	public static String circuitPrimitive = "circuitPrimitive";
 	public static String circuitBasic = "circuitBasic";
@@ -51,7 +52,7 @@ public class RECIPES_Tools {
 	public static String circuitElite = "circuitElite";
 	public static String circuitMaster = "circuitMaster";
 	public static String circuitUltimate = "circuitUltimate";
-	
+
 	//Cables
 	public static String cableGt01Electrum = "cableGt01Electrum";
 	public static String cableGt02Electrum = "cableGt02Electrum";
@@ -61,8 +62,9 @@ public class RECIPES_Tools {
 	public static String cableGt02Copper = "cableGt02Copper";
 	public static String cableGt01AnnealedCopper = "cableGt01AnnealedCopper";
 	public static String cableGt02AnnealedCopper = "cableGt02AnnealedCopper";
-	
+
 	//Rods
+	public static String stickWood = "stickWood";
 	public static String stickStaballoy= "stickStaballoy";
 	public static String stickTitanium= "stickTitanium";
 	public static String stickIron= "stickIron";
@@ -75,7 +77,7 @@ public class RECIPES_Tools {
 	public static String stickInvar= "stickInvar";
 	public static String stickElectrum= "stickElectrum";
 	public static String stickElectricalSteel= "stickElectricalSteel";
-	
+
 	//Plates
 	public static String plateStaballoy= "plateStaballoy";
 	public static String plateTitanium= "plateTitanium";
@@ -89,7 +91,7 @@ public class RECIPES_Tools {
 	public static String plateInvar= "plateInvar";
 	public static String plateElectrum= "plateElectrum";
 	public static String plateElectricalSteel= "plateElectricalSteel";
-	
+
 	//Ingots
 	public static String ingotStaballoy= "ingotStaballoy";
 	public static String ingotTitanium= "ingotTitanium";
@@ -104,7 +106,7 @@ public class RECIPES_Tools {
 	public static String ingotElectrum= "ingotElectrum";
 	public static String ingotUranium= "ingotUranium";
 	public static String ingotElectricalSteel= "ingotElectricalSteel";
-	
+
 	//Crafting Tools
 	public static String craftingToolHardHammer = "craftingToolHardHammer";
 	public static String craftingToolSoftHammer = "craftingToolSoftHammer";
@@ -115,21 +117,21 @@ public class RECIPES_Tools {
 	public static String craftingToolCrowbar = "craftingToolCrowbar";
 	public static String craftingToolKnife = "craftingToolKnife";
 	public static String craftingToolScrewdriver = "craftingToolScrewdriver";
-	
+
 	public static ItemStack sandHammer = new ItemStack (ModItems.itemSandstoneHammer, 1, OreDictionary.WILDCARD_VALUE);
 	public static String craftingToolSandHammer = "craftingToolSandHammer";
-	
+
 	public static ItemStack personalCloakingDevice = ItemUtils.getSimpleStack(ModItems.itemPersonalCloakingDevice);
 	public static String plateDoubleNiChrome = "plateDoubleNichrome";
 	public static String plateIridiumAlloy = "plateAlloyIridium";
-	
+
 	public static final void RECIPES_LOAD(){		
-		
-			
-			run();
-		
+
+
+		run();
+
 	}
-	
+
 	private static void run(){
 		//Staballoy Pickaxe
 		RecipeUtils.recipeBuilder(
@@ -137,14 +139,14 @@ public class RECIPES_Tools {
 				craftingToolFile, stickTungsten, craftingToolHardHammer,
 				craftingToolWrench, stickTungsten, craftingToolHardHammer,
 				RECIPE_StaballoyPickaxe);
-		
+
 		//Staballoy Axe
 		RecipeUtils.recipeBuilder(
 				plateStaballoy, ingotStaballoy, craftingToolHardHammer,
 				plateStaballoy, stickTungsten, craftingToolHardHammer,
 				craftingToolFile, stickTungsten, craftingToolWrench,
 				RECIPE_StaballoyAxe);
-		
+
 		//Cobble to Sand
 		RecipeUtils.recipeBuilder(
 				CobbleStone, CobbleStone, CobbleStone,
@@ -153,13 +155,13 @@ public class RECIPES_Tools {
 				RECIPE_Sand);
 
 		if (LoadedMods.Baubles){
-		//Cloaking Device
-		RecipeUtils.recipeBuilder(
-				plateDoubleNiChrome, plateIridiumAlloy, plateDoubleNiChrome,
-				plateIridiumAlloy, batteryUltimate, plateIridiumAlloy,
-				plateDoubleNiChrome, plateIridiumAlloy, plateDoubleNiChrome,
-				personalCloakingDevice);
-		
+			//Cloaking Device
+			RecipeUtils.recipeBuilder(
+					plateDoubleNiChrome, plateIridiumAlloy, plateDoubleNiChrome,
+					plateIridiumAlloy, batteryUltimate, plateIridiumAlloy,
+					plateDoubleNiChrome, plateIridiumAlloy, plateDoubleNiChrome,
+					personalCloakingDevice);
+
 		}
 		//Sand to Sandstone
 		RecipeUtils.recipeBuilder(
@@ -167,14 +169,21 @@ public class RECIPES_Tools {
 				Sand, sandHammer, Sand,
 				Sand, Sand, Sand,
 				RECIPE_SandStone);
-		
+
 		//Sandstone Hammer
 		RecipeUtils.recipeBuilder(
 				plateElectrum, ingotElectrum, plateElectrum,
 				craftingToolScrewdriver, stickBronze, craftingToolHardHammer,
 				null, stickSteel, null,
 				RECIPE_SandstoneHammer);	
-		
+
+		//Basic Firemaker
+		RecipeUtils.recipeBuilder(
+				"cropWheat", "cropWheat", "cropWheat",
+				ItemUtils.getSimpleStack(Items.string), stickWood, ItemUtils.getSimpleStack(Items.string),
+				"cropWheat", "cropWheat", "cropWheat",
+				RECIPE_FireStarter);
+
 	}
-	
+
 }
