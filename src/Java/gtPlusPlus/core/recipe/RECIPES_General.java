@@ -24,7 +24,7 @@ public class RECIPES_General {
 	static String RECIPE_BronzePlate = "plateAnyBronze";
 	static ItemStack RECIPE_BasicCasingIC2;
 	static ItemStack OUTPUT_Workbench_Bronze = ItemUtils.getSimpleStack(Item.getItemFromBlock(ModBlocks.blockWorkbench));
-	static String RECIPE_HydrogenDust = "dustHydrogen";
+	static ItemStack RECIPE_HydrogenDust = ItemUtils.getSimpleStack(ModItems.itemHydrogenBlob);
 
 	public static void RECIPES_LOAD(){
 		if (LoadedMods.Gregtech){

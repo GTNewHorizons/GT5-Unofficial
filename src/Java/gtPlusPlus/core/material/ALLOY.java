@@ -1,5 +1,7 @@
 package gtPlusPlus.core.material;
 
+import gregtech.api.enums.Materials;
+
 
 public final class ALLOY {
 
@@ -497,6 +499,69 @@ public final class ALLOY {
 					new MaterialStack(ELEMENT.getInstance().NIOBIUM, 40),
 					new MaterialStack(ELEMENT.getInstance().CARBON, 50),
 					new MaterialStack(ELEMENT.getInstance().OXYGEN, 10)
+			});
+	
+	public static final Material THORIUM_HEXAFLUORIDE = new Material(
+			"Thorium Hexafluoride", //Material Name
+			new short[]{10, 50, 10, 0}, //Material Colour
+			Materials.Thorium.mMeltingPoint, //Melting Point in C
+			Materials.Thorium.mBlastFurnaceTemp, //Boiling Point in C
+			((ELEMENT.getInstance().THORIUM232.getProtons()+ELEMENT.getInstance().THORIUM232.getProtons()+(ELEMENT.getInstance().FLUORINE.getProtons()*6))/8), //Protons
+			((ELEMENT.getInstance().THORIUM232.getNeutrons()+ELEMENT.getInstance().THORIUM232.getNeutrons()+(ELEMENT.getInstance().FLUORINE.getNeutrons()*6))/8), //Neutrons
+			false, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().THORIUM232, 1),
+					new MaterialStack(ELEMENT.getInstance().THORIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().FLUORINE, 12)
+			});
+	
+	public static final Material THORIUM_TETRAFLUORIDE = new Material(
+			"Thorium Tetrafluoride", //Material Name
+			new short[]{25, 70, 25, 0}, //Material Colour
+			Materials.Thorium.mMeltingPoint, //Melting Point in C
+			Materials.Thorium.mBlastFurnaceTemp, //Boiling Point in C
+			((ELEMENT.getInstance().THORIUM232.getProtons()+(ELEMENT.getInstance().FLUORINE.getProtons()*4))/5), //Protons
+			((ELEMENT.getInstance().THORIUM232.getNeutrons()+(ELEMENT.getInstance().FLUORINE.getNeutrons()*4))/5), //Neutrons
+			false, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().THORIUM232, 1),
+					new MaterialStack(ELEMENT.getInstance().FLUORINE, 4)
+			});
+	
+	public static final Material LiFBeF2ZrF4U235 = new Material(
+			"Reactor Salt LiFBeF2ZrF4U235", //Material Name
+			new short[]{50, 70, 15, 0}, //Material Colour
+			590, //Melting Point in C
+			890, //Boiling Point in C
+			150, //Protons
+			150, //Neutrons
+			true, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().LITHIUM7, 1),
+					new MaterialStack(ELEMENT.getInstance().BERYLLIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().ZIRCONIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().URANIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().FLUORINE, 6)
+			});
+	
+	public static final Material LiFBeF2ThF4UF4 = new Material(
+			"Reactor Salt LiFBeF2ThF4UF4", //Material Name
+			new short[]{40, 90, 25, 0}, //Material Colour
+			566, //Melting Point in C
+			870, //Boiling Point in C
+			150, //Protons
+			150, //Neutrons
+			true, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().LITHIUM7, 1),
+					new MaterialStack(ELEMENT.getInstance().BERYLLIUM, 1),
+					new MaterialStack(ALLOY.THORIUM_TETRAFLUORIDE, 1),
+					new MaterialStack(ELEMENT.getInstance().URANIUM233, 1),
+					new MaterialStack(ELEMENT.getInstance().FLUORINE, 6)
 			});
 	
 	

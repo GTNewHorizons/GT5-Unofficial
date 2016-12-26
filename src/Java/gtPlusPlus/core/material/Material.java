@@ -289,6 +289,14 @@ public class Material {
 	final public ItemStack getFrameBox(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("frameGt"+unlocalizedName, stacksize);
 	}
+	
+	final public ItemStack getCell(int stacksize){
+		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+unlocalizedName, stacksize);
+	}
+	
+	final public ItemStack getNugget(int stacksize){
+		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("nugget"+unlocalizedName, stacksize);
+	}
 
 	final public ItemStack[] getMaterialComposites(){
 		//Utils.LOG_WARNING("Something requested the materials needed for "+localizedName);
@@ -299,7 +307,7 @@ public class Material {
 					//Utils.LOG_WARNING("i:"+i);
 					ItemStack testNull = null;
 					try {
-						testNull = vMaterialInput.get(i).getDustStack();
+						testNull = vMaterialInput.get(i).getValidStack();
 					} catch (Throwable r){
 						Utils.LOG_WARNING("Failed gathering material stack for "+localizedName+".");
 						Utils.LOG_WARNING("What Failed: Length:"+vMaterialInput.size()+" current:"+i);
@@ -307,7 +315,7 @@ public class Material {
 					try {
 						if (testNull != null){
 							//Utils.LOG_WARNING("not null");
-							temp[i] = vMaterialInput.get(i).getDustStack();
+							temp[i] = vMaterialInput.get(i).getValidStack();
 						}
 					} catch (Throwable r){
 						Utils.LOG_WARNING("Failed setting slot "+i+", using "+localizedName);

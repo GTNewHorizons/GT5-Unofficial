@@ -75,10 +75,10 @@ extends GregtechMeta_MultiBlockBase {
 		aNBT.setInteger("mEfficiency", mEfficiency);
 		aNBT.setInteger("mPollution", mPollution);
 		aNBT.setInteger("mRuntime", mRuntime);
+		aNBT.setInteger("mCasingCount", countCasings());
 		aNBT.setLong("mFluidStored", fluidStored);
 		aNBT.setInteger("mStorageMultiplier", storageMultiplier);
 		aNBT.setLong("mMaxFluidStored", maximumFluidStorage);
-		aNBT.setInteger("mCasingCount", multiblockCasingCount);
 
 		if (mOutputItems != null) for (int i = 0; i < mOutputItems.length; i++)
 			if (mOutputItems[i] != null) {
@@ -102,14 +102,13 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	private short getStorageMultiplier(){
-		int tempstorageMultiplier = (1*multiblockCasingCount);
+		int tempstorageMultiplier = (1*countCasings());
 		if (tempstorageMultiplier <= 0){
 			if (this != null){
 				if (this.getBaseMetaTileEntity() != null){
 					if (this.getBaseMetaTileEntity().getWorld() != null){
-						Utils.LOG_INFO("Invalid Storage Multiplier. "+multiblockCasingCount);
-						checkMachine(this.getBaseMetaTileEntity(), null);
-						return 0;
+						Utils.LOG_INFO("Invalid Storage Multiplier. "+countCasings());
+						return (short) countCasings();
 					}
 				}	
 			}
@@ -140,10 +139,10 @@ extends GregtechMeta_MultiBlockBase {
 		mEfficiency = aNBT.getInteger("mEfficiency");
 		mPollution = aNBT.getInteger("mPollution");
 		mRuntime = aNBT.getInteger("mRuntime");
+		multiblockCasingCount = aNBT.getInteger("mCasingCount");
 		fluidStored = aNBT.getLong("mFluidStored");
 		storageMultiplier = aNBT.getInteger("mStorageMultiplier");
 		maximumFluidStorage = aNBT.getLong("mMaxFluidStored");
-		multiblockCasingCount = aNBT.getInteger("mCasingCount");
 		mOutputItems = new ItemStack[getAmountOfOutputs()];
 		for (int i = 0; i < mOutputItems.length; i++) mOutputItems[i] = GT_Utility.loadItem(aNBT, "mOutputItem" + i);
 		mOutputFluids = new FluidStack[getAmountOfOutputs()];
@@ -410,6 +409,64 @@ extends GregtechMeta_MultiBlockBase {
 		Utils.LOG_INFO("Your Multitank can be 20 blocks tall.");
 		Utils.LOG_INFO("Casings Count: "+tAmount+" Valid Multiblock: "+(tAmount >= 16)+" Tank Storage Capacity:"+getMaximumTankStorage()+"L");
 		return tAmount >= 16;
+	}
+	
+	public int countCasings() {
+		if (this.getBaseMetaTileEntity().getWorld() == null){
+			return 0;
+		}		
+		int xDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetX;
+		int zDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetZ;
+		if (!this.getBaseMetaTileEntity().getAirOffset(xDir, 0, zDir)) {
+			Utils.LOG_WARNING("Must be hollow.");
+			return 0;
+		}
+		int tAmount = 0;
+		for (int i = -1; i < 2; i++) {
+			for (int j = -1; j < 2; j++) {
+				for (int h = -1; h < 19; h++) {
+					if ((h != 0) || (((xDir + i != 0) || (zDir + j != 0)) && ((i != 0) || (j != 0)))) {
+						IGregTechTileEntity tTileEntity = this.getBaseMetaTileEntity().getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
+						if ((!addMaintenanceToMachineList(tTileEntity, 68)) && (!addInputToMachineList(tTileEntity, 68)) && (!addOutputToMachineList(tTileEntity, 68)) && (!addEnergyInputToMachineList(tTileEntity, 68))) {
+							if (this.getBaseMetaTileEntity().getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
+								if (h < 3){
+									Utils.LOG_WARNING("Casing Expected.");
+									return 0;
+								}
+								else if (h >= 3){
+									//Utils.LOG_WARNING("Your Multitank can be 20 blocks tall.");
+								}
+							}
+							if (this.getBaseMetaTileEntity().getMetaIDOffset(xDir + i, h, zDir + j) != 11) {
+								if (h < 3){
+									Utils.LOG_WARNING("Wrong Meta.");
+									return 0;
+								}
+								else if (h >= 3){
+									//Utils.LOG_WARNING("Your Multitank can be 20 blocks tall.");
+								}
+							}
+							if (h < 3){
+								tAmount++;
+							}
+							else if (h >= 3){
+								if (this.getBaseMetaTileEntity().getBlockOffset(xDir + i, h, zDir + j) == Blocks.air || this.getBaseMetaTileEntity().getBlockOffset(xDir + i, h, zDir + j).getUnlocalizedName().contains("residual")){
+									Utils.LOG_WARNING("Found air");
+								}
+								else {
+									Utils.LOG_WARNING("Layer "+(h+2)+" is complete. Adding "+(64000*9)+"L storage to the tank.");
+									tAmount++;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		multiblockCasingCount = tAmount;
+		Utils.LOG_INFO("Your Multitank can be 20 blocks tall.");
+		Utils.LOG_INFO("Casings Count: "+tAmount+" Valid Multiblock: "+(tAmount >= 16)+" Tank Storage Capacity:"+getMaximumTankStorage()+"L");
+		return tAmount;
 	}
 
 	@Override

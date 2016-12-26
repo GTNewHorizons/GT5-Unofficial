@@ -1,11 +1,12 @@
 package gtPlusPlus.core.recipe;
 
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.*;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
@@ -35,6 +36,7 @@ public class RECIPES_GREGTECH {
 		autoclaveRecipes();
 		mixerRecipes();
 		macerationRecipes();
+		centrifugeRecipes();
 		addFuels();
 	}
 
@@ -278,7 +280,7 @@ public class RECIPES_GREGTECH {
 		try {		
 			//Fli2BeF4 + Thorium TetraFluoride = Uranium233
 			CORE.RA.addLFTRRecipe(
-					FluidUtils.getFluidStack("thoriumtetrafluoride", 400), //Fluid input (slot 1)
+					FluidUtils.getFluidStack("molten.thoriumtetrafluoride", 400), //Fluid input (slot 1)
 					FluidUtils.getFluidStack("molten.li2bef4", 1200), //Fluid output (slot 2)
 					FluidUtils.getFluidStack("molten.uranium233", 750), //Output Array of Items - Upto 9,
 					12000*20, //Time in ticks
@@ -399,6 +401,24 @@ public class RECIPES_GREGTECH {
 		
 	}
 	
+	private static void centrifugeRecipes(){
+		GT_Values.RA.addCentrifugeRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("dustThorium", 8),
+				GT_Values.NI,
+				GT_Values.NF,
+				GT_Values.NF,
+				ELEMENT.getInstance().THORIUM232.getDust(2),
+				ELEMENT.getInstance().THORIUM.getDust(5),
+				ELEMENT.getInstance().URANIUM232.getDust(1),
+				GT_Values.NI,
+				GT_Values.NI,
+				GT_Values.NI,
+				new int[]{10000, 10000, 10},
+				500*20,
+				2000);
+		
+	}
+	
 	private static void mixerRecipes(){
 		GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 1), null, null, null, FluidUtils.getFluidStack("oxygen", 288), FluidUtils.getFluidStack("sulfurdioxide", 432), null, 600, 60);
 		GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustUranium233", 2), ItemUtils.getItemStackOfAmountFromOreDict("dustUranium233", 1), null, null, FluidUtils.getFluidStack("hydrofluoricacid", 2000), FluidUtils.getFluidStack("molten.uraniumtetrafluoride", 144*3), null, 3000, 500);
@@ -485,6 +505,25 @@ public class RECIPES_GREGTECH {
 				ItemUtils.getItemStackOfAmountFromOreDict("pelletZirconium", 1),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustZrCl4", 1));
 	}
-
+	
+	public static boolean addPulverisationRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3) {
+		aOutput1 = GT_OreDictUnificator.get(true, aOutput1);
+		aOutput2 = GT_OreDictUnificator.get(true, aOutput2);
+		if ((GT_Utility.isStackInvalid(aInput)) || (GT_Utility.isStackInvalid(aOutput1))){
+			return false;
+		}
+		if (GT_Utility.getContainerItem(aInput, false) == null) {
+			
+			if (GregTech_API.sRecipeFile.get(ConfigCategories.Machines.maceration, aInput, true)) {
+				GT_Utility.addSimpleIC2MachineRecipe(aInput, GT_ModHandler.getMaceratorRecipeList(), null, new Object[] { aOutput1 });
+			}
+			GT_Values.RA.addPulveriserRecipe(aInput, new ItemStack[] {
+					aOutput1, aOutput2, aOutput3 }, 
+					new int[] {10000, 10000, 10000},
+					400,
+					2);
+		}
+		return true;
+	}
 
 }

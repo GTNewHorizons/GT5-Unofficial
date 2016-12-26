@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
@@ -89,6 +90,82 @@ public class RecipeGen_DustGeneration  implements Runnable{
 		}
 		else {
 			Utils.LOG_WARNING("4 Small dust from 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");			
+		}
+		
+		//Melting Shapes to fluid
+		if (GT_Values.RA.addFluidExtractionRecipe(normalDust, //Input
+				null, //Input 2
+				material.getFluid(144), //Fluid Output
+				0, //Chance
+				1*20, //Duration
+				16 //Eu Tick
+				)){
+			Utils.LOG_WARNING("144l fluid extractor from 1 Dust Recipe: "+material.getLocalizedName()+" - Success");
+		}
+		else {
+			Utils.LOG_WARNING("144l fluid extractor from 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");			
+		}	
+		if (GT_Values.RA.addFluidExtractionRecipe(material.getPlate(1), //Input
+				null, //Input 2
+				material.getFluid(144), //Fluid Output
+				0, //Chance
+				1*20, //Duration
+				16 //Eu Tick
+				)){
+			Utils.LOG_WARNING("144l fluid extractor from 1 plate Recipe: "+material.getLocalizedName()+" - Success");
+		}
+		else {
+			Utils.LOG_WARNING("144l fluid extractor from 1 plate Recipe: "+material.getLocalizedName()+" - Failed");			
+		}	
+		if (GT_Values.RA.addFluidExtractionRecipe(material.getNugget(1), //Input
+				null, //Input 2
+				material.getFluid(16), //Fluid Output
+				0, //Chance
+				1*20, //Duration
+				16 //Eu Tick
+				)){
+			Utils.LOG_WARNING("16l fluid extractor from 1 nugget Recipe: "+material.getLocalizedName()+" - Success");
+		}
+		else {
+			Utils.LOG_WARNING("16l fluid extractor from 1 nugget Recipe: "+material.getLocalizedName()+" - Failed");			
+		}
+		
+		//Making Shapes from fluid
+		if (GT_Values.RA.addFluidSolidifierRecipe(
+				ItemList.Shape_Mold_Ingot.get(1), //Item Shape		
+				material.getFluid(144), //Fluid Input
+				material.getIngot(1), //output				
+				1*20, //Duration
+				16 //Eu Tick
+				)){
+			Utils.LOG_WARNING("144l fluid molder for 1 ingot Recipe: "+material.getLocalizedName()+" - Success");
+		}
+		else {
+			Utils.LOG_WARNING("144l fluid molder for 1 ingot Recipe: "+material.getLocalizedName()+" - Failed");			
+		}	
+		if (GT_Values.RA.addFluidSolidifierRecipe(
+				ItemList.Shape_Mold_Plate.get(1), //Item Shape		
+				material.getFluid(144), //Fluid Input
+				material.getPlate(1), //output				
+				1*20, //Duration
+				16 //Eu Tick
+				)){
+			Utils.LOG_WARNING("144l fluid molder for 1 plate Recipe: "+material.getLocalizedName()+" - Success");
+		}
+		else {
+			Utils.LOG_WARNING("144l fluid molder for 1 plate Recipe: "+material.getLocalizedName()+" - Failed");			
+		}
+		if (GT_Values.RA.addFluidSolidifierRecipe(
+				ItemList.Shape_Mold_Nugget.get(1), //Item Shape		
+				material.getFluid(16), //Fluid Input
+				material.getNugget(1), //output				
+				1*20, //Duration
+				16 //Eu Tick
+				)){
+			Utils.LOG_WARNING("16l fluid molder for 1 nugget Recipe: "+material.getLocalizedName()+" - Success");
+		}
+		else {
+			Utils.LOG_WARNING("16l fluid molder for 1 nugget Recipe: "+material.getLocalizedName()+" - Failed");			
 		}
 
 		//Is this a composite?

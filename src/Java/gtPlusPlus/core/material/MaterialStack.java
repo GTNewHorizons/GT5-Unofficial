@@ -32,6 +32,16 @@ public class MaterialStack {
 		intArr[1]=Integer.parseInt(arr[1]);
 		return intArr;
 	}
+	
+	public ItemStack getValidStack(){
+		if (this.stackMaterial.getDust(1) == null){
+			if (this.stackMaterial.getCell(1) == null){
+				return null;
+			}
+			return this.stackMaterial.getCell(this.vAmount[0]);
+		}
+		return this.stackMaterial.getDust(this.vAmount[0]);
+	}
 
 	public ItemStack getDustStack(){
 		return this.stackMaterial.getDust(this.vAmount[0]);

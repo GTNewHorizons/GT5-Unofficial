@@ -3,8 +3,7 @@ package gtPlusPlus.xmod.gregtech.loaders;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.material.Material;
-import gtPlusPlus.core.material.MaterialStack;
+import gtPlusPlus.core.material.*;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 
@@ -30,6 +29,19 @@ public class RecipeGen_BlastSmelter  implements Runnable{
 		//Add a Blast Smelting Recipe, Let's go!			
 		ItemStack tStack;
 		if (null != (tStack = M.getDust(1))) {
+			
+			Material[] badMaterials = {
+				ALLOY.THORIUM_HEXAFLUORIDE,
+				ALLOY.THORIUM_TETRAFLUORIDE,
+				ALLOY.BLOODSTEEL,
+				ALLOY.LiFBeF2ThF4UF4,
+				ALLOY.LiFBeF2ZrF4U235
+			};
+			for (Material R : badMaterials){
+				if (M == R){
+					return;
+				}
+			}
 
 			//Prepare some Variables
 			ItemStack[] components;

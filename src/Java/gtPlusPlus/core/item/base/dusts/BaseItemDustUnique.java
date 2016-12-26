@@ -6,6 +6,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.entity.EntityUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.materials.MaterialUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 
 import java.util.List;
@@ -69,13 +70,13 @@ public class BaseItemDustUnique extends Item{
 	public String getItemStackDisplayName(ItemStack iStack) {
 
 		if (getUnlocalizedName().contains("DustTiny")){
-			name = "Tiny Pile of "+materialName + " Dust";
+			name = "Tiny Pile of "+MaterialUtils.subscript(materialName) + " Dust";
 		}
 		else if (getUnlocalizedName().contains("DustSmall")){
-			name = "Small Pile of "+materialName + " Dust";
+			name = "Small Pile of "+MaterialUtils.subscript(materialName) + " Dust";
 		}
 		else {
-			name = materialName + " Dust";
+			name = MaterialUtils.subscript(materialName) + " Dust";
 		}
 		return name;
 	}
@@ -90,13 +91,13 @@ public class BaseItemDustUnique extends Item{
 	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
 		//if (pileType != null && materialName != null && pileType != "" && materialName != "" && !pileType.equals("") && !materialName.equals("")){
 		if (getUnlocalizedName().contains("DustTiny")){
-			list.add(EnumChatFormatting.GRAY+"A tiny pile of " + materialName + " dust.");	
+			list.add(EnumChatFormatting.GRAY+"A tiny pile of " + MaterialUtils.subscript(materialName) + " dust.");	
 		}
 		else if (getUnlocalizedName().contains("DustSmall")){
-			list.add(EnumChatFormatting.GRAY+"A small pile of " + materialName + " dust.");	
+			list.add(EnumChatFormatting.GRAY+"A small pile of " + MaterialUtils.subscript(materialName) + " dust.");	
 		}
 		else {
-			list.add(EnumChatFormatting.GRAY+"A pile of " + materialName + " dust.");
+			list.add(EnumChatFormatting.GRAY+"A pile of " + MaterialUtils.subscript(materialName) + " dust.");
 		}
 		if (sRadiation > 0){
 			list.add(CORE.GT_Tooltip_Radioactive);
@@ -106,7 +107,7 @@ public class BaseItemDustUnique extends Item{
 	}
 
 	public final String getMaterialName() {
-		return materialName;
+		return MaterialUtils.subscript(materialName);
 	}
 
 	@Override

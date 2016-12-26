@@ -41,7 +41,7 @@ public class MaterialGenerator {
 
 		int sRadiation = 0;
 		if (ItemUtils.isRadioactive(materialName)){
-			sRadiation = ItemUtils.getRadioactivityLevel(materialName);
+			sRadiation = matInfo.vRadioationLevel;
 		}
 
 		if (generateEverything == true){		
@@ -103,8 +103,7 @@ public class MaterialGenerator {
 		RecipeGen_Extruder.generateRecipes(matInfo);
 		RecipeGen_ShapedCrafting.generateRecipes(matInfo);
 		RecipeGen_DustGeneration.generateRecipes(matInfo);
-		if (matInfo != ALLOY.ENERGYCRYSTAL && matInfo != ALLOY.BLOODSTEEL)
-			RecipeGen_BlastSmelter.generateARecipe(matInfo);	
+		RecipeGen_BlastSmelter.generateARecipe(matInfo);	
 
 	}
 

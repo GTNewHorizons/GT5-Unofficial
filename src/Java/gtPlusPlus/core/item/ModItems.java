@@ -25,6 +25,7 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.debug.DEBUG_INIT;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.materials.MaterialUtils;
 import net.minecraft.item.*;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.util.EnumChatFormatting;
@@ -172,6 +173,11 @@ public final class ModItems {
 	public static Item dustCookedZrCl4;
 	public static Item dustZrF4;
 
+	public static Item dustNaBF4NaF;
+	public static Item dustLiFBeF2ZrF4UF4;
+	public static Item dustLiFBeF2ZrF4U235;
+	public static Item dustLiFBeF2ThF4UF4;
+
 
 
 	//@SuppressWarnings("unused")
@@ -242,6 +248,8 @@ public final class ModItems {
 			//neutron cross-section of lithium-7 (about 45 millibarns) makes high separation of lithium-7 from natural lithium a 
 			//strong requirement for the possible use in lithium fluoride reactors.
 			MaterialGenerator.generate(ELEMENT.getInstance().LITHIUM7, false);
+			//Thorium-232 is the most stable isotope of Thorium, purified for nuclear fuel use in this case.
+			MaterialGenerator.generate(ELEMENT.getInstance().THORIUM232, false);
 			//Production of 233U (through the neutron irradiation of 232Th) invariably produces small amounts of 232U as an impurity
 			//because of parasitic (n,2n) reactions on uranium-233 itself, or on protactinium-233, or on thorium-232:
 			MaterialGenerator.generate(ELEMENT.getInstance().URANIUM232);
@@ -249,7 +257,6 @@ public final class ModItems {
 			MaterialGenerator.generate(ELEMENT.getInstance().URANIUM233);			
 			//Zirconium - Because Greg himself never added it.
 			MaterialGenerator.generate(ELEMENT.getInstance().ZIRCONIUM);
-
 
 
 			//Carbides - Tungsten Carbide exists in .09 so don't generate it. - Should still come before alloys though
@@ -262,6 +269,14 @@ public final class ModItems {
 			MaterialGenerator.generate(ALLOY.NIOBIUM_CARBIDE);	
 
 
+			//Generate Fluorides
+			MaterialGenerator.generate(ALLOY.THORIUM_HEXAFLUORIDE, false);
+			MaterialGenerator.generate(ALLOY.THORIUM_TETRAFLUORIDE, false);
+			
+			//Generate Reactor Fuel Salts
+			MaterialGenerator.generate(ALLOY.LiFBeF2ZrF4U235, false);
+			MaterialGenerator.generate(ALLOY.LiFBeF2ThF4UF4, false);
+			
 
 			//Generate some Alloys
 
@@ -375,15 +390,26 @@ public final class ModItems {
 
 		//Zirconium
 		//Cinter Pellet.
-		itemZirconiumChlorideCinterPellet = new CoreItem("itemZirconiumPellet", "Zirconium Pellet", tabMisc).setTextureName(CORE.MODID + ":itemShard");
+		itemZirconiumChlorideCinterPellet = new CoreItem("itemZirconiumPellet", "Zirconium Pellet ["+MaterialUtils.subscript("ZrCl4")+"]", tabMisc).setTextureName(CORE.MODID + ":itemShard");
 		GT_OreDictUnificator.registerOre("pelletZirconium", new ItemStack(itemZirconiumChlorideCinterPellet));
 		//Zirconium Chloride
 		dustZrCl4 = ItemUtils.generateSpecialUseDusts("ZrCl4", "ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; //http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
 		dustCookedZrCl4 = ItemUtils.generateSpecialUseDusts("CookedZrCl4", "Cooked ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; //http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
 		//Zirconium Tetrafluoride
 		dustZrF4 = ItemUtils.generateSpecialUseDusts("ZrF4", "ZrF4", Utils.rgbtoHexValue(170, 170, 170))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
+
+		//Coolant Salt
+		//NaBF4 - NaF - 621C
+		dustNaBF4NaF = ItemUtils.generateSpecialUseDusts("NaBF4NaF", "NaBF4NaF", Utils.rgbtoHexValue(170, 170, 170))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
+		//Fuel Salt
+		//7LiF - BeF2 - ZrF4 - UF4 - 650C
+		dustLiFBeF2ZrF4UF4 = ItemUtils.generateSpecialUseDusts("LiFBeF2ZrF4UF4", "LiFBeF2ZrF4UF4", Utils.rgbtoHexValue(170, 170, 170))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
+		//7LiF - BeF2 - ZrF4 - U235 - 590C
+		dustLiFBeF2ZrF4U235 = ItemUtils.generateSpecialUseDusts("LiFBeF2ZrF4U235", "LiFBeF2ZrF4U235", Utils.rgbtoHexValue(170, 170, 170))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
+		//7liF - BeF2 - ThF4 - UF4 - 566C
+		dustLiFBeF2ThF4UF4 = ItemUtils.generateSpecialUseDusts("LiFBeF2ThF4UF4", "LiFBeF2ThF4UF4", Utils.rgbtoHexValue(170, 170, 170))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
 		
-		
+
 		//Test items
 		metaItem2 = new BaseEuItem();
 		metaItem2.registerItem(0, EnumChatFormatting.BLACK+"Test Item 0", 0, 0, "I am 0.");
