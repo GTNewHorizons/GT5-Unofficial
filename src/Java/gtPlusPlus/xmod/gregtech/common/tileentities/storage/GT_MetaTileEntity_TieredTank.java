@@ -12,15 +12,28 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GT_MetaTileEntity_TieredTank
 extends GT_MetaTileEntity_BasicTank {
 
-	private NBTTagCompound mRecipeStuff;
+	@Override
+	public void closeInventory() {
+		tryForceNBTUpdate();
+		super.closeInventory();
+	}
+
+	@Override
+	public boolean onWrenchRightClick(byte aSide, byte aWrenchingSide,
+			EntityPlayer aPlayer, float aX, float aY, float aZ) {
+		tryForceNBTUpdate();
+		return super.onWrenchRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ);
+	}
+
 	private String mFluidName;
 	private int mFluidAmount;
-	private FluidStack mInternalTank;
+	private NBTTagCompound internalCraftingComponentsTag;
 
 	public GT_MetaTileEntity_TieredTank(int aID, String aName, String aNameRegional, int aTier) {
 		super(aID, aName, aNameRegional, aTier, 3, "Stores " + ((int) (Math.pow(2, aTier) * 32000)) + "L of fluid");
@@ -40,46 +53,6 @@ extends GT_MetaTileEntity_BasicTank {
 		return aSide == 1 ? new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER_ACTIVE)} : new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER)};
 	}
 
-	
-	private boolean setVars(){
-		if (mRecipeStuff == null){
-			mRecipeStuff = new NBTTagCompound();
-		}
-		Utils.LOG_INFO("setting Vars.");
-		if (mFluidName.equals("") || !mFluidName.equals(null)){
-			if (mFluid != null)	mFluidName = mFluid.getFluid().getName();
-		}
-		else{
-			if (mFluid != null){
-				mInternalTank = mFluid;
-				if (!mFluidName.equalsIgnoreCase(mFluid.getFluid().getName())){
-					mFluidName = mFluid.getFluid().getName();
-				}
-			}
-			else {
-				// Leave Values Blank.	
-				return false;
-			}
-		}
-
-		if (mFluidAmount <= 0){
-			if (mFluid != null)	mFluidAmount = mFluid.amount;
-		}
-		else {
-			if (mFluid != null){
-				if (mFluidAmount != mFluid.amount){
-					mFluidAmount = mFluid.amount;
-				}
-			}
-			else {
-				// Leave Values Blank.	
-				return false;
-			}
-		}
-		return true;
-	}
-	
-
 	@Override
 	public String[] getDescription() {
 		//setVars();
@@ -93,38 +66,116 @@ extends GT_MetaTileEntity_BasicTank {
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 		super.saveNBTData(aNBT);
-		setVars();
-		NBTTagCompound lRecipeStuff = new NBTTagCompound();
-		if (lRecipeStuff != null){
-			lRecipeStuff.setString("mFluidName", mFluidName);		
-			lRecipeStuff.setInteger("mFluidAmount", mFluidAmount);
-			Utils.LOG_INFO(mFluidName+" Amount: "+mFluidAmount+"L");
-			
-		}
 		//Utils.LOG_INFO(mFluidName+" Amxount: "+mFluidAmount+"L");
-		aNBT.setTag("GT.CraftingComponents", lRecipeStuff);
+		//aNBT.setTag("GT.CraftingComponents", lRecipeStuff);
+		NBTTagCompound gtCraftingComponentsTag = aNBT.getCompoundTag("GT.CraftingComponents");
+
+		if (gtCraftingComponentsTag != null){
+			Utils.LOG_INFO("Got Crafting Tag");
+			if (gtCraftingComponentsTag.hasNoTags()){
+				Utils.LOG_INFO("Crafting Tag has no tags");	
+				if (mFluid != null){
+					Utils.LOG_INFO("mFluid was not null, Saving TileEntity NBT data.");
+					gtCraftingComponentsTag.setInteger("xAmount", mFluid.amount);
+					gtCraftingComponentsTag.setString("xFluid", mFluid.getFluid().getName());
+
+					//Backup the current tag
+					gtCraftingComponentsTag.setTag("backupTag", internalCraftingComponentsTag);
+					internalCraftingComponentsTag = gtCraftingComponentsTag;
+
+					aNBT.setTag("GT.CraftingComponents", gtCraftingComponentsTag);
+				}
+			}
+			else {
+				Utils.LOG_INFO("Crafting Tag has tags");	
+				if (mFluid != null){
+					Utils.LOG_INFO("mFluid was not null, Saving TileEntity NBT data.");
+					gtCraftingComponentsTag.setInteger("xAmount", mFluid.amount);
+					gtCraftingComponentsTag.setString("xFluid", mFluid.getFluid().getName());
+
+					//Backup the current tag
+					gtCraftingComponentsTag.setTag("backupTag", internalCraftingComponentsTag);
+					internalCraftingComponentsTag = gtCraftingComponentsTag;
+
+					aNBT.setTag("GT.CraftingComponents", gtCraftingComponentsTag);
+				}
+			}
+		}
+
+
 	}
 
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);  	
-		mRecipeStuff = aNBT.getCompoundTag("GT.CraftingComponents");
-		mFluidName = mRecipeStuff.getString("mFluidName");
-		mFluidAmount = mRecipeStuff.getInteger("mFluidAmount");
-		//mInternalTank = mFluid;
-		mFluid = FluidUtils.getFluidStack(mFluidName, mFluidAmount);
-		setItemNBT(aNBT);
+		NBTTagCompound gtCraftingComponentsTag = aNBT.getCompoundTag("GT.CraftingComponents");
+		String xFluid = null;
+		int xAmount = 0;
+		if (gtCraftingComponentsTag.hasNoTags()){
+			if (mFluid != null){
+				Utils.LOG_INFO("mFluid was not null, Creating TileEntity NBT data.");
+				gtCraftingComponentsTag.setInteger("xAmount", mFluid.amount);
+				gtCraftingComponentsTag.setString("xFluid", mFluid.getFluid().getName());
+				aNBT.setTag("GT.CraftingComponents", gtCraftingComponentsTag);
+			}
+		}
+		else {
+
+			internalCraftingComponentsTag = gtCraftingComponentsTag.getCompoundTag("backupTag");
+
+			if (gtCraftingComponentsTag.hasKey("xFluid")){
+				Utils.LOG_INFO("xFluid was not null, Loading TileEntity NBT data.");
+				xFluid = gtCraftingComponentsTag.getString("xFluid");
+			}
+			if (gtCraftingComponentsTag.hasKey("xAmount")){
+				Utils.LOG_INFO("xAmount was not null, Loading TileEntity NBT data.");
+				xAmount = gtCraftingComponentsTag.getInteger("xAmount");
+			}
+			if (xFluid != null && xAmount != 0){
+				Utils.LOG_INFO("Setting Internal Tank, loading "+xAmount+"L of "+xFluid);
+				setInternalTank(xFluid, xAmount);
+			}
+		}
+
+	}
+
+	private boolean setInternalTank(String fluidName, int amount){
+		FluidStack temp = FluidUtils.getFluidStack(fluidName, amount);
+		if (temp != null){
+			if (mFluid == null){
+				mFluid = temp;
+				Utils.LOG_INFO(temp.getFluid().getName()+" Amount: "+temp.amount+"L");
+			}
+			else{
+				Utils.LOG_INFO("Retained Fluid.");
+				Utils.LOG_INFO(mFluid.getFluid().getName()+" Amxount: "+mFluid.amount+"L");
+			}
+			markDirty();
+			return true;
+		}
+		return false;
+
+
+	}
+
+	@Override
+	public FluidStack drain(int maxDrain, boolean doDrain) {
+		tryForceNBTUpdate();
+		return super.drain(maxDrain, doDrain);
+	}
+
+	@Override
+	public int fill(FluidStack aFluid, boolean doFill) {
+		tryForceNBTUpdate();
+		return super.fill(aFluid, doFill);
 	}
 
 	@Override
 	public void setItemNBT(NBTTagCompound aNBT) {
 		super.setItemNBT(aNBT);
-		NBTTagCompound lRecipeStuff = new NBTTagCompound();
-		if (lRecipeStuff != null){
-			lRecipeStuff.setString("mFluidName", mFluidName);		
-			lRecipeStuff.setInteger("mFluidAmount", mFluidAmount);
-		}
-		aNBT.setTag("GT.CraftingComponents", lRecipeStuff);
+		Utils.LOG_INFO("setItemNBT");
+		//aNBT.setTag("GT.CraftingComponents", lRecipeStuff);
+
 	}
 
 
@@ -135,8 +186,14 @@ extends GT_MetaTileEntity_BasicTank {
 			return true;
 		}
 		aBaseMetaTileEntity.openGUI(aPlayer);
-		setVars();
+		tryForceNBTUpdate();
 		return true;
+	}
+
+	@Override
+	public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+		super.onLeftclick(aBaseMetaTileEntity, aPlayer);
+		tryForceNBTUpdate();
 	}
 
 	@Override
@@ -230,14 +287,100 @@ extends GT_MetaTileEntity_BasicTank {
 
 	@Override
 	public void onMachineBlockUpdate() {
-		this.getBaseMetaTileEntity().markDirty();
+		tryForceNBTUpdate();
 		super.onMachineBlockUpdate();
 	}
 
 	@Override
 	public void onRemoval() {
-		this.getBaseMetaTileEntity().markDirty();
+		tryForceNBTUpdate();
 		super.onRemoval();
+	}
+
+	@Override
+	public void onCloseGUI() {
+		super.onCloseGUI();
+		tryForceNBTUpdate();
+	}
+
+	@Override
+	public FluidStack drain(ForgeDirection aSide, FluidStack aFluid, boolean doDrain) {
+		tryForceNBTUpdate();
+		return super.drain(aSide, aFluid, doDrain);
+	}
+
+	@Override
+	public FluidStack drain(ForgeDirection aSide, int maxDrain, boolean doDrain) {
+		tryForceNBTUpdate();
+		return super.drain(aSide, maxDrain, doDrain);
+	}
+
+	@Override
+	public int fill(ForgeDirection arg0, FluidStack arg1, boolean arg2) {
+		tryForceNBTUpdate();
+		return super.fill(arg0, arg1, arg2);
+	}
+
+	@Override
+	public int fill_default(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
+		tryForceNBTUpdate();
+		return super.fill_default(aSide, aFluid, doFill);
+	}
+
+	private static int mInternalSaveClock = 0;
+
+	@Override
+	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+		super.onPostTick(aBaseMetaTileEntity, aTick);
+
+		if (mInternalSaveClock != 20){
+			mInternalSaveClock++;
+		}
+		else {
+			mInternalSaveClock = 0;
+			//tryForceNBTUpdate();
+		}
+
+	}
+
+	private void tryForceNBTUpdate(){
+
+		//Block is invalid.
+		if (this == null || this.getBaseMetaTileEntity() == null){
+			Utils.LOG_INFO("Block was not valid for saving data.");
+			return;
+		}
+
+		//Don't need this to run clientside.
+		if (!this.getBaseMetaTileEntity().isServerSide()) {
+			return;
+		}
+
+		//Internal Tag was not valid.
+		if (internalCraftingComponentsTag.hasNoTags() || internalCraftingComponentsTag == null){
+			Utils.LOG_INFO("Internal NBT data tag was not valid.");
+			return;
+		}		
+
+		//Internal tag was valid and contains tags.
+		if (!this.internalCraftingComponentsTag.hasNoTags()){
+			Utils.LOG_INFO("Found tags to save.");
+			saveNBTData(internalCraftingComponentsTag);
+		}
+		//Internal tag has no tags.
+		else {
+			Utils.LOG_INFO("Found no tags to save.");			
+		}
+
+		//Mark block for update
+		int x,y,z = 0;
+		x = this.getBaseMetaTileEntity().getXCoord();
+		y = this.getBaseMetaTileEntity().getYCoord();
+		z = this.getBaseMetaTileEntity().getZCoord();
+		this.getBaseMetaTileEntity().getWorld().markBlockForUpdate(x, y, z);
+
+		//Mark block dirty, let chunk know it's data has changed and it must be saved to disk. (Albeit slowly)
+		this.getBaseMetaTileEntity().markDirty();		
 	}
 
 }
