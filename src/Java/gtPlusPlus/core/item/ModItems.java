@@ -180,6 +180,8 @@ public final class ModItems {
 	public static Item dustLiFBeF2ZrF4U235;
 	public static Item dustLiFBeF2ThF4UF4;
 
+	private static Item dustCalciumSulfate;
+
 
 
 	//@SuppressWarnings("unused")
@@ -387,6 +389,13 @@ public final class ModItems {
 		}
 		dustCalciumHydroxide = ItemUtils.generateSpecialUseDusts("CalciumHydroxide", "Hydrated Lime", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_hydroxide
 		dustCalciumCarbonate = ItemUtils.generateSpecialUseDusts("CalciumCarbonate", "Calcium Carbonate", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_carbonate
+		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGypsum", 1) == null || ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustCalciumSulfate", 1) == null){
+			dustCalciumSulfate = ItemUtils.generateSpecialUseDusts("Gypsum", "Calcium Sulfate (Gypsum)", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_sulfate
+			GT_OreDictUnificator.registerOre("dustCalciumSulfate", ItemUtils.getSimpleStack(dustCalciumSulfate));
+			}	
+		else {
+			GT_OreDictUnificator.registerOre("dustCalciumSulfate", ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGypsum", 1));
+		}
 		dustLi2CO3CaOH2 = ItemUtils.generateSpecialUseDusts("Li2CO3CaOH2", "Li2CO3 + Ca(OH)2 Compound", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_carbonate
 
 		//FLiBe Fuel Compounds

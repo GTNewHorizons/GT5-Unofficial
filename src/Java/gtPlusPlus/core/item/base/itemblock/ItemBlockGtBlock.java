@@ -1,6 +1,7 @@
 package gtPlusPlus.core.item.base.itemblock;
 
 import gregtech.api.util.GT_OreDictUnificator;
+import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.block.base.BlockBaseModular;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.entity.EntityUtils;
@@ -20,8 +21,15 @@ public class ItemBlockGtBlock extends ItemBlock{
 	protected final int blockColour;
 	protected final int sRadiation;
 	
+	private boolean isFluorite = false;
+	
 	public ItemBlockGtBlock(Block block) {
 		super(block);
+		
+		if (block == ModBlocks.blockOreFluorite){
+			isFluorite = true;
+		}
+		
 		BlockBaseModular baseBlock = (BlockBaseModular) block;
 		this.blockColour = baseBlock.getRenderColor(0);
 		if (block.getLocalizedName().toLowerCase().contains("uranium") || block.getLocalizedName().toLowerCase().contains("plutonium") || block.getLocalizedName().toLowerCase().contains("thorium")){
@@ -41,6 +49,9 @@ public class ItemBlockGtBlock extends ItemBlock{
 	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
 			if (sRadiation > 0){
 				list.add(CORE.GT_Tooltip_Radioactive);
+			}			
+			if (isFluorite){
+				list.add("Mined from Sandstone and Limestone.");				
 			}
 		super.addInformation(stack, aPlayer, list, bool);
 	}

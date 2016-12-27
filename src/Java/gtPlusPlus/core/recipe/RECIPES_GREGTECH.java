@@ -294,6 +294,30 @@ public class RECIPES_GREGTECH {
 						500); //EU	
 
 			}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+			
+			//CaF2 + H2SO4 → CaSO4(solid) + 2 HF
+			try {
+				
+				CORE.RA.addDehydratorRecipe(
+						new ItemStack[]{
+								ItemUtils.getItemStackOfAmountFromOreDict("dustFluorite", 37),
+								ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 16)
+						}, //Item input (Array, up to 2)
+						FluidUtils.getFluidStack("sulfuricacid", 56*144), //Fluid input (slot 1)
+						null, //Fluid output (slot 2)
+						new ItemStack[]{
+							ItemUtils.getItemStackOfAmountFromOreDict("dustCalciumSulfate", 30),
+							ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 16),
+							ItemUtils.getItemStackOfAmountFromOreDict("dustSilver", 1),
+							ItemUtils.getItemStackOfAmountFromOreDict("dustGold", 2),
+							ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 1),
+							ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 2)
+						}, //Output Array of Items - Upto 9,
+						new int[]{0, 0, 100, 100, 100, 100},
+						170*20, //Time in ticks
+						230); //EU	
+
+			}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 		}
 		
 	}
