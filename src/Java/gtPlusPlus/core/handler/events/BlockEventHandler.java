@@ -1,5 +1,7 @@
 package gtPlusPlus.core.handler.events;
 
+import static gtPlusPlus.core.lib.CORE.configSwitches.chanceToDropDrainedShard;
+import static gtPlusPlus.core.lib.CORE.configSwitches.chanceToDropFluoriteOre;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.LoadedMods;
@@ -75,9 +77,9 @@ public class BlockEventHandler {
 	public void harvestDrops(BlockEvent.HarvestDropsEvent event) {
 		//Spawn Dull Shards (Can spawn from Tree Logs, Grass or Stone. Stone going to be the most common source.)
 		if ((event.block == Blocks.stone || event.block == Blocks.sandstone || event.block == Blocks.log || event.block == Blocks.log2 || event.block == Blocks.grass) 
-				&& !LoadedMods.Thaumcraft) {
+				&& !LoadedMods.Thaumcraft && chanceToDropDrainedShard != 0) {
 			//small chance for one to spawn per stone mined. 1 per 3 stacks~ //TODO MAKE A CONFIG OPTION
-			if (MathUtils.randInt(1, 196) == 1){
+			if (MathUtils.randInt(1, chanceToDropDrainedShard) == 1){
 				//Let's sort out a lucky charm for the player.
 				int FancyChance = MathUtils.randInt(1, 4);
 				if (MathUtils.randInt(1, 100) < 90){
@@ -101,16 +103,17 @@ public class BlockEventHandler {
 				}				
 			}	
 			else {
-				Utils.LOG_INFO("invalid chance");
+				Utils.LOG_WARNING("invalid chance");
 			}
 		}
 		
 		//Spawns Fluorite from Lime Stone
+		if (chanceToDropFluoriteOre != 0){
 		if (!oreLimestone.isEmpty() || !blockLimestone.isEmpty()){
 			if (!oreLimestone.isEmpty())
 			for (ItemStack temp : oreLimestone){
 				if (ItemUtils.getSimpleStack(Item.getItemFromBlock(event.block)) == temp) {
-					if (MathUtils.randInt(1, 32) == 1){
+					if (MathUtils.randInt(1, chanceToDropFluoriteOre) == 1){
 						event.drops.add(fluoriteOre.copy());							
 					}
 				}
@@ -118,18 +121,18 @@ public class BlockEventHandler {
 			if (!oreLimestone.isEmpty())
 				for (ItemStack temp : blockLimestone){
 					if (ItemUtils.getSimpleStack(Item.getItemFromBlock(event.block)) == temp) {
-						if (MathUtils.randInt(1, 32) == 1){
+						if (MathUtils.randInt(1, chanceToDropFluoriteOre) == 1){
 							event.drops.add(fluoriteOre.copy());							
 						}
 					}
 				}
 		}
 		if (event.block == Blocks.sandstone){
-			if (MathUtils.randInt(1, 640) == 1){
+			if (MathUtils.randInt(1, chanceToDropFluoriteOre*20) == 1){
 				event.drops.add(fluoriteOre.copy());							
 			}
 		}
-		//}
+		}
 	}
 
 	@SubscribeEvent

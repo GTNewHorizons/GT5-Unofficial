@@ -69,6 +69,10 @@ implements ActionListener
 		//Pipes & Cables
 		CORE.configSwitches.enableCustom_Pipes = config.getBoolean("enableCustom_Pipes", "gregtech", true, "Adds Custom GT Fluid Pipes.");
 		CORE.configSwitches.enableCustom_Cables = config.getBoolean("enableCustom_Cables", "gregtech", true, "Adds Custom GT Cables.");
+			
+		//Block Drops
+		CORE.configSwitches.chanceToDropDrainedShard = config.getInt("chanceToDropDrainedShard", "blockdrops", 196, 0, 10000, "Drained shards have a 1 in X chance to drop.");
+		CORE.configSwitches.chanceToDropFluoriteOre = config.getInt("chanceToDropFluoriteOre", "blockdrops", 32, 0, 10000, "Fluorite Ore has a 1 in X chance to drop from Limestone and a 1 in X*20 from Sandstone..");
 				
 		
 		//Single machines

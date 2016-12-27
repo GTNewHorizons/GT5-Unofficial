@@ -82,6 +82,10 @@ public class CORE {
 		public static boolean enableSkookumChoochers = true;
 		public static boolean enableMultiSizeTools = true;
 		
+		//Block Drops
+		public static int chanceToDropDrainedShard = 196;
+		public static int chanceToDropFluoriteOre = 32;
+		
 		//Machine Related
 		public static boolean enableAlternativeBatteryAlloy = false;
 		public static boolean enableThaumcraftShardUnification = false;
