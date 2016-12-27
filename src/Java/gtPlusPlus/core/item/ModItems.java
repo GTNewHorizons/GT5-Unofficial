@@ -376,14 +376,8 @@ public final class ModItems {
 
 
 
-		//Nuclear Fuel Dusts
-		//dustUraniumTetraFluoride = ItemUtils.generateSpecialUseDusts("UraniumTetrafluoride", "Uranium Tetrafluoride", Utils.rgbtoHexValue(17, 179, 42))[0];
-		//dustUraniumHexaFluoride = ItemUtils.generateSpecialUseDusts("UraniumHexafluoride", "Uranium Hexafluoride", Utils.rgbtoHexValue(9, 199, 32))[0];
-
-		//dustBerylliumFluoride = ItemUtils.generateSpecialUseDusts("BerylliumFluoride", "Beryllium Fluoride", Utils.rgbtoHexValue(175, 175, 175))[0]; //https://en.wikipedia.org/wiki/Beryllium_fluoride
-
+		//Nuclear Fuel Dusts		
 		dustLithiumCarbonate = ItemUtils.generateSpecialUseDusts("LithiumCarbonate", "Lithium Carbonate", Utils.rgbtoHexValue(240, 240, 240))[0]; //https://en.wikipedia.org/wiki/Lithium_carbonate
-		//dustLithiumFluoride = ItemUtils.generateSpecialUseDusts("LithiumFluoride", "Lithium Fluoride", Utils.rgbtoHexValue(245, 245, 245))[0]; //https://en.wikipedia.org/wiki/Lithium_fluoride
 		dustLithiumPeroxide = ItemUtils.generateSpecialUseDusts("LithiumPeroxide", "Lithium Peroxide", Utils.rgbtoHexValue(250, 250, 250))[0]; //https://en.wikipedia.org/wiki/Lithium_peroxide
 		dustLithiumHydroxide = ItemUtils.generateSpecialUseDusts("LithiumHydroxide", "Lithium Hydroxide", Utils.rgbtoHexValue(250, 250, 250))[0]; //https://en.wikipedia.org/wiki/Lithium_hydroxide
 
@@ -396,11 +390,7 @@ public final class ModItems {
 
 		//FLiBe Fuel Compounds
 		dustLi2BeF4 = ItemUtils.generateSpecialUseDusts("Li2BeF4", "Li2BeF4 Fuel Compound", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/FLiBe
-		//FluidUtils.generateFluid("UraniumTetrafluoride", "Uranium Tetrafluoride", 4700, new short[]{17, 179, 42, 100});
-		//FluidUtils.generateFluid("UraniumHexafluoride", "Uranium Hexafluoride", 5500, new short[]{9, 199, 32, 100});
-		//FluidUtils.generateFluid("BerylliumFluoride", "Beryllium Fluoride", 3200, new short[]{175, 175, 175, 100});
-		//FluidUtils.generateFluid("LithiumFluoride", "Lithium Fluoride", 2000, new short[]{235, 235, 235, 100});
-		FluidUtils.generateFluid("Li2BeF4", "Reactor Secondary Fuel [Li2BeF4]", 7430, new short[]{255, 255, 255, 100});		
+		FluidUtils.generateFluid("Li2BeF4", "Li2BeF4", 7430, new short[]{255, 255, 255, 100});		
 
 		//Zirconium
 		//Cinter Pellet.
@@ -412,12 +402,13 @@ public final class ModItems {
 		//Zirconium Tetrafluoride
 		dustZrF4 = ItemUtils.generateSpecialUseDusts("ZrF4", "ZrF4", Utils.rgbtoHexValue(170, 170, 170))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
 		GT_OreDictUnificator.registerOre("cellZrF4", ItemUtils.getItemStackOfAmountFromOreDict("cellZirconiumTetrafluoride", 1));
+		GT_OreDictUnificator.registerOre("dustZrF4", ItemUtils.getItemStackOfAmountFromOreDict("dustZirconiumTetrafluoride", 1));
 		GT_OreDictUnificator.registerOre("dustZirconiumTetrafluoride", new ItemStack(ModItems.dustZrF4));
 		FluidUtils.generateFluid("ZirconiumTetrafluoride", "Zirconium Tetrafluoride", 500, new short[]{170, 170, 140, 100});
 		
 		//Coolant Salt
 		//NaBF4 - NaF - 621C
-		dustNaBF4NaF = ItemUtils.generateSpecialUseDusts("NaBF4NaF", "NaBF4NaF", Utils.rgbtoHexValue(45, 45, 90))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
+		/*dustNaBF4NaF = ItemUtils.generateSpecialUseDusts("NaBF4NaF", "NaBF4NaF", Utils.rgbtoHexValue(45, 45, 90))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
 		//Fuel Salt
 		//7LiF - BeF2 - ZrF4 - UF4 - 650C
 		dustLiFBeF2ZrF4UF4 = ItemUtils.generateSpecialUseDusts("LiFBeF2ZrF4UF4", "LiF-BeF2-ZrF4-UF4", Utils.rgbtoHexValue(35, 90, 25))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
@@ -429,7 +420,7 @@ public final class ModItems {
 		FluidUtils.generateFluid("NaBF4NaF", "NaBF4-NaF", 621, new short[]{45, 45, 90, 100});		
 		FluidUtils.generateFluid("LiFBeF2ZrF4UF4", "LiF-BeF2-ZrF4-UF4", 650, new short[]{35, 90, 25, 100});		
 		FluidUtils.generateFluid("LiFBeF2ZrF4U235", "LiF-BeF2-ZrF4-U235", 590, new short[]{35, 80, 15, 100});		
-		FluidUtils.generateFluid("LiFBeF2ThF4UF4", "LiF-BeF2-ThF4-UF4", 566, new short[]{35, 70, 25, 100});		
+		FluidUtils.generateFluid("LiFBeF2ThF4UF4", "LiF-BeF2-ThF4-UF4", 566, new short[]{35, 70, 25, 100});		*/
 		
 
 		//Test items

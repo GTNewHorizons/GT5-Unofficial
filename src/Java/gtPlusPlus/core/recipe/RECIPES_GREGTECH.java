@@ -298,6 +298,11 @@ public class RECIPES_GREGTECH {
 	
 	private static void lftrRecipes(){
 		try {		
+			
+			
+			
+		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+		try {
 			//Fli2BeF4 + Thorium TetraFluoride = Uranium233
 			CORE.RA.addLFTRRecipe(
 					FluidUtils.getFluidStack("molten.thoriumtetrafluoride", 400), //Fluid input (slot 1)
@@ -306,7 +311,8 @@ public class RECIPES_GREGTECH {
 					12000*20, //Time in ticks
 					3500); //EU	
 			
-			
+		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+		try {
 			//Fli2BeF4 + Uranium235 = 1x Uranium233
 			CORE.RA.addLFTRRecipe(
 					FluidUtils.getFluidStack("molten.uranium", 144*64), //Fluid input (slot 1)
@@ -314,7 +320,8 @@ public class RECIPES_GREGTECH {
 					FluidUtils.getFluidStack("molten.uraniumhexafluoride", 6*144), //Output Array of Items - Upto 9,
 					120*60*20, //Time in ticks
 					8000); //EU	
-			
+		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+		try {
 			//Fli2BeF4 + Uranium233 TetraFluoride = Uranium233
 			CORE.RA.addLFTRRecipe(
 					FluidUtils.getFluidStack("molten.uraniumtetrafluoride", 200), //Fluid input (slot 1)
