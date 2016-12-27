@@ -15,7 +15,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -89,20 +88,9 @@ public class BaseItemDustUnique extends Item{
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
-		//if (pileType != null && materialName != null && pileType != "" && materialName != "" && !pileType.equals("") && !materialName.equals("")){
-		if (getUnlocalizedName().contains("DustTiny")){
-			list.add(EnumChatFormatting.GRAY+"A tiny pile of " + MaterialUtils.subscript(materialName) + " dust.");	
-		}
-		else if (getUnlocalizedName().contains("DustSmall")){
-			list.add(EnumChatFormatting.GRAY+"A small pile of " + MaterialUtils.subscript(materialName) + " dust.");	
-		}
-		else {
-			list.add(EnumChatFormatting.GRAY+"A pile of " + MaterialUtils.subscript(materialName) + " dust.");
-		}
 		if (sRadiation > 0){
 			list.add(CORE.GT_Tooltip_Radioactive);
 		}
-		//}
 		super.addInformation(stack, aPlayer, list, bool);
 	}
 

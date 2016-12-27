@@ -281,12 +281,12 @@ public class RECIPES_GREGTECH {
 				CORE.RA.addDehydratorRecipe(
 						new ItemStack[]{
 								ItemUtils.getItemStackOfAmountFromOreDict("dustCookedZrCl4", 9),
-								ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 36)
+								ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 9)
 						}, //Item input (Array, up to 2)
 						FluidUtils.getFluidStack("hydrofluoricacid", 9*144), //Fluid input (slot 1)
 						null, //Fluid output (slot 2)
 						new ItemStack[]{
-							ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenChloride", 36),
+							ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenChloride", 9),
 							ItemUtils.getItemStackOfAmountFromOreDict("dustZrF4", 9)
 						}, //Output Array of Items - Upto 9,
 						new int[]{0},
@@ -313,8 +313,8 @@ public class RECIPES_GREGTECH {
 							ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 1),
 							ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 2)
 						}, //Output Array of Items - Upto 9,
-						new int[]{0, 0, 100, 100, 100, 100},
-						170*20, //Time in ticks
+						new int[]{0, 0, 100, 100, 300, 200},
+						10*60*20, //Time in ticks
 						230); //EU	
 
 			}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}

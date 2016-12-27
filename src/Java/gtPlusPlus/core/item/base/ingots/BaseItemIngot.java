@@ -8,14 +8,9 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.entity.EntityUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
-
-import java.util.List;
-
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -54,20 +49,6 @@ public class BaseItemIngot extends Item{
 	public String getItemStackDisplayName(ItemStack p_77653_1_) {
 
 		return (materialName+ " Ingot");
-	}
-
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
-		if (materialName != null && materialName != "" && !materialName.equals("") && !unlocalName.contains("HotIngot")){
-			list.add(EnumChatFormatting.GRAY+"A solid ingot of " + materialName + ".");		
-		}
-		else if (materialName != null && materialName != "" && !materialName.equals("") && unlocalName.toLowerCase().contains("ingothot")){
-			list.add(EnumChatFormatting.GRAY+"Warning: "+EnumChatFormatting.RED+"Very hot! "+EnumChatFormatting.GRAY+" Avoid direct handling..");		
-		}
-		if (sRadiation > 0){
-			list.add(CORE.GT_Tooltip_Radioactive);
-			}
-		super.addInformation(stack, aPlayer, list, bool);
 	}
 
 	public final String getMaterialName() {

@@ -4,14 +4,9 @@ import gregtech.api.enums.GT_Values;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
-
-import java.util.List;
-
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 public class BaseItemIngotHot extends BaseItemIngot{
@@ -33,14 +28,6 @@ public class BaseItemIngotHot extends BaseItemIngot{
 	public String getItemStackDisplayName(ItemStack p_77653_1_) {
 
 		return ("Hot "+materialName+ " Ingot");
-	}
-
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
-		if (materialName != null && materialName != "" && !materialName.equals("")){
-			list.add(EnumChatFormatting.GRAY+"A "+EnumChatFormatting.RED+"burning hot"+EnumChatFormatting.GRAY+" ingot of " + materialName + ".");		
-		}
-		super.addInformation(stack, aPlayer, list, bool);
 	}
 
 	@Override

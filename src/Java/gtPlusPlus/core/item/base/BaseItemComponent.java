@@ -59,7 +59,7 @@ public class BaseItemComponent extends Item{
 	public String getItemStackDisplayName(ItemStack p_77653_1_) {
 
 		if (componentMaterial != null)
-		return (componentMaterial.getLocalizedName()+componentType.DISPLAY_NAME);
+			return (componentMaterial.getLocalizedName()+componentType.DISPLAY_NAME);
 		return materialName+" Cell";
 	}
 
@@ -75,43 +75,46 @@ public class BaseItemComponent extends Item{
 
 
 			if (componentType == ComponentTypes.DUST){			
-				list.add(EnumChatFormatting.GRAY+"A pile of " + materialName + " dust.");
+				//list.add(EnumChatFormatting.GRAY+"A pile of " + materialName + " dust.");
 			}
 			if (componentType == ComponentTypes.INGOT){			
-				list.add(EnumChatFormatting.GRAY+"A solid ingot of " + materialName + ".");	
+				//list.add(EnumChatFormatting.GRAY+"A solid ingot of " + materialName + ".");	
 				if (materialName != null && materialName != "" && !materialName.equals("") && unlocalName.toLowerCase().contains("ingothot")){
 					list.add(EnumChatFormatting.GRAY+"Warning: "+EnumChatFormatting.RED+"Very hot! "+EnumChatFormatting.GRAY+" Avoid direct handling..");		
 				}
 			}
 			if (componentType == ComponentTypes.PLATE){			
-				list.add(EnumChatFormatting.GRAY+"A flat plate of " + materialName + ".");	
+				//list.add(EnumChatFormatting.GRAY+"A flat plate of " + materialName + ".");	
 			}
 			if (componentType == ComponentTypes.PLATEDOUBLE){			
-				list.add(EnumChatFormatting.GRAY+"A double plate of " + materialName + ".");	
+				//list.add(EnumChatFormatting.GRAY+"A double plate of " + materialName + ".");	
 			}
 			if (componentType == ComponentTypes.ROD){			
-				list.add(EnumChatFormatting.GRAY+"A 40cm Rod of " + materialName + ".");	
+				//list.add(EnumChatFormatting.GRAY+"A 40cm Rod of " + materialName + ".");	
 			}
 			if (componentType == ComponentTypes.RODLONG){			
-				list.add(EnumChatFormatting.GRAY+"A 80cm Rod of " + materialName + ".");
+				//list.add(EnumChatFormatting.GRAY+"A 80cm Rod of " + materialName + ".");
 			}
 			if (componentType == ComponentTypes.ROTOR){			
-				list.add(EnumChatFormatting.GRAY+"A Rotor made out of " + materialName + ". ");	
+				//list.add(EnumChatFormatting.GRAY+"A Rotor made out of " + materialName + ". ");	
 			}
 			if (componentType == ComponentTypes.BOLT){			
-				list.add(EnumChatFormatting.GRAY+"A small Bolt, constructed from " + materialName + ".");	
+				//list.add(EnumChatFormatting.GRAY+"A small Bolt, constructed from " + materialName + ".");	
 			}
 			if (componentType == ComponentTypes.SCREW){			
-				list.add(EnumChatFormatting.GRAY+"A 8mm Screw, fabricated out of some " + materialName + ".");	
+				//list.add(EnumChatFormatting.GRAY+"A 8mm Screw, fabricated out of some " + materialName + ".");	
 			}
 			if (componentType == ComponentTypes.GEAR){			
-				list.add(EnumChatFormatting.GRAY+"A large Gear, constructed from " + materialName + ".");
+				//list.add(EnumChatFormatting.GRAY+"A large Gear, constructed from " + materialName + ".");
 			}
 			if (componentType == ComponentTypes.RING){			
-				list.add(EnumChatFormatting.GRAY+"A " + materialName + " Ring.");
-			}
-			if (componentMaterial.isRadioactive){
-				list.add(CORE.GT_Tooltip_Radioactive);
+				//list.add(EnumChatFormatting.GRAY+"A " + materialName + " Ring.");
+			}			
+			if (componentMaterial != null){
+				list.add(componentMaterial.vChemicalFormula);
+				if (componentMaterial.isRadioactive){
+					list.add(CORE.GT_Tooltip_Radioactive);
+				}
 			}
 
 		}
