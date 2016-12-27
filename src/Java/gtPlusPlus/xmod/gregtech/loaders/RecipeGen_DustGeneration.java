@@ -21,8 +21,12 @@ public class RecipeGen_DustGeneration  implements Runnable{
 	public void run() {
 		generateRecipes(toGenerate);		
 	}
-
+	
 	public static void generateRecipes(final Material material){
+		generateRecipes(material, false);
+	}
+
+	public static void generateRecipes(final Material material, boolean disableOptional){
 		final int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 64 : 16;
 
 		Utils.LOG_WARNING("Generating Shaped Crafting recipes for "+material.getLocalizedName()); //TODO
@@ -218,10 +222,17 @@ public class RecipeGen_DustGeneration  implements Runnable{
 		}
 
 		//Macerate blocks back to dusts.
-		GT_ModHandler.addPulverisationRecipe(material.getBlock(1), material.getDust(9));
+		ItemStack materialBlock = material.getBlock(1);
+		ItemStack materialFrameBox = material.getFrameBox(1);
+		
+		if (materialBlock != null)
+		GT_ModHandler.addPulverisationRecipe(materialBlock, material.getDust(9));
+
+		if (materialFrameBox != null)
+		GT_ModHandler.addPulverisationRecipe(materialFrameBox, material.getDust(2));
 		
 		//Is this a composite?
-		if (inputStacks != null){			
+		if (inputStacks != null && !disableOptional){			
 			//Is this a composite?
 			Utils.LOG_INFO("mixer length: "+inputStacks.length);
 			if (inputStacks.length != 0 && inputStacks.length <= 4){								

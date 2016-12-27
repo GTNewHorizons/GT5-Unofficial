@@ -238,7 +238,7 @@ public class Material {
 	final public ItemStack getBlock(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("block"+unlocalizedName, stacksize);
 	}
-
+	
 	final public ItemStack getDust(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dust"+unlocalizedName, stacksize);
 	}

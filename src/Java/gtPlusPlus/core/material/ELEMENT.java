@@ -87,17 +87,13 @@ public final class ELEMENT {
 	public final Material RADON = MaterialUtils.generateMaterialFromGtENUM(Materials.Radon);	
 	public final Material THORIUM = new Material("Thorium", Materials.Thorium.mRGBa, Materials.Thorium.mMeltingPoint, Materials.Thorium.mBlastFurnaceTemp, 90, 142, false, MaterialUtils.superscript("Th"), 1);
 			/*MaterialUtils.generateMaterialFromGtENUM(Materials.Thorium);*/	
-	public final Material URANIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Uranium);	
-	public final Material PLUTONIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Plutonium);
+	public final Material URANIUM238 = MaterialUtils.generateMaterialFromGtENUM(Materials.Uranium);
+	public final Material URANIUM235 = MaterialUtils.generateMaterialFromGtENUM(Materials.Uranium235);	
+	public final Material PLUTONIUM244 = MaterialUtils.generateMaterialFromGtENUM(Materials.Plutonium);
+	public final Material PLUTONIUM241 = MaterialUtils.generateMaterialFromGtENUM(Materials.Plutonium241);
 	
 	
-	//Custom Isotopes
-	public final Material LITHIUM7 = new Material("Lithium 7", Materials.Lithium.mRGBa, Materials.Lithium.mMeltingPoint, Materials.Lithium.mBlastFurnaceTemp, Materials.Lithium.getProtons(), Materials.Lithium.getNeutrons(), Materials.Lithium.mBlastFurnaceRequired, MaterialUtils.superscript("7Li"), 0);//Not a GT Inherited Material
-	public final Material URANIUM232 = new Material("Uranium 232", new short[]{88, 220, 103, 0}, 1132, 4131, 92, 140, false, MaterialUtils.superscript("232U"), 4);//Not a GT Inherited Material
-	public final Material URANIUM233 = new Material("Uranium 233", new short[]{73, 220, 83, 0}, 1132, 4131, 92, 141, false, MaterialUtils.superscript("233U"), 2);//Not a GT Inherited Material
-
-	public final Material THORIUM232 = new Material("Thorium 232", new short[]{15, 60, 15, 0}, Materials.Thorium.mMeltingPoint, Materials.Thorium.mBlastFurnaceTemp, 90, 142, false, MaterialUtils.superscript("232Th"), 1);//Not a GT Inherited Material
-	//public final Material THORIUMTETRAFLUORIDE = new Material("Thorium Tetrafluoride", Materials.Thorium.mRGBa, Materials.Thorium.mMeltingPoint, Materials.Thorium.mBlastFurnaceTemp, Materials.Thorium.getProtons(), Materials.Thorium.getNeutrons(), false, MaterialUtils.superscript("Th"), 1);//Not a GT Inherited Material
+	
 
 
 	//Misc

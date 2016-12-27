@@ -107,4 +107,34 @@ public class MaterialGenerator {
 
 	}
 
+	public static void generateNuclearMaterial(final Material matInfo){	
+		String unlocalizedName = matInfo.getUnlocalizedName();
+		String materialName = matInfo.getLocalizedName();
+		short[] C = matInfo.getRGBA();
+		int Colour = Utils.rgbtoHexValue(C[0], C[1], C[2]);
+
+		int sRadiation = 0;
+		if (matInfo.vRadioationLevel != 0){
+			sRadiation = matInfo.vRadioationLevel;
+		}	
+		
+		Item temp;
+		Block tempBlock;
+		
+		tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
+		temp = new BaseItemIngot("itemIngot"+unlocalizedName, materialName, Colour, sRadiation);
+		temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", 3, sRadiation);
+		temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", 2, sRadiation);
+		temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", 1, sRadiation);
+		temp = new BaseItemNugget(matInfo);
+		temp = new BaseItemPlate(matInfo);
+		temp = new BaseItemPlateDouble(matInfo);
+		
+		RecipeGen_Plates.generateRecipes(matInfo);
+		RecipeGen_Extruder.generateRecipes(matInfo);
+		RecipeGen_ShapedCrafting.generateRecipes(matInfo);
+		RecipeGen_DustGeneration.generateRecipes(matInfo, true);
+	}
+
+
 }

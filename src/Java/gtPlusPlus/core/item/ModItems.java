@@ -21,6 +21,8 @@ import gtPlusPlus.core.item.tool.staballoy.*;
 import gtPlusPlus.core.lib.*;
 import gtPlusPlus.core.lib.CORE.configSwitches;
 import gtPlusPlus.core.material.*;
+import gtPlusPlus.core.material.nuclear.FLUORIDES;
+import gtPlusPlus.core.material.nuclear.NUCLIDE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.debug.DEBUG_INIT;
 import gtPlusPlus.core.util.fluid.FluidUtils;
@@ -242,21 +244,28 @@ public final class ModItems {
 		try{
 
 			//Elements generate first so they can be used in compounds.
-
+			
+			//Zirconium - Because Greg himself never added it.
+			MaterialGenerator.generate(ELEMENT.getInstance().ZIRCONIUM);
+			
+			
+			
+			
+			//Nuclear Isotopes
+			
 			//Lithium-7 is used as a part of the molten lithium fluoride in molten salt reactors: liquid-fluoride nuclear reactors. 
 			//The large neutron-absorption cross-section of lithium-6 (about 940 barns[5]) as compared with the very small 
 			//neutron cross-section of lithium-7 (about 45 millibarns) makes high separation of lithium-7 from natural lithium a 
 			//strong requirement for the possible use in lithium fluoride reactors.
-			MaterialGenerator.generate(ELEMENT.getInstance().LITHIUM7, false);
+			MaterialGenerator.generate(NUCLIDE.getInstance().LITHIUM7, false);
 			//Thorium-232 is the most stable isotope of Thorium, purified for nuclear fuel use in this case.
-			MaterialGenerator.generate(ELEMENT.getInstance().THORIUM232, false);
+			MaterialGenerator.generateNuclearMaterial(NUCLIDE.getInstance().THORIUM232);
 			//Production of 233U (through the neutron irradiation of 232Th) invariably produces small amounts of 232U as an impurity
 			//because of parasitic (n,2n) reactions on uranium-233 itself, or on protactinium-233, or on thorium-232:
-			MaterialGenerator.generate(ELEMENT.getInstance().URANIUM232);
+			MaterialGenerator.generate(NUCLIDE.getInstance().URANIUM232);
 			//Uranium-233 is a fissile isotope of uranium that is bred from thorium-232 as part of the thorium fuel cycle.
-			MaterialGenerator.generate(ELEMENT.getInstance().URANIUM233);			
-			//Zirconium - Because Greg himself never added it.
-			MaterialGenerator.generate(ELEMENT.getInstance().ZIRCONIUM);
+			MaterialGenerator.generate(NUCLIDE.getInstance().URANIUM233);			
+			
 
 
 			//Carbides - Tungsten Carbide exists in .09 so don't generate it. - Should still come before alloys though
@@ -270,12 +279,17 @@ public final class ModItems {
 
 
 			//Generate Fluorides
-			MaterialGenerator.generate(ALLOY.THORIUM_HEXAFLUORIDE, false);
-			MaterialGenerator.generate(ALLOY.THORIUM_TETRAFLUORIDE, false);
+			MaterialGenerator.generateNuclearMaterial(FLUORIDES.BERYLLIUM_FLUORIDE);
+			MaterialGenerator.generateNuclearMaterial(FLUORIDES.LITHIUM_FLUORIDE);
+			MaterialGenerator.generateNuclearMaterial(FLUORIDES.THORIUM_TETRAFLUORIDE);
+			MaterialGenerator.generateNuclearMaterial(FLUORIDES.THORIUM_HEXAFLUORIDE);
+			MaterialGenerator.generateNuclearMaterial(FLUORIDES.URANIUM_TETRAFLUORIDE);
+			MaterialGenerator.generateNuclearMaterial(FLUORIDES.URANIUM_HEXAFLUORIDE);
+			MaterialGenerator.generateNuclearMaterial(FLUORIDES.ZIRCONIUM_TETRAFLUORIDE);
 			
 			//Generate Reactor Fuel Salts
-			MaterialGenerator.generate(ALLOY.LiFBeF2ZrF4U235, false);
-			MaterialGenerator.generate(ALLOY.LiFBeF2ThF4UF4, false);
+			MaterialGenerator.generateNuclearMaterial(NUCLIDE.LiFBeF2ZrF4U235);
+			MaterialGenerator.generateNuclearMaterial(NUCLIDE.LiFBeF2ThF4UF4);
 			
 
 			//Generate some Alloys
@@ -363,13 +377,13 @@ public final class ModItems {
 
 
 		//Nuclear Fuel Dusts
-		dustUraniumTetraFluoride = ItemUtils.generateSpecialUseDusts("UraniumTetrafluoride", "Uranium Tetrafluoride", Utils.rgbtoHexValue(17, 179, 42))[0];
-		dustUraniumHexaFluoride = ItemUtils.generateSpecialUseDusts("UraniumHexafluoride", "Uranium Hexafluoride", Utils.rgbtoHexValue(9, 199, 32))[0];
+		//dustUraniumTetraFluoride = ItemUtils.generateSpecialUseDusts("UraniumTetrafluoride", "Uranium Tetrafluoride", Utils.rgbtoHexValue(17, 179, 42))[0];
+		//dustUraniumHexaFluoride = ItemUtils.generateSpecialUseDusts("UraniumHexafluoride", "Uranium Hexafluoride", Utils.rgbtoHexValue(9, 199, 32))[0];
 
-		dustBerylliumFluoride = ItemUtils.generateSpecialUseDusts("BerylliumFluoride", "Beryllium Fluoride", Utils.rgbtoHexValue(175, 175, 175))[0]; //https://en.wikipedia.org/wiki/Beryllium_fluoride
+		//dustBerylliumFluoride = ItemUtils.generateSpecialUseDusts("BerylliumFluoride", "Beryllium Fluoride", Utils.rgbtoHexValue(175, 175, 175))[0]; //https://en.wikipedia.org/wiki/Beryllium_fluoride
 
 		dustLithiumCarbonate = ItemUtils.generateSpecialUseDusts("LithiumCarbonate", "Lithium Carbonate", Utils.rgbtoHexValue(240, 240, 240))[0]; //https://en.wikipedia.org/wiki/Lithium_carbonate
-		dustLithiumFluoride = ItemUtils.generateSpecialUseDusts("LithiumFluoride", "Lithium Fluoride", Utils.rgbtoHexValue(245, 245, 245))[0]; //https://en.wikipedia.org/wiki/Lithium_fluoride
+		//dustLithiumFluoride = ItemUtils.generateSpecialUseDusts("LithiumFluoride", "Lithium Fluoride", Utils.rgbtoHexValue(245, 245, 245))[0]; //https://en.wikipedia.org/wiki/Lithium_fluoride
 		dustLithiumPeroxide = ItemUtils.generateSpecialUseDusts("LithiumPeroxide", "Lithium Peroxide", Utils.rgbtoHexValue(250, 250, 250))[0]; //https://en.wikipedia.org/wiki/Lithium_peroxide
 		dustLithiumHydroxide = ItemUtils.generateSpecialUseDusts("LithiumHydroxide", "Lithium Hydroxide", Utils.rgbtoHexValue(250, 250, 250))[0]; //https://en.wikipedia.org/wiki/Lithium_hydroxide
 
@@ -382,11 +396,11 @@ public final class ModItems {
 
 		//FLiBe Fuel Compounds
 		dustLi2BeF4 = ItemUtils.generateSpecialUseDusts("Li2BeF4", "Li2BeF4 Fuel Compound", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/FLiBe
-		FluidUtils.generateFluid("UraniumTetrafluoride", "Uranium Tetrafluoride", 4700, new short[]{17, 179, 42, 100});
-		FluidUtils.generateFluid("UraniumHexafluoride", "Uranium Hexafluoride", 5500, new short[]{9, 199, 32, 100});
-		FluidUtils.generateFluid("BerylliumFluoride", "Beryllium Fluoride", 3200, new short[]{175, 175, 175, 100});
-		FluidUtils.generateFluid("LithiumFluoride", "Lithium Fluoride", 2000, new short[]{235, 235, 235, 100});
-		FluidUtils.generateFluid("Li2BeF4", "Li2BeF4", 7430, new short[]{255, 255, 255, 100});		
+		//FluidUtils.generateFluid("UraniumTetrafluoride", "Uranium Tetrafluoride", 4700, new short[]{17, 179, 42, 100});
+		//FluidUtils.generateFluid("UraniumHexafluoride", "Uranium Hexafluoride", 5500, new short[]{9, 199, 32, 100});
+		//FluidUtils.generateFluid("BerylliumFluoride", "Beryllium Fluoride", 3200, new short[]{175, 175, 175, 100});
+		//FluidUtils.generateFluid("LithiumFluoride", "Lithium Fluoride", 2000, new short[]{235, 235, 235, 100});
+		FluidUtils.generateFluid("Li2BeF4", "Reactor Secondary Fuel [Li2BeF4]", 7430, new short[]{255, 255, 255, 100});		
 
 		//Zirconium
 		//Cinter Pellet.
@@ -397,17 +411,25 @@ public final class ModItems {
 		dustCookedZrCl4 = ItemUtils.generateSpecialUseDusts("CookedZrCl4", "Cooked ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; //http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
 		//Zirconium Tetrafluoride
 		dustZrF4 = ItemUtils.generateSpecialUseDusts("ZrF4", "ZrF4", Utils.rgbtoHexValue(170, 170, 170))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
-
+		GT_OreDictUnificator.registerOre("cellZrF4", ItemUtils.getItemStackOfAmountFromOreDict("cellZirconiumTetrafluoride", 1));
+		GT_OreDictUnificator.registerOre("dustZirconiumTetrafluoride", new ItemStack(ModItems.dustZrF4));
+		FluidUtils.generateFluid("ZirconiumTetrafluoride", "Zirconium Tetrafluoride", 500, new short[]{170, 170, 140, 100});
+		
 		//Coolant Salt
 		//NaBF4 - NaF - 621C
-		dustNaBF4NaF = ItemUtils.generateSpecialUseDusts("NaBF4NaF", "NaBF4NaF", Utils.rgbtoHexValue(170, 170, 170))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
+		dustNaBF4NaF = ItemUtils.generateSpecialUseDusts("NaBF4NaF", "NaBF4NaF", Utils.rgbtoHexValue(45, 45, 90))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
 		//Fuel Salt
 		//7LiF - BeF2 - ZrF4 - UF4 - 650C
-		dustLiFBeF2ZrF4UF4 = ItemUtils.generateSpecialUseDusts("LiFBeF2ZrF4UF4", "LiFBeF2ZrF4UF4", Utils.rgbtoHexValue(170, 170, 170))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
+		dustLiFBeF2ZrF4UF4 = ItemUtils.generateSpecialUseDusts("LiFBeF2ZrF4UF4", "LiF-BeF2-ZrF4-UF4", Utils.rgbtoHexValue(35, 90, 25))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
 		//7LiF - BeF2 - ZrF4 - U235 - 590C
-		dustLiFBeF2ZrF4U235 = ItemUtils.generateSpecialUseDusts("LiFBeF2ZrF4U235", "LiFBeF2ZrF4U235", Utils.rgbtoHexValue(170, 170, 170))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
+		dustLiFBeF2ZrF4U235 = ItemUtils.generateSpecialUseDusts("LiFBeF2ZrF4U235", "LiF-BeF2-ZrF4-U235", Utils.rgbtoHexValue(35, 80, 15))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
 		//7liF - BeF2 - ThF4 - UF4 - 566C
-		dustLiFBeF2ThF4UF4 = ItemUtils.generateSpecialUseDusts("LiFBeF2ThF4UF4", "LiFBeF2ThF4UF4", Utils.rgbtoHexValue(170, 170, 170))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
+		dustLiFBeF2ThF4UF4 = ItemUtils.generateSpecialUseDusts("LiFBeF2ThF4UF4", "LiF-BeF2-ThF4-UF4", Utils.rgbtoHexValue(35, 70, 25))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
+		
+		FluidUtils.generateFluid("NaBF4NaF", "NaBF4-NaF", 621, new short[]{45, 45, 90, 100});		
+		FluidUtils.generateFluid("LiFBeF2ZrF4UF4", "LiF-BeF2-ZrF4-UF4", 650, new short[]{35, 90, 25, 100});		
+		FluidUtils.generateFluid("LiFBeF2ZrF4U235", "LiF-BeF2-ZrF4-U235", 590, new short[]{35, 80, 15, 100});		
+		FluidUtils.generateFluid("LiFBeF2ThF4UF4", "LiF-BeF2-ThF4-UF4", 566, new short[]{35, 70, 25, 100});		
 		
 
 		//Test items
