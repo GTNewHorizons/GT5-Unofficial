@@ -1,8 +1,7 @@
 package gtPlusPlus.core.common.compat;
 
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.item.general.ItemCloakingDevice;
-import gtPlusPlus.core.item.general.ItemHealingDevice;
+import gtPlusPlus.core.item.general.*;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 
@@ -22,6 +21,7 @@ public class COMPAT_Baubles {
 		ModItems.itemPersonalCloakingDevice = new ItemCloakingDevice(0);
 		//itemPersonalCloakingDeviceCharged = new ItemCloakingDevice(0).set;
 		ModItems.itemPersonalHealingDevice = new ItemHealingDevice();
+		ModItems.itemSlowBuildingRing = new ItemSlowBuildingRing();
 	}
 	
 	public static void baublesNotLoaded(){

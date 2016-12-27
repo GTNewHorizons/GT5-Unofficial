@@ -106,6 +106,7 @@ public final class ModItems {
 	public static Item itemPersonalCloakingDevice;
 	public static Item itemPersonalCloakingDeviceCharged;
 	public static Item itemPersonalHealingDevice;
+	public static Item itemSlowBuildingRing;
 
 	public static MultiPickaxeBase MP_GTMATERIAL;
 	public static MultiSpadeBase MS_GTMATERIAL;
