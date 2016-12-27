@@ -94,7 +94,8 @@ implements ActionListener
 		CORE.configSwitches.enableMultiblock_MultiTank = config.getBoolean("enableMultiblockMultiTank", "gregtech", true, "Tall tanks, each layer adds extra fluid storage.");
 		CORE.configSwitches.enableMultiblock_PowerSubstation = config.getBoolean("enableMultiblockPowerSubstation", "gregtech", true, "For managing large power grids.");
 		CORE.configSwitches.enableMultiblock_LiquidFluorideThoriumReactor = config.getBoolean("enableMultiblockLiquidFluorideThoriumReactor", "gregtech", true, "For supplying large power grids.");
-				
+		CORE.configSwitches.enableMultiblock_NuclearFuelRefinery = config.getBoolean("enableMultiblock_NuclearFuelRefinery", "gregtech", true, "Refines molten chemicals into nuclear fuels.");
+			
 		
 		//Options
 		RF2EU_Battery.rfPerEU = config.getInt("rfUsedPerEUForUniversalBatteries", "configurables", 4, 1, 1000, "How much RF is a single unit of EU worth? (Most mods use 4:1 ratio)");

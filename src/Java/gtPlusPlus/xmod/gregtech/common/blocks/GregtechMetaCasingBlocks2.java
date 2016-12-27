@@ -21,10 +21,10 @@ extends GregtechMetaCasingBlocksAbstract {
 		for (byte i = 0; i < 16; i = (byte) (i + 1)) {
 			Textures.BlockIcons.CASING_BLOCKS[GTID + i] = new GT_CopiedBlockTexture(this, 6, i);
 		}
-		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Strctural Glass Casing");
-		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Placeholder Casing");
-		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Placeholder Casing");
-		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Placeholder Casing"); //60
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Structural Glass Casing");
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Hastelloy-N Sealant Block");
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Hastelloy-X Structural Block");
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Incoloy-DS Fluid Containment Block"); //60
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Placeholder Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Placeholder Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Incoloy Casing");
@@ -38,9 +38,9 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Placeholder Casing ");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Placeholder Casing ");
 		GregtechItemList.Casing_StructuralGlass.set(new ItemStack(this, 1, 0));
-		GregtechItemList.Casing_PlaceHolder1.set(new ItemStack(this, 1, 1));
-		GregtechItemList.Casing_PlaceHolder2.set(new ItemStack(this, 1, 2));
-		GregtechItemList.Casing_PlaceHolder3.set(new ItemStack(this, 1, 3));
+		GregtechItemList.Casing_Refinery_External.set(new ItemStack(this, 1, 1));
+		GregtechItemList.Casing_Refinery_Structural.set(new ItemStack(this, 1, 2));
+		GregtechItemList.Casing_Refinery_Internal.set(new ItemStack(this, 1, 3));
 		GregtechItemList.Casing_PlaceHolder4.set(new ItemStack(this, 1, 4));
 		GregtechItemList.Casing_PlaceHolder5.set(new ItemStack(this, 1, 5));
 		GregtechItemList.Casing_PlaceHolder6.set(new ItemStack(this, 1, 6));

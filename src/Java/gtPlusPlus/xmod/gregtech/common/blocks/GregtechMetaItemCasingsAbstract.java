@@ -41,16 +41,16 @@ extends ItemBlock {
 		super.addInformation(aStack, aPlayer, aList, aF3_H);       
 		switch (getDamage(aStack)) {
 		case 0:
-			aList.add(this.mCasing_Centrifuge);
+			//aList.add(this.mCasing_Centrifuge);
 			break;
 		case 1:
-			aList.add(this.mCasing_CokeOven);
+			//aList.add(this.mCasing_CokeOven);
 			break;
 		case 2:
-			aList.add(this.mCasing_CokeCoil1);
+			//aList.add(this.mCasing_CokeCoil1);
 			break;
 		case 3:
-			aList.add(this.mCasing_CokeCoil2);
+			//aList.add(this.mCasing_CokeCoil2);
 			break;
 		default:
 			break;      

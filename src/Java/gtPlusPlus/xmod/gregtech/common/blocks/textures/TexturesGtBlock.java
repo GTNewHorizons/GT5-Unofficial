@@ -103,6 +103,14 @@ public class TexturesGtBlock {
 	private static final CustomIcon Internal_Casing_ZirconiumCarbide = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_ZIRCONIUM_CARBIDE");	
 	public static final CustomIcon Casing_Material_ZirconiumCarbide = Internal_Casing_ZirconiumCarbide;
 	
+
+	private static final CustomIcon Internal_Casing_HastelloyX = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_HASTELLOY_X");	
+	public static final CustomIcon Casing_Material_HastelloyX = Internal_Casing_HastelloyX;
+	private static final CustomIcon Internal_Casing_HastelloyN = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_HASTELLOY_N");	
+	public static final CustomIcon Casing_Material_HastelloyN = Internal_Casing_HastelloyN;
+	private static final CustomIcon Internal_Casing_Fluid_IncoloyDS = new CustomIcon("TileEntities/MACHINE_CASING_FLUID_INCOLOY_DS");	
+	public static final CustomIcon Casing_Material_Fluid_IncoloyDS = Internal_Casing_Fluid_IncoloyDS;
+	
 	//Material Machine/Firebox Casings
 	private static final CustomIcon Internal_Casing_Staballoy_Firebox = new CustomIcon("TileEntities/MACHINE_CASING_FIREBOX_STABALLOY");	
 	public static final CustomIcon Casing_Staballoy_Firebox = Internal_Casing_Staballoy_Firebox;

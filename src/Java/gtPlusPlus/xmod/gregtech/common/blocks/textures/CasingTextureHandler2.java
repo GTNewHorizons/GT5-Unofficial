@@ -12,13 +12,13 @@ public class CasingTextureHandler2 {
 				return TexturesGtBlock.Casing_Machine_Dimensional_Adv.getIcon();
 				//Coke Oven Frame
 			case 1:
-				return TexturesGtBlock._PlaceHolder.getIcon();
+				return TexturesGtBlock.Casing_Material_HastelloyX.getIcon();
 				//Coke Oven Casing Tier 1
 			case 2: 
-				return TexturesGtBlock._PlaceHolder.getIcon();
+				return TexturesGtBlock.Casing_Material_HastelloyN.getIcon();
 				//Coke Oven Casing Tier 2
 			case 3: 
-				return TexturesGtBlock._PlaceHolder.getIcon();
+				return TexturesGtBlock.Casing_Material_Fluid_IncoloyDS.getIcon();
 				//Material Press Casings
 			case 4: 
 				return TexturesGtBlock._PlaceHolder.getIcon();

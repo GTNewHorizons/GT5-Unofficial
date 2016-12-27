@@ -64,6 +64,7 @@ public class COMPAT_HANDLER {
 		GregtechIndustrialMultiTank.run();
 		GregtechGeothermalThermalGenerator.run();
 		Gregtech4Content.run();
+		GregtechIndustrialFuelRefinery.run();
 		}
 
 	}
