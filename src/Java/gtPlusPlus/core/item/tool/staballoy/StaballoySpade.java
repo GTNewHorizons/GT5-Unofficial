@@ -34,6 +34,7 @@ public class StaballoySpade extends ItemSpade{
 	protected String lookingDirection;
 	protected World localWorld;
 	public ItemStack thisPickaxe = null;
+	private int miningLevel;
 
 	/*
 	 * 
@@ -68,7 +69,7 @@ public class StaballoySpade extends ItemSpade{
 		return super.onBlockDestroyed(stack, world, block, X, Y, Z, entity);
 	}
 
-	public Boolean canPickaxeBlock(Block currentBlock, World currentWorld){
+	public Boolean canPickaxeBlock(Block currentBlock, World currentWorld, int[] xyz){
 		String correctTool = "";
 		if (!currentWorld.isRemote){			
 			try {
@@ -76,7 +77,7 @@ public class StaballoySpade extends ItemSpade{
 				//Utils.LOG_WARNING(correctTool);
 
 				Utils.LOG_INFO("Tool for Block: "+correctTool+" | Current block: "+currentBlock.getLocalizedName());
-				if (UtilsMining.getBlockType(currentBlock) || correctTool.equals("shovel")){
+				if (UtilsMining.getBlockType(currentBlock, currentWorld, xyz, miningLevel) || correctTool.equals("shovel")){
 					return true;}
 			} catch (NullPointerException e){
 				return false;}
@@ -173,7 +174,7 @@ public class StaballoySpade extends ItemSpade{
 			removalTool = block.getHarvestTool(0);
 			if (removalTool != null){
 			if (removalTool.equals("shovel")){				
-				if (canPickaxeBlock(block, world)){
+				if (canPickaxeBlock(block, world, new int[]{X,Y,Z})){
 					if((block != Blocks.bedrock) && (block.getBlockHardness(world, X, Y, Z) != -1) && (block.getBlockHardness(world, X, Y, Z) <= 100) && (block != Blocks.water) && (block != Blocks.lava)){
 
 						int itemdmg = heldItem.getItemDamage();

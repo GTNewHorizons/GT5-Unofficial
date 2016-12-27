@@ -110,7 +110,7 @@ public class BlockEventHandler {
 			if (!oreLimestone.isEmpty())
 			for (ItemStack temp : oreLimestone){
 				if (ItemUtils.getSimpleStack(Item.getItemFromBlock(event.block)) == temp) {
-					if (MathUtils.randInt(1, 64) == 1){
+					if (MathUtils.randInt(1, 32) == 1){
 						event.drops.add(fluoriteOre.copy());							
 					}
 				}
@@ -118,7 +118,7 @@ public class BlockEventHandler {
 			if (!oreLimestone.isEmpty())
 				for (ItemStack temp : blockLimestone){
 					if (ItemUtils.getSimpleStack(Item.getItemFromBlock(event.block)) == temp) {
-						if (MathUtils.randInt(1, 64) == 1){
+						if (MathUtils.randInt(1, 32) == 1){
 							event.drops.add(fluoriteOre.copy());							
 						}
 					}

@@ -26,7 +26,7 @@ public class BlockBaseModular extends BasicBlock{
 	}
 	
 	public BlockBaseModular(String unlocalizedName, String blockMaterial, Material vanillaMaterial,  BlockTypes blockType, int colour, int miningLevel) {
-		super(blockType.getTexture()+unlocalizedName, vanillaMaterial);
+		super(unlocalizedName, vanillaMaterial);
 		this.setHarvestLevel(blockType.getHarvestTool(), miningLevel);
 		this.setBlockTextureName(CORE.MODID+":"+blockType.getTexture());
 		this.blockColour = colour;

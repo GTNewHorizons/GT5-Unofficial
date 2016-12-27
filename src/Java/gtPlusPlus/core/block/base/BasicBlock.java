@@ -30,7 +30,7 @@ public class BasicBlock extends BlockContainer {
     public static enum BlockTypes {
     	STANDARD("blockBlock", "pickaxe", soundTypeMetal),
     	FRAME("blockFrameGt", "wrench", soundTypeMetal),
-    	ORE("blockOre", "pickaxe", soundTypeStone);
+    	ORE("blockStone", "pickaxe", soundTypeStone);
     
     	private String TEXTURE_NAME;
     	private String HARVEST_TOOL;

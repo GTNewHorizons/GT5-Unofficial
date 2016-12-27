@@ -16,42 +16,43 @@ public class BlockBaseOre extends BlockBaseModular{
 	@SuppressWarnings("unused")
 	private IIcon overlay;
 
-	@Override
+	/*@Override
 	public boolean renderAsNormalBlock() {
-		return false;
-	}
+		return true;
+	}*/
 
 	public BlockBaseOre(String unlocalizedName, String blockMaterial,  BlockTypes blockType, int colour) {
 		this(unlocalizedName, blockMaterial, Material.iron, blockType, colour, 2);
 	}
 	
 	public BlockBaseOre(String unlocalizedName, String blockMaterial, Material vanillaMaterial,  BlockTypes blockType, int colour, int miningLevel) {
-		super(blockType.getTexture()+unlocalizedName, blockMaterial, vanillaMaterial, blockType, colour, miningLevel);		
+		super(unlocalizedName, blockMaterial, vanillaMaterial, blockType, colour, miningLevel);		
 	}
 
 	/**
 	 * Returns which pass should this block be rendered on. 0 for solids and 1 for alpha
 	 */
-	@Override
+	
+	/*@Override
 	@SideOnly(Side.CLIENT)
 	public int getRenderBlockPass()
 	{
-		return 1;
-	}	
+		return 0;
+	}	*/
 
-	@Override
+	/*@Override
 	public boolean isOpaqueCube()
     {
-	    return false;
-    }
+	    return true;
+    }*/
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iIcon)
 	{
-		//this.blockIcon = iIcon.registerIcon(CORE.MODID + ":" + thisBlock.getTexture());
-		this.base = iIcon.registerIcon(CORE.MODID + ":" + "blockStone");	
-		this.overlay = iIcon.registerIcon(CORE.MODID + ":" + "blockOre_Overlay");
+		this.blockIcon = iIcon.registerIcon(CORE.MODID + ":" + thisBlock.getTexture());
+		//this.base = iIcon.registerIcon(CORE.MODID + ":" + "blockStone");	
+		//this.overlay = iIcon.registerIcon(CORE.MODID + ":" + "blockOre_Overlay");
 	}
 
 	@Override

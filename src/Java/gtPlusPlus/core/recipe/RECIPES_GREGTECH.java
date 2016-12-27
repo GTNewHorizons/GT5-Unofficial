@@ -3,6 +3,7 @@ package gtPlusPlus.core.recipe;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.util.*;
+import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
@@ -12,6 +13,7 @@ import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -531,6 +533,9 @@ public class RECIPES_GREGTECH {
 		GT_ModHandler.addPulverisationRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict("pelletZirconium", 1),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustZrCl4", 1));
+		GT_ModHandler.addPulverisationRecipe(
+				ItemUtils.getSimpleStack(Item.getItemFromBlock(ModBlocks.blockOreFluorite)),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustFluorite", 4));
 	}
 	
 	public static boolean addPulverisationRecipe(ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3) {

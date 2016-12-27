@@ -279,6 +279,7 @@ public final class ModItems {
 
 
 			//Generate Fluorides
+			MaterialGenerator.generateNuclearMaterial(FLUORIDES.FLUORITE);
 			MaterialGenerator.generateNuclearMaterial(FLUORIDES.BERYLLIUM_FLUORIDE);
 			MaterialGenerator.generateNuclearMaterial(FLUORIDES.LITHIUM_FLUORIDE);
 			MaterialGenerator.generateNuclearMaterial(FLUORIDES.THORIUM_TETRAFLUORIDE);

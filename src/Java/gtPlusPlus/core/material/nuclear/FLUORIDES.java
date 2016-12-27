@@ -8,6 +8,20 @@ public class FLUORIDES {
 	private static final FLUORIDES thisClass = new FLUORIDES();
 	public FLUORIDES(){}
 	public static FLUORIDES getInstance(){return thisClass;}
+	
+	public static final Material FLUORITE = new Material(
+			"Fluorite", //Material Name
+			new short[]{75, 70, 25, 0}, //Material Colour
+			Materials.Fluorine.mMeltingPoint, //Melting Point in C
+			Materials.Fluorine.mBlastFurnaceTemp, //Boiling Point in C
+			((ELEMENT.getInstance().CALCIUM.getProtons()+(ELEMENT.getInstance().FLUORINE.getProtons()*2))/3), //Protons
+			((ELEMENT.getInstance().CALCIUM.getNeutrons()+(ELEMENT.getInstance().FLUORINE.getNeutrons()*2))/3), //Neutrons
+			false, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().CALCIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().FLUORINE, 2)
+			});
 
 	public static final Material THORIUM_TETRAFLUORIDE = new Material(
 	"Thorium Tetrafluoride", //Material Name

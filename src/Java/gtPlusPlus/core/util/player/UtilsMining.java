@@ -140,13 +140,28 @@ public class UtilsMining {
 	}
 	
 	
-	public static boolean getBlockType(Block block){
+	public static boolean getBlockType(Block block, World world, int[] xyz, int miningLevel){
 		final String LIQUID = "liquid";
 		final String BLOCK = "block";
 		final String ORE = "ore";
 		final String AIR = "air";
 		String blockClass = "";
 
+		if (world.isRemote){
+			return false;
+		}
+		
+		if (block == Blocks.end_stone) return true;
+		if (block == Blocks.stone) return true;
+		if (block == Blocks.sandstone) return true;
+		if (block == Blocks.netherrack) return true;
+		if (block == Blocks.nether_brick) return true;
+		if (block == Blocks.nether_brick_stairs) return true;
+		if (block == Blocks.nether_brick_fence) return true;
+		if (block == Blocks.glowstone) return true;
+		
+		
+		
 		try {
 			blockClass = block.getClass().toString().toLowerCase();
 			Utils.LOG_WARNING(blockClass);
@@ -156,6 +171,10 @@ public class UtilsMining {
 			}
 			else if (blockClass.toLowerCase().contains(ORE)){
 				Utils.LOG_WARNING(block.toString()+" is an Ore.");
+				return true;
+			}
+			else if (block.getHarvestLevel(world.getBlockMetadata(xyz[0], xyz[1], xyz[2])) >= miningLevel){
+				Utils.LOG_WARNING(block.toString()+" is minable.");
 				return true;
 			}
 			else if (blockClass.toLowerCase().contains(AIR)){
