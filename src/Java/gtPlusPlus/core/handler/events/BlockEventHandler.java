@@ -1,17 +1,22 @@
 package gtPlusPlus.core.handler.events;
 
+import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class BlockEventHandler {
@@ -52,11 +57,18 @@ public class BlockEventHandler {
 				}
 		}*/
 	}
+	
+	
 
 	@SubscribeEvent
 	public void onBlockBreak(BlockEvent.BreakEvent event) {
-
+		
 	}
+	
+
+	ArrayList<ItemStack> oreLimestone = OreDictionary.getOres("oreLimestone");
+	ArrayList<ItemStack> blockLimestone = OreDictionary.getOres("limestone");
+	ItemStack fluoriteOre = ItemUtils.getSimpleStack(Item.getItemFromBlock(ModBlocks.blockOreFluorite));
 
 	//Used to handle Thaumcraft Shards when TC is not installed.
 	@SubscribeEvent
@@ -90,6 +102,31 @@ public class BlockEventHandler {
 			}	
 			else {
 				Utils.LOG_INFO("invalid chance");
+			}
+		}
+		
+		//Spawns Fluorite from Lime Stone
+		if (!oreLimestone.isEmpty() || !blockLimestone.isEmpty()){
+			if (!oreLimestone.isEmpty())
+			for (ItemStack temp : oreLimestone){
+				if (ItemUtils.getSimpleStack(Item.getItemFromBlock(event.block)) == temp) {
+					if (MathUtils.randInt(1, 64) == 1){
+						event.drops.add(fluoriteOre.copy());							
+					}
+				}
+			}
+			if (!oreLimestone.isEmpty())
+				for (ItemStack temp : blockLimestone){
+					if (ItemUtils.getSimpleStack(Item.getItemFromBlock(event.block)) == temp) {
+						if (MathUtils.randInt(1, 64) == 1){
+							event.drops.add(fluoriteOre.copy());							
+						}
+					}
+				}
+		}
+		if (event.block == Blocks.sandstone){
+			if (MathUtils.randInt(1, 640) == 1){
+				event.drops.add(fluoriteOre.copy());							
 			}
 		}
 		//}

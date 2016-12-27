@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block;
 
+import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
+import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.block.general.FirePit;
 import gtPlusPlus.core.block.general.LightGlass;
 import gtPlusPlus.core.block.machine.Machine_Workbench;
@@ -34,6 +36,8 @@ public final class ModBlocks {
 	public static Block blockCasings2Misc;
 	
 	public static Block blockFirePit;
+	
+	public static Block blockOreFluorite;
 
 
 
@@ -56,6 +60,7 @@ public final class ModBlocks {
 		blockWorkbench = new Machine_Workbench().setHardness(1.5F);
 		blockWorkbenchAdvanced = new Machine_WorkbenchAdvanced().setHardness(2.5F);
 		blockFirePit = new FirePit();
+		blockOreFluorite = new BlockBaseOre("oreFluorite", "Fluorite", Material.rock, BlockTypes.ORE, Utils.rgbtoHexValue(120, 120, 30), 3);
 
 		
 	}

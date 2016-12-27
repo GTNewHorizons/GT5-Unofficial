@@ -20,9 +20,14 @@ public class BlockBaseModular extends BasicBlock{
 	protected String thisBlockMaterial;
 	protected final String thisBlockType;
 
+
 	public BlockBaseModular(String unlocalizedName, String blockMaterial,  BlockTypes blockType, int colour) {
-		super(blockType.getTexture()+unlocalizedName, Material.iron);
-		this.setHarvestLevel(blockType.getHarvestTool(), 2);
+		this(unlocalizedName, blockMaterial, Material.iron, blockType, colour, 2);
+	}
+	
+	public BlockBaseModular(String unlocalizedName, String blockMaterial, Material vanillaMaterial,  BlockTypes blockType, int colour, int miningLevel) {
+		super(blockType.getTexture()+unlocalizedName, vanillaMaterial);
+		this.setHarvestLevel(blockType.getHarvestTool(), miningLevel);
 		this.setBlockTextureName(CORE.MODID+":"+blockType.getTexture());
 		this.blockColour = colour;
 		this.thisBlock = blockType;
@@ -48,6 +53,10 @@ public class BlockBaseModular extends BasicBlock{
 			LanguageRegistry.addName(this, blockMaterial+ " Frame Box");
 			//Utils.LOG_INFO("Registered Block in Language Registry as: "+blockMaterial+ " Frame Box");
 		}
+		else if (thisBlockType == BlockTypes.ORE.name().toUpperCase()){
+			LanguageRegistry.addName(this, blockMaterial+ " Ore");
+			//Utils.LOG_INFO("Registered Block in Language Registry as: "+blockMaterial+ " Frame Box");
+		}
 		else {
 			LanguageRegistry.addName(this, blockMaterial);
 			//Utils.LOG_INFO("Registered Block in Language Registry as: "+blockMaterial);
@@ -60,6 +69,10 @@ public class BlockBaseModular extends BasicBlock{
 		}
 		else if (thisBlockType == BlockTypes.FRAME.name().toUpperCase()){
 			GameRegistry.registerBlock(this, ItemBlockGtFrameBox.class, Utils.sanitizeString(blockType.getTexture()+unlocalizedName));
+			//Utils.LOG_INFO("Registered Block in Block Registry as: "+blockMaterial+" Frame Box");			
+		}
+		else if (thisBlockType == BlockTypes.ORE.name().toUpperCase()){
+			GameRegistry.registerBlock(this, ItemBlockGtBlock.class, Utils.sanitizeString(blockType.getTexture()+unlocalizedName));
 			//Utils.LOG_INFO("Registered Block in Block Registry as: "+blockMaterial+" Frame Box");			
 		}
 		else {
@@ -106,6 +119,9 @@ public class BlockBaseModular extends BasicBlock{
 		}
 		else if (thisBlock == BlockTypes.FRAME){
 			tempIngot = thisBlockMaterial + " Frame Box";
+		}
+		else if (thisBlock == BlockTypes.ORE){
+			tempIngot = thisBlockMaterial + " Ore";
 		}
 		else {
 

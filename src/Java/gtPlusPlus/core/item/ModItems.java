@@ -400,10 +400,10 @@ public final class ModItems {
 		dustZrCl4 = ItemUtils.generateSpecialUseDusts("ZrCl4", "ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; //http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
 		dustCookedZrCl4 = ItemUtils.generateSpecialUseDusts("CookedZrCl4", "Cooked ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; //http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
 		//Zirconium Tetrafluoride
-		dustZrF4 = ItemUtils.generateSpecialUseDusts("ZrF4", "ZrF4", Utils.rgbtoHexValue(170, 170, 170))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
+		//dustZrF4 = ItemUtils.generateSpecialUseDusts("ZrF4", "ZrF4", Utils.rgbtoHexValue(170, 170, 170))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
+		//GT_OreDictUnificator.registerOre("dustZirconiumTetrafluoride", new ItemStack(ModItems.dustZrF4));
 		GT_OreDictUnificator.registerOre("cellZrF4", ItemUtils.getItemStackOfAmountFromOreDict("cellZirconiumTetrafluoride", 1));
 		GT_OreDictUnificator.registerOre("dustZrF4", ItemUtils.getItemStackOfAmountFromOreDict("dustZirconiumTetrafluoride", 1));
-		GT_OreDictUnificator.registerOre("dustZirconiumTetrafluoride", new ItemStack(ModItems.dustZrF4));
 		FluidUtils.generateFluid("ZirconiumTetrafluoride", "Zirconium Tetrafluoride", 500, new short[]{170, 170, 140, 100});
 		
 		//Coolant Salt

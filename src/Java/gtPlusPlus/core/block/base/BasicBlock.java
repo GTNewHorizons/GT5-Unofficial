@@ -11,6 +11,10 @@ import net.minecraft.world.World;
 public class BasicBlock extends BlockContainer {
 
     public BasicBlock(final String unlocalizedName, final Material material) {
+    	this(unlocalizedName, material, 2);
+    }
+    
+    public BasicBlock(final String unlocalizedName, final Material material, int harvestLevel) {
         super(material);
         this.setBlockName(Utils.sanitizeString(unlocalizedName));
         this.setBlockTextureName(CORE.MODID + ":" + unlocalizedName);
@@ -18,14 +22,15 @@ public class BasicBlock extends BlockContainer {
         this.setHardness(2.0F);
         this.setResistance(6.0F);
         this.setLightLevel(0.0F);
-        this.setHarvestLevel("pickaxe", 2);
+        this.setHarvestLevel("pickaxe", harvestLevel);
         this.setStepSound(soundTypeMetal);
     }
 
     
     public static enum BlockTypes {
-    	STANDARD("blockBlock", "pickaxe", soundTypeStone),
-    	FRAME("blockFrameGt", "wrench", soundTypeMetal);
+    	STANDARD("blockBlock", "pickaxe", soundTypeMetal),
+    	FRAME("blockFrameGt", "wrench", soundTypeMetal),
+    	ORE("blockOre", "pickaxe", soundTypeStone);
     
     	private String TEXTURE_NAME;
     	private String HARVEST_TOOL;
