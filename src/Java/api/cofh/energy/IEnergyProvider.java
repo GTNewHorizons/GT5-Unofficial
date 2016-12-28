@@ -1,12 +1,10 @@
-package cofh.api.energy;
+package api.cofh.energy;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
-public abstract interface IEnergyHandler
-  extends IEnergyProvider, IEnergyReceiver
+public abstract interface IEnergyProvider
+  extends IEnergyConnection
 {
-  public abstract int receiveEnergy(ForgeDirection paramForgeDirection, int paramInt, boolean paramBoolean);
-  
   public abstract int extractEnergy(ForgeDirection paramForgeDirection, int paramInt, boolean paramBoolean);
   
   public abstract int getEnergyStored(ForgeDirection paramForgeDirection);

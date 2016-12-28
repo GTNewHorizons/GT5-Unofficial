@@ -1,13 +1,17 @@
 package gtPlusPlus.core.proxy;
 
 import gtPlusPlus.GTplusplus;
+import gtPlusPlus.core.common.BasePlayer;
 import gtPlusPlus.core.common.CommonProxy;
+import gtPlusPlus.core.handler.events.SneakManager;
 import gtPlusPlus.core.handler.render.FirepitRender;
 import gtPlusPlus.core.tileentities.general.TileEntityFirepit;
 import gtPlusPlus.core.util.particles.EntityParticleFXMysterious;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
+import net.minecraftforge.common.MinecraftForge;
+import api.player.client.ClientPlayerAPI;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.*;
@@ -28,11 +32,17 @@ public class ClientProxy extends CommonProxy{
 		super.preInit(e);
 		//Do this weird things for textures.
 		GTplusplus.loadTextures();		
+		//We boot up the sneak manager.
+		MinecraftForge.EVENT_BUS.register(SneakManager.instance);
 	}
 
 	@Override
 	public void init(FMLInitializationEvent e) {
 		// TODO Auto-generated method stub
+		
+		//Register player instance
+		ClientPlayerAPI.register("SneakManager", BasePlayer.class);
+		
 		super.init(e);
 	}
 
@@ -59,8 +69,6 @@ public class ClientProxy extends CommonProxy{
 	public int addArmor(String armor){
 		return RenderingRegistry.addNewArmourRendererPrefix(armor);
 	}
-
-
 
 	@Override
 	public void generateMysteriousParticles(Entity theEntity)

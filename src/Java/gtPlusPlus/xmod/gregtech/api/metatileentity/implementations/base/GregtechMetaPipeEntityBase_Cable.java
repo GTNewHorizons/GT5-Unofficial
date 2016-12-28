@@ -22,6 +22,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import api.cofh.energy.IEnergyReceiver;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -31,7 +32,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import cofh.api.energy.IEnergyReceiver;
 
 public class GregtechMetaPipeEntityBase_Cable extends MetaPipeEntity implements IMetaTileEntityCable {
 	public final float mThickNess;

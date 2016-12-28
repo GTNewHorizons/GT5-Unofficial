@@ -1,11 +1,14 @@
 package gtPlusPlus.core.item.general;
 
 import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.handler.events.CustomMovementHandler;
+import gtPlusPlus.core.handler.events.SneakManager;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.item.ItemUtils;
 
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,6 +25,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class ItemSlowBuildingRing extends Item implements IBauble{
 
 	private final String unlocalizedName = "SlowBuildingRing";
+	CustomMovementHandler x;
 	
 	public ItemSlowBuildingRing(){
 		this.setCreativeTab(AddToCreativeTab.tabMachines);
@@ -100,6 +104,8 @@ public class ItemSlowBuildingRing extends Item implements IBauble{
 				arg1.setSneaking(false);
 			}
 		}
+		SneakManager.setStateOFF(SneakManager.getSneakingState());
+		SneakManager.setStateOFF(SneakManager.getSprintingDisabledState());
 	}
 
 	@Override //TODO
@@ -111,9 +117,15 @@ public class ItemSlowBuildingRing extends Item implements IBauble{
 		if (arg1.worldObj.isRemote){
 			if (!arg1.isSneaking()){
 				arg1.setSneaking(true);
+				Minecraft.getMinecraft().thePlayer.setSneaking(true);
+				SneakManager.setStateON(SneakManager.getSneakingState());
+				SneakManager.setStateON(SneakManager.getSprintingDisabledState());
 			}
 			else if (arg1.isSneaking()){
 				arg1.setSprinting(false);
+				Minecraft.getMinecraft().thePlayer.setSprinting(true);
+				SneakManager.setStateON(SneakManager.getSneakingState());
+				SneakManager.setStateON(SneakManager.getSprintingDisabledState());
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-package cofh.api.energy;
+package api.cofh.energy;
 
 import net.minecraft.nbt.NBTTagCompound;
 
