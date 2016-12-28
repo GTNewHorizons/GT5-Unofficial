@@ -35,6 +35,7 @@ public class RECIPES_GREGTECH {
 		dehydratorRecipes();
 		blastFurnaceRecipes();
 		lftrRecipes();
+		fissionFuelRecipes();
 		autoclaveRecipes();
 		mixerRecipes();
 		macerationRecipes();
@@ -341,7 +342,7 @@ public class RECIPES_GREGTECH {
 		try {
 			//Fli2BeF4 + Uranium235 = 1x Uranium233
 			CORE.RA.addLFTRRecipe(
-					FluidUtils.getFluidStack("molten.LiFBeF2ZrF4U235".toLowerCase(), 144*64), //Fluid input (slot 1)
+					FluidUtils.getFluidStack("molten.LiFBeF2ZrF4U235".toLowerCase(), 144*32), //Fluid input (slot 1)
 					FluidUtils.getFluidStack("molten.li2bef4", 144*12), //Fluid output (slot 2)
 					FluidUtils.getFluidStack("molten.uraniumhexafluoride", 6*144), //Output Array of Items - Upto 9,
 					120*60*20, //Time in ticks
@@ -351,10 +352,69 @@ public class RECIPES_GREGTECH {
 			//Fli2BeF4 + Uranium233 TetraFluoride = Uranium233
 			CORE.RA.addLFTRRecipe(
 					FluidUtils.getFluidStack("molten.LiFBeF2ThF4UF4".toLowerCase(), 200), //Fluid input (slot 1)
-					FluidUtils.getFluidStack("molten.li2bef4", 1000), //Fluid output (slot 2)
+					FluidUtils.getFluidStack("molten.li2bef4", 500), //Fluid output (slot 2)
 					FluidUtils.getFluidStack("molten.uraniumhexafluoride", 1200), //Output Array of Items - Upto 9,
 					16000*20, //Time in ticks
 					4000); //EU	
+
+		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+	}
+	
+	private static void fissionFuelRecipes(){
+		try {
+			
+			String salt_LiFBeF2ThF4UF4 = "LiFBeF2ThF4UF4".toLowerCase();
+			String salt_LiFBeF2ZrF4U235 = "LiFBeF2ZrF4U235".toLowerCase();
+			String salt_LiFBeF2ZrF4UF4 = "LiFBeF2ZrF4UF4".toLowerCase();
+			
+			FluidStack LithiumFluoride = FluidUtils.getFluidStack("molten.lithiumtetrafluoride", 100); //Re-usable FluidStacks
+			FluidStack BerylliumFluoride = FluidUtils.getFluidStack("molten.berylliumtetrafluoride", 100); //Re-usable FluidStacks
+			FluidStack ThoriumFluoride = FluidUtils.getFluidStack("molten.thoriumtetrafluoride", 100); //Re-usable FluidStacks
+			FluidStack ZirconiumFluoride = FluidUtils.getFluidStack("molten.zirconiumtetrafluoride", 100); //Re-usable FluidStacks
+			FluidStack UraniumTetraFluoride = FluidUtils.getFluidStack("molten.uraniumtetrafluoride", 100); //Re-usable FluidStacks
+			FluidStack Uranium235 = FluidUtils.getFluidStack("molten.uranium235", 1000); //Re-usable FluidStacks
+			
+			FluidStack LiFBeF2ThF4UF4 = FluidUtils.getFluidStack("molten."+salt_LiFBeF2ThF4UF4, 100); //Re-usable FluidStacks
+			FluidStack LiFBeF2ZrF4U235 = FluidUtils.getFluidStack("molten."+salt_LiFBeF2ZrF4U235, 100); //Re-usable FluidStacks
+			FluidStack LiFBeF2ZrF4UF4 = FluidUtils.getFluidStack("molten."+salt_LiFBeF2ZrF4UF4, 100); //Re-usable FluidStacks
+			
+			//7LiF - BeF2 - ZrF4 - UF4 - 650C
+			CORE.RA.addFissionFuel(
+					FluidUtils.getFluidStack(LithiumFluoride, 6500), //Input A
+					FluidUtils.getFluidStack(BerylliumFluoride, 2500), //Input B
+					FluidUtils.getFluidStack(ZirconiumFluoride, 800), //Input C
+					FluidUtils.getFluidStack(UraniumTetraFluoride, 700), //Input D
+					null, null, null, null, null, //Extra 5 inputs
+					FluidUtils.getFluidStack(LiFBeF2ZrF4UF4, 10000), //Output Fluid 1
+					null, //Output Fluid 2
+					60*60*20, //Duration
+					4740);
+			
+			//7LiF - BeF2 - ZrF4 - U235 - 590C
+			CORE.RA.addFissionFuel(
+					FluidUtils.getFluidStack(LithiumFluoride, 5500), //Input A
+					FluidUtils.getFluidStack(BerylliumFluoride, 1500), //Input B
+					FluidUtils.getFluidStack(ZirconiumFluoride, 600), //Input C
+					FluidUtils.getFluidStack(Uranium235, 2400), //Input D
+					null, null, null, null, null, //Extra 5 inputs
+					FluidUtils.getFluidStack(LiFBeF2ZrF4U235, 10000), //Output Fluid 1
+					null, //Output Fluid 2
+					45*60*20, //Duration
+					4740);
+			
+			//7liF - BeF2 - ThF4 - UF4 - 566C
+			CORE.RA.addFissionFuel(
+					FluidUtils.getFluidStack(LithiumFluoride, 6200), //Input A
+					FluidUtils.getFluidStack(BerylliumFluoride, 2800), //Input B
+					FluidUtils.getFluidStack(ThoriumFluoride, 700), //Input C
+					FluidUtils.getFluidStack(UraniumTetraFluoride, 700), //Input D
+					null, null, null, null, null, //Extra 5 inputs
+					FluidUtils.getFluidStack(LiFBeF2ThF4UF4, 10000), //Output Fluid 1
+					null, //Output Fluid 2
+					60*60*20, //Duration
+					4740);
+			
+					
 
 		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 	}

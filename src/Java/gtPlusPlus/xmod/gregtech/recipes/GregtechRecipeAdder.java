@@ -303,4 +303,21 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
         return true;
     }
 
+	@Override
+	public boolean addFissionFuel(
+			FluidStack aInput1, FluidStack aInput2,	FluidStack aInput3, 
+			FluidStack aInput4, FluidStack aInput5, FluidStack aInput6, 
+			FluidStack aInput7, FluidStack aInput8, FluidStack aInput9, 
+			FluidStack aOutput1, FluidStack aOutput2,
+			int aDuration, int aEUt) {
+		
+		if (aInput1 == null || aInput2 == null || aOutput1 == null || aDuration < 1 || aEUt < 1) {
+            return false;
+        }
+		FluidStack inputs[] = {aInput1, aInput2, aInput3, aInput4, aInput5, aInput6, aInput7, aInput8, aInput9};
+		FluidStack outputs[] = {aOutput1, aOutput2};
+        Recipe_GT.Gregtech_Recipe_Map.sFissionFuelProcessing.addRecipe(null, inputs, outputs, aDuration, aEUt, 0);
+        return true;
+	}
+
 }

@@ -37,6 +37,24 @@ public final class NUCLIDE {
 					new MaterialStack(FLUORIDES.URANIUM_TETRAFLUORIDE, 1)
 			});
 	
+	public static final Material LiFBeF2ZrF4UF4 = new Material(
+			"LiFBeF2ZrF4UF4", //Material Name
+			new short[]{20, 70, 45, 0}, //Material Colour
+			650, //Melting Point in C
+			940, //Boiling Point in C
+			150, //Protons
+			150, //Neutrons
+			false, //Uses Blast furnace?
+			MaterialUtils.subscript(MaterialUtils.superscript("7")+"LiFBeF2ZrF4UF4"), //Chemical Formula
+			5, //Radioactivity Level
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(FLUORIDES.LITHIUM_FLUORIDE, 65),
+					new MaterialStack(FLUORIDES.BERYLLIUM_FLUORIDE, 28),
+					new MaterialStack(FLUORIDES.ZIRCONIUM_TETRAFLUORIDE, 5),
+					new MaterialStack(FLUORIDES.URANIUM_TETRAFLUORIDE, 2)
+			});
+	
 	public static final Material LiFBeF2ZrF4U235 = new Material(
 			"LiFBeF2ZrF4U235", //Material Name
 			new short[]{50, 70, 15, 0}, //Material Colour

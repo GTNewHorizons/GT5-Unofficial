@@ -125,6 +125,18 @@ public class Recipe_GT extends GT_Recipe{
         }
     }
 	
+	public Recipe_GT(
+			FluidStack aInput1, FluidStack aInput2, FluidStack aInput3,
+			FluidStack aInput4, FluidStack aInput5, FluidStack aInput6,
+			FluidStack aInput7, FluidStack aInput8, FluidStack aInput9,
+			FluidStack aOutput1, FluidStack aOutput2,
+			int aDuration, int aEUt) {
+        this(true, null, null, null, null, new FluidStack[]{aInput1, aInput2, aInput3, aInput4, aInput5, aInput6, aInput7, aInput8, aInput9}, new FluidStack[]{aOutput1, aOutput2}, Math.max(aDuration, 1), aEUt, 0);
+        if (mInputs.length > 1) {
+        	Gregtech_Recipe_Map.sFissionFuelProcessing.addRecipe(this);
+        }
+    }
+	
 	/*public GregtechRecipe(ItemStack aInput, FluidStack aFluid, ItemStack[] aOutput, int aDuration, int aEUt) {
         this(true, new ItemStack[]{aInput}, aOutput.clone(), null, null, new FluidStack[]{aFluid}, null, aDuration, aEUt, 0);
         if (mInputs.length > 0 && mOutputs[0] != null) {
@@ -241,7 +253,7 @@ public class Recipe_GT extends GT_Recipe{
 		//LFTR recipes
 		public static final GT_Recipe_Map sLiquidFluorineThoriumReactorRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(50), "gt.recipe.lftr", "Liquid Fluoride Thorium Reactor", null, RES_PATH_GUI + "basicmachines/LFTR", 0, 0, 0, 2, 1, "Start: ", 1, " EU", true, true);
 		//Fission Fuel Plant Recipes
-		public static final GT_Recipe_Map sFissionFuelProcessing = new GT_Recipe_Map(new HashSet<GT_Recipe>(50), "gt.recipe.fissionfuel", "Liquid Fluoride Thorium Reactor", null, RES_PATH_GUI + "basicmachines/LFTR", 0, 0, 0, 2, 1, E, 1, E, true, true);
+		public static final GT_Recipe_Map sFissionFuelProcessing = new GT_Recipe_Map(new HashSet<GT_Recipe>(50), "gt.recipe.fissionfuel", "Fission Fuel Processing", null, RES_PATH_GUI + "basicmachines/LFTR", 0, 0, 0, 9, 1, E, 1, E, true, true);
 		
 		/**
 		 * HashMap of Recipes based on their Items

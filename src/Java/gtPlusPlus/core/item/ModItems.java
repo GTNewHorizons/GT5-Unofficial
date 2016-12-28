@@ -293,6 +293,7 @@ public final class ModItems {
 			
 			//Generate Reactor Fuel Salts
 			MaterialGenerator.generateNuclearMaterial(NUCLIDE.LiFBeF2ZrF4U235);
+			MaterialGenerator.generateNuclearMaterial(NUCLIDE.LiFBeF2ZrF4UF4);
 			MaterialGenerator.generateNuclearMaterial(NUCLIDE.LiFBeF2ThF4UF4);
 			
 
