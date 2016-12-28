@@ -62,12 +62,20 @@ public class RECIPES_LaserEngraver implements IOreRecipeRegistrator {
 
 		} else if (aOreDictName.equals(OreDictNames.craftingLensWhite.toString())) {
 			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateLithium", 1) != null){
-				GT_Values.RA.addLaserEngraverRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Lithium, 26L), GT_Utility.copyAmount(0L, new Object[]{aStack}), ItemUtils.getItemStackOfAmountFromOreDict("plateDoubleLithium7", 13), 600*20, 2000);
+				GT_Values.RA.addLaserEngraverRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Lithium, 2L), GT_Utility.copyAmount(0L, new Object[]{aStack}), ItemUtils.getItemStackOfAmountFromOreDict("plateDoubleLithium7", 1), 4*60*20, 2000);
 			}
 			else {
 				Utils.LOG_INFO("plateLithium does not exist within Gregtech, please report this issue to Blood-asp on github.");
 				Utils.LOG_INFO("This material item can be re-enabled within the gregtech configuration files, If you wish to fix this yourself.");
 			}
+			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustLithium", 1) != null){
+				GT_Values.RA.addLaserEngraverRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lithium, 3L), GT_Utility.copyAmount(0L, new Object[]{aStack}), ItemUtils.getItemStackOfAmountFromOreDict("dustLithium7", 1), 2*60*20, 2000);
+			}
+			else {
+				Utils.LOG_INFO("dustLithium does not exist within Gregtech, please report this issue to Blood-asp on github.");
+				Utils.LOG_INFO("This material item can be re-enabled within the gregtech configuration files, If you wish to fix this yourself.");
+			}
+			
 		}
 	}
 }

@@ -332,29 +332,29 @@ public class RECIPES_GREGTECH {
 		try {
 			//Fli2BeF4 + Thorium TetraFluoride = Uranium233
 			CORE.RA.addLFTRRecipe(
-					FluidUtils.getFluidStack("molten.thoriumtetrafluoride", 400), //Fluid input (slot 1)
+					FluidUtils.getFluidStack("molten.LiFBeF2ThF4UF4".toLowerCase(), 144*4), //Fluid input (slot 1)
 					FluidUtils.getFluidStack("molten.li2bef4", 1200), //Fluid output (slot 2)
-					FluidUtils.getFluidStack("molten.uraniumhexafluoride", 1600), //Output Array of Items - Upto 9,
-					12000*20, //Time in ticks
+					FluidUtils.getFluidStack("molten.uraniumhexafluoride", (1200+(144*4))), //Output Array of Items - Upto 9,
+					300*60*20, //Time in ticks
 					3500); //EU	
 			
 		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 		try {
 			//Fli2BeF4 + Uranium235 = 1x Uranium233
 			CORE.RA.addLFTRRecipe(
-					FluidUtils.getFluidStack("molten.LiFBeF2ZrF4U235".toLowerCase(), 144*32), //Fluid input (slot 1)
+					FluidUtils.getFluidStack("molten.LiFBeF2ZrF4U235".toLowerCase(), 144*16), //Fluid input (slot 1)
 					FluidUtils.getFluidStack("molten.li2bef4", 144*12), //Fluid output (slot 2)
-					FluidUtils.getFluidStack("molten.uraniumhexafluoride", 6*144), //Output Array of Items - Upto 9,
+					FluidUtils.getFluidStack("molten.uraniumhexafluoride", 3*144), //Output Array of Items - Upto 9,
 					120*60*20, //Time in ticks
 					8000); //EU	
 		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 		try {
 			//Fli2BeF4 + Uranium233 TetraFluoride = Uranium233
 			CORE.RA.addLFTRRecipe(
-					FluidUtils.getFluidStack("molten.LiFBeF2ThF4UF4".toLowerCase(), 200), //Fluid input (slot 1)
+					FluidUtils.getFluidStack("molten.LiFBeF2ZrF4UF4".toLowerCase(), 144*2), //Fluid input (slot 1)
 					FluidUtils.getFluidStack("molten.li2bef4", 500), //Fluid output (slot 2)
-					FluidUtils.getFluidStack("molten.uraniumhexafluoride", 1200), //Output Array of Items - Upto 9,
-					16000*20, //Time in ticks
+					FluidUtils.getFluidStack("molten.uraniumhexafluoride", 1288), //Output Array of Items - Upto 9,
+					420*60*20, //Time in ticks
 					4000); //EU	
 
 		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
