@@ -50,7 +50,7 @@ public class MaterialUtils {
 		long protons = material.getProtons();
 		long neutrons = material.getNeutrons();
 		boolean blastFurnace = material.mBlastFurnaceRequired;	
-		String chemicalFormula = material.mChemicalFormula;
+		String chemicalFormula = MaterialUtils.subscript(material.mChemicalFormula);
 		Element element = material.mElement;
 		int radioactivity = 0;
 		if (material.isRadioactive()){

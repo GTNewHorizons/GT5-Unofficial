@@ -2,6 +2,7 @@ package gtPlusPlus.core.item.base.ingots;
 
 import gregtech.api.enums.GT_Values;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.entity.Entity;
@@ -16,17 +17,16 @@ public class BaseItemIngotHot extends BaseItemIngot{
 	private int tickCounterMax = 200;
 	private int mTier;
 
-	public BaseItemIngotHot(String unlocalizedName, String materialName, ItemStack coldIngot, int tier) {
-		super(unlocalizedName, materialName, Utils.rgbtoHexValue(225, 225, 225), 0);
+	public BaseItemIngotHot(Material material) {
+		super(material, ComponentTypes.HOTINGOT);
 		this.setTextureName(CORE.MODID + ":" + "itemIngotHot");
-		this.outputIngot = coldIngot;
-		this.mTier = tier;
+		this.outputIngot = material.getIngot(1);
+		this.mTier = material.vTier;
 		generateRecipe();
 	}
 	
 	@Override
 	public String getItemStackDisplayName(ItemStack p_77653_1_) {
-
 		return ("Hot "+materialName+ " Ingot");
 	}
 
@@ -37,9 +37,7 @@ public class BaseItemIngotHot extends BaseItemIngot{
 
 	private void generateRecipe(){
 		Utils.LOG_WARNING("Adding Vacuum Freezer recipe for a Hot Ingot of "+materialName+".");
-		GT_Values.RA.addVacuumFreezerRecipe(ItemUtils.getSimpleStack(this), outputIngot.copy(), 60*mTier);
-
-		
+		GT_Values.RA.addVacuumFreezerRecipe(ItemUtils.getSimpleStack(this), outputIngot.copy(), 60*mTier);	
 	}	
 
 	@Override
@@ -52,8 +50,8 @@ public class BaseItemIngotHot extends BaseItemIngot{
 				entityHolding.attackEntityFrom(DamageSource.onFire, 1);
 				tickCounter = 0;
 			}
-			super.onUpdate(iStack, world, entityHolding, p_77663_4_, p_77663_5_);
 		}
+		super.onUpdate(iStack, world, entityHolding, p_77663_4_, p_77663_5_);
 	}
 
 

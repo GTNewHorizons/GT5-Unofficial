@@ -49,7 +49,7 @@ public class MaterialGenerator {
 				Item temp;
 				Block tempBlock;
 				tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
-				temp = new BaseItemIngot("itemIngot"+unlocalizedName, materialName, Colour, sRadiation);
+				temp = new BaseItemIngot(matInfo);
 
 				temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, sRadiation);
 				temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, sRadiation);
@@ -65,10 +65,9 @@ public class MaterialGenerator {
 				Block tempBlock;
 				tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
 				tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.FRAME, Colour);
-				temp = new BaseItemIngot("itemIngot"+unlocalizedName, materialName, Colour, sRadiation);
+				temp = new BaseItemIngot(matInfo);
 				if (hotIngot){
-					Item tempIngot = temp;
-					temp = new BaseItemIngotHot("itemHotIngot"+unlocalizedName, materialName, ItemUtils.getSimpleStack(tempIngot, 1), materialTier);
+					temp = new BaseItemIngotHot(matInfo);
 				}
 				temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, sRadiation);
 				temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, sRadiation);
@@ -88,7 +87,7 @@ public class MaterialGenerator {
 			Item temp;
 			Block tempBlock;
 			tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
-			temp = new BaseItemIngot("itemIngot"+unlocalizedName, materialName, Colour, sRadiation);
+			temp = new BaseItemIngot(matInfo);
 			temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, sRadiation);
 			temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, sRadiation);
 			temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier, sRadiation);
@@ -122,7 +121,7 @@ public class MaterialGenerator {
 		Block tempBlock;
 		
 		tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
-		temp = new BaseItemIngot("itemIngot"+unlocalizedName, materialName, Colour, sRadiation);
+		temp = new BaseItemIngot(matInfo);
 		temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", 3, sRadiation);
 		temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", 2, sRadiation);
 		temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", 1, sRadiation);

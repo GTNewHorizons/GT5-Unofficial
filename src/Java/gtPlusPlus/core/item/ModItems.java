@@ -11,7 +11,7 @@ import gtPlusPlus.core.item.base.dusts.decimal.BaseItemCentidust;
 import gtPlusPlus.core.item.base.dusts.decimal.BaseItemDecidust;
 import gtPlusPlus.core.item.base.foods.BaseItemFood;
 import gtPlusPlus.core.item.base.foods.BaseItemHotFood;
-import gtPlusPlus.core.item.base.ingots.BaseItemIngot;
+import gtPlusPlus.core.item.base.ingots.BaseItemIngotOLD;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate;
 import gtPlusPlus.core.item.effects.RarityUncommon;
 import gtPlusPlus.core.item.general.*;
@@ -183,6 +183,8 @@ public final class ModItems {
 
 	private static Item dustCalciumSulfate;
 
+	private static BaseItemPlate itemPlateClay;
+
 
 
 	//@SuppressWarnings("unused")
@@ -190,7 +192,7 @@ public final class ModItems {
 	public static final void init(){
 
 		//Default item used when recipes fail, handy for debugging.
-		AAA_Broken = new BaseItemIngot("AAA_Broken", "Errors - Tell Alkalus", Utils.rgbtoHexValue(128, 128, 128), 0);
+		AAA_Broken = new BaseItemIngotOLD("AAA_Broken", "Errors - Tell Alkalus", Utils.rgbtoHexValue(128, 128, 128), 0);
 
 		//Debug Loading
 		if (CORE.DEBUG){
@@ -455,6 +457,8 @@ public final class ModItems {
 			itemBaseCentidust = UtilsItems.generateCentidust(m);*/
 			}
 		}
+		
+		itemPlateClay = new BaseItemPlate(MaterialUtils.generateMaterialFromGtENUM(Materials.Clay));
 
 		//EnderIO Resources
 		if (LoadedMods.EnderIO || LOAD_ALL_CONTENT){

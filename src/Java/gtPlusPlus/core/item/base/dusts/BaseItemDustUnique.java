@@ -24,6 +24,7 @@ public class BaseItemDustUnique extends Item{
 	protected String materialName;
 	protected String pileType;
 	String name = "";
+	String chemicalNotation = "";
 
 	public BaseItemDustUnique(String unlocalizedName, String materialName, int colour, String pileSize) {
 		setUnlocalizedName(unlocalizedName);
@@ -36,6 +37,7 @@ public class BaseItemDustUnique extends Item{
 		this.setCreativeTab(tabMisc);
 		this.colour = colour;
 		this.materialName = materialName;
+		this.chemicalNotation = MaterialUtils.subscript(materialName);
 		this.sRadiation = ItemUtils.getRadioactivityLevel(materialName);
 		GameRegistry.registerItem(this, unlocalizedName);
 
@@ -69,13 +71,13 @@ public class BaseItemDustUnique extends Item{
 	public String getItemStackDisplayName(ItemStack iStack) {
 
 		if (getUnlocalizedName().contains("DustTiny")){
-			name = "Tiny Pile of "+MaterialUtils.subscript(materialName) + " Dust";
+			name = "Tiny Pile of "+materialName+ " Dust";
 		}
 		else if (getUnlocalizedName().contains("DustSmall")){
-			name = "Small Pile of "+MaterialUtils.subscript(materialName) + " Dust";
+			name = "Small Pile of "+materialName+ " Dust";
 		}
 		else {
-			name = MaterialUtils.subscript(materialName) + " Dust";
+			name = materialName+ " Dust";
 		}
 		return name;
 	}
@@ -91,7 +93,42 @@ public class BaseItemDustUnique extends Item{
 		if (sRadiation > 0){
 			list.add(CORE.GT_Tooltip_Radioactive);
 		}
+		if (containsSubScript(chemicalNotation)){
+			list.add(chemicalNotation);
+		}
 		super.addInformation(stack, aPlayer, list, bool);
+	}
+	
+	static boolean containsSubScript(String s){
+		if (s.contains(MaterialUtils.superscript("1"))) return true;
+		if (s.contains(MaterialUtils.superscript("2"))) return true;
+		if (s.contains(MaterialUtils.superscript("3"))) return true;
+		if (s.contains(MaterialUtils.superscript("4"))) return true;
+		if (s.contains(MaterialUtils.superscript("5"))) return true;
+		if (s.contains(MaterialUtils.superscript("6"))) return true;
+		if (s.contains(MaterialUtils.superscript("7"))) return true;
+		if (s.contains(MaterialUtils.superscript("8"))) return true;
+		if (s.contains(MaterialUtils.superscript("9"))) return true;
+		if (s.contains(MaterialUtils.subscript("1"))) return true;
+		if (s.contains(MaterialUtils.subscript("2"))) return true;
+		if (s.contains(MaterialUtils.subscript("3"))) return true;
+		if (s.contains(MaterialUtils.subscript("4"))) return true;
+		if (s.contains(MaterialUtils.subscript("5"))) return true;
+		if (s.contains(MaterialUtils.subscript("6"))) return true;
+		if (s.contains(MaterialUtils.subscript("7"))) return true;
+		if (s.contains(MaterialUtils.subscript("8"))) return true;
+		if (s.contains(MaterialUtils.subscript("9"))) return true;
+		String r = MaterialUtils.subscript(s);
+		if (r.contains(("1"))) return false;
+		if (r.contains(("2"))) return false;
+		if (r.contains(("3"))) return false;
+		if (r.contains(("4"))) return false;
+		if (r.contains(("5"))) return false;
+		if (r.contains(("6"))) return false;
+		if (r.contains(("7"))) return false;
+		if (r.contains(("8"))) return false;
+		if (r.contains(("9"))) return false;
+		return false;
 	}
 
 	public final String getMaterialName() {

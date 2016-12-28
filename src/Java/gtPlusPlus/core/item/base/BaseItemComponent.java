@@ -69,7 +69,7 @@ public class BaseItemComponent extends Item{
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
+	public final void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
 
 		if (materialName != null && materialName != "" && !materialName.equals("") && componentMaterial != null){
 
@@ -111,7 +111,9 @@ public class BaseItemComponent extends Item{
 				//list.add(EnumChatFormatting.GRAY+"A " + materialName + " Ring.");
 			}			
 			if (componentMaterial != null){
+				if (!componentMaterial.vChemicalFormula.equals("??"))
 				list.add(componentMaterial.vChemicalFormula);
+				
 				if (componentMaterial.isRadioactive){
 					list.add(CORE.GT_Tooltip_Radioactive);
 				}
@@ -145,6 +147,7 @@ public class BaseItemComponent extends Item{
 	public static enum ComponentTypes {
 		DUST("Dust", " Dust", "dust"),
 		INGOT("Ingot", " Ingot", "ingot"),
+		HOTINGOT("HotIngot", " Hot Ingot", "ingotHot"),
 		PLATE("Plate", " Plate", "plate"),
 		PLATEDOUBLE("PlateDouble", " Double Plate", "plateDouble"),
 		ROD("Rod", " Rod", "stick"),
