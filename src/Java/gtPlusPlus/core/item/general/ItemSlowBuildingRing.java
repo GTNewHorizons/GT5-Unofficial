@@ -70,9 +70,9 @@ public class ItemSlowBuildingRing extends Item implements IBauble{
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {				
 		list.add("");				
-		list.add(EnumChatFormatting.GREEN+"Worn as a Ring within Baubles."+EnumChatFormatting.GRAY);	
-		list.add(EnumChatFormatting.GREEN+"Prevents you from sprinting and keeps you stuck crouching."+EnumChatFormatting.GRAY);	
-		list.add(EnumChatFormatting.GREEN+"Press shift once worn to active, take off to stop the effect."+EnumChatFormatting.GRAY);			
+		list.add(EnumChatFormatting.GREEN+"Worn as a Ring within Baubles. Prevents you from sprinting."+EnumChatFormatting.GRAY);	
+		list.add(EnumChatFormatting.GREEN+"Movement speed reduced to crouch speed."+EnumChatFormatting.GRAY);	
+		list.add(EnumChatFormatting.GREEN+"Press shift while worn to toggle crouch on/off."+EnumChatFormatting.GRAY);			
 		list.add("");			
 		super.addInformation(stack, aPlayer, list, bool);
 	}

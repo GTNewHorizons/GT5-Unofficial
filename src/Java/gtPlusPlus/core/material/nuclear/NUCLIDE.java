@@ -20,13 +20,15 @@ public final class NUCLIDE {
 	
 	
 	public static final Material LiFBeF2ThF4UF4 = new Material(
-			"Reactor Salt LiFBeF2ThF4UF4", //Material Name
+			"LiFBeF2ThF4UF4", //Material Name
 			new short[]{40, 90, 25, 0}, //Material Colour
 			566, //Melting Point in C
 			870, //Boiling Point in C
 			150, //Protons
 			150, //Neutrons
 			false, //Uses Blast furnace?
+			MaterialUtils.subscript(MaterialUtils.superscript("7")+"LiFBeF2ThF4UF4"), //Chemical Formula
+			5, //Radioactivity Level
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
 					new MaterialStack(FLUORIDES.LITHIUM_FLUORIDE, 65),
@@ -36,13 +38,15 @@ public final class NUCLIDE {
 			});
 	
 	public static final Material LiFBeF2ZrF4U235 = new Material(
-			"Reactor Salt LiFBeF2ZrF4U235", //Material Name
+			"LiFBeF2ZrF4U235", //Material Name
 			new short[]{50, 70, 15, 0}, //Material Colour
 			590, //Melting Point in C
 			890, //Boiling Point in C
 			150, //Protons
 			150, //Neutrons
 			false, //Uses Blast furnace?
+			MaterialUtils.subscript(MaterialUtils.superscript("7")+"LiFBeF2ZrF4")+MaterialUtils.superscript("235U"), //Chemical Formula
+			5, //Radioactivity Level
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
 					new MaterialStack(FLUORIDES.LITHIUM_FLUORIDE, 55),

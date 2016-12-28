@@ -240,6 +240,8 @@ public class Recipe_GT extends GT_Recipe{
 		
 		//LFTR recipes
 		public static final GT_Recipe_Map sLiquidFluorineThoriumReactorRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(50), "gt.recipe.lftr", "Liquid Fluoride Thorium Reactor", null, RES_PATH_GUI + "basicmachines/LFTR", 0, 0, 0, 2, 1, "Start: ", 1, " EU", true, true);
+		//Fission Fuel Plant Recipes
+		public static final GT_Recipe_Map sFissionFuelProcessing = new GT_Recipe_Map(new HashSet<GT_Recipe>(50), "gt.recipe.fissionfuel", "Liquid Fluoride Thorium Reactor", null, RES_PATH_GUI + "basicmachines/LFTR", 0, 0, 0, 2, 1, E, 1, E, true, true);
 		
 		/**
 		 * HashMap of Recipes based on their Items
