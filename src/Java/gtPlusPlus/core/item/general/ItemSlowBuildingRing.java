@@ -99,13 +99,8 @@ public class ItemSlowBuildingRing extends Item implements IBauble{
 
 	@Override //TODO
 	public void onUnequipped(ItemStack arg0, EntityLivingBase arg1) {
-		if (arg1.worldObj.isRemote){
-			if (arg1.isSneaking()){
-				arg1.setSneaking(false);
-			}
-		}
-		SneakManager.setStateOFF(SneakManager.getSneakingState());
-		SneakManager.setStateOFF(SneakManager.getSprintingDisabledState());
+		SneakManager.setSprintingStateON();
+		SneakManager.setCrouchingStateOFF();
 	}
 
 	@Override //TODO
@@ -118,14 +113,14 @@ public class ItemSlowBuildingRing extends Item implements IBauble{
 			if (!arg1.isSneaking()){
 				arg1.setSneaking(true);
 				Minecraft.getMinecraft().thePlayer.setSneaking(true);
-				SneakManager.setStateON(SneakManager.getSneakingState());
-				SneakManager.setStateON(SneakManager.getSprintingDisabledState());
+				SneakManager.setSprintingStateOFF();
+				SneakManager.setCrouchingStateON();
 			}
 			else if (arg1.isSneaking()){
 				arg1.setSprinting(false);
 				Minecraft.getMinecraft().thePlayer.setSprinting(true);
-				SneakManager.setStateON(SneakManager.getSneakingState());
-				SneakManager.setStateON(SneakManager.getSprintingDisabledState());
+				SneakManager.setSprintingStateOFF();
+				SneakManager.setCrouchingStateON();
 			}
 		}
 	}

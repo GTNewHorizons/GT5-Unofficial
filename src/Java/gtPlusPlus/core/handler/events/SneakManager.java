@@ -1,5 +1,6 @@
 package gtPlusPlus.core.handler.events;
 
+import gtPlusPlus.core.util.Utils;
 import net.minecraft.client.Minecraft;
 
 public class SneakManager {
@@ -9,17 +10,17 @@ public class SneakManager {
 	protected static final Minecraft mc = Minecraft.getMinecraft();
 	public static boolean		canSprint		= true;
 	public static boolean		isSneaking		= true;
-	public static boolean		optionDoubleTap			= false;
+	public static boolean		optionDoubleTap			= true;
 	public static boolean		wasSprintDisabled		= false;
 	
-	private static State Sprinting = State.OFF;
+	private static State Sprinting = State.ON;
 	private static State Crouching = State.OFF;
 	
 	public static boolean Sneaking(){
 		return Crouching.getState();
 	}
 	
-	public static boolean SprintingDisabled(){
+	public static boolean Sprinting(){
 		return Sprinting.getState();
 	}
 	
@@ -40,17 +41,26 @@ public class SneakManager {
 	}
 	
 	private static State toggleState(State state){
+		Utils.LOG_INFO("State Toggle");
 		if (state == State.ON)
 		return state = State.OFF;
 		return state = State.ON;
 	}
 	
-	public static State setStateON(State state1){
-		return state1 = State.ON;
+	public static State setCrouchingStateON(){
+		return Crouching = State.ON;
 	}
 	
-	public static State setStateOFF(State state1){
-		return state1 = State.OFF;
+	public static State setCrouchingStateOFF(){
+		return Crouching = State.OFF;
+	}
+	
+	public static State setSprintingStateON(){
+		return Sprinting = State.ON;
+	}
+	
+	public static State setSprintingStateOFF(){
+		return Sprinting = State.OFF;
 	}
 	
 	 public static enum State {
