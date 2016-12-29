@@ -412,9 +412,16 @@ extends GregtechMeta_MultiBlockBase {
 	}
 	
 	public int countCasings() {
+		try{
 		if (this.getBaseMetaTileEntity().getWorld() == null){
 			return 0;
-		}		
+		}	
+		if (this.getBaseMetaTileEntity() == null){
+			return 0;
+		}
+		} catch(NullPointerException r){
+			return 0;
+		}
 		int xDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetX;
 		int zDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetZ;
 		if (!this.getBaseMetaTileEntity().getAirOffset(xDir, 0, zDir)) {
