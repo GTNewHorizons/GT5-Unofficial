@@ -350,7 +350,7 @@ public class FluidUtils {
 	}	
 	
 	public final static Fluid generateFluid(String unlocalizedName, String localizedName, int MeltingPoint, short[] RGBA){
-		if (FluidUtils.getFluidStack("molten"+localizedName, 1) == null && ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dust"+Utils.sanitizeString(localizedName), 1) != null){
+		if (FluidUtils.getFluidStack("molten"+"."+unlocalizedName.toLowerCase(), 1) == null && ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dust"+Utils.sanitizeString(localizedName), 1) != null){
 			Utils.LOG_WARNING("Generating our own fluid.");
 
 			//Generate a Cell if we need to

@@ -418,7 +418,7 @@ public final class ModItems {
 		//GT_OreDictUnificator.registerOre("dustZirconiumTetrafluoride", new ItemStack(ModItems.dustZrF4));
 		GT_OreDictUnificator.registerOre("cellZrF4", ItemUtils.getItemStackOfAmountFromOreDict("cellZirconiumTetrafluoride", 1));
 		GT_OreDictUnificator.registerOre("dustZrF4", ItemUtils.getItemStackOfAmountFromOreDict("dustZirconiumTetrafluoride", 1));
-		FluidUtils.generateFluid("ZirconiumTetrafluoride", "Zirconium Tetrafluoride", 500, new short[]{170, 170, 140, 100});
+		FluidUtils.generateFluid("ZirconiumTetrafluoride", "Zirconium Tetrafluoride [ZrF4]", 500, new short[]{170, 170, 140, 100});
 		
 		//Coolant Salt
 		//NaBF4 - NaF - 621C
