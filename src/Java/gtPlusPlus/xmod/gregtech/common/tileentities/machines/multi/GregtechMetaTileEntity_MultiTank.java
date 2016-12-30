@@ -21,6 +21,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -35,11 +36,12 @@ extends GregtechMeta_MultiBlockBase {
 		super(aID, aName, aNameRegional);
 	}
 
-	private long fluidStored = 0;
-	private int multiblockCasingCount = 0;
-	private int storageMultiplier = getStorageMultiplier();
-	private long maximumFluidStorage = getMaximumTankStorage();
+	private short multiblockCasingCount = 0;
+	private int mInternalSaveClock = 0;
+	private short storageMultiplier = 1;
+	private int maximumFluidStorage = 96000;
 	private FluidStack internalStorageTank = null;
+	private NBTTagCompound internalCraftingComponentsTag = new NBTTagCompound();
 
 	@Override
 	public String[] getInfoData() {
@@ -68,93 +70,123 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
-		aNBT.setInteger("mEUt", mEUt);
-		aNBT.setInteger("mProgresstime", mProgresstime);
-		aNBT.setInteger("mMaxProgresstime", mMaxProgresstime);
-		aNBT.setInteger("mEfficiencyIncrease", mEfficiencyIncrease);
-		aNBT.setInteger("mEfficiency", mEfficiency);
-		aNBT.setInteger("mPollution", mPollution);
-		aNBT.setInteger("mRuntime", mRuntime);
-		aNBT.setInteger("mCasingCount", countCasings());
-		aNBT.setLong("mFluidStored", fluidStored);
-		aNBT.setInteger("mStorageMultiplier", storageMultiplier);
-		aNBT.setLong("mMaxFluidStored", maximumFluidStorage);
+		super.saveNBTData(aNBT);
+		NBTTagCompound gtCraftingComponentsTag = aNBT.getCompoundTag("GT.CraftingComponents");
+		if (gtCraftingComponentsTag != null){
+			
+			Utils.LOG_WARNING("Got Crafting Tag");
+			
+				if (internalStorageTank != null){
+					Utils.LOG_WARNING("mFluid was not null, Saving TileEntity NBT data.");
 
-		if (mOutputItems != null) for (int i = 0; i < mOutputItems.length; i++)
-			if (mOutputItems[i] != null) {
-				NBTTagCompound tNBT = new NBTTagCompound();
-				mOutputItems[i].writeToNBT(tNBT);
-				aNBT.setTag("mOutputItem" + i, tNBT);
-			}
-		if (mOutputFluids != null) for (int i = 0; i < mOutputFluids.length; i++)
-			if (mOutputFluids[i] != null) {
-				NBTTagCompound tNBT = new NBTTagCompound();
-				mOutputFluids[i].writeToNBT(tNBT);
-				aNBT.setTag("mOutputFluids" + i, tNBT);
-			}
+					gtCraftingComponentsTag.setString("xFluid", internalStorageTank.getFluid().getName());
+					gtCraftingComponentsTag.setInteger("xAmount", internalStorageTank.amount);
+					gtCraftingComponentsTag.setLong("xAmountMax", maximumFluidStorage);
 
-		aNBT.setBoolean("mWrench", mWrench);
-		aNBT.setBoolean("mScrewdriver", mScrewdriver);
-		aNBT.setBoolean("mSoftHammer", mSoftHammer);
-		aNBT.setBoolean("mHardHammer", mHardHammer);
-		aNBT.setBoolean("mSolderingTool", mSolderingTool);
-		aNBT.setBoolean("mCrowbar", mCrowbar);
-	}
+					aNBT.setTag("GT.CraftingComponents", gtCraftingComponentsTag);
+				}
+				else {
+					Utils.LOG_WARNING("mFluid was null, Saving TileEntity NBT data.");
+					gtCraftingComponentsTag.removeTag("xFluid");
+					gtCraftingComponentsTag.removeTag("xAmount");
+					gtCraftingComponentsTag.removeTag("xAmountMax");
+					gtCraftingComponentsTag.setLong("xAmountMax", maximumFluidStorage);
 
-	private short getStorageMultiplier(){
-		int tempstorageMultiplier = (1*countCasings());
-		if (tempstorageMultiplier <= 0){
-			if (this != null){
-				if (this.getBaseMetaTileEntity() != null){
-					if (this.getBaseMetaTileEntity().getWorld() != null){
-						Utils.LOG_INFO("Invalid Storage Multiplier. "+countCasings());
-						return (short) countCasings();
-					}
-				}	
-			}
-			return 1;
+
+					aNBT.setTag("GT.CraftingComponents", gtCraftingComponentsTag);
+				}
 		}
-		return (short) tempstorageMultiplier;
 	}
-
-	private long getMaximumTankStorage(){
-		int multiplier = getStorageMultiplier();
-		Utils.LOG_WARNING("x = "+multiplier+" * 96000");
-		long tempTankStorageMax = (96000*multiplier);
-		Utils.LOG_WARNING("x = "+tempTankStorageMax);
-		if (tempTankStorageMax <= 0){
-			return 96000;
-		}
-		return tempTankStorageMax;
-	}
-
-
+	
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
-		mEUt = aNBT.getInteger("mEUt");
-		mProgresstime = aNBT.getInteger("mProgresstime");
-		mMaxProgresstime = aNBT.getInteger("mMaxProgresstime");
-		if (mMaxProgresstime > 0) mRunningOnLoad = true;
-		mEfficiencyIncrease = aNBT.getInteger("mEfficiencyIncrease");
-		mEfficiency = aNBT.getInteger("mEfficiency");
-		mPollution = aNBT.getInteger("mPollution");
-		mRuntime = aNBT.getInteger("mRuntime");
-		multiblockCasingCount = aNBT.getInteger("mCasingCount");
-		fluidStored = aNBT.getLong("mFluidStored");
-		storageMultiplier = aNBT.getInteger("mStorageMultiplier");
-		maximumFluidStorage = aNBT.getLong("mMaxFluidStored");
-		mOutputItems = new ItemStack[getAmountOfOutputs()];
-		for (int i = 0; i < mOutputItems.length; i++) mOutputItems[i] = GT_Utility.loadItem(aNBT, "mOutputItem" + i);
-		mOutputFluids = new FluidStack[getAmountOfOutputs()];
-		for (int i = 0; i < mOutputFluids.length; i++)
-			mOutputFluids[i] = GT_Utility.loadFluid(aNBT, "mOutputFluids" + i);
-		mWrench = aNBT.getBoolean("mWrench");
-		mScrewdriver = aNBT.getBoolean("mScrewdriver");
-		mSoftHammer = aNBT.getBoolean("mSoftHammer");
-		mHardHammer = aNBT.getBoolean("mHardHammer");
-		mSolderingTool = aNBT.getBoolean("mSolderingTool");
-		mCrowbar = aNBT.getBoolean("mCrowbar");
+		super.loadNBTData(aNBT);  	
+		NBTTagCompound gtCraftingComponentsTag = aNBT.getCompoundTag("GT.CraftingComponents");
+		String xFluid = null;
+		int xAmount = 0;
+		if (gtCraftingComponentsTag.hasNoTags()){
+			if (internalStorageTank != null){
+				Utils.LOG_WARNING("mFluid was not null, Creating TileEntity NBT data.");
+				gtCraftingComponentsTag.setInteger("xAmount", internalStorageTank.amount);
+				gtCraftingComponentsTag.setString("xFluid", internalStorageTank.getFluid().getName());
+				aNBT.setTag("GT.CraftingComponents", gtCraftingComponentsTag);
+			}
+		}
+		else {
+
+			//internalCraftingComponentsTag = gtCraftingComponentsTag.getCompoundTag("backupTag");
+
+			if (gtCraftingComponentsTag.hasKey("xFluid")){
+				Utils.LOG_WARNING("xFluid was not null, Loading TileEntity NBT data.");
+				xFluid = gtCraftingComponentsTag.getString("xFluid");
+			}
+			if (gtCraftingComponentsTag.hasKey("xAmount")){
+				Utils.LOG_WARNING("xAmount was not null, Loading TileEntity NBT data.");
+				xAmount = gtCraftingComponentsTag.getInteger("xAmount");
+			}
+			if (xFluid != null && xAmount != 0){
+				Utils.LOG_WARNING("Setting Internal Tank, loading "+xAmount+"L of "+xFluid);
+				setInternalTank(xFluid, xAmount);
+			}
+		}
 	}
+	
+	private boolean setInternalTank(String fluidName, int amount){
+		FluidStack temp = FluidUtils.getFluidStack(fluidName, amount);
+		if (temp != null){
+			if (internalStorageTank == null){
+				internalStorageTank = temp;
+				Utils.LOG_WARNING(temp.getFluid().getName()+" Amount: "+temp.amount+"L");
+			}
+			else{
+				Utils.LOG_WARNING("Retained Fluid.");
+				Utils.LOG_WARNING(internalStorageTank.getFluid().getName()+" Amxount: "+internalStorageTank.amount+"L");
+			}
+			markDirty();
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+		tryForceNBTUpdate();
+		super.onLeftclick(aBaseMetaTileEntity, aPlayer);
+	}
+	
+	@Override
+	public boolean onWrenchRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+		tryForceNBTUpdate();
+		return super.onWrenchRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ);
+	}
+	
+	@Override
+	public void onRemoval() {
+		tryForceNBTUpdate();
+		super.onRemoval();
+	}
+	
+
+	@Override
+	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+		super.onPostTick(aBaseMetaTileEntity, aTick);
+
+		if (internalStorageTank.amount >= maximumFluidStorage){
+			if (internalStorageTank.amount > maximumFluidStorage){
+				internalStorageTank.amount = (int) maximumFluidStorage;
+			}
+			this.stopMachine();
+		}
+		
+		if (mInternalSaveClock != 20){
+			mInternalSaveClock++;
+		}
+		else {
+			mInternalSaveClock = 0;
+			tryForceNBTUpdate();
+		}
+
+	}	
 
 	public GregtechMetaTileEntity_MultiTank(String aName) {
 		super(aName);
@@ -206,9 +238,6 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
-		//Utils.LOG_WARNING("Okay");
-
-
 
 		ArrayList<ItemStack> tInputList = getStoredInputs();
 		for (int i = 0; i < tInputList.size() - 1; i++) {
@@ -405,30 +434,38 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 		}
-		multiblockCasingCount = tAmount;
+		multiblockCasingCount = (short) tAmount;
+		maximumFluidStorage = getMaximumTankStorage(tAmount);
 		Utils.LOG_INFO("Your Multitank can be 20 blocks tall.");
-		Utils.LOG_INFO("Casings Count: "+tAmount+" Valid Multiblock: "+(tAmount >= 16)+" Tank Storage Capacity:"+getMaximumTankStorage()+"L");
+		Utils.LOG_INFO("Casings Count: "+multiblockCasingCount+" Valid Multiblock: "+(tAmount >= 16)+" Tank Storage Capacity:"+maximumFluidStorage+"L");
+		tryForceNBTUpdate();
 		return tAmount >= 16;
 	}
 	
-	public int countCasings() {
+	/*public int countCasings() {
+		Utils.LOG_INFO("Counting Machine Casings");
 		try{
 		if (this.getBaseMetaTileEntity().getWorld() == null){
+			Utils.LOG_INFO("Tile Entity's world was null for casing count.");
 			return 0;
 		}	
 		if (this.getBaseMetaTileEntity() == null){
+			Utils.LOG_INFO("Tile Entity was null for casing count.");
 			return 0;
 		}
 		} catch(NullPointerException r){
+			Utils.LOG_INFO("Null Pointer Exception caught.");
 			return 0;
 		}
 		int xDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetX;
 		int zDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetZ;
 		if (!this.getBaseMetaTileEntity().getAirOffset(xDir, 0, zDir)) {
+			Utils.LOG_INFO("Failed due to air being misplaced.");
 			Utils.LOG_WARNING("Must be hollow.");
 			return 0;
 		}
 		int tAmount = 0;
+		Utils.LOG_INFO("Casing Count set to 0.");
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
 				for (int h = -1; h < 19; h++) {
@@ -470,11 +507,12 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 		}
-		multiblockCasingCount = tAmount;
-		Utils.LOG_INFO("Your Multitank can be 20 blocks tall.");
-		Utils.LOG_INFO("Casings Count: "+tAmount+" Valid Multiblock: "+(tAmount >= 16)+" Tank Storage Capacity:"+getMaximumTankStorage()+"L");
+		Utils.LOG_INFO("Finished counting.");
+		multiblockCasingCount = (short) tAmount;
+		//Utils.LOG_INFO("Your Multitank can be 20 blocks tall.");
+		Utils.LOG_INFO("Casings Count: "+tAmount+" Valid Multiblock: "+(tAmount >= 16)+" Tank Storage Capacity:"+getMaximumTankStorage(tAmount)+"L");
 		return tAmount;
-	}
+	}*/
 
 	@Override
 	public int getMaxEfficiency(ItemStack aStack) {
@@ -494,5 +532,58 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public boolean explodesOnComponentBreak(ItemStack aStack) {
 		return false;
+	}
+	
+	private static short getStorageMultiplier(int casingCount){
+		int tsm = 1*casingCount;
+		if (tsm <= 0){			
+				return 1;	
+		}
+		return (short) tsm;
+	}
+	
+	private static int getMaximumTankStorage(int casingCount){
+		int multiplier = getStorageMultiplier(casingCount); 
+		int tempTankStorageMax = 96000*multiplier;
+		if (tempTankStorageMax <= 0){return 96000;}
+		return tempTankStorageMax;
+	}
+	
+	private void tryForceNBTUpdate(){
+
+		//Block is invalid.
+		if (this == null || this.getBaseMetaTileEntity() == null){
+			Utils.LOG_WARNING("Block was not valid for saving data.");
+			return;
+		}
+
+		//Don't need this to run clientside.
+		if (!this.getBaseMetaTileEntity().isServerSide()) {
+			return;
+		}
+
+		//Internal Tag was not valid.
+		try{
+		if (internalCraftingComponentsTag == null){
+			Utils.LOG_WARNING("Internal NBT data tag was null.");
+			return;
+		}	
+		} catch (NullPointerException x){
+			Utils.LOG_WARNING("Caught null NBT.");
+		}
+
+		//Internal tag was valid.
+		saveNBTData(internalCraftingComponentsTag);
+		
+
+		//Mark block for update
+		int x,y,z = 0;
+		x = this.getBaseMetaTileEntity().getXCoord();
+		y = this.getBaseMetaTileEntity().getYCoord();
+		z = this.getBaseMetaTileEntity().getZCoord();
+		this.getBaseMetaTileEntity().getWorld().markBlockForUpdate(x, y, z);
+
+		//Mark block dirty, let chunk know it's data has changed and it must be saved to disk. (Albeit slowly)
+		this.getBaseMetaTileEntity().markDirty();		
 	}
 }

@@ -183,7 +183,6 @@ extends GT_MetaTileEntity_BasicTank {
 	@Override
 	public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
 		super.onLeftclick(aBaseMetaTileEntity, aPlayer);
-		Utils.LOG_INFO("Left Clicking on Tank.");
 		tryForceNBTUpdate();
 	}
 
@@ -284,7 +283,6 @@ extends GT_MetaTileEntity_BasicTank {
 
 	@Override
 	public void onRemoval() {
-		Utils.LOG_INFO("Tank Removel?");
 		tryForceNBTUpdate();
 		super.onRemoval();
 	}
