@@ -173,7 +173,7 @@ public class RecipeGen_DustGeneration  implements Runnable{
 		
 		//Making Shapes from fluid
 		if (GT_Values.RA.addFluidSolidifierRecipe(
-				ItemList.Shape_Mold_Ingot.get(1), //Item Shape		
+				ItemList.Shape_Mold_Ingot.get(0), //Item Shape		
 				material.getFluid(144), //Fluid Input
 				material.getIngot(1), //output				
 				1*20, //Duration
@@ -197,7 +197,7 @@ public class RecipeGen_DustGeneration  implements Runnable{
 			Utils.LOG_WARNING("144l fluid molder for 1 plate Recipe: "+material.getLocalizedName()+" - Failed");			
 		}
 		if (GT_Values.RA.addFluidSolidifierRecipe(
-				ItemList.Shape_Mold_Nugget.get(1), //Item Shape		
+				ItemList.Shape_Mold_Nugget.get(0), //Item Shape		
 				material.getFluid(16), //Fluid Input
 				material.getNugget(1), //output				
 				1*20, //Duration
@@ -209,7 +209,7 @@ public class RecipeGen_DustGeneration  implements Runnable{
 			Utils.LOG_WARNING("16l fluid molder for 1 nugget Recipe: "+material.getLocalizedName()+" - Failed");			
 		}
 		if (GT_Values.RA.addFluidSolidifierRecipe(
-				ItemList.Shape_Mold_Block.get(1), //Item Shape		
+				ItemList.Shape_Mold_Block.get(0), //Item Shape		
 				material.getFluid(144*9), //Fluid Input
 				material.getBlock(1), //output				
 				1*20, //Duration
