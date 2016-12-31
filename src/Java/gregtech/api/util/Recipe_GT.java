@@ -133,7 +133,7 @@ public class Recipe_GT extends GT_Recipe{
 			int aDuration, int aEUt) {
         this(true, null, null, null, null, new FluidStack[]{aInput1, aInput2, aInput3, aInput4, aInput5, aInput6, aInput7, aInput8, aInput9}, new FluidStack[]{aOutput1, aOutput2}, Math.max(aDuration, 1), aEUt, 0);
         if (mInputs.length > 1) {
-        	Gregtech_Recipe_Map.sFissionFuelProcessing.addRecipe(this);
+        	CustomRecipeMap.sFissionFuelProcessing.addRecipe(this);
         }
     }
 	
@@ -150,39 +150,47 @@ public class Recipe_GT extends GT_Recipe{
 		for (Gregtech_Recipe_Map tMapEntry : Gregtech_Recipe_Map.sMappings) tMapEntry.reInit();
 	}
 	
+	@Override
 	public ItemStack getRepresentativeInput(int aIndex) {
         if (aIndex < 0 || aIndex >= mInputs.length) return null;
         return GT_Utility.copy(mInputs[aIndex]);
     }
 
-    public ItemStack getOutput(int aIndex) {
+    @Override
+	public ItemStack getOutput(int aIndex) {
         if (aIndex < 0 || aIndex >= mOutputs.length) return null;
         return GT_Utility.copy(mOutputs[aIndex]);
     }
 
-    public int getOutputChance(int aIndex) {
+    @Override
+	public int getOutputChance(int aIndex) {
         if (aIndex < 0 || aIndex >= mChances.length) return 10000;
         return mChances[aIndex];
     }
 
-    public FluidStack getRepresentativeFluidInput(int aIndex) {
+    @Override
+	public FluidStack getRepresentativeFluidInput(int aIndex) {
         if (aIndex < 0 || aIndex >= mFluidInputs.length || mFluidInputs[aIndex] == null) return null;
         return mFluidInputs[aIndex].copy();
     }
 
-    public FluidStack getFluidOutput(int aIndex) {
+    @Override
+	public FluidStack getFluidOutput(int aIndex) {
         if (aIndex < 0 || aIndex >= mFluidOutputs.length || mFluidOutputs[aIndex] == null) return null;
         return mFluidOutputs[aIndex].copy();
     }
 
+	@Override
 	public GT_Recipe copy() {
 		return this.copy();
 	}
 
+	@Override
 	public boolean isRecipeInputEqual(boolean aDecreaseStacksizeBySuccess, FluidStack[] aFluidInputs, ItemStack... aInputs) {
 		return isRecipeInputEqual(aDecreaseStacksizeBySuccess, false, aFluidInputs, aInputs);
 	}
 
+	@Override
 	public boolean isRecipeInputEqual(boolean aDecreaseStacksizeBySuccess, boolean aDontCheckStackSizes, FluidStack[] aFluidInputs, ItemStack... aInputs) {
 		if (mFluidInputs.length > 0 && aFluidInputs == null) return false;
 		for (FluidStack tFluid : mFluidInputs)
@@ -253,7 +261,7 @@ public class Recipe_GT extends GT_Recipe{
 		//LFTR recipes
 		public static final GT_Recipe_Map sLiquidFluorineThoriumReactorRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(50), "gt.recipe.lftr", "Liquid Fluoride Thorium Reactor", null, RES_PATH_GUI + "basicmachines/LFTR", 0, 0, 0, 2, 1, "Start: ", 1, " EU", true, true);
 		//Fission Fuel Plant Recipes
-		public static final GT_Recipe_Map sFissionFuelProcessing = new GT_Recipe_Map(new HashSet<GT_Recipe>(50), "gt.recipe.fissionfuel", "Fission Fuel Processing", null, RES_PATH_GUI + "basicmachines/LFTR", 0, 0, 0, 9, 1, E, 1, E, true, true);
+		//public static final GT_Recipe_Map sFissionFuelProcessing = new GT_Recipe_Map(new HashSet<GT_Recipe>(50), "gt.recipe.fissionfuel", "Fission Fuel Processing", null, RES_PATH_GUI + "basicmachines/LFTR", 0, 0, 0, 9, 1, E, 1, E, true, true);
 		
 		/**
 		 * HashMap of Recipes based on their Items
