@@ -19,7 +19,7 @@ public class CustomRecipeMap/* extends GT_Recipe_Map*/{
 
         //public static final CustomRecipeMap sOreWasherRecipes = new GT_Recipe_Map_OreWasher(new HashSet<GT_Recipe>(0), "ic.recipe.orewasher", "Ore Washer", "ic2.blockOreWashingPlant", RES_PATH_GUI + "basicmachines/OreWasher", 1, 3, 1, 1, 1, E, 1, E, true, false);
       //Fission Fuel Plant Recipes
-      	public static final CustomRecipeMap sFissionFuelProcessing = new CustomRecipeMap(new HashSet<GT_Recipe>(50), "gt.recipe.fissionfuel", "Fission Fuel Processing", null, RES_PATH_GUI + "basicmachines/LFTR", 0, 0, 0, 9, 1, E, 1, E, true, true);
+      	public static final CustomRecipeMap sFissionFuelProcessing = new CustomRecipeMap(new HashSet<GT_Recipe>(50), "gt.recipe.fissionfuel", "Fission Fuel Processing", null, RES_PATH_GUI + "basicmachines/FissionFuel", 0, 0, 0, 9, 1, E, 1, E, true, true);
       		
         /**
          * HashMap of Recipes based on their Items

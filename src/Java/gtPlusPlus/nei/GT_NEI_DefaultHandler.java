@@ -775,31 +775,31 @@ public class GT_NEI_DefaultHandler
             //New fluid display behaviour when 3 fluid inputs are detected. (Basically a mix of the code below for outputs an the code above for 9 input slots.)
             if (aRecipe.mFluidInputs.length > 2) {
                 if (aRecipe.mFluidInputs[0] != null && (aRecipe.mFluidInputs[0].getFluid() != null)) {
-                    this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[0], true), 12, -4));
+                    this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[0], true), 12, 5));
                 }
                 if (aRecipe.mFluidInputs[1] != null && (aRecipe.mFluidInputs[1].getFluid() != null)) {
-                    this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[1], true), 30, -4));
+                    this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[1], true), 30, 5));
                 }
                 if (aRecipe.mFluidInputs.length > 2 && aRecipe.mFluidInputs[2] != null && (aRecipe.mFluidInputs[2].getFluid() != null)) {
-                    this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[2], true), 48, -4));
+                    this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[2], true), 48, 5));
                 }
                 if (aRecipe.mFluidInputs.length > 3 && aRecipe.mFluidInputs[3] != null && (aRecipe.mFluidInputs[3].getFluid() != null)) {
-                    this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[3], true), 12, 14));
+                    this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[3], true), 12, 23));
                 }
                 if (aRecipe.mFluidInputs.length > 4 && aRecipe.mFluidInputs[4] != null && (aRecipe.mFluidInputs[4].getFluid() != null)) {
-                    this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[4], true), 30, 14));
+                    this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[4], true), 30, 23));
                 }
                 if (aRecipe.mFluidInputs.length > 5 && aRecipe.mFluidInputs[5] != null && (aRecipe.mFluidInputs[5].getFluid() != null)) {
-                    this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[5], true), 48, 14));
+                    this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[5], true), 48, 23));
                 }
                 if (aRecipe.mFluidInputs.length > 6 && aRecipe.mFluidInputs[6] != null && (aRecipe.mFluidInputs[6].getFluid() != null)) {
-                    this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[6], true), 12, 32));
+                    this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[6], true), 12, 41));
                 }
                 if (aRecipe.mFluidInputs.length > 7 && aRecipe.mFluidInputs[7] != null && (aRecipe.mFluidInputs[7].getFluid() != null)) {
-                    this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[7], true), 30, 32));
+                    this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[7], true), 30, 41));
                 }
                 if (aRecipe.mFluidInputs.length > 8 && aRecipe.mFluidInputs[8] != null && (aRecipe.mFluidInputs[8].getFluid() != null)) {
-                    this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[8], true), 48, 32));
+                    this.mInputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidInputs[8], true), 48, 41));
                 }
             } 
             //Returns to old behaviour if fluid inputs < 3
@@ -812,22 +812,34 @@ public class GT_NEI_DefaultHandler
             
             if (aRecipe.mFluidOutputs.length > 1) {
                 if (aRecipe.mFluidOutputs[0] != null && (aRecipe.mFluidOutputs[0].getFluid() != null)) {
-                    this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true), 120, 5));
+                    this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true), 102, 5));
                 }
                 if (aRecipe.mFluidOutputs[1] != null && (aRecipe.mFluidOutputs[1].getFluid() != null)) {
-                    this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[1], true), 138, 5));
+                    this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[1], true), 120, 5));
                 }
                 if (aRecipe.mFluidOutputs.length > 2 && aRecipe.mFluidOutputs[2] != null && (aRecipe.mFluidOutputs[2].getFluid() != null)) {
-                    this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[2], true), 102, 23));
+                    this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[2], true), 138, 5));
                 }
                 if (aRecipe.mFluidOutputs.length > 3 && aRecipe.mFluidOutputs[3] != null && (aRecipe.mFluidOutputs[3].getFluid() != null)) {
-                    this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[3], true), 120, 23));
+                    this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[3], true), 102, 23));
                 }
                 if (aRecipe.mFluidOutputs.length > 4 && aRecipe.mFluidOutputs[4] != null && (aRecipe.mFluidOutputs[4].getFluid() != null)) {
-                    this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[4], true), 138, 23));
+                    this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[4], true), 120, 23));
+                }
+                if (aRecipe.mFluidOutputs.length > 5 && aRecipe.mFluidOutputs[5] != null && (aRecipe.mFluidOutputs[5].getFluid() != null)) {
+                    this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[5], true), 138, 23));
+                }
+                if (aRecipe.mFluidOutputs.length > 6 && aRecipe.mFluidOutputs[6] != null && (aRecipe.mFluidOutputs[6].getFluid() != null)) {
+                    this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[6], true), 102, 41));
+                }
+                if (aRecipe.mFluidOutputs.length > 7 && aRecipe.mFluidOutputs[7] != null && (aRecipe.mFluidOutputs[7].getFluid() != null)) {
+                    this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[7], true), 120, 41));
+                }
+                if (aRecipe.mFluidOutputs.length > 8 && aRecipe.mFluidOutputs[8] != null && (aRecipe.mFluidOutputs[8].getFluid() != null)) {
+                    this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[8], true), 138, 41));
                 }
             } else if ((aRecipe.mFluidOutputs.length > 0) && (aRecipe.mFluidOutputs[0] != null) && (aRecipe.mFluidOutputs[0].getFluid() != null)) {
-                this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true), 102, 52));
+                this.mOutputs.add(new FixedPositionedStack(GT_Utility.getFluidDisplayStack(aRecipe.mFluidOutputs[0], true), 102, 5));
             }
         }
 

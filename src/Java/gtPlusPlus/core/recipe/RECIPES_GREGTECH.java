@@ -324,9 +324,7 @@ public class RECIPES_GREGTECH {
 	}
 	
 	private static void lftrRecipes(){
-		try {		
-			
-			
+		try {				
 			
 		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 		try {
@@ -412,9 +410,7 @@ public class RECIPES_GREGTECH {
 					FluidUtils.getFluidStack(LiFBeF2ThF4UF4, 10000), //Output Fluid 1
 					null, //Output Fluid 2
 					60*60*20, //Duration
-					4740);
-			
-					
+					4740);					
 
 		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 	}
