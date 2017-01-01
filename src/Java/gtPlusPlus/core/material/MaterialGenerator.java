@@ -132,6 +132,8 @@ public class MaterialGenerator {
 		RecipeGen_Plates.generateRecipes(matInfo);
 		RecipeGen_Extruder.generateRecipes(matInfo);
 		RecipeGen_ShapedCrafting.generateRecipes(matInfo);
+		RecipeGen_Fluids.generateRecipes(matInfo);
+		RecipeGen_Assembler.generateRecipes(matInfo);
 		RecipeGen_DustGeneration.generateRecipes(matInfo, true);
 	}
 
