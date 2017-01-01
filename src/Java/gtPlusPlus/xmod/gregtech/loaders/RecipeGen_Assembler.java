@@ -4,6 +4,7 @@ import gregtech.api.enums.GT_Values;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
+import net.minecraft.item.ItemStack;
 
 public class RecipeGen_Assembler  implements Runnable{
 
@@ -28,33 +29,40 @@ public class RecipeGen_Assembler  implements Runnable{
 				60,
 				8);         
 		
-		//Rotor - Soldering Alloy
-		GT_Values.RA.addAssemblerRecipe(
+		//Rotor
+		addAssemblerRecipe(
 				material.getPlate(4),
 				material.getRing(1),
-				FluidUtils.getFluidStack("molten.solderingalloy", 16),
 				material.getRotor(1),
 				240,
-				24);      
-
-		//Rotor - Lead
-		GT_Values.RA.addAssemblerRecipe(
-				material.getPlate(4),
-				material.getRing(1),
-				FluidUtils.getFluidStack("molten.lead", 48),
-				material.getRotor(1),
-				240,
-				24);      
-
-		//Rotor - Tin
-		GT_Values.RA.addAssemblerRecipe(
-				material.getPlate(4),
-				material.getRing(1),
-				FluidUtils.getFluidStack("molten.tin", 32),
-				material.getRotor(1),
-				240,
-				24);      
+				24);          
 		
 	}
+	
+	private static void addAssemblerRecipe(ItemStack input1, ItemStack input2, ItemStack output1, int seconds, int euCost){
+		GT_Values.RA.addAssemblerRecipe(
+				input1,
+				input2,
+				FluidUtils.getFluidStack("molten.solderingalloy", 16),
+				output1,
+				seconds,
+				euCost);
+		GT_Values.RA.addAssemblerRecipe(
+				input1,
+				input2,
+				FluidUtils.getFluidStack("molten.tin", 32),
+				output1,
+				seconds,
+				euCost);
+		GT_Values.RA.addAssemblerRecipe(
+				input1,
+				input2,
+				FluidUtils.getFluidStack("molten.lead", 48),
+				output1,
+				seconds,
+				euCost);
+		}
+	
+	
 }
 

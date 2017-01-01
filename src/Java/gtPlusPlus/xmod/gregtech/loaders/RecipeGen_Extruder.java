@@ -10,11 +10,11 @@ import net.minecraft.item.ItemStack;
 public class RecipeGen_Extruder implements Runnable{
 
 	final Material toGenerate;
-	
+
 	public RecipeGen_Extruder(final Material M){
 		this.toGenerate = M;
 	}
-	
+
 	@Override
 	public void run() {
 		generateRecipes(toGenerate);		
@@ -32,9 +32,36 @@ public class RecipeGen_Extruder implements Runnable{
 		final ItemStack shape_Gear = ItemList.Shape_Extruder_Gear.get(0);
 		final ItemStack shape_Rod = ItemList.Shape_Extruder_Rod.get(0);
 		final ItemStack shape_Bolt = ItemList.Shape_Extruder_Bolt.get(0);
+		final ItemStack shape_Block = ItemList.Shape_Extruder_Block.get(0);
+		final ItemStack shape_Ingot = ItemList.Shape_Extruder_Ingot.get(0);
 
 		Utils.LOG_WARNING("Generating Extruder recipes for "+material.getLocalizedName());
 
+		//Ingot Recipe
+		if (addExtruderRecipe(
+				material.getBlock(1),
+				shape_Ingot,
+				material.getIngot(9),
+				(int) Math.max(material.getMass() * 2L * 1, 1),
+				4 * material.vVoltageMultiplier)){
+			Utils.LOG_WARNING("Extruder Ingot Recipe: "+material.getLocalizedName()+" - Success");
+		}
+		else {
+			Utils.LOG_WARNING("Extruder Ingot Recipe: "+material.getLocalizedName()+" - Failed");			
+		}
+
+		//Block Recipe
+		if (addExtruderRecipe(
+				material.getIngot(9),
+				shape_Block,
+				material.getBlock(1),
+				(int) Math.max(material.getMass() * 2L * 1, 1),
+				8 * material.vVoltageMultiplier)){
+			Utils.LOG_WARNING("Extruder Block Recipe: "+material.getLocalizedName()+" - Success");
+		}
+		else {
+			Utils.LOG_WARNING("Extruder Block Recipe: "+material.getLocalizedName()+" - Failed");			
+		}
 
 		//Plate Recipe
 		if (addExtruderRecipe(
