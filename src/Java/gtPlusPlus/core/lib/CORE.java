@@ -1,5 +1,6 @@
 package gtPlusPlus.core.lib;
 
+import gregtech.api.GregTech_API;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.gregtech.recipehandlers.GregtechRecipe;
 import gtPlusPlus.core.util.networking.NetworkUtils;
@@ -27,6 +28,7 @@ public class CORE {
 	public static Map PlayerCache;
 	public static final String[] VOLTAGES = {"ULV","LV","MV","HV","EV","IV","LuV","ZPM","UV","MAX"};
 	public static final boolean MAIN_GREGTECH_5U_EXPERIMENTAL_FORK = Meta_GT_Proxy.areWeUsingGregtech5uExperimental();
+	public static final int GREGTECH_API_VERSION = GregTech_API.VERSION;
 	public static IGregtech_RecipeAdder RA;
 	@Deprecated
 	public static IGregtech_RecipeAdder sRecipeAdder;

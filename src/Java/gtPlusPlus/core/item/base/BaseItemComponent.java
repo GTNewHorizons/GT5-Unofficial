@@ -25,6 +25,7 @@ public class BaseItemComponent extends Item{
 	public final String unlocalName;
 	public final ComponentTypes componentType;
 	public final int componentColour;
+	public Object extraData;
 
 	public BaseItemComponent(Material material, ComponentTypes componentType) {
 		this.componentMaterial = material;
@@ -50,6 +51,7 @@ public class BaseItemComponent extends Item{
 		this.setUnlocalizedName(unlocalName);
 		this.setMaxStackSize(64);
 		this.componentColour = MathUtils.getRgbAsHex(RGBA);
+		this.extraData = RGBA;
 		this.setTextureName(CORE.MODID + ":" + "item"+ComponentTypes.CELL.COMPONENT_NAME);
 		GameRegistry.registerItem(this, unlocalName);
 		GT_OreDictUnificator.registerOre(ComponentTypes.CELL.getOreDictName()+unlocalName, ItemUtils.getSimpleStack(this));
