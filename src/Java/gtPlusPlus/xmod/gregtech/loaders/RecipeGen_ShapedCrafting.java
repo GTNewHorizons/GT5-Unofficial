@@ -9,16 +9,16 @@ import net.minecraft.item.ItemStack;
 public class RecipeGen_ShapedCrafting  implements Runnable{
 
 	final Material toGenerate;
-	
+
 	public RecipeGen_ShapedCrafting(final Material M){
 		this.toGenerate = M;
 	}
-	
+
 	@Override
 	public void run() {
 		generateRecipes(toGenerate);		
 	}
-	
+
 	public static void generateRecipes(final Material material){
 		Utils.LOG_WARNING("Generating Shaped Crafting recipes for "+material.getLocalizedName()); //TODO
 
@@ -90,7 +90,7 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 		//Add a shapeless recipe for each dust this way - Compat mode.
 		/*ItemStack[] inputStacks = material.getMaterialComposites();
 		ItemStack outputStacks = material.getDust(material.smallestStackSizeWhenProcessing);
-		
+
 		if (inputStacks.length > 0){
 			Utils.LOG_WARNING(ItemUtils.getArrayStackNames(inputStacks));
 			long[] inputStackSize = material.vSmallestRatio;
@@ -111,7 +111,7 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 				}
 			}
 		}*/			
-		
+
 
 		//Shaped Recipe - Bolts
 		if (!material.isRadioactive){
@@ -176,6 +176,20 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 			}
 			else {
 				Utils.LOG_WARNING("Rotor Recipe: "+material.getLocalizedName()+" - Failed");			
+			}
+		}
+
+		//Gear Recipe
+		if (!material.isRadioactive){
+			if (RecipeUtils.recipeBuilder(
+					material.getRod(1), material.getPlate(1), material.getRod(1),
+					material.getPlate(1), "craftingToolWrench", material.getPlate(1),
+					material.getRod(1), material.getPlate(1), material.getRod(1),
+					material.getGear(1))){
+				Utils.LOG_WARNING("Gear Recipe: "+material.getLocalizedName()+" - Success");
+			}
+			else {
+				Utils.LOG_WARNING("Gear Recipe: "+material.getLocalizedName()+" - Failed");			
 			}
 		}
 
