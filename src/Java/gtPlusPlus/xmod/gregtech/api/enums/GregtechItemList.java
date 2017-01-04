@@ -143,7 +143,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	ThoriumReactor, 
 	
 	//Nuclear Fuel Processor
-	Industrial_FuelRefinery,
+	Industrial_FuelRefinery, 
+	
+	//Tree Farm
+	Industrial_TreeFarm,
 	;
 
 	public static final GregtechItemList[]

@@ -1,384 +1,384 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
-import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.*;
+import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.GT_Pollution;
-import gregtech.common.gui.GT_Container_BronzeBlastFurnace;
-import gregtech.common.gui.GT_GUIContainer_BronzeBlastFurnace;
-import gtPlusPlus.xmod.gregtech.api.objects.XSTR;
+import gregtech.api.util.GT_Recipe;
+import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+
+import java.util.ArrayList;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.ChunkPosition;
-import net.minecraftforge.common.util.ForgeDirection;
 
-public class GregtechMetaTileEntityTreeFarm extends MetaTileEntity {
-	
-	
-    private static final ITexture[] FACING_SIDE = {new GT_RenderedTexture(Textures.BlockIcons.MACHINE_BRONZEPLATEDBRICKS)};
-    private static final ITexture[] FACING_FRONT = {new GT_RenderedTexture(Textures.BlockIcons.MACHINE_BRONZEBLASTFURNACE)};
-    private static final ITexture[] FACING_ACTIVE = {new GT_RenderedTexture(Textures.BlockIcons.MACHINE_BRONZEBLASTFURNACE_ACTIVE)};
-    
-    public int mMaxProgresstime = 0;
-    public int mUpdate = 5;
-    public int mProgresstime = 0;
-    public boolean mMachine = false;
-    public ItemStack mOutputItem1;
-    public ItemStack mOutputItem2;
+public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlockBase {
 
-    public GregtechMetaTileEntityTreeFarm(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, 4);
-    }
 
-    public GregtechMetaTileEntityTreeFarm(String aName) {
-        super(aName, 4);
-    }
+	private static final ITexture[] FACING_SIDE = {new GT_RenderedTexture(TexturesGtBlock.Casing_Material_Tumbaga)};
+	private static final ITexture[] FACING_FRONT = {new GT_RenderedTexture(Textures.BlockIcons.MACHINE_BRONZEBLASTFURNACE)};
+	private static final ITexture[] FACING_ACTIVE = {new GT_RenderedTexture(Textures.BlockIcons.MACHINE_BRONZEBLASTFURNACE_ACTIVE)};
 
-    @Override
+
+	private boolean running = false;
+	private boolean p1, p2, p3, p4, p5, p6;
+	public int mMaxProgresstime = 0;
+	public int mUpdate = 5;
+	public int mProgresstime = 0;
+	public boolean mMachine = false;
+	public ItemStack mOutputItem1;
+	public ItemStack mOutputItem2;
+	private Block Humus;
+
+	public GregtechMetaTileEntityTreeFarm(int aID, String aName, String aNameRegional) {
+		super(aID, aName, aNameRegional);
+	}
+
+	public GregtechMetaTileEntityTreeFarm(String aName) {
+		super(aName);
+	}   
+
+	@Override
 	public String[] getDescription() {
-        return new String[]{
-                "Controller Block for the Tree Farmer",
-                "How to get your first logs without an axe.",
-                "Max Size(WxHxD): 9x1x9 (Controller, with upto 4 dirt out each direction on a flat plane.)",
-                "Dirt for the rest! [D = Dirt, X = Controller]",
-        		"DDDDDDDDD",
-        		"DDDDDDDDD",
-        		"DDDDDDDDD",
-        		"DDDDDDDDD",
-        		"DDDDXDDDD",
-        		"DDDDDDDDD",
-        		"DDDDDDDDD",
-        		"DDDDDDDDD",
-        		"DDDDDDDDD"};
-    }
+		return new String[]{
+				"Controller Block for the Tree Farmer",
+				"How to get your first logs without an axe.",
+				"Max Size(WxHxD): 9x1x9 (Controller, with upto 4 dirt out each direction on a flat plane.)",
+				"Dirt for the rest! [D = Dirt, X = Controller]",
+				"DDDDDDDDD",
+				"DDDDDDDDD",
+				"DDDDDDDDD",
+				"DDDDDDDDD",
+				"DDDDXDDDD",
+				"DDDDDDDDD",
+				"DDDDDDDDD",
+				"DDDDDDDDD",
+		"DDDDDDDDD"};
+	}
 
-    @Override
+	@Override
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
-            return aActive ? FACING_ACTIVE : FACING_FRONT;
-        }
-        return FACING_SIDE;
-    }
+		if (aSide == 1) {
+			return new ITexture[]{new GT_RenderedTexture(TexturesGtBlock.Casing_Material_Tumbaga), new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Vent_Fast : TexturesGtBlock.Overlay_Machine_Vent_Fast)};
+		}
+		return new ITexture[]{new GT_RenderedTexture(TexturesGtBlock.Casing_Material_Tumbaga)};
+	}
 
-    @Override
-	public boolean isSteampowered() {
-        return false;
-    }
+	@Override
+	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+		return null;
+	}
 
-    @Override
-	public boolean isElectric() {
-        return false;
-    }
-
-    @Override
-	public boolean isPneumatic() {
-        return false;
-    }
-
-    @Override
-	public boolean isEnetInput() {
-        return false;
-    }
-
-    @Override
-	public boolean isEnetOutput() {
-        return false;
-    }
-
-    @Override
-	public boolean isInputFacing(byte aSide) {
-        return false;
-    }
-
-    @Override
-	public boolean isOutputFacing(byte aSide) {
-        return false;
-    }
-
-    @Override
+	@Override
 	public boolean isTeleporterCompatible() {
-        return false;
-    }
+		return false;
+	}
 
-    @Override
+	@Override
 	public boolean isFacingValid(byte aFacing) {
-        return aFacing > 1;
-    }
+		return aFacing > 1;
+	}
 
-    @Override
+	@Override
 	public boolean isAccessAllowed(EntityPlayer aPlayer) {
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-	public int getProgresstime() {
-        return this.mProgresstime;
-    }
-
-    @Override
-	public int maxProgresstime() {
-        return this.mMaxProgresstime;
-    }
-
-    @Override
-	public int increaseProgress(int aProgress) {
-        this.mProgresstime += aProgress;
-        return this.mMaxProgresstime - this.mProgresstime;
-    }
-
-    @Override
+	@Override
 	public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCoverID) {
-        return (GregTech_API.getCoverBehavior(aCoverID.toStack()).isSimpleCover()) && (super.allowCoverOnSide(aSide, aCoverID));
-    }
+		return (GregTech_API.getCoverBehavior(aCoverID.toStack()).isSimpleCover()) && (super.allowCoverOnSide(aSide, aCoverID));
+	}
 
-    @Override
+	@Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GregtechMetaTileEntityTreeFarm(this.mName);
-    }
+		return new GregtechMetaTileEntityTreeFarm(this.mName);
+	}
 
-    @Override
-	public void saveNBTData(NBTTagCompound aNBT) {
-        aNBT.setInteger("mProgresstime", this.mProgresstime);
-        aNBT.setInteger("mMaxProgresstime", this.mMaxProgresstime);
-        if (this.mOutputItem1 != null) {
-            NBTTagCompound tNBT = new NBTTagCompound();
-            this.mOutputItem1.writeToNBT(tNBT);
-            aNBT.setTag("mOutputItem1", tNBT);
-        }
-        if (this.mOutputItem2 != null) {
-            NBTTagCompound tNBT = new NBTTagCompound();
-            this.mOutputItem2.writeToNBT(tNBT);
-            aNBT.setTag("mOutputItem2", tNBT);
-        }
-    }
-
-    @Override
-	public void loadNBTData(NBTTagCompound aNBT) {
-        this.mUpdate = 5;
-        this.mProgresstime = aNBT.getInteger("mProgresstime");
-        this.mMaxProgresstime = aNBT.getInteger("mMaxProgresstime");
-        this.mOutputItem1 = GT_Utility.loadItem(aNBT, "mOutputItem1");
-        this.mOutputItem2 = GT_Utility.loadItem(aNBT, "mOutputItem2");
-    }
-
-    @Override
+	@Override
 	public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-        if (aBaseMetaTileEntity.isClientSide()) {
-            return true;
-        }
-        aBaseMetaTileEntity.openGUI(aPlayer);
-        return true;
-    }
+		if (aBaseMetaTileEntity.isClientSide()) return true;
 
-    @Override
-	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_BronzeBlastFurnace(aPlayerInventory, aBaseMetaTileEntity);
-    }
+		return true;
+	}
 
-    @Override
-	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_BronzeBlastFurnace(aPlayerInventory, aBaseMetaTileEntity);
-    }
+	@Override
+	public boolean isCorrectMachinePart(ItemStack aStack) {
+		return true;
+	}
 
-    private boolean checkMachine() {
-        int xDir = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetX;
-        int zDir = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetZ;
-        for (int i = -1; i < 2; i++) {
-            for (int j = -1; j < 3; j++) {
-                for (int k = -1; k < 2; k++) {
-                    if ((xDir + i != 0) || (j != 0) || (zDir + k != 0)) {
-                        if ((i != 0) || (j == -1) || (k != 0)) {
-                            if ((getBaseMetaTileEntity().getBlockOffset(xDir + i, j, zDir + k) != GregTech_API.sBlockCasings1) || (getBaseMetaTileEntity().getMetaIDOffset(xDir + i, j, zDir + k) != 10)) {
-                                return false;
-                            }
-                        } else if ((!GT_Utility.arrayContains(getBaseMetaTileEntity().getBlockOffset(xDir + i, j, zDir + k), new Object[]{Blocks.lava, Blocks.flowing_lava, null})) && (!getBaseMetaTileEntity().getAirOffset(xDir + i, j, zDir + k))) {
-                            return false;
-                        }
-                    }
-                }
-            }
-        }
-        return true;
-    }
+	@Override
+	public boolean checkRecipe(ItemStack aStack) {
+		Utils.LOG_INFO("Working");
+		if (!checkRecursiveBlocks()) {
+			this.mEfficiency = 0;
+			this.mEfficiencyIncrease = 0;
+			this.mMaxProgresstime = 0;
+			running = false;
+			return false;
+		}
 
-    @Override
-	public void onMachineBlockUpdate() {
-        this.mUpdate = 5;
-    }
+		if (mEfficiency == 0) {
+			this.mEfficiency = 10000;
+			this.mEfficiencyIncrease = 10000;
+			this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+			//GT_Pollution.addPollution(new ChunkPosition(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord()), mMaxProgresstime*5);
+			return true;
+		}
+		this.mEfficiency = 0;
+		this.mEfficiencyIncrease = 0;
+		this.mMaxProgresstime = 0;
+		return false;
+	}
 
-    @Override
-	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
-        if ((aBaseMetaTileEntity.isClientSide()) &&
-                (aBaseMetaTileEntity.isActive())) {
-            aBaseMetaTileEntity.getWorld().spawnParticle("largesmoke", aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1) + (new XSTR()).nextFloat(), aBaseMetaTileEntity.getOffsetY(aBaseMetaTileEntity.getBackFacing(), 1), aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1) + (new XSTR()).nextFloat(), 0.0D, 0.3D, 0.0D);
-        }
-        if (aBaseMetaTileEntity.isServerSide()) {
-            if (this.mUpdate-- == 0) {
-                this.mMachine = checkMachine();
-            }
-            if (this.mMachine) {
-                if (this.mMaxProgresstime > 0) {
-                    if (++this.mProgresstime >= this.mMaxProgresstime) {
-                        addOutputProducts();
-                        this.mOutputItem1 = null;
-                        this.mOutputItem2 = null;
-                        this.mProgresstime = 0;
-                        this.mMaxProgresstime = 0;
-                        GT_Mod.instance.achievements.issueAchievement(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), "steel");
-                    }
-                } else if (aBaseMetaTileEntity.isAllowedToWork()) {
-                    checkRecipe();
-                }
-            }
-            if(this.mMaxProgresstime>0 && (aTimer % 20L == 0L)){
-            	GT_Pollution.addPollution(new ChunkPosition(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord()), 50);
-            }
-            
-            aBaseMetaTileEntity.setActive((this.mMaxProgresstime > 0) && (this.mMachine));
-            if (aBaseMetaTileEntity.isActive()) {
-                if (aBaseMetaTileEntity.getAir(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1))) {
-                    aBaseMetaTileEntity.getWorld().setBlock(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1), Blocks.lava, 1, 2);
-                    this.mUpdate = 1;
-                }
-                if (aBaseMetaTileEntity.getAir(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1), aBaseMetaTileEntity.getYCoord() + 1, aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1))) {
-                    aBaseMetaTileEntity.getWorld().setBlock(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1), aBaseMetaTileEntity.getYCoord() + 1, aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1), Blocks.lava, 1, 2);
-                    this.mUpdate = 1;
-                }
-            } else {
-                if (aBaseMetaTileEntity.getBlock(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1)) == Blocks.lava) {
-                    aBaseMetaTileEntity.getWorld().setBlock(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1), Blocks.air, 0, 2);
-                    this.mUpdate = 1;
-                }
-                if (aBaseMetaTileEntity.getBlock(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1), aBaseMetaTileEntity.getYCoord() + 1, aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1)) == Blocks.lava) {
-                    aBaseMetaTileEntity.getWorld().setBlock(aBaseMetaTileEntity.getOffsetX(aBaseMetaTileEntity.getBackFacing(), 1), aBaseMetaTileEntity.getYCoord() + 1, aBaseMetaTileEntity.getOffsetZ(aBaseMetaTileEntity.getBackFacing(), 1), Blocks.air, 0, 2);
-                    this.mUpdate = 1;
-                }
-            }
-        }
-    }
+	private boolean checkRecursiveBlocks() {
+		ArrayList<ChunkPosition> tList1 = new ArrayList<ChunkPosition>();
+		ArrayList<ChunkPosition> tList2 = new ArrayList<ChunkPosition>();
 
-    private void addOutputProducts() {
-        if (this.mOutputItem1 != null) {
-            if (this.mInventory[2] == null) {
-                this.mInventory[2] = GT_Utility.copy(new Object[]{this.mOutputItem1});
-            } else if (GT_Utility.areStacksEqual(this.mInventory[2], this.mOutputItem1)) {
-                this.mInventory[2].stackSize = Math.min(this.mOutputItem1.getMaxStackSize(), this.mOutputItem1.stackSize + this.mInventory[2].stackSize);
-            }
-        }
-        if (this.mOutputItem2 != null) {
-            if (this.mInventory[3] == null) {
-                this.mInventory[3] = GT_Utility.copy(new Object[]{this.mOutputItem2});
-            } else if (GT_Utility.areStacksEqual(this.mInventory[3], this.mOutputItem2)) {
-                this.mInventory[3].stackSize = Math.min(this.mOutputItem2.getMaxStackSize(), this.mOutputItem2.stackSize + this.mInventory[3].stackSize);
-            }
-        }
-    }
+		Block tBlock = this.getBaseMetaTileEntity().getBlockOffset(0, +1, 0);
+		Utils.LOG_INFO("Looking for air above the controller.");
+		if (!isAirBlock(tBlock)) {
+			Utils.LOG_INFO("Did not find air above the controller.");
+			return false;
+		} else {
+			Utils.LOG_INFO("Adding spot to a list?");
+			tList2.add(new ChunkPosition(0, 0, 0));
+		}
+		while (!tList2.isEmpty()) {
+			ChunkPosition tPos = (ChunkPosition) tList2.get(0);
+			tList2.remove(0);
+			if (!checkAllBlockSides(tPos.chunkPosX, tPos.chunkPosY, tPos.chunkPosZ, tList1, tList2)) {
+				return false;
+			}
+		}
+		if (running) {
+			for (ChunkPosition tPos : tList1) {
+				if (isWoodLog(this.getBaseMetaTileEntity().getBlockOffset(tPos.chunkPosX, tPos.chunkPosY, tPos.chunkPosZ))){
+					//This does the block change to brittle charcoal.
+					//this.getBaseMetaTileEntity().getWorld().setBlock(this.getBaseMetaTileEntity().getXCoord() + tPos.chunkPosX, this.getBaseMetaTileEntity().getYCoord() + tPos.chunkPosY, this.getBaseMetaTileEntity().getZCoord() + tPos.chunkPosZ, GregTech_API.sBlockConcretes, 4, 3);
 
-    private boolean spaceForOutput(ItemStack aStack1, ItemStack aStack2) {
-        if (((this.mInventory[2] == null) || (aStack1 == null) || ((this.mInventory[2].stackSize + aStack1.stackSize <= this.mInventory[2].getMaxStackSize()) && (GT_Utility.areStacksEqual(this.mInventory[2], aStack1)))) && (
-                (this.mInventory[3] == null) || (aStack2 == null) || ((this.mInventory[3].stackSize + aStack2.stackSize <= this.mInventory[3].getMaxStackSize()) && (GT_Utility.areStacksEqual(this.mInventory[3], aStack2))))) {
-            return true;
-        }
-        return false;
-    }
+				}                   
+			}
+			running = false;
+			return false;
+		} else {
+			this.mMaxProgresstime = (int) Math.sqrt(tList1.size() * 240000);
+		}
+		running = true;
+		return true;
+	}
 
-    private boolean checkRecipe() {
-        if (!this.mMachine) {
-            return false;
-        }
-        if ((this.mInventory[0] != null) && (this.mInventory[1] != null) && (this.mInventory[0].stackSize >= 1)) {
-            if ((GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[0], "dustIron")) || (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[0], "ingotIron"))) {
-                if ((this.mInventory[1].getItem() == Items.coal) && (this.mInventory[1].stackSize >= 4) && (spaceForOutput(this.mOutputItem1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L), this.mOutputItem2 = GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 4L)))) {
-                    getBaseMetaTileEntity().decrStackSize(0, 1);
-                    getBaseMetaTileEntity().decrStackSize(1, 4);
-                    this.mMaxProgresstime = 7200;
-                    return true;
-                }
-                if ((GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[1], "fuelCoke")) && (this.mInventory[1].stackSize >= 2) && (spaceForOutput(this.mOutputItem1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L), this.mOutputItem2 = GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 4L)))) {
-                    getBaseMetaTileEntity().decrStackSize(0, 1);
-                    getBaseMetaTileEntity().decrStackSize(1, 2);
-                    this.mMaxProgresstime = 4800;
-                    return true;
-                }
-                if ((this.mInventory[0].stackSize >= 9) && ((GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[1], "blockCoal")) || (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[1], "blockCharcoal"))) && (this.mInventory[1].stackSize >= 4) && (spaceForOutput(this.mOutputItem1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 9L), this.mOutputItem2 = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 4L)))) {
-                    getBaseMetaTileEntity().decrStackSize(0, 9);
-                    getBaseMetaTileEntity().decrStackSize(1, 4);
-                    this.mMaxProgresstime = 64800;
-                    return true;
-                }
-            } else if (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[0], "dustSteel")) {
-                if ((this.mInventory[1].getItem() == Items.coal) && (this.mInventory[1].stackSize >= 2) && (spaceForOutput(this.mOutputItem1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L), this.mOutputItem2 = GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 2L)))) {
-                    getBaseMetaTileEntity().decrStackSize(0, 1);
-                    getBaseMetaTileEntity().decrStackSize(1, 2);
-                    this.mMaxProgresstime = 3600;
-                    return true;
-                }
-                if ((GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[1], "fuelCoke")) && (this.mInventory[1].stackSize >= 1) && (spaceForOutput(this.mOutputItem1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 1L), this.mOutputItem2 = GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 2L)))) {
-                    getBaseMetaTileEntity().decrStackSize(0, 1);
-                    getBaseMetaTileEntity().decrStackSize(1, 1);
-                    this.mMaxProgresstime = 2400;
-                    return true;
-                }
-                if ((this.mInventory[0].stackSize >= 9) && ((GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[1], "blockCoal")) || (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[1], "blockCharcoal"))) && (this.mInventory[1].stackSize >= 2) && (spaceForOutput(this.mOutputItem1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 9L), this.mOutputItem2 = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 2L)))) {
-                    getBaseMetaTileEntity().decrStackSize(0, 9);
-                    getBaseMetaTileEntity().decrStackSize(1, 2);
-                    this.mMaxProgresstime = 32400;
-                    return true;
-                }
-            } else if (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[0], "blockIron")) {
-                if ((this.mInventory[1].getItem() == Items.coal) && (this.mInventory[1].stackSize >= 36) && (spaceForOutput(this.mOutputItem1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 9L), this.mOutputItem2 = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 4L)))) {
-                    getBaseMetaTileEntity().decrStackSize(0, 1);
-                    getBaseMetaTileEntity().decrStackSize(1, 36);
-                    this.mMaxProgresstime = 64800;
-                    return true;
-                }
-                if ((GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[1], "fuelCoke")) && (this.mInventory[1].stackSize >= 18) && (spaceForOutput(this.mOutputItem1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 9L), this.mOutputItem2 = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Ash, 4L)))) {
-                    getBaseMetaTileEntity().decrStackSize(0, 1);
-                    getBaseMetaTileEntity().decrStackSize(1, 18);
-                    this.mMaxProgresstime = 43200;
-                    return true;
-                }
-                if (((GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[1], "blockCoal")) || (GT_OreDictUnificator.isItemStackInstanceOf(this.mInventory[1], "blockCharcoal"))) && (this.mInventory[1].stackSize >= 4) && (spaceForOutput(this.mOutputItem1 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Steel, 9L), this.mOutputItem2 = GT_OreDictUnificator.get(OrePrefixes.dust, Materials.DarkAsh, 4L)))) {
-                    getBaseMetaTileEntity().decrStackSize(0, 1);
-                    getBaseMetaTileEntity().decrStackSize(1, 4);
-                    this.mMaxProgresstime = 64800;
-                    return true;
-                }
-            }
-        }
-        this.mOutputItem1 = null;
-        this.mOutputItem2 = null;
-        return false;
-    }
+	private boolean checkAllBlockSides(int aX, int aY, int aZ, ArrayList<ChunkPosition> aList1, ArrayList<ChunkPosition> aList2) {
+		p1 = false;
+		p2 = false;
+		p3 = false;
+		p4 = false;
+		p5 = false;
+		p6 = false;
+		Utils.LOG_INFO("checkAllBlockSides");
+		
+		Utils.LOG_INFO("Testing Side 1");
+		Block tBlock = this.getBaseMetaTileEntity().getBlockOffset(aX + 1, aY, aZ);
+		if (aX + 1 < 6 && (isDirtBlock(tBlock))) {
+			if (!aList1.contains(new ChunkPosition(aX + 1, aY, aZ)) && (!aList2.contains(new ChunkPosition(aX + 1, aY, aZ)))){
+				p1 = true;
+				Utils.LOG_INFO("set p1 true");
+			}
+		} else if (!(tBlock == Blocks.dirt || tBlock == Blocks.grass)) {
+			Utils.LOG_INFO("1- Looking for Dirt at X:"+(aX+1)+" Y:"+aY+" Z:"+aZ+" but instead found "+tBlock.getLocalizedName());
+			return false;
+		}
 
-    @Override
-	public boolean isGivingInformation() {
-        return false;
-    }
+		Utils.LOG_INFO("Testing Side 2");
+		tBlock = this.getBaseMetaTileEntity().getBlockOffset(aX - 1, aY, aZ);
+		if (aX - 1 > -6 && (isDirtBlock(tBlock))) {
+			if (!aList1.contains(new ChunkPosition(aX - 1, aY, aZ)) && (!aList2.contains(new ChunkPosition(aX - 1, aY, aZ)))){
+				p2 = true;
+				Utils.LOG_INFO("set p2 true");
+			}
+		} else if (!(tBlock == Blocks.dirt || tBlock == Blocks.grass)) {
+			Utils.LOG_INFO("2- Looking for Dirt at X:"+(aX-1)+" Y:"+aY+" Z:"+aZ+" but instead found "+tBlock.getLocalizedName());
+			return false;
+		}
 
-    @Override
-	public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return aIndex > 1;
-    }
+		Utils.LOG_INFO("Testing For Fence X+1");
+		tBlock = this.getBaseMetaTileEntity().getBlockOffset(aX+1, aY+1, aZ);
+		if ((aY+1) == 1 && (isFenceBlock(tBlock))) {
+			if (!aList1.contains(new ChunkPosition(aX+1, aY+1, aZ)) && (!aList2.contains(new ChunkPosition(aX+1, aY+1, aZ)))){
+				//p3 = true;
+				Utils.LOG_INFO("set p3 true");
+			}
+		} else if (!(isFenceBlock(tBlock)) || !this.getBaseMetaTileEntity().getAirOffset(aX+1, aY+1, aZ)) {
+			Utils.LOG_INFO("3- Looking for Fence at X:"+(aX+1)+" Y:"+(aY+1)+" Z:"+aZ+" but instead found "+tBlock.getLocalizedName());
+			return false;
+		}
+		Utils.LOG_INFO("Testing For Fence X-1");
+		tBlock = this.getBaseMetaTileEntity().getBlockOffset(aX-1, aY+1, aZ);
+		if ((aY+1) == 1 && (isFenceBlock(tBlock))) {
+			if (!aList1.contains(new ChunkPosition(aX-1, aY+1, aZ)) && (!aList2.contains(new ChunkPosition(aX-1, aY+1, aZ)))){
+				//p3 = true;
+				Utils.LOG_INFO("set p3 true");
+			}
+		} else if (!(isFenceBlock(tBlock)) || !this.getBaseMetaTileEntity().getAirOffset(aX-1, aY+1, aZ)) {
+			Utils.LOG_INFO("3- Looking for Fence at X:"+(aX-1)+" Y:"+(aY+1)+" Z:"+aZ+" but instead found "+tBlock.getLocalizedName());
+			return false;
+		}
+		Utils.LOG_INFO("Testing For Fence Z+1");
+		tBlock = this.getBaseMetaTileEntity().getBlockOffset(aX, aY+1, aZ+1);
+		if ((aY+1) == 1 && (isFenceBlock(tBlock))) {
+			if (!aList1.contains(new ChunkPosition(aX, aY+1, aZ+1)) && (!aList2.contains(new ChunkPosition(aX, aY+1, aZ+1)))){
+				//p3 = true;
+				Utils.LOG_INFO("set p3 true");
+			}
+		} else if (!(isFenceBlock(tBlock)) || !this.getBaseMetaTileEntity().getAirOffset(aX, aY+1, aZ+1)) {
+			Utils.LOG_INFO("3- Looking for Fence at X:"+(aX)+" Y:"+(aY+1)+" Z:"+(aZ+1)+" but instead found "+tBlock.getLocalizedName());
+			return false;
+		}
+		Utils.LOG_INFO("Testing For Fence Z-1");
+		tBlock = this.getBaseMetaTileEntity().getBlockOffset(aX, aY+1, aZ-1);
+		if ((aY+1) == 1 && (isFenceBlock(tBlock))) {
+			if (!aList1.contains(new ChunkPosition(aX, aY+1, aZ-1)) && (!aList2.contains(new ChunkPosition(aX, aY+1, aZ-1)))){
+				//p3 = true;
+				Utils.LOG_INFO("set p3 true");
+			}
+		} else if (!(isFenceBlock(tBlock)) || !this.getBaseMetaTileEntity().getAirOffset(aX, aY+1, aZ-1)) {
+			Utils.LOG_INFO("3- Looking for Fence at X:"+(aX)+" Y:"+(aY+1)+" Z:"+(aZ-1)+" but instead found "+tBlock.getLocalizedName());
+			return false;
+		}
 
-    @Override
-	public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return !GT_Utility.areStacksEqual(aStack, this.mInventory[0]);
-    }
+		/*Utils.LOG_INFO("Testing Side 4");
+		tBlock = this.getBaseMetaTileEntity().getBlockOffset(aX, aY - 1, aZ);
+		if (aY - 1 > -6 && (isDirtBlock(tBlock))) {
+			if (!aList1.contains(new ChunkPosition(aX, aY - 1, aZ)) && (!aList2.contains(new ChunkPosition(aX, aY - 1, aZ)))){
+				p4 = true;
+				Utils.LOG_INFO("set p4 true");
+			}
+		} else if (tBlock != GregTech_API.sBlockCasings1) { //The Base Layer Check
+			Utils.LOG_INFO("Bottom Layer is not Machine Casings HV");
+			return false;
+		}
+		else if (this.getBaseMetaTileEntity().getMetaIDOffset(aX, aY - 1, aZ) != 3) {
+			Utils.LOG_INFO("Bottom Layer has wrong meta, expecting 3. Got "+this.getBaseMetaTileEntity().getMetaIDOffset(aX, aY - 1, aZ));
+			return false;
+		}*/
 
-    @Override
-	public byte getTileEntityBaseType() {
-        return 0;
-    }
+		Utils.LOG_INFO("Testing Side 5");
+		tBlock = this.getBaseMetaTileEntity().getBlockOffset(aX, aY, aZ + 1);
+		if (aZ + 1 < 6 && (isDirtBlock(tBlock))) {
+			if (!aList1.contains(new ChunkPosition(aX, aY, aZ + 1)) && (!aList2.contains(new ChunkPosition(aX, aY, aZ + 1)))){
+				p5 = true;
+				Utils.LOG_INFO("set p5 true");
+			}
+		} else if (!(tBlock == Blocks.dirt || tBlock == Blocks.grass)) {
+			Utils.LOG_INFO("Looking for Dirt at X:"+(aX)+" Y:"+aY+" Z:"+(aZ+1)+" but instead found "+tBlock.getLocalizedName());
+			return false;
+		}
+
+		Utils.LOG_INFO("Testing Side 6");
+		tBlock = this.getBaseMetaTileEntity().getBlockOffset(aX, aY, aZ - 1);
+		if (aZ - 1 > -6 && (isDirtBlock(tBlock))) {
+			if (!aList1.contains(new ChunkPosition(aX, aY, aZ - 1)) && (!aList2.contains(new ChunkPosition(aX, aY, aZ - 1)))){
+				p6 = true;
+				Utils.LOG_INFO("set p6 true");
+			}
+		} else if (!(tBlock == Blocks.dirt || tBlock == Blocks.grass)) {
+			Utils.LOG_INFO("Looking for Dirt at X:"+(aX)+" Y:"+aY+" Z:"+(aZ-1)+" but instead found "+tBlock.getLocalizedName());
+			return false;
+		}
+		aList1.add(new ChunkPosition(aX, aY, aZ));
+		if (p1) aList2.add(new ChunkPosition(aX + 1, aY, aZ));
+		if (p2) aList2.add(new ChunkPosition(aX - 1, aY, aZ));
+		if (p3) aList2.add(new ChunkPosition(aX, aY, aZ));
+		if (p4) aList2.add(new ChunkPosition(aX, aY - 1, aZ));
+		if (p5) aList2.add(new ChunkPosition(aX, aY, aZ + 1));
+		if (p6) aList2.add(new ChunkPosition(aX, aY, aZ - 1));
+		return true;
+	}
+
+	public boolean isWoodLog(Block log){
+		String tTool = log.getHarvestTool(0);
+		return  OrePrefixes.log.contains(new ItemStack(log, 1))&& ((tTool != null) && (tTool.equals("axe"))) || (log.getMaterial() == Material.wood);
+	}
+
+	public boolean isDirtBlock(Block dirt){    	
+		return  (dirt == Blocks.dirt ? true : (dirt == Blocks.grass ? true : (getHumus() == null ? false : (dirt == Humus ? true : false))));
+	}
+
+	public boolean isFenceBlock(Block fence){
+		return  (fence == Blocks.fence ? true : (fence == Blocks.fence_gate ? true : (fence == Blocks.nether_brick_fence ? true : false)));		
+	}
+	
+	public boolean isAirBlock(Block air){
+		return (air == Blocks.air ? true : (air instanceof BlockAir ? true : false));
+	}
+
+	private Block getHumus(){
+		if (!LoadedMods.Forestry){
+			return null;
+		}
+		else if(this.Humus != null){
+			return this.Humus;
+		}
+		else if (ReflectionUtils.doesClassExist("forestry.core.blocks.BlockSoil")){
+			try {				
+				Class<?> humusClass = Class.forName("forestry.core.blocks.BlockSoil");
+				ItemStack humusStack = ItemUtils.getCorrectStacktype("Forestry:soil", 1);
+				if (humusClass != null){
+					this.Humus = Block.getBlockFromItem(humusStack.getItem());
+					return Block.getBlockFromItem(humusStack.getItem());
+				}
+			} catch (ClassNotFoundException e) {}
+		}
+		return null;
+	}
+
+	@Override
+	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+		mWrench = true;
+		mScrewdriver = true;
+		mSoftHammer = true;
+		mHardHammer = true;
+		mSolderingTool = true;
+		mCrowbar = true;
+		return true;
+	}
+
+	@Override
+	public int getMaxEfficiency(ItemStack aStack) {
+		return 10000;
+	}
+
+	@Override
+	public int getPollutionPerTick(ItemStack aStack) {
+		return 0;
+	}
+
+	@Override
+	public int getDamageToComponent(ItemStack aStack) {
+		return 0;
+	}
+
+	@Override
+	public int getAmountOfOutputs() {
+		return 1;
+	}
+
+	@Override
+	public boolean explodesOnComponentBreak(ItemStack aStack) {
+		return false;
+	}
+
 }
