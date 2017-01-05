@@ -74,6 +74,11 @@ public class TreefarmManager {
 	}
 	
 	public static boolean isAirBlock(Block air){
+		
+		if (air.getLocalizedName().toLowerCase().contains("air")){
+			return true;
+		}
+		
 		return (air == Blocks.air ? true : (air instanceof BlockAir ? true : false));
 	}
 	
