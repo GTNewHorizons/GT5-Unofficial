@@ -121,6 +121,11 @@ public class TexturesGtBlock {
 	private static final CustomIcon Internal_Casing_Machine_Redstone_On = new CustomIcon("TileEntities/cover_redstone_emitter");	
 	public static final CustomIcon Casing_Machine_Redstone_On = Internal_Casing_Machine_Redstone_On;
 	
+	//MACHINE_CASING_FARM_MANAGER_STRUCTURAL
+	//Farm Manager Casings
+	private static final CustomIcon Internal_Casing_Machine_Farm_Manager = new CustomIcon("TileEntities/MACHINE_CASING_FARM_MANAGER_STRUCTURAL");	
+	public static final CustomIcon Casing_Machine_Farm_Manager = Internal_Casing_Machine_Farm_Manager;
+	
 	//Overlays
 	//Fan Textures
 	private static final CustomIcon Internal_Overlay_Machine_Vent = new CustomIcon("TileEntities/machine_top_vent_rotating");	

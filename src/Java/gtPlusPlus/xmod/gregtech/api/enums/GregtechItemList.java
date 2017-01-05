@@ -146,7 +146,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Industrial_FuelRefinery, 
 	
 	//Tree Farm
-	Industrial_TreeFarm,
+	Industrial_TreeFarm, TreeFarmer_Structural,
 	;
 
 	public static final GregtechItemList[]

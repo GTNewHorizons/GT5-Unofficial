@@ -65,6 +65,7 @@ public class COMPAT_HANDLER {
 		GregtechGeothermalThermalGenerator.run();
 		Gregtech4Content.run();
 		GregtechIndustrialFuelRefinery.run();
+		GregtechTreeFarmerTE.run();
 		GregtechIndustrialTreeFarm.run();
 		}
 
