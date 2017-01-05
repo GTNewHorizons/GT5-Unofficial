@@ -1,7 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -10,17 +9,15 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
+import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.ItemUtils;
-import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.xmod.forestry.trees.TreefarmManager;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -43,6 +40,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 	public ItemStack mOutputItem1;
 	public ItemStack mOutputItem2;
 	private Block Humus;
+	private boolean isForestryLoaded = TreefarmManager.isForestryValid();
 
 	public GregtechMetaTileEntityTreeFarm(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -150,7 +148,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 
 		Block tBlock = this.getBaseMetaTileEntity().getBlockOffset(0, +1, 0);
 		Utils.LOG_INFO("Looking for air above the controller.");
-		if (!isAirBlock(tBlock)) {
+		if (!TreefarmManager.isAirBlock(tBlock)) {
 			Utils.LOG_INFO("Did not find air above the controller.");
 			return false;
 		} else {
@@ -166,7 +164,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		}
 		if (running) {
 			for (ChunkPosition tPos : tList1) {
-				if (isWoodLog(this.getBaseMetaTileEntity().getBlockOffset(tPos.chunkPosX, tPos.chunkPosY, tPos.chunkPosZ))){
+				if (TreefarmManager.isWoodLog(this.getBaseMetaTileEntity().getBlockOffset(tPos.chunkPosX, tPos.chunkPosY, tPos.chunkPosZ))){
 					//This does the block change to brittle charcoal.
 					//this.getBaseMetaTileEntity().getWorld().setBlock(this.getBaseMetaTileEntity().getXCoord() + tPos.chunkPosX, this.getBaseMetaTileEntity().getYCoord() + tPos.chunkPosY, this.getBaseMetaTileEntity().getZCoord() + tPos.chunkPosZ, GregTech_API.sBlockConcretes, 4, 3);
 
@@ -192,7 +190,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		
 		Utils.LOG_INFO("Testing Side 1");
 		Block tBlock = this.getBaseMetaTileEntity().getBlockOffset(aX + 1, aY, aZ);
-		if (aX + 1 < 6 && (isDirtBlock(tBlock))) {
+		if (aX + 1 < 6 && (TreefarmManager.isDirtBlock(tBlock))) {
 			if (!aList1.contains(new ChunkPosition(aX + 1, aY, aZ)) && (!aList2.contains(new ChunkPosition(aX + 1, aY, aZ)))){
 				p1 = true;
 				Utils.LOG_INFO("set p1 true");
@@ -204,7 +202,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 
 		Utils.LOG_INFO("Testing Side 2");
 		tBlock = this.getBaseMetaTileEntity().getBlockOffset(aX - 1, aY, aZ);
-		if (aX - 1 > -6 && (isDirtBlock(tBlock))) {
+		if (aX - 1 > -6 && (TreefarmManager.isDirtBlock(tBlock))) {
 			if (!aList1.contains(new ChunkPosition(aX - 1, aY, aZ)) && (!aList2.contains(new ChunkPosition(aX - 1, aY, aZ)))){
 				p2 = true;
 				Utils.LOG_INFO("set p2 true");
@@ -216,45 +214,45 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 
 		Utils.LOG_INFO("Testing For Fence X+1");
 		tBlock = this.getBaseMetaTileEntity().getBlockOffset(aX+1, aY+1, aZ);
-		if ((aY+1) == 1 && (isFenceBlock(tBlock))) {
+		if ((aY+1) == 1 && (TreefarmManager.isFenceBlock(tBlock))) {
 			if (!aList1.contains(new ChunkPosition(aX+1, aY+1, aZ)) && (!aList2.contains(new ChunkPosition(aX+1, aY+1, aZ)))){
 				//p3 = true;
 				Utils.LOG_INFO("set p3 true");
 			}
-		} else if (!(isFenceBlock(tBlock)) || !this.getBaseMetaTileEntity().getAirOffset(aX+1, aY+1, aZ)) {
+		} else if (!(TreefarmManager.isFenceBlock(tBlock)) || !this.getBaseMetaTileEntity().getAirOffset(aX+1, aY+1, aZ)) {
 			Utils.LOG_INFO("3- Looking for Fence at X:"+(aX+1)+" Y:"+(aY+1)+" Z:"+aZ+" but instead found "+tBlock.getLocalizedName());
 			return false;
 		}
 		Utils.LOG_INFO("Testing For Fence X-1");
 		tBlock = this.getBaseMetaTileEntity().getBlockOffset(aX-1, aY+1, aZ);
-		if ((aY+1) == 1 && (isFenceBlock(tBlock))) {
+		if ((aY+1) == 1 && (TreefarmManager.isFenceBlock(tBlock))) {
 			if (!aList1.contains(new ChunkPosition(aX-1, aY+1, aZ)) && (!aList2.contains(new ChunkPosition(aX-1, aY+1, aZ)))){
 				//p3 = true;
 				Utils.LOG_INFO("set p3 true");
 			}
-		} else if (!(isFenceBlock(tBlock)) || !this.getBaseMetaTileEntity().getAirOffset(aX-1, aY+1, aZ)) {
+		} else if (!(TreefarmManager.isFenceBlock(tBlock)) || !this.getBaseMetaTileEntity().getAirOffset(aX-1, aY+1, aZ)) {
 			Utils.LOG_INFO("3- Looking for Fence at X:"+(aX-1)+" Y:"+(aY+1)+" Z:"+aZ+" but instead found "+tBlock.getLocalizedName());
 			return false;
 		}
 		Utils.LOG_INFO("Testing For Fence Z+1");
 		tBlock = this.getBaseMetaTileEntity().getBlockOffset(aX, aY+1, aZ+1);
-		if ((aY+1) == 1 && (isFenceBlock(tBlock))) {
+		if ((aY+1) == 1 && (TreefarmManager.isFenceBlock(tBlock))) {
 			if (!aList1.contains(new ChunkPosition(aX, aY+1, aZ+1)) && (!aList2.contains(new ChunkPosition(aX, aY+1, aZ+1)))){
 				//p3 = true;
 				Utils.LOG_INFO("set p3 true");
 			}
-		} else if (!(isFenceBlock(tBlock)) || !this.getBaseMetaTileEntity().getAirOffset(aX, aY+1, aZ+1)) {
+		} else if (!(TreefarmManager.isFenceBlock(tBlock)) || !this.getBaseMetaTileEntity().getAirOffset(aX, aY+1, aZ+1)) {
 			Utils.LOG_INFO("3- Looking for Fence at X:"+(aX)+" Y:"+(aY+1)+" Z:"+(aZ+1)+" but instead found "+tBlock.getLocalizedName());
 			return false;
 		}
 		Utils.LOG_INFO("Testing For Fence Z-1");
 		tBlock = this.getBaseMetaTileEntity().getBlockOffset(aX, aY+1, aZ-1);
-		if ((aY+1) == 1 && (isFenceBlock(tBlock))) {
+		if ((aY+1) == 1 && (TreefarmManager.isFenceBlock(tBlock))) {
 			if (!aList1.contains(new ChunkPosition(aX, aY+1, aZ-1)) && (!aList2.contains(new ChunkPosition(aX, aY+1, aZ-1)))){
 				//p3 = true;
 				Utils.LOG_INFO("set p3 true");
 			}
-		} else if (!(isFenceBlock(tBlock)) || !this.getBaseMetaTileEntity().getAirOffset(aX, aY+1, aZ-1)) {
+		} else if (!(TreefarmManager.isFenceBlock(tBlock)) || !this.getBaseMetaTileEntity().getAirOffset(aX, aY+1, aZ-1)) {
 			Utils.LOG_INFO("3- Looking for Fence at X:"+(aX)+" Y:"+(aY+1)+" Z:"+(aZ-1)+" but instead found "+tBlock.getLocalizedName());
 			return false;
 		}
@@ -277,7 +275,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 
 		Utils.LOG_INFO("Testing Side 5");
 		tBlock = this.getBaseMetaTileEntity().getBlockOffset(aX, aY, aZ + 1);
-		if (aZ + 1 < 6 && (isDirtBlock(tBlock))) {
+		if (aZ + 1 < 6 && (TreefarmManager.isDirtBlock(tBlock))) {
 			if (!aList1.contains(new ChunkPosition(aX, aY, aZ + 1)) && (!aList2.contains(new ChunkPosition(aX, aY, aZ + 1)))){
 				p5 = true;
 				Utils.LOG_INFO("set p5 true");
@@ -289,7 +287,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 
 		Utils.LOG_INFO("Testing Side 6");
 		tBlock = this.getBaseMetaTileEntity().getBlockOffset(aX, aY, aZ - 1);
-		if (aZ - 1 > -6 && (isDirtBlock(tBlock))) {
+		if (aZ - 1 > -6 && (TreefarmManager.isDirtBlock(tBlock))) {
 			if (!aList1.contains(new ChunkPosition(aX, aY, aZ - 1)) && (!aList2.contains(new ChunkPosition(aX, aY, aZ - 1)))){
 				p6 = true;
 				Utils.LOG_INFO("set p6 true");
@@ -308,51 +306,163 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		return true;
 	}
 
-	public boolean isWoodLog(Block log){
-		String tTool = log.getHarvestTool(0);
-		return  OrePrefixes.log.contains(new ItemStack(log, 1))&& ((tTool != null) && (tTool.equals("axe"))) || (log.getMaterial() == Material.wood);
-	}
-
-	public boolean isDirtBlock(Block dirt){    	
-		return  (dirt == Blocks.dirt ? true : (dirt == Blocks.grass ? true : (getHumus() == null ? false : (dirt == Humus ? true : false))));
-	}
-
-	public boolean isFenceBlock(Block fence){
-		return  (fence == Blocks.fence ? true : (fence == Blocks.fence_gate ? true : (fence == Blocks.nether_brick_fence ? true : false)));		
-	}
 	
-	public boolean isAirBlock(Block air){
-		return (air == Blocks.air ? true : (air instanceof BlockAir ? true : false));
-	}
 
 	private Block getHumus(){
-		if (!LoadedMods.Forestry){
-			return null;
-		}
-		else if(this.Humus != null){
-			return this.Humus;
-		}
-		else if (ReflectionUtils.doesClassExist("forestry.core.blocks.BlockSoil")){
-			try {				
-				Class<?> humusClass = Class.forName("forestry.core.blocks.BlockSoil");
-				ItemStack humusStack = ItemUtils.getCorrectStacktype("Forestry:soil", 1);
-				if (humusClass != null){
-					this.Humus = Block.getBlockFromItem(humusStack.getItem());
-					return Block.getBlockFromItem(humusStack.getItem());
-				}
-			} catch (ClassNotFoundException e) {}
-		}
+	if (!LoadedMods.Forestry){
 		return null;
+	}
+	return TreefarmManager.getHumus();	
 	}
 
 	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+
+		// Life Lessons from Greg.
+		/**
+		[23:41:15] <GregoriusTechneticies> xdir and zdir are x2 and not x3
+		[23:41:26] <GregoriusTechneticies> thats you issue
+		[23:44:33] <Alkalus> mmm?
+		[23:44:49] <Alkalus> Should they be x3?
+		[23:44:50] <GregoriusTechneticies> you just do a x2, what is for a 5x5 multiblock
+		[23:45:01] <GregoriusTechneticies> x3 is for a 7x7 one
+		[23:45:06] <Alkalus> I have no idea what that value does, tbh..
+		[23:45:15] <GregoriusTechneticies> its the offset
+		[23:45:23] <Alkalus> Debugging checkMachine has been a pain and I usually trash designs that don't work straight up..
+		[23:45:28] <GregoriusTechneticies> it determines the horizontal middle of the multiblock
+		[23:45:47] <GregoriusTechneticies> which is in your case THREE blocks away from the controller
+		[23:45:51] <Alkalus> Ahh
+		[23:45:57] <GregoriusTechneticies> and not 2
+		[23:46:06] <Alkalus> Noted, thanks :D
+		 */
+
+		int xDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 7; 
+		int zDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 7;
+
+		for (int i = -7; i <= 7; i++) {
+			for (int j = -7; j <= 7; j++) {
+				for (int h = 0; h <= 1; h++) {
+					
+					
+					IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
+
+					// Reactor Floor/Roof inner 14x14
+					if ((i != -7 && i != 7) && (j != -7 && j != 7)) {
+
+						// Reactor Floor & Roof (Inner 5x5) + Mufflers, Dynamos and Fluid outputs.
+						if (h == 0) {
+
+							//If not a hatch, continue, else add hatch and continue.
+							if ((!addMufflerToMachineList(tTileEntity, 70)) && (!addOutputToMachineList(tTileEntity, 70)) && (!addDynamoToMachineList(tTileEntity, 70))) {
+								if (!TreefarmManager.isDirtBlock(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))) {
+									Utils.LOG_INFO("Dirt like block missing from inner 14x14.");
+									Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+									aBaseMetaTileEntity.getWorld().setBlock(
+											(aBaseMetaTileEntity.getXCoord()+(xDir+i)),
+											(aBaseMetaTileEntity.getYCoord()+(h)),
+											(aBaseMetaTileEntity.getZCoord()+(zDir+j)),
+											Blocks.melon_block);
+									return false;
+									}								
+							}	
+						} 
+
+						// Inside 2 layers, mostly air
+						else {		
+							//Farm Inner 14x14
+							if (!TreefarmManager.isWoodLog(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)) || !TreefarmManager.isAirBlock(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)) || !aBaseMetaTileEntity.getAirOffset(xDir+i, h, zDir+j)) {
+								Utils.LOG_INFO("Dirt like block missing from inner 14x14, layer 2."); //TODO
+								Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+								aBaseMetaTileEntity.getWorld().setBlock(
+										(aBaseMetaTileEntity.getXCoord()+(xDir+i)),
+										(aBaseMetaTileEntity.getYCoord()+(h)),
+										(aBaseMetaTileEntity.getZCoord()+(zDir+j)),
+										Blocks.melon_block);
+								return false;
+								}	
+
+						}			
+
+					}
+
+					//Dealt with inner 5x5, now deal with the exterior.
+					else {
+
+						//Deal with all 4 sides (Reactor walls)
+						if (h == 1 || h == 2) {														
+							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
+								Utils.LOG_INFO("Glass Casings Missing from somewhere in the second layer.");
+								Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+								return false;
+							}
+							if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 13) {
+								Utils.LOG_INFO("Glass Casings Missing from somewhere in the second layer.");
+								return false;
+							}							
+						}
+
+						//Deal with top and Bottom edges (Inner 5x5)
+						else if (h == 0 || h == 3) {
+							if ((!addMaintenanceToMachineList(tTileEntity, 70)) && (!addInputToMachineList(tTileEntity, 70)) && (!addOutputToMachineList(tTileEntity, 70)) && (!addDynamoToMachineList(tTileEntity, 70))) {
+								if ((xDir + i != 0) || (zDir + j != 0)) {//no controller
+									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
+										Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the edges on the top layer.");
+										Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										return false;
+									}
+									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 12) {
+										Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the edges on the top layer.");
+										return false;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (this.mMufflerHatches.size() != 4){
+			Utils.LOG_INFO("You require EXACTLY 4 muffler hatches on top. FOUR.");
+			return false;
+		}
+		if (this.mEnergyHatches != null) {
+			for (int i = 0; i < this.mEnergyHatches.size(); i++) {
+				if (this.mEnergyHatches.get(i).mTier < 5){
+					Utils.LOG_INFO("You require at LEAST V tier Energy Hatches.");
+					Utils.LOG_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
+					return false;
+				}
+			}
+		}
+		if (this.mOutputHatches != null) {
+			for (int i = 0; i < this.mOutputHatches.size(); i++) {
+					
+				if (this.mOutputHatches.get(i).mTier < 5 && (this.mOutputHatches.get(i).getBaseMetaTileEntity() instanceof GregtechMTE_NuclearReactor)){
+					Utils.LOG_INFO("You require at LEAST V tier Output Hatches.");
+					Utils.LOG_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
+					Utils.LOG_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getInventoryName());
+					return false;
+				}
+			}
+		}
+		if (this.mInputHatches != null) {
+			for (int i = 0; i < this.mInputHatches.size(); i++) {
+				if (this.mInputHatches.get(i).mTier < 5){
+					Utils.LOG_INFO("You require at LEAST V tier Input Hatches.");
+					Utils.LOG_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
+					Utils.LOG_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getInventoryName());
+					return false;
+				}
+			}
+		}
 		mWrench = true;
 		mScrewdriver = true;
 		mSoftHammer = true;
 		mHardHammer = true;
 		mSolderingTool = true;
-		mCrowbar = true;
+		mCrowbar = true;		
+		Utils.LOG_INFO("Multiblock Formed.");
 		return true;
 	}
 
