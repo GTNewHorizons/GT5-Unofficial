@@ -141,11 +141,11 @@ public abstract class GregtechMetaTreeFarmerBase extends GT_MetaTileEntity_Tiere
 	}
 
 	public ITexture[] getBottom(byte aColor) {
-		return new ITexture[]{new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Farm_Manager)};
+		return new ITexture[]{new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Acacia_Log)};
 	}
 
 	public ITexture[] getTop(byte aColor) {
-		return new ITexture[]{new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Farm_Manager)};
+		return new ITexture[]{new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Podzol)};
 	}
 
 	public ITexture[] getSides(byte aColor) {

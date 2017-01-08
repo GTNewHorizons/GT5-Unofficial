@@ -13,7 +13,7 @@ public class TexturesGtBlock {
 	/*
 	 * Handles Custom Textures.
 	 */
-	
+
 	public static class CustomIcon implements IIconContainer, Runnable {
 		protected IIcon mIcon;
 		protected String mIconName;
@@ -45,8 +45,8 @@ public class TexturesGtBlock {
 			return TextureMap.locationBlocksTexture;
 		}
 	}
-	
-	
+
+
 	/*
 	 * Add Some Custom Textures below.
 	 * I am not sure whether or not I need to declare them as such, but better to be safe than sorry.
@@ -58,7 +58,7 @@ public class TexturesGtBlock {
 	private static final CustomIcon Internal_PlaceHolder = new CustomIcon("TileEntities/_PlaceHolder");	
 	public static final CustomIcon _PlaceHolder = Internal_PlaceHolder;
 
-	
+
 	//Machine Casings
 	//Simple
 	private static final CustomIcon Internal_Casing_Machine_Simple_Top = new CustomIcon("TileEntities/machine_top");	
@@ -75,7 +75,7 @@ public class TexturesGtBlock {
 	public static final CustomIcon Casing_Machine_Dimensional = Internal_Casing_Machine_Dimensional;
 	private static final CustomIcon Internal_Casing_Machine_Dimensional_Adv = new CustomIcon("TileEntities/high_adv_machine_dimensional");	
 	public static final CustomIcon Casing_Machine_Dimensional_Adv = Internal_Casing_Machine_Dimensional_Adv;
-	
+
 	//Material Casings
 	private static final CustomIcon Internal_Casing_Tantalloy61 = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_TANTALLOY61");	
 	public static final CustomIcon Casing_Material_Tantalloy61 = Internal_Casing_Tantalloy61;
@@ -91,7 +91,7 @@ public class TexturesGtBlock {
 	public static final CustomIcon Casing_Material_Zeron100 = Internal_Casing_Zeron100;
 	private static final CustomIcon Internal_Casing_Potin = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_POTIN");	
 	public static final CustomIcon Casing_Material_Potin = Internal_Casing_Potin;
-	
+
 	private static final CustomIcon Internal_Casing_Grisium = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_GRISIUM");	
 	public static final CustomIcon Casing_Material_Grisium = Internal_Casing_Grisium;
 	private static final CustomIcon Internal_Casing_Incoloy020 = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_INCOLOY_020");	
@@ -102,7 +102,7 @@ public class TexturesGtBlock {
 	public static final CustomIcon Casing_Material_IncoloyMA956 = Internal_Casing_IncoloyMA956;
 	private static final CustomIcon Internal_Casing_ZirconiumCarbide = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_ZIRCONIUM_CARBIDE");	
 	public static final CustomIcon Casing_Material_ZirconiumCarbide = Internal_Casing_ZirconiumCarbide;
-	
+
 
 	private static final CustomIcon Internal_Casing_HastelloyX = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_HASTELLOY_X");	
 	public static final CustomIcon Casing_Material_HastelloyX = Internal_Casing_HastelloyX;
@@ -110,22 +110,28 @@ public class TexturesGtBlock {
 	public static final CustomIcon Casing_Material_HastelloyN = Internal_Casing_HastelloyN;
 	private static final CustomIcon Internal_Casing_Fluid_IncoloyDS = new CustomIcon("TileEntities/MACHINE_CASING_FLUID_INCOLOY_DS");	
 	public static final CustomIcon Casing_Material_Fluid_IncoloyDS = Internal_Casing_Fluid_IncoloyDS;
-	
+
 	//Material Machine/Firebox Casings
 	private static final CustomIcon Internal_Casing_Staballoy_Firebox = new CustomIcon("TileEntities/MACHINE_CASING_FIREBOX_STABALLOY");	
 	public static final CustomIcon Casing_Staballoy_Firebox = Internal_Casing_Staballoy_Firebox;
-	
+
 	//Misc Casings	
 	private static final CustomIcon Internal_Casing_Machine_Redstone_Off = new CustomIcon("TileEntities/cover_redstone_conductor");	
 	public static final CustomIcon Casing_Machine_Redstone_Off = Internal_Casing_Machine_Redstone_Off;
 	private static final CustomIcon Internal_Casing_Machine_Redstone_On = new CustomIcon("TileEntities/cover_redstone_emitter");	
 	public static final CustomIcon Casing_Machine_Redstone_On = Internal_Casing_Machine_Redstone_On;
-	
+
 	//MACHINE_CASING_FARM_MANAGER_STRUCTURAL
 	//Farm Manager Casings
 	private static final CustomIcon Internal_Casing_Machine_Farm_Manager = new CustomIcon("TileEntities/MACHINE_CASING_FARM_MANAGER_STRUCTURAL");	
 	public static final CustomIcon Casing_Machine_Farm_Manager = Internal_Casing_Machine_Farm_Manager;
-	
+	//Acacia_Log
+	private static final CustomIcon Internal_Casing_Machine_Acacia_Log = new CustomIcon("TileEntities/log_acacia_top");	
+	public static final CustomIcon Casing_Machine_Acacia_Log = Internal_Casing_Machine_Acacia_Log;
+	//Podzol Top
+	private static final CustomIcon Internal_Casing_Machine_Podzol = new CustomIcon("TileEntities/dirt_podzol_top");	
+	public static final CustomIcon Casing_Machine_Podzol = Internal_Casing_Machine_Podzol;
+
 	//Overlays
 	//Fan Textures
 	private static final CustomIcon Internal_Overlay_Machine_Vent = new CustomIcon("TileEntities/machine_top_vent_rotating");	

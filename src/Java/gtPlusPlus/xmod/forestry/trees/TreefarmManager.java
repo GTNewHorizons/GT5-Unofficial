@@ -64,6 +64,11 @@ public class TreefarmManager {
 		String tTool = log.getHarvestTool(0);
 		return  OrePrefixes.log.contains(new ItemStack(log, 1))&& ((tTool != null) && (tTool.equals("axe"))) || (log.getMaterial() == Material.wood);
 	}
+	
+	public static boolean isLeaves(Block log){
+		String tTool = log.getHarvestTool(0);
+		return  OrePrefixes.leaves.contains(new ItemStack(log, 1)) || (log.getMaterial() == Material.leaves);
+	}
 
 	public static boolean isDirtBlock(Block dirt){    	
 		return  (dirt == Blocks.dirt ? true : (dirt == Blocks.grass ? true : (getHumus() == null ? false : (dirt == blockHumus ? true : false))));

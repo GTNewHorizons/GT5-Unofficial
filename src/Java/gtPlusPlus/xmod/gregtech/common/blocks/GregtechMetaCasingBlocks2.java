@@ -24,8 +24,8 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Structural Glass Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Hastelloy-N Sealant Block");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Hastelloy-X Structural Block");
-		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Incoloy-DS Fluid Containment Block"); //60
-		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Placeholder Casing");
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Incoloy-DS Fluid Containment Block"); //76
+		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Placeholder Casing"); //IS A PLACEHOLDER DO NOT CHANGE
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Placeholder Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Incoloy Casing");
 		GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Placeholder Casing");

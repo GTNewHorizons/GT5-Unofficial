@@ -21,7 +21,7 @@ public class CasingTextureHandler2 {
 				return TexturesGtBlock.Casing_Material_Fluid_IncoloyDS.getIcon();
 				//Material Press Casings
 			case 4: 
-				return TexturesGtBlock._PlaceHolder.getIcon();
+				return TexturesGtBlock.Casing_Machine_Farm_Manager.getIcon();
 				//Electrolyzer Casings
 			case 5: 
 				return TexturesGtBlock._PlaceHolder.getIcon();
