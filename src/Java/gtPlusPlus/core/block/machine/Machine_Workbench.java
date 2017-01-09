@@ -3,6 +3,7 @@ package gtPlusPlus.core.block.machine;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.player.PlayerUtils;
@@ -16,12 +17,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import buildcraft.api.tools.IToolWrench;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.api.tool.ITool;
 
+@Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = "EnderIO")
 public class Machine_Workbench extends BlockContainer
 {
     @SideOnly(Side.CLIENT)
@@ -77,24 +79,7 @@ public class Machine_Workbench extends BlockContainer
 		boolean holdingWrench = false;
 
 		if (heldItem != null){
-			if (heldItem.getItem() instanceof ItemToolWrench){
-				holdingWrench = true;
-			}
-			else if (heldItem.getItem() instanceof IToolWrench){
-				holdingWrench = true;
-			}
-			else if (heldItem.getItem() instanceof ITool){
-				holdingWrench = true;
-			}
-			/*else if (heldItem.getItem() instanceof GT_MetaGenerated_Tool){
-				GT_MetaGenerated_Tool testTool = (GT_MetaGenerated_Tool) heldItem.getItem();
-				if (testTool.canWrench(player, x, y, z)){
-					holdingWrench = true;
-				}
-			}*/
-			else {
-				holdingWrench = false;
-			}
+			holdingWrench =  isWrench(heldItem);			
 		}
 
 		if (world.isRemote) return true;
@@ -115,4 +100,28 @@ public class Machine_Workbench extends BlockContainer
 	public TileEntity createNewTileEntity(World world, int p_149915_2_) {
 		return new TileEntityWorkbench();
 	}
+	
+	public static boolean isWrench(ItemStack item){
+		
+		if (item.getItem() instanceof ItemToolWrench){
+			return true;
+		}
+		if (item.getItem() instanceof IToolWrench){
+			return true;
+		}
+		if (LoadedMods.EnderIO){
+			return checkEnderIOWrench(item);
+		}		
+		
+		return false;
+	}
+	
+	@Optional.Method(modid = "EnderIO")
+	private static boolean checkEnderIOWrench(ItemStack item){
+		if (item.getItem() instanceof crazypants.enderio.api.tool.ITool){
+			return true;
+		}
+		return false;
+	}
+	
 }

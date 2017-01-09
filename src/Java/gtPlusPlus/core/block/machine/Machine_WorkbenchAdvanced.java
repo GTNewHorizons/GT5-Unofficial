@@ -20,7 +20,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import crazypants.enderio.api.tool.ITool;
 
 public class Machine_WorkbenchAdvanced extends BlockContainer
 {
@@ -80,9 +79,9 @@ public class Machine_WorkbenchAdvanced extends BlockContainer
 			else if (heldItem.getItem() instanceof IToolWrench){
 				holdingWrench = true;
 			}
-			else if (heldItem.getItem() instanceof ITool){
+			/*else if (heldItem.getItem() instanceof ITool){
 				holdingWrench = true;
-			}
+			}*/
 			/*else if (heldItem.getItem() instanceof GT_MetaGenerated_Tool){
 				GT_MetaGenerated_Tool testTool = (GT_MetaGenerated_Tool) heldItem.getItem();
 				if (testTool.canWrench(player, x, y, z)){
