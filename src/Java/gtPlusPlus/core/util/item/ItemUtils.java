@@ -23,6 +23,7 @@ import gtPlusPlus.core.util.wrapper.var;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.*;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraftforge.fluids.FluidStack;
@@ -33,6 +34,9 @@ public class ItemUtils {
 
 	public static ItemStack getSimpleStack(Item x){
 		return getSimpleStack(x, 1);
+	}
+	public static ItemStack getSimpleStack(Block x){
+		return getSimpleStack(Item.getItemFromBlock(x), 1);
 	}
 	public static ItemStack getSimpleStack(Item x, int i){
 		try {

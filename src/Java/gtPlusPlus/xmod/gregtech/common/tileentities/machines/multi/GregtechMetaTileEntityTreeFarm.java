@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
+import static gtPlusPlus.core.lib.CORE.configSwitches.enableTreeFarmerParticles;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -10,22 +11,29 @@ import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.forestry.trees.TreefarmManager;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.IGrowable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.FakePlayerFactory;
+import net.minecraftforge.event.entity.player.BonemealEvent;
+import cpw.mods.fml.common.eventhandler.Event.Result;
 
 public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlockBase {
 
 	public ArrayList<GT_MetaTileEntity_TieredMachineBlock> mCasings = new ArrayList();
 
-	 /* private */ private int treeCheckTicks = 0;
+	/* private */ private int treeCheckTicks = 0;
 
 	public GregtechMetaTileEntityTreeFarm(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -293,9 +301,10 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 					Utils.LOG_INFO("Looking For Trees - Serverside | "+treeCheckTicks);
 					final boolean b = findLogs(aBaseMetaTileEntity);
 					Utils.LOG_INFO("Did I manage to find/cut logs? "+b);
-					if (b){
-						cleanUp(aBaseMetaTileEntity);
-					}
+
+					cleanUp(aBaseMetaTileEntity);
+
+					findSaplings(aBaseMetaTileEntity);
 				}
 			}	
 
@@ -322,33 +331,15 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 					if ((i != -7 && i != 7) && (j != -7 && j != 7)) {							
 
 						//Farm Inner 13*13
-
-						//Make sure it's not logs and return.
-						if (!TreefarmManager.isWoodLog(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)) || !TreefarmManager.isAirBlock(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)) || !aBaseMetaTileEntity.getAirOffset(xDir+i, h, zDir+j)) {
-							//Utils.LOG_INFO("Wood like block missing from inner 14x14, layer 2."); //TODO
-							//Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());	
-							//Utils.LOG_INFO("Found at x:"+(xDir+i)+" y:"+h+" z:"+(zDir+j));
-							//return false;
-						}
-
-						if (TreefarmManager.isLeaves(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))){
-							int posiX, posiY, posiZ;
-							posiX = aBaseMetaTileEntity.getXCoord()+xDir+i;
-							posiY = aBaseMetaTileEntity.getYCoord()+h;
-							posiZ = aBaseMetaTileEntity.getZCoord()+zDir+j;
-							Utils.LOG_INFO("Cleaning Up some leaves.");
-							aBaseMetaTileEntity.getWorld().setBlockToAir(posiX, posiY, posiZ);
-						}
-
 						if (TreefarmManager.isWoodLog(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)) || TreefarmManager.isWoodLog(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))){
-							Utils.LOG_INFO("Found A log of some kind I can chop.");
+							//Utils.LOG_INFO("Found A log of some kind I can chop.");
 							if (this.mEnergyHatches != null) {
 								for (final GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches){
 									if (isValidMetaTileEntity(tHatch)) {
 										//Utils.LOG_INFO("Hatch ["+"]| can hold:"+maxEUStore()+" | holding:"+tHatch.getEUVar());
 										if (tHatch.getEUVar() >= 128) {
-											Utils.LOG_INFO("I should cut wood instead of print messages.");
-											Utils.LOG_INFO("Found at x:"+(xDir+i)+" y:"+h+" z:"+(zDir+j));
+											//Utils.LOG_INFO("I should cut wood instead of print messages.");
+											//Utils.LOG_INFO("Found at x:"+(xDir+i)+" y:"+h+" z:"+(zDir+j));
 											logsCut++;												
 											//tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(128 * 1, false);
 
@@ -384,11 +375,12 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 				}
 			}
 		}
-		cleanUp(aBaseMetaTileEntity);
-		Utils.LOG_INFO("general failure | maybe there is no logs, not an error. | cut:"+logsCut );
+		if (logsCut > 0)
+			cleanUp(aBaseMetaTileEntity);
+		//Utils.LOG_INFO("general failure | maybe there is no logs, not an error. | cut:"+logsCut );
 		return false;		
 	}
-	
+
 	private static boolean cleanUp(final IGregTechTileEntity aBaseMetaTileEntity){
 		Utils.LOG_INFO("called cleanUp()");
 		int cleanedUp = 0;
@@ -396,35 +388,98 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		final int zDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 7;
 		for (int i = -10; i <= 10; i++) {
 			for (int j = -10; j <= 10; j++) {
-				for (int h=3;h<175;h++){
-						if (TreefarmManager.isLeaves(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)) || TreefarmManager.isWoodLog(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))){
-							int posiX, posiY, posiZ;
-							posiX = aBaseMetaTileEntity.getXCoord()+xDir+i;
-							posiY = aBaseMetaTileEntity.getYCoord()+h;
-							posiZ = aBaseMetaTileEntity.getZCoord()+zDir+j;
-							Utils.LOG_INFO("Cleaning Up some leftovers.");
-							cleanedUp++;
-							aBaseMetaTileEntity.getWorld().setBlockToAir(posiX, posiY, posiZ);
-						}
-
+				for (int h=2;h<175;h++){
+					if (TreefarmManager.isLeaves(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)) || TreefarmManager.isWoodLog(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))){
+						int posiX, posiY, posiZ;
+						posiX = aBaseMetaTileEntity.getXCoord()+xDir+i;
+						posiY = aBaseMetaTileEntity.getYCoord()+h;
+						posiZ = aBaseMetaTileEntity.getZCoord()+zDir+j;
+						Utils.LOG_INFO("Cleaning Up some leftovers.");
+						cleanedUp++;
+						aBaseMetaTileEntity.getWorld().setBlockToAir(posiX, posiY, posiZ);
 					}
-				
+
+				}
+
 			}
 		}
 		Utils.LOG_INFO("cleaning up | "+cleanedUp );
 		return true;		
 	}
 
+	private static boolean findSaplings(final IGregTechTileEntity aBaseMetaTileEntity){
+		Utils.LOG_INFO("called findSaplings()");
+		int saplings = 0;
+		final int xDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 7; 
+		final int zDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 7;
+		for (int i = -7; i <= 7; i++) {
+			for (int j = -7; j <= 7; j++) {
+				int h = 1;
+				//Utils.LOG_INFO("Looking for saplings.");
+				if (TreefarmManager.isSapling(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))){
+					int posiX, posiY, posiZ;
+					posiX = aBaseMetaTileEntity.getXCoord()+xDir+i;
+					posiY = aBaseMetaTileEntity.getYCoord()+h;
+					posiZ = aBaseMetaTileEntity.getZCoord()+zDir+j;
+					Utils.LOG_INFO("Found a sapling to grow.");
+					saplings++;
+					applyBonemeal(aBaseMetaTileEntity.getWorld(), posiX, posiY, posiZ);
+				}				
+			}
+		}
+		Utils.LOG_INFO("Tried to grow saplings: | "+saplings );
+		return true;		
+	}
 
-	private static boolean cutLog (final World world, final int x, final int y, final int z){
+
+	private boolean cutLog(final World world, final int x, final int y, final int z){
 		Utils.LOG_INFO("Cutting Log");
 		try {
-			final Block block = world.getBlock(x, y, z);
-			Utils.LOG_INFO(block.toString());
-			block.dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
+			//Get Log.
+			final Block block = world.getBlock(x, y, z);			
+			//Make a valid itemstack to add to the output bus.
+			ItemStack logStack[] = {ItemUtils.getSimpleStack(block)};
+			//Add the stack to the bus.
+			this.mOutputItems = logStack;
+			//Update bus contents.
+			updateSlots();
+			//Remove drop that was added to the bus.
 			world.setBlockToAir(x, y, z);
 			return true;
 		} catch (NullPointerException e){}
+		return false;
+	}
+
+	public static boolean applyBonemeal(World world, int intX, int intY, int intZ){
+		Block block = world.getBlock(intX, intY, intZ);
+		EntityPlayer player = FakePlayerFactory.getMinecraft((WorldServer)world);
+		if (!world.isRemote){
+			if (enableTreeFarmerParticles){
+				world.playAuxSFX(2005, intX, intY, intZ, 0);
+			}
+		}
+		BonemealEvent event = new BonemealEvent(player, world, block, intX, intY, intZ);
+		if (MinecraftForge.EVENT_BUS.post(event)){
+			Utils.LOG_INFO("Not sure why this returned false");
+			return false;
+		}
+		if (event.getResult() == Result.ALLOW){
+			if (!world.isRemote){
+				world.playAuxSFX(2005, intX, intY, intZ, 0);
+			}
+			return true;
+		}
+		if (block instanceof IGrowable){
+			IGrowable igrowable = (IGrowable)block;
+			if (igrowable.func_149851_a(world, intX, intY, intZ, world.isRemote)){
+				if (!world.isRemote){
+					if (igrowable.func_149852_a(world, world.rand, intX, intY, intZ)){
+						igrowable.func_149853_b(world, world.rand, intX, intY, intZ);
+					}
+				}				
+				return true;
+			}
+		}
 		return false;
 	}
 

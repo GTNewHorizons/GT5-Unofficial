@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.forestry.trees;
 
 import gregtech.api.enums.OrePrefixes;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.block.Block;
@@ -41,33 +42,45 @@ public class TreefarmManager {
 		}
 		return true;
 	}
-	
+
 	@Optional.Method(modid = "Forestry")
 	public static Block getHumus(){	
-	if(blockHumus != null){
-		return blockHumus;
+		if(blockHumus != null){
+			return blockHumus;
+		}
+		else if (ReflectionUtils.doesClassExist("forestry.core.blocks.BlockSoil")){
+			try {				
+				Class<?> humusClass = Class.forName("forestry.core.blocks.BlockSoil");
+				ItemStack humusStack = ItemUtils.getCorrectStacktype("Forestry:soil", 1);
+				if (humusClass != null){
+					blockHumus = Block.getBlockFromItem(humusStack.getItem());
+					return Block.getBlockFromItem(humusStack.getItem());
+				}
+			} catch (ClassNotFoundException e) {}
+		}
+		return null;
 	}
-	else if (ReflectionUtils.doesClassExist("forestry.core.blocks.BlockSoil")){
-		try {				
-			Class<?> humusClass = Class.forName("forestry.core.blocks.BlockSoil");
-			ItemStack humusStack = ItemUtils.getCorrectStacktype("Forestry:soil", 1);
-			if (humusClass != null){
-				blockHumus = Block.getBlockFromItem(humusStack.getItem());
-				return Block.getBlockFromItem(humusStack.getItem());
-			}
-		} catch (ClassNotFoundException e) {}
-	}
-	return null;
-}
-	
+
 	public static boolean isWoodLog(Block log){
 		String tTool = log.getHarvestTool(0);
 		return  OrePrefixes.log.contains(new ItemStack(log, 1))&& ((tTool != null) && (tTool.equals("axe"))) || (log.getMaterial() == Material.wood);
 	}
-	
+
 	public static boolean isLeaves(Block log){
-		String tTool = log.getHarvestTool(0);
 		return  OrePrefixes.leaves.contains(new ItemStack(log, 1)) || (log.getMaterial() == Material.leaves);
+	}
+
+	public static boolean isSapling(Block log){
+		if (log != null){
+			if (OrePrefixes.sapling.contains(new ItemStack(log, 1))){
+				Utils.LOG_INFO(""+log.getLocalizedName());
+			}
+			if (log.getLocalizedName().toLowerCase().contains("sapling")){
+				Utils.LOG_INFO(""+log.getLocalizedName());
+				return true;
+			}
+		}
+		return  OrePrefixes.sapling.contains(new ItemStack(log, 1));
 	}
 
 	public static boolean isDirtBlock(Block dirt){    	
@@ -77,16 +90,16 @@ public class TreefarmManager {
 	public static boolean isFenceBlock(Block fence){
 		return  (fence == Blocks.fence ? true : (fence == Blocks.fence_gate ? true : (fence == Blocks.nether_brick_fence ? true : false)));		
 	}
-	
+
 	public static boolean isAirBlock(Block air){
-		
+
 		if (air.getLocalizedName().toLowerCase().contains("air")){
 			return true;
 		}
-		
+
 		return (air == Blocks.air ? true : (air instanceof BlockAir ? true : false));
 	}
-	
+
 	/*public static boolean isSaplingBlock(Block sapling){
 		return (sapling == Blocks.sapling ? true : (sapling == Blocks.))
 	}*/
