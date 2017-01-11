@@ -110,12 +110,12 @@ public class Detrav_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBloc
         long tVoltage = getMaxInputVoltage();
 
         if (getBaseMetaTileEntity().getRandomNumber(10) <= 4) {
+            if (mMineList.isEmpty()) {
             for(int i = - circuit_config; i<=circuit_config; i++)
                 for(int j = - circuit_config; j<=circuit_config; j++) {
                     Chunk c = getBaseMetaTileEntity().getWorld().getChunkFromBlockCoords(getBaseMetaTileEntity().getXCoord() + i * 16, getBaseMetaTileEntity().getZCoord() + j * 16);
                     for (int x = 0; x < 16; x++)
                         for (int z = 0; z < 16; z++) {
-                            if (mMineList.isEmpty()) {
                                 int yLevel = getYOfPumpHead();
                                 Block tBlock = c.getBlock(x,yLevel,z);
                                 int tMetaID = c.getBlockMetadata(x,yLevel,z);
@@ -137,9 +137,9 @@ public class Detrav_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBloc
                                         }
                                     }
                                 }
-                            }
                         }
                 }
+            }
             if (mMineList.isEmpty()) {
                 if(getBaseMetaTileEntity().getBlockOffset(ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetX, getYOfPumpHead() - 1 - getBaseMetaTileEntity().getYCoord(), ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetZ) != Blocks.bedrock){
                     if (mEnergyHatches.size() > 0 && mEnergyHatches.get(0).getEUVar() > (512 + getMaxInputVoltage() * 4)) {
