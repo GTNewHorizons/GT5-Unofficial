@@ -14,7 +14,7 @@ public class GregtechIndustrialTreeFarm
 	{
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Tree Farm Multiblock.");
-			if (CORE.configSwitches.enableMultiblock_NuclearFuelRefinery) run1();
+			if (CORE.configSwitches.enableMultiblock_TreeFarmer) run1();
 		}
 
 	}

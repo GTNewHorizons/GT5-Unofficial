@@ -185,6 +185,10 @@ public final class ModItems {
 
 	private static BaseItemPlate itemPlateClay;
 
+	private static Item dustFertUN18;
+
+	private static Item dustFertUN32;
+
 
 
 	//@SuppressWarnings("unused")
@@ -345,7 +349,6 @@ public final class ModItems {
 			//Leagrisium
 			MaterialGenerator.generate(ALLOY.LEAGRISIUM);		
 
-
 			//Must be the final Alloy to Generate
 			MaterialGenerator.generate(ALLOY.QUANTUM);		
 
@@ -353,15 +356,16 @@ public final class ModItems {
 		} catch (Throwable r){
 			Utils.LOG_INFO("Failed to Generated a Material. "+r.getMessage());
 			//Utils.LOG_INFO("Failed to Generated a Material. "+r.getCause().getMessage());
-			Utils.LOG_INFO("Failed to Generated a Material. "+r.getStackTrace()[0].getMethodName());
-			Utils.LOG_INFO("Failed to Generated a Material. "+r.getStackTrace()[1].getMethodName());
+			//Utils.LOG_INFO("Failed to Generated a Material. "+r.getStackTrace()[0].getMethodName());
+			//Utils.LOG_INFO("Failed to Generated a Material. "+r.getStackTrace()[1].getMethodName());
 			r.printStackTrace();
-			System.exit(1);
+			//System.exit(1);
 		}
 
 		//TC Style Shards, for use in making energy crystal mix.
 		//A dull shard, able to be infused with an element.
 		shardDull = new BaseItemTCShard("Drained", Utils.rgbtoHexValue(75, 75, 75), "Can be infused to create a magical shard.", "Obtained from Mining Stone/SandStone, Chopping Logs or Shovelling Dirt.");
+		
 		//Generates four elemental shards when TC is not installed.
 		if (!LoadedMods.Thaumcraft){
 			shardAer = new BaseItemTCShard("Aer", Utils.rgbtoHexValue(225, 225, 5));
@@ -414,29 +418,50 @@ public final class ModItems {
 		dustZrCl4 = ItemUtils.generateSpecialUseDusts("ZrCl4", "ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; //http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
 		dustCookedZrCl4 = ItemUtils.generateSpecialUseDusts("CookedZrCl4", "Cooked ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; //http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
 		//Zirconium Tetrafluoride
-		//dustZrF4 = ItemUtils.generateSpecialUseDusts("ZrF4", "ZrF4", Utils.rgbtoHexValue(170, 170, 170))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
-		//GT_OreDictUnificator.registerOre("dustZirconiumTetrafluoride", new ItemStack(ModItems.dustZrF4));
 		GT_OreDictUnificator.registerOre("cellZrF4", ItemUtils.getItemStackOfAmountFromOreDict("cellZirconiumTetrafluoride", 1));
 		GT_OreDictUnificator.registerOre("dustZrF4", ItemUtils.getItemStackOfAmountFromOreDict("dustZirconiumTetrafluoride", 1));
-		FluidUtils.generateFluid("ZirconiumTetrafluoride", "Zirconium Tetrafluoride [ZrF4]", 500, new short[]{170, 170, 140, 100});
+		FluidUtils.generateFluid("ZirconiumTetrafluoride", "Zirconium Tetrafluoride [ZrF4]", 500, new short[]{170, 170, 140, 100}); //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
 		
 		//Coolant Salt
 		//NaBF4 - NaF - 621C
-		/*dustNaBF4NaF = ItemUtils.generateSpecialUseDusts("NaBF4NaF", "NaBF4NaF", Utils.rgbtoHexValue(45, 45, 90))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
-		//Fuel Salt
-		//7LiF - BeF2 - ZrF4 - UF4 - 650C
-		dustLiFBeF2ZrF4UF4 = ItemUtils.generateSpecialUseDusts("LiFBeF2ZrF4UF4", "LiF-BeF2-ZrF4-UF4", Utils.rgbtoHexValue(35, 90, 25))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
-		//7LiF - BeF2 - ZrF4 - U235 - 590C
-		dustLiFBeF2ZrF4U235 = ItemUtils.generateSpecialUseDusts("LiFBeF2ZrF4U235", "LiF-BeF2-ZrF4-U235", Utils.rgbtoHexValue(35, 80, 15))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
-		//7liF - BeF2 - ThF4 - UF4 - 566C
-		dustLiFBeF2ThF4UF4 = ItemUtils.generateSpecialUseDusts("LiFBeF2ThF4UF4", "LiF-BeF2-ThF4-UF4", Utils.rgbtoHexValue(35, 70, 25))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
+		//dustNaBF4NaF = ItemUtils.generateSpecialUseDusts("NaBF4NaF", "NaBF4NaF", Utils.rgbtoHexValue(45, 45, 90))[0]; //https://en.wikipedia.org/wiki/Zirconium_tetrafluoride
+				
+	
+		//Load Tree Farmer
+		if (CORE.configSwitches.enableMultiblock_TreeFarmer){ //https://en.wikipedia.org/wiki/UAN
+			dustFertUN18 = ItemUtils.generateSpecialUseDusts("UN18Fertiliser", "UN-18 Fertiliser", Utils.rgbtoHexValue(60, 155, 60))[0];
+			dustFertUN32 = ItemUtils.generateSpecialUseDusts("UN32Fertiliser", "UN-32 Fertiliser", Utils.rgbtoHexValue(55, 190, 55))[0];
+			
+			ItemStack temp1 = null;
+			ItemStack temp2 = null;
+			
+			if (LoadedMods.IndustrialCraft2){
+				temp1 = ItemUtils.getCorrectStacktype("IC2:itemFertilizer", 1);
+			}
+			if (LoadedMods.Forestry){
+				temp2 = ItemUtils.getCorrectStacktype("Forestry:fertilizerCompound", 1);				
+			}
+			if (temp1 != null){
+				FluidUtils.generateFluidNonMolten("Fertiliser", "Fertiliser", 32, new short[]{45, 170, 45, 100}, temp1, temp2);
+			}
+			FluidUtils.generateFluidNonMolten("UN32Fertiliser", "UN-32 Fertiliser", 24, new short[]{55, 190, 55, 100}, null, null);
+			FluidUtils.generateFluidNonMolten("UN18Fertiliser", "UN-18 Fertiliser", 22, new short[]{60, 155, 60, 100}, null, null);
+			
+			/*GT_Values.RA.addMixerRecipe(
+			arg0, //Item In
+			arg1,
+			arg2,
+			arg3, 
+			arg4, //Fluid in
+			arg5, //Fluid Out
+			arg6, //Item out
+			arg7, //Eu	
+			arg8); //Time
+			 */
+			
+		}
 		
-		FluidUtils.generateFluid("NaBF4NaF", "NaBF4-NaF", 621, new short[]{45, 45, 90, 100});		
-		FluidUtils.generateFluid("LiFBeF2ZrF4UF4", "LiF-BeF2-ZrF4-UF4", 650, new short[]{35, 90, 25, 100});		
-		FluidUtils.generateFluid("LiFBeF2ZrF4U235", "LiF-BeF2-ZrF4-U235", 590, new short[]{35, 80, 15, 100});		
-		FluidUtils.generateFluid("LiFBeF2ThF4UF4", "LiF-BeF2-ThF4-UF4", 566, new short[]{35, 70, 25, 100});		*/
 		
-
 		//Test items
 		metaItem2 = new BaseEuItem();
 		metaItem2.registerItem(0, EnumChatFormatting.BLACK+"Test Item 0", 0, 0, "I am 0.");
@@ -446,8 +471,10 @@ public final class ModItems {
 		metaItem2.registerItem(4, "Whirlygig", 1043644000, (short) 5, "Spin me right round.", EnumRarity.rare, EnumChatFormatting.DARK_GREEN, true);
 		metaItem2.registerItem(5, "Whirlygig 2", 2124867000, (short) 7, "Spin me right round.", EnumRarity.uncommon, EnumChatFormatting.RED, true);
 
+		
+		
+		//Load Multitools
 		boolean gtStyleTools = LoadedMods.Gregtech;
-
 		if (CORE.configSwitches.enableMultiSizeTools){
 			Materials[] rm = Materials.values();
 			for (Materials m : rm){

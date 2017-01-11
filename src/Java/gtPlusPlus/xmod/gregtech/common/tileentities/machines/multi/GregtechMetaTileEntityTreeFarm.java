@@ -25,7 +25,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 
 	public ArrayList<GT_MetaTileEntity_TieredMachineBlock> mCasings = new ArrayList();
 
-	int treeCheckTicks = 0;
+	 /* private */ private int treeCheckTicks = 0;
 
 	public GregtechMetaTileEntityTreeFarm(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -140,8 +140,8 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 						if (h == 0) {
 							//Dirt Floor
 							if (!TreefarmManager.isDirtBlock(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))) {
-								Utils.LOG_WARNING("Dirt like block missing from inner 14x14.");
-								Utils.LOG_WARNING("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+								Utils.LOG_INFO("Dirt like block missing from inner 14x14.");
+								Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 								aBaseMetaTileEntity.getWorld().setBlock(
 										(aBaseMetaTileEntity.getXCoord()+(xDir+i)),
 										(aBaseMetaTileEntity.getYCoord()+(h)),
@@ -155,9 +155,9 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 						//else if (h == 1){		
 						//Farm Inner 14x14
 						/*if (!TreefarmManager.isWoodLog(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)) || !TreefarmManager.isAirBlock(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)) || !aBaseMetaTileEntity.getAirOffset(xDir+i, h, zDir+j)) {
-								Utils.LOG_WARNING("Wood like block missing from inner 14x14, layer 2."); //TODO
-								Utils.LOG_WARNING("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());	
-								Utils.LOG_WARNING("Found at x:"+(xDir+i)+" y:"+h+" z:"+(zDir+j));
+								Utils.LOG_INFO("Wood like block missing from inner 14x14, layer 2."); //TODO
+								Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());	
+								Utils.LOG_INFO("Found at x:"+(xDir+i)+" y:"+h+" z:"+(zDir+j));
 								//return false;
 								}*/	
 						//}			
@@ -169,8 +169,8 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 						//Deal with all 4 sides (Fenced area)
 						if (h == 1) {														
 							if (!TreefarmManager.isFenceBlock(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))) {
-								Utils.LOG_WARNING("Fence/Gate missing from outside the second layer.");
-								Utils.LOG_WARNING("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+								Utils.LOG_INFO("Fence/Gate missing from outside the second layer.");
+								Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 								return false;
 							}					
 						}
@@ -179,9 +179,9 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 							if ((!addMaintenanceToMachineList(tTileEntity, 77)) && (!addInputToMachineList(tTileEntity, 77)) && (!addOutputToMachineList(tTileEntity, 77)) && (!addEnergyInputToMachineList(tTileEntity, 77))) {
 								if ((xDir + i != 0) || (zDir + j != 0)) {//no controller			
 
-									if (aBaseMetaTileEntity.getMetaTileID() != 752) {
-										Utils.LOG_WARNING("Farm Keeper Casings Missing from one of the edges on the bottom edge. x:"+(xDir+i)+" y:"+h+" z:"+(zDir+j)+" | "+aBaseMetaTileEntity.getClass());
-										Utils.LOG_WARNING("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+									if (tTileEntity.getMetaTileID() != 752) {
+										Utils.LOG_INFO("Farm Keeper Casings Missing from one of the edges on the bottom edge. x:"+(xDir+i)+" y:"+h+" z:"+(zDir+j)+" | "+aBaseMetaTileEntity.getClass());
+										Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()+" "+tTileEntity.getMetaTileID());
 										return false;
 									}
 									Utils.LOG_WARNING("Found a farm keeper.");
@@ -293,6 +293,9 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 					Utils.LOG_INFO("Looking For Trees - Serverside | "+treeCheckTicks);
 					final boolean b = findLogs(aBaseMetaTileEntity);
 					Utils.LOG_INFO("Did I manage to find/cut logs? "+b);
+					if (b){
+						cleanUp(aBaseMetaTileEntity);
+					}
 				}
 			}	
 
@@ -381,8 +384,35 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 				}
 			}
 		}
-		Utils.LOG_INFO("general failure | cut:"+logsCut );
+		cleanUp(aBaseMetaTileEntity);
+		Utils.LOG_INFO("general failure | maybe there is no logs, not an error. | cut:"+logsCut );
 		return false;		
+	}
+	
+	private static boolean cleanUp(final IGregTechTileEntity aBaseMetaTileEntity){
+		Utils.LOG_INFO("called cleanUp()");
+		int cleanedUp = 0;
+		final int xDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 7; 
+		final int zDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 7;
+		for (int i = -10; i <= 10; i++) {
+			for (int j = -10; j <= 10; j++) {
+				for (int h=3;h<175;h++){
+						if (TreefarmManager.isLeaves(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)) || TreefarmManager.isWoodLog(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))){
+							int posiX, posiY, posiZ;
+							posiX = aBaseMetaTileEntity.getXCoord()+xDir+i;
+							posiY = aBaseMetaTileEntity.getYCoord()+h;
+							posiZ = aBaseMetaTileEntity.getZCoord()+zDir+j;
+							Utils.LOG_INFO("Cleaning Up some leftovers.");
+							cleanedUp++;
+							aBaseMetaTileEntity.getWorld().setBlockToAir(posiX, posiY, posiZ);
+						}
+
+					}
+				
+			}
+		}
+		Utils.LOG_INFO("cleaning up | "+cleanedUp );
+		return true;		
 	}
 
 
@@ -390,7 +420,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		Utils.LOG_INFO("Cutting Log");
 		try {
 			final Block block = world.getBlock(x, y, z);
-			Utils.LOG_WARNING(block.toString());
+			Utils.LOG_INFO(block.toString());
 			block.dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
 			world.setBlockToAir(x, y, z);
 			return true;

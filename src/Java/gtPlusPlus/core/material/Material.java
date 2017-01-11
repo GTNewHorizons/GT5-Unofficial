@@ -308,7 +308,6 @@ public class Material {
 	}
 
 	final public ItemStack[] getMaterialComposites(){
-		//Utils.LOG_WARNING("Something requested the materials needed for "+localizedName);
 		if (vMaterialInput != null){
 			if (!vMaterialInput.isEmpty()){
 				ItemStack[] temp = new ItemStack[vMaterialInput.size()];
@@ -395,8 +394,7 @@ public class Material {
 		return null;
 	}
 
-	@SuppressWarnings("unused")
-	final String getToolTip(String chemSymbol, long aMultiplier, boolean aShowQuestionMarks) {
+	public final String getToolTip(String chemSymbol, long aMultiplier, boolean aShowQuestionMarks) {
 		if (!aShowQuestionMarks && (vChemicalFormula.equals("?")||vChemicalFormula.equals("??"))) return "";
 		Utils.LOG_WARNING("===============| Calculating Atomic Formula for "+this.localizedName+" |===============");
 		if (!chemSymbol.equals(""))
@@ -451,7 +449,7 @@ public class Material {
 
 	}
 
-	final Fluid generateFluid(){
+	public final Fluid generateFluid(){
 		if (Materials.get(localizedName).mFluid == null){
 			Utils.LOG_WARNING("Generating our own fluid.");
 
@@ -476,18 +474,8 @@ public class Material {
 
 	final public FluidStack getFluid(int fluidAmount) {
 		Utils.LOG_WARNING("Attempting to get "+fluidAmount+"L of "+this.vMoltenFluid.getName());
-
 		FluidStack moltenFluid = new FluidStack(this.vMoltenFluid, fluidAmount);
-
 		Utils.LOG_WARNING("Info: "+moltenFluid.getFluid().getName()+" Info: "+moltenFluid.amount+" Info: "+moltenFluid.getFluidID());
-
-		//FluidStack moltenFluid = FluidUtils.getFluidStack(this.vMoltenFluid.getName(), fluidAmount);
-		/*boolean isNull = (moltenFluid == null);
-		if (isNull) Utils.LOG_WARNING("Did not obtain fluid.");
-		else Utils.LOG_WARNING("Found fluid.");
-		if (isNull){
-			return null;
-		}*/
 		return moltenFluid;
 	}
 

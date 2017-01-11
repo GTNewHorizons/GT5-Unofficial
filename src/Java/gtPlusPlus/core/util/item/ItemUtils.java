@@ -177,8 +177,12 @@ public class ItemUtils {
 			return temp;
 		}
 		String[] fqrnSplit = fqrn.split(":");
-		if(fqrnSplit[2] == null){fqrnSplit[2] = "0";}			
-		temp = ItemUtils.getItemStackWithMeta(LoadedMods.MiscUtils, fqrn, fqrnSplit[1], Integer.parseInt(fqrnSplit[2]), stackSize);
+		String temp1;
+		String temp2;
+		temp1 = fqrnSplit[1];
+		if (fqrnSplit.length < 3){temp2 = "0";}
+		else {temp2 = fqrnSplit[2];}
+		temp = ItemUtils.getItemStackWithMeta(LoadedMods.MiscUtils, fqrn, temp1, Integer.parseInt(temp2), stackSize);
 		return temp;			
 	}	
 

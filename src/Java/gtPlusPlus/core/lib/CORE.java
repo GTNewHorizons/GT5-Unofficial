@@ -122,6 +122,8 @@ public class CORE {
 		public static boolean enableMultiblock_PowerSubstation = true;
 		public static boolean enableMultiblock_LiquidFluorideThoriumReactor = true;
 		public static boolean enableMultiblock_NuclearFuelRefinery = true;
+
+		public static boolean enableMultiblock_TreeFarmer = true;
 		
 	}
 	

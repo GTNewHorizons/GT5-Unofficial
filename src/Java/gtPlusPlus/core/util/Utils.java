@@ -530,7 +530,7 @@ public class Utils {
 	public static ToolMaterial generateMaterialFromGT(Materials gtMaterial){
 		String name = gtMaterial.name();
 		int harvestLevel = gtMaterial.mToolQuality;
-		int durability = gtMaterial.mDurability;
+		int durability = gtMaterial.mDurability*3;
 		float damage = gtMaterial.mToolQuality;
 		int efficiency = (int) gtMaterial.mToolSpeed;
 		int enchantability = gtMaterial.mEnchantmentToolsLevel;
