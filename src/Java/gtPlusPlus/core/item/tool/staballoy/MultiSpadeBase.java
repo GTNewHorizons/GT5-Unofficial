@@ -1,7 +1,6 @@
 package gtPlusPlus.core.item.tool.staballoy;
 
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -39,7 +38,8 @@ public class MultiSpadeBase extends StaballoySpade{
 	public MultiSpadeBase(String unlocalizedName, ToolMaterial material, int materialDurability, int colour) {
 		super(Utils.sanitizeString(unlocalizedName), material);
 		this.setUnlocalizedName(Utils.sanitizeString(unlocalizedName));
-		this.setTextureName(CORE.MODID + ":" + "itemShovel");
+		//this.setTextureName(CORE.MODID + ":" + "itemShovel");
+		this.setTextureName("minecraft"+":"+"iron_shovel");
 		this.FACING_HORIZONTAL=true;
 		this.setMaxStackSize(1);
 		this.setMaxDamage(materialDurability);
