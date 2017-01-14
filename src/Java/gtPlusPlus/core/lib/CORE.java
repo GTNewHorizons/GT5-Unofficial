@@ -124,7 +124,9 @@ public class CORE {
 		public static boolean enableMultiblock_NuclearFuelRefinery = true;
 		public static boolean enableMultiblock_TreeFarmer = true;
 		
+		//Visuals
 		public static boolean enableTreeFarmerParticles = true;
+		public static boolean useGregtechTextures = true;
 		
 	}
 	

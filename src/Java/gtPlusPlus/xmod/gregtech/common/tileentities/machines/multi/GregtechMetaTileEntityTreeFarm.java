@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
 import static gtPlusPlus.core.lib.CORE.configSwitches.enableTreeFarmerParticles;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -299,10 +300,11 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 				//If Machine can work and it's only one of two times a second this will tick, tick.
 				if (mMachine){
 					Utils.LOG_INFO("Looking For Trees - Serverside | "+treeCheckTicks);
-					final boolean b = findLogs(aBaseMetaTileEntity);
-					Utils.LOG_INFO("Did I manage to find/cut logs? "+b);
+					findLogs(aBaseMetaTileEntity);
 
 					cleanUp(aBaseMetaTileEntity);
+
+					plantSaplings(aBaseMetaTileEntity);
 
 					findSaplings(aBaseMetaTileEntity);
 				}
@@ -388,7 +390,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		final int zDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 7;
 		for (int i = -10; i <= 10; i++) {
 			for (int j = -10; j <= 10; j++) {
-				for (int h=2;h<175;h++){
+				for (int h=1;h<175;h++){
 					if (TreefarmManager.isLeaves(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)) || TreefarmManager.isWoodLog(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))){
 						int posiX, posiY, posiZ;
 						posiX = aBaseMetaTileEntity.getXCoord()+xDir+i;
@@ -431,16 +433,60 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		return true;		
 	}
 
+	private boolean plantSaplings(final IGregTechTileEntity aBaseMetaTileEntity){
+		Utils.LOG_INFO("called plantSaplings()");
+		World world = aBaseMetaTileEntity.getWorld();
+		ArrayList<ItemStack> r = getStoredInputs();
+		int saplings = 0;
+		final int xDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 7; 
+		final int zDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 7;
+		for (int i = -7; i <= 7; i++) {
+			for (int j = -7; j <= 7; j++) {
+				int h = 1;			
+
+				if (TreefarmManager.isAirBlock(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))){
+					for (ItemStack n : r){
+						if (n != null){
+							if (OrePrefixes.sapling.contains(n) || n.getDisplayName().toLowerCase().contains("sapling")){
+								Utils.LOG_INFO(""+n.getDisplayName());
+
+								int posX, posY, posZ;
+								posX = aBaseMetaTileEntity.getXCoord()+xDir+i;
+								posY = aBaseMetaTileEntity.getYCoord()+h;
+								posZ = aBaseMetaTileEntity.getZCoord()+zDir+j;
+
+								//Works for everything but forestry saplings - TODO
+								Block saplingToPlace = Block.getBlockFromItem(n.getItem());
+
+								//If sapling block is not null
+								if (saplingToPlace != null){
+									//Plant Sapling
+									world.setBlock(posX, posY, posZ, saplingToPlace);
+									world.setBlockMetadataWithNotify(posX, posY, posZ, n.getItemDamage(), 4);
+									//Deplete Input stack
+									depleteInput(n);
+								}
+							}
+						}
+					}	
+				}											
+			}
+		}
+		Utils.LOG_INFO("Tried to grow saplings: | "+saplings );
+		return true;		
+	}
+
+	private Block findAirForSaplingToGrow(){
+		return null;
+	}
 
 	private boolean cutLog(final World world, final int x, final int y, final int z){
 		Utils.LOG_INFO("Cutting Log");
 		try {
 			//Get Log.
-			final Block block = world.getBlock(x, y, z);			
-			//Make a valid itemstack to add to the output bus.
-			ItemStack logStack[] = {ItemUtils.getSimpleStack(block)};
+			final Block block = world.getBlock(x, y, z);
 			//Add the stack to the bus.
-			this.mOutputItems = logStack;
+			addOutput(ItemUtils.getSimpleStack(block));
 			//Update bus contents.
 			updateSlots();
 			//Remove drop that was added to the bus.

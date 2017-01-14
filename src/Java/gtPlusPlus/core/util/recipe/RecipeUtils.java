@@ -36,7 +36,7 @@ public class RecipeUtils {
 			return false;
 		}
 		
-		Utils.LOG_INFO("Trying to add a recipe for "+resultItem.toString());
+		//Utils.LOG_INFO("Trying to add a recipe for "+resultItem.toString());
 		String a,b,c,d,e,f,g,h,i;
 		if (slot_1 == null){ a = " ";} else { a = "1";validSlots.add('1');validSlots.add(slot_1);}
 		Utils.LOG_WARNING(a);
@@ -110,7 +110,7 @@ public class RecipeUtils {
 
 		try {
 			GameRegistry.addRecipe(new ShapedOreRecipe(resultItem.copy(), (Object[]) validSlots.toArray()));		
-			Utils.LOG_INFO("Success! Added a recipe for "+resultItem.getDisplayName());
+			//Utils.LOG_INFO("Success! Added a recipe for "+resultItem.getDisplayName());
 			if (!COMPAT_HANDLER.areInitItemsLoaded){
 				RegistrationHandler.recipesSuccess++;
 			}

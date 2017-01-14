@@ -29,11 +29,8 @@ public class BaseItemDustUnique extends Item{
 	public BaseItemDustUnique(String unlocalizedName, String materialName, int colour, String pileSize) {
 		setUnlocalizedName(unlocalizedName);
 		this.setUnlocalizedName(unlocalizedName);
-		this.setMaxStackSize(64);	
-		if (pileSize == "dust" || pileSize == "Dust"){
-			this.setTextureName(CORE.MODID + ":" + "dust");}
-		else{
-			this.setTextureName(CORE.MODID + ":" + "dust"+pileSize);}
+		this.setMaxStackSize(64);
+		this.setTextureName(getCorrectTexture(pileSize));
 		this.setCreativeTab(tabMisc);
 		this.colour = colour;
 		this.materialName = materialName;
@@ -82,6 +79,23 @@ public class BaseItemDustUnique extends Item{
 		return name;
 	}
 
+	private String getCorrectTexture(String pileSize){
+		if (!CORE.configSwitches.useGregtechTextures){
+			if (pileSize == "dust" || pileSize == "Dust"){
+				this.setTextureName(CORE.MODID + ":" + "dust");}
+			else{
+				this.setTextureName(CORE.MODID + ":" + "dust"+pileSize);
+			}
+		}		
+		if (pileSize.toLowerCase().contains("small")){
+			return "gregtech" + ":" + "materialicons/SHINY/dustSmall";			
+		}
+		else if (pileSize.toLowerCase().contains("tiny")){
+			return "gregtech" + ":" + "materialicons/SHINY/dustTiny";			
+		}	
+		return "gregtech" + ":" + "materialicons/SHINY/dust";			
+	}
+
 	protected final int sRadiation;
 	@Override
 	public void onUpdate(ItemStack iStack, World world, Entity entityHolding, int p_77663_4_, boolean p_77663_5_) {
@@ -98,7 +112,7 @@ public class BaseItemDustUnique extends Item{
 		}
 		super.addInformation(stack, aPlayer, list, bool);
 	}
-	
+
 	static boolean containsSubScript(String s){
 		if (s.contains(MaterialUtils.superscript("1"))) return true;
 		if (s.contains(MaterialUtils.superscript("2"))) return true;

@@ -33,11 +33,9 @@ public class BaseItemDust extends Item{
 	public BaseItemDust(String unlocalizedName, String materialName, Material matInfo, int colour, String pileSize, int tier, int sRadioactivity) {
 		setUnlocalizedName(unlocalizedName);
 		this.setUnlocalizedName(unlocalizedName);
-		this.setMaxStackSize(64);	
-		if (pileSize == "dust" || pileSize == "Dust"){
-			this.setTextureName(CORE.MODID + ":" + "dust");}
-		else{
-			this.setTextureName(CORE.MODID + ":" + "dust"+pileSize);}
+		this.setMaxStackSize(64);
+		this.setTextureName(getCorrectTexture(pileSize));
+		
 		this.setCreativeTab(tabMisc);
 		this.colour = colour;
 		this.mTier = tier;
@@ -73,6 +71,23 @@ public class BaseItemDust extends Item{
 		}
 		addFurnaceRecipe();
 		addMacerationRecipe();
+	}
+
+	private String getCorrectTexture(String pileSize){
+		if (!CORE.configSwitches.useGregtechTextures){
+			if (pileSize == "dust" || pileSize == "Dust"){
+				this.setTextureName(CORE.MODID + ":" + "dust");}
+			else{
+				this.setTextureName(CORE.MODID + ":" + "dust"+pileSize);
+			}
+		}		
+		if (pileSize.toLowerCase().contains("small")){
+			return "gregtech" + ":" + "materialicons/METALLIC/dustSmall";			
+		}
+		else if (pileSize.toLowerCase().contains("tiny")){
+			return "gregtech" + ":" + "materialicons/METALLIC/dustTiny";			
+		}	
+		return "gregtech" + ":" + "materialicons/METALLIC/dust";			
 	}
 
 	@Override
@@ -117,7 +132,7 @@ public class BaseItemDust extends Item{
 		if (dustInfo != null){
 			list.add(dustInfo.vChemicalFormula);
 		}
-		
+
 
 		//}
 		super.addInformation(stack, aPlayer, list, bool);

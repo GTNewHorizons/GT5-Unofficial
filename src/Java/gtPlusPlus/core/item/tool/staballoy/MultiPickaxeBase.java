@@ -43,7 +43,7 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 		this.setTextureName(CORE.MODID + ":" + "itemPickaxe");
 		this.FACING_HORIZONTAL=true;
 		this.setMaxStackSize(1);
-		this.setMaxDamage(materialDurability);
+		this.setMaxDamage(materialDurability*3);
 		this.colour = colour;
 		this.materialName = material.name();		
 		this.setCreativeTab(AddToCreativeTab.tabTools);

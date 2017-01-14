@@ -35,7 +35,7 @@ public class BaseItemComponent extends Item{
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
 		this.setUnlocalizedName(unlocalName);
 		this.setMaxStackSize(64);
-		this.setTextureName(CORE.MODID + ":" + "item"+componentType.COMPONENT_NAME);
+		this.setTextureName(getCorrectTextures());
 		this.componentColour = material.getRgbAsHex();
 		GameRegistry.registerItem(this, unlocalName);
 		GT_OreDictUnificator.registerOre(componentType.getOreDictName()+material.getUnlocalizedName(), ItemUtils.getSimpleStack(this));
@@ -55,6 +55,25 @@ public class BaseItemComponent extends Item{
 		this.setTextureName(CORE.MODID + ":" + "item"+ComponentTypes.CELL.COMPONENT_NAME);
 		GameRegistry.registerItem(this, unlocalName);
 		GT_OreDictUnificator.registerOre(ComponentTypes.CELL.getOreDictName()+unlocalName, ItemUtils.getSimpleStack(this));
+	}
+
+	public String getCorrectTextures(){
+		if (!CORE.configSwitches.useGregtechTextures){
+			return CORE.MODID + ":" + "item"+componentType.COMPONENT_NAME;
+		}
+		if (componentType == ComponentTypes.GEAR){
+			return "gregtech" + ":" + "materialicons/METALLIC/" + "gearGt";
+		}
+		else if (componentType == ComponentTypes.ROD){
+			return "gregtech" + ":" + "materialicons/METALLIC/" + "stick";
+		}
+		else if (componentType == ComponentTypes.RODLONG){
+			return "gregtech" + ":" + "materialicons/METALLIC/" + "stickLong";
+		}
+		else if (componentType == ComponentTypes.PLATEDOUBLE){
+			return "gregtech" + ":" + "materialicons/METALLIC/" + "plateDouble";
+		}
+		return "gregtech" + ":" + "materialicons/METALLIC/" + componentType.COMPONENT_NAME.toLowerCase();
 	}
 
 	@Override
@@ -114,8 +133,8 @@ public class BaseItemComponent extends Item{
 			}			
 			if (componentMaterial != null){
 				if (!componentMaterial.vChemicalFormula.equals("??"))
-				list.add(componentMaterial.vChemicalFormula);
-				
+					list.add(componentMaterial.vChemicalFormula);
+
 				if (componentMaterial.isRadioactive){
 					list.add(CORE.GT_Tooltip_Radioactive);
 				}

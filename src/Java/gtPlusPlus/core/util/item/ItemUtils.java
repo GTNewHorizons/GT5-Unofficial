@@ -307,7 +307,7 @@ public class ItemUtils {
 		Utils.LOG_WARNING("Generating a Multi-Pick out of "+material.name());
 		short[] rgb;
 		rgb = material.getRGBA();
-		int dur = customMaterial.getMaxUses();
+		int dur = customMaterial.getMaxUses()*3;
 		Utils.LOG_WARNING("Determined durability for "+material.name()+" is "+dur);
 		if (GT_Durability){
 			dur = material.mDurability*100;
