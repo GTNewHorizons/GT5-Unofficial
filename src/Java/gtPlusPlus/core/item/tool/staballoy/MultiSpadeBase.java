@@ -1,6 +1,7 @@
 package gtPlusPlus.core.item.tool.staballoy;
 
 import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -33,6 +34,7 @@ public class MultiSpadeBase extends StaballoySpade{
 	protected ItemStack thisPickaxe = null;
 	protected final int colour;
 	protected final String materialName;
+	protected final String displayName;
 	public boolean isValid = true;
 
 	public MultiSpadeBase(String unlocalizedName, ToolMaterial material, int materialDurability, int colour) {
@@ -45,52 +47,64 @@ public class MultiSpadeBase extends StaballoySpade{
 		this.setMaxDamage(materialDurability*3);
 		this.colour = colour;
 		this.materialName = material.name();
+		this.displayName = unlocalizedName;
 		this.setCreativeTab(AddToCreativeTab.tabTools);
 		try {isValid = addRecipe();} catch (Throwable e){}
 		if (colour != 0 && isValid){
-			GameRegistry.registerItem(this, Utils.sanitizeString(unlocalizedName));			
+			if (GameRegistry.findItem(CORE.MODID, Utils.sanitizeString(unlocalizedName)) == null){
+				GameRegistry.registerItem(this, Utils.sanitizeString(unlocalizedName));			
+			}
 		}
 	}
-	
+
 	private boolean addRecipe(){
 		String plateDense = "plateDense"+materialName;
+		String plateDouble = "plateDouble"+materialName;
 		String rodLong = "stickLong"+materialName;
 		String toolHammer = "craftingToolHardHammer";
 		String toolWrench = "craftingToolWrench";
 		String toolFile = "craftingToolFile";
 		String toolScrewDriver = "craftingToolScrewdriver";
-		
+
 		if (null == ItemUtils.getItemStackOfAmountFromOreDictNoBroken(rodLong, 1)){
 			return false;
 		}
 		if (null == ItemUtils.getItemStackOfAmountFromOreDictNoBroken(plateDense, 1)){
+			if (null != ItemUtils.getItemStackOfAmountFromOreDictNoBroken(plateDouble, 1)){
+				RecipeUtils.recipeBuilder(
+						toolFile, plateDouble, toolHammer,
+						null, rodLong, null,
+						toolWrench, rodLong, toolScrewDriver,
+						ItemUtils.getSimpleStack(this));
+
+				return true;
+			}
 			return false;
 		}		
-		
+
 		RecipeUtils.recipeBuilder(
 				toolFile, plateDense, toolHammer,
 				null, rodLong, null,
 				toolWrench, rodLong, toolScrewDriver,
 				ItemUtils.getSimpleStack(this));
-		
+
 		return true;
 	}
-	
+
 	public final String getMaterialName() {
 		return materialName;
 	}
-	
+
 	@Override
 	public String getItemStackDisplayName(ItemStack iStack) {
-
-		String name;
+		return displayName;
+		/*String name;
 		if (getUnlocalizedName().toLowerCase().contains("wood")){
 			name = "Wooden";
 		}
 		else {
-			name = materialName;
 		}
-		return "Big "+name+" Spade";
+		return "Big "+name+" Spade";*/
 	}
 
 	@Override

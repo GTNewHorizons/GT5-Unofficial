@@ -1,6 +1,7 @@
 package gtPlusPlus.core.item.tool.staballoy;
 
 import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -34,6 +35,7 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 	protected ItemStack thisPickaxe = null;
 	protected final int colour;
 	protected final String materialName;
+	protected final String displayName;
 	public boolean isValid = true;
 
 	public MultiPickaxeBase(String unlocalizedName, ToolMaterial material, int materialDurability, int colour) {
@@ -45,12 +47,15 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 		this.setMaxStackSize(1);
 		this.setMaxDamage(materialDurability*3);
 		this.colour = colour;
-		this.materialName = material.name();		
+		this.materialName = material.name();
+		this.displayName = unlocalizedName;
 		this.setCreativeTab(AddToCreativeTab.tabTools);
 		miningLevel = material.getHarvestLevel();
 		try {isValid = addRecipe();} catch (Throwable e){}
-		if (colour != 0 && isValid){
-			GameRegistry.registerItem(this, Utils.sanitizeString(unlocalizedName));			
+		if (colour != 0 && isValid && materialDurability > 10000){
+			if (GameRegistry.findItem(CORE.MODID, Utils.sanitizeString(unlocalizedName)) == null){
+				GameRegistry.registerItem(this, Utils.sanitizeString(unlocalizedName));			
+			}	
 		}
 
 	}
@@ -67,6 +72,7 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 
 	private boolean addRecipe(){
 		String plateDense = "plateDense"+materialName;
+		String plateDouble = "plateDouble"+materialName;
 		String rodLong = "stickLong"+materialName;
 		String toolHammer = "craftingToolHardHammer";
 		String toolWrench = "craftingToolWrench";
@@ -77,6 +83,15 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 			return false;
 		}
 		if (null == ItemUtils.getItemStackOfAmountFromOreDictNoBroken(plateDense, 1)){
+			if (null != ItemUtils.getItemStackOfAmountFromOreDictNoBroken(plateDouble, 1)){
+				RecipeUtils.recipeBuilder(
+						plateDouble, plateDouble, plateDouble,
+						toolFile, rodLong, toolHammer,
+						toolWrench, rodLong, toolScrewDriver,
+						ItemUtils.getSimpleStack(this));
+
+				return true;
+			}
 			return false;
 		}
 
@@ -95,8 +110,8 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 
 	@Override
 	public String getItemStackDisplayName(ItemStack iStack) {
-
-		String name;
+		return displayName;
+		/*String name;
 		if (getUnlocalizedName().toLowerCase().contains("wood")){
 			name = "Wooden";
 		}
@@ -113,9 +128,8 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 			name = "Diamond";
 		}
 		else {
-			name = materialName;
 		}
-		return name+" Multipickaxe";
+		return name+" Multipickaxe";*/
 	}
 
 	@Override

@@ -304,7 +304,7 @@ public class ItemUtils {
 
 	public static MultiPickaxeBase generateMultiPick(boolean GT_Durability, Materials material){
 		ToolMaterial customMaterial = Utils.generateToolMaterialFromGT(material);
-		return generateMultiPick(GT_Durability, customMaterial, material.name(), material.mDurability, material.mRGBa);
+		return generateMultiPick(GT_Durability, customMaterial, material.mDefaultLocalName, material.mDurability, material.mRGBa);
 	}
 
 	public static MultiPickaxeBase generateMultiPick(Material material){
@@ -349,7 +349,7 @@ public class ItemUtils {
 	
 	public static MultiSpadeBase generateMultiShovel(boolean GT_Durability, Materials material){
 		ToolMaterial customMaterial = Utils.generateToolMaterialFromGT(material);
-		return generateMultiShovel(GT_Durability, customMaterial, material.name(), material.mDurability, material.mRGBa);
+		return generateMultiShovel(GT_Durability, customMaterial, material.mDefaultLocalName, material.mDurability, material.mRGBa);
 	}
 	
 	public static MultiSpadeBase generateMultiShovel(Material material){

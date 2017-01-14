@@ -529,7 +529,7 @@ public class Utils {
 	}
 
 	public static ToolMaterial generateToolMaterialFromGT(Materials gtMaterial){
-		String name = gtMaterial.name();
+		String name = Utils.sanitizeString(gtMaterial.mDefaultLocalName);
 		int harvestLevel = gtMaterial.mToolQuality;
 		int durability = gtMaterial.mDurability;
 		float damage = gtMaterial.mToolQuality;

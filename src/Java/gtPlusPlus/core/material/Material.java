@@ -87,18 +87,27 @@ public class Material {
 		this.vMass = getMass();
 
 		//Sets tool Durability
-		if (durability != 0){			this.vDurability = durability;
-			
+		if (durability != 0){			
+			this.vDurability = durability;
 		}
 		else {
 			if (inputs != null){
 				long durabilityTemp = 0;
 				int counterTemp = 0;
 				for (MaterialStack m : inputs){
-					durabilityTemp =  (durabilityTemp+m.getStackMaterial().vDurability);
-					counterTemp++;
-				}			
+					if (m.getStackMaterial() != null){
+						if (m.getStackMaterial().vDurability != 0){
+							durabilityTemp =  (durabilityTemp+m.getStackMaterial().vDurability);
+							counterTemp++;
+						}
+					}					
+				}
+				if (durabilityTemp != 0 && counterTemp != 0){
 				this.vDurability = (durabilityTemp/counterTemp);
+				}
+				else {
+					this.vDurability = 8196;
+				}
 			}
 			else {
 				this.vDurability = 0;
