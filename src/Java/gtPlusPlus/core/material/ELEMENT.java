@@ -55,7 +55,7 @@ public final class ELEMENT {
 	public final Material RUBIDIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Rubidium);
 	public final Material STRONTIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Strontium);
 	public final Material YTTRIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Yttrium);
-	public final Material ZIRCONIUM = new Material("Zirconium", new short[]{255, 250, 205}, 1855, 4377, 40, 51, false, "Zr", 0);//Not a GT Inherited Material
+	public final Material ZIRCONIUM = new Material("Zirconium", 25600, new short[]{255, 250, 205}, 1855, 4377, 40, 51, false, "Zr", 0);//Not a GT Inherited Material
 	public final Material NIOBIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Niobium);
 	public final Material MOLYBDENUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Molybdenum);
 	//public final Material TECHNETIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Technetium);
@@ -85,7 +85,7 @@ public final class ELEMENT {
 	public final Material LEAD = MaterialUtils.generateMaterialFromGtENUM(Materials.Lead);	
 	public final Material BISMUTH = MaterialUtils.generateMaterialFromGtENUM(Materials.Bismuth);	
 	public final Material RADON = MaterialUtils.generateMaterialFromGtENUM(Materials.Radon);	
-	public final Material THORIUM = new Material("Thorium", Materials.Thorium.mRGBa, Materials.Thorium.mMeltingPoint, Materials.Thorium.mBlastFurnaceTemp, 90, 142, false, MaterialUtils.superscript("Th"), 1);
+	public final Material THORIUM = new Material("Thorium", 51200, Materials.Thorium.mRGBa, Materials.Thorium.mMeltingPoint, Materials.Thorium.mBlastFurnaceTemp, 90, 142, false, MaterialUtils.superscript("Th"), 1);
 			/*MaterialUtils.generateMaterialFromGtENUM(Materials.Thorium);*/	
 	public final Material URANIUM238 = MaterialUtils.generateMaterialFromGtENUM(Materials.Uranium);
 	public final Material URANIUM235 = MaterialUtils.generateMaterialFromGtENUM(Materials.Uranium235);	

@@ -4,6 +4,7 @@ import gregtech.api.enums.*;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -527,14 +528,26 @@ public class Utils {
 
 	}
 
-	public static ToolMaterial generateMaterialFromGT(Materials gtMaterial){
+	public static ToolMaterial generateToolMaterialFromGT(Materials gtMaterial){
 		String name = gtMaterial.name();
 		int harvestLevel = gtMaterial.mToolQuality;
-		int durability = gtMaterial.mDurability*3;
+		int durability = gtMaterial.mDurability;
 		float damage = gtMaterial.mToolQuality;
 		int efficiency = (int) gtMaterial.mToolSpeed;
 		int enchantability = gtMaterial.mEnchantmentToolsLevel;
 		ToolMaterial temp = EnumHelper.addToolMaterial(name, harvestLevel, durability, efficiency, damage, enchantability);
+		return temp;
+
+	}
+	
+	public static ToolMaterial generateToolMaterial(Material material){
+		String name = material.getLocalizedName();
+		int harvestLevel = material.vHarvestLevel;
+		int durability = (int) material.vDurability;
+		float damage = material.vToolQuality;
+		int efficiency = (int) material.vToolQuality;
+		//int enchantability = material.mEnchantmentToolsLevel;
+		ToolMaterial temp = EnumHelper.addToolMaterial(name, harvestLevel, durability, efficiency, damage, 0);
 		return temp;
 
 	}

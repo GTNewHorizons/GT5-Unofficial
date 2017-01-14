@@ -16,6 +16,7 @@ import gtPlusPlus.core.item.base.plates.BaseItemPlate;
 import gtPlusPlus.core.item.effects.RarityUncommon;
 import gtPlusPlus.core.item.general.*;
 import gtPlusPlus.core.item.init.ItemsFoods;
+import gtPlusPlus.core.item.init.ItemsMultiTools;
 import gtPlusPlus.core.item.tool.misc.SandstoneHammer;
 import gtPlusPlus.core.item.tool.staballoy.*;
 import gtPlusPlus.core.lib.*;
@@ -471,20 +472,10 @@ public final class ModItems {
 		metaItem2.registerItem(4, "Whirlygig", 1043644000, (short) 5, "Spin me right round.", EnumRarity.rare, EnumChatFormatting.DARK_GREEN, true);
 		metaItem2.registerItem(5, "Whirlygig 2", 2124867000, (short) 7, "Spin me right round.", EnumRarity.uncommon, EnumChatFormatting.RED, true);
 
+		//Create Multi-tools
+		ItemsMultiTools.load();
 		
-		
-		//Load Multitools
-		boolean gtStyleTools = LoadedMods.Gregtech;
-		if (CORE.configSwitches.enableMultiSizeTools){
-			Materials[] rm = Materials.values();
-			for (Materials m : rm){
-				MP_GTMATERIAL = ItemUtils.generateMultiPick(gtStyleTools, m);
-				MS_GTMATERIAL = ItemUtils.generateMultiShovel(gtStyleTools, m);
-				/*itemBaseDecidust = UtilsItems.generateDecidust(m);
-			itemBaseCentidust = UtilsItems.generateCentidust(m);*/
-			}
-		}
-		
+		//Just an unusual plate needed for some black magic.
 		itemPlateClay = new BaseItemPlate(MaterialUtils.generateMaterialFromGtENUM(Materials.Clay));
 
 		//EnderIO Resources

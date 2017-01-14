@@ -47,16 +47,28 @@ public class Material {
 	public final int vVoltageMultiplier;
 	public final String vChemicalFormula;
 	public final String vChemicalSymbol;
+	
+	public final long vDurability;
+	public final int vToolQuality;
+	public final int vHarvestLevel;
 
 	public Material(final String materialName, final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final MaterialStack... inputs){		
-		this(materialName, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, "", 0, inputs);
+		this(materialName, 0, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, "", 0, inputs);
 	}
 
 	public Material(final String materialName, final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final int radiationLevel, MaterialStack... inputs){		
-		this(materialName, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, "", radiationLevel, inputs);
+		this(materialName, 0, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, "", radiationLevel, inputs);
+	}
+
+	public Material(final String materialName, final long durability, final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final int radiationLevel, MaterialStack... inputs){		
+		this(materialName, durability, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, "", radiationLevel, inputs);
 	}
 
 	public Material(final String materialName, final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final String chemicalSymbol, final int radiationLevel, final MaterialStack... inputs){
+		this(materialName, 0, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, chemicalSymbol, radiationLevel, inputs);
+	}
+
+	public Material(final String materialName, final long durability, final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final String chemicalSymbol, final int radiationLevel, final MaterialStack... inputs){
 
 		this.unlocalizedName = Utils.sanitizeString(materialName);
 		this.localizedName = materialName;
@@ -73,6 +85,50 @@ public class Material {
 		this.vProtons = protons;
 		this.vNeutrons = neutrons;
 		this.vMass = getMass();
+
+		//Sets tool Durability
+		if (durability != 0){			this.vDurability = durability;
+			
+		}
+		else {
+			if (inputs != null){
+				long durabilityTemp = 0;
+				int counterTemp = 0;
+				for (MaterialStack m : inputs){
+					durabilityTemp =  (durabilityTemp+m.getStackMaterial().vDurability);
+					counterTemp++;
+				}			
+				this.vDurability = (durabilityTemp/counterTemp);
+			}
+			else {
+				this.vDurability = 0;
+			}
+		}
+		
+		if (this.vDurability >= 0 && this.vDurability < 64000){
+			this.vToolQuality = 1;
+			this.vHarvestLevel = 2;
+		}
+		else if (this.vDurability >= 64000 && this.vDurability < 128000){
+			this.vToolQuality = 2;
+			this.vHarvestLevel = 2;
+		}
+		else if (this.vDurability >= 128000 && this.vDurability < 256000){
+			this.vToolQuality = 3;
+			this.vHarvestLevel = 2;
+		}
+		else if (this.vDurability >= 256000 && this.vDurability < 512000){
+			this.vToolQuality = 3;
+			this.vHarvestLevel = 3;
+		}
+		else if (this.vDurability >= 512000 && this.vDurability <= Integer.MAX_VALUE){
+			this.vToolQuality = 4;
+			this.vHarvestLevel = 4;
+		}
+		else {
+			this.vToolQuality = 0;
+			this.vHarvestLevel = 0;
+		}
 
 		//Sets the Rad level
 		if (radiationLevel != 0){
@@ -230,15 +286,15 @@ public class Material {
 	final public boolean requiresBlastFurnace(){
 		return usesBlastFurnace;
 	}
-	
+
 	final public Block getBlock(){
 		return Block.getBlockFromItem(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("block"+unlocalizedName, 1).getItem());
 	}
-	
+
 	final public ItemStack getBlock(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("block"+unlocalizedName, stacksize);
 	}
-	
+
 	final public ItemStack getDust(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dust"+unlocalizedName, stacksize);
 	}
@@ -298,11 +354,11 @@ public class Material {
 	final public ItemStack getFrameBox(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("frameGt"+unlocalizedName, stacksize);
 	}
-	
+
 	final public ItemStack getCell(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+unlocalizedName, stacksize);
 	}
-	
+
 	final public ItemStack getNugget(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("nugget"+unlocalizedName, stacksize);
 	}

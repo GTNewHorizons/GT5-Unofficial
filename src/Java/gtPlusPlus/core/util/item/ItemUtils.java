@@ -253,11 +253,11 @@ public class ItemUtils {
 
 	public static ItemStack getItemStackOfAmountFromOreDictNoBroken(String oredictName, int amount){
 		if (CORE.DEBUG){
-		Utils.LOG_INFO("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(1));
-		Utils.LOG_INFO("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(2));
-		Utils.LOG_INFO("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(3));
-		Utils.LOG_INFO("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(4));
-		Utils.LOG_INFO("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(5));		
+			Utils.LOG_INFO("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(1));
+			Utils.LOG_INFO("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(2));
+			Utils.LOG_INFO("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(3));
+			Utils.LOG_INFO("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(4));
+			Utils.LOG_INFO("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(5));		
 		}
 		ItemStack returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);
 		if (returnValue.getItem().getClass() != ModItems.AAA_Broken.getClass() || returnValue.getItem() != ModItems.AAA_Broken){		
@@ -283,83 +283,54 @@ public class ItemUtils {
 				new BaseItemDustUnique("itemDustTiny"+unlocalizedName, materialName, Colour, "Tiny")};
 		return output;
 	}
-	
+
 	public static Item[] generateSpecialUseDusts(Material material, boolean onlyLargeDust){
 		String materialName = material.getLocalizedName();
 		String unlocalizedName = Utils.sanitizeString(materialName);
 		int Colour = material.getRgbAsHex();
 		Item[] output = null;
 		if (onlyLargeDust == false){
-		output = new Item[]{
-				new BaseItemDustUnique("itemDust"+unlocalizedName, materialName, Colour, "Dust"),
-				new BaseItemDustUnique("itemDustSmall"+unlocalizedName, materialName, Colour, "Small"),
-				new BaseItemDustUnique("itemDustTiny"+unlocalizedName, materialName, Colour, "Tiny")};
+			output = new Item[]{
+					new BaseItemDustUnique("itemDust"+unlocalizedName, materialName, Colour, "Dust"),
+					new BaseItemDustUnique("itemDustSmall"+unlocalizedName, materialName, Colour, "Small"),
+					new BaseItemDustUnique("itemDustTiny"+unlocalizedName, materialName, Colour, "Tiny")};
 		} else{
 			output = new Item[]{
-				new BaseItemDustUnique("itemDust"+unlocalizedName, materialName, Colour, "Dust")
-				};
+					new BaseItemDustUnique("itemDust"+unlocalizedName, materialName, Colour, "Dust")
+			};
 		}
 		return output;
 	}
 
 	public static MultiPickaxeBase generateMultiPick(boolean GT_Durability, Materials material){
-		ToolMaterial customMaterial = Utils.generateMaterialFromGT(material);
-		Utils.LOG_WARNING("Generating a Multi-Pick out of "+material.name());
-		short[] rgb;
-		rgb = material.getRGBA();
-		int dur = customMaterial.getMaxUses()*3;
-		Utils.LOG_WARNING("Determined durability for "+material.name()+" is "+dur);
-		if (GT_Durability){
-			dur = material.mDurability*100;
-			Utils.LOG_WARNING("Using gregtech durability value, "+material.name()+" is now "+dur+".");
-		}
-		else if (dur <= 0){
-			dur = material.mDurability;
-			Utils.LOG_WARNING("Determined durability too low, "+material.name()+" is now "+dur+" based on the GT material durability.");
-		}
-
-		if (dur <= 0){
-			Utils.LOG_WARNING("Still too low, "+material.name()+" will now go unused.");
-			return null;
-		}
-
-		MultiPickaxeBase MP_Redstone = new MultiPickaxeBase(
-				material.name()+" Multipick",
-				(customMaterial),
-				dur,
-				Utils.rgbtoHexValue(rgb[0],rgb[1],rgb[2])
-				);
-
-		if (MP_Redstone.isValid){
-			return MP_Redstone;
-		}		
-		return null;
-
+		ToolMaterial customMaterial = Utils.generateToolMaterialFromGT(material);
+		return generateMultiPick(GT_Durability, customMaterial, material.name(), material.mDurability, material.mRGBa);
 	}
 
-	public static MultiSpadeBase generateMultiShovel(boolean GT_Durability, Materials material){
-		ToolMaterial customMaterial = Utils.generateMaterialFromGT(material);
-		Utils.LOG_WARNING("Generating a Multi-Shovel out of "+material.name());
-		short[] rgb;
-		rgb = material.getRGBA();
+	public static MultiPickaxeBase generateMultiPick(Material material){
+		ToolMaterial customMaterial = Utils.generateToolMaterial(material);
+		return generateMultiPick(true, customMaterial, material.getLocalizedName(), (int) material.vDurability, material.getRGBA());
+	}
+	
+	public static MultiPickaxeBase generateMultiPick(boolean GT_Durability, ToolMaterial customMaterial, String name, int durability, short[] rgba){
+		Utils.LOG_WARNING("Generating a Multi-Pick out of "+name);
+		short[] rgb = rgba;
 		int dur = customMaterial.getMaxUses();
-		Utils.LOG_WARNING("Determined durability for "+material.name()+" is "+dur);
+		Utils.LOG_WARNING("Determined durability for "+name+" is "+dur);
 		if (GT_Durability){
-			dur = material.mDurability*100;
-			Utils.LOG_WARNING("Using gregtech durability value, "+material.name()+" is now "+dur+".");
+			dur = durability*100;
+			Utils.LOG_WARNING("Using gregtech durability value, "+name+" is now "+dur+".");
 		}
 		else if (dur <= 0){
-			dur = material.mDurability;
-			Utils.LOG_WARNING("Determined durability too low, "+material.name()+" is now "+dur+" based on the GT material durability.");
+			dur = durability;
+			Utils.LOG_WARNING("Determined durability too low, "+name+" is now "+dur+" based on the GT material durability.");
 		}
-
 		if (dur <= 0){
-			Utils.LOG_WARNING("Still too low, "+material.name()+" will now go unused.");
+			Utils.LOG_WARNING("Still too low, "+name+" will now go unused.");
 			return null;
 		}
-
-		MultiSpadeBase MP_Redstone = new MultiSpadeBase(
-				material.name()+" Multishovel",
+		MultiPickaxeBase MP_Redstone = new MultiPickaxeBase(
+				name+" Multipick",
 				(customMaterial),
 				dur,
 				Utils.rgbtoHexValue(rgb[0],rgb[1],rgb[2])
@@ -369,8 +340,63 @@ public class ItemUtils {
 			return MP_Redstone;
 		}		
 		return null;
-
 	}
+	
+	
+	
+	
+	
+	
+	public static MultiSpadeBase generateMultiShovel(boolean GT_Durability, Materials material){
+		ToolMaterial customMaterial = Utils.generateToolMaterialFromGT(material);
+		return generateMultiShovel(GT_Durability, customMaterial, material.name(), material.mDurability, material.mRGBa);
+	}
+	
+	public static MultiSpadeBase generateMultiShovel(Material material){
+		ToolMaterial customMaterial = Utils.generateToolMaterial(material);
+		return generateMultiShovel(true, customMaterial, material.getLocalizedName(), (int) material.vDurability, material.getRGBA());
+	}
+
+	public static MultiSpadeBase generateMultiShovel(boolean GT_Durability, ToolMaterial customMaterial, String name, int durability, short[] rgba){
+		Utils.LOG_WARNING("Generating a Multi-Spade out of "+name);
+		short[] rgb = rgba;
+		int dur = customMaterial.getMaxUses();
+		Utils.LOG_WARNING("Determined durability for "+name+" is "+dur);
+		if (GT_Durability){
+			dur = durability*100;
+			Utils.LOG_WARNING("Using gregtech durability value, "+name+" is now "+dur+".");
+		}
+		else if (dur <= 0){
+			dur = durability;
+			Utils.LOG_WARNING("Determined durability too low, "+name+" is now "+dur+" based on the GT material durability.");
+		}
+		if (dur <= 0){
+			Utils.LOG_WARNING("Still too low, "+name+" will now go unused.");
+			return null;
+		}
+		MultiSpadeBase MP_Redstone = new MultiSpadeBase(
+				name+" Multispade",
+				(customMaterial),
+				dur,
+				Utils.rgbtoHexValue(rgb[0],rgb[1],rgb[2])
+				);
+
+		if (MP_Redstone.isValid){
+			return MP_Redstone;
+		}		
+		return null;
+	}
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+
 
 	public static BaseItemDecidust generateDecidust(Materials material){
 		if (GT_OreDictUnificator.get(OrePrefixes.dust, material, 1L) != null){

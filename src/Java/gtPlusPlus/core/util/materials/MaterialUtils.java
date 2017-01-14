@@ -50,6 +50,7 @@ public class MaterialUtils {
 		long protons = material.getProtons();
 		long neutrons = material.getNeutrons();
 		boolean blastFurnace = material.mBlastFurnaceRequired;	
+		int durability = material.mDurability;
 		String chemicalFormula = MaterialUtils.subscript(material.mChemicalFormula);
 		Element element = material.mElement;
 		int radioactivity = 0;
@@ -63,7 +64,7 @@ public class MaterialUtils {
 		if (hasValidRGBA(rgba) || element == Element.H || (material == Materials.InfusedAir || material == Materials.InfusedFire || material == Materials.InfusedEarth || material == Materials.InfusedWater)){
 			//ModItems.itemBaseDecidust = UtilsItems.generateDecidust(material);
 			//ModItems.itemBaseCentidust = UtilsItems.generateCentidust(material);
-			return new Material(name, rgba, melting, boiling, protons, neutrons, blastFurnace, chemicalFormula, radioactivity);
+			return new Material(name, durability, rgba, melting, boiling, protons, neutrons, blastFurnace, chemicalFormula, radioactivity);
 		}
 		return null;
 		
@@ -72,6 +73,7 @@ public class MaterialUtils {
 	public static Material generateQuickMaterial(String materialName, short[] colour, int sRadioactivity) {
 		Material temp = new Material(
 				materialName,
+				0, //Durability
 				colour,
 				1000, //melting
 				3000, //boiling
