@@ -1,5 +1,6 @@
 package gregtech.loaders.preload;
 
+import com.dreammaster.gthandler.CustomItemList;
 import cpw.mods.fml.common.Loader;
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
@@ -283,11 +284,11 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         ItemList.Quantum_Tank_EV.set(new GT_MetaTileEntity_QuantumTank(123, "quantum.tank.tier.09", "Quantum Tank IV", 8).getStackForm(1L));
         ItemList.Quantum_Tank_IV.set(new GT_MetaTileEntity_QuantumTank(124, "quantum.tank.tier.10", "Quantum Tank V", 9).getStackForm(1L));
 
-        GT_ModHandler.addCraftingRecipe(ItemList.Quantum_Tank_LV.get(1L, new Object[0]), bitsd, new Object[]{"DGD", "PMP", "DPD", 'M', ItemList.Hull_IV, 'G', ItemList.Field_Generator_EV, 'D', ItemList.Circuit_Parts_Crystal_Chip_Elite, 'P', OrePrefixes.plate.get(Materials.HSSE)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Quantum_Tank_MV.get(1L, new Object[0]), bitsd, new Object[]{"DGD", "PMP", "DPD", 'M', ItemList.Hull_LuV, 'G', ItemList.Field_Generator_IV, 'D', ItemList.Circuit_Data, 'P', OrePrefixes.plate.get(Materials.Titanium)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Quantum_Tank_HV.get(1L, new Object[0]), bitsd, new Object[]{"DGD", "PMP", "DPD", 'M', ItemList.Hull_ZPM, 'G', ItemList.Field_Generator_LuV, 'D', ItemList.Circuit_Elite, 'P', OrePrefixes.plate.get(Materials.TungstenSteel)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Quantum_Tank_EV.get(1L, new Object[0]), bitsd, new Object[]{"DGD", "PMP", "DPD", 'M', ItemList.Hull_UV, 'G', ItemList.Field_Generator_ZPM, 'D', ItemList.Circuit_Ultimate, 'P', OrePrefixes.plate.get(Materials.Europium)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Quantum_Tank_IV.get(1L, new Object[0]), bitsd, new Object[]{"DGD", "PMP", "DPD", 'M', ItemList.Hull_MAX, 'G', ItemList.Field_Generator_UV, 'D', ItemList.Circuit_Ultimate, 'P', OrePrefixes.plate.get(Materials.Americium)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Quantum_Tank_LV.get(1L, new Object[0]), bitsd, new Object[]{"DGD", "PMP", "DPD", 'M', ItemList.Hull_LuV, 'G', ItemList.Field_Generator_LV, 'D', ItemList.Circuit_Parts_Crystal_Chip_Elite, 'P', OrePrefixes.plate.get(Materials.HSSE)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Quantum_Tank_MV.get(1L, new Object[0]), bitsd, new Object[]{"DGD", "PMP", "DPD", 'M', ItemList.Hull_ZPM, 'G', ItemList.Field_Generator_MV, 'D', ItemList.Circuit_Data, 'P', OrePrefixes.plate.get(Materials.Titanium)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Quantum_Tank_HV.get(1L, new Object[0]), bitsd, new Object[]{"DGD", "PMP", "DPD", 'M', ItemList.Hull_UV, 'G', ItemList.Field_Generator_HV, 'D', ItemList.Circuit_Elite, 'P', OrePrefixes.plate.get(Materials.TungstenSteel)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Quantum_Tank_EV.get(1L, new Object[0]), bitsd, new Object[]{"DGD", "PMP", "DPD", 'M', ItemList.Hull_UEV, 'G', ItemList.Field_Generator_EV, 'D', ItemList.Circuit_Ultimate, 'P', OrePrefixes.plate.get(Materials.Europium)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Quantum_Tank_IV.get(1L, new Object[0]), bitsd, new Object[]{"DGD", "PMP", "DPD", 'M', ItemList.Hull_UIV, 'G', ItemList.Field_Generator_IV, 'D', ItemList.Circuit_Ultimate, 'P', OrePrefixes.plate.get(Materials.Americium)});
 
         ItemList.Super_Tank_LV.set(new GT_MetaTileEntity_SuperTank(130, "super.tank.tier.01", "Super Tank I", 1).getStackForm(1L));
         ItemList.Super_Tank_MV.set(new GT_MetaTileEntity_SuperTank(131, "super.tank.tier.02", "Super Tank II", 2).getStackForm(1L));
@@ -295,11 +296,11 @@ public class GT_Loader_MetaTileEntities implements Runnable {
         ItemList.Super_Tank_EV.set(new GT_MetaTileEntity_SuperTank(133, "super.tank.tier.04", "Super Tank IV", 4).getStackForm(1L));
         ItemList.Super_Tank_IV.set(new GT_MetaTileEntity_SuperTank(134, "super.tank.tier.05", "Super Tank V", 5).getStackForm(1L));
 
-        GT_ModHandler.addCraftingRecipe(ItemList.Super_Tank_LV.get(1L, new Object[0]), bitsd, new Object[]{"DGD", "PMP", "DPD", 'M', ItemList.Hull_LV, 'G', OrePrefixes.plate.get(Materials.Rubber), 'D', ItemList.Circuit_Basic, 'P', OrePrefixes.plate.get(Materials.Iron)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Super_Tank_MV.get(1L, new Object[0]), bitsd, new Object[]{"DGD", "PMP", "DPD", 'M', ItemList.Hull_MV, 'G', OrePrefixes.plate.get(Materials.Plastic), 'D', ItemList.Circuit_Good, 'P', OrePrefixes.plate.get(Materials.Steel)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Super_Tank_HV.get(1L, new Object[0]), bitsd, new Object[]{"DGD", "PMP", "DPD", 'M', ItemList.Hull_HV, 'G', OrePrefixes.plate.get(Materials.Silicone), 'D', ItemList.Circuit_Advanced, 'P', OrePrefixes.plate.get(Materials.Aluminium)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Super_Tank_EV.get(1L, new Object[0]), bitsd, new Object[]{"DGD", "PMP", "DPD", 'M', ItemList.Hull_EV, 'G', OrePrefixes.plateDouble.get(Materials.Epoxid), 'D', ItemList.Circuit_Elite, 'P', OrePrefixes.plate.get(Materials.StainlessSteel)});
-        GT_ModHandler.addCraftingRecipe(ItemList.Super_Tank_IV.get(1L, new Object[0]), bitsd, new Object[]{"DGD", "PMP", "DPD", 'M', ItemList.Hull_IV, 'G', OrePrefixes.plateTriple.get(Materials.Polytetrafluoroethylene), 'D', ItemList.Circuit_Master, 'P', OrePrefixes.plate.get(Materials.Titanium)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Super_Tank_LV.get(1L, new Object[0]), bitsd, new Object[]{"DGD", "PMP", "DPD", 'M', ItemList.Hull_LV, 'G', ItemList.Pump_LV, 'D', ItemList.Circuit_Basic, 'P', OrePrefixes.plate.get(Materials.Iron)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Super_Tank_MV.get(1L, new Object[0]), bitsd, new Object[]{"DGD", "PMP", "DPD", 'M', ItemList.Hull_MV, 'G', ItemList.Pump_MV, 'D', ItemList.Circuit_Good, 'P', OrePrefixes.plate.get(Materials.Steel)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Super_Tank_HV.get(1L, new Object[0]), bitsd, new Object[]{"DGD", "PMP", "DPD", 'M', ItemList.Hull_HV, 'G', ItemList.Pump_HV, 'D', ItemList.Circuit_Advanced, 'P', OrePrefixes.plate.get(Materials.Aluminium)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Super_Tank_EV.get(1L, new Object[0]), bitsd, new Object[]{"DGD", "PMP", "DPD", 'M', ItemList.Hull_EV, 'G', ItemList.Pump_EV, 'D', ItemList.Circuit_Elite, 'P', OrePrefixes.plate.get(Materials.StainlessSteel)});
+        GT_ModHandler.addCraftingRecipe(ItemList.Super_Tank_IV.get(1L, new Object[0]), bitsd, new Object[]{"DGD", "PMP", "DPD", 'M', ItemList.Hull_IV, 'G', ItemList.Pump_IV, 'D', ItemList.Circuit_Master, 'P', OrePrefixes.plate.get(Materials.Titanium)});
 
         ItemList.Quantum_Chest_LV.set(new GT_MetaTileEntity_QuantumChest(125, "quantum.chest.tier.06", "Quantum Chest I", 5).getStackForm(1L));
         ItemList.Quantum_Chest_MV.set(new GT_MetaTileEntity_QuantumChest(126, "quantum.chest.tier.07", "Quantum Chest II", 6).getStackForm(1L));
