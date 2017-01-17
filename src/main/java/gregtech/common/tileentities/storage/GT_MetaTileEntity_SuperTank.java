@@ -13,11 +13,11 @@ import net.minecraft.util.EnumChatFormatting;
 public class GT_MetaTileEntity_SuperTank
         extends GT_MetaTileEntity_BasicTank {
     public GT_MetaTileEntity_SuperTank(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 1, "Stores " + ((int) (Math.pow(2, aTier) * 2000000)) + "L of fluid");
+        super(aID, aName, aNameRegional, aTier, 3, "Stores " + ((int) (Math.pow(2, aTier) * 2000000)) + "L of fluid");
     }
 
     public GT_MetaTileEntity_SuperTank(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 1, aDescription, aTextures);
+        super(aName, aTier, 3, aDescription, aTextures);
     }
 
     @Override
