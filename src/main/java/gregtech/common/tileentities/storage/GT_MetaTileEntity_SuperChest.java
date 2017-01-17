@@ -98,12 +98,12 @@ public class GT_MetaTileEntity_SuperChest extends GT_MetaTileEntity_TieredMachin
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_MetaTileEntity_SuperChest(aPlayerInventory, aBaseMetaTileEntity);
+        return new GT_Container_QuantumChest(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_MetaTileEntity_SuperChest(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
+        return new GT_GUIContainer_QuantumChest(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
     }
 
     @Override
