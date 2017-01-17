@@ -19,7 +19,8 @@ public class GT_MetaTileEntity_SuperChest extends GT_MetaTileEntity_TieredMachin
     public int mItemCount = 0;
     public ItemStack mItemStack = null;
     public GT_MetaTileEntity_SuperChest(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 3, "This Chest stores " + CommonSizeCompute(aTier) + " Blocks");
+
+      super(aID, aName, aNameRegional, aTier, 3, "This Chest stores " + CommonSizeCompute(aTier) + " Blocks");
     }
 
     public GT_MetaTileEntity_SuperChest(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
@@ -180,6 +181,7 @@ public class GT_MetaTileEntity_SuperChest extends GT_MetaTileEntity_TieredMachin
 
     public int getMaxItemCount() {
         return CommonSizeCompute(mTier);
+
     }
 
     @Override
@@ -238,7 +240,9 @@ public class GT_MetaTileEntity_SuperChest extends GT_MetaTileEntity_TieredMachin
         if (aBaseMetaTileEntity.getFrontFacing() == 0 && aSide == 4) {
             return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SCHEST)};
         }
+
         return aSide == aBaseMetaTileEntity.getFrontFacing() ? new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SCHEST)} : new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1]};
+
     }
 
     @Override

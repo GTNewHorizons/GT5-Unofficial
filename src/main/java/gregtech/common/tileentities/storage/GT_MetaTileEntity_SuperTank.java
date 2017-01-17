@@ -13,7 +13,9 @@ import net.minecraft.util.EnumChatFormatting;
 public class GT_MetaTileEntity_SuperTank
         extends GT_MetaTileEntity_BasicTank {
     public GT_MetaTileEntity_SuperTank(int aID, String aName, String aNameRegional, int aTier) {
+
         super(aID, aName, aNameRegional, aTier, 3, "Stores " + CommonSizeCompute(aTier) + "L of fluid");
+
     }
 
     public GT_MetaTileEntity_SuperTank(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
@@ -128,6 +130,7 @@ public class GT_MetaTileEntity_SuperTank
         return new GT_MetaTileEntity_SuperTank(mName, mTier, mDescription, mTextures);
     }
 
+
     private static int CommonSizeCompute(int tier){
         switch(tier){
             case 1:
@@ -146,6 +149,7 @@ public class GT_MetaTileEntity_SuperTank
     @Override
     public int getCapacity() {
         return CommonSizeCompute(mTier);
+
     }
 
     @Override
