@@ -41,7 +41,7 @@ public class GT_Block_Casings1
         ItemList.Casing_LuV.set(new ItemStack(this, 1, 6));
         ItemList.Casing_ZPM.set(new ItemStack(this, 1, 7));
         ItemList.Casing_UV.set(new ItemStack(this, 1, 8));
-        ItemList.Casing_MAX.set(new ItemStack(this, 1, 9));
+        ItemList.Casing_UEV.set(new ItemStack(this, 1, 9));
         ItemList.Casing_BronzePlatedBricks.set(new ItemStack(this, 1, 10));
         ItemList.Casing_HeatProof.set(new ItemStack(this, 1, 11));
         ItemList.Casing_Coil_Cupronickel_Deprecated.set(new ItemStack(this, 1, 12));
