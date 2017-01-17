@@ -102,7 +102,7 @@ public class GT_MetaTileEntity_SuperTank
 
         if (mFluid == null) {
             return new String[]{
-                    EnumChatFormatting.BLUE + "Quantum Tank"+ EnumChatFormatting.RESET,
+                    EnumChatFormatting.BLUE + "Super Tank"+ EnumChatFormatting.RESET,
                     "Stored Fluid:",
                     EnumChatFormatting.GOLD + "No Fluid"+ EnumChatFormatting.RESET,
                     EnumChatFormatting.GREEN + Integer.toString(0) + " L"+ EnumChatFormatting.RESET+" "+
@@ -110,7 +110,7 @@ public class GT_MetaTileEntity_SuperTank
             };
         }
         return new String[]{
-                EnumChatFormatting.BLUE + "Quantum Tank"+ EnumChatFormatting.RESET,
+                EnumChatFormatting.BLUE + "Super Tank"+ EnumChatFormatting.RESET,
                 "Stored Fluid:",
                 EnumChatFormatting.GOLD + mFluid.getLocalizedName()+ EnumChatFormatting.RESET,
                 EnumChatFormatting.GREEN + Integer.toString(mFluid.amount) + " L"+ EnumChatFormatting.RESET+" "+
