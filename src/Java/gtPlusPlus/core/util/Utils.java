@@ -547,6 +547,7 @@ public class Utils {
 		float damage = material.vToolQuality;
 		int efficiency = (int) material.vToolQuality;
 		//int enchantability = material.mEnchantmentToolsLevel;
+		Utils.LOG_INFO("ToolMaterial stats for "+material.getLocalizedName()+" | harvestLevel:"+harvestLevel+" | durability:"+durability+" | toolQuality:"+damage+" | toolSpeed:"+damage);
 		ToolMaterial temp = EnumHelper.addToolMaterial(name, harvestLevel, durability, efficiency, damage, 0);
 		return temp;
 

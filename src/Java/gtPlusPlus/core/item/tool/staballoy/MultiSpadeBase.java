@@ -58,9 +58,10 @@ public class MultiSpadeBase extends StaballoySpade{
 	}
 
 	private boolean addRecipe(){
-		String plateDense = "plateDense"+materialName;
-		String plateDouble = "plateDouble"+materialName;
-		String rodLong = "stickLong"+materialName;
+		String cleanName = Utils.sanitizeString(materialName);
+		String plateDense = "plateDense"+cleanName;
+		String plateDouble = "plateDouble"+cleanName;
+		String rodLong = "stickLong"+cleanName;
 		String toolHammer = "craftingToolHardHammer";
 		String toolWrench = "craftingToolWrench";
 		String toolFile = "craftingToolFile";

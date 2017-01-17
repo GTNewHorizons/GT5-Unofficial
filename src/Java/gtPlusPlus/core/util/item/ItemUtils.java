@@ -313,7 +313,7 @@ public class ItemUtils {
 	}
 	
 	public static MultiPickaxeBase generateMultiPick(boolean GT_Durability, ToolMaterial customMaterial, String name, int durability, short[] rgba){
-		Utils.LOG_WARNING("Generating a Multi-Pick out of "+name);
+		Utils.LOG_INFO("Generating a Multi-Pick out of "+name);
 		short[] rgb = rgba;
 		int dur = customMaterial.getMaxUses();
 		Utils.LOG_WARNING("Determined durability for "+name+" is "+dur);
@@ -338,7 +338,8 @@ public class ItemUtils {
 
 		if (MP_Redstone.isValid){
 			return MP_Redstone;
-		}		
+		}	
+		Utils.LOG_INFO("Pickaxe was not valid.");
 		return null;
 	}
 	

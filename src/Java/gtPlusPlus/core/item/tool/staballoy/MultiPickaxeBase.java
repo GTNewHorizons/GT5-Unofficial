@@ -71,19 +71,25 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 	 */
 
 	private boolean addRecipe(){
-		String plateDense = "plateDense"+materialName;
-		String plateDouble = "plateDouble"+materialName;
-		String rodLong = "stickLong"+materialName;
+		
+		String cleanName = Utils.sanitizeString(materialName);
+		
+		String plateDense = "plateDense"+cleanName;
+		String plateDouble = "plateDouble"+cleanName;
+		String rodLong = "stickLong"+cleanName;
 		String toolHammer = "craftingToolHardHammer";
 		String toolWrench = "craftingToolWrench";
 		String toolFile = "craftingToolFile";
 		String toolScrewDriver = "craftingToolScrewdriver";
-
+		
 		if (null == ItemUtils.getItemStackOfAmountFromOreDictNoBroken(rodLong, 1)){
+			Utils.LOG_WARNING("stickLong of "+cleanName+" does not exist.");
 			return false;
 		}
 		if (null == ItemUtils.getItemStackOfAmountFromOreDictNoBroken(plateDense, 1)){
+			Utils.LOG_WARNING("plateDense of "+cleanName+" does not exist.");
 			if (null != ItemUtils.getItemStackOfAmountFromOreDictNoBroken(plateDouble, 1)){
+				Utils.LOG_WARNING("plateDouble of "+cleanName+" does exist. Using it instead.");
 				RecipeUtils.recipeBuilder(
 						plateDouble, plateDouble, plateDouble,
 						toolFile, rodLong, toolHammer,
@@ -92,6 +98,7 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 
 				return true;
 			}
+			Utils.LOG_WARNING("plateDouble of "+cleanName+" does not exist.");
 			return false;
 		}
 
