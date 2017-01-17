@@ -63,7 +63,17 @@ public class TreefarmManager {
 
 	public static boolean isWoodLog(Block log){
 		String tTool = log.getHarvestTool(0);
-		return  OrePrefixes.log.contains(new ItemStack(log, 1))&& ((tTool != null) && (tTool.equals("axe"))) || (log.getMaterial() == Material.wood);
+		
+		if (log == Blocks.log || log == Blocks.log2){
+			return true;
+		}
+		
+		//IC2 Rubber Tree Compat
+		if (log.getClass().getName().toLowerCase().contains("rubwood")){
+			return true;
+		}
+		
+		return  OrePrefixes.log.contains(new ItemStack(log, 1))&& ((tTool != null) && (tTool.equals("axe"))) || (log.getMaterial() != Material.wood) ? false : (OrePrefixes.fence.contains(new ItemStack(log, 1)) ? false : true);
 	}
 
 	public static boolean isLeaves(Block log){
@@ -88,7 +98,7 @@ public class TreefarmManager {
 	}
 
 	public static boolean isFenceBlock(Block fence){
-		return  (fence == Blocks.fence ? true : (fence == Blocks.fence_gate ? true : (fence == Blocks.nether_brick_fence ? true : false)));		
+		return  (fence == Blocks.fence ? true : (fence == Blocks.fence_gate ? true : (fence == Blocks.nether_brick_fence ? true : (OrePrefixes.fence.contains(new ItemStack(fence, 1)) ? true : false))));		
 	}
 
 	public static boolean isAirBlock(Block air){
@@ -96,6 +106,12 @@ public class TreefarmManager {
 		if (air.getLocalizedName().toLowerCase().contains("air")){
 			return true;
 		}
+		
+		if (air.getClass().getName().toLowerCase().contains("residual") || air.getClass().getName().toLowerCase().contains("heat")){
+			return true;
+		}
+		
+		//Utils.LOG_INFO("Found "+air.getLocalizedName());
 
 		return (air == Blocks.air ? true : (air instanceof BlockAir ? true : false));
 	}

@@ -8,7 +8,7 @@ import ic2.api.item.*;
 
 import java.util.List;
 
-import api.cofh.energy.ItemEnergyContainer;
+import cofh.energy.ItemEnergyContainer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

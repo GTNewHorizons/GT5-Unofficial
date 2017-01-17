@@ -1,4 +1,4 @@
-package api.cofh.energy;
+package cofh.energy;
 
 public abstract interface IEnergyStorage
 {

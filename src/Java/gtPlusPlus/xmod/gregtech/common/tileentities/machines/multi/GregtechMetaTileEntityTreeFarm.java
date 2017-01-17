@@ -11,8 +11,10 @@ import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.forestry.trees.TreefarmManager;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
@@ -35,6 +37,9 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 	public ArrayList<GT_MetaTileEntity_TieredMachineBlock> mCasings = new ArrayList();
 
 	/* private */ private int treeCheckTicks = 0;
+	/* private */ private int plantSaplingTicks = 0;
+	/* private */ private int cleanupTicks = 0;
+	/* private */ private boolean canChop = false;
 
 	public GregtechMetaTileEntityTreeFarm(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -275,44 +280,83 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 
 	//Tree Manager
 
+	private void tickTrees(){
+		if (treeCheckTicks > 200){
+			treeCheckTicks = 0;
+		}
+		else {
+			treeCheckTicks++;
+		}
+	}
+
+	private void tickSaplings(){
+		if (plantSaplingTicks > 200){
+			plantSaplingTicks = 0;
+		}
+		else {
+			plantSaplingTicks++;
+		}
+	}
+
+	private void tickCleanup(){
+		if (cleanupTicks > 600){
+			cleanupTicks = 0;
+		}
+		else {
+			cleanupTicks++;
+		}
+	}
+
+	private void tickHandler(){
+		//Count Sapling Timer
+		tickSaplings();
+		//Count Tree Cutting Timer
+		tickTrees();
+		//Tick Cleanup script Timer.
+		tickCleanup();
+	}
+
+
 	@Override
 	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
 
 		if (aBaseMetaTileEntity.isServerSide()) {
-
-			//Check Inventory slots [1]
+			//Check Inventory slots [1] - Find a valid Buzzsaw Blade or a Saw
 			try {
 				Utils.LOG_INFO(mInventory[1].getDisplayName());
 			} catch (NullPointerException t){}
 
-			//Update Tick Timer Last - Do Not move up the call stack
-			if (treeCheckTicks > 100){
-				treeCheckTicks = 0;
-			}
-			else {
-				treeCheckTicks++;
-			}
-
-			//Set Machine State
-			if (treeCheckTicks == 100){
-				mMachine = checkMachine(aBaseMetaTileEntity, mInventory[1]);
-
-				//If Machine can work and it's only one of two times a second this will tick, tick.
-				if (mMachine){
+			//If Machine can work and it's only once every 5 seconds this will tick.
+			if (mMachine){
+				//Set Machine State
+				if (treeCheckTicks == 200){
+					//mMachine = checkMachine(aBaseMetaTileEntity, mInventory[1]);
 					Utils.LOG_INFO("Looking For Trees - Serverside | "+treeCheckTicks);
+					//Find wood to Cut
 					findLogs(aBaseMetaTileEntity);
-
-					cleanUp(aBaseMetaTileEntity);
-
-					plantSaplings(aBaseMetaTileEntity);
-
-					findSaplings(aBaseMetaTileEntity);
 				}
 			}	
-
-
-
-
+			else {
+				if (plantSaplingTicks == 100){
+					Utils.LOG_INFO("Looking For space to plant saplings - Serverside | "+plantSaplingTicks);
+					//Plant Some Saplings
+					plantSaplings(aBaseMetaTileEntity);
+				}	
+				else if (plantSaplingTicks == 200){
+					Utils.LOG_INFO("Looking For Saplings to grow - Serverside | "+plantSaplingTicks);
+					//Try Grow some Saplings
+					findSaplings(aBaseMetaTileEntity);
+					//Set can work state
+					mMachine = true;
+				}
+			}
+			//Call Cleanup Task last, before ticking.
+			if (cleanupTicks == 600){
+				Utils.LOG_INFO("Looking For rubbish to cleanup - Serverside | "+cleanupTicks);
+				cleanUp(aBaseMetaTileEntity);
+			}
+			//Tick TE
+			tickHandler();
 		}
 		//Client Side - do nothing
 
@@ -377,6 +421,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 				}
 			}
 		}
+		mMachine = false;
 		if (logsCut > 0)
 			cleanUp(aBaseMetaTileEntity);
 		//Utils.LOG_INFO("general failure | maybe there is no logs, not an error. | cut:"+logsCut );
@@ -444,40 +489,65 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 			for (int j = -7; j <= 7; j++) {
 				int h = 1;			
 
-				if (TreefarmManager.isAirBlock(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))){
-					for (ItemStack n : r){
-						if (n != null){
-							if (OrePrefixes.sapling.contains(n) || n.getDisplayName().toLowerCase().contains("sapling")){
-								Utils.LOG_INFO(""+n.getDisplayName());
+				if ((i != -7 && i != 7) && (j != -7 && j != 7)) {		
+					if (TreefarmManager.isAirBlock(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))){
+						//Utils.LOG_INFO("Found air");
+						if (r.size() > 0){
+							Utils.LOG_INFO("r was not null. "+r.size());
+							for (ItemStack n : r){
+								Utils.LOG_INFO("found "+n.getDisplayName());
+								if (OrePrefixes.sapling.contains(n) || n.getDisplayName().toLowerCase().contains("sapling")){
+									//Utils.LOG_INFO(""+n.getDisplayName());
 
-								int posX, posY, posZ;
-								posX = aBaseMetaTileEntity.getXCoord()+xDir+i;
-								posY = aBaseMetaTileEntity.getYCoord()+h;
-								posZ = aBaseMetaTileEntity.getZCoord()+zDir+j;
+									int posX, posY, posZ;
+									posX = aBaseMetaTileEntity.getXCoord()+xDir+i;
+									posY = aBaseMetaTileEntity.getYCoord()+h;
+									posZ = aBaseMetaTileEntity.getZCoord()+zDir+j;
 
-								//Works for everything but forestry saplings - TODO
-								Block saplingToPlace = Block.getBlockFromItem(n.getItem());
+									//Works for everything but forestry saplings - TODO
+									Block saplingToPlace;
 
-								//If sapling block is not null
-								if (saplingToPlace != null){
-									//Plant Sapling
-									world.setBlock(posX, posY, posZ, saplingToPlace);
-									world.setBlockMetadataWithNotify(posX, posY, posZ, n.getItemDamage(), 4);
-									//Deplete Input stack
-									depleteInput(n);
+									if (n.getClass().getName().toLowerCase().contains("forestry")){
+										Utils.LOG_INFO("It's a forestry sapling, trying magic.");
+										saplingToPlace = Block.getBlockFromItem(ItemUtils.getItem("Forestry:saplingGE"));
+
+									}
+									else {
+										saplingToPlace = Block.getBlockFromItem(n.getItem());									
+									}
+
+
+									//If sapling block is not null
+									if (saplingToPlace != null){
+										Utils.LOG_INFO("Placing Sapling Block.");
+										//Plant Sapling
+										world.setBlock(posX, posY, posZ, saplingToPlace);
+										world.setBlockMetadataWithNotify(posX, posY, posZ, n.getItemDamage(), 4);
+										//Deplete Input stack
+										depleteInput(n);
+										r = getStoredInputs();
+										break;
+									}
+									Utils.LOG_INFO(n.getDisplayName()+" did not have a valid block.");
+								}
+								else {
+									Utils.LOG_INFO("item was not a sapling");
 								}
 							}
 						}
+						else{
+							Utils.LOG_INFO("Input stack empty or null");
+						}
 					}	
-				}											
+					else {
+						Utils.LOG_INFO("No space for sapling, no air.");					
+					}
+					}			
+				
 			}
 		}
 		Utils.LOG_INFO("Tried to grow saplings: | "+saplings );
 		return true;		
-	}
-
-	private Block findAirForSaplingToGrow(){
-		return null;
 	}
 
 	private boolean cutLog(final World world, final int x, final int y, final int z){
@@ -486,18 +556,31 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 			//Get Log.
 			final Block block = world.getBlock(x, y, z);
 			//Add the stack to the bus.
-			addOutput(ItemUtils.getSimpleStack(block));
-			//Update bus contents.
-			updateSlots();
-			//Remove drop that was added to the bus.
-			world.setBlockToAir(x, y, z);
-			return true;
+
+			ItemStack outputStack = ItemUtils.getSimpleStack(block);
+			if (outputStack != null){
+				Utils.LOG_INFO("Adding 1x "+outputStack.getDisplayName());
+				addOutput(outputStack);
+				//Update bus contents.
+				updateSlots();
+				//Remove drop that was added to the bus.
+				world.setBlockToAir(x, y, z);
+				return true;
+			}			
+
 		} catch (NullPointerException e){}
 		return false;
 	}
 
 	public static boolean applyBonemeal(World world, int intX, int intY, int intZ){
 		Block block = world.getBlock(intX, intY, intZ);
+		int chance = MathUtils.randInt(0, 10);
+
+		//Random Growth
+		if (chance < 8){
+			return false;
+		}
+
 		EntityPlayer player = FakePlayerFactory.getMinecraft((WorldServer)world);
 		if (!world.isRemote){
 			if (enableTreeFarmerParticles){
@@ -584,6 +667,29 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 
 	public static ITexture[] getSidesActive(final byte aColor) {
 		return getSides(aColor);
+	}
+
+
+	public boolean depleteInputEx(ItemStack aStack) {
+		if (GT_Utility.isStackInvalid(aStack))	return false;
+
+		Utils.LOG_INFO("Taking one sapling away from in input bus.");
+
+		for (GT_MetaTileEntity_Hatch_InputBus tHatch : this.mInputBusses) {
+			tHatch.mRecipeMap = getRecipeMap();
+			if (isValidMetaTileEntity(tHatch)) {
+				for (int i = tHatch.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; --i) {
+					if ((!(GT_Utility.areStacksEqual(aStack, tHatch.getBaseMetaTileEntity().getStackInSlot(i)))) || (tHatch.getBaseMetaTileEntity().getStackInSlot(0).stackSize < aStack.stackSize)){
+						continue;
+					}
+					tHatch.getBaseMetaTileEntity().decrStackSize(0,1);
+					return true;
+				}
+			}
+
+		}
+
+		return false;
 	}
 
 }

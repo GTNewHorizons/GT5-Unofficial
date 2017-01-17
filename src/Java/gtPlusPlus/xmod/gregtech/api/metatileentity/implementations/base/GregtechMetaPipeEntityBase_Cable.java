@@ -22,7 +22,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import api.cofh.energy.IEnergyReceiver;
+import cofh.energy.IEnergyReceiver;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;

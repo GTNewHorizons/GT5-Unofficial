@@ -1,4 +1,4 @@
-package api.cofh.energy;
+package cofh.energy;
 
 import net.minecraftforge.common.util.ForgeDirection;
 

@@ -18,7 +18,7 @@ import ic2.api.energy.tile.IEnergySink;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import api.cofh.energy.IEnergyReceiver;
+import cofh.energy.IEnergyReceiver;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;

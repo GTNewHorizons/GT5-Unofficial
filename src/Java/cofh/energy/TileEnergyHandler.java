@@ -1,4 +1,4 @@
-package api.cofh.energy;
+package cofh.energy;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
