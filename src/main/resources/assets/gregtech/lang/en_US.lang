@@ -567,6 +567,62 @@ achievement.denseaspossible.desc=Produce Neutronium
 achievement.whatnow=What now?
 achievement.whatnow.desc=Craft a Ultimate Battery
 
+achievement.gt.metaitem.01.32606=Electric Motor LuV tier
+achievement.gt.metaitem.01.32606.desc=Pickup this item to see the recipe in NEI
+achievement.gt.metaitem.01.32607=Electric Motor ZPM tier
+achievement.gt.metaitem.01.32607.desc=Pickup this item to see the recipe in NEI
+achievement.gt.metaitem.01.32608=Electric Motor UV tier
+achievement.gt.metaitem.01.32608.desc=Pickup this item to see the recipe in NEI
+
+achievement.gt.metaitem.01.32615=Electric Pump LuV tier
+achievement.gt.metaitem.01.32615.desc=Pickup this item to see the recipe in NEI
+achievement.gt.metaitem.01.32616=Electric Pump ZPM tier
+achievement.gt.metaitem.01.32616.desc=Pickup this item to see the recipe in NEI
+achievement.gt.metaitem.01.32617=Electric Pump UV tier
+achievement.gt.metaitem.01.32617.desc=Pickup this item to see the recipe in NEI
+
+achievement.gt.metaitem.01.32635=Conveyor Module LuV tier
+achievement.gt.metaitem.01.32635.desc=Pickup this item to see the recipe in NEI
+achievement.gt.metaitem.01.32636=Conveyor Module ZPM tier
+achievement.gt.metaitem.01.32636.desc=Pickup this item to see the recipe in NEI
+achievement.gt.metaitem.01.32637=Conveyor Module UV tier
+achievement.gt.metaitem.01.32637.desc=Pickup this item to see the recipe in NEI
+
+achievement.gt.metaitem.01.32645=Electric Piston LuV tier
+achievement.gt.metaitem.01.32645.desc=Pickup this item to see the recipe in NEI
+achievement.gt.metaitem.01.32646=Electric Piston ZPM tier
+achievement.gt.metaitem.01.32646.desc=Pickup this item to see the recipe in NEI
+achievement.gt.metaitem.01.32647=Electric Piston UV tier
+achievement.gt.metaitem.01.32647.desc=Pickup this item to see the recipe in NEI
+
+achievement.gt.metaitem.01.32655=Robot Arm LuV tier
+achievement.gt.metaitem.01.32655.desc=Pickup this item to see the recipe in NEI
+achievement.gt.metaitem.01.32656=Robot Arm ZPM tier
+achievement.gt.metaitem.01.32656.desc=Pickup this item to see the recipe in NEI
+achievement.gt.metaitem.01.32657=Robot Arm UV tier
+achievement.gt.metaitem.01.32657.desc=Pickup this item to see the recipe in NEI
+
+achievement.gt.metaitem.01.32675=Field Generator LuV tier
+achievement.gt.metaitem.01.32675.desc=Pickup this item to see the recipe in NEI
+achievement.gt.metaitem.01.32676=Field Generator ZPM tier
+achievement.gt.metaitem.01.32676.desc=Pickup this item to see the recipe in NEI
+achievement.gt.metaitem.01.32677=Field Generator UV tier
+achievement.gt.metaitem.01.32677.desc=Pickup this item to see the recipe in NEI
+
+achievement.gt.metaitem.01.32685=Emitter LuV tier
+achievement.gt.metaitem.01.32685.desc=Pickup this item to see the recipe in NEI
+achievement.gt.metaitem.01.32686=Emitter ZPM tier
+achievement.gt.metaitem.01.32686.desc=Pickup this item to see the recipe in NEI
+achievement.gt.metaitem.01.32687=Emitter UV tier
+achievement.gt.metaitem.01.32687.desc=Pickup this item to see the recipe in NEI
+
+achievement.gt.metaitem.01.32695=Sensor LuV tier
+achievement.gt.metaitem.01.32695.desc=Pickup this item to see the recipe in NEI
+achievement.gt.metaitem.01.32696=Sensor ZPM tier
+achievement.gt.metaitem.01.32696.desc=Pickup this item to see the recipe in NEI
+achievement.gt.metaitem.01.32697=Sensor UV tier
+achievement.gt.metaitem.01.32697.desc=Pickup this item to see the recipe in NEI
+
 for.bees.species.clay=Clay
 for.bees.species.slimeball=Slimeball
 for.bees.species.peat=Peat
