@@ -10,14 +10,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
-public class GT_MetaTileEntity_QuantumTank
+public class GT_MetaTileEntity_SuperTank
         extends GT_MetaTileEntity_BasicTank {
-    public GT_MetaTileEntity_QuantumTank(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 3, "Stores " + ((int) (Math.pow(2, aTier) * 64000000)) + "L of fluid");
+    public GT_MetaTileEntity_SuperTank(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier, 1, "Stores " + ((int) (Math.pow(2, aTier) * 2000000)) + "L of fluid");
     }
 
-    public GT_MetaTileEntity_QuantumTank(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, 3, aDescription, aTextures);
+    public GT_MetaTileEntity_SuperTank(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+        super(aName, aTier, 1, aDescription, aTextures);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class GT_MetaTileEntity_QuantumTank
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return aSide == 1 ? new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_QTANK)} : new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1]};
+        return aSide == 1 ? new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_STANK)} : new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1]};
     }
 
     @Override
@@ -125,17 +125,17 @@ public class GT_MetaTileEntity_QuantumTank
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_QuantumTank(mName, mTier, mDescription, mTextures);
+        return new GT_MetaTileEntity_SuperTank(mName, mTier, mDescription, mTextures);
     }
 
     @Override
     public int getCapacity() {
-        return (int) (Math.pow(2, mTier) * 64000000);
+        return (int) (Math.pow(2, mTier) * 2000000);
     }
 
     @Override
     public int getTankPressure() {
-        return 1000;
+        return 100;
     }
 
 }
