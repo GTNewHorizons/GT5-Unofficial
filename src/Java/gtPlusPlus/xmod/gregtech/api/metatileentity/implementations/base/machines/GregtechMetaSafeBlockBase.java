@@ -190,7 +190,7 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 			return true;
 
 		}
-		if (!aPlayer.equals(null)) {
+		if (aPlayer != null) {
 			UUID tempUUID = aPlayer.getUniqueID();
 			/*if (!aPlayer.worldObj.isRemote){
 			//PlayerCache.appendParamChanges(aPlayer.getDisplayName(), aPlayer.getUniqueID().toString());

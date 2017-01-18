@@ -65,7 +65,7 @@ public class BaseItemDust extends Item{
 			temp = temp.replace("itemD", "d");
 			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
 		}		
-		if (temp != null && temp != ""){
+		if (temp != null && !temp.equals("")){
 			oredictName = temp;
 			GT_OreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
 		}
@@ -175,7 +175,7 @@ public class BaseItemDust extends Item{
 		tempIngot = tempIngot.replace("itemDust", "ingot");
 		Utils.LOG_WARNING("Generating OreDict Name: "+tempIngot);
 		ItemStack[] outputStacks = {dustInfo.getDust(1)};
-		if (tempIngot != null && tempIngot != ""){
+		if (tempIngot != null && !tempIngot.equals("")){
 			tempInputStack = ItemUtils.getItemStackOfAmountFromOreDict(tempIngot, 1);
 			tempOutputStack = ItemUtils.getItemStackOfAmountFromOreDict(tempDust, 1);
 			ItemStack tempStackOutput2 = null;
@@ -216,7 +216,7 @@ public class BaseItemDust extends Item{
 			return;
 		}
 		temp = temp.replace("itemDust", "ingot");		
-		if (temp != null && temp != ""){
+		if (temp != null && !temp.equals("")){
 
 			if (dustInfo.requiresBlastFurnace()){
 				Utils.LOG_WARNING("Adding recipe for Hot "+materialName+" Ingots in a Blast furnace.");
@@ -230,7 +230,7 @@ public class BaseItemDust extends Item{
 			}
 			Utils.LOG_WARNING("Adding recipe for "+materialName+" Ingots in a furnace.");
 			ItemStack tempOutputStack = ItemUtils.getItemStackOfAmountFromOreDict(temp, 1);
-			Utils.LOG_WARNING("This will produce an ingot of "+tempOutputStack.getDisplayName() + " Debug: "+temp);
+			//Utils.LOG_WARNING("This will produce an ingot of "+tempOutputStack.getDisplayName() + " Debug: "+temp);
 			if (null != tempOutputStack){
 				if (mTier < 5 || !dustInfo.requiresBlastFurnace()){					
 					if (CORE.GT_Recipe.addSmeltingAndAlloySmeltingRecipe(ItemUtils.getSimpleStack(this), tempOutputStack)){

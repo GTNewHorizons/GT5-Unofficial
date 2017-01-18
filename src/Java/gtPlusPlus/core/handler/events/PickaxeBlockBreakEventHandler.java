@@ -20,7 +20,7 @@ public class PickaxeBlockBreakEventHandler {
 	public void onBreakBlock(BreakEvent event) {
 		try{
 			TileEntity entity = event.world.getTileEntity(event.x, event.y, event.z);
-			if (entity != null && !entity.equals(null)){
+			if (entity != null){
 				EntityPlayer playerInternal = event.getPlayer();
 				Utils.LOG_WARNING(entity.getClass().getSimpleName());
 				if (entity.getClass().getSimpleName().equals("")){

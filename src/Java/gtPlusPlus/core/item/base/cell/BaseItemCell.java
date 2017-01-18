@@ -38,7 +38,7 @@ public class BaseItemCell extends BaseItemComponent{
 
 	private int fluidBright = 0;
 	private int tickValue;
-	private short fluidColour[];
+	private short[] fluidColour;
 	boolean upwards = true;
 
 	@Override

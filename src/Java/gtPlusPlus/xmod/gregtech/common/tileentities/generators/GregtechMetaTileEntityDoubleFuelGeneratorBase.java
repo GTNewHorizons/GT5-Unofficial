@@ -74,11 +74,11 @@ public class GregtechMetaTileEntityDoubleFuelGeneratorBase
 
     		return  new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Advanced);
     	}
-    	else if (this.mTier >= 6){
+    	else {
 
     		return  new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Ultra);
     	}
-		return  new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top);
+		//return  new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top);
     }
     
 

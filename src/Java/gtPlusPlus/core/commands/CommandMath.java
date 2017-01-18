@@ -88,11 +88,11 @@ public class CommandMath implements ICommand
 			ChunkCoordinates Y = null;
 			Utils.LOG_WARNING("Bed Location: "+Y);
 			try {
-				if (P.getBedLocation(0).equals(null)){
+				if (P.getBedLocation(0) == null){
 					Y = W.getSpawnPoint();
 					Utils.LOG_WARNING("Spawn Location: "+Y);
 				}				
-				else if (!P.getBedLocation(0).equals(null)){
+				else if (P.getBedLocation(0) != null){
 					Y = P.getBedLocation(0);
 					Utils.LOG_WARNING("Bed Location: "+Y);
 				}
@@ -104,7 +104,7 @@ public class CommandMath implements ICommand
 			catch(NullPointerException e) {
 			    PlayerUtils.messagePlayer(P, "You do not have a spawn, so...");
 			}
-			if (Y == null || Y.equals(null)) {
+			if (Y == null) {
 				Y = W.getSpawnPoint();
 				Utils.LOG_WARNING("Spawn Location: "+Y);
 			}

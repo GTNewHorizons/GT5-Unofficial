@@ -39,7 +39,7 @@ public class BaseItemIngotOLD extends Item{
 		else if (unlocalName.contains("itemHotIngot")){
 			temp = unlocalName.replace("itemHotIngot", "ingotHot");
 		}
-		if (temp != null && temp != ""){
+		if (temp != null && !temp.equals("")){
 			GT_OreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
 		}		
 		generateCompressorRecipe();
@@ -76,7 +76,7 @@ public class BaseItemIngotOLD extends Item{
 			}
 			temp = temp.replace("itemIngot", "block");
 			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
-			if (temp != null && temp != ""){
+			if (temp != null && !temp.equals("")){
 				tempOutput = ItemUtils.getItemStackOfAmountFromOreDict(temp, 1);
 				if (tempOutput != null){
 					GT_ModHandler.addCompressionRecipe(tempStack, tempOutput);

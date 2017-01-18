@@ -153,6 +153,9 @@ public class ItemUtils {
 	@SuppressWarnings("unused")
 	public static ItemStack simpleMetaStack(Item item, int meta, int itemstackSize){		
 		try {
+			if (item == null){
+				return null;
+			}			
 			Item em = item;			
 			Item em1 = item;
 			Utils.LOG_WARNING("Found: "+em1.getUnlocalizedName()+":"+meta);
@@ -192,7 +195,7 @@ public class ItemUtils {
 
 	public static ItemStack getCorrectStacktype(Object item_Input, int stackSize) {
 		if (item_Input instanceof String){
-			return getCorrectStacktype(item_Input, stackSize);
+			return getItemStackOfAmountFromOreDictNoBroken((String) item_Input, stackSize);
 		}
 		else if (item_Input instanceof ItemStack){
 			return (ItemStack) item_Input;
@@ -234,7 +237,7 @@ public class ItemUtils {
 
 	public static ItemStack[] validItemsForOreDict(String oredictName){
 		List<?> validNames = MaterialUtils.oreDictValuesForEntry(oredictName);
-		ItemStack[] inputs = null;
+		ItemStack[] inputs = new ItemStack[validNames.size()];
 		for (int i=0; i<validNames.size();i++){
 			inputs[i] = (ItemStack) validNames.get(i);
 		}

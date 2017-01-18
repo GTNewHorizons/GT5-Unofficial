@@ -17,7 +17,6 @@ import gtPlusPlus.xmod.forestry.trees.TreefarmManager;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -32,7 +31,7 @@ public class GregtechMetaTileEntityAnimalFarm extends GT_MetaTileEntity_MultiBlo
 	private static final ITexture[] FACING_ACTIVE = {new GT_RenderedTexture(Textures.BlockIcons.MACHINE_BRONZEBLASTFURNACE_ACTIVE)};
 
 
-	public ArrayList<GT_MetaTileEntity_TieredMachineBlock> mCasings = new ArrayList();
+	//public ArrayList<GT_MetaTileEntity_TieredMachineBlock> mCasings = new ArrayList();
 
 	private boolean running = false;
 	private boolean p1, p2, p3, p4, p5, p6;
@@ -148,7 +147,7 @@ public class GregtechMetaTileEntityAnimalFarm extends GT_MetaTileEntity_MultiBlo
 	@Override
 	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
 
-		this.mCasings.clear();
+		//this.mCasings.clear();
 		Utils.LOG_INFO("Step 1");
 		int xDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 7; 
 		int zDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 7;
@@ -266,7 +265,7 @@ public class GregtechMetaTileEntityAnimalFarm extends GT_MetaTileEntity_MultiBlo
 			}
 		}
 		mSolderingTool = true;
-		turnCasingActive(true);
+		//turnCasingActive(true);
 		Utils.LOG_INFO("Multiblock Formed.");
 		return true;
 	}
@@ -303,24 +302,14 @@ public class GregtechMetaTileEntityAnimalFarm extends GT_MetaTileEntity_MultiBlo
 		if (aMetaTileEntity == null)
 			return false;
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_TieredMachineBlock) {
-			return this.mCasings.add((GT_MetaTileEntity_TieredMachineBlock) aMetaTileEntity);
+			//return this.mCasings.add((GT_MetaTileEntity_TieredMachineBlock) aMetaTileEntity);
 		}
 		return false;
 	}
 
-	public boolean turnCasingActive(boolean status) {
-		if (this.mCasings != null) {
-			Utils.LOG_INFO("Changing casing Textures.");
-			for (GT_MetaTileEntity_TieredMachineBlock hatch : this.mCasings) {
-				hatch = changeTextureswithReflection(hatch, getTextureSet());
-			}
-		}
-		return true;
-	}
-
 	private GT_MetaTileEntity_TieredMachineBlock changeTextureswithReflection(GT_MetaTileEntity_TieredMachineBlock casing, ITexture[][][] textureSet){
 		GT_MetaTileEntity_TieredMachineBlock cv = casing;
-		System.out.println("Before: "+cv.mTextures.hashCode());
+		//System.out.println("Before: "+cv.mTextures.hashCode());
 		//Get declared field from class
 		Field f;
 		try {
@@ -336,7 +325,7 @@ public class GregtechMetaTileEntityAnimalFarm extends GT_MetaTileEntity_MultiBlo
 				//change the field value
 				f.set(cv, textureSet);
 				//Verify change in texture set
-				System.out.println("After: "+cv.mTextures.hashCode());
+				//System.out.println("After: "+cv.mTextures.hashCode());
 				return cv;
 			} catch (NoSuchFieldException e) {
 				Utils.LOG_INFO("Could not find mTextures.");

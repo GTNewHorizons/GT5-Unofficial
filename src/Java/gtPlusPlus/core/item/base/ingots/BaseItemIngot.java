@@ -35,7 +35,7 @@ public class BaseItemIngot extends BaseItemComponent{
 			}
 			temp = temp.replace("itemIngot", "block");
 			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
-			if (temp != null && temp != ""){
+			if (temp != null && !temp.equals("")){
 				tempOutput = ItemUtils.getItemStackOfAmountFromOreDict(temp, 1);
 				if (tempOutput != null){
 					GT_ModHandler.addCompressionRecipe(tempStack, tempOutput);

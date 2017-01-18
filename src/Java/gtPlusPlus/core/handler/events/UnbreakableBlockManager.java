@@ -60,7 +60,7 @@ public class UnbreakableBlockManager{
 
 
 	private static void innerInvincible(GregtechMetaSafeBlock MetaSafeBlock, TileEntity entity, World TE_WORLD, /*EntityPlayer aPlayer,*/ int X, int Y, int Z){
-		if (entity != null && !entity.equals(null)){
+		if (entity != null){
 			Utils.LOG_WARNING("Checking new State of Flag[nUnbreakable]. Value="+MetaSafeBlock.bUnbreakable);
 			Utils.LOG_WARNING("Grabbed TE: "+entity.toString());
 

@@ -79,8 +79,9 @@ public class BaseItemComponent extends Item{
 	@Override
 	public String getItemStackDisplayName(ItemStack p_77653_1_) {
 
-		if (componentMaterial != null)
+		if (componentMaterial != null) {
 			return (componentMaterial.getLocalizedName()+componentType.DISPLAY_NAME);
+		}
 		return materialName+" Cell";
 	}
 
@@ -132,8 +133,9 @@ public class BaseItemComponent extends Item{
 				//list.add(EnumChatFormatting.GRAY+"A " + materialName + " Ring.");
 			}			
 			if (componentMaterial != null){
-				if (!componentMaterial.vChemicalFormula.equals("??"))
+				if (!componentMaterial.vChemicalFormula.equals("??")) {
 					list.add(componentMaterial.vChemicalFormula);
+				}
 
 				if (componentMaterial.isRadioactive){
 					list.add(CORE.GT_Tooltip_Radioactive);

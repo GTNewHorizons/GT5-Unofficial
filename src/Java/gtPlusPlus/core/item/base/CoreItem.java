@@ -177,7 +177,7 @@ public class CoreItem extends Item
 
 	@Override
 	public String getItemStackDisplayName(ItemStack tItem) {
-		if (itemName == null || itemName.equals("") || itemName == "")
+		if (itemName == null || itemName.equals(""))
 		return super.getItemStackDisplayName(tItem);
 		return itemName;
 	}

@@ -14,7 +14,7 @@ public class PlayerCache {
 	private static final File cache = new File("PlayerCache.dat");
 
 	public static final void initCache() {
-		if (CORE.PlayerCache == null || CORE.PlayerCache.equals(null)){
+		if (CORE.PlayerCache == null){
 			try {
 
 				if (cache != null){

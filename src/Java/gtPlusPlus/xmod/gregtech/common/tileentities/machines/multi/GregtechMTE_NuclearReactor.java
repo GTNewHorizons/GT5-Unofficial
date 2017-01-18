@@ -336,8 +336,15 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 				this.mLastRecipe = null;
 				return false;
 			}
+			
+			if (tRecipe == null){
+				return false;
+			}
+			
 			if (mRunningOnLoad || tRecipe.isRecipeInputEqual(true, tFluids, new ItemStack[]{})) {
-				this.mLastRecipe = tRecipe;
+				if (tRecipe != null){
+					this.mLastRecipe = tRecipe;	
+				}
 				this.mEUt = (this.mLastRecipe.mEUt * overclock(this.mLastRecipe.mSpecialValue));
 				this.mMaxProgresstime = this.mLastRecipe.mDuration / overclock(this.mLastRecipe.mSpecialValue);
 				this.mEfficiencyIncrease = 10000;

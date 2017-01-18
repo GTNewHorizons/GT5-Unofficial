@@ -549,24 +549,24 @@ extends GregtechMeta_MultiBlockBase {
 		return tempTankStorageMax;
 	}
 	
-	private void tryForceNBTUpdate(){
+	private boolean tryForceNBTUpdate(){
 
 		//Block is invalid.
 		if (this == null || this.getBaseMetaTileEntity() == null){
 			Utils.LOG_WARNING("Block was not valid for saving data.");
-			return;
+			return false;
 		}
 
 		//Don't need this to run clientside.
 		if (!this.getBaseMetaTileEntity().isServerSide()) {
-			return;
+			return false;
 		}
 
 		//Internal Tag was not valid.
 		try{
 		if (internalCraftingComponentsTag == null){
 			Utils.LOG_WARNING("Internal NBT data tag was null.");
-			return;
+			return false;
 		}	
 		} catch (NullPointerException x){
 			Utils.LOG_WARNING("Caught null NBT.");
@@ -584,6 +584,7 @@ extends GregtechMeta_MultiBlockBase {
 		this.getBaseMetaTileEntity().getWorld().markBlockForUpdate(x, y, z);
 
 		//Mark block dirty, let chunk know it's data has changed and it must be saved to disk. (Albeit slowly)
-		this.getBaseMetaTileEntity().markDirty();		
+		this.getBaseMetaTileEntity().markDirty();
+		return true;		
 	}
 }
