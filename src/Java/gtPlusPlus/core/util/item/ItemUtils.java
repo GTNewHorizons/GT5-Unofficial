@@ -311,7 +311,7 @@ public class ItemUtils {
 		ToolMaterial customMaterial = Utils.generateToolMaterial(material);
 		return generateMultiPick(true, customMaterial, material.getLocalizedName(), (int) material.vDurability, material.getRGBA());
 	}
-	
+
 	public static MultiPickaxeBase generateMultiPick(boolean GT_Durability, ToolMaterial customMaterial, String name, int durability, short[] rgba){
 		Utils.LOG_INFO("Generating a Multi-Pick out of "+name);
 		short[] rgb = rgba;
@@ -342,17 +342,17 @@ public class ItemUtils {
 		Utils.LOG_INFO("Pickaxe was not valid.");
 		return null;
 	}
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
 	public static MultiSpadeBase generateMultiShovel(boolean GT_Durability, Materials material){
 		ToolMaterial customMaterial = Utils.generateToolMaterialFromGT(material);
 		return generateMultiShovel(GT_Durability, customMaterial, material.mDefaultLocalName, material.mDurability, material.mRGBa);
 	}
-	
+
 	public static MultiSpadeBase generateMultiShovel(Material material){
 		ToolMaterial customMaterial = Utils.generateToolMaterial(material);
 		return generateMultiShovel(true, customMaterial, material.getLocalizedName(), (int) material.vDurability, material.getRGBA());
@@ -389,14 +389,14 @@ public class ItemUtils {
 	}
 
 
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
 
 
 	public static BaseItemDecidust generateDecidust(Materials material){
@@ -504,6 +504,20 @@ public class ItemUtils {
 
 	public static ItemStack getGregtechCircuit(int Meta){
 		return ItemUtils.getItemStackWithMeta(LoadedMods.Gregtech, "gregtech:gt.integrated_circuit", "Gregtech Circuit", Meta, 0);
+	}
+	public static ItemStack[] getBlockDrops(ArrayList<ItemStack> blockDrops) {
+		if (blockDrops == null){
+			return null;
+		}
+		if (blockDrops.isEmpty()){
+			return null;
+		}
+		ItemStack outputs[] = new ItemStack[blockDrops.size()];
+		short forCounter = 0;
+		for (ItemStack I : blockDrops){
+			outputs[forCounter] = I;
+		}
+		return outputs;
 	}
 
 }

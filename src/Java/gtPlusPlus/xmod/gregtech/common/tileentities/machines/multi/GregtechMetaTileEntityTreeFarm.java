@@ -330,7 +330,6 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 			if (mMachine){
 				//Set Machine State
 				if (treeCheckTicks == 200){
-					//mMachine = checkMachine(aBaseMetaTileEntity, mInventory[1]);
 					Utils.LOG_INFO("Looking For Trees - Serverside | "+treeCheckTicks);
 					//Find wood to Cut
 					findLogs(aBaseMetaTileEntity);
@@ -347,7 +346,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 					//Try Grow some Saplings
 					findSaplings(aBaseMetaTileEntity);
 					//Set can work state
-					mMachine = true;
+					mMachine = checkMachine(aBaseMetaTileEntity, mInventory[1]);
 				}
 			}
 			//Call Cleanup Task last, before ticking.
@@ -379,7 +378,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 						//Farm Inner 13*13
 						if (TreefarmManager.isWoodLog(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)) || TreefarmManager.isWoodLog(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))){
 							//Utils.LOG_INFO("Found A log of some kind I can chop.");
-							if (this.mEnergyHatches != null) {
+							if (this.mEnergyHatches.size() > 0) {
 								for (final GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches){
 									if (isValidMetaTileEntity(tHatch)) {
 										//Utils.LOG_INFO("Hatch ["+"]| can hold:"+maxEUStore()+" | holding:"+tHatch.getEUVar());
@@ -477,6 +476,21 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		Utils.LOG_INFO("Tried to grow saplings: | "+saplings );
 		return true;		
 	}
+	
+	public ArrayList<ItemStack> getStoredInputsEx() {
+		ArrayList<ItemStack> rList = new ArrayList<ItemStack>();
+		for (GT_MetaTileEntity_Hatch_InputBus tHatch : this.mInputBusses) {
+			tHatch.mRecipeMap = getRecipeMap();
+			if (isValidMetaTileEntity(tHatch)) {
+				for (int i = tHatch.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; --i) {
+					if (tHatch.getBaseMetaTileEntity().getStackInSlot(i) == null)
+						continue;
+					rList.add(tHatch.getBaseMetaTileEntity().getStackInSlot(i));
+				}
+			}
+		}
+		return rList;
+	}
 
 	private boolean plantSaplings(final IGregTechTileEntity aBaseMetaTileEntity){
 		Utils.LOG_INFO("called plantSaplings()");
@@ -516,6 +530,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 										saplingToPlace = Block.getBlockFromItem(n.getItem());									
 									}
 
+									
 
 									//If sapling block is not null
 									if (saplingToPlace != null){
@@ -525,7 +540,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 										world.setBlockMetadataWithNotify(posX, posY, posZ, n.getItemDamage(), 4);
 										//Deplete Input stack
 										depleteInput(n);
-										r = getStoredInputs();
+										//r = getStoredInputs();
 										break;
 									}
 									Utils.LOG_INFO(n.getDisplayName()+" did not have a valid block.");
@@ -536,7 +551,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 							}
 						}
 						else{
-							Utils.LOG_INFO("Input stack empty or null");
+							Utils.LOG_INFO("Input stack empty or null - hatch count "+this.mInputBusses.size());
 						}
 					}	
 					else {
@@ -557,12 +572,16 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 			final Block block = world.getBlock(x, y, z);
 			//Add the stack to the bus.
 
-			ItemStack outputStack = ItemUtils.getSimpleStack(block);
-			if (outputStack != null){
-				Utils.LOG_INFO("Adding 1x "+outputStack.getDisplayName());
-				addOutput(outputStack);
-				//Update bus contents.
-				updateSlots();
+			int dropMeta = world.getBlockMetadata(x, y, z);
+			ArrayList<ItemStack> blockDrops = block.getDrops(world, x, y, z, dropMeta, 0);
+			ItemStack[] drops = ItemUtils.getBlockDrops(blockDrops);
+			if (drops != null){				
+				for (ItemStack outputs : drops){
+					Utils.LOG_INFO("Adding 1x "+outputs.getDisplayName());
+					addOutput(outputs);
+					//Update bus contents.
+					updateSlots();
+				}				
 				//Remove drop that was added to the bus.
 				world.setBlockToAir(x, y, z);
 				return true;
