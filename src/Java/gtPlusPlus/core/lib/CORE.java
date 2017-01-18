@@ -16,6 +16,10 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.config.Configuration;
 
 public class CORE {
+	
+	protected CORE(){
+		
+	}
 
 	public static final String name = "GT++";	
 	public static final String MODID = "miscutils";

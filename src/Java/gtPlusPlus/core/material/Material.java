@@ -218,7 +218,7 @@ public class Material {
 		//dataVar = MathUtils.generateSingularRandomHexValue();
 
 		String ratio = "";
-		if (vSmallestRatio != null)
+		if (vSmallestRatio != null) {
 			for (int hu=0;hu<vSmallestRatio.length;hu++){
 				if (ratio.equals("")){
 					ratio = String.valueOf(vSmallestRatio[hu]);
@@ -227,6 +227,7 @@ public class Material {
 					ratio = ratio + ":" +vSmallestRatio[hu];
 				}		
 			}
+		}
 
 		Utils.LOG_INFO("Creating a Material instance for "+materialName);
 		Utils.LOG_INFO("Formula: "+vChemicalFormula + " Smallest Stack: "+smallestStackSizeWhenProcessing+" Smallest Ratio:"+ratio);
@@ -237,13 +238,13 @@ public class Material {
 		Utils.LOG_INFO("Boiling Point: "+boilingPointC+"C.");
 	}
 
-	final public String getLocalizedName(){
+	public final String getLocalizedName(){
 		if (this.localizedName != null)
 			return this.localizedName;
 		return "ERROR BAD LOCALIZED NAME";
 	}
 
-	final public String getUnlocalizedName(){
+	public final String getUnlocalizedName(){
 		if (this.unlocalizedName != null)
 			return this.unlocalizedName;
 		return "ERROR.BAD.UNLOCALIZED.NAME";
@@ -268,7 +269,7 @@ public class Material {
 		return vProtons;
 	}
 
-	final public long getNeutrons() {
+	public final long getNeutrons() {
 		return vNeutrons;
 	}
 
@@ -276,23 +277,23 @@ public class Material {
 		return vProtons + vNeutrons;
 	}
 
-	final public int getMeltingPointC() {
+	public final int getMeltingPointC() {
 		return meltingPointC;
 	}
 
-	final public int getBoilingPointC() {
+	public final int getBoilingPointC() {
 		return boilingPointC;
 	}
 
-	final public int getMeltingPointK() {
+	public final int getMeltingPointK() {
 		return meltingPointK;
 	}
 
-	final public int getBoilingPointK() {
+	public final int getBoilingPointK() {
 		return boilingPointK;
 	}
 
-	final public boolean requiresBlastFurnace(){
+	public final boolean requiresBlastFurnace(){
 		return usesBlastFurnace;
 	}
 
@@ -300,75 +301,75 @@ public class Material {
 		return Block.getBlockFromItem(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("block"+unlocalizedName, 1).getItem());
 	}
 
-	final public ItemStack getBlock(int stacksize){
+	public final ItemStack getBlock(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("block"+unlocalizedName, stacksize);
 	}
 
-	final public ItemStack getDust(int stacksize){
+	public final ItemStack getDust(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dust"+unlocalizedName, stacksize);
 	}
 
-	final public ItemStack getSmallDust(int stacksize){
+	public final ItemStack getSmallDust(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustSmall"+unlocalizedName, stacksize);
 	}
 
-	final public ItemStack getTinyDust(int stacksize){
+	public final ItemStack getTinyDust(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustTiny"+unlocalizedName, stacksize);
 	}
 
-	final public ItemStack[] getValidInputStacks(){
+	public final ItemStack[] getValidInputStacks(){
 		return ItemUtils.validItemsForOreDict(unlocalizedName);
 	}
 
-	final public ItemStack getIngot(int stacksize){
+	public final ItemStack getIngot(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingot"+unlocalizedName, stacksize);
 	}
 
-	final public ItemStack getPlate(int stacksize){
+	public final ItemStack getPlate(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plate"+unlocalizedName, stacksize);
 	}
 
-	final public ItemStack getPlateDouble(int stacksize){
+	public final ItemStack getPlateDouble(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateDouble"+unlocalizedName, stacksize);
 	}
 
-	final public ItemStack getGear(int stacksize){
+	public final ItemStack getGear(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("gear"+unlocalizedName, stacksize);
 	}
 
-	final public ItemStack getRod(int stacksize){
+	public final ItemStack getRod(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("stick"+unlocalizedName, stacksize);
 	}
 
-	final public ItemStack getLongRod(int stacksize){
+	public final ItemStack getLongRod(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("stickLong"+unlocalizedName, stacksize);
 	}
 
-	final public ItemStack getBolt(int stacksize){
+	public final ItemStack getBolt(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("bolt"+unlocalizedName, stacksize);
 	}
 
-	final public ItemStack getScrew(int stacksize){
+	public final ItemStack getScrew(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("screw"+unlocalizedName, stacksize);
 	}
 
-	final public ItemStack getRing(int stacksize){
+	public final ItemStack getRing(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ring"+unlocalizedName, stacksize);
 	}
 
-	final public ItemStack getRotor(int stacksize){
+	public final ItemStack getRotor(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("rotor"+unlocalizedName, stacksize);
 	}
 
-	final public ItemStack getFrameBox(int stacksize){
+	public final ItemStack getFrameBox(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("frameGt"+unlocalizedName, stacksize);
 	}
 
-	final public ItemStack getCell(int stacksize){
+	public final ItemStack getCell(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+unlocalizedName, stacksize);
 	}
 
-	final public ItemStack getNugget(int stacksize){
+	public final ItemStack getNugget(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("nugget"+unlocalizedName, stacksize);
 	}
 
@@ -400,7 +401,7 @@ public class Material {
 		return new ItemStack[]{};
 	}
 
-	final public ArrayList<MaterialStack> getComposites(){		
+	public final ArrayList<MaterialStack> getComposites(){		
 		return this.vMaterialInput;
 	}
 
@@ -420,7 +421,7 @@ public class Material {
 
 
 	@SuppressWarnings("static-method")
-	final public long[] getSmallestRatio(ArrayList<MaterialStack> tempInput){
+	public final long[] getSmallestRatio(ArrayList<MaterialStack> tempInput){
 		if (tempInput != null){
 			if (!tempInput.isEmpty()){
 				Utils.LOG_WARNING("length: "+tempInput.size());
@@ -492,12 +493,12 @@ public class Material {
 												dummyFormula = dummyFormula +tempInput.get(e).getStackMaterial().vChemicalFormula;											
 											}
 										}
-									}
-									else
+									} else {
 										dummyFormula = dummyFormula + "??";
-								}
-								else
+									}
+								} else {
 									dummyFormula = dummyFormula + "▓▓";
+								}
 							}
 						}
 						return MaterialUtils.subscript(dummyFormula);

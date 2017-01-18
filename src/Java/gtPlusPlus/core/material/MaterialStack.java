@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 
 public class MaterialStack {
 
-	private transient final int[] vAmount;
+	private final transient int[] vAmount;
 	private final Material stackMaterial;
 	private final double vPercentageToUse;
 
