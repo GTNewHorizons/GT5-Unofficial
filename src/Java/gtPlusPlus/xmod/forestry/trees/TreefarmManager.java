@@ -69,7 +69,7 @@ public class TreefarmManager {
 		}
 		
 		//IC2 Rubber Tree Compat
-		if (log.getClass().getName().toLowerCase().contains("rubwood")){
+		if (log.getClass().getName().toLowerCase().contains("rubwood") || log.getClass().getName().toLowerCase().contains("rubleaves")){
 			return true;
 		}
 		
