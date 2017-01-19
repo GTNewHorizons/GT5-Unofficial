@@ -35,25 +35,6 @@ import cpw.mods.fml.common.eventhandler.Event.Result;
 
 public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlockBase {
 
-	@Override
-	public void saveNBTData(NBTTagCompound aNBT) {
-		// TODO Auto-generated method stub
-		super.saveNBTData(aNBT);
-	}
-
-	@Override
-	public void loadNBTData(NBTTagCompound aNBT) {
-		// TODO Auto-generated method stub
-		super.loadNBTData(aNBT);
-	}
-
-	@Override
-	public boolean drainEnergyInput(long aEU) {
-		Utils.LOG_INFO("Draining Energy from the Multiblock.");
-		return super.drainEnergyInput(aEU);
-	}
-
-
 	public ArrayList<GT_MetaTileEntity_TieredMachineBlock> mCasings = new ArrayList();
 
 	/* private */ private int treeCheckTicks = 0;
@@ -77,6 +58,50 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 				"How to get your first logs without an axe.",
 				"Max Size(WxHxD): 9x1x9 (Controller, with upto 4 dirt out each direction on a flat plane.)"
 		};
+	}
+	
+
+	@Override
+	public void saveNBTData(NBTTagCompound aNBT) {
+		aNBT.setLong("mInternalPower", this.mInternalPower);
+		super.saveNBTData(aNBT);
+	}
+
+	@Override
+	public void loadNBTData(NBTTagCompound aNBT) {
+		this.mInternalPower = aNBT.getLong("mInternalPower");
+		super.loadNBTData(aNBT);
+	}
+
+	@Override
+	public boolean drainEnergyInput(long aEU) {
+		this.mInternalPower = (this.mInternalPower-32);
+		Utils.LOG_INFO("Draining internal power storage by 32EU. Stored:"+this.mInternalPower);	
+		return true;
+	}
+	
+	public boolean addPowerToInternalStorage(){
+		if (this.mEnergyHatches.size() > 0) {
+			for (final GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches){
+				if (isValidMetaTileEntity(tHatch)) {
+					if (tHatch.getEUVar() >= 128) {	
+						for (int o=0;o<(tHatch.getEUVar()/128);o++){
+							if (this.mInternalPower<(maxEUStore()-128)){
+								tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(128, false);	
+								this.mInternalPower = (this.mInternalPower+128);		
+								Utils.LOG_INFO("Increasing internal power storage by 128EU. Stored:"+this.mInternalPower);						
+							}
+						}
+					}
+				}
+			}
+		}					
+		return true;
+	}
+	
+	@Override
+	public long maxEUStore() {
+		return 3244800; //13*13*150*128
 	}
 
 	@Override
@@ -129,22 +154,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		Utils.LOG_INFO("Working");
-		/*if (!checkRecursiveBlocks()) {
-			this.mEfficiency = 0;
-			this.mEfficiencyIncrease = 0;
-			this.mMaxProgresstime = 0;
-			running = false;
-			return false;
-		}
-
-		if (mEfficiency == 0) {
-			this.mEfficiency = 10000;
-			this.mEfficiencyIncrease = 10000;
-			this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-			//GT_Pollution.addPollution(new ChunkPosition(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord()), mMaxProgresstime*5);
-			return true;
-		}*/
+		Utils.LOG_INFO("Working");	
 		this.mEfficiency = 0;
 		this.mEfficiencyIncrease = 0;
 		this.mMaxProgresstime = 0;
@@ -342,6 +352,10 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
 
 		if (aBaseMetaTileEntity.isServerSide()) {
+			
+			//Add some Power
+			addPowerToInternalStorage();
+			
 			//Check Inventory slots [1] - Find a valid Buzzsaw Blade or a Saw
 			try {
 				Utils.LOG_INFO(mInventory[1].getDisplayName());
@@ -401,15 +415,17 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 						for (int i = -7; i <= 7; i++) {
 							for (int j = -7; j <= 7; j++) {
 								for (int h=1;h<150;h++){
-									if ((i != -7 && i != 7) && (j != -7 && j != 7)) {										
-										if (TreefarmManager.isWoodLog(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)) 
-												|| TreefarmManager.isLeaves(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))){
+									if ((i != -7 && i != 7) && (j != -7 && j != 7)) {	
+										
+										Block loopBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
+										
+										if (TreefarmManager.isWoodLog(loopBlock) || TreefarmManager.isLeaves(loopBlock)){
 														
 											long tempStoredEU = tHatch.getEUVar();		
 											int powerDrain = 32;
 											
 											if (tempStoredEU >= powerDrain){										
-												Utils.LOG_INFO("Cutting a log, currently stored:"+tempStoredEU+" | max:"+tHatch.maxEUStore());
+												Utils.LOG_INFO("Cutting a "+loopBlock.getLocalizedName()+", currently stored:"+tempStoredEU+" | max:"+tHatch.maxEUStore());
 												//tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(128 * 1, false);
 												drainEnergyInput(powerDrain);
 												
