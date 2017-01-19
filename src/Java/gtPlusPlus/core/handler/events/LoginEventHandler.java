@@ -28,7 +28,7 @@ public class LoginEventHandler {
 		try {
 
 
-			if (localPlayerRef instanceof EntityPlayerMP && localPlayerRef != null){
+			if (localPlayerRef instanceof EntityPlayerMP){
 
 				//Populates player cache
 				if (!localPlayerRef.worldObj.isRemote){

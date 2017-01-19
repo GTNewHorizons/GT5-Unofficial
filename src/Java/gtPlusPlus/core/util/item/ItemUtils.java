@@ -78,7 +78,7 @@ public class ItemUtils {
 		try {
 			Item em = null;			
 			Item em1 = getItem(FQRN);
-			Utils.LOG_WARNING("Found: "+em1.getUnlocalizedName()+":"+meta);
+			//Utils.LOG_WARNING("Found: "+em1.getUnlocalizedName()+":"+meta);
 			if (em1 != null){
 				em = em1;
 			}
@@ -103,13 +103,12 @@ public class ItemUtils {
 		}
 	}
 
-	@SuppressWarnings("unused")
 	public static ItemStack getItemStackWithMeta(boolean MOD, String FQRN, String itemName, int meta, int itemstackSize){
 		if (MOD){
 			try {
 				Item em = null;			
 				Item em1 = getItem(FQRN);
-				Utils.LOG_WARNING("Found: "+em1.getUnlocalizedName()+":"+meta);
+				//Utils.LOG_WARNING("Found: "+em1.getUnlocalizedName()+":"+meta);
 				if (em1 != null){
 					if (null == em){
 						em = em1;
@@ -128,12 +127,11 @@ public class ItemUtils {
 		return null;
 	}
 
-	@SuppressWarnings("unused")
 	public static ItemStack simpleMetaStack(String FQRN, int meta, int itemstackSize){		
 		try {
 			Item em = null;			
 			Item em1 = getItem(FQRN);
-			Utils.LOG_WARNING("Found: "+em1.getUnlocalizedName()+":"+meta);
+			//Utils.LOG_WARNING("Found: "+em1.getUnlocalizedName()+":"+meta);
 			if (em1 != null){
 				if (null == em){
 					em = em1;
@@ -170,7 +168,7 @@ public class ItemUtils {
 			}
 			return null;
 		} catch (NullPointerException e) {
-			Utils.LOG_ERROR(item.getUnlocalizedName()+" not found. [NULL]");
+			//Utils.LOG_ERROR(item.getUnlocalizedName()+" not found. [NULL]");
 			return null;
 		}		
 	}
@@ -217,17 +215,6 @@ public class ItemUtils {
 		String[] fqrnSplit = fqrn.split(":");
 		return GameRegistry.findItemStack(fqrnSplit[0], fqrnSplit[1], Size);
 	}
-
-	// TODO
-	/*public static FluidStack getFluidStack(Materials m, int Size) // fqrn = fully qualified resource name
-	{
-		String[] fqrnSplit = fqrn.split(":");
-
-		FluidStack x = (FluidStack) "Materials."+m+".getFluid"(Size);
-
-		return GameRegistry.findItemStack(fqrnSplit[0], fqrnSplit[1], Size);
-	}*/
-
 
 	public static void generateSpawnEgg(String entityModID, String parSpawnName, int colourEgg, int colourOverlay){
 		Item itemSpawnEgg = new BasicSpawnEgg(entityModID, parSpawnName, colourEgg, colourOverlay).setUnlocalizedName("spawn_egg_"+parSpawnName.toLowerCase()).setTextureName(CORE.MODID+":spawn_egg");
@@ -405,8 +392,9 @@ public class ItemUtils {
 	public static BaseItemDecidust generateDecidust(Materials material){
 		if (GT_OreDictUnificator.get(OrePrefixes.dust, material, 1L) != null){
 			Material placeholder = MaterialUtils.generateMaterialFromGtENUM(material);
-			if (placeholder != null)
-				generateDecidust(placeholder);						
+			if (placeholder != null) {
+				generateDecidust(placeholder);
+			}						
 		}		
 		return null;
 	}
@@ -422,8 +410,9 @@ public class ItemUtils {
 	public static BaseItemCentidust generateCentidust(Materials material){
 		if (GT_OreDictUnificator.get(OrePrefixes.dust, material, 1L) != null){
 			Material placeholder = MaterialUtils.generateMaterialFromGtENUM(material);
-			if (placeholder != null)
-				generateCentidust(placeholder);						
+			if (placeholder != null) {
+				generateCentidust(placeholder);
+			}						
 		}		
 		return null;
 	}
@@ -515,7 +504,7 @@ public class ItemUtils {
 		if (blockDrops.isEmpty()){
 			return null;
 		}
-		ItemStack outputs[] = new ItemStack[blockDrops.size()];
+		ItemStack[] outputs = new ItemStack[blockDrops.size()];
 		short forCounter = 0;
 		for (ItemStack I : blockDrops){
 			outputs[forCounter] = I;

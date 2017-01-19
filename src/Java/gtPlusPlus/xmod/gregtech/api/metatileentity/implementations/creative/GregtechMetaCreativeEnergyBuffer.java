@@ -38,9 +38,6 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 		super(aID, aName, aNameRegional, aTier, aDescription, aSlotCount);
 	}
 
-	public boolean mCharge = false, mDecharge = false;
-	public int mBatteryCount = 1, mChargeableCount = 1;
-
 	@Override
 	public String[] getDescription() {
 		return new String[] {mDescription, "Added by: "	+ EnumChatFormatting.DARK_GREEN+"Alkalus"};

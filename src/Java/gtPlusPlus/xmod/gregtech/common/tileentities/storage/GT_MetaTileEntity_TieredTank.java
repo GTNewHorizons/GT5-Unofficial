@@ -62,6 +62,7 @@ extends GT_MetaTileEntity_BasicTank {
 					Utils.LOG_WARNING("mFluid was not null, Saving TileEntity NBT data.");
 					gtCraftingComponentsTag.setInteger("xAmount", mFluid.amount);
 					gtCraftingComponentsTag.setString("xFluid", mFluid.getFluid().getName());
+					mFluidName = mFluid.getFluid().getName();
 
 					//Backup the current tag
 					//gtCraftingComponentsTag.setTag("backupTag", internalCraftingComponentsTag);
@@ -347,13 +348,9 @@ extends GT_MetaTileEntity_BasicTank {
 		}
 
 		//Internal Tag was not valid.
-		try{
 		if (internalCraftingComponentsTag == null){
 			Utils.LOG_WARNING("Internal NBT data tag was null.");
 			return;
-		}	
-		} catch (NullPointerException x){
-			Utils.LOG_WARNING("Caught null NBT.");
 		}
 		/*if (internalCraftingComponentsTag.hasNoTags()){
 			Utils.LOG_WARNING("Internal NBT data tag was not valid.");

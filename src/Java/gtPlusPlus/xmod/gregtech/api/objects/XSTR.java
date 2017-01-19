@@ -255,10 +255,11 @@ public class XSTR extends Random {
 
     @Override
 	public void nextBytes(byte[] bytes_arr) {
-        for (int iba = 0, lenba = bytes_arr.length; iba < lenba; )
-            for (int rndba = nextInt(),
+        for (int iba = 0, lenba = bytes_arr.length; iba < lenba; ) {
+			for (int rndba = nextInt(),
                  nba = Math.min(lenba - iba, Integer.SIZE/Byte.SIZE);
                  nba-- > 0; rndba >>= Byte.SIZE)
                 bytes_arr[iba++] = (byte)rndba;
+		}
     }
 }

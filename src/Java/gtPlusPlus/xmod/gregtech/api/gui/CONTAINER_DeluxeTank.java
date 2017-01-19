@@ -19,8 +19,6 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class CONTAINER_DeluxeTank extends GT_Container_BasicTank {
 
-    public int mContent = 0;
-
     public CONTAINER_DeluxeTank(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
     }

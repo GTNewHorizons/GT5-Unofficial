@@ -170,10 +170,6 @@ public class GregtechRecipeRegistrator {
             GT_ModHandler.addSmeltingRecipe(GT_Utility.copyAmount(1, aStack), GregtechOreDictUnificator.getIngot(aMaterial.mSmeltInto, aMaterialAmount));
     }
 
-    public static void registerReverseArcSmelting(ItemStack aStack, GT_Materials aMaterial, long aMaterialAmount, GregtechMaterialStack aByProduct01, GregtechMaterialStack aByProduct02, GregtechMaterialStack aByProduct03) {
-        registerReverseArcSmelting(aStack, new GregtechItemData(aMaterial == null ? null : new GregtechMaterialStack(aMaterial, aMaterialAmount), aByProduct01, aByProduct02, aByProduct03));
-    }
-
     public static void registerReverseArcSmelting(ItemStack aStack, GregtechItemData aData) {
         if (aStack == null || aData == null) return;
         aData = new GregtechItemData(aData);
@@ -217,10 +213,6 @@ public class GregtechRecipeRegistrator {
             tAmount += tMaterial.mAmount * tMaterial.mMaterial.getMass();
 
         RA.addArcFurnaceRecipe(aStack, new ItemStack[]{GregtechOreDictUnificator.getIngotOrDust(aData.mMaterial), GregtechOreDictUnificator.getIngotOrDust(aData.getByProduct(0)), GregtechOreDictUnificator.getIngotOrDust(aData.getByProduct(1)), GregtechOreDictUnificator.getIngotOrDust(aData.getByProduct(2))}, null, (int) Math.max(16, tAmount / M), 96);
-    }
-
-    public static void registerReverseMacerating(ItemStack aStack, GT_Materials aMaterial, long aMaterialAmount, GregtechMaterialStack aByProduct01, GregtechMaterialStack aByProduct02, GregtechMaterialStack aByProduct03, boolean aAllowHammer) {
-        registerReverseMacerating(aStack, new GregtechItemData(aMaterial == null ? null : new GregtechMaterialStack(aMaterial, aMaterialAmount), aByProduct01, aByProduct02, aByProduct03), aAllowHammer);
     }
 
     public static void registerReverseMacerating(ItemStack aStack, GregtechItemData aData, boolean aAllowHammer) {

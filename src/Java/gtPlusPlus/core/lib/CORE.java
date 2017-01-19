@@ -20,6 +20,8 @@ public class CORE {
 	protected CORE(){
 		
 	}
+	
+	public final static float PI = (float) Math.PI;
 
 	public static final String name = "GT++";	
 	public static final String MODID = "miscutils";

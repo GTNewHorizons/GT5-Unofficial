@@ -87,7 +87,11 @@ public class RecipeUtils {
 					Utils.LOG_WARNING("Adding 1.");
 					j++;
 				}
-				else if (j >= 3){
+				else if (j == l){
+					Utils.LOG_WARNING("Done iteration.");
+					break;
+				}
+				else {
 					Utils.LOG_WARNING("ArrayList Values: '"+validSlots.get(j)+"' "+validSlots.get(j+1));
 					if (j < (l-2)){
 						Utils.LOG_WARNING("Adding 2.");
@@ -97,10 +101,6 @@ public class RecipeUtils {
 						Utils.LOG_WARNING("Done iteration.");
 						break;
 					}
-				}
-				else if (j == l){
-					Utils.LOG_WARNING("Done iteration.");
-					break;
 				}
 				if (validSlots.get(j) instanceof String || validSlots.get(j) instanceof ItemStack){
 					//Utils.LOG_WARNING("Is Valid: "+validSlots.get(j));

@@ -14,13 +14,11 @@ public class BaseItemCell extends BaseItemComponent{
 
 	private IIcon base;
 	private IIcon overlay;
-	private final Material cellMaterial;
 	ComponentTypes Cell = ComponentTypes.CELL;
 
 	public BaseItemCell(Material material) {
 		super(material, BaseItemComponent.ComponentTypes.CELL);	
-		this.cellMaterial = material;
-		fluidColour = (short[]) ((cellMaterial == null) ? extraData : cellMaterial.getRGBA());
+		fluidColour = (short[]) ((material == null) ? extraData : material.getRGBA());
 	}
 
 	@Override
@@ -36,8 +34,6 @@ public class BaseItemCell extends BaseItemComponent{
 		//this.overlay = cellMaterial.getFluid(1000).getFluid().get
 	}
 
-	private int fluidBright = 0;
-	private int tickValue;
 	private short[] fluidColour;
 	boolean upwards = true;
 

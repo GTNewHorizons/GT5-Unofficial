@@ -25,45 +25,7 @@ import net.minecraftforge.fluids.FluidStack;
  */
 public class Recipe_GT extends GT_Recipe{
 
-	public static volatile int VERSION = 508;
-	/**
-	 * If you want to change the Output, feel free to modify or even replace the whole ItemStack Array, for Inputs, please add a new Recipe, because of the HashMaps.
-	 */
-	public ItemStack[] mInputs, mOutputs;
-	/**
-	 * If you want to change the Output, feel free to modify or even replace the whole ItemStack Array, for Inputs, please add a new Recipe, because of the HashMaps.
-	 */
-	public FluidStack[] mFluidInputs, mFluidOutputs;
-	/**
-	 * If you changed the amount of Array-Items inside the Output Array then the length of this Array must be larger or equal to the Output Array. A chance of 10000 equals 100%
-	 */
-	public int[] mChances;
-	/**
-	 * An Item that needs to be inside the Special Slot, like for example the Copy Slot inside the Printer. This is only useful for Fake Recipes in NEI, since findRecipe() and containsInput() don't give a shit about this Field. Lists are also possible.
-	 */
-	public Object mSpecialItems;
-	public int mDuration, mEUt, mSpecialValue;
-	/**
-	 * Use this to just disable a specific Recipe, but the Configuration enables that already for every single Recipe.
-	 */
-	public boolean mEnabled = true;
-	/**
-	 * If this Recipe is hidden from NEI
-	 */
-	public boolean mHidden = false;
-	/**
-	 * If this Recipe is Fake and therefore doesn't get found by the findRecipe Function (It is still in the HashMaps, so that containsInput does return T on those fake Inputs)
-	 */
-	public boolean mFakeRecipe = false;
-	/**
-	 * If this Recipe can be stored inside a Machine in order to make Recipe searching more Efficient by trying the previously used Recipe first. In case you have a Recipe Map overriding things and returning one time use Recipes, you have to set this to F.
-	 */
-	public boolean mCanBeBuffered = true;
-	/**
-	 * If this Recipe needs the Output Slots to be completely empty. Needed in case you have randomised Outputs
-	 */
-	public boolean mNeedsEmptyOutput = false;
-	
+	public static volatile int VERSION = 508;	
 	
 	protected Recipe_GT(boolean aOptimize, ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems, int[] aChances, FluidStack[] aFluidInputs, FluidStack[] aFluidOutputs, int aDuration, int aEUt, int aSpecialValue) {
 		super(aOptimize, aInputs, aOutputs, aSpecialItems, aChances, aFluidInputs, aFluidOutputs, aDuration, aEUt, aSpecialValue);
@@ -179,11 +141,6 @@ public class Recipe_GT extends GT_Recipe{
         if (aIndex < 0 || aIndex >= mFluidOutputs.length || mFluidOutputs[aIndex] == null) return null;
         return mFluidOutputs[aIndex].copy();
     }
-
-	@Override
-	public GT_Recipe copy() {
-		return this.copy();
-	}
 
 	@Override
 	public boolean isRecipeInputEqual(boolean aDecreaseStacksizeBySuccess, FluidStack[] aFluidInputs, ItemStack... aInputs) {

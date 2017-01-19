@@ -77,7 +77,7 @@ public class Utils {
 
 		TC_AspectStack returnValue = null;
 
-		if (aspect.toUpperCase() == "COGNITIO"){
+		if (aspect.toUpperCase().equals("COGNITIO")){
 			//Adds in Compat for older GT Versions which Misspell aspects.
 			try {
 				if (EnumUtils.isValidEnum(TC_Aspects.class, "COGNITIO")){
@@ -92,7 +92,7 @@ public class Utils {
 				Utils.LOG_INFO("Invalid Thaumcraft Aspects - Report this issue to Alkalus");
 			}
 		}
-		else if (aspect.toUpperCase() == "EXANIMUS"){
+		else if (aspect.toUpperCase().equals("EXANIMUS")){
 			//Adds in Compat for older GT Versions which Misspell aspects.			
 			try {
 				if (EnumUtils.isValidEnum(TC_Aspects.class, "EXANIMUS")){
@@ -109,7 +109,7 @@ public class Utils {
 
 
 		}
-		else if (aspect.toUpperCase() == "PRAECANTATIO"){
+		else if (aspect.toUpperCase().equals("PRAECANTATIO")){
 			//Adds in Compat for older GT Versions which Misspell aspects.			
 			try {
 				if (EnumUtils.isValidEnum(TC_Aspects.class, "PRAECANTATIO")){
@@ -201,7 +201,9 @@ public class Utils {
 	 * Returns if that Liquid is IC2Steam.
 	 */
 	public static boolean isIC2Steam(FluidStack aFluid) {
-		if (aFluid == null) return false;
+		if (aFluid == null) {
+			return false;
+		}
 		return aFluid.isFluidEqual(getIC2Steam(1));
 	}
 
@@ -441,8 +443,7 @@ public class Utils {
 			result = hexChar+hexAsStringOrInt;
 			return result;
 		}
-		else if (hexAsStringOrInt.getClass() == Integer.class){
-			;
+		else if (hexAsStringOrInt.getClass() == Integer.class){			
 			if (((String) hexAsStringOrInt).length() != 6){
 				String temp = leftPadWithZeroes((String) hexAsStringOrInt, 6);
 				result = temp;

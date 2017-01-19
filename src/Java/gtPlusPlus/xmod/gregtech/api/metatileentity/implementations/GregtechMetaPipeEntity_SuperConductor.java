@@ -18,7 +18,6 @@ import ic2.api.energy.tile.IEnergySink;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import cofh.energy.IEnergyReceiver;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
@@ -26,15 +25,14 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import cofh.energy.IEnergyReceiver;
 
 public class GregtechMetaPipeEntity_SuperConductor extends GregtechMetaPipeEntityBase_Cable implements IMetaTileEntityCable {
-	public long mTransferredAmperage = 0, mTransferredAmperageLast20 = 0, mTransferredVoltageLast20 = 0;
-
+	
 	public final float mThickNess;
 	public final GT_Materials mMaterial;
 	public final long mCableLossPerMeter, mAmperage, mVoltage;
 	public final boolean mInsulated, mCanShock;
-	public long mRestRF;
 
 	public GregtechMetaPipeEntity_SuperConductor(int aID, String aName, String aNameRegional, float aThickNess, GT_Materials aMaterial, long aCableLossPerMeter, long aAmperage, long aVoltage, boolean aInsulated, boolean aCanShock) {
 		super(aID, aName, aNameRegional, 0, aMaterial, 0, aAmperage, aVoltage, aInsulated, aCanShock);

@@ -45,15 +45,15 @@ public class BlockBaseModular extends BasicBlock{
 			//Utils.LOG_INFO("==========================================");
 		}
 		
-		if (thisBlockType == BlockTypes.STANDARD.name().toUpperCase()){
+		if (thisBlockType.equals(BlockTypes.STANDARD.name().toUpperCase())){
 			LanguageRegistry.addName(this, "Block of "+blockMaterial);
 			//Utils.LOG_INFO("Registered Block in Language Registry as: "+"Block of "+blockMaterial);
 		}
-		else if (thisBlockType == BlockTypes.FRAME.name().toUpperCase()){
+		else if (thisBlockType.equals(BlockTypes.FRAME.name().toUpperCase())){
 			LanguageRegistry.addName(this, blockMaterial+ " Frame Box");
 			//Utils.LOG_INFO("Registered Block in Language Registry as: "+blockMaterial+ " Frame Box");
 		}
-		else if (thisBlockType == BlockTypes.ORE.name().toUpperCase()){
+		else if (thisBlockType.equals(BlockTypes.ORE.name().toUpperCase())){
 			LanguageRegistry.addName(this, blockMaterial+ " Ore");
 			//Utils.LOG_INFO("Registered Block in Language Registry as: "+blockMaterial+ " Frame Box");
 		}
@@ -63,15 +63,15 @@ public class BlockBaseModular extends BasicBlock{
 		}		
 		
 		//setOreDict(unlocalizedName, blockType);
-		if (thisBlockType == BlockTypes.STANDARD.name().toUpperCase()){
+		if (thisBlockType.equals(BlockTypes.STANDARD.name().toUpperCase())){
 			GameRegistry.registerBlock(this, ItemBlockGtBlock.class, Utils.sanitizeString(blockType.getTexture()+unlocalizedName));	
 			//Utils.LOG_INFO("Registered Block in Block Registry as: "+"Block of "+blockMaterial);		
 		}
-		else if (thisBlockType == BlockTypes.FRAME.name().toUpperCase()){
+		else if (thisBlockType.equals(BlockTypes.FRAME.name().toUpperCase())){
 			GameRegistry.registerBlock(this, ItemBlockGtFrameBox.class, Utils.sanitizeString(blockType.getTexture()+unlocalizedName));
 			//Utils.LOG_INFO("Registered Block in Block Registry as: "+blockMaterial+" Frame Box");			
 		}
-		else if (thisBlockType == BlockTypes.ORE.name().toUpperCase()){
+		else if (thisBlockType.equals(BlockTypes.ORE.name().toUpperCase())){
 			GameRegistry.registerBlock(this, ItemBlockGtBlock.class, Utils.sanitizeString(blockType.getTexture()+unlocalizedName));
 			//Utils.LOG_INFO("Registered Block in Block Registry as: "+blockMaterial+" Frame Box");			
 		}

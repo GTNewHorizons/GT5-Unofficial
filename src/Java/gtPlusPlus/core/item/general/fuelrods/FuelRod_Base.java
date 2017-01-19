@@ -147,7 +147,7 @@ public class FuelRod_Base extends Item{
 			int r = maximumFuel - i;
 			return r;
 		}
-		return getFuelRemaining(stack);
+		return 0;
 	}
 
 	public boolean setFuelRemainingExplicitly(int i){

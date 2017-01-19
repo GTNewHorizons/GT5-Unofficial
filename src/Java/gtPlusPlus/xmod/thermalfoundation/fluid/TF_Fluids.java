@@ -56,7 +56,6 @@ public class TF_Fluids
 		if (!FluidRegistry.isFluidRegistered(paramString)) {
 			FluidRegistry.registerFluid(paramFluid);
 		}
-		paramFluid = FluidRegistry.getFluid(paramString);
 	}
 
 	public static void registerDispenserHandlers()

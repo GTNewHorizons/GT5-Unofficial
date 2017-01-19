@@ -20,7 +20,6 @@ import net.minecraftforge.fluids.FluidStack;
  */
 public abstract class GT_MetaTileEntity_DeluxeTank extends GT_MetaTileEntity_BasicTank {
 
-	public FluidStack mFluid;
 	public FluidStack mFluid2;
 
 	/**

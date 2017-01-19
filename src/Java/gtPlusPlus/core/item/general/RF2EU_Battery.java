@@ -8,7 +8,6 @@ import ic2.api.item.*;
 
 import java.util.List;
 
-import cofh.energy.ItemEnergyContainer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,6 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import cofh.energy.ItemEnergyContainer;
 import cpw.mods.fml.common.IFuelHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -125,7 +125,7 @@ public class RF2EU_Battery extends ItemEnergyContainer implements IElectricItem,
 	{
 		int i = 30;
 
-		float f13 = (float)(Minecraft.getSystemTime() % 6000L) / 3000.0F * 3.141592F * 2.0F;
+		float f13 = ((float)(Minecraft.getSystemTime() % 6000L) / 3000.0F * CORE.PI * 2.0F);
 
 		float t = 0.9F + 0.1F * MathHelper.cos(f13);
 

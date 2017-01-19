@@ -6,6 +6,7 @@
 
 package gtPlusPlus.core.handler.render;
 
+import gtPlusPlus.core.lib.CORE;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -40,14 +41,14 @@ public class FirepitModel extends ModelBase
 		Side_B.setRotationPoint(-6F, 18F, 6F);
 		Side_B.setTextureSize(16, 16);
 		Side_B.mirror = true;
-		setRotation(Side_B, -0.3148822F, 1.570796F, 0F);
+		setRotation(Side_B, -0.3148822F, (CORE.PI/2), 0F);
 
 		Side_C = new ModelRenderer(this, 0, 0);
 		Side_C.addBox(0F, 0F, 0F, 12, 6, 1);
 		Side_C.setRotationPoint(6F, 18F, 6F);
 		Side_C.setTextureSize(16, 16);
 		Side_C.mirror = true;
-		setRotation(Side_C, -0.3148822F, 3.141593F, 0F);
+		setRotation(Side_C, -0.3148822F, CORE.PI, 0F);
 		//Side_C.mirror = false;
 
 		Side_D = new ModelRenderer(this, 0, 0);
@@ -62,14 +63,14 @@ public class FirepitModel extends ModelBase
 		Log1.setRotationPoint(4F, 10F, -4F);
 		Log1.setTextureSize(16, 16);
 		Log1.mirror = true;
-		setRotation(Log1, 0F, 0F, 1.570796F);
+		setRotation(Log1, 0F, 0F, (CORE.PI/2));
 
 		Log2 = new ModelRenderer(this, -2, 10);
 		Log2.addBox(0F, 0F, 0F, 14, 2, 2);
 		Log2.setRotationPoint(-4F, 10F, -4F);
 		Log2.setTextureSize(16, 16);
 		Log2.mirror = true;
-		setRotation(Log2, 1.570796F, 0F, 1.570796F);
+		setRotation(Log2, (CORE.PI/2), 0F, (CORE.PI/2));
 		//Log2.mirror = false;
 
 		Log3 = new ModelRenderer(this, 0, 10);
@@ -77,14 +78,14 @@ public class FirepitModel extends ModelBase
 		Log3.setRotationPoint(-4F, 10F, 4F);
 		Log3.setTextureSize(16, 16);
 		Log3.mirror = true;
-		setRotation(Log3, 3.141593F, 0F, 1.570796F);
+		setRotation(Log3, CORE.PI, 0F, (CORE.PI/2));
 
 		Log4 = new ModelRenderer(this, -2, 10);
 		Log4.addBox(0F, 0F, 0F, 14, 2, 2);
 		Log4.setRotationPoint(4F, 10F, 4F);
 		Log4.setTextureSize(16, 16);
 		Log4.mirror = true;
-		setRotation(Log4, 4.712389F, 0F, 1.570796F);
+		setRotation(Log4, 4.712389F, 0F, (CORE.PI/2));
 		//Log4.mirror = false;
 	}
 
@@ -103,7 +104,7 @@ public class FirepitModel extends ModelBase
 		Log4.render(f5);
 	}
 
-	private void setRotation(ModelRenderer model, float x, float y, float z)
+	private static void setRotation(ModelRenderer model, float x, float y, float z)
 	{
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;

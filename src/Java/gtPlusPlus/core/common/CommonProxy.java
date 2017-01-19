@@ -15,17 +15,14 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.debug.DEBUG_INIT;
 import gtPlusPlus.core.util.player.PlayerCache;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
-
-import java.util.Iterator;
-
 import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.*;
 
 public class CommonProxy {
+	
+	public static Meta_GT_Proxy GtProxy;
 	
 	public CommonProxy(){
 		//Should Register Gregtech Materials I've Made
@@ -38,19 +35,11 @@ public class CommonProxy {
 			else {
 				Utils.LOG_INFO("We're using Gregtech 5.08 or an equivalent fork.");
 			}
-			handleGtIntegrationInit();
+			Utils.LOG_INFO("Setting up our own GT_Proxy.");
+			GtProxy = new Meta_GT_Proxy();	
 		}
-	}
-	private static void handleGtIntegrationInit(){
-		Utils.LOG_INFO("Setting up our own GT_Proxy.");
-		Meta_GT_Proxy GtProxy = new Meta_GT_Proxy();	
-		for (String tOreName : OreDictionary.getOreNames()) {
-			ItemStack tOreStack;
-			Utils.LOG_INFO("Iterating list of GT materials for custom tool parts.");
-			for (Iterator i$ = OreDictionary.getOres(tOreName).iterator(); i$.hasNext(); GtProxy.registerOre(new OreDictionary.OreRegisterEvent(tOreName, tOreStack))) {
-				Utils.LOG_INFO("Iterating Material");
-				tOreStack = (ItemStack) i$.next();
-			}
+		else {
+			GtProxy = null;
 		}
 	}
 
@@ -122,12 +111,11 @@ public class CommonProxy {
 
 	}
 
-	@SuppressWarnings("static-method")
 	public int addArmor(String armor) {
 		return 0;
 	}
-	
-	public void generateMysteriousParticles(Entity theEntity) { }
 
+	public void generateMysteriousParticles(Entity entity) {		
+	}
 
 }

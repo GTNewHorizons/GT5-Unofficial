@@ -17,7 +17,6 @@ public class GUI_RTG
   extends GuiRTGenerator
 {
   public CONTAINER_RTG container;
-  public String name;
   
   public GUI_RTG(CONTAINER_RTG container1)
   {

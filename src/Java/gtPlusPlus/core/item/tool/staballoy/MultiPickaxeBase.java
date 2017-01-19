@@ -27,12 +27,6 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 		return 0;
 	}
 
-	protected Boolean FACING_HORIZONTAL = true;
-	protected String FACING = "north";
-	protected EntityPlayer localPlayer;
-	protected String lookingDirection;
-	protected World localWorld;
-	protected ItemStack thisPickaxe = null;
 	protected final int colour;
 	protected final String materialName;
 	protected final String displayName;

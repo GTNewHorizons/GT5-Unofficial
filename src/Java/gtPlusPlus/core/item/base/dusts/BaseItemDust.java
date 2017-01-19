@@ -28,14 +28,13 @@ public class BaseItemDust extends Item{
 	String name = "";
 	private int mTier;
 	private Material dustInfo;
-	private String oredictName;
 
 	public BaseItemDust(String unlocalizedName, String materialName, Material matInfo, int colour, String pileSize, int tier, int sRadioactivity) {
 		setUnlocalizedName(unlocalizedName);
 		this.setUnlocalizedName(unlocalizedName);
 		this.setMaxStackSize(64);
 		this.setTextureName(getCorrectTexture(pileSize));
-		
+
 		this.setCreativeTab(tabMisc);
 		this.colour = colour;
 		this.mTier = tier;
@@ -66,7 +65,6 @@ public class BaseItemDust extends Item{
 			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
 		}		
 		if (temp != null && !temp.equals("")){
-			oredictName = temp;
 			GT_OreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
 		}
 		addFurnaceRecipe();
@@ -111,6 +109,7 @@ public class BaseItemDust extends Item{
 		EntityUtils.applyRadiationDamageToEntity(sRadiation, world, entityHolding);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
 		//if (pileType != null && materialName != null && pileType != "" && materialName != "" && !pileType.equals("") && !materialName.equals("")){
@@ -222,8 +221,8 @@ public class BaseItemDust extends Item{
 				Utils.LOG_WARNING("Adding recipe for Hot "+materialName+" Ingots in a Blast furnace.");
 				String tempIngot = temp.replace("ingot", "ingotHot");
 				ItemStack tempOutputStack = ItemUtils.getItemStackOfAmountFromOreDict(tempIngot, 1);
-				Utils.LOG_WARNING("This will produce "+tempOutputStack.getDisplayName() + " Debug: "+tempIngot);
 				if (null != tempOutputStack){
+					Utils.LOG_WARNING("This will produce "+tempOutputStack.getDisplayName() + " Debug: "+tempIngot);
 					addBlastFurnaceRecipe(ItemUtils.getSimpleStack(this), null, tempOutputStack, null, 350*mTier);		
 				}				
 				return;

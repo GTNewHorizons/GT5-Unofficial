@@ -249,7 +249,6 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 	private boolean redstone = false;
 	private boolean fluidcoolreactor = false;
 	private boolean active = true;
-	public boolean prevActive = false;
 
 
 	public short getReactorSize()
@@ -273,6 +272,7 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 		return cols;
 	}
 
+	@Override
 	protected void updateEntityServer()
 	{
 		Utils.LOG_WARNING("updateEntityServer");

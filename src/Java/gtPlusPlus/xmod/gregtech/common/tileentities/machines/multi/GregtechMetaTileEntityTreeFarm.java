@@ -41,7 +41,8 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 	/* private */ private int plantSaplingTicks = 0;
 	/* private */ private int cleanupTicks = 0;
 	/* private */ private boolean canChop = false;
-	/* private */ private long mInternalPower = 0;
+	/* private */ private long mInternalPower = 0;	
+	/* private */ private static int powerDrain = 32;
 
 	public GregtechMetaTileEntityTreeFarm(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -89,7 +90,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 							if (this.mInternalPower<(maxEUStore()-128)){
 								tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(128, false);	
 								this.mInternalPower = (this.mInternalPower+128);		
-								Utils.LOG_INFO("Increasing internal power storage by 128EU. Stored:"+this.mInternalPower);						
+								//Utils.LOG_INFO("Increasing internal power storage by 128EU. Stored:"+this.mInternalPower);						
 							}
 						}
 					}
@@ -421,25 +422,24 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 										
 										if (TreefarmManager.isWoodLog(loopBlock) || TreefarmManager.isLeaves(loopBlock)){
 														
-											long tempStoredEU = tHatch.getEUVar();		
-											int powerDrain = 32;
+											long tempStoredEU = tHatch.getEUVar();	
 											
 											if (tempStoredEU >= powerDrain){										
-												Utils.LOG_INFO("Cutting a "+loopBlock.getLocalizedName()+", currently stored:"+tempStoredEU+" | max:"+tHatch.maxEUStore());
+												//Utils.LOG_INFO("Cutting a "+loopBlock.getLocalizedName()+", currently stored:"+tempStoredEU+" | max:"+tHatch.maxEUStore());
 												//tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(128 * 1, false);
 												drainEnergyInput(powerDrain);
 												
 												long tempStoredEU2 = tHatch.getEUVar();
 												if (tempStoredEU != tempStoredEU2){
 													if (tempStoredEU == (tempStoredEU2+powerDrain)){
-														Utils.LOG_INFO(powerDrain+"EU was drained.");													
+														//Utils.LOG_INFO(powerDrain+"EU was drained.");													
 													}
 													else {
-														Utils.LOG_INFO(""+(tempStoredEU-tempStoredEU2)+"EU was drained.");
+														//Utils.LOG_INFO(""+(tempStoredEU-tempStoredEU2)+"EU was drained.");
 													}
 												}
 												else {
-													Utils.LOG_INFO("Stored EU did not change.");	
+													//Utils.LOG_INFO("Stored EU did not change.");	
 												}
 												
 												posX = aBaseMetaTileEntity.getXCoord()+xDir+i;
@@ -504,7 +504,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		return true;		
 	}
 
-	private static boolean findSaplings(final IGregTechTileEntity aBaseMetaTileEntity){
+	private boolean findSaplings(final IGregTechTileEntity aBaseMetaTileEntity){
 		Utils.LOG_INFO("called findSaplings()");
 		int saplings = 0;
 		final int xDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 7; 
@@ -520,6 +520,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 					posiZ = aBaseMetaTileEntity.getZCoord()+zDir+j;
 					//Utils.LOG_INFO("Found a sapling to grow.");
 					saplings++;
+					drainEnergyInput(powerDrain);
 					applyBonemeal(aBaseMetaTileEntity.getWorld(), posiX, posiY, posiZ);
 				}				
 			}
@@ -591,6 +592,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 										world.setBlockMetadataWithNotify(posX, posY, posZ, n.getItemDamage(), 4);
 										//Deplete Input stack
 										depleteInputEx(n);
+										drainEnergyInput(powerDrain);
 										counter--;
 										//Update slot contents?
 										updateSlots();

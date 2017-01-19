@@ -230,11 +230,6 @@ public enum GregtechOrePrefixes {
 		return true;
 	}
 
-	public boolean isIgnored(GT_Materials aMaterial) {
-		if (aMaterial != null && (!aMaterial.mUnificatable || aMaterial != aMaterial.mMaterialInto)) return true;
-		return mIgnoredMaterials.contains(aMaterial);
-	}
-
 	public boolean addFamiliarPrefix(GregtechOrePrefixes aPrefix) {
 		if (aPrefix == null || mFamiliarPrefixes.contains(aPrefix) || aPrefix == this) return false;
 		return mFamiliarPrefixes.add(aPrefix);
@@ -530,7 +525,7 @@ public enum GregtechOrePrefixes {
 
 		public static GT_Materials get(String aMaterialName) {
 			Object tObject = GT_Utility.getFieldContent(GT_Materials.class, aMaterialName, false, false);
-			if (tObject != null && tObject instanceof Materials) return (GT_Materials) tObject;
+			if (tObject != null && tObject instanceof GT_Materials) return (GT_Materials) tObject;
 			return _NULL;
 		}
 

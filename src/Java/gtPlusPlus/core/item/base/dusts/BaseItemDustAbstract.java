@@ -18,7 +18,7 @@ public abstract class BaseItemDustAbstract extends Item{
 	public BaseItemDustAbstract(String unlocalizedName, String materialName, int colour, String pileSize) {
 		this.setUnlocalizedName(unlocalizedName);
 		this.setMaxStackSize(64);	
-		if (pileSize == "dust" || pileSize == "Dust"){
+		if (pileSize.toLowerCase().equals("dust")){
 			this.setTextureName(CORE.MODID + ":" + "dust");			
 		}
 		else{
@@ -31,6 +31,7 @@ public abstract class BaseItemDustAbstract extends Item{
 		GameRegistry.registerItem(this, unlocalizedName);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public abstract void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool);
 

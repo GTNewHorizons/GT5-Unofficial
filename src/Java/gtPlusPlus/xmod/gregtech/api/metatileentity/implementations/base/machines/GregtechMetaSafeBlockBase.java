@@ -35,7 +35,7 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 	@Override
 	public ITexture[][][] getTextureSet(ITexture[] aTextures) {
 		ITexture[][][] rTextures = new ITexture[6][17][];
-		ITexture tIcon = getOverlayIcon(), tOut = new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_QCHEST), tUp = new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_VENT), tShitGoesWrong = new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_FLUID_SIDE_ACTIVE);
+		ITexture tIcon = getOverlayIcon(), tOut = new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_QCHEST), tUp = new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_VENT);
 		for (byte i = -1; i < 16; i++) {
 			rTextures[0][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1], tUp, tIcon}; //Back
 			rTextures[1][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1], tIcon}; // Right, Strangely The top side as well when facing East?

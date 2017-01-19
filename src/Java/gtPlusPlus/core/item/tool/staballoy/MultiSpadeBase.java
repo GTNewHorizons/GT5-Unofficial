@@ -6,10 +6,8 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -26,12 +24,6 @@ public class MultiSpadeBase extends StaballoySpade{
 		return 0;
 	}
 
-	protected Boolean FACING_HORIZONTAL = true;
-	protected String FACING = "north";
-	protected EntityPlayer localPlayer;
-	protected String lookingDirection;
-	protected World localWorld;
-	protected ItemStack thisPickaxe = null;
 	protected final int colour;
 	protected final String materialName;
 	protected final String displayName;

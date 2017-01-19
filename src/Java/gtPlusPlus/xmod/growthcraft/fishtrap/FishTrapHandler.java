@@ -14,15 +14,15 @@ public class FishTrapHandler {
 
 	protected static void addFish(String lootType, ItemStack lootStack, int lootChance){
 		if (LoadedMods.getModVersion("Growthcraft").contains("2.3.1")){
-			if (lootType == fishTypes[0]){
+			if (lootType.equals(fishTypes[0])){
 				Growthcraft_Old.addTrapFish(lootStack, lootChance);
 				Utils.LOG_INFO("Added "+lootStack.getDisplayName()+" as an extra Fish for Growthcraft Fishtraps.");
 			}
-			else if (lootType == fishTypes[1]){
+			else if (lootType.equals(fishTypes[1])){
 				Growthcraft_Old.addTrapJunk(lootStack, lootChance);
 				Utils.LOG_INFO("Added "+lootStack.getDisplayName()+" as extra Junk for Growthcraft Fishtraps.");
 			}
-			else if (lootType == fishTypes[2]){
+			else if (lootType.equals(fishTypes[2])){
 				Growthcraft_Old.addTrapTreasure(lootStack, lootChance);
 				Utils.LOG_INFO("Added "+lootStack.getDisplayName()+" as extra Treasure for Growthcraft Fishtraps.");
 			}
@@ -67,79 +67,79 @@ public class FishTrapHandler {
 	}
 	
 	private static int getLootChance(String name){
-		if (name == harvestcraftFish[0]){
+		if (name.equals(harvestcraftFish[0])){
 			return 20;
 		}
-		else if (name == harvestcraftFish[1]){
+		else if (name.equals(harvestcraftFish[1])){
 			return 10;
 		}
-		else if (name == harvestcraftFish[2]){
+		else if (name.equals(harvestcraftFish[2])){
 			return 15;
 		}
-		else if (name == harvestcraftFish[3]){
+		else if (name.equals(harvestcraftFish[3])){
 			return 55;
 		}
-		else if (name == harvestcraftFish[4]){
+		else if (name.equals(harvestcraftFish[4])){
 			return 5;
 		}
-		else if (name == harvestcraftFish[5]){
+		else if (name.equals(harvestcraftFish[5])){
 			return 8;
 		}
-		else if (name == harvestcraftFish[6]){
+		else if (name.equals(harvestcraftFish[6])){
 			return 11;
 		}
-		else if (name == harvestcraftFish[7]){
+		else if (name.equals(harvestcraftFish[7])){
 			return 11;
 		}
-		else if (name == harvestcraftFish[8]){
+		else if (name.equals(harvestcraftFish[8])){
 			return 15;
 		}
-		else if (name == harvestcraftFish[9]){
+		else if (name.equals(harvestcraftFish[9])){
 			return 1;
 		}
-		else if (name == harvestcraftFish[10]){
+		else if (name.equals(harvestcraftFish[10])){
 			return 5;
 		}
-		else if (name == harvestcraftFish[11]){
+		else if (name.equals(harvestcraftFish[11])){
 			return 10;
 		}
-		else if (name == harvestcraftFish[12]){
+		else if (name.equals(harvestcraftFish[12])){
 			return 25;
 		}
-		else if (name == harvestcraftFish[13]){
+		else if (name.equals(harvestcraftFish[13])){
 			return 15;
 		}
-		else if (name == harvestcraftFish[14]){
+		else if (name.equals(harvestcraftFish[14])){
 			return 20;
 		} //"Perch", "Scallop", "Shrimp", "Snail", "Snapper", "Tilapia", "Trout", "Tuna", "Turtle", "Walleye"};
-		else if (name == harvestcraftFish[15]){
+		else if (name.equals(harvestcraftFish[15])){
 			return 22;
 		}
-		else if (name == harvestcraftFish[16]){
+		else if (name.equals(harvestcraftFish[16])){
 			return 10;
 		}
-		else if (name == harvestcraftFish[17]){
+		else if (name.equals(harvestcraftFish[17])){
 			return 35;
 		}
-		else if (name == harvestcraftFish[18]){
+		else if (name.equals(harvestcraftFish[18])){
 			return 3;
 		}
-		else if (name == harvestcraftFish[19]){
+		else if (name.equals(harvestcraftFish[19])){
 			return 20;
 		}
-		else if (name == harvestcraftFish[20]){
+		else if (name.equals(harvestcraftFish[20])){
 			return 4;
 		}
-		else if (name == harvestcraftFish[21]){
+		else if (name.equals(harvestcraftFish[21])){
 			return 40;
 		}
-		else if (name == harvestcraftFish[22]){
+		else if (name.equals(harvestcraftFish[22])){
 			return 30;
 		}
-		else if (name == harvestcraftFish[23]){
+		else if (name.equals(harvestcraftFish[23])){
 			return 5;
 		}
-		else if (name == harvestcraftFish[24]){
+		else if (name.equals(harvestcraftFish[24])){
 			return 8;
 		}
 		else {

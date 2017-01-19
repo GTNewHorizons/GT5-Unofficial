@@ -46,7 +46,7 @@ public class StaballoyAxe extends ItemAxe{
 		super.addInformation(stack, aPlayer, list, bool);
 	}
 	
-	public boolean canIgnore(Block bit){
+	public static boolean canIgnore(Block bit){
 		if (bit instanceof BlockAir)return true;
 		if (bit instanceof BlockGrass)return true;
 		if (bit instanceof BlockSand)return true;
@@ -105,7 +105,7 @@ public class StaballoyAxe extends ItemAxe{
 					for(int x=19;x>=0;x--){
 						int r=check(par1World,x,y,z,xo,yo,zo);
 						if (r==2) return 3;
-						if (r==2) return 2;
+						//if (r==2) return 2;
 						if (r==1) f=true;
 					}
 		}
@@ -154,7 +154,7 @@ public class StaballoyAxe extends ItemAxe{
 					for(int x=19;x>=0;x--){
 						int r=check2(par1World,x,y,z,xo,yo,zo);
 						if (r==2) return 3;
-						if (r==2) return 2;
+						//if (r==2) return 2;
 						if (r==1) f=true;
 					}
 		}
@@ -178,7 +178,7 @@ public class StaballoyAxe extends ItemAxe{
 				}
 	}
 
-	private void breakMushroom(World wld, Block bit, EntityPlayer plr, boolean silk, int x, int y, int z, int met) {
+	private static void breakMushroom(World wld, Block bit, EntityPlayer plr, boolean silk, int x, int y, int z, int met) {
 		if (silk){
 			ItemStack stk = null; //TODO
 			/*if (bit==Blocks.brown_mushroom_block) stk = new ItemStack(LoonToolItems.brown_mushroom_block,1,met);

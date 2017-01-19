@@ -2,7 +2,6 @@ package gtPlusPlus.core.util.player;
 
 import gtPlusPlus.core.util.Utils;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -44,7 +43,7 @@ public class UtilsMining {
 		}
 	}
 
-	public static void customMine(World world, String FACING, EntityPlayer aPlayer){
+	/*public static void customMine(World world, String FACING, EntityPlayer aPlayer){
 
 		float DURABILITY_LOSS = 0;
 		if (!world.isRemote){
@@ -71,10 +70,10 @@ public class UtilsMining {
 				for(int i = -2; i < 3; i++) {
 					for(int j = -2; j < 3; j++) {
 						for(int k = -2; k < 3; k++) {
-/*//							float dur = calculateDurabilityLoss(world, X + i, Y + k, Z + j);
+//							float dur = calculateDurabilityLoss(world, X + i, Y + k, Z + j);
 //							DURABILITY_LOSS = (DURABILITY_LOSS + dur);	
 //							Utils.LOG_WARNING("Added Loss: "+dur);
-*/							removeBlockAndDropAsItem(world, X + i, Y + k, Z + j);
+							removeBlockAndDropAsItem(world, X + i, Y + k, Z + j);
 						}
 					}
 				}
@@ -95,9 +94,9 @@ public class UtilsMining {
 				for(int i = -1; i < 2; i++) {
 					for(int j = -1; j < 2; j++) {
 						for(int k = -1; k < 2; k++) {
-							/*float dur = calculateDurabilityLoss(world, X+k, Y + i, Z + j);
+							float dur = calculateDurabilityLoss(world, X+k, Y + i, Z + j);
 							DURABILITY_LOSS = (DURABILITY_LOSS + dur);
-							Utils.LOG_WARNING("Added Loss: "+dur);*/
+							Utils.LOG_WARNING("Added Loss: "+dur);
 							removeBlockAndDropAsItem(world, X+k, Y + i, Z + j);
 						}
 					}
@@ -119,9 +118,9 @@ public class UtilsMining {
 				for(int i = -1; i < 2; i++) {
 					for(int j = -1; j < 2; j++) {
 						for(int k = -1; k < 2; k++) {
-							/*float dur = calculateDurabilityLoss(world, X + j, Y + i, Z+k);
+							float dur = calculateDurabilityLoss(world, X + j, Y + i, Z+k);
 							DURABILITY_LOSS = (DURABILITY_LOSS + dur);
-							Utils.LOG_WARNING("Added Loss: "+dur);*/
+							Utils.LOG_WARNING("Added Loss: "+dur);
 							removeBlockAndDropAsItem(world, X + j, Y + i, Z+k);
 						}
 					}
@@ -137,7 +136,7 @@ public class UtilsMining {
 			}
 			DURABILITY_LOSS = 0;
 		}
-	}
+	}*/
 	
 	
 	public static boolean getBlockType(Block block, World world, int[] xyz, int miningLevel){

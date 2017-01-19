@@ -59,7 +59,7 @@ public class BaseItemDustUnique extends Item{
 			temp = temp.replace("itemD", "d");
 			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
 		}		
-		if (temp != null && temp != ""){
+		if (temp != null && !temp.equals("")){
 			GT_OreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
 		}
 	}

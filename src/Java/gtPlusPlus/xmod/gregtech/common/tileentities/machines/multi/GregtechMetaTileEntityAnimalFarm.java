@@ -35,10 +35,6 @@ public class GregtechMetaTileEntityAnimalFarm extends GT_MetaTileEntity_MultiBlo
 
 	private boolean running = false;
 	private boolean p1, p2, p3, p4, p5, p6;
-	public int mMaxProgresstime = 0;
-	public int mUpdate = 5;
-	public int mProgresstime = 0;
-	public boolean mMachine = false;
 	public ItemStack mOutputItem1;
 	public ItemStack mOutputItem2;
 	private Block Humus;
