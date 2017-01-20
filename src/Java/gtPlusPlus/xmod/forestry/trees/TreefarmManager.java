@@ -1,10 +1,7 @@
 package gtPlusPlus.xmod.forestry.trees;
 
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.items.GT_MetaGenerated_Tool;
-import gregtech.common.items.GT_MetaGenerated_Item_02;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.slots.SlotBuzzSaw.SAWTOOL;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -134,26 +131,5 @@ public class TreefarmManager {
 	/*public static boolean isSaplingBlock(Block sapling){
 		return (sapling == Blocks.sapling ? true : (sapling == Blocks.))
 	}*/
-
-	public static SAWTOOL isCorrectMachinePart(final ItemStack aStack) {
-		if (aStack != null){
-			if (aStack.getItem() instanceof GT_MetaGenerated_Item_02 || aStack.getItem() instanceof GT_MetaGenerated_Tool){
-				if (OrePrefixes.craftingTool.contains(aStack)){
-					if (aStack.getDisplayName().toLowerCase().contains("saw")){
-						if (aStack.getItemDamage() == 10){
-							return SAWTOOL.NONE;
-						}
-						else if (aStack.getItemDamage() == 140){
-							return SAWTOOL.NONE;
-						}
-						else {
-							return SAWTOOL.NONE;
-						}
-					}
-				}
-			}
-		}
-		return SAWTOOL.NONE;
-	}
 
 }
