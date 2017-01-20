@@ -464,7 +464,6 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 											long tempStoredEU = mInternalPower;											
 											if (tempStoredEU >= powerDrain){										
 												Utils.LOG_MACHINE_INFO("Cutting a "+loopBlock.getLocalizedName()+", currently stored:"+tempStoredEU+" | max:"+maxEUStore());
-												//tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(128 * 1, false);
 												drainEnergyInput(powerDrain);
 
 												long tempStoredEU2 = mInternalPower;
@@ -592,7 +591,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		int counter = 0;
 		if (r.size() > 0){
 			Utils.LOG_MACHINE_INFO("| r was not null. "+r.size()+" |");
-			for (ItemStack n : r){
+			OUTER : for (ItemStack n : r){
 				Utils.LOG_MACHINE_INFO("found "+n.getDisplayName());
 				if (OrePrefixes.sapling.contains(n) || n.getDisplayName().toLowerCase().contains("sapling")){
 					Utils.LOG_MACHINE_INFO(""+n.getDisplayName());
@@ -610,9 +609,11 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 
 					//Find Gaps for Saplings after scanning Item Busses
 					for (int i = -7; i <= 7; i++) {
-						for (int j = -7; j <= 7; j++) {
-							int h = 1;			
-							if (counter > 0)
+						INNER : for (int j = -7; j <= 7; j++) {
+							int h = 1;		
+							
+							
+							if (counter > 0){								
 								if ((i != -7 && i != 7) && (j != -7 && j != 7)) {		
 									if (TreefarmManager.isAirBlock(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))){									
 
@@ -654,15 +655,21 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 									}	
 									else {
 										//Utils.LOG_MACHINE_INFO("No space for sapling, no air.");
-										continue;
+										continue INNER;
 									}
 								}
+							
+						} //TODO
+							else {
+								break OUTER;
+							}
+							
 						}
 					}
 				}
 				else {
 					Utils.LOG_MACHINE_INFO("item was not a sapling");
-					continue;
+					continue OUTER;
 				}
 			}
 		}

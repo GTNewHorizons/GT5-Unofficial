@@ -79,7 +79,19 @@ public class TreefarmManager {
 		return  OrePrefixes.log.contains(new ItemStack(log, 1))&& ((tTool != null) && (tTool.equals("axe"))) || (log.getMaterial() != Material.wood) ? false : (OrePrefixes.fence.contains(new ItemStack(log, 1)) ? false : true);
 	}
 
-	public static boolean isLeaves(Block log){
+	public static boolean isLeaves(Block log){		
+		if (log.getUnlocalizedName().toLowerCase().contains("leaf")){
+			return true;
+		}
+		if (log.getUnlocalizedName().toLowerCase().contains("leaves")){
+			return true;
+		}
+		if (log.getLocalizedName().toLowerCase().contains("leaf")){
+			return true;
+		}
+		if (log.getLocalizedName().toLowerCase().contains("leaves")){
+			return true;
+		}		
 		return  OrePrefixes.leaves.contains(new ItemStack(log, 1)) || (log.getMaterial() == Material.leaves);
 	}
 
