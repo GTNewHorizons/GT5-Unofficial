@@ -5,6 +5,7 @@ import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.proxy.ClientProxy;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -163,6 +164,13 @@ public class Utils {
 		//}
 	}
 
+	//Non-Dev Comments 
+	public static void LOG_MACHINE_INFO(String s){
+		if (CORE.configSwitches.MACHINE_INFO || ClientProxy.playerName.toLowerCase().contains("draknyte1")){
+		FMLLog.info("GT++: Machine Info: "+s);
+		}
+	}
+
 	//Developer Comments
 	public static void LOG_WARNING(String s){
 		if (CORE.DEBUG){
@@ -180,7 +188,7 @@ public class Utils {
 	//Developer Logger
 	public static void LOG_SPECIFIC_WARNING(String whatToLog, String msg, int line){
 		//if (!CORE.DEBUG){		
-			FMLLog.warning("GT++ |"+line+"| "+whatToLog+" | "+msg);
+		FMLLog.warning("GT++ |"+line+"| "+whatToLog+" | "+msg);
 		//}			
 	}
 
@@ -540,7 +548,7 @@ public class Utils {
 		return temp;
 
 	}
-	
+
 	public static ToolMaterial generateToolMaterial(Material material){
 		String name = material.getLocalizedName();
 		int harvestLevel = material.vHarvestLevel;

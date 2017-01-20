@@ -1,6 +1,7 @@
 package gtPlusPlus.core.handler.events;
 
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.proxy.ClientProxy;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.player.PlayerCache;
 import gtPlusPlus.core.util.player.PlayerUtils;
@@ -24,6 +25,9 @@ public class LoginEventHandler {
 		this.localPlayerRef = event.player;
 		this.localPlayersName = event.player.getDisplayName();
 		this.localPlayersUUID = event.player.getUniqueID();
+		
+		//Set this for easier use elsewhere.
+		ClientProxy.playerName = this.localPlayersName;
 
 		try {
 

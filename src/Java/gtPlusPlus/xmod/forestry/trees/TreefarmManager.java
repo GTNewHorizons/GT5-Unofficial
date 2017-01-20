@@ -1,7 +1,10 @@
 package gtPlusPlus.xmod.forestry.trees;
 
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.common.items.GT_MetaGenerated_Item_02;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.slots.SlotBuzzSaw.SAWTOOL;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -63,16 +66,16 @@ public class TreefarmManager {
 
 	public static boolean isWoodLog(Block log){
 		String tTool = log.getHarvestTool(0);
-		
+
 		if (log == Blocks.log || log == Blocks.log2){
 			return true;
 		}
-		
+
 		//IC2 Rubber Tree Compat
 		if (log.getClass().getName().toLowerCase().contains("rubwood") || log.getClass().getName().toLowerCase().contains("rubleaves")){
 			return true;
 		}
-		
+
 		return  OrePrefixes.log.contains(new ItemStack(log, 1))&& ((tTool != null) && (tTool.equals("axe"))) || (log.getMaterial() != Material.wood) ? false : (OrePrefixes.fence.contains(new ItemStack(log, 1)) ? false : true);
 	}
 
@@ -106,11 +109,11 @@ public class TreefarmManager {
 		if (air.getLocalizedName().toLowerCase().contains("air")){
 			return true;
 		}
-		
+
 		if (air.getClass().getName().toLowerCase().contains("residual") || air.getClass().getName().toLowerCase().contains("heat")){
 			return true;
 		}
-		
+
 		//Utils.LOG_INFO("Found "+air.getLocalizedName());
 
 		return (air == Blocks.air ? true : (air instanceof BlockAir ? true : false));
@@ -119,5 +122,26 @@ public class TreefarmManager {
 	/*public static boolean isSaplingBlock(Block sapling){
 		return (sapling == Blocks.sapling ? true : (sapling == Blocks.))
 	}*/
+
+	public static SAWTOOL isCorrectMachinePart(final ItemStack aStack) {
+		if (aStack != null){
+			if (aStack.getItem() instanceof GT_MetaGenerated_Item_02 || aStack.getItem() instanceof GT_MetaGenerated_Tool){
+				if (OrePrefixes.craftingTool.contains(aStack)){
+					if (aStack.getDisplayName().toLowerCase().contains("saw")){
+						if (aStack.getItemDamage() == 10){
+							return SAWTOOL.NONE;
+						}
+						else if (aStack.getItemDamage() == 140){
+							return SAWTOOL.NONE;
+						}
+						else {
+							return SAWTOOL.NONE;
+						}
+					}
+				}
+			}
+		}
+		return SAWTOOL.NONE;
+	}
 
 }

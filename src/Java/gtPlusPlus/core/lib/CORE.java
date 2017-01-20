@@ -79,12 +79,14 @@ public class CORE {
 	RES_PATH_FLUIDS = MODID + ":" + TEX_DIR_FLUIDS;
 
 
+
 	//public static final Materials2[] MiscGeneratedMaterials = new Materials2[1000];
 
 	public static class configSwitches {
 
 		//Debug
 		public static boolean disableEnderIOIntegration = false;
+		public static boolean MACHINE_INFO = false;
 		
 		//Tools
 		public static boolean enableSkookumChoochers = true;

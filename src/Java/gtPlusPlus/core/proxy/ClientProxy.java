@@ -26,6 +26,8 @@ public class ClientProxy extends CommonProxy{
 	}
 	*/
 	
+	public static String playerName = "";
+	
 	@Override
 	public void preInit(FMLPreInitializationEvent e) {
 		// TODO Auto-generated method stub
