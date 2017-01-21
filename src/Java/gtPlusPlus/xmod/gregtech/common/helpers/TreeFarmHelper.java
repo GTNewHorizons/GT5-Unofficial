@@ -153,10 +153,10 @@ public class TreeFarmHelper {
 				if (OrePrefixes.craftingTool.contains(aStack)){
 					if (aStack.getDisplayName().toLowerCase().contains("saw")){
 						if (aStack.getItemDamage() == 10){
-							return SAWTOOL.NONE;
+							return SAWTOOL.SAW;
 						}
 						else if (aStack.getItemDamage() == 140){
-							return SAWTOOL.NONE;
+							return SAWTOOL.BUZZSAW;
 						}
 						else {
 							return SAWTOOL.NONE;

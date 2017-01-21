@@ -16,6 +16,7 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.forestry.trees.TreefarmManager;
+import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_TreeFarmer;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_TreeFarmer;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.TreeFarmHelper;
@@ -35,11 +36,11 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 	/* private */ private int treeCheckTicks = 0;
 	/* private */ private int plantSaplingTicks = 0;
 	/* private */ private int cleanupTicks = 0;
-	/* private */ private boolean canChop = false;
-	/* private */ private long mInternalPower = 0;	
+	/* private */ public long mInternalPower = 0;	
 	/* private */ private static int powerDrain = 32;
 
 	private SAWTOOL mCurrentMachineTool = SAWTOOL.NONE;
+	private boolean canChop = false;
 
 	private int cuttingNumber = 0;
 	private int cuttingNumber2 = 0;
@@ -58,8 +59,17 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		return new String[]{
 				"Controller Block for the Tree Farmer",
 				"How to get your first logs without an axe.",
-				"Max Size(WxHxD): 9x1x9 (Controller, with upto 4 dirt out each direction on a flat plane.)"
+				"Size(WxHxD): 15x2x15",
+				"Purple: Farm Keeper Blocks",
+				"Dark Purple: Dirt/Grass/Podzol/Humus",
+				"Light Blue: Fence/Fence Gate",
+				"Blue/Yellow: Controller"
 		};
+	}
+	
+	public long getStoredInternalPower(){
+		//Utils.LOG_MACHINE_INFO("returning "+this.mInternalPower+"EU to the called method.");
+		return this.mInternalPower;
 	}
 
 
@@ -109,7 +119,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == 1) {
-			return new ITexture[]{new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Acacia_Log), new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Vent_Fast : TexturesGtBlock.Overlay_Machine_Vent)};
+			return new ITexture[]{new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Acacia_Log), new GT_RenderedTexture(canChop ? TexturesGtBlock.Overlay_Machine_Vent_Fast : TexturesGtBlock.Overlay_Machine_Vent)};
 		}
 		return new ITexture[]{new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Farm_Manager)};
 	}
@@ -147,7 +157,12 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
 		return new GUI_TreeFarmer(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "TreeFarmer.png");
-	}
+	}	
+
+    @Override
+	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new CONTAINER_TreeFarmer(aPlayerInventory, aBaseMetaTileEntity);
+    }
 
 	@Override
 	public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
@@ -165,13 +180,15 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		if (currentInputItem != SAWTOOL.NONE){
 			if (currentInputItem == SAWTOOL.SAW){
 				mCurrentMachineTool = SAWTOOL.SAW;
-				isValid = true;
 			}
-			else if (currentInputItem == SAWTOOL.BUZZSAW){
+			else {
 				mCurrentMachineTool = SAWTOOL.BUZZSAW;	
-				isValid = true;			
 			}
-		}		 
+			isValid = true;
+		}
+		else {
+			//Utils.LOG_MACHINE_INFO("Found "+aStack.getDisplayName());
+		}
 		return isValid;
 	}
 
@@ -357,7 +374,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 
 	@Override
 	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
-
+		//super.onPostTick(aBaseMetaTileEntity, aTick);
 		if (aBaseMetaTileEntity.isServerSide()) {
 
 			//Does it have a tool this cycle to cut?
@@ -370,6 +387,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 			try {
 				validCuttingTool = isCorrectMachinePart(mInventory[1]);
 				if (validCuttingTool){
+					this.mMaxProgresstime = 600;
 					String materialName = GT_MetaGenerated_Tool.getPrimaryMaterial(mInventory[1]).mDefaultLocalName;
 					if (materialName.toLowerCase().contains("null")){
 
@@ -378,11 +396,14 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 
 					}
 				} 
+				else {
+					this.mMaxProgresstime = 0;
+				}
 			} catch (NullPointerException t){}
 
 			if (isRepaired){
 				//If Machine can work and it's only once every 5 seconds this will tick.
-				if (mMachine){
+				if (canChop){
 					//Set Machine State
 					if (treeCheckTicks == 200){
 						Utils.LOG_MACHINE_INFO("Looking For Trees - Serverside | "+treeCheckTicks);
@@ -408,7 +429,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 						//Set can work state
 						this.mInputBusses = new ArrayList<GT_MetaTileEntity_Hatch_InputBus>();
 						this.mEnergyHatches = new ArrayList<GT_MetaTileEntity_Hatch_Energy>();
-						mMachine = checkMachine(aBaseMetaTileEntity, mInventory[1]);
+						canChop = checkMachine(aBaseMetaTileEntity, mInventory[1]);
 					}
 				}
 				//Call Cleanup Task last, before ticking.
@@ -497,7 +518,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		}
 
 
-		mMachine = false;
+		canChop = false;
 		if (logsCut > 250)
 			TreeFarmHelper.cleanUp(aBaseMetaTileEntity);
 		//Utils.LOG_MACHINE_INFO("general failure | maybe there is no logs, not an error. | cut:"+logsCut );
@@ -590,8 +611,8 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 										if (saplingToPlace != null){
 											Utils.LOG_MACHINE_INFO("Placing Sapling Block.");
 											//Plant Sapling
-											world.setBlock(posX, posY, posZ, saplingToPlace);
-											world.setBlockMetadataWithNotify(posX, posY, posZ, n.getItemDamage(), 4);
+											//world.setBlock(posX, posY, posZ, saplingToPlace);
+											//world.setBlockMetadataWithNotify(posX, posY, posZ, n.getItemDamage(), 4);
 											//Deplete Input stack
 											depleteInputEx(n);
 											drainEnergyInput(powerDrain);
