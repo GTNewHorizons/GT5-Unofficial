@@ -18,7 +18,7 @@ import net.minecraftforge.common.config.Configuration;
 public class CORE {
 	
 	protected CORE(){
-		
+		//import cpw.mods.fml.common.Optional;
 	}
 	
 	public final static float PI = (float) Math.PI;

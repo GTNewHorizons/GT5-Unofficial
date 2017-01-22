@@ -67,6 +67,11 @@ public class TreefarmManager {
 		if (log == Blocks.log || log == Blocks.log2){
 			return true;
 		}
+		
+		//Forestry/General Compat
+		if (log.getClass().getName().toLowerCase().contains("blocklog")){
+			return true;
+		}
 
 		//IC2 Rubber Tree Compat
 		if (log.getClass().getName().toLowerCase().contains("rubwood") || log.getClass().getName().toLowerCase().contains("rubleaves")){
