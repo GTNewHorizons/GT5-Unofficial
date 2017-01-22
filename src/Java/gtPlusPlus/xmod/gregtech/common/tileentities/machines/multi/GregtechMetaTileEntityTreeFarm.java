@@ -48,6 +48,8 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 	/* private */ private int cleanupTicks = 0;
 	/* private */ public long mInternalPower = 0;	
 	/* private */ private static int powerDrain = 32;
+	
+	private short energyHatchRetryCount = 0;
 
 	private EntityPlayerMP farmerAI;
 
@@ -104,7 +106,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		return true;
 	}
 
-	public boolean addPowerToInternalStorage(){
+	public boolean addPowerToInternalStorage(IGregTechTileEntity aBaseMetaTileEntity){
 		if (this.mEnergyHatches.size() > 0) {
 			for (final GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches){
 				if (isValidMetaTileEntity(tHatch)) {
@@ -118,8 +120,23 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 						}
 					}
 				}
+				else {
+					Utils.LOG_INFO("Bad Power hatch to obtain energy from.");
+				}
 			}
-		}					
+		}	
+		else {			
+			if (energyHatchRetryCount <= 10){
+				energyHatchRetryCount++;
+				Utils.LOG_INFO("No energy hatches found.");
+			}
+			else {
+				Utils.LOG_MACHINE_INFO("Rechecking for Energy hatches.");
+				energyHatchRetryCount = 0;
+				this.mEnergyHatches = new ArrayList<GT_MetaTileEntity_Hatch_Energy>();
+				checkMachine(aBaseMetaTileEntity, mInventory[1]);
+			}			
+		}
 		return true;
 	}
 
@@ -417,7 +434,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		return false;		
 	}
 
-	private boolean findSaplings(final IGregTechTileEntity aBaseMetaTileEntity){
+	private boolean growSaplingsWithBonemeal(final IGregTechTileEntity aBaseMetaTileEntity){
 		Utils.LOG_MACHINE_INFO("called findSaplings()");
 		int saplings = 0;
 		final int xDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 7; 
@@ -434,14 +451,19 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 					//Utils.LOG_MACHINE_INFO("Found a sapling to grow.");
 					saplings++;
 
-					if (this.doesInputHatchContainAnyFertiliser()){
-						if (depleteFertiliser()){
+					if (depleteFertiliser()){
 							if (drainEnergyInput(powerDrain)){
 								TreeFarmHelper.applyBonemeal(aBaseMetaTileEntity.getWorld(), posiX, posiY, posiZ);	
 							}
+							else {
+								Utils.LOG_MACHINE_INFO("x3");
+								break;
+							}
+						}
+						else {
+							Utils.LOG_MACHINE_INFO("x2");
+							break;
 						}					
-					}
-
 				}				
 			}
 		}
@@ -556,9 +578,9 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 			if (!(tree instanceof ITree)) {
 				return false;
 			}
-			return TreeManager.treeRoot.plantSapling(world, (ITree) tree, farmerAI.getGameProfile(), x, y, z);
+			return TreeManager.treeRoot.plantSapling(world, (ITree) tree, getFakePlayer().getGameProfile(), x, y, z);
 		}
-		return germling.copy().tryPlaceItemIntoWorld(farmerAI, world, x, y - 1, z, 1, 0.0F, 0.0F, 0.0F);
+		return germling.copy().tryPlaceItemIntoWorld(getFakePlayer(), world, x, y - 1, z, 1, 0.0F, 0.0F, 0.0F);
 	}
 
 	private boolean cutLog(final World world, final int x, final int y, final int z){
@@ -762,18 +784,17 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
 		//super.onPostTick(aBaseMetaTileEntity, aTick);
 		if (aBaseMetaTileEntity.isServerSide()) {
-
+			
 			//Does it have a tool this cycle to cut?
 			boolean validCuttingTool = false;
 			boolean isRepaired = isMachineRepaired();
 			//Add some Power
-			addPowerToInternalStorage();
+			addPowerToInternalStorage(aBaseMetaTileEntity);
 
 			//Set Forestry Fake player Sapling Planter
 			if (this.farmerAI == null) {
 				this.farmerAI = new FakeFarmer(MinecraftServer.getServer().worldServerForDimension(this.getBaseMetaTileEntity().getWorld().provider.dimensionId));
 			}			
-
 			//Check Inventory slots [1] - Find a valid Buzzsaw Blade or a Saw
 			try {
 				validCuttingTool = isCorrectMachinePart(mInventory[1]);
@@ -791,8 +812,11 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 					this.mMaxProgresstime = 0;
 				}
 			} catch (NullPointerException t){}
-
+			
 			if (isRepaired){
+				
+				//Utils.LOG_INFO("Ticking3");
+				
 				//If Machine can work and it's only once every 5 seconds this will tick.
 				if (canChop){
 					//Set Machine State
@@ -816,7 +840,11 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 					else if (plantSaplingTicks == 200){
 						Utils.LOG_MACHINE_INFO("Looking For Saplings to grow - Serverside | "+plantSaplingTicks);
 						//Try Grow some Saplings
-						findSaplings(aBaseMetaTileEntity);
+						
+						if (this.doesInputHatchContainAnyFertiliser()){
+							growSaplingsWithBonemeal(aBaseMetaTileEntity);
+						}						
+						
 						//Set can work state
 						this.mInputBusses = new ArrayList<GT_MetaTileEntity_Hatch_InputBus>();
 						this.mEnergyHatches = new ArrayList<GT_MetaTileEntity_Hatch_Energy>();
