@@ -6,11 +6,11 @@ import gtPlusPlus.core.util.gregtech.recipehandlers.GregtechRecipe;
 import gtPlusPlus.core.util.networking.NetworkUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
+import gtPlusPlus.xmod.gregtech.api.objects.XSTR;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_TesseractGenerator;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.config.Configuration;
@@ -21,7 +21,9 @@ public class CORE {
 		//import cpw.mods.fml.common.Optional;
 	}
 	
-	public final static float PI = (float) Math.PI;
+	//Math Related
+	public static final float PI = (float) Math.PI;
+	public static volatile Random RANDOM = new XSTR();
 
 	public static final String name = "GT++";	
 	public static final String MODID = "miscutils";

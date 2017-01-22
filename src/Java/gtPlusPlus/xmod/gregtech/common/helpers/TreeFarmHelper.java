@@ -7,8 +7,10 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.common.items.GT_MetaGenerated_Item_02;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.slots.SlotBuzzSaw.SAWTOOL;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.forestry.trees.TreefarmManager;
 import net.minecraft.block.Block;
@@ -16,13 +18,16 @@ import net.minecraft.block.IGrowable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.entity.player.BonemealEvent;
+import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 
 public class TreeFarmHelper {
+	
+	public static final FluidStack fertT1 = FluidUtils.getFluidStack("fluid.fertiliser", 3);
+	public static final FluidStack fertT2 = FluidUtils.getFluidStack("fluid.un18fertiliser", 2);
+	public static final FluidStack fertT3 = FluidUtils.getFluidStack("fluid.un32fertiliser", 1);
 
 	public static ITexture[][][] getTextureSet() {
 		ITexture[][][] rTextures = new ITexture[10][17][];
@@ -81,16 +86,31 @@ public class TreeFarmHelper {
 		return getSides(aColor);
 	}
 
-	public static boolean applyBonemeal(World world, int intX, int intY, int intZ){
+	public static boolean applyBonemeal(EntityPlayer player, World world, int intX, int intY, int intZ, short multiplier){
 		Block block = world.getBlock(intX, intY, intZ);
-		int chance = MathUtils.randInt(1, 10); //TODO
-	
-		//Random Growth
-		if (chance < 8){
+		
+		
+		int roll;
+		int rollNeeded;
+		
+		if (multiplier==1){
+			roll = MathUtils.randInt(1, 15);
+			rollNeeded = 15;			
+		}
+		else if (multiplier==2){
+			roll = MathUtils.randInt(1, 10);
+			rollNeeded = 10;			
+		}
+		else {
+			roll = MathUtils.randInt(1, 5);
+			rollNeeded = 5;			
+		}
+		
+		if (roll != rollNeeded){
 			return false;
 		}
 	
-		EntityPlayer player = FakePlayerFactory.getMinecraft((WorldServer)world);
+		//EntityPlayer player = FakePlayerFactory.getMinecraft((WorldServer)world);
 		if (!world.isRemote){
 			if (enableTreeFarmerParticles){
 				world.playAuxSFX(2005, intX, intY, intZ, 0);
@@ -111,8 +131,8 @@ public class TreeFarmHelper {
 			IGrowable igrowable = (IGrowable)block;
 			if (igrowable.func_149851_a(world, intX, intY, intZ, world.isRemote)){
 				if (!world.isRemote){
-					if (igrowable.func_149852_a(world, world.rand, intX, intY, intZ)){
-						igrowable.func_149853_b(world, world.rand, intX, intY, intZ);
+					if (igrowable.func_149852_a(world, CORE.RANDOM, intX, intY, intZ)){
+						igrowable.func_149853_b(world, CORE.RANDOM, intX, intY, intZ);
 					}
 				}				
 				return true;

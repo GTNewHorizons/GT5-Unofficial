@@ -20,7 +20,6 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.players.FakeFarmer;
 import gtPlusPlus.core.slots.SlotBuzzSaw.SAWTOOL;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.particles.BlockBreakParticles;
@@ -48,7 +47,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 	/* private */ private int cleanupTicks = 0;
 	/* private */ public long mInternalPower = 0;	
 	/* private */ private static int powerDrain = 32;
-	
+
 	private short energyHatchRetryCount = 0;
 
 	private EntityPlayerMP farmerAI;
@@ -435,7 +434,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 	}
 
 	private boolean growSaplingsWithBonemeal(final IGregTechTileEntity aBaseMetaTileEntity){
-		Utils.LOG_MACHINE_INFO("called findSaplings()");
+		Utils.LOG_MACHINE_INFO("called growSaplingsWithBonemeal()");
 		int saplings = 0;
 		final int xDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 7; 
 		final int zDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 7;
@@ -452,18 +451,19 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 					saplings++;
 
 					if (depleteFertiliser()){
-							if (drainEnergyInput(powerDrain)){
-								TreeFarmHelper.applyBonemeal(aBaseMetaTileEntity.getWorld(), posiX, posiY, posiZ);	
-							}
-							else {
-								Utils.LOG_MACHINE_INFO("x3");
-								break;
-							}
+						if (drainEnergyInput(powerDrain)){
+							short fertTier = getFertiliserTier(getCurrentFertiliserStack());
+							TreeFarmHelper.applyBonemeal(getFakePlayer(), aBaseMetaTileEntity.getWorld(), posiX, posiY, posiZ, fertTier);	
 						}
 						else {
-							Utils.LOG_MACHINE_INFO("x2");
+							Utils.LOG_MACHINE_INFO("x3");
 							break;
-						}					
+						}
+					}
+					else {
+						Utils.LOG_MACHINE_INFO("x2");
+						break;
+					}					
 				}				
 			}
 		}
@@ -637,6 +637,9 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 
 	public FluidStack[] getStoredInputFluids(){
 		ArrayList<FluidStack> fluidArray = this.getStoredFluids();
+		if (fluidArray.size() < 1){
+			return new FluidStack[] {};
+		}
 		FluidStack storedInputFluids[] = new FluidStack[fluidArray.size()];
 		if (storedInputFluids.length >= 1){
 			int counter = 0;
@@ -645,229 +648,260 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 				counter++;
 			}
 			return storedInputFluids;			
-		}		
-		return null;
+		}
+		return new FluidStack[] {};
 	}
 
 	public boolean doesInputHatchContainAnyFertiliser(){
 		FluidStack[] tempFluids = getStoredInputFluids();
-		FluidStack fert1 = FluidUtils.getFluidStack("fluid.fertiliser", 1);
-		FluidStack fert2 = FluidUtils.getFluidStack("fluid.un18fertiliser", 1);
-		FluidStack fert3 = FluidUtils.getFluidStack("fluid.un32fertiliser", 1);
 		if (tempFluids.length >= 1){
 			for (FluidStack f : tempFluids){
-				if (f.isFluidEqual(fert1) || f.isFluidEqual(fert2) || f.isFluidEqual(fert3)){
+				if (f.isFluidEqual(TreeFarmHelper.fertT1) || f.isFluidEqual(TreeFarmHelper.fertT2) || f.isFluidEqual(TreeFarmHelper.fertT3)){
 					return true;
 				}
 			}
 		}
-		Utils.LOG_MACHINE_INFO("No fertiliser found.");
-		return false;
-	}
-
-	public boolean doesInputHatchContainEnoughFertiliser(){
-		FluidStack[] tempFluids = getStoredInputFluids();
-		FluidStack fert1 = FluidUtils.getFluidStack("fluid.fertiliser", 3);
-		FluidStack fert2 = FluidUtils.getFluidStack("fluid.un18fertiliser", 2);
-		FluidStack fert3 = FluidUtils.getFluidStack("fluid.un32fertiliser", 1);
-		if (tempFluids.length >= 1){
-			for (FluidStack f : tempFluids){
-				if (f.amount >= fert1.amount || f.amount >= fert2.amount || f.amount >= fert3.amount){
-					return true;
-				}
-			}
-		}
-		Utils.LOG_MACHINE_INFO("No fertiliser found.");
-		return false;
-	}
-
-	public boolean depleteFertiliser(){
-		if (!doesInputHatchContainEnoughFertiliser()){
+		else {
+			Utils.LOG_MACHINE_INFO("No fertiliser found.");
 			return false;
+		}
+		return false;
+	}
+
+	public short getFertiliserTier(FluidStack f){
+		if (f.isFluidEqual(TreeFarmHelper.fertT1)){
+			return 1;
+		}
+		else if(f.isFluidEqual(TreeFarmHelper.fertT2)){
+			return 2;
+		}
+		else if(f.isFluidEqual(TreeFarmHelper.fertT3)){
+			return 3;
+		}
+		else {
+			return 0;
+		}
+	}
+
+	public FluidStack getCurrentFertiliserStack(){
+		if (!doesInputHatchContainAnyFertiliser()){
+			return null;
 		}		
 		FluidStack[] tempFluids = getStoredInputFluids();
-		FluidStack fert1 = FluidUtils.getFluidStack("fluid.fertiliser", 3);
-		FluidStack fert2 = FluidUtils.getFluidStack("fluid.un18fertiliser", 2);
-		FluidStack fert3 = FluidUtils.getFluidStack("fluid.un32fertiliser", 1);
 		if (tempFluids.length >= 1){
 			for (FluidStack f : tempFluids){
-				if (f.isFluidEqual(fert1) || f.isFluidEqual(fert2) || f.isFluidEqual(fert3)){					
-					if (f.isFluidEqual(fert1) && f.amount >= fert1.amount){
-						this.depleteInput(fert1);
-						return true;
-					}
-					else if(f.isFluidEqual(fert2) && f.amount >= fert2.amount){
-						this.depleteInput(fert2);
-						return true;
-					}
-					else if(f.isFluidEqual(fert3) && f.amount >= fert3.amount){
-						this.depleteInput(fert3);
-						return true;
-					}
+				if (f.isFluidEqual(TreeFarmHelper.fertT1)){
+					return TreeFarmHelper.fertT1;
+				}
+				else if(f.isFluidEqual(TreeFarmHelper.fertT2)){
+					return TreeFarmHelper.fertT2;
+				}
+				else if(f.isFluidEqual(TreeFarmHelper.fertT3)){
+					return TreeFarmHelper.fertT3;
 				}
 			}
 		}
-		return false;
+		return null;
 	}
 
 
+public boolean doesInputHatchContainEnoughFertiliser(){
+	FluidStack[] tempFluids = getStoredInputFluids();
+	if (tempFluids.length >= 1){
+		for (FluidStack f : tempFluids){
+			if (f.amount >= TreeFarmHelper.fertT1.amount || f.amount >= TreeFarmHelper.fertT2.amount || f.amount >= TreeFarmHelper.fertT3.amount){
+				return true;
+			}
+		}
+	}
+	Utils.LOG_MACHINE_INFO("No fertiliser found.");
+	return false;
+}
 
-	public boolean depleteInputEx(ItemStack aStack) {
-		if (GT_Utility.isStackInvalid(aStack))	return false;
-
-		Utils.LOG_MACHINE_INFO("Taking one sapling away from in input bus.");
-
-		for (GT_MetaTileEntity_Hatch_InputBus tHatch : this.mInputBusses) {
-			tHatch.mRecipeMap = getRecipeMap();
-			if (isValidMetaTileEntity(tHatch)) {
-				for (int i = tHatch.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; --i) {
-					if ((!(GT_Utility.areStacksEqual(aStack, tHatch.getBaseMetaTileEntity().getStackInSlot(i)))) || (tHatch.getBaseMetaTileEntity().getStackInSlot(0).stackSize < aStack.stackSize)){
-						continue;
-					}
-					tHatch.getBaseMetaTileEntity().decrStackSize(0,1);
+public boolean depleteFertiliser(){
+	if (!doesInputHatchContainEnoughFertiliser()){
+		return false;
+	}		
+	FluidStack[] tempFluids = getStoredInputFluids();
+	if (tempFluids.length >= 1){
+		for (FluidStack f : tempFluids){
+			if (f.isFluidEqual(TreeFarmHelper.fertT1) || f.isFluidEqual(TreeFarmHelper.fertT2) || f.isFluidEqual(TreeFarmHelper.fertT3)){					
+				if (f.isFluidEqual(TreeFarmHelper.fertT1) && f.amount >= TreeFarmHelper.fertT1.amount){
+					this.depleteInput(TreeFarmHelper.fertT1);
+					return true;
+				}
+				else if(f.isFluidEqual(TreeFarmHelper.fertT2) && f.amount >= TreeFarmHelper.fertT2.amount){
+					this.depleteInput(TreeFarmHelper.fertT2);
+					return true;
+				}
+				else if(f.isFluidEqual(TreeFarmHelper.fertT3) && f.amount >= TreeFarmHelper.fertT3.amount){
+					this.depleteInput(TreeFarmHelper.fertT3);
 					return true;
 				}
 			}
-
-		}
-
-		return false;
-	}
-
-	//Tree Manager
-	private void tickTrees(){
-		if (treeCheckTicks > 200){
-			treeCheckTicks = 0;
-		}
-		else {
-			treeCheckTicks++;
 		}
 	}
+	return false;
+}
 
-	private void tickSaplings(){
-		if (plantSaplingTicks > 200){
-			plantSaplingTicks = 0;
+
+
+public boolean depleteInputEx(ItemStack aStack) {
+	if (GT_Utility.isStackInvalid(aStack))	return false;
+
+	Utils.LOG_MACHINE_INFO("Taking one sapling away from in input bus.");
+
+	for (GT_MetaTileEntity_Hatch_InputBus tHatch : this.mInputBusses) {
+		tHatch.mRecipeMap = getRecipeMap();
+		if (isValidMetaTileEntity(tHatch)) {
+			for (int i = tHatch.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; --i) {
+				if ((!(GT_Utility.areStacksEqual(aStack, tHatch.getBaseMetaTileEntity().getStackInSlot(i)))) || (tHatch.getBaseMetaTileEntity().getStackInSlot(0).stackSize < aStack.stackSize)){
+					continue;
+				}
+				tHatch.getBaseMetaTileEntity().decrStackSize(0,1);
+				return true;
+			}
 		}
-		else {
-			plantSaplingTicks++;
-		}
+
 	}
 
-	private void tickCleanup(){
-		if (cleanupTicks > 600){
-			cleanupTicks = 0;
-		}
-		else {
-			cleanupTicks++;
-		}
+	return false;
+}
+
+//Tree Manager
+private void tickTrees(){
+	if (treeCheckTicks > 200){
+		treeCheckTicks = 0;
 	}
-
-	private void tickHandler(){
-		//Count Sapling Timer
-		tickSaplings();
-		//Count Tree Cutting Timer
-		tickTrees();
-		//Tick Cleanup script Timer.
-		tickCleanup();
+	else {
+		treeCheckTicks++;
 	}
+}
 
-	public EntityPlayerMP getFakePlayer() {
-		return this.farmerAI;
+private void tickSaplings(){
+	if (plantSaplingTicks > 200){
+		plantSaplingTicks = 0;
 	}
-
-	@Override
-	public boolean onRunningTick(ItemStack aStack) {
-		return super.onRunningTick(aStack);
+	else {
+		plantSaplingTicks++;
 	}
+}
 
-	@Override
-	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
-		//super.onPostTick(aBaseMetaTileEntity, aTick);
-		if (aBaseMetaTileEntity.isServerSide()) {
-			
-			//Does it have a tool this cycle to cut?
-			boolean validCuttingTool = false;
-			boolean isRepaired = isMachineRepaired();
-			//Add some Power
-			addPowerToInternalStorage(aBaseMetaTileEntity);
+private void tickCleanup(){
+	if (cleanupTicks > 600){
+		cleanupTicks = 0;
+	}
+	else {
+		cleanupTicks++;
+	}
+}
 
-			//Set Forestry Fake player Sapling Planter
-			if (this.farmerAI == null) {
-				this.farmerAI = new FakeFarmer(MinecraftServer.getServer().worldServerForDimension(this.getBaseMetaTileEntity().getWorld().provider.dimensionId));
-			}			
-			//Check Inventory slots [1] - Find a valid Buzzsaw Blade or a Saw
-			try {
-				validCuttingTool = isCorrectMachinePart(mInventory[1]);
-				if (validCuttingTool){
-					this.mMaxProgresstime = 600;
-					String materialName = GT_MetaGenerated_Tool.getPrimaryMaterial(mInventory[1]).mDefaultLocalName;
-					if (materialName.toLowerCase().contains("null")){
+private void tickHandler(){
+	//Count Sapling Timer
+	tickSaplings();
+	//Count Tree Cutting Timer
+	tickTrees();
+	//Tick Cleanup script Timer.
+	tickCleanup();
+}
 
+public EntityPlayerMP getFakePlayer() {
+	return this.farmerAI;
+}
+
+@Override
+public boolean onRunningTick(ItemStack aStack) {
+	return super.onRunningTick(aStack);
+}
+
+@Override
+public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
+	//super.onPostTick(aBaseMetaTileEntity, aTick);
+	if (aBaseMetaTileEntity.isServerSide()) {
+
+		//Does it have a tool this cycle to cut?
+		boolean validCuttingTool = false;
+		boolean isRepaired = isMachineRepaired();
+		//Add some Power
+		addPowerToInternalStorage(aBaseMetaTileEntity);
+
+		//Set Forestry Fake player Sapling Planter
+		if (this.farmerAI == null) {
+			this.farmerAI = new FakeFarmer(MinecraftServer.getServer().worldServerForDimension(this.getBaseMetaTileEntity().getWorld().provider.dimensionId));
+		}			
+		//Check Inventory slots [1] - Find a valid Buzzsaw Blade or a Saw
+		try {
+			validCuttingTool = isCorrectMachinePart(mInventory[1]);
+			if (validCuttingTool){
+				this.mMaxProgresstime = 600;
+				String materialName = GT_MetaGenerated_Tool.getPrimaryMaterial(mInventory[1]).mDefaultLocalName;
+				if (materialName.toLowerCase().contains("null")){
+
+				}
+				else {
+
+				}
+			} 
+			else {
+				this.mMaxProgresstime = 0;
+			}
+		} catch (NullPointerException t){}
+
+		if (isRepaired){
+
+			//Utils.LOG_INFO("Ticking3");
+
+			//If Machine can work and it's only once every 5 seconds this will tick.
+			if (canChop){
+				//Set Machine State
+				if (treeCheckTicks == 200){
+					Utils.LOG_MACHINE_INFO("Looking For Trees - Serverside | "+treeCheckTicks);
+					//Find wood to Cut
+					if (validCuttingTool){
+						findLogs(aBaseMetaTileEntity);						
 					}
 					else {
-
-					}
-				} 
-				else {
-					this.mMaxProgresstime = 0;
-				}
-			} catch (NullPointerException t){}
-			
-			if (isRepaired){
-				
-				//Utils.LOG_INFO("Ticking3");
-				
-				//If Machine can work and it's only once every 5 seconds this will tick.
-				if (canChop){
-					//Set Machine State
-					if (treeCheckTicks == 200){
-						Utils.LOG_MACHINE_INFO("Looking For Trees - Serverside | "+treeCheckTicks);
-						//Find wood to Cut
-						if (validCuttingTool){
-							findLogs(aBaseMetaTileEntity);						
-						}
-						else {
-							Utils.LOG_MACHINE_INFO("Did not find a valid saw or Buzzsaw blade.");
-						}
-					}
-				}	
-				else {
-					if (plantSaplingTicks == 100){
-						Utils.LOG_MACHINE_INFO("Looking For space to plant saplings - Serverside | "+plantSaplingTicks);
-						//Plant Some Saplings
-						plantSaplings(aBaseMetaTileEntity);
-					}	
-					else if (plantSaplingTicks == 200){
-						Utils.LOG_MACHINE_INFO("Looking For Saplings to grow - Serverside | "+plantSaplingTicks);
-						//Try Grow some Saplings
-						
-						if (this.doesInputHatchContainAnyFertiliser()){
-							growSaplingsWithBonemeal(aBaseMetaTileEntity);
-						}						
-						
-						//Set can work state
-						this.mInputBusses = new ArrayList<GT_MetaTileEntity_Hatch_InputBus>();
-						this.mEnergyHatches = new ArrayList<GT_MetaTileEntity_Hatch_Energy>();
-						canChop = checkMachine(aBaseMetaTileEntity, mInventory[1]);
+						Utils.LOG_MACHINE_INFO("Did not find a valid saw or Buzzsaw blade.");
 					}
 				}
-				//Call Cleanup Task last, before ticking.
-				if (cleanupTicks == 600){
-					Utils.LOG_MACHINE_INFO("Looking For rubbish to cleanup - Serverside | "+cleanupTicks);
-					//cleanUp(aBaseMetaTileEntity);
-				}
-				//Tick TE
-				tickHandler();
-			}
+			}	
 			else {
-				if (treeCheckTicks == 200 || plantSaplingTicks == 100 || plantSaplingTicks == 200 || cleanupTicks == 600){
-					Utils.LOG_MACHINE_INFO("Machine is not fully repaired, not ticking.");					
+				if (plantSaplingTicks == 100){
+					Utils.LOG_MACHINE_INFO("Looking For space to plant saplings - Serverside | "+plantSaplingTicks);
+					//Plant Some Saplings
+					plantSaplings(aBaseMetaTileEntity);
+				}	
+				else if (plantSaplingTicks == 200){
+					Utils.LOG_MACHINE_INFO("Looking For Saplings to grow - Serverside | "+plantSaplingTicks);
+					//Try Grow some Saplings
+
+					if (doesInputHatchContainAnyFertiliser()){
+						growSaplingsWithBonemeal(aBaseMetaTileEntity);
+					}						
+
+					//Set can work state
+					this.mInputBusses = new ArrayList<GT_MetaTileEntity_Hatch_InputBus>();
+					this.mEnergyHatches = new ArrayList<GT_MetaTileEntity_Hatch_Energy>();
+					canChop = checkMachine(aBaseMetaTileEntity, mInventory[1]);
 				}
 			}
-
+			//Call Cleanup Task last, before ticking.
+			if (cleanupTicks == 600){
+				Utils.LOG_MACHINE_INFO("Looking For rubbish to cleanup - Serverside | "+cleanupTicks);
+				//cleanUp(aBaseMetaTileEntity);
+			}
+			//Tick TE
+			tickHandler();
 		}
-		//Client Side - do nothing
+		else {
+			if (treeCheckTicks == 200 || plantSaplingTicks == 100 || plantSaplingTicks == 200 || cleanupTicks == 600){
+				Utils.LOG_MACHINE_INFO("Machine is not fully repaired, not ticking.");					
+			}
+		}
 
 	}
+	//Client Side - do nothing
+
+}
 
 }
