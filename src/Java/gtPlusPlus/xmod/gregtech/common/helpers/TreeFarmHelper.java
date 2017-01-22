@@ -12,10 +12,12 @@ import gtPlusPlus.core.slots.SlotBuzzSaw.SAWTOOL;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.particles.BlockBreakParticles;
 import gtPlusPlus.xmod.forestry.trees.TreefarmManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -24,7 +26,7 @@ import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 
 public class TreeFarmHelper {
-	
+
 	public static final FluidStack fertT1 = FluidUtils.getFluidStack("fluid.fertiliser", 3);
 	public static final FluidStack fertT2 = FluidUtils.getFluidStack("fluid.un18fertiliser", 2);
 	public static final FluidStack fertT3 = FluidUtils.getFluidStack("fluid.un32fertiliser", 1);
@@ -88,11 +90,11 @@ public class TreeFarmHelper {
 
 	public static boolean applyBonemeal(EntityPlayer player, World world, int intX, int intY, int intZ, short multiplier){
 		Block block = world.getBlock(intX, intY, intZ);
-		
-		
+
+
 		int roll;
 		int rollNeeded;
-		
+
 		if (multiplier==1){
 			roll = MathUtils.randInt(1, 15);
 			rollNeeded = 15;			
@@ -105,11 +107,11 @@ public class TreeFarmHelper {
 			roll = MathUtils.randInt(1, 5);
 			rollNeeded = 5;			
 		}
-		
+
 		if (roll != rollNeeded){
 			return false;
 		}
-	
+
 		//EntityPlayer player = FakePlayerFactory.getMinecraft((WorldServer)world);
 		if (!world.isRemote){
 			if (enableTreeFarmerParticles){
@@ -144,23 +146,76 @@ public class TreeFarmHelper {
 	public static boolean cleanUp(final IGregTechTileEntity aBaseMetaTileEntity){
 		Utils.LOG_MACHINE_INFO("called cleanUp()");
 		int cleanedUp = 0;
-		final int xDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 7; 
-		final int zDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 7;
-		for (int i = -10; i <= 10; i++) {
-			for (int j = -10; j <= 10; j++) {
-				for (int h=1;h<175;h++){
-					if (TreefarmManager.isLeaves(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)) || TreefarmManager.isWoodLog(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))){
-						int posiX, posiY, posiZ;
-						posiX = aBaseMetaTileEntity.getXCoord()+xDir+i;
-						posiY = aBaseMetaTileEntity.getYCoord()+h;
-						posiZ = aBaseMetaTileEntity.getZCoord()+zDir+j;
-						//Utils.LOG_MACHINE_INFO("Cleaning Up some leftovers.");
-						cleanedUp++;
-						aBaseMetaTileEntity.getWorld().setBlockToAir(posiX, posiY, posiZ);
+		final int xDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 11; 
+		final int zDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 11;
+		
+		for (int h=1;h<175;h++){
+		for (int i = -11; i <= 11; i++) {
+			for (int j = -11; j <= 11; j++) {
+
+					Block testBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
+
+
+					if 
+					((
+							(i == -8 || i == 8) ||
+							(i == -9 || i == 9) ||
+							(i == -10 || i == 10) ||
+							(i == -11 || i == 11)
+							)
+									&&
+							(
+							(j == -8 || j == 8) ||
+							(j == -9 || j == 9) ||
+							(j == -10 || j == 10) ||
+							(j == -11 || j == 11)
+							)){
+						
+						if (!testBlock.getUnlocalizedName().toLowerCase().contains("air") || !testBlock.getUnlocalizedName().toLowerCase().contains("pumpkin"))
+						Utils.LOG_INFO("5:"+testBlock.getUnlocalizedName());
+						else aBaseMetaTileEntity.getWorld().setBlock(aBaseMetaTileEntity.getXCoord()+xDir+i, aBaseMetaTileEntity.getYCoord()+h, aBaseMetaTileEntity.getZCoord()+zDir+j, Blocks.bookshelf);
 					}
-	
+
+
+					//If not in the middle - don't know how else to check this one without lots of !=
+					if (
+							i != 7 && i != -7 && j != 7 && j != -7 &&
+							i != 6 && i != -6 && j != 6 && j != -6 &&
+							i != 5 && i != -5 && j != 5 && j != -5 &&
+							i != 4 && i != -4 && j != 4 && j != -4 &&
+							i != 3 && i != -3 && j != 3 && j != -3 &&
+							i != 2 && i != -2 && j != 2 && j != -2 &&
+							i != 1 && i != -1 && j != 1 && j != -1 &&
+							i != 0 && j != 0
+							){
+						
+						if (!testBlock.getUnlocalizedName().toLowerCase().contains("air") || !testBlock.getUnlocalizedName().toLowerCase().contains("pumpkin"))
+						Utils.LOG_INFO("0:"+testBlock.getUnlocalizedName());
+						else aBaseMetaTileEntity.getWorld().setBlock(aBaseMetaTileEntity.getXCoord()+xDir+i, aBaseMetaTileEntity.getYCoord()+h, aBaseMetaTileEntity.getZCoord()+zDir+j, Blocks.melon_block);
+						
+
+						if (TreefarmManager.isLeaves(testBlock) || TreefarmManager.isWoodLog(testBlock)){
+							Utils.LOG_INFO("1:"+testBlock.getUnlocalizedName());
+							int posiX, posiY, posiZ;
+							posiX = aBaseMetaTileEntity.getXCoord()+xDir+i;
+							posiY = aBaseMetaTileEntity.getYCoord()+h;
+							posiZ = aBaseMetaTileEntity.getZCoord()+zDir+j;
+							//Utils.LOG_MACHINE_INFO("Cleaning Up some leftovers.");
+							cleanedUp++;
+							aBaseMetaTileEntity.getWorld().setBlockToAir(posiX, posiY, posiZ);
+							new BlockBreakParticles(aBaseMetaTileEntity.getWorld(), posiX, posiY, posiZ, Blocks.dirt);
+						}
+						else {
+							//Utils.LOG_INFO("2:"+testBlock.getUnlocalizedName());
+						}
+					}	
+					else {
+						//Utils.LOG_INFO("1");
+					}
+
+
 				}
-	
+
 			}
 		}
 		Utils.LOG_MACHINE_INFO("cleaning up | "+cleanedUp );
