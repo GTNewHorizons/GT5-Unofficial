@@ -20,6 +20,7 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.players.FakeFarmer;
 import gtPlusPlus.core.slots.SlotBuzzSaw.SAWTOOL;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.particles.BlockBreakParticles;
@@ -37,6 +38,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 import cpw.mods.fml.common.Optional;
 
 public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlockBase {
@@ -440,21 +442,6 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		return true;		
 	}
 
-	public ArrayList<ItemStack> getStoredInputsEx(int x) {
-		ArrayList<ItemStack> rList = new ArrayList<ItemStack>();
-		for (GT_MetaTileEntity_Hatch_InputBus tHatch : this.mInputBusses) {
-			//tHatch.mRecipeMap = getRecipeMap();
-			if (isValidMetaTileEntity(tHatch)) {
-				for (int i = tHatch.getBaseMetaTileEntity().getSizeInventory() - 1; i >= 0; --i) {
-					if (tHatch.getBaseMetaTileEntity().getStackInSlot(i) == null)
-						continue;
-					rList.add(tHatch.getBaseMetaTileEntity().getStackInSlot(i));
-				}
-			}
-		}
-		return rList;
-	}
-
 	private boolean plantSaplings(final IGregTechTileEntity aBaseMetaTileEntity){
 		Utils.LOG_MACHINE_INFO("called plantSaplings()");
 		World world = aBaseMetaTileEntity.getWorld();
@@ -616,6 +603,50 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 
 
 		} catch (NullPointerException e){}
+		return false;
+	}
+	
+	public FluidStack[] getStoredInputFluids(){
+		ArrayList<FluidStack> fluidArray = this.getStoredFluids();
+		FluidStack storedInputFluids[] = new FluidStack[fluidArray.size()];
+		if (storedInputFluids.length >= 1){
+			int counter = 0;
+			for (FluidStack inputPuddle : fluidArray){
+				storedInputFluids[counter] = inputPuddle;
+				counter++;
+			}
+			return storedInputFluids;			
+		}		
+		return null;
+	}
+	
+	public boolean doesInputHatchContainAnyFertiliser(){
+		FluidStack[] tempFluids = getStoredInputFluids();
+		FluidStack fert1 = FluidUtils.getFluidStack("fluid.fertiliser", 1);
+		FluidStack fert2 = FluidUtils.getFluidStack("fluid.un18fertiliser", 1);
+		FluidStack fert3 = FluidUtils.getFluidStack("fluid.un32fertiliser", 1);
+		if (tempFluids.length >= 1){
+			for (FluidStack f : tempFluids){
+				if (f.isFluidEqual(fert1) || f.isFluidEqual(fert2) || f.isFluidEqual(fert3)){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public boolean doesInputHatchContainEnoughFertiliser(){
+		FluidStack[] tempFluids = getStoredInputFluids();
+		FluidStack fert1 = FluidUtils.getFluidStack("fluid.fertiliser", 3);
+		FluidStack fert2 = FluidUtils.getFluidStack("fluid.un18fertiliser", 2);
+		FluidStack fert3 = FluidUtils.getFluidStack("fluid.un32fertiliser", 1);
+		if (tempFluids.length >= 1){
+			for (FluidStack f : tempFluids){
+				if (f.isFluidStackIdentical(fert1) || f.isFluidStackIdentical(fert2) || f.isFluidStackIdentical(fert3)){
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 
