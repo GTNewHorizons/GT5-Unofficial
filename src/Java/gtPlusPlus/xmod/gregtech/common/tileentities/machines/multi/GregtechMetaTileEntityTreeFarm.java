@@ -48,7 +48,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 	/* private */ private int cleanupTicks = 0;
 	/* private */ public long mInternalPower = 0;	
 	/* private */ private static int powerDrain = 32;
-	
+
 	private EntityPlayerMP farmerAI;
 
 	private SAWTOOL mCurrentMachineTool = SAWTOOL.NONE;
@@ -433,8 +433,15 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 					posiZ = aBaseMetaTileEntity.getZCoord()+zDir+j;
 					//Utils.LOG_MACHINE_INFO("Found a sapling to grow.");
 					saplings++;
-					drainEnergyInput(powerDrain);
-					TreeFarmHelper.applyBonemeal(aBaseMetaTileEntity.getWorld(), posiX, posiY, posiZ);
+
+					if (this.doesInputHatchContainAnyFertiliser()){
+						if (depleteFertiliser()){
+							if (drainEnergyInput(powerDrain)){
+								TreeFarmHelper.applyBonemeal(aBaseMetaTileEntity.getWorld(), posiX, posiY, posiZ);	
+							}
+						}					
+					}
+
 				}				
 			}
 		}
@@ -456,10 +463,10 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 				Utils.LOG_MACHINE_INFO("found "+n.getDisplayName());
 				if (OrePrefixes.sapling.contains(n) || n.getDisplayName().toLowerCase().contains("sapling")){
 					Utils.LOG_MACHINE_INFO(""+n.getDisplayName());
-					
+
 					counter = n.stackSize;
 					Block saplingToPlace = Block.getBlockFromItem(n.getItem());						
-					
+
 
 					//Find Gaps for Saplings after scanning Item Busses
 					for (int i = -7; i <= 7; i++) {
@@ -477,16 +484,16 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 
 										//If sapling block is not null || Ignore if forestry is loaded.
 										if ((saplingToPlace != null && !LoadedMods.Forestry) || LoadedMods.Forestry){
-											
+
 											//Plant Sapling
 											if (!LoadedMods.Forestry){
-											world.setBlock(posX, posY, posZ, saplingToPlace);
-											world.setBlockMetadataWithNotify(posX, posY, posZ, n.getItemDamage(), 4);
+												world.setBlock(posX, posY, posZ, saplingToPlace);
+												world.setBlockMetadataWithNotify(posX, posY, posZ, n.getItemDamage(), 4);
 											}
 											else {
 												plantSaplingAt(n, this.getBaseMetaTileEntity().getWorld(), posX, posY, posZ);
 											}											
-											
+
 											//Deplete Input stack
 											depleteInputEx(n);
 											drainEnergyInput(powerDrain);
@@ -540,7 +547,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		Utils.LOG_MACHINE_INFO("Tried to plant saplings: | "+saplings );
 		return true;		
 	}
-	
+
 	@Optional.Method(modid = "Forestry")
 	public boolean plantSaplingAt(ItemStack germling, World world, int x, int y, int z) {
 		Utils.LOG_MACHINE_INFO("Planting Sapling with Forestry method, since it's installed.");
@@ -605,7 +612,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		} catch (NullPointerException e){}
 		return false;
 	}
-	
+
 	public FluidStack[] getStoredInputFluids(){
 		ArrayList<FluidStack> fluidArray = this.getStoredFluids();
 		FluidStack storedInputFluids[] = new FluidStack[fluidArray.size()];
@@ -619,7 +626,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		}		
 		return null;
 	}
-	
+
 	public boolean doesInputHatchContainAnyFertiliser(){
 		FluidStack[] tempFluids = getStoredInputFluids();
 		FluidStack fert1 = FluidUtils.getFluidStack("fluid.fertiliser", 1);
@@ -632,9 +639,10 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 				}
 			}
 		}
+		Utils.LOG_MACHINE_INFO("No fertiliser found.");
 		return false;
 	}
-	
+
 	public boolean doesInputHatchContainEnoughFertiliser(){
 		FluidStack[] tempFluids = getStoredInputFluids();
 		FluidStack fert1 = FluidUtils.getFluidStack("fluid.fertiliser", 3);
@@ -642,8 +650,38 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		FluidStack fert3 = FluidUtils.getFluidStack("fluid.un32fertiliser", 1);
 		if (tempFluids.length >= 1){
 			for (FluidStack f : tempFluids){
-				if (f.isFluidStackIdentical(fert1) || f.isFluidStackIdentical(fert2) || f.isFluidStackIdentical(fert3)){
+				if (f.amount >= fert1.amount || f.amount >= fert2.amount || f.amount >= fert3.amount){
 					return true;
+				}
+			}
+		}
+		Utils.LOG_MACHINE_INFO("No fertiliser found.");
+		return false;
+	}
+
+	public boolean depleteFertiliser(){
+		if (!doesInputHatchContainEnoughFertiliser()){
+			return false;
+		}		
+		FluidStack[] tempFluids = getStoredInputFluids();
+		FluidStack fert1 = FluidUtils.getFluidStack("fluid.fertiliser", 3);
+		FluidStack fert2 = FluidUtils.getFluidStack("fluid.un18fertiliser", 2);
+		FluidStack fert3 = FluidUtils.getFluidStack("fluid.un32fertiliser", 1);
+		if (tempFluids.length >= 1){
+			for (FluidStack f : tempFluids){
+				if (f.isFluidEqual(fert1) || f.isFluidEqual(fert2) || f.isFluidEqual(fert3)){					
+					if (f.isFluidEqual(fert1) && f.amount >= fert1.amount){
+						this.depleteInput(fert1);
+						return true;
+					}
+					else if(f.isFluidEqual(fert2) && f.amount >= fert2.amount){
+						this.depleteInput(fert2);
+						return true;
+					}
+					else if(f.isFluidEqual(fert3) && f.amount >= fert3.amount){
+						this.depleteInput(fert3);
+						return true;
+					}
 				}
 			}
 		}
@@ -710,7 +748,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		//Tick Cleanup script Timer.
 		tickCleanup();
 	}
-	
+
 	public EntityPlayerMP getFakePlayer() {
 		return this.farmerAI;
 	}
@@ -735,7 +773,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 			if (this.farmerAI == null) {
 				this.farmerAI = new FakeFarmer(MinecraftServer.getServer().worldServerForDimension(this.getBaseMetaTileEntity().getWorld().provider.dimensionId));
 			}			
-			
+
 			//Check Inventory slots [1] - Find a valid Buzzsaw Blade or a Saw
 			try {
 				validCuttingTool = isCorrectMachinePart(mInventory[1]);

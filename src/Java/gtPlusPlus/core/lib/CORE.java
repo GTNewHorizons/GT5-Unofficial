@@ -86,7 +86,7 @@ public class CORE {
 
 		//Debug
 		public static boolean disableEnderIOIntegration = false;
-		public static boolean MACHINE_INFO = false;
+		public static boolean MACHINE_INFO = true;
 		
 		//Tools
 		public static boolean enableSkookumChoochers = true;
