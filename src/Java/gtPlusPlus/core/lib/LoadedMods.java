@@ -11,6 +11,7 @@ public class LoadedMods {
 	
 	//Initialize Variables
 	public static boolean Gregtech = false;
+	public static boolean BuildCraft = false;
 	public static boolean EnderIO = false;
 	public static boolean Big_Reactors = false;
 	public static boolean IndustrialCraft2 = false;
@@ -58,6 +59,11 @@ public class LoadedMods {
 				}
 			}
 			
+			totalMods++;
+		}
+		if (Loader.isModLoaded("BuildCraft") == true){
+			BuildCraft = true;
+			Utils.LOG_INFO("Components enabled for: BuildCraft");
 			totalMods++;
 		}
 		if (Loader.isModLoaded("EnderIO") == true && !configSwitches.disableEnderIOIntegration){

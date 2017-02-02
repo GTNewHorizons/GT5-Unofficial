@@ -4,8 +4,6 @@ import static cpw.mods.fml.common.registry.GameRegistry.findBlock;
 import static cpw.mods.fml.common.registry.GameRegistry.findItem;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.xmod.forestry.trees.ForestryLeaf;
-import gtPlusPlus.xmod.forestry.trees.ForestrySapling;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
@@ -46,7 +44,7 @@ public class Forestry {
 		item = findItem(name, "sapling");
 		Block block = findBlock(name, "saplingGE");
 		if (item != null && block != null) {
-			ForestrySapling sapling = new ForestrySapling(item, block);
+			//ForestrySapling sapling = new ForestrySapling(item, block);
 			//MFRRegistry.registerPlantable(sapling);
 			//MFRRegistry.registerFertilizable(sapling);
 		} else
@@ -100,7 +98,7 @@ public class Forestry {
 
 		block = findBlock(name, "leaves");
 		if (block != null) {
-			ForestryLeaf leaf = new ForestryLeaf(block);
+			//ForestryLeaf leaf = new ForestryLeaf(block);
 			//MFRRegistry.registerFertilizable(leaf);
 			//MFRRegistry.registerHarvestable(leaf);
 			//MFRRegistry.registerFruit(leaf);

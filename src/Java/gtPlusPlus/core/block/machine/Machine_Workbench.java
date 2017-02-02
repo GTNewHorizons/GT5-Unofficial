@@ -7,6 +7,7 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.player.PlayerUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import ic2.core.item.tool.ItemToolWrench;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -18,6 +19,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.Optional;
+import cpw.mods.fml.common.Optional.Interface;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -101,26 +103,50 @@ public class Machine_Workbench extends BlockContainer
 		return new TileEntityWorkbench();
 	}
 	
-	public static boolean isWrench(ItemStack item){
-		
+	public static boolean isWrench(ItemStack item){		
 		if (item.getItem() instanceof ItemToolWrench){
 			return true;
 		}
-		if (item.getItem() instanceof IToolWrench){
-			return true;
+		if (LoadedMods.BuildCraft){
+			return checkBuildcraftWrench(item);
 		}
 		if (LoadedMods.EnderIO){
 			return checkEnderIOWrench(item);
 		}		
-		
 		return false;
 	}
 	
 	@Optional.Method(modid = "EnderIO")
 	private static boolean checkEnderIOWrench(ItemStack item){
-		if (item.getItem() instanceof crazypants.enderio.api.tool.ITool){
-			return true;
-		}
+		if (ReflectionUtils.doesClassExist("crazypants.enderio.api.tool.ITool")){
+			Class<?> wrenchClass;
+			try {
+				wrenchClass = Class.forName("crazypants.enderio.api.tool.ITool");
+				if (wrenchClass.isInstance(item.getItem())){
+					return true;
+				}
+			}
+			catch (ClassNotFoundException e1) {
+				return false;
+			}			
+		}		
+		return false;
+	}
+	
+	@Optional.Method(modid = "Buildcraft")
+	private static boolean checkBuildcraftWrench(ItemStack item){
+		if (ReflectionUtils.doesClassExist("buildcraft.api.tools.IToolWrench")){
+			Class<?> wrenchClass;
+			try {
+				wrenchClass = Class.forName("buildcraft.api.tools.IToolWrench");
+				if (wrenchClass.isInstance(item.getItem())){
+					return true;
+				}
+			}
+			catch (ClassNotFoundException e1) {
+				return false;
+			}			
+		}		
 		return false;
 	}
 	
