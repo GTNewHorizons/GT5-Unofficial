@@ -37,7 +37,7 @@ public class RotorBase extends ItemWindRotor{
 		this.renderTexture = RenderTexture;
 		this.minWindStrength = minWindStrength;
 		this.maxWindStrength = maxWindStrength;
-		this.water = (internalName != InternalName.itemwoodrotor);
+		this.water = true;
 	}
 
 	@Override
