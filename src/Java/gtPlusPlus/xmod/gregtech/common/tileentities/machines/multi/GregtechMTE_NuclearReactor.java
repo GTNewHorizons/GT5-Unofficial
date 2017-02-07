@@ -6,6 +6,7 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
@@ -13,6 +14,7 @@ import gregtech.api.util.*;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 
 import java.util.ArrayList;
@@ -27,6 +29,10 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 
 	public GT_Recipe mLastRecipe;
 	public int mEUStore;
+	protected int fuelConsumption = 0;
+	protected int fuelValue = 0;
+	protected int fuelRemaining = 0;
+	protected boolean boostEu = false;
 
 	//public FluidStack mFluidOut = Materials.UUMatter.getFluid(1L);
 
@@ -141,7 +147,7 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 
 						}
 
-						//TODO - Add Caron Moderation Rods
+						//TODO - Add Carbon Moderation Rods
 						/*
 							else { //carbon moderation rods are at 1,1 & -1,-1 & 1,-1 & -1,1
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
@@ -209,7 +215,7 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 		}
 		if (this.mOutputHatches != null) {
 			for (int i = 0; i < this.mOutputHatches.size(); i++) {
-					
+
 				if (this.mOutputHatches.get(i).mTier < 5 && (this.mOutputHatches.get(i).getBaseMetaTileEntity() instanceof GregtechMTE_NuclearReactor)){
 					Utils.LOG_INFO("You require at LEAST V tier Output Hatches.");
 					Utils.LOG_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
@@ -245,12 +251,12 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 
 	@Override
 	public int getMaxEfficiency(ItemStack aStack) {
-		return 10000;
+		return boostEu ? 30000 : 10000;
 	}
 
 	@Override
 	public int getPollutionPerTick(ItemStack aStack) {
-		return 0;
+		return 5;
 	}
 
 	@Override
@@ -259,13 +265,8 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 	}
 
 	@Override
-	public int getAmountOfOutputs() {
-		return 1;
-	}
-
-	@Override
 	public boolean explodesOnComponentBreak(ItemStack aStack) {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -336,11 +337,11 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 				this.mLastRecipe = null;
 				return false;
 			}
-			
+
 			if (tRecipe == null){
 				return false;
 			}
-			
+
 			if (mRunningOnLoad || tRecipe.isRecipeInputEqual(true, tFluids, new ItemStack[]{})) {
 				if (tRecipe != null){
 					this.mLastRecipe = tRecipe;	
@@ -472,6 +473,67 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 	@Override
 	public long maxEUStore() {
 		return 640000000L * (Math.min(16, this.mEnergyHatches.size())) / 16L;
+	}
+
+	@Override
+	public String[] getInfoData() {
+		return new String[]{
+				"Liquid Fluoride Thorium Reactor",
+				"Current Output: "+mEUt*mEfficiency/10000 +" EU/t",
+				"Fuel Consumption: "+fuelConsumption+"L/t",
+				"Fuel Value: "+fuelValue+" EU/L",
+				"Fuel Remaining: "+fuelRemaining+" Litres",
+				"Current Efficiency: "+(mEfficiency/100)+"%"};
+	}
+
+	@Override
+	public boolean isGivingInformation() {
+		return true;
+	}
+
+	@Override
+	public int getAmountOfOutputs() {
+		return 1;
+	}
+	
+	@Override
+	public void explodeMultiblock() {
+		this.mInventory[1] = null;
+		long explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
+		for (final MetaTileEntity tTileEntity : this.mInputBusses) {
+			explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
+			tTileEntity.getBaseMetaTileEntity().doExplosion(explodevalue);
+		}
+		for (final MetaTileEntity tTileEntity : this.mOutputBusses) {
+			explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
+			tTileEntity.getBaseMetaTileEntity().doExplosion(explodevalue);
+		}
+		for (final MetaTileEntity tTileEntity : this.mInputHatches) {
+			explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
+			tTileEntity.getBaseMetaTileEntity().doExplosion(explodevalue);
+		}
+		for (final MetaTileEntity tTileEntity : this.mOutputHatches) {
+			explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
+			tTileEntity.getBaseMetaTileEntity().doExplosion(explodevalue);
+		}
+		for (final MetaTileEntity tTileEntity : this.mDynamoHatches) {
+			explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
+			tTileEntity.getBaseMetaTileEntity().doExplosion(explodevalue);
+		}
+		for (final MetaTileEntity tTileEntity : this.mMufflerHatches) {
+			explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
+			tTileEntity.getBaseMetaTileEntity().doExplosion(explodevalue);
+		}
+		for (final MetaTileEntity tTileEntity : this.mEnergyHatches) {
+			explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
+			tTileEntity.getBaseMetaTileEntity().doExplosion(explodevalue);
+		}
+		for (final MetaTileEntity tTileEntity : this.mMaintenanceHatches) {
+			explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
+			tTileEntity.getBaseMetaTileEntity().doExplosion(explodevalue);
+		}
+		explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
+		this.getBaseMetaTileEntity().doExplosion(explodevalue);
 	}
 
 }
