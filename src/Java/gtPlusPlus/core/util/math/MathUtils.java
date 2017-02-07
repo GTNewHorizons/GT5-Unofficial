@@ -266,5 +266,18 @@ public class MathUtils {
 		}		
 		return Utils.rgbtoHexValue(RGBA[0], RGBA[1], RGBA[2]);
 	}
+	
+	
+	public final static int returnLargestNumber(int a, int b){
+		if (a > b){
+			return a;
+		}
+		else if (a == b){
+			return a;
+		}
+		else {
+			return b;
+		}
+	}
 
 }

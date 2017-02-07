@@ -19,6 +19,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.Block.SoundType;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
@@ -536,6 +537,66 @@ public class Utils {
 		return output;
 
 	}
+	
+	public static String[] parseVersion(String version){
+		return parseVersion(version, "//.");
+	}
+	
+	public static String[] parseVersion(String version, String delimiter){
+		String[] versionArray = version.split(delimiter);
+		return versionArray;
+	}
+	
+	public static Versioning compareModVersion (String currentVersion, String expectedVersion){
+		return compareModVersion(currentVersion, expectedVersion, "//.");
+	}
+	
+	public static Versioning compareModVersion (String currentVersion, String expectedVersion, String delimiter){
+		String[] a = parseVersion(currentVersion, delimiter);
+		String[] b = parseVersion(expectedVersion, delimiter);
+		int[] c = new int[a.length];
+		int[] d = new int[b.length];
+		for (int r=0;r<a.length;r++){
+			c[r]=Integer.parseInt(a[r]);
+		}
+		for (int r=0;r<b.length;r++){
+			d[r]=Integer.parseInt(b[r]);
+		}
+		Versioning[] e = new Versioning[MathUtils.returnLargestNumber(c.length, d.length)];
+		for (int r=0;r<e.length;r++){
+			
+			
+			if (c[r] > d[r]){
+				e[r] = Versioning.NEWER;
+			}
+			else if (c[r] < d[r]){
+				e[r] = Versioning.OLDER;
+			}
+			else if (c[r] == d[r]){
+				e[r] = Versioning.EQUAL;
+			}
+		}
+		
+		for (int r=0;r<e.length;r++){
+			if (e[0] == Versioning.NEWER){
+				return Versioning.NEWER;
+			}
+			else if (e[0] == Versioning.OLDER){
+				return Versioning.OLDER;
+			}
+			else {				
+				if (e[r] == Versioning.OLDER){
+					
+				}
+				
+				return Versioning.NEWER;
+			}
+		}
+		
+	return null;	
+	}
+	
+	
 
 	public static ToolMaterial generateToolMaterialFromGT(Materials gtMaterial){
 		String name = Utils.sanitizeString(gtMaterial.mDefaultLocalName);
@@ -561,6 +622,31 @@ public class Utils {
 		return temp;
 
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public static enum Versioning {
+    	EQUAL(0),
+    	NEWER(1),
+    	OLDER(-1);
+    	private int versioningInfo;
+    	private Versioning (final int versionStatus){
+    		this.versioningInfo = versionStatus;
+    	}
+    	public int getTexture() {
+    		return versioningInfo;
+    	}    
+    }
+	
 
 
 }

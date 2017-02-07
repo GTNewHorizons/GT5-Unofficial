@@ -13,7 +13,12 @@ public class FishTrapHandler {
 	private static final String[] fishTypes = {"fish", "junk", "treasure"};
 
 	protected static void addFish(String lootType, ItemStack lootStack, int lootChance){
-		if (LoadedMods.getModVersion("Growthcraft").contains("2.3.1")){
+		
+		String GCVersion = LoadedMods.getModVersion("Growthcraft");
+		
+		String[] versionString = GCVersion.split("//.");
+		
+		if (LoadedMods.getModVersion("Growthcraft").contains("2.3.1") || versionString[1].equals("3")){
 			if (lootType.equals(fishTypes[0])){
 				Growthcraft_Old.addTrapFish(lootStack, lootChance);
 				Utils.LOG_INFO("Added "+lootStack.getDisplayName()+" as an extra Fish for Growthcraft Fishtraps.");
@@ -24,6 +29,23 @@ public class FishTrapHandler {
 			}
 			else if (lootType.equals(fishTypes[2])){
 				Growthcraft_Old.addTrapTreasure(lootStack, lootChance);
+				Utils.LOG_INFO("Added "+lootStack.getDisplayName()+" as extra Treasure for Growthcraft Fishtraps.");
+			}
+			else {
+				return;
+			}
+		}
+		else if (LoadedMods.getModVersion("Growthcraft").contains("2.7.2")){
+			if (lootType.equals(fishTypes[0])){
+				Growthcraft_New.addTrapFish(lootStack, lootChance);
+				Utils.LOG_INFO("Added "+lootStack.getDisplayName()+" as an extra Fish for Growthcraft Fishtraps.");
+			}
+			else if (lootType.equals(fishTypes[1])){
+				Growthcraft_New.addTrapJunk(lootStack, lootChance);
+				Utils.LOG_INFO("Added "+lootStack.getDisplayName()+" as extra Junk for Growthcraft Fishtraps.");
+			}
+			else if (lootType.equals(fishTypes[2])){
+				Growthcraft_New.addTrapTreasure(lootStack, lootChance);
 				Utils.LOG_INFO("Added "+lootStack.getDisplayName()+" as extra Treasure for Growthcraft Fishtraps.");
 			}
 			else {
