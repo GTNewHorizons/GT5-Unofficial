@@ -34,6 +34,8 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 	protected int fuelRemaining = 0;
 	protected double realOptFlow = 0;
 	protected boolean boostEu = false;
+	protected boolean heliumSparging = false;
+	protected boolean fluorideSparging = false;
 
 	//public FluidStack mFluidOut = Materials.UUMatter.getFluid(1L);
 
@@ -345,17 +347,9 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 							if(depleteInput(tLiquid)) { //Deplete that amount
 
 								//If it has a supply of this material, boostEu = true;
-								boostEu = depleteInput(Materials.Oxygen.getGas(2L));
+								boostEu = depleteInput(Materials.Helium.getGas(50L));
 
-								//TODO - Recipes requires this, but I don't think we will need it for the LFTR
-								/*if(tFluids.contains(Materials.Lubricant.getFluid(1L))) { //Has lubricant?
-									//Deplete Lubricant. 1000L should = 1 hour of runtime (if baseEU = 2048)
-									if(mRuntime % 72 == 0 || mRuntime == 0){
-										depleteInput(Materials.Lubricant.getFluid(boostEu ? 2 : 1));
-									}
-								} else {
-									return false;
-								}*/
+
 
 								if (aFuel != null){
 									this.mLastRecipe = aFuel;	
@@ -428,6 +422,15 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 		}
 		explodevalue = MathUtils.randLong(Integer.MAX_VALUE, 8589934588L);
 		this.getBaseMetaTileEntity().doExplosion(explodevalue);
+	}
+
+
+	protected FluidStack[] getByproductsOfSparge(FluidStack spargeGas){
+		FluidStack[] outputArrayOfGases = new FluidStack[]{};
+		if (spargeGas != null){
+
+		}
+		return outputArrayOfGases;
 	}
 
 }
