@@ -124,4 +124,50 @@ public class FLUORIDES {
 					new MaterialStack(ELEMENT.getInstance().FLUORINE, 1)
 			});
 	
+	
+	//LFTR Output
+	
+	
+	public static final Material NEPTUNIUM_HEXAFLUORIDE = new Material(
+			"Neptunium Hexafluoride", //Material Name
+			ELEMENT.getInstance().NEPTUNIUM.getRGBA(), //Material Colour
+			ELEMENT.getInstance().NEPTUNIUM.getMeltingPointC(), //Melting Point in C
+			ELEMENT.getInstance().NEPTUNIUM.getBoilingPointC(), //Boiling Point in C
+			((ELEMENT.getInstance().NEPTUNIUM.getProtons()+(ELEMENT.getInstance().FLUORINE.getProtons()*6))/7), //Protons
+			((ELEMENT.getInstance().NEPTUNIUM.getNeutrons()+(ELEMENT.getInstance().FLUORINE.getNeutrons()*6))/7), //Neutrons
+			false, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().NEPTUNIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().FLUORINE, 6)
+			});
+	
+	public static final Material TECHNETIUM_HEXAFLUORIDE = new Material(
+			"Technetium Hexafluoride", //Material Name
+			ELEMENT.getInstance().TECHNETIUM.getRGBA(), //Material Colour
+			ELEMENT.getInstance().TECHNETIUM.getMeltingPointC(), //Melting Point in C
+			ELEMENT.getInstance().TECHNETIUM.getBoilingPointC(), //Boiling Point in C
+			((ELEMENT.getInstance().TECHNETIUM.getProtons()+(ELEMENT.getInstance().FLUORINE.getProtons()*6))/7), //Protons
+			((ELEMENT.getInstance().TECHNETIUM.getNeutrons()+(ELEMENT.getInstance().FLUORINE.getNeutrons()*6))/7), //Neutrons
+			false, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().TECHNETIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().FLUORINE, 6)
+			});
+	
+	public static final Material SELENIUM_HEXAFLUORIDE = new Material(
+			"Selenium Hexafluoride", //Material Name
+			ELEMENT.getInstance().SELENIUM.getRGBA(), //Material Colour
+			ELEMENT.getInstance().SELENIUM.getMeltingPointC(), //Melting Point in C
+			ELEMENT.getInstance().SELENIUM.getBoilingPointC(), //Boiling Point in C
+			((ELEMENT.getInstance().SELENIUM.getProtons()+(ELEMENT.getInstance().FLUORINE.getProtons()*6))/7), //Protons
+			((ELEMENT.getInstance().SELENIUM.getNeutrons()+(ELEMENT.getInstance().FLUORINE.getNeutrons()*6))/7), //Neutrons
+			false, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().SELENIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().FLUORINE, 6)
+			});
+	
 }
