@@ -255,20 +255,22 @@ public final class ModItems {
 
 			//Elements generate first so they can be used in compounds.
 			//Missing Elements
-			MaterialGenerator.generate(ELEMENT.getInstance().SELENIUM);
+			MaterialGenerator.generate(ELEMENT.getInstance().SELENIUM); //LFTR byproduct
 			MaterialGenerator.generate(ELEMENT.getInstance().BROMINE);
+			MaterialGenerator.generate(ELEMENT.getInstance().KRYPTON); //LFTR byproduct
+			MaterialGenerator.generate(ELEMENT.getInstance().STRONTIUM);
 			MaterialGenerator.generate(ELEMENT.getInstance().ZIRCONIUM);
 			MaterialGenerator.generate(ELEMENT.getInstance().RUTHENIUM);
-			MaterialGenerator.generate(ELEMENT.getInstance().IODINE);
+			MaterialGenerator.generate(ELEMENT.getInstance().IODINE); //LFTR byproduct
 			MaterialGenerator.generate(ELEMENT.getInstance().HAFNIUM);
 			MaterialGenerator.generate(ELEMENT.getInstance().DYSPROSIUM);
-			MaterialGenerator.generate(ELEMENT.getInstance().TELLURIUM);
+			MaterialGenerator.generate(ELEMENT.getInstance().TELLURIUM); //LFTR byproduct
 			MaterialGenerator.generate(ELEMENT.getInstance().RHODIUM);
 			MaterialGenerator.generate(ELEMENT.getInstance().RHENIUM);
 			MaterialGenerator.generate(ELEMENT.getInstance().THALLIUM);
 			
 			//RADIOACTIVE ELEMENTS
-			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().TECHNETIUM, false);
+			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().TECHNETIUM, false); //LFTR byproduct
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().POLONIUM, false);
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().ASTATINE, false);
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().RADON, false);
@@ -277,7 +279,7 @@ public final class ModItems {
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().PROMETHIUM, false);
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().ACTINIUM, false);
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().PROTACTINIUM, false);
-			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().NEPTUNIUM, false);
+			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().NEPTUNIUM, false); //LFTR byproduct
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().CURIUM, false);
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().BERKELIUM, false);
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().CALIFORNIUM, false);
@@ -299,7 +301,10 @@ public final class ModItems {
 			//because of parasitic (n,2n) reactions on uranium-233 itself, or on protactinium-233, or on thorium-232:
 			MaterialGenerator.generate(NUCLIDE.getInstance().URANIUM232);
 			//Uranium-233 is a fissile isotope of uranium that is bred from thorium-232 as part of the thorium fuel cycle.
-			MaterialGenerator.generate(NUCLIDE.getInstance().URANIUM233);			
+			MaterialGenerator.generate(NUCLIDE.getInstance().URANIUM233);	
+			//Plutonium-238 is a very powerful alpha emitter. This makes the plutonium-238 isotope suitable for usage in radioisotope thermoelectric generators (RTGs) 
+			//and radioisotope heater units - one gram of plutonium-238 generates approximately 0.5 W of thermal power.
+			MaterialGenerator.generateNuclearMaterial(NUCLIDE.getInstance().PLUTONIUM238, false);
 			
 
 
