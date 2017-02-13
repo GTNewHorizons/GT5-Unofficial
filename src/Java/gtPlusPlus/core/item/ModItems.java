@@ -254,10 +254,35 @@ public final class ModItems {
 		try{
 
 			//Elements generate first so they can be used in compounds.
-			
-			//Zirconium - Because Greg himself never added it.
+			//Missing Elements
+			MaterialGenerator.generate(ELEMENT.getInstance().SELENIUM);
+			MaterialGenerator.generate(ELEMENT.getInstance().BROMINE);
 			MaterialGenerator.generate(ELEMENT.getInstance().ZIRCONIUM);
+			MaterialGenerator.generate(ELEMENT.getInstance().RUTHENIUM);
+			MaterialGenerator.generate(ELEMENT.getInstance().IODINE);
+			MaterialGenerator.generate(ELEMENT.getInstance().HAFNIUM);
+			MaterialGenerator.generate(ELEMENT.getInstance().DYSPROSIUM);
+			MaterialGenerator.generate(ELEMENT.getInstance().TELLURIUM);
+			MaterialGenerator.generate(ELEMENT.getInstance().RHODIUM);
+			MaterialGenerator.generate(ELEMENT.getInstance().RHENIUM);
+			MaterialGenerator.generate(ELEMENT.getInstance().THALLIUM);
 			
+			//RADIOACTIVE ELEMENTS
+			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().TECHNETIUM, false);
+			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().POLONIUM, false);
+			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().ASTATINE, false);
+			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().RADON, false);
+			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().FRANCIUM, false);
+			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().RADIUM, false);
+			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().PROMETHIUM, false);
+			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().ACTINIUM, false);
+			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().PROTACTINIUM, false);
+			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().NEPTUNIUM, false);
+			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().CURIUM, false);
+			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().BERKELIUM, false);
+			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().CALIFORNIUM, false);
+			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().EINSTEINIUM, false);
+			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().FERMIUM, false);
 			
 			
 			

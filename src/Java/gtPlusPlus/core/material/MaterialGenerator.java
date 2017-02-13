@@ -108,8 +108,11 @@ public class MaterialGenerator {
 		RecipeGen_ShapedCrafting.generateRecipes(matInfo);
 
 	}
-
 	public static void generateNuclearMaterial(final Material matInfo){	
+		generateNuclearMaterial(matInfo, true);
+	}
+	
+	public static void generateNuclearMaterial(final Material matInfo, boolean generatePlates){	
 		String unlocalizedName = matInfo.getUnlocalizedName();
 		String materialName = matInfo.getLocalizedName();
 		short[] C = matInfo.getRGBA();
