@@ -207,9 +207,9 @@ public class Material {
 			else if (isValid.mGas != null){
 				this.vMoltenFluid = isValid.mGas;
 			}
-			else if (isValid.mPlasma != null){
+			/*else if (isValid.mPlasma != null){
 				this.vMoltenFluid = isValid.mPlasma;
-			}
+			}*/
 			else {
 				this.vMoltenFluid = generateFluid();
 			}
