@@ -6,6 +6,8 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.materials.MaterialUtils;
+import gtPlusPlus.core.util.math.MathUtils;
 import net.minecraft.item.ItemStack;
 
 public class RecipeGen_BlastSmelterGT  implements Runnable{
@@ -50,6 +52,10 @@ public class RecipeGen_BlastSmelterGT  implements Runnable{
 					else {
 						duration = (int) Math.max(M.getMass() / 50L, 1L) * 150;	
 					}
+					
+					//Sets the materials 'tier'. Will probably replace this logic.
+					int x = M.mMeltingPoint;
+					int vVoltageMultiplier = (x <= 800 ? 8 : (x <= 1600 ? 16 : (x <= 2800 ? 32 : (x <= 3600 ? 64 : (x <= 4200 ? 128 : (x <= 5400 ? 256 : (x <= 7200 ? 512 : 1024)))))));
 
 
 					//Make a simple one Material Materialstack[] and log it for validity.
@@ -67,10 +73,10 @@ public class RecipeGen_BlastSmelterGT  implements Runnable{
 
 					//Generate Recipes for all singular materials that can be made molten.
 					if (M.mBlastFurnaceRequired) {
-						doTest = CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getMolten(fluidAmount), 100, duration, 240);
+						doTest = CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getMolten(fluidAmount), 100, duration, 8*vVoltageMultiplier);
 					}
 					else {
-						doTest = CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getMolten(fluidAmount), 100, duration/2, 120);					
+						doTest = CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getMolten(fluidAmount), 100, duration/2, 4*vVoltageMultiplier);					
 					}
 					
 					for (MaterialStack xMaterial : M.mMaterialList){
@@ -156,12 +162,20 @@ public class RecipeGen_BlastSmelterGT  implements Runnable{
 									if (components[das] != null)
 										Utils.LOG_WARNING("tMaterial["+das+"]: "+components[das].getDisplayName()+" Meta: "+components[das].getItemDamage()+", Amount: "+components[das].stackSize);
 								}
-								if (M.mBlastFurnaceRequired) {
+								
+								CORE.RA.addBlastSmelterRecipe(
+										components,
+										M.getMolten(fluidAmount),
+										100,
+										(int) Math.max(M.getMass() * 2L * 1, 1),
+										8 * vVoltageMultiplier); // EU Cost
+								
+								/*if (M.mBlastFurnaceRequired) {
 									CORE.RA.addBlastSmelterRecipe(components, M.getMolten(fluidAmount), 100, duration, 500);							
 								}
 								else {
 									CORE.RA.addBlastSmelterRecipe(components, M.getMolten(fluidAmount), 100, duration, 240);							
-								}
+								}*/
 							}
 						}
 					}
