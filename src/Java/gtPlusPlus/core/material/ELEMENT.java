@@ -84,7 +84,7 @@ public final class ELEMENT {
 	public final Material TIN = MaterialUtils.generateMaterialFromGtENUM(Materials.Tin);
 
 
-//Antimony - to the end
+	//Antimony - to the end
 
 	public final Material ANTIMONY = MaterialUtils.generateMaterialFromGtENUM(Materials.Antimony);
 	
@@ -126,7 +126,7 @@ public final class ELEMENT {
 	public final Material TUNGSTEN = MaterialUtils.generateMaterialFromGtENUM(Materials.Tungsten);
 	
 	
-	public final Material RHENIUM = new Material("name", 25600, new short[]{255, 250, 205}, melt, boil, proton, neutron, false, "Zr", 0);//Not a GT Inherited Material
+	public final Material RHENIUM = new Material("Rhenium", 25600, new short[]{255, 250, 205}, 3180, 3627, 75, 111, false, "Re", 0);//Not a GT Inherited Material
 	
 	
 	public final Material OSMIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Osmium);
@@ -136,43 +136,43 @@ public final class ELEMENT {
 	public final Material MERCURY = MaterialUtils.generateMaterialFromGtENUM(Materials.Mercury); //Mercury
 	
 	
-	public final Material THALLIUM = new Material("name", 25600, new short[]{255, 250, 205}, melt, boil, proton, neutron, false, "Zr", 0);//Not a GT Inherited Material
+	public final Material THALLIUM = new Material("Thallium", 25600, new short[]{255, 250, 205}, 304, 1457, 81, 123, false, "tl", 0);//Not a GT Inherited Material
 	
 	
 	public final Material LEAD = MaterialUtils.generateMaterialFromGtENUM(Materials.Lead);	
 	public final Material BISMUTH = MaterialUtils.generateMaterialFromGtENUM(Materials.Bismuth);
 	
 	
-	public final Material POLONIUM = new Material("name", 25600, new short[]{255, 250, 205}, melt, boil, proton, neutron, false, "Zr", 0);//Not a GT Inherited Material
-	public final Material ASTATINE = new Material("name", 25600, new short[]{255, 250, 205}, melt, boil, proton, neutron, false, "Zr", 0);//Not a GT Inherited Material
+	public final Material POLONIUM = new Material("Polonium", 25600, new short[]{255, 250, 205}, 254, 962, 84, 125, false, "Po", 0);//Not a GT Inherited Material
+	public final Material ASTATINE = new Material("Astatine", 25600, new short[]{255, 250, 205}, 302, 337, 85, 125, false, "At", 0);//Not a GT Inherited Material
 	
 	
 	public final Material RADON = MaterialUtils.generateMaterialFromGtENUM(Materials.Radon);
 	
 	
-	public final Material FRANCIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Francium); //Francium
-	public final Material RADIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Radium); //Radium
-	public final Material ACTINIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Actinium); //Actinium
+	public final Material FRANCIUM = new Material("Francium", 25600, new short[]{255, 250, 205}, 27, 677, 87, 136, false, "Fr", 0);//Not a GT Inherited Material
+	public final Material RADIUM = new Material("Radium", 25600, new short[]{255, 250, 205}, 700, 1737, 88, 138, false, "Ra", 0);//Not a GT Inherited Material
+	public final Material ACTINIUM = new Material("Actinium", 25600, new short[]{255, 250, 205}, 1050, 3200, 89, 138, false, "Ac", 0);//Not a GT Inherited Material
 	
 	public final Material THORIUM = new Material("Thorium", 51200, Materials.Thorium.mRGBa, Materials.Thorium.mMeltingPoint, Materials.Thorium.mBlastFurnaceTemp, 90, 142, false, MaterialUtils.superscript("Th"), 1);
 			
-	public final Material PROTACTINIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Protactinium); //Protactinium
+	public final Material PROTACTINIUM = new Material("Protactinium", 25600, new short[]{255, 250, 205}, 1568, 4027, 91, 140, false, "Pa", 0);//Not a GT Inherited Material
 	
 	public final Material URANIUM238 = MaterialUtils.generateMaterialFromGtENUM(Materials.Uranium);
 	public final Material URANIUM235 = MaterialUtils.generateMaterialFromGtENUM(Materials.Uranium235);
 
-	public final Material NEPTUNIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Neptunium); //Neptunium
+	public final Material NEPTUNIUM = new Material("Neptunium", 25600, new short[]{255, 250, 205}, 640, 3902, 93, 144, false, "Np", 0);//Not a GT Inherited Material
 	
 	public final Material PLUTONIUM244 = MaterialUtils.generateMaterialFromGtENUM(Materials.Plutonium);
 	public final Material PLUTONIUM241 = MaterialUtils.generateMaterialFromGtENUM(Materials.Plutonium241);
 	public final Material AMERICIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Americium); //Americium
 	
 	
-	public final Material CURIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Curium); //Curium
-	public final Material BERKELIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Berkelium); //Berkelium
-	public final Material CALIFORNIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Californium); //Californium
-	public final Material EINSTEINIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Einsteinium); //Einsteinium
-	public final Material FERMIUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Fermium); //100 Fermium
+	public final Material CURIUM = new Material("Curium", 25600, new short[]{255, 250, 205}, 1340, 3110, 96, 151, false, "Cm", 0);//Not a GT Inherited Material
+	public final Material BERKELIUM = new Material("Berkelium", 25600, new short[]{255, 250, 205}, 985, 710, 97, 150, false, "Bk", 0);//Not a GT Inherited Material
+	public final Material CALIFORNIUM = new Material("Californium", 25600, new short[]{255, 250, 205}, 899, 1472, 98, 153, false, "Cf", 0);//Not a GT Inherited Material
+	public final Material EINSTEINIUM = new Material("Einsteinium", 25600, new short[]{255, 250, 205}, 860, 3500, 99, 153, false, "Es", 0);//Not a GT Inherited Material //Boiling Point is made up
+	public final Material FERMIUM = new Material("Fermium", 25600, new short[]{255, 250, 205}, 1527, 3850, 100, 157, false, "Fm", 0);//Not a GT Inherited Material //Boiling Point is made up
 	
 	
 	
