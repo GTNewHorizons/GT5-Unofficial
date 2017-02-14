@@ -98,7 +98,7 @@ public final class ELEMENT {
 	public final Material PLATINUM = MaterialUtils.generateMaterialFromGtENUM(Materials.Platinum);	
 	public final Material GOLD = MaterialUtils.generateMaterialFromGtENUM(Materials.Gold);	
 	public final Material MERCURY = MaterialUtils.generateMaterialFromGtENUM(Materials.Mercury); //Mercury
-	public final Material THALLIUM = new Material("Thallium", 25600, new short[]{175, 175, 175}, 304, 1457, 81, 123, false, "tl", 0);//Not a GT Inherited Material
+	public final Material THALLIUM = new Material("Thallium", 25600, new short[]{175, 175, 175}, 304, 1457, 81, 123, false, "Tl", 0);//Not a GT Inherited Material
 	public final Material LEAD = MaterialUtils.generateMaterialFromGtENUM(Materials.Lead);	
 	public final Material BISMUTH = MaterialUtils.generateMaterialFromGtENUM(Materials.Bismuth);
 	public final Material POLONIUM = new Material("Polonium", 25600, new short[]{180, 170, 180}, 254, 962, 84, 125, false, "Po", 1);//Not a GT Inherited Material

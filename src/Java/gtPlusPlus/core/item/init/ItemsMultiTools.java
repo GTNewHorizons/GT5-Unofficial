@@ -43,7 +43,7 @@ public class ItemsMultiTools {
 					toolFactory(ALLOY.TANTALLOY_61);
 					toolFactory(ALLOY.STABALLOY);
 					toolFactory(ALLOY.QUANTUM);
-					toolFactory(ALLOY.BEDROCKIUM);
+					//toolFactory(ALLOY.BEDROCKIUM);
 					toolFactory(ALLOY.POTIN);
 					toolFactory(ALLOY.TUMBAGA);
 					toolFactory(ALLOY.TALONITE);

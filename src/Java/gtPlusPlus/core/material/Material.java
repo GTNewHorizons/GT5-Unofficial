@@ -23,12 +23,14 @@ public class Material {
 	private final String localizedName;
 
 	private final Fluid vMoltenFluid;
+	private final Fluid vPlasma;
 
 	protected Object dataVar = MathUtils.generateSingularRandomHexValue();
 
 	private ArrayList<MaterialStack> vMaterialInput = new ArrayList<MaterialStack>();
 	public final long[] vSmallestRatio;
-
+	public final short vComponentCount;
+	
 	private final short[] RGBA;
 
 	private final boolean usesBlastFurnace;
@@ -47,7 +49,7 @@ public class Material {
 	public final int vVoltageMultiplier;
 	public final String vChemicalFormula;
 	public final String vChemicalSymbol;
-	
+
 	public final long vDurability;
 	public final int vToolQuality;
 	public final int vHarvestLevel;
@@ -99,11 +101,12 @@ public class Material {
 						if (m.getStackMaterial().vDurability != 0){
 							durabilityTemp =  (durabilityTemp+m.getStackMaterial().vDurability);
 							counterTemp++;
+							
 						}
 					}					
 				}
 				if (durabilityTemp != 0 && counterTemp != 0){
-				this.vDurability = (durabilityTemp/counterTemp);
+					this.vDurability = (durabilityTemp/counterTemp);
 				}
 				else {
 					this.vDurability = 8196;
@@ -113,7 +116,7 @@ public class Material {
 				this.vDurability = 0;
 			}
 		}
-		
+
 		if (this.vDurability >= 0 && this.vDurability < 64000){
 			this.vToolQuality = 1;
 			this.vHarvestLevel = 2;
@@ -168,6 +171,7 @@ public class Material {
 			}
 		}
 
+		this.vComponentCount = getComponentCount(inputs);
 		this.vSmallestRatio = getSmallestRatio(vMaterialInput);
 		int tempSmallestSize = 0;
 
@@ -200,20 +204,19 @@ public class Material {
 		if (isValid == Materials._NULL){
 			this.vMoltenFluid = generateFluid();
 		}
-		else {
+		else {			
 			if (isValid.mFluid != null){
 				this.vMoltenFluid = isValid.mFluid;
 			}
 			else if (isValid.mGas != null){
 				this.vMoltenFluid = isValid.mGas;
 			}
-			/*else if (isValid.mPlasma != null){
-				this.vMoltenFluid = isValid.mPlasma;
-			}*/
 			else {
 				this.vMoltenFluid = generateFluid();
 			}
 		}
+
+		this.vPlasma = generatePlasma();
 
 		//dataVar = MathUtils.generateSingularRandomHexValue();
 
@@ -369,6 +372,10 @@ public class Material {
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+unlocalizedName, stacksize);
 	}
 
+	public final ItemStack getPlasmaCell(int stacksize){
+		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cellPlasma"+unlocalizedName, stacksize);
+	}
+
 	public final ItemStack getNugget(int stacksize){
 		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("nugget"+unlocalizedName, stacksize);
 	}
@@ -417,6 +424,21 @@ public class Material {
 			return temp;
 		}
 		return new int[]{};
+	}
+	
+	private final short getComponentCount(MaterialStack[] inputs){
+		int counterTemp = 0;
+		for (MaterialStack m : inputs){
+			if (m.getStackMaterial() != null){
+					counterTemp++;				
+			}					
+		}
+		if (counterTemp != 0){
+			return (short) counterTemp;
+		}
+		else {
+			return 1;
+		}
 	}
 
 
@@ -537,6 +559,21 @@ public class Material {
 		Utils.LOG_WARNING("Getting the fluid from a GT material instead.");
 		return Materials.get(localizedName).mFluid;
 	}
+
+	public final Fluid generatePlasma(){
+		Materials isValid = Materials.get(getLocalizedName());
+		if (isValid != Materials._NULL && isValid != null){
+			if (isValid.mPlasma != null){
+				Utils.LOG_INFO("Using a pre-defined Plasma from GT.");
+				return isValid.mPlasma;
+			}
+		}	
+		Utils.LOG_INFO("Generating our own Plasma.");
+		return FluidUtils.addGTPlasma(this);
+		//return null;
+	}
+
+
 
 	final public FluidStack getFluid(int fluidAmount) {
 		Utils.LOG_WARNING("Attempting to get "+fluidAmount+"L of "+this.vMoltenFluid.getName());

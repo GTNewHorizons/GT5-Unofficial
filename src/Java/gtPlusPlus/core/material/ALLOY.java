@@ -122,7 +122,7 @@ public final class ALLOY {
 					new MaterialStack(ELEMENT.getInstance().TIN, 20)
 			});
 
-	public static final Material BEDROCKIUM = new Material(
+	/*public static final Material BEDROCKIUM = new Material(
 			"Bedrockium", //Material Name
 			new short[]{32, 32, 32, 0}, //Material Colour
 			7735, //Melting Point in C
@@ -131,7 +131,7 @@ public final class ALLOY {
 			100, //Neutrons
 			false, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
-			null);
+			null);*/
 
 	public static final Material INCONEL_625 = new Material(
 			"Inconel-625", //Material Name

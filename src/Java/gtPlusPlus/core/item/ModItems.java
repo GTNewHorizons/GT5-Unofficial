@@ -578,7 +578,7 @@ public final class ModItems {
 		if (LoadedMods.Extra_Utils|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("ExtraUtilities Found - Loading Resources.");
 			try {
-				MaterialGenerator.generate(ALLOY.BEDROCKIUM);
+				//MaterialGenerator.generate(ALLOY.BEDROCKIUM);
 			} catch (NullPointerException e){
 				e.getClass();
 			}

@@ -15,7 +15,10 @@ import api.player.client.ClientPlayerAPI;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
+@SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy{
 
 	/*private final HashSet<String> mCapeList = new HashSet<String>();
@@ -26,6 +29,7 @@ public class ClientProxy extends CommonProxy{
 	}
 	*/
 	
+	@SideOnly(Side.CLIENT)
 	public static String playerName = "";
 	
 	@Override

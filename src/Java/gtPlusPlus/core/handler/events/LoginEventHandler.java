@@ -12,6 +12,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class LoginEventHandler {
 
@@ -25,9 +27,11 @@ public class LoginEventHandler {
 		this.localPlayerRef = event.player;
 		this.localPlayersName = event.player.getDisplayName();
 		this.localPlayersUUID = event.player.getUniqueID();
-		
+
 		//Set this for easier use elsewhere.
-		ClientProxy.playerName = this.localPlayersName;
+		if (event.player.getEntityWorld().isRemote){
+			ClientProxy.playerName = this.localPlayersName;
+		}
 
 		try {
 
@@ -36,19 +40,19 @@ public class LoginEventHandler {
 
 				//Populates player cache
 				if (!localPlayerRef.worldObj.isRemote){
-				PlayerCache.appendParamChanges(localPlayersName, localPlayersUUID.toString());
-				
-				if (!CORE.isModUpToDate){
-					Utils.LOG_INFO("You're not using the latest recommended version of GT++, consider updating.");
-					if (!CORE.MASTER_VERSION.toLowerCase().equals("offline"))
-					Utils.LOG_INFO("Latest version is: "+CORE.MASTER_VERSION);
-					Utils.LOG_INFO("You currently have: "+CORE.VERSION);
-					PlayerUtils.messagePlayer(localPlayerRef, "You're not using the latest recommended version of GT++, consider updating.");
-				}
-				else {
-					Utils.LOG_INFO("You're using the latest recommended version of GT++.");					
-				}
-				
+					PlayerCache.appendParamChanges(localPlayersName, localPlayersUUID.toString());
+
+					if (!CORE.isModUpToDate){
+						Utils.LOG_INFO("You're not using the latest recommended version of GT++, consider updating.");
+						if (!CORE.MASTER_VERSION.toLowerCase().equals("offline"))
+							Utils.LOG_INFO("Latest version is: "+CORE.MASTER_VERSION);
+						Utils.LOG_INFO("You currently have: "+CORE.VERSION);
+						PlayerUtils.messagePlayer(localPlayerRef, "You're not using the latest recommended version of GT++, consider updating.");
+					}
+					else {
+						Utils.LOG_INFO("You're using the latest recommended version of GT++.");					
+					}
+
 				}
 
 

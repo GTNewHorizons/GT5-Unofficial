@@ -27,7 +27,12 @@ public class MaterialGenerator {
 		generate(matInfo, true);	
 	}
 
+
 	public static void generate(final Material matInfo, boolean generateEverything){	
+		generate(matInfo, generateEverything, true);
+	}
+	
+	public static void generate(final Material matInfo, boolean generateEverything, boolean generateBlastSmelterRecipes){	
 		String unlocalizedName = matInfo.getUnlocalizedName();
 		String materialName = matInfo.getLocalizedName();
 		short[] C = matInfo.getRGBA();
