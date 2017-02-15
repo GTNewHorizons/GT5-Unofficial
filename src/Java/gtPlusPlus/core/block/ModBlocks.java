@@ -4,8 +4,7 @@ import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.block.general.FirePit;
 import gtPlusPlus.core.block.general.LightGlass;
-import gtPlusPlus.core.block.machine.Machine_Workbench;
-import gtPlusPlus.core.block.machine.Machine_WorkbenchAdvanced;
+import gtPlusPlus.core.block.machine.*;
 import gtPlusPlus.core.fluids.FluidRegistryHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
@@ -16,6 +15,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public final class ModBlocks {
 
+	public static Block blockFishTrap;
 	public static Block blockWorkbench;
 	public static Block blockWorkbenchAdvanced;
 	//Blocks
@@ -60,6 +60,7 @@ public final class ModBlocks {
 		blockWorkbench = new Machine_Workbench().setHardness(1.5F);
 		blockWorkbenchAdvanced = new Machine_WorkbenchAdvanced().setHardness(2.5F);
 		blockFirePit = new FirePit();
+		blockFishTrap = new FishTrap();
 		blockOreFluorite = new BlockBaseOre("oreFluorite", "Fluorite", Material.rock, BlockTypes.ORE, Utils.rgbtoHexValue(120, 120, 30), 3);
 
 		

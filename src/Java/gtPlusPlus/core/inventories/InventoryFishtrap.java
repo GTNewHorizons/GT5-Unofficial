@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-public class InventoryFishtrap implements IInventory{
+public class InventoryFishTrap implements IInventory{
 
 	private String name = "Fishtrap";
 
@@ -19,7 +19,7 @@ public class InventoryFishtrap implements IInventory{
 	/**
 	 * @param itemstack - the ItemStack to which this inventory belongs
 	 */
-	public InventoryFishtrap()
+	public InventoryFishTrap()
 	{		
 		
 	}

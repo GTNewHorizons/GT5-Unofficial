@@ -5,11 +5,11 @@ import gtPlusPlus.core.container.*;
 import gtPlusPlus.core.gui.beta.Gui_ID_Registry;
 import gtPlusPlus.core.gui.beta.MU_GuiId;
 import gtPlusPlus.core.gui.item.GuiBaseBackpack;
-import gtPlusPlus.core.gui.machine.GUI_Workbench;
-import gtPlusPlus.core.gui.machine.GUI_WorkbenchAdvanced;
+import gtPlusPlus.core.gui.machine.*;
 import gtPlusPlus.core.interfaces.IGuiManager;
 import gtPlusPlus.core.inventories.BaseInventoryBackpack;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbenchAdvanced;
 import gtPlusPlus.core.util.Utils;
@@ -30,7 +30,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int GUI3 = 2;      //BackpackHandler
 	public static final int GUI4 = 3;      //Workbench
 	public static final int GUI5 = 4;      //Workbench Adv
-	public static final int GUI6 = 5;      //
+	public static final int GUI6 = 5;      //Fish trap
 	public static final int GUI7 = 6;      //
 	public static final int GUI8 = 7;      //
 
@@ -79,6 +79,9 @@ public class GuiHandler implements IGuiHandler {
 				return new Container_WorkbenchAdvanced(player.inventory, (TileEntityWorkbenchAdvanced)te);
 
 			}
+			if (ID == GUI6){
+				return new Container_FishTrap(player.inventory, (TileEntityFishTrap)te);
+			}
 		}
 
 
@@ -121,6 +124,9 @@ public class GuiHandler implements IGuiHandler {
 			if (ID == GUI5){
 				Utils.LOG_INFO("sad");
 				return new GUI_WorkbenchAdvanced(player.inventory, (TileEntityWorkbenchAdvanced)te);
+			}
+			if (ID == GUI6){
+				return new GUI_FishTrap(player.inventory, (TileEntityFishTrap)te);
 			}
 		}
 
