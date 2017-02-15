@@ -61,7 +61,7 @@ public class RecipeGen_BlastSmelterGT  implements Runnable{
 					//Make a simple one Material Materialstack[] and log it for validity.
 					tMaterial = new MaterialStack[]{new MaterialStack(M, 1)};	
 					circuitGT = ItemUtils.getGregtechCircuit(1);
-					ItemStack[] tItemStackTest = new ItemStack[]{circuitGT, ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dust"+M, 1)};
+					ItemStack[] tItemStackTest = new ItemStack[]{circuitGT, ItemUtils.getGregtechDust(M, 1)};
 					inputStackCount = 1;
 					fluidAmount = 144*inputStackCount;
 					Utils.LOG_WARNING("Adding an Alloy Blast Smelter Recipe for "+M+". Gives "+fluidAmount+"L of molten metal.");
@@ -120,7 +120,7 @@ public class RecipeGen_BlastSmelterGT  implements Runnable{
 								for (MaterialStack aOutputPart : tempStack){
 									if (aOutputPart != null){
 										Utils.LOG_WARNING("Finding dust: "+aOutputPart.mMaterial);
-										ItemStack rStack = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dust"+aOutputPart.mMaterial, (int) aOutputPart.mAmount);
+										ItemStack rStack = ItemUtils.getGregtechDust(aOutputPart.mMaterial, (int) aOutputPart.mAmount);
 										if (rStack != null){
 											Utils.LOG_WARNING("Found dust: "+aOutputPart.mMaterial);
 											components[counter] = rStack;

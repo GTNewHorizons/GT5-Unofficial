@@ -256,6 +256,15 @@ public class ItemUtils {
 		Utils.LOG_INFO(oredictName+" was not valid.");	
 		return null;
 	}
+	
+	public static ItemStack getGregtechDust(Materials material, int amount){
+		ItemStack returnValue = GT_OreDictUnificator.get(OrePrefixes.dust, material, 1L);
+		if (returnValue.getItem().getClass() != ModItems.AAA_Broken.getClass() || returnValue.getItem() != ModItems.AAA_Broken){		
+			return returnValue;
+		}
+		Utils.LOG_INFO(material+" was not valid.");	
+		return null;
+	}
 
 	public static Item[] generateDusts(String unlocalizedName, String materialName, int materialTier, Material matInfo, int Colour){
 		int radioactive = getRadioactivityLevel(materialName);

@@ -13,6 +13,7 @@ import gtPlusPlus.core.item.base.foods.BaseItemFood;
 import gtPlusPlus.core.item.base.foods.BaseItemHotFood;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngotOLD;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate;
+import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
 import gtPlusPlus.core.item.effects.RarityUncommon;
 import gtPlusPlus.core.item.general.*;
 import gtPlusPlus.core.item.init.ItemsFoods;
@@ -182,18 +183,16 @@ public final class ModItems {
 	public static Item dustLiFBeF2ZrF4U235;
 	public static Item dustLiFBeF2ThF4UF4;
 
-	private static Item dustCalciumSulfate;
+	public static Item dustCalciumSulfate;
 
-	private static BaseItemPlate itemPlateClay;
+	public static BaseItemPlate itemPlateClay;
+	public static BaseItemPlateDouble itemDoublePlateClay;
+	
+	public static Item dustFertUN18;
+	public static Item dustFertUN32;
 
-	private static Item dustFertUN18;
-
-	private static Item dustFertUN32;
 
 
-
-	//@SuppressWarnings("unused")
-	@SuppressWarnings("unused")
 	public static final void init(){
 
 		//Default item used when recipes fail, handy for debugging.
@@ -511,6 +510,7 @@ public final class ModItems {
 		
 		//Just an unusual plate needed for some black magic.
 		itemPlateClay = new BaseItemPlate(MaterialUtils.generateMaterialFromGtENUM(Materials.Clay));
+		itemDoublePlateClay = new BaseItemPlateDouble(MaterialUtils.generateMaterialFromGtENUM(Materials.Clay));
 
 		//EnderIO Resources
 		if (LoadedMods.EnderIO || LOAD_ALL_CONTENT){
