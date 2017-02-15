@@ -2,6 +2,7 @@ package gtPlusPlus.core.tileentities.general;
 
 import java.util.UUID;
 
+import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.inventories.*;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
@@ -56,7 +57,7 @@ public class TileEntityFishTrap extends TileEntity{
 				surroundingBlocks[5] = worldObj.getBlock(locationX, locationY, locationZ-1);
 				int waterCount = 0;
 				for (Block checkBlock : surroundingBlocks){
-					if (checkBlock == Blocks.water || checkBlock == Blocks.flowing_water || checkBlock.getUnlocalizedName().toLowerCase().contains("water")){
+					if (checkBlock == Blocks.water || checkBlock == Blocks.flowing_water || checkBlock.getUnlocalizedName().toLowerCase().contains("water") || checkBlock == ModBlocks.blockFishTrap){
 						waterCount++;
 					}
 				}
@@ -79,7 +80,11 @@ public class TileEntityFishTrap extends TileEntity{
 			int checkingSlot = 0;
 			ItemStack loot = generateLootForFishTrap();
 			for (ItemStack contents : this.getInventory().getInventory()){
-				if (contents.getItem() == loot.getItem()){
+				if (contents == null){
+					this.getInventory().setInventorySlotContents(checkingSlot, loot);
+					return true;
+				}
+				else if (contents.getItem() == loot.getItem()){
 					if (contents.stackSize < contents.getMaxStackSize()){
 						contents.stackSize++;;
 						return true;
@@ -88,10 +93,6 @@ public class TileEntityFishTrap extends TileEntity{
 						this.getInventory().setInventorySlotContents(checkingSlot, loot);
 						return true;
 					}
-				}
-				else if (contents.getItem() == null){
-					this.getInventory().setInventorySlotContents(checkingSlot, loot);
-					return true;
 				}
 				else {
 
@@ -141,37 +142,42 @@ public class TileEntityFishTrap extends TileEntity{
 			}
 			
 			if (this.isInWater){
-				int calculateTickrate = 0;
-				if (this.waterSides < 2){
-					calculateTickrate = 0;
-				}
-				else if (this.waterSides >= 2 && this.waterSides < 4){
-					calculateTickrate = 3000;
-				}
-				else if (this.waterSides >= 4 && this.waterSides < 6){
-					calculateTickrate = 2000;
-				}
-				else if (this.waterSides == 6){
-					calculateTickrate = 900;
-				}				
-				this.baseTickRate = calculateTickrate;
+				calculateTickrate();
 			}
 			
 			//Try add some loot once every 30 seconds.
 			if (this.tickCount%this.baseTickRate==0){	
 				if (this.isInWater){
 					//Add loot
-					Utils.LOG_INFO("Adding Loot to the fishtrap at x["+this.locationX+"] y["+this.locationY+"] z["+this.locationZ+"]");
+					Utils.LOG_INFO("Adding Loot to the fishtrap at x["+this.locationX+"] y["+this.locationY+"] z["+this.locationZ+"] (Ticking for loot every "+this.baseTickRate+" ticks)");
 					tryAddLoot();
+					markDirty();
 				}				
 				this.tickCount = 0;
 			}
-			if (this.tickCount > 1000){
+			if (this.tickCount > (this.baseTickRate+500)){
 				this.tickCount = 0;
 			}
 
 
 		}
+	}
+	
+	public void calculateTickrate(){
+		int calculateTickrate = 0;
+		if (this.waterSides < 2){
+			calculateTickrate = 0;
+		}
+		else if (this.waterSides >= 2 && this.waterSides < 4){
+			calculateTickrate = 3000;
+		}
+		else if (this.waterSides >= 4 && this.waterSides < 6){
+			calculateTickrate = 2000;
+		}
+		else if (this.waterSides == 6){
+			calculateTickrate = 900;
+		}				
+		this.baseTickRate = calculateTickrate;
 	}
 
 	public boolean anyPlayerInRange(){
@@ -197,21 +203,22 @@ public class TileEntityFishTrap extends TileEntity{
 
 	@Override
 	public void writeToNBT(NBTTagCompound tagCompound) {
-		super.writeToNBT(tagCompound);
+		//super.writeToNBT(tagCompound);
 		inventoryContents.writeToNBT(getTag(tagCompound, "ContentsChest"));
-		UUID ownerUUID = getOwnerUUID();
+		
+		/*UUID ownerUUID = getOwnerUUID();
 		if (ownerUUID != null){
 			tagCompound.setLong("OwnerUUIDMost", ownerUUID.getMostSignificantBits());
 			tagCompound.setLong("OwnerUUIDLeast", ownerUUID.getLeastSignificantBits());
-		}
+		}*/
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound tagCompound) {
-		super.readFromNBT(tagCompound);
-
+		//super.readFromNBT(tagCompound);
 		inventoryContents.readFromNBT(tagCompound.getCompoundTag("ContentsChest"));
-		setOwnerUUID(new UUID(tagCompound.getLong("OwnerUUIDMost"), tagCompound.getLong("OwnerUUIDLeast")));
+		
+		/*setOwnerUUID(new UUID(tagCompound.getLong("OwnerUUIDMost"), tagCompound.getLong("OwnerUUIDLeast")));*/
 	}
 
 }
