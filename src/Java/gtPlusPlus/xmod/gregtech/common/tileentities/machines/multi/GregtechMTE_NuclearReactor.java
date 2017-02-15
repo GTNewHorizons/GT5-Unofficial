@@ -12,6 +12,9 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.*;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.material.nuclear.FLUORIDES;
+import gtPlusPlus.core.material.nuclear.NUCLIDE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
@@ -346,10 +349,22 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 							fuelConsumption = tLiquid.amount = boostEu ? (4096 / aFuel.mSpecialValue) : (2048 / aFuel.mSpecialValue); //Calc fuel consumption
 							if(depleteInput(tLiquid)) { //Deplete that amount
 
-								//If it has a supply of this material, boostEu = true;
-								boostEu = depleteInput(Materials.Helium.getGas(50L));
-
-
+								//Make an empty fluid stack for possible sparging output
+								FluidStack[] spargeOutput = new FluidStack[]{};
+								//Try Sparge Noble Gases
+								if (depleteInput(Materials.Helium.getGas(1000L))){
+									spargeOutput = getByproductsOfSparge(Materials.Helium.getGas(1000L));
+								}
+								//Try Sparge Fluorides
+								else if (depleteInput(Materials.Fluorine.getGas(100L))){
+									spargeOutput = getByproductsOfSparge(Materials.Fluorine.getGas(100L));
+								}
+								//If Sparging occurred, try add the outputs to the output hatches.
+								if (spargeOutput.length > 0){
+									for (FluidStack F : spargeOutput){
+										addOutput(F);
+									}
+								}
 
 								if (aFuel != null){
 									this.mLastRecipe = aFuel;	
@@ -428,7 +443,40 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 	protected FluidStack[] getByproductsOfSparge(FluidStack spargeGas){
 		FluidStack[] outputArrayOfGases = new FluidStack[]{};
 		if (spargeGas != null){
-
+			if (spargeGas.isFluidEqual(Materials.Helium.getGas(1000))){
+				int outputChances[] = {
+						MathUtils.roundToClosestInt(MathUtils.randInt(10, 1000)/10),
+						MathUtils.roundToClosestInt(MathUtils.randInt(10, 600)/10),
+						MathUtils.roundToClosestInt(MathUtils.randInt(10, 400)/10),
+						MathUtils.roundToClosestInt(MathUtils.randInt(10, 1000)/10),
+						MathUtils.roundToClosestInt(MathUtils.randInt(10, 100)/10)						
+				};
+				int heliumContent = (1000-outputChances[0]-outputChances[1]-outputChances[2]-outputChances[3]-outputChances[4]);
+				outputArrayOfGases = new FluidStack[]{
+						ELEMENT.getInstance().XENON.getFluid(outputChances[0]),
+						ELEMENT.getInstance().NEON.getFluid(outputChances[1]),
+						ELEMENT.getInstance().ARGON.getFluid(outputChances[2]),
+						ELEMENT.getInstance().KRYPTON.getFluid(outputChances[3]),
+						ELEMENT.getInstance().RADON.getFluid(outputChances[4]),
+						Materials.Helium.getGas(heliumContent)						
+				};
+			}
+			else if (spargeGas.isFluidEqual(Materials.Fluorine.getGas(100))){
+				int outputChances[] = {
+						MathUtils.roundToClosestInt(MathUtils.randDouble(10, 100)),
+						MathUtils.roundToClosestInt(MathUtils.randDouble(1, 50)/10),
+						MathUtils.roundToClosestInt(MathUtils.randDouble(1, 50)/10),
+						MathUtils.roundToClosestInt(MathUtils.randDouble(1, 50)/10)					
+				};
+				int fluorineContent = (100-outputChances[0]-outputChances[1]-outputChances[2]-outputChances[3]);
+				outputArrayOfGases = new FluidStack[]{
+						FLUORIDES.URANIUM_HEXAFLUORIDE.getFluid(outputChances[0]),
+						FLUORIDES.NEPTUNIUM_HEXAFLUORIDE.getFluid(outputChances[1]),
+						FLUORIDES.TECHNETIUM_HEXAFLUORIDE.getFluid(outputChances[2]),
+						FLUORIDES.SELENIUM_HEXAFLUORIDE.getFluid(outputChances[3]),
+						Materials.Fluorine.getGas(fluorineContent)						
+				};
+			}
 		}
 		return outputArrayOfGases;
 	}
