@@ -32,10 +32,10 @@ public class TileEntityFishTrap extends TileEntity{
 	public boolean setTileLocation(){
 		if (this.hasWorldObj()){
 			if (!this.getWorldObj().isRemote){
-			locationX = this.xCoord;
-			locationY = this.yCoord;
-			locationZ = this.zCoord;
-			return true;
+				locationX = this.xCoord;
+				locationY = this.yCoord;
+				locationZ = this.zCoord;
+				return true;
 			}
 		}
 		return false;	
@@ -48,23 +48,23 @@ public class TileEntityFishTrap extends TileEntity{
 			//Utils.LOG_INFO("FT has world object");
 			if (!this.getWorldObj().isRemote){
 				//Utils.LOG_INFO("running code serverside");
-			surroundingBlocks[0] = worldObj.getBlock(locationX, locationY+1, locationZ); //Above
-			surroundingBlocks[1] = worldObj.getBlock(locationX, locationY-1, locationZ); //Below
-			surroundingBlocks[2] = worldObj.getBlock(locationX+1, locationY, locationZ);
-			surroundingBlocks[3] = worldObj.getBlock(locationX-1, locationY, locationZ);
-			surroundingBlocks[4] = worldObj.getBlock(locationX, locationY, locationZ+1);
-			surroundingBlocks[5] = worldObj.getBlock(locationX, locationY, locationZ-1);
-			int waterCount = 0;
-			for (Block checkBlock : surroundingBlocks){
-				//Utils.LOG_INFO("found "+checkBlock.getLocalizedName());
-				if (checkBlock == Blocks.water || checkBlock == Blocks.flowing_water || checkBlock.getUnlocalizedName().toLowerCase().contains("water")){
-					waterCount++;
+				surroundingBlocks[0] = worldObj.getBlock(locationX, locationY+1, locationZ); //Above
+				surroundingBlocks[1] = worldObj.getBlock(locationX, locationY-1, locationZ); //Below
+				surroundingBlocks[2] = worldObj.getBlock(locationX+1, locationY, locationZ);
+				surroundingBlocks[3] = worldObj.getBlock(locationX-1, locationY, locationZ);
+				surroundingBlocks[4] = worldObj.getBlock(locationX, locationY, locationZ+1);
+				surroundingBlocks[5] = worldObj.getBlock(locationX, locationY, locationZ-1);
+				int waterCount = 0;
+				for (Block checkBlock : surroundingBlocks){
+					//Utils.LOG_INFO("found "+checkBlock.getLocalizedName());
+					if (checkBlock == Blocks.water || checkBlock == Blocks.flowing_water || checkBlock.getUnlocalizedName().toLowerCase().contains("water")){
+						waterCount++;
+					}
 				}
-			}
-			if (waterCount >= 4){
-				//Utils.LOG_INFO("found water");
-				return true;
-			}
+				if (waterCount >= 4){
+					//Utils.LOG_INFO("found water");
+					return true;
+				}
 			}
 		}
 		//Utils.LOG_INFO("Error finding water");
@@ -74,19 +74,60 @@ public class TileEntityFishTrap extends TileEntity{
 	public InventoryFishTrap getInventory(){
 		return this.inventoryContents;
 	}
-	
+
 	public boolean tryAddLoot(){
+		Utils.LOG_INFO("1");
 		if (this.getInventory().getInventory() != null){
+			Utils.LOG_INFO("2");
 			int checkingSlot = 0;
+			ItemStack loot = generateLootForFishTrap();
 			for (ItemStack contents : this.getInventory().getInventory()){
-				if (contents == null){
-					this.getInventory().setInventorySlotContents(checkingSlot, ItemUtils.getSimpleStack(Items.fish));
+				Utils.LOG_INFO("checkingSlots");
+				if (contents == loot){
+					if (contents.stackSize < loot.getMaxStackSize()){
+						contents.stackSize++;
+					}
+					else {
+						this.getInventory().setInventorySlotContents(checkingSlot, loot);
+					}
+				}
+				if (contents == null || contents != loot){
+					Utils.LOG_INFO("3");
+					this.getInventory().setInventorySlotContents(checkingSlot, loot);
+					return true;
+				}
+				else {
+
 				}
 				checkingSlot++;
 			}
 		}
-		
+
 		return false;
+	}
+
+	private ItemStack generateLootForFishTrap() {
+		int lootWeight = MathUtils.randInt(0,  100);
+		ItemStack loot;
+		if (lootWeight <= 10){
+			loot = ItemUtils.getSimpleStack(Items.slime_ball);			
+		}
+		else if (lootWeight <= 20){
+			loot = ItemUtils.getSimpleStack(Items.bone);
+		}
+		else if (lootWeight <= 40){
+			loot = ItemUtils.getSimpleStack(Blocks.sand);
+		}
+		else if (lootWeight <= 80){
+			loot = ItemUtils.getSimpleStack(Items.fish);
+		}
+		else if (lootWeight <= 100){
+			loot = ItemUtils.getSimpleStack(Items.fish);
+		}
+		else {
+			loot = ItemUtils.getSimpleStack(Blocks.diamond_ore);
+		}
+		return loot;
 	}
 
 	@Override
@@ -100,13 +141,14 @@ public class TileEntityFishTrap extends TileEntity{
 				Utils.LOG_INFO("In water? "+this.isInWater+" tick:"+this.tickCount);
 			}
 			else {
-				
+
 			}
 			//Try add some loot once every 30 seconds.
 			if (this.tickCount%300==0){	
 				if (this.isInWater){
 					//Add loot
 					Utils.LOG_INFO("Adding Loot to the fishtrap at x["+this.locationX+"] y["+this.locationY+"] z["+this.locationZ+"]");
+					tryAddLoot();
 				}				
 				this.tickCount = 0;
 			}
