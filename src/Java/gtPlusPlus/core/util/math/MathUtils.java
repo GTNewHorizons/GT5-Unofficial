@@ -65,6 +65,37 @@ public class MathUtils {
 		return val;
 	}
 	
+	
+	/**
+	 * Returns a psuedo-random number between min and max, inclusive.
+	 * The difference between min and max can be at most
+	 * Double.MAX_VALUE - 1.
+	 *
+	 * @param min Minimim value
+	 * @param max Maximim value.  Must be greater than min.
+	 * @return Double between min and max, inclusive.
+	 * @see java.util.Random#nextDouble(double)
+	 */
+	public static double randDouble(double min, double max) {
+		// Usually this can be a field rather than a method variable
+		Random rand = new Random();
+
+		// nextInt is normally exclusive of the top value,
+		// so add 1 to make it inclusive
+		double randomNum = MathUtils.nextDouble(rand,(max - min) + 1) + min;
+		return randomNum;
+	}
+	
+	private static double nextDouble(Random rng, double n) {
+		// error checking and 2^x checking removed for simplicity.
+		double bits, val;
+		do {
+			bits = (rng.nextLong() << 1) >>> 1;
+			val = bits % n;
+		} while (bits-val+(n-1) < 0L);
+		return val;
+	}
+	
 
 	/**
 	 * Returns a percentage.
@@ -108,6 +139,19 @@ public class MathUtils {
 	public static double decimalRoundingToWholes(double d) {
 		return 5*(Math.round(d/5));
 	}
+	
+	//Smooth Rounding Function
+		/**
+		 * Returns a integer.
+		 * The returned number is d rounded to the nearest flat integer.
+		 * Supports Doubles as input.
+		 *
+		 * @param current Current value.
+		 * @return integer Rounded value.	 
+		 */
+		public static int roundToClosestInt(double d) {
+			return (int) (Math.round(d * 2) / 2.0);
+		}
 	
 	public static int roundToClosestMultiple(double number, int multiple) {
         int result = multiple;
