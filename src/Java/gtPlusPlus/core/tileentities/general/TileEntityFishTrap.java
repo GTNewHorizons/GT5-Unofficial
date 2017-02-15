@@ -22,6 +22,8 @@ public class TileEntityFishTrap extends TileEntity{
 	private int locationX;
 	private int locationY;
 	private int locationZ;
+	private int waterSides = 0;
+	private int baseTickRate = 600*5;
 
 	public TileEntityFishTrap(){
 		this.inventoryContents = new InventoryFishTrap();//number of slots - without product slot
@@ -45,9 +47,7 @@ public class TileEntityFishTrap extends TileEntity{
 		setTileLocation();
 		Block[] surroundingBlocks = new Block[6];
 		if (this.hasWorldObj()){
-			//Utils.LOG_INFO("FT has world object");
 			if (!this.getWorldObj().isRemote){
-				//Utils.LOG_INFO("running code serverside");
 				surroundingBlocks[0] = worldObj.getBlock(locationX, locationY+1, locationZ); //Above
 				surroundingBlocks[1] = worldObj.getBlock(locationX, locationY-1, locationZ); //Below
 				surroundingBlocks[2] = worldObj.getBlock(locationX+1, locationY, locationZ);
@@ -56,13 +56,12 @@ public class TileEntityFishTrap extends TileEntity{
 				surroundingBlocks[5] = worldObj.getBlock(locationX, locationY, locationZ-1);
 				int waterCount = 0;
 				for (Block checkBlock : surroundingBlocks){
-					//Utils.LOG_INFO("found "+checkBlock.getLocalizedName());
 					if (checkBlock == Blocks.water || checkBlock == Blocks.flowing_water || checkBlock.getUnlocalizedName().toLowerCase().contains("water")){
 						waterCount++;
 					}
 				}
-				if (waterCount >= 4){
-					//Utils.LOG_INFO("found water");
+				if (waterCount >= 2){
+					this.waterSides = waterCount;
 					return true;
 				}
 			}
@@ -76,23 +75,21 @@ public class TileEntityFishTrap extends TileEntity{
 	}
 
 	public boolean tryAddLoot(){
-		Utils.LOG_INFO("1");
 		if (this.getInventory().getInventory() != null){
-			Utils.LOG_INFO("2");
 			int checkingSlot = 0;
 			ItemStack loot = generateLootForFishTrap();
 			for (ItemStack contents : this.getInventory().getInventory()){
-				Utils.LOG_INFO("checkingSlots");
-				if (contents == loot){
-					if (contents.stackSize < loot.getMaxStackSize()){
-						contents.stackSize++;
+				if (contents.getItem() == loot.getItem()){
+					if (contents.stackSize < contents.getMaxStackSize()){
+						contents.stackSize++;;
+						return true;
 					}
 					else {
 						this.getInventory().setInventorySlotContents(checkingSlot, loot);
+						return true;
 					}
 				}
-				if (contents == null || contents != loot){
-					Utils.LOG_INFO("3");
+				else if (contents.getItem() == null){
 					this.getInventory().setInventorySlotContents(checkingSlot, loot);
 					return true;
 				}
@@ -138,13 +135,30 @@ public class TileEntityFishTrap extends TileEntity{
 			//Check if the Tile is within water once per second.
 			if (this.tickCount%20==0){					
 				this.isInWater = isSurroundedByWater();
-				Utils.LOG_INFO("In water? "+this.isInWater+" tick:"+this.tickCount);
 			}
 			else {
 
 			}
+			
+			if (this.isInWater){
+				int calculateTickrate = 0;
+				if (this.waterSides < 2){
+					calculateTickrate = 0;
+				}
+				else if (this.waterSides >= 2 && this.waterSides < 4){
+					calculateTickrate = 3000;
+				}
+				else if (this.waterSides >= 4 && this.waterSides < 6){
+					calculateTickrate = 2000;
+				}
+				else if (this.waterSides == 6){
+					calculateTickrate = 900;
+				}				
+				this.baseTickRate = calculateTickrate;
+			}
+			
 			//Try add some loot once every 30 seconds.
-			if (this.tickCount%300==0){	
+			if (this.tickCount%this.baseTickRate==0){	
 				if (this.isInWater){
 					//Add loot
 					Utils.LOG_INFO("Adding Loot to the fishtrap at x["+this.locationX+"] y["+this.locationY+"] z["+this.locationZ+"]");

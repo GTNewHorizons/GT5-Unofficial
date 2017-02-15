@@ -2,6 +2,7 @@ package gtPlusPlus.core.container;
 
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.inventories.*;
+import gtPlusPlus.core.slots.SlotNoInput;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -45,7 +46,7 @@ public class Container_FishTrap extends Container {
 			for (var7 = 0; var7 < 4; ++var7)
 			{
 				//Utils.LOG_WARNING("Adding slots at var:"+(var7 + var6 * 4)+" x:"+(8 + var7 * 18)+" y:"+(7 + var6 * 18));
-				this.addSlotToContainer(new Slot(inventoryChest, var7 + var6 * 4, 8 + var7 * 18, 7 + var6 * 18));
+				this.addSlotToContainer(new SlotNoInput(inventoryChest, var7 + var6 * 4, 8 + var7 * 18, 7 + var6 * 18));
 				slotStorage[o] = o;
 				o++;
 			}
