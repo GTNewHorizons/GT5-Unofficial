@@ -1,5 +1,6 @@
 package gtPlusPlus.core.inventories;
 
+import gtPlusPlus.core.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -34,6 +35,7 @@ public class InventoryFishTrap implements IInventory{
             int slot = data.getInteger("Slot");
             if(slot >= 0 && slot < INV_SIZE)
             {
+        		Utils.LOG_INFO("Trying to read NBT data from inventory.");
                 inventory[slot] = ItemStack.loadItemStackFromNBT(data);
             }
         }
@@ -47,6 +49,7 @@ public class InventoryFishTrap implements IInventory{
             ItemStack stack = inventory[i];
             if(stack != null)
             {
+        		Utils.LOG_INFO("Trying to write NBT data to inventory.");
                 NBTTagCompound data = new NBTTagCompound();
                 stack.writeToNBT(data);
                 data.setInteger("Slot", i);

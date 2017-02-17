@@ -56,14 +56,25 @@ public class TileEntityFishTrap extends TileEntity{
 				surroundingBlocks[4] = worldObj.getBlock(locationX, locationY, locationZ+1);
 				surroundingBlocks[5] = worldObj.getBlock(locationX, locationY, locationZ-1);
 				int waterCount = 0;
+				int trapCount = 0;
 				for (Block checkBlock : surroundingBlocks){
 					if (checkBlock == Blocks.water || checkBlock == Blocks.flowing_water || checkBlock.getUnlocalizedName().toLowerCase().contains("water") || checkBlock == ModBlocks.blockFishTrap){
+						if (checkBlock != ModBlocks.blockFishTrap){
 						waterCount++;
+						}
+						else {
+							waterCount++;
+							trapCount++;
+						}
 					}
 				}
-				if (waterCount >= 2){
+				if (waterCount >= 2 && trapCount <= 4){
 					this.waterSides = waterCount;
 					return true;
+				}
+				else if (waterCount >= 2 && trapCount > 4){
+					Utils.LOG_INFO("Too many fish traps surrounding this one.");
+					Utils.LOG_INFO("Not adding Loot to the fishtrap at x["+this.locationX+"] y["+this.locationY+"] z["+this.locationZ+"] (Ticking for loot every "+this.baseTickRate+" ticks)");
 				}
 			}
 		}
@@ -82,15 +93,18 @@ public class TileEntityFishTrap extends TileEntity{
 			for (ItemStack contents : this.getInventory().getInventory()){
 				if (contents == null){
 					this.getInventory().setInventorySlotContents(checkingSlot, loot);
+					this.markDirty();
 					return true;
 				}
 				else if (contents.getItem() == loot.getItem()){
 					if (contents.stackSize < contents.getMaxStackSize()){
-						contents.stackSize++;;
+						contents.stackSize++;
+						this.markDirty();
 						return true;
 					}
 					else {
 						this.getInventory().setInventorySlotContents(checkingSlot, loot);
+						this.markDirty();
 						return true;
 					}
 				}
@@ -100,7 +114,7 @@ public class TileEntityFishTrap extends TileEntity{
 				checkingSlot++;
 			}
 		}
-
+		this.markDirty();
 		return false;
 	}
 
@@ -152,7 +166,12 @@ public class TileEntityFishTrap extends TileEntity{
 					Utils.LOG_INFO("Adding Loot to the fishtrap at x["+this.locationX+"] y["+this.locationY+"] z["+this.locationZ+"] (Ticking for loot every "+this.baseTickRate+" ticks)");
 					tryAddLoot();
 					markDirty();
-				}				
+				}	
+				else {
+					Utils.LOG_INFO("This Trap does not have enough water around it.");
+					Utils.LOG_INFO("Not adding Loot to the fishtrap at x["+this.locationX+"] y["+this.locationY+"] z["+this.locationZ+"] (Ticking for loot every "+this.baseTickRate+" ticks)");
+					markDirty();
+				}
 				this.tickCount = 0;
 			}
 			if (this.tickCount > (this.baseTickRate+500)){
@@ -204,21 +223,15 @@ public class TileEntityFishTrap extends TileEntity{
 	@Override
 	public void writeToNBT(NBTTagCompound tagCompound) {
 		//super.writeToNBT(tagCompound);
+		Utils.LOG_INFO("Trying to write NBT data to TE.");
 		inventoryContents.writeToNBT(getTag(tagCompound, "ContentsChest"));
-		
-		/*UUID ownerUUID = getOwnerUUID();
-		if (ownerUUID != null){
-			tagCompound.setLong("OwnerUUIDMost", ownerUUID.getMostSignificantBits());
-			tagCompound.setLong("OwnerUUIDLeast", ownerUUID.getLeastSignificantBits());
-		}*/
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound tagCompound) {
 		//super.readFromNBT(tagCompound);
+		Utils.LOG_INFO("Trying to read NBT data from TE.");
 		inventoryContents.readFromNBT(tagCompound.getCompoundTag("ContentsChest"));
-		
-		/*setOwnerUUID(new UUID(tagCompound.getLong("OwnerUUIDMost"), tagCompound.getLong("OwnerUUIDLeast")));*/
 	}
 
 }
