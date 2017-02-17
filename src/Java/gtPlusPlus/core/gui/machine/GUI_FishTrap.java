@@ -15,7 +15,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GUI_FishTrap extends GuiContainer {
 
-	private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(CORE.MODID, "textures/gui/BronzeCraftingTable.png");
+	private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(CORE.MODID, "textures/gui/FishTrap.png");
 
 	public GUI_FishTrap(InventoryPlayer player_inventory, TileEntityFishTrap te){
 		super(new Container_FishTrap(player_inventory, te));

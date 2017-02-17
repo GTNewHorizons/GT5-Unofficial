@@ -11,7 +11,7 @@ public class InventoryFishTrap implements IInventory{
 	private String name = "Fishtrap";
 
 	/** Defining your inventory size this way is handy */
-	public static final int INV_SIZE = 16;
+	public static final int INV_SIZE = 15;
 
 	/** Inventory's size must be same as number of slots you add to the Container class */
 	private ItemStack[] inventory = new ItemStack[INV_SIZE];
