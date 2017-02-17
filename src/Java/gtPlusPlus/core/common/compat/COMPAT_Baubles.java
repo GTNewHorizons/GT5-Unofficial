@@ -15,17 +15,19 @@ public class COMPAT_Baubles {
 			baublesNotLoaded();
 		}
 	}
-	
+
 	public static void baublesLoaded(){
 		Utils.LOG_INFO("Baubles Found - Loading Wearables.");
 		ModItems.itemPersonalCloakingDevice = new ItemCloakingDevice(0);
 		//itemPersonalCloakingDeviceCharged = new ItemCloakingDevice(0).set;
 		ModItems.itemPersonalHealingDevice = new ItemHealingDevice();
-		ModItems.itemSlowBuildingRing = new ItemSlowBuildingRing();
+		if (LoadedMods.PlayerAPI){
+			ModItems.itemSlowBuildingRing = new ItemSlowBuildingRing();
+		}
 	}
-	
+
 	public static void baublesNotLoaded(){
 		Utils.LOG_INFO("Baubles Not Found - Skipping Resources.");
 	}
-	
+
 }

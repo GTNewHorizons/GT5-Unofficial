@@ -11,6 +11,7 @@ public class LoadedMods {
 	
 	//Initialize Variables
 	public static boolean Gregtech = false;
+	public static boolean PlayerAPI = false;
 	public static boolean BuildCraft = false;
 	public static boolean EnderIO = false;
 	public static boolean Big_Reactors = false;
@@ -59,6 +60,11 @@ public class LoadedMods {
 				}
 			}
 			
+			totalMods++;
+		}
+		if (Loader.isModLoaded("PlayerAPI") == true){
+			PlayerAPI = true;
+			Utils.LOG_INFO("Components enabled for: PlayerAPI");
 			totalMods++;
 		}
 		if (Loader.isModLoaded("BuildCraft") == true){
