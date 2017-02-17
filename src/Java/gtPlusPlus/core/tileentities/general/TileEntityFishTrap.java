@@ -1,7 +1,5 @@
 package gtPlusPlus.core.tileentities.general;
 
-import java.util.UUID;
-
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.inventories.*;
 import gtPlusPlus.core.util.Utils;
@@ -16,7 +14,6 @@ import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityFishTrap extends TileEntity{
 
-	private UUID ownerUUID;
 	private int tickCount = 0;
 	private boolean isInWater = false;
 	private InventoryFishTrap inventoryContents;
@@ -28,7 +25,6 @@ public class TileEntityFishTrap extends TileEntity{
 
 	public TileEntityFishTrap(){
 		this.inventoryContents = new InventoryFishTrap();//number of slots - without product slot
-		this.canUpdate();
 		setTileLocation();
 	}
 
@@ -203,15 +199,6 @@ public class TileEntityFishTrap extends TileEntity{
 		return this.worldObj.getClosestPlayer(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 32) != null;
 	}
 
-	public UUID getOwnerUUID() {
-		return ownerUUID;
-	}
-
-	public void setOwnerUUID(UUID ownerUUID) {
-		this.ownerUUID = ownerUUID;
-		markDirty();
-	}
-
 	public NBTTagCompound getTag(NBTTagCompound nbt, String tag){
 		if(!nbt.hasKey(tag)){
 			nbt.setTag(tag, new NBTTagCompound());
@@ -221,17 +208,17 @@ public class TileEntityFishTrap extends TileEntity{
 
 
 	@Override
-	public void writeToNBT(NBTTagCompound tagCompound) {
-		//super.writeToNBT(tagCompound);
+	public void writeToNBT(NBTTagCompound nbt){
+		super.writeToNBT(nbt);
 		Utils.LOG_INFO("Trying to write NBT data to TE.");
-		inventoryContents.writeToNBT(getTag(tagCompound, "ContentsChest"));
+		inventoryContents.writeToNBT(getTag(nbt, "ContentsChest"));
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tagCompound) {
-		//super.readFromNBT(tagCompound);
+	public void readFromNBT(NBTTagCompound nbt){
+		super.readFromNBT(nbt);
 		Utils.LOG_INFO("Trying to read NBT data from TE.");
-		inventoryContents.readFromNBT(tagCompound.getCompoundTag("ContentsChest"));
+		inventoryContents.readFromNBT(nbt.getCompoundTag("ContentsChest"));
 	}
 
 }

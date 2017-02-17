@@ -25,30 +25,24 @@ public class InventoryFishTrap implements IInventory{
 		
 	}
 	
-	public void readFromNBT(NBTTagCompound nbt)
-    {
+	public void readFromNBT(NBTTagCompound nbt){
         NBTTagList list = nbt.getTagList("Items", 10);
         inventory = new ItemStack[INV_SIZE];
-        for(int i = 0;i<list.tagCount();i++)
-        {
+        for(int i = 0;i<list.tagCount();i++){
             NBTTagCompound data = list.getCompoundTagAt(i);
             int slot = data.getInteger("Slot");
-            if(slot >= 0 && slot < INV_SIZE)
-            {
+            if(slot >= 0 && slot < INV_SIZE){
         		Utils.LOG_INFO("Trying to read NBT data from inventory.");
                 inventory[slot] = ItemStack.loadItemStackFromNBT(data);
             }
         }
     }
 
-    public void writeToNBT(NBTTagCompound nbt)
-    {
+    public void writeToNBT(NBTTagCompound nbt){
         NBTTagList list = new NBTTagList();
-        for(int i = 0;i<INV_SIZE;i++)
-        {
+        for(int i = 0;i<INV_SIZE;i++){
             ItemStack stack = inventory[i];
-            if(stack != null)
-            {
+            if(stack != null){
         		Utils.LOG_INFO("Trying to write NBT data to inventory.");
                 NBTTagCompound data = new NBTTagCompound();
                 stack.writeToNBT(data);
