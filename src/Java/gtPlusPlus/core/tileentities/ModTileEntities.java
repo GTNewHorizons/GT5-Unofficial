@@ -5,6 +5,7 @@ import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbenchAdvanced;
 import gtPlusPlus.core.util.Utils;
 import cpw.mods.fml.common.registry.GameRegistry;
+import growthcraft.fishtrap.common.tileentity.TileEntityFishTrap;
 
 public class ModTileEntities {
 
@@ -18,6 +19,7 @@ public class ModTileEntities {
 		// GameRegistry.registerTileEntity(TileEntityHeliumGenerator.class, "Helium");
 		GameRegistry.registerTileEntity(TileEntityWorkbench.class, "TileWorkbench");
 		GameRegistry.registerTileEntity(TileEntityWorkbenchAdvanced.class, "TileWorkbenchAdvanced");
+		GameRegistry.registerTileEntity(TileEntityFishTrap.class, "TileFishTrap");
 		GameRegistry.registerTileEntity(TileEntityFirepit.class, "TileFirePit");
 
 	}

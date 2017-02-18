@@ -3,7 +3,7 @@ package gtPlusPlus.core.block.machine;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
+import gtPlusPlus.core.tileentities.general.TileEntityFishtrap;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -66,7 +66,7 @@ public class FishTrap extends BlockContainer
 		if (world.isRemote) return true;
 
 		TileEntity te = world.getTileEntity(x, y, z);
-		if (te != null && te instanceof TileEntityFishTrap){
+		if (te != null && te instanceof TileEntityFishtrap){
 				player.openGui(GTplusplus.instance, 5, world, x, y, z);
 				return true;				
 			}
@@ -85,7 +85,7 @@ public class FishTrap extends BlockContainer
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int p_149915_2_) {
-		return new TileEntityFishTrap();
+		return new TileEntityFishtrap();
 	}
 	
 }

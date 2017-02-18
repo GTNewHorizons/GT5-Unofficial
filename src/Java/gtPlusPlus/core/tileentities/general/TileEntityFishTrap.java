@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
-public class TileEntityFishTrap extends TileEntity{
+public class TileEntityFishtrap extends TileEntity{
 
 	private int tickCount = 0;
 	private boolean isInWater = false;
@@ -23,7 +23,7 @@ public class TileEntityFishTrap extends TileEntity{
 	private int waterSides = 0;
 	private int baseTickRate = 600*5;
 
-	public TileEntityFishTrap(){
+	public TileEntityFishtrap(){
 		this.inventoryContents = new InventoryFishTrap();//number of slots - without product slot
 		setTileLocation();
 	}
@@ -211,7 +211,9 @@ public class TileEntityFishTrap extends TileEntity{
 	public void writeToNBT(NBTTagCompound nbt){
 		super.writeToNBT(nbt);
 		Utils.LOG_INFO("Trying to write NBT data to TE.");
-		inventoryContents.writeToNBT(getTag(nbt, "ContentsChest"));
+		NBTTagCompound chestData = new NBTTagCompound();
+		inventoryContents.writeToNBT(chestData);
+		nbt.setTag("ContentsChest", chestData);
 	}
 
 	@Override

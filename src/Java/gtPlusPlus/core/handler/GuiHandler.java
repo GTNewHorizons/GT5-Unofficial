@@ -9,7 +9,7 @@ import gtPlusPlus.core.gui.machine.*;
 import gtPlusPlus.core.interfaces.IGuiManager;
 import gtPlusPlus.core.inventories.BaseInventoryBackpack;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
+import gtPlusPlus.core.tileentities.general.TileEntityFishtrap;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbenchAdvanced;
 import gtPlusPlus.core.util.Utils;
@@ -80,7 +80,7 @@ public class GuiHandler implements IGuiHandler {
 
 			}
 			if (ID == GUI6){
-				return new Container_FishTrap(player.inventory, (TileEntityFishTrap)te);
+				return new Container_FishTrap(player.inventory, (TileEntityFishtrap)te);
 			}
 		}
 
@@ -126,7 +126,7 @@ public class GuiHandler implements IGuiHandler {
 				return new GUI_WorkbenchAdvanced(player.inventory, (TileEntityWorkbenchAdvanced)te);
 			}
 			if (ID == GUI6){
-				return new GUI_FishTrap(player.inventory, (TileEntityFishTrap)te);
+				return new GUI_FishTrap(player.inventory, (TileEntityFishtrap)te);
 			}
 		}
 
