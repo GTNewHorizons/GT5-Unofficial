@@ -3,7 +3,7 @@ package gtPlusPlus.core.container;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.inventories.*;
 import gtPlusPlus.core.slots.SlotNoInput;
-import gtPlusPlus.core.tileentities.general.TileEntityFishtrap;
+import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.*;
@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 
 public class Container_FishTrap extends Container {
 
-	protected TileEntityFishtrap tile_entity;
+	protected TileEntityFishTrap tile_entity;
 	public final InventoryFishTrap inventoryChest;
 
 	private World worldObj;
@@ -27,7 +27,7 @@ public class Container_FishTrap extends Container {
 
 	private int[] slotStorage = new int[15];
 
-	public Container_FishTrap(InventoryPlayer inventory, TileEntityFishtrap te){
+	public Container_FishTrap(InventoryPlayer inventory, TileEntityFishTrap te){
 		this.tile_entity = te;
 		this.inventoryChest = te.getInventory();
 

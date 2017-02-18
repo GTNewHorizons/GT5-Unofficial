@@ -16,14 +16,6 @@ public class InventoryFishTrap implements IInventory{
 
 	/** Inventory's size must be same as number of slots you add to the Container class */
 	private ItemStack[] inventory = new ItemStack[INV_SIZE];
-
-	/**
-	 * @param itemstack - the ItemStack to which this inventory belongs
-	 */
-	public InventoryFishTrap()
-	{		
-		
-	}
 	
 	public void readFromNBT(NBTTagCompound nbt){
         NBTTagList list = nbt.getTagList("Items", 10);

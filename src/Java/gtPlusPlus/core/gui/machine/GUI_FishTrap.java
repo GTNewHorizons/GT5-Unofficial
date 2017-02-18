@@ -2,7 +2,7 @@ package gtPlusPlus.core.gui.machine;
 
 import gtPlusPlus.core.container.Container_FishTrap;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.tileentities.general.TileEntityFishtrap;
+import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -17,7 +17,7 @@ public class GUI_FishTrap extends GuiContainer {
 
 	private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(CORE.MODID, "textures/gui/FishTrap.png");
 
-	public GUI_FishTrap(InventoryPlayer player_inventory, TileEntityFishtrap te){
+	public GUI_FishTrap(InventoryPlayer player_inventory, TileEntityFishTrap te){
 		super(new Container_FishTrap(player_inventory, te));
 	}
 

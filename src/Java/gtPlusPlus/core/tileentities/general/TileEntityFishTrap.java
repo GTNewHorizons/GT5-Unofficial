@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
-public class TileEntityFishtrap extends TileEntity{
+public class TileEntityFishTrap extends TileEntity{
 
 	private int tickCount = 0;
 	private boolean isInWater = false;
@@ -23,7 +23,7 @@ public class TileEntityFishtrap extends TileEntity{
 	private int waterSides = 0;
 	private int baseTickRate = 600*5;
 
-	public TileEntityFishtrap(){
+	public TileEntityFishTrap(){
 		this.inventoryContents = new InventoryFishTrap();//number of slots - without product slot
 		setTileLocation();
 	}
