@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
-import gregtech.api.enums.*;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -193,22 +194,32 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 							}
 							if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 13) {
 								Utils.LOG_INFO("Glass Casings Missing from somewhere in the second layer.");
+								Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 								return false;
 							}							
 						}
 
 						//Deal with top and Bottom edges (Inner 5x5)
 						else if (h == 0 || h == 3) {
-							if ((!addMaintenanceToMachineList(tTileEntity, 70)) && (!addInputToMachineList(tTileEntity, 70)) && (!addOutputToMachineList(tTileEntity, 70)) && (!addDynamoToMachineList(tTileEntity, 70))) {
+							if ((!addToMachineList(tTileEntity, 70)) && (!addInputToMachineList(tTileEntity, 70)) && (!addOutputToMachineList(tTileEntity, 70)) && (!addDynamoToMachineList(tTileEntity, 70))) {
 								if ((xDir + i != 0) || (zDir + j != 0)) {//no controller
+									
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
 										Utils.LOG_INFO("LFTR Casing(s) Missing from one of the edges on the top layer.");
 										Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 										return false;
 									}
 									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 12) {
-										Utils.LOG_INFO("LFTR Casing(s) Missing from one of the edges on the top layer.");
-										return false;
+										Utils.LOG_INFO("LFTR Casing(s) Missing from one of the edges on the top layer. "+h);
+										Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										if (h ==0){
+											if (tTileEntity instanceof GregtechMTE_NuclearReactor){
+												
+											}
+										}
+										else {
+											return false;
+										}
 									}
 								}
 							}

@@ -230,6 +230,7 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 					}
 				}
 				else {
+					Utils.LOG_INFO("debug.1");
 					return false;
 				}
 			}
@@ -245,6 +246,7 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 					}
 				}
 				else {
+					Utils.LOG_INFO("debug.2");
 					return false;
 				}
 			}
@@ -260,6 +262,7 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 					}
 				}
 				else {
+					Utils.LOG_INFO("debug.3");
 					return false;
 				}
 			}
@@ -274,6 +277,7 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 					}
 				}
 				else {
+					Utils.LOG_INFO("debug.4");
 					return false;
 				}
 			}
@@ -287,9 +291,10 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 			}
 		}
 		
-		if (mInputHatches.size() != 2 || mOutputHatches.size() != 2 ||
+		if (mInputHatches.size() != 4 || mOutputHatches.size() != 2 ||
 				mOutputBusses.size() != 1 || mMufflerHatches.size() != 1 ||
 				mMaintenanceHatches.size() != 2 || mEnergyHatches.size() < 1){
+			Utils.LOG_INFO("Wrong Hatch count.");
 			return false;
 		}
 		if (mMufflerHatches.size() == 1){
@@ -297,7 +302,7 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 				Utils.LOG_INFO("Your Muffler must be AT LEAST ZPM tier or higher.");
 			}
 		}
-		
+		Utils.LOG_INFO("Multiblock Formed.");		
 		return true;
 	}
 

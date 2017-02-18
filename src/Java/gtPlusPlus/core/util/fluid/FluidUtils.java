@@ -2,10 +2,8 @@ package gtPlusPlus.core.util.fluid;
 
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_LanguageManager;
-import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.fluids.GenericFluid;
 import gtPlusPlus.core.item.base.BaseItemComponent;
-import gtPlusPlus.core.item.base.cell.BaseItemCell;
 import gtPlusPlus.core.item.base.cell.BaseItemPlasmaCell;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
@@ -231,6 +229,9 @@ public class FluidUtils {
 	}
 	
 	 public static Fluid addGTPlasma(Material aMaterial) {
+		 if (aMaterial.getLocalizedName().toLowerCase().contains("clay")){
+			 return null;
+		 }
 		 Utils.LOG_INFO("Generating a "+aMaterial.getLocalizedName()+" Plasma Cell");
 		 if (aMaterial.vComponentCount != 1){			 
 			 Utils.LOG_INFO("Compound made from: ");

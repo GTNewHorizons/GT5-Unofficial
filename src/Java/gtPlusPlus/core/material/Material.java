@@ -30,7 +30,7 @@ public class Material {
 	private ArrayList<MaterialStack> vMaterialInput = new ArrayList<MaterialStack>();
 	public final long[] vSmallestRatio;
 	public final short vComponentCount;
-	
+
 	private final short[] RGBA;
 
 	private final boolean usesBlastFurnace;
@@ -101,7 +101,7 @@ public class Material {
 						if (m.getStackMaterial().vDurability != 0){
 							durabilityTemp =  (durabilityTemp+m.getStackMaterial().vDurability);
 							counterTemp++;
-							
+
 						}
 					}					
 				}
@@ -425,12 +425,12 @@ public class Material {
 		}
 		return new int[]{};
 	}
-	
+
 	private final short getComponentCount(MaterialStack[] inputs){
 		int counterTemp = 0;
 		for (MaterialStack m : inputs){
 			if (m.getStackMaterial() != null){
-					counterTemp++;				
+				counterTemp++;				
 			}					
 		}
 		if (counterTemp != 0){
@@ -538,6 +538,13 @@ public class Material {
 	}
 
 	public final Fluid generateFluid(){
+
+		try {
+			if (Materials.get(localizedName) == Materials.Clay){
+				return null;
+			}
+		} catch (Throwable e){}
+
 		if (Materials.get(localizedName).mFluid == null){
 			Utils.LOG_WARNING("Generating our own fluid.");
 
@@ -562,7 +569,7 @@ public class Material {
 
 	public final Fluid generatePlasma(){
 		Materials isValid = Materials.get(getLocalizedName());
-		if (isValid != Materials._NULL && isValid != null){
+		if (isValid != Materials._NULL && isValid != null && isValid != Materials.Clay){
 			if (isValid.mPlasma != null){
 				Utils.LOG_INFO("Using a pre-defined Plasma from GT.");
 				return isValid.mPlasma;
