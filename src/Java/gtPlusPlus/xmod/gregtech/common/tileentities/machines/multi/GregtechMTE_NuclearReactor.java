@@ -1,6 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
-import gregtech.GT_Mod;
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -14,7 +13,6 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
-import gtPlusPlus.core.material.nuclear.NUCLIDE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
@@ -23,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -341,13 +338,21 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 		ArrayList<FluidStack> tFluids = getStoredFluids();
 		Collection<GT_Recipe> tRecipeList = Recipe_GT.Gregtech_Recipe_Map.sLiquidFluorineThoriumReactorRecipes.mRecipeList;
 		if(tFluids.size() > 0 && tRecipeList != null) { //Does input hatch have a LFTR fuel?
+			Utils.LOG_INFO("Found more than one input fluid and a list of valid recipes.");
+			boolean containsFLIBE = false;
+			boolean containsPrimarySalt = false;
 			for (FluidStack hatchFluid1 : tFluids) { //Loops through hatches
+				Utils.LOG_INFO("Looping through Input hatches - Found "+hatchFluid1.getLocalizedName());
 				for(GT_Recipe aFuel : tRecipeList) { //Loops through LFTR fuel recipes
+					Utils.LOG_INFO("Looping through Recipes.");
 					FluidStack tLiquid;
-					if ((tLiquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(0), true)) != null) { //Create fluidstack from current recipe
+					if ((tLiquid = GT_Utility.getFluidForFilledItem(aFuel.getRepresentativeInput(1), true)) != null) { //Create fluidstack from current recipe
+						Utils.LOG_INFO("Creating a fluidstack from the current recipe");
 						if (hatchFluid1.isFluidEqual(tLiquid)) { //Has a LFTR fluid
+							Utils.LOG_INFO("Input hatch contains some LFTR Fuel");
 							fuelConsumption = tLiquid.amount = boostEu ? (4096 / aFuel.mSpecialValue) : (2048 / aFuel.mSpecialValue); //Calc fuel consumption
 							if(depleteInput(tLiquid)) { //Deplete that amount
+								Utils.LOG_INFO("Depleted some input fluid");
 
 								//Make an empty fluid stack for possible sparging output
 								FluidStack[] spargeOutput = new FluidStack[]{};

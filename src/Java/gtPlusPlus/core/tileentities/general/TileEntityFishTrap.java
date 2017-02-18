@@ -210,7 +210,7 @@ public class TileEntityFishTrap extends TileEntity{
 	@Override
 	public void writeToNBT(NBTTagCompound nbt){
 		super.writeToNBT(nbt);
-		Utils.LOG_INFO("Trying to write NBT data to TE.");
+		//Utils.LOG_INFO("Trying to write NBT data to TE.");
 		NBTTagCompound chestData = new NBTTagCompound();
 		inventoryContents.writeToNBT(chestData);
 		nbt.setTag("ContentsChest", chestData);
@@ -219,7 +219,7 @@ public class TileEntityFishTrap extends TileEntity{
 	@Override
 	public void readFromNBT(NBTTagCompound nbt){
 		super.readFromNBT(nbt);
-		Utils.LOG_INFO("Trying to read NBT data from TE.");
+		//Utils.LOG_INFO("Trying to read NBT data from TE.");
 		inventoryContents.readFromNBT(nbt.getCompoundTag("ContentsChest"));
 	}
 
