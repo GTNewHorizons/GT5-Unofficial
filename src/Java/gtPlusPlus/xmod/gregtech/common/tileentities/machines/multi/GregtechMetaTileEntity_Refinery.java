@@ -41,11 +41,11 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 				"1x7x1 Incoloy-DS Fluid Containment Block pillar (Center of base)",
 				"1x4x1 Hastelloy-N Sealant Blocks (Each Incoloy-DS Fluid Containment side and on top)",
 				"1x1x1 Zeron-100 Reactor Shielding (Second Sealant Tower layer, Surrounding Fluid Containment)",
-				"2x Input Hatch (One of base platform)",
+				"4x Input Hatch (One of base platform)",
 				"2x Output Hatch (One of base platform)",
 				"1x Output Bus (One of base platform)",
 				"2x Maintenance Hatch (One of base platform)",
-				"1x ZPM Muffler (One of base platform)",
+				"1x ZPM or better Muffler (One of base platform)",
 		"1x Energy Hatch (One of base platform)"};
 	}
 
