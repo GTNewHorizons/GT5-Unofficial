@@ -4,6 +4,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.entity.EntityUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -134,7 +135,12 @@ public class BaseItemComponent extends Item{
 			}			
 			if (componentMaterial != null){
 				if (!componentMaterial.vChemicalFormula.equals("??")) {
+					if (componentType != ComponentTypes.CELL || componentType != ComponentTypes.PLASMACELL){
 					list.add(componentMaterial.vChemicalFormula);
+					}
+					else {
+						list.add(Utils.sanitizeString(componentMaterial.vChemicalFormula));						
+					}
 				}
 
 				if (componentMaterial.isRadioactive){

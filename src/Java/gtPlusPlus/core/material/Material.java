@@ -256,6 +256,10 @@ public class Material {
 			return this.unlocalizedName;
 		return "ERROR.BAD.UNLOCALIZED.NAME";
 	}
+	
+	final public MaterialState getState(){
+		return this.materialState;
+	}
 
 	final public short[] getRGBA(){
 		if (this.RGBA != null)

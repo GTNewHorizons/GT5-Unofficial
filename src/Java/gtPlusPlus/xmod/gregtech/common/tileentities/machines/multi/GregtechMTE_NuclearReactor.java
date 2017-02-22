@@ -375,7 +375,7 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 							if(depleteInput(tLiquid)) { //Deplete that amount
 								Utils.LOG_INFO("Depleted some FLiBe fluid");
 
-								this.mMaxProgresstime = 1;
+								this.mMaxProgresstime = 500;
 								
 								if(tFluids.contains(NUCLIDE.LiFBeF2ThF4UF4.getFluid(1)) ||
 										tFluids.contains(NUCLIDE.LiFBeF2ZrF4UF4.getFluid(2)) ||
