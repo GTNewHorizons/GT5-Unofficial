@@ -1,11 +1,12 @@
 package gtPlusPlus.core.material;
 
-
+import gtPlusPlus.core.material.state.MaterialState;
 
 public final class ALLOY {
 
 	public static final Material ENERGYCRYSTAL = new Material(
 			"Energy Crystal", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{228, 255, 0, 0}, //Material Colour
 			5660, //Melting Point in C
 			0, //Boiling Point in C
@@ -22,6 +23,7 @@ public final class ALLOY {
 
 	public static final Material BLOODSTEEL = new Material(
 			"Blood Steel", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{142, 28, 0, 0}, //Material Colour
 			2500, //Melting Point in C
 			0, //Boiling Point in C
@@ -36,6 +38,7 @@ public final class ALLOY {
 
 	public static final Material STABALLOY = new Material(
 			"Staballoy", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{68, 75, 66, 0}, //Material Colour
 			3450, //Melting Point in C
 			((ELEMENT.getInstance().URANIUM238.getBoilingPointC()*9)+(ELEMENT.getInstance().TITANIUM.getBoilingPointC()*1))/10, //Boiling Point in C
@@ -50,6 +53,7 @@ public final class ALLOY {
 
 	public static final Material TANTALLOY_60 = new Material(
 			"Tantalloy-60", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{213, 231, 237, 0}, //Material Colour
 			3025, //Melting Point in C
 			((ELEMENT.getInstance().TUNGSTEN.getBoilingPointC()*1)+(ELEMENT.getInstance().TANTALUM.getBoilingPointC()*8)+(ELEMENT.getInstance().TITANIUM.getBoilingPointC()*1))/10, //Boiling Point in C
@@ -64,6 +68,7 @@ public final class ALLOY {
 
 	public static final Material TANTALLOY_61 = new Material(
 			"Tantalloy-61", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{193, 211, 217, 0}, //Material Colour
 			3030, //Melting Point in C
 			((ELEMENT.getInstance().TUNGSTEN.getBoilingPointC()*1)+(ELEMENT.getInstance().TANTALUM.getBoilingPointC()*7)+(ELEMENT.getInstance().TITANIUM.getBoilingPointC()*1)+(ELEMENT.getInstance().YTTRIUM.getBoilingPointC()*1))/10, //Boiling Point in C
@@ -79,6 +84,7 @@ public final class ALLOY {
 
 	public static final Material BRONZE = new Material(
 			"Bronze", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{128, 128, 128, 0}, //Material Colour
 			((ELEMENT.getInstance().TIN.getMeltingPointC()*1)+(ELEMENT.getInstance().COPPER.getMeltingPointC()*3))/4, //Melting point in C
 			((ELEMENT.getInstance().TIN.getBoilingPointC()*1)+(ELEMENT.getInstance().COPPER.getBoilingPointC()*3))/4, //Boiling Point in C
@@ -94,6 +100,7 @@ public final class ALLOY {
 
 	public static final Material TUMBAGA = new Material(
 			"Tumbaga", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{255,178,15, 0}, //Material Colour
 			((ELEMENT.getInstance().GOLD.getMeltingPointC()*7)+(ELEMENT.getInstance().COPPER.getMeltingPointC()*3))/10, //Melting point in C
 			((ELEMENT.getInstance().GOLD.getBoilingPointC()*7)+(ELEMENT.getInstance().COPPER.getBoilingPointC()*3))/10, //Boiling Point in C
@@ -109,6 +116,7 @@ public final class ALLOY {
 
 	public static final Material POTIN = new Material(
 			"Potin", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{201,151,129, 0}, //Material Colour
 			((ELEMENT.getInstance().LEAD.getMeltingPointC()*4)+(ALLOY.BRONZE.getMeltingPointC()*4)+(ELEMENT.getInstance().TIN.getMeltingPointC()*2))/10, //Melting point in C
 			((ELEMENT.getInstance().LEAD.getBoilingPointC()*4)+(ALLOY.BRONZE.getBoilingPointC()*4)+(ELEMENT.getInstance().TIN.getBoilingPointC()*2))/10, //Boiling Point in C
@@ -135,6 +143,7 @@ public final class ALLOY {
 
 	public static final Material INCONEL_625 = new Material(
 			"Inconel-625", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{128, 200, 128, 0}, //Material Colour
 			1425, //Melting Point in C
 			((ELEMENT.getInstance().NICKEL.getBoilingPointC()*6)+(ELEMENT.getInstance().CHROMIUM.getBoilingPointC()*2)+(ELEMENT.getInstance().IRON.getBoilingPointC()*1)+(ELEMENT.getInstance().MOLYBDENUM.getBoilingPointC()*1))/10, //Boiling Point in C
@@ -151,6 +160,7 @@ public final class ALLOY {
 
 	public static final Material INCONEL_690 = new Material(
 			"Inconel-690", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{118, 220, 138, 0}, //Material Colour
 			1425, //Melting Point in C
 			((ELEMENT.getInstance().NICKEL.getBoilingPointC()*6)+(ELEMENT.getInstance().CHROMIUM.getBoilingPointC()*2)+(ELEMENT.getInstance().NIOBIUM.getBoilingPointC()*1)+(ELEMENT.getInstance().MOLYBDENUM.getBoilingPointC()*1))/10, //Boiling Point in C
@@ -167,6 +177,7 @@ public final class ALLOY {
 
 	public static final Material INCONEL_792 = new Material(
 			"Inconel-792", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{108, 240, 118, 0}, //Material Colour
 			1425, //Melting Point in C
 			((ELEMENT.getInstance().NICKEL.getBoilingPointC()*6)+(ELEMENT.getInstance().CHROMIUM.getBoilingPointC()*1)+(ELEMENT.getInstance().IRON.getBoilingPointC()*1)+(ELEMENT.getInstance().ALUMINIUM.getBoilingPointC()*2))/10, //Boiling Point in C
@@ -183,6 +194,7 @@ public final class ALLOY {
 	
 	public static final Material STEEL = new Material(
 			"Steel", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{180, 180, 20, 0}, //Material Colour
 			((ELEMENT.getInstance().CARBON.getMeltingPointC()*5)+(ELEMENT.getInstance().IRON.getMeltingPointC()*95))/100, //Melting point in C
 			((ELEMENT.getInstance().CARBON.getBoilingPointC()*5)+(ELEMENT.getInstance().IRON.getBoilingPointC()*95))/100, //Boiling Point in C
@@ -199,6 +211,7 @@ public final class ALLOY {
 
 	public static final Material ZERON_100 = new Material(
 			"Zeron-100", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{180, 180, 20, 0}, //Material Colour
 			((ELEMENT.getInstance().CHROMIUM.getMeltingPointC()*25)+(ELEMENT.getInstance().NICKEL.getMeltingPointC()*6)+(ELEMENT.getInstance().COBALT.getMeltingPointC()*9)+(ALLOY.STEEL.getMeltingPointC()*60))/100, //Melting Point in C
 			((ELEMENT.getInstance().CHROMIUM.getBoilingPointC()*25)+(ELEMENT.getInstance().NICKEL.getBoilingPointC()*6)+(ELEMENT.getInstance().COBALT.getBoilingPointC()*9)+(ALLOY.STEEL.getBoilingPointC()*60))/100, //Boiling Point in C
@@ -217,6 +230,7 @@ public final class ALLOY {
 
 	public static final Material MARAGING250 = new Material(
 			"Maraging Steel 250", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{140, 140, 140, 0}, //Material Colour
 			1413, //Melting Point in C
 			((ELEMENT.getInstance().TITANIUM.getBoilingPointC()*5)+(ELEMENT.getInstance().NICKEL.getBoilingPointC()*16)+(ELEMENT.getInstance().COBALT.getBoilingPointC()*9)+(ALLOY.STEEL.getBoilingPointC()*70))/100, //Boiling Point in C
@@ -234,6 +248,7 @@ public final class ALLOY {
 
 	public static final Material MARAGING300 = new Material(
 			"Maraging Steel 300", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{150, 150, 150, 0}, //Material Colour
 			1413, //Melting Point in C
 			((ELEMENT.getInstance().TITANIUM.getBoilingPointC()*10)+(ELEMENT.getInstance().NICKEL.getBoilingPointC()*21)+(ELEMENT.getInstance().COBALT.getBoilingPointC()*14)+(ALLOY.STEEL.getBoilingPointC()*55))/100, //Boiling Point in C
@@ -251,6 +266,7 @@ public final class ALLOY {
 
 	public static final Material MARAGING350 = new Material(
 			"Maraging Steel 350", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{160, 160, 160, 0}, //Material Colour
 			1413, //Melting Point in C
 			((ELEMENT.getInstance().TITANIUM.getBoilingPointC()*15)+(ELEMENT.getInstance().NICKEL.getBoilingPointC()*21)+(ELEMENT.getInstance().COBALT.getBoilingPointC()*9)+(ALLOY.STEEL.getBoilingPointC()*55))/100, //Boiling Point in C
@@ -268,6 +284,7 @@ public final class ALLOY {
 
 	public static final Material STELLITE = new Material(
 			"Stellite", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{129, 75, 120, 0}, //Material Colour
 			1310, //Melting Point in C
 			((ELEMENT.getInstance().TITANIUM.getBoilingPointC()*10)+(ELEMENT.getInstance().CHROMIUM.getBoilingPointC()*35)+(ELEMENT.getInstance().COBALT.getBoilingPointC()*35)+(ELEMENT.getInstance().MANGANESE.getBoilingPointC()*20))/100, //Boiling Point in C
@@ -284,6 +301,7 @@ public final class ALLOY {
 
 	public static final Material TALONITE = new Material(
 			"Talonite", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{228, 75, 120, 0}, //Material Colour
 			1454, //Melting Point in C
 			((ELEMENT.getInstance().MOLYBDENUM.getBoilingPointC()*10)+(ELEMENT.getInstance().CHROMIUM.getBoilingPointC()*30)+(ELEMENT.getInstance().COBALT.getBoilingPointC()*40)+(ELEMENT.getInstance().PHOSPHORUS.getBoilingPointC()*20))/100, //Boiling Point in C
@@ -300,6 +318,7 @@ public final class ALLOY {
 
 	public static final Material HASTELLOY_W = new Material(
 			"Hastelloy-W", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{218, 165, 32, 0}, //Material Colour
 			1350, //Melting Point in C
 			((ELEMENT.getInstance().IRON.getBoilingPointC()*6)+(ELEMENT.getInstance().MOLYBDENUM.getBoilingPointC()*24)+(ELEMENT.getInstance().CHROMIUM.getBoilingPointC()*5)+(ELEMENT.getInstance().NICKEL.getBoilingPointC()*65))/100, //Boiling Point in C
@@ -332,6 +351,7 @@ public final class ALLOY {
 	
 	public static final Material HASTELLOY_X = new Material(
 			"Hastelloy-X", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{255, 193, 37, 0}, //Material Colour
 			1350, //Melting Point in C
 			((ELEMENT.getInstance().IRON.getBoilingPointC()*18)+(ELEMENT.getInstance().MOLYBDENUM.getBoilingPointC()*9)+(ELEMENT.getInstance().CHROMIUM.getBoilingPointC()*22)+(ELEMENT.getInstance().NICKEL.getBoilingPointC()*51))/100, //Boiling Point in C
@@ -348,6 +368,7 @@ public final class ALLOY {
 
 	public static final Material HASTELLOY_N = new Material(
 			"Hastelloy-N", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{236, 213, 48, 0}, //Material Colour
 			1350, //Melting Point in C
 			((ELEMENT.getInstance().YTTRIUM.getBoilingPointC()*5)+(ELEMENT.getInstance().MOLYBDENUM.getBoilingPointC()*16)+(ELEMENT.getInstance().CHROMIUM.getBoilingPointC()*7)+(ELEMENT.getInstance().NICKEL.getBoilingPointC()*72))/100, //Boiling Point in C
@@ -364,6 +385,7 @@ public final class ALLOY {
 
 	public static final Material HASTELLOY_C276 = new Material(
 			"Hastelloy-C276", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{238, 180, 34, 0}, //Material Colour
 			1350, //Melting Point in C
 			((ELEMENT.getInstance().COBALT.getBoilingPointC()*2)+(ELEMENT.getInstance().MOLYBDENUM.getBoilingPointC()*16)+(ELEMENT.getInstance().CHROMIUM.getBoilingPointC()*16)+(ELEMENT.getInstance().NICKEL.getBoilingPointC()*66))/100, //Boiling Point in C
@@ -380,6 +402,7 @@ public final class ALLOY {
 
 	public static final Material INCOLOY_020 = new Material(
 			"Incoloy-020", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{101, 81, 71, 0}, //Material Colour
 			1425, //Melting Point in C
 			((ELEMENT.getInstance().IRON.getBoilingPointC()*40)+(ELEMENT.getInstance().COPPER.getBoilingPointC()*4)+(ELEMENT.getInstance().CHROMIUM.getBoilingPointC()*20)+(ELEMENT.getInstance().NICKEL.getBoilingPointC()*36))/100, //Boiling Point in C
@@ -396,6 +419,7 @@ public final class ALLOY {
 
 	public static final Material INCOLOY_DS = new Material(
 			"Incoloy-DS", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{71, 101, 81, 0}, //Material Colour
 			1425, //Melting Point in C
 			((ELEMENT.getInstance().IRON.getBoilingPointC()*46)+(ELEMENT.getInstance().COBALT.getBoilingPointC()*18)+(ELEMENT.getInstance().CHROMIUM.getBoilingPointC()*18)+(ELEMENT.getInstance().NICKEL.getBoilingPointC()*18))/100, //Boiling Point in C
@@ -412,6 +436,7 @@ public final class ALLOY {
 
 	public static final Material INCOLOY_MA956 = new Material(
 			"Incoloy-MA956", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{81, 71, 101, 0}, //Material Colour
 			1425, //Melting Point in C
 			((ELEMENT.getInstance().IRON.getBoilingPointC()*75)+(ELEMENT.getInstance().ALUMINIUM.getBoilingPointC()*4)+(ELEMENT.getInstance().CHROMIUM.getBoilingPointC()*20)+(ELEMENT.getInstance().YTTRIUM.getBoilingPointC()*1))/100, //Boiling Point in C
@@ -428,6 +453,7 @@ public final class ALLOY {
 
 	public static final Material TUNGSTEN_CARBIDE = new Material(
 			"Tungsten Carbide", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{44, 44, 44, 0}, //Material Colour
 			3422, //Melting Point in C
 			((ELEMENT.getInstance().TUNGSTEN.getBoilingPointC()*5)+(ELEMENT.getInstance().CARBON.getBoilingPointC()*5))/10, //Boiling Point in C
@@ -442,6 +468,7 @@ public final class ALLOY {
 
 	public static final Material SILICON_CARBIDE = new Material(
 			"Silicon Carbide", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{40, 48, 36, 0}, //Material Colour
 			1414, //Melting Point in C
 			((ELEMENT.getInstance().SILICON.getBoilingPointC()*5)+(ELEMENT.getInstance().CARBON.getBoilingPointC()*5))/10, //Boiling Point in C
@@ -457,6 +484,7 @@ public final class ALLOY {
 
 	public static final Material TANTALUM_CARBIDE = new Material(
 			"Tantalum Carbide", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{139, 136, 120, 0}, //Material Colour
 			2980, //Melting Point in C
 			((ELEMENT.getInstance().TANTALUM.getBoilingPointC()*5)+(ELEMENT.getInstance().CARBON.getBoilingPointC()*5))/10, //Boiling Point in C
@@ -472,6 +500,7 @@ public final class ALLOY {
 
 	public static final Material ZIRCONIUM_CARBIDE = new Material(
 			"Zirconium Carbide", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{222, 202, 180, 0}, //Material Colour
 			1855, //Melting Point in C
 			((ELEMENT.getInstance().ZIRCONIUM.getBoilingPointC()*5)+(ELEMENT.getInstance().CARBON.getBoilingPointC()*5))/10, //Boiling Point in C
@@ -487,6 +516,7 @@ public final class ALLOY {
 
 	public static final Material NIOBIUM_CARBIDE = new Material(
 			"Niobium Carbide", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{205, 197, 191, 0}, //Material Colour
 			2477, //Melting Point in C
 			((ELEMENT.getInstance().NIOBIUM.getBoilingPointC()*5)+(ELEMENT.getInstance().CARBON.getBoilingPointC()*5))/10, //Boiling Point in C
@@ -502,6 +532,7 @@ public final class ALLOY {
 	
 	public static final Material LEAGRISIUM = new Material(
 			"Grisium", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{53, 93, 106, 0}, //Material Colour
 			9001, //Melting Point in C
 			25000, //Boiling Point in C
@@ -528,30 +559,10 @@ public final class ALLOY {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	//Quantum
 	public static final Material QUANTUM = new Material(
 			"Quantum", //Material Name
+			 MaterialState.SOLID, //State
 			new short[]{128, 128, 255, 50}, //Material Colour
 			9999, //Melting Point in C
 			25000, //Boiling Point in C

@@ -4,6 +4,7 @@ import gregtech.api.enums.*;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.objects.MaterialStack;
 import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class MaterialUtils {
-	
+
 	public static short firstID = 791;
 
 	private static Class[][] commonTypes =
@@ -23,15 +24,15 @@ public class MaterialUtils {
 			String.class, int.class, int.class, int.class, int.class, boolean.class,
 			boolean.class, int.class, int.class, int.class, Dyes.class, int.class,
 			List.class , List.class}};
-	
+
 	public static Materials addGtMaterial(String enumNameForMaterial, TextureSet aIconSet, float aToolSpeed, int aToolDurability, int aToolQuality, int aTypes, int aR, int aG, int aB, int aA, String aLocalName, int aFuelType, int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent, int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor, int aExtraData, List<MaterialStack> aMaterialList, List<TC_AspectStack> aAspects)
-    {
+	{
 		Utils.LOG_INFO("Attempting to add GT material: "+enumNameForMaterial);
 		return EnumHelper.addEnum(Materials.class, enumNameForMaterial, commonTypes, firstID++, aIconSet, aToolSpeed, aToolDurability, aToolQuality, aTypes, aR, aG, aB, aA, aLocalName,
 				aFuelType, aFuelPower, aMeltingPoint, aBlastFurnaceTemp, aBlastFurnaceRequired, aTransparent, aOreValue, aDensityMultiplier, aDensityDivider,
 				aColor, aExtraData, aMaterialList, aAspects);
-		}
-	
+	}
+
 	public static List<?> oreDictValuesForEntry(String oredictName){
 		List<?> oredictItemNames;
 		if(OreDictionary.doesOreNameExist(oredictName)){
@@ -41,7 +42,7 @@ public class MaterialUtils {
 		}		
 		return null;
 	}
-	
+
 	public static Material generateMaterialFromGtENUM(Materials material){
 		String name = material.name();
 		short[] rgba = material.mRGBa;
@@ -51,28 +52,49 @@ public class MaterialUtils {
 		long neutrons = material.getNeutrons();
 		boolean blastFurnace = material.mBlastFurnaceRequired;	
 		int durability = material.mDurability;
+		MaterialState materialState;
 		String chemicalFormula = MaterialUtils.subscript(material.mChemicalFormula);
 		Element element = material.mElement;
 		int radioactivity = 0;
 		if (material.isRadioactive()){
 			radioactivity = 1;
 		}	
+
+		//Determine default state
+		if (material.getMolten(1) != null){
+			materialState = MaterialState.SOLID;
+		}
+		else if (material.getFluid(1) != null){
+			materialState = MaterialState.LIQUID;
+		}
+		else if (material.getGas(1) != null){
+			materialState = MaterialState.GAS;
+		}
+		else if (material.getPlasma(1) != null){
+			materialState = MaterialState.PLASMA;
+		}
+		else {
+			materialState = MaterialState.SOLID;
+		}
+
+
 		if (name.toLowerCase().contains("infused")){
 			String tempname = name.substring(7, name.length());
 			name = "Infused " + tempname;
-			}
+		}
 		if (hasValidRGBA(rgba) || element == Element.H || (material == Materials.InfusedAir || material == Materials.InfusedFire || material == Materials.InfusedEarth || material == Materials.InfusedWater)){
 			//ModItems.itemBaseDecidust = UtilsItems.generateDecidust(material);
 			//ModItems.itemBaseCentidust = UtilsItems.generateCentidust(material);
-			return new Material(name, durability, rgba, melting, boiling, protons, neutrons, blastFurnace, chemicalFormula, radioactivity);
+			return new Material(name, materialState, durability, rgba, melting, boiling, protons, neutrons, blastFurnace, chemicalFormula, radioactivity);
 		}
 		return null;
-		
+
 	}
-	
-	public static Material generateQuickMaterial(String materialName, short[] colour, int sRadioactivity) {
+
+	public static Material generateQuickMaterial(String materialName, MaterialState defaultState, short[] colour, int sRadioactivity) {
 		Material temp = new Material(
 				materialName,
+				defaultState,
 				0, //Durability
 				colour,
 				1000, //melting
@@ -84,7 +106,7 @@ public class MaterialUtils {
 				sRadioactivity);
 		return temp;
 	}
-	
+
 	public static boolean hasValidRGBA(short[] rgba){
 		boolean test1 = false;
 		boolean test2 = false;
@@ -107,35 +129,35 @@ public class MaterialUtils {
 		}
 		return true;
 	}
-	
+
 	public static String superscript(String str) {
-	    str = str.replaceAll("0", "\u2070");
-	    str = str.replaceAll("1", "\u00B9");
-	    str = str.replaceAll("2", "\u00B2");
-	    str = str.replaceAll("3", "\u00B3");
-	    str = str.replaceAll("4", "\u2074");
-	    str = str.replaceAll("5", "\u2075");
-	    str = str.replaceAll("6", "\u2076");
-	    str = str.replaceAll("7", "\u2077");
-	    str = str.replaceAll("8", "\u2078");
-	    str = str.replaceAll("9", "\u2079");      
-	    return str;
+		str = str.replaceAll("0", "\u2070");
+		str = str.replaceAll("1", "\u00B9");
+		str = str.replaceAll("2", "\u00B2");
+		str = str.replaceAll("3", "\u00B3");
+		str = str.replaceAll("4", "\u2074");
+		str = str.replaceAll("5", "\u2075");
+		str = str.replaceAll("6", "\u2076");
+		str = str.replaceAll("7", "\u2077");
+		str = str.replaceAll("8", "\u2078");
+		str = str.replaceAll("9", "\u2079");      
+		return str;
 	}
 
 	public static String subscript(String str) {
-	    str = str.replaceAll("0", "\u2080");
-	    str = str.replaceAll("1", "\u2081");
-	    str = str.replaceAll("2", "\u2082");
-	    str = str.replaceAll("3", "\u2083");
-	    str = str.replaceAll("4", "\u2084");
-	    str = str.replaceAll("5", "\u2085");
-	    str = str.replaceAll("6", "\u2086");
-	    str = str.replaceAll("7", "\u2087");
-	    str = str.replaceAll("8", "\u2088");
-	    str = str.replaceAll("9", "\u2089");
-	    return str;
+		str = str.replaceAll("0", "\u2080");
+		str = str.replaceAll("1", "\u2081");
+		str = str.replaceAll("2", "\u2082");
+		str = str.replaceAll("3", "\u2083");
+		str = str.replaceAll("4", "\u2084");
+		str = str.replaceAll("5", "\u2085");
+		str = str.replaceAll("6", "\u2086");
+		str = str.replaceAll("7", "\u2087");
+		str = str.replaceAll("8", "\u2088");
+		str = str.replaceAll("9", "\u2089");
+		return str;
 	}
-	
+
 	public static int getTierOfMaterial(int M){
 		if (M >= 0 && M <= 750){
 			return 1;
@@ -171,7 +193,7 @@ public class MaterialUtils {
 			return 0;
 		}
 	}
-	
+
 
 	/*
 	 * That's shown, many times, in the EnumHelper code, all the add functions just wrap the addEnum function.
@@ -189,7 +211,7 @@ public class MaterialUtils {
 					List.class , List.class}],
 	 */
 
-	
+
 
 	/*public static Materials GenerateGtMaterialForSingleUse(MaterialInfo s){
 

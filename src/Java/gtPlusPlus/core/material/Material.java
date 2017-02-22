@@ -3,6 +3,7 @@ package gtPlusPlus.core.material;
 import static gregtech.api.enums.GT_Values.M;
 import gregtech.api.enums.*;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
+import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
@@ -21,6 +22,8 @@ public class Material {
 
 	private final String unlocalizedName;
 	private final String localizedName;
+	
+	private final MaterialState materialState;
 
 	private final Fluid vMoltenFluid;
 	private final Fluid vPlasma;
@@ -54,26 +57,27 @@ public class Material {
 	public final int vToolQuality;
 	public final int vHarvestLevel;
 
-	public Material(final String materialName, final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final MaterialStack... inputs){		
-		this(materialName, 0, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, "", 0, inputs);
+	public Material(final String materialName, MaterialState defaultState,final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final MaterialStack... inputs){		
+		this(materialName, defaultState, 0, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, "", 0, inputs);
 	}
 
-	public Material(final String materialName, final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final int radiationLevel, MaterialStack... inputs){		
-		this(materialName, 0, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, "", radiationLevel, inputs);
+	public Material(final String materialName, MaterialState defaultState,final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final int radiationLevel, MaterialStack... inputs){		
+		this(materialName, defaultState, 0, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, "", radiationLevel, inputs);
 	}
 
-	public Material(final String materialName, final long durability, final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final int radiationLevel, MaterialStack... inputs){		
-		this(materialName, durability, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, "", radiationLevel, inputs);
+	public Material(final String materialName, MaterialState defaultState,final long durability, final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final int radiationLevel, MaterialStack... inputs){		
+		this(materialName, defaultState, durability, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, "", radiationLevel, inputs);
 	}
 
-	public Material(final String materialName, final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final String chemicalSymbol, final int radiationLevel, final MaterialStack... inputs){
-		this(materialName, 0, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, chemicalSymbol, radiationLevel, inputs);
+	public Material(final String materialName, MaterialState defaultState,final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final String chemicalSymbol, final int radiationLevel, final MaterialStack... inputs){
+		this(materialName, defaultState, 0, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, chemicalSymbol, radiationLevel, inputs);
 	}
 
-	public Material(final String materialName, final long durability, final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final String chemicalSymbol, final int radiationLevel, final MaterialStack... inputs){
+	public Material(final String materialName, MaterialState defaultState, final long durability, final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final String chemicalSymbol, final int radiationLevel, final MaterialStack... inputs){
 
 		this.unlocalizedName = Utils.sanitizeString(materialName);
 		this.localizedName = materialName;
+		this.materialState = defaultState;
 		this.RGBA = rgba;
 		this.meltingPointC = meltingPoint;
 		if (boilingPoint != 0){
@@ -553,15 +557,43 @@ public class Material {
 				@SuppressWarnings("unused")
 				Item temp = new BaseItemCell(this);
 			}
-			return FluidUtils.addGTFluid(
-					this.getUnlocalizedName(),
-					"Molten "+this.getLocalizedName(),		
-					this.RGBA,
-					4,
-					this.getMeltingPointK(),
-					ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+getUnlocalizedName(), 1),
-					ItemList.Cell_Empty.get(1L, new Object[0]),
-					1000);
+			
+			if (this.materialState == MaterialState.SOLID){
+				return FluidUtils.addGTFluid(
+						this.getUnlocalizedName(),
+						"Molten "+this.getLocalizedName(),		
+						this.RGBA,
+						this.materialState.ID(),
+						this.getMeltingPointK(),
+						ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+getUnlocalizedName(), 1),
+						ItemList.Cell_Empty.get(1L, new Object[0]),
+						1000);
+			}
+			else if (this.materialState == MaterialState.LIQUID){
+				return FluidUtils.addGTFluid(
+						this.getUnlocalizedName(),
+						this.getLocalizedName(),		
+						this.RGBA,
+						this.materialState.ID(),
+						this.getMeltingPointK(),
+						ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+getUnlocalizedName(), 1),
+						ItemList.Cell_Empty.get(1L, new Object[0]),
+						1000);
+			}
+			else if (this.materialState == MaterialState.GAS){
+				return FluidUtils.addGTFluid(
+						this.getUnlocalizedName(),
+						this.getLocalizedName()+" Gas",		
+						this.RGBA,
+						this.materialState.ID(),
+						this.getMeltingPointK(),
+						ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+getUnlocalizedName(), 1),
+						ItemList.Cell_Empty.get(1L, new Object[0]),
+						1000);
+			}
+			else { //Plasma
+				return generatePlasma();
+			}			
 		}
 		Utils.LOG_WARNING("Getting the fluid from a GT material instead.");
 		return Materials.get(localizedName).mFluid;
