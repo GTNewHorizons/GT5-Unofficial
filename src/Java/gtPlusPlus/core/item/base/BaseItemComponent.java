@@ -134,9 +134,9 @@ public class BaseItemComponent extends Item{
 				//list.add(EnumChatFormatting.GRAY+"A " + materialName + " Ring.");
 			}			
 			if (componentMaterial != null){
-				if (!componentMaterial.vChemicalFormula.equals("??")) {
+				if (!componentMaterial.vChemicalFormula.equals("??") && !componentMaterial.vChemicalFormula.equals("?")) {
 					if (componentType != ComponentTypes.CELL || componentType != ComponentTypes.PLASMACELL){
-					list.add(componentMaterial.vChemicalFormula);
+					list.add(Utils.sanitizeString(componentMaterial.vChemicalFormula));
 					}
 					else {
 						list.add(Utils.sanitizeString(componentMaterial.vChemicalFormula));						

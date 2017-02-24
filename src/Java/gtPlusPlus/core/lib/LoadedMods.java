@@ -38,6 +38,7 @@ public class LoadedMods {
 	public static boolean IHL = false;
 	public static boolean OpenComputers = false; //OpenComputers
 	public static boolean Computronics = false; //computronics
+	public static boolean DreamCraft = false; //GT: New Horizons
 	
 
 	
@@ -62,6 +63,15 @@ public class LoadedMods {
 			
 			totalMods++;
 		}
+		//
+
+		if (Loader.isModLoaded("dreamcraft") == true){
+			DreamCraft = true;
+			Utils.LOG_INFO("Components enabled for: DreamCraft");
+			Utils.LOG_INFO("Components enabled for: GT: New Horizons");
+			totalMods++;
+		}
+		
 		if (Loader.isModLoaded("PlayerAPI") == true){
 			PlayerAPI = true;
 			Utils.LOG_INFO("Components enabled for: PlayerAPI");

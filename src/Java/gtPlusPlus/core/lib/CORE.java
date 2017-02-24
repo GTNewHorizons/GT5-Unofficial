@@ -47,6 +47,10 @@ public class CORE {
 	public static final String GT_Tooltip_Radioactive = EnumChatFormatting.GRAY+"Warning: "+EnumChatFormatting.GREEN+"Radioactive! "+EnumChatFormatting.GOLD+" Avoid direct handling without hazmat protection.";
 	public static final String noItem = "";
 	
+	public static boolean isNewHorizonsLoaded = LoadedMods.DreamCraft;
+	//Because I want to be lazy.
+	public static boolean GTNH = isNewHorizonsLoaded;
+	
 	/**
 	 * A List containing all the Materials, which are somehow in use by GT and therefor receive a specific Set of Items.
 	 */

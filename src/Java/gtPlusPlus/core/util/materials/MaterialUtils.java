@@ -53,7 +53,7 @@ public class MaterialUtils {
 		boolean blastFurnace = material.mBlastFurnaceRequired;	
 		int durability = material.mDurability;
 		MaterialState materialState;
-		String chemicalFormula = MaterialUtils.subscript(material.mChemicalFormula);
+		String chemicalFormula = MaterialUtils.subscript(Utils.sanitizeString(material.mChemicalFormula));
 		Element element = material.mElement;
 		int radioactivity = 0;
 		if (material.isRadioactive()){
