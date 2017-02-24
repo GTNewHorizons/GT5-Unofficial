@@ -123,10 +123,10 @@ public class RECIPES_Machines {
 	static String rodTier10 = "stickNaquadahEnriched";
 	static String rodTier11 = "stickNeutronium";
 
-	static String pipeTier1 = "pipeHuge"+"Potin";
-	static String pipeTier2 = "pipeHuge"+"DarkSteel";
-	static String pipeTier3 = "pipeHuge"+"StainlessSteel";
-	static String pipeTier4 = "pipeHuge"+"Titanium";
+	static String pipeTier1 = "pipeHuge"+"Clay";
+	static String pipeTier2 = "pipeHuge"+"Potin";
+	static String pipeTier3 = "pipeHuge"+"Steel";
+	static String pipeTier4 = "pipeHuge"+"StainlessSteel";
 	static String pipeTier5 = "pipeHuge"+"TungstenSteel";
 	static String pipeTier6 = "pipeHuge"+"MaragingSteel300";
 	static String pipeTier7 = "pipeHuge"+"Tantalloy60";
