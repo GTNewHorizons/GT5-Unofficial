@@ -1,6 +1,9 @@
 package gtPlusPlus.core.recipe;
 
+import static gtPlusPlus.core.lib.CORE.GTNH;
+
 import gregtech.api.enums.*;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
@@ -627,6 +630,7 @@ public class RECIPES_Machines {
 
 
 			//Tiered Tanks
+			if (!GTNH){
 			RecipeUtils.addShapedGregtechRecipe(
 					plateTier1, plateTier1, plateTier1,
 					plateTier1, pipeTier1, plateTier1,
@@ -677,7 +681,48 @@ public class RECIPES_Machines {
 					plateTier10, pipeTier10, plateTier10,
 					plateTier10, RECIPE_CONSTANTS.electricPump_MAX, plateTier10,
 					GregtechItemList.GT_FluidTank_MAX.get(1));
-
+			}
+			else {
+				
+				plateTier1 = "plateTin";
+				plateTier2 = "plateCopper";
+				plateTier3 = "plateIron";
+				plateTier4 = "plateBronze";
+				plateTier5 = "plateSteel";
+				plateTier6 = "plateAluminium";
+				
+				
+				RecipeUtils.addShapedGregtechRecipe(
+						plateTier1, plateTier1, plateTier1,
+						plateTier1, pipeTier1, plateTier1,
+						plateTier1, GregtechItemList.Fluid_Cell_144L.get(1), plateTier1,
+						GregtechItemList.GT_FluidTank_ULV.get(1));
+				RecipeUtils.addShapedGregtechRecipe(
+						plateTier2, plateTier2, plateTier2,
+						plateTier2, pipeTier2, plateTier2,
+						plateTier2, electricPump_LV, plateTier2,
+						GregtechItemList.GT_FluidTank_LV.get(1));
+				RecipeUtils.addShapedGregtechRecipe(
+						plateTier3, plateTier3, plateTier3,
+						plateTier3, pipeTier3, plateTier3,
+						plateTier3, electricPump_MV, plateTier3,
+						GregtechItemList.GT_FluidTank_MV.get(1));
+				RecipeUtils.addShapedGregtechRecipe(
+						plateTier4, plateTier4, plateTier4,
+						plateTier4, pipeTier4, plateTier4,
+						plateTier4, electricPump_HV, plateTier4,
+						GregtechItemList.GT_FluidTank_HV.get(1));
+				RecipeUtils.addShapedGregtechRecipe(
+						plateTier5, plateTier5, plateTier5,
+						plateTier5, pipeTier5, plateTier5,
+						plateTier5, electricPump_EV, plateTier5,
+						GregtechItemList.GT_FluidTank_EV.get(1));
+				RecipeUtils.addShapedGregtechRecipe(
+						plateTier6, plateTier6, plateTier6,
+						plateTier6, pipeTier6, plateTier6,
+						plateTier6, electricPump_IV, plateTier6,
+						GregtechItemList.GT_FluidTank_IV.get(1));
+			}
 
 			//Industrial Multi Tank Casing
 			RecipeUtils.addShapedGregtechRecipe(
