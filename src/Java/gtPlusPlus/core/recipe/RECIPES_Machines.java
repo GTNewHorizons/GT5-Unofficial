@@ -685,11 +685,17 @@ public class RECIPES_Machines {
 			else {
 				
 				plateTier1 = "plateTin";
+				pipeTier1 = "pipeLargeClay";
 				plateTier2 = "plateCopper";
+				pipeTier2 = "pipeHugeClay";
 				plateTier3 = "plateIron";
+				pipeTier3 = "pipeMediumCopper";
 				plateTier4 = "plateBronze";
+				pipeTier4 = "pipeLargeCopper";
 				plateTier5 = "plateSteel";
+				pipeTier5 = "pipeLargeBronze";
 				plateTier6 = "plateAluminium";
+				pipeTier6 = "pipeMediumSteel";
 				
 				
 				RecipeUtils.addShapedGregtechRecipe(
