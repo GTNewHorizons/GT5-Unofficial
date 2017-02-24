@@ -26,7 +26,7 @@ public class RecipeGen_DustGeneration  implements Runnable{
 	}
 
 	public static void generateRecipes(final Material material, boolean disableOptional){
-		final int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 64 : 16;
+		final int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 60 : 15;
 
 		Utils.LOG_WARNING("Generating Shaped Crafting recipes for "+material.getLocalizedName()); //TODO
 		//Ring Recipe

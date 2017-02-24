@@ -22,7 +22,7 @@ public class RecipeGen_Extruder implements Runnable{
 
 	public static void generateRecipes(final Material material){
 
-		final int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 64 : 16;
+		final int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 60 : 15;
 		final ItemStack itemIngot = material.getIngot(1);
 		final ItemStack plate_Single = material.getPlate(1);
 		final ItemStack itemGear = material.getGear(1);

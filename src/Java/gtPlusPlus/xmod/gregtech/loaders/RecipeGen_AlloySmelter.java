@@ -18,7 +18,7 @@ public class RecipeGen_AlloySmelter  implements Runnable{
 	}
 	
 	public static void generateRecipes(final Material material){
-		final int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 64 : 16;
+		final int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 60 : 15;
 			
 		//Nuggets
 		GT_Values.RA.addAlloySmelterRecipe(

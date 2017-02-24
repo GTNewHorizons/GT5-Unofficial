@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.loaders;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
 import net.minecraft.item.ItemStack;
 
@@ -87,11 +88,14 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 		}
 
 
+		final int tVoltageMultiplier = material.getMeltingPointK() >= 1600 ? 60 : 15;
+		
+
 		//Add a shapeless recipe for each dust this way - Compat mode.
-		/*ItemStack[] inputStacks = material.getMaterialComposites();
+		ItemStack[] inputStacks = material.getMaterialComposites();
 		ItemStack outputStacks = material.getDust(material.smallestStackSizeWhenProcessing);
 
-		if (inputStacks.length > 0){
+		if (inputStacks.length > 0 && tVoltageMultiplier == 15){
 			Utils.LOG_WARNING(ItemUtils.getArrayStackNames(inputStacks));
 			long[] inputStackSize = material.vSmallestRatio;
 			if (inputStackSize != null){
@@ -110,7 +114,7 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 					Utils.LOG_WARNING("Shapeless Crafting Recipe: "+material.getLocalizedName()+" - Failed");			
 				}
 			}
-		}*/			
+		}		
 
 
 		//Shaped Recipe - Bolts
