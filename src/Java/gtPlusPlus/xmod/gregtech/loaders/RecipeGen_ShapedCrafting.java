@@ -88,7 +88,7 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 		}
 
 
-		final int tVoltageMultiplier = material.getMeltingPointK() >= 1600 ? 60 : 15;
+		/*final int tVoltageMultiplier = material.getMeltingPointK() >= 1600 ? 60 : 15;
 		
 
 		//Add a shapeless recipe for each dust this way - Compat mode.
@@ -114,7 +114,7 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 					Utils.LOG_WARNING("Shapeless Crafting Recipe: "+material.getLocalizedName()+" - Failed");			
 				}
 			}
-		}		
+		}	*/	
 
 
 		//Shaped Recipe - Bolts
