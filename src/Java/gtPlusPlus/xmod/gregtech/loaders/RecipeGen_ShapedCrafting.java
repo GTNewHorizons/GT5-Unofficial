@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
 import gregtech.api.util.GT_ModHandler;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
@@ -59,16 +60,30 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 
 		//Ring Recipe
 		if (!material.isRadioactive){
-			if (RecipeUtils.recipeBuilder(
-					"craftingToolHardHammer", null, null,
-					null, material.getRod(1), null,
-					null, null, null,
-					material.getRing(1))){
-				Utils.LOG_WARNING("Ring Recipe: "+material.getLocalizedName()+" - Success");
+			if (CORE.GTNH){
+				if (RecipeUtils.recipeBuilder(
+						"craftingToolHardHammer", null, null,
+						"craftingToolFile", material.getRod(1), null,
+						null, null, null,
+						material.getRing(1))){
+					Utils.LOG_WARNING("GT:NH Ring Recipe: "+material.getLocalizedName()+" - Success");
+				}
+				else {
+					Utils.LOG_WARNING("GT:NH Ring Recipe: "+material.getLocalizedName()+" - Failed");			
+				}
 			}
 			else {
-				Utils.LOG_WARNING("Ring Recipe: "+material.getLocalizedName()+" - Failed");			
-			}
+				if (RecipeUtils.recipeBuilder(
+						"craftingToolHardHammer", null, null,
+						null, material.getRod(1), null,
+						null, null, null,
+						material.getRing(1))){
+					Utils.LOG_WARNING("Ring Recipe: "+material.getLocalizedName()+" - Success");
+				}
+				else {
+					Utils.LOG_WARNING("Ring Recipe: "+material.getLocalizedName()+" - Failed");			
+				}
+			}			
 		}
 
 
