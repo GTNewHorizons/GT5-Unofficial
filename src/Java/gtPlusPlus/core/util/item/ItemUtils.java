@@ -16,6 +16,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.array.Pair;
 import gtPlusPlus.core.util.materials.MaterialUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.core.util.wrapper.var;
@@ -305,15 +306,16 @@ public class ItemUtils {
 
 	public static MultiPickaxeBase generateMultiPick(boolean GT_Durability, Materials material){
 		ToolMaterial customMaterial = Utils.generateToolMaterialFromGT(material);
-		return generateMultiPick(GT_Durability, customMaterial, material.mDefaultLocalName, material.mDurability, material.mRGBa);
+		Object enchant = new Pair(material.mEnchantmentTools, material.mEnchantmentToolsLevel);
+		return generateMultiPick(GT_Durability, customMaterial, material.mDefaultLocalName, material.mDurability, material.mRGBa, enchant);
 	}
 
 	public static MultiPickaxeBase generateMultiPick(Material material){
 		ToolMaterial customMaterial = Utils.generateToolMaterial(material);
-		return generateMultiPick(true, customMaterial, material.getLocalizedName(), (int) material.vDurability, material.getRGBA());
+		return generateMultiPick(true, customMaterial, material.getLocalizedName(), (int) material.vDurability, material.getRGBA(), null);
 	}
 
-	public static MultiPickaxeBase generateMultiPick(boolean GT_Durability, ToolMaterial customMaterial, String name, int durability, short[] rgba){
+	public static MultiPickaxeBase generateMultiPick(boolean GT_Durability, ToolMaterial customMaterial, String name, int durability, short[] rgba, Object enchantment){
 		Utils.LOG_INFO("Generating a Multi-Pick out of "+name);
 		short[] rgb = rgba;
 		int dur = customMaterial.getMaxUses();
@@ -330,12 +332,23 @@ public class ItemUtils {
 			Utils.LOG_WARNING("Still too low, "+name+" will now go unused.");
 			return null;
 		}
+
+		Object enchant;
+		if (enchantment != null){
+			if (enchantment instanceof Pair){
+				enchant = enchantment;
+			}
+		}
+		else {
+			enchant = null;
+		}
+		
 		MultiPickaxeBase MP_Redstone = new MultiPickaxeBase(
 				name+" Multipick",
 				(customMaterial),
 				dur,
-				Utils.rgbtoHexValue(rgb[0],rgb[1],rgb[2])
-				);
+				Utils.rgbtoHexValue(rgb[0],rgb[1],rgb[2]),
+				enchantment);
 
 		if (MP_Redstone.isValid){
 			return MP_Redstone;

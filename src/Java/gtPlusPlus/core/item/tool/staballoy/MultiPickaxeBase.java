@@ -3,14 +3,19 @@ package gtPlusPlus.core.item.tool.staballoy;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.array.Pair;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
 import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.world.World;
+
+import java.util.List;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -31,8 +36,9 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 	protected final String materialName;
 	protected final String displayName;
 	public boolean isValid = true;
+	private final Pair<?, ?> enchantment;
 
-	public MultiPickaxeBase(String unlocalizedName, ToolMaterial material, int materialDurability, int colour) {
+	public MultiPickaxeBase(String unlocalizedName, ToolMaterial material, int materialDurability, int colour, Object enchant) {
 		super(Utils.sanitizeString(unlocalizedName), material);
 		this.setUnlocalizedName(Utils.sanitizeString(unlocalizedName));
 		//this.setTextureName(CORE.MODID + ":" + "itemPickaxe");
@@ -45,6 +51,21 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 		this.displayName = unlocalizedName;
 		this.setCreativeTab(AddToCreativeTab.tabTools);
 		miningLevel = material.getHarvestLevel();
+		
+		
+		
+		if (enchant != null){
+			if (enchant instanceof Pair){
+				this.enchantment = (Pair<?, ?>) enchant;				
+			}
+			else {
+				this.enchantment = null;
+			}
+		}
+		else {
+			this.enchantment = null;
+		}
+		
 		try {isValid = addRecipe();} catch (Throwable e){}
 		if (colour != 0 && isValid && materialDurability > 10000){
 			if (GameRegistry.findItem(CORE.MODID, Utils.sanitizeString(unlocalizedName)) == null){
@@ -226,6 +247,52 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 	@Override
 	public boolean hasEffect(ItemStack par1ItemStack){
 		return false;
+	}
+
+	@Override
+	public void onCreated(ItemStack mThisItem, World mWorld, EntityPlayer mPlayer) {
+		Enchantment enchant = null;
+		int enchantmentLevel = 0;
+		Pair<?, ?> Y = this.enchantment;
+		if (Y != null){
+			if (Y.getKey() != null){
+				enchant = (Enchantment) ((Pair<?, ?>) this.enchantment).getKey();				
+			}
+			if (Y.getValue() != null){
+				enchantmentLevel = (byte) ((Pair<?, ?>) this.enchantment).getValue();				
+			}
+		}
+		ItemStack itemToEnchant = mThisItem;		
+		if (enchant != null && enchantmentLevel != 0 && enchantmentLevel >= 1){
+			itemToEnchant.addEnchantment(enchant, enchantmentLevel);
+		}
+		super.onCreated(itemToEnchant, mWorld, mPlayer);
+	}
+
+	@Override
+	public void getSubItems(Item mItem, CreativeTabs mCreativeTab, List mList) {
+		Enchantment enchant = null;
+		int enchantmentLevel = 0;
+		Pair<?, ?> Y = this.enchantment;
+		if (Y != null){
+			if (Y.getKey() != null){
+				enchant = (Enchantment) ((Pair<?, ?>) this.enchantment).getKey();				
+			}
+			if (Y.getValue() != null){
+				enchantmentLevel = (byte) ((Pair<?, ?>) this.enchantment).getValue();				
+			}
+		}
+		
+		Item thisItem = mItem;
+		ItemStack itemToEnchant = ItemUtils.getSimpleStack(thisItem);		
+		if (enchant != null && enchantmentLevel != 0 && enchantmentLevel >= 1){
+			itemToEnchant.addEnchantment(enchant, enchantmentLevel);
+			mList.add(itemToEnchant);
+		}
+		else {
+			mList.add(new ItemStack(thisItem, 1, 0));			
+		}
+		
 	}
 
 }
