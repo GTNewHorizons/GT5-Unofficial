@@ -1,7 +1,5 @@
 package gtPlusPlus.core.recipe;
 
-import static gtPlusPlus.core.lib.CORE.GTNH;
-
 import gregtech.api.enums.*;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
@@ -630,7 +628,8 @@ public class RECIPES_Machines {
 
 
 			//Tiered Tanks
-			if (!GTNH){
+			Utils.LOG_INFO("Is New Horizons Loaded? "+CORE.GTNH);
+			if (!CORE.GTNH){
 			RecipeUtils.addShapedGregtechRecipe(
 					plateTier1, plateTier1, plateTier1,
 					plateTier1, pipeTier1, plateTier1,
@@ -697,6 +696,13 @@ public class RECIPES_Machines {
 				plateTier6 = "plateAluminium";
 				pipeTier6 = "pipeMediumSteel";
 				
+				Utils.LOG_INFO("Loading New Horizon Tanks, with custom recipes.");
+				Utils.LOG_INFO("Using "+plateTier1+" with "+pipeTier1);
+				Utils.LOG_INFO("Using "+plateTier2+" with "+pipeTier2);
+				Utils.LOG_INFO("Using "+plateTier3+" with "+pipeTier3);
+				Utils.LOG_INFO("Using "+plateTier4+" with "+pipeTier4);
+				Utils.LOG_INFO("Using "+plateTier5+" with "+pipeTier5);
+				Utils.LOG_INFO("Using "+plateTier6+" with "+pipeTier6);
 				
 				RecipeUtils.addShapedGregtechRecipe(
 						plateTier1, plateTier1, plateTier1,

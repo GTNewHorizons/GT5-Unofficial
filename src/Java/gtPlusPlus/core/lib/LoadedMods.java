@@ -4,6 +4,9 @@ import gtPlusPlus.core.lib.CORE.configSwitches;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechTextures;
 import gtPlusPlus.xmod.gregtech.recipes.GregtechRecipeAdder;
+
+import static gtPlusPlus.core.lib.CORE.GTNH;
+
 import cpw.mods.fml.common.Loader;
 
 public class LoadedMods {
@@ -67,6 +70,7 @@ public class LoadedMods {
 
 		if (Loader.isModLoaded("dreamcraft") == true){
 			DreamCraft = true;
+			GTNH = true;
 			Utils.LOG_INFO("Components enabled for: DreamCraft");
 			Utils.LOG_INFO("Components enabled for: GT: New Horizons");
 			totalMods++;

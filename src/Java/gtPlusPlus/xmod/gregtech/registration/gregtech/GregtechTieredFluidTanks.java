@@ -19,6 +19,10 @@ public class GregtechTieredFluidTanks
 
 	private static void run1()	{
 		int ID = 817;
+		Utils.LOG_INFO("Is New Horizons Loaded? "+CORE.GTNH);
+		if (CORE.GTNH){
+			Utils.LOG_INFO("Only loading ULV-IV tier tanks for New Horizons Modpack.");
+		}
 		GregtechItemList.GT_FluidTank_ULV.set(new GT_MetaTileEntity_TieredTank(ID++, "fluidtank.tier.00", "Ultra Low Voltage Fluid Tank", 0).getStackForm(1L));
 		GregtechItemList.GT_FluidTank_LV.set(new GT_MetaTileEntity_TieredTank(ID++, "fluidtank.tier.01", "Low Voltage Fluid Tank", 1).getStackForm(1L));
 		GregtechItemList.GT_FluidTank_MV.set(new GT_MetaTileEntity_TieredTank(ID++, "fluidtank.tier.02", "Medium Voltage Fluid Tank", 2).getStackForm(1L));

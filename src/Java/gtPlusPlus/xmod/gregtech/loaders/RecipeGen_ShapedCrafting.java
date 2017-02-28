@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.loaders;
 
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
@@ -60,7 +61,7 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 
 		//Ring Recipe
 		if (!material.isRadioactive){
-			if (CORE.GTNH){
+			if (LoadedMods.DreamCraft){
 				if (RecipeUtils.recipeBuilder(
 						"craftingToolHardHammer", null, null,
 						"craftingToolFile", material.getRod(1), null,

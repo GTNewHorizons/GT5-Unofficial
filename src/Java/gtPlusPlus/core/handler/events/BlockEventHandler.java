@@ -59,14 +59,14 @@ public class BlockEventHandler {
 				}
 		}*/
 	}
-	
-	
+
+
 
 	@SubscribeEvent
 	public void onBlockBreak(BlockEvent.BreakEvent event) {
-		
+
 	}
-	
+
 
 	ArrayList<ItemStack> oreLimestone = OreDictionary.getOres("oreLimestone");
 	ArrayList<ItemStack> blockLimestone = OreDictionary.getOres("limestone");
@@ -106,32 +106,32 @@ public class BlockEventHandler {
 				Utils.LOG_WARNING("invalid chance");
 			}
 		}
-		
+
 		//Spawns Fluorite from Lime Stone
 		if (chanceToDropFluoriteOre != 0){
-		if (!oreLimestone.isEmpty() || !blockLimestone.isEmpty()){
-			if (!oreLimestone.isEmpty())
-			for (ItemStack temp : oreLimestone){
-				if (ItemUtils.getSimpleStack(Item.getItemFromBlock(event.block)) == temp) {
-					if (MathUtils.randInt(1, chanceToDropFluoriteOre) == 1){
-						event.drops.add(fluoriteOre.copy());							
-					}
-				}
-			}
-			if (!oreLimestone.isEmpty())
-				for (ItemStack temp : blockLimestone){
-					if (ItemUtils.getSimpleStack(Item.getItemFromBlock(event.block)) == temp) {
-						if (MathUtils.randInt(1, chanceToDropFluoriteOre) == 1){
-							event.drops.add(fluoriteOre.copy());							
+			if (!oreLimestone.isEmpty() || !blockLimestone.isEmpty()){
+				if (!oreLimestone.isEmpty())
+					for (ItemStack temp : oreLimestone){
+						if (ItemUtils.getSimpleStack(Item.getItemFromBlock(event.block)) == temp) {
+							if (MathUtils.randInt(1, chanceToDropFluoriteOre) == 1){
+								event.drops.add(fluoriteOre.copy());							
+							}
 						}
 					}
-				}
-		}
-		if (event.block == Blocks.sandstone){
-			if (MathUtils.randInt(1, chanceToDropFluoriteOre*20) == 1){
-				event.drops.add(fluoriteOre.copy());							
+				if (!blockLimestone.isEmpty())
+					for (ItemStack temp : blockLimestone){
+						if (ItemUtils.getSimpleStack(Item.getItemFromBlock(event.block)) == temp) {
+							if (MathUtils.randInt(1, chanceToDropFluoriteOre) == 1){
+								event.drops.add(fluoriteOre.copy());							
+							}
+						}
+					}
 			}
-		}
+			if (event.block == Blocks.sandstone){
+				if (MathUtils.randInt(1, chanceToDropFluoriteOre*20) == 1){
+					event.drops.add(fluoriteOre.copy());							
+				}
+			}
 		}
 	}
 
