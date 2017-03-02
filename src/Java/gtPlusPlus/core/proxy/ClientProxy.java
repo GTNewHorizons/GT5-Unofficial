@@ -5,6 +5,7 @@ import gtPlusPlus.core.common.BasePlayer;
 import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.handler.events.SneakManager;
 import gtPlusPlus.core.handler.render.FirepitRender;
+import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.tileentities.general.TileEntityFirepit;
 import gtPlusPlus.core.util.particles.EntityParticleFXMysterious;
 import net.minecraft.client.Minecraft;
@@ -17,6 +18,7 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import cpw.mods.fml.common.Optional;
 
 @SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy{
@@ -39,15 +41,18 @@ public class ClientProxy extends CommonProxy{
 		//Do this weird things for textures.
 		GTplusplus.loadTextures();		
 		//We boot up the sneak manager.
-		MinecraftForge.EVENT_BUS.register(SneakManager.instance);
+		if (LoadedMods.PlayerAPI){
+			MinecraftForge.EVENT_BUS.register(SneakManager.instance);			
+		}
 	}
 
 	@Override
 	public void init(FMLInitializationEvent e) {
 		// TODO Auto-generated method stub
 		
-		//Register player instance
-		ClientPlayerAPI.register("SneakManager", BasePlayer.class);
+		if (LoadedMods.PlayerAPI){
+			playerAPIStuff();
+		}
 		
 		super.init(e);
 	}
@@ -114,6 +119,12 @@ public class ClientProxy extends CommonProxy{
         mCapeRenderer.receiveRenderSpecialsEvent(aEvent);
     }*/
 
+	@Optional.Method(modid = "PlayerAPI")
+	private void playerAPIStuff(){
+		//Register player instance
+				ClientPlayerAPI.register("SneakManager", BasePlayer.class);
+	}
+	
 
 
 }
