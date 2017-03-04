@@ -101,11 +101,12 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		Utils.LOG_INFO("Fabricating Matter.");
+		Utils.LOG_WARNING("Fabricating Matter.");
 		if (this.mInputHatches.size() != 1){
 			Utils.LOG_INFO("Too many input hatches. Found: "+this.mInputHatches.size()+" | Expected: 1");
 			return false;
 		}
+		Utils.LOG_WARNING("Step 1");
 
 		final ArrayList<ItemStack> tInputList = this.getStoredInputs();
 		for (int i = 0; i < (tInputList.size() - 1); i++) {
@@ -120,6 +121,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 				}
 			}
 		}
+		Utils.LOG_WARNING("Step 2");
 
 		final ItemStack[] tInputs = Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, 2);
 
@@ -138,37 +140,50 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 				}
 			}
 		}
+		Utils.LOG_WARNING("Step 3");
 
 		final long tVoltage = this.getMaxInputVoltage();
 		final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-		final FluidStack[] tFluids = Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tFluidList.size()]), 0, tFluidList.size());
+		FluidStack[] tFluids = Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tFluidList.size()]), 0, tFluidList.size());
 
 
-		for (int scrapSlots=0;scrapSlots<tInputs.length;scrapSlots++){
-			if (tInputs[scrapSlots].getItem() == this.scrapPile.getItem()){
-				if (tInputs[scrapSlots].stackSize >= 9 ){
-					Utils.LOG_INFO("Found enough scrap for a special recipe. x"+tInputs[scrapSlots].stackSize);
-					for (final GT_MetaTileEntity_Hatch_Input tHatch : this.mInputHatches) {
-						if (isValidMetaTileEntity(tHatch)) {
-							Utils.LOG_INFO("Input fluid empty - Time to generate 1UU-A.");
-							if (tHatch.mFluid == null){
-								tHatch.mFluid = FluidUtils.getFluidStack("uuamplifier", 2);
+		//Find Scrap and make UU-A
+		/*if (tInputs.length >= 1){
+			Utils.LOG_INFO("Found Items in input bus.");
+			if (getStoredInputs().contains(this.scrapPile.getItem())){
+				Utils.LOG_INFO("Step 3.5");
+				for (int scrapSlots=0;scrapSlots<tInputs.length;scrapSlots++){
+					if (tInputs[scrapSlots].getItem() == this.scrapPile.getItem()){
+						if (tInputs[scrapSlots].stackSize >= 9 ){
+							Utils.LOG_INFO("Found enough scrap for a special recipe. x"+tInputs[scrapSlots].stackSize+", recipe requires 9.");
+							for (final GT_MetaTileEntity_Hatch_Input tHatch : this.mInputHatches) {
+								if (isValidMetaTileEntity(tHatch)) {
+									Utils.LOG_INFO("Input fluid empty - Time to generate 2L of UU-A.");
+									if (tHatch.mFluid == null){
+										tHatch.mFluid = FluidUtils.getFluidStack("uuamplifier", 2);
+									}
+									else{
+										tHatch.mFluid.amount++;
+										tHatch.mFluid.amount++;
+									}
+									tInputs[scrapSlots].stackSize = tInputs[scrapSlots].stackSize - 9;
+									Utils.LOG_INFO("Remaining after recipe. x"+tInputs[scrapSlots].stackSize);
+								}
 							}
-							else{
-								tHatch.mFluid.amount++;
-								tHatch.mFluid.amount++;
-							}
-							tInputs[scrapSlots].stackSize = tInputs[scrapSlots].stackSize - 9;
-							Utils.LOG_INFO("Remaining after recipe. x"+tInputs[scrapSlots].stackSize);
 						}
 					}
 				}
 			}
-		}
+			else {
+				Utils.LOG_INFO("Did not find an itemstack containing 9 IC2 Scrap or more.");
+			}
+		}*/
+		Utils.LOG_WARNING("Step 4");
 
+		tFluids = Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tFluidList.size()]), 0, tFluidList.size());
 
 		if (tFluids.length > 0) {
-			Utils.LOG_INFO("Input fluid found");
+			Utils.LOG_WARNING("Input fluid found");
 			for(int i = 0;i<tFluids.length;i++){
 				final GT_Recipe tRecipe = Recipe_GT.Gregtech_Recipe_Map.sMatterFab2Recipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], new FluidStack[]{tFluids[i]}, new ItemStack[]{});
 				if (tRecipe != null) {
@@ -201,13 +216,13 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 					}
 				}
 				else {
-					//Utils.LOG_INFO("Invalid Recipe");
+					Utils.LOG_INFO("Invalid Recipe");
 					return false;
 				}
 			}
 		}
 		else if (tFluids.length == 0) {
-			Utils.LOG_INFO("Input fluid not found");
+			Utils.LOG_WARNING("Input fluid not found");
 			this.fakeRecipe = Recipe_GT.Gregtech_Recipe_Map.sMatterFab2Recipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], new FluidStack[]{this.tempFake}, new ItemStack[]{});
 
 			this.mEfficiency = (10000 - ((this.getIdealStatus() - this.getRepairStatus()) * 1000));
