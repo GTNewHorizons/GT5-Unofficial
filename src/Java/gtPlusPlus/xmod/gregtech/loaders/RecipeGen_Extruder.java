@@ -94,7 +94,7 @@ public class RecipeGen_Extruder implements Runnable{
 		//Gear Recipe
 		if (!material.isRadioactive){
 			if (addExtruderRecipe(
-					material.getIngot(8),
+					material.getIngot(4),
 					shape_Gear,
 					itemGear,
 					(int) Math.max(material.getMass() * 5L, 1),
