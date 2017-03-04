@@ -51,7 +51,7 @@ public class CoreItem extends Item
 	 */
 	public CoreItem(final String unlocalizedName, final CreativeTabs creativeTab, final ItemStack OverrideItem)
 	{
-		this(unlocalizedName, creativeTab, 64, 0, "This item will be replaced by another when helf by a player, it is old and should not be used in recipes.", EnumRarity.uncommon, EnumChatFormatting.UNDERLINE, false, OverrideItem); //Calls 5
+		this(unlocalizedName, creativeTab, 64, 0, "This item will be replaced by another when held by a player, it is old and should not be used in recipes.", EnumRarity.uncommon, EnumChatFormatting.UNDERLINE, false, OverrideItem); //Calls 5
 	}
 	//0.1
 	/*
@@ -59,7 +59,7 @@ public class CoreItem extends Item
 	 */
 	public CoreItem(final String unlocalizedName, final String displayName, final CreativeTabs creativeTab, final ItemStack OverrideItem)
 	{
-		this(unlocalizedName, creativeTab, 64, 0, "This item will be replaced by another when helf by a player, it is old and should not be used in recipes.", EnumRarity.uncommon, EnumChatFormatting.UNDERLINE, false, OverrideItem); //Calls 5
+		this(unlocalizedName, creativeTab, 64, 0, "This item will be replaced by another when held by a player, it is old and should not be used in recipes.", EnumRarity.uncommon, EnumChatFormatting.UNDERLINE, false, OverrideItem); //Calls 5
 		this.itemName = displayName;
 	}
 

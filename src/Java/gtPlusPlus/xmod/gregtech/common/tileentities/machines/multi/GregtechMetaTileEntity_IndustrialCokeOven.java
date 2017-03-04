@@ -44,7 +44,7 @@ extends GregtechMeta_MultiBlockBase {
 				"Controller Block for the Industrial Coke Oven",
 				"Size: 3x3x3 (Hollow)",
 				"Controller (front middle at bottom)",
-				"8x Heat Resistant/Proof Coils (middle Layer, hollow)",
+				"8x Heat Resistant/Proof Coke Oven Casings (middle Layer, hollow)",
 				"1x Input Hatch (one of bottom)",
 				"1x Output Hatch (one of bottom)",
 				"1x Input Bus (one of bottom)",
