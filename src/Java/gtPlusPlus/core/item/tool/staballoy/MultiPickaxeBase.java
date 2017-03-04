@@ -257,10 +257,10 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 		final Pair<?, ?> Y = this.enchantment;
 		if (Y != null){
 			if (Y.getKey() != null){
-				enchant = (Enchantment) ((Pair<?, ?>) this.enchantment).getKey();
+				enchant = (Enchantment) this.enchantment.getKey();
 			}
 			if (Y.getValue() != null){
-				enchantmentLevel = (byte) ((Pair<?, ?>) this.enchantment).getValue();
+				enchantmentLevel = ((Integer) this.enchantment.getValue()).intValue();
 			}
 		}
 		final ItemStack itemToEnchant = mThisItem;
@@ -277,10 +277,10 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 		final Pair<?, ?> Y = this.enchantment;
 		if (Y != null){
 			if (Y.getKey() != null){
-				enchant = (Enchantment) ((Pair<?, ?>) this.enchantment).getKey();
+				enchant = (Enchantment) this.enchantment.getKey();
 			}
 			if (Y.getValue() != null){
-				enchantmentLevel = (byte) ((Pair<?, ?>) this.enchantment).getValue();
+				enchantmentLevel = ((Integer) this.enchantment.getValue()).intValue();
 			}
 		}
 
