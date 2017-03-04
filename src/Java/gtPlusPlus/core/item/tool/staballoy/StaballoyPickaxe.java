@@ -237,9 +237,14 @@ public class StaballoyPickaxe extends ItemPickaxe{
 
 					Utils.LOG_WARNING("Removing.5");
 					if (heldItem.getItemDamage() <= (heldItem.getMaxDamage()-dur)){
-
-						block.dropBlockAsItem(world, X, Y, Z, world.getBlockMetadata(X, Y, Z), 0);
-						world.setBlockToAir(X, Y, Z);
+						
+						if (X == 0 && Y == 0 && Z == 0){
+							
+						}
+						else {
+							block.dropBlockAsItem(world, X, Y, Z, world.getBlockMetadata(X, Y, Z), 0);
+							world.setBlockToAir(X, Y, Z);							
+						}
 
 					}
 
