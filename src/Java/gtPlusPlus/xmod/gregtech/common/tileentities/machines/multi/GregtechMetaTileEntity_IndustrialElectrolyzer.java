@@ -114,7 +114,7 @@ extends GregtechMeta_MultiBlockBase {
 		}
 		final FluidStack[] tFluids = Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tInputList.size()]), 0, 1);
 
-		final int tValidOutputSlots = this.getValidOutputSlots(this.getRecipeMap(), tInputs);
+		final int tValidOutputSlots = this.getValidOutputSlots(this.getBaseMetaTileEntity(), GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[(byte) Math.max(1, GT_Utility.getTier(this.getMaxInputVoltage()))], tFluids, tInputs), tInputs);
 		Utils.LOG_WARNING("Valid Output Slots: "+tValidOutputSlots);
 
 		//More than or one input

@@ -10,17 +10,20 @@ import gregtech.api.enums.*;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.metatileentity.BaseMetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.*;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.Pair;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
@@ -932,45 +935,32 @@ public abstract class GregtechMeta_MultiBlockBase extends MetaTileEntity {
 		//
 	}
 
-	public int getValidOutputSlots(final GT_Recipe.GT_Recipe_Map sRecipeMap, final ItemStack[] sInputs){
+	public int getValidOutputSlots(final IGregTechTileEntity machineCalling, final GT_Recipe sRecipes, final ItemStack[] sInputs){
+		Utils.LOG_INFO("Finding valid output slots");
 		final ArrayList<ItemStack> tInputList = this.getStoredInputs();
-		final GT_Recipe tRecipe = sRecipeMap.findRecipe(this.getBaseMetaTileEntity(), false, 9223372036854775807L, null, sInputs);
-		final ArrayList<Pair<GT_MetaTileEntity_Hatch_OutputBus, Integer>> rList = new ArrayList<>();
-		int tTotalHatches=0;
-		for (final GT_MetaTileEntity_Hatch_OutputBus tHatch : this.mOutputBusses) {
-			int hatchUsedSlotCount = 0;
-			if (isValidMetaTileEntity(tHatch)) {
-				tTotalHatches++;
-				for (int i=0; i<tHatch.getBaseMetaTileEntity().getSizeInventory(); i++) {
-					if (tHatch.getBaseMetaTileEntity().getStackInSlot(i) != null){hatchUsedSlotCount++;}
-				}
-				rList.add(new Pair<>(tHatch, hatchUsedSlotCount));
-			}
-		}
-		final boolean[] mValidOutputSlots = new boolean[tTotalHatches];
-		int arrayPos=0;
-		for (final Pair<GT_MetaTileEntity_Hatch_OutputBus, Integer> IE : rList) {
-			final GT_MetaTileEntity_Hatch_OutputBus vTE = IE.getKey();
-			final int vUsedSlots = IE.getValue();
-			if (vUsedSlots == 0){mValidOutputSlots[arrayPos] = true;}
-			else if (vUsedSlots < vTE.getSizeInventory()){
-				final int outputItemCount = tRecipe.mOutputs.length;
-				if (vUsedSlots < (vTE.getSizeInventory()-outputItemCount)){mValidOutputSlots[arrayPos] = true;}
-				else if (vUsedSlots >= (vTE.getSizeInventory()-outputItemCount)){
-					if (vUsedSlots > (vTE.getSizeInventory()-outputItemCount)){if (arrayPos == tTotalHatches){return 0;} /*Change to Hatch total*/ }
-				}
-			}
-			//Hatch is full
-			if (vUsedSlots == vTE.getSizeInventory()){
-				mValidOutputSlots[arrayPos] = false;
-				if (arrayPos == tTotalHatches){return 0;} // Change to Hatch Total
-			}
-			arrayPos++;
-		}
-		int tValidOutputSlots = 0;
-		for (int cr=0;cr<mValidOutputSlots.length;cr++){if (mValidOutputSlots[cr]){tValidOutputSlots++;}}
-		if (tValidOutputSlots >= 1) {return tValidOutputSlots;}
-		return 0;
+	    final GT_Recipe tRecipe = sRecipes;
+	    final int outputItemCount = tRecipe.mOutputs.length;
+	    int tValidOutputHatches = 0;
+	 
+	    for (final GT_MetaTileEntity_Hatch_OutputBus tHatch : this.mOutputBusses) {
+	        if (!isValidMetaTileEntity(tHatch)) continue;
+	 
+	        int tEmptySlots = 0;
+	        boolean foundRoom = false;
+	        final IInventory tHatchInv = tHatch.getBaseMetaTileEntity();
+	        for(int i = 0; i < tHatchInv.getSizeInventory() && !foundRoom; ++i)
+	        {
+	            if(tHatchInv.getStackInSlot(i) != null) continue;
+	           
+	            tEmptySlots++;
+	            if(tEmptySlots < outputItemCount) continue;
+	           
+	            tValidOutputHatches++;
+	            foundRoom = true;
+	        }
+	    }
+	 
+	    return tValidOutputHatches;
 	}
 
 

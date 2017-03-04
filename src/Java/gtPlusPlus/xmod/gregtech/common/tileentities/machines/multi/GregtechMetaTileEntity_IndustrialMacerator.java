@@ -133,8 +133,8 @@ extends GregtechMeta_MultiBlockBase {
 		final GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(this.getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
 
 
-		final int tValidOutputSlots = this.getValidOutputSlots(this.getRecipeMap(), tInputs);
-		Utils.LOG_WARNING("Valid Output Slots: "+tValidOutputSlots);
+		final int tValidOutputSlots = this.getValidOutputSlots(this.getBaseMetaTileEntity(), tRecipe, tInputs);
+		Utils.LOG_INFO("Maceration Stack - Valid Output Slots: "+tValidOutputSlots);
 
 		//More than or one input
 		if ((tInputList.size() > 0) && (tValidOutputSlots >= 1)) {

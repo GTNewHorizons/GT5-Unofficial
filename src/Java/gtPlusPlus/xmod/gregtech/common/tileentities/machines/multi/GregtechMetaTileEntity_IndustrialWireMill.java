@@ -82,7 +82,7 @@ extends GregtechMeta_MultiBlockBase {
 			final GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sWiremillRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], null, new ItemStack[]{tInput});
 			if (tRecipe != null) {
 
-				final int tValidOutputSlots = this.getValidOutputSlots(this.getRecipeMap(), new ItemStack[]{tInput});
+				final int tValidOutputSlots = this.getValidOutputSlots(this.getBaseMetaTileEntity(), tRecipe, new ItemStack[]{tInput});
 				Utils.LOG_WARNING("Valid Output Slots: "+tValidOutputSlots);
 				//More than or one input
 				if ((tInputList.size() > 0) && (tValidOutputSlots >= 1)) {

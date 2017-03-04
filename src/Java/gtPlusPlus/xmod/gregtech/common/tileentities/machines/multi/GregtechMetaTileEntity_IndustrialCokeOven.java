@@ -87,6 +87,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
+		Utils.LOG_INFO("Trying to process Coal coke");
 		final ArrayList<ItemStack> tInputList = this.getStoredInputs();
 		for (int i = 0; i < (tInputList.size() - 1); i++) {
 			for (int j = i + 1; j < tInputList.size(); j++) {
@@ -117,8 +118,8 @@ extends GregtechMeta_MultiBlockBase {
 		}
 		final FluidStack[] tFluids = Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tInputList.size()]), 0, 1);
 
-		final int tValidOutputSlots = this.getValidOutputSlots(this.getRecipeMap(), tInputs);
-		Utils.LOG_WARNING("Valid Output Slots: "+tValidOutputSlots);
+		final int tValidOutputSlots = this.getValidOutputSlots(this.getBaseMetaTileEntity(), Recipe_GT.Gregtech_Recipe_Map.sCokeOvenRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[(byte) Math.max(1, GT_Utility.getTier(this.getMaxInputVoltage()))], tFluids, tInputs), tInputs);
+		Utils.LOG_INFO("Valid Output Slots: "+tValidOutputSlots);
 
 		//More than or one input
 		if ((tInputList.size() > 0) && (tValidOutputSlots >= 1)) {
