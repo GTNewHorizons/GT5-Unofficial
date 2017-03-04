@@ -311,7 +311,8 @@ public class ItemUtils {
 
 	public static MultiPickaxeBase generateMultiPick(final boolean GT_Durability, final Materials material){
 		final ToolMaterial customMaterial = Utils.generateToolMaterialFromGT(material);
-		final Object enchant = new Pair(material.mEnchantmentTools, (Byte.valueOf(material.mEnchantmentToolsLevel)));
+		int enchantLevel = material.mEnchantmentToolsLevel;		
+		final Object enchant = new Pair(material.mEnchantmentTools, enchantLevel);
 		return generateMultiPick(GT_Durability, customMaterial, material.mDefaultLocalName, material.mDurability, material.mRGBa, enchant);
 	}
 
