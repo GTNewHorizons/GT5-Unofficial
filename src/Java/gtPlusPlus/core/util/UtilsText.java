@@ -20,13 +20,13 @@ public enum UtilsText {
 	white('f');
 
 	private char colourValue;
-	private UtilsText (char value)
+	private UtilsText (final char value)
 	{
 		this.colourValue = value;
 	}
 
 	public String colour() {
-		return "§"+colourValue;
+		return "ï¿½"+this.colourValue;
 	}
 
 }

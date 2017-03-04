@@ -10,16 +10,16 @@ import net.minecraft.entity.player.InventoryPlayer;
  * The Container I use for all my Basic Machines
  */
 public class CONTAINER_MultiMachine extends GT_ContainerMetaTile_Machine {
-    public CONTAINER_MultiMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
-        super(aInventoryPlayer, aTileEntity);
-    }
+	public CONTAINER_MultiMachine(final InventoryPlayer aInventoryPlayer, final IGregTechTileEntity aTileEntity) {
+		super(aInventoryPlayer, aTileEntity);
+	}
 
-    public CONTAINER_MultiMachine(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, boolean bindInventory) {
-        super(aInventoryPlayer, aTileEntity, bindInventory);
-    }
+	public CONTAINER_MultiMachine(final InventoryPlayer aInventoryPlayer, final IGregTechTileEntity aTileEntity, final boolean bindInventory) {
+		super(aInventoryPlayer, aTileEntity, bindInventory);
+	}
 }
 
-    /*@Override
+/*@Override
     public void addSlots(InventoryPlayer aInventoryPlayer) {
         addSlotToContainer(new Slot(mTileEntity, 1, 152, 5));
     }

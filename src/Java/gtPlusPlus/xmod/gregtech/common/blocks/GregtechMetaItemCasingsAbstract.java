@@ -1,9 +1,8 @@
 package gtPlusPlus.xmod.gregtech.common.blocks;
 
-import gregtech.api.util.GT_LanguageManager;
-
 import java.util.List;
 
+import gregtech.api.util.GT_LanguageManager;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -19,27 +18,27 @@ extends ItemBlock {
 	protected final String mNoMobsToolTip = GT_LanguageManager.addStringLocalization("gt.nomobspawnsonthisblock", "Mobs cannot Spawn on this Block");
 	protected final String mNoTileEntityToolTip = GT_LanguageManager.addStringLocalization("gt.notileentityinthisblock", "This is NOT a TileEntity!");
 
-	public GregtechMetaItemCasingsAbstract(Block par1) {
+	public GregtechMetaItemCasingsAbstract(final Block par1) {
 		super(par1);
-		setMaxDamage(0);
-		setHasSubtypes(true);
+		this.setMaxDamage(0);
+		this.setHasSubtypes(true);
 		//setCreativeTab(AddToCreativeTab.tabMachines);
 	}
 
 	@Override
-	public int getMetadata(int aMeta) {
+	public int getMetadata(final int aMeta) {
 		return aMeta;
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack aStack) {
-		return this.field_150939_a.getUnlocalizedName() + "." + getDamage(aStack);
+	public String getUnlocalizedName(final ItemStack aStack) {
+		return this.field_150939_a.getUnlocalizedName() + "." + this.getDamage(aStack);
 	}
 
 	@Override
-	public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-		super.addInformation(aStack, aPlayer, aList, aF3_H);       
-		switch (getDamage(aStack)) {
+	public void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, final List aList, final boolean aF3_H) {
+		super.addInformation(aStack, aPlayer, aList, aF3_H);
+		switch (this.getDamage(aStack)) {
 		case 0:
 			//aList.add(this.mCasing_Centrifuge);
 			break;
@@ -53,7 +52,7 @@ extends ItemBlock {
 			//aList.add(this.mCasing_CokeCoil2);
 			break;
 		default:
-			break;      
+			break;
 		}
 		aList.add(this.mNoMobsToolTip);
 		aList.add(this.mNoTileEntityToolTip);

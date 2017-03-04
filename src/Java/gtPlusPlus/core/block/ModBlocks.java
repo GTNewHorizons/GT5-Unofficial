@@ -1,5 +1,6 @@
 package gtPlusPlus.core.block;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.block.general.FirePit;
@@ -11,7 +12,6 @@ import gtPlusPlus.core.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.Fluid;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public final class ModBlocks {
 
@@ -34,9 +34,9 @@ public final class ModBlocks {
 	public static Fluid fluidJackDaniels = new Fluid("fluidJackDaniels");
 	public static Block blockFluidJackDaniels;
 	public static Block blockCasings2Misc;
-	
+
 	public static Block blockFirePit;
-	
+
 	public static Block blockOreFluorite;
 
 
@@ -45,7 +45,7 @@ public final class ModBlocks {
 		Utils.LOG_INFO("Initializing Blocks.");
 		//blockGriefSaver = new TowerDevice().setBlockName("blockGriefSaver").setCreativeTab(AddToCreativeTab.tabBlock).setBlockTextureName("blockDefault");
 
-		registerBlocks(); 
+		registerBlocks();
 	}
 
 	public static void registerBlocks(){
@@ -63,7 +63,7 @@ public final class ModBlocks {
 		blockFishTrap = new FishTrap();
 		blockOreFluorite = new BlockBaseOre("oreFluorite", "Fluorite", Material.rock, BlockTypes.ORE, Utils.rgbtoHexValue(120, 120, 30), 3);
 
-		
+
 	}
 
 }

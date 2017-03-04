@@ -8,7 +8,7 @@ import gtPlusPlus.core.util.recipe.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 
 public class RECIPES_MachineComponents {
-	
+
 	//Wire
 	static String wireTier6 = "wireGt08NiobiumTitanium";
 	static String wireTier7 = "wireGt08Osmium";
@@ -82,10 +82,10 @@ public class RECIPES_MachineComponents {
 	static String craftingToolWrench = "craftingToolWrench";
 	static String craftingToolScrewdriver = "craftingToolScrewdriver";
 
-	public static final void RECIPES_LOAD(){	
-		Utils.LOG_INFO("Loading Recipes for the Various Circuits and Machine components.");	
+	public static final void RECIPES_LOAD(){
+		Utils.LOG_INFO("Loading Recipes for the Various Circuits and Machine components.");
 		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
-			run();	
+			run();
 		}
 		else {
 			onlyMaxComponents();
@@ -272,8 +272,8 @@ public class RECIPES_MachineComponents {
 
 		Utils.LOG_INFO("Done loading recipes for the Various machine components.");
 
-	}		
-	
+	}
+
 	private static void onlyMaxComponents(){
 		RecipeUtils.addShapedGregtechRecipe(
 				cableTier10, wireTier10, rodTier10a,
@@ -328,14 +328,14 @@ public class RECIPES_MachineComponents {
 		GT_Values.RA.addForgeHammerRecipe(ItemList.Circuit_Master.get(1L, new Object[0]), GregtechItemList.Circuit_Parts_Crystal_Chip_IV.get(5L, new Object[0]), 32, 256);
 		GT_Values.RA.addForgeHammerRecipe(GregtechItemList.Circuit_IV.get(1L, new Object[0]), GregtechItemList.Circuit_Parts_Crystal_Chip_LuV.get(5L, new Object[0]), 64, 512);
 		GT_Values.RA.addForgeHammerRecipe(GregtechItemList.Circuit_LuV.get(1L, new Object[0]), GregtechItemList.Circuit_Parts_Crystal_Chip_ZPM.get(5L, new Object[0]), 128, 1024);
-		for (Materials tMat : Materials.values()) {
+		for (final Materials tMat : Materials.values()) {
 			if ((tMat.mStandardMoltenFluid != null) && (tMat.contains(SubTag.SOLDERING_MATERIAL))) {
-				int tMultiplier = tMat.contains(SubTag.SOLDERING_MATERIAL_GOOD) ? 1 : tMat.contains(SubTag.SOLDERING_MATERIAL_BAD) ? 4 : 2;
-				GT_Values.RA.addAssemblerRecipe(GregtechItemList.Circuit_Board_IV.get(1L, new Object[0]), GregtechItemList.Circuit_Parts_IV.get(1L, new Object[0]), tMat.getMolten(144L * tMultiplier / 4L), GregtechItemList.Circuit_IV.get(1L, new Object[0]), 32, 512);
-				GT_Values.RA.addAssemblerRecipe(GregtechItemList.Circuit_Board_LuV.get(1L, new Object[0]), GregtechItemList.Circuit_Parts_LuV.get(1L, new Object[0]), tMat.getMolten(144L * tMultiplier / 4L), GregtechItemList.Circuit_LuV.get(1L, new Object[0]), 64, 1024);
-				GT_Values.RA.addAssemblerRecipe(GregtechItemList.Circuit_Board_ZPM.get(1L, new Object[0]), GregtechItemList.Circuit_Parts_ZPM.get(1L, new Object[0]), tMat.getMolten(144L * tMultiplier / 4L), GregtechItemList.Circuit_ZPM.get(1L, new Object[0]), 96, 2048);
+				final int tMultiplier = tMat.contains(SubTag.SOLDERING_MATERIAL_GOOD) ? 1 : tMat.contains(SubTag.SOLDERING_MATERIAL_BAD) ? 4 : 2;
+				GT_Values.RA.addAssemblerRecipe(GregtechItemList.Circuit_Board_IV.get(1L, new Object[0]), GregtechItemList.Circuit_Parts_IV.get(1L, new Object[0]), tMat.getMolten((144L * tMultiplier) / 4L), GregtechItemList.Circuit_IV.get(1L, new Object[0]), 32, 512);
+				GT_Values.RA.addAssemblerRecipe(GregtechItemList.Circuit_Board_LuV.get(1L, new Object[0]), GregtechItemList.Circuit_Parts_LuV.get(1L, new Object[0]), tMat.getMolten((144L * tMultiplier) / 4L), GregtechItemList.Circuit_LuV.get(1L, new Object[0]), 64, 1024);
+				GT_Values.RA.addAssemblerRecipe(GregtechItemList.Circuit_Board_ZPM.get(1L, new Object[0]), GregtechItemList.Circuit_Parts_ZPM.get(1L, new Object[0]), tMat.getMolten((144L * tMultiplier) / 4L), GregtechItemList.Circuit_ZPM.get(1L, new Object[0]), 96, 2048);
 
 			}
-		}		
+		}
 	}
 }

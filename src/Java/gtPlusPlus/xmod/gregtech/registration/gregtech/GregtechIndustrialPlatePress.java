@@ -14,7 +14,9 @@ public class GregtechIndustrialPlatePress
 	{
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Industrial Press Multiblock.");
-			if (CORE.configSwitches.enableMultiblock_IndustrialPlatePress) run1();
+			if (CORE.configSwitches.enableMultiblock_IndustrialPlatePress) {
+				run1();
+			}
 		}
 
 	}
@@ -23,6 +25,6 @@ public class GregtechIndustrialPlatePress
 	{
 		//Industrial Presser Multiblock
 		GregtechItemList.Industrial_PlatePress.set(new GregtechMetaTileEntity_IndustrialPlatePress(792, "industrialbender.controller.tier.single", "Industrial Material Press").getStackForm(1L));
-		
+
 	}
 }

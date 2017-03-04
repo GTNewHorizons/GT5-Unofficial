@@ -1,10 +1,10 @@
 package gtPlusPlus.xmod.forestry.bees.alveary;
 
-import net.minecraft.inventory.ISidedInventory;
 import forestry.api.apiculture.IBeeHousing;
+import net.minecraft.inventory.ISidedInventory;
 
 public abstract interface ISidedFrameWearingInventory
-  extends ISidedInventory
+extends ISidedInventory
 {
-  public abstract void wearOutFrames(IBeeHousing paramIBeeHousing, int paramInt);
+	public abstract void wearOutFrames(IBeeHousing paramIBeeHousing, int paramInt);
 }

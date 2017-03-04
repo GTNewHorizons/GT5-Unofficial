@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.lossless;
 
 import static gregtech.api.enums.GT_Values.GT;
+
 import gregtech.api.interfaces.ITexture;
 import gtPlusPlus.core.lib.CORE;
 
@@ -9,54 +10,58 @@ public abstract class GregtechMetaTileEntityLossless extends MetaTileEntityLossl
 	 * Value between [0 - 9] to describe the Tier of this Machine.
 	 */
 	public final byte mTier;
-	
+
 	/**
 	 * A simple Description.
 	 */
 	public final String mDescription;
-	
+
 	/**
 	 * Contains all Textures used by this Block.
 	 */
 	public final ITexture[][][] mTextures;
-	
-	public GregtechMetaTileEntityLossless(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription, ITexture... aTextures) {
+
+	public GregtechMetaTileEntityLossless(final int aID, final String aName, final String aNameRegional, final int aTier, final int aInvSlotCount, final String aDescription, final ITexture... aTextures) {
 		super(aID, aName, aNameRegional, aInvSlotCount);
-		mTier = (byte)Math.max(0, Math.min(aTier, 9));
-		mDescription = aDescription;
-		
+		this.mTier = (byte)Math.max(0, Math.min(aTier, 9));
+		this.mDescription = aDescription;
+
 		// must always be the last call!
-		if (GT.isClientSide()) mTextures = getTextureSet(aTextures); else mTextures = null;
+		if (GT.isClientSide()) {
+			this.mTextures = this.getTextureSet(aTextures);
+		} else {
+			this.mTextures = null;
+		}
 	}
-	
-	public GregtechMetaTileEntityLossless(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
+
+	public GregtechMetaTileEntityLossless(final String aName, final int aTier, final int aInvSlotCount, final String aDescription, final ITexture[][][] aTextures) {
 		super(aName, aInvSlotCount);
-		mTier = (byte)aTier;
-		mDescription = aDescription;
-		mTextures = aTextures;
-		
+		this.mTier = (byte)aTier;
+		this.mDescription = aDescription;
+		this.mTextures = aTextures;
+
 	}
-	
+
 	@Override
 	public byte getTileEntityBaseType() {
-		return (byte)(Math.min(3, mTier<=0?0:1+((mTier-1) / 4)));
+		return (byte)(Math.min(3, this.mTier<=0?0:1+((this.mTier-1) / 4)));
 	}
-	
-    @Override
+
+	@Override
 	public long getInputTier() {
-    	return mTier;
-    }
-    
-    @Override
+		return this.mTier;
+	}
+
+	@Override
 	public long getOutputTier() {
-    	return mTier;
-    }
-    
+		return this.mTier;
+	}
+
 	@Override
 	public String[] getDescription() {
-		return new String[] {mDescription, CORE.GT_Tooltip};
+		return new String[] {this.mDescription, CORE.GT_Tooltip};
 	}
-	
+
 	/**
 	 * Used Client Side to get a Texture Set for this Block.
 	 * Called after setting the Tier and the Description so that those two are accessible.

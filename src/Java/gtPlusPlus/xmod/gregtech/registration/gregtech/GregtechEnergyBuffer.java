@@ -11,29 +11,31 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.creative.Greg
 
 public class GregtechEnergyBuffer
 {
-	
+
 	//Misc Items
 	//public static Item itemBufferCore;
-	
+
 	public static void run()
 	{
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Energy Buffer Blocks.");
-			if (CORE.configSwitches.enableMachine_RocketEngines) run1();
+			if (CORE.configSwitches.enableMachine_RocketEngines) {
+				run1();
+			}
 		}
-		
+
 	}
 
 	private static void run1()
 	{
-		
+
 		//itemBufferCore = new Item().setUnlocalizedName("itemBufferCore").setCreativeTab(AddToCreativeTab.tabMisc).setTextureName(CORE.MODID + ":itemBufferCore");
 
 		//Registry
 		//GameRegistry.registerItem(itemBufferCore, "itemBufferCore");
 		//LanguageRegistry.addName(itemBufferCore, "Buffer Core");
 		//OreDictionary.registerOre("itemBufferCore", itemBufferCore);
-		
+
 
 		//Energy Buffers
 		GregtechItemList.Energy_Buffer_1by1_ULV.set(new GregtechMetaEnergyBuffer(770, "energybuffer.01.tier.00", "Ultra Low Voltage Energy Buffer", 0, "", 1).getStackForm(1L));
@@ -48,10 +50,10 @@ public class GregtechEnergyBuffer
 		GregtechItemList.Energy_Buffer_1by1_MAX.set(new GregtechMetaEnergyBuffer(779, "energybuffer.01.tier.09", "MAX Voltage Energy Buffer", 9, "", 1).getStackForm(1L));
 		// Creative Buffer Has Special ID
 		GregtechItemList.Energy_Buffer_CREATIVE
-				.set(new GregtechMetaCreativeEnergyBuffer(750,
-						"energybuffer.01.tier.xx",
-						"512V Creative Energy Buffer", 3, "", 0)
-						.getStackForm(1L));
+		.set(new GregtechMetaCreativeEnergyBuffer(750,
+				"energybuffer.01.tier.xx",
+				"512V Creative Energy Buffer", 3, "", 0)
+				.getStackForm(1L));
 
 		GT_ModHandler.addCraftingRecipe(GregtechItemList.Energy_Buffer_1by1_ULV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "WTW", "WMW", Character.valueOf('M'), ItemList.Hull_ULV, Character.valueOf('W'), OrePrefixes.wireGt08.get(Materials.Lead), Character.valueOf('T'), GregtechOreDictNames.buffer_core });
 		GT_ModHandler.addCraftingRecipe(GregtechItemList.Energy_Buffer_1by1_LV.get(1L, new Object[0]), GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[] { "WTW", "WMW", Character.valueOf('M'), ItemList.Hull_LV, Character.valueOf('W'), OrePrefixes.wireGt08.get(Materials.Tin), Character.valueOf('T'), GregtechOreDictNames.buffer_core });
@@ -73,9 +75,9 @@ public class GregtechEnergyBuffer
 						ItemList.Hull_MAX, Character.valueOf('W'),
 						OrePrefixes.wireGt08.get(Materials.Superconductor),
 						Character.valueOf('T'), GregtechOreDictNames.buffer_core });*/
-		
-		
-		
+
+
+
 
 	}
 }

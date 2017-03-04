@@ -14,7 +14,9 @@ public class GregtechLFTR
 	{
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Liquid Fluorine Thorium Reactor [LFTR].");
-			if (CORE.configSwitches.enableMultiblock_LiquidFluorideThoriumReactor) run1();
+			if (CORE.configSwitches.enableMultiblock_LiquidFluorideThoriumReactor) {
+				run1();
+			}
 		}
 
 	}
@@ -23,6 +25,6 @@ public class GregtechLFTR
 	{
 		//LFTR
 		GregtechItemList.ThoriumReactor.set(new GregtechMTE_NuclearReactor(751, "lftr.controller.single", "Thorium Reactor [LFTR]").getStackForm(1L));
-		
+
 	}
 }

@@ -8,14 +8,14 @@ import net.minecraft.item.ItemStack;
 
 public class GregtechMetaItemCasings1
 extends GregtechMetaItemCasingsAbstract {
-	public GregtechMetaItemCasings1(Block par1) {
+	public GregtechMetaItemCasings1(final Block par1) {
 		super(par1);
 	}
 
 	@Override
-	public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
+	public void addInformation(final ItemStack aStack, final EntityPlayer aPlayer, final List aList, final boolean aF3_H) {
 		super.addInformation(aStack, aPlayer, aList, aF3_H);
-		switch (getDamage(aStack)) {
+		switch (this.getDamage(aStack)) {
 		case 0:
 			aList.add(this.mCasing_Centrifuge);
 			break;
@@ -30,7 +30,7 @@ extends GregtechMetaItemCasingsAbstract {
 			break;
 		default:
 			aList.add(this.mCasing_CokeCoil2);
-			break;      
+			break;
 		}
 	}
 }

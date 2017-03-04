@@ -14,7 +14,9 @@ public class GregtechIndustrialMacerator
 	{
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Industrial Maceration Stack Multiblock.");
-			if (CORE.configSwitches.enableMultiblock_IndustrialMacerationStack) run1();
+			if (CORE.configSwitches.enableMultiblock_IndustrialMacerationStack) {
+				run1();
+			}
 		}
 
 	}
@@ -23,6 +25,6 @@ public class GregtechIndustrialMacerator
 	{
 		//Industrial Maceration Stack Multiblock
 		GregtechItemList.Industrial_MacerationStack.set(new GregtechMetaTileEntity_IndustrialMacerator(797, "industrialmacerator.controller.tier.single", "Maceration Stack Controller").getStackForm(1L));
-		
+
 	}
 }

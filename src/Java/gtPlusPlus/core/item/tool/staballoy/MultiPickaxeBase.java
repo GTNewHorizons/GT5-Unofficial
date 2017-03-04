@@ -1,5 +1,10 @@
 package gtPlusPlus.core.item.tool.staballoy;
 
+import java.util.List;
+
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
@@ -14,19 +19,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.*;
 import net.minecraft.world.World;
 
-import java.util.List;
-
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 public class MultiPickaxeBase extends StaballoyPickaxe{
 
 	/* (non-Javadoc)
 	 * @see net.minecraft.item.Item#getDurabilityForDisplay(net.minecraft.item.ItemStack)
 	 */
 	@Override
-	public double getDurabilityForDisplay(ItemStack stack) {
+	public double getDurabilityForDisplay(final ItemStack stack) {
 		if (super.getDurabilityForDisplay(stack) > 0){
 			return super.getDurabilityForDisplay(stack);}
 		return 0;
@@ -38,7 +37,7 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 	public boolean isValid = true;
 	private final Pair<?, ?> enchantment;
 
-	public MultiPickaxeBase(String unlocalizedName, ToolMaterial material, int materialDurability, int colour, Object enchant) {
+	public MultiPickaxeBase(final String unlocalizedName, final ToolMaterial material, final int materialDurability, final int colour, final Object enchant) {
 		super(Utils.sanitizeString(unlocalizedName), material);
 		this.setUnlocalizedName(Utils.sanitizeString(unlocalizedName));
 		//this.setTextureName(CORE.MODID + ":" + "itemPickaxe");
@@ -50,13 +49,13 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 		this.materialName = material.name();
 		this.displayName = unlocalizedName;
 		this.setCreativeTab(AddToCreativeTab.tabTools);
-		miningLevel = material.getHarvestLevel();
-		
-		
-		
+		this.miningLevel = material.getHarvestLevel();
+
+
+
 		if (enchant != null){
 			if (enchant instanceof Pair){
-				this.enchantment = (Pair<?, ?>) enchant;				
+				this.enchantment = (Pair<?, ?>) enchant;
 			}
 			else {
 				this.enchantment = null;
@@ -65,38 +64,38 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 		else {
 			this.enchantment = null;
 		}
-		
-		try {isValid = addRecipe();} catch (Throwable e){}
-		if (colour != 0 && isValid && materialDurability > 10000){
+
+		try {this.isValid = this.addRecipe();} catch (final Throwable e){}
+		if ((colour != 0) && this.isValid && (materialDurability > 10000)){
 			if (GameRegistry.findItem(CORE.MODID, Utils.sanitizeString(unlocalizedName)) == null){
-				GameRegistry.registerItem(this, Utils.sanitizeString(unlocalizedName));			
-			}	
+				GameRegistry.registerItem(this, Utils.sanitizeString(unlocalizedName));
+			}
 		}
 
 	}
 
 	/*
-	 * 
-	 * 
-	 * 
-	 *  Methods 
-	 * 
-	 * 
-	 * 
+	 *
+	 *
+	 *
+	 *  Methods
+	 *
+	 *
+	 *
 	 */
 
 	private boolean addRecipe(){
-		
-		String cleanName = Utils.sanitizeString(materialName);
-		
-		String plateDense = "plateDense"+cleanName;
-		String plateDouble = "plateDouble"+cleanName;
-		String rodLong = "stickLong"+cleanName;
-		String toolHammer = "craftingToolHardHammer";
-		String toolWrench = "craftingToolWrench";
-		String toolFile = "craftingToolFile";
-		String toolScrewDriver = "craftingToolScrewdriver";
-		
+
+		final String cleanName = Utils.sanitizeString(this.materialName);
+
+		final String plateDense = "plateDense"+cleanName;
+		final String plateDouble = "plateDouble"+cleanName;
+		final String rodLong = "stickLong"+cleanName;
+		final String toolHammer = "craftingToolHardHammer";
+		final String toolWrench = "craftingToolWrench";
+		final String toolFile = "craftingToolFile";
+		final String toolScrewDriver = "craftingToolScrewdriver";
+
 		if (null == ItemUtils.getItemStackOfAmountFromOreDictNoBroken(rodLong, 1)){
 			Utils.LOG_WARNING("stickLong of "+cleanName+" does not exist.");
 			return false;
@@ -127,12 +126,12 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 	}
 
 	public final String getMaterialName() {
-		return materialName;
+		return this.materialName;
 	}
 
 	@Override
-	public String getItemStackDisplayName(ItemStack iStack) {
-		return displayName;
+	public String getItemStackDisplayName(final ItemStack iStack) {
+		return this.displayName;
 		/*String name;
 		if (getUnlocalizedName().toLowerCase().contains("wood")){
 			name = "Wooden";
@@ -155,22 +154,22 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 	}
 
 	@Override
-	public int getColorFromItemStack(ItemStack stack, int HEX_OxFFFFFF) {
-		if (colour == 0){
+	public int getColorFromItemStack(final ItemStack stack, final int HEX_OxFFFFFF) {
+		if (this.colour == 0){
 			return MathUtils.generateSingularRandomHexValue();
 		}
-		return colour;
+		return this.colour;
 
 	}
 
 	@SuppressWarnings("static-method")
-	private float calculateDurabilityLoss(World world, int X, int Y, int Z){
+	private float calculateDurabilityLoss(final World world, final int X, final int Y, final int Z){
 		float bDurabilityLoss = 0;
 		Boolean correctTool = false;
 		float bHardness = 0;
-		if (!world.isRemote){			
+		if (!world.isRemote){
 			try {
-				Block removalist = world.getBlock(X, Y, Z);
+				final Block removalist = world.getBlock(X, Y, Z);
 				//Utils.LOG_WARNING(removalist.toString());
 
 				bHardness = removalist.getBlockHardness(world, X, Y, Z)*100;
@@ -179,14 +178,14 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 				bDurabilityLoss = 100;
 				//Utils.LOG_WARNING("Durability Loss: "+bDurabilityLoss);
 
-				correctTool = canPickaxeBlock(removalist, world, new int[]{X,Y,Z});
+				correctTool = this.canPickaxeBlock(removalist, world, new int[]{X,Y,Z});
 				Utils.LOG_WARNING(""+correctTool);
 
 				if (!correctTool){
 					return 0;
 				}
 
-			} catch (NullPointerException e){
+			} catch (final NullPointerException e){
 
 			}
 		}
@@ -204,7 +203,7 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 			String removalTool = "";
 			removalTool = block.getHarvestTool(1);
 
-			if (removalTool.equals("pickaxe") || UtilsMining.getBlockType(block, world, new int[]{X,Y,Z}, miningLevel)){				
+			if (removalTool.equals("pickaxe") || UtilsMining.getBlockType(block, world, new int[]{X,Y,Z}, miningLevel)){
 				if (canPickaxeBlock(block, world, new int[]{X,Y,Z})){
 					if((block != Blocks.bedrock) && (block.getBlockHardness(world, X, Y, Z) != -1) && (block.getBlockHardness(world, X, Y, Z) <= 100) && (block != Blocks.water) && (block != Blocks.lava)){
 
@@ -229,70 +228,72 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 		}
 	}*/
 
-	public void damageItem(ItemStack item, int damage, EntityPlayer localPlayer){
+	@Override
+	public void damageItem(final ItemStack item, final int damage, final EntityPlayer localPlayer){
 		item.damageItem(damage, localPlayer);
 	}
 
-	public void setItemDamage(ItemStack item, int damage){
+	@Override
+	public void setItemDamage(final ItemStack item, final int damage){
 		item.setItemDamage(damage-1);
 	}
 
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack){
+	public EnumRarity getRarity(final ItemStack par1ItemStack){
 		return EnumRarity.uncommon;
 	}
 
 	@Override
-	public boolean hasEffect(ItemStack par1ItemStack){
+	public boolean hasEffect(final ItemStack par1ItemStack){
 		return false;
 	}
 
 	@Override
-	public void onCreated(ItemStack mThisItem, World mWorld, EntityPlayer mPlayer) {
+	public void onCreated(final ItemStack mThisItem, final World mWorld, final EntityPlayer mPlayer) {
 		Enchantment enchant = null;
 		int enchantmentLevel = 0;
-		Pair<?, ?> Y = this.enchantment;
+		final Pair<?, ?> Y = this.enchantment;
 		if (Y != null){
 			if (Y.getKey() != null){
-				enchant = (Enchantment) ((Pair<?, ?>) this.enchantment).getKey();				
+				enchant = (Enchantment) ((Pair<?, ?>) this.enchantment).getKey();
 			}
 			if (Y.getValue() != null){
-				enchantmentLevel = (byte) ((Pair<?, ?>) this.enchantment).getValue();				
+				enchantmentLevel = (byte) ((Pair<?, ?>) this.enchantment).getValue();
 			}
 		}
-		ItemStack itemToEnchant = mThisItem;		
-		if (enchant != null && enchantmentLevel != 0 && enchantmentLevel >= 1){
+		final ItemStack itemToEnchant = mThisItem;
+		if ((enchant != null) && (enchantmentLevel != 0) && (enchantmentLevel >= 1)){
 			itemToEnchant.addEnchantment(enchant, enchantmentLevel);
 		}
 		super.onCreated(itemToEnchant, mWorld, mPlayer);
 	}
 
 	@Override
-	public void getSubItems(Item mItem, CreativeTabs mCreativeTab, List mList) {
+	public void getSubItems(final Item mItem, final CreativeTabs mCreativeTab, final List mList) {
 		Enchantment enchant = null;
 		int enchantmentLevel = 0;
-		Pair<?, ?> Y = this.enchantment;
+		final Pair<?, ?> Y = this.enchantment;
 		if (Y != null){
 			if (Y.getKey() != null){
-				enchant = (Enchantment) ((Pair<?, ?>) this.enchantment).getKey();				
+				enchant = (Enchantment) ((Pair<?, ?>) this.enchantment).getKey();
 			}
 			if (Y.getValue() != null){
-				enchantmentLevel = (byte) ((Pair<?, ?>) this.enchantment).getValue();				
+				enchantmentLevel = (byte) ((Pair<?, ?>) this.enchantment).getValue();
 			}
 		}
-		
-		Item thisItem = mItem;
-		ItemStack itemToEnchant = ItemUtils.getSimpleStack(thisItem);		
-		if (enchant != null && enchantmentLevel != 0 && enchantmentLevel >= 1){
+
+		final Item thisItem = mItem;
+		final ItemStack itemToEnchant = ItemUtils.getSimpleStack(thisItem);
+		if ((enchant != null) && (enchantmentLevel != 0) && (enchantmentLevel >= 1)){
 			itemToEnchant.addEnchantment(enchant, enchantmentLevel);
 			mList.add(itemToEnchant);
 		}
 		else {
-			mList.add(new ItemStack(thisItem, 1, 0));			
+			mList.add(new ItemStack(thisItem, 1, 0));
 		}
-		
+
 	}
 
 }

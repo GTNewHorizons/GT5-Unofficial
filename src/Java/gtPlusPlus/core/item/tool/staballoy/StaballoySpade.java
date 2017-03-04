@@ -1,11 +1,12 @@
 package gtPlusPlus.core.item.tool.staballoy;
 
+import java.util.List;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.player.UtilsMining;
-
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,8 +14,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.*;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class StaballoySpade extends ItemSpade{
 
@@ -22,7 +21,7 @@ public class StaballoySpade extends ItemSpade{
 	 * @see net.minecraft.item.Item#getDurabilityForDisplay(net.minecraft.item.ItemStack)
 	 */
 	@Override
-	public double getDurabilityForDisplay(ItemStack stack) {
+	public double getDurabilityForDisplay(final ItemStack stack) {
 		if (super.getDurabilityForDisplay(stack) > 0){
 			return super.getDurabilityForDisplay(stack);}
 		return 0;
@@ -37,56 +36,56 @@ public class StaballoySpade extends ItemSpade{
 	private int miningLevel;
 
 	/*
-	 * 
-	 * 
-	 * 
-	 *  Methods 
-	 * 
-	 * 
-	 * 
+	 *
+	 *
+	 *
+	 *  Methods
+	 *
+	 *
+	 *
 	 */
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer aPlayer) {
-		localPlayer = aPlayer;
-		localWorld = world;
-		thisPickaxe = stack;
+	public ItemStack onItemRightClick(final ItemStack stack, final World world, final EntityPlayer aPlayer) {
+		this.localPlayer = aPlayer;
+		this.localWorld = world;
+		this.thisPickaxe = stack;
 		return super.onItemRightClick(stack, world, aPlayer);
 	}
 
 
 
 	@Override
-	public boolean onBlockDestroyed(ItemStack stack, World world, Block block, int X, int Y, int Z, EntityLivingBase entity) {
+	public boolean onBlockDestroyed(final ItemStack stack, final World world, final Block block, final int X, final int Y, final int Z, final EntityLivingBase entity) {
 		//super.onBlockDestroyed(stack, world, block, X, Y, Z, entity);
-		localWorld = world;
-		thisPickaxe = stack;
+		this.localWorld = world;
+		this.thisPickaxe = stack;
 		//checkFacing(world);
-		if (!world.isRemote){		
-			GetDestroyOrientation(lookingDirection, world, X, Y, Z, stack);
+		if (!world.isRemote){
+			this.GetDestroyOrientation(this.lookingDirection, world, X, Y, Z, stack);
 		}
 
 		return super.onBlockDestroyed(stack, world, block, X, Y, Z, entity);
 	}
 
-	public Boolean canPickaxeBlock(Block currentBlock, World currentWorld, int[] xyz){
+	public Boolean canPickaxeBlock(final Block currentBlock, final World currentWorld, final int[] xyz){
 		String correctTool = "";
-		if (!currentWorld.isRemote){			
+		if (!currentWorld.isRemote){
 			try {
 				correctTool = currentBlock.getHarvestTool(0);
 				//Utils.LOG_WARNING(correctTool);
 
 				Utils.LOG_INFO("Tool for Block: "+correctTool+" | Current block: "+currentBlock.getLocalizedName());
-				if (UtilsMining.getBlockType(currentBlock, currentWorld, xyz, miningLevel) || correctTool.equals("shovel")){
+				if (UtilsMining.getBlockType(currentBlock, currentWorld, xyz, this.miningLevel) || correctTool.equals("shovel")){
 					return true;}
-			} catch (NullPointerException e){
+			} catch (final NullPointerException e){
 				return false;}
 		}
 		return false;
 	}
 
-	private void GetDestroyOrientation(String FACING, World world, int X, int Y, int Z, ItemStack heldItem){
-		localWorld = world;
+	private void GetDestroyOrientation(final String FACING, final World world, final int X, final int Y, final int Z, final ItemStack heldItem){
+		this.localWorld = world;
 		float DURABILITY_LOSS = 0;
 		if (!world.isRemote){
 
@@ -94,7 +93,7 @@ public class StaballoySpade extends ItemSpade{
 				DURABILITY_LOSS = 0;
 				for(int i = -1; i < 2; i++) {
 					for(int j = -1; j < 2; j++) {
-						DURABILITY_LOSS = (DURABILITY_LOSS + removeBlockAndDropAsItem(world, X + i, Y, Z + j, heldItem));
+						DURABILITY_LOSS = (DURABILITY_LOSS + this.removeBlockAndDropAsItem(world, X + i, Y, Z + j, heldItem));
 					}
 				}
 			}
@@ -103,7 +102,7 @@ public class StaballoySpade extends ItemSpade{
 				DURABILITY_LOSS = 0;
 				for(int i = -1; i < 2; i++) {
 					for(int j = -1; j < 2; j++) {
-						DURABILITY_LOSS = (DURABILITY_LOSS + removeBlockAndDropAsItem(world, X , Y + i, Z + j, heldItem));						
+						DURABILITY_LOSS = (DURABILITY_LOSS + this.removeBlockAndDropAsItem(world, X , Y + i, Z + j, heldItem));
 					}
 				}
 			}
@@ -112,7 +111,7 @@ public class StaballoySpade extends ItemSpade{
 				DURABILITY_LOSS = 0;
 				for(int i = -1; i < 2; i++) {
 					for(int j = -1; j < 2; j++) {
-						DURABILITY_LOSS = (DURABILITY_LOSS + removeBlockAndDropAsItem(world, X + j, Y + i, Z, heldItem));
+						DURABILITY_LOSS = (DURABILITY_LOSS + this.removeBlockAndDropAsItem(world, X + j, Y + i, Z, heldItem));
 					}
 				}
 			}
@@ -120,14 +119,14 @@ public class StaballoySpade extends ItemSpade{
 			//int heldItemDurability = heldItem.getDamage(1);
 			Utils.LOG_INFO("Total Loss: "+(int)DURABILITY_LOSS);
 			//heldItem.setDamage(heldStack, DURABILITY_LOSS);
-			//Utils.LOG_WARNING("|GID|Durability: "+heldItem.getItemDamage());			
+			//Utils.LOG_WARNING("|GID|Durability: "+heldItem.getItemDamage());
 			//Utils.LOG_WARNING("Durability: "+heldStack.getDamage(heldStack));
 			Utils.LOG_INFO("1x: "+(heldItem.getItemDamage()));
-			int itemdmg = heldItem.getItemDamage();
-			int maxdmg = heldItem.getMaxDamage();
-			int dodmg = (int)DURABILITY_LOSS;
-			int durNow = (int) maxdmg-itemdmg;
-			int durLeft = (int) ((maxdmg-itemdmg)-DURABILITY_LOSS);
+			final int itemdmg = heldItem.getItemDamage();
+			final int maxdmg = heldItem.getMaxDamage();
+			final int dodmg = (int)DURABILITY_LOSS;
+			final int durNow = maxdmg-itemdmg;
+			final int durLeft = (int) ((maxdmg-itemdmg)-DURABILITY_LOSS);
 
 			Utils.LOG_INFO(
 					"Current Damage: " + itemdmg
@@ -139,7 +138,7 @@ public class StaballoySpade extends ItemSpade{
 
 
 			//Break Tool
-			if ((durNow-dodmg) <= (900) && itemdmg != 0){
+			if (((durNow-dodmg) <= (900)) && (itemdmg != 0)){
 				//TODO break tool
 				Utils.LOG_INFO("Breaking Tool");
 				heldItem.stackSize = 0;
@@ -148,72 +147,72 @@ public class StaballoySpade extends ItemSpade{
 			else {
 				//setItemDamage(heldItem, durLeft);
 				Utils.LOG_INFO(""+(durNow-durLeft));
-				damageItem(heldItem, (durNow-durLeft)-1, localPlayer);				
+				this.damageItem(heldItem, (durNow-durLeft)-1, this.localPlayer);
 			}
 			DURABILITY_LOSS = 0;
 
 		}
 	}
 
-	public void damageItem(ItemStack item, int damage, EntityPlayer localPlayer){
+	public void damageItem(final ItemStack item, final int damage, final EntityPlayer localPlayer){
 		item.damageItem(damage, localPlayer);
 	}
 
-	public void setItemDamage(ItemStack item, int damage){
+	public void setItemDamage(final ItemStack item, final int damage){
 		item.setItemDamage(damage-1);
 	}
 
 	//Should clear up blocks quicker if I chain it.
-	public int removeBlockAndDropAsItem(World world, int X, int Y, int Z, ItemStack heldItem){
-		localWorld = world;
+	public int removeBlockAndDropAsItem(final World world, final int X, final int Y, final int Z, final ItemStack heldItem){
+		this.localWorld = world;
 		Utils.LOG_INFO("Trying to drop/remove a block.");
 		try {
-			Block block = world.getBlock(X, Y, Z);
+			final Block block = world.getBlock(X, Y, Z);
 			Utils.LOG_WARNING(block.toString());
 			String removalTool = "";
 			removalTool = block.getHarvestTool(0);
 			if (removalTool != null){
-			if (removalTool.equals("shovel")){				
-				if (canPickaxeBlock(block, world, new int[]{X,Y,Z})){
-					if((block != Blocks.bedrock) && (block.getBlockHardness(world, X, Y, Z) != -1) && (block.getBlockHardness(world, X, Y, Z) <= 100) && (block != Blocks.water) && (block != Blocks.lava)){
+				if (removalTool.equals("shovel")){
+					if (this.canPickaxeBlock(block, world, new int[]{X,Y,Z})){
+						if((block != Blocks.bedrock) && (block.getBlockHardness(world, X, Y, Z) != -1) && (block.getBlockHardness(world, X, Y, Z) <= 100) && (block != Blocks.water) && (block != Blocks.lava)){
 
-						int itemdmg = heldItem.getItemDamage();
-						int maxdmg = heldItem.getMaxDamage();
-						int dodmg = (int)100;
-						int durNow = (int) maxdmg-itemdmg;
-						int durLeft = (int) ((maxdmg-itemdmg)-100);
+							final int itemdmg = heldItem.getItemDamage();
+							final int maxdmg = heldItem.getMaxDamage();
+							final int dodmg = 100;
+							final int durNow = maxdmg-itemdmg;
+							final int durLeft = (maxdmg-itemdmg)-100;
 
-						if ((durNow-dodmg) <= (900) && itemdmg != 0){
-							//Do Nothing, Tool is useless.
-							return 0;
+							if (((durNow-dodmg) <= (900)) && (itemdmg != 0)){
+								//Do Nothing, Tool is useless.
+								return 0;
+							}
+							block.dropBlockAsItem(world, X, Y, Z, world.getBlockMetadata(X, Y, Z), 0);
+							world.setBlockToAir(X, Y, Z);
+							Utils.LOG_INFO("Adding 100 damage to item.");
+							return 100;
 						}
-						block.dropBlockAsItem(world, X, Y, Z, world.getBlockMetadata(X, Y, Z), 0);
-						world.setBlockToAir(X, Y, Z);
-						Utils.LOG_INFO("Adding 100 damage to item.");
-						return 100;								
+						Utils.LOG_INFO("Incorrect Tool for mining this block. Wrong Block Water/lava/bedrock/blacklist");
+						return 0;
 					}
-					Utils.LOG_INFO("Incorrect Tool for mining this block. Wrong Block Water/lava/bedrock/blacklist");
+					Utils.LOG_INFO("Incorrect Tool for mining this block. Cannot Shovel this block type.");
 					return 0;
 				}
-				Utils.LOG_INFO("Incorrect Tool for mining this block. Cannot Shovel this block type.");
+				Utils.LOG_INFO("Incorrect Tool for mining this block. Blocks mining tool is now Shovel.");
 				return 0;
 			}
-			Utils.LOG_INFO("Incorrect Tool for mining this block. Blocks mining tool is now Shovel.");	
+			Utils.LOG_INFO("Either the block was air or it declares an invalid mining tool.");
 			return 0;
-			}
-			Utils.LOG_INFO("Either the block was air or it declares an invalid mining tool.");	
-			return 0;			
-		} catch (NullPointerException e){
+		} catch (final NullPointerException e){
 			Utils.LOG_INFO("Something Broke");
 			e.printStackTrace();
 			return 0;
 		}
 	}
 
-	public boolean checkFacing(World world){
-		localWorld = world;
-		if (localPlayer != null){
-			int direction = MathHelper.floor_double((double)((localPlayer.rotationYaw * 4F) / 360F) + 0.5D) & 3;
+	public boolean checkFacing(final World world){
+		this.localWorld = world;
+		if (this.localPlayer != null){
+			final int direction = MathHelper.floor_double((this.localPlayer.rotationYaw * 4F) / 360F + 0.5D) & 3;
 			//Utils.LOG_WARNING("Player - F: "+direction);
 			//Utils.LOG_WARNING("Player - getLookVec(): "+localPlayer.getLookVec().yCoord);
 
@@ -221,88 +220,88 @@ public class StaballoySpade extends ItemSpade{
 				localPlayer.getLookVec().yCoord;
 			}*/
 
-			MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(world, (EntityPlayer) localPlayer, false);
+			final MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(world, this.localPlayer, false);
 			if (movingobjectposition != null){
-				int sideHit = movingobjectposition.sideHit;
+				final int sideHit = movingobjectposition.sideHit;
 				String playerStandingPosition = "";
-				if (movingobjectposition != null) {	       
+				if (movingobjectposition != null) {
 					//System.out.println("Side Hit: "+movingobjectposition.sideHit);
 				}
 
 				if (sideHit == 0){
 					playerStandingPosition = "above";
-					FACING_HORIZONTAL = false;
+					this.FACING_HORIZONTAL = false;
 				}
 				else if (sideHit == 1){
 					playerStandingPosition = "below";
-					FACING_HORIZONTAL = false;
+					this.FACING_HORIZONTAL = false;
 				}
 				else if (sideHit == 2){
 					playerStandingPosition = "facingSouth";
-					FACING_HORIZONTAL = true;
+					this.FACING_HORIZONTAL = true;
 				}
 				else if (sideHit == 3){
 					playerStandingPosition = "facingNorth";
-					FACING_HORIZONTAL = true;
+					this.FACING_HORIZONTAL = true;
 				}
 				else if (sideHit == 4){
 					playerStandingPosition = "facingEast";
-					FACING_HORIZONTAL = true;
+					this.FACING_HORIZONTAL = true;
 				}
 				else if (sideHit == 5){
 					playerStandingPosition = "facingWest";
-					FACING_HORIZONTAL = true;
+					this.FACING_HORIZONTAL = true;
 				}
-				lookingDirection = playerStandingPosition;
+				this.lookingDirection = playerStandingPosition;
 
-				if (direction == 0){				
-					FACING = "south";
-				} 
-				else if (direction == 1){				
-					FACING = "west";
+				if (direction == 0){
+					this.FACING = "south";
 				}
-				else if (direction == 2){				
-					FACING = "north";
-				} 
-				else if (direction == 3){				
-					FACING = "east";
+				else if (direction == 1){
+					this.FACING = "west";
+				}
+				else if (direction == 2){
+					this.FACING = "north";
+				}
+				else if (direction == 3){
+					this.FACING = "east";
 				}
 			}
 
 
 			return true;
 		}
-		return false;		
+		return false;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
-		thisPickaxe = stack;	
+	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+		this.thisPickaxe = stack;
 		list.add(EnumChatFormatting.GOLD+"Spades a 3x3 area in the direction you are facing.");
 		super.addInformation(stack, aPlayer, list, bool);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack){
+	public EnumRarity getRarity(final ItemStack par1ItemStack){
 		return EnumRarity.rare;
 	}
 
 	@Override
-	public boolean hasEffect(ItemStack par1ItemStack){
+	public boolean hasEffect(final ItemStack par1ItemStack){
 		return true;
 	}
 
 
 	@Override
-	public boolean onBlockStartBreak(ItemStack itemstack, int X, int Y, int Z, EntityPlayer aPlayer) {
-		thisPickaxe = itemstack;
-		localPlayer = aPlayer;		
-		checkFacing(localPlayer.worldObj);
+	public boolean onBlockStartBreak(final ItemStack itemstack, final int X, final int Y, final int Z, final EntityPlayer aPlayer) {
+		this.thisPickaxe = itemstack;
+		this.localPlayer = aPlayer;
+		this.checkFacing(this.localPlayer.worldObj);
 		return super.onBlockStartBreak(itemstack, X, Y, Z, aPlayer);
 	}
-	public StaballoySpade(String unlocalizedName, ToolMaterial material) {
+	public StaballoySpade(final String unlocalizedName, final ToolMaterial material) {
 		super(material);
 		this.setUnlocalizedName(unlocalizedName);
 		this.setTextureName(CORE.MODID + ":" + unlocalizedName);

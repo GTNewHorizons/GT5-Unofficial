@@ -11,20 +11,20 @@ import net.minecraft.entity.player.InventoryPlayer;
  * The Container I use for all my Basic Machines
  */
 public class CONTAINER_MatterFab extends GT_ContainerMetaTile_Machine {
-	
+
 	public int mUUA_USED = ((GregtechMetaTileEntity_MassFabricator)this.mTileEntity.getMetaTileEntity()).getAmplifierUsed();
 	public int mUUM_MADE = ((GregtechMetaTileEntity_MassFabricator)this.mTileEntity.getMetaTileEntity()).getMatterProduced();
-	
-    public CONTAINER_MatterFab(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
-        super(aInventoryPlayer, aTileEntity);
-    }
 
-    public CONTAINER_MatterFab(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, boolean bindInventory) {
-        super(aInventoryPlayer, aTileEntity, bindInventory);
-    }
+	public CONTAINER_MatterFab(final InventoryPlayer aInventoryPlayer, final IGregTechTileEntity aTileEntity) {
+		super(aInventoryPlayer, aTileEntity);
+	}
+
+	public CONTAINER_MatterFab(final InventoryPlayer aInventoryPlayer, final IGregTechTileEntity aTileEntity, final boolean bindInventory) {
+		super(aInventoryPlayer, aTileEntity, bindInventory);
+	}
 }
 
-    /*@Override
+/*@Override
     public void addSlots(InventoryPlayer aInventoryPlayer) {
         addSlotToContainer(new Slot(mTileEntity, 1, 152, 5));
     }

@@ -6,7 +6,7 @@ import java.util.Enumeration;
 
 public class NetworkUtils {
 
-	public static String getContentFromURL(String args) {
+	public static String getContentFromURL(final String args) {
 		try {
 			if (hasValidNetworkInterface()){
 				if (netIsAvailableGithub() || netIsAvailableOther() || netIsAvailableBaidu() || netIsAvailableGoogle()){
@@ -14,9 +14,9 @@ public class NetworkUtils {
 						URL url;
 						// get URL content
 						url = new URL(args);
-						URLConnection conn = url.openConnection();
+						final URLConnection conn = url.openConnection();
 						// open the stream and put it into BufferedReader
-						BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+						final BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 						String inputLine;
 						String tempLine = null;
 						while ((inputLine = br.readLine()) != null) {
@@ -24,75 +24,77 @@ public class NetworkUtils {
 						}
 						br.close();
 						return tempLine;
-					} 
-					catch (MalformedURLException e) {}
-					catch (IOException e) {}
-				}		
+					}
+					catch (final MalformedURLException e) {}
+					catch (final IOException e) {}
+				}
 			}
-		} catch (SocketException e) {}
+		} catch (final SocketException e) {}
 		return "offline";
 	}
 
-	private static boolean netIsAvailableGoogle() {                                                                                                                                                                                                 
-		try {                                                                                                                                                                                                                                 
-			final URL url = new URL("http://www.google.com");                                                                                                                                                                                 
-			final URLConnection conn = url.openConnection();                                                                                                                                                                                  
-			conn.connect();                                                                                                                                                                                                                   
-			return true;                                                                                                                                                                                                                      
-		} catch (MalformedURLException e) {                                                                                                                                                                                                   
-			throw new RuntimeException(e);                                                                                                                                                                                                    
-		} catch (IOException e) {                                                                                                                                                                                                             
-			return false;                                                                                                                                                                                                                     
-		}                                                                                                                                                                                                                                     
-	}  
-
-	private static boolean netIsAvailableBaidu() {                                                                                                                                                                                                 
-		try {                                                                                                                                                                                                                                 
-			final URL url = new URL("http://www.baidu.com");                                                                                                                                                                                 
-			final URLConnection conn = url.openConnection();                                                                                                                                                                                  
-			conn.connect();                                                                                                                                                                                                                   
-			return true;                                                                                                                                                                                                                      
-		} catch (MalformedURLException e) {                                                                                                                                                                                                   
-			throw new RuntimeException(e);                                                                                                                                                                                                    
-		} catch (IOException e) {                                                                                                                                                                                                             
-			return false;                                                                                                                                                                                                                     
-		}                                                                                                                                                                                                                                     
+	private static boolean netIsAvailableGoogle() {
+		try {
+			final URL url = new URL("http://www.google.com");
+			final URLConnection conn = url.openConnection();
+			conn.connect();
+			return true;
+		} catch (final MalformedURLException e) {
+			throw new RuntimeException(e);
+		} catch (final IOException e) {
+			return false;
+		}
 	}
 
-	private static boolean netIsAvailableGithub() {                                                                                                                                                                                                 
-		try {                                                                                                                                                                                                                                 
-			final URL url = new URL("https://github.com/draknyte1/GTplusplus");                                                                                                                                                                                 
-			final URLConnection conn = url.openConnection();                                                                                                                                                                                  
-			conn.connect();                                                                                                                                                                                                                   
-			return true;                                                                                                                                                                                                                      
-		} catch (MalformedURLException e) {                                                                                                                                                                                                   
-			throw new RuntimeException(e);                                                                                                                                                                                                    
-		} catch (IOException e) {                                                                                                                                                                                                             
-			return false;                                                                                                                                                                                                                     
-		}                                                                                                                                                                                                                                     
-	}	
-
-	private static boolean netIsAvailableOther() {  
-	try {
-	      int timeout = 2000;
-	      InetAddress[] addresses = InetAddress.getAllByName("www.yahoo.com");
-	      for (InetAddress address : addresses) {
-	        if (address.isReachable(timeout))
-	          return true;
+	private static boolean netIsAvailableBaidu() {
+		try {
+			final URL url = new URL("http://www.baidu.com");
+			final URLConnection conn = url.openConnection();
+			conn.connect();
+			return true;
+		} catch (final MalformedURLException e) {
+			throw new RuntimeException(e);
+		} catch (final IOException e) {
 			return false;
-	      }
-	    } catch (Exception e) {
-	    	return false;
-	    }
-	return false;
+		}
+	}
+
+	private static boolean netIsAvailableGithub() {
+		try {
+			final URL url = new URL("https://github.com/draknyte1/GTplusplus");
+			final URLConnection conn = url.openConnection();
+			conn.connect();
+			return true;
+		} catch (final MalformedURLException e) {
+			throw new RuntimeException(e);
+		} catch (final IOException e) {
+			return false;
+		}
+	}
+
+	private static boolean netIsAvailableOther() {
+		try {
+			final int timeout = 2000;
+			final InetAddress[] addresses = InetAddress.getAllByName("www.yahoo.com");
+			for (final InetAddress address : addresses) {
+				if (address.isReachable(timeout)) {
+					return true;
+				}
+				return false;
+			}
+		} catch (final Exception e) {
+			return false;
+		}
+		return false;
 	}
 
 	private static boolean hasValidNetworkInterface() throws SocketException{
-		Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+		final Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
 		while (interfaces.hasMoreElements()) {
-			NetworkInterface interf = interfaces.nextElement();
-			if (interf.isUp() && !interf.isLoopback())
+			final NetworkInterface interf = interfaces.nextElement();
+			if (interf.isUp() && !interf.isLoopback()) {
 				return true;
+			}
 		}
 		return false;
 	}

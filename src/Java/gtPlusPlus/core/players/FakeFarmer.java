@@ -2,6 +2,9 @@ package gtPlusPlus.core.players;
 
 import java.util.UUID;
 
+import com.mojang.authlib.GameProfile;
+
+import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -12,21 +15,17 @@ import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
-import com.mojang.authlib.GameProfile;
-
-import cpw.mods.fml.common.FMLCommonHandler;
-
 public class FakeFarmer extends EntityPlayerMP {
 	private static final UUID uuid = UUID.fromString("c1ddfd7f-120a-4437-8b64-38660d3ec62d");
 
 	private static GameProfile FAKE_PROFILE = new GameProfile(uuid, "[GT_Farm_Manager]");
 
-	public FakeFarmer(WorldServer world) {
+	public FakeFarmer(final WorldServer world) {
 		super(FMLCommonHandler.instance().getMinecraftServerInstance(), world, FAKE_PROFILE, new ItemInWorldManager(world));
 	}
 
 	@Override
-	public boolean canCommandSenderUseCommand(int i, String s) {
+	public boolean canCommandSenderUseCommand(final int i, final String s) {
 		return false;
 	}
 
@@ -36,19 +35,19 @@ public class FakeFarmer extends EntityPlayerMP {
 	}
 
 	@Override
-	public void addChatComponentMessage(IChatComponent chatmessagecomponent) {
+	public void addChatComponentMessage(final IChatComponent chatmessagecomponent) {
 	}
 
 	@Override
-	public void addChatMessage(IChatComponent p_145747_1_) {
+	public void addChatMessage(final IChatComponent p_145747_1_) {
 	}
 
 	@Override
-	public void addStat(StatBase par1StatBase, int par2) {
+	public void addStat(final StatBase par1StatBase, final int par2) {
 	}
 
 	@Override
-	public void openGui(Object mod, int modGuiId, World world, int x, int y, int z) {
+	public void openGui(final Object mod, final int modGuiId, final World world, final int x, final int y, final int z) {
 	}
 
 	@Override
@@ -57,12 +56,12 @@ public class FakeFarmer extends EntityPlayerMP {
 	}
 
 	@Override
-	public boolean canAttackPlayer(EntityPlayer player) {
+	public boolean canAttackPlayer(final EntityPlayer player) {
 		return false;
 	}
 
 	@Override
-	public void onDeath(DamageSource source) {
+	public void onDeath(final DamageSource source) {
 	}
 
 	@Override
@@ -70,15 +69,15 @@ public class FakeFarmer extends EntityPlayerMP {
 	}
 
 	@Override
-	public void travelToDimension(int dim) {
+	public void travelToDimension(final int dim) {
 	}
 
 	@Override
-	public void func_147100_a(C15PacketClientSettings pkt) {
+	public void func_147100_a(final C15PacketClientSettings pkt) {
 	}
 
 	@Override
-	public boolean canPlayerEdit(int par1, int par2, int par3, int par4, ItemStack par5ItemStack) {
+	public boolean canPlayerEdit(final int par1, final int par2, final int par3, final int par4, final ItemStack par5ItemStack) {
 		return true;
 	}
 }

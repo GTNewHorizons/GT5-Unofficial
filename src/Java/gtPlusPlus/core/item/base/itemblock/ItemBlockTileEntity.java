@@ -12,32 +12,32 @@ import net.minecraft.world.World;
 public class ItemBlockTileEntity extends ItemBlock{
 
 	String[] description;
-	
-	public ItemBlockTileEntity(Block block) {
+
+	public ItemBlockTileEntity(final Block block) {
 		super(block);
 	}
-    
-    @Override
-	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
-				for (int i =0; i< this.description.length; i++){
-					if (!this.description[i].equals("")){
-						list.add(this.description[i]);
-					}
-				 }
-				
-			
+
+	@Override
+	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+		for (int i =0; i< this.description.length; i++){
+			if (!this.description[i].equals("")){
+				list.add(this.description[i]);
+			}
+		}
+
+
 		super.addInformation(stack, aPlayer, list, bool);
 	}
-    
-	 @Override
-		public void onUpdate(ItemStack iStack, World world, Entity entityHolding, int p_77663_4_, boolean p_77663_5_) {
-		 
+
+	@Override
+	public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_, final boolean p_77663_5_) {
+
+	}
+
+	public void setDecription(final String[] description){
+		for (int i =0; i< description.length; i++){
+			this.description[i] = description[i];
 		}
-	 
-	 public void setDecription(String[] description){
-		 for (int i =0; i< description.length; i++){
-			 this.description[i] = description[i];
-		 }
-	 }
+	}
 
 }

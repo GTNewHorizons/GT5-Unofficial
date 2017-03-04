@@ -14,7 +14,9 @@ public class GregtechIndustrialCokeOven
 	{
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Industrial Coke Oven Multiblock.");
-			if (CORE.configSwitches.enableMultiblock_IndustrialCokeOven) run1();
+			if (CORE.configSwitches.enableMultiblock_IndustrialCokeOven) {
+				run1();
+			}
 		}
 
 	}
@@ -23,6 +25,6 @@ public class GregtechIndustrialCokeOven
 	{
 		//Industrial Centrifuge Multiblock
 		GregtechItemList.Industrial_CokeOven.set(new GregtechMetaTileEntity_IndustrialCokeOven(791, "industrialcokeoven.controller.tier.single", "Industrial Coke Oven").getStackForm(1L));
-		
+
 	}
 }

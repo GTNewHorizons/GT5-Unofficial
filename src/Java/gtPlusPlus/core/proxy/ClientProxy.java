@@ -1,9 +1,14 @@
 package gtPlusPlus.core.proxy;
 
+import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.Optional;
+import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.common.compat.COMPAT_PlayerAPI;
-import gtPlusPlus.core.handler.events.SneakManager;
 import gtPlusPlus.core.handler.render.FirepitRender;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.tileentities.general.TileEntityFirepit;
@@ -11,52 +16,45 @@ import gtPlusPlus.core.util.particles.EntityParticleFXMysterious;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
-import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.common.event.*;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ClientProxy extends CommonProxy{
 
 	/*private final HashSet<String> mCapeList = new HashSet<String>();
 	private final CapeHandler mCapeRenderer;
-	
+
 	ClientProxy(){
 		mCapeRenderer = new CapeHandler(mCapeList);
 	}
-	*/
-	
+	 */
+
 	@SideOnly(Side.CLIENT)
 	public static String playerName = "";
-	
+
 	@Override
-	public void preInit(FMLPreInitializationEvent e) {
+	public void preInit(final FMLPreInitializationEvent e) {
 		// TODO Auto-generated method stub
 		super.preInit(e);
 		//Do this weird things for textures.
-		GTplusplus.loadTextures();		
+		GTplusplus.loadTextures();
 		//We boot up the sneak manager.
 		if (LoadedMods.PlayerAPI){
-			init_PlayerAPI_PRE();	
+			this.init_PlayerAPI_PRE();
 		}
 	}
 
 	@Override
-	public void init(FMLInitializationEvent e) {
+	public void init(final FMLInitializationEvent e) {
 		// TODO Auto-generated method stub
-		
+
 		if (LoadedMods.PlayerAPI){
-			init_PlayerAPI_INIT();
+			this.init_PlayerAPI_INIT();
 		}
-		
+
 		super.init(e);
 	}
 
 	@Override
-	public void postInit(FMLPostInitializationEvent e) {
+	public void postInit(final FMLPostInitializationEvent e) {
 		// TODO Auto-generated method stub
 		super.postInit(e);
 	}
@@ -70,48 +68,48 @@ public class ClientProxy extends CommonProxy{
 
 		//ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBloodSteelChest.class, new BloodSteelChestRenderer());
 		//MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.tutChest), new ItemRenderBloodSteelChest());
-		
+
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFirepit.class, new FirepitRender());
 	}
 
 	@Override
-	public int addArmor(String armor){
+	public int addArmor(final String armor){
 		return RenderingRegistry.addNewArmourRendererPrefix(armor);
 	}
 
 	@Override
-	public void generateMysteriousParticles(Entity theEntity)
+	public void generateMysteriousParticles(final Entity theEntity)
 	{
-		double motionX = theEntity.worldObj.rand.nextGaussian() * 0.02D;
-		double motionY = theEntity.worldObj.rand.nextGaussian() * 0.02D;
-		double motionZ = theEntity.worldObj.rand.nextGaussian() * 0.02D;
-		EntityFX particleMysterious = new EntityParticleFXMysterious(
+		final double motionX = theEntity.worldObj.rand.nextGaussian() * 0.02D;
+		final double motionY = theEntity.worldObj.rand.nextGaussian() * 0.02D;
+		final double motionZ = theEntity.worldObj.rand.nextGaussian() * 0.02D;
+		final EntityFX particleMysterious = new EntityParticleFXMysterious(
 
-				theEntity.worldObj, 
-				theEntity.posX + theEntity.worldObj.rand.nextFloat() * theEntity.width 
+				theEntity.worldObj,
+				(theEntity.posX + (theEntity.worldObj.rand.nextFloat() * theEntity.width
 
-				* 2.0F - theEntity.width, 
-				theEntity.posY + 0.5D + theEntity.worldObj.rand.nextFloat() 
+						* 2.0F)) - theEntity.width,
+				theEntity.posY + 0.5D + (theEntity.worldObj.rand.nextFloat()
 
-				* theEntity.height, 
-				theEntity.posZ + theEntity.worldObj.rand.nextFloat() * theEntity.width 
+						* theEntity.height),
+				(theEntity.posZ + (theEntity.worldObj.rand.nextFloat() * theEntity.width
 
-				* 2.0F - theEntity.width, 
+						* 2.0F)) - theEntity.width,
 
-				motionX, 
+				motionX,
 
-				motionY, 
+				motionY,
 
 				motionZ);
-		Minecraft.getMinecraft().effectRenderer.addEffect(particleMysterious);        
+		Minecraft.getMinecraft().effectRenderer.addEffect(particleMysterious);
 	}
 
 	@Override
-	public void serverStarting(FMLServerStartingEvent e)
+	public void serverStarting(final FMLServerStartingEvent e)
 	{
-		
+
 	}
-	
+
 	/*@SubscribeEvent
     public void receiveRenderSpecialsEvent(net.minecraftforge.client.event.RenderPlayerEvent.Specials.Pre aEvent) {
         mCapeRenderer.receiveRenderSpecialsEvent(aEvent);
@@ -122,13 +120,13 @@ public class ClientProxy extends CommonProxy{
 		//Register player instance
 		COMPAT_PlayerAPI.clientProxy.initPre();
 	}
-	
+
 	@Optional.Method(modid = "PlayerAPI")
 	private void init_PlayerAPI_INIT(){
 		//Register player instance
 		COMPAT_PlayerAPI.clientProxy.Init();
 	}
-	
+
 
 
 }

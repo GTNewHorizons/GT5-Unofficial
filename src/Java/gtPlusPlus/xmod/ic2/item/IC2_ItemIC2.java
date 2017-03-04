@@ -1,22 +1,22 @@
 package gtPlusPlus.xmod.ic2.item;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import net.minecraft.item.*;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class IC2_ItemIC2
 extends Item
 {
-	public IC2_ItemIC2(String internalName)
+	public IC2_ItemIC2(final String internalName)
 	{
-		setUnlocalizedName(internalName);
-		setCreativeTab(AddToCreativeTab.tabMachines);
-		setTextureName(CORE.MODID + ":" + internalName);
+		this.setUnlocalizedName(internalName);
+		this.setCreativeTab(AddToCreativeTab.tabMachines);
+		this.setTextureName(CORE.MODID + ":" + internalName);
 
 		GameRegistry.registerItem(this, internalName);
 	}
@@ -73,18 +73,18 @@ extends Item
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack itemStack)
+	public String getUnlocalizedName(final ItemStack itemStack)
 	{
-		return getUnlocalizedName();
+		return this.getUnlocalizedName();
 	}
 
 	@Override
-	public String getItemStackDisplayName(ItemStack itemStack)
+	public String getItemStackDisplayName(final ItemStack itemStack)
 	{
-		return StatCollector.translateToLocal(getUnlocalizedName(itemStack));
+		return StatCollector.translateToLocal(this.getUnlocalizedName(itemStack));
 	}
 
-	public IC2_ItemIC2 setRarity(int aRarity)
+	public IC2_ItemIC2 setRarity(final int aRarity)
 	{
 		this.rarity = aRarity;
 		return this;
@@ -92,7 +92,7 @@ extends Item
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack stack)
+	public EnumRarity getRarity(final ItemStack stack)
 	{
 		return EnumRarity.values()[this.rarity];
 	}

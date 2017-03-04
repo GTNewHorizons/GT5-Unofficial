@@ -9,37 +9,37 @@ import net.minecraft.item.ItemStack;
 public class RecipeGen_Assembler  implements Runnable{
 
 	final Material toGenerate;
-	
+
 	public RecipeGen_Assembler(final Material M){
 		this.toGenerate = M;
 	}
-	
+
 	@Override
 	public void run() {
-		generateRecipes(toGenerate);		
+		generateRecipes(this.toGenerate);
 	}
-	
+
 	public static void generateRecipes(final Material material){
-			
+
 		//Frame Box
 		GT_Values.RA.addAssemblerRecipe(
 				material.getRod(4),
 				ItemUtils.getGregtechCircuit(4),
-				material.getBlock(1),
+				material.getFrameBox(1),
 				60,
-				8);         
-		
+				8);
+
 		//Rotor
 		addAssemblerRecipe(
 				material.getPlate(4),
 				material.getRing(1),
 				material.getRotor(1),
 				240,
-				24);          
-		
+				24);
+
 	}
-	
-	private static void addAssemblerRecipe(ItemStack input1, ItemStack input2, ItemStack output1, int seconds, int euCost){
+
+	private static void addAssemblerRecipe(final ItemStack input1, final ItemStack input2, final ItemStack output1, final int seconds, final int euCost){
 		GT_Values.RA.addAssemblerRecipe(
 				input1,
 				input2,
@@ -61,8 +61,8 @@ public class RecipeGen_Assembler  implements Runnable{
 				output1,
 				seconds,
 				euCost);
-		}
-	
-	
+	}
+
+
 }
 

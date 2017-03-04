@@ -1,12 +1,13 @@
 package gtPlusPlus.core.container;
 
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.inventories.*;
+import gtPlusPlus.core.inventories.InventoryFishTrap;
 import gtPlusPlus.core.slots.SlotNoInput;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.*;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -15,28 +16,28 @@ public class Container_FishTrap extends Container {
 	protected TileEntityFishTrap tile_entity;
 	public final InventoryFishTrap inventoryChest;
 
-	private World worldObj;
-	private int posX;
-	private int posY;
-	private int posZ;
+	private final World worldObj;
+	private final int posX;
+	private final int posY;
+	private final int posZ;
 
 
 	public static int StorageSlotNumber = 15; //Number of slots in storage area
 	public static int InventorySlotNumber = 36; //Inventory Slots (Inventory and Hotbar)
 	public static int FullSlotNumber = InventorySlotNumber + StorageSlotNumber; //All slots
 
-	private int[] slotStorage = new int[15];
+	private final int[] slotStorage = new int[15];
 
-	public Container_FishTrap(InventoryPlayer inventory, TileEntityFishTrap te){
+	public Container_FishTrap(final InventoryPlayer inventory, final TileEntityFishTrap te){
 		this.tile_entity = te;
 		this.inventoryChest = te.getInventory();
 
 		int var6;
 		int var7;
-		worldObj = te.getWorldObj();
-		posX = te.xCoord;
-		posY = te.yCoord;
-		posZ = te.zCoord;
+		this.worldObj = te.getWorldObj();
+		this.posX = te.xCoord;
+		this.posY = te.yCoord;
+		this.posZ = te.zCoord;
 
 		int o=0;
 
@@ -46,8 +47,8 @@ public class Container_FishTrap extends Container {
 			for (var7 = 0; var7 < 5; ++var7)
 			{
 				//Utils.LOG_WARNING("Adding slots at var:"+(var7 + var6 * 4)+" x:"+(8 + var7 * 18)+" y:"+(7 + var6 * 18));
-				this.addSlotToContainer(new SlotNoInput(inventoryChest, var7 + var6 * 4, 36+ 8 + var7 * 18, 8 + 7 + var6 * 18));
-				slotStorage[o] = o;
+				this.addSlotToContainer(new SlotNoInput(this.inventoryChest, var7 + (var6 * 4), 36+ 8 + (var7 * 18), 8 + 7 + (var6 * 18)));
+				this.slotStorage[o] = o;
 				o++;
 			}
 		}
@@ -59,58 +60,58 @@ public class Container_FishTrap extends Container {
 		{
 			for (var7 = 0; var7 < 9; ++var7)
 			{
-				this.addSlotToContainer(new Slot(inventory, var7 + var6 * 9 + 9, 8 + var7 * 18, 84 + var6 * 18));
+				this.addSlotToContainer(new Slot(inventory, var7 + (var6 * 9) + 9, 8 + (var7 * 18), 84 + (var6 * 18)));
 			}
 		}
 
 		//Player Hotbar
 		for (var6 = 0; var6 < 9; ++var6)
 		{
-			this.addSlotToContainer(new Slot(inventory, var6, 8 + var6 * 18, 142));
-		}         
+			this.addSlotToContainer(new Slot(inventory, var6, 8 + (var6 * 18), 142));
+		}
 
 	}
 
 	@Override
-	public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer){
+	public ItemStack slotClick(final int aSlotIndex, final int aMouseclick, final int aShifthold, final EntityPlayer aPlayer){
 
 		if (!aPlayer.worldObj.isRemote){
-			if (aSlotIndex == 999 || aSlotIndex == -999){
+			if ((aSlotIndex == 999) || (aSlotIndex == -999)){
 				//Utils.LOG_WARNING("??? - "+aSlotIndex);
 			}
 		}
 		return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
 	}
 
-	
+
 
 
 
 	@Override
-	public void onContainerClosed(EntityPlayer par1EntityPlayer){
+	public void onContainerClosed(final EntityPlayer par1EntityPlayer){
 		super.onContainerClosed(par1EntityPlayer);
 	}
 
 
 	@Override
-	public boolean canInteractWith(EntityPlayer par1EntityPlayer){
-		if (worldObj.getBlock(posX, posY, posZ) != ModBlocks.blockFishTrap){
+	public boolean canInteractWith(final EntityPlayer par1EntityPlayer){
+		if (this.worldObj.getBlock(this.posX, this.posY, this.posZ) != ModBlocks.blockFishTrap){
 			return false;
 		}
 
-		return par1EntityPlayer.getDistanceSq((double)posX + 0.5D, (double)posY + 0.5D, (double)posZ + 0.5D) <= 64D;
+		return par1EntityPlayer.getDistanceSq(this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D) <= 64D;
 	}
 
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
+	public ItemStack transferStackInSlot(final EntityPlayer par1EntityPlayer, final int par2)
 	{
 		ItemStack var3 = null;
-		Slot var4 = (Slot)this.inventorySlots.get(par2);
+		final Slot var4 = (Slot)this.inventorySlots.get(par2);
 
-		if (var4 != null && var4.getHasStack())
+		if ((var4 != null) && var4.getHasStack())
 		{
-			ItemStack var5 = var4.getStack();
+			final ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 
 			/*if (par2 == 0)
@@ -163,7 +164,7 @@ public class Container_FishTrap extends Container {
 
 	//Can merge Slot
 	@Override
-	public boolean func_94530_a(ItemStack p_94530_1_, Slot p_94530_2_) {
+	public boolean func_94530_a(final ItemStack p_94530_1_, final Slot p_94530_2_) {
 		return super.func_94530_a(p_94530_1_, p_94530_2_);
 	}
 

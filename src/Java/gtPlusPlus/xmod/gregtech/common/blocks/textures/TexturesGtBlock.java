@@ -18,15 +18,15 @@ public class TexturesGtBlock {
 		protected IIcon mIcon;
 		protected String mIconName;
 
-		public CustomIcon(String aIconName) {
-			mIconName = aIconName;
-			Utils.LOG_WARNING("Constructing a Custom Texture. " + mIconName);
+		public CustomIcon(final String aIconName) {
+			this.mIconName = aIconName;
+			Utils.LOG_WARNING("Constructing a Custom Texture. " + this.mIconName);
 			GregTech_API.sGTBlockIconload.add(this);
 		}
 
 		@Override
 		public IIcon getIcon() {
-			return mIcon;
+			return this.mIcon;
 		}
 
 		@Override
@@ -36,7 +36,7 @@ public class TexturesGtBlock {
 
 		@Override
 		public void run() {
-			mIcon = GregTech_API.sBlockIcons.registerIcon(CORE.MODID + ":"  + mIconName);
+			this.mIcon = GregTech_API.sBlockIcons.registerIcon(CORE.MODID + ":"  + this.mIconName);
 			Utils.LOG_WARNING("FIND ME _ Processing texture: "+this.getTextureFile().getResourcePath());
 		}
 
@@ -50,139 +50,139 @@ public class TexturesGtBlock {
 	/*
 	 * Add Some Custom Textures below.
 	 * I am not sure whether or not I need to declare them as such, but better to be safe than sorry.
-	 * Right? 
+	 * Right?
 	 */
 
 
 	//PlaceHolder Texture
-	private static final CustomIcon Internal_PlaceHolder = new CustomIcon("TileEntities/_PlaceHolder");	
+	private static final CustomIcon Internal_PlaceHolder = new CustomIcon("TileEntities/_PlaceHolder");
 	public static final CustomIcon _PlaceHolder = Internal_PlaceHolder;
 
 
 	//Machine Casings
 	//Simple
-	private static final CustomIcon Internal_Casing_Machine_Simple_Top = new CustomIcon("TileEntities/machine_top");	
+	private static final CustomIcon Internal_Casing_Machine_Simple_Top = new CustomIcon("TileEntities/machine_top");
 	public static final CustomIcon Casing_Machine_Simple_Top = Internal_Casing_Machine_Simple_Top;
-	private static final CustomIcon Internal_Casing_Machine_Simple_Bottom = new CustomIcon("TileEntities/machine_bottom");	
+	private static final CustomIcon Internal_Casing_Machine_Simple_Bottom = new CustomIcon("TileEntities/machine_bottom");
 	public static final CustomIcon Casing_Machine_Simple_Bottom = Internal_Casing_Machine_Simple_Bottom;
 	//Advanced and Ultra
-	private static final CustomIcon Internal_Casing_Machine_Advanced = new CustomIcon("TileEntities/high_adv_machine");	
+	private static final CustomIcon Internal_Casing_Machine_Advanced = new CustomIcon("TileEntities/high_adv_machine");
 	public static final CustomIcon Casing_Machine_Advanced = Internal_Casing_Machine_Advanced;
-	private static final CustomIcon Internal_Casing_Machine_Ultra = new CustomIcon("TileEntities/adv_machine_lesu");	
+	private static final CustomIcon Internal_Casing_Machine_Ultra = new CustomIcon("TileEntities/adv_machine_lesu");
 	public static final CustomIcon Casing_Machine_Ultra = Internal_Casing_Machine_Ultra;
 	//Dimensional - Non Overlay
-	private static final CustomIcon Internal_Casing_Machine_Dimensional = new CustomIcon("TileEntities/adv_machine_dimensional");	
+	private static final CustomIcon Internal_Casing_Machine_Dimensional = new CustomIcon("TileEntities/adv_machine_dimensional");
 	public static final CustomIcon Casing_Machine_Dimensional = Internal_Casing_Machine_Dimensional;
-	private static final CustomIcon Internal_Casing_Machine_Dimensional_Adv = new CustomIcon("TileEntities/high_adv_machine_dimensional");	
+	private static final CustomIcon Internal_Casing_Machine_Dimensional_Adv = new CustomIcon("TileEntities/high_adv_machine_dimensional");
 	public static final CustomIcon Casing_Machine_Dimensional_Adv = Internal_Casing_Machine_Dimensional_Adv;
 
 	//Material Casings
-	private static final CustomIcon Internal_Casing_Tantalloy61 = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_TANTALLOY61");	
+	private static final CustomIcon Internal_Casing_Tantalloy61 = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_TANTALLOY61");
 	public static final CustomIcon Casing_Material_Tantalloy61 = Internal_Casing_Tantalloy61;
-	private static final CustomIcon Internal_Casing_MaragingSteel = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_MARAGINGSTEEL");	
+	private static final CustomIcon Internal_Casing_MaragingSteel = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_MARAGINGSTEEL");
 	public static final CustomIcon Casing_Material_MaragingSteel = Internal_Casing_MaragingSteel;
-	private static final CustomIcon Internal_Casing_Stellite = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_STELLITE");	
+	private static final CustomIcon Internal_Casing_Stellite = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_STELLITE");
 	public static final CustomIcon Casing_Material_Stellite = Internal_Casing_Stellite;
-	private static final CustomIcon Internal_Casing_Talonite = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_TALONITE");	
+	private static final CustomIcon Internal_Casing_Talonite = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_TALONITE");
 	public static final CustomIcon Casing_Material_Talonite = Internal_Casing_Talonite;
-	private static final CustomIcon Internal_Casing_Tumbaga = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_TUMBAGA");	
+	private static final CustomIcon Internal_Casing_Tumbaga = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_TUMBAGA");
 	public static final CustomIcon Casing_Material_Tumbaga = Internal_Casing_Tumbaga;
-	private static final CustomIcon Internal_Casing_Zeron100 = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_ZERON100");	
+	private static final CustomIcon Internal_Casing_Zeron100 = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_ZERON100");
 	public static final CustomIcon Casing_Material_Zeron100 = Internal_Casing_Zeron100;
-	private static final CustomIcon Internal_Casing_Potin = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_POTIN");	
+	private static final CustomIcon Internal_Casing_Potin = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_POTIN");
 	public static final CustomIcon Casing_Material_Potin = Internal_Casing_Potin;
 
-	private static final CustomIcon Internal_Casing_Grisium = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_GRISIUM");	
+	private static final CustomIcon Internal_Casing_Grisium = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_GRISIUM");
 	public static final CustomIcon Casing_Material_Grisium = Internal_Casing_Grisium;
-	private static final CustomIcon Internal_Casing_Incoloy020 = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_INCOLOY_020");	
+	private static final CustomIcon Internal_Casing_Incoloy020 = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_INCOLOY_020");
 	public static final CustomIcon Casing_Material_Incoloy020 = Internal_Casing_Incoloy020;
-	private static final CustomIcon Internal_Casing_IncoloyDS = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_INCOLOY_DS");	
+	private static final CustomIcon Internal_Casing_IncoloyDS = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_INCOLOY_DS");
 	public static final CustomIcon Casing_Material_IncoloyDS = Internal_Casing_IncoloyDS;
-	private static final CustomIcon Internal_Casing_IncoloyMA956 = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_INCOLOY_MA956");	
+	private static final CustomIcon Internal_Casing_IncoloyMA956 = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_INCOLOY_MA956");
 	public static final CustomIcon Casing_Material_IncoloyMA956 = Internal_Casing_IncoloyMA956;
-	private static final CustomIcon Internal_Casing_ZirconiumCarbide = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_ZIRCONIUM_CARBIDE");	
+	private static final CustomIcon Internal_Casing_ZirconiumCarbide = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_ZIRCONIUM_CARBIDE");
 	public static final CustomIcon Casing_Material_ZirconiumCarbide = Internal_Casing_ZirconiumCarbide;
 
 
-	private static final CustomIcon Internal_Casing_HastelloyX = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_HASTELLOY_X");	
+	private static final CustomIcon Internal_Casing_HastelloyX = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_HASTELLOY_X");
 	public static final CustomIcon Casing_Material_HastelloyX = Internal_Casing_HastelloyX;
-	private static final CustomIcon Internal_Casing_HastelloyN = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_HASTELLOY_N");	
+	private static final CustomIcon Internal_Casing_HastelloyN = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_HASTELLOY_N");
 	public static final CustomIcon Casing_Material_HastelloyN = Internal_Casing_HastelloyN;
-	private static final CustomIcon Internal_Casing_Fluid_IncoloyDS = new CustomIcon("TileEntities/MACHINE_CASING_FLUID_INCOLOY_DS");	
+	private static final CustomIcon Internal_Casing_Fluid_IncoloyDS = new CustomIcon("TileEntities/MACHINE_CASING_FLUID_INCOLOY_DS");
 	public static final CustomIcon Casing_Material_Fluid_IncoloyDS = Internal_Casing_Fluid_IncoloyDS;
 
 	//Material Machine/Firebox Casings
-	private static final CustomIcon Internal_Casing_Staballoy_Firebox = new CustomIcon("TileEntities/MACHINE_CASING_FIREBOX_STABALLOY");	
+	private static final CustomIcon Internal_Casing_Staballoy_Firebox = new CustomIcon("TileEntities/MACHINE_CASING_FIREBOX_STABALLOY");
 	public static final CustomIcon Casing_Staballoy_Firebox = Internal_Casing_Staballoy_Firebox;
 
-	//Misc Casings	
-	private static final CustomIcon Internal_Casing_Machine_Redstone_Off = new CustomIcon("TileEntities/cover_redstone_conductor");	
+	//Misc Casings
+	private static final CustomIcon Internal_Casing_Machine_Redstone_Off = new CustomIcon("TileEntities/cover_redstone_conductor");
 	public static final CustomIcon Casing_Machine_Redstone_Off = Internal_Casing_Machine_Redstone_Off;
-	private static final CustomIcon Internal_Casing_Machine_Redstone_On = new CustomIcon("TileEntities/cover_redstone_emitter");	
+	private static final CustomIcon Internal_Casing_Machine_Redstone_On = new CustomIcon("TileEntities/cover_redstone_emitter");
 	public static final CustomIcon Casing_Machine_Redstone_On = Internal_Casing_Machine_Redstone_On;
 
 	//MACHINE_CASING_FARM_MANAGER_STRUCTURAL
 	//Farm Manager Casings
-	private static final CustomIcon Internal_Casing_Machine_Farm_Manager = new CustomIcon("TileEntities/MACHINE_CASING_FARM_MANAGER_STRUCTURAL");	
+	private static final CustomIcon Internal_Casing_Machine_Farm_Manager = new CustomIcon("TileEntities/MACHINE_CASING_FARM_MANAGER_STRUCTURAL");
 	public static final CustomIcon Casing_Machine_Farm_Manager = Internal_Casing_Machine_Farm_Manager;
 	//Acacia_Log
-	private static final CustomIcon Internal_Casing_Machine_Acacia_Log = new CustomIcon("TileEntities/log_acacia_top");	
+	private static final CustomIcon Internal_Casing_Machine_Acacia_Log = new CustomIcon("TileEntities/log_acacia_top");
 	public static final CustomIcon Casing_Machine_Acacia_Log = Internal_Casing_Machine_Acacia_Log;
 	//Podzol Top
-	private static final CustomIcon Internal_Casing_Machine_Podzol = new CustomIcon("TileEntities/dirt_podzol_top");	
+	private static final CustomIcon Internal_Casing_Machine_Podzol = new CustomIcon("TileEntities/dirt_podzol_top");
 	public static final CustomIcon Casing_Machine_Podzol = Internal_Casing_Machine_Podzol;
 
 	//Overlays
 	//Fan Textures
-	private static final CustomIcon Internal_Overlay_Machine_Vent = new CustomIcon("TileEntities/machine_top_vent_rotating");	
+	private static final CustomIcon Internal_Overlay_Machine_Vent = new CustomIcon("TileEntities/machine_top_vent_rotating");
 	public static final CustomIcon Overlay_Machine_Vent = Internal_Overlay_Machine_Vent;
-	private static final CustomIcon Internal_Overlay_Machine_Vent_Fast = new CustomIcon("TileEntities/machine_top_vent_rotating_fast");	
+	private static final CustomIcon Internal_Overlay_Machine_Vent_Fast = new CustomIcon("TileEntities/machine_top_vent_rotating_fast");
 	public static final CustomIcon Overlay_Machine_Vent_Fast = Internal_Overlay_Machine_Vent_Fast;
-	private static final CustomIcon Internal_Overlay_Machine_Vent_Adv = new CustomIcon("TileEntities/adv_machine_vent_rotating");	
+	private static final CustomIcon Internal_Overlay_Machine_Vent_Adv = new CustomIcon("TileEntities/adv_machine_vent_rotating");
 	public static final CustomIcon Overlay_Machine_Vent_Adv = Internal_Overlay_Machine_Vent_Adv;
 	//Speaker Texture
-	private static final CustomIcon Internal_Overlay_Machine_Sound = new CustomIcon("TileEntities/audio_out");	
+	private static final CustomIcon Internal_Overlay_Machine_Sound = new CustomIcon("TileEntities/audio_out");
 	public static final CustomIcon Overlay_Machine_Sound = Internal_Overlay_Machine_Sound;
-	private static final CustomIcon Internal_Overlay_Machine_Sound_Active = new CustomIcon("TileEntities/audio_out_active");	
+	private static final CustomIcon Internal_Overlay_Machine_Sound_Active = new CustomIcon("TileEntities/audio_out_active");
 	public static final CustomIcon Overlay_Machine_Sound_Active = Internal_Overlay_Machine_Sound_Active;
 	//Diesel Engines
-	private static final CustomIcon Internal_Overlay_Machine_Diesel_Vertical = new CustomIcon("TileEntities/machine_top_dieselmotor");	
+	private static final CustomIcon Internal_Overlay_Machine_Diesel_Vertical = new CustomIcon("TileEntities/machine_top_dieselmotor");
 	public static final CustomIcon Overlay_Machine_Diesel_Vertical = Internal_Overlay_Machine_Diesel_Vertical;
-	private static final CustomIcon Internal_Overlay_Machine_Diesel_Horizontal = new CustomIcon("TileEntities/machine_top_dieselmotor2");	
+	private static final CustomIcon Internal_Overlay_Machine_Diesel_Horizontal = new CustomIcon("TileEntities/machine_top_dieselmotor2");
 	public static final CustomIcon Overlay_Machine_Diesel_Horizontal = Internal_Overlay_Machine_Diesel_Horizontal;
-	private static final CustomIcon Internal_Overlay_Machine_Diesel_Vertical_Active = new CustomIcon("TileEntities/machine_top_dieselmotor_active");	
+	private static final CustomIcon Internal_Overlay_Machine_Diesel_Vertical_Active = new CustomIcon("TileEntities/machine_top_dieselmotor_active");
 	public static final CustomIcon Overlay_Machine_Diesel_Vertical_Active = Internal_Overlay_Machine_Diesel_Vertical_Active;
-	private static final CustomIcon Internal_Overlay_Machine_Diesel_Horizontal_Active = new CustomIcon("TileEntities/machine_top_dieselmotor2_active");	
+	private static final CustomIcon Internal_Overlay_Machine_Diesel_Horizontal_Active = new CustomIcon("TileEntities/machine_top_dieselmotor2_active");
 	public static final CustomIcon Overlay_Machine_Diesel_Horizontal_Active = Internal_Overlay_Machine_Diesel_Horizontal_Active;
 	//Computer Screens
-	private static final CustomIcon Internal_Casing_Machine_Screen_1 = new CustomIcon("TileEntities/adv_machine_screen_random1");	
+	private static final CustomIcon Internal_Casing_Machine_Screen_1 = new CustomIcon("TileEntities/adv_machine_screen_random1");
 	public static final CustomIcon Casing_Machine_Screen_1 = Internal_Casing_Machine_Screen_1;
-	private static final CustomIcon Internal_Casing_Machine_Screen_2 = new CustomIcon("TileEntities/adv_machine_screen_random2");	
+	private static final CustomIcon Internal_Casing_Machine_Screen_2 = new CustomIcon("TileEntities/adv_machine_screen_random2");
 	public static final CustomIcon Casing_Machine_Screen_2 = Internal_Casing_Machine_Screen_2;
-	private static final CustomIcon Internal_Casing_Machine_Screen_3 = new CustomIcon("TileEntities/adv_machine_screen_random3");	
+	private static final CustomIcon Internal_Casing_Machine_Screen_3 = new CustomIcon("TileEntities/adv_machine_screen_random3");
 	public static final CustomIcon Casing_Machine_Screen_3 = Internal_Casing_Machine_Screen_3;
-	private static final CustomIcon Internal_Casing_Machine_Screen_Frequency = new CustomIcon("TileEntities/adv_machine_screen_frequency");	
+	private static final CustomIcon Internal_Casing_Machine_Screen_Frequency = new CustomIcon("TileEntities/adv_machine_screen_frequency");
 	public static final CustomIcon Casing_Machine_Screen_Frequency = Internal_Casing_Machine_Screen_Frequency;
-	private static final CustomIcon Internal_Overlay_Machine_Screen_Logo = new CustomIcon("TileEntities/adv_machine_screen_logo");	
+	private static final CustomIcon Internal_Overlay_Machine_Screen_Logo = new CustomIcon("TileEntities/adv_machine_screen_logo");
 	public static final CustomIcon Overlay_Machine_Screen_Logo = Internal_Overlay_Machine_Screen_Logo;
 	//Crafting Overlays
-	private static final CustomIcon Internal_Overlay_Crafting_Bronze = new CustomIcon("TileEntities/bronze_top_crafting");	
+	private static final CustomIcon Internal_Overlay_Crafting_Bronze = new CustomIcon("TileEntities/bronze_top_crafting");
 	public static final CustomIcon Overlay_Crafting_Bronze = Internal_Overlay_Crafting_Bronze;
-	private static final CustomIcon Internal_Overlay_Crafting_Steel = new CustomIcon("TileEntities/cover_crafting");	
+	private static final CustomIcon Internal_Overlay_Crafting_Steel = new CustomIcon("TileEntities/cover_crafting");
 	public static final CustomIcon Overlay_Crafting_Steel = Internal_Overlay_Crafting_Steel;
 	//Dimensional
-	private static final CustomIcon Internal_Overlay_Machine_Dimensional_Blue = new CustomIcon("TileEntities/adv_machine_dimensional_cover_blue");	
+	private static final CustomIcon Internal_Overlay_Machine_Dimensional_Blue = new CustomIcon("TileEntities/adv_machine_dimensional_cover_blue");
 	public static final CustomIcon Overlay_Machine_Dimensional_Blue = Internal_Overlay_Machine_Dimensional_Blue;
-	private static final CustomIcon Internal_Overlay_Machine_Dimensional_Orange = new CustomIcon("TileEntities/adv_machine_dimensional_cover_orange");	
+	private static final CustomIcon Internal_Overlay_Machine_Dimensional_Orange = new CustomIcon("TileEntities/adv_machine_dimensional_cover_orange");
 	public static final CustomIcon Overlay_Machine_Dimensional_Orange = Internal_Overlay_Machine_Dimensional_Orange;
 	//Icons
-	private static final CustomIcon Internal_Overlay_MatterFab = new CustomIcon("TileEntities/adv_machine_matterfab");	
+	private static final CustomIcon Internal_Overlay_MatterFab = new CustomIcon("TileEntities/adv_machine_matterfab");
 	public static final CustomIcon Overlay_MatterFab = Internal_Overlay_MatterFab;
-	private static final CustomIcon Internal_Overlay_MatterFab_Active = new CustomIcon("TileEntities/adv_machine_matterfab_active");	
+	private static final CustomIcon Internal_Overlay_MatterFab_Active = new CustomIcon("TileEntities/adv_machine_matterfab_active");
 	public static final CustomIcon Overlay_MatterFab_Active = Internal_Overlay_MatterFab_Active;
-	private static final CustomIcon Internal_Overlay_Oil = new CustomIcon("TileEntities/adv_machine_oil");	
+	private static final CustomIcon Internal_Overlay_Oil = new CustomIcon("TileEntities/adv_machine_oil");
 	public static final CustomIcon Overlay_Oil = Internal_Overlay_Oil;
-	private static final CustomIcon Internal_Overlay_UU_Matter = new CustomIcon("TileEntities/adv_machine_uum");	
+	private static final CustomIcon Internal_Overlay_UU_Matter = new CustomIcon("TileEntities/adv_machine_uum");
 	public static final CustomIcon Overlay_UU_Matter = Internal_Overlay_UU_Matter;
 
 }

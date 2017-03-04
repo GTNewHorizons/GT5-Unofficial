@@ -6,7 +6,8 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
-import gtPlusPlus.xmod.gregtech.api.enums.*;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import net.minecraft.item.ItemStack;
 
@@ -138,14 +139,14 @@ public class RECIPES_Machines {
 
 
 	//Machine Casings
-	static ItemStack machineCasing_ULV; 
-	static ItemStack machineCasing_LV; 
+	static ItemStack machineCasing_ULV;
+	static ItemStack machineCasing_LV;
 	static ItemStack machineCasing_MV;
 	static ItemStack machineCasing_HV;
 	static ItemStack machineCasing_EV;
 	static ItemStack machineCasing_IV;
-	static ItemStack machineCasing_LuV; 
-	static ItemStack machineCasing_ZPM; 
+	static ItemStack machineCasing_LuV;
+	static ItemStack machineCasing_ZPM;
 	static ItemStack machineCasing_UV;
 	static ItemStack machineCasing_MAX;
 
@@ -155,7 +156,7 @@ public class RECIPES_Machines {
 	static ItemStack gearboxCasing_Tier_3;
 	static ItemStack gearboxCasing_Tier_4;
 
-	//IV MACHINES	
+	//IV MACHINES
 	public static ItemStack IV_MACHINE_Electrolyzer;
 	public static ItemStack IV_MACHINE_Centrifuge;
 	public static ItemStack IV_MACHINE_BendingMachine;
@@ -170,7 +171,7 @@ public class RECIPES_Machines {
 
 
 	//Plates
-	static String plateElectricalSteel= "plateElectricalSteel";	
+	static String plateElectricalSteel= "plateElectricalSteel";
 	static String plateEnergeticAlloy= "plateEnergeticAlloy";
 	static String plateCobalt = "plateCobalt";
 	static String plateBronze = "plateBronze";
@@ -265,7 +266,7 @@ public class RECIPES_Machines {
 
 	private static void run(){
 		initModItems();
-	}	
+	}
 
 	private static void initModItems(){
 		if (LoadedMods.IndustrialCraft2){
@@ -337,7 +338,7 @@ public class RECIPES_Machines {
 			sensor_IV = ItemList.Sensor_IV.get(1);
 
 
-			//IV MACHINES	
+			//IV MACHINES
 			IV_MACHINE_Electrolyzer = ItemList.Machine_IV_Electrolyzer.get(1);
 			IV_MACHINE_BendingMachine= ItemList.Machine_IV_Bender.get(1);
 			IV_MACHINE_Wiremill= ItemList.Machine_IV_Wiremill.get(1);
@@ -358,10 +359,10 @@ public class RECIPES_Machines {
 			INPUT_IECokeOvenBlock = ItemUtils.getItemStackWithMeta(LoadedMods.ImmersiveEngineering, "ImmersiveEngineering:stoneDecoration", "Coke_Oven_IE", 1, 1);
 		}
 		runModRecipes();
-	}	
+	}
 
 	private static void runModRecipes(){
-		if (LoadedMods.Gregtech){			
+		if (LoadedMods.Gregtech){
 
 			RecipeUtils.addShapedGregtechRecipe(
 					ItemList.Electric_Piston_EV, GregtechOrePrefixes.circuit.get(Materials.Ultimate), ItemList.Electric_Piston_EV,
@@ -502,7 +503,7 @@ public class RECIPES_Machines {
 					"plateAnyIron", blockBricks, "plateAnyIron",
 					"plateAnyIron", RECIPES_Tools.craftingToolWrench, "plateAnyIron",
 					RECIPE_IronPlatedBricks);
-			
+
 			//Add recycle recipes for the Iron Plated Bricks
 			//GT_ModHandler.addPulverisationRecipe(RECIPE_IronPlatedBricks, ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustIron", 6), ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustClay", 2), true);
 			RECIPES_GREGTECH.addPulverisationRecipe(
@@ -511,7 +512,7 @@ public class RECIPES_Machines {
 					ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustClay", 2),
 					null);
 			GT_Values.RA.addArcFurnaceRecipe(RECIPE_IronPlatedBricks, new ItemStack[]{ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotWroughtIron", 6), ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustAsh", 2)}, new int[]{0}, 32*20, 32);
-			
+
 			/*//Electrolyzer Frame Casing
 			UtilsRecipe.addShapedGregtechRecipe(
 					"platePotin", "stickLongChrome", "platePotin",
@@ -605,7 +606,7 @@ public class RECIPES_Machines {
 					"stickPlatinum", "frameGtInconel625", "stickPlatinum",
 					"platePalladium", "stickLongPalladium", "platePalladium",
 					RECIPE_IndustrialMacerationStackFrame);
-			//Industrial Maceration stack 
+			//Industrial Maceration stack
 			RecipeUtils.addShapedGregtechRecipe(
 					"plateTungstenCarbide", IV_MACHINE_Macerator, "plateTungstenCarbide",
 					EV_MACHINE_Macerator, circuitTier7, EV_MACHINE_Macerator,
@@ -630,59 +631,59 @@ public class RECIPES_Machines {
 			//Tiered Tanks
 			Utils.LOG_INFO("Is New Horizons Loaded? "+CORE.GTNH);
 			if (!CORE.GTNH){
-			RecipeUtils.addShapedGregtechRecipe(
-					plateTier1, plateTier1, plateTier1,
-					plateTier1, pipeTier1, plateTier1,
-					plateTier1, GregtechItemList.Fluid_Cell_144L.get(1), plateTier1,
-					GregtechItemList.GT_FluidTank_ULV.get(1));
-			RecipeUtils.addShapedGregtechRecipe(
-					plateTier2, plateTier2, plateTier2,
-					plateTier2, pipeTier2, plateTier2,
-					plateTier2, electricPump_LV, plateTier2,
-					GregtechItemList.GT_FluidTank_LV.get(1));
-			RecipeUtils.addShapedGregtechRecipe(
-					plateTier3, plateTier3, plateTier3,
-					plateTier3, pipeTier3, plateTier3,
-					plateTier3, electricPump_MV, plateTier3,
-					GregtechItemList.GT_FluidTank_MV.get(1));
-			RecipeUtils.addShapedGregtechRecipe(
-					plateTier4, plateTier4, plateTier4,
-					plateTier4, pipeTier4, plateTier4,
-					plateTier4, electricPump_HV, plateTier4,
-					GregtechItemList.GT_FluidTank_HV.get(1));
-			RecipeUtils.addShapedGregtechRecipe(
-					plateTier5, plateTier5, plateTier5,
-					plateTier5, pipeTier5, plateTier5,
-					plateTier5, electricPump_EV, plateTier5,
-					GregtechItemList.GT_FluidTank_EV.get(1));
-			RecipeUtils.addShapedGregtechRecipe(
-					plateTier6, plateTier6, plateTier6,
-					plateTier6, pipeTier6, plateTier6,
-					plateTier6, electricPump_IV, plateTier6,
-					GregtechItemList.GT_FluidTank_IV.get(1));
-			RecipeUtils.addShapedGregtechRecipe(
-					plateTier7, plateTier7, plateTier7,
-					plateTier7, pipeTier7, plateTier7,
-					plateTier7, RECIPE_CONSTANTS.electricPump_LuV, plateTier7,
-					GregtechItemList.GT_FluidTank_LuV.get(1));
-			RecipeUtils.addShapedGregtechRecipe(
-					plateTier8, plateTier8, plateTier8,
-					plateTier8, pipeTier8, plateTier8,
-					plateTier8, RECIPE_CONSTANTS.electricPump_ZPM, plateTier8,
-					GregtechItemList.GT_FluidTank_ZPM.get(1));
-			RecipeUtils.addShapedGregtechRecipe(
-					plateTier9, plateTier9, plateTier9,
-					plateTier9, pipeTier9, plateTier9,
-					plateTier9, RECIPE_CONSTANTS.electricPump_UV, plateTier9,
-					GregtechItemList.GT_FluidTank_UV.get(1));
-			RecipeUtils.addShapedGregtechRecipe(
-					plateTier10, plateTier10, plateTier10,
-					plateTier10, pipeTier10, plateTier10,
-					plateTier10, RECIPE_CONSTANTS.electricPump_MAX, plateTier10,
-					GregtechItemList.GT_FluidTank_MAX.get(1));
+				RecipeUtils.addShapedGregtechRecipe(
+						plateTier1, plateTier1, plateTier1,
+						plateTier1, pipeTier1, plateTier1,
+						plateTier1, GregtechItemList.Fluid_Cell_144L.get(1), plateTier1,
+						GregtechItemList.GT_FluidTank_ULV.get(1));
+				RecipeUtils.addShapedGregtechRecipe(
+						plateTier2, plateTier2, plateTier2,
+						plateTier2, pipeTier2, plateTier2,
+						plateTier2, electricPump_LV, plateTier2,
+						GregtechItemList.GT_FluidTank_LV.get(1));
+				RecipeUtils.addShapedGregtechRecipe(
+						plateTier3, plateTier3, plateTier3,
+						plateTier3, pipeTier3, plateTier3,
+						plateTier3, electricPump_MV, plateTier3,
+						GregtechItemList.GT_FluidTank_MV.get(1));
+				RecipeUtils.addShapedGregtechRecipe(
+						plateTier4, plateTier4, plateTier4,
+						plateTier4, pipeTier4, plateTier4,
+						plateTier4, electricPump_HV, plateTier4,
+						GregtechItemList.GT_FluidTank_HV.get(1));
+				RecipeUtils.addShapedGregtechRecipe(
+						plateTier5, plateTier5, plateTier5,
+						plateTier5, pipeTier5, plateTier5,
+						plateTier5, electricPump_EV, plateTier5,
+						GregtechItemList.GT_FluidTank_EV.get(1));
+				RecipeUtils.addShapedGregtechRecipe(
+						plateTier6, plateTier6, plateTier6,
+						plateTier6, pipeTier6, plateTier6,
+						plateTier6, electricPump_IV, plateTier6,
+						GregtechItemList.GT_FluidTank_IV.get(1));
+				RecipeUtils.addShapedGregtechRecipe(
+						plateTier7, plateTier7, plateTier7,
+						plateTier7, pipeTier7, plateTier7,
+						plateTier7, RECIPE_CONSTANTS.electricPump_LuV, plateTier7,
+						GregtechItemList.GT_FluidTank_LuV.get(1));
+				RecipeUtils.addShapedGregtechRecipe(
+						plateTier8, plateTier8, plateTier8,
+						plateTier8, pipeTier8, plateTier8,
+						plateTier8, RECIPE_CONSTANTS.electricPump_ZPM, plateTier8,
+						GregtechItemList.GT_FluidTank_ZPM.get(1));
+				RecipeUtils.addShapedGregtechRecipe(
+						plateTier9, plateTier9, plateTier9,
+						plateTier9, pipeTier9, plateTier9,
+						plateTier9, RECIPE_CONSTANTS.electricPump_UV, plateTier9,
+						GregtechItemList.GT_FluidTank_UV.get(1));
+				RecipeUtils.addShapedGregtechRecipe(
+						plateTier10, plateTier10, plateTier10,
+						plateTier10, pipeTier10, plateTier10,
+						plateTier10, RECIPE_CONSTANTS.electricPump_MAX, plateTier10,
+						GregtechItemList.GT_FluidTank_MAX.get(1));
 			}
 			else {
-				
+
 				plateTier1 = "plateTin";
 				pipeTier1 = "pipeLargeClay";
 				plateTier2 = "plateCopper";
@@ -695,7 +696,7 @@ public class RECIPES_Machines {
 				pipeTier5 = "pipeLargeBronze";
 				plateTier6 = "plateAluminium";
 				pipeTier6 = "pipeMediumSteel";
-				
+
 				Utils.LOG_INFO("Loading New Horizon Tanks, with custom recipes.");
 				Utils.LOG_INFO("Using "+plateTier1+" with "+pipeTier1);
 				Utils.LOG_INFO("Using "+plateTier2+" with "+pipeTier2);
@@ -703,7 +704,7 @@ public class RECIPES_Machines {
 				Utils.LOG_INFO("Using "+plateTier4+" with "+pipeTier4);
 				Utils.LOG_INFO("Using "+plateTier5+" with "+pipeTier5);
 				Utils.LOG_INFO("Using "+plateTier6+" with "+pipeTier6);
-				
+
 				RecipeUtils.addShapedGregtechRecipe(
 						plateTier1, plateTier1, plateTier1,
 						plateTier1, pipeTier1, plateTier1,
@@ -762,14 +763,14 @@ public class RECIPES_Machines {
 					rodTier5, "frameGtTumbaga", rodTier5,
 					"plateZirconiumCarbide", rodTier5, "plateZirconiumCarbide",
 					RECIPE_IndustrialBlastSmelterFrame);
-			//Blast Smelter Coil 
+			//Blast Smelter Coil
 			RecipeUtils.addShapedGregtechRecipe(
 					"plateStaballoy", "plateStaballoy", "plateStaballoy",
 					"frameGtStaballoy", gearboxCasing_Tier_3, "frameGtStaballoy",
 					"plateStaballoy", "plateStaballoy", "plateStaballoy",
 					RECIPE_IndustrialBlastSmelterCoil);
-			
-			
+
+
 			//Matter Fabricator CPU
 			RecipeUtils.addShapedGregtechRecipe(
 					"plateDoubleQuantum", circuitTier5, "plateDoubleQuantum",
@@ -782,7 +783,7 @@ public class RECIPES_Machines {
 					rodTier8, "frameGtInconel690", rodTier8,
 					"plateNiobiumCarbide", rodTier8, "plateNiobiumCarbide",
 					RECIPE_IndustrialMatterFabFrame);
-			//Matter Fabricator Coil 
+			//Matter Fabricator Coil
 			RecipeUtils.addShapedGregtechRecipe(
 					"plateQuantum", "plateQuantum", "plateQuantum",
 					"frameGtStellite", machineCasing_UV, "frameGtStellite",

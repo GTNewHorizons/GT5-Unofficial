@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.creative;
 
 import static gregtech.api.enums.GT_Values.V;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.*;
 import gregtech.api.interfaces.ITexture;
@@ -20,68 +21,68 @@ import net.minecraft.util.EnumChatFormatting;
 
 /**
  * NEVER INCLUDE THIS FILE IN YOUR MOD!!!
- * 
+ *
  * This is the main construct for my Basic Machines such as the Automatic Extractor
  * Extend this class to make a simple Machine
  */
 public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 
 
-	public GregtechMetaCreativeEnergyBuffer(String aName, int aTier,
-			String aDescription, ITexture[][][] aTextures, int aSlotCount) {
+	public GregtechMetaCreativeEnergyBuffer(final String aName, final int aTier,
+			final String aDescription, final ITexture[][][] aTextures, final int aSlotCount) {
 		super(aName, aTier, aDescription, aTextures, aSlotCount);
 		// TODO Auto-generated constructor stub
 	}
 
-	public GregtechMetaCreativeEnergyBuffer(int aID, String aName,
-			String aNameRegional, int aTier, String aDescription, int aSlotCount) {
+	public GregtechMetaCreativeEnergyBuffer(final int aID, final String aName,
+			final String aNameRegional, final int aTier, final String aDescription, final int aSlotCount) {
 		super(aID, aName, aNameRegional, aTier, aDescription, aSlotCount);
 	}
 
 	@Override
 	public String[] getDescription() {
-		return new String[] {mDescription, "Added by: "	+ EnumChatFormatting.DARK_GREEN+"Alkalus"};
+		return new String[] {this.mDescription, "Added by: "	+ EnumChatFormatting.DARK_GREEN+"Alkalus"};
 	}
 
 	/*
 	 * MACHINE_STEEL_SIDE
 	 */
 	@Override
-	public ITexture[][][] getTextureSet(ITexture[] aTextures) {
-		ITexture[][][] rTextures = new ITexture[2][17][];
+	public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
+		final ITexture[][][] rTextures = new ITexture[2][17][];
 		for (byte i = -1; i < 16; i++) {
 			rTextures[0][i + 1] = new ITexture[] { new GT_RenderedTexture(
 					Textures.BlockIcons.MACHINE_CASING_MAGIC_FRONT) };
 			rTextures[1][i + 1] = new ITexture[] {
 					new GT_RenderedTexture(
 							Textures.BlockIcons.MACHINE_CASING_MAGIC_FRONT),
-							mInventory.length > 4 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[mTier]
-									: Textures.BlockIcons.OVERLAYS_ENERGY_OUT[mTier] };
+					this.mInventory.length > 4 ? Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier]
+							: Textures.BlockIcons.OVERLAYS_ENERGY_OUT[this.mTier] };
 		}
 		return rTextures;
 	}
 
 	@Override
-	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity,
-			byte aSide, byte aFacing, byte aColorIndex, boolean aActive,
-			boolean aRedstone) {
-		return mTextures[aSide == aFacing ? 1 : 0][aColorIndex + 1];
+	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity,
+			final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive,
+			final boolean aRedstone) {
+		return this.mTextures[aSide == aFacing ? 1 : 0][aColorIndex + 1];
 	}
 
 	@Override
-	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GregtechMetaCreativeEnergyBuffer(mName, mTier, mDescription,
-				mTextures, mInventory.length);
+	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
+		return new GregtechMetaCreativeEnergyBuffer(this.mName, this.mTier, this.mDescription,
+				this.mTextures, this.mInventory.length);
 	}
 
 	@Override public boolean isSimpleMachine()						{return false;}
 	@Override public boolean isElectric()							{return true;}
-	@Override public boolean isValidSlot(int aIndex)				{return true;}
-	@Override public boolean isFacingValid(byte aFacing)			{return true;}
+	@Override public boolean isValidSlot(final int aIndex)				{return true;}
+	@Override public boolean isFacingValid(final byte aFacing)			{return true;}
 	@Override public boolean isEnetInput() 							{return true;}
 	@Override public boolean isEnetOutput() 						{return true;}
-	@Override public boolean isInputFacing(byte aSide)				{return aSide!=getBaseMetaTileEntity().getFrontFacing();}
-	@Override public boolean isOutputFacing(byte aSide)				{return aSide==getBaseMetaTileEntity().getFrontFacing();}
+	@Override public boolean isInputFacing(final byte aSide)				{return aSide!=this.getBaseMetaTileEntity().getFrontFacing();}
+	@Override public boolean isOutputFacing(final byte aSide)				{return aSide==this.getBaseMetaTileEntity().getFrontFacing();}
 	@Override public boolean isTeleporterCompatible()				{return false;}
 
 	@Override
@@ -96,45 +97,45 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 
 	@Override
 	public long maxEUInput() {
-		return V[mTier];
+		return V[this.mTier];
 	}
 
 	@Override
 	public long maxEUOutput() {
-		return V[mTier];
+		return V[this.mTier];
 	}
 
 	@Override
 	public long maxAmperesIn() {
-		return mChargeableCount * 16;
+		return this.mChargeableCount * 16;
 	}
 
 	@Override
 	public long maxAmperesOut() {
-		return mChargeableCount * 16;
+		return this.mChargeableCount * 16;
 	}
 	@Override public int rechargerSlotStartIndex()					{return 0;}
 	@Override public int dechargerSlotStartIndex()					{return 0;}
-	@Override public int rechargerSlotCount()						{return mCharge?mInventory.length:0;}
-	@Override public int dechargerSlotCount()						{return mDecharge?mInventory.length:0;}
+	@Override public int rechargerSlotCount()						{return this.mCharge?this.mInventory.length:0;}
+	@Override public int dechargerSlotCount()						{return this.mDecharge?this.mInventory.length:0;}
 	@Override public int getProgresstime()							{return Integer.MAX_VALUE;}
-	@Override public int maxProgresstime()							{return (int)getBaseMetaTileEntity().getUniversalEnergyCapacity();}
-	@Override public boolean isAccessAllowed(EntityPlayer aPlayer)	{return true;}
+	@Override public int maxProgresstime()							{return (int)this.getBaseMetaTileEntity().getUniversalEnergyCapacity();}
+	@Override public boolean isAccessAllowed(final EntityPlayer aPlayer)	{return true;}
 
 	@Override
-	public void saveNBTData(NBTTagCompound aNBT) {
+	public void saveNBTData(final NBTTagCompound aNBT) {
 		//
 	}
 
 	@Override
-	public void loadNBTData(NBTTagCompound aNBT) {
+	public void loadNBTData(final NBTTagCompound aNBT) {
 		//
 	}
 
 	@Override
-	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory,
-			IGregTechTileEntity aBaseMetaTileEntity) {
-		switch (mInventory.length) {
+	public Object getServerGUI(final int aID, final InventoryPlayer aPlayerInventory,
+			final IGregTechTileEntity aBaseMetaTileEntity) {
+		switch (this.mInventory.length) {
 		case  1: return new GT_Container_1by1(aPlayerInventory, aBaseMetaTileEntity);
 		case  4: return new GT_Container_2by2(aPlayerInventory, aBaseMetaTileEntity);
 		case  9: return new GT_Container_3by3(aPlayerInventory, aBaseMetaTileEntity);
@@ -144,38 +145,42 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 	}
 
 	@Override
-	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory,
-			IGregTechTileEntity aBaseMetaTileEntity) {
-		switch (mInventory.length) {
-		case  1: return new GT_GUIContainer_1by1(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
-		case  4: return new GT_GUIContainer_2by2(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
-		case  9: return new GT_GUIContainer_3by3(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
-		case 16: return new GT_GUIContainer_4by4(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
+	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory,
+			final IGregTechTileEntity aBaseMetaTileEntity) {
+		switch (this.mInventory.length) {
+		case  1: return new GT_GUIContainer_1by1(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName());
+		case  4: return new GT_GUIContainer_2by2(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName());
+		case  9: return new GT_GUIContainer_3by3(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName());
+		case 16: return new GT_GUIContainer_4by4(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName());
 		}
-		return new GT_GUIContainer_1by1(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
+		return new GT_GUIContainer_1by1(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName());
 	}
 
 	@Override
-	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
 		this.getBaseMetaTileEntity().increaseStoredEnergyUnits(Integer.MAX_VALUE, true);
 		if (aBaseMetaTileEntity.isServerSide()) {
-			mCharge = aBaseMetaTileEntity.getStoredEU() / 2 > aBaseMetaTileEntity
-					.getEUCapacity() / 3;
-			mDecharge = aBaseMetaTileEntity.getStoredEU()     < aBaseMetaTileEntity.getEUCapacity() / 3;
-			mBatteryCount = 1;
-			mChargeableCount = 1;
-			this.getBaseMetaTileEntity().increaseStoredEnergyUnits(mMax, true);
-			for (ItemStack tStack : mInventory) if (GT_ModHandler.isElectricItem(tStack, mTier)) {
-				if (GT_ModHandler.isChargerItem(tStack)) mBatteryCount++;
-				mChargeableCount++;
+			this.mCharge = (aBaseMetaTileEntity.getStoredEU() / 2) > (aBaseMetaTileEntity
+					.getEUCapacity() / 3);
+			this.mDecharge = aBaseMetaTileEntity.getStoredEU()     < (aBaseMetaTileEntity.getEUCapacity() / 3);
+			this.mBatteryCount = 1;
+			this.mChargeableCount = 1;
+			this.getBaseMetaTileEntity().increaseStoredEnergyUnits(this.mMax, true);
+			for (final ItemStack tStack : this.mInventory) {
+				if (GT_ModHandler.isElectricItem(tStack, this.mTier)) {
+					if (GT_ModHandler.isChargerItem(tStack)) {
+						this.mBatteryCount++;
+					}
+					this.mChargeableCount++;
+				}
 			}
 		}
 	}
 
 	@Override
-	public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+	public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
 		if(GT_ModHandler.isElectricItem(aStack)&&aStack.getUnlocalizedName().startsWith("gt.metaitem.01.")){
-			String name = aStack.getUnlocalizedName();
+			final String name = aStack.getUnlocalizedName();
 			if(name.equals("gt.metaitem.01.32510")||
 					name.equals("gt.metaitem.01.32511")||
 					name.equals("gt.metaitem.01.32520")||
@@ -189,7 +194,7 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 	}
 
 	@Override
-	public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+	public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
 		if(!GT_Utility.isStackValid(aStack)){
 			return false;
 		}
@@ -201,15 +206,15 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 
 	@Override
 	public long[] getStoredEnergy(){
-		long tScale = getBaseMetaTileEntity().getEUCapacity();
-		long tStored = getBaseMetaTileEntity().getStoredEU();
+		long tScale = this.getBaseMetaTileEntity().getEUCapacity();
+		long tStored = this.getBaseMetaTileEntity().getStoredEU();
 		this.setEUVar(Long.MAX_VALUE);
-		if (mInventory != null) {
-			for (ItemStack aStack : mInventory) {
+		if (this.mInventory != null) {
+			for (final ItemStack aStack : this.mInventory) {
 				if (GT_ModHandler.isElectricItem(aStack)) {
 
 					if (aStack.getItem() instanceof GT_MetaBase_Item) {
-						Long[] stats = ((GT_MetaBase_Item) aStack.getItem())
+						final Long[] stats = ((GT_MetaBase_Item) aStack.getItem())
 								.getElectricStats(aStack);
 						if (stats != null) {
 							tScale = tScale + stats[0];
@@ -238,18 +243,18 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 
 	@Override
 	public String[] getInfoData() {
-		count++;		
-		if(mMax==0||count%20==0){
-			long[] tmp = getStoredEnergy();
-			mStored=tmp[0];
-			mMax=tmp[1];
+		this.count++;
+		if((this.mMax==0)||((this.count%20)==0)){
+			final long[] tmp = this.getStoredEnergy();
+			this.mStored=tmp[0];
+			this.mMax=tmp[1];
 		}
 
 		return new String[] {
-				getLocalName(),
+				this.getLocalName(),
 				"THIS IS A CREATIVE ITEM - FOR TESTING",
-				GT_Utility.formatNumbers(mStored)+" EU /",
-				GT_Utility.formatNumbers(mMax)+" EU"};
+				GT_Utility.formatNumbers(this.mStored)+" EU /",
+				GT_Utility.formatNumbers(this.mMax)+" EU"};
 	}
 
 	@Override

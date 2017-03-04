@@ -1,5 +1,8 @@
 package gtPlusPlus.core.item.general;
 
+import java.util.List;
+
+import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.interfaces.IItemBlueprint;
 import gtPlusPlus.core.lib.CORE;
@@ -7,9 +10,6 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.player.PlayerUtils;
-
-import java.util.List;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -19,14 +19,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ItemBlueprint extends Item implements IItemBlueprint{
 
-	public ItemBlueprint(String unlocalizedName) {
+	public ItemBlueprint(final String unlocalizedName) {
 		this.setUnlocalizedName(unlocalizedName);
 		this.setTextureName(CORE.MODID + ":" + unlocalizedName);
-		this.setMaxStackSize(1);	
+		this.setMaxStackSize(1);
 		this.setCreativeTab(AddToCreativeTab.tabMachines);
 		//this.bpID = MathUtils.randInt(0, 1000);
 		GameRegistry.registerItem(this, unlocalizedName);
@@ -34,10 +33,10 @@ public class ItemBlueprint extends Item implements IItemBlueprint{
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void addInformation(ItemStack itemStack, EntityPlayer aPlayer, List list, boolean bool) {
+	public void addInformation(final ItemStack itemStack, final EntityPlayer aPlayer, final List list, final boolean bool) {
 		//Create some NBT if it's not there, otherwise this does nothing.
 		if (!itemStack.hasTagCompound()){
-		createNBT(itemStack);
+			this.createNBT(itemStack);
 		}
 		//Set up some default variables.
 		int id = -1;
@@ -46,14 +45,14 @@ public class ItemBlueprint extends Item implements IItemBlueprint{
 		//Get proper display vars from NBT if it's there
 		if (itemStack.hasTagCompound()){
 			//Utils.LOG_WARNING("Found TagCompound");
-			id = (int) getNBT(itemStack, "mID");
-			name = (String) getNBT(itemStack, "mName");
-			blueprint = (boolean) getNBT(itemStack, "mBlueprint");
+			id = (int) this.getNBT(itemStack, "mID");
+			name = (String) this.getNBT(itemStack, "mName");
+			blueprint = (boolean) this.getNBT(itemStack, "mBlueprint");
 		}
 		//Write to tooltip list for each viable setting.
 		if (itemStack.hasTagCompound()) {
 			if (id != -1){
-				list.add(EnumChatFormatting.GRAY+"Technical Document No. "+id);			
+				list.add(EnumChatFormatting.GRAY+"Technical Document No. "+id);
 			}
 			if(blueprint){
 				list.add(EnumChatFormatting.BLUE+"Currently holding a blueprint for "+name);
@@ -61,7 +60,7 @@ public class ItemBlueprint extends Item implements IItemBlueprint{
 			else {
 				list.add(EnumChatFormatting.RED+"Currently not holding a blueprint for anything.");
 			}
-		}		
+		}
 		else {
 			list.add(EnumChatFormatting.RED+"Currently not holding a blueprint for anything.");
 		}
@@ -69,46 +68,46 @@ public class ItemBlueprint extends Item implements IItemBlueprint{
 	}
 
 	@Override
-	public String getItemStackDisplayName(ItemStack p_77653_1_) {
+	public String getItemStackDisplayName(final ItemStack p_77653_1_) {
 		return "Blueprint [I am useless]";
 	}
 
 	@Override
-	public void onCreated(ItemStack itemStack, World world, EntityPlayer player) {
-		createNBT(itemStack);
+	public void onCreated(final ItemStack itemStack, final World world, final EntityPlayer player) {
+		this.createNBT(itemStack);
 	}
 
 	@Override
-	public void onUpdate(ItemStack itemStack, World par2World, Entity par3Entity, int par4, boolean par5) {
+	public void onUpdate(final ItemStack itemStack, final World par2World, final Entity par3Entity, final int par4, final boolean par5) {
 
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer par3Entity) {
+	public ItemStack onItemRightClick(final ItemStack itemStack, final World world, final EntityPlayer par3Entity) {
 		//Let the player know what blueprint is held
 		if (itemStack.hasTagCompound()) {
-			PlayerUtils.messagePlayer(par3Entity, "This Blueprint holds NBT data. "+"|"+getNBT(itemStack, "mID")+"|"+getNBT(itemStack, "mBlueprint")+"|"+getNBT(itemStack, "mName")+"|"+ItemUtils.getArrayStackNames(readItemsFromNBT(itemStack)));
+			PlayerUtils.messagePlayer(par3Entity, "This Blueprint holds NBT data. "+"|"+this.getNBT(itemStack, "mID")+"|"+this.getNBT(itemStack, "mBlueprint")+"|"+this.getNBT(itemStack, "mName")+"|"+ItemUtils.getArrayStackNames(this.readItemsFromNBT(itemStack)));
 		}
 		else {
-			createNBT(itemStack);
-			PlayerUtils.messagePlayer(par3Entity, "This is a placeholder. "+getNBT(itemStack, "mID"));			
+			this.createNBT(itemStack);
+			PlayerUtils.messagePlayer(par3Entity, "This is a placeholder. "+this.getNBT(itemStack, "mID"));
 		}
 
 
 		return super.onItemRightClick(itemStack, world, par3Entity);
 	}
 
-	public ItemStack[] readItemsFromNBT(ItemStack itemStack){
+	public ItemStack[] readItemsFromNBT(final ItemStack itemStack){
 		ItemStack[] blueprint = new ItemStack[9];
 		if (itemStack.hasTagCompound()){
-			NBTTagCompound nbt = itemStack.getTagCompound();
-			NBTTagList list = nbt.getTagList("Items", 10);
+			final NBTTagCompound nbt = itemStack.getTagCompound();
+			final NBTTagList list = nbt.getTagList("Items", 10);
 			blueprint = new ItemStack[INV_SIZE];
 			for(int i = 0;i<list.tagCount();i++)
 			{
-				NBTTagCompound data = list.getCompoundTagAt(i);
-				int slot = data.getInteger("Slot");
-				if(slot >= 0 && slot < INV_SIZE)
+				final NBTTagCompound data = list.getCompoundTagAt(i);
+				final int slot = data.getInteger("Slot");
+				if((slot >= 0) && (slot < INV_SIZE))
 				{
 					blueprint[slot] = ItemStack.loadItemStackFromNBT(data);
 				}
@@ -118,17 +117,17 @@ public class ItemBlueprint extends Item implements IItemBlueprint{
 		return null;
 	}
 
-	public ItemStack writeItemsToNBT(ItemStack itemStack, ItemStack[] craftingGrid){
-		ItemStack[] blueprint = craftingGrid;
+	public ItemStack writeItemsToNBT(final ItemStack itemStack, final ItemStack[] craftingGrid){
+		final ItemStack[] blueprint = craftingGrid;
 		if (itemStack.hasTagCompound()){
-			NBTTagCompound nbt = itemStack.getTagCompound();
-			NBTTagList list = new NBTTagList();
+			final NBTTagCompound nbt = itemStack.getTagCompound();
+			final NBTTagList list = new NBTTagList();
 			for(int i = 0;i<INV_SIZE;i++)
 			{
-				ItemStack stack = blueprint[i];
+				final ItemStack stack = blueprint[i];
 				if(stack != null)
 				{
-					NBTTagCompound data = new NBTTagCompound();
+					final NBTTagCompound data = new NBTTagCompound();
 					stack.writeToNBT(data);
 					data.setInteger("Slot", i);
 					list.appendTag(data);
@@ -142,18 +141,18 @@ public class ItemBlueprint extends Item implements IItemBlueprint{
 	}
 
 	@Override
-	public boolean isBlueprint(ItemStack stack) {
+	public boolean isBlueprint(final ItemStack stack) {
 		return true;
 	}
 
 	@Override
-	public boolean setBlueprint(ItemStack stack, IInventory craftingTable, ItemStack output) {
+	public boolean setBlueprint(final ItemStack stack, final IInventory craftingTable, final ItemStack output) {
 		boolean hasBP = false;
 		ItemStack[] blueprint = new ItemStack[9];
 
 		if (stack.hasTagCompound()){
-			hasBP = (boolean) getNBT(stack, "mBlueprint");
-			blueprint = readItemsFromNBT(stack);
+			hasBP = (boolean) this.getNBT(stack, "mBlueprint");
+			blueprint = this.readItemsFromNBT(stack);
 		}
 
 		if (!hasBP){
@@ -164,7 +163,7 @@ public class ItemBlueprint extends Item implements IItemBlueprint{
 						blueprint[0].stackSize = 0;
 					}
 				}
-				writeItemsToNBT(stack, blueprint);
+				this.writeItemsToNBT(stack, blueprint);
 				if (stack.hasTagCompound()){
 					if(stack.getTagCompound().getCompoundTag("Items") != null){
 						stack.stackTagCompound.setBoolean("mBlueprint", true);
@@ -172,43 +171,43 @@ public class ItemBlueprint extends Item implements IItemBlueprint{
 					else {
 						//Invalid BP saved?
 					}
-					hasBP = (boolean) getNBT(stack, "mBlueprint");
+					hasBP = (boolean) this.getNBT(stack, "mBlueprint");
 				}
-				
+
 				if (output != null){
-					setBlueprintName(stack, output.getDisplayName());
+					this.setBlueprintName(stack, output.getDisplayName());
 					hasBP = true;
 					return true;
 				}
 				return false;
-			} catch (Throwable t){
-				return false;			
+			} catch (final Throwable t){
+				return false;
 			}
 		}
 		return false;
 	}
 
 	@Override
-	public void setBlueprintName(ItemStack stack, String name) {
+	public void setBlueprintName(final ItemStack stack, final String name) {
 		stack.stackTagCompound.setString("mName", name);
 	}
 
 	@Override
-	public boolean hasBlueprint(ItemStack stack) {
+	public boolean hasBlueprint(final ItemStack stack) {
 		if (stack.hasTagCompound()){
-			return (boolean) getNBT(stack, "mBlueprint");
+			return (boolean) this.getNBT(stack, "mBlueprint");
 		}
 		return false;
 	}
 
 	@Override
-	public ItemStack[] getBlueprint(ItemStack stack) {
+	public ItemStack[] getBlueprint(final ItemStack stack) {
 		ItemStack[] blueprint = new ItemStack[9];
 		if (stack.hasTagCompound()){
-			blueprint = readItemsFromNBT(stack);
-		}		
+			blueprint = this.readItemsFromNBT(stack);
+		}
 		try {
-			ItemStack[] returnStack = new ItemStack[9];
+			final ItemStack[] returnStack = new ItemStack[9];
 			for (int o=0; o<blueprint.length; o++){
 				returnStack[o] = blueprint[o];
 				if (returnStack[0] != null){
@@ -216,12 +215,12 @@ public class ItemBlueprint extends Item implements IItemBlueprint{
 				}
 			}
 			return returnStack;
-		} catch (Throwable t){
-			return null;			
+		} catch (final Throwable t){
+			return null;
 		}
 	}
 
-	public boolean createNBT(ItemStack itemStack){   
+	public boolean createNBT(final ItemStack itemStack){
 		if (itemStack.hasTagCompound()){
 			if (!itemStack.stackTagCompound.getBoolean("mBlueprint") && !itemStack.stackTagCompound.getString("mName").equals("")){
 				//No Blueprint and no name Set
@@ -245,9 +244,9 @@ public class ItemBlueprint extends Item implements IItemBlueprint{
 			return false;
 		}
 		else if(!itemStack.hasTagCompound()){
-			int bpID = MathUtils.randInt(0, 1000);
-			boolean hasRecipe = false;
-			String recipeName = "";
+			final int bpID = MathUtils.randInt(0, 1000);
+			final boolean hasRecipe = false;
+			final String recipeName = "";
 			Utils.LOG_WARNING("Creating Blueprint, setting up it's NBT data. "+bpID);
 			itemStack.stackTagCompound = new NBTTagCompound();
 			itemStack.stackTagCompound.setInteger("mID", bpID);
@@ -256,19 +255,19 @@ public class ItemBlueprint extends Item implements IItemBlueprint{
 			return true;
 		}
 		else {
-			int bpID = MathUtils.randInt(0, 1000);
-			boolean hasRecipe = false;
-			String recipeName = "";
+			final int bpID = MathUtils.randInt(0, 1000);
+			final boolean hasRecipe = false;
+			final String recipeName = "";
 			Utils.LOG_WARNING("Creating a Blueprint, setting up it's NBT data. "+bpID);
 			itemStack.stackTagCompound = new NBTTagCompound();
 			itemStack.stackTagCompound.setInteger("mID", bpID);
 			itemStack.stackTagCompound.setBoolean("mBlueprint", hasRecipe);
 			itemStack.stackTagCompound.setString("mName", recipeName);
 			return true;
-		}		
+		}
 	}
 
-	public Object getNBT(ItemStack itemStack, String tagNBT){   
+	public Object getNBT(final ItemStack itemStack, final String tagNBT){
 		if (!itemStack.hasTagCompound()){
 			return null;
 		}
@@ -286,8 +285,9 @@ public class ItemBlueprint extends Item implements IItemBlueprint{
 			//For More Tag Support
 			//o = itemStack.stackTagCompound.getInteger(tagNBT);
 		}
-		if (o != null)
+		if (o != null) {
 			return o;
+		}
 		return null;	}
 
 }

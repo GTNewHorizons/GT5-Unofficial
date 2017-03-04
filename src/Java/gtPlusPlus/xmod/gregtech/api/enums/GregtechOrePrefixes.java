@@ -2,6 +2,9 @@ package gtPlusPlus.xmod.gregtech.api.enums;
 
 import static gregtech.api.enums.GT_Values.*;
 import static gtPlusPlus.core.util.Utils.getTcAspectStack;
+
+import java.util.*;
+
 import gregtech.api.enums.*;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.interfaces.*;
@@ -12,9 +15,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_OreRecipeRegistrator;
 import gtPlusPlus.xmod.gregtech.api.objects.GregtechItemData;
 import gtPlusPlus.xmod.gregtech.api.objects.GregtechMaterialStack;
-
-import java.util.*;
-
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -52,10 +52,10 @@ public enum GregtechOrePrefixes {
 	gemExquisite("Exquisite Gemstones", "Exquisite ", "", true, true, true, false, false, false, true, true, false, false, B[2], M * 4, 16, 62), // A regular Gem worth four Dusts. Introduced by TerraFirmaCraft
 	stick("Sticks/Rods", "", " Rod", true, true, false, false, false, false, true, true, false, false, B[1] | B[2], M / 2, 64, 23), // Stick made of half an Ingot. Introduced by Eloraam
 	type2("16x Wires", "16x ", " Wire", true, true, false, false, false, false, true, false, false, false, 0, M * 8, 64, -1),
-	
-	 toolSkookumChoocher("Skookum Choocher", "", " Skookum Choocher", true, true, false, false, false, false, true, true, false, false, B[6], M * 6, 16, 37), // consisting out of 6 Ingots.
 
-	
+	toolSkookumChoocher("Skookum Choocher", "", " Skookum Choocher", true, true, false, false, false, false, true, true, false, false, B[6], M * 6, 16, 37), // consisting out of 6 Ingots.
+
+
 
 	batterySingleuse("Single Use Batteries", "", "", false, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1),
 	battery("Reusable Batteries", "", "", false, true, false, false, false, false, false, false, false, false, 0, -1, 64, -1), // Introduced by Calclavia
@@ -65,18 +65,18 @@ public enum GregtechOrePrefixes {
 
 	public static volatile int VERSION = 508;
 
-    static {
-    	
-        ingotHot.mHeatDamage = 3.0F;
-        
-    }
+	static {
 
-	public final ArrayList<ItemStack> mPrefixedItems = new ArrayList<ItemStack>();
+		ingotHot.mHeatDamage = 3.0F;
+
+	}
+
+	public final ArrayList<ItemStack> mPrefixedItems = new ArrayList<>();
 	public final short mTextureIndex;
 	public final String mRegularLocalName, mLocalizedMaterialPre, mLocalizedMaterialPost;
 	public final boolean mIsUsedForOreProcessing, mIsEnchantable, mIsUnificatable, mIsMaterialBased, mIsSelfReferencing, mIsContainer, mDontUnificateActively, mIsUsedForBlocks, mAllowNormalRecycling, mGenerateDefaultItem;
-	public final List<TC_AspectStack> mAspects = new ArrayList<TC_AspectStack>();
-	public final Collection<GregtechOrePrefixes> mFamiliarPrefixes = new HashSet<GregtechOrePrefixes>();
+	public final List<TC_AspectStack> mAspects = new ArrayList<>();
+	public final Collection<GregtechOrePrefixes> mFamiliarPrefixes = new HashSet<>();
 	/**
 	 * Used to determine the amount of Material this Prefix contains.
 	 * Multiply or Divide GregTech_API.MATERIAL_UNIT to get the Amounts in comparision to one Ingot.
@@ -84,9 +84,9 @@ public enum GregtechOrePrefixes {
 	 * Negative = Undefined Amount
 	 */
 	public final long mMaterialAmount;
-	private final Collection<Materials> mNotGeneratedItems = new HashSet<Materials>(), mIgnoredMaterials = new HashSet<Materials>(), mGeneratedItems = new HashSet<Materials>();
-	private final ArrayList<Interface_OreRecipeRegistrator> mOreProcessing = new ArrayList<Interface_OreRecipeRegistrator>();
-	private final ArrayList<Interface_OreRecipeRegistrator> mOreProcessingFake = new ArrayList<Interface_OreRecipeRegistrator>();
+	private final Collection<Materials> mNotGeneratedItems = new HashSet<>(), mIgnoredMaterials = new HashSet<>(), mGeneratedItems = new HashSet<>();
+	private final ArrayList<Interface_OreRecipeRegistrator> mOreProcessing = new ArrayList<>();
+	private final ArrayList<Interface_OreRecipeRegistrator> mOreProcessingFake = new ArrayList<>();
 	public ItemStack mContainerItem = null;
 	public ICondition<ISubTagContainer> mCondition = null;
 	public byte mDefaultStackSize = 64;
@@ -97,73 +97,74 @@ public enum GregtechOrePrefixes {
 	 * Yes this Value can be changed to add Bits for the MetaGenerated-Item-Check.
 	 */
 	public int mMaterialGenerationBits = 0;
-	private GregtechOrePrefixes(String aRegularLocalName, String aLocalizedMaterialPre, String aLocalizedMaterialPost, boolean aIsUnificatable, boolean aIsMaterialBased, boolean aIsSelfReferencing, boolean aIsContainer, boolean aDontUnificateActively, boolean aIsUsedForBlocks, boolean aAllowNormalRecycling, boolean aGenerateDefaultItem, boolean aIsEnchantable, boolean aIsUsedForOreProcessing, int aMaterialGenerationBits, long aMaterialAmount, int aDefaultStackSize, int aTextureindex) {
-		mIsUnificatable = aIsUnificatable;
-		mIsMaterialBased = aIsMaterialBased;
-		mIsSelfReferencing = aIsSelfReferencing;
-		mIsContainer = aIsContainer;
-		mDontUnificateActively = aDontUnificateActively;
-		mIsUsedForBlocks = aIsUsedForBlocks;
-		mAllowNormalRecycling = aAllowNormalRecycling;
-		mGenerateDefaultItem = aGenerateDefaultItem;
-		mIsEnchantable = aIsEnchantable;
-		mIsUsedForOreProcessing = aIsUsedForOreProcessing;
-		mMaterialGenerationBits = aMaterialGenerationBits;
-		mMaterialAmount = aMaterialAmount;
-		mRegularLocalName = aRegularLocalName;
-		mLocalizedMaterialPre = aLocalizedMaterialPre;
-		mLocalizedMaterialPost = aLocalizedMaterialPost;
-		mDefaultStackSize = (byte) aDefaultStackSize;
-		mTextureIndex = (short) aTextureindex;
+	private GregtechOrePrefixes(final String aRegularLocalName, final String aLocalizedMaterialPre, final String aLocalizedMaterialPost, final boolean aIsUnificatable, final boolean aIsMaterialBased, final boolean aIsSelfReferencing, final boolean aIsContainer, final boolean aDontUnificateActively, final boolean aIsUsedForBlocks, final boolean aAllowNormalRecycling, final boolean aGenerateDefaultItem, final boolean aIsEnchantable, final boolean aIsUsedForOreProcessing, final int aMaterialGenerationBits, final long aMaterialAmount, final int aDefaultStackSize, final int aTextureindex) {
+		this.mIsUnificatable = aIsUnificatable;
+		this.mIsMaterialBased = aIsMaterialBased;
+		this.mIsSelfReferencing = aIsSelfReferencing;
+		this.mIsContainer = aIsContainer;
+		this.mDontUnificateActively = aDontUnificateActively;
+		this.mIsUsedForBlocks = aIsUsedForBlocks;
+		this.mAllowNormalRecycling = aAllowNormalRecycling;
+		this.mGenerateDefaultItem = aGenerateDefaultItem;
+		this.mIsEnchantable = aIsEnchantable;
+		this.mIsUsedForOreProcessing = aIsUsedForOreProcessing;
+		this.mMaterialGenerationBits = aMaterialGenerationBits;
+		this.mMaterialAmount = aMaterialAmount;
+		this.mRegularLocalName = aRegularLocalName;
+		this.mLocalizedMaterialPre = aLocalizedMaterialPre;
+		this.mLocalizedMaterialPost = aLocalizedMaterialPost;
+		this.mDefaultStackSize = (byte) aDefaultStackSize;
+		this.mTextureIndex = (short) aTextureindex;
 
-		
+
 		//TODO - Utilise some form of way to check if it's gt 5.9 if so, use string switch.
-		if (name().startsWith("ore")) {
-			getTcAspectStack(TC_Aspects.TERRA.name(), 1).addToAspectList(mAspects);
-		} else if (name().startsWith("wire") || name().startsWith("cable")) {
-			getTcAspectStack(TC_Aspects.ELECTRUM.name(), 1).addToAspectList(mAspects);
-		} else if (name().startsWith("dust")) {
-			getTcAspectStack(TC_Aspects.PERDITIO.name(), 1).addToAspectList(mAspects);
-		} else if (name().startsWith("crushed")) {
-			getTcAspectStack(TC_Aspects.PERFODIO.name(), 1).addToAspectList(mAspects);
-		} else if (name().startsWith("ingot") || name().startsWith("nugget")) {
-			getTcAspectStack(TC_Aspects.METALLUM.name(), 1).addToAspectList(mAspects);
-		} else if (name().startsWith("armor")) {
-			getTcAspectStack(TC_Aspects.TUTAMEN.name(), 1).addToAspectList(mAspects);
-		} else if (name().startsWith("stone")) {
-			getTcAspectStack(TC_Aspects.TERRA.name(), 1).addToAspectList(mAspects);
-		} else if (name().startsWith("pipe")) {
-			getTcAspectStack(TC_Aspects.ITER.name(), 1).addToAspectList(mAspects);
-		} else if (name().startsWith("gear")) {
-			getTcAspectStack(TC_Aspects.MOTUS.name(), 1).addToAspectList(mAspects);
-			getTcAspectStack(TC_Aspects.MACHINA.name(), 1).addToAspectList(mAspects);
-		} else if (name().startsWith("frame") || name().startsWith("plate")) {
-			getTcAspectStack(TC_Aspects.FABRICO.name(), 1).addToAspectList(mAspects);
-		} else if (name().startsWith("tool")) {
-			getTcAspectStack(TC_Aspects.INSTRUMENTUM.name(), 2).addToAspectList(mAspects);
-		} else if (name().startsWith("gem") || name().startsWith("crystal") || name().startsWith("lens")) {
-			getTcAspectStack(TC_Aspects.VITREUS.name(), 1).addToAspectList(mAspects);
-		} else if (name().startsWith("crate")) {
-			getTcAspectStack(TC_Aspects.ITER.name(), 2).addToAspectList(mAspects);
-		} else if (name().startsWith("circuit")) {		
-			getTcAspectStack("COGNITIO", 1);			
-		} else if (name().startsWith("computer")) {
-				getTcAspectStack("COGNITIO", 4).addToAspectList(mAspects);
-		} else if (name().startsWith("battery")) {
-			getTcAspectStack(TC_Aspects.ELECTRUM.name(), 1).addToAspectList(mAspects);
+		if (this.name().startsWith("ore")) {
+			getTcAspectStack(TC_Aspects.TERRA.name(), 1).addToAspectList(this.mAspects);
+		} else if (this.name().startsWith("wire") || this.name().startsWith("cable")) {
+			getTcAspectStack(TC_Aspects.ELECTRUM.name(), 1).addToAspectList(this.mAspects);
+		} else if (this.name().startsWith("dust")) {
+			getTcAspectStack(TC_Aspects.PERDITIO.name(), 1).addToAspectList(this.mAspects);
+		} else if (this.name().startsWith("crushed")) {
+			getTcAspectStack(TC_Aspects.PERFODIO.name(), 1).addToAspectList(this.mAspects);
+		} else if (this.name().startsWith("ingot") || this.name().startsWith("nugget")) {
+			getTcAspectStack(TC_Aspects.METALLUM.name(), 1).addToAspectList(this.mAspects);
+		} else if (this.name().startsWith("armor")) {
+			getTcAspectStack(TC_Aspects.TUTAMEN.name(), 1).addToAspectList(this.mAspects);
+		} else if (this.name().startsWith("stone")) {
+			getTcAspectStack(TC_Aspects.TERRA.name(), 1).addToAspectList(this.mAspects);
+		} else if (this.name().startsWith("pipe")) {
+			getTcAspectStack(TC_Aspects.ITER.name(), 1).addToAspectList(this.mAspects);
+		} else if (this.name().startsWith("gear")) {
+			getTcAspectStack(TC_Aspects.MOTUS.name(), 1).addToAspectList(this.mAspects);
+			getTcAspectStack(TC_Aspects.MACHINA.name(), 1).addToAspectList(this.mAspects);
+		} else if (this.name().startsWith("frame") || this.name().startsWith("plate")) {
+			getTcAspectStack(TC_Aspects.FABRICO.name(), 1).addToAspectList(this.mAspects);
+		} else if (this.name().startsWith("tool")) {
+			getTcAspectStack(TC_Aspects.INSTRUMENTUM.name(), 2).addToAspectList(this.mAspects);
+		} else if (this.name().startsWith("gem") || this.name().startsWith("crystal") || this.name().startsWith("lens")) {
+			getTcAspectStack(TC_Aspects.VITREUS.name(), 1).addToAspectList(this.mAspects);
+		} else if (this.name().startsWith("crate")) {
+			getTcAspectStack(TC_Aspects.ITER.name(), 2).addToAspectList(this.mAspects);
+		} else if (this.name().startsWith("circuit")) {
+			getTcAspectStack("COGNITIO", 1);
+		} else if (this.name().startsWith("computer")) {
+			getTcAspectStack("COGNITIO", 4).addToAspectList(this.mAspects);
+		} else if (this.name().startsWith("battery")) {
+			getTcAspectStack(TC_Aspects.ELECTRUM.name(), 1).addToAspectList(this.mAspects);
 		}
 	}
 
-	public static GregtechOrePrefixes getOrePrefix(String aOre) {
-		for (GregtechOrePrefixes tPrefix : values())
-			if (aOre.startsWith(tPrefix.toString())) {                
+	public static GregtechOrePrefixes getOrePrefix(final String aOre) {
+		for (final GregtechOrePrefixes tPrefix : values()) {
+			if (aOre.startsWith(tPrefix.toString())) {
 				return tPrefix;
 			}
+		}
 		return null;
 	}
 
-	public static String stripPrefix(String aOre) {
-		for (GregtechOrePrefixes tPrefix : values()) {
+	public static String stripPrefix(final String aOre) {
+		for (final GregtechOrePrefixes tPrefix : values()) {
 			if (aOre.startsWith(tPrefix.toString())) {
 				return aOre.replaceFirst(tPrefix.toString(), "");
 			}
@@ -171,8 +172,8 @@ public enum GregtechOrePrefixes {
 		return aOre;
 	}
 
-	public static String replacePrefix(String aOre, GregtechOrePrefixes aPrefix) {
-		for (GregtechOrePrefixes tPrefix : values()) {
+	public static String replacePrefix(final String aOre, final GregtechOrePrefixes aPrefix) {
+		for (final GregtechOrePrefixes tPrefix : values()) {
 			if (aOre.startsWith(tPrefix.toString())) {
 				return aOre.replaceFirst(tPrefix.toString(), aPrefix.toString());
 			}
@@ -180,95 +181,122 @@ public enum GregtechOrePrefixes {
 		return "";
 	}
 
-	public static GregtechOrePrefixes getPrefix(String aPrefixName) {
+	public static GregtechOrePrefixes getPrefix(final String aPrefixName) {
 		return getPrefix(aPrefixName, null);
 	}
 
-	public static GregtechOrePrefixes getPrefix(String aPrefixName, GregtechOrePrefixes aReplacement) {
-		Object tObject = GT_Utility.getFieldContent(GregtechOrePrefixes.class, aPrefixName, false, false);
-		if (tObject != null && tObject instanceof GregtechOrePrefixes) return (GregtechOrePrefixes) tObject;
+	public static GregtechOrePrefixes getPrefix(final String aPrefixName, final GregtechOrePrefixes aReplacement) {
+		final Object tObject = GT_Utility.getFieldContent(GregtechOrePrefixes.class, aPrefixName, false, false);
+		if ((tObject != null) && (tObject instanceof GregtechOrePrefixes)) {
+			return (GregtechOrePrefixes) tObject;
+		}
 		return aReplacement;
 	}
 
-	public static Materials getMaterial(String aOre) {
+	public static Materials getMaterial(final String aOre) {
 		return Materials.get(stripPrefix(aOre));
 	}
 
-	public static Materials getMaterial(String aOre, GregtechOrePrefixes aPrefix) {
+	public static Materials getMaterial(final String aOre, final GregtechOrePrefixes aPrefix) {
 		return Materials.get(aOre.replaceFirst(aPrefix.toString(), ""));
 	}
 
-	public static Materials getRealMaterial(String aOre, GregtechOrePrefixes aPrefix) {
+	public static Materials getRealMaterial(final String aOre, final GregtechOrePrefixes aPrefix) {
 		return Materials.getRealMaterial(aOre.replaceFirst(aPrefix.toString(), ""));
 	}
 
-	public static boolean isInstanceOf(String aName, GregtechOrePrefixes aPrefix) {
+	public static boolean isInstanceOf(final String aName, final GregtechOrePrefixes aPrefix) {
 		return aName == null ? false : aName.startsWith(aPrefix.toString());
 	}
 
-	public boolean add(ItemStack aStack) {
-		if (aStack == null) return false;
-		if (!contains(aStack)) mPrefixedItems.add(aStack);
-		while (mPrefixedItems.contains(null)) mPrefixedItems.remove(null);
+	public boolean add(final ItemStack aStack) {
+		if (aStack == null) {
+			return false;
+		}
+		if (!this.contains(aStack)) {
+			this.mPrefixedItems.add(aStack);
+		}
+		while (this.mPrefixedItems.contains(null)) {
+			this.mPrefixedItems.remove(null);
+		}
 		return true;
 	}
 
 
-	public boolean contains(ItemStack aStack) {
-		if (aStack == null) return false;
-		for (ItemStack tStack : mPrefixedItems)
-			if (GT_Utility.areStacksEqual(aStack, tStack, !tStack.hasTagCompound())) return true;
+	public boolean contains(final ItemStack aStack) {
+		if (aStack == null) {
+			return false;
+		}
+		for (final ItemStack tStack : this.mPrefixedItems) {
+			if (GT_Utility.areStacksEqual(aStack, tStack, !tStack.hasTagCompound())) {
+				return true;
+			}
+		}
 		return false;
 	}
 
-	public boolean doGenerateItem(Materials aMaterial) {
-		return aMaterial != null && aMaterial != Materials._NULL && ((aMaterial.mTypes & mMaterialGenerationBits) != 0 || mGeneratedItems.contains(aMaterial)) && !mNotGeneratedItems.contains(aMaterial) && (mCondition == null || mCondition.isTrue(aMaterial));
+	public boolean doGenerateItem(final Materials aMaterial) {
+		return (aMaterial != null) && (aMaterial != Materials._NULL) && (((aMaterial.mTypes & this.mMaterialGenerationBits) != 0) || this.mGeneratedItems.contains(aMaterial)) && !this.mNotGeneratedItems.contains(aMaterial) && ((this.mCondition == null) || this.mCondition.isTrue(aMaterial));
 	}
 
-	public boolean ignoreMaterials(Materials... aMaterials) {
-		for (Materials tMaterial : aMaterials) if (tMaterial != null) mIgnoredMaterials.add(tMaterial);
+	public boolean ignoreMaterials(final Materials... aMaterials) {
+		for (final Materials tMaterial : aMaterials) {
+			if (tMaterial != null) {
+				this.mIgnoredMaterials.add(tMaterial);
+			}
+		}
 		return true;
 	}
 
-	public boolean addFamiliarPrefix(GregtechOrePrefixes aPrefix) {
-		if (aPrefix == null || mFamiliarPrefixes.contains(aPrefix) || aPrefix == this) return false;
-		return mFamiliarPrefixes.add(aPrefix);
+	public boolean addFamiliarPrefix(final GregtechOrePrefixes aPrefix) {
+		if ((aPrefix == null) || this.mFamiliarPrefixes.contains(aPrefix) || (aPrefix == this)) {
+			return false;
+		}
+		return this.mFamiliarPrefixes.add(aPrefix);
 	}
 
-	public boolean add(Interface_OreRecipeRegistrator aRegistrator) {
-		if (aRegistrator == null) return false;
-		return mOreProcessing.add(aRegistrator);
+	public boolean add(final Interface_OreRecipeRegistrator aRegistrator) {
+		if (aRegistrator == null) {
+			return false;
+		}
+		return this.mOreProcessing.add(aRegistrator);
 	}
 
-	public void processOre(GT_Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-		if (aMaterial != null && (aMaterial != GT_Materials._NULL || mIsSelfReferencing || !mIsMaterialBased) && GT_Utility.isStackValid(aStack))
-			for (Interface_OreRecipeRegistrator tRegistrator : mOreProcessing) {
-				if (D2)
-					GT_Log.ore.println("Processing '" + aOreDictName + "' with the Prefix '" + name() + "' and the Material '" + aMaterial.name() + "' at " + GT_Utility.getClassName(tRegistrator));
+	public void processOre(final GT_Materials aMaterial, final String aOreDictName, final String aModName, final ItemStack aStack) {
+		if ((aMaterial != null) && ((aMaterial != GT_Materials._NULL) || this.mIsSelfReferencing || !this.mIsMaterialBased) && GT_Utility.isStackValid(aStack)) {
+			for (final Interface_OreRecipeRegistrator tRegistrator : this.mOreProcessing) {
+				if (D2) {
+					GT_Log.ore.println("Processing '" + aOreDictName + "' with the Prefix '" + this.name() + "' and the Material '" + aMaterial.name() + "' at " + GT_Utility.getClassName(tRegistrator));
+				}
 				tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GT_Utility.copyAmount(1, aStack));
 			}
+		}
 	}
-	
+
 	//TODO
-	 public void processOre(Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-	        if (aMaterial != null && (aMaterial != Materials._NULL || mIsSelfReferencing || !mIsMaterialBased) && GT_Utility.isStackValid(aStack))
-	            for (Interface_OreRecipeRegistrator tRegistrator : mOreProcessingFake) {
-	                if (D2)
-	                    GT_Log.ore.println("Processing '" + aOreDictName + "' with the Prefix '" + name() + "' and the Material '" + aMaterial.name() + "' at " + GT_Utility.getClassName(tRegistrator));
-	                tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GT_Utility.copyAmount(1, aStack));
-	            }
-	    }
-
-	public Object get(Object aMaterial) {
-		if (aMaterial instanceof GT_Materials) return new GregtechItemData(this, (GT_Materials) aMaterial);
-		return name() + aMaterial;
+	public void processOre(final Materials aMaterial, final String aOreDictName, final String aModName, final ItemStack aStack) {
+		if ((aMaterial != null) && ((aMaterial != Materials._NULL) || this.mIsSelfReferencing || !this.mIsMaterialBased) && GT_Utility.isStackValid(aStack)) {
+			for (final Interface_OreRecipeRegistrator tRegistrator : this.mOreProcessingFake) {
+				if (D2) {
+					GT_Log.ore.println("Processing '" + aOreDictName + "' with the Prefix '" + this.name() + "' and the Material '" + aMaterial.name() + "' at " + GT_Utility.getClassName(tRegistrator));
+				}
+				tRegistrator.registerOre(this, aMaterial, aOreDictName, aModName, GT_Utility.copyAmount(1, aStack));
+			}
+		}
 	}
 
-	public String getDefaultLocalNameForItem(Materials aMaterial) {
+	public Object get(final Object aMaterial) {
+		if (aMaterial instanceof GT_Materials) {
+			return new GregtechItemData(this, (GT_Materials) aMaterial);
+		}
+		return this.name() + aMaterial;
+	}
+
+	public String getDefaultLocalNameForItem(final Materials aMaterial) {
 
 
 		// Use Standard Localization
-		return mLocalizedMaterialPre + aMaterial.mDefaultLocalName + mLocalizedMaterialPost;
+		return this.mLocalizedMaterialPre + aMaterial.mDefaultLocalName + this.mLocalizedMaterialPost;
 	}
 
 	public enum GT_Materials implements IColorModulationContainer, ISubTagContainer {
@@ -281,9 +309,9 @@ public enum GregtechOrePrefixes {
 		 * Mainly for preventing NullPointer Exceptions and providing Default Values.
 		 *
 		 * Unknown Material Components. Dead End Section.
-		 * 
+		 *
 		 * Alkalus Range 730-799 & 970-998
-		 * (aMetaItemSubID, TextureSet, aToolSpeed, aToolDurability, aToolQuality, aTypes, R, G, B, Alpha, aLocalName, 
+		 * (aMetaItemSubID, TextureSet, aToolSpeed, aToolDurability, aToolQuality, aTypes, R, G, B, Alpha, aLocalName,
 		 * aFuelType, aFuelPower, aMeltingPoint, aBlastFurnaceTemp, aBlastFurnaceRequired, aTransparent, aOreValue, aDensityMultiplier, aDensityDivider, aColor
 		 *	this(aMetaItemSubID, aIconSet, aToolSpeed, aToolDurability, aToolQuality, true);
 		 *
@@ -303,7 +331,7 @@ public enum GregtechOrePrefixes {
 		Quantum(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 255, 255, 255, 0, "ZPM Tier", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeLightGray, Arrays.asList(getTcAspectStack(TC_Aspects.ELECTRUM, 8), getTcAspectStack(TC_Aspects.MACHINA, 8))),
 
 		Superconductor(-1, TextureSet.SET_NONE, 1.0F, 0, 0, 0, 190, 240, 190, 0, "Superconductor", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeGreen, Arrays.asList(getTcAspectStack(TC_Aspects.ELECTRUM, 8))),
-		
+
 		Staballoy(30, TextureSet.SET_ROUGH, 10.0F, 5120, 4, 1 | 2  | 16 | 32 | 64 | 128, 68, 75, 66, 0, "Staballoy", 0, 0, 1500, 2800, true, false, 1, 3, 1, Dyes.dyeGreen, 2, Arrays.asList(new MaterialStack(Materials.Titanium, 1), new MaterialStack(Materials.Uranium, 9)), Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
 		Bedrockium(31, TextureSet.SET_FINE, 8.0F, 8196, 3, 1 | 2 | 16 | 32 | 64 | 128, 39, 39, 39, 0, "Bedrockium", 0, 0, -1, 0, false, false, 1, 5, 1, Dyes.dyeLightGray, 2, Arrays.asList(new MaterialStack(Materials.Carbon, 63), new MaterialStack(Materials.Carbon, 56)),   Arrays.asList(getTcAspectStack(TC_Aspects.VACUOS, 8), getTcAspectStack(TC_Aspects.TUTAMEN, 3))),
 		BloodSteel(32, TextureSet.SET_METALLIC, 11.0F, 768, 4, 1 | 2 | 16 | 32 | 64 | 128, 142, 28, 0, 0, "Blood Steel", 0, 0, -1, 0, false, false, 1, 1, 1, Dyes.dyeRed, 2, Arrays.asList(new MaterialStack(Materials.Steel, 3)), Arrays.asList(getTcAspectStack(TC_Aspects.VICTUS, 8), getTcAspectStack(TC_Aspects.IGNIS, 3))),
@@ -315,7 +343,7 @@ public enum GregtechOrePrefixes {
 		PulsatingIron(38, TextureSet.SET_SHINY, 5.0F, 256, 2, 1 | 2 | 64 | 128, 50, 91, 21, 0, "Pulsating Iron", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeGreen, 2, Arrays.asList(new MaterialStack(Materials.Iron, 2), new MaterialStack(Materials.EnderPearl, 2)), Arrays.asList(getTcAspectStack(TC_Aspects.ALIENIS, 3), getTcAspectStack(TC_Aspects.METALLUM, 3))),
 		/* TODO*/ RedstoneAlloy(39, TextureSet.SET_METALLIC, 1.0F, 256, 2, 1|2|16|32|64, 178,34,34, 0, "Redstone Alloy", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeRed, 2, Arrays.asList(new MaterialStack(Materials.Iron, 2), new MaterialStack(Materials.Redstone, 4))),
 
-		//Needs more Use, I think. 
+		//Needs more Use, I think.
 		Tantalloy60(40, TextureSet.SET_DULL, 8.0F, 5120, 3, 1 | 2 | 16 | 32 | 64 | 128, 68, 75, 166, 0, "Tantalloy-60", 0, 0, 3035, 2200, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2, Arrays.asList(new MaterialStack(Materials.Tungsten, 1), new MaterialStack(Materials.Tantalum, 9)), Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
 		Tantalloy61(41, TextureSet.SET_DULL, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 122, 135, 196, 0, "Tantalloy-61", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2, Arrays.asList(new MaterialStack(Materials.Tungsten, 1), new MaterialStack(Materials.Tantalum, 9), new MaterialStack(Materials.Titanium, 1)), Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
 
@@ -327,30 +355,30 @@ public enum GregtechOrePrefixes {
 		HastelloyX(47, TextureSet.SET_SHINY, 7.0F, 5120, 2, 1 | 2 | 16 | 32 | 64 | 128, 255, 193, 37, 0, "Hastelloy-X", 0, 0, 3015, 2150, true, false, 1, 2, 1, Dyes.dyeLightBlue, 2, Arrays.asList(new MaterialStack(Materials.Tungsten, 1), new MaterialStack(Materials.Tantalum, 9), new MaterialStack(Materials.Titanium, 1)), Arrays.asList(getTcAspectStack(TC_Aspects.METALLUM, 8), getTcAspectStack(TC_Aspects.STRONTIO, 3))),
 
 
-		
+
 		//Radioactive Materials
 		HydrofluoricAcid(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 200, 200, 200, 0, "Hydrofluoric Acid", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeWhite, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1))),
 		UraniumHexaFluoride(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 73, 220, 83, 0, "Uranium Hexafluoride", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeLime, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1))),
 		UraniumTetraFluoride(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 73, 220, 83, 0, "Uranium Tetrafluoride", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeLime, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1))),
-		ThoriumTetraFluoride(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 15, 120, 15, 0, "Thorium Tetrafluoride", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeGreen, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1))), 
-		
+		ThoriumTetraFluoride(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 15, 120, 15, 0, "Thorium Tetrafluoride", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeGreen, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1))),
+
 		SulfurousAcid(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 110, 220, 30, 0, "Sulfurous Acid", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeWhite, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1))),
 		SulfurDioxide(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 150, 200, 50, 0, "Sulfur Dioxide", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeWhite, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1))),
 		HydrogenChloride(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 150, 240, 90, 0, "Hydrogen Chloride", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeWhite, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1))),
-		SulfuricApatite(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 0, 105, 105, 0, "Sulfuric Apatite Solution", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeWhite, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1))), 
-		
-		SulfuricLithium(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 0, 105, 105, 0, "Sulfuric Lithium Solution", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeWhite, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1))), 
-		LithiumHydroxide(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 0, 105, 105, 0, "Lithium Hydroxide", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeWhite, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1))), 
-		 
+		SulfuricApatite(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 0, 105, 105, 0, "Sulfuric Apatite Solution", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeWhite, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1))),
+
+		SulfuricLithium(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 0, 105, 105, 0, "Sulfuric Lithium Solution", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeWhite, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1))),
+		LithiumHydroxide(-1, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 0, 105, 105, 0, "Lithium Hydroxide", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeWhite, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1))),
+
 		;
-		
-		
-		
-		
+
+
+
+
 		/**
 		 * List of all Materials.
 		 */
-		public static final Collection<GT_Materials> VALUES = new HashSet<GT_Materials>(Arrays.asList(values()));
+		public static final Collection<GT_Materials> VALUES = new HashSet<>(Arrays.asList(values()));
 
 
 		static {
@@ -378,11 +406,11 @@ public enum GregtechOrePrefixes {
 		public final int mMetaItemSubID;
 		public final boolean mUnificatable;
 		public final GT_Materials mMaterialInto;
-		public final List<MaterialStack> mMaterialList = new ArrayList<MaterialStack>();
-		public final List<GT_Materials> mOreByProducts = new ArrayList<GT_Materials>(), mOreReRegistrations = new ArrayList<GT_Materials>();
-		public final List<TC_AspectStack> mAspects = new ArrayList<TC_AspectStack>();
-		private final ArrayList<ItemStack> mMaterialItems = new ArrayList<ItemStack>();
-		private final Collection<SubTag> mSubTags = new HashSet<SubTag>();
+		public final List<MaterialStack> mMaterialList = new ArrayList<>();
+		public final List<GT_Materials> mOreByProducts = new ArrayList<>(), mOreReRegistrations = new ArrayList<>();
+		public final List<TC_AspectStack> mAspects = new ArrayList<>();
+		private final ArrayList<ItemStack> mMaterialItems = new ArrayList<>();
+		private final Collection<SubTag> mSubTags = new HashSet<>();
 		public Enchantment mEnchantmentTools = null, mEnchantmentArmors = null;
 		public byte mEnchantmentToolsLevel = 0, mEnchantmentArmorsLevel = 0;
 		public boolean mBlastFurnaceRequired = false;
@@ -401,14 +429,14 @@ public enum GregtechOrePrefixes {
 		 */
 		public Fluid mStandardMoltenFluid = null;
 
-		private GT_Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aToolDurability, int aToolQuality, boolean aUnificatable) {
-			mUnificatable = aUnificatable;
-			mMaterialInto = this;
-			mMetaItemSubID = aMetaItemSubID;
-			mToolQuality = (byte) aToolQuality;
-			mDurability = aToolDurability;
-			mToolSpeed = aToolSpeed;
-			mIconSet = aIconSet;
+		private GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed, final int aToolDurability, final int aToolQuality, final boolean aUnificatable) {
+			this.mUnificatable = aUnificatable;
+			this.mMaterialInto = this;
+			this.mMetaItemSubID = aMetaItemSubID;
+			this.mToolQuality = (byte) aToolQuality;
+			this.mDurability = aToolDurability;
+			this.mToolSpeed = aToolSpeed;
+			this.mIconSet = aIconSet;
 			if (aMetaItemSubID >= 0) {
 				if (CORE.sMU_GeneratedMaterials[aMetaItemSubID] == null) {
 					CORE.sMU_GeneratedMaterials[aMetaItemSubID] = this;
@@ -418,14 +446,16 @@ public enum GregtechOrePrefixes {
 			}
 		}
 
-		private GT_Materials(GT_Materials aMaterialInto, boolean aReRegisterIntoThis) {
-			mUnificatable = false;
-			mDefaultLocalName = aMaterialInto.mDefaultLocalName;
-			mMaterialInto = aMaterialInto.mMaterialInto;
-			if (aReRegisterIntoThis) mMaterialInto.mOreReRegistrations.add(this);
-			mChemicalFormula = aMaterialInto.mChemicalFormula;
-			mMetaItemSubID = -1;
-			mIconSet = TextureSet.SET_NONE;
+		private GT_Materials(final GT_Materials aMaterialInto, final boolean aReRegisterIntoThis) {
+			this.mUnificatable = false;
+			this.mDefaultLocalName = aMaterialInto.mDefaultLocalName;
+			this.mMaterialInto = aMaterialInto.mMaterialInto;
+			if (aReRegisterIntoThis) {
+				this.mMaterialInto.mOreReRegistrations.add(this);
+			}
+			this.mChemicalFormula = aMaterialInto.mChemicalFormula;
+			this.mMetaItemSubID = -1;
+			this.mIconSet = TextureSet.SET_NONE;
 		}
 
 		/**
@@ -451,85 +481,105 @@ public enum GregtechOrePrefixes {
 		 * @param aBlastFurnaceRequired If this requires a Blast Furnace.
 		 * @param aColor                Vanilla MC Wool Color which comes the closest to this.
 		 */
-		private GT_Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aToolDurability, int aToolQuality, int aTypes, int aR, int aG, int aB, int aA, String aLocalName, int aFuelType, int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent, int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor) {
+		private GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed, final int aToolDurability, final int aToolQuality, final int aTypes, final int aR, final int aG, final int aB, final int aA, final String aLocalName, final int aFuelType, final int aFuelPower, final int aMeltingPoint, final int aBlastFurnaceTemp, final boolean aBlastFurnaceRequired, final boolean aTransparent, final int aOreValue, final int aDensityMultiplier, final int aDensityDivider, final Dyes aColor) {
 			this(aMetaItemSubID, aIconSet, aToolSpeed, aToolDurability, aToolQuality, true);
-			mDefaultLocalName = aLocalName;
-			mMeltingPoint = (short) aMeltingPoint;
-			mBlastFurnaceTemp = (short) aBlastFurnaceTemp;
-			mBlastFurnaceRequired = aBlastFurnaceRequired;
-			if (aTransparent) add(SubTag.TRANSPARENT);
-			mFuelPower = aFuelPower;
-			mFuelType = aFuelType;
-			mOreValue = aOreValue;
-			mDensity = (M * aDensityMultiplier) / aDensityDivider;
-			mColor = aColor == null ? Dyes._NULL : aColor;
-			if (mColor != null) add(SubTag.HAS_COLOR);
-			mRGBa[0] = mMoltenRGBa[0] = (short) aR;
-			mRGBa[1] = mMoltenRGBa[1] = (short) aG;
-			mRGBa[2] = mMoltenRGBa[2] = (short) aB;
-			mRGBa[3] = mMoltenRGBa[3] = (short) aA;
-			mTypes = aTypes;
-			if ((mTypes & 2) != 0) add(SubTag.SMELTING_TO_FLUID);
+			this.mDefaultLocalName = aLocalName;
+			this.mMeltingPoint = (short) aMeltingPoint;
+			this.mBlastFurnaceTemp = (short) aBlastFurnaceTemp;
+			this.mBlastFurnaceRequired = aBlastFurnaceRequired;
+			if (aTransparent) {
+				this.add(SubTag.TRANSPARENT);
+			}
+			this.mFuelPower = aFuelPower;
+			this.mFuelType = aFuelType;
+			this.mOreValue = aOreValue;
+			this.mDensity = (M * aDensityMultiplier) / aDensityDivider;
+			this.mColor = aColor == null ? Dyes._NULL : aColor;
+			if (this.mColor != null) {
+				this.add(SubTag.HAS_COLOR);
+			}
+			this.mRGBa[0] = this.mMoltenRGBa[0] = (short) aR;
+			this.mRGBa[1] = this.mMoltenRGBa[1] = (short) aG;
+			this.mRGBa[2] = this.mMoltenRGBa[2] = (short) aB;
+			this.mRGBa[3] = this.mMoltenRGBa[3] = (short) aA;
+			this.mTypes = aTypes;
+			if ((this.mTypes & 2) != 0) {
+				this.add(SubTag.SMELTING_TO_FLUID);
+			}
 		}
 
-		private GT_Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aToolDurability, int aToolQuality, int aTypes, int aR, int aG, int aB, int aA, String aLocalName, int aFuelType, int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent, int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor, List<TC_AspectStack> aAspects) {
+		private GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed, final int aToolDurability, final int aToolQuality, final int aTypes, final int aR, final int aG, final int aB, final int aA, final String aLocalName, final int aFuelType, final int aFuelPower, final int aMeltingPoint, final int aBlastFurnaceTemp, final boolean aBlastFurnaceRequired, final boolean aTransparent, final int aOreValue, final int aDensityMultiplier, final int aDensityDivider, final Dyes aColor, final List<TC_AspectStack> aAspects) {
 			this(aMetaItemSubID, aIconSet, aToolSpeed, aToolDurability, aToolQuality, aTypes, aR, aG, aB, aA, aLocalName, aFuelType, aFuelPower, aMeltingPoint, aBlastFurnaceTemp, aBlastFurnaceRequired, aTransparent, aOreValue, aDensityMultiplier, aDensityDivider, aColor);
-			mAspects.addAll(aAspects);
+			this.mAspects.addAll(aAspects);
 		}
 
 		/**
 		 * @param aElement The Element Enum represented by this Material
 		 */
-		private GT_Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aToolDurability, int aToolQuality, int aTypes, int aR, int aG, int aB, int aA, String aLocalName, int aFuelType, int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent, int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor, Element aElement, List<TC_AspectStack> aAspects) {
+		private GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed, final int aToolDurability, final int aToolQuality, final int aTypes, final int aR, final int aG, final int aB, final int aA, final String aLocalName, final int aFuelType, final int aFuelPower, final int aMeltingPoint, final int aBlastFurnaceTemp, final boolean aBlastFurnaceRequired, final boolean aTransparent, final int aOreValue, final int aDensityMultiplier, final int aDensityDivider, final Dyes aColor, final Element aElement, final List<TC_AspectStack> aAspects) {
 			this(aMetaItemSubID, aIconSet, aToolSpeed, aToolDurability, aToolQuality, aTypes, aR, aG, aB, aA, aLocalName, aFuelType, aFuelPower, aMeltingPoint, aBlastFurnaceTemp, aBlastFurnaceRequired, aTransparent, aOreValue, aDensityMultiplier, aDensityDivider, aColor);
-			mElement = aElement;
+			this.mElement = aElement;
 			//mElement.mLinkedMaterials.add(this);
 			if (aElement == Element._NULL) {
-				mChemicalFormula = "Empty";
+				this.mChemicalFormula = "Empty";
 			} else {
-				mChemicalFormula = aElement.toString();
-				mChemicalFormula = mChemicalFormula.replaceAll("_", "-");
+				this.mChemicalFormula = aElement.toString();
+				this.mChemicalFormula = this.mChemicalFormula.replaceAll("_", "-");
 			}
-			mAspects.addAll(aAspects);
+			this.mAspects.addAll(aAspects);
 		}
 
-		private GT_Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aToolDurability, int aToolQuality, int aTypes, int aR, int aG, int aB, int aA, String aLocalName, int aFuelType, int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent, int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor, int aExtraData, List<MaterialStack> aMaterialList) {
+		private GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed, final int aToolDurability, final int aToolQuality, final int aTypes, final int aR, final int aG, final int aB, final int aA, final String aLocalName, final int aFuelType, final int aFuelPower, final int aMeltingPoint, final int aBlastFurnaceTemp, final boolean aBlastFurnaceRequired, final boolean aTransparent, final int aOreValue, final int aDensityMultiplier, final int aDensityDivider, final Dyes aColor, final int aExtraData, final List<MaterialStack> aMaterialList) {
 			this(aMetaItemSubID, aIconSet, aToolSpeed, aToolDurability, aToolQuality, aTypes, aR, aG, aB, aA, aLocalName, aFuelType, aFuelPower, aMeltingPoint, aBlastFurnaceTemp, aBlastFurnaceRequired, aTransparent, aOreValue, aDensityMultiplier, aDensityDivider, aColor, aExtraData, aMaterialList, null);
 		}
 
-		private GT_Materials(int aMetaItemSubID, TextureSet aIconSet, float aToolSpeed, int aToolDurability, int aToolQuality, int aTypes, int aR, int aG, int aB, int aA, String aLocalName, int aFuelType, int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent, int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor, int aExtraData, List<MaterialStack> aMaterialList, List<TC_AspectStack> aAspects) {
+		private GT_Materials(final int aMetaItemSubID, final TextureSet aIconSet, final float aToolSpeed, final int aToolDurability, final int aToolQuality, final int aTypes, final int aR, final int aG, final int aB, final int aA, final String aLocalName, final int aFuelType, final int aFuelPower, final int aMeltingPoint, final int aBlastFurnaceTemp, final boolean aBlastFurnaceRequired, final boolean aTransparent, final int aOreValue, final int aDensityMultiplier, final int aDensityDivider, final Dyes aColor, final int aExtraData, final List<MaterialStack> aMaterialList, final List<TC_AspectStack> aAspects) {
 			this(aMetaItemSubID, aIconSet, aToolSpeed, aToolDurability, aToolQuality, aTypes, aR, aG, aB, aA, aLocalName, aFuelType, aFuelPower, aMeltingPoint, aBlastFurnaceTemp, aBlastFurnaceRequired, aTransparent, aOreValue, aDensityMultiplier, aDensityDivider, aColor);
-			mExtraData = aExtraData;
-			mMaterialList.addAll(aMaterialList);
-			mChemicalFormula = "";
-			for (MaterialStack tMaterial : mMaterialList) mChemicalFormula += tMaterial.toString();
-			mChemicalFormula = mChemicalFormula.replaceAll("_", "-");
+			this.mExtraData = aExtraData;
+			this.mMaterialList.addAll(aMaterialList);
+			this.mChemicalFormula = "";
+			for (final MaterialStack tMaterial : this.mMaterialList) {
+				this.mChemicalFormula += tMaterial.toString();
+			}
+			this.mChemicalFormula = this.mChemicalFormula.replaceAll("_", "-");
 
 			int tAmountOfComponents = 0, tMeltingPoint = 0;
-			for (MaterialStack tMaterial : mMaterialList) {
+			for (final MaterialStack tMaterial : this.mMaterialList) {
 				tAmountOfComponents += tMaterial.mAmount;
-				if (tMaterial.mMaterial.mMeltingPoint > 0)
+				if (tMaterial.mMaterial.mMeltingPoint > 0) {
 					tMeltingPoint += tMaterial.mMaterial.mMeltingPoint * tMaterial.mAmount;
-				if (aAspects == null)
-					for (TC_AspectStack tAspect : tMaterial.mMaterial.mAspects) tAspect.addToAspectList(mAspects);
+				}
+				if (aAspects == null) {
+					for (final TC_AspectStack tAspect : tMaterial.mMaterial.mAspects) {
+						tAspect.addToAspectList(this.mAspects);
+					}
+				}
 			}
 
-			if (mMeltingPoint < 0) mMeltingPoint = (short) (tMeltingPoint / tAmountOfComponents);
+			if (this.mMeltingPoint < 0) {
+				this.mMeltingPoint = (short) (tMeltingPoint / tAmountOfComponents);
+			}
 
 			tAmountOfComponents *= aDensityMultiplier;
 			tAmountOfComponents /= aDensityDivider;
-			if (aAspects == null) for (TC_AspectStack tAspect : mAspects)
-				tAspect.mAmount = Math.max(1, tAspect.mAmount / Math.max(1, tAmountOfComponents));
-			else mAspects.addAll(aAspects);
+			if (aAspects == null) {
+				for (final TC_AspectStack tAspect : this.mAspects) {
+					tAspect.mAmount = Math.max(1, tAspect.mAmount / Math.max(1, tAmountOfComponents));
+				}
+			} else {
+				this.mAspects.addAll(aAspects);
+			}
 		}
 
-		public static GT_Materials get(String aMaterialName) {
-			Object tObject = GT_Utility.getFieldContent(GT_Materials.class, aMaterialName, false, false);
-			if (tObject != null && tObject instanceof GT_Materials) return (GT_Materials) tObject;
+		public static GT_Materials get(final String aMaterialName) {
+			final Object tObject = GT_Utility.getFieldContent(GT_Materials.class, aMaterialName, false, false);
+			if ((tObject != null) && (tObject instanceof GT_Materials)) {
+				return (GT_Materials) tObject;
+			}
 			return _NULL;
 		}
 
-		public static GT_Materials getRealMaterial(String aMaterialName) {
+		public static GT_Materials getRealMaterial(final String aMaterialName) {
 			return get(aMaterialName).mMaterialInto;
 		}
 
@@ -538,12 +588,13 @@ public enum GregtechOrePrefixes {
 		 *
 		 * @param aConfiguration
 		 */
-		public static void init(GT_Config aConfiguration) {
-			for (GT_Materials tMaterial : VALUES) {
-				String tString = tMaterial.toString().toLowerCase();
+		public static void init(final GT_Config aConfiguration) {
+			for (final GT_Materials tMaterial : VALUES) {
+				final String tString = tMaterial.toString().toLowerCase();
 				tMaterial.mHeatDamage = (float) aConfiguration.get(ConfigCategories.Materials.heatdamage, tString, tMaterial.mHeatDamage);
-				if (tMaterial.mBlastFurnaceRequired)
+				if (tMaterial.mBlastFurnaceRequired) {
 					tMaterial.mBlastFurnaceRequired = aConfiguration.get(ConfigCategories.Materials.blastfurnacerequirements, tString, true);
+				}
 				if (tMaterial.mBlastFurnaceRequired && aConfiguration.get(ConfigCategories.Materials.blastinductionsmelter, tString, tMaterial.mBlastFurnaceTemp < 1500)){}
 				//GT_ModHandler.ThermalExpansion.addSmelterBlastOre(tMaterial);
 				//tMaterial.mHandleMaterial = (tMaterial == Desh ? tMaterial.mHandleMaterial : tMaterial == Diamond || tMaterial == Thaumium ? Wood : tMaterial.contains(SubTag.BURNING) ? Blaze : tMaterial.contains(SubTag.MAGICAL) && tMaterial.contains(SubTag.CRYSTAL) && Loader.isModLoaded(MOD_ID_TC) ? Thaumium : tMaterial.getMass() > Element.Tc.getMass() * 2 ? TungstenSteel : tMaterial.getMass() > Element.Tc.getMass() ? Steel : Wood);
@@ -551,98 +602,129 @@ public enum GregtechOrePrefixes {
 		}
 
 		public boolean isRadioactive() {
-			if (mElement != null) return mElement.mHalfLifeSeconds >= 0;
-			for (MaterialStack tMaterial : mMaterialList) if (tMaterial.mMaterial.isRadioactive()) return true;
+			if (this.mElement != null) {
+				return this.mElement.mHalfLifeSeconds >= 0;
+			}
+			for (final MaterialStack tMaterial : this.mMaterialList) {
+				if (tMaterial.mMaterial.isRadioactive()) {
+					return true;
+				}
+			}
 			return false;
 		}
 
 		public long getProtons() {
-			if (mElement != null) return mElement.getProtons();
-			if (mMaterialList.size() <= 0) return Element.Tc.getProtons();
+			if (this.mElement != null) {
+				return this.mElement.getProtons();
+			}
+			if (this.mMaterialList.size() <= 0) {
+				return Element.Tc.getProtons();
+			}
 			long rAmount = 0, tAmount = 0;
-			for (MaterialStack tMaterial : mMaterialList) {
+			for (final MaterialStack tMaterial : this.mMaterialList) {
 				tAmount += tMaterial.mAmount;
 				rAmount += tMaterial.mAmount * tMaterial.mMaterial.getProtons();
 			}
-			return (getDensity() * rAmount) / (tAmount * M);
+			return (this.getDensity() * rAmount) / (tAmount * M);
 		}
 
 		public long getNeutrons() {
-			if (mElement != null) return mElement.getNeutrons();
-			if (mMaterialList.size() <= 0) return Element.Tc.getNeutrons();
+			if (this.mElement != null) {
+				return this.mElement.getNeutrons();
+			}
+			if (this.mMaterialList.size() <= 0) {
+				return Element.Tc.getNeutrons();
+			}
 			long rAmount = 0, tAmount = 0;
-			for (MaterialStack tMaterial : mMaterialList) {
+			for (final MaterialStack tMaterial : this.mMaterialList) {
 				tAmount += tMaterial.mAmount;
 				rAmount += tMaterial.mAmount * tMaterial.mMaterial.getNeutrons();
 			}
-			return (getDensity() * rAmount) / (tAmount * M);
+			return (this.getDensity() * rAmount) / (tAmount * M);
 		}
 
 		public long getMass() {
-			if (mElement != null) return mElement.getMass();
-			if (mMaterialList.size() <= 0) return Element.Tc.getMass();
+			if (this.mElement != null) {
+				return this.mElement.getMass();
+			}
+			if (this.mMaterialList.size() <= 0) {
+				return Element.Tc.getMass();
+			}
 			long rAmount = 0, tAmount = 0;
-			for (MaterialStack tMaterial : mMaterialList) {
+			for (final MaterialStack tMaterial : this.mMaterialList) {
 				tAmount += tMaterial.mAmount;
 				rAmount += tMaterial.mAmount * tMaterial.mMaterial.getMass();
 			}
-			return (getDensity() * rAmount) / (tAmount * M);
+			return (this.getDensity() * rAmount) / (tAmount * M);
 		}
 
 		public long getDensity() {
-			return mDensity;
+			return this.mDensity;
 		}
 
 		public String getToolTip() {
-			return getToolTip(1, false);
+			return this.getToolTip(1, false);
 		}
 
-		public String getToolTip(boolean aShowQuestionMarks) {
-			return getToolTip(1, aShowQuestionMarks);
+		public String getToolTip(final boolean aShowQuestionMarks) {
+			return this.getToolTip(1, aShowQuestionMarks);
 		}
 
-		public String getToolTip(long aMultiplier) {
-			return getToolTip(aMultiplier, false);
+		public String getToolTip(final long aMultiplier) {
+			return this.getToolTip(aMultiplier, false);
 		}
 
-		public String getToolTip(long aMultiplier, boolean aShowQuestionMarks) {
-			if (!aShowQuestionMarks && mChemicalFormula.equals("?")) return "";
-			if (aMultiplier >= M * 2 && !mMaterialList.isEmpty()) {
-				return ((mElement != null || (mMaterialList.size() < 2 && mMaterialList.get(0).mAmount == 1)) ? mChemicalFormula : "(" + mChemicalFormula + ")") + aMultiplier;
+		public String getToolTip(final long aMultiplier, final boolean aShowQuestionMarks) {
+			if (!aShowQuestionMarks && this.mChemicalFormula.equals("?")) {
+				return "";
 			}
-			return mChemicalFormula;
+			if ((aMultiplier >= (M * 2)) && !this.mMaterialList.isEmpty()) {
+				return (((this.mElement != null) || ((this.mMaterialList.size() < 2) && (this.mMaterialList.get(0).mAmount == 1))) ? this.mChemicalFormula : "(" + this.mChemicalFormula + ")") + aMultiplier;
+			}
+			return this.mChemicalFormula;
 		}
 
 		/**
 		 * Adds an ItemStack to this Material.
 		 */
-		public GT_Materials add(ItemStack aStack) {
-			if (aStack != null && !contains(aStack)) mMaterialItems.add(aStack);
+		public GT_Materials add(final ItemStack aStack) {
+			if ((aStack != null) && !this.contains(aStack)) {
+				this.mMaterialItems.add(aStack);
+			}
 			return this;
 		}
 
 		/**
 		 * This is used to determine if any of the ItemStacks belongs to this Material.
 		 */
-		public boolean contains(ItemStack... aStacks) {
-			if (aStacks == null || aStacks.length <= 0) return false;
-			for (ItemStack tStack : mMaterialItems)
-				for (ItemStack aStack : aStacks)
-					if (GT_Utility.areStacksEqual(aStack, tStack, !tStack.hasTagCompound())) return true;
+		public boolean contains(final ItemStack... aStacks) {
+			if ((aStacks == null) || (aStacks.length <= 0)) {
+				return false;
+			}
+			for (final ItemStack tStack : this.mMaterialItems) {
+				for (final ItemStack aStack : aStacks) {
+					if (GT_Utility.areStacksEqual(aStack, tStack, !tStack.hasTagCompound())) {
+						return true;
+					}
+				}
+			}
 			return false;
 		}
 
 		/**
 		 * This is used to determine if an ItemStack belongs to this Material.
 		 */
-		public boolean remove(ItemStack aStack) {
-			if (aStack == null) return false;
+		public boolean remove(final ItemStack aStack) {
+			if (aStack == null) {
+				return false;
+			}
 			boolean temp = false;
-			for (int i = 0; i < mMaterialItems.size(); i++)
-				if (GT_Utility.areStacksEqual(aStack, mMaterialItems.get(i))) {
-					mMaterialItems.remove(i--);
+			for (int i = 0; i < this.mMaterialItems.size(); i++) {
+				if (GT_Utility.areStacksEqual(aStack, this.mMaterialItems.get(i))) {
+					this.mMaterialItems.remove(i--);
 					temp = true;
 				}
+			}
 			return temp;
 		}
 
@@ -650,12 +732,15 @@ public enum GregtechOrePrefixes {
 		 * Adds a SubTag to this Material
 		 */
 		@Override
-		public ISubTagContainer add(SubTag... aTags) {
-			if (aTags != null) for (SubTag aTag : aTags)
-				if (aTag != null && !contains(aTag)) {
-					aTag.addContainerToList(this);
-					mSubTags.add(aTag);
+		public ISubTagContainer add(final SubTag... aTags) {
+			if (aTags != null) {
+				for (final SubTag aTag : aTags) {
+					if ((aTag != null) && !this.contains(aTag)) {
+						aTag.addContainerToList(this);
+						this.mSubTags.add(aTag);
+					}
 				}
+			}
 			return this;
 		}
 
@@ -663,23 +748,23 @@ public enum GregtechOrePrefixes {
 		 * If this Material has this exact SubTag
 		 */
 		@Override
-		public boolean contains(SubTag aTag) {
-			return mSubTags.contains(aTag);
+		public boolean contains(final SubTag aTag) {
+			return this.mSubTags.contains(aTag);
 		}
 
 		/**
 		 * Removes a SubTag from this Material
 		 */
 		@Override
-		public boolean remove(SubTag aTag) {
-			return mSubTags.remove(aTag);
+		public boolean remove(final SubTag aTag) {
+			return this.mSubTags.remove(aTag);
 		}
 
 		/**
 		 * Sets the Heat Damage for this Material (negative = frost)
 		 */
-		public GT_Materials setHeatDamage(float aHeatDamage) {
-			mHeatDamage = aHeatDamage;
+		public GT_Materials setHeatDamage(final float aHeatDamage) {
+			this.mHeatDamage = aHeatDamage;
 			return this;
 		}
 
@@ -687,8 +772,10 @@ public enum GregtechOrePrefixes {
 		 * Adds a Material to the List of Byproducts when grinding this Ore.
 		 * Is used for more precise Ore grinding, so that it is possible to choose between certain kinds of Materials.
 		 */
-		public GT_Materials addOreByProduct(GT_Materials aMaterial) {
-			if (!mOreByProducts.contains(aMaterial.mMaterialInto)) mOreByProducts.add(aMaterial.mMaterialInto);
+		public GT_Materials addOreByProduct(final GT_Materials aMaterial) {
+			if (!this.mOreByProducts.contains(aMaterial.mMaterialInto)) {
+				this.mOreByProducts.add(aMaterial.mMaterialInto);
+			}
 			return this;
 		}
 
@@ -696,8 +783,12 @@ public enum GregtechOrePrefixes {
 		 * Adds multiple Materials to the List of Byproducts when grinding this Ore.
 		 * Is used for more precise Ore grinding, so that it is possible to choose between certain kinds of Materials.
 		 */
-		public GT_Materials addOreByProducts(GT_Materials... aMaterials) {
-			for (GT_Materials tMaterial : aMaterials) if (tMaterial != null) addOreByProduct(tMaterial);
+		public GT_Materials addOreByProducts(final GT_Materials... aMaterials) {
+			for (final GT_Materials tMaterial : aMaterials) {
+				if (tMaterial != null) {
+					this.addOreByProduct(tMaterial);
+				}
+			}
 			return this;
 		}
 
@@ -705,16 +796,20 @@ public enum GregtechOrePrefixes {
 		 * If this Ore gives multiple drops of its Main Material.
 		 * Lapis Ore for example gives about 6 drops.
 		 */
-		public GT_Materials setOreMultiplier(int aOreMultiplier) {
-			if (aOreMultiplier > 0) mOreMultiplier = aOreMultiplier;
+		public GT_Materials setOreMultiplier(final int aOreMultiplier) {
+			if (aOreMultiplier > 0) {
+				this.mOreMultiplier = aOreMultiplier;
+			}
 			return this;
 		}
 
 		/**
 		 * If this Ore gives multiple drops of its Byproduct Material.
 		 */
-		public GT_Materials setByProductMultiplier(int aByProductMultiplier) {
-			if (aByProductMultiplier > 0) mByProductMultiplier = aByProductMultiplier;
+		public GT_Materials setByProductMultiplier(final int aByProductMultiplier) {
+			if (aByProductMultiplier > 0) {
+				this.mByProductMultiplier = aByProductMultiplier;
+			}
 			return this;
 		}
 
@@ -722,16 +817,20 @@ public enum GregtechOrePrefixes {
 		 * If this Ore gives multiple drops of its Main Material.
 		 * Lapis Ore for example gives about 6 drops.
 		 */
-		public GT_Materials setSmeltingMultiplier(int aSmeltingMultiplier) {
-			if (aSmeltingMultiplier > 0) mSmeltingMultiplier = aSmeltingMultiplier;
+		public GT_Materials setSmeltingMultiplier(final int aSmeltingMultiplier) {
+			if (aSmeltingMultiplier > 0) {
+				this.mSmeltingMultiplier = aSmeltingMultiplier;
+			}
 			return this;
 		}
 
 		/**
 		 * This Ore should be smolten directly into an Ingot of this Material instead of an Ingot of itself.
 		 */
-		public GT_Materials setDirectSmelting(GT_Materials aMaterial) {
-			if (aMaterial != null) mDirectSmelting = aMaterial.mMaterialInto.mDirectSmelting;
+		public GT_Materials setDirectSmelting(final GT_Materials aMaterial) {
+			if (aMaterial != null) {
+				this.mDirectSmelting = aMaterial.mMaterialInto.mDirectSmelting;
+			}
 			return this;
 		}
 
@@ -739,80 +838,98 @@ public enum GregtechOrePrefixes {
 		 * This Material should be the Main Material this Ore gets ground into.
 		 * Example, Chromite giving Chrome or Tungstate giving Tungsten.
 		 */
-		public GT_Materials setOreReplacement(GT_Materials aMaterial) {
-			if (aMaterial != null) mOreReplacement = aMaterial.mMaterialInto.mOreReplacement;
+		public GT_Materials setOreReplacement(final GT_Materials aMaterial) {
+			if (aMaterial != null) {
+				this.mOreReplacement = aMaterial.mMaterialInto.mOreReplacement;
+			}
 			return this;
 		}
 
 		/**
 		 * This Material smelts always into an instance of aMaterial. Used for Magnets.
 		 */
-		public GT_Materials setSmeltingInto(GT_Materials aMaterial) {
-			if (aMaterial != null) mSmeltInto = aMaterial.mMaterialInto.mSmeltInto;
+		public GT_Materials setSmeltingInto(final GT_Materials aMaterial) {
+			if (aMaterial != null) {
+				this.mSmeltInto = aMaterial.mMaterialInto.mSmeltInto;
+			}
 			return this;
 		}
 
 		/**
 		 * This Material arc smelts always into an instance of aMaterial. Used for Wrought Iron.
 		 */
-		public GT_Materials setArcSmeltingInto(GT_Materials aMaterial) {
-			if (aMaterial != null) mArcSmeltInto = aMaterial.mMaterialInto.mArcSmeltInto;
+		public GT_Materials setArcSmeltingInto(final GT_Materials aMaterial) {
+			if (aMaterial != null) {
+				this.mArcSmeltInto = aMaterial.mMaterialInto.mArcSmeltInto;
+			}
 			return this;
 		}
 
 		/**
 		 * This Material macerates always into an instance of aMaterial.
 		 */
-		public GT_Materials setMaceratingInto(GT_Materials aMaterial) {
-			if (aMaterial != null) mMacerateInto = aMaterial.mMaterialInto.mMacerateInto;
+		public GT_Materials setMaceratingInto(final GT_Materials aMaterial) {
+			if (aMaterial != null) {
+				this.mMacerateInto = aMaterial.mMaterialInto.mMacerateInto;
+			}
 			return this;
 		}
 
-		public GT_Materials setEnchantmentForTools(Enchantment aEnchantment, int aEnchantmentLevel) {
-			mEnchantmentTools = aEnchantment;
-			mEnchantmentToolsLevel = (byte) aEnchantmentLevel;
+		public GT_Materials setEnchantmentForTools(final Enchantment aEnchantment, final int aEnchantmentLevel) {
+			this.mEnchantmentTools = aEnchantment;
+			this.mEnchantmentToolsLevel = (byte) aEnchantmentLevel;
 			return this;
 		}
 
-		public GT_Materials setEnchantmentForArmors(Enchantment aEnchantment, int aEnchantmentLevel) {
-			mEnchantmentArmors = aEnchantment;
-			mEnchantmentArmorsLevel = (byte) aEnchantmentLevel;
+		public GT_Materials setEnchantmentForArmors(final Enchantment aEnchantment, final int aEnchantmentLevel) {
+			this.mEnchantmentArmors = aEnchantment;
+			this.mEnchantmentArmorsLevel = (byte) aEnchantmentLevel;
 			return this;
 		}
 
-		public FluidStack getSolid(long aAmount) {
-			if (mSolid == null) return null;
-			return new GT_FluidStack(mSolid, (int) aAmount);
+		public FluidStack getSolid(final long aAmount) {
+			if (this.mSolid == null) {
+				return null;
+			}
+			return new GT_FluidStack(this.mSolid, (int) aAmount);
 		}
 
-		public FluidStack getFluid(long aAmount) {
-			if (mFluid == null) return null;
-			return new GT_FluidStack(mFluid, (int) aAmount);
+		public FluidStack getFluid(final long aAmount) {
+			if (this.mFluid == null) {
+				return null;
+			}
+			return new GT_FluidStack(this.mFluid, (int) aAmount);
 		}
 
-		public FluidStack getGas(long aAmount) {
-			if (mGas == null) return null;
-			return new GT_FluidStack(mGas, (int) aAmount);
+		public FluidStack getGas(final long aAmount) {
+			if (this.mGas == null) {
+				return null;
+			}
+			return new GT_FluidStack(this.mGas, (int) aAmount);
 		}
 
-		public FluidStack getPlasma(long aAmount) {
-			if (mPlasma == null) return null;
-			return new GT_FluidStack(mPlasma, (int) aAmount);
+		public FluidStack getPlasma(final long aAmount) {
+			if (this.mPlasma == null) {
+				return null;
+			}
+			return new GT_FluidStack(this.mPlasma, (int) aAmount);
 		}
 
-		public FluidStack getMolten(long aAmount) {
-			if (mStandardMoltenFluid == null) return null;
-			return new GT_FluidStack(mStandardMoltenFluid, (int) aAmount);
+		public FluidStack getMolten(final long aAmount) {
+			if (this.mStandardMoltenFluid == null) {
+				return null;
+			}
+			return new GT_FluidStack(this.mStandardMoltenFluid, (int) aAmount);
 		}
 
 		@Override
 		public short[] getRGBA() {
-			return mRGBa;
+			return this.mRGBa;
 		}
 
 		public static volatile int VERSION = 508;
 
 	}
 
-	
+
 }

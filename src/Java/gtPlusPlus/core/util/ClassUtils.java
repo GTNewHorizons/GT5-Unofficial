@@ -10,31 +10,31 @@ public class ClassUtils {
     //  There is therefore no more risk of code throwing NoClassDefFoundException.
     executeCodeLinkingToDependency();
 	}*/
-	public static boolean isPresent(String className) {
+	public static boolean isPresent(final String className) {
 		try {
 			Class.forName(className);
 			return true;
-		} catch (Throwable ex) {
+		} catch (final Throwable ex) {
 			// Class or one of its dependencies is not present...
 			return false;
 		}
 	}
 
-	public static Method getMethodViaReflection(Class<?> lookupClass, String methodName, boolean invoke) throws Exception{
-		Class<? extends Class> lookup = lookupClass.getClass();
-		Method m = lookup.getDeclaredMethod(methodName);
-		m.setAccessible(true);// Abracadabra 
+	public static Method getMethodViaReflection(final Class<?> lookupClass, final String methodName, final boolean invoke) throws Exception{
+		final Class<? extends Class> lookup = lookupClass.getClass();
+		final Method m = lookup.getDeclaredMethod(methodName);
+		m.setAccessible(true);// Abracadabra
 		if (invoke){
 			m.invoke(lookup);// now its OK
 		}
 		return m;
 	}
 
-	public static Class getNonPublicClass(String className){
+	public static Class getNonPublicClass(final String className){
 		Class<?> c = null;
 		try {
 			c = Class.forName(className);
-		} catch (ClassNotFoundException e) {
+		} catch (final ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -59,7 +59,7 @@ public class ClassUtils {
 				constructor.setAccessible(true);//ABRACADABRA!
 
 				try {
-					Object o = constructor.newInstance();
+					final Object o = constructor.newInstance();
 					return (Class) o;
 				} catch (InstantiationException | IllegalAccessException
 						| IllegalArgumentException | InvocationTargetException e) {

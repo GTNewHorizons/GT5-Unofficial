@@ -11,43 +11,43 @@ public class SlotBuzzSaw extends Slot{
 
 	public SAWTOOL currentTool = SAWTOOL.NONE;
 
-	public SlotBuzzSaw(IInventory inventory, int slot, int x, int y) {
+	public SlotBuzzSaw(final IInventory inventory, final int slot, final int x, final int y) {
 		super(inventory, slot, x, y);
 
 	}
 
 	@Override
-	public boolean isItemValid(ItemStack itemstack) {
+	public boolean isItemValid(final ItemStack itemstack) {
 		boolean isValid = false;
 
 		if (itemstack != null){
-			if (itemstack.getItem() instanceof GT_MetaGenerated_Item_02 || itemstack.getItem() instanceof GT_MetaGenerated_Tool){
+			if ((itemstack.getItem() instanceof GT_MetaGenerated_Item_02) || (itemstack.getItem() instanceof GT_MetaGenerated_Tool)){
 				//Buzzsaw Blade //TODO
 				/*if (OrePrefixes.toolHeadBuzzSaw.contains(itemstack)){
-					isValid = false;					
+					isValid = false;
 				}*/
 				if (OrePrefixes.craftingTool.contains(itemstack)){
-					if (itemstack.getDisplayName().toLowerCase().contains("saw")){					
+					if (itemstack.getDisplayName().toLowerCase().contains("saw")){
 						if (itemstack.getItemDamage() == 10){
 							isValid = true;
-							currentTool = SAWTOOL.SAW;
+							this.currentTool = SAWTOOL.SAW;
 						}
 						if (itemstack.getItemDamage() == 140){
 							isValid = true;
-							currentTool = SAWTOOL.BUZZSAW;
+							this.currentTool = SAWTOOL.BUZZSAW;
 						}
 					}
 				}
 				else {
-					currentTool = SAWTOOL.NONE;
+					this.currentTool = SAWTOOL.NONE;
 				}
 			}
 			else {
-				currentTool = SAWTOOL.NONE;
+				this.currentTool = SAWTOOL.NONE;
 			}
-		}	
+		}
 		else {
-			currentTool = SAWTOOL.NONE;
+			this.currentTool = SAWTOOL.NONE;
 		}
 		return isValid;
 	}

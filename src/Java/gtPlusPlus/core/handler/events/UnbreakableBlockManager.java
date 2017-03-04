@@ -17,14 +17,14 @@ public class UnbreakableBlockManager{
 	}
 
 
-	public final void setmTileEntity(BaseMetaTileEntity mTileEntity/*, EntityPlayer aPlayer*/) {
+	public final void setmTileEntity(final BaseMetaTileEntity mTileEntity/*, EntityPlayer aPlayer*/) {
 		UnbreakableBlockManager.mTileEntity = mTileEntity;
 		if (!hasRun){
 			hasRun = true;
-			makeIndestructible(/*aPlayer*/);
+			this.makeIndestructible(/*aPlayer*/);
 		}
 		else {
-			Utils.LOG_WARNING("Why do you run twice?");	
+			Utils.LOG_WARNING("Why do you run twice?");
 		}
 	}
 
@@ -38,28 +38,28 @@ public class UnbreakableBlockManager{
 
 
 		Utils.LOG_WARNING("Initializing the code to set this TE to -1 hardness and make it indestructible.");
-		int X = ((BaseMetaTileEntity)mTileEntity).xCoord; //(GregtechMetaSafeBlock) this.mTileEntity.getXCoord();
-		int Y = ((BaseMetaTileEntity)mTileEntity).yCoord;
-		int Z = ((BaseMetaTileEntity)mTileEntity).zCoord;
+		final int X = mTileEntity.xCoord; //(GregtechMetaSafeBlock) this.mTileEntity.getXCoord();
+		final int Y = mTileEntity.yCoord;
+		final int Z = mTileEntity.zCoord;
 		Utils.LOG_WARNING("Grabbing TileEntity @ [x,y,z] |"+X+"|"+Y+"|"+Z+"|");
 
-		try{	
-			GregtechMetaSafeBlock MetaSafeBlock = ((GregtechMetaSafeBlock) this.mTileEntity.getMetaTileEntity());
-			TileEntity BaseMetaTileEntity = ((BaseMetaTileEntity)mTileEntity).getTileEntity(X, Y, Z);
+		try{
+			final GregtechMetaSafeBlock MetaSafeBlock = ((GregtechMetaSafeBlock) UnbreakableBlockManager.mTileEntity.getMetaTileEntity());
+			final TileEntity BaseMetaTileEntity = mTileEntity.getTileEntity(X, Y, Z);
 			//MetaSafeBlockBase.
-			World TE_WORLD = MetaSafeBlock.getBaseMetaTileEntity().getWorld();
+			final World TE_WORLD = MetaSafeBlock.getBaseMetaTileEntity().getWorld();
 			Utils.LOG_WARNING("Checking new State of Flag[nUnbreakable]. Value="+MetaSafeBlock.bUnbreakable);
-			TileEntity entity = BaseMetaTileEntity;
-			innerInvincible(MetaSafeBlock, entity, TE_WORLD, /*aPlayer,*/ X, Y, Z);		
+			final TileEntity entity = BaseMetaTileEntity;
+			innerInvincible(MetaSafeBlock, entity, TE_WORLD, /*aPlayer,*/ X, Y, Z);
 		}
-		catch (NullPointerException e) {
+		catch (final NullPointerException e) {
 			System.out.print("Caught a NullPointerException involving Safe Blocks. Cause: ");
 			e.printStackTrace();
 		}
 	}
 
 
-	private static void innerInvincible(GregtechMetaSafeBlock MetaSafeBlock, TileEntity entity, World TE_WORLD, /*EntityPlayer aPlayer,*/ int X, int Y, int Z){
+	private static void innerInvincible(final GregtechMetaSafeBlock MetaSafeBlock, final TileEntity entity, final World TE_WORLD, /*EntityPlayer aPlayer,*/ final int X, final int Y, final int Z){
 		if (entity != null){
 			Utils.LOG_WARNING("Checking new State of Flag[nUnbreakable]. Value="+MetaSafeBlock.bUnbreakable);
 			Utils.LOG_WARNING("Grabbed TE: "+entity.toString());
@@ -67,19 +67,19 @@ public class UnbreakableBlockManager{
 
 
 
-			if (entity instanceof BaseTileEntity && !(entity instanceof BaseMetaPipeEntity)){
-				IMetaTileEntity I = ((BaseMetaTileEntity)entity).getMetaTileEntity();
+			if ((entity instanceof BaseTileEntity) && !(entity instanceof BaseMetaPipeEntity)){
+				final IMetaTileEntity I = ((BaseMetaTileEntity)entity).getMetaTileEntity();
 				Utils.LOG_WARNING("Checking State of Flag[nUnbreakable]. Value="+MetaSafeBlock.bUnbreakable);
 				Utils.LOG_WARNING("I Details: "+I.getMetaName()+" | "+I.getTileEntityBaseType()+" | "+I.toString());
-				
 
 
 
 
-				if (I instanceof GregtechMetaSafeBlock){				
+
+				if (I instanceof GregtechMetaSafeBlock){
 					Utils.LOG_WARNING("Checking State of Flag[nUnbreakable]. Value="+MetaSafeBlock.bUnbreakable);
 
-					Block ThisBlock = I.getBaseMetaTileEntity().getBlock(X, Y, Z);
+					final Block ThisBlock = I.getBaseMetaTileEntity().getBlock(X, Y, Z);
 					Utils.LOG_WARNING("Block Details: "+ThisBlock.toString());
 
 

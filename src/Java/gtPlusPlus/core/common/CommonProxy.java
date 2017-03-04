@@ -1,6 +1,9 @@
 package gtPlusPlus.core.common;
 
 import static gtPlusPlus.core.lib.CORE.DEBUG;
+
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.event.*;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.*;
@@ -17,13 +20,11 @@ import gtPlusPlus.core.util.player.PlayerCache;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.event.*;
 
 public class CommonProxy {
-	
+
 	public static Meta_GT_Proxy GtProxy;
-	
+
 	public CommonProxy(){
 		//Should Register Gregtech Materials I've Made
 		MinecraftForge.EVENT_BUS.register(this);
@@ -36,19 +37,19 @@ public class CommonProxy {
 				Utils.LOG_INFO("We're using Gregtech 5.08 or an equivalent fork.");
 			}
 			Utils.LOG_INFO("Setting up our own GT_Proxy.");
-			GtProxy = new Meta_GT_Proxy();	
+			GtProxy = new Meta_GT_Proxy();
 		}
 		else {
 			GtProxy = null;
 		}
 	}
 
-	public void preInit(FMLPreInitializationEvent e) {
-		Utils.LOG_INFO("Doing some house cleaning.");		
+	public void preInit(final FMLPreInitializationEvent e) {
+		Utils.LOG_INFO("Doing some house cleaning.");
 		LoadedMods.checkLoaded();
 		Utils.LOG_INFO("Making sure we're ready to party!");
-		
-		
+
+
 		if (!DEBUG){
 			Utils.LOG_WARNING("Development mode not enabled.");
 		}
@@ -57,18 +58,18 @@ public class CommonProxy {
 		}
 		else {
 			Utils.LOG_WARNING("Development mode not set.");
-		}		
+		}
 		AddToCreativeTab.initialiseTabs();
 		COMPAT_IntermodStaging.preInit();
 		//Apparently I should do this here. Might put it in Init for a test.
 		//Growthcraft_Handler.run();
 	}
 
-	public void init(FMLInitializationEvent e) {
+	public void init(final FMLInitializationEvent e) {
 		//Debug Loading
 		if (CORE.DEBUG){
-					DEBUG_INIT.registerHandlers();
-		}		
+			DEBUG_INIT.registerHandlers();
+		}
 		ModItems.init();
 		ModBlocks.init();
 		RECIPE_CONSTANTS.initialise();
@@ -76,25 +77,25 @@ public class CommonProxy {
 		MinecraftForge.EVENT_BUS.register(new PickaxeBlockBreakEventHandler());
 		//Block Handler for all events.
 		MinecraftForge.EVENT_BUS.register(new BlockEventHandler());
-		
-		//Compat Handling		
+
+		//Compat Handling
 		COMPAT_HANDLER.registerMyModsOreDictEntries();
 		COMPAT_HANDLER.intermodOreDictionarySupport();
 		COMPAT_IntermodStaging.init();
 	}
 
-	public void postInit(FMLPostInitializationEvent e) {
+	public void postInit(final FMLPostInitializationEvent e) {
 		Utils.LOG_INFO("Cleaning up, doing postInit.");
-		PlayerCache.initCache();		
+		PlayerCache.initCache();
 		//Compat Handling
 		COMPAT_HANDLER.InitialiseHandlerThenAddRecipes();
 		COMPAT_HANDLER.RemoveRecipesFromOtherMods();
 		COMPAT_HANDLER.startLoadingGregAPIBasedRecipes();
 		COMPAT_IntermodStaging.postInit();
 	}
-	
-	
-	public void serverStarting(FMLServerStartingEvent e)
+
+
+	public void serverStarting(final FMLServerStartingEvent e)
 	{
 		COMPAT_HANDLER.InitialiseLateHandlerThenAddRecipes();
 	}
@@ -111,11 +112,11 @@ public class CommonProxy {
 
 	}
 
-	public int addArmor(String armor) {
+	public int addArmor(final String armor) {
 		return 0;
 	}
 
-	public void generateMysteriousParticles(Entity entity) {		
+	public void generateMysteriousParticles(final Entity entity) {
 	}
 
 }

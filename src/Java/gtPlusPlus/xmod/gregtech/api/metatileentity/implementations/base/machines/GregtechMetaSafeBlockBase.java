@@ -1,6 +1,9 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.machines;
 
 import static gregtech.api.enums.GT_Values.V;
+
+import java.util.UUID;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -10,9 +13,6 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.player.PlayerCache;
 import gtPlusPlus.core.util.player.PlayerUtils;
-
-import java.util.UUID;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,85 +24,89 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 	//UnbreakableBlockManager Xasda = new UnbreakableBlockManager();
 	private boolean value_last = false, value_current = false;
 
-	public GregtechMetaSafeBlockBase(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription) {
+	public GregtechMetaSafeBlockBase(final int aID, final String aName, final String aNameRegional, final int aTier, final int aInvSlotCount, final String aDescription) {
 		super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
 	}
 
-	public GregtechMetaSafeBlockBase(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
+	public GregtechMetaSafeBlockBase(final String aName, final int aTier, final int aInvSlotCount, final String aDescription, final ITexture[][][] aTextures) {
 		super(aName, aTier, aInvSlotCount, aDescription, aTextures);
 	}
 
 	@Override
-	public ITexture[][][] getTextureSet(ITexture[] aTextures) {
-		ITexture[][][] rTextures = new ITexture[6][17][];
-		ITexture tIcon = getOverlayIcon(), tOut = new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_QCHEST), tUp = new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_VENT);
+	public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
+		final ITexture[][][] rTextures = new ITexture[6][17][];
+		final ITexture tIcon = this.getOverlayIcon(), tOut = new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_QCHEST), tUp = new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_VENT);
 		for (byte i = -1; i < 16; i++) {
-			rTextures[0][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1], tUp, tIcon}; //Back
-			rTextures[1][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1], tIcon}; // Right, Strangely The top side as well when facing East?
-			rTextures[2][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1], tIcon}; // Top  And Bottom, When Facing South (What the hell?)
-			rTextures[3][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1], tIcon}; // Left, Top if facing West and Bottom if facing east?
-			rTextures[4][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1], tIcon}; // Top and Bottom when Facing North..
-			rTextures[5][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][i + 1], tOut}; // Front
+			rTextures[0][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1], tUp, tIcon}; //Back
+			rTextures[1][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1], tIcon}; // Right, Strangely The top side as well when facing East?
+			rTextures[2][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1], tIcon}; // Top  And Bottom, When Facing South (What the hell?)
+			rTextures[3][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1], tIcon}; // Left, Top if facing West and Bottom if facing east?
+			rTextures[4][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1], tIcon}; // Top and Bottom when Facing North..
+			rTextures[5][i + 1] = new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][i + 1], tOut}; // Front
 		}
 		return rTextures;
 
 	}
 
 	@Override
-	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-		if (aSide == aFacing) return mTextures[5][aColorIndex + 1];
-		if (GT_Utility.getOppositeSide(aSide) == aFacing) return mTextures[0][aColorIndex + 1];
+	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+		if (aSide == aFacing) {
+			return this.mTextures[5][aColorIndex + 1];
+		}
+		if (GT_Utility.getOppositeSide(aSide) == aFacing) {
+			return this.mTextures[0][aColorIndex + 1];
+		}
 		switch (aFacing) {
 		case 0:
-			return mTextures[4][aColorIndex + 1];
+			return this.mTextures[4][aColorIndex + 1];
 		case 1:
-			return mTextures[2][aColorIndex + 1];
+			return this.mTextures[2][aColorIndex + 1];
 		case 2:
 			switch (aSide) {
 			case 0:
-				return mTextures[2][aColorIndex + 1];
+				return this.mTextures[2][aColorIndex + 1];
 			case 1:
-				return mTextures[2][aColorIndex + 1];
+				return this.mTextures[2][aColorIndex + 1];
 			case 4:
-				return mTextures[1][aColorIndex + 1];
+				return this.mTextures[1][aColorIndex + 1];
 			case 5:
-				return mTextures[3][aColorIndex + 1];
+				return this.mTextures[3][aColorIndex + 1];
 			}
 		case 3:
 			switch (aSide) {
 			case 0:
-				return mTextures[4][aColorIndex + 1];
+				return this.mTextures[4][aColorIndex + 1];
 			case 1:
-				return mTextures[4][aColorIndex + 1];
+				return this.mTextures[4][aColorIndex + 1];
 			case 4:
-				return mTextures[3][aColorIndex + 1];
+				return this.mTextures[3][aColorIndex + 1];
 			case 5:
-				return mTextures[1][aColorIndex + 1];
+				return this.mTextures[1][aColorIndex + 1];
 			}
 		case 4:
 			switch (aSide) {
 			case 0:
-				return mTextures[3][aColorIndex + 1];
+				return this.mTextures[3][aColorIndex + 1];
 			case 1:
-				return mTextures[1][aColorIndex + 1];
+				return this.mTextures[1][aColorIndex + 1];
 			case 2:
-				return mTextures[3][aColorIndex + 1];
+				return this.mTextures[3][aColorIndex + 1];
 			case 3:
-				return mTextures[1][aColorIndex + 1];
+				return this.mTextures[1][aColorIndex + 1];
 			}
 		case 5:
 			switch (aSide) {
 			case 0:
-				return mTextures[1][aColorIndex + 1];
+				return this.mTextures[1][aColorIndex + 1];
 			case 1:
-				return mTextures[3][aColorIndex + 1];
+				return this.mTextures[3][aColorIndex + 1];
 			case 2:
-				return mTextures[1][aColorIndex + 1];
+				return this.mTextures[1][aColorIndex + 1];
 			case 3:
-				return mTextures[3][aColorIndex + 1];
+				return this.mTextures[3][aColorIndex + 1];
 			}
 		}
-		return mTextures[5][aColorIndex + 1];
+		return this.mTextures[5][aColorIndex + 1];
 	}
 
 	@Override
@@ -111,12 +115,12 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 	}
 
 	@Override
-	public boolean isValidSlot(int aIndex) {
-		return aIndex < mInventory.length - 1;
+	public boolean isValidSlot(final int aIndex) {
+		return aIndex < (this.mInventory.length - 1);
 	}
 
 	@Override
-	public boolean isFacingValid(byte aFacing) {
+	public boolean isFacingValid(final byte aFacing) {
 		return true;
 	}
 
@@ -131,13 +135,13 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 	}
 
 	@Override
-	public boolean isInputFacing(byte aSide) {
-		return !isOutputFacing(aSide);
+	public boolean isInputFacing(final byte aSide) {
+		return !this.isOutputFacing(aSide);
 	}
 
 	@Override
-	public boolean isOutputFacing(byte aSide) {
-		return getBaseMetaTileEntity().getBackFacing() == aSide;
+	public boolean isOutputFacing(final byte aSide) {
+		return this.getBaseMetaTileEntity().getBackFacing() == aSide;
 	}
 
 	@Override
@@ -152,17 +156,17 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 
 	@Override
 	public long maxEUStore() {
-		return 512 + V[mTier] * 50;
+		return 512 + (V[this.mTier] * 50);
 	}
 
 	@Override
 	public long maxEUInput() {
-		return V[mTier];
+		return V[this.mTier];
 	}
 
 	@Override
 	public long maxEUOutput() {
-		return bOutput ? V[mTier] : 0;
+		return this.bOutput ? V[this.mTier] : 0;
 	}
 
 	@Override
@@ -176,55 +180,55 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 	}
 
 	@Override
-	public boolean isAccessAllowed(EntityPlayer aPlayer) {
+	public boolean isAccessAllowed(final EntityPlayer aPlayer) {
 		return true;
 	}
 
 	public abstract ITexture getOverlayIcon();
 
 	@Override
-	public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+	public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
 
-		if (aBaseMetaTileEntity.isClientSide()) {			
-			//Utils.LOG_WARNING("Clicky Clicky.");			
+		if (aBaseMetaTileEntity.isClientSide()) {
+			//Utils.LOG_WARNING("Clicky Clicky.");
 			return true;
 
 		}
 		if (aPlayer != null) {
-			UUID tempUUID = aPlayer.getUniqueID();
+			final UUID tempUUID = aPlayer.getUniqueID();
 			/*if (!aPlayer.worldObj.isRemote){
 			//PlayerCache.appendParamChanges(aPlayer.getDisplayName(), aPlayer.getUniqueID().toString());
 			}*/
 			//Utils.LOG_INFO("test");
-			if (ownerUUID == null){
+			if (this.ownerUUID == null){
 				Utils.LOG_INFO("No owner yet for this block.");
 			}
 			else {
 				//Utils.LOG_INFO("test");
-				Utils.LOG_INFO("Current Owner: "+PlayerCache.lookupPlayerByUUID(ownerUUID)+" - UUID: "+ownerUUID);
+				Utils.LOG_INFO("Current Owner: "+PlayerCache.lookupPlayerByUUID(this.ownerUUID)+" - UUID: "+this.ownerUUID);
 			}
 			Utils.LOG_WARNING("Is ownerUUID Null");
-			if (ownerUUID == null){
+			if (this.ownerUUID == null){
 				Utils.LOG_WARNING("OwnerUUID is Null, let's set it.");
 				Utils.LOG_WARNING("Accessing Players UUID is: "+tempUUID);
-				ownerUUID = tempUUID;
+				this.ownerUUID = tempUUID;
 				//Utils.messagePlayer(aPlayer, "Owner of this safe, now set. Try accessing it again.");
-				Utils.LOG_WARNING("Block Owner is now set to: "+ownerUUID);
+				Utils.LOG_WARNING("Block Owner is now set to: "+this.ownerUUID);
 			}
 			Utils.LOG_WARNING("No, it is not.");
 			Utils.LOG_WARNING("Checking ownerUUID.");
-			if (ownerUUID != null){
+			if (this.ownerUUID != null){
 				Utils.LOG_WARNING("ownerUUID != Null, if accessor == owner.");
 				Utils.LOG_WARNING("Accessing is: "+PlayerCache.lookupPlayerByUUID(tempUUID));
-				if (ownerUUID.equals(tempUUID)){
-					Utils.LOG_WARNING("Owner's UUID: "+ownerUUID);
+				if (this.ownerUUID.equals(tempUUID)){
+					Utils.LOG_WARNING("Owner's UUID: "+this.ownerUUID);
 					aBaseMetaTileEntity.openGUI(aPlayer);
 					//Utils.LOG_WARNING("GUI should now be open for you sir.");
 				}
 				else {
 					PlayerUtils.messagePlayer(aPlayer, "Access Denied, This does not belong to you.");
-					PlayerUtils.messagePlayer(aPlayer, "it is owned by: "+PlayerCache.lookupPlayerByUUID(ownerUUID));
-					Utils.LOG_WARNING("Expecting Player : "+PlayerCache.lookupPlayerByUUID(ownerUUID));
+					PlayerUtils.messagePlayer(aPlayer, "it is owned by: "+PlayerCache.lookupPlayerByUUID(this.ownerUUID));
+					Utils.LOG_WARNING("Expecting Player : "+PlayerCache.lookupPlayerByUUID(this.ownerUUID));
 					Utils.LOG_ERROR("Access Denied.");
 					return true;
 				}
@@ -243,41 +247,45 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 	}
 
 	@Override
-	public void saveNBTData(NBTTagCompound aNBT) {
-		aNBT.setBoolean("bUnbreakable", bUnbreakable);
-		aNBT.setBoolean("bOutput", bOutput);
-		aNBT.setBoolean("bRedstoneIfFull", bRedstoneIfFull);
-		aNBT.setInteger("mTargetStackSize", mTargetStackSize);
-		if (ownerUUID != null)
-		aNBT.setString("ownerUUID", ownerUUID.toString());
+	public void saveNBTData(final NBTTagCompound aNBT) {
+		aNBT.setBoolean("bUnbreakable", this.bUnbreakable);
+		aNBT.setBoolean("bOutput", this.bOutput);
+		aNBT.setBoolean("bRedstoneIfFull", this.bRedstoneIfFull);
+		aNBT.setInteger("mTargetStackSize", this.mTargetStackSize);
+		if (this.ownerUUID != null) {
+			aNBT.setString("ownerUUID", this.ownerUUID.toString());
+		}
 	}
 
 	@Override
-	public void loadNBTData(NBTTagCompound aNBT) {
-		bUnbreakable = aNBT.getBoolean("bUnbreakable");
-		bOutput = aNBT.getBoolean("bOutput");
-		bRedstoneIfFull = aNBT.getBoolean("bRedstoneIfFull");
-		mTargetStackSize = aNBT.getInteger("mTargetStackSize");
-		if (aNBT.hasKey("ownerUUID"))
-		ownerUUID = UUID.fromString(aNBT.getString("ownerUUID"));
+	public void loadNBTData(final NBTTagCompound aNBT) {
+		this.bUnbreakable = aNBT.getBoolean("bUnbreakable");
+		this.bOutput = aNBT.getBoolean("bOutput");
+		this.bRedstoneIfFull = aNBT.getBoolean("bRedstoneIfFull");
+		this.mTargetStackSize = aNBT.getInteger("mTargetStackSize");
+		if (aNBT.hasKey("ownerUUID")) {
+			this.ownerUUID = UUID.fromString(aNBT.getString("ownerUUID"));
+		}
 	}
 
 	@Override
-	public void setItemNBT(NBTTagCompound aNBT) {
+	public void setItemNBT(final NBTTagCompound aNBT) {
 		super.setItemNBT(aNBT);
-		if (mTargetStackSize > 0) aNBT.setInteger("mTargetStackSize", mTargetStackSize);
+		if (this.mTargetStackSize > 0) {
+			aNBT.setInteger("mTargetStackSize", this.mTargetStackSize);
+		}
 	}
 
 	@Override
-	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTimer) {
+	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTimer) {
 		/*if (aBaseMetaTileEntity.isAllowedToWork() && aBaseMetaTileEntity.isServerSide() && aBaseMetaTileEntity.isUniversalEnergyStored(getMinimumStoredEU()) && (aBaseMetaTileEntity.hasWorkJustBeenEnabled() || aBaseMetaTileEntity.hasInventoryBeenModified() || aTimer % 200 == 0 || mSuccess > 0)) {
 		 */
-		if (aBaseMetaTileEntity.isServerSide()  && (aBaseMetaTileEntity.hasWorkJustBeenEnabled() || aBaseMetaTileEntity.hasInventoryBeenModified() || aTimer % 200 == 0 || mSuccess > 0)) {
-			value_last = value_current;
-			value_current = bUnbreakable;
-			if (value_last != value_current){
+		if (aBaseMetaTileEntity.isServerSide()  && (aBaseMetaTileEntity.hasWorkJustBeenEnabled() || aBaseMetaTileEntity.hasInventoryBeenModified() || ((aTimer % 200) == 0) || (this.mSuccess > 0))) {
+			this.value_last = this.value_current;
+			this.value_current = this.bUnbreakable;
+			if (this.value_last != this.value_current){
 				Utils.LOG_WARNING("VALUE CHANGE - Ticking for a moment.");
-				if (bUnbreakable == true){				
+				if (this.bUnbreakable == true){
 					//Xasda.setmTileEntity((BaseMetaTileEntity) aBaseMetaTileEntity);
 					//Utils.LOG_ERROR("Safe is Indestructible.");
 					this.getBaseMetaTileEntity().getBlock(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord()).setResistance(Float.MAX_VALUE);
@@ -288,23 +296,23 @@ public abstract class GregtechMetaSafeBlockBase extends GT_MetaTileEntity_Tiered
 					//Utils.LOG_ERROR("Safe is not Indestructible.");
 					this.getBaseMetaTileEntity().getBlock(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord()).setResistance(1F);
 					this.getBaseMetaTileEntity().getBlock(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord()).setHardness(2);
-					
+
 				}
 			}
 			else {
-				
+
 			}
-			
+
 		}
 	}
 
 	@Override
-	public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+	public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
 		return false;
 	}
 
 	@Override
-	public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+	public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
 		return aSide != aBaseMetaTileEntity.getBackFacing();
 	}
 }

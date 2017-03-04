@@ -5,7 +5,7 @@ import gtPlusPlus.core.material.Material;
 
 public class BaseItemNugget extends BaseItemComponent{
 
-	public BaseItemNugget(Material material) {
-		super(material, BaseItemComponent.ComponentTypes.NUGGET);		
+	public BaseItemNugget(final Material material) {
+		super(material, BaseItemComponent.ComponentTypes.NUGGET);
 	}
 }

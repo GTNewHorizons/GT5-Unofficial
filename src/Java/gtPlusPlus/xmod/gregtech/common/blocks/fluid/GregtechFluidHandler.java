@@ -36,14 +36,14 @@ public class GregtechFluidHandler {
 
 		if (!LoadedMods.ThermalFoundation){
 
-			Utils.LOG_INFO("Adding in our own GT versions of Thermal Foundation Fluids");		
+			Utils.LOG_INFO("Adding in our own GT versions of Thermal Foundation Fluids");
 			FluidUtils.addFluid("cryotheum", "Gelid Cryotheum", GT_Materials.Cryotheum, 4, -1200, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.Cryotheum, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
 			FluidUtils.addFluid("pyrotheum", "Blazing Pyrotheum", GT_Materials.Pyrotheum, 4, 4000, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.Pyrotheum, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
 		}
 
 		if (LoadedMods.IndustrialCraft2){
-			Utils.LOG_INFO("Adding in GT Fluids for various nuclear related content.");	
-			
+			Utils.LOG_INFO("Adding in GT Fluids for various nuclear related content.");
+
 			FluidUtils.addFluid("hydrofluoricAcid", "Hydrofluoric Acid", GT_Materials.HydrofluoricAcid, 1, 120, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.HydrofluoricAcid, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
 			generateIC2FluidCell("HydrofluoricAcid");
 
@@ -67,7 +67,7 @@ public class GregtechFluidHandler {
 
 
 			//Check for IHL Hydrogen Chloride
-			if (!LoadedMods.IHL || ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenChloride", 1) == null){
+			if (!LoadedMods.IHL || (ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenChloride", 1) == null)){
 				if (FluidUtils.getFluidStack("hydrogenchloride", 1) == null){
 					if (LoadedMods.IHL){
 						Utils.LOG_INFO("IHL Loaded but hydrogen chloride could not be found for some reason. How about we add our own.");
@@ -79,7 +79,7 @@ public class GregtechFluidHandler {
 					generateIC2FluidCell("HydrogenChloride");
 				}
 			}
-			
+
 
 			FluidUtils.addFluid("sulfuricLithium", "Sulfuric Lithium Mix", GT_Materials.SulfuricLithium, 4, 280, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfuricLithium, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
 			generateIC2FluidCell("SulfuricLithium");
@@ -100,7 +100,7 @@ public class GregtechFluidHandler {
 		}
 	}
 
-	private static void generateIC2FluidCell(String fluidNameWithCaps){
+	private static void generateIC2FluidCell(final String fluidNameWithCaps){
 		Utils.LOG_INFO("Adding a Cell for "+fluidNameWithCaps);
 		if (LoadedMods.IndustrialCraft2){
 			Utils.createInternalNameAndFluidCell(fluidNameWithCaps);

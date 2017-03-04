@@ -2,6 +2,7 @@ package gtPlusPlus.core.common.compat;
 
 
 import static gtPlusPlus.core.handler.COMPAT_HANDLER.RemoveRecipeQueue;
+
 import gtPlusPlus.core.lib.CORE.configSwitches;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.ShapedRecipeObject;
@@ -15,13 +16,13 @@ public class COMPAT_IC2 {
 	private static ItemStack itemSolarHelmet = ItemUtils.simpleMetaStack("IC2:itemSolarHelmet", 0, 1);
 
 	public static ShapedRecipeObject Cropnalyzer = new ShapedRecipeObject(
-			"ore:cableGt02Copper", "ore:cableGt02Copper", null, 
-			"minecraft:redstone", "ore:blockGlass", "minecraft:redstone", 
-			"minecraft:redstone", "ore:circuitBasic", "minecraft:redstone", 
+			"ore:cableGt02Copper", "ore:cableGt02Copper", null,
+			"minecraft:redstone", "ore:blockGlass", "minecraft:redstone",
+			"minecraft:redstone", "ore:circuitBasic", "minecraft:redstone",
 			itemCropnalyzer);
 	public static ShapedRecipeObject SolarHelmet = new ShapedRecipeObject(
-			"ore:plateIron", "ore:plateIron", "ore:plateIron", 
-			"ore:plateIron", "gregtech:gt.metaitem.01:32750", "ore:plateIron", 
+			"ore:plateIron", "ore:plateIron", "ore:plateIron",
+			"ore:plateIron", "gregtech:gt.metaitem.01:32750", "ore:plateIron",
 			"ore:craftingWireCopper", "ore:craftingWireCopper", "ore:craftingWireCopper",
 			itemSolarHelmet);
 
@@ -29,7 +30,7 @@ public class COMPAT_IC2 {
 
 	public static void OreDict(){
 		//Get ItemStacks for results
-		/*itemCropnalyzer = UtilsItems.getItemStack("IC2:itemCropnalyzer", 1);	
+		/*itemCropnalyzer = UtilsItems.getItemStack("IC2:itemCropnalyzer", 1);
 		itemSolarHelmet = UtilsItems.getItemStack("IC2:itemSolarHelmet", 1);	*/
 		run();
 	}
@@ -50,7 +51,7 @@ public class COMPAT_IC2 {
 				RemoveRecipeQueue.add("IC2:itemCable:6");
 				RemoveRecipeQueue.add("IC2:itemCable:10");
 				RemoveRecipeQueue.add("IC2:itemCable:13");
-				//RemoveRecipeQueue.add(itemCropnalyzer);		
+				//RemoveRecipeQueue.add(itemCropnalyzer);
 				//RemoveRecipeQueue.add(itemSolarHelmet);
 
 				//AddRecipeQueue.add(Cropnalyzer);

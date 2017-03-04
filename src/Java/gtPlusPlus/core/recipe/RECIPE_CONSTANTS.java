@@ -40,7 +40,7 @@ public class RECIPE_CONSTANTS {
 	public static ItemStack sensor_ZPM;
 	public static ItemStack sensor_UV;
 	public static ItemStack sensor_MAX;
-	
+
 	public static void initialise(){
 		if(CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
 			registerGTExperimentalComponents();
@@ -49,7 +49,7 @@ public class RECIPE_CONSTANTS {
 			registerGTStandardComponents();
 		}
 	}
-	
+
 	private static void registerGTExperimentalComponents(){
 		//Machine Components
 		electricMotor_LuV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32606, 1);
@@ -76,7 +76,7 @@ public class RECIPE_CONSTANTS {
 		sensor_LuV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32695, 1);
 		sensor_ZPM = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32696, 1);
 		sensor_UV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32697, 1);
-		
+
 		//Max Tier Components Blood Never added... Useless, lol.
 		electricMotor_MAX = GregtechItemList.Electric_Motor_MAX.get(1);
 		electricPump_MAX = GregtechItemList.Electric_Pump_MAX.get(1);
@@ -87,7 +87,7 @@ public class RECIPE_CONSTANTS {
 		fieldGenerator_MAX = GregtechItemList.Field_Generator_MAX.get(1);
 		sensor_MAX = GregtechItemList.Sensor_MAX.get(1);
 	}
-	
+
 	private static void registerGTStandardComponents(){
 		electricMotor_LuV = GregtechItemList.Electric_Motor_LuV.get(1);
 		electricMotor_ZPM = GregtechItemList.Electric_Motor_ZPM.get(1);

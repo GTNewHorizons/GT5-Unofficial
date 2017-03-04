@@ -8,20 +8,20 @@ import gtPlusPlus.xmod.thermalfoundation.recipe.TF_Gregtech_Recipes;
 
 public class HANDLER_TF{
 
-	public static void preInit(){		
+	public static void preInit(){
 		if (LoadedMods.CoFHCore && !LoadedMods.ThermalFoundation){
 			TF_Fluids.preInit();
 			TF_Items.preInit();
 			TF_Blocks.preInit();
-		}		
+		}
 	}
 
 	public static void init(){
 		if (LoadedMods.CoFHCore && !LoadedMods.ThermalFoundation){
 			TF_Fluids.init();
-			TF_Blocks.init();	
+			TF_Blocks.init();
 			TF_Items.init();
-		}		
+		}
 	}
 
 	public static void postInit(){
@@ -31,7 +31,7 @@ public class HANDLER_TF{
 			TF_Blocks.postInit();
 			if(LoadedMods.Gregtech){
 				TF_Gregtech_Recipes.run();
-			}	
-		}		
-	}	
+			}
+		}
+	}
 }

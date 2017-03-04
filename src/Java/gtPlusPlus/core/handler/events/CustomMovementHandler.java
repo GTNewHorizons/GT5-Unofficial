@@ -10,7 +10,7 @@ import net.minecraft.util.MovementInputFromOptions;
  */
 
 public class CustomMovementHandler {
-	
+
 	public boolean isDisabled;
 	public boolean canDoubleTap;
 
@@ -22,17 +22,17 @@ public class CustomMovementHandler {
 	private long lastSprintPressed;
 	private boolean handledSneakPress;
 	private boolean handledSprintPress;
-	private boolean wasRiding;	
+	private boolean wasRiding;
 
 	/*
 	 * 		MovementInputFromOptions.updatePlayerMoveState()
 	 */
-	public void update(Minecraft mc, MovementInputFromOptions options, EntityPlayerSP thisPlayer)
+	public void update(final Minecraft mc, final MovementInputFromOptions options, final EntityPlayerSP thisPlayer)
 	{
 		options.moveStrafe = 0.0F;
 		options.moveForward = 0.0F;
 
-		GameSettings settings = mc.gameSettings;
+		final GameSettings settings = mc.gameSettings;
 
 		if(settings.keyBindForward.getIsKeyPressed())
 		{
@@ -61,7 +61,7 @@ public class CustomMovementHandler {
 		//
 
 		// Check to see if Enabled - Added 6/17/14 to provide option to disable Sneak Toggle
-		boolean isSneaking = SneakManager.Sneaking();
+		final boolean isSneaking = SneakManager.Sneaking();
 		//Utils.LOG_INFO("Can sneak: "+isSneaking);
 		//Utils.LOG_INFO("Can sprint: "+SneakManager.Sprinting());
 		if (isSneaking)
@@ -94,7 +94,7 @@ public class CustomMovementHandler {
 					this.wasRiding = false;
 				}
 				// If the key was held down for more than 300ms, stop sneaking upon release.
-				else if(System.currentTimeMillis() - this.lastPressed > 300L)
+				else if((System.currentTimeMillis() - this.lastPressed) > 300L)
 				{
 					options.sneak = false;
 				}
@@ -109,8 +109,8 @@ public class CustomMovementHandler {
 
 		if(options.sneak || SneakManager.Sneaking())
 		{
-			options.moveStrafe = (float)((double)options.moveStrafe * 0.3D);
-			options.moveForward = (float)((double)options.moveForward * 0.3D);
+			options.moveStrafe = (float)(options.moveStrafe * 0.3D);
+			options.moveForward = (float)(options.moveForward * 0.3D);
 		}
 
 		//
@@ -118,16 +118,16 @@ public class CustomMovementHandler {
 		//
 
 		// Establish conditions where we don't want to start a sprint - sneaking, riding, flying, hungry
-		boolean enoughHunger = (float)thisPlayer.getFoodStats().getFoodLevel() > 6.0F || thisPlayer.capabilities.isFlying;
-		boolean canSprint = !options.sneak && !thisPlayer.isRiding() && !thisPlayer.capabilities.isFlying && enoughHunger;
+		final boolean enoughHunger = (thisPlayer.getFoodStats().getFoodLevel() > 6.0F) || thisPlayer.capabilities.isFlying;
+		final boolean canSprint = !options.sneak && !thisPlayer.isRiding() && !thisPlayer.capabilities.isFlying && enoughHunger;
 
-		isDisabled = !SneakManager.Sprinting();
-		canDoubleTap = SneakManager.optionDoubleTap;
+		this.isDisabled = !SneakManager.Sprinting();
+		this.canDoubleTap = SneakManager.optionDoubleTap;
 
 		// Key Pressed
-		if((canSprint || isDisabled) && settings.keyBindSprint.getIsKeyPressed() && !this.handledSprintPress)
+		if((canSprint || this.isDisabled) && settings.keyBindSprint.getIsKeyPressed() && !this.handledSprintPress)
 		{
-			if(!isDisabled)
+			if(!this.isDisabled)
 			{
 				this.sprint = !this.sprint;
 				this.lastSprintPressed = System.currentTimeMillis();
@@ -137,10 +137,10 @@ public class CustomMovementHandler {
 		}
 
 		// Key Released
-		if((canSprint || isDisabled) && !settings.keyBindSprint.getIsKeyPressed() && this.handledSprintPress)
+		if((canSprint || this.isDisabled) && !settings.keyBindSprint.getIsKeyPressed() && this.handledSprintPress)
 		{
 			// Was key held for longer than 300ms?  If so, mark it so we can resume vanilla behavior
-			if(System.currentTimeMillis() - this.lastSprintPressed > 300L)
+			if((System.currentTimeMillis() - this.lastSprintPressed) > 300L)
 			{
 				this.sprintHeldAndReleased = true;
 			}
@@ -149,7 +149,7 @@ public class CustomMovementHandler {
 
 	}
 
-	public void UpdateSprint(boolean newValue, boolean doubleTapped){
+	public void UpdateSprint(final boolean newValue, final boolean doubleTapped){
 		if (!SneakManager.Sprinting()){
 			this.sprint = false;
 			this.sprintDoubleTapped = doubleTapped;
@@ -157,7 +157,7 @@ public class CustomMovementHandler {
 		else{
 			this.sprint = newValue;
 			this.sprintDoubleTapped = doubleTapped;
-		}		
+		}
 	}
-	
+
 }

@@ -1,9 +1,8 @@
 package gtPlusPlus.core.util.recipe.shapeless;
 
-import gtPlusPlus.core.util.Utils;
-
 import java.util.ArrayList;
 
+import gtPlusPlus.core.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -13,15 +12,15 @@ import net.minecraft.item.crafting.ShapelessRecipes;
 public class ShapelessUtils {
 
 
-	public static boolean addShapelessRecipe(ItemStack output, Object ... params)
+	public static boolean addShapelessRecipe(final ItemStack output, final Object ... params)
 	{
-		ArrayList<ItemStack> arraylist = new ArrayList<ItemStack>();
-		Object[] aobject = params;
-		int i = params.length;
+		final ArrayList<ItemStack> arraylist = new ArrayList<>();
+		final Object[] aobject = params;
+		final int i = params.length;
 
 		for (int j = 0; j < i; ++j)
 		{
-			Object object1 = aobject[j];
+			final Object object1 = aobject[j];
 
 			if (object1 instanceof ItemStack)
 			{
@@ -35,7 +34,7 @@ public class ShapelessUtils {
 			{
 				if ((object1 == null))
 				{
-					Utils.LOG_INFO(("Invalid shapeless input, ignoring!"));					
+					Utils.LOG_INFO(("Invalid shapeless input, ignoring!"));
 				}
 				else if (!(object1 instanceof Block) && (object1 != null))
 				{

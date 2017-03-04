@@ -14,7 +14,9 @@ public class GregtechSteamCondenser
 	{
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Steam Condensor.");
-			if (CORE.configSwitches.enableMachine_SteamConverter) run1();
+			if (CORE.configSwitches.enableMachine_SteamConverter) {
+				run1();
+			}
 		}
 
 	}
@@ -23,6 +25,6 @@ public class GregtechSteamCondenser
 	{
 		//Steam Condensors
 		GregtechItemList.Condensor_MAX.set(new GregtechMetaCondensor(769, "steamcondensor.01.tier.single", "Steam Condensor").getStackForm(1L));
-		
+
 	}
 }

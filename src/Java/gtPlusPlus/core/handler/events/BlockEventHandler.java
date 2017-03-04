@@ -2,16 +2,17 @@ package gtPlusPlus.core.handler.events;
 
 import static gtPlusPlus.core.lib.CORE.configSwitches.chanceToDropDrainedShard;
 import static gtPlusPlus.core.lib.CORE.configSwitches.chanceToDropFluoriteOre;
+
+import java.util.ArrayList;
+import java.util.Random;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
-
-import java.util.ArrayList;
-import java.util.Random;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -19,13 +20,12 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.oredict.OreDictionary;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class BlockEventHandler {
-	private Random random = new Random();
+	private final Random random = new Random();
 
 	@SubscribeEvent
-	public void onBlockLeftClicked(PlayerInteractEvent event) {
+	public void onBlockLeftClicked(final PlayerInteractEvent event) {
 		/*if (event.action != PlayerInteractEvent.Action.LEFT_CLICK_BLOCK) return;
 
 		ItemStack heldItem = event.entityPlayer.getHeldItem();
@@ -44,7 +44,7 @@ public class BlockEventHandler {
 	}
 
 	@SubscribeEvent
-	public void onEntityDrop(LivingDropsEvent event) {
+	public void onEntityDrop(final LivingDropsEvent event) {
 		/*if (event.entityLiving instanceof EntityPig && event.source instanceof EntityDamageSource) {
 			// getEntity will return the Entity that caused the damage,even for indirect damage sources like arrows/fireballs
 			// (where it will return the Entity that shot the projectile rather than the projectile itself)
@@ -63,7 +63,7 @@ public class BlockEventHandler {
 
 
 	@SubscribeEvent
-	public void onBlockBreak(BlockEvent.BreakEvent event) {
+	public void onBlockBreak(final BlockEvent.BreakEvent event) {
 
 	}
 
@@ -74,34 +74,34 @@ public class BlockEventHandler {
 
 	//Used to handle Thaumcraft Shards when TC is not installed.
 	@SubscribeEvent
-	public void harvestDrops(BlockEvent.HarvestDropsEvent event) {
+	public void harvestDrops(final BlockEvent.HarvestDropsEvent event) {
 		//Spawn Dull Shards (Can spawn from Tree Logs, Grass or Stone. Stone going to be the most common source.)
-		if ((event.block == Blocks.stone || event.block == Blocks.sandstone || event.block == Blocks.log || event.block == Blocks.log2 || event.block == Blocks.grass) 
-				&& !LoadedMods.Thaumcraft && chanceToDropDrainedShard != 0) {
+		if (((event.block == Blocks.stone) || (event.block == Blocks.sandstone) || (event.block == Blocks.log) || (event.block == Blocks.log2) || (event.block == Blocks.grass))
+				&& !LoadedMods.Thaumcraft && (chanceToDropDrainedShard != 0)) {
 			//small chance for one to spawn per stone mined. 1 per 3 stacks~ //TODO MAKE A CONFIG OPTION
 			if (MathUtils.randInt(1, chanceToDropDrainedShard) == 1){
 				//Let's sort out a lucky charm for the player.
-				int FancyChance = MathUtils.randInt(1, 4);
+				final int FancyChance = MathUtils.randInt(1, 4);
 				if (MathUtils.randInt(1, 100) < 90){
-					event.drops.add(new ItemStack(ModItems.shardDull));	
+					event.drops.add(new ItemStack(ModItems.shardDull));
 				}
 				//Make a Fire Shard
 				else if (FancyChance == 1){
-					event.drops.add(new ItemStack(ModItems.shardIgnis));	
+					event.drops.add(new ItemStack(ModItems.shardIgnis));
 				}
 				//Make a Water Shard.
 				else if (FancyChance == 2){
-					event.drops.add(new ItemStack(ModItems.shardAqua));	
+					event.drops.add(new ItemStack(ModItems.shardAqua));
 				}
 				//Make an Earth Shard.
 				else if (FancyChance == 3){
-					event.drops.add(new ItemStack(ModItems.shardTerra));	
+					event.drops.add(new ItemStack(ModItems.shardTerra));
 				}
 				//Make an Air Shard.
 				else if (FancyChance == 4){
-					event.drops.add(new ItemStack(ModItems.shardAer));	
-				}				
-			}	
+					event.drops.add(new ItemStack(ModItems.shardAer));
+				}
+			}
 			else {
 				Utils.LOG_WARNING("invalid chance");
 			}
@@ -109,34 +109,36 @@ public class BlockEventHandler {
 
 		//Spawns Fluorite from Lime Stone
 		if (chanceToDropFluoriteOre != 0){
-			if (!oreLimestone.isEmpty() || !blockLimestone.isEmpty()){
-				if (!oreLimestone.isEmpty())
-					for (ItemStack temp : oreLimestone){
+			if (!this.oreLimestone.isEmpty() || !this.blockLimestone.isEmpty()){
+				if (!this.oreLimestone.isEmpty()) {
+					for (final ItemStack temp : this.oreLimestone){
 						if (ItemUtils.getSimpleStack(Item.getItemFromBlock(event.block)) == temp) {
 							if (MathUtils.randInt(1, chanceToDropFluoriteOre) == 1){
-								event.drops.add(fluoriteOre.copy());							
+								event.drops.add(this.fluoriteOre.copy());
 							}
 						}
 					}
-				if (!blockLimestone.isEmpty())
-					for (ItemStack temp : blockLimestone){
+				}
+				if (!this.blockLimestone.isEmpty()) {
+					for (final ItemStack temp : this.blockLimestone){
 						if (ItemUtils.getSimpleStack(Item.getItemFromBlock(event.block)) == temp) {
 							if (MathUtils.randInt(1, chanceToDropFluoriteOre) == 1){
-								event.drops.add(fluoriteOre.copy());							
+								event.drops.add(this.fluoriteOre.copy());
 							}
 						}
 					}
+				}
 			}
 			if (event.block == Blocks.sandstone){
 				if (MathUtils.randInt(1, chanceToDropFluoriteOre*20) == 1){
-					event.drops.add(fluoriteOre.copy());							
+					event.drops.add(this.fluoriteOre.copy());
 				}
 			}
 		}
 	}
 
 	@SubscribeEvent
-	public void logsHarvest(BlockEvent.HarvestDropsEvent event) {
+	public void logsHarvest(final BlockEvent.HarvestDropsEvent event) {
 		/*if (event.block instanceof BlockLog) {
 			// http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/modification-development/2444501-harvestdropevent-changing-drops-of-vanilla-blocks
 

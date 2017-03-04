@@ -14,29 +14,29 @@ import net.minecraft.world.World;
 public class Workbench_CraftingHandler {
 
 	private static final Workbench_CraftingHandler instance = new Workbench_CraftingHandler();
-	private List recipes = new ArrayList();
-	
+	private final List recipes = new ArrayList();
+
 	public static final Workbench_CraftingHandler getInstance() {
-	return instance;
+		return instance;
 	}
 	public Workbench_CraftingHandler() {
-	
-	//just a example recipe so you know how to add them
-	addRecipe(new ItemStack(Blocks.iron_block), new Object[]
-	{
-	"###",
-	"###",
-	"###",
-	Character.valueOf('#'), Items.iron_ingot
-	});
-	
-	//another example Recipe, but shapeless
-	addShapelessRecipe(new ItemStack(Items.cake),new Object[]{Items.stick});
-	
-	
+
+		//just a example recipe so you know how to add them
+		this.addRecipe(new ItemStack(Blocks.iron_block), new Object[]
+				{
+						"###",
+						"###",
+						"###",
+						Character.valueOf('#'), Items.iron_ingot
+				});
+
+		//another example Recipe, but shapeless
+		this.addShapelessRecipe(new ItemStack(Items.cake),new Object[]{Items.stick});
+
+
 	}
-	
-	void addRecipe(ItemStack par1ItemStack, Object par2ArrayOfObj[])
+
+	void addRecipe(final ItemStack par1ItemStack, final Object par2ArrayOfObj[])
 	{
 		String s = "";
 		int i = 0;
@@ -45,11 +45,11 @@ public class Workbench_CraftingHandler {
 
 		if (par2ArrayOfObj[i] instanceof String[])
 		{
-			String as[] = (String[])par2ArrayOfObj[i++];
+			final String as[] = (String[])par2ArrayOfObj[i++];
 
 			for (int l = 0; l < as.length; l++)
 			{
-				String s2 = as[l];
+				final String s2 = as[l];
 				k++;
 				j = s2.length();
 				s = (new StringBuilder()).append(s).append(s2).toString();
@@ -59,18 +59,18 @@ public class Workbench_CraftingHandler {
 		{
 			while (par2ArrayOfObj[i] instanceof String)
 			{
-				String s1 = (String)par2ArrayOfObj[i++];
+				final String s1 = (String)par2ArrayOfObj[i++];
 				k++;
 				j = s1.length();
 				s = (new StringBuilder()).append(s).append(s1).toString();
 			}
 		}
 
-		HashMap hashmap = new HashMap();
+		final HashMap hashmap = new HashMap();
 
 		for (; i < par2ArrayOfObj.length; i += 2)
 		{
-			Character character = (Character)par2ArrayOfObj[i];
+			final Character character = (Character)par2ArrayOfObj[i];
 			ItemStack itemstack = null;
 
 			if (par2ArrayOfObj[i + 1] instanceof Item)
@@ -89,11 +89,11 @@ public class Workbench_CraftingHandler {
 			hashmap.put(character, itemstack);
 		}
 
-		ItemStack aitemstack[] = new ItemStack[j * k];
+		final ItemStack aitemstack[] = new ItemStack[j * k];
 
-		for (int i1 = 0; i1 < j * k; i1++)
+		for (int i1 = 0; i1 < (j * k); i1++)
 		{
-			char c = s.charAt(i1);
+			final char c = s.charAt(i1);
 
 			if (hashmap.containsKey(Character.valueOf(c)))
 			{
@@ -105,18 +105,18 @@ public class Workbench_CraftingHandler {
 			}
 		}
 
-		recipes.add(new ShapedRecipes(j, k, aitemstack, par1ItemStack));
+		this.recipes.add(new ShapedRecipes(j, k, aitemstack, par1ItemStack));
 	}
 
-	public void addShapelessRecipe(ItemStack par1ItemStack, Object par2ArrayOfObj[])
+	public void addShapelessRecipe(final ItemStack par1ItemStack, final Object par2ArrayOfObj[])
 	{
-		ArrayList arraylist = new ArrayList();
-		Object aobj[] = par2ArrayOfObj;
-		int i = aobj.length;
+		final ArrayList arraylist = new ArrayList();
+		final Object aobj[] = par2ArrayOfObj;
+		final int i = aobj.length;
 
 		for (int j = 0; j < i; j++)
 		{
-			Object obj = aobj[j];
+			final Object obj = aobj[j];
 
 			if (obj instanceof ItemStack)
 			{
@@ -140,10 +140,10 @@ public class Workbench_CraftingHandler {
 			}
 		}
 
-		recipes.add(new ShapelessRecipes(par1ItemStack, arraylist));
+		this.recipes.add(new ShapelessRecipes(par1ItemStack, arraylist));
 	}
 
-	public ItemStack findMatchingRecipe(InventoryCrafting par1InventoryCrafting, World par2World)
+	public ItemStack findMatchingRecipe(final InventoryCrafting par1InventoryCrafting, final World par2World)
 	{
 		int i = 0;
 		ItemStack itemstack = null;
@@ -151,7 +151,7 @@ public class Workbench_CraftingHandler {
 
 		for (int j = 0; j < par1InventoryCrafting.getSizeInventory(); j++)
 		{
-			ItemStack itemstack2 = par1InventoryCrafting.getStackInSlot(j);
+			final ItemStack itemstack2 = par1InventoryCrafting.getStackInSlot(j);
 
 			if (itemstack2 == null)
 			{
@@ -188,9 +188,9 @@ public class Workbench_CraftingHandler {
 			return new ItemStack(itemstack.itemID, 1, k1);
 		}*/
 
-		for (int k = 0; k < recipes.size(); k++)
+		for (int k = 0; k < this.recipes.size(); k++)
 		{
-			IRecipe irecipe = (IRecipe)recipes.get(k);
+			final IRecipe irecipe = (IRecipe)this.recipes.get(k);
 
 			if (irecipe.matches(par1InventoryCrafting, par2World))
 			{
@@ -201,9 +201,9 @@ public class Workbench_CraftingHandler {
 		return null;
 	}
 
-	
+
 	public List getRecipeList()
 	{
-		return recipes;
+		return this.recipes;
 	}
 }

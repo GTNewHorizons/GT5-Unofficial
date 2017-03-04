@@ -1,5 +1,7 @@
 package gtPlusPlus.core.handler;
 
+import cpw.mods.fml.common.network.IGuiHandler;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.container.*;
 import gtPlusPlus.core.gui.beta.Gui_ID_Registry;
@@ -20,8 +22,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.common.network.NetworkRegistry;
 
 public class GuiHandler implements IGuiHandler {
 
@@ -36,18 +36,18 @@ public class GuiHandler implements IGuiHandler {
 
 
 
-	public static void init(){ 	
+	public static void init(){
 
-		Utils.LOG_INFO("Registering GUIs."); 	
-		NetworkRegistry.INSTANCE.registerGuiHandler(GTplusplus.instance, new GuiHandler()); 	
-		//Register GuiHandler 	
-		//NetworkRegistry.INSTANCE.registerGuiHandler(GTplusplus.instance, new GuiHandler()); 	
+		Utils.LOG_INFO("Registering GUIs.");
+		NetworkRegistry.INSTANCE.registerGuiHandler(GTplusplus.instance, new GuiHandler());
+		//Register GuiHandler
+		//NetworkRegistry.INSTANCE.registerGuiHandler(GTplusplus.instance, new GuiHandler());
 	}
 
 
 	@Override //ContainerModTileEntity
-	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		TileEntity te = world.getTileEntity(x, y, z);
+	public Object getServerGuiElement(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
+		final TileEntity te = world.getTileEntity(x, y, z);
 
 		if (te != null){
 			if (ID == GUI1){
@@ -94,9 +94,9 @@ public class GuiHandler implements IGuiHandler {
 	}
 
 	@Override //GuiModTileEntity
-	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+	public Object getClientGuiElement(final int ID, final EntityPlayer player, final World world, final int x, final int y, final int z) {
 		Utils.LOG_WARNING("getClientGuiElement Called by: "+player+", in world: "+player.dimension+" at x:"+x+", y:"+y+", z:"+z+".");
-		TileEntity te = world.getTileEntity(x, y, z);
+		final TileEntity te = world.getTileEntity(x, y, z);
 		if (te != null){
 			if (ID == GUI1){
 				if (CORE.configSwitches.enableCustomAlvearyBlocks){
@@ -114,7 +114,7 @@ public class GuiHandler implements IGuiHandler {
 		{
 			// We have to cast the new container as our custom class
 			// and pass in currently held item for the inventory
-			return new GuiBaseBackpack((Container_BackpackBase) new Container_BackpackBase(player, player.inventory, new BaseInventoryBackpack(player.getHeldItem())));
+			return new GuiBaseBackpack(new Container_BackpackBase(player, player.inventory, new BaseInventoryBackpack(player.getHeldItem())));
 		}
 
 		if (te != null){
@@ -136,31 +136,31 @@ public class GuiHandler implements IGuiHandler {
 
 
 	//New Methods
-	public static void openGui(EntityPlayer entityplayer, IGuiManager guiHandler)
+	public static void openGui(final EntityPlayer entityplayer, final IGuiManager guiHandler)
 	{
 		openGui(entityplayer, guiHandler, (short)0);
 	}
 
-	public static void openGui(EntityPlayer entityplayer, IGuiManager guiHandler, short data)
+	public static void openGui(final EntityPlayer entityplayer, final IGuiManager guiHandler, final short data)
 	{
-		int guiData = encodeGuiData(guiHandler, data);
-		ChunkCoordinates coordinates = guiHandler.getCoordinates();
+		final int guiData = encodeGuiData(guiHandler, data);
+		final ChunkCoordinates coordinates = guiHandler.getCoordinates();
 		entityplayer.openGui(GTplusplus.instance, guiData, entityplayer.worldObj, coordinates.posX, coordinates.posY, coordinates.posZ);
 	}
 
-	private static int encodeGuiData(IGuiManager guiHandler, short data)
+	private static int encodeGuiData(final IGuiManager guiHandler, final short data)
 	{
-		MU_GuiId guiId = Gui_ID_Registry.getGuiIdForGuiHandler(guiHandler);
-		return data << 16 | guiId.getId();
+		final MU_GuiId guiId = Gui_ID_Registry.getGuiIdForGuiHandler(guiHandler);
+		return (data << 16) | guiId.getId();
 	}
 
-	private static MU_GuiId decodeGuiID(int guiData)
+	private static MU_GuiId decodeGuiID(final int guiData)
 	{
-		int guiId = guiData & 0xFF;
+		final int guiId = guiData & 0xFF;
 		return Gui_ID_Registry.getGuiId(guiId);
 	}
 
-	private static short decodeGuiData(int guiId)
+	private static short decodeGuiData(final int guiId)
 	{
 		return (short)(guiId >> 16);
 	}

@@ -14,7 +14,9 @@ public class GregtechIronBlastFurnace
 	{
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Iron Blast Furnace.");
-			if (CORE.configSwitches.enableMultiblock_IronBlastFurnace) run1();
+			if (CORE.configSwitches.enableMultiblock_IronBlastFurnace) {
+				run1();
+			}
 		}
 
 	}

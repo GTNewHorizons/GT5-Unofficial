@@ -1,39 +1,38 @@
 package gtPlusPlus.xmod.ic2.item;
 
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.item.base.CoreItem;
-
 import java.util.List;
 
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.*;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.item.base.CoreItem;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.*;
 
 public class IC2_ItemGradual
 extends CoreItem
 {
-	public IC2_ItemGradual(String internalName)
+	public IC2_ItemGradual(final String internalName)
 	{
 		super(internalName, AddToCreativeTab.tabMachines, 1, 10000, "", EnumRarity.uncommon);
-		setNoRepair();
+		this.setNoRepair();
 	}
 
 	@Override
-	public boolean isDamaged(ItemStack stack)
+	public boolean isDamaged(final ItemStack stack)
 	{
-		return getDamage(stack) > 1;
+		return this.getDamage(stack) > 1;
 	}
 
 	@Override
-	public boolean showDurabilityBar(ItemStack stack)
+	public boolean showDurabilityBar(final ItemStack stack)
 	{
 		return true;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(Item item, CreativeTabs tabs, List itemList)
+	public void getSubItems(final Item item, final CreativeTabs tabs, final List itemList)
 	{
 		itemList.add(new ItemStack(this, 1, 1));
 	}

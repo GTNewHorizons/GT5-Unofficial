@@ -11,12 +11,12 @@ public class COMPAT_IntermodStaging {
 
 	public static void preInit(){
 		HANDLER_GT.preInit();
-		HANDLER_GC.preInit();	
+		HANDLER_GC.preInit();
 		HANDLER_TF.preInit();
 		HANDLER_FR.preInit();
 		HANDLER_IC2.preInit();
 		HANDLER_Computronics.preInit();
-		
+
 	}
 
 	public static void init(){

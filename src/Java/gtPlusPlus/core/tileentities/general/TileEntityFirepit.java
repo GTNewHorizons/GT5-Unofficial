@@ -6,34 +6,34 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityFirepit extends TileEntity{
-	
+
 	private UUID ownerUUID;
 
 	public UUID getOwnerUUID() {
-		return ownerUUID;
+		return this.ownerUUID;
 	}
 
-	public void setOwnerUUID(UUID ownerUUID) {
+	public void setOwnerUUID(final UUID ownerUUID) {
 		this.ownerUUID = ownerUUID;
-		markDirty();
+		this.markDirty();
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound tagCompound) {
+	public void writeToNBT(final NBTTagCompound tagCompound) {
 		super.writeToNBT(tagCompound);
 
-		UUID ownerUUID = getOwnerUUID();
+		final UUID ownerUUID = this.getOwnerUUID();
 		if (ownerUUID != null){
-		tagCompound.setLong("OwnerUUIDMost", ownerUUID.getMostSignificantBits());
-		tagCompound.setLong("OwnerUUIDLeast", ownerUUID.getLeastSignificantBits());
+			tagCompound.setLong("OwnerUUIDMost", ownerUUID.getMostSignificantBits());
+			tagCompound.setLong("OwnerUUIDLeast", ownerUUID.getLeastSignificantBits());
 		}
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tagCompound) {
+	public void readFromNBT(final NBTTagCompound tagCompound) {
 		super.readFromNBT(tagCompound);
 
-		setOwnerUUID(new UUID(tagCompound.getLong("OwnerUUIDMost"), tagCompound.getLong("OwnerUUIDLeast")));
+		this.setOwnerUUID(new UUID(tagCompound.getLong("OwnerUUIDMost"), tagCompound.getLong("OwnerUUIDLeast")));
 	}
-	
+
 }

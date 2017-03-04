@@ -1,11 +1,9 @@
 package gtPlusPlus.xmod.gregtech.loaders;
 
 import gregtech.api.util.GT_ModHandler;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
 import net.minecraft.item.ItemStack;
 
@@ -19,7 +17,7 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 
 	@Override
 	public void run() {
-		generateRecipes(toGenerate);		
+		generateRecipes(this.toGenerate);
 	}
 
 	public static void generateRecipes(final Material material){
@@ -32,32 +30,32 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 				material.getPlate(1),
 				gregtech.api.util.GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED,
 				new Object[]{"h", "B", "I",
-					Character.valueOf('I'),
-					material.getIngot(1),
-					Character.valueOf('B'),
-					material.getIngot(1)});
+						Character.valueOf('I'),
+						material.getIngot(1),
+						Character.valueOf('B'),
+						material.getIngot(1)});
 
 		GT_ModHandler.addShapelessCraftingRecipe(
 				material.getPlate(1),
 				new Object[]{gregtech.api.enums.ToolDictNames.craftingToolForgeHammer,
-					material.getIngot(1),
-					material.getIngot(1)});	     
+						material.getIngot(1),
+						material.getIngot(1)});
 
 		//Double Plate Shaped/Shapeless
 		GT_ModHandler.addCraftingRecipe(
 				material.getPlateDouble(1),
 				gregtech.api.util.GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | gregtech.api.util.GT_ModHandler.RecipeBits.BUFFERED,
 				new Object[]{"I", "B", "h",
-					Character.valueOf('I'),
-					material.getPlate(1),
-					Character.valueOf('B'),
-					material.getPlate(1)});
+						Character.valueOf('I'),
+						material.getPlate(1),
+						Character.valueOf('B'),
+						material.getPlate(1)});
 
 		GT_ModHandler.addShapelessCraftingRecipe(
 				material.getPlateDouble(1),
 				new Object[]{gregtech.api.enums.ToolDictNames.craftingToolForgeHammer,
-					material.getPlate(1),
-					material.getPlate(1)});	    
+						material.getPlate(1),
+						material.getPlate(1)});
 
 		//Ring Recipe
 		if (!material.isRadioactive){
@@ -70,7 +68,7 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 					Utils.LOG_WARNING("GT:NH Ring Recipe: "+material.getLocalizedName()+" - Success");
 				}
 				else {
-					Utils.LOG_WARNING("GT:NH Ring Recipe: "+material.getLocalizedName()+" - Failed");			
+					Utils.LOG_WARNING("GT:NH Ring Recipe: "+material.getLocalizedName()+" - Failed");
 				}
 			}
 			else {
@@ -82,9 +80,9 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 					Utils.LOG_WARNING("Ring Recipe: "+material.getLocalizedName()+" - Success");
 				}
 				else {
-					Utils.LOG_WARNING("Ring Recipe: "+material.getLocalizedName()+" - Failed");			
+					Utils.LOG_WARNING("Ring Recipe: "+material.getLocalizedName()+" - Failed");
 				}
-			}			
+			}
 		}
 
 
@@ -99,13 +97,13 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 				Utils.LOG_WARNING("Framebox Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_WARNING("Framebox Recipe: "+material.getLocalizedName()+" - Failed");			
+				Utils.LOG_WARNING("Framebox Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 		}
 
 
 		/*final int tVoltageMultiplier = material.getMeltingPointK() >= 1600 ? 60 : 15;
-		
+
 
 		//Add a shapeless recipe for each dust this way - Compat mode.
 		ItemStack[] inputStacks = material.getMaterialComposites();
@@ -119,18 +117,18 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 					if (inputStacks[x] != null && inputStackSize[x] != 0)
 					inputStacks[x].stackSize = (int) inputStackSize[x];
 				}
-				Utils.LOG_WARNING(ItemUtils.getArrayStackNames(inputStacks));			
+				Utils.LOG_WARNING(ItemUtils.getArrayStackNames(inputStacks));
 				if (RecipeUtils.buildShapelessRecipe(
-						outputStacks, 
+						outputStacks,
 						inputStacks
 						)){
 					Utils.LOG_WARNING("Shapeless Crafting Recipe: "+material.getLocalizedName()+" - Success");
 				}
 				else {
-					Utils.LOG_WARNING("Shapeless Crafting Recipe: "+material.getLocalizedName()+" - Failed");			
+					Utils.LOG_WARNING("Shapeless Crafting Recipe: "+material.getLocalizedName()+" - Failed");
 				}
 			}
-		}	*/	
+		}	*/
 
 
 		//Shaped Recipe - Bolts
@@ -143,7 +141,7 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 				Utils.LOG_WARNING("Bolt Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_WARNING("Bolt Recipe: "+material.getLocalizedName()+" - Failed");			
+				Utils.LOG_WARNING("Bolt Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 		}
 
@@ -157,7 +155,7 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 			Utils.LOG_WARNING("Rod Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_WARNING("Rod Recipe: "+material.getLocalizedName()+" - Failed");			
+			Utils.LOG_WARNING("Rod Recipe: "+material.getLocalizedName()+" - Failed");
 		}
 
 
@@ -170,7 +168,7 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 			Utils.LOG_WARNING("Rod Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_WARNING("Rod Recipe: "+material.getLocalizedName()+" - Failed");			
+			Utils.LOG_WARNING("Rod Recipe: "+material.getLocalizedName()+" - Failed");
 		}
 
 		//Two small to long rod
@@ -182,7 +180,7 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 			Utils.LOG_WARNING("Long Rod Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_WARNING("Long Rod Recipe: "+material.getLocalizedName()+" - Failed");			
+			Utils.LOG_WARNING("Long Rod Recipe: "+material.getLocalizedName()+" - Failed");
 		}
 
 		//Rotor Recipe
@@ -195,7 +193,7 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 				Utils.LOG_WARNING("Rotor Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_WARNING("Rotor Recipe: "+material.getLocalizedName()+" - Failed");			
+				Utils.LOG_WARNING("Rotor Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 		}
 
@@ -209,7 +207,7 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 				Utils.LOG_WARNING("Gear Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_WARNING("Gear Recipe: "+material.getLocalizedName()+" - Failed");			
+				Utils.LOG_WARNING("Gear Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 		}
 
@@ -223,7 +221,7 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 				Utils.LOG_WARNING("Screw Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_WARNING("Screw Recipe: "+material.getLocalizedName()+" - Failed");			
+				Utils.LOG_WARNING("Screw Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 		}
 	}

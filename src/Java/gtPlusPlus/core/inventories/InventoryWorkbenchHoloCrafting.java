@@ -6,19 +6,19 @@ import net.minecraft.item.ItemStack;
 
 public class InventoryWorkbenchHoloCrafting implements IInventory{
 
-	private String name = "Inventory Crafting";
+	private final String name = "Inventory Crafting";
 
 	/** Defining your inventory size this way is handy */
 	public static final int INV_SIZE = 9;
 
 	/** Inventory's size must be same as number of slots you add to the Container class */
-	private ItemStack[] inventory = new ItemStack[INV_SIZE];
+	private final ItemStack[] inventory = new ItemStack[INV_SIZE];
 
 	/**
 	 * @param itemstack - the ItemStack to which this inventory belongs
 	 */
 	public InventoryWorkbenchHoloCrafting()
-	{		
+	{
 
 	}
 
@@ -57,67 +57,67 @@ public class InventoryWorkbenchHoloCrafting implements IInventory{
 	@Override
 	public int getSizeInventory()
 	{
-		return inventory.length;
+		return this.inventory.length;
 	}
 
 	public ItemStack[] getInventory(){
-		return inventory;
+		return this.inventory;
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int slot)
+	public ItemStack getStackInSlot(final int slot)
 	{
-		return inventory[slot];
+		return this.inventory[slot];
 	}
 
 	@Override
-	public ItemStack decrStackSize(int slot, int amount)
+	public ItemStack decrStackSize(final int slot, final int amount)
 	{
-		ItemStack stack = getStackInSlot(slot);
+		ItemStack stack = this.getStackInSlot(slot);
 		if(stack != null)
 		{
 			if(stack.stackSize > amount)
 			{
 				stack = stack.splitStack(amount);
-				markDirty();
+				this.markDirty();
 			}
 			else
 			{
-				setInventorySlotContents(slot, null);
+				this.setInventorySlotContents(slot, null);
 			}
 		}
 		return stack;
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int slot)
+	public ItemStack getStackInSlotOnClosing(final int slot)
 	{
-		ItemStack stack = getStackInSlot(slot);
-		setInventorySlotContents(slot, null);
+		final ItemStack stack = this.getStackInSlot(slot);
+		this.setInventorySlotContents(slot, null);
 		return stack;
 	}
 
 	@Override
-	public void setInventorySlotContents(int slot, ItemStack stack)
+	public void setInventorySlotContents(final int slot, final ItemStack stack)
 	{
-		inventory[slot] = stack;
-		if (stack != null && stack.stackSize > getInventoryStackLimit())
+		this.inventory[slot] = stack;
+		if ((stack != null) && (stack.stackSize > this.getInventoryStackLimit()))
 		{
-			stack.stackSize = getInventoryStackLimit();
+			stack.stackSize = this.getInventoryStackLimit();
 		}
-		markDirty();
+		this.markDirty();
 	}
 
 	@Override
 	public String getInventoryName()
 	{
-		return name;
+		return this.name;
 	}
 
 	@Override
 	public boolean hasCustomInventoryName()
 	{
-		return name.length() > 0;
+		return this.name.length() > 0;
 	}
 
 	@Override
@@ -129,21 +129,21 @@ public class InventoryWorkbenchHoloCrafting implements IInventory{
 	@Override
 	public void markDirty()
 	{
-		for (int i = 0; i < getSizeInventory(); ++i)
+		for (int i = 0; i < this.getSizeInventory(); ++i)
 		{
-			ItemStack temp = getStackInSlot(i);
+			final ItemStack temp = this.getStackInSlot(i);
 			if (temp != null){
 				//Utils.LOG_INFO("Slot "+i+" contains "+temp.getDisplayName()+" x"+temp.stackSize);
 			}
 
-			if (temp != null && temp.stackSize == 0) {
-				inventory[i] = null;
+			if ((temp != null) && (temp.stackSize == 0)) {
+				this.inventory[i] = null;
 			}
 		}
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer)
+	public boolean isUseableByPlayer(final EntityPlayer entityplayer)
 	{
 		return true;
 	}
@@ -156,7 +156,7 @@ public class InventoryWorkbenchHoloCrafting implements IInventory{
 
 
 	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack itemstack)
+	public boolean isItemValidForSlot(final int slot, final ItemStack itemstack)
 	{
 		return true;
 	}

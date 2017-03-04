@@ -1,12 +1,12 @@
 package gtPlusPlus.core.slots;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
-import cpw.mods.fml.common.FMLCommonHandler;
 
 public class SlotOutput extends SlotCrafting{
 
@@ -15,7 +15,7 @@ public class SlotOutput extends SlotCrafting{
 	private int amountCrafted;
 
 
-	public SlotOutput(EntityPlayer player, InventoryCrafting craftingInventory, IInventory p_i45790_3_, int slotIndex, int xPosition, int yPosition)
+	public SlotOutput(final EntityPlayer player, final InventoryCrafting craftingInventory, final IInventory p_i45790_3_, final int slotIndex, final int xPosition, final int yPosition)
 	{
 		super(player, craftingInventory, p_i45790_3_, slotIndex, xPosition, yPosition);
 		this.thePlayer = player;
@@ -25,7 +25,7 @@ public class SlotOutput extends SlotCrafting{
 	 * Check if the stack is a valid item for this slot. Always true beside for the armor slots.
 	 */
 	@Override
-	public boolean isItemValid(ItemStack par1ItemStack)
+	public boolean isItemValid(final ItemStack par1ItemStack)
 	{
 		return false;
 	}
@@ -34,7 +34,7 @@ public class SlotOutput extends SlotCrafting{
 	 * stack.
 	 */
 	@Override
-	public ItemStack decrStackSize(int par1)
+	public ItemStack decrStackSize(final int par1)
 	{
 		if (this.getHasStack())
 		{
@@ -47,7 +47,7 @@ public class SlotOutput extends SlotCrafting{
 	 * internal count then calls onCrafting(item).
 	 */
 	@Override
-	protected void onCrafting(ItemStack par1ItemStack, int par2)
+	protected void onCrafting(final ItemStack par1ItemStack, final int par2)
 	{
 		this.amountCrafted += par2;
 		this.onCrafting(par1ItemStack);
@@ -56,30 +56,30 @@ public class SlotOutput extends SlotCrafting{
 	 * the itemStack passed in is the output - ie, iron ingots, and pickaxes, not ore and wood.
 	 */
 	@Override
-	protected void onCrafting(ItemStack stack)
+	protected void onCrafting(final ItemStack stack)
 	{
 		stack.onCrafting(this.thePlayer.worldObj, this.thePlayer, this.amountCrafted);
 		this.amountCrafted = 0;
 	}
 
 	@Override
-	public void onPickupFromSlot(EntityPlayer playerIn, ItemStack stack)
+	public void onPickupFromSlot(final EntityPlayer playerIn, final ItemStack stack)
 	{
 		{
-			FMLCommonHandler.instance().firePlayerCraftingEvent(playerIn, stack, craftMatrix);
+			FMLCommonHandler.instance().firePlayerCraftingEvent(playerIn, stack, this.craftMatrix);
 			this.onCrafting(stack);
 			for (int i = 0; i < this.craftMatrix.getSizeInventory(); ++i)
 			{
-				ItemStack itemstack1 = this.craftMatrix.getStackInSlot(i);
+				final ItemStack itemstack1 = this.craftMatrix.getStackInSlot(i);
 				if (itemstack1 != null)
 				{
 					this.craftMatrix.decrStackSize(i, 1);
 					if (itemstack1.getItem().hasContainerItem(itemstack1))
 					{
 						ItemStack itemstack2 = itemstack1.getItem().getContainerItem(itemstack1);
-						if (itemstack2.isItemStackDamageable() && itemstack2.getItemDamage() > itemstack2.getMaxDamage())
+						if (itemstack2.isItemStackDamageable() && (itemstack2.getItemDamage() > itemstack2.getMaxDamage()))
 						{
-							MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(thePlayer, itemstack2));
+							MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(this.thePlayer, itemstack2));
 							itemstack2 = null;
 						}
 						if (!this.thePlayer.inventory.addItemStackToInventory(itemstack2))

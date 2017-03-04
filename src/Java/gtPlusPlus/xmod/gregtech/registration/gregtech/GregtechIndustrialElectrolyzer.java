@@ -14,7 +14,9 @@ public class GregtechIndustrialElectrolyzer
 	{
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Industrial Electrolyzer Multiblock.");
-			if (CORE.configSwitches.enableMultiblock_IndustrialElectrolyzer) run1();
+			if (CORE.configSwitches.enableMultiblock_IndustrialElectrolyzer) {
+				run1();
+			}
 		}
 
 	}
@@ -23,6 +25,6 @@ public class GregtechIndustrialElectrolyzer
 	{
 		//Industrial Electrolyzer Multiblock
 		GregtechItemList.Industrial_Electrolyzer.set(new GregtechMetaTileEntity_IndustrialElectrolyzer(796, "industrialelectrolyzer.controller.tier.single", "Industrial Electrolyzer").getStackForm(1L));
-		
+
 	}
 }

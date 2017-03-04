@@ -17,22 +17,22 @@ public class Gregtech_Recipe_Adder {
 	private static ItemStack outputStack2;
 
 	public static void addRecipe(
-			Item maceratorInput, int maceratorInputAmount1,
-			Item maceratorOutput, int maceratorOutputAmount1,
-			Item compressorInput, int compressorInputAmount1,
-			Item compressorOutput, int compressorOutputAmount1,
-			Item blastFurnaceInput, int blastFurnaceInputAmount1,
-			Item blastFurnaceOutput, int blastFurnaceOutputAmount1,
-			Item blastFurnaceInput2, int blastFurnaceInputAmount2,
-			Item blastFurnaceOutput2, int blastFurnaceOutputAmount2,
-			Item smeltingInput, int smeltingInputAmount1,
-			Item smeltingOutput, int smeltingOutputAmount1,			
-			
-			int euPerTick, int timeInTicks,
-			boolean addMaceratorRecipe, boolean addCompressorRecipe, boolean addBlastFurnaceRecipe, int blastFurnaceTemp, boolean addSmeltingRecipe, boolean addMixerRecipe){
+			final Item maceratorInput, final int maceratorInputAmount1,
+			final Item maceratorOutput, final int maceratorOutputAmount1,
+			final Item compressorInput, final int compressorInputAmount1,
+			final Item compressorOutput, final int compressorOutputAmount1,
+			final Item blastFurnaceInput, final int blastFurnaceInputAmount1,
+			final Item blastFurnaceOutput, final int blastFurnaceOutputAmount1,
+			final Item blastFurnaceInput2, final int blastFurnaceInputAmount2,
+			final Item blastFurnaceOutput2, final int blastFurnaceOutputAmount2,
+			final Item smeltingInput, final int smeltingInputAmount1,
+			final Item smeltingOutput, final int smeltingOutputAmount1,
+
+			final int euPerTick, final int timeInTicks,
+			final boolean addMaceratorRecipe, final boolean addCompressorRecipe, final boolean addBlastFurnaceRecipe, final int blastFurnaceTemp, final boolean addSmeltingRecipe, final boolean addMixerRecipe){
 		euT = euPerTick;
 		ticks = timeInTicks;
-		
+
 		resetVars();
 		if (addMaceratorRecipe){
 			inputStack1 = ItemUtils.getSimpleStack(maceratorInput, maceratorInputAmount1);
@@ -62,7 +62,7 @@ public class Gregtech_Recipe_Adder {
 		resetVars();
 
 	}
-	
+
 	private static void resetVars(){
 		inputStack1 = null;
 		inputStack2 = null;
@@ -70,15 +70,15 @@ public class Gregtech_Recipe_Adder {
 		outputStack2 = null;
 	}
 
-	private static void addMaceratorRecipe(ItemStack input1, ItemStack output1){
+	private static void addMaceratorRecipe(final ItemStack input1, final ItemStack output1){
 		GT_ModHandler.addPulverisationRecipe(input1, output1);
 	}
 
-	private static void addCompressorRecipe(ItemStack input1, ItemStack output1){
+	private static void addCompressorRecipe(final ItemStack input1, final ItemStack output1){
 		GT_ModHandler.addCompressionRecipe(input1, output1);
 	}
 
-	private static void addBlastFurnaceRecipe(ItemStack input1, ItemStack input2, ItemStack output1, ItemStack output2, int tempRequired){
+	private static void addBlastFurnaceRecipe(final ItemStack input1, final ItemStack input2, final ItemStack output1, final ItemStack output2, final int tempRequired){
 		Utils.LOG_INFO("Registering Blast Furnace Recipes.");
 		GT_Values.RA.addBlastRecipe(
 				input1,
@@ -87,11 +87,11 @@ public class Gregtech_Recipe_Adder {
 				output1,
 				output2,
 				ticks,
-				euT, 
+				euT,
 				tempRequired);
 	}
 
-	private static void addSmeltingRecipe(ItemStack input1, ItemStack output1){
+	private static void addSmeltingRecipe(final ItemStack input1, final ItemStack output1){
 		GT_ModHandler.addSmeltingRecipe(input1, output1);
 	}
 

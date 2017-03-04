@@ -9,10 +9,10 @@ public class COMPAT_RFTools {
 	public static void OreDict(){
 		run();
 	}
-	
+
 	private static final void run(){
 		GT_OreDictUnificator.registerOre("plateDimensionShard", new ItemStack(ModItems.itemPlateDimensionShard));
-		
+
 	}
-	
+
 }

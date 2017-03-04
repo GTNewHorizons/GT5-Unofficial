@@ -9,15 +9,15 @@ import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.item.ItemStack;
 
 public class FishTrapHandler {
-	
+
 	private static final String[] fishTypes = {"fish", "junk", "treasure"};
 
-	protected static void addFish(String lootType, ItemStack lootStack, int lootChance){
-		
-		String GCVersion = LoadedMods.getModVersion("Growthcraft");
-		
-		String[] versionString = GCVersion.split("//.");
-		
+	protected static void addFish(final String lootType, final ItemStack lootStack, final int lootChance){
+
+		final String GCVersion = LoadedMods.getModVersion("Growthcraft");
+
+		final String[] versionString = GCVersion.split("//.");
+
 		if (LoadedMods.getModVersion("Growthcraft").contains("2.3.1") || versionString[1].equals("3")){
 			if (lootType.equals(fishTypes[0])){
 				Growthcraft_Old.addTrapFish(lootStack, lootChance);
@@ -52,43 +52,43 @@ public class FishTrapHandler {
 				return;
 			}
 		}
-		
+
 		else {
 			Utils.LOG_INFO("Extra Fish loot for Growthcraft Fishtraps disabled. Found V."+LoadedMods.getModVersion("Growthcraft"));
 		}
-		
+
 	}
-	
+
 	final static String prefix = "food";
 	final static String suffix = "raw";
 	final static String seaweed = "cropSeaweed";
 	final static String greenheartFish = "Greenheartfish";
 	private static final String[] harvestcraftFish = {
-		"Anchovy", "Bass", "Carp", "Catfish", "Charr", "Clam", "Crab", "Crayfish", "Eel", "Frog", "Grouper", "Herring",
-		"Jellyfish", "Mudfish", "Octopus", "Perch", "Scallop", "Shrimp", "Snail", "Snapper", "Tilapia", "Trout", "Tuna", "Turtle", "Walleye"};
+			"Anchovy", "Bass", "Carp", "Catfish", "Charr", "Clam", "Crab", "Crayfish", "Eel", "Frog", "Grouper", "Herring",
+			"Jellyfish", "Mudfish", "Octopus", "Perch", "Scallop", "Shrimp", "Snail", "Snapper", "Tilapia", "Trout", "Tuna", "Turtle", "Walleye"};
 	public static void pamsHarvestCraftCompat(){
 		for (int i = 0; i < harvestcraftFish.length; i++){
-			String itemName = prefix+harvestcraftFish[i]+suffix;
-			int lootChance = getLootChance(harvestcraftFish[i]);
+			final String itemName = prefix+harvestcraftFish[i]+suffix;
+			final int lootChance = getLootChance(harvestcraftFish[i]);
 			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken(itemName, 1) != null){
-				addFish("fish", ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1), lootChance);		
+				addFish("fish", ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1), lootChance);
 				addGregtechMaceratorRecipe(ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1));
 				addGregtechCentrifugeRecipe(ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1));
 				addGregtechFluidRecipe(ItemUtils.getItemStackOfAmountFromOreDict(itemName, 1));
 			}
 		}
 		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken(greenheartFish, 1) != null){
-			addFish("fish", ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1), getLootChance(greenheartFish));	
+			addFish("fish", ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1), getLootChance(greenheartFish));
 			addGregtechMaceratorRecipe(ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1));
 			addGregtechCentrifugeRecipe(ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1));
 			addGregtechFluidRecipe(ItemUtils.getItemStackOfAmountFromOreDict(greenheartFish, 1));
 		}
 		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken(seaweed, 1) != null){
-			addFish("junk", ItemUtils.getItemStackOfAmountFromOreDict(seaweed, 1), getLootChance(seaweed));				
+			addFish("junk", ItemUtils.getItemStackOfAmountFromOreDict(seaweed, 1), getLootChance(seaweed));
 		}
 	}
-	
-	private static int getLootChance(String name){
+
+	private static int getLootChance(final String name){
 		if (name.equals(harvestcraftFish[0])){
 			return 20;
 		}
@@ -168,23 +168,23 @@ public class FishTrapHandler {
 			return 25;
 		}
 	}
-	
-	private static void addGregtechCentrifugeRecipe(ItemStack input){
+
+	private static void addGregtechCentrifugeRecipe(final ItemStack input){
 		if (LoadedMods.Gregtech){
-		GT_Values.RA.addCentrifugeRecipe(input, null, null, FluidUtils.getFluidStack("methane", 96), null, null, null, null, null, null, null, 19*20, 5);
-		}		
+			GT_Values.RA.addCentrifugeRecipe(input, null, null, FluidUtils.getFluidStack("methane", 96), null, null, null, null, null, null, null, 19*20, 5);
+		}
 	}
-	
-	private static void addGregtechMaceratorRecipe(ItemStack input){
+
+	private static void addGregtechMaceratorRecipe(final ItemStack input){
 		if (LoadedMods.Gregtech){
 			GT_ModHandler.addPulverisationRecipe(input, ItemUtils.getItemStackOfAmountFromOreDict("dustMeatRaw", 1), ItemUtils.getItemStackOfAmountFromOreDict("dustTinyBone", 1), 0);
 		}
 	}
-	
-	private static void addGregtechFluidRecipe(ItemStack input){
+
+	private static void addGregtechFluidRecipe(final ItemStack input){
 		if (LoadedMods.Gregtech){
-		GT_Values.RA.addFluidExtractionRecipe(input, null, FluidUtils.getFluidStack("fishoil", 4), 0, (64/4), 4); //4eu/t  total eu used = 64 so time = 64/4
-		}		
+			GT_Values.RA.addFluidExtractionRecipe(input, null, FluidUtils.getFluidStack("fishoil", 4), 0, (64/4), 4); //4eu/t  total eu used = 64 so time = 64/4
+		}
 	}
-	
+
 }

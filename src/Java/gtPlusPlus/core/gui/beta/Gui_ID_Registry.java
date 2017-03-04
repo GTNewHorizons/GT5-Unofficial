@@ -1,8 +1,8 @@
 package gtPlusPlus.core.gui.beta;
 
-import gtPlusPlus.core.interfaces.IGuiManagerMiscUtils;
-
 import java.util.*;
+
+import gtPlusPlus.core.interfaces.IGuiManagerMiscUtils;
 
 public class Gui_ID_Registry
 {
@@ -17,25 +17,25 @@ public class Gui_ID_Registry
 		//registerGuiHandlers(MU_GuiType.Entity, Arrays.asList(new Class[] { EntityMinecartApiary.class, EntityMinecartBeehouse.class }));
 	}
 
-	private static void registerGuiHandlers(Gui_Types MU_GuiType, List<Class<? extends IGuiManagerMiscUtils>> guiHandlerClasses)
+	private static void registerGuiHandlers(final Gui_Types MU_GuiType, final List<Class<? extends IGuiManagerMiscUtils>> guiHandlerClasses)
 	{
-		for (Class<? extends IGuiManagerMiscUtils> tileGuiHandlerClass : guiHandlerClasses)
+		for (final Class<? extends IGuiManagerMiscUtils> tileGuiHandlerClass : guiHandlerClasses)
 		{
-			MU_GuiId guiId = new MU_GuiId(nextId++, MU_GuiType, tileGuiHandlerClass);
+			final MU_GuiId guiId = new MU_GuiId(nextId++, MU_GuiType, tileGuiHandlerClass);
 			classMap.put(tileGuiHandlerClass, guiId);
 			idMap.put(Integer.valueOf(guiId.getId()), guiId);
 		}
 	}
 
-	public static MU_GuiId getGuiIdForGuiHandler(IGuiManagerMiscUtils guiHandler)
+	public static MU_GuiId getGuiIdForGuiHandler(final IGuiManagerMiscUtils guiHandler)
 	{
-		Class<? extends IGuiManagerMiscUtils> guiHandlerClass = guiHandler.getClass();
-		MU_GuiId guiId = (MU_GuiId)classMap.get(guiHandlerClass);
+		final Class<? extends IGuiManagerMiscUtils> guiHandlerClass = guiHandler.getClass();
+		MU_GuiId guiId = classMap.get(guiHandlerClass);
 		if (guiId == null) {
-			for (Map.Entry<Class<? extends IGuiManagerMiscUtils>, MU_GuiId> classGuiIdEntry : classMap.entrySet()) {
+			for (final Map.Entry<Class<? extends IGuiManagerMiscUtils>, MU_GuiId> classGuiIdEntry : classMap.entrySet()) {
 				if (((Class)classGuiIdEntry.getKey()).isAssignableFrom(guiHandlerClass))
 				{
-					guiId = (MU_GuiId)classGuiIdEntry.getValue();
+					guiId = classGuiIdEntry.getValue();
 					break;
 				}
 			}
@@ -46,9 +46,9 @@ public class Gui_ID_Registry
 		return guiId;
 	}
 
-	public static MU_GuiId getGuiId(int id)
+	public static MU_GuiId getGuiId(final int id)
 	{
-		return (MU_GuiId)idMap.get(Integer.valueOf(id));
+		return idMap.get(Integer.valueOf(id));
 	}
 
 }

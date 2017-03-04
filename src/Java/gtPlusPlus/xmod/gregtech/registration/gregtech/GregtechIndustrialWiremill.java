@@ -14,7 +14,9 @@ public class GregtechIndustrialWiremill
 	{
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Industrial Wire Factory Multiblock.");
-			if (CORE.configSwitches.enableMultiblock_IndustrialWireMill) run1();
+			if (CORE.configSwitches.enableMultiblock_IndustrialWireMill) {
+				run1();
+			}
 		}
 
 	}
@@ -23,6 +25,6 @@ public class GregtechIndustrialWiremill
 	{
 		//Industrial Wire Factory Multiblock
 		GregtechItemList.Industrial_WireFactory.set(new GregtechMetaTileEntity_IndustrialWireMill(798, "industrialwiremill.controller.tier.single", "Wire Factory Controller").getStackForm(1L));
-		
+
 	}
 }

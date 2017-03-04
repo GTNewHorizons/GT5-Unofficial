@@ -9,10 +9,10 @@ public class COMPAT_SimplyJetpacks {
 	public static void OreDict(){
 		run();
 	}
-	
+
 	private static final void run(){
 		GT_OreDictUnificator.registerOre("plateEnrichedSoularium", new ItemStack(ModItems.itemPlateEnrichedSoularium));
-		
+
 	}
-	
+
 }

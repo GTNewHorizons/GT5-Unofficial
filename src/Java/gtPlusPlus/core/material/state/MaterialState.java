@@ -10,6 +10,6 @@ public enum MaterialState {
 		this.STATE = State;
 	}
 	public int ID() {
-		return STATE;
+		return this.STATE;
 	}
 }

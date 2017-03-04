@@ -18,234 +18,248 @@ import net.minecraftforge.fluids.FluidStack;
  */
 public abstract class GregtechMetaTileEntityLosslessBasicTank extends GregtechMetaTileEntityLosslessTieredMachineBlock {
 
-    public FluidStack mFluid;
+	public FluidStack mFluid;
 
-    /**
-     * @param aInvSlotCount should be 3
-     */
-    public GregtechMetaTileEntityLosslessBasicTank(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription, ITexture... aTextures) {
-        super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
-    }
+	/**
+	 * @param aInvSlotCount should be 3
+	 */
+	public GregtechMetaTileEntityLosslessBasicTank(final int aID, final String aName, final String aNameRegional, final int aTier, final int aInvSlotCount, final String aDescription, final ITexture... aTextures) {
+		super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription, aTextures);
+	}
 
-    public GregtechMetaTileEntityLosslessBasicTank(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aInvSlotCount, aDescription, aTextures);
-    }
+	public GregtechMetaTileEntityLosslessBasicTank(final String aName, final int aTier, final int aInvSlotCount, final String aDescription, final ITexture[][][] aTextures) {
+		super(aName, aTier, aInvSlotCount, aDescription, aTextures);
+	}
 
-    @Override
-    public boolean isSimpleMachine() {
-        return false;
-    }
+	@Override
+	public boolean isSimpleMachine() {
+		return false;
+	}
 
-    @Override
-    public boolean isValidSlot(int aIndex) {
-        return aIndex != getStackDisplaySlot();
-    }
+	@Override
+	public boolean isValidSlot(final int aIndex) {
+		return aIndex != this.getStackDisplaySlot();
+	}
 
-    @Override
-    public void saveNBTData(NBTTagCompound aNBT) {
-        if (mFluid != null) aNBT.setTag("mFluid", mFluid.writeToNBT(new NBTTagCompound()));
-    }
+	@Override
+	public void saveNBTData(final NBTTagCompound aNBT) {
+		if (this.mFluid != null) {
+			aNBT.setTag("mFluid", this.mFluid.writeToNBT(new NBTTagCompound()));
+		}
+	}
 
-    @Override
-    public void loadNBTData(NBTTagCompound aNBT) {
-        mFluid = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mFluid"));
-    }
+	@Override
+	public void loadNBTData(final NBTTagCompound aNBT) {
+		this.mFluid = FluidStack.loadFluidStackFromNBT(aNBT.getCompoundTag("mFluid"));
+	}
 
-    public abstract boolean doesFillContainers();
+	public abstract boolean doesFillContainers();
 
-    public abstract boolean doesEmptyContainers();
+	public abstract boolean doesEmptyContainers();
 
-    public abstract boolean canTankBeFilled();
+	public abstract boolean canTankBeFilled();
 
-    public abstract boolean canTankBeEmptied();
+	public abstract boolean canTankBeEmptied();
 
-    public abstract boolean displaysItemStack();
+	public abstract boolean displaysItemStack();
 
-    public abstract boolean displaysStackSize();
+	public abstract boolean displaysStackSize();
 
-    public int getInputSlot() {
-        return 0;
-    }
+	public int getInputSlot() {
+		return 0;
+	}
 
-    public int getOutputSlot() {
-        return 1;
-    }
+	public int getOutputSlot() {
+		return 1;
+	}
 
-    public int getStackDisplaySlot() {
-        return 2;
-    }
+	public int getStackDisplaySlot() {
+		return 2;
+	}
 
-    public boolean isFluidInputAllowed(FluidStack aFluid) {
-        return true;
-    }
+	public boolean isFluidInputAllowed(final FluidStack aFluid) {
+		return true;
+	}
 
-    public boolean isFluidChangingAllowed() {
-        return true;
-    }
+	public boolean isFluidChangingAllowed() {
+		return true;
+	}
 
-    public FluidStack getFillableStack() {
-        return mFluid;
-    }
+	public FluidStack getFillableStack() {
+		return this.mFluid;
+	}
 
-    public FluidStack setFillableStack(FluidStack aFluid) {
-        mFluid = aFluid;
-        return mFluid;
-    }
+	public FluidStack setFillableStack(final FluidStack aFluid) {
+		this.mFluid = aFluid;
+		return this.mFluid;
+	}
 
-    public FluidStack getDrainableStack() {
-        return mFluid;
-    }
+	public FluidStack getDrainableStack() {
+		return this.mFluid;
+	}
 
-    public FluidStack setDrainableStack(FluidStack aFluid) {
-        mFluid = aFluid;
-        return mFluid;
-    }
+	public FluidStack setDrainableStack(final FluidStack aFluid) {
+		this.mFluid = aFluid;
+		return this.mFluid;
+	}
 
-    public FluidStack getDisplayedFluid() {
-        return getDrainableStack();
-    }
+	public FluidStack getDisplayedFluid() {
+		return this.getDrainableStack();
+	}
 
-    @Override
-    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_BasicTank(aPlayerInventory, aBaseMetaTileEntity);
-    }
+	@Override
+	public Object getServerGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
+		return new GT_Container_BasicTank(aPlayerInventory, aBaseMetaTileEntity);
+	}
 
-    @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_BasicTank(aPlayerInventory, aBaseMetaTileEntity, getLocalName());
-    }
+	@Override
+	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
+		return new GT_GUIContainer_BasicTank(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName());
+	}
 
-    @Override
-    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide()) {
-            if (isFluidChangingAllowed() && getFillableStack() != null && getFillableStack().amount <= 0)
-                setFillableStack(null);
+	@Override
+	public void onPreTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
+		if (aBaseMetaTileEntity.isServerSide()) {
+			if (this.isFluidChangingAllowed() && (this.getFillableStack() != null) && (this.getFillableStack().amount <= 0)) {
+				this.setFillableStack(null);
+			}
 
-            if (displaysItemStack() && getStackDisplaySlot() >= 0 && getStackDisplaySlot() < mInventory.length) {
-                if (getDisplayedFluid() == null) {
-                    if (ItemList.Display_Fluid.isStackEqual(mInventory[getStackDisplaySlot()], true, true))
-                        mInventory[getStackDisplaySlot()] = null;
-                } else {
-                    mInventory[getStackDisplaySlot()] = GT_Utility.getFluidDisplayStack(getDisplayedFluid(), displaysStackSize());
-                }
-            }
+			if (this.displaysItemStack() && (this.getStackDisplaySlot() >= 0) && (this.getStackDisplaySlot() < this.mInventory.length)) {
+				if (this.getDisplayedFluid() == null) {
+					if (ItemList.Display_Fluid.isStackEqual(this.mInventory[this.getStackDisplaySlot()], true, true)) {
+						this.mInventory[this.getStackDisplaySlot()] = null;
+					}
+				} else {
+					this.mInventory[this.getStackDisplaySlot()] = GT_Utility.getFluidDisplayStack(this.getDisplayedFluid(), this.displaysStackSize());
+				}
+			}
 
-            if (doesEmptyContainers()) {
-                FluidStack tFluid = GT_Utility.getFluidForFilledItem(mInventory[getInputSlot()], true);
-                if (tFluid != null && isFluidInputAllowed(tFluid)) {
-                    if (getFillableStack() == null) {
-                        if (isFluidInputAllowed(tFluid) && tFluid.amount <= getCapacity()) {
-                            if (aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), GT_Utility.getContainerItem(mInventory[getInputSlot()], true), 1)) {
-                                setFillableStack(tFluid.copy());
-                                aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
-                            }
-                        }
-                    } else {
-                        if (tFluid.isFluidEqual(getFillableStack()) && tFluid.amount + getFillableStack().amount <= getCapacity()) {
-                            if (aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), GT_Utility.getContainerItem(mInventory[getInputSlot()], true), 1)) {
-                                getFillableStack().amount += tFluid.amount;
-                                aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
-                            }
-                        }
-                    }
-                }
-            }
+			if (this.doesEmptyContainers()) {
+				final FluidStack tFluid = GT_Utility.getFluidForFilledItem(this.mInventory[this.getInputSlot()], true);
+				if ((tFluid != null) && this.isFluidInputAllowed(tFluid)) {
+					if (this.getFillableStack() == null) {
+						if (this.isFluidInputAllowed(tFluid) && (tFluid.amount <= this.getCapacity())) {
+							if (aBaseMetaTileEntity.addStackToSlot(this.getOutputSlot(), GT_Utility.getContainerItem(this.mInventory[this.getInputSlot()], true), 1)) {
+								this.setFillableStack(tFluid.copy());
+								aBaseMetaTileEntity.decrStackSize(this.getInputSlot(), 1);
+							}
+						}
+					} else {
+						if (tFluid.isFluidEqual(this.getFillableStack()) && ((tFluid.amount + this.getFillableStack().amount) <= this.getCapacity())) {
+							if (aBaseMetaTileEntity.addStackToSlot(this.getOutputSlot(), GT_Utility.getContainerItem(this.mInventory[this.getInputSlot()], true), 1)) {
+								this.getFillableStack().amount += tFluid.amount;
+								aBaseMetaTileEntity.decrStackSize(this.getInputSlot(), 1);
+							}
+						}
+					}
+				}
+			}
 
-            if (doesFillContainers()) {
-                ItemStack tOutput = GT_Utility.fillFluidContainer(getDrainableStack(), mInventory[getInputSlot()], false, true);
-                if (tOutput != null && aBaseMetaTileEntity.addStackToSlot(getOutputSlot(), tOutput, 1)) {
-                    FluidStack tFluid = GT_Utility.getFluidForFilledItem(tOutput, true);
-                    aBaseMetaTileEntity.decrStackSize(getInputSlot(), 1);
-                    if (tFluid != null) getDrainableStack().amount -= tFluid.amount;
-                    if (getDrainableStack().amount <= 0 && isFluidChangingAllowed()) setDrainableStack(null);
-                }
-            }
-        }
-    }
+			if (this.doesFillContainers()) {
+				final ItemStack tOutput = GT_Utility.fillFluidContainer(this.getDrainableStack(), this.mInventory[this.getInputSlot()], false, true);
+				if ((tOutput != null) && aBaseMetaTileEntity.addStackToSlot(this.getOutputSlot(), tOutput, 1)) {
+					final FluidStack tFluid = GT_Utility.getFluidForFilledItem(tOutput, true);
+					aBaseMetaTileEntity.decrStackSize(this.getInputSlot(), 1);
+					if (tFluid != null) {
+						this.getDrainableStack().amount -= tFluid.amount;
+					}
+					if ((this.getDrainableStack().amount <= 0) && this.isFluidChangingAllowed()) {
+						this.setDrainableStack(null);
+					}
+				}
+			}
+		}
+	}
 
-    @Override
-    public FluidStack getFluid() {
-        return getDrainableStack();
-    }
+	@Override
+	public FluidStack getFluid() {
+		return this.getDrainableStack();
+	}
 
-    @Override
-    public int getFluidAmount() {
-        return getDrainableStack() != null ? getDrainableStack().amount : 0;
-    }
+	@Override
+	public int getFluidAmount() {
+		return this.getDrainableStack() != null ? this.getDrainableStack().amount : 0;
+	}
 
-    @Override
-    public int fill(FluidStack aFluid, boolean doFill) {
-        if (aFluid == null || aFluid.getFluid().getID() <= 0 || aFluid.amount <= 0 || !canTankBeFilled() || !isFluidInputAllowed(aFluid))
-            return 0;
+	@Override
+	public int fill(final FluidStack aFluid, final boolean doFill) {
+		if ((aFluid == null) || (aFluid.getFluid().getID() <= 0) || (aFluid.amount <= 0) || !this.canTankBeFilled() || !this.isFluidInputAllowed(aFluid)) {
+			return 0;
+		}
 
-        if (getFillableStack() == null || getFillableStack().getFluid().getID() <= 0) {
-            if (aFluid.amount <= getCapacity()) {
-                if (doFill) {
-                    setFillableStack(aFluid.copy());
-                    getBaseMetaTileEntity().markDirty();
-                }
-                return aFluid.amount;
-            }
-            if (doFill) {
-                setFillableStack(aFluid.copy());
-                getFillableStack().amount = getCapacity();
-                getBaseMetaTileEntity().markDirty();
-            }
-            return getCapacity();
-        }
+		if ((this.getFillableStack() == null) || (this.getFillableStack().getFluid().getID() <= 0)) {
+			if (aFluid.amount <= this.getCapacity()) {
+				if (doFill) {
+					this.setFillableStack(aFluid.copy());
+					this.getBaseMetaTileEntity().markDirty();
+				}
+				return aFluid.amount;
+			}
+			if (doFill) {
+				this.setFillableStack(aFluid.copy());
+				this.getFillableStack().amount = this.getCapacity();
+				this.getBaseMetaTileEntity().markDirty();
+			}
+			return this.getCapacity();
+		}
 
-        if (!getFillableStack().isFluidEqual(aFluid))
-            return 0;
+		if (!this.getFillableStack().isFluidEqual(aFluid)) {
+			return 0;
+		}
 
-        int space = getCapacity() - getFillableStack().amount;
-        if (aFluid.amount <= space) {
-            if (doFill) {
-                getFillableStack().amount += aFluid.amount;
-                getBaseMetaTileEntity().markDirty();
-            }
-            return aFluid.amount;
-        }
-        if (doFill)
-            getFillableStack().amount = getCapacity();
-        return space;
-    }
+		final int space = this.getCapacity() - this.getFillableStack().amount;
+		if (aFluid.amount <= space) {
+			if (doFill) {
+				this.getFillableStack().amount += aFluid.amount;
+				this.getBaseMetaTileEntity().markDirty();
+			}
+			return aFluid.amount;
+		}
+		if (doFill) {
+			this.getFillableStack().amount = this.getCapacity();
+		}
+		return space;
+	}
 
-    @Override
-    public FluidStack drain(int maxDrain, boolean doDrain) {
-        if (getDrainableStack() == null || !canTankBeEmptied()) return null;
-        if (getDrainableStack().amount <= 0 && isFluidChangingAllowed()) {
-            setDrainableStack(null);
-            getBaseMetaTileEntity().markDirty();
-            return null;
-        }
+	@Override
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
+		if ((this.getDrainableStack() == null) || !this.canTankBeEmptied()) {
+			return null;
+		}
+		if ((this.getDrainableStack().amount <= 0) && this.isFluidChangingAllowed()) {
+			this.setDrainableStack(null);
+			this.getBaseMetaTileEntity().markDirty();
+			return null;
+		}
 
-        int used = maxDrain;
-        if (getDrainableStack().amount < used)
-            used = getDrainableStack().amount;
+		int used = maxDrain;
+		if (this.getDrainableStack().amount < used) {
+			used = this.getDrainableStack().amount;
+		}
 
-        if (doDrain) {
-            getDrainableStack().amount -= used;
-            getBaseMetaTileEntity().markDirty();
-        }
+		if (doDrain) {
+			this.getDrainableStack().amount -= used;
+			this.getBaseMetaTileEntity().markDirty();
+		}
 
-        FluidStack drained = getDrainableStack().copy();
-        drained.amount = used;
+		final FluidStack drained = this.getDrainableStack().copy();
+		drained.amount = used;
 
-        if (getDrainableStack().amount <= 0 && isFluidChangingAllowed()) {
-            setDrainableStack(null);
-            getBaseMetaTileEntity().markDirty();
-        }
+		if ((this.getDrainableStack().amount <= 0) && this.isFluidChangingAllowed()) {
+			this.setDrainableStack(null);
+			this.getBaseMetaTileEntity().markDirty();
+		}
 
-        return drained;
-    }
+		return drained;
+	}
 
-    @Override
-    public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return aIndex == getOutputSlot();
-    }
+	@Override
+	public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
+		return aIndex == this.getOutputSlot();
+	}
 
-    @Override
-    public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
-        return aIndex == getInputSlot();
-    }
+	@Override
+	public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
+		return aIndex == this.getInputSlot();
+	}
 }

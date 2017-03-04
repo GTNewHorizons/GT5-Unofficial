@@ -3,40 +3,47 @@ package gtPlusPlus.xmod.gregtech.api.objects;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 
 public class GregtechMaterialStack implements Cloneable {
-    public long mAmount;
-    public GT_Materials mMaterial;
+	public long mAmount;
+	public GT_Materials mMaterial;
 
-    public GregtechMaterialStack(GT_Materials aMaterial, long aAmount) {
-        mMaterial = aMaterial == null ? GT_Materials._NULL : aMaterial;
-        mAmount = aAmount;
-    }
+	public GregtechMaterialStack(final GT_Materials aMaterial, final long aAmount) {
+		this.mMaterial = aMaterial == null ? GT_Materials._NULL : aMaterial;
+		this.mAmount = aAmount;
+	}
 
-    public GregtechMaterialStack copy(long aAmount) {
-        return new GregtechMaterialStack(mMaterial, aAmount);
-    }
+	public GregtechMaterialStack copy(final long aAmount) {
+		return new GregtechMaterialStack(this.mMaterial, aAmount);
+	}
 
-    @Override
-    public GregtechMaterialStack clone() {
-        return new GregtechMaterialStack(mMaterial, mAmount);
-    }
+	@Override
+	public GregtechMaterialStack clone() {
+		return new GregtechMaterialStack(this.mMaterial, this.mAmount);
+	}
 
-    @Override
-    public boolean equals(Object aObject) {
-        if (aObject == this) return true;
-        if (aObject == null) return false;
-        if (aObject instanceof GT_Materials) return aObject == mMaterial;
-        if (aObject instanceof GregtechMaterialStack)
-            return ((GregtechMaterialStack) aObject).mMaterial == mMaterial && (mAmount < 0 || ((GregtechMaterialStack) aObject).mAmount < 0 || ((GregtechMaterialStack) aObject).mAmount == mAmount);
-        return false;
-    }
+	@Override
+	public boolean equals(final Object aObject) {
+		if (aObject == this) {
+			return true;
+		}
+		if (aObject == null) {
+			return false;
+		}
+		if (aObject instanceof GT_Materials) {
+			return aObject == this.mMaterial;
+		}
+		if (aObject instanceof GregtechMaterialStack) {
+			return (((GregtechMaterialStack) aObject).mMaterial == this.mMaterial) && ((this.mAmount < 0) || (((GregtechMaterialStack) aObject).mAmount < 0) || (((GregtechMaterialStack) aObject).mAmount == this.mAmount));
+		}
+		return false;
+	}
 
-    @Override
-    public String toString() {
-        return (mMaterial.mMaterialList.size() > 1 && mAmount > 1 ? "(" : "") + mMaterial.getToolTip(true) + (mMaterial.mMaterialList.size() > 1 && mAmount > 1 ? ")" : "") + (mAmount > 1 ? mAmount : "");
-    }
+	@Override
+	public String toString() {
+		return ((this.mMaterial.mMaterialList.size() > 1) && (this.mAmount > 1) ? "(" : "") + this.mMaterial.getToolTip(true) + ((this.mMaterial.mMaterialList.size() > 1) && (this.mAmount > 1) ? ")" : "") + (this.mAmount > 1 ? this.mAmount : "");
+	}
 
-    @Override
-    public int hashCode() {
-        return mMaterial.hashCode();
-    }
+	@Override
+	public int hashCode() {
+		return this.mMaterial.hashCode();
+	}
 }

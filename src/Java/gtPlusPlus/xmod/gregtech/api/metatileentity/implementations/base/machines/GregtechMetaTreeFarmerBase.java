@@ -13,35 +13,35 @@ public abstract class GregtechMetaTreeFarmerBase extends GT_MetaTileEntity_Tiere
 	public boolean bOutput = false, bRedstoneIfFull = false, bInvert = false, bUnbreakable = false;
 	public int mSuccess = 0, mTargetStackSize = 0;
 
-	public GregtechMetaTreeFarmerBase(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription) {
+	public GregtechMetaTreeFarmerBase(final int aID, final String aName, final String aNameRegional, final int aTier, final int aInvSlotCount, final String aDescription) {
 		super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
 	}
 
-	public GregtechMetaTreeFarmerBase(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
+	public GregtechMetaTreeFarmerBase(final String aName, final int aTier, final int aInvSlotCount, final String aDescription, final ITexture[][][] aTextures) {
 		super(aName, aTier, aInvSlotCount, aDescription, aTextures);
 	}
 
 	@Override
-	public ITexture[][][] getTextureSet(ITexture[] aTextures) {
-		ITexture[][][] rTextures = new ITexture[10][17][];
+	public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
+		final ITexture[][][] rTextures = new ITexture[10][17][];
 		for (byte i = -1; i < 16; i++) {
-			rTextures[0][i + 1] = getFront(i);
-			rTextures[1][i + 1] = getBack(i);
-			rTextures[2][i + 1] = getBottom(i);
-			rTextures[3][i + 1] = getTop(i);
-			rTextures[4][i + 1] = getSides(i);
-			rTextures[5][i + 1] = getFrontActive(i);
-			rTextures[6][i + 1] = getBackActive(i);
-			rTextures[7][i + 1] = getBottomActive(i);
-			rTextures[8][i + 1] = getTopActive(i);
-			rTextures[9][i + 1] = getSidesActive(i);
+			rTextures[0][i + 1] = this.getFront(i);
+			rTextures[1][i + 1] = this.getBack(i);
+			rTextures[2][i + 1] = this.getBottom(i);
+			rTextures[3][i + 1] = this.getTop(i);
+			rTextures[4][i + 1] = this.getSides(i);
+			rTextures[5][i + 1] = this.getFrontActive(i);
+			rTextures[6][i + 1] = this.getBackActive(i);
+			rTextures[7][i + 1] = this.getBottomActive(i);
+			rTextures[8][i + 1] = this.getTopActive(i);
+			rTextures[9][i + 1] = this.getSidesActive(i);
 		}
 		return rTextures;
 	}
 
 	@Override
-	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-		return mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0 : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex + 1];
+	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+		return this.mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0 : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex + 1];
 	}
 
 	@Override
@@ -50,12 +50,12 @@ public abstract class GregtechMetaTreeFarmerBase extends GT_MetaTileEntity_Tiere
 	}
 
 	@Override
-	public boolean isValidSlot(int aIndex) {
+	public boolean isValidSlot(final int aIndex) {
 		return false;
 	}
 
 	@Override
-	public boolean isFacingValid(byte aFacing) {
+	public boolean isFacingValid(final byte aFacing) {
 		return true;
 	}
 
@@ -70,13 +70,13 @@ public abstract class GregtechMetaTreeFarmerBase extends GT_MetaTileEntity_Tiere
 	}
 
 	@Override
-	public boolean isInputFacing(byte aSide) {
-		return !isOutputFacing(aSide);
+	public boolean isInputFacing(final byte aSide) {
+		return !this.isOutputFacing(aSide);
 	}
 
 	@Override
-	public boolean isOutputFacing(byte aSide) {
-		return getBaseMetaTileEntity().getBackFacing() == aSide;
+	public boolean isOutputFacing(final byte aSide) {
+		return this.getBaseMetaTileEntity().getBackFacing() == aSide;
 	}
 
 	@Override
@@ -115,7 +115,7 @@ public abstract class GregtechMetaTreeFarmerBase extends GT_MetaTileEntity_Tiere
 	}
 
 	@Override
-	public boolean isAccessAllowed(EntityPlayer aPlayer) {
+	public boolean isAccessAllowed(final EntityPlayer aPlayer) {
 		return false;
 	}
 
@@ -123,52 +123,52 @@ public abstract class GregtechMetaTreeFarmerBase extends GT_MetaTileEntity_Tiere
 
 
 	@Override
-	public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+	public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
 		return false;
 	}
 
 	@Override
-	public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
+	public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
 		return false;
 	}
 
-	public ITexture[] getFront(byte aColor) {
+	public ITexture[] getFront(final byte aColor) {
 		return new ITexture[]{new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Farm_Manager)};
 	}
 
-	public ITexture[] getBack(byte aColor) {
+	public ITexture[] getBack(final byte aColor) {
 		return new ITexture[]{new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Farm_Manager)};
 	}
 
-	public ITexture[] getBottom(byte aColor) {
+	public ITexture[] getBottom(final byte aColor) {
 		return new ITexture[]{new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Acacia_Log)};
 	}
 
-	public ITexture[] getTop(byte aColor) {
+	public ITexture[] getTop(final byte aColor) {
 		return new ITexture[]{new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Podzol)};
 	}
 
-	public ITexture[] getSides(byte aColor) {
+	public ITexture[] getSides(final byte aColor) {
 		return new ITexture[]{new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Farm_Manager)};
 	}
 
-	public ITexture[] getFrontActive(byte aColor) {
-		return getFront(aColor);
+	public ITexture[] getFrontActive(final byte aColor) {
+		return this.getFront(aColor);
 	}
 
-	public ITexture[] getBackActive(byte aColor) {
-		return getBack(aColor);
+	public ITexture[] getBackActive(final byte aColor) {
+		return this.getBack(aColor);
 	}
 
-	public ITexture[] getBottomActive(byte aColor) {
-		return getBottom(aColor);
+	public ITexture[] getBottomActive(final byte aColor) {
+		return this.getBottom(aColor);
 	}
 
-	public ITexture[] getTopActive(byte aColor) {
-		return getTop(aColor);
+	public ITexture[] getTopActive(final byte aColor) {
+		return this.getTop(aColor);
 	}
 
-	public ITexture[] getSidesActive(byte aColor) {
-		return getSides(aColor);
+	public ITexture[] getSidesActive(final byte aColor) {
+		return this.getSides(aColor);
 	}
 }

@@ -28,26 +28,26 @@ public class HANDLER_GT {
 
 		//Load General Blocks and set up some Basic Meta Tile Entitie states
 		Gregtech_Blocks.run();
-		
+
 		//Register Tile Entities
 		COMPAT_HANDLER.registerGregtechMachines();
-		
+
 		//Add Custom Pipes, Wires and Cables.
 		GregtechConduits.run();
-		
+
 		//Only loads if the config option is true (default: true)
 		if (CORE.configSwitches.enableSkookumChoochers){
 			new MetaGeneratedGregtechTools();
-			new ProcessingToolHeadChoocher().run();	
+			new ProcessingToolHeadChoocher().run();
 		}
-		
+
 		//Generates recipes for all gregtech smelting and alloy smelting combinations.
 		RecipeGen_BlastSmelterGT.generateRecipes();
-		
+
 	}
 
 	public static void postInit(){
-		
+
 	}
 
 }

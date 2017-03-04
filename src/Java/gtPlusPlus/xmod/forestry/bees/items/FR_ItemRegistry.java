@@ -9,13 +9,13 @@
  * SirSengir (original work), CovertJaguar, Player, Binnie, MysteriousAges
  ******************************************************************************/
 package gtPlusPlus.xmod.forestry.bees.items;
+import cpw.mods.fml.common.Optional;
+import cpw.mods.fml.common.registry.GameRegistry;
 import forestry.core.utils.StringUtil;
 import gtPlusPlus.core.lib.LoadedMods;
 import net.minecraft.item.*;
 import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraftforge.common.ChestGenHooks;
-import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class FR_ItemRegistry {
 
@@ -40,7 +40,7 @@ public class FR_ItemRegistry {
 
 
 	@Optional.Method(modid = "Forestry")
-	public static void Register() {		
+	public static void Register() {
 
 		//Forestry Frames
 		//frameUntreated = registerItem(new FR_ItemHiveFrame(80, 0.9f), "frameUntreated");
@@ -63,7 +63,7 @@ public class FR_ItemRegistry {
 			hiveFrameCaged = new MB_ItemFrame(MB_FrameType.CAGE, EnumRarity.common, "");
 			hiveFrameSoul = new MB_ItemFrame(MB_FrameType.SOUL, EnumRarity.common, "");
 			hiveFrameClay = new MB_ItemFrame(MB_FrameType.CLAY, EnumRarity.common, "");
-			hiveFrameNova = new MB_ItemFrame(MB_FrameType.NOVA, EnumRarity.epic, "A Creative Only Frame.");			
+			hiveFrameNova = new MB_ItemFrame(MB_FrameType.NOVA, EnumRarity.epic, "A Creative Only Frame.");
 		}
 
 
@@ -71,7 +71,7 @@ public class FR_ItemRegistry {
 
 	}
 
-	protected static <T extends Item> T registerItem(T item, String name) {
+	protected static <T extends Item> T registerItem(final T item, final String name) {
 		item.setUnlocalizedName(name);
 		GameRegistry.registerItem(item, StringUtil.cleanItemName(item));
 		return item;

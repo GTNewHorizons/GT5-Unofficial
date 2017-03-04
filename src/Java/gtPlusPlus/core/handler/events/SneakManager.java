@@ -40,11 +40,11 @@ public class SneakManager {
 		toggleState(Sprinting);
 	}
 
-	private static State toggleState(State state){
+	private static State toggleState(final State state){
 		Utils.LOG_INFO("State Toggle");
 		if (state == State.ON) {
 			return State.OFF;
-		}		
+		}
 		return State.ON;
 	}
 
@@ -68,14 +68,14 @@ public class SneakManager {
 		ON(true),
 		OFF(false);
 
-		private boolean STATE;
+		private final boolean STATE;
 		private State (final boolean State)
 		{
 			this.STATE = State;
 		}
 
 		public boolean getState() {
-			return STATE;
+			return this.STATE;
 		}
 
 	}

@@ -1,7 +1,7 @@
 package gtPlusPlus.core.tileentities.general;
 
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.inventories.*;
+import gtPlusPlus.core.inventories.InventoryFishTrap;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -16,7 +16,7 @@ public class TileEntityFishTrap extends TileEntity{
 
 	private int tickCount = 0;
 	private boolean isInWater = false;
-	private InventoryFishTrap inventoryContents;
+	private final InventoryFishTrap inventoryContents;
 	private int locationX;
 	private int locationY;
 	private int locationZ;
@@ -25,38 +25,38 @@ public class TileEntityFishTrap extends TileEntity{
 
 	public TileEntityFishTrap(){
 		this.inventoryContents = new InventoryFishTrap();//number of slots - without product slot
-		setTileLocation();
+		this.setTileLocation();
 	}
 
 	public boolean setTileLocation(){
 		if (this.hasWorldObj()){
 			if (!this.getWorldObj().isRemote){
-				locationX = this.xCoord;
-				locationY = this.yCoord;
-				locationZ = this.zCoord;
+				this.locationX = this.xCoord;
+				this.locationY = this.yCoord;
+				this.locationZ = this.zCoord;
 				return true;
 			}
 		}
-		return false;	
+		return false;
 	}
 
 	public final boolean isSurroundedByWater(){
-		setTileLocation();
-		Block[] surroundingBlocks = new Block[6];
+		this.setTileLocation();
+		final Block[] surroundingBlocks = new Block[6];
 		if (this.hasWorldObj()){
 			if (!this.getWorldObj().isRemote){
-				surroundingBlocks[0] = worldObj.getBlock(locationX, locationY+1, locationZ); //Above
-				surroundingBlocks[1] = worldObj.getBlock(locationX, locationY-1, locationZ); //Below
-				surroundingBlocks[2] = worldObj.getBlock(locationX+1, locationY, locationZ);
-				surroundingBlocks[3] = worldObj.getBlock(locationX-1, locationY, locationZ);
-				surroundingBlocks[4] = worldObj.getBlock(locationX, locationY, locationZ+1);
-				surroundingBlocks[5] = worldObj.getBlock(locationX, locationY, locationZ-1);
+				surroundingBlocks[0] = this.worldObj.getBlock(this.locationX, this.locationY+1, this.locationZ); //Above
+				surroundingBlocks[1] = this.worldObj.getBlock(this.locationX, this.locationY-1, this.locationZ); //Below
+				surroundingBlocks[2] = this.worldObj.getBlock(this.locationX+1, this.locationY, this.locationZ);
+				surroundingBlocks[3] = this.worldObj.getBlock(this.locationX-1, this.locationY, this.locationZ);
+				surroundingBlocks[4] = this.worldObj.getBlock(this.locationX, this.locationY, this.locationZ+1);
+				surroundingBlocks[5] = this.worldObj.getBlock(this.locationX, this.locationY, this.locationZ-1);
 				int waterCount = 0;
 				int trapCount = 0;
-				for (Block checkBlock : surroundingBlocks){
-					if (checkBlock == Blocks.water || checkBlock == Blocks.flowing_water || checkBlock.getUnlocalizedName().toLowerCase().contains("water") || checkBlock == ModBlocks.blockFishTrap){
+				for (final Block checkBlock : surroundingBlocks){
+					if ((checkBlock == Blocks.water) || (checkBlock == Blocks.flowing_water) || checkBlock.getUnlocalizedName().toLowerCase().contains("water") || (checkBlock == ModBlocks.blockFishTrap)){
 						if (checkBlock != ModBlocks.blockFishTrap){
-						waterCount++;
+							waterCount++;
 						}
 						else {
 							waterCount++;
@@ -64,11 +64,11 @@ public class TileEntityFishTrap extends TileEntity{
 						}
 					}
 				}
-				if (waterCount >= 2 && trapCount <= 4){
+				if ((waterCount >= 2) && (trapCount <= 4)){
 					this.waterSides = waterCount;
 					return true;
 				}
-				else if (waterCount >= 2 && trapCount > 4){
+				else if ((waterCount >= 2) && (trapCount > 4)){
 					Utils.LOG_INFO("Too many fish traps surrounding this one.");
 					Utils.LOG_INFO("Not adding Loot to the fishtrap at x["+this.locationX+"] y["+this.locationY+"] z["+this.locationZ+"] (Ticking for loot every "+this.baseTickRate+" ticks)");
 				}
@@ -85,8 +85,8 @@ public class TileEntityFishTrap extends TileEntity{
 	public boolean tryAddLoot(){
 		if (this.getInventory().getInventory() != null){
 			int checkingSlot = 0;
-			ItemStack loot = generateLootForFishTrap();
-			for (ItemStack contents : this.getInventory().getInventory()){
+			final ItemStack loot = this.generateLootForFishTrap();
+			for (final ItemStack contents : this.getInventory().getInventory()){
 				if (contents == null){
 					this.getInventory().setInventorySlotContents(checkingSlot, loot);
 					this.markDirty();
@@ -115,10 +115,10 @@ public class TileEntityFishTrap extends TileEntity{
 	}
 
 	private ItemStack generateLootForFishTrap() {
-		int lootWeight = MathUtils.randInt(0,  100);
+		final int lootWeight = MathUtils.randInt(0,  100);
 		ItemStack loot;
 		if (lootWeight <= 10){
-			loot = ItemUtils.getSimpleStack(Items.slime_ball);			
+			loot = ItemUtils.getSimpleStack(Items.slime_ball);
 		}
 		else if (lootWeight <= 20){
 			loot = ItemUtils.getSimpleStack(Items.bone);
@@ -144,29 +144,29 @@ public class TileEntityFishTrap extends TileEntity{
 			this.tickCount++;
 			//Utils.LOG_INFO("Ticking "+this.tickCount);
 			//Check if the Tile is within water once per second.
-			if (this.tickCount%20==0){					
-				this.isInWater = isSurroundedByWater();
+			if ((this.tickCount%20)==0){
+				this.isInWater = this.isSurroundedByWater();
 			}
 			else {
 
 			}
-			
+
 			if (this.isInWater){
-				calculateTickrate();
+				this.calculateTickrate();
 			}
-			
+
 			//Try add some loot once every 30 seconds.
-			if (this.tickCount%this.baseTickRate==0){	
+			if ((this.tickCount%this.baseTickRate)==0){
 				if (this.isInWater){
 					//Add loot
 					Utils.LOG_INFO("Adding Loot to the fishtrap at x["+this.locationX+"] y["+this.locationY+"] z["+this.locationZ+"] (Ticking for loot every "+this.baseTickRate+" ticks)");
-					tryAddLoot();
-					markDirty();
-				}	
+					this.tryAddLoot();
+					this.markDirty();
+				}
 				else {
 					Utils.LOG_INFO("This Trap does not have enough water around it.");
 					Utils.LOG_INFO("Not adding Loot to the fishtrap at x["+this.locationX+"] y["+this.locationY+"] z["+this.locationZ+"] (Ticking for loot every "+this.baseTickRate+" ticks)");
-					markDirty();
+					this.markDirty();
 				}
 				this.tickCount = 0;
 			}
@@ -177,21 +177,21 @@ public class TileEntityFishTrap extends TileEntity{
 
 		}
 	}
-	
+
 	public void calculateTickrate(){
 		int calculateTickrate = 0;
 		if (this.waterSides < 2){
 			calculateTickrate = 0;
 		}
-		else if (this.waterSides >= 2 && this.waterSides < 4){
+		else if ((this.waterSides >= 2) && (this.waterSides < 4)){
 			calculateTickrate = 3000;
 		}
-		else if (this.waterSides >= 4 && this.waterSides < 6){
+		else if ((this.waterSides >= 4) && (this.waterSides < 6)){
 			calculateTickrate = 2000;
 		}
 		else if (this.waterSides == 6){
 			calculateTickrate = 900;
-		}				
+		}
 		this.baseTickRate = calculateTickrate;
 	}
 
@@ -199,7 +199,7 @@ public class TileEntityFishTrap extends TileEntity{
 		return this.worldObj.getClosestPlayer(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, 32) != null;
 	}
 
-	public NBTTagCompound getTag(NBTTagCompound nbt, String tag){
+	public NBTTagCompound getTag(final NBTTagCompound nbt, final String tag){
 		if(!nbt.hasKey(tag)){
 			nbt.setTag(tag, new NBTTagCompound());
 		}
@@ -208,19 +208,19 @@ public class TileEntityFishTrap extends TileEntity{
 
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt){
+	public void writeToNBT(final NBTTagCompound nbt){
 		super.writeToNBT(nbt);
 		//Utils.LOG_INFO("Trying to write NBT data to TE.");
-		NBTTagCompound chestData = new NBTTagCompound();
-		inventoryContents.writeToNBT(chestData);
+		final NBTTagCompound chestData = new NBTTagCompound();
+		this.inventoryContents.writeToNBT(chestData);
 		nbt.setTag("ContentsChest", chestData);
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt){
+	public void readFromNBT(final NBTTagCompound nbt){
 		super.readFromNBT(nbt);
 		//Utils.LOG_INFO("Trying to read NBT data from TE.");
-		inventoryContents.readFromNBT(nbt.getCompoundTag("ContentsChest"));
+		this.inventoryContents.readFromNBT(nbt.getCompoundTag("ContentsChest"));
 	}
 
 }

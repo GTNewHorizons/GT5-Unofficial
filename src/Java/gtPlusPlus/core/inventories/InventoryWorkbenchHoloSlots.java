@@ -10,11 +10,11 @@ import net.minecraft.nbt.NBTTagList;
 
 public class InventoryWorkbenchHoloSlots implements IInventory{
 
-	private String name = "Inventory Holo";
+	private final String name = "Inventory Holo";
 
 	//Output Slot
 	public IInventory craftResult = new InventoryCraftResult();
-	
+
 	/** Defining your inventory size this way is handy */
 	public static final int INV_SIZE = 6;
 
@@ -29,30 +29,30 @@ public class InventoryWorkbenchHoloSlots implements IInventory{
 
 	}
 
-	public void readFromNBT(NBTTagCompound nbt)
+	public void readFromNBT(final NBTTagCompound nbt)
 	{
-		NBTTagList list = nbt.getTagList("Items", 10);
-		inventory = new ItemStack[INV_SIZE];
+		final NBTTagList list = nbt.getTagList("Items", 10);
+		this.inventory = new ItemStack[INV_SIZE];
 		for(int i = 0;i<list.tagCount();i++)
 		{
-			NBTTagCompound data = list.getCompoundTagAt(i);
-			int slot = data.getInteger("Slot");
-			if(slot >= 1 && slot < INV_SIZE)
+			final NBTTagCompound data = list.getCompoundTagAt(i);
+			final int slot = data.getInteger("Slot");
+			if((slot >= 1) && (slot < INV_SIZE))
 			{
-				inventory[slot] = ItemStack.loadItemStackFromNBT(data);
+				this.inventory[slot] = ItemStack.loadItemStackFromNBT(data);
 			}
 		}
 	}
 
-	public void writeToNBT(NBTTagCompound nbt)
+	public void writeToNBT(final NBTTagCompound nbt)
 	{
-		NBTTagList list = new NBTTagList();
+		final NBTTagList list = new NBTTagList();
 		for(int i = 0;i<INV_SIZE;i++)
 		{
-			ItemStack stack = inventory[i];
-			if(stack != null && i != 0)
+			final ItemStack stack = this.inventory[i];
+			if((stack != null) && (i != 0))
 			{
-				NBTTagCompound data = new NBTTagCompound();
+				final NBTTagCompound data = new NBTTagCompound();
 				stack.writeToNBT(data);
 				data.setInteger("Slot", i);
 				list.appendTag(data);
@@ -64,45 +64,45 @@ public class InventoryWorkbenchHoloSlots implements IInventory{
 	@Override
 	public int getSizeInventory()
 	{
-		return inventory.length;
+		return this.inventory.length;
 	}
 
 	public ItemStack[] getInventory(){
-		return inventory;
+		return this.inventory;
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int slot)
+	public ItemStack getStackInSlot(final int slot)
 	{
-		return inventory[slot];
+		return this.inventory[slot];
 	}
 
 	@Override
-	public void setInventorySlotContents(int slot, ItemStack stack)
+	public void setInventorySlotContents(final int slot, final ItemStack stack)
 	{
-		inventory[slot] = stack;
+		this.inventory[slot] = stack;
 
-		if (stack != null && stack.stackSize > getInventoryStackLimit())
+		if ((stack != null) && (stack.stackSize > this.getInventoryStackLimit()))
 		{
-			stack.stackSize = getInventoryStackLimit();
+			stack.stackSize = this.getInventoryStackLimit();
 		}
 
 		// Don't forget this line or your inventory will not be saved!
-		markDirty();
+		this.markDirty();
 	}
 
 	// 1.7.2+ renamed to getInventoryName
 	@Override
 	public String getInventoryName()
 	{
-		return name;
+		return this.name;
 	}
 
 	// 1.7.2+ renamed to hasCustomInventoryName
 	@Override
 	public boolean hasCustomInventoryName()
 	{
-		return name.length() > 0;
+		return this.name.length() > 0;
 	}
 
 	@Override
@@ -120,16 +120,16 @@ public class InventoryWorkbenchHoloSlots implements IInventory{
 	@Override
 	public void markDirty()
 	{
-		for (int i = 0; i < getSizeInventory(); ++i)
+		for (int i = 0; i < this.getSizeInventory(); ++i)
 		{
-			if (getStackInSlot(i) != null && getStackInSlot(i).stackSize == 0) {
-				inventory[i] = null;
+			if ((this.getStackInSlot(i) != null) && (this.getStackInSlot(i).stackSize == 0)) {
+				this.inventory[i] = null;
 			}
 		}
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer)
+	public boolean isUseableByPlayer(final EntityPlayer entityplayer)
 	{
 		return true;
 	}
@@ -148,13 +148,13 @@ public class InventoryWorkbenchHoloSlots implements IInventory{
 	 * even when this returns false
 	 */
 	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack itemstack)
-	{	
+	public boolean isItemValidForSlot(final int slot, final ItemStack itemstack)
+	{
 		return false;
 	}
 
 	/** A list of one item containing the result of the crafting formula */
-	private ItemStack[] stackResult = new ItemStack[1];
+	private final ItemStack[] stackResult = new ItemStack[1];
 
 	/**
 	 * Removes from an inventory slot (first arg) up to a specified number (second arg) of items and returns them in a
@@ -187,17 +187,17 @@ public class InventoryWorkbenchHoloSlots implements IInventory{
 		return stack;
 	}*/
 	@Override
-	public ItemStack decrStackSize(int p_70298_1_, int p_70298_2_)
-    {
-		if (getStackInSlot(0) != null){
-			Utils.LOG_INFO("getStackInSlot(0) contains "+getStackInSlot(0).getDisplayName());
+	public ItemStack decrStackSize(final int p_70298_1_, final int p_70298_2_)
+	{
+		if (this.getStackInSlot(0) != null){
+			Utils.LOG_INFO("getStackInSlot(0) contains "+this.getStackInSlot(0).getDisplayName());
 			if (this.stackResult[0] == null){
 				Utils.LOG_INFO("this.stackResult[0] == null");
-				this.stackResult[0] = getStackInSlot(0);
+				this.stackResult[0] = this.getStackInSlot(0);
 			}
 			else if (this.stackResult[0] != null){
 				Utils.LOG_INFO("this.stackResult[0] != null");
-				if (this.stackResult[0].getDisplayName().toLowerCase().equals(getStackInSlot(0).getDisplayName().toLowerCase())){
+				if (this.stackResult[0].getDisplayName().toLowerCase().equals(this.getStackInSlot(0).getDisplayName().toLowerCase())){
 					Utils.LOG_INFO("Items are the same?");
 				}
 				else {
@@ -205,27 +205,27 @@ public class InventoryWorkbenchHoloSlots implements IInventory{
 				}
 			}
 		}
-		
-        if (this.stackResult[0] != null)
-        {
+
+		if (this.stackResult[0] != null)
+		{
 			Utils.LOG_INFO("this.stackResult[0] != null - Really never should be though. - Returning "+this.stackResult[0].getDisplayName());
-            ItemStack itemstack = this.stackResult[0];
-            this.stackResult[0] = null;
-            return itemstack;
-        }
+			final ItemStack itemstack = this.stackResult[0];
+			this.stackResult[0] = null;
+			return itemstack;
+		}
 		return null;
-    }
+	}
 
 	/**
 	 * When some containers are closed they call this on each slot, then drop whatever it returns as an EntityItem -
 	 * like when you close a workbench GUI.
 	 */
 	@Override
-	public ItemStack getStackInSlotOnClosing(int p_70304_1_)
+	public ItemStack getStackInSlotOnClosing(final int p_70304_1_)
 	{
 		if (this.stackResult[0] != null)
 		{
-			ItemStack itemstack = this.stackResult[0];
+			final ItemStack itemstack = this.stackResult[0];
 			this.stackResult[0] = null;
 			return itemstack;
 		}

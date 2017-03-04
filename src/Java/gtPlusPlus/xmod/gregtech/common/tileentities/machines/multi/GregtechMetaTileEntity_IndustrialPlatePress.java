@@ -1,6 +1,10 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
 import static gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks.GTID;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -14,10 +18,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -26,16 +26,16 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_IndustrialPlatePress
 extends GregtechMeta_MultiBlockBase {
-	public GregtechMetaTileEntity_IndustrialPlatePress(int aID, String aName, String aNameRegional) {
+	public GregtechMetaTileEntity_IndustrialPlatePress(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}
 
-	public GregtechMetaTileEntity_IndustrialPlatePress(String aName) {
+	public GregtechMetaTileEntity_IndustrialPlatePress(final String aName) {
 		super(aName);
 	}
 
 	@Override
-	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
 		return new GregtechMetaTileEntity_IndustrialPlatePress(this.mName);
 	}
 
@@ -54,7 +54,7 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
 			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[GTID+4], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER)};
 		}
@@ -62,8 +62,8 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MaterialPress.png");
+	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
+		return new GUI_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "MaterialPress.png");
 	}
 
 	@Override
@@ -72,118 +72,118 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public boolean isFacingValid(byte aFacing) {
+	public boolean isFacingValid(final byte aFacing) {
 		return aFacing > 1;
 	}
 
-	@Override	
-	public boolean checkRecipe(ItemStack aStack) { //TODO - Add Check to make sure Fluid output isn't full
-        ArrayList<ItemStack> tInputList = getStoredInputs();
-        for (int i = 0; i < tInputList.size() - 1; i++) {
-            for (int j = i + 1; j < tInputList.size(); j++) {
-                if (GT_Utility.areStacksEqual((ItemStack) tInputList.get(i), (ItemStack) tInputList.get(j))) {
-                    if (((ItemStack) tInputList.get(i)).stackSize >= ((ItemStack) tInputList.get(j)).stackSize) {
-                        tInputList.remove(j--);
-                    } else {
-                        tInputList.remove(i--);
-                        break;
-                    }
-                }
-            }
-        }
-        ItemStack[] tInputs = (ItemStack[]) Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, 2);
+	@Override
+	public boolean checkRecipe(final ItemStack aStack) { //TODO - Add Check to make sure Fluid output isn't full
+		final ArrayList<ItemStack> tInputList = this.getStoredInputs();
+		for (int i = 0; i < (tInputList.size() - 1); i++) {
+			for (int j = i + 1; j < tInputList.size(); j++) {
+				if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
+					if (tInputList.get(i).stackSize >= tInputList.get(j).stackSize) {
+						tInputList.remove(j--);
+					} else {
+						tInputList.remove(i--);
+						break;
+					}
+				}
+			}
+		}
+		final ItemStack[] tInputs = Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, 2);
 
-        ArrayList<FluidStack> tFluidList = getStoredFluids();
-        for (int i = 0; i < tFluidList.size() - 1; i++) {
-            for (int j = i + 1; j < tFluidList.size(); j++) {
-                if (GT_Utility.areFluidsEqual((FluidStack) tFluidList.get(i), (FluidStack) tFluidList.get(j))) {
-                    if (((FluidStack) tFluidList.get(i)).amount >= ((FluidStack) tFluidList.get(j)).amount) {
-                        tFluidList.remove(j--);
-                    } else {
-                        tFluidList.remove(i--);
-                        break;
-                    }
-                }
-            }
-        }
-        FluidStack[] tFluids = (FluidStack[]) Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tInputList.size()]), 0, 1);
-        
-        int tValidOutputSlots = this.getValidOutputSlots(getRecipeMap(), tInputs);
-		Utils.LOG_WARNING("Valid Output Slots: "+tValidOutputSlots);		
+		final ArrayList<FluidStack> tFluidList = this.getStoredFluids();
+		for (int i = 0; i < (tFluidList.size() - 1); i++) {
+			for (int j = i + 1; j < tFluidList.size(); j++) {
+				if (GT_Utility.areFluidsEqual(tFluidList.get(i), tFluidList.get(j))) {
+					if (tFluidList.get(i).amount >= tFluidList.get(j).amount) {
+						tFluidList.remove(j--);
+					} else {
+						tFluidList.remove(i--);
+						break;
+					}
+				}
+			}
+		}
+		final FluidStack[] tFluids = Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tInputList.size()]), 0, 1);
+
+		final int tValidOutputSlots = this.getValidOutputSlots(this.getRecipeMap(), tInputs);
+		Utils.LOG_WARNING("Valid Output Slots: "+tValidOutputSlots);
 		//More than or one input
-		if (tInputList.size() > 0 && tValidOutputSlots >= 1) {        
-            long tVoltage = getMaxInputVoltage();
-            byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sBenderRecipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
-            if ((tRecipe != null) && (2500 >= tRecipe.mSpecialValue) && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
-                this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-                this.mEfficiencyIncrease = 10000;
-                if (tRecipe.mEUt <= 16) {
-                    this.mEUt = (tRecipe.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
-                    this.mMaxProgresstime = (tRecipe.mDuration / (1 << tTier - 1));
-                } else {
-                    this.mEUt = tRecipe.mEUt;
-                    this.mMaxProgresstime = tRecipe.mDuration;
-                    while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-                        this.mEUt *= 4;
-                        this.mMaxProgresstime /= 2;
-                    }
-                }
-                if (this.mEUt > 0) {
-                    this.mEUt = (-this.mEUt);
-                }
-                this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-                this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0), tRecipe.getOutput(1)};
-                updateSlots();
-                return true;
-            }
-        }
-        return false;
-    }
+		if ((tInputList.size() > 0) && (tValidOutputSlots >= 1)) {
+			final long tVoltage = this.getMaxInputVoltage();
+			final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+			final GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sBenderRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
+			if ((tRecipe != null) && (2500 >= tRecipe.mSpecialValue) && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
+				this.mEfficiency = (10000 - ((this.getIdealStatus() - this.getRepairStatus()) * 1000));
+				this.mEfficiencyIncrease = 10000;
+				if (tRecipe.mEUt <= 16) {
+					this.mEUt = (tRecipe.mEUt * (1 << (tTier - 1)) * (1 << (tTier - 1)));
+					this.mMaxProgresstime = (tRecipe.mDuration / (1 << (tTier - 1)));
+				} else {
+					this.mEUt = tRecipe.mEUt;
+					this.mMaxProgresstime = tRecipe.mDuration;
+					while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+						this.mEUt *= 4;
+						this.mMaxProgresstime /= 2;
+					}
+				}
+				if (this.mEUt > 0) {
+					this.mEUt = (-this.mEUt);
+				}
+				this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+				this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0), tRecipe.getOutput(1)};
+				this.updateSlots();
+				return true;
+			}
+		}
+		return false;
+	}
 
 	@Override
-	public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
-        super.startSoundLoop(aIndex, aX, aY, aZ);
-        if (aIndex == 20) {
-            GT_Utility.doSoundAtClient((String) GregTech_API.sSoundList.get(Integer.valueOf(5)), 10, 1.0F, aX, aY, aZ);
-        }
-    }
+	public void startSoundLoop(final byte aIndex, final double aX, final double aY, final double aZ) {
+		super.startSoundLoop(aIndex, aX, aY, aZ);
+		if (aIndex == 20) {
+			GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(Integer.valueOf(5)), 10, 1.0F, aX, aY, aZ);
+		}
+	}
 
 	@Override
-	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-        int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-        int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-        if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {
-            return false;
-        }
-        int tAmount = 0;
-        for (int i = -1; i < 2; i++) {
-            for (int j = -1; j < 2; j++) {
-                for (int h = -1; h < 2; h++) {
-                    if ((h != 0) || (((xDir + i != 0) || (zDir + j != 0)) && ((i != 0) || (j != 0)))) {
-                        IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-                        if ((!addMaintenanceToMachineList(tTileEntity, 61)) && (!addMufflerToMachineList(tTileEntity, 61)) && (!addInputToMachineList(tTileEntity, 61)) && (!addOutputToMachineList(tTileEntity, 61)) && (!addEnergyInputToMachineList(tTileEntity, 61))) {
-                            Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
-                            byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
-                            if (((tBlock != ModBlocks.blockCasingsMisc) || (tMeta != 4))) {
-                                return false;
-                            }
-                            tAmount++;
-                        }
-                    }
-                }
-            }
-        }
-        return tAmount >= 16;
-    }
+	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
+		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
+		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+		if (!aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir)) {
+			return false;
+		}
+		int tAmount = 0;
+		for (int i = -1; i < 2; i++) {
+			for (int j = -1; j < 2; j++) {
+				for (int h = -1; h < 2; h++) {
+					if ((h != 0) || ((((xDir + i) != 0) || ((zDir + j) != 0)) && ((i != 0) || (j != 0)))) {
+						final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
+						if ((!this.addMaintenanceToMachineList(tTileEntity, 61)) && (!this.addMufflerToMachineList(tTileEntity, 61)) && (!this.addInputToMachineList(tTileEntity, 61)) && (!this.addOutputToMachineList(tTileEntity, 61)) && (!this.addEnergyInputToMachineList(tTileEntity, 61))) {
+							final Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
+							final byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
+							if (((tBlock != ModBlocks.blockCasingsMisc) || (tMeta != 4))) {
+								return false;
+							}
+							tAmount++;
+						}
+					}
+				}
+			}
+		}
+		return tAmount >= 16;
+	}
 
 	@Override
-	public int getMaxEfficiency(ItemStack aStack) {
+	public int getMaxEfficiency(final ItemStack aStack) {
 		return 10000;
 	}
 
 	@Override
-	public int getPollutionPerTick(ItemStack aStack) {
+	public int getPollutionPerTick(final ItemStack aStack) {
 		return 0;
 	}
 
@@ -193,7 +193,7 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public boolean explodesOnComponentBreak(ItemStack aStack) {
+	public boolean explodesOnComponentBreak(final ItemStack aStack) {
 		return false;
 	}
 }

@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.base.cell;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
@@ -7,8 +9,6 @@ import gtPlusPlus.core.util.Utils;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class BaseItemCell extends BaseItemComponent{
 
@@ -16,9 +16,9 @@ public class BaseItemCell extends BaseItemComponent{
 	private IIcon overlay;
 	ComponentTypes Cell = ComponentTypes.CELL;
 
-	public BaseItemCell(Material material) {
-		super(material, BaseItemComponent.ComponentTypes.CELL);	
-		fluidColour = (short[]) ((material == null) ? extraData : material.getRGBA());
+	public BaseItemCell(final Material material) {
+		super(material, BaseItemComponent.ComponentTypes.CELL);
+		this.fluidColour = (short[]) ((material == null) ? this.extraData : material.getRGBA());
 	}
 
 	@Override
@@ -27,22 +27,22 @@ public class BaseItemCell extends BaseItemComponent{
 		return true;
 	}
 
-	@Override 
-	public void registerIcons(IIconRegister i) {
-		this.base = i.registerIcon(CORE.MODID + ":" + "item"+Cell.getComponent());	
-		this.overlay = i.registerIcon(CORE.MODID + ":" + "item"+Cell.getComponent()+"_Overlay");
+	@Override
+	public void registerIcons(final IIconRegister i) {
+		this.base = i.registerIcon(CORE.MODID + ":" + "item"+this.Cell.getComponent());
+		this.overlay = i.registerIcon(CORE.MODID + ":" + "item"+this.Cell.getComponent()+"_Overlay");
 		//this.overlay = cellMaterial.getFluid(1000).getFluid().get
 	}
 
-	private short[] fluidColour;
+	private final short[] fluidColour;
 	boolean upwards = true;
 
 	@Override
-	public int getColorFromItemStack(ItemStack stack, int renderPass) {
+	public int getColorFromItemStack(final ItemStack stack, final int renderPass) {
 		if (renderPass == 0){
-			return Utils.rgbtoHexValue(230, 230, 230);			
-		}	
-		
+			return Utils.rgbtoHexValue(230, 230, 230);
+		}
+
 
 		/*if (tickValue == 20){
 			if (upwards){
@@ -56,7 +56,7 @@ public class BaseItemCell extends BaseItemComponent{
 				if (fluidBright >= 20) upwards = false;
 			}
 		}
-		
+
 		if (tickValue > 20){
 			tickValue=0;
 		}
@@ -65,12 +65,12 @@ public class BaseItemCell extends BaseItemComponent{
 		}
 
 		return Utils.rgbtoHexValue(fluidColour[0]+fluidBright, fluidColour[1]+fluidBright, fluidColour[2]+fluidBright);*/
-		return componentColour;
+		return this.componentColour;
 	}
 
 
 	@Override
-	public IIcon getIconFromDamageForRenderPass(int damage, int pass) {
+	public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
 		if(pass == 0) {
 			return this.base;
 		}

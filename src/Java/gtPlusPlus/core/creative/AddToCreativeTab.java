@@ -19,7 +19,7 @@ public class AddToCreativeTab {
 		tabTools = new MiscUtilCreativeTabTools("MiscUtilToolsTab");
 		tabMachines = new MiscUtilCreativeTabMachines("MiscUtilMachineTab");
 		tabOther = new MiscUtilCreativeTabOther("MiscUtilOtherTab");
-		
+
 		if (CORE.DEBUG){
 			//tabCombat = new MiscUtilCreativeTabCombat("MiscUtilCombatTab");
 		}

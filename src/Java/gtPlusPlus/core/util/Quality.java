@@ -4,13 +4,13 @@ import gtPlusPlus.core.util.math.MathUtils;
 import net.minecraft.util.EnumChatFormatting;
 
 public enum Quality {
-	
+
 	// Magic Blue
 	// Rare Yellow
 	// Set Green
 	// Unique Gold/Purple
 	// Trade-off Brown
-	
+
 	POOR("Poor", EnumChatFormatting.GRAY),
 	COMMON("Common", EnumChatFormatting.WHITE),
 	UNCOMMON("Uncommon", EnumChatFormatting.DARK_GREEN),
@@ -31,27 +31,28 @@ public enum Quality {
 	}
 
 	public String getQuality() {
-		return LOOT;
+		return this.LOOT;
 	}
-	
+
 	protected EnumChatFormatting getColour(){
-		return COLOUR;
+		return this.COLOUR;
 	}
-	
+
 	public String formatted(){
 		return this.COLOUR+this.LOOT;
 	}
-	
+
 	public static Quality getRandomQuality(){
-		int lootChance = MathUtils.randInt(0, 100);
+		final int lootChance = MathUtils.randInt(0, 100);
 		if (lootChance <= 10){return Quality.POOR;}
 		else if (lootChance <= 45){return Quality.COMMON;}
 		else if (lootChance <= 65){return Quality.UNCOMMON;}
 		else if (lootChance <= 82){return Quality.MAGIC;}
 		else if (lootChance <= 92){return Quality.EPIC;}
 		else if (lootChance <= 97){return Quality.RARE;}
-		else if (lootChance <= 99){return Quality.ARTIFACT;}
-		else return null;		
+		else if (lootChance <= 99){return Quality.ARTIFACT;} else {
+			return null;
+		}
 	}
 
 }

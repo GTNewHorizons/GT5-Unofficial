@@ -1,19 +1,18 @@
 package gtPlusPlus.core.item.base;
 
-import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
-
 import java.util.List;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.*;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class CoreItem extends Item
 {
@@ -31,7 +30,7 @@ public class CoreItem extends Item
 	/*
 	 * Name, Tab - 64 Stack, 0 Dmg
 	 */
-	public CoreItem(String unlocalizedName, CreativeTabs creativeTab)
+	public CoreItem(final String unlocalizedName, final CreativeTabs creativeTab)
 	{
 		this(unlocalizedName, creativeTab, 64, 0); //Calls 3
 	}
@@ -40,35 +39,35 @@ public class CoreItem extends Item
 	/*
 	 * Name, Tab - 64 Stack, 0 Dmg
 	 */
-	public CoreItem(String unlocalizedName, String displayName, CreativeTabs creativeTab)
+	public CoreItem(final String unlocalizedName, final String displayName, final CreativeTabs creativeTab)
 	{
 		this(unlocalizedName, creativeTab, 64, 0); //Calls 3
-		itemName = displayName;
+		this.itemName = displayName;
 	}
 
-	//0.1
-		/*
-		 * Name, Tab - 64 Stack, 0 Dmg
-		 */
-		public CoreItem(String unlocalizedName, CreativeTabs creativeTab, ItemStack OverrideItem)
-		{
-			this(unlocalizedName, creativeTab, 64, 0, "This item will be replaced by another when helf by a player, it is old and should not be used in recipes.", EnumRarity.uncommon, EnumChatFormatting.UNDERLINE, false, OverrideItem); //Calls 5
-		}
 	//0.1
 	/*
 	 * Name, Tab - 64 Stack, 0 Dmg
 	 */
-	public CoreItem(String unlocalizedName, String displayName, CreativeTabs creativeTab, ItemStack OverrideItem)
+	public CoreItem(final String unlocalizedName, final CreativeTabs creativeTab, final ItemStack OverrideItem)
 	{
 		this(unlocalizedName, creativeTab, 64, 0, "This item will be replaced by another when helf by a player, it is old and should not be used in recipes.", EnumRarity.uncommon, EnumChatFormatting.UNDERLINE, false, OverrideItem); //Calls 5
-		itemName = displayName;
+	}
+	//0.1
+	/*
+	 * Name, Tab - 64 Stack, 0 Dmg
+	 */
+	public CoreItem(final String unlocalizedName, final String displayName, final CreativeTabs creativeTab, final ItemStack OverrideItem)
+	{
+		this(unlocalizedName, creativeTab, 64, 0, "This item will be replaced by another when helf by a player, it is old and should not be used in recipes.", EnumRarity.uncommon, EnumChatFormatting.UNDERLINE, false, OverrideItem); //Calls 5
+		this.itemName = displayName;
 	}
 
 	//1
 	/*
 	 * Name, Tab, Stack - 0 Dmg
 	 */
-	public CoreItem(String unlocalizedName, CreativeTabs creativeTab, int stackSize)
+	public CoreItem(final String unlocalizedName, final CreativeTabs creativeTab, final int stackSize)
 	{
 		this(unlocalizedName, creativeTab, stackSize, 0); //Calls 3
 	}
@@ -76,15 +75,15 @@ public class CoreItem extends Item
 	/*
 	 * Name, Tab, Stack, Description - 0 Dmg
 	 */
-	public CoreItem(String unlocalizedName, CreativeTabs creativeTab, int stackSize, String description)
+	public CoreItem(final String unlocalizedName, final CreativeTabs creativeTab, final int stackSize, final String description)
 	{
 		this(unlocalizedName, creativeTab, stackSize, 0, description); //Calls 4
-	}	
+	}
 	//3
 	/*
 	 * Name, Tab, Stack, Dmg - Description
 	 */
-	public CoreItem(String unlocalizedName, CreativeTabs creativeTab, int stackSize, int maxDmg)
+	public CoreItem(final String unlocalizedName, final CreativeTabs creativeTab, final int stackSize, final int maxDmg)
 	{
 		this(unlocalizedName, creativeTab, stackSize, maxDmg, ""); //Calls 4
 	}
@@ -92,7 +91,7 @@ public class CoreItem extends Item
 	/*
 	 * Name, Tab, Stack, Dmg, Description
 	 */
-	public CoreItem(String unlocalizedName, CreativeTabs creativeTab, int stackSize, int maxDmg, String description)
+	public CoreItem(final String unlocalizedName, final CreativeTabs creativeTab, final int stackSize, final int maxDmg, final String description)
 	{
 		this(unlocalizedName, creativeTab, stackSize, maxDmg, description, EnumRarity.common, EnumChatFormatting.GRAY, false, null); //Calls 4.5
 	}
@@ -100,7 +99,7 @@ public class CoreItem extends Item
 	/*
 	 * Name, Tab, Stack, Dmg, Description, Text Colour - Common
 	 */
-	public CoreItem(String unlocalizedName, CreativeTabs creativeTab, int stackSize, int maxDmg, String description, EnumChatFormatting colour)
+	public CoreItem(final String unlocalizedName, final CreativeTabs creativeTab, final int stackSize, final int maxDmg, final String description, final EnumChatFormatting colour)
 	{
 		this(unlocalizedName, creativeTab, stackSize, maxDmg, description, EnumRarity.common, colour, false, null); //Calls 5
 	}
@@ -109,22 +108,22 @@ public class CoreItem extends Item
 	/*
 	 * Name, Tab, Stack, Dmg, Description, Rarity - Gray text
 	 */
-	public CoreItem(String unlocalizedName, CreativeTabs creativeTab, int stackSize, int maxDmg, String description, EnumRarity rarity)
+	public CoreItem(final String unlocalizedName, final CreativeTabs creativeTab, final int stackSize, final int maxDmg, final String description, final EnumRarity rarity)
 	{
 		this(unlocalizedName, creativeTab, stackSize, maxDmg, description, rarity, EnumChatFormatting.GRAY, false, null); //Calls 5
 	}
 
-	//5	
+	//5
 	/*
 	 * Name, Tab, Stack, Dmg, Description, Rarity, Text Colour, Effect
 	 */
-	public CoreItem(String unlocalizedName, CreativeTabs creativeTab, int stackSize, int maxDmg, String description, EnumRarity regRarity, EnumChatFormatting colour, boolean Effect, ItemStack OverrideItem)
+	public CoreItem(final String unlocalizedName, final CreativeTabs creativeTab, final int stackSize, final int maxDmg, final String description, final EnumRarity regRarity, final EnumChatFormatting colour, final boolean Effect, final ItemStack OverrideItem)
 	{
-		setUnlocalizedName(unlocalizedName);
-		setTextureName(CORE.MODID + ":" + unlocalizedName);
-		setCreativeTab(creativeTab);
-		setMaxStackSize(stackSize);
-		setMaxDamage(maxDmg);
+		this.setUnlocalizedName(unlocalizedName);
+		this.setTextureName(CORE.MODID + ":" + unlocalizedName);
+		this.setCreativeTab(creativeTab);
+		this.setMaxStackSize(stackSize);
+		this.setMaxDamage(maxDmg);
 		this.rarity = regRarity;
 		this.itemDescription = description;
 		this.descColour = colour;
@@ -135,29 +134,29 @@ public class CoreItem extends Item
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
-		list.add(descColour+itemDescription);
+	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+		list.add(this.descColour+this.itemDescription);
 		//super.addInformation(stack, aPlayer, list, bool);
-	}	
+	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack){
-		return rarity;
+	public EnumRarity getRarity(final ItemStack par1ItemStack){
+		return this.rarity;
 	}
 
 	@Override
-	public boolean hasEffect(ItemStack par1ItemStack){
-		return hasEffect;
+	public boolean hasEffect(final ItemStack par1ItemStack){
+		return this.hasEffect;
 	}
 
 	@Override
-	public void onUpdate(ItemStack iStack, World world, Entity entityHolding, int p_77663_4_, boolean p_77663_5_) {
-		if (turnsInto != null){
+	public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_, final boolean p_77663_5_) {
+		if (this.turnsInto != null){
 			if (entityHolding instanceof EntityPlayer){
 
-				Utils.LOG_INFO("Replacing "+iStack.getDisplayName()+" with "+turnsInto.getDisplayName()+".");
-				ItemStack tempTransform = turnsInto;
+				Utils.LOG_INFO("Replacing "+iStack.getDisplayName()+" with "+this.turnsInto.getDisplayName()+".");
+				final ItemStack tempTransform = this.turnsInto;
 				if (iStack.stackSize == 64){
 					tempTransform.stackSize=64;
 					((EntityPlayer) entityHolding).inventory.addItemStackToInventory((tempTransform));
@@ -176,9 +175,10 @@ public class CoreItem extends Item
 	}
 
 	@Override
-	public String getItemStackDisplayName(ItemStack tItem) {
-		if (itemName == null || itemName.equals(""))
-		return super.getItemStackDisplayName(tItem);
-		return itemName;
+	public String getItemStackDisplayName(final ItemStack tItem) {
+		if ((this.itemName == null) || this.itemName.equals("")) {
+			return super.getItemStackDisplayName(tItem);
+		}
+		return this.itemName;
 	}
 }

@@ -1,19 +1,16 @@
 package gtPlusPlus.core.handler.events;
 
+import java.util.UUID;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.proxy.ClientProxy;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.player.PlayerCache;
 import gtPlusPlus.core.util.player.PlayerUtils;
-
-import java.util.UUID;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class LoginEventHandler {
 
@@ -22,7 +19,7 @@ public class LoginEventHandler {
 	private EntityPlayer localPlayerRef;
 
 	@SubscribeEvent
-	public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
+	public void onPlayerLogin(final PlayerEvent.PlayerLoggedInEvent event) {
 
 		this.localPlayerRef = event.player;
 		this.localPlayersName = event.player.getDisplayName();
@@ -36,21 +33,22 @@ public class LoginEventHandler {
 		try {
 
 
-			if (localPlayerRef instanceof EntityPlayerMP){
+			if (this.localPlayerRef instanceof EntityPlayerMP){
 
 				//Populates player cache
-				if (!localPlayerRef.worldObj.isRemote){
-					PlayerCache.appendParamChanges(localPlayersName, localPlayersUUID.toString());
+				if (!this.localPlayerRef.worldObj.isRemote){
+					PlayerCache.appendParamChanges(this.localPlayersName, this.localPlayersUUID.toString());
 
 					if (!CORE.isModUpToDate){
 						Utils.LOG_INFO("You're not using the latest recommended version of GT++, consider updating.");
-						if (!CORE.MASTER_VERSION.toLowerCase().equals("offline"))
+						if (!CORE.MASTER_VERSION.toLowerCase().equals("offline")) {
 							Utils.LOG_INFO("Latest version is: "+CORE.MASTER_VERSION);
+						}
 						Utils.LOG_INFO("You currently have: "+CORE.VERSION);
-						PlayerUtils.messagePlayer(localPlayerRef, "You're not using the latest recommended version of GT++, consider updating.");
+						PlayerUtils.messagePlayer(this.localPlayerRef, "You're not using the latest recommended version of GT++, consider updating.");
 					}
 					else {
-						Utils.LOG_INFO("You're using the latest recommended version of GT++.");					
+						Utils.LOG_INFO("You're using the latest recommended version of GT++.");
 					}
 
 				}
@@ -90,14 +88,14 @@ public class LoginEventHandler {
 
 						}
 					};
-					//t.start();		
+					//t.start();
 
 
 				}*/
 
 
-			}			
-		} catch (Throwable errr){
+			}
+		} catch (final Throwable errr){
 			Utils.LOG_INFO("Login Handler encountered an error.");
 
 		}

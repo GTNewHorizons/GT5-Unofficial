@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.base.cell;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
@@ -10,8 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class BaseItemPlasmaCell extends BaseItemComponent{
 
@@ -19,12 +19,12 @@ public class BaseItemPlasmaCell extends BaseItemComponent{
 	private IIcon overlay;
 	ComponentTypes PlasmaCell = ComponentTypes.PLASMACELL;
 	private int tickCounter = 0;
-	private int tickCounterMax = 200;
-	private short[] fluidColour;
+	private final int tickCounterMax = 200;
+	private final short[] fluidColour;
 
-	public BaseItemPlasmaCell(Material material) {
-		super(material, ComponentTypes.PLASMACELL);	
-		fluidColour = (short[]) ((material == null) ? extraData : material.getRGBA());
+	public BaseItemPlasmaCell(final Material material) {
+		super(material, ComponentTypes.PLASMACELL);
+		this.fluidColour = (short[]) ((material == null) ? this.extraData : material.getRGBA());
 	}
 
 	@Override
@@ -33,45 +33,45 @@ public class BaseItemPlasmaCell extends BaseItemComponent{
 		return true;
 	}
 
-	@Override 
-	public void registerIcons(IIconRegister i) {
-		this.base = i.registerIcon(CORE.MODID + ":" + "item"+PlasmaCell.getComponent());	
-		this.overlay = i.registerIcon(CORE.MODID + ":" + "item"+PlasmaCell.getComponent()+"_Overlay");
+	@Override
+	public void registerIcons(final IIconRegister i) {
+		this.base = i.registerIcon(CORE.MODID + ":" + "item"+this.PlasmaCell.getComponent());
+		this.overlay = i.registerIcon(CORE.MODID + ":" + "item"+this.PlasmaCell.getComponent()+"_Overlay");
 		//this.overlay = cellMaterial.getFluid(1000).getFluid().get
 	}
 
 
 	@Override
-	public int getColorFromItemStack(ItemStack stack, int renderPass) {
+	public int getColorFromItemStack(final ItemStack stack, final int renderPass) {
 		if (renderPass == 0){
-			return Utils.rgbtoHexValue(230, 230, 230);			
-		}	
-		return componentColour;
+			return Utils.rgbtoHexValue(230, 230, 230);
+		}
+		return this.componentColour;
 	}
 
 	@Override
-	public IIcon getIconFromDamageForRenderPass(int damage, int pass) {
+	public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
 		if(pass == 0) {
 			return this.base;
 		}
 		return this.overlay;
 	}
-	
+
 	@Override
-	public String getItemStackDisplayName(ItemStack cell) {
-		return materialName+" Plasma Cell";
+	public String getItemStackDisplayName(final ItemStack cell) {
+		return this.materialName+" Plasma Cell";
 	}
 
 	@Override
-	public void onUpdate(ItemStack iStack, World world, Entity entityHolding, int p_77663_4_, boolean p_77663_5_) {
-		if (componentMaterial != null){
+	public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_, final boolean p_77663_5_) {
+		if (this.componentMaterial != null){
 			if (!world.isRemote){
-				if(tickCounter  < tickCounterMax ){
-					tickCounter++;
-				}	
-				else if(tickCounter >= tickCounterMax){
+				if(this.tickCounter  < this.tickCounterMax ){
+					this.tickCounter++;
+				}
+				else if(this.tickCounter >= this.tickCounterMax){
 					entityHolding.attackEntityFrom(DamageSource.onFire, 2);
-					tickCounter = 0;
+					this.tickCounter = 0;
 				}
 			}
 		}

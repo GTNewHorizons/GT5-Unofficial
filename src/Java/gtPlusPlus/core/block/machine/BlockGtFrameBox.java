@@ -10,25 +10,25 @@ public class BlockGtFrameBox extends MetaBlock {
 
 	private int[] colours;
 	private int totalColours;
-	
+
 	public BlockGtFrameBox(
-			String unlocalizedName, Material material,
-			BlockTypes blockTypeENUM, boolean recolour, int... colour) {
+			final String unlocalizedName, final Material material,
+			final BlockTypes blockTypeENUM, final boolean recolour, final int... colour) {
 		super(unlocalizedName, material, blockTypeENUM.getBlockSoundType());
-        this.setBlockTextureName(CORE.MODID + ":" + "blockGtFrame");
-        this.setHarvestLevel(blockTypeENUM.getHarvestTool(), 2);
-        if (recolour && (colour != null && colour.length > 0)){
-        	colours = colour;
-        	totalColours = colours.length;
-        }
+		this.setBlockTextureName(CORE.MODID + ":" + "blockGtFrame");
+		this.setHarvestLevel(blockTypeENUM.getHarvestTool(), 2);
+		if (recolour && ((colour != null) && (colour.length > 0))){
+			this.colours = colour;
+			this.totalColours = this.colours.length;
+		}
 	}
 
 	@Override
-	public int colorMultiplier(IBlockAccess p_149720_1_, int p_149720_2_,
-			int p_149720_3_, int p_149720_4_) {
-		for (int i : colours){
-			
-		}		
+	public int colorMultiplier(final IBlockAccess p_149720_1_, final int p_149720_2_,
+			final int p_149720_3_, final int p_149720_4_) {
+		for (final int i : this.colours){
+
+		}
 		return super.colorMultiplier(p_149720_1_, p_149720_2_, p_149720_3_, p_149720_4_);
 	}
 

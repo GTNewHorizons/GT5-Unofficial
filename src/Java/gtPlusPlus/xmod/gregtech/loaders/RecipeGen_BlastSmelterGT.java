@@ -6,8 +6,6 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
-import gtPlusPlus.core.util.materials.MaterialUtils;
-import gtPlusPlus.core.util.math.MathUtils;
 import net.minecraft.item.ItemStack;
 
 public class RecipeGen_BlastSmelterGT  implements Runnable{
@@ -18,17 +16,17 @@ public class RecipeGen_BlastSmelterGT  implements Runnable{
 
 	@Override
 	public void run() {
-		generateRecipes();		
+		generateRecipes();
 	}
 
 	public static void generateRecipes(){
 
-		Materials[] GregMaterials = Materials.values();
+		final Materials[] GregMaterials = Materials.values();
 
-		GT:	for (Materials M : GregMaterials){
+		GT:	for (final Materials M : GregMaterials){
 			if (!M.equals(Materials._NULL)){
 
-				//Add a Blast Smelting Recipe, Let's go!			
+				//Add a Blast Smelting Recipe, Let's go!
 				ItemStack tStack;
 				if ((null != (tStack = GT_OreDictUnificator.get(OrePrefixes.ingot, M.mSmeltInto, 1L))) && (!M.contains(SubTag.NO_SMELTING) && (M.contains(SubTag.METAL)))) {
 
@@ -50,25 +48,26 @@ public class RecipeGen_BlastSmelterGT  implements Runnable{
 						duration = (int) Math.max(M.getMass() / 50L, 1L) * M.mBlastFurnaceTemp;
 					}
 					else {
-						duration = (int) Math.max(M.getMass() / 50L, 1L) * 150;	
+						duration = (int) Math.max(M.getMass() / 50L, 1L) * 150;
 					}
-					
+
 					//Sets the materials 'tier'. Will probably replace this logic.
-					int x = M.mMeltingPoint;
-					int vVoltageMultiplier = (x <= 800 ? 8 : (x <= 1600 ? 16 : (x <= 2800 ? 32 : (x <= 3600 ? 64 : (x <= 4200 ? 128 : (x <= 5400 ? 256 : (x <= 7200 ? 512 : 1024)))))));
+					final int x = M.mMeltingPoint;
+					final int vVoltageMultiplier = (x <= 800 ? 8 : (x <= 1600 ? 16 : (x <= 2800 ? 32 : (x <= 3600 ? 64 : (x <= 4200 ? 128 : (x <= 5400 ? 256 : (x <= 7200 ? 512 : 1024)))))));
 
 
 					//Make a simple one Material Materialstack[] and log it for validity.
-					tMaterial = new MaterialStack[]{new MaterialStack(M, 1)};	
+					tMaterial = new MaterialStack[]{new MaterialStack(M, 1)};
 					circuitGT = ItemUtils.getGregtechCircuit(1);
-					ItemStack[] tItemStackTest = new ItemStack[]{circuitGT, ItemUtils.getGregtechDust(M, 1)};
+					final ItemStack[] tItemStackTest = new ItemStack[]{circuitGT, ItemUtils.getGregtechDust(M, 1)};
 					inputStackCount = 1;
 					fluidAmount = 144*inputStackCount;
 					Utils.LOG_WARNING("Adding an Alloy Blast Smelter Recipe for "+M+". Gives "+fluidAmount+"L of molten metal.");
 					Utils.LOG_WARNING("tMaterial.length: "+tMaterial.length+".");
 					for (int das=0;das<tItemStackTest.length;das++){
-						if (tItemStackTest[das] != null)
+						if (tItemStackTest[das] != null) {
 							Utils.LOG_WARNING("tMaterial["+das+"]: "+tItemStackTest[das].getDisplayName()+" Meta: "+tItemStackTest[das].getItemDamage()+", Amount: "+tItemStackTest[das].stackSize);
+						}
 					}
 
 					//Generate Recipes for all singular materials that can be made molten.
@@ -76,15 +75,15 @@ public class RecipeGen_BlastSmelterGT  implements Runnable{
 						doTest = CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getMolten(fluidAmount), 100, duration, 8*vVoltageMultiplier);
 					}
 					else {
-						doTest = CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getMolten(fluidAmount), 100, duration/2, 4*vVoltageMultiplier);					
+						doTest = CORE.RA.addBlastSmelterRecipe(tItemStackTest, M.getMolten(fluidAmount), 100, duration/2, 4*vVoltageMultiplier);
 					}
-					
-					for (MaterialStack xMaterial : M.mMaterialList){
-						if (xMaterial.mMaterial == Materials.Magic || xMaterial.mMaterial == Materials.Metal){
-							continue GT;						
+
+					for (final MaterialStack xMaterial : M.mMaterialList){
+						if ((xMaterial.mMaterial == Materials.Magic) || (xMaterial.mMaterial == Materials.Metal)){
+							continue GT;
 						}
 						if (null == GT_OreDictUnificator.get(OrePrefixes.dust, xMaterial, 1L)){
-							continue GT;						
+							continue GT;
 						}
 					}
 
@@ -95,20 +94,20 @@ public class RecipeGen_BlastSmelterGT  implements Runnable{
 
 
 						int mMaterialListSize=0;
-						for (MaterialStack ternkfsdf:M.mMaterialList){
+						for (final MaterialStack ternkfsdf:M.mMaterialList){
 							mMaterialListSize++;
 						}
 						Utils.LOG_WARNING("Size: "+mMaterialListSize);
 						//If this Material has some kind of compound list, proceed
 						if (mMaterialListSize > 1){
-							MaterialStack[] tempStack = new MaterialStack[mMaterialListSize];
+							final MaterialStack[] tempStack = new MaterialStack[mMaterialListSize];
 							circuitGT = ItemUtils.getGregtechCircuit(mMaterialListSize);
 							//Just double checking
 							if (tempStack.length > 1){
 
 								//Builds me a MaterialStack[] from the MaterialList of M.
 								int ooo=0;
-								for (MaterialStack xMaterial : M.mMaterialList){
+								for (final MaterialStack xMaterial : M.mMaterialList){
 									Utils.LOG_WARNING("FOUND: "+xMaterial.mMaterial);
 									Utils.LOG_WARNING("ADDING: "+xMaterial.mMaterial);
 									tempStack[ooo] = M.mMaterialList.get(ooo);
@@ -117,31 +116,31 @@ public class RecipeGen_BlastSmelterGT  implements Runnable{
 
 								//Builds me an ItemStack[] of the materials. - Without a circuit - this gets a good count for the 144L fluid multiplier
 								components = new ItemStack[tempStack.length];
-								for (MaterialStack aOutputPart : tempStack){
+								for (final MaterialStack aOutputPart : tempStack){
 									if (aOutputPart != null){
 										Utils.LOG_WARNING("Finding dust: "+aOutputPart.mMaterial);
-										ItemStack rStack = ItemUtils.getGregtechDust(aOutputPart.mMaterial, (int) aOutputPart.mAmount);
+										final ItemStack rStack = ItemUtils.getGregtechDust(aOutputPart.mMaterial, (int) aOutputPart.mAmount);
 										if (rStack != null){
 											Utils.LOG_WARNING("Found dust: "+aOutputPart.mMaterial);
 											components[counter] = rStack;
 											inputStackCount = inputStackCount+rStack.stackSize;
 										}
-									}							
-									counter++;			
+									}
+									counter++;
 								}
 
 
-								if (mMaterialListSize > 0 && mMaterialListSize < 9){
-									ItemStack[] components_NoCircuit = components;
+								if ((mMaterialListSize > 0) && (mMaterialListSize < 9)){
+									final ItemStack[] components_NoCircuit = components;
 									//Builds me an ItemStack[] of the materials. - With a circuit
 									components = new ItemStack[components_NoCircuit.length+1];
-									for (int fr=0;fr<components.length;fr++){						
+									for (int fr=0;fr<components.length;fr++){
 										if (fr==0){
 											components[0] = circuitGT;
 										}
 										else {
 											components[fr] = components_NoCircuit[fr-1];
-										}								
+										}
 									}
 								}
 
@@ -159,22 +158,23 @@ public class RecipeGen_BlastSmelterGT  implements Runnable{
 								Utils.LOG_WARNING("Adding an Alloy Blast Smelter Recipe for "+M+" using it's compound dusts. This material has "+ inputStackCount+" parts. Gives "+fluidAmount+"L of molten metal.");
 								Utils.LOG_WARNING("tMaterial.length: "+components.length+".");
 								for (int das=0;das<components.length;das++){
-									if (components[das] != null)
+									if (components[das] != null) {
 										Utils.LOG_WARNING("tMaterial["+das+"]: "+components[das].getDisplayName()+" Meta: "+components[das].getItemDamage()+", Amount: "+components[das].stackSize);
+									}
 								}
-								
+
 								CORE.RA.addBlastSmelterRecipe(
 										components,
 										M.getMolten(fluidAmount),
 										100,
 										(int) Math.max(M.getMass() * 2L * 1, 1),
 										8 * vVoltageMultiplier); // EU Cost
-								
+
 								/*if (M.mBlastFurnaceRequired) {
-									CORE.RA.addBlastSmelterRecipe(components, M.getMolten(fluidAmount), 100, duration, 500);							
+									CORE.RA.addBlastSmelterRecipe(components, M.getMolten(fluidAmount), 100, duration, 500);
 								}
 								else {
-									CORE.RA.addBlastSmelterRecipe(components, M.getMolten(fluidAmount), 100, duration, 240);							
+									CORE.RA.addBlastSmelterRecipe(components, M.getMolten(fluidAmount), 100, duration, 240);
 								}*/
 							}
 						}

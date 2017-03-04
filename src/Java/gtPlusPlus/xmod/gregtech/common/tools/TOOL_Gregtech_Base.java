@@ -1,12 +1,11 @@
 package gtPlusPlus.xmod.gregtech.common.tools;
 
+import java.util.List;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.damagesources.GT_DamageSources;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.Interface_ToolStats;
 import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaTool;
-
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
@@ -55,7 +54,7 @@ implements Interface_ToolStats {
 	}
 
 	@Override
-	public int getHurtResistanceTime(int aOriginalHurtResistance, Entity aEntity) {
+	public int getHurtResistanceTime(final int aOriginalHurtResistance, final Entity aEntity) {
 		return aOriginalHurtResistance;
 	}
 
@@ -76,7 +75,7 @@ implements Interface_ToolStats {
 
 	@Override
 	public String getBreakingSound() {
-		return (String) GregTech_API.sSoundList.get(Integer.valueOf(0));
+		return GregTech_API.sSoundList.get(Integer.valueOf(0));
 	}
 
 	@Override
@@ -113,62 +112,65 @@ implements Interface_ToolStats {
 	public boolean isMiningTool() {
 		return true;
 	}
-	
+
 	public boolean isChainsaw(){
 		return false;
 	}
-	
-	
+
+
+	@Override
 	public boolean isGrafter(){
 		return false;
 	}
 
-	
-	public DamageSource getDamageSource(EntityLivingBase aPlayer, Entity aEntity) {
-		return GT_DamageSources.getCombatDamage((aPlayer instanceof EntityPlayer) ? "player" : "mob", aPlayer, (aEntity instanceof EntityLivingBase) ? getDeathMessage(aPlayer, (EntityLivingBase) aEntity) : null);
+
+	@Override
+	public DamageSource getDamageSource(final EntityLivingBase aPlayer, final Entity aEntity) {
+		return GT_DamageSources.getCombatDamage((aPlayer instanceof EntityPlayer) ? "player" : "mob", aPlayer, (aEntity instanceof EntityLivingBase) ? this.getDeathMessage(aPlayer, (EntityLivingBase) aEntity) : null);
 	}
 
-	public IChatComponent getDeathMessage(EntityLivingBase aPlayer, EntityLivingBase aEntity) {
+	public IChatComponent getDeathMessage(final EntityLivingBase aPlayer, final EntityLivingBase aEntity) {
 		return new EntityDamageSource((aPlayer instanceof EntityPlayer) ? "player" : "mob", aPlayer).func_151519_b(aEntity);
 	}
 
 	@Override
-	public int convertBlockDrops(List<ItemStack> aDrops, ItemStack aStack, EntityPlayer aPlayer, Block aBlock, int aX, int aY, int aZ, byte aMetaData, int aFortune, boolean aSilkTouch, BlockEvent.HarvestDropsEvent aEvent) {
+	public int convertBlockDrops(final List<ItemStack> aDrops, final ItemStack aStack, final EntityPlayer aPlayer, final Block aBlock, final int aX, final int aY, final int aZ, final byte aMetaData, final int aFortune, final boolean aSilkTouch, final BlockEvent.HarvestDropsEvent aEvent) {
 		return 0;
 	}
 
 	@Override
-	public ItemStack getBrokenItem(ItemStack aStack) {
+	public ItemStack getBrokenItem(final ItemStack aStack) {
 		return null;
 	}
 
 	@Override
-	public Enchantment[] getEnchantments(ItemStack aStack) {
+	public Enchantment[] getEnchantments(final ItemStack aStack) {
 		return ZERO_ENCHANTMENTS;
 	}
 
 	@Override
-	public int[] getEnchantmentLevels(ItemStack aStack) {
+	public int[] getEnchantmentLevels(final ItemStack aStack) {
 		return ZERO_ENCHANTMENT_LEVELS;
 	}
 
 	@Override
-	public void onToolCrafted(ItemStack aStack, EntityPlayer aPlayer) {
+	public void onToolCrafted(final ItemStack aStack, final EntityPlayer aPlayer) {
 		aPlayer.triggerAchievement(AchievementList.openInventory);
 		aPlayer.triggerAchievement(AchievementList.mineWood);
 		aPlayer.triggerAchievement(AchievementList.buildWorkBench);
 	}
-	
-	public void onStatsAddedToTool(Gregtech_MetaTool aItem, int aID) {
+
+	@Override
+	public void onStatsAddedToTool(final Gregtech_MetaTool aItem, final int aID) {
 	}
 
 	@Override
-	public float getNormalDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack, EntityPlayer aPlayer) {
+	public float getNormalDamageAgainstEntity(final float aOriginalDamage, final Entity aEntity, final ItemStack aStack, final EntityPlayer aPlayer) {
 		return aOriginalDamage;
 	}
 
 	@Override
-	public float getMagicDamageAgainstEntity(float aOriginalDamage, Entity aEntity, ItemStack aStack, EntityPlayer aPlayer) {
+	public float getMagicDamageAgainstEntity(final float aOriginalDamage, final Entity aEntity, final ItemStack aStack, final EntityPlayer aPlayer) {
 		return aOriginalDamage;
 	}
 }

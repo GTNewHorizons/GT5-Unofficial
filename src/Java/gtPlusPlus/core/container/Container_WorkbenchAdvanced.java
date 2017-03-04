@@ -25,10 +25,10 @@ public class Container_WorkbenchAdvanced extends Container {
 	public final InventoryWorkbenchHoloSlots inventoryHolo;
 	public final InventoryWorkbenchHoloCrafting inventoryCrafting;
 
-	private World worldObj;
-	private int posX;
-	private int posY;
-	private int posZ;
+	private final World worldObj;
+	private final int posX;
+	private final int posY;
+	private final int posZ;
 
 	public static int HoloSlotNumber = 6;
 	public static int InputSlotNumber = 9; //Number of Slots in the Crafting Grid
@@ -39,13 +39,13 @@ public class Container_WorkbenchAdvanced extends Container {
 	public static int InventoryOutSlotNumber = InventorySlotNumber + 1; //Inventory Slot Number + Output
 	public static int FullSlotNumber = InventorySlotNumber + InOutputSlotNumber; //All slots
 
-	private int slotOutput = 0;
-	private int[] slotHolo = new int[5];
-	private int[] slotCrafting = new int[9];
-	private int[] slotStorage = new int[16];
-	private int[] slotTools = new int[5];
+	private final int slotOutput = 0;
+	private final int[] slotHolo = new int[5];
+	private final int[] slotCrafting = new int[9];
+	private final int[] slotStorage = new int[16];
+	private final int[] slotTools = new int[5];
 
-	public Container_WorkbenchAdvanced(InventoryPlayer inventory, TileEntityWorkbenchAdvanced tile){
+	public Container_WorkbenchAdvanced(final InventoryPlayer inventory, final TileEntityWorkbenchAdvanced tile){
 		this.tile_entity = tile;
 		this.inventoryChest = tile.inventoryChest;
 		this.inventoryTool = tile.inventoryTool;
@@ -54,44 +54,44 @@ public class Container_WorkbenchAdvanced extends Container {
 
 		int var6;
 		int var7;
-		worldObj = tile.getWorldObj();
-		posX = tile.xCoord;
-		posY = tile.yCoord;
-		posZ = tile.zCoord;
+		this.worldObj = tile.getWorldObj();
+		this.posX = tile.xCoord;
+		this.posY = tile.yCoord;
+		this.posZ = tile.zCoord;
 
 		int o=0;
 
 		//Output slot
-		addSlotToContainer(new SlotOutput(inventory.player, this.craftMatrix, tile.inventoryCraftResult, 0, 136, 64));
+		this.addSlotToContainer(new SlotOutput(inventory.player, this.craftMatrix, tile.inventoryCraftResult, 0, 136, 64));
 		//Util Slots
-		addSlotToContainer(new SlotBlueprint(inventoryHolo, 1, 136, 28)); //Blueprint
-		addSlotToContainer(new SlotNoInput(inventoryHolo, 2, 154, 28)); //Hopper
-		addSlotToContainer(new GT_Slot_Holo(inventoryHolo, 3, 154, 64, false, false, 64)); //Parking
+		this.addSlotToContainer(new SlotBlueprint(this.inventoryHolo, 1, 136, 28)); //Blueprint
+		this.addSlotToContainer(new SlotNoInput(this.inventoryHolo, 2, 154, 28)); //Hopper
+		this.addSlotToContainer(new GT_Slot_Holo(this.inventoryHolo, 3, 154, 64, false, false, 64)); //Parking
 		//Holo Slots
-		addSlotToContainer(new GT_Slot_Holo(inventoryHolo, 4, 154, 46, false, false, 1));
-		addSlotToContainer(new GT_Slot_Holo(inventoryHolo, 5, 136, 46, false, false, 1));
+		this.addSlotToContainer(new GT_Slot_Holo(this.inventoryHolo, 4, 154, 46, false, false, 1));
+		this.addSlotToContainer(new GT_Slot_Holo(this.inventoryHolo, 5, 136, 46, false, false, 1));
 
 		for (int i=1; i<6; i++){
-			slotHolo[o] = o+1;
+			this.slotHolo[o] = o+1;
 			o++;
 		}
 
 		o=0;
 
-		updateCraftingMatrix();
+		this.updateCraftingMatrix();
 
 		//Crafting Grid
 		for (var6 = 0; var6 < 3; ++var6)
 		{
 			for (var7 = 0; var7 < 3; ++var7)
 			{
-				this.addSlotToContainer(new Slot(this.craftMatrix, var7 + var6 * 3, 82 + var7 * 18, 28 + var6 * 18));
+				this.addSlotToContainer(new Slot(this.craftMatrix, var7 + (var6 * 3), 82 + (var7 * 18), 28 + (var6 * 18)));
 
 				/*if (this.inventoryCrafting.getStackInSlot(o) != null){
-					this.craftMatrix.setInventorySlotContents(o, inventoryCrafting.getStackInSlot(o));		
-					this.inventoryCrafting.setInventorySlotContents(o, null);				
-				}	*/			
-				slotCrafting[o] = o+6;
+					this.craftMatrix.setInventorySlotContents(o, inventoryCrafting.getStackInSlot(o));
+					this.inventoryCrafting.setInventorySlotContents(o, null);
+				}	*/
+				this.slotCrafting[o] = o+6;
 				o++;
 			}
 		}
@@ -104,8 +104,8 @@ public class Container_WorkbenchAdvanced extends Container {
 			for (var7 = 0; var7 < 4; ++var7)
 			{
 				//Utils.LOG_WARNING("Adding slots at var:"+(var7 + var6 * 4)+" x:"+(8 + var7 * 18)+" y:"+(7 + var6 * 18));
-				this.addSlotToContainer(new Slot(inventoryChest, var7 + var6 * 4, 8 + var7 * 18, 7 + var6 * 18));
-				slotStorage[o] = o+15;
+				this.addSlotToContainer(new Slot(this.inventoryChest, var7 + (var6 * 4), 8 + (var7 * 18), 7 + (var6 * 18)));
+				this.slotStorage[o] = o+15;
 				o++;
 			}
 		}
@@ -117,64 +117,64 @@ public class Container_WorkbenchAdvanced extends Container {
 		{
 			for (var7 = 0; var7 < 5; ++var7)
 			{
-				this.addSlotToContainer(new SlotGtToolElectric(inventoryTool, var7 + var6 * 3, 82 + var7 * 18, 8 + var6 * 18, 3, false));
-				slotTools[o] = o+31;
+				this.addSlotToContainer(new SlotGtToolElectric(this.inventoryTool, var7 + (var6 * 3), 82 + (var7 * 18), 8 + (var6 * 18), 3, false));
+				this.slotTools[o] = o+31;
 				o++;
 			}
-		} 
+		}
 
 		//Player Inventory
 		for (var6 = 0; var6 < 3; ++var6)
 		{
 			for (var7 = 0; var7 < 9; ++var7)
 			{
-				this.addSlotToContainer(new Slot(inventory, var7 + var6 * 9 + 9, 8 + var7 * 18, 84 + var6 * 18));
+				this.addSlotToContainer(new Slot(inventory, var7 + (var6 * 9) + 9, 8 + (var7 * 18), 84 + (var6 * 18)));
 			}
 		}
 
 		//Player Hotbar
 		for (var6 = 0; var6 < 9; ++var6)
 		{
-			this.addSlotToContainer(new Slot(inventory, var6, 8 + var6 * 18, 142));
+			this.addSlotToContainer(new Slot(inventory, var6, 8 + (var6 * 18), 142));
 		}
 
-		this.onCraftMatrixChanged(this.craftMatrix);          
+		this.onCraftMatrixChanged(this.craftMatrix);
 
 	}
 
 	@Override
-	public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer){
+	public ItemStack slotClick(final int aSlotIndex, final int aMouseclick, final int aShifthold, final EntityPlayer aPlayer){
 
 		if (!aPlayer.worldObj.isRemote){
-			if (aSlotIndex == 999 || aSlotIndex == -999){
+			if ((aSlotIndex == 999) || (aSlotIndex == -999)){
 				//Utils.LOG_WARNING("??? - "+aSlotIndex);
 			}
 
-			if (aSlotIndex == slotOutput){
+			if (aSlotIndex == this.slotOutput){
 				Utils.LOG_WARNING("Player Clicked on the output slot");
 				//TODO
 			}
 
-			for (int x : slotHolo){
+			for (final int x : this.slotHolo){
 				if (aSlotIndex == x){
-					Utils.LOG_WARNING("Player Clicked slot "+aSlotIndex+" in the Holo Grid");		
+					Utils.LOG_WARNING("Player Clicked slot "+aSlotIndex+" in the Holo Grid");
 					if (x == 1){
-						Utils.LOG_WARNING("Player Clicked Blueprint slot in the Holo Grid");	
+						Utils.LOG_WARNING("Player Clicked Blueprint slot in the Holo Grid");
 					}
 					else if (x == 2){
 						Utils.LOG_WARNING("Player Clicked Right Arrow slot in the Holo Grid");
-						if (inventoryHolo.getStackInSlot(1) != null){
+						if (this.inventoryHolo.getStackInSlot(1) != null){
 							Utils.LOG_WARNING("Found an ItemStack.");
-							if (inventoryHolo.getStackInSlot(1).getItem() instanceof IItemBlueprint){
+							if (this.inventoryHolo.getStackInSlot(1).getItem() instanceof IItemBlueprint){
 								Utils.LOG_WARNING("Found a blueprint.");
-								ItemStack tempBlueprint = inventoryHolo.getStackInSlot(1);
-								ItemBlueprint tempItemBlueprint = (ItemBlueprint) tempBlueprint.getItem();				
-								if (inventoryHolo.getStackInSlot(0) != null && !tempItemBlueprint.hasBlueprint(tempBlueprint)){
+								final ItemStack tempBlueprint = this.inventoryHolo.getStackInSlot(1);
+								final ItemBlueprint tempItemBlueprint = (ItemBlueprint) tempBlueprint.getItem();
+								if ((this.inventoryHolo.getStackInSlot(0) != null) && !tempItemBlueprint.hasBlueprint(tempBlueprint)){
 									Utils.LOG_WARNING("Output slot was not empty.");
 									Utils.LOG_WARNING("Trying to manipulate NBT data on the blueprint stack, then replace it with the new one.");
-									tempItemBlueprint.setBlueprint(inventoryHolo.getStackInSlot(1), craftMatrix, inventoryHolo.getStackInSlot(0));	
-									ItemStack newTempBlueprint = ItemUtils.getSimpleStack(tempItemBlueprint);
-									inventoryHolo.setInventorySlotContents(1, newTempBlueprint);
+									tempItemBlueprint.setBlueprint(this.inventoryHolo.getStackInSlot(1), this.craftMatrix, this.inventoryHolo.getStackInSlot(0));
+									final ItemStack newTempBlueprint = ItemUtils.getSimpleStack(tempItemBlueprint);
+									this.inventoryHolo.setInventorySlotContents(1, newTempBlueprint);
 									Utils.LOG_WARNING(ItemUtils.getArrayStackNames(tempItemBlueprint.getBlueprint(newTempBlueprint)));
 								}
 								else {
@@ -182,12 +182,12 @@ public class Container_WorkbenchAdvanced extends Container {
 										Utils.LOG_WARNING("Blueprint already holds a recipe.");
 									}
 									else {
-										Utils.LOG_WARNING("Output slot was empty.");									
+										Utils.LOG_WARNING("Output slot was empty.");
 									}
 								}
 							}
 							else {
-								Utils.LOG_WARNING("ItemStack found was not a blueprint.");							
+								Utils.LOG_WARNING("ItemStack found was not a blueprint.");
 							}
 						}
 						else {
@@ -195,60 +195,60 @@ public class Container_WorkbenchAdvanced extends Container {
 						}
 					}
 					else if (x == 3){
-						Utils.LOG_WARNING("Player Clicked Big [P] slot in the Holo Grid");	
+						Utils.LOG_WARNING("Player Clicked Big [P] slot in the Holo Grid");
 					}
 					else if (x == 4){
-						Utils.LOG_WARNING("Player Clicked Transfer to Crafting Grid slot in the Holo Grid");	
+						Utils.LOG_WARNING("Player Clicked Transfer to Crafting Grid slot in the Holo Grid");
 					}
 					else if (x == 5){
-						Utils.LOG_WARNING("Player Clicked Transfer to Storage Grid slot in the Holo Grid");	
+						Utils.LOG_WARNING("Player Clicked Transfer to Storage Grid slot in the Holo Grid");
 					}
 				}
 			}
 
-			for (int x : slotCrafting){
+			for (final int x : this.slotCrafting){
 				if (aSlotIndex == x){
-					Utils.LOG_WARNING("Player Clicked slot "+aSlotIndex+" in the crafting Grid");				
+					Utils.LOG_WARNING("Player Clicked slot "+aSlotIndex+" in the crafting Grid");
 				}
 			}
-			for (int x : slotStorage){
+			for (final int x : this.slotStorage){
 				if (aSlotIndex == x){
-					Utils.LOG_WARNING("Player Clicked slot "+aSlotIndex+" in the storage Grid");				
+					Utils.LOG_WARNING("Player Clicked slot "+aSlotIndex+" in the storage Grid");
 				}
 			}
-			for (int x : slotTools){
+			for (final int x : this.slotTools){
 				if (aSlotIndex == x){
-					Utils.LOG_WARNING("Player Clicked slot "+aSlotIndex+" in the tool Grid");				
+					Utils.LOG_WARNING("Player Clicked slot "+aSlotIndex+" in the tool Grid");
 				}
 			}
 		}
-		//Utils.LOG_WARNING("Player Clicked slot "+aSlotIndex+" in the Grid");	
+		//Utils.LOG_WARNING("Player Clicked slot "+aSlotIndex+" in the Grid");
 		return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
 	}
 
 	private void updateCraftingMatrix() {
-		for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
-			craftMatrix.setInventorySlotContents(i, tile_entity.inventoryCrafting.getStackInSlot(i));
+		for (int i = 0; i < this.craftMatrix.getSizeInventory(); i++) {
+			this.craftMatrix.setInventorySlotContents(i, this.tile_entity.inventoryCrafting.getStackInSlot(i));
 		}
 	}
 
 	@Override
-	public void onCraftMatrixChanged(IInventory iiventory) {
-		tile_entity.inventoryCraftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(craftMatrix, worldObj));
-	}	
+	public void onCraftMatrixChanged(final IInventory iiventory) {
+		this.tile_entity.inventoryCraftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.worldObj));
+	}
 
 	@Override
-	public void onContainerClosed(EntityPlayer par1EntityPlayer)
+	public void onContainerClosed(final EntityPlayer par1EntityPlayer)
 	{
 		super.onContainerClosed(par1EntityPlayer);
-		saveCraftingMatrix();
+		this.saveCraftingMatrix();
 	}
 
 	private void saveCraftingMatrix() {
-		for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
-			tile_entity.inventoryCrafting.setInventorySlotContents(i, craftMatrix.getStackInSlot(i));
+		for (int i = 0; i < this.craftMatrix.getSizeInventory(); i++) {
+			this.tile_entity.inventoryCrafting.setInventorySlotContents(i, this.craftMatrix.getStackInSlot(i));
 		}
-	}	
+	}
 
 
 
@@ -273,10 +273,10 @@ public class Container_WorkbenchAdvanced extends Container {
 
 	/*@Override
 	public void onContainerClosed(EntityPlayer par1EntityPlayer)
-	{		
+	{
 		for (int o=0; o<craftMatrix.getSizeInventory(); o++){
-			this.inventoryCrafting.setInventorySlotContents(o, craftMatrix.getStackInSlot(o));	
-			this.craftMatrix.setInventorySlotContents(o, null);				
+			this.inventoryCrafting.setInventorySlotContents(o, craftMatrix.getStackInSlot(o));
+			this.craftMatrix.setInventorySlotContents(o, null);
 		}*/
 
 	//super.onContainerClosed(par1EntityPlayer);
@@ -297,24 +297,24 @@ public class Container_WorkbenchAdvanced extends Container {
 		}*/
 
 	@Override
-	public boolean canInteractWith(EntityPlayer par1EntityPlayer){
-		if (worldObj.getBlock(posX, posY, posZ) != ModBlocks.blockWorkbench){
+	public boolean canInteractWith(final EntityPlayer par1EntityPlayer){
+		if (this.worldObj.getBlock(this.posX, this.posY, this.posZ) != ModBlocks.blockWorkbench){
 			return false;
 		}
 
-		return par1EntityPlayer.getDistanceSq((double)posX + 0.5D, (double)posY + 0.5D, (double)posZ + 0.5D) <= 64D;
+		return par1EntityPlayer.getDistanceSq(this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D) <= 64D;
 	}
 
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
+	public ItemStack transferStackInSlot(final EntityPlayer par1EntityPlayer, final int par2)
 	{
 		ItemStack var3 = null;
-		Slot var4 = (Slot)this.inventorySlots.get(par2);
+		final Slot var4 = (Slot)this.inventorySlots.get(par2);
 
-		if (var4 != null && var4.getHasStack())
+		if ((var4 != null) && var4.getHasStack())
 		{
-			ItemStack var5 = var4.getStack();
+			final ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 
 			if (par2 == 0)
@@ -326,14 +326,14 @@ public class Container_WorkbenchAdvanced extends Container {
 
 				var4.onSlotChange(var5, var3);
 			}
-			else if (par2 >= InOutputSlotNumber && par2 < InventoryOutSlotNumber)
+			else if ((par2 >= InOutputSlotNumber) && (par2 < InventoryOutSlotNumber))
 			{
 				if (!this.mergeItemStack(var5, InventoryOutSlotNumber, FullSlotNumber, false))
 				{
 					return null;
 				}
 			}
-			else if (par2 >= InventoryOutSlotNumber && par2 < FullSlotNumber)
+			else if ((par2 >= InventoryOutSlotNumber) && (par2 < FullSlotNumber))
 			{
 				if (!this.mergeItemStack(var5, InOutputSlotNumber, InventoryOutSlotNumber, false))
 				{
@@ -367,8 +367,8 @@ public class Container_WorkbenchAdvanced extends Container {
 
 	//Can merge Slot
 	@Override
-	public boolean func_94530_a(ItemStack p_94530_1_, Slot p_94530_2_) {
-		return p_94530_2_.inventory != tile_entity.inventoryCraftResult && super.func_94530_a(p_94530_1_, p_94530_2_);
+	public boolean func_94530_a(final ItemStack p_94530_1_, final Slot p_94530_2_) {
+		return (p_94530_2_.inventory != this.tile_entity.inventoryCraftResult) && super.func_94530_a(p_94530_1_, p_94530_2_);
 	}
 
 

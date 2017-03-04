@@ -25,7 +25,7 @@ public class Container_BackpackBase extends Container
 	// ARMOR_START = BaseInventoryBackpack.INV_SIZE, ARMOR_END = ARMOR_START+3,
 	// INV_START = ARMOR_END+1, and then carry on like above.
 
-	public Container_BackpackBase(EntityPlayer par1Player, InventoryPlayer inventoryPlayer, BaseInventoryBackpack inventoryItem)
+	public Container_BackpackBase(final EntityPlayer par1Player, final InventoryPlayer inventoryPlayer, final BaseInventoryBackpack inventoryItem)
 	{
 		this.inventory = inventoryItem;
 
@@ -41,7 +41,7 @@ public class Container_BackpackBase extends Container
 			// from being stored within itself, but if you want to allow that and
 			// you followed my advice at the end of the above step, then you
 			// could get away with using the vanilla Slot class
-			this.addSlotToContainer(new SlotItemBackpackInv(this.inventory, i, 80 + (18 * (int)(i/4)), 8 + (18*(i%4))));
+			this.addSlotToContainer(new SlotItemBackpackInv(this.inventory, i, 80 + (18 * (i/4)), 8 + (18*(i%4))));
 		}
 
 		// If you want, you can add ARMOR SLOTS here as well, but you need to
@@ -52,43 +52,44 @@ public class Container_BackpackBase extends Container
 			// These are the standard positions for survival inventory layout
 			this.addSlotToContainer(new SlotArmor(this.player, inventoryPlayer, inventoryPlayer.getSizeInventory() - 1 - i, 8, 8 + i * 18, i));
 		}
-		*/
+		 */
 
 		// PLAYER INVENTORY - uses default locations for standard inventory texture file
 		for (i = 0; i < 3; ++i)
 		{
 			for (int j = 0; j < 9; ++j)
 			{
-				this.addSlotToContainer(new Slot(inventoryPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+				this.addSlotToContainer(new Slot(inventoryPlayer, j + (i * 9) + 9, 8 + (j * 18), 84 + (i * 18)));
 			}
 		}
 
 		// PLAYER ACTION BAR - uses default locations for standard action bar texture file
 		for (i = 0; i < 9; ++i)
 		{
-			this.addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 18, 142));
+			this.addSlotToContainer(new Slot(inventoryPlayer, i, 8 + (i * 18), 142));
 		}
 	}
 
 	@Override
-	public boolean canInteractWith(EntityPlayer entityplayer)
+	public boolean canInteractWith(final EntityPlayer entityplayer)
 	{
 		// be sure to return the inventory's isUseableByPlayer method
 		// if you defined special behavior there:
-		return inventory.isUseableByPlayer(entityplayer);
+		return this.inventory.isUseableByPlayer(entityplayer);
 	}
 
 	/**
 	 * Called when a player shift-clicks on a slot. You must override this or you will crash when someone does that.
 	 */
-	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int index)
+	@Override
+	public ItemStack transferStackInSlot(final EntityPlayer par1EntityPlayer, final int index)
 	{
 		ItemStack itemstack = null;
-		Slot slot = (Slot) this.inventorySlots.get(index);
+		final Slot slot = (Slot) this.inventorySlots.get(index);
 
-		if (slot != null && slot.getHasStack())
+		if ((slot != null) && slot.getHasStack())
 		{
-			ItemStack itemstack1 = slot.getStack();
+			final ItemStack itemstack1 = slot.getStack();
 			itemstack = itemstack1.copy();
 
 			// If item is in our custom Inventory or armor slot
@@ -108,7 +109,7 @@ public class Container_BackpackBase extends Container
 				/*
 				If your inventory only stores certain instances of Items,
 				you can implement shift-clicking to your inventory like this:
-				
+
 				// Check that the item is the right type
 				if (itemstack1.getItem() instanceof ItemCustom)
 				{
@@ -133,9 +134,9 @@ public class Container_BackpackBase extends Container
 				Otherwise, you have basically 2 choices:
 				1. shift-clicking between player inventory and custom inventory
 				2. shift-clicking between action bar and inventory
-				 
+
 				Be sure to choose only ONE of the following implementations!!!
-				*/
+				 */
 				/**
 				 * Implementation number 1: Shift-click into your custom inventory
 				 */
@@ -147,12 +148,12 @@ public class Container_BackpackBase extends Container
 						return null;
 					}
 				}
-				
+
 				/**
 				 * Implementation number 2: Shift-click items between action bar and inventory
 				 */
 				// item is in player's inventory, but not in action bar
-				if (index >= INV_START && index < HOTBAR_START)
+				if ((index >= INV_START) && (index < HOTBAR_START))
 				{
 					// place in action bar
 					if (!this.mergeItemStack(itemstack1, HOTBAR_START, HOTBAR_END+1, false))
@@ -161,7 +162,7 @@ public class Container_BackpackBase extends Container
 					}
 				}
 				// item in action bar - place in player inventory
-				else if (index >= HOTBAR_START && index < HOTBAR_END+1)
+				else if ((index >= HOTBAR_START) && (index < (HOTBAR_END+1)))
 				{
 					if (!this.mergeItemStack(itemstack1, INV_START, INV_END+1, false))
 					{
@@ -196,9 +197,9 @@ public class Container_BackpackBase extends Container
 	 * be able to save properly
 	 */
 	@Override
-	public ItemStack slotClick(int slot, int button, int flag, EntityPlayer player) {
+	public ItemStack slotClick(final int slot, final int button, final int flag, final EntityPlayer player) {
 		// this will prevent the player from interacting with the item that opened the inventory:
-		if (slot >= 0 && getSlot(slot) != null && getSlot(slot).getStack() == player.getHeldItem()) {
+		if ((slot >= 0) && (this.getSlot(slot) != null) && (this.getSlot(slot).getStack() == player.getHeldItem())) {
 			return null;
 		}
 		return super.slotClick(slot, button, flag, player);

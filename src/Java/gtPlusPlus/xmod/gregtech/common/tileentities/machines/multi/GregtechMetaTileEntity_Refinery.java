@@ -1,6 +1,9 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
 import static gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks2.GTID;
+
+import java.util.ArrayList;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
@@ -12,9 +15,6 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.util.Utils;
-
-import java.util.ArrayList;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -25,14 +25,15 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 
 	private boolean completedCycle = false;
 
-	public GregtechMetaTileEntity_Refinery(int aID, String aName, String aNameRegional) {
+	public GregtechMetaTileEntity_Refinery(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}
 
-	public GregtechMetaTileEntity_Refinery(String aName) {
+	public GregtechMetaTileEntity_Refinery(final String aName) {
 		super(aName);
 	}
 
+	@Override
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Fission Fuel Processing Unit",
@@ -49,21 +50,23 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 		"1x Energy Hatch (One of base platform)"};
 	}
 
-	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+	@Override
+	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
 			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[GTID+2], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER)};
 		}
 		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[GTID+2]};
 	}
 
-	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "LFTR.png");
+	@Override
+	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
+		return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "LFTR.png");
 	}
 
 	@Override
-	public boolean checkRecipe(ItemStack aStack) {
-		if (mInventory[1] == null || (mInventory[1].isItemEqual(GT_ModHandler.getIC2Item("miningPipe", 1L)) && mInventory[1].stackSize < mInventory[1].getMaxStackSize())) {
-			ArrayList<ItemStack> tItems = getStoredInputs();
+	public boolean checkRecipe(final ItemStack aStack) {
+		if ((this.mInventory[1] == null) || (this.mInventory[1].isItemEqual(GT_ModHandler.getIC2Item("miningPipe", 1L)) && (this.mInventory[1].stackSize < this.mInventory[1].getMaxStackSize()))) {
+			final ArrayList<ItemStack> tItems = this.getStoredInputs();
 			for (ItemStack tStack : tItems) {
 				if (tStack.isItemEqual(GT_ModHandler.getIC2Item("miningPipe", 1L))) {
 					if (tStack.stackSize < 2) {
@@ -73,10 +76,10 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 					}
 
 				}
-				if (mInventory[1] == null) {
-					mInventory[1] = GT_ModHandler.getIC2Item("miningPipe", 1L);
+				if (this.mInventory[1] == null) {
+					this.mInventory[1] = GT_ModHandler.getIC2Item("miningPipe", 1L);
 				} else {
-					mInventory[1].stackSize++;
+					this.mInventory[1].stackSize++;
 				}
 			}
 		}
@@ -84,28 +87,29 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 		if (tFluid == null) {
 			return false;
 		}
-		if (getYOfPumpHead() > 0 && getBaseMetaTileEntity().getBlockOffset(ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetX, getYOfPumpHead() - 1 - getBaseMetaTileEntity().getYCoord(), ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetZ) != Blocks.bedrock) {
-			if (completedCycle) {
-				moveOneDown();
+		if ((this.getYOfPumpHead() > 0) && (this.getBaseMetaTileEntity().getBlockOffset(ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetX, this.getYOfPumpHead() - 1 - this.getBaseMetaTileEntity().getYCoord(), ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetZ) != Blocks.bedrock)) {
+			if (this.completedCycle) {
+				this.moveOneDown();
 			}
 			tFluid = null;
-			if (mEnergyHatches.size() > 0 && mEnergyHatches.get(0).getEUVar() > (512 + getMaxInputVoltage() * 4))
-				completedCycle = true;
+			if ((this.mEnergyHatches.size() > 0) && (this.mEnergyHatches.get(0).getEUVar() > (512 + (this.getMaxInputVoltage() * 4)))) {
+				this.completedCycle = true;
+			}
 		} else if (tFluid.amount < 5000) {
-			stopMachine();
+			this.stopMachine();
 			return false;
 		} else {
 			tFluid.amount = tFluid.amount / 5000;
 		}
-		long tVoltage = getMaxInputVoltage();
-		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-		this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+		final long tVoltage = this.getMaxInputVoltage();
+		final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+		this.mEfficiency = (10000 - ((this.getIdealStatus() - this.getRepairStatus()) * 1000));
 		this.mEfficiencyIncrease = 10000;
-		int tEU = 24;
-		int tDuration = 160;
+		final int tEU = 24;
+		final int tDuration = 160;
 		if (tEU <= 16) {
-			this.mEUt = (tEU * (1 << tTier - 1) * (1 << tTier - 1));
-			this.mMaxProgresstime = (tDuration / (1 << tTier - 1));
+			this.mEUt = (tEU * (1 << (tTier - 1)) * (1 << (tTier - 1)));
+			this.mMaxProgresstime = (tDuration / (1 << (tTier - 1)));
 		} else {
 			this.mEUt = tEU;
 			this.mMaxProgresstime = tDuration;
@@ -127,89 +131,89 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 				|| (!GT_Utility.areStacksEqual(this.mInventory[1], GT_ModHandler.getIC2Item("miningPipe", 1L)))) {
 			return false;
 		}
-		int xDir = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetX;
-		int zDir = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetZ;
-		int yHead = getYOfPumpHead();
+		final int xDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetX;
+		final int zDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetZ;
+		final int yHead = this.getYOfPumpHead();
 		if (yHead < 1) {
 			return false;
 		}
-		if (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord() + xDir, yHead - 1, getBaseMetaTileEntity().getZCoord() + zDir) == Blocks.bedrock) {
+		if (this.getBaseMetaTileEntity().getBlock(this.getBaseMetaTileEntity().getXCoord() + xDir, yHead - 1, this.getBaseMetaTileEntity().getZCoord() + zDir) == Blocks.bedrock) {
 			return false;
 		}
-		if (!(getBaseMetaTileEntity().getWorld().setBlock(getBaseMetaTileEntity().getXCoord() + xDir, yHead - 1, getBaseMetaTileEntity().getZCoord() + zDir, GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 1L))))) {
+		if (!(this.getBaseMetaTileEntity().getWorld().setBlock(this.getBaseMetaTileEntity().getXCoord() + xDir, yHead - 1, this.getBaseMetaTileEntity().getZCoord() + zDir, GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 1L))))) {
 			return false;
 		}
-		if (yHead != getBaseMetaTileEntity().getYCoord()) {
-			getBaseMetaTileEntity().getWorld().setBlock(getBaseMetaTileEntity().getXCoord() + xDir, yHead, getBaseMetaTileEntity().getZCoord() + zDir, GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipe", 1L)));
+		if (yHead != this.getBaseMetaTileEntity().getYCoord()) {
+			this.getBaseMetaTileEntity().getWorld().setBlock(this.getBaseMetaTileEntity().getXCoord() + xDir, yHead, this.getBaseMetaTileEntity().getZCoord() + zDir, GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipe", 1L)));
 		}
-		getBaseMetaTileEntity().decrStackSize(1, 1);
+		this.getBaseMetaTileEntity().decrStackSize(1, 1);
 		return true;
 	}
 
 	private int getYOfPumpHead() {
-		int xDir = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetX;
-		int zDir = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetZ;
-		int y = getBaseMetaTileEntity().getYCoord() - 1;
-		while (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir) == GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipe", 1L))) {
+		final int xDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetX;
+		final int zDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetZ;
+		int y = this.getBaseMetaTileEntity().getYCoord() - 1;
+		while (this.getBaseMetaTileEntity().getBlock(this.getBaseMetaTileEntity().getXCoord() + xDir, y, this.getBaseMetaTileEntity().getZCoord() + zDir) == GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipe", 1L))) {
 			y--;
 		}
-		if (y == getBaseMetaTileEntity().getYCoord() - 1) {
-			if (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir) != GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 1L))) {
+		if (y == (this.getBaseMetaTileEntity().getYCoord() - 1)) {
+			if (this.getBaseMetaTileEntity().getBlock(this.getBaseMetaTileEntity().getXCoord() + xDir, y, this.getBaseMetaTileEntity().getZCoord() + zDir) != GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 1L))) {
 				return y + 1;
 			}
-		} else if (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir) != GT_Utility
-				.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 1L)) && this.mInventory[1] != null && this.mInventory[1].stackSize > 0 && GT_Utility.areStacksEqual(this.mInventory[1], GT_ModHandler.getIC2Item("miningPipe", 1L))) {
-			getBaseMetaTileEntity().getWorld().setBlock(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir,
+		} else if ((this.getBaseMetaTileEntity().getBlock(this.getBaseMetaTileEntity().getXCoord() + xDir, y, this.getBaseMetaTileEntity().getZCoord() + zDir) != GT_Utility
+				.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 1L))) && (this.mInventory[1] != null) && (this.mInventory[1].stackSize > 0) && GT_Utility.areStacksEqual(this.mInventory[1], GT_ModHandler.getIC2Item("miningPipe", 1L))) {
+			this.getBaseMetaTileEntity().getWorld().setBlock(this.getBaseMetaTileEntity().getXCoord() + xDir, y, this.getBaseMetaTileEntity().getZCoord() + zDir,
 					GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 1L)));
-			getBaseMetaTileEntity().decrStackSize(0, 1);
+			this.getBaseMetaTileEntity().decrStackSize(0, 1);
 		}
 		return y;
 	}
 
 	@Override
-	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-			for (int i = -1; i < 2; i++) {
-				for (int j = -1; j < 2; j++) {
-					int Y = 0;
-					if ((xDir + i != 0) || (zDir + j != 0)) {
-						IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, Y, zDir + j);
-						if ((!addToMachineList(tTileEntity, GTID+2)) && (!addEnergyInputToMachineList(tTileEntity, GTID+1))) {
+	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
+		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
+		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+		for (int i = -1; i < 2; i++) {
+			for (int j = -1; j < 2; j++) {
+				int Y = 0;
+				if (((xDir + i) != 0) || ((zDir + j) != 0)) {
+					final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, Y, zDir + j);
+					if ((!this.addToMachineList(tTileEntity, GTID+2)) && (!this.addEnergyInputToMachineList(tTileEntity, GTID+1))) {
 
-							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, Y, zDir + j) != ModBlocks.blockCasings2Misc) {
-								Utils.LOG_INFO("Wrong Block.");
-								return false;
-							}
-							if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, Y, zDir + j) != 2) {
-								Utils.LOG_INFO("Wrong Meta 1.");
-								return false;
-							}
+						if (aBaseMetaTileEntity.getBlockOffset(xDir + i, Y, zDir + j) != ModBlocks.blockCasings2Misc) {
+							Utils.LOG_INFO("Wrong Block.");
+							return false;
 						}
-						else {
-							Utils.LOG_INFO("Added Hatch. "+tTileEntity.getInventoryName());
+						if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, Y, zDir + j) != 2) {
+							Utils.LOG_INFO("Wrong Meta 1.");
+							return false;
 						}
 					}
-						Y = 1;
-						Utils.LOG_INFO("Checking at Y+1 as well.");
-						IGregTechTileEntity tTileEntity2 = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, Y, zDir + j);
-						if ((!addToMachineList(tTileEntity2, GTID+2)) && (!addEnergyInputToMachineList(tTileEntity2, GTID+1))) {
+					else {
+						Utils.LOG_INFO("Added Hatch. "+tTileEntity.getInventoryName());
+					}
+				}
+				Y = 1;
+				Utils.LOG_INFO("Checking at Y+1 as well.");
+				final IGregTechTileEntity tTileEntity2 = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, Y, zDir + j);
+				if ((!this.addToMachineList(tTileEntity2, GTID+2)) && (!this.addEnergyInputToMachineList(tTileEntity2, GTID+1))) {
 
-							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, Y, zDir + j) != ModBlocks.blockCasings2Misc) {
-								Utils.LOG_INFO("Wrong Block.");
-								return false;
-							}
-							if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, Y, zDir + j) != 2) {
-								Utils.LOG_INFO("Wrong Meta 1.");
-								return false;
-							}
-						}
-						else {
-							Utils.LOG_INFO("Added Hatch. "+tTileEntity2.getInventoryName());
-						}					
+					if (aBaseMetaTileEntity.getBlockOffset(xDir + i, Y, zDir + j) != ModBlocks.blockCasings2Misc) {
+						Utils.LOG_INFO("Wrong Block.");
+						return false;
+					}
+					if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, Y, zDir + j) != 2) {
+						Utils.LOG_INFO("Wrong Meta 1.");
+						return false;
+					}
+				}
+				else {
+					Utils.LOG_INFO("Added Hatch. "+tTileEntity2.getInventoryName());
 				}
 			}
-		
+		}
+
 		for (int y = 2; y < 6; y++) {
 			if (aBaseMetaTileEntity.getBlockOffset(xDir, y, zDir) != ModBlocks.blockCasings2Misc) { //Must Define meta for center blocks
 				Utils.LOG_INFO("Wrong Block.");
@@ -290,39 +294,39 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 				return false;
 			}
 		}
-		
-		if (mInputHatches.size() != 4 || mOutputHatches.size() != 2 ||
-				mOutputBusses.size() != 1 || mMufflerHatches.size() != 1 ||
-				mMaintenanceHatches.size() != 2 || mEnergyHatches.size() < 1){
+
+		if ((this.mInputHatches.size() != 4) || (this.mOutputHatches.size() != 2) ||
+				(this.mOutputBusses.size() != 1) || (this.mMufflerHatches.size() != 1) ||
+				(this.mMaintenanceHatches.size() != 2) || (this.mEnergyHatches.size() < 1)){
 			Utils.LOG_INFO("Wrong Hatch count.");
 			return false;
 		}
-		if (mMufflerHatches.size() == 1){
-			if (mMufflerHatches.get(0).mTier < 7){
+		if (this.mMufflerHatches.size() == 1){
+			if (this.mMufflerHatches.get(0).mTier < 7){
 				Utils.LOG_INFO("Your Muffler must be AT LEAST ZPM tier or higher.");
 			}
 		}
-		Utils.LOG_INFO("Multiblock Formed.");		
+		Utils.LOG_INFO("Multiblock Formed.");
 		return true;
 	}
 
 	@Override
-	public boolean isCorrectMachinePart(ItemStack aStack) {
+	public boolean isCorrectMachinePart(final ItemStack aStack) {
 		return true;
 	}
 
 	@Override
-	public int getMaxEfficiency(ItemStack aStack) {
+	public int getMaxEfficiency(final ItemStack aStack) {
 		return 10000;
 	}
 
 	@Override
-	public int getPollutionPerTick(ItemStack aStack) {
+	public int getPollutionPerTick(final ItemStack aStack) {
 		return 0;
 	}
 
 	@Override
-	public int getDamageToComponent(ItemStack aStack) {
+	public int getDamageToComponent(final ItemStack aStack) {
 		return 0;
 	}
 
@@ -332,11 +336,12 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 	}
 
 	@Override
-	public boolean explodesOnComponentBreak(ItemStack aStack) {
+	public boolean explodesOnComponentBreak(final ItemStack aStack) {
 		return false;
 	}
 
-	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+	@Override
+	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
 		return new GregtechMetaTileEntity_Refinery(this.mName);
 	}
 

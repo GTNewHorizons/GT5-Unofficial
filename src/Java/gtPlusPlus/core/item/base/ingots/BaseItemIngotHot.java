@@ -12,43 +12,43 @@ import net.minecraft.world.World;
 
 public class BaseItemIngotHot extends BaseItemIngot{
 
-	private ItemStack outputIngot;
+	private final ItemStack outputIngot;
 	private int tickCounter = 0;
-	private int tickCounterMax = 200;
-	private int mTier;
+	private final int tickCounterMax = 200;
+	private final int mTier;
 
-	public BaseItemIngotHot(Material material) {
+	public BaseItemIngotHot(final Material material) {
 		super(material, ComponentTypes.HOTINGOT);
 		this.setTextureName(CORE.MODID + ":" + "itemIngotHot");
 		this.outputIngot = material.getIngot(1);
 		this.mTier = material.vTier;
-		generateRecipe();
-	}
-	
-	@Override
-	public String getItemStackDisplayName(ItemStack p_77653_1_) {
-		return ("Hot "+materialName+ " Ingot");
+		this.generateRecipe();
 	}
 
 	@Override
-	public int getColorFromItemStack(ItemStack stack, int HEX_OxFFFFFF) {
+	public String getItemStackDisplayName(final ItemStack p_77653_1_) {
+		return ("Hot "+this.materialName+ " Ingot");
+	}
+
+	@Override
+	public int getColorFromItemStack(final ItemStack stack, final int HEX_OxFFFFFF) {
 		return Utils.rgbtoHexValue(225, 225, 225);
 	}
 
 	private void generateRecipe(){
-		Utils.LOG_WARNING("Adding Vacuum Freezer recipe for a Hot Ingot of "+materialName+".");
-		GT_Values.RA.addVacuumFreezerRecipe(ItemUtils.getSimpleStack(this), outputIngot.copy(), 60*mTier);	
-	}	
+		Utils.LOG_WARNING("Adding Vacuum Freezer recipe for a Hot Ingot of "+this.materialName+".");
+		GT_Values.RA.addVacuumFreezerRecipe(ItemUtils.getSimpleStack(this), this.outputIngot.copy(), 60*this.mTier);
+	}
 
 	@Override
-	public void onUpdate(ItemStack iStack, World world, Entity entityHolding, int p_77663_4_, boolean p_77663_5_) {
+	public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_, final boolean p_77663_5_) {
 		if (!world.isRemote){
-			if(tickCounter < tickCounterMax){
-				tickCounter++;
-			}	
-			else if(tickCounter == tickCounterMax){
+			if(this.tickCounter < this.tickCounterMax){
+				this.tickCounter++;
+			}
+			else if(this.tickCounter == this.tickCounterMax){
 				entityHolding.attackEntityFrom(DamageSource.onFire, 1);
-				tickCounter = 0;
+				this.tickCounter = 0;
 			}
 		}
 		super.onUpdate(iStack, world, entityHolding, p_77663_4_, p_77663_5_);

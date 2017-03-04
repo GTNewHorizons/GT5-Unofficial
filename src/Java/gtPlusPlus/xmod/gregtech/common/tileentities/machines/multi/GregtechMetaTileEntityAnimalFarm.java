@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
+import java.lang.reflect.Field;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -15,9 +17,6 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.forestry.trees.TreefarmManager;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-
-import java.lang.reflect.Field;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -33,20 +32,20 @@ public class GregtechMetaTileEntityAnimalFarm extends GT_MetaTileEntity_MultiBlo
 
 	//public ArrayList<GT_MetaTileEntity_TieredMachineBlock> mCasings = new ArrayList();
 
-	private boolean running = false;
+	private final boolean running = false;
 	private boolean p1, p2, p3, p4, p5, p6;
 	public ItemStack mOutputItem1;
 	public ItemStack mOutputItem2;
 	private Block Humus;
-	private boolean isForestryLoaded = TreefarmManager.isForestryValid();
+	private final boolean isForestryLoaded = TreefarmManager.isForestryValid();
 
-	public GregtechMetaTileEntityAnimalFarm(int aID, String aName, String aNameRegional) {
+	public GregtechMetaTileEntityAnimalFarm(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}
 
-	public GregtechMetaTileEntityAnimalFarm(String aName) {
+	public GregtechMetaTileEntityAnimalFarm(final String aName) {
 		super(aName);
-	}   
+	}
 
 	@Override
 	public String[] getDescription() {
@@ -55,11 +54,11 @@ public class GregtechMetaTileEntityAnimalFarm extends GT_MetaTileEntity_MultiBlo
 				"How to get your first logs without an axe.",
 				"Max Size(WxHxD): 9x1x9 (Controller, with upto 4 dirt out each direction on a flat plane.)",
 				"Dirt for the rest! [D = Dirt, X = Controller]"
-				};
+		};
 	}
 
 	@Override
-	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == 1) {
 			return new ITexture[]{new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Acacia_Log), new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Vent_Fast : TexturesGtBlock.Overlay_Machine_Vent)};
 		}
@@ -77,39 +76,41 @@ public class GregtechMetaTileEntityAnimalFarm extends GT_MetaTileEntity_MultiBlo
 	}
 
 	@Override
-	public boolean isFacingValid(byte aFacing) {
+	public boolean isFacingValid(final byte aFacing) {
 		return aFacing > 1;
 	}
 
 	@Override
-	public boolean isAccessAllowed(EntityPlayer aPlayer) {
+	public boolean isAccessAllowed(final EntityPlayer aPlayer) {
 		return true;
 	}
 
 	@Override
-	public boolean allowCoverOnSide(byte aSide, GT_ItemStack aCoverID) {
+	public boolean allowCoverOnSide(final byte aSide, final GT_ItemStack aCoverID) {
 		return (GregTech_API.getCoverBehavior(aCoverID.toStack()).isSimpleCover()) && (super.allowCoverOnSide(aSide, aCoverID));
 	}
 
 	@Override
-	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+	public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
 		return new GregtechMetaTileEntityAnimalFarm(this.mName);
 	}
 
 	@Override
-	public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
-		if (aBaseMetaTileEntity.isClientSide()) return true;
+	public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
+		if (aBaseMetaTileEntity.isClientSide()) {
+			return true;
+		}
 
 		return true;
 	}
 
 	@Override
-	public boolean isCorrectMachinePart(ItemStack aStack) {
+	public boolean isCorrectMachinePart(final ItemStack aStack) {
 		return true;
 	}
 
 	@Override
-	public boolean checkRecipe(ItemStack aStack) {
+	public boolean checkRecipe(final ItemStack aStack) {
 		Utils.LOG_INFO("Working");
 		/*if (!checkRecursiveBlocks()) {
 			this.mEfficiency = 0;
@@ -137,16 +138,16 @@ public class GregtechMetaTileEntityAnimalFarm extends GT_MetaTileEntity_MultiBlo
 		if (!LoadedMods.Forestry){
 			return null;
 		}
-		return TreefarmManager.getHumus();	
+		return TreefarmManager.getHumus();
 	}
 
 	@Override
-	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
+	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
 
 		//this.mCasings.clear();
 		Utils.LOG_INFO("Step 1");
-		int xDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 7; 
-		int zDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 7;
+		final int xDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 7;
+		final int zDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 7;
 
 		for (int i = -7; i <= 7; i++) {
 			Utils.LOG_INFO("Step 2");
@@ -155,10 +156,10 @@ public class GregtechMetaTileEntityAnimalFarm extends GT_MetaTileEntity_MultiBlo
 				for (int h = 0; h <= 1; h++) {
 					Utils.LOG_INFO("Step 4");
 
-					IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
+					final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
 
 					//Farm Floor inner 14x14
-					if ((i != -7 && i != 7) && (j != -7 && j != 7)) {
+					if (((i != -7) && (i != 7)) && ((j != -7) && (j != 7))) {
 						Utils.LOG_INFO("Step 5 - H:"+h);
 						// Farm Dirt Floor and Inner Air/Log space.
 						if (h == 0) {
@@ -172,40 +173,40 @@ public class GregtechMetaTileEntityAnimalFarm extends GT_MetaTileEntity_MultiBlo
 										(aBaseMetaTileEntity.getZCoord()+(zDir+j)),
 										Blocks.melon_block);
 								return false;
-							}							
-						} 
+							}
+						}
 						// Inside fenced area, mostly air or trees or saplings
-						else if (h == 1){		
+						else if (h == 1){
 							//Farm Inner 14x14
 							/*if (!TreefarmManager.isWoodLog(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)) || !TreefarmManager.isAirBlock(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)) || !aBaseMetaTileEntity.getAirOffset(xDir+i, h, zDir+j)) {
 								Utils.LOG_INFO("Wood like block missing from inner 14x14, layer 2."); //TODO
-								Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());	
+								Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 								Utils.LOG_INFO("Found at x:"+(xDir+i)+" y:"+h+" z:"+(zDir+j));
 								//return false;
-								}*/	
-						}			
+								}*/
+						}
 
 					}
 					//Dealt with inner 5x5, now deal with the exterior.
 					else {
 						Utils.LOG_INFO("Step 6 - H:"+h);
 						//Deal with all 4 sides (Fenced area)
-						if (h == 1) {														
+						if (h == 1) {
 							if (!TreefarmManager.isFenceBlock(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))) {
 								Utils.LOG_INFO("Fence/Gate missing from outside the second layer.");
 								Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 								return false;
-							}					
+							}
 						}
 						//Deal with Bottom edges (Add Hatches/Busses first, othercheck make sure it's dirt) //TODO change the casings to not dirt~
 						else if (h == 0) {
 
 							try {
-								addCasingToCasingList(tTileEntity);
-							} catch (Throwable t){}
+								this.addCasingToCasingList(tTileEntity);
+							} catch (final Throwable t){}
 
-							if ((!addMaintenanceToMachineList(tTileEntity, 77)) && (!addInputToMachineList(tTileEntity, 77)) && (!addOutputToMachineList(tTileEntity, 77)) && (!addEnergyInputToMachineList(tTileEntity, 77))) {
-								if ((xDir + i != 0) || (zDir + j != 0)) {//no controller			
+							if ((!this.addMaintenanceToMachineList(tTileEntity, 77)) && (!this.addInputToMachineList(tTileEntity, 77)) && (!this.addOutputToMachineList(tTileEntity, 77)) && (!this.addEnergyInputToMachineList(tTileEntity, 77))) {
+								if (((xDir + i) != 0) || ((zDir + j) != 0)) {//no controller
 
 									if (!(aBaseMetaTileEntity.getMetaTileID() != 752)) {
 										Utils.LOG_INFO("Fark Keeper Casings Missing from one of the edges on the bottom edge. x:"+(xDir+i)+" y:"+h+" z:"+(zDir+j)+" | "+aBaseMetaTileEntity.getClass());
@@ -241,7 +242,7 @@ public class GregtechMetaTileEntityAnimalFarm extends GT_MetaTileEntity_MultiBlo
 		if (this.mOutputHatches != null) {
 			for (int i = 0; i < this.mOutputHatches.size(); i++) {
 
-				if (this.mOutputHatches.get(i).mTier < 2 && (this.mOutputHatches.get(i).getBaseMetaTileEntity() instanceof GregtechMTE_NuclearReactor)){
+				if ((this.mOutputHatches.get(i).mTier < 2) && (this.mOutputHatches.get(i).getBaseMetaTileEntity() instanceof GregtechMTE_NuclearReactor)){
 					Utils.LOG_INFO("You require at LEAST MV tier Output Hatches.");
 					Utils.LOG_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
 					Utils.LOG_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getInventoryName());
@@ -260,24 +261,24 @@ public class GregtechMetaTileEntityAnimalFarm extends GT_MetaTileEntity_MultiBlo
 				}
 			}
 		}
-		mSolderingTool = true;
+		this.mSolderingTool = true;
 		//turnCasingActive(true);
 		Utils.LOG_INFO("Multiblock Formed.");
 		return true;
 	}
 
 	@Override
-	public int getMaxEfficiency(ItemStack aStack) {
+	public int getMaxEfficiency(final ItemStack aStack) {
 		return 10000;
 	}
 
 	@Override
-	public int getPollutionPerTick(ItemStack aStack) {
+	public int getPollutionPerTick(final ItemStack aStack) {
 		return 0;
 	}
 
 	@Override
-	public int getDamageToComponent(ItemStack aStack) {
+	public int getDamageToComponent(final ItemStack aStack) {
 		return 0;
 	}
 
@@ -287,29 +288,31 @@ public class GregtechMetaTileEntityAnimalFarm extends GT_MetaTileEntity_MultiBlo
 	}
 
 	@Override
-	public boolean explodesOnComponentBreak(ItemStack aStack) {
+	public boolean explodesOnComponentBreak(final ItemStack aStack) {
 		return false;
 	}
 
-	public boolean addCasingToCasingList(IGregTechTileEntity aTileEntity) {
-		if (aTileEntity == null)
+	public boolean addCasingToCasingList(final IGregTechTileEntity aTileEntity) {
+		if (aTileEntity == null) {
 			return false;
-		IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
-		if (aMetaTileEntity == null)
+		}
+		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+		if (aMetaTileEntity == null) {
 			return false;
+		}
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_TieredMachineBlock) {
 			//return this.mCasings.add((GT_MetaTileEntity_TieredMachineBlock) aMetaTileEntity);
 		}
 		return false;
 	}
 
-	private GT_MetaTileEntity_TieredMachineBlock changeTextureswithReflection(GT_MetaTileEntity_TieredMachineBlock casing, ITexture[][][] textureSet){
-		GT_MetaTileEntity_TieredMachineBlock cv = casing;
+	private GT_MetaTileEntity_TieredMachineBlock changeTextureswithReflection(final GT_MetaTileEntity_TieredMachineBlock casing, final ITexture[][][] textureSet){
+		final GT_MetaTileEntity_TieredMachineBlock cv = casing;
 		//System.out.println("Before: "+cv.mTextures.hashCode());
 		//Get declared field from class
 		Field f;
 		try {
-			Field[] x = cv.getClass().getFields();
+			final Field[] x = cv.getClass().getFields();
 			for (int i =0; i<x.length;i++){
 				//Utils.LOG_INFO(x[i].getName());
 			}
@@ -317,13 +320,13 @@ public class GregtechMetaTileEntityAnimalFarm extends GT_MetaTileEntity_MultiBlo
 				//Try get the field variable
 				f = cv.getClass().getField("mTextures");
 				// set the accessiblity of the field to true, this will enable you to change the value
-				f.setAccessible(true); 
+				f.setAccessible(true);
 				//change the field value
 				f.set(cv, textureSet);
 				//Verify change in texture set
 				//System.out.println("After: "+cv.mTextures.hashCode());
 				return cv;
-			} catch (NoSuchFieldException e) {
+			} catch (final NoSuchFieldException e) {
 				Utils.LOG_INFO("Could not find mTextures.");
 				return casing;
 			}
@@ -336,60 +339,60 @@ public class GregtechMetaTileEntityAnimalFarm extends GT_MetaTileEntity_MultiBlo
 
 
 	public ITexture[][][] getTextureSet() {
-		ITexture[][][] rTextures = new ITexture[10][17][];
+		final ITexture[][][] rTextures = new ITexture[10][17][];
 		for (byte i = -1; i < 16; i++) {
-			rTextures[0][i + 1] = getFront(i);
-			rTextures[1][i + 1] = getBack(i);
-			rTextures[2][i + 1] = getBottom(i);
-			rTextures[3][i + 1] = getTop(i);
-			rTextures[4][i + 1] = getSides(i);
-			rTextures[5][i + 1] = getFrontActive(i);
-			rTextures[6][i + 1] = getBackActive(i);
-			rTextures[7][i + 1] = getBottomActive(i);
-			rTextures[8][i + 1] = getTopActive(i);
-			rTextures[9][i + 1] = getSidesActive(i);
+			rTextures[0][i + 1] = this.getFront(i);
+			rTextures[1][i + 1] = this.getBack(i);
+			rTextures[2][i + 1] = this.getBottom(i);
+			rTextures[3][i + 1] = this.getTop(i);
+			rTextures[4][i + 1] = this.getSides(i);
+			rTextures[5][i + 1] = this.getFrontActive(i);
+			rTextures[6][i + 1] = this.getBackActive(i);
+			rTextures[7][i + 1] = this.getBottomActive(i);
+			rTextures[8][i + 1] = this.getTopActive(i);
+			rTextures[9][i + 1] = this.getSidesActive(i);
 		}
 		return rTextures;
 	}
 
-	public ITexture[] getFront(byte aColor) {
+	public ITexture[] getFront(final byte aColor) {
 		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[2][aColor + 1]};
 	}
 
-	public ITexture[] getBack(byte aColor) {
+	public ITexture[] getBack(final byte aColor) {
 		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[2][aColor + 1]};
 	}
 
-	public ITexture[] getBottom(byte aColor) {
+	public ITexture[] getBottom(final byte aColor) {
 		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[2][aColor + 1]};
 	}
 
-	public ITexture[] getTop(byte aColor) {
+	public ITexture[] getTop(final byte aColor) {
 		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[2][aColor + 1]};
 	}
 
-	public ITexture[] getSides(byte aColor) {
+	public ITexture[] getSides(final byte aColor) {
 		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[2][aColor + 1]};
 	}
 
-	public ITexture[] getFrontActive(byte aColor) {
-		return getFront(aColor);
+	public ITexture[] getFrontActive(final byte aColor) {
+		return this.getFront(aColor);
 	}
 
-	public ITexture[] getBackActive(byte aColor) {
-		return getBack(aColor);
+	public ITexture[] getBackActive(final byte aColor) {
+		return this.getBack(aColor);
 	}
 
-	public ITexture[] getBottomActive(byte aColor) {
-		return getBottom(aColor);
+	public ITexture[] getBottomActive(final byte aColor) {
+		return this.getBottom(aColor);
 	}
 
-	public ITexture[] getTopActive(byte aColor) {
-		return getTop(aColor);
+	public ITexture[] getTopActive(final byte aColor) {
+		return this.getTop(aColor);
 	}
 
-	public ITexture[] getSidesActive(byte aColor) {
-		return getSides(aColor);
+	public ITexture[] getSidesActive(final byte aColor) {
+		return this.getSides(aColor);
 	}
 
 }

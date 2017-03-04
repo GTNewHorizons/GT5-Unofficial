@@ -17,7 +17,7 @@ public class RecipeGen_Extruder implements Runnable{
 
 	@Override
 	public void run() {
-		generateRecipes(toGenerate);		
+		generateRecipes(this.toGenerate);
 	}
 
 	public static void generateRecipes(final Material material){
@@ -47,7 +47,7 @@ public class RecipeGen_Extruder implements Runnable{
 			Utils.LOG_WARNING("Extruder Ingot Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_WARNING("Extruder Ingot Recipe: "+material.getLocalizedName()+" - Failed");			
+			Utils.LOG_WARNING("Extruder Ingot Recipe: "+material.getLocalizedName()+" - Failed");
 		}
 
 		//Block Recipe
@@ -60,7 +60,7 @@ public class RecipeGen_Extruder implements Runnable{
 			Utils.LOG_WARNING("Extruder Block Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_WARNING("Extruder Block Recipe: "+material.getLocalizedName()+" - Failed");			
+			Utils.LOG_WARNING("Extruder Block Recipe: "+material.getLocalizedName()+" - Failed");
 		}
 
 		//Plate Recipe
@@ -72,7 +72,7 @@ public class RecipeGen_Extruder implements Runnable{
 			Utils.LOG_WARNING("Extruder Plate Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_WARNING("Extruder Plate Recipe: "+material.getLocalizedName()+" - Failed");			
+			Utils.LOG_WARNING("Extruder Plate Recipe: "+material.getLocalizedName()+" - Failed");
 		}
 
 		//Ring Recipe
@@ -86,7 +86,7 @@ public class RecipeGen_Extruder implements Runnable{
 				Utils.LOG_WARNING("Extruder Ring Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_WARNING("Extruder Ring Recipe: "+material.getLocalizedName()+" - Failed");			
+				Utils.LOG_WARNING("Extruder Ring Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 		}
 
@@ -102,7 +102,7 @@ public class RecipeGen_Extruder implements Runnable{
 				Utils.LOG_WARNING("Extruder Gear Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_WARNING("Extruder Gear Recipe: "+material.getLocalizedName()+" - Failed");			
+				Utils.LOG_WARNING("Extruder Gear Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 		}
 
@@ -117,29 +117,29 @@ public class RecipeGen_Extruder implements Runnable{
 			Utils.LOG_WARNING("Extruder Rod Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_WARNING("Extruder Rod Recipe: "+material.getLocalizedName()+" - Failed");			
+			Utils.LOG_WARNING("Extruder Rod Recipe: "+material.getLocalizedName()+" - Failed");
 		}
 
 
 		//Bolt Recipe
 		if (!material.isRadioactive){
 			if (addExtruderRecipe(
-					itemIngot, 
-					shape_Bolt, 
+					itemIngot,
+					shape_Bolt,
 					material.getBolt(8),
 					(int) Math.max(material.getMass() * 2L * 1, 1),
 					6 * material.vVoltageMultiplier)){
 				Utils.LOG_WARNING("Extruder Bolt Recipe: "+material.getLocalizedName()+" - Success");
 			}
 			else {
-				Utils.LOG_WARNING("Extruder Bolt Recipe: "+material.getLocalizedName()+" - Failed");			
+				Utils.LOG_WARNING("Extruder Bolt Recipe: "+material.getLocalizedName()+" - Failed");
 			}
 		}
 
-	}	
+	}
 
 
-	public static boolean addExtruderRecipe(ItemStack aInput, ItemStack aShape, ItemStack aOutput, int aDuration, int aEUt) {
+	public static boolean addExtruderRecipe(final ItemStack aInput, final ItemStack aShape, final ItemStack aOutput, int aDuration, final int aEUt) {
 		if ((aInput == null) || (aShape == null) || (aOutput == null)) {
 			return false;
 		}

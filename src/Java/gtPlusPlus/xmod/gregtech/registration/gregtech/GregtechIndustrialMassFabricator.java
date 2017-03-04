@@ -14,7 +14,9 @@ public class GregtechIndustrialMassFabricator
 	{
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Industrial Matter Fabricator Multiblock.");
-			if (CORE.configSwitches.enableMultiblock_MatterFabricator) run1();
+			if (CORE.configSwitches.enableMultiblock_MatterFabricator) {
+				run1();
+			}
 		}
 
 	}
@@ -23,6 +25,6 @@ public class GregtechIndustrialMassFabricator
 	{
 		//Industrial Matter Fabricator Multiblock
 		GregtechItemList.Industrial_MassFab.set(new GregtechMetaTileEntity_MassFabricator(799, "industrialmassfab.controller.tier.single", "Matter Fabrication CPU").getStackForm(1L));
-		
+
 	}
 }

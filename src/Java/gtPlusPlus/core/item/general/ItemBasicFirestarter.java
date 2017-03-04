@@ -14,15 +14,15 @@ import net.minecraft.world.World;
 public class ItemBasicFirestarter extends CoreItem {
 
 	public ItemBasicFirestarter() {
-		super("itemSimpleFiremaker", AddToCreativeTab.tabTools, 1, 5, "Can probably make you a fire");		
+		super("itemSimpleFiremaker", AddToCreativeTab.tabTools, 1, 5, "Can probably make you a fire");
 		this.setTextureName(CORE.MODID+":"+"itemFireStarter");
 	}
 
 	@Override
 	public boolean onItemUse(
-			ItemStack thisItem, EntityPlayer thisPlayer, World thisWorld,
+			final ItemStack thisItem, final EntityPlayer thisPlayer, final World thisWorld,
 			int blockX, int blockY, int blockZ,
-			int p_77648_7_, float p_77648_8_, float p_77648_9_, float p_77648_10_) {
+			final int p_77648_7_, final float p_77648_8_, final float p_77648_9_, final float p_77648_10_) {
 		if (p_77648_7_ == 0) {
 			--blockY;
 		}
@@ -47,23 +47,23 @@ public class ItemBasicFirestarter extends CoreItem {
 		if (thisWorld.getBlock(blockX, blockY, blockZ) instanceof FirePit){
 			thisWorld.setBlockMetadataWithNotify(blockX, blockY, blockZ, 2, 4);
 			PlayerUtils.messagePlayer(thisPlayer, "You light the fire pit. ");
-		}		
+		}
 		if (thisWorld.isAirBlock(blockX, blockY, blockZ))
 		{
-			int random = MathUtils.randInt(0, 3);
+			final int random = MathUtils.randInt(0, 3);
 			//Explode, lol.
 			if (random == 0){
 				PlayerUtils.messagePlayer(thisPlayer, "You somehow managed to set yourself on fire... ");
-				thisWorld.playSoundEffect((double)thisPlayer.posX + 0.5D, (double)thisPlayer.posY + 0.5D, (double)thisPlayer.posZ + 0.5D, "fire.ignite", 1.0F, itemRand.nextFloat() * 0.4F + 0.8F);
-				thisPlayer.setFire(4);	
+				thisWorld.playSoundEffect(thisPlayer.posX + 0.5D, thisPlayer.posY + 0.5D, thisPlayer.posZ + 0.5D, "fire.ignite", 1.0F, (itemRand.nextFloat() * 0.4F) + 0.8F);
+				thisPlayer.setFire(4);
 				thisItem.damageItem(thisItem.getMaxDamage(), thisPlayer);
 			}
 
 			//Create a fire
 			else if (random == 2){
 				PlayerUtils.messagePlayer(thisPlayer, "You created a fire!");
-				thisWorld.playSoundEffect((double)blockX + 0.5D, (double)blockY + 0.5D, (double)blockZ + 0.5D, "fire.ignite", 1.0F, itemRand.nextFloat() * 0.4F + 0.8F);
-				thisWorld.setBlock(blockX, blockY, blockZ, Blocks.fire);	
+				thisWorld.playSoundEffect(blockX + 0.5D, blockY + 0.5D, blockZ + 0.5D, "fire.ignite", 1.0F, (itemRand.nextFloat() * 0.4F) + 0.8F);
+				thisWorld.setBlock(blockX, blockY, blockZ, Blocks.fire);
 			}
 
 			//Do nothing
@@ -78,7 +78,7 @@ public class ItemBasicFirestarter extends CoreItem {
 	}
 
 	@Override
-	public String getItemStackDisplayName(ItemStack thisItem) {
+	public String getItemStackDisplayName(final ItemStack thisItem) {
 		return "Basic Firemaker";
 	}
 }

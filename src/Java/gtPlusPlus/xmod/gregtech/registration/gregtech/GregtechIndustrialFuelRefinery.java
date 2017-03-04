@@ -14,7 +14,9 @@ public class GregtechIndustrialFuelRefinery
 	{
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Industrial Fuel Processing and Refinery Multiblock.");
-			if (CORE.configSwitches.enableMultiblock_NuclearFuelRefinery) run1();
+			if (CORE.configSwitches.enableMultiblock_NuclearFuelRefinery) {
+				run1();
+			}
 		}
 
 	}
@@ -23,6 +25,6 @@ public class GregtechIndustrialFuelRefinery
 	{
 		//Industrial Maceration Stack Multiblock
 		GregtechItemList.Industrial_FuelRefinery.set(new GregtechMetaTileEntity_Refinery(835, "industrialrefinery.controller.tier.single", "Fission Fuel Processing Plant").getStackForm(1L));
-		
+
 	}
 }

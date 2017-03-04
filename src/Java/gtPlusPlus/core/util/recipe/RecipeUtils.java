@@ -1,5 +1,8 @@
 package gtPlusPlus.core.util.recipe;
 
+import java.util.*;
+
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.handler.Recipes.LateRegistrationHandler;
@@ -8,34 +11,30 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.shapeless.ShapelessUtils;
-
-import java.util.*;
-
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.oredict.*;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class RecipeUtils {
 
-	public static boolean recipeBuilder(Object slot_1, Object slot_2, Object slot_3, Object slot_4, Object slot_5, Object slot_6, Object slot_7, Object slot_8, Object slot_9, ItemStack resultItem){	
+	public static boolean recipeBuilder(final Object slot_1, final Object slot_2, final Object slot_3, final Object slot_4, final Object slot_5, final Object slot_6, final Object slot_7, final Object slot_8, final Object slot_9, final ItemStack resultItem){
 
-		ArrayList<Object> validSlots = new ArrayList<Object>();
+		final ArrayList<Object> validSlots = new ArrayList<>();
 		if (resultItem == null){
 			Utils.LOG_INFO("Found a recipe with an invalid output, yet had a valid inputs. Skipping.");
 			return false;
 		}
-		
-		if (slot_1 == null && slot_2 == null && slot_3 == null &&
-				slot_4 == null && slot_5 == null && slot_6 == null &&
-				slot_7 == null && slot_8 == null && slot_9 == null){
+
+		if ((slot_1 == null) && (slot_2 == null) && (slot_3 == null) &&
+				(slot_4 == null) && (slot_5 == null) && (slot_6 == null) &&
+				(slot_7 == null) && (slot_8 == null) && (slot_9 == null)){
 			Utils.LOG_INFO("Found a recipe with 0 inputs, yet had a valid output.");
 			Utils.LOG_INFO("Error found while adding a recipe for: "+resultItem.getDisplayName()+" | Please report this issue on Github.");
 			return false;
 		}
-		
+
 		//Utils.LOG_INFO("Trying to add a recipe for "+resultItem.toString());
 		String a,b,c,d,e,f,g,h,i;
 		if (slot_1 == null){ a = " ";} else { a = "1";validSlots.add('1');validSlots.add(slot_1);}
@@ -59,13 +58,13 @@ public class RecipeUtils {
 
 
 		Utils.LOG_ERROR("_______");
-		String lineOne = a+b+c;
+		final String lineOne = a+b+c;
 		Utils.LOG_ERROR("|"+a+"|"+b+"|"+c+"|");
 		Utils.LOG_ERROR("_______");
-		String lineTwo = d+e+f;
+		final String lineTwo = d+e+f;
 		Utils.LOG_ERROR("|"+d+"|"+e+"|"+f+"|");
 		Utils.LOG_ERROR("_______");
-		String lineThree = g+h+i;
+		final String lineThree = g+h+i;
 		Utils.LOG_ERROR("|"+g+"|"+h+"|"+i+"|");
 		Utils.LOG_ERROR("_______");
 
@@ -75,10 +74,10 @@ public class RecipeUtils {
 		boolean advancedLog = false;
 		if (CORE.DEBUG){
 			advancedLog = true;
-		}		
+		}
 		if (advancedLog){
 			int j = 0;
-			int l = validSlots.size();
+			final int l = validSlots.size();
 			Utils.LOG_WARNING("l:"+l);
 			while (j <= l) {
 				Utils.LOG_WARNING("j:"+j);
@@ -102,14 +101,14 @@ public class RecipeUtils {
 						break;
 					}
 				}
-				if (validSlots.get(j) instanceof String || validSlots.get(j) instanceof ItemStack){
+				if ((validSlots.get(j) instanceof String) || (validSlots.get(j) instanceof ItemStack)){
 					//Utils.LOG_WARNING("Is Valid: "+validSlots.get(j));
 				}
-			}	
+			}
 		}
 
 		try {
-			GameRegistry.addRecipe(new ShapedOreRecipe(resultItem.copy(), (Object[]) validSlots.toArray()));		
+			GameRegistry.addRecipe(new ShapedOreRecipe(resultItem.copy(), validSlots.toArray()));
 			//Utils.LOG_INFO("Success! Added a recipe for "+resultItem.getDisplayName());
 			if (!COMPAT_HANDLER.areInitItemsLoaded){
 				RegistrationHandler.recipesSuccess++;
@@ -130,15 +129,15 @@ public class RecipeUtils {
 			}
 			else {
 				LateRegistrationHandler.recipesFailed++;
-			}	
+			}
 			return false;
 		}
 	}
 
-	public static void shapelessBuilder(ItemStack Output, Object slot_1, Object slot_2, Object slot_3, Object slot_4, Object slot_5, Object slot_6, Object slot_7, Object slot_8, Object slot_9){
+	public static void shapelessBuilder(final ItemStack Output, final Object slot_1, final Object slot_2, final Object slot_3, final Object slot_4, final Object slot_5, final Object slot_6, final Object slot_7, final Object slot_8, final Object slot_9){
 		//Item output_ITEM = Output.getItem();
 
-		ArrayList<Object> validSlots = new ArrayList<Object>();
+		final ArrayList<Object> validSlots = new ArrayList<>();
 
 		Utils.LOG_INFO("Trying to add a recipe for "+Output.toString());
 		String a,b,c,d,e,f,g,h,i;
@@ -182,12 +181,12 @@ public class RecipeUtils {
 
 		try {
 			//GameRegistry.addRecipe(new ShapelessOreRecipe(Output, outputAmount), (Object[]) validSlots.toArray());
-			GameRegistry.addRecipe(new ShapelessOreRecipe(Output, (Object[]) validSlots.toArray()));
+			GameRegistry.addRecipe(new ShapelessOreRecipe(Output, validSlots.toArray()));
 			//GameRegistry.addShapelessRecipe(new ItemStack(output_ITEM, 1), new Object[] {slot_1, slot_2});
 			Utils.LOG_INFO("Success! Added a recipe for "+Output.getDisplayName());
-			RegistrationHandler.recipesSuccess++;		
+			RegistrationHandler.recipesSuccess++;
 		}
-		catch(RuntimeException k){
+		catch(final RuntimeException k){
 			k.getMessage();
 			k.getClass();
 			k.printStackTrace();
@@ -200,7 +199,7 @@ public class RecipeUtils {
 		//GameRegistry.addShapelessRecipe(new ItemStack(output_ITEM, 1), new Object[] {slot_1, slot_2});
 	}
 
-	public static void recipeBuilder(Object[] array, ItemStack outPut) {
+	public static void recipeBuilder(final Object[] array, final ItemStack outPut) {
 		Utils.LOG_SPECIFIC_WARNING("object Array - recipeBuilder", "Attempting to build a recipe using an object array as an input, splitting it, then running the normal recipeBuilder() method.", 396);
 		Object a=null;
 		Object b=null;
@@ -251,8 +250,8 @@ public class RecipeUtils {
 
 	public static boolean removeCraftingRecipe(Object x){
 		if (null == x){return false;}
-		if (x instanceof String){	
-			Item R = ItemUtils.getItem((String) x);
+		if (x instanceof String){
+			final Item R = ItemUtils.getItem((String) x);
 			if (R != null){
 				x = R;
 			}
@@ -260,16 +259,16 @@ public class RecipeUtils {
 				return false;
 			}
 		}
-		if (x instanceof Item || x instanceof ItemStack){
+		if ((x instanceof Item) || (x instanceof ItemStack)){
 			if (x instanceof Item){
-				ItemStack r = new ItemStack((Item) x);
+				final ItemStack r = new ItemStack((Item) x);
 				Utils.LOG_INFO("Removing Recipe for "+r.getUnlocalizedName());
 			}
 			else {
 				Utils.LOG_INFO("Removing Recipe for "+((ItemStack) x).getUnlocalizedName());
 			}
 			if (x instanceof ItemStack){
-				Item r = ((ItemStack) x).getItem();		
+				final Item r = ((ItemStack) x).getItem();
 				if (null != r){
 					x = r;
 				}
@@ -277,25 +276,25 @@ public class RecipeUtils {
 					Utils.LOG_INFO("Recipe removal failed - Tell Alkalus.");
 					return false;
 				}
-			}			
+			}
 			if (RecipeUtils.attemptRecipeRemoval((Item) x)){
 				Utils.LOG_INFO("Recipe removal successful");
 				return true;
 			}
 			Utils.LOG_INFO("Recipe removal failed - Tell Alkalus.");
-			return false;			
+			return false;
 		}
 		return false;
 	}
 
-	private static boolean attemptRecipeRemoval(Item I){
+	private static boolean attemptRecipeRemoval(final Item I){
 		Utils.LOG_WARNING("Create list of recipes.");
-		List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
-		Iterator<IRecipe> items = recipes.iterator();
+		final List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
+		final Iterator<IRecipe> items = recipes.iterator();
 		Utils.LOG_WARNING("Begin list iteration.");
 		while (items.hasNext()) {
-			ItemStack is = items.next().getRecipeOutput();
-			if (is != null && is.getItem() == I){
+			final ItemStack is = items.next().getRecipeOutput();
+			if ((is != null) && (is.getItem() == I)){
 				items.remove();
 				Utils.LOG_INFO("Remove a recipe with "+I.getUnlocalizedName()+" as output.");
 				continue;
@@ -304,10 +303,10 @@ public class RecipeUtils {
 		Utils.LOG_WARNING("All recipes should be gone?");
 		if (!items.hasNext()){
 			Utils.LOG_WARNING("We iterated once, let's try again to double check.");
-			Iterator<IRecipe> items2 = recipes.iterator();
+			final Iterator<IRecipe> items2 = recipes.iterator();
 			while (items2.hasNext()) {
-				ItemStack is = items2.next().getRecipeOutput();
-				if (is != null && is.getItem() == I){
+				final ItemStack is = items2.next().getRecipeOutput();
+				if ((is != null) && (is.getItem() == I)){
 					items.remove();
 					Utils.LOG_WARNING("REMOVING MISSED RECIPE - RECHECK CONSTRUCTORS");
 					return true;
@@ -325,48 +324,48 @@ public class RecipeUtils {
 
 
 
-	public static boolean addShapedGregtechRecipe( 
-			Object InputItem1, Object InputItem2, Object InputItem3,
-			Object InputItem4, Object InputItem5, Object InputItem6,
-			Object InputItem7, Object InputItem8, Object InputItem9,
-			ItemStack OutputItem){	
+	public static boolean addShapedGregtechRecipe(
+			final Object InputItem1, final Object InputItem2, final Object InputItem3,
+			final Object InputItem4, final Object InputItem5, final Object InputItem6,
+			final Object InputItem7, final Object InputItem8, final Object InputItem9,
+			final ItemStack OutputItem){
 
-		if ((!(InputItem1 instanceof ItemStack) && !(InputItem1 instanceof String) && (InputItem1 != null)) || 
-				(!(InputItem2 instanceof ItemStack) && !(InputItem2 instanceof String) && (InputItem2 != null)) || 
-				(!(InputItem3 instanceof ItemStack) && !(InputItem3 instanceof String) && (InputItem3 != null)) || 
-				(!(InputItem4 instanceof ItemStack) && !(InputItem4 instanceof String) && (InputItem4 != null)) || 
-				(!(InputItem5 instanceof ItemStack) && !(InputItem5 instanceof String) && (InputItem5 != null)) || 
-				(!(InputItem6 instanceof ItemStack) && !(InputItem6 instanceof String) && (InputItem6 != null)) || 
-				(!(InputItem7 instanceof ItemStack) && !(InputItem7 instanceof String) && (InputItem7 != null)) || 
-				(!(InputItem8 instanceof ItemStack) && !(InputItem8 instanceof String) && (InputItem8 != null)) || 
+		if ((!(InputItem1 instanceof ItemStack) && !(InputItem1 instanceof String) && (InputItem1 != null)) ||
+				(!(InputItem2 instanceof ItemStack) && !(InputItem2 instanceof String) && (InputItem2 != null)) ||
+				(!(InputItem3 instanceof ItemStack) && !(InputItem3 instanceof String) && (InputItem3 != null)) ||
+				(!(InputItem4 instanceof ItemStack) && !(InputItem4 instanceof String) && (InputItem4 != null)) ||
+				(!(InputItem5 instanceof ItemStack) && !(InputItem5 instanceof String) && (InputItem5 != null)) ||
+				(!(InputItem6 instanceof ItemStack) && !(InputItem6 instanceof String) && (InputItem6 != null)) ||
+				(!(InputItem7 instanceof ItemStack) && !(InputItem7 instanceof String) && (InputItem7 != null)) ||
+				(!(InputItem8 instanceof ItemStack) && !(InputItem8 instanceof String) && (InputItem8 != null)) ||
 				(!(InputItem9 instanceof ItemStack) && !(InputItem9 instanceof String) && (InputItem9 != null))){
 			Utils.LOG_INFO("One Input item was not an ItemStack of an OreDict String.");
 			return false;
 		}
 
-		if (GT_ModHandler.addCraftingRecipe(OutputItem, 
-				GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | 
+		if (GT_ModHandler.addCraftingRecipe(OutputItem,
+				GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE |
 				GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
-				new Object[]{"ABC", "DEF", "GHI", 
-				'A', InputItem1,  
-				'B', InputItem2,  
-				'C', InputItem3,  
-				'D', InputItem4,  
-				'E', InputItem5,  
-				'F', InputItem6,  
-				'G', InputItem7,  
-				'H', InputItem8,  
-				'I', InputItem9})){
+				new Object[]{"ABC", "DEF", "GHI",
+						'A', InputItem1,
+						'B', InputItem2,
+						'C', InputItem3,
+						'D', InputItem4,
+						'E', InputItem5,
+						'F', InputItem6,
+						'G', InputItem7,
+						'H', InputItem8,
+						'I', InputItem9})){
 			Utils.LOG_INFO("Success! Added a recipe for "+OutputItem.getDisplayName());
-			RegistrationHandler.recipesSuccess++;	
+			RegistrationHandler.recipesSuccess++;
 			return true;
 		}
 		return false;
 	}
 
-	public static void addShapelessGregtechRecipe(ItemStack OutputItem, Object... inputItems){
+	public static void addShapelessGregtechRecipe(final ItemStack OutputItem, final Object... inputItems){
 
-		for(Object whatever : inputItems){
+		for(final Object whatever : inputItems){
 			if (!(whatever instanceof ItemStack) && !(whatever instanceof String)){
 				Utils.LOG_INFO("One Input item was not an ItemStack of an OreDict String.");
 				return;
@@ -378,13 +377,13 @@ public class RecipeUtils {
 				new Object[]{inputItems});
 	}
 
-	public static ItemStack getItemStackFromOreDict(String oredictName){
-		ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
+	public static ItemStack getItemStackFromOreDict(final String oredictName){
+		final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
 		return oreDictList.get(0);
 	}
 
-	public static boolean buildShapelessRecipe(ItemStack output, Object[] input){
-		return ShapelessUtils.addShapelessRecipe(output, input);				
+	public static boolean buildShapelessRecipe(final ItemStack output, final Object[] input){
+		return ShapelessUtils.addShapelessRecipe(output, input);
 	}
 
 }

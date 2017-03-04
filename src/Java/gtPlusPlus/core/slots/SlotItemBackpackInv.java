@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 
 public class SlotItemBackpackInv extends Slot
 {
-	public SlotItemBackpackInv(IInventory inv, int index, int xPos, int yPos)
+	public SlotItemBackpackInv(final IInventory inv, final int index, final int xPos, final int yPos)
 	{
 		super(inv, index, xPos, yPos);
 	}
@@ -20,7 +20,7 @@ public class SlotItemBackpackInv extends Slot
 	 * Check if the stack is a valid item for this slot.
 	 */
 	@Override
-	public boolean isItemValid(ItemStack itemstack)
+	public boolean isItemValid(final ItemStack itemstack)
 	{
 		// Everything returns true except an instance of our Item
 		return !(itemstack.getItem() instanceof BaseItemBackpack);

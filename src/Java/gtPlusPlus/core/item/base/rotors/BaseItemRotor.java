@@ -5,7 +5,7 @@ import gtPlusPlus.core.material.Material;
 
 public class BaseItemRotor extends BaseItemComponent{
 
-	public BaseItemRotor(Material material) {
+	public BaseItemRotor(final Material material) {
 		super(material, BaseItemComponent.ComponentTypes.ROTOR);
 	}
 }

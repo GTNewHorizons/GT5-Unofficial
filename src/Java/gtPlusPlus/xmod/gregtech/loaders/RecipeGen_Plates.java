@@ -11,16 +11,16 @@ import net.minecraft.item.ItemStack;
 public class RecipeGen_Plates implements Runnable{
 
 	final Material toGenerate;
-	
+
 	public RecipeGen_Plates(final Material M){
 		this.toGenerate = M;
 	}
-	
+
 	@Override
 	public void run() {
-		generateRecipes(toGenerate);		
+		generateRecipes(this.toGenerate);
 	}
-	
+
 	public static void generateRecipes(final Material material){
 
 		final int tVoltageMultiplier = material.getMeltingPointK() >= 2800 ? 60 : 15;
@@ -32,7 +32,7 @@ public class RecipeGen_Plates implements Runnable{
 		final ItemStack plate_Double = material.getPlateDouble(1);
 
 		Utils.LOG_WARNING("Generating Plate recipes for "+material.getLocalizedName());
-		
+
 		//Forge Hammer
 		if (addForgeHammerRecipe(
 				ingotStackTwo,
@@ -42,7 +42,7 @@ public class RecipeGen_Plates implements Runnable{
 			Utils.LOG_WARNING("Forge Hammer Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_WARNING("Forge Hammer Recipe: "+material.getLocalizedName()+" - Failed");			
+			Utils.LOG_WARNING("Forge Hammer Recipe: "+material.getLocalizedName()+" - Failed");
 		}
 		//Bender
 		if (addBenderRecipe(
@@ -53,7 +53,7 @@ public class RecipeGen_Plates implements Runnable{
 			Utils.LOG_WARNING("Bender Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_WARNING("Bender Recipe: "+material.getLocalizedName()+" - Failed");			
+			Utils.LOG_WARNING("Bender Recipe: "+material.getLocalizedName()+" - Failed");
 		}
 		//Alloy Smelter
 		if (GT_Values.RA.addAlloySmelterRecipe(
@@ -65,7 +65,7 @@ public class RecipeGen_Plates implements Runnable{
 			Utils.LOG_WARNING("Alloy Smelter Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_WARNING("Alloy Smelter Recipe: "+material.getLocalizedName()+" - Failed");			
+			Utils.LOG_WARNING("Alloy Smelter Recipe: "+material.getLocalizedName()+" - Failed");
 		}
 
 
@@ -78,7 +78,7 @@ public class RecipeGen_Plates implements Runnable{
 			Utils.LOG_WARNING("Bender Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_WARNING("Bender Recipe: "+material.getLocalizedName()+" - Failed");			
+			Utils.LOG_WARNING("Bender Recipe: "+material.getLocalizedName()+" - Failed");
 		}
 		if (addBenderRecipe(
 				plate_SingleTwo,
@@ -88,11 +88,11 @@ public class RecipeGen_Plates implements Runnable{
 			Utils.LOG_WARNING("Bender Recipe: "+material.getLocalizedName()+" - Success");
 		}
 		else {
-			Utils.LOG_WARNING("Bender Recipe: "+material.getLocalizedName()+" - Failed");			
-		} 
+			Utils.LOG_WARNING("Bender Recipe: "+material.getLocalizedName()+" - Failed");
+		}
 	}
 
-	public static boolean addBenderRecipe(ItemStack aInput1, ItemStack aOutput1, int aDuration, int aEUt) {
+	public static boolean addBenderRecipe(final ItemStack aInput1, final ItemStack aOutput1, int aDuration, final int aEUt) {
 		if ((aInput1 == null) || (aOutput1 == null)) {
 			return false;
 		}
@@ -103,7 +103,7 @@ public class RecipeGen_Plates implements Runnable{
 		return true;
 	}
 
-	public static boolean addExtruderRecipe(ItemStack aInput, ItemStack aShape, ItemStack aOutput, int aDuration, int aEUt) {
+	public static boolean addExtruderRecipe(final ItemStack aInput, final ItemStack aShape, final ItemStack aOutput, int aDuration, final int aEUt) {
 		if ((aInput == null) || (aShape == null) || (aOutput == null)) {
 			return false;
 		}
@@ -114,7 +114,7 @@ public class RecipeGen_Plates implements Runnable{
 		return true;
 	}
 
-	public static boolean addForgeHammerRecipe(ItemStack aInput1, ItemStack aOutput1, int aDuration, int aEUt) {
+	public static boolean addForgeHammerRecipe(final ItemStack aInput1, final ItemStack aOutput1, final int aDuration, final int aEUt) {
 		if ((aInput1 == null) || (aOutput1 == null)) {
 			return false;
 		}

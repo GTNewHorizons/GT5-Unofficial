@@ -12,7 +12,9 @@ public class GregtechTieredFluidTanks
 	{
 		if (LoadedMods.Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Portable Fluid Tanks.");
-			if (CORE.configSwitches.enableMachine_FluidTanks) run1();
+			if (CORE.configSwitches.enableMachine_FluidTanks) {
+				run1();
+			}
 		}
 
 	}
@@ -33,7 +35,7 @@ public class GregtechTieredFluidTanks
 			GregtechItemList.GT_FluidTank_LuV.set(new GT_MetaTileEntity_TieredTank(ID++, "fluidtank.tier.06", "Ludicrous Voltage Fluid Tank", 6).getStackForm(1L));
 			GregtechItemList.GT_FluidTank_ZPM.set(new GT_MetaTileEntity_TieredTank(ID++, "fluidtank.tier.07", "ZPM Voltage Fluid Tank", 7).getStackForm(1L));
 			GregtechItemList.GT_FluidTank_UV.set(new GT_MetaTileEntity_TieredTank(ID++, "fluidtank.tier.08", "Ultimate Voltage Fluid Tank", 8).getStackForm(1L));
-			GregtechItemList.GT_FluidTank_MAX.set(new GT_MetaTileEntity_TieredTank(ID++, "fluidtank.tier.09", "MAX Voltage Fluid Tank", 9).getStackForm(1L));        
+			GregtechItemList.GT_FluidTank_MAX.set(new GT_MetaTileEntity_TieredTank(ID++, "fluidtank.tier.09", "MAX Voltage Fluid Tank", 9).getStackForm(1L));
 		}
 	}
 }

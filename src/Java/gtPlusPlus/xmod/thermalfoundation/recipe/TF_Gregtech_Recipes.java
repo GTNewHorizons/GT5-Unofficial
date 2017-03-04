@@ -19,12 +19,12 @@ public class TF_Gregtech_Recipes {
 
 	private static void start(){
 		//Get Items to work with
-		ItemStack dust_Cryotheum = TF_Items.itemDustCryotheum.copy();
-		ItemStack dust_Pyrotheum = TF_Items.itemDustPyrotheum.copy();
-		ItemStack dust_Blizz = TF_Items.itemDustBlizz.copy();
-		ItemStack dust_Blizz3 = ItemUtils.simpleMetaStack(TF_Items.itemMaterial, 2, 3);
-		ItemStack rod_Blizz = TF_Items.itemRodBlizz.copy();	
-		FluidStack moltenRedstone = getFluidStack("molten.redstone", 250);
+		final ItemStack dust_Cryotheum = TF_Items.itemDustCryotheum.copy();
+		final ItemStack dust_Pyrotheum = TF_Items.itemDustPyrotheum.copy();
+		final ItemStack dust_Blizz = TF_Items.itemDustBlizz.copy();
+		final ItemStack dust_Blizz3 = ItemUtils.simpleMetaStack(TF_Items.itemMaterial, 2, 3);
+		final ItemStack rod_Blizz = TF_Items.itemRodBlizz.copy();
+		final FluidStack moltenRedstone = getFluidStack("molten.redstone", 250);
 
 		//Gelid Cryotheum
 		Utils.LOG_INFO("Adding Recipes for Gelid Cryotheum");
@@ -41,17 +41,17 @@ public class TF_Gregtech_Recipes {
 		GT_ModHandler.addPulverisationRecipe(rod_Blizz, dust_Blizz3, new ItemStack(Items.snowball, 1), 50, false);
 
 		//Blazing Pyrotheum
-		Utils.LOG_INFO("Adding Recipes for Blazing Pyrotheum");	
-		GT_Values.RA.addFluidExtractionRecipe(dust_Pyrotheum, GT_Values.NI, getFluidStack("pyrotheum", 250), 10000, 200, 240);	
+		Utils.LOG_INFO("Adding Recipes for Blazing Pyrotheum");
+		GT_Values.RA.addFluidExtractionRecipe(dust_Pyrotheum, GT_Values.NI, getFluidStack("pyrotheum", 250), 10000, 200, 240);
 
 	}
 
-	private static FluidStack getFluidStack(String fluidName, int amount){
+	private static FluidStack getFluidStack(final String fluidName, final int amount){
 		Utils.LOG_WARNING("Trying to get a fluid stack of "+fluidName);
 		try {
 			return FluidRegistry.getFluidStack(fluidName, amount);
-		} 
-		catch (Throwable e){
+		}
+		catch (final Throwable e){
 			return null;
 		}
 

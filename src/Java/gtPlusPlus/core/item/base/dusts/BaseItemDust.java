@@ -1,6 +1,10 @@
 package gtPlusPlus.core.item.base.dusts;
 
 import static gtPlusPlus.core.creative.AddToCreativeTab.tabMisc;
+
+import java.util.List;
+
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -10,15 +14,11 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.entity.EntityUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
-
-import java.util.List;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BaseItemDust extends Item{
 
@@ -26,14 +26,14 @@ public class BaseItemDust extends Item{
 	protected String materialName;
 	protected String pileType;
 	String name = "";
-	private int mTier;
-	private Material dustInfo;
+	private final int mTier;
+	private final Material dustInfo;
 
-	public BaseItemDust(String unlocalizedName, String materialName, Material matInfo, int colour, String pileSize, int tier, int sRadioactivity) {
-		setUnlocalizedName(unlocalizedName);
+	public BaseItemDust(final String unlocalizedName, final String materialName, final Material matInfo, final int colour, final String pileSize, final int tier, final int sRadioactivity) {
+		this.setUnlocalizedName(unlocalizedName);
 		this.setUnlocalizedName(unlocalizedName);
 		this.setMaxStackSize(64);
-		this.setTextureName(getCorrectTexture(pileSize));
+		this.setTextureName(this.getCorrectTexture(pileSize));
 
 		this.setCreativeTab(tabMisc);
 		this.colour = colour;
@@ -44,13 +44,13 @@ public class BaseItemDust extends Item{
 		GameRegistry.registerItem(this, unlocalizedName);
 
 		String temp = "";
-		Utils.LOG_WARNING("Unlocalized name for OreDict nameGen: "+getUnlocalizedName());
-		if (getUnlocalizedName().contains("item.")){
-			temp = getUnlocalizedName().replace("item.", "");
+		Utils.LOG_WARNING("Unlocalized name for OreDict nameGen: "+this.getUnlocalizedName());
+		if (this.getUnlocalizedName().contains("item.")){
+			temp = this.getUnlocalizedName().replace("item.", "");
 			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
 		}
 		else {
-			temp = getUnlocalizedName();
+			temp = this.getUnlocalizedName();
 		}
 		if (temp.contains("DustTiny")){
 			temp = temp.replace("itemD", "d");
@@ -63,73 +63,73 @@ public class BaseItemDust extends Item{
 		else {
 			temp = temp.replace("itemD", "d");
 			Utils.LOG_WARNING("Generating OreDict Name: "+temp);
-		}		
-		if (temp != null && !temp.equals("")){
+		}
+		if ((temp != null) && !temp.equals("")){
 			GT_OreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
 		}
-		addFurnaceRecipe();
-		addMacerationRecipe();
+		this.addFurnaceRecipe();
+		this.addMacerationRecipe();
 	}
 
-	private String getCorrectTexture(String pileSize){
+	private String getCorrectTexture(final String pileSize){
 		if (!CORE.configSwitches.useGregtechTextures){
-			if (pileSize == "dust" || pileSize == "Dust"){
+			if ((pileSize == "dust") || (pileSize == "Dust")){
 				this.setTextureName(CORE.MODID + ":" + "dust");}
 			else{
 				this.setTextureName(CORE.MODID + ":" + "dust"+pileSize);
 			}
-		}		
+		}
 		if (pileSize.toLowerCase().contains("small")){
-			return "gregtech" + ":" + "materialicons/METALLIC/dustSmall";			
+			return "gregtech" + ":" + "materialicons/METALLIC/dustSmall";
 		}
 		else if (pileSize.toLowerCase().contains("tiny")){
-			return "gregtech" + ":" + "materialicons/METALLIC/dustTiny";			
-		}	
-		return "gregtech" + ":" + "materialicons/METALLIC/dust";			
+			return "gregtech" + ":" + "materialicons/METALLIC/dustTiny";
+		}
+		return "gregtech" + ":" + "materialicons/METALLIC/dust";
 	}
 
 	@Override
-	public String getItemStackDisplayName(ItemStack iStack) {
+	public String getItemStackDisplayName(final ItemStack iStack) {
 
-		if (getUnlocalizedName().contains("DustTiny")){
-			name = "Tiny Pile of "+materialName + " Dust";
+		if (this.getUnlocalizedName().contains("DustTiny")){
+			this.name = "Tiny Pile of "+this.materialName + " Dust";
 		}
-		else if (getUnlocalizedName().contains("DustSmall")){
-			name = "Small Pile of "+materialName + " Dust";
+		else if (this.getUnlocalizedName().contains("DustSmall")){
+			this.name = "Small Pile of "+this.materialName + " Dust";
 		}
 		else {
-			name = materialName + " Dust";
+			this.name = this.materialName + " Dust";
 		}
-		return name;
+		return this.name;
 	}
 
 	protected final int sRadiation;
 	@Override
-	public void onUpdate(ItemStack iStack, World world, Entity entityHolding, int p_77663_4_, boolean p_77663_5_) {
-		EntityUtils.applyRadiationDamageToEntity(sRadiation, world, entityHolding);
+	public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_, final boolean p_77663_5_) {
+		EntityUtils.applyRadiationDamageToEntity(this.sRadiation, world, entityHolding);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
+	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
 		//if (pileType != null && materialName != null && pileType != "" && materialName != "" && !pileType.equals("") && !materialName.equals("")){
 		/*if (getUnlocalizedName().contains("DustTiny")){
-			list.add(EnumChatFormatting.GRAY+"A tiny pile of " + materialName + " dust.");	
+			list.add(EnumChatFormatting.GRAY+"A tiny pile of " + materialName + " dust.");
 		}
 		else if (getUnlocalizedName().contains("DustSmall")){
-			list.add(EnumChatFormatting.GRAY+"A small pile of " + materialName + " dust.");	
+			list.add(EnumChatFormatting.GRAY+"A small pile of " + materialName + " dust.");
 		}
 		else {
 			list.add(EnumChatFormatting.GRAY+"A pile of " + materialName + " dust.");
 		}*/
 		if (stack.getDisplayName().equalsIgnoreCase("fluorite")){
-			list.add("Mined from Sandstone and Limestone.");						
+			list.add("Mined from Sandstone and Limestone.");
 		}
-		if (sRadiation > 0){
+		if (this.sRadiation > 0){
 			list.add(CORE.GT_Tooltip_Radioactive);
 		}
-		if (dustInfo != null){
-			list.add(dustInfo.vChemicalFormula);
+		if (this.dustInfo != null){
+			list.add(this.dustInfo.vChemicalFormula);
 		}
 
 
@@ -138,47 +138,47 @@ public class BaseItemDust extends Item{
 	}
 
 	public final String getMaterialName() {
-		return materialName;
+		return this.materialName;
 	}
 
 	@Override
-	public int getColorFromItemStack(ItemStack stack, int HEX_OxFFFFFF) {
-		if (colour == 0){
+	public int getColorFromItemStack(final ItemStack stack, final int HEX_OxFFFFFF) {
+		if (this.colour == 0){
 			return MathUtils.generateSingularRandomHexValue();
 		}
-		return colour;
+		return this.colour;
 
 	}
 
 	private void addMacerationRecipe(){
-		Utils.LOG_WARNING("Adding recipe for "+materialName+" Dusts");
+		Utils.LOG_WARNING("Adding recipe for "+this.materialName+" Dusts");
 
-		String tempIngot = getUnlocalizedName().replace("item.itemDust", "ingot");
-		String tempDust = getUnlocalizedName().replace("item.itemDust", "dust");
+		String tempIngot = this.getUnlocalizedName().replace("item.itemDust", "ingot");
+		final String tempDust = this.getUnlocalizedName().replace("item.itemDust", "dust");
 		ItemStack tempInputStack;
 		ItemStack tempOutputStack;
 
-		if (getUnlocalizedName().contains("DustSmall") || getUnlocalizedName().contains("DustTiny")){
+		if (this.getUnlocalizedName().contains("DustSmall") || this.getUnlocalizedName().contains("DustTiny")){
 			return;
 		}
 
-		Utils.LOG_WARNING("Unlocalized name for OreDict nameGen: "+getUnlocalizedName());
-		if (getUnlocalizedName().contains("item.")){
-			tempIngot = getUnlocalizedName().replace("item.", "");
+		Utils.LOG_WARNING("Unlocalized name for OreDict nameGen: "+this.getUnlocalizedName());
+		if (this.getUnlocalizedName().contains("item.")){
+			tempIngot = this.getUnlocalizedName().replace("item.", "");
 			Utils.LOG_WARNING("Generating OreDict Name: "+tempIngot);
 		}
 		else {
-			tempIngot = getUnlocalizedName();
+			tempIngot = this.getUnlocalizedName();
 		}
 
 		tempIngot = tempIngot.replace("itemDust", "ingot");
 		Utils.LOG_WARNING("Generating OreDict Name: "+tempIngot);
-		ItemStack[] outputStacks = {dustInfo.getDust(1)};
-		if (tempIngot != null && !tempIngot.equals("")){
+		final ItemStack[] outputStacks = {this.dustInfo.getDust(1)};
+		if ((tempIngot != null) && !tempIngot.equals("")){
 			tempInputStack = ItemUtils.getItemStackOfAmountFromOreDict(tempIngot, 1);
 			tempOutputStack = ItemUtils.getItemStackOfAmountFromOreDict(tempDust, 1);
 			ItemStack tempStackOutput2 = null;
-			int chance = mTier*10/MathUtils.randInt(10, 20);
+			final int chance = (this.mTier*10)/MathUtils.randInt(10, 20);
 			if (outputStacks.length != 0){
 				if (outputStacks.length == 1){
 					tempStackOutput2 = null;
@@ -191,68 +191,68 @@ public class BaseItemDust extends Item{
 					else {
 						tempStackOutput2 = null;
 					}
-				}								
+				}
 			}
 			else {
 				tempStackOutput2 = null;
 			}
-			if (null != tempOutputStack && null != tempInputStack){
+			if ((null != tempOutputStack) && (null != tempInputStack)){
 				GT_ModHandler.addPulverisationRecipe(tempInputStack, tempOutputStack.splitStack(1), tempStackOutput2, chance);
 			}
 		}
 	}
 
-	private void addFurnaceRecipe(){		
+	private void addFurnaceRecipe(){
 
 		String temp = "";
-		if (getUnlocalizedName().contains("item.")){
-			temp = getUnlocalizedName().replace("item.", "");
+		if (this.getUnlocalizedName().contains("item.")){
+			temp = this.getUnlocalizedName().replace("item.", "");
 		}
 		else {
-			temp = getUnlocalizedName();
+			temp = this.getUnlocalizedName();
 		}
 		if (temp.contains("DustTiny") || temp.contains("DustSmall")){
 			return;
 		}
-		temp = temp.replace("itemDust", "ingot");		
-		if (temp != null && !temp.equals("")){
+		temp = temp.replace("itemDust", "ingot");
+		if ((temp != null) && !temp.equals("")){
 
-			if (dustInfo.requiresBlastFurnace()){
-				Utils.LOG_WARNING("Adding recipe for Hot "+materialName+" Ingots in a Blast furnace.");
-				String tempIngot = temp.replace("ingot", "ingotHot");
-				ItemStack tempOutputStack = ItemUtils.getItemStackOfAmountFromOreDict(tempIngot, 1);
+			if (this.dustInfo.requiresBlastFurnace()){
+				Utils.LOG_WARNING("Adding recipe for Hot "+this.materialName+" Ingots in a Blast furnace.");
+				final String tempIngot = temp.replace("ingot", "ingotHot");
+				final ItemStack tempOutputStack = ItemUtils.getItemStackOfAmountFromOreDict(tempIngot, 1);
 				if (null != tempOutputStack){
 					Utils.LOG_WARNING("This will produce "+tempOutputStack.getDisplayName() + " Debug: "+tempIngot);
-					addBlastFurnaceRecipe(ItemUtils.getSimpleStack(this), null, tempOutputStack, null, 350*mTier);		
-				}				
+					this.addBlastFurnaceRecipe(ItemUtils.getSimpleStack(this), null, tempOutputStack, null, 350*this.mTier);
+				}
 				return;
 			}
-			Utils.LOG_WARNING("Adding recipe for "+materialName+" Ingots in a furnace.");
-			ItemStack tempOutputStack = ItemUtils.getItemStackOfAmountFromOreDict(temp, 1);
+			Utils.LOG_WARNING("Adding recipe for "+this.materialName+" Ingots in a furnace.");
+			final ItemStack tempOutputStack = ItemUtils.getItemStackOfAmountFromOreDict(temp, 1);
 			//Utils.LOG_WARNING("This will produce an ingot of "+tempOutputStack.getDisplayName() + " Debug: "+temp);
 			if (null != tempOutputStack){
-				if (mTier < 5 || !dustInfo.requiresBlastFurnace()){					
+				if ((this.mTier < 5) || !this.dustInfo.requiresBlastFurnace()){
 					if (CORE.GT_Recipe.addSmeltingAndAlloySmeltingRecipe(ItemUtils.getSimpleStack(this), tempOutputStack)){
-						Utils.LOG_WARNING("Successfully added a furnace recipe for "+materialName);
+						Utils.LOG_WARNING("Successfully added a furnace recipe for "+this.materialName);
 					}
 					else {
-						Utils.LOG_WARNING("Failed to add a furnace recipe for "+materialName);
+						Utils.LOG_WARNING("Failed to add a furnace recipe for "+this.materialName);
 					}
-				}				
-				else if (mTier >= 5 || dustInfo.requiresBlastFurnace()){
-					Utils.LOG_WARNING("Adding recipe for "+materialName+" Ingots in a Blast furnace.");
+				}
+				else if ((this.mTier >= 5) || this.dustInfo.requiresBlastFurnace()){
+					Utils.LOG_WARNING("Adding recipe for "+this.materialName+" Ingots in a Blast furnace.");
 					Utils.LOG_WARNING("This will produce "+tempOutputStack.getDisplayName());
 					if (null != tempOutputStack){
-						addBlastFurnaceRecipe(ItemUtils.getSimpleStack(this), null, tempOutputStack, null, 350*mTier);		
-					}				
-					return;				
+						this.addBlastFurnaceRecipe(ItemUtils.getSimpleStack(this), null, tempOutputStack, null, 350*this.mTier);
+					}
+					return;
 				}
 			}
 
-		}	
+		}
 	}
 
-	private void addBlastFurnaceRecipe(ItemStack input1, ItemStack input2, ItemStack output1, ItemStack output2, int tempRequired){
+	private void addBlastFurnaceRecipe(final ItemStack input1, final ItemStack input2, final ItemStack output1, final ItemStack output2, final int tempRequired){
 		//Special Cases
 		/*if (input1.getUnlocalizedName().toLowerCase().contains("tantalloy61")){
 			Utils.LOG_INFO("Adding Special handler for Staballoy-61 in the Blast Furnace");
@@ -270,8 +270,8 @@ public class BaseItemDust extends Item{
 				GT_Values.NF, GT_Values.NF,
 				output1,
 				output2,
-				250*mTier*20,
-				mTier*64, 
+				250*this.mTier*20,
+				this.mTier*64,
 				tempRequired);
 
 

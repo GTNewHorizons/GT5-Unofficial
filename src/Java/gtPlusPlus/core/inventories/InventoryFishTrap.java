@@ -1,6 +1,5 @@
 package gtPlusPlus.core.inventories;
 
-import gtPlusPlus.core.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -9,113 +8,113 @@ import net.minecraft.nbt.NBTTagList;
 
 public class InventoryFishTrap implements IInventory{
 
-	private String name = "Fishtrap";
+	private final String name = "Fishtrap";
 
 	/** Defining your inventory size this way is handy */
 	public static final int INV_SIZE = 15;
 
 	/** Inventory's size must be same as number of slots you add to the Container class */
 	private ItemStack[] inventory = new ItemStack[INV_SIZE];
-	
-	public void readFromNBT(NBTTagCompound nbt){
-        NBTTagList list = nbt.getTagList("Items", 10);
-        inventory = new ItemStack[INV_SIZE];
-        for(int i = 0;i<list.tagCount();i++){
-            NBTTagCompound data = list.getCompoundTagAt(i);
-            int slot = data.getInteger("Slot");
-            if(slot >= 0 && slot < INV_SIZE){
-        		//Utils.LOG_INFO("Trying to read NBT data from inventory.");
-                inventory[slot] = ItemStack.loadItemStackFromNBT(data);
-            }
-        }
-    }
 
-    public void writeToNBT(NBTTagCompound nbt){
-        NBTTagList list = new NBTTagList();
-        for(int i = 0;i<INV_SIZE;i++){
-            ItemStack stack = inventory[i];
-            if(stack != null){
-        		//Utils.LOG_INFO("Trying to write NBT data to inventory.");
-                NBTTagCompound data = new NBTTagCompound();
-                stack.writeToNBT(data);
-                data.setInteger("Slot", i);
-                list.appendTag(data);
-            }
-        }
-        nbt.setTag("Items", list);
-    }
-	
+	public void readFromNBT(final NBTTagCompound nbt){
+		final NBTTagList list = nbt.getTagList("Items", 10);
+		this.inventory = new ItemStack[INV_SIZE];
+		for(int i = 0;i<list.tagCount();i++){
+			final NBTTagCompound data = list.getCompoundTagAt(i);
+			final int slot = data.getInteger("Slot");
+			if((slot >= 0) && (slot < INV_SIZE)){
+				//Utils.LOG_INFO("Trying to read NBT data from inventory.");
+				this.inventory[slot] = ItemStack.loadItemStackFromNBT(data);
+			}
+		}
+	}
+
+	public void writeToNBT(final NBTTagCompound nbt){
+		final NBTTagList list = new NBTTagList();
+		for(int i = 0;i<INV_SIZE;i++){
+			final ItemStack stack = this.inventory[i];
+			if(stack != null){
+				//Utils.LOG_INFO("Trying to write NBT data to inventory.");
+				final NBTTagCompound data = new NBTTagCompound();
+				stack.writeToNBT(data);
+				data.setInteger("Slot", i);
+				list.appendTag(data);
+			}
+		}
+		nbt.setTag("Items", list);
+	}
+
 	@Override
 	public int getSizeInventory()
 	{
-		return inventory.length;
+		return this.inventory.length;
 	}
-	
+
 	public ItemStack[] getInventory(){
-		return inventory;
+		return this.inventory;
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int slot)
+	public ItemStack getStackInSlot(final int slot)
 	{
-		return inventory[slot];
+		return this.inventory[slot];
 	}
 
 	@Override
-	public ItemStack decrStackSize(int slot, int amount)
+	public ItemStack decrStackSize(final int slot, final int amount)
 	{
-		ItemStack stack = getStackInSlot(slot);
+		ItemStack stack = this.getStackInSlot(slot);
 		if(stack != null)
 		{
 			if(stack.stackSize > amount)
 			{
 				stack = stack.splitStack(amount);
 				// Don't forget this line or your inventory will not be saved!
-				markDirty();
+				this.markDirty();
 			}
 			else
 			{
 				// this method also calls markDirty, so we don't need to call it again
-				setInventorySlotContents(slot, null);
+				this.setInventorySlotContents(slot, null);
 			}
 		}
 		return stack;
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int slot)
+	public ItemStack getStackInSlotOnClosing(final int slot)
 	{
-		ItemStack stack = getStackInSlot(slot);
-		setInventorySlotContents(slot, null);
+		final ItemStack stack = this.getStackInSlot(slot);
+		this.setInventorySlotContents(slot, null);
 		return stack;
 	}
 
 	@Override
-	public void setInventorySlotContents(int slot, ItemStack stack)
+	public void setInventorySlotContents(final int slot, final ItemStack stack)
 	{
-		inventory[slot] = stack;
+		this.inventory[slot] = stack;
 
-		if (stack != null && stack.stackSize > getInventoryStackLimit())
+		if ((stack != null) && (stack.stackSize > this.getInventoryStackLimit()))
 		{
-			stack.stackSize = getInventoryStackLimit();
+			stack.stackSize = this.getInventoryStackLimit();
 		}
 
 		// Don't forget this line or your inventory will not be saved!
-		markDirty();
+		this.markDirty();
 	}
 
 	// 1.7.2+ renamed to getInventoryName
 	@Override
 	public String getInventoryName()
 	{
-		return name;
+		return this.name;
 	}
 
 	// 1.7.2+ renamed to hasCustomInventoryName
 	@Override
 	public boolean hasCustomInventoryName()
 	{
-		return name.length() > 0;
+		return this.name.length() > 0;
 	}
 
 	@Override
@@ -133,21 +132,21 @@ public class InventoryFishTrap implements IInventory{
 	@Override
 	public void markDirty()
 	{
-		for (int i = 0; i < getSizeInventory(); ++i)
+		for (int i = 0; i < this.getSizeInventory(); ++i)
 		{
-			ItemStack temp = getStackInSlot(i);
+			final ItemStack temp = this.getStackInSlot(i);
 			if (temp != null){
 				//Utils.LOG_INFO("Slot "+i+" contains "+temp.getDisplayName()+" x"+temp.stackSize);
 			}
-			
-			if (temp != null && temp.stackSize == 0) {
-				inventory[i] = null;
+
+			if ((temp != null) && (temp.stackSize == 0)) {
+				this.inventory[i] = null;
 			}
 		}
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer)
+	public boolean isUseableByPlayer(final EntityPlayer entityplayer)
 	{
 		return true;
 	}
@@ -166,7 +165,7 @@ public class InventoryFishTrap implements IInventory{
 	 * even when this returns false
 	 */
 	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack itemstack)
+	public boolean isItemValidForSlot(final int slot, final ItemStack itemstack)
 	{
 		// Don't want to be able to store the inventory item within itself
 		// Bad things will happen, like losing your inventory

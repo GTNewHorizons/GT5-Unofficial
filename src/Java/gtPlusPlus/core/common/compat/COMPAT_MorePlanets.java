@@ -4,11 +4,11 @@ import gtPlusPlus.core.util.item.ItemUtils;
 
 public class COMPAT_MorePlanets {
 
-	
+
 	public static void OreDict(){
 		run();
 	}
-	
+
 	private final static void run(){
 		//Metals
 		ItemUtils.getItemForOreDict("MorePlanet:kapteyn-b_item", "ingotFrozenIron", "Frozen Iron Ingot", 0);
@@ -25,7 +25,7 @@ public class COMPAT_MorePlanets {
 		ItemUtils.getItemForOreDict("MorePlanet:polongnius_item", "ingotPolongiusMeteoricIron", "Polongius Meteoric Iron Ingot", 4);
 		ItemUtils.getItemForOreDict("MorePlanet:mercury_item", "ingotMeteoricSteel", "Meteoric Steel Ingot", 3);
 		ItemUtils.getItemForOreDict("MorePlanet:sirius-b_item", "dustSulfur", "Sulfur Dust", 2);
-		
+
 		//Gems
 		ItemUtils.getItemForOreDict("MorePlanet:fronos_item", "gemBlackDiamond", "Black Diamond Gem", 2);
 		ItemUtils.getItemForOreDict("MorePlanet:koentus_item", "gemWhiteCrystal", "White Crystal", 0);
@@ -33,5 +33,5 @@ public class COMPAT_MorePlanets {
 		ItemUtils.getItemForOreDict("MorePlanet:pluto_item", "gemXeonius", "Xeonius Gem", 0);
 		ItemUtils.getItemForOreDict("MorePlanet:kapteyn-b_item", "gemUranium", "Uranium Gem", 1);
 	}
-	
+
 }

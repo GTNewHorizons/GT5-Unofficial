@@ -1,5 +1,10 @@
 package gtPlusPlus.core.block.machine;
 
+import buildcraft.api.tools.IToolWrench;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
@@ -15,11 +20,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import buildcraft.api.tools.IToolWrench;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class Machine_WorkbenchAdvanced extends BlockContainer
 {
@@ -46,14 +46,14 @@ public class Machine_WorkbenchAdvanced extends BlockContainer
 	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIcon getIcon(int p_149691_1_, int p_149691_2_)
+	public IIcon getIcon(final int p_149691_1_, final int p_149691_2_)
 	{
-		return p_149691_1_ == 1 ? this.textureTop : (p_149691_1_ == 0 ? this.textureBottom : (p_149691_1_ != 2 && p_149691_1_ != 4 ? this.blockIcon : this.textureFront));
+		return p_149691_1_ == 1 ? this.textureTop : (p_149691_1_ == 0 ? this.textureBottom : ((p_149691_1_ != 2) && (p_149691_1_ != 4) ? this.blockIcon : this.textureFront));
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister p_149651_1_)
+	public void registerBlockIcons(final IIconRegister p_149651_1_)
 	{
 		this.blockIcon = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "machine_top");
 		this.textureTop = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "cover_crafting");
@@ -65,11 +65,13 @@ public class Machine_WorkbenchAdvanced extends BlockContainer
 	 * Called upon block activation (right click on the block.)
 	 */
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float lx, float ly, float lz)
+	public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player, final int side, final float lx, final float ly, final float lz)
 	{
 
-		ItemStack heldItem = PlayerUtils.getItemStackInPlayersHand(player);
-		if (world.isRemote) return true;
+		final ItemStack heldItem = PlayerUtils.getItemStackInPlayersHand(player);
+		if (world.isRemote) {
+			return true;
+		}
 		boolean holdingWrench = false;
 
 		if (heldItem != null){
@@ -94,12 +96,12 @@ public class Machine_WorkbenchAdvanced extends BlockContainer
 		}
 
 
-		TileEntity te = world.getTileEntity(x, y, z);
-		if (te != null && te instanceof TileEntityWorkbenchAdvanced)
+		final TileEntity te = world.getTileEntity(x, y, z);
+		if ((te != null) && (te instanceof TileEntityWorkbenchAdvanced))
 		{
 			if (!holdingWrench){
 				player.openGui(GTplusplus.instance, 4, world, x, y, z);
-				return true;				
+				return true;
 			}
 			Utils.LOG_INFO("Holding a Wrench, doing wrench things instead.");
 		}
@@ -107,7 +109,7 @@ public class Machine_WorkbenchAdvanced extends BlockContainer
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world, int p_149915_2_) {
+	public TileEntity createNewTileEntity(final World world, final int p_149915_2_) {
 		return new TileEntityWorkbenchAdvanced(128000, 2);
 	}
 }

@@ -1,13 +1,17 @@
 package gtPlusPlus.core.block.general;
 
 import static net.minecraftforge.common.util.ForgeDirection.*;
-import gtPlusPlus.core.block.base.BasicBlock;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.tileentities.general.TileEntityFirepit;
 
 import java.util.List;
 import java.util.Random;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.block.base.BasicBlock;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.tileentities.general.TileEntityFirepit;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -19,10 +23,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class FirePit extends BasicBlock{
 	private static IIcon[] TEXTURE;
@@ -40,44 +40,44 @@ public class FirePit extends BasicBlock{
 		GameRegistry.registerBlock(this, "blockFirePit");
 		LanguageRegistry.addName(this, "Fire Pit");
 	}
-	
-	@Override
-	public int tickRate(World aParWorld)    {
-        return 30;
-    }
 
-    @Override
-    public TileEntity createNewTileEntity(World world, int i) {
-            return new TileEntityFirepit();
-    }
-	
+	@Override
+	public int tickRate(final World aParWorld)    {
+		return 30;
+	}
+
+	@Override
+	public TileEntity createNewTileEntity(final World world, final int i) {
+		return new TileEntityFirepit();
+	}
+
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister par1IconRegister){
+	public void registerBlockIcons(final IIconRegister par1IconRegister){
 		TEXTURE = new IIcon[] {par1IconRegister.registerIcon(this.getTextureName() + "_layer_0"), par1IconRegister.registerIcon(this.getTextureName() + "_layer_1")};
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List){
+	public void getSubBlocks(final Item par1, final CreativeTabs par2CreativeTabs, final List par3List){
 		par3List.add(new ItemStack(par1, 1, 2));
 	}
 
 	@Override
-	public void updateTick(World par1World, int x, int y, int z, Random par5Random){
+	public void updateTick(final World par1World, final int x, final int y, final int z, final Random par5Random){
 		if (!par1World.isRemote){
 			//Sets meta.
-			meta = par1World.getBlockMetadata(x, y, z);
+			this.meta = par1World.getBlockMetadata(x, y, z);
 			//If Raining, Put out.
-			if (par1World.isRaining() 
-					&& (par1World.canLightningStrikeAt(x, y, z) 
-					|| par1World.canLightningStrikeAt(x - 1, y, z) 
-					|| par1World.canLightningStrikeAt(x + 1, y, z) 
-					|| par1World.canLightningStrikeAt(x, y, z - 1) 
-					|| par1World.canLightningStrikeAt(x, y, z + 1))){
+			if (par1World.isRaining()
+					&& (par1World.canLightningStrikeAt(x, y, z)
+							|| par1World.canLightningStrikeAt(x - 1, y, z)
+							|| par1World.canLightningStrikeAt(x + 1, y, z)
+							|| par1World.canLightningStrikeAt(x, y, z - 1)
+							|| par1World.canLightningStrikeAt(x, y, z + 1))){
 				//Fire goes out
-               par1World.setBlockMetadataWithNotify(x, y, z, 1, 4);
-            }	
+				par1World.setBlockMetadataWithNotify(x, y, z, 1, 4);
+			}
 			if (isNeighborBurning(par1World, x, y, z)){
 				//Fire can ignite from a nearby flame source.
 				par1World.setBlockMetadataWithNotify(x, y, z, 2, 4);
@@ -86,9 +86,9 @@ public class FirePit extends BasicBlock{
 	}
 
 	@Override
-	public Item getItemDropped(int meta, Random par2Random, int par3){
+	public Item getItemDropped(final int meta, final Random par2Random, final int par3){
 		switch (meta){
-		case 0: 
+		case 0:
 			return null;
 		default:
 			break;
@@ -97,20 +97,20 @@ public class FirePit extends BasicBlock{
 	}
 
 	@Override
-	public int damageDropped(int meta){
+	public int damageDropped(final int meta){
 		return meta;
 	}
-	
+
 	@Override
 	public boolean isOpaqueCube(){
-        return false;
-    }
+		return false;
+	}
 
 	@Override
 	public int getRenderType(){
-        return -1;
-    }
-	
+		return -1;
+	}
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getRenderBlockPass(){
@@ -121,7 +121,7 @@ public class FirePit extends BasicBlock{
 	public boolean renderAsNormalBlock(){
 		return false;
 	}
-	
+
 	/*@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World aParWorld, int x, int y, int z){
         return null;
@@ -134,92 +134,95 @@ public class FirePit extends BasicBlock{
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(World p_149734_1_, int p_149734_2_, int p_149734_3_, int p_149734_4_, Random p_149734_5_){
+	public void randomDisplayTick(final World p_149734_1_, final int p_149734_2_, final int p_149734_3_, final int p_149734_4_, final Random p_149734_5_){
 		int l;
 		float f;
 		float f1;
 		float f2;
-		if (meta == 2)
-		if (p_149734_5_.nextInt(24) == 0){
-			p_149734_1_.playSound((double)((float)p_149734_2_ + 0.5F), (double)((float)p_149734_3_ + 0.5F), (double)((float)p_149734_4_ + 0.5F), "fire.fire", 1.0F + p_149734_5_.nextFloat(), p_149734_5_.nextFloat() * 0.7F + 0.3F, false);
-		}
-		if (meta == 2)
-		if (!World.doesBlockHaveSolidTopSurface(p_149734_1_, p_149734_2_, p_149734_3_ - 1, p_149734_4_) && !Blocks.fire.canCatchFire(p_149734_1_, p_149734_2_, p_149734_3_ - 1, p_149734_4_, UP)){
-			if (Blocks.fire.canCatchFire(p_149734_1_, p_149734_2_ - 1, p_149734_3_, p_149734_4_, EAST)){
-				for (l = 0; l < 2; ++l){
-					f = (float)p_149734_2_ + p_149734_5_.nextFloat() * 0.1F;
-					f1 = (float)p_149734_3_ + p_149734_5_.nextFloat();
-					f2 = (float)p_149734_4_ + p_149734_5_.nextFloat();
-					p_149734_1_.spawnParticle("largesmoke", (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
-				}
-			}
-			if (Blocks.fire.canCatchFire(p_149734_1_, p_149734_2_ + 1, p_149734_3_, p_149734_4_, WEST)){
-				for (l = 0; l < 2; ++l){
-					f = (float)(p_149734_2_ + 1) - p_149734_5_.nextFloat() * 0.1F;
-					f1 = (float)p_149734_3_ + p_149734_5_.nextFloat();
-					f2 = (float)p_149734_4_ + p_149734_5_.nextFloat();
-					p_149734_1_.spawnParticle("largesmoke", (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
-				}
-			}
-			if (Blocks.fire.canCatchFire(p_149734_1_, p_149734_2_, p_149734_3_, p_149734_4_ - 1, SOUTH)){
-				for (l = 0; l < 2; ++l){
-					f = (float)p_149734_2_ + p_149734_5_.nextFloat();
-					f1 = (float)p_149734_3_ + p_149734_5_.nextFloat();
-					f2 = (float)p_149734_4_ + p_149734_5_.nextFloat() * 0.1F;
-					p_149734_1_.spawnParticle("largesmoke", (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
-				}
-			}
-			if (Blocks.fire.canCatchFire(p_149734_1_, p_149734_2_, p_149734_3_, p_149734_4_ + 1, NORTH)){
-				for (l = 0; l < 2; ++l){
-					f = (float)p_149734_2_ + p_149734_5_.nextFloat();
-					f1 = (float)p_149734_3_ + p_149734_5_.nextFloat();
-					f2 = (float)(p_149734_4_ + 1) - p_149734_5_.nextFloat() * 0.1F;
-					p_149734_1_.spawnParticle("largesmoke", (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
-				}
-			}
-			if (Blocks.fire.canCatchFire(p_149734_1_, p_149734_2_, p_149734_3_ + 1, p_149734_4_, DOWN)){
-				for (l = 0; l < 2; ++l){
-					f = (float)p_149734_2_ + p_149734_5_.nextFloat();
-					f1 = (float)(p_149734_3_ + 1) - p_149734_5_.nextFloat() * 0.1F;
-					f2 = (float)p_149734_4_ + p_149734_5_.nextFloat();
-					p_149734_1_.spawnParticle("largesmoke", (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
-				}
+		if (this.meta == 2) {
+			if (p_149734_5_.nextInt(24) == 0){
+				p_149734_1_.playSound(p_149734_2_ + 0.5F, p_149734_3_ + 0.5F, p_149734_4_ + 0.5F, "fire.fire", 1.0F + p_149734_5_.nextFloat(), (p_149734_5_.nextFloat() * 0.7F) + 0.3F, false);
 			}
 		}
-		else{
-			if (meta == 2)
-			for (l = 0; l < 3; ++l){
-				f = (float)p_149734_2_ + p_149734_5_.nextFloat();
-				f1 = (float)p_149734_3_ + p_149734_5_.nextFloat() * 0.5F + 0.5F;
-				f2 = (float)p_149734_4_ + p_149734_5_.nextFloat();
-				p_149734_1_.spawnParticle("largesmoke", (double)f, (double)f1, (double)f2, 0.0D, 0.0D, 0.0D);
+		if (this.meta == 2) {
+			if (!World.doesBlockHaveSolidTopSurface(p_149734_1_, p_149734_2_, p_149734_3_ - 1, p_149734_4_) && !Blocks.fire.canCatchFire(p_149734_1_, p_149734_2_, p_149734_3_ - 1, p_149734_4_, UP)){
+				if (Blocks.fire.canCatchFire(p_149734_1_, p_149734_2_ - 1, p_149734_3_, p_149734_4_, EAST)){
+					for (l = 0; l < 2; ++l){
+						f = p_149734_2_ + (p_149734_5_.nextFloat() * 0.1F);
+						f1 = p_149734_3_ + p_149734_5_.nextFloat();
+						f2 = p_149734_4_ + p_149734_5_.nextFloat();
+						p_149734_1_.spawnParticle("largesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
+					}
+				}
+				if (Blocks.fire.canCatchFire(p_149734_1_, p_149734_2_ + 1, p_149734_3_, p_149734_4_, WEST)){
+					for (l = 0; l < 2; ++l){
+						f = p_149734_2_ + 1 - (p_149734_5_.nextFloat() * 0.1F);
+						f1 = p_149734_3_ + p_149734_5_.nextFloat();
+						f2 = p_149734_4_ + p_149734_5_.nextFloat();
+						p_149734_1_.spawnParticle("largesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
+					}
+				}
+				if (Blocks.fire.canCatchFire(p_149734_1_, p_149734_2_, p_149734_3_, p_149734_4_ - 1, SOUTH)){
+					for (l = 0; l < 2; ++l){
+						f = p_149734_2_ + p_149734_5_.nextFloat();
+						f1 = p_149734_3_ + p_149734_5_.nextFloat();
+						f2 = p_149734_4_ + (p_149734_5_.nextFloat() * 0.1F);
+						p_149734_1_.spawnParticle("largesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
+					}
+				}
+				if (Blocks.fire.canCatchFire(p_149734_1_, p_149734_2_, p_149734_3_, p_149734_4_ + 1, NORTH)){
+					for (l = 0; l < 2; ++l){
+						f = p_149734_2_ + p_149734_5_.nextFloat();
+						f1 = p_149734_3_ + p_149734_5_.nextFloat();
+						f2 = p_149734_4_ + 1 - (p_149734_5_.nextFloat() * 0.1F);
+						p_149734_1_.spawnParticle("largesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
+					}
+				}
+				if (Blocks.fire.canCatchFire(p_149734_1_, p_149734_2_, p_149734_3_ + 1, p_149734_4_, DOWN)){
+					for (l = 0; l < 2; ++l){
+						f = p_149734_2_ + p_149734_5_.nextFloat();
+						f1 = p_149734_3_ + 1 - (p_149734_5_.nextFloat() * 0.1F);
+						f2 = p_149734_4_ + p_149734_5_.nextFloat();
+						p_149734_1_.spawnParticle("largesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
+					}
+				}
+			}
+			else{
+				if (this.meta == 2) {
+					for (l = 0; l < 3; ++l){
+						f = p_149734_2_ + p_149734_5_.nextFloat();
+						f1 = p_149734_3_ + (p_149734_5_.nextFloat() * 0.5F) + 0.5F;
+						f2 = p_149734_4_ + p_149734_5_.nextFloat();
+						p_149734_1_.spawnParticle("largesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
+					}
+				}
 			}
 		}
 	}
 
-    @SideOnly(Side.CLIENT)
-    public static IIcon getFireIcon(int p_149840_1_){
-        return FirePit.TEXTURE[p_149840_1_];
-    }
-
-    @Override
 	@SideOnly(Side.CLIENT)
-    public IIcon getIcon(int p_149691_1_, int p_149691_2_){
-        return FirePit.TEXTURE[0];
-    }
-    
-    private static boolean isNeighborBurning(World world, int x, int y, int z){
-        return canCatchFire(world, x + 1, y, z, WEST ) ||
-               canCatchFire(world, x - 1, y, z, EAST ) ||
-               canCatchFire(world, x, y - 1, z, UP   ) ||
-               canCatchFire(world, x, y + 1, z, DOWN ) ||
-               canCatchFire(world, x, y, z - 1, SOUTH) ||
-               canCatchFire(world, x, y, z + 1, NORTH);
-    }
-    
-    public static boolean canCatchFire(World world, int x, int y, int z, ForgeDirection face)
-    {
-        return world.getBlock(x, y, z).isFireSource(world, x, y, z, face);
-    }
-    
+	public static IIcon getFireIcon(final int p_149840_1_){
+		return FirePit.TEXTURE[p_149840_1_];
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public IIcon getIcon(final int p_149691_1_, final int p_149691_2_){
+		return FirePit.TEXTURE[0];
+	}
+
+	private static boolean isNeighborBurning(final World world, final int x, final int y, final int z){
+		return canCatchFire(world, x + 1, y, z, WEST ) ||
+				canCatchFire(world, x - 1, y, z, EAST ) ||
+				canCatchFire(world, x, y - 1, z, UP   ) ||
+				canCatchFire(world, x, y + 1, z, DOWN ) ||
+				canCatchFire(world, x, y, z - 1, SOUTH) ||
+				canCatchFire(world, x, y, z + 1, NORTH);
+	}
+
+	public static boolean canCatchFire(final World world, final int x, final int y, final int z, final ForgeDirection face)
+	{
+		return world.getBlock(x, y, z).isFireSource(world, x, y, z, face);
+	}
+
 }

@@ -17,7 +17,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
 
 	@Override
-	public boolean addCokeOvenRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput, int aDuration, int aEUt) {
+	public boolean addCokeOvenRecipe(final ItemStack aInput1, final ItemStack aInput2, final FluidStack aFluidInput, final FluidStack aFluidOutput, final ItemStack aOutput, int aDuration, final int aEUt) {
 		try {
 			try {
 				RECIPEHANDLER_CokeOven.debug1();
@@ -27,7 +27,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 					return false;
 				}
 
-			} catch (NullPointerException e){e.getStackTrace();}
+			} catch (final NullPointerException e){e.getStackTrace();}
 			try {
 				RECIPEHANDLER_CokeOven.debug2(aInput1, aInput2, aFluidInput, aFluidOutput, aOutput, aDuration, aEUt);
 				if ((aOutput != null) && ((aDuration = GregTech_API.sRecipeFile.get("cokeoven", aOutput, aDuration)) <= 0)) {
@@ -36,7 +36,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 					return false;
 				}
 
-			} catch (NullPointerException e){e.getStackTrace();}
+			} catch (final NullPointerException e){e.getStackTrace();}
 			try {
 				RECIPEHANDLER_CokeOven.debug3(aInput1, aInput2, aFluidInput, aFluidOutput, aOutput, aDuration, aEUt);
 				if ((aFluidOutput == null) && ((aDuration = GregTech_API.sRecipeFile.get("cokeoven", aFluidOutput.getFluid().getName(), aDuration)) <= 0)) {
@@ -45,7 +45,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 					return false;
 				}
 
-			} catch (NullPointerException e){e.getStackTrace();}
+			} catch (final NullPointerException e){e.getStackTrace();}
 			try {
 				RECIPEHANDLER_CokeOven.debug4(aInput1, aInput2, aFluidInput, aFluidOutput, aOutput, aDuration, aEUt);
 				if (aFluidInput == null){
@@ -58,10 +58,10 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
 				return true;
 
-			} catch (NullPointerException e){
+			} catch (final NullPointerException e){
 				return false;
 			}
-		} catch (Throwable e){
+		} catch (final Throwable e){
 			Utils.LOG_WARNING("aInput1:"+aInput1.toString()+" aInput2:"+aInput2.toString()+" aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aOutput:"+aOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
 			Utils.LOG_WARNING("Failed.");
 			e.getStackTrace();
@@ -70,7 +70,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 	}
 
 	@Override
-	public boolean addMatterFabricatorRecipe(FluidStack aFluidInput, FluidStack aFluidOutput, int aDuration, int aEUt) {
+	public boolean addMatterFabricatorRecipe(final FluidStack aFluidInput, final FluidStack aFluidOutput, final int aDuration, final int aEUt) {
 		try {
 			try {
 				//RECIPEHANDLER_MatterFabricator.debug1();
@@ -80,7 +80,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 					return false;
 				}
 
-			} catch (NullPointerException e){e.getStackTrace();}
+			} catch (final NullPointerException e){e.getStackTrace();}
 			try{
 
 				//RECIPEHANDLER_MatterFabricator.debug4(aFluidInput, aFluidOutput, aDuration, aEUt);
@@ -96,10 +96,10 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
 				return true;
 
-			} catch (NullPointerException e){
+			} catch (final NullPointerException e){
 				return false;
 			}
-		} catch (Throwable e){
+		} catch (final Throwable e){
 			//Utils.LOG_WARNING("aFluidInput:"+aFluidInput.toString()+" aFluidOutput:"+aFluidOutput.toString()+" aDuration:"+aDuration+" aEU/t:"+aEUt);
 			Utils.LOG_WARNING("Failed.");
 			e.getStackTrace();
@@ -108,9 +108,9 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 	}
 
 	@Override
-	public boolean addMatterFabricatorRecipe(ItemStack aInputStack, FluidStack aFluidInput, FluidStack aFluidOutput, int aDuration, int aEUt) {
+	public boolean addMatterFabricatorRecipe(final ItemStack aInputStack, final FluidStack aFluidInput, final FluidStack aFluidOutput, final int aDuration, final int aEUt) {
 		try {
-			try {if (aFluidOutput == null || aInputStack == null) {return false;}} catch (NullPointerException e){}
+			try {if ((aFluidOutput == null) || (aInputStack == null)) {return false;}} catch (final NullPointerException e){}
 			try{
 				if (aFluidInput == null){
 					Recipe_GT.Gregtech_Recipe_Map.sMatterFab2Recipes.addRecipe(true, new ItemStack[]{aInputStack}, null, null, null, new FluidStack[]{aFluidOutput}, aDuration, aEUt, 0);
@@ -120,13 +120,13 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				}
 				RECIPEHANDLER_MatterFabricator.debug5(aFluidInput, aFluidOutput, aDuration, aEUt);
 				return true;
-			} catch (NullPointerException e){return false;}
-		} catch (Throwable e){return false;}
+			} catch (final NullPointerException e){return false;}
+		} catch (final Throwable e){return false;}
 	}
 
-	
+
 	@Override
-	public boolean addFuel(ItemStack aInput1, ItemStack aOutput1, int aEU, int aType) {
+	public boolean addFuel(final ItemStack aInput1, final ItemStack aOutput1, final int aEU, final int aType) {
 		if (aInput1 == null) {
 			Utils.LOG_INFO("Fuel Input is Invalid.");
 			return false;
@@ -183,7 +183,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
 
 	@Override
-	public boolean addDehydratorRecipe(ItemStack aInput, FluidStack aFluid, ItemStack[] aOutput, int aDuration, int aEUt) {
+	public boolean addDehydratorRecipe(final ItemStack aInput, final FluidStack aFluid, final ItemStack[] aOutput, int aDuration, final int aEUt) {
 		Utils.LOG_INFO("Trying to add a Dehydrator recipe.");
 		try{
 			if ((aInput == null) || (aFluid == null) || (aOutput == null)) {
@@ -195,14 +195,14 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes.addRecipe(true, new ItemStack[]{aInput}, aOutput, null, new FluidStack[]{aFluid}, null, aDuration, aEUt, 0);
 			//RECIPEHANDLER_Dehydrator.debug5(aInput, null, aFluid, null, aOutput, aDuration, aEUt);
 			return true;
-		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");return false;}
+		}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");return false;}
 	}
 
 
 
 
 	@Override
-	public boolean addDehydratorRecipe(ItemStack[] aInput, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack[] aOutputItems, int[] aChances, int aDuration, int aEUt) throws IndexOutOfBoundsException{
+	public boolean addDehydratorRecipe(final ItemStack[] aInput, final FluidStack aFluidInput, final FluidStack aFluidOutput, final ItemStack[] aOutputItems, final int[] aChances, int aDuration, final int aEUt) throws IndexOutOfBoundsException{
 		Utils.LOG_INFO("Trying to add a Dehydrator recipe.");
 		try{
 			if (aInput[0] != null){
@@ -246,7 +246,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 			}
 
 			return true;
-		}catch (NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");return false;}
+		}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");return false;}
 	}
 
 
@@ -254,13 +254,13 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 
 
 	@Override
-	public boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aOutput, int aChance, int aDuration, int aEUt) {
+	public boolean addBlastSmelterRecipe(final ItemStack[] aInput, FluidStack aOutput, final int aChance, int aDuration, final int aEUt) {
 		if ((aInput == null) || (aOutput == null)) {
 			Utils.LOG_WARNING("Fail - Input or Output was null.");
 			return false;
 		}
-		        
-		
+
+
 		if (aOutput.isFluidEqual(Materials.PhasedGold.getMolten(1))) {
 			aOutput = Materials.VibrantAlloy.getMolten(aOutput.amount);
 		}
@@ -273,53 +273,54 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		}
 
 		for (int das=0;das<aInput.length;das++){
-			if (aInput[das] != null)
-			Utils.LOG_WARNING("tMaterial["+das+"]: "+aInput[das].getDisplayName()+", Amount: "+aInput[das].stackSize);
+			if (aInput[das] != null) {
+				Utils.LOG_WARNING("tMaterial["+das+"]: "+aInput[das].getDisplayName()+", Amount: "+aInput[das].stackSize);
+			}
 		}
-		
+
 		Recipe_GT.Gregtech_Recipe_Map.sAlloyBlastSmelterRecipes.addRecipe(true, aInput, new ItemStack[]{null}, null, new int[]{aChance}, null, new FluidStack[]{aOutput}, aDuration, aEUt, 0);
 		return true;
 	}
 
-	
+
 
 	@Override
-	public boolean addLFTRRecipe(ItemStack aInput1, FluidStack aInput2,
-			ItemStack aOutput1, FluidStack aOutput2, int aDuration, int aEUt) {
+	public boolean addLFTRRecipe(final ItemStack aInput1, final FluidStack aInput2,
+			final ItemStack aOutput1, final FluidStack aOutput2, final int aDuration, final int aEUt) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
-	@Override
-	public boolean addLFTRRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, int aDuration, int aEUt) {
-        return false;
-    }
 
-    @Override
-    public boolean addLFTRRecipe(FluidStack aInput1, FluidStack aInput2, FluidStack aOutput1, int aDuration, int aEUt) {
-        if (aInput1 == null || aInput2 == null || aOutput1 == null || aDuration < 1 || aEUt < 1) {
-            return false;
-        }
-        Recipe_GT.Gregtech_Recipe_Map.sLiquidFluorineThoriumReactorRecipes.addRecipe(null, new FluidStack[]{aInput1, aInput2}, new FluidStack[]{aOutput1}, aDuration, aEUt, 16000);
-        return true;
-    }
+	@Override
+	public boolean addLFTRRecipe(final ItemStack aInput1, final ItemStack aInput2, final ItemStack aOutput1, final int aDuration, final int aEUt) {
+		return false;
+	}
+
+	@Override
+	public boolean addLFTRRecipe(final FluidStack aInput1, final FluidStack aInput2, final FluidStack aOutput1, final int aDuration, final int aEUt) {
+		if ((aInput1 == null) || (aInput2 == null) || (aOutput1 == null) || (aDuration < 1) || (aEUt < 1)) {
+			return false;
+		}
+		Recipe_GT.Gregtech_Recipe_Map.sLiquidFluorineThoriumReactorRecipes.addRecipe(null, new FluidStack[]{aInput1, aInput2}, new FluidStack[]{aOutput1}, aDuration, aEUt, 16000);
+		return true;
+	}
 
 	@Override
 	public boolean addFissionFuel(
-			FluidStack aInput1, FluidStack aInput2,	FluidStack aInput3, 
-			FluidStack aInput4, FluidStack aInput5, FluidStack aInput6, 
-			FluidStack aInput7, FluidStack aInput8, FluidStack aInput9, 
-			FluidStack aOutput1, FluidStack aOutput2,
-			int aDuration, int aEUt) {
-		
-		if (aInput1 == null || aInput2 == null || aOutput1 == null || aDuration < 1 || aEUt < 1) {
-            return false;
-        }
-		FluidStack inputs[] = {aInput1, aInput2, aInput3, aInput4, aInput5, aInput6, aInput7, aInput8, aInput9};
-		FluidStack outputs[] = {aOutput1, aOutput2};
-        //Recipe_GT.Gregtech_Recipe_Map.sFissionFuelProcessing.addRecipe(null, inputs, outputs, aDuration, aEUt, 0);
+			final FluidStack aInput1, final FluidStack aInput2,	final FluidStack aInput3,
+			final FluidStack aInput4, final FluidStack aInput5, final FluidStack aInput6,
+			final FluidStack aInput7, final FluidStack aInput8, final FluidStack aInput9,
+			final FluidStack aOutput1, final FluidStack aOutput2,
+			final int aDuration, final int aEUt) {
+
+		if ((aInput1 == null) || (aInput2 == null) || (aOutput1 == null) || (aDuration < 1) || (aEUt < 1)) {
+			return false;
+		}
+		final FluidStack inputs[] = {aInput1, aInput2, aInput3, aInput4, aInput5, aInput6, aInput7, aInput8, aInput9};
+		final FluidStack outputs[] = {aOutput1, aOutput2};
+		//Recipe_GT.Gregtech_Recipe_Map.sFissionFuelProcessing.addRecipe(null, inputs, outputs, aDuration, aEUt, 0);
 		CustomRecipeMap.sFissionFuelProcessing.addRecipe(null, inputs, outputs, aDuration, aEUt, 0);
-        return true;
+		return true;
 	}
 
 }

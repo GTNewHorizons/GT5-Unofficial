@@ -1,15 +1,14 @@
 package gtPlusPlus.core.util.materials;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import gregtech.api.enums.*;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.objects.MaterialStack;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.oredict.OreDictionary;
@@ -25,7 +24,7 @@ public class MaterialUtils {
 			boolean.class, int.class, int.class, int.class, Dyes.class, int.class,
 			List.class , List.class}};
 
-	public static Materials addGtMaterial(String enumNameForMaterial, TextureSet aIconSet, float aToolSpeed, int aToolDurability, int aToolQuality, int aTypes, int aR, int aG, int aB, int aA, String aLocalName, int aFuelType, int aFuelPower, int aMeltingPoint, int aBlastFurnaceTemp, boolean aBlastFurnaceRequired, boolean aTransparent, int aOreValue, int aDensityMultiplier, int aDensityDivider, Dyes aColor, int aExtraData, List<MaterialStack> aMaterialList, List<TC_AspectStack> aAspects)
+	public static Materials addGtMaterial(final String enumNameForMaterial, final TextureSet aIconSet, final float aToolSpeed, final int aToolDurability, final int aToolQuality, final int aTypes, final int aR, final int aG, final int aB, final int aA, final String aLocalName, final int aFuelType, final int aFuelPower, final int aMeltingPoint, final int aBlastFurnaceTemp, final boolean aBlastFurnaceRequired, final boolean aTransparent, final int aOreValue, final int aDensityMultiplier, final int aDensityDivider, final Dyes aColor, final int aExtraData, final List<MaterialStack> aMaterialList, final List<TC_AspectStack> aAspects)
 	{
 		Utils.LOG_INFO("Attempting to add GT material: "+enumNameForMaterial);
 		return EnumHelper.addEnum(Materials.class, enumNameForMaterial, commonTypes, firstID++, aIconSet, aToolSpeed, aToolDurability, aToolQuality, aTypes, aR, aG, aB, aA, aLocalName,
@@ -33,32 +32,32 @@ public class MaterialUtils {
 				aColor, aExtraData, aMaterialList, aAspects);
 	}
 
-	public static List<?> oreDictValuesForEntry(String oredictName){
+	public static List<?> oreDictValuesForEntry(final String oredictName){
 		List<?> oredictItemNames;
 		if(OreDictionary.doesOreNameExist(oredictName)){
-			ArrayList<ItemStack> oredictItems = OreDictionary.getOres(oredictName);
+			final ArrayList<ItemStack> oredictItems = OreDictionary.getOres(oredictName);
 			oredictItemNames = Utils.convertArrayListToList(oredictItems);
 			return oredictItemNames;
-		}		
+		}
 		return null;
 	}
 
-	public static Material generateMaterialFromGtENUM(Materials material){
+	public static Material generateMaterialFromGtENUM(final Materials material){
 		String name = material.name();
-		short[] rgba = material.mRGBa;
-		int melting = material.mMeltingPoint;
-		int boiling = material.mBlastFurnaceTemp;
-		long protons = material.getProtons();
-		long neutrons = material.getNeutrons();
-		boolean blastFurnace = material.mBlastFurnaceRequired;	
-		int durability = material.mDurability;
+		final short[] rgba = material.mRGBa;
+		final int melting = material.mMeltingPoint;
+		final int boiling = material.mBlastFurnaceTemp;
+		final long protons = material.getProtons();
+		final long neutrons = material.getNeutrons();
+		final boolean blastFurnace = material.mBlastFurnaceRequired;
+		final int durability = material.mDurability;
 		MaterialState materialState;
-		String chemicalFormula = MaterialUtils.subscript(Utils.sanitizeString(material.mChemicalFormula));
-		Element element = material.mElement;
+		final String chemicalFormula = MaterialUtils.subscript(Utils.sanitizeString(material.mChemicalFormula));
+		final Element element = material.mElement;
 		int radioactivity = 0;
 		if (material.isRadioactive()){
 			radioactivity = 1;
-		}	
+		}
 
 		//Determine default state
 		if (material.getMolten(1) != null){
@@ -79,10 +78,10 @@ public class MaterialUtils {
 
 
 		if (name.toLowerCase().contains("infused")){
-			String tempname = name.substring(7, name.length());
+			final String tempname = name.substring(7, name.length());
 			name = "Infused " + tempname;
 		}
-		if (hasValidRGBA(rgba) || element == Element.H || (material == Materials.InfusedAir || material == Materials.InfusedFire || material == Materials.InfusedEarth || material == Materials.InfusedWater)){
+		if (hasValidRGBA(rgba) || (element == Element.H) || ((material == Materials.InfusedAir) || (material == Materials.InfusedFire) || (material == Materials.InfusedEarth) || (material == Materials.InfusedWater))){
 			//ModItems.itemBaseDecidust = UtilsItems.generateDecidust(material);
 			//ModItems.itemBaseCentidust = UtilsItems.generateCentidust(material);
 			return new Material(name, materialState, durability, rgba, melting, boiling, protons, neutrons, blastFurnace, chemicalFormula, radioactivity);
@@ -91,8 +90,8 @@ public class MaterialUtils {
 
 	}
 
-	public static Material generateQuickMaterial(String materialName, MaterialState defaultState, short[] colour, int sRadioactivity) {
-		Material temp = new Material(
+	public static Material generateQuickMaterial(final String materialName, final MaterialState defaultState, final short[] colour, final int sRadioactivity) {
+		final Material temp = new Material(
 				materialName,
 				defaultState,
 				0, //Durability
@@ -107,23 +106,23 @@ public class MaterialUtils {
 		return temp;
 	}
 
-	public static boolean hasValidRGBA(short[] rgba){
+	public static boolean hasValidRGBA(final short[] rgba){
 		boolean test1 = false;
 		boolean test2 = false;
-		boolean test3 = false;		
+		boolean test3 = false;
 		for (int r=0;r<rgba.length;r++){
 			if (rgba[r] == 0){
 				if (r == 0){
 					test1 = true;
 				}
 				else if (r == 1){
-					test2 = true;					
+					test2 = true;
 				}
 				else if (r == 2){
-					test3 = true;					
+					test3 = true;
 				}
 			}
-		}		
+		}
 		if ((test1 && test2) || (test1 && test3) || (test3 && test2)){
 			return false;
 		}
@@ -140,7 +139,7 @@ public class MaterialUtils {
 		str = str.replaceAll("6", "\u2076");
 		str = str.replaceAll("7", "\u2077");
 		str = str.replaceAll("8", "\u2078");
-		str = str.replaceAll("9", "\u2079");      
+		str = str.replaceAll("9", "\u2079");
 		return str;
 	}
 
@@ -158,35 +157,35 @@ public class MaterialUtils {
 		return str;
 	}
 
-	public static int getTierOfMaterial(int M){
-		if (M >= 0 && M <= 750){
+	public static int getTierOfMaterial(final int M){
+		if ((M >= 0) && (M <= 750)){
 			return 1;
 		}
-		else if(M >= 751 && M <= 1250){
+		else if((M >= 751) && (M <= 1250)){
 			return 2;
 		}
-		else if(M >= 1251 && M <= 1750){
+		else if((M >= 1251) && (M <= 1750)){
 			return 3;
 		}
-		else if(M >= 1751 && M <= 2250){
+		else if((M >= 1751) && (M <= 2250)){
 			return 4;
 		}
-		else if(M >= 2251 && M <= 2750){
+		else if((M >= 2251) && (M <= 2750)){
 			return 5;
 		}
-		else if(M >= 2751 && M <= 3250){
+		else if((M >= 2751) && (M <= 3250)){
 			return 6;
 		}
-		else if(M >= 3251 && M <= 3750){
+		else if((M >= 3251) && (M <= 3750)){
 			return 7;
 		}
-		else if(M >= 3751 && M <= 4250){
+		else if((M >= 3751) && (M <= 4250)){
 			return 8;
 		}
-		else if(M >= 4251 && M <= 4750){
+		else if((M >= 4251) && (M <= 4750)){
 			return 9;
 		}
-		else if(M >= 4751 && M <= 9999){
+		else if((M >= 4751) && (M <= 9999)){
 			return 10;
 		}
 		else {
@@ -197,11 +196,11 @@ public class MaterialUtils {
 
 	/*
 	 * That's shown, many times, in the EnumHelper code, all the add functions just wrap the addEnum function.
-	You need the target enum class, and 2 arrays, 1 holding the types for the constructor arguments, 
+	You need the target enum class, and 2 arrays, 1 holding the types for the constructor arguments,
 	and the other holding the constructor argument values (the things being passed to the constructor)
 
-	The 'decompiled' Boolean should be set to true if the class you're adding to has been decompiled/recompiled again. 
-	(it adds a 2nd enum arguments that need to be accounted for, but isn't actually useful to you) 
+	The 'decompiled' Boolean should be set to true if the class you're adding to has been decompiled/recompiled again.
+	(it adds a 2nd enum arguments that need to be accounted for, but isn't actually useful to you)
 
 	 *
 	 *new Class[{int.class, TextureSet.class, float.class, int.class,

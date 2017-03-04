@@ -8,7 +8,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.item.ItemStack;
 
 public class RECIPE_Batteries {
-	
+
 	static ItemStack RECIPE_Battery_Sodium = GregtechItemList.Battery_RE_EV_Sodium.get(1);
 	static ItemStack RECIPE_Battery_Cadmium = GregtechItemList.Battery_RE_EV_Cadmium.get(1);
 	static ItemStack RECIPE_Battery_Lithium = GregtechItemList.Battery_RE_EV_Lithium.get(1);
@@ -18,16 +18,16 @@ public class RECIPE_Batteries {
 	static ItemStack machineTransformer_EV;
 
 	public static void RECIPES_LOAD(){
-		
+
 		if (LoadedMods.Gregtech){
 			machineTransformer_EV = ItemList.Transformer_EV_HV.get(1);
-		run();
+			run();
 		}
 	}
-	
+
 	private static void run(){
-		
-		
+
+
 		RecipeUtils.addShapedGregtechRecipe(
 				GT_Battery_Sodium, RECIPES_Machines.cableTier4, GT_Battery_Sodium,
 				RECIPES_Machines.circuitTier3, machineTransformer_EV, RECIPES_Machines.circuitTier3,
@@ -43,7 +43,7 @@ public class RECIPE_Batteries {
 				RECIPES_Machines.circuitTier3, machineTransformer_EV, RECIPES_Machines.circuitTier3,
 				GT_Battery_Lithium, RECIPES_Machines.cableTier4, GT_Battery_Lithium,
 				RECIPE_Battery_Lithium);
-		
+
 	}
-	
+
 }

@@ -1,5 +1,10 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import org.apache.commons.lang3.ArrayUtils;
+
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -15,17 +20,11 @@ import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MatterFab;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlockBase {
 
@@ -43,18 +42,18 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 	GT_Recipe fakeRecipe;
 
 	public int getAmplifierUsed(){
-		return mAmplifierUsed;
+		return this.mAmplifierUsed;
 	}
 
 	public int getMatterProduced(){
-		return mMatterProduced;
+		return this.mMatterProduced;
 	}
 
-	public GregtechMetaTileEntity_MassFabricator(int aID, String aName, String aNameRegional) {
+	public GregtechMetaTileEntity_MassFabricator(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}
 
-	public GregtechMetaTileEntity_MassFabricator(String aName) {
+	public GregtechMetaTileEntity_MassFabricator(final String aName) {
 		super(aName);
 	}
 
@@ -70,14 +69,14 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 				"1x Output Hatch (Any bottom layer casing)",
 				"1x Maintenance Hatch (Any bottom layer casing)",
 				"1x Muffler Hatch (Centered 3x1x3 area in Top layer)",
-				"1x Energy Hatch (Any bottom layer casing)",				
+				"1x Energy Hatch (Any bottom layer casing)",
 				"24x IC2 Reinforced Glass for the walls",
 				"Matter Fabricator Casings for the edges & top (40 at least!)",
 				CORE.GT_Tooltip};
 	}
 
 	@Override
-	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
 			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[66],
 					new GT_RenderedTexture(aActive ? TexturesGtBlock.Casing_Machine_Screen_3 : TexturesGtBlock.Casing_Machine_Screen_1)};
@@ -86,12 +85,12 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 	}
 
 	@Override
-	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GUI_MatterFab(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "MatterFabricator.png");
+	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
+		return new GUI_MatterFab(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "MatterFabricator.png");
 	}
 
 	@Override
-	public void onConfigLoad(GT_Config aConfig) {
+	public void onConfigLoad(final GT_Config aConfig) {
 		super.onConfigLoad(aConfig);
 		sDurationMultiplier = aConfig.get(ConfigCategories.machineconfig, "Massfabricator.UUM_Duration_Multiplier", sDurationMultiplier);
 		sUUAperUUM = aConfig.get(ConfigCategories.machineconfig, "Massfabricator.UUA_per_UUM", sUUAperUUM);
@@ -101,18 +100,18 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 	}
 
 	@Override
-	public boolean checkRecipe(ItemStack aStack) {
+	public boolean checkRecipe(final ItemStack aStack) {
 		Utils.LOG_INFO("Fabricating Matter.");
-		if (mInputHatches.size() != 1){
-			Utils.LOG_INFO("Too many input hatches. Found: "+mInputHatches.size()+" | Expected: 1");
+		if (this.mInputHatches.size() != 1){
+			Utils.LOG_INFO("Too many input hatches. Found: "+this.mInputHatches.size()+" | Expected: 1");
 			return false;
 		}
 
-		ArrayList<ItemStack> tInputList = getStoredInputs();
-		for (int i = 0; i < tInputList.size() - 1; i++) {
+		final ArrayList<ItemStack> tInputList = this.getStoredInputs();
+		for (int i = 0; i < (tInputList.size() - 1); i++) {
 			for (int j = i + 1; j < tInputList.size(); j++) {
-				if (GT_Utility.areStacksEqual((ItemStack) tInputList.get(i), (ItemStack) tInputList.get(j))) {
-					if (((ItemStack) tInputList.get(i)).stackSize >= ((ItemStack) tInputList.get(j)).stackSize) {
+				if (GT_Utility.areStacksEqual(tInputList.get(i), tInputList.get(j))) {
+					if (tInputList.get(i).stackSize >= tInputList.get(j).stackSize) {
 						tInputList.remove(j--);
 					} else {
 						tInputList.remove(i--);
@@ -120,17 +119,17 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 					}
 				}
 			}
-		}	
+		}
 
-		ItemStack[] tInputs = (ItemStack[]) Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, 2);
+		final ItemStack[] tInputs = Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, 2);
 
 
 
-		ArrayList<FluidStack> tFluidList = getStoredFluids();
-		for (int i = 0; i < tFluidList.size() - 1; i++) {
+		final ArrayList<FluidStack> tFluidList = this.getStoredFluids();
+		for (int i = 0; i < (tFluidList.size() - 1); i++) {
 			for (int j = i + 1; j < tFluidList.size(); j++) {
-				if (GT_Utility.areFluidsEqual((FluidStack) tFluidList.get(i), (FluidStack) tFluidList.get(j))) {
-					if (((FluidStack) tFluidList.get(i)).amount >= ((FluidStack) tFluidList.get(j)).amount) {
+				if (GT_Utility.areFluidsEqual(tFluidList.get(i), tFluidList.get(j))) {
+					if (tFluidList.get(i).amount >= tFluidList.get(j).amount) {
 						tFluidList.remove(j--);
 					} else {
 						tFluidList.remove(i--);
@@ -140,16 +139,16 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 			}
 		}
 
-		long tVoltage = getMaxInputVoltage();
-		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-		FluidStack[] tFluids = (FluidStack[]) Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tFluidList.size()]), 0, tFluidList.size());
+		final long tVoltage = this.getMaxInputVoltage();
+		final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+		final FluidStack[] tFluids = Arrays.copyOfRange(tFluidList.toArray(new FluidStack[tFluidList.size()]), 0, tFluidList.size());
 
 
 		for (int scrapSlots=0;scrapSlots<tInputs.length;scrapSlots++){
-			if (tInputs[scrapSlots].getItem() == scrapPile.getItem()){
+			if (tInputs[scrapSlots].getItem() == this.scrapPile.getItem()){
 				if (tInputs[scrapSlots].stackSize >= 9 ){
 					Utils.LOG_INFO("Found enough scrap for a special recipe. x"+tInputs[scrapSlots].stackSize);
-					for (GT_MetaTileEntity_Hatch_Input tHatch : mInputHatches) {
+					for (final GT_MetaTileEntity_Hatch_Input tHatch : this.mInputHatches) {
 						if (isValidMetaTileEntity(tHatch)) {
 							Utils.LOG_INFO("Input fluid empty - Time to generate 1UU-A.");
 							if (tHatch.mFluid == null){
@@ -163,7 +162,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 							Utils.LOG_INFO("Remaining after recipe. x"+tInputs[scrapSlots].stackSize);
 						}
 					}
-				}		
+				}
 			}
 		}
 
@@ -171,14 +170,14 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 		if (tFluids.length > 0) {
 			Utils.LOG_INFO("Input fluid found");
 			for(int i = 0;i<tFluids.length;i++){
-				GT_Recipe tRecipe = Recipe_GT.Gregtech_Recipe_Map.sMatterFab2Recipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], new FluidStack[]{tFluids[i]}, new ItemStack[]{});
+				final GT_Recipe tRecipe = Recipe_GT.Gregtech_Recipe_Map.sMatterFab2Recipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], new FluidStack[]{tFluids[i]}, new ItemStack[]{});
 				if (tRecipe != null) {
 					if (tRecipe.isRecipeInputEqual(true, tFluids, new ItemStack[]{})) {
-						this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+						this.mEfficiency = (10000 - ((this.getIdealStatus() - this.getRepairStatus()) * 1000));
 						this.mEfficiencyIncrease = 10000;
 						if (tRecipe.mEUt <= 16) {
-							this.mEUt = (tRecipe.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
-							this.mMaxProgresstime = ((tRecipe.mDuration/**sDurationMultiplier*/) / (1 << tTier - 1));
+							this.mEUt = (tRecipe.mEUt * (1 << (tTier - 1)) * (1 << (tTier - 1)));
+							this.mMaxProgresstime = ((tRecipe.mDuration/**sDurationMultiplier*/) / (1 << (tTier - 1)));
 						} else {
 							this.mEUt = tRecipe.mEUt;
 							this.mMaxProgresstime = (tRecipe.mDuration/**sDurationMultiplier*/);
@@ -193,10 +192,10 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 						this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
 						this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0)};
 						this.mOutputFluids = tRecipe.mFluidOutputs.clone();
-						ArrayUtils.reverse(mOutputFluids);
-						mMatterProduced++;
-						mAmplifierUsed++;
-						updateSlots();
+						ArrayUtils.reverse(this.mOutputFluids);
+						this.mMatterProduced++;
+						this.mAmplifierUsed++;
+						this.updateSlots();
 						//Utils.LOG_INFO("Recipes Finished: "+mMatterProduced);
 						return true;
 					}
@@ -209,9 +208,9 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 		}
 		else if (tFluids.length == 0) {
 			Utils.LOG_INFO("Input fluid not found");
-			fakeRecipe = Recipe_GT.Gregtech_Recipe_Map.sMatterFab2Recipes.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], new FluidStack[]{tempFake}, new ItemStack[]{});
+			this.fakeRecipe = Recipe_GT.Gregtech_Recipe_Map.sMatterFab2Recipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], new FluidStack[]{this.tempFake}, new ItemStack[]{});
 
-			this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
+			this.mEfficiency = (10000 - ((this.getIdealStatus() - this.getRepairStatus()) * 1000));
 			this.mEfficiencyIncrease = 10000;
 
 			this.mEUt = 32;
@@ -225,13 +224,13 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 				this.mEUt = (-this.mEUt);
 			}
 
-			if (fakeRecipe != null) {
+			if (this.fakeRecipe != null) {
 				this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-				this.mOutputItems = new ItemStack[]{fakeRecipe.getOutput(0)};
-				this.mOutputFluids = fakeRecipe.mFluidOutputs.clone();
-				ArrayUtils.reverse(mOutputFluids);
-				mMatterProduced++;
-				updateSlots();
+				this.mOutputItems = new ItemStack[]{this.fakeRecipe.getOutput(0)};
+				this.mOutputFluids = this.fakeRecipe.mFluidOutputs.clone();
+				ArrayUtils.reverse(this.mOutputFluids);
+				this.mMatterProduced++;
+				this.updateSlots();
 				//Utils.LOG_INFO("Recipes Finished: "+mMatterProduced);
 				return true;
 			}
@@ -244,16 +243,16 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 	}
 
 	@Override
-	public boolean checkMachine(IGregTechTileEntity aBaseMetaTileEntity, ItemStack aStack) {
-		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 2;
-		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 2;
+	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
+		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 2;
+		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 2;
 		for (int i = -2; i < 3; i++) {
 			for (int j = -2; j < 3; j++) {
 				for (int h = 0; h < 4; h++) {
 
 					//Utils.LOG_INFO("Logging Variables - xDir:"+xDir+" zDir:"+zDir+" h:"+h+" i:"+i+" j:"+j);
 
-					IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
+					final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
 					/*if (tTileEntity != Block.getBlockFromItem(UtilsItems.getItem("IC2:blockAlloyGlass"))) {
 						Utils.LOG_INFO("h:"+h+" i:"+i+" j:"+j);
 						double tX = tTileEntity.getXCoord();
@@ -262,7 +261,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 						Utils.LOG_INFO("Found Glass at X:"+tX+" Y:"+tY+" Z:"+tZ);
 						//return false;
 					}*/
-					if ((i != -2 && i != 2) && (j != -2 && j != 2)) {// innerer 3x3 ohne h�he
+					if (((i != -2) && (i != 2)) && ((j != -2) && (j != 2))) {// innerer 3x3 ohne h�he
 						if (h == 0) {// innen boden (kantal coils)
 							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
 								Utils.LOG_INFO("Matter Generation Coils missings from the bottom layer, inner 3x3.");
@@ -273,7 +272,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 								return false;
 							}
 						} else if (h == 3) {// innen decke (ulv casings + input + muffler)
-							if ((!addMufflerToMachineList(tTileEntity, 66))) {
+							if ((!this.addMufflerToMachineList(tTileEntity, 66))) {
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
 									Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the top layers inner 3x3.");
 									return false;
@@ -291,8 +290,8 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 						}
 					} else {// Outer 5x5
 						if (h == 0) {// au�en boden (controller, output, energy, maintainance, rest ulv casings)
-							if ((!addMaintenanceToMachineList(tTileEntity, 66)) && (!addInputToMachineList(tTileEntity, 66)) && (!addOutputToMachineList(tTileEntity, 66)) && (!addEnergyInputToMachineList(tTileEntity, 66))) {
-								if ((xDir + i != 0) || (zDir + j != 0)) {//no controller
+							if ((!this.addMaintenanceToMachineList(tTileEntity, 66)) && (!this.addInputToMachineList(tTileEntity, 66)) && (!this.addOutputToMachineList(tTileEntity, 66)) && (!this.addEnergyInputToMachineList(tTileEntity, 66))) {
+								if (((xDir + i) != 0) || ((zDir + j) != 0)) {//no controller
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
 										Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the edges of the bottom layer.");
 										return false;
@@ -306,7 +305,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 						} else {// au�en �ber boden (ulv casings)
 							if (h == 1) {
 
-								if ((i == -2 || i == 2) && (j == -2 || j == 2)){
+								if (((i == -2) || (i == 2)) && ((j == -2) || (j == 2))){
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
 										Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the corners in the second layer.");
 										return false;
@@ -317,7 +316,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 									}
 								}
 
-								else if ((i != -2 || i != 2) && (j != -2 || j != 2)){
+								else if (((i != -2) || (i != 2)) && ((j != -2) || (j != 2))){
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != IC2Glass) {
 										Utils.LOG_INFO("Glass Casings Missing from somewhere in the second layer.");
 										return false;
@@ -325,7 +324,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 								}
 							}
 							if (h == 2) {
-								if ((i == -2 || i == 2) && (j == -2 || j == 2)){
+								if (((i == -2) || (i == 2)) && ((j == -2) || (j == 2))){
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
 										Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the corners in the third layer.");
 										return false;
@@ -336,7 +335,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 									}
 								}
 
-								else if ((i != -2 || i != 2) && (j != -2 || j != 2)){
+								else if (((i != -2) || (i != 2)) && ((j != -2) || (j != 2))){
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != IC2Glass) {
 										Utils.LOG_INFO("Glass Casings Missing from somewhere in the third layer.");
 										return false;
@@ -363,12 +362,12 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 	}
 
 	@Override
-	public int getMaxEfficiency(ItemStack aStack) {
+	public int getMaxEfficiency(final ItemStack aStack) {
 		return 10000;
 	}
 
 	@Override
-	public int getPollutionPerTick(ItemStack aStack) {
+	public int getPollutionPerTick(final ItemStack aStack) {
 		return 0;
 	}
 
@@ -378,12 +377,12 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 	}
 
 	@Override
-	public boolean explodesOnComponentBreak(ItemStack aStack) {
+	public boolean explodesOnComponentBreak(final ItemStack aStack) {
 		return false;
 	}
 
 	@Override
-	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
 		return new GregtechMetaTileEntity_MassFabricator(this.mName);
 	}
 

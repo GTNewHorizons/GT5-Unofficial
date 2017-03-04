@@ -1,33 +1,32 @@
 package gtPlusPlus.core.item.base.dusts;
 
-import gtPlusPlus.core.lib.CORE;
-
 import java.util.List;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import gtPlusPlus.core.lib.CORE;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public abstract class BaseItemDustAbstract extends Item{
-	
+
 	protected int colour = 0;
 	protected String materialName;
 	protected String pileType;
-	
-	public BaseItemDustAbstract(String unlocalizedName, String materialName, int colour, String pileSize) {
+
+	public BaseItemDustAbstract(final String unlocalizedName, final String materialName, final int colour, final String pileSize) {
 		this.setUnlocalizedName(unlocalizedName);
-		this.setMaxStackSize(64);	
+		this.setMaxStackSize(64);
 		if (pileSize.toLowerCase().equals("dust")){
-			this.setTextureName(CORE.MODID + ":" + "dust");			
+			this.setTextureName(CORE.MODID + ":" + "dust");
 		}
 		else{
-			this.setTextureName(CORE.MODID + ":" + "dust"+pileSize);			
+			this.setTextureName(CORE.MODID + ":" + "dust"+pileSize);
 		}
 		this.setMaxStackSize(64);
 		this.colour = colour;
-		this.materialName = materialName;		
-		setUnlocalizedName(unlocalizedName);
+		this.materialName = materialName;
+		this.setUnlocalizedName(unlocalizedName);
 		GameRegistry.registerItem(this, unlocalizedName);
 	}
 
@@ -39,5 +38,5 @@ public abstract class BaseItemDustAbstract extends Item{
 
 	@Override
 	public abstract int getColorFromItemStack(ItemStack stack, int HEX_OxFFFFFF);
-	
+
 }

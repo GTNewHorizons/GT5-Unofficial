@@ -13,14 +13,14 @@ public class SlotGtToolElectric extends SlotGtTool {
 	public int tier;
 	private ItemStack content;
 
-	public SlotGtToolElectric(IInventory base, int x, int y, int z, int tier, boolean allowRedstoneDust)
+	public SlotGtToolElectric(final IInventory base, final int x, final int y, final int z, final int tier, final boolean allowRedstoneDust)
 	{
 		super(base, x, y, z);
 		this.tier = tier;
 		this.allowRedstoneDust = allowRedstoneDust;
 	}
 
-	public boolean accepts(ItemStack stack)
+	public boolean accepts(final ItemStack stack)
 	{
 		if (stack == null) {
 			return false;
@@ -31,12 +31,12 @@ public class SlotGtToolElectric extends SlotGtTool {
 		return (Info.itemEnergy.getEnergyValue(stack) > 0.0D) || (ElectricItem.manager.discharge(stack, (1.0D / 0.0D), this.tier, true, true, true) > 0.0D);
 	}
 
-	public double discharge(double amount, boolean ignoreLimit)
+	public double discharge(final double amount, final boolean ignoreLimit)
 	{
 		if (amount <= 0.0D) {
 			throw new IllegalArgumentException("Amount must be > 0.");
 		}
-		ItemStack stack = get(0);
+		final ItemStack stack = this.get(0);
 		if (stack == null) {
 			return 0.0D;
 		}
@@ -49,13 +49,13 @@ public class SlotGtToolElectric extends SlotGtTool {
 			}
 			stack.stackSize -= 1;
 			if (stack.stackSize <= 0) {
-				put(0, null);
+				this.put(0, null);
 			}
 		}
 		return realAmount;
 	}
 
-	public void setTier(int tier1)
+	public void setTier(final int tier1)
 	{
 		this.tier = tier1;
 	}
@@ -64,34 +64,34 @@ public class SlotGtToolElectric extends SlotGtTool {
 
 	public ItemStack get()
 	{
-		return get(0);
+		return this.get(0);
 	}
 
-	public ItemStack get(int index)
+	public ItemStack get(final int index)
 	{
 		return this.content;
 	}
 
-	public void put(ItemStack content)
+	public void put(final ItemStack content)
 	{
-		put(0, content);
+		this.put(0, content);
 	}
 
-	public void put(int index, ItemStack content)
+	public void put(final int index, final ItemStack content)
 	{
 		this.content = content;
-		onChanged();
+		this.onChanged();
 	}
 
 	public void onChanged() {}
 
 	@Override
-	public boolean isItemValid(ItemStack itemstack) {
-		if (itemstack.getItem() instanceof GT_MetaGenerated_Tool || itemstack.getItem() instanceof IElectricItem){
+	public boolean isItemValid(final ItemStack itemstack) {
+		if ((itemstack.getItem() instanceof GT_MetaGenerated_Tool) || (itemstack.getItem() instanceof IElectricItem)){
 			Utils.LOG_WARNING(itemstack.getDisplayName()+" is a valid Tool.");
 			return true;
 		}
-		Utils.LOG_WARNING(itemstack.getDisplayName()+" is not a valid Tool.");		
+		Utils.LOG_WARNING(itemstack.getDisplayName()+" is not a valid Tool.");
 		return false;
 	}
 

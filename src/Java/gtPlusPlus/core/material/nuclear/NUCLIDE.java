@@ -18,12 +18,12 @@ public final class NUCLIDE {
 	public final Material URANIUM233 = new Material("Uranium 233", MaterialState.SOLID, new short[]{73, 220, 83, 0}, 1132, 4131, 92, 141, false, MaterialUtils.superscript("233U"), 2);//Not a GT Inherited Material
 	public final Material THORIUM232 = new Material("Thorium 232", MaterialState.SOLID, new short[]{15, 60, 15, 0}, Materials.Thorium.mMeltingPoint, Materials.Thorium.mBlastFurnaceTemp, 90, 142, false, MaterialUtils.superscript("232Th"), 1);//Not a GT Inherited Material
 	public final Material PLUTONIUM238 = new Material("Plutonium-238", MaterialState.SOLID, Materials.Plutonium241.mDurability, Materials.Plutonium241.mRGBa, Materials.Plutonium241.mMeltingPoint, Materials.Plutonium241.mBlastFurnaceTemp, 94, 144, false, MaterialUtils.superscript("238Pu"), 2);//Not a GT Inherited Material
-	
-	
-	
+
+
+
 	public static final Material LiFBeF2ThF4UF4 = new Material(
 			"LiFBeF2ThF4UF4", //Material Name
-			 MaterialState.LIQUID, //State
+			MaterialState.LIQUID, //State
 			new short[]{40, 90, 25, 0}, //Material Colour
 			566, //Melting Point in C
 			870, //Boiling Point in C
@@ -39,10 +39,10 @@ public final class NUCLIDE {
 					new MaterialStack(FLUORIDES.THORIUM_TETRAFLUORIDE, 1),
 					new MaterialStack(FLUORIDES.URANIUM_TETRAFLUORIDE, 1)
 			});
-	
+
 	public static final Material LiFBeF2ZrF4UF4 = new Material(
 			"LiFBeF2ZrF4UF4", //Material Name
-			 MaterialState.LIQUID, //State
+			MaterialState.LIQUID, //State
 			new short[]{20, 70, 45, 0}, //Material Colour
 			650, //Melting Point in C
 			940, //Boiling Point in C
@@ -58,10 +58,10 @@ public final class NUCLIDE {
 					new MaterialStack(FLUORIDES.ZIRCONIUM_TETRAFLUORIDE, 5),
 					new MaterialStack(FLUORIDES.URANIUM_TETRAFLUORIDE, 2)
 			});
-	
+
 	public static final Material LiFBeF2ZrF4U235 = new Material(
 			"LiFBeF2ZrF4U235", //Material Name
-			 MaterialState.LIQUID, //State
+			MaterialState.LIQUID, //State
 			new short[]{50, 70, 15, 0}, //Material Colour
 			590, //Melting Point in C
 			890, //Boiling Point in C

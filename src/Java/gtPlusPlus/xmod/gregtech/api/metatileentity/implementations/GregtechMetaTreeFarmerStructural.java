@@ -10,45 +10,45 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.machines
 import net.minecraft.nbt.NBTTagCompound;
 
 public class GregtechMetaTreeFarmerStructural
-        extends GregtechMetaTreeFarmerBase {
-	
+extends GregtechMetaTreeFarmerBase {
+
 	@Override
 	public String[] getDescription() {
-		return new String[] {mDescription, CORE.GT_Tooltip};
+		return new String[] {this.mDescription, CORE.GT_Tooltip};
 	}
-	
-    public GregtechMetaTreeFarmerStructural(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "Structural Blocks for the Tree Farmer.");
-    }
 
-    public GregtechMetaTreeFarmerStructural(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription) {
-        super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
-    }
+	public GregtechMetaTreeFarmerStructural(final int aID, final String aName, final String aNameRegional, final int aTier) {
+		super(aID, aName, aNameRegional, aTier, 0, "Structural Blocks for the Tree Farmer.");
+	}
 
-    public GregtechMetaTreeFarmerStructural(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aInvSlotCount, aDescription, aTextures);
-    }
+	public GregtechMetaTreeFarmerStructural(final int aID, final String aName, final String aNameRegional, final int aTier, final int aInvSlotCount, final String aDescription) {
+		super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
+	}
 
-    @Override
-	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GregtechMetaTreeFarmerStructural(this.mName, this.mTier, this.mInventory.length, this.mDescription, this.mTextures);
-    }
+	public GregtechMetaTreeFarmerStructural(final String aName, final int aTier, final int aInvSlotCount, final String aDescription, final ITexture[][][] aTextures) {
+		super(aName, aTier, aInvSlotCount, aDescription, aTextures);
+	}
 
-    @Override
+	@Override
+	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
+		return new GregtechMetaTreeFarmerStructural(this.mName, this.mTier, this.mInventory.length, this.mDescription, this.mTextures);
+	}
+
+	@Override
 	public ITexture getOverlayIcon() {
-        return new GT_RenderedTexture(Textures.BlockIcons.VOID);
-    }
-
-    @Override
-	public boolean isValidSlot(int aIndex) {
-        return false;
-    }
-
-	@Override
-	public void saveNBTData(NBTTagCompound paramNBTTagCompound) {		
+		return new GT_RenderedTexture(Textures.BlockIcons.VOID);
 	}
 
 	@Override
-	public void loadNBTData(NBTTagCompound paramNBTTagCompound) {		
+	public boolean isValidSlot(final int aIndex) {
+		return false;
+	}
+
+	@Override
+	public void saveNBTData(final NBTTagCompound paramNBTTagCompound) {
+	}
+
+	@Override
+	public void loadNBTData(final NBTTagCompound paramNBTTagCompound) {
 	}
 }

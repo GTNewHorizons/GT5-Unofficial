@@ -11,6 +11,6 @@ public class Gregtech_Blocks {
 		//Casing Blocks
 		ModBlocks.blockCasingsMisc = new GregtechMetaCasingBlocks();
 		ModBlocks.blockCasings2Misc = new GregtechMetaCasingBlocks2();
-		
+
 	}
 }

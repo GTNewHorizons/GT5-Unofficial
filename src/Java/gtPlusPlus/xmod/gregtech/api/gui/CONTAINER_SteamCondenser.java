@@ -1,32 +1,31 @@
 package gtPlusPlus.xmod.gregtech.api.gui;
 
+import java.util.Iterator;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.generators.GregtechMetaBoilerBase;
-
-import java.util.Iterator;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class CONTAINER_SteamCondenser extends GT_ContainerMetaTile_Machine
 {
-	public CONTAINER_SteamCondenser(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, int aSteamCapacity)
+	public CONTAINER_SteamCondenser(final InventoryPlayer aInventoryPlayer, final IGregTechTileEntity aTileEntity, final int aSteamCapacity)
 	{
 		super(aInventoryPlayer, aTileEntity);
 		this.mSteamCapacity = aSteamCapacity;
 	}
 
 	@Override
-	public void addSlots(InventoryPlayer aInventoryPlayer)
+	public void addSlots(final InventoryPlayer aInventoryPlayer)
 	{
-		addSlotToContainer(new Slot(this.mTileEntity, 2, 116, 62));
-		addSlotToContainer(new Slot(this.mTileEntity, 0, 44, 26));
-		addSlotToContainer(new Slot(this.mTileEntity, 1, 44, 62));
-		addSlotToContainer(new Slot(this.mTileEntity, 3, 116, 26));
+		this.addSlotToContainer(new Slot(this.mTileEntity, 2, 116, 62));
+		this.addSlotToContainer(new Slot(this.mTileEntity, 0, 44, 26));
+		this.addSlotToContainer(new Slot(this.mTileEntity, 1, 44, 62));
+		this.addSlotToContainer(new Slot(this.mTileEntity, 3, 116, 26));
 	}
 
 	@Override
@@ -61,15 +60,15 @@ public class CONTAINER_SteamCondenser extends GT_ContainerMetaTile_Machine
 		this.mWaterAmount = (((GregtechMetaBoilerBase)this.mTileEntity.getMetaTileEntity()).mFluid == null ? 0 : ((GregtechMetaBoilerBase)this.mTileEntity.getMetaTileEntity()).mFluid.amount);
 		this.mTickingTime = ((GregtechMetaBoilerBase)this.mTileEntity.getMetaTileEntity()).RI;
 
-		this.mTemperature = Math.min(54, Math.max(0, this.mTemperature * 54 / (((GregtechMetaBoilerBase)this.mTileEntity.getMetaTileEntity()).maxProgresstime() - 10)));
-		this.mSteamAmount = Math.min(54, Math.max(0, this.mSteamAmount * 54 / (this.mSteamCapacity - 100)));
-		this.mWaterAmount = Math.min(54, Math.max(0, this.mWaterAmount * 54 / 15900));
-		this.mProcessingEnergy = Math.min(14, Math.max(this.mProcessingEnergy > 0 ? 1 : 0, this.mProcessingEnergy * 14 / 1000));
+		this.mTemperature = Math.min(54, Math.max(0, (this.mTemperature * 54) / (((GregtechMetaBoilerBase)this.mTileEntity.getMetaTileEntity()).maxProgresstime() - 10)));
+		this.mSteamAmount = Math.min(54, Math.max(0, (this.mSteamAmount * 54) / (this.mSteamCapacity - 100)));
+		this.mWaterAmount = Math.min(54, Math.max(0, (this.mWaterAmount * 54) / 15900));
+		this.mProcessingEnergy = Math.min(14, Math.max(this.mProcessingEnergy > 0 ? 1 : 0, (this.mProcessingEnergy * 14) / 1000));
 
-		Iterator var2 = this.crafters.iterator();
+		final Iterator var2 = this.crafters.iterator();
 		while (var2.hasNext())
 		{
-			ICrafting var1 = (ICrafting)var2.next();
+			final ICrafting var1 = (ICrafting)var2.next();
 			var1.sendProgressBarUpdate(this, 100, this.mTemperature);
 			var1.sendProgressBarUpdate(this, 101, this.mProcessingEnergy);
 			var1.sendProgressBarUpdate(this, 102, this.mSteamAmount);
@@ -79,18 +78,18 @@ public class CONTAINER_SteamCondenser extends GT_ContainerMetaTile_Machine
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void updateProgressBar(int par1, int par2)
+	public void updateProgressBar(final int par1, final int par2)
 	{
 		super.updateProgressBar(par1, par2);
 		switch (par1)
 		{
-		case 100: 
+		case 100:
 			this.mTemperature = par2; break;
-		case 101: 
+		case 101:
 			this.mProcessingEnergy = par2; break;
-		case 102: 
+		case 102:
 			this.mSteamAmount = par2; break;
-		case 103: 
+		case 103:
 			this.mWaterAmount = par2;
 		}
 	}

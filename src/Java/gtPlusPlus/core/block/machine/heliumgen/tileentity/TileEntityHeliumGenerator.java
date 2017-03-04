@@ -1,5 +1,7 @@
 package gtPlusPlus.core.block.machine.heliumgen.tileentity;
 
+import java.util.List;
+
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.block.machine.heliumgen.slots.InvSlotRadiation;
 import gtPlusPlus.core.item.ModItems;
@@ -13,11 +15,7 @@ import ic2.core.*;
 import ic2.core.block.TileEntityInventory;
 import ic2.core.init.MainConfig;
 import ic2.core.item.reactor.ItemReactorHeatStorage;
-import ic2.core.network.NetworkManager;
 import ic2.core.util.ConfigUtil;
-
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -43,28 +41,29 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 	private int facing = 2;
 	private int progress;
 
-	
+
 	public void update2Entity(){
 		Utils.LOG_WARNING("updateEntity");
-		if(++progress >= 40){
+		if(++this.progress >= 40){
 			//if(++progress >= 300){
-			if(heliumStack == null)
-				heliumStack = ItemUtils.getSimpleStack(ModItems.itemHeliumBlob);
-			else if(heliumStack.getItem() == ModItems.itemHeliumBlob && heliumStack.stackSize < 64)
-				heliumStack.stackSize++;
-			progress = 0;
-			markDirty();
+			if(this.heliumStack == null) {
+				this.heliumStack = ItemUtils.getSimpleStack(ModItems.itemHeliumBlob);
+			} else if((this.heliumStack.getItem() == ModItems.itemHeliumBlob) && (this.heliumStack.stackSize < 64)) {
+				this.heliumStack.stackSize++;
+			}
+			this.progress = 0;
+			this.markDirty();
 		}
 	}
 
 	@Override
 	public short getFacing(){
-		return (short) facing;
+		return (short) this.facing;
 	}
 
 	@Override
-	public void setFacing(short dir){
-		facing = dir;
+	public void setFacing(final short dir){
+		this.facing = dir;
 	}
 
 	/*@Override
@@ -95,17 +94,17 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbttagcompound)
+	public void readFromNBT(final NBTTagCompound nbttagcompound)
 	{
 		super.readFromNBT(nbttagcompound);
 
 		//this.heliumStack = ItemStack.loadItemStackFromNBT(nbttagcompound.getCompoundTag("Helium"));
-		NBTTagList list = nbttagcompound.getTagList("Items", 10);
-	    for (int i = 0; i < list.tagCount(); ++i) {
-	        NBTTagCompound stackTag = list.getCompoundTagAt(i);
-	        int slot = stackTag.getByte("Slot") & 255;
-	        this.setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(stackTag));
-	    }
+		final NBTTagList list = nbttagcompound.getTagList("Items", 10);
+		for (int i = 0; i < list.tagCount(); ++i) {
+			final NBTTagCompound stackTag = list.getCompoundTagAt(i);
+			final int slot = stackTag.getByte("Slot") & 255;
+			this.setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(stackTag));
+		}
 		this.progress = nbttagcompound.getInteger("Progress");
 		this.facing = nbttagcompound.getShort("Facing");
 		this.heat = nbttagcompound.getInteger("heat");
@@ -114,14 +113,14 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbttagcompound)
+	public void writeToNBT(final NBTTagCompound nbttagcompound)
 	{
 		super.writeToNBT(nbttagcompound);
 
 		nbttagcompound.setInteger("Progress", this.progress);
 		nbttagcompound.setShort("Facing", (short) this.facing);
 		nbttagcompound.setInteger("heat", this.heat);
-		nbttagcompound.setShort("output", (short)(int)getReactorEnergyOutput());
+		nbttagcompound.setShort("output", (short)(int)this.getReactorEnergyOutput());
 		nbttagcompound.setBoolean("active", this.active);
 		/*if(heliumStack != null) {
 			NBTTagCompound produce = new NBTTagCompound();
@@ -130,30 +129,30 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 		}
 		else
 			nbttagcompound.removeTag("Helium");*/
-		NBTTagList list = new NBTTagList();
-	    for (int i = 0; i < this.getSizeInventory(); ++i) {
-	        if (this.getStackInSlot(i) != null) {
-	            NBTTagCompound stackTag = new NBTTagCompound();
-	            stackTag.setByte("Slot", (byte) i);
-	            this.getStackInSlot(i).writeToNBT(stackTag);
-	            list.appendTag(stackTag);
-	        }
-	    }
-	    nbttagcompound.setTag("Items", list);
+		final NBTTagList list = new NBTTagList();
+		for (int i = 0; i < this.getSizeInventory(); ++i) {
+			if (this.getStackInSlot(i) != null) {
+				final NBTTagCompound stackTag = new NBTTagCompound();
+				stackTag.setByte("Slot", (byte) i);
+				this.getStackInSlot(i).writeToNBT(stackTag);
+				list.appendTag(stackTag);
+			}
+		}
+		nbttagcompound.setTag("Items", list);
 	}
 
 
 	@Override
 	public Packet getDescriptionPacket() {
-		NBTTagCompound tag = new NBTTagCompound();
-		writeToNBT(tag);
-		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, -999, tag);
+		final NBTTagCompound tag = new NBTTagCompound();
+		this.writeToNBT(tag);
+		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, -999, tag);
 	}
 
 	@Override
-	public void onDataPacket(net.minecraft.network.NetworkManager net, S35PacketUpdateTileEntity packet) {
+	public void onDataPacket(final net.minecraft.network.NetworkManager net, final S35PacketUpdateTileEntity packet) {
 		super.onDataPacket(net, packet);
-		readFromNBT(packet.func_148857_g());
+		this.readFromNBT(packet.func_148857_g());
 	}
 
 
@@ -164,23 +163,25 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int slot){
-		return heliumStack;
+	public ItemStack getStackInSlot(final int slot){
+		return this.heliumStack;
 	}
 
 	@Override
-	public ItemStack decrStackSize(int slot, int decrement){
+	public ItemStack decrStackSize(final int slot, final int decrement){
 		Utils.LOG_WARNING("decrStackSize");
-		if(heliumStack == null)
+		if(this.heliumStack == null) {
 			return null;
-		if(decrement < heliumStack.stackSize){
-			ItemStack take = heliumStack.splitStack(decrement);
-			if(heliumStack.stackSize <= 0)
-				heliumStack = null;
+		}
+		if(decrement < this.heliumStack.stackSize){
+			final ItemStack take = this.heliumStack.splitStack(decrement);
+			if(this.heliumStack.stackSize <= 0) {
+				this.heliumStack = null;
+			}
 			return take;
 		}
-		ItemStack take = heliumStack;
-		heliumStack = null;
+		final ItemStack take = this.heliumStack;
+		this.heliumStack = null;
 		return take;
 	}
 
@@ -190,13 +191,13 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 	public void closeInventory() {}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer player)
+	public boolean isUseableByPlayer(final EntityPlayer player)
 	{
-		return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && player.getDistanceSq((double)this.xCoord + 0.5D, (double)this.yCoord + 0.5D, (double)this.zCoord + 0.5D) <= 64.0D;
+		return (this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this) && (player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) <= 64.0D);
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack stack){
+	public boolean isItemValidForSlot(final int slot, final ItemStack stack){
 		return false;
 	}
 
@@ -206,12 +207,12 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 	}
 
 	@Override
-	public void setInventorySlotContents(int slot, ItemStack stack){
-		heliumStack = stack;
+	public void setInventorySlotContents(final int slot, final ItemStack stack){
+		this.heliumStack = stack;
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int slot){
+	public ItemStack getStackInSlotOnClosing(final int slot){
 		return null;
 	}
 
@@ -247,7 +248,7 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 	private int EmitHeatbuffer = 0;
 	public int EmitHeat = 0;
 	private boolean redstone = false;
-	private boolean fluidcoolreactor = false;
+	private final boolean fluidcoolreactor = false;
 	private boolean active = true;
 
 
@@ -260,9 +261,9 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 		}
 		short cols = 3;
 		//Utils.LOG_WARNING("getReactorSize == "+cols);
-		for (Direction direction : Direction.directions)
+		for (final Direction direction : Direction.directions)
 		{
-			TileEntity target = direction.applyToTileEntity(this);
+			final TileEntity target = direction.applyToTileEntity(this);
 			if ((target instanceof TileEntityHeliumGenerator)) {
 				cols = (short)(cols + 1);
 				Utils.LOG_WARNING("getReactorSize =1= "+cols);
@@ -278,7 +279,7 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 		Utils.LOG_WARNING("updateEntityServer");
 		super.updateEntity();
 
-		if (this.updateTicker++ % getTickRate() != 0) {
+		if ((this.updateTicker++ % this.getTickRate()) != 0) {
 			return;
 		}
 		if (!this.worldObj.doChunksNearChunkExist(this.xCoord, this.yCoord, this.zCoord, 2))
@@ -288,31 +289,31 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 		else
 		{
 
-			dropAllUnfittingStuff();
+			this.dropAllUnfittingStuff();
 
 			this.output = 0.0F;
 			this.maxHeat = 10000;
 			this.hem = 1.0F;
 
-			processChambers();       
+			this.processChambers();
 			this.EmitHeatbuffer = 0;
-			if (calculateHeatEffects()) {
+			if (this.calculateHeatEffects()) {
 				return;
 			}
-			setActive((this.heat >= 1000) || (this.output > 0.0F));
+			this.setActive((this.heat >= 1000) || (this.output > 0.0F));
 
-			markDirty();
+			this.markDirty();
 		}
-		((NetworkManager)IC2.network.get()).updateTileEntityField(this, "output");
+		IC2.network.get().updateTileEntityField(this, "output");
 	}
 
 	@Override
-	public void setActive(boolean active1)
+	public void setActive(final boolean active1)
 	{
 		Utils.LOG_WARNING("setActive");
 		this.active = active1;
 		if (this.prevActive != active1) {
-			((NetworkManager)IC2.network.get()).updateTileEntityField(this, "active");
+			IC2.network.get().updateTileEntityField(this, "active");
 		}
 		this.prevActive = active1;
 	}
@@ -322,43 +323,43 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 		Utils.LOG_WARNING("dropAllUnfittingStuff");
 		for (int i = 0; i < this.reactorSlot.size(); i++)
 		{
-			ItemStack stack = this.reactorSlot.get(i);
-			if ((stack != null) && (!isUsefulItem(stack, false)))
+			final ItemStack stack = this.reactorSlot.get(i);
+			if ((stack != null) && (!this.isUsefulItem(stack, false)))
 			{
 				this.reactorSlot.put(i, null);
-				eject(stack);
+				this.eject(stack);
 			}
 		}
 		for (int i = this.reactorSlot.size(); i < this.reactorSlot.rawSize(); i++)
 		{
-			ItemStack stack = this.reactorSlot.get(i);
+			final ItemStack stack = this.reactorSlot.get(i);
 
 			this.reactorSlot.put(i, null);
-			eject(stack);
+			this.eject(stack);
 		}
 	}
 
-	public void eject(ItemStack drop)
+	public void eject(final ItemStack drop)
 	{
 		Utils.LOG_WARNING("eject");
 		if ((!IC2.platform.isSimulating()) || (drop == null)) {
 			return;
 		}
-		float f = 0.7F;
-		double d = this.worldObj.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-		double d1 = this.worldObj.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-		double d2 = this.worldObj.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-		EntityItem entityitem = new EntityItem(this.worldObj, this.xCoord + d, this.yCoord + d1, this.zCoord + d2, drop);
+		final float f = 0.7F;
+		final double d = (this.worldObj.rand.nextFloat() * f) + ((1.0F - f) * 0.5D);
+		final double d1 = (this.worldObj.rand.nextFloat() * f) + ((1.0F - f) * 0.5D);
+		final double d2 = (this.worldObj.rand.nextFloat() * f) + ((1.0F - f) * 0.5D);
+		final EntityItem entityitem = new EntityItem(this.worldObj, this.xCoord + d, this.yCoord + d1, this.zCoord + d2, drop);
 		entityitem.delayBeforeCanPickup = 10;
 		this.worldObj.spawnEntityInWorld(entityitem);
 	}
 
-	public boolean isUsefulItem(ItemStack stack, boolean forInsertion)
+	public boolean isUsefulItem(final ItemStack stack, final boolean forInsertion)
 	{
 		//Utils.LOG_WARNING("isUsefulItem");
-		Item item = stack.getItem();
-		if ((forInsertion) && (this.fluidcoolreactor) && 
-				((item instanceof ItemReactorHeatStorage)) && 
+		final Item item = stack.getItem();
+		if ((forInsertion) && (this.fluidcoolreactor) &&
+				((item instanceof ItemReactorHeatStorage)) &&
 				(((ItemReactorHeatStorage)item).getCustomDamage(stack) > 0)) {
 			return false;
 		}
@@ -374,25 +375,25 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 		if ((this.heat < 8000) || (!IC2.platform.isSimulating()) || (ConfigUtil.getFloat(MainConfig.get(), "protection/reactorExplosionPowerLimit") <= 0.0F)) {
 			return false;
 		}
-		float power = this.heat / this.maxHeat;
+		final float power = this.heat / this.maxHeat;
 		if (power >= 1.0F)
 		{
-			explode();
+			this.explode();
 			return true;
 		}
-		if ((power >= 0.85F) && (this.worldObj.rand.nextFloat() <= 0.2F * this.hem))
+		if ((power >= 0.85F) && (this.worldObj.rand.nextFloat() <= (0.2F * this.hem)))
 		{
-			int[] coord = getRandCoord(2);
+			final int[] coord = this.getRandCoord(2);
 			if (coord != null)
 			{
-				Block block = this.worldObj.getBlock(coord[0], coord[1], coord[2]);
+				final Block block = this.worldObj.getBlock(coord[0], coord[1], coord[2]);
 				if (block.isAir(this.worldObj, coord[0], coord[1], coord[2]))
 				{
 					this.worldObj.setBlock(coord[0], coord[1], coord[2], Blocks.fire, 0, 7);
 				}
 				else if ((block.getBlockHardness(this.worldObj, coord[0], coord[1], coord[2]) >= 0.0F) && (this.worldObj.getTileEntity(coord[0], coord[1], coord[2]) == null))
 				{
-					Material mat = block.getMaterial();
+					final Material mat = block.getMaterial();
 					if ((mat == Material.rock) || (mat == Material.iron) || (mat == Material.lava) || (mat == Material.ground) || (mat == Material.clay)) {
 						this.worldObj.setBlock(coord[0], coord[1], coord[2], Blocks.flowing_lava, 15, 7);
 					} else {
@@ -403,19 +404,19 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 		}
 		if (power >= 0.7F)
 		{
-			List list1 = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(this.xCoord - 3, this.yCoord - 3, this.zCoord - 3, this.xCoord + 4, this.yCoord + 4, this.zCoord + 4));
+			final List list1 = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(this.xCoord - 3, this.yCoord - 3, this.zCoord - 3, this.xCoord + 4, this.yCoord + 4, this.zCoord + 4));
 			for (int l = 0; l < list1.size(); l++)
 			{
-				Entity ent = (Entity)list1.get(l);
+				final Entity ent = (Entity)list1.get(l);
 				ent.attackEntityFrom(IC2DamageSource.radiation, (int)(this.worldObj.rand.nextInt(4) * this.hem));
 			}
 		}
 		if ((power >= 0.5F) && (this.worldObj.rand.nextFloat() <= this.hem))
 		{
-			int[] coord = getRandCoord(2);
+			final int[] coord = this.getRandCoord(2);
 			if (coord != null)
 			{
-				Block block = this.worldObj.getBlock(coord[0], coord[1], coord[2]);
+				final Block block = this.worldObj.getBlock(coord[0], coord[1], coord[2]);
 				if (block.getMaterial() == Material.water) {
 					this.worldObj.setBlockToAir(coord[0], coord[1], coord[2]);
 				}
@@ -423,12 +424,12 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 		}
 		if ((power >= 0.4F) && (this.worldObj.rand.nextFloat() <= this.hem))
 		{
-			int[] coord = getRandCoord(2);
-			if ((coord != null) && 
+			final int[] coord = this.getRandCoord(2);
+			if ((coord != null) &&
 					(this.worldObj.getTileEntity(coord[0], coord[1], coord[2]) == null))
 			{
-				Block block = this.worldObj.getBlock(coord[0], coord[1], coord[2]);
-				Material mat = block.getMaterial();
+				final Block block = this.worldObj.getBlock(coord[0], coord[1], coord[2]);
+				final Material mat = block.getMaterial();
 				if ((mat == Material.wood) || (mat == Material.leaves) || (mat == Material.cloth)) {
 					this.worldObj.setBlock(coord[0], coord[1], coord[2], Blocks.fire, 0, 7);
 				}
@@ -437,15 +438,15 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 		return false;
 	}
 
-	public int[] getRandCoord(int radius)
+	public int[] getRandCoord(final int radius)
 	{
 		if (radius <= 0) {
 			return null;
 		}
-		int[] c = new int[3];
-		c[0] = (this.xCoord + this.worldObj.rand.nextInt(2 * radius + 1) - radius);
-		c[1] = (this.yCoord + this.worldObj.rand.nextInt(2 * radius + 1) - radius);
-		c[2] = (this.zCoord + this.worldObj.rand.nextInt(2 * radius + 1) - radius);
+		final int[] c = new int[3];
+		c[0] = ((this.xCoord + this.worldObj.rand.nextInt((2 * radius) + 1)) - radius);
+		c[1] = ((this.yCoord + this.worldObj.rand.nextInt((2 * radius) + 1)) - radius);
+		c[2] = ((this.zCoord + this.worldObj.rand.nextInt((2 * radius) + 1)) - radius);
 		if ((c[0] == this.xCoord) && (c[1] == this.yCoord) && (c[2] == this.zCoord)) {
 			return null;
 		}
@@ -455,15 +456,15 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 	public void processChambers()
 	{
 		Utils.LOG_WARNING("processChambers");
-		int size = getReactorSize();
+		final int size = this.getReactorSize();
 		for (int pass = 0; pass < 6; pass++) {
 			for (int y = 0; y < 3; y++) {
 				for (int x = 0; x < size; x++)
 				{
-					ItemStack stack = this.reactorSlot.get(x, y);
+					final ItemStack stack = this.reactorSlot.get(x, y);
 					if ((stack != null) && ((stack.getItem() instanceof IReactorComponent)))
 					{
-						IReactorComponent comp = (IReactorComponent)stack.getItem();
+						final IReactorComponent comp = (IReactorComponent)stack.getItem();
 						comp.processChamber(this, stack, x, y, pass == 0);
 					}
 				}
@@ -488,13 +489,13 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 	}
 
 	@Override
-	public void setHeat(int heat1)
+	public void setHeat(final int heat1)
 	{
 		this.heat = heat1;
 	}
 
 	@Override
-	public int addHeat(int amount)
+	public int addHeat(final int amount)
 	{
 		this.heat += amount;
 		return this.heat;
@@ -507,13 +508,13 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 	}
 
 	@Override
-	public void setMaxHeat(int newMaxHeat)
+	public void setMaxHeat(final int newMaxHeat)
 	{
 		this.maxHeat = newMaxHeat;
 	}
 
 	@Override
-	public void addEmitHeat(int heat)
+	public void addEmitHeat(final int heat)
 	{
 		this.EmitHeatbuffer += heat;
 	}
@@ -525,7 +526,7 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 	}
 
 	@Override
-	public void setHeatEffectModifier(float newHEM)
+	public void setHeatEffectModifier(final float newHEM)
 	{
 		this.hem = newHEM;
 	}
@@ -539,42 +540,42 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 	@Override
 	public double getReactorEUEnergyOutput()
 	{
-		return getOfferedEnergy();
+		return this.getOfferedEnergy();
 	}
 
 	public double getOfferedEnergy()
 	{
-		return getReactorEnergyOutput() * 5.0F * 1.0F;
+		return this.getReactorEnergyOutput() * 5.0F * 1.0F;
 	}
 
 	@Override
-	public float addOutput(float energy)
+	public float addOutput(final float energy)
 	{
 		return this.output += energy;
 	}
 
 	@Override
-	public ItemStack getItemAt(int x, int y)
+	public ItemStack getItemAt(final int x, final int y)
 	{
 		Utils.LOG_WARNING("getItemAt");
-		if ((x < 0) || (x >= getReactorSize()) || (y < 0) || (y >= 6)) {
+		if ((x < 0) || (x >= this.getReactorSize()) || (y < 0) || (y >= 6)) {
 			return null;
 		}
 		return this.reactorSlot.get(x, y);
 	}
 
 	@Override
-	public void setItemAt(int x, int y, ItemStack item)
+	public void setItemAt(final int x, final int y, final ItemStack item)
 	{
 		Utils.LOG_WARNING("setItemAt");
-		if ((x < 0) || (x >= getReactorSize()) || (y < 0) || (y >= 6)) {
+		if ((x < 0) || (x >= this.getReactorSize()) || (y < 0) || (y >= 6)) {
 			return;
 		}
 		this.reactorSlot.put(x, y, item);
 	}
 
 	public TileEntityHeliumGenerator() {
-		this.updateTicker = IC2.random.nextInt(getTickRate());	    
+		this.updateTicker = IC2.random.nextInt(this.getTickRate());
 		this.reactorSlot = new InvSlotRadiation(this, "helium_collector", 0, 54); //TODO
 	}
 
@@ -594,7 +595,7 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 	{
 		Utils.LOG_WARNING("receiveRedstone");
 		if ((this.worldObj.isBlockIndirectlyGettingPowered(this.xCoord, this.yCoord, this.zCoord)) || (this.redstone)) {
-			decrStackSize(-1, 1);
+			this.decrStackSize(-1, 1);
 			return true;
 		}
 		return false;
@@ -604,11 +605,11 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 	public boolean produceEnergy()
 	{
 		Utils.LOG_WARNING("produceEnergy");
-		return (receiveredstone()) && (ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/generator") > 0.0F);
+		return (this.receiveredstone()) && (ConfigUtil.getFloat(MainConfig.get(), "balance/energy/generator/generator") > 0.0F);
 	}
 
 	@Override
-	public void setRedstoneSignal(boolean redstone)
+	public void setRedstoneSignal(final boolean redstone)
 	{
 		this.redstone = redstone;
 	}
@@ -620,13 +621,13 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 	}
 
 	@Override
-	public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int side)
+	public boolean wrenchCanSetFacing(final EntityPlayer entityPlayer, final int side)
 	{
 		return true;
 	}
 
 	@Override
-	public boolean wrenchCanRemove(EntityPlayer entityPlayer)
+	public boolean wrenchCanRemove(final EntityPlayer entityPlayer)
 	{
 		return true;
 	}
@@ -638,7 +639,7 @@ public class TileEntityHeliumGenerator extends TileEntityInventory implements II
 	}
 
 	@Override
-	public ItemStack getWrenchDrop(EntityPlayer entityPlayer)
+	public ItemStack getWrenchDrop(final EntityPlayer entityPlayer)
 	{
 		return new ItemStack(ModBlocks.blockHeliumGenerator, 1);
 	}

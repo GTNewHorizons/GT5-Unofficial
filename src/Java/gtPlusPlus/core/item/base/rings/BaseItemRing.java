@@ -5,7 +5,7 @@ import gtPlusPlus.core.material.Material;
 
 public class BaseItemRing extends BaseItemComponent{
 
-	public BaseItemRing(Material material) {
+	public BaseItemRing(final Material material) {
 		super(material, BaseItemComponent.ComponentTypes.RING);
 	}
 }

@@ -1,16 +1,15 @@
 package gtPlusPlus.core.item.tool.misc;
 
-import gtPlusPlus.core.item.base.BaseItemWithDamageValue;
-import gtPlusPlus.core.lib.CORE;
-
 import java.util.List;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.item.base.BaseItemWithDamageValue;
+import gtPlusPlus.core.lib.CORE;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class SandstoneHammer extends BaseItemWithDamageValue{
 
@@ -18,14 +17,14 @@ public class SandstoneHammer extends BaseItemWithDamageValue{
 	 * @see net.minecraft.item.Item#getColorFromItemStack(net.minecraft.item.ItemStack, int)
 	 */
 	@Override
-	public int getColorFromItemStack(ItemStack stack, int HEX_OxFFFFFF) {
+	public int getColorFromItemStack(final ItemStack stack, final int HEX_OxFFFFFF) {
 		//Figure Out Damage
 
 
 		return super.getColorFromItemStack(stack, HEX_OxFFFFFF);
 	}
 
-	public SandstoneHammer(String unlocalizedName) {
+	public SandstoneHammer(final String unlocalizedName) {
 		super(unlocalizedName);
 		this.setTextureName(CORE.MODID + ":" + unlocalizedName);
 		this.setMaxStackSize(1);
@@ -34,13 +33,13 @@ public class SandstoneHammer extends BaseItemWithDamageValue{
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
+	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
 		list.add(EnumChatFormatting.GRAY+"Allows you to craft sand from cobble, or sandstone from sand.");
 		super.addInformation(stack, aPlayer, list, bool);
-	}	
+	}
 
 	@Override
-	public boolean doesContainerItemLeaveCraftingGrid(ItemStack itemStack)
+	public boolean doesContainerItemLeaveCraftingGrid(final ItemStack itemStack)
 	{
 		return false;
 	}
@@ -52,12 +51,12 @@ public class SandstoneHammer extends BaseItemWithDamageValue{
 	}
 
 	@Override
-	public boolean hasContainerItem(ItemStack itemStack)
+	public boolean hasContainerItem(final ItemStack itemStack)
 	{
 		return true;
 	}
 	@Override
-	public ItemStack getContainerItem(ItemStack itemStack)
+	public ItemStack getContainerItem(final ItemStack itemStack)
 	{
 		itemStack.setItemDamage(itemStack.getItemDamage() + 8);
 
@@ -66,12 +65,12 @@ public class SandstoneHammer extends BaseItemWithDamageValue{
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public EnumRarity getRarity(ItemStack par1ItemStack){
+	public EnumRarity getRarity(final ItemStack par1ItemStack){
 		return EnumRarity.uncommon;
 	}
 
 	@Override
-	public boolean hasEffect(ItemStack par1ItemStack){
+	public boolean hasEffect(final ItemStack par1ItemStack){
 		return false;
 	}
 

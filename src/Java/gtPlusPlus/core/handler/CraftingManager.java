@@ -8,10 +8,10 @@ public class CraftingManager {
 	}
 
 	public static void addCraftingRecipies() {
-		
+
 	}
 
 	public static void addSmeltingRecipies() {
-		
+
 	}
 }

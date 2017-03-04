@@ -7,38 +7,38 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class UtilsMining {
-	
+
 	private static boolean durabilityDamage = false;
 	private static ItemStack stack;
 
-	public static Boolean canPickaxeBlock(Block currentBlock, World currentWorld){
+	public static Boolean canPickaxeBlock(final Block currentBlock, final World currentWorld){
 		String correctTool = "";
-		if (!currentWorld.isRemote){			
+		if (!currentWorld.isRemote){
 			try {
 				correctTool = currentBlock.getHarvestTool(0);
 				//Utils.LOG_WARNING(correctTool);
 				if (correctTool.equals("pickaxe")){
 					return true;}
-			} catch (NullPointerException e){
+			} catch (final NullPointerException e){
 				return false;}
 		}
 		return false;
 	}
-	
-	private static void removeBlockAndDropAsItem(World world, int X, int Y, int Z){
+
+	private static void removeBlockAndDropAsItem(final World world, final int X, final int Y, final int Z){
 		try {
-			Block block = world.getBlock(X, Y, Z);		
-				if (canPickaxeBlock(block, world)){
-					if((block != Blocks.bedrock) && (block.getBlockHardness(world, X, Y, Z) != -1) && (block.getBlockHardness(world, X, Y, Z) <= 100) && (block != Blocks.water) && (block != Blocks.lava)){
-						block.dropBlockAsItem(world, X, Y, Z, world.getBlockMetadata(X, Y, Z), 0);
-						world.setBlockToAir(X, Y, Z);
+			final Block block = world.getBlock(X, Y, Z);
+			if (canPickaxeBlock(block, world)){
+				if((block != Blocks.bedrock) && (block.getBlockHardness(world, X, Y, Z) != -1) && (block.getBlockHardness(world, X, Y, Z) <= 100) && (block != Blocks.water) && (block != Blocks.lava)){
+					block.dropBlockAsItem(world, X, Y, Z, world.getBlockMetadata(X, Y, Z), 0);
+					world.setBlockToAir(X, Y, Z);
 
 				}
 				else {
 					Utils.LOG_WARNING("Incorrect Tool for mining this block.");
 				}
 			}
-		} catch (NullPointerException e){
+		} catch (final NullPointerException e){
 
 		}
 	}
@@ -71,7 +71,7 @@ public class UtilsMining {
 					for(int j = -2; j < 3; j++) {
 						for(int k = -2; k < 3; k++) {
 //							float dur = calculateDurabilityLoss(world, X + i, Y + k, Z + j);
-//							DURABILITY_LOSS = (DURABILITY_LOSS + dur);	
+//							DURABILITY_LOSS = (DURABILITY_LOSS + dur);
 //							Utils.LOG_WARNING("Added Loss: "+dur);
 							removeBlockAndDropAsItem(world, X + i, Y + k, Z + j);
 						}
@@ -88,7 +88,7 @@ public class UtilsMining {
 					X = (int) aPlayer.posX + 1;}
 					else {
 						X = (int) aPlayer.posX - 1;}
-					
+
 
 				DURABILITY_LOSS = 0;
 				for(int i = -1; i < 2; i++) {
@@ -108,12 +108,12 @@ public class UtilsMining {
 				//Set Player Facing
 				X = (int) aPlayer.posX;
 				Y = (int) aPlayer.posY;
-				
+
 				if (FACING.equals("facingNorth")){
 				Z = (int) aPlayer.posZ + 1;}
 				else {
 					Z = (int) aPlayer.posZ - 1;}
-				
+
 				DURABILITY_LOSS = 0;
 				for(int i = -1; i < 2; i++) {
 					for(int j = -1; j < 2; j++) {
@@ -137,9 +137,9 @@ public class UtilsMining {
 			DURABILITY_LOSS = 0;
 		}
 	}*/
-	
-	
-	public static boolean getBlockType(Block block, World world, int[] xyz, int miningLevel){
+
+
+	public static boolean getBlockType(final Block block, final World world, final int[] xyz, final int miningLevel){
 		final String LIQUID = "liquid";
 		final String BLOCK = "block";
 		final String ORE = "ore";
@@ -149,18 +149,34 @@ public class UtilsMining {
 		if (world.isRemote){
 			return false;
 		}
-		
-		if (block == Blocks.end_stone) return true;
-		if (block == Blocks.stone) return true;
-		if (block == Blocks.sandstone) return true;
-		if (block == Blocks.netherrack) return true;
-		if (block == Blocks.nether_brick) return true;
-		if (block == Blocks.nether_brick_stairs) return true;
-		if (block == Blocks.nether_brick_fence) return true;
-		if (block == Blocks.glowstone) return true;
-		
-		
-		
+
+		if (block == Blocks.end_stone) {
+			return true;
+		}
+		if (block == Blocks.stone) {
+			return true;
+		}
+		if (block == Blocks.sandstone) {
+			return true;
+		}
+		if (block == Blocks.netherrack) {
+			return true;
+		}
+		if (block == Blocks.nether_brick) {
+			return true;
+		}
+		if (block == Blocks.nether_brick_stairs) {
+			return true;
+		}
+		if (block == Blocks.nether_brick_fence) {
+			return true;
+		}
+		if (block == Blocks.glowstone) {
+			return true;
+		}
+
+
+
 		try {
 			blockClass = block.getClass().toString().toLowerCase();
 			Utils.LOG_WARNING(blockClass);
@@ -189,10 +205,10 @@ public class UtilsMining {
 				return false;
 			}
 		}
-		catch(NullPointerException e){
+		catch(final NullPointerException e){
 			return false;
 		}
 	}
-	
-	
+
+
 }

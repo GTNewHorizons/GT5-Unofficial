@@ -1,15 +1,13 @@
 package gtPlusPlus.core.tileentities.machines;
 
+import java.util.List;
+import java.util.Vector;
+
 import gtPlusPlus.core.inventories.*;
 import ic2.api.network.INetworkDataProvider;
 import ic2.api.network.INetworkUpdateListener;
 import ic2.api.tile.IWrenchable;
 import ic2.core.IC2;
-import ic2.core.network.NetworkManager;
-
-import java.util.List;
-import java.util.Vector;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCraftResult;
@@ -24,8 +22,8 @@ public class TileEntityWorkbench extends TileEntity implements INetworkDataProvi
 
 	public InventoryWorkbenchChest inventoryChest;
 	public InventoryWorkbenchTools inventoryTool;
-	public InventoryWorkbenchHoloSlots inventoryHolo;	
-	public InventoryWorkbenchHoloCrafting inventoryCrafting;	
+	public InventoryWorkbenchHoloSlots inventoryHolo;
+	public InventoryWorkbenchHoloCrafting inventoryCrafting;
 
 	public IInventory inventoryCraftResult = new InventoryCraftResult();
 
@@ -38,7 +36,7 @@ public class TileEntityWorkbench extends TileEntity implements INetworkDataProvi
 	}
 
 	@SuppressWarnings("static-method")
-	public NBTTagCompound getTag(NBTTagCompound nbt, String tag)
+	public NBTTagCompound getTag(final NBTTagCompound nbt, final String tag)
 	{
 		if(!nbt.hasKey(tag))
 		{
@@ -48,75 +46,76 @@ public class TileEntityWorkbench extends TileEntity implements INetworkDataProvi
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt)
+	public void writeToNBT(final NBTTagCompound nbt)
 	{
 		super.writeToNBT(nbt);
-		
+
 		nbt.setShort("facing", this.facing);
-		
-		inventoryChest.writeToNBT(getTag(nbt, "ContentsChest"));
-		inventoryTool.writeToNBT(getTag(nbt, "ContentsTools"));
+
+		this.inventoryChest.writeToNBT(this.getTag(nbt, "ContentsChest"));
+		this.inventoryTool.writeToNBT(this.getTag(nbt, "ContentsTools"));
 		//inventoryCrafting.writeToNBT(getTag(nbt, "ContentsCrafting"));
-		inventoryHolo.writeToNBT(getTag(nbt, "ContentsHolo"));
+		this.inventoryHolo.writeToNBT(this.getTag(nbt, "ContentsHolo"));
 
 		// Write Crafting Matrix to NBT
-		NBTTagList craftingTag = new NBTTagList();
-		for (int currentIndex = 0; currentIndex < inventoryCrafting.getSizeInventory(); ++currentIndex) {
-			if (inventoryCrafting.getStackInSlot(currentIndex) != null) {
-				NBTTagCompound tagCompound = new NBTTagCompound();
+		final NBTTagList craftingTag = new NBTTagList();
+		for (int currentIndex = 0; currentIndex < this.inventoryCrafting.getSizeInventory(); ++currentIndex) {
+			if (this.inventoryCrafting.getStackInSlot(currentIndex) != null) {
+				final NBTTagCompound tagCompound = new NBTTagCompound();
 				tagCompound.setByte("Slot", (byte) currentIndex);
-				inventoryCrafting.getStackInSlot(currentIndex).writeToNBT(tagCompound);
+				this.inventoryCrafting.getStackInSlot(currentIndex).writeToNBT(tagCompound);
 				craftingTag.appendTag(tagCompound);
 			}
 		}
 
 		nbt.setTag("CraftingMatrix", craftingTag);
 		// Write craftingResult to NBT
-		if (inventoryCraftResult.getStackInSlot(0) != null)
-			nbt.setTag("CraftingResult", inventoryCraftResult.getStackInSlot(0).writeToNBT(new NBTTagCompound()));
+		if (this.inventoryCraftResult.getStackInSlot(0) != null) {
+			nbt.setTag("CraftingResult", this.inventoryCraftResult.getStackInSlot(0).writeToNBT(new NBTTagCompound()));
+		}
 
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound nbt)
+	public void readFromNBT(final NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
 
-	    this.prevFacing = (this.facing = nbt.getShort("facing"));
-	    
-		inventoryChest.readFromNBT(nbt.getCompoundTag("ContentsChest"));
-		inventoryTool.readFromNBT(nbt.getCompoundTag("ContentsTools"));
+		this.prevFacing = (this.facing = nbt.getShort("facing"));
+
+		this.inventoryChest.readFromNBT(nbt.getCompoundTag("ContentsChest"));
+		this.inventoryTool.readFromNBT(nbt.getCompoundTag("ContentsTools"));
 		//inventoryCrafting.readFromNBT(nbt.getCompoundTag("ContentsCrafting"));
-		inventoryHolo.readFromNBT(nbt.getCompoundTag("ContentsHolo"));
+		this.inventoryHolo.readFromNBT(nbt.getCompoundTag("ContentsHolo"));
 
 		// Read in the Crafting Matrix from NBT
-		NBTTagList craftingTag = nbt.getTagList("CraftingMatrix", 10);
-		inventoryCrafting = new InventoryWorkbenchHoloCrafting(); //TODO: magic number
+		final NBTTagList craftingTag = nbt.getTagList("CraftingMatrix", 10);
+		this.inventoryCrafting = new InventoryWorkbenchHoloCrafting(); //TODO: magic number
 		for (int i = 0; i < craftingTag.tagCount(); ++i) {
-			NBTTagCompound tagCompound = (NBTTagCompound) craftingTag.getCompoundTagAt(i);
-			byte slot = tagCompound.getByte("Slot");
-			if (slot >= 0 && slot < inventoryCrafting.getSizeInventory()) {
-				inventoryCrafting.setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(tagCompound));
+			final NBTTagCompound tagCompound = craftingTag.getCompoundTagAt(i);
+			final byte slot = tagCompound.getByte("Slot");
+			if ((slot >= 0) && (slot < this.inventoryCrafting.getSizeInventory())) {
+				this.inventoryCrafting.setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(tagCompound));
 			}
 		}
 
 
 		// Read craftingResult from NBT
-		NBTTagCompound tagCraftResult = nbt.getCompoundTag("CraftingResult");
-		inventoryCraftResult.setInventorySlotContents(0, ItemStack.loadItemStackFromNBT(tagCraftResult));
+		final NBTTagCompound tagCraftResult = nbt.getCompoundTag("CraftingResult");
+		this.inventoryCraftResult.setInventorySlotContents(0, ItemStack.loadItemStackFromNBT(tagCraftResult));
 
 	}
 
 	@Override
 	public List<String> getNetworkedFields(){
-		List<String> ret = new Vector(2);	    
-		ret.add("facing");	    
+		final List<String> ret = new Vector(2);
+		ret.add("facing");
 		return ret;
 	}
 
 
 	@Override
-	public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int side)
+	public boolean wrenchCanSetFacing(final EntityPlayer entityPlayer, final int side)
 	{
 		return false;
 	}
@@ -125,11 +124,11 @@ public class TileEntityWorkbench extends TileEntity implements INetworkDataProvi
 	public short prevFacing = 0;
 
 	@Override
-	public void setFacing(short facing1)
+	public void setFacing(final short facing1)
 	{
 		this.facing = facing1;
 		if (this.prevFacing != facing1) {
-			((NetworkManager)IC2.network.get()).updateTileEntityField(this, "facing");
+			IC2.network.get().updateTileEntityField(this, "facing");
 		}
 		this.prevFacing = facing1;
 	}
@@ -142,7 +141,7 @@ public class TileEntityWorkbench extends TileEntity implements INetworkDataProvi
 
 
 	@Override
-	public boolean wrenchCanRemove(EntityPlayer entityPlayer)
+	public boolean wrenchCanRemove(final EntityPlayer entityPlayer)
 	{
 		return true;
 	}
@@ -154,16 +153,16 @@ public class TileEntityWorkbench extends TileEntity implements INetworkDataProvi
 	}
 
 	@Override
-	public ItemStack getWrenchDrop(EntityPlayer entityPlayer)
+	public ItemStack getWrenchDrop(final EntityPlayer entityPlayer)
 	{
 		return new ItemStack(this.worldObj.getBlock(this.xCoord, this.yCoord, this.zCoord), 1, this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord));
 	}
 
 	@Override
-	public void onNetworkUpdate(String field) {
+	public void onNetworkUpdate(final String field) {
 
-	      this.prevFacing = this.facing;
-		
+		this.prevFacing = this.facing;
+
 	}
 
 

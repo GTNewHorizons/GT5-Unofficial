@@ -5,7 +5,7 @@ import gtPlusPlus.core.material.Material;
 
 public class BaseItemGear extends BaseItemComponent{
 
-	public BaseItemGear(Material material) {
-		super(material, BaseItemComponent.ComponentTypes.GEAR);		
+	public BaseItemGear(final Material material) {
+		super(material, BaseItemComponent.ComponentTypes.GEAR);
 	}
 }

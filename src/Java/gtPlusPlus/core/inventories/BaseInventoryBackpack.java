@@ -1,9 +1,8 @@
 package gtPlusPlus.core.inventories;
 
-import gtPlusPlus.core.item.base.BaseItemBackpack;
-
 import java.util.UUID;
 
+import gtPlusPlus.core.item.base.BaseItemBackpack;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -13,7 +12,7 @@ import net.minecraftforge.common.util.Constants;
 
 public class BaseInventoryBackpack implements IInventory{
 
-	private String name = "Inventory Item";
+	private final String name = "Inventory Item";
 
 	/** Provides NBT Tag Compound to reference */
 	private final ItemStack invItem;
@@ -22,28 +21,28 @@ public class BaseInventoryBackpack implements IInventory{
 	public static final int INV_SIZE = 8;
 
 	/** Inventory's size must be same as number of slots you add to the Container class */
-	private ItemStack[] inventory = new ItemStack[INV_SIZE];
+	private final ItemStack[] inventory = new ItemStack[INV_SIZE];
 
 	// declaration of variable:
-	protected String uniqueID;	
+	protected String uniqueID;
 
 	/**
 	 * @param itemstack - the ItemStack to which this inventory belongs
 	 */
-	public BaseInventoryBackpack(ItemStack stack)
+	public BaseInventoryBackpack(final ItemStack stack)
 	{
-		invItem = stack;
+		this.invItem = stack;
 
 		/** initialize variable within the constructor: */
-		uniqueID = "";
+		this.uniqueID = "";
 
 		if (!stack.hasTagCompound())
 		{
 			stack.setTagCompound(new NBTTagCompound());
 			// no tag compound means the itemstack does not yet have a UUID, so assign one:
-			uniqueID = UUID.randomUUID().toString();
-		}		
-		
+			this.uniqueID = UUID.randomUUID().toString();
+		}
+
 		// Create a new NBT Tag Compound if one doesn't already exist, or you will crash
 		if (!stack.hasTagCompound()) {
 			stack.setTagCompound(new NBTTagCompound());
@@ -53,75 +52,75 @@ public class BaseInventoryBackpack implements IInventory{
 		// either reference will change in the other
 
 		// Read the inventory contents from NBT
-		readFromNBT(stack.getTagCompound());
+		this.readFromNBT(stack.getTagCompound());
 	}
 	@Override
 	public int getSizeInventory()
 	{
-		return inventory.length;
+		return this.inventory.length;
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int slot)
+	public ItemStack getStackInSlot(final int slot)
 	{
-		return inventory[slot];
+		return this.inventory[slot];
 	}
 
 	@Override
-	public ItemStack decrStackSize(int slot, int amount)
+	public ItemStack decrStackSize(final int slot, final int amount)
 	{
-		ItemStack stack = getStackInSlot(slot);
+		ItemStack stack = this.getStackInSlot(slot);
 		if(stack != null)
 		{
 			if(stack.stackSize > amount)
 			{
 				stack = stack.splitStack(amount);
 				// Don't forget this line or your inventory will not be saved!
-				markDirty();
+				this.markDirty();
 			}
 			else
 			{
 				// this method also calls markDirty, so we don't need to call it again
-				setInventorySlotContents(slot, null);
+				this.setInventorySlotContents(slot, null);
 			}
 		}
 		return stack;
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int slot)
+	public ItemStack getStackInSlotOnClosing(final int slot)
 	{
-		ItemStack stack = getStackInSlot(slot);
-		setInventorySlotContents(slot, null);
+		final ItemStack stack = this.getStackInSlot(slot);
+		this.setInventorySlotContents(slot, null);
 		return stack;
 	}
 
 	@Override
-	public void setInventorySlotContents(int slot, ItemStack stack)
+	public void setInventorySlotContents(final int slot, final ItemStack stack)
 	{
-		inventory[slot] = stack;
+		this.inventory[slot] = stack;
 
-		if (stack != null && stack.stackSize > getInventoryStackLimit())
+		if ((stack != null) && (stack.stackSize > this.getInventoryStackLimit()))
 		{
-			stack.stackSize = getInventoryStackLimit();
+			stack.stackSize = this.getInventoryStackLimit();
 		}
 
 		// Don't forget this line or your inventory will not be saved!
-		markDirty();
+		this.markDirty();
 	}
 
 	// 1.7.2+ renamed to getInventoryName
 	@Override
 	public String getInventoryName()
 	{
-		return name;
+		return this.name;
 	}
 
 	// 1.7.2+ renamed to hasCustomInventoryName
 	@Override
 	public boolean hasCustomInventoryName()
 	{
-		return name.length() > 0;
+		return this.name.length() > 0;
 	}
 
 	@Override
@@ -139,19 +138,19 @@ public class BaseInventoryBackpack implements IInventory{
 	@Override
 	public void markDirty()
 	{
-		for (int i = 0; i < getSizeInventory(); ++i)
+		for (int i = 0; i < this.getSizeInventory(); ++i)
 		{
-			if (getStackInSlot(i) != null && getStackInSlot(i).stackSize == 0) {
-				inventory[i] = null;
+			if ((this.getStackInSlot(i) != null) && (this.getStackInSlot(i).stackSize == 0)) {
+				this.inventory[i] = null;
 			}
 		}
 
-		// This line here does the work:		
-		writeToNBT(invItem.getTagCompound());
+		// This line here does the work:
+		this.writeToNBT(this.invItem.getTagCompound());
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer)
+	public boolean isUseableByPlayer(final EntityPlayer entityplayer)
 	{
 		return true;
 	}
@@ -170,7 +169,7 @@ public class BaseInventoryBackpack implements IInventory{
 	 * even when this returns false
 	 */
 	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack itemstack)
+	public boolean isItemValidForSlot(final int slot, final ItemStack itemstack)
 	{
 		// Don't want to be able to store the inventory item within itself
 		// Bad things will happen, like losing your inventory
@@ -181,32 +180,32 @@ public class BaseInventoryBackpack implements IInventory{
 	/**
 	 * A custom method to read our inventory from an ItemStack's NBT compound
 	 */
-	public void readFromNBT(NBTTagCompound compound)
+	public void readFromNBT(final NBTTagCompound compound)
 	{
 		// Gets the custom taglist we wrote to this compound, if any
 		// 1.7.2+ change to compound.getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND);
-		NBTTagList items = compound.getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND);
-		
-		if ("".equals(uniqueID))
+		final NBTTagList items = compound.getTagList("ItemInventory", Constants.NBT.TAG_COMPOUND);
+
+		if ("".equals(this.uniqueID))
 		{
 			// try to read unique ID from NBT
-			uniqueID = compound.getString("uniqueID");
+			this.uniqueID = compound.getString("uniqueID");
 			// if it's still "", assign a new one:
-			if ("".equals(uniqueID))
+			if ("".equals(this.uniqueID))
 			{
-				uniqueID = UUID.randomUUID().toString();
+				this.uniqueID = UUID.randomUUID().toString();
 			}
 		}
 
 		for (int i = 0; i < items.tagCount(); ++i)
 		{
 			// 1.7.2+ change to items.getCompoundTagAt(i)
-			NBTTagCompound item = (NBTTagCompound) items.getCompoundTagAt(i);
-			int slot = item.getInteger("Slot");
+			final NBTTagCompound item = items.getCompoundTagAt(i);
+			final int slot = item.getInteger("Slot");
 
 			// Just double-checking that the saved slot index is within our inventory array bounds
-			if (slot >= 0 && slot < getSizeInventory()) {
-				inventory[slot] = ItemStack.loadItemStackFromNBT(item);
+			if ((slot >= 0) && (slot < this.getSizeInventory())) {
+				this.inventory[slot] = ItemStack.loadItemStackFromNBT(item);
 			}
 		}
 	}
@@ -214,21 +213,21 @@ public class BaseInventoryBackpack implements IInventory{
 	/**
 	 * A custom method to write our inventory to an ItemStack's NBT compound
 	 */
-	public void writeToNBT(NBTTagCompound tagcompound)
+	public void writeToNBT(final NBTTagCompound tagcompound)
 	{
 		// Create a new NBT Tag List to store itemstacks as NBT Tags
-		NBTTagList items = new NBTTagList();
+		final NBTTagList items = new NBTTagList();
 
-		for (int i = 0; i < getSizeInventory(); ++i)
+		for (int i = 0; i < this.getSizeInventory(); ++i)
 		{
 			// Only write stacks that contain items
-			if (getStackInSlot(i) != null)
+			if (this.getStackInSlot(i) != null)
 			{
 				// Make a new NBT Tag Compound to write the itemstack and slot index to
-				NBTTagCompound item = new NBTTagCompound();
+				final NBTTagCompound item = new NBTTagCompound();
 				item.setInteger("Slot", i);
 				// Writes the itemstack in slot(i) to the Tag Compound we just made
-				getStackInSlot(i).writeToNBT(item);
+				this.getStackInSlot(i).writeToNBT(item);
 
 				// add the tag compound to our tag list
 				items.appendTag(item);

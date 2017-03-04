@@ -1,13 +1,12 @@
 package gtPlusPlus.core.item.base;
 
+import java.util.List;
+
 import gregtech.api.enums.Materials;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Quality;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
-
-import java.util.List;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -22,51 +21,51 @@ public class BaseItemLoot extends Item{
 	private Quality lootQuality;
 	private final Materials lootMaterial;
 
-	public BaseItemLoot(LootTypes lootType, Materials material) {
+	public BaseItemLoot(final LootTypes lootType, final Materials material) {
 		this.lootTypes = lootType;
 		this.lootMaterial = material;
-		this.materialName = material.mDefaultLocalName;		
-		this.unlocalName = "item"+lootType.LOOT_TYPE+this.materialName;		
-		this.setUnlocalizedName(unlocalName);
+		this.materialName = material.mDefaultLocalName;
+		this.unlocalName = "item"+lootType.LOOT_TYPE+this.materialName;
+		this.setUnlocalizedName(this.unlocalName);
 		this.setMaxStackSize(1);
 		this.setTextureName(CORE.MODID + ":" + "item"+lootType.LOOT_TYPE);
 	}
-	
+
 	public ItemStack generateLootStack(){
-		lootQuality = Quality.getRandomQuality();
+		this.lootQuality = Quality.getRandomQuality();
 		return ItemUtils.getSimpleStack(this, 1);
 	}
 
 	@Override
-	public String getItemStackDisplayName(ItemStack p_77653_1_) {
-		return (materialName+lootTypes.DISPLAY_SUFFIX);
+	public String getItemStackDisplayName(final ItemStack p_77653_1_) {
+		return (this.materialName+this.lootTypes.DISPLAY_SUFFIX);
 	}
 
 	public final String getMaterialName() {
-		return materialName;
+		return this.materialName;
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer aPlayer, List list, boolean bool) {
-		list.add(lootQuality.getQuality());
-			
+	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
+		list.add(this.lootQuality.getQuality());
+
 		/*if (componentMaterial.isRadioactive){
 				list.add(CORE.GT_Tooltip_Radioactive);
-			}*/		
+			}*/
 
 		super.addInformation(stack, aPlayer, list, bool);
 	}
 
 
 	@Override
-	public int getColorFromItemStack(ItemStack stack, int HEX_OxFFFFFF) {
-		short[] temp = lootMaterial.mRGBa;
+	public int getColorFromItemStack(final ItemStack stack, final int HEX_OxFFFFFF) {
+		final short[] temp = this.lootMaterial.mRGBa;
 		return Utils.rgbtoHexValue(temp[0], temp[1], temp[2]);
 	}
 
 	@Override
-	public void onUpdate(ItemStack iStack, World world, Entity entityHolding, int p_77663_4_, boolean p_77663_5_) {
+	public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_, final boolean p_77663_5_) {
 		//EntityUtils.applyRadiationDamageToEntity(lootQuality.vRadioationLevel, world, entityHolding);
 	}
 
@@ -83,7 +82,7 @@ public class BaseItemLoot extends Item{
 		Helmet("Helmet", " Medium Helm", "helmet"),
 		Chestplate("Platebody", " Chestplate", "platebody"),
 		Leggings("Platelegs", " Platelegs", "platelegs"),
-		Boots("Boots", " Boots", "boots");	    
+		Boots("Boots", " Boots", "boots");
 		private String LOOT_TYPE;
 		private String DISPLAY_SUFFIX;
 		private String OREDICT_NAME;
@@ -93,13 +92,13 @@ public class BaseItemLoot extends Item{
 			this.OREDICT_NAME = OreDictName;
 		}
 		public String getLootType(){
-			return LOOT_TYPE;
-		}	 
+			return this.LOOT_TYPE;
+		}
 		public String getName(){
-			return DISPLAY_SUFFIX;
+			return this.DISPLAY_SUFFIX;
 		}
 		public String getOreDictName(){
-		return OREDICT_NAME;
+			return this.OREDICT_NAME;
 		}
 	}
 

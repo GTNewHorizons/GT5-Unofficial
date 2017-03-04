@@ -1,10 +1,9 @@
 package gtPlusPlus.xmod.forestry.bees.alveary;
 
-import net.minecraft.util.ChunkCoordinates;
-
 import com.mojang.authlib.GameProfile;
 
 import forestry.api.multiblock.*;
+import net.minecraft.util.ChunkCoordinates;
 
 public class FR_AlvearyFrameBlock implements IAlvearyComponent, IMultiblockComponent{
 
@@ -21,16 +20,16 @@ public class FR_AlvearyFrameBlock implements IAlvearyComponent, IMultiblockCompo
 	}
 
 	@Override
-	public void onMachineAssembled(IMultiblockController arg0,
-			ChunkCoordinates arg1, ChunkCoordinates arg2) {
+	public void onMachineAssembled(final IMultiblockController arg0,
+			final ChunkCoordinates arg1, final ChunkCoordinates arg2) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onMachineBroken() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

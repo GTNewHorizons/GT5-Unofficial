@@ -1,17 +1,16 @@
 package gtPlusPlus.core.lib;
 
+import static gtPlusPlus.core.lib.CORE.GTNH;
+
+import cpw.mods.fml.common.Loader;
 import gtPlusPlus.core.lib.CORE.configSwitches;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechTextures;
 import gtPlusPlus.xmod.gregtech.recipes.GregtechRecipeAdder;
 
-import static gtPlusPlus.core.lib.CORE.GTNH;
-
-import cpw.mods.fml.common.Loader;
-
 public class LoadedMods {
 
-	
+
 	//Initialize Variables
 	public static boolean Gregtech = false;
 	public static boolean PlayerAPI = false;
@@ -42,9 +41,9 @@ public class LoadedMods {
 	public static boolean OpenComputers = false; //OpenComputers
 	public static boolean Computronics = false; //computronics
 	public static boolean DreamCraft = false; //GT: New Horizons
-	
 
-	
+
+
 	private static int totalMods;
 	@SuppressWarnings("deprecation")
 	public static void checkLoaded(){
@@ -59,11 +58,11 @@ public class LoadedMods {
 					GregtechTextures.BlockIcons.VOID.name();
 					GregtechTextures.ItemIcons.VOID.name();
 					Utils.LOG_INFO("Created Gregtech texture handler.");
-				} catch (NullPointerException e){
+				} catch (final NullPointerException e){
 					Utils.LOG_INFO("Could NOT create a Gregtech recipe handler.");
 				}
 			}
-			
+
 			totalMods++;
 		}
 		//
@@ -75,7 +74,7 @@ public class LoadedMods {
 			Utils.LOG_INFO("Components enabled for: GT: New Horizons");
 			totalMods++;
 		}
-		
+
 		if (Loader.isModLoaded("PlayerAPI") == true){
 			PlayerAPI = true;
 			Utils.LOG_INFO("Components enabled for: PlayerAPI");
@@ -86,7 +85,7 @@ public class LoadedMods {
 			Utils.LOG_INFO("Components enabled for: BuildCraft");
 			totalMods++;
 		}
-		if (Loader.isModLoaded("EnderIO") == true && !configSwitches.disableEnderIOIntegration){
+		if ((Loader.isModLoaded("EnderIO") == true) && !configSwitches.disableEnderIOIntegration){
 			EnderIO = true;
 			Utils.LOG_INFO("Components enabled for: EnderIO");
 			totalMods++;
@@ -203,7 +202,7 @@ public class LoadedMods {
 			IHL  = true;
 			Utils.LOG_INFO("Components enabled for: IHL");
 			totalMods++;
-		} 
+		}
 		if (Loader.isModLoaded("Baubles") == true){
 			Baubles  = true;
 			Utils.LOG_INFO("Components enabled for: Baubles");
@@ -219,14 +218,14 @@ public class LoadedMods {
 			Utils.LOG_INFO("Components enabled for: Computronics");
 			totalMods++;
 		}
-	
+
 		Utils.LOG_INFO("Content found for "+totalMods+" mods");
-		
+
 	}
-	
-	public static String getModVersion(String modName){
+
+	public static String getModVersion(final String modName){
 		final String ver = cpw.mods.fml.common.FMLCommonHandler.instance().findContainerFor(modName).getVersion();
 		return ver;
 	}
-	
+
 }

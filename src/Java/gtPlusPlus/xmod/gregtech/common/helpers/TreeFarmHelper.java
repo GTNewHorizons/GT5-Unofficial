@@ -1,6 +1,8 @@
 package gtPlusPlus.xmod.gregtech.common.helpers;
 
 import static gtPlusPlus.core.lib.CORE.configSwitches.enableTreeFarmerParticles;
+
+import cpw.mods.fml.common.eventhandler.Event.Result;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -23,7 +25,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.fluids.FluidStack;
-import cpw.mods.fml.common.eventhandler.Event.Result;
 
 public class TreeFarmHelper {
 
@@ -32,7 +33,7 @@ public class TreeFarmHelper {
 	public static final FluidStack fertT3 = FluidUtils.getFluidStack("fluid.un32fertiliser", 1);
 
 	public static ITexture[][][] getTextureSet() {
-		ITexture[][][] rTextures = new ITexture[10][17][];
+		final ITexture[][][] rTextures = new ITexture[10][17][];
 		for (byte i = -1; i < 16; i++) {
 			rTextures[0][i + 1] = TreeFarmHelper.getFront(i);
 			rTextures[1][i + 1] = TreeFarmHelper.getBack(i);
@@ -88,8 +89,8 @@ public class TreeFarmHelper {
 		return getSides(aColor);
 	}
 
-	public static boolean applyBonemeal(EntityPlayer player, World world, int intX, int intY, int intZ, short multiplier){
-		Block block = world.getBlock(intX, intY, intZ);
+	public static boolean applyBonemeal(final EntityPlayer player, final World world, final int intX, final int intY, final int intZ, final short multiplier){
+		final Block block = world.getBlock(intX, intY, intZ);
 
 
 		int roll;
@@ -97,15 +98,15 @@ public class TreeFarmHelper {
 
 		if (multiplier==1){
 			roll = MathUtils.randInt(1, 15);
-			rollNeeded = 15;			
+			rollNeeded = 15;
 		}
 		else if (multiplier==2){
 			roll = MathUtils.randInt(1, 10);
-			rollNeeded = 10;			
+			rollNeeded = 10;
 		}
 		else {
 			roll = MathUtils.randInt(1, 5);
-			rollNeeded = 5;			
+			rollNeeded = 5;
 		}
 
 		if (roll != rollNeeded){
@@ -118,7 +119,7 @@ public class TreeFarmHelper {
 				world.playAuxSFX(2005, intX, intY, intZ, 0);
 			}
 		}
-		BonemealEvent event = new BonemealEvent(player, world, block, intX, intY, intZ);
+		final BonemealEvent event = new BonemealEvent(player, world, block, intX, intY, intZ);
 		if (MinecraftForge.EVENT_BUS.post(event)){
 			Utils.LOG_MACHINE_INFO("Not sure why this returned false");
 			return false;
@@ -130,13 +131,13 @@ public class TreeFarmHelper {
 			return true;
 		}
 		if (block instanceof IGrowable){
-			IGrowable igrowable = (IGrowable)block;
+			final IGrowable igrowable = (IGrowable)block;
 			if (igrowable.func_149851_a(world, intX, intY, intZ, world.isRemote)){
 				if (!world.isRemote){
 					if (igrowable.func_149852_a(world, CORE.RANDOM, intX, intY, intZ)){
 						igrowable.func_149853_b(world, CORE.RANDOM, intX, intY, intZ);
 					}
-				}				
+				}
 				return true;
 			}
 		}
@@ -146,53 +147,57 @@ public class TreeFarmHelper {
 	public static boolean cleanUp(final IGregTechTileEntity aBaseMetaTileEntity){
 		Utils.LOG_MACHINE_INFO("called cleanUp()");
 		int cleanedUp = 0;
-		final int xDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 11; 
+		final int xDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 11;
 		final int zDir = net.minecraftforge.common.util.ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 11;
-		
+
 		for (int h=1;h<175;h++){
-		for (int i = -11; i <= 11; i++) {
-			for (int j = -11; j <= 11; j++) {
+			for (int i = -11; i <= 11; i++) {
+				for (int j = -11; j <= 11; j++) {
 
-					Block testBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
+					final Block testBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
 
 
-					if 
+					if
 					((
-							(i == -8 || i == 8) ||
-							(i == -9 || i == 9) ||
-							(i == -10 || i == 10) ||
-							(i == -11 || i == 11)
+							((i == -8) || (i == 8)) ||
+							((i == -9) || (i == 9)) ||
+							((i == -10) || (i == 10)) ||
+							((i == -11) || (i == 11))
 							)
-									&&
+							&&
 							(
-							(j == -8 || j == 8) ||
-							(j == -9 || j == 9) ||
-							(j == -10 || j == 10) ||
-							(j == -11 || j == 11)
-							)){
-						
-						if (!testBlock.getUnlocalizedName().toLowerCase().contains("air") || !testBlock.getUnlocalizedName().toLowerCase().contains("pumpkin"))
-						Utils.LOG_INFO("5:"+testBlock.getUnlocalizedName());
-						else aBaseMetaTileEntity.getWorld().setBlock(aBaseMetaTileEntity.getXCoord()+xDir+i, aBaseMetaTileEntity.getYCoord()+h, aBaseMetaTileEntity.getZCoord()+zDir+j, Blocks.bookshelf);
+									((j == -8) || (j == 8)) ||
+									((j == -9) || (j == 9)) ||
+									((j == -10) || (j == 10)) ||
+									((j == -11) || (j == 11))
+									)){
+
+						if (!testBlock.getUnlocalizedName().toLowerCase().contains("air") || !testBlock.getUnlocalizedName().toLowerCase().contains("pumpkin")) {
+							Utils.LOG_INFO("5:"+testBlock.getUnlocalizedName());
+						} else {
+							aBaseMetaTileEntity.getWorld().setBlock(aBaseMetaTileEntity.getXCoord()+xDir+i, aBaseMetaTileEntity.getYCoord()+h, aBaseMetaTileEntity.getZCoord()+zDir+j, Blocks.bookshelf);
+						}
 					}
 
 
 					//If not in the middle - don't know how else to check this one without lots of !=
 					if (
-							i != 7 && i != -7 && j != 7 && j != -7 &&
-							i != 6 && i != -6 && j != 6 && j != -6 &&
-							i != 5 && i != -5 && j != 5 && j != -5 &&
-							i != 4 && i != -4 && j != 4 && j != -4 &&
-							i != 3 && i != -3 && j != 3 && j != -3 &&
-							i != 2 && i != -2 && j != 2 && j != -2 &&
-							i != 1 && i != -1 && j != 1 && j != -1 &&
-							i != 0 && j != 0
+							(i != 7) && (i != -7) && (j != 7) && (j != -7) &&
+							(i != 6) && (i != -6) && (j != 6) && (j != -6) &&
+							(i != 5) && (i != -5) && (j != 5) && (j != -5) &&
+							(i != 4) && (i != -4) && (j != 4) && (j != -4) &&
+							(i != 3) && (i != -3) && (j != 3) && (j != -3) &&
+							(i != 2) && (i != -2) && (j != 2) && (j != -2) &&
+							(i != 1) && (i != -1) && (j != 1) && (j != -1) &&
+							(i != 0) && (j != 0)
 							){
-						
-						if (!testBlock.getUnlocalizedName().toLowerCase().contains("air") || !testBlock.getUnlocalizedName().toLowerCase().contains("pumpkin"))
-						Utils.LOG_INFO("0:"+testBlock.getUnlocalizedName());
-						else aBaseMetaTileEntity.getWorld().setBlock(aBaseMetaTileEntity.getXCoord()+xDir+i, aBaseMetaTileEntity.getYCoord()+h, aBaseMetaTileEntity.getZCoord()+zDir+j, Blocks.melon_block);
-						
+
+						if (!testBlock.getUnlocalizedName().toLowerCase().contains("air") || !testBlock.getUnlocalizedName().toLowerCase().contains("pumpkin")) {
+							Utils.LOG_INFO("0:"+testBlock.getUnlocalizedName());
+						} else {
+							aBaseMetaTileEntity.getWorld().setBlock(aBaseMetaTileEntity.getXCoord()+xDir+i, aBaseMetaTileEntity.getYCoord()+h, aBaseMetaTileEntity.getZCoord()+zDir+j, Blocks.melon_block);
+						}
+
 
 						if (TreefarmManager.isLeaves(testBlock) || TreefarmManager.isWoodLog(testBlock)){
 							Utils.LOG_INFO("1:"+testBlock.getUnlocalizedName());
@@ -208,7 +213,7 @@ public class TreeFarmHelper {
 						else {
 							//Utils.LOG_INFO("2:"+testBlock.getUnlocalizedName());
 						}
-					}	
+					}
 					else {
 						//Utils.LOG_INFO("1");
 					}
@@ -219,12 +224,12 @@ public class TreeFarmHelper {
 			}
 		}
 		Utils.LOG_MACHINE_INFO("cleaning up | "+cleanedUp );
-		return true;		
+		return true;
 	}
 
 	public static SAWTOOL isCorrectMachinePart(final ItemStack aStack) {
 		if (aStack != null){
-			if (aStack.getItem() instanceof GT_MetaGenerated_Item_02 || aStack.getItem() instanceof GT_MetaGenerated_Tool){
+			if ((aStack.getItem() instanceof GT_MetaGenerated_Item_02) || (aStack.getItem() instanceof GT_MetaGenerated_Tool)){
 				if (OrePrefixes.craftingTool.contains(aStack)){
 					if (aStack.getDisplayName().toLowerCase().contains("saw")){
 						if (aStack.getItemDamage() == 10){

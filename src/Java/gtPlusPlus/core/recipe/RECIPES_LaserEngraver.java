@@ -15,8 +15,8 @@ public class RECIPES_LaserEngraver implements IOreRecipeRegistrator {
 	}
 
 	@Override
-	public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
-		if (aOreDictName.equals(OreDictNames.craftingLensBlue.toString())) {			
+	public void registerOre(final OrePrefixes aPrefix, final Materials aMaterial, final String aOreDictName, final String aModName, final ItemStack aStack) {
+		if (aOreDictName.equals(OreDictNames.craftingLensBlue.toString())) {
 			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("foilYttriumBariumCuprate", 1) != null){
 				GT_Values.RA.addLaserEngraverRecipe(GT_OreDictUnificator.get(OrePrefixes.foil, Materials.YttriumBariumCuprate, 2L), GT_Utility.copyAmount(0L, new Object[]{aStack}), GregtechItemList.Circuit_Parts_Wiring_IV.get(1L, new Object[0]), 64, 480);
 			}
@@ -39,8 +39,8 @@ public class RECIPES_LaserEngraver implements IOreRecipeRegistrator {
 				Utils.LOG_INFO("This material item can be re-enabled within the gregtech configuration files, If you wish to fix this yourself.");
 			}
 
-			
-		} else if (aOreDictName.equals(OreDictNames.craftingLensYellow.toString())) {			
+
+		} else if (aOreDictName.equals(OreDictNames.craftingLensYellow.toString())) {
 			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("foilOsmium", 1) != null){
 				GT_Values.RA.addLaserEngraverRecipe(GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmium, 2L), GT_Utility.copyAmount(0L, new Object[]{aStack}), GregtechItemList.Circuit_Parts_Wiring_LuV.get(1L, new Object[0]), 64, 1024);
 			}
@@ -48,7 +48,7 @@ public class RECIPES_LaserEngraver implements IOreRecipeRegistrator {
 				Utils.LOG_INFO("foilOsmium does not exist within Gregtech, please report this issue to Blood-asp on github.");
 				Utils.LOG_INFO("This material item can be re-enabled within the gregtech configuration files, If you wish to fix this yourself.");
 			}
-			
+
 		} else if (aOreDictName.equals(OreDictNames.craftingLensCyan.toString())) {
 		} else if (aOreDictName.equals(OreDictNames.craftingLensRed.toString())) {
 		} else if (aOreDictName.equals(OreDictNames.craftingLensGreen.toString())) {
@@ -75,7 +75,7 @@ public class RECIPES_LaserEngraver implements IOreRecipeRegistrator {
 				Utils.LOG_INFO("dustLithium does not exist within Gregtech, please report this issue to Blood-asp on github.");
 				Utils.LOG_INFO("This material item can be re-enabled within the gregtech configuration files, If you wish to fix this yourself.");
 			}
-			
+
 		}
 	}
 }

@@ -9,7 +9,7 @@ public class HANDLER_GC {
 	//Run me during Pre-Init
 	public static void preInit(){
 		if (LoadedMods.Growthcraft){
-			//Register_Booze.preInit();			
+			//Register_Booze.preInit();
 		}
 	}
 

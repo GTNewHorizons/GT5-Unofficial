@@ -12,47 +12,47 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.machines
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GregtechMetaSafeBlock
-        extends GregtechMetaSafeBlockBase {
-	
+extends GregtechMetaSafeBlockBase {
+
 	@Override
 	public String[] getDescription() {
-		return new String[] {mDescription, CORE.GT_Tooltip};
+		return new String[] {this.mDescription, CORE.GT_Tooltip};
 	}
-	
-    public GregtechMetaSafeBlock(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 28, "Protecting your items from sticky fingers.");
-    }
 
-    public GregtechMetaSafeBlock(int aID, String aName, String aNameRegional, int aTier, int aInvSlotCount, String aDescription) {
-        super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
-    }
+	public GregtechMetaSafeBlock(final int aID, final String aName, final String aNameRegional, final int aTier) {
+		super(aID, aName, aNameRegional, aTier, 28, "Protecting your items from sticky fingers.");
+	}
 
-    public GregtechMetaSafeBlock(String aName, int aTier, int aInvSlotCount, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aInvSlotCount, aDescription, aTextures);
-    }
+	public GregtechMetaSafeBlock(final int aID, final String aName, final String aNameRegional, final int aTier, final int aInvSlotCount, final String aDescription) {
+		super(aID, aName, aNameRegional, aTier, aInvSlotCount, aDescription);
+	}
 
-    @Override
-	public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GregtechMetaSafeBlock(this.mName, this.mTier, this.mInventory.length, this.mDescription, this.mTextures);
-    }
+	public GregtechMetaSafeBlock(final String aName, final int aTier, final int aInvSlotCount, final String aDescription, final ITexture[][][] aTextures) {
+		super(aName, aTier, aInvSlotCount, aDescription, aTextures);
+	}
 
-    @Override
+	@Override
+	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
+		return new GregtechMetaSafeBlock(this.mName, this.mTier, this.mInventory.length, this.mDescription, this.mTextures);
+	}
+
+	@Override
 	public ITexture getOverlayIcon() {
-        return new GT_RenderedTexture(Textures.BlockIcons.VOID);
-    }
+		return new GT_RenderedTexture(Textures.BlockIcons.VOID);
+	}
 
-    @Override
-	public boolean isValidSlot(int aIndex) {
-        return aIndex < this.mInventory.length - 1;
-    }
+	@Override
+	public boolean isValidSlot(final int aIndex) {
+		return aIndex < (this.mInventory.length - 1);
+	}
 
-    @Override
-	public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new CONTAINER_SafeBlock(aPlayerInventory, aBaseMetaTileEntity);
-    }
+	@Override
+	public Object getServerGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
+		return new CONTAINER_SafeBlock(aPlayerInventory, aBaseMetaTileEntity);
+	}
 
-    @Override
-	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GUI_SafeBlock(aPlayerInventory, aBaseMetaTileEntity);
-    }
+	@Override
+	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
+		return new GUI_SafeBlock(aPlayerInventory, aBaseMetaTileEntity);
+	}
 }

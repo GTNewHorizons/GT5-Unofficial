@@ -20,81 +20,81 @@ extends GT_MetaTileEntity_BasicTank {
 
 	private String mFluidName;
 	private int mFluidAmount;
-	private NBTTagCompound internalCraftingComponentsTag = new NBTTagCompound();
+	private final NBTTagCompound internalCraftingComponentsTag = new NBTTagCompound();
 
-	public GT_MetaTileEntity_TieredTank(int aID, String aName, String aNameRegional, int aTier) {
-		super(aID, aName, aNameRegional, aTier, 3, "Stores " + ((int) (Math.pow(2, aTier) * 32000)) + "L of fluid");
+	public GT_MetaTileEntity_TieredTank(final int aID, final String aName, final String aNameRegional, final int aTier) {
+		super(aID, aName, aNameRegional, aTier, 3, "Stores " + ((aTier+1) * 32000) + "L of fluid");
 	}
 
-	public GT_MetaTileEntity_TieredTank(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-		super(aName, aTier, 3, aDescription, aTextures);
+	public GT_MetaTileEntity_TieredTank(final String aName, final int aTier, final String aDescription, final ITexture[][][] aTextures) {
+		super(aName, aTier, 3, "Stores " + ((aTier+1) * 32000) + "L of fluid", aTextures);
 	}
 
 	@Override
-	public ITexture[][][] getTextureSet(ITexture[] aTextures) {
+	public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
 		return new ITexture[0][0][0];
 	}
 
 	@Override
-	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-		return aSide == 1 ? new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER_ACTIVE)} : new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER)};
+	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+		return aSide == 1 ? new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER_ACTIVE)} : new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColorIndex + 1], new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_POTIONBREWER)};
 	}
 
-	@Override
+	/*@Override
 	public String[] getDescription() {
 		//setVars();
-		if ((mFluidName.equals("Empty")||mFluidName.equals("")) || mFluidAmount <= 0){
-			return new String[] {mDescription, CORE.GT_Tooltip};
+		if ((this.mFluidName.equals("Empty")||this.mFluidName.equals("")) || (this.mFluidAmount <= 0)){
+			return new String[] {"Stores " + (this.mTier * 32000) + "L of fluid", CORE.GT_Tooltip};
 		}
-		return new String[] {mDescription, "Stored Fluid: "+mFluidName, "Stored Amount: "+mFluidAmount+"l", CORE.GT_Tooltip};
-	}
+		return new String[] {"Stores " + (this.mTier * 32000) + "L of fluid", "Stored Fluid: "+this.mFluidName, "Stored Amount: "+this.mFluidAmount+"l", CORE.GT_Tooltip};
+	}*/
 
 
 	@Override
-	public void saveNBTData(NBTTagCompound aNBT) {
+	public void saveNBTData(final NBTTagCompound aNBT) {
 		super.saveNBTData(aNBT);
-		NBTTagCompound gtCraftingComponentsTag = aNBT.getCompoundTag("GT.CraftingComponents");
+		final NBTTagCompound gtCraftingComponentsTag = aNBT.getCompoundTag("GT.CraftingComponents");
 		if (gtCraftingComponentsTag != null){
-			
+
 			Utils.LOG_WARNING("Got Crafting Tag");
-			
-				if (mFluid != null){
-					Utils.LOG_WARNING("mFluid was not null, Saving TileEntity NBT data.");
-					gtCraftingComponentsTag.setInteger("xAmount", mFluid.amount);
-					gtCraftingComponentsTag.setString("xFluid", mFluid.getFluid().getName());
-					mFluidName = mFluid.getFluid().getName();
 
-					//Backup the current tag
-					//gtCraftingComponentsTag.setTag("backupTag", internalCraftingComponentsTag);
-					//internalCraftingComponentsTag = gtCraftingComponentsTag;
+			if (this.mFluid != null){
+				Utils.LOG_WARNING("mFluid was not null, Saving TileEntity NBT data.");
+				gtCraftingComponentsTag.setInteger("xAmount", this.mFluid.amount);
+				gtCraftingComponentsTag.setString("xFluid", this.mFluid.getFluid().getName());
+				this.mFluidName = this.mFluid.getFluid().getName();
 
-					aNBT.setTag("GT.CraftingComponents", gtCraftingComponentsTag);
-				}
-				else {
-					Utils.LOG_WARNING("mFluid was null, Saving TileEntity NBT data.");
-					gtCraftingComponentsTag.removeTag("xFluid");
-					gtCraftingComponentsTag.removeTag("xAmount");
+				//Backup the current tag
+				//gtCraftingComponentsTag.setTag("backupTag", internalCraftingComponentsTag);
+				//internalCraftingComponentsTag = gtCraftingComponentsTag;
 
-					//Backup the current tag
-					//gtCraftingComponentsTag.setTag("backupTag", internalCraftingComponentsTag);
-					//internalCraftingComponentsTag = gtCraftingComponentsTag;
+				aNBT.setTag("GT.CraftingComponents", gtCraftingComponentsTag);
+			}
+			else {
+				Utils.LOG_WARNING("mFluid was null, Saving TileEntity NBT data.");
+				gtCraftingComponentsTag.removeTag("xFluid");
+				gtCraftingComponentsTag.removeTag("xAmount");
 
-					aNBT.setTag("GT.CraftingComponents", gtCraftingComponentsTag);
-				}
+				//Backup the current tag
+				//gtCraftingComponentsTag.setTag("backupTag", internalCraftingComponentsTag);
+				//internalCraftingComponentsTag = gtCraftingComponentsTag;
+
+				aNBT.setTag("GT.CraftingComponents", gtCraftingComponentsTag);
+			}
 		}
 	}
 
 	@Override
-	public void loadNBTData(NBTTagCompound aNBT) {
-		super.loadNBTData(aNBT);  	
-		NBTTagCompound gtCraftingComponentsTag = aNBT.getCompoundTag("GT.CraftingComponents");
+	public void loadNBTData(final NBTTagCompound aNBT) {
+		super.loadNBTData(aNBT);
+		final NBTTagCompound gtCraftingComponentsTag = aNBT.getCompoundTag("GT.CraftingComponents");
 		String xFluid = null;
 		int xAmount = 0;
 		if (gtCraftingComponentsTag.hasNoTags()){
-			if (mFluid != null){
+			if (this.mFluid != null){
 				Utils.LOG_WARNING("mFluid was not null, Creating TileEntity NBT data.");
-				gtCraftingComponentsTag.setInteger("xAmount", mFluid.amount);
-				gtCraftingComponentsTag.setString("xFluid", mFluid.getFluid().getName());
+				gtCraftingComponentsTag.setInteger("xAmount", this.mFluid.amount);
+				gtCraftingComponentsTag.setString("xFluid", this.mFluid.getFluid().getName());
 				aNBT.setTag("GT.CraftingComponents", gtCraftingComponentsTag);
 			}
 		}
@@ -110,26 +110,26 @@ extends GT_MetaTileEntity_BasicTank {
 				Utils.LOG_WARNING("xAmount was not null, Loading TileEntity NBT data.");
 				xAmount = gtCraftingComponentsTag.getInteger("xAmount");
 			}
-			if (xFluid != null && xAmount != 0){
+			if ((xFluid != null) && (xAmount != 0)){
 				Utils.LOG_WARNING("Setting Internal Tank, loading "+xAmount+"L of "+xFluid);
-				setInternalTank(xFluid, xAmount);
+				this.setInternalTank(xFluid, xAmount);
 			}
 		}
 
 	}
 
-	private boolean setInternalTank(String fluidName, int amount){
-		FluidStack temp = FluidUtils.getFluidStack(fluidName, amount);
+	private boolean setInternalTank(final String fluidName, final int amount){
+		final FluidStack temp = FluidUtils.getFluidStack(fluidName, amount);
 		if (temp != null){
-			if (mFluid == null){
-				mFluid = temp;
+			if (this.mFluid == null){
+				this.mFluid = temp;
 				Utils.LOG_WARNING(temp.getFluid().getName()+" Amount: "+temp.amount+"L");
 			}
 			else{
 				Utils.LOG_WARNING("Retained Fluid.");
-				Utils.LOG_WARNING(mFluid.getFluid().getName()+" Amxount: "+mFluid.amount+"L");
+				Utils.LOG_WARNING(this.mFluid.getFluid().getName()+" Amxount: "+this.mFluid.amount+"L");
 			}
-			markDirty();
+			this.markDirty();
 			return true;
 		}
 		return false;
@@ -138,19 +138,19 @@ extends GT_MetaTileEntity_BasicTank {
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, boolean doDrain) {
-		tryForceNBTUpdate();
+	public FluidStack drain(final int maxDrain, final boolean doDrain) {
+		this.tryForceNBTUpdate();
 		return super.drain(maxDrain, doDrain);
 	}
 
 	@Override
-	public int fill(FluidStack aFluid, boolean doFill) {
-		tryForceNBTUpdate();
+	public int fill(final FluidStack aFluid, final boolean doFill) {
+		this.tryForceNBTUpdate();
 		return super.fill(aFluid, doFill);
 	}
 
 	@Override
-	public void setItemNBT(NBTTagCompound aNBT) {
+	public void setItemNBT(final NBTTagCompound aNBT) {
 		super.setItemNBT(aNBT);
 		Utils.LOG_WARNING("setItemNBT");
 		//aNBT.setTag("GT.CraftingComponents", lRecipeStuff);
@@ -159,32 +159,32 @@ extends GT_MetaTileEntity_BasicTank {
 
 	@Override
 	public void closeInventory() {
-		tryForceNBTUpdate();
+		this.tryForceNBTUpdate();
 		super.closeInventory();
 	}
 
 	@Override
-	public boolean onWrenchRightClick(byte aSide, byte aWrenchingSide,
-			EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		tryForceNBTUpdate();
+	public boolean onWrenchRightClick(final byte aSide, final byte aWrenchingSide,
+			final EntityPlayer aPlayer, final float aX, final float aY, final float aZ) {
+		this.tryForceNBTUpdate();
 		return super.onWrenchRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ);
 	}
 
 	@Override
-	public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+	public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
 		if (aBaseMetaTileEntity.isClientSide()){
 			//setVars();
 			return true;
 		}
 		aBaseMetaTileEntity.openGUI(aPlayer);
-		tryForceNBTUpdate();
+		this.tryForceNBTUpdate();
 		return true;
 	}
 
 	@Override
-	public void onLeftclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
+	public void onLeftclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
 		super.onLeftclick(aBaseMetaTileEntity, aPlayer);
-		tryForceNBTUpdate();
+		this.tryForceNBTUpdate();
 	}
 
 	@Override
@@ -193,12 +193,12 @@ extends GT_MetaTileEntity_BasicTank {
 	}
 
 	@Override
-	public boolean isFacingValid(byte aFacing) {
+	public boolean isFacingValid(final byte aFacing) {
 		return true;
 	}
 
 	@Override
-	public boolean isAccessAllowed(EntityPlayer aPlayer) {
+	public boolean isAccessAllowed(final EntityPlayer aPlayer) {
 		return true;
 	}
 
@@ -240,20 +240,20 @@ extends GT_MetaTileEntity_BasicTank {
 	@Override
 	public String[] getInfoData() {
 
-		if (mFluid == null) {
+		if (this.mFluid == null) {
 			return new String[]{
-					GT_Values.VOLTAGE_NAMES[mTier]+" Fluid Tank",
+					GT_Values.VOLTAGE_NAMES[this.mTier]+" Fluid Tank",
 					"Stored Fluid:",
 					"No Fluid",
 					Integer.toString(0) + "L",
-					Integer.toString(getCapacity()) + "L"};
+					Integer.toString(this.getCapacity()) + "L"};
 		}
 		return new String[]{
-				GT_Values.VOLTAGE_NAMES[mTier]+" Fluid Tank",
+				GT_Values.VOLTAGE_NAMES[this.mTier]+" Fluid Tank",
 				"Stored Fluid:",
-				mFluid.getLocalizedName(),
-				Integer.toString(mFluid.amount) + "L",
-				Integer.toString(getCapacity()) + "L"};
+				this.mFluid.getLocalizedName(),
+				Integer.toString(this.mFluid.amount) + "L",
+				Integer.toString(this.getCapacity()) + "L"};
 	}
 
 	@Override
@@ -262,13 +262,13 @@ extends GT_MetaTileEntity_BasicTank {
 	}
 
 	@Override
-	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GT_MetaTileEntity_TieredTank(mName, mTier, mDescription, mTextures);
+	public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
+		return new GT_MetaTileEntity_TieredTank(this.mName, this.mTier, this.mDescription, this.mTextures);
 	}
 
 	@Override
 	public int getCapacity() {
-		return (int) (Math.pow(2, mTier) * 32000);
+		return (int) (Math.pow(2, this.mTier) * 32000);
 	}
 
 	@Override
@@ -284,52 +284,52 @@ extends GT_MetaTileEntity_BasicTank {
 
 	@Override
 	public void onRemoval() {
-		tryForceNBTUpdate();
+		this.tryForceNBTUpdate();
 		super.onRemoval();
 	}
 
 	@Override
 	public void onCloseGUI() {
 		super.onCloseGUI();
-		tryForceNBTUpdate();
+		this.tryForceNBTUpdate();
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection aSide, FluidStack aFluid, boolean doDrain) {
-		tryForceNBTUpdate();
+	public FluidStack drain(final ForgeDirection aSide, final FluidStack aFluid, final boolean doDrain) {
+		this.tryForceNBTUpdate();
 		return super.drain(aSide, aFluid, doDrain);
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection aSide, int maxDrain, boolean doDrain) {
-		tryForceNBTUpdate();
+	public FluidStack drain(final ForgeDirection aSide, final int maxDrain, final boolean doDrain) {
+		this.tryForceNBTUpdate();
 		return super.drain(aSide, maxDrain, doDrain);
 	}
 
 	@Override
-	public int fill(ForgeDirection arg0, FluidStack arg1, boolean arg2) {
-		tryForceNBTUpdate();
+	public int fill(final ForgeDirection arg0, final FluidStack arg1, final boolean arg2) {
+		this.tryForceNBTUpdate();
 		return super.fill(arg0, arg1, arg2);
 	}
 
 	@Override
-	public int fill_default(ForgeDirection aSide, FluidStack aFluid, boolean doFill) {
-		tryForceNBTUpdate();
+	public int fill_default(final ForgeDirection aSide, final FluidStack aFluid, final boolean doFill) {
+		this.tryForceNBTUpdate();
 		return super.fill_default(aSide, aFluid, doFill);
 	}
 
 	private int mInternalSaveClock = 0;
 
 	@Override
-	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
 		super.onPostTick(aBaseMetaTileEntity, aTick);
 
-		if (mInternalSaveClock != 20){
-			mInternalSaveClock++;
+		if (this.mInternalSaveClock != 20){
+			this.mInternalSaveClock++;
 		}
 		else {
-			mInternalSaveClock = 0;
-			tryForceNBTUpdate();
+			this.mInternalSaveClock = 0;
+			this.tryForceNBTUpdate();
 		}
 
 	}
@@ -337,7 +337,7 @@ extends GT_MetaTileEntity_BasicTank {
 	private void tryForceNBTUpdate(){
 
 		//Block is invalid.
-		if (this == null || this.getBaseMetaTileEntity() == null){
+		if ((this == null) || (this.getBaseMetaTileEntity() == null)){
 			Utils.LOG_WARNING("Block was not valid for saving data.");
 			return;
 		}
@@ -348,7 +348,7 @@ extends GT_MetaTileEntity_BasicTank {
 		}
 
 		//Internal Tag was not valid.
-		if (internalCraftingComponentsTag == null){
+		if (this.internalCraftingComponentsTag == null){
 			Utils.LOG_WARNING("Internal NBT data tag was null.");
 			return;
 		}
@@ -360,12 +360,12 @@ extends GT_MetaTileEntity_BasicTank {
 		//Internal tag was valid and contains tags.
 		if (!this.internalCraftingComponentsTag.hasNoTags()){
 			Utils.LOG_WARNING("Found tags to save.");
-			saveNBTData(internalCraftingComponentsTag);
+			this.saveNBTData(this.internalCraftingComponentsTag);
 		}
 		//Internal tag has no tags.
 		else {
-			Utils.LOG_WARNING("Found no tags to save.");	
-			saveNBTData(internalCraftingComponentsTag);		
+			Utils.LOG_WARNING("Found no tags to save.");
+			this.saveNBTData(this.internalCraftingComponentsTag);
 		}
 
 		//Mark block for update
@@ -376,7 +376,7 @@ extends GT_MetaTileEntity_BasicTank {
 		this.getBaseMetaTileEntity().getWorld().markBlockForUpdate(x, y, z);
 
 		//Mark block dirty, let chunk know it's data has changed and it must be saved to disk. (Albeit slowly)
-		this.getBaseMetaTileEntity().markDirty();		
+		this.getBaseMetaTileEntity().markDirty();
 	}
 
 }

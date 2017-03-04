@@ -125,7 +125,7 @@ public class RECIPES_Tools {
 	public static String plateDoubleNiChrome = "plateDoubleNichrome";
 	public static String plateIridiumAlloy = "plateAlloyIridium";
 
-	public static final void RECIPES_LOAD(){		
+	public static final void RECIPES_LOAD(){
 
 
 		run();
@@ -175,7 +175,7 @@ public class RECIPES_Tools {
 				plateElectrum, ingotElectrum, plateElectrum,
 				craftingToolScrewdriver, stickBronze, craftingToolHardHammer,
 				null, stickSteel, null,
-				RECIPE_SandstoneHammer);	
+				RECIPE_SandstoneHammer);
 
 		//Basic Firemaker
 		RecipeUtils.recipeBuilder(

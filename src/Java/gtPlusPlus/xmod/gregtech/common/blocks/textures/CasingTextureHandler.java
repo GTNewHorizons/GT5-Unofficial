@@ -11,17 +11,17 @@ public class CasingTextureHandler {
 	//private static final TexturesGregtech58 gregtech58 = new TexturesGregtech58();
 	private static final TexturesCentrifugeMultiblock gregtechX = new TexturesCentrifugeMultiblock();
 
-	public static  IIcon getIcon(int aSide, int aMeta) { //Texture ID's. case 0 == ID[57]
+	public static  IIcon getIcon(final int aSide, final int aMeta) { //Texture ID's. case 0 == ID[57]
 		if ((aMeta >= 0) && (aMeta < 16)) {
 			switch (aMeta) {
-			//Centrifuge 
-			case 0: 
+			//Centrifuge
+			case 0:
 				return TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();
 				//Coke Oven Frame
 			case 1:
 				return TexturesGtBlock.Casing_Material_Tantalloy61.getIcon();
 				//Coke Oven Casing Tier 1
-			case 2: 
+			case 2:
 				return Textures.BlockIcons.MACHINE_CASING_FIREBOX_BRONZE.getIcon();
 				//Coke Oven Casing Tier 2
 			case 3:
@@ -46,20 +46,20 @@ public class CasingTextureHandler {
 				return TexturesGtBlock.Casing_Machine_Dimensional_Adv.getIcon();
 				//Iron Blast Fuance Textures
 			case 10:
-				return TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();		
+				return TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
 				//Multitank Exterior Casing
 			case 11:
-				return TexturesGtBlock.Casing_Material_Grisium.getIcon();	
+				return TexturesGtBlock.Casing_Material_Grisium.getIcon();
 				//Reactor Casing I
 			case 12:
-				return TexturesGtBlock.Casing_Material_Stellite.getIcon();	
+				return TexturesGtBlock.Casing_Material_Stellite.getIcon();
 				//Reactor Casing II
 			case 13:
-				return TexturesGtBlock.Casing_Material_Zeron100.getIcon();	
+				return TexturesGtBlock.Casing_Material_Zeron100.getIcon();
 			case 14:
 				return TexturesGtBlock.Casing_Staballoy_Firebox.getIcon();
 			case 15:
-				return TexturesGtBlock.Casing_Material_ZirconiumCarbide.getIcon();		
+				return TexturesGtBlock.Casing_Material_ZirconiumCarbide.getIcon();
 
 			default:
 				return Textures.BlockIcons.MACHINE_CASING_RADIOACTIVEHAZARD.getIcon();
@@ -70,7 +70,7 @@ public class CasingTextureHandler {
 	}
 
 
-	public static IIcon handleCasingsGT(IBlockAccess aWorld, int xCoord, int yCoord, int zCoord, int aSide, GregtechMetaCasingBlocks thisBlock) {
+	public static IIcon handleCasingsGT(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord, final int aSide, final GregtechMetaCasingBlocks thisBlock) {
 		/*if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
 			return gregtech59.handleCasingsGT59(aWorld, xCoord, yCoord, zCoord, aSide, thisBlock);
 		}

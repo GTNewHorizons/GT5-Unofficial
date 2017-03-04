@@ -6,12 +6,12 @@ import net.minecraft.world.World;
 
 public class BlockBreakParticles {
 
-	public BlockBreakParticles(World world, int x, int y, int z, Block block){
+	public BlockBreakParticles(final World world, final int x, final int y, final int z, final Block block){
 		try {
 			HANDLER_FR.createBlockBreakParticles(world, x, y, z, block);
-		} catch (Throwable T){
-			
+		} catch (final Throwable T){
+
 		}
 	}
-	
+
 }

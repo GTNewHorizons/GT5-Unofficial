@@ -1,6 +1,9 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
 import static gtPlusPlus.core.lib.LoadedMods.Gregtech;
+
+import java.util.ArrayList;
+
 import gregtech.api.enums.*;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -14,18 +17,15 @@ import gtPlusPlus.core.util.recipe.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.*;
-
-import java.util.ArrayList;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class GregtechConduits {
 	/**
-	 * 
+	 *
 	 * The Voltage Tiers. Use this Array instead of the old named Voltage Variables
 	 * public static final long[] V = new long[] {0=8, 1=32, 2=128, 3=512, 4=2048, 5=8192, 6=32768, 7=131072, 8=524288, 9=Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE};
-	 * 
+	 *
 	 */
 
 
@@ -36,8 +36,12 @@ public class GregtechConduits {
 	{
 		if (Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Custom Cables/Wires/Pipes.");
-			if (CORE.configSwitches.enableCustom_Cables) run1();
-			if (CORE.configSwitches.enableCustom_Pipes) run2();
+			if (CORE.configSwitches.enableCustom_Cables) {
+				run1();
+			}
+			if (CORE.configSwitches.enableCustom_Pipes) {
+				run2();
+			}
 		}
 
 	}
@@ -56,11 +60,11 @@ public class GregtechConduits {
 		if (LoadedMods.Thaumcraft){
 			superConductorFactory(GT_Materials.Void, 512, 30661, 0, 0, 8);}
 
-		
-		
 
-	}	
-	
+
+
+	}
+
 	private static void run2(){
 		generateNonGTFluidPipes(GT_Materials.Staballoy, ALLOY.STABALLOY, BasePipeID, 6250, 7500, true);
 		generateNonGTFluidPipes(GT_Materials.Tantalloy60, ALLOY.TANTALLOY_60, BasePipeID+5, 5000, 4250, true);
@@ -81,8 +85,8 @@ public class GregtechConduits {
 		generateGTFluidPipes(Materials.Lead, BasePipeID+70, 720, 1200, true);
 	}
 
-	private static void wireFactory(String Material, int Voltage, int ID, long insulatedLoss, long uninsulatedLoss, long Amps){
-		Materials T = Materials.valueOf(Material);
+	private static void wireFactory(final String Material, final int Voltage, final int ID, final long insulatedLoss, final long uninsulatedLoss, final long Amps){
+		final Materials T = Materials.valueOf(Material);
 		int V = 0;
 		if (Voltage == 8){
 			V = 0;
@@ -119,12 +123,12 @@ public class GregtechConduits {
 			Utils.LOG_ERROR(Material+" has defaulted to 8v.");
 			V = 0;
 		}
-		//makeWires(T, ID, 2L, 4L, 2L, GT_Values.V[V], true, false);	 
-		makeWires(T, ID, insulatedLoss, uninsulatedLoss, Amps, GT_Values.V[V], true, false);	 
-		//makeWires(T, ID, bEC ? 2L : 2L, bEC ? 4L : 4L, 2L, gregtech.api.enums.GT_Values.V[V], true, false);	 
-	}	
+		//makeWires(T, ID, 2L, 4L, 2L, GT_Values.V[V], true, false);
+		makeWires(T, ID, insulatedLoss, uninsulatedLoss, Amps, GT_Values.V[V], true, false);
+		//makeWires(T, ID, bEC ? 2L : 2L, bEC ? 4L : 4L, 2L, gregtech.api.enums.GT_Values.V[V], true, false);
+	}
 
-	private static void makeWires(Materials aMaterial, int aStartID, long aLossInsulated, long aLoss, long aAmperage, long aVoltage, boolean aInsulatable, boolean aAutoInsulated)
+	private static void makeWires(final Materials aMaterial, final int aStartID, final long aLossInsulated, final long aLoss, final long aAmperage, final long aVoltage, final boolean aInsulatable, final boolean aAutoInsulated)
 	{
 		Utils.LOG_WARNING("Gregtech5u Content | Registered "+aMaterial.name() +" as a new material for Wire & Cable.");
 		GT_OreDictUnificator.registerOre(OrePrefixes.wireGt01, aMaterial, new GregtechMetaPipeEntity_Cable(aStartID + 0, "wire." + aMaterial.name().toLowerCase() + ".01", "1x " + aMaterial.mDefaultLocalName + " Wire", 0.125F, aMaterial, aLoss, 1L * aAmperage, aVoltage, false, !aAutoInsulated).getStackForm(1L));
@@ -143,8 +147,8 @@ public class GregtechConduits {
 		}
 	}
 
-	private static void superConductorFactory(GT_Materials Material, int Voltage, int ID, long insulatedLoss, long uninsulatedLoss, long Amps){
-		GT_Materials T = Material;
+	private static void superConductorFactory(final GT_Materials Material, final int Voltage, final int ID, final long insulatedLoss, final long uninsulatedLoss, final long Amps){
+		final GT_Materials T = Material;
 		int V = 0;
 		if (Voltage == 8){
 			V = 0;
@@ -181,27 +185,27 @@ public class GregtechConduits {
 			Utils.LOG_ERROR(Material.name()+" has defaulted to 8v.");
 			V = 0;
 		}
-		//makeWires(T, ID, 2L, 4L, 2L, GT_Values.V[V], true, false);	 
-		makeSuperConductors(T, ID, insulatedLoss, uninsulatedLoss, Amps, GT_Values.V[V], true, false);	 
-		//makeWires(T, ID, bEC ? 2L : 2L, bEC ? 4L : 4L, 2L, gregtech.api.enums.GT_Values.V[V], true, false);	 
-	}	
+		//makeWires(T, ID, 2L, 4L, 2L, GT_Values.V[V], true, false);
+		makeSuperConductors(T, ID, insulatedLoss, uninsulatedLoss, Amps, GT_Values.V[V], true, false);
+		//makeWires(T, ID, bEC ? 2L : 2L, bEC ? 4L : 4L, 2L, gregtech.api.enums.GT_Values.V[V], true, false);
+	}
 
-	private static void makeSuperConductors(GT_Materials aMaterial, int aStartID, long aLossInsulated, long aLoss, long aAmperage, long aVoltage, boolean aInsulatable, boolean aAutoInsulated)
+	private static void makeSuperConductors(final GT_Materials aMaterial, final int aStartID, final long aLossInsulated, final long aLoss, final long aAmperage, final long aVoltage, final boolean aInsulatable, final boolean aAutoInsulated)
 	{
 		Utils.LOG_WARNING("Gregtech5u Content | Registered "+aMaterial.name() +" as a new Super Conductor.");
 		registerOre(GregtechOrePrefixes.type2, aMaterial, new GregtechMetaPipeEntity_SuperConductor(aStartID + 5, "wire." + aMaterial.name().toLowerCase() + ".16", "16x " + aMaterial.mDefaultLocalName + " Wire", 1.0F, aMaterial, aLoss, 16L * aAmperage, aVoltage, false, !aAutoInsulated).getStackForm(1L));
 
 	}
 
-	private static boolean registerOre(GregtechOrePrefixes aPrefix, Object aMaterial, ItemStack aStack) {
+	private static boolean registerOre(final GregtechOrePrefixes aPrefix, final Object aMaterial, final ItemStack aStack) {
 		return GT_OreDictUnificator.registerOre(aPrefix.get(aMaterial), aStack);
 	}
 
 
-	private static void generateGTFluidPipes(Materials material, int startID, int transferRatePerSec, int heatResistance, boolean isGasProof){
-		int transferRatePerTick = transferRatePerSec/20;
-		long mass = material.getMass();
-		long voltage = material.mMeltingPoint >= 2800 ? 64 : 16;
+	private static void generateGTFluidPipes(final Materials material, final int startID, final int transferRatePerSec, final int heatResistance, final boolean isGasProof){
+		final int transferRatePerTick = transferRatePerSec/20;
+		final long mass = material.getMass();
+		final long voltage = material.mMeltingPoint >= 2800 ? 64 : 16;
 		GT_OreDictUnificator.registerOre(OrePrefixes.pipeTiny.get(material), new GT_MetaPipeEntity_Fluid(startID, "GT_Pipe_"+material.mDefaultLocalName+"_Tiny", "Tiny "+material.mDefaultLocalName+" Fluid Pipe", 0.25F, material, transferRatePerTick*2, heatResistance, isGasProof).getStackForm(1L));
 		GT_OreDictUnificator.registerOre(OrePrefixes.pipeSmall.get(material), new GT_MetaPipeEntity_Fluid(startID+1, "GT_Pipe_"+material.mDefaultLocalName+"_Small", "Small "+material.mDefaultLocalName+" Fluid Pipe", 0.375F, material, transferRatePerTick*4, heatResistance, isGasProof).getStackForm(1L));
 		GT_OreDictUnificator.registerOre(OrePrefixes.pipeMedium.get(material), new GT_MetaPipeEntity_Fluid(startID+2, "GT_Pipe_"+material.mDefaultLocalName+"", ""+material.mDefaultLocalName+" Fluid Pipe", 0.5F, material, transferRatePerTick*6, heatResistance, isGasProof).getStackForm(1L));
@@ -210,8 +214,8 @@ public class GregtechConduits {
 		generatePipeRecipes(material.mDefaultLocalName, mass, voltage);
 	}
 
-	private static void generateNonGTFluidPipes(GT_Materials material, Material myMaterial, int startID, int transferRatePerSec, int heatResistance, boolean isGasProof){
-		int transferRatePerTick = transferRatePerSec/20;
+	private static void generateNonGTFluidPipes(final GT_Materials material, final Material myMaterial, final int startID, final int transferRatePerSec, final int heatResistance, final boolean isGasProof){
+		final int transferRatePerTick = transferRatePerSec/20;
 		long mass;
 		long voltage;
 		if (myMaterial != null){
@@ -219,11 +223,11 @@ public class GregtechConduits {
 			voltage = myMaterial.vVoltageMultiplier;
 			if (myMaterial.getLocalizedName().equals(ALLOY.POTIN.getLocalizedName())){
 				voltage = 4;
-			}			
+			}
 		}
 		else {
 			mass = ELEMENT.getInstance().IRON.getMass();
-			voltage = 8;			
+			voltage = 8;
 		}
 
 		GT_OreDictUnificator.registerOre(OrePrefixes.pipeTiny.get(material), new GregtechMetaPipeEntityFluid(startID, "GT_Pipe_"+material.mDefaultLocalName+"_Tiny", "Tiny "+material.mDefaultLocalName+" Fluid Pipe", 0.25F, material, transferRatePerTick*2, heatResistance, isGasProof).getStackForm(1L));
@@ -235,7 +239,7 @@ public class GregtechConduits {
 
 	}
 
-	private static void generatePipeRecipes(String materialName, long Mass, long vMulti){
+	private static void generatePipeRecipes(final String materialName, final long Mass, final long vMulti){
 
 		String output = materialName.substring(0, 1).toUpperCase() + materialName.substring(1);
 		output = output.replace("-", "").replace("_", "").replace(" ", "");
@@ -244,11 +248,17 @@ public class GregtechConduits {
 			output = "Void";
 		}
 
-		Utils.LOG_INFO("Generating "+output+" pipes & respective recipes.");		
+		Utils.LOG_INFO("Generating "+output+" pipes & respective recipes.");
 
-		ItemStack pipeIngot = ItemUtils.getItemStackOfAmountFromOreDict("ingot"+output, 1).copy();
-		ItemStack pipePlate = ItemUtils.getItemStackOfAmountFromOreDict("plate"+output, 1).copy();
+		ItemStack pipeIngot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingot"+output, 1);
+		ItemStack pipePlate = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plate"+output, 1);
 
+		if (pipeIngot == null){
+			if (pipePlate != null){
+				pipeIngot = pipePlate;
+			}
+		}
+		
 		//Check all pipes are not null
 		Utils.LOG_INFO("Generated pipeTiny from "+ materialName +"? "+ ((ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Tiny"+output, 1) != null) ? true : false));
 		Utils.LOG_INFO("Generated pipeSmall from "+ materialName +"? "+ ((ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Small"+output, 1) != null) ? true : false));
@@ -258,13 +268,13 @@ public class GregtechConduits {
 
 		int eut = 128;
 		int time = 0;
-		int bonusMulti = 5*20;
+		final int bonusMulti = 5*20;
 
 		time = (int) Math.max(Mass * 8L, 1);
 		eut = (int) (10 * vMulti);
 
 
-		//Add the Three Shaped Recipes First		
+		//Add the Three Shaped Recipes First
 		RecipeUtils.recipeBuilder(
 				pipePlate, "craftingToolWrench", pipePlate,
 				pipePlate, null, pipePlate,
@@ -313,25 +323,26 @@ public class GregtechConduits {
 				ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1),
 				time+=bonusMulti, eut);
 
-		if (eut < 512 && !output.equals("Void")){
-			ItemStack pipePlateDouble = ItemUtils.getItemStackOfAmountFromOreDict("plateDouble"+output, 1).copy();
-			if (pipePlateDouble != null)
+		if ((eut < 512) && !output.equals("Void")){
+			final ItemStack pipePlateDouble = ItemUtils.getItemStackOfAmountFromOreDict("plateDouble"+output, 1).copy();
+			if (pipePlateDouble != null) {
 				RecipeUtils.recipeBuilder(
 						pipePlateDouble, "craftingToolHardHammer", pipePlateDouble,
 						pipePlateDouble, null, pipePlateDouble,
 						pipePlateDouble, "craftingToolWrench", pipePlateDouble,
 						ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1));
-			else
+			} else {
 				Utils.LOG_INFO("Failed to add a recipe for "+materialName+" Huge pipes. Double plates probably do not exist.");
+			}
 		}
 
 
 	}
 
-	private static ItemStack getOredictStack(String oredictName, int amount){
-		ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
+	private static ItemStack getOredictStack(final String oredictName, final int amount){
+		final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
 		if (!oreDictList.isEmpty()){
-			ItemStack returnValue = oreDictList.get(0).copy();
+			final ItemStack returnValue = oreDictList.get(0).copy();
 			returnValue.stackSize = amount;
 			return returnValue;
 		}

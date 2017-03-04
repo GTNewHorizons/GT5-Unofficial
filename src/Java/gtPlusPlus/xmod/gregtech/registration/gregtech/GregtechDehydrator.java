@@ -13,7 +13,9 @@ public class GregtechDehydrator
 	{
 		if (LoadedMods.Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Chemical Dehydrators.");
-			if (CORE.configSwitches.enableMachine_Dehydrators) run1();
+			if (CORE.configSwitches.enableMachine_Dehydrators) {
+				run1();
+			}
 		}
 
 	}
@@ -25,7 +27,7 @@ public class GregtechDehydrator
 
 		 public GT_MetaTileEntity_BasicMachine_GT_Recipe(
 		  int aID, String aName, String aNameRegional, int aTier,
-		  String aDescription, 
+		  String aDescription,
 		  GT_Recipe_Map aRecipes,
 		  int aInputSlots, int aOutputSlots,
 		  int aTankCapacity,
@@ -34,7 +36,7 @@ public class GregtechDehydrator
 		  boolean aSharedTank, boolean aRequiresFluidForFiltering,
 		  int aSpecialEffect,
 		  String aOverlays,
-		  Object[] aRecipe) {	  
+		  Object[] aRecipe) {
 
 		 */
 
@@ -44,7 +46,7 @@ public class GregtechDehydrator
 				Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes,
 				2, 9,
 				10000,
-				2, 5, 
+				2, 5,
 				"Dehydrator.png", "",
 				false, false,
 				0,
@@ -56,7 +58,7 @@ public class GregtechDehydrator
 				Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes,
 				2, 9,
 				10000,
-				2, 5, 
+				2, 5,
 				"Dehydrator.png", "",
 				false, false,
 				0,
@@ -68,7 +70,7 @@ public class GregtechDehydrator
 				Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes,
 				2, 9,
 				10000,
-				2, 5, 
+				2, 5,
 				"Dehydrator.png", "",
 				false, false,
 				0,
@@ -80,7 +82,7 @@ public class GregtechDehydrator
 				Recipe_GT.Gregtech_Recipe_Map.sChemicalDehydratorRecipes,
 				2, 9,
 				10000,
-				2, 5, 
+				2, 5,
 				"Dehydrator.png", "",
 				false, false,
 				0,

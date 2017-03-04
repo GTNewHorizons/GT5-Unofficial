@@ -1,12 +1,12 @@
 package gtPlusPlus.core.util.debug;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.BaseItemWithCharge;
 import gtPlusPlus.core.item.general.BedLocator_Base;
 import gtPlusPlus.core.lib.CORE;
 import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class DEBUG_INIT {
 
@@ -21,7 +21,7 @@ public class DEBUG_INIT {
 		ModItems.itemDebugShapeSpawner = new DEBUG_ITEM_ShapeSpawner("itemDebugShapeSpawner", AddToCreativeTab.tabMisc, 1, 500);
 		GameRegistry.registerItem(ModItems.itemDebugShapeSpawner, "itemDebugShapeSpawner");
 		ModItems.itemBedLocator_Base = new BedLocator_Base("itemBedLocator_Base");
-		GameRegistry.registerItem(ModItems.itemBedLocator_Base, "itemBedLocator_Base");		
+		GameRegistry.registerItem(ModItems.itemBedLocator_Base, "itemBedLocator_Base");
 		ModItems.itemBaseItemWithCharge = new BaseItemWithCharge("itemBaseItemWithCharge", 0, 1000);
 		GameRegistry.registerItem(ModItems.itemBaseItemWithCharge, "itemBaseItemWithCharge");
 	}
@@ -37,7 +37,7 @@ public class DEBUG_INIT {
 	}
 
 	public static void registerHandlers(){
-		MinecraftForge.EVENT_BUS.register(new DEBUG_ScreenOverlay());	
+		MinecraftForge.EVENT_BUS.register(new DEBUG_ScreenOverlay());
 	}
 
 }

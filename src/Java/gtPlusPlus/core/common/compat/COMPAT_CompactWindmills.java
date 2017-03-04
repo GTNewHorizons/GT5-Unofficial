@@ -2,6 +2,7 @@ package gtPlusPlus.core.common.compat;
 
 import static gtPlusPlus.core.handler.COMPAT_HANDLER.AddRecipeQueue;
 import static gtPlusPlus.core.handler.COMPAT_HANDLER.RemoveRecipeQueue;
+
 import gtPlusPlus.core.recipe.ShapedRecipeObject;
 import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.item.ItemStack;
@@ -73,14 +74,14 @@ public class COMPAT_CompactWindmills {
 
 	//Wooden Rotor
 	public static ShapedRecipeObject Wooden_Rotor = new ShapedRecipeObject(
-			rotorBlade1, "ore:plateAnyIron", "ore:plateAnyIron", 
-			"ore:screwAluminium", rotorIC1, "ore:screwAluminium", 
+			rotorBlade1, "ore:plateAnyIron", "ore:plateAnyIron",
+			"ore:screwAluminium", rotorIC1, "ore:screwAluminium",
 			rotorBlade1, "plateAnyIron", rotorBlade1,
 			rotor1);
 	//Alloy Rotor
 	public static ShapedRecipeObject Alloy_Rotor = new ShapedRecipeObject(
-			plateAlloy, plateAlloy, plateAlloy, 
-			plateAlloy, rotorIC3, plateAlloy, 
+			plateAlloy, plateAlloy, plateAlloy,
+			plateAlloy, rotorIC3, plateAlloy,
 			plateAlloy,plateAlloy, plateAlloy,
 			rotor3);
 	//Carbon Rotor
@@ -92,50 +93,50 @@ public class COMPAT_CompactWindmills {
 
 	//Kinetic Wind Turbine
 	public static ShapedRecipeObject KWT = new ShapedRecipeObject(
-		plateCarbon, shaftIron, plateCarbon,
-		cableCopper, mvCasing, cableCopper,
-		plateRubber, plateCarbon, plateRubber,
-		kineticWind);
-		
+			plateCarbon, shaftIron, plateCarbon,
+			cableCopper, mvCasing, cableCopper,
+			plateRubber, plateCarbon, plateRubber,
+			kineticWind);
+
 	//ELV Windmill
 	public static ShapedRecipeObject WM_ELV = new ShapedRecipeObject(
-	
-		circuitTier1, elvTransformer, circuitTier1,
-		plateTier1, lvCasing, plateTier1,
-		plateTier1, rotor1, plateTier1,
-		elvWindmill);
-		
-		
+
+			circuitTier1, elvTransformer, circuitTier1,
+			plateTier1, lvCasing, plateTier1,
+			plateTier1, rotor1, plateTier1,
+			elvWindmill);
+
+
 	//LV Windmill
 	public static ShapedRecipeObject WM_LV = new ShapedRecipeObject(
-		circuitTier2, lvTransformer, circuitTier2,
-		plateTier2, mvCasing, plateTier2,
-		plateTier2, rotor2, plateTier2,
-		lvWindmill);
-		
+			circuitTier2, lvTransformer, circuitTier2,
+			plateTier2, mvCasing, plateTier2,
+			plateTier2, rotor2, plateTier2,
+			lvWindmill);
+
 	//MV Windmill
 	public static ShapedRecipeObject WM_MV = new ShapedRecipeObject(
-		circuitTier3, mvTransformer, circuitTier3,
-		plateTier3, hvCasing, plateTier3,
-		plateTier3, rotor3, plateTier3,
-		mvWindmill);
-		
+			circuitTier3, mvTransformer, circuitTier3,
+			plateTier3, hvCasing, plateTier3,
+			plateTier3, rotor3, plateTier3,
+			mvWindmill);
+
 	//HV Windmill
 	public static ShapedRecipeObject WM_HV = new ShapedRecipeObject(
-		circuitTier4, hvTransformer, circuitTier4,
-		plateTier4, evCasing, plateTier4,
-		plateTier4, rotor4, plateTier4,
-		hvWindmill);
-		
+			circuitTier4, hvTransformer, circuitTier4,
+			plateTier4, evCasing, plateTier4,
+			plateTier4, rotor4, plateTier4,
+			hvWindmill);
+
 	//EV Windmill
 	public static ShapedRecipeObject WM_EV = new ShapedRecipeObject(
-		circuitTier5, evTransformer, circuitTier5,
-		plateTier5, ivCasing, plateTier5,
-		plateTier5, rotor5, plateTier5,
-		evWindmill);
+			circuitTier5, evTransformer, circuitTier5,
+			plateTier5, ivCasing, plateTier5,
+			plateTier5, rotor5, plateTier5,
+			evWindmill);
 
 	public static void OreDict(){
-		run();		
+		run();
 	}
 
 	private static final void run(){
@@ -144,7 +145,7 @@ public class COMPAT_CompactWindmills {
 		//RemoveRecipeQueue.add("CompactWindmills:ALLOY");
 		//RemoveRecipeQueue.add("CompactWindmills:CARBON");
 		//RemoveRecipeQueue.add("CompactWindmills:IRIDIUM");
-		
+
 		//Remove Recipes
 		RemoveRecipeQueue.add(kineticWind);
 		RemoveRecipeQueue.add(elvWindmill);
@@ -155,7 +156,7 @@ public class COMPAT_CompactWindmills {
 		RemoveRecipeQueue.add(rotor1);
 		RemoveRecipeQueue.add(rotor3);
 		RemoveRecipeQueue.add(rotor4);
-		
+
 		//Add Recipes
 		AddRecipeQueue.add(Wooden_Rotor);
 		AddRecipeQueue.add(Alloy_Rotor);

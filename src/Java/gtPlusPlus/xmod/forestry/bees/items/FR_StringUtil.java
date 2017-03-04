@@ -4,7 +4,7 @@ import net.minecraft.util.StatCollector;
 
 public class FR_StringUtil
 {
-	public static String getLocalizedString(String key)
+	public static String getLocalizedString(final String key)
 	{
 		if(StatCollector.canTranslate(key))
 		{
@@ -13,7 +13,7 @@ public class FR_StringUtil
 		return StatCollector.translateToFallback(key);
 	}
 
-	public static String getLocalizedString(String key, Object... objects)
+	public static String getLocalizedString(final String key, final Object... objects)
 	{
 		if(StatCollector.canTranslate(key))
 		{

@@ -24,7 +24,7 @@ public class IC2_Items {
 	public static ItemStack shaft_Material_2; //TungstenSteel
 	public static ItemStack shaft_Material_3; //Vibrant Alloy
 	public static ItemStack shaft_Material_4; //Iridium
-	
+
 	public static ItemStack blockRTG;
 	public static ItemStack blockKineticGenerator;
 

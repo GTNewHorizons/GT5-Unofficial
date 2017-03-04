@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.forestry.trees;
 
+import cpw.mods.fml.common.Optional;
 import gregtech.api.enums.OrePrefixes;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
@@ -10,7 +11,6 @@ import net.minecraft.block.BlockAir;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import cpw.mods.fml.common.Optional;
 
 public class TreefarmManager {
 
@@ -44,30 +44,30 @@ public class TreefarmManager {
 	}
 
 	@Optional.Method(modid = "Forestry")
-	public static Block getHumus(){	
+	public static Block getHumus(){
 		if(blockHumus != null){
 			return blockHumus;
 		}
 		else if (ReflectionUtils.doesClassExist("forestry.core.blocks.BlockSoil")){
-			try {				
-				Class<?> humusClass = Class.forName("forestry.core.blocks.BlockSoil");
-				ItemStack humusStack = ItemUtils.getCorrectStacktype("Forestry:soil", 1);
+			try {
+				final Class<?> humusClass = Class.forName("forestry.core.blocks.BlockSoil");
+				final ItemStack humusStack = ItemUtils.getCorrectStacktype("Forestry:soil", 1);
 				if (humusClass != null){
 					blockHumus = Block.getBlockFromItem(humusStack.getItem());
 					return Block.getBlockFromItem(humusStack.getItem());
 				}
-			} catch (ClassNotFoundException e) {}
+			} catch (final ClassNotFoundException e) {}
 		}
 		return null;
 	}
 
-	public static boolean isWoodLog(Block log){
-		String tTool = log.getHarvestTool(0);
+	public static boolean isWoodLog(final Block log){
+		final String tTool = log.getHarvestTool(0);
 
-		if (log == Blocks.log || log == Blocks.log2){
+		if ((log == Blocks.log) || (log == Blocks.log2)){
 			return true;
 		}
-		
+
 		//Forestry/General Compat
 		if (log.getClass().getName().toLowerCase().contains("blocklog")){
 			return true;
@@ -78,10 +78,10 @@ public class TreefarmManager {
 			return true;
 		}
 
-		return  OrePrefixes.log.contains(new ItemStack(log, 1))&& ((tTool != null) && (tTool.equals("axe"))) || (log.getMaterial() != Material.wood) ? false : (OrePrefixes.fence.contains(new ItemStack(log, 1)) ? false : true);
+		return  (OrePrefixes.log.contains(new ItemStack(log, 1))&& ((tTool != null) && (tTool.equals("axe")))) || (log.getMaterial() != Material.wood) ? false : (OrePrefixes.fence.contains(new ItemStack(log, 1)) ? false : true);
 	}
 
-	public static boolean isLeaves(Block log){		
+	public static boolean isLeaves(final Block log){
 		if (log.getUnlocalizedName().toLowerCase().contains("leaf")){
 			return true;
 		}
@@ -93,11 +93,11 @@ public class TreefarmManager {
 		}
 		if (log.getLocalizedName().toLowerCase().contains("leaves")){
 			return true;
-		}		
+		}
 		return  OrePrefixes.leaves.contains(new ItemStack(log, 1)) || (log.getMaterial() == Material.leaves);
 	}
 
-	public static boolean isSapling(Block log){
+	public static boolean isSapling(final Block log){
 		if (log != null){
 			if (OrePrefixes.sapling.contains(new ItemStack(log, 1))){
 				Utils.LOG_INFO(""+log.getLocalizedName());
@@ -110,15 +110,15 @@ public class TreefarmManager {
 		return  OrePrefixes.sapling.contains(new ItemStack(log, 1));
 	}
 
-	public static boolean isDirtBlock(Block dirt){    	
+	public static boolean isDirtBlock(final Block dirt){
 		return  (dirt == Blocks.dirt ? true : (dirt == Blocks.grass ? true : (getHumus() == null ? false : (dirt == blockHumus ? true : false))));
 	}
 
-	public static boolean isFenceBlock(Block fence){
-		return  (fence == Blocks.fence ? true : (fence == Blocks.fence_gate ? true : (fence == Blocks.nether_brick_fence ? true : (OrePrefixes.fence.contains(new ItemStack(fence, 1)) ? true : false))));		
+	public static boolean isFenceBlock(final Block fence){
+		return  (fence == Blocks.fence ? true : (fence == Blocks.fence_gate ? true : (fence == Blocks.nether_brick_fence ? true : (OrePrefixes.fence.contains(new ItemStack(fence, 1)) ? true : false))));
 	}
 
-	public static boolean isAirBlock(Block air){
+	public static boolean isAirBlock(final Block air){
 
 		if (air.getLocalizedName().toLowerCase().contains("air")){
 			return true;

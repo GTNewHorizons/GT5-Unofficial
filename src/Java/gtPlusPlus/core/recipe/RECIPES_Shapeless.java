@@ -7,20 +7,20 @@ import gtPlusPlus.core.util.recipe.RecipeUtils;
 import net.minecraft.item.ItemStack;
 
 public class RECIPES_Shapeless {
-	
+
 	static ItemStack dustStaballoy;
-	
+
 	//Circuits
-		static String circuitPrimitive = "circuitPrimitive";
-		static String circuitBasic = "circuitBasic";
-		static String circuitGood = "circuitGood";
-		static String circuitAdvanced = "circuitAdvanced";
-		static String circuitData = "circuitData";
-		static String circuitElite = "circuitElite";
-		static String circuitMaster = "circuitMaster";
-		static String circuitUltimate = "circuitUltimate";
-		static ItemStack gearboxCasing_Tier_1;
-	
+	static String circuitPrimitive = "circuitPrimitive";
+	static String circuitBasic = "circuitBasic";
+	static String circuitGood = "circuitGood";
+	static String circuitAdvanced = "circuitAdvanced";
+	static String circuitData = "circuitData";
+	static String circuitElite = "circuitElite";
+	static String circuitMaster = "circuitMaster";
+	static String circuitUltimate = "circuitUltimate";
+	static ItemStack gearboxCasing_Tier_1;
+
 	public static final void RECIPES_LOAD(){
 		//run();
 		Utils.LOG_INFO("Loading Shapeless Recipes.");
@@ -28,19 +28,19 @@ public class RECIPES_Shapeless {
 
 	private static void run(){
 		//Gregtech items
-		if (LoadedMods.Gregtech){		
-		gearboxCasing_Tier_1 = ItemList.Casing_Gearbox_Bronze.get(1);
-		
-		RecipeUtils.shapelessBuilder(dustStaballoy, 
-				"dustTitanium", "dustUranium", "dustUranium",
-				"dustUranium", "dustUranium", "dustUranium",
-				"dustUranium", "dustUranium", "dustUranium");
-		
-		RecipeUtils.shapelessBuilder(gearboxCasing_Tier_1, 
-				circuitPrimitive, circuitPrimitive, circuitPrimitive,
-				circuitPrimitive, circuitPrimitive, circuitPrimitive,
-				circuitPrimitive, circuitPrimitive, circuitPrimitive);
+		if (LoadedMods.Gregtech){
+			gearboxCasing_Tier_1 = ItemList.Casing_Gearbox_Bronze.get(1);
+
+			RecipeUtils.shapelessBuilder(dustStaballoy,
+					"dustTitanium", "dustUranium", "dustUranium",
+					"dustUranium", "dustUranium", "dustUranium",
+					"dustUranium", "dustUranium", "dustUranium");
+
+			RecipeUtils.shapelessBuilder(gearboxCasing_Tier_1,
+					circuitPrimitive, circuitPrimitive, circuitPrimitive,
+					circuitPrimitive, circuitPrimitive, circuitPrimitive,
+					circuitPrimitive, circuitPrimitive, circuitPrimitive);
 		}
 	}
-	
+
 }

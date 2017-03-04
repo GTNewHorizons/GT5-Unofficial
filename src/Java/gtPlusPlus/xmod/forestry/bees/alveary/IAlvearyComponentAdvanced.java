@@ -11,14 +11,14 @@ extends IMultiblockComponent
 	@Override
 	public abstract T getMultiblockLogic();
 
-	
+
 	public static abstract interface FrameHouse
 	extends IAlvearyComponentAdvanced
 	{
 		public abstract void changeClimate(int paramInt, IClimateControlled paramIClimateControlled);
 	}
 
-	
+
 	public static abstract interface BeeModifier
 	extends IAlvearyComponentAdvanced
 	{

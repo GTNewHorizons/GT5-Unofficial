@@ -39,7 +39,7 @@ public class RECIPES_General {
 				RECIPE_Paper, RECIPE_LapisDust, NULL,
 				RECIPE_Paper, RECIPE_LapisDust, NULL,
 				RECIPE_LapisDust, RECIPE_LapisDust, NULL,
-				OUTPUT_Blueprint);	
+				OUTPUT_Blueprint);
 
 		//Bronze Workbench
 		RecipeUtils.recipeBuilder(
