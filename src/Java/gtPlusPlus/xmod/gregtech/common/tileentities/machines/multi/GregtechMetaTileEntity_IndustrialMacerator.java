@@ -134,7 +134,7 @@ extends GregtechMeta_MultiBlockBase {
 
 
 		final int tValidOutputSlots = this.getValidOutputSlots(this.getBaseMetaTileEntity(), tRecipe, tInputs);
-		Utils.LOG_INFO("Maceration Stack - Valid Output Slots: "+tValidOutputSlots);
+		Utils.LOG_WARNING("Maceration Stack - Valid Output Hatches: "+tValidOutputSlots);
 
 		//More than or one input
 		if ((tInputList.size() > 0) && (tValidOutputSlots >= 1)) {

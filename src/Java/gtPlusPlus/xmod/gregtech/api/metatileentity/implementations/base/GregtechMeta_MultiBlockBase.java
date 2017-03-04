@@ -936,7 +936,7 @@ public abstract class GregtechMeta_MultiBlockBase extends MetaTileEntity {
 	}
 
 	public int getValidOutputSlots(final IGregTechTileEntity machineCalling, final GT_Recipe sRecipes, final ItemStack[] sInputs){
-		Utils.LOG_INFO("Finding valid output slots");
+		Utils.LOG_WARNING("Finding valid output slots for "+machineCalling.getInventoryName());
 		final ArrayList<ItemStack> tInputList = this.getStoredInputs();
 	    final GT_Recipe tRecipe = sRecipes;
 	    final int outputItemCount = tRecipe.mOutputs.length;
