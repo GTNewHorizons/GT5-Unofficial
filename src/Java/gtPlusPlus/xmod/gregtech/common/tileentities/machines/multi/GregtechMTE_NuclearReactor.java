@@ -37,9 +37,6 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 	protected double realOptFlow = 0;
 	protected boolean boostEu = false;
 	protected boolean heliumSparging = false;
-	protected boolean fluorideSparging = false;
-
-	//public FluidStack mFluidOut = Materials.UUMatter.getFluid(1L);
 
 	public GregtechMTE_NuclearReactor(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -367,15 +364,15 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 					FluidStack tLiquid;
 					final FluidStack testStack = aFuel.mFluidInputs[1];
 					if ((tLiquid = testStack) != null) { //Create fluidstack from current recipe
-						Utils.LOG_INFO("Creating a fluidstack from the current recipe");
+						Utils.LOG_INFO("Creating a fluidstack from the current recipe. "+testStack.getLocalizedName());
 						if (hatchFluid1.isFluidEqual(tLiquid)) { //Has a LFTR fluid
-							this.fuelConsumption = tLiquid.amount = this.boostEu ? (aFuel.mSpecialValue/4096) : (aFuel.mSpecialValue/2048); //Calc fuel consumption
+							this.fuelConsumption = this.boostEu ? (aFuel.mSpecialValue/4096) : (aFuel.mSpecialValue/2048); //Calc fuel consumption
 							Utils.LOG_INFO("Input hatch contains some FLiBe Fuel, using "+this.fuelConsumption);
 							if(this.depleteInput(tLiquid)) { //Deplete that amount
 								Utils.LOG_INFO("Depleted some FLiBe fluid");
 
 								this.mMaxProgresstime = 500;
-
+								
 								if(tFluids.contains(NUCLIDE.LiFBeF2ThF4UF4.getFluid(1)) ||
 										tFluids.contains(NUCLIDE.LiFBeF2ZrF4UF4.getFluid(2)) ||
 										tFluids.contains(NUCLIDE.LiFBeF2ZrF4U235.getFluid(10))) { //Has a Primary fuel salt?
@@ -404,43 +401,47 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 
 
 								//Try Sparge Noble Gases
-								if (this.depleteInput(Materials.Helium.getGas(1000L)) && this.heliumSparging){
-									//Make an empty fluid stack for possible sparging output
-									FluidStack[] spargeOutput = new FluidStack[]{};
-									Utils.LOG_INFO("Doing a Sparge with Helium");
-									spargeOutput = this.getByproductsOfSparge(Materials.Helium.getGas(1000L));
-									this.heliumSparging = false;
-									//If Sparging occurred, try add the outputs to the output hatches.
-									try {
-										if (spargeOutput.length >= 1){
+								if (this.heliumSparging){
+									if (this.depleteInput(Materials.Helium.getGas(1000L))){
+										//Make an empty fluid stack for possible sparging output
+										FluidStack[] spargeOutput = new FluidStack[]{};
+										Utils.LOG_INFO("Doing a Sparge with Helium - "+this.heliumSparging);
+										this.heliumSparging = false;
+										spargeOutput = this.getByproductsOfSparge(Materials.Helium.getGas(1000L));
+										
+										//If Sparging occurred, try add the outputs to the output hatches.
+										try {
+											if (spargeOutput.length >= 1){
+												for (final FluidStack F : spargeOutput){
+													Utils.LOG_INFO("Adding Sparge Output - "+F.getLocalizedName());
+													this.addOutput(F);
+												}
+											}
+										} catch (final Throwable T){}
+									}
+								}
+								//Try Sparge Fluorides
+								else {
+									if (this.depleteInput(Materials.Fluorine.getGas(100L))){
+										//Make an empty fluid stack for possible sparging output
+										FluidStack[] spargeOutput = new FluidStack[]{};
+										Utils.LOG_INFO("Doing a Sparge with Fluorine");
+										spargeOutput = this.getByproductsOfSparge(Materials.Fluorine.getGas(100L));
+										this.heliumSparging = true;
+										//If Sparging occurred, try add the outputs to the output hatches.
+										if (spargeOutput.length > 0){
 											for (final FluidStack F : spargeOutput){
 												Utils.LOG_INFO("Adding Sparge Output - "+F.getLocalizedName());
 												this.addOutput(F);
 											}
-										}
-									} catch (final Throwable T){}
-								}
-
-								//Try Sparge Fluorides
-								if (this.depleteInput(Materials.Fluorine.getGas(100L)) && !this.heliumSparging){
-									//Make an empty fluid stack for possible sparging output
-									FluidStack[] spargeOutput = new FluidStack[]{};
-									Utils.LOG_INFO("Doing a Sparge with Fluorine");
-									spargeOutput = this.getByproductsOfSparge(Materials.Fluorine.getGas(100L));
-									this.heliumSparging = true;
-									//If Sparging occurred, try add the outputs to the output hatches.
-									if (spargeOutput.length > 0){
-										for (final FluidStack F : spargeOutput){
-											Utils.LOG_INFO("Adding Sparge Output - "+F.getLocalizedName());
-											this.addOutput(F);
 										}
 									}
 								}
 
 
 								if (aFuel != null){
-									Utils.LOG_INFO("Saving previous Recipe.");
-									this.mLastRecipe = aFuel;
+									//Utils.LOG_INFO("Saving previous Recipe.");
+									//this.mLastRecipe = aFuel;
 								}
 
 
@@ -449,7 +450,15 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 
 								if (this.mEfficiency < 500){
 									this.mEfficiency++;
+									this.mMaxProgresstime = 500;
 								}
+								else if (this.mEfficiency == 500) {
+									this.mMaxProgresstime = 300;
+								}
+								else if (this.mEfficiency > 500){
+									this.mEfficiency = 500;
+								}
+								Utils.LOG_INFO("Efficiency == "+this.mEfficiency);
 
 								this.mEUt = (this.mEfficiency < 500 ? 2048 : (8196*4)); //Output 0 if startup is less than 20%
 								Utils.LOG_INFO("Generating "+this.mEUt+"EU/t @ an efficiency level of "+this.mEfficiency);
@@ -459,7 +468,7 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 								this.mEfficiencyIncrease = 15;
 
 								//Best output some Fluids
-								this.mOutputFluids = this.mLastRecipe.mFluidOutputs;
+								//this.mOutputFluids = this.mLastRecipe.mFluidOutputs;
 
 								return true;
 							}
@@ -553,7 +562,7 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 				final int fluorineContent = (100-outputChances[0]-outputChances[1]-outputChances[2]-outputChances[3]);
 				Utils.LOG_INFO("Fluorine remaining: "+fluorineContent);
 				outputArrayOfGases = new FluidStack[]{
-						FLUORIDES.URANIUM_HEXAFLUORIDE.getFluid(outputChances[0]),
+						FLUORIDES.LITHIUM_FLUORIDE.getFluid(outputChances[0]),
 						FLUORIDES.NEPTUNIUM_HEXAFLUORIDE.getFluid(outputChances[1]),
 						FLUORIDES.TECHNETIUM_HEXAFLUORIDE.getFluid(outputChances[2]),
 						FLUORIDES.SELENIUM_HEXAFLUORIDE.getFluid(outputChances[3]),
