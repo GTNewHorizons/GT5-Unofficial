@@ -42,11 +42,17 @@ public class RECIPE_CONSTANTS {
 	public static ItemStack sensor_MAX;
 
 	public static void initialise(){
-		if(CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
-			registerGTExperimentalComponents();
+
+		if (!CORE.GTNH){					
+			if(CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
+				registerGTExperimentalComponents();
+			}
+			else {
+				registerGTStandardComponents();
+			}
 		}
 		else {
-			registerGTStandardComponents();
+			registerGTNHComponents();
 		}
 	}
 
@@ -120,6 +126,51 @@ public class RECIPE_CONSTANTS {
 		sensor_LuV = GregtechItemList.Sensor_LuV.get(1);
 		sensor_ZPM = GregtechItemList.Sensor_ZPM.get(1);
 		sensor_UV = GregtechItemList.Sensor_UV.get(1);
+		sensor_MAX = GregtechItemList.Sensor_MAX.get(1);
+	}
+
+	private static void registerGTNHComponents(){
+		//Machine Components
+		electricMotor_LuV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32606, 1);
+		electricMotor_ZPM = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32607, 1);
+		electricMotor_UV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32608, 1);
+		
+		electricPump_LuV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32615, 1);
+		electricPump_ZPM = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32616, 1);
+		electricPump_UV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32617, 1);
+		
+		electricPiston_LuV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32645, 1);
+		electricPiston_ZPM = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32646, 1);
+		electricPiston_UV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32647, 1);
+		
+		robotArm_LuV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32655, 1);
+		robotArm_ZPM = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32656, 1);
+		robotArm_UV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32657, 1);
+		
+		conveyorModule_LuV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32635, 1);
+		conveyorModule_ZPM = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32636, 1);
+		conveyorModule_UV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32637, 1);
+		
+		emitter_LuV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32685, 1);
+		emitter_ZPM = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32686, 1);
+		emitter_UV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32687, 1);
+		
+		fieldGenerator_LuV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32675, 1);
+		fieldGenerator_ZPM = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32676, 1);
+		fieldGenerator_UV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32677, 1);
+		
+		sensor_LuV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32695, 1);
+		sensor_ZPM = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32696, 1);
+		sensor_UV = ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01", 32697, 1);
+
+		//Max Tier Components Blood Never added... Useless, lol.
+		electricMotor_MAX = GregtechItemList.Electric_Motor_MAX.get(1);
+		electricPump_MAX = GregtechItemList.Electric_Pump_MAX.get(1);
+		electricPiston_MAX = GregtechItemList.Electric_Piston_MAX.get(1);
+		robotArm_MAX = GregtechItemList.Robot_Arm_MAX.get(1);
+		conveyorModule_MAX = GregtechItemList.Conveyor_Module_MAX.get(1);
+		emitter_MAX = GregtechItemList.Emitter_MAX.get(1);
+		fieldGenerator_MAX = GregtechItemList.Field_Generator_MAX.get(1);
 		sensor_MAX = GregtechItemList.Sensor_MAX.get(1);
 	}
 

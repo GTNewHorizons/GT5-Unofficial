@@ -159,7 +159,7 @@ public class TileEntityFishTrap extends TileEntity{
 			if ((this.tickCount%this.baseTickRate)==0){
 				if (this.isInWater){
 					//Add loot
-					Utils.LOG_INFO("Adding Loot to the fishtrap at x["+this.locationX+"] y["+this.locationY+"] z["+this.locationZ+"] (Ticking for loot every "+this.baseTickRate+" ticks)");
+					//Utils.LOG_INFO("Adding Loot to the fishtrap at x["+this.locationX+"] y["+this.locationY+"] z["+this.locationZ+"] (Ticking for loot every "+this.baseTickRate+" ticks)");
 					this.tryAddLoot();
 					this.markDirty();
 				}
