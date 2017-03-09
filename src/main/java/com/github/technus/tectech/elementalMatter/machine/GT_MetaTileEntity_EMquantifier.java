@@ -51,11 +51,11 @@ public class GT_MetaTileEntity_EMquantifier extends GT_MetaTileEntity_Multiblock
                 for (int h = -1; h < 2; h++) {
                     if ((h != 0) || (((xDir + i != 0) || (zDir + j != 0)) && ((i != 0) || (j != 0)))) {
                         IGregTechTileEntity tTileEntity = iGregTechTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-                        if (    (!addMaintenanceToMachineList(tTileEntity, 83)) &&
-                                (!addClassicInputToMachineList(tTileEntity, 83)) &&
-                                (!addElementalOutputToMachineList(tTileEntity, 83)) &&
-                                (!addMufflerToMachineList(tTileEntity, 83)) &&
-                                (!addEnergyIOToMachineList(tTileEntity, 83))) {
+                        if (    (!addMaintenanceToMachineList(tTileEntity, 99)) &&
+                                (!addClassicInputToMachineList(tTileEntity, 99)) &&
+                                (!addElementalOutputToMachineList(tTileEntity, 99)) &&
+                                (!addMufflerToMachineList(tTileEntity, 99)) &&
+                                (!addEnergyIOToMachineList(tTileEntity, 99))) {
                             if (    iGregTechTileEntity.getBlockOffset(xDir + i, h, zDir + j) != GT_Container_CasingsTT.sBlockCasingsTT ||
                                     iGregTechTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 3) {
                                 return false;

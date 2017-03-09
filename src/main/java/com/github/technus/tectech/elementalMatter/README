@@ -41,5 +41,3 @@ Trees:
  InstanceStack - inst stack
  |||||multiple to 1
  InstanceStackTree - inst container - real things go here
-
-//TODO CHECK USE CASES OF VALUES and KEYS method!
