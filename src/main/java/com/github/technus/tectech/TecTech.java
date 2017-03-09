@@ -3,7 +3,6 @@ package com.github.technus.tectech;
 import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.blocks.QuantumGlass;
-import com.github.technus.tectech.blocks.QuantumGlassRender;
 import com.github.technus.tectech.proxy.CommonProxy;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -62,6 +61,7 @@ public class TecTech {
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
 		GameRegistry.registerBlock(QuantumGlass.INSTANCE,QuantumGlass.INSTANCE.getUnlocalizedName());
+		proxy.registerRenderInfo();
 	}
 
 	@EventHandler
