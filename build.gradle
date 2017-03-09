@@ -1,0 +1,96 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath "de.undercouch:gradle-download-task:3.1.2"
+    }
+}
+
+import de.undercouch.gradle.tasks.download.Download
+apply plugin: 'forge'
+
+allprojects {
+    apply plugin: 'java'
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
+}
+
+file "build.properties" withReader {
+    def prop = new Properties()
+    prop.load(it)
+    ext.config = new ConfigSlurper().parse prop
+}
+
+version = "${config.minecraft.version}-${config.tectech.version}"
+group= "com.github.technus"
+archivesBaseName = "TecTech"
+
+minecraft {
+    version = "${config.forge.version}"
+    runDir = "eclipse"
+
+    replaceIn "src/main/java/com/github/technus/tectech/auxiliary/Reference.java"
+    replace "GRADLETOKEN_VERSION", "${config.tectech.version}"
+}
+
+repositories {
+    maven {
+        name 'UsrvDE'
+        url "http://jenkins.usrv.de:8082/nexus/content/repositories/releases/"
+    }
+    maven {
+        name = "ic2"
+        url = "http://maven.ic2.player.to/"
+    }
+}
+
+dependencies {
+    compile "eu.usrv:YAMCore:${config.minecraft.version}-${config.yamcore.version}:deobf"
+    compile "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"
+}
+
+task getGregTech(type: Download) {
+    onlyIf {
+        !file("libs/gregtech-${config.gregtech.version}-dev.jar").exists()
+    }
+    src "http://jenkins.usrv.de:8081/job/Gregtech-5-Unofficial/${config.gregtech.jenkinsbuild}/artifact/build/libs/gregtech-${config.gregtech.version}-dev.jar"
+    dest file("libs/gregtech-${config.gregtech.version}-dev.jar")
+    mustRunAfter "deobfBinJar"
+    mustRunAfter "repackMinecraft"
+}
+
+tasks.setupCIWorkspace.dependsOn getGregTech
+tasks.setupDevWorkspace.dependsOn getGregTech
+tasks.setupDecompWorkspace.dependsOn getGregTech
+tasks.compileJava.dependsOn getGregTech
+
+processResources
+{
+    def cleanVersion = project.version.split('-')[1]
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", cleanVersion
+    inputs.property "mcversion", project.minecraft.version
+
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+                
+        // replace version and mcversion
+        expand 'version':cleanVersion, 'mcversion':project.minecraft.version
+    }
+        
+    // copy everything else, thats not the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
