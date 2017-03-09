@@ -29,10 +29,6 @@ public final class QuantumGlassRender implements ISimpleBlockRenderingHandler {
         renderer.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, side);
         tessellator.draw();
         tessellator.startDrawingQuads();
-        tessellator.setNormal(0.0F, 1.0F, 0.0F);
-        renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, side);
-        tessellator.draw();
-        tessellator.startDrawingQuads();
         tessellator.setNormal(0.0F, 0.0F, -1.0F);
         renderer.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, side);
         tessellator.draw();
@@ -47,6 +43,10 @@ public final class QuantumGlassRender implements ISimpleBlockRenderingHandler {
         tessellator.startDrawingQuads();
         tessellator.setNormal(1.0F, 0.0F, 0.0F);
         renderer.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, side);
+        tessellator.draw();
+        tessellator.startDrawingQuads();
+        tessellator.setNormal(0.0F, 1.0F, 0.0F);
+        renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, side);
         tessellator.draw();
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
         GL11.glEnable(GL11.GL_CULL_FACE);
