@@ -31,7 +31,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     private static Textures.BlockIcons.CustomIcon EM_T_ACTIVE;
 
     protected cElementalInstanceStackTree content=new cElementalInstanceStackTree();
-    float lifeTimeMult=1f;
+    //float lifeTimeMult=1f;
     int postEnergize=0;
     float overflowMatter=0f;
     public short id=-1;
@@ -66,7 +66,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("postEnergize",postEnergize);
-        aNBT.setFloat("lifeTimeMult",lifeTimeMult);
+        //aNBT.setFloat("lifeTimeMult",lifeTimeMult);
         aNBT.setFloat("overflowMatter",overflowMatter);
         aNBT.setTag("eM_Stacks",content.toNBT());
         aNBT.setShort("eID",id);
@@ -76,7 +76,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         postEnergize=aNBT.getInteger("postEnergize");
-        lifeTimeMult=aNBT.getFloat("lifeTimeMult");
+        //lifeTimeMult=aNBT.getFloat("lifeTimeMult");
         overflowMatter=aNBT.getFloat("overflowMatter");
         id=aNBT.getShort("eID");
         try {
@@ -93,7 +93,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
             byte Tick= (byte)(aTick%20);
             if (decayAt == Tick) {
                 purgeOverflow();
-                content.tickContent(lifeTimeMult, postEnergize);
+                content.tickContent(postEnergize);//Hatches don't life time mult things
                 purgeOverflow();
             } else if (overflowAt == Tick) {
                 if(overflowMatter<=0) {

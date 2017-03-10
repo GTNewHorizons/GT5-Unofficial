@@ -120,6 +120,20 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         return null;//return null since decay cannot be achieved
     }
 
+    public cElementalInstanceStackTree decay(long age, int postEnergize) {
+        if (this.energy > 0) {
+            this.energy--;
+            return decayCompute(definition.getEnergeticDecayInstant(), lifeTimeMult, age, postEnergize + this.energy);
+        } else if (definition.getRawLifeTime() < 0) {
+            return null;//return null, decay cannot be achieved
+        } else if (1F > this.lifeTime) {
+            return decayCompute(definition.getNaturalDecayInstant(), lifeTimeMult, age, postEnergize + this.energy);
+        } else if (((float) this.age) > this.lifeTime) {
+            return decayCompute(definition.getDecayArray(), lifeTimeMult, age, postEnergize + this.energy);
+        }
+        return null;//return null since decay cannot be achieved
+    }
+
     private cElementalInstanceStackTree decayCompute(cElementalDecay[] decays, float lifeTimeMult, long age, int energy) {
         if (decays == null) return null;//Can not decay so it wont
         else if (decays.length == 0) return new cElementalInstanceStackTree();//provide non null 0 length array for annihilation

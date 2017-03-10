@@ -288,7 +288,21 @@ public final class cElementalInstanceStackTree implements Comparable<cElementalI
 //Tick Content
     public void tickContent(float lifeTimeMult, int postEnergize){
         for(cElementalInstanceStack instance:this.values()){
-            cElementalInstanceStackTree newThings=instance.decay(lifeTimeMult,++instance.age,postEnergize);
+            cElementalInstanceStackTree newThings=instance.decay(lifeTimeMult,instance.age+=20,postEnergize);
+            if(newThings==null){
+                instance.nextColor();
+            }else{
+                tree.remove(instance.definition);
+                for(cElementalInstanceStack newInstance:newThings.values())
+                    putUnify(newInstance);
+            }
+        }
+
+    }
+
+    public void tickContent(int postEnergize){
+        for(cElementalInstanceStack instance:this.values()){
+            cElementalInstanceStackTree newThings=instance.decay(instance.age+=20,postEnergize);
             if(newThings==null){
                 instance.nextColor();
             }else{
