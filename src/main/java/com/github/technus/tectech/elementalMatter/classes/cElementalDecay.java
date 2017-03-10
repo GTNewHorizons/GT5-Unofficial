@@ -46,7 +46,7 @@ public final class cElementalDecay {
         this.probability=probability;
     }
 
-    public cElementalInstanceStackTree getResults(float lifeMult, int age, int energy, int amountDecaying) {
+    public cElementalInstanceStackTree getResults(float lifeMult, long age, int energy, int amountDecaying) {
         cElementalInstanceStackTree decayResult = new cElementalInstanceStackTree();
         if(outputStacks == null) return decayResult;//This is to prevent null pointer exceptions.
                 //Deny decay code is in instance!

@@ -25,7 +25,7 @@ public final class eQuarkDefinition extends cElementalPrimitive {
     }
 
     public static void run() {
-        quark_u.init(quark_u_, 90F, 3, -1,
+        quark_u.init(quark_u_, 1e35F, 3, -1,
                 new cElementalDecay(0.9F, quark_d, eLeptonDefinition.lepton_e_, eNeutrinoDefinition.lepton_Ve),
                 new cElementalDecay(0.050778116F, quark_s/*,lepton_m_,lepton_Vm*/),
                 new cElementalDecay(1.23201e-5F, quark_b/*,lepton_t_,lepton_Vt*/),
@@ -41,7 +41,7 @@ public final class eQuarkDefinition extends cElementalPrimitive {
                 new cElementalDecay(7.51689e-5F, quark_d, eLeptonDefinition.lepton_t_, eNeutrinoDefinition.lepton_Vt),
                 eBosonDefinition.deadEnd);//makes photons and don't care
 
-        quark_d.init(quark_d_, 46F, 3, -1,
+        quark_d.init(quark_d_, 1e35F, 3, -1,
                 new cElementalDecay(0.9F, quark_u, eLeptonDefinition.lepton_e, eNeutrinoDefinition.lepton_Ve_),
                 new cElementalDecay(0.05071504F, quark_c/*,lepton_m,lepton_Vm_*/),
                 new cElementalDecay(7.51689e-5F, quark_t/*,lepton_t,lepton_Vt_*/),

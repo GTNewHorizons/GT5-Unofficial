@@ -18,7 +18,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
     public int energy;
     //byte color; 0=R 1=G 2=B 0=C 1=M 2=Y, else ignored
     private byte color;
-    public int age;
+    public long age;
     public int amount;
     private float lifeTime;
     private float lifeTimeMult;
@@ -27,7 +27,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         this(stackSafe.definition, stackSafe.amount, 1F, 0, 0);
     }
 
-    public cElementalInstanceStack(cElementalDefinitionStack stackSafe, float lifeTimeMult, int age, int energy) {
+    public cElementalInstanceStack(cElementalDefinitionStack stackSafe, float lifeTimeMult, long age, int energy) {
         this(stackSafe.definition,stackSafe.amount,lifeTimeMult,age,energy);
     }
 
@@ -35,7 +35,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         this(defSafe, amount, 1F, 0, 0);
     }
 
-    public cElementalInstanceStack(iElementalDefinition defSafe, int amount, float lifeTimeMult, int age, int energy) {
+    public cElementalInstanceStack(iElementalDefinition defSafe, int amount, float lifeTimeMult, long age, int energy) {
         this.definition = defSafe==null?null__:defSafe;
         byte color = definition.getColor();
         if (color < (byte) 0) {//transforms colorable??? into proper color
@@ -106,7 +106,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         return decay(1F, age, 0);
     }
 
-    public cElementalInstanceStackTree decay(Float lifeTimeMult, int age, int postEnergize) {
+    public cElementalInstanceStackTree decay(Float lifeTimeMult, long age, int postEnergize) {
         if (this.energy > 0) {
             this.energy--;
             return decayCompute(definition.getEnergeticDecayInstant(), lifeTimeMult, age, postEnergize + this.energy);
@@ -120,7 +120,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         return null;//return null since decay cannot be achieved
     }
 
-    private cElementalInstanceStackTree decayCompute(cElementalDecay[] decays, float lifeTimeMult, int age, int energy) {
+    private cElementalInstanceStackTree decayCompute(cElementalDecay[] decays, float lifeTimeMult, long age, int energy) {
         if (decays == null) return null;//Can not decay so it wont
         else if (decays.length == 0) return new cElementalInstanceStackTree();//provide non null 0 length array for annihilation
         else if (decays.length == 1) {//only one type of decay :D, doesn't need dead end
@@ -229,7 +229,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         nbt.setInteger("q",amount);
         nbt.setInteger("e",energy);
         nbt.setByte("c",color);
-        nbt.setInteger("a",age);
+        nbt.setLong("a",age);
         nbt.setFloat("m",lifeTimeMult);
         return nbt;
     }
@@ -238,7 +238,10 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         NBTTagCompound definition=nbt.getCompoundTag("d");
         cElementalInstanceStack instance= new cElementalInstanceStack(
                 cElementalDefinition.fromNBT(definition),
-                nbt.getInteger("q"),nbt.getFloat("m"),nbt.getInteger("a"),nbt.getInteger("e"));
+                nbt.getInteger("q"),
+                nbt.getFloat("m"),
+                nbt.getLong("a"),
+                nbt.getInteger("e"));
         instance.setColor(nbt.getByte("c"));
         return instance;
     }
