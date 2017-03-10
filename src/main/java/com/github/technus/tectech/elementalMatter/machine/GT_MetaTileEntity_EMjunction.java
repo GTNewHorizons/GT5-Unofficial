@@ -55,7 +55,7 @@ public class GT_MetaTileEntity_EMjunction extends GT_MetaTileEntity_MultiblockBa
                 }
             }
         }
-        return true;
+        return eInputHatches.size() <= 9;
     }
 
     @Override
@@ -70,16 +70,20 @@ public class GT_MetaTileEntity_EMjunction extends GT_MetaTileEntity_MultiblockBa
     @Override
     public void EM_checkParams() {
         for(int i=0;i<10;i++){
-            if(eParamsIn[i]<0)eParamsInStatus[i]=2;
-            else if(eParamsIn[i]==0)eParamsInStatus[i]=0;
-            else if(eParamsIn[i]>eInputHatches.size())eParamsInStatus[i]=4;
-            else eParamsInStatus[i]=1;
+            if((int)eParamsIn[i]<0)eParamsInStatus[i]=PARAM_TOO_LOW;
+            else if((int)eParamsIn[i]==0)eParamsInStatus[i]=PARAM_UNUSED;
+            else if((int)eParamsIn[i]>eInputHatches.size())eParamsInStatus[i]=PARAM_TOO_HIGH;
+            else eParamsInStatus[i]=PARAM_OK;
         }
         for(int i=10;i<20;i++){
-            if(eParamsIn[i]<0)eParamsInStatus[i]=2;
-            else if(eParamsIn[i]==0)eParamsInStatus[i]=3;
-            else if(eParamsIn[i]>eOutputHatches.size())eParamsInStatus[i]=4;
-            else eParamsInStatus[i]=1;
+            if(eParamsInStatus[i-10]==PARAM_OK){
+                if((int)eParamsIn[i]<0) eParamsInStatus[i] = PARAM_TOO_LOW;
+                else if((int)eParamsIn[i]==0)eParamsInStatus[i]=PARAM_LOW;
+                else if((int)eParamsIn[i]>eOutputHatches.size())eParamsInStatus[i]=PARAM_TOO_HIGH;
+                else eParamsInStatus[i]=PARAM_OK;
+            }else{
+                eParamsInStatus[i]=PARAM_UNUSED;
+            }
         }
     }
 
@@ -98,16 +102,16 @@ public class GT_MetaTileEntity_EMjunction extends GT_MetaTileEntity_MultiblockBa
     @Override
     public void EM_outputFunction() {
         for(int i=0;i<10;i++){
-            if(((int) eParamsIn[i] - 1)<0 || ((int) eParamsIn[i] - 1)>=eInputHatches.size()) continue;
-            GT_MetaTileEntity_Hatch_InputElemental in=eInputHatches.get((int) eParamsIn[i] - 1);
-            if(eParamsIn[i+10]==0){
+            final int inIndex=(int)(eParamsIn[i])-1;
+            final int outIndex=(int)(eParamsIn[i+10])-1;
+            if(inIndex<0 || inIndex>eInputHatches.size()) continue;
+            GT_MetaTileEntity_Hatch_InputElemental in=eInputHatches.get(inIndex);
+            if(outIndex==-1){
                 cleanHatchContent(in);
             }else{
-                GT_MetaTileEntity_Hatch_OutputElemental out=eOutputHatches.get((int)eParamsIn[i+10]-1);
-                if (out != null) {
-                    in.getContainerHandler().putUnifyAll(out.getContainerHandler());
-                    out.getContainerHandler().clear();
-                }
+                GT_MetaTileEntity_Hatch_OutputElemental out=eOutputHatches.get(outIndex);
+                out.getContainerHandler().putUnifyAll(in.getContainerHandler());
+                in.getContainerHandler().clear();
             }
         }
     }

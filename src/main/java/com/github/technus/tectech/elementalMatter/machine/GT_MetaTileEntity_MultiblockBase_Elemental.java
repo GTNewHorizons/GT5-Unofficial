@@ -51,6 +51,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_Elemental extends GT_Meta
     public final float[] eParamsOut=new float[20];
     public final byte[] eParamsInStatus =new byte[20];
     public final byte[] eParamsOutStatus=new byte[20];
+    protected final byte PARAM_UNUSED=0, PARAM_OK=1, PARAM_TOO_LOW=2, PARAM_LOW=3, PARAM_TOO_HIGH=4, PARAM_HIGH=5, PARAM_WRONG=6;
 
     //TO ENABLE this change value in <init> to false and/or other than 0, can also be added in recipe check or whatever
     public boolean eParameters=true,ePowerPass=false,eSafeVoid=false;

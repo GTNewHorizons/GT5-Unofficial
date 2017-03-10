@@ -190,7 +190,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
 
     @Override
     public String[] getInfoData() {
-        if (id>=0){
+        if (id>0){
             if(content==null || content.size()==0) return new String[]{"ID: "+EnumChatFormatting.AQUA+id,"No Stacks"};
             else {
                 final String[] lines=content.getElementalInfo();

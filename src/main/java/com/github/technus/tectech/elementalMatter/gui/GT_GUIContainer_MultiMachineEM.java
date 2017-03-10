@@ -13,8 +13,8 @@ import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
  */
 
 public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Machine {
-    private static final XSTR ran=new XSTR();
     String mName = "";
+    private static byte cntr=0;
 
     public GT_GUIContainer_MultiMachineEM(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile) {
         super(new GT_Container_MultiMachineEM(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "multimachines/" + (aTextureFile == null ? "MultiblockDisplay" : aTextureFile));
@@ -65,6 +65,7 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
         y-=26;
         drawTexturedModalRect(x, y, 0, 0, xSize, ySize+26);
         if (this.mContainer != null && ((GT_Container_MultiMachineEM) this.mContainer).eParamsInStatus!=null) {
+            cntr=(byte)((1+cntr)%6);
             GL11.glColor4f(1f, 1f, 1f, 1f);
 
             if(((GT_Container_MultiMachineEM) mContainer).ePowerPass)
@@ -151,11 +152,19 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
     private void LEDdrawP(int x,int y,int i,int j,byte status){
         final int v=192,su=8,sv=6,u=11;
         switch(status){
+            case 6:
+                if (cntr<2){
+                    drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * j, su, sv);
+                    break;
+                } else if (cntr<4){
+                    drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (8 + j), su, sv);
+                    break;
+                }
             case 1://ok
                 drawTexturedModalRect(x+su*i,y+sv*j,u+su*i,v+sv*(4+j),su,sv);
             break;
             case 2://too low blink
-                if(ran.nextInt(2)==0){
+                if(cntr<3){
                     drawTexturedModalRect(x+su*i,y+sv*j,u+su*i,v+sv*j,su,sv);
                     break;
                 }
@@ -163,19 +172,13 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
                 drawTexturedModalRect(x+su*i,y+sv*j,u+su*i,v+sv*(2+j),su,sv);
             break;
             case 4://too high blink
-                if(ran.nextInt(2)==0) {
+                if(cntr<3) {
                     drawTexturedModalRect(x+su*i,y+sv*j,u+su*i,v+sv*(8+j),su,sv);
                     break;
                 }
             case 5:// too high
                 drawTexturedModalRect(x+su*i,y+sv*j,u+su*i,v+sv*(6+j),su,sv);
             break;
-            case 6:
-                if(ran.nextInt(2)==0)
-                    drawTexturedModalRect(x+su*i,y+sv*j,u+su*i,v+sv*j,su,sv);
-                else
-                    drawTexturedModalRect(x+su*i,y+sv*j,u+su*i,v+sv*(8+j),su,sv);
-
         }
     }
 }
