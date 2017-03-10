@@ -79,7 +79,7 @@ public final class dHadronDefinition extends cElementalDefinition {
         this.mass = mass * 5.543F * (float) mult;//yes it becomes heavier
 
         if (this.mass == protonMass && this.amount == 3) this.rawLifeTime = 1e35F;
-        else if (this.mass == neutronMass && this.amount == 3) this.rawLifeTime = 17630F;
+        else if (this.mass == neutronMass && this.amount == 3) this.rawLifeTime = 882F;
         else {
             if (this.amount == 3) {
                 this.rawLifeTime = (1.34F / this.mass) * (float) Math.pow(9.81, charge);

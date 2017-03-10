@@ -8,7 +8,7 @@ import com.github.technus.tectech.elementalMatter.classes.cElementalPrimitive;
  * Created by danie_000 on 22.10.2016.
  */
 public final class eBosonDefinition extends cElementalPrimitive {
-    public static final eBosonDefinition boson_Y__ = new eBosonDefinition("Photon", "\u03b3", 0, 1e-19F, 0, -1,27);
+    public static final eBosonDefinition boson_Y__ = new eBosonDefinition("Photon", "\u03b3", 0, 1e-18F, 0, -1,27);
     public static final eBosonDefinition boson_H__ = new eBosonDefinition("Higgs", "\u0397", 0, 126.09e9F, 0, -2,28);
     //deadEnd
     public static final cElementalDecay deadEnd = new cElementalDecay(boson_Y__,boson_Y__);
