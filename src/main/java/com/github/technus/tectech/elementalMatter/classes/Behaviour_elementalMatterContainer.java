@@ -1,6 +1,7 @@
 package com.github.technus.tectech.elementalMatter.classes;
 
 
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.commonValues;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalInstanceContainer;
 import gregtech.api.interfaces.IItemBehaviour;
@@ -18,8 +19,6 @@ import net.minecraft.world.World;
 
 import java.util.Collections;
 import java.util.List;
-
-import static com.github.technus.tectech.elementalMatter.commonValues.DEBUGMODE;
 
 /**
  * Created by danie_000 on 11.12.2016.
@@ -42,7 +41,7 @@ public final class Behaviour_elementalMatterContainer extends Behaviour_None {
                         try {
                             content.putUnifyAll(cElementalInstanceStackTree.fromNBT(tNBT.getCompoundTag("content")));
                         }catch (tElementalException e){
-                            if(DEBUGMODE)e.printStackTrace();
+                            if(TecTech.ModConfig.DEBUG_MODE)e.printStackTrace();
                             return true;
                         }
                         ((iElementalInstanceContainer) metaTE).purgeOverflow();

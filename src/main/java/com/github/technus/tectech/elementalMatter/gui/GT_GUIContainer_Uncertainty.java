@@ -1,8 +1,8 @@
 package com.github.technus.tectech.elementalMatter.gui;
 
+import com.github.technus.tectech.TecTech;
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.XSTR;
 import net.minecraft.entity.player.InventoryPlayer;
 import org.lwjgl.opengl.GL11;
 
@@ -10,8 +10,6 @@ import static com.github.technus.tectech.TecTech.proxy;
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
 public class GT_GUIContainer_Uncertainty extends GT_GUIContainerMetaTile_Machine {
-    private static final XSTR ran= new XSTR();
-
     public GT_GUIContainer_Uncertainty(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(new GT_Container_Uncertainty(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "Uncertainty.png");
     }
@@ -95,7 +93,7 @@ public class GT_GUIContainer_Uncertainty extends GT_GUIContainerMetaTile_Machine
             }
             x-=6;y-=6;
             for(int i=0;i<16;i++)
-                if(ran.nextInt(1000)<((GT_Container_Uncertainty) this.mContainer).matrix[i])
+                if(TecTech.Rnd.nextInt(1000)<((GT_Container_Uncertainty) this.mContainer).matrix[i])
                     drawTexturedModalRect(x + 12*(i/4), y + 12*(i%4),
                             fU + 12*(i/4), V + 12*(i%4), 10, 10);
             if(((GT_Container_Uncertainty) this.mContainer).selection>-1) {

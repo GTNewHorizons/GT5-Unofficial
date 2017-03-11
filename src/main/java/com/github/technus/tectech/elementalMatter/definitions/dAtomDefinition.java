@@ -1,5 +1,6 @@
 package com.github.technus.tectech.elementalMatter.definitions;
 
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.classes.*;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
 import gregtech.api.objects.XSTR;
@@ -7,12 +8,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.TreeSet;
+import java.util.*;
 
 import static com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStackTree.stackUpTree;
-import static com.github.technus.tectech.elementalMatter.commonValues.DEBUGMODE;
 import static com.github.technus.tectech.elementalMatter.definitions.eBosonDefinition.boson_Y__;
 import static com.github.technus.tectech.elementalMatter.definitions.eBosonDefinition.deadEnd;
 
@@ -21,8 +19,11 @@ import static com.github.technus.tectech.elementalMatter.definitions.eBosonDefin
  */
 public final class dAtomDefinition extends cElementalDefinition {
     private static final byte nbtType=(byte)'a';
-    private static final XSTR xstr = new XSTR();
-    private static final HashMap<Integer,TreeSet<Integer>> stableIsotopes=new HashMap<>();
+    private static final Random xstr = new XSTR();//NEEDS SEPARATE!
+    private static HashMap<Integer,TreeSet<Integer>> stableIsotopes=new HashMap<>();
+    private static final TreeMap<Integer,dAtomDefinition> stableAtoms=new TreeMap<>();
+    private static HashMap<Integer,TreeMap<Float,Integer>> mostStableUnstableIsotopes=new HashMap<>();
+    private static final TreeMap<Integer,dAtomDefinition> unstableAtoms=new TreeMap<>();
     private static cElementalDefinitionStack alfa;
 
     //float-mass in eV/c^2
@@ -240,7 +241,7 @@ public final class dAtomDefinition extends cElementalDefinition {
             if(type!=1) return (negative?"~? ":"? ") +nomenclature.Name[element];
             return negative?"~"+ nomenclature.Name[element]:nomenclature.Name[element];
         }catch(Exception e){
-            if(DEBUGMODE)e.printStackTrace();
+            if(TecTech.ModConfig.DEBUG_MODE)e.printStackTrace();
             return (negative?"Element: ~":"Element: ") + element;
         }
     }
@@ -252,12 +253,12 @@ public final class dAtomDefinition extends cElementalDefinition {
         try{
             return (negative?"~":"") + nomenclature.Symbol[element]+" N:"+isotope+" I:"+getIonization();
         }catch(Exception e){
-            if(DEBUGMODE)e.printStackTrace();
+            if(TecTech.ModConfig.DEBUG_MODE)e.printStackTrace();
             try {
                 int s100 = element / 100, s1 = (element/10) % 10, s10 = (element) % 10;
                 return (negative?"~":"") + nomenclature.SymbolIUPAC[10+s100]+nomenclature.SymbolIUPAC[s10]+nomenclature.SymbolIUPAC[s1]+ " N:" + isotope + " I:" + getIonization();
             }catch (Exception E){
-                if(DEBUGMODE)e.printStackTrace();
+                if(TecTech.ModConfig.DEBUG_MODE)e.printStackTrace();
                 return (negative?"~":"") + "? N:" + isotope + " I:" + getIonization();
             }
         }
@@ -294,7 +295,7 @@ public final class dAtomDefinition extends cElementalDefinition {
                         deadEnd
                 };
             }catch (Exception e){
-                if(DEBUGMODE)e.printStackTrace();
+                if(TecTech.ModConfig.DEBUG_MODE)e.printStackTrace();
             }
         }
         return getNaturalDecayInstant();
@@ -310,7 +311,7 @@ public final class dAtomDefinition extends cElementalDefinition {
                         deadEnd
                 };
             }catch (Exception e){
-                if(DEBUGMODE)e.printStackTrace();
+                if(TecTech.ModConfig.DEBUG_MODE)e.printStackTrace();
             }
         }
         return getNaturalDecayInstant();
@@ -327,7 +328,7 @@ public final class dAtomDefinition extends cElementalDefinition {
                         deadEnd
                 };
             }catch (Exception e){
-                if(DEBUGMODE)e.printStackTrace();
+                if(TecTech.ModConfig.DEBUG_MODE)e.printStackTrace();
             }
         }
         return getNaturalDecayInstant();
@@ -344,7 +345,7 @@ public final class dAtomDefinition extends cElementalDefinition {
                         deadEnd
                 };
             }catch (Exception e){
-                if(DEBUGMODE)e.printStackTrace();
+                if(TecTech.ModConfig.DEBUG_MODE)e.printStackTrace();
             }
         }
         return getNaturalDecayInstant();
@@ -370,7 +371,7 @@ public final class dAtomDefinition extends cElementalDefinition {
             decaysInto.add(new cElementalDefinitionStack(new dAtomDefinition(newAtom.toArray(new cElementalDefinitionStack[newAtom.size()])),1));
             return new cElementalDecay[]{new cElementalDecay(0.95F, decaysInto.toArray(new cElementalDefinitionStack[decaysInto.size()])), eBosonDefinition.deadEnd};
         }catch(tElementalException e){
-            if(DEBUGMODE)e.printStackTrace();
+            if(TecTech.ModConfig.DEBUG_MODE)e.printStackTrace();
             for(cElementalDefinitionStack things:newAtom){
                 decaysInto.add(things);
             }
@@ -404,18 +405,20 @@ public final class dAtomDefinition extends cElementalDefinition {
         try {
             return new dAtomDefinition(false, antiElements);
         } catch (tElementalException e) {
-            if(DEBUGMODE)e.printStackTrace();
+            if(TecTech.ModConfig.DEBUG_MODE)e.printStackTrace();
             return null;
         }
     }
 
     @Override
     public FluidStack materializesIntoFluid() {
+
         return null;
     }
 
     @Override
     public ItemStack materializesIntoItem() {
+
         return null;
     }
 
@@ -443,7 +446,7 @@ public final class dAtomDefinition extends cElementalDefinition {
         try {
             return new dAtomDefinition(stacks);
         }catch (tElementalException e){
-            if(DEBUGMODE)e.printStackTrace();
+            if(TecTech.ModConfig.DEBUG_MODE)e.printStackTrace();
             return null;
         }
     }
@@ -452,11 +455,12 @@ public final class dAtomDefinition extends cElementalDefinition {
         try {
             cElementalDefinition.addCreatorFromNBT(nbtType, dAtomDefinition.class.getMethod("fromNBT", NBTTagCompound.class));
         }catch (Exception e){
-            if(DEBUGMODE)e.printStackTrace();
+            if(TecTech.ModConfig.DEBUG_MODE)e.printStackTrace();
         }
         //populate stable isotopes
-        for(int element=0;element<180;element++)
-            for(int isotope=0;isotope<180;isotope++){
+        el:
+        for(int element=1;element<84;element++)
+            for(int isotope=0;isotope<130;isotope++){
                 xstr.setSeed((long) (element+1)*(isotope+100));
                 //stability curve
                 final int StableIsotope = stableIzoCurve(element);
@@ -465,33 +469,57 @@ public final class dAtomDefinition extends cElementalDefinition {
                 final float rawLifeTime= calculateLifeTime(izoDiff,izoDiffAbs,element,isotope,false);
                 if(isStable(rawLifeTime)){
                     TreeSet<Integer> isotopes=stableIsotopes.get(element);
-                    if(isotopes==null)
-                        stableIsotopes.put(element,isotopes=new TreeSet<>());
+                    if(isotopes==null) stableIsotopes.put(element,isotopes=new TreeSet<>());
                     isotopes.add(isotope);
                 }
             }
+
+        for(int element=84;element<150;element++)
+            for(int isotope=0;isotope<180;isotope++){
+                xstr.setSeed((long) (element+1)*(isotope+100));
+                //stability curve
+                final int Isotope = stableIzoCurve(element);
+                final int izoDiff =isotope-Isotope;
+                final int izoDiffAbs = Math.abs(izoDiff);
+                final float rawLifeTime= calculateLifeTime(izoDiff,izoDiffAbs,element,isotope,false);
+                TreeMap<Float,Integer> isotopes=mostStableUnstableIsotopes.get(element);
+                if(isotopes==null) mostStableUnstableIsotopes.put(element,isotopes=new TreeMap<>());
+                isotopes.put(rawLifeTime,isotope);
+            }
+
         try {
+            for(int key:stableIsotopes.keySet()){
+                stableAtoms.put(key,new dAtomDefinition(
+                        new cElementalDefinitionStack(dHadronDefinition.hadron_p,key),
+                        new cElementalDefinitionStack(dHadronDefinition.hadron_n,stableIsotopes.get(key).first()),
+                        new cElementalDefinitionStack(eLeptonDefinition.lepton_e,key)));
+                if(TecTech.ModConfig.DEBUG_MODE)
+                    System.out.println("Added Stable Atom:"+key+" "+stableIsotopes.get(key).first()+" "+stableAtoms.get(key).getMass());
+            }
+            for(int key:mostStableUnstableIsotopes.keySet()){
+                unstableAtoms.put(key,new dAtomDefinition(
+                        new cElementalDefinitionStack(dHadronDefinition.hadron_p,key),
+                        new cElementalDefinitionStack(dHadronDefinition.hadron_n,mostStableUnstableIsotopes.get(key).lastEntry().getValue()),
+                        new cElementalDefinitionStack(eLeptonDefinition.lepton_e,key)));
+                if(TecTech.ModConfig.DEBUG_MODE)
+                    System.out.println("Added Unstable Atom:"+key+" "+mostStableUnstableIsotopes.get(key).lastEntry().getValue()+" "+unstableAtoms.get(key).getMass());
+            }
             alfa = new cElementalDefinitionStack(
                     new dAtomDefinition(
                             new cElementalDefinitionStack(dHadronDefinition.hadron_p, 2),
                             new cElementalDefinitionStack(dHadronDefinition.hadron_n, 2))
                     ,1);
         }catch (Exception e){
-            if(DEBUGMODE)e.printStackTrace();
+            if(TecTech.ModConfig.DEBUG_MODE)e.printStackTrace();
         }
     }
 
     public static dAtomDefinition getFirstStableIsotope(int element){
-        try {
-            int isotope=stableIsotopes.get(element).first();
-            return new dAtomDefinition(
-                    new cElementalDefinitionStack(dHadronDefinition.hadron_n,isotope),
-                    new cElementalDefinitionStack(dHadronDefinition.hadron_p,element),
-                    new cElementalDefinitionStack(eLeptonDefinition.lepton_e,element));
-        }catch (Exception e){
-            if(DEBUGMODE)e.printStackTrace();
-            return null;
-        }
+        return stableAtoms.get(element);
+    }
+
+    public static dAtomDefinition getBestUnstableIsotope(int element){
+        return unstableAtoms.get(element);
     }
 
     @Override

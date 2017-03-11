@@ -1,5 +1,6 @@
 package com.github.technus.tectech.elementalMatter.classes;
 
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
 import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReport;
@@ -8,8 +9,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.TreeMap;
-
-import static com.github.technus.tectech.elementalMatter.commonValues.DEBUGMODE;
 
 /**
  * Created by danie_000 on 22.10.2016.
@@ -167,7 +166,7 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
         try {
             cElementalDefinition.addCreatorFromNBT(nbtType, cElementalPrimitive.class.getMethod("fromNBT", NBTTagCompound.class));
         } catch (Exception e) {
-            if(DEBUGMODE)e.printStackTrace();
+            if(TecTech.ModConfig.DEBUG_MODE)e.printStackTrace();
         }
     }
 }

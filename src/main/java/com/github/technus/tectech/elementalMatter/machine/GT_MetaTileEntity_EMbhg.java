@@ -1,7 +1,7 @@
 package com.github.technus.tectech.elementalMatter.machine;
 
-import com.github.technus.tectech.casing.GT_Container_CasingsTT;
 import com.github.technus.tectech.blocks.QuantumGlass;
+import com.github.technus.tectech.casing.GT_Container_CasingsTT;
 import com.github.technus.tectech.elementalMatter.commonValues;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;

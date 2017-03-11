@@ -1,5 +1,6 @@
 package com.github.technus.tectech.elementalMatter.machine;
 
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackTree;
 import com.github.technus.tectech.elementalMatter.classes.tElementalException;
 import com.github.technus.tectech.elementalMatter.commonValues;
@@ -82,7 +83,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
         try {
             content = cElementalInstanceStackTree.fromNBT(aNBT.getCompoundTag("eM_Stacks"));
         }catch (tElementalException e){
-            if(DEBUGMODE)e.printStackTrace();
+            if(TecTech.ModConfig.DEBUG_MODE)e.printStackTrace();
             if(content==null) content=new cElementalInstanceStackTree();
         }
     }
@@ -97,24 +98,30 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
                 purgeOverflow();
             } else if (overflowAt == Tick) {
                 if(overflowMatter<=0) {
-                    deathDelay=2;
+                    deathDelay=3;
                 }else {
-                    IGregTechTileEntity tGTTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(aBaseMetaTileEntity.getBackFacing());
-                    if (tGTTileEntity == null || !(tGTTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_MufflerElemental))
-                        tGTTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide((byte) 0);
-                    if (tGTTileEntity == null || !(tGTTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_MufflerElemental))
-                        tGTTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide((byte) 1);
-                    if (tGTTileEntity != null && (tGTTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_MufflerElemental)) {
-                        GT_MetaTileEntity_Hatch_MufflerElemental aMetaTileEntity = (GT_MetaTileEntity_Hatch_MufflerElemental) tGTTileEntity.getMetaTileEntity();
-                        aMetaTileEntity.overflowMatter += overflowMatter;
-                        if (aMetaTileEntity.overflowMatter > aMetaTileEntity.overflowMax) {
-                            tGTTileEntity.doExplosion(V[15]);
-                        } else overflowMatter = 0;
-                    } else {
-                        if(deathDelay==1) aBaseMetaTileEntity.setOnFire();
-                        else if(deathDelay<1) getBaseMetaTileEntity().doExplosion(V[15]);
-                        deathDelay--;
+                    if(deathDelay==2) {
+                        if (TecTech.ModConfig.BOOM_ENABLE && TecTech.Rnd.nextInt(10)==0) aBaseMetaTileEntity.setOnFire();
+                        else System.out.println("FIRE! " + getBaseMetaTileEntity().getXCoord() + " " + getBaseMetaTileEntity().getYCoord() + " " + getBaseMetaTileEntity().getZCoord());
+                    }else if(deathDelay==1) {
+                        IGregTechTileEntity tGTTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(aBaseMetaTileEntity.getBackFacing());
+                        if (tGTTileEntity == null || !(tGTTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_MufflerElemental))
+                            tGTTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide((byte) 0);
+                        if (tGTTileEntity == null || !(tGTTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_MufflerElemental))
+                            tGTTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide((byte) 1);
+                        if (tGTTileEntity != null && (tGTTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_MufflerElemental)) {
+                            GT_MetaTileEntity_Hatch_MufflerElemental aMetaTileEntity = (GT_MetaTileEntity_Hatch_MufflerElemental) tGTTileEntity.getMetaTileEntity();
+                            aMetaTileEntity.overflowMatter += overflowMatter;
+                            if (aMetaTileEntity.overflowMatter > aMetaTileEntity.overflowMax) {
+                                if(TecTech.ModConfig.BOOM_ENABLE)tGTTileEntity.doExplosion(V[14]);
+                                else System.out.println("BOOM! "+getBaseMetaTileEntity().getXCoord()+" "+getBaseMetaTileEntity().getYCoord()+" "+getBaseMetaTileEntity().getZCoord());
+                            } else overflowMatter = 0F;
+                        }
+                    }else if(deathDelay<1) {
+                        if (TecTech.ModConfig.BOOM_ENABLE) getBaseMetaTileEntity().doExplosion(V[14]);
+                        else System.out.println("BOOM! " + getBaseMetaTileEntity().getXCoord() + " " + getBaseMetaTileEntity().getYCoord() + " " + getBaseMetaTileEntity().getZCoord());
                     }
+                    deathDelay--;
                 }
             } else if (moveAt==Tick){
                 moveAround(aBaseMetaTileEntity);
@@ -226,6 +233,8 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
 
     @Override
     public void onRemoval() {
-        if(isValidMetaTileEntity(this) && getBaseMetaTileEntity().isActive()) getBaseMetaTileEntity().doExplosion(V[15]);
+        if(isValidMetaTileEntity(this) && getBaseMetaTileEntity().isActive())
+            if(TecTech.ModConfig.BOOM_ENABLE)getBaseMetaTileEntity().doExplosion(V[15]);
+            else System.out.println("BOOM! "+getBaseMetaTileEntity().getXCoord()+" "+getBaseMetaTileEntity().getYCoord()+" "+getBaseMetaTileEntity().getZCoord());
     }
 }

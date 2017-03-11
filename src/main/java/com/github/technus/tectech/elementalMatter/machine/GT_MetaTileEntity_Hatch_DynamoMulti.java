@@ -79,7 +79,7 @@ public class GT_MetaTileEntity_Hatch_DynamoMulti extends GT_MetaTileEntity_Hatch
 
     @Override
     public long maxEUStore() {
-        return 512L + V[mTier] * 8L * Amperes;
+        return 512L + V[mTier] * 4L * Amperes;
     }
 
     @Override

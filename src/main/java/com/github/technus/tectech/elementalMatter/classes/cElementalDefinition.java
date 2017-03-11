@@ -1,5 +1,6 @@
 package com.github.technus.tectech.elementalMatter.classes;
 
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
 import com.github.technus.tectech.elementalMatter.interfaces.iHasElementalDefinition;
 import net.minecraft.nbt.NBTTagCompound;
@@ -7,7 +8,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import java.lang.reflect.Method;
 import java.util.TreeMap;
 
-import static com.github.technus.tectech.elementalMatter.commonValues.DEBUGMODE;
 import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveDefinition.debug__;
 
 /**
@@ -28,7 +28,7 @@ public abstract class cElementalDefinition implements iElementalDefinition {
         try {
             return (iElementalDefinition) nbtCreationBind.get(nbt.getByte("t")).invoke(null, nbt);
         }catch(Exception e){
-            if(DEBUGMODE)e.printStackTrace();
+            if(TecTech.ModConfig.DEBUG_MODE)e.printStackTrace();
             return debug__;
         }
     }

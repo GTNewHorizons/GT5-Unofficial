@@ -1,7 +1,7 @@
 package com.github.technus.tectech.elementalMatter.machine;
 
-import com.github.technus.tectech.casing.GT_Container_CasingsTT;
 import com.github.technus.tectech.blocks.QuantumGlass;
+import com.github.technus.tectech.casing.GT_Container_CasingsTT;
 import com.github.technus.tectech.elementalMatter.commonValues;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -59,8 +59,8 @@ public class GT_MetaTileEntity_EMdequantifier extends GT_MetaTileEntity_Multiblo
     public String[] getDescription() {
         return new String[]{
                 commonValues.tecMark,
-                "Conveniently convert regular stuff into quantum form.",
-                EnumChatFormatting.AQUA.toString()+EnumChatFormatting.BOLD+"To make it more inconvenient."
+                "Transform quantum form back to regular one...",
+                EnumChatFormatting.AQUA.toString()+EnumChatFormatting.BOLD+"but why?"
         };
     }
 }

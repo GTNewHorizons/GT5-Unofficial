@@ -19,6 +19,4 @@ public final class commonValues {
 	// - in case some hatches are not in multiblock structure
 	public final static byte multiCheckAt = 12;// multiblock checks it's state
 	public final static byte disperseAt = 14;// overflow hatches perform disperse
-
-	public final static boolean DEBUGMODE = true;
 }

@@ -1,5 +1,6 @@
 package com.github.technus.tectech.elementalMatter.machine;
 
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.commonValues;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
@@ -8,7 +9,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.objects.XSTR;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityExplodeFX;
 import net.minecraft.client.particle.EntityFX;
@@ -152,8 +152,6 @@ public class GT_MetaTileEntity_Hatch_MufflerElemental extends GT_MetaTileEntity_
         //DOES NOT CHECK FOR TOO MUCH, it is done only while putting stuff in (OPTIMIZATION!!!)
     }
 
-    private static XSTR floatGen=new XSTR();
-
     public void particles(World aWorld){//CUTE!
         IGregTechTileEntity aMuffler=this.getBaseMetaTileEntity();
         ForgeDirection aDir=ForgeDirection.getOrientation(aMuffler.getFrontFacing());
@@ -165,8 +163,8 @@ public class GT_MetaTileEntity_Hatch_MufflerElemental extends GT_MetaTileEntity_
                 //aDir.offsetY*0.1F+0.2F+0.1F*floatGen.nextFloat();
         float xSpd=0;
         float zSpd=0;
-        EntityFX particle=new EntityExplodeFX(aWorld, xPos + floatGen.nextFloat()*0.5F, yPos + floatGen.nextFloat()*0.5F, zPos + floatGen.nextFloat()*0.5F, xSpd, ySpd, zSpd);
-        particle.setRBGColorF(0,0.6F*floatGen.nextFloat(),0.8f);
+        EntityFX particle=new EntityExplodeFX(aWorld, xPos + TecTech.Rnd.nextFloat()*0.5F, yPos + TecTech.Rnd.nextFloat()*0.5F, zPos + TecTech.Rnd.nextFloat()*0.5F, xSpd, ySpd, zSpd);
+        particle.setRBGColorF(0,0.6F*TecTech.Rnd.nextFloat(),0.8f);
         Minecraft.getMinecraft().effectRenderer.addEffect(particle);
     }
 
@@ -187,6 +185,8 @@ public class GT_MetaTileEntity_Hatch_MufflerElemental extends GT_MetaTileEntity_
 
     @Override
     public void onRemoval() {
-        if(isValidMetaTileEntity(this) && getBaseMetaTileEntity().isActive()) getBaseMetaTileEntity().doExplosion(V[15]);
+        if(isValidMetaTileEntity(this) && getBaseMetaTileEntity().isActive())
+            if(TecTech.ModConfig.BOOM_ENABLE)getBaseMetaTileEntity().doExplosion(V[15]);
+            else System.out.println("BOOM! "+getBaseMetaTileEntity().getXCoord()+" "+getBaseMetaTileEntity().getYCoord()+" "+getBaseMetaTileEntity().getZCoord());
     }
 }

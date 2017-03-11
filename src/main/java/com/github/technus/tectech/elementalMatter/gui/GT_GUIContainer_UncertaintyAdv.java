@@ -2,7 +2,6 @@ package com.github.technus.tectech.elementalMatter.gui;
 
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.objects.XSTR;
 import net.minecraft.entity.player.InventoryPlayer;
 import org.lwjgl.opengl.GL11;
 
@@ -11,7 +10,6 @@ import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 import static org.lwjgl.opengl.GL11.*;
 
 public final class GT_GUIContainer_UncertaintyAdv extends GT_GUIContainerMetaTile_Machine {
-    protected static final XSTR ran= new XSTR();
     protected static final short sX=52,sY=33,bU=0,rU=70,fU=192,V=210,Vs=216;
 
     public GT_GUIContainer_UncertaintyAdv(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {

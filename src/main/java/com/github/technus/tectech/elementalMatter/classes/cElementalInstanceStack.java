@@ -1,8 +1,8 @@
 package com.github.technus.tectech.elementalMatter.classes;
 
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
 import com.github.technus.tectech.elementalMatter.interfaces.iHasElementalDefinition;
-import gregtech.api.objects.XSTR;
 import net.minecraft.nbt.NBTTagCompound;
 
 import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveDefinition.null__;
@@ -11,8 +11,6 @@ import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveD
  * Created by danie_000 on 22.10.2016.
  */
 public final class cElementalInstanceStack implements iHasElementalDefinition {
-    private static final XSTR xstr = new XSTR();
-
     public final iElementalDefinition definition;
     //energy - if positive then particle should try to decay
     public int energy;
@@ -41,7 +39,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         if (color < (byte) 0) {//transforms colorable??? into proper color
             this.color = color;
         } else {
-            this.color = (byte) (xstr.nextInt(3));
+            this.color = (byte) (TecTech.Rnd.nextInt(3));
         }
         this.lifeTimeMult = lifeTimeMult;
         this.lifeTime = definition.getRawLifeTime() * this.lifeTimeMult;
@@ -84,7 +82,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
 
     public byte nextColor() {
         if (this.color < (byte) 0) return this.color;
-        this.color = (byte) (xstr.nextInt(3));
+        this.color = (byte) (TecTech.Rnd.nextInt(3));
         return this.color;
     }
 
@@ -177,7 +175,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
             }
 
             for (int i = 0; i < amountRemaining; i++) {
-                double rand = (double) (xstr.nextFloat());
+                double rand = (double) (TecTech.Rnd.nextFloat());
                 for (int j = 0; j < differentDecays; j++) {//looking for the thing it decayed into
                     rand -= (double) (decays[j].probability);
                     if (rand <= 0D) {

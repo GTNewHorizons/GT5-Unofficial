@@ -1,7 +1,7 @@
 package com.github.technus.tectech.elementalMatter.machine;
 
-import com.github.technus.tectech.casing.GT_Container_CasingsTT;
 import com.github.technus.tectech.blocks.QuantumGlass;
+import com.github.technus.tectech.casing.GT_Container_CasingsTT;
 import com.github.technus.tectech.elementalMatter.commonValues;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -17,12 +17,10 @@ import static gregtech.api.enums.GT_Values.V;
 public class GT_MetaTileEntity_EMjunction extends GT_MetaTileEntity_MultiblockBase_Elemental  {
     public GT_MetaTileEntity_EMjunction(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        mEUt=-(int)V[9];
     }
 
     public GT_MetaTileEntity_EMjunction(String aName) {
         super(aName);
-        mEUt=-(int)V[9];
     }
 
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
@@ -55,7 +53,7 @@ public class GT_MetaTileEntity_EMjunction extends GT_MetaTileEntity_MultiblockBa
                 }
             }
         }
-        return eInputHatches.size() <= 9;
+        return true;
     }
 
     @Override
@@ -91,11 +89,14 @@ public class GT_MetaTileEntity_EMjunction extends GT_MetaTileEntity_MultiblockBa
     public boolean EM_checkRecipe(ItemStack itemStack) {
         for(GT_MetaTileEntity_Hatch_InputElemental in: eInputHatches)
             if(in.getContainerHandler().hasStacks()) {
-                ampereRating=1+((eInputHatches.size()+eOutputHatches.size())>>1);
+                mEUt=-(int)V[9];
+                eAmpereRating =1+((eInputHatches.size()+eOutputHatches.size())>>1);
                 mMaxProgresstime=20;
+                mEfficiencyIncrease=10000;
                 return true;
             }
         mMaxProgresstime=0;
+        mEfficiencyIncrease=0;
         return false;
     }
 
@@ -103,8 +104,8 @@ public class GT_MetaTileEntity_EMjunction extends GT_MetaTileEntity_MultiblockBa
     public void EM_outputFunction() {
         for(int i=0;i<10;i++){
             final int inIndex=(int)(eParamsIn[i])-1;
-            final int outIndex=(int)(eParamsIn[i+10])-1;
             if(inIndex<0 || inIndex>eInputHatches.size()) continue;
+            final int outIndex=(int)(eParamsIn[i+10])-1;
             GT_MetaTileEntity_Hatch_InputElemental in=eInputHatches.get(inIndex);
             if(outIndex==-1){
                 cleanHatchContent(in);

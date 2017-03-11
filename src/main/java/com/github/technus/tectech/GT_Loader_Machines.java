@@ -1,38 +1,12 @@
 package com.github.technus.tectech;
 
-import com.github.technus.tectech.elementalMatter.classes.cElementalPrimitive;
-import com.github.technus.tectech.elementalMatter.definitions.*;
 import com.github.technus.tectech.elementalMatter.machine.*;
 
 /**
  * Created by danie_000 on 16.11.2016.
  */
-public class GT_Loader_Elemental implements Runnable {
+public class GT_Loader_Machines implements Runnable {
     public void run() {
-
-        // ===================================================================================================
-        // def init
-        // ===================================================================================================
-
-        cElementalPrimitive.run();
-
-        cPrimitiveDefinition.run();
-
-        eQuarkDefinition.run();
-        eLeptonDefinition.run();
-        eNeutrinoDefinition.run();
-        eBosonDefinition.run();
-
-        dHadronDefinition.run();
-
-        dAtomDefinition.run();
-
-        // ===================================================================================================
-        // Recipe init
-        // ===================================================================================================
-
-        GT_MetaTileEntity_EMquantifier.recipeInit();
-
         // ===================================================================================================
         // eM IN
         // ===================================================================================================
@@ -196,21 +170,24 @@ public class GT_Loader_Elemental implements Runnable {
         // MULTIBLOCKS EM
         // ===================================================================================================
 
-        CustomItemList.Machine_Multi_MatterToEM.set(new GT_MetaTileEntity_EMquantifier(12160,"multimachine.mattertoem","Matter Quantifier").getStackForm(1L));
-        CustomItemList.Machine_Multi_EMToMatter.set(new GT_MetaTileEntity_EMdequantifier(12161,"multimachine.emtomatter","Matter De-quantifier").getStackForm(1L));
-        CustomItemList.Machine_Multi_EMjunction.set(new GT_MetaTileEntity_EMjunction(12162,"multimachine.emjunction","Matter junction").getStackForm(1L));
-        CustomItemList.Machine_Multi_EM.set(new GT_MetaTileEntity_EMmachine(12163,"multimachine.emprocessing","Quantum Processing Machine").getStackForm(1L));
-        CustomItemList.Machine_Multi_EMCrafter.set(new GT_MetaTileEntity_EMcrafter(12164,"multimachine.emcrafter","Matter Assembler").getStackForm(1L));
-        CustomItemList.Machine_Multi_Collider.set(new GT_MetaTileEntity_EMcollider(12165,"multimachine.emcollider","Matter Collider").getStackForm(1L));
-        CustomItemList.Machine_Multi_BHG.set(new GT_MetaTileEntity_EMbhg(12166,"multimachine.blackholegenerator","Black Hole Generator").getStackForm(1L));
-        CustomItemList.Machine_Multi_Wormhole.set(new GT_MetaTileEntity_EMwormhole(12167,"multimachine.emwormhole","Wormhole").getStackForm(1L));
+        CustomItemList.Machine_Multi_Transformer.set(new GT_MetaTileEntity_EMtransformer(12160,"multimachine.em.transformer", "Active Transformer").getStackForm(1L));
+        CustomItemList.Machine_Multi_MatterToEM.set(new GT_MetaTileEntity_EMquantifier(12161,"multimachine.em.mattertoem","Matter Quantifier").getStackForm(1L));
+        CustomItemList.Machine_Multi_EMToMatter.set(new GT_MetaTileEntity_EMdequantifier(12162,"multimachine.em.emtomatter","Matter De-quantifier").getStackForm(1L));
+        CustomItemList.Machine_Multi_EMjunction.set(new GT_MetaTileEntity_EMjunction(12163,"multimachine.em.junction","Matter junction").getStackForm(1L));
+        CustomItemList.Machine_Multi_EMmachine.set(new GT_MetaTileEntity_EMmachine(12164,"multimachine.em.processing","Quantum Processing Machine").getStackForm(1L));
+        CustomItemList.Machine_Multi_EMCrafter.set(new GT_MetaTileEntity_EMcrafter(12165,"multimachine.em.crafter","Matter Assembler").getStackForm(1L));
+        CustomItemList.Machine_Multi_Collider.set(new GT_MetaTileEntity_EMcollider(12166,"multimachine.em.collider","Matter Collider").getStackForm(1L));
+        CustomItemList.Machine_Multi_BHG.set(new GT_MetaTileEntity_EMbhg(12167,"multimachine.em.blackholegenerator","Black Hole Generator").getStackForm(1L));
+        CustomItemList.Machine_Multi_Wormhole.set(new GT_MetaTileEntity_EMwormhole(12168,"multimachine.em.wormhole","Wormhole").getStackForm(1L));
+        CustomItemList.Machine_Multi_Scanner.set(new GT_MetaTileEntity_EMscanner(12169,"multimachine.em.scanner","Elemental Scanner").getStackForm(1L));
+        CustomItemList.Machine_Multi_Computer.set(new GT_MetaTileEntity_Computer(12170,"multimachine.em.computer","Quantum computer").getStackForm(1L));
 
         // ===================================================================================================
         // Hatches EM
         // ===================================================================================================
-        CustomItemList.Parametrizer_Hatch.set(new GT_MetaTileEntity_Hatch_Param(12170,"hatch.param.tier.06","Parametrizer for machines",6).getStackForm(1L));
-        CustomItemList.Uncertainty_Hatch.set(new GT_MetaTileEntity_Hatch_Uncertainty(12171,"hatch.emcertain.tier.06","Uncertainty resolver",6).getStackForm(1L));
-        CustomItemList.UncertaintyX_Hatch.set(new GT_MetaTileEntity_Hatch_Uncertainty(12172,"hatch.emcertain.tier.10","Uncertainty resolver X",10).getStackForm(1L));
+        CustomItemList.Parametrizer_Hatch.set(new GT_MetaTileEntity_Hatch_Param(12180,"hatch.param.tier.06","Parametrizer for machines",6).getStackForm(1L));
+        CustomItemList.Uncertainty_Hatch.set(new GT_MetaTileEntity_Hatch_Uncertainty(12181,"hatch.emcertain.tier.06","Uncertainty resolver",6).getStackForm(1L));
+        CustomItemList.UncertaintyX_Hatch.set(new GT_MetaTileEntity_Hatch_Uncertainty(12182,"hatch.emcertain.tier.10","Uncertainty resolver X",10).getStackForm(1L));
 
         // ===================================================================================================
         // EM pipe

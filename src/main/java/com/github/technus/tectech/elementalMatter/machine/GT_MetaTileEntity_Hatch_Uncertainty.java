@@ -1,5 +1,6 @@
 package com.github.technus.tectech.elementalMatter.machine;
 
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.commonValues;
 import com.github.technus.tectech.elementalMatter.gui.GT_Container_Uncertainty;
 import com.github.technus.tectech.elementalMatter.gui.GT_GUIContainer_Uncertainty;
@@ -10,7 +11,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.objects.XSTR;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -28,7 +28,6 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
     private static float errorMargin=0.05f;
     public short[] matrix=new short[]{500,500,500,500,500,500,500,500,500,500,500,500,500,500,500,500};
     public byte selection=-1,mode=0,status=-128;
-    private static final XSTR ran=new XSTR();
 
     public GT_MetaTileEntity_Hatch_Uncertainty(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Feeling certain, or not?");
@@ -187,7 +186,7 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
 
     public void regenerate(){
         for(int i=0;i<matrix.length;i++)
-            matrix[i]=(short)ran.nextInt(1000);
+            matrix[i]=(short)TecTech.Rnd.nextInt(1000);
     }
 
     public byte compute(){
@@ -259,8 +258,8 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
         return status=(byte)result;
     }
 
-    private void shift(){
-        final int i=ran.nextInt(16),j=ran.nextInt(2);
+    private void shift(){//TODO MAKE IT MORE EVIL
+        final int i=TecTech.Rnd.nextInt(16),j=TecTech.Rnd.nextInt(2);
         matrix[i]+=(((matrix[i]&1)==0)?2:-2)*j;
         switch(matrix[i]){
             case 1002: matrix[i]-=3; break;

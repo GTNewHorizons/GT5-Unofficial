@@ -28,8 +28,12 @@ public enum CustomItemList implements IItemContainer
 	eM_in_UV,eM_in_UHV,eM_in_UEV,eM_in_UIV,eM_in_UMV,eM_in_UXV,
 	eM_out_UV,eM_out_UHV,eM_out_UEV,eM_out_UIV,eM_out_UMV,eM_out_UXV,
 	eM_muffler_UV,eM_muffler_UHV,eM_muffler_UEV,eM_muffler_UIV,eM_muffler_UMV,eM_muffler_UXV,
-	Parametrizer_Hatch,Uncertainty_Hatch,UncertaintyX_Hatch,eM_Casing,eM_Field,eM_Field_Casing,eM_Coil,eM_Tele,eM_TimeSpaceWarp,debugBlock,
-	Machine_Multi_BHG,Machine_Multi_EM,Machine_Multi_MatterToEM,Machine_Multi_EMToMatter,Machine_Multi_Collider,Machine_Multi_Wormhole,Machine_Multi_EMCrafter,Machine_Multi_EMjunction;
+	Parametrizer_Hatch,Uncertainty_Hatch,UncertaintyX_Hatch,
+	eM_Casing,eM_Field,eM_Field_Casing,eM_Coil,eM_Tele,eM_TimeSpaceWarp,
+	debugBlock,
+	Machine_Multi_MatterToEM,Machine_Multi_EMToMatter,Machine_Multi_EMjunction,
+	Machine_Multi_Transformer,Machine_Multi_Computer,
+	Machine_Multi_BHG,Machine_Multi_EMmachine,Machine_Multi_Collider,Machine_Multi_Wormhole,Machine_Multi_EMCrafter,Machine_Multi_Scanner;
 
 
 	private ItemStack mStack = null;
@@ -146,6 +150,4 @@ public enum CustomItemList implements IItemContainer
 		for (Object tOreName : aOreNames) GT_OreDictUnificator.registerOre(tOreName, getWildcard(1));
 		return this;
 	}
-
-
 }
