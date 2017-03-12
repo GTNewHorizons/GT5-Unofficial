@@ -187,7 +187,8 @@ public class BaseItemComponent extends Item{
 		RING("Ring", " Ring", "ring"),
 		PLASMACELL("CellPlasma", " Plasma Cell", "cellPlasma"),
 		CELL("Cell", " Cell", "cell"),
-		NUGGET("Nugget", " Nugget", "nugget");
+		NUGGET("Nugget", " Nugget", "nugget"),
+		PLATEHEAVY("HeavyPlate", " Heavy Plate", "plateHeavy");
 
 		private String COMPONENT_NAME;
 		private String DISPLAY_NAME;
