@@ -5,6 +5,7 @@ import gtPlusPlus.core.inventories.InventoryHeliumGenerator;
 import gtPlusPlus.core.slots.SlotFuelRod;
 import gtPlusPlus.core.slots.SlotNoInput;
 import gtPlusPlus.core.tileentities.general.TileEntityHeliumGenerator;
+import gtPlusPlus.core.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -23,11 +24,12 @@ public class Container_HeliumGenerator extends Container {
 	private final int posZ;
 
 
-	public static int StorageSlotNumber = 18; //Number of slots in storage area
+	public static int StorageSlotNumber = 19; //Number of slots in storage area
 	public static int InventorySlotNumber = 36; //Inventory Slots (Inventory and Hotbar)
 	public static int FullSlotNumber = InventorySlotNumber + StorageSlotNumber; //All slots
 
-	private final int[] slotStorage = new int[15];
+	//0 Is output, 1-18 are input.
+	private final int[] slotStorage = new int[19];
 
 	public Container_HeliumGenerator(final InventoryPlayer inventory, final TileEntityHeliumGenerator te){
 		this.tile_entity = te;
@@ -43,7 +45,7 @@ public class Container_HeliumGenerator extends Container {
 		int o=0;
 		
 		//Output
-		this.addSlotToContainer(new SlotNoInput(this.inventoryChest, 0, 80, 35));
+		this.addSlotToContainer(new SlotNoInput(this.inventoryChest, 0, 80, 53));
 		this.slotStorage[o] = o;
 		o++;
 
@@ -52,7 +54,8 @@ public class Container_HeliumGenerator extends Container {
 		{
 			for (var7 = 0; var7 < 3; ++var7)
 			{
-				this.addSlotToContainer(new SlotFuelRod(this.inventoryChest, var7 + (var6 * 4), 36+ 8 + (var7 * 18), 8 + 7 + (var6 * 18)));
+				Utils.LOG_INFO("Adding slots at var:"+(o)+" x:"+(8 + var7 * 18)+" y:"+(9 + var6 * 18));
+				this.addSlotToContainer(new SlotFuelRod(this.inventoryChest, o, 8 + (var7 * 18), 18 + (var6 * 18)));
 				this.slotStorage[o] = o;
 				o++;
 			}
@@ -63,7 +66,8 @@ public class Container_HeliumGenerator extends Container {
 		{
 			for (var7 = 0; var7 < 3; ++var7)
 			{
-				this.addSlotToContainer(new SlotFuelRod(this.inventoryChest, var7 + (var6 * 4), 90 + 8 + (var7 * 18), 8 + 7 + (var6 * 18)));
+				Utils.LOG_INFO("Adding slots at var:"+(o)+" x:"+(90+8+(var7 * 18))+" y:"+(9 + var6 * 18));
+				this.addSlotToContainer(new SlotFuelRod(this.inventoryChest, o, 116 + (var7 * 18), 18 + (var6 * 18)));
 				this.slotStorage[o] = o;
 				o++;
 			}

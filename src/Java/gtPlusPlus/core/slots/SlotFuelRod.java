@@ -1,5 +1,6 @@
 package gtPlusPlus.core.slots;
 
+import gregtech.api.enums.ItemList;
 import ic2.core.Ic2Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -14,7 +15,40 @@ public class SlotFuelRod extends Slot{
 
 	@Override
 	public boolean isItemValid(final ItemStack itemstack) {
-		return itemstack.getItem().getClass() == Ic2Items.fuelRod.getItem().getClass();
+		boolean returnValue = false;
+		//Uranium Rods
+		if (itemstack.getItem() == Ic2Items.reactorUraniumSimple.getItem()){
+			returnValue = true;
+		}
+		else if (itemstack.getItem() == Ic2Items.reactorUraniumDual.getItem()){
+			returnValue = true;
+		}
+		else if (itemstack.getItem() == Ic2Items.reactorUraniumQuad.getItem()){
+			returnValue = true;
+		}
+		
+		//Mox Rods
+		if (itemstack.getItem() == Ic2Items.reactorMOXSimple.getItem()){
+			returnValue = true;
+		}
+		else if (itemstack.getItem() == Ic2Items.reactorMOXDual.getItem()){
+			returnValue = true;
+		}
+		else if (itemstack.getItem() == Ic2Items.reactorMOXQuad.getItem()){
+			returnValue = true;
+		}
+		
+		//Thorium Rods
+		if (itemstack.getItem() == ItemList.ThoriumCell_1.getItem()){
+			returnValue = true;
+		}
+		else if (itemstack.getItem() == ItemList.ThoriumCell_2.getItem()){
+			returnValue = true;
+		}
+		else if (itemstack.getItem() == ItemList.ThoriumCell_4.getItem()){
+			returnValue = true;
+		}
+		return returnValue;
 	}
 
 	@Override
