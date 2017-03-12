@@ -8,7 +8,6 @@ import com.github.technus.tectech.elementalMatter.classes.tElementalException;
 import com.github.technus.tectech.elementalMatter.commonValues;
 import com.github.technus.tectech.elementalMatter.gui.GT_Container_MultiMachineEM;
 import com.github.technus.tectech.elementalMatter.gui.GT_GUIContainer_MultiMachineEM;
-import eu.usrv.yamcore.YAMCore;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -66,9 +65,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_Elemental extends GT_Meta
     public boolean eParameters=true,ePowerPass=false,eSafeVoid=false,eDismatleBoom=false;
     public byte eCertainMode=0,eCertainStatus=0,minRepairStatus=3;
 
-    private int eMaxAmpereFlow =0;
+    private long eMaxAmpereFlow =0;
     private long maxEUinputMin=0,maxEUinputMax=0;
-    public int eAmpereFlow =1;
+    public long eAmpereFlow =1;
 
     //init param states in constructor, or implement it in checkrecipe/outputfunction
 
@@ -141,8 +140,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_Elemental extends GT_Meta
 
         aNBT.setLong("eMaxEUmin", maxEUinputMin);
         aNBT.setLong("eMaxEUmax", maxEUinputMax);
-        aNBT.setInteger("eRating", eAmpereFlow);
-        aNBT.setInteger("eMaxA", eMaxAmpereFlow);
+        aNBT.setLong("eRating", eAmpereFlow);
+        aNBT.setLong("eMaxA", eMaxAmpereFlow);
         aNBT.setByte("eCertainM",eCertainMode);
         aNBT.setByte("eCertainS",eCertainStatus);
         aNBT.setByte("eMinRepair",minRepairStatus);
@@ -189,8 +188,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_Elemental extends GT_Meta
 
         maxEUinputMin =aNBT.getLong("eMaxEUmin");
         maxEUinputMax =aNBT.getLong("eMaxEUmax");
-        eAmpereFlow =aNBT.getInteger("eRating");
-        eMaxAmpereFlow =aNBT.getInteger("eMaxA");
+        eAmpereFlow =aNBT.getLong("eRating");
+        eMaxAmpereFlow =aNBT.getLong("eMaxA");
         eCertainMode=aNBT.getByte("eCertainM");
         eCertainStatus=aNBT.getByte("eCertainS");
         minRepairStatus=aNBT.getByte("eMinRepair");
@@ -567,7 +566,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_Elemental extends GT_Meta
     }
 
     //new method
-    public final boolean EMaddEnergyOutput(long EU, int Amperes) {
+    public final boolean EMaddEnergyOutput(long EU, long Amperes) {
         if(EU <= 0L || Amperes<=0) return true;
         long euVar=EU*Amperes;
         long diff;
@@ -618,7 +617,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_Elemental extends GT_Meta
     }
 
     //new method
-    public final boolean EMdrainEnergyInput(long EU, int Amperes) {
+    public final boolean EMdrainEnergyInput(long EU, long Amperes) {
         if(EU <= 0L || Amperes<=0) return true;
         long euVar=EU*Amperes;
         if(     getEUVar() < euVar ||
@@ -1109,7 +1108,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_Elemental extends GT_Meta
                         EnumChatFormatting.YELLOW + Long.toString(maxEnergy) + EnumChatFormatting.RESET +" EU",
                 (mEUt<=0?"Probably uses: ":"Probably makes: ")+
                         EnumChatFormatting.RED + Integer.toString(Math.abs(mEUt)) + EnumChatFormatting.RESET + " EU/t at "+
-                        EnumChatFormatting.RED + Integer.toString(eAmpereFlow)+ EnumChatFormatting.RESET +" A",
+                        EnumChatFormatting.RED + eAmpereFlow+ EnumChatFormatting.RESET +" A",
                 "Tier Rating: "+EnumChatFormatting.YELLOW+VN[getMaxEnergyInputTier()]+EnumChatFormatting.RESET+" / "+EnumChatFormatting.GREEN+VN[getMinEnergyInputTier()]+EnumChatFormatting.RESET+
                         " Amp Rating: "+EnumChatFormatting.GREEN+ eMaxAmpereFlow +EnumChatFormatting.RESET + " A",
                 "Problems: "+EnumChatFormatting.RED+ (getIdealStatus() - getRepairStatus())+EnumChatFormatting.RESET+

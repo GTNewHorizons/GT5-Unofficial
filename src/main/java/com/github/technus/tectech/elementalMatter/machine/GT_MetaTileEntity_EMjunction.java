@@ -88,7 +88,7 @@ public class GT_MetaTileEntity_EMjunction extends GT_MetaTileEntity_MultiblockBa
     public boolean EM_checkRecipe(ItemStack itemStack) {
         for(GT_MetaTileEntity_Hatch_InputElemental in: eInputHatches)
             if(in.getContainerHandler().hasStacks()) {
-                mEUt=-(int)V[9];
+                mEUt=-(int)V[8];
                 eAmpereFlow =1+((eInputHatches.size()+eOutputHatches.size())>>1);
                 mMaxProgresstime=20;
                 mEfficiencyIncrease=10000;
