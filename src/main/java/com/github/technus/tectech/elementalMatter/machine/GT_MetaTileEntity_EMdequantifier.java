@@ -29,22 +29,21 @@ public class GT_MetaTileEntity_EMdequantifier extends GT_MetaTileEntity_Multiblo
     @Override
     public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX;
+        int yDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY;
         int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ;
-        if (iGregTechTileEntity.getBlockOffset(xDir, 0, zDir)!= QuantumGlass.INSTANCE) {
-            return false;
-        }
+        if (iGregTechTileEntity.getBlockOffset(xDir, yDir, zDir)!= QuantumGlass.INSTANCE) return false;
         for (int i = -1; i < 2; i++) {
             for (int j = -1; j < 2; j++) {
                 for (int h = -1; h < 2; h++) {
-                    if ((h != 0) || (((xDir + i != 0) || (zDir + j != 0)) && ((i != 0) || (j != 0)))) {
-                        IGregTechTileEntity tTileEntity = iGregTechTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
+                    if ((i!=0 || j!=0 || h!=0)/*exclude center*/&&(xDir+i!=0 || yDir+h!=0 || zDir+j!=0)/*exclude this*/) {
+                        IGregTechTileEntity tTileEntity = iGregTechTileEntity.getIGregTechTileEntityOffset(xDir + i, yDir + h, zDir + j);
                         if (    (!addMaintenanceToMachineList(tTileEntity, 99)) &&
                                 (!addElementalInputToMachineList(tTileEntity, 99)) &&
                                 (!addClassicOutputToMachineList(tTileEntity, 99)) &&
                                 (!addMufflerToMachineList(tTileEntity, 99)) &&
                                 (!addEnergyIOToMachineList(tTileEntity, 99))) {
-                            if (    iGregTechTileEntity.getBlockOffset(xDir + i, h, zDir + j) != GT_Container_CasingsTT.sBlockCasingsTT ||
-                                    iGregTechTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 3) {
+                            if (    iGregTechTileEntity.getBlockOffset(xDir + i, yDir + h, zDir + j) != GT_Container_CasingsTT.sBlockCasingsTT ||
+                                    iGregTechTileEntity.getMetaIDOffset(xDir + i, yDir + h, zDir + j) != 3) {
                                 return false;
                             }
                         }

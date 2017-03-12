@@ -26,7 +26,7 @@ public class TecTechConfig extends ConfigManager {
 		ModAdminErrorLogs_Enabled = _mainConfig.getBoolean("AdminErrorLog", "Modules", ModAdminErrorLogs_Enabled,
 				"If set to true, every op/admin will receive all errors occoured during the startup phase as ingame message on join");
 		DEBUG_MODE=_mainConfig.getBoolean("DebugPrint", "Debug", DEBUG_MODE,
-				"Enables logging into System.out");
+				"Enables logging");
 		BOOM_ENABLE=_mainConfig.getBoolean("BoomEnable","Features", BOOM_ENABLE,
 				"Set to false to disable explosions on everything bad that you can do (this will not be available after release)");
 	}

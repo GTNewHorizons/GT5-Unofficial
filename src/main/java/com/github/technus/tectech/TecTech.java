@@ -50,7 +50,6 @@ public class TecTech {
 	@EventHandler
 	public void PreLoad(FMLPreInitializationEvent PreEvent) {
 		Logger.setDebugOutput(true);
-
 		Rnd = new XSTR();
 
 		//ItemManager = new ModItemManager(Refstrings.MODID);

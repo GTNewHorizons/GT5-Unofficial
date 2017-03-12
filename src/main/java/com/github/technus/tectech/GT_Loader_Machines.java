@@ -1,6 +1,7 @@
 package com.github.technus.tectech;
 
 import com.github.technus.tectech.elementalMatter.machine.*;
+import org.apache.logging.log4j.Level;
 
 /**
  * Created by danie_000 on 16.11.2016.
@@ -193,7 +194,5 @@ public class GT_Loader_Machines implements Runnable {
         // EM pipe
         // ===================================================================================================
         CustomItemList.EMpipe.set(new GT_MetaTileEntity_EMpipe(12179,"pipe.elementalmatter","Quantum tunnel").getStackForm(1L));
-
-        //System.out.println("ELEMENTAL INIT DONE");
     }
 }

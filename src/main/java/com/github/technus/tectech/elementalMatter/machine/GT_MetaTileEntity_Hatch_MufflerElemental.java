@@ -9,17 +9,12 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityExplodeFX;
-import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.EnumSkyBlock;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import static com.github.technus.tectech.elementalMatter.commonValues.disperseAt;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
@@ -145,27 +140,11 @@ public class GT_MetaTileEntity_Hatch_MufflerElemental extends GT_MetaTileEntity_
                     aBaseMetaTileEntity.getWorld().updateLightByType(EnumSkyBlock.Block,aBaseMetaTileEntity.getXCoord(),aBaseMetaTileEntity.getYCoord(),aBaseMetaTileEntity.getZCoord());
                 }
             }
-        }else if(aBaseMetaTileEntity.isClientSide() && this.getBaseMetaTileEntity().isActive()){
-            particles(this.getBaseMetaTileEntity().getWorld());
+        }else if(aBaseMetaTileEntity.isClientSide() && getBaseMetaTileEntity().isActive()){
+            TecTech.proxy.particles(getBaseMetaTileEntity(),getBaseMetaTileEntity().getFrontFacing());
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
         //DOES NOT CHECK FOR TOO MUCH, it is done only while putting stuff in (OPTIMIZATION!!!)
-    }
-
-    public void particles(World aWorld){//CUTE!
-        IGregTechTileEntity aMuffler=this.getBaseMetaTileEntity();
-        ForgeDirection aDir=ForgeDirection.getOrientation(aMuffler.getFrontFacing());
-        float xPos=aDir.offsetX*0.76F+aMuffler.getXCoord()+0.25F;
-        float yPos=aDir.offsetY*0.76F+aMuffler.getYCoord()+0.25F;
-        float zPos=aDir.offsetZ*0.76F+aMuffler.getZCoord()+0.25F;
-
-        float ySpd=0;
-                //aDir.offsetY*0.1F+0.2F+0.1F*floatGen.nextFloat();
-        float xSpd=0;
-        float zSpd=0;
-        EntityFX particle=new EntityExplodeFX(aWorld, xPos + TecTech.Rnd.nextFloat()*0.5F, yPos + TecTech.Rnd.nextFloat()*0.5F, zPos + TecTech.Rnd.nextFloat()*0.5F, xSpd, ySpd, zSpd);
-        particle.setRBGColorF(0,0.6F*TecTech.Rnd.nextFloat(),0.8f);
-        Minecraft.getMinecraft().effectRenderer.addEffect(particle);
     }
 
     @Override
@@ -187,6 +166,6 @@ public class GT_MetaTileEntity_Hatch_MufflerElemental extends GT_MetaTileEntity_
     public void onRemoval() {
         if(isValidMetaTileEntity(this) && getBaseMetaTileEntity().isActive())
             if(TecTech.ModConfig.BOOM_ENABLE)getBaseMetaTileEntity().doExplosion(V[15]);
-            else System.out.println("BOOM! "+getBaseMetaTileEntity().getXCoord()+" "+getBaseMetaTileEntity().getYCoord()+" "+getBaseMetaTileEntity().getZCoord());
+            else TecTech.proxy.broadcast("BOOM! "+getBaseMetaTileEntity().getXCoord()+" "+getBaseMetaTileEntity().getYCoord()+" "+getBaseMetaTileEntity().getZCoord());
     }
 }

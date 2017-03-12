@@ -8,6 +8,7 @@ import com.github.technus.tectech.elementalMatter.classes.tElementalException;
 import com.github.technus.tectech.elementalMatter.commonValues;
 import com.github.technus.tectech.elementalMatter.gui.GT_Container_MultiMachineEM;
 import com.github.technus.tectech.elementalMatter.gui.GT_GUIContainer_MultiMachineEM;
+import eu.usrv.yamcore.YAMCore;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -33,6 +34,7 @@ import java.util.ArrayList;
 
 import static com.github.technus.tectech.elementalMatter.commonValues.*;
 import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GT_Values.VN;
 
 /**
  * Created by danie_000 on 27.10.2016.
@@ -64,9 +66,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_Elemental extends GT_Meta
     public boolean eParameters=true,ePowerPass=false,eSafeVoid=false,eDismatleBoom=false;
     public byte eCertainMode=0,eCertainStatus=0,minRepairStatus=3;
 
-    private int maxAmps=0;
+    private int eMaxAmpereFlow =0;
     private long maxEUinputMin=0,maxEUinputMax=0;
-    public int eAmpereRating =1;
+    public int eAmpereFlow =1;
 
     //init param states in constructor, or implement it in checkrecipe/outputfunction
 
@@ -139,8 +141,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_Elemental extends GT_Meta
 
         aNBT.setLong("eMaxEUmin", maxEUinputMin);
         aNBT.setLong("eMaxEUmax", maxEUinputMax);
-        aNBT.setInteger("eRating", eAmpereRating);
-        aNBT.setInteger("eMaxA",maxAmps);
+        aNBT.setInteger("eRating", eAmpereFlow);
+        aNBT.setInteger("eMaxA", eMaxAmpereFlow);
         aNBT.setByte("eCertainM",eCertainMode);
         aNBT.setByte("eCertainS",eCertainStatus);
         aNBT.setByte("eMinRepair",minRepairStatus);
@@ -187,8 +189,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_Elemental extends GT_Meta
 
         maxEUinputMin =aNBT.getLong("eMaxEUmin");
         maxEUinputMax =aNBT.getLong("eMaxEUmax");
-        eAmpereRating =aNBT.getInteger("eRating");
-        maxAmps=aNBT.getInteger("eMaxA");
+        eAmpereFlow =aNBT.getInteger("eRating");
+        eMaxAmpereFlow =aNBT.getInteger("eMaxA");
         eCertainMode=aNBT.getByte("eCertainM");
         eCertainStatus=aNBT.getByte("eCertainS");
         minRepairStatus=aNBT.getByte("eMinRepair");
@@ -237,7 +239,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_Elemental extends GT_Meta
 
     @Override
     public final long maxEUStore() {
-        return (maxEUinputMin*maxAmps)<<3;
+        return (maxEUinputMin* eMaxAmpereFlow)<<3;
     }
 
     @Override
@@ -295,7 +297,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_Elemental extends GT_Meta
                 mMachine = checkMachine(aBaseMetaTileEntity, mInventory[1]);
 
                 if(!mMachine)
-                    if(eDismatleBoom) explodeMultiblock();
+                    if(eDismatleBoom && mMaxProgresstime>0) explodeMultiblock();
                     else if(outputEM!=null)
                         for(cElementalInstanceStackTree tree:outputEM)
                             if(tree.hasStacks()) explodeMultiblock();
@@ -323,16 +325,17 @@ public abstract class GT_MetaTileEntity_MultiblockBase_Elemental extends GT_Meta
                                 if (hatch.maxEUInput() < maxEUinputMin) maxEUinputMin = hatch.maxEUInput();
                                 if (hatch.maxEUInput() > maxEUinputMax) maxEUinputMax = hatch.maxEUInput();
                             }
-                        maxAmps=0;
+                        eMaxAmpereFlow =0;
+                        //counts only full amps
                         for(GT_MetaTileEntity_Hatch_Energy hatch:mEnergyHatches)
-                            if(isValidMetaTileEntity(hatch))maxAmps+=hatch.maxEUInput()/ maxEUinputMin;
+                            if(isValidMetaTileEntity(hatch)) eMaxAmpereFlow +=hatch.maxEUInput()/ maxEUinputMin;
                         for(GT_MetaTileEntity_Hatch_EnergyMulti hatch:eEnergyMulti)
-                            if(isValidMetaTileEntity(hatch))maxAmps+=(hatch.maxEUInput()/ maxEUinputMin)*hatch.Amperes;
+                            if(isValidMetaTileEntity(hatch)) eMaxAmpereFlow +=(hatch.maxEUInput()/ maxEUinputMin)*hatch.Amperes;
                         if(this.getEUVar()>maxEUStore())this.setEUVar(this.maxEUStore());
                     } else {
                         maxEUinputMin=0;
                         maxEUinputMax=0;
-                        maxAmps=0;
+                        eMaxAmpereFlow =0;
                         this.setEUVar(0);
                     }
 
@@ -343,7 +346,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_Elemental extends GT_Meta
                 }else{
                     maxEUinputMin=0;
                     maxEUinputMax=0;
-                    maxAmps=0;
+                    eMaxAmpereFlow =0;
                     this.setEUVar(0);
                 }
             }
@@ -542,9 +545,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_Elemental extends GT_Meta
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if(this.mEUt > 0) {
-            this.EMaddEnergyOutput((long)mEUt *  (long)mEfficiency / getMaxEfficiency(aStack),eAmpereRating);
+            this.EMaddEnergyOutput((long)mEUt *  (long)mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
             return true;
-        } else if(this.mEUt < 0 && !this.EMdrainEnergyInput((long)(-this.mEUt) * getMaxEfficiency(aStack) / (long)Math.max(1000, this.mEfficiency),eAmpereRating)) {
+        } else if(this.mEUt < 0 && !this.EMdrainEnergyInput((long)(-this.mEUt) * getMaxEfficiency(aStack) / (long)Math.max(1000, this.mEfficiency), eAmpereFlow)) {
             this.stopMachine();
             return false;
         } else return true;
@@ -620,7 +623,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_Elemental extends GT_Meta
         long euVar=EU*Amperes;
         if(     getEUVar() < euVar ||
                 EU>maxEUinputMax ||
-                (euVar+maxEUinputMin-1)/maxEUinputMin>maxAmps)return false;
+                (euVar+maxEUinputMin-1)/maxEUinputMin> eMaxAmpereFlow)return false;
         //sub eu
         setEUVar(getEUVar()-euVar);
         return true;
@@ -783,7 +786,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_Elemental extends GT_Meta
     @Override
     public void explodeMultiblock() {//BEST METHOD EVER!!!
         if(!TecTech.ModConfig.BOOM_ENABLE) {
-            System.out.println("BOOM! "+getBaseMetaTileEntity().getXCoord()+" "+getBaseMetaTileEntity().getYCoord()+" "+getBaseMetaTileEntity().getZCoord());
+            TecTech.proxy.broadcast("BOOM! "+getBaseMetaTileEntity().getXCoord()+" "+getBaseMetaTileEntity().getYCoord()+" "+getBaseMetaTileEntity().getZCoord());
             return;
         }
         GT_Pollution.addPollution(new ChunkPosition(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord()), 600000);
@@ -1106,9 +1109,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_Elemental extends GT_Meta
                         EnumChatFormatting.YELLOW + Long.toString(maxEnergy) + EnumChatFormatting.RESET +" EU",
                 (mEUt<=0?"Probably uses: ":"Probably makes: ")+
                         EnumChatFormatting.RED + Integer.toString(Math.abs(mEUt)) + EnumChatFormatting.RESET + " EU/t at "+
-                        EnumChatFormatting.RED + Integer.toString(eAmpereRating)+ EnumChatFormatting.RESET +" A",
-                "Tier Rating: "+EnumChatFormatting.YELLOW+getMaxEnergyInputTier()+EnumChatFormatting.RESET+" / "+EnumChatFormatting.GREEN+getMinEnergyInputTier()+EnumChatFormatting.RESET+
-                        " Amp Rating: "+EnumChatFormatting.GREEN+maxAmps+EnumChatFormatting.RESET + " A",
+                        EnumChatFormatting.RED + Integer.toString(eAmpereFlow)+ EnumChatFormatting.RESET +" A",
+                "Tier Rating: "+EnumChatFormatting.YELLOW+VN[getMaxEnergyInputTier()]+EnumChatFormatting.RESET+" / "+EnumChatFormatting.GREEN+VN[getMinEnergyInputTier()]+EnumChatFormatting.RESET+
+                        " Amp Rating: "+EnumChatFormatting.GREEN+ eMaxAmpereFlow +EnumChatFormatting.RESET + " A",
                 "Problems: "+EnumChatFormatting.RED+ (getIdealStatus() - getRepairStatus())+EnumChatFormatting.RESET+
                         " Efficiency: "+EnumChatFormatting.YELLOW+Float.toString(mEfficiency / 100.0F)+EnumChatFormatting.RESET + " %",
                 "PowerPass: "+EnumChatFormatting.BLUE+ePowerPass+EnumChatFormatting.RESET+
@@ -1161,10 +1164,16 @@ public abstract class GT_MetaTileEntity_MultiblockBase_Elemental extends GT_Meta
                             default: {//check for block (countable)
                                 int pointer = block - '0';
                                 //countable air -> net.minecraft.block.BlockAir
-                                if (aBaseMetaTileEntity.getBlockOffset(x, y, z) != blockType[pointer])  return false;
-                                    //System.out.println("Keked1:"+x+" "+y+" "+z+"/"+a+" "+c+"/"+aBaseMetaTileEntity.getBlockOffset (x,y,z)+" "+blockType[pointer]);
-                                if (aBaseMetaTileEntity.getMetaIDOffset(x, y, z) != blockMeta[pointer]) return false;
-                                    //System.out.println("Keked2:"+x+" "+y+" "+z+"/"+a+" "+c+"/"+aBaseMetaTileEntity.getMetaIDOffset(x,y,z)+" "+blockMeta[pointer]);
+                                if (aBaseMetaTileEntity.getBlockOffset(x, y, z) != blockType[pointer]){
+                                    if(TecTech.ModConfig.DEBUG_MODE)
+                                        TecTech.Logger.info("Struct-block-error "+x+" "+y+" "+z+"/"+a+" "+c+"/"+aBaseMetaTileEntity.getBlockOffset (x,y,z)+" "+blockType[pointer]);
+                                    return false;
+                                }
+                                if (aBaseMetaTileEntity.getMetaIDOffset(x, y, z) != blockMeta[pointer]){
+                                    if(TecTech.ModConfig.DEBUG_MODE)
+                                        TecTech.Logger.info("Struct-meta-id-error "+x+" "+y+" "+z+"/"+a+" "+c+"/"+aBaseMetaTileEntity.getMetaIDOffset(x,y,z)+" "+blockMeta[pointer]);
+                                    return false;
+                                }
                             }
                         }
                         a++;//block in horizontal layer

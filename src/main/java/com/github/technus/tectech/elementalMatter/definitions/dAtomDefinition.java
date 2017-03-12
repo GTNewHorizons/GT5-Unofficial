@@ -7,6 +7,7 @@ import gregtech.api.objects.XSTR;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
+import org.apache.logging.log4j.Level;
 
 import java.util.*;
 
@@ -459,7 +460,7 @@ public final class dAtomDefinition extends cElementalDefinition {
         }
         //populate stable isotopes
         el:
-        for(int element=1;element<84;element++)
+        for(int element=1;element<84;element++)//Up to Astatine exclusive
             for(int isotope=0;isotope<130;isotope++){
                 xstr.setSeed((long) (element+1)*(isotope+100));
                 //stability curve
@@ -475,7 +476,7 @@ public final class dAtomDefinition extends cElementalDefinition {
             }
 
         for(int element=84;element<150;element++)
-            for(int isotope=0;isotope<180;isotope++){
+            for(int isotope=100;isotope<180;isotope++){
                 xstr.setSeed((long) (element+1)*(isotope+100));
                 //stability curve
                 final int Isotope = stableIzoCurve(element);
@@ -494,7 +495,7 @@ public final class dAtomDefinition extends cElementalDefinition {
                         new cElementalDefinitionStack(dHadronDefinition.hadron_n,stableIsotopes.get(key).first()),
                         new cElementalDefinitionStack(eLeptonDefinition.lepton_e,key)));
                 if(TecTech.ModConfig.DEBUG_MODE)
-                    System.out.println("Added Stable Atom:"+key+" "+stableIsotopes.get(key).first()+" "+stableAtoms.get(key).getMass());
+                    TecTech.Logger.info("Added Stable Atom:"+key+" "+stableIsotopes.get(key).first()+" "+stableAtoms.get(key).getMass());
             }
             for(int key:mostStableUnstableIsotopes.keySet()){
                 unstableAtoms.put(key,new dAtomDefinition(
@@ -502,7 +503,7 @@ public final class dAtomDefinition extends cElementalDefinition {
                         new cElementalDefinitionStack(dHadronDefinition.hadron_n,mostStableUnstableIsotopes.get(key).lastEntry().getValue()),
                         new cElementalDefinitionStack(eLeptonDefinition.lepton_e,key)));
                 if(TecTech.ModConfig.DEBUG_MODE)
-                    System.out.println("Added Unstable Atom:"+key+" "+mostStableUnstableIsotopes.get(key).lastEntry().getValue()+" "+unstableAtoms.get(key).getMass());
+                    TecTech.Logger.info("Added Unstable Atom:"+key+" "+mostStableUnstableIsotopes.get(key).lastEntry().getValue()+" "+unstableAtoms.get(key).getMass());
             }
             alfa = new cElementalDefinitionStack(
                     new dAtomDefinition(

@@ -11,13 +11,16 @@ public class GT_CustomLoader {
 
 	public void run() {
 		ElementalCasing = new GT_Loader_CasingsTT();
-		ElementalLoader = new GT_Loader_Machines();
 		ElementalCasing.run();
+		TecTech.Logger.info("Casing Init Done");
+		ElementalLoader = new GT_Loader_Machines();
 		ElementalLoader.run();
+		TecTech.Logger.info("Machine Init Done");
 	}
 
 	public void run2() {
 		ElementalRecipes = new GT_Loader_Recipes();
 		ElementalRecipes.run();
+		TecTech.Logger.info("Recipe Init Done Done");
 	}
 }

@@ -1,18 +1,40 @@
 package com.github.technus.tectech.proxy;
 
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.blocks.QuantumGlassRender;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.particle.EntityExplodeFX;
+import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 public class ClientProxy extends CommonProxy {
+	@Override
 	public void registerRenderInfo() {
 		QuantumGlassRender.renderID = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(QuantumGlassRender.renderID, new QuantumGlassRender());
+	}
+
+	@Override
+	public void particles(IGregTechTileEntity aMuffler,byte facing){//CUTE!
+		ForgeDirection aDir=ForgeDirection.getOrientation(facing);
+		float xPos=aDir.offsetX*0.76F+aMuffler.getXCoord()+0.25F;
+		float yPos=aDir.offsetY*0.76F+aMuffler.getYCoord()+0.25F;
+		float zPos=aDir.offsetZ*0.76F+aMuffler.getZCoord()+0.25F;
+
+		float ySpd=0;
+		//aDir.offsetY*0.1F+0.2F+0.1F*floatGen.nextFloat();
+		float xSpd=0;
+		float zSpd=0;
+		EntityFX particle=new EntityExplodeFX(aMuffler.getWorld(), xPos + TecTech.Rnd.nextFloat()*0.5F, yPos + TecTech.Rnd.nextFloat()*0.5F, zPos + TecTech.Rnd.nextFloat()*0.5F, xSpd, ySpd, zSpd);
+		particle.setRBGColorF(0,0.6F*TecTech.Rnd.nextFloat(),0.8f);
+		Minecraft.getMinecraft().effectRenderer.addEffect(particle);
 	}
 
 	@Override
@@ -50,6 +72,5 @@ public class ClientProxy extends CommonProxy {
 			fontRenderer.setUnicodeFlag(origFont);
 		} else
 			fontRenderer.drawSplitString(str, x, y, maxWidth, color);
-
 	}
 }
