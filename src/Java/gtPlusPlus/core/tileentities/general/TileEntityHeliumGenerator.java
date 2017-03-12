@@ -84,40 +84,7 @@ public class TileEntityHeliumGenerator extends TileEntity{
 	@Override
 	public void updateEntity(){
 		if (!this.worldObj.isRemote){
-			this.tickCount++;
-			//Utils.LOG_INFO("Ticking "+this.tickCount);
-			//Check if the Tile is within water once per second.
-			if ((this.tickCount%20)==0){
-				
-			}
-			else {
-
-			}
-
-			if (true){
-				this.calculateTickrate();
-			}
-
-			//Try add some loot once every 30 seconds.
-			if ((this.tickCount%this.baseTickRate)==0){
-				if (true){
-					//Add loot
-					//Utils.LOG_INFO("Adding Loot to the fishtrap at x["+this.locationX+"] y["+this.locationY+"] z["+this.locationZ+"] (Ticking for loot every "+this.baseTickRate+" ticks)");
-					this.tryAddLoot();
-					this.markDirty();
-				}
-				else {
-					Utils.LOG_INFO("This Trap does not have enough water around it.");
-					Utils.LOG_INFO("Not adding Loot to the fishtrap at x["+this.locationX+"] y["+this.locationY+"] z["+this.locationZ+"] (Ticking for loot every "+this.baseTickRate+" ticks)");
-					this.markDirty();
-				}
-				this.tickCount = 0;
-			}
-			if (this.tickCount > (this.baseTickRate+500)){
-				this.tickCount = 0;
-			}
-
-
+			
 		}
 	}
 

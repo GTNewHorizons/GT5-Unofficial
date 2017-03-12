@@ -52,9 +52,9 @@ public class HeliumGenerator extends BlockContainer
 	public void registerBlockIcons(final IIconRegister p_149651_1_)
 	{
 		this.blockIcon = p_149651_1_.registerIcon(CORE.MODID + ":" + "Chrono/" + "CyberPanel2");
-		this.textureTop = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "CyberPanel2");
-		this.textureBottom = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "CyberPanel");
-		this.textureFront = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "CyberPanel");
+		this.textureTop = p_149651_1_.registerIcon(CORE.MODID + ":" + "Chrono/" + "CyberPanel2");
+		this.textureBottom = p_149651_1_.registerIcon(CORE.MODID + ":" + "Chrono/" + "CyberPanel");
+		this.textureFront = p_149651_1_.registerIcon(CORE.MODID + ":" + "Chrono/" + "CyberPanel");
 	}
 
 	/**
