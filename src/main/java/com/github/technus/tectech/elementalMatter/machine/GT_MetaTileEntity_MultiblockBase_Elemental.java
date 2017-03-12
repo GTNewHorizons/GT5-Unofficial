@@ -299,7 +299,10 @@ public abstract class GT_MetaTileEntity_MultiblockBase_Elemental extends GT_Meta
                     if(eDismatleBoom && mMaxProgresstime>0) explodeMultiblock();
                     else if(outputEM!=null)
                         for(cElementalInstanceStackTree tree:outputEM)
-                            if(tree.hasStacks()) explodeMultiblock();
+                            if(tree.hasStacks()) {
+                                explodeMultiblock();
+                                break;
+                            }
 
                 if(eUncertainHatches.size()>1) mMachine=false;
 
@@ -1206,14 +1209,13 @@ public abstract class GT_MetaTileEntity_MultiblockBase_Elemental extends GT_Meta
                 for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches)
                     hatch.getBaseMetaTileEntity().setActive(false);
             }
-            if(outputEM!=null) {
-                for (cElementalInstanceStackTree output : outputEM) {
+            if(eDismatleBoom && mMaxProgresstime>0) explodeMultiblock();
+            else if(outputEM!=null)
+                for (cElementalInstanceStackTree output : outputEM)
                     if (output.hasStacks()) {
                         explodeMultiblock();
                         return;
                     }
-                }
-            }
         }catch (Exception e){
             if(TecTech.ModConfig.DEBUG_MODE) e.printStackTrace();
         }
