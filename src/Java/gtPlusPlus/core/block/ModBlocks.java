@@ -59,6 +59,7 @@ public final class ModBlocks {
 		//Workbench
 		blockWorkbench = new Machine_Workbench().setHardness(1.5F);
 		blockWorkbenchAdvanced = new Machine_WorkbenchAdvanced().setHardness(2.5F);
+		blockHeliumGenerator = new HeliumGenerator();
 		blockFirePit = new FirePit();
 		blockFishTrap = new FishTrap();
 		blockOreFluorite = new BlockBaseOre("oreFluorite", "Fluorite", Material.rock, BlockTypes.ORE, Utils.rgbtoHexValue(120, 120, 30), 3);

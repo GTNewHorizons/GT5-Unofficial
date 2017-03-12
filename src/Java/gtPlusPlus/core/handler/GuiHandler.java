@@ -12,6 +12,7 @@ import gtPlusPlus.core.interfaces.IGuiManager;
 import gtPlusPlus.core.inventories.BaseInventoryBackpack;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
+import gtPlusPlus.core.tileentities.general.TileEntityHeliumGenerator;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbenchAdvanced;
 import gtPlusPlus.core.util.Utils;
@@ -26,7 +27,7 @@ import net.minecraft.world.World;
 public class GuiHandler implements IGuiHandler {
 
 	public static final int GUI1 = 0;      //Frame Alveary
-	public static final int GUI2 = 1;      //RTG
+	public static final int GUI2 = 1;      //Helium Generator
 	public static final int GUI3 = 2;      //BackpackHandler
 	public static final int GUI4 = 3;      //Workbench
 	public static final int GUI5 = 4;      //Workbench Adv
@@ -56,7 +57,8 @@ public class GuiHandler implements IGuiHandler {
 				}
 			}
 			else if (ID == GUI2){
-				//return new CONTAINER_RTG(player, (TileEntityRTG)te);
+				//HeliumGenerator
+				return new Container_HeliumGenerator(player.inventory, (TileEntityHeliumGenerator)te);
 			}
 
 
@@ -106,7 +108,7 @@ public class GuiHandler implements IGuiHandler {
 			}
 			else  if (ID == GUI2){
 				Utils.LOG_WARNING("Opening Gui with Id: "+ID+" RTG");
-				//return new GUI_RTG((TileEntityRTG) te.);
+				return new GUI_HeliumGenerator(player.inventory, (TileEntityHeliumGenerator) te);
 			}
 		}
 
