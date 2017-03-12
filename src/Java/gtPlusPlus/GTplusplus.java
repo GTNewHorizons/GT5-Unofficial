@@ -162,6 +162,8 @@ implements ActionListener
 	{
 		Utils.LOG_INFO("Loading "+CORE.name+" V"+CORE.VERSION);
 		Utils.LOG_INFO("Latest is "+CORE.MASTER_VERSION+". Updated? "+Utils.isModUpToDate());
+		Utils.LOG_INFO("User's Country: "+CORE.USER_COUNTRY);
+		
 		//FirstCall();
 		FMLCommonHandler.instance().bus().register(new LoginEventHandler());
 		Utils.LOG_INFO("Login Handler Initialized");

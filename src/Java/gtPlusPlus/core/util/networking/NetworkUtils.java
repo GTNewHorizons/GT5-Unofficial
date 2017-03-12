@@ -33,6 +33,18 @@ public class NetworkUtils {
 		return "offline";
 	}
 
+	public static boolean checkNetworkIsAvailableWithValidInterface(){
+		try {
+			if (hasValidNetworkInterface()){
+				if (netIsAvailableGithub() || netIsAvailableOther() || netIsAvailableBaidu() || netIsAvailableGoogle()){
+					return true;
+				}
+			}
+		}
+		catch (SocketException e) {}
+		return false;
+	}
+
 	private static boolean netIsAvailableGoogle() {
 		try {
 			final URL url = new URL("http://www.google.com");

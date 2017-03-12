@@ -32,6 +32,8 @@ import net.minecraftforge.fluids.*;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.apache.commons.lang3.EnumUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
@@ -157,32 +159,42 @@ public class Utils {
 		}
 		return (target.getItem() == input.getItem() && ((target.getItemDamage() == WILDCARD_VALUE && !strict) || target.getItemDamage() == input.getItemDamage()));
 	}
+	
+	//Logging Functions
+	private static final Logger modLogger = makeLogger();
+	
+	//Generate GT++ Logger
+	public static Logger makeLogger(){
+		Logger gtPlusPlusLogger = LogManager.getLogger("GT++");
+		return gtPlusPlusLogger;
+	}
+	
 
 	//Non-Dev Comments 
 	public static void LOG_INFO(String s){
 		//if (CORE.DEBUG){
-		FMLLog.info("GT++: "+s);
+		modLogger.info(s);
 		//}
 	}
 
 	//Non-Dev Comments 
 	public static void LOG_MACHINE_INFO(String s){
 		if (CORE.configSwitches.MACHINE_INFO || ClientProxy.playerName.toLowerCase().contains("draknyte1")){
-		FMLLog.info("GT++: Machine Info: "+s);
+			modLogger.info("Machine Info: "+s);
 		}
 	}
 
 	//Developer Comments
 	public static void LOG_WARNING(String s){
 		if (CORE.DEBUG){
-			FMLLog.warning("GT++: "+s);
+			modLogger.warn(s);
 		}
 	}
 
 	//Errors
 	public static void LOG_ERROR(String s){
 		if (CORE.DEBUG){
-			FMLLog.severe("GT++: "+s);
+			modLogger.fatal(s);
 		}
 	}
 
