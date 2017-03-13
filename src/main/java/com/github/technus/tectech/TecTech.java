@@ -2,6 +2,8 @@ package com.github.technus.tectech;
 import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.blocks.QuantumGlass;
+import com.github.technus.tectech.casing.GT_Block_CasingsTT;
+import com.github.technus.tectech.casing.GT_Container_CasingsTT;
 import com.github.technus.tectech.proxy.CommonProxy;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -98,6 +100,7 @@ public class TecTech {
 
 	public void RegisterThingsInTabs(){
 		QuantumGlass.INSTANCE.setCreativeTab(mainTab);//TODO? COPY PASTE GT CLASSES TO ADD MY THINGS TO CREATIVE TAB
+		GT_Container_CasingsTT.sBlockCasingsTT.setCreativeTab(mainTab);
 	}
 
 	/**
@@ -106,7 +109,5 @@ public class TecTech {
 	 * @param pEvent
 	 */
 	@EventHandler
-	public void serverLoad(FMLServerStartingEvent pEvent) {
-	}
-
+	public void serverLoad(FMLServerStartingEvent pEvent) {}
 }

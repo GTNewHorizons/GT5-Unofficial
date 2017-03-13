@@ -1,6 +1,7 @@
 package com.github.technus.tectech.casing;
 
 import com.github.technus.tectech.CustomItemList;
+import com.github.technus.tectech.TecTech;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -9,9 +10,13 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.GT_Block_Casings_Abstract;
 import gregtech.common.blocks.GT_Material_Casings;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+
+import java.util.List;
 
 /**
  * Created by danie_000 on 03.10.2016.
@@ -99,5 +104,12 @@ public class GT_Block_CasingsTT
 
     public int colorMultiplier(IBlockAccess aWorld, int aX, int aY, int aZ) {
         return super.colorMultiplier(aWorld, aX, aY, aZ);
+    }
+
+    @Override
+    public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
+        for(int i=3;i<=9;i++){
+            aList.add(new ItemStack(aItem,1,i));
+        }
     }
 }
