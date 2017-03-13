@@ -315,7 +315,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_Elemental extends GT_Meta
                         if(isValidMetaTileEntity(hatch_elemental))hatch_elemental.id=id++;
 
                     if(mEnergyHatches.size()>0 || eEnergyMulti.size()>0) {
-                        maxEUinputMin =V[15];
+                        maxEUinputMin=V[15];
                         maxEUinputMax=V[0];
                         for(GT_MetaTileEntity_Hatch_Energy hatch:mEnergyHatches)
                             if(isValidMetaTileEntity(hatch)){
@@ -327,7 +327,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_Elemental extends GT_Meta
                                 if (hatch.maxEUInput() < maxEUinputMin) maxEUinputMin = hatch.maxEUInput();
                                 if (hatch.maxEUInput() > maxEUinputMax) maxEUinputMax = hatch.maxEUInput();
                             }
-                        eMaxAmpereFlow =0;
+                        eMaxAmpereFlow=0;
                         //counts only full amps
                         for(GT_MetaTileEntity_Hatch_Energy hatch:mEnergyHatches)
                             if(isValidMetaTileEntity(hatch)) eMaxAmpereFlow +=hatch.maxEUInput()/ maxEUinputMin;
@@ -337,7 +337,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_Elemental extends GT_Meta
                     } else {
                         maxEUinputMin=0;
                         maxEUinputMax=0;
-                        eMaxAmpereFlow =0;
+                        eMaxAmpereFlow=0;
                         this.setEUVar(0);
                     }
 
@@ -348,7 +348,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_Elemental extends GT_Meta
                 }else{
                     maxEUinputMin=0;
                     maxEUinputMax=0;
-                    eMaxAmpereFlow =0;
+                    eMaxAmpereFlow=0;
                     this.setEUVar(0);
                 }
             }
@@ -621,11 +621,19 @@ public abstract class GT_MetaTileEntity_MultiblockBase_Elemental extends GT_Meta
 
     //new method
     public final boolean EMdrainEnergyInput(long EU, long Amperes) {
-        if(EU <= 0L || Amperes<=0) return true;
+        if(EU <= 0L || Amperes <= 0) return true;
         long euVar=EU*Amperes;
-        if(     getEUVar() < euVar ||
+        if(     euVar > getEUVar() ||
                 EU>maxEUinputMax ||
-                (euVar+maxEUinputMin-1)/maxEUinputMin> eMaxAmpereFlow)return false;
+                (euVar-1)/maxEUinputMin+1>eMaxAmpereFlow){
+            if(TecTech.ModConfig.DEBUG_MODE) {
+                TecTech.Logger.debug("OMG1 " + euVar + " " + getEUVar() + " " + (euVar > getEUVar()));
+                TecTech.Logger.debug("OMG2 " + EU + " " + maxEUinputMax + " " + (EU > maxEUinputMax));
+                TecTech.Logger.debug("OMG3 " + euVar + " " + eMaxAmpereFlow);
+                TecTech.Logger.debug("OMG4 " + ((euVar - 1) / maxEUinputMin + 1) + " " + eMaxAmpereFlow + " " + ((euVar - 1) / maxEUinputMin + 1 > eMaxAmpereFlow));
+            }
+            return false;
+        }
         //sub eu
         setEUVar(getEUVar()-euVar);
         return true;
@@ -788,7 +796,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_Elemental extends GT_Meta
     @Override
     public void explodeMultiblock() {//BEST METHOD EVER!!!
         if(!TecTech.ModConfig.BOOM_ENABLE) {
-            TecTech.proxy.broadcast("BOOM! "+getBaseMetaTileEntity().getXCoord()+" "+getBaseMetaTileEntity().getYCoord()+" "+getBaseMetaTileEntity().getZCoord());
+            TecTech.proxy.broadcast("Multi Explode BOOM! "+getBaseMetaTileEntity().getXCoord()+" "+getBaseMetaTileEntity().getYCoord()+" "+getBaseMetaTileEntity().getZCoord());
+            StackTraceElement[] ste=Thread.currentThread().getStackTrace();
+            TecTech.proxy.broadcast("Multi Explode BOOM! "+ste[2].toString());
             return;
         }
         GT_Pollution.addPollution(new ChunkPosition(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord()), 600000);
@@ -1106,7 +1116,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_Elemental extends GT_Meta
                 "Progress:",
                 EnumChatFormatting.GREEN + Integer.toString(mProgresstime/20) + EnumChatFormatting.RESET +" s / "+
                         EnumChatFormatting.YELLOW + Integer.toString(mMaxProgresstime/20) + EnumChatFormatting.RESET +" s",
-                "Stored Energy:",
+                "Energy Hatches:",
                 EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET +" EU / "+
                         EnumChatFormatting.YELLOW + Long.toString(maxEnergy) + EnumChatFormatting.RESET +" EU",
                 (mEUt<=0?"Probably uses: ":"Probably makes: ")+

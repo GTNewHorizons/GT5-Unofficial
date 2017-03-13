@@ -102,7 +102,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
                 }else {
                     if(deathDelay==2) {
                         if (TecTech.ModConfig.BOOM_ENABLE && TecTech.Rnd.nextInt(10)==0) aBaseMetaTileEntity.setOnFire();
-                        else TecTech.proxy.broadcast("FIRE! " + getBaseMetaTileEntity().getXCoord() + " " + getBaseMetaTileEntity().getYCoord() + " " + getBaseMetaTileEntity().getZCoord());
+                        else TecTech.proxy.broadcast("Container0 FIRE! " + getBaseMetaTileEntity().getXCoord() + " " + getBaseMetaTileEntity().getYCoord() + " " + getBaseMetaTileEntity().getZCoord());
                     }else if(deathDelay==1) {
                         IGregTechTileEntity tGTTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(aBaseMetaTileEntity.getBackFacing());
                         if (tGTTileEntity == null || !(tGTTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_MufflerElemental))
@@ -114,12 +114,12 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
                             aMetaTileEntity.overflowMatter += overflowMatter;
                             if (aMetaTileEntity.overflowMatter > aMetaTileEntity.overflowMax) {
                                 if(TecTech.ModConfig.BOOM_ENABLE)tGTTileEntity.doExplosion(V[14]);
-                                else TecTech.proxy.broadcast("BOOM! "+getBaseMetaTileEntity().getXCoord()+" "+getBaseMetaTileEntity().getYCoord()+" "+getBaseMetaTileEntity().getZCoord());
+                                else TecTech.proxy.broadcast("Container1 BOOM! "+getBaseMetaTileEntity().getXCoord()+" "+getBaseMetaTileEntity().getYCoord()+" "+getBaseMetaTileEntity().getZCoord());
                             } else overflowMatter = 0F;
                         }
                     }else if(deathDelay<1) {
                         if (TecTech.ModConfig.BOOM_ENABLE) getBaseMetaTileEntity().doExplosion(V[14]);
-                        else TecTech.proxy.broadcast("BOOM! " + getBaseMetaTileEntity().getXCoord() + " " + getBaseMetaTileEntity().getYCoord() + " " + getBaseMetaTileEntity().getZCoord());
+                        else TecTech.proxy.broadcast("Container2 BOOM! " + getBaseMetaTileEntity().getXCoord() + " " + getBaseMetaTileEntity().getYCoord() + " " + getBaseMetaTileEntity().getZCoord());
                     }
                     deathDelay--;
                 }

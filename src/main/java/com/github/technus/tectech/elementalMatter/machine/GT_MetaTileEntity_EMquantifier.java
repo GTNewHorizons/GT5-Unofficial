@@ -16,12 +16,11 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.HashMap;
 
@@ -33,8 +32,8 @@ import static gregtech.api.enums.GT_Values.V;
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EMquantifier extends GT_MetaTileEntity_MultiblockBase_Elemental  {
-    public static HashMap<String,cElementalDefinitionStack> itemBinds=new HashMap<>(32);
-    public static HashMap<Fluid,cElementalDefinitionStack> fluidBind=new HashMap<>(8);
+    public static HashMap<Integer,cElementalDefinitionStack> itemBinds=new HashMap<>(32);
+    public static HashMap<Integer,cElementalDefinitionStack> fluidBind=new HashMap<>(8);
     private static float refMass,refUnstableMass;
 
     public GT_MetaTileEntity_EMquantifier(int aID, String aName, String aNameRegional) {
@@ -92,31 +91,36 @@ public class GT_MetaTileEntity_EMquantifier extends GT_MetaTileEntity_Multiblock
             ItemStack[] inI =getStoredInputs().toArray(new ItemStack[0]);
             if (inI.length > 0) {
                 for (ItemStack is : inI) {
-                    if(TecTech.ModConfig.DEBUG_MODE)
-                        TecTech.Logger.info("Quantifier-recipe "+is.getItem().getUnlocalizedName()+"."+is.getItemDamage());
-                    cElementalDefinitionStack into = itemBinds.get(is.getItem().getUnlocalizedName()+"."+is.getItemDamage());
-                    if (into != null && isInputEqual(true, false,
-                            nothingF, new ItemStack[]{new ItemStack(is.getItem(),1,is.getItemDamage())}, null, inI)) {
-                        mMaxProgresstime = 20;
-                        mEfficiencyIncrease=10000;
-                        float mass = into.getMass();
-                        float euMult = mass / refMass;
-                        eAmpereFlow = (int) Math.ceil(euMult);
-                        if (mass > refUnstableMass) {
-                            mEUt = (int) -V[9];
-                        } else {
-                            mEUt = (int) -V[8];
+                    int[] oreIDs=OreDictionary.getOreIDs(is);
+                    if (TecTech.ModConfig.DEBUG_MODE)
+                        TecTech.Logger.info("Quantifier-recipe " + is.getItem().getUnlocalizedName() + "." + is.getItemDamage()+" "+is.getDisplayName());
+                    for(int ID:oreIDs) {
+                        if (TecTech.ModConfig.DEBUG_MODE)
+                            TecTech.Logger.info("Quantifier-recipe " + is.getItem().getUnlocalizedName() + "." + is.getItemDamage()+" "+OreDictionary.getOreName(ID));
+                        cElementalDefinitionStack into = itemBinds.get(ID);
+                        if (into != null && isInputEqual(true, false,
+                                nothingF, new ItemStack[]{new ItemStack(is.getItem(), 1, is.getItemDamage())}, null, inI)) {
+                            mMaxProgresstime = 20;
+                            mEfficiencyIncrease = 10000;
+                            float mass = into.getMass();
+                            float euMult = mass / refMass;
+                            eAmpereFlow = (int) Math.ceil(euMult);
+                            if (mass > refUnstableMass) {
+                                mEUt = (int) -V[9];
+                            } else {
+                                mEUt = (int) -V[8];
+                            }
+                            outputEM = new cElementalInstanceStackTree[1];
+                            outputEM[0] = new cElementalInstanceStackTree(new cElementalInstanceStack(into));
+                            return true;
                         }
-                        outputEM = new cElementalInstanceStackTree[1];
-                        outputEM[0] = new cElementalInstanceStackTree(new cElementalInstanceStack(into));
-                        return true;
                     }
                 }
             }
             FluidStack[] inF=getStoredFluids().toArray(new FluidStack[0]);
             if (inF.length > 0) {
                 for (FluidStack fs : inF) {
-                    cElementalDefinitionStack into = fluidBind.get(fs.getFluid());
+                    cElementalDefinitionStack into = fluidBind.get(fs.getFluid().getID());
                     if (into != null && fs.amount >= 144 && isInputEqual(true, false,
                             new FluidStack[]{new FluidStack(fs.getFluid(), 144)}, nothingI, inF, (ItemStack[]) null)) {
                         mMaxProgresstime = 20;
@@ -150,230 +154,228 @@ public class GT_MetaTileEntity_EMquantifier extends GT_MetaTileEntity_Multiblock
         eOutputHatches.get(0).getContainerHandler().putUnifyAll(outputEM[0]);
     }
 
-    private static String getItem(OrePrefixes prefix, Materials material){
-        if(TecTech.ModConfig.DEBUG_MODE)
-            TecTech.Logger.info("Quantifier-init "+material.name()+" "+GT_OreDictUnificator.get(prefix, material, 1L).getUnlocalizedName());
-        return GT_OreDictUnificator.get(prefix, material, 1L).getUnlocalizedName();
+    private static int getID(OrePrefixes prefix, Materials material){
+        return OreDictionary.getOreID(prefix.name()+material.name());
     }
 
     public static void run(){
         refMass=getFirstStableIsotope(1).getMass()*144F;
-        fluidBind.put(Materials.Hydrogen.mGas,new cElementalDefinitionStack(getFirstStableIsotope(1),144));
-        fluidBind.put(Materials.Helium.mGas,new cElementalDefinitionStack(getFirstStableIsotope(2),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Lithium),
+        fluidBind.put(Materials.Hydrogen.mGas.getID(),new cElementalDefinitionStack(getFirstStableIsotope(1),144));
+        fluidBind.put(Materials.Helium.mGas.getID(),new cElementalDefinitionStack(getFirstStableIsotope(2),144));
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Lithium),
                 new cElementalDefinitionStack(getFirstStableIsotope(3),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Beryllium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Beryllium),
                 new cElementalDefinitionStack(getFirstStableIsotope(4),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Boron),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Boron),
                 new cElementalDefinitionStack(getFirstStableIsotope(5),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Carbon),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Carbon),
                 new cElementalDefinitionStack(getFirstStableIsotope(6),144));
-        fluidBind.put(Materials.Nitrogen.mGas,new cElementalDefinitionStack(getFirstStableIsotope(7),144));
-        fluidBind.put(Materials.Oxygen.mGas,new cElementalDefinitionStack(getFirstStableIsotope(8),144));
-        fluidBind.put(Materials.Fluorine.mFluid,new cElementalDefinitionStack(getFirstStableIsotope(9),144));
-        //fluidBind.put(Materials.Neon.mGas,new cElementalDefinitionStack(getFirstStableIsotope(10),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Sodium),
+        fluidBind.put(Materials.Nitrogen.mGas.getID(),new cElementalDefinitionStack(getFirstStableIsotope(7),144));
+        fluidBind.put(Materials.Oxygen.mGas.getID(),new cElementalDefinitionStack(getFirstStableIsotope(8),144));
+        fluidBind.put(Materials.Fluorine.mGas.getID(),new cElementalDefinitionStack(getFirstStableIsotope(9),144));
+        //fluidBind.put(Materials.Neon.mGas.getID(),new cElementalDefinitionStack(getFirstStableIsotope(10),144));
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Sodium),
                 new cElementalDefinitionStack(getFirstStableIsotope(11),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Magnesium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Magnesium),
                 new cElementalDefinitionStack(getFirstStableIsotope(12),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Aluminium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Aluminium),
                 new cElementalDefinitionStack(getFirstStableIsotope(13),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Silicon),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Silicon),
                 new cElementalDefinitionStack(getFirstStableIsotope(14),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Phosphorus),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Phosphorus),
                 new cElementalDefinitionStack(getFirstStableIsotope(15),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Sulfur),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Sulfur),
                 new cElementalDefinitionStack(getFirstStableIsotope(16),144));
-        fluidBind.put(Materials.Chlorine.mFluid,new cElementalDefinitionStack(getFirstStableIsotope(17),144));
-        fluidBind.put(Materials.Argon.mGas,new cElementalDefinitionStack(getFirstStableIsotope(18),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Potassium),
+        fluidBind.put(Materials.Chlorine.mFluid.getID(),new cElementalDefinitionStack(getFirstStableIsotope(17),144));
+        fluidBind.put(Materials.Argon.mGas.getID(),new cElementalDefinitionStack(getFirstStableIsotope(18),144));
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Potassium),
                 new cElementalDefinitionStack(getFirstStableIsotope(19),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Calcium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Calcium),
                 new cElementalDefinitionStack(getFirstStableIsotope(20),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Scandium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Scandium),
                 new cElementalDefinitionStack(getFirstStableIsotope(21),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Titanium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Titanium),
                 new cElementalDefinitionStack(getFirstStableIsotope(22),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Vanadium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Vanadium),
                 new cElementalDefinitionStack(getFirstStableIsotope(23),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Chrome),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Chrome),
                 new cElementalDefinitionStack(getFirstStableIsotope(24),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Manganese),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Manganese),
                 new cElementalDefinitionStack(getFirstStableIsotope(25),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Iron),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Iron),
                 new cElementalDefinitionStack(getFirstStableIsotope(26),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.IronMagnetic),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.IronMagnetic),
                 new cElementalDefinitionStack(getFirstStableIsotope(26),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Cobalt),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Cobalt),
                 new cElementalDefinitionStack(getFirstStableIsotope(27),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Nickel),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Nickel),
                 new cElementalDefinitionStack(getFirstStableIsotope(28),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Copper),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Copper),
                 new cElementalDefinitionStack(getFirstStableIsotope(29),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Zinc),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Zinc),
                 new cElementalDefinitionStack(getFirstStableIsotope(30),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Gallium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Gallium),
                 new cElementalDefinitionStack(getFirstStableIsotope(31),144));
-        //itemBinds.put(getItem(OrePrefixes.dust, Materials.Germanium),
+        //itemBinds.put(getID(OrePrefixes.dust, Materials.Germanium),
         //        new cElementalDefinitionStack(getFirstStableIsotope(32),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Arsenic),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Arsenic),
                 new cElementalDefinitionStack(getFirstStableIsotope(33),144));
-        //itemBinds.put(getItem(OrePrefixes.dust, Materials.Selenium),
+        //itemBinds.put(getID(OrePrefixes.dust, Materials.Selenium),
         //        new cElementalDefinitionStack(getFirstStableIsotope(34),144));
-        //itemBinds.put(getItem(OrePrefixes.dust, Materials.Bromine),
+        //itemBinds.put(getID(OrePrefixes.dust, Materials.Bromine),
         //        new cElementalDefinitionStack(getFirstStableIsotope(35),144));
-        //itemBinds.put(getItem(OrePrefixes.dust, Materials.Krypton),
+        //itemBinds.put(getID(OrePrefixes.dust, Materials.Krypton),
         //        new cElementalDefinitionStack(getFirstStableIsotope(36),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Rubidium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Rubidium),
                 new cElementalDefinitionStack(getFirstStableIsotope(37),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Strontium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Strontium),
                 new cElementalDefinitionStack(getFirstStableIsotope(38),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Yttrium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Yttrium),
                 new cElementalDefinitionStack(getFirstStableIsotope(39),144));
-        //itemBinds.put(getItem(OrePrefixes.dust, Materials.Zirconium),
+        //itemBinds.put(getID(OrePrefixes.dust, Materials.Zirconium),
         //        new cElementalDefinitionStack(getFirstStableIsotope(40),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Niobium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Niobium),
                 new cElementalDefinitionStack(getFirstStableIsotope(41),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Molybdenum),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Molybdenum),
                 new cElementalDefinitionStack(getFirstStableIsotope(42),144));
-        //itemBinds.put(getItem(OrePrefixes.dust, Materials.Technetium),
+        //itemBinds.put(getID(OrePrefixes.dust, Materials.Technetium),
         //        new cElementalDefinitionStack(getFirstStableIsotope(43),144));
-        //itemBinds.put(getItem(OrePrefixes.dust, Materials.Ruthenium),
+        //itemBinds.put(getID(OrePrefixes.dust, Materials.Ruthenium),
         //        new cElementalDefinitionStack(getFirstStableIsotope(44),144));
-        //itemBinds.put(getItem(OrePrefixes.dust, Materials.Rhodium),
+        //itemBinds.put(getID(OrePrefixes.dust, Materials.Rhodium),
         //        new cElementalDefinitionStack(getFirstStableIsotope(45),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Palladium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Palladium),
                 new cElementalDefinitionStack(getFirstStableIsotope(46),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Silver),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Silver),
                 new cElementalDefinitionStack(getFirstStableIsotope(47),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Cadmium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Cadmium),
                 new cElementalDefinitionStack(getFirstStableIsotope(48),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Indium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Indium),
                 new cElementalDefinitionStack(getFirstStableIsotope(49),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Tin),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Tin),
                 new cElementalDefinitionStack(getFirstStableIsotope(50),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Antimony),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Antimony),
                 new cElementalDefinitionStack(getFirstStableIsotope(51),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Tellurium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Tellurium),
                 new cElementalDefinitionStack(getFirstStableIsotope(52),144));
-        //itemBinds.put(getItem(OrePrefixes.dust, Materials.Iodine),
+        //itemBinds.put(getID(OrePrefixes.dust, Materials.Iodine),
         //        new cElementalDefinitionStack(getFirstStableIsotope(53),144));
-        //fluidBind.put(Materials.Xenon.mGas,new cElementalDefinitionStack(getFirstStableIsotope(54),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Caesium),
+        //fluidBind.put(Materials.Xenon.mGas.getID(),new cElementalDefinitionStack(getFirstStableIsotope(54),144));
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Caesium),
                 new cElementalDefinitionStack(getFirstStableIsotope(55),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Barium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Barium),
                 new cElementalDefinitionStack(getFirstStableIsotope(56),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Lanthanum),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Lanthanum),
                 new cElementalDefinitionStack(getFirstStableIsotope(57),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Cerium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Cerium),
                 new cElementalDefinitionStack(getFirstStableIsotope(58),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Praseodymium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Praseodymium),
                 new cElementalDefinitionStack(getFirstStableIsotope(59),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Neodymium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Neodymium),
                 new cElementalDefinitionStack(getFirstStableIsotope(60),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.NeodymiumMagnetic),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.NeodymiumMagnetic),
                 new cElementalDefinitionStack(getFirstStableIsotope(60),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Promethium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Promethium),
                 new cElementalDefinitionStack(getFirstStableIsotope(61),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Samarium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Samarium),
                 new cElementalDefinitionStack(getFirstStableIsotope(62),144));
-        //itemBinds.put(getItem(OrePrefixes.dust, Materials.SamariumMagnetic),
+        //itemBinds.put(getID(OrePrefixes.dust, Materials.SamariumMagnetic),
         //        new cElementalDefinitionStack(getFirstStableIsotope(62),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Europium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Europium),
                 new cElementalDefinitionStack(getFirstStableIsotope(63),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Gadolinium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Gadolinium),
                 new cElementalDefinitionStack(getFirstStableIsotope(64),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Terbium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Terbium),
                 new cElementalDefinitionStack(getFirstStableIsotope(65),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Dysprosium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Dysprosium),
                 new cElementalDefinitionStack(getFirstStableIsotope(66),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Holmium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Holmium),
                 new cElementalDefinitionStack(getFirstStableIsotope(67),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Erbium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Erbium),
                 new cElementalDefinitionStack(getFirstStableIsotope(68),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Thulium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Thulium),
                 new cElementalDefinitionStack(getFirstStableIsotope(69),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Ytterbium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Ytterbium),
                 new cElementalDefinitionStack(getFirstStableIsotope(70),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Lutetium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Lutetium),
                 new cElementalDefinitionStack(getFirstStableIsotope(71),144));
-        //itemBinds.put(getItem(OrePrefixes.dust, Materials.Hafnum),
+        //itemBinds.put(getID(OrePrefixes.dust, Materials.Hafnum),
         //        new cElementalDefinitionStack(getFirstStableIsotope(72),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Tantalum),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Tantalum),
                 new cElementalDefinitionStack(getFirstStableIsotope(73),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Tungsten),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Tungsten),
                 new cElementalDefinitionStack(getFirstStableIsotope(74),144));
-        //itemBinds.put(getItem(OrePrefixes.dust, Materials.Rhenium),
+        //itemBinds.put(getID(OrePrefixes.dust, Materials.Rhenium),
         //        new cElementalDefinitionStack(getFirstStableIsotope(75),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Osmium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Osmium),
                 new cElementalDefinitionStack(getFirstStableIsotope(76),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Iridium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Iridium),
                 new cElementalDefinitionStack(getFirstStableIsotope(77),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Platinum),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Platinum),
                 new cElementalDefinitionStack(getFirstStableIsotope(78),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Gold),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Gold),
                 new cElementalDefinitionStack(getFirstStableIsotope(79),144));
-        fluidBind.put(Materials.Mercury.mFluid,new cElementalDefinitionStack(getFirstStableIsotope(80),144));
-        //itemBinds.put(getItem(OrePrefixes.dust, Materials.Thalium),
+        fluidBind.put(Materials.Mercury.mFluid.getID(),new cElementalDefinitionStack(getFirstStableIsotope(80),144));
+        //itemBinds.put(getID(OrePrefixes.dust, Materials.Thalium),
         //        new cElementalDefinitionStack(getFirstStableIsotope(81),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Lead),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Lead),
                 new cElementalDefinitionStack(getFirstStableIsotope(82),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Bismuth),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Bismuth),
                 new cElementalDefinitionStack(getFirstStableIsotope(83),144));
         //UNSTABLE ATOMS
         refUnstableMass=getFirstStableIsotope(83).getMass()*144F;
-        //itemBinds.put(getItem(OrePrefixes.dust, Materials.Polonium),
+        //itemBinds.put(getID(OrePrefixes.dust, Materials.Polonium),
         //        new cElementalDefinitionStack(getBestUnstableIsotope(84),144));
-        //fluidBind.put(Materials.Astatine.mPlasma,new cElementalDefinitionStack(getBestUnstableIsotope(85),144));
-        fluidBind.put(Materials.Radon.mGas,new cElementalDefinitionStack(getBestUnstableIsotope(86),144));
-        //itemBinds.put(getItem(OrePrefixes.dust, Materials.Francium),
+        //fluidBind.put(Materials.Astatine.mPlasma.getID(),new cElementalDefinitionStack(getBestUnstableIsotope(85),144));
+        fluidBind.put(Materials.Radon.mGas.getID(),new cElementalDefinitionStack(getBestUnstableIsotope(86),144));
+        //itemBinds.put(getID(OrePrefixes.dust, Materials.Francium),
         //        new cElementalDefinitionStack(getBestUnstableIsotope(87),144));
-        //itemBinds.put(getItem(OrePrefixes.dust, Materials.Radium),
+        //itemBinds.put(getID(OrePrefixes.dust, Materials.Radium),
         //        new cElementalDefinitionStack(getBestUnstableIsotope(88),144));
-        //itemBinds.put(getItem(OrePrefixes.dust, Materials.Actinium),
+        //itemBinds.put(getID(OrePrefixes.dust, Materials.Actinium),
         //        new cElementalDefinitionStack(getBestUnstableIsotope(89),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Thorium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Thorium),
                 new cElementalDefinitionStack(getBestUnstableIsotope(90),144));
-        //itemBinds.put(getItem(OrePrefixes.dust, Materials.Protactinium),
+        //itemBinds.put(getID(OrePrefixes.dust, Materials.Protactinium),
         //        new cElementalDefinitionStack(getBestUnstableIsotope(91),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Uranium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Uranium),
                 new cElementalDefinitionStack(getBestUnstableIsotope(92),144));
-        //itemBinds.put(getItem(OrePrefixes.dust, Materials.Neptunium),
+        //itemBinds.put(getID(OrePrefixes.dust, Materials.Neptunium),
         //        new cElementalDefinitionStack(getBestUnstableIsotope(93),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Plutonium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Plutonium),
                 new cElementalDefinitionStack(getBestUnstableIsotope(94),144));
-        itemBinds.put(getItem(OrePrefixes.dust, Materials.Americium),
+        itemBinds.put(getID(OrePrefixes.dust, Materials.Americium),
                 new cElementalDefinitionStack(getBestUnstableIsotope(95),144));
         /* ... */
-        itemBinds.put(getItem(OrePrefixes.ingotHot, Materials.Neutronium),
+        itemBinds.put(getID(OrePrefixes.ingotHot, Materials.Neutronium),
                 new cElementalDefinitionStack(dHadronDefinition.hadron_n,100000));
 
         try{
-            fluidBind.put(Materials.Deuterium.mGas, new cElementalDefinitionStack(
+            fluidBind.put(Materials.Deuterium.mGas.getID(), new cElementalDefinitionStack(
                     new dAtomDefinition(
                             eLeptonDefinition.lepton_e1,
                             dHadronDefinition.hadron_p1,
                             dHadronDefinition.hadron_n1
                     ),144));
-            fluidBind.put(Materials.Tritium.mGas, new cElementalDefinitionStack(
+            fluidBind.put(Materials.Tritium.mGas.getID(), new cElementalDefinitionStack(
                     new dAtomDefinition(
                             eLeptonDefinition.lepton_e1,
                             dHadronDefinition.hadron_p1,
                             dHadronDefinition.hadron_n2
                     ),144));
-            fluidBind.put(Materials.Helium_3.mGas, new cElementalDefinitionStack(
+            fluidBind.put(Materials.Helium_3.mGas.getID(), new cElementalDefinitionStack(
                     new dAtomDefinition(
                             new cElementalDefinitionStack(eLeptonDefinition.lepton_e,2),
                             dHadronDefinition.hadron_p2,
                             new cElementalDefinitionStack(dHadronDefinition.hadron_n,3)
                     ),144));
-            itemBinds.put(getItem(OrePrefixes.dust, Materials.Uranium235),
+            itemBinds.put(getID(OrePrefixes.dust, Materials.Uranium235),
                     new cElementalDefinitionStack(new dAtomDefinition(
                             new cElementalDefinitionStack(eLeptonDefinition.lepton_e,92),
                             new cElementalDefinitionStack(dHadronDefinition.hadron_p,92),
                             new cElementalDefinitionStack(dHadronDefinition.hadron_n,143)
                     ),144));
-            itemBinds.put(getItem(OrePrefixes.dust, Materials.Plutonium241),
+            itemBinds.put(getID(OrePrefixes.dust, Materials.Plutonium241),
                     new cElementalDefinitionStack(new dAtomDefinition(
                             new cElementalDefinitionStack(eLeptonDefinition.lepton_e,94),
                             new cElementalDefinitionStack(dHadronDefinition.hadron_p,94),
