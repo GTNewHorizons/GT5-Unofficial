@@ -1,7 +1,7 @@
 package com.github.technus.tectech.proxy;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.things.block.QuantumGlassRender;
+import com.github.technus.tectech.thing.block.QuantumGlassRender;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;

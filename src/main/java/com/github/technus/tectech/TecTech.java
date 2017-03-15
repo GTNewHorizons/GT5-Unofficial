@@ -2,9 +2,12 @@ package com.github.technus.tectech;
 
 import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
-import com.github.technus.tectech.things.block.QuantumGlass;
-import com.github.technus.tectech.things.casing.GT_Container_CasingsTT;
-import com.github.technus.tectech.things.machineTT;
+import com.github.technus.tectech.loader.GT_CustomLoader;
+import com.github.technus.tectech.thing.CustomItemList;
+import com.github.technus.tectech.thing.block.QuantumGlass;
+import com.github.technus.tectech.thing.casing.GT_Container_CasingsTT;
+import com.github.technus.tectech.thing.item.debug_container_EM;
+import com.github.technus.tectech.thing.machineTT;
 import com.github.technus.tectech.proxy.CommonProxy;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -81,6 +84,9 @@ public class TecTech {
 
     @EventHandler
     public void PostLoad(FMLPostInitializationEvent PostEvent) {
+        QuantumGlass.run();
+        debug_container_EM.run();
+
         GTCustomLoader = new GT_CustomLoader();
         GTCustomLoader.run();
         GTCustomLoader.run2();
@@ -89,13 +95,7 @@ public class TecTech {
             @SideOnly(Side.CLIENT)
             @Override
             public Item getTabIconItem() {
-                return CustomItemList.eM_TimeSpaceWarp.getItem();
-            }
-
-            @SideOnly(Side.CLIENT)
-            @Override
-            public ItemStack getIconItemStack() {
-                return CustomItemList.eM_TimeSpaceWarp.getWithDamage(1, 8);
+                return debug_container_EM.INSTANCE;
             }
 
             @Override
@@ -115,6 +115,7 @@ public class TecTech {
     public void RegisterThingsInTabs() {
         QuantumGlass.INSTANCE.setCreativeTab(mainTab);//TODO? COPY PASTE GT CLASSES TO ADD MY THINGS TO CREATIVE TAB
         GT_Container_CasingsTT.sBlockCasingsTT.setCreativeTab(mainTab);
+        debug_container_EM.INSTANCE.setCreativeTab(mainTab);
     }
 
     /**
