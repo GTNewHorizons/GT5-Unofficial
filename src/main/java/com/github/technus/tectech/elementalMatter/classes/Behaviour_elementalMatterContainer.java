@@ -32,16 +32,16 @@ public final class Behaviour_elementalMatterContainer extends Behaviour_None {
         NBTTagCompound tNBT = aStack.getTagCompound();
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (aPlayer instanceof EntityPlayerMP) {
-            aStack.stackSize=1;
+            aStack.stackSize = 1;
             if (tTileEntity != null && tTileEntity instanceof IGregTechTileEntity) {
-                IMetaTileEntity metaTE=((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-                if(metaTE !=null && metaTE instanceof iElementalInstanceContainer) {
-                    cElementalInstanceStackTree content=((iElementalInstanceContainer) metaTE).getContainerHandler();
+                IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
+                if (metaTE != null && metaTE instanceof iElementalInstanceContainer) {
+                    cElementalInstanceStackTree content = ((iElementalInstanceContainer) metaTE).getContainerHandler();
                     if (tNBT.hasKey("content")) {
                         try {
                             content.putUnifyAll(cElementalInstanceStackTree.fromNBT(tNBT.getCompoundTag("content")));
-                        }catch (tElementalException e){
-                            if(TecTech.ModConfig.DEBUG_MODE)e.printStackTrace();
+                        } catch (tElementalException e) {
+                            if (TecTech.ModConfig.DEBUG_MODE) e.printStackTrace();
                             return true;
                         }
                         ((iElementalInstanceContainer) metaTE).purgeOverflow();
@@ -65,11 +65,13 @@ public final class Behaviour_elementalMatterContainer extends Behaviour_None {
         aList.add(mTooltip);
         try {
             NBTTagCompound tNBT = aStack.getTagCompound();
-            if(tNBT.hasKey("info")) {
+            if (tNBT.hasKey("info")) {
                 aList.add("Contains:");
                 Collections.addAll(aList, cElementalInstanceStackTree.infoFromNBT(tNBT.getCompoundTag("info")));
             }
-        }catch(Exception e){aList.add("---Unexpected Termination---");}
+        } catch (Exception e) {
+            aList.add("---Unexpected Termination---");
+        }
         return aList;
     }
 }

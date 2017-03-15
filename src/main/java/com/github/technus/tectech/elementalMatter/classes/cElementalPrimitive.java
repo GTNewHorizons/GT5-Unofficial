@@ -15,10 +15,12 @@ import java.util.TreeMap;
  * EXTEND THIS TO ADD NEW PRIMITIVES, WATCH OUT FOR ID'S!!!  (-1 to 32 can be assumed as used)
  */
 public abstract class cElementalPrimitive extends cElementalDefinition {
-    private static final byte nbtType=(byte) 'p';
+    public static final TreeMap<cElementalPrimitive, ItemStack> itemBinds = new TreeMap<>();
+    public static final TreeMap<cElementalPrimitive, FluidStack> fluidBinds = new TreeMap<>();
+
+    private static final byte nbtType = (byte) 'p';
 
     public static final TreeMap<Integer, iElementalDefinition> bindsBO = new TreeMap<>();
-
 
     public final String name;
     public final String symbol;
@@ -50,7 +52,8 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
         this.charge = (byte) charge;
         this.color = (byte) color;
         this.ID = ID;
-        if(bindsBO.put(ID, this)!=null) Minecraft.getMinecraft().crashed(new CrashReport("Primitive definition",new tElementalException("Duplicate ID")));
+        if (bindsBO.put(ID, this) != null)
+            Minecraft.getMinecraft().crashed(new CrashReport("Primitive definition", new tElementalException("Duplicate ID")));
     }
 
     //
@@ -136,9 +139,9 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
 
     @Override
     public final NBTTagCompound toNBT() {
-        NBTTagCompound nbt=new NBTTagCompound();
-        nbt.setByte("t",nbtType);
-        nbt.setInteger("c",ID);
+        NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setByte("t", nbtType);
+        nbt.setInteger("c", ID);
         return nbt;
     }
 
@@ -153,8 +156,8 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
 
     @Override
     public final int compareTo(iElementalDefinition o) {
-        if(getClassType()==o.getClassType()){
-            int oID=((cElementalPrimitive)o).ID;
+        if (getClassType() == o.getClassType()) {
+            int oID = ((cElementalPrimitive) o).ID;
             if (ID > oID) return 1;
             if (ID < oID) return -1;
             return 0;
@@ -166,7 +169,7 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
         try {
             cElementalDefinition.addCreatorFromNBT(nbtType, cElementalPrimitive.class.getMethod("fromNBT", NBTTagCompound.class));
         } catch (Exception e) {
-            if(TecTech.ModConfig.DEBUG_MODE)e.printStackTrace();
+            if (TecTech.ModConfig.DEBUG_MODE) e.printStackTrace();
         }
     }
 }

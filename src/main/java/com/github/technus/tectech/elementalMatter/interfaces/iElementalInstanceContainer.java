@@ -7,5 +7,6 @@ import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStac
  */
 public interface iElementalInstanceContainer {
     cElementalInstanceStackTree getContainerHandler();
+
     float purgeOverflow();
 }

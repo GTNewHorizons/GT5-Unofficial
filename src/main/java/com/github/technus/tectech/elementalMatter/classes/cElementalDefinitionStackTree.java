@@ -14,29 +14,31 @@ import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveD
  * Created by danie_000 on 22.01.2017.
  */
 public final class cElementalDefinitionStackTree implements Comparable<cElementalDefinitionStackTree> {
-    private TreeMap<iElementalDefinition,cElementalDefinitionStack> tree=new TreeMap<>();
-//Constructors
-    public cElementalDefinitionStackTree(){}
+    private TreeMap<iElementalDefinition, cElementalDefinitionStack> tree = new TreeMap<>();
 
-    @Deprecated
-    public cElementalDefinitionStackTree(iElementalDefinition... in){
-        if(in==null)return;
-        for(iElementalDefinition definition:in)
-            tree.put(definition, new cElementalDefinitionStack(definition,1));
+    //Constructors
+    public cElementalDefinitionStackTree() {
     }
 
-    public cElementalDefinitionStackTree(cElementalDefinitionStack... in){
-        if(in==null)return;
-        for(cElementalDefinitionStack stack:in)
+    @Deprecated
+    public cElementalDefinitionStackTree(iElementalDefinition... in) {
+        if (in == null) return;
+        for (iElementalDefinition definition : in)
+            tree.put(definition, new cElementalDefinitionStack(definition, 1));
+    }
+
+    public cElementalDefinitionStackTree(cElementalDefinitionStack... in) {
+        if (in == null) return;
+        for (cElementalDefinitionStack stack : in)
             tree.put(stack.definition, stack);
     }
 
-    private cElementalDefinitionStackTree(TreeMap<iElementalDefinition,cElementalDefinitionStack> in){
-        if(in==null)return;
-        tree=in;
+    private cElementalDefinitionStackTree(TreeMap<iElementalDefinition, cElementalDefinitionStack> in) {
+        if (in == null) return;
+        tree = in;
     }
 
-    public cElementalDefinitionStackTree(cElementalDefinitionStackTree in){
+    public cElementalDefinitionStackTree(cElementalDefinitionStackTree in) {
         this(in.tree);
     }
 
@@ -47,53 +49,53 @@ public final class cElementalDefinitionStackTree implements Comparable<cElementa
 
     @Override
     public int compareTo(cElementalDefinitionStackTree o) {
-        if(tree.size()!=o.tree.size())return tree.size()-o.tree.size();
-        cElementalDefinitionStack[] ofThis=values(),ofThat=o.values();
-        for(int i=0;i<ofThat.length;i++){
-            int result=ofThis[i].compareTo(ofThat[i]);
-            if(result!=0) return result;
+        if (tree.size() != o.tree.size()) return tree.size() - o.tree.size();
+        cElementalDefinitionStack[] ofThis = values(), ofThat = o.values();
+        for (int i = 0; i < ofThat.length; i++) {
+            int result = ofThis[i].compareTo(ofThat[i]);
+            if (result != 0) return result;
         }
         return 0;
     }
 
     //Removers
-    public void clear(){
+    public void clear() {
         tree.clear();
     }
 
-    public cElementalDefinitionStack remove(iElementalDefinition def){
+    public cElementalDefinitionStack remove(iElementalDefinition def) {
         return tree.remove(def);
     }
 
     @Deprecated
-    public cElementalDefinitionStack remove(iHasElementalDefinition has){
+    public cElementalDefinitionStack remove(iHasElementalDefinition has) {
         return tree.remove(has.getDefinition());
     }
 
-    public void removeAll(iElementalDefinition... definitions){
-        for(iElementalDefinition def:definitions)
+    public void removeAll(iElementalDefinition... definitions) {
+        for (iElementalDefinition def : definitions)
             tree.remove(def);
     }
 
     @Deprecated
-    private void removeAll(iHasElementalDefinition... hasElementals){
-        for(iHasElementalDefinition has:hasElementals)
+    private void removeAll(iHasElementalDefinition... hasElementals) {
+        for (iHasElementalDefinition has : hasElementals)
             tree.remove(has.getDefinition());
     }
 
-//Remove amounts
-    public boolean removeAmount(boolean testOnly, cElementalInstanceStack instance){
-        final cElementalDefinitionStack target=tree.get(instance.definition);
-        if(target==null)
+    //Remove amounts
+    public boolean removeAmount(boolean testOnly, cElementalInstanceStack instance) {
+        final cElementalDefinitionStack target = tree.get(instance.definition);
+        if (target == null)
             return false;
-        if(testOnly)
-            return target.amount>=instance.amount;
-        else{
-            final int diff=target.amount-instance.amount;
-            if(diff>0) {
-                tree.put(target.definition,new cElementalDefinitionStack(target.definition,diff));
+        if (testOnly)
+            return target.amount >= instance.amount;
+        else {
+            final int diff = target.amount - instance.amount;
+            if (diff > 0) {
+                tree.put(target.definition, new cElementalDefinitionStack(target.definition, diff));
                 return true;
-            }else if(diff==0){
+            } else if (diff == 0) {
                 tree.remove(instance.definition);
                 return true;
             }
@@ -101,18 +103,18 @@ public final class cElementalDefinitionStackTree implements Comparable<cElementa
         return false;
     }
 
-    public boolean removeAmount(boolean testOnly, cElementalDefinitionStack stack){
-        final cElementalDefinitionStack target=tree.get(stack.definition);
-        if(target==null)
+    public boolean removeAmount(boolean testOnly, cElementalDefinitionStack stack) {
+        final cElementalDefinitionStack target = tree.get(stack.definition);
+        if (target == null)
             return false;
-        if(testOnly)
-            return target.amount>=stack.amount;
-        else{
-            final int diff=target.amount-stack.amount;
-            if(diff>0) {
-                tree.put(target.definition,new cElementalDefinitionStack(target.definition,diff));
+        if (testOnly)
+            return target.amount >= stack.amount;
+        else {
+            final int diff = target.amount - stack.amount;
+            if (diff > 0) {
+                tree.put(target.definition, new cElementalDefinitionStack(target.definition, diff));
                 return true;
-            }else if(diff==0){
+            } else if (diff == 0) {
                 tree.remove(stack.definition);
                 return true;
             }
@@ -121,183 +123,184 @@ public final class cElementalDefinitionStackTree implements Comparable<cElementa
     }
 
     @Deprecated
-    public boolean removeAmount(boolean testOnly, iElementalDefinition def){
-        return removeAmount(testOnly,new cElementalDefinitionStack(def,1));
+    public boolean removeAmount(boolean testOnly, iElementalDefinition def) {
+        return removeAmount(testOnly, new cElementalDefinitionStack(def, 1));
     }
 
     public boolean removeAllAmounts(boolean testOnly, cElementalInstanceStack... instances) {
-        boolean test=true;
-        for(cElementalInstanceStack stack:instances)
-            test&=removeAmount(true,stack);
-        if(testOnly || !test)return test;
-        for(cElementalInstanceStack stack:instances)
-            removeAmount(false,stack);
+        boolean test = true;
+        for (cElementalInstanceStack stack : instances)
+            test &= removeAmount(true, stack);
+        if (testOnly || !test) return test;
+        for (cElementalInstanceStack stack : instances)
+            removeAmount(false, stack);
         return true;
     }
 
-    public boolean removeAllAmounts(boolean testOnly, cElementalDefinitionStack... stacks){
-        boolean test=true;
-        for(cElementalDefinitionStack stack:stacks)
-            test&=removeAmount(true,stack);
-        if(testOnly || !test)return test;
-        for(cElementalDefinitionStack stack:stacks)
-            removeAmount(false,stack);
+    public boolean removeAllAmounts(boolean testOnly, cElementalDefinitionStack... stacks) {
+        boolean test = true;
+        for (cElementalDefinitionStack stack : stacks)
+            test &= removeAmount(true, stack);
+        if (testOnly || !test) return test;
+        for (cElementalDefinitionStack stack : stacks)
+            removeAmount(false, stack);
         return true;
     }
 
     @Deprecated
-    public boolean removeAllAmounts(boolean testOnly, iElementalDefinition...  definitions){
-        final cElementalDefinitionStack[] stacks=new cElementalDefinitionStack[definitions.length];
-        for (int i=0;i<stacks.length;i++)
-            stacks[i]=new cElementalDefinitionStack(definitions[i],1);
-        return removeAllAmounts(testOnly,stacks);
+    public boolean removeAllAmounts(boolean testOnly, iElementalDefinition... definitions) {
+        final cElementalDefinitionStack[] stacks = new cElementalDefinitionStack[definitions.length];
+        for (int i = 0; i < stacks.length; i++)
+            stacks[i] = new cElementalDefinitionStack(definitions[i], 1);
+        return removeAllAmounts(testOnly, stacks);
     }
 
-    public boolean removeAllAmounts(boolean testOnly, cElementalDefinitionStackTree container){
-        return removeAllAmounts(testOnly,container.values());
+    public boolean removeAllAmounts(boolean testOnly, cElementalDefinitionStackTree container) {
+        return removeAllAmounts(testOnly, container.values());
     }
 
-    public boolean removeAllAmounts(boolean testOnly, cElementalInstanceStackTree container){
-        return removeAllAmounts(testOnly,container.values());
+    public boolean removeAllAmounts(boolean testOnly, cElementalInstanceStackTree container) {
+        return removeAllAmounts(testOnly, container.values());
     }
 
-//Put replace
-    public cElementalDefinitionStack putReplace(cElementalDefinitionStack defStackUnsafe){
-        return tree.put(defStackUnsafe.definition,defStackUnsafe);
+    //Put replace
+    public cElementalDefinitionStack putReplace(cElementalDefinitionStack defStackUnsafe) {
+        return tree.put(defStackUnsafe.definition, defStackUnsafe);
     }
 
-    public void putReplaceAll(cElementalDefinitionStack... defStacks){
-        for(cElementalDefinitionStack defStack:defStacks)
-            this.tree.put(defStack.definition,defStack);
+    public void putReplaceAll(cElementalDefinitionStack... defStacks) {
+        for (cElementalDefinitionStack defStack : defStacks)
+            this.tree.put(defStack.definition, defStack);
     }
 
-    private void putReplaceAll(Map<iElementalDefinition,cElementalDefinitionStack> inTreeUnsafe){
+    private void putReplaceAll(Map<iElementalDefinition, cElementalDefinitionStack> inTreeUnsafe) {
         this.tree.putAll(inTreeUnsafe);
     }
 
-    public void putReplaceAll(cElementalDefinitionStackTree inContainerUnsafe){
+    public void putReplaceAll(cElementalDefinitionStackTree inContainerUnsafe) {
         putReplaceAll(inContainerUnsafe.tree);
     }
 
-//Put unify
-    public cElementalDefinitionStack putUnify(cElementalDefinitionStack def){
-        return tree.put(def.definition,def.unifyIntoNew(tree.get(def.definition)));
+    //Put unify
+    public cElementalDefinitionStack putUnify(cElementalDefinitionStack def) {
+        return tree.put(def.definition, def.unifyIntoNew(tree.get(def.definition)));
     }
 
     @Deprecated
-    public cElementalDefinitionStack putUnify(iElementalDefinition def){
-        return putUnify(new cElementalDefinitionStack(def,1));
+    public cElementalDefinitionStack putUnify(iElementalDefinition def) {
+        return putUnify(new cElementalDefinitionStack(def, 1));
     }
 
-    public void putUnifyAll(cElementalDefinitionStack... defs){
-        for(cElementalDefinitionStack def:defs)
+    public void putUnifyAll(cElementalDefinitionStack... defs) {
+        for (cElementalDefinitionStack def : defs)
             putUnify(def);
     }
 
     @Deprecated
-    public void  putUnifyAll(iElementalDefinition... defs){
-        for(iElementalDefinition def:defs)
+    public void putUnifyAll(iElementalDefinition... defs) {
+        for (iElementalDefinition def : defs)
             putUnify(def);
     }
 
-    private void putUnifyAll(Map<iElementalDefinition,cElementalDefinitionStack> inTreeUnsafe){
-        for (cElementalDefinitionStack in:inTreeUnsafe.values())
+    private void putUnifyAll(Map<iElementalDefinition, cElementalDefinitionStack> inTreeUnsafe) {
+        for (cElementalDefinitionStack in : inTreeUnsafe.values())
             putUnify(in);
     }
 
-    public void putUnifyAll(cElementalDefinitionStackTree containerUnsafe){
+    public void putUnifyAll(cElementalDefinitionStackTree containerUnsafe) {
         putUnifyAll(containerUnsafe.tree);
     }
-//Getters
-    public cElementalDefinitionStack getDefinitionStack(iElementalDefinition def){
+
+    //Getters
+    public cElementalDefinitionStack getDefinitionStack(iElementalDefinition def) {
         return tree.get(def);
     }
 
     public String[] getElementalInfo() {
-        final String[] info=new String[tree.size()*3];
-        int i=0;
-        for(cElementalDefinitionStack defStack:tree.values()){
-            info[i  ]=EnumChatFormatting.BLUE + defStack.definition.getName();
-            info[i+1]=EnumChatFormatting.AQUA + defStack.definition.getSymbol();
-            info[i+2]="Amount "+EnumChatFormatting.GREEN + defStack.amount;
-            i+=3;
+        final String[] info = new String[tree.size() * 3];
+        int i = 0;
+        for (cElementalDefinitionStack defStack : tree.values()) {
+            info[i] = EnumChatFormatting.BLUE + defStack.definition.getName();
+            info[i + 1] = EnumChatFormatting.AQUA + defStack.definition.getSymbol();
+            info[i + 2] = "Amount " + EnumChatFormatting.GREEN + defStack.amount;
+            i += 3;
         }
         return info;
     }
 
-    public cElementalDefinitionStack[] values(){
+    public cElementalDefinitionStack[] values() {
         return tree.values().toArray(new cElementalDefinitionStack[0]);
     }
 
-    public iElementalDefinition[] keys(){
+    public iElementalDefinition[] keys() {
         return tree.keySet().toArray(new iElementalDefinition[0]);
     }
 
-//Tests
-    public boolean containsDefinition(iElementalDefinition def){
+    //Tests
+    public boolean containsDefinition(iElementalDefinition def) {
         return tree.containsKey(def);
     }
 
-    public boolean containsDefinitionStack(cElementalDefinitionStack inst){
+    public boolean containsDefinitionStack(cElementalDefinitionStack inst) {
         return tree.containsValue(inst);
     }
 
-    public int size(){
+    public int size() {
         return tree.size();
     }
 
-    public boolean hasStacks(){
-        return tree.size()>0;
+    public boolean hasStacks() {
+        return tree.size() > 0;
     }
 
-//NBT
-    public NBTTagCompound getInfoNBT(){
-        final NBTTagCompound nbt=new NBTTagCompound();
-        final String[] info=getElementalInfo();
-        nbt.setInteger("i",info.length);
-        for(int i=0;i<info.length;i++)
-            nbt.setString(Integer.toString(i),info[i]);
+    //NBT
+    public NBTTagCompound getInfoNBT() {
+        final NBTTagCompound nbt = new NBTTagCompound();
+        final String[] info = getElementalInfo();
+        nbt.setInteger("i", info.length);
+        for (int i = 0; i < info.length; i++)
+            nbt.setString(Integer.toString(i), info[i]);
         return nbt;
     }
 
-    public static String[] infoFromNBT(NBTTagCompound nbt){
-        final String[] strings=new String[nbt.getInteger("i")];
-        for(int i=0;i<strings.length;i++)
-            strings[i]=nbt.getString(Integer.toString(i));
+    public static String[] infoFromNBT(NBTTagCompound nbt) {
+        final String[] strings = new String[nbt.getInteger("i")];
+        for (int i = 0; i < strings.length; i++)
+            strings[i] = nbt.getString(Integer.toString(i));
         return strings;
     }
 
     public NBTTagCompound toNBT() {
-        final NBTTagCompound nbt=new NBTTagCompound();
-        nbt.setInteger("i",tree.size());
-        int i=0;
-        for(cElementalDefinitionStack defStack: tree.values())
-            nbt.setTag(Integer.toString(i++),defStack.toNBT());
+        final NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setInteger("i", tree.size());
+        int i = 0;
+        for (cElementalDefinitionStack defStack : tree.values())
+            nbt.setTag(Integer.toString(i++), defStack.toNBT());
         return nbt;
     }
 
-    public static cElementalDefinitionStackTree fromNBT(NBTTagCompound nbt) throws tElementalException{
-        final cElementalDefinitionStack[] defStacks=new cElementalDefinitionStack[nbt.getInteger("i")];
-        for(int i=0;i<defStacks.length;i++) {
+    public static cElementalDefinitionStackTree fromNBT(NBTTagCompound nbt) throws tElementalException {
+        final cElementalDefinitionStack[] defStacks = new cElementalDefinitionStack[nbt.getInteger("i")];
+        for (int i = 0; i < defStacks.length; i++) {
             defStacks[i] = cElementalDefinitionStack.fromNBT(nbt.getCompoundTag(Integer.toString(i)));
-            if(defStacks[i].definition.equals(debug__))
+            if (defStacks[i].definition.equals(debug__))
                 throw new tElementalException("Something went Wrong");
         }
         return new cElementalDefinitionStackTree(defStacks);
     }
 
-//stackUp
+    //stackUp
     @Deprecated
-    public static cElementalDefinitionStackTree stackUpTree(iElementalDefinition... in){
-        final cElementalDefinitionStackTree inTree=new cElementalDefinitionStackTree();
-        for(iElementalDefinition def:in){
-            inTree.putUnify(new cElementalDefinitionStack(def,1));
+    public static cElementalDefinitionStackTree stackUpTree(iElementalDefinition... in) {
+        final cElementalDefinitionStackTree inTree = new cElementalDefinitionStackTree();
+        for (iElementalDefinition def : in) {
+            inTree.putUnify(new cElementalDefinitionStack(def, 1));
         }
         return inTree;
     }
 
-    public static cElementalDefinitionStackTree stackUpTree(cElementalDefinitionStack... in){
-        final cElementalDefinitionStackTree inTree=new cElementalDefinitionStackTree();
+    public static cElementalDefinitionStackTree stackUpTree(cElementalDefinitionStack... in) {
+        final cElementalDefinitionStackTree inTree = new cElementalDefinitionStackTree();
         inTree.putUnifyAll(in);
         return inTree;
     }

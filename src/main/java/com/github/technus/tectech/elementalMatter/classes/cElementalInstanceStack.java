@@ -26,7 +26,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
     }
 
     public cElementalInstanceStack(cElementalDefinitionStack stackSafe, float lifeTimeMult, long age, int energy) {
-        this(stackSafe.definition,stackSafe.amount,lifeTimeMult,age,energy);
+        this(stackSafe.definition, stackSafe.amount, lifeTimeMult, age, energy);
     }
 
     public cElementalInstanceStack(iElementalDefinition defSafe, int amount) {
@@ -34,7 +34,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
     }
 
     public cElementalInstanceStack(iElementalDefinition defSafe, int amount, float lifeTimeMult, long age, int energy) {
-        this.definition = defSafe==null?null__:defSafe;
+        this.definition = defSafe == null ? null__ : defSafe;
         byte color = definition.getColor();
         if (color < (byte) 0) {//transforms colorable??? into proper color
             this.color = color;
@@ -45,7 +45,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         this.lifeTime = definition.getRawLifeTime() * this.lifeTimeMult;
         this.age = age;
         this.energy = energy;
-        this.amount=amount;
+        this.amount = amount;
     }
 
     @Override
@@ -62,7 +62,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
     }
 
     public cElementalDefinitionStack getDefinitionStack() {
-        return new cElementalDefinitionStack(definition,amount);
+        return new cElementalDefinitionStack(definition, amount);
     }
 
     @Override
@@ -134,7 +134,8 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
 
     private cElementalInstanceStackTree decayCompute(cElementalDecay[] decays, float lifeTimeMult, long age, int energy) {
         if (decays == null) return null;//Can not decay so it wont
-        else if (decays.length == 0) return new cElementalInstanceStackTree();//provide non null 0 length array for annihilation
+        else if (decays.length == 0)
+            return new cElementalInstanceStackTree();//provide non null 0 length array for annihilation
         else if (decays.length == 1) {//only one type of decay :D, doesn't need dead end
             return decays[0].getResults(lifeTimeMult, age, energy, this.amount);
         } else {
@@ -194,7 +195,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
     }
 
     public cElementalInstanceStack getCopy() {
-        cElementalInstanceStack cI = new cElementalInstanceStack(definition,amount, lifeTimeMult, age, energy);
+        cElementalInstanceStack cI = new cElementalInstanceStack(definition, amount, lifeTimeMult, age, energy);
         cI.setColor(color);
         return cI;
     }
@@ -206,21 +207,21 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof iElementalDefinition)
-            return definition.compareTo((iElementalDefinition) obj)==0;
-        if(obj instanceof iHasElementalDefinition)
-            return definition.compareTo(((iHasElementalDefinition) obj).getDefinition())==0;
+        if (obj instanceof iElementalDefinition)
+            return definition.compareTo((iElementalDefinition) obj) == 0;
+        if (obj instanceof iHasElementalDefinition)
+            return definition.compareTo(((iHasElementalDefinition) obj).getDefinition()) == 0;
         return false;
     }
 
-    public cElementalInstanceStack unifyIntoThis(cElementalInstanceStack... instances){
-        if(instances==null)return this;
+    public cElementalInstanceStack unifyIntoThis(cElementalInstanceStack... instances) {
+        if (instances == null) return this;
         //returns with the definition from the first object passed
-        int energy=this.energy*this.amount;
-        float lifeTimeMul=this.lifeTimeMult;
+        int energy = this.energy * this.amount;
+        float lifeTimeMul = this.lifeTimeMult;
 
-        for(cElementalInstanceStack instance:instances){
-            if(instance!=null && this.compareTo(instance)==0) {
+        for (cElementalInstanceStack instance : instances) {
+            if (instance != null && this.compareTo(instance) == 0) {
                 this.amount += instance.amount;
                 energy += instance.energy * instance.amount;
                 lifeTimeMul = Math.min(lifeTimeMul, instance.lifeTimeMult);
@@ -228,27 +229,27 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
             }
         }
 
-        if(amount!=0)energy/=Math.abs(amount);
+        if (amount != 0) energy /= Math.abs(amount);
 
-        this.energy=energy;
+        this.energy = energy;
         this.multLifeTime(lifeTimeMul);
         return this;
     }
 
     public NBTTagCompound toNBT() {
-        NBTTagCompound nbt=new NBTTagCompound();
+        NBTTagCompound nbt = new NBTTagCompound();
         nbt.setTag("d", definition.toNBT());
-        nbt.setInteger("q",amount);
-        nbt.setInteger("e",energy);
-        nbt.setByte("c",color);
-        nbt.setLong("a",age);
-        nbt.setFloat("m",lifeTimeMult);
+        nbt.setInteger("q", amount);
+        nbt.setInteger("e", energy);
+        nbt.setByte("c", color);
+        nbt.setLong("a", age);
+        nbt.setFloat("m", lifeTimeMult);
         return nbt;
     }
 
-    public static cElementalInstanceStack fromNBT(NBTTagCompound nbt){
-        NBTTagCompound definition=nbt.getCompoundTag("d");
-        cElementalInstanceStack instance= new cElementalInstanceStack(
+    public static cElementalInstanceStack fromNBT(NBTTagCompound nbt) {
+        NBTTagCompound definition = nbt.getCompoundTag("d");
+        cElementalInstanceStack instance = new cElementalInstanceStack(
                 cElementalDefinition.fromNBT(definition),
                 nbt.getInteger("q"),
                 nbt.getFloat("m"),

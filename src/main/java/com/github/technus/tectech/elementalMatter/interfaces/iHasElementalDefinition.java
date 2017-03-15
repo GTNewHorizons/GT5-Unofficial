@@ -5,5 +5,6 @@ package com.github.technus.tectech.elementalMatter.interfaces;
  */
 public interface iHasElementalDefinition extends Comparable<iHasElementalDefinition> {
     iElementalDefinition getDefinition();
+
     int getAmount();
 }

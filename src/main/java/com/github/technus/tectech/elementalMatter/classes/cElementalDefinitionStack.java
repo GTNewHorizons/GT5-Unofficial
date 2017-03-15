@@ -14,7 +14,7 @@ public final class cElementalDefinitionStack implements iHasElementalDefinition 
     public final int amount;
 
     public cElementalDefinitionStack(iElementalDefinition def, int amount) {
-        this.definition = def==null?null__:def;
+        this.definition = def == null ? null__ : def;
         this.amount = amount;
     }
 
@@ -43,32 +43,32 @@ public final class cElementalDefinitionStack implements iHasElementalDefinition 
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof iElementalDefinition)
-            return definition.compareTo((iElementalDefinition) obj)==0;
-        if(obj instanceof iHasElementalDefinition)
-            return definition.compareTo(((iHasElementalDefinition) obj).getDefinition())==0;
+        if (obj instanceof iElementalDefinition)
+            return definition.compareTo((iElementalDefinition) obj) == 0;
+        if (obj instanceof iHasElementalDefinition)
+            return definition.compareTo(((iHasElementalDefinition) obj).getDefinition()) == 0;
         return false;
     }
 
     public NBTTagCompound toNBT() {
-        NBTTagCompound nbt=new NBTTagCompound();
-        nbt.setTag("d",definition.toNBT());
-        nbt.setInteger("q",amount);
+        NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setTag("d", definition.toNBT());
+        nbt.setInteger("q", amount);
         return nbt;
     }
 
-    public static cElementalDefinitionStack fromNBT(NBTTagCompound nbt){
+    public static cElementalDefinitionStack fromNBT(NBTTagCompound nbt) {
         return new cElementalDefinitionStack(
                 cElementalDefinition.fromNBT(nbt.getCompoundTag("d")),
                 nbt.getInteger("q"));
     }
 
-    public cElementalDefinitionStack unifyIntoNew(cElementalDefinitionStack... other){
-        if(other==null)return this;
-        int i=amount;
-        for(cElementalDefinitionStack stack:other)
-            if(stack!=null)
-                i+=stack.amount;
-        return new cElementalDefinitionStack(definition,i);
+    public cElementalDefinitionStack unifyIntoNew(cElementalDefinitionStack... other) {
+        if (other == null) return this;
+        int i = amount;
+        for (cElementalDefinitionStack stack : other)
+            if (stack != null)
+                i += stack.amount;
+        return new cElementalDefinitionStack(definition, i);
     }
 }

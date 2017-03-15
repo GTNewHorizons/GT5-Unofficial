@@ -11,21 +11,21 @@ public class rElementalRecipe implements Comparable<rElementalRecipe> {
     public final cElementalDefinitionStackTree outEM;
     public final ItemStack[] outItems;
     public final FluidStack[] outFluids;
-    public Object[] extension=null;
+    public Object[] extension = null;
 
     public rElementalRecipe(
             cElementalDefinitionStackTree inEMnotNull,
             cElementalDefinitionStackTree outEM,
             ItemStack[] outItems,
-            FluidStack[] outFluids){
-        this.inEM=inEMnotNull;
-        this.outEM=outEM;
-        this.outItems=outItems;
-        this.outFluids=outFluids;
+            FluidStack[] outFluids) {
+        this.inEM = inEMnotNull;
+        this.outEM = outEM;
+        this.outItems = outItems;
+        this.outFluids = outFluids;
     }
 
-    public void extend(Object... data){
-        extension=data;
+    public void extend(Object... data) {
+        extension = data;
     }
 
     @Override
