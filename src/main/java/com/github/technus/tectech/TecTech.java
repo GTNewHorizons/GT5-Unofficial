@@ -1,8 +1,8 @@
 package com.github.technus.tectech;
+
 import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.blocks.QuantumGlass;
-import com.github.technus.tectech.casing.GT_Block_CasingsTT;
 import com.github.technus.tectech.casing.GT_Container_CasingsTT;
 import com.github.technus.tectech.proxy.CommonProxy;
 import cpw.mods.fml.common.Loader;

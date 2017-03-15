@@ -1,7 +1,6 @@
 package com.github.technus.tectech.casing;
 
 import com.github.technus.tectech.CustomItemList;
-import com.github.technus.tectech.TecTech;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;

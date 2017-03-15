@@ -7,7 +7,6 @@ import gregtech.api.objects.XSTR;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
-import org.apache.logging.log4j.Level;
 
 import java.util.*;
 
