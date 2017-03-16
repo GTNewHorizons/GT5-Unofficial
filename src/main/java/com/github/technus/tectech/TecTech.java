@@ -1,6 +1,5 @@
 package com.github.technus.tectech;
 
-import com.dreammaster.lib.Refstrings;
 import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.loader.GT_CustomLoader;
@@ -18,14 +17,10 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import eu.usrv.yamcore.auxiliary.IngameErrorLog;
 import eu.usrv.yamcore.auxiliary.LogHelper;
-import eu.usrv.yamcore.blocks.ModBlockManager;
-import eu.usrv.yamcore.fluids.ModFluidManager;
-import eu.usrv.yamcore.items.ModItemManager;
 import gregtech.api.GregTech_API;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -43,9 +38,6 @@ public class TecTech {
     @Instance(Reference.MODID)
     public static TecTech instance;
 
-    public static ModFluidManager FluidManager = null;
-    public static ModBlockManager BlockManager = null;
-    public static ModItemManager ItemManager = null;
     private static IngameErrorLog Module_AdminErrorLogs = null;
     public static GT_CustomLoader GTCustomLoader = null;
     public static TecTechConfig ModConfig;
@@ -62,10 +54,6 @@ public class TecTech {
     public void PreLoad(FMLPreInitializationEvent PreEvent) {
         Logger.setDebugOutput(true);
         Rnd = new XSTR();
-
-        ItemManager = new ModItemManager(Refstrings.MODID);
-        BlockManager = new ModBlockManager(Refstrings.MODID);
-        //FluidManager = new ModFluidManager(Refstrings.MODID);
 
         ModConfig = new TecTechConfig(PreEvent.getModConfigurationDirectory(), Reference.COLLECTIONNAME,
                 Reference.MODID);
