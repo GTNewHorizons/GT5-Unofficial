@@ -8,6 +8,7 @@ import com.github.technus.tectech.elementalMatter.interfaces.iElementalInstanceC
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -36,7 +37,11 @@ public class debug_container_EM extends Item {
 
     @Override
     public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
-        NBTTagCompound tNBT = aStack.getTagCompound();
+        NBTTagCompound tNBT;
+        //if(aStack.getTagCompound()==null){
+        //    aStack.setTagCompound(new NBTTagCompound());
+        //}
+        tNBT = aStack.getTagCompound();
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (aPlayer instanceof EntityPlayerMP) {
             aStack.stackSize = 1;
@@ -73,7 +78,7 @@ public class debug_container_EM extends Item {
         aList.add("Container for elemental matter");
         try {
             NBTTagCompound tNBT = aStack.getTagCompound();
-            if (tNBT.hasKey("info")) {
+            if (tNBT!=null && tNBT.hasKey("info")) {
                 aList.add("Contains:");
                 Collections.addAll(aList, cElementalInstanceStackTree.infoFromNBT(tNBT.getCompoundTag("info")));
             }
@@ -85,5 +90,12 @@ public class debug_container_EM extends Item {
     public static void run(){
         INSTANCE=new debug_container_EM();
         GameRegistry.registerItem(INSTANCE, INSTANCE.getUnlocalizedName());
+    }
+
+    @Override
+    public void getSubItems(Item item, CreativeTabs tab, List list) {
+        ItemStack that=new ItemStack(this,1);
+        that.setTagCompound(new NBTTagCompound());
+        list.add(that);
     }
 }

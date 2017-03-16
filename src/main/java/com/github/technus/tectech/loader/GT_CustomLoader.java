@@ -23,6 +23,6 @@ public class GT_CustomLoader {
     public void run2() {
         ElementalRecipes = new GT_Loader_Recipes();
         ElementalRecipes.run();
-        TecTech.Logger.info("Recipe Init Done Done");
+        TecTech.Logger.info("Recipe Init Done");
     }
 }
