@@ -31,7 +31,7 @@ public enum CustomItemList implements IItemContainer {
     eM_Casing, eM_Field, eM_Field_Casing, eM_Coil, eM_Tele, eM_TimeSpaceWarp,
     debugBlock,
     Machine_Multi_MatterToEM, Machine_Multi_EMToMatter, Machine_Multi_EMjunction,
-    Machine_Multi_Transformer, Machine_Multi_Computer,
+    Machine_Multi_Transformer, Machine_Multi_Computer, Machine_Multi_Infuser,
     Machine_Multi_BHG, Machine_Multi_EMmachine, Machine_Multi_Collider, Machine_Multi_Wormhole, Machine_Multi_EMCrafter, Machine_Multi_Scanner;
 
 
