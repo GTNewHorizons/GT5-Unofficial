@@ -5,6 +5,7 @@ import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStac
 import com.github.technus.tectech.elementalMatter.classes.tElementalException;
 import com.github.technus.tectech.elementalMatter.commonValues;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalInstanceContainer;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,7 +31,7 @@ public class debug_container_EM extends Item {
         super();
         setMaxStackSize(1);
         setUnlocalizedName("em.debugContainer");
-        setTextureName(MODID + ":debugContainer");
+        setTextureName(MODID + ":itemDebugContainer");
     }
 
     @Override
@@ -83,5 +84,6 @@ public class debug_container_EM extends Item {
 
     public static void run(){
         INSTANCE=new debug_container_EM();
+        GameRegistry.registerItem(INSTANCE, INSTANCE.getUnlocalizedName());
     }
 }

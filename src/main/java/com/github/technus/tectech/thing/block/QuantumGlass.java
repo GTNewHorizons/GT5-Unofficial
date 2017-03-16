@@ -1,5 +1,6 @@
 package com.github.technus.tectech.thing.block;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import eu.usrv.yamcore.blocks.BlockBase;
@@ -21,7 +22,7 @@ public final class QuantumGlass extends BlockBase {
     public QuantumGlass() {
         super(Material.iron);
         this.setBlockBounds(0, 0, 0, 1, 1, 1);
-        setBlockName("QuantumGlass");
+        setBlockName("quantumGlass");
         setHarvestLevel("wrench", 3);
         setHardness(50);
         setResistance(30);
@@ -83,5 +84,6 @@ public final class QuantumGlass extends BlockBase {
 
     public static void run(){
         INSTANCE=new QuantumGlass();
+        GameRegistry.registerBlock(INSTANCE, INSTANCE.getUnlocalizedName());
     }
 }

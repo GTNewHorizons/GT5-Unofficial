@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.pipe;
 
-import com.github.technus.tectech.thing.machineTT;
 import com.github.technus.tectech.elementalMatter.commonValues;
+import com.github.technus.tectech.thing.machineTT;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;

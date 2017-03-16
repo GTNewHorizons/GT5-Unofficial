@@ -1,13 +1,13 @@
 package com.github.technus.tectech.thing.metaTileEntity;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.thing.machineTT;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackTree;
 import com.github.technus.tectech.elementalMatter.classes.tElementalException;
 import com.github.technus.tectech.elementalMatter.commonValues;
-import com.github.technus.tectech.thing.metaTileEntity.pipe.iConnectsToEMpipe;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalInstanceContainer;
+import com.github.technus.tectech.thing.machineTT;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_MufflerElemental;
+import com.github.technus.tectech.thing.metaTileEntity.pipe.iConnectsToEMpipe;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;

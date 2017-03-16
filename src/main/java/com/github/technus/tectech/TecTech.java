@@ -1,14 +1,14 @@
 package com.github.technus.tectech;
 
+import com.dreammaster.lib.Refstrings;
 import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.loader.GT_CustomLoader;
-import com.github.technus.tectech.thing.CustomItemList;
+import com.github.technus.tectech.proxy.CommonProxy;
 import com.github.technus.tectech.thing.block.QuantumGlass;
 import com.github.technus.tectech.thing.casing.GT_Container_CasingsTT;
 import com.github.technus.tectech.thing.item.debug_container_EM;
 import com.github.technus.tectech.thing.machineTT;
-import com.github.technus.tectech.proxy.CommonProxy;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -23,6 +23,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import eu.usrv.yamcore.auxiliary.IngameErrorLog;
 import eu.usrv.yamcore.auxiliary.LogHelper;
+import eu.usrv.yamcore.blocks.ModBlockManager;
+import eu.usrv.yamcore.fluids.ModFluidManager;
 import eu.usrv.yamcore.items.ModItemManager;
 import gregtech.api.GregTech_API;
 import net.minecraft.creativetab.CreativeTabs;
@@ -41,10 +43,10 @@ public class TecTech {
     @Instance(Reference.MODID)
     public static TecTech instance;
 
-    //public static ModFluidManager FluidManager = null;
-    //public static ModBlockManager BlockManager = null;
+    public static ModFluidManager FluidManager = null;
+    public static ModBlockManager BlockManager = null;
     public static ModItemManager ItemManager = null;
-    public static IngameErrorLog Module_AdminErrorLogs = null;
+    private static IngameErrorLog Module_AdminErrorLogs = null;
     public static GT_CustomLoader GTCustomLoader = null;
     public static TecTechConfig ModConfig;
     public static XSTR Rnd = null;
@@ -61,8 +63,8 @@ public class TecTech {
         Logger.setDebugOutput(true);
         Rnd = new XSTR();
 
-        //ItemManager = new ModItemManager(Refstrings.MODID);
-        //BlockManager = new ModBlockManager(Refstrings.MODID);
+        ItemManager = new ModItemManager(Refstrings.MODID);
+        BlockManager = new ModBlockManager(Refstrings.MODID);
         //FluidManager = new ModFluidManager(Refstrings.MODID);
 
         ModConfig = new TecTechConfig(PreEvent.getModConfigurationDirectory(), Reference.COLLECTIONNAME,
@@ -78,7 +80,7 @@ public class TecTech {
 
     @EventHandler
     public void load(FMLInitializationEvent event) {
-        GameRegistry.registerBlock(QuantumGlass.INSTANCE, QuantumGlass.INSTANCE.getUnlocalizedName());
+
         proxy.registerRenderInfo();
     }
 
@@ -113,7 +115,7 @@ public class TecTech {
     }
 
     public void RegisterThingsInTabs() {
-        QuantumGlass.INSTANCE.setCreativeTab(mainTab);//TODO? COPY PASTE GT CLASSES TO ADD MY THINGS TO CREATIVE TAB
+        QuantumGlass.INSTANCE.setCreativeTab(mainTab);
         GT_Container_CasingsTT.sBlockCasingsTT.setCreativeTab(mainTab);
         debug_container_EM.INSTANCE.setCreativeTab(mainTab);
     }

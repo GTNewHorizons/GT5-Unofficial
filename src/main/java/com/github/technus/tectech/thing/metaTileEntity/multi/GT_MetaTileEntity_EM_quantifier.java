@@ -1,8 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.thing.block.QuantumGlass;
-import com.github.technus.tectech.thing.casing.GT_Container_CasingsTT;
 import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStack;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStack;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackTree;
@@ -11,6 +9,8 @@ import com.github.technus.tectech.elementalMatter.commonValues;
 import com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition;
 import com.github.technus.tectech.elementalMatter.definitions.dHadronDefinition;
 import com.github.technus.tectech.elementalMatter.definitions.eLeptonDefinition;
+import com.github.technus.tectech.thing.block.QuantumGlass;
+import com.github.technus.tectech.thing.casing.GT_Container_CasingsTT;
 import com.github.technus.tectech.thing.metaTileEntity.GT_MetaTileEntity_MultiblockBase_EM;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;

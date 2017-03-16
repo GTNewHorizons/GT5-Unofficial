@@ -1,9 +1,9 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
+import com.github.technus.tectech.thing.metaTileEntity.GT_MetaTileEntity_Hatch_ElementalContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import com.github.technus.tectech.thing.metaTileEntity.GT_MetaTileEntity_Hatch_ElementalContainer;
 
 /**
  * Created by danie_000 on 27.10.2016.
