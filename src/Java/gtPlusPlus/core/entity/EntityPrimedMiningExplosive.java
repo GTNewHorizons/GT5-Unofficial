@@ -1,6 +1,7 @@
 package gtPlusPlus.core.entity;
 
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.world.explosions.ExplosionHandler;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.nbt.NBTTagCompound;
@@ -124,11 +125,15 @@ public class EntityPrimedMiningExplosive extends EntityTNTPrimed
 	private void explode()
 	{
 		final float f = 20.0F;
-		this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, f, true);
+		
+		ExplosionHandler explode = new ExplosionHandler();
+		explode.createExplosion(this.worldObj, this, this.posX, this.posY, this.posZ, f, true, true);
+		
+		/*this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, f, true);
 		this.worldObj.createExplosion(this, this.posX+MathUtils.randDouble(-10, 10), this.posY, this.posZ+MathUtils.randDouble(-10, 10), f+MathUtils.randFloat(-5F, 5F), true);
 		this.worldObj.createExplosion(this, this.posX+MathUtils.randDouble(-10, 10), this.posY, this.posZ+MathUtils.randDouble(-10, 10), f+MathUtils.randFloat(-5F, 5F), true);
 		this.worldObj.createExplosion(this, this.posX+MathUtils.randDouble(-10, 10), this.posY, this.posZ+MathUtils.randDouble(-10, 10), f+MathUtils.randFloat(-5F, 5F), true);
-		this.worldObj.createExplosion(this, this.posX+MathUtils.randDouble(-10, 10), this.posY, this.posZ+MathUtils.randDouble(-10, 10), f+MathUtils.randFloat(-5F, 5F), true);
+		this.worldObj.createExplosion(this, this.posX+MathUtils.randDouble(-10, 10), this.posY, this.posZ+MathUtils.randDouble(-10, 10), f+MathUtils.randFloat(-5F, 5F), true);*/
 	}
 
 	/**
