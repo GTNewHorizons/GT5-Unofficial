@@ -21,7 +21,7 @@ public class GregtechTieredFluidTanks
 
 	private static void run1()	{
 		int ID = 817;
-		Utils.LOG_INFO("Is New Horizons Loaded? "+CORE.GTNH);
+		Utils.LOG_INFO("Is New Horizons Loaded? " + CORE.GTNH);
 		if (CORE.GTNH){
 			Utils.LOG_INFO("Only loading ULV-IV tier tanks for New Horizons Modpack.");
 		}
@@ -29,9 +29,9 @@ public class GregtechTieredFluidTanks
 		GregtechItemList.GT_FluidTank_LV.set(new GT_MetaTileEntity_TieredTank(ID++, "fluidtank.tier.01", "Low Voltage Fluid Tank", 1).getStackForm(1L));
 		GregtechItemList.GT_FluidTank_MV.set(new GT_MetaTileEntity_TieredTank(ID++, "fluidtank.tier.02", "Medium Voltage Fluid Tank", 2).getStackForm(1L));
 		GregtechItemList.GT_FluidTank_HV.set(new GT_MetaTileEntity_TieredTank(ID++, "fluidtank.tier.03", "High Voltage Fluid Tank", 3).getStackForm(1L));
-		GregtechItemList.GT_FluidTank_EV.set(new GT_MetaTileEntity_TieredTank(ID++, "fluidtank.tier.04", "Extreme Voltage Fluid Tank", 4).getStackForm(1L));
-		GregtechItemList.GT_FluidTank_IV.set(new GT_MetaTileEntity_TieredTank(ID++, "fluidtank.tier.05", "Insane Voltage Fluid Tank", 5).getStackForm(1L));
 		if (!CORE.GTNH){
+			GregtechItemList.GT_FluidTank_EV.set(new GT_MetaTileEntity_TieredTank(ID++, "fluidtank.tier.04", "Extreme Voltage Fluid Tank", 4).getStackForm(1L));
+			GregtechItemList.GT_FluidTank_IV.set(new GT_MetaTileEntity_TieredTank(ID++, "fluidtank.tier.05", "Insane Voltage Fluid Tank", 5).getStackForm(1L));
 			GregtechItemList.GT_FluidTank_LuV.set(new GT_MetaTileEntity_TieredTank(ID++, "fluidtank.tier.06", "Ludicrous Voltage Fluid Tank", 6).getStackForm(1L));
 			GregtechItemList.GT_FluidTank_ZPM.set(new GT_MetaTileEntity_TieredTank(ID++, "fluidtank.tier.07", "ZPM Voltage Fluid Tank", 7).getStackForm(1L));
 			GregtechItemList.GT_FluidTank_UV.set(new GT_MetaTileEntity_TieredTank(ID++, "fluidtank.tier.08", "Ultimate Voltage Fluid Tank", 8).getStackForm(1L));
