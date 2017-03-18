@@ -180,6 +180,7 @@ implements ActionListener
 	public void init(final FMLInitializationEvent event)
 	{
 		proxy.init(event);
+		proxy.registerEntities();
 		//MinecraftForge.EVENT_BUS.register(this);
 		//FMLCommonHandler.instance().bus().register(this);
 		proxy.registerNetworkStuff();

@@ -3,8 +3,7 @@ package gtPlusPlus.core.block;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseOre;
-import gtPlusPlus.core.block.general.FirePit;
-import gtPlusPlus.core.block.general.LightGlass;
+import gtPlusPlus.core.block.general.*;
 import gtPlusPlus.core.block.machine.*;
 import gtPlusPlus.core.fluids.FluidRegistryHandler;
 import gtPlusPlus.core.lib.CORE;
@@ -38,6 +37,8 @@ public final class ModBlocks {
 	public static Block blockFirePit;
 
 	public static Block blockOreFluorite;
+	
+	public static Block blockMiningExplosive;
 
 
 
@@ -63,6 +64,7 @@ public final class ModBlocks {
 		blockFirePit = new FirePit();
 		blockFishTrap = new FishTrap();
 		blockOreFluorite = new BlockBaseOre("oreFluorite", "Fluorite", Material.rock, BlockTypes.ORE, Utils.rgbtoHexValue(120, 120, 30), 3);
+		blockMiningExplosive = new MiningExplosives();
 
 
 	}

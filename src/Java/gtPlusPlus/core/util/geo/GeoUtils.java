@@ -32,6 +32,7 @@ public class GeoUtils {
 			while ((numCharsRead = isr.read(charArray)) > 0) {
 				sb.append(charArray, 0, numCharsRead);
 			}
+			isr.close();
 			String result = sb.toString();
 			return result;
 		} catch (IOException e) {}
@@ -68,6 +69,7 @@ public class GeoUtils {
 				}
 				String temp = sb.toString();
 				String result = temp.replaceAll("(\\r|\\n)", "");
+				isr.close();
 				return result;
 				//Catch block for bad connection
 			} catch (IOException e) {

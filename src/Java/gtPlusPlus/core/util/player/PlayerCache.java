@@ -37,6 +37,7 @@ public class PlayerCache {
 			final OutputStream out = new FileOutputStream(cache);
 			props.store(out, "Player Cache.");
 			Utils.LOG_INFO("PlayerCache.dat created for future use.");
+			out.close();
 		}
 		catch (final Exception e ) {
 			e.printStackTrace();

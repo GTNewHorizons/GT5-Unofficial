@@ -6,6 +6,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.*;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.entity.InternalEntityRegistry;
 import gtPlusPlus.core.handler.*;
 import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.handler.events.PickaxeBlockBreakEventHandler;
@@ -102,6 +103,10 @@ public class CommonProxy {
 
 	public void registerNetworkStuff(){
 		GuiHandler.init();
+	}
+	
+	public void registerEntities(){
+		InternalEntityRegistry.registerEntities();
 	}
 
 	public void registerTileEntities(){
