@@ -5,8 +5,9 @@ import org.lwjgl.opengl.GL11;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.util.Utils;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.entity.RenderTNTPrimed;
+import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityTNTPrimed;
@@ -14,8 +15,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 
 @SideOnly(Side.CLIENT)
-public class RenderMiningExplosivesPrimed extends RenderTNTPrimed
-{
+public class RenderMiningExplosivesPrimed extends Render {
 	private final RenderBlocks blockRenderer = new RenderBlocks();
 
 	public RenderMiningExplosivesPrimed(){
@@ -28,8 +28,8 @@ public class RenderMiningExplosivesPrimed extends RenderTNTPrimed
 	 * (Render<T extends Entity) and this method has signature public void func_76986_a(T entity, double d, double d1,
 	 * double d2, float f, float f1). But JAD is pre 1.5 so doesn't do that.
 	 */
-	@Override
 	public void doRender(final EntityTNTPrimed entity, final double p_76986_2_, final double p_76986_4_, final double p_76986_6_, final float p_76986_8_, final float p_76986_9_){
+		Utils.LOG_INFO("Rendering Mining Explosion.");
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float)p_76986_2_, (float)p_76986_4_, (float)p_76986_6_);
 		float f2;
@@ -78,7 +78,6 @@ public class RenderMiningExplosivesPrimed extends RenderTNTPrimed
 	/**
 	 * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
 	 */
-	@Override
 	protected ResourceLocation getEntityTexture(final EntityTNTPrimed p_110775_1_){
 		return TextureMap.locationBlocksTexture;
 	}

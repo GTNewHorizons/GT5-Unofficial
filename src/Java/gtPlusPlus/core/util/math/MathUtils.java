@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Random;
 
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.xmod.gregtech.api.objects.XSTR;
 
 public class MathUtils {
 
@@ -20,7 +21,7 @@ public class MathUtils {
 	public static int randInt(final int min, final int max) {
 
 		// Usually this can be a field rather than a method variable
-		final Random rand = new Random();
+		final Random rand = new XSTR();
 
 		// nextInt is normally exclusive of the top value,
 		// so add 1 to make it inclusive
@@ -47,7 +48,7 @@ public class MathUtils {
 	 */
 	public static long randLong(final long min, final long max) {
 		// Usually this can be a field rather than a method variable
-		final Random rand = new Random();
+		final Random rand = new XSTR();
 
 		// nextInt is normally exclusive of the top value,
 		// so add 1 to make it inclusive
@@ -78,7 +79,7 @@ public class MathUtils {
 	 */
 	public static double randDouble(final double min, final double max) {
 		// Usually this can be a field rather than a method variable
-		final Random rand = new Random();
+		final Random rand = new XSTR();
 
 		// nextInt is normally exclusive of the top value,
 		// so add 1 to make it inclusive
@@ -89,6 +90,36 @@ public class MathUtils {
 	private static double nextDouble(final Random rng, final double n) {
 		// error checking and 2^x checking removed for simplicity.
 		double bits, val;
+		do {
+			bits = (rng.nextLong() << 1) >>> 1;
+			val = bits % n;
+		} while (((bits-val)+(n-1)) < 0L);
+		return val;
+	}
+	
+	/**
+	 * Returns a psuedo-random number between min and max, inclusive.
+	 * The difference between min and max can be at most
+	 * Float.MAX_VALUE - 1.
+	 *
+	 * @param min Minimim value
+	 * @param max Maximim value.  Must be greater than min.
+	 * @return Float between min and max, inclusive.
+	 * @see java.util.Random#nextFloat(float)
+	 */
+	public static float randFloat(final float min, final float max) {
+		// Usually this can be a field rather than a method variable
+		final Random rand = new XSTR();
+
+		// nextInt is normally exclusive of the top value,
+		// so add 1 to make it inclusive
+		final float randomNum = MathUtils.nextFloat(rand,(max - min) + 1) + min;
+		return randomNum;
+	}
+
+	private static float nextFloat(final Random rng, final float n) {
+		// error checking and 2^x checking removed for simplicity.
+		float bits, val;
 		do {
 			bits = (rng.nextLong() << 1) >>> 1;
 			val = bits % n;

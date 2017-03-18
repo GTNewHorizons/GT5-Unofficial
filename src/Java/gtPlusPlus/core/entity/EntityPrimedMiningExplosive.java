@@ -94,19 +94,30 @@ public class EntityPrimedMiningExplosive extends EntityTNTPrimed
 			this.worldObj.spawnParticle("smoke", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
 			this.worldObj.spawnParticle("smoke", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
 			this.worldObj.spawnParticle("smoke", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
-			this.worldObj.spawnParticle("smoke", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
-			this.worldObj.spawnParticle("smoke", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
-			this.worldObj.spawnParticle("smoke", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
-			this.worldObj.spawnParticle("smoke", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
-			this.worldObj.spawnParticle("smoke", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
-			this.worldObj.spawnParticle("smoke", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
-			this.worldObj.spawnParticle("smoke", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
-			this.worldObj.spawnParticle("smoke", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
-			this.worldObj.spawnParticle("smoke", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
-			this.worldObj.spawnParticle("smoke", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
-			this.worldObj.spawnParticle("smoke", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
-			this.worldObj.spawnParticle("smoke", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
-			this.worldObj.spawnParticle("smoke", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+			this.worldObj.spawnParticle("largesmoke", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+			this.worldObj.spawnParticle("largesmoke", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+			this.worldObj.spawnParticle("largesmoke", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+			this.worldObj.spawnParticle("largesmoke", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+			this.worldObj.spawnParticle("cloud", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+			this.worldObj.spawnParticle("cloud", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+			this.worldObj.spawnParticle("cloud", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+			this.worldObj.spawnParticle("cloud", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+			this.worldObj.spawnParticle("flame", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+			this.worldObj.spawnParticle("flame", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+			this.worldObj.spawnParticle("flame", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+			this.worldObj.spawnParticle("flame", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+			this.worldObj.spawnParticle("explode", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+			this.worldObj.spawnParticle("explode", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+			this.worldObj.spawnParticle("explode", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+			this.worldObj.spawnParticle("explode", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+			this.worldObj.spawnParticle("largeexplode", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+			this.worldObj.spawnParticle("largeexplode", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+			this.worldObj.spawnParticle("largeexplode", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+			this.worldObj.spawnParticle("largeexplode", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+			this.worldObj.spawnParticle("hugeexplosion", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+			this.worldObj.spawnParticle("hugeexplosion", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+			this.worldObj.spawnParticle("hugeexplosion", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+			this.worldObj.spawnParticle("hugeexplosion", this.posX+MathUtils.randDouble(0, 1), this.posY+MathUtils.randDouble(0, 1), this.posZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
 		}
 	}
 
@@ -114,6 +125,10 @@ public class EntityPrimedMiningExplosive extends EntityTNTPrimed
 	{
 		final float f = 20.0F;
 		this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, f, true);
+		this.worldObj.createExplosion(this, this.posX+MathUtils.randDouble(-10, 10), this.posY, this.posZ+MathUtils.randDouble(-10, 10), f+MathUtils.randFloat(-5F, 5F), true);
+		this.worldObj.createExplosion(this, this.posX+MathUtils.randDouble(-10, 10), this.posY, this.posZ+MathUtils.randDouble(-10, 10), f+MathUtils.randFloat(-5F, 5F), true);
+		this.worldObj.createExplosion(this, this.posX+MathUtils.randDouble(-10, 10), this.posY, this.posZ+MathUtils.randDouble(-10, 10), f+MathUtils.randFloat(-5F, 5F), true);
+		this.worldObj.createExplosion(this, this.posX+MathUtils.randDouble(-10, 10), this.posY, this.posZ+MathUtils.randDouble(-10, 10), f+MathUtils.randFloat(-5F, 5F), true);
 	}
 
 	/**

@@ -1,6 +1,6 @@
 package gtPlusPlus.core.handler.events;
 
-import java.util.UUID;
+import java.util.*;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
@@ -45,7 +45,7 @@ public class LoginEventHandler {
 							Utils.LOG_INFO("Latest version is: "+CORE.MASTER_VERSION);
 						}
 						Utils.LOG_INFO("You currently have: "+CORE.VERSION);
-						PlayerUtils.messagePlayer(this.localPlayerRef, "You're not using the latest recommended version of GT++, consider updating.");
+						ShortTimer(this.localPlayerRef, 20);						
 					}
 					else {
 						Utils.LOG_INFO("You're using the latest recommended version of GT++.");
@@ -98,6 +98,31 @@ public class LoginEventHandler {
 		} catch (final Throwable errr){
 			Utils.LOG_INFO("Login Handler encountered an error.");
 
+		}
+	}
+	
+	//Handles notifying the player about a version update.
+	public Timer ShortTimer(EntityPlayer localPlayer, final int seconds) {
+		Timer timer;
+		timer = new Timer();
+		timer.schedule(new NotifyPlayer(localPlayer), seconds * 1000);
+		return timer;
+	}
+	
+	//Timer Task for notifying the player.
+	class NotifyPlayer extends TimerTask {
+		final EntityPlayer toMessage;
+		public NotifyPlayer(EntityPlayer localPlayer) {
+			toMessage = localPlayer;
+		}
+
+		@Override
+		public void run() {
+			if (toMessage != null){
+				if (toMessage instanceof EntityPlayerMP){
+					PlayerUtils.messagePlayer(toMessage, "You're not using the latest recommended version of GT++, consider updating.");					
+				}
+			}
 		}
 	}
 
