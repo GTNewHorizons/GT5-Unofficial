@@ -7,6 +7,7 @@ import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.objects.ItemData;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Proxy;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
@@ -52,7 +53,7 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
         if(aWorld.getBlock(aX,aY,aZ) == Blocks.bedrock)
         {
             if (!aWorld.isRemote) {
-                FluidStack fStack = getUndergroundOil(aWorld,aX,aZ);
+                FluidStack fStack = GT_Utility.getUndergroundOil(aWorld,aX,aZ);
                 addChatMassageByValue(aPlayer,fStack.amount/5000,fStack.getLocalizedName());
                 if (!aPlayer.capabilities.isCreativeMode)
                     ((DetravMetaGeneratedTool01)aItem).doDamage(aStack, this.mCosts);
@@ -201,44 +202,6 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
             aPlayer.addChatMessage(new ChatComponentText(foundTexts[4] + name));
         else
             aPlayer.addChatMessage(new ChatComponentText(foundTexts[5] + name));
-    }
-
-    public static FluidStack getUndergroundOil(World aWorld, int aX, int aZ) {
-        Random tRandom = new Random((aWorld.getSeed() + (aX / 96) + (7 * (aZ / 96))));
-        int oil = tRandom.nextInt(3);
-        double amount = tRandom.nextInt(50) + tRandom.nextDouble();
-        oil = tRandom.nextInt(4);
-//		System.out.println("Oil: "+(aX/96)+" "+(aZ/96)+" "+oil+" "+amount);
-//		amount = 40;
-        Fluid tFluid = null;
-        switch(oil) {
-            case 0:
-                tFluid = Materials.NatruralGas.mGas;
-                break;
-            case 1:
-                tFluid = Materials.OilLight.mFluid;
-                break;
-            case 2:
-                tFluid = Materials.OilMedium.mFluid;
-                break;
-            case 3:
-                tFluid = Materials.OilHeavy.mFluid;
-                break;
-            default:
-                tFluid = Materials.Oil.mFluid;
-        }
-
-        int tAmount = (int)(Math.pow(amount, 5.0D) / 100.0D);
-        ChunkPosition tPos = new ChunkPosition(aX / 16, 1, aZ / 16);
-        if(GT_Proxy.chunkData.containsKey(tPos)) {
-            int[] tInts = (int[])GT_Proxy.chunkData.get(tPos);
-            if(tInts.length > 0 && tInts[0] > 0) {
-                tAmount = tInts[0];
-            }
-        }
-        tAmount -= 5;
-
-        return new FluidStack(tFluid, tAmount);
     }
 
     public static int getPolution(World aWorld, int aX, int aZ)

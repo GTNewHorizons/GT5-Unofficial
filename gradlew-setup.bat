@@ -1,1 +1,1 @@
-gradlew setupDecompWorkspace --refresh-dependencies -i > log.log
+gradlew setupDecompWorkspace --refresh-dependencies -i --offline
