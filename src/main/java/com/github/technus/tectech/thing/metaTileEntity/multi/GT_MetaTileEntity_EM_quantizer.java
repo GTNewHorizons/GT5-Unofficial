@@ -32,21 +32,21 @@ import static gregtech.api.enums.GT_Values.V;
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class GT_MetaTileEntity_EM_quantifier extends GT_MetaTileEntity_MultiblockBase_EM {
+public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_MultiblockBase_EM {
     public static HashMap<Integer, cElementalDefinitionStack> itemBinds = new HashMap<>(32);
     public static HashMap<Integer, cElementalDefinitionStack> fluidBind = new HashMap<>(8);
     private static float refMass, refUnstableMass;
 
-    public GT_MetaTileEntity_EM_quantifier(int aID, String aName, String aNameRegional) {
+    public GT_MetaTileEntity_EM_quantizer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public GT_MetaTileEntity_EM_quantifier(String aName) {
+    public GT_MetaTileEntity_EM_quantizer(String aName) {
         super(aName);
     }
 
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_EM_quantifier(this.mName);
+        return new GT_MetaTileEntity_EM_quantizer(this.mName);
     }
 
     @Override

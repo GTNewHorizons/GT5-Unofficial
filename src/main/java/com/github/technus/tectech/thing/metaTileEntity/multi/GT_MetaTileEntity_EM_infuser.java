@@ -1,18 +1,25 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
+import cofh.api.energy.IEnergyContainerItem;
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.commonValues;
 import com.github.technus.tectech.thing.metaTileEntity.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.gui.GT_GUIContainer_MultiMachineEM;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import ic2.api.item.ElectricItem;
+import ic2.api.item.IElectricItem;
+import ic2.api.item.IElectricItemManager;
+import ic2.api.item.ISpecialElectricItem;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import static com.github.technus.tectech.elementalMatter.commonValues.multiCheckAt;
 import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
+import static gregtech.api.GregTech_API.mEUtoRF;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -59,7 +66,8 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
                 for (int h = -1; h < 2; h++) {
                     if ((i != 0 || j != 0 || h != 0)/*exclude center*/ && (xDir + i != 0 || yDir + h != 0 || zDir + j != 0)/*exclude this*/) {
                         IGregTechTileEntity tTileEntity = iGregTechTileEntity.getIGregTechTileEntityOffset(xDir + i, yDir + h, zDir + j);
-                        if (!addEnergyIOToMachineList(tTileEntity, 99)) {
+                        if ((!addMaintenanceToMachineList(tTileEntity, 99)) &&
+                                (!addEnergyIOToMachineList(tTileEntity, 99))) {
                             if (iGregTechTileEntity.getBlockOffset(xDir + i, yDir + h, zDir + j) != sBlockCasingsTT ||
                                     iGregTechTileEntity.getMetaIDOffset(xDir + i, yDir + h, zDir + j) != 3) {
                                 return false;
@@ -74,9 +82,15 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public boolean EM_checkRecipe(ItemStack itemStack) {
-        if (getBaseMetaTileEntity().isAllowedToWork()) {
-
-
+        if (getBaseMetaTileEntity().isAllowedToWork() && getRepairStatus()==getIdealStatus() && itemStack!=null && itemStack.stackSize==1) {
+            Item ofThis=itemStack.getItem();
+            if(itemStack.getItem() instanceof ISpecialElectricItem){
+                doChargeItemStackSpecial((ISpecialElectricItem) ofThis,itemStack);
+            }else if(itemStack.getItem() instanceof IElectricItem){
+                doChargeItemStack((IElectricItem) ofThis,itemStack);
+            }else if(itemStack.getItem() instanceof IEnergyContainerItem){
+                doChargeItemStackRF((IEnergyContainerItem) ofThis,itemStack);
+            }
             mEfficiencyIncrease = 10000;
             mMaxProgresstime = 20;
             eDismatleBoom=true;
@@ -94,9 +108,58 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     public String[] getDescription() {
         return new String[]{
                 commonValues.tecMark,
-                "Power substation",
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "All the transformation!",
-                EnumChatFormatting.BLUE + "Insanely fast lossy charging, HAYO!",
+                "Power Transfer Extreme!",
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Insanely fast charging!",
+                EnumChatFormatting.BLUE + "Doesn't work while broken!",
+                EnumChatFormatting.BLUE + "Power loss is a thing."
         };
+    }
+
+    private void doChargeItemStack(IElectricItem item, ItemStack stack )
+    {
+        try {
+            double euDiff=item.getMaxCharge(stack) - ElectricItem.manager.getCharge(stack);
+            if(euDiff>0)this.setEUVar(this.getEUVar()-this.getEUVar()>>5);
+            this.setEUVar(
+                this.getEUVar()-(long)Math.ceil(
+                        ElectricItem.manager.charge(stack,
+                                Math.min(euDiff,this.getEUVar())
+                        ,item.getTier(stack),true,false)
+                ));
+        } catch( Exception e ) {
+            if(TecTech.ModConfig.DEBUG_MODE)
+                e.printStackTrace();
+        }
+    }
+
+    private void doChargeItemStackSpecial(ISpecialElectricItem item, ItemStack stack )
+    {
+        try {
+            final IElectricItemManager manager=item.getManager(stack);
+            double euDiff=item.getMaxCharge(stack) - manager.getCharge(stack);
+            if(euDiff>0)this.setEUVar(this.getEUVar()-this.getEUVar()>>5);
+            this.setEUVar(
+                    this.getEUVar()-(long)Math.ceil(
+                            manager.charge(stack,
+                                    Math.min(euDiff,this.getEUVar())
+                                    ,item.getTier(stack),true,false)
+                    ));
+        } catch( Exception e ) {
+            if(TecTech.ModConfig.DEBUG_MODE)
+                e.printStackTrace();
+        }
+    }
+
+    private void doChargeItemStackRF(IEnergyContainerItem item,  ItemStack stack )
+    {
+        try {
+            long RF=Math.min(item.getMaxEnergyStored(stack)-item.getEnergyStored(stack),this.getEUVar()*mEUtoRF/100L);
+            //if(RF>0)this.setEUVar(this.getEUVar()-this.getEUVar()>>10);
+            RF=item.receiveEnergy(stack,RF>Integer.MAX_VALUE?Integer.MAX_VALUE:(int)RF,false);
+            this.setEUVar(this.getEUVar()-(RF*100L/mEUtoRF));
+        } catch( Exception e ) {
+            if (TecTech.ModConfig.DEBUG_MODE)
+                e.printStackTrace();
+        }
     }
 }

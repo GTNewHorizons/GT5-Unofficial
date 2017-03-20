@@ -2,7 +2,7 @@ package com.github.technus.tectech.loader;
 
 import com.github.technus.tectech.elementalMatter.classes.cElementalPrimitive;
 import com.github.technus.tectech.elementalMatter.definitions.*;
-import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_quantifier;
+import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_quantizer;
 
 /**
  * Created by danie_000 on 16.11.2016.
@@ -30,6 +30,6 @@ public class GT_Loader_Recipes implements Runnable {
         // Recipe init
         // ===================================================================================================
 
-        GT_MetaTileEntity_EM_quantifier.run();
+        GT_MetaTileEntity_EM_quantizer.run();
     }
 }

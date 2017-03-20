@@ -13,18 +13,18 @@ import net.minecraftforge.common.util.ForgeDirection;
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class GT_MetaTileEntity_EM_dequantifier extends GT_MetaTileEntity_MultiblockBase_EM {
+public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_MultiblockBase_EM {
 
-    public GT_MetaTileEntity_EM_dequantifier(int aID, String aName, String aNameRegional) {
+    public GT_MetaTileEntity_EM_dequantizer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public GT_MetaTileEntity_EM_dequantifier(String aName) {
+    public GT_MetaTileEntity_EM_dequantizer(String aName) {
         super(aName);
     }
 
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_EM_dequantifier(this.mName);
+        return new GT_MetaTileEntity_EM_dequantizer(this.mName);
     }
 
     @Override

@@ -98,6 +98,7 @@ public class TecTech {
                 super.displayAllReleventItems(stuffToShow);
             }
         };
+
         RegisterThingsInTabs();
         if (Loader.isModLoaded("dreamcraft")) ;//TODO init recipes for GTNH coremod
     }

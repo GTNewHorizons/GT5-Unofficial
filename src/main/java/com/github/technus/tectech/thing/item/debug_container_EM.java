@@ -37,11 +37,7 @@ public class debug_container_EM extends Item {
 
     @Override
     public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
-        NBTTagCompound tNBT;
-        //if(aStack.getTagCompound()==null){
-        //    aStack.setTagCompound(new NBTTagCompound());
-        //}
-        tNBT = aStack.getTagCompound();
+        NBTTagCompound tNBT = aStack.getTagCompound();
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (aPlayer instanceof EntityPlayerMP) {
             aStack.stackSize = 1;
@@ -75,13 +71,12 @@ public class debug_container_EM extends Item {
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
         aList.add(commonValues.tecMark);
-        aList.add("Container for elemental matter");
         try {
             NBTTagCompound tNBT = aStack.getTagCompound();
             if (tNBT!=null && tNBT.hasKey("info")) {
                 aList.add("Contains:");
                 Collections.addAll(aList, cElementalInstanceStackTree.infoFromNBT(tNBT.getCompoundTag("info")));
-            }
+            }else aList.add("Container for elemental matter");
         } catch (Exception e) {
             aList.add("---Unexpected Termination---");
         }
