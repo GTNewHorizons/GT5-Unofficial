@@ -2,9 +2,12 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import cofh.api.energy.IEnergyContainerItem;
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.elementalMatter.commonValues;
 import com.github.technus.tectech.thing.metaTileEntity.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.gui.GT_GUIContainer_MultiMachineEM;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.Optional;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import ic2.api.item.ElectricItem;
@@ -88,7 +91,7 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
                 doChargeItemStackSpecial((ISpecialElectricItem) ofThis,itemStack);
             }else if(itemStack.getItem() instanceof IElectricItem){
                 doChargeItemStack((IElectricItem) ofThis,itemStack);
-            }else if(itemStack.getItem() instanceof IEnergyContainerItem){
+            }else if(TecTech.hasCOFH && itemStack.getItem() instanceof IEnergyContainerItem){
                 doChargeItemStackRF((IEnergyContainerItem) ofThis,itemStack);
             }
             mEfficiencyIncrease = 10000;
@@ -150,6 +153,7 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
         }
     }
 
+    @Optional.Method(modid=Reference.COFHCORE)
     private void doChargeItemStackRF(IEnergyContainerItem item,  ItemStack stack )
     {
         try {

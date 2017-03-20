@@ -29,7 +29,7 @@ import net.minecraft.item.ItemStack;
 import java.util.List;
 
 @Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION, dependencies = "required-after:Forge@[10.13.4.1614,);"
-        + "required-after:YAMCore@[0.5.70,);" + "required-after:gregtech;")
+        + "required-after:YAMCore@[0.5.70,);" + "required-after:gregtech;" + "after:CoFHCore")
 public class TecTech {
 
     @SidedProxy(clientSide = Reference.CLIENTSIDE, serverSide = Reference.SERVERSIDE)
@@ -38,12 +38,14 @@ public class TecTech {
     @Instance(Reference.MODID)
     public static TecTech instance;
 
+    public static LogHelper Logger = new LogHelper(Reference.MODID);
     private static IngameErrorLog Module_AdminErrorLogs = null;
     public static GT_CustomLoader GTCustomLoader = null;
     public static TecTechConfig ModConfig;
     public static XSTR Rnd = null;
-    public static LogHelper Logger = new LogHelper(Reference.MODID);
     public static CreativeTabs mainTab = null;
+
+    public static boolean hasCOFH=false;
 
     public static void AddLoginError(String pMessage) {
         if (Module_AdminErrorLogs != null)
@@ -68,12 +70,13 @@ public class TecTech {
 
     @EventHandler
     public void load(FMLInitializationEvent event) {
-
         proxy.registerRenderInfo();
     }
 
     @EventHandler
     public void PostLoad(FMLPostInitializationEvent PostEvent) {
+        hasCOFH=Loader.isModLoaded(Reference.COFHCORE);
+
         QuantumGlass.run();
         debug_container_EM.run();
 

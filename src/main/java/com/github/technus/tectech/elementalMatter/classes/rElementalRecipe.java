@@ -7,12 +7,12 @@ import net.minecraftforge.fluids.FluidStack;
  * Created by Tec on 02.03.2017.
  */
 public class rElementalRecipe implements Comparable<rElementalRecipe> {
-    public cElementalDefinitionStackTree inEM;
-    public cElementalDefinitionStackTree outEM;
-    public ItemStack[] outItems;
-    public FluidStack[] outFluids;
+    public final cElementalDefinitionStackTree inEM;
+    public final cElementalDefinitionStackTree outEM;
+    public final ItemStack[] outItems;
+    public final FluidStack[] outFluids;
     public Object[] extension = null;
-    private short comparableID=0;
+    public final short comparableID;
 
     public rElementalRecipe(
             cElementalDefinitionStackTree inEMnotNull,
