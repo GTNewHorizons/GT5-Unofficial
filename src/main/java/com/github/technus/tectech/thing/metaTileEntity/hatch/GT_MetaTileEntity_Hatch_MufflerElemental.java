@@ -29,6 +29,7 @@ public class GT_MetaTileEntity_Hatch_MufflerElemental extends GT_MetaTileEntity_
     private static Textures.BlockIcons.CustomIcon EM_T_SIDES;
     private static Textures.BlockIcons.CustomIcon EM_T_ACTIVE;
     private static Textures.BlockIcons.CustomIcon MufflerEM;
+    private static Textures.BlockIcons.CustomIcon MufflerEMidle;
     public float overflowMatter = 0f;
     public final float overflowMax;
     public final float overflowDisperse;
@@ -53,6 +54,7 @@ public class GT_MetaTileEntity_Hatch_MufflerElemental extends GT_MetaTileEntity_
         EM_T_ACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_EM_T_ACTIVE");
         EM_T_SIDES = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_EM_T_SIDES");
         MufflerEM = new Textures.BlockIcons.CustomIcon("iconsets/MUFFLER_EM");
+        MufflerEMidle = new Textures.BlockIcons.CustomIcon("iconsets/MUFFLER_EM_IDLE");
     }
 
     @Override
@@ -62,7 +64,7 @@ public class GT_MetaTileEntity_Hatch_MufflerElemental extends GT_MetaTileEntity_
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(EM_T_SIDES, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_MUFFLER)};
+        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(EM_T_SIDES, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())), new GT_RenderedTexture(MufflerEMidle)};
     }
 
     @Override

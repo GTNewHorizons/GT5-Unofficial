@@ -188,7 +188,7 @@ public class GT_Loader_Machines implements Runnable {
         Machine_Multi_Stabilizer.set(new GT_MetaTileEntity_EM_stabilizer(12170, "multimachine.em.stabilizer", "Elemental Stabilizer").getStackForm(1L));
         Machine_Multi_Scanner.set(new GT_MetaTileEntity_EM_scanner(12171, "multimachine.em.scanner", "Elemental Scanner").getStackForm(1L));
         Machine_Multi_Computer.set(new GT_MetaTileEntity_EM_computer(12172, "multimachine.em.computer", "Quantum Computer").getStackForm(1L));
-        Machine_Multi_Switch.set(new GT_MetaTileEntity_EM_switch(12173, "multimachine.em.switch", "Network Switch with QoS").getStackForm(1L));
+        Machine_Multi_Switch.set(new GT_MetaTileEntity_EM_switch(12173, "multimachine.em.switch", "Network Switch With QoS").getStackForm(1L));
 
         // ===================================================================================================
         // Hatches EM
