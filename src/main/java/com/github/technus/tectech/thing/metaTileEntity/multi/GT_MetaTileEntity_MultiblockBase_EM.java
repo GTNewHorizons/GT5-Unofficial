@@ -1,4 +1,4 @@
-package com.github.technus.tectech.thing.metaTileEntity;
+package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStack;
@@ -56,12 +56,14 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public ArrayList<GT_MetaTileEntity_Hatch_Uncertainty> eUncertainHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_EnergyMulti> eEnergyMulti = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_DynamoMulti> eDynamoMulti = new ArrayList<>();
+    public ArrayList<GT_MetaTileEntity_Hatch_InputData> eInputData = new ArrayList<>();
+    public ArrayList<GT_MetaTileEntity_Hatch_OutputData> eOutputData = new ArrayList<>();
 
     public final float[] eParamsIn = new float[20];
     public final float[] eParamsOut = new float[20];
     public final byte[] eParamsInStatus = new byte[20];
     public final byte[] eParamsOutStatus = new byte[20];
-    protected final static byte PARAM_UNUSED = 0, PARAM_OK = 1, PARAM_TOO_LOW = 2, PARAM_LOW = 3, PARAM_TOO_HIGH = 4, PARAM_HIGH = 5, PARAM_WRONG = 6;
+    public final static byte PARAM_UNUSED = 0, PARAM_OK = 1, PARAM_TOO_LOW = 2, PARAM_LOW = 3, PARAM_TOO_HIGH = 4, PARAM_HIGH = 5, PARAM_WRONG = 6;
 
     //TO ENABLE this change value in <init> to false and/or other than 0, can also be added in recipe check or whatever
     public boolean eParameters = true, ePowerPass = false, eSafeVoid = false, eDismatleBoom = false;
@@ -70,10 +72,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     private long eMaxAmpereFlow = 0;
     private long maxEUinputMin = 0, maxEUinputMax = 0;
     public long eAmpereFlow = 1;
+    public long eRequiredData = 0;
+    protected long eAvailableData=0;
 
     //init param states in constructor, or implement it in checkrecipe/outputfunction
 
-    //METHODS TO OVERRIDE - this 3 below + checkMachine
+    //METHODS TO OVERRIDE
 
     //if you want to add checks that run periodically when machine works then make onRunningTick better
     //if you want to add checks that run periodically when machine is built then use check params
@@ -81,17 +85,19 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public boolean EM_checkRecipe(ItemStack itemStack) {
         return false;
     }
-    //My code handles AMPS, if you want overclocking just modify mEUt and mMaxProgressTime, leave amps as usual!
+    // My code handles AMPS, if you want overclocking just modify mEUt and mMaxProgressTime, leave amps as usual!
+    // Set mEUt, Efficiencies, required computation, time, check input etc.
 
-    public void EM_checkParams() {
-    }
-    //update status of parameters in guis and "machine state"
+    public void EM_checkParams() {}
+    // update status of parameters in guis and "machine state"
+    // Called before check recipe, before outputting, and every second the machine is active
 
-    public void EM_outputFunction() {
-    }
+    public void EM_outputFunction() {}
     // based on "machine state" do output,
-    // this must move to output EM things and can also modify output items/fluids/EM, remaining EM is NOT overflowed.
-    //(Well it can be overflowed if machine didn't finished, soft-hammered/disabled/not enough EU)
+    // this must move to outputEM to EM output hatches
+    // and can also modify output items/fluids/EM, remaining EM is NOT overflowed.
+    // (Well it can be overflowed if machine didn't finished, soft-hammered/disabled/not enough EU)
+    // Setting available data processing
 
     //RATHER LEAVE ALONE Section
 
@@ -146,6 +152,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         aNBT.setLong("eMaxEUmax", maxEUinputMax);
         aNBT.setLong("eRating", eAmpereFlow);
         aNBT.setLong("eMaxA", eMaxAmpereFlow);
+        aNBT.setLong("eDataR", eRequiredData);
+        aNBT.setLong("eDataA", eAvailableData);
         aNBT.setByte("eCertainM", eCertainMode);
         aNBT.setByte("eCertainS", eCertainStatus);
         aNBT.setByte("eMinRepair", minRepairStatus);
@@ -194,6 +202,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         maxEUinputMax = aNBT.getLong("eMaxEUmax");
         eAmpereFlow = aNBT.getLong("eRating");
         eMaxAmpereFlow = aNBT.getLong("eMaxA");
+        eRequiredData = aNBT.getLong("eDataR");
+        eAvailableData = aNBT.getLong("eDataA");
         eCertainMode = aNBT.getByte("eCertainM");
         eCertainStatus = aNBT.getByte("eCertainS");
         minRepairStatus = aNBT.getByte("eMinRepair");
@@ -284,6 +294,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                     if (isValidMetaTileEntity(hatch_elemental)) hatch_elemental.id = -1;
                 for (GT_MetaTileEntity_Hatch_ElementalContainer hatch_elemental : eInputHatches)
                     if (isValidMetaTileEntity(hatch_elemental)) hatch_elemental.id = -1;
+
+                for (GT_MetaTileEntity_Hatch_DataConnector hatch_data : eOutputData)
+                    if (isValidMetaTileEntity(hatch_data)) hatch_data.id = -1;
+                for (GT_MetaTileEntity_Hatch_DataConnector hatch_data : eInputData)
+                    if (isValidMetaTileEntity(hatch_data)) hatch_data.id = -1;
+
                 for (GT_MetaTileEntity_Hatch_Uncertainty hatch : eUncertainHatches)
                     if (isValidMetaTileEntity(hatch)) hatch.getBaseMetaTileEntity().setActive(false);
                 for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches)
@@ -317,6 +333,13 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                     id = 1;
                     for (GT_MetaTileEntity_Hatch_ElementalContainer hatch_elemental : eInputHatches)
                         if (isValidMetaTileEntity(hatch_elemental)) hatch_elemental.id = id++;
+
+                    id = 1;
+                    for (GT_MetaTileEntity_Hatch_DataConnector hatch_data : eOutputData)
+                        if (isValidMetaTileEntity(hatch_data)) hatch_data.id = id++;
+                    id = 1;
+                    for (GT_MetaTileEntity_Hatch_DataConnector hatch_data : eInputData)
+                        if (isValidMetaTileEntity(hatch_data)) hatch_data.id = id++;
 
                     if (mEnergyHatches.size() > 0 || eEnergyMulti.size() > 0) {
                         maxEUinputMin = V[15];
@@ -423,7 +446,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
                     if (getRepairStatus() >= minRepairStatus) {//S
                         if (multiCheckAt == Tick)
-                            paramsUpdate();
+                            hatchesStatusUpdate();
 
                         if (mMaxProgresstime > 0 && doRandomMaintenanceDamage()) {//Start
                             if (onRunningTick(mInventory[1])) {//Compute EU
@@ -431,7 +454,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                     stopMachine();
 
                                 if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime && recipeAt == Tick) {//progress increase and done
-                                    paramsUpdate();
+                                    hatchesStatusUpdate();
                                     EM_outputFunction();
                                     if (mOutputItems != null) for (ItemStack tStack : mOutputItems)
                                         if (tStack != null)
@@ -455,7 +478,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                             mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
                                         }
                                         updateSlots();
-                                    }
+                                    }else hatchesStatusUpdate();
                                 }
                             }
                         } else {
@@ -465,7 +488,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                         mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
                                     }
                                     updateSlots();
-                                }
+                                }else hatchesStatusUpdate();
                             }
                         }
 
@@ -550,8 +573,16 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         return super.getRepairStatus() + ((eCertainStatus == 0) ? 1 : 0) + (this.eParameters ? 1 : 0);
     }
 
+    private long getAvailableData() {
+        long result=0;
+        for(GT_MetaTileEntity_Hatch_InputData in:eInputData)
+            result+=in.data;
+        return result;
+    }
+
     @Override
     public boolean onRunningTick(ItemStack aStack) {
+        if(eRequiredData>eAvailableData) return false;
         if (this.mEUt > 0) {
             this.EMaddEnergyOutput((long) mEUt * (long) mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
             return true;
@@ -700,6 +731,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         mEfficiencyIncrease = 0;
         getBaseMetaTileEntity().disableWorking();
 
+        for(GT_MetaTileEntity_Hatch_OutputData data:eOutputData)
+            data.timeout = 0;
+
         float mass = 0;
         if (outputEM == null) return;
         for (cElementalInstanceStackTree tree : outputEM)
@@ -765,11 +799,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     @Override
     public final boolean checkRecipe(ItemStack itemStack) {//do recipe checks, based on "machine content and state"
-        paramsUpdate();
+        hatchesStatusUpdate();
         return EM_checkRecipe(itemStack);
     }
 
-    private void paramsUpdate() {
+    private void hatchesStatusUpdate() {
         for (GT_MetaTileEntity_Hatch_Param param : eParamHatches) {
             int paramID = param.param;
             if (paramID < 0) continue;
@@ -779,9 +813,13 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             param.input2f = eParamsOut[paramID + 10];
         }
         EM_checkParams();
-        for (GT_MetaTileEntity_Hatch_Uncertainty uncertainty : eUncertainHatches) {
+
+        eAvailableData=getAvailableData();
+        for(GT_MetaTileEntity_Hatch_OutputData data:eOutputData)
+            data.timeout=3;
+
+        for (GT_MetaTileEntity_Hatch_Uncertainty uncertainty : eUncertainHatches)
             eCertainStatus = uncertainty.update(eCertainMode);
-        }
     }
 
     @Override
@@ -824,6 +862,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         for (MetaTileEntity tTileEntity : eEnergyMulti) tTileEntity.getBaseMetaTileEntity().doExplosion(V[14]);
         for (MetaTileEntity tTileEntity : eUncertainHatches) tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
         for (MetaTileEntity tTileEntity : eDynamoMulti) tTileEntity.getBaseMetaTileEntity().doExplosion(V[14]);
+        for (MetaTileEntity tTileEntity : eInputData) tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
+        for (MetaTileEntity tTileEntity : eOutputData) tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
         getBaseMetaTileEntity().doExplosion(V[15]);
     }
 
@@ -862,6 +902,10 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             return eMufflerHatches.add((GT_MetaTileEntity_Hatch_MufflerElemental) aMetaTileEntity);
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyMulti)
             return eEnergyMulti.add((GT_MetaTileEntity_Hatch_EnergyMulti) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputData)
+            return eInputData.add((GT_MetaTileEntity_Hatch_InputData) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputData)
+            return eOutputData.add((GT_MetaTileEntity_Hatch_OutputData) aMetaTileEntity);
         return false;
     }
 
@@ -1101,6 +1145,22 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         return false;
     }
 
+    //NEW METHOD
+    public final boolean addDataConnectorToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputData) {
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
+            return eInputData.add((GT_MetaTileEntity_Hatch_InputData) aMetaTileEntity);
+        }
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputData) {
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
+            return eOutputData.add((GT_MetaTileEntity_Hatch_OutputData) aMetaTileEntity);
+        }
+        return false;
+    }
+
     @Override
     public String[] getInfoData() {//TODO Do it
         long storedEnergy = 0;
@@ -1133,7 +1193,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 "Problems: " + EnumChatFormatting.RED + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET +
                         " Efficiency: " + EnumChatFormatting.YELLOW + Float.toString(mEfficiency / 100.0F) + EnumChatFormatting.RESET + " %",
                 "PowerPass: " + EnumChatFormatting.BLUE + ePowerPass + EnumChatFormatting.RESET +
-                        " SafeVoid: " + EnumChatFormatting.BLUE + eSafeVoid
+                        " SafeVoid: " + EnumChatFormatting.BLUE + eSafeVoid,
+                "Computation: " + EnumChatFormatting.GREEN + eAvailableData + EnumChatFormatting.RESET +" TFLOPS / "+EnumChatFormatting.YELLOW+eRequiredData+EnumChatFormatting.RESET+" TFLOPS"
         };
     }
 
@@ -1233,6 +1294,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                     hatch_elemental.id = -1;
                 for (GT_MetaTileEntity_Hatch_ElementalContainer hatch_elemental : eInputHatches)
                     hatch_elemental.id = -1;
+                for (GT_MetaTileEntity_Hatch_DataConnector hatch_data : eOutputData) {
+                    hatch_data.timeout=0;
+                    hatch_data.id = -1;
+                }
+                for (GT_MetaTileEntity_Hatch_DataConnector hatch_data : eInputData)
+                    hatch_data.id = -1;
                 for (GT_MetaTileEntity_Hatch_Uncertainty hatch : eUncertainHatches)
                     hatch.getBaseMetaTileEntity().setActive(false);
                 for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches)
@@ -1347,64 +1414,4 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
         return true;
     }
-
-    /**
-     * finds a Recipe matching the aFluid and ItemStack Inputs.
-     *
-     * @param aNotUnificated if this is T the Recipe searcher will unificate the ItemStack Inputs
-     * @param aVoltage       Voltage of the Machine or Long.MAX_VALUE if it has no Voltage
-     * @param aFluids        the Fluid Inputs
-     * @param aSpecialSlot   the content of the Special Slot, the regular Manager doesn't do anything with this, but some custom ones do.
-     * @param aInputs        the Item Inputs
-     * @return the Recipe it has found or null for no matching Recipe
-     */
-
-    //protected static GT_Recipe findRecipe(boolean aNotUnificated, long aVoltage, FluidStack[] aFluids, ItemStack aSpecialSlot, ItemStack... aInputs) {
-    //    // Some Recipe Classes require a certain amount of Inputs of certain kinds. Like "at least 1 Fluid + 1 Stack" or "at least 2 Stacks" before they start searching for Recipes.
-    //    // This improves Performance massively, especially if people leave things like Circuits, Molds or Shapes in their Machines to select Sub Recipes.
-    //    if (GregTech_API.sPostloadFinished) {
-    //        if (mMinimalInputFluids > 0) {
-    //            if (aFluids == null) return null;
-    //            int tAmount = 0;
-    //            for (FluidStack aFluid : aFluids) if (aFluid != null) tAmount++;
-    //            if (tAmount < mMinimalInputFluids) return null;
-    //        }
-    //        if (mMinimalInputItems > 0) {
-    //            if (aInputs == null) return null;
-    //            int tAmount = 0;
-    //            for (ItemStack aInput : aInputs) if (aInput != null) tAmount++;
-    //            if (tAmount < mMinimalInputItems) return null;
-    //        }
-    //    }
-    //    // Unification happens here in case the Input isn't already unificated.
-    //    if (aNotUnificated) aInputs = GT_OreDictUnificator.getStackArray(true, (Object[]) aInputs);
-    //    // Check the Recipe which has been used last time in order to not have to search for it again, if possible.
-    //    if (aRecipe != null)
-    //        if (!aRecipe.mFakeRecipe && aRecipe.mCanBeBuffered && aRecipe.isRecipeInputEqual(false, true, aFluids, aInputs))
-    //            return aRecipe.mEnabled && aVoltage * mAmperage >= aRecipe.mEUt ? aRecipe : null;
-    //    // Now look for the Recipes inside the Item HashMaps, but only when the Recipes usually have Items.
-    //    if (mUsualInputCount > 0 && aInputs != null) for (ItemStack tStack : aInputs)
-    //        if (tStack != null) {
-    //            Collection<GT_Recipe>
-    //                    tRecipes = mRecipeItemMap.get(new GT_ItemStack(tStack));
-    //            if (tRecipes != null) for (GT_Recipe tRecipe : tRecipes)
-    //                if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, true, aFluids, aInputs))
-    //                    return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt ? tRecipe : null;
-    //            tRecipes = mRecipeItemMap.get(new GT_ItemStack(GT_Utility.copyMetaData(W, tStack)));
-    //            if (tRecipes != null) for (GT_Recipe tRecipe : tRecipes)
-    //                if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, true, aFluids, aInputs))
-    //                    return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt ? tRecipe : null;
-    //        }
-    //    // If the minimal Amount of Items for the Recipe is 0, then it could be a Fluid-Only Recipe, so check that Map too.
-    //    if (mMinimalInputItems == 0 && aFluids != null) for (FluidStack aFluid : aFluids)
-    //        if (aFluid != null) {
-    //            Collection<GT_Recipe>
-    //                    tRecipes = mRecipeFluidMap.get(aFluid.getFluid());
-    //            if (tRecipes != null) for (GT_Recipe tRecipe : tRecipes)
-    //                if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, true, aFluids, aInputs))
-    //                    return tRecipe.mEnabled && aVoltage * mAmperage >= tRecipe.mEUt ? tRecipe : null;
-    //        }
-    //    // And nothing has been found.
-    //    return null;
-    //}
 }

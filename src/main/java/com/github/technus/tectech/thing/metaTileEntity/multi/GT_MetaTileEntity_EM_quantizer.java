@@ -11,7 +11,6 @@ import com.github.technus.tectech.elementalMatter.definitions.dHadronDefinition;
 import com.github.technus.tectech.elementalMatter.definitions.eLeptonDefinition;
 import com.github.technus.tectech.thing.block.QuantumGlass;
 import com.github.technus.tectech.thing.casing.GT_Container_CasingsTT;
-import com.github.technus.tectech.thing.metaTileEntity.GT_MetaTileEntity_MultiblockBase_EM;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;

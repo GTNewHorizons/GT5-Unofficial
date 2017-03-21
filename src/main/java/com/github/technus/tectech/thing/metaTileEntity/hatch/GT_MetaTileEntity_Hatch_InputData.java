@@ -7,18 +7,18 @@ import gregtech.api.metatileentity.MetaTileEntity;
 /**
  * Created by danie_000 on 27.10.2016.
  */
-public class GT_MetaTileEntity_Hatch_InputElemental extends GT_MetaTileEntity_Hatch_ElementalContainer {
-    public GT_MetaTileEntity_Hatch_InputElemental(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, "Elemental Input for Multiblocks (" + 1000 * aTier * (aTier - 7) + "U, " + aTier * 2 + " stacks)");
+public class GT_MetaTileEntity_Hatch_InputData extends GT_MetaTileEntity_Hatch_DataConnector {
+    public GT_MetaTileEntity_Hatch_InputData(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier, "Data Input for Multiblocks");
     }
 
-    public GT_MetaTileEntity_Hatch_InputElemental(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_InputData(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_InputElemental(mName, mTier, mDescription, mTextures);
+        return new GT_MetaTileEntity_Hatch_InputData(mName, mTier, mDescription, mTextures);
     }
 
     @Override

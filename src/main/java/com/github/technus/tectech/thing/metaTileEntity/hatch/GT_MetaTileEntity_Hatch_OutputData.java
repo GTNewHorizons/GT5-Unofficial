@@ -1,6 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_EM;
+import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Data;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -10,27 +10,27 @@ import gregtech.api.util.GT_Utility;
 /**
  * Created by danie_000 on 27.10.2016.
  */
-public class GT_MetaTileEntity_Hatch_OutputElemental extends GT_MetaTileEntity_Hatch_ElementalContainer {
-    public GT_MetaTileEntity_Hatch_OutputElemental(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, "Elemental Output for Multiblocks (" + 1000 * aTier * (aTier - 7) + "U, " + aTier * 2 + " stacks)");
+public class GT_MetaTileEntity_Hatch_OutputData extends GT_MetaTileEntity_Hatch_DataConnector {
+    public GT_MetaTileEntity_Hatch_OutputData(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier, "Data Output for Multiblocks");
     }
 
-    public GT_MetaTileEntity_Hatch_OutputElemental(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_Hatch_OutputData(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_OutputElemental(mName, mTier, mDescription, mTextures);
-    }
-
-    @Override
-    public boolean isOutputFacing(byte aSide) {
-        return aSide == getBaseMetaTileEntity().getFrontFacing();
+        return new GT_MetaTileEntity_Hatch_OutputData(mName, mTier, mDescription, mTextures);
     }
 
     @Override
     public boolean isInputFacing(byte aSide) {
+        return aSide == getBaseMetaTileEntity().getFrontFacing();
+    }
+
+    @Override
+    public boolean isOutputFacing(byte aSide) {
         return false;
     }
 
@@ -40,7 +40,12 @@ public class GT_MetaTileEntity_Hatch_OutputElemental extends GT_MetaTileEntity_H
     }
 
     @Override
-    public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
+    public boolean canConnect(byte side) {
+        return isInputFacing(side);
+    }
+
+    @Override
+    public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {//TODO
         byte color = getBaseMetaTileEntity().getColorization();
         if (color < 0) return;
         byte front = aBaseMetaTileEntity.getFrontFacing();
@@ -50,22 +55,17 @@ public class GT_MetaTileEntity_Hatch_OutputElemental extends GT_MetaTileEntity_H
             if (tGTTileEntity != null && tGTTileEntity.getColorization() == color) {
                 IMetaTileEntity aMetaTileEntity = tGTTileEntity.getMetaTileEntity();
                 if (aMetaTileEntity != null) {
-                    if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputElemental &&
+                    if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputData &&
                             opposite == aMetaTileEntity.getBaseMetaTileEntity().getFrontFacing()) {
-                        ((GT_MetaTileEntity_Hatch_InputElemental) aMetaTileEntity).getContainerHandler().putUnifyAll(content);
-                        ((GT_MetaTileEntity_Hatch_InputElemental) aMetaTileEntity).updateSlots();
-                        content.clear();
                         return;
-                    } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Pipe_EM) {
-                        if (((GT_MetaTileEntity_Pipe_EM) aMetaTileEntity).connectionCount > 2) return;
+                    } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Pipe_Data) {
+                        if (((GT_MetaTileEntity_Pipe_Data) aMetaTileEntity).connectionCount > 2) return;
                     } else return;
                 } else return;
             } else return;
         }
-    }
-
-    @Override
-    public boolean canConnect(byte side) {
-        return isOutputFacing(side);
+        //trace optics all the way to the end, no branching splitting etc.
+        //Coloring requirement!
+        //set data to match this and timout to 3
     }
 }

@@ -1,4 +1,4 @@
-package com.github.technus.tectech.thing.metaTileEntity;
+package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackTree;
@@ -6,7 +6,6 @@ import com.github.technus.tectech.elementalMatter.classes.tElementalException;
 import com.github.technus.tectech.elementalMatter.commonValues;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalInstanceContainer;
 import com.github.technus.tectech.thing.machineTT;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_MufflerElemental;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.iConnectsToEMpipe;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
@@ -32,6 +31,7 @@ import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Mult
 public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_MetaTileEntity_Hatch implements iElementalInstanceContainer, iConnectsToEMpipe, machineTT {
     private static Textures.BlockIcons.CustomIcon EM_T_SIDES;
     private static Textures.BlockIcons.CustomIcon EM_T_ACTIVE;
+    private static Textures.BlockIcons.CustomIcon EM_T_CONN;
 
     protected cElementalInstanceStackTree content = new cElementalInstanceStackTree();
     //float lifeTimeMult=1f;
@@ -53,16 +53,17 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
         super.registerIcons(aBlockIconRegister);
         EM_T_ACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_EM_T_ACTIVE");
         EM_T_SIDES = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_EM_T_SIDES");
+        EM_T_CONN = new Textures.BlockIcons.CustomIcon("iconsets/EM_PIPE_CONN");
     }
 
     @Override
     public ITexture[] getTexturesActive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(EM_T_ACTIVE, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
+        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(EM_T_ACTIVE, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())), new GT_RenderedTexture(EM_T_CONN)};
     }
 
     @Override
     public ITexture[] getTexturesInactive(ITexture aBaseTexture) {
-        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(EM_T_SIDES, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())), new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_PIPE_OUT)};
+        return new ITexture[]{aBaseTexture, new GT_RenderedTexture(EM_T_SIDES, Dyes.getModulation(getBaseMetaTileEntity().getColorization(), MACHINE_METAL.getRGBA())), new GT_RenderedTexture(EM_T_CONN)};
     }
 
     @Override
@@ -102,12 +103,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
                 if (overflowMatter <= 0) {
                     deathDelay = 3;
                 } else {
-                    if (deathDelay == 2) {
-                        if (TecTech.ModConfig.BOOM_ENABLE && TecTech.Rnd.nextInt(10) == 0)
-                            aBaseMetaTileEntity.setOnFire();
-                        else
-                            TecTech.proxy.broadcast("Container0 FIRE! " + getBaseMetaTileEntity().getXCoord() + " " + getBaseMetaTileEntity().getYCoord() + " " + getBaseMetaTileEntity().getZCoord());
-                    } else if (deathDelay == 1) {
+                    if (deathDelay == 1) {
                         IGregTechTileEntity tGTTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide(aBaseMetaTileEntity.getBackFacing());
                         if (tGTTileEntity == null || !(tGTTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_MufflerElemental))
                             tGTTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide((byte) 0);
@@ -116,16 +112,18 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
                         if (tGTTileEntity != null && (tGTTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_MufflerElemental)) {
                             GT_MetaTileEntity_Hatch_MufflerElemental aMetaTileEntity = (GT_MetaTileEntity_Hatch_MufflerElemental) tGTTileEntity.getMetaTileEntity();
                             aMetaTileEntity.overflowMatter += overflowMatter;
+                            overflowMatter = 0F;
+                            deathDelay=3;//needed in some cases like repetitive failures. Should be 4 since there is -- at end but meh...
                             if (aMetaTileEntity.overflowMatter > aMetaTileEntity.overflowMax) {
                                 if (TecTech.ModConfig.BOOM_ENABLE) tGTTileEntity.doExplosion(V[14]);
                                 else
                                     TecTech.proxy.broadcast("Container1 BOOM! " + getBaseMetaTileEntity().getXCoord() + " " + getBaseMetaTileEntity().getYCoord() + " " + getBaseMetaTileEntity().getZCoord());
-                            } else overflowMatter = 0F;
+                            }
                         }
                     } else if (deathDelay < 1) {
                         if (TecTech.ModConfig.BOOM_ENABLE) getBaseMetaTileEntity().doExplosion(V[14]);
                         else
-                            TecTech.proxy.broadcast("Container2 BOOM! " + getBaseMetaTileEntity().getXCoord() + " " + getBaseMetaTileEntity().getYCoord() + " " + getBaseMetaTileEntity().getZCoord());
+                            TecTech.proxy.broadcast("Container0 BOOM! " + getBaseMetaTileEntity().getXCoord() + " " + getBaseMetaTileEntity().getYCoord() + " " + getBaseMetaTileEntity().getZCoord());
                     }
                     deathDelay--;
                 }
@@ -136,8 +134,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
         }
     }
 
-    public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
-    }
+    public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {}
 
     @Override
     public cElementalInstanceStackTree getContainerHandler() {

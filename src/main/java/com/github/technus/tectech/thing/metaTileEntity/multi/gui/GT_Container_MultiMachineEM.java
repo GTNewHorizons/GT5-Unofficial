@@ -1,6 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi.gui;
 
-import com.github.technus.tectech.thing.metaTileEntity.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_MultiblockBase_EM;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;

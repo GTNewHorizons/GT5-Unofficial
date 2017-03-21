@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 import static gregtech.api.enums.GT_Values.W;
 
 public enum CustomItemList implements IItemContainer {
-    EMpipe,
+    EMpipe,DATApipe,
     eM_dynamomulti4_UV, eM_dynamomulti16_UV, eM_dynamomulti64_UV,
     eM_dynamomulti4_UHV, eM_dynamomulti16_UHV, eM_dynamomulti64_UHV,
     eM_dynamomulti4_UEV, eM_dynamomulti16_UEV, eM_dynamomulti64_UEV,
@@ -27,7 +27,7 @@ public enum CustomItemList implements IItemContainer {
     eM_in_UV, eM_in_UHV, eM_in_UEV, eM_in_UIV, eM_in_UMV, eM_in_UXV,
     eM_out_UV, eM_out_UHV, eM_out_UEV, eM_out_UIV, eM_out_UMV, eM_out_UXV,
     eM_muffler_UV, eM_muffler_UHV, eM_muffler_UEV, eM_muffler_UIV, eM_muffler_UMV, eM_muffler_UXV,
-    Parametrizer_Hatch, Uncertainty_Hatch, UncertaintyX_Hatch,
+    Parametrizer_Hatch, Uncertainty_Hatch, UncertaintyX_Hatch, dataIn_Hatch, dataOut_Hatch,
     eM_Casing, eM_Field, eM_Field_Casing, eM_Coil, eM_Tele, eM_TimeSpaceWarp,
     debugBlock,
     Machine_Multi_MatterToEM, Machine_Multi_EMToMatter, Machine_Multi_EMjunction,

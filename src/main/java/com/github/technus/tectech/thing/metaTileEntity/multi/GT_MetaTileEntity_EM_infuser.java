@@ -3,14 +3,11 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 import cofh.api.energy.IEnergyContainerItem;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.commonValues;
-import com.github.technus.tectech.thing.metaTileEntity.GT_MetaTileEntity_MultiblockBase_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.gui.GT_GUIContainer_MultiMachineEM;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
-import ic2.api.item.IElectricItemManager;
-import ic2.api.item.ISpecialElectricItem;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.Item;
@@ -39,10 +36,12 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
 
     public GT_MetaTileEntity_EM_infuser(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        minRepairStatus=(byte) getIdealStatus();
     }
 
     public GT_MetaTileEntity_EM_infuser(String aName) {
         super(aName);
+        minRepairStatus=(byte) getIdealStatus();
     }
 
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
@@ -82,11 +81,9 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public boolean EM_checkRecipe(ItemStack itemStack) {
-        if (getBaseMetaTileEntity().isAllowedToWork() && getRepairStatus()==getIdealStatus() && itemStack!=null && itemStack.stackSize==1) {
+        if (getBaseMetaTileEntity().isAllowedToWork() && itemStack!=null && itemStack.stackSize==1) {
             Item ofThis=itemStack.getItem();
-            if(itemStack.getItem() instanceof ISpecialElectricItem){
-                doChargeItemStackSpecial((ISpecialElectricItem) ofThis,itemStack);
-            }else if(itemStack.getItem() instanceof IElectricItem){
+            if(itemStack.getItem() instanceof IElectricItem){
                 doChargeItemStack((IElectricItem) ofThis,itemStack);
             }else if(TecTech.hasCOFH && itemStack.getItem() instanceof IEnergyContainerItem){
                 doChargeItemStackRF((IEnergyContainerItem) ofThis,itemStack);
@@ -100,7 +97,6 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
             eDismatleBoom=false;
         }
         eAmpereFlow = 0;
-        mEUt = 0;
         return ePowerPass;
     }
 
@@ -126,24 +122,6 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
                                 Math.min(euDiff,this.getEUVar())
                         ,item.getTier(stack),true,false)
                 ));
-        } catch( Exception e ) {
-            if(TecTech.ModConfig.DEBUG_MODE)
-                e.printStackTrace();
-        }
-    }
-
-    private void doChargeItemStackSpecial(ISpecialElectricItem item, ItemStack stack )
-    {
-        try {
-            final IElectricItemManager manager=item.getManager(stack);
-            double euDiff=item.getMaxCharge(stack) - manager.getCharge(stack);
-            if(euDiff>0)this.setEUVar(this.getEUVar()-this.getEUVar()>>5);
-            this.setEUVar(
-                    this.getEUVar()-(long)Math.ceil(
-                            manager.charge(stack,
-                                    Math.min(euDiff,this.getEUVar())
-                                    ,item.getTier(stack),true,false)
-                    ));
         } catch( Exception e ) {
             if(TecTech.ModConfig.DEBUG_MODE)
                 e.printStackTrace();

@@ -3,7 +3,6 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 import com.github.technus.tectech.elementalMatter.commonValues;
 import com.github.technus.tectech.thing.block.QuantumGlass;
 import com.github.technus.tectech.thing.casing.GT_Container_CasingsTT;
-import com.github.technus.tectech.thing.metaTileEntity.GT_MetaTileEntity_MultiblockBase_EM;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.item.ItemStack;

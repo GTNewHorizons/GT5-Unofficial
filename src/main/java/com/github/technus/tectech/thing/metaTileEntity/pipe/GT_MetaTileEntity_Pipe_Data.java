@@ -25,33 +25,33 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 /**
  * Created by Tec on 26.02.2017.
  */
-public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements iConnectsToEMpipe, machineTT {
+public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements iConnectsToDataPipe, machineTT {
     private static Textures.BlockIcons.CustomIcon EMpipe;
     private static Textures.BlockIcons.CustomIcon EMcandy;
     public byte connectionCount = 0;
 
-    public GT_MetaTileEntity_Pipe_EM(int aID, String aName, String aNameRegional) {
+    public GT_MetaTileEntity_Pipe_Data(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional, 0);
     }
 
-    public GT_MetaTileEntity_Pipe_EM(String aName) {
+    public GT_MetaTileEntity_Pipe_Data(String aName) {
         super(aName, 0);
     }
 
     @Override
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity iGregTechTileEntity) {
-        return new GT_MetaTileEntity_Pipe_EM(mName);
+        return new GT_MetaTileEntity_Pipe_Data(mName);
     }
 
     @Override
     public float getThickNess() {
-        return 0.5F;
+        return 0.375F;
     }
 
     @Override
     public void registerIcons(IIconRegister aBlockIconRegister) {
-        EMpipe = new Textures.BlockIcons.CustomIcon("iconsets/EM_PIPE");
-        EMcandy = new Textures.BlockIcons.CustomIcon("iconsets/EM_CANDY");
+        EMpipe = new Textures.BlockIcons.CustomIcon("iconsets/EM_DATA");
+        EMcandy = new Textures.BlockIcons.CustomIcon("iconsets/EM_BAR");
         super.registerIcons(aBlockIconRegister);
     }
 
@@ -92,8 +92,8 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements iConnec
     public String[] getDescription() {
         return new String[]{
                 commonValues.tecMark,
-                "Quantum tunneling device.",
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Not a portal!!!",
+                "Advanced data transmission",
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Don't stare at the beam!",
                 EnumChatFormatting.AQUA + "Must be painted to work",
                 EnumChatFormatting.AQUA + "Do not cross,split or turn"
         };
@@ -113,6 +113,7 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements iConnec
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if ((aTick & 31) == 31) {
+                byte mOld = 0;
                 mConnections = 0;
                 connectionCount = 0;
                 if (aBaseMetaTileEntity.getColorization() < 0) return;
@@ -126,13 +127,13 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements iConnec
                             if (tColor != aBaseMetaTileEntity.getColorization()) continue;
                             //}
                         }
-                        if (tTileEntity instanceof iConnectsToEMpipe && (((iConnectsToEMpipe) tTileEntity).canConnect(j))) {
+                        if (tTileEntity instanceof iConnectsToDataPipe && (((iConnectsToDataPipe) tTileEntity).canConnect(j))) {
                             mConnections |= (1 << i);
                             connectionCount++;
                         }
-                        else if (tTileEntity instanceof IGregTechTileEntity && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof iConnectsToEMpipe) {
+                        else if (tTileEntity instanceof IGregTechTileEntity && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof iConnectsToDataPipe) {
                             if (//((IGregTechTileEntity) tTileEntity).getCoverBehaviorAtSide(j).alwaysLookConnected(j, ((IGregTechTileEntity) tTileEntity).getCoverIDAtSide(j), ((IGregTechTileEntity) tTileEntity).getCoverDataAtSide(j), ((IGregTechTileEntity) tTileEntity)) ||
-                                    ((iConnectsToEMpipe) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()).canConnect(j)) {
+                                    ((iConnectsToDataPipe) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()).canConnect(j)) {
                                 mConnections |= (1 << i);
                                 connectionCount++;
                             }
