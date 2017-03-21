@@ -731,8 +731,10 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         mEfficiencyIncrease = 0;
         getBaseMetaTileEntity().disableWorking();
 
-        for(GT_MetaTileEntity_Hatch_OutputData data:eOutputData)
+        for(GT_MetaTileEntity_Hatch_OutputData data:eOutputData) {
             data.timeout = 0;
+            data.data = 0;
+        }
 
         float mass = 0;
         if (outputEM == null) return;
@@ -805,7 +807,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     private void hatchesStatusUpdate() {
         for (GT_MetaTileEntity_Hatch_Param param : eParamHatches) {
-            int paramID = param.param;
+            final int paramID = param.param;
             if (paramID < 0) continue;
             eParamsIn[paramID] = param.value1f;
             eParamsIn[paramID + 10] = param.value2f;
@@ -816,7 +818,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
         eAvailableData=getAvailableData();
         for(GT_MetaTileEntity_Hatch_OutputData data:eOutputData)
-            data.timeout=3;
+            if(data.data>0)data.timeout=2;
 
         for (GT_MetaTileEntity_Hatch_Uncertainty uncertainty : eUncertainHatches)
             eCertainStatus = uncertainty.update(eCertainMode);
@@ -1296,6 +1298,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                     hatch_elemental.id = -1;
                 for (GT_MetaTileEntity_Hatch_DataConnector hatch_data : eOutputData) {
                     hatch_data.timeout=0;
+                    hatch_data.data=0;
                     hatch_data.id = -1;
                 }
                 for (GT_MetaTileEntity_Hatch_DataConnector hatch_data : eInputData)

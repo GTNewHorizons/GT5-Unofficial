@@ -29,7 +29,7 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector extends GT_MetaTileE
 
     public short id = -1;
     public int data = 0;
-    public byte timeout=3;
+    public byte timeout=2;
 
     public GT_MetaTileEntity_Hatch_DataConnector(int aID, String aName, String aNameRegional, int aTier, String descr) {
         super(aID, aName, aNameRegional, aTier, 0, descr);
