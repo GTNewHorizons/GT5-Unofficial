@@ -188,6 +188,7 @@ public class GT_Loader_Machines implements Runnable {
         Machine_Multi_Stabilizer.set(new GT_MetaTileEntity_EM_stabilizer(12170, "multimachine.em.stabilizer", "Elemental Stabilizer").getStackForm(1L));
         Machine_Multi_Scanner.set(new GT_MetaTileEntity_EM_scanner(12171, "multimachine.em.scanner", "Elemental Scanner").getStackForm(1L));
         Machine_Multi_Computer.set(new GT_MetaTileEntity_EM_computer(12172, "multimachine.em.computer", "Quantum Computer").getStackForm(1L));
+        Machine_Multi_Switch.set(new GT_MetaTileEntity_EM_switch(12173, "multimachine.em.switch", "Network Switch with QoS").getStackForm(1L));
 
         // ===================================================================================================
         // Hatches EM
@@ -195,8 +196,8 @@ public class GT_Loader_Machines implements Runnable {
         Parametrizer_Hatch.set(new GT_MetaTileEntity_Hatch_Param(12180, "hatch.param.tier.08", "Parametrizer", 8).getStackForm(1L));
         Uncertainty_Hatch.set(new GT_MetaTileEntity_Hatch_Uncertainty(12181, "hatch.certain.tier.08", "Uncertainty Resolver", 10).getStackForm(1L));
         UncertaintyX_Hatch.set(new GT_MetaTileEntity_Hatch_Uncertainty(12182, "hatch.certain.tier.10", "Uncertainty Resolver X", 10).getStackForm(1L));
-        dataIn_Hatch.set(new GT_MetaTileEntity_Hatch_InputData(12183, "hatch.datain.tier.08", "Optical Host Connector", 8).getStackForm(1L));
-        dataOut_Hatch.set(new GT_MetaTileEntity_Hatch_OutputData(12184, "hatch.dataout.tier.08", "Optical Server Connector", 8).getStackForm(1L));
+        dataIn_Hatch.set(new GT_MetaTileEntity_Hatch_InputData(12183, "hatch.datain.tier.08", "Optical Slave Connector", 8).getStackForm(1L));
+        dataOut_Hatch.set(new GT_MetaTileEntity_Hatch_OutputData(12184, "hatch.dataout.tier.08", "Optical Master Connector", 8).getStackForm(1L));
 
         // ===================================================================================================
         // EM pipe

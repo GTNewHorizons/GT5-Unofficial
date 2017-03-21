@@ -23,7 +23,7 @@ import java.util.List;
 public class GT_Block_CasingsTT
         extends GT_Block_Casings_Abstract {
 
-    private static IIcon eM3, eM4, eM5, eM6, eM7, eM8, eM9;
+    private static IIcon eM0s,eM1s,eM2s,eM0,eM1,eM2,eM3, eM4, eM5, eM6, eM7, eM8, eM9;
     private static IIcon debug[] = new IIcon[6];
 
     public GT_Block_CasingsTT() {
@@ -33,6 +33,9 @@ public class GT_Block_CasingsTT
             Textures.BlockIcons.CASING_BLOCKS[(i + 96)] = new GT_CopiedBlockTexture(this, 6, i);
             /*IMPORTANT for block recoloring*/
         }
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Computer Casing");//adding
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Advanced Computer Casing");//adding
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".2.name", "Computer Heat Vent");//adding
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".3.name", "Molecular Containment Casing");//adding
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".4.name", "Containment Field Generator");//adding
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".5.name", "Containment Field Generator Casing");//adding
@@ -43,6 +46,9 @@ public class GT_Block_CasingsTT
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Debug Sides");//adding
 
 
+        CustomItemList.eM_computer.set(new ItemStack(this, 1, 0));//adding
+        CustomItemList.eM_computerAdv.set(new ItemStack(this, 1, 1));//adding
+        CustomItemList.eM_computerVent.set(new ItemStack(this, 1, 2));//adding
         CustomItemList.eM_Casing.set(new ItemStack(this, 1, 3));//adding
         CustomItemList.eM_Field.set(new ItemStack(this, 1, 4));//adding
         CustomItemList.eM_Field_Casing.set(new ItemStack(this, 1, 5));//adding
@@ -56,6 +62,12 @@ public class GT_Block_CasingsTT
     @Override
     public void registerBlockIcons(IIconRegister aIconRegister) {
         //super.registerBlockIcons(aIconRegister);
+        eM0s = aIconRegister.registerIcon("gregtech:iconsets/EM_PC");
+        eM1s = aIconRegister.registerIcon("gregtech:iconsets/EM_PC_ADV");
+        eM2s = aIconRegister.registerIcon("gregtech:iconsets/EM_PC_VENT");
+        eM0 = aIconRegister.registerIcon("gregtech:iconsets/EM_PC_NONSIDE");
+        eM1 = aIconRegister.registerIcon("gregtech:iconsets/EM_PC_ADV_NONSIDE");
+        eM2 = aIconRegister.registerIcon("gregtech:iconsets/EM_PC_VENT_NONSIDE");
         eM3 = aIconRegister.registerIcon("gregtech:iconsets/EM_CASING");
         eM4 = aIconRegister.registerIcon("gregtech:iconsets/EM_FIELD");
         eM5 = aIconRegister.registerIcon("gregtech:iconsets/EM_FIELD_CASING");
@@ -75,6 +87,15 @@ public class GT_Block_CasingsTT
 
     public IIcon getIcon(int aSide, int aMeta) {
         switch (aMeta) {
+            case 0:
+                if (aSide < 2) return eM0;
+                return eM0s;
+            case 1:
+                if (aSide < 2) return eM1;
+                return eM1s;
+            case 2:
+                if (aSide < 2) return eM2;
+                return eM2s;
             case 3:
                 return eM3;
             case 4:
@@ -107,7 +128,7 @@ public class GT_Block_CasingsTT
 
     @Override
     public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
-        for (int i = 3; i <= 9; i++) {
+        for (int i = 0; i <= 9; i++) {
             aList.add(new ItemStack(aItem, 1, i));
         }
     }

@@ -58,8 +58,8 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
     public String[] getDescription() {
         return new String[]{
                 commonValues.tecMark,
-                "Transform quantum form back to regular one...",
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "but why?"
+                "Transform quantum form back to...",
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "regular one, but why?"
         };
     }
 }

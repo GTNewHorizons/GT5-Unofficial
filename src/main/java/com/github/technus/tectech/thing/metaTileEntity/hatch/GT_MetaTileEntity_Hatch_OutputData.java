@@ -57,6 +57,8 @@ public class GT_MetaTileEntity_Hatch_OutputData extends GT_MetaTileEntity_Hatch_
                 if (aMetaTileEntity != null) {
                     if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputData &&
                             opposite == aMetaTileEntity.getBaseMetaTileEntity().getFrontFacing()) {
+                        ((GT_MetaTileEntity_Hatch_InputData) aMetaTileEntity).timeout=3;
+                        ((GT_MetaTileEntity_Hatch_InputData) aMetaTileEntity).data=data;
                         return;
                     } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Pipe_Data) {
                         if (((GT_MetaTileEntity_Pipe_Data) aMetaTileEntity).connectionCount > 2) return;

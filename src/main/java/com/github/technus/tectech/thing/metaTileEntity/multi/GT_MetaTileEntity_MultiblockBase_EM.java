@@ -46,8 +46,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public final static ItemStack[] nothingI = new ItemStack[0];
     public final static FluidStack[] nothingF = new FluidStack[0];
 
-    private static Textures.BlockIcons.CustomIcon ScreenOFF;
-    private static Textures.BlockIcons.CustomIcon ScreenON;
+    protected static Textures.BlockIcons.CustomIcon ScreenOFF;
+    protected static Textures.BlockIcons.CustomIcon ScreenON;
 
     public ArrayList<GT_MetaTileEntity_Hatch_InputElemental> eInputHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_OutputElemental> eOutputHatches = new ArrayList<>();
