@@ -44,7 +44,7 @@ public class GT_MetaTileEntity_EM_stabilizer extends GT_MetaTileEntity_Multibloc
         return new String[]{
                 commonValues.tecMark,
                 "Alters time to stabilize matter",
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Wbbly wobbly timey wimey, stuff."
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Wibbly wobbly timey wimey, stuff."
         };
     }
 }
