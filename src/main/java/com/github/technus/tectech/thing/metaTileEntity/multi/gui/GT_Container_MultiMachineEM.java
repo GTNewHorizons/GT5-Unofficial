@@ -14,7 +14,7 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
     public byte[] eParamsInStatus = new byte[20];//unused 0,G ok 1, B too low 2, R too high 3, Y blink dangerous 4,5
     public byte[] eParamsOutStatus = new byte[20];
     public byte eCertainMode = 5, eCertainStatus = 127;
-    public boolean ePowerPass = false, eSafeVoid = false;
+    public boolean ePowerPass = false, eSafeVoid = false, allowedToWork = false;
 
     public GT_Container_MultiMachineEM(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
@@ -27,8 +27,9 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
     @Override
     public void addSlots(InventoryPlayer aInventoryPlayer) {
         addSlotToContainer(new Slot(mTileEntity, 1, 152, -21));
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 2, 152, 0, false, false, 1));
-        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 2, 152, 21, false, false, 1));
+        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 2, 152, -2, false, false, 1));
+        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 2, 152, 15, false, false, 1));
+        addSlotToContainer(new GT_Slot_Holo(this.mTileEntity, 2, 152, 32, false, false, 1));
     }
 
     @Override
@@ -44,6 +45,13 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
                     break;
                 case 2:
                     base.eSafeVoid ^= true;
+                    break;
+                case 3:
+                    if(base.getBaseMetaTileEntity().isAllowedToWork()) {
+                        base.getBaseMetaTileEntity().disableWorking();
+                    }else{
+                        base.getBaseMetaTileEntity().enableWorking();
+                    }
                     break;
             }
         }
@@ -61,6 +69,7 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
         this.eCertainStatus = ((GT_MetaTileEntity_MultiblockBase_EM) this.mTileEntity.getMetaTileEntity()).eCertainStatus;
         this.ePowerPass = ((GT_MetaTileEntity_MultiblockBase_EM) this.mTileEntity.getMetaTileEntity()).ePowerPass;
         this.eSafeVoid = ((GT_MetaTileEntity_MultiblockBase_EM) this.mTileEntity.getMetaTileEntity()).eSafeVoid;
+        this.allowedToWork = this.mTileEntity.isAllowedToWork();
 
         for (Object crafter : this.crafters) {
             ICrafting var1 = (ICrafting) crafter;
@@ -68,7 +77,7 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
             for (int j = 0; j < eParamsInStatus.length; j++)
                 var1.sendProgressBarUpdate(this, i++, eParamsInStatus[j] | (eParamsOutStatus[j] << 8));
             var1.sendProgressBarUpdate(this, 120, eCertainMode | (eCertainStatus << 8));
-            var1.sendProgressBarUpdate(this, 121, (ePowerPass ? 1 : 0) + (eSafeVoid ? 2 : 0));
+            var1.sendProgressBarUpdate(this, 121, (ePowerPass ? 1 : 0) + (eSafeVoid ? 2 : 0) + (allowedToWork ? 4 : 0));
         }
     }
 
@@ -85,6 +94,7 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
         } else if (par1 == 121) {
             this.ePowerPass = (par2 & 1) == 1;
             this.eSafeVoid = (par2 & 2) == 2;
+            this.allowedToWork = (par2 & 4) == 4;
         }
     }
 

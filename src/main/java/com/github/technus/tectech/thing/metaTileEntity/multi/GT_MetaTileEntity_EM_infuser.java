@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import static com.github.technus.tectech.elementalMatter.commonValues.multiCheckAt;
 import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
 import static gregtech.api.GregTech_API.mEUtoRF;
 
@@ -49,11 +50,6 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "EMDisplayPower.png");
-    }
-
-    @Override
     public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX;
         int yDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY;
@@ -81,23 +77,51 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public boolean EM_checkRecipe(ItemStack itemStack) {
-        if (getBaseMetaTileEntity().isAllowedToWork() && itemStack!=null && itemStack.stackSize==1) {
+        if (itemStack!=null && itemStack.stackSize==1) {
             Item ofThis=itemStack.getItem();
-            if(itemStack.getItem() instanceof IElectricItem){
-                doChargeItemStack((IElectricItem) ofThis,itemStack);
-            }else if(TecTech.hasCOFH && itemStack.getItem() instanceof IEnergyContainerItem){
-                doChargeItemStackRF((IEnergyContainerItem) ofThis,itemStack);
+            if(ofThis instanceof IElectricItem){
+                mEfficiencyIncrease = 10000;
+                mMaxProgresstime = 20;
+                eDismatleBoom=true;
+                return true;
+            }else if(TecTech.hasCOFH && ofThis instanceof IEnergyContainerItem){
+                mEfficiencyIncrease = 10000;
+                mMaxProgresstime = 20;
+                eDismatleBoom=true;
+                return true;
             }
-            mEfficiencyIncrease = 10000;
-            mMaxProgresstime = 20;
-            eDismatleBoom=true;
-        } else {
-            mEfficiencyIncrease = 0;
-            mMaxProgresstime = 0;
-            eDismatleBoom=false;
         }
+        mEfficiencyIncrease = 0;
+        mMaxProgresstime = 0;
+        eDismatleBoom=false;
         eAmpereFlow = 0;
-        return ePowerPass;
+        mEUt = 0;
+        return false;
+    }
+
+    @Override
+    public void EM_outputFunction() {
+        ItemStack itemStack=mInventory[1];
+        if (itemStack!=null && itemStack.stackSize==1) {
+            Item ofThis=itemStack.getItem();
+            if(ofThis instanceof IElectricItem){
+                if(doChargeItemStack((IElectricItem) ofThis,itemStack)==0)
+                    this.getBaseMetaTileEntity().disableWorking();
+                return;
+            }else if(TecTech.hasCOFH && ofThis instanceof IEnergyContainerItem){
+                if(doChargeItemStackRF((IEnergyContainerItem) ofThis,itemStack)==0)
+                    this.getBaseMetaTileEntity().disableWorking();
+                return;
+            }
+        }
+        this.getBaseMetaTileEntity().disableWorking();
+    }
+
+    @Override
+    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if ((aTick & 31) == 31) {
+            eSafeVoid=false;
+        }
     }
 
     @Override
@@ -111,33 +135,39 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
         };
     }
 
-    private void doChargeItemStack(IElectricItem item, ItemStack stack )
+    private long doChargeItemStack(IElectricItem item, ItemStack stack)
     {
         try {
             double euDiff=item.getMaxCharge(stack) - ElectricItem.manager.getCharge(stack);
             if(euDiff>0)this.setEUVar(this.getEUVar()-this.getEUVar()>>5);
-            this.setEUVar(
-                this.getEUVar()-(long)Math.ceil(
-                        ElectricItem.manager.charge(stack,
-                                Math.min(euDiff,this.getEUVar())
-                        ,item.getTier(stack),true,false)
-                ));
+            long remove=(long)Math.ceil(
+                    ElectricItem.manager.charge(stack,
+                            Math.min(euDiff,this.getEUVar())
+                            ,item.getTier(stack),true,false));
+            this.setEUVar(this.getEUVar()-remove);
+            if(this.getEUVar()<0)this.setEUVar(0);
+            return remove;
         } catch( Exception e ) {
             if(TecTech.ModConfig.DEBUG_MODE)
                 e.printStackTrace();
         }
+        return 0;
     }
 
-    private void doChargeItemStackRF(IEnergyContainerItem item,  ItemStack stack )
+    private long doChargeItemStackRF(IEnergyContainerItem item,  ItemStack stack )
     {
         try {
             long RF=Math.min(item.getMaxEnergyStored(stack)-item.getEnergyStored(stack),this.getEUVar()*mEUtoRF/100L);
             //if(RF>0)this.setEUVar(this.getEUVar()-this.getEUVar()>>10);
             RF=item.receiveEnergy(stack,RF>Integer.MAX_VALUE?Integer.MAX_VALUE:(int)RF,false);
-            this.setEUVar(this.getEUVar()-(RF*100L/mEUtoRF));
+            RF=RF*100L/mEUtoRF;
+            this.setEUVar(this.getEUVar()-RF);
+            if(this.getEUVar()<0)this.setEUVar(0);
+            return RF;
         } catch( Exception e ) {
             if (TecTech.ModConfig.DEBUG_MODE)
                 e.printStackTrace();
         }
+        return 0;
     }
 }

@@ -68,10 +68,13 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
             GL11.glColor4f(1f, 1f, 1f, 1f);
 
             if (((GT_Container_MultiMachineEM) mContainer).ePowerPass)
-                drawTexturedModalRect(x + 151, y + 25, 183, 25, 18, 18);
+                drawTexturedModalRect(x + 151, y + 23, 183, 23, 18, 18);
 
             if (((GT_Container_MultiMachineEM) mContainer).eSafeVoid)
-                drawTexturedModalRect(x + 151, y + 46, 183, 46, 18, 18);
+                drawTexturedModalRect(x + 151, y + 41, 183, 41, 18, 18);
+
+            if (((GT_Container_MultiMachineEM) mContainer).allowedToWork)
+                drawTexturedModalRect(x + 151, y + 57, 183, 57, 18, 18);
 
             x += 11;
             y += 96;

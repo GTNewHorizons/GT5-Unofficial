@@ -41,11 +41,6 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
     }
 
     @Override
-    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "EMDisplayPower.png");
-    }
-
-    @Override
     public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX;
         int yDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY;
@@ -97,14 +92,9 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
 
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if ((aTick % 20) == multiCheckAt) {
-            if (eSafeVoid) {
-                eSafeVoid = false;
-                if (aBaseMetaTileEntity.isAllowedToWork())
-                    aBaseMetaTileEntity.disableWorking();
-                else aBaseMetaTileEntity.enableWorking();
-            }
+        if ((aTick & 31) == 31) {
             ePowerPass = aBaseMetaTileEntity.isAllowedToWork();
+            eSafeVoid=false;
         }
     }
 
