@@ -24,6 +24,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.HashMap;
 
+import static com.github.technus.tectech.Util.isInputEqual;
 import static com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition.getBestUnstableIsotope;
 import static com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition.getFirstStableIsotope;
 import static gregtech.api.enums.GT_Values.V;

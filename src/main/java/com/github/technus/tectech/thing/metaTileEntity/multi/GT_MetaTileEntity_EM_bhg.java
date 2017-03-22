@@ -80,14 +80,14 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
 
     @Override
     public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return stuctureCheck(shape, blockType, blockMeta, 7, 7, 0, iGregTechTileEntity);
+        return EM_StructureCheck(shape, blockType, blockMeta, 7, 7, 0);
     }
 
     @Override
     public String[] getDescription() {
         return new String[]{
                 commonValues.tecMark,
-                "Singularity decay based power generation.",
+                "Singularity based power generation.",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Super unstable!!!"
         };
     }

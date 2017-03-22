@@ -10,7 +10,6 @@ import com.github.technus.tectech.thing.machineTT;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.gui.GT_Container_MultiMachineEM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.gui.GT_GUIContainer_MultiMachineEM;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -18,7 +17,6 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
@@ -33,6 +31,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 
+import static com.github.technus.tectech.Util.StuctureCheck;
 import static com.github.technus.tectech.elementalMatter.commonValues.*;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
@@ -161,6 +160,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         aNBT.setBoolean("ePass", ePowerPass);
         aNBT.setBoolean("eVoid", eSafeVoid);
         aNBT.setBoolean("eBoom", eDismatleBoom);
+        aNBT.setBoolean("eOK", mMachine);
 
         if (outputEM != null) {
             aNBT.setInteger("outputStackCount", outputEM.length);
@@ -211,6 +211,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         ePowerPass = aNBT.getBoolean("ePass");
         eSafeVoid = aNBT.getBoolean("eVoid");
         eDismatleBoom = aNBT.getBoolean("eBoom");
+        mMachine = aNBT.getBoolean("eOK");
 
         //Fix supermethod shit.
         mOutputItems = new ItemStack[aNBT.getInteger("eItemsOut")];
@@ -1205,79 +1206,13 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         return true;
     }
 
-    //Check Machine Structure based on string array array, ond offset of the controller
-    public static boolean stuctureCheck(String[][] structure,//0-9 casing, +- air no air, a-z ignore
-                                        Block[] blockType,//use numbers 0-9 for casing types
-                                        byte[] blockMeta,//use numbers 0-9 for casing types
-                                        int horizontalOffset, int verticalOffset, int depthOffset,
-                                        IGregTechTileEntity aBaseMetaTileEntity) {
-        //TE Rotation
-        byte facing = aBaseMetaTileEntity.getFrontFacing();
-
-        int x, y, z, a, c;//b is y no matter what
-
-        //perform your duties
-        c = -depthOffset;
-        for (String[] _structure : structure) {//front to back
-            y = verticalOffset;
-            for (String __structure : _structure) {//top to bottom
-                a = -horizontalOffset;
-                for (char block : __structure.toCharArray()) {//left to right
-                    if (block > '`') {//small characters allow to skip check a-1 skip, b-2 skips etc.
-                        a += block - '`';
-                    } else {
-                        //get x y z from rotation
-                        switch (facing) {//translation
-                            case 4:
-                                x = c;
-                                z = a;
-                                break;
-                            case 3:
-                                x = a;
-                                z = -c;
-                                break;
-                            case 5:
-                                x = -c;
-                                z = -a;
-                                break;
-                            case 2:
-                                x = -a;
-                                z = c;
-                                break;
-                            default:
-                                return false;
-                        }
-                        //Check block
-                        switch (block) {
-                            case '-'://must be air
-                                if (!aBaseMetaTileEntity.getAirOffset(x, y, z)) return false;
-                                break;
-                            case '+'://must not be air
-                                if (aBaseMetaTileEntity.getAirOffset(x, y, z)) return false;
-                                break;
-                            default: {//check for block (countable)
-                                int pointer = block - '0';
-                                //countable air -> net.minecraft.block.BlockAir
-                                if (aBaseMetaTileEntity.getBlockOffset(x, y, z) != blockType[pointer]) {
-                                    if (TecTech.ModConfig.DEBUG_MODE)
-                                        TecTech.Logger.info("Struct-block-error " + x + " " + y + " " + z + "/" + a + " " + c + "/" + aBaseMetaTileEntity.getBlockOffset(x, y, z) + " " + blockType[pointer]);
-                                    return false;
-                                }
-                                if (aBaseMetaTileEntity.getMetaIDOffset(x, y, z) != blockMeta[pointer]) {
-                                    if (TecTech.ModConfig.DEBUG_MODE)
-                                        TecTech.Logger.info("Struct-meta-id-error " + x + " " + y + " " + z + "/" + a + " " + c + "/" + aBaseMetaTileEntity.getMetaIDOffset(x, y, z) + " " + blockMeta[pointer]);
-                                    return false;
-                                }
-                            }
-                        }
-                        a++;//block in horizontal layer
-                    }
-                }
-                y--;//horizontal layer
-            }
-            c++;//depth
-        }
-        return true;
+    //can be used to check structures of multi-blocks larger than one chunk, but...
+    //ALL THE HATCHES AND THE CONTROLLER SHOULD BE IN ONE CHUNK OR IN LOADED CHUNKS
+    public final boolean EM_StructureCheck(String[][] structure,//0-9 casing, +- air no air, a-z ignore
+                                                     Block[] blockType,//use numbers 0-9 for casing types
+                                                     byte[] blockMeta,//use numbers 0-9 for casing types
+                                                     int horizontalOffset, int verticalOffset, int depthOffset){
+        return StuctureCheck(structure,blockType,blockMeta,horizontalOffset,verticalOffset,depthOffset,getBaseMetaTileEntity(),!mMachine);
     }
 
     @Override
@@ -1318,103 +1253,5 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         } catch (Exception e) {
             if (TecTech.ModConfig.DEBUG_MODE) e.printStackTrace();
         }
-    }
-
-    protected boolean isInputEqual(boolean aDecreaseStacksizeBySuccess, boolean aDontCheckStackSizes, FluidStack[] requiredFluidInputs, ItemStack[] requiredInputs, FluidStack[] givenFluidInputs, ItemStack... givenInputs) {
-        if (!GregTech_API.sPostloadFinished) return false;
-        if (requiredFluidInputs.length > 0 && givenFluidInputs == null) return false;
-        int amt;
-        for (FluidStack tFluid : requiredFluidInputs)
-            if (tFluid != null) {
-                boolean temp = true;
-                amt = tFluid.amount;
-                for (FluidStack aFluid : givenFluidInputs)
-                    if (aFluid != null && aFluid.isFluidEqual(tFluid)) {
-                        if (aDontCheckStackSizes) {
-                            temp = false;
-                            break;
-                        }
-                        amt -= aFluid.amount;
-                        if (amt < 1) {
-                            temp = false;
-                            break;
-                        }
-                    }
-                if (temp) return false;
-            }
-
-        if (requiredInputs.length > 0 && givenInputs == null) return false;
-        for (ItemStack tStack : requiredInputs) {
-            if (tStack != null) {
-                amt = tStack.stackSize;
-                boolean temp = true;
-                for (ItemStack aStack : givenInputs) {
-                    if ((GT_Utility.areUnificationsEqual(aStack, tStack, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, aStack), tStack, true))) {
-                        if (aDontCheckStackSizes) {
-                            temp = false;
-                            break;
-                        }
-                        amt -= aStack.stackSize;
-                        if (amt < 1) {
-                            temp = false;
-                            break;
-                        }
-                    }
-                }
-                if (temp) return false;
-            }
-        }
-
-        if (aDecreaseStacksizeBySuccess) {
-            if (givenFluidInputs != null) {
-                for (FluidStack tFluid : requiredFluidInputs) {
-                    if (tFluid != null) {
-                        amt = tFluid.amount;
-                        for (FluidStack aFluid : givenFluidInputs) {
-                            if (aFluid != null && aFluid.isFluidEqual(tFluid)) {
-                                if (aDontCheckStackSizes) {
-                                    aFluid.amount -= amt;
-                                    break;
-                                }
-                                if (aFluid.amount < amt) {
-                                    amt -= aFluid.amount;
-                                    aFluid.amount = 0;
-                                } else {
-                                    aFluid.amount -= amt;
-                                    amt = 0;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (givenInputs != null) {
-                for (ItemStack tStack : requiredInputs) {
-                    if (tStack != null) {
-                        amt = tStack.stackSize;
-                        for (ItemStack aStack : givenInputs) {
-                            if ((GT_Utility.areUnificationsEqual(aStack, tStack, true) || GT_Utility.areUnificationsEqual(GT_OreDictUnificator.get(false, aStack), tStack, true))) {
-                                if (aDontCheckStackSizes) {
-                                    aStack.stackSize -= amt;
-                                    break;
-                                }
-                                if (aStack.stackSize < amt) {
-                                    amt -= aStack.stackSize;
-                                    aStack.stackSize = 0;
-                                } else {
-                                    aStack.stackSize -= amt;
-                                    amt = 0;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return true;
     }
 }
