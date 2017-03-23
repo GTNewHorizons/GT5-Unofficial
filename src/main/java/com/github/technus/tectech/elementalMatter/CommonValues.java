@@ -5,7 +5,7 @@ import net.minecraft.util.EnumChatFormatting;
 /**
  * Created by danie_000 on 11.01.2017.
  */
-public final class commonValues {
+public final class CommonValues {
     public final static String tecMark =
             EnumChatFormatting.BLUE + "Tec" +
                     EnumChatFormatting.DARK_BLUE + "Tech" +

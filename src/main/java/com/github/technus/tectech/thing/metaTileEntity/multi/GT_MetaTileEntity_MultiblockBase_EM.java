@@ -5,7 +5,7 @@ import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionSt
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStack;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackTree;
 import com.github.technus.tectech.elementalMatter.classes.tElementalException;
-import com.github.technus.tectech.elementalMatter.commonValues;
+import com.github.technus.tectech.elementalMatter.CommonValues;
 import com.github.technus.tectech.thing.machineTT;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.gui.GT_Container_MultiMachineEM;
@@ -32,7 +32,7 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.ArrayList;
 
 import static com.github.technus.tectech.Util.StuctureCheck;
-import static com.github.technus.tectech.elementalMatter.commonValues.*;
+import static com.github.technus.tectech.elementalMatter.CommonValues.*;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
 
@@ -1218,7 +1218,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     @Override
     public String[] getDescription() {
         return new String[]{
-                commonValues.tecMark,
+                CommonValues.tecMark,
                 "Nothing special just override me."
         };
     }

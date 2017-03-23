@@ -1,6 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-import com.github.technus.tectech.elementalMatter.commonValues;
+import com.github.technus.tectech.elementalMatter.CommonValues;
 import com.github.technus.tectech.thing.machineTT;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.iConnectsToDataPipe;
 import gregtech.api.enums.Dyes;
@@ -16,7 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
-import static com.github.technus.tectech.elementalMatter.commonValues.moveAt;
+import static com.github.technus.tectech.elementalMatter.CommonValues.moveAt;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
 /**
@@ -143,7 +143,7 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector extends GT_MetaTileE
     @Override
     public String[] getDescription() {
         return new String[]{
-                commonValues.tecMark,
+                CommonValues.tecMark,
                 mDescription,
                 "High speed fibre optics connector.",
                 EnumChatFormatting.AQUA + "Must be painted to work"

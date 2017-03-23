@@ -2,7 +2,7 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import cofh.api.energy.IEnergyContainerItem;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.elementalMatter.commonValues;
+import com.github.technus.tectech.elementalMatter.CommonValues;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import ic2.api.item.ElectricItem;
@@ -124,7 +124,7 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     @Override
     public String[] getDescription() {
         return new String[]{
-                commonValues.tecMark,
+                CommonValues.tecMark,
                 "Power Transfer Extreme!",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Insanely fast charging!",
                 EnumChatFormatting.BLUE + "Doesn't work while broken!",

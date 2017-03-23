@@ -1,6 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.pipe;
 
-import com.github.technus.tectech.elementalMatter.commonValues;
+import com.github.technus.tectech.elementalMatter.CommonValues;
 import com.github.technus.tectech.thing.machineTT;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
@@ -91,7 +91,7 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements iConn
     @Override
     public String[] getDescription() {
         return new String[]{
-                commonValues.tecMark,
+                CommonValues.tecMark,
                 "Advanced data transmission",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Don't stare at the beam!",
                 EnumChatFormatting.AQUA + "Must be painted to work",

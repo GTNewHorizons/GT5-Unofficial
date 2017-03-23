@@ -3,7 +3,7 @@ package com.github.technus.tectech.thing.item;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackTree;
 import com.github.technus.tectech.elementalMatter.classes.tElementalException;
-import com.github.technus.tectech.elementalMatter.commonValues;
+import com.github.technus.tectech.elementalMatter.CommonValues;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalInstanceContainer;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -25,10 +25,10 @@ import static com.github.technus.tectech.auxiliary.Reference.MODID;
 /**
  * Created by Tec on 15.03.2017.
  */
-public class debug_container_EM extends Item {
-    public static debug_container_EM INSTANCE;
+public class DebugContainer_EM extends Item {
+    public static DebugContainer_EM INSTANCE;
 
-    debug_container_EM(){
+    DebugContainer_EM(){
         super();
         setMaxStackSize(1);
         setUnlocalizedName("em.debugContainer");
@@ -70,7 +70,7 @@ public class debug_container_EM extends Item {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
-        aList.add(commonValues.tecMark);
+        aList.add(CommonValues.tecMark);
         try {
             NBTTagCompound tNBT = aStack.getTagCompound();
             if (tNBT!=null && tNBT.hasKey("info")) {
@@ -83,7 +83,7 @@ public class debug_container_EM extends Item {
     }
 
     public static void run(){
-        INSTANCE=new debug_container_EM();
+        INSTANCE=new DebugContainer_EM();
         GameRegistry.registerItem(INSTANCE, INSTANCE.getUnlocalizedName());
     }
 

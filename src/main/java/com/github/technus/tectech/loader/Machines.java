@@ -1,16 +1,18 @@
 package com.github.technus.tectech.loader;
 
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.*;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Data;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_EM;
+import com.github.technus.tectech.thing.metaTileEntity.single.GT_MetaTileEntity_DebugStructureWriter;
 
 import static com.github.technus.tectech.thing.CustomItemList.*;
 
 /**
  * Created by danie_000 on 16.11.2016.
  */
-public class GT_Loader_Machines implements Runnable {
+public class Machines implements Runnable {
     public void run() {
         // ===================================================================================================
         // eM IN
@@ -189,6 +191,8 @@ public class GT_Loader_Machines implements Runnable {
         Machine_Multi_Scanner.set(new GT_MetaTileEntity_EM_scanner(12171, "multimachine.em.scanner", "Elemental Scanner").getStackForm(1L));
         Machine_Multi_Computer.set(new GT_MetaTileEntity_EM_computer(12172, "multimachine.em.computer", "Quantum Computer").getStackForm(1L));
         Machine_Multi_Switch.set(new GT_MetaTileEntity_EM_switch(12173, "multimachine.em.switch", "Network Switch With QoS").getStackForm(1L));
+
+        Machine_DebugWriter.set(new GT_MetaTileEntity_DebugStructureWriter(12179,"debug.tt.writer","Debug Structure Writer",15).getStackForm(1L));
 
         // ===================================================================================================
         // Hatches EM

@@ -7,7 +7,7 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_E
 /**
  * Created by danie_000 on 16.11.2016.
  */
-public class GT_Loader_Recipes implements Runnable {
+public class Recipes implements Runnable {
     public void run() {
         // ===================================================================================================
         // def init

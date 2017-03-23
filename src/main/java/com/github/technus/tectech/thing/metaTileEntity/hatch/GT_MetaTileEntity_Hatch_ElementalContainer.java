@@ -3,7 +3,7 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackTree;
 import com.github.technus.tectech.elementalMatter.classes.tElementalException;
-import com.github.technus.tectech.elementalMatter.commonValues;
+import com.github.technus.tectech.elementalMatter.CommonValues;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalInstanceContainer;
 import com.github.technus.tectech.thing.machineTT;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.iConnectsToEMpipe;
@@ -20,7 +20,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
-import static com.github.technus.tectech.elementalMatter.commonValues.*;
+import static com.github.technus.tectech.elementalMatter.CommonValues.*;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;
@@ -223,7 +223,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     @Override
     public String[] getDescription() {
         return new String[]{
-                commonValues.tecMark,
+                CommonValues.tecMark,
                 mDescription,
                 "Max stacks amount: " + EnumChatFormatting.AQUA + getMaxStacksCount(),
                 "Stack capacity: " + EnumChatFormatting.AQUA + getMaxStackSize(),

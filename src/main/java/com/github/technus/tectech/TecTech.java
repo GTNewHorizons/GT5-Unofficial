@@ -2,11 +2,11 @@ package com.github.technus.tectech;
 
 import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
-import com.github.technus.tectech.loader.GT_CustomLoader;
+import com.github.technus.tectech.loader.Main;
 import com.github.technus.tectech.proxy.CommonProxy;
 import com.github.technus.tectech.thing.block.QuantumGlass;
 import com.github.technus.tectech.thing.casing.GT_Container_CasingsTT;
-import com.github.technus.tectech.thing.item.debug_container_EM;
+import com.github.technus.tectech.thing.item.DebugContainer_EM;
 import com.github.technus.tectech.thing.machineTT;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -40,7 +40,7 @@ public class TecTech {
 
     public static LogHelper Logger = new LogHelper(Reference.MODID);
     private static IngameErrorLog Module_AdminErrorLogs = null;
-    public static GT_CustomLoader GTCustomLoader = null;
+    public static Main GTCustomLoader = null;
     public static TecTechConfig ModConfig;
     public static XSTR Rnd = null;
     public static CreativeTabs mainTab = null;
@@ -78,9 +78,9 @@ public class TecTech {
         hasCOFH=Loader.isModLoaded(Reference.COFHCORE);
 
         QuantumGlass.run();
-        debug_container_EM.run();
+        DebugContainer_EM.run();
 
-        GTCustomLoader = new GT_CustomLoader();
+        GTCustomLoader = new Main();
         GTCustomLoader.run();
         GTCustomLoader.run2();
 
@@ -88,7 +88,7 @@ public class TecTech {
             @SideOnly(Side.CLIENT)
             @Override
             public Item getTabIconItem() {
-                return debug_container_EM.INSTANCE;
+                return DebugContainer_EM.INSTANCE;
             }
 
             @Override
@@ -109,7 +109,7 @@ public class TecTech {
     public void RegisterThingsInTabs() {
         QuantumGlass.INSTANCE.setCreativeTab(mainTab);
         GT_Container_CasingsTT.sBlockCasingsTT.setCreativeTab(mainTab);
-        debug_container_EM.INSTANCE.setCreativeTab(mainTab);
+        DebugContainer_EM.INSTANCE.setCreativeTab(mainTab);
     }
 
     /**

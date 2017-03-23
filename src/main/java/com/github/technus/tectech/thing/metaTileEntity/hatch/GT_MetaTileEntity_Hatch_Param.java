@@ -1,6 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-import com.github.technus.tectech.elementalMatter.commonValues;
+import com.github.technus.tectech.elementalMatter.CommonValues;
 import com.github.technus.tectech.thing.machineTT;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Param;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Param;
@@ -175,7 +175,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
     @Override
     public String[] getDescription() {
         return new String[]{
-                commonValues.tecMark,
+                CommonValues.tecMark,
                 mDescription,
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "E=M*C^2"
         };

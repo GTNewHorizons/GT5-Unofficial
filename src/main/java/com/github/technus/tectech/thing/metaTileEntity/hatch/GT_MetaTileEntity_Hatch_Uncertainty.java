@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.elementalMatter.commonValues;
+import com.github.technus.tectech.elementalMatter.CommonValues;
 import com.github.technus.tectech.thing.machineTT;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Uncertainty;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Uncertainty;
@@ -166,7 +166,7 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
     @Override
     public String[] getDescription() {
         return new String[]{
-                commonValues.tecMark,
+                CommonValues.tecMark,
                 mDescription,
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Schrödinger equation in a box"
         };

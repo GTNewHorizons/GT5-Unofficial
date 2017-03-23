@@ -5,7 +5,7 @@ import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionSt
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStack;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackTree;
 import com.github.technus.tectech.elementalMatter.classes.tElementalException;
-import com.github.technus.tectech.elementalMatter.commonValues;
+import com.github.technus.tectech.elementalMatter.CommonValues;
 import com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition;
 import com.github.technus.tectech.elementalMatter.definitions.dHadronDefinition;
 import com.github.technus.tectech.elementalMatter.definitions.eLeptonDefinition;
@@ -80,7 +80,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
     @Override
     public String[] getDescription() {
         return new String[]{
-                commonValues.tecMark,
+                CommonValues.tecMark,
                 "Conveniently convert regular stuff into quantum form.",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "To make it more inconvenient."
         };

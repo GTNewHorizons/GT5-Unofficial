@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import static gregtech.api.enums.GT_Values.W;
 
 public enum CustomItemList implements IItemContainer {
+    Machine_DebugWriter,
     EMpipe,DATApipe,
     eM_dynamomulti4_UV, eM_dynamomulti16_UV, eM_dynamomulti64_UV,
     eM_dynamomulti4_UHV, eM_dynamomulti16_UHV, eM_dynamomulti64_UHV,
