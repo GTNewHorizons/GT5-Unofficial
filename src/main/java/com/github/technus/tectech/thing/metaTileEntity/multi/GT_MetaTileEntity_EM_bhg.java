@@ -3,6 +3,7 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 import com.github.technus.tectech.elementalMatter.CommonValues;
 import com.github.technus.tectech.thing.block.QuantumGlass;
 import com.github.technus.tectech.thing.casing.GT_Container_CasingsTT;
+import com.github.technus.tectech.thing.metaTileEntity.constructableTT;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -13,12 +14,13 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
+import static com.github.technus.tectech.Util.StuctureBuilder;
 import static gregtech.api.enums.GT_Values.E;
 
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_EM {
+public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_EM implements constructableTT {
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
     //Time dillatation - to slow down the explosion thing but REALLY REDUCE POWER OUTPUT
@@ -61,6 +63,11 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
 
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_EM_bhg(this.mName);
+    }
+
+    @Override
+    public void construct() {
+        StuctureBuilder(shape,blockType,blockMeta,7,7,0,this.getBaseMetaTileEntity());
     }
 
     @Override

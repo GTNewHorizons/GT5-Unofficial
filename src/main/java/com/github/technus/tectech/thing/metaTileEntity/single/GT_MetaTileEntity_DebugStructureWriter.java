@@ -10,17 +10,19 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.GT_RenderedTexture;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import static com.github.technus.tectech.Util.ReverseStructureCheck;
+import static com.github.technus.tectech.Util.StructureWriter;
 
 /**
  * Created by Tec on 23.03.2017.
  */
 public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_TieredMachineBlock {
+    private static Textures.BlockIcons.CustomIcon MARK;
     public short numbers[]=new short[6];
     public boolean size=false;
     public String[] result=new String[]{"Undefined"};
@@ -39,8 +41,14 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
     }
 
     @Override
+    public void registerIcons(IIconRegister aBlockIconRegister) {
+        super.registerIcons(aBlockIconRegister);
+        MARK = new Textures.BlockIcons.CustomIcon("iconsets/MARK");
+    }
+
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], (aSide != this.getBaseMetaTileEntity().getFrontFacing()) ? new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER_SIDES) : aActive ? new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE) : new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER)};
+        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], (aSide != this.getBaseMetaTileEntity().getFrontFacing()) ? new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER_SIDES) : new GT_RenderedTexture(MARK)};
     }
 
     @Override
@@ -90,7 +98,7 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if(aBaseMetaTileEntity.isAllowedToWork()){
-            result=ReverseStructureCheck(this.getBaseMetaTileEntity(),numbers[0],numbers[1],numbers[2],numbers[3],numbers[4],numbers[5]);
+            result= StructureWriter(this.getBaseMetaTileEntity(),numbers[0],numbers[1],numbers[2],numbers[3],numbers[4],numbers[5]);
             if(TecTech.ModConfig.DEBUG_MODE)
                 for(String s:result)
                     TecTech.Logger.info(s);

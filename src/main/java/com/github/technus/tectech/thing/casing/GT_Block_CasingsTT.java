@@ -23,7 +23,7 @@ import java.util.List;
 public class GT_Block_CasingsTT
         extends GT_Block_Casings_Abstract {
 
-    private static IIcon eM0s,eM1s,eM2s,eM0,eM1,eM2,eM3, eM4, eM5, eM6, eM7, eM8, eM9;
+    private static IIcon eM0s,eM1s,eM2s,eM0,eM1,eM2,eM3, eM4, eM5, eM6s, eM6, eM7, eM8, eM9;
     private static IIcon debug[] = new IIcon[6];
 
     public GT_Block_CasingsTT() {
@@ -42,8 +42,9 @@ public class GT_Block_CasingsTT
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Molecular Containment Coil");//adding
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Teleportation Casing");//adding
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Spacetime Altering Casing");//adding
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Collider Hollow Casing");//adding
 
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Debug Sides");//adding
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Debug Sides");//adding
 
 
         CustomItemList.eM_computer.set(new ItemStack(this, 1, 0));//adding
@@ -55,27 +56,28 @@ public class GT_Block_CasingsTT
         CustomItemList.eM_Coil.set(new ItemStack(this, 1, 6));//adding
         CustomItemList.eM_Tele.set(new ItemStack(this, 1, 7));//adding
         CustomItemList.eM_TimeSpaceWarp.set(new ItemStack(this, 1, 8));
+        CustomItemList.eM_Hollow.set(new ItemStack(this, 1, 9));
 
-        CustomItemList.debugBlock.set(new ItemStack(this, 1, 9));
+        CustomItemList.debugBlock.set(new ItemStack(this, 1, 10));
     }
 
     @Override
     public void registerBlockIcons(IIconRegister aIconRegister) {
         //super.registerBlockIcons(aIconRegister);
-        eM0s = aIconRegister.registerIcon("gregtech:iconsets/EM_PC");
-        eM1s = aIconRegister.registerIcon("gregtech:iconsets/EM_PC_ADV");
-        eM2s = aIconRegister.registerIcon("gregtech:iconsets/EM_PC_VENT");
         eM0 = aIconRegister.registerIcon("gregtech:iconsets/EM_PC_NONSIDE");
+        eM0s = aIconRegister.registerIcon("gregtech:iconsets/EM_PC");
         eM1 = aIconRegister.registerIcon("gregtech:iconsets/EM_PC_ADV_NONSIDE");
+        eM1s = aIconRegister.registerIcon("gregtech:iconsets/EM_PC_ADV");
         eM2 = aIconRegister.registerIcon("gregtech:iconsets/EM_PC_VENT_NONSIDE");
+        eM2s = aIconRegister.registerIcon("gregtech:iconsets/EM_PC_VENT");
         eM3 = aIconRegister.registerIcon("gregtech:iconsets/EM_CASING");
         eM4 = aIconRegister.registerIcon("gregtech:iconsets/EM_FIELD");
         eM5 = aIconRegister.registerIcon("gregtech:iconsets/EM_FIELD_CASING");
-        eM6 = aIconRegister.registerIcon("gregtech:iconsets/EM_COIL");
-        eM7 = aIconRegister.registerIcon("gregtech:iconsets/EM_COIL_NONSIDE");
-        eM8 = aIconRegister.registerIcon("gregtech:iconsets/EM_TELE");
-        eM8 = aIconRegister.registerIcon("gregtech:iconsets/EM_TELE");
-        eM9 = aIconRegister.registerIcon("gregtech:iconsets/EM_TIMESPACE");
+        eM6 = aIconRegister.registerIcon("gregtech:iconsets/EM_COIL_NONSIDE");
+        eM6s = aIconRegister.registerIcon("gregtech:iconsets/EM_COIL");
+        eM7 = aIconRegister.registerIcon("gregtech:iconsets/EM_TELE");
+        eM8 = aIconRegister.registerIcon("gregtech:iconsets/EM_TIMESPACE");
+        eM9 = aIconRegister.registerIcon("gregtech:iconsets/EM_HOLLOW");
 
         debug[0] = aIconRegister.registerIcon("gregtech:iconsets/DEBUG_0");
         debug[1] = aIconRegister.registerIcon("gregtech:iconsets/DEBUG_1");
@@ -103,13 +105,15 @@ public class GT_Block_CasingsTT
             case 5:
                 return eM5;
             case 6:
-                if (aSide < 2) return eM7;
-                return eM6;
+                if (aSide < 2) return eM6;
+                return eM6s;
             case 7:
-                return eM8;
+                return eM7;
             case 8:
-                return eM9;
+                return eM8;
             case 9:
+                return eM9;
+            case 10:
                 return debug[aSide];
             default:
                 return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
@@ -128,7 +132,7 @@ public class GT_Block_CasingsTT
 
     @Override
     public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
-        for (int i = 0; i <= 9; i++) {
+        for (int i = 0; i <= 10; i++) {
             aList.add(new ItemStack(aItem, 1, i));
         }
     }

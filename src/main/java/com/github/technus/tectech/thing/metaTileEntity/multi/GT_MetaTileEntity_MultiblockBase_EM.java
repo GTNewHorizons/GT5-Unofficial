@@ -1,11 +1,11 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.elementalMatter.CommonValues;
 import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStack;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStack;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackTree;
 import com.github.technus.tectech.elementalMatter.classes.tElementalException;
-import com.github.technus.tectech.elementalMatter.CommonValues;
 import com.github.technus.tectech.thing.machineTT;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.gui.GT_Container_MultiMachineEM;
@@ -31,7 +31,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 
-import static com.github.technus.tectech.Util.StuctureCheck;
+import static com.github.technus.tectech.Util.StuctureChecker;
 import static com.github.technus.tectech.elementalMatter.CommonValues.*;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
@@ -1212,7 +1212,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                                      Block[] blockType,//use numbers 0-9 for casing types
                                                      byte[] blockMeta,//use numbers 0-9 for casing types
                                                      int horizontalOffset, int verticalOffset, int depthOffset){
-        return StuctureCheck(structure,blockType,blockMeta,horizontalOffset,verticalOffset,depthOffset,getBaseMetaTileEntity(),!mMachine);
+        return StuctureChecker(structure,blockType,blockMeta,horizontalOffset,verticalOffset,depthOffset,getBaseMetaTileEntity(),!mMachine);
     }
 
     @Override

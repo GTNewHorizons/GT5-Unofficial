@@ -1,3 +1,4 @@
 itemGroup.TecTech=TecTech Interdimensional
 tile.quantumGlass.name=Quantum Glass
 item.em.debugContainer.name=Debug EM Container
+item.em.debugBuilder.name=Debug Builder

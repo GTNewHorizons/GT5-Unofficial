@@ -6,6 +6,7 @@ import com.github.technus.tectech.loader.Main;
 import com.github.technus.tectech.proxy.CommonProxy;
 import com.github.technus.tectech.thing.block.QuantumGlass;
 import com.github.technus.tectech.thing.casing.GT_Container_CasingsTT;
+import com.github.technus.tectech.thing.item.DebugBuilder;
 import com.github.technus.tectech.thing.item.DebugContainer_EM;
 import com.github.technus.tectech.thing.machineTT;
 import cpw.mods.fml.common.Loader;
@@ -79,6 +80,7 @@ public class TecTech {
 
         QuantumGlass.run();
         DebugContainer_EM.run();
+        DebugBuilder.run();
 
         GTCustomLoader = new Main();
         GTCustomLoader.run();
@@ -104,12 +106,14 @@ public class TecTech {
 
         RegisterThingsInTabs();
         if (Loader.isModLoaded("dreamcraft")) ;//TODO init recipes for GTNH coremod
+        else ;//TODO init recipes for NON-GTNH version
     }
 
     public void RegisterThingsInTabs() {
         QuantumGlass.INSTANCE.setCreativeTab(mainTab);
         GT_Container_CasingsTT.sBlockCasingsTT.setCreativeTab(mainTab);
         DebugContainer_EM.INSTANCE.setCreativeTab(mainTab);
+        DebugBuilder.INSTANCE.setCreativeTab(mainTab);
     }
 
     /**

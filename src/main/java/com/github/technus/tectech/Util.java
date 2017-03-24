@@ -12,8 +12,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -37,17 +35,18 @@ public class Util {
 
     //Check Machine Structure based on string[][] (effectively char[][][]), ond offset of the controller
     //This only checks for REGULAR BLOCKS!
-    public static boolean StuctureCheck(String[][] structure,//0-9 casing, +- air no air, a... ignore 'a'-CHAR-1 blocks
-                                        Block[] blockType,//use numbers 0-9 for casing types
-                                        byte[] blockMeta,//use numbers 0-9 for casing types
-                                        int horizontalOffset, int verticalOffset, int depthOffset,
-                                        IGregTechTileEntity aBaseMetaTileEntity,
-                                        boolean forceCheck) {
+    public static boolean StuctureChecker(String[][] structure,//0-9 casing, +- air no air, a... ignore 'a'-CHAR-1 blocks
+                                          Block[] blockType,//use numbers 0-9 for casing types
+                                          byte[] blockMeta,//use numbers 0-9 for casing types
+                                          int horizontalOffset, int verticalOffset, int depthOffset,
+                                          IGregTechTileEntity aBaseMetaTileEntity,
+                                          boolean forceCheck) {
         //TE Rotation
         byte facing = aBaseMetaTileEntity.getFrontFacing();
         World world=aBaseMetaTileEntity.getWorld();
+        if(world.isRemote)return false;
 
-        int x, y, z, a, b, c, yPos;
+        int x, y, z, a, b, c;
         //a,b,c - relative to block face!
         //x,y,z - relative to block position on map!
         //yPos  - absolute height of checked block
@@ -64,41 +63,41 @@ public class Util {
                     } else {
                         //get x y z from rotation
                         switch (facing) {//translation
-                            case 4: x = +c; z = +a; y = +b; break;
-                            case 3: x = +a; z = -c; y = +b; break;
-                            case 5: x = -c; z = -a; y = +b; break;
-                            case 2: x = -a; z = +c; y = +b; break;
+                            case 4: x = aBaseMetaTileEntity.getXCoord()+c; z = aBaseMetaTileEntity.getZCoord()+a; y = aBaseMetaTileEntity.getYCoord()+b; break;
+                            case 3: x = aBaseMetaTileEntity.getXCoord()+a; z = aBaseMetaTileEntity.getZCoord()-c; y = aBaseMetaTileEntity.getYCoord()+b; break;
+                            case 5: x = aBaseMetaTileEntity.getXCoord()-c; z = aBaseMetaTileEntity.getZCoord()-a; y = aBaseMetaTileEntity.getYCoord()+b; break;
+                            case 2: x = aBaseMetaTileEntity.getXCoord()-a; z = aBaseMetaTileEntity.getZCoord()+c; y = aBaseMetaTileEntity.getYCoord()+b; break;
                             //Things get odd if the block faces up or down...
-                            case 1: x = +a; y = -c; z = +b; break;//similar to 3
-                            case 0: x = -a; y = +c; z = -b; break;//similar to 2
+                            case 1: x = aBaseMetaTileEntity.getXCoord()+a; z = aBaseMetaTileEntity.getZCoord()+b; y = aBaseMetaTileEntity.getYCoord()-c; break;//similar to 3
+                            case 0: x = aBaseMetaTileEntity.getXCoord()-a; z = aBaseMetaTileEntity.getZCoord()-b; y = aBaseMetaTileEntity.getYCoord()+c; break;//similar to 2
                             default: return false;
                         }
+
                         //that must be here since in some cases other axis (b,c) controls y
-                        yPos=aBaseMetaTileEntity.getYCoord()+y;
-                        if(yPos<0 || yPos>=256) return false;
+                        if(y<0 || y>=256) return false;
 
                         //Check block
                         if (world.blockExists(x,y,z)) {//this actually checks if the chunk is loaded at this pos
                             switch (block) {
                                 case '-'://must be air
-                                    if (getBlockOffset(aBaseMetaTileEntity, x, y, z, world).getMaterial() != Material.air)
+                                    if (world.getBlock(x, y, z).getMaterial() != Material.air)
                                         return false;
                                     break;
                                 case '+'://must not be air
-                                    if (getBlockOffset(aBaseMetaTileEntity, x, y, z, world).getMaterial() == Material.air)
+                                    if (world.getBlock(x, y, z).getMaterial() == Material.air)
                                         return false;
                                     break;
                                 default: {//check for block (countable)
                                     int pointer = block - '0';
                                     //countable air -> net.minecraft.block.BlockAir
-                                    if (getBlockOffset(aBaseMetaTileEntity,x,y,z,world) != blockType[pointer]) {
+                                    if (world.getBlock(x, y, z) != blockType[pointer]) {
                                         if (TecTech.ModConfig.DEBUG_MODE)
-                                            TecTech.Logger.info("Struct-block-error " + x + " " + y + " " + z + "/" + a + " " + c + "/" + getBlockOffset(aBaseMetaTileEntity,x,y,z,world) + " " + blockType[pointer]);
+                                            TecTech.Logger.info("Struct-block-error " + x + " " + y + " " + z + "/" + a + " " + c + "/" + world.getBlock(x, y, z) + " " + blockType[pointer]);
                                         return false;
                                     }
-                                    if (getMetaIDOffset(aBaseMetaTileEntity,x,y,z,world) != blockMeta[pointer]) {
+                                    if (world.getBlockMetadata(x, y, z) != blockMeta[pointer]) {
                                         if (TecTech.ModConfig.DEBUG_MODE)
-                                            TecTech.Logger.info("Struct-meta-id-error " + x + " " + y + " " + z + "/" + a + " " + c + "/" + getMetaIDOffset(aBaseMetaTileEntity,x,y,z,world) + " " + blockMeta[pointer]);
+                                            TecTech.Logger.info("Struct-meta-id-error " + x + " " + y + " " + z + "/" + a + " " + c + "/" + world.getBlockMetadata(x, y, z) + " " + blockMeta[pointer]);
                                         return false;
                                     }
                                 }
@@ -114,16 +113,81 @@ public class Util {
         return true;
     }
 
-    public static String[] ReverseStructureCheck(IGregTechTileEntity aBaseMetaTileEntity,
-                                         int horizontalOffset, int verticalOffset, int depthOffset,
-                                         int horizontalSize, int verticalSize, int depthSize){
+    public static boolean StuctureBuilder(String[][] structure,//0-9 casing, +- air no air, a... ignore 'a'-CHAR-1 blocks
+                                        Block[] blockType,//use numbers 0-9 for casing types
+                                        byte[] blockMeta,//use numbers 0-9 for casing types
+                                        int horizontalOffset, int verticalOffset, int depthOffset,
+                                        IGregTechTileEntity aBaseMetaTileEntity) {
         //TE Rotation
         byte facing = aBaseMetaTileEntity.getFrontFacing();
         World world=aBaseMetaTileEntity.getWorld();
+        if(world.isRemote)return false;
+
+        int x, y, z, a, b, c;
+        //a,b,c - relative to block face!
+        //x,y,z - relative to block position on map!
+
+        //perform your duties
+        c = -depthOffset;
+        for (String[] _structure : structure) {//front to back
+            b = verticalOffset;
+            for (String __structure : _structure) {//top to bottom
+                a = -horizontalOffset;
+                for (char block : __structure.toCharArray()) {//left to right
+                    if (block > '`') {//characters allow to skip check a-1 skip, b-2 skips etc.
+                        a += block - '`';
+                    } else {
+                        //get x y z from rotation
+                        switch (facing) {//translation
+                            case 4: x = aBaseMetaTileEntity.getXCoord()+c; z = aBaseMetaTileEntity.getZCoord()+a; y = aBaseMetaTileEntity.getYCoord()+b; break;
+                            case 3: x = aBaseMetaTileEntity.getXCoord()+a; z = aBaseMetaTileEntity.getZCoord()-c; y = aBaseMetaTileEntity.getYCoord()+b; break;
+                            case 5: x = aBaseMetaTileEntity.getXCoord()-c; z = aBaseMetaTileEntity.getZCoord()-a; y = aBaseMetaTileEntity.getYCoord()+b; break;
+                            case 2: x = aBaseMetaTileEntity.getXCoord()-a; z = aBaseMetaTileEntity.getZCoord()+c; y = aBaseMetaTileEntity.getYCoord()+b; break;
+                            //Things get odd if the block faces up or down...
+                            case 1: x = aBaseMetaTileEntity.getXCoord()+a; z = aBaseMetaTileEntity.getZCoord()+b; y = aBaseMetaTileEntity.getYCoord()-c; break;//similar to 3
+                            case 0: x = aBaseMetaTileEntity.getXCoord()-a; z = aBaseMetaTileEntity.getZCoord()-b; y = aBaseMetaTileEntity.getYCoord()+c; break;//similar to 2
+                            default: return false;
+                        }
+
+                        //that must be here since in some cases other axis (b,c) controls y
+                        if(y<0 || y>=256) return false;
+
+                        //Check block
+                        if (world.blockExists(x,y,z)) {//this actually checks if the chunk is loaded
+                            switch (block) {
+                                case '-'://must be air
+                                    world.setBlock(x,y,z,Blocks.air,0,3);
+                                    break;
+                                case '+'://must not be air
+                                    world.setBlock(x,y,z,Blocks.glass,0,3);
+                                default: {//check for block (countable)
+                                    int pointer = block - '0';
+                                    //countable air -> net.minecraft.block.BlockAir
+                                    world.setBlock(x,y,z,blockType[pointer],blockMeta[pointer],3);
+                                }
+                            }
+                        }
+                        a++;//block in horizontal layer
+                    }
+                }
+                b--;//horizontal layer
+            }
+            c++;//depth
+        }
+        return true;
+    }
+
+    public static String[] StructureWriter(IGregTechTileEntity aBaseMetaTileEntity,
+                                           int horizontalOffset, int verticalOffset, int depthOffset,
+                                           int horizontalSize, int verticalSize, int depthSize){
+        //TE Rotation
+        byte facing = aBaseMetaTileEntity.getFrontFacing();
+        World world=aBaseMetaTileEntity.getWorld();
+        if(world.isRemote)return new String[]{"Not at Client m8"};
 
         ItemStack[] array=new ItemStack[10];
 
-        int x, y, z, a, b, c,yPos;
+        int x, y, z, a, b, c;
         //a,b,c - relative to block face!
         //x,y,z - relative to block position on map!
         //yPos  - absolute height of checked block
@@ -137,21 +201,22 @@ public class Util {
                 for (int az=0;az<horizontalSize;az++) {//left to right
                     //get x y z from rotation
                     switch (facing) {//translation
-                        case 4: x = +c; z = +a; y = +b; break;
-                        case 3: x = +a; z = -c; y = +b; break;
-                        case 5: x = -c; z = -a; y = +b; break;
-                        case 2: x = -a; z = +c; y = +b; break;
+                        case 4: x = aBaseMetaTileEntity.getXCoord()+c; z = aBaseMetaTileEntity.getZCoord()+a; y = aBaseMetaTileEntity.getYCoord()+b; break;
+                        case 3: x = aBaseMetaTileEntity.getXCoord()+a; z = aBaseMetaTileEntity.getZCoord()-c; y = aBaseMetaTileEntity.getYCoord()+b; break;
+                        case 5: x = aBaseMetaTileEntity.getXCoord()-c; z = aBaseMetaTileEntity.getZCoord()-a; y = aBaseMetaTileEntity.getYCoord()+b; break;
+                        case 2: x = aBaseMetaTileEntity.getXCoord()-a; z = aBaseMetaTileEntity.getZCoord()+c; y = aBaseMetaTileEntity.getYCoord()+b; break;
                         //Things get odd if the block faces up or down...
-                        case 1: x = +a; y = -c; z = +b; break;//similar to 3
-                        case 0: x = -a; y = +c; z = -b; break;//similar to 2
-                        default: return new String[]{"Invalid facing"};
+                        case 1: x = aBaseMetaTileEntity.getXCoord()+a; z = aBaseMetaTileEntity.getZCoord()+b; y = aBaseMetaTileEntity.getYCoord()-c; break;//similar to 3
+                        case 0: x = aBaseMetaTileEntity.getXCoord()-a; z = aBaseMetaTileEntity.getZCoord()-b; y = aBaseMetaTileEntity.getYCoord()+c; break;//similar to 2
+                        default: return new String[]{"Invalid rotation"};
                     }
-                    //that must be here since in some cases other axis (a,b,c) controls y
-                    yPos=aBaseMetaTileEntity.getYCoord()+y;
-                    if(yPos<0 || yPos>=256) return new String[]{"Invalid position"};
+
+                    //that must be here since in some cases other axis (b,c) controls y
+                    if(y<0 || y>=256) return new String[]{"Invalid position"};
+
                     //Check block
-                    Block block=getBlockOffset(aBaseMetaTileEntity,x,y,z,world);
-                    int meta=getMetaIDOffset(aBaseMetaTileEntity,x,y,z,world);
+                    Block block=world.getBlock(x,y,z);
+                    int meta=world.getBlockMetadata(x,y,z);
 
                     if(!block.hasTileEntity(meta) && block.getMaterial()!=Material.air) {
                         boolean err=true;
@@ -178,10 +243,24 @@ public class Util {
 
         List<String> output=new ArrayList<>();
 
-        output.add("Block[] MetaID[]");
+        output.add("Offsets: "+horizontalOffset+" "+verticalOffset+" "+depthOffset);
+        output.add("Sizes: "+horizontalSize+" "+verticalSize+" "+depthSize);
         output.add("");
-        for(ItemStack is:array){
-            if(is!=null) output.add(is.getUnlocalizedName()+" "+is.getItemDamage());
+
+        output.add("ID[]: Name[]");
+        output.add("");
+        for(int i=0;i<array.length;i++){
+            if(array[i]!=null) {
+                output.add(i+": "+array[i].getDisplayName());
+            }
+        }
+        output.add("");
+        output.add("ID[]: Block[] BlockMetaID[]");
+        output.add("");
+        for(int i=0;i<array.length;i++){
+            if(array[i]!=null) {
+                output.add(i+": "+array[i].getItem().getUnlocalizedName()+" "+array[i].getItemDamage());
+            }
         }
         output.add("");
         output.add("String[][]");
@@ -196,22 +275,19 @@ public class Util {
                 for (int az=0;az<horizontalSize;az++) {//left to right
                     //get x y z from rotation
                     switch (facing) {//translation
-                        case 4: x = +c; z = +a; y = +b; break;
-                        case 3: x = +a; z = -c; y = +b; break;
-                        case 5: x = -c; z = -a; y = +b; break;
-                        case 2: x = -a; z = +c; y = +b; break;
+                        case 4: x = aBaseMetaTileEntity.getXCoord()+c; z = aBaseMetaTileEntity.getZCoord()+a; y = aBaseMetaTileEntity.getYCoord()+b; break;
+                        case 3: x = aBaseMetaTileEntity.getXCoord()+a; z = aBaseMetaTileEntity.getZCoord()-c; y = aBaseMetaTileEntity.getYCoord()+b; break;
+                        case 5: x = aBaseMetaTileEntity.getXCoord()-c; z = aBaseMetaTileEntity.getZCoord()-a; y = aBaseMetaTileEntity.getYCoord()+b; break;
+                        case 2: x = aBaseMetaTileEntity.getXCoord()-a; z = aBaseMetaTileEntity.getZCoord()+c; y = aBaseMetaTileEntity.getYCoord()+b; break;
                         //Things get odd if the block faces up or down...
-                        case 1: x = +a; y = -c; z = +b; break;//similar to 3
-                        case 0: x = -a; y = +c; z = -b; break;//similar to 2
-                        default: return new String[]{"Invalid facing"};
+                        case 1: x = aBaseMetaTileEntity.getXCoord()+a; z = aBaseMetaTileEntity.getZCoord()+b; y = aBaseMetaTileEntity.getYCoord()-c; break;//similar to 3
+                        case 0: x = aBaseMetaTileEntity.getXCoord()-a; z = aBaseMetaTileEntity.getZCoord()-b; y = aBaseMetaTileEntity.getYCoord()+c; break;//similar to 2
+                        default: return new String[]{"Invalid rotation"};
                     }
-                    //that must be here since in some cases other axis (a,b,c) controls y
-                    //yPos=aBaseMetaTileEntity.getYCoord()+y;
-                    //if(yPos<0 || yPos>=256) return new String[]{"Invalid position"};
-                    //Check block
 
-                    Block block=getBlockOffset(aBaseMetaTileEntity,x,y,z,world);
-                    int meta=getMetaIDOffset(aBaseMetaTileEntity,x,y,z,world);
+                    //Check block
+                    Block block=world.getBlock(x,y,z);
+                    int meta=world.getBlockMetadata(x,y,z);
 
                     if(a==0 && b==0 && c==0){
                         line+='X';
@@ -239,14 +315,6 @@ public class Util {
             c++;//depth
         }
         return output.toArray(new String[0]);
-    }
-
-    private static Block getBlockOffset(IGregTechTileEntity a,int x,int y,int z,World w){
-        return w.getBlock(a.getXCoord()+x,a.getYCoord()+y,a.getZCoord()+z);
-    }
-
-    private static int getMetaIDOffset(IGregTechTileEntity a,int x,int y,int z,World w){
-        return w.getBlockMetadata(a.getXCoord()+x,a.getYCoord()+y,a.getZCoord()+z);
     }
 
     public static boolean isInputEqual(boolean aDecreaseStacksizeBySuccess, boolean aDontCheckStackSizes, FluidStack[] requiredFluidInputs, ItemStack[] requiredInputs, FluidStack[] givenFluidInputs, ItemStack... givenInputs) {

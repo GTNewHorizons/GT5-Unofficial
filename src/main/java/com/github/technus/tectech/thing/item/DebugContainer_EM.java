@@ -1,9 +1,9 @@
 package com.github.technus.tectech.thing.item;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.elementalMatter.CommonValues;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackTree;
 import com.github.technus.tectech.elementalMatter.classes.tElementalException;
-import com.github.technus.tectech.elementalMatter.CommonValues;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalInstanceContainer;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -61,8 +61,8 @@ public class DebugContainer_EM extends Item {
                         tNBT.setTag("content", content.toNBT());
                         content.clear();
                     }
+                    return true;
                 }
-                return true;
             }
         }
         return aPlayer instanceof EntityPlayerMP;
