@@ -31,20 +31,27 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 		return 0;
 	}
 
+	protected boolean canBreak = true;
 	protected final int colour;
 	protected final String materialName;
 	protected final String displayName;
 	public boolean isValid = true;
 	private final Pair<?, ?> enchantment;
 
-	public MultiPickaxeBase(final String unlocalizedName, final ToolMaterial material, final int materialDurability, final int colour, final Object enchant) {
+	public MultiPickaxeBase(final String unlocalizedName, final ToolMaterial material, final long materialDurability, final int colour, final Object enchant) {
 		super(Utils.sanitizeString(unlocalizedName), material);
 		this.setUnlocalizedName(Utils.sanitizeString(unlocalizedName));
 		//this.setTextureName(CORE.MODID + ":" + "itemPickaxe");
 		this.setTextureName("minecraft"+":"+"iron_pickaxe");
 		this.FACING_HORIZONTAL=true;
 		this.setMaxStackSize(1);
-		this.setMaxDamage(materialDurability*3);
+		if ((materialDurability*3) <= Integer.MAX_VALUE){
+			this.setMaxDamage((int) (materialDurability*3));			
+		}
+		else {
+			this.setMaxDamage(Integer.MAX_VALUE);
+			this.canBreak = false;
+		}
 		this.colour = colour;
 		this.materialName = material.name();
 		this.displayName = unlocalizedName;
@@ -132,25 +139,6 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 	@Override
 	public String getItemStackDisplayName(final ItemStack iStack) {
 		return this.displayName;
-		/*String name;
-		if (getUnlocalizedName().toLowerCase().contains("wood")){
-			name = "Wooden";
-		}
-		else if (getUnlocalizedName().toLowerCase().contains("cobblestone")){
-			name = "Cobblestone";
-		}
-		else if (getUnlocalizedName().toLowerCase().contains("iron")){
-			name = "Iron";
-		}
-		else if (getUnlocalizedName().toLowerCase().contains("gold")){
-			name = "Gold";
-		}
-		else if (getUnlocalizedName().toLowerCase().contains("diamond")){
-			name = "Diamond";
-		}
-		else {
-		}
-		return name+" Multipickaxe";*/
 	}
 
 	@Override
@@ -230,12 +218,16 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 
 	@Override
 	public void damageItem(final ItemStack item, final int damage, final EntityPlayer localPlayer){
-		item.damageItem(damage, localPlayer);
+		if (this.canBreak){
+			item.damageItem(damage, localPlayer);
+		}
 	}
 
 	@Override
 	public void setItemDamage(final ItemStack item, final int damage){
-		item.setItemDamage(damage-1);
+		if (this.canBreak){
+			item.setItemDamage(damage-1);			
+		}
 	}
 
 
@@ -295,5 +287,21 @@ public class MultiPickaxeBase extends StaballoyPickaxe{
 		}
 
 	}
+	
+	
+	/**
+	 * 
+	 * Time to Override Minecraft stupid mechanics, allowing unbreakable stuff.
+	 * 
+	 */
 
+    public boolean isDamageable(){
+        if (this.getMaxDamage() > 0 && !this.hasSubtypes){
+        	if (this.canBreak){
+        		return true;
+        	}
+        }
+        return false;
+    }
+	
 }
