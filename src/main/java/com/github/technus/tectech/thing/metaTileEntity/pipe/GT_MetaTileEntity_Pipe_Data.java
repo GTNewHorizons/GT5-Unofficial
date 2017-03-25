@@ -95,7 +95,7 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements iConn
                 "Advanced data transmission",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Don't stare at the beam!",
                 EnumChatFormatting.AQUA + "Must be painted to work",
-                EnumChatFormatting.AQUA + "Do not cross,split or turn"
+                EnumChatFormatting.AQUA + "Do not cross or split"
         };
     }
 

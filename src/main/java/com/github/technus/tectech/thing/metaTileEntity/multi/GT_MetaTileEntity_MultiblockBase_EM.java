@@ -31,7 +31,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 
-import static com.github.technus.tectech.Util.StuctureChecker;
+import static com.github.technus.tectech.Util.StructureChecker;
 import static com.github.technus.tectech.elementalMatter.CommonValues.*;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
@@ -1212,7 +1212,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                                      Block[] blockType,//use numbers 0-9 for casing types
                                                      byte[] blockMeta,//use numbers 0-9 for casing types
                                                      int horizontalOffset, int verticalOffset, int depthOffset){
-        return StuctureChecker(structure,blockType,blockMeta,horizontalOffset,verticalOffset,depthOffset,getBaseMetaTileEntity(),!mMachine);
+        return StructureChecker(structure,blockType,blockMeta,horizontalOffset,verticalOffset,depthOffset,getBaseMetaTileEntity(),!mMachine);
     }
 
     @Override

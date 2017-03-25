@@ -35,12 +35,12 @@ public class Util {
 
     //Check Machine Structure based on string[][] (effectively char[][][]), ond offset of the controller
     //This only checks for REGULAR BLOCKS!
-    public static boolean StuctureChecker(String[][] structure,//0-9 casing, +- air no air, A... ignore 'A'-CHAR-1 blocks
-                                          Block[] blockType,//use numbers 0-9 for casing types
-                                          byte[] blockMeta,//use numbers 0-9 for casing types
-                                          int horizontalOffset, int verticalOffset, int depthOffset,
-                                          IGregTechTileEntity aBaseMetaTileEntity,
-                                          boolean forceCheck) {
+    public static boolean StructureChecker(String[][] structure,//0-9 casing, +- air no air, A... ignore 'A'-CHAR-1 blocks
+                                           Block[] blockType,//use numbers 0-9 for casing types
+                                           byte[] blockMeta,//use numbers 0-9 for casing types
+                                           int horizontalOffset, int verticalOffset, int depthOffset,
+                                           IGregTechTileEntity aBaseMetaTileEntity,
+                                           boolean forceCheck) {
         //TE Rotation
         byte facing = aBaseMetaTileEntity.getFrontFacing();
         World world=aBaseMetaTileEntity.getWorld();
@@ -60,6 +60,8 @@ public class Util {
                 for (char block : __structure.toCharArray()) {//left to right
                     if (block > '@') {//characters allow to skip check a-1 skip, b-2 skips etc.
                         a += block - '@';
+                    } else if (block < '+') {//used to mark THINGS
+                        a++;
                     } else {
                         //get x y z from rotation
                         switch (facing) {//translation
@@ -87,20 +89,19 @@ public class Util {
                                     if (world.getBlock(x, y, z).getMaterial() == Material.air)
                                         return false;
                                     break;
-                                default: {//check for block (countable)
+                                default: //check for block (countable)
                                     int pointer = block - '0';
                                     //countable air -> net.minecraft.block.BlockAir
                                     if (world.getBlock(x, y, z) != blockType[pointer]) {
                                         if (TecTech.ModConfig.DEBUG_MODE)
-                                            TecTech.Logger.info("Struct-block-error " + x + " " + y + " " + z + "/" + a + " " + c + "/" + world.getBlock(x, y, z) + " " + blockType[pointer]);
+                                            TecTech.Logger.info("Struct-block-error " + x + " " + y + " " + z + " / " + a + " " + b + " " + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + " " + blockType[pointer].getUnlocalizedName());
                                         return false;
                                     }
                                     if (world.getBlockMetadata(x, y, z) != blockMeta[pointer]) {
                                         if (TecTech.ModConfig.DEBUG_MODE)
-                                            TecTech.Logger.info("Struct-meta-id-error " + x + " " + y + " " + z + "/" + a + " " + c + "/" + world.getBlockMetadata(x, y, z) + " " + blockMeta[pointer]);
+                                            TecTech.Logger.info("Struct-meta-id-error " + x + " " + y + " " + z + " / " + a + " " + b + " " + c + " / " + world.getBlockMetadata(x, y, z) + " " + blockMeta[pointer]);
                                         return false;
                                     }
-                                }
                             }
                         }else if (forceCheck) return false;
                         a++;//block in horizontal layer
@@ -113,11 +114,11 @@ public class Util {
         return true;
     }
 
-    public static boolean StuctureBuilder(String[][] structure,//0-9 casing, +- air no air, A... ignore 'A'-CHAR+1 blocks
-                                        Block[] blockType,//use numbers 0-9 for casing types
-                                        byte[] blockMeta,//use numbers 0-9 for casing types
-                                        int horizontalOffset, int verticalOffset, int depthOffset,
-                                        IGregTechTileEntity aBaseMetaTileEntity) {
+    public static boolean StructureBuilder(String[][] structure,//0-9 casing, +- air no air, A... ignore 'A'-CHAR+1 blocks
+                                           Block[] blockType,//use numbers 0-9 for casing types
+                                           byte[] blockMeta,//use numbers 0-9 for casing types
+                                           int horizontalOffset, int verticalOffset, int depthOffset,
+                                           IGregTechTileEntity aBaseMetaTileEntity) {
         //TE Rotation
         byte facing = aBaseMetaTileEntity.getFrontFacing();
         World world=aBaseMetaTileEntity.getWorld();
@@ -136,6 +137,8 @@ public class Util {
                 for (char block : __structure.toCharArray()) {//left to right
                     if (block > '@') {//characters allow to skip check a-1 skip, b-2 skips etc.
                         a += block - '@';
+                    } else if (block < '+') {//used to mark THINGS
+                        a++;
                     } else {
                         //get x y z from rotation
                         switch (facing) {//translation
@@ -156,14 +159,15 @@ public class Util {
                         if (world.blockExists(x,y,z)) {//this actually checks if the chunk is loaded
                             switch (block) {
                                 case '-'://must be air
-                                    world.setBlock(x,y,z,Blocks.air,0,3);
+                                    world.setBlock(x,y,z,Blocks.air,0,2);
                                     break;
                                 case '+'://must not be air
-                                    world.setBlock(x,y,z,Blocks.glass,0,3);
+                                    world.setBlock(x,y,z,Blocks.wool,15,2);
+                                    break;
                                 default: {//check for block (countable)
                                     int pointer = block - '0';
                                     //countable air -> net.minecraft.block.BlockAir
-                                    world.setBlock(x,y,z,blockType[pointer],blockMeta[pointer],3);
+                                    world.setBlock(x,y,z,blockType[pointer],blockMeta[pointer],2);
                                 }
                             }
                         }
@@ -265,10 +269,11 @@ public class Util {
         output.add("");
         output.add("String[][]");
         //perform your duties - #2 - write strings
+        output.add("{");
         c = -depthOffset;
         for (int cz=0;cz<depthSize;cz++) {//front to back
             b = verticalOffset;
-            output.add("");
+            String addMe="{";
             for (int by=0;by<verticalSize;by++) {//top to bottom
                 a = -horizontalOffset;
                 String line="";
@@ -290,14 +295,14 @@ public class Util {
                     int meta=world.getBlockMetadata(x,y,z);
 
                     if(a==0 && b==0 && c==0){
-                        line+='X';
+                        line+='#';
                     }else if(block.getMaterial()==Material.air){
                         line+='-';
                     }else if(block.hasTileEntity(meta)){
                         line+='+';
                     }else{
                         ItemStack stack=new ItemStack(block,1,meta);
-                        String str="?";
+                        String str="?";//OH YEAH NPEs
                         for(int i=0;i<array.length;i++){
                             if(array[i]!=null && stack.getItem()==array[i].getItem() && stack.getItemDamage()==array[i].getItemDamage()) {
                                 str = Integer.toString(i);
@@ -329,13 +334,25 @@ public class Util {
                     while(l.length()>0 && l.toCharArray()[l.length()-1]=='~')
                         l=l.substring(0,l.length()-1);
                     if(l.length()==0)
-                        l="#";
-                    output.add(l);
-                }else output.add(line);
+                        l="E,";
+                    else{
+                        l="\""+l+"\",";
+                    }
+                    addMe+=l;
+                }else {
+                    if(line.length()==0)
+                        line="E,";
+                    else{
+                        line="\""+line+"\",";
+                    }
+                    addMe+=line;
+                }
                 b--;//horizontal layer
             }
+            output.add(addMe+"},");
             c++;//depth
         }
+        output.add("}");
         return output.toArray(new String[0]);
     }
 

@@ -24,7 +24,6 @@ public final class QuantumGlassRender implements ISimpleBlockRenderingHandler {
 
         //Get icons from custom register (useful for renderers and fluids)
         IIcon side = QuantumGlass.stuff;
-        GL11.glDisable(GL11.GL_CULL_FACE);
         tessellator.startDrawingQuads();
         tessellator.setNormal(0.0F, -1.0F, 0.0F);
         renderer.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, side);
@@ -50,7 +49,6 @@ public final class QuantumGlassRender implements ISimpleBlockRenderingHandler {
         renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, side);
         tessellator.draw();
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-        GL11.glEnable(GL11.GL_CULL_FACE);
     }
 
     @Override
@@ -64,6 +62,7 @@ public final class QuantumGlassRender implements ISimpleBlockRenderingHandler {
         tes.setBrightness(15728880);
         tes.setColorOpaque_F(0F, 1F, 1F);
         IIcon side = QuantumGlass.stuff;
+        GL11.glDisable(GL11.GL_CULL_FACE);
 
         //South
         if (world.getBlock(x, y, z + 1).getClass() != QuantumGlass.class) {
@@ -107,6 +106,7 @@ public final class QuantumGlassRender implements ISimpleBlockRenderingHandler {
             tes.addVertexWithUV(x + 1, y + 0.001, z + 1, side.getMaxU(), side.getMinV());
             tes.addVertexWithUV(x + 1, y + 0.001, z, side.getMaxU(), side.getMaxV());
         }
+        GL11.glEnable(GL11.GL_CULL_FACE);
         return true;
     }
 

@@ -26,7 +26,6 @@ public class GT_MetaTileEntity_EM_wormhole extends GT_MetaTileEntity_MultiblockB
             {},//behind front
             {} //behind
     };
-    private static final int[] casingRequirements = new int[]{};
     private static final Block[] blockType = new Block[]{};
     private static final byte[] blockMeta = new byte[]{};
 

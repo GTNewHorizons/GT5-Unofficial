@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
-import static com.github.technus.tectech.Util.StuctureBuilder;
+import static com.github.technus.tectech.Util.StructureBuilder;
 import static gregtech.api.enums.GT_Values.E;
 
 /**
@@ -67,7 +67,7 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
 
     @Override
     public void construct() {
-        StuctureBuilder(shape,blockType,blockMeta,7,7,0,this.getBaseMetaTileEntity());
+        StructureBuilder(shape,blockType,blockMeta,7,7,0,this.getBaseMetaTileEntity());
     }
 
     @Override

@@ -18,7 +18,6 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
             {},//behind front
             {} //behind
     };
-    private static final int[] casingRequirements = new int[]{};
     private static final Block[] blockType = new Block[]{};
     private static final byte[] blockMeta = new byte[]{};
 

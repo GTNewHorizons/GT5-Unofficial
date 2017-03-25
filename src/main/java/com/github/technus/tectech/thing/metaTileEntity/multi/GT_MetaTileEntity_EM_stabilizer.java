@@ -18,7 +18,6 @@ public class GT_MetaTileEntity_EM_stabilizer extends GT_MetaTileEntity_Multibloc
             {},//behind front
             {} //behind
     };
-    private static final int[] casingRequirements = new int[]{};
     private static final Block[] blockType = new Block[]{};
     private static final byte[] blockMeta = new byte[]{};
 
