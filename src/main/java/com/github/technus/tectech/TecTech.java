@@ -105,7 +105,7 @@ public class TecTech {
         };
 
         RegisterThingsInTabs();
-        if (Loader.isModLoaded("dreamcraft")) ;//TODO init recipes for GTNH coremod
+        if (Loader.isModLoaded("dreamcraft")) ;//TODO init recipes for GTNH version
         else ;//TODO init recipes for NON-GTNH version
     }
 

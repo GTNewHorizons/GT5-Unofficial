@@ -35,7 +35,7 @@ public class Util {
 
     //Check Machine Structure based on string[][] (effectively char[][][]), ond offset of the controller
     //This only checks for REGULAR BLOCKS!
-    public static boolean StuctureChecker(String[][] structure,//0-9 casing, +- air no air, a... ignore 'a'-CHAR-1 blocks
+    public static boolean StuctureChecker(String[][] structure,//0-9 casing, +- air no air, A... ignore 'A'-CHAR-1 blocks
                                           Block[] blockType,//use numbers 0-9 for casing types
                                           byte[] blockMeta,//use numbers 0-9 for casing types
                                           int horizontalOffset, int verticalOffset, int depthOffset,
@@ -58,8 +58,8 @@ public class Util {
             for (String __structure : _structure) {//top to bottom
                 a = -horizontalOffset;
                 for (char block : __structure.toCharArray()) {//left to right
-                    if (block > '`') {//characters allow to skip check a-1 skip, b-2 skips etc.
-                        a += block - '`';
+                    if (block > '@') {//characters allow to skip check a-1 skip, b-2 skips etc.
+                        a += block - '@';
                     } else {
                         //get x y z from rotation
                         switch (facing) {//translation
@@ -113,7 +113,7 @@ public class Util {
         return true;
     }
 
-    public static boolean StuctureBuilder(String[][] structure,//0-9 casing, +- air no air, a... ignore 'a'-CHAR-1 blocks
+    public static boolean StuctureBuilder(String[][] structure,//0-9 casing, +- air no air, A... ignore 'A'-CHAR+1 blocks
                                         Block[] blockType,//use numbers 0-9 for casing types
                                         byte[] blockMeta,//use numbers 0-9 for casing types
                                         int horizontalOffset, int verticalOffset, int depthOffset,
@@ -134,8 +134,8 @@ public class Util {
             for (String __structure : _structure) {//top to bottom
                 a = -horizontalOffset;
                 for (char block : __structure.toCharArray()) {//left to right
-                    if (block > '`') {//characters allow to skip check a-1 skip, b-2 skips etc.
-                        a += block - '`';
+                    if (block > '@') {//characters allow to skip check a-1 skip, b-2 skips etc.
+                        a += block - '@';
                     } else {
                         //get x y z from rotation
                         switch (facing) {//translation
@@ -179,7 +179,7 @@ public class Util {
 
     public static String[] StructureWriter(IGregTechTileEntity aBaseMetaTileEntity,
                                            int horizontalOffset, int verticalOffset, int depthOffset,
-                                           int horizontalSize, int verticalSize, int depthSize){
+                                           int horizontalSize, int verticalSize, int depthSize, boolean ignoreAir){
         //TE Rotation
         byte facing = aBaseMetaTileEntity.getFrontFacing();
         World world=aBaseMetaTileEntity.getWorld();
@@ -306,10 +306,32 @@ public class Util {
                         }
                         line+=str;
                     }
-
                     a++;//block in horizontal layer
                 }
-                output.add(line);
+                if(ignoreAir) {
+                    String l = "";
+                    char temp='@';
+                    for (char ch : line.toCharArray()) {
+                        if(ch=='-'){
+                            temp+=1;
+                            if(temp=='~') {
+                                l += '~';
+                                temp='@';
+                            }
+                        }else{
+                            if(temp>'@') {
+                                l += temp;
+                                temp='@';
+                            }
+                            l+=ch;
+                        }
+                    }
+                    while(l.length()>0 && l.toCharArray()[l.length()-1]=='~')
+                        l=l.substring(0,l.length()-1);
+                    if(l.length()==0)
+                        l="#";
+                    output.add(l);
+                }else output.add(line);
                 b--;//horizontal layer
             }
             c++;//depth

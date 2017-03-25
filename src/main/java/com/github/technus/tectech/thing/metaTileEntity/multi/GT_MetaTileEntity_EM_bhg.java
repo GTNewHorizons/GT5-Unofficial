@@ -27,19 +27,19 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
     //Startcodes to startup
     //per dim disable thingies
     private static final String[] s = new String[]{
-            "f202", "f020", "g0", "c5g5", "d55c55", "f0a0", "e21212",
-            "d00c00", "c0g0", "b0i0", "a20i02", "a02i20", "d0024200",
-            "c022c220", "b02g20", "02k20", "a03i30", "21k12"
+            "F202", "F020", "G0", "C5G5", "D55C55", "F0A0", "E21212",
+            "D00C00", "C0G0", "B0I0", "A20I02", "A02I20", "D0024200",
+            "C022C220", "B02G20", "02K20", "A03I30", "21K12"
     };
     private static final String[][] S = new String[][]{
             {E, E, E, E, E, E, s[0], s[5], s[0]},//front
-            {E, E, E, E, s[2], s[0], s[6], "d0033300", s[6], s[0], s[2]},
-            {E, E, E, s[2], s[1], s[1], s[7], "c033c330", s[7], s[1], s[1], s[2]},
-            {E, E, s[2], s[1], s[4], s[4], s[8], "b03g30", s[8], s[4], s[4], s[1], s[2]},
+            {E, E, E, E, s[2], s[0], s[6], "D0033300", s[6], s[0], s[2]},
+            {E, E, E, s[2], s[1], s[1], s[7], "C033C330", s[7], s[1], s[1], s[2]},
+            {E, E, s[2], s[1], s[4], s[4], s[8], "B03G30", s[8], s[4], s[4], s[1], s[2]},
             {E, s[2], s[1], s[4], s[3], s[3], s[9], s[16], s[9], s[3], s[3], s[4], s[1], s[2]},
             {E, s[0], s[1], s[4], s[3], s[3], s[10], s[16], s[10], s[3], s[3], s[4], s[1], s[0]},
-            {s[0], s[6], s[7], s[8], s[9], s[10], s[17], "03k30", s[17], s[10], s[9], s[8], s[7], s[6], s[0]},
-            {s[5], s[12], s[13], s[14], s[11], s[11], s[15], "a3k3", s[15], s[11], s[11], s[14], s[13], s[12], s[5]}
+            {s[0], s[6], s[7], s[8], s[9], s[10], s[17], "03K30", s[17], s[10], s[9], s[8], s[7], s[6], s[0]},
+            {s[5], s[12], s[13], s[14], s[11], s[11], s[15], "A3K3", s[15], s[11], s[11], s[14], s[13], s[12], s[5]}
     };
     private static final String[][] shape = new String[][]{
             S[0], S[1], S[2], S[3], S[4], S[5], S[6], S[7], S[6], S[5], S[4], S[3], S[2], S[1], S[0]
