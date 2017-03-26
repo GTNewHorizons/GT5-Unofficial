@@ -1,6 +1,7 @@
 package com.detrav;
 
 import com.detrav.commands.DetravBiomeScannerCommand;
+import com.detrav.commands.DetravLevelUpCommand;
 import com.detrav.events.DetravBlockBreakEventHandler;
 import com.detrav.events.DetravLoginEventHandler;
 import com.detrav.proxies.CommonProxy;
@@ -68,8 +69,6 @@ public class DetravScannerMod
     @EventHandler
     public void onPostLoad(FMLPostInitializationEvent aEvent) {
         proxy.onPostLoad();
-        DetravBlockBreakEventHandler.register();
-        DetravLoginEventHandler.register();
     }
 
     @EventHandler
@@ -77,5 +76,6 @@ public class DetravScannerMod
     {
         //event.registerServerCommand(new DetravScannerCommand());
         event.registerServerCommand(new DetravBiomeScannerCommand());
+        //event.registerServerCommand(new DetravLevelUpCommand());
     }
 }

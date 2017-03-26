@@ -1,9 +1,13 @@
 package com.detrav.proxies;
 
 import com.detrav.DetravScannerMod;
+import com.detrav.commands.DetravLevelUpCommand;
 import com.detrav.enums.DetravItemList;
 import com.detrav.enums.DetravSimpleItems;
+import com.detrav.events.DetravBlockBreakEventHandler;
 import com.detrav.events.DetravEntityDropEvent;
+import com.detrav.events.DetravLevelUpEvent;
+import com.detrav.events.DetravLoginEventHandler;
 import com.detrav.gui.DetravGuiProPick;
 import com.detrav.gui.DetravPortableAnvilGui;
 import com.detrav.gui.containers.DetravPortableAnvilContainer;
@@ -58,6 +62,9 @@ public class CommonProxy implements IGuiHandler {
 
         //DetravCraftingEventHandler.register();
         DetravEntityDropEvent.register();
+        DetravLevelUpEvent.register();
+        DetravBlockBreakEventHandler.register();
+        DetravLoginEventHandler.register();
     }
 
     @Override

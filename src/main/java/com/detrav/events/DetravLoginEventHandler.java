@@ -4,6 +4,7 @@ import com.detrav.net.DetravModePacket03;
 import com.detrav.net.DetravNetwork;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -20,6 +21,7 @@ public class DetravLoginEventHandler {
         if(event.entity instanceof EntityPlayerMP)
         {
             DetravNetwork.INSTANCE.sendToPlayer(new DetravModePacket03((EntityPlayerMP)event.entity),(EntityPlayerMP)event.entity);
+            DetravLevelUpEvent.UpdateHealthAttribute((EntityPlayer) event.entity);
         }
         //if(Minecraft.getMinecraft().thePlayer!=null)
         //Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(""+(event.entity instanceof EntityPlayerMP)+" | " + event.world.isRemote));
