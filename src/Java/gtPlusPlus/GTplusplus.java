@@ -100,6 +100,7 @@ implements ActionListener
 		CORE.configSwitches.enableMultiblock_PowerSubstation = config.getBoolean("enableMultiblockPowerSubstation", "gregtech", true, "For managing large power grids.");
 		CORE.configSwitches.enableMultiblock_LiquidFluorideThoriumReactor = config.getBoolean("enableMultiblockLiquidFluorideThoriumReactor", "gregtech", true, "For supplying large power grids.");
 		CORE.configSwitches.enableMultiblock_NuclearFuelRefinery = config.getBoolean("enableMultiblock_NuclearFuelRefinery", "gregtech", true, "Refines molten chemicals into nuclear fuels.");
+		CORE.configSwitches.enableMultiblock_IndustrialSifter = config.getBoolean("enableMultiblock_IndustrialSifter", "gregtech", true, "Large scale sifting.");
 
 
 		//Options

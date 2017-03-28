@@ -26,7 +26,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Hastelloy-X Structural Block");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Incoloy-DS Fluid Containment Block"); //76
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Placeholder Casing"); //IS A PLACEHOLDER DO NOT CHANGE
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Placeholder Casing");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Sifter Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Incoloy Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Placeholder Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Incoloy Casing"); //65
@@ -42,7 +42,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GregtechItemList.Casing_Refinery_Structural.set(new ItemStack(this, 1, 2));
 		GregtechItemList.Casing_Refinery_Internal.set(new ItemStack(this, 1, 3));
 		GregtechItemList.Casing_PlaceHolder4.set(new ItemStack(this, 1, 4));
-		GregtechItemList.Casing_PlaceHolder5.set(new ItemStack(this, 1, 5));
+		GregtechItemList.Casing_Sifter.set(new ItemStack(this, 1, 5));
 		GregtechItemList.Casing_PlaceHolder6.set(new ItemStack(this, 1, 6));
 		GregtechItemList.Casing_PlaceHolder7.set(new ItemStack(this, 1, 7));
 		GregtechItemList.Casing_PlaceHolder8.set(new ItemStack(this, 1, 8));
