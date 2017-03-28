@@ -22,12 +22,14 @@ public class CasingTextureHandler2 {
 				//Material Press Casings
 			case 4:
 				return TexturesGtBlock.Casing_Machine_Farm_Manager.getIcon();
-				//Electrolyzer Casings
+				
+				//Sifter Structural
 			case 5:
-				return TexturesGtBlock._PlaceHolder.getIcon();
-				//Broken Blue Fusion Casings
+				return TexturesGtBlock.Casing_Machine_Metal_Panel_A.getIcon();
+				//Sifter Sieve
 			case 6:
-				return TexturesGtBlock._PlaceHolder.getIcon();
+				return TexturesGtBlock.Casing_Machine_Metal_Grate_A.getIcon();
+				
 				//Maceration Stack Casings
 			case 7:
 				return TexturesGtBlock._PlaceHolder.getIcon();

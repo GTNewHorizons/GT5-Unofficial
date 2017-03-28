@@ -50,7 +50,8 @@ extends GregtechMeta_MultiBlockBase {
 				"4x Output Bus (Any casing besides bottom layer)",
 				"1x Maintenance Hatch (Any casing)",
 				"1x Energy Hatch (Any casing)",
-				"Sifter Casings for the rest (X at least!)",
+				"9x Sieve Grate (Top 3x3)",
+				"Sifter Casings for the rest (50)",
 				CORE.GT_Tooltip};
 	}
 
@@ -190,14 +191,29 @@ extends GregtechMeta_MultiBlockBase {
 					{
 						final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
 						if ((!this.addMaintenanceToMachineList(tTileEntity, 78)) && (!this.addInputToMachineList(tTileEntity, 78)) && (!this.addOutputToMachineList(tTileEntity, 78)) && (!this.addEnergyInputToMachineList(tTileEntity, 78)) && (!this.ignoreController(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)))) {
-							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-								Utils.LOG_INFO("Returned False 1");
-								return false;
+							
+							if (h != 2){
+								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
+									Utils.LOG_INFO("Returned False 1 [Casing]");
+									return false;
+								}
+								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 6) {
+									Utils.LOG_INFO("Returned False 2 [Casing]");
+									return false;
+								}	
 							}
-							if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 6) {
-								Utils.LOG_INFO("Returned False 2");
-								return false;
+							else {
+								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
+									Utils.LOG_INFO("Returned False 1 [Sieve]");
+									return false;
+								}
+								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 7) {
+									Utils.LOG_INFO("Returned False 2 [Sieve]");
+									return false;
+								}	
 							}
+							
+							
 							tAmount++;
 						}
 					}
@@ -213,7 +229,7 @@ extends GregtechMeta_MultiBlockBase {
 			Utils.LOG_INFO("height: "+height+" | Returned False 4");
 			return false;
 		}
-		final GT_MetaTileEntity_Hatch_OutputBus[] tmpHatches = new GT_MetaTileEntity_Hatch_OutputBus[5];
+		final GT_MetaTileEntity_Hatch_OutputBus[] tmpHatches = new GT_MetaTileEntity_Hatch_OutputBus[4];
 		for (int i = 0; i < this.mOutputBusses.size(); i++) {
 			final int hatchNumber = this.mOutputBusses.get(i).getBaseMetaTileEntity().getYCoord() - 1 - height;
 			if (tmpHatches[hatchNumber] == null) {
@@ -227,7 +243,7 @@ extends GregtechMeta_MultiBlockBase {
 		for (int i = 0; i < tmpHatches.length; i++) {
 			this.mOutputBusses.add(tmpHatches[i]);
 		}
-		return tAmount >= 26;
+		return tAmount >= 46;
 	}
 
 	public boolean ignoreController(final Block tTileEntity) {
