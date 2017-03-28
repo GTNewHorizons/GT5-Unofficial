@@ -3,7 +3,6 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.CommonValues;
 import com.github.technus.tectech.thing.block.QuantumGlass;
-import com.github.technus.tectech.thing.casing.GT_Block_CasingsTT;
 import com.github.technus.tectech.thing.casing.GT_Container_CasingsTT;
 import com.github.technus.tectech.thing.metaTileEntity.constructableTT;
 import gregtech.api.GregTech_API;
@@ -12,10 +11,10 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.common.blocks.GT_Block_Casings2;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
 import static com.github.technus.tectech.Util.StructureBuilder;
@@ -27,6 +26,7 @@ import static gregtech.api.enums.GT_Values.E;
 public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockBase_EM implements constructableTT {
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
+    private byte eTier =0;
 
     //use multi A energy inputs, use less power the longer it runs
     private static final String[][] shape = new String[][]{
@@ -142,10 +142,41 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setByte("eTier", eTier);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        eTier =aNBT.getByte("eTier");
+    }
+
+    @Override
     public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return iGregTechTileEntity.getMetaIDOffset(0,-1,0)==3?
-                EM_StructureCheck(shape,blockType,blockMeta,0,-2,28):
-                EM_StructureCheck(shape,blockType2,blockMeta2,0,-2,28);
+        if(iGregTechTileEntity.getBlockOffset(0,-1,0)!=GT_Container_CasingsTT.sBlockCasingsTT){
+            eTier =0;
+            return false;
+        }else if(iGregTechTileEntity.getMetaIDOffset(0,-1,0)==3){
+            eTier =1;
+        }else if(iGregTechTileEntity.getMetaIDOffset(0,-1,0)==5){
+            eTier =2;
+        }else{
+            eTier =0;
+            return false;
+        }
+        
+
+        boolean test;
+        switch (eTier){
+            case 1:test=EM_StructureCheck(shape,blockType,blockMeta,0,-2,28); break;
+            case 2:test=EM_StructureCheck(shape,blockType2,blockMeta2,0,-2,28); break;
+            default: eTier = 0; return false;
+        }
+        if(test) return true;
+        eTier = 0;
+        return false;
     }
 
     @Override

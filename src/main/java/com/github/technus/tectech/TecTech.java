@@ -116,12 +116,8 @@ public class TecTech {
         DebugBuilder.INSTANCE.setCreativeTab(mainTab);
     }
 
-    /**
-     * Do some stuff once the server starts
-     *
-     * @param pEvent
-     */
     @EventHandler
     public void serverLoad(FMLServerStartingEvent pEvent) {
+        //Be Lazy...
     }
 }
