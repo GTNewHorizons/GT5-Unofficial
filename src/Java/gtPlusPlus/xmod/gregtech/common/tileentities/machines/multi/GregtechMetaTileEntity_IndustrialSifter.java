@@ -136,7 +136,26 @@ extends GregtechMeta_MultiBlockBase {
 		//Make a recipe instance for the rest of the method.
 		final GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sSifterRecipes.findRecipe(this.getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
 
-
+		//Change bonus chances
+		int[] outputChances = tRecipe.mChances;
+		for (int r=0;r<outputChances.length;r++){
+			if (outputChances[r]<100){
+				int temp = outputChances[r];
+				if (outputChances[r] < 80 && outputChances[r] >= 1){
+					outputChances[r] = temp+12;
+				}
+				else if (outputChances[r] < 90 && outputChances[r] >= 80){
+					outputChances[r] = temp+4;
+				}
+				else if (outputChances[r] <= 99 && outputChances[r] >= 90){
+					outputChances[r] = temp+1;
+				}
+			}
+		}
+		
+		//Rebuff Drop Rates for % output
+		tRecipe.mChances = outputChances;
+		
 		final int tValidOutputSlots = this.getValidOutputSlots(this.getBaseMetaTileEntity(), tRecipe, tInputs);
 		Utils.LOG_WARNING("Sifter - Valid Output Hatches: "+tValidOutputSlots);
 
