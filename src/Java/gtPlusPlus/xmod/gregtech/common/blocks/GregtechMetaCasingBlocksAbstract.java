@@ -90,7 +90,12 @@ extends GT_Block_Casings_Abstract {
 
 	@Override
 	public boolean isOpaqueCube() {
-		return true;
+		return false;
+	}
+	
+	@Override
+	public int getRenderBlockPass() {
+		return 1;
 	}
 
 	@Override

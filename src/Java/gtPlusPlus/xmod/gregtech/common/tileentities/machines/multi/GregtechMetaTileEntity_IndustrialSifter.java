@@ -239,9 +239,9 @@ extends GregtechMeta_MultiBlockBase {
 					if (((i != -2) && (i != 2)) && ((j != -2) && (j != 2))) {
 
 						// Reactor Floor & Roof (Inner 5x5) + Mufflers, Dynamos and Fluid outputs.
-						if ((h == 0) || (h == 2)) {
+						if ((h == 0) || (h == 2 || h == 1)) {
 							
-							if (h == 2){							
+							if (h == 2 || h == 1){						
 							//If not a hatch, continue, else add hatch and continue.
 							if ((!this.addMufflerToMachineList(tTileEntity, 78)) && (!this.addOutputToMachineList(tTileEntity, 78)) && (!this.addDynamoToMachineList(tTileEntity, 78))) {
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
@@ -272,7 +272,7 @@ extends GregtechMeta_MultiBlockBase {
 						}
 
 						// Inside 2 layers, mostly air
-						else {
+						/*else {
 							// Reactor Inner 5x5
 							//if ((i != -1 && i != 1) && (j != -1 && j != 1)) {
 							if (!aBaseMetaTileEntity.getAirOffset(xDir + i, h, zDir + j)) {
@@ -280,7 +280,7 @@ extends GregtechMeta_MultiBlockBase {
 								return false;
 							}
 
-						}
+						}*/
 					}
 
 					//Dealt with inner 5x5, now deal with the exterior.
