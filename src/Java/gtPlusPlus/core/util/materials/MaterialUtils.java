@@ -35,8 +35,8 @@ public class MaterialUtils {
 	public static List<?> oreDictValuesForEntry(final String oredictName){
 		List<?> oredictItemNames;
 		if(OreDictionary.doesOreNameExist(oredictName)){
-			final ArrayList<ItemStack> oredictItems = OreDictionary.getOres(oredictName);
-			oredictItemNames = Utils.convertArrayListToList(oredictItems);
+			final List<ItemStack> oredictItems = OreDictionary.getOres(oredictName);
+			oredictItemNames = oredictItems;
 			return oredictItemNames;
 		}
 		return null;

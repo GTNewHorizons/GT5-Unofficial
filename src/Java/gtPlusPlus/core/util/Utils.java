@@ -340,8 +340,8 @@ public class Utils {
 		return targetList;
 	}
 
-	public static List<Object> convertArrayListToList(@SuppressWarnings("rawtypes") final ArrayList sourceArray) {
-		final List<Object> targetList = new ArrayList<>(Arrays.asList(sourceArray));
+	public static List<Object> convertArrayListToList(final ArrayList<Object> sourceArray) {
+		final List<Object> targetList = new ArrayList<Object>(Arrays.asList(sourceArray));
 		return targetList;
 	}
 
