@@ -28,7 +28,7 @@ public class CasingTextureHandler2 {
 				return TexturesGtBlock.Casing_Machine_Metal_Panel_A.getIcon();
 				//Sifter Sieve
 			case 6:
-				return TexturesGtBlock.Casing_Machine_Metal_Grate_A.getIcon();
+				return TexturesGtBlock.Casing_Machine_Metal_Grate_A_Solid.getIcon();
 				
 				//Maceration Stack Casings
 			case 7:

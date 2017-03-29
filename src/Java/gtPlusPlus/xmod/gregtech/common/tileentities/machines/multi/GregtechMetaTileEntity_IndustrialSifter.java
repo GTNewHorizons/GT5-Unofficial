@@ -20,6 +20,7 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -110,6 +111,8 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
 
+		Utils.LOG_INFO("1");
+		
 		//Get inputs.
 		final ArrayList<ItemStack> tInputList = this.getStoredInputs();
 		for (int i = 0; i < (tInputList.size() - 1); i++) {
@@ -124,6 +127,8 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 		}
+		
+		Utils.LOG_INFO("2");
 
 		//Temp var
 		final ItemStack[] tInputs = Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, 2);
@@ -132,32 +137,53 @@ extends GregtechMeta_MultiBlockBase {
 		if (this.mOutputBusses.size() != 4){
 			return false;
 		}
+		
+		Utils.LOG_INFO("3");
 
 		//Make a recipe instance for the rest of the method.
 		final GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sSifterRecipes.findRecipe(this.getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
 
+		Utils.LOG_INFO("3.1");
+		
 		//Change bonus chances
-		int[] outputChances = tRecipe.mChances;
-		for (int r=0;r<outputChances.length;r++){
-			if (outputChances[r]<100){
-				int temp = outputChances[r];
-				if (outputChances[r] < 80 && outputChances[r] >= 1){
-					outputChances[r] = temp+12;
-				}
-				else if (outputChances[r] < 90 && outputChances[r] >= 80){
-					outputChances[r] = temp+4;
-				}
-				else if (outputChances[r] <= 99 && outputChances[r] >= 90){
-					outputChances[r] = temp+1;
+		int[] outputChances;
+		
+		Utils.LOG_INFO("3.2");
+		
+		if (tRecipe.mChances != null){
+			outputChances = tRecipe.mChances;
+			
+			Utils.LOG_INFO("3.3");
+			
+			for (int r=0;r<outputChances.length;r++){
+				Utils.LOG_INFO("Output["+r+"] chance = "+outputChances[r]);
+				if (outputChances[r]<100){
+					int temp = outputChances[r];
+					if (outputChances[r] < 80 && outputChances[r] >= 1){
+						outputChances[r] = temp+12;
+					}
+					else if (outputChances[r] < 90 && outputChances[r] >= 80){
+						outputChances[r] = temp+4;
+					}
+					else if (outputChances[r] <= 99 && outputChances[r] >= 90){
+						outputChances[r] = temp+1;
+					}
 				}
 			}
+
+			Utils.LOG_INFO("3.4");
+			
+			//Rebuff Drop Rates for % output
+			tRecipe.mChances = outputChances;
+			
 		}
 		
-		//Rebuff Drop Rates for % output
-		tRecipe.mChances = outputChances;
+		
+		Utils.LOG_INFO("4");
+	
 		
 		final int tValidOutputSlots = this.getValidOutputSlots(this.getBaseMetaTileEntity(), tRecipe, tInputs);
-		Utils.LOG_WARNING("Sifter - Valid Output Hatches: "+tValidOutputSlots);
+		Utils.LOG_INFO("Sifter - Valid Output Hatches: "+tValidOutputSlots);
 
 		//More than or one input
 		if ((tInputList.size() > 0) && (tValidOutputSlots >= 1)) {
@@ -206,40 +232,124 @@ extends GregtechMeta_MultiBlockBase {
 		for (int i = -2; i < 3; i++) {
 			for (int j = -2; j < 3; j++) {
 				for (int h = 0; h < 3; h++) {
-					if (!((i == 0) && (j == 0) && ((h > 0) && (h < 3))))//((h > 0)&&(h<5)) || (((xDir + i != 0) || (zDir + j != 0)) && ((i != 0) || (j != 0)))
-					{
-						final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-						if ((!this.addMaintenanceToMachineList(tTileEntity, 78)) && (!this.addInputToMachineList(tTileEntity, 78)) && (!this.addOutputToMachineList(tTileEntity, 78)) && (!this.addEnergyInputToMachineList(tTileEntity, 78)) && (!this.ignoreController(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)))) {
+					
+					final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
+
+					// Reactor Floor/Roof inner 5x5
+					if (((i != -2) && (i != 2)) && ((j != -2) && (j != 2))) {
+
+						// Reactor Floor & Roof (Inner 5x5) + Mufflers, Dynamos and Fluid outputs.
+						if ((h == 0) || (h == 2)) {
 							
-							if (h != 2){
+							if (h == 2){							
+							//If not a hatch, continue, else add hatch and continue.
+							if ((!this.addMufflerToMachineList(tTileEntity, 78)) && (!this.addOutputToMachineList(tTileEntity, 78)) && (!this.addDynamoToMachineList(tTileEntity, 78))) {
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
-									Utils.LOG_INFO("Returned False 1 [Casing]");
+									Utils.LOG_INFO("LFTR Casing(s) Missing from one of the top layers inner 3x3.");
+									Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 									return false;
 								}
 								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 6) {
-									Utils.LOG_INFO("Returned False 2 [Casing]");
+									Utils.LOG_INFO("LFTR Casing(s) Missing from one of the top layers inner 3x3. Wrong Meta for Casing. Found:"+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()+" with meta:"+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j));
 									return false;
-								}	
+								}
+							}
+							}
+							else {
+								if ((!this.addMufflerToMachineList(tTileEntity, 78)) && (!this.addOutputToMachineList(tTileEntity, 78)) && (!this.addDynamoToMachineList(tTileEntity, 78))) {
+									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
+										Utils.LOG_INFO("LFTR Casing(s) Missing from one of the bottom layers inner 3x3.");
+										Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										return false;
+									}
+									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 5) {
+										Utils.LOG_INFO("LFTR Casing(s) Missing from one of the bottom layers inner 3x3. Wrong Meta for Casing. Found:"+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()+" with meta:"+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j));
+										return false;
+									}
+									tAmount++;
+								}
+							}
+						}
+
+						// Inside 2 layers, mostly air
+						else {
+							// Reactor Inner 5x5
+							//if ((i != -1 && i != 1) && (j != -1 && j != 1)) {
+							if (!aBaseMetaTileEntity.getAirOffset(xDir + i, h, zDir + j)) {
+								Utils.LOG_INFO("Make sure the inner 3x3 of the Multiblock is Air.");
+								return false;
+							}
+
+						}
+					}
+
+					//Dealt with inner 5x5, now deal with the exterior.
+					else {
+
+						//Deal with all 4 sides (Reactor walls)
+						if ((h == 1) || (h == 2)) {
+							if (h == 2){
+								if ((!this.addMufflerToMachineList(tTileEntity, 78)) && (!this.addOutputToMachineList(tTileEntity, 78)) && (!this.addDynamoToMachineList(tTileEntity, 78))) {
+									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
+										Utils.LOG_INFO("Glass Casings Missing from somewhere in the second layer.");
+										Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										return false;
+									}
+									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 5) {
+										Utils.LOG_INFO("Glass Casings Missing from somewhere in the second layer.");
+										Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										return false;
+									}
+									tAmount++;
+								}
 							}
 							else {
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
-									Utils.LOG_INFO("Returned False 1 [Sieve]");
+									Utils.LOG_INFO("Glass Casings Missing from somewhere in the second layer.");
+									Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 									return false;
 								}
-								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 7) {
-									Utils.LOG_INFO("Returned False 2 [Sieve]");
+								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 5) {
+									Utils.LOG_INFO("Glass Casings Missing from somewhere in the second layer.");
+									Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 									return false;
-								}	
+								}
+								tAmount++;
 							}
-							
-							
-							tAmount++;
+						}
+
+						//Deal with top and Bottom edges (Inner 5x5)
+						else if ((h == 0) || (h == 2)) {
+							if ((!this.addToMachineList(tTileEntity, 78)) && (!this.addInputToMachineList(tTileEntity, 78)) && (!this.addOutputToMachineList(tTileEntity, 78)) && (!this.addDynamoToMachineList(tTileEntity, 78))) {
+								if (((xDir + i) != 0) || ((zDir + j) != 0)) {//no controller
+
+									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
+										Utils.LOG_INFO("LFTR Casing(s) Missing from one of the edges on the top layer.");
+										Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										return false;
+									}
+									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 5) {
+										Utils.LOG_INFO("LFTR Casing(s) Missing from one of the edges on the top layer. "+h);
+										Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										if (h ==0){
+											if (tTileEntity instanceof GregtechMetaTileEntity_IndustrialSifter){
+
+											}
+										}
+										else {
+											return false;
+										}
+									}
+								}
+							}
 						}
 					}
+					
 				}
 			}
 		}
-		if ((this.mOutputHatches.size() != 0) || (this.mInputBusses.size() != 1) || (this.mOutputBusses.size() != 4)) {
+		if ((this.mOutputHatches.size() != 0) || (this.mInputBusses.size() != 1) || (this.mOutputBusses.size() != 4)
+				|| (this.mMaintenanceHatches.size() != 1) || (this.mEnergyHatches.size() != 1)) {
 			Utils.LOG_INFO("Returned False 3");
 			return false;
 		}
@@ -251,10 +361,10 @@ extends GregtechMeta_MultiBlockBase {
 		final GT_MetaTileEntity_Hatch_OutputBus[] tmpHatches = new GT_MetaTileEntity_Hatch_OutputBus[4];
 		for (int i = 0; i < this.mOutputBusses.size(); i++) {
 			final int hatchNumber = this.mOutputBusses.get(i).getBaseMetaTileEntity().getYCoord() - 1 - height;
-			if (tmpHatches[hatchNumber] == null) {
-				tmpHatches[hatchNumber] = this.mOutputBusses.get(i);
+			if (tmpHatches[i] == null) {
+				tmpHatches[i] = this.mOutputBusses.get(i);
 			} else {
-				Utils.LOG_INFO("Returned False 5");
+				Utils.LOG_INFO("Returned False 5 - "+this.mOutputBusses.size());
 				return false;
 			}
 		}
@@ -262,7 +372,10 @@ extends GregtechMeta_MultiBlockBase {
 		for (int i = 0; i < tmpHatches.length; i++) {
 			this.mOutputBusses.add(tmpHatches[i]);
 		}
-		return tAmount >= 46;
+		
+		Utils.LOG_INFO("Structure Built? "+(tAmount>35));
+		
+		return tAmount >= 35;
 	}
 
 	public boolean ignoreController(final Block tTileEntity) {
