@@ -121,8 +121,8 @@ public class PluginGT5VeinStat extends PluginGT5Base {
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.betweenOre") + ": " + getGTOreLocalizedName(oreLayer.betweenMeta), 2, 57, 0x404040, false);
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.sporadicOre") + ": " + getGTOreLocalizedName(oreLayer.sporadicMeta), 2, 70, 0x404040, false);
         GuiDraw.drawString(I18n.format("gtnop.gui.nei.genHeight") + ": " + oreLayer.worldGenHeightRange, 2, 83, 0x404040, false);
-        GuiDraw.drawString(I18n.format("gtnop.gui.nei.weightedChance") + ": " + oreLayer.weightedChance, 2, 96, 0x404040, false);
-        GuiDraw.drawString(I18n.format("gtnop.gui.nei.worldNames") + ": " + getWorldNameTranslated(oreLayer.genOverworld, oreLayer.genNether, oreLayer.genEnd, oreLayer.genMoon, oreLayer.genMars), 2, 109, 0x404040, false);
+        GuiDraw.drawString(I18n.format("gtnop.gui.nei.worldNames") + ": " + getWorldNameTranslated(oreLayer.genOverworld, oreLayer.genNether, oreLayer.genEnd, oreLayer.genMoon, oreLayer.genMars), 2, 96, 0x404040, false);
+        GuiDraw.drawString(I18n.format("gtnop.gui.nei.weightedChance") + ": " + getWeightedChance(oreLayer.randomWeight, oreLayer.genOverworld, oreLayer.genNether, oreLayer.genEnd, oreLayer.genMoon, oreLayer.genMars), 2, 109, 0x404040, false);
         if (GT5OreLayerHelper.restrictBiomeSupport) GuiDraw.drawString(I18n.format("gtnop.gui.nei.restrictBiome") + ": " + getBiomeTranslated(oreLayer.restrictBiome), 2, 122, 0x404040, false);
         GuiDraw.drawStringR(EnumChatFormatting.BOLD + I18n.format("gtnop.gui.nei.seeAll"), getGuiWidth()-3, 5, 0x404040, false);
     }
@@ -132,6 +132,36 @@ public class PluginGT5VeinStat extends PluginGT5Base {
             return I18n.format("gtnop.ore.custom.name") + I18n.format("gtnop.ore.vein.name") + unlocalizedName.substring(15);
         else
             return I18n.format("gtnop." + unlocalizedName) + I18n.format("gtnop.ore.vein.name");
+    }
+    
+    public String getWeightedChance(int randomWeight, boolean genOverworld, boolean genNether, boolean genEnd, boolean genMoon, boolean genMars) {
+        String weightedChance = "";
+        if (genOverworld && GT5OreLayerHelper.weightPerWorld[0] != 0) {
+            if (!weightedChance.isEmpty())
+                weightedChance += ", ";
+            weightedChance += String.format("%.2f%%", (100.0f*randomWeight)/GT5OreLayerHelper.weightPerWorld[0]);
+        }
+        if (genNether && GT5OreLayerHelper.weightPerWorld[1] != 0) {
+            if (!weightedChance.isEmpty())
+                weightedChance += ", ";
+            weightedChance += String.format("%.2f%%", (100.0f*randomWeight)/GT5OreLayerHelper.weightPerWorld[1]);
+        }
+        if (genEnd && GT5OreLayerHelper.weightPerWorld[2] != 0) {
+            if (!weightedChance.isEmpty())
+                weightedChance += ", ";
+            weightedChance += String.format("%.2f%%", (100.0f*randomWeight)/GT5OreLayerHelper.weightPerWorld[2]);
+        }
+        if (genMoon && GT5OreLayerHelper.weightPerWorld[3] != 0) {
+            if (!weightedChance.isEmpty())
+                weightedChance += ", ";
+            weightedChance += String.format("%.2f%%", (100.0f*randomWeight)/GT5OreLayerHelper.weightPerWorld[3]);
+        }
+        if (genMars && GT5OreLayerHelper.weightPerWorld[4] != 0) {
+            if (!weightedChance.isEmpty())
+                weightedChance += ", ";
+            weightedChance += String.format("%.2f%%", (100.0f*randomWeight)/GT5OreLayerHelper.weightPerWorld[4]);
+        }
+        return weightedChance;
     }
     
     @Override

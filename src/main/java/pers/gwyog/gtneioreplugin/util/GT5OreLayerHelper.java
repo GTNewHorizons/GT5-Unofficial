@@ -21,6 +21,7 @@ public class GT5OreLayerHelper {
     public static boolean gcBasicSupport = false;
     public static boolean gcAsteroidSupport = false;
     public static boolean immersiveEngineeringSupport = false;
+    public static int[] weightPerWorld = {0, 0, 0, 0, 0};
     public static HashMap<String, OreLayerWrapper> mapOreLayerWrapper = new HashMap<String, OreLayerWrapper>();
 
     public GT5OreLayerHelper() {
@@ -82,9 +83,9 @@ public class GT5OreLayerHelper {
         public short betweenMeta;
         public short sporadicMeta;
         public String worldGenHeightRange;
-        public String weightedChance;
         public String weightedIEChance;
         public String restrictBiome;
+        public int randomWeight;
         public boolean genOverworld = false;
         public boolean genNether = false;
         public boolean genEnd = false;
@@ -101,15 +102,20 @@ public class GT5OreLayerHelper {
             this.betweenMeta = worldGen.mBetweenMeta;
             this.sporadicMeta = worldGen.mSporadicMeta;
             this.worldGenHeightRange = worldGen.mMinY + "-" + worldGen.mMaxY;
-            this.weightedChance = String.format("%.2f%%", (100.0f*worldGen.mWeight)/GT_Worldgen_GT_Ore_Layer.sWeight);
+            this.randomWeight = worldGen.mWeight;
             this.genOverworld = worldGen.mOverworld;
             this.genNether = worldGen.mNether;
             this.genEnd = worldGen.mEnd;
+            weightPerWorld[0] += this.genOverworld ? this.randomWeight : 0;
+            weightPerWorld[1] += this.genNether ? this.randomWeight : 0;
+            weightPerWorld[2] += this.genEnd ? this.randomWeight : 0;
             if (restrictBiomeSupport) 
                 this.restrictBiome = worldGen.mRestrictBiome;
             if (GT5OreLayerHelper.gcBasicSupport) {
                 this.genMoon = worldGen.mMoon;
                 this.genMars = worldGen.mMars;
+                weightPerWorld[3] += this.genMoon ? this.randomWeight : 0;
+                weightPerWorld[4] += this.genMars ? this.randomWeight : 0;
             }
             if (GT5OreLayerHelper.endAsteroidSupport)
                 this.genEndAsteroid = worldGen.mEndAsteroid;

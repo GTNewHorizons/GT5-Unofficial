@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import pers.gwyog.gtneioreplugin.GTNEIOrePlugin;
 
 public class GT6OreLayerHelper {
+    public static int[] weightPerWorld = {0, 0, 0};
     public static HashMap<String, OreLayerWrapper> mapOreLayerWrapper = new HashMap<String, OreLayerWrapper>();
     public static Set<PrefixBlock> setOreNormalBasicTypes = new HashSet<PrefixBlock>();
     
@@ -33,7 +34,7 @@ public class GT6OreLayerHelper {
         public short betweenMeta;
         public short sporadicMeta;
         public String worldGenHeightRange;
-        public String weightedChance;
+        public int randomWeight;
         public boolean genOverworld = false;
         public boolean genNether = false;
         public boolean genEnd = false;
@@ -45,10 +46,13 @@ public class GT6OreLayerHelper {
             this.betweenMeta = worldGen.mBetweenMeta;
             this.sporadicMeta = worldGen.mSporadicMeta;
             this.worldGenHeightRange = worldGen.mMinY + "-" + worldGen.mMaxY;
-            this.weightedChance = String.format("%.2f%%", (100.0f*worldGen.mWeight)/Worldgen_GT_Ore_Layer.sWeight);
+            this.randomWeight = worldGen.mWeight;
             this.genOverworld = worldGen.mOverworld;
             this.genNether = worldGen.mNether;
             this.genEnd = worldGen.mEnd;
+            weightPerWorld[0] += this.genOverworld ? this.randomWeight : 0;
+            weightPerWorld[1] += this.genNether ? this.randomWeight : 0;
+            weightPerWorld[2] += this.genEnd ? this.randomWeight : 0;
         }    
     } 
     
