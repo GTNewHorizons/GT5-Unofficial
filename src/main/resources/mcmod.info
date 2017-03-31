@@ -3,7 +3,7 @@
   "modid": "gtneioreplugin",
   "name": "GT NEI Ore Plugin",
   "description": "A forge mod which adds NEI plugins for GregTech5's ores.",
-  "version": "v1.0.3",
+  "version": "v1.0.4",
   "mcversion": "1.7.10",
   "url": "",
   "updateUrl": "",
