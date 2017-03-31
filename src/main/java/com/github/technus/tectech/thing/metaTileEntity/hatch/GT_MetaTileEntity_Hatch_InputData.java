@@ -1,5 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
+import com.github.technus.tectech.thing.metaTileEntity.pipe.iConnectsToDataPipe;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -39,5 +40,10 @@ public class GT_MetaTileEntity_Hatch_InputData extends GT_MetaTileEntity_Hatch_D
     @Override
     public boolean canConnect(byte side) {
         return isInputFacing(side);
+    }
+
+    @Override
+    public iConnectsToDataPipe getNext(iConnectsToDataPipe source) {
+        return null;
     }
 }

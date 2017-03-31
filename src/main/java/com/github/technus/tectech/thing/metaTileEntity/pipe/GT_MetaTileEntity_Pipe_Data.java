@@ -2,6 +2,8 @@ package com.github.technus.tectech.thing.metaTileEntity.pipe;
 
 import com.github.technus.tectech.elementalMatter.CommonValues;
 import com.github.technus.tectech.thing.machineTT;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -157,5 +159,24 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements iConn
     @Override
     public boolean canConnect(byte side) {
         return true;
+    }
+
+    @Override
+    public iConnectsToDataPipe getNext(iConnectsToDataPipe source) {
+        if(connectionCount!=2) return null;
+        for(byte s=0;s<6;s++){
+            if((mConnections&(1<<s))==0) continue;//if not connected continue
+            final IGregTechTileEntity next=getBaseMetaTileEntity().getIGregTechTileEntityAtSide(s);
+            if(next==null) continue;
+            final IMetaTileEntity meta=next.getMetaTileEntity();
+            if(meta instanceof iConnectsToDataPipe && meta!=source){
+                if(meta instanceof GT_MetaTileEntity_Hatch_InputData)
+                    return (iConnectsToDataPipe)meta;
+                if(meta instanceof GT_MetaTileEntity_Pipe_Data &&
+                        ((GT_MetaTileEntity_Pipe_Data) meta).connectionCount==2)
+                    return (iConnectsToDataPipe)meta;
+            }
+        }
+        return null;
     }
 }

@@ -44,14 +44,14 @@ public class GT_MetaTileEntity_Hatch_OutputElemental extends GT_MetaTileEntity_H
         byte color = getBaseMetaTileEntity().getColorization();
         if (color < 0) return;
         byte front = aBaseMetaTileEntity.getFrontFacing();
-        byte opposite = GT_Utility.getOppositeSide(getBaseMetaTileEntity().getFrontFacing());
+        byte opposite = GT_Utility.getOppositeSide(front);
         for (byte dist = 1; dist < 16; dist++) {
             IGregTechTileEntity tGTTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSideAndDistance(front, dist);
             if (tGTTileEntity != null && tGTTileEntity.getColorization() == color) {
                 IMetaTileEntity aMetaTileEntity = tGTTileEntity.getMetaTileEntity();
                 if (aMetaTileEntity != null) {
                     if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputElemental &&
-                            opposite == aMetaTileEntity.getBaseMetaTileEntity().getFrontFacing()) {
+                            opposite == tGTTileEntity.getFrontFacing()) {
                         ((GT_MetaTileEntity_Hatch_InputElemental) aMetaTileEntity).getContainerHandler().putUnifyAll(content);
                         ((GT_MetaTileEntity_Hatch_InputElemental) aMetaTileEntity).updateSlots();
                         content.clear();

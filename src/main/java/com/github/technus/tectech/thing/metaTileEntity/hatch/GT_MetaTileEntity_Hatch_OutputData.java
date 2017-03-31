@@ -1,6 +1,8 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Data;
+import com.github.technus.tectech.thing.metaTileEntity.pipe.iConnectsToDataPipe;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -25,12 +27,12 @@ public class GT_MetaTileEntity_Hatch_OutputData extends GT_MetaTileEntity_Hatch_
     }
 
     @Override
-    public boolean isInputFacing(byte aSide) {
+    public boolean isOutputFacing(byte aSide) {
         return aSide == getBaseMetaTileEntity().getFrontFacing();
     }
 
     @Override
-    public boolean isOutputFacing(byte aSide) {
+    public boolean isInputFacing(byte aSide) {
         return false;
     }
 
@@ -45,29 +47,33 @@ public class GT_MetaTileEntity_Hatch_OutputData extends GT_MetaTileEntity_Hatch_
     }
 
     @Override
-    public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {//TODO
-        byte color = getBaseMetaTileEntity().getColorization();
-        if (color < 0) return;
-        byte front = aBaseMetaTileEntity.getFrontFacing();
-        byte opposite = GT_Utility.getOppositeSide(getBaseMetaTileEntity().getFrontFacing());
-        for (byte dist = 1; dist < 16; dist++) {
-            IGregTechTileEntity tGTTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSideAndDistance(front, dist);
-            if (tGTTileEntity != null && tGTTileEntity.getColorization() == color) {
-                IMetaTileEntity aMetaTileEntity = tGTTileEntity.getMetaTileEntity();
-                if (aMetaTileEntity != null) {
-                    if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputData &&
-                            opposite == aMetaTileEntity.getBaseMetaTileEntity().getFrontFacing()) {
-                        ((GT_MetaTileEntity_Hatch_InputData) aMetaTileEntity).timeout=2;
-                        ((GT_MetaTileEntity_Hatch_InputData) aMetaTileEntity).data=data;
-                        return;
-                    } else if (aMetaTileEntity instanceof GT_MetaTileEntity_Pipe_Data) {
-                        if (((GT_MetaTileEntity_Pipe_Data) aMetaTileEntity).connectionCount > 2) return;
-                    } else return;
-                } else return;
-            } else return;
+    public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
+        iConnectsToDataPipe next;
+        int range=0;
+        while((next=getNext(this))!=null && range++<1000){
+            if(next instanceof GT_MetaTileEntity_Hatch_InputData){
+                ((GT_MetaTileEntity_Hatch_InputData) next).timeout=2;
+                ((GT_MetaTileEntity_Hatch_InputData) next).data=data;
+            }
         }
-        //trace optics all the way to the end, no branching splitting etc.
-        //Coloring requirement!
-        //set data to match this and timout to 3
+    }
+
+    @Override
+    public iConnectsToDataPipe getNext(iConnectsToDataPipe source/*==this*/) {
+        IGregTechTileEntity base=getBaseMetaTileEntity();
+        byte color=base.getColorization();
+        if (color < 0) return null;
+        IGregTechTileEntity next=base.getIGregTechTileEntityAtSide(base.getFrontFacing());
+        if(next==null || color!=base.getColorization()) return null;
+        IMetaTileEntity meta=next.getMetaTileEntity();
+        if(meta instanceof iConnectsToDataPipe){
+            if(meta instanceof GT_MetaTileEntity_Hatch_InputData &&
+                    GT_Utility.getOppositeSide(next.getFrontFacing())==base.getFrontFacing())
+                return (iConnectsToDataPipe) meta;
+            if(meta instanceof GT_MetaTileEntity_Pipe_Data &&
+                    ((GT_MetaTileEntity_Pipe_Data) meta).connectionCount==2)
+                return (iConnectsToDataPipe) meta;
+        }
+        return null;
     }
 }

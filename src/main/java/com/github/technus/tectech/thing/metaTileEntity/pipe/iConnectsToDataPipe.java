@@ -5,4 +5,6 @@ package com.github.technus.tectech.thing.metaTileEntity.pipe;
  */
 public interface iConnectsToDataPipe {
     boolean canConnect(byte side);
+
+    iConnectsToDataPipe getNext(iConnectsToDataPipe source);
 }
