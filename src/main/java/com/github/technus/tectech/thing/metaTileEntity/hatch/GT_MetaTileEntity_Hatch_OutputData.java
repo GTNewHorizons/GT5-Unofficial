@@ -48,9 +48,9 @@ public class GT_MetaTileEntity_Hatch_OutputData extends GT_MetaTileEntity_Hatch_
 
     @Override
     public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
-        iConnectsToDataPipe next;
+        iConnectsToDataPipe next=this;
         int range=0;
-        while((next=getNext(this))!=null && range++<1000){
+        while((next=getNext(next))!=null && range++<1000){
             if(next instanceof GT_MetaTileEntity_Hatch_InputData){
                 ((GT_MetaTileEntity_Hatch_InputData) next).timeout=2;
                 ((GT_MetaTileEntity_Hatch_InputData) next).data=data;
