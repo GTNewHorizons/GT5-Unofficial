@@ -43,7 +43,7 @@ public class GT_MetaTileEntity_Hatch_OutputData extends GT_MetaTileEntity_Hatch_
 
     @Override
     public boolean canConnect(byte side) {
-        return isInputFacing(side);
+        return isOutputFacing(side);
     }
 
     @Override

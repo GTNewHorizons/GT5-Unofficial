@@ -128,7 +128,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
                     deathDelay--;
                 }
             } else if (moveAt == Tick) {
-                moveAround(aBaseMetaTileEntity);
+                if(content.hasStacks())moveAround(aBaseMetaTileEntity);
                 getBaseMetaTileEntity().setActive(content.hasStacks());
             }
         }

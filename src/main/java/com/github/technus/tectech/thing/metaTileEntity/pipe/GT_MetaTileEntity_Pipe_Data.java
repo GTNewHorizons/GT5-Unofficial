@@ -115,7 +115,6 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements iConn
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if ((aTick & 31) == 31) {
-                byte mOld = 0;
                 mConnections = 0;
                 connectionCount = 0;
                 if (aBaseMetaTileEntity.getColorization() < 0) return;
