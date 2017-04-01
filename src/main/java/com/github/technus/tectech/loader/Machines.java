@@ -173,7 +173,7 @@ public class Machines implements Runnable {
                 15225, "hatch.dynamomulti64.tier.13", "UXV 64A Dynamo Hatch", 13, 64).getStackForm(1L));
 
         // ===================================================================================================
-        // MULTIBLOCKS EM
+        // MULTIBLOCKS
         // ===================================================================================================
 
         Machine_Multi_Transformer.set(new GT_MetaTileEntity_EM_transformer(15300, "multimachine.em.transformer", "Active Transformer").getStackForm(1L));
@@ -184,17 +184,21 @@ public class Machines implements Runnable {
         Machine_Multi_EMjunction.set(new GT_MetaTileEntity_EM_junction(15342, "multimachine.em.junction", "Matter Junction").getStackForm(1L));
         Machine_Multi_EMmachine.set(new GT_MetaTileEntity_EM_machine(15343, "multimachine.em.processing", "Quantum Processing Machine").getStackForm(1L));
         Machine_Multi_EMCrafter.set(new GT_MetaTileEntity_EM_crafter(15344, "multimachine.em.crafter", "Matter Assembler").getStackForm(1L));
-        Machine_Multi_Collider.set(new GT_MetaTileEntity_EM_collider(15345, "multimachine.em.collider", "Matter Collider").getStackForm(1L));
-        Machine_Multi_BHG.set(new GT_MetaTileEntity_EM_bhg(15346, "multimachine.em.blackholegenerator", "Black Hole Generator").getStackForm(1L));
-        Machine_Multi_Wormhole.set(new GT_MetaTileEntity_EM_wormhole(15347, "multimachine.em.wormhole", "Wormhole").getStackForm(1L));
-        Machine_Multi_Stabilizer.set(new GT_MetaTileEntity_EM_stabilizer(15348, "multimachine.em.stabilizer", "Elemental Stabilizer").getStackForm(1L));
-        Machine_Multi_Scanner.set(new GT_MetaTileEntity_EM_scanner(15349, "multimachine.em.scanner", "Elemental Scanner").getStackForm(1L));
+        Machine_Multi_Scanner.set(new GT_MetaTileEntity_EM_scanner(15353, "multimachine.em.scanner", "Elemental Scanner").getStackForm(1L));
+
+        Machine_Multi_Collider.set(new GT_MetaTileEntity_EM_collider(15350, "multimachine.em.collider", "Matter Collider").getStackForm(1L));
+        Machine_Multi_Wormhole.set(new GT_MetaTileEntity_EM_wormhole(15351, "multimachine.em.wormhole", "Wormhole").getStackForm(1L));
+        Machine_Multi_Stabilizer.set(new GT_MetaTileEntity_EM_stabilizer(15352, "multimachine.em.stabilizer", "Elemental Stabilizer").getStackForm(1L));
+
+        Machine_Multi_Decay.set(new GT_MetaTileEntity_EM_decay(15360,"multimachine.em.decay","Decay Generator").getStackForm(1L));
+        Machine_Multi_Annihilation.set(new GT_MetaTileEntity_EM_annihilation(15361,"multimachine.em.annihilation","Annihilation Generator").getStackForm(1L));
+        Machine_Multi_BHG.set(new GT_MetaTileEntity_EM_bhg(15362, "multimachine.em.blackholegenerator", "Black Hole Generator").getStackForm(1L));
 
         Machine_Multi_Computer.set(new GT_MetaTileEntity_EM_computer(15380, "multimachine.em.computer", "Quantum Computer").getStackForm(1L));
         Machine_Multi_Switch.set(new GT_MetaTileEntity_EM_switch(15381, "multimachine.em.switch", "Network Switch With QoS").getStackForm(1L));
 
         // ===================================================================================================
-        // Hatches EM
+        // Hatches
         // ===================================================================================================
         Parametrizer_Hatch.set(new GT_MetaTileEntity_Hatch_Param(15420, "hatch.param.tier.08", "Parametrizer", 8).getStackForm(1L));
         Uncertainty_Hatch.set(new GT_MetaTileEntity_Hatch_Uncertainty(15421, "hatch.certain.tier.08", "Uncertainty Resolver", 10).getStackForm(1L));
@@ -203,7 +207,7 @@ public class Machines implements Runnable {
         dataOut_Hatch.set(new GT_MetaTileEntity_Hatch_OutputData(15424, "hatch.dataout.tier.08", "Optical Master Connector", 8).getStackForm(1L));
 
         // ===================================================================================================
-        // EM pipe
+        // Pipes
         // ===================================================================================================
         EMpipe.set(new GT_MetaTileEntity_Pipe_EM(15460, "pipe.elementalmatter", "Quantum Tunnel").getStackForm(1L));
         DATApipe.set(new GT_MetaTileEntity_Pipe_Data(15461, "pipe.datastream", "Optical Fiber Cable").getStackForm(1L));

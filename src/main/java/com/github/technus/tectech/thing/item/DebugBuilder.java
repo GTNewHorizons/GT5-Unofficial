@@ -1,17 +1,14 @@
 package com.github.technus.tectech.thing.item;
 
 import com.github.technus.tectech.elementalMatter.CommonValues;
-import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackTree;
 import com.github.technus.tectech.thing.metaTileEntity.constructableTT;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 

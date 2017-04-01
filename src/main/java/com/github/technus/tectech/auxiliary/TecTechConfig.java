@@ -13,12 +13,14 @@ public class TecTechConfig extends ConfigManager {
 
     public boolean DEBUG_MODE;
     public boolean BOOM_ENABLE;
+    public boolean NERF_FUSION;
 
     @Override
     protected void PreInit() {
         ModAdminErrorLogs_Enabled = false;
         DEBUG_MODE = false;
         BOOM_ENABLE = true;
+        NERF_FUSION = true;
     }
 
     @Override
@@ -29,6 +31,8 @@ public class TecTechConfig extends ConfigManager {
                 "Enables logging");
         BOOM_ENABLE = _mainConfig.getBoolean("BoomEnable", "Features", BOOM_ENABLE,
                 "Set to false to disable explosions on everything bad that you can do (this will not be available after release)");
+        NERF_FUSION = _mainConfig.getBoolean("NerfFusion", "Features", NERF_FUSION,
+                "Set to false to disable nerfing of plasmas heavier than Fe");
     }
 
     @Override

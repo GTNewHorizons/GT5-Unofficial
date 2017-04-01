@@ -1,6 +1,5 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Data;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.iConnectsToDataPipe;
 import gregtech.api.interfaces.ITexture;

@@ -23,10 +23,15 @@ import cpw.mods.fml.relauncher.SideOnly;
 import eu.usrv.yamcore.auxiliary.IngameErrorLog;
 import eu.usrv.yamcore.auxiliary.LogHelper;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
+import gregtech.api.util.GT_Recipe;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION, dependencies = "required-after:Forge@[10.13.4.1614,);"
@@ -45,6 +50,7 @@ public class TecTech {
     public static TecTechConfig ModConfig;
     public static XSTR Rnd = null;
     public static CreativeTabs mainTab = null;
+    private static boolean oneTimeFix=false;
 
     public static boolean hasCOFH=false;
 
@@ -105,19 +111,51 @@ public class TecTech {
         };
 
         RegisterThingsInTabs();
+
         if (Loader.isModLoaded("dreamcraft")) ;//TODO init recipes for GTNH version
         else ;//TODO init recipes for NON-GTNH version
     }
 
-    public void RegisterThingsInTabs() {
+    @EventHandler
+    public void serverLoad(FMLServerStartingEvent pEvent) {
+        if(!oneTimeFix) {
+            if (ModConfig.NERF_FUSION) FixBrokenFusionRecipes();
+            oneTimeFix=true;
+        }
+    }
+
+    private void RegisterThingsInTabs() {
         QuantumGlass.INSTANCE.setCreativeTab(mainTab);
         GT_Container_CasingsTT.sBlockCasingsTT.setCreativeTab(mainTab);
         DebugContainer_EM.INSTANCE.setCreativeTab(mainTab);
         DebugBuilder.INSTANCE.setCreativeTab(mainTab);
     }
 
-    @EventHandler
-    public void serverLoad(FMLServerStartingEvent pEvent) {
-        //Be Lazy...
+    private void FixBrokenFusionRecipes(){
+        HashMap<Fluid,Fluid> binds=new HashMap<>();
+        for(Materials m:Materials.values()){
+            FluidStack p=m.getPlasma(1);
+            if(     p!=null) {
+                if(ModConfig.DEBUG_MODE) TecTech.Logger.info("Found Plasma of "+m.name());
+                if (m.mElement != null &&
+                        (m.mElement.mProtons >= Materials.Iron.mElement.mProtons ||
+                        -m.mElement.mProtons >= Materials.Iron.mElement.mProtons ||
+                         m.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons ||
+                        -m.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons)) {
+                    if (ModConfig.DEBUG_MODE) TecTech.Logger.info("Attempting to bind " + m.name());
+                    if (m.getMolten(1) != null) binds.put(p.getFluid(), m.getMolten(1).getFluid());
+                    else if (m.getGas(1) != null) binds.put(p.getFluid(), m.getGas(1).getFluid());
+                    else if (m.getFluid(1) != null) binds.put(p.getFluid(), m.getFluid(1).getFluid());
+                    else binds.put(p.getFluid(),Materials.Iron.getMolten(1).getFluid());
+                }
+            }
+        }
+        for(GT_Recipe r:GT_Recipe.GT_Recipe_Map.sFusionRecipes.mRecipeList){
+            Fluid f=binds.get(r.mFluidOutputs[0].getFluid());
+            if(f!=null){
+                if(ModConfig.DEBUG_MODE) TecTech.Logger.info("Nerfing Recipe "+r.mFluidOutputs[0].getUnlocalizedName());
+                r.mFluidOutputs[0]=new FluidStack(f,r.mFluidInputs[0].amount);
+            }
+        }
     }
 }

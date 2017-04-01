@@ -3,7 +3,6 @@ package com.github.technus.tectech.thing.metaTileEntity.pipe;
 import com.github.technus.tectech.elementalMatter.CommonValues;
 import com.github.technus.tectech.thing.machineTT;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
