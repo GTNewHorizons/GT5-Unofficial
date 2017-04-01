@@ -43,6 +43,7 @@ public class HellFire extends BlockFire {
 		GameRegistry.registerBlock(this, "blockHellFire");
 		LanguageRegistry.addName(this, "Hellish Fire");
 		enableBrutalFire();
+		this.setLightLevel(15);
 	}
 
 	private void enableBrutalFire() {
