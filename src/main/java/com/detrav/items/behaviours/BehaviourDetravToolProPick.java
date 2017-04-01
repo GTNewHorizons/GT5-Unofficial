@@ -181,6 +181,10 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
             addChatMassageByValue(aPlayer,total,"Total");
             if (!aPlayer.capabilities.isCreativeMode)
                 aItem.doDamage(aStack, this.mCosts);
+            if(total==0)
+            {
+                addChatMassageByValue(aPlayer,0,null);
+            }
             return;
         }
         addChatMassageByValue(aPlayer,0,null);

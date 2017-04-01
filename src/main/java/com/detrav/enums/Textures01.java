@@ -19,6 +19,7 @@ public class Textures01 {
                     new Textures.ItemIcons.CustomIcon("gt.detrav.metatool.01/ELECTRIC_HV_PRO_PICK_HEAD"),
                     new Textures.ItemIcons.CustomIcon("gt.detrav.metatool.01/PORTABE_CHARGER"),
                     new Textures.ItemIcons.CustomIcon("gt.detrav.metatool.01/PORTABE_CHARGER_BORDER"),
-                    new Textures.ItemIcons.CustomIcon("gt.detrav.metatool.01/ANVIL_TOOL")
+                    new Textures.ItemIcons.CustomIcon("gt.detrav.metatool.01/ANVIL_TOOL"),
+                    new Textures.ItemIcons.CustomIcon("gt.detrav.metatool.01/TOOL_TREE_TAP")
             };
 }

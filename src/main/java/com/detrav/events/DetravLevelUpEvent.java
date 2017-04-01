@@ -24,8 +24,8 @@ public class DetravLevelUpEvent {
         EntityPlayer player = ev.entityPlayer;
         if (player != null) {
             if (!player.getEntityWorld().isRemote) {
-                if ((player.experience + ev.orb.xpValue) >= player.xpBarCap()) {
-                    UpdateHealthAttribute(player);
+                if ((player.experience + ev.orb.xpValue*2) >= player.xpBarCap()) {
+                    UpdateHealthAttribute(player,1);
                 }
             }
         }
@@ -33,14 +33,20 @@ public class DetravLevelUpEvent {
 
     public static void UpdateHealthAttribute(EntityPlayer player)
     {
+        UpdateHealthAttribute(player,0);
+    }
+
+    public static void UpdateHealthAttribute(EntityPlayer player,int bonus)
+    {
         if (!player.getEntityWorld().isRemote) {
-            AttributeModifier mod = GetAttributeModifier(player.experienceLevel);
+            AttributeModifier mod = GetAttributeModifier(player.experienceLevel+bonus);
             player.getEntityAttribute(
                     SharedMonsterAttributes.maxHealth
             ).removeModifier(mod);
             player.getEntityAttribute(
                     SharedMonsterAttributes.maxHealth
             ).applyModifier(mod);
+            player.heal(player.getMaxHealth());
         }
     }
 

@@ -19,6 +19,8 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
+import ic2.api.item.IC2Items;
+import ic2.core.Ic2Items;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -59,6 +61,11 @@ public class CommonProxy implements IGuiHandler {
         GT_ModHandler.addCraftingRecipe(DetravItemList.Solar_Boiler_High.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"GGG", "RRR", "PMP", Character.valueOf('M'), ItemList.Casing_HV, Character.valueOf('P'), OrePrefixes.pipeSmall.get(Materials.StainlessSteel), Character.valueOf('R'), OrePrefixes.dust.get(Materials.Rutile), Character.valueOf('G'), new ItemStack(Blocks.glass, 1)});
 
         GT_ModHandler.addShapelessCraftingRecipe(DetravItemList.DetravAdvancedMiner2.get(1L, new Object[0]),new Object[]{ItemList.AdvancedMiner2});
+
+        //Treetap recipes
+
+        GT_ModHandler.addShapelessCraftingRecipe(DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(10,1, Materials.Wood,Materials.Wood, null ),
+                new Object[]{Ic2Items.treetap,Ic2Items.rubberWood,Ic2Items.resin});
 
         //DetravCraftingEventHandler.register();
         DetravEntityDropEvent.register();
