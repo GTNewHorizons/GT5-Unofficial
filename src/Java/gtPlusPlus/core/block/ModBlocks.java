@@ -39,6 +39,8 @@ public final class ModBlocks {
 	public static Block blockOreFluorite;
 	
 	public static Block blockMiningExplosive;
+	
+	public static Block blockHellfire;
 
 
 
@@ -65,6 +67,7 @@ public final class ModBlocks {
 		blockFishTrap = new FishTrap();
 		blockOreFluorite = new BlockBaseOre("oreFluorite", "Fluorite", Material.rock, BlockTypes.ORE, Utils.rgbtoHexValue(120, 120, 30), 3);
 		blockMiningExplosive = new MiningExplosives();
+		blockHellfire = new HellFire();
 
 
 	}

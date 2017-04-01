@@ -8,8 +8,11 @@ import java.util.Random;
 
 import com.google.common.collect.Maps;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.objects.XSTR;
 import net.minecraft.block.Block;
@@ -28,11 +31,15 @@ public class HellFire extends BlockFire {
 	@Deprecated
 	private final int[] field_149848_b = new int[4096];
 	@SideOnly(Side.CLIENT)
-	private IIcon[] field_149850_M;
+	private IIcon[] IIconArray;
 
-	protected HellFire() {
+	public HellFire() {
 		this.setTickRandomly(true);
-		this.setBlockTextureName(CORE.MODID + ":" + "");
+		this.setBlockTextureName(CORE.MODID + "hellfire/blockHellFire");
+		this.setBlockName("blockHellFire");
+		this.setCreativeTab(AddToCreativeTab.tabBlock);
+		GameRegistry.registerBlock(this, "blockHellFire");
+		LanguageRegistry.addName(this, "Hellish Fire");
 	}
 
 	/**
@@ -40,7 +47,7 @@ public class HellFire extends BlockFire {
 	 */
 	@Override
 	public int tickRate(final World world) {
-		return 10;
+		return 5;
 	}
 
 	/**
@@ -65,20 +72,20 @@ public class HellFire extends BlockFire {
 				world.setBlockToAir(x, y, z);
 			}
 			else {
-				final int l = world.getBlockMetadata(x, y, z);
+				final int blockMeta = world.getBlockMetadata(x, y, z);
 
-				if (l < 15) {
-					world.setBlockMetadataWithNotify(x, y, z, l + (random.nextInt(3) / 2), 4);
+				if (blockMeta < 15) {
+					world.setBlockMetadataWithNotify(x, y, z, blockMeta + (random.nextInt(3) / 2), 4);
 				}
 
 				world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world) + random.nextInt(10));
 
 				if (!flag && !this.canNeighborBurn(world, x, y, z)) {
-					if (!World.doesBlockHaveSolidTopSurface(world, x, y - 1, z) || (l > 3)) {
+					if (!World.doesBlockHaveSolidTopSurface(world, x, y - 1, z) || (blockMeta > 3)) {
 						world.setBlockToAir(x, y, z);
 					}
 				}
-				else if (!flag && !this.canCatchFire(world, x, y - 1, z, UP) && (l == 15) && (random.nextInt(4) == 0)) {
+				else if (!flag && !this.canCatchFire(world, x, y - 1, z, UP) && (blockMeta == 15) && (random.nextInt(4) == 0)) {
 					world.setBlockToAir(x, y, z);
 				}
 				else {
@@ -89,12 +96,12 @@ public class HellFire extends BlockFire {
 						b0 = -50;
 					}
 
-					this.tryCatchFire(world, x + 1, y, z, 300 + b0, random, l, WEST);
-					this.tryCatchFire(world, x - 1, y, z, 300 + b0, random, l, EAST);
-					this.tryCatchFire(world, x, y - 1, z, 250 + b0, random, l, UP);
-					this.tryCatchFire(world, x, y + 1, z, 250 + b0, random, l, DOWN);
-					this.tryCatchFire(world, x, y, z - 1, 300 + b0, random, l, SOUTH);
-					this.tryCatchFire(world, x, y, z + 1, 300 + b0, random, l, NORTH);
+					this.tryCatchFire(world, x + 1, y, z, 300 + b0, random, blockMeta, WEST);
+					this.tryCatchFire(world, x - 1, y, z, 300 + b0, random, blockMeta, EAST);
+					this.tryCatchFire(world, x, y - 1, z, 250 + b0, random, blockMeta, UP);
+					this.tryCatchFire(world, x, y + 1, z, 250 + b0, random, blockMeta, DOWN);
+					this.tryCatchFire(world, x, y, z - 1, 300 + b0, random, blockMeta, SOUTH);
+					this.tryCatchFire(world, x, y, z + 1, 300 + b0, random, blockMeta, NORTH);
 
 					for (int i1 = x - 1; i1 <= (x + 1); ++i1) {
 						for (int j1 = z - 1; j1 <= (z + 1); ++j1) {
@@ -106,10 +113,10 @@ public class HellFire extends BlockFire {
 										l1 += (k1 - (y + 1)) * 100;
 									}
 
-									final int i2 = this.getChanceOfNeighborsEncouragingFire(world, i1, k1, j1);
+									final int neighbourFireChance = this.getChanceOfNeighborsEncouragingFire(world, i1, k1, j1);
 
-									if (i2 > 0) {
-										int j2 = (i2 + 40 + (world.difficultySetting.getDifficultyId() * 7)) / (l + 30);
+									if (neighbourFireChance > 0) {
+										int j2 = (neighbourFireChance + 40 + (world.difficultySetting.getDifficultyId() * 14)) / (blockMeta + 30);
 
 										if (flag1) {
 											j2 /= 2;
@@ -121,7 +128,7 @@ public class HellFire extends BlockFire {
 												&& !world.canLightningStrikeAt(i1 + 1, k1, j1)
 												&& !world.canLightningStrikeAt(i1, k1, j1 - 1)
 												&& !world.canLightningStrikeAt(i1, k1, j1 + 1)) {
-											int k2 = l + (random.nextInt(5) / 4);
+											int k2 = blockMeta + (random.nextInt(5) / 4);
 
 											if (k2 > 15) {
 												k2 = 15;
@@ -330,15 +337,16 @@ public class HellFire extends BlockFire {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(final IIconRegister p_149651_1_) {
-		this.field_149850_M = new IIcon[] { p_149651_1_.registerIcon(this.getTextureName() + "_layer_0"),
-				p_149651_1_.registerIcon(this.getTextureName() + "_layer_1") };
+	public void registerBlockIcons(final IIconRegister IIconRegister) {
+		this.IIconArray = new IIcon[] { 
+				IIconRegister.registerIcon(CORE.MODID + ":" + "hellfire/" + "blockHellFire" + "_layer_0"),
+				IIconRegister.registerIcon(CORE.MODID + ":" + "hellfire/" + "blockHellFire" + "_layer_1") };
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getFireIcon(final int p_149840_1_) {
-		return this.field_149850_M[p_149840_1_];
+		return this.IIconArray[p_149840_1_];
 	}
 
 	/**
@@ -347,7 +355,7 @@ public class HellFire extends BlockFire {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(final int p_149691_1_, final int p_149691_2_) {
-		return this.field_149850_M[0];
+		return this.IIconArray[0];
 	}
 
 	@Override
