@@ -14,6 +14,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.objects.XSTR;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
@@ -40,6 +41,22 @@ public class HellFire extends BlockFire {
 		this.setCreativeTab(AddToCreativeTab.tabBlock);
 		GameRegistry.registerBlock(this, "blockHellFire");
 		LanguageRegistry.addName(this, "Hellish Fire");
+		enableBrutalFire();
+	}
+
+	private void enableBrutalFire() {
+		for (Object o : Block.blockRegistry.getKeys())
+	      {
+	        String name = (String)o;
+	        Block b = Block.getBlockFromName(name);
+	        if (b != Blocks.air)
+	        {
+	          int spread = Blocks.fire.getEncouragement(b);
+	          int flamm = Blocks.fire.getFlammability(b);
+	          this.setFireInfo(b, spread * 4, flamm * 4);
+	        }
+	      }
+		
 	}
 
 	/**
@@ -69,7 +86,10 @@ public class HellFire extends BlockFire {
 					&& (world.canLightningStrikeAt(x, y, z) || world.canLightningStrikeAt(x - 1, y, z)
 							|| world.canLightningStrikeAt(x + 1, y, z) || world.canLightningStrikeAt(x, y, z - 1)
 							|| world.canLightningStrikeAt(x, y, z + 1))) {
-				world.setBlockToAir(x, y, z);
+				
+				if (MathUtils.randInt(0, 100) >= 90){
+					world.setBlockToAir(x, y, z);
+				}
 			}
 			else {
 				final int blockMeta = world.getBlockMetadata(x, y, z);
@@ -176,33 +196,33 @@ public class HellFire extends BlockFire {
 	/**
 	 * Returns true if at least one block next to this one can burn.
 	 */
-	private boolean canNeighborBurn(final World p_149847_1_, final int p_149847_2_, final int p_149847_3_, final int p_149847_4_) {
-		return this.canCatchFire(p_149847_1_, p_149847_2_ + 1, p_149847_3_, p_149847_4_, WEST)
-				|| this.canCatchFire(p_149847_1_, p_149847_2_ - 1, p_149847_3_, p_149847_4_, EAST)
-				|| this.canCatchFire(p_149847_1_, p_149847_2_, p_149847_3_ - 1, p_149847_4_, UP)
-				|| this.canCatchFire(p_149847_1_, p_149847_2_, p_149847_3_ + 1, p_149847_4_, DOWN)
-				|| this.canCatchFire(p_149847_1_, p_149847_2_, p_149847_3_, p_149847_4_ - 1, SOUTH)
-				|| this.canCatchFire(p_149847_1_, p_149847_2_, p_149847_3_, p_149847_4_ + 1, NORTH);
+	private boolean canNeighborBurn(final World world, final int x, final int y, final int z) {
+		return this.canCatchFire(world, x + 1, y, z, WEST)
+				|| this.canCatchFire(world, x - 1, y, z, EAST)
+				|| this.canCatchFire(world, x, y - 1, z, UP)
+				|| this.canCatchFire(world, x, y + 1, z, DOWN)
+				|| this.canCatchFire(world, x, y, z - 1, SOUTH)
+				|| this.canCatchFire(world, x, y, z + 1, NORTH);
 	}
 
 	/**
 	 * Gets the highest chance of a neighbor block encouraging this block to
 	 * catch fire
 	 */
-	private int getChanceOfNeighborsEncouragingFire(final World p_149845_1_, final int p_149845_2_, final int p_149845_3_, final int p_149845_4_) {
+	private int getChanceOfNeighborsEncouragingFire(final World world, final int x, final int y, final int z) {
 		final byte b0 = 0;
 
-		if (!p_149845_1_.isAirBlock(p_149845_2_, p_149845_3_, p_149845_4_)) {
+		if (!world.isAirBlock(x, y, z)) {
 			return 0;
 		}
 		else {
 			int l = b0;
-			l = this.getChanceToEncourageFire(p_149845_1_, p_149845_2_ + 1, p_149845_3_, p_149845_4_, l, WEST);
-			l = this.getChanceToEncourageFire(p_149845_1_, p_149845_2_ - 1, p_149845_3_, p_149845_4_, l, EAST);
-			l = this.getChanceToEncourageFire(p_149845_1_, p_149845_2_, p_149845_3_ - 1, p_149845_4_, l, UP);
-			l = this.getChanceToEncourageFire(p_149845_1_, p_149845_2_, p_149845_3_ + 1, p_149845_4_, l, DOWN);
-			l = this.getChanceToEncourageFire(p_149845_1_, p_149845_2_, p_149845_3_, p_149845_4_ - 1, l, SOUTH);
-			l = this.getChanceToEncourageFire(p_149845_1_, p_149845_2_, p_149845_3_, p_149845_4_ + 1, l, NORTH);
+			l = this.getChanceToEncourageFire(world, x + 1, y, z, l, WEST);
+			l = this.getChanceToEncourageFire(world, x - 1, y, z, l, EAST);
+			l = this.getChanceToEncourageFire(world, x, y - 1, z, l, UP);
+			l = this.getChanceToEncourageFire(world, x, y + 1, z, l, DOWN);
+			l = this.getChanceToEncourageFire(world, x, y, z - 1, l, SOUTH);
+			l = this.getChanceToEncourageFire(world, x, y, z + 1, l, NORTH);
 			return l;
 		}
 	}
