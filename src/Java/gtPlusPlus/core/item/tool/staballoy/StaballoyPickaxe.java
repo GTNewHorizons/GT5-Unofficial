@@ -22,9 +22,7 @@ public class StaballoyPickaxe extends ItemPickaxe{
 	 */
 	@Override
 	public double getDurabilityForDisplay(final ItemStack stack) {
-		if (super.getDurabilityForDisplay(stack) > 0){
-			return super.getDurabilityForDisplay(stack);}
-		return 0;
+		return (double)stack.getItemDamageForDisplay() / (double)stack.getMaxDamage();
 	}
 
 	protected Boolean FACING_HORIZONTAL = true;
