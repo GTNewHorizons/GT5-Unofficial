@@ -20,6 +20,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFire;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -72,7 +73,7 @@ public class HellFire extends BlockFire {
 	 */
 	@Override
 	public void updateTick(final World world, final int x, final int y, final int z, Random random) {
-
+		
 		random = new XSTR();
 
 		if (world.getGameRules().getGameRuleBooleanValue("doFireTick")) {
@@ -277,6 +278,18 @@ public class HellFire extends BlockFire {
 			}
 		}
 	}
+	
+	//Burn
+	@Override
+	public void onEntityWalking(World world, int i, int j, int k, Entity entity) {
+		entity.setFire(10);
+	}
+	
+	//Burn
+	@Override
+	public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity) {
+		entity.setFire(10);
+	}
 
 	/**
 	 * A randomly called display update to be able to add particles or other
@@ -305,7 +318,7 @@ public class HellFire extends BlockFire {
 					f = x + (randomObj.nextFloat() * 0.1F);
 					f1 = y + randomObj.nextFloat();
 					f2 = z + randomObj.nextFloat();
-					world.spawnParticle("largesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle("hugesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
 				}
 			}
 
@@ -314,7 +327,7 @@ public class HellFire extends BlockFire {
 					f = (x + 1) - (randomObj.nextFloat() * 0.1F);
 					f1 = y + randomObj.nextFloat();
 					f2 = z + randomObj.nextFloat();
-					world.spawnParticle("largesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle("hugesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
 				}
 			}
 
@@ -323,7 +336,7 @@ public class HellFire extends BlockFire {
 					f = x + randomObj.nextFloat();
 					f1 = y + randomObj.nextFloat();
 					f2 = z + (randomObj.nextFloat() * 0.1F);
-					world.spawnParticle("largesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle("hugesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
 				}
 			}
 
@@ -332,7 +345,7 @@ public class HellFire extends BlockFire {
 					f = x + randomObj.nextFloat();
 					f1 = y + randomObj.nextFloat();
 					f2 = (z + 1) - (randomObj.nextFloat() * 0.1F);
-					world.spawnParticle("largesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle("hugesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
 				}
 			}
 
@@ -341,16 +354,16 @@ public class HellFire extends BlockFire {
 					f = x + randomObj.nextFloat();
 					f1 = (y + 1) - (randomObj.nextFloat() * 0.1F);
 					f2 = z + randomObj.nextFloat();
-					world.spawnParticle("largesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle("hugesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
 				}
 			}
 		}
 		else {
-			for (l = 0; l < 3; ++l) {
+			for (l = 0; l < 5; ++l) {
 				f = x + randomObj.nextFloat();
 				f1 = y + (randomObj.nextFloat() * 0.5F) + 0.5F;
 				f2 = z + randomObj.nextFloat();
-				world.spawnParticle("largesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
+				world.spawnParticle("hugesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
 			}
 		}
 	}
