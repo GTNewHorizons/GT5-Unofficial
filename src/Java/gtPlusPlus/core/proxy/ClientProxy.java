@@ -35,7 +35,6 @@ public class ClientProxy extends CommonProxy{
 
 	@Override
 	public void preInit(final FMLPreInitializationEvent e) {
-		// TODO Auto-generated method stub
 		super.preInit(e);
 		//Do this weird things for textures.
 		GTplusplus.loadTextures();
@@ -47,8 +46,6 @@ public class ClientProxy extends CommonProxy{
 
 	@Override
 	public void init(final FMLInitializationEvent e) {
-		// TODO Auto-generated method stub
-
 		if (LoadedMods.PlayerAPI){
 			this.init_PlayerAPI_INIT();
 		}
@@ -58,7 +55,6 @@ public class ClientProxy extends CommonProxy{
 
 	@Override
 	public void postInit(final FMLPostInitializationEvent e) {
-		// TODO Auto-generated method stub
 		super.postInit(e);
 	}
 
@@ -68,12 +64,12 @@ public class ClientProxy extends CommonProxy{
 		//RenderingRegistry.registerEntityRenderingHandler(EntityBloodSteelMob.class, new RenderBloodSteelMob(new ModelBloodSteelMob(), 0));
 		//RenderingRegistry.registerEntityRenderingHandler(EntityBloodSteelHostileMob.class, new RenderBloodSteelMobHostile(new ModelBloodSteelMob(), 0));
 		//RenderingRegistry.registerEntityRenderingHandler(EntityGrenade.class, new RenderSnowball(ModItems.tutGrenade));		
-		Utils.LOG_INFO("Registering Renderer for Mining Explosives.");
+		Utils.LOG_INFO("Registering Custom Renderer for Mining Explosives.");
 	    RenderingRegistry.registerEntityRenderingHandler(EntityPrimedMiningExplosive.class, new RenderMiningExplosivesPrimed());
 
 		//ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBloodSteelChest.class, new BloodSteelChestRenderer());
 		//MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.tutChest), new ItemRenderBloodSteelChest());
-
+	    Utils.LOG_INFO("Registering Custom Renderer for the Fire Pit.");
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFirepit.class, new FirepitRender());
 	}
 

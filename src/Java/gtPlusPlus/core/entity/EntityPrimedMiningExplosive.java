@@ -124,10 +124,10 @@ public class EntityPrimedMiningExplosive extends EntityTNTPrimed
 
 	private void explode()
 	{
-		final float f = 20.0F;
+		final float f = 100.0F;
 		
 		ExplosionHandler explode = new ExplosionHandler();
-		explode.createExplosion(this.worldObj, this, this.posX, this.posY, this.posZ, f, true, true);
+		explode.createExplosion(this.worldObj, this, this.posX, this.posY, this.posZ, f, false, true);
 		
 		/*this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, f, true);
 		this.worldObj.createExplosion(this, this.posX+MathUtils.randDouble(-10, 10), this.posY, this.posZ+MathUtils.randDouble(-10, 10), f+MathUtils.randFloat(-5F, 5F), true);
