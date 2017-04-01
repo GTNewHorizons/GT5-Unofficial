@@ -13,7 +13,6 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
@@ -26,7 +25,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.xmod.gregtech.HANDLER_GT;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
@@ -170,9 +169,8 @@ implements ActionListener
 		Utils.LOG_INFO("Login Handler Initialized");
 
 		handleConfigFile(event);
-		proxy.registerTileEntities();
-		proxy.registerRenderThings();
-		HANDLER_GT.mMaterialProperties = new GT_Config(new Configuration(new File(new File(event.getModConfigurationDirectory(), "GTplusplus"), "MaterialProperties.cfg")));
+		
+		//HANDLER_GT.mMaterialProperties = new GT_Config(new Configuration(new File(new File(event.getModConfigurationDirectory(), "GTplusplus"), "MaterialProperties.cfg")));
 		proxy.preInit(event);
 	}
 
@@ -181,9 +179,14 @@ implements ActionListener
 	public void init(final FMLInitializationEvent event)
 	{
 		proxy.init(event);
+		
+		Utils.LOG_INFO("[Proxy] Calling Entity registrator.");
 		proxy.registerEntities();
-		//MinecraftForge.EVENT_BUS.register(this);
-		//FMLCommonHandler.instance().bus().register(this);
+		Utils.LOG_INFO("[Proxy] Calling Tile Entity registrator.");
+		proxy.registerTileEntities();
+		Utils.LOG_INFO("[Proxy] Calling Render registrator.");
+		proxy.registerRenderThings();
+		
 		proxy.registerNetworkStuff();
 	}
 
@@ -200,7 +203,7 @@ implements ActionListener
 		}
 
 		//~
-		//ReflectionUtils.becauseIWorkHard();
+		ReflectionUtils.becauseIWorkHard();
 
 		//Utils.LOG_INFO("Activating GT OreDictionary Handler, this can take some time.");
 		Utils.LOG_INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");

@@ -221,13 +221,22 @@ public class MiningExplosion extends Explosion {
 					d5 *= d7;
 					this.worldObj.spawnParticle("explode", (d0 + (this.explosionX * 1.0D)) / 2.0D, (d1 + (this.explosionY * 1.0D)) / 2.0D, (d2 + (this.explosionZ * 1.0D)) / 2.0D, d3, d4, d5);
 					this.worldObj.spawnParticle("smoke", d0, d1, d2, d3, d4, d5);
+					this.worldObj.spawnParticle("smoke", this.explosionX+MathUtils.randDouble(0, 1), this.explosionY+MathUtils.randDouble(0, 1), this.explosionZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+					this.worldObj.spawnParticle("largesmoke", this.explosionX+MathUtils.randDouble(0, 1), this.explosionY+MathUtils.randDouble(0, 1), this.explosionZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+					this.worldObj.spawnParticle("cloud", this.explosionX+MathUtils.randDouble(0, 1), this.explosionY+MathUtils.randDouble(0, 1), this.explosionZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+					this.worldObj.spawnParticle("flame", this.explosionX+MathUtils.randDouble(0, 1), this.explosionY+MathUtils.randDouble(0, 1), this.explosionZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+					this.worldObj.spawnParticle("explode", this.explosionX+MathUtils.randDouble(0, 1), this.explosionY+MathUtils.randDouble(0, 1), this.explosionZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+					this.worldObj.spawnParticle("largeexplode", this.explosionX+MathUtils.randDouble(0, 1), this.explosionY+MathUtils.randDouble(0, 1), this.explosionZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+					this.worldObj.spawnParticle("hugeexplosion", this.explosionX+MathUtils.randDouble(0, 1), this.explosionY+MathUtils.randDouble(0, 1), this.explosionZ+MathUtils.randDouble(0, 1), 0.0D, 0.0D, 0.0D);
+				
 				}
 
 				if (block.getMaterial() != Material.air)
 				{
 					if (block.canDropFromExplosion(this))
 					{
-						block.dropBlockAsItemWithChance(this.worldObj, i, j, k, this.worldObj.getBlockMetadata(i, j, k), 1.0F / this.explosionSize, 0);
+						//world, x, y, z, world.getBlockMetadata(x, y, z), dropProb, 0
+						block.dropBlockAsItemWithChance(this.worldObj, i, j, k, this.worldObj.getBlockMetadata(i, j, k), 1F, 0);
 					}
 
 					block.onBlockExploded(this.worldObj, i, j, k, this);
