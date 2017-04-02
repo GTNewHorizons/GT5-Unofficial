@@ -37,13 +37,14 @@ public class HellFire extends BlockFire {
 
 	public HellFire() {
 		this.setTickRandomly(true);
-		this.setBlockTextureName(CORE.MODID + "hellfire/blockHellFire");
+		this.setLightLevel(1F);
+		this.setLightOpacity(0);
+		//this.setBlockTextureName(CORE.MODID + "hellfire/blockHellFire");
 		this.setBlockName("blockHellFire");
 		this.setCreativeTab(AddToCreativeTab.tabBlock);
 		GameRegistry.registerBlock(this, "blockHellFire");
 		LanguageRegistry.addName(this, "Hellish Fire");
 		enableBrutalFire();
-		this.setLightLevel(15);
 	}
 
 	private void enableBrutalFire() {
@@ -75,7 +76,7 @@ public class HellFire extends BlockFire {
 	@Override
 	public void updateTick(final World world, final int x, final int y, final int z, Random random) {
 		
-		random = new XSTR();
+		random = new XSTR();		
 
 		if (world.getGameRules().getGameRuleBooleanValue("doFireTick")) {
 			final boolean flag = world.getBlock(x, y - 1, z).isFireSource(world, x, y - 1, z, UP);
@@ -319,7 +320,10 @@ public class HellFire extends BlockFire {
 					f = x + (randomObj.nextFloat() * 0.1F);
 					f1 = y + randomObj.nextFloat();
 					f2 = z + randomObj.nextFloat();
-					world.spawnParticle("hugesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle("witchMagic", f, f1, f2, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle("largesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle("largesmoke", f, f1+0.5F, f2, 0.0D, 0.0D, 0.0D);
+					
 				}
 			}
 
@@ -328,7 +332,9 @@ public class HellFire extends BlockFire {
 					f = (x + 1) - (randomObj.nextFloat() * 0.1F);
 					f1 = y + randomObj.nextFloat();
 					f2 = z + randomObj.nextFloat();
-					world.spawnParticle("hugesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle("witchMagic", f, f1, f2, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle("largesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle("largesmoke", f, f1+0.5F, f2, 0.0D, 0.0D, 0.0D);
 				}
 			}
 
@@ -337,7 +343,9 @@ public class HellFire extends BlockFire {
 					f = x + randomObj.nextFloat();
 					f1 = y + randomObj.nextFloat();
 					f2 = z + (randomObj.nextFloat() * 0.1F);
-					world.spawnParticle("hugesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle("witchMagic", f, f1, f2, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle("largesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle("largesmoke", f, f1+0.5F, f2, 0.0D, 0.0D, 0.0D);
 				}
 			}
 
@@ -346,7 +354,9 @@ public class HellFire extends BlockFire {
 					f = x + randomObj.nextFloat();
 					f1 = y + randomObj.nextFloat();
 					f2 = (z + 1) - (randomObj.nextFloat() * 0.1F);
-					world.spawnParticle("hugesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle("witchMagic", f, f1, f2, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle("largesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle("largesmoke", f, f1+0.5F, f2, 0.0D, 0.0D, 0.0D);
 				}
 			}
 
@@ -355,7 +365,9 @@ public class HellFire extends BlockFire {
 					f = x + randomObj.nextFloat();
 					f1 = (y + 1) - (randomObj.nextFloat() * 0.1F);
 					f2 = z + randomObj.nextFloat();
-					world.spawnParticle("hugesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle("witchMagic", f, f1, f2, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle("largesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
+					world.spawnParticle("largesmoke", f, f1+0.5F, f2, 0.0D, 0.0D, 0.0D);
 				}
 			}
 		}
@@ -364,7 +376,9 @@ public class HellFire extends BlockFire {
 				f = x + randomObj.nextFloat();
 				f1 = y + (randomObj.nextFloat() * 0.5F) + 0.5F;
 				f2 = z + randomObj.nextFloat();
-				world.spawnParticle("hugesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
+				world.spawnParticle("witchMagic", f, f1, f2, 0.0D, 0.0D, 0.0D);
+				world.spawnParticle("largesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
+				world.spawnParticle("largesmoke", f, f1+0.5F, f2, 0.0D, 0.0D, 0.0D);
 			}
 		}
 	}

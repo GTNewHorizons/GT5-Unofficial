@@ -24,6 +24,8 @@ public class CORE {
 	//Math Related
 	public static final float PI = (float) Math.PI;
 	public static volatile Random RANDOM = new XSTR();
+	
+	public static boolean DEVENV = false;
 
 	public static final String name = "GT++";
 	public static final String MODID = "miscutils";

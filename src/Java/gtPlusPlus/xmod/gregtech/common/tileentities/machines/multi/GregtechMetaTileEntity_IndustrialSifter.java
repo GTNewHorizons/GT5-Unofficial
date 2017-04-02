@@ -20,7 +20,6 @@ import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.Gregtech
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -59,7 +58,7 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[78], new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Diesel_Vertical_Active : TexturesGtBlock.Overlay_Machine_Diesel_Vertical)};
+			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[78], new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Diesel_Horizontal_Active : TexturesGtBlock.Overlay_Machine_Diesel_Horizontal)};
 		}
 		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[78]};
 	}
@@ -227,6 +226,9 @@ extends GregtechMeta_MultiBlockBase {
 		if (!aBaseMetaTileEntity.getAirOffset(xDir, 1, zDir)) {
 			return false;
 		}
+		
+		Utils.LOG_INFO("Checking structure for Industrial Sifter.");
+		
 		int tAmount = 0;
 		controller = false;
 		for (int i = -2; i < 3; i++) {
