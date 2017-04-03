@@ -215,8 +215,11 @@ public class LoadedMods {
 		}
 		if (Loader.isModLoaded("computronics") == true){
 			Computronics  = true;
-			Utils.LOG_INFO("Components enabled for: Computronics");
+			Utils.LOG_INFO("Components disabled for: Computronics - This feature will enable itself if you remove Computronics.");
 			totalMods++;
+		}
+		else {
+			Utils.LOG_INFO("Components enabled for: Computronics - This feature will disable itself if you add Computronics.");			
 		}
 
 		Utils.LOG_INFO("Content found for "+totalMods+" mods");

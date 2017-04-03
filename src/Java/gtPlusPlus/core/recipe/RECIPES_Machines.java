@@ -737,7 +737,7 @@ public class RECIPES_Machines {
 					RECIPE_IndustrialMultiTankFrame);
 			//Industrial Multi Tank
 			RecipeUtils.addShapedGregtechRecipe(
-					"pipeHugeDarkSteel", "gearGrisium", "pipeHugeDarkSteel",
+					"pipeHugeTantalloy60", "gearGrisium", "pipeHugeTantalloy60",
 					circuitTier4, RECIPE_IndustrialMultiTankFrame, circuitTier4,
 					"plateDoubleGrisium", "rotorGrisium", "plateDoubleGrisium",
 					RECIPE_IndustrialMultiTankController);
