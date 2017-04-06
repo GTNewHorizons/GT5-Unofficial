@@ -12,7 +12,7 @@ import static gregtech.api.enums.GT_Values.W;
 
 public enum CustomItemList implements IItemContainer {
     Machine_DebugWriter,
-    EMpipe,DATApipe,
+    EMpipe,DATApipe,rack_Hatch,
     eM_dynamomulti4_UV, eM_dynamomulti16_UV, eM_dynamomulti64_UV,
     eM_dynamomulti4_UHV, eM_dynamomulti16_UHV, eM_dynamomulti64_UHV,
     eM_dynamomulti4_UEV, eM_dynamomulti16_UEV, eM_dynamomulti64_UEV,

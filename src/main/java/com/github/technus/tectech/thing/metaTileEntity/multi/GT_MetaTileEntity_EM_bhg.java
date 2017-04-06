@@ -1,6 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
-import com.github.technus.tectech.elementalMatter.CommonValues;
+import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.thing.block.QuantumGlass;
 import com.github.technus.tectech.thing.casing.GT_Container_CasingsTT;
 import com.github.technus.tectech.thing.metaTileEntity.constructableTT;

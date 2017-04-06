@@ -1,6 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
-import com.github.technus.tectech.elementalMatter.CommonValues;
+import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.thing.block.QuantumGlass;
 import com.github.technus.tectech.thing.casing.GT_Container_CasingsTT;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
@@ -108,9 +108,10 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
             if (inIndex < 0 || inIndex > eInputHatches.size()) continue;
             final int outIndex = (int) (eParamsIn[i + 10]) - 1;
             GT_MetaTileEntity_Hatch_InputElemental in = eInputHatches.get(inIndex);
-            if (outIndex == -1) {
+            if (outIndex == -1) {//param==0 -> null the content
                 cleanHatchContent(in);
             } else {
+                if (outIndex < 0 || outIndex > eOutputHatches.size()) continue;
                 GT_MetaTileEntity_Hatch_OutputElemental out = eOutputHatches.get(outIndex);
                 out.getContainerHandler().putUnifyAll(in.getContainerHandler());
                 in.getContainerHandler().clear();

@@ -205,6 +205,7 @@ public class Machines implements Runnable {
         UncertaintyX_Hatch.set(new GT_MetaTileEntity_Hatch_Uncertainty(15422, "hatch.certain.tier.10", "Uncertainty Resolver X", 10).getStackForm(1L));
         dataIn_Hatch.set(new GT_MetaTileEntity_Hatch_InputData(15423, "hatch.datain.tier.08", "Optical Slave Connector", 8).getStackForm(1L));
         dataOut_Hatch.set(new GT_MetaTileEntity_Hatch_OutputData(15424, "hatch.dataout.tier.08", "Optical Master Connector", 8).getStackForm(1L));
+        rack_Hatch.set(new GT_MetaTileEntity_Hatch_Rack(15425,"hatch.rack.tier.08","Computer Rack",8,"4 Slot Rack").getStackForm(1L));
 
         // ===================================================================================================
         // Pipes

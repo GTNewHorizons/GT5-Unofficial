@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.elementalMatter.CommonValues;
+import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_Container_DebugStructureWriter;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_GUIContainer_DebugStructureWriter;
 import gregtech.api.enums.Textures;

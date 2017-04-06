@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.item;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.elementalMatter.CommonValues;
+import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackTree;
 import com.github.technus.tectech.elementalMatter.classes.tElementalException;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalInstanceContainer;

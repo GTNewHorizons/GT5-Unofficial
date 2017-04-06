@@ -51,12 +51,14 @@ public class GT_MetaTileEntity_Hatch_OutputData extends GT_MetaTileEntity_Hatch_
         int range=0;
         while((next=current.getNext(source))!=null && range++<1000){
             if(next instanceof GT_MetaTileEntity_Hatch_InputData){
-                ((GT_MetaTileEntity_Hatch_InputData) next).timeout=2;
-                ((GT_MetaTileEntity_Hatch_InputData) next).data=data;
+                ((GT_MetaTileEntity_Hatch_InputData) next).q=q;
+                ((GT_MetaTileEntity_Hatch_InputData) next).delDelay =true;
+                q=null;
                 return;
             }
             source=current; current=next;
         }
+        q=null;
     }
 
     @Override

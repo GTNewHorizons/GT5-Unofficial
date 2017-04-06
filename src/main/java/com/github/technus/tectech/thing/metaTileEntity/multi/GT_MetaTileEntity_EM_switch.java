@@ -1,16 +1,23 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
-import com.github.technus.tectech.elementalMatter.CommonValues;
+import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.dataFramework.quantumDataPacket;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputElemental;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
+import static gregtech.api.enums.GT_Values.V;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -64,10 +71,69 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     }
 
     @Override
+    public boolean EM_checkRecipe(ItemStack itemStack) {
+        short thingsActive=0;
+        for (GT_MetaTileEntity_Hatch_InputData di : eInputData) {
+            if(di.q!=null) {
+                thingsActive++;
+            }
+        }
+
+        if(thingsActive>0){
+            thingsActive+=eOutputData.size();
+            mEUt = -(int) V[8];
+            eAmpereFlow = 1 + ((thingsActive + thingsActive) >> 3);
+            mMaxProgresstime = 20;
+            mEfficiencyIncrease = 10000;
+            return true;
+        }
+        mMaxProgresstime = 0;
+        mEfficiencyIncrease = 0;
+        return false;
+    }
+
+    @Override
+    public void EM_outputFunction() {
+        float total=0;
+        for(int i=0;i<10;i++){//each param pair
+            if(eParamsIn[i]>0 && eParamsIn[i+10]>=0)
+                total+=eParamsIn[i];//Total weighted div
+        }
+
+        total+=total/100F;
+
+        quantumDataPacket pack=new quantumDataPacket(position,0);
+        for(GT_MetaTileEntity_Hatch_InputData i:eInputData){
+            if(i.q==null) continue;
+            if(i.q.contains(position)){
+                i.q=null;
+                continue;
+            }
+            pack = pack.unifyPacketWith(i.q);
+            i.q = null;
+            if (pack == null) return;
+        }
+
+        for (int i = 0; i < 10; i++) {
+            if(eParamsIn[i]>0) {
+                final int outIndex = (int) (eParamsIn[i + 10]) - 1;
+                if (outIndex < 0 || outIndex > eOutputData.size()) continue;
+                GT_MetaTileEntity_Hatch_OutputData out = eOutputData.get(outIndex);
+                out.q = new quantumDataPacket(pack, (long) ((pack.computation * eParamsIn[i]) / total));
+            }
+        }
+    }
+
+    @Override
+    public void EM_checkParams() {
+
+    }
+
+    @Override
     public String[] getDescription() {
         return new String[]{
                 CommonValues.tecMark,
-                "User controller computation power routing",
+                "User controlled computation power routing",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Quality of service is a must"
         };
     }

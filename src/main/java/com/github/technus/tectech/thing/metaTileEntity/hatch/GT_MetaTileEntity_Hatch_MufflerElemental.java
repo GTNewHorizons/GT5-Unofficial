@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.elementalMatter.CommonValues;
+import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.thing.machineTT;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
@@ -17,7 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.EnumSkyBlock;
 
-import static com.github.technus.tectech.elementalMatter.CommonValues.disperseAt;
+import static com.github.technus.tectech.CommonValues.disperseAt;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;

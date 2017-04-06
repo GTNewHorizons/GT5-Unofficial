@@ -1,6 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-import com.github.technus.tectech.elementalMatter.CommonValues;
+import com.github.technus.tectech.dataFramework.quantumDataPacket;
+import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.thing.machineTT;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.iConnectsToDataPipe;
 import gregtech.api.enums.Dyes;
@@ -16,7 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
-import static com.github.technus.tectech.elementalMatter.CommonValues.moveAt;
+import static com.github.technus.tectech.CommonValues.moveAt;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
 /**
@@ -27,9 +28,9 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector extends GT_MetaTileE
     private static Textures.BlockIcons.CustomIcon EM_D_ACTIVE;
     private static Textures.BlockIcons.CustomIcon EM_D_CONN;
 
+    public quantumDataPacket q;
+
     public short id = -1;
-    public int data = 0;
-    public byte timeout=2;
 
     public GT_MetaTileEntity_Hatch_DataConnector(int aID, String aName, String aNameRegional, int aTier, String descr) {
         super(aID, aName, aNameRegional, aTier, 0, descr);
@@ -61,24 +62,26 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector extends GT_MetaTileE
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setShort("eID", id);
-        aNBT.setInteger("eDATA",data);
+        aNBT.setTag("eDATA",q.toNbt());
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         id = aNBT.getShort("eID");
-        data=aNBT.getInteger("eDATA");
+        q=new quantumDataPacket(aNBT.getCompoundTag("eDATA"));
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            if (moveAt == aTick % 20) {
-                if(timeout>0) timeout--;
-                else data=0;
-                moveAround(aBaseMetaTileEntity);
-                getBaseMetaTileEntity().setActive(data>0);
+            if (moveAt == aTick%20) {
+                if(q==null){
+                    getBaseMetaTileEntity().setActive(false);
+                } else {
+                    getBaseMetaTileEntity().setActive(true);
+                    moveAround(aBaseMetaTileEntity);
+                }
             }
         }
     }
@@ -135,9 +138,13 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector extends GT_MetaTileE
     public String[] getInfoData() {
         if (id > 0) return new String[]{
                 "ID: "+ EnumChatFormatting.AQUA +id,
-                "Computation: "+ EnumChatFormatting.AQUA +data
+                "Computation: "+ EnumChatFormatting.AQUA +(q!=null?q.computation:0),
+                "PacketHistory: "+EnumChatFormatting.RED +(q!=null?q.trace.size():0),
         };
-        return new String[]{"Computation: "+ EnumChatFormatting.AQUA +data};
+        return new String[]{
+                "Computation: "+ EnumChatFormatting.AQUA +(q!=null?q.computation:0),
+                "PacketHistory: "+EnumChatFormatting.RED +(q!=null?q.trace.size():0),
+        };
     }
 
     @Override

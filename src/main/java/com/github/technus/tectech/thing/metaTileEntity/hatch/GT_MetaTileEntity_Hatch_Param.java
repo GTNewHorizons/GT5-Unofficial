@@ -1,6 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-import com.github.technus.tectech.elementalMatter.CommonValues;
+import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.thing.machineTT;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Param;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Param;

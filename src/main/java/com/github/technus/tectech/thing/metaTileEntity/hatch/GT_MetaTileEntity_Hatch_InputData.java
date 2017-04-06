@@ -9,6 +9,8 @@ import gregtech.api.metatileentity.MetaTileEntity;
  * Created by danie_000 on 27.10.2016.
  */
 public class GT_MetaTileEntity_Hatch_InputData extends GT_MetaTileEntity_Hatch_DataConnector {
+    public boolean delDelay = true;
+
     public GT_MetaTileEntity_Hatch_InputData(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, "Data Input for Multiblocks");
     }
@@ -45,5 +47,11 @@ public class GT_MetaTileEntity_Hatch_InputData extends GT_MetaTileEntity_Hatch_D
     @Override
     public iConnectsToDataPipe getNext(iConnectsToDataPipe source) {
         return null;
+    }
+
+    @Override
+    public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
+        if(delDelay) delDelay =false;
+        else q=null;
     }
 }

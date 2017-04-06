@@ -1,4 +1,4 @@
-package com.github.technus.tectech.elementalMatter;
+package com.github.technus.tectech;
 
 import net.minecraft.util.EnumChatFormatting;
 
