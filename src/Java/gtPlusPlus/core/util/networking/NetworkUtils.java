@@ -86,7 +86,7 @@ public class NetworkUtils {
 
 	private static boolean netIsAvailableOther() {
 		try {
-			final int timeout = 2000;
+			final int timeout = 200;
 			final InetAddress[] addresses = InetAddress.getAllByName("www.yahoo.com");
 			for (final InetAddress address : addresses) {
 				if (address.isReachable(timeout)) {
