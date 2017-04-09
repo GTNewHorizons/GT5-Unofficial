@@ -2,7 +2,7 @@ package com.github.technus.tectech;
 
 import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
-import com.github.technus.tectech.loader.Main;
+import com.github.technus.tectech.loader.MainLoader;
 import com.github.technus.tectech.proxy.CommonProxy;
 import com.github.technus.tectech.thing.block.QuantumGlass;
 import com.github.technus.tectech.thing.casing.GT_Container_CasingsTT;
@@ -46,7 +46,7 @@ public class TecTech {
 
     public static LogHelper Logger = new LogHelper(Reference.MODID);
     private static IngameErrorLog Module_AdminErrorLogs = null;
-    public static Main GTCustomLoader = null;
+    public static MainLoader GTCustomLoader = null;
     public static TecTechConfig ModConfig;
     public static XSTR Rnd = null;
     public static CreativeTabs mainTab = null;
@@ -84,13 +84,9 @@ public class TecTech {
     public void PostLoad(FMLPostInitializationEvent PostEvent) {
         hasCOFH=Loader.isModLoaded(Reference.COFHCORE);
 
-        QuantumGlass.run();
-        DebugContainer_EM.run();
-        DebugBuilder.run();
-
-        GTCustomLoader = new Main();
-        GTCustomLoader.run();
-        GTCustomLoader.run2();
+        GTCustomLoader = new MainLoader();
+        GTCustomLoader.things();
+        GTCustomLoader.recipes();
 
         mainTab = new CreativeTabs("TecTech") {
             @SideOnly(Side.CLIENT)
@@ -110,7 +106,7 @@ public class TecTech {
             }
         };
 
-        RegisterThingsInTabs();
+        GTCustomLoader.registerThingsInTabs();
 
         if (Loader.isModLoaded("dreamcraft")) ;//TODO init recipes for GTNH version
         else ;//TODO init recipes for NON-GTNH version
@@ -119,16 +115,9 @@ public class TecTech {
     @EventHandler
     public void serverLoad(FMLServerStartingEvent pEvent) {
         if(!oneTimeFix) {
-            if (ModConfig.NERF_FUSION) FixBrokenFusionRecipes();
             oneTimeFix=true;
+            if (ModConfig.NERF_FUSION) FixBrokenFusionRecipes();
         }
-    }
-
-    private void RegisterThingsInTabs() {
-        QuantumGlass.INSTANCE.setCreativeTab(mainTab);
-        GT_Container_CasingsTT.sBlockCasingsTT.setCreativeTab(mainTab);
-        DebugContainer_EM.INSTANCE.setCreativeTab(mainTab);
-        DebugBuilder.INSTANCE.setCreativeTab(mainTab);
     }
 
     private void FixBrokenFusionRecipes(){

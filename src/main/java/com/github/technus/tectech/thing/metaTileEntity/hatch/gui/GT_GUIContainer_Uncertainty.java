@@ -75,7 +75,7 @@ public class GT_GUIContainer_Uncertainty extends GT_GUIContainerMetaTile_Machine
                             rU + ((state & 8) == 0 ? 88 : 24),
                             Vs + 24, 10, 10);
                     break;
-                case 5://xox ooo xox
+                case 5://xox oxo xox
                     drawTexturedModalRect(x, y,
                             rU + ((state & 1) == 0 ? 64 : 0),
                             Vs, 10, 10);

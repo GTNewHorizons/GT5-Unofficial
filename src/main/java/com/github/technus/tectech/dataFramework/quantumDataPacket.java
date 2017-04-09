@@ -1,6 +1,7 @@
 package com.github.technus.tectech.dataFramework;
 
 import com.github.technus.tectech.vec3pos;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.TreeSet;
@@ -14,10 +15,6 @@ public class quantumDataPacket {
     public long computation=0;
     public TreeSet<vec3pos> trace=new TreeSet<>();
 
-    public quantumDataPacket(long comp){
-        computation=comp;
-    }
-
     public quantumDataPacket(vec3pos pos,long computation){
         this.computation=computation;
         trace.add(pos);
@@ -25,11 +22,6 @@ public class quantumDataPacket {
 
     public quantumDataPacket(quantumDataPacket q,long computation){
         this.computation=computation;
-        trace.addAll(q.trace);
-    }
-
-    public quantumDataPacket(quantumDataPacket q){
-        this.computation=q.computation;
         trace.addAll(q.trace);
     }
 
@@ -77,7 +69,7 @@ public class quantumDataPacket {
         return check()?this:null;
     }
 
-    public long computationIfNotConatined(vec3pos pos){
+    public long computationIfNotContained(vec3pos pos){
         if(trace.contains(pos))return 0;
         return computation;
     }

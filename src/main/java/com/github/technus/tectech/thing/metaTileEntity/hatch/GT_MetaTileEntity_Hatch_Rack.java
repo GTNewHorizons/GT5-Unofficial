@@ -1,7 +1,10 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.machineTT;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Rack;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Rack;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_Container_2by2;
@@ -30,7 +33,7 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
     private static Textures.BlockIcons.CustomIcon EM_R;
     private static Textures.BlockIcons.CustomIcon EM_R_ACTIVE;
     public int heat=0;
-    private float overclock=1;
+    private float overClock =1, overVolt =1;
     private static TreeMap<String,component> componentBinds=new TreeMap<>();
 
     public GT_MetaTileEntity_Hatch_Rack(int aID, String aName, String aNameRegional, int aTier, String descr) {
@@ -45,14 +48,16 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("eHeat",heat);
-        aNBT.setFloat("eOverclock",overclock);
+        aNBT.setFloat("eOverClock", overClock);
+        aNBT.setFloat("eOverVolt", overVolt);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         heat=aNBT.getInteger("eHeat");
-        overclock=aNBT.getFloat("eOverclock");
+        overClock =aNBT.getFloat("eOverClock");
+        overVolt =aNBT.getFloat("eOverVolt");
     }
 
     @Override
@@ -111,12 +116,12 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_2by2(aPlayerInventory, aBaseMetaTileEntity);
+        return new GT_Container_Rack(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_2by2(aPlayerInventory, aBaseMetaTileEntity, "Computer Rack");
+        return new GT_GUIContainer_Rack(aPlayerInventory, aBaseMetaTileEntity, "Computer Rack");
     }
 
     @Override
@@ -132,26 +137,29 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
     }
 
     //TODO implement: glitches with OC, random component burning with OC
-    private int getComputationPower(float overclock,boolean heatProcess){
+    private int getComputationPower(float overclock, float overvolt, boolean tickingComponents){
         float computation=0,heat=0;
-        for(ItemStack is:mInventory){
-            if(is==null || is.stackSize!=1) continue;
-            component comp=componentBinds.get(is.getUnlocalizedName());
+        for(int i=0;i<mInventory.length;i++){
+            if(mInventory[i]==null || mInventory[i].stackSize!=1) continue;
+            component comp=componentBinds.get(mInventory[i].getUnlocalizedName());
             if(comp==null) continue;
-            if(heatProcess){
-                if(this.heat>comp.maxHeat){
-                    is.stackSize=0;
+            if(tickingComponents) {
+                if (this.heat > comp.maxHeat) {
+                    mInventory[i] = null;
                     continue;
-                }
-                if(comp.subZero || this.heat>=0)
-                    heat+=comp.heat>0?comp.heat*overclock*overclock:comp.heat;
+                } else if (comp.subZero || this.heat > 0)
+                    heat += comp.heat > 0 ? comp.heat * overclock * overclock * overvolt: comp.heat;
+                //=MAX(0;MIN(MIN($B4;1*C$3+C$3-0,25);1+RAND()+(C$3-1)-($B4-1)/2))
+                if(overvolt*10f>7f+TecTech.Rnd.nextFloat())
+                    computation+=comp.computation*Math.max(0,Math.min(Math.min(overclock,overvolt+overvolt-0.25),1+TecTech.Rnd.nextFloat()+(overvolt-1)-(overclock-1)/2));
+            }else{
+                computation+=comp.computation*overclock;
             }
-            computation+=comp.computation;
         }
-        if(heatProcess){
+        if(tickingComponents) {
             this.heat+=Math.ceil(heat);
         }
-        return (int)Math.ceil(computation*overclock);
+        return (int)Math.floor(computation);
     }
 
     @Override
@@ -159,10 +167,10 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
         return 1;
     }
 
-    public int tickComponents(float oc) {
-        overclock=oc;
-        if(overclock>10) getBaseMetaTileEntity().setToFire();
-        return getComputationPower(overclock,true);
+    public int tickComponents(float oc,float ov) {
+        if(oc>3+TecTech.Rnd.nextFloat() || ov>2+TecTech.Rnd.nextFloat()) getBaseMetaTileEntity().setToFire();
+        overClock =oc; overVolt =ov;
+        return getComputationPower(overClock, overVolt,true);
     }
 
     @Override
@@ -203,8 +211,8 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
     @Override
     public String[] getInfoData() {
         return new String[]{
-                "Base computation: "+ EnumChatFormatting.AQUA +getComputationPower(1,false),
-                "After overclocking: "+ EnumChatFormatting.AQUA +getComputationPower(overclock,false),
+                "Base computation: "+ EnumChatFormatting.AQUA +getComputationPower(1,0,false),
+                "After overclocking: "+ EnumChatFormatting.AQUA +getComputationPower(overClock,0,false),
                 "Heat Accumulated: "+ EnumChatFormatting.RED + ((heat+99)/100) +EnumChatFormatting.RESET+" %"};
                                                                 //heat==0? --> ((heat+9)/10) = 0
                                                                 //Heat==1-10? -->  1
@@ -228,6 +236,7 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
             this.maxHeat=maxHeat;
             this.subZero=subZero;
             componentBinds.put(unlocalizedName,this);
+            if(TecTech.ModConfig.DEBUG_MODE) TecTech.Logger.info("Component registered: "+unlocalizedName);
         }
 
         @Override

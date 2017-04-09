@@ -62,14 +62,16 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector extends GT_MetaTileE
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setShort("eID", id);
-        aNBT.setTag("eDATA",q.toNbt());
+        if(q!=null)
+            aNBT.setTag("eDATA",q.toNbt());
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         id = aNBT.getShort("eID");
-        q=new quantumDataPacket(aNBT.getCompoundTag("eDATA"));
+        if(aNBT.hasKey("eDATA"))
+            q=new quantumDataPacket(aNBT.getCompoundTag("eDATA"));
     }
 
     @Override

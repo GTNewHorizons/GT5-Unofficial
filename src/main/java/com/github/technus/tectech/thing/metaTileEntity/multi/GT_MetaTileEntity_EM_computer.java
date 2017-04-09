@@ -7,6 +7,7 @@ import com.github.technus.tectech.dataFramework.quantumDataPacket;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Rack;
+import com.github.technus.tectech.vec3pos;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -29,18 +30,10 @@ import static gregtech.api.enums.GT_Values.V;
 public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockBase_EM {
     private final ArrayList<GT_MetaTileEntity_Hatch_Rack> eRacks=new ArrayList<>();
 
-    private static final String[][] front = new String[][]{
-            {"  ","  ","+ ","  ",},
-    };
-    private static final String[][] terminator = new String[][]{
-            {"  ","  ","  ","  ",},
-    };
-    private static final String[][] cap = new String[][]{
-            {"01","22","22","01",},
-    };
-    private static final String[][] slice = new String[][]{
-            {"01","!2","!2","01",},
-    };
+    private static final String[][] front = new String[][]{{"A  ","A  ","A+ ","A  ",},};
+    private static final String[][] terminator = new String[][]{{"A  ","A  ","A  ","A  ",},};
+    private static final String[][] cap = new String[][]{{"-01","A22","A22","-01",},};
+    private static final String[][] slice = new String[][]{{"-01","A!2","A!2","-01",},};
     private static final Block[] blockType = new Block[]{sBlockCasingsTT,sBlockCasingsTT,sBlockCasingsTT};
     private static final byte[] blockMeta = new byte[]{2,0,1};
     private static final String[] addingMethods = new String[]{"addToMachineList","addRackToMachineList"};
@@ -52,10 +45,14 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
 
     public GT_MetaTileEntity_EM_computer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        eCertainMode = 5;
+        eCertainStatus = -128;//no-brainer value
     }
 
     public GT_MetaTileEntity_EM_computer(String aName) {
         super(aName);
+        eCertainMode = 5;
+        eCertainStatus = -128;//no-brainer value
     }
 
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
@@ -70,7 +67,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[96]};
     }
 
-    //TODO implement uncertainty,unstability
+    //TODO implement uncertainty, unstability
     @Override
     public boolean EM_checkRecipe(ItemStack itemStack) {
         eAvailableData=0;
@@ -80,30 +77,29 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
 
         for (GT_MetaTileEntity_Hatch_Rack r : eRacks) {
             if(r.heat>maxTemp)maxTemp=r.heat;
-            rackComputation= r.tickComponents(eParamsIn[0]);
+            rackComputation= r.tickComponents(eParamsIn[0],eParamsIn[10]);
             if(rackComputation>0){
-                r.getBaseMetaTileEntity().setActive(true);
                 eAvailableData+=rackComputation;
                 thingsActive+=4;
             }
+            r.getBaseMetaTileEntity().setActive(true);
         }
 
-        for (GT_MetaTileEntity_Hatch_InputData di : eInputData) {
-            if(di.q!=null) {//ok for power losses
+        for (GT_MetaTileEntity_Hatch_InputData di : eInputData)
+            if(di.q!=null)//ok for power losses
                 thingsActive++;
-            }
-        }
 
-        if(thingsActive>0){
+        if(thingsActive>0 && eCertainStatus==0){
             thingsActive+=eOutputData.size();
-            mEUt = -(int) V[8];
-            eAmpereFlow = 1 + ((thingsActive + thingsActive) >> 3);
+            mEUt = -(int) (V[8]*eParamsIn[10]);
+            eAmpereFlow = 1 + (thingsActive >> 2);
             mMaxProgresstime = 20;
             mEfficiencyIncrease = 10000;
             return true;
         }
         mMaxProgresstime = 0;
         mEfficiencyIncrease = 0;
+        EM_stopMachine();//to stop all hatches
         return false;
     }
 
@@ -120,12 +116,22 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
             eParamsInStatus[0]=PARAM_LOW;
         else if(eParamsIn[0]==1)
             eParamsInStatus[0]=PARAM_OK;
-        else if(eParamsIn[0]<=2)
+        else if(eParamsIn[0]<=3)
             eParamsInStatus[0]=PARAM_HIGH;
         else eParamsInStatus[0]=PARAM_TOO_HIGH;
 
-        eParamsOut[0]=eAvailableData;
-        eParamsOut[10]=maxTemp;
+        if(eParamsIn[10]<=0.7f)
+            eParamsInStatus[10]=PARAM_TOO_LOW;
+        else if(eParamsIn[10]<0.8f)
+            eParamsInStatus[10]=PARAM_LOW;
+        else if(eParamsIn[10]<=1.2f)
+            eParamsInStatus[10]=PARAM_OK;
+        else if(eParamsIn[10]<=2)
+            eParamsInStatus[10]=PARAM_HIGH;
+        else eParamsInStatus[10]=PARAM_TOO_HIGH;
+
+        eParamsOut[0]=maxTemp;
+        eParamsOut[10]=eAvailableData;
 
         if(maxTemp<-10000)
             eParamsOutStatus[0]=PARAM_TOO_LOW;
@@ -141,23 +147,18 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     @Override
     public void EM_outputFunction() {
         if(eOutputData.size()>0) {
-            quantumDataPacket pack = new quantumDataPacket(position, eAvailableData);
+            final vec3pos pos=new vec3pos(getBaseMetaTileEntity());
+            quantumDataPacket pack = new quantumDataPacket(pos, eAvailableData);
             for (GT_MetaTileEntity_Hatch_InputData i : eInputData) {
-                if(i.q==null)continue;
-                if(i.q.contains(position)){
-                    i.q=null;
-                    continue;
-                }
+                if(i.q==null || i.q.contains(pos)) continue;
                 pack = pack.unifyPacketWith(i.q);
-                i.q = null;
                 if (pack == null) return;
             }
 
             pack.computation /= eOutputData.size();
 
-            for (GT_MetaTileEntity_Hatch_OutputData o : eOutputData) {
+            for (GT_MetaTileEntity_Hatch_OutputData o : eOutputData)
                 o.q=pack;
-            }
         }
     }
 
@@ -177,14 +178,17 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     @Override
     public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         eRacks.clear();
-        if(!EM_StructureCheckAdvanced(front,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,0,2,0))return false;
-        if(!EM_StructureCheckAdvanced(cap,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,0,2,-1))return false;
-        int i;
-        for(i=-2;i>-16;i--){
-            if(!EM_StructureCheckAdvanced(slice,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,0,2,i))break;
+        if(!EM_StructureCheckAdvanced(front,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,1,2,0))return false;
+        if(!EM_StructureCheckAdvanced(cap,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,1,2,-1))return false;
+        byte i,slices=4;
+        for(i=-2;i>-16;){
+            if(!EM_StructureCheckAdvanced(slice,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,1,2,i))break;
+            slices++;
+            i--;
         }
-        if(!EM_StructureCheckAdvanced(cap,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,0,2,++i))return false;
-        if(!EM_StructureCheckAdvanced(terminator,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,0,2,--i))return false;
+        if(!EM_StructureCheckAdvanced(cap,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,1,2,++i))return false;
+        if(!EM_StructureCheckAdvanced(terminator,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,1,2,--i))return false;
+        eCertainMode=(byte)(slices/3);
         return eUncertainHatches.size() == 1;
     }
 

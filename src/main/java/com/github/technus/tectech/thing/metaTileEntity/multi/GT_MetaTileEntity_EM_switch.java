@@ -6,6 +6,7 @@ import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_H
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputElemental;
+import com.github.technus.tectech.vec3pos;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -73,16 +74,14 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     @Override
     public boolean EM_checkRecipe(ItemStack itemStack) {
         short thingsActive=0;
-        for (GT_MetaTileEntity_Hatch_InputData di : eInputData) {
-            if(di.q!=null) {
+        for (GT_MetaTileEntity_Hatch_InputData di : eInputData)
+            if(di.q!=null)
                 thingsActive++;
-            }
-        }
 
         if(thingsActive>0){
             thingsActive+=eOutputData.size();
-            mEUt = -(int) V[8];
-            eAmpereFlow = 1 + ((thingsActive + thingsActive) >> 3);
+            mEUt = -(int) V[7];
+            eAmpereFlow = 1 + (thingsActive >> 2);
             mMaxProgresstime = 20;
             mEfficiencyIncrease = 10000;
             return true;
@@ -94,32 +93,29 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
 
     @Override
     public void EM_outputFunction() {
-        float total=0;
-        for(int i=0;i<10;i++){//each param pair
-            if(eParamsIn[i]>0 && eParamsIn[i+10]>=0)
-                total+=eParamsIn[i];//Total weighted div
-        }
-
-        total+=total/100F;
-
-        quantumDataPacket pack=new quantumDataPacket(position,0);
-        for(GT_MetaTileEntity_Hatch_InputData i:eInputData){
-            if(i.q==null) continue;
-            if(i.q.contains(position)){
-                i.q=null;
-                continue;
+        if(eOutputData.size()>0) {
+            float total = 0;
+            for (int i = 0; i < 10; i++) {//each param pair
+                if (eParamsIn[i] > 0 && eParamsIn[i + 10] >= 0)
+                    total += eParamsIn[i];//Total weighted div
             }
-            pack = pack.unifyPacketWith(i.q);
-            i.q = null;
-            if (pack == null) return;
-        }
+            total += total / 100F;
 
-        for (int i = 0; i < 10; i++) {
-            if(eParamsIn[i]>0) {
-                final int outIndex = (int) (eParamsIn[i + 10]) - 1;
-                if (outIndex < 0 || outIndex > eOutputData.size()) continue;
-                GT_MetaTileEntity_Hatch_OutputData out = eOutputData.get(outIndex);
-                out.q = new quantumDataPacket(pack, (long) ((pack.computation * eParamsIn[i]) / total));
+            final vec3pos pos = new vec3pos(getBaseMetaTileEntity());
+            quantumDataPacket pack = new quantumDataPacket(pos, 0);
+            for (GT_MetaTileEntity_Hatch_InputData i : eInputData) {
+                if (i.q == null || i.q.contains(pos)) continue;
+                pack = pack.unifyPacketWith(i.q);
+                if (pack == null) return;
+            }
+
+            for (int i = 0; i < 10; i++) {
+                if (eParamsIn[i] > 0) {
+                    final int outIndex = (int) (eParamsIn[i + 10]) - 1;
+                    if (outIndex < 0 || outIndex > eOutputData.size()) continue;
+                    GT_MetaTileEntity_Hatch_OutputData out = eOutputData.get(outIndex);
+                    out.q = new quantumDataPacket(pack, (long) ((pack.computation * eParamsIn[i]) / total));
+                }
             }
         }
     }

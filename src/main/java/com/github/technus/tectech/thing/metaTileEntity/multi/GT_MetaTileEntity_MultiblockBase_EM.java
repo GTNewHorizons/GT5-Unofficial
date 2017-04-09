@@ -81,7 +81,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public long eAmpereFlow = 1;
     public long eRequiredData = 0;
     protected long eAvailableData=0;
-    public final vec3pos position;
 
     //init param states in constructor, or implement it in checkrecipe/outputfunction
 
@@ -111,12 +110,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     protected void EM_extraExplosions(){}//For that extra hatches explosions, and maybe some MOORE EXPLOSIONS
     protected void EM_stopMachine(){}//On machine stop
 
-    //Get Available data on data producers should return mAvailableData that is set in check recipe
+    //Get Available data, Override only on data producers should return mAvailableData that is set in check recipe
     protected long EM_getAvailableData() {
         long result=0;
-        for(GT_MetaTileEntity_Hatch_InputData in:eInputData) {
-            if(in.q!=null) result += in.q.computationIfNotConatined(position);
-        }
+        final vec3pos pos=new vec3pos(getBaseMetaTileEntity());
+        for(GT_MetaTileEntity_Hatch_InputData in:eInputData)
+            if(in.q!=null) result += in.q.computationIfNotContained(pos);
         return result;
     }
 
@@ -124,16 +123,10 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     public GT_MetaTileEntity_MultiblockBase_EM(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        if(getBaseMetaTileEntity()!=null)
-            position=new vec3pos(getBaseMetaTileEntity());
-        else position=null;
     }
 
     public GT_MetaTileEntity_MultiblockBase_EM(String aName) {
         super(aName);
-        if(getBaseMetaTileEntity()!=null)
-            position=new vec3pos(getBaseMetaTileEntity());
-        else position=null;
     }
 
     @Override
@@ -510,7 +503,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                             mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
                                         }
                                         updateSlots();
-                                    }else hatchesStatusUpdate();
+                                    }else stopMachine();
                                 }
                             }
                         } else {
@@ -520,7 +513,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                         mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
                                     }
                                     updateSlots();
-                                }else hatchesStatusUpdate();
+                                }else stopMachine();
                             }
                         }
 
@@ -607,7 +600,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if(eRequiredData>eAvailableData) return false;
+        if(eRequiredData>0 && eRequiredData>eAvailableData) return false;
         if (this.mEUt > 0) {
             this.EMaddEnergyOutput((long) mEUt * (long) mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
             return true;
@@ -773,6 +766,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             }
         }
         outputEM = null;
+
+        hatchesStatusUpdate();
 
         EM_stopMachine();
     }
@@ -1318,6 +1313,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         }
     }
 
+    //CALLBACK
     public final boolean addThing(String methodName,IGregTechTileEntity igt,int casing){
         try {
             return (boolean) adderMethodMap.get(methodName).invoke(this, igt, casing);

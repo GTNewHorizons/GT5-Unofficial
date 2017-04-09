@@ -52,9 +52,8 @@ public class GT_MetaTileEntity_Hatch_OutputData extends GT_MetaTileEntity_Hatch_
         while((next=current.getNext(source))!=null && range++<1000){
             if(next instanceof GT_MetaTileEntity_Hatch_InputData){
                 ((GT_MetaTileEntity_Hatch_InputData) next).q=q;
-                ((GT_MetaTileEntity_Hatch_InputData) next).delDelay =true;
-                q=null;
-                return;
+                ((GT_MetaTileEntity_Hatch_InputData) next).delDelay=true;
+                break;
             }
             source=current; current=next;
         }

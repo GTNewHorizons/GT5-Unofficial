@@ -26,9 +26,8 @@ import net.minecraftforge.fluids.FluidStack;
 public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch implements machineTT {
     private static Textures.BlockIcons.CustomIcon ScreenON;
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
-    private static float errorMargin = 0.05f;
     public short[] matrix = new short[]{500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500};
-    public byte selection = -1, mode = 0, status = -128;
+    public byte selection = -1, mode = 0, status = -128;//all 8 bits set
 
     public GT_MetaTileEntity_Hatch_Uncertainty(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Feeling certain, or not?");
@@ -71,10 +70,15 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide() && (aTick & 15) == 0) {
-            shift();
-            compute();
-            if (mode == 0) aBaseMetaTileEntity.setActive(false);
-            else aBaseMetaTileEntity.setActive(true);
+            if (mode == 0) {
+                aBaseMetaTileEntity.setActive(false);
+                status=-128;
+            }
+            else {
+                aBaseMetaTileEntity.setActive(true);
+                shift();
+                compute();
+            }
         }
     }
 
@@ -172,17 +176,12 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
         };
     }
 
-    private float massOffset(int sideLenY, int sideLenX, short... masses) {
-        int mass = 0;
-        int massI = 0, massJ = 0;
-        for (int i = 0; i < sideLenY; i++) {
-            for (int j = 0; j < sideLenY * sideLenX; j += sideLenY) {
-                mass += masses[i + j];
-                massI += ((float) i - ((float) sideLenY / 2f) + .5f) * masses[i + j];
-                massJ += ((float) (j / sideLenY) - ((float) sideLenX / 2f) + .5f) * masses[i + j];
-            }
+    private boolean balanceCheck(int sideLenY, short... masses) {
+        float inequality = 0;
+        for (int i = 0; i < masses.length>>1; i++) {
+            inequality += Math.abs(masses[i]-masses[masses.length-i-1]);
         }
-        return ((Math.abs(massI / (float) mass) / (float) sideLenY) + (Math.abs(massJ / (float) mass)) / (float) sideLenX);
+        return inequality < (masses.length<<7);
     }
 
     public void regenerate() {
@@ -194,92 +193,80 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
         int result = 0;
         switch (mode) {
             case 1://ooo oxo ooo
-                result = (massOffset(4, 4, matrix) < errorMargin) ? 0 : 1;
+                result = balanceCheck(4, matrix) ? 0 : 1;
                 break;
             case 2://ooo xox ooo
-                result += (massOffset(4, 2,
+                result += balanceCheck(4,
                         matrix[0], matrix[4],
                         matrix[1], matrix[5],
                         matrix[2], matrix[6],
-                        matrix[3], matrix[7]) < errorMargin) ? 0 : 1;
-                result += (massOffset(4, 2,
+                        matrix[3], matrix[7]) ? 0 : 1;
+                result += balanceCheck(4,
                         matrix[8], matrix[12],
                         matrix[9], matrix[13],
                         matrix[10], matrix[14],
-                        matrix[11], matrix[15]) < errorMargin) ? 0 : 2;
+                        matrix[11], matrix[15]) ? 0 : 2;
                 break;
             case 3://oxo xox oxo
-                result += (massOffset(2, 4,
+                result += balanceCheck(2,
                         matrix[0], matrix[4], matrix[8], matrix[12],
-                        matrix[1], matrix[5], matrix[9], matrix[13]) < errorMargin) ? 0 : 1;
-                result += (massOffset(4, 2,
+                        matrix[1], matrix[5], matrix[9], matrix[13]) ? 0 : 1;
+                result += balanceCheck(4,
                         matrix[0], matrix[4],
                         matrix[1], matrix[5],
                         matrix[2], matrix[6],
-                        matrix[3], matrix[7]) < errorMargin) ? 0 : 2;
-                result += (massOffset(4, 2,
+                        matrix[3], matrix[7]) ? 0 : 2;
+                result += balanceCheck(4,
                         matrix[8], matrix[12],
                         matrix[9], matrix[13],
                         matrix[10], matrix[14],
-                        matrix[11], matrix[15]) < errorMargin) ? 0 : 4;
-                result += (massOffset(2, 4,
+                        matrix[11], matrix[15]) ? 0 : 4;
+                result += balanceCheck(2,
                         matrix[2], matrix[6], matrix[10], matrix[14],
-                        matrix[3], matrix[7], matrix[11], matrix[15]) < errorMargin) ? 0 : 8;
+                        matrix[3], matrix[7], matrix[11], matrix[15]) ? 0 : 8;
                 break;
             case 4://xox ooo xox
-                result += (massOffset(2, 2,
+                result += balanceCheck(2,
                         matrix[0], matrix[4],
-                        matrix[1], matrix[5]) < errorMargin) ? 0 : 1;
-                result += (massOffset(2, 2,
+                        matrix[1], matrix[5]) ? 0 : 1;
+                result += balanceCheck(2,
                         matrix[8], matrix[12],
-                        matrix[9], matrix[13]) < errorMargin) ? 0 : 2;
-                result += (massOffset(2, 2,
+                        matrix[9], matrix[13]) ? 0 : 2;
+                result += balanceCheck(2,
                         matrix[2], matrix[6],
-                        matrix[3], matrix[7]) < errorMargin) ? 0 : 4;
-                result += (massOffset(2, 2,
+                        matrix[3], matrix[7]) ? 0 : 4;
+                result += balanceCheck(2,
                         matrix[10], matrix[14],
-                        matrix[11], matrix[15]) < errorMargin) ? 0 : 8;
+                        matrix[11], matrix[15]) ? 0 : 8;
                 break;
             case 5://xox oxo xox
-                result += (massOffset(2, 2,
+                result += balanceCheck(2,
                         matrix[0], matrix[4],
-                        matrix[1], matrix[5]) < errorMargin) ? 0 : 1;
-                result += (massOffset(2, 2,
+                        matrix[1], matrix[5]) ? 0 : 1;
+                result += balanceCheck(2,
                         matrix[8], matrix[12],
-                        matrix[9], matrix[13]) < errorMargin) ? 0 : 2;
-                result += (massOffset(4, 4, matrix) < errorMargin) ? 0 : 4;
-                result += (massOffset(2, 2,
+                        matrix[9], matrix[13]) ? 0 : 2;
+                result += balanceCheck(4, matrix) ? 0 : 4;
+                result += balanceCheck(2,
                         matrix[2], matrix[6],
-                        matrix[3], matrix[7]) < errorMargin) ? 0 : 8;
-                result += (massOffset(2, 2,
+                        matrix[3], matrix[7]) ? 0 : 8;
+                result += balanceCheck(2,
                         matrix[10], matrix[14],
-                        matrix[11], matrix[15]) < errorMargin) ? 0 : 16;
+                        matrix[11], matrix[15]) ? 0 : 16;
                 break;
         }
         return status = (byte) result;
     }
 
     private void shift() {//TODO MAKE IT MORE EVIL
-        final int i = TecTech.Rnd.nextInt(16), j = TecTech.Rnd.nextInt(2);
-        matrix[i] += (((matrix[i] & 1) == 0) ? 2 : -2) * j;
-        switch (matrix[i]) {
-            case 1002:
-                matrix[i] -= 3;
-                break;
-            case 1001:
-                matrix[i] -= 1;
-                break;
-            case -1:
-                matrix[i] += 1;
-                break;
-            case -2:
-                matrix[i] += 3;
-                break;
-        }
+        final int i = TecTech.Rnd.nextInt(16);
+        matrix[i] += (((matrix[i] & 1) == 0) ? 2 : -2) * TecTech.Rnd.nextInt(5);
+        if(matrix[i]<0) matrix[i]=0;
+        else if (matrix[i]>1000) matrix[i]=999;
     }
 
     public byte update(int newMode) {
-        if (newMode == mode) return mode;
+        if (newMode == mode) return status;
         if (newMode < 0 || newMode > 5) newMode = 0;
         mode = (byte) newMode;
         regenerate();

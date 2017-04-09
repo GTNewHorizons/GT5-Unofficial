@@ -10,7 +10,7 @@ public final class CommonValues {
             EnumChatFormatting.BLUE + "Tec" +
                     EnumChatFormatting.DARK_BLUE + "Tech" +
                     EnumChatFormatting.BLUE + ": Elemental Matter";
-    public final static byte decayAt = 0;// hatches compute dacays
+    public final static byte decayAt = 0;// hatches compute decays
     public final static byte multiPurge1At = 2;// multiblocks clean their hatches 1
     public final static byte moveAt = 4;// move stuff around
     public final static byte recipeAt = 6;// move stuff around
