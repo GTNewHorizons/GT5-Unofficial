@@ -5,10 +5,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 
 import java.util.Iterator;
 
@@ -60,6 +61,43 @@ public class GT_Container_Rack extends GT_ContainerMetaTile_Machine {
                 this.heat = par2!=0;
                 return;
         }
-        if(heat || mActive!=0) Minecraft.getMinecraft().displayGuiScreen(null);
+        //TODO TEST!!!
+        //if(heat || mActive!=0) Minecraft.getMinecraft().displayGuiScreen(null);
+    }
+
+    @Override
+    public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
+        if(heat || mActive!=0) return null;
+        return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
+    }
+
+    @Override
+    public ItemStack transferStackInSlot(EntityPlayer aPlayer, int aSlotIndex) {
+        if(heat || mActive!=0) return null;
+        return super.transferStackInSlot(aPlayer, aSlotIndex);
+    }
+
+    @Override
+    public boolean canDragIntoSlot(Slot par1Slot) {
+        if(heat || mActive!=0) return false;
+        return super.canDragIntoSlot(par1Slot);
+    }
+
+    @Override
+    public void putStacksInSlots(ItemStack[] par1ArrayOfItemStack) {
+        if(heat || mActive!=0) return;
+        super.putStacksInSlots(par1ArrayOfItemStack);
+    }
+
+    @Override
+    protected boolean mergeItemStack(ItemStack aStack, int aStartIndex, int aSlotCount, boolean par4) {
+        if(heat || mActive!=0) return false;
+        return super.mergeItemStack(aStack, aStartIndex, aSlotCount, par4);
+    }
+
+    @Override
+    public void putStackInSlot(int par1, ItemStack par2ItemStack) {
+        if(heat || mActive!=0) return;
+        super.putStackInSlot(par1, par2ItemStack);
     }
 }

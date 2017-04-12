@@ -3,9 +3,7 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.dataFramework.quantumDataPacket;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputElemental;
 import com.github.technus.tectech.vec3pos;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -13,7 +11,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -109,12 +106,23 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
                 if (pack == null) return;
             }
 
+            long remaining=pack.computation;
+
             for (int i = 0; i < 10; i++) {
                 if (eParamsIn[i] > 0) {
                     final int outIndex = (int) (eParamsIn[i + 10]) - 1;
                     if (outIndex < 0 || outIndex > eOutputData.size()) continue;
                     GT_MetaTileEntity_Hatch_OutputData out = eOutputData.get(outIndex);
-                    out.q = new quantumDataPacket(pack, (long) ((pack.computation * eParamsIn[i]) / total));
+                    final long part=(long) ((pack.computation * eParamsIn[i]) / total);
+                    if(part>0) {
+                        remaining-=part;
+                        if (remaining > 0)
+                            out.q = new quantumDataPacket(pack, part);
+                        else if (part + remaining > 0) {
+                            out.q = new quantumDataPacket(pack, part + remaining);
+                            break;
+                        } else break;
+                    }
                 }
             }
         }
@@ -122,7 +130,21 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
 
     @Override
     public void EM_checkParams() {
-
+        for (int i = 0; i < 10; i++) {
+            if (eParamsIn[i] < 0) eParamsInStatus[i] = PARAM_TOO_LOW;
+            else if (eParamsIn[i] == 0) eParamsInStatus[i] = PARAM_UNUSED;
+            else if (eParamsIn[i] == Float.POSITIVE_INFINITY) eParamsInStatus[i] = PARAM_TOO_HIGH;
+            else eParamsInStatus[i] = PARAM_OK;
+        }
+        for (int i = 10; i < 20; i++) {
+            if (eParamsInStatus[i - 10] == PARAM_OK) {
+                if ((int) eParamsIn[i] <= 0) eParamsInStatus[i] = PARAM_LOW;
+                else if ((int) eParamsIn[i] > eOutputData.size()) eParamsInStatus[i] = PARAM_TOO_HIGH;
+                else eParamsInStatus[i] = PARAM_OK;
+            } else {
+                eParamsInStatus[i] = PARAM_UNUSED;
+            }
+        }
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.item;
 
-import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackTree;
 import com.github.technus.tectech.elementalMatter.classes.tElementalException;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalInstanceContainer;
@@ -15,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 import java.util.Collections;
@@ -76,7 +77,10 @@ public class DebugContainer_EM extends Item {
             if (tNBT!=null && tNBT.hasKey("info")) {
                 aList.add("Contains:");
                 Collections.addAll(aList, cElementalInstanceStackTree.infoFromNBT(tNBT.getCompoundTag("info")));
-            }else aList.add("Container for elemental matter");
+            }else {
+                aList.add("Container for elemental matter");
+                aList.add(EnumChatFormatting.BLUE+"Right click on elemental hatches");
+            }
         } catch (Exception e) {
             aList.add("---Unexpected Termination---");
         }

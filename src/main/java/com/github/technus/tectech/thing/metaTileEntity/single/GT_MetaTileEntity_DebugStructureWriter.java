@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
-import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_Container_DebugStructureWriter;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_GUIContainer_DebugStructureWriter;
 import gregtech.api.enums.Textures;
@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 
 import static com.github.technus.tectech.Util.StructureWriter;
 
@@ -117,7 +118,9 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
-            aBaseMetaTileEntity.openGUI(aPlayer);
+        aBaseMetaTileEntity.openGUI(aPlayer);
+        if(TecTech.ModConfig.DEBUG_MODE && aPlayer.getHeldItem()!=null)
+            TecTech.Logger.info("UnlocalizedName: "+aPlayer.getHeldItem().getUnlocalizedName());
         return true;
     }
 
@@ -141,8 +144,8 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
         return new String[]{
                 CommonValues.tecMark,
                 this.mDescription,
-                "Prints Multiblock NonTE structure check code",
-                "ABC axises aligned to machine front"
+                EnumChatFormatting.BLUE+"Prints Multiblock NonTE structure check code",
+                EnumChatFormatting.BLUE+"ABC axises aligned to machine front"
         };
     }
 

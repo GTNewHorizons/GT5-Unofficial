@@ -1,8 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
-import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.thing.block.QuantumGlass;
+import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.casing.GT_Container_CasingsTT;
 import com.github.technus.tectech.thing.metaTileEntity.constructableTT;
 import gregtech.api.GregTech_API;
@@ -97,7 +96,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     private static final Block[] blockType = new Block[]{
             GT_Container_CasingsTT.sBlockCasingsTT,
             GregTech_API.sBlockCasings4,
-            QuantumGlass.INSTANCE,
+            QuantumGlassBlock.INSTANCE,
             GT_Container_CasingsTT.sBlockCasingsTT,
             GT_Container_CasingsTT.sBlockCasingsTT,
             GT_Container_CasingsTT.sBlockCasingsTT
@@ -107,7 +106,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     private static final Block[] blockType2 = new Block[]{
             GT_Container_CasingsTT.sBlockCasingsTT,
             GT_Container_CasingsTT.sBlockCasingsTT,
-            QuantumGlass.INSTANCE,
+            QuantumGlassBlock.INSTANCE,
             GT_Container_CasingsTT.sBlockCasingsTT,
             GT_Container_CasingsTT.sBlockCasingsTT,
             GT_Container_CasingsTT.sBlockCasingsTT
@@ -180,8 +179,8 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public void construct() {
-        if(TecTech.Rnd.nextBoolean())
+    public void construct(int qty) {
+        if((qty&1)==0)
             StructureBuilder(shape,blockType,blockMeta,0,-2,28,this.getBaseMetaTileEntity());
         else StructureBuilder(shape,blockType2,blockMeta2,0,-2,28,this.getBaseMetaTileEntity());
     }

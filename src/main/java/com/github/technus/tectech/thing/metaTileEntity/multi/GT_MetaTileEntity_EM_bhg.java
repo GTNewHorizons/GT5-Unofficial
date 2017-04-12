@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.thing.block.QuantumGlass;
+import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.casing.GT_Container_CasingsTT;
 import com.github.technus.tectech.thing.metaTileEntity.constructableTT;
 import gregtech.api.enums.Textures;
@@ -50,7 +50,7 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
             GT_Container_CasingsTT.sBlockCasingsTT,
             GT_Container_CasingsTT.sBlockCasingsTT,
             GT_Container_CasingsTT.sBlockCasingsTT,
-            QuantumGlass.INSTANCE};
+            QuantumGlassBlock.INSTANCE};
     private static final byte[] blockMeta = new byte[]{3, 4, 5, 6, 7, 0};
 
     public GT_MetaTileEntity_EM_bhg(int aID, String aName, String aNameRegional) {
@@ -66,7 +66,7 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
     }
 
     @Override
-    public void construct() {
+    public void construct(int qty) {
         StructureBuilder(shape,blockType,blockMeta,7,7,0,this.getBaseMetaTileEntity());
     }
 

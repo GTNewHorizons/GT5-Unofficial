@@ -1,8 +1,8 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
+import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
-import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.dataFramework.quantumDataPacket;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
@@ -67,7 +67,6 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[96]};
     }
 
-    //TODO implement uncertainty, unstability
     @Override
     public boolean EM_checkRecipe(ItemStack itemStack) {
         eAvailableData=0;
@@ -76,6 +75,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         int rackComputation;
 
         for (GT_MetaTileEntity_Hatch_Rack r : eRacks) {
+            if(!isValidMetaTileEntity(r))continue;
             if(r.heat>maxTemp)maxTemp=r.heat;
             rackComputation= r.tickComponents(eParamsIn[0],eParamsIn[10]);
             if(rackComputation>0){
@@ -180,15 +180,15 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         eRacks.clear();
         if(!EM_StructureCheckAdvanced(front,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,1,2,0))return false;
         if(!EM_StructureCheckAdvanced(cap,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,1,2,-1))return false;
-        byte i,slices=4;
-        for(i=-2;i>-16;){
+        byte i=-2,slices=4;
+        for(;i>-16;){
             if(!EM_StructureCheckAdvanced(slice,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,1,2,i))break;
             slices++;
             i--;
         }
         if(!EM_StructureCheckAdvanced(cap,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,1,2,++i))return false;
         if(!EM_StructureCheckAdvanced(terminator,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,1,2,--i))return false;
-        eCertainMode=(byte)(slices/3);
+        eCertainMode=(byte)Math.min(slices/3,5);
         return eUncertainHatches.size() == 1;
     }
 

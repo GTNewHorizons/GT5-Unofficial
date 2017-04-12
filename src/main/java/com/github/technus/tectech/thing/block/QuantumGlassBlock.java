@@ -15,11 +15,11 @@ import static com.github.technus.tectech.auxiliary.Reference.MODID;
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public final class QuantumGlass extends BlockBase {
+public final class QuantumGlassBlock extends BlockBase {
     public static IIcon stuff;
-    public static QuantumGlass INSTANCE;
+    public static QuantumGlassBlock INSTANCE;
 
-    public QuantumGlass() {
+    public QuantumGlassBlock() {
         super(Material.iron);
         this.setBlockBounds(0, 0, 0, 1, 1, 1);
         setBlockName("quantumGlass");
@@ -83,7 +83,7 @@ public final class QuantumGlass extends BlockBase {
     }
 
     public static void run(){
-        INSTANCE=new QuantumGlass();
-        GameRegistry.registerBlock(INSTANCE, INSTANCE.getUnlocalizedName());
+        INSTANCE=new QuantumGlassBlock();
+        GameRegistry.registerBlock(INSTANCE,QuantumGlassItem.class,INSTANCE.getUnlocalizedName());
     }
 }

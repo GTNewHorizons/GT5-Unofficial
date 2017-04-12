@@ -1,7 +1,7 @@
 package com.github.technus.tectech.loader;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.thing.block.QuantumGlass;
+import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.casing.GT_Container_CasingsTT;
 import com.github.technus.tectech.thing.item.DebugBuilder;
 import com.github.technus.tectech.thing.item.DebugContainer_EM;
@@ -35,7 +35,7 @@ public class MainLoader {
     }
 
     public void registerThingsInTabs(){
-        QuantumGlass.INSTANCE.setCreativeTab(mainTab);
+        QuantumGlassBlock.INSTANCE.setCreativeTab(mainTab);
         GT_Container_CasingsTT.sBlockCasingsTT.setCreativeTab(mainTab);
         DebugContainer_EM.INSTANCE.setCreativeTab(mainTab);
         DebugBuilder.INSTANCE.setCreativeTab(mainTab);

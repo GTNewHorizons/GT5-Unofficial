@@ -1,7 +1,6 @@
 package com.github.technus.tectech.dataFramework;
 
 import com.github.technus.tectech.vec3pos;
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.TreeSet;

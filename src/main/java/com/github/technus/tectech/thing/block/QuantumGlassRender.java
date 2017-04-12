@@ -23,7 +23,7 @@ public final class QuantumGlassRender implements ISimpleBlockRenderingHandler {
         Tessellator tessellator = Tessellator.instance;
 
         //Get icons from custom register (useful for renderers and fluids)
-        IIcon side = QuantumGlass.stuff;
+        IIcon side = QuantumGlassBlock.stuff;
         tessellator.startDrawingQuads();
         tessellator.setNormal(0.0F, -1.0F, 0.0F);
         renderer.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, side);
@@ -61,46 +61,46 @@ public final class QuantumGlassRender implements ISimpleBlockRenderingHandler {
         tes.setNormal(0F, 1F, 0F);
         tes.setBrightness(15728880);
         tes.setColorOpaque_F(0F, 1F, 1F);
-        IIcon side = QuantumGlass.stuff;
+        IIcon side = QuantumGlassBlock.stuff;
         GL11.glDisable(GL11.GL_CULL_FACE);
 
         //South
-        if (world.getBlock(x, y, z + 1).getClass() != QuantumGlass.class) {
+        if (world.getBlock(x, y, z + 1).getClass() != QuantumGlassBlock.class) {
             tes.addVertexWithUV(x, y, z + 0.999, side.getMinU(), side.getMaxV()); //0.999 instead of 1 for fighting (textures overlapping)
             tes.addVertexWithUV(x, y + 1, z + 0.999, side.getMinU(), side.getMinV());
             tes.addVertexWithUV(x + 1, y + 1, z + 0.999, side.getMaxU(), side.getMinV());
             tes.addVertexWithUV(x + 1, y, z + 0.999, side.getMaxU(), side.getMaxV());
         }
         //East
-        if (world.getBlock(x + 1, y, z).getClass() != QuantumGlass.class) {
+        if (world.getBlock(x + 1, y, z).getClass() != QuantumGlassBlock.class) {
             tes.addVertexWithUV(x + 0.999, y, z + 1, side.getMinU(), side.getMaxV());
             tes.addVertexWithUV(x + 0.999, y + 1, z + 1, side.getMinU(), side.getMinV());
             tes.addVertexWithUV(x + 0.999, y + 1, z, side.getMaxU(), side.getMinV());
             tes.addVertexWithUV(x + 0.999, y, z, side.getMaxU(), side.getMaxV());
         }
         //North
-        if (world.getBlock(x, y, z - 1).getClass() != QuantumGlass.class) {
+        if (world.getBlock(x, y, z - 1).getClass() != QuantumGlassBlock.class) {
             tes.addVertexWithUV(x + 1, y, z + 0.001, side.getMinU(), side.getMaxV());
             tes.addVertexWithUV(x + 1, y + 1, z + 0.001, side.getMinU(), side.getMinV());
             tes.addVertexWithUV(x, y + 1, z + 0.001, side.getMaxU(), side.getMinV());
             tes.addVertexWithUV(x, y, z + 0.001, side.getMaxU(), side.getMaxV());
         }
         //West
-        if (world.getBlock(x - 1, y, z).getClass() != QuantumGlass.class) {
+        if (world.getBlock(x - 1, y, z).getClass() != QuantumGlassBlock.class) {
             tes.addVertexWithUV(x + 0.001, y, z, side.getMinU(), side.getMaxV());
             tes.addVertexWithUV(x + 0.001, y + 1, z, side.getMinU(), side.getMinV());
             tes.addVertexWithUV(x + 0.001, y + 1, z + 1, side.getMaxU(), side.getMinV());
             tes.addVertexWithUV(x + 0.001, y, z + 1, side.getMaxU(), side.getMaxV());
         }
         //Top
-        if (world.getBlock(x, y + 1, z).getClass() != QuantumGlass.class) {
+        if (world.getBlock(x, y + 1, z).getClass() != QuantumGlassBlock.class) {
             tes.addVertexWithUV(x, y + 0.999, z + 1, side.getMinU(), side.getMaxV());
             tes.addVertexWithUV(x, y + 0.999, z, side.getMinU(), side.getMinV());
             tes.addVertexWithUV(x + 1, y + 0.999, z, side.getMaxU(), side.getMinV());
             tes.addVertexWithUV(x + 1, y + 0.999, z + 1, side.getMaxU(), side.getMaxV());
         }
         //Bottom
-        if (world.getBlock(x, y - 1, z).getClass() != QuantumGlass.class) {
+        if (world.getBlock(x, y - 1, z).getClass() != QuantumGlassBlock.class) {
             tes.addVertexWithUV(x, y + 0.001, z, side.getMinU(), side.getMaxV());
             tes.addVertexWithUV(x, y + 0.001, z + 1, side.getMinU(), side.getMinV());
             tes.addVertexWithUV(x + 1, y + 0.001, z + 1, side.getMaxU(), side.getMinV());

@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.machineTT;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Uncertainty;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Uncertainty;
@@ -258,9 +258,10 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
         return status = (byte) result;
     }
 
-    private void shift() {//TODO MAKE IT MORE EVIL
-        final int i = TecTech.Rnd.nextInt(16);
-        matrix[i] += (((matrix[i] & 1) == 0) ? 2 : -2) * TecTech.Rnd.nextInt(5);
+    private void shift() {
+        final int i = TecTech.Rnd.nextInt(16),j=TecTech.Rnd.nextInt(128);
+        matrix[i] += (((matrix[i] & 1) == 0) ? 2 : -2) * j>>5;
+        matrix[i] += j==0?1:0;
         if(matrix[i]<0) matrix[i]=0;
         else if (matrix[i]>1000) matrix[i]=999;
     }

@@ -127,16 +127,15 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
-        if(aBaseMetaTileEntity.isActive())
-            aPlayer.addChatComponentMessage(new ChatComponentText("It is still active..."));
-        else if(heat>0)
-            aPlayer.addChatComponentMessage(new ChatComponentText("It is still warm..."));
-        else
+        //if(aBaseMetaTileEntity.isActive())
+        //    aPlayer.addChatComponentMessage(new ChatComponentText("It is still active..."));
+        //else if(heat>0)
+        //    aPlayer.addChatComponentMessage(new ChatComponentText("It is still warm..."));
+        //else
             aBaseMetaTileEntity.openGUI(aPlayer);
         return true;
     }
 
-    //TODO implement: glitches with OC, random component burning with OC
     private int getComputationPower(float overclock, float overvolt, boolean tickingComponents){
         float computation=0,heat=0;
         for(int i=0;i<mInventory.length;i++){

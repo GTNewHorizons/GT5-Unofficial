@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
-import com.github.technus.tectech.dataFramework.quantumDataPacket;
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.dataFramework.quantumDataPacket;
 import com.github.technus.tectech.thing.machineTT;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.iConnectsToDataPipe;
 import gregtech.api.enums.Dyes;
