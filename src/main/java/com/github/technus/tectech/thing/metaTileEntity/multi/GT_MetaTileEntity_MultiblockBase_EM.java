@@ -111,6 +111,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     protected void EM_extraExplosions(){}//For that extra hatches explosions, and maybe some MOORE EXPLOSIONS
     protected void EM_stopMachine(){}//On machine stop
 
+    //machine structure check
+    protected boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+        return false;
+    }
+
     //Get Available data, Override only on data producers should return mAvailableData that is set in check recipe
     protected long EM_getAvailableData() {
         long result=0;
@@ -119,6 +124,14 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             if(in.q!=null) result += in.q.computationIfNotContained(pos);
         return result;
     }
+
+    //Extra hook on cyclic updates (not really needed for machines smaller than 1 chunk)
+    //BUT NEEDED WHEN - machine blocks are not touching each other ot they don't implement IMachineBlockUpdateable (ex. air)
+    protected boolean EM_cyclicUpdate(){
+        return mUpdate<=-1000;//set to false to disable cyclic update
+        //default is once per 50s;
+    }
+
 
     //RATHER LEAVE ALONE Section
 
@@ -299,11 +312,16 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     private boolean cyclicUpdate(){
-        if(mUpdate<-1000){
+        if(EM_cyclicUpdate()){
             mUpdate=0;
             return true;
         }
         return false;
+    }
+
+    @Override
+    public final boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+        return EM_checkMachine(iGregTechTileEntity,itemStack);
     }
 
     @Override

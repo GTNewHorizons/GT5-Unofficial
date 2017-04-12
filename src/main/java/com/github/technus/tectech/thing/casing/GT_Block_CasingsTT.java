@@ -27,11 +27,10 @@ public class GT_Block_CasingsTT
     private static IIcon debug[] = new IIcon[6];
 
     public GT_Block_CasingsTT() {
-
         super(GT_Item_CasingsTT.class, "gt.blockcasingsTT", GT_Material_Casings.INSTANCE);
         for (byte i = 0; i < 16; i = (byte) (i + 1)) {
             Textures.BlockIcons.CASING_BLOCKS[(i + 96)] = new GT_CopiedBlockTexture(this, 6, i);
-            /*IMPORTANT for block recoloring*/
+            /*IMPORTANT for block recoloring**/
         }
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Computer Casing");//adding
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Advanced Computer Casing");//adding

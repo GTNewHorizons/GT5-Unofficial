@@ -4,6 +4,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import eu.usrv.yamcore.blocks.BlockBase;
+import gregtech.api.GregTech_API;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -85,5 +86,6 @@ public final class QuantumGlassBlock extends BlockBase {
     public static void run(){
         INSTANCE=new QuantumGlassBlock();
         GameRegistry.registerBlock(INSTANCE,QuantumGlassItem.class,INSTANCE.getUnlocalizedName());
+        GregTech_API.registerMachineBlock(INSTANCE,-1);
     }
 }

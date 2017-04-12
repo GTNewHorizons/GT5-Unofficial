@@ -153,7 +153,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public boolean checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    public boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         if(iGregTechTileEntity.getBlockOffset(0,-1,0)!=GT_Container_CasingsTT.sBlockCasingsTT){
             eTier =0;
             return false;
