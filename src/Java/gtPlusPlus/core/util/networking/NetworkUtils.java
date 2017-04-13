@@ -7,36 +7,32 @@ import java.util.Enumeration;
 public class NetworkUtils {
 
 	public static String getContentFromURL(final String args) {
-		try {
-			if (hasValidNetworkInterface()){
-				if (netIsAvailableGithub() || netIsAvailableOther() || netIsAvailableBaidu() || netIsAvailableGoogle()){
-					try {
-						URL url;
-						// get URL content
-						url = new URL(args);
-						final URLConnection conn = url.openConnection();
-						// open the stream and put it into BufferedReader
-						final BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-						String inputLine;
-						String tempLine = null;
-						while ((inputLine = br.readLine()) != null) {
-							tempLine = inputLine;
-						}
-						br.close();
-						return tempLine;
+		if (checkNetworkIsAvailableWithValidInterface()){
+				try {
+					URL url;
+					// get URL content
+					url = new URL(args);
+					final URLConnection conn = url.openConnection();
+					// open the stream and put it into BufferedReader
+					final BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+					String inputLine;
+					String tempLine = null;
+					while ((inputLine = br.readLine()) != null) {
+						tempLine = inputLine;
 					}
-					catch (final MalformedURLException e) {}
-					catch (final IOException e) {}
+					br.close();
+					return tempLine;
 				}
-			}
-		} catch (final SocketException e) {}
+				catch (final MalformedURLException e) {}
+				catch (final IOException e) {}				
+		}
 		return "offline";
 	}
 
 	public static boolean checkNetworkIsAvailableWithValidInterface(){
 		try {
 			if (hasValidNetworkInterface()){
-				if (netIsAvailableGithub() || netIsAvailableOther() || netIsAvailableBaidu() || netIsAvailableGoogle()){
+				if (checkAddressWithTimeout("http://www.google.com", 10) || checkAddressWithTimeout("http://www.baidu.com", 10) || checkAddressWithTimeout("https://github.com/draknyte1/GTplusplus", 10) || checkAddressWithTimeout("www.yahoo.com", 10)){
 					return true;
 				}
 			}
@@ -88,6 +84,21 @@ public class NetworkUtils {
 		try {
 			final int timeout = 200;
 			final InetAddress[] addresses = InetAddress.getAllByName("www.yahoo.com");
+			for (final InetAddress address : addresses) {
+				if (address.isReachable(timeout)) {
+					return true;
+				}
+				return false;
+			}
+		} catch (final Exception e) {
+			return false;
+		}
+		return false;
+	}
+	
+	private static boolean checkAddressWithTimeout(String URL, int timeout) {
+		try {			
+			final InetAddress[] addresses = InetAddress.getAllByName(URL);
 			for (final InetAddress address : addresses) {
 				if (address.isReachable(timeout)) {
 					return true;
