@@ -217,7 +217,8 @@ public class GT_NEI_DefaultHandler
 				}
 			}
 			if (tDuration > 0) {
-				drawText(10, 113, "Time: " + (tDuration < 20 ? "< 1" : Integer.valueOf(tDuration / 20)) + " secs", -16777216);
+//                drawText(10, 113, "Time: " + (tDuration < 20 ? "< 1" : Integer.valueOf(tDuration / 20)) + " secs", -16777216);
+                drawText(10, 113, String.format("Time: %.2f secs", 0.05 * tDuration), -16777216);
 			}
 			int tSpecial = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue;
 			if (tSpecial == -100 && GT_Mod.gregtechproxy.mLowGravProcessing) {//IF mSpecialValue == -100 THEN needs Low Gravity

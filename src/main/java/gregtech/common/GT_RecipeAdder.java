@@ -572,6 +572,9 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         }
         return true;
     }
+    public boolean addDistilleryRecipe(int circuitConfig, FluidStack aInput, FluidStack aOutput, int aDuration, int aEUt, boolean aHidden) {
+        return addDistilleryRecipe(ItemList.Circuit_Integrated.getWithDamage(0L, circuitConfig, new Object[0]), aInput, aOutput, aDuration, aEUt, aHidden);
+    }
 
     public boolean addFluidSolidifierRecipe(ItemStack aMold, FluidStack aInput, ItemStack aOutput, int aDuration, int aEUt) {
         if ((aMold == null) || (aInput == null) || (aOutput == null)) {

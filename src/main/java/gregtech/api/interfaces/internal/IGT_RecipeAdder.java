@@ -431,6 +431,8 @@ public interface IGT_RecipeAdder {
      */
     public boolean addDistilleryRecipe(ItemStack aCircuit, FluidStack aInput, FluidStack aOutput, int aDuration, int aEUt, boolean aHidden);
 
+    public boolean addDistilleryRecipe(int aCircuit, FluidStack aInput, FluidStack aOutput, int aDuration, int aEUt, boolean aHidden);
+
     /**
      * Adds a Recipe for the Fluid Solidifier
      */
