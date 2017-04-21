@@ -1,5 +1,6 @@
 package com.github.technus.tectech;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -565,5 +566,9 @@ public class Util {
         }
 
         return true;
+    }
+
+    public static String getUniqueIdentifier(ItemStack is){
+        return GameRegistry.findUniqueIdentifierFor(is.getItem()).modId+":"+is.getUnlocalizedName();
     }
 }

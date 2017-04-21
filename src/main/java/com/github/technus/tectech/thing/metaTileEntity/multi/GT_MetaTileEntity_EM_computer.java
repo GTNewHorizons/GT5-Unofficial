@@ -177,6 +177,9 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+        for(GT_MetaTileEntity_Hatch_Rack rack:eRacks)
+            if (isValidMetaTileEntity(rack))
+                rack.getBaseMetaTileEntity().setActive(false);
         eRacks.clear();
         if(!EM_StructureCheckAdvanced(front,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,1,2,0))return false;
         if(!EM_StructureCheckAdvanced(cap,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,1,2,-1))return false;
@@ -186,9 +189,13 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
             slices++;
             i--;
         }
+        if(slices>16)return false;
         if(!EM_StructureCheckAdvanced(cap,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,1,2,++i))return false;
         if(!EM_StructureCheckAdvanced(terminator,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,1,2,--i))return false;
         eCertainMode=(byte)Math.min(slices/3,5);
+        for(GT_MetaTileEntity_Hatch_Rack rack:eRacks)
+            if (isValidMetaTileEntity(rack))
+                rack.getBaseMetaTileEntity().setActive(iGregTechTileEntity.isActive());
         return eUncertainHatches.size() == 1;
     }
 

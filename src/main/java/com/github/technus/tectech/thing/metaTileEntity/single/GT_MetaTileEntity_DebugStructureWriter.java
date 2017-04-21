@@ -18,6 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
 import static com.github.technus.tectech.Util.StructureWriter;
+import static com.github.technus.tectech.Util.getUniqueIdentifier;
 
 /**
  * Created by Tec on 23.03.2017.
@@ -120,7 +121,7 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
         if (aBaseMetaTileEntity.isClientSide()) return true;
         aBaseMetaTileEntity.openGUI(aPlayer);
         if(TecTech.ModConfig.DEBUG_MODE && aPlayer.getHeldItem()!=null)
-            TecTech.Logger.info("UnlocalizedName: "+aPlayer.getHeldItem().getUnlocalizedName());
+            TecTech.Logger.info("UnlocalizedName: "+ getUniqueIdentifier(aPlayer.getHeldItem()));
         return true;
     }
 
