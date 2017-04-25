@@ -48,13 +48,13 @@ public class Detrav_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBloc
     public String[] getDescription() {
         return new String[]{
                 "Controller Block for the Detrav Advanced Miner II",
-                "Size is controlled by the odd circuits configuration",
+                "Default size is one chunk, use circuit configuration",
+                "to increase the size, {config}*2 + 1 chunks"
                 "Size(WxHxD): 3x7x3, Controller (Front middle bottom)",
                 "3x1x3 Base of Solid Steel Casings",
                 "1x3x1 Solid Steel Casing pillar (Center of base)",
                 "1x3x1 Steel Frame Boxes (Each Steel pillar side and on top)",
                 "1x Input Hatch (Any bottom layer casing)",
-                "1x Input Bus for Mining Pipe (Any bottom layer casing)",
                 "1x Output Bus (Any bottom layer casing)",
                 "1x Maintenance Hatch (Any bottom layer casing)",
                 "1x MV+ Energy Hatch (Any bottom layer casing)"};
@@ -73,28 +73,10 @@ public class Detrav_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBloc
 
     @Override
     public boolean checkRecipe(ItemStack aStack) {
-        int circuit_config;
-        if (mInventory[1] == null && !mInventory[1].getUnlocalizedName().startsWith("gt.integrated_circuit")) return false;
-
-        circuit_config = mInventory[1].getItemDamage();
-        if (circuit_config < 1 && circuit_config % 2 != 1) {
+        
+        if(!moveFirst())
             return false;
-        }
-
-        circuit_config --;
-        circuit_config /= 2;
-
-        if(mInputBusses == null) return false;
-        boolean flagreturn = true;
-        ArrayList<ItemStack> tItems = getStoredInputs();
-        for (ItemStack tStack : tItems) {
-            if (tStack.isItemEqual(GT_ModHandler.getIC2Item("miningPipe", 1L))) {
-                flagreturn = false;
-                break;
-            }
-        }
-        if(flagreturn) return false;
-
+        
         if (mInputHatches == null || mInputHatches.get(0).mFluid == null || mInputHatches.get(0).mFluid.getFluid().getID() != ItemList.sDrillingFluid.getID()) {
             return false;
         }
@@ -111,35 +93,33 @@ public class Detrav_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBloc
 
         if (getBaseMetaTileEntity().getRandomNumber(10) <= 4) {
             if (mMineList.isEmpty()) {
-            for(int i = - circuit_config; i<=circuit_config; i++)
-                for(int j = - circuit_config; j<=circuit_config; j++) {
-                    Chunk c = getBaseMetaTileEntity().getWorld().getChunkFromBlockCoords(getBaseMetaTileEntity().getXCoord() + i * 16, getBaseMetaTileEntity().getZCoord() + j * 16);
-                    for (int x = 0; x < 16; x++)
-                        for (int z = 0; z < 16; z++) {
-                                int yLevel = getYOfPumpHead();
-                                Block tBlock = c.getBlock(x,yLevel,z);
-                                int tMetaID = c.getBlockMetadata(x,yLevel,z);
-                                if (tBlock instanceof GT_Block_Ores_Abstract) {
-                                    TileEntity tTileEntity = c.getTileEntityUnsafe(x,yLevel,z);
-                                    if ((tTileEntity!=null)
-                                            && (tTileEntity instanceof GT_TileEntity_Ores)
-                                            && ((GT_TileEntity_Ores) tTileEntity).mNatural == true
-                                            && !mMineList.contains(new ChunkPosition(tTileEntity.xCoord, tTileEntity.yCoord, tTileEntity.zCoord))) {
-                                        mMineList.add(new ChunkPosition(tTileEntity.xCoord, tTileEntity.yCoord, tTileEntity.zCoord));
-                                    }
-                                }
-                                else {
-                                    ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
-                                    if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {
-                                        ChunkPosition cp = new ChunkPosition(c.xPosition * 16 + x, yLevel, c.zPosition * 16 + z);
-                                        if (!mMineList.contains(cp)) {
-                                            mMineList.add(cp);
-                                        }
-                                    }
-                                }
+                int x = getXCurrent();
+                int z = getZCurrent();
+                for(int yLevel = getBaseMetaTileEntity().getYCoord() - 1; yLevel>1; yLevel --)
+                {
+                    Block tBlock = c.getBlock(x,yLevel,z);
+                    int tMetaID = c.getBlockMetadata(x,yLevel,z);
+                    if (tBlock instanceof GT_Block_Ores_Abstract) {
+                        TileEntity tTileEntity = c.getTileEntityUnsafe(x,yLevel,z);
+                        if ((tTileEntity!=null)
+                                && (tTileEntity instanceof GT_TileEntity_Ores)
+                                && ((GT_TileEntity_Ores) tTileEntity).mNatural == true
+                                && !mMineList.contains(new ChunkPosition(tTileEntity.xCoord, tTileEntity.yCoord, tTileEntity.zCoord))) {
+                            mMineList.add(new ChunkPosition(tTileEntity.xCoord, tTileEntity.yCoord, tTileEntity.zCoord));
                         }
-                }
+                    }
+                    else {
+                        ItemData tAssotiation = GT_OreDictUnificator.getAssociation(new ItemStack(tBlock, 1, tMetaID));
+                        if ((tAssotiation != null) && (tAssotiation.mPrefix.toString().startsWith("ore"))) {
+                            ChunkPosition cp = new ChunkPosition(c.xPosition * 16 + x, yLevel, c.zPosition * 16 + z);
+                            if (!mMineList.contains(cp)) {
+                                mMineList.add(cp);
+                            }
+                        }
+                    }
+                }       
             }
+        
 
             ArrayList<ItemStack> tDrops = new ArrayList();
             Block tMineBlock = null;
@@ -196,12 +176,8 @@ public class Detrav_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBloc
             }
             else
             {
-                if(getBaseMetaTileEntity().getBlockOffset(ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetX, getYOfPumpHead() - 1 - getBaseMetaTileEntity().getYCoord(), ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetZ) != Blocks.bedrock){
-                    if (mEnergyHatches.size() > 0 && mEnergyHatches.get(0).getEUVar() > (512 + getMaxInputVoltage() * 4)) {
-                        moveOneDown();
-                    }
-                }else{
-                    return false;
+                if (mEnergyHatches.size() > 0 && mEnergyHatches.get(0).getEUVar() > (512 + getMaxInputVoltage() * 4)) {
+                    moveNext();
                 }
             }
         }
@@ -229,68 +205,128 @@ public class Detrav_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBloc
         return true;
     }
 
-    private boolean moveOneDown() {
+    private boolean moveFirst() {
+        int circuit_config = 1;
+        if (mInventory[1] == null && !mInventory[1].getUnlocalizedName().startsWith("gt.integrated_circuit")) return false;
 
-        boolean flagreturn = true;
-        ArrayList<ItemStack> tItems = getStoredInputs();
-        for (ItemStack tStack : tItems) {
-            if (tStack.isItemEqual(GT_ModHandler.getIC2Item("miningPipe", 1L))) {
-                flagreturn = false;
-                break;
-            }
+        circuit_config = mInventory[1].getItemDamage();
+        
+        circuit_config *= 2;
+        circuit_config++;
+        //in here if circuit is empty set data to chunk
+        boolean configurated = false;
+
+        NBTTagCompound aNBT = aCircuit.getTagCompound();
+        if(aNBT == null) {
+            aCircuit = new NBTTagCompound();
+            NBTTagCompound detravPosition = new NBTTagCompound();
+            aNBT.setTag("DetravPosition", detravPosition);
+            aStack.setTagCompound(aNBT);
         }
-        if(flagreturn) return false;
-
-
-
-
-        int xDir = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetX;
-        int zDir = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetZ;
-        int yHead = getYOfPumpHead();
-        if (yHead <= 0) {
-            return false;
+        
+        NBTTagCompound detravPosition = aNBT.getCompoundTag("DetravPosition");
+        if (detravPosition == null ) {
+            detravPosition = new NBTTagCompound();
+            aNBT.setTag("DetravPosition", detravPosition);
         }
-        if (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord() + xDir, yHead - 1, getBaseMetaTileEntity().getZCoord() + zDir) == Blocks.bedrock) {
-            return false;
-        }
-        if (!(getBaseMetaTileEntity().getWorld().setBlock(getBaseMetaTileEntity().getXCoord() + xDir, yHead - 1, getBaseMetaTileEntity().getZCoord() + zDir, GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 1L))))) {
-            return false;
-        }
-        if (yHead != getBaseMetaTileEntity().getYCoord()) {
-            getBaseMetaTileEntity().getWorld().setBlock(getBaseMetaTileEntity().getXCoord() + xDir, yHead, getBaseMetaTileEntity().getZCoord() + zDir, GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipe", 1L)));
-        }
+        configurated = detravPosition.hasKey("Configurated") && detravPosition.get("Configurated");
+        
+        if(!configurated)
+        {
+            configurated = true;
+            int x_from = getBaseMetaTileEntity().getXCoord() -circuit_config * 16;
+            int x_to = getBaseMetaTileEntity().getXCoord() +circuit_config * 16;
+            int x_current = x_from;
+            int z_from = getBaseMetaTileEntity().getZCoord() - circuit_config * 16;
+            int z_to = getBaseMetaTileEntity().getZCoord() + circuit_config * 16;
+            int z_current = z_from;
 
-        for (ItemStack tStack : tItems) {
-            if (tStack.isItemEqual(GT_ModHandler.getIC2Item("miningPipe", 1L))) {
-                tStack.stackSize--;
-                if (tStack.stackSize < 1) {
-                    tStack = null;
-                }
-                return true;
-            }
+            detravPosition.set("XFrom",x_from);
+            detravPosition.set("XTo",x_to);
+            detravPosition.set("XCurrent",x_current);
+            detravPosition.set("ZFrom",z_from);
+            detravPosition.set("ZTo",z_to);
+            detravPosition.set("ZCurrent",z_current);
         }
-
-        return true;
+        if(detravPosition.hasKey("Finished"))
+            configurated = !detravPosition.get("Finished");
+        return configurated;
     }
 
-    private int getYOfPumpHead() {
-        int xDir = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetX;
-        int zDir = ForgeDirection.getOrientation(getBaseMetaTileEntity().getBackFacing()).offsetZ;
-        int y = getBaseMetaTileEntity().getYCoord() - 1;
-        while (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir) == GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipe", 1L))) {
-            y--;
-        }
-        if (y == getBaseMetaTileEntity().getYCoord() - 1) {
-            if (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir) != GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 1L))) {
-                return y + 1;
+    private int getXCurrent()
+    {
+        int fakeResult = getBaseMetaTileEntity().getXCoord();
+        if(mInventory[1] == null) return fakeResult;
+        ItemStack aCircuit = mInventory[1];
+        NBTTagCompound aNBT = aCircuit.getTagCompound();
+        if(aNBT == null) return fakeResultfalse;
+        NBTTagCompound detravPosition = aNBT.getCompoundTag("DetravPosition");
+        if (detravPosition == null ) return fakeResult;
+
+        if(detravPosition.hasKey("Finished"))
+            if(detravPosition.get("Finished"))
+                return fakeResult;
+
+        return detravPosition.get("XCurrent");
+    }
+
+    private int getZCurrent()
+    {
+        int fakeResult = getBaseMetaTileEntity().getZCoord();
+        if(mInventory[1] == null) return fakeResult;
+        ItemStack aCircuit = mInventory[1];
+        NBTTagCompound aNBT = aCircuit.getTagCompound();
+        if(aNBT == null) return fakeResultfalse;
+        NBTTagCompound detravPosition = aNBT.getCompoundTag("DetravPosition");
+        if (detravPosition == null ) return fakeResult;
+
+        if(detravPosition.hasKey("Finished"))
+            if(detravPosition.get("Finished"))
+                return fakeResult;
+
+        return detravPosition.get("ZCurrent");
+    }
+
+
+    private boolean moveNext() {
+        if(mInventory[1] == null) return false;
+        ItemStack aCircuit = mInventory[1];
+        NBTTagCompound aNBT = aCircuit.getTagCompound();
+        if(aNBT == null) return false;
+        NBTTagCompound detravPosition = aNBT.getCompoundTag("DetravPosition");
+        if (detravPosition == null ) return false;
+
+        if(detravPosition.hasKey("Finished"))
+            if(detravPosition.get("Finished"))
+                return false;
+        
+        int x_from = detravPosition.get("XFrom");
+        int z_from = detravPosition.get("ZFrom");
+        int x_to = detravPosition.get("XTo");
+        int z_to = detravPosition.get("ZTo");
+        int x_current = detravPosition.get("XCurrent");
+        int z_current = detravPosition.get("ZCurrent");
+
+        if(z_current < z_to)
+            z_current++;
+        else
+        {
+            if(x_current < x_to)
+            {
+                z_current = z_from;
+                x_current++;
             }
-        } else if (getBaseMetaTileEntity().getBlock(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir) != GT_Utility
-                .getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 1L)) && this.mInventory[1] != null && this.mInventory[1].stackSize > 0 && GT_Utility.areStacksEqual(this.mInventory[1], GT_ModHandler.getIC2Item("miningPipe", 1L))) {
-            getBaseMetaTileEntity().getWorld().setBlock(getBaseMetaTileEntity().getXCoord() + xDir, y, getBaseMetaTileEntity().getZCoord() + zDir,
-                    GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 1L)));
-            getBaseMetaTileEntity().decrStackSize(0, 1);
+            else
+            {
+                detravPosition.set("Finished",true);
+                return false;
+            }
         }
-        return y;
+
+        detravPosition.set("XCurrent",x_current);
+        detravPosition.get("ZCurrent",z_current);
+        
+        return true;
     }
 
     @Override
