@@ -3,6 +3,9 @@ package com.detrav.tileentities;
 /**
  * Created by Detrav on 13.12.2016.
  */
+import com.detrav.enums.DetravItemList;
+import com.detrav.items.DetravMetaGeneratedItem01;
+import com.detrav.items.DetravMetaGeneratedTool01;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
@@ -30,10 +33,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
+import java.util.zip.Inflater;
 
 public class Detrav_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBlockBase {
 
@@ -73,6 +78,8 @@ public class Detrav_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBloc
         return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "AdvMiner2.png");
     }
 
+
+
     @Override
     public boolean checkRecipe(ItemStack aStack) {
         
@@ -93,18 +100,23 @@ public class Detrav_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBloc
         depleteInput(tFluid);
         long tVoltage = getMaxInputVoltage();
 
-        if (getBaseMetaTileEntity().getRandomNumber(10) <= 4) {
+        if (getBaseMetaTileEntity().getRandomNumber(10) <= 4 &&
+            DetravMetaGeneratedItem01.INSTANCE.isConfiguredCircuit(mInventory[1])) {
+
             if (mMineList.isEmpty()) {
                 int x = getXCurrent();
                 int z = getZCurrent();
                 World w = getBaseMetaTileEntity().getWorld();
                 if(w==null) return false;
+                Chunk c = w.getChunkProvider().provideChunk(x>>4,z>>4);
+                x = x & 15;
+                z = z & 15;
                 for(int yLevel = getBaseMetaTileEntity().getYCoord() - 1; yLevel>1; yLevel --)
                 {
-                    Block tBlock =  w.getBlock(x,yLevel,z);
-                    int tMetaID = w.getBlockMetadata(x,yLevel,z);
+                    Block tBlock =  c.getBlock(x,yLevel,z);
+                    int tMetaID = c.getBlockMetadata(x,yLevel,z);
                     if (tBlock instanceof GT_Block_Ores_Abstract) {
-                        TileEntity tTileEntity = w.getTileEntity(x,yLevel,z);
+                        TileEntity tTileEntity = c.getTileEntityUnsafe(x,yLevel,z);
                         if ((tTileEntity!=null)
                                 && (tTileEntity instanceof GT_TileEntity_Ores)
                                 && ((GT_TileEntity_Ores) tTileEntity).mNatural == true
@@ -209,56 +221,121 @@ public class Detrav_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBloc
         return true;
     }
 
+
+
+
     private boolean moveFirst() {
         int circuit_config = 1;
-        if (mInventory[1] == null && !mInventory[1].getUnlocalizedName().startsWith("gt.integrated_circuit")) return false;
+        if (mInventory[1] == null)
+            return false;
+        if (mInventory[1].stackSize > 1) return false;
+        if (mInventory[1].getUnlocalizedName().startsWith("gt.integrated_circuit")) {
+            circuit_config = mInventory[1].getItemDamage();
+            circuit_config *= 2;
+            circuit_config++;
+            {
+                ItemStack aCircuit = mInventory[1];
+                NBTTagCompound aNBT = aCircuit.getTagCompound();
+                if (aNBT == null) {
+                    aNBT = new NBTTagCompound();
+                    NBTTagCompound detravPosition = new NBTTagCompound();
+                    aNBT.setTag("DetravPosition", detravPosition);
+                    aCircuit.setTagCompound(aNBT);
+                }
 
-        circuit_config = mInventory[1].getItemDamage();
+                NBTTagCompound detravPosition = aNBT.getCompoundTag("DetravPosition");
+                if (detravPosition == null) {
+                    detravPosition = new NBTTagCompound();
+                    aNBT.setTag("DetravPosition", detravPosition);
+                }
 
-        ItemStack aCircuit = mInventory[1];
-        
-        circuit_config *= 2;
-        circuit_config++;
-        //in here if circuit is empty set data to chunk
-        boolean configurated = false;
+                int x_from = ((getBaseMetaTileEntity().getXCoord() >> 4) - circuit_config + 1) * 16 - 16 * 3;
+                int x_to = ((getBaseMetaTileEntity().getXCoord() >> 4) + circuit_config) * 16 + 16 * 3;
+                int z_from = ((getBaseMetaTileEntity().getZCoord() >> 4) - circuit_config + 1) * 16 - 16 * 3;
+                int z_to = ((getBaseMetaTileEntity().getZCoord() >> 4) + circuit_config) * 16 + 16 * 3;
 
-        NBTTagCompound aNBT = aCircuit.getTagCompound();
-        if(aNBT == null) {
-            aNBT = new NBTTagCompound();
-            NBTTagCompound detravPosition = new NBTTagCompound();
-            aNBT.setTag("DetravPosition", detravPosition);
-            aCircuit.setTagCompound(aNBT);
+                int x_current = x_from;
+                int z_current = z_from;
+
+                if(!detravPosition.hasKey("Configured")) {
+                    detravPosition.setBoolean("Configured", true);
+                    detravPosition.setInteger("XCurrent",x_current);
+                    detravPosition.setInteger("ZCurrent",z_current);
+                }
+                else
+                {
+                    if(detravPosition.hasKey("XCurrent"))
+                        x_current = detravPosition.getInteger("XCurrent");
+                    if(detravPosition.hasKey("ZCurrent"))
+                        z_current = detravPosition.getInteger("ZCurrent");
+                }
+
+                World aWorld = getBaseMetaTileEntity().getWorld();
+                IChunkProvider provider = aWorld.getChunkProvider();
+                for (int i = x_current; i <= x_to; i += 16)
+                    for (int j = z_current; j <= z_to; j += 16) {
+                        if (!provider.provideChunk(i >> 4, j >> 4).isTerrainPopulated) {
+                            provider.populate(provider, (i >> 4), (j >> 4) );
+                            detravPosition.setInteger("XCurrent",i);
+                            detravPosition.setInteger("ZCurrent",j);
+                            return true;
+                        }
+                    }
+
+            }
+            {
+                mInventory[1] = DetravItemList.ConfiguredCircuit.get(1);
+                ItemStack aCircuit = mInventory[1];
+
+                //in here if circuit is empty set data to chunk
+
+
+                NBTTagCompound aNBT = aCircuit.getTagCompound();
+                if (aNBT == null) {
+                    aNBT = new NBTTagCompound();
+                    NBTTagCompound detravPosition = new NBTTagCompound();
+                    aNBT.setTag("DetravPosition", detravPosition);
+                    aCircuit.setTagCompound(aNBT);
+                }
+
+                NBTTagCompound detravPosition = aNBT.getCompoundTag("DetravPosition");
+                if (detravPosition == null) {
+                    detravPosition = new NBTTagCompound();
+                    aNBT.setTag("DetravPosition", detravPosition);
+                }
+
+
+                int x_from = ((getBaseMetaTileEntity().getXCoord() >> 4) - circuit_config + 1) * 16;
+                int x_to = ((getBaseMetaTileEntity().getXCoord() >> 4) + circuit_config) * 16;
+                int x_current = x_from;
+                int z_from = ((getBaseMetaTileEntity().getZCoord() >> 4) - circuit_config + 1) * 16;
+                int z_to = ((getBaseMetaTileEntity().getZCoord() >> 4) + circuit_config) * 16;
+                int z_current = z_from;
+
+                detravPosition.setInteger("XFrom", x_from);
+                detravPosition.setInteger("XTo", x_to);
+                detravPosition.setInteger("XCurrent", x_current);
+                detravPosition.setInteger("ZFrom", z_from);
+                detravPosition.setInteger("ZTo", z_to);
+                detravPosition.setInteger("ZCurrent", z_current);
+
+            }
         }
-        
-        NBTTagCompound detravPosition = aNBT.getCompoundTag("DetravPosition");
-        if (detravPosition == null ) {
-            detravPosition = new NBTTagCompound();
-            aNBT.setTag("DetravPosition", detravPosition);
-        }
-        configurated = detravPosition.hasKey("Configurated") && detravPosition.getBoolean("Configurated");
-        
-        if(!configurated)
-        {
-            configurated = true;
-            int x_from = ((getBaseMetaTileEntity().getXCoord() >> 4) - circuit_config+1) * 16;
-            int x_to = ((getBaseMetaTileEntity().getXCoord() >> 4) + circuit_config) * 16;
-            int x_current = x_from;
-            int z_from = ((getBaseMetaTileEntity().getZCoord() >> 4) - circuit_config+1) * 16;
-            int z_to = ((getBaseMetaTileEntity().getZCoord() >> 4) + circuit_config) * 16;
-            int z_current = z_from;
+        if (DetravMetaGeneratedItem01.INSTANCE.isConfiguredCircuit(mInventory[1])) {
+            NBTTagCompound aNBT = mInventory[1].getTagCompound();
+            if (aNBT == null) {
+                return false;
+            }
 
-            detravPosition.setInteger("XFrom",x_from);
-            detravPosition.setInteger("XTo",x_to);
-            detravPosition.setInteger("XCurrent",x_current);
-            detravPosition.setInteger("ZFrom",z_from);
-            detravPosition.setInteger("ZTo",z_to);
-            detravPosition.setInteger("ZCurrent",z_current);
-
-            detravPosition.setBoolean("Configurated",configurated);
+            NBTTagCompound detravPosition = aNBT.getCompoundTag("DetravPosition");
+            if (detravPosition == null) {
+                return false;
+            }
+            if (detravPosition.hasKey("Finished"))
+                return !detravPosition.getBoolean("Finished");
+            return true;
         }
-        if(detravPosition.hasKey("Finished"))
-            configurated = !detravPosition.getBoolean("Finished");
-        return configurated;
+        return false;
     }
 
     private int getXCurrent()
@@ -317,19 +394,23 @@ public class Detrav_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBloc
 
         if(z_current < z_to)
             z_current++;
-        else
-        {
-            if(x_current < x_to)
-            {
+        else {
+            if (x_current < x_to) {
                 z_current = z_from;
                 x_current++;
-            }
-            else
-            {
-                detravPosition.setBoolean("Finished",true);
+            } else {
+                detravPosition.setBoolean("Finished", true);
+                if (detravPosition.hasKey("Percent"))
+                    detravPosition.removeTag("Percent");
                 return false;
             }
         }
+
+        detravPosition.setInteger("Percent", (int)(
+                        ((float)(z_current - z_from +  (x_current - x_from) * (z_to - z_from )))
+                        * 100f
+                        /((float)( (x_to - x_from + 1 )*(z_to-z_from)))));
+
 
         detravPosition.setInteger("XCurrent",x_current);
         detravPosition.setInteger("ZCurrent",z_current);

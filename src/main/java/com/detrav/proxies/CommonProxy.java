@@ -67,6 +67,7 @@ public class CommonProxy implements IGuiHandler {
         GT_ModHandler.addShapelessCraftingRecipe(DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(10,1, Materials.Wood,Materials.Wood, null ),
                 new Object[]{Ic2Items.treetap,Ic2Items.rubberWood,Ic2Items.resin});
 
+        GT_ModHandler.addShapelessCraftingRecipe(ItemList.Circuit_Integrated.get(1), new Object[]{ DetravItemList.ConfiguredCircuit } );
         //DetravCraftingEventHandler.register();
         DetravEntityDropEvent.register();
         DetravLevelUpEvent.register();

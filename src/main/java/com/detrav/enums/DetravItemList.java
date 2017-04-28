@@ -18,7 +18,8 @@ public enum DetravItemList implements IItemContainer {
     Solar_Boiler_Low,
     Solar_Boiler_Medium,
     Solar_Boiler_High,
-    DetravAdvancedMiner2;
+    DetravAdvancedMiner2,
+    ConfiguredCircuit;
 
 
     private ItemStack mStack;
