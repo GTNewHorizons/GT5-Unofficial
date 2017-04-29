@@ -134,7 +134,7 @@ public class RecipeGen_Fluids  implements Runnable{
 
 			//Plate
 			if (GT_Values.RA.addFluidSolidifierRecipe(
-					ItemList.Shape_Mold_Plate.get(1), //Item Shape
+					ItemList.Shape_Mold_Plate.get(0), //Item Shape
 					material.getFluid(144), //Fluid Input
 					material.getPlate(1), //output
 					32, //Duration

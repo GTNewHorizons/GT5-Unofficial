@@ -160,7 +160,7 @@ public class Material {
 		this.vTier = MaterialUtils.getTierOfMaterial((int) MathUtils.celsiusToKelvin(meltingPoint));
 
 		this.usesBlastFurnace = blastFurnace;
-		this.vVoltageMultiplier = this.getMeltingPointK() >= 2800 ? 64 : 16;
+		this.vVoltageMultiplier = this.getMeltingPointK() >= 2800 ? 60 : 15;
 
 		if (inputs == null){
 			this.vMaterialInput = null;
