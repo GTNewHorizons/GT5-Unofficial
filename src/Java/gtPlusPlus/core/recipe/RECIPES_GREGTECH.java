@@ -532,7 +532,8 @@ public class RECIPES_GREGTECH {
 		GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 1), null, null, null, FluidUtils.getFluidStack("oxygen", 288), FluidUtils.getFluidStack("sulfurdioxide", 432), null, 600, 60);
 		GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustUranium233", 4), ItemUtils.getItemStackOfAmountFromOreDict("dustUranium235", 1), null, null, FluidUtils.getFluidStack("hydrofluoricacid", 2000), FluidUtils.getFluidStack("molten.uraniumtetrafluoride", 144*3), null, 3000, 500);
 		//GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("cellFluorine", 1), ItemUtils.getItemStackOfAmountFromOreDict("cellFluorine", 1), null, null, FluidUtils.getFluidStack("molten.uraniumtetrafluoride", 720), FluidUtils.getFluidStack("molten.uraniumhexafluoride", 288), null, 5000, 2000);
-	}
+		GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustSteel", 20), ItemUtils.getItemStackOfAmountFromOreDict("dustSilicon", 1), ItemUtils.getItemStackOfAmountFromOreDict("dustNickel", 5), ItemUtils.getItemStackOfAmountFromOreDict("dustAluminium", 4), null, null, ItemUtils.getItemStackOfAmountFromOreDict("dustEglinSteel", 30), 1200, 60);
+		}
 
 	private static void chemicalReactorRecipes(){
 		GT_Values.RA.addChemicalRecipe(

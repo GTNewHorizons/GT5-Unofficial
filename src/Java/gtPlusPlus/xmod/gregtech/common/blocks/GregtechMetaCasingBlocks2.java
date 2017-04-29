@@ -43,7 +43,7 @@ extends GregtechMetaCasingBlocksAbstract {
 		GregtechItemList.Casing_Refinery_Internal.set(new ItemStack(this, 1, 3));
 		GregtechItemList.Casing_PlaceHolder4.set(new ItemStack(this, 1, 4));
 		GregtechItemList.Casing_Sifter.set(new ItemStack(this, 1, 5));
-		GregtechItemList.Casing_PlaceHolder6.set(new ItemStack(this, 1, 6));
+		GregtechItemList.Casing_SifterGrate.set(new ItemStack(this, 1, 6));
 		GregtechItemList.Casing_PlaceHolder7.set(new ItemStack(this, 1, 7));
 		GregtechItemList.Casing_PlaceHolder8.set(new ItemStack(this, 1, 8));
 		GregtechItemList.Casing_PlaceHolder9.set(new ItemStack(this, 1, 9));

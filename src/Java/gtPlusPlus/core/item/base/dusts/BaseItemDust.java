@@ -264,14 +264,21 @@ public class BaseItemDust extends Item{
 				Utils.LOG_INFO("Found "+input2.getDisplayName());
 			}
 		}*/
+		
+		int timeTaken = 250*this.mTier*20;
+		
+		if (this.mTier <= 4){
+			timeTaken = 50*this.mTier*20;
+		}
+		
 		GT_Values.RA.addBlastRecipe(
 				input1,
 				input2,
 				GT_Values.NF, GT_Values.NF,
 				output1,
 				output2,
-				250*this.mTier*20,
-				this.mTier*64,
+				timeTaken,
+				this.mTier*60,
 				tempRequired);
 
 

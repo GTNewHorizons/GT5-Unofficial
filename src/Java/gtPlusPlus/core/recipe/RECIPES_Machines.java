@@ -60,6 +60,10 @@ public class RECIPES_Machines {
 	static ItemStack RECIPE_IndustrialBlastSmelterController = GregtechItemList.Industrial_AlloyBlastSmelter.get(1);
 	static ItemStack RECIPE_IndustrialBlastSmelterFrame = GregtechItemList.Casing_BlastSmelter.get(1);
 	static ItemStack RECIPE_IndustrialBlastSmelterCoil = GregtechItemList.Casing_Coil_BlastSmelter.get(1);
+	//Industrial Sieve
+	static ItemStack RECIPE_IndustrialSieveController = GregtechItemList.Industrial_Sifter.get(1);
+	static ItemStack RECIPE_IndustrialSieveFrame = GregtechItemList.Casing_Sifter.get(1);
+	static ItemStack RECIPE_IndustrialSieveGrate = GregtechItemList.Casing_SifterGrate.get(1);
 
 
 	//Buffer Cores
@@ -781,6 +785,26 @@ public class RECIPES_Machines {
 					"frameGtStellite", machineCasing_UV, "frameGtStellite",
 					"plateQuantum", "plateQuantum", "plateQuantum",
 					RECIPE_IndustrialMatterFabCoil);
+			
+			
+			//Industrial Sieve
+			RecipeUtils.addShapedGregtechRecipe(
+					"plateEglinSteel", circuitTier2, "plateEglinSteel",
+					cableTier3, machineCasing_MV, cableTier3,
+					"plateEglinSteel", circuitTier2, "plateEglinSteel",
+					RECIPE_IndustrialSieveController);
+			//Industrial Sieve Casing
+			RecipeUtils.addShapedGregtechRecipe(
+					"plateEglinSteel", "plateEglinSteel", "plateEglinSteel",
+					"plateEglinSteel", "frameGtTumbaga", "plateEglinSteel",
+					"plateEglinSteel", "plateEglinSteel", "plateEglinSteel",
+					RECIPE_IndustrialSieveFrame);
+			//Industrial Sieve Grate
+			RecipeUtils.addShapedGregtechRecipe(
+					"frameGtEglinSteel", "wireFineSteel", "frameGtEglinSteel",
+					"wireFineSteel", "wireFineSteel", "wireFineSteel",
+					"frameGtEglinSteel", "wireFineSteel", "frameGtEglinSteel",
+					RECIPE_IndustrialSieveGrate);
 
 		}
 

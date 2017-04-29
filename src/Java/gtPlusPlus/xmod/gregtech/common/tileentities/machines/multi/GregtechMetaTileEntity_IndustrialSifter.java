@@ -115,7 +115,7 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
 
-		Utils.LOG_INFO("1");
+		Utils.LOG_WARNING("1");
 		
 		//Get inputs.
 		final ArrayList<ItemStack> tInputList = this.getStoredInputs();
@@ -132,7 +132,7 @@ extends GregtechMeta_MultiBlockBase {
 			}
 		}
 		
-		Utils.LOG_INFO("2");
+		Utils.LOG_WARNING("2");
 
 		//Temp var
 		final ItemStack[] tInputs = Arrays.copyOfRange(tInputList.toArray(new ItemStack[tInputList.size()]), 0, 2);
@@ -143,7 +143,7 @@ extends GregtechMeta_MultiBlockBase {
 		}
 		
 		
-		Utils.LOG_INFO("3");
+		Utils.LOG_WARNING("3");
 
 		//Make a recipe instance for the rest of the method.
 		final GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sSifterRecipes.findRecipe(this.getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
@@ -152,53 +152,53 @@ extends GregtechMeta_MultiBlockBase {
 		
 		if (cloneRecipe != tRecipe || cloneRecipe == null){
 			cloneRecipe = tRecipe.copy();
-			Utils.LOG_INFO("Setting Recipe");
+			Utils.LOG_WARNING("Setting Recipe");
 		}		
 		if (mInputStacks != tRecipe.mInputs || mInputStacks == null){
 			mInputStacks = tRecipe.mInputs;
-			Utils.LOG_INFO("Setting Recipe Inputs");
+			Utils.LOG_WARNING("Setting Recipe Inputs");
 		}
 		if (cloneChances != tRecipe.mChances || cloneChances == null){
 			cloneChances = tRecipe.mChances.clone();
-			Utils.LOG_INFO("Setting Chances");
+			Utils.LOG_WARNING("Setting Chances");
 		}
 		
 		for (int r=0;r<cloneChances.length;r++){
-			Utils.LOG_INFO("Original map Output["+r+"] chance = "+cloneChances[r]);
+			Utils.LOG_WARNING("Original map Output["+r+"] chance = "+cloneChances[r]);
 		}
 		
-		Utils.LOG_INFO("3.1");
+		Utils.LOG_WARNING("3.1");
 		
 		//Change bonus chances
 		int[] outputChances;
 		
-		Utils.LOG_INFO("3.2");
+		Utils.LOG_WARNING("3.2");
 		
 		if (cloneRecipe.mChances != null){
 			outputChances = cloneRecipe.mChances.clone();
 			
-			Utils.LOG_INFO("3.3");
+			Utils.LOG_WARNING("3.3");
 			
 			for (int r=0;r<outputChances.length;r++){
-				Utils.LOG_INFO("Output["+r+"] chance = "+outputChances[r]);
+				Utils.LOG_WARNING("Output["+r+"] chance = "+outputChances[r]);
 				if (outputChances[r]<10000){
 					int temp = outputChances[r];
 					if (outputChances[r] < 8000 && outputChances[r] >= 1){
 						outputChances[r] = temp+1200;
-						Utils.LOG_INFO("Output["+r+"] chance now = "+outputChances[r]);
+						Utils.LOG_WARNING("Output["+r+"] chance now = "+outputChances[r]);
 					}
 					else if (outputChances[r] < 9000 && outputChances[r] >= 8000){
 						outputChances[r] = temp+400;
-						Utils.LOG_INFO("Output["+r+"] chance now = "+outputChances[r]);
+						Utils.LOG_WARNING("Output["+r+"] chance now = "+outputChances[r]);
 					}
 					else if (outputChances[r] <= 9900 && outputChances[r] >= 9000){
 						outputChances[r] = temp+100;
-						Utils.LOG_INFO("Output["+r+"] chance now = "+outputChances[r]);
+						Utils.LOG_WARNING("Output["+r+"] chance now = "+outputChances[r]);
 					}
 				}
 			}
 
-			Utils.LOG_INFO("3.4");
+			Utils.LOG_WARNING("3.4");
 			
 			//Rebuff Drop Rates for % output
 			cloneRecipe.mChances = outputChances;
@@ -206,11 +206,11 @@ extends GregtechMeta_MultiBlockBase {
 		}
 		
 		
-		Utils.LOG_INFO("4");
+		Utils.LOG_WARNING("4");
 	
 		
 		final int tValidOutputSlots = this.getValidOutputSlots(this.getBaseMetaTileEntity(), cloneRecipe, tInputs);
-		Utils.LOG_INFO("Sifter - Valid Output Hatches: "+tValidOutputSlots);
+		Utils.LOG_WARNING("Sifter - Valid Output Hatches: "+tValidOutputSlots);
 
 		//More than or one input
 		if ((tInputList.size() > 0) && (tValidOutputSlots >= 1)) {

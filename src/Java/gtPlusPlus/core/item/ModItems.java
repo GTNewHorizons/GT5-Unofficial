@@ -18,7 +18,6 @@ import gtPlusPlus.core.item.base.misc.BaseItemMisc;
 import gtPlusPlus.core.item.base.misc.BaseItemMisc.MiscTypes;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate;
 import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
-import gtPlusPlus.core.item.effects.RarityRare;
 import gtPlusPlus.core.item.effects.RarityUncommon;
 import gtPlusPlus.core.item.general.*;
 import gtPlusPlus.core.item.init.ItemsFoods;
@@ -31,7 +30,6 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.*;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.material.nuclear.NUCLIDE;
-import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.debug.DEBUG_INIT;
 import gtPlusPlus.core.util.fluid.FluidUtils;
@@ -371,7 +369,8 @@ public final class ModItems {
 			MaterialGenerator.generate(ALLOY.INCONEL_792);
 
 
-			//Maraging Steel
+			//Steels
+			MaterialGenerator.generate(ALLOY.EGLIN_STEEL);
 			MaterialGenerator.generate(ALLOY.MARAGING250);
 			MaterialGenerator.generate(ALLOY.MARAGING300);
 			MaterialGenerator.generate(ALLOY.MARAGING350);
