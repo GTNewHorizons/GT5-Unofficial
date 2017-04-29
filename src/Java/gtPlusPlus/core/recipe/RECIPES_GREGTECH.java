@@ -30,6 +30,7 @@ public class RECIPES_GREGTECH {
 		assemblerRecipes();
 		distilleryRecipes();
 		extractorRecipes();
+		fluidExtractorRecipes();
 		chemicalBathRecipes();
 		chemicalReactorRecipes();
 		dehydratorRecipes();
@@ -37,6 +38,7 @@ public class RECIPES_GREGTECH {
 		lftrRecipes();
 		fissionFuelRecipes();
 		autoclaveRecipes();
+		compressorRecipes();
 		mixerRecipes();
 		macerationRecipes();
 		centrifugeRecipes();
@@ -486,6 +488,10 @@ public class RECIPES_GREGTECH {
 		GT_ModHandler.addExtractionRecipe(GregtechItemList.Battery_RE_EV_Cadmium.get(1L, new Object[0]), ItemList.Battery_Hull_HV.get(4L, new Object[0]));
 		GT_ModHandler.addExtractionRecipe(GregtechItemList.Battery_RE_EV_Lithium.get(1L, new Object[0]), ItemList.Battery_Hull_HV.get(4L, new Object[0]));
 	}
+	
+	private static void fluidExtractorRecipes(){
+		GT_Values.RA.addFluidExtractionRecipe(ItemUtils.getSimpleStack(Items.ender_pearl), null, FluidUtils.getFluidStack("ender", 250), 10000, 100, 30);
+	}
 
 	private static void chemicalBathRecipes(){
 		final int[] chances = {};
@@ -608,6 +614,10 @@ public class RECIPES_GREGTECH {
 				0,
 				120*20,
 				30);
+	}
+	
+	private static void compressorRecipes(){
+		GT_ModHandler.addCompressionRecipe(ItemUtils.getSimpleStack(Items.clay_ball), ItemUtils.getItemStackOfAmountFromOreDict("plateClay", 1));
 	}
 
 	private static void macerationRecipes(){

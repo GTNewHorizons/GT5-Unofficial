@@ -322,7 +322,8 @@ public enum GregtechOrePrefixes {
 		//Lapis(526, TextureSet.SET_LAPIS, 1.0F, 0, 1, 1 | 4 | 8, 70, 70, 220, 0, "Lapis", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeBlue, 2, Arrays.asList(new MaterialStack(Materials.Lazurite, 12), new MaterialStack(Materials.Sodalite, 2), new MaterialStack(Materials.Pyrite, 1), new MaterialStack(Materials.Calcite, 1)), Arrays.asList(getTcAspectStack(TC_Aspects.SENSUS, 1))),
 		Pyrotheum(20, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 255, 128, 0, 0, "Pyrotheum", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeYellow, 2, Arrays.asList(new MaterialStack(Materials.Coal, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Blaze, 1), new MaterialStack(Materials.Sulfur, 1)), Arrays.asList(getTcAspectStack("PRAECANTATIO", 2), getTcAspectStack(TC_Aspects.IGNIS, 1))),
 		Cryotheum(21, TextureSet.SET_FLUID, 1.0F, 0, 1, 2 | 16 | 32, 102, 178, 255, 0, "Cryotheum", 0, 0, -1, 0, false, false, 2, 3, 1, Dyes.dyeLightBlue, 2, Arrays.asList(new MaterialStack(Materials.Blizz, 1), new MaterialStack(Materials.Redstone, 1), new MaterialStack(Materials.Snow, 1), new MaterialStack(Materials.Niter, 1)), Arrays.asList(getTcAspectStack("PRAECANTATIO", 2), getTcAspectStack(TC_Aspects.GELUM, 1))),
-
+		Ender(22, TextureSet.SET_FLUID, 1.0F, 0, 2, 1, 255, 255, 255, 0, "Ender", 0, 0, -1, 0, false, false, 3, 1, 1, Dyes.dyeGreen),
+		
 		/**
 		 * Circuitry, Batteries and other Technical things
 		 */

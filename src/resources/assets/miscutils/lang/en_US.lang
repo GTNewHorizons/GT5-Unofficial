@@ -78,12 +78,17 @@ fluid.psc_JD=Jack Daniels
 
 item.MiscUtils.bucket.bucketPyrotheum.name=Blazing Pyrotheum Bucket
 item.MiscUtils.bucket.bucketCryotheum.name=Gelid Cryotheum Bucket
+item.MiscUtils.bucket.bucketEnder.name=Resonant Ender Bucket
 item.MiscUtils.material.dustPyrotheum.name=Pyrotheum Dust
 item.MiscUtils.material.dustCryotheum.name=Cryotheum Dust
 item.MiscUtils.material.rodBlizz.name=Blizz Rod
 item.MiscUtils.material.dustBlizz.name=Blizz Powder
 tile.MiscUtils.fluid.pyrotheum.name=Blazing Pyrotheum
 tile.MiscUtils.fluid.cryotheum.name=Gelid Cryotheum
+
+tile.miscutils.fluid.cryotheum.name=Gelid Cryotheum
+tile.miscutils.fluid.pyrotheum.name=Blazing Pyrotheum
+tile.miscutils.fluid.ender.name=Resonant Ender
 
 item.frameAccelerated.name=Accelerated Frame
 item.frameVoid.name=Void Frame

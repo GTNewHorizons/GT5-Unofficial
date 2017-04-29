@@ -39,7 +39,8 @@ public class GregtechFluidHandler {
 			Utils.LOG_INFO("Adding in our own GT versions of Thermal Foundation Fluids");
 			FluidUtils.addFluid("cryotheum", "Gelid Cryotheum", GT_Materials.Cryotheum, 4, -1200, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.Cryotheum, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
 			FluidUtils.addFluid("pyrotheum", "Blazing Pyrotheum", GT_Materials.Pyrotheum, 4, 4000, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.Pyrotheum, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
-		}
+			FluidUtils.addFluid("ender", "Resonant Ender", GT_Materials.Ender, 4, 4000, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.Ender, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+			}
 
 		if (LoadedMods.IndustrialCraft2){
 			Utils.LOG_INFO("Adding in GT Fluids for various nuclear related content.");

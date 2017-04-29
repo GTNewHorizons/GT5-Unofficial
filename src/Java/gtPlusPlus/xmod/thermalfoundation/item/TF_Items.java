@@ -24,6 +24,7 @@ public class TF_Items {
 	public static ItemBucket itemBucket;
 	public static ItemStack bucketPyrotheum;
 	public static ItemStack bucketCryotheum;
+	 public static ItemStack bucketEnder;
 
 	public static ItemStack itemDustBlizz;
 	public static ItemStack itemDustPyrotheum;
@@ -39,6 +40,7 @@ public class TF_Items {
 
 		bucketPyrotheum = itemBucket.addOreDictItem(1, "bucketPyrotheum");
 		bucketCryotheum = itemBucket.addOreDictItem(2, "bucketCryotheum");
+	    bucketEnder = itemBucket.addOreDictItem(3, "bucketEnder", 1);
 		rodBlizz = itemMaterial.addOreDictItem(1, "rodBlizz");
 		dustBlizz = itemMaterial.addOreDictItem(2, "dustBlizz");
 		dustPyrotheum = itemMaterial.addOreDictItem(3, "dustPyrotheum");
@@ -62,8 +64,10 @@ public class TF_Items {
 
 		BucketHandler.registerBucket(TF_Blocks.blockFluidPyrotheum, 0, bucketPyrotheum);
 		BucketHandler.registerBucket(TF_Blocks.blockFluidCryotheum, 0, bucketCryotheum);
+	    BucketHandler.registerBucket(TF_Blocks.blockFluidEnder, 0, bucketEnder);
 		FluidContainerRegistry.registerFluidContainer(TF_Fluids.fluidPyrotheum, bucketPyrotheum, FluidContainerRegistry.EMPTY_BUCKET);
 		FluidContainerRegistry.registerFluidContainer(TF_Fluids.fluidCryotheum, bucketCryotheum, FluidContainerRegistry.EMPTY_BUCKET);
+	    FluidContainerRegistry.registerFluidContainer(TF_Fluids.fluidEnder, bucketEnder, FluidContainerRegistry.EMPTY_BUCKET);
 
 
 	}

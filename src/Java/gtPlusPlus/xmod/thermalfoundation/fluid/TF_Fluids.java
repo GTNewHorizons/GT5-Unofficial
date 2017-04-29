@@ -15,6 +15,7 @@ public class TF_Fluids
 {
 	public static Fluid fluidPyrotheum;
 	public static Fluid fluidCryotheum;
+	public static Fluid fluidEnder;
 
 	public static void preInit()
 	{
@@ -22,6 +23,7 @@ public class TF_Fluids
 			Utils.LOG_INFO("Adding in our own versions of Thermal Foundation Fluids - Non-GT");
 			final Fluid pyrotheum = FluidRegistry.getFluid("pyrotheum");
 			final Fluid cryotheum = FluidRegistry.getFluid("cryotheum");
+			final Fluid ender = FluidRegistry.getFluid("ender");
 
 			if (pyrotheum == null){
 				Utils.LOG_INFO("Registering Blazing Pyrotheum as it does not exist.");
@@ -40,6 +42,16 @@ public class TF_Fluids
 			else {
 				Utils.LOG_INFO("Registering Gelid Cryotheum as it is an already existing Fluid.");
 				fluidCryotheum = cryotheum;
+			}
+			
+			if (ender == null){
+				Utils.LOG_INFO("Registering Resonant Ender as it does not exist.");
+				fluidEnder = new Fluid("ender").setLuminosity(3).setDensity(4000).setViscosity(3000).setTemperature(300).setRarity(EnumRarity.uncommon);
+			    registerFluid(fluidEnder, "ender");
+			}
+			else {
+				Utils.LOG_INFO("Registering Resonant Ender as it is an already existing Fluid.");
+				fluidEnder = ender;
 			}
 		}
 		else {
