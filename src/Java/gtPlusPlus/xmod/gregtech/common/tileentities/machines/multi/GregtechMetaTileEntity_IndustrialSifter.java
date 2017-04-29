@@ -148,10 +148,10 @@ extends GregtechMeta_MultiBlockBase {
 		//Make a recipe instance for the rest of the method.
 		final GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sSifterRecipes.findRecipe(this.getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
 		
-		baseRecipe = tRecipe;
+		baseRecipe = tRecipe.copy();
 		
 		if (cloneRecipe != tRecipe || cloneRecipe == null){
-			cloneRecipe = tRecipe;
+			cloneRecipe = tRecipe.copy();
 			Utils.LOG_INFO("Setting Recipe");
 		}		
 		if (mInputStacks != tRecipe.mInputs || mInputStacks == null){
@@ -159,7 +159,7 @@ extends GregtechMeta_MultiBlockBase {
 			Utils.LOG_INFO("Setting Recipe Inputs");
 		}
 		if (cloneChances != tRecipe.mChances || cloneChances == null){
-			cloneChances = tRecipe.mChances;
+			cloneChances = tRecipe.mChances.clone();
 			Utils.LOG_INFO("Setting Chances");
 		}
 		
@@ -175,7 +175,7 @@ extends GregtechMeta_MultiBlockBase {
 		Utils.LOG_INFO("3.2");
 		
 		if (cloneRecipe.mChances != null){
-			outputChances = cloneRecipe.mChances;
+			outputChances = cloneRecipe.mChances.clone();
 			
 			Utils.LOG_INFO("3.3");
 			
@@ -241,7 +241,7 @@ extends GregtechMeta_MultiBlockBase {
 				this.mOutputItems = outputs;
 				this.sendLoopStart((byte) 20);
 				this.updateSlots();
-				tRecipe.mChances = baseRecipe.mChances;
+				//tRecipe.mChances = baseRecipe.mChances;
 				return true;
 			}
 		}
