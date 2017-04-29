@@ -9,5 +9,6 @@ public enum  DetravToolDictNames {
     craftingToolPortableCharger,
     craftingToolPortableAnvil,
     craftingToolSmartPlunger,
-    craftingToolSmartTreeTap;
+    craftingToolSmartTreeTap,
+    craftingToolCictuitConfigurator;
 }

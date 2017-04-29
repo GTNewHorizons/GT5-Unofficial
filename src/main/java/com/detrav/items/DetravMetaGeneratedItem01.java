@@ -43,11 +43,9 @@ public class DetravMetaGeneratedItem01 extends DetravMetaGeneratedItem {
         return aDoShowAllItems || !aPrefix.name().startsWith("toolHead");
     }
 
-    public boolean isConfiguredCircuit(ItemStack aStack)
-    {
-        return aStack.getUnlocalizedName().indexOf("gt.detrav.metaitem.01." + (mOffset+1)) == 0;
+    public boolean isConfiguredCircuit(ItemStack aStack) {
+        return aStack.getUnlocalizedName().indexOf("gt.detrav.metaitem.01." + (mOffset + 1)) == 0;
     }
-
 
 
     public void addAdditionalToolTips(List aList, ItemStack aStack, EntityPlayer aPlayer) {
@@ -65,11 +63,9 @@ public class DetravMetaGeneratedItem01 extends DetravMetaGeneratedItem {
                         tOffset = addToList(tOffset, aList, detravPosition, "Percent", true);
                         tOffset = addToList(tOffset, aList, detravPosition, "XCurrent", true);
                         tOffset = addToList(tOffset, aList, detravPosition, "ZCurrent", true);
-                        tOffset = addToList(tOffset, aList, detravPosition, "XFrom", true);
-                        tOffset = addToList(tOffset, aList, detravPosition, "XTo", true);
-                        tOffset = addToList(tOffset, aList, detravPosition, "ZFrom", true);
-                        tOffset = addToList(tOffset, aList, detravPosition, "ZTo", true);
-                        tOffset = addToList(tOffset, aList, detravPosition, "Configurated", false);
+                        tOffset = addToList(tOffset, aList, detravPosition, "X", "XFrom", "XTo");
+                        tOffset = addToList(tOffset, aList, detravPosition, "Z", "ZFrom", "ZTo");
+                        tOffset = addToList(tOffset, aList, detravPosition, "Y", "YFrom", "YTo");
                     }
                 }
             }
@@ -77,7 +73,7 @@ public class DetravMetaGeneratedItem01 extends DetravMetaGeneratedItem {
         }
     }
 
-    public int addToList(int tOffset, List aList, NBTTagCompound tag,String name, boolean integer) {
+    public int addToList(int tOffset, List aList, NBTTagCompound tag, String name, boolean integer) {
         if (!tag.hasKey(name))
             return tOffset;
         if (integer) {
@@ -88,6 +84,36 @@ public class DetravMetaGeneratedItem01 extends DetravMetaGeneratedItem {
                 aList.add(tOffset, EnumChatFormatting.WHITE + name + EnumChatFormatting.GRAY);
             }
         }
-        return  tOffset + 1;
+        return tOffset + 1;
+    }
+
+
+    public int addToList(int tOffset, List aList, NBTTagCompound tag, String text, String from, String to) {
+        String i_from = "";
+        String i_to = "";
+        boolean noFrom = true;
+        boolean noTo = true;
+        if (tag.hasKey(from)) {
+            i_from = "" + tag.getInteger(from);
+            noFrom = false;
+        }
+
+        if (tag.hasKey(to)) {
+            i_to = "" + tag.getInteger(to);
+            noTo = false;
+        }
+
+        if (noFrom && noTo)
+            return tOffset;
+
+        if (!noFrom && !noTo)
+            aList.add(tOffset, EnumChatFormatting.WHITE + text + " from " + i_from + " to " + i_to + EnumChatFormatting.GRAY);
+        else if (noFrom)
+            aList.add(tOffset, EnumChatFormatting.WHITE + text + " to " + i_to + EnumChatFormatting.GRAY);
+        else
+            aList.add(tOffset, EnumChatFormatting.WHITE + text + " from " + i_from + EnumChatFormatting.GRAY);
+
+
+        return tOffset + 1;
     }
 }

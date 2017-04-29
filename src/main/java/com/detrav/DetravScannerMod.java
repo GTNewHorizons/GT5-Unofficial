@@ -23,7 +23,7 @@ import net.minecraftforge.common.config.Configuration;
 public class DetravScannerMod
 {
     public static final String MODID = "detravscannermod";
-    public static final String VERSION = "0.41";
+    public static final String VERSION = "0.42";
 
     public static final CreativeTabs TAB_DETRAV = new DetravCreativeTab();
 

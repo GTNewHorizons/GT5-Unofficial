@@ -111,7 +111,8 @@ public class Detrav_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBloc
                 Chunk c = w.getChunkProvider().provideChunk(x>>4,z>>4);
                 x = x & 15;
                 z = z & 15;
-                for(int yLevel = getBaseMetaTileEntity().getYCoord() - 1; yLevel>1; yLevel --)
+                int yTo = getYTo();
+                for(int yLevel = getYFrom(); yLevel>=yTo; yLevel --)
                 {
                     Block tBlock =  c.getBlock(x,yLevel,z);
                     int tMetaID = c.getBlockMetadata(x,yLevel,z);
@@ -312,12 +313,17 @@ public class Detrav_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBloc
                 int z_to = ((getBaseMetaTileEntity().getZCoord() >> 4) + circuit_config) * 16;
                 int z_current = z_from;
 
+                int y_from = getBaseMetaTileEntity().getYCoord() - 1;
+                int y_to = 1;
+
                 detravPosition.setInteger("XFrom", x_from);
                 detravPosition.setInteger("XTo", x_to);
                 detravPosition.setInteger("XCurrent", x_current);
                 detravPosition.setInteger("ZFrom", z_from);
                 detravPosition.setInteger("ZTo", z_to);
                 detravPosition.setInteger("ZCurrent", z_current);
+                detravPosition.setInteger("YFrom",y_from);
+                detravPosition.setInteger("YTo", y_to);
 
             }
         }
@@ -353,6 +359,53 @@ public class Detrav_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBloc
                 return fakeResult;
 
         return detravPosition.getInteger("XCurrent");
+    }
+
+    private int getYFrom()
+    {
+        int fakeResult = getBaseMetaTileEntity().getYCoord()-1;
+        if(mInventory[1] == null) return fakeResult;
+        ItemStack aCircuit = mInventory[1];
+        NBTTagCompound aNBT = aCircuit.getTagCompound();
+        if(aNBT == null) return fakeResult;
+        NBTTagCompound detravPosition = aNBT.getCompoundTag("DetravPosition");
+        if (detravPosition == null ) return fakeResult;
+
+        if(detravPosition.hasKey("Finished"))
+            if(detravPosition.getBoolean("Finished"))
+                return fakeResult;
+
+        if(!detravPosition.hasKey("YFrom"))
+            return  fakeResult;
+
+        int y_from = detravPosition.getInteger("YFrom");;
+        if(y_from < 1 || y_from > 254)
+            return fakeResult;
+        return y_from;
+    }
+
+    private int getYTo() {
+        int fakeResult = getBaseMetaTileEntity().getYCoord() - 1;
+        if (mInventory[1] == null) return fakeResult;
+        ItemStack aCircuit = mInventory[1];
+        NBTTagCompound aNBT = aCircuit.getTagCompound();
+        if (aNBT == null) return fakeResult;
+        NBTTagCompound detravPosition = aNBT.getCompoundTag("DetravPosition");
+        if (detravPosition == null) return fakeResult;
+
+        if (detravPosition.hasKey("Finished"))
+            if (detravPosition.getBoolean("Finished"))
+                return fakeResult;
+        if(!detravPosition.hasKey("YTo"))
+            return 1;
+
+        int y_to = detravPosition.getInteger("YTo");
+
+        if (y_to > 254)
+            return fakeResult;
+        if (y_to < 1)
+            return 1;
+        return y_to;
     }
 
     private int getZCurrent()
@@ -391,6 +444,35 @@ public class Detrav_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBloc
         int z_to = detravPosition.getInteger("ZTo");
         int x_current = detravPosition.getInteger("XCurrent");
         int z_current = detravPosition.getInteger("ZCurrent");
+        int y_from = detravPosition.getInteger("YFrom");
+        int y_to = detravPosition.getInteger("YTo");
+
+        if(x_from > x_to)
+        {
+            int temp = x_to;
+            x_to = x_from;
+            x_from = temp;
+            detravPosition.setInteger("XFrom",x_from);
+            detravPosition.setInteger("XTo",x_to);
+        }
+
+        if(z_from > z_to)
+        {
+            int temp = z_to;
+            z_to = z_from;
+            z_from = temp;
+            detravPosition.setInteger("ZFrom",z_from);
+            detravPosition.setInteger("ZTo",z_to);
+        }
+
+        if(y_from < y_to)
+        {
+            int temp = y_to;
+            y_to = y_from;
+            y_from = temp;
+            detravPosition.setInteger("YFrom",y_from);
+            detravPosition.setInteger("YTo",y_to);
+        }
 
         if(z_current < z_to)
             z_current++;

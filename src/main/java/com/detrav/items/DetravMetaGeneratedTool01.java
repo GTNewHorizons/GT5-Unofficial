@@ -38,6 +38,7 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
         addTool(102, "Electric Prospector's Scanner (MV)", "", new DetravToolMVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
         addTool(104, "Electric Prospector's Scanner (HV)", "", new DetravToolHVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
         addTool(106, "Portable Battery Charger", "", new DetravToolPortableCharger(), new Object[]{DetravToolDictNames.craftingToolPortableCharger, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.AURAM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
+        addTool(108, "Circuit Confugurator", "", new DetravToolCircuitConfigurator(), new Object[]{DetravToolDictNames.craftingToolCictuitConfigurator, new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO,10L) });
 
         setCreativeTab(DetravScannerMod.TAB_DETRAV);
     }
@@ -114,6 +115,9 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
                     aList.add(tOffset + 2, "Can use as normal battery");
                     aList.add(tOffset + 3, "x4 charge speed for tools");
                     aList.add(tOffset + 4, "Right click to open GUI");
+                    break;
+                case 108:
+                    aList.add(tOffset + 0, EnumChatFormatting.WHITE + "It can configure any programmed circuit" + EnumChatFormatting.GRAY);
                     break;
             }
         }
