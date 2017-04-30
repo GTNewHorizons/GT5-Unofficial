@@ -64,6 +64,9 @@ public class RECIPES_Machines {
 	static ItemStack RECIPE_IndustrialSieveController = GregtechItemList.Industrial_Sifter.get(1);
 	static ItemStack RECIPE_IndustrialSieveFrame = GregtechItemList.Casing_Sifter.get(1);
 	static ItemStack RECIPE_IndustrialSieveGrate = GregtechItemList.Casing_SifterGrate.get(1);
+	//Industrial Tree Farmer
+	static ItemStack RECIPE_TreeFarmController = GregtechItemList.Industrial_TreeFarm.get(1);
+	static ItemStack RECIPE_TreeFarmFrame = GregtechItemList.TreeFarmer_Structural.get(1);
 
 
 	//Buffer Cores
@@ -805,6 +808,20 @@ public class RECIPES_Machines {
 					"wireFineSteel", "wireFineSteel", "wireFineSteel",
 					"frameGtEglinSteel", "wireFineSteel", "frameGtEglinSteel",
 					RECIPE_IndustrialSieveGrate);
+			
+			
+			//Industrial Tree Farm Controller
+			RecipeUtils.addShapedGregtechRecipe(
+					"plateEglinSteel", "rotorEglinSteel", "plateEglinSteel",
+					"cableGt02Steel", "pipeMediumSteek", "cableGt02Steel",
+					"plateEglinSteel", machineCasing_MV, "plateEglinSteel",
+					RECIPE_TreeFarmController);
+			//Industrial Tree Farm Frame
+			RecipeUtils.addShapedGregtechRecipe(
+					"dirt", "dirt", "dirt",
+					"plankWood", "frameGtTumbaga", "plankWood",
+					"plankWood", "plankWood", "plankWood",
+					RECIPE_TreeFarmFrame);
 
 		}
 
