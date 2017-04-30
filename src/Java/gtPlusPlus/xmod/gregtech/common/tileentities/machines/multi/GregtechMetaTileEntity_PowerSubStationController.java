@@ -171,7 +171,6 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTil
 		return 0;
 	}
 
-	@Override
 	public int getAmountOfOutputs() {
 		return 1;
 	}

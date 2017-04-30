@@ -282,7 +282,6 @@ public class GregtechMetaTileEntityAnimalFarm extends GT_MetaTileEntity_MultiBlo
 		return 0;
 	}
 
-	@Override
 	public int getAmountOfOutputs() {
 		return 1;
 	}

@@ -330,7 +330,6 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 		return 0;
 	}
 
-	@Override
 	public int getAmountOfOutputs() {
 		return 3;
 	}

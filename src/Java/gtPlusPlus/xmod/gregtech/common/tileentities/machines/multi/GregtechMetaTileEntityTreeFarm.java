@@ -345,7 +345,6 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		return 1;
 	}
 
-	@Override
 	public int getAmountOfOutputs() {
 		return 1;
 	}

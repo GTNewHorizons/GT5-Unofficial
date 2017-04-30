@@ -226,7 +226,6 @@ extends GT_MetaTileEntity_MultiBlockBase {
 		return 0;
 	}
 
-	@Override
 	public int getAmountOfOutputs() {
 		return 1;
 	}

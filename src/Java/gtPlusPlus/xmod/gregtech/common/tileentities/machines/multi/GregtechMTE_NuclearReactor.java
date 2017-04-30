@@ -484,7 +484,6 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 
 
 
-	@Override
 	public int getAmountOfOutputs() {
 		return 1;
 	}
