@@ -813,7 +813,7 @@ public class RECIPES_Machines {
 			//Industrial Tree Farm Controller
 			RecipeUtils.addShapedGregtechRecipe(
 					"plateEglinSteel", "rotorEglinSteel", "plateEglinSteel",
-					"cableGt02Steel", "pipeMediumSteek", "cableGt02Steel",
+					"cableGt02Steel", "pipeMediumSteel", "cableGt02Steel",
 					"plateEglinSteel", machineCasing_MV, "plateEglinSteel",
 					RECIPE_TreeFarmController);
 			//Industrial Tree Farm Frame
