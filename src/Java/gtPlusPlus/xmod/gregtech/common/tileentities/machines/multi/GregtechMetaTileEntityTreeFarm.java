@@ -359,9 +359,25 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 	private boolean isMachineRepaired(){
 		if (this.mMaintenanceHatches.size() >= 1){
 			GT_MetaTileEntity_Hatch_Maintenance x = this.mMaintenanceHatches.get(0);
+			//Utils.LOG_INFO("Checking status of maint. hatches.");
 			if (x.mCrowbar && x.mHardHammer && x.mScrewdriver && x.mSoftHammer && x.mSolderingTool && x.mWrench){
-			return true;
+				Utils.LOG_INFO("Maint. hatch 0 was okay.");
+				return true;
 			}
+			else {
+				if (x.getBaseMetaTileEntity().isActive() == false){
+					return true;
+				}
+				/*Utils.LOG_INFO("Maint. Hatches requires Hard Hammer? "+x.mHardHammer);
+				Utils.LOG_INFO("Maint. Hatches requires Soft Hammer? "+x.mSoftHammer);
+				Utils.LOG_INFO("Maint. Hatches requires Crowbar? "+x.mCrowbar);
+				Utils.LOG_INFO("Maint. Hatches requires Screwdriver? "+x.mScrewdriver);
+				Utils.LOG_INFO("Maint. Hatches requires Soldering Iron? "+x.mSolderingTool);
+				Utils.LOG_INFO("Maint. Hatches requires Wrench? "+x.mWrench);*/
+			}
+		}
+		else {
+			Utils.LOG_INFO("Found no maint. hatches.");
 		}
 		return false;
 	}
