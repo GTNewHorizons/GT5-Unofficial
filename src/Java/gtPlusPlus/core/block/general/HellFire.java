@@ -49,17 +49,24 @@ public class HellFire extends BlockFire {
 
 	private void enableBrutalFire() {
 		for (Object o : Block.blockRegistry.getKeys())
-	      {
-	        String name = (String)o;
-	        Block b = Block.getBlockFromName(name);
-	        if (b != Blocks.air)
-	        {
-	          int spread = Blocks.fire.getEncouragement(b);
-	          int flamm = Blocks.fire.getFlammability(b);
-	          this.setFireInfo(b, spread * 4, flamm * 4);
-	        }
-	      }
-		
+		{
+			String name = (String)o;
+			Block b = Block.getBlockFromName(name);
+
+			if (b == Blocks.grass || b == Blocks.mycelium){
+				int spread = 3;
+				int flamm = 3;
+				this.setFireInfo(b, spread * 4, flamm * 4);
+			}
+
+			if (b != Blocks.air)
+			{
+				int spread = Blocks.fire.getEncouragement(b);
+				int flamm = Blocks.fire.getFlammability(b);
+				this.setFireInfo(b, spread * 4, flamm * 4);
+			}
+		}
+
 	}
 
 	/**
@@ -75,7 +82,7 @@ public class HellFire extends BlockFire {
 	 */
 	@Override
 	public void updateTick(final World world, final int x, final int y, final int z, Random random) {
-		
+
 		random = new XSTR();		
 
 		if (world.getGameRules().getGameRuleBooleanValue("doFireTick")) {
@@ -89,7 +96,7 @@ public class HellFire extends BlockFire {
 					&& (world.canLightningStrikeAt(x, y, z) || world.canLightningStrikeAt(x - 1, y, z)
 							|| world.canLightningStrikeAt(x + 1, y, z) || world.canLightningStrikeAt(x, y, z - 1)
 							|| world.canLightningStrikeAt(x, y, z + 1))) {
-				
+
 				if (MathUtils.randInt(0, 100) >= 90){
 					world.setBlockToAir(x, y, z);
 				}
@@ -280,13 +287,13 @@ public class HellFire extends BlockFire {
 			}
 		}
 	}
-	
+
 	//Burn
 	@Override
 	public void onEntityWalking(World world, int i, int j, int k, Entity entity) {
 		entity.setFire(10);
 	}
-	
+
 	//Burn
 	@Override
 	public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity) {
@@ -300,9 +307,9 @@ public class HellFire extends BlockFire {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(final World world, final int x, final int y, final int z, Random randomObj) {
-		
+
 		randomObj = new XSTR();
-		
+
 		if (randomObj.nextInt(24) == 0) {
 			world.playSound(x + 0.5F, y + 0.5F, z + 0.5F, "fire.fire",
 					1.0F + randomObj.nextFloat(), (randomObj.nextFloat() * 0.7F) + 0.3F, false);
@@ -323,7 +330,7 @@ public class HellFire extends BlockFire {
 					world.spawnParticle("witchMagic", f, f1, f2, 0.0D, 0.0D, 0.0D);
 					world.spawnParticle("largesmoke", f, f1, f2, 0.0D, 0.0D, 0.0D);
 					world.spawnParticle("largesmoke", f, f1+0.5F, f2, 0.0D, 0.0D, 0.0D);
-					
+
 				}
 			}
 
