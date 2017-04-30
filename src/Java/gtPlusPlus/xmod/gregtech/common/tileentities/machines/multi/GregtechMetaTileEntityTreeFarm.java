@@ -10,6 +10,7 @@ import forestry.core.utils.GeneticsUtil;
 import forestry.plugins.PluginManager;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.interfaces.IDamagableItem;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -17,8 +18,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
+import gregtech.api.util.*;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.players.FakeFarmer;
 import gtPlusPlus.core.slots.SlotBuzzSaw.SAWTOOL;
@@ -32,6 +32,7 @@ import gtPlusPlus.xmod.gregtech.api.gui.GUI_TreeFarmer;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.TreeFarmHelper;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -103,9 +104,11 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 
 	@Override
 	public boolean drainEnergyInput(final long aEU) {
-		this.mInternalPower = (this.mInternalPower-32);
-		Utils.LOG_MACHINE_INFO("Draining internal power storage by 32EU. Stored:"+this.mInternalPower);
-		return true;
+		if (this.mInternalPower >= 32){
+			this.mInternalPower = (this.mInternalPower-32);
+			Utils.LOG_MACHINE_INFO("Draining internal power storage by 32EU. Stored:"+this.mInternalPower);
+			return true;}
+		return false;
 	}
 
 	public boolean addPowerToInternalStorage(final IGregTechTileEntity aBaseMetaTileEntity){
@@ -354,8 +357,11 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 
 
 	private boolean isMachineRepaired(){
-		if (this.mSolderingTool || this.mCrowbar || this.mHardHammer || this.mScrewdriver || this.mSoftHammer || this.mWrench){
+		if (this.mMaintenanceHatches.size() >= 1){
+			GT_MetaTileEntity_Hatch_Maintenance x = this.mMaintenanceHatches.get(0);
+			if (x.mCrowbar && x.mHardHammer && x.mScrewdriver && x.mSoftHammer && x.mSolderingTool && x.mWrench){
 			return true;
+			}
 		}
 		return false;
 	}
@@ -464,6 +470,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 			for (int j = -7; j <= 7; j++) {
 				final int h = 1;
 				//Utils.LOG_MACHINE_INFO("Looking for saplings.");
+				if (this.mInternalPower >= 32) {
 				if (TreefarmManager.isSapling(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))){
 					int posiX, posiY, posiZ;
 					posiX = aBaseMetaTileEntity.getXCoord()+xDir+i;
@@ -488,6 +495,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 					}
 				}
 			}
+			}
 		}
 		Utils.LOG_MACHINE_INFO("Tried to grow saplings: | "+saplings );
 		return true;
@@ -503,90 +511,92 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		int counter = 0;
 		if (r.size() > 0){
 			Utils.LOG_MACHINE_INFO("| r was not null. "+r.size()+" |");
-			OUTER : for (final ItemStack n : r){
-				Utils.LOG_MACHINE_INFO("found "+n.getDisplayName());
-				if (OrePrefixes.sapling.contains(n) || n.getDisplayName().toLowerCase().contains("sapling")){
-					Utils.LOG_MACHINE_INFO(""+n.getDisplayName());
+			if (this.mInternalPower >= 32) {
+				OUTER : for (final ItemStack n : r){
+					Utils.LOG_MACHINE_INFO("found "+n.getDisplayName());
+					if (OrePrefixes.sapling.contains(n) || n.getDisplayName().toLowerCase().contains("sapling")){
+						Utils.LOG_MACHINE_INFO(""+n.getDisplayName());
 
-					counter = n.stackSize;
-					final Block saplingToPlace = Block.getBlockFromItem(n.getItem());
+						counter = n.stackSize;
+						final Block saplingToPlace = Block.getBlockFromItem(n.getItem());
 
 
-					//Find Gaps for Saplings after scanning Item Busses
-					for (int i = -7; i <= 7; i++) {
-						INNER : for (int j = -7; j <= 7; j++) {
-							final int h = 1;
-							if (counter > 0){
-								if (((i != -7) && (i != 7)) && ((j != -7) && (j != 7))) {
-									if (TreefarmManager.isAirBlock(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))){
+						//Find Gaps for Saplings after scanning Item Busses
+						for (int i = -7; i <= 7; i++) {
+							INNER : for (int j = -7; j <= 7; j++) {
+								final int h = 1;
+								if (counter > 0){
+									if (((i != -7) && (i != 7)) && ((j != -7) && (j != 7))) {
+										if (TreefarmManager.isAirBlock(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))){
 
-										//Get block location to place sapling block
-										int posX, posY, posZ;
-										posX = aBaseMetaTileEntity.getXCoord()+xDir+i;
-										posY = aBaseMetaTileEntity.getYCoord()+h;
-										posZ = aBaseMetaTileEntity.getZCoord()+zDir+j;
+											//Get block location to place sapling block
+											int posX, posY, posZ;
+											posX = aBaseMetaTileEntity.getXCoord()+xDir+i;
+											posY = aBaseMetaTileEntity.getYCoord()+h;
+											posZ = aBaseMetaTileEntity.getZCoord()+zDir+j;
 
-										//If sapling block is not null || Ignore if forestry is loaded.
-										if (((saplingToPlace != null) && !LoadedMods.Forestry) || LoadedMods.Forestry){
+											//If sapling block is not null || Ignore if forestry is loaded.
+											if (saplingToPlace != null){
 
-											//Plant Sapling
-											if (!LoadedMods.Forestry){
-												world.setBlock(posX, posY, posZ, saplingToPlace);
-												world.setBlockMetadataWithNotify(posX, posY, posZ, n.getItemDamage(), 4);
+												//Plant Sapling
+												if (!LoadedMods.Forestry){
+													world.setBlock(posX, posY, posZ, saplingToPlace);
+													world.setBlockMetadataWithNotify(posX, posY, posZ, n.getItemDamage(), 4);
+												}
+												else {
+													this.plantSaplingAt(n, this.getBaseMetaTileEntity().getWorld(), posX, posY, posZ);
+												}
+
+												//Deplete Input stack
+												this.depleteInputEx(n);
+												this.drainEnergyInput(powerDrain);
+												counter--;
+												//Update slot contents?
+												this.updateSlots();
+
+												//Test If Inputs Changed
+												final ArrayList<ItemStack> temp = this.getStoredInputs();
+												if (r != temp){
+													Utils.LOG_MACHINE_INFO("Inputs changed, updating.");
+													for (final ItemStack xr : r){
+														Utils.LOG_MACHINE_INFO("xr:"+xr.getDisplayName()+"x"+xr.stackSize);
+													}
+													for (final ItemStack xc : temp){
+														Utils.LOG_MACHINE_INFO("xc:"+xc.getDisplayName()+"x"+xc.stackSize);
+													}
+													r = temp;
+												}
 											}
 											else {
-												this.plantSaplingAt(n, this.getBaseMetaTileEntity().getWorld(), posX, posY, posZ);
-											}
-
-											//Deplete Input stack
-											this.depleteInputEx(n);
-											this.drainEnergyInput(powerDrain);
-											counter--;
-											//Update slot contents?
-											this.updateSlots();
-
-											//Test If Inputs Changed
-											final ArrayList<ItemStack> temp = this.getStoredInputs();
-											if (r != temp){
-												Utils.LOG_MACHINE_INFO("Inputs changed, updating.");
-												for (final ItemStack xr : r){
-													Utils.LOG_MACHINE_INFO("xr:"+xr.getDisplayName()+"x"+xr.stackSize);
-												}
-												for (final ItemStack xc : temp){
-													Utils.LOG_MACHINE_INFO("xc:"+xc.getDisplayName()+"x"+xc.stackSize);
-												}
-												r = temp;
+												Utils.LOG_MACHINE_INFO(n.getDisplayName()+" did not have a valid block.");
 											}
 										}
 										else {
-											Utils.LOG_MACHINE_INFO(n.getDisplayName()+" did not have a valid block.");
+											//Utils.LOG_MACHINE_INFO("No space for sapling, no air.");
+											continue INNER;
 										}
 									}
-									else {
-										//Utils.LOG_MACHINE_INFO("No space for sapling, no air.");
-										continue INNER;
-									}
+
+								} //TODO
+								else {
+									break OUTER;
 								}
 
-							} //TODO
-							else {
-								break OUTER;
 							}
-
 						}
 					}
-				}
-				else {
-					Utils.LOG_MACHINE_INFO("item was not a sapling");
-					continue OUTER;
+					else {
+						Utils.LOG_MACHINE_INFO("item was not a sapling");
+						continue OUTER;
+					}
 				}
 			}
-		}
-		else{
-			/*Utils.LOG_MACHINE_INFO("Input stack empty or null - hatch count "+this.mInputBusses.size());
+			else{
+				/*Utils.LOG_MACHINE_INFO("Input stack empty or null - hatch count "+this.mInputBusses.size());
 			for (GT_MetaTileEntity_Hatch_InputBus x : this.mInputBusses){
 				Utils.LOG_MACHINE_INFO("x:"+x.getBaseMetaTileEntity().getXCoord()+" | y:"+x.getBaseMetaTileEntity().getYCoord()+" | z:"+x.getBaseMetaTileEntity().getZCoord());
 			}*/
+			}
 		}
 		Utils.LOG_MACHINE_INFO("Tried to plant saplings: | "+saplings );
 		return true;
@@ -610,7 +620,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		try {
 			final Block block = world.getBlock(x, y, z);
 			int chanceForLeaves = 1000;
-			//is it leaves or a log? if leaves, heavily reduce chance to obtain rubber
+			//is it leaves or a log? if leaves, heavily reduce chance to obtain rubber/output
 			if (block.getUnlocalizedName().toLowerCase().contains("leaves")){
 				chanceForLeaves = MathUtils.randInt(1, 1000);
 				if (chanceForLeaves > 990) {
@@ -651,6 +661,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 			//Remove drop that was added to the bus.
 			world.setBlockToAir(x, y, z);
 			new BlockBreakParticles(world, x, y, z, block);
+			damageOrDechargeItem(this.mInventory[1], 1, 10, this.farmerAI);
 			return true;
 
 
@@ -846,7 +857,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 
 			//Does it have a tool this cycle to cut?
 			boolean validCuttingTool = false;
-			final boolean isRepaired = this.isMachineRepaired();
+			final boolean isRepaired = isMachineRepaired();
 			//Add some Power
 			this.addPowerToInternalStorage(aBaseMetaTileEntity);
 
@@ -909,25 +920,64 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 						this.mEnergyHatches = new ArrayList<>();
 						this.canChop = this.checkMachine(aBaseMetaTileEntity, this.mInventory[1]);
 					}
-				}
-				//Tick TE
-				this.tickHandler();
+				}				
 			}
 			else {
 				if ((this.treeCheckTicks == 200) || (this.plantSaplingTicks == 100) || (this.plantSaplingTicks == 200)){
-					Utils.LOG_MACHINE_INFO("Machine is not fully repaired, not ticking.");
+					Utils.LOG_MACHINE_INFO("Machine is not fully repaired, not ticking. Repair status code:"+this.getRepairStatus());
 				}
 			}
 
 			//Call Cleanup Task last, before ticking.
 			if (this.cleanupTicks == 600){
-				Utils.LOG_MACHINE_INFO("Looking For rubbish to cleanup - Serverside | "+this.cleanupTicks);
-				TreeFarmHelper.cleanUp(aBaseMetaTileEntity);
+				this.checkMachine(aBaseMetaTileEntity, this.mInventory[1]);
+				/*Utils.LOG_MACHINE_INFO("Looking For rubbish to cleanup - Serverside | "+this.cleanupTicks);
+				TreeFarmHelper.cleanUp(aBaseMetaTileEntity);*/
 			}
+			//Tick TE
+			this.tickHandler();
 
 		}
 		//Client Side - do nothing
 
+	}
+	
+	
+	public static boolean damageOrDechargeItem(ItemStack aStack, int aDamage, int aDecharge, EntityLivingBase aPlayer) {
+		if ((GT_Utility.isStackInvalid(aStack)) || ((aStack.getMaxStackSize() <= 1) && (aStack.stackSize > 1)))
+			return false;
+		if ((aPlayer != null) && (aPlayer instanceof EntityPlayer)
+				&& (((EntityPlayer) aPlayer).capabilities.isCreativeMode))
+			return true;
+		if (aStack.getItem() instanceof IDamagableItem)
+			return ((IDamagableItem) aStack.getItem()).doDamageToItem(aStack, aDamage);
+		if (GT_ModHandler.isElectricItem(aStack)) {
+			if (GT_ModHandler.canUseElectricItem(aStack, aDecharge)) {
+				if ((aPlayer != null) && (aPlayer instanceof EntityPlayer)) {
+					return GT_ModHandler.useElectricItem(aStack, aDecharge, (EntityPlayer) aPlayer);
+				}
+				return (GT_ModHandler.dischargeElectricItem(aStack, aDecharge, 2147483647, true, false, true) >= aDecharge);
+			}
+		}
+		else if (aStack.getItem().isDamageable()) {
+			if (aPlayer == null)
+				aStack.setItemDamage(aStack.getItemDamage() + aDamage);
+			else {
+				aStack.damageItem(aDamage, aPlayer);
+			}
+			if (aStack.getItemDamage() >= aStack.getMaxDamage()) {
+				aStack.setItemDamage(aStack.getMaxDamage() + 1);
+				ItemStack tStack = GT_Utility.getContainerItem(aStack, true);
+				if (tStack != null) {
+					aStack.func_150996_a(tStack.getItem());
+					aStack.setItemDamage(tStack.getItemDamage());
+					aStack.stackSize = tStack.stackSize;
+					aStack.setTagCompound(tStack.getTagCompound());
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 
 }
