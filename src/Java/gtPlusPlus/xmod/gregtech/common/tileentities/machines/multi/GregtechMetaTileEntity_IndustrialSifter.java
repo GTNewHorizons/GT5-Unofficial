@@ -46,12 +46,12 @@ extends GregtechMeta_MultiBlockBase {
 				"Controller Block for the Industrial Sifter",
 				"Size[WxHxL]: 5x3x5 (Hollow)",
 				"Controller (Center Bottom)",
-				"1x Input Bus (Any bottom layer casing)",
-				"4x Output Bus (Any casing besides bottom layer)",
-				"1x Maintenance Hatch (Any casing)",
-				"1x Energy Hatch (Any casing)",
-				"9x Sieve Grate (Top 3x3)",
-				"Sifter Casings for the rest (50)",
+				"1x Input Bus (Any top or bottom edge casing)",
+				"4x Output Bus (Any top or bottom edge casing)",
+				"1x Maintenance Hatch (Any top or bottom edge casing)",
+				"1x Energy Hatch (Any top or bottom edge casing)",
+				"9x Sieve Grate (Top and Middle 3x3)",
+				"Sieve Casings for the rest (47)",
 				CORE.GT_Tooltip};
 	}
 
@@ -250,12 +250,12 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
-		Utils.LOG_INFO("Checking structure for Industrial Sifter.");
+		Utils.LOG_MACHINE_INFO("Checking structure for Industrial Sifter.");
 		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 2;
 		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 2;
 		
 		/*if (!aBaseMetaTileEntity.getAirOffset(xDir, 1, zDir)) {
-			Utils.LOG_INFO("Don't know why this exists?");
+			Utils.LOG_MACHINE_INFO("Don't know why this exists?");
 			return false;
 		}*/
 		
@@ -277,12 +277,12 @@ extends GregtechMeta_MultiBlockBase {
 							//If not a hatch, continue, else add hatch and continue.
 							if ((!this.addMufflerToMachineList(tTileEntity, 78)) && (!this.addOutputToMachineList(tTileEntity, 78)) && (!this.addDynamoToMachineList(tTileEntity, 78))) {
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
-									Utils.LOG_INFO("Sifter Casing(s) Missing from one of the top layers inner 3x3.");
-									Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+									Utils.LOG_MACHINE_INFO("Sifter Casing(s) Missing from one of the top layers inner 3x3.");
+									Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 									return false;
 								}
 								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 6) {
-									Utils.LOG_INFO("Sifter Casing(s) Missing from one of the top layers inner 3x3. Wrong Meta for Casing. Found:"+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()+" with meta:"+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j));
+									Utils.LOG_MACHINE_INFO("Sifter Casing(s) Missing from one of the top layers inner 3x3. Wrong Meta for Casing. Found:"+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()+" with meta:"+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j));
 									return false;
 								}
 							}
@@ -290,12 +290,12 @@ extends GregtechMeta_MultiBlockBase {
 							else {
 								if ((!this.addMufflerToMachineList(tTileEntity, 78)) && (!this.addOutputToMachineList(tTileEntity, 78)) && (!this.addDynamoToMachineList(tTileEntity, 78))) {
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
-										Utils.LOG_INFO("Sifter Casing(s) Missing from one of the bottom layers inner 3x3.");
-										Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										Utils.LOG_MACHINE_INFO("Sifter Casing(s) Missing from one of the bottom layers inner 3x3.");
+										Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 										return false;
 									}
 									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 5) {
-										Utils.LOG_INFO("Sifter Casing(s) Missing from one of the bottom layers inner 3x3. Wrong Meta for Casing. Found:"+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()+" with meta:"+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j));
+										Utils.LOG_MACHINE_INFO("Sifter Casing(s) Missing from one of the bottom layers inner 3x3. Wrong Meta for Casing. Found:"+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()+" with meta:"+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j));
 										return false;
 									}
 									tAmount++;
@@ -308,7 +308,7 @@ extends GregtechMeta_MultiBlockBase {
 							// Sifter Inner 5x5
 							//if ((i != -1 && i != 1) && (j != -1 && j != 1)) {
 							if (!aBaseMetaTileEntity.getAirOffset(xDir + i, h, zDir + j)) {
-								Utils.LOG_INFO("Make sure the inner 3x3 of the Multiblock is Air.");
+								Utils.LOG_MACHINE_INFO("Make sure the inner 3x3 of the Multiblock is Air.");
 								return false;
 							}
 
@@ -323,13 +323,13 @@ extends GregtechMeta_MultiBlockBase {
 							if (h == 2){
 								if (!this.addToMachineList(tTileEntity, 78)) {
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
-										Utils.LOG_INFO("Sifter Casings Missing from somewhere in the top layer edge.");
-										Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										Utils.LOG_MACHINE_INFO("Sifter Casings Missing from somewhere in the top layer edge.");
+										Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 										return false;
 									}
 									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 5) {
-										Utils.LOG_INFO("Sifter Casings Missing from somewhere in the top layer edge.");
-										Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										Utils.LOG_MACHINE_INFO("Sifter Casings Missing from somewhere in the top layer edge.");
+										Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 										return false;
 									}
 									tAmount++;
@@ -337,13 +337,13 @@ extends GregtechMeta_MultiBlockBase {
 							}
 							else {
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
-									Utils.LOG_INFO("Sifter Casings Missing from somewhere in the second layer.");
-									Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+									Utils.LOG_MACHINE_INFO("Sifter Casings Missing from somewhere in the second layer.");
+									Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 									return false;
 								}
 								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 5) {
-									Utils.LOG_INFO("Sifter Casings Missing from somewhere in the second layer.");
-									Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+									Utils.LOG_MACHINE_INFO("Sifter Casings Missing from somewhere in the second layer.");
+									Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 									return false;
 								}
 								tAmount++;
@@ -356,13 +356,13 @@ extends GregtechMeta_MultiBlockBase {
 								if (((xDir + i) != 0) || ((zDir + j) != 0)) {//no controller
 
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
-										Utils.LOG_INFO("Sifter Casing(s) Missing from one of the edges on the top layer.");
-										Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										Utils.LOG_MACHINE_INFO("Sifter Casing(s) Missing from one of the edges on the top layer.");
+										Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 										return false;
 									}
 									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 5) {
-										Utils.LOG_INFO("Sifter Casing(s) Missing from one of the edges on the top layer. "+h);
-										Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										Utils.LOG_MACHINE_INFO("Sifter Casing(s) Missing from one of the edges on the top layer. "+h);
+										Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 										if (h ==0){
 											if (tTileEntity instanceof GregtechMetaTileEntity_IndustrialSifter){
 
@@ -382,11 +382,11 @@ extends GregtechMeta_MultiBlockBase {
 		}
 		if ((this.mInputBusses.size() != 1) || (this.mOutputBusses.size() != 4)
 				|| (this.mMaintenanceHatches.size() != 1) || (this.mEnergyHatches.size() != 1)) {
-			Utils.LOG_INFO("Returned False 3");
-			Utils.LOG_INFO("Input Buses: "+this.mInputBusses.size()+" | expected: 1");
-			Utils.LOG_INFO("Output Buses: "+this.mOutputBusses.size()+" | expected: 4");
-			Utils.LOG_INFO("Energy Hatches: "+this.mEnergyHatches.size()+" | expected: 1");
-			Utils.LOG_INFO("Maint. hatches: "+this.mMaintenanceHatches.size()+" | expected: 1");
+			Utils.LOG_MACHINE_INFO("Returned False 3");
+			Utils.LOG_MACHINE_INFO("Input Buses: "+this.mInputBusses.size()+" | expected: 1");
+			Utils.LOG_MACHINE_INFO("Output Buses: "+this.mOutputBusses.size()+" | expected: 4");
+			Utils.LOG_MACHINE_INFO("Energy Hatches: "+this.mEnergyHatches.size()+" | expected: 1");
+			Utils.LOG_MACHINE_INFO("Maint. hatches: "+this.mMaintenanceHatches.size()+" | expected: 1");
 			return false;
 		}
 		final int height = this.getBaseMetaTileEntity().getYCoord();
@@ -397,7 +397,7 @@ extends GregtechMeta_MultiBlockBase {
 			if (tmpHatches[i] == null) {
 				tmpHatches[i] = this.mOutputBusses.get(i);
 			} else {
-				Utils.LOG_INFO("Returned False 5 - "+this.mOutputBusses.size());
+				Utils.LOG_MACHINE_INFO("Returned False 5 - "+this.mOutputBusses.size());
 				return false;
 			}
 		}
