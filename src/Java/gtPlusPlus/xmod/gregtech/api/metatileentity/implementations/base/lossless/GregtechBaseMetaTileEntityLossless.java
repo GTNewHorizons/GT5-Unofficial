@@ -2089,6 +2089,7 @@ public class GregtechBaseMetaTileEntityLossless extends BaseTileEntity implement
 	}
 
 
+	@Override
 	public ITexture[] getTexture(final Block arg0, final byte aSide) {
 		final ITexture rIcon = this.getCoverTexture(aSide);
 		if (rIcon != null) {
@@ -2100,7 +2101,6 @@ public class GregtechBaseMetaTileEntityLossless extends BaseTileEntity implement
 		return Textures.BlockIcons.ERROR_RENDERING;
 	}
 
-	@Override
 	public ITexture[] getTexture(final byte aSide) {
 		final ITexture rIcon = this.getCoverTexture(aSide);
 		if (rIcon != null) {

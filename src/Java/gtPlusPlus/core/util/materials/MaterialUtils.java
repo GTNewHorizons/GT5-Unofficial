@@ -1,16 +1,12 @@
 package gtPlusPlus.core.util.materials;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import gregtech.api.enums.*;
-import gregtech.api.enums.TC_Aspects.TC_AspectStack;
-import gregtech.api.objects.MaterialStack;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class MaterialUtils {
@@ -23,14 +19,6 @@ public class MaterialUtils {
 			String.class, int.class, int.class, int.class, int.class, boolean.class,
 			boolean.class, int.class, int.class, int.class, Dyes.class, int.class,
 			List.class , List.class}};
-
-	public static Materials addGtMaterial(final String enumNameForMaterial, final TextureSet aIconSet, final float aToolSpeed, final int aToolDurability, final int aToolQuality, final int aTypes, final int aR, final int aG, final int aB, final int aA, final String aLocalName, final int aFuelType, final int aFuelPower, final int aMeltingPoint, final int aBlastFurnaceTemp, final boolean aBlastFurnaceRequired, final boolean aTransparent, final int aOreValue, final int aDensityMultiplier, final int aDensityDivider, final Dyes aColor, final int aExtraData, final List<MaterialStack> aMaterialList, final List<TC_AspectStack> aAspects)
-	{
-		Utils.LOG_INFO("Attempting to add GT material: "+enumNameForMaterial);
-		return EnumHelper.addEnum(Materials.class, enumNameForMaterial, commonTypes, firstID++, aIconSet, aToolSpeed, aToolDurability, aToolQuality, aTypes, aR, aG, aB, aA, aLocalName,
-				aFuelType, aFuelPower, aMeltingPoint, aBlastFurnaceTemp, aBlastFurnaceRequired, aTransparent, aOreValue, aDensityMultiplier, aDensityDivider,
-				aColor, aExtraData, aMaterialList, aAspects);
-	}
 
 	public static List<?> oreDictValuesForEntry(final String oredictName){
 		List<?> oredictItemNames;

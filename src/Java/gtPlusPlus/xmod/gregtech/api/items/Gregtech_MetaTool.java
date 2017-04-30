@@ -144,7 +144,6 @@ public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool implements
 	}
 
 
-	@Override
 	public void addAdditionalToolTips(final List aList, final ItemStack aStack) {
 		final long tMaxDamage = getToolMaxDamage(aStack);
 		final Materials tMaterial = getPrimaryMaterial(aStack);
@@ -169,6 +168,7 @@ public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool implements
 		}
 	}
 
+	@Override
 	public void addAdditionalToolTips(final List aList, final ItemStack aStack, final EntityPlayer aPlayer) {
 		final long tMaxDamage = getToolMaxDamage(aStack);
 		final Materials tMaterial = getPrimaryMaterial(aStack);

@@ -9,6 +9,7 @@ import gtPlusPlus.core.util.recipe.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
@@ -818,7 +819,7 @@ public class RECIPES_Machines {
 					RECIPE_TreeFarmController);
 			//Industrial Tree Farm Frame
 			RecipeUtils.addShapedGregtechRecipe(
-					"dirt", "dirt", "dirt",
+					ItemUtils.getSimpleStack(Blocks.dirt), ItemUtils.getSimpleStack(Blocks.dirt), ItemUtils.getSimpleStack(Blocks.dirt),
 					"plankWood", "frameGtTumbaga", "plankWood",
 					"plankWood", "plankWood", "plankWood",
 					RECIPE_TreeFarmFrame);
