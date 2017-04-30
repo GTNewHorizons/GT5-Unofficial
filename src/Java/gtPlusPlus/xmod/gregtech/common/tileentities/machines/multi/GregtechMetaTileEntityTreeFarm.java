@@ -126,14 +126,14 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 					}
 				}
 				else {
-					Utils.LOG_INFO("Bad Power hatch to obtain energy from.");
+					Utils.LOG_MACHINE_INFO("Bad Power hatch to obtain energy from.");
 				}
 			}
 		}
 		else {
 			if (this.energyHatchRetryCount <= 10){
 				this.energyHatchRetryCount++;
-				Utils.LOG_INFO("No energy hatches found.");
+				Utils.LOG_MACHINE_INFO("No energy hatches found.");
 			}
 			else {
 				Utils.LOG_MACHINE_INFO("Rechecking for Energy hatches.");
@@ -295,8 +295,8 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		if (this.mEnergyHatches != null) {
 			for (int i = 0; i < this.mEnergyHatches.size(); i++) {
 				if (this.mEnergyHatches.get(i).mTier < 2){
-					Utils.LOG_INFO("You require at LEAST MV tier Energy Hatches.");
-					Utils.LOG_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
+					Utils.LOG_MACHINE_INFO("You require at LEAST MV tier Energy Hatches.");
+					Utils.LOG_MACHINE_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
 					return false;
 				}
 			}
@@ -306,9 +306,9 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 			for (int i = 0; i < this.mOutputHatches.size(); i++) {
 
 				if ((this.mOutputHatches.get(i).mTier < 2) && (this.mOutputHatches.get(i).getBaseMetaTileEntity() instanceof GregtechMTE_NuclearReactor)){
-					Utils.LOG_INFO("You require at LEAST MV tier Output Hatches.");
-					Utils.LOG_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
-					Utils.LOG_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getInventoryName());
+					Utils.LOG_MACHINE_INFO("You require at LEAST MV tier Output Hatches.");
+					Utils.LOG_MACHINE_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
+					Utils.LOG_MACHINE_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getInventoryName());
 					return false;
 				}
 			}
@@ -317,9 +317,9 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		if (this.mInputHatches != null) {
 			for (int i = 0; i < this.mInputHatches.size(); i++) {
 				if (this.mInputHatches.get(i).mTier < 2){
-					Utils.LOG_INFO("You require at LEAST MV tier Input Hatches.");
-					Utils.LOG_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
-					Utils.LOG_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getInventoryName());
+					Utils.LOG_MACHINE_INFO("You require at LEAST MV tier Input Hatches.");
+					Utils.LOG_MACHINE_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
+					Utils.LOG_MACHINE_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getInventoryName());
 					return false;
 				}
 			}
@@ -358,25 +358,25 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 	private boolean isMachineRepaired(){
 		if (this.mMaintenanceHatches.size() >= 1){
 			GT_MetaTileEntity_Hatch_Maintenance x = this.mMaintenanceHatches.get(0);
-			//Utils.LOG_INFO("Checking status of maint. hatches.");
+			//Utils.LOG_MACHINE_INFO("Checking status of maint. hatches.");
 			if (x.mCrowbar && x.mHardHammer && x.mScrewdriver && x.mSoftHammer && x.mSolderingTool && x.mWrench){
-				Utils.LOG_INFO("Maint. hatch 0 was okay.");
+				Utils.LOG_MACHINE_INFO("Maint. hatch 0 was okay.");
 				return true;
 			}
 			else {
 				if (x.getBaseMetaTileEntity().isActive() == false){
 					return true;
 				}
-				/*Utils.LOG_INFO("Maint. Hatches requires Hard Hammer? "+x.mHardHammer);
-				Utils.LOG_INFO("Maint. Hatches requires Soft Hammer? "+x.mSoftHammer);
-				Utils.LOG_INFO("Maint. Hatches requires Crowbar? "+x.mCrowbar);
-				Utils.LOG_INFO("Maint. Hatches requires Screwdriver? "+x.mScrewdriver);
-				Utils.LOG_INFO("Maint. Hatches requires Soldering Iron? "+x.mSolderingTool);
-				Utils.LOG_INFO("Maint. Hatches requires Wrench? "+x.mWrench);*/
+				/*Utils.LOG_MACHINE_INFO("Maint. Hatches requires Hard Hammer? "+x.mHardHammer);
+				Utils.LOG_MACHINE_INFO("Maint. Hatches requires Soft Hammer? "+x.mSoftHammer);
+				Utils.LOG_MACHINE_INFO("Maint. Hatches requires Crowbar? "+x.mCrowbar);
+				Utils.LOG_MACHINE_INFO("Maint. Hatches requires Screwdriver? "+x.mScrewdriver);
+				Utils.LOG_MACHINE_INFO("Maint. Hatches requires Soldering Iron? "+x.mSolderingTool);
+				Utils.LOG_MACHINE_INFO("Maint. Hatches requires Wrench? "+x.mWrench);*/
 			}
 		}
 		else {
-			Utils.LOG_INFO("Found no maint. hatches.");
+			Utils.LOG_MACHINE_INFO("Found no maint. hatches.");
 		}
 		return false;
 	}
@@ -900,7 +900,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 
 			if (isRepaired){
 
-				//Utils.LOG_INFO("Ticking3");
+				//Utils.LOG_MACHINE_INFO("Ticking3");
 
 				//If Machine can work and it's only once every 5 seconds this will tick.
 				if (this.canChop){
