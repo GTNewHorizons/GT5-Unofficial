@@ -8,6 +8,7 @@ import gtPlusPlus.core.block.machine.*;
 import gtPlusPlus.core.fluids.FluidRegistryHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.world.dimensionA.block.BlockModPortal;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.Fluid;
@@ -42,6 +43,8 @@ public final class ModBlocks {
 	
 	public static Block blockHellfire;
 
+	//TODO
+	public static BlockModPortal lightPortal;
 
 
 	public static void init() {
@@ -68,8 +71,12 @@ public final class ModBlocks {
 		blockOreFluorite = new BlockBaseOre("oreFluorite", "Fluorite", Material.rock, BlockTypes.ORE, Utils.rgbtoHexValue(120, 120, 30), 3);
 		blockMiningExplosive = new MiningExplosives();
 		blockHellfire = new HellFire();
-
+		
+		//TODO
+		lightPortal = new BlockModPortal("dimensionPortalA");
+		GameRegistry.registerBlock(lightPortal, "dimensionPortalA");
 
 	}
+
 
 }

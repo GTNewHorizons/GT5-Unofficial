@@ -26,6 +26,9 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.core.world.dimensionA.world.Dimension;
+import gtPlusPlus.core.world.dimensionA.world.WorldTypesTutorial;
+import gtPlusPlus.core.world.dimensionA.world.biomes.ModBiomes;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
@@ -190,6 +193,14 @@ implements ActionListener
 		proxy.registerRenderThings();
 		
 		proxy.registerNetworkStuff();
+		
+		//Register Dimension A
+		ModBiomes.registerWithBiomeDictionary();
+		Dimension.registerWorldProvider();
+		Dimension.registerDimensions();
+		WorldTypesTutorial.addCustomWorldTypes();
+		
+		
 	}
 
 	//Post-Init
