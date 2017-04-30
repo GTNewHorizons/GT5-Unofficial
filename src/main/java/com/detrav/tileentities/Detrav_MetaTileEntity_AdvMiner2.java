@@ -109,15 +109,15 @@ public class Detrav_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBloc
                 World w = getBaseMetaTileEntity().getWorld();
                 if(w==null) return false;
                 Chunk c = w.getChunkProvider().provideChunk(x>>4,z>>4);
-                x = x & 15;
-                z = z & 15;
+                int x1 = x & 15;
+                int z1 = z & 15;
                 int yTo = getYTo();
                 for(int yLevel = getYFrom(); yLevel>=yTo; yLevel --)
                 {
-                    Block tBlock =  c.getBlock(x,yLevel,z);
-                    int tMetaID = c.getBlockMetadata(x,yLevel,z);
+                    Block tBlock =  c.getBlock(x1,yLevel,z1);
+                    int tMetaID = c.getBlockMetadata(x1,yLevel,z1);
                     if (tBlock instanceof GT_Block_Ores_Abstract) {
-                        TileEntity tTileEntity = c.getTileEntityUnsafe(x,yLevel,z);
+                        TileEntity tTileEntity = c.getTileEntityUnsafe(x1,yLevel,z1);
                         if ((tTileEntity!=null)
                                 && (tTileEntity instanceof GT_TileEntity_Ores)
                                 && ((GT_TileEntity_Ores) tTileEntity).mNatural == true
@@ -144,7 +144,11 @@ public class Detrav_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBloc
             while ((tMineBlock==null || tMineBlock == Blocks.air) && !mMineList.isEmpty()) {
                 mle = mMineList.get(0);
                 mMineList.remove(0);
-                tMineBlock = getBaseMetaTileEntity().getBlock(mle.chunkPosX, mle.chunkPosY, mle.chunkPosZ);
+                tMineBlock = getBaseMetaTileEntity()
+                        .getWorld()
+                        .getChunkProvider()
+                        .provideChunk( mle.chunkPosX >> 4,  mle.chunkPosZ >> 4 )
+                        .getBlock(mle.chunkPosX&15, mle.chunkPosY, mle.chunkPosZ&15);
             }
 
             if (tMineBlock!=null && tMineBlock!=Blocks.air) {

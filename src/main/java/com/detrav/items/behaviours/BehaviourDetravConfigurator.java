@@ -25,7 +25,7 @@ public class BehaviourDetravConfigurator  extends Behaviour_None {
                     int circuit_config = inv.mainInventory[i].getItemDamage();
                     if(circuit_config > 5)
                         circuit_config = 5;
-                    circuit_config *= 2;
+                    //circuit_config *= 2;
                     circuit_config++;
                     inv.mainInventory[i] = DetravItemList.ConfiguredCircuit.get(1);
                     ItemStack aCircuit = inv.mainInventory[i];
