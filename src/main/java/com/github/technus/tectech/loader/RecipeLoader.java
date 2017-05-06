@@ -29,6 +29,10 @@ public class RecipeLoader implements Runnable {
 
         dAtomDefinition.run();
 
+        ePrimalAspectDefinition.run();
+
+        dComplexAspectDefinition.run();
+
         // ===================================================================================================
         // Recipe init
         // ===================================================================================================

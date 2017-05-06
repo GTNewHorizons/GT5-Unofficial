@@ -14,7 +14,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
     public final iElementalDefinition definition;
     //energy - if positive then particle should try to decay
     public int energy;
-    //byte color; 0=Red 1=Green 2=Blue 3=Order 4=Earth 5=Water 0=Cyan 1=Magenta 2=Yellow 3=Entropy 4=Air 5=Fire, else ignored (-1 - uncolorable)
+    //byte color; 0=Red 1=Green 2=Blue 0=Cyan 1=Magenta 2=Yellow, else ignored (-1 - uncolorable)
     private byte color;
     public long age;
     public int amount;
@@ -36,7 +36,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
     public cElementalInstanceStack(iElementalDefinition defSafe, int amount, float lifeTimeMult, long age, int energy) {
         this.definition = defSafe == null ? null__ : defSafe;
         byte color = definition.getColor();
-        if (color < 0 || color >= 3) {//transforms colorable??? into proper color
+        if (color < 0 || color > 2) {//transforms colorable??? into proper color
             this.color = color;
         } else {
             this.color = (byte) (TecTech.Rnd.nextInt(3));
@@ -70,17 +70,17 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         return definition;
     }
 
-    public final byte getColor() {
+    public byte getColor() {
         return color;
     }
 
-    public final byte setColor(byte color) {//does not allow changing magic element
-        if (this.color < 0 || this.color >= 3 || color<0 || color>=3) return this.color;
+    public byte setColor(byte color) {//does not allow changing magic element
+        if (this.color < 0 || this.color > 2 || color<0 || color>=3) return this.color;
         return this.color = color;
     }
 
-    public final byte nextColor() {//does not allow changing magic element
-        if (this.color < 0 || this.color >= 3 ) return this.color;
+    public byte nextColor() {//does not allow changing magic element
+        if (this.color < 0 || this.color > 2 ) return this.color;
         return this.color = (byte) (TecTech.Rnd.nextInt(3));
     }
 

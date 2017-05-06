@@ -37,7 +37,7 @@ public final class dHadronDefinition extends cElementalDefinition {
     public final byte type;
     //private final FluidStack fluidThing;
     //private final ItemStack itemThing;
-    private cElementalDefinitionStackMap quarkStacks;
+    private final cElementalDefinitionStackMap quarkStacks;
 
     @Deprecated
     public dHadronDefinition(eQuarkDefinition... quarks) throws tElementalException {

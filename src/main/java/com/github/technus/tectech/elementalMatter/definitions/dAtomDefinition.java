@@ -47,7 +47,7 @@ public final class dAtomDefinition extends cElementalDefinition {
     //private final ItemStack itemThing;
     public final int isotope;
     public final int element;
-    private cElementalDefinitionStackMap elementalStacks;
+    private final cElementalDefinitionStackMap elementalStacks;
 
     //stable is rawLifeTime>=10^9
 

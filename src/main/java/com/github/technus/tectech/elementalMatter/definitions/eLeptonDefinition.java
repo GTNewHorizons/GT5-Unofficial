@@ -10,12 +10,14 @@ import static com.github.technus.tectech.elementalMatter.definitions.eNeutrinoDe
  * Created by danie_000 on 22.10.2016.
  */
 public final class eLeptonDefinition extends cElementalPrimitive {
-    public static final eLeptonDefinition lepton_e = new eLeptonDefinition("Electron", "\u03b2-", 1, 0.511e6F, -3, -1, 15);
-    public static final eLeptonDefinition lepton_m = new eLeptonDefinition("Muon", "\u03bc-", 2, 105.658e6F, -3, -1, 17);
-    public static final eLeptonDefinition lepton_t = new eLeptonDefinition("Tauon", "\u03c4-", 3, 1776.83e6F, -3, -1, 19);
-    public static final eLeptonDefinition lepton_e_ = new eLeptonDefinition("Positron", "\u03b2+", -1, 0.511e6F, 3, -1, 16);
-    public static final eLeptonDefinition lepton_m_ = new eLeptonDefinition("Antimuon", "\u03bc+", -2, 105.658e6F, 3, -1, 18);
-    public static final eLeptonDefinition lepton_t_ = new eLeptonDefinition("Antitauon", "\u03c4+", -3, 1776.83e6F, 3, -1, 20);
+    public static final eLeptonDefinition
+            lepton_e = new eLeptonDefinition("Electron", "\u03b2-", 1, 0.511e6F, -3, -1, 15),
+            lepton_m = new eLeptonDefinition("Muon", "\u03bc-", 2, 105.658e6F, -3, -1, 17),
+            lepton_t = new eLeptonDefinition("Tauon", "\u03c4-", 3, 1776.83e6F, -3, -1, 19),
+            lepton_e_ = new eLeptonDefinition("Positron", "\u03b2+", -1, 0.511e6F, 3, -1, 16),
+            lepton_m_ = new eLeptonDefinition("Antimuon", "\u03bc+", -2, 105.658e6F, 3, -1, 18),
+            lepton_t_ = new eLeptonDefinition("Antitauon", "\u03c4+", -3, 1776.83e6F, 3, -1, 20);
+
     public static final cElementalDefinitionStack lepton_e1 = new cElementalDefinitionStack(lepton_e, 1);
     public static final cElementalDefinitionStack lepton_e_1 = new cElementalDefinitionStack(lepton_e_, 1);
 
