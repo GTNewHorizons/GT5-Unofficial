@@ -2,9 +2,10 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStack;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStack;
-import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackTree;
+import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackMap;
 import com.github.technus.tectech.elementalMatter.classes.tElementalException;
 import com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition;
 import com.github.technus.tectech.elementalMatter.definitions.dHadronDefinition;
@@ -93,10 +94,10 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
             if (inI.length > 0) {
                 for (ItemStack is : inI) {
                     int[] oreIDs = OreDictionary.getOreIDs(is);
-                    if (TecTech.ModConfig.DEBUG_MODE)
+                    if (TecTechConfig.DEBUG_MODE)
                         TecTech.Logger.info("Quantifier-recipe " + is.getItem().getUnlocalizedName() + "." + is.getItemDamage() + " " + is.getDisplayName());
                     for (int ID : oreIDs) {
-                        if (TecTech.ModConfig.DEBUG_MODE)
+                        if (TecTechConfig.DEBUG_MODE)
                             TecTech.Logger.info("Quantifier-recipe " + is.getItem().getUnlocalizedName() + "." + is.getItemDamage() + " " + OreDictionary.getOreName(ID));
                         cElementalDefinitionStack into = itemBinds.get(ID);
                         if (into != null && isInputEqual(true, false,
@@ -111,8 +112,8 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
                             } else {
                                 mEUt = (int) -V[8];
                             }
-                            outputEM = new cElementalInstanceStackTree[1];
-                            outputEM[0] = new cElementalInstanceStackTree(new cElementalInstanceStack(into));
+                            outputEM = new cElementalInstanceStackMap[1];
+                            outputEM[0] = new cElementalInstanceStackMap(new cElementalInstanceStack(into));
                             return true;
                         }
                     }
@@ -134,8 +135,8 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
                         } else {
                             mEUt = (int) -V[8];
                         }
-                        outputEM = new cElementalInstanceStackTree[1];
-                        outputEM[0] = new cElementalInstanceStackTree(new cElementalInstanceStack(into));
+                        outputEM = new cElementalInstanceStackMap[1];
+                        outputEM[0] = new cElementalInstanceStackMap(new cElementalInstanceStack(into));
                         return true;
                     }
                 }
@@ -383,7 +384,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
                             new cElementalDefinitionStack(dHadronDefinition.hadron_n, 149)
                     ), 144));
         } catch (tElementalException e) {
-            if (TecTech.ModConfig.DEBUG_MODE) e.printStackTrace();
+            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
         }
     }
 }

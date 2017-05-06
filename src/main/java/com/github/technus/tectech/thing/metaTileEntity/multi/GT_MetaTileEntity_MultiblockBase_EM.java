@@ -2,9 +2,10 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStack;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStack;
-import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackTree;
+import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackMap;
 import com.github.technus.tectech.elementalMatter.classes.tElementalException;
 import com.github.technus.tectech.thing.machineTT;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
@@ -34,6 +35,7 @@ import net.minecraftforge.fluids.FluidStack;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.TreeMap;
 
 import static com.github.technus.tectech.CommonValues.*;
@@ -46,10 +48,10 @@ import static gregtech.api.enums.GT_Values.VN;
  * Created by danie_000 on 27.10.2016.
  */
 public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEntity_MultiBlockBase implements machineTT {
-    protected final static TreeMap<String,Method> adderMethodMap =new TreeMap<>();
+    protected final static Map<String,Method> adderMethodMap =new TreeMap<>();
     public static Method adderMethod;
 
-    protected cElementalInstanceStackTree[] outputEM = new cElementalInstanceStackTree[0];
+    protected cElementalInstanceStackMap[] outputEM = new cElementalInstanceStackMap[0];
 
     public final static ItemStack[] nothingI = new ItemStack[0];
     public final static FluidStack[] nothingF = new FluidStack[0];
@@ -258,16 +260,16 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
         final int outputLen = aNBT.getInteger("outputStackCount");
         if (outputLen > 0) {
-            outputEM = new cElementalInstanceStackTree[outputLen];
+            outputEM = new cElementalInstanceStackMap[outputLen];
             for (int i = 0; i < outputEM.length; i++)
                 try {
-                    outputEM[i] = cElementalInstanceStackTree.fromNBT(
+                    outputEM[i] = cElementalInstanceStackMap.fromNBT(
                             aNBT.getCompoundTag("outputEM").getCompoundTag(Integer.toString(i)));
                 } catch (tElementalException e) {
-                    if (TecTech.ModConfig.DEBUG_MODE) e.printStackTrace();
-                    outputEM[i] = new cElementalInstanceStackTree();
+                    if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+                    outputEM[i] = new cElementalInstanceStackMap();
                 }
-        } else outputEM = new cElementalInstanceStackTree[0];
+        } else outputEM = new cElementalInstanceStackMap[0];
 
         NBTTagCompound paramI = aNBT.getCompoundTag("eParamsIn");
         for (int i = 0; i < eParamsIn.length; i++)
@@ -370,7 +372,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 if (!mMachine)
                     if (eDismatleBoom && mMaxProgresstime > 0) explodeMultiblock();
                     else if (outputEM != null)
-                        for (cElementalInstanceStackTree tree : outputEM)
+                        for (cElementalInstanceStackMap tree : outputEM)
                             if (tree.hasStacks()) {
                                 explodeMultiblock();
                                 break;
@@ -522,7 +524,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                     updateSlots();
                                     mOutputItems = null;
                                     mOutputFluids = null;
-                                    outputEM = new cElementalInstanceStackTree[0];
+                                    outputEM = new cElementalInstanceStackMap[0];
                                     mProgresstime = 0;
                                     mMaxProgresstime = 0;
                                     mEfficiencyIncrease = 0;
@@ -531,7 +533,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                             mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
                                         }
                                         updateSlots();
-                                    }else stopMachine();
+                                    } else stopMachine();
                                 }
                             }
                         } else {
@@ -541,7 +543,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                         mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
                                     }
                                     updateSlots();
-                                }else stopMachine();
+                                } else stopMachine();
                             }
                         }
 
@@ -709,7 +711,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         if (euVar > getEUVar() ||
                 EU > maxEUinputMax ||
                 (euVar - 1) / maxEUinputMin + 1 > eMaxAmpereFlow) {// euVar==0? --> (euVar - 1) / maxEUinputMin + 1 = 1!
-            if (TecTech.ModConfig.DEBUG_MODE) {
+            if (TecTechConfig.DEBUG_MODE) {
                 TecTech.Logger.debug("OMG1 " + euVar + " " + getEUVar() + " " + (euVar > getEUVar()));
                 TecTech.Logger.debug("OMG2 " + EU + " " + maxEUinputMax + " " + (EU > maxEUinputMax));
                 TecTech.Logger.debug("OMG3 " + euVar + " " + eMaxAmpereFlow);
@@ -783,7 +785,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
         float mass = 0;
         if (outputEM == null) return;
-        for (cElementalInstanceStackTree tree : outputEM)
+        for (cElementalInstanceStackMap tree : outputEM)
             mass += tree.getMass();
         if (mass > 0) {
             if (eMufflerHatches.size() < 1) explodeMultiblock();
@@ -1309,13 +1311,13 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             }
             if (eDismatleBoom && mMaxProgresstime > 0) explodeMultiblock();
             else if (outputEM != null)
-                for (cElementalInstanceStackTree output : outputEM)
+                for (cElementalInstanceStackMap output : outputEM)
                     if (output.hasStacks()) {
                         explodeMultiblock();
                         return;
                     }
         } catch (Exception e) {
-            if (TecTech.ModConfig.DEBUG_MODE) e.printStackTrace();
+            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
         }
     }
 
@@ -1339,7 +1341,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             adderMethodMap.put("addDataConnectorToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addDataConnectorToMachineList", IGregTechTileEntity.class, int.class));
             adderMethod=GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addThing", String.class, IGregTechTileEntity.class, int.class);
         }catch (NoSuchMethodException e){
-            if(TecTech.ModConfig.DEBUG_MODE) e.printStackTrace();
+            if(TecTechConfig.DEBUG_MODE) e.printStackTrace();
         }
     }
 
@@ -1348,7 +1350,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         try {
             return (boolean) adderMethodMap.get(methodName).invoke(this, igt, casing);
         }catch (InvocationTargetException | IllegalAccessException e){
-            if(TecTech.ModConfig.DEBUG_MODE) e.printStackTrace();
+            if(TecTechConfig.DEBUG_MODE) e.printStackTrace();
         }
         return false;
     }

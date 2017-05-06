@@ -73,8 +73,7 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
             if (mode == 0) {
                 aBaseMetaTileEntity.setActive(false);
                 status=-128;
-            }
-            else {
+            } else {
                 aBaseMetaTileEntity.setActive(true);
                 shift();
                 compute();

@@ -13,18 +13,18 @@ import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveD
 /**
  * Created by danie_000 on 22.01.2017.
  */
-public final class cElementalInstanceStackTree implements Comparable<cElementalInstanceStackTree> {
-    private TreeMap<iElementalDefinition, cElementalInstanceStack> tree = new TreeMap<>();
+public final class cElementalInstanceStackMap implements Comparable<cElementalInstanceStackMap> {
+    private Map<iElementalDefinition, cElementalInstanceStack> tree = new TreeMap<>();
 
     //Constructors
-    public cElementalInstanceStackTree() {
+    public cElementalInstanceStackMap() {
     }
 
-    public cElementalInstanceStackTree(cElementalInstanceStack... inSafe) {
+    public cElementalInstanceStackMap(cElementalInstanceStack... inSafe) {
         this(true, inSafe);
     }
 
-    public cElementalInstanceStackTree(boolean copy, cElementalInstanceStack... in) {
+    public cElementalInstanceStackMap(boolean copy, cElementalInstanceStack... in) {
         if (in == null) return;
         if (copy) {
             for (cElementalInstanceStack instance : in) {
@@ -37,11 +37,11 @@ public final class cElementalInstanceStackTree implements Comparable<cElementalI
         }
     }
 
-    private cElementalInstanceStackTree(TreeMap<iElementalDefinition, cElementalInstanceStack> inSafe) {
+    private cElementalInstanceStackMap(Map<iElementalDefinition, cElementalInstanceStack> inSafe) {
         this(true, inSafe);
     }
 
-    private cElementalInstanceStackTree(boolean copy, TreeMap<iElementalDefinition, cElementalInstanceStack> in) {
+    private cElementalInstanceStackMap(boolean copy, Map<iElementalDefinition, cElementalInstanceStack> in) {
         if (in == null) return;
         if (copy) {
             for (cElementalInstanceStack instance : in.values()) {
@@ -52,21 +52,21 @@ public final class cElementalInstanceStackTree implements Comparable<cElementalI
         }
     }
 
-    public cElementalInstanceStackTree(cElementalInstanceStackTree inSafe) {
+    public cElementalInstanceStackMap(cElementalInstanceStackMap inSafe) {
         this(true, inSafe.tree);
     }
 
-    public cElementalInstanceStackTree(boolean copy, cElementalInstanceStackTree in) {
+    public cElementalInstanceStackMap(boolean copy, cElementalInstanceStackMap in) {
         this(copy, in.tree);
     }
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        return new cElementalInstanceStackTree(tree);
+        return new cElementalInstanceStackMap(tree);
     }
 
     @Override
-    public int compareTo(cElementalInstanceStackTree o) {
+    public int compareTo(cElementalInstanceStackMap o) {
         if (tree.size() != o.tree.size()) return tree.size() - o.tree.size();
         cElementalInstanceStack[] ofThis = values(), ofThat = o.values();
         for (int i = 0; i < ofThat.length; i++) {
@@ -173,11 +173,11 @@ public final class cElementalInstanceStackTree implements Comparable<cElementalI
         return removeAllAmounts(testOnly, stacks);
     }
 
-    public boolean removeAllAmounts(boolean testOnly, cElementalDefinitionStackTree container) {
+    public boolean removeAllAmounts(boolean testOnly, cElementalDefinitionStackMap container) {
         return removeAllAmounts(testOnly, container.values());
     }
 
-    public boolean removeAllAmounts(boolean testOnly, cElementalInstanceStackTree container) {
+    public boolean removeAllAmounts(boolean testOnly, cElementalInstanceStackMap container) {
         return removeAllAmounts(testOnly, container.values());
     }
 
@@ -215,7 +215,7 @@ public final class cElementalInstanceStackTree implements Comparable<cElementalI
         this.tree.putAll(inTreeUnsafe);
     }
 
-    public void putReplaceAll(cElementalInstanceStackTree inContainerUnsafe) {
+    public void putReplaceAll(cElementalInstanceStackMap inContainerUnsafe) {
         putReplaceAll(inContainerUnsafe.tree);
     }
 
@@ -234,7 +234,7 @@ public final class cElementalInstanceStackTree implements Comparable<cElementalI
             putUnify(in);
     }
 
-    public void putUnifyAll(cElementalInstanceStackTree containerUnsafe) {
+    public void putUnifyAll(cElementalInstanceStackMap containerUnsafe) {
         putUnifyAll(containerUnsafe.tree);
     }
 
@@ -291,7 +291,7 @@ public final class cElementalInstanceStackTree implements Comparable<cElementalI
     //Tick Content
     public void tickContent(float lifeTimeMult, int postEnergize) {
         for (cElementalInstanceStack instance : this.values()) {
-            cElementalInstanceStackTree newThings = instance.decay(lifeTimeMult, instance.age += 20, postEnergize);
+            cElementalInstanceStackMap newThings = instance.decay(lifeTimeMult, instance.age += 20, postEnergize);
             if (newThings == null) {
                 instance.nextColor();
             } else {
@@ -305,7 +305,7 @@ public final class cElementalInstanceStackTree implements Comparable<cElementalI
 
     public void tickContent(int postEnergize) {
         for (cElementalInstanceStack instance : this.values()) {
-            cElementalInstanceStackTree newThings = instance.decay(instance.age += 20, postEnergize);
+            cElementalInstanceStackMap newThings = instance.decay(instance.age += 20, postEnergize);
             if (newThings == null) {
                 instance.nextColor();
             } else {
@@ -343,19 +343,19 @@ public final class cElementalInstanceStackTree implements Comparable<cElementalI
         return nbt;
     }
 
-    public static cElementalInstanceStackTree fromNBT(NBTTagCompound nbt) throws tElementalException {
+    public static cElementalInstanceStackMap fromNBT(NBTTagCompound nbt) throws tElementalException {
         final cElementalInstanceStack[] instances = new cElementalInstanceStack[nbt.getInteger("i")];
         for (int i = 0; i < instances.length; i++) {
             instances[i] = cElementalInstanceStack.fromNBT(nbt.getCompoundTag(Integer.toString(i)));
             if (instances[i].definition.equals(debug__))
                 throw new tElementalException("Something went Wrong");
         }
-        return new cElementalInstanceStackTree(false, instances);
+        return new cElementalInstanceStackMap(false, instances);
     }
 
     //stackUp
     public static cElementalInstanceStack[] stackUp(cElementalInstanceStack... in) {
-        final cElementalInstanceStackTree inTree = new cElementalInstanceStackTree();
+        final cElementalInstanceStackMap inTree = new cElementalInstanceStackMap();
         inTree.putUnifyAll(in);
         return inTree.values();
     }

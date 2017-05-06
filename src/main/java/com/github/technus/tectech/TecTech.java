@@ -123,13 +123,13 @@ public class TecTech {
         for(Materials m:Materials.values()){
             FluidStack p=m.getPlasma(1);
             if(     p!=null) {
-                if(ModConfig.DEBUG_MODE) TecTech.Logger.info("Found Plasma of "+m.name());
+                if(TecTechConfig.DEBUG_MODE) TecTech.Logger.info("Found Plasma of "+m.name());
                 if (m.mElement != null &&
                         (m.mElement.mProtons >= Materials.Iron.mElement.mProtons ||
                         -m.mElement.mProtons >= Materials.Iron.mElement.mProtons ||
                          m.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons ||
                         -m.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons)) {
-                    if (ModConfig.DEBUG_MODE) TecTech.Logger.info("Attempting to bind " + m.name());
+                    if (TecTechConfig.DEBUG_MODE) TecTech.Logger.info("Attempting to bind " + m.name());
                     if (m.getMolten(1) != null) binds.put(p.getFluid(), m.getMolten(1).getFluid());
                     else if (m.getGas(1) != null) binds.put(p.getFluid(), m.getGas(1).getFluid());
                     else if (m.getFluid(1) != null) binds.put(p.getFluid(), m.getFluid(1).getFluid());
@@ -140,7 +140,7 @@ public class TecTech {
         for(GT_Recipe r:GT_Recipe.GT_Recipe_Map.sFusionRecipes.mRecipeList){
             Fluid f=binds.get(r.mFluidOutputs[0].getFluid());
             if(f!=null){
-                if(ModConfig.DEBUG_MODE) TecTech.Logger.info("Nerfing Recipe "+r.mFluidOutputs[0].getUnlocalizedName());
+                if(TecTechConfig.DEBUG_MODE) TecTech.Logger.info("Nerfing Recipe "+r.mFluidOutputs[0].getUnlocalizedName());
                 r.mFluidOutputs[0]=new FluidStack(f,r.mFluidInputs[0].amount);
             }
         }

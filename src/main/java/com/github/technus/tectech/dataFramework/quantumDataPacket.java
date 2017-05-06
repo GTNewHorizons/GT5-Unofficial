@@ -3,6 +3,7 @@ package com.github.technus.tectech.dataFramework;
 import com.github.technus.tectech.vec3pos;
 import net.minecraft.nbt.NBTTagCompound;
 
+import java.util.Set;
 import java.util.TreeSet;
 
 /**
@@ -12,7 +13,7 @@ public class quantumDataPacket {
     public static byte maxHistory =64;
 
     public long computation=0;
-    public TreeSet<vec3pos> trace=new TreeSet<>();
+    public Set<vec3pos> trace=new TreeSet<>();
 
     public quantumDataPacket(vec3pos pos,long computation){
         this.computation=computation;

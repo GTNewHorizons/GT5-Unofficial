@@ -23,9 +23,12 @@ import static gregtech.api.enums.GT_Values.E;
 public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_EM implements constructableTT {
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
+
     //Time dillatation - to slow down the explosion thing but REALLY REDUCE POWER OUTPUT
     //Startcodes to startup
     //per dim disable thingies
+
+    //region Structure
     private static final String[] s = new String[]{
             "F202", "F020", "G0", "C5G5", "D55C55", "F0A0", "E21212",
             "D00C00", "C0G0", "B0I0", "A20I02", "A02I20", "D0024200",
@@ -52,6 +55,7 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
             GT_Container_CasingsTT.sBlockCasingsTT,
             QuantumGlassBlock.INSTANCE};
     private static final byte[] blockMeta = new byte[]{3, 4, 5, 6, 7, 0};
+    //endregion
 
     public GT_MetaTileEntity_EM_bhg(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);

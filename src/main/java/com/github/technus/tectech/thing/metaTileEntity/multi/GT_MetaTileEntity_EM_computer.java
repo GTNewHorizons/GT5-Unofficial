@@ -3,6 +3,7 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
+import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.dataFramework.quantumDataPacket;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
@@ -29,7 +30,9 @@ import static gregtech.api.enums.GT_Values.V;
  */
 public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockBase_EM {
     private final ArrayList<GT_MetaTileEntity_Hatch_Rack> eRacks=new ArrayList<>();
+    private int maxTemp=0;
 
+    //region Structure
     private static final String[][] front = new String[][]{{"A  ","A  ","A+ ","A  ",},};
     private static final String[][] terminator = new String[][]{{"A  ","A  ","A  ","A  ",},};
     private static final String[][] cap = new String[][]{{"-01","A22","A22","-01",},};
@@ -40,8 +43,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     private static final byte[] casingTextures = new byte[]{96,97};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT,sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0,1};
-
-    private int maxTemp=0;
+    //endregion
 
     public GT_MetaTileEntity_EM_computer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -234,7 +236,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         try {
             adderMethodMap.put("addRackToMachineList", GT_MetaTileEntity_EM_computer.class.getMethod("addRackToMachineList", IGregTechTileEntity.class, int.class));
         }catch (NoSuchMethodException e){
-            if(TecTech.ModConfig.DEBUG_MODE) e.printStackTrace();
+            if(TecTechConfig.DEBUG_MODE) e.printStackTrace();
         }
     }
 }

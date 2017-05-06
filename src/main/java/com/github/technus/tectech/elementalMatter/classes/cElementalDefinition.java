@@ -1,11 +1,12 @@
 package com.github.technus.tectech.elementalMatter.classes;
 
-import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
 import com.github.technus.tectech.elementalMatter.interfaces.iHasElementalDefinition;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 import java.util.TreeMap;
 
 import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveDefinition.debug__;
@@ -15,7 +16,7 @@ import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveD
  */
 public abstract class cElementalDefinition implements iElementalDefinition {
     //add text based creators for recipe formula input?
-    private static final TreeMap<Byte, Method> nbtCreationBind = new TreeMap<>();//creator methods in subclasses
+    private static final Map<Byte, Method> nbtCreationBind = new TreeMap<>();//creator methods in subclasses
 
     protected static Method addCreatorFromNBT(byte b, Method m) {
         return nbtCreationBind.put(b, m);
@@ -28,7 +29,7 @@ public abstract class cElementalDefinition implements iElementalDefinition {
         try {
             return (iElementalDefinition) nbtCreationBind.get(nbt.getByte("t")).invoke(null, nbt);
         } catch (Exception e) {
-            if (TecTech.ModConfig.DEBUG_MODE) e.printStackTrace();
+            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
             return debug__;
         }
     }
@@ -59,9 +60,10 @@ public abstract class cElementalDefinition implements iElementalDefinition {
 
     //use only for nested operations!
     private static int compareDefinitionStacksWithAmount(cElementalDefinitionStack[] tc, cElementalDefinitionStack[] sc) {
-        if (tc == null)
+        if (tc == null) {
             if (sc == null) return 0;
             else return -1;
+        }
         if (sc == null) return 1;
 
         if (tc.length > sc.length) return 1;
@@ -75,5 +77,15 @@ public abstract class cElementalDefinition implements iElementalDefinition {
             if (tc[i].amount < sc[i].amount) return -1;
         }
         return 0;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash=getSubParticles().size();
+        int i=9;
+        for(cElementalDefinitionStack s:getSubParticles().values()){
+            hash+=s.hashCode()*(i++);
+        }
+        return hash;
     }
 }

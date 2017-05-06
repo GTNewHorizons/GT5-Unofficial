@@ -1,8 +1,8 @@
 package com.github.technus.tectech.thing.item;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackTree;
+import com.github.technus.tectech.auxiliary.TecTechConfig;
+import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackMap;
 import com.github.technus.tectech.elementalMatter.classes.tElementalException;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalInstanceContainer;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -45,12 +45,12 @@ public class DebugContainer_EM extends Item {
             if (tTileEntity != null && tTileEntity instanceof IGregTechTileEntity) {
                 IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
                 if (metaTE != null && metaTE instanceof iElementalInstanceContainer) {
-                    cElementalInstanceStackTree content = ((iElementalInstanceContainer) metaTE).getContainerHandler();
+                    cElementalInstanceStackMap content = ((iElementalInstanceContainer) metaTE).getContainerHandler();
                     if (tNBT.hasKey("content")) {
                         try {
-                            content.putUnifyAll(cElementalInstanceStackTree.fromNBT(tNBT.getCompoundTag("content")));
+                            content.putUnifyAll(cElementalInstanceStackMap.fromNBT(tNBT.getCompoundTag("content")));
                         } catch (tElementalException e) {
-                            if (TecTech.ModConfig.DEBUG_MODE) e.printStackTrace();
+                            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
                             return true;
                         }
                         ((iElementalInstanceContainer) metaTE).purgeOverflow();
@@ -76,8 +76,8 @@ public class DebugContainer_EM extends Item {
             NBTTagCompound tNBT = aStack.getTagCompound();
             if (tNBT!=null && tNBT.hasKey("info")) {
                 aList.add("Contains:");
-                Collections.addAll(aList, cElementalInstanceStackTree.infoFromNBT(tNBT.getCompoundTag("info")));
-            }else {
+                Collections.addAll(aList, cElementalInstanceStackMap.infoFromNBT(tNBT.getCompoundTag("info")));
+            } else {
                 aList.add("Container for elemental matter");
                 aList.add(EnumChatFormatting.BLUE+"Right click on elemental hatches");
             }

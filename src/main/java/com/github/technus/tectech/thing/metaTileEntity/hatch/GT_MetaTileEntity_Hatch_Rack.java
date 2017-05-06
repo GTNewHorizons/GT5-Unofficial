@@ -2,6 +2,7 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.thing.machineTT;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Rack;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Rack;
@@ -20,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
+import java.util.Map;
 import java.util.TreeMap;
 
 import static com.github.technus.tectech.CommonValues.multiCheckAt;
@@ -33,7 +35,7 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
     private static Textures.BlockIcons.CustomIcon EM_R_ACTIVE;
     public int heat=0;
     private float overClock =1, overVolt =1;
-    private static TreeMap<String,component> componentBinds=new TreeMap<>();
+    private static Map<String,component> componentBinds=new TreeMap<>();
 
     public GT_MetaTileEntity_Hatch_Rack(int aID, String aName, String aNameRegional, int aTier, String descr) {
         super(aID, aName, aNameRegional, aTier, 4, descr);
@@ -184,12 +186,11 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
                         if (comp == null) continue;
                         if (this.heat > comp.maxHeat) {
                             mInventory[i] = null;
-                            continue;
                         } else if (comp.heat<0) {
                             heatC += comp.heat * (this.heat/10000);
                         }
                     }
-                    this.heat += Math.min(-this.heat, Math.ceil(heatC));
+                    this.heat += Math.max(-this.heat, Math.ceil(heatC));
                 }
 
                 if(heat>0)heat-=Math.max(heat/1000,1);
@@ -303,7 +304,7 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
             this.maxHeat=maxHeat;
             this.subZero=subZero;
             componentBinds.put(unlocalizedName,this);
-            if(TecTech.ModConfig.DEBUG_MODE) TecTech.Logger.info("Component registered: "+unlocalizedName);
+            if(TecTechConfig.DEBUG_MODE) TecTech.Logger.info("Component registered: "+unlocalizedName);
         }
 
         @Override

@@ -12,7 +12,7 @@ public final class cElementalDecay {
     //Or cast null into ARRAY type but this static is more convenient!!!
     public static final cElementalDecay[] noProduct = new cElementalDecay[0];
     //this in turn can be used to tell that the thing should just vanish
-    public final cElementalDefinitionStackTree outputStacks;
+    public final cElementalDefinitionStackMap outputStacks;
     public final float probability;
 
     public cElementalDecay(iElementalDefinition... outSafe) {
@@ -24,7 +24,7 @@ public final class cElementalDecay {
         for (int i = 0; i < outArr.length; i++) {
             outArr[i] = new cElementalDefinitionStack(outSafe[i], 1);
         }
-        this.outputStacks = new cElementalDefinitionStackTree(outArr);
+        this.outputStacks = new cElementalDefinitionStackMap(outArr);
         this.probability = probability;
     }
 
@@ -33,21 +33,21 @@ public final class cElementalDecay {
     }
 
     public cElementalDecay(float probability, cElementalDefinitionStack... out) {
-        this.outputStacks = new cElementalDefinitionStackTree(out);
+        this.outputStacks = new cElementalDefinitionStackMap(out);
         this.probability = probability;
     }
 
-    public cElementalDecay(cElementalDefinitionStackTree tree) {
+    public cElementalDecay(cElementalDefinitionStackMap tree) {
         this(2F, tree);
     }
 
-    public cElementalDecay(float probability, cElementalDefinitionStackTree tree) {
+    public cElementalDecay(float probability, cElementalDefinitionStackMap tree) {
         this.outputStacks = tree;
         this.probability = probability;
     }
 
-    public cElementalInstanceStackTree getResults(float lifeMult, long age, int energy, int amountDecaying) {
-        cElementalInstanceStackTree decayResult = new cElementalInstanceStackTree();
+    public cElementalInstanceStackMap getResults(float lifeMult, long age, int energy, int amountDecaying) {
+        cElementalInstanceStackMap decayResult = new cElementalInstanceStackMap();
         if (outputStacks == null) return decayResult;//This is to prevent null pointer exceptions.
         //Deny decay code is in instance!
         int qtty = 0;

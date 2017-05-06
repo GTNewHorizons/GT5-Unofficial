@@ -1,5 +1,6 @@
 package com.github.technus.tectech.elementalMatter.classes;
 
+import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -7,12 +8,12 @@ import java.util.TreeMap;
  */
 public class rElementalRecipeTree {
     //Multimap for multiple recipes from the same thing - you know parameters might differ the output
-    private TreeMap<cElementalDefinitionStackTree, TreeMap<Short,rElementalRecipe> > recipes = new TreeMap<>();
+    private TreeMap<cElementalDefinitionStackMap, Map<Short,rElementalRecipe> > recipes = new TreeMap<>();
 
     public rElementalRecipeTree() {}
 
     public rElementalRecipe put(rElementalRecipe in) {
-        TreeMap<Short, rElementalRecipe> r=recipes.get(in.inEM);
+        Map<Short, rElementalRecipe> r=recipes.get(in.inEM);
         if(r==null){
             r=new TreeMap<>();
             recipes.put(in.inEM,r);
@@ -25,33 +26,33 @@ public class rElementalRecipeTree {
             put(recipe);
     }
 
-    public TreeMap<Short,rElementalRecipe> findExact(cElementalDefinitionStackTree in) {
+    public Map<Short,rElementalRecipe> findExact(cElementalDefinitionStackMap in) {
         return recipes.get(in);
     }
 
-    public TreeMap<Short,rElementalRecipe> findTopMatch(cElementalDefinitionStackTree in) {
-        for (cElementalDefinitionStackTree requirement : recipes.descendingKeySet())
+    public Map<Short,rElementalRecipe> findTopMatch(cElementalDefinitionStackMap in) {
+        for (cElementalDefinitionStackMap requirement : recipes.descendingKeySet())
             if (in.removeAllAmounts(true, requirement))
                 return recipes.get(requirement);
         return null;
     }
 
-    public TreeMap<Short,rElementalRecipe> findTopMatch(cElementalInstanceStackTree in, boolean testOnly) {
-        for (cElementalDefinitionStackTree requirement : recipes.descendingKeySet())
+    public Map<Short,rElementalRecipe> findTopMatch(cElementalInstanceStackMap in, boolean testOnly) {
+        for (cElementalDefinitionStackMap requirement : recipes.descendingKeySet())
             if (in.removeAllAmounts(testOnly, requirement))
                 return recipes.get(requirement);
         return null;
     }
 
-    public TreeMap<Short,rElementalRecipe> findBottomMatch(cElementalDefinitionStackTree in) {
-        for (cElementalDefinitionStackTree requirement : recipes.keySet())
+    public Map<Short,rElementalRecipe> findBottomMatch(cElementalDefinitionStackMap in) {
+        for (cElementalDefinitionStackMap requirement : recipes.keySet())
             if (in.removeAllAmounts(true, requirement))
                 return recipes.get(requirement);
         return null;
     }
 
-    public TreeMap<Short,rElementalRecipe> findBottomMatch(cElementalInstanceStackTree in, boolean testOnly) {
-        for (cElementalDefinitionStackTree requirement : recipes.keySet())
+    public Map<Short,rElementalRecipe> findBottomMatch(cElementalInstanceStackMap in, boolean testOnly) {
+        for (cElementalDefinitionStackMap requirement : recipes.keySet())
             if (in.removeAllAmounts(testOnly, requirement))
                 return recipes.get(requirement);
         return null;

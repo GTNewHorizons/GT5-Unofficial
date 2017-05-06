@@ -3,6 +3,7 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 import cofh.api.energy.IEnergyContainerItem;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.auxiliary.TecTechConfig;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import ic2.api.item.ElectricItem;
@@ -144,7 +145,7 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
             if(this.getEUVar()<0)this.setEUVar(0);
             return remove;
         } catch( Exception e ) {
-            if(TecTech.ModConfig.DEBUG_MODE)
+            if(TecTechConfig.DEBUG_MODE)
                 e.printStackTrace();
         }
         return 0;
@@ -161,7 +162,7 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
             if(this.getEUVar()<0)this.setEUVar(0);
             return RF;
         } catch( Exception e ) {
-            if (TecTech.ModConfig.DEBUG_MODE)
+            if (TecTechConfig.DEBUG_MODE)
                 e.printStackTrace();
         }
         return 0;

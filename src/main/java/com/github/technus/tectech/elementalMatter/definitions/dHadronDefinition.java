@@ -1,6 +1,6 @@
 package com.github.technus.tectech.elementalMatter.definitions;
 
-import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.classes.*;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
 import net.minecraft.item.ItemStack;
@@ -8,17 +8,18 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.TreeMap;
 
-import static com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStackTree.stackUpTree;
+import static com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStackMap.stackUpTree;
 import static com.github.technus.tectech.elementalMatter.definitions.eBosonDefinition.boson_Y__;
 
 /**
  * Created by danie_000 on 17.11.2016.
  */
 public final class dHadronDefinition extends cElementalDefinition {
-    public static final TreeMap<dHadronDefinition, ItemStack> itemBinds = new TreeMap<>();
-    public static final TreeMap<dHadronDefinition, FluidStack> fluidBinds = new TreeMap<>();
+    public static final Map<dHadronDefinition, ItemStack> itemBinds = new TreeMap<>();
+    public static final Map<dHadronDefinition, FluidStack> fluidBinds = new TreeMap<>();
 
     private static final byte nbtType = (byte) 'h';
     //Helpers
@@ -36,7 +37,7 @@ public final class dHadronDefinition extends cElementalDefinition {
     public final byte type;
     //private final FluidStack fluidThing;
     //private final ItemStack itemThing;
-    private cElementalDefinitionStackTree quarkStacks;
+    private cElementalDefinitionStackMap quarkStacks;
 
     @Deprecated
     public dHadronDefinition(eQuarkDefinition... quarks) throws tElementalException {
@@ -56,11 +57,11 @@ public final class dHadronDefinition extends cElementalDefinition {
         this(check, stackUpTree(quarks));
     }
 
-    public dHadronDefinition(cElementalDefinitionStackTree quarks) throws tElementalException {
+    public dHadronDefinition(cElementalDefinitionStackMap quarks) throws tElementalException {
         this(true, quarks);
     }
 
-    private dHadronDefinition(boolean check, cElementalDefinitionStackTree quarks) throws tElementalException {
+    private dHadronDefinition(boolean check, cElementalDefinitionStackMap quarks) throws tElementalException {
         if (check && !canTheyBeTogether(quarks)) throw new tElementalException("Hadron Definition error");
         this.quarkStacks = quarks;
 
@@ -96,7 +97,7 @@ public final class dHadronDefinition extends cElementalDefinition {
     }
 
     //public but u can just try{}catch(){} the constructor it still calls this method
-    private static boolean canTheyBeTogether(cElementalDefinitionStackTree stacks) {
+    private static boolean canTheyBeTogether(cElementalDefinitionStackMap stacks) {
         int amount = 0;
         for (cElementalDefinitionStack quarks : stacks.values()) {
             if (!(quarks.definition instanceof eQuarkDefinition)) return false;
@@ -154,7 +155,7 @@ public final class dHadronDefinition extends cElementalDefinition {
     }
 
     @Override
-    public cElementalDefinitionStackTree getSubParticles() {
+    public cElementalDefinitionStackMap getSubParticles() {
         return quarkStacks;
     }
 
@@ -221,7 +222,7 @@ public final class dHadronDefinition extends cElementalDefinition {
                         new cElementalDecay(0.001F, new dHadronDefinition(false, contentOfBaryon), Particles[0], Particles[1], boson_Y__),
                         eBosonDefinition.deadEnd}; //decay into quarks
             } catch (tElementalException e) {
-                if (TecTech.ModConfig.DEBUG_MODE) e.printStackTrace();
+                if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
                 return new cElementalDecay[]{eBosonDefinition.deadEnd};
             }
         }
@@ -249,13 +250,13 @@ public final class dHadronDefinition extends cElementalDefinition {
 
     @Override
     public iElementalDefinition getAnti() {
-        cElementalDefinitionStackTree anti = new cElementalDefinitionStackTree();
+        cElementalDefinitionStackMap anti = new cElementalDefinitionStackMap();
         for (cElementalDefinitionStack stack : quarkStacks.values())
             anti.putReplace(new cElementalDefinitionStack(stack.definition.getAnti(), stack.amount));
         try {
             return new dHadronDefinition(anti);
         } catch (tElementalException e) {
-            if (TecTech.ModConfig.DEBUG_MODE) e.printStackTrace();
+            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
             return null;
         }
     }
@@ -288,7 +289,7 @@ public final class dHadronDefinition extends cElementalDefinition {
         try {
             return new dHadronDefinition(stacks);
         } catch (tElementalException e) {
-            if (TecTech.ModConfig.DEBUG_MODE) e.printStackTrace();
+            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
             return null;
         }
     }
@@ -306,7 +307,7 @@ public final class dHadronDefinition extends cElementalDefinition {
             hadron_n = new dHadronDefinition(false, eQuarkDefinition.quark_u, eQuarkDefinition.quark_d, eQuarkDefinition.quark_d);
             hadron_n_ = (dHadronDefinition) (hadron_n.getAnti());
         } catch (tElementalException e) {
-            if (TecTech.ModConfig.DEBUG_MODE) e.printStackTrace();
+            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
             protonMass = -1;
             neutronMass = -1;
         }
@@ -317,7 +318,7 @@ public final class dHadronDefinition extends cElementalDefinition {
         try {
             cElementalDefinition.addCreatorFromNBT(nbtType, dHadronDefinition.class.getMethod("fromNBT", NBTTagCompound.class));
         } catch (Exception e) {
-            if (TecTech.ModConfig.DEBUG_MODE) e.printStackTrace();
+            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
         }
     }
 

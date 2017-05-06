@@ -2,7 +2,8 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackTree;
+import com.github.technus.tectech.auxiliary.TecTechConfig;
+import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackMap;
 import com.github.technus.tectech.elementalMatter.classes.tElementalException;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalInstanceContainer;
 import com.github.technus.tectech.thing.machineTT;
@@ -33,7 +34,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     private static Textures.BlockIcons.CustomIcon EM_T_ACTIVE;
     private static Textures.BlockIcons.CustomIcon EM_T_CONN;
 
-    protected cElementalInstanceStackTree content = new cElementalInstanceStackTree();
+    protected cElementalInstanceStackMap content = new cElementalInstanceStackMap();
     //float lifeTimeMult=1f;
     public int postEnergize = 0;
     public float overflowMatter = 0f;
@@ -84,10 +85,10 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
         overflowMatter = aNBT.getFloat("overflowMatter");
         id = aNBT.getShort("eID");
         try {
-            content = cElementalInstanceStackTree.fromNBT(aNBT.getCompoundTag("eM_Stacks"));
+            content = cElementalInstanceStackMap.fromNBT(aNBT.getCompoundTag("eM_Stacks"));
         } catch (tElementalException e) {
-            if (TecTech.ModConfig.DEBUG_MODE) e.printStackTrace();
-            if (content == null) content = new cElementalInstanceStackTree();
+            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+            if (content == null) content = new cElementalInstanceStackMap();
         }
     }
 
@@ -137,7 +138,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {}
 
     @Override
-    public cElementalInstanceStackTree getContainerHandler() {
+    public cElementalInstanceStackMap getContainerHandler() {
         return content;
     }
 

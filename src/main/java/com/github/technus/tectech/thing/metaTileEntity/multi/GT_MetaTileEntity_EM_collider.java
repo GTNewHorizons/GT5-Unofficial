@@ -27,6 +27,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     private static Textures.BlockIcons.CustomIcon ScreenON;
     private byte eTier =0;
 
+    //region Structure
     //use multi A energy inputs, use less power the longer it runs
     private static final String[][] shape = new String[][]{
             {E, "Y00000000000", E,},
@@ -112,6 +113,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             GT_Container_CasingsTT.sBlockCasingsTT
     };
     private static final byte[] blockMeta2 = new byte[]{3,6,0,8,5,9};
+    //endregion
 
     public GT_MetaTileEntity_EM_collider(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -157,11 +159,11 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         if(iGregTechTileEntity.getBlockOffset(0,-1,0)!=GT_Container_CasingsTT.sBlockCasingsTT){
             eTier =0;
             return false;
-        }else if(iGregTechTileEntity.getMetaIDOffset(0,-1,0)==3){
+        } else if(iGregTechTileEntity.getMetaIDOffset(0,-1,0)==3) {
             eTier =1;
-        }else if(iGregTechTileEntity.getMetaIDOffset(0,-1,0)==5){
+        } else if(iGregTechTileEntity.getMetaIDOffset(0,-1,0)==5) {
             eTier =2;
-        }else{
+        } else {
             eTier =0;
             return false;
         }

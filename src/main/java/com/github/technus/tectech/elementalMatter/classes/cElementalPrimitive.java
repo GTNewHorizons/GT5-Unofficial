@@ -1,6 +1,6 @@
 package com.github.technus.tectech.elementalMatter.classes;
 
-import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
 import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReport;
@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -15,12 +16,12 @@ import java.util.TreeMap;
  * EXTEND THIS TO ADD NEW PRIMITIVES, WATCH OUT FOR ID'S!!!  (-1 to 32 can be assumed as used)
  */
 public abstract class cElementalPrimitive extends cElementalDefinition {
-    public static final TreeMap<cElementalPrimitive, ItemStack> itemBinds = new TreeMap<>();
-    public static final TreeMap<cElementalPrimitive, FluidStack> fluidBinds = new TreeMap<>();
+    public static final Map<cElementalPrimitive, ItemStack> itemBinds = new TreeMap<>();
+    public static final Map<cElementalPrimitive, FluidStack> fluidBinds = new TreeMap<>();
 
     private static final byte nbtType = (byte) 'p';
 
-    public static final TreeMap<Integer, iElementalDefinition> bindsBO = new TreeMap<>();
+    public static final Map<Integer, iElementalDefinition> bindsBO = new TreeMap<>();
 
     public final String name;
     public final String symbol;
@@ -28,7 +29,7 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
     public final float mass;
     //int -electric charge in 1/3rds of electron charge for optimization
     public final byte charge;
-    //-1 if is not colorable
+    //byte color; 0=Red 1=Green 2=Blue 3=Order 4=Earth 5=Water 0=Cyan 1=Magenta 2=Yellow 3=Entropy 4=Air 5=Fire, else ignored (-1 - uncolorable)
     public final byte color;
     //-1/-2/-3 anti matter generations, +1/+2/+3 matter generations, 0 self anti
     public final byte type;
@@ -118,7 +119,7 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
     }
 
     @Override
-    public final cElementalDefinitionStackTree getSubParticles() {
+    public final cElementalDefinitionStackMap getSubParticles() {
         return null;
     }
 
@@ -169,7 +170,12 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
         try {
             cElementalDefinition.addCreatorFromNBT(nbtType, cElementalPrimitive.class.getMethod("fromNBT", NBTTagCompound.class));
         } catch (Exception e) {
-            if (TecTech.ModConfig.DEBUG_MODE) e.printStackTrace();
+            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
         }
+    }
+
+    @Override
+    public final int hashCode() {
+        return ID;
     }
 }

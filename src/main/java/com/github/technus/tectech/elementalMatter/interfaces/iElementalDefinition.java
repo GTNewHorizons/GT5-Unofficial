@@ -1,7 +1,7 @@
 package com.github.technus.tectech.elementalMatter.interfaces;
 
 import com.github.technus.tectech.elementalMatter.classes.cElementalDecay;
-import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStackTree;
+import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStackMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
@@ -37,7 +37,7 @@ public interface iElementalDefinition extends Comparable<iElementalDefinition> {
 
     float getRawLifeTime();//defined in static fields or generated
 
-    cElementalDefinitionStackTree getSubParticles();//contents... null if none
+    cElementalDefinitionStackMap getSubParticles();//contents... null if none
 
     ItemStack materializesIntoItem();
 

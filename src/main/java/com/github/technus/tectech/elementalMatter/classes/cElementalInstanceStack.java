@@ -14,7 +14,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
     public final iElementalDefinition definition;
     //energy - if positive then particle should try to decay
     public int energy;
-    //byte color; 0=R 1=G 2=B 0=C 1=M 2=Y, else ignored
+    //byte color; 0=Red 1=Green 2=Blue 3=Order 4=Earth 5=Water 0=Cyan 1=Magenta 2=Yellow 3=Entropy 4=Air 5=Fire, else ignored (-1 - uncolorable)
     private byte color;
     public long age;
     public int amount;
@@ -36,7 +36,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
     public cElementalInstanceStack(iElementalDefinition defSafe, int amount, float lifeTimeMult, long age, int energy) {
         this.definition = defSafe == null ? null__ : defSafe;
         byte color = definition.getColor();
-        if (color < (byte) 0) {//transforms colorable??? into proper color
+        if (color < 0 || color >= 3) {//transforms colorable??? into proper color
             this.color = color;
         } else {
             this.color = (byte) (TecTech.Rnd.nextInt(3));
@@ -70,20 +70,18 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         return definition;
     }
 
-    public byte getColor() {
+    public final byte getColor() {
         return color;
     }
 
-    public byte setColor(byte color) {
-        if (this.color < (byte) 0) return this.color;
-        this.color = color;
-        return this.color;
+    public final byte setColor(byte color) {//does not allow changing magic element
+        if (this.color < 0 || this.color >= 3 || color<0 || color>=3) return this.color;
+        return this.color = color;
     }
 
-    public byte nextColor() {
-        if (this.color < (byte) 0) return this.color;
-        this.color = (byte) (TecTech.Rnd.nextInt(3));
-        return this.color;
+    public final byte nextColor() {//does not allow changing magic element
+        if (this.color < 0 || this.color >= 3 ) return this.color;
+        return this.color = (byte) (TecTech.Rnd.nextInt(3));
     }
 
     public float getLifeTime() {
@@ -100,11 +98,11 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         return lifeTimeMult;
     }
 
-    public cElementalInstanceStackTree decay() {
+    public cElementalInstanceStackMap decay() {
         return decay(1F, age, 0);
     }
 
-    public cElementalInstanceStackTree decay(Float lifeTimeMult, long age, int postEnergize) {
+    public cElementalInstanceStackMap decay(Float lifeTimeMult, long age, int postEnergize) {
         if (this.energy > 0) {
             this.energy--;
             return decayCompute(definition.getEnergeticDecayInstant(), lifeTimeMult, age, postEnergize + this.energy);
@@ -118,7 +116,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         return null;//return null since decay cannot be achieved
     }
 
-    public cElementalInstanceStackTree decay(long age, int postEnergize) {
+    public cElementalInstanceStackMap decay(long age, int postEnergize) {
         if (this.energy > 0) {
             this.energy--;
             return decayCompute(definition.getEnergeticDecayInstant(), lifeTimeMult, age, postEnergize + this.energy);
@@ -132,14 +130,14 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         return null;//return null since decay cannot be achieved
     }
 
-    private cElementalInstanceStackTree decayCompute(cElementalDecay[] decays, float lifeTimeMult, long age, int energy) {
+    private cElementalInstanceStackMap decayCompute(cElementalDecay[] decays, float lifeTimeMult, long age, int energy) {
         if (decays == null) return null;//Can not decay so it wont
         else if (decays.length == 0)
-            return new cElementalInstanceStackTree();//provide non null 0 length array for annihilation
+            return new cElementalInstanceStackMap();//provide non null 0 length array for annihilation
         else if (decays.length == 1) {//only one type of decay :D, doesn't need dead end
             return decays[0].getResults(lifeTimeMult, age, energy, this.amount);
         } else {
-            cElementalInstanceStackTree output = new cElementalInstanceStackTree();
+            cElementalInstanceStackMap output = new cElementalInstanceStackMap();
             final int differentDecays = decays.length;
             int[] qttyOfDecay = new int[differentDecays];
             int amountRemaining = this.amount, amount = this.amount;
