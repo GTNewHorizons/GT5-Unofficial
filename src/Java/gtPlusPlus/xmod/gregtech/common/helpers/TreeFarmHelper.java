@@ -229,13 +229,14 @@ public class TreeFarmHelper {
 
 	public static SAWTOOL isCorrectMachinePart(final ItemStack aStack) {
 		if (aStack != null){
+			//Utils.LOG_INFO("Found "+aStack.getDisplayName()+" in the GUI slot.");
 			if ((aStack.getItem() instanceof GT_MetaGenerated_Item_02) || (aStack.getItem() instanceof GT_MetaGenerated_Tool)){
 				if (OrePrefixes.craftingTool.contains(aStack)){
-					if (aStack.getDisplayName().toLowerCase().contains("saw")){
+					if (aStack.getDisplayName().toLowerCase().contains("saw") || aStack.getDisplayName().toLowerCase().contains("gt.metatool.01.10")){
 						if (aStack.getItemDamage() == 10){
 							return SAWTOOL.SAW;
 						}
-						else if (aStack.getItemDamage() == 140){
+						else if (aStack.getItemDamage() == 140  || aStack.getDisplayName().toLowerCase().contains("gt.metatool.01.140")){
 							return SAWTOOL.BUZZSAW;
 						}
 						else {

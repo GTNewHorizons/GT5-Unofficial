@@ -36,6 +36,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
@@ -92,13 +93,42 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 
 	@Override
 	public void saveNBTData(final NBTTagCompound aNBT) {
+		
+		Utils.LOG_INFO("Called NBT data save");
 		aNBT.setLong("mInternalPower", this.mInternalPower);
+		
+		//Save [Buzz]Saw
+		final NBTTagList list = new NBTTagList();
+		for(int i = 0;i<2;i++){
+			final ItemStack stack = this.mInventory[i];
+			if(stack != null){
+				final NBTTagCompound data = new NBTTagCompound();
+				stack.writeToNBT(data);
+				data.setInteger("Slot", i);
+				Utils.LOG_INFO("Saving "+stack.getDisplayName()+" in slot "+i);
+				list.appendTag(data);
+			}
+		}
+		aNBT.setTag("Items", list);
+		
 		super.saveNBTData(aNBT);
 	}
 
 	@Override
 	public void loadNBTData(final NBTTagCompound aNBT) {
 		this.mInternalPower = aNBT.getLong("mInternalPower");
+		
+		//Load [Buzz]Saw
+		final NBTTagList list = aNBT.getTagList("Items", 10);
+		for(int i = 0;i<list.tagCount();i++){
+			final NBTTagCompound data = list.getCompoundTagAt(i);
+			final int slot = data.getInteger("Slot");
+			if((slot >= 0) && (slot < 2)){
+				this.mInventory[slot] = ItemStack.loadItemStackFromNBT(data);
+				Utils.LOG_INFO("Loading "+this.mInventory[slot].getDisplayName()+" in slot "+i);
+			}
+		}
+		
 		super.loadNBTData(aNBT);
 	}
 
@@ -133,10 +163,10 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		else {
 			if (this.energyHatchRetryCount <= 10){
 				this.energyHatchRetryCount++;
-				Utils.LOG_MACHINE_INFO("No energy hatches found.");
+				//Utils.LOG_MACHINE_INFO("No energy hatches found.");
 			}
 			else {
-				Utils.LOG_MACHINE_INFO("Rechecking for Energy hatches.");
+				//Utils.LOG_MACHINE_INFO("Rechecking for Energy hatches.");
 				this.energyHatchRetryCount = 0;
 				this.mEnergyHatches = new ArrayList<>();
 				this.checkMachine(aBaseMetaTileEntity, this.mInventory[1]);
@@ -190,18 +220,19 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 
 	@Override
 	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GUI_TreeFarmer(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "TreeFarmer.png");
+			return new GUI_TreeFarmer(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "TreeFarmer.png");
 	}
 
 	@Override
 	public Object getServerGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
-		return new CONTAINER_TreeFarmer(aPlayerInventory, aBaseMetaTileEntity);
+			return new CONTAINER_TreeFarmer(aPlayerInventory, aBaseMetaTileEntity);
 	}
 
 	@Override
 	public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) {
-		if (aBaseMetaTileEntity.isClientSide()) {
-			return true;
+		if (aBaseMetaTileEntity.isClientSide() || aBaseMetaTileEntity.getWorld().isRemote) {
+			Utils.LOG_INFO("Doing nothing Client Side.");
+			return false;
 		}
 		aBaseMetaTileEntity.openGUI(aPlayer);
 		return true;
@@ -360,7 +391,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 			GT_MetaTileEntity_Hatch_Maintenance x = this.mMaintenanceHatches.get(0);
 			//Utils.LOG_MACHINE_INFO("Checking status of maint. hatches.");
 			if (x.mCrowbar && x.mHardHammer && x.mScrewdriver && x.mSoftHammer && x.mSolderingTool && x.mWrench){
-				Utils.LOG_MACHINE_INFO("Maint. hatch 0 was okay.");
+				//Utils.LOG_MACHINE_INFO("Maint. hatch 0 was okay.");
 				return true;
 			}
 			else {
@@ -376,7 +407,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 			}
 		}
 		else {
-			Utils.LOG_MACHINE_INFO("Found no maint. hatches.");
+			//Utils.LOG_MACHINE_INFO("Found no maint. hatches.");
 		}
 		return false;
 	}
@@ -486,30 +517,30 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 				final int h = 1;
 				//Utils.LOG_MACHINE_INFO("Looking for saplings.");
 				if (this.mInternalPower >= 32) {
-				if (TreefarmManager.isSapling(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))){
-					int posiX, posiY, posiZ;
-					posiX = aBaseMetaTileEntity.getXCoord()+xDir+i;
-					posiY = aBaseMetaTileEntity.getYCoord()+h;
-					posiZ = aBaseMetaTileEntity.getZCoord()+zDir+j;
-					//Utils.LOG_MACHINE_INFO("Found a sapling to grow.");
-					saplings++;
+					if (TreefarmManager.isSapling(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j))){
+						int posiX, posiY, posiZ;
+						posiX = aBaseMetaTileEntity.getXCoord()+xDir+i;
+						posiY = aBaseMetaTileEntity.getYCoord()+h;
+						posiZ = aBaseMetaTileEntity.getZCoord()+zDir+j;
+						//Utils.LOG_MACHINE_INFO("Found a sapling to grow.");
+						saplings++;
 
-					if (this.depleteFertiliser()){
-						if (this.drainEnergyInput(powerDrain)){
-							final short fertTier = this.getFertiliserTier(this.getCurrentFertiliserStack());
-							TreeFarmHelper.applyBonemeal(this.getFakePlayer(), aBaseMetaTileEntity.getWorld(), posiX, posiY, posiZ, fertTier);
+						if (this.depleteFertiliser()){
+							if (this.drainEnergyInput(powerDrain)){
+								final short fertTier = this.getFertiliserTier(this.getCurrentFertiliserStack());
+								TreeFarmHelper.applyBonemeal(this.getFakePlayer(), aBaseMetaTileEntity.getWorld(), posiX, posiY, posiZ, fertTier);
+							}
+							else {
+								Utils.LOG_MACHINE_INFO("x3");
+								break;
+							}
 						}
 						else {
-							Utils.LOG_MACHINE_INFO("x3");
+							Utils.LOG_MACHINE_INFO("x2");
 							break;
 						}
 					}
-					else {
-						Utils.LOG_MACHINE_INFO("x2");
-						break;
-					}
 				}
-			}
 			}
 		}
 		Utils.LOG_MACHINE_INFO("Tried to grow saplings: | "+saplings );
@@ -526,7 +557,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		int counter = 0;
 		if (r.size() > 0){
 			Utils.LOG_MACHINE_INFO("| r was not null. "+r.size()+" |");
-			if (this.mInternalPower >= 32) {
+			if (this.getStoredInternalPower() >= 32) {
 				OUTER : for (final ItemStack n : r){
 					Utils.LOG_MACHINE_INFO("found "+n.getDisplayName());
 					if (OrePrefixes.sapling.contains(n) || n.getDisplayName().toLowerCase().contains("sapling")){
@@ -636,10 +667,10 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 			final Block block = world.getBlock(x, y, z);
 			int chanceForLeaves = 1000;
 			//is it leaves or a log? if leaves, heavily reduce chance to obtain rubber/output
-			if (block.getUnlocalizedName().toLowerCase().contains("leaves")){
-				chanceForLeaves = MathUtils.randInt(1, 1000);
-				if (chanceForLeaves > 990) {
-					Utils.LOG_MACHINE_INFO("Found some leaves that will drop, chance to drop item "+chanceForLeaves+", needed 990-1000.");
+			if (block.getUnlocalizedName().toLowerCase().contains("leaves") || block.getUnlocalizedName().toLowerCase().contains("leaf") || TreefarmManager.isLeaves(block)){
+				chanceForLeaves = MathUtils.randInt(1, 10);
+				if (chanceForLeaves > 8) {
+					Utils.LOG_MACHINE_INFO("Found some leaves that will drop, chance to drop item "+chanceForLeaves+", needed 800-1000.");
 				}
 			}
 
@@ -648,7 +679,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 				final ItemStack rubberResin = ItemUtils.getCorrectStacktype("IC2:itemHarz", 1);
 				final int chanceForRubber = MathUtils.randInt(1, 10);
 				final int multiplier = MathUtils.randInt(1, 3);
-				if ((chanceForRubber > 7) && (chanceForLeaves > 990)){
+				if ((chanceForRubber > 7) && (chanceForLeaves > 8)){
 					rubberResin.stackSize = multiplier;
 					Utils.LOG_MACHINE_INFO("Adding "+rubberResin.getDisplayName()+" x"+rubberResin.stackSize);
 					this.addOutput(rubberResin);
@@ -663,7 +694,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 			//Add Drops
 			if (drops != null){
 				for (final ItemStack outputs : drops){
-					if (chanceForLeaves > 990){
+					if (chanceForLeaves > 8){
 						Utils.LOG_MACHINE_INFO("Adding 1x "+outputs.getDisplayName());
 						this.addOutput(outputs);
 						//Update bus contents.
@@ -951,13 +982,14 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 			}
 			//Tick TE
 			this.tickHandler();
+			this.markDirty();
 
 		}
 		//Client Side - do nothing
 
 	}
-	
-	
+
+
 	public static boolean damageOrDechargeItem(ItemStack aStack, int aDamage, int aDecharge, EntityLivingBase aPlayer) {
 		if ((GT_Utility.isStackInvalid(aStack)) || ((aStack.getMaxStackSize() <= 1) && (aStack.stackSize > 1)))
 			return false;

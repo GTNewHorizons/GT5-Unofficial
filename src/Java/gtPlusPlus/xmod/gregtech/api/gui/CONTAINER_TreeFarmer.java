@@ -34,7 +34,7 @@ public class CONTAINER_TreeFarmer extends GT_ContainerMetaTile_Machine {
 
 	@Override
 	public int getShiftClickSlotCount() {
-		return 0;
+		return 1;
 	}
 
 	@Override
@@ -59,6 +59,9 @@ public class CONTAINER_TreeFarmer extends GT_ContainerMetaTile_Machine {
 		for(final ICrafting crafting : (List<ICrafting>)this.crafters) {
 			crafting.sendProgressBarUpdate(this, 100, (int) ((GregtechMetaTileEntityTreeFarm) this.mTileEntity.getMetaTileEntity()).maxEUStore());
 			crafting.sendProgressBarUpdate(this, 101, (int) ((GregtechMetaTileEntityTreeFarm) this.mTileEntity.getMetaTileEntity()).getStoredInternalPower());
+			if (((GregtechMetaTileEntityTreeFarm) this.mTileEntity.getMetaTileEntity()).isCorrectMachinePart(this.mTileEntity.getStackInSlot(1))){	
+				this.mTileEntity.markDirty();
+				}
 		}
 	}
 

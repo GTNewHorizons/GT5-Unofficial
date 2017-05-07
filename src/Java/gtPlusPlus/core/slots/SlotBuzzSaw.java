@@ -27,7 +27,7 @@ public class SlotBuzzSaw extends Slot{
 					isValid = false;
 				}*/
 				if (OrePrefixes.craftingTool.contains(itemstack)){
-					if (itemstack.getDisplayName().toLowerCase().contains("saw")){
+					if (itemstack.getDisplayName().toLowerCase().contains("saw") || itemstack.getDisplayName().toLowerCase().contains("gt.metatool.01.10") || itemstack.getDisplayName().toLowerCase().contains("gt.metatool.01.140")){
 						if (itemstack.getItemDamage() == 10){
 							isValid = true;
 							this.currentTool = SAWTOOL.SAW;
