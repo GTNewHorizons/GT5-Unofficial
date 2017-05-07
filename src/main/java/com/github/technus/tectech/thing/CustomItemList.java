@@ -29,7 +29,7 @@ public enum CustomItemList implements IItemContainer {
     eM_out_UV, eM_out_UHV, eM_out_UEV, eM_out_UIV, eM_out_UMV, eM_out_UXV,
     eM_muffler_UV, eM_muffler_UHV, eM_muffler_UEV, eM_muffler_UIV, eM_muffler_UMV, eM_muffler_UXV,
     Parametrizer_Hatch, Uncertainty_Hatch, UncertaintyX_Hatch, dataIn_Hatch, dataOut_Hatch,
-    eM_Casing, eM_Field, eM_Field_Casing, eM_Coil, eM_Tele, eM_TimeSpaceWarp, eM_computer, eM_computerAdv, eM_computerVent, eM_Hollow,
+    eM_Containment, eM_Containment_Field, eM_Containment_Advanced, eM_Coil, eM_Teleportation, eM_Dimensional, eM_Ultimate_Containment,eM_Ultimate_Containment_Advanced,eM_Ultimate_Containment_Field,eM_Spacetime, eM_Computer_Casing, eM_Computer_Bus, eM_Computer_Vent, eM_Hollow, eM_Power,
     debugBlock,
     Machine_Multi_MatterToEM, Machine_Multi_EMToMatter, Machine_Multi_EMjunction,
     Machine_Multi_Transformer, Machine_Multi_Computer, Machine_Multi_Infuser, Machine_Multi_Switch,

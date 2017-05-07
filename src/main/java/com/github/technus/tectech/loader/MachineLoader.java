@@ -200,8 +200,8 @@ public class MachineLoader implements Runnable {
         // ===================================================================================================
         // Hatches
         // ===================================================================================================
-        Parametrizer_Hatch.set(new GT_MetaTileEntity_Hatch_Param(15420, "hatch.param.tier.08", "Parametrizer", 8).getStackForm(1L));
-        Uncertainty_Hatch.set(new GT_MetaTileEntity_Hatch_Uncertainty(15421, "hatch.certain.tier.08", "Uncertainty Resolver", 10).getStackForm(1L));
+        Parametrizer_Hatch.set(new GT_MetaTileEntity_Hatch_Param(15420, "hatch.param.tier.08", "Parametrizer", 7).getStackForm(1L));
+        Uncertainty_Hatch.set(new GT_MetaTileEntity_Hatch_Uncertainty(15421, "hatch.certain.tier.08", "Uncertainty Resolver", 7).getStackForm(1L));
         UncertaintyX_Hatch.set(new GT_MetaTileEntity_Hatch_Uncertainty(15422, "hatch.certain.tier.10", "Uncertainty Resolver X", 10).getStackForm(1L));
         dataIn_Hatch.set(new GT_MetaTileEntity_Hatch_InputData(15423, "hatch.datain.tier.08", "Optical Slave Connector", 8).getStackForm(1L));
         dataOut_Hatch.set(new GT_MetaTileEntity_Hatch_OutputData(15424, "hatch.dataout.tier.08", "Optical Master Connector", 8).getStackForm(1L));
@@ -210,7 +210,7 @@ public class MachineLoader implements Runnable {
         // ===================================================================================================
         // Pipes
         // ===================================================================================================
-        EMpipe.set(new GT_MetaTileEntity_Pipe_EM(15460, "pipe.elementalmatter", "Quantum Tunnel").getStackForm(1L));
+        EMpipe.set(new GT_MetaTileEntity_Pipe_EM(15460, "pipe.elementalmatter", "Quantum \"Tunnel\"").getStackForm(1L));
         DATApipe.set(new GT_MetaTileEntity_Pipe_Data(15461, "pipe.datastream", "Optical Fiber Cable").getStackForm(1L));
 
         // ===================================================================================================
