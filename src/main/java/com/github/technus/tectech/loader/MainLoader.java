@@ -8,7 +8,7 @@ import com.github.technus.tectech.thing.item.DebugContainer_EM;
 
 import static com.github.technus.tectech.TecTech.mainTab;
 
-public class MainLoader {
+public class MainLoader {//TODO add checks for - is mod loaded dreamcraft to enable higher tier machinery. (above UV), or implement a check for GT tier values.
     public MainLoader() {}
 
     public void things() {
