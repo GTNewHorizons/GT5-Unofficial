@@ -15,8 +15,12 @@ import com.github.technus.tectech.thing.casing.GT_Container_CasingsTT;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.objects.GT_RenderedTexture;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -28,6 +32,7 @@ import java.util.HashMap;
 import static com.github.technus.tectech.Util.isInputEqual;
 import static com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition.getBestUnstableIsotope;
 import static com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition.getFirstStableIsotope;
+import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
 import static gregtech.api.enums.GT_Values.V;
 
 /**
@@ -37,6 +42,22 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
     public static HashMap<Integer, cElementalDefinitionStack> itemBinds = new HashMap<>(32);
     public static HashMap<Integer, cElementalDefinitionStack> fluidBind = new HashMap<>(8);
     private static float refMass, refUnstableMass;
+
+    //region Structure
+    //use multi A energy inputs, use less power the longer it runs
+    private static final String[][] shape = new String[][]{
+            {"!!!","!+!","!!!",},
+            {"010","101","010",},
+            {"\"\"\"","\"0\"","\"\"\"",},
+            {"202","0 0","202",},
+    };
+    private static final Block[] blockType = new Block[]{sBlockCasingsTT,sBlockCasingsTT,QuantumGlassBlock.INSTANCE};
+    private static final byte[] blockMeta = new byte[]{4,0,0};
+    private static final String[] addingMethods = new String[]{"addElementalOutputToMachineList","addClassicToMachineList","addElementalMufflerToMachineList"};
+    private static final byte[] casingTextures = new byte[]{textureOffset+4,textureOffset,textureOffset+4};
+    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT,sBlockCasingsTT,sBlockCasingsTT};
+    private static final byte[] blockMetaFallback = new byte[]{4,0,4};
+    //endregion
 
     public GT_MetaTileEntity_EM_quantizer(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -52,30 +73,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
 
     @Override
     public boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX;
-        int yDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY;
-        int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ;
-        if (iGregTechTileEntity.getBlockOffset(xDir, yDir, zDir) != QuantumGlassBlock.INSTANCE) return false;
-        for (int i = -1; i < 2; i++) {
-            for (int j = -1; j < 2; j++) {
-                for (int h = -1; h < 2; h++) {
-                    if ((i != 0 || j != 0 || h != 0)/*exclude center*/ && (xDir + i != 0 || yDir + h != 0 || zDir + j != 0)/*exclude this*/) {
-                        IGregTechTileEntity tTileEntity = iGregTechTileEntity.getIGregTechTileEntityOffset(xDir + i, yDir + h, zDir + j);
-                        if ((!addMaintenanceToMachineList(tTileEntity, 99)) &&
-                                (!addClassicInputToMachineList(tTileEntity, 99)) &&
-                                (!addElementalOutputToMachineList(tTileEntity, 99)) &&
-                                (!addMufflerToMachineList(tTileEntity, 99)) &&
-                                (!addEnergyIOToMachineList(tTileEntity, 99))) {
-                            if (iGregTechTileEntity.getBlockOffset(xDir + i, yDir + h, zDir + j) != GT_Container_CasingsTT.sBlockCasingsTT ||
-                                    iGregTechTileEntity.getMetaIDOffset(xDir + i, yDir + h, zDir + j) != 3) {
-                                return false;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return true;
+        return EM_StructureCheckAdvanced(shape,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,1,1,0);
     }
 
     @Override

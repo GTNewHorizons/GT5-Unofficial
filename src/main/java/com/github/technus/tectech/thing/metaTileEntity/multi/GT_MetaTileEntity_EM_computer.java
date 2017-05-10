@@ -38,11 +38,11 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     private static final String[][] cap = new String[][]{{"-01","A22","A22","-01",},};
     private static final String[][] slice = new String[][]{{"-01","A!2","A!2","-01",},};
     private static final Block[] blockType = new Block[]{sBlockCasingsTT,sBlockCasingsTT,sBlockCasingsTT};
-    private static final byte[] blockMeta = new byte[]{2,0,1};
+    private static final byte[] blockMeta = new byte[]{2,1,3};
     private static final String[] addingMethods = new String[]{"addToMachineList","addRackToMachineList"};
-    private static final byte[] casingTextures = new byte[]{96,97};
+    private static final byte[] casingTextures = new byte[]{textureOffset+1,textureOffset+3};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT,sBlockCasingsTT};
-    private static final byte[] blockMetaFallback = new byte[]{0,1};
+    private static final byte[] blockMetaFallback = new byte[]{1,3};
     //endregion
 
     public GT_MetaTileEntity_EM_computer(int aID, String aName, String aNameRegional) {
@@ -64,9 +64,9 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[96], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset+3], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
         }
-        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[96]};
+        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset+3]};
     }
 
     @Override

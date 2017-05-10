@@ -1,13 +1,17 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
+import static gregtech.api.GregTech_API.sBlockCasings1;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -42,16 +46,16 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
         int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX;
         int yDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY;
         int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ;
-        if (iGregTechTileEntity.getBlockOffset(xDir, yDir, zDir) != sBlockCasingsTT || iGregTechTileEntity.getMetaIDOffset(xDir, yDir, zDir) != 6)
-            return false;
+        if (iGregTechTileEntity.getBlockOffset(xDir, yDir, zDir) != sBlockCasings1 || iGregTechTileEntity.getMetaIDOffset(xDir, yDir, zDir) != 15)
+            return false;//Not superconducting coil in middle
         for (int i = -1; i < 2; i++) {
             for (int j = -1; j < 2; j++) {
                 for (int h = -1; h < 2; h++) {
                     if ((i != 0 || j != 0 || h != 0)/*exclude center*/ && (xDir + i != 0 || yDir + h != 0 || zDir + j != 0)/*exclude this*/) {
                         IGregTechTileEntity tTileEntity = iGregTechTileEntity.getIGregTechTileEntityOffset(xDir + i, yDir + h, zDir + j);
-                        if (!addEnergyIOToMachineList(tTileEntity, 99)) {
+                        if (!addEnergyIOToMachineList(tTileEntity, textureOffset)) {
                             if (iGregTechTileEntity.getBlockOffset(xDir + i, yDir + h, zDir + j) != sBlockCasingsTT ||
-                                    iGregTechTileEntity.getMetaIDOffset(xDir + i, yDir + h, zDir + j) != 3) {
+                                    iGregTechTileEntity.getMetaIDOffset(xDir + i, yDir + h, zDir + j) != 0) {
                                 return false;
                             }
                         }
@@ -60,6 +64,13 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
             }
         }
         return true;
+    }
+
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+        if (aSide == aFacing) {
+            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+        }
+        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset]};
     }
 
     @Override

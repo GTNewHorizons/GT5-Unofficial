@@ -177,41 +177,52 @@ public class MachineLoader implements Runnable {
         // ===================================================================================================
 
         Machine_Multi_Transformer.set(new GT_MetaTileEntity_EM_transformer(15300, "multimachine.em.transformer", "Active Transformer").getStackForm(1L));
-        Machine_Multi_Infuser.set(new GT_MetaTileEntity_EM_infuser(15301,"multimachine.em.infuser","Energy Infuser").getStackForm(1));
 
-        Machine_Multi_MatterToEM.set(new GT_MetaTileEntity_EM_quantizer(15340, "multimachine.em.mattertoem", "Matter Quantizer").getStackForm(1L));
-        Machine_Multi_EMToMatter.set(new GT_MetaTileEntity_EM_dequantizer(15341, "multimachine.em.emtomatter", "Matter Dequantizer").getStackForm(1L));
-        Machine_Multi_EMjunction.set(new GT_MetaTileEntity_EM_junction(15342, "multimachine.em.junction", "Matter Junction").getStackForm(1L));
-        Machine_Multi_EMmachine.set(new GT_MetaTileEntity_EM_machine(15343, "multimachine.em.processing", "Quantum Processing Machine").getStackForm(1L));
-        Machine_Multi_EMCrafter.set(new GT_MetaTileEntity_EM_crafter(15344, "multimachine.em.crafter", "Matter Assembler").getStackForm(1L));
-        Machine_Multi_Scanner.set(new GT_MetaTileEntity_EM_scanner(15353, "multimachine.em.scanner", "Elemental Scanner").getStackForm(1L));
+        Machine_Multi_Switch.set(new GT_MetaTileEntity_EM_switch(15310, "multimachine.em.switch", "Network Switch With QoS").getStackForm(1L));
+        Machine_Multi_Computer.set(new GT_MetaTileEntity_EM_computer(15311, "multimachine.em.computer", "Quantum Computer").getStackForm(1L));
 
-        Machine_Multi_Collider.set(new GT_MetaTileEntity_EM_collider(15350, "multimachine.em.collider", "Matter Collider").getStackForm(1L));
-        Machine_Multi_Wormhole.set(new GT_MetaTileEntity_EM_wormhole(15351, "multimachine.em.wormhole", "Wormhole").getStackForm(1L));
-        Machine_Multi_Stabilizer.set(new GT_MetaTileEntity_EM_stabilizer(15352, "multimachine.em.stabilizer", "Elemental Stabilizer").getStackForm(1L));
+        Machine_Multi_EMjunction.set(new GT_MetaTileEntity_EM_junction(15320, "multimachine.em.junction", "Matter Junction").getStackForm(1L));
+        Machine_Multi_MatterToEM.set(new GT_MetaTileEntity_EM_quantizer(15321, "multimachine.em.mattertoem", "Matter Quantizer").getStackForm(1L));
+        Machine_Multi_EMToMatter.set(new GT_MetaTileEntity_EM_dequantizer(15322, "multimachine.em.emtomatter", "Matter Dequantizer").getStackForm(1L));
 
-        Machine_Multi_Decay.set(new GT_MetaTileEntity_EM_decay(15360,"multimachine.em.decay","Decay Generator").getStackForm(1L));
-        Machine_Multi_Annihilation.set(new GT_MetaTileEntity_EM_annihilation(15361,"multimachine.em.annihilation","Annihilation Generator").getStackForm(1L));
-        Machine_Multi_BHG.set(new GT_MetaTileEntity_EM_bhg(15362, "multimachine.em.blackholegenerator", "Black Hole Generator").getStackForm(1L));
+        Machine_Multi_Scanner.set(new GT_MetaTileEntity_EM_scanner(15330, "multimachine.em.scanner", "Elemental Scanner").getStackForm(1L));
 
-        Machine_Multi_Computer.set(new GT_MetaTileEntity_EM_computer(15380, "multimachine.em.computer", "Quantum Computer").getStackForm(1L));
-        Machine_Multi_Switch.set(new GT_MetaTileEntity_EM_switch(15381, "multimachine.em.switch", "Network Switch With QoS").getStackForm(1L));
+        Machine_Multi_Collider.set(new GT_MetaTileEntity_EM_collider(15340, "multimachine.em.collider", "Matter Collider").getStackForm(1L));
+
+        Machine_Multi_Infuser.set(new GT_MetaTileEntity_EM_infuser(15350,"multimachine.em.infuser","Energy Infuser").getStackForm(1));
+
+        Machine_Multi_EMmachine.set(new GT_MetaTileEntity_EM_machine(15360, "multimachine.em.processing", "Quantum Processing Machine").getStackForm(1L));
+
+        Machine_Multi_EMCrafter.set(new GT_MetaTileEntity_EM_crafter(15370, "multimachine.em.crafter", "Matter Assembler").getStackForm(1L));
+
+        Machine_Multi_Stabilizer.set(new GT_MetaTileEntity_EM_stabilizer(15380, "multimachine.em.stabilizer", "Elemental Stabilizer").getStackForm(1L));
+
+        Machine_Multi_Wormhole.set(new GT_MetaTileEntity_EM_wormhole(15390, "multimachine.em.wormhole", "Wormhole").getStackForm(1L));
+
+        Machine_Multi_Decay.set(new GT_MetaTileEntity_EM_decay(15400,"multimachine.em.decay","Decay Generator").getStackForm(1L));
+        Machine_Multi_Annihilation.set(new GT_MetaTileEntity_EM_annihilation(15405,"multimachine.em.annihilation","Annihilation Generator").getStackForm(1L));
+        Machine_Multi_BHG.set(new GT_MetaTileEntity_EM_bhg(15410, "multimachine.em.blackholegenerator", "Black Hole Generator").getStackForm(1L));
+
 
         // ===================================================================================================
         // Hatches
         // ===================================================================================================
         Parametrizer_Hatch.set(new GT_MetaTileEntity_Hatch_Param(15420, "hatch.param.tier.08", "Parametrizer", 7).getStackForm(1L));
-        Uncertainty_Hatch.set(new GT_MetaTileEntity_Hatch_Uncertainty(15421, "hatch.certain.tier.08", "Uncertainty Resolver", 7).getStackForm(1L));
-        UncertaintyX_Hatch.set(new GT_MetaTileEntity_Hatch_Uncertainty(15422, "hatch.certain.tier.10", "Uncertainty Resolver X", 10).getStackForm(1L));
-        dataIn_Hatch.set(new GT_MetaTileEntity_Hatch_InputData(15423, "hatch.datain.tier.08", "Optical Slave Connector", 8).getStackForm(1L));
-        dataOut_Hatch.set(new GT_MetaTileEntity_Hatch_OutputData(15424, "hatch.dataout.tier.08", "Optical Master Connector", 8).getStackForm(1L));
-        rack_Hatch.set(new GT_MetaTileEntity_Hatch_Rack(15425,"hatch.rack.tier.08","Computer Rack",8,"4 Slot Rack").getStackForm(1L));
+
+        Uncertainty_Hatch.set(new GT_MetaTileEntity_Hatch_Uncertainty(15430, "hatch.certain.tier.08", "Uncertainty Resolver", 7).getStackForm(1L));
+        UncertaintyX_Hatch.set(new GT_MetaTileEntity_Hatch_Uncertainty(15431, "hatch.certain.tier.10", "Uncertainty Resolver X", 10).getStackForm(1L));
+
+        dataIn_Hatch.set(new GT_MetaTileEntity_Hatch_InputData(15440, "hatch.datain.tier.08", "Optical Slave Connector", 8).getStackForm(1L));
+        dataOut_Hatch.set(new GT_MetaTileEntity_Hatch_OutputData(15441, "hatch.dataout.tier.08", "Optical Master Connector", 8).getStackForm(1L));
+
+        rack_Hatch.set(new GT_MetaTileEntity_Hatch_Rack(15450,"hatch.rack.tier.08","Computer Rack",8,"4 Slot Rack").getStackForm(1L));
 
         // ===================================================================================================
         // Pipes
         // ===================================================================================================
         EMpipe.set(new GT_MetaTileEntity_Pipe_EM(15460, "pipe.elementalmatter", "Quantum \"Tunnel\"").getStackForm(1L));
-        DATApipe.set(new GT_MetaTileEntity_Pipe_Data(15461, "pipe.datastream", "Optical Fiber Cable").getStackForm(1L));
+
+        DATApipe.set(new GT_MetaTileEntity_Pipe_Data(15470, "pipe.datastream", "Optical Fiber Cable").getStackForm(1L));
 
         // ===================================================================================================
         // DebugStuff

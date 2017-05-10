@@ -15,12 +15,14 @@ public class MainLoader {//TODO add checks for - is mod loaded dreamcraft to ena
         CasingLoader casingLoader = new CasingLoader();
         casingLoader.run();
         TecTech.Logger.info("Casing Init Done");
-        MachineLoader machineLoader = new MachineLoader();
-        machineLoader.run();
-        TecTech.Logger.info("Machine Init Done");
+
         ThingsLoader thingsLoader = new ThingsLoader();
         thingsLoader.run();
         TecTech.Logger.info("Other things Init Done");
+
+        MachineLoader machineLoader = new MachineLoader();
+        machineLoader.run();
+        TecTech.Logger.info("Machine Init Done");
     }
 
     public void recipes() {

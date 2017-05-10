@@ -1,5 +1,6 @@
 package com.github.technus.tectech.loader;
 
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.item.DebugBuilder;
 import com.github.technus.tectech.thing.item.DebugContainer_EM;
@@ -9,8 +10,12 @@ import com.github.technus.tectech.thing.item.DebugContainer_EM;
  */
 public class ThingsLoader implements Runnable {
     public void run() {
+
         QuantumGlassBlock.run();
+        TecTech.Logger.info("Quantum Glass registered");
+
         DebugContainer_EM.run();
         DebugBuilder.run();
+        TecTech.Logger.info("Debug Items registered");
     }
 }

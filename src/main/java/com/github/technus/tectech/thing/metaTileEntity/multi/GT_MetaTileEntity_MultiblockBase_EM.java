@@ -58,6 +58,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     protected static Textures.BlockIcons.CustomIcon ScreenOFF;
     protected static Textures.BlockIcons.CustomIcon ScreenON;
+    protected final static int textureOffset=96;
 
     public ArrayList<GT_MetaTileEntity_Hatch_InputElemental> eInputHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_OutputElemental> eOutputHatches = new ArrayList<>();
@@ -164,9 +165,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[99], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset+4], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
         }
-        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[99]};
+        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset+4]};
     }
 
     @Override
@@ -963,6 +964,80 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         return false;
     }
 
+    public final boolean addClassicToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch)
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input)
+            return mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus)
+            return mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output)
+            return mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus)
+            return mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy)
+            return mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo)
+            return mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance)
+            return mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler)
+            return mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Param)
+            return eParamHatches.add((GT_MetaTileEntity_Hatch_Param) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Uncertainty)
+            return eUncertainHatches.add((GT_MetaTileEntity_Hatch_Uncertainty) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyMulti)
+            return eEnergyMulti.add((GT_MetaTileEntity_Hatch_EnergyMulti) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoMulti)
+            return eDynamoMulti.add((GT_MetaTileEntity_Hatch_DynamoMulti) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputData)
+            return eInputData.add((GT_MetaTileEntity_Hatch_InputData) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputData)
+            return eOutputData.add((GT_MetaTileEntity_Hatch_OutputData) aMetaTileEntity);
+        return false;
+    }
+
+    public final boolean addElementalToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch)
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputElemental)
+            return eInputHatches.add((GT_MetaTileEntity_Hatch_InputElemental) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputElemental)
+            return eOutputHatches.add((GT_MetaTileEntity_Hatch_OutputElemental) aMetaTileEntity);
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_MufflerElemental)
+            return eMufflerHatches.add((GT_MetaTileEntity_Hatch_MufflerElemental) aMetaTileEntity);
+        return false;
+    }
+
+    public final boolean addClassicMufflerToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
+            return mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
+        }
+        return false;
+    }
+
+    public final boolean addElementalMufflerToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+        if (aTileEntity == null) return false;
+        IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+        if (aMetaTileEntity == null) return false;
+        if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_MufflerElemental) {
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
+            return eMufflerHatches.add((GT_MetaTileEntity_Hatch_MufflerElemental) aMetaTileEntity);
+        }
+        return false;
+    }
+
     @Override
     public final boolean addMufflerToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) return false;
@@ -1324,7 +1399,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public static void run(){
         try {
             adderMethodMap.put("addToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addToMachineList", IGregTechTileEntity.class, int.class));
+            adderMethodMap.put("addClassicToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addClassicToMachineList", IGregTechTileEntity.class, int.class));
+            adderMethodMap.put("addElementalToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addElementalToMachineList", IGregTechTileEntity.class, int.class));
             adderMethodMap.put("addMufflerToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addMufflerToMachineList", IGregTechTileEntity.class, int.class));
+            adderMethodMap.put("addClassicMufflerToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addClassicMufflerToMachineList", IGregTechTileEntity.class, int.class));
+            adderMethodMap.put("addElementalMufflerToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addElementalMufflerToMachineList", IGregTechTileEntity.class, int.class));
             adderMethodMap.put("addInputToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addInputToMachineList", IGregTechTileEntity.class, int.class));
             adderMethodMap.put("addOutputToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addOutputToMachineList", IGregTechTileEntity.class, int.class));
             adderMethodMap.put("addEnergyInputToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addEnergyInputToMachineList", IGregTechTileEntity.class, int.class));

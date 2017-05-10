@@ -40,13 +40,13 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
                 for (int h = -1; h < 2; h++) {
                     if ((i != 0 || j != 0 || h != 0)/*exclude center*/ && (xDir + i != 0 || yDir + h != 0 || zDir + j != 0)/*exclude this*/) {
                         IGregTechTileEntity tTileEntity = iGregTechTileEntity.getIGregTechTileEntityOffset(xDir + i, yDir + h, zDir + j);
-                        if ((!addMaintenanceToMachineList(tTileEntity, 99)) &&
-                                (!addElementalInputToMachineList(tTileEntity, 99)) &&
-                                (!addElementalOutputToMachineList(tTileEntity, 99)) &&
-                                (!addMufflerToMachineList(tTileEntity, 99)) &&
-                                (!addEnergyIOToMachineList(tTileEntity, 99))) {
+                        if ((!addMaintenanceToMachineList(tTileEntity, textureOffset+4)) &&
+                                (!addElementalInputToMachineList(tTileEntity, textureOffset+4)) &&
+                                (!addElementalOutputToMachineList(tTileEntity, textureOffset+4)) &&
+                                (!addMufflerToMachineList(tTileEntity, textureOffset+4)) &&
+                                (!addEnergyIOToMachineList(tTileEntity, textureOffset+4))) {
                             if (iGregTechTileEntity.getBlockOffset(xDir + i, yDir + h, zDir + j) != GT_Container_CasingsTT.sBlockCasingsTT ||
-                                    iGregTechTileEntity.getMetaIDOffset(xDir + i, yDir + h, zDir + j) != 3) {
+                                    iGregTechTileEntity.getMetaIDOffset(xDir + i, yDir + h, zDir + j) != 4) {
                                 return false;
                             }
                         }
