@@ -43,7 +43,7 @@ public class GT_Block_CasingsTT
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".6.name", "Containment Field Generator");
 
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Molecular Coil");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Collider Hollow Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Hollow Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Spacetime Altering Casing");
 
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Teleportation Casing");

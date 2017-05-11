@@ -7,19 +7,31 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
+import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
+
 /**
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase_EM {
+    //region structure
     private static final String[][] shape = new String[][]{
-            {"",//left to right top
-                    "",
-                    ""},//front
-            {},//behind front
-            {} //behind
+            {"0C0","A   ","A + ","A   ","0C0",},
+            {"00000","00000","00000","00000","00000",},
+            {"0C0","A!!!","A!0!","A!!!","0C0",},
+            {"00000","01110","01110","01110","00000",},
+            {"0\"\"\"0","\"111\"","\"111\"","\"111\"","0\"\"\"0",},
+            {"00000","01110","01110","01110","00000",},
+            {"0C0","A!!!","A!0!","A!!!","0C0",},
+            {"00000","00000","00000","00000","00000",},
+            {"0C0","A   ","A   ","A   ","0C0",},
     };
-    private static final Block[] blockType = new Block[]{};
-    private static final byte[] blockMeta = new byte[]{};
+    private static final Block[] blockType = new Block[]{sBlockCasingsTT,sBlockCasingsTT};
+    private static final byte[] blockMeta = new byte[]{4,8};
+    private static final String[] addingMethods = new String[]{"addClassicToMachineList","addElementalToMachineList","addElementalMufflerToMachineList"};
+    private static final byte[] casingTextures = new byte[]{textureOffset,textureOffset+4,textureOffset+4};
+    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT,sBlockCasingsTT,sBlockCasingsTT};
+    private static final byte[] blockMetaFallback = new byte[]{0,4,4};
+    //endregion
 
     public GT_MetaTileEntity_EM_decay(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -35,7 +47,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
 
     @Override
     public boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return false;
+        return EM_StructureCheckAdvanced(shape,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,2,2,0);
     }
 
     @Override

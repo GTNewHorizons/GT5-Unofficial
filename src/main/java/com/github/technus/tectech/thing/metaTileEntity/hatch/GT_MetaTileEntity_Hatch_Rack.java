@@ -21,8 +21,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 import static com.github.technus.tectech.CommonValues.multiCheckAt;
 import static com.github.technus.tectech.Util.getUniqueIdentifier;
@@ -35,7 +35,7 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implem
     private static Textures.BlockIcons.CustomIcon EM_R_ACTIVE;
     public int heat=0;
     private float overClock =1, overVolt =1;
-    private static Map<String,component> componentBinds=new TreeMap<>();
+    private static Map<String,component> componentBinds=new HashMap<>();
 
     public GT_MetaTileEntity_Hatch_Rack(int aID, String aName, String aNameRegional, int aTier, String descr) {
         super(aID, aName, aNameRegional, aTier, 4, descr);

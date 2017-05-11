@@ -1,25 +1,42 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
+import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
+
 /**
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBase_EM {
+
+    //region structure
     private static final String[][] shape = new String[][]{
-            {"",//left to right top
-                    "",
-                    ""},//front
-            {},//behind front
-            {} //behind
+            {"     "," 222 "," 2+2 "," 222 ","     ",},
+            {"00000","00000","00000","00000","00000",},
+            {"00100","01110","11111","01110","00100",},
+            {"01110","1C1","1C1","1C1","01110",},
+            {"01110","1C1","1C1","1C1","01110",},
+            {"01110","1C1","1C1","1C1","01110",},
+            {"00100","01110","11\"11","01110","00100",},
+            {"!!!!!","!000!","!0#0!","!000!","!!!!!",},
     };
-    private static final Block[] blockType = new Block[]{};
-    private static final byte[] blockMeta = new byte[]{};
+    private static final Block[] blockType = new Block[]{sBlockCasingsTT, QuantumGlassBlock.INSTANCE,sBlockCasingsTT};
+    private static final byte[] blockMeta = new byte[]{4,0,0};
+    private static final String[] addingMethods = new String[]{
+            "addClassicToMachineList",
+            "addElementalMufflerToMachineList",
+            "addElementalOutputToMachineList",
+            "addElementalInputToMachineList"};
+    private static final byte[] casingTextures = new byte[]{textureOffset,textureOffset+4,textureOffset+4,textureOffset+4};
+    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT,sBlockCasingsTT,sBlockCasingsTT,sBlockCasingsTT};
+    private static final byte[] blockMetaFallback = new byte[]{0,4,4,4};
+    //endregion
 
     public GT_MetaTileEntity_EM_scanner(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -35,7 +52,9 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return false;
+        if (!EM_StructureCheckAdvanced(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0))
+            return false;
+        return eInputHatches.size() != 1 || eOutputHatches.size() != 1 && eOutputHatches.get(0).getBaseMetaTileEntity().getFrontFacing() == iGregTechTileEntity.getFrontFacing();
     }
 
     @Override

@@ -12,7 +12,7 @@ import static gregtech.api.enums.GT_Values.W;
 
 public enum CustomItemList implements IItemContainer {
     Machine_DebugWriter,
-    EMpipe,DATApipe,rack_Hatch,
+    EMpipe,DATApipe,rack_Hatch,holder_Hatch,
     eM_dynamomulti4_UV, eM_dynamomulti16_UV, eM_dynamomulti64_UV,
     eM_dynamomulti4_UHV, eM_dynamomulti16_UHV, eM_dynamomulti64_UHV,
     eM_dynamomulti4_UEV, eM_dynamomulti16_UEV, eM_dynamomulti64_UEV,
@@ -34,7 +34,7 @@ public enum CustomItemList implements IItemContainer {
     Machine_Multi_MatterToEM, Machine_Multi_EMToMatter, Machine_Multi_EMjunction,
     Machine_Multi_Transformer, Machine_Multi_Computer, Machine_Multi_Infuser, Machine_Multi_Switch,
     Machine_Multi_BHG, Machine_Multi_Annihilation, Machine_Multi_Decay,
-    Machine_Multi_EMmachine, Machine_Multi_Stabilizer, Machine_Multi_Collider, Machine_Multi_Wormhole, Machine_Multi_EMCrafter, Machine_Multi_Scanner;
+    Machine_Multi_EMmachine, Machine_Multi_Stabilizer, Machine_Multi_Collider, Machine_Multi_Wormhole, Machine_Multi_EMCrafter, Machine_Multi_Scanner, Machine_Multi_Research;
 
 
     private ItemStack mStack = null;

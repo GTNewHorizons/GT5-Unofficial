@@ -5,6 +5,7 @@ import com.github.technus.tectech.elementalMatter.definitions.*;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Rack;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_computer;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_quantizer;
+import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_research;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_MultiblockBase_EM;
 
 /**
@@ -40,6 +41,7 @@ public class RecipeLoader implements Runnable {
         GT_MetaTileEntity_MultiblockBase_EM.run();
         GT_MetaTileEntity_Hatch_Rack.run();
         GT_MetaTileEntity_EM_computer.run();
+        GT_MetaTileEntity_EM_research.run();
         GT_MetaTileEntity_EM_quantizer.run();
     }
 }

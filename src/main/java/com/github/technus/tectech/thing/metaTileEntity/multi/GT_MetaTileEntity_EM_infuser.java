@@ -21,16 +21,19 @@ import static gregtech.api.GregTech_API.mEUtoRF;
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBase_EM {
-    //use multi A energy inputs, use less power the longer it runs
+    //region Structure
     private static final String[][] shape = new String[][]{
-            {"",//left to right top
-                    "",
-                    ""},//front
-            {},//behind front
-            {} //behind
+            {"   ","000","1+1","000","   ",},
+            {"   ","010","111","010","   ",},
+            {"   ","000","111","000","   ",},
     };
-    private static final Block[] blockType = new Block[]{};
-    private static final byte[] blockMeta = new byte[]{};
+    private static final Block[] blockType = new Block[]{sBlockCasingsTT,sBlockCasingsTT};
+    private static final byte[] blockMeta = new byte[]{7,4};
+    private static final String[] addingMethods = new String[]{"addClassicToMachineList"};
+    private static final byte[] casingTextures = new byte[]{textureOffset};
+    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT};
+    private static final byte[] blockMetaFallback = new byte[]{0};
+    //endregion
 
     public GT_MetaTileEntity_EM_infuser(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -42,34 +45,18 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
         minRepairStatus=(byte) getIdealStatus();
     }
 
+    @Override
+    public boolean isFacingValid(byte aFacing) {
+        return aFacing>=2;
+    }
+
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_EM_infuser(this.mName);
     }
 
     @Override
     public boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX;
-        int yDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY;
-        int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ;
-        if (iGregTechTileEntity.getBlockOffset(xDir, yDir, zDir) != sBlockCasingsTT || iGregTechTileEntity.getMetaIDOffset(xDir, yDir, zDir) != 6)
-            return false;
-        for (int i = -1; i < 2; i++) {
-            for (int j = -1; j < 2; j++) {
-                for (int h = -1; h < 2; h++) {
-                    if ((i != 0 || j != 0 || h != 0)/*exclude center*/ && (xDir + i != 0 || yDir + h != 0 || zDir + j != 0)/*exclude this*/) {
-                        IGregTechTileEntity tTileEntity = iGregTechTileEntity.getIGregTechTileEntityOffset(xDir + i, yDir + h, zDir + j);
-                        if ((!addMaintenanceToMachineList(tTileEntity, 99)) &&
-                                (!addEnergyIOToMachineList(tTileEntity, 99))) {
-                            if (iGregTechTileEntity.getBlockOffset(xDir + i, yDir + h, zDir + j) != sBlockCasingsTT ||
-                                    iGregTechTileEntity.getMetaIDOffset(xDir + i, yDir + h, zDir + j) != 3) {
-                                return false;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return true;
+        return EM_StructureCheckAdvanced(shape,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,1,2,0);
     }
 
     @Override

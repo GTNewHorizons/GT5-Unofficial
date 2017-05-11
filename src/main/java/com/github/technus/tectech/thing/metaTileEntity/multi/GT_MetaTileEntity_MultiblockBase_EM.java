@@ -35,8 +35,8 @@ import net.minecraftforge.fluids.FluidStack;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 import static com.github.technus.tectech.CommonValues.*;
 import static com.github.technus.tectech.Util.StructureChecker;
@@ -48,7 +48,7 @@ import static gregtech.api.enums.GT_Values.VN;
  * Created by danie_000 on 27.10.2016.
  */
 public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEntity_MultiBlockBase implements machineTT {
-    protected final static Map<String,Method> adderMethodMap =new TreeMap<>();
+    protected final static Map<String,Method> adderMethodMap =new HashMap<>();
     public static Method adderMethod;
 
     protected cElementalInstanceStackMap[] outputEM = new cElementalInstanceStackMap[0];
@@ -132,7 +132,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     //BUT NEEDED WHEN - machine blocks are not touching each other ot they don't implement IMachineBlockUpdateable (ex. air)
     protected boolean EM_cyclicUpdate(){
         return mUpdate<=-1000;//set to false to disable cyclic update
-        //default is once per 50s;
+        //default is once per 50s; mUpdate is decremented every tick
     }
 
 
