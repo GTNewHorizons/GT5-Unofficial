@@ -81,7 +81,7 @@ public abstract class cElementalDefinition implements iElementalDefinition {
 
     @Override
     public int hashCode() {
-        int hash=getSubParticles().size();
+        int hash=Integer.MIN_VALUE+getSubParticles().size();
         int i=9;
         for(cElementalDefinitionStack s:getSubParticles().values()){
             hash+=s.hashCode()*(i++);
