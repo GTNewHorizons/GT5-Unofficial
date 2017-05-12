@@ -10,7 +10,7 @@ import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveD
 /**
  * Created by danie_000 on 22.10.2016.
  */
-public class cElementalInstanceStack implements iHasElementalDefinition {//TODO unify checks for amount?
+public final class cElementalInstanceStack implements iHasElementalDefinition {//TODO unify checks for amount?
     public final iElementalDefinition definition;
     //energy - if positive then particle should try to decay
     public int energy;
@@ -60,11 +60,7 @@ public class cElementalInstanceStack implements iHasElementalDefinition {//TODO 
     }
 
     @Override
-    protected final Object clone() {
-        return Clone();
-    }
-
-    public final cElementalInstanceStack Clone() {
+    public final cElementalInstanceStack clone() {
         return new cElementalInstanceStack(this);
     }
 

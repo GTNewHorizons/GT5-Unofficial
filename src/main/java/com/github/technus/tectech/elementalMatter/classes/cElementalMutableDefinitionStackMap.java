@@ -47,7 +47,7 @@ public final class cElementalMutableDefinitionStackMap extends cElementalStackMa
     }
 
     @Override
-    public cElementalMutableDefinitionStackMap Clone(){
+    public cElementalMutableDefinitionStackMap clone(){
         return new cElementalMutableDefinitionStackMap(map);
     }
 
@@ -210,5 +210,15 @@ public final class cElementalMutableDefinitionStackMap extends cElementalStackMa
     public void putUnifyAll(cElementalMutableDefinitionStackMap containerUnsafe) {
         for (cElementalDefinitionStack in : containerUnsafe.map.values())
             putUnify(in);
+    }
+
+    public static cElementalMutableDefinitionStackMap fromNBT(NBTTagCompound nbt) throws tElementalException {
+        final cElementalDefinitionStack[] defStacks = new cElementalDefinitionStack[nbt.getInteger("i")];
+        for (int i = 0; i < defStacks.length; i++) {
+            defStacks[i] = cElementalDefinitionStack.fromNBT(nbt.getCompoundTag(Integer.toString(i)));
+            if (defStacks[i].definition.equals(nbtE__))
+                throw new tElementalException("Something went Wrong");
+        }
+        return new cElementalMutableDefinitionStackMap(defStacks);
     }
 }

@@ -6,7 +6,7 @@ import com.github.technus.tectech.elementalMatter.classes.cElementalPrimitive;
 /**
  * Created by Tec on 06.05.2017.
  */
-public class ePrimalAspectDefinition extends cElementalPrimitive {
+public final class ePrimalAspectDefinition extends cElementalPrimitive {
     public static final ePrimalAspectDefinition
             magic_order = new ePrimalAspectDefinition("Order", "o`", 0, 0F, 0, -1, 30),
             magic_entropy_ = new ePrimalAspectDefinition("Entropy", "e`", 0, 0F, 0, -1, 31),

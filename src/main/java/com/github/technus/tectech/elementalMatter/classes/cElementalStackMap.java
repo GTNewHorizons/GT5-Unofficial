@@ -25,13 +25,7 @@ abstract class cElementalStackMap implements Comparable<cElementalStackMap> {
     }
 
     @Override
-    protected final Object clone() {//Equal to making new obj...
-        return Clone();
-    }
-
-    public cElementalStackMap Clone(){
-        return this;
-    }
+    public abstract cElementalStackMap clone();
 
     @Deprecated
     public abstract Map<iElementalDefinition,cElementalDefinitionStack> getRawMap();
@@ -95,7 +89,7 @@ abstract class cElementalStackMap implements Comparable<cElementalStackMap> {
     }
 
     //NBT
-    public NBTTagCompound getInfoNBT() {
+    public final NBTTagCompound getInfoNBT() {
         final NBTTagCompound nbt = new NBTTagCompound();
         final String[] info = getElementalInfo();
         nbt.setInteger("i", info.length);
@@ -111,22 +105,12 @@ abstract class cElementalStackMap implements Comparable<cElementalStackMap> {
         return strings;
     }
 
-    public NBTTagCompound toNBT() {
+    public final NBTTagCompound toNBT() {
         final NBTTagCompound nbt = new NBTTagCompound();
         nbt.setInteger("i", map.size());
         int i = 0;
         for (cElementalDefinitionStack defStack : map.values())
             nbt.setTag(Integer.toString(i++), defStack.toNBT());
         return nbt;
-    }
-
-    public static cElementalMutableDefinitionStackMap fromNBT(NBTTagCompound nbt) throws tElementalException {
-        final cElementalDefinitionStack[] defStacks = new cElementalDefinitionStack[nbt.getInteger("i")];
-        for (int i = 0; i < defStacks.length; i++) {
-            defStacks[i] = cElementalDefinitionStack.fromNBT(nbt.getCompoundTag(Integer.toString(i)));
-            if (defStacks[i].definition.equals(nbtE__))
-                throw new tElementalException("Something went Wrong");
-        }
-        return new cElementalMutableDefinitionStackMap(defStacks);
     }
 }

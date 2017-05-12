@@ -13,7 +13,7 @@ import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveD
 /**
  * Created by danie_000 on 22.01.2017.
  */
-public class cElementalInstanceStackMap implements Comparable<cElementalInstanceStackMap> {
+public final class cElementalInstanceStackMap implements Comparable<cElementalInstanceStackMap> {
     private Map<iElementalDefinition, cElementalInstanceStack> map = new TreeMap<>();
 
     //Constructors
@@ -27,7 +27,7 @@ public class cElementalInstanceStackMap implements Comparable<cElementalInstance
     public cElementalInstanceStackMap(boolean clone, cElementalInstanceStack... in) {
         if (clone) {
             for (cElementalInstanceStack instance : in) {
-                map.put(instance.definition, instance.Clone());
+                map.put(instance.definition, instance.clone());
             }
         } else {
             for (cElementalInstanceStack instance : in) {
@@ -43,7 +43,7 @@ public class cElementalInstanceStackMap implements Comparable<cElementalInstance
     private cElementalInstanceStackMap(boolean clone, Map<iElementalDefinition, cElementalInstanceStack> in) {
         if (clone) {
             for (cElementalInstanceStack instance : in.values()) {
-                map.put(instance.definition, instance.Clone());
+                map.put(instance.definition, instance.clone());
             }
         } else {
             map = in;
@@ -59,11 +59,7 @@ public class cElementalInstanceStackMap implements Comparable<cElementalInstance
     }
 
     @Override
-    protected final Object clone() {
-        return Clone();
-    }
-
-    public final cElementalInstanceStackMap Clone(){
+    public final cElementalInstanceStackMap clone(){
         return new cElementalInstanceStackMap(map);
     }
 

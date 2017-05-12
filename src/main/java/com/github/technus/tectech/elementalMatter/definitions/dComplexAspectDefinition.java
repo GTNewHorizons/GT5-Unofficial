@@ -12,7 +12,7 @@ import static com.github.technus.tectech.elementalMatter.classes.cElementalDecay
 /**
  * Created by Tec on 06.05.2017.
  */
-public class dComplexAspectDefinition extends cElementalDefinition {
+public final class dComplexAspectDefinition extends cElementalDefinition {
     //TODO aspect binding
 
     private static final byte nbtType = (byte) 'c';

@@ -79,7 +79,7 @@ public final class dAtomDefinition extends cElementalDefinition {
 
     private dAtomDefinition(boolean clone, boolean check, cElementalMutableDefinitionStackMap things) throws tElementalException {
         if (check && !canTheyBeTogether(things)) throw new tElementalException("Atom Definition error");
-        this.elementalStacks = clone?things.Clone():things;
+        this.elementalStacks = clone?things.clone():things;
 
         float mass = 0;
         int cLeptons = 0;
@@ -275,7 +275,7 @@ public final class dAtomDefinition extends cElementalDefinition {
 
     @Override
     public cElementalMutableDefinitionStackMap getSubParticles() {
-        return elementalStacks.Clone();
+        return elementalStacks.clone();
     }
 
     @Override
