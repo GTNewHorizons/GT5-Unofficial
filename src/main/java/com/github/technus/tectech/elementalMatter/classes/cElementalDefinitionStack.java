@@ -71,4 +71,9 @@ public final class cElementalDefinitionStack implements iHasElementalDefinition 
                 i += stack.amount;
         return new cElementalDefinitionStack(definition, i);
     }
+
+    @Override
+    public int hashCode() {
+        return amount+81*definition.hashCode();
+    }
 }
