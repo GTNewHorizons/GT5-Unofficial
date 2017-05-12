@@ -10,7 +10,7 @@ import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveD
 /**
  * Created by danie_000 on 22.10.2016.
  */
-public final class cElementalInstanceStack implements iHasElementalDefinition {
+public class cElementalInstanceStack implements iHasElementalDefinition {
     public final iElementalDefinition definition;
     //energy - if positive then particle should try to decay
     public int energy;
@@ -46,6 +46,26 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         this.age = age;
         this.energy = energy;
         this.amount = amount;
+    }
+
+    //Clone proxy
+    private cElementalInstanceStack(cElementalInstanceStack stack){
+        definition=stack.definition;
+        energy=stack.energy;
+        color=stack.color;
+        age=stack.age;
+        amount=stack.amount;
+        lifeTime=stack.lifeTime;
+        lifeTimeMult=stack.lifeTimeMult;
+    }
+
+    @Override
+    protected final Object clone() {
+        return Clone();
+    }
+
+    public final cElementalInstanceStack Clone() {
+        return new cElementalInstanceStack(this);
     }
 
     @Override
@@ -190,12 +210,6 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
             }
             return output;
         }
-    }
-
-    public cElementalInstanceStack getCopy() {
-        cElementalInstanceStack cI = new cElementalInstanceStack(definition, amount, lifeTimeMult, age, energy);
-        cI.setColor(color);
-        return cI;
     }
 
     @Override

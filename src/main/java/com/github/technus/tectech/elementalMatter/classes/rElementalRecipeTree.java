@@ -8,7 +8,7 @@ import java.util.TreeMap;
  */
 public class rElementalRecipeTree {
     //Multimap for multiple recipes from the same thing - you know parameters might differ the output
-    private TreeMap<cElementalDefinitionStackMap, Map<Short,rElementalRecipe> > recipes = new TreeMap<>();
+    private TreeMap<cElementalMutableDefinitionStackMap, Map<Short,rElementalRecipe> > recipes = new TreeMap<>();
 
     public rElementalRecipeTree() {}
 
@@ -26,33 +26,33 @@ public class rElementalRecipeTree {
             put(recipe);
     }
 
-    public Map<Short,rElementalRecipe> findExact(cElementalDefinitionStackMap in) {
+    public Map<Short,rElementalRecipe> findExact(cElementalMutableDefinitionStackMap in) {
         return recipes.get(in);
     }
 
-    public Map<Short,rElementalRecipe> findTopMatch(cElementalDefinitionStackMap in) {
-        for (cElementalDefinitionStackMap requirement : recipes.descendingKeySet())
+    public Map<Short,rElementalRecipe> findTopMatch(cElementalMutableDefinitionStackMap in) {
+        for (cElementalMutableDefinitionStackMap requirement : recipes.descendingKeySet())
             if (in.removeAllAmounts(true, requirement))
                 return recipes.get(requirement);
         return null;
     }
 
     public Map<Short,rElementalRecipe> findTopMatch(cElementalInstanceStackMap in, boolean testOnly) {
-        for (cElementalDefinitionStackMap requirement : recipes.descendingKeySet())
+        for (cElementalMutableDefinitionStackMap requirement : recipes.descendingKeySet())
             if (in.removeAllAmounts(testOnly, requirement))
                 return recipes.get(requirement);
         return null;
     }
 
-    public Map<Short,rElementalRecipe> findBottomMatch(cElementalDefinitionStackMap in) {
-        for (cElementalDefinitionStackMap requirement : recipes.keySet())
+    public Map<Short,rElementalRecipe> findBottomMatch(cElementalMutableDefinitionStackMap in) {
+        for (cElementalMutableDefinitionStackMap requirement : recipes.keySet())
             if (in.removeAllAmounts(true, requirement))
                 return recipes.get(requirement);
         return null;
     }
 
     public Map<Short,rElementalRecipe> findBottomMatch(cElementalInstanceStackMap in, boolean testOnly) {
-        for (cElementalDefinitionStackMap requirement : recipes.keySet())
+        for (cElementalMutableDefinitionStackMap requirement : recipes.keySet())
             if (in.removeAllAmounts(testOnly, requirement))
                 return recipes.get(requirement);
         return null;

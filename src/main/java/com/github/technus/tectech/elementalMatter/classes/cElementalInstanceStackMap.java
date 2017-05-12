@@ -13,8 +13,8 @@ import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveD
 /**
  * Created by danie_000 on 22.01.2017.
  */
-public final class cElementalInstanceStackMap implements Comparable<cElementalInstanceStackMap> {
-    private Map<iElementalDefinition, cElementalInstanceStack> tree = new TreeMap<>();
+public class cElementalInstanceStackMap implements Comparable<cElementalInstanceStackMap> {
+    private Map<iElementalDefinition, cElementalInstanceStack> map = new TreeMap<>();
 
     //Constructors
     public cElementalInstanceStackMap() {
@@ -24,15 +24,14 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         this(true, inSafe);
     }
 
-    public cElementalInstanceStackMap(boolean copy, cElementalInstanceStack... in) {
-        if (in == null) return;
-        if (copy) {
+    public cElementalInstanceStackMap(boolean clone, cElementalInstanceStack... in) {
+        if (clone) {
             for (cElementalInstanceStack instance : in) {
-                tree.put(instance.definition, instance.getCopy());
+                map.put(instance.definition, instance.Clone());
             }
         } else {
             for (cElementalInstanceStack instance : in) {
-                tree.put(instance.definition, instance);
+                map.put(instance.definition, instance);
             }
         }
     }
@@ -41,33 +40,41 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         this(true, inSafe);
     }
 
-    private cElementalInstanceStackMap(boolean copy, Map<iElementalDefinition, cElementalInstanceStack> in) {
-        if (in == null) return;
-        if (copy) {
+    private cElementalInstanceStackMap(boolean clone, Map<iElementalDefinition, cElementalInstanceStack> in) {
+        if (clone) {
             for (cElementalInstanceStack instance : in.values()) {
-                tree.put(instance.definition, instance.getCopy());
+                map.put(instance.definition, instance.Clone());
             }
         } else {
-            tree = in;
+            map = in;
         }
     }
 
     public cElementalInstanceStackMap(cElementalInstanceStackMap inSafe) {
-        this(true, inSafe.tree);
+        this(true, inSafe.map);
     }
 
     public cElementalInstanceStackMap(boolean copy, cElementalInstanceStackMap in) {
-        this(copy, in.tree);
+        this(copy, in.map);
     }
 
     @Override
-    protected Object clone() throws CloneNotSupportedException {
-        return new cElementalInstanceStackMap(tree);
+    protected final Object clone() {
+        return Clone();
+    }
+
+    public final cElementalInstanceStackMap Clone(){
+        return new cElementalInstanceStackMap(map);
+    }
+
+    @Deprecated
+    public Map<iElementalDefinition,cElementalInstanceStack> getRawMap() {
+        return map;
     }
 
     @Override
     public int compareTo(cElementalInstanceStackMap o) {
-        if (tree.size() != o.tree.size()) return tree.size() - o.tree.size();
+        if (map.size() != o.map.size()) return map.size() - o.map.size();
         cElementalInstanceStack[] ofThis = values(), ofThat = o.values();
         for (int i = 0; i < ofThat.length; i++) {
             int result = ofThis[i].compareTo(ofThat[i]);
@@ -78,32 +85,32 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
 
     //Removers
     public void clear() {
-        tree.clear();
+        map.clear();
     }
 
     public cElementalInstanceStack remove(iElementalDefinition def) {
-        return tree.remove(def);
+        return map.remove(def);
     }
 
     @Deprecated
     public cElementalInstanceStack remove(iHasElementalDefinition has) {
-        return tree.remove(has.getDefinition());
+        return map.remove(has.getDefinition());
     }
 
     public void removeAll(iElementalDefinition... definitions) {
         for (iElementalDefinition def : definitions)
-            tree.remove(def);
+            map.remove(def);
     }
 
     @Deprecated
     private void removeAll(iHasElementalDefinition... hasElementals) {
         for (iHasElementalDefinition has : hasElementals)
-            tree.remove(has.getDefinition());
+            map.remove(has.getDefinition());
     }
 
     //Remove amounts
     public boolean removeAmount(boolean testOnly, cElementalInstanceStack instance) {
-        final cElementalInstanceStack target = tree.get(instance.definition);
+        final cElementalInstanceStack target = map.get(instance.definition);
         if (target == null)
             return false;
         if (testOnly)
@@ -114,7 +121,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
                 target.amount = diff;
                 return true;
             } else if (diff == 0) {
-                tree.remove(instance.definition);
+                map.remove(instance.definition);
                 return true;
             }
         }
@@ -122,7 +129,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
     }
 
     public boolean removeAmount(boolean testOnly, cElementalDefinitionStack stack) {
-        final cElementalInstanceStack target = tree.get(stack.definition);
+        final cElementalInstanceStack target = map.get(stack.definition);
         if (target == null)
             return false;
         if (testOnly)
@@ -133,7 +140,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
                 target.amount = diff;
                 return true;
             } else if (diff == 0) {
-                tree.remove(stack.definition);
+                map.remove(stack.definition);
                 return true;
             }
         }
@@ -173,7 +180,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         return removeAllAmounts(testOnly, stacks);
     }
 
-    public boolean removeAllAmounts(boolean testOnly, cElementalDefinitionStackMap container) {
+    public boolean removeAllAmounts(boolean testOnly, cElementalMutableDefinitionStackMap container) {
         return removeAllAmounts(testOnly, container.values());
     }
 
@@ -185,11 +192,11 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
     public float removeOverflow(int stacksCount, int stackCapacity) {
         float massRemoved = 0;
 
-        if (tree.size() > stacksCount) {
+        if (map.size() > stacksCount) {
             iElementalDefinition[] keys = this.keys();
             for (int i = stacksCount; i < keys.length; i++) {
-                massRemoved += tree.get(keys[i]).getDefinitionStack().getMass();
-                tree.remove(keys[i]);
+                massRemoved += map.get(keys[i]).getDefinitionStack().getMass();
+                map.remove(keys[i]);
             }
         }
 
@@ -203,25 +210,25 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
 
     //Put replace
     public cElementalInstanceStack putReplace(cElementalInstanceStack instanceUnsafe) {
-        return tree.put(instanceUnsafe.definition, instanceUnsafe);
+        return map.put(instanceUnsafe.definition, instanceUnsafe);
     }
 
     public void putReplaceAll(cElementalInstanceStack... instances) {
         for (cElementalInstanceStack instance : instances)
-            this.tree.put(instance.definition, instance);
+            this.map.put(instance.definition, instance);
     }
 
     private void putReplaceAll(Map<iElementalDefinition, cElementalInstanceStack> inTreeUnsafe) {
-        this.tree.putAll(inTreeUnsafe);
+        this.map.putAll(inTreeUnsafe);
     }
 
     public void putReplaceAll(cElementalInstanceStackMap inContainerUnsafe) {
-        putReplaceAll(inContainerUnsafe.tree);
+        putReplaceAll(inContainerUnsafe.map);
     }
 
     //Put unify
     public cElementalInstanceStack putUnify(cElementalInstanceStack instance) {
-        return tree.put(instance.definition, instance.unifyIntoThis(tree.get(instance.definition)));
+        return map.put(instance.definition, instance.unifyIntoThis(map.get(instance.definition)));
     }
 
     public void putUnifyAll(cElementalInstanceStack... instances) {
@@ -235,18 +242,18 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
     }
 
     public void putUnifyAll(cElementalInstanceStackMap containerUnsafe) {
-        putUnifyAll(containerUnsafe.tree);
+        putUnifyAll(containerUnsafe.map);
     }
 
     //Getters
     public cElementalInstanceStack getInstance(iElementalDefinition def) {
-        return tree.get(def);
+        return map.get(def);
     }
 
     public String[] getElementalInfo() {
-        final String[] info = new String[tree.size() * 3];
+        final String[] info = new String[map.size() * 3];
         int i = 0;
-        for (cElementalInstanceStack instance : tree.values()) {
+        for (cElementalInstanceStack instance : map.values()) {
             info[i] = EnumChatFormatting.BLUE + instance.definition.getName();
             info[i + 1] = EnumChatFormatting.AQUA + instance.definition.getSymbol();
             info[i + 2] = "Amount " + EnumChatFormatting.GREEN + instance.amount;
@@ -256,16 +263,16 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
     }
 
     public cElementalInstanceStack[] values() {
-        return tree.values().toArray(new cElementalInstanceStack[0]);
+        return map.values().toArray(new cElementalInstanceStack[0]);
     }
 
     public iElementalDefinition[] keys() {
-        return tree.keySet().toArray(new iElementalDefinition[0]);
+        return map.keySet().toArray(new iElementalDefinition[0]);
     }
 
     public float getMass() {
         float mass = 0;
-        for (cElementalInstanceStack stack : tree.values()) {
+        for (cElementalInstanceStack stack : map.values()) {
             mass += stack.getMass();
         }
         return mass;
@@ -273,19 +280,19 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
 
     //Tests
     public boolean containsDefinition(iElementalDefinition def) {
-        return tree.containsKey(def);
+        return map.containsKey(def);
     }
 
     public boolean containsInstance(cElementalInstanceStack inst) {
-        return tree.containsValue(inst);
+        return map.containsValue(inst);
     }
 
     public int size() {
-        return tree.size();
+        return map.size();
     }
 
     public boolean hasStacks() {
-        return tree.size() > 0;
+        return map.size() > 0;
     }
 
     //Tick Content
@@ -295,7 +302,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
             if (newThings == null) {
                 instance.nextColor();
             } else {
-                tree.remove(instance.definition);
+                map.remove(instance.definition);
                 for (cElementalInstanceStack newInstance : newThings.values())
                     putUnify(newInstance);
             }
@@ -309,7 +316,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
             if (newThings == null) {
                 instance.nextColor();
             } else {
-                tree.remove(instance.definition);
+                map.remove(instance.definition);
                 for (cElementalInstanceStack newInstance : newThings.values())
                     putUnify(newInstance);
             }
@@ -336,9 +343,9 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
 
     public NBTTagCompound toNBT() {
         final NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setInteger("i", tree.size());
+        nbt.setInteger("i", map.size());
         int i = 0;
-        for (cElementalInstanceStack instance : tree.values())
+        for (cElementalInstanceStack instance : map.values())
             nbt.setTag(Integer.toString(i++), instance.toNBT());
         return nbt;
     }

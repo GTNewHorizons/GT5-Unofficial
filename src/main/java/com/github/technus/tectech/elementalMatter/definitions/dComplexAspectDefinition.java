@@ -17,10 +17,10 @@ public class dComplexAspectDefinition extends cElementalDefinition {
 
     private static final byte nbtType = (byte) 'c';
 
-    private final cElementalDefinitionStackMap aspectStacks;
+    private final cElementalMutableDefinitionStackMap aspectStacks;
 
     public dComplexAspectDefinition(cElementalDefinitionStack[] tree) throws tElementalException{//todo constructors
-        aspectStacks=new cElementalDefinitionStackMap();
+        aspectStacks=new cElementalMutableDefinitionStackMap();
     }
 
     @Override
@@ -81,7 +81,7 @@ public class dComplexAspectDefinition extends cElementalDefinition {
     }
 
     @Override
-    public cElementalDefinitionStackMap getSubParticles() {
+    public cElementalMutableDefinitionStackMap getSubParticles() {
         return aspectStacks;
     }
 

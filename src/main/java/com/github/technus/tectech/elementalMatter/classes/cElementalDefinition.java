@@ -6,6 +6,7 @@ import com.github.technus.tectech.elementalMatter.interfaces.iHasElementalDefini
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -15,15 +16,19 @@ import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveD
  * Created by danie_000 on 23.01.2017.
  */
 public abstract class cElementalDefinition implements iElementalDefinition {
-    //add text based creators for recipe formula input?
-    private static final Map<Byte, Method> nbtCreationBind = new TreeMap<>();//creator methods in subclasses
+    //Nothing array
+    public static final iElementalDefinition[] nothing = new cElementalPrimitive[0];
 
+    //add text based creators for recipe formula input?
+    private static final Map<Byte, Method> nbtCreationBind = new HashMap<>();//creator methods in subclasses
     protected static Method addCreatorFromNBT(byte b, Method m) {
         return nbtCreationBind.put(b, m);
     }
 
-    //Nothing array
-    public static final iElementalDefinition[] nothing = new cElementalPrimitive[0];
+    @Override
+    protected final Object clone() {
+        return this;//IMMUTABLE
+    }
 
     public static iElementalDefinition fromNBT(NBTTagCompound nbt) {
         try {

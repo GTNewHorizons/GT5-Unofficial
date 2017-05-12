@@ -6,42 +6,64 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
 import java.util.Map;
+import java.util.TreeMap;
 
 import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveDefinition.debug__;
 
 /**
- * Created by Tec on 12.05.2017.
+ * Created by danie_000 on 22.01.2017.
  */
-public class cElementalDefinitionStackMap/*IMMUTABLE*/ extends cElementalMutableDefinitionStackMap {//TODO MAKE IMMUTABLE
-    public cElementalDefinitionStackMap(cElementalMutableDefinitionStackMap mutable) {
-        map=mutable.Clone().map;
-    }
+public class cElementalMutableDefinitionStackMap implements Comparable<cElementalMutableDefinitionStackMap> {//TODO MAKE MUTABLE AF
+    protected Map<iElementalDefinition, cElementalDefinitionStack> map;
 
-    //IMMUTABLES DONT NEED IT
-    @Override
-    protected Object clone() {
-        return this;
-    }
+    //Constructors + Clone, all make a whole new OBJ.
+    public cElementalMutableDefinitionStackMap() {map=new TreeMap<>();}
 
-    @Override
     @Deprecated
-    public final cElementalMutableDefinitionStackMap Clone() {
-        return null;
+    public cElementalMutableDefinitionStackMap(iElementalDefinition... in) {
+        map=new TreeMap<>();
+        for (iElementalDefinition definition : in)
+            map.put(definition, new cElementalDefinitionStack(definition, 1));
+    }
+
+    public cElementalMutableDefinitionStackMap(cElementalDefinitionStack... in) {
+        map=new TreeMap<>();
+        for (cElementalDefinitionStack stack : in)
+            map.put(stack.definition, stack);
+    }
+
+    public cElementalMutableDefinitionStackMap(Map<iElementalDefinition, cElementalDefinitionStack> in) {
+        this(true,in);
+    }
+
+    public cElementalMutableDefinitionStackMap(boolean clone, Map<iElementalDefinition, cElementalDefinitionStack> in) {
+        if (clone) {
+            map = new TreeMap<>();
+            for (cElementalDefinitionStack stack : in.values())
+                map.put(stack.definition, stack);
+        } else {
+            map = in;
+        }
     }
 
     @Override
-    public final cElementalMutableDefinitionStackMap mutable() {
+    protected Object clone() {//Equal to making new obj...
+        return Clone();
+    }
+
+    public cElementalMutableDefinitionStackMap Clone(){
         return new cElementalMutableDefinitionStackMap(map);
     }
 
-    @Override
     public cElementalDefinitionStackMap immutable() {
-        return this;
+        return new cElementalDefinitionStackMap(this);
     }
+
+    public cElementalMutableDefinitionStackMap mutable() {return this;}
 
     @Deprecated
     public Map<iElementalDefinition,cElementalDefinitionStack> getRawMap() {
-        return mutable().getRawMap();
+        return map;
     }
 
     @Override

@@ -19,8 +19,13 @@ public final class cElementalDefinitionStack implements iHasElementalDefinition 
     }
 
     @Override
+    protected final Object clone() {
+        return this;//IMMUTABLE
+    }
+
+    @Override
     public iElementalDefinition getDefinition() {
-        return definition;
+        return definition;//IMMUTABLE
     }
 
     @Override

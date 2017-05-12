@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
-import static com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStackMap.stackUpTree;
+import static com.github.technus.tectech.elementalMatter.classes.cElementalMutableDefinitionStackMap.stackUpTree;
 import static com.github.technus.tectech.elementalMatter.definitions.eBosonDefinition.boson_Y__;
 
 /**
@@ -37,7 +37,7 @@ public final class dHadronDefinition extends cElementalDefinition {
     public final byte type;
     //private final FluidStack fluidThing;
     //private final ItemStack itemThing;
-    private final cElementalDefinitionStackMap quarkStacks;
+    private final cElementalMutableDefinitionStackMap quarkStacks;
 
     @Deprecated
     public dHadronDefinition(eQuarkDefinition... quarks) throws tElementalException {
@@ -57,11 +57,11 @@ public final class dHadronDefinition extends cElementalDefinition {
         this(check, stackUpTree(quarks));
     }
 
-    public dHadronDefinition(cElementalDefinitionStackMap quarks) throws tElementalException {
+    public dHadronDefinition(cElementalMutableDefinitionStackMap quarks) throws tElementalException {
         this(true, quarks);
     }
 
-    private dHadronDefinition(boolean check, cElementalDefinitionStackMap quarks) throws tElementalException {
+    private dHadronDefinition(boolean check, cElementalMutableDefinitionStackMap quarks) throws tElementalException {
         if (check && !canTheyBeTogether(quarks)) throw new tElementalException("Hadron Definition error");
         this.quarkStacks = quarks;
 
@@ -97,7 +97,7 @@ public final class dHadronDefinition extends cElementalDefinition {
     }
 
     //public but u can just try{}catch(){} the constructor it still calls this method
-    private static boolean canTheyBeTogether(cElementalDefinitionStackMap stacks) {
+    private static boolean canTheyBeTogether(cElementalMutableDefinitionStackMap stacks) {
         int amount = 0;
         for (cElementalDefinitionStack quarks : stacks.values()) {
             if (!(quarks.definition instanceof eQuarkDefinition)) return false;
@@ -155,7 +155,7 @@ public final class dHadronDefinition extends cElementalDefinition {
     }
 
     @Override
-    public cElementalDefinitionStackMap getSubParticles() {
+    public cElementalMutableDefinitionStackMap getSubParticles() {
         return quarkStacks;
     }
 
@@ -250,7 +250,7 @@ public final class dHadronDefinition extends cElementalDefinition {
 
     @Override
     public iElementalDefinition getAnti() {
-        cElementalDefinitionStackMap anti = new cElementalDefinitionStackMap();
+        cElementalMutableDefinitionStackMap anti = new cElementalMutableDefinitionStackMap();
         for (cElementalDefinitionStack stack : quarkStacks.values())
             anti.putReplace(new cElementalDefinitionStack(stack.definition.getAnti(), stack.amount));
         try {

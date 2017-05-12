@@ -11,7 +11,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.*;
 
-import static com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStackMap.stackUpTree;
+import static com.github.technus.tectech.elementalMatter.classes.cElementalMutableDefinitionStackMap.stackUpTree;
 import static com.github.technus.tectech.elementalMatter.definitions.eBosonDefinition.boson_Y__;
 import static com.github.technus.tectech.elementalMatter.definitions.eBosonDefinition.deadEnd;
 
@@ -47,7 +47,8 @@ public final class dAtomDefinition extends cElementalDefinition {
     //private final ItemStack itemThing;
     public final int isotope;
     public final int element;
-    private final cElementalDefinitionStackMap elementalStacks;
+
+    private final cElementalMutableDefinitionStackMap elementalStacks;//CLONED I/O
 
     //stable is rawLifeTime>=10^9
 
@@ -56,29 +57,29 @@ public final class dAtomDefinition extends cElementalDefinition {
 
     @Deprecated
     public dAtomDefinition(iElementalDefinition... things) throws tElementalException {
-        this(true, stackUpTree(things));
+        this(false, true, stackUpTree(things));
     }
 
     @Deprecated
     private dAtomDefinition(boolean check, iElementalDefinition... things) throws tElementalException {
-        this(check, stackUpTree(things));
+        this(false, check, stackUpTree(things));
     }
 
     public dAtomDefinition(cElementalDefinitionStack... things) throws tElementalException {
-        this(true, stackUpTree(things));
+        this(false, true, stackUpTree(things));
     }
 
     private dAtomDefinition(boolean check, cElementalDefinitionStack... things) throws tElementalException {
-        this(check, stackUpTree(things));
+        this(false, check, stackUpTree(things));
     }
 
-    public dAtomDefinition(cElementalDefinitionStackMap things) throws tElementalException {
-        this(true, things);
+    public dAtomDefinition(cElementalMutableDefinitionStackMap things) throws tElementalException {
+        this(true, true, things);
     }
 
-    private dAtomDefinition(boolean check, cElementalDefinitionStackMap things) throws tElementalException {
+    private dAtomDefinition(boolean clone, boolean check, cElementalMutableDefinitionStackMap things) throws tElementalException {
         if (check && !canTheyBeTogether(things)) throw new tElementalException("Atom Definition error");
-        this.elementalStacks = things;
+        this.elementalStacks = clone?things.Clone():things;
 
         float mass = 0;
         int cLeptons = 0;
@@ -190,7 +191,7 @@ public final class dAtomDefinition extends cElementalDefinition {
         return rawLifeTime;
     }
 
-    private static boolean canTheyBeTogether(cElementalDefinitionStackMap stacks) {
+    private static boolean canTheyBeTogether(cElementalMutableDefinitionStackMap stacks) {
         boolean nuclei = false;
         for (cElementalDefinitionStack stack : stacks.values())
             if (stack.definition instanceof dHadronDefinition) {
@@ -273,8 +274,8 @@ public final class dAtomDefinition extends cElementalDefinition {
     }
 
     @Override
-    public cElementalDefinitionStackMap getSubParticles() {
-        return elementalStacks;
+    public cElementalMutableDefinitionStackMap getSubParticles() {
+        return elementalStacks.Clone();
     }
 
     @Override
@@ -300,7 +301,7 @@ public final class dAtomDefinition extends cElementalDefinition {
     }
 
     private cElementalDecay[] Emmision(cElementalDefinitionStack emit) {
-        final cElementalDefinitionStackMap tree = new cElementalDefinitionStackMap(elementalStacks.values());
+        final cElementalMutableDefinitionStackMap tree = new cElementalMutableDefinitionStackMap(elementalStacks.values());
         if (tree.removeAmount(false, emit)) {
             try {
                 return new cElementalDecay[]{
@@ -316,7 +317,7 @@ public final class dAtomDefinition extends cElementalDefinition {
     }
 
     private cElementalDecay[] alphaDecay() {
-        final cElementalDefinitionStackMap tree = new cElementalDefinitionStackMap(elementalStacks.values());
+        final cElementalMutableDefinitionStackMap tree = new cElementalMutableDefinitionStackMap(elementalStacks.values());
         if (tree.removeAllAmounts(false, dHadronDefinition.hadron_n2, dHadronDefinition.hadron_p2)) {
             try {
                 return new cElementalDecay[]{
@@ -332,7 +333,7 @@ public final class dAtomDefinition extends cElementalDefinition {
     }
 
     private cElementalDecay[] MbetaDecay() {
-        final cElementalDefinitionStackMap tree = new cElementalDefinitionStackMap(elementalStacks.values());
+        final cElementalMutableDefinitionStackMap tree = new cElementalMutableDefinitionStackMap(elementalStacks.values());
         if (tree.removeAmount(false, dHadronDefinition.hadron_n1)) {
             try {
                 tree.putUnify(dHadronDefinition.hadron_p1);
@@ -349,7 +350,7 @@ public final class dAtomDefinition extends cElementalDefinition {
     }
 
     private cElementalDecay[] PbetaDecay() {
-        final cElementalDefinitionStackMap tree = new cElementalDefinitionStackMap(elementalStacks.values());
+        final cElementalMutableDefinitionStackMap tree = new cElementalMutableDefinitionStackMap(elementalStacks.values());
         if (tree.removeAmount(false, dHadronDefinition.hadron_p1)) {
             try {
                 tree.putUnify(dHadronDefinition.hadron_n1);
@@ -411,10 +412,10 @@ public final class dAtomDefinition extends cElementalDefinition {
 
     @Override
     public iElementalDefinition getAnti() {
-        cElementalDefinitionStack[] elementalStacks = this.elementalStacks.values();
-        cElementalDefinitionStack[] antiElements = new cElementalDefinitionStack[elementalStacks.length];
+        cElementalDefinitionStack[] antiStacks = this.elementalStacks.values();
+        cElementalDefinitionStack[] antiElements = new cElementalDefinitionStack[antiStacks.length];
         for (int i = 0; i < antiElements.length; i++) {
-            antiElements[i] = new cElementalDefinitionStack(elementalStacks[i].definition.getAnti(), elementalStacks[i].amount);
+            antiElements[i] = new cElementalDefinitionStack(antiStacks[i].definition.getAnti(), antiStacks[i].amount);
         }
         try {
             return new dAtomDefinition(false, antiElements);

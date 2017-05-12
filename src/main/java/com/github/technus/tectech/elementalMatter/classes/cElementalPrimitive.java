@@ -34,7 +34,7 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
     public final byte color;
     //-1/-2/-3 anti matter generations, +1/+2/+3 matter generations, 0 self anti
     public final byte type;
-    private cElementalPrimitive anti;
+    private cElementalPrimitive anti;//IMMUTABLE
     private cElementalDecay[] elementalDecays;
     private byte naturalDecayInstant;
     private byte energeticDecayInstant;
@@ -120,7 +120,7 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
     }
 
     @Override
-    public final cElementalDefinitionStackMap getSubParticles() {
+    public final cElementalMutableDefinitionStackMap getSubParticles() {
         return null;
     }
 
