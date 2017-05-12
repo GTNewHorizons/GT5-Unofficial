@@ -12,9 +12,8 @@ import static com.github.technus.tectech.elementalMatter.classes.cElementalDecay
  */
 public final class cPrimitiveDefinition extends cElementalPrimitive {
     public static final cPrimitiveDefinition
-            debug__ = new cPrimitiveDefinition("Fallback of a bug", "!", 0, 0f, 0, Integer.MIN_VALUE, Integer.MIN_VALUE),
-        //Never create null__ particle - if u need fallback use debug__
-            null__ = new cPrimitiveDefinition("This is a bug", ".", 0, 0F, 0, -3, Integer.MAX_VALUE),
+            nbtE__ = new cPrimitiveDefinition("NBT ERROR", "!", 0, 0f, 0, Integer.MIN_VALUE, Integer.MIN_VALUE),
+            null__ = new cPrimitiveDefinition("NULL POINTER", ".", 0, 0F, 0, -3, Integer.MAX_VALUE),
             space__ = new cPrimitiveDefinition("Space", "_", 0, 0F, 0, -4, 0),
             magic = new cPrimitiveDefinition("Magic", "Ma", 4, -1F, 0, 0, 1),
             magic_ = new cPrimitiveDefinition("Antimagic", "~Ma", -4, -1F, 0, 0, 2);
@@ -23,12 +22,8 @@ public final class cPrimitiveDefinition extends cElementalPrimitive {
         super(name, symbol, type, mass, charge, color, ID);
     }
 
-    public static iElementalDefinition fromNBT(NBTTagCompound content) {
-        return bindsBO.get(content.getInteger("c"));
-    }
-
     public static void run() {
-        debug__.init(null__, -1F, -1, -1, noDecay);
+        nbtE__.init(null__, -1F, -1, -1, noDecay);
         null__.init(null__, -1F, -1, -1, noProduct);
         space__.init(space__, -1F, -1, -1, noProduct);
         magic.init(magic_, -1F, -1, -1, noDecay);

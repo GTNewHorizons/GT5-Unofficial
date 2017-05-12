@@ -8,9 +8,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
-import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveDefinition.debug__;
+import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveDefinition.nbtE__;
 
 /**
  * Created by danie_000 on 23.01.2017.
@@ -35,7 +34,7 @@ public abstract class cElementalDefinition implements iElementalDefinition {
             return (iElementalDefinition) nbtCreationBind.get(nbt.getByte("t")).invoke(null, nbt);
         } catch (Exception e) {
             if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
-            return debug__;
+            return nbtE__;
         }
     }
 

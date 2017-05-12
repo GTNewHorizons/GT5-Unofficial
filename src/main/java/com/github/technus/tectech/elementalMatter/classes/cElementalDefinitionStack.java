@@ -9,7 +9,7 @@ import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveD
 /**
  * Created by danie_000 on 20.11.2016.
  */
-public final class cElementalDefinitionStack implements iHasElementalDefinition {
+public final class cElementalDefinitionStack implements iHasElementalDefinition {//TODO unify checks for amount?
     public final iElementalDefinition definition;
     public final int amount;
 
@@ -79,6 +79,6 @@ public final class cElementalDefinitionStack implements iHasElementalDefinition 
 
     @Override
     public int hashCode() {
-        return amount+81*definition.hashCode();
+        return definition.hashCode();
     }
 }

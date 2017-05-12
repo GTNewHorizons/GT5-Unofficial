@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveDefinition.null__;
+
 /**
  * Created by danie_000 on 22.10.2016.
  * EXTEND THIS TO ADD NEW PRIMITIVES, WATCH OUT FOR ID'S!!!  (-1 to 32 can be assumed as used)
@@ -34,6 +36,7 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
     public final byte color;
     //-1/-2/-3 anti matter generations, +1/+2/+3 matter generations, 0 self anti
     public final byte type;
+    
     private cElementalPrimitive anti;//IMMUTABLE
     private cElementalDecay[] elementalDecays;
     private byte naturalDecayInstant;
@@ -148,7 +151,8 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
     }
 
     public static iElementalDefinition fromNBT(NBTTagCompound content) {
-        return bindsBO.get(content.getInteger("c"));
+        iElementalDefinition primitive= bindsBO.get(content.getInteger("c"));
+        return primitive==null?null__:primitive;
     }
 
     @Override

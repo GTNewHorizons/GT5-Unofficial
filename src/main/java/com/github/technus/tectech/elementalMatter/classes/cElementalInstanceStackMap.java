@@ -8,7 +8,7 @@ import net.minecraft.util.EnumChatFormatting;
 import java.util.Map;
 import java.util.TreeMap;
 
-import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveDefinition.debug__;
+import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveDefinition.nbtE__;
 
 /**
  * Created by danie_000 on 22.01.2017.
@@ -354,7 +354,7 @@ public class cElementalInstanceStackMap implements Comparable<cElementalInstance
         final cElementalInstanceStack[] instances = new cElementalInstanceStack[nbt.getInteger("i")];
         for (int i = 0; i < instances.length; i++) {
             instances[i] = cElementalInstanceStack.fromNBT(nbt.getCompoundTag(Integer.toString(i)));
-            if (instances[i].definition.equals(debug__))
+            if (instances[i].definition.equals(nbtE__))
                 throw new tElementalException("Something went Wrong");
         }
         return new cElementalInstanceStackMap(false, instances);

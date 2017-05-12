@@ -10,7 +10,7 @@ import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveD
 /**
  * Created by danie_000 on 22.10.2016.
  */
-public class cElementalInstanceStack implements iHasElementalDefinition {
+public class cElementalInstanceStack implements iHasElementalDefinition {//TODO unify checks for amount?
     public final iElementalDefinition definition;
     //energy - if positive then particle should try to decay
     public int energy;
@@ -269,5 +269,10 @@ public class cElementalInstanceStack implements iHasElementalDefinition {
                 nbt.getInteger("e"));
         instance.setColor(nbt.getByte("c"));
         return instance;
+    }
+
+    @Override
+    public int hashCode() {
+        return definition.hashCode();
     }
 }
