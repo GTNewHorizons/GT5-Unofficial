@@ -45,6 +45,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         this(true, inSafe);
     }
 
+    @Deprecated
     private cElementalInstanceStackMap(boolean clone, TreeMap<iElementalDefinition, cElementalInstanceStack> in) {
         if (clone) {
             map = new TreeMap<>();

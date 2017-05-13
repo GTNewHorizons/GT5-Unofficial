@@ -33,6 +33,7 @@ public final class cElementalMutableDefinitionStackMap extends cElementalStackMa
         this(true, in);
     }
 
+    @Deprecated
     public cElementalMutableDefinitionStackMap(boolean clone, TreeMap<iElementalDefinition, cElementalDefinitionStack> in) {
         if (clone) {
             map = new TreeMap<>(in);
