@@ -21,15 +21,12 @@ public final class cElementalMutableDefinitionStackMap extends cElementalStackMa
 
     @Deprecated
     public cElementalMutableDefinitionStackMap(iElementalDefinition... in) {
-        map = new TreeMap<>();
-        for (iElementalDefinition definition : in)
-            map.put(definition, new cElementalDefinitionStack(definition, 1));
+        map=stackUpMap(in).map;
     }
 
+    @Deprecated
     public cElementalMutableDefinitionStackMap(cElementalDefinitionStack... in) {
-        map = new TreeMap<>();
-        for (cElementalDefinitionStack stack : in)
-            map.put(stack.definition, stack);
+        map=stackUpMap(in).map;
     }
 
     public cElementalMutableDefinitionStackMap(TreeMap<iElementalDefinition, cElementalDefinitionStack> in) {

@@ -16,25 +16,28 @@ import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveD
  * Created by danie_000 on 22.01.2017.
  */
 public final class cElementalInstanceStackMap implements Comparable<cElementalInstanceStackMap> {
-    private TreeMap<iElementalDefinition, cElementalInstanceStack> map = new TreeMap<>();
+    private TreeMap<iElementalDefinition, cElementalInstanceStack> map;
 
     //Constructors
     public cElementalInstanceStackMap() {
+        map = new TreeMap<>();
     }
 
+    @Deprecated
     public cElementalInstanceStackMap(cElementalInstanceStack... inSafe) {
         this(true, inSafe);
     }
 
+    @Deprecated
     public cElementalInstanceStackMap(boolean clone, cElementalInstanceStack... in) {
+        map = new TreeMap<>();
         if (clone) {
-            for (cElementalInstanceStack instance : in) {
-                map.put(instance.definition, instance.clone());
-            }
+            cElementalInstanceStack[] stacks=new cElementalInstanceStack[in.length];
+            for(int i=0;i<stacks.length;i++)
+                stacks[i]=in[i].clone();
+            putUnifyAll(stacks);
         } else {
-            for (cElementalInstanceStack instance : in) {
-                map.put(instance.definition, instance);
-            }
+            putUnifyAll(in);
         }
     }
 
@@ -44,9 +47,9 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
 
     private cElementalInstanceStackMap(boolean clone, TreeMap<iElementalDefinition, cElementalInstanceStack> in) {
         if (clone) {
-            for (cElementalInstanceStack instance : in.values()) {
-                map.put(instance.definition, instance.clone());
-            }
+            map = new TreeMap<>();
+            for(cElementalInstanceStack stack:in.values())
+                putUnify(stack.clone());
         } else {
             map = in;
         }

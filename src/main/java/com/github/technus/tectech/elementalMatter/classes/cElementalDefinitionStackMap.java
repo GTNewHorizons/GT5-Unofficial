@@ -20,15 +20,12 @@ public final class cElementalDefinitionStackMap/*IMMUTABLE*/ extends cElementalS
 
     @Deprecated
     public cElementalDefinitionStackMap(iElementalDefinition... in) {
-        map = new TreeMap<>();
-        for (iElementalDefinition definition : in)
-            map.put(definition, new cElementalDefinitionStack(definition, 1));
+        map=cElementalMutableDefinitionStackMap.stackUpMap(in).map;
     }
 
+    @Deprecated
     public cElementalDefinitionStackMap(cElementalDefinitionStack... in) {
-        map = new TreeMap<>();
-        for (cElementalDefinitionStack stack : in)
-            map.put(stack.definition, stack);
+        map=cElementalMutableDefinitionStackMap.stackUpMap(in).map;
     }
 
     public cElementalDefinitionStackMap(TreeMap<iElementalDefinition, cElementalDefinitionStack> in) {
@@ -41,14 +38,14 @@ public final class cElementalDefinitionStackMap/*IMMUTABLE*/ extends cElementalS
         return this;
     }
 
-    public cElementalMutableDefinitionStackMap constructMutable() {
+    public cElementalMutableDefinitionStackMap toMutable() {
         return new cElementalMutableDefinitionStackMap(map);
     }
 
     @Override
     @Deprecated//BETTER TO JUST MAKE A MUTABLE VERSION AND DO SHIT ON IT
     public TreeMap<iElementalDefinition, cElementalDefinitionStack> getRawMap() {
-        return constructMutable().getRawMap();
+        return toMutable().getRawMap();
     }
 
     public static cElementalDefinitionStackMap fromNBT(NBTTagCompound nbt) throws tElementalException {
