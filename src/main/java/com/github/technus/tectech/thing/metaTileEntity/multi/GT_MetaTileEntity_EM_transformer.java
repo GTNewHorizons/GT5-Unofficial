@@ -102,7 +102,7 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if ((aTick & 31) == 31) {
             ePowerPass = aBaseMetaTileEntity.isAllowedToWork();
-            eSafeVoid=false;
+            eSafeVoid = false;
         }
     }
 

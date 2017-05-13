@@ -4,31 +4,19 @@ import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinitio
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
-import java.util.Map;
-
-import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveDefinition.nbtE__;
+import java.util.TreeMap;
 
 /**
  * Created by Tec on 12.05.2017.
  */
 abstract class cElementalStackMap implements Comparable<cElementalStackMap> {
-    protected Map<iElementalDefinition, cElementalDefinitionStack> map;
-
-    public int compareTo(cElementalStackMap o) {
-        if (map.size() != o.map.size()) return map.size() - o.map.size();
-        cElementalDefinitionStack[] ofThis = values(), ofThat = o.values();
-        for (int i = 0; i < ofThat.length; i++) {
-            int result = ofThis[i].compareTo(ofThat[i]);
-            if (result != 0) return result;
-        }
-        return 0;
-    }
+    protected TreeMap<iElementalDefinition, cElementalDefinitionStack> map;
 
     @Override
     public abstract cElementalStackMap clone();
 
     @Deprecated
-    public abstract Map<iElementalDefinition,cElementalDefinitionStack> getRawMap();
+    public abstract TreeMap<iElementalDefinition, cElementalDefinitionStack> getRawMap();
 
     //Getters
     public final cElementalDefinitionStack getDefinitionStack(iElementalDefinition def) {
@@ -72,22 +60,6 @@ abstract class cElementalStackMap implements Comparable<cElementalStackMap> {
         return map.size() > 0;
     }
 
-    //stackUp
-    @Deprecated
-    public static cElementalMutableDefinitionStackMap stackUpTree(iElementalDefinition... in) {
-        final cElementalMutableDefinitionStackMap inTree = new cElementalMutableDefinitionStackMap();
-        for (iElementalDefinition def : in) {
-            inTree.putUnify(new cElementalDefinitionStack(def, 1));
-        }
-        return inTree;
-    }
-
-    public static cElementalMutableDefinitionStackMap stackUpTree(cElementalDefinitionStack... in) {
-        final cElementalMutableDefinitionStackMap inTree = new cElementalMutableDefinitionStackMap();
-        inTree.putUnifyAll(in);
-        return inTree;
-    }
-
     //NBT
     public final NBTTagCompound getInfoNBT() {
         final NBTTagCompound nbt = new NBTTagCompound();
@@ -112,5 +84,35 @@ abstract class cElementalStackMap implements Comparable<cElementalStackMap> {
         for (cElementalDefinitionStack defStack : map.values())
             nbt.setTag(Integer.toString(i++), defStack.toNBT());
         return nbt;
+    }
+
+    @Override
+    public final int compareTo(cElementalStackMap o) {//this actually compares rest
+        final int sizeDiff = map.size() - o.map.size();
+        if (sizeDiff != 0) return sizeDiff;
+        cElementalDefinitionStack[] ofThis = values(), ofO = o.values();
+        for (int i = 0; i < ofO.length; i++) {
+            int result = ofThis[i].compareTo(ofO[i]);
+            if (result != 0) return result;
+        }
+        return 0;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof cElementalStackMap)
+            return compareTo((cElementalStackMap) obj) == 0;
+        if (obj instanceof cElementalInstanceStackMap)
+            return compareTo(((cElementalInstanceStackMap) obj).toDefinitionMapForComparison()) == 0;
+        return false;
+    }
+
+    @Override
+    public int hashCode() {//Hash only definitions to compare contents not amounts or data
+        int hash = -(map.size() << 4);
+        for (cElementalDefinitionStack s : map.values()) {
+            hash += s.definition.hashCode();
+        }
+        return hash;
     }
 }

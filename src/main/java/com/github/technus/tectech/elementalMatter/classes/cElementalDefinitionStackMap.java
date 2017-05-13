@@ -3,7 +3,6 @@ package com.github.technus.tectech.elementalMatter.classes;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
 import net.minecraft.nbt.NBTTagCompound;
 
-import java.util.Map;
 import java.util.TreeMap;
 
 import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveDefinition.nbtE__;
@@ -11,26 +10,29 @@ import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveD
 /**
  * Created by Tec on 12.05.2017.
  */
-public final class cElementalDefinitionStackMap/*IMMUTABLE*/ extends cElementalStackMap {
+public final class cElementalDefinitionStackMap/*IMMUTABLE*/ extends cElementalStackMap {//Target class for construction of definitions/recipes
     //Constructors + Clone, all make a whole new OBJ.
+    public static final cElementalDefinitionStackMap empty = new cElementalDefinitionStackMap();
+
+    private cElementalDefinitionStackMap() {
+        map = new TreeMap<>();
+    }
 
     @Deprecated
     public cElementalDefinitionStackMap(iElementalDefinition... in) {
-        map=new TreeMap<>();
+        map = new TreeMap<>();
         for (iElementalDefinition definition : in)
             map.put(definition, new cElementalDefinitionStack(definition, 1));
     }
 
     public cElementalDefinitionStackMap(cElementalDefinitionStack... in) {
-        map=new TreeMap<>();
+        map = new TreeMap<>();
         for (cElementalDefinitionStack stack : in)
             map.put(stack.definition, stack);
     }
 
-    public cElementalDefinitionStackMap(Map<iElementalDefinition, cElementalDefinitionStack> in) {
-        map = new TreeMap<>();
-        for (cElementalDefinitionStack stack : in.values())
-            map.put(stack.definition, stack);
+    public cElementalDefinitionStackMap(TreeMap<iElementalDefinition, cElementalDefinitionStack> in) {
+        map = new TreeMap<>(in);
     }
 
     //IMMUTABLE DON'T NEED IT
@@ -39,14 +41,14 @@ public final class cElementalDefinitionStackMap/*IMMUTABLE*/ extends cElementalS
         return this;
     }
 
-    public cElementalMutableDefinitionStackMap toMutable() {
+    public cElementalMutableDefinitionStackMap constructMutable() {
         return new cElementalMutableDefinitionStackMap(map);
     }
 
     @Override
-    @Deprecated
-    public Map<iElementalDefinition,cElementalDefinitionStack> getRawMap() {
-        return toMutable().getRawMap();
+    @Deprecated//BETTER TO JUST MAKE A MUTABLE VERSION AND DO SHIT ON IT
+    public TreeMap<iElementalDefinition, cElementalDefinitionStack> getRawMap() {
+        return constructMutable().getRawMap();
     }
 
     public static cElementalDefinitionStackMap fromNBT(NBTTagCompound nbt) throws tElementalException {

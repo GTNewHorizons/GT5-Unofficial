@@ -22,7 +22,7 @@ public class GT_Item_CasingsTT
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
         aList.add(tecMark);
-        switch(aStack.getItemDamage()){
+        switch (aStack.getItemDamage()) {
             case 0://"High Power Casing"
                 aList.add("Well suited for high power applications.");
                 aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "The power levels are rising!");

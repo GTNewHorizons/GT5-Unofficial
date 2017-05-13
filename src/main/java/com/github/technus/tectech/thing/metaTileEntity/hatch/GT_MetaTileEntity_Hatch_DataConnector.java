@@ -62,23 +62,23 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector extends GT_MetaTileE
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setShort("eID", id);
-        if(q!=null)
-            aNBT.setTag("eDATA",q.toNbt());
+        if (q != null)
+            aNBT.setTag("eDATA", q.toNbt());
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         id = aNBT.getShort("eID");
-        if(aNBT.hasKey("eDATA"))
-            q=new quantumDataPacket(aNBT.getCompoundTag("eDATA"));
+        if (aNBT.hasKey("eDATA"))
+            q = new quantumDataPacket(aNBT.getCompoundTag("eDATA"));
     }
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            if (moveAt == aTick%20) {
-                if(q==null){
+            if (moveAt == aTick % 20) {
+                if (q == null) {
                     getBaseMetaTileEntity().setActive(false);
                 } else {
                     getBaseMetaTileEntity().setActive(true);
@@ -139,13 +139,13 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector extends GT_MetaTileE
     @Override
     public String[] getInfoData() {
         if (id > 0) return new String[]{
-                "ID: "+ EnumChatFormatting.AQUA +id,
-                "Computation: "+ EnumChatFormatting.AQUA +(q!=null?q.computation:0),
-                "PacketHistory: "+EnumChatFormatting.RED +(q!=null?q.trace.size():0),
+                "ID: " + EnumChatFormatting.AQUA + id,
+                "Computation: " + EnumChatFormatting.AQUA + (q != null ? q.computation : 0),
+                "PacketHistory: " + EnumChatFormatting.RED + (q != null ? q.trace.size() : 0),
         };
         return new String[]{
-                "Computation: "+ EnumChatFormatting.AQUA +(q!=null?q.computation:0),
-                "PacketHistory: "+EnumChatFormatting.RED +(q!=null?q.trace.size():0),
+                "Computation: " + EnumChatFormatting.AQUA + (q != null ? q.computation : 0),
+                "PacketHistory: " + EnumChatFormatting.RED + (q != null ? q.trace.size() : 0),
         };
     }
 

@@ -20,6 +20,7 @@ public abstract class cElementalDefinition implements iElementalDefinition {
 
     //add text based creators for recipe formula input?
     private static final Map<Byte, Method> nbtCreationBind = new HashMap<>();//creator methods in subclasses
+
     protected static Method addCreatorFromNBT(byte b, Method m) {
         return nbtCreationBind.put(b, m);
     }
@@ -39,39 +40,30 @@ public abstract class cElementalDefinition implements iElementalDefinition {
     }
 
     @Override
-    public final boolean equals(Object obj) {
-        if (obj instanceof iElementalDefinition)
-            return compareTo((iElementalDefinition) obj) == 0;
-        if (obj instanceof iHasElementalDefinition)
-            return compareTo(((iHasElementalDefinition) obj).getDefinition()) == 0;
-        return false;
-    }
-
-    @Override
     public int compareTo(iElementalDefinition o) {
-        if (getClassType() == o.getClassType()) {
-            //only of the internal def stacks!!!
-            //that allows neat check if the same thing and
-            //top hierarchy amount can be used to store amount info
-            return compareDefinitionStacksWithAmount(getSubParticles().values(), o.getSubParticles().values());
-        }
-        return compareClasses(o);
+        final int classCompare = compareClassID(o);
+        if (classCompare != 0) return classCompare;
+
+        //only of the internal def stacks!!!
+        //that allows neat check if the same thing and
+        //top hierarchy amount can be used to store amount info
+        return compareInnerContentsWithAmounts(getSubParticles().values(), o.getSubParticles().values());
     }
 
-    public final int compareClasses(iElementalDefinition obj) {
+    public final int compareClassID(iElementalDefinition obj) {
         return ((int) getClassType()) - obj.getClassType();
     }
 
     //use only for nested operations!
-    private static int compareDefinitionStacksWithAmount(cElementalDefinitionStack[] tc, cElementalDefinitionStack[] sc) {
+    private static int compareInnerContentsWithAmounts(cElementalDefinitionStack[] tc, cElementalDefinitionStack[] sc) {
         if (tc == null) {
             if (sc == null) return 0;
             else return -1;
         }
         if (sc == null) return 1;
 
-        if (tc.length > sc.length) return 1;
-        if (tc.length < sc.length) return -1;
+        final int lenDiff = tc.length - sc.length;
+        if (lenDiff != 0) return lenDiff;
 
         for (int i = 0; i < tc.length; i++) {
             int cn = tc[i].definition.compareTo(sc[i].definition);
@@ -84,11 +76,19 @@ public abstract class cElementalDefinition implements iElementalDefinition {
     }
 
     @Override
-    public int hashCode() {
-        int hash=Integer.MIN_VALUE+getSubParticles().size();
-        int i=9;
-        for(cElementalDefinitionStack s:getSubParticles().values()){
-            hash+=s.hashCode()*(i++);
+    public final boolean equals(Object obj) {
+        if (obj instanceof iElementalDefinition)
+            return compareTo((iElementalDefinition) obj) == 0;
+        if (obj instanceof iHasElementalDefinition)
+            return compareTo(((iHasElementalDefinition) obj).getDefinition()) == 0;
+        return false;
+    }
+
+    @Override
+    public int hashCode() {//Internal amounts should be also hashed
+        int hash = -(getSubParticles().size() << 4);
+        for (cElementalDefinitionStack s : getSubParticles().values()) {
+            hash += ((s.amount & 0x1) == 0 ? -s.amount : s.amount) + s.definition.hashCode();
         }
         return hash;
     }

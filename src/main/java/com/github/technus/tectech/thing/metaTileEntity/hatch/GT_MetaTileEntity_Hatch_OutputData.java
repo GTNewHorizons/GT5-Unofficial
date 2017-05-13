@@ -47,32 +47,33 @@ public class GT_MetaTileEntity_Hatch_OutputData extends GT_MetaTileEntity_Hatch_
 
     @Override
     public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
-        iConnectsToDataPipe current=this,source=this,next;
-        int range=0;
-        while((next=current.getNext(source))!=null && range++<1000){
-            if(next instanceof GT_MetaTileEntity_Hatch_InputData){
-                ((GT_MetaTileEntity_Hatch_InputData) next).q=q;
-                ((GT_MetaTileEntity_Hatch_InputData) next).delDelay=true;
+        iConnectsToDataPipe current = this, source = this, next;
+        int range = 0;
+        while ((next = current.getNext(source)) != null && range++ < 1000) {
+            if (next instanceof GT_MetaTileEntity_Hatch_InputData) {
+                ((GT_MetaTileEntity_Hatch_InputData) next).q = q;
+                ((GT_MetaTileEntity_Hatch_InputData) next).delDelay = true;
                 break;
             }
-            source=current; current=next;
+            source = current;
+            current = next;
         }
-        q=null;
+        q = null;
     }
 
     @Override
     public iConnectsToDataPipe getNext(iConnectsToDataPipe source/*==this*/) {
-        IGregTechTileEntity base=getBaseMetaTileEntity();
-        byte color=base.getColorization();
+        IGregTechTileEntity base = getBaseMetaTileEntity();
+        byte color = base.getColorization();
         if (color < 0) return null;
-        IGregTechTileEntity next=base.getIGregTechTileEntityAtSide(base.getFrontFacing());
-        if(next==null || color!=base.getColorization()) return null;
-        IMetaTileEntity meta=next.getMetaTileEntity();
-        if(meta instanceof iConnectsToDataPipe){
-            if(meta instanceof GT_MetaTileEntity_Hatch_InputData
-                    && GT_Utility.getOppositeSide(next.getFrontFacing())==base.getFrontFacing())
+        IGregTechTileEntity next = base.getIGregTechTileEntityAtSide(base.getFrontFacing());
+        if (next == null || color != base.getColorization()) return null;
+        IMetaTileEntity meta = next.getMetaTileEntity();
+        if (meta instanceof iConnectsToDataPipe) {
+            if (meta instanceof GT_MetaTileEntity_Hatch_InputData
+                    && GT_Utility.getOppositeSide(next.getFrontFacing()) == base.getFrontFacing())
                 return (iConnectsToDataPipe) meta;
-            if(meta instanceof GT_MetaTileEntity_Pipe_Data
+            if (meta instanceof GT_MetaTileEntity_Pipe_Data
                     /*&& ((GT_MetaTileEntity_Pipe_Data) meta).connectionCount==2*/)//Checked later
                 return (iConnectsToDataPipe) meta;
         }

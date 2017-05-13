@@ -1,7 +1,8 @@
-package com.github.technus.tectech.elementalMatter.definitions;
+package com.github.technus.tectech.elementalMatter.magicAddon.definitions;
 
 import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.classes.*;
+import com.github.technus.tectech.elementalMatter.definitions.eBosonDefinition;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,15 +13,15 @@ import static com.github.technus.tectech.elementalMatter.classes.cElementalDecay
 /**
  * Created by Tec on 06.05.2017.
  */
-public final class dComplexAspectDefinition extends cElementalDefinition {
+public final class dComplexAspectDefinition extends cElementalDefinition {//TODO Optimize map i/o
     //TODO aspect binding
 
     private static final byte nbtType = (byte) 'c';
 
-    private final cElementalMutableDefinitionStackMap aspectStacks;
+    private final cElementalDefinitionStackMap aspectStacks;
 
-    public dComplexAspectDefinition(cElementalDefinitionStack[] tree) throws tElementalException{//todo constructors
-        aspectStacks=new cElementalMutableDefinitionStackMap();
+    public dComplexAspectDefinition(cElementalDefinitionStack[] tree) throws tElementalException {//todo constructors
+        aspectStacks = cElementalDefinitionStackMap.empty;
     }
 
     @Override
@@ -81,7 +82,7 @@ public final class dComplexAspectDefinition extends cElementalDefinition {
     }
 
     @Override
-    public cElementalMutableDefinitionStackMap getSubParticles() {
+    public cElementalDefinitionStackMap getSubParticles() {
         return aspectStacks;
     }
 

@@ -9,7 +9,7 @@ import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveD
 /**
  * Created by danie_000 on 20.11.2016.
  */
-public final class cElementalDefinitionStack implements iHasElementalDefinition {//TODO unify checks for amount?
+public final class cElementalDefinitionStack implements iHasElementalDefinition {
     public final iElementalDefinition definition;
     public final int amount;
 
@@ -41,6 +41,31 @@ public final class cElementalDefinitionStack implements iHasElementalDefinition 
         return definition.getMass() * amount;
     }
 
+    public NBTTagCompound toNBT() {
+        NBTTagCompound nbt = new NBTTagCompound();
+        nbt.setTag("d", definition.toNBT());
+        nbt.setInteger("q", amount);
+        return nbt;
+    }
+
+    public static cElementalDefinitionStack fromNBT(NBTTagCompound nbt) {
+        return new cElementalDefinitionStack(
+                cElementalDefinition.fromNBT(nbt.getCompoundTag("d")),
+                nbt.getInteger("q"));
+    }
+
+    public cElementalDefinitionStack addAmountIntoNewInstance(int amount) {
+        return new cElementalDefinitionStack(definition, amount + this.amount);
+    }
+
+    public cElementalDefinitionStack addAmountIntoNewInstance(cElementalDefinitionStack... other) {
+        if (other == null || other.length == 0) return this;
+        int i = 0;
+        for (cElementalDefinitionStack stack : other)
+            i += stack.amount;
+        return addAmountIntoNewInstance(i);
+    }
+
     @Override
     public int compareTo(iHasElementalDefinition o) {
         return definition.compareTo(o.getDefinition());
@@ -55,28 +80,7 @@ public final class cElementalDefinitionStack implements iHasElementalDefinition 
         return false;
     }
 
-    public NBTTagCompound toNBT() {
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setTag("d", definition.toNBT());
-        nbt.setInteger("q", amount);
-        return nbt;
-    }
-
-    public static cElementalDefinitionStack fromNBT(NBTTagCompound nbt) {
-        return new cElementalDefinitionStack(
-                cElementalDefinition.fromNBT(nbt.getCompoundTag("d")),
-                nbt.getInteger("q"));
-    }
-
-    public cElementalDefinitionStack unifyIntoNew(cElementalDefinitionStack... other) {
-        if (other == null) return this;
-        int i = amount;
-        for (cElementalDefinitionStack stack : other)
-            if (stack != null)
-                i += stack.amount;
-        return new cElementalDefinitionStack(definition, i);
-    }
-
+    //Amount shouldn't be hashed if this is just indicating amount and not structure
     @Override
     public int hashCode() {
         return definition.hashCode();

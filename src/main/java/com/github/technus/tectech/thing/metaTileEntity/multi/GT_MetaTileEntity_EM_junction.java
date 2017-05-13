@@ -22,17 +22,17 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
     //region Structure
     //use multi A energy inputs, use less power the longer it runs
     private static final String[][] shape = new String[][]{
-            {"   "," + ","   ",},
-            {"000","000","000",},
-            {"!!!","!0!","!!!",},
-            {"!!!","!!!","!!!",},
+            {"   ", " + ", "   ",},
+            {"000", "000", "000",},
+            {"!!!", "!0!", "!!!",},
+            {"!!!", "!!!", "!!!",},
     };
     private static final Block[] blockType = new Block[]{sBlockCasingsTT};
     private static final byte[] blockMeta = new byte[]{4};
-    private static final String[] addingMethods = new String[]{"addClassicToMachineList","addElementalToMachineList"};
-    private static final byte[] casingTextures = new byte[]{textureOffset,textureOffset+4};
-    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT,sBlockCasingsTT};
-    private static final byte[] blockMetaFallback = new byte[]{0,4};
+    private static final String[] addingMethods = new String[]{"addClassicToMachineList", "addElementalToMachineList"};
+    private static final byte[] casingTextures = new byte[]{textureOffset, textureOffset + 4};
+    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
+    private static final byte[] blockMetaFallback = new byte[]{0, 4};
     //endregion
 
     public GT_MetaTileEntity_EM_junction(int aID, String aName, String aNameRegional) {
@@ -49,7 +49,7 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return EM_StructureCheckAdvanced(shape,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,1,1,0);
+        return EM_StructureCheckAdvanced(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
     }
 
     @Override

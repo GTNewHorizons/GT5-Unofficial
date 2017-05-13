@@ -107,7 +107,7 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements iConn
 
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        onPostTick(aBaseMetaTileEntity,31);
+        onPostTick(aBaseMetaTileEntity, 31);
     }
 
     @Override
@@ -120,24 +120,23 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements iConn
                 for (byte i = 0, j; i < 6; i++) {
                     j = GT_Utility.getOppositeSide(i);
                     //if (!aBaseMetaTileEntity.getCoverBehaviorAtSide(i).alwaysLookConnected(i, aBaseMetaTileEntity.getCoverIDAtSide(i), aBaseMetaTileEntity.getCoverDataAtSide(i), aBaseMetaTileEntity)) {
-                        TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(i);
-                        if (tTileEntity instanceof IColoredTileEntity) {
-                            //if (aBaseMetaTileEntity.getColorization() >= 0) {
-                            byte tColor = ((IColoredTileEntity) tTileEntity).getColorization();
-                            if (tColor != aBaseMetaTileEntity.getColorization()) continue;
-                            //}
-                        }
-                        if (tTileEntity instanceof iConnectsToDataPipe && (((iConnectsToDataPipe) tTileEntity).canConnect(j))) {
+                    TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(i);
+                    if (tTileEntity instanceof IColoredTileEntity) {
+                        //if (aBaseMetaTileEntity.getColorization() >= 0) {
+                        byte tColor = ((IColoredTileEntity) tTileEntity).getColorization();
+                        if (tColor != aBaseMetaTileEntity.getColorization()) continue;
+                        //}
+                    }
+                    if (tTileEntity instanceof iConnectsToDataPipe && (((iConnectsToDataPipe) tTileEntity).canConnect(j))) {
+                        mConnections |= (1 << i);
+                        connectionCount++;
+                    } else if (tTileEntity instanceof IGregTechTileEntity && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof iConnectsToDataPipe) {
+                        if (//((IGregTechTileEntity) tTileEntity).getCoverBehaviorAtSide(j).alwaysLookConnected(j, ((IGregTechTileEntity) tTileEntity).getCoverIDAtSide(j), ((IGregTechTileEntity) tTileEntity).getCoverDataAtSide(j), ((IGregTechTileEntity) tTileEntity)) ||
+                                ((iConnectsToDataPipe) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()).canConnect(j)) {
                             mConnections |= (1 << i);
                             connectionCount++;
                         }
-                        else if (tTileEntity instanceof IGregTechTileEntity && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof iConnectsToDataPipe) {
-                            if (//((IGregTechTileEntity) tTileEntity).getCoverBehaviorAtSide(j).alwaysLookConnected(j, ((IGregTechTileEntity) tTileEntity).getCoverIDAtSide(j), ((IGregTechTileEntity) tTileEntity).getCoverDataAtSide(j), ((IGregTechTileEntity) tTileEntity)) ||
-                                    ((iConnectsToDataPipe) ((IGregTechTileEntity) tTileEntity).getMetaTileEntity()).canConnect(j)) {
-                                mConnections |= (1 << i);
-                                connectionCount++;
-                            }
-                        }
+                    }
                     //}
                     //else {
                     //    mConnections |= (1 << i);
@@ -161,18 +160,18 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements iConn
 
     @Override
     public iConnectsToDataPipe getNext(iConnectsToDataPipe source) {
-        if(connectionCount!=2) return null;
-        for(byte s=0;s<6;s++){
-            if((mConnections&(1<<s))==0) continue;//if not connected continue
-            final IGregTechTileEntity next=getBaseMetaTileEntity().getIGregTechTileEntityAtSide(s);
-            if(next==null) continue;
-            final IMetaTileEntity meta=next.getMetaTileEntity();
-            if(meta instanceof iConnectsToDataPipe && meta!=source){
-                if(meta instanceof GT_MetaTileEntity_Hatch_InputData)
-                    return (iConnectsToDataPipe)meta;
-                if(meta instanceof GT_MetaTileEntity_Pipe_Data &&
-                        ((GT_MetaTileEntity_Pipe_Data) meta).connectionCount==2)
-                    return (iConnectsToDataPipe)meta;
+        if (connectionCount != 2) return null;
+        for (byte s = 0; s < 6; s++) {
+            if ((mConnections & (1 << s)) == 0) continue;//if not connected continue
+            final IGregTechTileEntity next = getBaseMetaTileEntity().getIGregTechTileEntityAtSide(s);
+            if (next == null) continue;
+            final IMetaTileEntity meta = next.getMetaTileEntity();
+            if (meta instanceof iConnectsToDataPipe && meta != source) {
+                if (meta instanceof GT_MetaTileEntity_Hatch_InputData)
+                    return (iConnectsToDataPipe) meta;
+                if (meta instanceof GT_MetaTileEntity_Pipe_Data &&
+                        ((GT_MetaTileEntity_Pipe_Data) meta).connectionCount == 2)
+                    return (iConnectsToDataPipe) meta;
             }
         }
         return null;

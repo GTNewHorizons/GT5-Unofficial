@@ -11,14 +11,14 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.*;
 
-import static com.github.technus.tectech.elementalMatter.classes.cElementalMutableDefinitionStackMap.stackUpTree;
+import static com.github.technus.tectech.elementalMatter.classes.cElementalMutableDefinitionStackMap.stackUpMap;
 import static com.github.technus.tectech.elementalMatter.definitions.eBosonDefinition.boson_Y__;
 import static com.github.technus.tectech.elementalMatter.definitions.eBosonDefinition.deadEnd;
 
 /**
  * Created by danie_000 on 18.11.2016.
  */
-public final class dAtomDefinition extends cElementalDefinition {
+public final class dAtomDefinition extends cElementalDefinition {//TODO Optimize map i/o
     public static final Map<dAtomDefinition, ItemStack> itemBinds = new TreeMap<>();
     public static final Map<dAtomDefinition, FluidStack> fluidBinds = new TreeMap<>();
 
@@ -48,7 +48,7 @@ public final class dAtomDefinition extends cElementalDefinition {
     public final int isotope;
     public final int element;
 
-    private final cElementalMutableDefinitionStackMap elementalStacks;//CLONED I/O
+    private final cElementalDefinitionStackMap elementalStacks;//CLONED I/O
 
     //stable is rawLifeTime>=10^9
 
@@ -57,29 +57,29 @@ public final class dAtomDefinition extends cElementalDefinition {
 
     @Deprecated
     public dAtomDefinition(iElementalDefinition... things) throws tElementalException {
-        this(false, true, stackUpTree(things));
+        this(false, true, stackUpMap(things).toImmutable());
     }
 
     @Deprecated
     private dAtomDefinition(boolean check, iElementalDefinition... things) throws tElementalException {
-        this(false, check, stackUpTree(things));
+        this(false, check, stackUpMap(things).toImmutable());
     }
 
     public dAtomDefinition(cElementalDefinitionStack... things) throws tElementalException {
-        this(false, true, stackUpTree(things));
+        this(false, true, stackUpMap(things).toImmutable());
     }
 
     private dAtomDefinition(boolean check, cElementalDefinitionStack... things) throws tElementalException {
-        this(false, check, stackUpTree(things));
+        this(false, check, stackUpMap(things).toImmutable());
     }
 
-    public dAtomDefinition(cElementalMutableDefinitionStackMap things) throws tElementalException {
-        this(true, true, things);
+    public dAtomDefinition(cElementalDefinitionStackMap things) throws tElementalException {
+        this(false, true, things);
     }
 
-    private dAtomDefinition(boolean clone, boolean check, cElementalMutableDefinitionStackMap things) throws tElementalException {
+    private dAtomDefinition(boolean clone, boolean check, cElementalDefinitionStackMap things) throws tElementalException {
         if (check && !canTheyBeTogether(things)) throw new tElementalException("Atom Definition error");
-        this.elementalStacks = clone?things.clone():things;
+        this.elementalStacks = clone ? things.clone() : things;
 
         float mass = 0;
         int cLeptons = 0;
@@ -191,7 +191,7 @@ public final class dAtomDefinition extends cElementalDefinition {
         return rawLifeTime;
     }
 
-    private static boolean canTheyBeTogether(cElementalMutableDefinitionStackMap stacks) {
+    private static boolean canTheyBeTogether(cElementalDefinitionStackMap stacks) {
         boolean nuclei = false;
         for (cElementalDefinitionStack stack : stacks.values())
             if (stack.definition instanceof dHadronDefinition) {
@@ -274,7 +274,7 @@ public final class dAtomDefinition extends cElementalDefinition {
     }
 
     @Override
-    public cElementalMutableDefinitionStackMap getSubParticles() {
+    public cElementalDefinitionStackMap getSubParticles() {
         return elementalStacks.clone();
     }
 
@@ -306,7 +306,7 @@ public final class dAtomDefinition extends cElementalDefinition {
             try {
                 return new cElementalDecay[]{
                         new cElementalDecay(0.5f, this),
-                        new cElementalDecay(0.5f, new cElementalDefinitionStack(new dAtomDefinition(tree), 1), emit),
+                        new cElementalDecay(0.5f, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable()), 1), emit),
                         deadEnd
                 };
             } catch (Exception e) {
@@ -322,7 +322,7 @@ public final class dAtomDefinition extends cElementalDefinition {
             try {
                 return new cElementalDecay[]{
                         new cElementalDecay(0.5f, this),
-                        new cElementalDecay(0.5f, new cElementalDefinitionStack(new dAtomDefinition(tree), 1), alpha),
+                        new cElementalDecay(0.5f, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable()), 1), alpha),
                         deadEnd
                 };
             } catch (Exception e) {
@@ -339,7 +339,7 @@ public final class dAtomDefinition extends cElementalDefinition {
                 tree.putUnify(dHadronDefinition.hadron_p1);
                 return new cElementalDecay[]{
                         new cElementalDecay(0.5f, this),
-                        new cElementalDecay(0.5f, new cElementalDefinitionStack(new dAtomDefinition(tree), 1), eLeptonDefinition.lepton_e1, eNeutrinoDefinition.lepton_Ve_1),
+                        new cElementalDecay(0.5f, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable()), 1), eLeptonDefinition.lepton_e1, eNeutrinoDefinition.lepton_Ve_1),
                         deadEnd
                 };
             } catch (Exception e) {
@@ -356,7 +356,7 @@ public final class dAtomDefinition extends cElementalDefinition {
                 tree.putUnify(dHadronDefinition.hadron_n1);
                 return new cElementalDecay[]{
                         new cElementalDecay(0.5f, this),
-                        new cElementalDecay(0.5f, new cElementalDefinitionStack(new dAtomDefinition(tree), 1), eLeptonDefinition.lepton_e_1, eNeutrinoDefinition.lepton_Ve1),
+                        new cElementalDecay(0.5f, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable()), 1), eLeptonDefinition.lepton_e_1, eNeutrinoDefinition.lepton_Ve1),
                         deadEnd
                 };
             } catch (Exception e) {

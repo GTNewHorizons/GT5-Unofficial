@@ -10,7 +10,6 @@ import com.github.technus.tectech.thing.item.DebugContainer_EM;
  */
 public class ThingsLoader implements Runnable {
     public void run() {
-
         QuantumGlassBlock.run();
         TecTech.Logger.info("Quantum Glass registered");
 

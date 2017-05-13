@@ -12,7 +12,7 @@ public final class cElementalDecay {
     //Or cast null into ARRAY type but this static is more convenient!!!
     public static final cElementalDecay[] noProduct = new cElementalDecay[0];
     //this in turn can be used to tell that the thing should just vanish
-    public final cElementalMutableDefinitionStackMap outputStacks;
+    public final cElementalDefinitionStackMap outputStacks;
     public final float probability;
 
     public cElementalDecay(iElementalDefinition... outSafe) {
@@ -24,7 +24,7 @@ public final class cElementalDecay {
         for (int i = 0; i < outArr.length; i++) {
             outArr[i] = new cElementalDefinitionStack(outSafe[i], 1);
         }
-        this.outputStacks = new cElementalMutableDefinitionStackMap(outArr);
+        this.outputStacks = new cElementalDefinitionStackMap(outArr);
         this.probability = probability;
     }
 
@@ -33,15 +33,15 @@ public final class cElementalDecay {
     }
 
     public cElementalDecay(float probability, cElementalDefinitionStack... out) {
-        this.outputStacks = new cElementalMutableDefinitionStackMap(out);
+        this.outputStacks = new cElementalDefinitionStackMap(out);
         this.probability = probability;
     }
 
-    public cElementalDecay(cElementalMutableDefinitionStackMap tree) {
+    public cElementalDecay(cElementalDefinitionStackMap tree) {
         this(2F, tree);
     }
 
-    public cElementalDecay(float probability, cElementalMutableDefinitionStackMap tree) {
+    public cElementalDecay(float probability, cElementalDefinitionStackMap tree) {
         this.outputStacks = tree;
         this.probability = probability;
     }

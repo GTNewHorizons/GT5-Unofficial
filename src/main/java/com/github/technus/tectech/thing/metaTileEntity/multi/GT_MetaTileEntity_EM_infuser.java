@@ -23,12 +23,12 @@ import static gregtech.api.GregTech_API.mEUtoRF;
 public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBase_EM {
     //region Structure
     private static final String[][] shape = new String[][]{
-            {"   ","000","1+1","000","   ",},
-            {"   ","010","111","010","   ",},
-            {"   ","000","111","000","   ",},
+            {"   ", "000", "1+1", "000", "   ",},
+            {"   ", "010", "111", "010", "   ",},
+            {"   ", "000", "111", "000", "   ",},
     };
-    private static final Block[] blockType = new Block[]{sBlockCasingsTT,sBlockCasingsTT};
-    private static final byte[] blockMeta = new byte[]{7,4};
+    private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
+    private static final byte[] blockMeta = new byte[]{7, 4};
     private static final String[] addingMethods = new String[]{"addClassicToMachineList"};
     private static final byte[] casingTextures = new byte[]{textureOffset};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT};
@@ -37,17 +37,17 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
 
     public GT_MetaTileEntity_EM_infuser(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        minRepairStatus=(byte) getIdealStatus();
+        minRepairStatus = (byte) getIdealStatus();
     }
 
     public GT_MetaTileEntity_EM_infuser(String aName) {
         super(aName);
-        minRepairStatus=(byte) getIdealStatus();
+        minRepairStatus = (byte) getIdealStatus();
     }
 
     @Override
     public boolean isFacingValid(byte aFacing) {
-        return aFacing>=2;
+        return aFacing >= 2;
     }
 
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
@@ -56,28 +56,28 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return EM_StructureCheckAdvanced(shape,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,1,2,0);
+        return EM_StructureCheckAdvanced(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, 0);
     }
 
     @Override
     public boolean EM_checkRecipe(ItemStack itemStack) {
-        if (itemStack!=null && itemStack.stackSize==1) {
-            Item ofThis=itemStack.getItem();
-            if(ofThis instanceof IElectricItem){
+        if (itemStack != null && itemStack.stackSize == 1) {
+            Item ofThis = itemStack.getItem();
+            if (ofThis instanceof IElectricItem) {
                 mEfficiencyIncrease = 10000;
                 mMaxProgresstime = 20;
-                eDismatleBoom=true;
+                eDismatleBoom = true;
                 return true;
-            }else if(TecTech.hasCOFH && ofThis instanceof IEnergyContainerItem){
+            } else if (TecTech.hasCOFH && ofThis instanceof IEnergyContainerItem) {
                 mEfficiencyIncrease = 10000;
                 mMaxProgresstime = 20;
-                eDismatleBoom=true;
+                eDismatleBoom = true;
                 return true;
             }
         }
         mEfficiencyIncrease = 0;
         mMaxProgresstime = 0;
-        eDismatleBoom=false;
+        eDismatleBoom = false;
         eAmpereFlow = 0;
         mEUt = 0;
         return false;
@@ -85,15 +85,15 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public void EM_outputFunction() {
-        ItemStack itemStack=mInventory[1];
-        if (itemStack!=null && itemStack.stackSize==1) {
-            Item ofThis=itemStack.getItem();
-            if(ofThis instanceof IElectricItem){
-                if(doChargeItemStack((IElectricItem) ofThis,itemStack)==0)
+        ItemStack itemStack = mInventory[1];
+        if (itemStack != null && itemStack.stackSize == 1) {
+            Item ofThis = itemStack.getItem();
+            if (ofThis instanceof IElectricItem) {
+                if (doChargeItemStack((IElectricItem) ofThis, itemStack) == 0)
                     this.getBaseMetaTileEntity().disableWorking();
                 return;
-            }else if(TecTech.hasCOFH && ofThis instanceof IEnergyContainerItem){
-                if(doChargeItemStackRF((IEnergyContainerItem) ofThis,itemStack)==0)
+            } else if (TecTech.hasCOFH && ofThis instanceof IEnergyContainerItem) {
+                if (doChargeItemStackRF((IEnergyContainerItem) ofThis, itemStack) == 0)
                     this.getBaseMetaTileEntity().disableWorking();
                 return;
             }
@@ -104,7 +104,7 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if ((aTick & 31) == 31) {
-            eSafeVoid=false;
+            eSafeVoid = false;
         }
     }
 
@@ -119,36 +119,34 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
         };
     }
 
-    private long doChargeItemStack(IElectricItem item, ItemStack stack)
-    {
+    private long doChargeItemStack(IElectricItem item, ItemStack stack) {
         try {
-            double euDiff=item.getMaxCharge(stack) - ElectricItem.manager.getCharge(stack);
-            if(euDiff>0)this.setEUVar(this.getEUVar()-this.getEUVar()>>5);
-            long remove=(long)Math.ceil(
+            double euDiff = item.getMaxCharge(stack) - ElectricItem.manager.getCharge(stack);
+            if (euDiff > 0) this.setEUVar(this.getEUVar() - this.getEUVar() >> 5);
+            long remove = (long) Math.ceil(
                     ElectricItem.manager.charge(stack,
-                            Math.min(euDiff,this.getEUVar())
-                            ,item.getTier(stack),true,false));
-            this.setEUVar(this.getEUVar()-remove);
-            if(this.getEUVar()<0)this.setEUVar(0);
+                            Math.min(euDiff, this.getEUVar())
+                            , item.getTier(stack), true, false));
+            this.setEUVar(this.getEUVar() - remove);
+            if (this.getEUVar() < 0) this.setEUVar(0);
             return remove;
-        } catch( Exception e ) {
-            if(TecTechConfig.DEBUG_MODE)
+        } catch (Exception e) {
+            if (TecTechConfig.DEBUG_MODE)
                 e.printStackTrace();
         }
         return 0;
     }
 
-    private long doChargeItemStackRF(IEnergyContainerItem item,  ItemStack stack )
-    {
+    private long doChargeItemStackRF(IEnergyContainerItem item, ItemStack stack) {
         try {
-            long RF=Math.min(item.getMaxEnergyStored(stack)-item.getEnergyStored(stack),this.getEUVar()*mEUtoRF/100L);
+            long RF = Math.min(item.getMaxEnergyStored(stack) - item.getEnergyStored(stack), this.getEUVar() * mEUtoRF / 100L);
             //if(RF>0)this.setEUVar(this.getEUVar()-this.getEUVar()>>10);
-            RF=item.receiveEnergy(stack,RF>Integer.MAX_VALUE?Integer.MAX_VALUE:(int)RF,false);
-            RF=RF*100L/mEUtoRF;
-            this.setEUVar(this.getEUVar()-RF);
-            if(this.getEUVar()<0)this.setEUVar(0);
+            RF = item.receiveEnergy(stack, RF > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) RF, false);
+            RF = RF * 100L / mEUtoRF;
+            this.setEUVar(this.getEUVar() - RF);
+            if (this.getEUVar() < 0) this.setEUVar(0);
             return RF;
-        } catch( Exception e ) {
+        } catch (Exception e) {
             if (TecTechConfig.DEBUG_MODE)
                 e.printStackTrace();
         }

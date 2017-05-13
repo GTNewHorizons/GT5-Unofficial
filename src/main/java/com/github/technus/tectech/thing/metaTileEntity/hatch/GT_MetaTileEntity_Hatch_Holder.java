@@ -63,7 +63,7 @@ public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch impl
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_Holder(mName,mTier,mDescription,mTextures);
+        return new GT_MetaTileEntity_Hatch_Holder(mName, mTier, mDescription, mTextures);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch impl
 
     @Override
     public boolean isFacingValid(byte aFacing) {
-        return aFacing>=2;
+        return aFacing >= 2;
     }
 
     @Override
@@ -114,7 +114,7 @@ public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch impl
         //else if(heat>0)
         //    aPlayer.addChatComponentMessage(new ChatComponentText("It is still warm..."));
         //else
-            aBaseMetaTileEntity.openGUI(aPlayer);
+        aBaseMetaTileEntity.openGUI(aPlayer);
         return true;
     }
 

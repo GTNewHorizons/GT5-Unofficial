@@ -9,8 +9,6 @@ import com.github.technus.tectech.thing.item.DebugContainer_EM;
 import static com.github.technus.tectech.TecTech.mainTab;
 
 public class MainLoader {//TODO add checks for - is mod loaded dreamcraft to enable higher tier machinery. (above UV), or implement a check for GT tier values.
-    public MainLoader() {}
-
     public void things() {
         CasingLoader casingLoader = new CasingLoader();
         casingLoader.run();
@@ -31,7 +29,7 @@ public class MainLoader {//TODO add checks for - is mod loaded dreamcraft to ena
         TecTech.Logger.info("Recipe Init Done");
     }
 
-    public void registerThingsInTabs(){
+    public void registerThingsInTabs() {
         QuantumGlassBlock.INSTANCE.setCreativeTab(mainTab);
         GT_Container_CasingsTT.sBlockCasingsTT.setCreativeTab(mainTab);
         DebugContainer_EM.INSTANCE.setCreativeTab(mainTab);

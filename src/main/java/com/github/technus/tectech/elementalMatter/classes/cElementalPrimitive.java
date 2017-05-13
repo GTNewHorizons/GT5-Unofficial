@@ -36,7 +36,7 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
     public final byte color;
     //-1/-2/-3 anti matter generations, +1/+2/+3 matter generations, 0 self anti
     public final byte type;
-    
+
     private cElementalPrimitive anti;//IMMUTABLE
     private cElementalDecay[] elementalDecays;
     private byte naturalDecayInstant;
@@ -123,7 +123,7 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
     }
 
     @Override
-    public final cElementalMutableDefinitionStackMap getSubParticles() {
+    public final cElementalDefinitionStackMap getSubParticles() {
         return null;
     }
 
@@ -151,13 +151,21 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
     }
 
     public static iElementalDefinition fromNBT(NBTTagCompound content) {
-        iElementalDefinition primitive= bindsBO.get(content.getInteger("c"));
-        return primitive==null?null__:primitive;
+        iElementalDefinition primitive = bindsBO.get(content.getInteger("c"));
+        return primitive == null ? null__ : primitive;
     }
 
     @Override
     public final byte getClassType() {
         return -128;
+    }
+
+    public static void run() {
+        try {
+            cElementalDefinition.addCreatorFromNBT(nbtType, cElementalPrimitive.class.getMethod("fromNBT", NBTTagCompound.class));
+        } catch (Exception e) {
+            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+        }
     }
 
     @Override
@@ -168,15 +176,7 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
             if (ID < oID) return -1;
             return 0;
         }
-        return compareClasses(o);
-    }
-
-    public static void run() {
-        try {
-            cElementalDefinition.addCreatorFromNBT(nbtType, cElementalPrimitive.class.getMethod("fromNBT", NBTTagCompound.class));
-        } catch (Exception e) {
-            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
-        }
+        return compareClassID(o);
     }
 
     @Override

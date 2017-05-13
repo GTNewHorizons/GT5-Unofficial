@@ -16,7 +16,7 @@ import static com.github.technus.tectech.CommonValues.tecMark;
 public class QuantumGlassItem extends ItemBlock {
     public static QuantumGlassItem INSTANCE;
 
-    public QuantumGlassItem(Block b){
+    public QuantumGlassItem(Block b) {
         super(b);
     }
 

@@ -25,7 +25,7 @@ import static gregtech.api.enums.GT_Values.E;
 public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockBase_EM implements constructableTT {
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
-    private byte eTier =0;
+    private byte eTier = 0;
 
     //region Structure
     //use multi A energy inputs, use less power the longer it runs
@@ -102,7 +102,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             GT_Container_CasingsTT.sBlockCasingsTT,
             GT_Container_CasingsTT.sBlockCasingsTT
     };
-    private static final byte[] blockMeta = new byte[]{3,7,0,9,3,9};
+    private static final byte[] blockMeta = new byte[]{3, 7, 0, 9, 3, 9};
 
     private static final Block[] blockType2 = new Block[]{
             GT_Container_CasingsTT.sBlockCasingsTT,
@@ -112,7 +112,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             GT_Container_CasingsTT.sBlockCasingsTT,
             GT_Container_CasingsTT.sBlockCasingsTT
     };
-    private static final byte[] blockMeta2 = new byte[]{3,6,0,8,5,9};
+    private static final byte[] blockMeta2 = new byte[]{3, 6, 0, 8, 5, 9};
     //endregion
 
     public GT_MetaTileEntity_EM_collider(int aID, String aName, String aNameRegional) {
@@ -137,9 +137,9 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset+4], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset + 4], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
         }
-        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset+4]};
+        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset + 4]};
     }
 
     @Override
@@ -151,40 +151,46 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        eTier =aNBT.getByte("eTier");
+        eTier = aNBT.getByte("eTier");
     }
 
     @Override
     public boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        if(iGregTechTileEntity.getBlockOffset(0,-1,0)!=GT_Container_CasingsTT.sBlockCasingsTT){
-            eTier =0;
+        if (iGregTechTileEntity.getBlockOffset(0, -1, 0) != GT_Container_CasingsTT.sBlockCasingsTT) {
+            eTier = 0;
             return false;
-        } else if(iGregTechTileEntity.getMetaIDOffset(0,-1,0)==3) {
-            eTier =1;
-        } else if(iGregTechTileEntity.getMetaIDOffset(0,-1,0)==5) {
-            eTier =2;
+        } else if (iGregTechTileEntity.getMetaIDOffset(0, -1, 0) == 3) {
+            eTier = 1;
+        } else if (iGregTechTileEntity.getMetaIDOffset(0, -1, 0) == 5) {
+            eTier = 2;
         } else {
-            eTier =0;
+            eTier = 0;
             return false;
         }
-        
+
 
         boolean test;
-        switch (eTier){
-            case 1:test=EM_StructureCheck(shape,blockType,blockMeta,0,-2,28); break;
-            case 2:test=EM_StructureCheck(shape,blockType2,blockMeta2,0,-2,28); break;
-            default: eTier = 0; return false;
+        switch (eTier) {
+            case 1:
+                test = EM_StructureCheck(shape, blockType, blockMeta, 0, -2, 28);
+                break;
+            case 2:
+                test = EM_StructureCheck(shape, blockType2, blockMeta2, 0, -2, 28);
+                break;
+            default:
+                eTier = 0;
+                return false;
         }
-        if(test) return true;
+        if (test) return true;
         eTier = 0;
         return false;
     }
 
     @Override
     public void construct(int qty) {
-        if((qty&1)==0)
-            StructureBuilder(shape,blockType,blockMeta,0,-2,28,this.getBaseMetaTileEntity());
-        else StructureBuilder(shape,blockType2,blockMeta2,0,-2,28,this.getBaseMetaTileEntity());
+        if ((qty & 1) == 0)
+            StructureBuilder(shape, blockType, blockMeta, 0, -2, 28, this.getBaseMetaTileEntity());
+        else StructureBuilder(shape, blockType2, blockMeta2, 0, -2, 28, this.getBaseMetaTileEntity());
     }
 
     @Override

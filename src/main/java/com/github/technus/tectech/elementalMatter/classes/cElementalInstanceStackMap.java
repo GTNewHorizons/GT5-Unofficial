@@ -5,6 +5,8 @@ import com.github.technus.tectech.elementalMatter.interfaces.iHasElementalDefini
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -14,7 +16,7 @@ import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveD
  * Created by danie_000 on 22.01.2017.
  */
 public final class cElementalInstanceStackMap implements Comparable<cElementalInstanceStackMap> {
-    private Map<iElementalDefinition, cElementalInstanceStack> map = new TreeMap<>();
+    private TreeMap<iElementalDefinition, cElementalInstanceStack> map = new TreeMap<>();
 
     //Constructors
     public cElementalInstanceStackMap() {
@@ -36,11 +38,11 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         }
     }
 
-    private cElementalInstanceStackMap(Map<iElementalDefinition, cElementalInstanceStack> inSafe) {
+    private cElementalInstanceStackMap(TreeMap<iElementalDefinition, cElementalInstanceStack> inSafe) {
         this(true, inSafe);
     }
 
-    private cElementalInstanceStackMap(boolean clone, Map<iElementalDefinition, cElementalInstanceStack> in) {
+    private cElementalInstanceStackMap(boolean clone, TreeMap<iElementalDefinition, cElementalInstanceStack> in) {
         if (clone) {
             for (cElementalInstanceStack instance : in.values()) {
                 map.put(instance.definition, instance.clone());
@@ -59,24 +61,32 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
     }
 
     @Override
-    public final cElementalInstanceStackMap clone(){
+    public final cElementalInstanceStackMap clone() {
         return new cElementalInstanceStackMap(map);
     }
 
-    @Deprecated
-    public Map<iElementalDefinition,cElementalInstanceStack> getRawMap() {
-        return map;
+    public final cElementalStackMap toDefinitionMapForComparison() {
+        cElementalDefinitionStack[] list = new cElementalDefinitionStack[map.size()];
+        int i = 0;
+        for (cElementalInstanceStack stack : map.values()) {
+            list[i++] = new cElementalDefinitionStack(stack.definition, stack.amount);
+        }
+        return new cElementalMutableDefinitionStackMap(list);
     }
 
-    @Override
-    public int compareTo(cElementalInstanceStackMap o) {
-        if (map.size() != o.map.size()) return map.size() - o.map.size();
-        cElementalInstanceStack[] ofThis = values(), ofThat = o.values();
-        for (int i = 0; i < ofThat.length; i++) {
-            int result = ofThis[i].compareTo(ofThat[i]);
-            if (result != 0) return result;
+    @Deprecated
+    public final cElementalStackMap toDefinitionMap(boolean mutable) {
+        TreeMap<iElementalDefinition, cElementalDefinitionStack> newMap = new TreeMap<>();
+        for (cElementalInstanceStack stack : map.values()) {
+            newMap.put(stack.definition, new cElementalDefinitionStack(stack.definition, stack.amount));
         }
-        return 0;
+        if (mutable) return new cElementalMutableDefinitionStackMap(newMap);
+        return new cElementalDefinitionStackMap(newMap);
+    }
+
+    @Deprecated
+    public Map<iElementalDefinition, cElementalInstanceStack> getRawMap() {
+        return map;
     }
 
     //Removers
@@ -176,7 +186,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         return removeAllAmounts(testOnly, stacks);
     }
 
-    public boolean removeAllAmounts(boolean testOnly, cElementalMutableDefinitionStackMap container) {
+    public boolean removeAllAmounts(boolean testOnly, cElementalStackMap container) {
         return removeAllAmounts(testOnly, container.values());
     }
 
@@ -361,5 +371,35 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         final cElementalInstanceStackMap inTree = new cElementalInstanceStackMap();
         inTree.putUnifyAll(in);
         return inTree.values();
+    }
+
+    @Override
+    public int compareTo(cElementalInstanceStackMap o) {
+        final int sizeDiff = map.size() - o.map.size();
+        if (sizeDiff != 0) return sizeDiff;
+        cElementalInstanceStack[] ofThis = values(), ofThat = o.values();
+        for (int i = 0; i < ofThat.length; i++) {
+            int result = ofThis[i].compareTo(ofThat[i]);
+            if (result != 0) return result;
+        }
+        return 0;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof cElementalInstanceStackMap)
+            return compareTo((cElementalInstanceStackMap) obj) == 0;
+        if (obj instanceof cElementalStackMap)
+            return toDefinitionMapForComparison().compareTo((cElementalStackMap) obj) == 0;
+        return false;
+    }
+
+    @Override
+    public int hashCode() {//Internal amounts should be also hashed
+        int hash = -(map.size() << 4);
+        for (cElementalInstanceStack s : map.values()) {
+            hash += s.definition.hashCode();
+        }
+        return hash;
     }
 }

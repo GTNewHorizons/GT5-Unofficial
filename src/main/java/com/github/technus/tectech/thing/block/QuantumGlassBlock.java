@@ -83,9 +83,9 @@ public final class QuantumGlassBlock extends BlockBase {
         stuff = this.blockIcon;
     }
 
-    public static void run(){
-        INSTANCE=new QuantumGlassBlock();
-        GameRegistry.registerBlock(INSTANCE,QuantumGlassItem.class,INSTANCE.getUnlocalizedName());
-        GregTech_API.registerMachineBlock(INSTANCE,-1);
+    public static void run() {
+        INSTANCE = new QuantumGlassBlock();
+        GameRegistry.registerBlock(INSTANCE, QuantumGlassItem.class, INSTANCE.getUnlocalizedName());
+        GregTech_API.registerMachineBlock(INSTANCE, -1);
     }
 }

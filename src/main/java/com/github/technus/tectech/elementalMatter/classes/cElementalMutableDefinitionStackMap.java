@@ -12,42 +12,40 @@ import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveD
 /**
  * Created by danie_000 on 22.01.2017.
  */
-public final class cElementalMutableDefinitionStackMap extends cElementalStackMap {
+public final class cElementalMutableDefinitionStackMap extends cElementalStackMap {//Transient class for construction of definitions/recipes
 
     //Constructors + Clone, all make a whole new OBJ.
     public cElementalMutableDefinitionStackMap() {
-        map=new TreeMap<>();
+        map = new TreeMap<>();
     }
 
     @Deprecated
     public cElementalMutableDefinitionStackMap(iElementalDefinition... in) {
-        map=new TreeMap<>();
+        map = new TreeMap<>();
         for (iElementalDefinition definition : in)
             map.put(definition, new cElementalDefinitionStack(definition, 1));
     }
 
     public cElementalMutableDefinitionStackMap(cElementalDefinitionStack... in) {
-        map=new TreeMap<>();
+        map = new TreeMap<>();
         for (cElementalDefinitionStack stack : in)
             map.put(stack.definition, stack);
     }
 
-    public cElementalMutableDefinitionStackMap(Map<iElementalDefinition, cElementalDefinitionStack> in) {
-        this(true,in);
+    public cElementalMutableDefinitionStackMap(TreeMap<iElementalDefinition, cElementalDefinitionStack> in) {
+        this(true, in);
     }
 
-    public cElementalMutableDefinitionStackMap(boolean clone, Map<iElementalDefinition, cElementalDefinitionStack> in) {
+    public cElementalMutableDefinitionStackMap(boolean clone, TreeMap<iElementalDefinition, cElementalDefinitionStack> in) {
         if (clone) {
-            map = new TreeMap<>();
-            for (cElementalDefinitionStack stack : in.values())
-                map.put(stack.definition, stack);
+            map = new TreeMap<>(in);
         } else {
             map = in;
         }
     }
 
     @Override
-    public cElementalMutableDefinitionStackMap clone(){
+    public cElementalMutableDefinitionStackMap clone() {
         return new cElementalMutableDefinitionStackMap(map);
     }
 
@@ -57,7 +55,7 @@ public final class cElementalMutableDefinitionStackMap extends cElementalStackMa
 
     @Override
     @Deprecated
-    public Map<iElementalDefinition,cElementalDefinitionStack> getRawMap() {
+    public TreeMap<iElementalDefinition, cElementalDefinitionStack> getRawMap() {
         return map;
     }
 
@@ -159,7 +157,7 @@ public final class cElementalMutableDefinitionStackMap extends cElementalStackMa
         return removeAllAmounts(testOnly, stacks);
     }
 
-    public boolean removeAllAmounts(boolean testOnly, cElementalMutableDefinitionStackMap container) {
+    public boolean removeAllAmounts(boolean testOnly, cElementalStackMap container) {
         return removeAllAmounts(testOnly, container.values());
     }
 
@@ -177,13 +175,13 @@ public final class cElementalMutableDefinitionStackMap extends cElementalStackMa
             this.map.put(defStack.definition, defStack);
     }
 
-    public void putReplaceAll(cElementalMutableDefinitionStackMap inContainerUnsafe) {
+    public void putReplaceAll(cElementalStackMap inContainerUnsafe) {
         this.map.putAll(inContainerUnsafe.map);
     }
 
     //Put unify
     public cElementalDefinitionStack putUnify(cElementalDefinitionStack def) {
-        return map.put(def.definition, def.unifyIntoNew(map.get(def.definition)));
+        return map.put(def.definition, def.addAmountIntoNewInstance(map.get(def.definition)));
     }
 
     @Deprecated
@@ -207,7 +205,7 @@ public final class cElementalMutableDefinitionStackMap extends cElementalStackMa
             putUnify(in);
     }
 
-    public void putUnifyAll(cElementalMutableDefinitionStackMap containerUnsafe) {
+    public void putUnifyAll(cElementalStackMap containerUnsafe) {
         for (cElementalDefinitionStack in : containerUnsafe.map.values())
             putUnify(in);
     }
@@ -220,5 +218,21 @@ public final class cElementalMutableDefinitionStackMap extends cElementalStackMa
                 throw new tElementalException("Something went Wrong");
         }
         return new cElementalMutableDefinitionStackMap(defStacks);
+    }
+
+    //stackUp
+    @Deprecated
+    public static cElementalMutableDefinitionStackMap stackUpMap(iElementalDefinition... in) {
+        final cElementalMutableDefinitionStackMap inTree = new cElementalMutableDefinitionStackMap();
+        for (iElementalDefinition def : in) {
+            inTree.putUnify(new cElementalDefinitionStack(def, 1));
+        }
+        return inTree;
+    }
+
+    public static cElementalMutableDefinitionStackMap stackUpMap(cElementalDefinitionStack... in) {
+        final cElementalMutableDefinitionStackMap inTree = new cElementalMutableDefinitionStackMap();
+        inTree.putUnifyAll(in);
+        return inTree;
     }
 }

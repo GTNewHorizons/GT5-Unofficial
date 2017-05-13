@@ -11,7 +11,7 @@ public class TecTechConfig extends ConfigManager {
 
     public boolean ModAdminErrorLogs_Enabled;
 
-        //final static to allow compiler to remove the debug code when this is false
+    //final static to allow compiler to remove the debug code when this is false
     public static final boolean DEBUG_MODE = true;
     public boolean BOOM_ENABLE;
     public boolean NERF_FUSION;

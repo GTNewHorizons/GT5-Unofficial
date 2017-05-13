@@ -114,7 +114,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
                             GT_MetaTileEntity_Hatch_MufflerElemental aMetaTileEntity = (GT_MetaTileEntity_Hatch_MufflerElemental) tGTTileEntity.getMetaTileEntity();
                             aMetaTileEntity.overflowMatter += overflowMatter;
                             overflowMatter = 0F;
-                            deathDelay=3;//needed in some cases like repetitive failures. Should be 4 since there is -- at end but meh...
+                            deathDelay = 3;//needed in some cases like repetitive failures. Should be 4 since there is -- at end but meh...
                             if (aMetaTileEntity.overflowMatter > aMetaTileEntity.overflowMax) {
                                 if (TecTech.ModConfig.BOOM_ENABLE) tGTTileEntity.doExplosion(V[14]);
                                 else
@@ -129,13 +129,14 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
                     deathDelay--;
                 }
             } else if (moveAt == Tick) {
-                if(content.hasStacks())moveAround(aBaseMetaTileEntity);
+                if (content.hasStacks()) moveAround(aBaseMetaTileEntity);
                 getBaseMetaTileEntity().setActive(content.hasStacks());
             }
         }
     }
 
-    public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {}
+    public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
+    }
 
     @Override
     public cElementalInstanceStackMap getContainerHandler() {

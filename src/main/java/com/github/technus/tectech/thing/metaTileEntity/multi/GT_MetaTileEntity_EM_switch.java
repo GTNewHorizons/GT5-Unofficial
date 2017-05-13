@@ -36,9 +36,9 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset+1], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset + 1], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
         }
-        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset+1]};
+        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset + 1]};
     }
 
     @Override
@@ -53,9 +53,9 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
                 for (int h = -1; h < 2; h++) {
                     if ((i != 0 || j != 0 || h != 0)/*exclude center*/ && (xDir + i != 0 || yDir + h != 0 || zDir + j != 0)/*exclude this*/) {
                         IGregTechTileEntity tTileEntity = iGregTechTileEntity.getIGregTechTileEntityOffset(xDir + i, yDir + h, zDir + j);
-                        if (!addEnergyIOToMachineList(tTileEntity, textureOffset+1) &&
-                                (!addDataConnectorToMachineList(tTileEntity,textureOffset+1)) &&
-                                (!addMaintenanceToMachineList(tTileEntity,textureOffset+1))) {
+                        if (!addEnergyIOToMachineList(tTileEntity, textureOffset + 1) &&
+                                (!addDataConnectorToMachineList(tTileEntity, textureOffset + 1)) &&
+                                (!addMaintenanceToMachineList(tTileEntity, textureOffset + 1))) {
                             if (iGregTechTileEntity.getBlockOffset(xDir + i, yDir + h, zDir + j) != sBlockCasingsTT ||
                                     iGregTechTileEntity.getMetaIDOffset(xDir + i, yDir + h, zDir + j) != 1) {
                                 return false;
@@ -70,13 +70,13 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
 
     @Override
     public boolean EM_checkRecipe(ItemStack itemStack) {
-        short thingsActive=0;
+        short thingsActive = 0;
         for (GT_MetaTileEntity_Hatch_InputData di : eInputData)
-            if(di.q!=null)
+            if (di.q != null)
                 thingsActive++;
 
-        if(thingsActive>0){
-            thingsActive+=eOutputData.size();
+        if (thingsActive > 0) {
+            thingsActive += eOutputData.size();
             mEUt = -(int) V[7];
             eAmpereFlow = 1 + (thingsActive >> 2);
             mMaxProgresstime = 20;
@@ -90,7 +90,7 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
 
     @Override
     public void EM_outputFunction() {
-        if(eOutputData.size()>0) {
+        if (eOutputData.size() > 0) {
             float total = 0;
             for (int i = 0; i < 10; i++) {//each param pair
                 if (eParamsIn[i] > 0 && eParamsIn[i + 10] >= 0)
@@ -106,16 +106,16 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
                 if (pack == null) return;
             }
 
-            long remaining=pack.computation;
+            long remaining = pack.computation;
 
             for (int i = 0; i < 10; i++) {
                 if (eParamsIn[i] > 0) {
                     final int outIndex = (int) (eParamsIn[i + 10]) - 1;
                     if (outIndex < 0 || outIndex > eOutputData.size()) continue;
                     GT_MetaTileEntity_Hatch_OutputData out = eOutputData.get(outIndex);
-                    final long part=(long) ((pack.computation * eParamsIn[i]) / total);
-                    if(part>0) {
-                        remaining-=part;
+                    final long part = (long) ((pack.computation * eParamsIn[i]) / total);
+                    if (part > 0) {
+                        remaining -= part;
                         if (remaining > 0)
                             out.q = new quantumDataPacket(pack, part);
                         else if (part + remaining > 0) {

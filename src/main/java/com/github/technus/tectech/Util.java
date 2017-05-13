@@ -26,7 +26,7 @@ public class Util {
     public static String intToString(int number, int groupSize) {
         StringBuilder result = new StringBuilder();
 
-        for(int i = 31; i >= 0 ; i--) {
+        for (int i = 31; i >= 0; i--) {
             int mask = 1 << i;
             result.append((number & mask) != 0 ? "1" : "0");
 
@@ -46,8 +46,8 @@ public class Util {
                                            int horizontalOffset, int verticalOffset, int depthOffset,
                                            IGregTechTileEntity aBaseMetaTileEntity,
                                            boolean forceCheck) {
-        World world=aBaseMetaTileEntity.getWorld();
-        if(world.isRemote)return false;
+        World world = aBaseMetaTileEntity.getWorld();
+        if (world.isRemote) return false;
         //TE Rotation
         byte facing = aBaseMetaTileEntity.getFrontFacing();
 
@@ -70,21 +70,46 @@ public class Util {
                     } else {
                         //get x y z from rotation
                         switch (facing) {//translation
-                            case 4: x = aBaseMetaTileEntity.getXCoord()+c; z = aBaseMetaTileEntity.getZCoord()+a; y = aBaseMetaTileEntity.getYCoord()+b; break;
-                            case 3: x = aBaseMetaTileEntity.getXCoord()+a; z = aBaseMetaTileEntity.getZCoord()-c; y = aBaseMetaTileEntity.getYCoord()+b; break;
-                            case 5: x = aBaseMetaTileEntity.getXCoord()-c; z = aBaseMetaTileEntity.getZCoord()-a; y = aBaseMetaTileEntity.getYCoord()+b; break;
-                            case 2: x = aBaseMetaTileEntity.getXCoord()-a; z = aBaseMetaTileEntity.getZCoord()+c; y = aBaseMetaTileEntity.getYCoord()+b; break;
+                            case 4:
+                                x = aBaseMetaTileEntity.getXCoord() + c;
+                                z = aBaseMetaTileEntity.getZCoord() + a;
+                                y = aBaseMetaTileEntity.getYCoord() + b;
+                                break;
+                            case 3:
+                                x = aBaseMetaTileEntity.getXCoord() + a;
+                                z = aBaseMetaTileEntity.getZCoord() - c;
+                                y = aBaseMetaTileEntity.getYCoord() + b;
+                                break;
+                            case 5:
+                                x = aBaseMetaTileEntity.getXCoord() - c;
+                                z = aBaseMetaTileEntity.getZCoord() - a;
+                                y = aBaseMetaTileEntity.getYCoord() + b;
+                                break;
+                            case 2:
+                                x = aBaseMetaTileEntity.getXCoord() - a;
+                                z = aBaseMetaTileEntity.getZCoord() + c;
+                                y = aBaseMetaTileEntity.getYCoord() + b;
+                                break;
                             //Things get odd if the block faces up or down...
-                            case 1: x = aBaseMetaTileEntity.getXCoord()+a; z = aBaseMetaTileEntity.getZCoord()+b; y = aBaseMetaTileEntity.getYCoord()-c; break;//similar to 3
-                            case 0: x = aBaseMetaTileEntity.getXCoord()-a; z = aBaseMetaTileEntity.getZCoord()-b; y = aBaseMetaTileEntity.getYCoord()+c; break;//similar to 2
-                            default: return false;
+                            case 1:
+                                x = aBaseMetaTileEntity.getXCoord() + a;
+                                z = aBaseMetaTileEntity.getZCoord() + b;
+                                y = aBaseMetaTileEntity.getYCoord() - c;
+                                break;//similar to 3
+                            case 0:
+                                x = aBaseMetaTileEntity.getXCoord() - a;
+                                z = aBaseMetaTileEntity.getZCoord() - b;
+                                y = aBaseMetaTileEntity.getYCoord() + c;
+                                break;//similar to 2
+                            default:
+                                return false;
                         }
 
                         //that must be here since in some cases other axis (b,c) controls y
-                        if(y<0 || y>=256) return false;
+                        if (y < 0 || y >= 256) return false;
 
                         //Check block
-                        if (world.blockExists(x,y,z)) {//this actually checks if the chunk is loaded at this pos
+                        if (world.blockExists(x, y, z)) {//this actually checks if the chunk is loaded at this pos
                             switch (block) {
                                 case '-'://must be air
                                     if (world.getBlock(x, y, z).getMaterial() != Material.air)
@@ -108,7 +133,7 @@ public class Util {
                                         return false;
                                     }
                             }
-                        }else if (forceCheck) return false;
+                        } else if (forceCheck) return false;
                         a++;//block in horizontal layer
                     }
                 }
@@ -133,13 +158,13 @@ public class Util {
             int horizontalOffset, int verticalOffset, int depthOffset,
             IGregTechTileEntity aBaseMetaTileEntity,
             boolean forceCheck) {
-        World world=aBaseMetaTileEntity.getWorld();
-        if(world.isRemote)return false;
+        World world = aBaseMetaTileEntity.getWorld();
+        if (world.isRemote) return false;
         //TE Rotation
         byte facing = aBaseMetaTileEntity.getFrontFacing();
 
         IGregTechTileEntity igt;
-        IMetaTileEntity imt=aBaseMetaTileEntity.getMetaTileEntity();
+        IMetaTileEntity imt = aBaseMetaTileEntity.getMetaTileEntity();
 
         int x, y, z, a, b, c, pointer;
         //a,b,c - relative to block face!
@@ -155,26 +180,51 @@ public class Util {
                 for (char block : __structure.toCharArray()) {//left to right
                     if (block > '@') {//characters allow to skip check a-1 skip, b-2 skips etc.
                         a += block - '@';
-                    //} else if (block < '+') {//used to mark THINGS
-                    //    a++;
+                        //} else if (block < '+') {//used to mark THINGS
+                        //    a++;
                     } else {
                         //get x y z from rotation
                         switch (facing) {//translation
-                            case 4: x = aBaseMetaTileEntity.getXCoord()+c; z = aBaseMetaTileEntity.getZCoord()+a; y = aBaseMetaTileEntity.getYCoord()+b; break;
-                            case 3: x = aBaseMetaTileEntity.getXCoord()+a; z = aBaseMetaTileEntity.getZCoord()-c; y = aBaseMetaTileEntity.getYCoord()+b; break;
-                            case 5: x = aBaseMetaTileEntity.getXCoord()-c; z = aBaseMetaTileEntity.getZCoord()-a; y = aBaseMetaTileEntity.getYCoord()+b; break;
-                            case 2: x = aBaseMetaTileEntity.getXCoord()-a; z = aBaseMetaTileEntity.getZCoord()+c; y = aBaseMetaTileEntity.getYCoord()+b; break;
+                            case 4:
+                                x = aBaseMetaTileEntity.getXCoord() + c;
+                                z = aBaseMetaTileEntity.getZCoord() + a;
+                                y = aBaseMetaTileEntity.getYCoord() + b;
+                                break;
+                            case 3:
+                                x = aBaseMetaTileEntity.getXCoord() + a;
+                                z = aBaseMetaTileEntity.getZCoord() - c;
+                                y = aBaseMetaTileEntity.getYCoord() + b;
+                                break;
+                            case 5:
+                                x = aBaseMetaTileEntity.getXCoord() - c;
+                                z = aBaseMetaTileEntity.getZCoord() - a;
+                                y = aBaseMetaTileEntity.getYCoord() + b;
+                                break;
+                            case 2:
+                                x = aBaseMetaTileEntity.getXCoord() - a;
+                                z = aBaseMetaTileEntity.getZCoord() + c;
+                                y = aBaseMetaTileEntity.getYCoord() + b;
+                                break;
                             //Things get odd if the block faces up or down...
-                            case 1: x = aBaseMetaTileEntity.getXCoord()+a; z = aBaseMetaTileEntity.getZCoord()+b; y = aBaseMetaTileEntity.getYCoord()-c; break;//similar to 3
-                            case 0: x = aBaseMetaTileEntity.getXCoord()-a; z = aBaseMetaTileEntity.getZCoord()-b; y = aBaseMetaTileEntity.getYCoord()+c; break;//similar to 2
-                            default: return false;
+                            case 1:
+                                x = aBaseMetaTileEntity.getXCoord() + a;
+                                z = aBaseMetaTileEntity.getZCoord() + b;
+                                y = aBaseMetaTileEntity.getYCoord() - c;
+                                break;//similar to 3
+                            case 0:
+                                x = aBaseMetaTileEntity.getXCoord() - a;
+                                z = aBaseMetaTileEntity.getZCoord() - b;
+                                y = aBaseMetaTileEntity.getYCoord() + c;
+                                break;//similar to 2
+                            default:
+                                return false;
                         }
 
                         //that must be here since in some cases other axis (b,c) controls y
-                        if(y<0 || y>=256) return false;
+                        if (y < 0 || y >= 256) return false;
 
                         //Check block
-                        if (world.blockExists(x,y,z)) {//this actually checks if the chunk is loaded at this pos
+                        if (world.blockExists(x, y, z)) {//this actually checks if the chunk is loaded at this pos
                             switch (block) {
                                 case '-'://must be air
                                     if (world.getBlock(x, y, z).getMaterial() != Material.air)
@@ -185,7 +235,7 @@ public class Util {
                                         return false;
                                     break;
                                 default://check for block (countable)
-                                    if((pointer = block - '0') >= 0) {
+                                    if ((pointer = block - '0') >= 0) {
                                         //countable air -> net.minecraft.block.BlockAir
                                         if (world.getBlock(x, y, z) != blockType[pointer]) {
                                             if (TecTechConfig.DEBUG_MODE)
@@ -197,10 +247,10 @@ public class Util {
                                                 TecTech.Logger.info("Struct-meta-id-error " + x + " " + y + " " + z + " / " + a + " " + b + " " + c + " / " + world.getBlockMetadata(x, y, z) + " " + blockMeta[pointer]);
                                             return false;
                                         }
-                                    }else if((pointer = block - ' ') >= 0){
-                                        igt=aBaseMetaTileEntity.getIGregTechTileEntity(x,y,z);
+                                    } else if ((pointer = block - ' ') >= 0) {
+                                        igt = aBaseMetaTileEntity.getIGregTechTileEntity(x, y, z);
                                         try {
-                                            if(igt==null ||  !(boolean) adder.invoke(imt,addingMethods[pointer],igt,casingTextures[pointer])){
+                                            if (igt == null || !(boolean) adder.invoke(imt, addingMethods[pointer], igt, casingTextures[pointer])) {
                                                 if (world.getBlock(x, y, z) != blockTypeFallback[pointer]) {
                                                     if (TecTechConfig.DEBUG_MODE)
                                                         TecTech.Logger.info("Fallback-struct-block-error " + x + " " + y + " " + z + " / " + a + " " + b + " " + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + " " + blockTypeFallback[pointer].getUnlocalizedName());
@@ -212,13 +262,13 @@ public class Util {
                                                     return false;
                                                 }
                                             }
-                                        }catch (InvocationTargetException | IllegalAccessException e){
-                                            if(TecTechConfig.DEBUG_MODE) e.printStackTrace();
+                                        } catch (InvocationTargetException | IllegalAccessException e) {
+                                            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
                                             return false;
                                         }
                                     }
                             }
-                        }else if (forceCheck) return false;
+                        } else if (forceCheck) return false;
                         a++;//block in horizontal layer
                     }
                 }
@@ -236,8 +286,8 @@ public class Util {
                                            IGregTechTileEntity aBaseMetaTileEntity) {
         //TE Rotation
         byte facing = aBaseMetaTileEntity.getFrontFacing();
-        World world=aBaseMetaTileEntity.getWorld();
-        if(world.isRemote)return false;
+        World world = aBaseMetaTileEntity.getWorld();
+        if (world.isRemote) return false;
 
         int x, y, z, a, b, c;
         //a,b,c - relative to block face!
@@ -257,32 +307,57 @@ public class Util {
                     } else {
                         //get x y z from rotation
                         switch (facing) {//translation
-                            case 4: x = aBaseMetaTileEntity.getXCoord()+c; z = aBaseMetaTileEntity.getZCoord()+a; y = aBaseMetaTileEntity.getYCoord()+b; break;
-                            case 3: x = aBaseMetaTileEntity.getXCoord()+a; z = aBaseMetaTileEntity.getZCoord()-c; y = aBaseMetaTileEntity.getYCoord()+b; break;
-                            case 5: x = aBaseMetaTileEntity.getXCoord()-c; z = aBaseMetaTileEntity.getZCoord()-a; y = aBaseMetaTileEntity.getYCoord()+b; break;
-                            case 2: x = aBaseMetaTileEntity.getXCoord()-a; z = aBaseMetaTileEntity.getZCoord()+c; y = aBaseMetaTileEntity.getYCoord()+b; break;
+                            case 4:
+                                x = aBaseMetaTileEntity.getXCoord() + c;
+                                z = aBaseMetaTileEntity.getZCoord() + a;
+                                y = aBaseMetaTileEntity.getYCoord() + b;
+                                break;
+                            case 3:
+                                x = aBaseMetaTileEntity.getXCoord() + a;
+                                z = aBaseMetaTileEntity.getZCoord() - c;
+                                y = aBaseMetaTileEntity.getYCoord() + b;
+                                break;
+                            case 5:
+                                x = aBaseMetaTileEntity.getXCoord() - c;
+                                z = aBaseMetaTileEntity.getZCoord() - a;
+                                y = aBaseMetaTileEntity.getYCoord() + b;
+                                break;
+                            case 2:
+                                x = aBaseMetaTileEntity.getXCoord() - a;
+                                z = aBaseMetaTileEntity.getZCoord() + c;
+                                y = aBaseMetaTileEntity.getYCoord() + b;
+                                break;
                             //Things get odd if the block faces up or down...
-                            case 1: x = aBaseMetaTileEntity.getXCoord()+a; z = aBaseMetaTileEntity.getZCoord()+b; y = aBaseMetaTileEntity.getYCoord()-c; break;//similar to 3
-                            case 0: x = aBaseMetaTileEntity.getXCoord()-a; z = aBaseMetaTileEntity.getZCoord()-b; y = aBaseMetaTileEntity.getYCoord()+c; break;//similar to 2
-                            default: return false;
+                            case 1:
+                                x = aBaseMetaTileEntity.getXCoord() + a;
+                                z = aBaseMetaTileEntity.getZCoord() + b;
+                                y = aBaseMetaTileEntity.getYCoord() - c;
+                                break;//similar to 3
+                            case 0:
+                                x = aBaseMetaTileEntity.getXCoord() - a;
+                                z = aBaseMetaTileEntity.getZCoord() - b;
+                                y = aBaseMetaTileEntity.getYCoord() + c;
+                                break;//similar to 2
+                            default:
+                                return false;
                         }
 
                         //that must be here since in some cases other axis (b,c) controls y
-                        if(y<0 || y>=256) return false;
+                        if (y < 0 || y >= 256) return false;
 
                         //Check block
-                        if (world.blockExists(x,y,z)) {//this actually checks if the chunk is loaded
+                        if (world.blockExists(x, y, z)) {//this actually checks if the chunk is loaded
                             switch (block) {
                                 case '-'://must be air
-                                    world.setBlock(x,y,z,Blocks.air,0,2);
+                                    world.setBlock(x, y, z, Blocks.air, 0, 2);
                                     break;
                                 case '+'://must not be air
-                                    world.setBlock(x,y,z,Blocks.wool,15,2);
+                                    world.setBlock(x, y, z, Blocks.wool, 15, 2);
                                     break;
                                 default: {//check for block (countable)
                                     int pointer = block - '0';
                                     //countable air -> net.minecraft.block.BlockAir
-                                    world.setBlock(x,y,z,blockType[pointer],blockMeta[pointer],2);
+                                    world.setBlock(x, y, z, blockType[pointer], blockMeta[pointer], 2);
                                 }
                             }
                         }
@@ -298,13 +373,13 @@ public class Util {
 
     public static String[] StructureWriter(IGregTechTileEntity aBaseMetaTileEntity,
                                            int horizontalOffset, int verticalOffset, int depthOffset,
-                                           int horizontalSize, int verticalSize, int depthSize, boolean ignoreAir){
+                                           int horizontalSize, int verticalSize, int depthSize, boolean ignoreAir) {
         //TE Rotation
         byte facing = aBaseMetaTileEntity.getFrontFacing();
-        World world=aBaseMetaTileEntity.getWorld();
-        if(world.isRemote)return new String[]{"Not at Client m8"};
+        World world = aBaseMetaTileEntity.getWorld();
+        if (world.isRemote) return new String[]{"Not at Client m8"};
 
-        ItemStack[] array=new ItemStack[10];
+        ItemStack[] array = new ItemStack[10];
 
         int x, y, z, a, b, c;
         //a,b,c - relative to block face!
@@ -313,40 +388,65 @@ public class Util {
 
         //perform your duties - #1 - count block types
         c = -depthOffset;
-        for (int cz=0;cz<depthSize;cz++) {//front to back
+        for (int cz = 0; cz < depthSize; cz++) {//front to back
             b = verticalOffset;
-            for (int by=0;by<verticalSize;by++) {//top to bottom
+            for (int by = 0; by < verticalSize; by++) {//top to bottom
                 a = -horizontalOffset;
-                for (int az=0;az<horizontalSize;az++) {//left to right
+                for (int az = 0; az < horizontalSize; az++) {//left to right
                     //get x y z from rotation
                     switch (facing) {//translation
-                        case 4: x = aBaseMetaTileEntity.getXCoord()+c; z = aBaseMetaTileEntity.getZCoord()+a; y = aBaseMetaTileEntity.getYCoord()+b; break;
-                        case 3: x = aBaseMetaTileEntity.getXCoord()+a; z = aBaseMetaTileEntity.getZCoord()-c; y = aBaseMetaTileEntity.getYCoord()+b; break;
-                        case 5: x = aBaseMetaTileEntity.getXCoord()-c; z = aBaseMetaTileEntity.getZCoord()-a; y = aBaseMetaTileEntity.getYCoord()+b; break;
-                        case 2: x = aBaseMetaTileEntity.getXCoord()-a; z = aBaseMetaTileEntity.getZCoord()+c; y = aBaseMetaTileEntity.getYCoord()+b; break;
+                        case 4:
+                            x = aBaseMetaTileEntity.getXCoord() + c;
+                            z = aBaseMetaTileEntity.getZCoord() + a;
+                            y = aBaseMetaTileEntity.getYCoord() + b;
+                            break;
+                        case 3:
+                            x = aBaseMetaTileEntity.getXCoord() + a;
+                            z = aBaseMetaTileEntity.getZCoord() - c;
+                            y = aBaseMetaTileEntity.getYCoord() + b;
+                            break;
+                        case 5:
+                            x = aBaseMetaTileEntity.getXCoord() - c;
+                            z = aBaseMetaTileEntity.getZCoord() - a;
+                            y = aBaseMetaTileEntity.getYCoord() + b;
+                            break;
+                        case 2:
+                            x = aBaseMetaTileEntity.getXCoord() - a;
+                            z = aBaseMetaTileEntity.getZCoord() + c;
+                            y = aBaseMetaTileEntity.getYCoord() + b;
+                            break;
                         //Things get odd if the block faces up or down...
-                        case 1: x = aBaseMetaTileEntity.getXCoord()+a; z = aBaseMetaTileEntity.getZCoord()+b; y = aBaseMetaTileEntity.getYCoord()-c; break;//similar to 3
-                        case 0: x = aBaseMetaTileEntity.getXCoord()-a; z = aBaseMetaTileEntity.getZCoord()-b; y = aBaseMetaTileEntity.getYCoord()+c; break;//similar to 2
-                        default: return new String[]{"Invalid rotation"};
+                        case 1:
+                            x = aBaseMetaTileEntity.getXCoord() + a;
+                            z = aBaseMetaTileEntity.getZCoord() + b;
+                            y = aBaseMetaTileEntity.getYCoord() - c;
+                            break;//similar to 3
+                        case 0:
+                            x = aBaseMetaTileEntity.getXCoord() - a;
+                            z = aBaseMetaTileEntity.getZCoord() - b;
+                            y = aBaseMetaTileEntity.getYCoord() + c;
+                            break;//similar to 2
+                        default:
+                            return new String[]{"Invalid rotation"};
                     }
 
                     //that must be here since in some cases other axis (b,c) controls y
-                    if(y<0 || y>=256) return new String[]{"Invalid position"};
+                    if (y < 0 || y >= 256) return new String[]{"Invalid position"};
 
                     //Check block
-                    Block block=world.getBlock(x,y,z);
-                    int meta=world.getBlockMetadata(x,y,z);
+                    Block block = world.getBlock(x, y, z);
+                    int meta = world.getBlockMetadata(x, y, z);
 
-                    if(!block.hasTileEntity(meta) && block.getMaterial()!=Material.air) {
-                        boolean err=true;
-                        final ItemStack is=new ItemStack(block, 1, meta);
-                        for(int i=0;i<array.length;i++){
-                            if(array[i]==null){
-                                array[i]=is;
-                                err=false;
+                    if (!block.hasTileEntity(meta) && block.getMaterial() != Material.air) {
+                        boolean err = true;
+                        final ItemStack is = new ItemStack(block, 1, meta);
+                        for (int i = 0; i < array.length; i++) {
+                            if (array[i] == null) {
+                                array[i] = is;
+                                err = false;
                                 break;
-                            } else if(is.getItem()==array[i].getItem() && is.getItemDamage()==array[i].getItemDamage()){
-                                err=false;
+                            } else if (is.getItem() == array[i].getItem() && is.getItemDamage() == array[i].getItemDamage()) {
+                                err = false;
                                 break;
                             }
                         }
@@ -360,25 +460,25 @@ public class Util {
             c++;//depth
         }
 
-        List<String> output=new ArrayList<>();
+        List<String> output = new ArrayList<>();
 
-        output.add("Offsets: "+horizontalOffset+" "+verticalOffset+" "+depthOffset);
-        output.add("Sizes: "+horizontalSize+" "+verticalSize+" "+depthSize);
+        output.add("Offsets: " + horizontalOffset + " " + verticalOffset + " " + depthOffset);
+        output.add("Sizes: " + horizontalSize + " " + verticalSize + " " + depthSize);
         output.add("");
 
         output.add("ID[]: Name[]");
         output.add("");
-        for(int i=0;i<array.length;i++){
-            if(array[i]!=null) {
-                output.add(i+": "+array[i].getDisplayName());
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] != null) {
+                output.add(i + ": " + array[i].getDisplayName());
             }
         }
         output.add("");
         output.add("ID[]: Block[] BlockMetaID[]");
         output.add("");
-        for(int i=0;i<array.length;i++){
-            if(array[i]!=null) {
-                output.add(i+": "+array[i].getItem().getUnlocalizedName()+" "+array[i].getItemDamage());
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] != null) {
+                output.add(i + ": " + array[i].getItem().getUnlocalizedName() + " " + array[i].getItemDamage());
             }
         }
         output.add("");
@@ -386,85 +486,110 @@ public class Util {
         //perform your duties - #2 - write strings
         output.add("{");
         c = -depthOffset;
-        for (int cz=0;cz<depthSize;cz++) {//front to back
+        for (int cz = 0; cz < depthSize; cz++) {//front to back
             b = verticalOffset;
-            String addMe="{";
-            for (int by=0;by<verticalSize;by++) {//top to bottom
+            String addMe = "{";
+            for (int by = 0; by < verticalSize; by++) {//top to bottom
                 a = -horizontalOffset;
-                String line="";
-                for (int az=0;az<horizontalSize;az++) {//left to right
+                String line = "";
+                for (int az = 0; az < horizontalSize; az++) {//left to right
                     //get x y z from rotation
                     switch (facing) {//translation
-                        case 4: x = aBaseMetaTileEntity.getXCoord()+c; z = aBaseMetaTileEntity.getZCoord()+a; y = aBaseMetaTileEntity.getYCoord()+b; break;
-                        case 3: x = aBaseMetaTileEntity.getXCoord()+a; z = aBaseMetaTileEntity.getZCoord()-c; y = aBaseMetaTileEntity.getYCoord()+b; break;
-                        case 5: x = aBaseMetaTileEntity.getXCoord()-c; z = aBaseMetaTileEntity.getZCoord()-a; y = aBaseMetaTileEntity.getYCoord()+b; break;
-                        case 2: x = aBaseMetaTileEntity.getXCoord()-a; z = aBaseMetaTileEntity.getZCoord()+c; y = aBaseMetaTileEntity.getYCoord()+b; break;
+                        case 4:
+                            x = aBaseMetaTileEntity.getXCoord() + c;
+                            z = aBaseMetaTileEntity.getZCoord() + a;
+                            y = aBaseMetaTileEntity.getYCoord() + b;
+                            break;
+                        case 3:
+                            x = aBaseMetaTileEntity.getXCoord() + a;
+                            z = aBaseMetaTileEntity.getZCoord() - c;
+                            y = aBaseMetaTileEntity.getYCoord() + b;
+                            break;
+                        case 5:
+                            x = aBaseMetaTileEntity.getXCoord() - c;
+                            z = aBaseMetaTileEntity.getZCoord() - a;
+                            y = aBaseMetaTileEntity.getYCoord() + b;
+                            break;
+                        case 2:
+                            x = aBaseMetaTileEntity.getXCoord() - a;
+                            z = aBaseMetaTileEntity.getZCoord() + c;
+                            y = aBaseMetaTileEntity.getYCoord() + b;
+                            break;
                         //Things get odd if the block faces up or down...
-                        case 1: x = aBaseMetaTileEntity.getXCoord()+a; z = aBaseMetaTileEntity.getZCoord()+b; y = aBaseMetaTileEntity.getYCoord()-c; break;//similar to 3
-                        case 0: x = aBaseMetaTileEntity.getXCoord()-a; z = aBaseMetaTileEntity.getZCoord()-b; y = aBaseMetaTileEntity.getYCoord()+c; break;//similar to 2
-                        default: return new String[]{"Invalid rotation"};
+                        case 1:
+                            x = aBaseMetaTileEntity.getXCoord() + a;
+                            z = aBaseMetaTileEntity.getZCoord() + b;
+                            y = aBaseMetaTileEntity.getYCoord() - c;
+                            break;//similar to 3
+                        case 0:
+                            x = aBaseMetaTileEntity.getXCoord() - a;
+                            z = aBaseMetaTileEntity.getZCoord() - b;
+                            y = aBaseMetaTileEntity.getYCoord() + c;
+                            break;//similar to 2
+                        default:
+                            return new String[]{"Invalid rotation"};
                     }
 
                     //Check block
-                    Block block=world.getBlock(x,y,z);
-                    int meta=world.getBlockMetadata(x,y,z);
+                    Block block = world.getBlock(x, y, z);
+                    int meta = world.getBlockMetadata(x, y, z);
 
-                    if(a==0 && b==0 && c==0){
-                        line+='+';
-                    }else if(block.getMaterial()==Material.air){
-                        line+='-';
-                    }else if(block.hasTileEntity(meta)){
-                        line+='*';
-                    }else{
-                        ItemStack stack=new ItemStack(block,1,meta);
-                        String str="?";//OH YEAH NPEs
-                        for(int i=0;i<array.length;i++){
-                            if(array[i]!=null && stack.getItem()==array[i].getItem() && stack.getItemDamage()==array[i].getItemDamage()) {
+                    if (a == 0 && b == 0 && c == 0) {
+                        line += '+';
+                    } else if (block.getMaterial() == Material.air) {
+                        line += '-';
+                    } else if (block.hasTileEntity(meta)) {
+                        line += '*';
+                    } else {
+                        ItemStack stack = new ItemStack(block, 1, meta);
+                        String str = "?";//OH YEAH NPEs
+                        for (int i = 0; i < array.length; i++) {
+                            if (array[i] != null && stack.getItem() == array[i].getItem() && stack.getItemDamage() == array[i].getItemDamage()) {
                                 str = Integer.toString(i);
                                 break;
                             }
                         }
-                        line+=str;
+                        line += str;
                     }
                     a++;//block in horizontal layer
                 }
-                if(ignoreAir) {
+                if (ignoreAir) {
                     String l = "";
-                    char temp='@';
+                    char temp = '@';
                     for (char ch : line.toCharArray()) {
-                        if(ch=='-'){
-                            temp+=1;
-                            if(temp=='~') {
+                        if (ch == '-') {
+                            temp += 1;
+                            if (temp == '~') {
                                 l += '~';
-                                temp='@';
+                                temp = '@';
                             }
-                        }else{
-                            if(temp>'@') {
+                        } else {
+                            if (temp > '@') {
                                 l += temp;
-                                temp='@';
+                                temp = '@';
                             }
-                            l+=ch;
+                            l += ch;
                         }
                     }
-                    while(l.length()>0 && l.toCharArray()[l.length()-1]=='~')
-                        l=l.substring(0,l.length()-1);
-                    if(l.length()==0)
-                        l="E,";
-                    else{
-                        l="\""+l+"\",";
+                    while (l.length() > 0 && l.toCharArray()[l.length() - 1] == '~')
+                        l = l.substring(0, l.length() - 1);
+                    if (l.length() == 0)
+                        l = "E,";
+                    else {
+                        l = "\"" + l + "\",";
                     }
-                    addMe+=l;
-                }else {
-                    if(line.length()==0)
-                        line="E,";
-                    else{
-                        line="\""+line+"\",";
+                    addMe += l;
+                } else {
+                    if (line.length() == 0)
+                        line = "E,";
+                    else {
+                        line = "\"" + line + "\",";
                     }
-                    addMe+=line;
+                    addMe += line;
                 }
                 b--;//horizontal layer
             }
-            output.add(addMe+"},");
+            output.add(addMe + "},");
             c++;//depth
         }
         output.add("}");
@@ -569,7 +694,7 @@ public class Util {
         return true;
     }
 
-    public static String getUniqueIdentifier(ItemStack is){
-        return GameRegistry.findUniqueIdentifierFor(is.getItem()).modId+":"+is.getUnlocalizedName();
+    public static String getUniqueIdentifier(ItemStack is) {
+        return GameRegistry.findUniqueIdentifierFor(is.getItem()).modId + ":" + is.getUnlocalizedName();
     }
 }

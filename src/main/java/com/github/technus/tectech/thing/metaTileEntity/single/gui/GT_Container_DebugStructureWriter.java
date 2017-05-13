@@ -16,8 +16,9 @@ import java.util.Iterator;
 
 public class GT_Container_DebugStructureWriter
         extends GT_ContainerMetaTile_Machine {
-    public boolean size=false;
-    public short numbers[]=new short[6];
+    public boolean size = false;
+    public short numbers[] = new short[6];
+
     public GT_Container_DebugStructureWriter(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
     }
@@ -52,44 +53,44 @@ public class GT_Container_DebugStructureWriter
         }
         Slot tSlot = (Slot) this.inventorySlots.get(aSlotIndex);
         if ((tSlot != null) && (this.mTileEntity.getMetaTileEntity() != null)) {
-            GT_MetaTileEntity_DebugStructureWriter dsw=(GT_MetaTileEntity_DebugStructureWriter)mTileEntity.getMetaTileEntity();
-            if(dsw.numbers==null)return null;
+            GT_MetaTileEntity_DebugStructureWriter dsw = (GT_MetaTileEntity_DebugStructureWriter) mTileEntity.getMetaTileEntity();
+            if (dsw.numbers == null) return null;
             switch (aSlotIndex) {
                 case 0:
-                    dsw.numbers[size?3:0] -= (aShifthold == 1 ? 512 : 64);
+                    dsw.numbers[size ? 3 : 0] -= (aShifthold == 1 ? 512 : 64);
                     return null;
                 case 1:
-                    dsw.numbers[size?4:1] -= (aShifthold == 1 ? 512 : 64);
+                    dsw.numbers[size ? 4 : 1] -= (aShifthold == 1 ? 512 : 64);
                     return null;
                 case 2:
-                    dsw.numbers[size?5:2] -= (aShifthold == 1 ? 512 : 64);
+                    dsw.numbers[size ? 5 : 2] -= (aShifthold == 1 ? 512 : 64);
                     return null;
                 case 4:
-                    dsw.numbers[size?3:0] -= (aShifthold == 1 ? 16 : 1);
+                    dsw.numbers[size ? 3 : 0] -= (aShifthold == 1 ? 16 : 1);
                     return null;
                 case 5:
-                    dsw.numbers[size?4:1] -= (aShifthold == 1 ? 16 : 1);
+                    dsw.numbers[size ? 4 : 1] -= (aShifthold == 1 ? 16 : 1);
                     return null;
                 case 6:
-                    dsw.numbers[size?5:2] -= (aShifthold == 1 ? 16 : 1);
+                    dsw.numbers[size ? 5 : 2] -= (aShifthold == 1 ? 16 : 1);
                     return null;
                 case 8:
-                    dsw.numbers[size?3:0] += (aShifthold == 1 ? 512 : 64);
+                    dsw.numbers[size ? 3 : 0] += (aShifthold == 1 ? 512 : 64);
                     return null;
                 case 9:
-                    dsw.numbers[size?4:1] += (aShifthold == 1 ? 512 : 64);
+                    dsw.numbers[size ? 4 : 1] += (aShifthold == 1 ? 512 : 64);
                     return null;
                 case 10:
-                    dsw.numbers[size?5:2] += (aShifthold == 1 ? 512 : 64);
+                    dsw.numbers[size ? 5 : 2] += (aShifthold == 1 ? 512 : 64);
                     return null;
                 case 12:
-                    dsw.numbers[size?3:0] += (aShifthold == 1 ? 16 : 1);
+                    dsw.numbers[size ? 3 : 0] += (aShifthold == 1 ? 16 : 1);
                     return null;
                 case 13:
-                    dsw.numbers[size?4:1] += (aShifthold == 1 ? 16 : 1);
+                    dsw.numbers[size ? 4 : 1] += (aShifthold == 1 ? 16 : 1);
                     return null;
                 case 14:
-                    dsw.numbers[size?5:2] += (aShifthold == 1 ? 16 : 1);
+                    dsw.numbers[size ? 5 : 2] += (aShifthold == 1 ? 16 : 1);
                     return null;
                 case 3:
                 case 7:
@@ -108,15 +109,15 @@ public class GT_Container_DebugStructureWriter
         if ((this.mTileEntity.isClientSide()) || (this.mTileEntity.getMetaTileEntity() == null)) {
             return;
         }
-        GT_MetaTileEntity_DebugStructureWriter dsw=(GT_MetaTileEntity_DebugStructureWriter)mTileEntity.getMetaTileEntity();
-        if(numbers!=null)
+        GT_MetaTileEntity_DebugStructureWriter dsw = (GT_MetaTileEntity_DebugStructureWriter) mTileEntity.getMetaTileEntity();
+        if (numbers != null)
             System.arraycopy(dsw.numbers, 0, this.numbers, 0, dsw.numbers.length);
         this.size = dsw.size;
 
         Iterator var2 = this.crafters.iterator();
         while (var2.hasNext()) {
             ICrafting var1 = (ICrafting) var2.next();
-            if(numbers!=null) {
+            if (numbers != null) {
                 var1.sendProgressBarUpdate(this, 100, this.numbers[0]);
                 var1.sendProgressBarUpdate(this, 101, this.numbers[1]);
                 var1.sendProgressBarUpdate(this, 102, this.numbers[2]);
@@ -124,7 +125,7 @@ public class GT_Container_DebugStructureWriter
                 var1.sendProgressBarUpdate(this, 104, this.numbers[4]);
                 var1.sendProgressBarUpdate(this, 105, this.numbers[5]);
             }
-            var1.sendProgressBarUpdate(this, 106, this.size?1:0);
+            var1.sendProgressBarUpdate(this, 106, this.size ? 1 : 0);
         }
     }
 
@@ -133,10 +134,10 @@ public class GT_Container_DebugStructureWriter
         super.updateProgressBar(par1, par2);
         switch (par1) {
             case 106:
-                this.size = par2==1;
+                this.size = par2 == 1;
                 break;
             default:
-                if(numbers!=null && par1>=100 && par1<=105)
+                if (numbers != null && par1 >= 100 && par1 <= 105)
                     this.numbers[par1 - 100] = (short) par2;
                 break;
         }

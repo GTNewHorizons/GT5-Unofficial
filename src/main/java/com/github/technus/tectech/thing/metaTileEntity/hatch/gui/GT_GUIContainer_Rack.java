@@ -25,9 +25,9 @@ public class GT_GUIContainer_Rack extends GT_GUIContainerMetaTile_Machine {
         int y = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
         if (this.mContainer != null) {
-            if(((GT_Container_Rack)mContainer).mActive==1)
+            if (((GT_Container_Rack) mContainer).mActive == 1)
                 drawTexturedModalRect(x + 151, y + 23, 183, 23, 18, 18);
-            if(((GT_Container_Rack)mContainer).heat)
+            if (((GT_Container_Rack) mContainer).heat)
                 drawTexturedModalRect(x + 151, y + 41, 183, 41, 18, 18);
         }
     }

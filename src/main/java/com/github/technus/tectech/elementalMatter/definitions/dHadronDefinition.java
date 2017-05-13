@@ -11,13 +11,13 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
-import static com.github.technus.tectech.elementalMatter.classes.cElementalMutableDefinitionStackMap.stackUpTree;
+import static com.github.technus.tectech.elementalMatter.classes.cElementalMutableDefinitionStackMap.stackUpMap;
 import static com.github.technus.tectech.elementalMatter.definitions.eBosonDefinition.boson_Y__;
 
 /**
  * Created by danie_000 on 17.11.2016.
  */
-public final class dHadronDefinition extends cElementalDefinition {
+public final class dHadronDefinition extends cElementalDefinition {//TODO Optimize map i/o
     public static final Map<dHadronDefinition, ItemStack> itemBinds = new TreeMap<>();
     public static final Map<dHadronDefinition, FluidStack> fluidBinds = new TreeMap<>();
 
@@ -37,31 +37,31 @@ public final class dHadronDefinition extends cElementalDefinition {
     public final byte type;
     //private final FluidStack fluidThing;
     //private final ItemStack itemThing;
-    private final cElementalMutableDefinitionStackMap quarkStacks;
+    private final cElementalDefinitionStackMap quarkStacks;
 
     @Deprecated
     public dHadronDefinition(eQuarkDefinition... quarks) throws tElementalException {
-        this(true, stackUpTree(quarks));
+        this(true, stackUpMap(quarks).toImmutable());
     }
 
     @Deprecated
     private dHadronDefinition(boolean check, eQuarkDefinition... quarks) throws tElementalException {
-        this(check, stackUpTree(quarks));
+        this(check, stackUpMap(quarks).toImmutable());
     }
 
     public dHadronDefinition(cElementalDefinitionStack... quarks) throws tElementalException {
-        this(true, stackUpTree(quarks));
+        this(true, stackUpMap(quarks).toImmutable());
     }
 
     private dHadronDefinition(boolean check, cElementalDefinitionStack... quarks) throws tElementalException {
-        this(check, stackUpTree(quarks));
+        this(check, stackUpMap(quarks).toImmutable());
     }
 
-    public dHadronDefinition(cElementalMutableDefinitionStackMap quarks) throws tElementalException {
+    public dHadronDefinition(cElementalDefinitionStackMap quarks) throws tElementalException {
         this(true, quarks);
     }
 
-    private dHadronDefinition(boolean check, cElementalMutableDefinitionStackMap quarks) throws tElementalException {
+    private dHadronDefinition(boolean check, cElementalDefinitionStackMap quarks) throws tElementalException {
         if (check && !canTheyBeTogether(quarks)) throw new tElementalException("Hadron Definition error");
         this.quarkStacks = quarks;
 
@@ -97,7 +97,7 @@ public final class dHadronDefinition extends cElementalDefinition {
     }
 
     //public but u can just try{}catch(){} the constructor it still calls this method
-    private static boolean canTheyBeTogether(cElementalMutableDefinitionStackMap stacks) {
+    private static boolean canTheyBeTogether(cElementalDefinitionStackMap stacks) {
         int amount = 0;
         for (cElementalDefinitionStack quarks : stacks.values()) {
             if (!(quarks.definition instanceof eQuarkDefinition)) return false;
@@ -155,7 +155,7 @@ public final class dHadronDefinition extends cElementalDefinition {
     }
 
     @Override
-    public cElementalMutableDefinitionStackMap getSubParticles() {
+    public cElementalDefinitionStackMap getSubParticles() {
         return quarkStacks;
     }
 
@@ -254,7 +254,7 @@ public final class dHadronDefinition extends cElementalDefinition {
         for (cElementalDefinitionStack stack : quarkStacks.values())
             anti.putReplace(new cElementalDefinitionStack(stack.definition.getAnti(), stack.amount));
         try {
-            return new dHadronDefinition(anti);
+            return new dHadronDefinition(anti.toImmutable());
         } catch (tElementalException e) {
             if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
             return null;

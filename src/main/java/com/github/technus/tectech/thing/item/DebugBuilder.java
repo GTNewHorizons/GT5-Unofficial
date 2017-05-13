@@ -23,7 +23,7 @@ import static com.github.technus.tectech.auxiliary.Reference.MODID;
 public class DebugBuilder extends Item {
     public static DebugBuilder INSTANCE;
 
-    DebugBuilder(){
+    DebugBuilder() {
         super();
         setMaxStackSize(1);
         setUnlocalizedName("em.debugBuilder");
@@ -49,11 +49,11 @@ public class DebugBuilder extends Item {
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
         aList.add(CommonValues.tecMark);
         aList.add("Constructs Multiblocks");
-        aList.add(EnumChatFormatting.BLUE+"Quantity Matters");
+        aList.add(EnumChatFormatting.BLUE + "Quantity Matters");
     }
 
-    public static void run(){
-        INSTANCE=new DebugBuilder();
+    public static void run() {
+        INSTANCE = new DebugBuilder();
         GameRegistry.registerItem(INSTANCE, INSTANCE.getUnlocalizedName());
     }
 }

@@ -41,17 +41,17 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
     //region Structure
     //use multi A energy inputs, use less power the longer it runs
     private static final String[][] shape = new String[][]{
-            {"!!!","!+!","!!!",},
-            {"010","101","010",},
-            {"\"\"\"","\"0\"","\"\"\"",},
-            {"202","0 0","202",},
+            {"!!!", "!+!", "!!!",},
+            {"010", "101", "010",},
+            {"\"\"\"", "\"0\"", "\"\"\"",},
+            {"202", "0 0", "202",},
     };
-    private static final Block[] blockType = new Block[]{sBlockCasingsTT,sBlockCasingsTT,QuantumGlassBlock.INSTANCE};
-    private static final byte[] blockMeta = new byte[]{4,0,0};
-    private static final String[] addingMethods = new String[]{"addElementalOutputToMachineList","addClassicToMachineList","addElementalMufflerToMachineList"};
-    private static final byte[] casingTextures = new byte[]{textureOffset+4,textureOffset,textureOffset+4};
-    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT,sBlockCasingsTT,sBlockCasingsTT};
-    private static final byte[] blockMetaFallback = new byte[]{4,0,4};
+    private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, QuantumGlassBlock.INSTANCE};
+    private static final byte[] blockMeta = new byte[]{4, 0, 0};
+    private static final String[] addingMethods = new String[]{"addElementalOutputToMachineList", "addClassicToMachineList", "addElementalMufflerToMachineList"};
+    private static final byte[] casingTextures = new byte[]{textureOffset + 4, textureOffset, textureOffset + 4};
+    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
+    private static final byte[] blockMetaFallback = new byte[]{4, 0, 4};
     //endregion
 
     public GT_MetaTileEntity_EM_quantizer(int aID, String aName, String aNameRegional) {
@@ -68,7 +68,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
 
     @Override
     public boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return EM_StructureCheckAdvanced(shape,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,1,1,0);
+        return EM_StructureCheckAdvanced(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
     }
 
     @Override

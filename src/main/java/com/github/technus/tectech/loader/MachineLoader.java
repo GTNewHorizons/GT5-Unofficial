@@ -190,7 +190,7 @@ public class MachineLoader implements Runnable {
 
         Machine_Multi_Collider.set(new GT_MetaTileEntity_EM_collider(15340, "multimachine.em.collider", "Matter Collider").getStackForm(1L));
 
-        Machine_Multi_Infuser.set(new GT_MetaTileEntity_EM_infuser(15350,"multimachine.em.infuser","Energy Infuser").getStackForm(1));
+        Machine_Multi_Infuser.set(new GT_MetaTileEntity_EM_infuser(15350, "multimachine.em.infuser", "Energy Infuser").getStackForm(1));
 
         Machine_Multi_EMmachine.set(new GT_MetaTileEntity_EM_machine(15360, "multimachine.em.processing", "Quantum Processing Machine").getStackForm(1L));
 
@@ -200,8 +200,8 @@ public class MachineLoader implements Runnable {
 
         Machine_Multi_Wormhole.set(new GT_MetaTileEntity_EM_wormhole(15390, "multimachine.em.wormhole", "Wormhole").getStackForm(1L));
 
-        Machine_Multi_Decay.set(new GT_MetaTileEntity_EM_decay(15400,"multimachine.em.decay","Decay Generator").getStackForm(1L));
-        Machine_Multi_Annihilation.set(new GT_MetaTileEntity_EM_annihilation(15405,"multimachine.em.annihilation","Annihilation Generator").getStackForm(1L));
+        Machine_Multi_Decay.set(new GT_MetaTileEntity_EM_decay(15400, "multimachine.em.decay", "Decay Generator").getStackForm(1L));
+        Machine_Multi_Annihilation.set(new GT_MetaTileEntity_EM_annihilation(15405, "multimachine.em.annihilation", "Annihilation Generator").getStackForm(1L));
         Machine_Multi_BHG.set(new GT_MetaTileEntity_EM_bhg(15410, "multimachine.em.blackholegenerator", "Black Hole Generator").getStackForm(1L));
 
 
@@ -216,8 +216,8 @@ public class MachineLoader implements Runnable {
         dataIn_Hatch.set(new GT_MetaTileEntity_Hatch_InputData(15440, "hatch.datain.tier.07", "Optical Slave Connector", 7).getStackForm(1L));
         dataOut_Hatch.set(new GT_MetaTileEntity_Hatch_OutputData(15441, "hatch.dataout.tier.07", "Optical Master Connector", 7).getStackForm(1L));
 
-        rack_Hatch.set(new GT_MetaTileEntity_Hatch_Rack(15450,"hatch.rack.tier.08","Computer Rack",8,"4 Slot Rack").getStackForm(1L));
-        holder_Hatch.set(new GT_MetaTileEntity_Hatch_Holder(15451,"hatch.holder.tier.09","Object Holder",8,"For Research Station").getStackForm(1L));
+        rack_Hatch.set(new GT_MetaTileEntity_Hatch_Rack(15450, "hatch.rack.tier.08", "Computer Rack", 8, "4 Slot Rack").getStackForm(1L));
+        holder_Hatch.set(new GT_MetaTileEntity_Hatch_Holder(15451, "hatch.holder.tier.09", "Object Holder", 8, "For Research Station").getStackForm(1L));
 
         // ===================================================================================================
         // Pipes
@@ -230,6 +230,6 @@ public class MachineLoader implements Runnable {
         // DebugStuff
         // ===================================================================================================
 
-        Machine_DebugWriter.set(new GT_MetaTileEntity_DebugStructureWriter(15499,"debug.tt.writer","Debug Structure Writer",15).getStackForm(1L));
+        Machine_DebugWriter.set(new GT_MetaTileEntity_DebugStructureWriter(15499, "debug.tt.writer", "Debug Structure Writer", 15).getStackForm(1L));
     }
 }

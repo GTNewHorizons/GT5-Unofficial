@@ -17,7 +17,7 @@ import java.util.Iterator;
  * Created by Tec on 09.04.2017.
  */
 public class GT_Container_Rack extends GT_ContainerMetaTile_Machine {
-    public boolean heat=false;
+    public boolean heat = false;
 
     public GT_Container_Rack(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
@@ -44,12 +44,12 @@ public class GT_Container_Rack extends GT_ContainerMetaTile_Machine {
         if ((this.mTileEntity.isClientSide()) || (this.mTileEntity.getMetaTileEntity() == null)) {
             return;
         }
-        this.heat = ((GT_MetaTileEntity_Hatch_Rack) this.mTileEntity.getMetaTileEntity()).heat>0;
+        this.heat = ((GT_MetaTileEntity_Hatch_Rack) this.mTileEntity.getMetaTileEntity()).heat > 0;
 
         Iterator var2 = this.crafters.iterator();
         while (var2.hasNext()) {
             ICrafting var1 = (ICrafting) var2.next();
-            var1.sendProgressBarUpdate(this, 100, this.heat?1:0);
+            var1.sendProgressBarUpdate(this, 100, this.heat ? 1 : 0);
         }
     }
 
@@ -58,7 +58,7 @@ public class GT_Container_Rack extends GT_ContainerMetaTile_Machine {
         super.updateProgressBar(par1, par2);
         switch (par1) {
             case 100:
-                this.heat = par2!=0;
+                this.heat = par2 != 0;
                 return;
         }
         //TODO TEST!!!
@@ -67,37 +67,37 @@ public class GT_Container_Rack extends GT_ContainerMetaTile_Machine {
 
     @Override
     public ItemStack slotClick(int aSlotIndex, int aMouseclick, int aShifthold, EntityPlayer aPlayer) {
-        if(heat || mActive!=0) return null;
+        if (heat || mActive != 0) return null;
         return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
     }
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer aPlayer, int aSlotIndex) {
-        if(heat || mActive!=0) return null;
+        if (heat || mActive != 0) return null;
         return super.transferStackInSlot(aPlayer, aSlotIndex);
     }
 
     @Override
     public boolean canDragIntoSlot(Slot par1Slot) {
-        if(heat || mActive!=0) return false;
+        if (heat || mActive != 0) return false;
         return super.canDragIntoSlot(par1Slot);
     }
 
     @Override
     public void putStacksInSlots(ItemStack[] par1ArrayOfItemStack) {
-        if(heat || mActive!=0) return;
+        if (heat || mActive != 0) return;
         super.putStacksInSlots(par1ArrayOfItemStack);
     }
 
     @Override
     protected boolean mergeItemStack(ItemStack aStack, int aStartIndex, int aSlotCount, boolean par4) {
-        if(heat || mActive!=0) return false;
+        if (heat || mActive != 0) return false;
         return super.mergeItemStack(aStack, aStartIndex, aSlotCount, par4);
     }
 
     @Override
     public void putStackInSlot(int par1, ItemStack par2ItemStack) {
-        if(heat || mActive!=0) return;
+        if (heat || mActive != 0) return;
         super.putStackInSlot(par1, par2ItemStack);
     }
 }

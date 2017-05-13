@@ -10,7 +10,7 @@ import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveD
 /**
  * Created by danie_000 on 22.10.2016.
  */
-public final class cElementalInstanceStack implements iHasElementalDefinition {//TODO unify checks for amount?
+public final class cElementalInstanceStack implements iHasElementalDefinition {
     public final iElementalDefinition definition;
     //energy - if positive then particle should try to decay
     public int energy;
@@ -49,14 +49,14 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {/
     }
 
     //Clone proxy
-    private cElementalInstanceStack(cElementalInstanceStack stack){
-        definition=stack.definition;
-        energy=stack.energy;
-        color=stack.color;
-        age=stack.age;
-        amount=stack.amount;
-        lifeTime=stack.lifeTime;
-        lifeTimeMult=stack.lifeTimeMult;
+    private cElementalInstanceStack(cElementalInstanceStack stack) {
+        definition = stack.definition;
+        energy = stack.energy;
+        color = stack.color;
+        age = stack.age;
+        amount = stack.amount;
+        lifeTime = stack.lifeTime;
+        lifeTimeMult = stack.lifeTimeMult;
     }
 
     @Override
@@ -91,12 +91,12 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {/
     }
 
     public byte setColor(byte color) {//does not allow changing magic element
-        if (this.color < 0 || this.color > 2 || color<0 || color>=3) return this.color;
+        if (this.color < 0 || this.color > 2 || color < 0 || color >= 3) return this.color;
         return this.color = color;
     }
 
     public byte nextColor() {//does not allow changing magic element
-        if (this.color < 0 || this.color > 2 ) return this.color;
+        if (this.color < 0 || this.color > 2) return this.color;
         return this.color = (byte) (TecTech.Rnd.nextInt(3));
     }
 
@@ -208,20 +208,6 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {/
         }
     }
 
-    @Override
-    public int compareTo(iHasElementalDefinition o) {//use for unification
-        return definition.compareTo(o.getDefinition());
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof iElementalDefinition)
-            return definition.compareTo((iElementalDefinition) obj) == 0;
-        if (obj instanceof iHasElementalDefinition)
-            return definition.compareTo(((iHasElementalDefinition) obj).getDefinition()) == 0;
-        return false;
-    }
-
     public cElementalInstanceStack unifyIntoThis(cElementalInstanceStack... instances) {
         if (instances == null) return this;
         //returns with the definition from the first object passed
@@ -267,6 +253,21 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {/
         return instance;
     }
 
+    @Override
+    public int compareTo(iHasElementalDefinition o) {//use for unification
+        return definition.compareTo(o.getDefinition());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof iElementalDefinition)
+            return definition.compareTo((iElementalDefinition) obj) == 0;
+        if (obj instanceof iHasElementalDefinition)
+            return definition.compareTo(((iHasElementalDefinition) obj).getDefinition()) == 0;
+        return false;
+    }
+
+    //Amount shouldn't be hashed if this is just indicating amount and not structure, DOES NOT CARE ABOUT INSTANCE INFO
     @Override
     public int hashCode() {
         return definition.hashCode();

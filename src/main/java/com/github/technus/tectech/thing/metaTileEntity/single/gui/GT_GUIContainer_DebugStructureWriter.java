@@ -14,12 +14,12 @@ public class GT_GUIContainer_DebugStructureWriter extends GT_GUIContainerMetaTil
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         this.fontRendererObj.drawString("StructPrint", 46, 8, 16448255);
         if (this.mContainer != null) {
-            GT_Container_DebugStructureWriter dsw= (GT_Container_DebugStructureWriter)mContainer;
-            if(dsw.numbers==null)return;
-            this.fontRendererObj.drawString(dsw.size?"Size":"Offset", 46, 16, 16448255);
-            this.fontRendererObj.drawString("A: " + dsw.numbers[dsw.size?3:0], 46, 24, 16448255);
-            this.fontRendererObj.drawString("B: " + dsw.numbers[dsw.size?4:1], 46, 32, 16448255);
-            this.fontRendererObj.drawString("C: " + dsw.numbers[dsw.size?5:2], 46, 40, 16448255);
+            GT_Container_DebugStructureWriter dsw = (GT_Container_DebugStructureWriter) mContainer;
+            if (dsw.numbers == null) return;
+            this.fontRendererObj.drawString(dsw.size ? "Size" : "Offset", 46, 16, 16448255);
+            this.fontRendererObj.drawString("A: " + dsw.numbers[dsw.size ? 3 : 0], 46, 24, 16448255);
+            this.fontRendererObj.drawString("B: " + dsw.numbers[dsw.size ? 4 : 1], 46, 32, 16448255);
+            this.fontRendererObj.drawString("C: " + dsw.numbers[dsw.size ? 5 : 2], 46, 40, 16448255);
         }
     }
 

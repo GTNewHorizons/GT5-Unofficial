@@ -29,7 +29,7 @@ import static com.github.technus.tectech.auxiliary.Reference.MODID;
 public class DebugContainer_EM extends Item {
     public static DebugContainer_EM INSTANCE;
 
-    DebugContainer_EM(){
+    DebugContainer_EM() {
         super();
         setMaxStackSize(1);
         setUnlocalizedName("em.debugContainer");
@@ -74,26 +74,26 @@ public class DebugContainer_EM extends Item {
         aList.add(CommonValues.tecMark);
         try {
             NBTTagCompound tNBT = aStack.getTagCompound();
-            if (tNBT!=null && tNBT.hasKey("info")) {
+            if (tNBT != null && tNBT.hasKey("info")) {
                 aList.add("Contains:");
                 Collections.addAll(aList, cElementalInstanceStackMap.infoFromNBT(tNBT.getCompoundTag("info")));
             } else {
                 aList.add("Container for elemental matter");
-                aList.add(EnumChatFormatting.BLUE+"Right click on elemental hatches");
+                aList.add(EnumChatFormatting.BLUE + "Right click on elemental hatches");
             }
         } catch (Exception e) {
             aList.add("---Unexpected Termination---");
         }
     }
 
-    public static void run(){
-        INSTANCE=new DebugContainer_EM();
+    public static void run() {
+        INSTANCE = new DebugContainer_EM();
         GameRegistry.registerItem(INSTANCE, INSTANCE.getUnlocalizedName());
     }
 
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List list) {
-        ItemStack that=new ItemStack(this,1);
+        ItemStack that = new ItemStack(this, 1);
         that.setTagCompound(new NBTTagCompound());
         list.add(that);
     }

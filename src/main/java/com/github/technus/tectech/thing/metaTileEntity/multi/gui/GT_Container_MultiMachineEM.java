@@ -47,7 +47,7 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
                     base.eSafeVoid ^= true;
                     break;
                 case 3:
-                    if(base.getBaseMetaTileEntity().isAllowedToWork()) {
+                    if (base.getBaseMetaTileEntity().isAllowedToWork()) {
                         base.getBaseMetaTileEntity().disableWorking();
                     } else {
                         base.getBaseMetaTileEntity().enableWorking();

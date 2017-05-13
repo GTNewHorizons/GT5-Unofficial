@@ -26,9 +26,9 @@ import static com.github.technus.tectech.Util.getUniqueIdentifier;
  */
 public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_TieredMachineBlock {
     private static Textures.BlockIcons.CustomIcon MARK;
-    public short numbers[]=new short[6];
-    public boolean size=false;
-    public String[] result=new String[]{"Undefined"};
+    public short numbers[] = new short[6];
+    public boolean size = false;
+    public String[] result = new String[]{"Undefined"};
 
     public GT_MetaTileEntity_DebugStructureWriter(int aID, String aName, String aNameRegional, int aTier) {
         super(aID, aName, aNameRegional, aTier, 0, "Scans Blocks Around");
@@ -40,7 +40,7 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_DebugStructureWriter(mName,mTier,mDescription,mTextures);
+        return new GT_MetaTileEntity_DebugStructureWriter(mName, mTier, mDescription, mTextures);
     }
 
     @Override
@@ -81,15 +81,15 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        for(int i=0;i<numbers.length;i++){
-            aNBT.setShort("eData"+i,numbers[i]);
+        for (int i = 0; i < numbers.length; i++) {
+            aNBT.setShort("eData" + i, numbers[i]);
         }
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        for(int i=0;i<numbers.length;i++){
-            numbers[i]=aNBT.getShort("eData"+i);
+        for (int i = 0; i < numbers.length; i++) {
+            numbers[i] = aNBT.getShort("eData" + i);
         }
     }
 
@@ -100,10 +100,10 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if(aBaseMetaTileEntity.isAllowedToWork()){
-            result= StructureWriter(this.getBaseMetaTileEntity(),numbers[0],numbers[1],numbers[2],numbers[3],numbers[4],numbers[5],false);
-            if(TecTechConfig.DEBUG_MODE)
-                for(String s:result)
+        if (aBaseMetaTileEntity.isAllowedToWork()) {
+            result = StructureWriter(this.getBaseMetaTileEntity(), numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5], false);
+            if (TecTechConfig.DEBUG_MODE)
+                for (String s : result)
                     TecTech.Logger.info(s);
             aBaseMetaTileEntity.disableWorking();
         }
@@ -111,9 +111,9 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
 
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        result= StructureWriter(this.getBaseMetaTileEntity(),numbers[0],numbers[1],numbers[2],numbers[3],numbers[4],numbers[5],true);
-        if(TecTechConfig.DEBUG_MODE)
-            for(String s:result)
+        result = StructureWriter(this.getBaseMetaTileEntity(), numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5], true);
+        if (TecTechConfig.DEBUG_MODE)
+            for (String s : result)
                 TecTech.Logger.info(s);
     }
 
@@ -121,8 +121,8 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         aBaseMetaTileEntity.openGUI(aPlayer);
-        if(TecTechConfig.DEBUG_MODE && aPlayer.getHeldItem()!=null)
-            TecTech.Logger.info("UnlocalizedName: "+ getUniqueIdentifier(aPlayer.getHeldItem()));
+        if (TecTechConfig.DEBUG_MODE && aPlayer.getHeldItem() != null)
+            TecTech.Logger.info("UnlocalizedName: " + getUniqueIdentifier(aPlayer.getHeldItem()));
         return true;
     }
 
@@ -146,8 +146,8 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
         return new String[]{
                 CommonValues.tecMark,
                 this.mDescription,
-                EnumChatFormatting.BLUE+"Prints Multiblock NonTE structure check code",
-                EnumChatFormatting.BLUE+"ABC axises aligned to machine front"
+                EnumChatFormatting.BLUE + "Prints Multiblock NonTE structure check code",
+                EnumChatFormatting.BLUE + "ABC axises aligned to machine front"
         };
     }
 

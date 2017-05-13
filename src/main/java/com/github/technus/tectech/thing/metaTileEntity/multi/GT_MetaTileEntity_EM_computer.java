@@ -29,20 +29,20 @@ import static gregtech.api.enums.GT_Values.V;
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockBase_EM {
-    private final ArrayList<GT_MetaTileEntity_Hatch_Rack> eRacks=new ArrayList<>();
-    private int maxTemp=0;
+    private final ArrayList<GT_MetaTileEntity_Hatch_Rack> eRacks = new ArrayList<>();
+    private int maxTemp = 0;
 
     //region Structure
-    private static final String[][] front = new String[][]{{"A  ","A  ","A+ ","A  ",},};
-    private static final String[][] terminator = new String[][]{{"A  ","A  ","A  ","A  ",},};
-    private static final String[][] cap = new String[][]{{"-01","A22","A22","-01",},};
-    private static final String[][] slice = new String[][]{{"-01","A!2","A!2","-01",},};
-    private static final Block[] blockType = new Block[]{sBlockCasingsTT,sBlockCasingsTT,sBlockCasingsTT};
-    private static final byte[] blockMeta = new byte[]{2,1,3};
-    private static final String[] addingMethods = new String[]{"addToMachineList","addRackToMachineList"};
-    private static final byte[] casingTextures = new byte[]{textureOffset+1,textureOffset+3};
-    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT,sBlockCasingsTT};
-    private static final byte[] blockMetaFallback = new byte[]{1,3};
+    private static final String[][] front = new String[][]{{"A  ", "A  ", "A+ ", "A  ",},};
+    private static final String[][] terminator = new String[][]{{"A  ", "A  ", "A  ", "A  ",},};
+    private static final String[][] cap = new String[][]{{"-01", "A22", "A22", "-01",},};
+    private static final String[][] slice = new String[][]{{"-01", "A!2", "A!2", "-01",},};
+    private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
+    private static final byte[] blockMeta = new byte[]{2, 1, 3};
+    private static final String[] addingMethods = new String[]{"addToMachineList", "addRackToMachineList"};
+    private static final byte[] casingTextures = new byte[]{textureOffset + 1, textureOffset + 3};
+    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
+    private static final byte[] blockMetaFallback = new byte[]{1, 3};
     //endregion
 
     public GT_MetaTileEntity_EM_computer(int aID, String aName, String aNameRegional) {
@@ -64,36 +64,36 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset+3], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset + 3], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
         }
-        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset+3]};
+        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset + 3]};
     }
 
     @Override
     public boolean EM_checkRecipe(ItemStack itemStack) {
-        eAvailableData=0;
-        maxTemp=0;
-        short thingsActive=0;
+        eAvailableData = 0;
+        maxTemp = 0;
+        short thingsActive = 0;
         int rackComputation;
 
         for (GT_MetaTileEntity_Hatch_Rack r : eRacks) {
-            if(!isValidMetaTileEntity(r))continue;
-            if(r.heat>maxTemp)maxTemp=r.heat;
-            rackComputation= r.tickComponents(eParamsIn[0],eParamsIn[10]);
-            if(rackComputation>0){
-                eAvailableData+=rackComputation;
-                thingsActive+=4;
+            if (!isValidMetaTileEntity(r)) continue;
+            if (r.heat > maxTemp) maxTemp = r.heat;
+            rackComputation = r.tickComponents(eParamsIn[0], eParamsIn[10]);
+            if (rackComputation > 0) {
+                eAvailableData += rackComputation;
+                thingsActive += 4;
             }
             r.getBaseMetaTileEntity().setActive(true);
         }
 
         for (GT_MetaTileEntity_Hatch_InputData di : eInputData)
-            if(di.q!=null)//ok for power losses
+            if (di.q != null)//ok for power losses
                 thingsActive++;
 
-        if(thingsActive>0 && eCertainStatus==0){
-            thingsActive+=eOutputData.size();
-            mEUt = -(int) (V[8]*eParamsIn[10]);
+        if (thingsActive > 0 && eCertainStatus == 0) {
+            thingsActive += eOutputData.size();
+            mEUt = -(int) (V[8] * eParamsIn[10]);
             eAmpereFlow = 1 + (thingsActive >> 2);
             mMaxProgresstime = 20;
             mEfficiencyIncrease = 10000;
@@ -112,47 +112,47 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public void EM_checkParams() {
-        if(eParamsIn[0]<=0)
-            eParamsInStatus[0]=PARAM_TOO_LOW;
-        else if(eParamsIn[0]<1)
-            eParamsInStatus[0]=PARAM_LOW;
-        else if(eParamsIn[0]==1)
-            eParamsInStatus[0]=PARAM_OK;
-        else if(eParamsIn[0]<=3)
-            eParamsInStatus[0]=PARAM_HIGH;
-        else eParamsInStatus[0]=PARAM_TOO_HIGH;
+        if (eParamsIn[0] <= 0)
+            eParamsInStatus[0] = PARAM_TOO_LOW;
+        else if (eParamsIn[0] < 1)
+            eParamsInStatus[0] = PARAM_LOW;
+        else if (eParamsIn[0] == 1)
+            eParamsInStatus[0] = PARAM_OK;
+        else if (eParamsIn[0] <= 3)
+            eParamsInStatus[0] = PARAM_HIGH;
+        else eParamsInStatus[0] = PARAM_TOO_HIGH;
 
-        if(eParamsIn[10]<=0.7f)
-            eParamsInStatus[10]=PARAM_TOO_LOW;
-        else if(eParamsIn[10]<0.8f)
-            eParamsInStatus[10]=PARAM_LOW;
-        else if(eParamsIn[10]<=1.2f)
-            eParamsInStatus[10]=PARAM_OK;
-        else if(eParamsIn[10]<=2)
-            eParamsInStatus[10]=PARAM_HIGH;
-        else eParamsInStatus[10]=PARAM_TOO_HIGH;
+        if (eParamsIn[10] <= 0.7f)
+            eParamsInStatus[10] = PARAM_TOO_LOW;
+        else if (eParamsIn[10] < 0.8f)
+            eParamsInStatus[10] = PARAM_LOW;
+        else if (eParamsIn[10] <= 1.2f)
+            eParamsInStatus[10] = PARAM_OK;
+        else if (eParamsIn[10] <= 2)
+            eParamsInStatus[10] = PARAM_HIGH;
+        else eParamsInStatus[10] = PARAM_TOO_HIGH;
 
-        eParamsOut[0]=maxTemp;
-        eParamsOut[10]=eAvailableData;
+        eParamsOut[0] = maxTemp;
+        eParamsOut[10] = eAvailableData;
 
-        if(maxTemp<-10000)
-            eParamsOutStatus[0]=PARAM_TOO_LOW;
-        else if(maxTemp<0)
-            eParamsOutStatus[0]=PARAM_LOW;
-        else if (maxTemp==0)
-            eParamsOutStatus[0]=PARAM_OK;
-        else if(maxTemp<=5000)
-            eParamsOutStatus[0]=PARAM_HIGH;
-        else eParamsOutStatus[0]=PARAM_TOO_HIGH;
+        if (maxTemp < -10000)
+            eParamsOutStatus[0] = PARAM_TOO_LOW;
+        else if (maxTemp < 0)
+            eParamsOutStatus[0] = PARAM_LOW;
+        else if (maxTemp == 0)
+            eParamsOutStatus[0] = PARAM_OK;
+        else if (maxTemp <= 5000)
+            eParamsOutStatus[0] = PARAM_HIGH;
+        else eParamsOutStatus[0] = PARAM_TOO_HIGH;
     }
 
     @Override
     public void EM_outputFunction() {
-        if(eOutputData.size()>0) {
-            final vec3pos pos=new vec3pos(getBaseMetaTileEntity());
+        if (eOutputData.size() > 0) {
+            final vec3pos pos = new vec3pos(getBaseMetaTileEntity());
             quantumDataPacket pack = new quantumDataPacket(pos, eAvailableData);
             for (GT_MetaTileEntity_Hatch_InputData i : eInputData) {
-                if(i.q==null || i.q.contains(pos)) continue;
+                if (i.q == null || i.q.contains(pos)) continue;
                 pack = pack.unifyPacketWith(i.q);
                 if (pack == null) return;
             }
@@ -160,42 +160,47 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
             pack.computation /= eOutputData.size();
 
             for (GT_MetaTileEntity_Hatch_OutputData o : eOutputData)
-                o.q=pack;
+                o.q = pack;
         }
     }
 
     @Override
     public void onRemoval() {
         super.onRemoval();
-        for(GT_MetaTileEntity_Hatch_Rack r:eRacks)
+        for (GT_MetaTileEntity_Hatch_Rack r : eRacks)
             r.getBaseMetaTileEntity().setActive(false);
     }
 
     @Override
     protected void EM_stopMachine() {
-        for(GT_MetaTileEntity_Hatch_Rack r:eRacks)
+        for (GT_MetaTileEntity_Hatch_Rack r : eRacks)
             r.getBaseMetaTileEntity().setActive(false);
     }
 
     @Override
     public boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        for(GT_MetaTileEntity_Hatch_Rack rack:eRacks)
+        for (GT_MetaTileEntity_Hatch_Rack rack : eRacks)
             if (isValidMetaTileEntity(rack))
                 rack.getBaseMetaTileEntity().setActive(false);
         eRacks.clear();
-        if(!EM_StructureCheckAdvanced(front,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,1,2,0))return false;
-        if(!EM_StructureCheckAdvanced(cap,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,1,2,-1))return false;
-        byte i=-2,slices=4;
-        for(;i>-16;){
-            if(!EM_StructureCheckAdvanced(slice,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,1,2,i))break;
+        if (!EM_StructureCheckAdvanced(front, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, 0))
+            return false;
+        if (!EM_StructureCheckAdvanced(cap, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, -1))
+            return false;
+        byte i = -2, slices = 4;
+        for (; i > -16; ) {
+            if (!EM_StructureCheckAdvanced(slice, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, i))
+                break;
             slices++;
             i--;
         }
-        if(slices>16)return false;
-        if(!EM_StructureCheckAdvanced(cap,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,1,2,++i))return false;
-        if(!EM_StructureCheckAdvanced(terminator,blockType,blockMeta,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback,1,2,--i))return false;
-        eCertainMode=(byte)Math.min(slices/3,5);
-        for(GT_MetaTileEntity_Hatch_Rack rack:eRacks)
+        if (slices > 16) return false;
+        if (!EM_StructureCheckAdvanced(cap, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, ++i))
+            return false;
+        if (!EM_StructureCheckAdvanced(terminator, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, --i))
+            return false;
+        eCertainMode = (byte) Math.min(slices / 3, 5);
+        for (GT_MetaTileEntity_Hatch_Rack rack : eRacks)
             if (isValidMetaTileEntity(rack))
                 rack.getBaseMetaTileEntity().setActive(iGregTechTileEntity.isActive());
         return eUncertainHatches.size() == 1;
@@ -210,14 +215,14 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     public String[] getDescription() {
         return new String[]{
                 CommonValues.tecMark,
-                Util.intToString(TecTech.Rnd.nextInt(),8),
+                Util.intToString(TecTech.Rnd.nextInt(), 8),
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "You need it to process the number above"
         };
     }
 
     @Override
     public boolean isFacingValid(byte aFacing) {
-        return aFacing>=2;
+        return aFacing >= 2;
     }
 
     //NEW METHOD
@@ -232,11 +237,11 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         return false;
     }
 
-    public static void run(){
+    public static void run() {
         try {
             adderMethodMap.put("addRackToMachineList", GT_MetaTileEntity_EM_computer.class.getMethod("addRackToMachineList", IGregTechTileEntity.class, int.class));
-        }catch (NoSuchMethodException e){
-            if(TecTechConfig.DEBUG_MODE) e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
         }
     }
 }

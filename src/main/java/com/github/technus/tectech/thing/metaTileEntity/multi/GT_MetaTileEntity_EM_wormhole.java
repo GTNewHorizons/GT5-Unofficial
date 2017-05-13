@@ -51,9 +51,9 @@ public class GT_MetaTileEntity_EM_wormhole extends GT_MetaTileEntity_MultiblockB
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset+4], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset + 4], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
         }
-        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset+4]};
+        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset + 4]};
     }
 
     @Override
