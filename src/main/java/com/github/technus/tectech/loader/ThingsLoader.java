@@ -2,6 +2,8 @@ package com.github.technus.tectech.loader;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
+import com.github.technus.tectech.thing.casing.GT_Block_CasingsTT;
+import com.github.technus.tectech.thing.casing.GT_Container_CasingsTT;
 import com.github.technus.tectech.thing.item.DebugBuilder;
 import com.github.technus.tectech.thing.item.DebugContainer_EM;
 
@@ -10,6 +12,9 @@ import com.github.technus.tectech.thing.item.DebugContainer_EM;
  */
 public class ThingsLoader implements Runnable {
     public void run() {
+        GT_Container_CasingsTT.sBlockCasingsTT = new GT_Block_CasingsTT();
+        TecTech.Logger.info("Elemental Casing registered");
+
         QuantumGlassBlock.run();
         TecTech.Logger.info("Quantum Glass registered");
 

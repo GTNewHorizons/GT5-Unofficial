@@ -1,5 +1,6 @@
 package com.github.technus.tectech.elementalMatter.classes;
 
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
 import net.minecraft.client.Minecraft;
@@ -162,10 +163,12 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
 
     public static void run() {
         try {
-            cElementalDefinition.addCreatorFromNBT(nbtType, cElementalPrimitive.class.getMethod("fromNBT", NBTTagCompound.class));
+            cElementalDefinition.addCreatorFromNBT(nbtType, cElementalPrimitive.class.getMethod("fromNBT", NBTTagCompound.class),(byte)-128);
         } catch (Exception e) {
             if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
         }
+        if(TecTechConfig.DEBUG_MODE)
+            TecTech.Logger.info("Registered Elemental Matter Class: Primitive "+nbtType+" "+(-128));
     }
 
     @Override

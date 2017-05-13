@@ -1,5 +1,6 @@
 package com.github.technus.tectech.elementalMatter.magicAddon.definitions;
 
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.classes.*;
 import com.github.technus.tectech.elementalMatter.definitions.eBosonDefinition;
@@ -123,10 +124,12 @@ public final class dComplexAspectDefinition extends cElementalDefinition {//TODO
 
     public static void run() {
         try {
-            cElementalDefinition.addCreatorFromNBT(nbtType, dComplexAspectDefinition.class.getMethod("fromNBT", NBTTagCompound.class));
+            cElementalDefinition.addCreatorFromNBT(nbtType, dComplexAspectDefinition.class.getMethod("fromNBT", NBTTagCompound.class),(byte)-96);
         } catch (Exception e) {
             if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
         }
+        if(TecTechConfig.DEBUG_MODE)
+            TecTech.Logger.info("Registered Elemental Matter Class: ComplexAspect "+nbtType+" "+(-96));
     }
 
     @Override

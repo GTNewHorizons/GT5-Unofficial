@@ -231,5 +231,16 @@ public class MachineLoader implements Runnable {
         // ===================================================================================================
 
         Machine_DebugWriter.set(new GT_MetaTileEntity_DebugStructureWriter(15499, "debug.tt.writer", "Debug Structure Writer", 15).getStackForm(1L));
+
+
+        // ===================================================================================================
+        // MetaTE init
+        // ===================================================================================================
+
+        GT_MetaTileEntity_MultiblockBase_EM.run();
+        GT_MetaTileEntity_Hatch_Rack.run();
+        GT_MetaTileEntity_EM_computer.run();
+        GT_MetaTileEntity_EM_research.run();
+        GT_MetaTileEntity_EM_quantizer.run();
     }
 }

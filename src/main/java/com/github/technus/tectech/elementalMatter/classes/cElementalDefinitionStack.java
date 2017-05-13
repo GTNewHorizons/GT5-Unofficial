@@ -55,6 +55,7 @@ public final class cElementalDefinitionStack implements iHasElementalDefinition 
     }
 
     public cElementalDefinitionStack addAmountIntoNewInstance(int amount) {
+        if(amount==0) return this;
         return new cElementalDefinitionStack(definition, amount + this.amount);
     }
 

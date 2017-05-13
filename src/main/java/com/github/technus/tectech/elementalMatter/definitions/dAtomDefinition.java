@@ -467,13 +467,7 @@ public final class dAtomDefinition extends cElementalDefinition {//TODO Optimize
     }
 
     public static void run() {
-        try {
-            cElementalDefinition.addCreatorFromNBT(nbtType, dAtomDefinition.class.getMethod("fromNBT", NBTTagCompound.class));
-        } catch (Exception e) {
-            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
-        }
         //populate stable isotopes
-        el:
         for (int element = 1; element < 84; element++)//Up to Astatine exclusive
             for (int isotope = 0; isotope < 130; isotope++) {
                 xstr.setSeed((long) (element + 1) * (isotope + 100));
@@ -527,6 +521,14 @@ public final class dAtomDefinition extends cElementalDefinition {//TODO Optimize
         } catch (Exception e) {
             if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
         }
+
+        try {
+            cElementalDefinition.addCreatorFromNBT(nbtType, dAtomDefinition.class.getMethod("fromNBT", NBTTagCompound.class),(byte)64);
+        } catch (Exception e) {
+            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+        }
+        if(TecTechConfig.DEBUG_MODE)
+            TecTech.Logger.info("Registered Elemental Matter Class: Atom "+nbtType+" "+64);
     }
 
     public static dAtomDefinition getFirstStableIsotope(int element) {

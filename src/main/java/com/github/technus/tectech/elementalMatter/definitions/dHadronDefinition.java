@@ -1,5 +1,6 @@
 package com.github.technus.tectech.elementalMatter.definitions;
 
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.classes.*;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
@@ -298,15 +299,15 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
 
     public static void run() {
         try {
-            hadron_p = new dHadronDefinition(false, eQuarkDefinition.quark_u, eQuarkDefinition.quark_u, eQuarkDefinition.quark_d);
+            hadron_p = new dHadronDefinition(new cElementalDefinitionStackMap(eQuarkDefinition.quark_u, eQuarkDefinition.quark_u, eQuarkDefinition.quark_d));
             protonMass = hadron_p.mass;
             //redefine the proton with proper lifetime (the lifetime is based on mass comparison)
-            hadron_p = new dHadronDefinition(false, eQuarkDefinition.quark_u, eQuarkDefinition.quark_u, eQuarkDefinition.quark_d);
+            hadron_p = new dHadronDefinition(new cElementalDefinitionStackMap(eQuarkDefinition.quark_u, eQuarkDefinition.quark_u, eQuarkDefinition.quark_d));
             hadron_p_ = (dHadronDefinition) (hadron_p.getAnti());
-            hadron_n = new dHadronDefinition(false, eQuarkDefinition.quark_u, eQuarkDefinition.quark_d, eQuarkDefinition.quark_d);
+            hadron_n = new dHadronDefinition(new cElementalDefinitionStackMap(eQuarkDefinition.quark_u, eQuarkDefinition.quark_d, eQuarkDefinition.quark_d));
             neutronMass = hadron_n.mass;
             //redefine the neutron with proper lifetime (the lifetime is based on mass comparison)
-            hadron_n = new dHadronDefinition(false, eQuarkDefinition.quark_u, eQuarkDefinition.quark_d, eQuarkDefinition.quark_d);
+            hadron_n = new dHadronDefinition(new cElementalDefinitionStackMap(eQuarkDefinition.quark_u, eQuarkDefinition.quark_d, eQuarkDefinition.quark_d));
             hadron_n_ = (dHadronDefinition) (hadron_n.getAnti());
         } catch (tElementalException e) {
             if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
@@ -317,11 +318,14 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
         hadron_n1 = new cElementalDefinitionStack(hadron_n, 1);
         hadron_p2 = new cElementalDefinitionStack(hadron_p, 2);
         hadron_n2 = new cElementalDefinitionStack(hadron_n, 2);
+
         try {
-            cElementalDefinition.addCreatorFromNBT(nbtType, dHadronDefinition.class.getMethod("fromNBT", NBTTagCompound.class));
+            cElementalDefinition.addCreatorFromNBT(nbtType, dHadronDefinition.class.getMethod("fromNBT", NBTTagCompound.class),(byte)-64);
         } catch (Exception e) {
             if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
         }
+        if(TecTechConfig.DEBUG_MODE)
+            TecTech.Logger.info("Registered Elemental Matter Class: Hadron "+nbtType+" "+(-64));
     }
 
     @Override

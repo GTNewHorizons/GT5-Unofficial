@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveDefinition.nbtE__;
@@ -20,9 +21,11 @@ public abstract class cElementalDefinition implements iElementalDefinition {
 
     //add text based creators for recipe formula input?
     private static final Map<Byte, Method> nbtCreationBind = new HashMap<>();//creator methods in subclasses
+    private static final HashSet<Byte> classSet = new HashSet<>();
 
-    protected static Method addCreatorFromNBT(byte b, Method m) {
-        return nbtCreationBind.put(b, m);
+    protected static void addCreatorFromNBT(byte shortcutNBT, Method constructorFromNBT,byte classID) {
+        if(nbtCreationBind.put(shortcutNBT, constructorFromNBT)!=null) throw new Error("Duplicate NBT shortcut! "+shortcutNBT);
+        if(!classSet.add(classID)) throw new Error("Duplicate Class ID! "+classID);
     }
 
     @Override

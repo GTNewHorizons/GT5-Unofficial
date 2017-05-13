@@ -17,37 +17,6 @@ import cpw.mods.fml.common.Loader;
 public class RecipeLoader implements Runnable {
     public void run() {
         // ===================================================================================================
-        // Definition init
-        // ===================================================================================================
-
-        cElementalPrimitive.run();
-
-        cPrimitiveDefinition.run();
-
-        eQuarkDefinition.run();
-        eLeptonDefinition.run();
-        eNeutrinoDefinition.run();
-        eBosonDefinition.run();
-
-        dHadronDefinition.run();
-
-        dAtomDefinition.run();
-
-        ePrimalAspectDefinition.run();
-
-        dComplexAspectDefinition.run();
-
-        // ===================================================================================================
-        // MetaTE init
-        // ===================================================================================================
-
-        GT_MetaTileEntity_MultiblockBase_EM.run();
-        GT_MetaTileEntity_Hatch_Rack.run();
-        GT_MetaTileEntity_EM_computer.run();
-        GT_MetaTileEntity_EM_research.run();
-        GT_MetaTileEntity_EM_quantizer.run();
-
-        // ===================================================================================================
         // Recipes init - common goes here rest goes into methods below
         // ===================================================================================================
 
