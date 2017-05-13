@@ -181,7 +181,9 @@ public final class cElementalMutableDefinitionStackMap extends cElementalStackMa
 
     //Put unify
     public cElementalDefinitionStack putUnify(cElementalDefinitionStack def) {
-        return map.put(def.definition, def.addAmountIntoNewInstance(map.get(def.definition)));
+        final cElementalDefinitionStack stack=map.get(def.definition);
+        if(stack==null) return map.put(def.definition,def);
+        return map.put(def.definition, stack.addAmountIntoNewInstance(def.amount));
     }
 
     @Deprecated

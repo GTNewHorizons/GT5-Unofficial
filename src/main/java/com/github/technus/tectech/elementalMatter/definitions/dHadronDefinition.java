@@ -253,16 +253,31 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
 
     @Override
     public iElementalDefinition getAnti() {
-        cElementalMutableDefinitionStackMap anti = new cElementalMutableDefinitionStackMap();
-        for (cElementalDefinitionStack stack : quarkStacks.values())
-            anti.putReplace(new cElementalDefinitionStack(stack.definition.getAnti(), stack.amount));
+        cElementalDefinitionStack[] stacks = this.quarkStacks.values();
+        cElementalDefinitionStack[] antiElements = new cElementalDefinitionStack[stacks.length];
+        for (int i = 0; i < antiElements.length; i++) {
+            antiElements[i] = new cElementalDefinitionStack(stacks[i].definition.getAnti(), stacks[i].amount);
+        }
         try {
-            return new dHadronDefinition(anti.toImmutable());
+            return new dHadronDefinition(false, antiElements);
         } catch (tElementalException e) {
             if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
             return null;
         }
     }
+
+    //@Override
+    //public iElementalDefinition getAnti() {
+    //    cElementalMutableDefinitionStackMap anti = new cElementalMutableDefinitionStackMap();
+    //    for (cElementalDefinitionStack stack : quarkStacks.values())
+    //        anti.putReplace(new cElementalDefinitionStack(stack.definition.getAnti(), stack.amount));
+    //    try {
+    //        return new dHadronDefinition(anti.toImmutable());
+    //    } catch (tElementalException e) {
+    //        if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+    //        return null;
+    //    }
+    //}
 
     @Override
     public ItemStack materializesIntoItem() {
@@ -299,15 +314,15 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
 
     public static void run() {
         try {
-            hadron_p = new dHadronDefinition(new cElementalDefinitionStackMap(eQuarkDefinition.quark_u, eQuarkDefinition.quark_u, eQuarkDefinition.quark_d));
+            hadron_p = new dHadronDefinition(stackUpMap(eQuarkDefinition.quark_u, eQuarkDefinition.quark_u, eQuarkDefinition.quark_d).toImmutable());
             protonMass = hadron_p.mass;
             //redefine the proton with proper lifetime (the lifetime is based on mass comparison)
-            hadron_p = new dHadronDefinition(new cElementalDefinitionStackMap(eQuarkDefinition.quark_u, eQuarkDefinition.quark_u, eQuarkDefinition.quark_d));
+            hadron_p = new dHadronDefinition(stackUpMap(eQuarkDefinition.quark_u, eQuarkDefinition.quark_u, eQuarkDefinition.quark_d).toImmutable());
             hadron_p_ = (dHadronDefinition) (hadron_p.getAnti());
-            hadron_n = new dHadronDefinition(new cElementalDefinitionStackMap(eQuarkDefinition.quark_u, eQuarkDefinition.quark_d, eQuarkDefinition.quark_d));
+            hadron_n = new dHadronDefinition(stackUpMap(eQuarkDefinition.quark_u, eQuarkDefinition.quark_d, eQuarkDefinition.quark_d).toImmutable());
             neutronMass = hadron_n.mass;
             //redefine the neutron with proper lifetime (the lifetime is based on mass comparison)
-            hadron_n = new dHadronDefinition(new cElementalDefinitionStackMap(eQuarkDefinition.quark_u, eQuarkDefinition.quark_d, eQuarkDefinition.quark_d));
+            hadron_n = new dHadronDefinition(stackUpMap(eQuarkDefinition.quark_u, eQuarkDefinition.quark_d, eQuarkDefinition.quark_d).toImmutable());
             hadron_n_ = (dHadronDefinition) (hadron_n.getAnti());
         } catch (tElementalException e) {
             if (TecTechConfig.DEBUG_MODE) e.printStackTrace();

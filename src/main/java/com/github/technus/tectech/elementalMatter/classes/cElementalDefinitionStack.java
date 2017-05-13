@@ -1,5 +1,6 @@
 package com.github.technus.tectech.elementalMatter.classes;
 
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
 import com.github.technus.tectech.elementalMatter.interfaces.iHasElementalDefinition;
 import net.minecraft.nbt.NBTTagCompound;

@@ -10,22 +10,18 @@ import static com.github.technus.tectech.TecTech.mainTab;
 
 public class MainLoader {//TODO add checks for - is mod loaded dreamcraft to enable higher tier machinery. (above UV), or implement a check for GT tier values.
     public void things() {
-        ElementalLoader elementalLoader = new ElementalLoader();
-        elementalLoader.run();
+        new ElementalLoader().run();
         TecTech.Logger.info("Elemental Init Done");
 
-        ThingsLoader thingsLoader = new ThingsLoader();
-        thingsLoader.run();
+        new ThingsLoader().run();
         TecTech.Logger.info("Block/Item Init Done");
 
-        MachineLoader machineLoader = new MachineLoader();
-        machineLoader.run();
+        new MachineLoader().run();
         TecTech.Logger.info("Machine Init Done");
     }
 
     public void recipes() {
-        RecipeLoader recipeLoader = new RecipeLoader();
-        recipeLoader.run();
+        new RecipeLoader().run();
         TecTech.Logger.info("Recipe Init Done");
     }
 

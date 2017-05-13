@@ -412,10 +412,10 @@ public final class dAtomDefinition extends cElementalDefinition {//TODO Optimize
 
     @Override
     public iElementalDefinition getAnti() {
-        cElementalDefinitionStack[] antiStacks = this.elementalStacks.values();
-        cElementalDefinitionStack[] antiElements = new cElementalDefinitionStack[antiStacks.length];
+        cElementalDefinitionStack[] stacks = this.elementalStacks.values();
+        cElementalDefinitionStack[] antiElements = new cElementalDefinitionStack[stacks.length];
         for (int i = 0; i < antiElements.length; i++) {
-            antiElements[i] = new cElementalDefinitionStack(antiStacks[i].definition.getAnti(), antiStacks[i].amount);
+            antiElements[i] = new cElementalDefinitionStack(stacks[i].definition.getAnti(), stacks[i].amount);
         }
         try {
             return new dAtomDefinition(false, antiElements);
@@ -424,6 +424,19 @@ public final class dAtomDefinition extends cElementalDefinition {//TODO Optimize
             return null;
         }
     }
+
+    //@Override
+    //public iElementalDefinition getAnti() {
+    //    cElementalMutableDefinitionStackMap anti = new cElementalMutableDefinitionStackMap();
+    //    for (cElementalDefinitionStack stack : elementalStacks.values())
+    //        anti.putReplace(new cElementalDefinitionStack(stack.definition.getAnti(), stack.amount));
+    //    try {
+    //        return new dAtomDefinition(anti.toImmutable());
+    //    } catch (tElementalException e) {
+    //        if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+    //        return null;
+    //    }
+    //}
 
     @Override
     public FluidStack materializesIntoFluid() {

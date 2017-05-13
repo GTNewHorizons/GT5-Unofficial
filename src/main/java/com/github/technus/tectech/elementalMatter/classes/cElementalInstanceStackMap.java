@@ -234,7 +234,9 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
 
     //Put unify
     public cElementalInstanceStack putUnify(cElementalInstanceStack instance) {
-        return map.put(instance.definition, instance.unifyIntoThis(map.get(instance.definition)));
+        cElementalInstanceStack stack=map.get(instance.definition);
+        if(stack==null) return map.put(instance.definition,instance);
+        return map.put(instance.definition, stack.unifyIntoThis(instance));
     }
 
     public void putUnifyAll(cElementalInstanceStack... instances) {
