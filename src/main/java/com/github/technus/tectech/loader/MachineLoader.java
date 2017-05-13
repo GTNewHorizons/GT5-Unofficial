@@ -12,7 +12,7 @@ import static com.github.technus.tectech.thing.CustomItemList.*;
  * Created by danie_000 on 16.11.2016.
  */
 public class MachineLoader implements Runnable {
-    public void run() {//TODO add config for starting position
+    public void run() {
         // ===================================================================================================
         // eM IN
         // ===================================================================================================

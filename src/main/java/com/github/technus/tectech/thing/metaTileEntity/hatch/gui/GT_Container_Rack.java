@@ -61,8 +61,6 @@ public class GT_Container_Rack extends GT_ContainerMetaTile_Machine {
                 this.heat = par2 != 0;
                 return;
         }
-        //TODO TEST!!!
-        //if(heat || mActive!=0) Minecraft.getMinecraft().displayGuiScreen(null);
     }
 
     @Override

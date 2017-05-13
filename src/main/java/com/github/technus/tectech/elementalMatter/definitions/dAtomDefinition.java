@@ -48,7 +48,7 @@ public final class dAtomDefinition extends cElementalDefinition {//TODO Optimize
     public final int isotope;
     public final int element;
 
-    private final cElementalDefinitionStackMap elementalStacks;//CLONED I/O
+    private final cElementalDefinitionStackMap elementalStacks;
 
     //stable is rawLifeTime>=10^9
 
@@ -57,29 +57,29 @@ public final class dAtomDefinition extends cElementalDefinition {//TODO Optimize
 
     @Deprecated
     public dAtomDefinition(iElementalDefinition... things) throws tElementalException {
-        this(false, true, stackUpMap(things).toImmutable());
+        this(true, stackUpMap(things).toImmutable());
     }
 
     @Deprecated
     private dAtomDefinition(boolean check, iElementalDefinition... things) throws tElementalException {
-        this(false, check, stackUpMap(things).toImmutable());
+        this(check, stackUpMap(things).toImmutable());
     }
 
     public dAtomDefinition(cElementalDefinitionStack... things) throws tElementalException {
-        this(false, true, stackUpMap(things).toImmutable());
+        this(true, stackUpMap(things).toImmutable());
     }
 
     private dAtomDefinition(boolean check, cElementalDefinitionStack... things) throws tElementalException {
-        this(false, check, stackUpMap(things).toImmutable());
+        this(check, stackUpMap(things).toImmutable());
     }
 
     public dAtomDefinition(cElementalDefinitionStackMap things) throws tElementalException {
-        this(false, true, things);
+        this(true, things);
     }
 
-    private dAtomDefinition(boolean clone, boolean check, cElementalDefinitionStackMap things) throws tElementalException {
+    private dAtomDefinition(boolean check, cElementalDefinitionStackMap things) throws tElementalException {
         if (check && !canTheyBeTogether(things)) throw new tElementalException("Atom Definition error");
-        this.elementalStacks = clone ? things.clone() : things;
+        this.elementalStacks = things;
 
         float mass = 0;
         int cLeptons = 0;

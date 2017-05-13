@@ -27,6 +27,7 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
     public static cElementalDefinitionStack hadron_p1, hadron_n1, hadron_p2, hadron_n2;
     private static float protonMass = 0F;
     private static float neutronMass = 0F;
+
     //float-mass in eV/c^2
     public final float mass;
     //int -electric charge in 1/3rds of electron charge for optimization
@@ -37,6 +38,7 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
     public final byte type;
     //private final FluidStack fluidThing;
     //private final ItemStack itemThing;
+
     private final cElementalDefinitionStackMap quarkStacks;
 
     @Deprecated

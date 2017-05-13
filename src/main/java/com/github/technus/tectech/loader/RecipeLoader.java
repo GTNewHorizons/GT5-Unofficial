@@ -9,6 +9,7 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_E
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_quantizer;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_research;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_MultiblockBase_EM;
+import cpw.mods.fml.common.Loader;
 
 /**
  * Created by danie_000 on 16.11.2016.
@@ -16,7 +17,7 @@ import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_M
 public class RecipeLoader implements Runnable {
     public void run() {
         // ===================================================================================================
-        // def init
+        // Definition init
         // ===================================================================================================
 
         cElementalPrimitive.run();
@@ -37,7 +38,7 @@ public class RecipeLoader implements Runnable {
         dComplexAspectDefinition.run();
 
         // ===================================================================================================
-        // Recipe init
+        // MetaTE init
         // ===================================================================================================
 
         GT_MetaTileEntity_MultiblockBase_EM.run();
@@ -45,5 +46,22 @@ public class RecipeLoader implements Runnable {
         GT_MetaTileEntity_EM_computer.run();
         GT_MetaTileEntity_EM_research.run();
         GT_MetaTileEntity_EM_quantizer.run();
+
+        // ===================================================================================================
+        // Recipes init - common goes here rest goes into methods below
+        // ===================================================================================================
+
+
+
+        if (Loader.isModLoaded("dreamcraft")) runDreamRun();//TODO init recipes for GTNH version
+        else runBloodRun();//TODO init recipes for NON-GTNH version
+    }
+
+    private void runDreamRun(){
+
+    }
+
+    private void runBloodRun(){
+        //Don't init things after UV!!! They don't conform to the standards.
     }
 }
