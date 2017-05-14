@@ -30,27 +30,31 @@ public class rElementalRecipeMap {//TODO FIX
             put(recipe);
     }
 
-    public rElementalRecipe remove(cElementalInstanceStackMap map, short id) {
-        return recipes.get(map).remove(id);
+    public rElementalRecipe remove(cElementalStackMap map, short id) {
+        return recipes.get(map).remove(id);//suspicious but ok, equals and hashcode methods are adjusted for that
     }
 
-    public HashMap<Short, rElementalRecipe> remove(cElementalInstanceStackMap map) {
-        return recipes.remove(map);
+    public HashMap<Short, rElementalRecipe> remove(cElementalStackMap map) {
+        return recipes.remove(map);//suspicious but ok, equals and hashcode methods are adjusted for that
     }
 
-    //Recipe founding should not check amounts
-
+    //Recipe founding should not check amounts - this checks if the types of matter in map are equal to any recipe!
+    //Return a recipeShortMap when the content of input is equal (ignoring amounts and instance data)
+    @Deprecated
     public HashMap<Short, rElementalRecipe> findExact(cElementalStackMap in) {
-        return recipes.get(in);//suspicious but ok
+        return recipes.get(in);//suspicious but ok, equals and hashcode methods are adjusted for that
     }
 
     public HashMap<Short, rElementalRecipe> findExact(cElementalInstanceStackMap in) {
-        return recipes.get(in);//suspicious but ok
+        return recipes.get(in.toDefinitionMapForComparison());//suspicious but ok, equals and hashcode methods are adjusted for that
     }
 
-    public HashMap<Short, rElementalRecipe> findMatch(cElementalMutableDefinitionStackMap in) {
+    //this does check if the map contains all the requirements for any recipe, and the required amounts
+    //Return a recipeShortMap when the content of input matches the recipe input - does not ignore amounts but ignores instance data!
+    @Deprecated
+    public HashMap<Short, rElementalRecipe> findMatch(cElementalMutableDefinitionStackMap in, boolean testOnlyTruePreferred) {
         for (cElementalDefinitionStackMap requirement : recipes.keySet())
-            if (in.removeAllAmounts(true, requirement))
+            if (in.removeAllAmounts(testOnlyTruePreferred, requirement))
                 return recipes.get(requirement);
         return null;
     }
@@ -61,4 +65,6 @@ public class rElementalRecipeMap {//TODO FIX
                 return recipes.get(requirement);
         return null;
     }
+
+    //To check for instance data and other things use recipe extensions!
 }

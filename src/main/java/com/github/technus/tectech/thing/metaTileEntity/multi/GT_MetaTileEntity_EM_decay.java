@@ -15,22 +15,22 @@ import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBl
 public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase_EM {
     //region structure
     private static final String[][] shape = new String[][]{
-            {"0C0", "A   ", "A + ", "A   ", "0C0",},
-            {"00000", "00000", "00000", "00000", "00000",},
-            {"0C0", "A!!!", "A!0!", "A!!!", "0C0",},
-            {"00000", "01110", "01110", "01110", "00000",},
-            {"0\"\"\"0", "\"111\"", "\"111\"", "\"111\"", "0\"\"\"0",},
-            {"00000", "01110", "01110", "01110", "00000",},
-            {"0C0", "A!!!", "A!0!", "A!!!", "0C0",},
-            {"00000", "00000", "00000", "00000", "00000",},
-            {"0C0", "A   ", "A   ", "A   ", "0C0",},
+            {"0C0","A   ","A + ","A   ","0C0",},
+            {"00000","00000","00000","00000","00000",},
+            {"0C0","A!!!","A!0!","A!!!","0C0",},
+            {"01110","12221","12221","12221","01110",},
+            {"01310","12221","32223","12221","01310",},
+            {"01110","12221","12221","12221","01110",},
+            {"0C0","A!!!","A!0!","A!!!","0C0",},
+            {"00000","00000","00000","00000","00000",},
+            {"0C0","A   ","A   ","A   ","0C0",},
     };
-    private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
-    private static final byte[] blockMeta = new byte[]{4, 8};
-    private static final String[] addingMethods = new String[]{"addClassicToMachineList", "addElementalToMachineList", "addElementalMufflerToMachineList"};
-    private static final byte[] casingTextures = new byte[]{textureOffset, textureOffset + 4, textureOffset + 4};
-    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
-    private static final byte[] blockMetaFallback = new byte[]{0, 4, 4};
+    private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT ,sBlockCasingsTT};
+    private static final byte[] blockMeta = new byte[]{4, 5, 8, 6};
+    private static final String[] addingMethods = new String[]{"addClassicToMachineList", "addElementalToMachineList"};
+    private static final byte[] casingTextures = new byte[]{textureOffset, textureOffset + 4};
+    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
+    private static final byte[] blockMetaFallback = new byte[]{0, 4};
     //endregion
 
     public GT_MetaTileEntity_EM_decay(int aID, String aName, String aNameRegional) {

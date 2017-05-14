@@ -1,25 +1,40 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
+import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
+
 /**
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_crafter extends GT_MetaTileEntity_MultiblockBase_EM {
+    //region structure
     private static final String[][] shape = new String[][]{
-            {"",//left to right top
-                    "",
-                    ""},//front
-            {},//behind front
-            {} //behind
+            {"A000","0   0","0 + 0","0   0","A000",},
+            {"00000","00000","00000","00000","00000",},
+            {"0C0","A!!!","A!1!","A!!!","0C0",},
+            {"22222","22222","22122","22222","22222",},
+            {"23432","33333","43134","33333","23432",},
+            {"23332","33333","33533","33333","23332",},
+            {"23432","33333","43134","33333","23432",},
+            {"22222","22222","22122","22222","22222",},
+            {"0C0","A!!!","A!1!","A!!!","0C0",},
+            {"00000","00000","00000","00000","00000",},
+            {"A000","0   0","0   0","0   0","A000",},
     };
-    private static final Block[] blockType = new Block[]{};
-    private static final byte[] blockMeta = new byte[]{};
+    private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT , QuantumGlassBlock.INSTANCE, sBlockCasingsTT, sBlockCasingsTT};
+    private static final byte[] blockMeta = new byte[]{4, 10, 5, 0, 6, 9};
+    private static final String[] addingMethods = new String[]{"addClassicToMachineList", "addElementalToMachineList"};
+    private static final byte[] casingTextures = new byte[]{textureOffset, textureOffset + 4};
+    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
+    private static final byte[] blockMetaFallback = new byte[]{0, 4};
+    //endregion
 
     public GT_MetaTileEntity_EM_crafter(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -35,7 +50,7 @@ public class GT_MetaTileEntity_EM_crafter extends GT_MetaTileEntity_MultiblockBa
 
     @Override
     public boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return false;
+        return EM_StructureCheckAdvanced(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0);
     }
 
     @Override
