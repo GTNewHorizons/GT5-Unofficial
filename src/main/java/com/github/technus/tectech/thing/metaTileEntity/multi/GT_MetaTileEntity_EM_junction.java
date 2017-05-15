@@ -3,6 +3,7 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.casing.GT_Container_CasingsTT;
+import com.github.technus.tectech.thing.metaTileEntity.constructableTT;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputElemental;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -12,17 +13,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import static com.github.technus.tectech.Util.StructureBuilder;
 import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
 import static gregtech.api.enums.GT_Values.V;
 
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockBase_EM {
+public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockBase_EM implements constructableTT {
     //region Structure
     //use multi A energy inputs, use less power the longer it runs
     private static final String[][] shape = new String[][]{
-            {"   ", " + ", "   ",},
+            {"   ", " . ", "   ",},
             {"000", "000", "000",},
             {"!!!", "!0!", "!!!",},
             {"!!!", "!!!", "!!!",},
@@ -50,6 +52,11 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
     @Override
     public boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         return EM_StructureCheckAdvanced(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
+    }
+
+    @Override
+    public void construct(int qty) {
+        StructureBuilder(shape, blockType, blockMeta,1, 1, 0, getBaseMetaTileEntity());
     }
 
     @Override

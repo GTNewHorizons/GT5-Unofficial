@@ -4,26 +4,29 @@ import cofh.api.energy.IEnergyContainerItem;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
+import com.github.technus.tectech.thing.metaTileEntity.constructableTT;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import static com.github.technus.tectech.Util.StructureBuilder;
 import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
 import static gregtech.api.GregTech_API.mEUtoRF;
 
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBase_EM {
+public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBase_EM implements constructableTT {
     //region Structure
     private static final String[][] shape = new String[][]{
-            {"   ", "000", "1+1", "000", "   ",},
+            {"   ", "000", "1.1", "000", "   ",},
             {"   ", "010", "111", "010", "   ",},
             {"   ", "000", "111", "000", "   ",},
     };
@@ -57,6 +60,11 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     @Override
     public boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         return EM_StructureCheckAdvanced(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, 0);
+    }
+
+    @Override
+    public void construct(int qty) {
+        StructureBuilder(shape, blockType, blockMeta,1, 2, 0, getBaseMetaTileEntity());
     }
 
     @Override

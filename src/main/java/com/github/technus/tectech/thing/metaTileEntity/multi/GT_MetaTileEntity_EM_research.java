@@ -3,6 +3,7 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
+import com.github.technus.tectech.thing.metaTileEntity.constructableTT;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Holder;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Rack;
 import gregtech.api.enums.Textures;
@@ -19,6 +20,7 @@ import net.minecraft.util.EnumChatFormatting;
 
 import java.util.ArrayList;
 
+import static com.github.technus.tectech.Util.StructureBuilder;
 import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
 import static gregtech.api.enums.GT_Values.E;
 import static gregtech.api.enums.GT_Values.V;
@@ -26,7 +28,7 @@ import static gregtech.api.enums.GT_Values.V;
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockBase_EM {
+public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockBase_EM implements constructableTT {
     private final ArrayList<GT_MetaTileEntity_Hatch_Holder> eHolders = new ArrayList<>();
 
     //region structure
@@ -35,7 +37,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
             {"A0", "010", "A1", "A!", "A1", "010", "A0",},
             {"A0", "010", E, E, E, "010", "A0",},
             {"000", "010", E, E, E, "010", "000",},
-            {"000", "212", "010", "0+0", "010", "212", "000",},
+            {"000", "212", "010", "0.0", "010", "212", "000",},
             {"000", "212", "111", "111", "111", "212", "000",},
             {"000", "222", "   ", "   ", "   ", "222", "000",},
     };
@@ -73,6 +75,11 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
             if (isValidMetaTileEntity(rack))
                 rack.getBaseMetaTileEntity().setActive(iGregTechTileEntity.isActive());
         return eHolders.size() == 1;
+    }
+
+    @Override
+    public void construct(int qty) {
+        StructureBuilder(shape, blockType, blockMeta,1, 3, 4, getBaseMetaTileEntity());
     }
 
     @Override

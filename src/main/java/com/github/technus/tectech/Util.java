@@ -63,11 +63,13 @@ public class Util {
             for (String __structure : _structure) {//top to bottom
                 a = -horizontalOffset;
                 for (char block : __structure.toCharArray()) {//left to right
-                    if (block > '@') {//characters allow to skip check a-1 skip, b-2 skips etc.
+                    if (block > '@')//characters allow to skip check a-1 skip, b-2 skips etc.
                         a += block - '@';
-                    } else if (block < '+') {//used to mark THINGS
+                    else if (block < '+')//used to mark THINGS
                         a++;
-                    } else {
+                    else if (block=='.')
+                        a++;
+                    else {
                         //get x y z from rotation
                         switch (facing) {//translation
                             case 4:
@@ -178,11 +180,13 @@ public class Util {
             for (String __structure : _structure) {//top to bottom
                 a = -horizontalOffset;
                 for (char block : __structure.toCharArray()) {//left to right
-                    if (block > '@') {//characters allow to skip check a-1 skip, b-2 skips etc.
+                    if (block > '@') //characters allow to skip check a-1 skip, b-2 skips etc.
                         a += block - '@';
-                        //} else if (block < '+') {//used to mark THINGS
-                        //    a++;
-                    } else {
+                  //else if (block < '+')//used to mark THINGS
+                  //    a++;
+                    else if (block=='.')
+                        a++;
+                    else {
                         //get x y z from rotation
                         switch (facing) {//translation
                             case 4:
@@ -289,7 +293,7 @@ public class Util {
         World world = aBaseMetaTileEntity.getWorld();
         if (world.isRemote) return false;
 
-        int x, y, z, a, b, c;
+        int x, y, z, a, b, c, pointer;
         //a,b,c - relative to block face!
         //x,y,z - relative to block position on map!
 
@@ -300,11 +304,13 @@ public class Util {
             for (String __structure : _structure) {//top to bottom
                 a = -horizontalOffset;
                 for (char block : __structure.toCharArray()) {//left to right
-                    if (block > '@') {//characters allow to skip check a-1 skip, b-2 skips etc.
+                    if (block > '@')//characters allow to skip check a-1 skip, b-2 skips etc.
                         a += block - '@';
-                    } else if (block < '+') {//used to mark THINGS
+                  //else if (block < '+')//used to mark THINGS
+                  //    a++;
+                    else if (block=='.')// this TE
                         a++;
-                    } else {
+                    else {
                         //get x y z from rotation
                         switch (facing) {//translation
                             case 4:
@@ -352,13 +358,29 @@ public class Util {
                                     world.setBlock(x, y, z, Blocks.air, 0, 2);
                                     break;
                                 case '+'://must not be air
-                                    world.setBlock(x, y, z, Blocks.wool, 15, 2);
+                                    world.setBlock(x, y, z, Blocks.stone, 15, 2);
                                     break;
-                                default: {//check for block (countable)
-                                    int pointer = block - '0';
-                                    //countable air -> net.minecraft.block.BlockAir
-                                    world.setBlock(x, y, z, blockType[pointer], blockMeta[pointer], 2);
-                                }
+                                default: //check for block
+                                    if ((pointer = block - '0') >= 0) {
+                                        world.setBlock(x, y, z, blockType[pointer], blockMeta[pointer], 2);
+                                    } else if ((pointer = block - ' ') >= 0) {
+                                        switch(pointer){
+                                            case 0: world.setBlock(x, y, z, Blocks.wool, 11, 2); break;
+                                            case 1: world.setBlock(x, y, z, Blocks.wool, 3, 2); break;
+                                            case 2: world.setBlock(x, y, z, Blocks.wool, 0, 2); break;
+                                            case 3: world.setBlock(x, y, z, Blocks.wool, 8, 2); break;
+                                            case 4: world.setBlock(x, y, z, Blocks.wool, 7, 2); break;
+                                            case 5: world.setBlock(x, y, z, Blocks.wool, 15, 2); break;
+                                            case 6: world.setBlock(x, y, z, Blocks.stained_hardened_clay, 11, 2); break;
+                                            case 7: world.setBlock(x, y, z, Blocks.stained_hardened_clay, 3, 2); break;
+                                            case 8: world.setBlock(x, y, z, Blocks.stained_hardened_clay, 0, 2); break;
+                                            case 9: world.setBlock(x, y, z, Blocks.stained_hardened_clay, 8, 2); break;
+                                            case 10:world.setBlock(x, y, z, Blocks.stained_hardened_clay, 7, 2); break;
+                                            case 11:world.setBlock(x, y, z, Blocks.stained_hardened_clay, 15, 2); break;
+                                            default:world.setBlock(x, y, z, Blocks.lapis_block, 0, 2);
+                                        }
+
+                                    }
                             }
                         }
                         a++;//block in horizontal layer
@@ -535,7 +557,7 @@ public class Util {
                     int meta = world.getBlockMetadata(x, y, z);
 
                     if (a == 0 && b == 0 && c == 0) {
-                        line += '+';
+                        line += '.';
                     } else if (block.getMaterial() == Material.air) {
                         line += '-';
                     } else if (block.hasTileEntity(meta)) {

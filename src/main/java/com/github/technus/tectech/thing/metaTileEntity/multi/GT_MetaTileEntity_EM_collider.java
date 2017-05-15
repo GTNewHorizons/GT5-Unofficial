@@ -143,6 +143,11 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
+    public boolean isFacingValid(byte aFacing) {
+        return aFacing >= 2;
+    }
+
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setByte("eTier", eTier);

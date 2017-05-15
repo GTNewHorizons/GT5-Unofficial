@@ -5,6 +5,7 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.dataFramework.quantumDataPacket;
+import com.github.technus.tectech.thing.metaTileEntity.constructableTT;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Rack;
@@ -22,18 +23,19 @@ import net.minecraft.util.EnumChatFormatting;
 
 import java.util.ArrayList;
 
+import static com.github.technus.tectech.Util.StructureBuilder;
 import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
 import static gregtech.api.enums.GT_Values.V;
 
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockBase_EM {
+public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockBase_EM implements constructableTT {
     private final ArrayList<GT_MetaTileEntity_Hatch_Rack> eRacks = new ArrayList<>();
     private int maxTemp = 0;
 
     //region Structure
-    private static final String[][] front = new String[][]{{"A  ", "A  ", "A+ ", "A  ",},};
+    private static final String[][] front = new String[][]{{"A  ", "A  ", "A. ", "A  ",},};
     private static final String[][] terminator = new String[][]{{"A  ", "A  ", "A  ", "A  ",},};
     private static final String[][] cap = new String[][]{{"-01", "A22", "A22", "-01",},};
     private static final String[][] slice = new String[][]{{"-01", "A!2", "A!2", "-01",},};
@@ -187,23 +189,38 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
             return false;
         if (!EM_StructureCheckAdvanced(cap, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, -1))
             return false;
-        byte i = -2, slices = 4;
-        for (; i > -16; ) {
-            if (!EM_StructureCheckAdvanced(slice, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, i))
+        byte offset = -2, totalLen = 4;
+        for (; offset > -16; ) {
+            if (!EM_StructureCheckAdvanced(slice, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, offset))
                 break;
-            slices++;
-            i--;
+            totalLen++;
+            offset--;
         }
-        if (slices > 16) return false;
-        if (!EM_StructureCheckAdvanced(cap, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, ++i))
+        if (totalLen > 16) return false;
+        if (!EM_StructureCheckAdvanced(cap, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, ++offset))
             return false;
-        if (!EM_StructureCheckAdvanced(terminator, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, --i))
+        if (!EM_StructureCheckAdvanced(terminator, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, --offset))
             return false;
-        eCertainMode = (byte) Math.min(slices / 3, 5);
+        eCertainMode = (byte) Math.min(totalLen / 3, 5);
         for (GT_MetaTileEntity_Hatch_Rack rack : eRacks)
             if (isValidMetaTileEntity(rack))
                 rack.getBaseMetaTileEntity().setActive(iGregTechTileEntity.isActive());
         return eUncertainHatches.size() == 1;
+    }
+
+    @Override
+    public void construct(int qty) {
+        IGregTechTileEntity igt=getBaseMetaTileEntity();
+        StructureBuilder(front, blockType, blockMeta, 1, 2, 0, igt);
+        StructureBuilder(cap, blockType, blockMeta, 1, 2, -1, igt);
+
+        byte offset=-2;
+        for (int rackSlices = qty>12?12:qty; rackSlices>0 ; rackSlices--) {
+            StructureBuilder(slice, blockType, blockMeta, 1, 2, offset--, igt);
+        }
+
+        StructureBuilder(cap, blockType, blockMeta, 1, 2, offset--, igt);
+        StructureBuilder(terminator, blockType, blockMeta, 1, 2, offset,igt);
     }
 
     @Override

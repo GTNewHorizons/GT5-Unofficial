@@ -11,6 +11,7 @@ import com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition;
 import com.github.technus.tectech.elementalMatter.definitions.dHadronDefinition;
 import com.github.technus.tectech.elementalMatter.definitions.eLeptonDefinition;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
+import com.github.technus.tectech.thing.metaTileEntity.constructableTT;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -24,6 +25,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.HashMap;
 
+import static com.github.technus.tectech.Util.StructureBuilder;
 import static com.github.technus.tectech.Util.isInputEqual;
 import static com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition.getBestUnstableIsotope;
 import static com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition.getFirstStableIsotope;
@@ -33,7 +35,7 @@ import static gregtech.api.enums.GT_Values.V;
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_MultiblockBase_EM {
+public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_MultiblockBase_EM implements constructableTT {
     public static HashMap<Integer, cElementalDefinitionStack> itemBinds = new HashMap<>(32);
     public static HashMap<Integer, cElementalDefinitionStack> fluidBind = new HashMap<>(8);
     private static float refMass, refUnstableMass;
@@ -41,7 +43,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
     //region Structure
     //use multi A energy inputs, use less power the longer it runs
     private static final String[][] shape = new String[][]{
-            {"!!!", "!+!", "!!!",},
+            {"!!!", "!.!", "!!!",},
             {"010", "101", "010",},
             {"\"\"\"", "\"0\"", "\"\"\"",},
             {"202", "0 0", "202",},
@@ -69,6 +71,11 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
     @Override
     public boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         return EM_StructureCheckAdvanced(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
+    }
+
+    @Override
+    public void construct(int qty) {
+        StructureBuilder(shape, blockType, blockMeta,1, 1, 0, getBaseMetaTileEntity());
     }
 
     @Override

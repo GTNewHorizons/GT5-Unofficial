@@ -25,7 +25,7 @@ public class DebugBuilder extends Item {
 
     DebugBuilder() {
         super();
-        setMaxStackSize(1);
+        //setMaxStackSize(1);
         setUnlocalizedName("em.debugBuilder");
         setTextureName(MODID + ":itemDebugBuilder");
     }
@@ -49,7 +49,7 @@ public class DebugBuilder extends Item {
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
         aList.add(CommonValues.tecMark);
         aList.add("Constructs Multiblocks");
-        aList.add(EnumChatFormatting.BLUE + "Quantity Matters");
+        aList.add(EnumChatFormatting.BLUE + "Quantity affects construction");
     }
 
     public static void run() {

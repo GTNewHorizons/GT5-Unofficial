@@ -2,22 +2,24 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
+import com.github.technus.tectech.thing.metaTileEntity.constructableTT;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
+import static com.github.technus.tectech.Util.StructureBuilder;
 import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
 
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBase_EM {
+public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBase_EM implements constructableTT {
 
     //region structure
     private static final String[][] shape = new String[][]{
-            {"     ", " 222 ", " 2+2 ", " 222 ", "     ",},
+            {"     ", " 222 ", " 2.2 ", " 222 ", "     ",},
             {"00000", "00000", "00000", "00000", "00000",},
             {"00100", "01110", "11111", "01110", "00100",},
             {"01110", "1C1", "1C1", "1C1", "01110",},
@@ -55,6 +57,11 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
         if (!EM_StructureCheckAdvanced(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0))
             return false;
         return eInputHatches.size() != 1 || eOutputHatches.size() != 1 && eOutputHatches.get(0).getBaseMetaTileEntity().getFrontFacing() == iGregTechTileEntity.getFrontFacing();
+    }
+
+    @Override
+    public void construct(int qty) {
+        StructureBuilder(shape, blockType, blockMeta,2, 2, 0, getBaseMetaTileEntity());
     }
 
     @Override
