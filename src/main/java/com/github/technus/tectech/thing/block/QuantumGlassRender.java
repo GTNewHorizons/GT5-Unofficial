@@ -21,7 +21,7 @@ public final class QuantumGlassRender implements ISimpleBlockRenderingHandler {
     public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         Tessellator tessellator = Tessellator.instance;
-
+        GL11.glPushMatrix();
         //Get icons from custom register (useful for renderers and fluids)
         IIcon side = QuantumGlassBlock.stuff;
         tessellator.startDrawingQuads();
@@ -49,6 +49,7 @@ public final class QuantumGlassRender implements ISimpleBlockRenderingHandler {
         renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, side);
         tessellator.draw();
         GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+        GL11.glPopMatrix();
     }
 
     @Override
@@ -58,6 +59,7 @@ public final class QuantumGlassRender implements ISimpleBlockRenderingHandler {
 
         renderer.renderStandardBlock(block, x, y, z);
         Tessellator tes = Tessellator.instance;
+        GL11.glPushMatrix();
         tes.setNormal(0F, 1F, 0F);
         tes.setBrightness(15728880);
         tes.setColorOpaque_F(0F, 1F, 1F);
@@ -106,6 +108,7 @@ public final class QuantumGlassRender implements ISimpleBlockRenderingHandler {
             tes.addVertexWithUV(x + 1, y + 0.001, z + 1, side.getMaxU(), side.getMinV());
             tes.addVertexWithUV(x + 1, y + 0.001, z, side.getMaxU(), side.getMaxV());
         }
+        GL11.glPopMatrix();
         GL11.glEnable(GL11.GL_CULL_FACE);
         return true;
     }
