@@ -89,6 +89,7 @@ public interface IGT_RecipeAdder {
      */
     public boolean addElectrolyzerRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, ItemStack aOutput5, ItemStack aOutput6, int[] aChances, int aDuration, int aEUt);
 
+
     /**
      * Adds a Chemical Recipe
      *
@@ -100,6 +101,15 @@ public interface IGT_RecipeAdder {
     public boolean addChemicalRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput, int aDuration);
 
     public boolean addChemicalRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput, int aDuration, int aEUt);
+
+
+    /**
+     * Adds Recipes for creating a radically polymerized polymer from a base Material (for example Ethylene -> Polyethylene)
+     * @param aBasicMaterial The basic Material
+     * @param aPolymer The polymer
+     */
+
+    public void addDefaultPolymerizationRecipes(Fluid aBasicMaterial, Fluid aPolymer);
 
     /**
      * Adds a Chemical Recipe

@@ -2,10 +2,12 @@ package gregtech.common;
 
 import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
+import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
@@ -129,10 +131,20 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
         }
         GT_Recipe.GT_Recipe_Map.sChemicalRecipes.addRecipe(true, new ItemStack[]{aInput1, aInput2}, new ItemStack[]{aOutput}, null, null, new FluidStack[]{aFluidInput}, new FluidStack[]{aFluidOutput}, aDuration, aEUtick, aCleanroom ? -200 : 0);
         return true;
+
+    }
+
+    @Override
+    public void addDefaultPolymerizationRecipes(Fluid aBasicMaterial, Fluid aPolymer){
+        //Oxygen/Titanium -> +50% Output each
+        GT_Values.RA.addChemicalRecipe(ItemList.Cell_Air.get(1, new Object[0]),                          ItemList.Circuit_Integrated.getWithDamage(0, 1, new Object[0]),         new GT_FluidStack(aBasicMaterial, 144),  new GT_FluidStack(aPolymer, 144),  ItemList.Cell_Empty.get(2, new Object[0]),  160);
+        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1),  ItemList.Circuit_Integrated.getWithDamage(0, 1, new Object[0]),         new GT_FluidStack(aBasicMaterial, 144),  new GT_FluidStack(aPolymer, 216),  ItemList.Cell_Empty.get(2, new Object[0]),  160);
+        GT_Values.RA.addChemicalRecipe(ItemList.Cell_Air.get(12, new Object[0]),                          GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Titanium, 1), new GT_FluidStack(aBasicMaterial, 1728), new GT_FluidStack(aPolymer, 2592), ItemList.Cell_Empty.get(12, new Object[0]), 640);
+        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 12), GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Titanium, 1), new GT_FluidStack(aBasicMaterial, 1728), new GT_FluidStack(aPolymer, 3456), ItemList.Cell_Empty.get(12, new Object[0]), 640);
     }
 
     public boolean addBlastRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, ItemStack aOutput2, int aDuration, int aEUt, int aLevel) {
-        return addBlastRecipe(aInput1, aInput2, null, null, aOutput1, aOutput2, aDuration, aEUt, aLevel);
+    return addBlastRecipe(aInput1, aInput2, null, null, aOutput1, aOutput2, aDuration, aEUt, aLevel);
     }
 
     public boolean addBlastRecipe(ItemStack aInput1, ItemStack aInput2, FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, int aDuration, int aEUt, int aLevel) {
