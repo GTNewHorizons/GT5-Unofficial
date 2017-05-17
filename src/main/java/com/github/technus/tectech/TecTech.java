@@ -38,7 +38,7 @@ public class TecTech {
     @Instance(Reference.MODID)
     public static TecTech instance;
 
-    public static LogHelper Logger = new LogHelper(Reference.MODID);
+    public static final LogHelper Logger = new LogHelper(Reference.MODID);
     private static IngameErrorLog Module_AdminErrorLogs = null;
     public static MainLoader GTCustomLoader = null;
     public static TecTechConfig ModConfig;
