@@ -26,11 +26,11 @@ public class GT_MetaTileEntity_EM_wormhole extends GT_MetaTileEntity_MultiblockB
 
     //region structure
     private static final String[][] shape = new String[][]{
-            {E,E,E,"C   ","C . ","C   ",E,E,E,},
-            {E,E,"D0","C000","B00100","C000","D0",E,E,},
-            {E,E,"D0","C2A2","B0C0","C2A2","D0",E,E,},
-            {E,"D0","D0",E,"A00C00",E,"D0","D0",E,},
-            {E,"D0",E,E,"A0E0",E,E,"D0",E,},
+            {E,E,E,"C   ","C . ","C   "/*,E,E,E,*/},
+            {E,E,"D0","C000","B00100","C000","D0"/*,E,E,*/},
+            {E,E,"D0","C2A2","B0C0","C2A2","D0"/*,E,E,*/},
+            {E,"D0","D0",E,"A00C00",E,"D0","D0"/*,E,*/},
+            {E,"D0",E,E,"A0E0",E,E,"D0"/*,E,*/},
             {"D0","D0",E,E,"00E00",E,E,"D0","D0",},
             {"B00000","A0033300","003C300","03E30","03E30","03E30","003C300","A0033300","B00000",},
             {"B0!!!0","A 31113 ","031222130","!12C21!","!12C21!","!12C21!","031222130","A 31113 ","B0!!!0",},

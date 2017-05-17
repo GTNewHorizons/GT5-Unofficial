@@ -33,7 +33,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
 
     //region structure
     private static final String[][] shape = new String[][]{
-            {E, "000", E, E, E, "000", E,},
+            {E, "000", E, E, E, "000"/*,E,*/},
             {"A0", "010", "A1", "A!", "A1", "010", "A0",},
             {"A0", "010", E, E, E, "010", "A0",},
             {"000", "010", E, E, E, "010", "000",},

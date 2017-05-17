@@ -19,7 +19,7 @@ import static gregtech.api.enums.GT_Values.E;
 public class GT_MetaTileEntity_EM_annihilation extends GT_MetaTileEntity_MultiblockBase_EM implements constructableTT {
     //region structure
     private static final String[][] shape = new String[][]{
-            {E,E,E,"D000","C0   0","C0 . 0","C0   0","D000",E,E,E,},
+            {"\u0002","D000","C0   0","C0 . 0","C0   0","D000"},
             {"C01A10","C01A10","D1A1","00B101B00","11111111111","C01110","11111111111","00B101B00","D1A1","C01A10","C01A10",},
             {"C01A10","A223222322","A244242442","03442424430","12225252221","A244222442","12225252221","03442424430","A244242442","A223222322","C01A10",},
             {"D111","A244222442","A4G4","A4G4","12G21","12G21","12G21","A4G4","A4G4","A244222442","D111",},
@@ -29,7 +29,7 @@ public class GT_MetaTileEntity_EM_annihilation extends GT_MetaTileEntity_Multibl
             {"D111","A244222442","A4G4","A4G4","12G21","12G21","12G21","A4G4","A4G4","A244222442","D111",},
             {"C01A10","A223222322","A244242442","03442424430","12225252221","A244222442","12225252221","03442424430","A244242442","A223222322","C01A10",},
             {"C01A10","C01A10","D1A1","00B101B00","11111111111","C01110","11111111111","00B101B00","D1A1","C01A10","C01A10",},
-            {E,E,E,"D000","C0   0","C0   0","C0   0","D000",E,E,E,},
+            {"\u0002","D000","C0   0","C0   0","C0   0","D000"},
     };
     private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT ,sBlockCasingsTT, QuantumGlassBlock.INSTANCE, sBlockCasingsTT};
     private static final byte[] blockMeta = new byte[]{4, 5, 12, 6, 0, 10};

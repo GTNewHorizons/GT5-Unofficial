@@ -18,6 +18,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static gregtech.api.enums.GT_Values.E;
 
 /**
  * Created by Tec on 21.03.2017.
@@ -52,6 +56,10 @@ public class Util {
         byte facing = aBaseMetaTileEntity.getFrontFacing();
 
         int x, y, z, a, b, c, pointer;
+        final int
+                baseX=aBaseMetaTileEntity.getXCoord(),
+                baseZ=aBaseMetaTileEntity.getZCoord(),
+                baseY=aBaseMetaTileEntity.getYCoord();
         //a,b,c - relative to block face!
         //x,y,z - relative to block position on map!
         //yPos  - absolute height of checked block
@@ -63,7 +71,10 @@ public class Util {
             for (String __structure : _structure) {//top to bottom
                 a = -horizontalOffset;
                 for (char block : __structure.toCharArray()) {//left to right
-                    if (block > '@')//characters allow to skip check a-1 skip, b-2 skips etc.
+                    if (block < ' ') {//Control chars allow skipping
+                        b -= block;
+                        break;
+                    } if (block > '@')//characters allow to skip check a-1 skip, b-2 skips etc.
                         a += block - '@';
                     else if (block < '+')//used to mark THINGS
                         a++;
@@ -73,35 +84,35 @@ public class Util {
                         //get x y z from rotation
                         switch (facing) {//translation
                             case 4:
-                                x = aBaseMetaTileEntity.getXCoord() + c;
-                                z = aBaseMetaTileEntity.getZCoord() + a;
-                                y = aBaseMetaTileEntity.getYCoord() + b;
+                                x = baseX + c;
+                                z = baseZ + a;
+                                y = baseY + b;
                                 break;
                             case 3:
-                                x = aBaseMetaTileEntity.getXCoord() + a;
-                                z = aBaseMetaTileEntity.getZCoord() - c;
-                                y = aBaseMetaTileEntity.getYCoord() + b;
+                                x = baseX + a;
+                                z = baseZ - c;
+                                y = baseY + b;
                                 break;
                             case 5:
-                                x = aBaseMetaTileEntity.getXCoord() - c;
-                                z = aBaseMetaTileEntity.getZCoord() - a;
-                                y = aBaseMetaTileEntity.getYCoord() + b;
+                                x = baseX - c;
+                                z = baseZ - a;
+                                y = baseY + b;
                                 break;
                             case 2:
-                                x = aBaseMetaTileEntity.getXCoord() - a;
-                                z = aBaseMetaTileEntity.getZCoord() + c;
-                                y = aBaseMetaTileEntity.getYCoord() + b;
+                                x = baseX - a;
+                                z = baseZ + c;
+                                y = baseY + b;
                                 break;
                             //Things get odd if the block faces up or down...
                             case 1:
-                                x = aBaseMetaTileEntity.getXCoord() + a;
-                                z = aBaseMetaTileEntity.getZCoord() + b;
-                                y = aBaseMetaTileEntity.getYCoord() - c;
+                                x = baseX + a;
+                                z = baseZ + b;
+                                y = baseY - c;
                                 break;//similar to 3
                             case 0:
-                                x = aBaseMetaTileEntity.getXCoord() - a;
-                                z = aBaseMetaTileEntity.getZCoord() - b;
-                                y = aBaseMetaTileEntity.getYCoord() + c;
+                                x = baseX - a;
+                                z = baseZ - b;
+                                y = baseY + c;
                                 break;//similar to 2
                             default:
                                 return false;
@@ -169,6 +180,10 @@ public class Util {
         IMetaTileEntity imt = aBaseMetaTileEntity.getMetaTileEntity();
 
         int x, y, z, a, b, c, pointer;
+        final int
+                baseX=aBaseMetaTileEntity.getXCoord(),
+                baseZ=aBaseMetaTileEntity.getZCoord(),
+                baseY=aBaseMetaTileEntity.getYCoord();
         //a,b,c - relative to block face!
         //x,y,z - relative to block position on map!
         //yPos  - absolute height of checked block
@@ -180,7 +195,10 @@ public class Util {
             for (String __structure : _structure) {//top to bottom
                 a = -horizontalOffset;
                 for (char block : __structure.toCharArray()) {//left to right
-                    if (block > '@') //characters allow to skip check a-1 skip, b-2 skips etc.
+                    if (block < ' ') {//Control chars allow skipping
+                        b -= block;
+                        break;
+                    } else if (block > '@') //characters allow to skip check a-1 skip, b-2 skips etc.
                         a += block - '@';
                   //else if (block < '+')//used to mark THINGS
                   //    a++;
@@ -190,35 +208,35 @@ public class Util {
                         //get x y z from rotation
                         switch (facing) {//translation
                             case 4:
-                                x = aBaseMetaTileEntity.getXCoord() + c;
-                                z = aBaseMetaTileEntity.getZCoord() + a;
-                                y = aBaseMetaTileEntity.getYCoord() + b;
+                                x = baseX + c;
+                                z = baseZ + a;
+                                y = baseY + b;
                                 break;
                             case 3:
-                                x = aBaseMetaTileEntity.getXCoord() + a;
-                                z = aBaseMetaTileEntity.getZCoord() - c;
-                                y = aBaseMetaTileEntity.getYCoord() + b;
+                                x = baseX + a;
+                                z = baseZ - c;
+                                y = baseY + b;
                                 break;
                             case 5:
-                                x = aBaseMetaTileEntity.getXCoord() - c;
-                                z = aBaseMetaTileEntity.getZCoord() - a;
-                                y = aBaseMetaTileEntity.getYCoord() + b;
+                                x = baseX - c;
+                                z = baseZ - a;
+                                y = baseY + b;
                                 break;
                             case 2:
-                                x = aBaseMetaTileEntity.getXCoord() - a;
-                                z = aBaseMetaTileEntity.getZCoord() + c;
-                                y = aBaseMetaTileEntity.getYCoord() + b;
+                                x = baseX - a;
+                                z = baseZ + c;
+                                y = baseY + b;
                                 break;
                             //Things get odd if the block faces up or down...
                             case 1:
-                                x = aBaseMetaTileEntity.getXCoord() + a;
-                                z = aBaseMetaTileEntity.getZCoord() + b;
-                                y = aBaseMetaTileEntity.getYCoord() - c;
+                                x = baseX + a;
+                                z = baseZ + b;
+                                y = baseY - c;
                                 break;//similar to 3
                             case 0:
-                                x = aBaseMetaTileEntity.getXCoord() - a;
-                                z = aBaseMetaTileEntity.getZCoord() - b;
-                                y = aBaseMetaTileEntity.getYCoord() + c;
+                                x = baseX - a;
+                                z = baseZ - b;
+                                y = baseY + c;
                                 break;//similar to 2
                             default:
                                 return false;
@@ -294,6 +312,10 @@ public class Util {
         if (world.isRemote) return false;
 
         int x, y, z, a, b, c, pointer;
+        final int
+                baseX=aBaseMetaTileEntity.getXCoord(),
+                baseZ=aBaseMetaTileEntity.getZCoord(),
+                baseY=aBaseMetaTileEntity.getYCoord();
         //a,b,c - relative to block face!
         //x,y,z - relative to block position on map!
 
@@ -304,7 +326,10 @@ public class Util {
             for (String __structure : _structure) {//top to bottom
                 a = -horizontalOffset;
                 for (char block : __structure.toCharArray()) {//left to right
-                    if (block > '@')//characters allow to skip check a-1 skip, b-2 skips etc.
+                    if (block < ' ') {//Control chars allow skipping
+                        b -= block;
+                        break;
+                    } if (block > '@')//characters allow to skip check a-1 skip, b-2 skips etc.
                         a += block - '@';
                   //else if (block < '+')//used to mark THINGS
                   //    a++;
@@ -314,35 +339,35 @@ public class Util {
                         //get x y z from rotation
                         switch (facing) {//translation
                             case 4:
-                                x = aBaseMetaTileEntity.getXCoord() + c;
-                                z = aBaseMetaTileEntity.getZCoord() + a;
-                                y = aBaseMetaTileEntity.getYCoord() + b;
+                                x = baseX + c;
+                                z = baseZ + a;
+                                y = baseY + b;
                                 break;
                             case 3:
-                                x = aBaseMetaTileEntity.getXCoord() + a;
-                                z = aBaseMetaTileEntity.getZCoord() - c;
-                                y = aBaseMetaTileEntity.getYCoord() + b;
+                                x = baseX + a;
+                                z = baseZ - c;
+                                y = baseY + b;
                                 break;
                             case 5:
-                                x = aBaseMetaTileEntity.getXCoord() - c;
-                                z = aBaseMetaTileEntity.getZCoord() - a;
-                                y = aBaseMetaTileEntity.getYCoord() + b;
+                                x = baseX - c;
+                                z = baseZ - a;
+                                y = baseY + b;
                                 break;
                             case 2:
-                                x = aBaseMetaTileEntity.getXCoord() - a;
-                                z = aBaseMetaTileEntity.getZCoord() + c;
-                                y = aBaseMetaTileEntity.getYCoord() + b;
+                                x = baseX - a;
+                                z = baseZ + c;
+                                y = baseY + b;
                                 break;
                             //Things get odd if the block faces up or down...
                             case 1:
-                                x = aBaseMetaTileEntity.getXCoord() + a;
-                                z = aBaseMetaTileEntity.getZCoord() + b;
-                                y = aBaseMetaTileEntity.getYCoord() - c;
+                                x = baseX + a;
+                                z = baseZ + b;
+                                y = baseY - c;
                                 break;//similar to 3
                             case 0:
-                                x = aBaseMetaTileEntity.getXCoord() - a;
-                                z = aBaseMetaTileEntity.getZCoord() - b;
-                                y = aBaseMetaTileEntity.getYCoord() + c;
+                                x = baseX - a;
+                                z = baseZ - b;
+                                y = baseY + c;
                                 break;//similar to 2
                             default:
                                 return false;
@@ -404,6 +429,10 @@ public class Util {
         ItemStack[] array = new ItemStack[10];
 
         int x, y, z, a, b, c;
+        final int
+                baseX=aBaseMetaTileEntity.getXCoord(),
+                baseZ=aBaseMetaTileEntity.getZCoord(),
+                baseY=aBaseMetaTileEntity.getYCoord();
         //a,b,c - relative to block face!
         //x,y,z - relative to block position on map!
         //yPos  - absolute height of checked block
@@ -418,35 +447,35 @@ public class Util {
                     //get x y z from rotation
                     switch (facing) {//translation
                         case 4:
-                            x = aBaseMetaTileEntity.getXCoord() + c;
-                            z = aBaseMetaTileEntity.getZCoord() + a;
-                            y = aBaseMetaTileEntity.getYCoord() + b;
+                            x = baseX + c;
+                            z = baseZ + a;
+                            y = baseY + b;
                             break;
                         case 3:
-                            x = aBaseMetaTileEntity.getXCoord() + a;
-                            z = aBaseMetaTileEntity.getZCoord() - c;
-                            y = aBaseMetaTileEntity.getYCoord() + b;
+                            x = baseX + a;
+                            z = baseZ - c;
+                            y = baseY + b;
                             break;
                         case 5:
-                            x = aBaseMetaTileEntity.getXCoord() - c;
-                            z = aBaseMetaTileEntity.getZCoord() - a;
-                            y = aBaseMetaTileEntity.getYCoord() + b;
+                            x = baseX - c;
+                            z = baseZ - a;
+                            y = baseY + b;
                             break;
                         case 2:
-                            x = aBaseMetaTileEntity.getXCoord() - a;
-                            z = aBaseMetaTileEntity.getZCoord() + c;
-                            y = aBaseMetaTileEntity.getYCoord() + b;
+                            x = baseX - a;
+                            z = baseZ + c;
+                            y = baseY + b;
                             break;
                         //Things get odd if the block faces up or down...
                         case 1:
-                            x = aBaseMetaTileEntity.getXCoord() + a;
-                            z = aBaseMetaTileEntity.getZCoord() + b;
-                            y = aBaseMetaTileEntity.getYCoord() - c;
+                            x = baseX + a;
+                            z = baseZ + b;
+                            y = baseY - c;
                             break;//similar to 3
                         case 0:
-                            x = aBaseMetaTileEntity.getXCoord() - a;
-                            z = aBaseMetaTileEntity.getZCoord() - b;
-                            y = aBaseMetaTileEntity.getYCoord() + c;
+                            x = baseX - a;
+                            z = baseZ - b;
+                            y = baseY + c;
                             break;//similar to 2
                         default:
                             return new String[]{"Invalid rotation"};
@@ -518,35 +547,35 @@ public class Util {
                     //get x y z from rotation
                     switch (facing) {//translation
                         case 4:
-                            x = aBaseMetaTileEntity.getXCoord() + c;
-                            z = aBaseMetaTileEntity.getZCoord() + a;
-                            y = aBaseMetaTileEntity.getYCoord() + b;
+                            x = baseX + c;
+                            z = baseZ + a;
+                            y = baseY + b;
                             break;
                         case 3:
-                            x = aBaseMetaTileEntity.getXCoord() + a;
-                            z = aBaseMetaTileEntity.getZCoord() - c;
-                            y = aBaseMetaTileEntity.getYCoord() + b;
+                            x = baseX + a;
+                            z = baseZ - c;
+                            y = baseY + b;
                             break;
                         case 5:
-                            x = aBaseMetaTileEntity.getXCoord() - c;
-                            z = aBaseMetaTileEntity.getZCoord() - a;
-                            y = aBaseMetaTileEntity.getYCoord() + b;
+                            x = baseX - c;
+                            z = baseZ - a;
+                            y = baseY + b;
                             break;
                         case 2:
-                            x = aBaseMetaTileEntity.getXCoord() - a;
-                            z = aBaseMetaTileEntity.getZCoord() + c;
-                            y = aBaseMetaTileEntity.getYCoord() + b;
+                            x = baseX - a;
+                            z = baseZ + c;
+                            y = baseY + b;
                             break;
                         //Things get odd if the block faces up or down...
                         case 1:
-                            x = aBaseMetaTileEntity.getXCoord() + a;
-                            z = aBaseMetaTileEntity.getZCoord() + b;
-                            y = aBaseMetaTileEntity.getYCoord() - c;
+                            x = baseX + a;
+                            z = baseZ + b;
+                            y = baseY - c;
                             break;//similar to 3
                         case 0:
-                            x = aBaseMetaTileEntity.getXCoord() - a;
-                            z = aBaseMetaTileEntity.getZCoord() - b;
-                            y = aBaseMetaTileEntity.getYCoord() + c;
+                            x = baseX - a;
+                            z = baseZ - b;
+                            y = baseY + c;
                             break;//similar to 2
                         default:
                             return new String[]{"Invalid rotation"};
@@ -611,12 +640,22 @@ public class Util {
                 }
                 b--;//horizontal layer
             }
-            output.add(addMe + "},");
+            //region less verbose
+            addMe=(addMe + "},").replaceAll("(E,)+(?=})",E/*Remove Empty strings at end*/);
+            Matcher m = matchE_.matcher(addMe);
+            while (m.find()) {
+                byte lenEE = (byte)(m.group(1).length()>>1);
+                addMe=addMe.replaceFirst("E,(E,)+","\"\\\\u00"+String.format("%02X", lenEE-1)+"\",");
+            }
+            //endregion
+            output.add(addMe);
             c++;//depth
         }
         output.add("}");
         return output.toArray(new String[0]);
     }
+
+    private static final Pattern matchE_ = Pattern.compile("(E,(E,)+)");
 
     public static boolean isInputEqual(boolean aDecreaseStacksizeBySuccess, boolean aDontCheckStackSizes, FluidStack[] requiredFluidInputs, ItemStack[] requiredInputs, FluidStack[] givenFluidInputs, ItemStack... givenInputs) {
         if (!GregTech_API.sPostloadFinished) return false;
