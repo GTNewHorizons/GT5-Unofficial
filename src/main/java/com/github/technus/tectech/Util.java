@@ -646,6 +646,7 @@ public class Util {
             while (m.find()) {
                 byte lenEE = (byte)(m.group(1).length()>>1);
                 addMe=addMe.replaceFirst("E,(E,)+","\"\\\\u00"+String.format("%02X", lenEE-1)+"\",");
+                //addMe=addMe.replaceFirst("E,(E,)+\"","\"\\\\u00"+String.format("%02X", lenEE));
             }
             //endregion
             output.add(addMe);

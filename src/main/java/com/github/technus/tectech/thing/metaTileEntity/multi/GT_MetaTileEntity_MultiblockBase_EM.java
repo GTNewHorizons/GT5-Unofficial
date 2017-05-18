@@ -186,11 +186,27 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
 
-        //Fix supermethod shit.
-        if (mOutputItems != null)
-            aNBT.setInteger("eItemsOut", mOutputItems.length);
-        if (mOutputFluids != null)
-            aNBT.setInteger("eFluidsOut", mOutputFluids.length);
+        //Ensures compatibility
+        if (mOutputItems != null) {
+            aNBT.setInteger("mOutputItemsLength", mOutputItems.length);
+            for (int i = 0; i < mOutputItems.length; i++)
+                if (mOutputItems[i] != null) {
+                    NBTTagCompound tNBT = new NBTTagCompound();
+                    mOutputItems[i].writeToNBT(tNBT);
+                    aNBT.setTag("mOutputItem" + i, tNBT);
+                }
+        }
+
+        //Ensures compatibility
+        if (mOutputFluids != null) {
+            aNBT.setInteger("mOutputFluidsLength", mOutputFluids.length);
+            for (int i = 0; i < mOutputFluids.length; i++)
+                if (mOutputFluids[i] != null) {
+                    NBTTagCompound tNBT = new NBTTagCompound();
+                    mOutputFluids[i].writeToNBT(tNBT);
+                    aNBT.setTag("mOutputFluids" + i, tNBT);
+                }
+        }
 
         aNBT.setLong("eMaxEUmin", maxEUinputMin);
         aNBT.setLong("eMaxEUmax", maxEUinputMax);
@@ -258,13 +274,21 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         eDismatleBoom = aNBT.getBoolean("eBoom");
         mMachine = aNBT.getBoolean("eOK");
 
-        //Fix supermethod shit.
-        mOutputItems = new ItemStack[aNBT.getInteger("eItemsOut")];
-        for (int i = 0; i < mOutputItems.length; i++)
-            mOutputItems[i] = GT_Utility.loadItem(aNBT, "mOutputItem" + i);
-        mOutputFluids = new FluidStack[aNBT.getInteger("eFluidsOut")];
-        for (int i = 0; i < mOutputFluids.length; i++)
-            mOutputFluids[i] = GT_Utility.loadFluid(aNBT, "mOutputFluids" + i);
+        //Ensures compatibility
+        int aOutputItemsLength = aNBT.getInteger("mOutputItemsLength");
+        if (aOutputItemsLength > 0) {
+            mOutputItems = new ItemStack[aOutputItemsLength];
+            for (int i = 0; i < mOutputItems.length; i++)
+                mOutputItems[i] = GT_Utility.loadItem(aNBT, "mOutputItem" + i);
+        }
+
+        //Ensures compatibility
+        int aOutputFluidsLength = aNBT.getInteger("mOutputFluidsLength");
+        if (aOutputFluidsLength > 0) {
+            mOutputFluids = new FluidStack[aOutputFluidsLength];
+            for (int i = 0; i < mOutputFluids.length; i++)
+                mOutputFluids[i] = GT_Utility.loadFluid(aNBT, "mOutputFluids" + i);
+        }
 
         final int outputLen = aNBT.getInteger("outputStackCount");
         if (outputLen > 0) {
@@ -904,7 +928,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             TecTech.proxy.broadcast("Multi Explode BOOM! " + ste[2].toString());
             return;
         }
-        GT_Pollution.addPollution(new ChunkPosition(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord()), 600000);
+        GT_Pollution.addPollution(getBaseMetaTileEntity(), 600000);
         mInventory[1] = null;
         for (MetaTileEntity tTileEntity : mInputBusses) tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
         for (MetaTileEntity tTileEntity : mOutputBusses) tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
