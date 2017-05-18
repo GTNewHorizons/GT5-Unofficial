@@ -836,6 +836,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public boolean mHasParentMod = true, mHasPlasma = false, mHasGas = false, mCustomOre = false;
     public Fluid mSolid = null, mFluid = null, mGas = null, mPlasma = null;
 
+    private boolean hasCorrespondingFluid = false, hasCorrespondingGas = false;
+
     /**
      * This Fluid is used as standard Unit for Molten Materials. 1296 is a Molten Block, that means 144 is one Material Unit worth of fluid.
      */
@@ -1617,9 +1619,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
      *                              32 = Plasma Cells
      *                              64 = Tool Heads
      *                              128 = Gears
-     *                              256 = Automatically create a corresponding fluid for this material
-     *                              512 = Automatically create a corresponding gas for this material
-
+     *                              256 = Designates something as empty (only used for the Empty material)
+     *
      * @param aR,                   aG, aB Color of the Material 0-255 each.
      * @param aA                    transparency of the Material Texture. 0 = fully visible, 255 = Invisible.
      * @param aName                 The Name used as Default for localization.
@@ -2021,4 +2022,22 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         return MATERIALS_MAP.values();
     }
 
+    public boolean hasCorrespondingFluid() {
+        return hasCorrespondingFluid;
+    }
+
+
+    public Materials setHasCorrespondingFluid(boolean hasCorrespondingFluid) {
+        this.hasCorrespondingFluid = hasCorrespondingFluid;
+        return this;
+    }
+
+    public boolean hasCorrespondingGas() {
+        return hasCorrespondingGas;
+    }
+
+    public Materials setHasCorrespondingGas(boolean hasCorrespondingGas) {
+        this.hasCorrespondingGas = hasCorrespondingGas;
+        return this;
+    }
 }

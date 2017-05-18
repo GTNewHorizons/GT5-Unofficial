@@ -31,6 +31,8 @@ public class MaterialBuilder {
     private int extraData = 0;
     private List<MaterialStack> materialList = new ArrayList<MaterialStack>();
     private List<TC_Aspects.TC_AspectStack> aspects = new ArrayList<TC_Aspects.TC_AspectStack>();
+    private boolean hasCorrespondingFluid = false;
+    private boolean hasCorrespondingGas = false;
 
     public MaterialBuilder(int metaItemSubID, TextureSet iconSet, String defaultLocalName) {
         this.metaItemSubID = metaItemSubID;
@@ -41,7 +43,10 @@ public class MaterialBuilder {
 
     public Materials constructMaterial() {
         return new Materials(metaItemSubID, iconSet, toolSpeed, durability, toolQuality, types, r, g, b, a, name, defaultLocalName, fuelType, fuelPower, meltingPoint, blastFurnaceTemp,
-                blastFurnaceRequired, transparent, oreValue, densityMultiplier, densityDivider, color, extraData, materialList, aspects);
+                blastFurnaceRequired, transparent, oreValue, densityMultiplier, densityDivider, color, extraData, materialList, aspects)
+                .setHasCorrespondingFluid(hasCorrespondingFluid)
+                .setHasCorrespondingGas(hasCorrespondingGas);
+
     }
 
     public MaterialBuilder setName(String name){
