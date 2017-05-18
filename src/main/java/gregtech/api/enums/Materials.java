@@ -534,6 +534,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials CrackedLightFuel        = new Materials( 743, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "CrackedLightFuel"        ,   "Cracked Light Fuel"            ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
     public static Materials CrackedHeavyFuel        = new Materials( 744, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "CrackedHeavyFuel"        ,   "Cracked Heavy Fuel"            ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
 
+    public static Materials PolyVinylChloride       = new MaterialBuilder(649, TextureSet.SET_FLUID         , "Polyvinyl Chloride").addCell().addGas().setRGB(200, 200, 25).setColor(Dyes.dyeYellow).constructMaterial();
+    public static Materials VinylChloride           = new MaterialBuilder(650, TextureSet.SET_FLUID         , "Vinyl Chloride").addCell().addGas().setRGB(200, 200, 25).setColor(Dyes.dyeYellow).constructMaterial();
+    public static Materials SulfurDioxide           = new MaterialBuilder(651, TextureSet.SET_FLUID         , "Sulfur Dioxide").addCell().addGas().setRGB(200, 200, 25).setColor(Dyes.dyeYellow).constructMaterial();
+    public static Materials SulfurTrioxide          = new MaterialBuilder(652, TextureSet.SET_FLUID         , "Sulfur Trioxide").addCell().addGas().setGasTemperature(344).setRGB(160, 160, 20).setColor(Dyes.dyeYellow).constructMaterial();
     public static Materials NitricAcid              = new MaterialBuilder(653, TextureSet.SET_FLUID         , "Nitric Acid").addCell().setRGB(230, 226, 171).constructMaterial();
     public static Materials Dimethylhydrazine       = new MaterialBuilder(654, TextureSet.SET_FLUID         , "1,1-Dimethylhydrazine").addCell().addFluid().setRGB(0, 0, 85).setColor(Dyes.dyeBlue).constructMaterial();
     public static Materials Chloramine              = new MaterialBuilder(655, TextureSet.SET_FLUID         , "Chloramine").addCell().addFluid().setRGB(63, 159, 128).setColor(Dyes.dyeCyan).constructMaterial();
@@ -2063,6 +2067,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
     public ItemStack getCells(int amount){
         return GT_OreDictUnificator.get(OrePrefixes.cell, this, amount);
+    }
+
+    public ItemStack getDust(int amount){
+        return GT_OreDictUnificator.get(OrePrefixes.dust, this, amount);
     }
 
 }
