@@ -1872,26 +1872,15 @@ public class GT_MachineRecipeLoader implements Runnable {
 		addProcess(tCrop, Materials.Beryllium, 100, false);
 
         addRecipesApril2017ChemistryUpdate();
-        if (false) {
+        if (GT_Mod.gregtechproxy.mReenableSimplifiedChemicalRecipes) {
             addSimplifiedChemicalRecipes();
-            if (true) {
-                GT_Values.RA.addCentrifugeRecipe(Materials.Stone.getDust(1), GT_Values.NI, GT_Values.NF, GT_Values.NF,
-                        Materials.Quartzite.getDustSmall(1),Materials.PotassiumFeldspar.getDustSmall(1),Materials.Marble.getDustTiny(2),
-                        Materials.Biotite.getDustTiny(1),     Materials.MetalMixture.getDustTiny(1),         Materials.Sodalite.getDustTiny(1),
-                        new int[]{10000, 10000, 10000, 10000, 10000, 5500}, 480, 30);
-                GT_Values.RA.addCentrifugeRecipe(Materials.MetalMixture.getDust(1), GT_Values.NI, GT_Values.NF, GT_Values.NF,
-                        Materials.BandedIron.getDustSmall(1),     Materials.Bauxite.getDustSmall(1), Materials.Pyrolusite.getDustTiny(2),
-                        Materials.Barite.getDustTiny(1),         Materials.Chromite.getDustTiny(1), Materials.Ilmenite.getDustTiny(1),
-                        new int[]{10000, 10000, 10000, 10000, 10000, 6000}, 480, 30);
-            }
+        }
             GT_Values.RA.addAutoclaveRecipe(Materials.SiliconDioxide.getDust(1), Materials.Water.getFluid(200L),         Materials.Quartzite.getGems(1), 750,  2000, 24);
             GT_Values.RA.addAutoclaveRecipe(Materials.SiliconDioxide.getDust(1), GT_ModHandler.getDistilledWater(200L), Materials.Quartzite.getGems(1), 1000, 1500, 24);
-            
+
         }
 
-    }
-
-    public void addProcess(ItemStack tCrop, Materials aMaterial, int chance, boolean aMainOutput) {
+        public void addProcess(ItemStack tCrop, Materials aMaterial, int chance, boolean aMainOutput) {
     	if(tCrop==null||aMaterial==null||GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial,1)==null)return;
         if (GT_Mod.gregtechproxy.mNerfedCrops) {
             GT_Values.RA.addChemicalRecipe(GT_Utility.copyAmount(9, tCrop), GT_OreDictUnificator.get(OrePrefixes.crushed, aMaterial, 1), Materials.Water.getFluid(1000), aMaterial.mOreByProducts.isEmpty() ? null : aMaterial.mOreByProducts.get(0).getMolten(144), GT_OreDictUnificator.get(OrePrefixes.crushedPurified, aMaterial, 4), 96, 24);

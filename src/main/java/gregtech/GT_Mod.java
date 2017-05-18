@@ -264,6 +264,7 @@ public class GT_Mod implements IGT_Mod {
         Calendar now = Calendar.getInstance();
         gregtechproxy.mAprilFool = GregTech_API.sSpecialFile.get(ConfigCategories.general, "AprilFool", now.get(Calendar.MONTH) == Calendar.APRIL && now.get(Calendar.DAY_OF_MONTH) == 1);
         gregtechproxy.mCropNeedBlock = tMainConfig.get("general", "CropNeedBlockBelow", true).getBoolean(true);
+        gregtechproxy.mReenableSimplifiedChemicalRecipes = tMainConfig.get("general", "ReenableSimplifiedChemicalRecipes", false).getBoolean(true);
         GregTech_API.mOutputRF = GregTech_API.sOPStuff.get(ConfigCategories.general, "OutputRF", true);
         GregTech_API.mInputRF = GregTech_API.sOPStuff.get(ConfigCategories.general, "InputRF", false);
         GregTech_API.mEUtoRF = GregTech_API.sOPStuff.get(ConfigCategories.general, "100EUtoRF", 360);
@@ -441,6 +442,18 @@ public class GT_Mod implements IGT_Mod {
         new GT_CoverBehaviorLoader().run();
         new GT_SonictronLoader().run();
         new GT_SpawnEventHandler();
+
+        if (GregTech_API.sOPStuff.get(ConfigCategories.Recipes.gregtechrecipes, "StoneDustCentrifugation", true)) {
+            GT_Values.RA.addCentrifugeRecipe(Materials.Stone.getDust(1), GT_Values.NI, GT_Values.NF, GT_Values.NF,
+                    Materials.Quartzite.getDustSmall(1),Materials.PotassiumFeldspar.getDustSmall(1),Materials.Marble.getDustTiny(2),
+                    Materials.Biotite.getDustTiny(1),     Materials.MetalMixture.getDustTiny(1),         Materials.Sodalite.getDustTiny(1),
+                    new int[]{10000, 10000, 10000, 10000, 10000, 5500}, 480, 30);
+            GT_Values.RA.addCentrifugeRecipe(Materials.MetalMixture.getDust(1), GT_Values.NI, GT_Values.NF, GT_Values.NF,
+                    Materials.BandedIron.getDustSmall(1),     Materials.Bauxite.getDustSmall(1), Materials.Pyrolusite.getDustTiny(2),
+                    Materials.Barite.getDustTiny(1),         Materials.Chromite.getDustTiny(1), Materials.Ilmenite.getDustTiny(1),
+                    new int[]{10000, 10000, 10000, 10000, 10000, 6000}, 480, 30);
+        }
+
         if (gregtechproxy.mSortToTheEnd) {
             try {
                 GT_Log.out.println("GT_Mod: Sorting GregTech to the end of the Mod List for further processing.");
