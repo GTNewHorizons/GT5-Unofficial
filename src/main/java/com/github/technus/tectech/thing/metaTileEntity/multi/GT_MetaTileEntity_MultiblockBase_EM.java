@@ -186,6 +186,21 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
 
+        aNBT.setLong("eMaxEUmin", maxEUinputMin);
+        aNBT.setLong("eMaxEUmax", maxEUinputMax);
+        aNBT.setLong("eRating", eAmpereFlow);
+        aNBT.setLong("eMaxA", eMaxAmpereFlow);
+        aNBT.setLong("eDataR", eRequiredData);
+        aNBT.setLong("eDataA", eAvailableData);
+        aNBT.setByte("eCertainM", eCertainMode);
+        aNBT.setByte("eCertainS", eCertainStatus);
+        aNBT.setByte("eMinRepair", minRepairStatus);
+        aNBT.setBoolean("eParam", eParameters);
+        aNBT.setBoolean("ePass", ePowerPass);
+        aNBT.setBoolean("eVoid", eSafeVoid);
+        aNBT.setBoolean("eBoom", eDismatleBoom);
+        aNBT.setBoolean("eOK", mMachine);
+
         //Ensures compatibility
         if (mOutputItems != null) {
             aNBT.setInteger("mOutputItemsLength", mOutputItems.length);
@@ -207,21 +222,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                     aNBT.setTag("mOutputFluids" + i, tNBT);
                 }
         }
-
-        aNBT.setLong("eMaxEUmin", maxEUinputMin);
-        aNBT.setLong("eMaxEUmax", maxEUinputMax);
-        aNBT.setLong("eRating", eAmpereFlow);
-        aNBT.setLong("eMaxA", eMaxAmpereFlow);
-        aNBT.setLong("eDataR", eRequiredData);
-        aNBT.setLong("eDataA", eAvailableData);
-        aNBT.setByte("eCertainM", eCertainMode);
-        aNBT.setByte("eCertainS", eCertainStatus);
-        aNBT.setByte("eMinRepair", minRepairStatus);
-        aNBT.setBoolean("eParam", eParameters);
-        aNBT.setBoolean("ePass", ePowerPass);
-        aNBT.setBoolean("eVoid", eSafeVoid);
-        aNBT.setBoolean("eBoom", eDismatleBoom);
-        aNBT.setBoolean("eOK", mMachine);
 
         if (outputEM != null) {
             aNBT.setInteger("outputStackCount", outputEM.length);
