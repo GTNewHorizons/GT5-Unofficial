@@ -10,6 +10,7 @@ import gregtech.api.interfaces.ISubTagContainer;
 import gregtech.api.objects.GT_FluidStack;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.loaders.materialprocessing.ProcessingConfig;
 import gregtech.loaders.materialprocessing.ProcessingModSupport;
@@ -148,7 +149,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials Flux                    = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "Flux"                    ,   "Flux"                          ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
 //\/public static Materials RedstoneAlloy           = new Materials( 381, TextureSet.SET_METALLIC          ,   3.0F,    128,  2, 1|2          |64|128      , 181,  51,  51,   0,   "RedstoneAlloy"           ,   "Redstone Alloy"                ,    0,       0,        500,21000,  true, false,   1,   1,   1, Dyes.dyeRed         , 1, Arrays.asList(new MaterialStack(Redstone, 1), new MaterialStack(Silicon, 1), new MaterialStack(Coal, 1)));
     public static Materials OsmiumTetroxide         = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 1                         , 255, 255, 255,   0,   "OsmiumTetroxide"         ,   "Osmium Tetroxide"              ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
-    public static Materials NitricAcid              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 0                         , 255, 255, 255,   0,   "NitricAcid"              ,   "Nitric Acid"                   ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
+    //public static Materials NitricAcid              = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 0                         , 255, 255, 255,   0,   "NitricAcid"              ,   "Nitric Acid"                   ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
     public static Materials RubberTreeSap           = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 0                         , 255, 255, 255,   0,   "RubberTreeSap"           ,   "Rubber Tree Sap"               ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
     public static Materials AquaRegia               = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 0                         , 255, 255, 255,   0,   "AquaRegia"               ,   "Aqua Regia"                    ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
     public static Materials SolutionBlueVitriol     = new Materials(  -1, TextureSet.SET_NONE              ,   1.0F,      0,  2, 0                         , 255, 255, 255,   0,   "SolutionBlueVitriol"     ,   "Blue Vitriol Solution"         ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes._NULL          );
@@ -425,10 +426,10 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
      * First Degree Compounds
      */
     public static Materials Methane                 = new Materials( 715, TextureSet.SET_FLUID             ,   1.0F,      0,  1,         16                , 255, 255, 255,   0,   "Methane"                 ,   "Methane"                       ,    1,      60,         -1,    0, false, false,   3,   1,   1, Dyes.dyeMagenta     , 1, Arrays.asList(new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 4)));
-    public static Materials CarbonDioxide           = new Materials( 497, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32|512         , 169, 208, 245, 240,   "CarbonDioxide", "Carbon Dioxide"                             ,    0,       0,         25,    1, false,  true,   1,   1,   1, Dyes.dyeLightBlue   , 1, Arrays.asList(new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 2)));
-    public static Materials NobleGases              = new Materials( 496, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 169, 208, 245, 240,   "NobleGases"              ,   "Noble Gases"                   ,    0,       0,          4,    0, false,  true,   1,   1,   1, Dyes.dyeLightBlue   , 2, Arrays.asList(new MaterialStack(CarbonDioxide,21),new MaterialStack(Helium, 9), new MaterialStack(Methane, 3), new MaterialStack(Deuterium, 1)));
+    public static Materials CarbonDioxide           = new Materials( 497, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 169, 208, 245, 240,   "CarbonDioxide"           ,   "Carbon Dioxide"                ,    0,       0,         25,    1, false,  true,   1,   1,   1, Dyes.dyeLightBlue   , 1, Arrays.asList(new MaterialStack(Carbon, 1), new MaterialStack(Oxygen, 2))).setHasCorrespondingGas(true);
+    public static Materials NobleGases              = new Materials( 496, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 169, 208, 245, 240,   "NobleGases"              ,   "Noble Gases"                   ,    0,       0,          4,    0, false,  true,   1,   1,   1, Dyes.dyeLightBlue   , 2, Arrays.asList(new MaterialStack(CarbonDioxide, 21), new MaterialStack(Helium, 9), new MaterialStack(Methane, 3), new MaterialStack(Deuterium, 1))).setHasCorrespondingFluid(true).setLiquidTemperature(79);
     public static Materials Air                     = new Materials(  -1, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 169, 208, 245, 240,   "Air"                     ,   "Air"                           ,    0,       0,         -1,    0, false,  true,   1,   1,   1, Dyes.dyeLightBlue   , 0, Arrays.asList(new MaterialStack(Nitrogen, 40), new MaterialStack(Oxygen, 11), new MaterialStack(Argon, 1),new MaterialStack(NobleGases,1)));
-    public static Materials LiquidAir               = new Materials( 495, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 169, 208, 245, 240,   "LiquidAir"               ,   "Liquid Air"                    ,    0,       0,          4,    0, false,  true,   1,   1,   1, Dyes.dyeLightBlue   , 2, Arrays.asList(new MaterialStack(Nitrogen, 40), new MaterialStack(Oxygen, 11), new MaterialStack(Argon, 1),new MaterialStack(NobleGases,1)));
+    public static Materials LiquidAir               = new Materials( 495, TextureSet.SET_FLUID             ,   1.0F,      0,  2,         16|32             , 169, 208, 245, 240,   "LiquidAir"               ,   "Liquid Air"                    ,    0,       0,          4,    0, false,  true,   1,   1,   1, Dyes.dyeLightBlue   , 2, Arrays.asList(new MaterialStack(Nitrogen, 40), new MaterialStack(Oxygen, 11), new MaterialStack(Argon, 1), new MaterialStack(NobleGases, 1))).setHasCorrespondingFluid(true).setLiquidTemperature(79);
     public static Materials Almandine               = new Materials( 820, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1    |8                   , 255,   0,   0,   0,   "Almandine"               ,   "Almandine"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeRed         , 1, Arrays.asList(new MaterialStack(Aluminium, 2), new MaterialStack(Iron, 3), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)));
     public static Materials Andradite               = new Materials( 821, TextureSet.SET_ROUGH             ,   1.0F,      0,  1, 1    |8                   , 150, 120,   0,   0,   "Andradite"               ,   "Andradite"                     ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeYellow      , 1, Arrays.asList(new MaterialStack(Calcium, 3), new MaterialStack(Iron, 2), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)));
     public static Materials AnnealedCopper          = new Materials( 345, TextureSet.SET_SHINY             ,   1.0F,      0,  2, 1|2             |128      , 255, 120,  20,   0,   "AnnealedCopper"          ,   "Annealed Copper"               ,    0,       0,         -1,    0, false, false,   3,   1,   1, Dyes.dyeOrange      , 2, Arrays.asList(new MaterialStack(Copper, 1)));
@@ -533,12 +534,12 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials CrackedLightFuel        = new Materials( 743, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "CrackedLightFuel"        ,   "Cracked Light Fuel"            ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
     public static Materials CrackedHeavyFuel        = new Materials( 744, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "CrackedHeavyFuel"        ,   "Cracked Heavy Fuel"            ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
 
-    public static Materials NitricOxide             = new MaterialBuilder(653, TextureSet.SET_FLUID         , "Nitric Oxide").addCell().addGas().setRGB(125, 200, 240).setColor(Dyes.dyeCyan).constructMaterial();
+    public static Materials NitricAcid              = new MaterialBuilder(653, TextureSet.SET_FLUID         , "Nitric Acid").addCell().setRGB(230, 226, 171).constructMaterial();
     public static Materials Dimethylhydrazine       = new MaterialBuilder(654, TextureSet.SET_FLUID         , "1,1-Dimethylhydrazine").addCell().addFluid().setRGB(0, 0, 85).setColor(Dyes.dyeBlue).constructMaterial();
     public static Materials Chloramine              = new MaterialBuilder(655, TextureSet.SET_FLUID         , "Chloramine").addCell().addFluid().setRGB(63, 159, 128).setColor(Dyes.dyeCyan).constructMaterial();
     public static Materials Dimethylamine           = new MaterialBuilder(656, TextureSet.SET_FLUID         , "Dimethylamine").addCell().addGas().setRGB(85, 68, 105).setColor(Dyes.dyeGray).constructMaterial();
     public static Materials DinitrogenTetroxide     = new MaterialBuilder(657, TextureSet.SET_FLUID         , "Dinitrogen Tetroxide").addCell().addGas().setRGB(0, 65, 132).setColor(Dyes.dyeBlue).constructMaterial();
-    public static Materials NitrogenOxide           = new MaterialBuilder(658, TextureSet.SET_FLUID         , "Nitrogen Oxide").addCell().addGas().setRGB(0, 103, 209).setColor(Dyes.dyeCyan).constructMaterial();
+    public static Materials NitricOxide             = new MaterialBuilder(658, TextureSet.SET_FLUID         , "Nitric Oxide").addCell().addGas().setRGB(125, 200, 240).setColor(Dyes.dyeCyan).constructMaterial();
     public static Materials Ammonia                 = new MaterialBuilder(659, TextureSet.SET_FLUID         , "Ammonia").addCell().addGas().setRGB(63, 52, 128).setColor(Dyes.dyeBlue).constructMaterial();
     public static Materials WoodGas                 = new MaterialBuilder(660, TextureSet.SET_FLUID         , "Wood Gas").addCell().addGas().setRGB(222, 205, 135).setColor(Dyes.dyeBrown).setFuelType(MaterialBuilder.GAS).setFuelPower(24).constructMaterial();
     public static Materials WoodVinegar             = new MaterialBuilder(661, TextureSet.SET_FLUID         , "Wood Vinegar").addCell().addFluid().setRGB(212, 85, 0).setColor(Dyes.dyeBrown).constructMaterial();
@@ -837,6 +838,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public Fluid mSolid = null, mFluid = null, mGas = null, mPlasma = null;
 
     private boolean hasCorrespondingFluid = false, hasCorrespondingGas = false;
+    private int liquidTemperature = 295, gasTemperature = 295;
 
     /**
      * This Fluid is used as standard Unit for Molten Materials. 1296 is a Molten Block, that means 144 is one Material Unit worth of fluid.
@@ -2040,4 +2042,27 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         this.hasCorrespondingGas = hasCorrespondingGas;
         return this;
     }
+
+    public int getLiquidTemperature() {
+        return liquidTemperature;
+    }
+
+    public Materials setLiquidTemperature(int liquidTemperature) {
+        this.liquidTemperature = liquidTemperature;
+        return this;
+    }
+
+    public int getGasTemperature() {
+        return gasTemperature;
+    }
+
+    public Materials setGasTemperature(int gasTemperature) {
+        this.gasTemperature = gasTemperature;
+        return this;
+    }
+
+    public ItemStack getCells(int amount){
+        return GT_OreDictUnificator.get(OrePrefixes.cell, this, amount);
+    }
+
 }
