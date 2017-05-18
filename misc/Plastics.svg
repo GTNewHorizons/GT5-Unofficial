@@ -15,7 +15,7 @@
    version="1.1"
    inkscape:version="0.48.5 r10040"
    sodipodi:docname="Plastics.svg"
-   inkscape:export-filename="C:\Users\Johannes\git\GT5-Unofficial\src\misc\Plastics.png"
+   inkscape:export-filename="C:\Users\Johannes\git\GT5-Unofficial\misc\Plastics.png"
    inkscape:export-xdpi="216"
    inkscape:export-ydpi="216">
   <defs
@@ -303,7 +303,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -312,6 +312,14 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,387.63782)">
+    <rect
+     style="opacity:0.98000003999999996;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+     id="rect8470"
+     width="1700"
+     height="1440"
+     x="0"
+     y="0"
+     transform="translate(0,-387.63782)" />
     <rect
        style="opacity:0.98000004;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.1655612;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
        id="rect3757"
