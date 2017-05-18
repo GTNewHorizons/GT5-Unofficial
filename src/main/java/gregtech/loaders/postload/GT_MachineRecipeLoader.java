@@ -2738,27 +2738,27 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addChemicalRecipe(Materials.Potassium.getDust(1), Materials.Nitrogen.getCells(1), Materials.Oxygen.getGas(3000), GT_Values.NF, Materials.Saltpeter.getDust(1), Materials.Empty.getCells(1), 180);
 
         GT_Values.RA.addMixerRecipe(Materials.Salt.getDust(1), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.Water.getFluid(1000), Materials.SaltWater.getFluid(1000), GT_Values.NI, 40, 8);
-        GT_Recipe.GT_Recipe_Map.sDistilleryRecipes.addRecipe(true, new ItemStack[]{GT_Utility.getIntegratedCircuit(1)}, new ItemStack[]{Materials.Salt.getDust(1)}, null, null, new FluidStack[]{Materials.SaltWater.getFluid(1000)}, new FluidStack[]{Materials.Water.getFluid(1000)}, 1000, 16, 0);
+        GT_Recipe.GT_Recipe_Map.sDistilleryRecipes.addRecipe(true, new ItemStack[]{GT_Utility.getIntegratedCircuit(1)}, new ItemStack[]{Materials.Salt.getDust(1)}, null, null, new FluidStack[]{Materials.SaltWater.getFluid(1000)}, new FluidStack[]{GT_ModHandler.getDistilledWater(1000)}, 1000, 16, 0);
 
         GT_Values.RA.addUniversalDistillationRecipe(FluidRegistry.getFluidStack("potion.vinegar", 40), new FluidStack[]{Materials.Water.getFluid(35), Materials.AceticAcid.getFluid(5)}, GT_Values.NI, 20, 64);
-        GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Calcite, 1), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.AceticAcid.getFluid(2000), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dust,Materials.CalciumAcetate, 3), 240, 16);
-        GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Calcium, 1), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.AceticAcid.getFluid(2000), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dust,Materials.CalciumAcetate, 3), 80, 16);
-        GameRegistry.addSmelting(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.CalciumAcetate, 1), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Acetone, 1), 0);
+        GT_Values.RA.addMixerRecipe(Materials.Calcite.getDust(1), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.AceticAcid.getFluid(2000), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dust,Materials.CalciumAcetate, 3), 240, 16);
+        GT_Values.RA.addMixerRecipe(Materials.Calcium.getDust(1), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.AceticAcid.getFluid(2000), GT_Values.NF, GT_OreDictUnificator.get(OrePrefixes.dust,Materials.CalciumAcetate, 3), 80, 16);
+        GameRegistry.addSmelting(Materials.CalciumAcetate.getCells(1), Materials.Acetone.getCells(1), 0);
 
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.AceticAcid, 1), GT_Values.NI, Materials.Methanol.getFluid(1000), Materials.MethylAcetate.getFluid(1000), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1), 240);
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Methanol, 1), GT_Values.NI, Materials.AceticAcid.getFluid(1000), Materials.MethylAcetate.getFluid(1000), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1), 240);
+        GT_Values.RA.addChemicalRecipe(Materials.AceticAcid.getCells(1), GT_Values.NI, Materials.Methanol.getFluid(1000), Materials.MethylAcetate.getFluid(1000), Materials.Water.getCells(1), 240);
+        GT_Values.RA.addChemicalRecipe(Materials.Methanol.getCells(1), GT_Values.NI, Materials.AceticAcid.getFluid(1000), Materials.MethylAcetate.getFluid(1000), Materials.Water.getCells(1), 240);
 
-        GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Acetone, 3), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.PolyvinylAcetate.getFluid(2000), Materials.Glue.getFluid(5000), ItemList.Cell_Empty.get(3, new Object[0]), 100, 8);
-        GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.PolyvinylAcetate, 2), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.Acetone.getFluid(3000), Materials.Glue.getFluid(5000), ItemList.Cell_Empty.get(2, new Object[0]), 100, 8);
-        GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.MethylAcetate, 3), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.PolyvinylAcetate.getFluid(2000), Materials.Glue.getFluid(5000), ItemList.Cell_Empty.get(3, new Object[0]), 100, 8);
-        GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.PolyvinylAcetate, 2), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.MethylAcetate.getFluid(3000), Materials.Glue.getFluid(5000), ItemList.Cell_Empty.get(2, new Object[0]), 100, 8);
+        GT_Values.RA.addMixerRecipe(Materials.Acetone.getCells(3), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.PolyvinylAcetate.getFluid(2000), Materials.Glue.getFluid(5000), Materials.Empty.getCells(3), 100, 8);
+        GT_Values.RA.addMixerRecipe(Materials.PolyvinylAcetate.getCells(2), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.Acetone.getFluid(3000), Materials.Glue.getFluid(5000), Materials.Empty.getCells(2), 100, 8);
+        GT_Values.RA.addMixerRecipe(Materials.MethylAcetate.getCells(3), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.PolyvinylAcetate.getFluid(2000), Materials.Glue.getFluid(5000), Materials.Empty.getCells(3), 100, 8);
+        GT_Values.RA.addMixerRecipe(Materials.PolyvinylAcetate.getCells(2), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.MethylAcetate.getFluid(3000), Materials.Glue.getFluid(5000), Materials.Empty.getCells(2), 100, 8);
 
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1), GT_Values.NI, Materials.Oxygen.getGas(2000), Materials.CarbonDioxide.getGas(1000), GT_Values.NI, 40, 2);
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1), GT_Values.NI, Materials.CarbonDioxide.getGas(1000), Materials.CarbonMonoxide.getGas(2000), GT_Values.NI, 1200);
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Methanol, 1), GT_Values.NI, Materials.CarbonMonoxide.getGas(1000), Materials.AceticAcid.getFluid(1000), ItemList.Cell_Empty.get(1, new Object[0]), 300);
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.CarbonMonoxide, 1), GT_Values.NI, Materials.Methanol.getFluid(1000), Materials.AceticAcid.getFluid(1000), ItemList.Cell_Empty.get(1, new Object[0]), 300);
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.CarbonMonoxide, 1), GT_Values.NI, Materials.Hydrogen.getGas(4000), Materials.Methanol.getFluid(1000), ItemList.Cell_Empty.get(1, new Object[0]), 120, 96);
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 4), GT_Values.NI, Materials.CarbonMonoxide.getGas(1000), Materials.Methanol.getFluid(1000), ItemList.Cell_Empty.get(4, new Object[0]), 120, 96);
+        GT_Values.RA.addChemicalRecipe(Materials.Carbon.getDust(1), GT_Values.NI, Materials.Oxygen.getGas(2000), Materials.CarbonDioxide.getGas(1000), GT_Values.NI, 40, 2);
+        GT_Values.RA.addChemicalRecipe(Materials.Carbon.getDust(1), GT_Values.NI, Materials.CarbonDioxide.getGas(1000), Materials.CarbonMonoxide.getGas(2000), GT_Values.NI, 1200);
+        GT_Values.RA.addChemicalRecipe(Materials.Methanol.getCells(1), GT_Values.NI, Materials.CarbonMonoxide.getGas(1000), Materials.AceticAcid.getFluid(1000), Materials.Empty.getCells(1), 300);
+        GT_Values.RA.addChemicalRecipe(Materials.CarbonMonoxide.getCells(1), GT_Values.NI, Materials.Methanol.getFluid(1000), Materials.AceticAcid.getFluid(1000), Materials.Empty.getCells(1), 300);
+        GT_Values.RA.addChemicalRecipe(Materials.CarbonMonoxide.getCells(1), GT_Values.NI, Materials.Hydrogen.getGas(4000), Materials.Methanol.getFluid(1000), Materials.Empty.getCells(1), 120, 96);
+        GT_Values.RA.addChemicalRecipe(Materials.Hydrogen.getCells(4), GT_Values.NI, Materials.CarbonMonoxide.getGas(1000), Materials.Methanol.getFluid(1000), Materials.Empty.getCells(4), 120, 96);
 
         GT_Values.RA.addDistillationTowerRecipe(Materials.FermentedBiomass.getFluid(500), new FluidStack[]{Materials.Methane.getGas(700), Materials.Methanol.getFluid(25), Materials.Ethanol.getFluid(100), Materials.AceticAcid.getFluid(15), Materials.Water.getFluid(185)}, GT_Values.NI, 40, 360);
         GT_Values.RA.addDistilleryRecipe(1, Materials.FermentedBiomass.getFluid(100), Materials.Methane.getGas(140),     160, 8, false);
@@ -2790,24 +2790,24 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addDistilleryRecipe(1, Materials.Naphtha.getFluid(100), Materials.Ethylene.getGas(50), 40, 16, false);
         GT_Values.RA.addDistilleryRecipe(2, Materials.Naphtha.getFluid(100), Materials.Propene.getGas(25), 40, 16, false);
 
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Ethanol, 2), GT_Values.NI, Materials.SulfuricAcid.getFluid(1000), Materials.Ethylene.getGas(1000), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1), 1200, 120);
+        GT_Values.RA.addChemicalRecipe(Materials.Ethanol.getCells(2), GT_Values.NI, Materials.SulfuricAcid.getFluid(1000), Materials.Ethylene.getGas(1000), Materials.Water.getCells(1), 1200, 120);
 
         //Polyethylen production, Oxygen/Titanium -> +50% Polyethylene each
         GT_Values.RA.addDefaultPolymerizationRecipes(Materials.Ethylene.mGas, Materials.Plastic.mStandardMoltenFluid);
 
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 1), Materials.Empty.getCells(1), Materials.Water.getFluid(1000), Materials.SodiumHydroxide.getFluid(1000), Materials.Hydrogen.getCells(1), 40, 8);
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 1), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 1), Materials.Oxygen.getGas(1000), Materials.SodiumHydroxide.getFluid(3000), GT_Values.NI, 60, 8);
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Sodium, 1), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1), Materials.Hydrogen.getGas(1000), Materials.SodiumHydroxide.getFluid(3000), GT_Values.NI, 60, 8);
+        GT_Values.RA.addChemicalRecipe(Materials.Sodium.getDust(1), Materials.Empty.getCells(1), Materials.Water.getFluid(1000), Materials.SodiumHydroxide.getFluid(1000), Materials.Hydrogen.getCells(1), 40, 8);
+        GT_Values.RA.addChemicalRecipe(Materials.Sodium.getDust(1), Materials.Hydrogen.getCells(1), Materials.Oxygen.getGas(1000), Materials.SodiumHydroxide.getFluid(3000), GT_Values.NI, 60, 8);
+        GT_Values.RA.addChemicalRecipe(Materials.Sodium.getDust(1), Materials.Oxygen.getCells(1), Materials.Hydrogen.getGas(1000), Materials.SodiumHydroxide.getFluid(3000), GT_Values.NI, 60, 8);
 
         GT_Values.RA.addChemicalRecipe(Materials.Chlorine.getCells(1), GT_Utility.getIntegratedCircuit(1), Materials.Hydrogen.getGas(1000), Materials.HydrochloricAcid.getFluid(1000), Materials.Empty.getCells(1), 60, 8);
         GT_Values.RA.addChemicalRecipe(Materials.Hydrogen.getCells(1), GT_Utility.getIntegratedCircuit(1), Materials.Chlorine.getGas(1000), Materials.HydrochloricAcid.getFluid(1000), Materials.Empty.getCells(1), 60, 8);
 
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Chlorine, 1), GT_Values.NI, Materials.Propene.getGas(1000), Materials.AllylChloride.getFluid(1000), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HydrochloricAcid, 1), 160);
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Propene, 1), GT_Values.NI, Materials.Chlorine.getGas(1000), Materials.HydrochloricAcid.getFluid(1000), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.AllylChloride, 1), 160);
+        GT_Values.RA.addChemicalRecipe(Materials.Chlorine.getCells(1), GT_Values.NI, Materials.Propene.getGas(1000), Materials.AllylChloride.getFluid(1000), Materials.HydrochloricAcid.getCells(1), 160);
+        GT_Values.RA.addChemicalRecipe(Materials.Propene.getCells(1), GT_Values.NI, Materials.Chlorine.getGas(1000), Materials.HydrochloricAcid.getFluid(1000), Materials.AllylChloride.getCells(1), 160);
 
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Chlorine, 10),     GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Mercury, 1),     Materials.Water.getFluid(10000),     Materials.HypochlorousAcid.getFluid(10000), ItemList.Cell_Empty.get(11, new Object[0]), 600, 8);
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Water, 10),     GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Mercury, 1),     Materials.Chlorine.getGas(10000),     Materials.HypochlorousAcid.getFluid(10000), ItemList.Cell_Empty.get(11, new Object[0]), 600, 8);
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Chlorine, 1),    GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1),     Materials.Mercury.getFluid(100),     Materials.HypochlorousAcid.getFluid(1000),  ItemList.Cell_Empty.get(2, new Object[0]),  60,  8);
+        GT_Values.RA.addChemicalRecipe(Materials.Chlorine.getCells(10), Materials.Mercury.getCells(1),     Materials.Water.getFluid(10000),     Materials.HypochlorousAcid.getFluid(10000), Materials.Empty.getCells(11), 600, 8);
+        GT_Values.RA.addChemicalRecipe(Materials.Water.getCells(10),     Materials.Mercury.getCells(1),     Materials.Chlorine.getGas(10000),     Materials.HypochlorousAcid.getFluid(10000), Materials.Empty.getCells(11), 600, 8);
+        GT_Values.RA.addChemicalRecipe(Materials.Chlorine.getCells(1),    Materials.Water.getCells(1),     Materials.Mercury.getFluid(100),     Materials.HypochlorousAcid.getFluid(1000),  Materials.Empty.getCells(2),  60,  8);
 
         GT_Values.RA.addChemicalRecipe(Materials.AllylChloride.getCells(1),     Materials.HypochlorousAcid.getCells(1), Materials.SodiumHydroxide.getFluid(1000),     new FluidStack(ItemList.sEpichlorhydrin, 1000), Materials.SaltWater.getCells(1), Materials.Empty.getCells(1), 480);
         GT_Values.RA.addChemicalRecipe(Materials.HypochlorousAcid.getCells(1),     Materials.SodiumHydroxide.getCells(1),     Materials.AllylChloride.getFluid(1000),     new FluidStack(ItemList.sEpichlorhydrin, 1000), Materials.SaltWater.getCells(1), Materials.Empty.getCells(1), 480);
@@ -2816,64 +2816,64 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addDistilleryRecipe(2, Materials.HeavyFuel.getFluid(100), Materials.Benzene.getFluid(40), 160, 24, false);
 
         GT_Values.RA.addChemicalRecipe(Materials.Apatite.getDust(1), Materials.SulfuricAcid.getCells(5), Materials.Water.getFluid(10000), Materials.PhosphoricAcid.getFluid(3000), Materials.HydrochloricAcid.getCells(1), Materials.Empty.getCells(4), 320);
-        GT_Recipe.GT_Recipe_Map.sArcFurnaceRecipes.addRecipe(true, new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Phosphor, 4)}, new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.dust, Materials.PhosphorousPentoxide, 14)}, null, null, new FluidStack[]{Materials.Oxygen.getGas(10000)}, null, 140, 8, 0);
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.PhosphorousPentoxide, 1), GT_Values.NI, Materials.Water.getFluid(6000), Materials.PhosphoricAcid.getFluid(4000), GT_Values.NI, 40);
+        GT_Values.RA.addChemicalRecipe(Materials.Phosphor.getDust(4), GT_Values.NI, Materials.Oxygen.getGas(10000), GT_Values.NF, Materials.PhosphorousPentoxide.getDust(1), 40);
+        GT_Values.RA.addChemicalRecipe(Materials.PhosphorousPentoxide.getDust(1), GT_Values.NI, Materials.Water.getFluid(6000), Materials.PhosphoricAcid.getFluid(4000), GT_Values.NI, 40);
 
         GT_Values.RA.addChemicalRecipe(Materials.Propene.getCells(8),        Materials.PhosphoricAcid.getCells(1),     Materials.Benzene.getFluid(8000),         Materials.Cumene.getFluid(16000), Materials.Empty.getCells(9), 1920);
         GT_Values.RA.addChemicalRecipe(Materials.PhosphoricAcid.getCells(1),Materials.Benzene.getCells(8),             Materials.Propene.getGas(8000),         Materials.Cumene.getFluid(16000), Materials.Empty.getCells(9), 1920);
         GT_Values.RA.addChemicalRecipe(Materials.Benzene.getCells(1),        Materials.Propene.getCells(1),             Materials.PhosphoricAcid.getFluid(125), Materials.Cumene.getFluid(2000),  Materials.Empty.getCells(2), 240);
 
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Cumene, 1), GT_Values.NI,     Materials.Oxygen.getGas(1000),     Materials.Acetone.getFluid(1000),     GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Phenol, 1),     160);
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1), GT_Values.NI,     Materials.Cumene.getFluid(1000),Materials.Phenol.getFluid(1000),     GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Acetone, 1),     160);
+        GT_Values.RA.addChemicalRecipe(Materials.Cumene.getCells(1), GT_Values.NI,     Materials.Oxygen.getGas(1000),     Materials.Acetone.getFluid(1000),     Materials.Phenol.getCells(1),     160);
+        GT_Values.RA.addChemicalRecipe(Materials.Oxygen.getCells(1), GT_Values.NI,     Materials.Cumene.getFluid(1000),Materials.Phenol.getFluid(1000),     Materials.Acetone.getCells(1),     160);
 
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.BisphenolA, 1), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SodiumHydroxide, 1),     new FluidStack(ItemList.sEpichlorhydrin, 2000), Materials.Epoxid.getMolten(1000), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.SaltWater, 2), 200);
+        GT_Values.RA.addChemicalRecipe(Materials.BisphenolA.getCells(1), Materials.SodiumHydroxide.getCells(1),     new FluidStack(ItemList.sEpichlorhydrin, 2000), Materials.Epoxid.getMolten(1000), Materials.SaltWater.getCells(2), 200);
 
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Acetone, 1),             GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Phenol, 2),             Materials.HydrochloricAcid.getFluid(1000),  Materials.BisphenolA.getFluid(1000), ItemList.Cell_Empty.get(3, new Object[0]), 160);
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HydrochloricAcid, 1),     GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Acetone, 1),             Materials.Phenol.getFluid(2000),             Materials.BisphenolA.getFluid(1000), ItemList.Cell_Empty.get(2, new Object[0]), 160);
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Phenol, 2),             GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HydrochloricAcid, 1),     Materials.Acetone.getFluid(1000),             Materials.BisphenolA.getFluid(1000), ItemList.Cell_Empty.get(3, new Object[0]), 160);
+        GT_Values.RA.addChemicalRecipe(Materials.Acetone.getCells(1),             Materials.Phenol.getCells(2),             Materials.HydrochloricAcid.getFluid(1000),  Materials.BisphenolA.getFluid(1000), Materials.Empty.getCells(3), 160);
+        GT_Values.RA.addChemicalRecipe(Materials.HydrochloricAcid.getCells(1),     Materials.Acetone.getCells(1),             Materials.Phenol.getFluid(2000),             Materials.BisphenolA.getFluid(1000), Materials.Empty.getCells(2), 160);
+        GT_Values.RA.addChemicalRecipe(Materials.Phenol.getCells(2),             Materials.HydrochloricAcid.getCells(1), Materials.Acetone.getFluid(1000),             Materials.BisphenolA.getFluid(1000), Materials.Empty.getCells(3), 160);
 
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Chlorine, 1),     ItemList.Circuit_Integrated.getWithDamage(0, 1, new Object[0]), Materials.Methane.getGas(1000),  Materials.MethylChloride.getGas(1000), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HydrochloricAcid, 1), 80);
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Methane, 1),     ItemList.Circuit_Integrated.getWithDamage(0, 1, new Object[0]), Materials.Chlorine.getGas(1000), Materials.HydrochloricAcid.getFluid(1000), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.MethylChloride, 1), 80);
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Chlorine, 3),     ItemList.Circuit_Integrated.getWithDamage(0, 3, new Object[0]), Materials.Methane.getGas(1000), Materials.Chloroform.getFluid(1000), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HydrochloricAcid, 3), 240);
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Methane, 1),     ItemList.Circuit_Integrated.getWithDamage(0, 3, new Object[0]), Materials.Chlorine.getGas(3000), Materials.HydrochloricAcid.getFluid(3000), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Chloroform, 1), 240);
+        GT_Values.RA.addChemicalRecipe(Materials.Chlorine.getCells(1),     ItemList.Circuit_Integrated.getWithDamage(0, 1), Materials.Methane.getGas(1000),  Materials.MethylChloride.getGas(1000),     Materials.HydrochloricAcid.getCells(1), 80);
+        GT_Values.RA.addChemicalRecipe(Materials.Methane.getCells(1),     ItemList.Circuit_Integrated.getWithDamage(0, 1), Materials.Chlorine.getGas(1000), Materials.HydrochloricAcid.getFluid(1000), Materials.MethylChloride.getCells(1), 80);
+        GT_Values.RA.addChemicalRecipe(Materials.Chlorine.getCells(3),     ItemList.Circuit_Integrated.getWithDamage(0, 3), Materials.Methane.getGas(1000),  Materials.Chloroform.getFluid(1000),         Materials.HydrochloricAcid.getCells(3), 240);
+        GT_Values.RA.addChemicalRecipe(Materials.Methane.getCells(1),     ItemList.Circuit_Integrated.getWithDamage(0, 3), Materials.Chlorine.getGas(3000), Materials.HydrochloricAcid.getFluid(3000), Materials.Chloroform.getCells(1), 240);
 
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Fluorine, 1),     GT_Values.NI, Materials.Hydrogen.getGas(1000), Materials.HydrofluoricAcid.getFluid(1000), ItemList.Cell_Empty.get(1, new Object[0]), 60, 8);
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 1),     GT_Values.NI, Materials.Fluorine.getGas(1000), Materials.HydrofluoricAcid.getFluid(1000), ItemList.Cell_Empty.get(1, new Object[0]), 60, 8);
+        GT_Values.RA.addChemicalRecipe(Materials.Fluorine.getCells(1),     GT_Values.NI, Materials.Hydrogen.getGas(1000), Materials.HydrofluoricAcid.getFluid(1000), Materials.Empty.getCells(1), 60, 8);
+        GT_Values.RA.addChemicalRecipe(Materials.Hydrogen.getCells(1),     GT_Values.NI, Materials.Fluorine.getGas(1000), Materials.HydrofluoricAcid.getFluid(1000), Materials.Empty.getCells(1), 60, 8);
 
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Chloroform, 2), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HydrofluoricAcid, 4), GT_Values.NF, Materials.Tetrafluoroethylene.getGas(1000), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HydrochloricAcid, 6), 480, 256);
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Chloroform, 2), ItemList.Cell_Empty.get(4, new Object[0]), Materials.HydrofluoricAcid.getFluid(4000),      Materials.Tetrafluoroethylene.getGas(1000), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HydrochloricAcid, 6), 480, 256);
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HydrofluoricAcid, 4), ItemList.Cell_Empty.get(2, new Object[0]), Materials.Chloroform.getFluid(2000),      Materials.Tetrafluoroethylene.getGas(1000), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HydrochloricAcid, 6), 480, 256);
+        GT_Values.RA.addChemicalRecipe(Materials.Chloroform.getCells(2),         Materials.HydrofluoricAcid.getCells(4), GT_Values.NF, Materials.Tetrafluoroethylene.getGas(1000), Materials.HydrochloricAcid.getCells(6), 480, 256);
+        GT_Values.RA.addChemicalRecipe(Materials.Chloroform.getCells(2),         Materials.Empty.getCells(4), Materials.HydrofluoricAcid.getFluid(4000),      Materials.Tetrafluoroethylene.getGas(1000), Materials.HydrochloricAcid.getCells(6), 480, 256);
+        GT_Values.RA.addChemicalRecipe(Materials.HydrofluoricAcid.getCells(4),  Materials.Empty.getCells(2), Materials.Chloroform.getFluid(2000),      Materials.Tetrafluoroethylene.getGas(1000), Materials.HydrochloricAcid.getCells(6), 480, 256);
 
         GT_Values.RA.addDefaultPolymerizationRecipes(Materials.Tetrafluoroethylene.mGas, Materials.Polytetrafluoroethylene.mStandardMoltenFluid);
 
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Silicon, 1), GT_Values.NI, Materials.MethylChloride.getGas(2000), Materials.Dimethyldichlorosilane.getFluid(1000), GT_Values.NI, 240, 96);
+        GT_Values.RA.addChemicalRecipe(Materials.Silicon.getDust(1), GT_Values.NI, Materials.MethylChloride.getGas(2000), Materials.Dimethyldichlorosilane.getFluid(1000), GT_Values.NI, 240, 96);
 
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Dimethyldichlorosilane, 1), GT_Values.NI, GT_ModHandler.getDistilledWater(1000), Materials.Silicone.getMolten(1000), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HydrochloricAcid, 2), 240, 96);
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Dimethyldichlorosilane, 1), GT_Values.NI, Materials.Water.getFluid(1000),          Materials.Silicone.getMolten(800),     GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HydrochloricAcid, 1), 240, 96);
+        GT_Values.RA.addChemicalRecipe(Materials.Dimethyldichlorosilane.getCells(1), GT_Values.NI, GT_ModHandler.getDistilledWater(1000), Materials.Silicone.getMolten(1000),Materials.HydrochloricAcid.getCells(2), 240, 96);
+        GT_Values.RA.addChemicalRecipe(Materials.Dimethyldichlorosilane.getCells(1), GT_Values.NI, Materials.Water.getFluid(1000),           Materials.Silicone.getMolten(800), Materials.HydrochloricAcid.getCells(1), 240, 96);
 
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Nitrogen, 1), GT_Values.NI, Materials.Hydrogen.getGas(3000), Materials.Ammonia.getGas(1000), ItemList.Cell_Empty.get(1, new Object[0]), 320, 384);
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Hydrogen, 3), GT_Values.NI, Materials.Nitrogen.getGas(1000), Materials.Ammonia.getGas(1000), ItemList.Cell_Empty.get(3, new Object[0]), 320, 384);
+        GT_Values.RA.addChemicalRecipe(Materials.Nitrogen.getCells(1), GT_Values.NI, Materials.Hydrogen.getGas(3000), Materials.Ammonia.getGas(1000), Materials.Empty.getCells(1), 320, 384);
+        GT_Values.RA.addChemicalRecipe(Materials.Hydrogen.getCells(3), GT_Values.NI, Materials.Nitrogen.getGas(1000), Materials.Ammonia.getGas(1000), Materials.Empty.getCells(3), 320, 384);
 
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Methanol, 2), GT_Values.NI, Materials.Ammonia.getGas(1000), Materials.Dimethylamine.getGas(1000), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Water, 2), 240, 120);
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Ammonia, 1), GT_Values.NI, Materials.Methanol.getFluid(2000), Materials.Water.getFluid(2000), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Dimethylamine, 1), 240, 120);
+        GT_Values.RA.addChemicalRecipe(Materials.Methanol.getCells(2), GT_Values.NI, Materials.Ammonia.getGas(1000),     Materials.Dimethylamine.getGas(1000), Materials.Water.getCells(2), 240, 120);
+        GT_Values.RA.addChemicalRecipe(Materials.Ammonia.getCells(1),  GT_Values.NI, Materials.Methanol.getFluid(2000), Materials.Water.getFluid(2000),       Materials.Dimethylamine.getCells(1), 240, 120);
 
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Ammonia, 1), GT_Values.NI, Materials.HypochlorousAcid.getFluid(1000), Materials.Water.getFluid(1000), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Chloramine, 1), 160);
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HypochlorousAcid, 1), GT_Values.NI, Materials.Ammonia.getGas(1000), Materials.Chloramine.getFluid(1000), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Water, 1), 160);
+        GT_Values.RA.addChemicalRecipe(Materials.Ammonia.getCells(1), GT_Values.NI, Materials.HypochlorousAcid.getFluid(1000), Materials.Water.getFluid(1000), Materials.Chloramine.getCells(1), 160);
+        GT_Values.RA.addChemicalRecipe(Materials.HypochlorousAcid.getCells(1), GT_Values.NI, Materials.Ammonia.getGas(1000), Materials.Chloramine.getFluid(1000), Materials.Water.getCells(1), 160);
 
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Chloramine, 1), GT_Values.NI, Materials.Dimethylamine.getGas(1000), Materials.Dimethylhydrazine.getFluid(1000), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.HydrochloricAcid, 1), 200);
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Dimethylamine, 1), GT_Values.NI, Materials.Chloramine.getFluid(1000), Materials.HydrochloricAcid.getFluid(1000), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Dimethylhydrazine, 1), 200);
+        GT_Values.RA.addChemicalRecipe(Materials.Chloramine.getCells(1), GT_Values.NI, Materials.Dimethylamine.getGas(1000), Materials.Dimethylhydrazine.getFluid(1000), Materials.HydrochloricAcid.getCells(1), 200);
+        GT_Values.RA.addChemicalRecipe(Materials.Dimethylamine.getCells(1), GT_Values.NI, Materials.Chloramine.getFluid(1000), Materials.HydrochloricAcid.getFluid(1000), Materials.Dimethylhydrazine.getCells(1), 200);
 
-        GT_Values.RA.addChemicalRecipe(ItemList.Circuit_Integrated.getWithDamage(0, 2, new Object[0]), GT_Values.NI, Materials.NitrogenDioxide.getGas(2000), Materials.DinitrogenTetroxide.getGas(1000), GT_Values.NI, 640);
+        GT_Values.RA.addChemicalRecipe(ItemList.Circuit_Integrated.getWithDamage(0, 2), GT_Values.NI, Materials.NitrogenDioxide.getGas(2000), Materials.DinitrogenTetroxide.getGas(1000), GT_Values.NI, 640);
 
-        GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Dimethylhydrazine, 1), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.DinitrogenTetroxide.getGas(1000), new FluidStack(ItemList.sRocketFuel, 8000), ItemList.Cell_Empty.get(1, new Object[0]), 60, 16);
-        GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.DinitrogenTetroxide, 1), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.Dimethylhydrazine.getFluid(1000), new FluidStack(ItemList.sRocketFuel, 8000), ItemList.Cell_Empty.get(1, new Object[0]), 60, 16);
-        GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Dimethylhydrazine, 1), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.Oxygen.getGas(1000), new FluidStack(ItemList.sRocketFuel, 4000), ItemList.Cell_Empty.get(1, new Object[0]), 60, 16);
-        GT_Values.RA.addMixerRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.Dimethylhydrazine.getFluid(1000), new FluidStack(ItemList.sRocketFuel, 4000), ItemList.Cell_Empty.get(1, new Object[0]), 60, 16);
+        GT_Values.RA.addMixerRecipe(Materials.Dimethylhydrazine.getCells(1), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.DinitrogenTetroxide.getGas(1000), new FluidStack(ItemList.sRocketFuel, 8000), Materials.Empty.getCells(1), 60, 16);
+        GT_Values.RA.addMixerRecipe(Materials.DinitrogenTetroxide.getCells(1), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.Dimethylhydrazine.getFluid(1000), new FluidStack(ItemList.sRocketFuel, 8000), Materials.Empty.getCells(1), 60, 16);
+        GT_Values.RA.addMixerRecipe(Materials.Dimethylhydrazine.getCells(1), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.Oxygen.getGas(1000), new FluidStack(ItemList.sRocketFuel, 4000), Materials.Empty.getCells(1), 60, 16);
+        GT_Values.RA.addMixerRecipe(Materials.Oxygen.getCells(1), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.Dimethylhydrazine.getFluid(1000), new FluidStack(ItemList.sRocketFuel, 4000), Materials.Empty.getCells(1), 60, 16);
 
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Ammonia, 4), GT_Values.NI, Materials.Oxygen.getGas(10000), Materials.Water.getFluid(6000), GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NitricOxide, 4), 160, 384);
+        GT_Values.RA.addChemicalRecipe(Materials.Ammonia.getCells(4), GT_Values.NI, Materials.Oxygen.getGas(10000), Materials.Water.getFluid(6000), Materials.NitricOxide.getCells(4), 160, 384);
 
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.NitricOxide, 1), GT_Values.NI, Materials.Oxygen.getGas(1000), Materials.NitrogenDioxide.getGas(1000), ItemList.Cell_Empty.get(1, new Object[0]), 160);
-        GT_Values.RA.addChemicalRecipe(GT_OreDictUnificator.get(OrePrefixes.cell, Materials.Oxygen, 1), GT_Values.NI, Materials.NitricOxide.getGas(1000), Materials.NitrogenDioxide.getGas(1000), ItemList.Cell_Empty.get(1, new Object[0]), 160);
+        GT_Values.RA.addChemicalRecipe(Materials.NitricOxide.getCells(1), GT_Values.NI, Materials.Oxygen.getGas(1000), Materials.NitrogenDioxide.getGas(1000), Materials.Empty.getCells(1), 160);
+        GT_Values.RA.addChemicalRecipe(Materials.Oxygen.getCells(1), GT_Values.NI, Materials.NitricOxide.getGas(1000), Materials.NitrogenDioxide.getGas(1000), Materials.Empty.getCells(1), 160);
 
         GT_Values.RA.addChemicalRecipe(Materials.Water.getCells(1), GT_Utility.getIntegratedCircuit(1), Materials.NitrogenDioxide.getGas(3000), Materials.NitricAcid.getFluid(2000), Materials.NitricOxide.getCells(1), 240);
         GT_Values.RA.addChemicalRecipe(Materials.NitrogenDioxide.getCells(3), GT_Utility.getIntegratedCircuit(1), Materials.Water.getFluid(1000), Materials.NitricOxide.getGas(1000), Materials.NitricAcid.getCells(2), Materials.Empty.getCells(1), 240);
