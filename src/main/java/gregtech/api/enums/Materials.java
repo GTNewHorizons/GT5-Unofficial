@@ -534,8 +534,8 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public static Materials CrackedLightFuel        = new Materials( 743, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "CrackedLightFuel"        ,   "Cracked Light Fuel"            ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeYellow      );
     public static Materials CrackedHeavyFuel        = new Materials( 744, TextureSet.SET_FLUID             ,   1.0F,      0,  0,         16                , 255, 255,   0,   0,   "CrackedHeavyFuel"        ,   "Cracked Heavy Fuel"            ,    0,       0,         -1,    0, false, false,   1,   1,   1, Dyes.dyeBlack       );
 
-    public static Materials PolyVinylChloride       = new MaterialBuilder(649, TextureSet.SET_FLUID         , "Polyvinyl Chloride").addCell().addGas().setRGB(200, 200, 25).setColor(Dyes.dyeYellow).constructMaterial();
-    public static Materials VinylChloride           = new MaterialBuilder(650, TextureSet.SET_FLUID         , "Vinyl Chloride").addCell().addGas().setRGB(200, 200, 25).setColor(Dyes.dyeYellow).constructMaterial();
+    public static Materials PolyvinylChloride       = new MaterialBuilder(649, TextureSet.SET_DULL          , "Polyvinyl Chloride").addDustItems().addMetalItems().addToolHeadItems().addGearItems().setToolSpeed(3.0f).setDurability(32).setToolQuality(1).setRGB(215, 230, 230).setColor(Dyes.dyeLightGray).constructMaterial();
+    public static Materials VinylChloride           = new MaterialBuilder(650, TextureSet.SET_FLUID         , "Vinyl Chloride").addCell().addGas().setRGB(225, 240, 240).setColor(Dyes.dyeLightGray).constructMaterial();
     public static Materials SulfurDioxide           = new MaterialBuilder(651, TextureSet.SET_FLUID         , "Sulfur Dioxide").addCell().addGas().setRGB(200, 200, 25).setColor(Dyes.dyeYellow).constructMaterial();
     public static Materials SulfurTrioxide          = new MaterialBuilder(652, TextureSet.SET_FLUID         , "Sulfur Trioxide").addCell().addGas().setGasTemperature(344).setRGB(160, 160, 20).setColor(Dyes.dyeYellow).constructMaterial();
     public static Materials NitricAcid              = new MaterialBuilder(653, TextureSet.SET_FLUID         , "Nitric Acid").addCell().setRGB(230, 226, 171).constructMaterial();
@@ -842,7 +842,6 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     public Fluid mSolid = null, mFluid = null, mGas = null, mPlasma = null;
 
     private boolean hasCorrespondingFluid = false, hasCorrespondingGas = false;
-    private int liquidTemperature = 295, gasTemperature = 295;
 
     /**
      * This Fluid is used as standard Unit for Molten Materials. 1296 is a Molten Block, that means 144 is one Material Unit worth of fluid.
@@ -934,6 +933,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
         Monazite                .setOreMultiplier( 8).setSmeltingMultiplier( 8).setByProductMultiplier(2);
 
         Plastic                 .setEnchantmentForTools(Enchantment.knockback, 1);
+        PolyvinylChloride        .setEnchantmentForTools(Enchantment.knockback, 1);
         Rubber                  .setEnchantmentForTools(Enchantment.knockback, 2);
         InfusedAir              .setEnchantmentForTools(Enchantment.knockback, 2);
 
@@ -1275,6 +1275,7 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
 
         Rubber                  .add(SubTag.FLAMMABLE, SubTag.NO_SMASHING, SubTag.BOUNCY, SubTag.STRETCHY);
         Plastic                 .add(SubTag.FLAMMABLE, SubTag.NO_SMASHING, SubTag.BOUNCY);
+        PolyvinylChloride       .add(SubTag.FLAMMABLE, SubTag.NO_SMASHING, SubTag.BOUNCY);
         Silicone                .add(SubTag.FLAMMABLE, SubTag.NO_SMASHING, SubTag.BOUNCY, SubTag.STRETCHY);
 
         TNT                     .add(SubTag.FLAMMABLE, SubTag.EXPLOSIVE, SubTag.NO_SMELTING, SubTag.NO_SMASHING);
@@ -2048,20 +2049,20 @@ public class Materials implements IColorModulationContainer, ISubTagContainer {
     }
 
     public int getLiquidTemperature() {
-        return liquidTemperature;
+        return mMeltingPoint == 0 ? 295 : mMeltingPoint;
     }
 
     public Materials setLiquidTemperature(int liquidTemperature) {
-        this.liquidTemperature = liquidTemperature;
+        this.mMeltingPoint = (short) liquidTemperature;
         return this;
     }
 
     public int getGasTemperature() {
-        return gasTemperature;
+        return mGasTemp == 0 ? 295 : mMeltingPoint;
     }
 
     public Materials setGasTemperature(int gasTemperature) {
-        this.gasTemperature = gasTemperature;
+        this.mGasTemp = (short) gasTemperature;
         return this;
     }
 

@@ -15,7 +15,7 @@ public class MaterialBuilder {
     private int durability = 0;
     private int toolQuality = 0;
     private int types = 0;
-    private int r = 255, g = 255, b = 255, a = 255;
+    private int r = 255, g = 255, b = 255, a = 0;
     private String name;
     private String defaultLocalName;
     private int fuelType = 0;
