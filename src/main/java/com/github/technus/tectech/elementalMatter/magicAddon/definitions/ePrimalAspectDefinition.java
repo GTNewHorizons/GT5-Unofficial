@@ -1,7 +1,8 @@
 package com.github.technus.tectech.elementalMatter.magicAddon.definitions;
 
-import static com.github.technus.tectech.elementalMatter.classes.cElementalDecay.noDecay;
 import com.github.technus.tectech.elementalMatter.classes.cElementalPrimitive;
+
+import static com.github.technus.tectech.elementalMatter.classes.cElementalDecay.noDecay;
 
 /**
  * Created by Tec on 06.05.2017.

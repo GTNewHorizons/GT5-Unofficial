@@ -5,8 +5,6 @@ import com.github.technus.tectech.elementalMatter.interfaces.iHasElementalDefini
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 

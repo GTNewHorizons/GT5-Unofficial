@@ -4,29 +4,21 @@ import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.loader.MainLoader;
 import com.github.technus.tectech.proxy.CommonProxy;
-import com.github.technus.tectech.thing.item.DebugContainer_EM;
-import com.github.technus.tectech.thing.machineTT;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import eu.usrv.yamcore.auxiliary.IngameErrorLog;
 import eu.usrv.yamcore.auxiliary.LogHelper;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Recipe;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.HashMap;
-import java.util.List;
 
 @Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION, dependencies = "required-after:Forge@[10.13.4.1614,);"
         + "required-after:YAMCore@[0.5.70,);" + "required-after:gregtech;" + "after:CoFHCore")
@@ -78,29 +70,9 @@ public class TecTech {
     public void PostLoad(FMLPostInitializationEvent PostEvent) {
         hasCOFH = Loader.isModLoaded(Reference.COFHCORE);
 
+
         GTCustomLoader = new MainLoader();
-        GTCustomLoader.things();
-        GTCustomLoader.recipes();
-
-        mainTab = new CreativeTabs("TecTech") {
-            @SideOnly(Side.CLIENT)
-            @Override
-            public Item getTabIconItem() {
-                return DebugContainer_EM.INSTANCE;
-            }
-
-            @Override
-            public void displayAllReleventItems(List stuffToShow) {
-                for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
-                    if (GregTech_API.METATILEENTITIES[i] instanceof machineTT) {
-                        stuffToShow.add(new ItemStack(GregTech_API.sBlockMachines, 1, i));
-                    }
-                }
-                super.displayAllReleventItems(stuffToShow);
-            }
-        };
-
-        GTCustomLoader.registerThingsInTabs();
+        GTCustomLoader.run();
     }
 
     @EventHandler

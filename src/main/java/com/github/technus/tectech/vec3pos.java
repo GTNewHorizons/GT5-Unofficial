@@ -1,8 +1,6 @@
 package com.github.technus.tectech;
 
-import cofh.lib.util.position.BlockPosition;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import net.minecraft.world.ChunkPosition;
 
 /**
  * Created by Tec on 05.04.2017.

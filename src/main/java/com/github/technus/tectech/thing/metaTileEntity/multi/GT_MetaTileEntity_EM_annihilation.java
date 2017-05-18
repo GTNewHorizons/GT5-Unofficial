@@ -11,7 +11,6 @@ import net.minecraft.util.EnumChatFormatting;
 
 import static com.github.technus.tectech.Util.StructureBuilder;
 import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
-import static gregtech.api.enums.GT_Values.E;
 
 /**
  * Created by danie_000 on 17.12.2016.

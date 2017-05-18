@@ -5,7 +5,6 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * Created by Tec on 05.04.2017.

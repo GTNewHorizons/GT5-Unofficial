@@ -1,15 +1,9 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.thing.machineTT;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Holder;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Rack;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Holder;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Rack;
-import cpw.mods.fml.common.Loader;
-import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -20,14 +14,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.github.technus.tectech.CommonValues.multiCheckAt;
-import static com.github.technus.tectech.Util.getUniqueIdentifier;
 
 /**
  * Created by Tec on 03.04.2017.

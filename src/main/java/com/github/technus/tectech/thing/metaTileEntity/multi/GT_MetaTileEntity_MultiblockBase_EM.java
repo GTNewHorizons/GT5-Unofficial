@@ -29,7 +29,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.ChunkPosition;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.lang.reflect.InvocationTargetException;

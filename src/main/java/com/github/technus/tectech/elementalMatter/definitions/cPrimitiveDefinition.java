@@ -1,8 +1,6 @@
 package com.github.technus.tectech.elementalMatter.definitions;
 
 import com.github.technus.tectech.elementalMatter.classes.cElementalPrimitive;
-import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
-import net.minecraft.nbt.NBTTagCompound;
 
 import static com.github.technus.tectech.elementalMatter.classes.cElementalDecay.noDecay;
 import static com.github.technus.tectech.elementalMatter.classes.cElementalDecay.noProduct;

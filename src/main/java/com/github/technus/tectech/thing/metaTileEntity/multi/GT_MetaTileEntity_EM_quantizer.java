@@ -188,7 +188,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
                 new cElementalDefinitionStack(getFirstStableIsotope(15), 144));
         itemBinds.put(getID(OrePrefixes.dust, Materials.Sulfur),
                 new cElementalDefinitionStack(getFirstStableIsotope(16), 144));
-        fluidBind.put(Materials.Chlorine.mFluid.getID(), new cElementalDefinitionStack(getFirstStableIsotope(17), 144));
+        fluidBind.put(Materials.Chlorine.mGas.getID(), new cElementalDefinitionStack(getFirstStableIsotope(17), 144));
         fluidBind.put(Materials.Argon.mGas.getID(), new cElementalDefinitionStack(getFirstStableIsotope(18), 144));
         itemBinds.put(getID(OrePrefixes.dust, Materials.Potassium),
                 new cElementalDefinitionStack(getFirstStableIsotope(19), 144));

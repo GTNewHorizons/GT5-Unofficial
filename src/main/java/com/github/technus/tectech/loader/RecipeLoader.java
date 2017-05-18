@@ -1,14 +1,5 @@
 package com.github.technus.tectech.loader;
 
-import com.github.technus.tectech.elementalMatter.classes.cElementalPrimitive;
-import com.github.technus.tectech.elementalMatter.definitions.*;
-import com.github.technus.tectech.elementalMatter.magicAddon.definitions.dComplexAspectDefinition;
-import com.github.technus.tectech.elementalMatter.magicAddon.definitions.ePrimalAspectDefinition;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Rack;
-import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_computer;
-import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_quantizer;
-import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_research;
-import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_MultiblockBase_EM;
 import cpw.mods.fml.common.Loader;
 
 /**

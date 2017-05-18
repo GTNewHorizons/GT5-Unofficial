@@ -2,7 +2,6 @@ package com.github.technus.tectech.elementalMatter.interfaces;
 
 import com.github.technus.tectech.elementalMatter.classes.cElementalDecay;
 import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStackMap;
-import com.github.technus.tectech.elementalMatter.classes.cElementalMutableDefinitionStackMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;

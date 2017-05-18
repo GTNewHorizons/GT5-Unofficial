@@ -1,8 +1,6 @@
 package com.github.technus.tectech.elementalMatter.classes;
 
 import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Created by Tec on 02.03.2017.
