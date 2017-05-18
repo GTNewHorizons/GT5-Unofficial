@@ -142,10 +142,10 @@ public class GT_RecipeAdder implements IGT_RecipeAdder {
     @Override
     public void addDefaultPolymerizationRecipes(Fluid aBasicMaterial, Fluid aPolymer){
         //Oxygen/Titanium -> +50% Output each
-        GT_Values.RA.addChemicalRecipe(ItemList.Cell_Air.get(2, new Object[0]), GT_Utility.getIntegratedCircuit(1),                                     new GT_FluidStack(aBasicMaterial, 144),  new GT_FluidStack(aPolymer, 144),  Materials.Empty.getCells(2), 160);
-        GT_Values.RA.addChemicalRecipe(Materials.Oxygen.getCells(2),              GT_Utility.getIntegratedCircuit(1),                                     new GT_FluidStack(aBasicMaterial, 144),  new GT_FluidStack(aPolymer, 216),  Materials.Empty.getCells(2), 160);
-        GT_Values.RA.addChemicalRecipe(ItemList.Cell_Air.get(12, new Object[0]),GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Titanium, 1),  new GT_FluidStack(aBasicMaterial, 1728), new GT_FluidStack(aPolymer, 2592), Materials.Empty.getCells(12), 640);
-        GT_Values.RA.addChemicalRecipe(Materials.Oxygen.getCells(12),             GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Titanium, 1),  new GT_FluidStack(aBasicMaterial, 1728), new GT_FluidStack(aPolymer, 3456), Materials.Empty.getCells(12), 640);
+        GT_Values.RA.addChemicalRecipe(ItemList.Cell_Air.get(2, new Object[0]), GT_Utility.getIntegratedCircuit(1), new GT_FluidStack(aBasicMaterial, 144),  new GT_FluidStack(aPolymer, 144),  Materials.Empty.getCells(2), 160);
+        GT_Values.RA.addChemicalRecipe(Materials.Oxygen.getCells(2),              GT_Utility.getIntegratedCircuit(1), new GT_FluidStack(aBasicMaterial, 144),  new GT_FluidStack(aPolymer, 216),  Materials.Empty.getCells(2), 160);
+        GT_Values.RA.addChemicalRecipe(ItemList.Cell_Air.get(12, new Object[0]),Materials.Titanium.getDustTiny(1),  new GT_FluidStack(aBasicMaterial, 1728), new GT_FluidStack(aPolymer, 2592), Materials.Empty.getCells(12), 640);
+        GT_Values.RA.addChemicalRecipe(Materials.Oxygen.getCells(12),             Materials.Titanium.getDustTiny(1),  new GT_FluidStack(aBasicMaterial, 1728), new GT_FluidStack(aPolymer, 3456), Materials.Empty.getCells(12), 640);
     }
 
     public boolean addBlastRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, ItemStack aOutput2, int aDuration, int aEUt, int aLevel) {
