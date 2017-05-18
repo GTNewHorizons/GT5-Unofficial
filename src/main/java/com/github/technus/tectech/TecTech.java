@@ -70,7 +70,6 @@ public class TecTech {
     public void PostLoad(FMLPostInitializationEvent PostEvent) {
         hasCOFH = Loader.isModLoaded(Reference.COFHCORE);
 
-
         GTCustomLoader = new MainLoader();
         GTCustomLoader.run();
     }
@@ -92,13 +91,13 @@ public class TecTech {
         for (Materials m : Materials.values()) {
             FluidStack p = m.getPlasma(1);
             if (p != null) {
-                if (TecTechConfig.DEBUG_MODE) TecTech.Logger.info("Found Plasma of " + m.name());
+                if (TecTechConfig.DEBUG_MODE) TecTech.Logger.info("Found Plasma of " + m.mName);
                 if (m.mElement != null &&
                         (m.mElement.mProtons >= Materials.Iron.mElement.mProtons ||
                                 -m.mElement.mProtons >= Materials.Iron.mElement.mProtons ||
                                 m.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons ||
                                 -m.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons)) {
-                    if (TecTechConfig.DEBUG_MODE) TecTech.Logger.info("Attempting to bind " + m.name());
+                    if (TecTechConfig.DEBUG_MODE) TecTech.Logger.info("Attempting to bind " + m.mName);
                     if (m.getMolten(1) != null) binds.put(p.getFluid(), m.getMolten(1).getFluid());
                     else if (m.getGas(1) != null) binds.put(p.getFluid(), m.getGas(1).getFluid());
                     else if (m.getFluid(1) != null) binds.put(p.getFluid(), m.getFluid(1).getFluid());

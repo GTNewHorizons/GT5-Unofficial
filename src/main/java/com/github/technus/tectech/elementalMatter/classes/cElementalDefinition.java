@@ -79,6 +79,11 @@ public abstract class cElementalDefinition implements iElementalDefinition {
     }
 
     @Override
+    public final cElementalDefinitionStack getStackForm(int i) {
+        return new cElementalDefinitionStack(this,i);
+    }
+
+    @Override
     public final boolean equals(Object obj) {
         if (obj instanceof iElementalDefinition)
             return compareTo((iElementalDefinition) obj) == 0;

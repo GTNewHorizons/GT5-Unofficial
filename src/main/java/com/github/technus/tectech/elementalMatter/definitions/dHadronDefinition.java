@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
-import static com.github.technus.tectech.elementalMatter.classes.cElementalMutableDefinitionStackMap.stackUpMap;
 import static com.github.technus.tectech.elementalMatter.definitions.eBosonDefinition.boson_Y__;
 
 /**
@@ -44,20 +43,20 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
 
     @Deprecated
     public dHadronDefinition(eQuarkDefinition... quarks) throws tElementalException {
-        this(true, stackUpMap(quarks).toImmutable());
+        this(true, new cElementalDefinitionStackMap(quarks));
     }
 
     @Deprecated
     private dHadronDefinition(boolean check, eQuarkDefinition... quarks) throws tElementalException {
-        this(check, stackUpMap(quarks).toImmutable());
+        this(check, new cElementalDefinitionStackMap(quarks));
     }
 
     public dHadronDefinition(cElementalDefinitionStack... quarks) throws tElementalException {
-        this(true, stackUpMap(quarks).toImmutable());
+        this(true, new cElementalDefinitionStackMap(quarks));
     }
 
     private dHadronDefinition(boolean check, cElementalDefinitionStack... quarks) throws tElementalException {
-        this(check, stackUpMap(quarks).toImmutable());
+        this(check, new cElementalDefinitionStackMap(quarks));
     }
 
     public dHadronDefinition(cElementalDefinitionStackMap quarks) throws tElementalException {
@@ -314,15 +313,15 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
 
     public static void run() {
         try {
-            hadron_p = new dHadronDefinition(stackUpMap(eQuarkDefinition.quark_u, eQuarkDefinition.quark_u, eQuarkDefinition.quark_d).toImmutable());
+            hadron_p = new dHadronDefinition(new cElementalDefinitionStackMap(eQuarkDefinition.quark_u.getStackForm(2), eQuarkDefinition.quark_d.getStackForm(1)));
             protonMass = hadron_p.mass;
             //redefine the proton with proper lifetime (the lifetime is based on mass comparison)
-            hadron_p = new dHadronDefinition(stackUpMap(eQuarkDefinition.quark_u, eQuarkDefinition.quark_u, eQuarkDefinition.quark_d).toImmutable());
+            hadron_p = new dHadronDefinition(new cElementalDefinitionStackMap(eQuarkDefinition.quark_u.getStackForm(2), eQuarkDefinition.quark_d.getStackForm(1)));
             hadron_p_ = (dHadronDefinition) (hadron_p.getAnti());
-            hadron_n = new dHadronDefinition(stackUpMap(eQuarkDefinition.quark_u, eQuarkDefinition.quark_d, eQuarkDefinition.quark_d).toImmutable());
+            hadron_n = new dHadronDefinition(new cElementalDefinitionStackMap(eQuarkDefinition.quark_u.getStackForm(1), eQuarkDefinition.quark_d.getStackForm(2)));
             neutronMass = hadron_n.mass;
             //redefine the neutron with proper lifetime (the lifetime is based on mass comparison)
-            hadron_n = new dHadronDefinition(stackUpMap(eQuarkDefinition.quark_u, eQuarkDefinition.quark_d, eQuarkDefinition.quark_d).toImmutable());
+            hadron_n = new dHadronDefinition(new cElementalDefinitionStackMap(eQuarkDefinition.quark_u.getStackForm(1), eQuarkDefinition.quark_d.getStackForm(2)));
             hadron_n_ = (dHadronDefinition) (hadron_n.getAnti());
         } catch (tElementalException e) {
             if (TecTechConfig.DEBUG_MODE) e.printStackTrace();

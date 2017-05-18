@@ -21,19 +21,21 @@ public final class cElementalMutableDefinitionStackMap extends cElementalStackMa
 
     @Deprecated
     public cElementalMutableDefinitionStackMap(iElementalDefinition... in) {
-        map=stackUpMap(in).map;
+        map=new TreeMap<>();
+        for (iElementalDefinition def : in) {
+            putUnify(new cElementalDefinitionStack(def, 1));
+        }
     }
 
-    @Deprecated
     public cElementalMutableDefinitionStackMap(cElementalDefinitionStack... in) {
-        map=stackUpMap(in).map;
+        map=new TreeMap<>();
+        putUnifyAll(in);
     }
 
     public cElementalMutableDefinitionStackMap(TreeMap<iElementalDefinition, cElementalDefinitionStack> in) {
         this(true, in);
     }
 
-    @Deprecated
     public cElementalMutableDefinitionStackMap(boolean clone, TreeMap<iElementalDefinition, cElementalDefinitionStack> in) {
         if (clone) {
             map = new TreeMap<>(in);
@@ -218,21 +220,5 @@ public final class cElementalMutableDefinitionStackMap extends cElementalStackMa
                 throw new tElementalException("Something went Wrong");
         }
         return new cElementalMutableDefinitionStackMap(defStacks);
-    }
-
-    //stackUp
-    @Deprecated
-    public static cElementalMutableDefinitionStackMap stackUpMap(iElementalDefinition... in) {
-        final cElementalMutableDefinitionStackMap inTree = new cElementalMutableDefinitionStackMap();
-        for (iElementalDefinition def : in) {
-            inTree.putUnify(new cElementalDefinitionStack(def, 1));
-        }
-        return inTree;
-    }
-
-    public static cElementalMutableDefinitionStackMap stackUpMap(cElementalDefinitionStack... in) {
-        final cElementalMutableDefinitionStackMap inTree = new cElementalMutableDefinitionStackMap();
-        inTree.putUnifyAll(in);
-        return inTree;
     }
 }

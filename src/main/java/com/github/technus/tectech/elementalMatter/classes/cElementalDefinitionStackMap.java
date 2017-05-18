@@ -20,12 +20,11 @@ public final class cElementalDefinitionStackMap/*IMMUTABLE*/ extends cElementalS
 
     @Deprecated
     public cElementalDefinitionStackMap(iElementalDefinition... in) {
-        map=cElementalMutableDefinitionStackMap.stackUpMap(in).map;
+        map=new cElementalMutableDefinitionStackMap(in).map;
     }
 
-    @Deprecated
     public cElementalDefinitionStackMap(cElementalDefinitionStack... in) {
-        map=cElementalMutableDefinitionStackMap.stackUpMap(in).map;
+        map=new cElementalMutableDefinitionStackMap(in).map;
     }
 
     public cElementalDefinitionStackMap(TreeMap<iElementalDefinition, cElementalDefinitionStack> in) {

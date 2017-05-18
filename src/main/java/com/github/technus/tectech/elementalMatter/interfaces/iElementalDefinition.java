@@ -1,6 +1,7 @@
 package com.github.technus.tectech.elementalMatter.interfaces;
 
 import com.github.technus.tectech.elementalMatter.classes.cElementalDecay;
+import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStack;
 import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStackMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -45,4 +46,6 @@ public interface iElementalDefinition extends Comparable<iElementalDefinition> {
     FluidStack materializesIntoFluid();
 
     NBTTagCompound toNBT();
+
+    cElementalDefinitionStack getStackForm(int i);
 }

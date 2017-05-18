@@ -157,7 +157,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
     }
 
     private static int getID(OrePrefixes prefix, Materials material) {
-        return OreDictionary.getOreID(prefix.name() + material.name());
+        return OreDictionary.getOreID(prefix.name() + material.mName);
     }
 
     public static void run() {

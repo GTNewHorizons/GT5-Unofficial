@@ -11,7 +11,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.*;
 
-import static com.github.technus.tectech.elementalMatter.classes.cElementalMutableDefinitionStackMap.stackUpMap;
 import static com.github.technus.tectech.elementalMatter.definitions.eBosonDefinition.boson_Y__;
 import static com.github.technus.tectech.elementalMatter.definitions.eBosonDefinition.deadEnd;
 
@@ -57,20 +56,20 @@ public final class dAtomDefinition extends cElementalDefinition {//TODO Optimize
 
     @Deprecated
     public dAtomDefinition(iElementalDefinition... things) throws tElementalException {
-        this(true, stackUpMap(things).toImmutable());
+        this(true, new cElementalDefinitionStackMap(things));
     }
 
     @Deprecated
     private dAtomDefinition(boolean check, iElementalDefinition... things) throws tElementalException {
-        this(check, stackUpMap(things).toImmutable());
+        this(check, new cElementalDefinitionStackMap(things));
     }
 
     public dAtomDefinition(cElementalDefinitionStack... things) throws tElementalException {
-        this(true, stackUpMap(things).toImmutable());
+        this(true, new cElementalDefinitionStackMap(things));
     }
 
     private dAtomDefinition(boolean check, cElementalDefinitionStack... things) throws tElementalException {
-        this(check, stackUpMap(things).toImmutable());
+        this(check, new cElementalDefinitionStackMap(things));
     }
 
     public dAtomDefinition(cElementalDefinitionStackMap things) throws tElementalException {
