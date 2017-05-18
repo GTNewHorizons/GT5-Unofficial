@@ -1,0 +1,1986 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="1700"
+   height="1440"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="Plastics.svg"
+   inkscape:export-filename="C:\Users\Johannes\git\GT5-Unofficial\src\misc\Plastics.png"
+   inkscape:export-xdpi="216"
+   inkscape:export-ydpi="216">
+  <defs
+     id="defs4">
+    <marker
+       inkscape:stockid="SquareL"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="SquareL"
+       style="overflow:visible">
+      <path
+         id="path7208"
+         d="M -5.0,-5.0 L -5.0,5.0 L 5.0,5.0 L 5.0,-5.0 L -5.0,-5.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt"
+         transform="scale(0.8)" />
+    </marker>
+    <marker
+       inkscape:stockid="EmptyDiamondL"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="EmptyDiamondL"
+       style="overflow:visible">
+      <path
+         id="path7244"
+         d="M 0,-7.0710768 L -7.0710894,0 L 0,7.0710589 L 7.0710462,0 L 0,-7.0710768 z "
+         style="fill-rule:evenodd;fill:#FFFFFF;stroke:#000000;stroke-width:1.0pt"
+         transform="scale(0.8)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lstart"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lstart"
+       style="overflow:visible">
+      <path
+         id="path7138"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt"
+         transform="scale(0.8) translate(12.5,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotL"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="DotL"
+       style="overflow:visible">
+      <path
+         id="path7199"
+         d="M -2.5,-1.0 C -2.5,1.7600000 -4.7400000,4.0 -7.5,4.0 C -10.260000,4.0 -12.5,1.7600000 -12.5,-1.0 C -12.5,-3.7600000 -10.260000,-6.0 -7.5,-6.0 C -4.7400000,-6.0 -2.5,-3.7600000 -2.5,-1.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt"
+         transform="scale(0.8) translate(7.4, 1)" />
+    </marker>
+    <marker
+       inkscape:stockid="DiamondL"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="DiamondL"
+       style="overflow:visible">
+      <path
+         id="path3921"
+         d="M 0,-7.0710768 -7.0710894,0 0,7.0710589 7.0710462,0 0,-7.0710768 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="scale(0.8,0.8)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend"
+       style="overflow:visible">
+      <path
+         id="path3845"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-2"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3845-4"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="DiamondL"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="DiamondL-7"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3921-1"
+         d="M 0,-7.0710768 -7.0710894,0 0,7.0710589 7.0710462,0 0,-7.0710768 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="scale(0.8,0.8)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-2-9"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3845-4-0"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-2-9-2"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3845-4-0-2"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker4083"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path4085"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-2-9-23"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3845-4-0-3"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker4160"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path4162"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-2-6"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3845-4-5"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker4234"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path4236"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Lend-2-0"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3845-4-2"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="marker4234-4"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path4236-8"
+         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="matrix(-0.8,0,0,-0.8,-10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="DiamondL"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="DiamondL-7-9"
+       style="overflow:visible">
+      <path
+         inkscape:connector-curvature="0"
+         id="path3921-1-0"
+         d="M 0,-7.0710768 -7.0710894,0 0,7.0710589 7.0710462,0 0,-7.0710768 z"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"
+         transform="scale(0.8,0.8)" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.5"
+     inkscape:cx="931.31552"
+     inkscape:cy="726.51581"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3755"
+       empspacing="5"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,387.63782)">
+    <rect
+       style="opacity:0.98000004;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2.1655612;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       id="rect3757"
+       width="340"
+       height="160"
+       x="1340"
+       y="-367.63782" />
+    <text
+       xml:space="preserve"
+       style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;opacity:0.98000004;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+       x="1420"
+       y="-332.63782"
+       id="text3759"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3761"
+         x="1420"
+         y="-332.63782">Normal Reaction</tspan></text>
+    <g
+       id="g3773"
+       transform="translate(-410,-320)">
+      <rect
+         rx="23.75"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="190"
+         id="rect3771"
+         style="fill:#ff8000;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765"
+         y="1012.3622"
+         x="50"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="50"
+           id="tspan3767"
+           sodipodi:role="line">Sulfuric Acid</tspan></text>
+    </g>
+    <g
+       transform="translate(0,-1200)"
+       id="g3773-1"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7"
+         style="fill:#e1e1e1;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           id="tspan3767-0"
+           sodipodi:role="line">Ethylene</tspan></text>
+    </g>
+    <g
+       transform="translate(340,-1200)"
+       id="g3773-1-9"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4"
+         style="fill:#c8c8c8;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832">Polyethylene</tspan></text>
+    </g>
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:0.89442724;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#DiamondL)"
+       d="m 300,-197.63782 80,0"
+       id="path3836"
+       inkscape:connector-curvature="0" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="m 1360,-342.63782 40,0"
+       id="path4282"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;opacity:0.98000004;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+       x="1420"
+       y="-297.63782"
+       id="text3759-5"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3761-5"
+         x="1420"
+         y="-297.63782">Polymerization</tspan></text>
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:0.93541437;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker-end:url(#DiamondL)"
+       d="m 1360,-307.63782 35,0"
+       id="path4282-1"
+       inkscape:connector-curvature="0" />
+    <g
+       transform="translate(800,-1160)"
+       id="g3773-1-1"
+       style="opacity:0.98000004">
+      <rect
+         rx="17.5"
+         ry="20"
+         y="972.36218"
+         x="-80"
+         height="60.000694"
+         width="260.00009"
+         id="rect3771-7-5"
+         style="fill:#e1e1e1;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-2"
+         y="1012.3622"
+         x="50"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="50"
+           id="tspan3767-0-7"
+           sodipodi:role="line">Ethylene</tspan></text>
+    </g>
+    <g
+       transform="translate(1020,-1080)"
+       id="g3773-1-9-6"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1"
+         style="fill:#b7c8c4;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832-2">Hydrochloric Acid</tspan></text>
+    </g>
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow1Lend-2)"
+       d="m 980,-147.63782 80,0"
+       id="path3836-3"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <g
+       transform="translate(810,-1080)"
+       id="g3773-1-1-2"
+       style="opacity:0.98000004;fill:#179a9a;fill-opacity:1">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="-90"
+         height="59.999672"
+         width="260.00012"
+         id="rect3771-7-5-2"
+         style="fill:#179a9a;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-2-1"
+         y="1012.3622"
+         x="39.711914"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="39.711914"
+           id="tspan3767-0-7-6"
+           sodipodi:role="line">Chlorine</tspan></text>
+    </g>
+    <g
+       transform="translate(1020,-1160)"
+       id="g3773-1-9-6-8"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-5"
+         style="fill:#e1f0f0;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-7"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832-2-6">Vinyl Chloride</tspan></text>
+    </g>
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 980,-77.63782 20,0 0,-70"
+       id="path5174"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend-2)"
+       d="m 1040,-147.63782 0,70 20,0"
+       id="path5176"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc" />
+    <g
+       transform="translate(1360,-1160)"
+       id="g3773-1-9-6-8-1"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-5-8"
+         style="fill:#d7e6e6;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-7-9"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan5771">Polyvinyl Chloride</tspan></text>
+    </g>
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#DiamondL-7)"
+       d="m 1320,-157.63782 80,0"
+       id="path5554"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <g
+       transform="translate(1360,-940)"
+       id="g3773-1-9-6-8-1-7"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-5-8-9"
+         style="fill:#dcdcdc;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-7-9-5"
+         y="1010.3622"
+         x="170"
+         style="font-size:22.5px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1010.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan5771-4">Polydimethylsiloxane</tspan></text>
+    </g>
+    <g
+       transform="translate(1020,-940)"
+       id="g3773-1-9-6-8-1-7-3"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-5-8-9-1"
+         style="fill:#dcdcdc;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-7-9-5-2"
+         y="1010.3622"
+         x="170"
+         style="font-size:21px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1010.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan5771-4-3"
+           style="font-size:21px;text-align:center;text-anchor:middle">Dimethyldichlorosilane</tspan></text>
+    </g>
+    <g
+       transform="translate(1360,-860)"
+       id="g3773-1-9-6-3"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-4"
+         style="fill:#b7c8c4;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-1"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832-2-1">Hydrochloric Acid</tspan></text>
+    </g>
+    <g
+       transform="translate(1020,-860)"
+       id="g3773-1-9-6-3-3"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-4-8"
+         style="fill:#3232ff;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-1-7"
+         y="1012.3622"
+         x="170.32861"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170.32861"
+           sodipodi:role="line"
+           id="tspan3832-2-1-4">Water</tspan></text>
+    </g>
+    <g
+       transform="translate(680,-860)"
+       id="g3773-1-9-6-8-1-7-3-2"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-5-8-9-1-7"
+         style="fill:#3c3c50;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-7-9-5-2-7"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan5771-4-3-9"
+           style="font-size:27px;text-align:center;text-anchor:middle;fill:#ffffff">Silicon</tspan></text>
+    </g>
+    <g
+       transform="translate(680,-940)"
+       id="g3773-1-9-6-8-1-7-3-2-3"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-5-8-9-1-7-1"
+         style="fill:#c82ca0;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-7-9-5-2-7-9"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan5771-4-3-9-8"
+           style="font-size:27px;text-align:center;text-anchor:middle;fill:#000000">Chloromethane</tspan></text>
+    </g>
+    <g
+       transform="translate(0,-940)"
+       id="g3773-1-9-6-8-1-7-3-2-3-6"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-5-8-9-1-7-1-5"
+         style="fill:#ff0078;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-7-9-5-2-7-9-0"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan5771-4-3-9-8-2"
+           style="font-size:27px;text-align:center;text-anchor:middle;fill:#000000">Methane</tspan></text>
+    </g>
+    <g
+       transform="translate(130,-860)"
+       id="g3773-1-1-2-8"
+       style="opacity:0.98000004;fill:#179a9a;fill-opacity:1">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="-90"
+         height="59.999672"
+         width="260.00012"
+         id="rect3771-7-5-2-6"
+         style="fill:#179a9a;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-2-1-0"
+         y="1012.3622"
+         x="39.711914"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="39.711914"
+           id="tspan3767-0-7-6-2"
+           sodipodi:role="line">Chlorine</tspan></text>
+    </g>
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow1Lend-2)"
+       d="m 980,-167.63782 80,0"
+       id="path3836-3-0"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <g
+       transform="translate(680,-1240)"
+       id="g3773-1-9-6-3-3-6"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-4-8-1"
+         style="fill:#64c8f0;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-1-7-3"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832-2-1-4-8">Oxygen</tspan></text>
+    </g>
+    <g
+       transform="translate(1020,-1240)"
+       id="g3773-1-9-6-3-3-9"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-4-8-3"
+         style="fill:#3232ff;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-1-7-4"
+         y="1012.3622"
+         x="170.32861"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170.32861"
+           sodipodi:role="line"
+           id="tspan3832-2-1-4-4">Water</tspan></text>
+    </g>
+    <g
+       transform="translate(680,-1320)"
+       id="g3773-1-9-6-6"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-0"
+         style="fill:#b7c8c4;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-6"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832-2-61">Hydrochloric Acid</tspan></text>
+    </g>
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 980,-317.63782 20,0 0,150"
+       id="path6124"
+       inkscape:connector-curvature="0" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 980,-237.63782 20,0"
+       id="path6126"
+       inkscape:connector-curvature="0" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend-2-9)"
+       d="m 1040,-167.63782 0,-70 20,0"
+       id="path6128"
+       inkscape:connector-curvature="0" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend-2-9)"
+       d="m 1320,62.36218 80,0"
+       id="path6320"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend-2-9)"
+       d="m 1380,62.36218 0,80 20,0"
+       id="path6322"
+       inkscape:connector-curvature="0" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 1320,142.36218 20,0 0,-80"
+       id="path6324"
+       inkscape:connector-curvature="0" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend-2-9)"
+       d="m 980,62.36218 80,0"
+       id="path6706"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 980,142.36218 20,0 0,-80"
+       id="path6708"
+       inkscape:connector-curvature="0" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 300,142.36218 20,0 0,-80"
+       id="path7092"
+       inkscape:connector-curvature="0" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend-2-9)"
+       d="m 300,62.36218 420,0"
+       id="path7094"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend-2-9)"
+       d="m 510,62.36218 0,50"
+       id="path7096"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <g
+       transform="translate(340,-860)"
+       id="g3773-1-9-6-1"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-7"
+         style="fill:#b7c8c4;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-4"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832-2-0">Hydrochloric Acid</tspan></text>
+    </g>
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 0,212.36218 1700,0"
+       id="path3934"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <g
+       transform="translate(1360,-720)"
+       id="g3773-1-9-6-8-1-7-9"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-5-8-9-4"
+         style="fill:#646464;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-7-9-5-8"
+         y="1010.3622"
+         x="170"
+         style="font-size:22.5px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1010.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan5771-4-8"
+           style="font-size:21px;fill:#ffffff">Polytetrafluoroethylene</tspan></text>
+    </g>
+    <g
+       transform="translate(1020,-720)"
+       id="g3773-1-9-6-8-1-7-9-2"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-5-8-9-4-4"
+         style="fill:#7d7d7d;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-7-9-5-8-5"
+         y="1010.3622"
+         x="170"
+         style="font-size:22.5px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1010.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan5771-4-8-5"
+           style="font-size:22.5px;fill:#ffffff">Tetrafluoroethylene</tspan></text>
+    </g>
+    <g
+       transform="translate(1020,-640)"
+       id="g3773-1-9-6-3-1"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-4-7"
+         style="fill:#b7c8c4;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-1-1"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832-2-1-1">Hydrochloric Acid</tspan></text>
+    </g>
+    <g
+       transform="translate(680,-640)"
+       id="g3773-1-9-6-3-1-5"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-4-7-2"
+         style="fill:#0088aa;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-1-1-7"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832-2-1-1-6">Hydrofluoric Acid</tspan></text>
+    </g>
+    <g
+       transform="translate(680,-720)"
+       id="g3773-1-9-6-8-1-7-3-2-3-1"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-5-8-9-1-7-1-4"
+         style="fill:#892ca0;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-7-9-5-2-7-9-2"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan5771-4-3-9-8-3"
+           style="font-size:27px;text-align:center;text-anchor:middle;fill:#000000">Chloroform</tspan></text>
+    </g>
+    <g
+       transform="translate(0,-720)"
+       id="g3773-1-9-6-8-1-7-3-2-3-6-4"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-5-8-9-1-7-1-5-1"
+         style="fill:#ff0078;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-7-9-5-2-7-9-0-1"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan5771-4-3-9-8-2-3"
+           style="font-size:27px;text-align:center;text-anchor:middle;fill:#000000">Methane</tspan></text>
+    </g>
+    <g
+       transform="translate(130,-640)"
+       id="g3773-1-1-2-8-8"
+       style="opacity:0.98000004;fill:#179a9a;fill-opacity:1">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="-90"
+         height="59.999672"
+         width="260.00012"
+         id="rect3771-7-5-2-6-7"
+         style="fill:#179a9a;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-2-1-0-4"
+         y="1012.3622"
+         x="39.711914"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="39.711914"
+           id="tspan3767-0-7-6-2-2"
+           sodipodi:role="line">Chlorine</tspan></text>
+    </g>
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 300,362.36217 20,0 0,-79.99999"
+       id="path7092-7"
+       inkscape:connector-curvature="0" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend-2-9)"
+       d="m 300,282.36218 420,0"
+       id="path7094-7"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend-2-9)"
+       d="m 510,282.36218 0,50"
+       id="path7096-9"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <g
+       transform="translate(340,-640)"
+       id="g3773-1-9-6-1-3"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-7-1"
+         style="fill:#b7c8c4;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-4-9"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832-2-0-8">Hydrochloric Acid</tspan></text>
+    </g>
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow1Lend-2)"
+       d="m 980,282.36218 80,0"
+       id="path3836-3-02"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 980,352.36218 20,0 0,-70"
+       id="path5174-8"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend-2)"
+       d="m 1040,282.36218 0,70 20,0"
+       id="path5176-6"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#DiamondL-7)"
+       d="m 1320,282.36218 80,0"
+       id="path5554-0"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 0,-7.63782 1700,0"
+       id="path3934-6"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 680,-387.63782 0,380"
+       id="path4321"
+       inkscape:connector-curvature="0" />
+    <g
+       transform="translate(1360,-260)"
+       id="g3773-1-9-6-3-1-1"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-4-7-3"
+         style="fill:#c88c14;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-1-1-8"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832-2-1-1-9">Epoxy Resin</tspan></text>
+    </g>
+    <g
+       transform="translate(1360,-180)"
+       id="g3773-1-9-6-3-1-1-3"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-4-7-3-4"
+         style="fill:#0000c8;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-1-1-8-4"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832-2-1-1-9-6">Salt Water</tspan></text>
+    </g>
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 1700,432.36218 -1700,0"
+       id="path4377"
+       inkscape:connector-curvature="0" />
+    <g
+       transform="translate(1020,-260)"
+       id="g3773-1-9-6-3-1-1-0"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-4-7-3-6"
+         style="fill:#501d05;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-1-1-8-6"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832-2-1-1-9-1">Epichlorohydrin</tspan></text>
+    </g>
+    <g
+       transform="translate(1020,-420)"
+       id="g3773-1-9-6-3-1-1-8"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-4-7-3-49"
+         style="fill:#003380;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-1-1-8-63"
+         y="1012.3622"
+         x="170"
+         style="font-size:25px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832-2-1-1-9-7">Sodium Hydroxide</tspan></text>
+    </g>
+    <g
+       transform="translate(1020,-100)"
+       id="g3773-1-9-6-3-1-1-88"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-4-7-3-2"
+         style="fill:#d4aa00;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-1-1-8-9"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832-2-1-1-9-13">Bisphenol A</tspan></text>
+    </g>
+    <g
+       transform="translate(680,-420)"
+       id="g3773-1-9-6-3-1-1-8-5"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-4-7-3-49-9"
+         style="fill:#003380;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-1-1-8-63-8"
+         y="1012.3622"
+         x="170"
+         style="font-size:25px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832-2-1-1-9-7-4">Sodium Hydroxide</tspan></text>
+    </g>
+    <g
+       transform="translate(680,-340)"
+       id="g3773-1-9-6-3-1-1-8-5-0"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-4-7-3-49-9-7"
+         style="fill:#6f8a91;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-1-1-8-63-8-6"
+         y="1012.3622"
+         x="170"
+         style="font-size:25px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832-2-1-1-9-7-4-3">Hypochlorous Acid</tspan></text>
+    </g>
+    <g
+       transform="translate(680,-260)"
+       id="g3773-1-9-6-3-1-1-8-5-6"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-4-7-3-49-9-1"
+         style="fill:#87deaa;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-1-1-8-63-8-5"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832-2-1-1-9-7-4-4">Allyl Chloride</tspan></text>
+    </g>
+    <g
+       transform="translate(680,-100)"
+       id="g3773-1-9-6-3-1-2"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-4-7-0"
+         style="fill:#784421;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-1-1-9"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832-2-1-1-7">Phenol</tspan></text>
+    </g>
+    <g
+       transform="translate(680,-20)"
+       id="g3773-1-9-6-3-1-3"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-4-7-7"
+         style="fill:#afafaf;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-1-1-2"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832-2-1-1-60">Acetone</tspan></text>
+    </g>
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker4234-4)"
+       d="m 1320,742.36218 80,0"
+       id="path4563"
+       inkscape:connector-curvature="0" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker4234-4)"
+       d="m 1380,742.36218 0,80 20,0"
+       id="path4565"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 1320,582.36218 20,0 0,160 0,160 -20,0"
+       id="path4775"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 1000,982.36218 0,-160 -20,0"
+       id="path4985"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccc" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker4234-4)"
+       d="m 980,902.36218 80,0"
+       id="path4987"
+       inkscape:connector-curvature="0" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker4234-4)"
+       d="m 980,742.36218 80,0"
+       id="path5197"
+       inkscape:connector-curvature="0" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 980,582.36218 20,0 0,160"
+       id="path5407"
+       inkscape:connector-curvature="0" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 980,662.36218 20,0"
+       id="path5409"
+       inkscape:connector-curvature="0" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 980,982.36218 20,0"
+       id="path5411"
+       inkscape:connector-curvature="0" />
+    <g
+       transform="translate(340,-100)"
+       id="g3773-1-9-6-3-1-2-1"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-4-7-0-2"
+         style="fill:#552200;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-1-1-9-0"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832-2-1-1-7-0">Cumene</tspan></text>
+    </g>
+    <g
+       transform="translate(340,-20)"
+       id="g3773-1-9-6-3-3-6-1"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-4-8-1-4"
+         style="fill:#64c8f0;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-1-7-3-6"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832-2-1-4-8-0">Oxygen</tspan></text>
+    </g>
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker4234-4)"
+       d="m 640,902.36218 80,0"
+       id="path5467"
+       inkscape:connector-curvature="0" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker4234-4)"
+       d="m 700,902.36218 0,80 20,0"
+       id="path5677"
+       inkscape:connector-curvature="0" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 640,982.36218 20,0 0,-80"
+       id="path5887"
+       inkscape:connector-curvature="0" />
+    <g
+       transform="translate(0,-100)"
+       id="g3773-1-9-6-3-1-2-1-7"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-4-7-0-2-1"
+         style="fill:#e1dd55;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-1-1-9-0-7"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832-2-1-1-7-0-7">Propene</tspan></text>
+    </g>
+    <g
+       transform="translate(0,-20)"
+       id="g3773-1-9-6-3-1-2-1-77"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-4-7-0-2-3"
+         style="fill:#1a1a1a;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-1-1-9-0-3"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan5942">Benzene</tspan></text>
+    </g>
+    <g
+       transform="translate(0,-180)"
+       id="g3773-1-9-6-3-1-2-1-9"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-4-7-0-2-9"
+         style="fill:#dcdc00;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-1-1-9-0-8"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832-2-1-1-7-0-1">Phosphoric Acid</tspan></text>
+    </g>
+    <rect
+       style="fill:#a0892c;fill-opacity:1;fill-rule:nonzero;stroke:none"
+       id="rect5946"
+       width="220"
+       height="160"
+       x="-340"
+       y="352.36218"
+       rx="20"
+       ry="20" />
+    <g
+       transform="translate(340,-260)"
+       id="g3773-1-9-6-3-1-2-1-7-8"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-4-7-0-2-1-2"
+         style="fill:#e1dd55;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-1-1-9-0-7-6"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832-2-1-1-7-0-7-6">Propene</tspan></text>
+    </g>
+    <g
+       transform="translate(680,-180)"
+       id="g3773-1-9-6-3-1-16-0"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-4-7-5-3"
+         style="fill:#b7c8c4;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-1-1-75-8"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832-2-1-1-4-0">Hydrochloric Acid</tspan></text>
+    </g>
+    <g
+       transform="translate(470,-180)"
+       id="g3773-1-1-2-8-8-1"
+       style="opacity:0.98000004;fill:#179a9a;fill-opacity:1">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="-90"
+         height="59.999672"
+         width="260.00012"
+         id="rect3771-7-5-2-6-7-2"
+         style="fill:#179a9a;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-2-1-0-4-5"
+         y="1012.3622"
+         x="39.711914"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="39.711914"
+           id="tspan3767-0-7-6-2-2-0"
+           sodipodi:role="line">Chlorine</tspan></text>
+    </g>
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker4234-4)"
+       d="m 300,902.36218 80,0"
+       id="path6029"
+       inkscape:connector-curvature="0" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 300,822.36218 20,0 0,160 -20,0"
+       id="path6239"
+       inkscape:connector-curvature="0" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker4234-4)"
+       d="m 640,742.36218 80,0"
+       id="path6241"
+       inkscape:connector-curvature="0" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 640,822.36218 20,0 0,-80"
+       id="path6451"
+       inkscape:connector-curvature="0" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker4234-4)"
+       d="m 700,742.36218 0,80 20,0"
+       id="path6453"
+       inkscape:connector-curvature="0" />
+    <g
+       transform="translate(469.99988,-500)"
+       id="g3773-1-1-2-8-8-1-9"
+       style="opacity:0.98000004;fill:#179a9a;fill-opacity:1">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="-90"
+         height="59.999672"
+         width="260.00012"
+         id="rect3771-7-5-2-6-7-2-4"
+         style="fill:#179a9a;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-2-1-0-4-5-7"
+         y="1012.3622"
+         x="39.711914"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="39.711914"
+           id="tspan3767-0-7-6-2-2-0-8"
+           sodipodi:role="line">Chlorine</tspan></text>
+    </g>
+    <g
+       transform="translate(340,-420)"
+       id="g3773-1-9-6-3-3-3"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-4-8-5"
+         style="fill:#3232ff;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-1-7-1"
+         y="1012.3622"
+         x="170.32861"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170.32861"
+           sodipodi:role="line"
+           id="tspan3832-2-1-4-2">Water</tspan></text>
+    </g>
+    <g
+       transform="translate(340,-340)"
+       id="g3773-1-9-6-3-3-3-0"
+       style="opacity:0.98000004">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-4-8-5-1"
+         style="fill:#ffdcdc;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-1-7-1-6"
+         y="1012.3622"
+         x="170.32861"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170.32861"
+           sodipodi:role="line"
+           id="tspan3832-2-1-4-2-4">Mercury</tspan></text>
+    </g>
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker4234-4)"
+       d="m 640,662.36218 80,0"
+       id="path6758"
+       inkscape:connector-curvature="0" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 640,502.36218 20,0 0,160"
+       id="path6968"
+       inkscape:connector-curvature="0" />
+    <path
+       style="opacity:0.98000004;fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 640,582.36218 20,0"
+       id="path6970"
+       inkscape:connector-curvature="0" />
+    <g
+       transform="translate(1360,200)"
+       id="g3773-1-9-6-3-1-1-06">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-4-7-3-1"
+         style="fill:#f9c887;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-1-1-8-8"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832-2-1-1-9-9">Glue</tspan></text>
+    </g>
+    <g
+       transform="translate(1020,120)"
+       id="g3773-1-9-6-3-1-3-8">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-4-7-7-4"
+         style="fill:#afafaf;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-1-1-2-1"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832-2-1-1-60-4">Acetone</tspan></text>
+    </g>
+    <g
+       transform="translate(1020,200)"
+       id="g3773-1-9-6-3-1-3-3">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-4-7-7-9"
+         style="fill:#ff9955;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-1-1-2-8"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832-2-1-1-60-8">Polyvinyl Acetate</tspan></text>
+    </g>
+    <g
+       transform="translate(1020,280)"
+       id="g3773-1-9-6-3-1-3-3-0">
+      <rect
+         rx="20"
+         ry="20"
+         y="972.36218"
+         x="40"
+         height="60"
+         width="260"
+         id="rect3771-7-4-1-4-7-7-9-8"
+         style="fill:#eec6af;fill-opacity:1;stroke:none" />
+      <text
+         sodipodi:linespacing="125%"
+         id="text3765-4-8-4-1-1-2-8-7"
+         y="1012.3622"
+         x="170"
+         style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         xml:space="preserve"><tspan
+           y="1012.3622"
+           x="170"
+           sodipodi:role="line"
+           id="tspan3832-2-1-1-60-8-7">Methyl Acetate</tspan></text>
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;opacity:0.98000004;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+       x="1420"
+       y="-262.63782"
+       id="text3759-5-8"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3761-5-3"
+         x="1420"
+         y="-262.63782">Distillation</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:27px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;opacity:0.98000004;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+       x="1420"
+       y="-227.63782"
+       id="text3759-5-8-1"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3761-5-3-0"
+         x="1420"
+         y="-227.63782">Mixer</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#DotL)"
+       d="m 1360,115 35,0"
+       id="path7130"
+       inkscape:connector-curvature="0"
+       transform="translate(0,-387.63782)" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#SquareL)"
+       d="m 1360,150 35,0"
+       id="path7132"
+       inkscape:connector-curvature="0"
+       transform="translate(0,-387.63782)" />
+  </g>
+</svg>
