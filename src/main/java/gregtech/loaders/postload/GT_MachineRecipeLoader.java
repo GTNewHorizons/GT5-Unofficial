@@ -2809,8 +2809,8 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addChemicalRecipe(Materials.Chlorine.getCells(1), GT_Utility.getIntegratedCircuit(1), Materials.Hydrogen.getGas(1000), Materials.HydrochloricAcid.getFluid(1000), Materials.Empty.getCells(1), 60, 8);
         GT_Values.RA.addChemicalRecipe(Materials.Hydrogen.getCells(1), GT_Utility.getIntegratedCircuit(1), Materials.Chlorine.getGas(1000), Materials.HydrochloricAcid.getFluid(1000), Materials.Empty.getCells(1), 60, 8);
 
-        GT_Values.RA.addChemicalRecipe(Materials.Chlorine.getCells(1), GT_Values.NI, Materials.Propene.getGas(1000), Materials.AllylChloride.getFluid(1000), Materials.HydrochloricAcid.getCells(1), 160);
-        GT_Values.RA.addChemicalRecipe(Materials.Propene.getCells(1), GT_Values.NI, Materials.Chlorine.getGas(1000), Materials.HydrochloricAcid.getFluid(1000), Materials.AllylChloride.getCells(1), 160);
+        GT_Values.RA.addChemicalRecipe(Materials.Chlorine.getCells(2), GT_Values.NI, Materials.Propene.getGas(1000), Materials.AllylChloride.getFluid(1000), Materials.HydrochloricAcid.getCells(1), 160);
+        GT_Values.RA.addChemicalRecipe(Materials.Propene.getCells(1), GT_Values.NI, Materials.Chlorine.getGas(2000), Materials.HydrochloricAcid.getFluid(1000), Materials.AllylChloride.getCells(1), 160);
 
         GT_Values.RA.addChemicalRecipe(Materials.Chlorine.getCells(10), Materials.Mercury.getCells(1),     Materials.Water.getFluid(10000),     Materials.HypochlorousAcid.getFluid(10000), Materials.Empty.getCells(11), 600, 8);
         GT_Values.RA.addChemicalRecipe(Materials.Water.getCells(10),     Materials.Mercury.getCells(1),     Materials.Chlorine.getGas(10000),     Materials.HypochlorousAcid.getFluid(10000), Materials.Empty.getCells(11), 600, 8);
@@ -2842,10 +2842,10 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addChemicalRecipe(Materials.HydrochloricAcid.getCells(1),     Materials.Acetone.getCells(1),             Materials.Phenol.getFluid(2000),             Materials.BisphenolA.getFluid(1000), Materials.Water.getCells(1), Materials.Empty.getCells(1), 160);
         GT_Values.RA.addChemicalRecipe(Materials.Phenol.getCells(2),             Materials.HydrochloricAcid.getCells(1), Materials.Acetone.getFluid(1000),             Materials.BisphenolA.getFluid(1000), Materials.Water.getCells(1), Materials.Empty.getCells(2), 160);
 
-        GT_Values.RA.addChemicalRecipe(Materials.Chlorine.getCells(1),     ItemList.Circuit_Integrated.getWithDamage(0, 1), Materials.Methane.getGas(1000),  Materials.Chloromethane.getGas(1000),     Materials.HydrochloricAcid.getCells(1), 80);
-        GT_Values.RA.addChemicalRecipe(Materials.Methane.getCells(1),     ItemList.Circuit_Integrated.getWithDamage(0, 1), Materials.Chlorine.getGas(1000), Materials.HydrochloricAcid.getFluid(1000), Materials.Chloromethane.getCells(1), 80);
-        GT_Values.RA.addChemicalRecipe(Materials.Chlorine.getCells(3),     ItemList.Circuit_Integrated.getWithDamage(0, 3), Materials.Methane.getGas(1000),  Materials.Chloroform.getFluid(1000),         Materials.HydrochloricAcid.getCells(3), 240);
-        GT_Values.RA.addChemicalRecipe(Materials.Methane.getCells(1),     ItemList.Circuit_Integrated.getWithDamage(0, 3), Materials.Chlorine.getGas(3000), Materials.HydrochloricAcid.getFluid(3000), Materials.Chloroform.getCells(1), 240);
+        GT_Values.RA.addChemicalRecipe(Materials.Chlorine.getCells(2),     ItemList.Circuit_Integrated.getWithDamage(0, 1), Materials.Methane.getGas(1000),  Materials.Chloromethane.getGas(1000),     Materials.HydrochloricAcid.getCells(1), 80);
+        GT_Values.RA.addChemicalRecipe(Materials.Methane.getCells(1),     ItemList.Circuit_Integrated.getWithDamage(0, 1), Materials.Chlorine.getGas(2000), Materials.HydrochloricAcid.getFluid(1000), Materials.Chloromethane.getCells(1), 80);
+        GT_Values.RA.addChemicalRecipe(Materials.Chlorine.getCells(6),     ItemList.Circuit_Integrated.getWithDamage(0, 3), Materials.Methane.getGas(1000),  Materials.Chloroform.getFluid(1000),         Materials.HydrochloricAcid.getCells(3), 240);
+        GT_Values.RA.addChemicalRecipe(Materials.Methane.getCells(1),     ItemList.Circuit_Integrated.getWithDamage(0, 3), Materials.Chlorine.getGas(3000), Materials.HydrochloricAcid.getFluid(6000), Materials.Chloroform.getCells(1), 240);
 
         GT_Values.RA.addChemicalRecipe(Materials.Fluorine.getCells(1),     GT_Values.NI, Materials.Hydrogen.getGas(1000), Materials.HydrofluoricAcid.getFluid(1000), Materials.Empty.getCells(1), 60, 8);
         GT_Values.RA.addChemicalRecipe(Materials.Hydrogen.getCells(1),     GT_Values.NI, Materials.Fluorine.getGas(1000), Materials.HydrofluoricAcid.getFluid(1000), Materials.Empty.getCells(1), 60, 8);
