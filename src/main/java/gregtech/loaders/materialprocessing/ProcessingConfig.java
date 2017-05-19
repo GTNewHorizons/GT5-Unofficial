@@ -3,6 +3,7 @@ package gregtech.loaders.materialprocessing;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.TextureSet;
 
 public class ProcessingConfig implements gregtech.api.interfaces.IMaterialHandler {
@@ -12,6 +13,7 @@ public class ProcessingConfig implements gregtech.api.interfaces.IMaterialHandle
 
     @Override
     public void onMaterialsInit() {
+        /** This is just left here as an example of how to add new materials. **/
         int i = 0;
         for (int j = GregTech_API.sMaterialProperties.get("general", "AmountOfCustomMaterialSlots", 16); i < j; i++) {
             String aID = (i < 10 ? "0" : "") + i;

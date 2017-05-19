@@ -119,23 +119,25 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         aNBT.setInteger("mRuntime", mRuntime);
 
         if (mOutputItems != null) {
-        	aNBT.setInteger("mOutputItemsLength", mOutputItems.length);
-        	for (int i = 0; i < mOutputItems.length; i++)
+            aNBT.setInteger("mOutputItemsLength", mOutputItems.length);
+            for (int i = 0; i < mOutputItems.length; i++)
                 if (mOutputItems[i] != null) {
                     NBTTagCompound tNBT = new NBTTagCompound();
                     mOutputItems[i].writeToNBT(tNBT);
                     aNBT.setTag("mOutputItem" + i, tNBT);
                 }
         }
+
         if (mOutputFluids != null) {
-        	aNBT.setInteger("mOutputFluidsLength", mOutputFluids.length);
-        	for (int i = 0; i < mOutputFluids.length; i++)
+            aNBT.setInteger("mOutputFluidsLength", mOutputFluids.length);
+            for (int i = 0; i < mOutputFluids.length; i++)
                 if (mOutputFluids[i] != null) {
                     NBTTagCompound tNBT = new NBTTagCompound();
                     mOutputFluids[i].writeToNBT(tNBT);
                     aNBT.setTag("mOutputFluids" + i, tNBT);
                 }
         }
+
         aNBT.setBoolean("mWrench", mWrench);
         aNBT.setBoolean("mScrewdriver", mScrewdriver);
         aNBT.setBoolean("mSoftHammer", mSoftHammer);
@@ -154,12 +156,12 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
         mEfficiency = aNBT.getInteger("mEfficiency");
         mPollution = aNBT.getInteger("mPollution");
         mRuntime = aNBT.getInteger("mRuntime");
-        
+
         int aOutputItemsLength = aNBT.getInteger("mOutputItemsLength");
         if (aOutputItemsLength > 0) {
             mOutputItems = new ItemStack[aOutputItemsLength];
             for (int i = 0; i < mOutputItems.length; i++)
-            	mOutputItems[i] = GT_Utility.loadItem(aNBT, "mOutputItem" + i);
+                mOutputItems[i] = GT_Utility.loadItem(aNBT, "mOutputItem" + i);
         }
 
         int aOutputFluidsLength = aNBT.getInteger("mOutputFluidsLength");
@@ -168,7 +170,8 @@ public abstract class GT_MetaTileEntity_MultiBlockBase extends MetaTileEntity {
             for (int i = 0; i < mOutputFluids.length; i++)
                 mOutputFluids[i] = GT_Utility.loadFluid(aNBT, "mOutputFluids" + i);
         }
-        
+
+
         mWrench = aNBT.getBoolean("mWrench");
         mScrewdriver = aNBT.getBoolean("mScrewdriver");
         mSoftHammer = aNBT.getBoolean("mSoftHammer");
