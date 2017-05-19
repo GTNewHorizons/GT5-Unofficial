@@ -2732,8 +2732,10 @@ public class GT_MachineRecipeLoader implements Runnable {
     }
 
     /**
-     * Adds recipes related to Acetic Acid, Acetone, Calcium Acetate, Charcoal Byproducts, Carbon Monoxide, Ethanol, Ethylene, Fermented Biomass, Methanol, Methyl Acetate, Polyvinyl Acetate, Propene, Sulfuric Ethylene, Vinyl Acetate
-     * Adds replacement recipes for Polyethylene
+     * Adds recipes related to the processing of Charcoal Byproducts, Fermented Biomass
+     * Adds recipes related to the production of Glue, Gunpowder, Polyvinyl Chloride
+     * Adds replacement recipes for Epoxy Resin, Nitric Acid, Polyethylene, Polydimethylsiloxane (Silicone), Polytetrafluoroethylene, Rocket Fuel, Sulfuric Acid
+     * Instrumental materials are not mentioned here.
      */
     private void addRecipesApril2017ChemistryUpdate(){
 
@@ -2898,6 +2900,9 @@ public class GT_MachineRecipeLoader implements Runnable {
         GT_Values.RA.addChemicalRecipe(Materials.HydricSulfide.getCells(1), GT_Values.NI, Materials.Oxygen.getGas(3000), Materials.SulfurDioxide.getGas(1000), Materials.Water.getCells(1), 120);
         GT_Values.RA.addChemicalRecipe(Materials.Oxygen.getCells(3), GT_Values.NI, Materials.HydricSulfide.getGas(1000), Materials.Water.getFluid(1000), Materials.SulfurDioxide.getCells(1), 120);
 
+        GT_Values.RA.addChemicalRecipe(Materials.SulfurDioxide.getCells(1), GT_Values.NI, Materials.HydricSulfide.getGas(2000), Materials.Water.getFluid(2000), Materials.Sulfur.getDust(3), Materials.Empty.getCells(1), 120);
+        GT_Values.RA.addChemicalRecipe(Materials.HydricSulfide.getCells(2), GT_Values.NI, Materials.SulfurDioxide.getGas(1000), Materials.Water.getFluid(2000), Materials.Sulfur.getDust(3), Materials.Empty.getCells(2), 120);
+        
         GT_Values.RA.addChemicalRecipe(Materials.Oxygen.getCells(1), GT_Values.NI, Materials.SulfurDioxide.getGas(1000), Materials.SulfurTrioxide.getGas(1000), Materials.Empty.getCells(1), 200);
         GT_Values.RA.addChemicalRecipe(Materials.SulfurDioxide.getCells(1), GT_Values.NI, Materials.Oxygen.getGas(1000), Materials.SulfurTrioxide.getGas(1000), Materials.Empty.getCells(1), 200);
 
