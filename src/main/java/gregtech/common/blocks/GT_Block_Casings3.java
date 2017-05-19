@@ -24,9 +24,9 @@ public class GT_Block_Casings3
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".7.name", "Magic Hazard Sign Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".8.name", "Frost Hazard Sign Block");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Noise Hazard Sign Block");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Grate Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Filter Casing");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Radiation Proof Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Grate Machine Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Filter Machine Casing");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Radiation Proof Machine Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Bronze Firebox Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Steel Firebox Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Tungstensteel Firebox Casing");

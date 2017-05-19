@@ -300,7 +300,7 @@ public class GT_NEI_AssLineHandler
         }
     }
 
-    public class FixedPositionedStack
+    public static class FixedPositionedStack
             extends PositionedStack {
         public final int mChance;
         public boolean permutated = false;
