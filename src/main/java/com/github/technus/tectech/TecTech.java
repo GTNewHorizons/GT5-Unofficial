@@ -21,7 +21,7 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.HashMap;
 
 @Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION, dependencies = "required-after:Forge@[10.13.4.1614,);"
-        + "required-after:YAMCore@[0.5.70,);" + "required-after:gregtech;" + "after:CoFHCore")
+        + "required-after:YAMCore@[0.5.70,);" + "required-after:gregtech;" + "after:CoFHCore;" + "after:Thaumcraft;")
 public class TecTech {
 
     @SidedProxy(clientSide = Reference.CLIENTSIDE, serverSide = Reference.SERVERSIDE)
@@ -38,7 +38,7 @@ public class TecTech {
     public static CreativeTabs mainTab = null;
     private static boolean oneTimeFix = false;
 
-    public static boolean hasCOFH = false;
+    public static boolean hasCOFH = false, hasThaumcraft = false;
 
     public static void AddLoginError(String pMessage) {
         if (Module_AdminErrorLogs != null)
@@ -63,6 +63,9 @@ public class TecTech {
 
     @EventHandler
     public void Load(FMLInitializationEvent event) {
+        hasCOFH = Loader.isModLoaded(Reference.COFHCORE);
+        hasThaumcraft = Loader.isModLoaded(Reference.THAUMCRAFT);
+
         GTCustomLoader = new MainLoader();
         GTCustomLoader.load();
 
@@ -71,7 +74,6 @@ public class TecTech {
 
     @EventHandler
     public void PostLoad(FMLPostInitializationEvent PostEvent) {
-        hasCOFH = Loader.isModLoaded(Reference.COFHCORE);
 
         GTCustomLoader.postLoad();
     }

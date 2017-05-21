@@ -21,6 +21,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
+import static com.github.technus.tectech.TecTech.hasThaumcraft;
 import static com.github.technus.tectech.TecTech.mainTab;
 import static com.github.technus.tectech.magicAddon.definitions.AspectDefinitionCompat.aspectDefinitionCompat;
 import static com.github.technus.tectech.magicAddon.thing.metaTileEntity.multi.EssentiaCompat.essentiaContainerCompat;
@@ -35,7 +36,7 @@ public final class MainLoader {//TODO add checks for - is mod loaded dreamcraft 
         TecTech.Logger.info("Elemental Init Done");
 
         progressBarLoad.step("Thaumcraft Compatibility");
-        if (Loader.isModLoaded("Thaumcraft")) {
+        if (hasThaumcraft) {
             essentiaContainerCompat = new EssentiaCompatEnabled();
             essentiaContainerCompat.run();
         } else {
@@ -57,7 +58,7 @@ public final class MainLoader {//TODO add checks for - is mod loaded dreamcraft 
         ProgressManager.ProgressBar progressBarPostLoad = ProgressManager.push("TecTech Post Loader", 4);
 
         progressBarPostLoad.step("Thaumcraft Compatibility");
-        if (Loader.isModLoaded("Thaumcraft")) {
+        if (hasThaumcraft) {
             aspectDefinitionCompat = new AspectDefinitionCompatEnabled();
             aspectDefinitionCompat.run();
         } else {
