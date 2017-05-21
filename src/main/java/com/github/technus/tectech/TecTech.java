@@ -62,7 +62,10 @@ public class TecTech {
     }
 
     @EventHandler
-    public void load(FMLInitializationEvent event) {
+    public void Load(FMLInitializationEvent event) {
+        GTCustomLoader = new MainLoader();
+        GTCustomLoader.load();
+
         proxy.registerRenderInfo();
     }
 
@@ -70,8 +73,7 @@ public class TecTech {
     public void PostLoad(FMLPostInitializationEvent PostEvent) {
         hasCOFH = Loader.isModLoaded(Reference.COFHCORE);
 
-        GTCustomLoader = new MainLoader();
-        GTCustomLoader.run();
+        GTCustomLoader.postLoad();
     }
 
     @EventHandler

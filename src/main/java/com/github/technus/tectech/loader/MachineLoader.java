@@ -1,5 +1,7 @@
 package com.github.technus.tectech.loader;
 
+import com.github.technus.tectech.magicAddon.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_essentiaDequantizer;
+import com.github.technus.tectech.magicAddon.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_essentiaQuantizer;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.*;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Data;
@@ -125,7 +127,6 @@ public class MachineLoader implements Runnable {
         eM_energymulti64_UXV.set(new GT_MetaTileEntity_Hatch_EnergyMulti(
                 15125, "hatch.energymulti64.tier.13", "UXV 64A Energy Hatch", 13, 64).getStackForm(1L));
 
-
         // ===================================================================================================
         // Multi AMP Power OUTPUTS
         // ===================================================================================================
@@ -185,6 +186,10 @@ public class MachineLoader implements Runnable {
         Machine_Multi_MatterToEM.set(new GT_MetaTileEntity_EM_quantizer(15321, "multimachine.em.mattertoem", "Matter Quantizer").getStackForm(1L));
         Machine_Multi_EMToMatter.set(new GT_MetaTileEntity_EM_dequantizer(15322, "multimachine.em.emtomatter", "Matter Dequantizer").getStackForm(1L));
 
+        // COMPAT
+        Machine_Multi_EssentiaToEM.set(new GT_MetaTileEntity_EM_essentiaQuantizer(15323, "multimachine.em.essentiatoem", "Essentia Quantizer").getStackForm(1L));
+        Machine_Multi_EMToEssentia.set(new GT_MetaTileEntity_EM_essentiaDequantizer(15324, "multimachine.em.emtoessentia", "Essentia Dequantizer").getStackForm(1L));
+
         Machine_Multi_Scanner.set(new GT_MetaTileEntity_EM_scanner(15330, "multimachine.em.scanner", "Elemental Scanner").getStackForm(1L));
         Machine_Multi_Research.set(new GT_MetaTileEntity_EM_research(15331, "multimachine.em.research", "Research station").getStackForm(1L));
 
@@ -204,10 +209,10 @@ public class MachineLoader implements Runnable {
         Machine_Multi_Annihilation.set(new GT_MetaTileEntity_EM_annihilation(15405, "multimachine.em.annihilation", "Annihilation Generator").getStackForm(1L));
         Machine_Multi_BHG.set(new GT_MetaTileEntity_EM_bhg(15410, "multimachine.em.blackholegenerator", "Black Hole Generator").getStackForm(1L));
 
-
         // ===================================================================================================
         // Hatches
         // ===================================================================================================
+
         Parametrizer_Hatch.set(new GT_MetaTileEntity_Hatch_Param(15420, "hatch.param.tier.07", "Parametrizer", 7).getStackForm(1L));
 
         Uncertainty_Hatch.set(new GT_MetaTileEntity_Hatch_Uncertainty(15430, "hatch.certain.tier.07", "Uncertainty Resolver", 7).getStackForm(1L));
@@ -222,6 +227,7 @@ public class MachineLoader implements Runnable {
         // ===================================================================================================
         // Pipes
         // ===================================================================================================
+
         EMpipe.set(new GT_MetaTileEntity_Pipe_EM(15460, "pipe.elementalmatter", "Quantum \"Tunnel\"").getStackForm(1L));
 
         DATApipe.set(new GT_MetaTileEntity_Pipe_Data(15470, "pipe.datastream", "Optical Fiber Cable").getStackForm(1L));
@@ -231,7 +237,6 @@ public class MachineLoader implements Runnable {
         // ===================================================================================================
 
         Machine_DebugWriter.set(new GT_MetaTileEntity_DebugStructureWriter(15499, "debug.tt.writer", "Debug Structure Writer", 15).getStackForm(1L));
-
 
         // ===================================================================================================
         // MetaTE init

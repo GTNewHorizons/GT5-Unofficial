@@ -1,4 +1,4 @@
-package com.github.technus.tectech.elementalMatter.magicAddon.definitions;
+package com.github.technus.tectech.magicAddon.definitions;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
@@ -10,32 +10,90 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
 import static com.github.technus.tectech.elementalMatter.classes.cElementalDecay.noDecay;
+import static com.github.technus.tectech.magicAddon.definitions.AspectDefinitionCompat.aspectDefinitionCompat;
 
 /**
  * Created by Tec on 06.05.2017.
  */
-public final class dComplexAspectDefinition extends cElementalDefinition {//TODO Optimize map i/o
-    //TODO aspect binding
+public final class dComplexAspectDefinition extends cElementalDefinition implements iElementalAspect {
+    private final int hash;
 
     private static final byte nbtType = (byte) 'c';
 
     private final cElementalDefinitionStackMap aspectStacks;
 
-    public dComplexAspectDefinition(cElementalDefinitionStack[] tree) throws tElementalException {//todo constructors
-        aspectStacks = cElementalDefinitionStackMap.empty;
+    @Deprecated
+    public dComplexAspectDefinition(cElementalDefinition... aspects) throws tElementalException {
+        this(true, new cElementalDefinitionStackMap(aspects));
+    }
+
+    @Deprecated
+    private dComplexAspectDefinition(boolean check, cElementalDefinition... aspects) throws tElementalException {
+        this(check, new cElementalDefinitionStackMap(aspects));
+    }
+
+    public dComplexAspectDefinition(cElementalDefinitionStack... aspects) throws tElementalException {
+        this(true, new cElementalDefinitionStackMap(aspects));
+    }
+
+    private dComplexAspectDefinition(boolean check, cElementalDefinitionStack... aspects) throws tElementalException {
+        this(check, new cElementalDefinitionStackMap(aspects));
+    }
+
+    public dComplexAspectDefinition(cElementalDefinitionStackMap aspects) throws tElementalException {
+        this(true, aspects);
+    }
+
+    private dComplexAspectDefinition(boolean check, cElementalDefinitionStackMap aspects) throws tElementalException {
+        if (check && !canTheyBeTogether(aspects)) throw new tElementalException("Hadron Definition error");
+        this.aspectStacks = aspects;
+
+        hash=super.hashCode();
+    }
+
+    //public but u can just try{}catch(){} the constructor it still calls this method
+    private static boolean canTheyBeTogether(cElementalDefinitionStackMap stacks) {
+        int amount = 0;
+        for (cElementalDefinitionStack aspects : stacks.values()) {
+            if (aspects.definition instanceof dComplexAspectDefinition || aspects.definition instanceof ePrimalAspectDefinition)
+                amount += aspects.amount;
+            else return false;
+        }
+        return amount==2;
+    }
+
+    //Unused outside yet still available.
+    public boolean checkThis() {
+        return canTheyBeTogether(aspectStacks);
     }
 
     @Override
-    public String getName() {//todo name
-        return "Aspect: ";
+    public String getName() {
+        String name= aspectDefinitionCompat.getAspectTag(this);
+        if(name!=null){
+            name=name.substring(0,1).toUpperCase()+name.substring(1);
+        }else{
+            name=getSymbol();
+        }
+        return "Aspect: "+name;
     }
 
     @Override
     public String getSymbol() {
         String symbol = "";
-        for (cElementalDefinitionStack quark : aspectStacks.values())
-            for (int i = 0; i < quark.amount; i++)
-                symbol += quark.definition.getSymbol();
+        for (cElementalDefinitionStack aspect : aspectStacks.values()) {
+            if (aspect.definition instanceof ePrimalAspectDefinition) {
+                for (int i = 0; i < aspect.amount; i++) {
+                    symbol += aspect.definition.getSymbol();
+                }
+            } else {
+                symbol+="(";
+                for (int i = 0; i < aspect.amount; i++) {
+                    symbol += aspect.definition.getSymbol();
+                }
+                symbol+=")";
+            }
+        }
         return symbol;
     }
 
@@ -117,6 +175,10 @@ public final class dComplexAspectDefinition extends cElementalDefinition {//TODO
         return null;
     }
 
+    public Object materializeIntoAspect() {
+        return aspectDefinitionCompat.getAspect(this);
+    }
+
     @Override
     public iElementalDefinition getAnti() {
         return null;
@@ -135,5 +197,10 @@ public final class dComplexAspectDefinition extends cElementalDefinition {//TODO
     @Override
     public byte getClassType() {
         return -96;
+    }
+
+    @Override
+    public int hashCode() {
+        return hash;
     }
 }

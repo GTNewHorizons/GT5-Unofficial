@@ -18,6 +18,7 @@ import static com.github.technus.tectech.elementalMatter.definitions.eBosonDefin
  * Created by danie_000 on 17.11.2016.
  */
 public final class dHadronDefinition extends cElementalDefinition {//TODO Optimize map i/o
+    private final int hash;
     public static final Map<dHadronDefinition, ItemStack> itemBinds = new TreeMap<>();
     public static final Map<dHadronDefinition, FluidStack> fluidBinds = new TreeMap<>();
 
@@ -96,6 +97,8 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
                 this.rawLifeTime = (1.21F / this.mass) / (float) Math.pow(9.80, charge);
             }
         }
+
+        hash=super.hashCode();
     }
 
     //public but u can just try{}catch(){} the constructor it still calls this method
@@ -345,5 +348,10 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
     @Override
     public byte getClassType() {
         return -64;
+    }
+
+    @Override
+    public int hashCode() {
+        return hash;
     }
 }

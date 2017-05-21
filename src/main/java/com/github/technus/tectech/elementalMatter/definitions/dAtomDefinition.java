@@ -18,6 +18,7 @@ import static com.github.technus.tectech.elementalMatter.definitions.eBosonDefin
  * Created by danie_000 on 18.11.2016.
  */
 public final class dAtomDefinition extends cElementalDefinition {//TODO Optimize map i/o
+    private final int hash;
     public static final Map<dAtomDefinition, ItemStack> itemBinds = new TreeMap<>();
     public static final Map<dAtomDefinition, FluidStack> fluidBinds = new TreeMap<>();
 
@@ -126,6 +127,8 @@ public final class dAtomDefinition extends cElementalDefinition {//TODO Optimize
         else
             this.decayMode = izoDiff > 0 ? (byte) Math.min(2, 1 + izoDiffAbs / 4) : (byte) -Math.min(2, 1 + izoDiffAbs / 4);
         this.stable = isStable(this.rawLifeTime);
+
+        hash=super.hashCode();
     }
 
     private static boolean isStable(float lifeTime) {
@@ -554,5 +557,10 @@ public final class dAtomDefinition extends cElementalDefinition {//TODO Optimize
     @Override
     public byte getClassType() {
         return 64;
+    }
+
+    @Override
+    public int hashCode() {
+        return hash;
     }
 }
