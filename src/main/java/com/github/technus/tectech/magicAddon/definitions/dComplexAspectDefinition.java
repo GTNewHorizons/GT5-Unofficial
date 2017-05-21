@@ -17,6 +17,7 @@ import static com.github.technus.tectech.magicAddon.definitions.AspectDefinition
  */
 public final class dComplexAspectDefinition extends cElementalDefinition implements iElementalAspect {
     private final int hash;
+    public final float mass;
 
     private static final byte nbtType = (byte) 'c';
 
@@ -47,7 +48,11 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
     private dComplexAspectDefinition(boolean check, cElementalDefinitionStackMap aspects) throws tElementalException {
         if (check && !canTheyBeTogether(aspects)) throw new tElementalException("Hadron Definition error");
         this.aspectStacks = aspects;
-
+        float mass=0;
+        for(cElementalDefinitionStack stack:aspects.values()){
+            mass+=stack.getMass();
+        }
+        this.mass=mass;
         hash=super.hashCode();
     }
 
@@ -157,7 +162,7 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
 
     @Override
     public float getMass() {
-        return 0;
+        return mass;
     }
 
     @Override

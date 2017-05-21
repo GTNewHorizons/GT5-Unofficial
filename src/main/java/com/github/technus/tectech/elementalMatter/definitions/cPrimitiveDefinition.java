@@ -13,8 +13,8 @@ public final class cPrimitiveDefinition extends cElementalPrimitive {
             nbtE__ = new cPrimitiveDefinition("NBT ERROR", "!", 0, 0f, 0, Integer.MIN_VALUE, Integer.MIN_VALUE),
             null__ = new cPrimitiveDefinition("NULL POINTER", ".", 0, 0F, 0, -3, Integer.MAX_VALUE),
             space__ = new cPrimitiveDefinition("Space", "_", 0, 0F, 0, -4, 0),
-            magic = new cPrimitiveDefinition("Magic", "Ma", 4, -1F, 0, 0, 1),
-            magic_ = new cPrimitiveDefinition("Antimagic", "~Ma", -4, -1F, 0, 0, 2);
+            magic = new cPrimitiveDefinition("Magic", "Ma", 4, 1e5F, 0, 0, 1),
+            magic_ = new cPrimitiveDefinition("Antimagic", "~Ma", -4, 1e5F, 0, 0, 2);
 
     protected cPrimitiveDefinition(String name, String symbol, int type, float mass, int charge, int color, int ID) {
         super(name, symbol, type, mass, charge, color, ID);
