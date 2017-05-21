@@ -11,7 +11,7 @@ import com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition;
 import com.github.technus.tectech.elementalMatter.definitions.dHadronDefinition;
 import com.github.technus.tectech.elementalMatter.definitions.eLeptonDefinition;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
-import com.github.technus.tectech.thing.metaTileEntity.constructableTT;
+import com.github.technus.tectech.thing.metaTileEntity.iConstructible;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
@@ -35,7 +35,7 @@ import static gregtech.api.enums.GT_Values.V;
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_MultiblockBase_EM implements constructableTT {
+public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_MultiblockBase_EM implements iConstructible {
     public static HashMap<Integer, cElementalDefinitionStack> itemBinds = new HashMap<>(32);
     public static HashMap<Integer, cElementalDefinitionStack> fluidBind = new HashMap<>(8);
     private static float refMass, refUnstableMass;

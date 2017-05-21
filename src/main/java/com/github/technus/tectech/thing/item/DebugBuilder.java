@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.item;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.thing.metaTileEntity.constructableTT;
+import com.github.technus.tectech.thing.metaTileEntity.iConstructible;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -36,8 +36,8 @@ public class DebugBuilder extends Item {
         if (aPlayer instanceof EntityPlayerMP) {
             if (tTileEntity != null && tTileEntity instanceof IGregTechTileEntity) {
                 IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-                if (metaTE != null && metaTE instanceof constructableTT) {
-                    ((constructableTT) metaTE).construct(aStack.stackSize);
+                if (metaTE != null && metaTE instanceof iConstructible) {
+                    ((iConstructible) metaTE).construct(aStack.stackSize);
                     return true;
                 }
             }

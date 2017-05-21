@@ -4,7 +4,7 @@ import cofh.api.energy.IEnergyContainerItem;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
-import com.github.technus.tectech.thing.metaTileEntity.constructableTT;
+import com.github.technus.tectech.thing.metaTileEntity.iConstructible;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import ic2.api.item.ElectricItem;
@@ -21,7 +21,7 @@ import static gregtech.api.GregTech_API.mEUtoRF;
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBase_EM implements constructableTT {
+public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBase_EM implements iConstructible {
     //region Structure
     private static final String[][] shape = new String[][]{
             {"   ", "000", "1.1", "000", "   ",},
