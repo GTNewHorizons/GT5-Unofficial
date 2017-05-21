@@ -881,6 +881,18 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         }
     }
 
+    public void purgeInstanceStack(cElementalInstanceStack target) {
+        float mass = target.getMass();
+        if (mass > 0) {
+            if (eMufflerHatches.size() < 1) explodeMultiblock();
+            mass /= eMufflerHatches.size();
+            for (GT_MetaTileEntity_Hatch_MufflerElemental dump : eMufflerHatches) {
+                dump.overflowMatter += mass;
+                if (dump.overflowMatter > dump.overflowMax) explodeMultiblock();
+            }
+        }
+    }
+
     @Override
     public final boolean checkRecipe(ItemStack itemStack) {//do recipe checks, based on "machine content and state"
         hatchesStatusUpdate();

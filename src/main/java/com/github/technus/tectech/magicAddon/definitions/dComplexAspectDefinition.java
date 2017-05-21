@@ -62,11 +62,6 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
         return amount==2;
     }
 
-    //Unused outside yet still available.
-    public boolean checkThis() {
-        return canTheyBeTogether(aspectStacks);
-    }
-
     @Override
     public String getName() {
         String name= aspectDefinitionCompat.getAspectTag(this);

@@ -112,11 +112,6 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
         return true;
     }
 
-    //Unused outside yet still available.
-    public boolean checkThis() {
-        return canTheyBeTogether(quarkStacks);
-    }
-
     @Override
     public String getName() {
         String name;

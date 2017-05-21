@@ -203,10 +203,6 @@ public final class dAtomDefinition extends cElementalDefinition {//TODO Optimize
         return nuclei;
     }
 
-    public boolean checkThis() {
-        return canTheyBeTogether(elementalStacks);
-    }
-
     @Override
     public int getCharge() {
         return charge;

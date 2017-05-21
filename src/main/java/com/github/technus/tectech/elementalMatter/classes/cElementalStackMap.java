@@ -19,6 +19,13 @@ abstract class cElementalStackMap implements Comparable<cElementalStackMap> {
     public abstract TreeMap<iElementalDefinition, cElementalDefinitionStack> getRawMap();
 
     //Getters
+    public final cElementalDefinitionStack getFirst(){
+        return map.firstEntry().getValue();
+    }
+
+    public final cElementalDefinitionStack getLast(){
+        return map.lastEntry().getValue();
+    }
     public final cElementalDefinitionStack getDefinitionStack(iElementalDefinition def) {
         return map.get(def);
     }

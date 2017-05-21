@@ -1,26 +1,20 @@
 package com.github.technus.tectech.magicAddon.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.auxiliary.TecTechConfig;
-import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStack;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStack;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackMap;
+import com.github.technus.tectech.magicAddon.definitions.dComplexAspectDefinition;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.metaTileEntity.constructableTT;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_MultiblockBase_EM;
-import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 import static com.github.technus.tectech.Util.StructureBuilder;
-import static com.github.technus.tectech.Util.isInputEqual;
 import static com.github.technus.tectech.magicAddon.thing.metaTileEntity.multi.EssentiaCompat.essentiaContainerCompat;
 import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
 import static gregtech.api.enums.GT_Values.E;
@@ -83,19 +77,20 @@ public class GT_MetaTileEntity_EM_essentiaQuantizer extends GT_MetaTileEntity_Mu
     @Override
     public boolean EM_checkRecipe(ItemStack itemStack) {
         container=essentiaContainerCompat.getContainer(this);
-
         cElementalInstanceStack newStack=essentiaContainerCompat.getFromContainer(container);
         if(newStack!=null){
-            if (TecTechConfig.DEBUG_MODE)
-                TecTech.Logger.info("Essentia-Quantifier-recipe " + newStack.definition.getName());
             mMaxProgresstime = 20;
             mEfficiencyIncrease = 10000;
             eAmpereFlow=1;
             outputEM = new cElementalInstanceStackMap[1];
             outputEM[0] = new cElementalInstanceStackMap(newStack);
+            if (newStack.definition instanceof dComplexAspectDefinition) {
+                mEUt = (int) -V[9];
+            } else {
+                mEUt = (int) -V[8];
+            }
             return true;
         }
-
         mEfficiencyIncrease = 0;
         mMaxProgresstime = 0;
         return false;

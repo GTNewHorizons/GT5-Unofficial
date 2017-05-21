@@ -255,6 +255,14 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
     }
 
     //Getters
+    public cElementalInstanceStack getFirst(){
+        return map.firstEntry().getValue();
+    }
+
+    public cElementalInstanceStack getLast(){
+        return map.lastEntry().getValue();
+    }
+
     public cElementalInstanceStack getInstance(iElementalDefinition def) {
         return map.get(def);
     }
