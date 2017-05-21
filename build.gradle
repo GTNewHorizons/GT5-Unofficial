@@ -54,6 +54,10 @@ repositories {
         name 'UsrvDE'
         url "http://jenkins.usrv.de:8082/nexus/content/repositories/releases/"
     }
+    maven { // Baubles
+    	name 'UsrvDE_3rdParty'
+    	url "http://jenkins.usrv.de:8082/nexus/content/repositories/thirdparty/"
+    }
     maven {
         name = "ic2"
         url = "http://maven.ic2.player.to/"
@@ -71,6 +75,7 @@ repositories {
 dependencies {
     compile "eu.usrv:YAMCore:${config.minecraft.version}-${config.yamcore.version}:deobf"
     compile "net.industrial-craft:industrialcraft-2:${config.ic2.version}:dev"
+    compile "com.azanor.baubles:Baubles:${config.baubles.version}:deobf"
     provided name: 'CoFHLib', version: config.cofhlib.version, ext: 'jar'
     provided name: 'CoFHCore', version: config.cofhcore.version, ext: 'jar'
 }
