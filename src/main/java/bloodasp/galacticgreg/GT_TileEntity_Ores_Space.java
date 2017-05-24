@@ -108,8 +108,8 @@ public class GT_TileEntity_Ores_Space {
 						pMetaData += pDimensionDef.getStoneType().getOffset();
 					else
 						pMetaData += pCustomGTOreOffset;
-					
-					pWorld.setBlock(pX, pY, pZ, GregTech_API.sBlockOres1, GT_TileEntity_Ores.getHarvestData((short) pMetaData), 0);
+
+					pWorld.setBlock(pX, pY, pZ, GregTech_API.sBlockOres1, GT_TileEntity_Ores.getHarvestData((short) 1, pMetaData), 0);
 					TileEntity tTileEntity = pWorld.getTileEntity(pX, pY, pZ);
 					if ((tTileEntity instanceof GT_TileEntity_Ores)) {
 						((GT_TileEntity_Ores) tTileEntity).mMetaData = ((short) pMetaData);
