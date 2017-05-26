@@ -1,5 +1,6 @@
 package com.github.technus.tectech.loader;
 
+import com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition;
 import cpw.mods.fml.common.Loader;
 
 /**
@@ -7,6 +8,8 @@ import cpw.mods.fml.common.Loader;
  */
 public class RecipeLoader implements Runnable {
     public void run() {
+        dAtomDefinition.setTransformation();
+
         // ===================================================================================================
         // Recipes init - common goes here rest goes into methods below
         // ===================================================================================================

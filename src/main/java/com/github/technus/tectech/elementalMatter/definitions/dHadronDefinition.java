@@ -19,8 +19,6 @@ import static com.github.technus.tectech.elementalMatter.definitions.eBosonDefin
  */
 public final class dHadronDefinition extends cElementalDefinition {//TODO Optimize map i/o
     private final int hash;
-    public static final Map<dHadronDefinition, ItemStack> itemBinds = new TreeMap<>();
-    public static final Map<dHadronDefinition, FluidStack> fluidBinds = new TreeMap<>();
 
     private static final byte nbtType = (byte) 'h';
     //Helpers
@@ -277,12 +275,12 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
     //}
 
     @Override
-    public ItemStack materializesIntoItem() {
+    public ItemStack someAmountIntoItemsStack() {
         return null;
     }
 
     @Override
-    public FluidStack materializesIntoFluid() {
+    public FluidStack someAmountIntoFluidStack() {
         return null;
     }
 

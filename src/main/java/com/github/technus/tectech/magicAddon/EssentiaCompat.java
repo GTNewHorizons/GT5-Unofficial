@@ -1,4 +1,4 @@
-package com.github.technus.tectech.magicAddon.thing.metaTileEntity.multi;
+package com.github.technus.tectech.magicAddon;
 
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStack;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_MultiblockBase_EM;

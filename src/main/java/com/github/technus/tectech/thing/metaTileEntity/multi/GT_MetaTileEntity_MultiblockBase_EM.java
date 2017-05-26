@@ -50,7 +50,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     protected final static Map<String, Method> adderMethodMap = new HashMap<>();
     public static Method adderMethod;
 
-    protected cElementalInstanceStackMap[] outputEM = new cElementalInstanceStackMap[0];
+    protected cElementalInstanceStackMap[] outputEM;
 
     public final static ItemStack[] nothingI = new ItemStack[0];
     public final static FluidStack[] nothingF = new FluidStack[0];
@@ -542,6 +542,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                 if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime && recipeAt == Tick) {//progress increase and done
                                     hatchesStatusUpdate();
                                     EM_outputFunction();
+                                    cleanOutputEM();
                                     if (mOutputItems != null) for (ItemStack tStack : mOutputItems)
                                         if (tStack != null)
                                             addOutput(tStack);
@@ -555,7 +556,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                     updateSlots();
                                     mOutputItems = null;
                                     mOutputFluids = null;
-                                    outputEM = new cElementalInstanceStackMap[0];
                                     mProgresstime = 0;
                                     mMaxProgresstime = 0;
                                     mEfficiencyIncrease = 0;
@@ -870,6 +870,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     public void cleanHatchContent(GT_MetaTileEntity_Hatch_ElementalContainer target) {
+        if (target == null) return;
         float mass = target.getContainerHandler().getMass();
         if (mass > 0) {
             if (eMufflerHatches.size() < 1) explodeMultiblock();
@@ -881,7 +882,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         }
     }
 
-    public void purgeInstanceStack(cElementalInstanceStack target) {
+    public void cleanInstanceStack(cElementalInstanceStack target) {
+        if (target == null) return;
         float mass = target.getMass();
         if (mass > 0) {
             if (eMufflerHatches.size() < 1) explodeMultiblock();
@@ -891,6 +893,26 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 if (dump.overflowMatter > dump.overflowMax) explodeMultiblock();
             }
         }
+    }
+
+    private void cleanOutputEM() {
+        if (outputEM == null) return;
+        float mass = 0;
+        for (cElementalInstanceStackMap map : outputEM)
+            mass = map.removeOverflow(0, 0);
+
+        if (mass > 0) {
+            if (eMufflerHatches.size() < 1) {
+                explodeMultiblock();
+                return;
+            }
+            mass /= eMufflerHatches.size();
+            for (GT_MetaTileEntity_Hatch_MufflerElemental dump : eMufflerHatches) {
+                dump.overflowMatter += mass;
+                if (dump.overflowMatter > dump.overflowMax) explodeMultiblock();
+            }
+        }
+        outputEM = null;
     }
 
     @Override

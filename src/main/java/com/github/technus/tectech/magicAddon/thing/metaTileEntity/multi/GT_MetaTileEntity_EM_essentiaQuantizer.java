@@ -3,7 +3,7 @@ package com.github.technus.tectech.magicAddon.thing.metaTileEntity.multi;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStack;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackMap;
-import com.github.technus.tectech.magicAddon.definitions.dComplexAspectDefinition;
+import com.github.technus.tectech.magicAddon.definitions.ePrimalAspectDefinition;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.metaTileEntity.iConstructible;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_MultiblockBase_EM;
@@ -15,7 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 
 import static com.github.technus.tectech.Util.StructureBuilder;
-import static com.github.technus.tectech.magicAddon.thing.metaTileEntity.multi.EssentiaCompat.essentiaContainerCompat;
+import static com.github.technus.tectech.magicAddon.EssentiaCompat.essentiaContainerCompat;
 import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
 import static gregtech.api.enums.GT_Values.E;
 import static gregtech.api.enums.GT_Values.V;
@@ -84,10 +84,10 @@ public class GT_MetaTileEntity_EM_essentiaQuantizer extends GT_MetaTileEntity_Mu
             eAmpereFlow=1;
             outputEM = new cElementalInstanceStackMap[1];
             outputEM[0] = new cElementalInstanceStackMap(newStack);
-            if (newStack.definition instanceof dComplexAspectDefinition) {
-                mEUt = (int) -V[9];
-            } else {
+            if (newStack.definition instanceof ePrimalAspectDefinition) {
                 mEUt = (int) -V[8];
+            } else {
+                mEUt = (int) -V[9];
             }
             return true;
         }

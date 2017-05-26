@@ -3,7 +3,7 @@ package com.github.technus.tectech.magicAddon.thing.metaTileEntity.multi;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStack;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackMap;
-import com.github.technus.tectech.magicAddon.definitions.dComplexAspectDefinition;
+import com.github.technus.tectech.magicAddon.definitions.ePrimalAspectDefinition;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.metaTileEntity.iConstructible;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_MultiblockBase_EM;
@@ -15,7 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 
 import static com.github.technus.tectech.Util.StructureBuilder;
-import static com.github.technus.tectech.magicAddon.thing.metaTileEntity.multi.EssentiaCompat.essentiaContainerCompat;
+import static com.github.technus.tectech.magicAddon.EssentiaCompat.essentiaContainerCompat;
 import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
 import static gregtech.api.enums.GT_Values.E;
 import static gregtech.api.enums.GT_Values.V;
@@ -68,23 +68,23 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
     @Override
     public boolean EM_checkRecipe(ItemStack itemStack) {
         container=essentiaContainerCompat.getContainer(this);
-        if (eInputHatches.size() < 1) {
+        if (eInputHatches.size() < 1 || container==null) {
             stopMachine();
             return false;
         }
-        cElementalInstanceStackMap inputHatchContainer=eOutputHatches.get(0).getContainerHandler();
+        cElementalInstanceStackMap inputHatchContainer=eInputHatches.get(0).getContainerHandler();
         if(inputHatchContainer.hasStacks()){
             cElementalInstanceStack stack = inputHatchContainer.getFirst();
             inputHatchContainer.removeAmount(false,new cElementalInstanceStack(stack.definition,1));
             if(!essentiaContainerCompat.putElementalInstanceStack(container,stack))
-                purgeInstanceStack(stack);
+                cleanInstanceStack(stack);
             mMaxProgresstime = 20;
             mEfficiencyIncrease = 10000;
             eAmpereFlow=1;
-            if (stack.definition instanceof dComplexAspectDefinition) {
-                mEUt = (int) -V[9];
-            } else {
+            if (stack.definition instanceof ePrimalAspectDefinition) {
                 mEUt = (int) -V[8];
+            } else {
+                mEUt = (int) -V[9];
             }
             return true;
         }

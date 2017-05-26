@@ -2,8 +2,8 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
-import com.github.technus.tectech.thing.metaTileEntity.iConstructible;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Holder;
+import com.github.technus.tectech.thing.metaTileEntity.iConstructible;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;

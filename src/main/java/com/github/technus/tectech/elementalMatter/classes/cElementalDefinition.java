@@ -29,7 +29,7 @@ public abstract class cElementalDefinition implements iElementalDefinition {
     }
 
     @Override
-    protected final Object clone() {
+    public final cElementalDefinition clone() {
         return this;//IMMUTABLE
     }
 

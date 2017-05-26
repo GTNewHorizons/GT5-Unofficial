@@ -1,10 +1,10 @@
 package com.github.technus.tectech.loader;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.magicAddon.EssentiaCompat;
+import com.github.technus.tectech.magicAddon.EssentiaCompatEnabled;
 import com.github.technus.tectech.magicAddon.definitions.AspectDefinitionCompat;
 import com.github.technus.tectech.magicAddon.definitions.AspectDefinitionCompatEnabled;
-import com.github.technus.tectech.magicAddon.thing.metaTileEntity.multi.EssentiaCompat;
-import com.github.technus.tectech.magicAddon.thing.metaTileEntity.multi.EssentiaCompatEnabled;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.casing.GT_Container_CasingsTT;
 import com.github.technus.tectech.thing.item.DebugBuilder;
@@ -22,8 +22,8 @@ import java.util.List;
 
 import static com.github.technus.tectech.TecTech.hasThaumcraft;
 import static com.github.technus.tectech.TecTech.mainTab;
+import static com.github.technus.tectech.magicAddon.EssentiaCompat.essentiaContainerCompat;
 import static com.github.technus.tectech.magicAddon.definitions.AspectDefinitionCompat.aspectDefinitionCompat;
-import static com.github.technus.tectech.magicAddon.thing.metaTileEntity.multi.EssentiaCompat.essentiaContainerCompat;
 
 public final class MainLoader {//TODO add checks for - is mod loaded dreamcraft to enable higher tier machinery. (above UV), or implement a check for GT tier values.
 
@@ -66,6 +66,7 @@ public final class MainLoader {//TODO add checks for - is mod loaded dreamcraft 
 
         progressBarPostLoad.step("Recipes");
         new RecipeLoader().run();
+
         TecTech.Logger.info("Recipe Init Done");
 
         progressBarPostLoad.step("Creative Tab part1");

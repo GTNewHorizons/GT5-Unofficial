@@ -4,23 +4,29 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.classes.*;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
+import cpw.mods.fml.common.registry.GameRegistry;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.XSTR;
+import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.*;
 
 import static com.github.technus.tectech.elementalMatter.definitions.eBosonDefinition.boson_Y__;
 import static com.github.technus.tectech.elementalMatter.definitions.eBosonDefinition.deadEnd;
+import static gregtech.api.enums.OrePrefixes.dust;
 
 /**
  * Created by danie_000 on 18.11.2016.
  */
-public final class dAtomDefinition extends cElementalDefinition {//TODO Optimize map i/o
+public final class dAtomDefinition extends cElementalDefinition {
     private final int hash;
-    public static final Map<dAtomDefinition, ItemStack> itemBinds = new TreeMap<>();
-    public static final Map<dAtomDefinition, FluidStack> fluidBinds = new TreeMap<>();
+    public static final bTransformationInfo transformation=new bTransformationInfo(16,0,64);
+    public static float refMass, refUnstableMass;
 
     private static final byte nbtType = (byte) 'a';
     private static final Random xstr = new XSTR();//NEEDS SEPARATE!
@@ -437,14 +443,16 @@ public final class dAtomDefinition extends cElementalDefinition {//TODO Optimize
     //}
 
     @Override
-    public FluidStack materializesIntoFluid() {
-
+    public FluidStack someAmountIntoFluidStack() {
+        aFluidDequantizationInfo fdq= transformation.fluidDequantization.get(this);
+        if(fdq!=null) return fdq.output();
         return null;
     }
 
     @Override
-    public ItemStack materializesIntoItem() {
-
+    public ItemStack someAmountIntoItemsStack() {
+        aItemDequantizationInfo idq= transformation.itemDequantization.get(this);
+        if(idq!=null) return idq.output();
         return null;
     }
 
@@ -540,6 +548,158 @@ public final class dAtomDefinition extends cElementalDefinition {//TODO Optimize
         }
         if(TecTechConfig.DEBUG_MODE)
             TecTech.Logger.info("Registered Elemental Matter Class: Atom "+nbtType+" "+64);
+    }
+
+    public static void setTransformation(){
+        /*----STABLE ATOMS----**/
+        refMass = getFirstStableIsotope(1).getMass() * 144F;
+
+        transformation.addFluid(new cElementalDefinitionStack(getFirstStableIsotope(1), 144),Materials.Hydrogen.mGas.getID(),144);
+        transformation.addFluid(new cElementalDefinitionStack(getFirstStableIsotope(2), 144),Materials.Helium.mGas.getID(), 144);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(3), 144), dust, Materials.Lithium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(4), 144), dust, Materials.Beryllium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(5), 144), dust, Materials.Boron,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(6), 144), dust, Materials.Carbon,1);
+        transformation.addFluid(new cElementalDefinitionStack(getFirstStableIsotope(7), 144),Materials.Nitrogen.mGas.getID(), 144);
+        transformation.addFluid(new cElementalDefinitionStack(getFirstStableIsotope(8), 144),Materials.Oxygen.mGas.getID(), 144);
+        transformation.addFluid(new cElementalDefinitionStack(getFirstStableIsotope(9), 144),Materials.Fluorine.mGas.getID(), 144);
+        //transformation.addFluid(new cElementalDefinitionStack(getFirstStableIsotope(10), 144),Materials.Neon.mGas.getID(), 144);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(11), 144), dust, Materials.Sodium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(12), 144), dust, Materials.Magnesium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(13), 144), dust, Materials.Aluminium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(14), 144), dust, Materials.Silicon,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(15), 144), dust, Materials.Phosphorus,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(16), 144), dust, Materials.Sulfur,1);
+        transformation.addFluid(new cElementalDefinitionStack(getFirstStableIsotope(17), 144),Materials.Chlorine.mGas.getID(), 144);
+        transformation.addFluid(new cElementalDefinitionStack(getFirstStableIsotope(18), 144),Materials.Argon.mGas.getID(), 144);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(19), 144), dust, Materials.Potassium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(20), 144), dust, Materials.Calcium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(21), 144), dust, Materials.Scandium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(22), 144), dust, Materials.Titanium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(23), 144), dust, Materials.Vanadium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(24), 144), dust, Materials.Chrome,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(25), 144), dust, Materials.Manganese,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(26), 144), dust, Materials.Iron,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(27), 144), dust, Materials.Cobalt,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(28), 144), dust, Materials.Nickel,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(29), 144), dust, Materials.Copper,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(30), 144), dust, Materials.Zinc,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(31), 144), dust, Materials.Gallium,1);
+        //transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(32), 144),OrePrefixes.dust, Materials.Germanium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(33), 144), dust, Materials.Arsenic,1);
+        //transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(34), 144),OrePrefixes.dust, Materials.Selenium,1);
+        //transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(35), 144),OrePrefixes.dust, Materials.Bromine,1);
+        //transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(36), 144),OrePrefixes.dust, Materials.Krypton,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(37), 144), dust, Materials.Rubidium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(38), 144), dust, Materials.Strontium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(39), 144), dust, Materials.Yttrium,1);
+        //transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(40), 144),OrePrefixes.dust, Materials.Zirconium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(41), 144), dust, Materials.Niobium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(42), 144), dust, Materials.Molybdenum,1);
+        //transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(43), 144),OrePrefixes.dust, Materials.Technetium,1);
+        //transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(44), 144),OrePrefixes.dust, Materials.Ruthenium,1);
+        //transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(45), 144),OrePrefixes.dust, Materials.Rhodium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(46), 144), dust, Materials.Palladium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(47), 144), dust, Materials.Silver,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(48), 144), dust, Materials.Cadmium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(49), 144), dust, Materials.Indium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(50), 144), dust, Materials.Tin,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(51), 144), dust, Materials.Antimony,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(52), 144), dust, Materials.Tellurium,1);
+        //transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(53), 144),OrePrefixes.dust, Materials.Iodine,1);
+        //transformation.addFluid(new cElementalDefinitionStack(getFirstStableIsotope(54), 144),Materials.Xenon.mGas.getID(), 144);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(55), 144), dust, Materials.Caesium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(56), 144), dust, Materials.Barium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(57), 144), dust, Materials.Lanthanum,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(58), 144), dust, Materials.Cerium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(59), 144), dust, Materials.Praseodymium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(60), 144), dust, Materials.Neodymium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(61), 144), dust, Materials.Promethium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(62), 144), dust, Materials.Samarium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(63), 144), dust, Materials.Europium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(64), 144), dust, Materials.Gadolinium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(65), 144), dust, Materials.Terbium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(66), 144), dust, Materials.Dysprosium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(67), 144), dust, Materials.Holmium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(68), 144), dust, Materials.Erbium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(69), 144), dust, Materials.Thulium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(70), 144), dust, Materials.Ytterbium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(71), 144), dust, Materials.Lutetium,1);
+        //transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(72), 144),OrePrefixes.dust, Materials.Hafnum,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(73), 144), dust, Materials.Tantalum,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(74), 144), dust, Materials.Tungsten,1);
+        //transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(75), 144),OrePrefixes.dust, Materials.Rhenium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(76), 144), dust, Materials.Osmium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(77), 144), dust, Materials.Iridium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(78), 144), dust, Materials.Platinum,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(79), 144), dust, Materials.Gold,1);
+        transformation.addFluid(new cElementalDefinitionStack(getFirstStableIsotope(80), 144),Materials.Mercury.mFluid.getID(), 144);
+        //transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(81), 144),OrePrefixes.dust, Materials.Thallium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(82), 144), dust, Materials.Lead,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(83), 144), dust, Materials.Bismuth,1);
+
+        /*----UNSTABLE ATOMS----**/
+        refUnstableMass = getFirstStableIsotope(83).getMass() * 144F;
+
+        //transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(84),144),OrePrefixes.dust, Materials.Polonium,1);
+        //transformation.addFluid(new cElementalDefinitionStack(getBestUnstableIsotope(85),144),Materials.Astatine.mPlasma.getID(), 144);
+        transformation.addFluid(new cElementalDefinitionStack(getBestUnstableIsotope(86),144),Materials.Radon.mGas.getID(), 144);
+        //transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(87),144),OrePrefixes.dust, Materials.Francium,1);
+        //transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(88),144),OrePrefixes.dust, Materials.Radium,1);
+        //transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(89),144),OrePrefixes.dust, Materials.Actinium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(90),144), dust, Materials.Thorium,1);
+        //transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(91),144),OrePrefixes.dust, Materials.Protactinium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(92),144), dust, Materials.Uranium,1);
+        //transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(93),144),OrePrefixes.dust, Materials.Neptunium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(94),144), dust, Materials.Plutonium,1);
+        transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(95),144), dust, Materials.Americium,1);
+
+        /* ... */
+        cElementalDefinitionStack neutrons=new cElementalDefinitionStack(dHadronDefinition.hadron_n, 100000);
+        transformation.oredictDequantization.put(neutrons.definition,new aOredictDequantizationInfo(neutrons, dust,Materials.Neutronium,1));
+        bTransformationInfo.oredictQuantization.put(
+                OreDictionary.getOreID(OrePrefixes.ingotHot.name()+Materials.Neutronium.mName),
+                new aOredictQuantizationInfo(OrePrefixes.ingotHot,Materials.Neutronium,1 ,neutrons)
+        );
+
+        try {
+            dAtomDefinition temp=new dAtomDefinition(
+                    eLeptonDefinition.lepton_e1,
+                    dHadronDefinition.hadron_p1,
+                    dHadronDefinition.hadron_n1
+            );
+            transformation.addFluid(new cElementalDefinitionStack(temp, 144),Materials.Deuterium.mGas.getID(), 144);
+
+            temp=new dAtomDefinition(
+                    eLeptonDefinition.lepton_e1,
+                    dHadronDefinition.hadron_p1,
+                    dHadronDefinition.hadron_n2
+            );
+            transformation.addFluid(new cElementalDefinitionStack(temp, 144),Materials.Tritium.mGas.getID(), 144);
+
+            temp=new dAtomDefinition(
+                    new cElementalDefinitionStack(eLeptonDefinition.lepton_e, 2),
+                    dHadronDefinition.hadron_p2,
+                    new cElementalDefinitionStack(dHadronDefinition.hadron_n, 3)
+            );
+            transformation.addFluid(new cElementalDefinitionStack(temp, 144),Materials.Helium_3.mGas.getID(), 144);
+
+            temp=new dAtomDefinition(
+                    new cElementalDefinitionStack(eLeptonDefinition.lepton_e, 92),
+                    new cElementalDefinitionStack(dHadronDefinition.hadron_p, 92),
+                    new cElementalDefinitionStack(dHadronDefinition.hadron_n, 143)
+            );
+            transformation.addOredict(new cElementalDefinitionStack(temp, 144),OrePrefixes.dust, Materials.Uranium235,1);
+
+            temp=new dAtomDefinition(
+                    new cElementalDefinitionStack(eLeptonDefinition.lepton_e, 94),
+                    new cElementalDefinitionStack(dHadronDefinition.hadron_p, 94),
+                    new cElementalDefinitionStack(dHadronDefinition.hadron_n, 149)
+            );
+            transformation.addOredict(new cElementalDefinitionStack(temp, 144),OrePrefixes.dust, Materials.Plutonium241,1);
+        } catch (tElementalException e) {
+            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+        }
     }
 
     public static dAtomDefinition getFirstStableIsotope(int element) {

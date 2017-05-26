@@ -10,8 +10,8 @@ import static com.github.technus.tectech.elementalMatter.classes.cElementalDecay
  */
 public final class cPrimitiveDefinition extends cElementalPrimitive {
     public static final cPrimitiveDefinition
-            nbtE__ = new cPrimitiveDefinition("NBT ERROR", "!", 0, 0f, 0, Integer.MIN_VALUE, Integer.MIN_VALUE),
-            null__ = new cPrimitiveDefinition("NULL POINTER", ".", 0, 0F, 0, -3, Integer.MAX_VALUE),
+            nbtE__ = new cPrimitiveDefinition("NBT ERROR", "!", 0, 0f, 0, Integer.MIN_VALUE, Integer.MIN_VALUE+10_000),
+            null__ = new cPrimitiveDefinition("NULL POINTER", ".", 0, 0F, 0, -3, Integer.MAX_VALUE-10_000),
             space__ = new cPrimitiveDefinition("Space", "_", 0, 0F, 0, -4, 0),
             magic = new cPrimitiveDefinition("Magic", "Ma", 4, 1e5F, 0, 0, 1),
             magic_ = new cPrimitiveDefinition("Antimagic", "~Ma", -4, 1e5F, 0, 0, 2);

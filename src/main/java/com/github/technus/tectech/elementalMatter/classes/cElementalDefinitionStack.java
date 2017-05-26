@@ -19,7 +19,7 @@ public final class cElementalDefinitionStack implements iHasElementalDefinition 
     }
 
     @Override
-    protected final Object clone() {
+    public final cElementalDefinitionStack clone() {
         return this;//IMMUTABLE
     }
 

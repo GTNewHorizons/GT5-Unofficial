@@ -20,9 +20,6 @@ import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveD
  * EXTEND THIS TO ADD NEW PRIMITIVES, WATCH OUT FOR ID'S!!!  (-1 to 32 can be assumed as used)
  */
 public abstract class cElementalPrimitive extends cElementalDefinition {
-    public static final Map<cElementalPrimitive, ItemStack> itemBinds = new TreeMap<>();
-    public static final Map<cElementalPrimitive, FluidStack> fluidBinds = new TreeMap<>();
-
     private static final byte nbtType = (byte) 'p';
 
     public static final Map<Integer, iElementalDefinition> bindsBO = new HashMap<>();
@@ -129,12 +126,12 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
     }
 
     @Override
-    public FluidStack materializesIntoFluid() {
+    public FluidStack someAmountIntoFluidStack() {
         return null;
     }
 
     @Override
-    public ItemStack materializesIntoItem() {
+    public ItemStack someAmountIntoItemsStack() {
         return null;
     }
 

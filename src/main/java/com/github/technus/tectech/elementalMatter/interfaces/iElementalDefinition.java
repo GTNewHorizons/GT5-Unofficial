@@ -10,7 +10,7 @@ import net.minecraftforge.fluids.FluidStack;
 /**
  * Created by danie_000 on 11.11.2016.
  */
-public interface iElementalDefinition extends Comparable<iElementalDefinition> {//IMMUTABLE
+public interface iElementalDefinition extends Comparable<iElementalDefinition>,Cloneable {//IMMUTABLE
 
     //Nomenclature
     String getName();
@@ -41,11 +41,13 @@ public interface iElementalDefinition extends Comparable<iElementalDefinition> {
 
     cElementalDefinitionStackMap getSubParticles();//contents... null if none
 
-    ItemStack materializesIntoItem();
+    ItemStack someAmountIntoItemsStack();
 
-    FluidStack materializesIntoFluid();
+    FluidStack someAmountIntoFluidStack();
 
     NBTTagCompound toNBT();
 
     cElementalDefinitionStack getStackForm(int i);
+
+    iElementalDefinition clone();
 }

@@ -166,12 +166,12 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
     }
 
     @Override
-    public FluidStack materializesIntoFluid() {
+    public FluidStack someAmountIntoFluidStack() {
         return null;
     }
 
     @Override
-    public ItemStack materializesIntoItem() {
+    public ItemStack someAmountIntoItemsStack() {
         return null;
     }
 
