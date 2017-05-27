@@ -5,9 +5,9 @@ import net.minecraft.block.Block;
 
 public class BOP_Block_Registrator {
 
-	static Block log_Rainforest;
-	static Block Leaves_Rainforest;
-	static Block sapling_Rainforest;
+	public static Block log_Rainforest;
+	public static Block leaves_Rainforest;
+	public static Block sapling_Rainforest;
 	
 	//Runs Each tree Type separately
 	public static final void run(){
@@ -17,7 +17,7 @@ public class BOP_Block_Registrator {
 	
 	private static final boolean registerTree_Rainforest(){
 		log_Rainforest = new LogRainforestTree();
-		Leaves_Rainforest = new LeavesRainforestTree();
+		leaves_Rainforest = new LeavesRainforestTree();
 		sapling_Rainforest = new SaplingRainforestTree();		
 		return true;
 	}

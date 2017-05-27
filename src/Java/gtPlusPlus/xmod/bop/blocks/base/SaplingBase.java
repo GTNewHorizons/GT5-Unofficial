@@ -25,209 +25,248 @@ import net.minecraft.world.gen.feature.*;
 public class SaplingBase extends BlockSapling
 {
 	protected String[] saplingTypes = new String[] {};
-    protected IIcon[] saplingTextures = new IIcon[] {};
+	protected IIcon[] saplingTextures = new IIcon[] {};
 
-    //Sapling types - field_149882_a
-    //Iicons - field_149881_b
-    
-    protected SaplingBase(String blockNameLocalized, String blockNameUnlocalized, String[] saplingTypes){
-        float f = 0.4F;
-        this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, f * 2.0F, 0.5F + f);
-        this.saplingTypes = saplingTypes;
-        this.saplingTextures = new IIcon[saplingTypes.length];
-        String blockName = "block"+Utils.sanitizeString(blockNameLocalized)+"Sapling";
+	//Sapling types - field_149882_a
+	//Iicons - field_149881_b
+
+	protected SaplingBase(String blockNameLocalized, String blockNameUnlocalized, String[] saplingTypes){
+		float f = 0.4F;
+		this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, f * 2.0F, 0.5F + f);
+		this.saplingTypes = saplingTypes;
+		this.saplingTextures = new IIcon[saplingTypes.length];
+		String blockName = "block"+Utils.sanitizeString(blockNameLocalized);
 		GameRegistry.registerBlock(this, ItemBlock.class, blockName);
 		this.setBlockName(blockName);
 		ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(this), "treeSapling");
 		this.setCreativeTab(AddToCreativeTab.tabBOP);
 		LanguageRegistry.addName(this, blockNameLocalized);
-    }
-    
-    private final void setVanillaVariable(Object toSet, Object value){
+	}
+
+	private final void setVanillaVariable(Object toSet, Object value){
 		toSet = value;
 	}
 
-    /**
-     * Gets the block's texture. Args: side, meta
-     */
-    @Override
+	/**
+	 * Gets the block's texture. Args: side, meta
+	 */
+	@Override
 	@SideOnly(Side.CLIENT)
-    public IIcon getIcon(int someInt, int meta){
-       /* p_149691_2_ &= 7;
+	public IIcon getIcon(int someInt, int meta){
+		/* p_149691_2_ &= 7;
         return saplingTextures[MathHelper.clamp_int(p_149691_2_, 0, 5)];*/
-        //return this.saplingTextures[meta % this.saplingTextures.length];
-    	Utils.LOG_INFO("Sapling meta is "+meta);
-      return this.saplingTextures[meta];        
-    }
-    
-    
+		//return this.saplingTextures[meta % this.saplingTextures.length];
+		try {
+			return this.saplingTextures[meta];  
+		}catch(Throwable T){
+			Utils.LOG_INFO("Invalid Sapling meta is "+meta);
+			return this.saplingTextures[0];
+		}
+	}
 
-   /* @Override
-	public void func_149879_c(World p_149879_1_, int p_149879_2_, int p_149879_3_, int p_149879_4_, Random p_149879_5_)
-    {
-        int l = p_149879_1_.getBlockMetadata(p_149879_2_, p_149879_3_, p_149879_4_);
+	/**
+	 * Ticks the block if it's been scheduled
+	 */
+	@Override
+	public void updateTick(World world, int x, int y, int z, Random rand){
+		if (!world.isRemote){
+			super.updateTick(world, x, y, z, rand);
+			if (world.getBlockLightValue(x, y + 1, z) >= 9 && rand.nextInt(7) == 0){
+				Utils.LOG_INFO("Update Tick");
+				this.updateMeta(world, x, y, z, rand);
+			}
+			else {
+				Utils.LOG_INFO("Tried to Tick.");
+			}
+		}
+	}
 
-        if ((l & 8) == 0)
-        {
-            p_149879_1_.setBlockMetadataWithNotify(p_149879_2_, p_149879_3_, p_149879_4_, l | 8, 4);
-        }
-        else
-        {
-            this.func_149878_d(p_149879_1_, p_149879_2_, p_149879_3_, p_149879_4_, p_149879_5_);
-        }
-    }*/
+	//Dunno - Think it is doGrow || doGrowthTick
+	@Override
+	public void func_149853_b(World world, Random rand, int x, int y, int z){
+		Utils.LOG_INFO("Please find what calls me - func_149853_b");
+		this.updateMeta(world, x, y, z, rand);
+	}
 
-    @Override
-	public void func_149878_d(World world, int x, int y, int z, Random rand)
-    {
-        if (!net.minecraftforge.event.terraingen.TerrainGen.saplingGrowTree(world, rand, x, y, z)) return;
-        int l = world.getBlockMetadata(x, y, z) & 7;
-        Object object = rand.nextInt(10) == 0 ? new WorldGenBigTree(true) : new WorldGenTrees(true);
-        int i1 = 0;
-        int j1 = 0;
-        boolean flag = false;
+	public void updateMeta(World world, int x, int y, int z, Random rand){
+		func_149879_c(world, x, y, z, rand);
+	}
 
-        switch (l)
-        {
-            case 0:
-            default:
-                break;
-            case 1:
-                label78:
+	@Override
+	public void func_149879_c(World world, int x, int y, int z, Random rand){
+		Utils.LOG_INFO("func_149879_c - 1");
+		int l = world.getBlockMetadata(x, y, z);
 
-                for (i1 = 0; i1 >= -1; --i1)
-                {
-                    for (j1 = 0; j1 >= -1; --j1)
-                    {
-                        if (this.func_149880_a(world, x + i1, y, z + j1, 1) && this.func_149880_a(world, x + i1 + 1, y, z + j1, 1) && this.func_149880_a(world, x + i1, y, z + j1 + 1, 1) && this.func_149880_a(world, x + i1 + 1, y, z + j1 + 1, 1))
-                        {
-                            object = new WorldGenMegaPineTree(false, rand.nextBoolean());
-                            flag = true;
-                            break label78;
-                        }
-                    }
-                }
+		if ((l & 8) == 0){
+			Utils.LOG_INFO("func_149879_c - 2");
+			world.setBlockMetadataWithNotify(x, y, z, l | 8, 4);
+		}
+		else{
+			Utils.LOG_INFO("func_149879_c - 3");
+			this.func_149878_d(world, x, y, z, rand);
+		}
+	}
 
-                if (!flag)
-                {
-                    j1 = 0;
-                    i1 = 0;
-                    object = new WorldGenTaiga2(true);
-                }
+	@Override
+	public void func_149878_d(World world, int x, int y, int z, Random rand){
+		Utils.LOG_INFO("func_149878_d - 1");
+		if (!net.minecraftforge.event.terraingen.TerrainGen.saplingGrowTree(world, rand, x, y, z)) return;
+		int l = world.getBlockMetadata(x, y, z) & 7;
+		Object object = rand.nextInt(10) == 0 ? new WorldGenBigTree(true) : new WorldGenTrees(true);
+		int i1 = 0;
+		int j1 = 0;
+		boolean flag = false;
 
-                break;
-            case 2:
-                object = new WorldGenForest(true, false);
-                break;
-            case 3:
-                label93:
+		switch (l)
+		{
+			case 0:
+			default:
+				Utils.LOG_INFO("Case 0 - Grow Tree");
+				break;
+			case 1:
+				Utils.LOG_INFO("Case 1 - Grow Tree");
+				label78:
 
-                for (i1 = 0; i1 >= -1; --i1)
-                {
-                    for (j1 = 0; j1 >= -1; --j1)
-                    {
-                        if (this.func_149880_a(world, x + i1, y, z + j1, 3) && this.func_149880_a(world, x + i1 + 1, y, z + j1, 3) && this.func_149880_a(world, x + i1, y, z + j1 + 1, 3) && this.func_149880_a(world, x + i1 + 1, y, z + j1 + 1, 3))
-                        {
-                            object = new WorldGenMegaJungle(true, 10, 20, 3, 3);
-                            flag = true;
-                            break label93;
-                        }
-                    }
-                }
+					for (i1 = 0; i1 >= -1; --i1)
+					{
+						for (j1 = 0; j1 >= -1; --j1)
+						{
+							if (this.func_149880_a(world, x + i1, y, z + j1, 1) && this.func_149880_a(world, x + i1 + 1, y, z + j1, 1) && this.func_149880_a(world, x + i1, y, z + j1 + 1, 1) && this.func_149880_a(world, x + i1 + 1, y, z + j1 + 1, 1))
+							{
+								object = new WorldGenMegaPineTree(false, rand.nextBoolean());
+								flag = true;
+								break label78;
+							}
+						}
+					}
 
-                if (!flag)
-                {
-                    j1 = 0;
-                    i1 = 0;
-                    object = new WorldGenTrees(true, 4 + rand.nextInt(7), 3, 3, false);
-                }
+			if (!flag)
+			{
+				j1 = 0;
+				i1 = 0;
+				object = new WorldGenTaiga2(true);
+			}
 
-                break;
-            case 4:
-                object = new WorldGenSavannaTree(true);
-                break;
-            case 5:
-                label108:
+			break;
+			case 2:
+				Utils.LOG_INFO("Case 2 - Grow Tree");
+				object = new WorldGenForest(true, false);
+				break;
+			case 3:
+				Utils.LOG_INFO("Case 3 - Grow Tree");
+				label93:
 
-                for (i1 = 0; i1 >= -1; --i1)
-                {
-                    for (j1 = 0; j1 >= -1; --j1)
-                    {
-                        if (this.func_149880_a(world, x + i1, y, z + j1, 5) && this.func_149880_a(world, x + i1 + 1, y, z + j1, 5) && this.func_149880_a(world, x + i1, y, z + j1 + 1, 5) && this.func_149880_a(world, x + i1 + 1, y, z + j1 + 1, 5))
-                        {
-                            object = new WorldGenCanopyTree(true);
-                            flag = true;
-                            break label108;
-                        }
-                    }
-                }
+					for (i1 = 0; i1 >= -1; --i1)
+					{
+						for (j1 = 0; j1 >= -1; --j1)
+						{
+							if (this.func_149880_a(world, x + i1, y, z + j1, 3) && this.func_149880_a(world, x + i1 + 1, y, z + j1, 3) && this.func_149880_a(world, x + i1, y, z + j1 + 1, 3) && this.func_149880_a(world, x + i1 + 1, y, z + j1 + 1, 3))
+							{
+								object = new WorldGenMegaJungle(true, 10, 20, 3, 3);
+								flag = true;
+								break label93;
+							}
+						}
+					}
 
-                if (!flag)
-                {
-                    return;
-                }
-        }
+			if (!flag)
+			{
+				j1 = 0;
+				i1 = 0;
+				object = new WorldGenTrees(true, 4 + rand.nextInt(7), 3, 3, false);
+			}
 
-        Block block = Blocks.air;
+			break;
+			case 4:
+				Utils.LOG_INFO("Case 4 - Grow Tree");
+				object = new WorldGenSavannaTree(true);
+				break;
+			case 5:
+				Utils.LOG_INFO("Case 5 - Grow Tree");
+				label108:
 
-        if (flag)
-        {
-            world.setBlock(x + i1, y, z + j1, block, 0, 4);
-            world.setBlock(x + i1 + 1, y, z + j1, block, 0, 4);
-            world.setBlock(x + i1, y, z + j1 + 1, block, 0, 4);
-            world.setBlock(x + i1 + 1, y, z + j1 + 1, block, 0, 4);
-        }
-        else
-        {
-            world.setBlock(x, y, z, block, 0, 4);
-        }
+					for (i1 = 0; i1 >= -1; --i1)
+					{
+						for (j1 = 0; j1 >= -1; --j1)
+						{
+							if (this.func_149880_a(world, x + i1, y, z + j1, 5) && this.func_149880_a(world, x + i1 + 1, y, z + j1, 5) && this.func_149880_a(world, x + i1, y, z + j1 + 1, 5) && this.func_149880_a(world, x + i1 + 1, y, z + j1 + 1, 5))
+							{
+								object = new WorldGenCanopyTree(true);
+								flag = true;
+								break label108;
+							}
+						}
+					}
 
-        if (!((WorldGenerator)object).generate(world, rand, x + i1, y, z + j1))
-        {
-            if (flag)
-            {
-                world.setBlock(x + i1, y, z + j1, this, l, 4);
-                world.setBlock(x + i1 + 1, y, z + j1, this, l, 4);
-                world.setBlock(x + i1, y, z + j1 + 1, this, l, 4);
-                world.setBlock(x + i1 + 1, y, z + j1 + 1, this, l, 4);
-            }
-            else
-            {
-                world.setBlock(x, y, z, this, l, 4);
-            }
-        }
-    }
+			if (!flag)
+			{
+				return;
+			}
+		}
 
-    @Override
+		Block block = Blocks.air;
+
+		if (flag)
+		{
+			world.setBlock(x + i1, y, z + j1, block, 0, 4);
+			world.setBlock(x + i1 + 1, y, z + j1, block, 0, 4);
+			world.setBlock(x + i1, y, z + j1 + 1, block, 0, 4);
+			world.setBlock(x + i1 + 1, y, z + j1 + 1, block, 0, 4);
+		}
+		else
+		{
+			world.setBlock(x, y, z, block, 0, 4);
+		}
+//public WorldGenRainForestTree_Ex(Block wood, Block leaves, int woodMeta, int leavesMeta, boolean doBlockNotify, int minTreeHeight, int randomTreeHeight) {
+		
+		//Object o = new WorldGenRainForestTree_Ex(BOP_Block_Registrator.);
+		
+		if (!((WorldGenerator)object).generate(world, rand, x + i1, y, z + j1))
+		{
+			if (flag)
+			{
+				world.setBlock(x + i1, y, z + j1, this, l, 4);
+				world.setBlock(x + i1 + 1, y, z + j1, this, l, 4);
+				world.setBlock(x + i1, y, z + j1 + 1, this, l, 4);
+				world.setBlock(x + i1 + 1, y, z + j1 + 1, this, l, 4);
+			}
+			else
+			{
+				world.setBlock(x, y, z, this, l, 4);
+			}
+		}
+	}
+
+	@Override
 	public boolean func_149880_a(World world, int p_149880_2_, int p_149880_3_, int p_149880_4_, int p_149880_5_){
-        return world.getBlock(p_149880_2_, p_149880_3_, p_149880_4_) == this && (world.getBlockMetadata(p_149880_2_, p_149880_3_, p_149880_4_) & 7) == p_149880_5_;
-    }
+		return world.getBlock(p_149880_2_, p_149880_3_, p_149880_4_) == this && (world.getBlockMetadata(p_149880_2_, p_149880_3_, p_149880_4_) & 7) == p_149880_5_;
+	}
 
-    /**
-     * Determines the damage on the item the block drops. Used in cloth and wood.
-     */
-    @Override
+	/**
+	 * Determines the damage on the item the block drops. Used in cloth and wood.
+	 */
+	@Override
 	public int damageDropped(int meta){
-        return MathHelper.clamp_int(meta & 7, 0, 5);
-    }
+		return MathHelper.clamp_int(meta & 7, 0, 5);
+	}
 
-    /**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
-    @Override
+	/**
+	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
+	 */
+	@Override
 	@SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, List metaList){
+	public void getSubBlocks(Item item, CreativeTabs tab, List metaList){
 		for (int i = 0; i < this.saplingTextures.length; ++i){
 			metaList.add(new ItemStack(item, 1, i));
 		}
 	}
 
-    @Override
+	@Override
 	@SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister iIcon){
-        for (int i = 0; i < saplingTextures.length; ++i){
-            saplingTextures[i] = iIcon.registerIcon(CORE.MODID + ":" + "trees/" + "saplings/" + "sapling_" + saplingTypes[i]);
-        }
-    }
+	public void registerBlockIcons(IIconRegister iIcon){
+		for (int i = 0; i < saplingTextures.length; ++i){
+			saplingTextures[i] = iIcon.registerIcon(CORE.MODID + ":" + "trees/" + "saplings/" + "sapling_" + saplingTypes[i]);
+		}
+	}
 
 }

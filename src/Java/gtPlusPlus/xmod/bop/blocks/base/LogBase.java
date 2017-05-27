@@ -29,6 +29,7 @@ public abstract class LogBase extends BlockLog
 		GameRegistry.registerBlock(this, ItemBlock.class, blockName);
 		this.setBlockName(blockName);
 		ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(this), "log"+Utils.sanitizeString(blockNameLocalized));
+		ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(this), "logWood");
 		this.setCreativeTab(AddToCreativeTab.tabBOP);
 		LanguageRegistry.addName(this, blockNameLocalized);
 	}
