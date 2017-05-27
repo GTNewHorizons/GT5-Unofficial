@@ -2,6 +2,8 @@ package gtPlusPlus.core.creative;
 
 import gtPlusPlus.core.creative.tabs.*;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.xmod.bop.creative.MiscUtilsBOPTab;
 import net.minecraft.creativetab.CreativeTabs;
 
 public class AddToCreativeTab {
@@ -12,6 +14,7 @@ public class AddToCreativeTab {
 	public static CreativeTabs tabTools;
 	public static CreativeTabs tabMachines;
 	public static CreativeTabs tabOther;
+	public static CreativeTabs tabBOP;
 
 	public static void initialiseTabs(){
 		tabBlock = new MiscUtilCreativeTabBlock("MiscUtilBlockTab");
@@ -19,6 +22,9 @@ public class AddToCreativeTab {
 		tabTools = new MiscUtilCreativeTabTools("MiscUtilToolsTab");
 		tabMachines = new MiscUtilCreativeTabMachines("MiscUtilMachineTab");
 		tabOther = new MiscUtilCreativeTabOther("MiscUtilOtherTab");
+		if (LoadedMods.BiomesOPlenty){
+			tabBOP = new MiscUtilsBOPTab("MiscUtilBOP");
+		}
 
 		if (CORE.DEBUG){
 			//tabCombat = new MiscUtilCreativeTabCombat("MiscUtilCombatTab");

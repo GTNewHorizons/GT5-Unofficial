@@ -41,6 +41,7 @@ public class LoadedMods {
 	public static boolean OpenComputers = false; //OpenComputers
 	public static boolean Computronics = false; //computronics
 	public static boolean DreamCraft = false; //GT: New Horizons
+	public static boolean BiomesOPlenty = false;
 
 
 
@@ -113,6 +114,11 @@ public class LoadedMods {
 		if (Loader.isModLoaded("Thaumcraft") == true){
 			Thaumcraft = true;
 			Utils.LOG_INFO("Components enabled for: Thaumcraft");
+			totalMods++;
+		}
+		if (Loader.isModLoaded("BiomesOPlenty") == true){
+			BiomesOPlenty = true;
+			Utils.LOG_INFO("Components enabled for: BiomesOPlenty");
 			totalMods++;
 		}
 		if (Loader.isModLoaded("ExtraUtilities") == true){

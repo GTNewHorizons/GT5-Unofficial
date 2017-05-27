@@ -1,6 +1,7 @@
 package gtPlusPlus.core.handler;
 
 import gtPlusPlus.xmod.Computronics.HANDLER_Computronics;
+import gtPlusPlus.xmod.bop.HANDLER_BiomesOPlenty;
 import gtPlusPlus.xmod.forestry.HANDLER_FR;
 import gtPlusPlus.xmod.gregtech.HANDLER_GT;
 import gtPlusPlus.xmod.growthcraft.HANDLER_GC;
@@ -16,6 +17,7 @@ public class COMPAT_IntermodStaging {
 		HANDLER_FR.preInit();
 		HANDLER_IC2.preInit();
 		HANDLER_Computronics.preInit();
+		HANDLER_BiomesOPlenty.preInit();
 
 	}
 
@@ -26,6 +28,7 @@ public class COMPAT_IntermodStaging {
 		HANDLER_FR.Init();
 		HANDLER_IC2.init();
 		HANDLER_Computronics.init();
+		HANDLER_BiomesOPlenty.init();
 	}
 
 	public static void postInit(){
@@ -35,6 +38,7 @@ public class COMPAT_IntermodStaging {
 		HANDLER_FR.postInit();
 		HANDLER_IC2.postInit();
 		HANDLER_Computronics.postInit();
+		HANDLER_BiomesOPlenty.postInit();
 	}
 
 
