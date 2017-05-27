@@ -2,10 +2,15 @@ package gtPlusPlus.core.world.dimensionA.world.biomes;
 
 import java.util.Random;
 
+import gtPlusPlus.core.world.dimensionA.world.biomes.decorators.BiomeDecoratorMod;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.WorldGenTallGrass;
+import net.minecraft.world.gen.feature.WorldGenerator;
 
 public class BiomeDarkForest extends ModBiomes{
+	
+	 protected BiomeDecoratorMod decorator;
 
 	public BiomeDarkForest(int biomeId) {
 		super(biomeId);
@@ -16,6 +21,14 @@ public class BiomeDarkForest extends ModBiomes{
 		this.topBlock = Blocks.grass;
 		this.fillerBlock = Blocks.dirt;
 	}
+	
+	/**
+     * Gets a WorldGen appropriate for this biome.
+     */
+    @Override
+	public WorldGenerator getRandomWorldGenForGrass(Random random){
+        return random.nextInt(2) == 0 ? new WorldGenTallGrass(Blocks.tallgrass, 1) : new WorldGenTallGrass(Blocks.tallgrass, 2);
+    }
 	
 	/**
 	 * Remove this to remove vines from dimension

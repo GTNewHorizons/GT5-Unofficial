@@ -159,7 +159,7 @@ public class ChunkProviderForest implements IChunkProvider {
 								if ((d15 += d16) > 0.0D) {
 									blocks[j3 += short1] = Blocks.stone;//these can be set to custom blocks
 								} else if (k2 * 8 + l2 < b0) {
-									blocks[j3 += short1] = Blocks.water;//these can be set to custom blocks
+									blocks[j3 += short1] = TF_Blocks.blockFluidEnder;//these can be set to custom blocks
 								} else {
 									blocks[j3 += short1] = null;//this is the air block i think.
 								}

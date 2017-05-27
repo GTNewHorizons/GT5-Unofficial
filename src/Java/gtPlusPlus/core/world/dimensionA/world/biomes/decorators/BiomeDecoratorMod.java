@@ -2,8 +2,8 @@ package gtPlusPlus.core.world.dimensionA.world.biomes.decorators;
 
 import java.util.Random;
 
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.world.dimensionA.world.gen.*;
-import gtPlusPlus.xmod.gregtech.api.objects.XSTR;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeDecorator;
@@ -15,7 +15,7 @@ public class BiomeDecoratorMod extends BiomeDecorator
 	/** The world the BiomeDecorator is currently decorating */
 	public static World currentWorld;
 	/** The Biome Decorator's random number generator. */
-	public static XSTR randomGenerator;
+	public static Random randomGenerator;
 	/** The X-coordinate of the chunk currently being decorated */
 	public static int chunk_X;
 	/** The Z-coordinate of the chunk currently being decorated */
@@ -53,7 +53,7 @@ public class BiomeDecoratorMod extends BiomeDecorator
 			throw new RuntimeException("Already decorating!!");
 		} else {
 			currentWorld = world;
-			randomGenerator = (XSTR) random;
+			randomGenerator = random;
 			chunk_X = chunkX;
 			chunk_Z = chunkZ;
 			genDecorationsForBiome(biomeGenBase);
@@ -68,6 +68,7 @@ public class BiomeDecoratorMod extends BiomeDecorator
 	 * @param biome
 	 */
 	protected void genDecorationsForBiome(BiomeGenBase biome) {
+		Utils.LOG_INFO("Decorating Chunk");
 		BiomeDecoratorHelper.decorateBiome(biome);
 	}
 }
