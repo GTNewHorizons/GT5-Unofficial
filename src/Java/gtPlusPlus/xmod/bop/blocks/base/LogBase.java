@@ -13,6 +13,7 @@ import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.block.BlockLog;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.*;
 import net.minecraft.util.IIcon;
 
@@ -32,6 +33,7 @@ public abstract class LogBase extends BlockLog
 		ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(this), "logWood");
 		this.setCreativeTab(AddToCreativeTab.tabBOP);
 		LanguageRegistry.addName(this, blockNameLocalized);
+		Blocks.fire.setFireInfo(this, 20, 100);
 	}
 
 	private final void setVanillaVariable(Object toSet, Object value){

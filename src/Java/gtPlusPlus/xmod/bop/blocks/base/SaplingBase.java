@@ -123,85 +123,7 @@ public class SaplingBase extends BlockSapling
 			default:
 				Utils.LOG_INFO("Case 0 - Grow Tree");
 				break;
-			case 1:
-				Utils.LOG_INFO("Case 1 - Grow Tree");
-				label78:
-
-					for (i1 = 0; i1 >= -1; --i1)
-					{
-						for (j1 = 0; j1 >= -1; --j1)
-						{
-							if (this.func_149880_a(world, x + i1, y, z + j1, 1) && this.func_149880_a(world, x + i1 + 1, y, z + j1, 1) && this.func_149880_a(world, x + i1, y, z + j1 + 1, 1) && this.func_149880_a(world, x + i1 + 1, y, z + j1 + 1, 1))
-							{
-								object = new WorldGenMegaPineTree(false, rand.nextBoolean());
-								flag = true;
-								break label78;
-							}
-						}
-					}
-
-			if (!flag)
-			{
-				j1 = 0;
-				i1 = 0;
-				object = new WorldGenTaiga2(true);
-			}
-
-			break;
-			case 2:
-				Utils.LOG_INFO("Case 2 - Grow Tree");
-				object = new WorldGenForest(true, false);
-				break;
-			case 3:
-				Utils.LOG_INFO("Case 3 - Grow Tree");
-				label93:
-
-					for (i1 = 0; i1 >= -1; --i1)
-					{
-						for (j1 = 0; j1 >= -1; --j1)
-						{
-							if (this.func_149880_a(world, x + i1, y, z + j1, 3) && this.func_149880_a(world, x + i1 + 1, y, z + j1, 3) && this.func_149880_a(world, x + i1, y, z + j1 + 1, 3) && this.func_149880_a(world, x + i1 + 1, y, z + j1 + 1, 3))
-							{
-								object = new WorldGenMegaJungle(true, 10, 20, 3, 3);
-								flag = true;
-								break label93;
-							}
-						}
-					}
-
-			if (!flag)
-			{
-				j1 = 0;
-				i1 = 0;
-				object = new WorldGenTrees(true, 4 + rand.nextInt(7), 3, 3, false);
-			}
-
-			break;
-			case 4:
-				Utils.LOG_INFO("Case 4 - Grow Tree");
-				object = new WorldGenSavannaTree(true);
-				break;
-			case 5:
-				Utils.LOG_INFO("Case 5 - Grow Tree");
-				label108:
-
-					for (i1 = 0; i1 >= -1; --i1)
-					{
-						for (j1 = 0; j1 >= -1; --j1)
-						{
-							if (this.func_149880_a(world, x + i1, y, z + j1, 5) && this.func_149880_a(world, x + i1 + 1, y, z + j1, 5) && this.func_149880_a(world, x + i1, y, z + j1 + 1, 5) && this.func_149880_a(world, x + i1 + 1, y, z + j1 + 1, 5))
-							{
-								object = new WorldGenCanopyTree(true);
-								flag = true;
-								break label108;
-							}
-						}
-					}
-
-			if (!flag)
-			{
-				return;
-			}
+			
 		}
 
 		Block block = Blocks.air;
@@ -217,9 +139,6 @@ public class SaplingBase extends BlockSapling
 		{
 			world.setBlock(x, y, z, block, 0, 4);
 		}
-//public WorldGenRainForestTree_Ex(Block wood, Block leaves, int woodMeta, int leavesMeta, boolean doBlockNotify, int minTreeHeight, int randomTreeHeight) {
-		
-		//Object o = new WorldGenRainForestTree_Ex(BOP_Block_Registrator.);
 		
 		if (!((WorldGenerator)object).generate(world, rand, x + i1, y, z + j1))
 		{
