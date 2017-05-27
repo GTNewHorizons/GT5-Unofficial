@@ -19,7 +19,7 @@ public class SaplingRainforestTree extends SaplingBase {
 
     @Override
 	public void func_149878_d(World world, int x, int y, int z, Random rand){
-		Utils.LOG_INFO("func_149878_d - 1");
+		Utils.LOG_WARNING("func_149878_d - 1");
 		if (!net.minecraftforge.event.terraingen.TerrainGen.saplingGrowTree(world, rand, x, y, z)) return;
 		int l = world.getBlockMetadata(x, y, z) & 7;
 		Object object = rand.nextInt(10) == 0 ? new WorldGenBigTree(true) : new WorldGenTrees(true);

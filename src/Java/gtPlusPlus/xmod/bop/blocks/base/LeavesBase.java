@@ -58,7 +58,7 @@ public class LeavesBase extends BlockLeaves {
 			}
 		}
 		else {
-			Utils.LOG_INFO("Unable to drop anything, Leaf Type array and Loot array are different sizes.");
+			Utils.LOG_WARNING("Unable to drop anything, Leaf Type array and Loot array are different sizes.");
 		}
 	}
 

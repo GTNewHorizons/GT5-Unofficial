@@ -59,7 +59,7 @@ public class SaplingBase extends BlockSapling
 		try {
 			return this.saplingTextures[meta];  
 		}catch(Throwable T){
-			Utils.LOG_INFO("Invalid Sapling meta is "+meta);
+			Utils.LOG_WARNING("Invalid Sapling meta is "+meta);
 			return this.saplingTextures[0];
 		}
 	}
@@ -72,11 +72,11 @@ public class SaplingBase extends BlockSapling
 		if (!world.isRemote){
 			super.updateTick(world, x, y, z, rand);
 			if (world.getBlockLightValue(x, y + 1, z) >= 9 && rand.nextInt(7) == 0){
-				Utils.LOG_INFO("Update Tick");
+				Utils.LOG_WARNING("Update Tick");
 				this.updateMeta(world, x, y, z, rand);
 			}
 			else {
-				Utils.LOG_INFO("Tried to Tick.");
+				Utils.LOG_WARNING("Tried to Tick.");
 			}
 		}
 	}
@@ -84,7 +84,7 @@ public class SaplingBase extends BlockSapling
 	//Dunno - Think it is doGrow || doGrowthTick
 	@Override
 	public void func_149853_b(World world, Random rand, int x, int y, int z){
-		Utils.LOG_INFO("Please find what calls me - func_149853_b");
+		Utils.LOG_WARNING("Please find what calls me - func_149853_b");
 		this.updateMeta(world, x, y, z, rand);
 	}
 
@@ -94,22 +94,22 @@ public class SaplingBase extends BlockSapling
 
 	@Override
 	public void func_149879_c(World world, int x, int y, int z, Random rand){
-		Utils.LOG_INFO("func_149879_c - 1");
+		Utils.LOG_WARNING("func_149879_c - 1");
 		int l = world.getBlockMetadata(x, y, z);
 
 		if ((l & 8) == 0){
-			Utils.LOG_INFO("func_149879_c - 2");
+			Utils.LOG_WARNING("func_149879_c - 2");
 			world.setBlockMetadataWithNotify(x, y, z, l | 8, 4);
 		}
 		else{
-			Utils.LOG_INFO("func_149879_c - 3");
+			Utils.LOG_WARNING("func_149879_c - 3");
 			this.func_149878_d(world, x, y, z, rand);
 		}
 	}
 
 	@Override
 	public void func_149878_d(World world, int x, int y, int z, Random rand){
-		Utils.LOG_INFO("func_149878_d - 1");
+		Utils.LOG_WARNING("func_149878_d - 1");
 		if (!net.minecraftforge.event.terraingen.TerrainGen.saplingGrowTree(world, rand, x, y, z)) return;
 		int l = world.getBlockMetadata(x, y, z) & 7;
 		Object object = rand.nextInt(10) == 0 ? new WorldGenBigTree(true) : new WorldGenTrees(true);
@@ -121,7 +121,7 @@ public class SaplingBase extends BlockSapling
 		{
 			case 0:
 			default:
-				Utils.LOG_INFO("Case 0 - Grow Tree");
+				Utils.LOG_WARNING("Case 0 - Grow Tree");
 				break;
 			
 		}
