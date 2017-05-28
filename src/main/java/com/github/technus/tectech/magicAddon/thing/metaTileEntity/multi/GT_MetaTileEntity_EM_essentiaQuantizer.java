@@ -82,12 +82,13 @@ public class GT_MetaTileEntity_EM_essentiaQuantizer extends GT_MetaTileEntity_Mu
             mMaxProgresstime = 20;
             mEfficiencyIncrease = 10000;
             eAmpereFlow=1;
-            outputEM = new cElementalInstanceStackMap[1];
-            outputEM[0] = new cElementalInstanceStackMap(newStack);
+            outputEM = new cElementalInstanceStackMap[]{
+                    new cElementalInstanceStackMap(newStack)
+            };
             if (newStack.definition instanceof ePrimalAspectDefinition) {
                 mEUt = (int) -V[8];
             } else {
-                mEUt = (int) -V[9];
+                mEUt = (int) -V[10];
             }
             return true;
         }
@@ -103,5 +104,6 @@ public class GT_MetaTileEntity_EM_essentiaQuantizer extends GT_MetaTileEntity_Mu
             return;
         }
         eOutputHatches.get(0).getContainerHandler().putUnifyAll(outputEM[0]);
+        outputEM=null;
     }
 }

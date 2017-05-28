@@ -138,7 +138,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
         float euMult = mass / refMass;
         eAmpereFlow = (int) Math.ceil(euMult);
         if (mass > refUnstableMass) {
-            mEUt = (int) -V[9];
+            mEUt = (int) -V[10];
         } else {
             mEUt = (int) -V[8];
         }
@@ -156,5 +156,6 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
             return;
         }
         eOutputHatches.get(0).getContainerHandler().putUnifyAll(outputEM[0]);
+        outputEM=null;
     }
 }

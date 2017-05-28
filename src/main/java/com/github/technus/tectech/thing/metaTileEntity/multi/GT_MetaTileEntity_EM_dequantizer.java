@@ -116,15 +116,10 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
         float euMult = mass / refMass;
         eAmpereFlow = (int) Math.ceil(euMult);
         if (mass > refUnstableMass) {
-            mEUt = (int) -V[9];
+            mEUt = (int) -V[10];
         } else {
             mEUt = (int) -V[8];
         }
-        outputEM = new cElementalInstanceStackMap[]{
-                from instanceof cElementalInstanceStack ?
-                        new cElementalInstanceStackMap((cElementalInstanceStack) from) :
-                        new cElementalInstanceStackMap(new cElementalInstanceStack(from.getDefinition(), from.getAmount()))
-        };
     }
 
     @Override

@@ -84,7 +84,7 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
             if (stack.definition instanceof ePrimalAspectDefinition) {
                 mEUt = (int) -V[8];
             } else {
-                mEUt = (int) -V[9];
+                mEUt = (int) -V[10];
             }
             return true;
         }
