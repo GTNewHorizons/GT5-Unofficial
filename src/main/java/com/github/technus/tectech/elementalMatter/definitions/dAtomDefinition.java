@@ -443,17 +443,13 @@ public final class dAtomDefinition extends cElementalDefinition {
     //}
 
     @Override
-    public FluidStack someAmountIntoFluidStack() {
-        aFluidDequantizationInfo fdq= transformation.fluidDequantization.get(this);
-        if(fdq!=null) return fdq.output();
-        return null;
+    public aFluidDequantizationInfo someAmountIntoFluidStack() {
+        return transformation.fluidDequantization.get(this);
     }
 
     @Override
-    public ItemStack someAmountIntoItemsStack() {
-        aItemDequantizationInfo idq= transformation.itemDequantization.get(this);
-        if(idq!=null) return idq.output();
-        return null;
+    public aItemDequantizationInfo someAmountIntoItemsStack() {
+        return transformation.itemDequantization.get(this);
     }
 
     private final static class nomenclature {

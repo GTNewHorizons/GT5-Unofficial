@@ -41,9 +41,9 @@ public interface iElementalDefinition extends Comparable<iElementalDefinition>,C
 
     cElementalDefinitionStackMap getSubParticles();//contents... null if none
 
-    ItemStack someAmountIntoItemsStack();
+    iExchangeInfo someAmountIntoItemsStack();
 
-    FluidStack someAmountIntoFluidStack();
+    iExchangeInfo someAmountIntoFluidStack();
 
     NBTTagCompound toNBT();
 

@@ -4,6 +4,7 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.classes.*;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
+import com.github.technus.tectech.elementalMatter.interfaces.iExchangeInfo;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
@@ -275,12 +276,12 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
     //}
 
     @Override
-    public ItemStack someAmountIntoItemsStack() {
+    public iExchangeInfo someAmountIntoItemsStack() {
         return null;
     }
 
     @Override
-    public FluidStack someAmountIntoFluidStack() {
+    public iExchangeInfo someAmountIntoFluidStack() {
         return null;
     }
 

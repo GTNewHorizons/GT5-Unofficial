@@ -3,6 +3,7 @@ package com.github.technus.tectech.elementalMatter.classes;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
+import com.github.technus.tectech.elementalMatter.interfaces.iExchangeInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.item.ItemStack;
@@ -126,12 +127,12 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
     }
 
     @Override
-    public FluidStack someAmountIntoFluidStack() {
+    public iExchangeInfo someAmountIntoFluidStack() {
         return null;
     }
 
     @Override
-    public ItemStack someAmountIntoItemsStack() {
+    public iExchangeInfo someAmountIntoItemsStack() {
         return null;
     }
 
