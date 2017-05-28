@@ -56,6 +56,7 @@ public class Dimension_DarkWorld {
 		Item.itemRegistry.addObject(423, "dimensionDarkWorld_trigger", portalItem);
 		blockTopLayer = new blockDarkWorldGround();
 		GameRegistry.registerBlock(blockTopLayer, "blockDarkWorldGround");
+		Blocks.fire.setFireInfo(blockTopLayer, 30, 20);
 		blockPortalFrame = new blockDarkWorldPortalFrame();
 		GameRegistry.registerBlock(blockPortalFrame, "blockDarkWorldPortalFrame");
 	}

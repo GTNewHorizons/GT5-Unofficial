@@ -66,6 +66,12 @@ public class HellFire extends BlockFire {
 				this.setFireInfo(b, spread * 4, flamm * 4);
 			}
 		}
+		
+		//Special Case madness
+		this.setFireInfo(Blocks.brown_mushroom_block, 20, 100);
+		this.setFireInfo(Blocks.red_mushroom_block, 20, 100);
+		this.setFireInfo(Blocks.grass, 20, 100);
+		this.setFireInfo(Blocks.mycelium, 20, 100);
 
 	}
 
