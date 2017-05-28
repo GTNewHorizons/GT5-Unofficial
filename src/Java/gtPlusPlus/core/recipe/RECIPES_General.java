@@ -4,6 +4,7 @@ import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
 import gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator;
@@ -81,23 +82,26 @@ public class RECIPES_General {
 			GT_ModHandler.addPulverisationRecipe(ItemUtils.getSimpleStack(ModItems.shardTerra), ItemUtils.getSimpleStack(ModItems.dustTerra, 2));
 			GT_ModHandler.addPulverisationRecipe(ItemUtils.getSimpleStack(ModItems.shardAqua), ItemUtils.getSimpleStack(ModItems.dustAqua, 2));
 			
-			
-			//Rainforest oak Sapling
-			RecipeUtils.recipeBuilder(
-					"stickWood", "stickWood", "stickWood",
-					"stickWood", "treeSapling", "stickWood",
-					"stickWood", "dustBone", "stickWood",
-					ItemUtils.getSimpleStack(BOP_Block_Registrator.sapling_Rainforest));
-			
-			//Iron bars
-			ItemStack ironBars = ItemUtils.getItemStack("minecraft:iron_bars", 1);
-			//Fish Trap
-			RecipeUtils.recipeBuilder(
-					ironBars, ironBars, ironBars,
-					ironBars, "frameGtWroughtIron", ironBars,
-					ironBars, ironBars, ironBars,
-					ItemUtils.getSimpleStack(ModBlocks.blockFishTrap));
-			
+		}
+		
+		//Rainforest oak Sapling
+		if (RecipeUtils.recipeBuilder(
+				"stickWood", "stickWood", "stickWood",
+				"stickWood", "treeSapling", "stickWood",
+				"stickWood", "dustBone", "stickWood",
+				ItemUtils.getSimpleStack(BOP_Block_Registrator.sapling_Rainforest))){
+		Utils.LOG_INFO("Added a recipe for Rainforest oak Saplings.");	
+		}
+		
+		//Iron bars
+		ItemStack ironBars = ItemUtils.getItemStack("minecraft:iron_bars", 1);
+		//Fish Trap
+		if (RecipeUtils.recipeBuilder(
+				ironBars, ironBars, ironBars,
+				ironBars, "frameGtWroughtIron", ironBars,
+				ironBars, ironBars, ironBars,
+				ItemUtils.getSimpleStack(ModBlocks.blockFishTrap))){
+		Utils.LOG_INFO("Added a recipe for the Fish Trap.");	
 		}
 
 	}

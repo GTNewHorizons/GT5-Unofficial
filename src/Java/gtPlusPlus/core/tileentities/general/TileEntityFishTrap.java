@@ -133,15 +133,15 @@ public class TileEntityFishTrap extends TileEntity{
 		//Pam Fish
 		else if (lootWeight <= 70){
 			if (LoadedMods.PamsHarvestcraft){
-				loot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(prefix+harvestcraftFish[MathUtils.randInt(0, harvestcraftFish.length)]+suffix, 1);
+				loot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(prefix+harvestcraftFish[MathUtils.randInt(0, harvestcraftFish.length)-1]+suffix, 1);
 			}
 			else {
-				loot = ItemUtils.getSimpleStack(minecraftFish[MathUtils.randInt(0, minecraftFish.length)], 1);
+				loot = ItemUtils.getSimpleStack(minecraftFish[MathUtils.randInt(0, minecraftFish.length)-1], 1);
 			}
 		}
 		//Minecraft Fish
 		else if (lootWeight <= 100){
-			loot = ItemUtils.getSimpleStack(minecraftFish[MathUtils.randInt(0, minecraftFish.length)], 1);
+			loot = ItemUtils.getSimpleStack(minecraftFish[MathUtils.randInt(0, minecraftFish.length)-1], 1);
 		}
 		else {
 			loot = ItemUtils.getSimpleStack(Blocks.diamond_ore);
