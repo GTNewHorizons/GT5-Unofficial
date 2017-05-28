@@ -135,19 +135,19 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         return false;
     }
 
-    public boolean removeAmount(boolean testOnly, cElementalDefinitionStack stack) {
-        final cElementalInstanceStack target = map.get(stack.definition);
+    public boolean removeAmount(boolean testOnly, iHasElementalDefinition stack) {
+        final cElementalInstanceStack target = map.get(stack.getDefinition());
         if (target == null)
             return false;
         if (testOnly)
-            return target.amount >= stack.amount;
+            return target.amount >= stack.getAmount();
         else {
-            final int diff = target.amount - stack.amount;
+            final int diff = target.amount - stack.getAmount();
             if (diff > 0) {
                 target.amount = diff;
                 return true;
             } else if (diff == 0) {
-                map.remove(stack.definition);
+                map.remove(stack.getDefinition());
                 return true;
             }
         }
@@ -169,12 +169,12 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         return true;
     }
 
-    public boolean removeAllAmounts(boolean testOnly, cElementalDefinitionStack... stacks) {
+    public boolean removeAllAmounts(boolean testOnly, iHasElementalDefinition... stacks) {
         boolean test = true;
-        for (cElementalDefinitionStack stack : stacks)
+        for (iHasElementalDefinition stack : stacks)
             test &= removeAmount(true, stack);
         if (testOnly || !test) return test;
-        for (cElementalDefinitionStack stack : stacks)
+        for (iHasElementalDefinition stack : stacks)
             removeAmount(false, stack);
         return true;
     }
@@ -406,7 +406,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
     }
 
     @Override
-    public int hashCode() {//Internal amounts should be also hashed
+    public int hashCode() {//Hash only definitions to compare contents not amounts or data
         int hash = -(map.size() << 4);
         for (cElementalInstanceStack s : map.values()) {
             hash += s.definition.hashCode();

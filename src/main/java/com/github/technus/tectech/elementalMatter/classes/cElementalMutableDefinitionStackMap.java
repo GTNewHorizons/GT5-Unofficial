@@ -105,19 +105,19 @@ public final class cElementalMutableDefinitionStackMap extends cElementalStackMa
         return false;
     }
 
-    public boolean removeAmount(boolean testOnly, cElementalDefinitionStack stack) {
-        final cElementalDefinitionStack target = map.get(stack.definition);
+    public boolean removeAmount(boolean testOnly, iHasElementalDefinition stack) {
+        final cElementalDefinitionStack target = map.get(stack.getDefinition());
         if (target == null)
             return false;
         if (testOnly)
-            return target.amount >= stack.amount;
+            return target.amount >= stack.getAmount();
         else {
-            final int diff = target.amount - stack.amount;
+            final int diff = target.amount - stack.getAmount();
             if (diff > 0) {
                 map.put(target.definition, new cElementalDefinitionStack(target.definition, diff));
                 return true;
             } else if (diff == 0) {
-                map.remove(stack.definition);
+                map.remove(stack.getDefinition());
                 return true;
             }
         }
@@ -139,12 +139,12 @@ public final class cElementalMutableDefinitionStackMap extends cElementalStackMa
         return true;
     }
 
-    public boolean removeAllAmounts(boolean testOnly, cElementalDefinitionStack... stacks) {
+    public boolean removeAllAmounts(boolean testOnly, iHasElementalDefinition... stacks) {
         boolean test = true;
-        for (cElementalDefinitionStack stack : stacks)
+        for (iHasElementalDefinition stack : stacks)
             test &= removeAmount(true, stack);
         if (testOnly || !test) return test;
-        for (cElementalDefinitionStack stack : stacks)
+        for (iHasElementalDefinition stack : stacks)
             removeAmount(false, stack);
         return true;
     }

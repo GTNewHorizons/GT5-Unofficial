@@ -85,6 +85,7 @@ public abstract class cElementalDefinition implements iElementalDefinition {
 
     @Override
     public final boolean equals(Object obj) {
+        if(this==obj)return true;
         if (obj instanceof iElementalDefinition)
             return compareTo((iElementalDefinition) obj) == 0;
         if (obj instanceof iHasElementalDefinition)

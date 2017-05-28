@@ -1,16 +1,28 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.elementalMatter.classes.*;
+import com.github.technus.tectech.elementalMatter.interfaces.iExchangeInfo;
+import com.github.technus.tectech.elementalMatter.interfaces.iHasElementalDefinition;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.iConstructible;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.ArrayList;
 
 import static com.github.technus.tectech.Util.StructureBuilder;
+import static com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition.refMass;
+import static com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition.refUnstableMass;
 import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
+import static gregtech.api.enums.GT_Values.V;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -55,10 +67,65 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
         StructureBuilder(shape, blockType, blockMeta,1, 1, 0, getBaseMetaTileEntity());
     }
 
-    //@Override
-    //public boolean EM_checkRecipe(ItemStack itemStack) {
-    //
-    //}
+    @Override
+    public boolean EM_checkRecipe(ItemStack itemStack) {
+        for (GT_MetaTileEntity_Hatch_InputElemental in : eInputHatches) {
+            cElementalInstanceStackMap map = in.getContainerHandler();
+            for (cElementalInstanceStack stack : map.values()) {
+                iExchangeInfo info = stack.getDefinition().someAmountIntoFluidStack();
+                if (info instanceof aFluidDequantizationInfo) {
+                    if(map.removeAllAmounts(false,(iHasElementalDefinition) info.input())){
+                        mOutputFluids=new FluidStack[]{(FluidStack) info.output()};
+                        startRecipe((iHasElementalDefinition)info.input());
+                        return true;
+                    }
+                } else {
+                    info = stack.getDefinition().someAmountIntoItemsStack();
+                    if (info != null) {
+                        if (info instanceof aItemDequantizationInfo) {
+                            if(map.removeAllAmounts(false,(iHasElementalDefinition) info.input())){
+                                mOutputItems=new ItemStack[]{(ItemStack) info.output()};
+                                startRecipe((iHasElementalDefinition)info.input());
+                                return true;
+                            }
+                        } else if (info instanceof aOredictDequantizationInfo) {
+                            if(map.removeAllAmounts(false,(iHasElementalDefinition) info.input())){
+                                ArrayList<ItemStack> items=OreDictionary.getOres(((aOredictDequantizationInfo) info).out);
+                                if(items!=null && items.size()>0) {
+                                    mOutputItems = new ItemStack[]{
+                                        items.get(0)
+                                    };
+                                    startRecipe((iHasElementalDefinition) info.input());
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        mEfficiencyIncrease = 0;
+        mMaxProgresstime = 0;
+        return false;
+    }
+
+    private void startRecipe(iHasElementalDefinition from) {
+        mMaxProgresstime = 20;
+        mEfficiencyIncrease = 10000;
+        float mass = from.getMass();
+        float euMult = mass / refMass;
+        eAmpereFlow = (int) Math.ceil(euMult);
+        if (mass > refUnstableMass) {
+            mEUt = (int) -V[9];
+        } else {
+            mEUt = (int) -V[8];
+        }
+        outputEM = new cElementalInstanceStackMap[]{
+                from instanceof cElementalInstanceStack ?
+                        new cElementalInstanceStackMap((cElementalInstanceStack) from) :
+                        new cElementalInstanceStackMap(new cElementalInstanceStack(from.getDefinition(), from.getAmount()))
+        };
+    }
 
     @Override
     public String[] getDescription() {

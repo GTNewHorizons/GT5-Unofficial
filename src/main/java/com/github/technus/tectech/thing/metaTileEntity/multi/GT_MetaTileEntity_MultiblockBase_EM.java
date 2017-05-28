@@ -743,10 +743,10 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 EU > maxEUinputMax ||
                 (euVar - 1) / maxEUinputMin + 1 > eMaxAmpereFlow) {// euVar==0? --> (euVar - 1) / maxEUinputMin + 1 = 1!
             if (TecTechConfig.DEBUG_MODE) {
-                TecTech.Logger.debug("OMG1 " + euVar + " " + getEUVar() + " " + (euVar > getEUVar()));
-                TecTech.Logger.debug("OMG2 " + EU + " " + maxEUinputMax + " " + (EU > maxEUinputMax));
-                TecTech.Logger.debug("OMG3 " + euVar + " " + eMaxAmpereFlow);
-                TecTech.Logger.debug("OMG4 " + ((euVar - 1) / maxEUinputMin + 1) + " " + eMaxAmpereFlow + " " + ((euVar - 1) / maxEUinputMin + 1 > eMaxAmpereFlow));
+                TecTech.Logger.debug("L1 " + euVar + " " + getEUVar() + " " + (euVar > getEUVar()));
+                TecTech.Logger.debug("L2 " + EU + " " + maxEUinputMax + " " + (EU > maxEUinputMax));
+                TecTech.Logger.debug("L3 " + euVar + " " + eMaxAmpereFlow);
+                TecTech.Logger.debug("L4 " + ((euVar - 1) / maxEUinputMin + 1) + " " + eMaxAmpereFlow + " " + ((euVar - 1) / maxEUinputMin + 1 > eMaxAmpereFlow));
             }
             return false;
         }
@@ -797,6 +797,24 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     //new Method
     public final int getMinEnergyInputTier() {
         return GT_Utility.getTier(maxEUinputMin);
+    }
+
+    //new Method
+    public final cElementalInstanceStackMap EMgetInputsClone(){
+        cElementalInstanceStackMap in=new cElementalInstanceStackMap();
+        for(GT_MetaTileEntity_Hatch_ElementalContainer hatch:eInputHatches){
+            in.putUnifyAll(hatch.getContainerHandler());
+        }
+        return in.hasStacks()?in:null;
+    }
+
+    //new Method
+    public final cElementalInstanceStackMap EMgetOutputsClone(){
+        cElementalInstanceStackMap out=new cElementalInstanceStackMap();
+        for(GT_MetaTileEntity_Hatch_ElementalContainer hatch:eOutputHatches){
+            out.putUnifyAll(hatch.getContainerHandler());
+        }
+        return out.hasStacks()?out:null;
     }
 
     @Override
