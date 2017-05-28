@@ -93,20 +93,12 @@ public class TileEntityFishTrap extends TileEntity{
 					this.markDirty();
 					return true;
 				}
-				else if (contents.getItem() == loot.getItem()){
+				else if (contents.getItem() == loot.getItem() && contents.stackSize <= contents.getMaxStackSize()-1){
 					if (contents.stackSize < contents.getMaxStackSize()){
 						contents.stackSize++;
 						this.markDirty();
 						return true;
 					}
-					else {
-						this.getInventory().setInventorySlotContents(checkingSlot, loot);
-						this.markDirty();
-						return true;
-					}
-				}
-				else {
-
 				}
 				checkingSlot++;
 			}
@@ -133,15 +125,15 @@ public class TileEntityFishTrap extends TileEntity{
 		//Pam Fish
 		else if (lootWeight <= 70){
 			if (LoadedMods.PamsHarvestcraft){
-				loot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(prefix+harvestcraftFish[MathUtils.randInt(0, harvestcraftFish.length)-1]+suffix, 1);
+				loot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(prefix+harvestcraftFish[MathUtils.randInt(0, harvestcraftFish.length-1)]+suffix, 1);
 			}
 			else {
-				loot = ItemUtils.getSimpleStack(minecraftFish[MathUtils.randInt(0, minecraftFish.length)-1], 1);
+				loot = ItemUtils.getSimpleStack(minecraftFish[MathUtils.randInt(0, minecraftFish.length-1)], 1);
 			}
 		}
 		//Minecraft Fish
 		else if (lootWeight <= 100){
-			loot = ItemUtils.getSimpleStack(minecraftFish[MathUtils.randInt(0, minecraftFish.length)-1], 1);
+			loot = ItemUtils.getSimpleStack(minecraftFish[MathUtils.randInt(0, minecraftFish.length-1)], 1);
 		}
 		else {
 			loot = ItemUtils.getSimpleStack(Blocks.diamond_ore);
