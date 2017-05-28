@@ -17,7 +17,7 @@ public enum MB_FrameType implements IBeeModifier
 	//Name, FrameHP, territory (1f), Mutation rate, lifespan rate, production rate, genetic decay (1f)
 	ACCELERATED("Accelerated", 175, 1f, 2.5f, 0.9f, 1.8f, 1f),
 	VOID("Void", 20, 1f, 1f, 0.0001f, 10f, 1f),
-	MUTAGENIC("Mutagenic", 3, 1f, 10f, 0.0001f, 10f, 1f),
+	MUTAGENIC("Mutagenic", 3, 1f, 5f, 0.0001f, 10f, 1f),
 	BUSY("Busy", 2000, 1f, 0f, 3f, 4f, 1f);
 
 	private final String frameName;
