@@ -638,6 +638,7 @@ public class RECIPES_Machines {
 
 
 			//Tiered Tanks
+			if (CORE.configSwitches.enableMachine_FluidTanks){
 			Utils.LOG_INFO("Is New Horizons Loaded? "+CORE.GTNH);
 			if (!CORE.GTNH){
 				RecipeUtils.addShapedGregtechRecipe(
@@ -735,6 +736,7 @@ public class RECIPES_Machines {
 						plateTier4, pipeTier4, plateTier4,
 						circuitTier1, electricPump_LV, circuitTier1,
 						GregtechItemList.GT_FluidTank_HV.get(1));
+			}
 			}
 
 			//Industrial Multi Tank Casing
