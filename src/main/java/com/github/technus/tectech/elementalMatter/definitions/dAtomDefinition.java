@@ -139,7 +139,7 @@ public final class dAtomDefinition extends cElementalDefinition {
     }
 
     private static boolean isStable(float lifeTime) {
-        return lifeTime > 1.5e25f;
+        return lifeTime >= 1.5e25f;
     }
 
     private static int stableIzoCurve(int element) {
