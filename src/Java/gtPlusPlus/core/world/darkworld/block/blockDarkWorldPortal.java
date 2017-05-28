@@ -7,6 +7,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
+import gtPlusPlus.core.world.darkworld.world.TeleporterDimensionMod;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.material.Material;
@@ -277,11 +278,11 @@ public class blockDarkWorldPortal extends BlockBreakable {
 			} else if (thePlayer.dimension != Dimension_DarkWorld.DIMID) {
 				thePlayer.timeUntilPortal = 10;
 				thePlayer.mcServer.getConfigurationManager().transferPlayerToDimension(thePlayer, Dimension_DarkWorld.DIMID,
-						new Dimension_DarkWorld.TeleporterDimensionMod(thePlayer.mcServer.worldServerForDimension(Dimension_DarkWorld.DIMID)));
+						new TeleporterDimensionMod(thePlayer.mcServer.worldServerForDimension(Dimension_DarkWorld.DIMID)));
 			} else {
 				thePlayer.timeUntilPortal = 10;
 				thePlayer.mcServer.getConfigurationManager().transferPlayerToDimension(thePlayer, 0,
-						new Dimension_DarkWorld.TeleporterDimensionMod(thePlayer.mcServer.worldServerForDimension(0)));
+						new TeleporterDimensionMod(thePlayer.mcServer.worldServerForDimension(0)));
 			}
 		}
 	}
