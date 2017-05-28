@@ -6,6 +6,7 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
+import gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -79,6 +80,15 @@ public class RECIPES_General {
 			GT_ModHandler.addPulverisationRecipe(ItemUtils.getSimpleStack(ModItems.shardIgnis), ItemUtils.getSimpleStack(ModItems.dustIgnis, 2));
 			GT_ModHandler.addPulverisationRecipe(ItemUtils.getSimpleStack(ModItems.shardTerra), ItemUtils.getSimpleStack(ModItems.dustTerra, 2));
 			GT_ModHandler.addPulverisationRecipe(ItemUtils.getSimpleStack(ModItems.shardAqua), ItemUtils.getSimpleStack(ModItems.dustAqua, 2));
+			
+			
+			//Rainforest oak Sapling
+			RecipeUtils.recipeBuilder(
+					"stickWood", "stickWood", "stickWood",
+					"stickWood", "treeSapling", "stickWood",
+					"stickWood", "dustBone", "stickWood",
+					ItemUtils.getSimpleStack(BOP_Block_Registrator.sapling_Rainforest));
+			
 		}
 
 	}
