@@ -70,12 +70,12 @@ public class TileEntityFishTrap extends TileEntity{
 					return true;
 				}
 				else if ((waterCount >= 2) && (trapCount > 4)){
-					Utils.LOG_INFO("Too many fish traps surrounding this one.");
-					Utils.LOG_INFO("Not adding Loot to the fishtrap at x["+this.locationX+"] y["+this.locationY+"] z["+this.locationZ+"] (Ticking for loot every "+this.baseTickRate+" ticks)");
+					Utils.LOG_WARNING("Too many fish traps surrounding this one.");
+					Utils.LOG_WARNING("Not adding Loot to the fishtrap at x["+this.locationX+"] y["+this.locationY+"] z["+this.locationZ+"] (Ticking for loot every "+this.baseTickRate+" ticks)");
 				}
 			}
 		}
-		//Utils.LOG_INFO("Error finding water");
+		//Utils.LOG_WARNING("Error finding water");
 		return false;
 	}
 
@@ -153,7 +153,7 @@ public class TileEntityFishTrap extends TileEntity{
 	public void updateEntity(){
 		if (!this.worldObj.isRemote){
 			this.tickCount++;
-			//Utils.LOG_INFO("Ticking "+this.tickCount);
+			//Utils.LOG_WARNING("Ticking "+this.tickCount);
 			//Check if the Tile is within water once per second.
 			if ((this.tickCount%20)==0){
 				this.isInWater = this.isSurroundedByWater();
@@ -170,13 +170,13 @@ public class TileEntityFishTrap extends TileEntity{
 			if ((this.tickCount%this.baseTickRate)==0){
 				if (this.isInWater){
 					//Add loot
-					//Utils.LOG_INFO("Adding Loot to the fishtrap at x["+this.locationX+"] y["+this.locationY+"] z["+this.locationZ+"] (Ticking for loot every "+this.baseTickRate+" ticks)");
+					//Utils.LOG_WARNING("Adding Loot to the fishtrap at x["+this.locationX+"] y["+this.locationY+"] z["+this.locationZ+"] (Ticking for loot every "+this.baseTickRate+" ticks)");
 					this.tryAddLoot();
 					this.markDirty();
 				}
 				else {
-					Utils.LOG_INFO("This Trap does not have enough water around it.");
-					Utils.LOG_INFO("Not adding Loot to the fishtrap at x["+this.locationX+"] y["+this.locationY+"] z["+this.locationZ+"] (Ticking for loot every "+this.baseTickRate+" ticks)");
+					Utils.LOG_WARNING("This Trap does not have enough water around it.");
+					Utils.LOG_WARNING("Not adding Loot to the fishtrap at x["+this.locationX+"] y["+this.locationY+"] z["+this.locationZ+"] (Ticking for loot every "+this.baseTickRate+" ticks)");
 					this.markDirty();
 				}
 				this.tickCount = 0;
@@ -221,7 +221,7 @@ public class TileEntityFishTrap extends TileEntity{
 	@Override
 	public void writeToNBT(final NBTTagCompound nbt){
 		super.writeToNBT(nbt);
-		//Utils.LOG_INFO("Trying to write NBT data to TE.");
+		//Utils.LOG_WARNING("Trying to write NBT data to TE.");
 		final NBTTagCompound chestData = new NBTTagCompound();
 		this.inventoryContents.writeToNBT(chestData);
 		nbt.setTag("ContentsChest", chestData);
@@ -230,7 +230,7 @@ public class TileEntityFishTrap extends TileEntity{
 	@Override
 	public void readFromNBT(final NBTTagCompound nbt){
 		super.readFromNBT(nbt);
-		//Utils.LOG_INFO("Trying to read NBT data from TE.");
+		//Utils.LOG_WARNING("Trying to read NBT data from TE.");
 		this.inventoryContents.readFromNBT(nbt.getCompoundTag("ContentsChest"));
 	}
 	

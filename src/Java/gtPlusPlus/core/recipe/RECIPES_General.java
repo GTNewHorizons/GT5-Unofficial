@@ -89,6 +89,15 @@ public class RECIPES_General {
 					"stickWood", "dustBone", "stickWood",
 					ItemUtils.getSimpleStack(BOP_Block_Registrator.sapling_Rainforest));
 			
+			//Iron bars
+			ItemStack ironBars = ItemUtils.getItemStack("minecraft:iron_bars", 1);
+			//Fish Trap
+			RecipeUtils.recipeBuilder(
+					ironBars, ironBars, ironBars,
+					ironBars, "frameGtWroughtIron", ironBars,
+					ironBars, ironBars, ironBars,
+					ItemUtils.getSimpleStack(ModBlocks.blockFishTrap));
+			
 		}
 
 	}
