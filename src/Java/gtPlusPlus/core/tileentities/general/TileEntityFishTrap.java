@@ -2,6 +2,7 @@ package gtPlusPlus.core.tileentities.general;
 
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.inventories.InventoryFishTrap;
+import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -117,20 +118,30 @@ public class TileEntityFishTrap extends TileEntity{
 	private ItemStack generateLootForFishTrap() {
 		final int lootWeight = MathUtils.randInt(0,  100);
 		ItemStack loot;
-		if (lootWeight <= 10){
+		if (lootWeight <= 5){
 			loot = ItemUtils.getSimpleStack(Items.slime_ball);
 		}
-		else if (lootWeight <= 20){
+		else if (lootWeight <= 15){
 			loot = ItemUtils.getSimpleStack(Items.bone);
 		}
-		else if (lootWeight <= 40){
+		else if (lootWeight <= 25){
 			loot = ItemUtils.getSimpleStack(Blocks.sand);
 		}
-		else if (lootWeight <= 80){
-			loot = ItemUtils.getSimpleStack(Items.fish);
+		else if (lootWeight <= 35){
+			loot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(seaweed, 1);
 		}
+		//Pam Fish
+		else if (lootWeight <= 70){
+			if (LoadedMods.PamsHarvestcraft){
+				loot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(prefix+harvestcraftFish[MathUtils.randInt(0, harvestcraftFish.length)]+suffix, 1);
+			}
+			else {
+				loot = ItemUtils.getSimpleStack(minecraftFish[MathUtils.randInt(0, minecraftFish.length)], 1);
+			}
+		}
+		//Minecraft Fish
 		else if (lootWeight <= 100){
-			loot = ItemUtils.getSimpleStack(Items.fish);
+			loot = ItemUtils.getSimpleStack(minecraftFish[MathUtils.randInt(0, minecraftFish.length)], 1);
 		}
 		else {
 			loot = ItemUtils.getSimpleStack(Blocks.diamond_ore);
@@ -221,6 +232,25 @@ public class TileEntityFishTrap extends TileEntity{
 		super.readFromNBT(nbt);
 		//Utils.LOG_INFO("Trying to read NBT data from TE.");
 		this.inventoryContents.readFromNBT(nbt.getCompoundTag("ContentsChest"));
+	}
+	
+	final static String prefix = "food";
+	final static String suffix = "raw";
+	final static String seaweed = "cropSeaweed";
+	final static String greenheartFish = "Greenheartfish";
+	private static final String[] harvestcraftFish = {
+			"Anchovy", "Bass", "Carp", "Catfish", "Charr", "Clam", "Crab", "Crayfish", "Eel", "Frog", "Grouper", "Herring",
+			"Jellyfish", "Mudfish", "Octopus", "Perch", "Scallop", "Shrimp", "Snail", "Snapper", "Tilapia", "Trout", "Tuna", "Turtle", "Walleye"};
+	
+	private static final ItemStack[] minecraftFish = {
+			ItemUtils.getItemStack("minecraft:fish", 1), ItemUtils.getItemStack("minecraft:fish:1", 1),
+			ItemUtils.getItemStack("minecraft:fish:2", 1), ItemUtils.getItemStack("minecraft:fish:3", 1)		
+	};
+	
+	public static void pamsHarvestCraftCompat(){
+		for (int i = 0; i < harvestcraftFish.length; i++){
+			
+		}
 	}
 
 }

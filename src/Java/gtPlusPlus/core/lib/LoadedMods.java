@@ -42,6 +42,7 @@ public class LoadedMods {
 	public static boolean Computronics = false; //computronics
 	public static boolean DreamCraft = false; //GT: New Horizons
 	public static boolean BiomesOPlenty = false;
+	public static boolean PamsHarvestcraft = false;
 
 
 
@@ -124,6 +125,11 @@ public class LoadedMods {
 		if (Loader.isModLoaded("ExtraUtilities") == true){
 			Extra_Utils = true;
 			Utils.LOG_INFO("Components enabled for: Extra_Utils");
+			totalMods++;
+		}
+		if (Loader.isModLoaded("harvestcraft") == true){
+			PamsHarvestcraft = true;
+			Utils.LOG_INFO("Components enabled for: PamsHarvestcraft");
 			totalMods++;
 		}
 		if (Loader.isModLoaded("PneumaticCraft") == true){

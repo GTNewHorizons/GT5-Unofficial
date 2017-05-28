@@ -62,7 +62,7 @@ public class FishTrapHandler {
 	final static String prefix = "food";
 	final static String suffix = "raw";
 	final static String seaweed = "cropSeaweed";
-	final static String greenheartFish = "Greenheartfish";
+	final static String greenheartFish = "foodGreenheartfish";
 	private static final String[] harvestcraftFish = {
 			"Anchovy", "Bass", "Carp", "Catfish", "Charr", "Clam", "Crab", "Crayfish", "Eel", "Frog", "Grouper", "Herring",
 			"Jellyfish", "Mudfish", "Octopus", "Perch", "Scallop", "Shrimp", "Snail", "Snapper", "Tilapia", "Trout", "Tuna", "Turtle", "Walleye"};
