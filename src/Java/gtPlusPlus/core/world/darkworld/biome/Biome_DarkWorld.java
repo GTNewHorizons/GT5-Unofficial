@@ -6,6 +6,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
 import net.minecraft.entity.monster.*;
 import net.minecraft.entity.passive.*;
@@ -25,7 +26,7 @@ public class Biome_DarkWorld {
 	}
 
 	public void load() {
-		BiomeDictionary.registerBiomeType(biome, BiomeDictionary.Type.DESERT);
+		BiomeDictionary.registerBiomeType(biome, BiomeDictionary.Type.SPOOKY);
 		BiomeManager.addSpawnBiome(biome);
 		// BiomeManager.desertBiomes.add(new BiomeManager.BiomeEntry(biome,
 		// 10));
@@ -54,7 +55,8 @@ public class Biome_DarkWorld {
 		@SuppressWarnings("unchecked")
 		public BiomeGenbiomeDarkWorld() {
 			super(40);
-			setBiomeName("biomeDarkWorld");
+			Utils.LOG_INFO("Dark World Temperature Category: "+getTempCategory());
+			setBiomeName("Dark World");
 			topBlock = Dimension_DarkWorld.blockTopLayer;
 			fillerBlock = Dimension_DarkWorld.blockSecondLayer;
 			theBiomeDecorator.generateLakes = true;
@@ -66,9 +68,12 @@ public class Biome_DarkWorld {
 			theBiomeDecorator.reedsPerChunk = 1;
 			theBiomeDecorator.cactiPerChunk = 1;
 			theBiomeDecorator.sandPerChunk = 8;
+			enableRain = true;
+			enableSnow = false;
 			rainfall = 0.7F;
 			setHeight(new BiomeGenBase.Height(0.15F, 0.8F));
 			waterColorMultiplier = 0x2d0b2d;
+			rootHeight = 48; //Ground level
 
 			this.spawnableMonsterList.clear();
 			this.spawnableCreatureList.clear();

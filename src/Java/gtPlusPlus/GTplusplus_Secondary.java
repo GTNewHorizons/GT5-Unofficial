@@ -32,6 +32,7 @@ public class GTplusplus_Secondary implements IFuelHandler, IWorldGenerator{
 	// Dark World Handler
 	Biome_DarkWorld DarkWorld_Biome = new Biome_DarkWorld();
 	Dimension_DarkWorld DarkWorld_Dimension = new Dimension_DarkWorld();
+	public static int globalDarkWorldPortalSpawnTimer = 0;
 
 	@EventHandler
 	public void load(final FMLInitializationEvent e) {

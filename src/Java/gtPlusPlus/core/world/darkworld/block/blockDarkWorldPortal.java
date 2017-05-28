@@ -15,7 +15,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -79,18 +78,22 @@ public class blockDarkWorldPortal extends BlockBreakable {
 	@Override
 	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random) {
 		super.updateTick(par1World, par2, par3, par4, par5Random);
-		if (par1World.provider.isSurfaceWorld()) {
+		/*if (par1World.provider.isSurfaceWorld()) {
 			int l;
 			for (l = par3; !World.doesBlockHaveSolidTopSurface(par1World, par2, l, par4) && l > 0; --l) {
 				;
 			}
 			if (l > 0 && !par1World.isBlockNormalCubeDefault(par2, l + 1, par4, true)) {
-				Entity entity = ItemMonsterPlacer.spawnCreature(par1World, 57, par2 + 0.5D, l + 1.1D, par4 + 0.5D);
-				if (entity != null) {
-					entity.timeUntilPortal = entity.getPortalCooldown();
+				Entity entity = ItemMonsterPlacer.spawnCreature(par1World, 65, par2 + 0.5D, l + 1.1D, par4 + 0.5D);
+				if (entity != null && globalDarkWorldPortalSpawnTimer >= 100000) {
+					globalDarkWorldPortalSpawnTimer = 0;
+					if (MathUtils.randInt(0, 100)>=95){
+						entity.timeUntilPortal = entity.getPortalCooldown();						
+					}
 				}
 			}
 		}
+		globalDarkWorldPortalSpawnTimer++;*/
 	}
 
 	/**
@@ -344,12 +347,12 @@ public class blockDarkWorldPortal extends BlockBreakable {
 	
 	@Override
 	public int colorMultiplier(final IBlockAccess par1IBlockAccess, final int par2, final int par3, final int par4){
-		return Utils.rgbtoHexValue(255, 128, 0);
+		return Utils.rgbtoHexValue(255, 255, 0);
 	}
 
 	@Override
 	public int getRenderColor(final int aMeta) {
-		return Utils.rgbtoHexValue(255, 128, 0);
+		return Utils.rgbtoHexValue(255, 255, 0);
 	}
 }
 

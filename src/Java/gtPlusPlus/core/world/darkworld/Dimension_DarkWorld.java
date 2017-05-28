@@ -7,10 +7,8 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.world.darkworld.biome.Biome_DarkWorld;
-import gtPlusPlus.core.world.darkworld.block.blockDarkWorldPortal;
-import gtPlusPlus.core.world.darkworld.block.blockDarkWorldPortalFrame;
+import gtPlusPlus.core.world.darkworld.block.*;
 import gtPlusPlus.core.world.darkworld.item.itemDarkWorldPortalTrigger;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
@@ -19,7 +17,6 @@ import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
@@ -39,11 +36,11 @@ import net.minecraftforge.event.terraingen.*;
 public class Dimension_DarkWorld {
 
 	public Object instance;
-	public static int DIMID = 93;
+	public static int DIMID = 227;
 
-	public static blockDarkWorldPortal portal;
-	public static itemDarkWorldPortalTrigger block;
-	public static Block blockTopLayer = Block.getBlockFromItem(ItemUtils.getCorrectStacktype("minecraft:dirt:2", 1).getItem());
+	public static blockDarkWorldPortal portalBlock;
+	public static itemDarkWorldPortalTrigger portalItem;
+	public static Block blockTopLayer;
 	public static Block blockSecondLayer = Blocks.dirt;
 	public static Block blockMainFiller = Blocks.stone;
 	public static Block blockSecondaryFiller;
@@ -53,20 +50,25 @@ public class Dimension_DarkWorld {
 
 	static {
 
-		portal = new blockDarkWorldPortal();
-		block = (itemDarkWorldPortalTrigger) (new itemDarkWorldPortalTrigger().setUnlocalizedName("dimensionDarkWorld_trigger"));
-		Item.itemRegistry.addObject(423, "dimensionDarkWorld_trigger", block);
+		DIMID = DimensionManager.getNextFreeDimId();
+		portalBlock = new blockDarkWorldPortal();
+		portalItem = (itemDarkWorldPortalTrigger) (new itemDarkWorldPortalTrigger().setUnlocalizedName("dimensionDarkWorld_trigger"));
+		Item.itemRegistry.addObject(423, "dimensionDarkWorld_trigger", portalItem);
+		blockTopLayer = new blockDarkWorldGround();
+		GameRegistry.registerBlock(blockTopLayer, "blockDarkWorldGround");
 		blockPortalFrame = new blockDarkWorldPortalFrame();
+		GameRegistry.registerBlock(blockPortalFrame, "blockDarkWorldPortalFrame");
 	}
 
 	public Dimension_DarkWorld() {
 	}
 
 	public void load() {
-		GameRegistry.registerBlock(portal, "dimensionDarkWorld_portal");
+		GameRegistry.registerBlock(portalBlock, "dimensionDarkWorld_portal");
 		DimensionManager.registerProviderType(DIMID, Dimension_DarkWorld.WorldProviderMod.class, false);
 		DimensionManager.registerDimension(DIMID, DIMID);
-		GameRegistry.addSmelting(Items.record_11, new ItemStack(block), 1.0f);
+		// GameRegistry.addSmelting(Items.record_11, new ItemStack(block),
+		// 1.0f);
 
 	}
 
@@ -93,8 +95,8 @@ public class Dimension_DarkWorld {
 
 		@Override
 		public void registerWorldChunkManager() {
-			this.worldChunkMgr = new WorldChunkManagerCustom(this.worldObj.getSeed(), WorldType.DEFAULT);
-			this.isHellWorld = true;
+			this.worldChunkMgr = new WorldChunkManagerCustom(this.worldObj.getSeed(), WorldType.AMPLIFIED);
+			this.isHellWorld = false;
 			this.hasNoSky = true;
 			this.dimensionId = DIMID;
 		}
@@ -112,7 +114,7 @@ public class Dimension_DarkWorld {
 
 		@Override
 		public boolean isSurfaceWorld() {
-			return false;
+			return true;
 		}
 
 		@Override
@@ -243,8 +245,8 @@ public class Dimension_DarkWorld {
 						double d5 = l1 + 0.5D - par1Entity.posZ;
 
 						for (int i2 = this.worldServerInstance.getActualHeight() - 1; i2 >= 0; --i2) {
-							if (this.worldServerInstance.getBlock(l3, i2, l1) == portal) {
-								while (this.worldServerInstance.getBlock(l3, i2 - 1, l1) == portal) {
+							if (this.worldServerInstance.getBlock(l3, i2, l1) == portalBlock) {
+								while (this.worldServerInstance.getBlock(l3, i2 - 1, l1) == portalBlock) {
 									--i2;
 								}
 
@@ -275,19 +277,19 @@ public class Dimension_DarkWorld {
 				d7 = k + 0.5D;
 				int i4 = -1;
 
-				if (this.worldServerInstance.getBlock(i - 1, j, k) == portal) {
+				if (this.worldServerInstance.getBlock(i - 1, j, k) == portalBlock) {
 					i4 = 2;
 				}
 
-				if (this.worldServerInstance.getBlock(i + 1, j, k) == portal) {
+				if (this.worldServerInstance.getBlock(i + 1, j, k) == portalBlock) {
 					i4 = 0;
 				}
 
-				if (this.worldServerInstance.getBlock(i, j, k - 1) == portal) {
+				if (this.worldServerInstance.getBlock(i, j, k - 1) == portalBlock) {
 					i4 = 3;
 				}
 
-				if (this.worldServerInstance.getBlock(i, j, k + 1) == portal) {
+				if (this.worldServerInstance.getBlock(i, j, k + 1) == portalBlock) {
 					i4 = 1;
 				}
 
@@ -553,7 +555,7 @@ public class Dimension_DarkWorld {
 						i4 = j2 + k3;
 						j4 = k2 + (j3 - 1) * l2;
 						flag = j3 == 0 || j3 == 3 || k3 == -1 || k3 == 3;
-						this.worldServerInstance.setBlock(l3, i4, j4, flag ? blockPortalFrame : portal, 0, 2);
+						this.worldServerInstance.setBlock(l3, i4, j4, flag ? blockPortalFrame : portalBlock, 0, 2);
 					}
 				}
 
@@ -635,7 +637,8 @@ public class Dimension_DarkWorld {
 		/**
 		 * Holds Stronghold Generator
 		 */
-		private MapGenStronghold strongholdGenerator = new MapGenStronghold();
+		// private MapGenStronghold strongholdGenerator = new
+		// MapGenStronghold();
 		/**
 		 * Holds Village Generator
 		 */
@@ -661,8 +664,12 @@ public class Dimension_DarkWorld {
 		{
 			caveGenerator = TerrainGen.getModdedMapGen(caveGenerator,
 					net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.CAVE);
-			strongholdGenerator = (MapGenStronghold) TerrainGen.getModdedMapGen(strongholdGenerator,
-					net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.STRONGHOLD);
+			/*
+			 * strongholdGenerator = (MapGenStronghold)
+			 * TerrainGen.getModdedMapGen(strongholdGenerator,
+			 * net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.
+			 * STRONGHOLD);
+			 */
 			villageGenerator = (MapGenVillage) TerrainGen.getModdedMapGen(villageGenerator,
 					net.minecraftforge.event.terraingen.InitMapGenEvent.EventType.VILLAGE);
 			mineshaftGenerator = (MapGenMineshaft) TerrainGen.getModdedMapGen(mineshaftGenerator,
@@ -1052,8 +1059,12 @@ public class Dimension_DarkWorld {
 
 		@Override
 		public ChunkPosition func_147416_a(World p_147416_1_, String p_147416_2_, int p_147416_3_, int p_147416_4_, int p_147416_5_) {
-			return "Stronghold".equals(p_147416_2_) && this.strongholdGenerator != null
-					? this.strongholdGenerator.func_151545_a(p_147416_1_, p_147416_3_, p_147416_4_, p_147416_5_) : null;
+			return /*
+					 * "Stronghold".equals(p_147416_2_) &&
+					 * this.strongholdGenerator != null ?
+					 * this.strongholdGenerator.func_151545_a(p_147416_1_,
+					 * p_147416_3_, p_147416_4_, p_147416_5_) :
+					 */ null;
 		}
 
 		@Override
@@ -1081,13 +1092,13 @@ public class Dimension_DarkWorld {
 		public WorldChunkManagerCustom() {
 			this.biomeCache = new BiomeCache(this);
 			this.biomesToSpawnIn = new ArrayList();
-			this.biomesToSpawnIn.addAll(allowedBiomes);
+			this.biomesToSpawnIn.addAll(allowedBiomes); // TODO
 		}
 
 		public WorldChunkManagerCustom(long seed, WorldType worldType) {
 			this();
 			// i changed this to my GenLayerDarkWorld
-			GenLayer[] agenlayer = LightForestGenLayer.makeTheWorld(seed, worldType);
+			GenLayer[] agenlayer = GenLayerDarkWorld.makeTheWorld(seed, worldType);
 
 			agenlayer = getModdedBiomeGenerators(worldType, seed, agenlayer);
 			this.genBiomes = agenlayer[0];
@@ -1308,9 +1319,9 @@ public class Dimension_DarkWorld {
 		}
 	}
 
-	public static class LightForestGenLayer extends GenLayer {
+	public static class GenLayerDarkWorld extends GenLayer {
 
-		public LightForestGenLayer(long seed) {
+		public GenLayerDarkWorld(long seed) {
 			super(seed);
 		}
 

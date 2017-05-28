@@ -1,6 +1,5 @@
 package gtPlusPlus.core.world.darkworld.block;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
@@ -17,7 +16,6 @@ public class blockDarkWorldPortalFrame extends Block{
 		this.setLightLevel(0.5F);
 		this.setBlockTextureName(CORE.MODID + ":" + "SwirlRed");
 		LanguageRegistry.addName(this, "Mystical Frame");
-		GameRegistry.registerBlock(this, "blockDarkWorldPortalFrame");
 
 	}
 
