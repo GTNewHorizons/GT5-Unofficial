@@ -503,14 +503,15 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                         }
                     else if (moveAt == Tick && eSafeVoid) {
                         for (GT_MetaTileEntity_Hatch_MufflerElemental voider : eMufflerHatches) {
-                            if (voider.overflowMax < voider.overflowMatter) continue;
-                            float remaining = voider.overflowMax - voider.overflowMatter;
+                            if (voider.overflowMax < voider.getOverflowMatter()) continue;
+                            float remaining = voider.overflowMax - voider.getOverflowMatter();
                             for (GT_MetaTileEntity_Hatch_InputElemental in : eInputHatches) {
                                 for (cElementalInstanceStack instance : in.getContainerHandler().values()) {
                                     int qty = (int) Math.floor(remaining / instance.definition.getMass());
                                     if (qty > 0) {
                                         qty = Math.min(qty, instance.amount);
-                                        voider.overflowMatter += instance.definition.getMass() * qty;
+                                        if(voider.addOverflowMatter(instance.definition.getMass() * qty))
+                                            voider.setOverflowMatter(voider.overflowMax);
                                         in.getContainerHandler().removeAmount(false, new cElementalDefinitionStack(instance.definition, qty));
                                     }
                                 }
@@ -520,13 +521,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                     int qty = (int) Math.floor(remaining / instance.definition.getMass());
                                     if (qty > 0) {
                                         qty = Math.min(qty, instance.amount);
-                                        voider.overflowMatter += instance.definition.getMass() * qty;
+                                        if(voider.addOverflowMatter(instance.definition.getMass() * qty))
+                                            voider.setOverflowMatter(voider.overflowMax);
                                         out.getContainerHandler().removeAmount(false, new cElementalDefinitionStack(instance.definition, qty));
                                     }
                                 }
                             }
-                            //in case some weird shit happened here, it will still be safe
-                            if (voider.overflowMatter > voider.overflowMax) voider.overflowMatter = voider.overflowMax;
                         }
                     }
 
@@ -840,8 +840,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             if (eMufflerHatches.size() < 1) explodeMultiblock();
             mass /= eMufflerHatches.size();
             for (GT_MetaTileEntity_Hatch_MufflerElemental dump : eMufflerHatches) {
-                dump.overflowMatter += mass;
-                if (dump.overflowMatter > dump.overflowMax) explodeMultiblock();
+                if (dump.addOverflowMatter(mass)) explodeMultiblock();
             }
         }
         outputEM = null;
@@ -881,8 +880,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             }
             mass /= eMufflerHatches.size();
             for (GT_MetaTileEntity_Hatch_MufflerElemental dump : eMufflerHatches) {
-                dump.overflowMatter += mass;
-                if (dump.overflowMatter > dump.overflowMax) explodeMultiblock();
+                if (dump.addOverflowMatter(mass)) explodeMultiblock();
             }
         }
     }
@@ -894,8 +892,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             if (eMufflerHatches.size() < 1) explodeMultiblock();
             mass /= eMufflerHatches.size();
             for (GT_MetaTileEntity_Hatch_MufflerElemental dump : eMufflerHatches) {
-                dump.overflowMatter += mass;
-                if (dump.overflowMatter > dump.overflowMax) explodeMultiblock();
+                if (dump.addOverflowMatter(mass)) explodeMultiblock();
             }
         }
     }
@@ -907,8 +904,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             if (eMufflerHatches.size() < 1) explodeMultiblock();
             mass /= eMufflerHatches.size();
             for (GT_MetaTileEntity_Hatch_MufflerElemental dump : eMufflerHatches) {
-                dump.overflowMatter += mass;
-                if (dump.overflowMatter > dump.overflowMax) explodeMultiblock();
+                if (dump.addOverflowMatter(mass)) explodeMultiblock();
             }
         }
     }
@@ -926,8 +922,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             }
             mass /= eMufflerHatches.size();
             for (GT_MetaTileEntity_Hatch_MufflerElemental dump : eMufflerHatches) {
-                dump.overflowMatter += mass;
-                if (dump.overflowMatter > dump.overflowMax) explodeMultiblock();
+                if (dump.addOverflowMatter(mass)) explodeMultiblock();
             }
         }
         outputEM = null;

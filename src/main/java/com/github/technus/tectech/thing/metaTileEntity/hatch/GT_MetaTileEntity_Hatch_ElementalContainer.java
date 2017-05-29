@@ -112,10 +112,9 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
                             tGTTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityAtSide((byte) 1);
                         if (tGTTileEntity != null && (tGTTileEntity.getMetaTileEntity() instanceof GT_MetaTileEntity_Hatch_MufflerElemental)) {
                             GT_MetaTileEntity_Hatch_MufflerElemental aMetaTileEntity = (GT_MetaTileEntity_Hatch_MufflerElemental) tGTTileEntity.getMetaTileEntity();
-                            aMetaTileEntity.overflowMatter += overflowMatter;
                             overflowMatter = 0F;
                             deathDelay = 3;//needed in some cases like repetitive failures. Should be 4 since there is -- at end but meh...
-                            if (aMetaTileEntity.overflowMatter > aMetaTileEntity.overflowMax) {
+                            if (aMetaTileEntity.addOverflowMatter(overflowMatter)) {
                                 if (TecTech.ModConfig.BOOM_ENABLE) tGTTileEntity.doExplosion(V[14]);
                                 else
                                     TecTech.proxy.broadcast("Container1 BOOM! " + getBaseMetaTileEntity().getXCoord() + " " + getBaseMetaTileEntity().getYCoord() + " " + getBaseMetaTileEntity().getZCoord());

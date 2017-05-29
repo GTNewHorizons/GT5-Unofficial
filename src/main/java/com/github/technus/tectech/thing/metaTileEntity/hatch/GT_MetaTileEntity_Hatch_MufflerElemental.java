@@ -30,9 +30,9 @@ public class GT_MetaTileEntity_Hatch_MufflerElemental extends GT_MetaTileEntity_
     private static Textures.BlockIcons.CustomIcon EM_T_ACTIVE;
     private static Textures.BlockIcons.CustomIcon MufflerEM;
     private static Textures.BlockIcons.CustomIcon MufflerEMidle;
-    public float overflowMatter = 0f;
+    private float overflowMatter = 0f;
     public final float overflowMax;
-    public final float overflowDisperse;
+    private final float overflowDisperse;
 
     public GT_MetaTileEntity_Hatch_MufflerElemental(int aID, String aName, String aNameRegional, int aTier, float max) {
         super(aID, aName, aNameRegional, aTier, 0, "Disposes excess elemental Matter");
@@ -171,5 +171,21 @@ public class GT_MetaTileEntity_Hatch_MufflerElemental extends GT_MetaTileEntity_
             if (TecTech.ModConfig.BOOM_ENABLE) getBaseMetaTileEntity().doExplosion(V[15]);
             else
                 TecTech.proxy.broadcast("Muffler BOOM! " + getBaseMetaTileEntity().getXCoord() + " " + getBaseMetaTileEntity().getYCoord() + " " + getBaseMetaTileEntity().getZCoord());
+    }
+
+    //Return - Should Explode
+    public boolean addOverflowMatter(float matter){
+        overflowMatter+=matter;
+        return overflowMatter > overflowMax;
+    }
+
+    public float getOverflowMatter() {
+        return overflowMatter;
+    }
+
+    //Return - Should Explode
+    public boolean setOverflowMatter(float overflowMatter) {
+        this.overflowMatter = overflowMatter;
+        return overflowMatter > overflowMax;
     }
 }
