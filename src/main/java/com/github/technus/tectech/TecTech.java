@@ -2,6 +2,8 @@ package com.github.technus.tectech;
 
 import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
+import com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition;
+import com.github.technus.tectech.loader.AtomOverrider;
 import com.github.technus.tectech.loader.MainLoader;
 import com.github.technus.tectech.proxy.CommonProxy;
 import cpw.mods.fml.common.Loader;
@@ -52,6 +54,7 @@ public class TecTech {
 
         ModConfig = new TecTechConfig(PreEvent.getModConfigurationDirectory(), Reference.COLLECTIONNAME,
                 Reference.MODID);
+
         if (!ModConfig.LoadConfig())
             Logger.error(Reference.MODID + " could not load its config file. Things are going to be weird!");
 
@@ -59,6 +62,9 @@ public class TecTech {
             Logger.debug("Module_AdminErrorLogs is enabled");
             Module_AdminErrorLogs = new IngameErrorLog();
         }
+
+        GTCustomLoader = new MainLoader();
+        dAtomDefinition.overrides.add(new AtomOverrider());
     }
 
     @EventHandler
@@ -66,7 +72,6 @@ public class TecTech {
         hasCOFH = Loader.isModLoaded(Reference.COFHCORE);
         hasThaumcraft = Loader.isModLoaded(Reference.THAUMCRAFT);
 
-        GTCustomLoader = new MainLoader();
         GTCustomLoader.load();
 
         proxy.registerRenderInfo();

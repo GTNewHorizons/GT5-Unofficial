@@ -80,7 +80,7 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
         int mult = this.amount * this.amount * (this.amount - 1);
         this.mass = mass * 5.543F * (float) mult;//yes it becomes heavier
 
-        if (this.mass == protonMass && this.amount == 3) this.rawLifeTime = 1e35F;
+        if (this.mass == protonMass && this.amount == 3) this.rawLifeTime = stableRawLifeTime;
         else if (this.mass == neutronMass && this.amount == 3) this.rawLifeTime = 882F;
         else {
             if (this.amount == 3) {

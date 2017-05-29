@@ -31,7 +31,13 @@ public final class dAtomDefinition extends cElementalDefinition {
     private static Map<Integer, TreeMap<Float, Integer>> mostStableUnstableIsotopes = new HashMap<>();
     private static final Map<Integer, dAtomDefinition> unstableAtoms = new HashMap<>();
     private static cElementalDefinitionStack alpha;
-    private static final HashMap<dAtomDefinition,Float> lifetimeOverrides=new HashMap<>();
+
+    private static final HashMap<dAtomDefinition,Float> lifetimeOverrides = new HashMap<>();
+    public static final ArrayList<Runnable> overrides = new ArrayList<>();
+
+    public static void addOverride(dAtomDefinition atom, float rawLifeTime){
+        lifetimeOverrides.put(atom,rawLifeTime);
+    }
 
     //float-mass in eV/c^2
     public final float mass;
@@ -119,18 +125,22 @@ public final class dAtomDefinition extends cElementalDefinition {
         int izoDiff = isotope - StableIsotope;
         int izoDiffAbs = Math.abs(izoDiff);
 
-        this.rawLifeTime = calculateLifeTime(izoDiff, izoDiffAbs, element, isotope, containsAnti);
+        hash=super.hashCode();
+
+        Float overridenLifeTime=lifetimeOverrides.get(this);
+        float rawLifeTimeTemp;
+        if(overridenLifeTime!=null)
+            rawLifeTimeTemp = overridenLifeTime;
+        else
+            rawLifeTimeTemp= calculateLifeTime(izoDiff, izoDiffAbs, element, isotope, containsAnti);
+
+        this.rawLifeTime=rawLifeTimeTemp>stableRawLifeTime?stableRawLifeTime:rawLifeTimeTemp;
+
         if (izoDiff == 0)
             this.decayMode = 0;
         else
             this.decayMode = izoDiff > 0 ? (byte) Math.min(2, 1 + izoDiffAbs / 4) : (byte) -Math.min(2, 1 + izoDiffAbs / 4);
-        this.stable = isStable(this.rawLifeTime);
-
-        hash=super.hashCode();
-    }
-
-    private static boolean isStable(float lifeTime) {
-        return lifeTime >= 1.5e25f;
+        this.stable = this.rawLifeTime>=stableRawLifeTime;
     }
 
     private static int stableIzoCurve(int element) {
@@ -479,6 +489,16 @@ public final class dAtomDefinition extends cElementalDefinition {
     }
 
     public static void run() {
+        for (Runnable r : overrides) r.run();
+
+        for(Map.Entry<dAtomDefinition,Float> entry:lifetimeOverrides.entrySet()){
+            try {
+                lifetimeOverrides.put(new dAtomDefinition(entry.getKey().elementalStacks), entry.getValue());
+            }catch (tElementalException e){
+                e.printStackTrace(); //Impossible
+            }
+        }
+
         //populate stable isotopes
         for (int element = 1; element < 84; element++)//Up to Astatine exclusive
             for (int isotope = 0; isotope < 130; isotope++) {
@@ -488,7 +508,7 @@ public final class dAtomDefinition extends cElementalDefinition {
                 final int izoDiff = isotope - StableIsotope;
                 final int izoDiffAbs = Math.abs(izoDiff);
                 final float rawLifeTime = calculateLifeTime(izoDiff, izoDiffAbs, element, isotope, false);
-                if (isStable(rawLifeTime)) {
+                if (rawLifeTime>=stableRawLifeTime) {
                     TreeSet<Integer> isotopes = stableIsotopes.get(element);
                     if (isotopes == null) stableIsotopes.put(element, isotopes = new TreeSet<>());
                     isotopes.add(isotope);
@@ -658,26 +678,26 @@ public final class dAtomDefinition extends cElementalDefinition {
 
         try {
             dAtomDefinition temp;
-            //temp=new dAtomDefinition(
-            //        eLeptonDefinition.lepton_e1,
-            //        dHadronDefinition.hadron_p1,
-            //        dHadronDefinition.hadron_n1
-            //);
-            //transformation.addFluid(new cElementalDefinitionStack(temp, 144),Materials.Deuterium.mGas.getID(), 144);
+            temp=new dAtomDefinition(
+                    eLeptonDefinition.lepton_e1,
+                    dHadronDefinition.hadron_p1,
+                    dHadronDefinition.hadron_n1
+            );
+            transformation.addFluid(new cElementalDefinitionStack(temp, 144),Materials.Deuterium.mGas.getID(), 144);
 
-            //temp=new dAtomDefinition(
-            //        eLeptonDefinition.lepton_e1,
-            //        dHadronDefinition.hadron_p1,
-            //        dHadronDefinition.hadron_n2
-            //);
-            //transformation.addFluid(new cElementalDefinitionStack(temp, 144),Materials.Tritium.mGas.getID(), 144);
+            temp=new dAtomDefinition(
+                    eLeptonDefinition.lepton_e1,
+                    dHadronDefinition.hadron_p1,
+                    dHadronDefinition.hadron_n2
+            );
+            transformation.addFluid(new cElementalDefinitionStack(temp, 144),Materials.Tritium.mGas.getID(), 144);
 
-            //temp=new dAtomDefinition(
-            //        new cElementalDefinitionStack(eLeptonDefinition.lepton_e, 2),
-            //        dHadronDefinition.hadron_p2,
-            //        new cElementalDefinitionStack(dHadronDefinition.hadron_n, 3)
-            //);
-            //transformation.addFluid(new cElementalDefinitionStack(temp, 144),Materials.Helium_3.mGas.getID(), 144);
+            temp=new dAtomDefinition(
+                    new cElementalDefinitionStack(eLeptonDefinition.lepton_e, 2),
+                    dHadronDefinition.hadron_p2,
+                    new cElementalDefinitionStack(dHadronDefinition.hadron_n, 3)
+            );
+            transformation.addFluid(new cElementalDefinitionStack(temp, 144),Materials.Helium_3.mGas.getID(), 144);
 
             temp=new dAtomDefinition(
                     new cElementalDefinitionStack(eLeptonDefinition.lepton_e, 92),
