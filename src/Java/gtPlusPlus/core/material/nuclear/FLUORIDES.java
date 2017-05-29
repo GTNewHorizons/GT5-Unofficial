@@ -104,7 +104,7 @@ public class FLUORIDES {
 			});
 
 	public static final Material BERYLLIUM_FLUORIDE = new Material(
-			"Beryllium Tetrafluoride", //Material Name
+			"Beryllium Fluoride", //Material Name
 			MaterialState.LIQUID, //State
 			new short[]{120, 180, 120, 0}, //Material Colour
 			Materials.Beryllium.mMeltingPoint, //Melting Point in C
@@ -119,7 +119,7 @@ public class FLUORIDES {
 			});
 
 	public static final Material LITHIUM_FLUORIDE = new Material(
-			"Lithium Tetrafluoride", //Material Name
+			"Lithium Fluoride", //Material Name
 			MaterialState.LIQUID, //State
 			new short[]{225, 220, 255, 0}, //Material Colour
 			Materials.Lithium.mMeltingPoint, //Melting Point in C
