@@ -1,7 +1,9 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.elementalMatter.classes.*;
+import com.github.technus.tectech.elementalMatter.classes.aOredictDequantizationInfo;
+import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStack;
+import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackMap;
 import com.github.technus.tectech.elementalMatter.interfaces.iExchangeInfo;
 import com.github.technus.tectech.elementalMatter.interfaces.iHasElementalDefinition;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
@@ -10,7 +12,6 @@ import com.github.technus.tectech.thing.metaTileEntity.iConstructible;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
@@ -64,7 +65,7 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
 
     @Override
     public void construct(int qty) {
-        StructureBuilder(shape, blockType, blockMeta,1, 1, 0, getBaseMetaTileEntity());
+        StructureBuilder(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity());
     }
 
     @Override
@@ -73,32 +74,31 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
             cElementalInstanceStackMap map = in.getContainerHandler();
             for (cElementalInstanceStack stack : map.values()) {
                 iExchangeInfo info = stack.getDefinition().someAmountIntoFluidStack();
-                if (info instanceof aFluidDequantizationInfo) {
-                    if(map.removeAllAmounts(false,(iHasElementalDefinition) info.input())){
-                        mOutputFluids=new FluidStack[]{(FluidStack) info.output()};
-                        startRecipe((iHasElementalDefinition)info.input());
+                if (info != null) {
+                    if (map.removeAllAmounts(false, (iHasElementalDefinition) info.input())) {
+                        mOutputFluids = new FluidStack[]{(FluidStack) info.output()};
+                        startRecipe((iHasElementalDefinition) info.input());
                         return true;
                     }
-                } else {
-                    info = stack.getDefinition().someAmountIntoItemsStack();
-                    if (info != null) {
-                        if (info instanceof aItemDequantizationInfo) {
-                            if(map.removeAllAmounts(false,(iHasElementalDefinition) info.input())){
-                                mOutputItems=new ItemStack[]{(ItemStack) info.output()};
-                                startRecipe((iHasElementalDefinition)info.input());
-                                return true;
-                            }
-                        } else if (info instanceof aOredictDequantizationInfo) {
-                            if(map.removeAllAmounts(false,(iHasElementalDefinition) info.input())){
-                                ArrayList<ItemStack> items=OreDictionary.getOres(((aOredictDequantizationInfo) info).out);
-                                if(items!=null && items.size()>0) {
-                                    mOutputItems = new ItemStack[]{
-                                        items.get(0)
-                                    };
-                                    startRecipe((iHasElementalDefinition) info.input());
-                                    return true;
-                                }
-                            }
+                }
+
+                info = stack.getDefinition().someAmountIntoItemsStack();
+                if (info != null) {
+                    if (map.removeAllAmounts(false, (iHasElementalDefinition) info.input())) {
+                        mOutputItems = new ItemStack[]{(ItemStack) info.output()};
+                        startRecipe((iHasElementalDefinition) info.input());
+                        return true;
+                    }
+                }
+
+                info = stack.getDefinition().someAmountIntoOredictStack();
+                if (info != null) {
+                    if (map.removeAllAmounts(false, (iHasElementalDefinition) info.input())) {
+                        ArrayList<ItemStack> items = OreDictionary.getOres(((aOredictDequantizationInfo) info).out);
+                        if (items != null && items.size() > 0) {
+                            mOutputItems = new ItemStack[]{items.get(0)};
+                            startRecipe((iHasElementalDefinition) info.input());
+                            return true;
                         }
                     }
                 }
@@ -115,7 +115,7 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
         float mass = from.getMass();
         float euMult = mass / refMass;
         eAmpereFlow = (int) Math.ceil(euMult);
-        if (mass > refUnstableMass || from.getDefinition().getRawLifeTime()<1.5e25f) {
+        if (mass > refUnstableMass || from.getDefinition().getRawLifeTime() < 1.5e25f) {
             mEUt = (int) -V[10];
         } else {
             mEUt = (int) -V[8];

@@ -1,11 +1,7 @@
 package com.github.technus.tectech.elementalMatter.interfaces;
 
-import com.github.technus.tectech.elementalMatter.classes.cElementalDecay;
-import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStack;
-import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStackMap;
-import net.minecraft.item.ItemStack;
+import com.github.technus.tectech.elementalMatter.classes.*;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidStack;
 
 /**
  * Created by danie_000 on 11.11.2016.
@@ -41,9 +37,11 @@ public interface iElementalDefinition extends Comparable<iElementalDefinition>,C
 
     cElementalDefinitionStackMap getSubParticles();//contents... null if none
 
-    iExchangeInfo someAmountIntoItemsStack();
+    aFluidDequantizationInfo someAmountIntoFluidStack();
 
-    iExchangeInfo someAmountIntoFluidStack();
+    aItemDequantizationInfo someAmountIntoItemsStack();
+
+    aOredictDequantizationInfo someAmountIntoOredictStack();
 
     NBTTagCompound toNBT();
 

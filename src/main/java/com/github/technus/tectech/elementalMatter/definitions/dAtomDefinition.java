@@ -4,14 +4,10 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.classes.*;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.XSTR;
-import gregtech.api.util.GT_OreDictUnificator;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.*;
@@ -50,17 +46,12 @@ public final class dAtomDefinition extends cElementalDefinition {
     public final byte decayMode;//t neutron to proton+,0,f proton to neutron
     public final boolean stable;
 
-    //private final FluidStack fluidThing;
-    //private final ItemStack itemThing;
     public final int isotope;
     public final int element;
 
     private final cElementalDefinitionStackMap elementalStacks;
 
     //stable is rawLifeTime>=10^9
-
-    //private final FluidStack fluidThing;
-    //private final ItemStack itemThing;
 
     @Deprecated
     public dAtomDefinition(iElementalDefinition... things) throws tElementalException {
@@ -449,7 +440,12 @@ public final class dAtomDefinition extends cElementalDefinition {
     }
 
     @Override
-    public aOredictDequantizationInfo someAmountIntoItemsStack() {
+    public aItemDequantizationInfo someAmountIntoItemsStack() {
+        return null;
+    }
+
+    @Override
+    public aOredictDequantizationInfo someAmountIntoOredictStack() {
         return transformation.oredictDequantization.get(this);
     }
 

@@ -18,7 +18,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import static com.github.technus.tectech.Util.StructureBuilder;
 import static com.github.technus.tectech.Util.isInputEqual;
-import static com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition.*;
+import static com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition.refMass;
+import static com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition.refUnstableMass;
 import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
 import static gregtech.api.enums.GT_Values.V;
 
@@ -137,7 +138,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
         float mass = into.getMass();
         float euMult = mass / refMass;
         eAmpereFlow = (int) Math.ceil(euMult);
-        if (mass > refUnstableMass || into.getDefinition().getRawLifeTime()<1.5e25f) {
+        if (mass > refUnstableMass || into.getDefinition().getRawLifeTime() < 1.5e25f) {
             mEUt = (int) -V[10];
         } else {
             mEUt = (int) -V[8];
@@ -156,6 +157,6 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
             return;
         }
         eOutputHatches.get(0).getContainerHandler().putUnifyAll(outputEM[0]);
-        outputEM=null;
+        outputEM = null;
     }
 }

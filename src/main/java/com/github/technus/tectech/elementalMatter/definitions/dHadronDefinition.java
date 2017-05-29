@@ -4,14 +4,9 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.classes.*;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
-import com.github.technus.tectech.elementalMatter.interfaces.iExchangeInfo;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.TreeMap;
 
 import static com.github.technus.tectech.elementalMatter.definitions.eBosonDefinition.boson_Y__;
 
@@ -276,12 +271,17 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
     //}
 
     @Override
-    public iExchangeInfo someAmountIntoItemsStack() {
+    public aFluidDequantizationInfo someAmountIntoFluidStack() {
         return null;
     }
 
     @Override
-    public iExchangeInfo someAmountIntoFluidStack() {
+    public aItemDequantizationInfo someAmountIntoItemsStack() {
+        return null;
+    }
+
+    @Override
+    public aOredictDequantizationInfo someAmountIntoOredictStack() {
         return null;
     }
 

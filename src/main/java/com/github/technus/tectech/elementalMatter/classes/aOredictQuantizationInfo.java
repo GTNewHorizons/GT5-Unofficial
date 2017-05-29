@@ -4,8 +4,6 @@ import com.github.technus.tectech.elementalMatter.interfaces.iExchangeInfo;
 import com.github.technus.tectech.elementalMatter.interfaces.iHasElementalDefinition;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 /**

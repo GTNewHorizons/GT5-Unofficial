@@ -5,10 +5,7 @@ import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.classes.*;
 import com.github.technus.tectech.elementalMatter.definitions.eBosonDefinition;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
-import com.github.technus.tectech.elementalMatter.interfaces.iExchangeInfo;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidStack;
 
 import static com.github.technus.tectech.elementalMatter.classes.cElementalDecay.noDecay;
 import static com.github.technus.tectech.magicAddon.definitions.AspectDefinitionCompat.aspectDefinitionCompat;
@@ -167,12 +164,17 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
     }
 
     @Override
-    public iExchangeInfo someAmountIntoFluidStack() {
+    public aFluidDequantizationInfo someAmountIntoFluidStack() {
         return null;
     }
 
     @Override
-    public iExchangeInfo someAmountIntoItemsStack() {
+    public aItemDequantizationInfo someAmountIntoItemsStack() {
+        return null;
+    }
+
+    @Override
+    public aOredictDequantizationInfo someAmountIntoOredictStack() {
         return null;
     }
 

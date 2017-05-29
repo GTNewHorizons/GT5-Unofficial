@@ -3,16 +3,12 @@ package com.github.technus.tectech.elementalMatter.classes;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
-import com.github.technus.tectech.elementalMatter.interfaces.iExchangeInfo;
 import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReport;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidStack;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveDefinition.null__;
 
@@ -127,12 +123,17 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
     }
 
     @Override
-    public iExchangeInfo someAmountIntoFluidStack() {
+    public aFluidDequantizationInfo someAmountIntoFluidStack() {
         return null;
     }
 
     @Override
-    public iExchangeInfo someAmountIntoItemsStack() {
+    public aItemDequantizationInfo someAmountIntoItemsStack() {
+        return null;
+    }
+
+    @Override
+    public aOredictDequantizationInfo someAmountIntoOredictStack() {
         return null;
     }
 
