@@ -541,21 +541,23 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
                                 if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime && recipeAt == Tick) {//progress increase and done
                                     hatchesStatusUpdate();
+
                                     EM_outputFunction();
                                     cleanOutputEM();
-                                    if (mOutputItems != null) for (ItemStack tStack : mOutputItems)
-                                        if (tStack != null)
-                                            addOutput(tStack);
 
-                                    if (mOutputFluids != null && mOutputFluids.length == 1)
-                                        for (FluidStack tStack : mOutputFluids)
-                                            if (tStack != null)
-                                                addOutput(tStack);
-                                            else if (mOutputFluids != null && mOutputFluids.length > 1)
-                                                addFluidOutputs(mOutputFluids);
-                                    updateSlots();
+                                    if (mOutputItems != null) for (ItemStack tStack : mOutputItems)
+                                        if (tStack != null) addOutput(tStack);
                                     mOutputItems = null;
+
+                                    if(mOutputFluids!=null) {
+                                        if (mOutputFluids.length == 1) {
+                                            for (FluidStack tStack : mOutputFluids)
+                                                if (tStack != null) addOutput(tStack);
+                                        } else if (mOutputFluids.length > 1) addFluidOutputs(mOutputFluids);
+                                    }
                                     mOutputFluids = null;
+
+                                    updateSlots();
                                     mProgresstime = 0;
                                     mMaxProgresstime = 0;
                                     mEfficiencyIncrease = 0;
@@ -633,13 +635,14 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     @Deprecated
     @Override
     public final int getAmountOfOutputs() {
-        return 0;
+        throw new NoSuchMethodError("Deprecated Do not use");
     }
 
-    private void addFluidOutputs(FluidStack[] mOutputFluids2) {
-        for (int i = 0; i < mOutputFluids2.length; ++i) {
-            if (this.mOutputHatches.size() > i && this.mOutputHatches.get(i) != null && mOutputFluids2[i] != null && isValidMetaTileEntity((MetaTileEntity) this.mOutputHatches.get(i))) {
-                this.mOutputHatches.get(i).fill(mOutputFluids2[i], true);
+    protected void addFluidOutputs(FluidStack[] mOutputFluids) {
+        int min=mOutputFluids.length>mOutputHatches.size()?mOutputHatches.size():mOutputFluids.length;
+        for (int i = 0; i < min; ++i) {
+            if (this.mOutputHatches.get(i) != null && mOutputFluids[i] != null && isValidMetaTileEntity(this.mOutputHatches.get(i))) {
+                this.mOutputHatches.get(i).fill(mOutputFluids[i], true);
             }
         }
     }
@@ -756,7 +759,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     //new method
-    public final boolean EMoverclockAndPutValuesIn(long EU, int time) {
+    public final boolean EMoverclockAndPutValuesIn(long EU, int time) {//TODO rewise
         if (EU == 0) {
             mEUt = 0;
             mMaxProgresstime = time;
