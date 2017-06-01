@@ -44,7 +44,7 @@ public class GT_Item_CasingsTT extends GT_Item_Casings_Abstract {
                 break;
             case 5://"Advanced Molecular Casing"
                 aList.add("Cooling and stabilization.");
-                aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Like a comfortable bed.");
+                aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "A comfortable machine bed.");
                 break;
             case 6://"Containment Field Generator"
                 aList.add("Creates a field that...");

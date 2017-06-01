@@ -11,12 +11,16 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import static com.github.technus.tectech.Util.StructureBuilder;
+import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
 import static gregtech.api.enums.GT_Values.E;
 
 /**
@@ -30,89 +34,42 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     //region Structure
     //use multi A energy inputs, use less power the longer it runs
     private static final String[][] shape = new String[][]{
-            {E, "Y00000000000", E,},
-            {"Y00000000000", "U0000111111111110000", "Y00000000000",},
-            {"U0000222222222220000", "S00111133333333333111100", "U0000222222222220000",},
-            {"S00222200000000000222200", "Q001133331111111111133331100", "S00222200000000000222200",},
-            {"Q00000000K00000000", "O0011331111K1111331100", "Q00000000K00000000",},
-            {"O000000S000000", "M00113311S11331100", "O000000S000000",},
-            {"M000000W000000", "L0113311W1133110", "M000000W000000",},
-            {"L00000[00000", "K013311[113310", "L00000[00000",},
-            {"K0000_0000", "J01311_11310", "K0000_0000",},
-            {"J000c000", "I0131c1310", "J000c000",},
-            {"I000e000", "H0131e1310", "I000e000",},
-            {"H000g000", "G0131g1310", "H000g000",},
-            {"G000i000", "F0131i1310", "G000i000",},
-            {"F000k000", "E0131k1310", "F000k000",},
-            {"E000m000", "D0131m1310", "E000m000",},
-            {"E000m000", "D0131m1310", "E000m000",},
-            {"D000o000", "C0131o1310", "D000o000",},
-            {"D000o000", "C0131o1310", "D000o000",},
-            {"C000q000", "B0131q1310", "C000q000",},
-            {"C000q000", "B0131q1310", "C000q000",},
-            {"B000s000", "A0131s1310", "B000s000",},
-            {"B000s000", "A0131s1310", "B000s000",},
-            {"A020u020", "0131u1310", "A020u020",},
-            {"A020u020", "0131u1310", "A020u020",},
-            {"A020u020", "0131u1310", "A020u020",},
-            {"A020u020", "0131u1310", "A020u020",},
-            {"00+w020", "1310v1310", "000w020",},
-            {"0000v020", "1310v1310", "++00v020",},
-            {"000w020", "1310v1310", "000w020",},
-            {"4444v020", "5314v1310", "4444v020",},
-            {"224w020", "5314v1310", "++4w020",},
-            {"+244v020", "5314v1310", "++44v020",},
-            {"224w020", "5314v1310", "++4w020",},
-            {"4444v020", "5314v1310", "4444v020",},
-            {"000w020", "1310v1310", "000w020",},
-            {"0000v020", "1310v1310", "++00v020",},
-            {"000w020", "1310v1310", "000w020",},
-            {"A020u020", "0131u1310", "A020u020",},
-            {"A020u020", "0131u1310", "A020u020",},
-            {"A020u020", "0131u1310", "A020u020",},
-            {"A020u020", "0131u1310", "A020u020",},
-            {"B000s000", "A0131s1310", "B000s000",},
-            {"B000s000", "A0131s1310", "B000s000",},
-            {"C000q000", "B0131q1310", "C000q000",},
-            {"C000q000", "B0131q1310", "C000q000",},
-            {"D000o000", "C0131o1310", "D000o000",},
-            {"D000o000", "C0131o1310", "D000o000",},
-            {"E000m000", "D0131m1310", "E000m000",},
-            {"E000m000", "D0131m1310", "E000m000",},
-            {"F000k000", "E0131k1310", "F000k000",},
-            {"G000i000", "F0131i1310", "G000i000",},
-            {"H000g000", "G0131g1310", "H000g000",},
-            {"I000e000", "H0131e1310", "I000e000",},
-            {"J000c000", "I0131c1310", "J000c000",},
-            {"K0000_0000", "J01311_11310", "K0000_0000",},
-            {"L00000[00000", "K013311[113310", "L00000[00000",},
-            {"M000000W000000", "L0113311W1133110", "M000000W000000",},
-            {"O000000S000000", "M00113311S11331100", "O000000S000000",},
-            {"Q00000000K00000000", "O0011331111K1111331100", "Q00000000K00000000",},
-            {"S00222200000000000222200", "Q001133331111111111133331100", "S00222200000000000222200",},
-            {"U0000222222222220000", "S00111133333333333111100", "U0000222222222220000",},
-            {"Y00000000000", "U0000111111111110000", "Y00000000000",},
-            {E, "Y00000000000", E,},
+            {"I0A0A0","I00000","I0A0A0",},
+            {"H0000000","G001111100","H0000000",},
+            {"F22223332222","F41155555114","F22223332222",},
+            {"E2000000000002","E4155111115514","E2000000000002",},
+            {"D20000E00002","D41511E11514","D20000E00002",},
+            {"C2000I0002","C4151I1514","C2000I0002",},
+            {"B2000K0002","B4151K1514","B2000K0002",},
+            {"B200M002","A0151M1510","B200M002",},
+            {"A0200M0020","A0151M1510","A0200M0020",},
+            {"0020O0200","0151O1510","0020O0200",},
+            {"A030O030","0151O1510","A030O030",},
+            {"0030O0300","0151O1510","0030O0300",},
+            {"A030O030","0151O1510","A030O030",},
+            {"0020O0200","0151O1510","0020O0200",},
+            {"A0200M0020","A0151M1510","A0200M0020",},
+            {"B200M002","A0151M1510","B200M002",},
+            {"B2000K0002","B4151K1514","B2000K0002",},
+            {"C2000I0002","C4151I1514","C2000I0002",},
+            {"D200002   200002","D415112 . 211514","D200002   200002",},
+            {"E20!!22222!!02","E4155111115514","E20!!22222!!02",},
+            {"F2222#\"#2222","F41155555114","F2222#\"#2222",},
     };
     private static final Block[] blockType = new Block[]{
             GT_Container_CasingsTT.sBlockCasingsTT,
-            GregTech_API.sBlockCasings4,
-            QuantumGlassBlock.INSTANCE,
-            GT_Container_CasingsTT.sBlockCasingsTT,
-            GT_Container_CasingsTT.sBlockCasingsTT,
-            GT_Container_CasingsTT.sBlockCasingsTT
-    };
-    private static final byte[] blockMeta = new byte[]{3, 7, 0, 9, 3, 9};
-
-    private static final Block[] blockType2 = new Block[]{
             GT_Container_CasingsTT.sBlockCasingsTT,
             GT_Container_CasingsTT.sBlockCasingsTT,
             QuantumGlassBlock.INSTANCE,
             GT_Container_CasingsTT.sBlockCasingsTT,
-            GT_Container_CasingsTT.sBlockCasingsTT,
             GT_Container_CasingsTT.sBlockCasingsTT
     };
-    private static final byte[] blockMeta2 = new byte[]{3, 6, 0, 8, 5, 9};
+    private static final byte[] blockMeta1 = new byte[]{4, 7, 4, 0, 4, 8};
+    private static final byte[] blockMeta2 = new byte[]{4, 7, 5, 0, 6, 9};
+    private static final String[] addingMethods = new String[]{"addClassicToMachineList", "addElementalInputToMachineList", "addElementalOutputToMachineList", "addElementalMufflerToMachineList"};
+    private static final byte[] casingTextures = new byte[]{textureOffset, textureOffset + 4, textureOffset + 4, textureOffset + 4};
+    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
+    private static final byte[] blockMetaFallback = new byte[]{0, 4, 4, 4};
     //endregion
 
     public GT_MetaTileEntity_EM_collider(int aID, String aName, String aNameRegional) {
@@ -161,26 +118,29 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        if (iGregTechTileEntity.getBlockOffset(0, -1, 0) != GT_Container_CasingsTT.sBlockCasingsTT) {
+        int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX*2;
+        int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ*2;
+        if (iGregTechTileEntity.getBlockOffset(xDir, 0, zDir) != GT_Container_CasingsTT.sBlockCasingsTT) {
             eTier = 0;
             return false;
-        } else if (iGregTechTileEntity.getMetaIDOffset(0, -1, 0) == 3) {
+        }
+
+        if (iGregTechTileEntity.getMetaIDOffset(xDir, 0, zDir) == 8) {
             eTier = 1;
-        } else if (iGregTechTileEntity.getMetaIDOffset(0, -1, 0) == 5) {
+        } else if (iGregTechTileEntity.getMetaIDOffset(xDir, 0, zDir) == 9) {
             eTier = 2;
         } else {
             eTier = 0;
             return false;
         }
 
-
         boolean test;
         switch (eTier) {
             case 1:
-                test = EM_StructureCheck(shape, blockType, blockMeta, 0, -2, 28);
+                test = EM_StructureCheckAdvanced(shape, blockType, blockMeta1,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback, 11, 1, 18);
                 break;
             case 2:
-                test = EM_StructureCheck(shape, blockType2, blockMeta2, 0, -2, 28);
+                test = EM_StructureCheckAdvanced(shape, blockType, blockMeta2,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback, 11, 1, 18);
                 break;
             default:
                 eTier = 0;
@@ -193,9 +153,19 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public void construct(int qty) {
-        if ((qty & 1) == 0)
-            StructureBuilder(shape, blockType, blockMeta, 0, -2, 28, this.getBaseMetaTileEntity());
-        else StructureBuilder(shape, blockType2, blockMeta2, 0, -2, 28, this.getBaseMetaTileEntity());
+        IGregTechTileEntity iGregTechTileEntity=getBaseMetaTileEntity();
+        int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX*4;
+        int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ*4;
+        if(iGregTechTileEntity.getBlockOffset(xDir,0,zDir).getMaterial() == Material.air)
+            iGregTechTileEntity.getWorld().setBlock(
+                    iGregTechTileEntity.getXCoord()+xDir,
+                    iGregTechTileEntity.getYCoord(),
+                    iGregTechTileEntity.getZCoord()+zDir,
+                    Blocks.lapis_block);
+        if ((qty & 1) == 1)
+            StructureBuilder(shape, blockType, blockMeta1, 11, 1, 18, iGregTechTileEntity);
+        else
+            StructureBuilder(shape, blockType, blockMeta2, 11, 1, 18, iGregTechTileEntity);
     }
 
     @Override

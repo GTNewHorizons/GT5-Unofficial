@@ -62,7 +62,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
         return new String[]{
                 CommonValues.tecMark,
                 "Is life time too long?",
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Make ia half-life (3) instead!"
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Make it half-life (3) instead!"
         };
     }
 }
