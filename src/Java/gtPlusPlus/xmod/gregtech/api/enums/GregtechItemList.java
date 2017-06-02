@@ -55,6 +55,16 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Field_Generator_LuV, Field_Generator_ZPM, Field_Generator_UV, Field_Generator_MAX,
 	Emitter_LuV, Emitter_ZPM, Emitter_UV, Emitter_MAX,
 	Sensor_LuV, Sensor_ZPM, Sensor_UV, Sensor_MAX,
+	
+	//ULV Components
+	Electric_Motor_ULV,
+	Electric_Pump_ULV,
+	Conveyor_Module_ULV,
+	Electric_Piston_ULV,
+	Robot_Arm_ULV,
+	Field_Generator_ULV,
+	Emitter_ULV,
+	Sensor_ULV,
 
 	//Circuits
 	Circuit_Primitive, Circuit_Basic, Circuit_Good, Circuit_Advanced,
