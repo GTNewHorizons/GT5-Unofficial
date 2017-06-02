@@ -10,13 +10,17 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 public class RECIPES_MachineComponents {
 
 	//Wire
+	static String wireTier0 = "wireGt01Lead";
+	static String wireTier1 = "wireGt01RedAlloy";
 	static String wireTier6 = "wireGt08NiobiumTitanium";
 	static String wireTier7 = "wireGt08Osmium";
 	static String wireTier8 = "wireGt08Naquadah";
 	static String wireTier9 = "wireGt08Superconductor";
 	static String wireTier10 = "wireGt16Superconductor";
 
-	//Wire
+	//Cable
+	static String cableTier0 = "cableGt01Lead";
+	static String cableTier1 = "cableGt01RedAlloy";
 	static String cableTier6 = "cableGt04Tungsten";
 	static String cableTier7 = "cableGt04NiobiumTitanium";
 	static String cableTier8 = "cableGt04Osmium";
@@ -24,12 +28,16 @@ public class RECIPES_MachineComponents {
 	static String cableTier10 = "wireGt08Superconductor";
 
 	//Plates
+	static String plateTier0 = "plateWroughtIron";
 	static String plateTier7 = "plateChrome";
 	static String plateTier8 = "plateIridium";
 	static String plateTier9 = "plateOsmium";
 	static String plateTier10 = "plateNeutronium";
 
 	//rods
+	static String rodTier0 = "stickWroughtIron";
+	static String rodTier1 = "stickPotin";
+	static String rodTier2 = "stickIronMagnetic";
 	static String rodTier7a = "stickChrome";
 	static String rodTier8a = "stickIridium";
 	static String rodTier9a = "stickOsmium";
@@ -44,18 +52,21 @@ public class RECIPES_MachineComponents {
 	static String rodTier10c = "stickOsmium";
 
 	//Screws
+	static String screwTier0 = "screwPotin";
 	static String screwTier7 = "screwChrome";
 	static String screwTier8 = "screwIridium";
 	static String screwTier9 = "screwOsmium";
 	static String screwTier10 = "screwNeutronium";
 
 	//Rotors
+	static String rotorTier0 = "rotorPotin";
 	static String rotorTier7 = "rotorChrome";
 	static String rotorTier8 = "rotorIridium";
 	static String rotorTier9 = "rotorOsmium";
 	static String rotorTier10 = "rotorNeutronium";
 
 	//Fluid Pipe
+	static String pipeTier0 = "pipeSmallLead";
 	static String pipeTier7 = "pipeHugeSteel";
 	static String pipeTier8 = "pipeHugeStainlessSteel";
 	static String pipeTier9 = "pipeHugeTitanium";
@@ -66,6 +77,8 @@ public class RECIPES_MachineComponents {
 	static String plateRubber = "plateRubber";
 
 	//Circuits
+	static String circuitTier0 = "circuitPrimitive";
+	static String circuitTier1 = "circuitBasic";
 	static String circuitTier6 = "circuitMaster";
 	static String circuitTier7 = "circuitUltimate";
 	static String circuitTier8 = "circuitSymbiotic";
@@ -73,6 +86,7 @@ public class RECIPES_MachineComponents {
 	static String circuitTier10 = "circuitQuantum";
 
 	//small gears
+	static String smallGearTier0 = "gearGtSmallWroughtIron";
 	static String smallGearTier7 = "gearGtSmallChrome";
 	static String smallGearTier8 = "gearGtSmallIridium";
 	static String smallGearTier9 = "gearGtSmallOsmium";
@@ -88,6 +102,7 @@ public class RECIPES_MachineComponents {
 			run();
 		}
 		else {
+			onlyULVComponents();
 			onlyMaxComponents();
 		}
 		GregtechMachinePhase();
@@ -270,8 +285,60 @@ public class RECIPES_MachineComponents {
 				circuitTier10, plateTier10, plateTier10,
 				RECIPE_CONSTANTS.sensor_MAX);
 
+		onlyULVComponents();
+		
 		Utils.LOG_INFO("Done loading recipes for the Various machine components.");
 
+	}
+	
+	private static void onlyULVComponents(){
+		RecipeUtils.addShapedGregtechRecipe(
+				cableTier1, wireTier0, rodTier0,
+				wireTier0, rodTier2, wireTier0,
+				rodTier0, wireTier0, cableTier1,
+				RECIPE_CONSTANTS.electricMotor_ULV);
+
+		RecipeUtils.addShapedGregtechRecipe(
+				cableTier0, rotorTier0, itemRubberRing,
+				craftingToolScrewdriver, pipeTier0, craftingToolWrench,
+				itemRubberRing, RECIPE_CONSTANTS.electricMotor_ULV, cableTier0,
+				RECIPE_CONSTANTS.electricPump_ULV);
+
+		RecipeUtils.addShapedGregtechRecipe(
+				plateTier0, plateTier0, plateTier0,
+				cableTier0, rodTier1, rodTier1,
+				cableTier0, RECIPE_CONSTANTS.electricMotor_ULV, smallGearTier0,
+				RECIPE_CONSTANTS.electricPiston_ULV);
+
+		RecipeUtils.addShapedGregtechRecipe(
+				cableTier0, cableTier0, cableTier0,
+				RECIPE_CONSTANTS.electricMotor_ULV, rodTier1, RECIPE_CONSTANTS.electricMotor_ULV,
+				RECIPE_CONSTANTS.electricPiston_ULV, circuitTier0, rodTier1,
+				RECIPE_CONSTANTS.robotArm_ULV);
+
+		RecipeUtils.addShapedGregtechRecipe(
+				plateRubber, plateRubber, plateRubber,
+				RECIPE_CONSTANTS.electricMotor_ULV, cableTier0, RECIPE_CONSTANTS.electricMotor_ULV,
+				plateRubber, plateRubber, plateRubber,
+				RECIPE_CONSTANTS.conveyorModule_ULV);
+
+		RecipeUtils.addShapedGregtechRecipe(
+				rodTier2, rodTier2, circuitTier0,
+				cableTier0, circuitTier1, rodTier2,
+				circuitTier0, cableTier0, rodTier2,
+				RECIPE_CONSTANTS.emitter_ULV);
+
+		RecipeUtils.addShapedGregtechRecipe(
+				wireTier0, circuitTier0, wireTier0,
+				circuitTier0, circuitTier1, circuitTier0,
+				wireTier0, circuitTier0, wireTier0,
+				RECIPE_CONSTANTS.fieldGenerator_ULV);
+
+		RecipeUtils.addShapedGregtechRecipe(
+				plateTier0, null, circuitTier1,
+				plateTier0, rodTier2, null,
+				circuitTier0, plateTier0, plateTier0,
+				RECIPE_CONSTANTS.sensor_ULV);
 	}
 
 	private static void onlyMaxComponents(){
