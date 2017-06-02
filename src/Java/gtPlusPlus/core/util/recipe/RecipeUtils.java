@@ -328,7 +328,7 @@ public class RecipeUtils {
 			final Object InputItem1, final Object InputItem2, final Object InputItem3,
 			final Object InputItem4, final Object InputItem5, final Object InputItem6,
 			final Object InputItem7, final Object InputItem8, final Object InputItem9,
-			final ItemStack OutputItem){
+			final ItemStack OutputItem){		
 
 		if ((!(InputItem1 instanceof ItemStack) && !(InputItem1 instanceof String) && (InputItem1 != null)) ||
 				(!(InputItem2 instanceof ItemStack) && !(InputItem2 instanceof String) && (InputItem2 != null)) ||

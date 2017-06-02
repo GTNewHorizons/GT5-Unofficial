@@ -334,7 +334,7 @@ public class RECIPES_MachineComponents {
 				wireTier0, circuitTier0, wireTier0,
 				RECIPE_CONSTANTS.fieldGenerator_ULV);
 
-		RecipeUtils.addShapedGregtechRecipe(
+		RecipeUtils.recipeBuilder(
 				plateTier0, null, circuitTier1,
 				plateTier0, rodTier2, null,
 				circuitTier0, plateTier0, plateTier0,
@@ -377,7 +377,7 @@ public class RECIPES_MachineComponents {
 				circuitTier10, circuitTier9, circuitTier10,
 				wireTier10, circuitTier10, wireTier10,
 				RECIPE_CONSTANTS.fieldGenerator_MAX);
-		RecipeUtils.addShapedGregtechRecipe(
+		RecipeUtils.recipeBuilder(
 				plateTier10, null, circuitTier9,
 				plateTier10, rodTier10c, null,
 				circuitTier10, plateTier10, plateTier10,
