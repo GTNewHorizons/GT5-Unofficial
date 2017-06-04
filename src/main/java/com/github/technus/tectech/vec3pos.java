@@ -23,13 +23,11 @@ public class vec3pos implements Comparable<vec3pos> {
 
     @Override
     public int compareTo(vec3pos o) {
-        if (y > o.y) return 1;
-        if (y < o.y) return -1;
-        if (x > o.x) return 1;
-        if (x < o.x) return -1;
-        if (z > o.z) return 1;
-        if (z < o.z) return -1;
-        return 0;
+        int tmp=y-o.y;
+        if (tmp!=0) return tmp;
+        tmp=x-o.x;
+        if (tmp!=0) return tmp;
+        return z-o.z;
     }
 
     @Override
