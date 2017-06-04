@@ -79,7 +79,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public boolean eParameters = true, ePowerPass = false, eSafeVoid = false, eDismatleBoom = false;
     public byte eCertainMode = 0, eCertainStatus = 0, minRepairStatus = 3;
 
-    private long eMaxAmpereFlow = 0;
+    protected long eMaxAmpereFlow = 0;//don't modify! unless YOU REALLY HAVE TO
     private long maxEUinputMin = 0, maxEUinputMax = 0;
     public long eAmpereFlow = 1;
     public long eRequiredData = 0;
@@ -803,7 +803,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     //new Method
-    public final cElementalInstanceStackMap EMgetInputsClone(){
+    public final cElementalInstanceStackMap EM_getInputsClone(){
         cElementalInstanceStackMap in=new cElementalInstanceStackMap();
         for(GT_MetaTileEntity_Hatch_ElementalContainer hatch:eInputHatches){
             in.putUnifyAll(hatch.getContainerHandler());
@@ -812,7 +812,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     //new Method
-    public final cElementalInstanceStackMap EMgetOutputsClone(){
+    public final cElementalInstanceStackMap EM_getOutputsClone(){
         cElementalInstanceStackMap out=new cElementalInstanceStackMap();
         for(GT_MetaTileEntity_Hatch_ElementalContainer hatch:eOutputHatches){
             out.putUnifyAll(hatch.getContainerHandler());

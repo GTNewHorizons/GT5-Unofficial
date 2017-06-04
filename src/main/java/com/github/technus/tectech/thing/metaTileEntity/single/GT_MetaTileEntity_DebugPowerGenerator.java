@@ -3,7 +3,9 @@ package com.github.technus.tectech.thing.metaTileEntity.single;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
+import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_Container_DebugPowerGenerator;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_Container_DebugStructureWriter;
+import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_GUIContainer_DebugPowerGenerator;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_GUIContainer_DebugStructureWriter;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -24,34 +26,33 @@ import static com.github.technus.tectech.Util.getUniqueIdentifier;
 /**
  * Created by Tec on 23.03.2017.
  */
-public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_TieredMachineBlock {
-    private static Textures.BlockIcons.CustomIcon MARK;
-    public short numbers[] = new short[6];
-    public boolean size = false;
-    public String[] result = new String[]{"Undefined"};
+public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_TieredMachineBlock {
+    private static Textures.BlockIcons.CustomIcon GENNY;
+    public int EUT=0,AMP=0;
+    public boolean producing=true;
 
-    public GT_MetaTileEntity_DebugStructureWriter(int aID, String aName, String aNameRegional, int aTier) {
-        super(aID, aName, aNameRegional, aTier, 0, "Scans Blocks Around");
+    public GT_MetaTileEntity_DebugPowerGenerator(int aID, String aName, String aNameRegional, int aTier) {
+        super(aID, aName, aNameRegional, aTier, 0, "Power from nothing");
     }
 
-    public GT_MetaTileEntity_DebugStructureWriter(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    public GT_MetaTileEntity_DebugPowerGenerator(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_DebugStructureWriter(mName, mTier, mDescription, mTextures);
+        return new GT_MetaTileEntity_DebugPowerGenerator(mName, mTier, mDescription, mTextures);
     }
 
     @Override
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        MARK = new Textures.BlockIcons.CustomIcon("iconsets/MARK");
+        GENNY = new Textures.BlockIcons.CustomIcon("iconsets/GENNY");
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], (aSide != this.getBaseMetaTileEntity().getFrontFacing()) ? new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER_SIDES) : new GT_RenderedTexture(MARK)};
+        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], (aSide != this.getBaseMetaTileEntity().getFrontFacing()) ? (aActive?Textures.BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier]:Textures.BlockIcons.OVERLAYS_ENERGY_IN_POWER[mTier]) : new GT_RenderedTexture(GENNY)};
     }
 
     @Override
@@ -61,12 +62,12 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_Container_DebugStructureWriter(aPlayerInventory, aBaseMetaTileEntity);
+        return new GT_Container_DebugPowerGenerator(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_DebugStructureWriter(aPlayerInventory, aBaseMetaTileEntity);
+        return new GT_GUIContainer_DebugPowerGenerator(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     @Override
@@ -81,16 +82,16 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        for (int i = 0; i < numbers.length; i++) {
-            aNBT.setShort("eData" + i, numbers[i]);
-        }
+        aNBT.setInteger("eEUT",EUT);
+        aNBT.setInteger("eAMP",AMP);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        for (int i = 0; i < numbers.length; i++) {
-            numbers[i] = aNBT.getShort("eData" + i);
-        }
+        EUT=aNBT.getInteger("eEUT");
+        AMP=aNBT.getInteger("eAMP");
+        producing=(long)AMP*EUT>=0;
+        getBaseMetaTileEntity().setActive(producing);
     }
 
     @Override
@@ -100,40 +101,26 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isAllowedToWork()) {
-            result = StructureWriter(this.getBaseMetaTileEntity(), numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5], false);
-            if (TecTechConfig.DEBUG_MODE)
-                for (String s : result)
-                    TecTech.Logger.info(s);
-            aBaseMetaTileEntity.disableWorking();
+        if (aBaseMetaTileEntity.isServerSide()) {
+            aBaseMetaTileEntity.setActive(producing);
+            if (aBaseMetaTileEntity.isActive()) {
+                setEUVar(maxEUStore());
+            } else {
+                setEUVar(0);
+            }
         }
-    }
-
-    @Override
-    public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-        result = StructureWriter(this.getBaseMetaTileEntity(), numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5], true);
-        if (TecTechConfig.DEBUG_MODE)
-            for (String s : result)
-                TecTech.Logger.info(s);
     }
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
         aBaseMetaTileEntity.openGUI(aPlayer);
-        //if (TecTechConfig.DEBUG_MODE && aPlayer.getHeldItem() != null)
-        //    TecTech.Logger.info("UnlocalizedName: " + getUniqueIdentifier(aPlayer.getHeldItem()));
         return true;
     }
 
     @Override
     public boolean isFacingValid(byte aFacing) {
         return true;
-    }
-
-    @Override
-    public boolean isElectric() {
-        return false;
     }
 
     @Override
@@ -146,18 +133,73 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
         return new String[]{
                 CommonValues.tecMark,
                 this.mDescription,
-                EnumChatFormatting.BLUE + "Prints Multiblock NonTE structure check code",
-                EnumChatFormatting.BLUE + "ABC axises aligned to machine front"
+                EnumChatFormatting.BLUE + "Infinite Producer/Consumer",
+                EnumChatFormatting.BLUE + "Since i wanted one..."
         };
     }
 
     @Override
-    public boolean isGivingInformation() {
+    public boolean isElectric() {
         return true;
     }
 
     @Override
-    public String[] getInfoData() {
-        return result;
+    public boolean isEnetOutput() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnetInput() {
+        return true;
+    }
+
+    @Override
+    public boolean isInputFacing(byte aSide) {
+        return !producing && aSide != getBaseMetaTileEntity().getFrontFacing();
+    }
+
+    @Override
+    public boolean isOutputFacing(byte aSide) {
+        return producing && aSide != getBaseMetaTileEntity().getFrontFacing();
+    }
+
+    @Override
+    public long maxAmperesIn() {
+        return producing?0:Math.abs(AMP);
+    }
+
+    @Override
+    public long maxAmperesOut() {
+        return producing?Math.abs(AMP):0;
+    }
+
+    @Override
+    public long maxEUInput() {
+        return producing?0:Integer.MAX_VALUE;
+    }
+
+    @Override
+    public long maxEUOutput() {
+        return producing?Math.abs(EUT):0;
+    }
+
+    @Override
+    public long maxEUStore() {
+        return Math.abs((long)EUT*AMP)<<2;
+    }
+
+    @Override
+    public long getMinimumStoredEU() {
+        return Math.abs((long)EUT*AMP);
+    }
+
+    @Override
+    public int getProgresstime() {
+        return (int) getBaseMetaTileEntity().getUniversalEnergyStored();
+    }
+
+    @Override
+    public int maxProgresstime() {
+        return (int) getBaseMetaTileEntity().getUniversalEnergyCapacity();
     }
 }

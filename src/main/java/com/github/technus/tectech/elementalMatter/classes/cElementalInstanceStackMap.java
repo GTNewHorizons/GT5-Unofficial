@@ -268,13 +268,14 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
     }
 
     public String[] getElementalInfo() {
-        final String[] info = new String[map.size() * 3];
+        final String[] info = new String[map.size() * 4];
         int i = 0;
         for (cElementalInstanceStack instance : map.values()) {
             info[i] = EnumChatFormatting.BLUE + instance.definition.getName();
             info[i + 1] = EnumChatFormatting.AQUA + instance.definition.getSymbol();
             info[i + 2] = "Amount " + EnumChatFormatting.GREEN + instance.amount;
-            i += 3;
+            info[i + 3] = "LifeTime " + EnumChatFormatting.GREEN + instance.getLifeTime();
+            i += 4;
         }
         return info;
     }
