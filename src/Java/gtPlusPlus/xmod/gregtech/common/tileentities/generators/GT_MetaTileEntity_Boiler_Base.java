@@ -18,31 +18,31 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class GT_MetaTileEntity_Boiler_Base
-extends GT_MetaTileEntity_Boiler {
+public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 
 	final private int mSteamPerSecond;
 	final private int mPollutionPerSecond;
 	final private int mBoilerTier;
 
 	public GT_MetaTileEntity_Boiler_Base(int aID, String aNameRegional, int aBoilerTier) {
-		super(aID, "electricboiler."+aBoilerTier+".tier.single", aNameRegional, "Produces "+(750+(250*aBoilerTier))+"L of Steam per second");
-		this.mSteamPerSecond = (750+(250*aBoilerTier));
-		this.mPollutionPerSecond = 20+(15*aBoilerTier);
+		super(aID, "electricboiler." + aBoilerTier + ".tier.single", aNameRegional,
+				"Produces " + (750 + (250 * aBoilerTier)) + "L of Steam per second");
+		this.mSteamPerSecond = (750 + (250 * aBoilerTier));
+		this.mPollutionPerSecond = 20 + (15 * aBoilerTier);
 		this.mBoilerTier = aBoilerTier;
 	}
 
 	public GT_MetaTileEntity_Boiler_Base(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
 		super(aName, aTier, aDescription, aTextures);
-		this.mSteamPerSecond = (750+(250*aTier));
-		this.mPollutionPerSecond = 20+(15*aTier);
+		this.mSteamPerSecond = (750 + (250 * aTier));
+		this.mPollutionPerSecond = 20 + (15 * aTier);
 		this.mBoilerTier = aTier;
 	}
 
 	public ITexture getOverlayIcon() {
 		return new GT_RenderedTexture(Textures.BlockIcons.BOILER_FRONT);
 	}
-	
+
 	@Override
 	public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
 		final ITexture[][][] rTextures = new ITexture[10][17][];
@@ -61,28 +61,32 @@ extends GT_MetaTileEntity_Boiler {
 		return rTextures;
 	}
 
-	protected GT_RenderedTexture getCasingTexture(){
-		if (this.mBoilerTier == 1){
-			return  new GT_RenderedTexture(Textures.BlockIcons.MACHINE_LV_SIDE);
+	protected GT_RenderedTexture getCasingTexture() {
+		if (this.mBoilerTier == 1) {
+			return new GT_RenderedTexture(Textures.BlockIcons.MACHINE_LV_SIDE);
 		}
-		else if (this.mBoilerTier == 2){
+		else if (this.mBoilerTier == 2) {
 
-			return  new GT_RenderedTexture(Textures.BlockIcons.MACHINE_MV_SIDE);
+			return new GT_RenderedTexture(Textures.BlockIcons.MACHINE_MV_SIDE);
 		}
-		else{
+		else {
 
-			return  new GT_RenderedTexture(Textures.BlockIcons.MACHINE_HV_SIDE);
+			return new GT_RenderedTexture(Textures.BlockIcons.MACHINE_HV_SIDE);
 		}
-		//return  new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top);
+		// return new
+		// GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Top);
 	}
-	
+
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return this.mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0 : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex + 1];
+		return this.mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0
+				: aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex
+						+ 1];
 	}
-	
+
 	public ITexture[] getFront(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mBoilerTier][aColor + 1], this.getCasingTexture()};
+		return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mBoilerTier][aColor + 1],
+				this.getCasingTexture() };
 	}
 
 	public ITexture[] getBack(final byte aColor) {
@@ -98,7 +102,8 @@ extends GT_MetaTileEntity_Boiler {
 	}
 
 	public ITexture[] getSides(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mBoilerTier][aColor + 1], this.getCasingTexture()};
+		return new ITexture[] { Textures.BlockIcons.MACHINE_CASINGS[this.mBoilerTier][aColor + 1],
+				this.getCasingTexture() };
 	}
 
 	public ITexture[] getFrontActive(final byte aColor) {
@@ -120,44 +125,46 @@ extends GT_MetaTileEntity_Boiler {
 	public ITexture[] getSidesActive(final byte aColor) {
 		return this.getSides(aColor);
 	}
-	
+
 	@Override
 	public boolean isOutputFacing(final byte aSide) {
 		return aSide != this.getBaseMetaTileEntity().getFrontFacing();
 	}
-	
+
 	@Override
 	public boolean isFacingValid(final byte aSide) {
 		return aSide > 1;
 	}
 
-	//Please find out what I do.
-	//I do stuff within the GUI. 
-	//this.mTemperature = Math.min(54, Math.max(0, this.mTemperature * 54 / (((GT_MetaTileEntity_Boiler) this.mTileEntity.getMetaTileEntity()).maxProgresstime() - 10)));
+	// Please find out what I do.
+	// I do stuff within the GUI.
+	// this.mTemperature = Math.min(54, Math.max(0, this.mTemperature * 54 /
+	// (((GT_MetaTileEntity_Boiler)
+	// this.mTileEntity.getMetaTileEntity()).maxProgresstime() - 10)));
 	@Override
 	public int maxProgresstime() {
-		return 1000+(250*mBoilerTier);
+		return 1000 + (250 * mBoilerTier);
 	}
 
-	//Electric boiler? Okay.
+	// Electric boiler? Okay.
 	@Override
-	public boolean isElectric(){
+	public boolean isElectric() {
 		return false;
 	}
 
-	//Hold more Steam
+	// Hold more Steam
 	@Override
 	public int getCapacity() {
-		return (16000+(16000*mBoilerTier));
+		return (16000 + (16000 * mBoilerTier));
 	}
 
-	//We want automation.
+	// We want automation.
 	@Override
 	public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
 		return true;
 	}
 
-	//We want automation.
+	// We want automation.
 	@Override
 	public boolean allowPutStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
 		return true;
@@ -181,16 +188,16 @@ extends GT_MetaTileEntity_Boiler {
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		if ((aBaseMetaTileEntity.isServerSide()) && (aTick > 20L)) {
-			//Utils.LOG_INFO("Ticking Boiler");
-			
+			// Utils.LOG_INFO("Ticking Boiler");
+
 			if (aTick % 60L == 0L) {
-				//Utils.LOG_INFO("Temp:"+this.mTemperature);
-				//Utils.LOG_INFO("getCapacity():"+this.getCapacity());
-				//Utils.LOG_INFO("maxProgresstime():"+this.maxProgresstime());
-				//Utils.LOG_INFO("mSteamPerSecond:"+this.mSteamPerSecond);
-				//Utils.LOG_INFO("mProcessingEnergy:"+this.mProcessingEnergy);
+				// Utils.LOG_INFO("Temp:"+this.mTemperature);
+				// Utils.LOG_INFO("getCapacity():"+this.getCapacity());
+				// Utils.LOG_INFO("maxProgresstime():"+this.maxProgresstime());
+				// Utils.LOG_INFO("mSteamPerSecond:"+this.mSteamPerSecond);
+				// Utils.LOG_INFO("mProcessingEnergy:"+this.mProcessingEnergy);
 			}
-			
+
 			if (this.mTemperature <= 20) {
 				this.mTemperature = 20;
 				this.mLossTimer = 0;
@@ -203,11 +210,14 @@ extends GT_MetaTileEntity_Boiler {
 				if (i != aBaseMetaTileEntity.getFrontFacing()) {
 					IFluidHandler tTileEntity = aBaseMetaTileEntity.getITankContainerAtSide(i);
 					if (tTileEntity != null) {
-						FluidStack tDrained = aBaseMetaTileEntity.drain(ForgeDirection.getOrientation(i), Math.max(1, this.mSteam.amount / 2), false);
+						FluidStack tDrained = aBaseMetaTileEntity.drain(ForgeDirection.getOrientation(i),
+								Math.max(1, this.mSteam.amount / 2), false);
 						if (tDrained != null) {
-							int tFilledAmount = tTileEntity.fill(ForgeDirection.getOrientation(i).getOpposite(), tDrained, false);
+							int tFilledAmount = tTileEntity.fill(ForgeDirection.getOrientation(i).getOpposite(),
+									tDrained, false);
 							if (tFilledAmount > 0) {
-								tTileEntity.fill(ForgeDirection.getOrientation(i).getOpposite(), aBaseMetaTileEntity.drain(ForgeDirection.getOrientation(i), tFilledAmount, true), true);
+								tTileEntity.fill(ForgeDirection.getOrientation(i).getOpposite(), aBaseMetaTileEntity
+										.drain(ForgeDirection.getOrientation(i), tFilledAmount, true), true);
 							}
 						}
 					}
@@ -217,90 +227,103 @@ extends GT_MetaTileEntity_Boiler {
 				if (this.mTemperature > 100) {
 					if ((this.mFluid == null) || (!GT_ModHandler.isWater(this.mFluid)) || (this.mFluid.amount <= 0)) {
 						this.mHadNoWater = true;
-					} else {
+					}
+					else {
 						if (this.mHadNoWater) {
 							aBaseMetaTileEntity.doExplosion(4096L);
 							return;
 						}
-						this.mFluid.amount -= (10*this.mBoilerTier);
-						//Utils.LOG_INFO("Draining "+(10*this.mBoilerTier)+"L of water. There is "+this.mFluid.amount+"L left.");
+						this.mFluid.amount -= (10 * this.mBoilerTier);
+						// Utils.LOG_INFO("Draining "+(10*this.mBoilerTier)+"L
+						// of water. There is "+this.mFluid.amount+"L left.");
 						if (this.mSteam == null) {
 							this.mSteam = GT_ModHandler.getSteam((this.mSteamPerSecond));
-						} else if (GT_ModHandler.isSteam(this.mSteam)) {
+						}
+						else if (GT_ModHandler.isSteam(this.mSteam)) {
 							this.mSteam.amount += (this.mSteamPerSecond);
-						} else {
+						}
+						else {
 							this.mSteam = GT_ModHandler.getSteam((this.mSteamPerSecond));
 						}
 					}
-				} else {
+				}
+				else {
 					this.mHadNoWater = false;
 				}
 			}
-			if ((this.mSteam != null) &&
-					(this.mSteam.amount > (getCapacity()*2))) {
+			if ((this.mSteam != null) && (this.mSteam.amount > (getCapacity() * 2))) {
 				sendSound((byte) 1);
-				this.mSteam.amount = (getCapacity()+(getCapacity()/2));
+				this.mSteam.amount = (getCapacity() + (getCapacity() / 2));
 			}
 			ItemStack fuelSlot = this.mInventory[2];
-			if ((this.mProcessingEnergy <= 0) && (aBaseMetaTileEntity.isAllowedToWork()) &&	(fuelSlot != null)) {
+			if ((this.mProcessingEnergy <= 0) && (aBaseMetaTileEntity.isAllowedToWork()) && (fuelSlot != null)) {
 
-				if (isInputFuelItem(fuelSlot) && (this.mTemperature < (maxProgresstime()-250))){
-					Utils.LOG_INFO("Current Heat:"+this.mTemperature+"/"+(maxProgresstime()-250)+" Burning fuel because not yet at a suitable temp.");
+				if (isInputFuelItem(fuelSlot) && (this.mTemperature < (maxProgresstime() - 250))) {
+					Utils.LOG_INFO("Current Heat:" + this.mTemperature + "/" + (maxProgresstime() - 250)
+							+ " Burning fuel because not yet at a suitable temp.");
 					useInputFuelItem(aBaseMetaTileEntity, fuelSlot);
 				}
 
 			}
 
-				if ((this.mTemperature < maxProgresstime()) && (this.mProcessingEnergy > 0) && (aTick % 10L == 0L)) {
-					//Utils.LOG_INFO("Adding +1 Temp.");
-					this.mProcessingEnergy -= 2;
-					this.mTemperature += 1;
-				}
-				if (this.mProcessingEnergy > 0 && (aTick % 20L == 0L)) {
-					//Utils.LOG_INFO("Current Temp is at: "+this.mTemperature+"C");
-					//GT_Pollution.addPollution(getBaseMetaTileEntity(), this.mPollutionPerSecond);
-				}
-				aBaseMetaTileEntity.setActive(this.mProcessingEnergy > 0);
+			if ((this.mTemperature < maxProgresstime()) && (this.mProcessingEnergy > 0) && (aTick % 10L == 0L)) {
+				// Utils.LOG_INFO("Adding +1 Temp.");
+				this.mProcessingEnergy -= 2;
+				this.mTemperature += 1;
 			}
-		
+			if (this.mProcessingEnergy > 0 && (aTick % 20L == 0L)) {
+				// Utils.LOG_INFO("Current Temp is at: "+this.mTemperature+"C");
+				// GT_Pollution.addPollution(getBaseMetaTileEntity(),
+				// this.mPollutionPerSecond);
+			}
+			aBaseMetaTileEntity.setActive(this.mProcessingEnergy > 0);
+		}
+
 	}
 
-	public boolean isInputFuelItem(ItemStack inputItem){
+	public boolean isInputFuelItem(ItemStack inputItem) {
 		int vCurrentBurnTime = 0;
 		vCurrentBurnTime = GameRegistry.getFuelValue(inputItem);
-		if (vCurrentBurnTime <= 0){
-			Utils.LOG_INFO("Invalid Boiler Fuel. Fuel:"+inputItem.getDisplayName()+" burns for "+vCurrentBurnTime);
-			return false;
-		}
-		else if (TileEntityFurnace.getItemBurnTime(inputItem) <= 0){
-			return false;
-		}
-		return true;
-	}
-
-	public boolean useInputFuelItem(IGregTechTileEntity aBaseMetaTileEntity, ItemStack inputItem){
-		int vCurrentBurnTime = 0;
-		vCurrentBurnTime = GameRegistry.getFuelValue(inputItem);
-		
-		if (vCurrentBurnTime <= 0){
+		if (vCurrentBurnTime <= 0) {
 			int furnaceTime = TileEntityFurnace.getItemBurnTime(inputItem);
-			if (furnaceTime > 0){
+			if (furnaceTime > 0) {
 				vCurrentBurnTime = furnaceTime;
 			}
 		}
-		
-		if (vCurrentBurnTime > 0){
-			this.mProcessingEnergy += (vCurrentBurnTime/10);
-			if ((vCurrentBurnTime/500) > 0){
-				this.mTemperature += (vCurrentBurnTime/500);				
+		if (vCurrentBurnTime > 0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	public boolean useInputFuelItem(IGregTechTileEntity aBaseMetaTileEntity, ItemStack inputItem) {
+		int vCurrentBurnTime = 0;
+		vCurrentBurnTime = GameRegistry.getFuelValue(inputItem);
+
+		if (vCurrentBurnTime <= 0) {
+			int furnaceTime = TileEntityFurnace.getItemBurnTime(inputItem);
+			if (furnaceTime > 0) {
+				vCurrentBurnTime = furnaceTime;
+			}
+		}
+
+		if (vCurrentBurnTime > 0) {
+			this.mProcessingEnergy += (vCurrentBurnTime / 10);
+			if ((vCurrentBurnTime / 500) > 0) {
+				this.mTemperature += (vCurrentBurnTime / 500);
 			}
 			aBaseMetaTileEntity.decrStackSize(2, 1);
 			if (aBaseMetaTileEntity.getRandomNumber(3) == 0) {
-				if (inputItem.getDisplayName().toLowerCase().contains("charcoal") || inputItem.getDisplayName().toLowerCase().contains("coke")){
-					aBaseMetaTileEntity.addStackToSlot(3, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
+				if (inputItem.getDisplayName().toLowerCase().contains("charcoal")
+						|| inputItem.getDisplayName().toLowerCase().contains("coke")) {
+					aBaseMetaTileEntity.addStackToSlot(3,
+							GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Ash, 1L));
 				}
 				else {
-					aBaseMetaTileEntity.addStackToSlot(3, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L));
+					aBaseMetaTileEntity.addStackToSlot(3,
+							GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.DarkAsh, 1L));
 				}
 			}
 			return true;
