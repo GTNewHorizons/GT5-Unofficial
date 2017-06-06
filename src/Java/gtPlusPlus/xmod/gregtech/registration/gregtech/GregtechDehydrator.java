@@ -1,11 +1,16 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
+import gregtech.api.enums.*;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachine_GT_Recipe;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.material.ALLOY;
+import gtPlusPlus.core.recipe.RECIPE_CONSTANTS;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import net.minecraft.item.ItemStack;
 
 public class GregtechDehydrator
 {
@@ -95,7 +100,54 @@ public class GregtechDehydrator
 		//GregtechItemList..set(new GregtechMetaTileEntitySolarGenerator(816, "dehydrator.tier.04", "ZPM Voltage Chemical Dehydrator", 7).getStackForm(1L));
 
 
+		ItemStack coilT1 = null;
+		ItemStack coilT2 = null;
+		ItemStack coilT3 = null;
+		ItemStack coilT4 = null;
 
+		GT_ModHandler.addCraftingRecipe(
+		GregtechItemList.GT_Dehydrator_EV.get(1L, new Object[0]),
+		GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
+		new Object[]{"ECE", "WMW", "GPG",
+			Character.valueOf('M'), ItemList.Hull_EV,
+			Character.valueOf('P'), ItemList.Robot_Arm_EV,
+			Character.valueOf('E'), coilT1,
+			Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Advanced),
+			Character.valueOf('W'), OrePrefixes.cableGt04.get(Materials.Aluminium),
+			Character.valueOf('G'), ALLOY.TUMBAGA.getGear(1)});
+
+		GT_ModHandler.addCraftingRecipe(
+		GregtechItemList.GT_Dehydrator_IV.get(1L, new Object[0]),
+		GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
+		new Object[]{"ECE", "WMW", "GPG",
+			Character.valueOf('M'), ItemList.Hull_IV,
+			Character.valueOf('P'), ItemList.Robot_Arm_IV,
+			Character.valueOf('E'), coilT2,
+			Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Elite),
+			Character.valueOf('W'), OrePrefixes.cableGt04.get(Materials.Tungsten),
+			Character.valueOf('G'), ALLOY.INCONEL_690.getGear(1)});
+
+		GT_ModHandler.addCraftingRecipe(
+		GregtechItemList.GT_Dehydrator_LuV.get(1L, new Object[0]),
+		GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
+		new Object[]{"ECE", "WMW", "GPG",
+			Character.valueOf('M'), ItemList.Hull_LuV,
+			Character.valueOf('P'), RECIPE_CONSTANTS.robotArm_LuV,
+			Character.valueOf('E'), coilT3,
+			Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Master),
+			Character.valueOf('W'), OrePrefixes.cableGt04.get(Materials.Naquadah),
+			Character.valueOf('G'), ALLOY.HASTELLOY_N.getGear(1)});
+
+		GT_ModHandler.addCraftingRecipe(
+		GregtechItemList.GT_Dehydrator_ZPM.get(1L, new Object[0]),
+		GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
+		new Object[]{"ECE", "WMW", "GPG",
+			Character.valueOf('M'), ItemList.Hull_ZPM,
+			Character.valueOf('P'), RECIPE_CONSTANTS.robotArm_ZPM,
+			Character.valueOf('E'), coilT4,
+			Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Ultimate),
+			Character.valueOf('W'), OrePrefixes.cableGt04.get(Materials.Osmium),
+			Character.valueOf('G'), ALLOY.ZERON_100.getGear(1)});
 
 	}
 }
