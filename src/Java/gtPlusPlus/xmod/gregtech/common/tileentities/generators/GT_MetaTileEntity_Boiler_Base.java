@@ -13,6 +13,7 @@ import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_AdvancedBoiler;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_AdvancedBoiler;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
@@ -267,16 +268,27 @@ extends GT_MetaTileEntity_Boiler {
 	public boolean isInputFuelItem(ItemStack inputItem){
 		int vCurrentBurnTime = 0;
 		vCurrentBurnTime = GameRegistry.getFuelValue(inputItem);
-		if (vCurrentBurnTime > 0){
-			return true;
+		if (vCurrentBurnTime <= 0){
+			Utils.LOG_INFO("Invalid Boiler Fuel. Fuel:"+inputItem.getDisplayName()+" burns for "+vCurrentBurnTime);
+			return false;
 		}
-		Utils.LOG_INFO("Invalid Boiler Fuel. Fuel:"+inputItem.getDisplayName()+" burns for "+vCurrentBurnTime);
-		return false;
+		else if (TileEntityFurnace.getItemBurnTime(inputItem) <= 0){
+			return false;
+		}
+		return true;
 	}
 
 	public boolean useInputFuelItem(IGregTechTileEntity aBaseMetaTileEntity, ItemStack inputItem){
 		int vCurrentBurnTime = 0;
 		vCurrentBurnTime = GameRegistry.getFuelValue(inputItem);
+		
+		if (vCurrentBurnTime <= 0){
+			int furnaceTime = TileEntityFurnace.getItemBurnTime(inputItem);
+			if (furnaceTime > 0){
+				vCurrentBurnTime = furnaceTime;
+			}
+		}
+		
 		if (vCurrentBurnTime > 0){
 			this.mProcessingEnergy += (vCurrentBurnTime/10);
 			if ((vCurrentBurnTime/500) > 0){
