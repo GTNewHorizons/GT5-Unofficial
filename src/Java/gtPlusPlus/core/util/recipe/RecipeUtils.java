@@ -328,40 +328,60 @@ public class RecipeUtils {
 			final Object InputItem1, final Object InputItem2, final Object InputItem3,
 			final Object InputItem4, final Object InputItem5, final Object InputItem6,
 			final Object InputItem7, final Object InputItem8, final Object InputItem9,
-			final ItemStack OutputItem){
+			final ItemStack OutputItem){		
 
-		if ((!(InputItem1 instanceof ItemStack) && !(InputItem1 instanceof String) && (InputItem1 != null)) ||
-				(!(InputItem2 instanceof ItemStack) && !(InputItem2 instanceof String) && (InputItem2 != null)) ||
-				(!(InputItem3 instanceof ItemStack) && !(InputItem3 instanceof String) && (InputItem3 != null)) ||
-				(!(InputItem4 instanceof ItemStack) && !(InputItem4 instanceof String) && (InputItem4 != null)) ||
-				(!(InputItem5 instanceof ItemStack) && !(InputItem5 instanceof String) && (InputItem5 != null)) ||
-				(!(InputItem6 instanceof ItemStack) && !(InputItem6 instanceof String) && (InputItem6 != null)) ||
-				(!(InputItem7 instanceof ItemStack) && !(InputItem7 instanceof String) && (InputItem7 != null)) ||
-				(!(InputItem8 instanceof ItemStack) && !(InputItem8 instanceof String) && (InputItem8 != null)) ||
-				(!(InputItem9 instanceof ItemStack) && !(InputItem9 instanceof String) && (InputItem9 != null))){
-			Utils.LOG_INFO("One Input item was not an ItemStack of an OreDict String.");
-			return false;
-		}
+				Object[] o = {
+					InputItem1, InputItem2, InputItem3,
+					InputItem4, InputItem5, InputItem6,
+					InputItem7, InputItem8, InputItem9
+				};
+				
+				if (addShapedGregtechRecipe(o, OutputItem)){
+					return true;
+				}
+				else {		
+					return false;
+				}
+			}
 
-		if (GT_ModHandler.addCraftingRecipe(OutputItem,
-				GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE |
-				GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
-				new Object[]{"ABC", "DEF", "GHI",
-						'A', InputItem1,
-						'B', InputItem2,
-						'C', InputItem3,
-						'D', InputItem4,
-						'E', InputItem5,
-						'F', InputItem6,
-						'G', InputItem7,
-						'H', InputItem8,
-						'I', InputItem9})){
-			Utils.LOG_INFO("Success! Added a recipe for "+OutputItem.getDisplayName());
-			RegistrationHandler.recipesSuccess++;
-			return true;
-		}
-		return false;
-	}
+			public static boolean addShapedGregtechRecipe(final Object[] inputs, final ItemStack output){
+
+				if (inputs.length != 9){
+					Utils.LOG_INFO("Input array for "+output.getDisplayName()+" does not equal 9.");
+					return false;
+				}
+				
+				for (int x=0;x<9;x++){
+					if (inputs[x] == null){
+						inputs[x] = " ";
+					}
+					if (!(inputs[x] instanceof ItemStack) || !(inputs[x] instanceof String)){
+						Utils.LOG_INFO("Invalid Item inserted into inputArray. Item:"+output.getDisplayName()+" has a bad recipe. Please report to Alkalus.");
+					}
+				}
+
+				if (GT_ModHandler.addCraftingRecipe(output,
+							GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE |
+							GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
+							new Object[]{"ABC", "DEF", "GHI",
+								'A', inputs[0],
+								'B', inputs[1],
+								'C', inputs[2],
+								'D', inputs[3],
+								'E', inputs[4],
+								'F', inputs[5],
+								'G', inputs[6],
+								'H', inputs[7],
+								'I', inputs[8]})){
+					Utils.LOG_INFO("Success! Added a recipe for "+output.getDisplayName());
+					RegistrationHandler.recipesSuccess++;
+					return true;
+				}
+				else {
+					Utils.LOG_INFO("Failed to add recipe for "+output.getDisplayName()+". Please report to Alkalus.");
+					return false;
+				}
+			}
 
 	public static void addShapelessGregtechRecipe(final ItemStack OutputItem, final Object... inputItems){
 
