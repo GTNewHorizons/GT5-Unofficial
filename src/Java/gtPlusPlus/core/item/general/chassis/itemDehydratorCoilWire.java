@@ -1,11 +1,25 @@
-public class itemDehydratorCoil extends Item {
+package gtPlusPlus.core.item.general.chassis;
 
-	public IIcon[] icon = new IIcon[1];
+import java.util.List;
 
-	public itemDehydratorCoil() {
+import cpw.mods.fml.common.registry.GameRegistry;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+
+public class itemDehydratorCoilWire extends Item {
+
+	public IIcon[] icons = new IIcon[1];
+
+	public itemDehydratorCoilWire() {
 		super();
 		this.setHasSubtypes(true);
-		String unlocalizedName = "itemDehydratorCoil";
+		String unlocalizedName = "itemDehydratorCoilWire";
 		this.setUnlocalizedName(unlocalizedName);
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
 		GameRegistry.registerItem(this, unlocalizedName);
@@ -13,7 +27,7 @@ public class itemDehydratorCoil extends Item {
 
 	@Override
 	public void registerIcons(IIconRegister reg) {
-		this.icons[0] = reg.registerIcon(CORE.MODID + ":" + "itemDehydratorCoil");
+		this.icons[0] = reg.registerIcon(CORE.MODID + ":" + "itemDehydratorCoilWire");
 	}
 
 	@Override
@@ -35,7 +49,7 @@ public class itemDehydratorCoil extends Item {
 
 	@Override
 	public String getItemStackDisplayName(final ItemStack tItem) {
-		String itemName = "Dehydrator Coil";
+		String itemName = "Coil Wire";
 		String suffixName = "";
 		if (tItem.getItemDamage() == 0){
 			suffixName = " [EV]";
@@ -57,16 +71,16 @@ public class itemDehydratorCoil extends Item {
 	public int getColorFromItemStack(final ItemStack stack, int HEX_OxFFFFFF) {
 		int meta = stack.getItemDamage();
 		if (meta == 0){
-			HEX_OxFFFFFF = Utils.rgbToHex(10,110,30);
+			HEX_OxFFFFFF = Utils.rgbtoHexValue(10,110,30);
 		}
 		else if (meta == 1){
-			HEX_OxFFFFFF = Utils.rgbToHex(150,180,35);
+			HEX_OxFFFFFF = Utils.rgbtoHexValue(150,180,35);
 		}	
 		else if (meta == 2){
-			HEX_OxFFFFFF = Utils.rgbToHex(200,85,40);
+			HEX_OxFFFFFF = Utils.rgbtoHexValue(200,85,40);
 		}
 		else if (meta == 3){
-			HEX_OxFFFFFF = Utils.rgbToHex(255,100,50);
+			HEX_OxFFFFFF = Utils.rgbtoHexValue(255,100,50);
 		}
 		return HEX_OxFFFFFF;
 	}
