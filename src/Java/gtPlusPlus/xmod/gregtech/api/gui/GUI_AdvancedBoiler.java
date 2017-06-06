@@ -2,18 +2,17 @@ package gtPlusPlus.xmod.gregtech.api.gui;
 
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.common.gui.GT_Container_Boiler;
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GUI_AdvancedBoiler
         extends GT_GUIContainerMetaTile_Machine {
     public GUI_AdvancedBoiler(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aTextureName, int aSteamCapacity) {
-        super(new GT_Container_Boiler(aInventoryPlayer, aTileEntity, aSteamCapacity), "miscutils:textures/gui/" + aTextureName);
+        super(new CONTAINER_AdvancedBoiler(aInventoryPlayer, aTileEntity, aSteamCapacity), "miscutils:textures/gui/" + aTextureName);
     }
 
     @Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        this.fontRendererObj.drawString("Boiler", 8, 4, 4210752);
+        this.fontRendererObj.drawString("Advanced Boiler", 8, 4, 4210752);
     }
 
     @Override
@@ -23,19 +22,19 @@ public class GUI_AdvancedBoiler
         int y = (this.height - this.ySize) / 2;
         drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
         if (this.mContainer != null) {
-            int tScale = ((GT_Container_Boiler) this.mContainer).mSteamAmount;
+            int tScale = ((CONTAINER_AdvancedBoiler) this.mContainer).mSteamAmount;
             if (tScale > 0) {
                 drawTexturedModalRect(x + 70, y + 25 + 54 - tScale, 194, 54 - tScale, 10, tScale);
             }
-            tScale = ((GT_Container_Boiler) this.mContainer).mWaterAmount;
+            tScale = ((CONTAINER_AdvancedBoiler) this.mContainer).mWaterAmount;
             if (tScale > 0) {
                 drawTexturedModalRect(x + 83, y + 25 + 54 - tScale, 204, 54 - tScale, 10, tScale);
             }
-            tScale = ((GT_Container_Boiler) this.mContainer).mTemperature;
+            tScale = ((CONTAINER_AdvancedBoiler) this.mContainer).mTemperature;
             if (tScale > 0) {
                 drawTexturedModalRect(x + 96, y + 25 + 54 - tScale, 214, 54 - tScale, 10, tScale);
             }
-            tScale = ((GT_Container_Boiler) this.mContainer).mProcessingEnergy;
+            tScale = ((CONTAINER_AdvancedBoiler) this.mContainer).mProcessingEnergy;
             if (tScale > 0) {
                 drawTexturedModalRect(x + 117, y + 44 + 14 - tScale, 177, 14 - tScale, 15, tScale + 1);
             }

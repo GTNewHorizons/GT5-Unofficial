@@ -27,9 +27,9 @@ public class GregtechAdvancedBoilers {
 		GregtechItemList.Boiler_Advanced_HV.set(new GT_MetaTileEntity_Boiler_HV(758, "Advanced Boiler [HV]", 3).getStackForm(1L));
 		
 		
-		ItemStack chassisT1 = ItemUtils.getItemStack("miscutils:itemBoilerChassis", 1);
-		ItemStack chassisT2 = ItemUtils.getItemStack("miscutils:itemBoilerChassis:1", 1);
-		ItemStack chassisT3 = ItemUtils.getItemStack("miscutils:itemBoilerChassis:2", 1);
+		ItemStack chassisT1 = ItemUtils.getItemStackWithMeta(true, "miscutils:itemBoilerChassis", "Boiler_Chassis_T1", 0, 1);
+		ItemStack chassisT2 = ItemUtils.getItemStackWithMeta(true, "miscutils:itemBoilerChassis", "Boiler_Chassis_T1", 1, 1);
+		ItemStack chassisT3 = ItemUtils.getItemStackWithMeta(true, "miscutils:itemBoilerChassis", "Boiler_Chassis_T1", 2, 1);
 
 
 		//Make the Coil in each following recipe a hammer and a Screwdriver.
