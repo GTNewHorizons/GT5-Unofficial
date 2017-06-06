@@ -1,23 +1,11 @@
-package gregtech.common.tileentities.boilers;
+package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.common.GT_Pollution;
-import gregtech.common.gui.GT_Container_Boiler;
-import gregtech.common.gui.GT_GUIContainer_Boiler;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.world.ChunkPosition;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidHandler;
 
 public class GT_MetaTileEntity_Boiler_LV
         extends GT_MetaTileEntity_Boiler_Base {
@@ -25,8 +13,13 @@ public class GT_MetaTileEntity_Boiler_LV
     public GT_MetaTileEntity_Boiler_LV(int aID, String aNameRegional, int aBoilerTier) {
         super(aID, aNameRegional, aBoilerTier);               
     }
+    
+    public GT_MetaTileEntity_Boiler_LV(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+        super(aName, aTier, aDescription, aTextures);
+    }
 
-    public ITexture[][][] getTextureSet(ITexture[] aTextures) {
+    @Override
+	public ITexture[][][] getTextureSet(ITexture[] aTextures) {
         ITexture[][][] rTextures = new ITexture[5][17][];
         for (byte i = -1; i < 16; i = (byte) (i + 1)) {
             ITexture[] tmp0 = {new GT_RenderedTexture(Textures.BlockIcons.MACHINE_STEELBRICKS_BOTTOM, Dyes.getModulation(i, Dyes._NULL.mRGBa))};
@@ -43,8 +36,9 @@ public class GT_MetaTileEntity_Boiler_LV
         return rTextures;
     }
 
-    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Boiler_LV(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+    @Override
+	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
+        return new GT_MetaTileEntity_Boiler_LV(this.mName, this.mTier, this.mDescription, this.mTextures);
     }
 
 }
