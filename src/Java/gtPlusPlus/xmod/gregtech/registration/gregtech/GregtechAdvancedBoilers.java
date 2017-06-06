@@ -34,40 +34,8 @@ public class GregtechAdvancedBoilers {
 
 		//Make the Coil in each following recipe a hammer and a Screwdriver.
 
-		GT_ModHandler.addCraftingRecipe(
-		GregtechItemList.Boiler_Advanced_LV.get(1L, new Object[0]),
-		GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
-		new Object[]{"ECE", "WMW", "GPG",
-			Character.valueOf('M'), ItemList.Hull_LV,
-			Character.valueOf('P'), ItemList.Robot_Arm_EV, //TODO
-			Character.valueOf('E'), chassisT1, //TODO
-			Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Basic),
-			Character.valueOf('W'), chassisT1,
-			Character.valueOf('G'), OrePrefixes.gear.get(Materials.Steel)});
-
-		GT_ModHandler.addCraftingRecipe(
-		GregtechItemList.Boiler_Advanced_MV.get(1L, new Object[0]),
-		GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
-		new Object[]{"ECE", "WMW", "GPG",
-			Character.valueOf('M'), ItemList.Hull_MV,
-			Character.valueOf('P'), ItemList.Robot_Arm_IV, //TODO
-			Character.valueOf('E'), chassisT2, //TODO
-			Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Good),
-			Character.valueOf('W'), chassisT2,
-			Character.valueOf('G'), ALLOY.SILICON_CARBIDE.getGear(1)});
-
-		GT_ModHandler.addCraftingRecipe(
-		GregtechItemList.Boiler_Advanced_HV.get(1L, new Object[0]),
-		GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
-		new Object[]{"ECE", "WMW", "GPG",
-			Character.valueOf('M'), ItemList.Hull_HV,
-			Character.valueOf('P'), RECIPE_CONSTANTS.robotArm_LuV, //TODO
-			Character.valueOf('E'), chassisT3, //TODO
-			Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Advanced),
-			Character.valueOf('W'), chassisT3,
-			Character.valueOf('G'), ALLOY.SILICON_CARBIDE.getGear(1)});
-
-
+		
+		//Chassis Recipes
 		GT_ModHandler.addCraftingRecipe(
 		chassisT1,
 		GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
@@ -99,6 +67,37 @@ public class GregtechAdvancedBoilers {
 			Character.valueOf('G'), OrePrefixes.pipeSmall.get(Materials.Steel)});
 
 		
+		//Boiler Recipes
+		GT_ModHandler.addCraftingRecipe(
+		GregtechItemList.Boiler_Advanced_LV.get(1L, new Object[0]),
+		GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
+		new Object[]{"dCw", "WMW", "GPG",
+			Character.valueOf('M'), ItemList.Hull_LV,
+			Character.valueOf('P'), ItemList.Robot_Arm_EV, //TODO
+			Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Basic),
+			Character.valueOf('W'), chassisT1,
+			Character.valueOf('G'), OrePrefixes.gear.get(Materials.Steel)});
+
+		GT_ModHandler.addCraftingRecipe(
+		GregtechItemList.Boiler_Advanced_MV.get(1L, new Object[0]),
+		GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
+		new Object[]{"dCw", "WMW", "GPG",
+			Character.valueOf('M'), ItemList.Hull_MV,
+			Character.valueOf('P'), ItemList.Robot_Arm_IV, //TODO
+			Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Good),
+			Character.valueOf('W'), chassisT2,
+			Character.valueOf('G'), ALLOY.SILICON_CARBIDE.getGear(1)});
+
+		GT_ModHandler.addCraftingRecipe(
+		GregtechItemList.Boiler_Advanced_HV.get(1L, new Object[0]),
+		GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
+		new Object[]{"dCw", "WMW", "GPG",
+			Character.valueOf('M'), ItemList.Hull_HV,
+			Character.valueOf('P'), RECIPE_CONSTANTS.robotArm_LuV, //TODO
+			Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Advanced),
+			Character.valueOf('W'), chassisT3,
+			Character.valueOf('G'), ALLOY.SILICON_CARBIDE.getGear(1)});
+
 		
 	}
 	

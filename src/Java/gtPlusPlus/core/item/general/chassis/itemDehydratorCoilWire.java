@@ -80,7 +80,7 @@ public class itemDehydratorCoilWire extends Item {
 			HEX_OxFFFFFF = Utils.rgbtoHexValue(200,85,40);
 		}
 		else if (meta == 3){
-			HEX_OxFFFFFF = Utils.rgbtoHexValue(255,100,50);
+			HEX_OxFFFFFF = Utils.rgbtoHexValue(255,150,50);
 		}
 		return HEX_OxFFFFFF;
 	}

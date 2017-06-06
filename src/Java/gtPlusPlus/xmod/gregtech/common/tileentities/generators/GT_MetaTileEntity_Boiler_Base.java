@@ -9,8 +9,9 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.gui.GT_Container_Boiler;
-import gregtech.common.gui.GT_GUIContainer_Boiler;
 import gregtech.common.tileentities.boilers.GT_MetaTileEntity_Boiler;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.xmod.gregtech.api.gui.GUI_AdvancedBoiler;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -92,7 +93,7 @@ extends GT_MetaTileEntity_Boiler {
 
 	@Override
 	public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-		return new GT_GUIContainer_Boiler(aPlayerInventory, aBaseMetaTileEntity, "AdvancedBoiler.png", getCapacity());
+		return new GUI_AdvancedBoiler(aPlayerInventory, aBaseMetaTileEntity, "AdvancedBoiler.png", getCapacity());
 	}
 
 	@Override
@@ -179,6 +180,7 @@ extends GT_MetaTileEntity_Boiler {
 		if (vCurrentBurnTime > 0){
 			return true;
 		}
+		Utils.LOG_INFO("Invalid Boiler Fuel. Fuel:"+inputItem.getDisplayName()+" burns for "+vCurrentBurnTime);
 		return false;
 	}
 

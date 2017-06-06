@@ -51,13 +51,13 @@ public class itemBoilerChassis extends Item {
 		String itemName = "Advanced Boiler Chassis";
 		String suffixName = "";
 		if (tItem.getItemDamage() == 0){
-			suffixName = " [T1]";
+			suffixName = " [Tier 1]";
 		}
 		else if (tItem.getItemDamage() == 1){
-			suffixName = " [T2]";
+			suffixName = " [Tier 2]";
 		}
 		else if (tItem.getItemDamage() == 2){
-			suffixName = " [T3]";
+			suffixName = " [Tier 3]";
 		}
 		return (itemName+suffixName);
 		
