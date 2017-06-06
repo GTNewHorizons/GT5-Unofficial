@@ -64,6 +64,9 @@ public class BaseItemComponent extends Item{
 		if (this.componentType == ComponentTypes.GEAR){
 			return "gregtech" + ":" + "materialicons/METALLIC/" + "gearGt";
 		}
+		else if (this.componentType == ComponentTypes.SMALLGEAR){
+			return "gregtech" + ":" + "materialicons/METALLIC/" + "gearGtSmall";
+		}
 		else if (this.componentType == ComponentTypes.ROD){
 			return "gregtech" + ":" + "materialicons/METALLIC/" + "stick";
 		}
@@ -79,6 +82,10 @@ public class BaseItemComponent extends Item{
 	@Override
 	public String getItemStackDisplayName(final ItemStack p_77653_1_) {
 
+		if (this.componentType == ComponentTypes.SMALLGEAR){
+			return "Small " + this.materialName+" Gear";
+		}
+		
 		if (this.componentMaterial != null) {
 			return (this.componentMaterial.getLocalizedName()+this.componentType.DISPLAY_NAME);
 		}
@@ -181,6 +188,7 @@ public class BaseItemComponent extends Item{
 		ROD("Rod", " Rod", "stick"),
 		RODLONG("RodLong", " Long Rod", "stickLong"),
 		GEAR("Gear", " Gear", "gear"),
+		SMALLGEAR("SmallGear", " Gear", "gearGtSmall"), //TODO
 		SCREW("Screw", " Screw", "screw"),
 		BOLT("Bolt", " Bolt", "bolt"),
 		ROTOR("Rotor", " Rotor", "rotor"),

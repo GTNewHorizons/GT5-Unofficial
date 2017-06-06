@@ -639,104 +639,104 @@ public class RECIPES_Machines {
 
 			//Tiered Tanks
 			if (CORE.configSwitches.enableMachine_FluidTanks){
-			Utils.LOG_INFO("Is New Horizons Loaded? "+CORE.GTNH);
-			if (!CORE.GTNH){
-				RecipeUtils.addShapedGregtechRecipe(
-						plateTier1, plateTier1, plateTier1,
-						plateTier1, pipeTier1, plateTier1,
-						plateTier1, GregtechItemList.Fluid_Cell_144L.get(1), plateTier1,
-						GregtechItemList.GT_FluidTank_ULV.get(1));
-				RecipeUtils.addShapedGregtechRecipe(
-						plateTier2, plateTier2, plateTier2,
-						plateTier2, pipeTier2, plateTier2,
-						plateTier2, electricPump_LV, plateTier2,
-						GregtechItemList.GT_FluidTank_LV.get(1));
-				RecipeUtils.addShapedGregtechRecipe(
-						plateTier3, plateTier3, plateTier3,
-						plateTier3, pipeTier3, plateTier3,
-						plateTier3, electricPump_MV, plateTier3,
-						GregtechItemList.GT_FluidTank_MV.get(1));
-				RecipeUtils.addShapedGregtechRecipe(
-						plateTier4, plateTier4, plateTier4,
-						plateTier4, pipeTier4, plateTier4,
-						plateTier4, electricPump_HV, plateTier4,
-						GregtechItemList.GT_FluidTank_HV.get(1));
-				RecipeUtils.addShapedGregtechRecipe(
-						plateTier5, plateTier5, plateTier5,
-						plateTier5, pipeTier5, plateTier5,
-						plateTier5, electricPump_EV, plateTier5,
-						GregtechItemList.GT_FluidTank_EV.get(1));
-				RecipeUtils.addShapedGregtechRecipe(
-						plateTier6, plateTier6, plateTier6,
-						plateTier6, pipeTier6, plateTier6,
-						plateTier6, electricPump_IV, plateTier6,
-						GregtechItemList.GT_FluidTank_IV.get(1));
-				RecipeUtils.addShapedGregtechRecipe(
-						plateTier7, plateTier7, plateTier7,
-						plateTier7, pipeTier7, plateTier7,
-						plateTier7, RECIPE_CONSTANTS.electricPump_LuV, plateTier7,
-						GregtechItemList.GT_FluidTank_LuV.get(1));
-				RecipeUtils.addShapedGregtechRecipe(
-						plateTier8, plateTier8, plateTier8,
-						plateTier8, pipeTier8, plateTier8,
-						plateTier8, RECIPE_CONSTANTS.electricPump_ZPM, plateTier8,
-						GregtechItemList.GT_FluidTank_ZPM.get(1));
-				RecipeUtils.addShapedGregtechRecipe(
-						plateTier9, plateTier9, plateTier9,
-						plateTier9, pipeTier9, plateTier9,
-						plateTier9, RECIPE_CONSTANTS.electricPump_UV, plateTier9,
-						GregtechItemList.GT_FluidTank_UV.get(1));
-				RecipeUtils.addShapedGregtechRecipe(
-						plateTier10, plateTier10, plateTier10,
-						plateTier10, pipeTier10, plateTier10,
-						plateTier10, RECIPE_CONSTANTS.electricPump_MAX, plateTier10,
-						GregtechItemList.GT_FluidTank_MAX.get(1));
-			}
-			else {
+				Utils.LOG_INFO("Is New Horizons Loaded? "+CORE.GTNH);
+				if (!CORE.GTNH){
+					RecipeUtils.addShapedGregtechRecipe(
+							plateTier1, plateTier1, plateTier1,
+							plateTier1, pipeTier1, plateTier1,
+							plateTier1, GregtechItemList.Fluid_Cell_144L.get(1), plateTier1,
+							GregtechItemList.GT_FluidTank_ULV.get(1));
+					RecipeUtils.addShapedGregtechRecipe(
+							plateTier2, plateTier2, plateTier2,
+							plateTier2, pipeTier2, plateTier2,
+							plateTier2, electricPump_LV, plateTier2,
+							GregtechItemList.GT_FluidTank_LV.get(1));
+					RecipeUtils.addShapedGregtechRecipe(
+							plateTier3, plateTier3, plateTier3,
+							plateTier3, pipeTier3, plateTier3,
+							plateTier3, electricPump_MV, plateTier3,
+							GregtechItemList.GT_FluidTank_MV.get(1));
+					RecipeUtils.addShapedGregtechRecipe(
+							plateTier4, plateTier4, plateTier4,
+							plateTier4, pipeTier4, plateTier4,
+							plateTier4, electricPump_HV, plateTier4,
+							GregtechItemList.GT_FluidTank_HV.get(1));
+					RecipeUtils.addShapedGregtechRecipe(
+							plateTier5, plateTier5, plateTier5,
+							plateTier5, pipeTier5, plateTier5,
+							plateTier5, electricPump_EV, plateTier5,
+							GregtechItemList.GT_FluidTank_EV.get(1));
+					RecipeUtils.addShapedGregtechRecipe(
+							plateTier6, plateTier6, plateTier6,
+							plateTier6, pipeTier6, plateTier6,
+							plateTier6, electricPump_IV, plateTier6,
+							GregtechItemList.GT_FluidTank_IV.get(1));
+					RecipeUtils.addShapedGregtechRecipe(
+							plateTier7, plateTier7, plateTier7,
+							plateTier7, pipeTier7, plateTier7,
+							plateTier7, RECIPE_CONSTANTS.electricPump_LuV, plateTier7,
+							GregtechItemList.GT_FluidTank_LuV.get(1));
+					RecipeUtils.addShapedGregtechRecipe(
+							plateTier8, plateTier8, plateTier8,
+							plateTier8, pipeTier8, plateTier8,
+							plateTier8, RECIPE_CONSTANTS.electricPump_ZPM, plateTier8,
+							GregtechItemList.GT_FluidTank_ZPM.get(1));
+					RecipeUtils.addShapedGregtechRecipe(
+							plateTier9, plateTier9, plateTier9,
+							plateTier9, pipeTier9, plateTier9,
+							plateTier9, RECIPE_CONSTANTS.electricPump_UV, plateTier9,
+							GregtechItemList.GT_FluidTank_UV.get(1));
+					RecipeUtils.addShapedGregtechRecipe(
+							plateTier10, plateTier10, plateTier10,
+							plateTier10, pipeTier10, plateTier10,
+							plateTier10, RECIPE_CONSTANTS.electricPump_MAX, plateTier10,
+							GregtechItemList.GT_FluidTank_MAX.get(1));
+				}
+				else {
 
-				plateTier1 = "plateTin";
-				pipeTier1 = "pipeLargeClay";
-				circuitTier1 = "circuitPrimitive";
-				plateTier2 = "plateCopper";
-				pipeTier2 = "pipeHugeClay";
-				plateTier3 = "plateBronze";
-				pipeTier3 = "pipeMediumBronze";
-				plateTier4 = "plateIron";
-				pipeTier4 = "pipeMediumSteel";
-				plateTier5 = "plateSteel";
-				plateTier6 = "plateRedstone";
-				plateTier7 = "plateRedstoneAlloy";
-				plateTier8 = "plateDarkSteel";
-				ItemStack waterBucket = ItemUtils.getSimpleStack(Items.water_bucket);
+					plateTier1 = "plateTin";
+					pipeTier1 = "pipeLargeClay";
+					circuitTier1 = "circuitPrimitive";
+					plateTier2 = "plateCopper";
+					pipeTier2 = "pipeHugeClay";
+					plateTier3 = "plateBronze";
+					pipeTier3 = "pipeMediumBronze";
+					plateTier4 = "plateIron";
+					pipeTier4 = "pipeMediumSteel";
+					plateTier5 = "plateSteel";
+					plateTier6 = "plateRedstone";
+					plateTier7 = "plateRedstoneAlloy";
+					plateTier8 = "plateDarkSteel";
+					ItemStack waterBucket = ItemUtils.getSimpleStack(Items.water_bucket);
 
 
-				Utils.LOG_INFO("Loading New Horizon Tanks, with custom recipes.");
-				Utils.LOG_INFO("Using "+plateTier1+" with "+pipeTier1);
-				Utils.LOG_INFO("Using "+plateTier2+" with "+pipeTier2);
-				Utils.LOG_INFO("Using " + plateTier3 + " with " + pipeTier3);
-				Utils.LOG_INFO("Using " + plateTier4 + " with " + pipeTier4);
+					Utils.LOG_INFO("Loading New Horizon Tanks, with custom recipes.");
+					Utils.LOG_INFO("Using "+plateTier1+" with "+pipeTier1);
+					Utils.LOG_INFO("Using "+plateTier2+" with "+pipeTier2);
+					Utils.LOG_INFO("Using " + plateTier3 + " with " + pipeTier3);
+					Utils.LOG_INFO("Using " + plateTier4 + " with " + pipeTier4);
 
-				RecipeUtils.addShapedGregtechRecipe(
-						plateTier1, plateTier4, plateTier1,
-						plateTier1, pipeTier1, plateTier1,
-						plateTier1, waterBucket, plateTier1,
-						GregtechItemList.GT_FluidTank_ULV.get(1));
-				RecipeUtils.addShapedGregtechRecipe(
-						plateTier2, plateTier5, plateTier2,
-						plateTier2, pipeTier2, plateTier2,
-						plateTier2, electricPump_LV, plateTier2,
-						GregtechItemList.GT_FluidTank_LV.get(1));
-				RecipeUtils.addShapedGregtechRecipe(
-						plateTier6, plateTier7, plateTier6,
-						plateTier3, pipeTier3, plateTier3,
-						plateTier6, electricPump_LV, plateTier6,
-						GregtechItemList.GT_FluidTank_MV.get(1));
-				RecipeUtils.addShapedGregtechRecipe(
-						circuitTier1, plateTier8, circuitTier1,
-						plateTier4, pipeTier4, plateTier4,
-						circuitTier1, electricPump_LV, circuitTier1,
-						GregtechItemList.GT_FluidTank_HV.get(1));
-			}
+					RecipeUtils.addShapedGregtechRecipe(
+							plateTier1, plateTier4, plateTier1,
+							plateTier1, pipeTier1, plateTier1,
+							plateTier1, waterBucket, plateTier1,
+							GregtechItemList.GT_FluidTank_ULV.get(1));
+					RecipeUtils.addShapedGregtechRecipe(
+							plateTier2, plateTier5, plateTier2,
+							plateTier2, pipeTier2, plateTier2,
+							plateTier2, electricPump_LV, plateTier2,
+							GregtechItemList.GT_FluidTank_LV.get(1));
+					RecipeUtils.addShapedGregtechRecipe(
+							plateTier6, plateTier7, plateTier6,
+							plateTier3, pipeTier3, plateTier3,
+							plateTier6, electricPump_LV, plateTier6,
+							GregtechItemList.GT_FluidTank_MV.get(1));
+					RecipeUtils.addShapedGregtechRecipe(
+							circuitTier1, plateTier8, circuitTier1,
+							plateTier4, pipeTier4, plateTier4,
+							circuitTier1, electricPump_LV, circuitTier1,
+							GregtechItemList.GT_FluidTank_HV.get(1));
+				}
 			}
 
 			//Industrial Multi Tank Casing
@@ -791,8 +791,8 @@ public class RECIPES_Machines {
 					"frameGtStellite", machineCasing_UV, "frameGtStellite",
 					"plateQuantum", "plateQuantum", "plateQuantum",
 					RECIPE_IndustrialMatterFabCoil);
-			
-			
+
+
 			//Industrial Sieve
 			RecipeUtils.addShapedGregtechRecipe(
 					"plateEglinSteel", circuitTier2, "plateEglinSteel",
@@ -811,8 +811,8 @@ public class RECIPES_Machines {
 					"wireFineSteel", "wireFineSteel", "wireFineSteel",
 					"frameGtEglinSteel", "wireFineSteel", "frameGtEglinSteel",
 					RECIPE_IndustrialSieveGrate);
-			
-			
+
+
 			//Industrial Tree Farm Controller
 			RecipeUtils.addShapedGregtechRecipe(
 					"plateEglinSteel", "rotorEglinSteel", "plateEglinSteel",

@@ -13,6 +13,7 @@ import gtPlusPlus.core.item.base.dusts.decimal.BaseItemCentidust;
 import gtPlusPlus.core.item.base.dusts.decimal.BaseItemDecidust;
 import gtPlusPlus.core.item.base.foods.BaseItemFood;
 import gtPlusPlus.core.item.base.foods.BaseItemHotFood;
+import gtPlusPlus.core.item.base.gears.BaseItemSmallGear;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngot_OLD;
 import gtPlusPlus.core.item.base.misc.BaseItemMisc;
 import gtPlusPlus.core.item.base.misc.BaseItemMisc.MiscTypes;
@@ -198,6 +199,9 @@ public final class ModItems {
 	public static Item dustFertUN32;
 
 	public static Fluid fluidFLiBeSalt;
+
+	public static Item itemSmallWroughtIronGear;
+	public static Item itemPlateLithium;
 
 
 
@@ -429,8 +433,6 @@ public final class ModItems {
 		dustTerra = ItemUtils.generateSpecialUseDusts(ELEMENT.getInstance().TERRA, true)[0];
 		dustAqua = ItemUtils.generateSpecialUseDusts(ELEMENT.getInstance().AQUA, true)[0];
 
-
-
 		//Nuclear Fuel Dusts
 		dustLithiumCarbonate = ItemUtils.generateSpecialUseDusts("LithiumCarbonate", "Lithium Carbonate", Utils.rgbtoHexValue(240, 240, 240))[0]; //https://en.wikipedia.org/wiki/Lithium_carbonate
 		dustLithiumPeroxide = ItemUtils.generateSpecialUseDusts("LithiumPeroxide", "Lithium Peroxide", Utils.rgbtoHexValue(250, 250, 250))[0]; //https://en.wikipedia.org/wiki/Lithium_peroxide
@@ -521,7 +523,17 @@ public final class ModItems {
 		//Just an unusual plate needed for some black magic.
 		itemPlateClay = new BaseItemPlate(MaterialUtils.generateMaterialFromGtENUM(Materials.Clay));
 		itemDoublePlateClay = new BaseItemPlateDouble(MaterialUtils.generateMaterialFromGtENUM(Materials.Clay));
-		
+
+		//A small gear needed for wizardry.
+		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("gearGtSmallWroughtIron", 1) == null){
+			itemSmallWroughtIronGear = new BaseItemSmallGear(MaterialUtils.generateMaterialFromGtENUM(Materials.WroughtIron));
+		}
+
+		//A plate of Lithium.
+		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateLithium", 1) == null){
+			itemPlateLithium = new BaseItemPlate(MaterialUtils.generateMaterialFromGtENUM(Materials.Lithium));
+		}
+
 		//Misc Items
 		Item tI;
 		tI = new BaseItemMisc("Chilly", new short[]{0,64,196}, 32, MiscTypes.POTION, new String[]{"It's Blue"});
@@ -660,7 +672,7 @@ public final class ModItems {
 		if (configSwitches.enableAlternativeBatteryAlloy) {
 			//ModItems.itemIngotBatteryAlloy = new BaseItemIngot("itemIngotBatteryAlloy", "Battery Alloy", new short[]{35, 228, 141}, 0); TODO
 			ModItems.itemPlateBatteryAlloy = ItemUtils.generateSpecialUsePlate("itemPlateBatteryAlloy", "Battery Alloy", new short[]{35, 228, 141}, 0);
-			
+
 		}
 
 

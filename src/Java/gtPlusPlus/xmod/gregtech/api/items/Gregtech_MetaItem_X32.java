@@ -185,7 +185,10 @@ public abstract class Gregtech_MetaItem_X32 extends Gregtech_MetaItem {
 
 	@Override
 	public int getColorFromItemStack(final ItemStack stack, int HEX_OxFFFFFF) {
-		if (stack.getDisplayName().contains("LuV")){
+		if (stack.getDisplayName().contains("ULV")){
+			HEX_OxFFFFFF = Utils.rgbtoHexValue(200, 180, 180);
+		}
+		else if (stack.getDisplayName().contains("LuV")){
 			HEX_OxFFFFFF = 0xffffcc;
 		}
 		else if (stack.getDisplayName().contains("ZPM")){
