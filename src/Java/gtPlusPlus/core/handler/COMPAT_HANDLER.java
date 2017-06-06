@@ -60,6 +60,7 @@ public class COMPAT_HANDLER {
 			GregtechSolarGenerators.run();
 			GregtechPowerSubStation.run();
 			GregtechDehydrator.run();
+			GregtechAdvancedBoilers.run();
 			GregtechTieredFluidTanks.run();
 			GregtechIndustrialMultiTank.run();
 			GregtechGeothermalThermalGenerator.run();

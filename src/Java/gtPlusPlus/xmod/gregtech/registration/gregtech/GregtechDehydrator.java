@@ -9,6 +9,7 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.recipe.RECIPE_CONSTANTS;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.item.ItemStack;
 
@@ -100,10 +101,10 @@ public class GregtechDehydrator
 		//GregtechItemList..set(new GregtechMetaTileEntitySolarGenerator(816, "dehydrator.tier.04", "ZPM Voltage Chemical Dehydrator", 7).getStackForm(1L));
 
 
-		ItemStack coilT1 = null;
-		ItemStack coilT2 = null;
-		ItemStack coilT3 = null;
-		ItemStack coilT4 = null;
+		ItemStack coilT1 = ItemUtils.getItemStack("miscutils:itemDehydratorCoil", 1);
+		ItemStack coilT2 = ItemUtils.getItemStack("miscutils:itemDehydratorCoil:1", 1);
+		ItemStack coilT3 = ItemUtils.getItemStack("miscutils:itemDehydratorCoil:2", 1);
+		ItemStack coilT4 = ItemUtils.getItemStack("miscutils:itemDehydratorCoil:3", 1);
 
 		GT_ModHandler.addCraftingRecipe(
 		GregtechItemList.GT_Dehydrator_EV.get(1L, new Object[0]),

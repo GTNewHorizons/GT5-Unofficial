@@ -344,7 +344,7 @@ public class RecipeUtils {
 				}
 			}
 
-			public static boolean addShapedGregtechRecipe(final Object[] inputs, final ItemStack output){
+			public static boolean addShapedGregtechRecipe(final Object[] inputs, ItemStack output){
 
 				if (inputs.length != 9){
 					Utils.LOG_INFO("Input array for "+output.getDisplayName()+" does not equal 9.");
@@ -356,7 +356,14 @@ public class RecipeUtils {
 						inputs[x] = " ";
 					}
 					if (!(inputs[x] instanceof ItemStack) || !(inputs[x] instanceof String)){
+						if (output != null){
 						Utils.LOG_INFO("Invalid Item inserted into inputArray. Item:"+output.getDisplayName()+" has a bad recipe. Please report to Alkalus.");
+							return false;
+						}
+						else {
+							Utils.LOG_INFO("Output is Null for a recipe. Report to Alkalus.");
+							output = ItemUtils.getItemStackOfAmountFromOreDict("sadibasdkjnad", 1);
+						}
 					}
 				}
 

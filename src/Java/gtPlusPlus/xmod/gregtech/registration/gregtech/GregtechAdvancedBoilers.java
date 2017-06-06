@@ -6,6 +6,7 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.recipe.RECIPE_CONSTANTS;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.*;
 import net.minecraft.item.ItemStack;
@@ -14,21 +15,21 @@ public class GregtechAdvancedBoilers {
 
 	public static void run() {
 		if (LoadedMods.Gregtech){
-			Utils.LOG_INFO("Gregtech5u Content | Registering Electric Boilers.");
+			Utils.LOG_INFO("Gregtech5u Content | Registering Advanced Boilers.");
 			run1();
 		}
 	}
 
 	private static void run1(){
 		//Boilers
-		GregtechItemList.Boiler_Advanced_LV.set(new GT_MetaTileEntity_Boiler_LV(601, "Advanced Boiler [LV]", 1).getStackForm(1L));
-		GregtechItemList.Boiler_Advanced_MV.set(new GT_MetaTileEntity_Boiler_MV(602, "Advanced Boiler [MV]", 2).getStackForm(1L));
-		GregtechItemList.Boiler_Advanced_HV.set(new GT_MetaTileEntity_Boiler_HV(603, "Advanced Boiler [HV]", 3).getStackForm(1L));
+		GregtechItemList.Boiler_Advanced_LV.set(new GT_MetaTileEntity_Boiler_LV(756, "Advanced Boiler [LV]", 1).getStackForm(1L));
+		GregtechItemList.Boiler_Advanced_MV.set(new GT_MetaTileEntity_Boiler_MV(757, "Advanced Boiler [MV]", 2).getStackForm(1L));
+		GregtechItemList.Boiler_Advanced_HV.set(new GT_MetaTileEntity_Boiler_HV(758, "Advanced Boiler [HV]", 3).getStackForm(1L));
 		
 		
-		ItemStack chassisT1;
-		ItemStack chassisT2;
-		ItemStack chassisT3;
+		ItemStack chassisT1 = ItemUtils.getItemStack("miscutils:itemBoilerChassis", 1);
+		ItemStack chassisT2 = ItemUtils.getItemStack("miscutils:itemBoilerChassis:1", 1);
+		ItemStack chassisT3 = ItemUtils.getItemStack("miscutils:itemBoilerChassis:2", 1);
 
 
 		//Make the Coil in each following recipe a hammer and a Screwdriver.
@@ -39,7 +40,7 @@ public class GregtechAdvancedBoilers {
 		new Object[]{"ECE", "WMW", "GPG",
 			Character.valueOf('M'), ItemList.Hull_LV,
 			Character.valueOf('P'), ItemList.Robot_Arm_EV, //TODO
-			Character.valueOf('E'), coilT1, //TODO
+			Character.valueOf('E'), chassisT1, //TODO
 			Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Basic),
 			Character.valueOf('W'), chassisT1,
 			Character.valueOf('G'), OrePrefixes.gear.get(Materials.Steel)});
@@ -50,7 +51,7 @@ public class GregtechAdvancedBoilers {
 		new Object[]{"ECE", "WMW", "GPG",
 			Character.valueOf('M'), ItemList.Hull_MV,
 			Character.valueOf('P'), ItemList.Robot_Arm_IV, //TODO
-			Character.valueOf('E'), coilT2, //TODO
+			Character.valueOf('E'), chassisT2, //TODO
 			Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Good),
 			Character.valueOf('W'), chassisT2,
 			Character.valueOf('G'), ALLOY.SILICON_CARBIDE.getGear(1)});
@@ -61,7 +62,7 @@ public class GregtechAdvancedBoilers {
 		new Object[]{"ECE", "WMW", "GPG",
 			Character.valueOf('M'), ItemList.Hull_HV,
 			Character.valueOf('P'), RECIPE_CONSTANTS.robotArm_LuV, //TODO
-			Character.valueOf('E'), coilT3, //TODO
+			Character.valueOf('E'), chassisT3, //TODO
 			Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Advanced),
 			Character.valueOf('W'), chassisT3,
 			Character.valueOf('G'), ALLOY.SILICON_CARBIDE.getGear(1)});
