@@ -21,6 +21,7 @@ import gtPlusPlus.core.item.base.plates.BaseItemPlate;
 import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
 import gtPlusPlus.core.item.effects.RarityUncommon;
 import gtPlusPlus.core.item.general.*;
+import gtPlusPlus.core.item.general.chassis.*;
 import gtPlusPlus.core.item.init.ItemsFoods;
 import gtPlusPlus.core.item.init.ItemsMultiTools;
 import gtPlusPlus.core.item.tool.misc.SandstoneHammer;
@@ -202,6 +203,10 @@ public final class ModItems {
 
 	public static Item itemSmallWroughtIronGear;
 	public static Item itemPlateLithium;
+
+	public static itemBoilerChassis itemBoilerChassis;
+	public static itemDehydratorCoilWire itemDehydratorCoilWire;
+	public static itemDehydratorCoil itemDehydratorCoil;
 
 
 
@@ -533,6 +538,10 @@ public final class ModItems {
 		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateLithium", 1) == null){
 			itemPlateLithium = new BaseItemPlate(MaterialUtils.generateMaterialFromGtENUM(Materials.Lithium));
 		}
+		
+		itemBoilerChassis = new itemBoilerChassis();
+		itemDehydratorCoilWire = new itemDehydratorCoilWire();
+		itemDehydratorCoil = new itemDehydratorCoil();
 
 		//Misc Items
 		Item tI;
