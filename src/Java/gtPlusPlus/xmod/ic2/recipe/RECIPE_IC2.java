@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.ic2.recipe;
 
 import gregtech.api.enums.*;
 import gregtech.api.util.*;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
@@ -9,6 +10,9 @@ import gtPlusPlus.core.util.recipe.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.ic2.item.IC2_Items;
 import net.minecraft.item.ItemStack;
+
+import static gtPlusPlus.core.recipe.RECIPES_Tools.craftingToolHardHammer;
+import static gtPlusPlus.core.recipe.RECIPES_Tools.craftingToolWrench;
 
 public class RECIPE_IC2 {
 
@@ -22,10 +26,21 @@ public class RECIPE_IC2 {
 	public static ItemStack block_T3 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.VibrantAlloy, 1L);
 	public static ItemStack block_T4 = GT_OreDictUnificator.get(OrePrefixes.ingot, Materials.Iridium, 1L);
 
+	public static ItemStack shaft_block_T1 = GT_OreDictUnificator.get(OrePrefixes.block, Materials.EnergeticAlloy, 1L);
+	public static ItemStack shaft_block_T2 = GT_OreDictUnificator.get(OrePrefixes.block, Materials.TungstenSteel, 1L);
+	public static ItemStack shaft_block_T3 = GT_OreDictUnificator.get(OrePrefixes.block, Materials.VibrantAlloy, 1L);
+	public static ItemStack shaft_block_T4 = GT_OreDictUnificator.get(OrePrefixes.block, Materials.Iridium, 1L);
+
 	public static String ingot_T1 = "ingotEnergeticAlloy";
 	public static String ingot_T2 = "ingotTungstenSteel";
 	public static String ingot_T3 = "ingotVibrantAlloy";
 	public static String ingot_T4 = "ingotIridium";
+
+	public static String ring_T1 = "ringStainlessSteel";
+	public static String ring_T2 = "ringTungstenSteel";
+	public static String ring_T3 = "ringChrome";
+	public static String ring_T4 = "ringOsmiridium";
+
 
 	private static ItemStack rotor_blade_T1 = ItemUtils.getSimpleStack(IC2_Items.rotor_Blade_Material_1.getItem());
 	private static ItemStack rotor_blade_T2 = ItemUtils.getSimpleStack(IC2_Items.rotor_Blade_Material_2.getItem());
@@ -61,32 +76,62 @@ public class RECIPE_IC2 {
 		}
 	}
 
-	public static void initRecipes(){
+	public static void initRecipes() {
 
-		//Rotor Blade Recipes
-		RecipeUtils.recipeBuilder(
-				plate_T1, ingot_T1, plate_T1,
-				plate_T1, ingot_T1, plate_T1,
-				plate_T1, ingot_T1, plate_T1,
-				rotor_blade_T1);
+		if (!CORE.GTNH) {
+			//Rotor Blade Recipes
 
-		RecipeUtils.recipeBuilder(
-				plate_T2, ingot_T2, plate_T2,
-				plate_T2, ingot_T2, plate_T2,
-				plate_T2, ingot_T2, plate_T2,
-				rotor_blade_T2);
+			RecipeUtils.recipeBuilder(
+					plate_T1, ingot_T1, plate_T1,
+					plate_T1, ingot_T1, plate_T1,
+					plate_T1, ingot_T1, plate_T1,
+					rotor_blade_T1);
 
-		RecipeUtils.recipeBuilder(
-				plate_T3, ingot_T3, plate_T3,
-				plate_T3, ingot_T3, plate_T3,
-				plate_T3, ingot_T3, plate_T3,
-				rotor_blade_T3);
+			RecipeUtils.recipeBuilder(
+					plate_T2, ingot_T2, plate_T2,
+					plate_T2, ingot_T2, plate_T2,
+					plate_T2, ingot_T2, plate_T2,
+					rotor_blade_T2);
 
-		RecipeUtils.recipeBuilder(
-				plate_T4, ingot_T4, plate_T4,
-				plate_T4, ingot_T4, plate_T4,
-				plate_T4, ingot_T4, plate_T4,
-				rotor_blade_T4);
+			RecipeUtils.recipeBuilder(
+					plate_T3, ingot_T3, plate_T3,
+					plate_T3, ingot_T3, plate_T3,
+					plate_T3, ingot_T3, plate_T3,
+					rotor_blade_T3);
+
+			RecipeUtils.recipeBuilder(
+					plate_T4, ingot_T4, plate_T4,
+					plate_T4, ingot_T4, plate_T4,
+					plate_T4, ingot_T4, plate_T4,
+					rotor_blade_T4);
+		}
+		if (CORE.GTNH) {
+
+			RecipeUtils.recipeBuilder(
+					plate_T1, plate_T1, plate_T1,
+					plate_T1, ring_T1, plate_T1,
+					plate_T1, plate_T1, plate_T1,
+					rotor_blade_T1);
+
+			RecipeUtils.recipeBuilder(
+					plate_T2, plate_T2, plate_T2,
+					plate_T2, ring_T2, plate_T2,
+					plate_T2, plate_T2, plate_T2,
+					rotor_blade_T2);
+
+			RecipeUtils.recipeBuilder(
+					plate_T3, plate_T3, plate_T3,
+					plate_T3, ring_T3, plate_T3,
+					plate_T3, plate_T3, plate_T3,
+					rotor_blade_T3);
+
+			RecipeUtils.recipeBuilder(
+					plate_T4, plate_T4, plate_T4,
+					plate_T4, ring_T4, plate_T4,
+					plate_T4, plate_T4, plate_T4,
+					rotor_blade_T4);
+
+		}
 
 		//Shaft Extruder Recipe
 		GT_ModHandler.addCraftingRecipe(GregtechItemList.Shape_Extruder_WindmillShaft.get(1L, new Object[0]), GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"hXS", "XPX", "fXd", Character.valueOf('P'), ItemList.Shape_Extruder_Rod, Character.valueOf('X'), OrePrefixes.plate.get(Materials.DarkIron), Character.valueOf('S'), OrePrefixes.screw.get(Materials.DarkIron)});
@@ -96,51 +141,80 @@ public class RECIPE_IC2 {
 
 		//Shaft Recipes
 		GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(9L, block_T1), GregtechItemList.Shape_Extruder_WindmillShaft.get(0L, new Object[0]), shaft_T1, 2560, 250);
-		if (LoadedMods.EnderIO){
+		GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, shaft_block_T1), GregtechItemList.Shape_Extruder_WindmillShaft.get(0L, new Object[0]), shaft_T1, 2560, 250);
+		if (LoadedMods.EnderIO || CORE.GTNH) {
 			Utils.LOG_INFO("Added recipe for GT5 Extruder: Windmill Shaft [Energetic]");
-		}
-		else {
+		} else {
 			Utils.LOG_INFO("Added recipe for GT5 Extruder: Windmill Shaft [Magnalium]");
 		}
 		GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(9L, block_T2), GregtechItemList.Shape_Extruder_WindmillShaft.get(0L, new Object[0]), shaft_T2, 5120, 500);
+		GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, shaft_block_T2), GregtechItemList.Shape_Extruder_WindmillShaft.get(0L, new Object[0]), shaft_T2, 5120, 500);
+
 		Utils.LOG_INFO("Added recipe for GT5 Extruder: Windmill Shaft [TungstenSteel]");
 		GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(9L, block_T3), GregtechItemList.Shape_Extruder_WindmillShaft.get(0L, new Object[0]), shaft_T3, 10240, 2000);
-		if (LoadedMods.EnderIO){
+		GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, shaft_block_T3), GregtechItemList.Shape_Extruder_WindmillShaft.get(0L, new Object[0]), shaft_T3, 10240, 2000);
+		if (LoadedMods.EnderIO || CORE.GTNH) {
 			Utils.LOG_INFO("Added recipe for GT5 Extruder: Windmill Shaft [Vibrant]");
-		}
-		else {
+		} else {
 			Utils.LOG_INFO("Added recipe for GT5 Extruder: Windmill Shaft [Ultimet]");
 		}
 		GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(9L, block_T4), GregtechItemList.Shape_Extruder_WindmillShaft.get(0L, new Object[0]), shaft_T4, 20480, 4000);
+		GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(1L, shaft_block_T4), GregtechItemList.Shape_Extruder_WindmillShaft.get(0L, new Object[0]), shaft_T4, 20480, 4000);
 		Utils.LOG_INFO("Added recipe for GT5 Extruder: Windmill Shaft [Iridium]");
 
-		//Rotor Recipes
-		RecipeUtils.recipeBuilder(
-				null, rotor_blade_T1, null,
-				rotor_blade_T1, shaft_T1, rotor_blade_T1,
-				null, rotor_blade_T1, null,
-				rotor_T1);
+		if (!CORE.GTNH) {
+			//Rotor Recipes
+			RecipeUtils.recipeBuilder(
+					null, rotor_blade_T1, null,
+					rotor_blade_T1, shaft_T1, rotor_blade_T1,
+					null, rotor_blade_T1, null,
+					rotor_T1);
 
-		RecipeUtils.recipeBuilder(
-				null, rotor_blade_T2, null,
-				rotor_blade_T2, shaft_T2, rotor_blade_T2,
-				null, rotor_blade_T2, null,
-				rotor_T2);
+			RecipeUtils.recipeBuilder(
+					null, rotor_blade_T2, null,
+					rotor_blade_T2, shaft_T2, rotor_blade_T2,
+					null, rotor_blade_T2, null,
+					rotor_T2);
 
-		RecipeUtils.recipeBuilder(
-				null, rotor_blade_T3, null,
-				rotor_blade_T3, shaft_T3, rotor_blade_T3,
-				null, rotor_blade_T3, null,
-				rotor_T3);
+			RecipeUtils.recipeBuilder(
+					null, rotor_blade_T3, null,
+					rotor_blade_T3, shaft_T3, rotor_blade_T3,
+					null, rotor_blade_T3, null,
+					rotor_T3);
 
-		RecipeUtils.recipeBuilder(
-				null, rotor_blade_T4, null,
-				rotor_blade_T4, shaft_T4, rotor_blade_T4,
-				null, rotor_blade_T4, null,
-				rotor_T4);
+			RecipeUtils.recipeBuilder(
+					null, rotor_blade_T4, null,
+					rotor_blade_T4, shaft_T4, rotor_blade_T4,
+					null, rotor_blade_T4, null,
+					rotor_T4);
+
+		}
+		if (CORE.GTNH) {
+			RecipeUtils.recipeBuilder(
+					shaft_T1, rotor_blade_T1, craftingToolHardHammer,
+					rotor_blade_T1, ring_T1, rotor_blade_T1,
+					craftingToolWrench, rotor_blade_T1, shaft_T1,
+					rotor_T1);
+
+			RecipeUtils.recipeBuilder(
+					shaft_T2, rotor_blade_T2, craftingToolHardHammer,
+					rotor_blade_T2, ring_T2, rotor_blade_T2,
+					craftingToolWrench, rotor_blade_T2, shaft_T2,
+					rotor_T2);
+
+			RecipeUtils.recipeBuilder(
+					shaft_T3, rotor_blade_T3, craftingToolHardHammer,
+					rotor_blade_T3, ring_T3, rotor_blade_T3,
+					craftingToolWrench, rotor_blade_T3, shaft_T3,
+					rotor_T3);
+
+			RecipeUtils.recipeBuilder(
+					shaft_T4, rotor_blade_T4, craftingToolHardHammer,
+					rotor_blade_T4, ring_T4, rotor_blade_T4,
+					craftingToolWrench, rotor_blade_T4, shaft_T4,
+					rotor_T4);
+		}
+
 
 	}
-
-
-
 }
