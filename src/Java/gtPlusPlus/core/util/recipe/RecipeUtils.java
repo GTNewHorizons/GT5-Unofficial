@@ -214,35 +214,35 @@ public class RecipeUtils {
 			array[z].toString();
 			switch(z)
 			{
-			case 0:
-				a = array[z];
-				break;
-			case 1:
-				b = array[z];
-				break;
-			case 2:
-				c = array[z];
-				break;
-			case 3:
-				d = array[z];
-				break;
-			case 4:
-				e = array[z];
-				break;
-			case 5:
-				f = array[z];
-				break;
-			case 6:
-				g = array[z];
-				break;
-			case 7:
-				h = array[z];
-				break;
-			case 8:
-				i = array[z];
-				break;
-			default:
-				break;
+				case 0:
+					a = array[z];
+					break;
+				case 1:
+					b = array[z];
+					break;
+				case 2:
+					c = array[z];
+					break;
+				case 3:
+					d = array[z];
+					break;
+				case 4:
+					e = array[z];
+					break;
+				case 5:
+					f = array[z];
+					break;
+				case 6:
+					g = array[z];
+					break;
+				case 7:
+					h = array[z];
+					break;
+				case 8:
+					i = array[z];
+					break;
+				default:
+					break;
 			}
 			recipeBuilder(a, b, c, d, e, f, g, h, i, outPut);
 		}
@@ -330,78 +330,76 @@ public class RecipeUtils {
 			final Object InputItem7, final Object InputItem8, final Object InputItem9,
 			final ItemStack OutputItem){		
 
-				Object[] o = {
-					InputItem1, InputItem2, InputItem3,
-					InputItem4, InputItem5, InputItem6,
-					InputItem7, InputItem8, InputItem9
-				};
-				
-				if (addShapedGregtechRecipe(o, OutputItem)){
-					return true;
-				}
-				else {		
-					return false;
-				}
+		Object[] o = {
+				InputItem1, InputItem2, InputItem3,
+				InputItem4, InputItem5, InputItem6,
+				InputItem7, InputItem8, InputItem9
+		};
+
+		if (addShapedGregtechRecipe(o, OutputItem)){
+			return true;
+		}
+		else {		
+			return false;
+		}
+	}
+
+	public static boolean addShapedGregtechRecipe(final Object[] inputs, ItemStack output){
+
+		if (inputs.length != 9){
+			Utils.LOG_INFO("Input array for "+output.getDisplayName()+" does not equal 9.");
+			return false;
+		}
+
+		for (int x=0;x<9;x++){
+			if (inputs[x] == null){
+				inputs[x] = " ";
 			}
-
-			public static boolean addShapedGregtechRecipe(final Object[] inputs, ItemStack output){
-
-				if (inputs.length != 9){
-					Utils.LOG_INFO("Input array for "+output.getDisplayName()+" does not equal 9.");
+			if (!(inputs[x] instanceof ItemStack) || !(inputs[x] instanceof String)){
+				if (output != null){
+					Utils.LOG_INFO("Invalid Item inserted into inputArray. Item:"+output.getDisplayName()+" has a bad recipe. Please report to Alkalus.");
 					return false;
-				}
-				
-				for (int x=0;x<9;x++){
-					if (inputs[x] == null){
-						inputs[x] = " ";
-					}
-					if (!(inputs[x] instanceof ItemStack) || !(inputs[x] instanceof String)){
-						if (output != null){
-						Utils.LOG_INFO("Invalid Item inserted into inputArray. Item:"+output.getDisplayName()+" has a bad recipe. Please report to Alkalus.");
-							return false;
-						}
-						else {
-							Utils.LOG_INFO("Output is Null for a recipe. Report to Alkalus.");
-							output = ItemUtils.getItemStackOfAmountFromOreDict("sadibasdkjnad", 1);
-						}
-					}
-				}
-
-				if (GT_ModHandler.addCraftingRecipe(output,
-							GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE |
-							GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
-							new Object[]{"ABC", "DEF", "GHI",
-								'A', inputs[0],
-								'B', inputs[1],
-								'C', inputs[2],
-								'D', inputs[3],
-								'E', inputs[4],
-								'F', inputs[5],
-								'G', inputs[6],
-								'H', inputs[7],
-								'I', inputs[8]})){
-					Utils.LOG_INFO("Success! Added a recipe for "+output.getDisplayName());
-					RegistrationHandler.recipesSuccess++;
-					return true;
 				}
 				else {
-					Utils.LOG_INFO("Failed to add recipe for "+output.getDisplayName()+". Please report to Alkalus.");
-					return false;
+					Utils.LOG_INFO("Output is Null for a recipe. Report to Alkalus.");
+					output = ItemUtils.getItemStackOfAmountFromOreDict("sadibasdkjnad", 1);
 				}
-			}
-
-	public static void addShapelessGregtechRecipe(final ItemStack OutputItem, final Object... inputItems){
-
-		for(final Object whatever : inputItems){
-			if (!(whatever instanceof ItemStack) && !(whatever instanceof String)){
-				Utils.LOG_INFO("One Input item was not an ItemStack of an OreDict String.");
-				return;
 			}
 		}
 
-		GT_ModHandler.addShapelessCraftingRecipe(OutputItem,
-				GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
-				new Object[]{inputItems});
+		if (GT_ModHandler.addCraftingRecipe(output,
+				GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE |
+				GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
+				new Object[]{"ABC", "DEF", "GHI",
+						'A', inputs[0],
+						'B', inputs[1],
+						'C', inputs[2],
+						'D', inputs[3],
+						'E', inputs[4],
+						'F', inputs[5],
+						'G', inputs[6],
+						'H', inputs[7],
+						'I', inputs[8]})){
+			Utils.LOG_INFO("Success! Added a recipe for "+output.getDisplayName());
+			RegistrationHandler.recipesSuccess++;
+			return true;
+		}
+		else {
+			Utils.LOG_INFO("Failed to add recipe for "+output.getDisplayName()+". Please report to Alkalus.");
+			return false;
+		}
+	}
+
+	public static boolean addShapelessGregtechRecipe(final Object[] inputItems, final ItemStack OutputItem){
+		//Catch Invalid Recipes
+		if (inputItems.length > 9 || inputItems.length < 2){
+			return false;
+		}
+		//let gregtech handle shapeless recipes.
+		if (GT_ModHandler.addShapelessCraftingRecipe(OutputItem, inputItems)){
+			return true;
+		}
+		return false;
 	}
 
 	public static ItemStack getItemStackFromOreDict(final String oredictName){
