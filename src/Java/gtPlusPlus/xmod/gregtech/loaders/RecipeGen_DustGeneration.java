@@ -157,24 +157,35 @@ public class RecipeGen_DustGeneration  implements Runnable{
 						}
 
 					}
-
+			
+					//Add mixer Recipe
 					if (GT_Values.RA.addMixerRecipe(
-							input1, input2,
-							input3, input4,
-							oxygen,
-							null,
-							outputStacks,
-							(int) Math.max(material.getMass() * 2L * 1, 1),
-							6 * material.vVoltageMultiplier))
+								input1, input2,
+								input3, input4,
+								oxygen,
+								null,
+								outputStacks,
+								(int) Math.max(material.getMass() * 2L * 1, 1),
+								2 * material.vVoltageMultiplier)) //Was 6, but let's try 2. This makes Potin LV, for example.
 					{
 						Utils.LOG_INFO("Dust Mixer Recipe: "+material.getLocalizedName()+" - Success");
 					}
 					else {
 						Utils.LOG_INFO("Dust Mixer Recipe: "+material.getLocalizedName()+" - Failed");
 					}
+					
+					//Add Shapeless recipe for low tier alloys.
+					if (tVoltageMultiplier <= 30){
+						if (RecipeUtils.addShapedGregtechRecipe(inputStacks, outputStacks)){
+									Utils.LOG_INFO("Dust Shapeless Recipe: "+material.getLocalizedName()+" - Success");						
+								}
+								else {
+									Utils.LOG_INFO("Dust Shapeless Recipe: "+material.getLocalizedName()+" - Failed");
+								}
+							}
+						}
+					}
 				}
-			}
-		}
 
 
 
