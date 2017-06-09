@@ -32,6 +32,7 @@ public class RecipeUtils {
 				(slot_7 == null) && (slot_8 == null) && (slot_9 == null)){
 			Utils.LOG_INFO("Found a recipe with 0 inputs, yet had a valid output.");
 			Utils.LOG_INFO("Error found while adding a recipe for: "+resultItem.getDisplayName()+" | Please report this issue on Github.");
+			RegistrationHandler.recipesFailed++;
 			return false;
 		}
 
@@ -339,7 +340,11 @@ public class RecipeUtils {
 		if (addShapedGregtechRecipe(o, OutputItem)){
 			return true;
 		}
-		else {		
+		else {
+			if (OutputItem != null){
+				Utils.LOG_INFO("Adding recipe for "+OutputItem.getDisplayName()+" failed. Error 62.");
+			}
+			RegistrationHandler.recipesFailed++;
 			return false;
 		}
 	}
@@ -347,17 +352,22 @@ public class RecipeUtils {
 	public static boolean addShapedGregtechRecipe(final Object[] inputs, ItemStack output){
 
 		if (inputs.length != 9){
-			Utils.LOG_INFO("Input array for "+output.getDisplayName()+" does not equal 9.");
+			Utils.LOG_INFO("Input array for "+output.getDisplayName()+" does not equal 9. "+inputs.length+" is the actual size.");
+
+			RegistrationHandler.recipesFailed++;
 			return false;
 		}
 
 		for (int x=0;x<9;x++){
 			if (inputs[x] == null){
 				inputs[x] = " ";
+				Utils.LOG_INFO("Input slot "+x+" changed from NULL to a blank space.");
 			}
-			if (!(inputs[x] instanceof ItemStack) || !(inputs[x] instanceof String)){
+			else if (!(inputs[x] instanceof ItemStack) && !(inputs[x] instanceof String)){
 				if (output != null){
 					Utils.LOG_INFO("Invalid Item inserted into inputArray. Item:"+output.getDisplayName()+" has a bad recipe. Please report to Alkalus.");
+
+					RegistrationHandler.recipesFailed++;
 					return false;
 				}
 				else {
@@ -385,7 +395,9 @@ public class RecipeUtils {
 			return true;
 		}
 		else {
-			Utils.LOG_INFO("Failed to add recipe for "+output.getDisplayName()+". Please report to Alkalus.");
+			if (output != null){
+				Utils.LOG_INFO("Adding recipe for "+output.getDisplayName()+" failed. Error 61.");
+			}
 			return false;
 		}
 	}
