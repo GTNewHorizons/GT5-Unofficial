@@ -8,8 +8,6 @@ import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.recipe.RECIPE_CONSTANTS;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GregtechMetaTileEntityGeothermalGenerator;
 import net.minecraft.item.ItemStack;
 
@@ -38,7 +36,7 @@ public class GregtechGeothermalThermalGenerator {
 						Character.valueOf('M'), ItemList.Hull_EV,
 						Character.valueOf('P'), ItemList.Electric_Piston_EV,
 						Character.valueOf('E'), ItemList.Electric_Motor_EV,
-						Character.valueOf('C'), GregtechOrePrefixes.circuit.get(Materials.Ultimate),
+						Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Ultimate),
 						Character.valueOf('W'), OrePrefixes.cableGt04.get(Materials.Aluminium),
 						Character.valueOf('G'), ALLOY.TANTALLOY_61.getGear(1)});
 
@@ -48,7 +46,7 @@ public class GregtechGeothermalThermalGenerator {
 						Character.valueOf('M'), ItemList.Hull_IV,
 						Character.valueOf('P'), ItemList.Electric_Piston_IV,
 						Character.valueOf('E'), ItemList.Electric_Motor_IV,
-						Character.valueOf('C'), GregtechOrePrefixes.circuit.get(GT_Materials.Symbiotic),
+						Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Superconductor),
 						Character.valueOf('W'), OrePrefixes.cableGt04.get(Materials.Platinum),
 						Character.valueOf('G'), ALLOY.STELLITE.getGear(1)});
 
@@ -60,7 +58,7 @@ public class GregtechGeothermalThermalGenerator {
 						Character.valueOf('M'), ItemList.Hull_LuV,
 						Character.valueOf('P'), INGREDIENT_1,
 						Character.valueOf('E'), INGREDIENT_2,
-						Character.valueOf('C'), GregtechOrePrefixes.circuit.get(GT_Materials.Neutronic),
+						Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Infinite),
 						Character.valueOf('W'), OrePrefixes.cableGt04.get(Materials.Tungsten),
 						Character.valueOf('G'), ALLOY.ZERON_100.getGear(1)});
 	}

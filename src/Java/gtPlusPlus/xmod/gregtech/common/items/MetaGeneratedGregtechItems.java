@@ -11,6 +11,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.covers.*;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
@@ -139,7 +140,8 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 		GregtechItemList.Circuit_Parts_Wiring_IV.set(this.addItem(tLastID = 719, "Etched IV Voltage Wiring", "Part of Circuit Boards", new Object[0]));
 		GregtechItemList.Circuit_Parts_Wiring_LuV.set(this.addItem(tLastID = 720, "Etched LuV Voltage Wiring", "Part of Circuit Boards", new Object[0]));
 		GregtechItemList.Circuit_Parts_Wiring_ZPM.set(this.addItem(tLastID = 721, "Etched ZPM Voltage Wiring", "Part of Circuit Boards", new Object[0]));
-
+		ItemUtils.addItemToOreDictionary(GregtechItemList.Circuit_IV.get(1), "circuitSuperconductor");
+		ItemUtils.addItemToOreDictionary(GregtechItemList.Circuit_LuV.get(1), "circuitInfinite");
 
 
 

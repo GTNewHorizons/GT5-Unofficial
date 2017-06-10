@@ -4,7 +4,7 @@ import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
-import gtPlusPlus.core.recipe.RECIPE_CONSTANTS;
+import gtPlusPlus.core.recipe.RECIPES_MachineComponents;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -67,13 +67,17 @@ public class GregtechAdvancedBoilers {
 			Character.valueOf('G'), OrePrefixes.pipeSmall.get(Materials.Steel)});
 
 		
+		ItemStack pipeTier1 = ItemUtils.getItemStackOfAmountFromOreDict(RECIPES_MachineComponents.pipeTier7, 1);
+		ItemStack pipeTier2 = ItemUtils.getItemStackOfAmountFromOreDict(RECIPES_MachineComponents.pipeTier8, 1);
+		ItemStack pipeTier3 = ItemUtils.getItemStackOfAmountFromOreDict(RECIPES_MachineComponents.pipeTier9, 1);
+		
 		//Boiler Recipes
 		GT_ModHandler.addCraftingRecipe(
 		GregtechItemList.Boiler_Advanced_LV.get(1L, new Object[0]),
 		GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
 		new Object[]{"dCw", "WMW", "GPG",
 			Character.valueOf('M'), ItemList.Hull_LV,
-			Character.valueOf('P'), ItemList.Robot_Arm_EV, //TODO
+			Character.valueOf('P'), pipeTier1,
 			Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Basic),
 			Character.valueOf('W'), chassisT1,
 			Character.valueOf('G'), OrePrefixes.gear.get(Materials.Steel)});
@@ -83,7 +87,7 @@ public class GregtechAdvancedBoilers {
 		GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
 		new Object[]{"dCw", "WMW", "GPG",
 			Character.valueOf('M'), ItemList.Hull_MV,
-			Character.valueOf('P'), ItemList.Robot_Arm_IV, //TODO
+			Character.valueOf('P'), pipeTier2,
 			Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Good),
 			Character.valueOf('W'), chassisT2,
 			Character.valueOf('G'), ALLOY.SILICON_CARBIDE.getGear(1)});
@@ -93,7 +97,7 @@ public class GregtechAdvancedBoilers {
 		GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
 		new Object[]{"dCw", "WMW", "GPG",
 			Character.valueOf('M'), ItemList.Hull_HV,
-			Character.valueOf('P'), RECIPE_CONSTANTS.robotArm_LuV, //TODO
+			Character.valueOf('P'), pipeTier3,
 			Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Advanced),
 			Character.valueOf('W'), chassisT3,
 			Character.valueOf('G'), ALLOY.SILICON_CARBIDE.getGear(1)});

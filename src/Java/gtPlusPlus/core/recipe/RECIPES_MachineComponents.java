@@ -10,91 +10,91 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 public class RECIPES_MachineComponents {
 
 	//Wire
-	static String wireTier0 = "wireGt01Lead";
-	static String wireTier1 = "wireGt01RedAlloy";
-	static String wireTier6 = "wireGt08NiobiumTitanium";
-	static String wireTier7 = "wireGt08Osmium";
-	static String wireTier8 = "wireGt08Naquadah";
-	static String wireTier9 = "wireGt08Superconductor";
-	static String wireTier10 = "wireGt16Superconductor";
+	public static String wireTier0 = "wireGt01Lead";
+	public static String wireTier1 = "wireGt01RedAlloy";
+	public static String wireTier6 = "wireGt08NiobiumTitanium";
+	public static String wireTier7 = "wireGt08Osmium";
+	public static String wireTier8 = "wireGt08Naquadah";
+	public static String wireTier9 = "wireGt08Superconductor";
+	public static String wireTier10 = "wireGt16Superconductor";
 
 	//Cable
-	static String cableTier0 = "cableGt01Lead";
-	static String cableTier1 = "cableGt01RedAlloy";
-	static String cableTier6 = "cableGt04Tungsten";
-	static String cableTier7 = "cableGt04NiobiumTitanium";
-	static String cableTier8 = "cableGt04Osmium";
-	static String cableTier9 = "cableGt04Naquadah";
-	static String cableTier10 = "wireGt08Superconductor";
+	public static String cableTier0 = "cableGt01Lead";
+	public static String cableTier1 = "cableGt01RedAlloy";
+	public static String cableTier6 = "cableGt04Tungsten";
+	public static String cableTier7 = "cableGt04NiobiumTitanium";
+	public static String cableTier8 = "cableGt04Osmium";
+	public static String cableTier9 = "cableGt04Naquadah";
+	public static String cableTier10 = "wireGt08Superconductor";
 
 	//Plates
-	static String plateTier0 = "plateWroughtIron";
-	static String plateTier7 = "plateChrome";
-	static String plateTier8 = "plateIridium";
-	static String plateTier9 = "plateOsmium";
-	static String plateTier10 = "plateNeutronium";
+	public static String plateTier0 = "plateWroughtIron";
+	public static String plateTier7 = "plateChrome";
+	public static String plateTier8 = "plateIridium";
+	public static String plateTier9 = "plateOsmium";
+	public static String plateTier10 = "plateNeutronium";
 
 	//rods
-	static String rodTier0 = "stickWroughtIron";
-	static String rodTier1 = "stickPotin";
-	static String rodTier2 = "stickIronMagnetic";
-	static String rodTier7a = "stickChrome";
-	static String rodTier8a = "stickIridium";
-	static String rodTier9a = "stickOsmium";
-	static String rodTier10a = "stickNeutronium";
-	static String rodTier7b = "stickPlatinum";
-	static String rodTier8b = "stickChrome";
-	static String rodTier9b = "stickIridium";
-	static String rodTier10b = "stickOsmium";
-	static String rodTier7c = "stickTitanium";
-	static String rodTier8c = "stickTungstenSteel";
-	static String rodTier9c = "stickNaquadah";
-	static String rodTier10c = "stickOsmium";
+	public static String rodTier0 = "stickWroughtIron";
+	public static String rodTier1 = "stickPotin";
+	public static String rodTier2 = "stickIronMagnetic";
+	public static String rodTier7a = "stickChrome";
+	public static String rodTier8a = "stickIridium";
+	public static String rodTier9a = "stickOsmium";
+	public static String rodTier10a = "stickNeutronium";
+	public static String rodTier7b = "stickPlatinum";
+	public static String rodTier8b = "stickChrome";
+	public static String rodTier9b = "stickIridium";
+	public static String rodTier10b = "stickOsmium";
+	public static String rodTier7c = "stickTitanium";
+	public static String rodTier8c = "stickTungstenSteel";
+	public static String rodTier9c = "stickNaquadah";
+	public static String rodTier10c = "stickOsmium";
 
 	//Screws
-	static String screwTier0 = "screwPotin";
-	static String screwTier7 = "screwChrome";
-	static String screwTier8 = "screwIridium";
-	static String screwTier9 = "screwOsmium";
-	static String screwTier10 = "screwNeutronium";
+	public static String screwTier0 = "screwPotin";
+	public static String screwTier7 = "screwChrome";
+	public static String screwTier8 = "screwIridium";
+	public static String screwTier9 = "screwOsmium";
+	public static String screwTier10 = "screwNeutronium";
 
 	//Rotors
-	static String rotorTier0 = "rotorPotin";
-	static String rotorTier7 = "rotorChrome";
-	static String rotorTier8 = "rotorIridium";
-	static String rotorTier9 = "rotorOsmium";
-	static String rotorTier10 = "rotorNeutronium";
+	public static String rotorTier0 = "rotorPotin";
+	public static String rotorTier7 = "rotorChrome";
+	public static String rotorTier8 = "rotorIridium";
+	public static String rotorTier9 = "rotorOsmium";
+	public static String rotorTier10 = "rotorNeutronium";
 
 	//Fluid Pipe
-	static String pipeTier0 = "pipeSmallLead";
-	static String pipeTier7 = "pipeHugeSteel";
-	static String pipeTier8 = "pipeHugeStainlessSteel";
-	static String pipeTier9 = "pipeHugeTitanium";
-	static String pipeTier10 = "pipeHugeTungstenSteel";
+	public static String pipeTier0 = "pipeSmallLead";
+	public static String pipeTier7 = "pipeHugeSteel";
+	public static String pipeTier8 = "pipeHugeStainlessSteel";
+	public static String pipeTier9 = "pipeHugeTitanium";
+	public static String pipeTier10 = "pipeHugeTungstenSteel";
 
 	//Rubber Ring/Plate
-	static String itemRubberRing = "ringRubber";
-	static String plateRubber = "plateRubber";
+	public static String itemRubberRing = "ringRubber";
+	public static String plateRubber = "plateRubber";
 
 	//Circuits
-	static String circuitTier0 = "circuitPrimitive";
-	static String circuitTier1 = "circuitBasic";
-	static String circuitTier6 = "circuitMaster";
-	static String circuitTier7 = "circuitUltimate";
-	static String circuitTier8 = "circuitSymbiotic";
-	static String circuitTier9 = "circuitNeutronic";
-	static String circuitTier10 = "circuitQuantum";
+	public static String circuitTier0 = "circuitPrimitive";
+	public static String circuitTier1 = "circuitBasic";
+	public static String circuitTier6 = "circuitMaster";
+	public static String circuitTier7 = "circuitUltimate";
+	public static String circuitTier8 = "circuitSuperconductor";
+	public static String circuitTier9 = "circuitInfinite";
+	public static String circuitTier10 = "circuitQuantum";
 
 	//small gears
-	static String smallGearTier0 = "gearGtSmallWroughtIron";
-	static String smallGearTier7 = "gearGtSmallChrome";
-	static String smallGearTier8 = "gearGtSmallIridium";
-	static String smallGearTier9 = "gearGtSmallOsmium";
-	static String smallGearTier10 = "gearGtSmallNeutronium";
+	public static String smallGearTier0 = "gearGtSmallWroughtIron";
+	public static String smallGearTier7 = "gearGtSmallChrome";
+	public static String smallGearTier8 = "gearGtSmallIridium";
+	public static String smallGearTier9 = "gearGtSmallOsmium";
+	public static String smallGearTier10 = "gearGtSmallNeutronium";
 
 	//Crafting Tools
-	static String craftingToolWrench = "craftingToolWrench";
-	static String craftingToolScrewdriver = "craftingToolScrewdriver";
+	public static String craftingToolWrench = "craftingToolWrench";
+	public static String craftingToolScrewdriver = "craftingToolScrewdriver";
 
 	public static final void RECIPES_LOAD(){
 		Utils.LOG_INFO("Loading Recipes for the Various Circuits and Machine components.");

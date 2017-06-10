@@ -7,8 +7,6 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -213,8 +211,8 @@ public class RECIPES_Machines {
 	static String circuitTier4 = "circuitElite";
 	static String circuitTier5 = "circuitMaster";
 	static String circuitTier6 = "circuitUltimate";
-	static String circuitTier7 = "circuitSymbiotic";
-	static String circuitTier8 = "circuitNeutronic";
+	static String circuitTier7 = "circuitSuperconductor";
+	static String circuitTier8 = "circuitInfinite";
 	static String circuitTier9 = "circuitQuantum";
 
 	//Machine Components
@@ -374,17 +372,17 @@ public class RECIPES_Machines {
 		if (LoadedMods.Gregtech){
 
 			RecipeUtils.addShapedGregtechRecipe(
-			ItemList.Electric_Piston_EV, GregtechOrePrefixes.circuit.get(Materials.Ultimate), ItemList.Electric_Piston_EV,
+			ItemList.Electric_Piston_EV, OrePrefixes.circuit.get(Materials.Ultimate), ItemList.Electric_Piston_EV,
 			ItemList.Electric_Motor_EV, machineCasing_EV, ItemList.Electric_Motor_EV,
 			"gearGtTitanium", "cableGt02Aluminium", "gearGtTitanium",
 			ItemUtils.simpleMetaStack("gregtech:gt.blockmachines", 793, 1));
 			RecipeUtils.addShapedGregtechRecipe(
-			ItemList.Electric_Piston_IV, GregtechOrePrefixes.circuit.get(GT_Materials.Symbiotic), ItemList.Electric_Piston_IV,
+			ItemList.Electric_Piston_IV, OrePrefixes.circuit.get(Materials.Superconductor), ItemList.Electric_Piston_IV,
 			ItemList.Electric_Motor_IV, machineCasing_IV, ItemList.Electric_Motor_IV,
 			"gearGtTungstenSteel", "cableGt02Platinum", "gearGtTungstenSteel",
 			ItemUtils.simpleMetaStack("gregtech:gt.blockmachines", 794, 1));
 			RecipeUtils.addShapedGregtechRecipe(
-			RECIPE_CONSTANTS.electricPiston_LuV, GregtechOrePrefixes.circuit.get(GT_Materials.Neutronic), RECIPE_CONSTANTS.electricPiston_LuV,
+			RECIPE_CONSTANTS.electricPiston_LuV, OrePrefixes.circuit.get(Materials.Infinite), RECIPE_CONSTANTS.electricPiston_LuV,
 			RECIPE_CONSTANTS.electricMotor_LuV, machineCasing_LuV, RECIPE_CONSTANTS.electricMotor_LuV,
 			"gearGtChrome", "cableGt02Tungsten", "gearGtChrome",
 			ItemUtils.simpleMetaStack("gregtech:gt.blockmachines", 795, 1));

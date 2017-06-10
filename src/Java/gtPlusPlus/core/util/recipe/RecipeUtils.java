@@ -404,7 +404,10 @@ public class RecipeUtils {
 
 	public static boolean addShapelessGregtechRecipe(final Object[] inputItems, final ItemStack OutputItem){
 		//Catch Invalid Recipes
-		if (inputItems.length > 9 || inputItems.length < 2){
+		if (inputItems.length > 9 || inputItems.length < 1){
+			if (OutputItem != null){
+				Utils.LOG_INFO("Invalid input array for shapeless recipe, which should output "+OutputItem.getDisplayName());
+			}
 			return false;
 		}
 		//let gregtech handle shapeless recipes.
