@@ -251,9 +251,23 @@ public class ItemUtils {
 			Utils.LOG_INFO("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(4));
 			Utils.LOG_INFO("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(5));
 		}
-		final ItemStack returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);
-		if ((returnValue.getItem().getClass() != ModItems.AAA_Broken.getClass()) || (returnValue.getItem() != ModItems.AAA_Broken)){
-			return returnValue.copy();
+
+		//Adds a check to grab dusts using GT methodology if possible.
+		ItemStack returnValue = null;
+		if (oredictName.toLowerCase().contains("dust")){
+			String MaterialName = oredictName.toLowerCase().replace("dust", "");
+			Materials m = Materials.get(MaterialName);
+			returnValue = getGregtechDust(m, amount);
+			if (returnValue != null){
+				return returnValue;
+			}
+		}
+
+		if (returnValue == null){
+			returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);
+			if ((returnValue.getItem().getClass() != ModItems.AAA_Broken.getClass()) || (returnValue.getItem() != ModItems.AAA_Broken)){
+				return returnValue.copy();
+			}
 		}
 		Utils.LOG_INFO(oredictName+" was not valid.");
 		return null;
@@ -286,7 +300,7 @@ public class ItemUtils {
 				new BaseItemDustUnique("itemDustTiny"+unlocalizedName, materialName, Colour, "Tiny")};
 		return output;
 	}
-	
+
 	public static Item generateSpecialUsePlate(String internalName, String displayName, short[] rgb, int radioactivity){
 		return new BaseItemPlate_OLD(internalName, displayName, Utils.rgbtoHexValue(rgb[0], rgb[1], rgb[2]), radioactivity);
 	}
