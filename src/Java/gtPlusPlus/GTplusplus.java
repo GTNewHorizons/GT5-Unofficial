@@ -63,6 +63,10 @@ public class GTplusplus implements ActionListener {
 		enableAlternativeDivisionSigilRecipe = config.getBoolean("enableAlternativeDivisionSigilRecipe", "machines",
 				false, "Utilizes Neutronium instead.");
 
+		//Circuits
+		CORE.configSwitches.enableCustomCircuits = config.getBoolean("enableCustomCircuits", "gregtech", true,
+				"Adds custom circuits to expand past the Master Tier.");
+		
 		// Tools
 		CORE.configSwitches.enableSkookumChoochers = config.getBoolean("enableSkookumChoochers", "gregtech", true,
 				"Adds Custom GT Tools, called Skookum Choochers, functioning as a hard hammer and a wrench.");

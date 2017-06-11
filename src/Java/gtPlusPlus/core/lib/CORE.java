@@ -112,6 +112,7 @@ public class CORE {
 
 		//Feature Related
 		public static boolean enableCustomAlvearyBlocks = false;
+		public static boolean enableCustomCircuits = true;
 
 		//Single Block Machines
 		public static boolean enableMachine_SolarGenerators = false;

@@ -290,7 +290,7 @@ public final class ModItems {
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().TECHNETIUM, false); //LFTR byproduct
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().POLONIUM, false);
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().ASTATINE, false);
-			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().RADON, false);
+			//MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().RADON, false);
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().FRANCIUM, false);
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().RADIUM, false);
 			//MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().PROMETHIUM, false);
