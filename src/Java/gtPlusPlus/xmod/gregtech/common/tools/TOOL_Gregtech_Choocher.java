@@ -9,6 +9,7 @@ import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.tools.GT_Tool;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
 import gtPlusPlus.xmod.gregtech.common.items.behaviours.Behaviour_Choocher;
 import net.minecraft.block.Block;
@@ -24,7 +25,7 @@ import net.minecraft.util.*;
 import net.minecraftforge.event.world.BlockEvent;
 
 public class TOOL_Gregtech_Choocher
-extends TOOL_Gregtech_Base {
+extends GT_Tool {
 
 	public static final List<String> mEffectiveList = Arrays.asList(new String[]{EntityIronGolem.class.getName(), "EntityTowerGuardian"});
 
@@ -163,11 +164,6 @@ extends TOOL_Gregtech_Base {
 		return GT_MetaGenerated_Tool.getPrimaryMaterial(aStack).mRGBa;
 	}
 
-	/*@Override
-	public void onStatsAddedToTool(Gregtech_MetaTool aItem, int aID) {
-        aItem.addItemBehavior(aID, new Behaviour_Choocher());
-    }*/
-
 	@Override
 	public void onToolCrafted(final ItemStack aStack, final EntityPlayer aPlayer) {
 		super.onToolCrafted(aStack, aPlayer);
@@ -193,4 +189,5 @@ extends TOOL_Gregtech_Base {
 	public boolean isGrafter() {
 		return false;
 	}
+	
 }
