@@ -1,7 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
-import static gregtech.api.enums.GT_Values.V;
-
 import gregtech.GT_Mod;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -71,47 +69,47 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 
 
 	public ITexture[] getBack(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange)};
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)};
 	}
 
 
 	public ITexture[] getBottom(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange)};
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)};
 	}
 
 
 	public ITexture[] getTop(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Screen_Logo)};
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)};
 	}
 
 
 	public ITexture[] getSides(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange)};
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)};
 	}
 
 
 	public ITexture[] getFrontActive(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier]};
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_2)};
 	}
 
 
 	public ITexture[] getBackActive(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange)};
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)};
 	}
 
 
 	public ITexture[] getBottomActive(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange)};
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)};
 	}
 
 
 	public ITexture[] getTopActive(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Screen_Logo)};
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)};
 	}
 
 
 	public ITexture[] getSidesActive(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Dimensional_Orange)};
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Simple_Bottom)};
 	}
 
 	@Override
@@ -128,12 +126,17 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 	@Override public boolean isInputFacing(final byte aSide)				{return aSide!=this.getBaseMetaTileEntity().getFrontFacing();}
 	@Override public boolean isOutputFacing(final byte aSide)				{return aSide==this.getBaseMetaTileEntity().getFrontFacing();}
 	@Override public boolean isTeleporterCompatible()				{return false;}
-	@Override public long getMinimumStoredEU()						{return V[this.mTier]*1;}
-	@Override public long maxEUStore()								{return V[this.mTier]*1000;}
+	@Override public long getMinimumStoredEU()						{return 0;}
+	@Override public long maxEUStore()								{return 0;}
+
+	@Override
+	public int getCapacity() {
+		return 0;
+	}
 
 	@Override
 	public long maxEUInput() {
-		return V[this.mTier];
+		return 0;
 	}
 
 	@Override
@@ -143,7 +146,7 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 
 	@Override
 	public long maxAmperesIn() {
-		return 1;
+		return 0;
 	}
 
 	@Override
