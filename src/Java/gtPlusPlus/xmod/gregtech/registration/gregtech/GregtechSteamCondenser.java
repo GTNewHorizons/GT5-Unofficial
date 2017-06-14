@@ -3,7 +3,7 @@ package gtPlusPlus.xmod.gregtech.registration.gregtech;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GregtechMetaCondensor;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaCondensor;
 
 public class GregtechSteamCondenser
 {

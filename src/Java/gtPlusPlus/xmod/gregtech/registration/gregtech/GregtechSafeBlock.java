@@ -5,7 +5,7 @@ import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GregtechMetaSafeBlock;
+import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GregtechMetaSafeBlock;
 
 public class GregtechSafeBlock
 {

@@ -1,4 +1,4 @@
-package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
+package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;

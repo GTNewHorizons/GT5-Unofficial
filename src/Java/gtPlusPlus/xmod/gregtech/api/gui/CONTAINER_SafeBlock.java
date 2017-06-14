@@ -6,7 +6,7 @@ import gregtech.api.gui.GT_ContainerMetaTile_Machine;
 import gregtech.api.gui.GT_Slot_Holo;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gtPlusPlus.core.util.player.PlayerCache;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GregtechMetaSafeBlock;
+import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GregtechMetaSafeBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;

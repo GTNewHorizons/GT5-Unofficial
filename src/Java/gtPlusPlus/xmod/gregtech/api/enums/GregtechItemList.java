@@ -108,7 +108,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	//Cooked Raisin Toast for ImQ009
 	Food_Baked_Raisin_Bread,
 
-	//For sintering TODO
+	//For making alloys
 	Industrial_AlloyBlastSmelter,
 
 	//Block that enables uplink to a superconductor network
@@ -162,7 +162,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Industrial_Sifter, 
 	
 	//Advanced Boilers
-	Boiler_Advanced_LV, Boiler_Advanced_MV, Boiler_Advanced_HV
+	Boiler_Advanced_LV, Boiler_Advanced_MV, Boiler_Advanced_HV, 
+	
+	//Fancy Pollution Devices
+	Pollution_Detector
 	;
 
 	public static final GregtechItemList[]

@@ -1,4 +1,4 @@
-package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
+package gtPlusPlus.xmod.gregtech.common.tileentities.storage;
 
 import static gregtech.api.enums.GT_Values.V;
 

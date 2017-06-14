@@ -1,4 +1,4 @@
-package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.creative;
+package gtPlusPlus.xmod.gregtech.common.tileentities.generators.creative;
 
 import static gregtech.api.enums.GT_Values.V;
 
@@ -11,7 +11,7 @@ import gregtech.api.items.GT_MetaBase_Item;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GregtechMetaEnergyBuffer;
+import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GregtechMetaEnergyBuffer;
 import ic2.api.item.IElectricItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

@@ -46,7 +46,7 @@ public class COMPAT_HANDLER {
 			GregtechLFTR.run();
 			GregtechSteamCondenser.run();
 			GregtechSafeBlock.run();
-			GregtechSuperConductionPoint.run();
+			//GregtechSuperConductionPoint.run();
 			GregtechIronBlastFurnace.run();
 			GregtechIndustrialCentrifuge.run();
 			GregtechIndustrialCokeOven.run();
@@ -58,9 +58,10 @@ public class COMPAT_HANDLER {
 			GregtechIndustrialMassFabricator.run();
 			GregtechIndustrialBlastSmelter.run();
 			GregtechSolarGenerators.run();
-			GregtechPowerSubStation.run();
+			//GregtechPowerSubStation.run();
 			GregtechDehydrator.run();
 			GregtechAdvancedBoilers.run();
+			GregtechPollutionDetector.run();
 			GregtechTieredFluidTanks.run();
 			GregtechIndustrialMultiTank.run();
 			GregtechGeothermalThermalGenerator.run();

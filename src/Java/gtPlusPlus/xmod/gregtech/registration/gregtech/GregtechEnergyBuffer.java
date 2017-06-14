@@ -6,8 +6,8 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOreDictNames;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GregtechMetaEnergyBuffer;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.creative.GregtechMetaCreativeEnergyBuffer;
+import gtPlusPlus.xmod.gregtech.common.tileentities.generators.creative.GregtechMetaCreativeEnergyBuffer;
+import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GregtechMetaEnergyBuffer;
 
 public class GregtechEnergyBuffer
 {

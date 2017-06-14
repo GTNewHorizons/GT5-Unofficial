@@ -3,7 +3,7 @@ package gtPlusPlus.core.handler.events;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.metatileentity.*;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GregtechMetaSafeBlock;
+import gtPlusPlus.xmod.gregtech.common.tileentities.storage.GregtechMetaSafeBlock;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
