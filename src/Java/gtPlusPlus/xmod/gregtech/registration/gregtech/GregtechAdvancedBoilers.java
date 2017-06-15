@@ -22,9 +22,9 @@ public class GregtechAdvancedBoilers {
 
 	private static void run1(){
 		//Boilers
-		GregtechItemList.Boiler_Advanced_LV.set(new GT_MetaTileEntity_Boiler_LV(756, "Advanced Boiler [LV]", 1).getStackForm(1L));
-		GregtechItemList.Boiler_Advanced_MV.set(new GT_MetaTileEntity_Boiler_MV(757, "Advanced Boiler [MV]", 2).getStackForm(1L));
-		GregtechItemList.Boiler_Advanced_HV.set(new GT_MetaTileEntity_Boiler_HV(758, "Advanced Boiler [HV]", 3).getStackForm(1L));
+		GregtechItemList.Boiler_Advanced_LV.set(new GT_MetaTileEntity_Boiler_LV(753, "Advanced Boiler [LV]", 1).getStackForm(1L));
+		GregtechItemList.Boiler_Advanced_MV.set(new GT_MetaTileEntity_Boiler_MV(754, "Advanced Boiler [MV]", 2).getStackForm(1L));
+		GregtechItemList.Boiler_Advanced_HV.set(new GT_MetaTileEntity_Boiler_HV(755, "Advanced Boiler [HV]", 3).getStackForm(1L));
 		
 		
 		ItemStack chassisT1 = ItemUtils.getItemStackWithMeta(true, "miscutils:itemBoilerChassis", "Boiler_Chassis_T1", 0, 1);

@@ -165,7 +165,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Boiler_Advanced_LV, Boiler_Advanced_MV, Boiler_Advanced_HV, 
 	
 	//Fancy Pollution Devices
-	Pollution_Detector
+	Pollution_Detector, 
+	Pollution_Cleaner_ULV, Pollution_Cleaner_LV, Pollution_Cleaner_MV, Pollution_Cleaner_HV, Pollution_Cleaner_EV,
+	Pollution_Cleaner_IV, Pollution_Cleaner_LuV, Pollution_Cleaner_ZPM, Pollution_Cleaner_UV, Pollution_Cleaner_MAX
 	;
 
 	public static final GregtechItemList[]

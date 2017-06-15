@@ -9,6 +9,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.player.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTileEntity;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -64,7 +65,7 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 
 
 	public ITexture[] getFront(final byte aColor) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier]};
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[this.mTier][aColor + 1], new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_2)};
 	}
 
 
@@ -177,7 +178,7 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 		}
 		else {
 			PlayerUtils.messagePlayer(playerIn, "This chunk contains "+getCurrentChunkPollution()+" pollution.");
-			PlayerUtils.messagePlayer(playerIn, "Average over last ten minutes: "+this.mAveragePollution+" pollution.");
+			PlayerUtils.messagePlayer(playerIn, "Average over last ten minutes: "+getAveragePollutionOverLastTen()+" pollution.");
 		}
 	}
 
@@ -342,6 +343,7 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 			}
 			//Update Pollution array once a minute
 			if (this.mSecondTimer >= 60){
+				Utils.sendServerMessage("Udating Average of pollution array. Using Array slot"+this.mArrayPos);
 				this.mSecondTimer = 0;
 				if (this.mArrayPos<this.mAveragePollutionArray.length){
 					this.mAveragePollutionArray[this.mArrayPos] = this.mCurrentPollution;
@@ -358,6 +360,7 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 	public int getAveragePollutionOverLastTen(){
 		int counter = 0;
 		int total = 0;
+		
 		for (int i=0;i<this.mAveragePollutionArray.length;i++){
 			if (this.mAveragePollutionArray[i] != 0){
 				total += this.mAveragePollutionArray[i];
@@ -372,6 +375,7 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 		else {
 			returnValue = getCurrentChunkPollution();
 		}
+		Utils.LOG_INFO("| DEBUG: "+returnValue +" | ArrayPos:"+this.mArrayPos+" | Counter:"+counter+" | Total:"+total+" |");
 		return returnValue;
 	}
 
