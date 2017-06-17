@@ -1,15 +1,26 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStack;
+import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackMap;
+import com.github.technus.tectech.elementalMatter.interfaces.iHasElementalDefinition;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.iConstructible;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.fluids.FluidTankInfo;
 
 import static com.github.technus.tectech.Util.StructureBuilder;
+import static com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition.refMass;
+import static com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition.refUnstableMass;
+import static com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition.stableRawLifeTime;
 import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
+import static gregtech.api.enums.GT_Values.V;
+import static gregtech.api.enums.GT_Values.VN;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -63,6 +74,67 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
                 CommonValues.tecMark,
                 "Is life time too long?",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Make it half-life (3) instead!"
+        };
+    }
+
+    @Override
+    public boolean EM_checkRecipe(ItemStack itemStack) {
+        cElementalInstanceStackMap map= EM_getInputsClone();
+        if(map!=null && map.hasStacks() && map.getFirst().getLifeTime()<stableRawLifeTime){
+            return startRecipe(map.getFirst());
+        }
+        mEfficiencyIncrease = 0;
+        mMaxProgresstime = 0;
+        return false;
+    }
+
+    private float m1,m2,m3;
+    private boolean startRecipe(cElementalInstanceStack input) {
+        m3=(float)Math.ceil(input.getLifeTime() / Math.pow(input.amount,3));
+        if(m3<1) explodeMultiblock();
+        if(m3>=Integer.MAX_VALUE) return false;
+        mMaxProgresstime = (int)m3;
+        mEfficiencyIncrease = 10000;
+        m1 = input.getMass()/input.amount;
+        m2 = input.decay().getMass()/input.amount;
+        return true;
+    }
+
+    @Override
+    public String[] getInfoData() {//TODO Do it
+        long storedEnergy = 0;
+        long maxEnergy = 0;
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
+            if (isValidMetaTileEntity(tHatch)) {
+                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
+                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+            }
+        }
+        for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : eEnergyMulti) {
+            if (isValidMetaTileEntity(tHatch)) {
+                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
+                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+            }
+        }
+
+        return new String[]{
+                "Progress:",
+                EnumChatFormatting.GREEN + Integer.toString(mProgresstime / 20) + EnumChatFormatting.RESET + " s / " +
+                        EnumChatFormatting.YELLOW + Integer.toString(mMaxProgresstime / 20) + EnumChatFormatting.RESET + " s",
+                "Energy Hatches:",
+                EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET + " EU / " +
+                        EnumChatFormatting.YELLOW + Long.toString(maxEnergy) + EnumChatFormatting.RESET + " EU",
+                (mEUt <= 0 ? "Probably uses: " : "Probably makes: ") +
+                        EnumChatFormatting.RED + Integer.toString(Math.abs(mEUt)) + EnumChatFormatting.RESET + " EU/t at " +
+                        EnumChatFormatting.RED + eAmpereFlow + EnumChatFormatting.RESET + " A",
+                "Tier Rating: " + EnumChatFormatting.YELLOW + VN[getMaxEnergyInputTier()] + EnumChatFormatting.RESET + " / " + EnumChatFormatting.GREEN + VN[getMinEnergyInputTier()] + EnumChatFormatting.RESET +
+                        " Amp Rating: " + EnumChatFormatting.GREEN + eMaxAmpereFlow + EnumChatFormatting.RESET + " A",
+                "Problems: " + EnumChatFormatting.RED + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET +
+                        " Efficiency: " + EnumChatFormatting.YELLOW + Float.toString(mEfficiency / 100.0F) + EnumChatFormatting.RESET + " %",
+                "PowerPass: " + EnumChatFormatting.BLUE + ePowerPass + EnumChatFormatting.RESET +
+                        " SafeVoid: " + EnumChatFormatting.BLUE + eSafeVoid,
+                "Computation: " + EnumChatFormatting.GREEN + eAvailableData + EnumChatFormatting.RESET + " / " + EnumChatFormatting.YELLOW + eRequiredData + EnumChatFormatting.RESET,
+                m1+" "+m2+" "+m3
         };
     }
 }
