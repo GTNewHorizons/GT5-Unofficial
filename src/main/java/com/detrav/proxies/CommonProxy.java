@@ -64,7 +64,7 @@ public class CommonProxy implements IGuiHandler {
                 GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
                 new Object[]{ "GGG","dCi","GGG", Character.valueOf('G'), new ItemStack(Items.dye,1,2), Character.valueOf('C'), ItemList.Circuit_Basic.get(1) });
 
-        GT_ModHandler.addShapelessCraftingRecipe(DetravItemList.DetravAdvancedMiner2.get(1L, new Object[0]),new Object[]{ItemList.AdvancedMiner2});
+        GT_ModHandler.addShapelessCraftingRecipe(DetravItemList.DetravAdvancedMiner2.get(1L, new Object[0]),new Object[]{ItemList.OilDrill});
 
         //Treetap recipes
 

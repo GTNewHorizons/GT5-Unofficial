@@ -11,6 +11,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.GT_UndergroundOil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -130,7 +131,7 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
                                     }
                                     break;
                                 case 2:
-                                    FluidStack fStack = GT_Utility.getUndergroundOil(aWorld, c.xPosition * 16 + x, c.zPosition * 16 + z);
+                                    FluidStack fStack = GT_UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(c.xPosition * 16 + x, c.zPosition * 16 + z), -1);
                                     if (fStack.amount > 10000) {
                                         packet.addBlock(c.xPosition * 16 + x, 2, c.zPosition * 16 + z, (short) (fStack.amount / 5000));
                                         packet.addBlock(c.xPosition * 16 + x, 1, c.zPosition * 16 + z, (short) fStack.getFluidID());
@@ -173,7 +174,7 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
             if(aWorld.getBlock(aX,aY,aZ) == Blocks.bedrock)
             {
                 if (!aWorld.isRemote) {
-                    FluidStack fStack = GT_Utility.getUndergroundOil(aWorld,aX,aZ);
+                    FluidStack fStack = GT_UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(aX, aZ), -1);
                     addChatMassageByValue(aPlayer,fStack.amount/5000,fStack.getLocalizedName());
                     if (!aPlayer.capabilities.isCreativeMode)
                         ((DetravMetaGeneratedTool01)aItem).doDamage(aStack, this.mCosts);
@@ -193,7 +194,7 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
         }
         if (data < 3)
             if (!aWorld.isRemote) {
-                FluidStack fStack = GT_Utility.getUndergroundOil(aWorld, aX, aZ);
+                FluidStack fStack = GT_UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(aX, aZ), -1);
                 addChatMassageByValue(aPlayer, fStack.amount / 5000, fStack.getLocalizedName());
                 if (!aPlayer.capabilities.isCreativeMode)
                     ((DetravMetaGeneratedTool01) aItem).doDamage(aStack, this.mCosts);
