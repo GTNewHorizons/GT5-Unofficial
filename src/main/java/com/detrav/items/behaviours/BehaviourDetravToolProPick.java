@@ -12,6 +12,8 @@ import gregtech.common.GT_Proxy;
 import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 import gregtech.common.items.behaviors.Behaviour_None;
+import gregtech.common.GT_UndergroundOil;
+import gregtech.common.GT_Pollution;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -53,7 +55,7 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
         if(aWorld.getBlock(aX,aY,aZ) == Blocks.bedrock)
         {
             if (!aWorld.isRemote) {
-                FluidStack fStack = GT_Utility.getUndergroundOil(aWorld,aX,aZ);
+                FluidStack fStack = GT_UndergroundOil.undergroundOil(aWorld.getChunkFromBlockCoords(aX, aZ), -1);
                 addChatMassageByValue(aPlayer,fStack.amount/5000,fStack.getLocalizedName());
                 if (!aPlayer.capabilities.isCreativeMode)
                     ((DetravMetaGeneratedTool01)aItem).doDamage(aStack, this.mCosts);
@@ -210,13 +212,6 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
 
     public static int getPolution(World aWorld, int aX, int aZ)
     {
-        ChunkPosition tPos = new ChunkPosition(aX / 16, 1, aZ / 16);
-        if(GT_Proxy.chunkData.containsKey(tPos)) {
-            int[] tInts = (int[])GT_Proxy.chunkData.get(tPos);
-            if(tInts.length > 1 && tInts[1] > 0) {
-                return tInts[1];
-            }
-        }
-        return 0;
+        return GT_Pollution.getPollution(aWorld.getChunkFromBlockCoords(aX, aZ));
     }
 }
