@@ -73,3 +73,5 @@ gradle/
 *.log
 tmp/
 libsrc/
+out/
+*.bat
