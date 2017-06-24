@@ -7,7 +7,7 @@ public enum  DetravToolDictNames {
     craftingToolProPick,
     craftingToolElectricProPick,
     craftingToolPortableCharger,
-    craftingToolPortableAnvil,
+    //craftingToolPortableAnvil,
     craftingToolSmartPlunger,
     craftingToolSmartTreeTap,
     craftingToolCictuitConfigurator;

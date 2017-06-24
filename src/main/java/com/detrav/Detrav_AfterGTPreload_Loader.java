@@ -34,14 +34,14 @@ public class Detrav_AfterGTPreload_Loader implements Runnable {
         //new ProcessingDetravToolProPick();
 
 
-        GT_ModHandler.addCraftingRecipe(DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(2, 1, Materials.Iron, Materials._NULL,null)
-                , GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"IBI", " I ", "III", Character.valueOf('I'), OrePrefixes.ingot.get(Materials.Iron), Character.valueOf('B'), OrePrefixes.block.get(Materials.Iron)});
+        //GT_ModHandler.addCraftingRecipe(DetravMetaGeneratedTool01.INSTANCE.getToolWithStats(2, 1, Materials.Iron, Materials._NULL,null)
+                //, GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.DO_NOT_CHECK_FOR_COLLISIONS | GT_ModHandler.RecipeBits.BUFFERED, new Object[]{"IBI", " I ", "III", Character.valueOf('I'), OrePrefixes.ingot.get(Materials.Iron), Character.valueOf('B'), OrePrefixes.block.get(Materials.Iron)});
 
         //ItemList.Machine_Bronze_Boiler_Solar.set(new GT_MetaTileEntity_Boiler_Solar(105, "boiler.solar", "Simple Solar Boiler").getStackForm(1L));
-        DetravItemList.Solar_Boiler_Low.set(new Detrav_MetaTileEntity_Boiler_Solar_Low(2051,"boiler.bronze.solar", "Bronze Solar Boiler").getStackForm(1L));
+        //DetravItemList.Solar_Boiler_Low.set(new Detrav_MetaTileEntity_Boiler_Solar_Low(2051,"boiler.bronze.solar", "Bronze Solar Boiler").getStackForm(1L));
         DetravItemList.Solar_Boiler_Medium.set(new Detrav_MetaTileEntity_Boiler_Solar_Medium(2052,"boiler.steel.solar", "Steel Solar Boiler").getStackForm(1L));
         DetravItemList.Solar_Boiler_High.set(new Detrav_MetaTileEntity_Boiler_Solar_High(2053,"boiler.stainless.steel.solar", "Stainless Steel Solar Boiler").getStackForm(1L));
-        DetravItemList.DetravAdvancedMiner2.set(new Detrav_MetaTileEntity_AdvMiner2(2054, "multimachine.advminer2.detrav", "Detrav Advanced Miner II").getStackForm(1));
+        DetravItemList.DetravAdvancedMiner2.set(new Detrav_MetaTileEntity_AdvMiner2(2054, "multimachine.advminer2.detrav", "Ore Drilling Plant V").getStackForm(1));
 
         //DetravItemList.Anvil.set()
 

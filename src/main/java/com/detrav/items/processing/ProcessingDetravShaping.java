@@ -24,14 +24,14 @@ public class ProcessingDetravShaping implements gregtech.api.interfaces.IOreReci
         if ((GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L) != null) && (!aMaterial.contains(SubTag.NO_SMELTING))) {
             int tAmount = (int) (aPrefix.mMaterialAmount / 3628800L);
             if ((tAmount > 0) && (tAmount <= 64) && (aPrefix.mMaterialAmount % 3628800L == 0L)) {
-                int tVoltageMultiplier = aMaterial.mBlastFurnaceTemp >= 2800 ? 64 : 16;
+                int tVoltageMultiplier = aMaterial.mBlastFurnaceTemp >= 2800 ? 64 : 32;
 
                 if (aMaterial.contains(SubTag.NO_SMASHING)) {
                     tVoltageMultiplier /= 4;
                 } else if (aPrefix.name().startsWith(OrePrefixes.dust.name())) {
                     return;
                 }
-                GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(2L, new Object[]{aStack}), DetravItemList.Shape_Extruder_ProPick.get(0L, new Object[0]), GT_OreDictUnificator.get(DetravSimpleItems.toolHeadProPick.get(aMaterial), tAmount), (int) Math.max(aMaterial.getMass() * 2L * tAmount, tAmount), 8 * tVoltageMultiplier);
+                GT_Values.RA.addExtruderRecipe(GT_Utility.copyAmount(2L, new Object[]{aStack}), DetravItemList.Shape_Extruder_ProPick.get(0L, new Object[0]), GT_OreDictUnificator.get(DetravSimpleItems.toolHeadProPick.get(aMaterial), tAmount), (int) Math.max(aMaterial.getMass() * 2L * tAmount, tAmount), 15 * tVoltageMultiplier);
             }
         }
     }

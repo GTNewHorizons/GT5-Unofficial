@@ -54,7 +54,7 @@ public class Detrav_MetaTileEntity_AdvMiner2 extends GT_MetaTileEntity_MultiBloc
 
     public String[] getDescription() {
         return new String[]{
-                "Controller Block for the Detrav Advanced Miner II",
+                "Controller Block for the Ore Drilling Plant V",
                 "Default size is one chunk, use circuit configuration",
                 "to increase the size, {config}*2 + 1 chunks",
                 "Size(WxHxD): 3x7x3, Controller (Front middle bottom)",
