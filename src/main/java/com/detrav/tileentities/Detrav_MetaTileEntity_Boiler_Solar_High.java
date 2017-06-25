@@ -22,7 +22,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 public class Detrav_MetaTileEntity_Boiler_Solar_High extends GT_MetaTileEntity_Boiler {
     public Detrav_MetaTileEntity_Boiler_Solar_High(int aID, String aName, String aNameRegional) {
-        super(aID, aName, aNameRegional, "Steam Power by the Sun, 600Liter/Sec", new ITexture[0]);
+        super(aID, aName, aNameRegional, "Steam Power by the Sun", new ITexture[0]);
     }
 
     public Detrav_MetaTileEntity_Boiler_Solar_High(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
@@ -31,7 +31,7 @@ public class Detrav_MetaTileEntity_Boiler_Solar_High extends GT_MetaTileEntity_B
 
     @Override
     public String[] getDescription() {
-        return new String[]{mDescription, "This machine can not explode!"};
+        return new String[]{mDescription, "Produces 600L of Steam per second"};
     }
 
     public ITexture[][][] getTextureSet(ITexture[] aTextures) {
@@ -112,7 +112,7 @@ public class Detrav_MetaTileEntity_Boiler_Solar_High extends GT_MetaTileEntity_B
                         this.mHadNoWater = true;
                     } else {
                         if (this.mHadNoWater) {
-                            //aBaseMetaTileEntity.doExplosion(2048L);
+                            aBaseMetaTileEntity.doExplosion(2048L);
                             return;
                         }
                         this.mFluid.amount -= 1;
