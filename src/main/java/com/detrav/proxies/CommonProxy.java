@@ -4,7 +4,6 @@ import com.detrav.DetravScannerMod;
 
 import com.detrav.enums.DetravItemList;
 import com.detrav.enums.DetravSimpleItems;
-import com.detrav.events.DetravBlockBreakEventHandler;
 import com.detrav.events.DetravEntityDropEvent;
 import com.detrav.events.DetravLevelUpEvent;
 import com.detrav.events.DetravLoginEventHandler;
@@ -73,7 +72,6 @@ public class CommonProxy implements IGuiHandler {
         //DetravCraftingEventHandler.register();
         DetravEntityDropEvent.register();
         DetravLevelUpEvent.register();
-        DetravBlockBreakEventHandler.register();
         DetravLoginEventHandler.register();
     }
 

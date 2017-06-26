@@ -3,7 +3,6 @@ package com.detrav.proxies;
 import com.detrav.DetravScannerMod;
 import com.detrav.enums.Textures01;
 import com.detrav.events.DetravDrawBlockHighlightEventHandler;
-import com.detrav.events.DetravKeyHandler;
 import com.detrav.gui.DetravGuiProPick;
 import gregtech.api.enums.Textures;
 import net.minecraft.client.Minecraft;
@@ -44,7 +43,6 @@ public class ClientProxy extends CommonProxy {
     public void onPreInit()
     {
         super.onPreInit();
-        DetravKeyHandler.register();
     }
 
     @Override

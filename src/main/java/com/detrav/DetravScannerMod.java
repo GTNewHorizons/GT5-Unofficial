@@ -2,7 +2,6 @@ package com.detrav;
 
 import com.detrav.commands.DetravBiomeScannerCommand;
 import com.detrav.commands.DetravLevelUpCommand;
-import com.detrav.events.DetravBlockBreakEventHandler;
 import com.detrav.events.DetravLoginEventHandler;
 import com.detrav.proxies.CommonProxy;
 import com.detrav.utils.DetravCreativeTab;
