@@ -418,18 +418,6 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void assemblerRecipes(){
-		//Wire Coils
-		ItemStack coil1 = ItemUtils.getItemStackWithMeta(true, "miscutils:itemDehydratorCoil", "coil1", 0, 1);
-		ItemStack coil2 = ItemUtils.getItemStackWithMeta(true, "miscutils:itemDehydratorCoil:1", "coil2", 1, 1);
-		ItemStack coil3 = ItemUtils.getItemStackWithMeta(true, "miscutils:itemDehydratorCoil:2", "coil3", 2, 1);
-		ItemStack coil4 = ItemUtils.getItemStackWithMeta(true, "miscutils:itemDehydratorCoil:3", "coil4", 3, 1);
-
-		GT_Values.RA.addAssemblerRecipe(ItemUtils.getGregtechCircuit(22), ItemUtils.getItemStackWithMeta(true, "miscutils:itemDehydratorCoilWire", "coilWire1", 0, 4), coil1, 50, 16);
-		GT_Values.RA.addAssemblerRecipe(ItemUtils.getGregtechCircuit(22), ItemUtils.getItemStackWithMeta(true, "miscutils:itemDehydratorCoilWire:1", "coilWire2", 1, 4), coil2, 50, 16);
-		GT_Values.RA.addAssemblerRecipe(ItemUtils.getGregtechCircuit(22), ItemUtils.getItemStackWithMeta(true, "miscutils:itemDehydratorCoilWire:2", "coilWire3", 2, 4), coil3, 50, 16);
-		GT_Values.RA.addAssemblerRecipe(ItemUtils.getGregtechCircuit(22), ItemUtils.getItemStackWithMeta(true, "miscutils:itemDehydratorCoilWire:3", "coilWire4", 3, 4), coil4, 50, 16);
-
-
 		//GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 6L), ItemList.Casing_Turbine.get(1L, new Object[0]), ItemList.Casing_Turbine2.get(1L, new Object[0]), 50, 16);
 		//GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 6L), ItemList.Casing_Turbine.get(1L, new Object[0]), ItemList.Casing_Turbine3.get(1L, new Object[0]), 50, 16);
 
@@ -500,7 +488,7 @@ public class RECIPES_GREGTECH {
 		GT_ModHandler.addExtractionRecipe(GregtechItemList.Battery_RE_EV_Cadmium.get(1L, new Object[0]), ItemList.Battery_Hull_HV.get(4L, new Object[0]));
 		GT_ModHandler.addExtractionRecipe(GregtechItemList.Battery_RE_EV_Lithium.get(1L, new Object[0]), ItemList.Battery_Hull_HV.get(4L, new Object[0]));
 	}
-
+	
 	private static void fluidExtractorRecipes(){
 		GT_Values.RA.addFluidExtractionRecipe(ItemUtils.getSimpleStack(Items.ender_pearl), null, FluidUtils.getFluidStack("ender", 250), 10000, 100, 30);
 	}
@@ -518,7 +506,7 @@ public class RECIPES_GREGTECH {
 		GT_Values.RA.addChemicalBathRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 10),
 				FluidUtils.getFluidStack("hydrofluoricacid", 20000),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumTetrafluoride", 5),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumfluoride", 5),
 				null,
 				null,
 				new int[]{},
@@ -551,7 +539,7 @@ public class RECIPES_GREGTECH {
 		GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustUranium233", 4), ItemUtils.getItemStackOfAmountFromOreDict("dustUranium235", 1), null, null, FluidUtils.getFluidStack("hydrofluoricacid", 2000), FluidUtils.getFluidStack("molten.uraniumtetrafluoride", 144*3), null, 3000, 500);
 		//GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("cellFluorine", 1), ItemUtils.getItemStackOfAmountFromOreDict("cellFluorine", 1), null, null, FluidUtils.getFluidStack("molten.uraniumtetrafluoride", 720), FluidUtils.getFluidStack("molten.uraniumhexafluoride", 288), null, 5000, 2000);
 		GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustSteel", 20), ItemUtils.getItemStackOfAmountFromOreDict("dustSilicon", 1), ItemUtils.getItemStackOfAmountFromOreDict("dustNickel", 5), ItemUtils.getItemStackOfAmountFromOreDict("dustAluminium", 4), null, null, ItemUtils.getItemStackOfAmountFromOreDict("dustEglinSteel", 30), 1200, 60);
-	}
+		}
 
 	private static void chemicalReactorRecipes(){
 		GT_Values.RA.addChemicalRecipe(
@@ -568,7 +556,7 @@ public class RECIPES_GREGTECH {
 				null, //Input Stack 2
 				FluidUtils.getFluidStack("hydrofluoricacid", 2500), //Fluid Input
 				FluidUtils.getFluidStack("water", 2500), //Fluid Output
-				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumTetrafluoride", 5), //Output Stack
+				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumfluoride", 5), //Output Stack
 				600*20
 				);
 
@@ -599,8 +587,8 @@ public class RECIPES_GREGTECH {
 
 	private static void blastFurnaceRecipes(){
 		GT_Values.RA.addBlastRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumTetrafluoride", 2),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustBerylliumTetrafluoride", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 2),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustBerylliumFluoride", 1),
 				GT_Values.NF, GT_Values.NF,
 				ItemUtils.getItemStackOfAmountFromOreDict("dustLi2BeF4", 3),
 				null,
@@ -627,9 +615,9 @@ public class RECIPES_GREGTECH {
 				120*20,
 				30);
 	}
-
+	
 	private static void compressorRecipes(){
-		GT_ModHandler.addCompressionRecipe(ItemUtils.getSimpleStack(Items.clay_ball), ItemUtils.getItemStackOfAmountFromOreDict("plateClay", 1));
+		GT_ModHandler.addCompressionRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustSmallClay", 4), ItemUtils.getItemStackOfAmountFromOreDict("plateClay", 1));
 	}
 
 	private static void macerationRecipes(){
