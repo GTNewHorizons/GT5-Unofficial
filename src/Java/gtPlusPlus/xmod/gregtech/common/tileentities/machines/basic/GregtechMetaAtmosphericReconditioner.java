@@ -14,6 +14,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -29,14 +30,14 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 	private float mDamageFactorHigh =  (float) 0.6000000238418579;
 
 	public GregtechMetaAtmosphericReconditioner(int aID, String aName, String aNameRegional, int aTier) {
-		super(aID, aName, aNameRegional, aTier, 1, "Making sure you don't live in Gwalior", 1, 1, "Massfabricator.png", "", 
+		super(aID, aName, aNameRegional, aTier, 1, "Making sure you don't live in Gwalior", 1, 1, "Recycler.png", "", 
 				new ITexture[]{
 						new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
 						new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB),
-						new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_MASSFAB_ACTIVE),
-						new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_MASSFAB),
-						new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TOP_MASSFAB_ACTIVE),
-						new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TOP_MASSFAB),
+						new GT_RenderedTexture(TexturesGtBlock.Overlay_MatterFab_Active),
+						new GT_RenderedTexture(TexturesGtBlock.Overlay_MatterFab),
+						new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Vent_Fast),
+						new GT_RenderedTexture(TexturesGtBlock.Overlay_Machine_Vent),
 						new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB_ACTIVE),
 						new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_BOTTOM_MASSFAB)
 		});
@@ -207,7 +208,7 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 									if (this.mInventory.length > 0){
 										for (int i=0;i<this.mInventory.length;i++){
 											if (this.mInventory[i] != null){
-												Utils.LOG_INFO("Pos:"+i+" | "+"item:"+this.mInventory[i].getDisplayName());
+												//Utils.LOG_INFO("Pos:"+i+" | "+"item:"+this.mInventory[i].getDisplayName());
 											}
 										}
 									}
