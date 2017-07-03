@@ -208,6 +208,7 @@ public final class ModItems {
 	public static itemDehydratorCoilWire itemDehydratorCoilWire;
 	public static itemDehydratorCoil itemDehydratorCoil;
 
+	public static Item itemAirFilter;
 
 
 	public static final void init(){
@@ -542,6 +543,8 @@ public final class ModItems {
 		itemBoilerChassis = new itemBoilerChassis();
 		itemDehydratorCoilWire = new itemDehydratorCoilWire();
 		itemDehydratorCoil = new itemDehydratorCoil();
+		
+		itemAirFilter = new ItemAirFilter();
 
 		//Misc Items
 		Item tI;
