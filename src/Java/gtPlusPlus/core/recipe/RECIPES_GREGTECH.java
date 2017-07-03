@@ -506,7 +506,7 @@ public class RECIPES_GREGTECH {
 		GT_Values.RA.addChemicalBathRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 10),
 				FluidUtils.getFluidStack("hydrofluoricacid", 20000),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumfluoride", 5),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 5),
 				null,
 				null,
 				new int[]{},
@@ -556,7 +556,7 @@ public class RECIPES_GREGTECH {
 				null, //Input Stack 2
 				FluidUtils.getFluidStack("hydrofluoricacid", 2500), //Fluid Input
 				FluidUtils.getFluidStack("water", 2500), //Fluid Output
-				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumfluoride", 5), //Output Stack
+				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 5), //Output Stack
 				600*20
 				);
 

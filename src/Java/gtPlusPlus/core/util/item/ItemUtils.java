@@ -556,4 +556,30 @@ public class ItemUtils {
 		return outputs;
 	}
 
+	private static String getModId(Item item) {
+		GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(item);
+		return id == null || id.modId.equals("") ? "minecraft" : id.modId;
+	}
+
+	public static String getModId(ItemStack key) {
+		return getModId(key.getItem());
+	}
+	
+	//Take 2 - GT Dusts
+	public static ItemStack getGregtechDust(final String oredictName, final int amount){
+		final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
+		if (!oreDictList.isEmpty()){
+			ItemStack returnvalue;
+			for (int xrc=0;xrc<oreDictList.size();xrc++){
+				String modid = getModId(oreDictList.get(xrc).getItem());
+				if (modid == "gregtech" || modid == CORE.MODID){
+					returnvalue = oreDictList.get(xrc).copy();
+					returnvalue.stackSize = amount;
+					return returnvalue;
+				}
+			}			
+		}
+		return getItemStackOfAmountFromOreDictNoBroken(oredictName, amount);
+	}
+
 }

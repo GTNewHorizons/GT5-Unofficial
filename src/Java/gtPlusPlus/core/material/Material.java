@@ -320,7 +320,7 @@ public class Material {
 	}
 
 	public final ItemStack getDust(final int stacksize){
-		return ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dust"+this.unlocalizedName, stacksize);
+		return ItemUtils.getGregtechDust("dust"+this.unlocalizedName, stacksize);
 	}
 
 	public final ItemStack getSmallDust(final int stacksize){
