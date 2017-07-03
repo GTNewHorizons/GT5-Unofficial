@@ -565,20 +565,38 @@ public class ItemUtils {
 		return getModId(key.getItem());
 	}
 	
-	//Take 2 - GT Dusts
+	//Take 2 - GT/GT++ Dusts
 	public static ItemStack getGregtechDust(final String oredictName, final int amount){
 		final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
 		if (!oreDictList.isEmpty()){
 			ItemStack returnvalue;
 			for (int xrc=0;xrc<oreDictList.size();xrc++){
 				String modid = getModId(oreDictList.get(xrc).getItem());
-				if (modid == "gregtech" || modid == CORE.MODID){
+				if (modid.equals("gregtech") || modid.equals(CORE.MODID)){
 					returnvalue = oreDictList.get(xrc).copy();
 					returnvalue.stackSize = amount;
 					return returnvalue;
 				}
 			}			
 		}
+		return getNonTinkersDust(oredictName, amount);
+	}
+	
+	//Anything But Tinkers Dust
+	public static ItemStack getNonTinkersDust(final String oredictName, final int amount){
+		final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
+		if (!oreDictList.isEmpty()){
+			ItemStack returnvalue;
+			for (int xrc=0;xrc<oreDictList.size();xrc++){
+				String modid = getModId(oreDictList.get(xrc).getItem());
+				if (!modid.equals("tconstruct")){
+					returnvalue = oreDictList.get(xrc).copy();
+					returnvalue.stackSize = amount;
+					return returnvalue;
+				}
+			}			
+		}
+		//If only Tinkers dust exists, bow down and just use it.
 		return getItemStackOfAmountFromOreDictNoBroken(oredictName, amount);
 	}
 
