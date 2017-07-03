@@ -14,7 +14,10 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.xmod.gregtech.api.gui.basic.CONTAINER_PollutionCleaner;
+import gtPlusPlus.xmod.gregtech.api.gui.basic.GUI_PollutionCleaner;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -30,7 +33,7 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 	private float mDamageFactorHigh =  (float) 0.6000000238418579;
 
 	public GregtechMetaAtmosphericReconditioner(int aID, String aName, String aNameRegional, int aTier) {
-		super(aID, aName, aNameRegional, aTier, 1, "Making sure you don't live in Gwalior", 1, 1, "Recycler.png", "", 
+		super(aID, aName, aNameRegional, aTier, 2, "Making sure you don't live in Gwalior - Uses 2A", 2, 0, "Recycler.png", "", 
 				new ITexture[]{
 						new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB_ACTIVE),
 						new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_SIDE_MASSFAB),
@@ -44,11 +47,11 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 	}
 
 	public GregtechMetaAtmosphericReconditioner(String aName, int aTier, String aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
-		super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
+		super(aName, aTier, 2, aDescription, aTextures, 2, 0, aGUIName, aNEIName);
 	}
 
 	public GregtechMetaAtmosphericReconditioner(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
-		super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
+		super(aName, aTier, 2, aDescription, aTextures, 2, 0, aGUIName, aNEIName);
 	}
 
 	@Override
@@ -115,23 +118,21 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 			}
 
 			//Power Drain
-
-			if (aTick % 1L == 0L){
-				long drainEU = V[mTier];
-				if (aBaseMetaTileEntity.isActive() && aBaseMetaTileEntity.getStoredEU() >= drainEU){
-					if(aBaseMetaTileEntity.decreaseStoredEnergyUnits(drainEU, false)){
-						Utils.LOG_INFO("Draining "+drainEU+" EU");
-					}
-				}
-				else if (!aBaseMetaTileEntity.isActive() && aBaseMetaTileEntity.getStoredEU() >= drainEU/4){
-					if(aBaseMetaTileEntity.decreaseStoredEnergyUnits((drainEU/4), false)){
-						//Utils.LOG_INFO("Draining "+(drainEU/4)+" EU");
-					}
-				}
-				else {
-					aBaseMetaTileEntity.setActive(false);
+			long drainEU = V[mTier];
+			if (aBaseMetaTileEntity.isActive() && aBaseMetaTileEntity.getStoredEU() >= drainEU){
+				if(aBaseMetaTileEntity.decreaseStoredEnergyUnits(drainEU, false)){
+					Utils.LOG_INFO("Draining "+drainEU+" EU");
 				}
 			}
+			else if (!aBaseMetaTileEntity.isActive() && aBaseMetaTileEntity.getStoredEU() >= drainEU/4){
+				if(aBaseMetaTileEntity.decreaseStoredEnergyUnits((drainEU/4), false)){
+					//Utils.LOG_INFO("Draining "+(drainEU/4)+" EU");
+				}
+			}
+			else {
+				aBaseMetaTileEntity.setActive(false);
+			}
+
 
 			//Only try once/sec.
 			if (aTick % 20L == 0L){
@@ -342,6 +343,26 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 		GT_Pollution.addPollution(this.getBaseMetaTileEntity(), -toRemove);
 		int after = getCurrentChunkPollution();
 		return (after<before);	
+	}
+
+	
+	
+	
+	
+	@Override
+	public Object getServerGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
+		return new CONTAINER_PollutionCleaner(aPlayerInventory, aBaseMetaTileEntity);
+	}
+
+	@Override
+	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
+		return new GUI_PollutionCleaner(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(),	this.mGUIName);
+	}
+
+	@Override
+	public boolean canInsertItem(int aIndex, ItemStack aStack, int aSide) {
+		//If trying to go to filter slot, return false
+		return super.canInsertItem(aIndex, aStack, aSide);
 	}
 
 }
