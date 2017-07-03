@@ -4,6 +4,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaAtmosphericReconditioner;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaPollutionCreator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaPollutionDetector;
 
 public class GregtechPollutionDevices {
@@ -20,6 +21,7 @@ public class GregtechPollutionDevices {
 	private static void run1(){
 		//759
 		GregtechItemList.Pollution_Detector.set(new GregtechMetaPollutionDetector(756, "pollutiondetector.01.tier.single", "Pollution Detection Device", 0, "Tells you if you're living in Gwalior yet.", 0).getStackForm(1L));
+		GregtechItemList.Pollution_Creator.set(new GregtechMetaPollutionCreator(951, "pollutioncreator.01.tier.single", "Smog Device", 4, "Polluting the skies.", 0).getStackForm(1L));
 		
 		GregtechItemList.Pollution_Cleaner_ULV.set(new GregtechMetaAtmosphericReconditioner(757, "pollutioncleaner.01.tier.single", "Pollution Scrubber", 0).getStackForm(1L));
 		GregtechItemList.Pollution_Cleaner_LV.set(new GregtechMetaAtmosphericReconditioner(758, "pollutioncleaner.02.tier.single", "Upgraded Pollution Scrubber", 1).getStackForm(1L));
