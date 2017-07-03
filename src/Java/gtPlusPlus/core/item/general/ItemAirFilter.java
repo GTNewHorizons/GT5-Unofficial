@@ -7,9 +7,11 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 
 public class ItemAirFilter extends Item {
@@ -22,6 +24,7 @@ public class ItemAirFilter extends Item {
 		String unlocalizedName = "itemAirFilter";
 		this.setUnlocalizedName(unlocalizedName);
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
+		this.setMaxStackSize(1);
 		GameRegistry.registerItem(this, unlocalizedName);
 	}
 
@@ -70,6 +73,15 @@ public class ItemAirFilter extends Item {
 		return HEX_OxFFFFFF;
 	}
 	
+	private static boolean createNBT(ItemStack rStack){
+		final NBTTagCompound tagMain = new NBTTagCompound();
+		final NBTTagCompound tagNBT = new NBTTagCompound();
+		tagNBT.setLong("Damage", 0);
+		tagMain.setTag("AirFilter", tagNBT);		
+		rStack.setTagCompound(tagMain);		
+		return true;
+	}
+	
 	public static final long getFilterDamage(final ItemStack aStack) {
 		NBTTagCompound aNBT = aStack.getTagCompound();
 		if (aNBT != null) {
@@ -77,6 +89,9 @@ public class ItemAirFilter extends Item {
 			if (aNBT != null) {
 				return aNBT.getLong("Damage");
 			}
+		}
+		else {
+		createNBT(aStack);
 		}
 		return 0L;
 	}
@@ -95,7 +110,26 @@ public class ItemAirFilter extends Item {
 
 	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
-		return (stack.getItemDamage() == 0 ? 20 : 50);		
+		if (stack.getTagCompound() == null){
+			createNBT(stack);
+        }
+		double currentDamage = getFilterDamage(stack);
+		double meta = stack.getItemDamage() == 0 ? 50 : 150;
+		double durabilitypercent = currentDamage / meta;		
+        return  durabilitypercent;
+	}
+
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
+		list.add(EnumChatFormatting.GRAY+"An Air filter for Atmospheric Reconditioning.");
+		int maxDamage = (stack.getItemDamage() == 0 ? 50 : 150);
+		list.add(EnumChatFormatting.GRAY+""+(maxDamage-getFilterDamage(stack))+"/"+maxDamage+" uses left.");
+		super.addInformation(stack, player, list, bool);
+	}
+
+	@Override
+	public boolean showDurabilityBar(ItemStack stack) {
+		return true;
 	}
 
 }
