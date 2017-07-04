@@ -432,7 +432,7 @@ public class FluidUtils {
 		if (dustStack == null){
 			dustStack = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dust"+Utils.sanitizeString(localizedName), 1);
 		}
-		if ((FluidUtils.getFluidStack(unlocalizedName.toLowerCase(), 1) == null) && ((dustStack != null) || (dustStack2 != null))){
+		if ((FluidUtils.getFluidStack(unlocalizedName.toLowerCase(), 1) == null)/* && ((dustStack != null) || (dustStack2 != null))*/){
 			Utils.LOG_WARNING("Generating our own fluid.");
 
 			//Generate a Cell if we need to

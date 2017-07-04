@@ -19,6 +19,7 @@ import gtPlusPlus.core.item.base.misc.BaseItemMisc;
 import gtPlusPlus.core.item.base.misc.BaseItemMisc.MiscTypes;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate;
 import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
+import gtPlusPlus.core.item.chemistry.CoalTar;
 import gtPlusPlus.core.item.effects.RarityUncommon;
 import gtPlusPlus.core.item.general.*;
 import gtPlusPlus.core.item.general.chassis.*;
@@ -545,6 +546,9 @@ public final class ModItems {
 		itemDehydratorCoil = new itemDehydratorCoil();
 		
 		itemAirFilter = new ItemAirFilter();
+		
+		//Chemistry
+		CoalTar.run();
 
 		//Misc Items
 		Item tI;
