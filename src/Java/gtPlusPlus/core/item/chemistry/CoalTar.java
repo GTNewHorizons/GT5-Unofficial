@@ -7,6 +7,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.common.GT_Proxy;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 
@@ -14,9 +15,28 @@ public class CoalTar {
 
 	public static void run(){
 
+		//Ethanol
+		// v - Dehydrate cells to remove water
+		//Create Ethylene
+		FluidUtils.generateFluidNonMolten("Ethylene", "Ethylene", -103, new short[]{255, 255, 255, 100}, null, null);
+				
+		//Create Benzene - (Toluene + Hydrogen | 95% Benzene / 5% methane)
+		FluidUtils.generateFluidNonMolten("Benzene", "Benzene", 81, new short[]{150, 75, 0, 100}, null, null);
+		
 		//Create Ethylbenzene - Ethylbenzene is produced in on a large scale by combining benzene and ethylene in an acid-catalyzed chemical reaction
+		//Use Chemical Reactor
 		FluidUtils.generateFluidNonMolten("Ethylbenzene", "Ethylbenzene", 136, new short[]{255, 255, 255, 100}, null, null);
-		//This gets used later
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		//Create Coal Tar
 		FluidUtils.generateFluidNonMolten("CoalTar", "Coal Tar", 450, new short[]{32, 32, 32, 100}, null, null);
@@ -44,6 +64,11 @@ public class CoalTar {
 		// v - Dehydrate at 180C+
 		
 		//Create Phthalic Anhydride
+		ItemUtils.generateSpecialUseDusts("PhthalicAnhydride", "Phthalic Anhydride", Utils.rgbtoHexValue(175, 175, 175));
+		
+		
+		//Create 2-Ethylanthraquinone
+		FluidUtils.generateFluidNonMolten("2Ethylanthraquinone", "2-Ethylanthraquinone", 415, new short[]{227, 255, 159, 100}, null, null);
 		
 		
 		
