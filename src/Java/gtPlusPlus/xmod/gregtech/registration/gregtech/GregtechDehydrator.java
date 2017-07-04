@@ -10,6 +10,7 @@ import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.recipe.RECIPE_CONSTANTS;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.recipe.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.item.ItemStack;
 
@@ -95,17 +96,47 @@ public class GregtechDehydrator
 				"UNBOXINATOR",
 				null).getStackForm(1L));
 
-		//GregtechItemList.GT_Dehydrator_EV.set(new GregtechMetaTileEntitySolarGenerator(813, "dehydrator.tier.01", "Extreme Voltage Chemical Dehydrator", 4).getStackForm(1L));
-		//GregtechItemList..set(new GregtechMetaTileEntitySolarGenerator(814, "dehydrator.tier.02", "Insane Voltage Chemical Dehydrator", 5).getStackForm(1L));
-		//GregtechItemList..set(new GregtechMetaTileEntitySolarGenerator(815, "dehydrator.tier.03", "Ludicrous Voltage Chemical Dehydrator", 6).getStackForm(1L));
-		//GregtechItemList..set(new GregtechMetaTileEntitySolarGenerator(816, "dehydrator.tier.04", "ZPM Voltage Chemical Dehydrator", 7).getStackForm(1L));
-
-
+		ItemStack coilWire1 = ItemUtils.getItemStackWithMeta(true, "miscutils:itemDehydratorCoilWire", "coilWire1", 0, 4);
+		ItemStack coilWire2 = ItemUtils.getItemStackWithMeta(true, "miscutils:itemDehydratorCoilWire:1", "coilWire2", 1, 4);
+		ItemStack coilWire3 = ItemUtils.getItemStackWithMeta(true, "miscutils:itemDehydratorCoilWire:2", "coilWire3", 2, 4);
+		ItemStack coilWire4 = ItemUtils.getItemStackWithMeta(true, "miscutils:itemDehydratorCoilWire:3", "coilWire4", 3, 4);
 		ItemStack coilT1 = ItemUtils.getItemStackWithMeta(true, "miscutils:itemDehydratorCoil", "coil1", 0, 1);
 		ItemStack coilT2 = ItemUtils.getItemStackWithMeta(true, "miscutils:itemDehydratorCoil:1", "coil2", 1, 1);
 		ItemStack coilT3 = ItemUtils.getItemStackWithMeta(true, "miscutils:itemDehydratorCoil:2", "coil3", 2, 1);
 		ItemStack coilT4 = ItemUtils.getItemStackWithMeta(true, "miscutils:itemDehydratorCoil:3", "coil4", 3, 1);
-
+		ItemStack spoolT1 = ItemUtils.getItemStackOfAmountFromOreDict("pipeMediumBronze", 1);
+		ItemStack spoolT2 = ItemUtils.getItemStackOfAmountFromOreDict("pipeMediumSteel", 1);
+		ItemStack spoolT3 = ItemUtils.getItemStackOfAmountFromOreDict("pipeMediumStainlessSteel", 1);
+		ItemStack spoolT4 = ItemUtils.getItemStackOfAmountFromOreDict("pipeMediumTitanium", 1);
+		
+		//Make some coils by wrapping wire around a spool.
+		GT_Values.RA.addAssemblerRecipe(
+				coilWire1,
+				spoolT1,
+				coilT1,
+				8*20,
+				120);
+		GT_Values.RA.addAssemblerRecipe(
+				coilWire2,
+				spoolT2,
+				coilT2,
+				8*20,
+				240);
+		GT_Values.RA.addAssemblerRecipe(
+				coilWire3,
+				spoolT3,
+				coilT3,
+				8*20,
+				480);
+		GT_Values.RA.addAssemblerRecipe(
+				coilWire4,
+				spoolT4,
+				coilT4,
+				8*20,
+				960);		
+		
+		
+		//Add recipes for the Dehydrators.
 		GT_ModHandler.addCraftingRecipe(
 		GregtechItemList.GT_Dehydrator_EV.get(1L, new Object[0]),
 		GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
