@@ -170,7 +170,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Pollution_Cleaner_IV, Pollution_Cleaner_LuV, Pollution_Cleaner_ZPM, Pollution_Cleaner_UV, Pollution_Cleaner_MAX, 
 	
 	//Debug machine
-	Pollution_Creator
+	Pollution_Creator, 
+	
+	//Basically is an automatic Cauldron
+	SimpleDustWasher
 	;
 
 	public static final GregtechItemList[]

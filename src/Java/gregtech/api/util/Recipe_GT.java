@@ -248,6 +248,10 @@ public class Recipe_GT extends GT_Recipe{
 		//Fission Fuel Plant Recipes
 		//public static final GT_Recipe_Map sFissionFuelProcessing = new GT_Recipe_Map(new HashSet<GT_Recipe>(50), "gt.recipe.fissionfuel", "Fission Fuel Processing", null, RES_PATH_GUI + "basicmachines/LFTR", 0, 0, 0, 9, 1, E, 1, E, true, true);
 
+		//Basic Washer Map
+		public static final GT_Recipe_Map sSimpleWasherRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(3), "gt.recipe.simplewasher", "Simple Dust Washer", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 1, 1, 0, 0, 1, E, 1, E, true, true);
+        
+		
 		/**
 		 * HashMap of Recipes based on their Items
 		 */

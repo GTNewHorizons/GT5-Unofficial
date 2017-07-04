@@ -70,6 +70,7 @@ public class COMPAT_HANDLER {
 			GregtechTreeFarmerTE.run();
 			GregtechIndustrialTreeFarm.run();
 			GregtechIndustrialSifter.run();
+			GregtechSimpleWasher.run();
 		}
 
 	}
