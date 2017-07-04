@@ -14,9 +14,46 @@ public class CoalTar {
 
 	public static void run(){
 
+		//Create Ethylbenzene - Ethylbenzene is produced in on a large scale by combining benzene and ethylene in an acid-catalyzed chemical reaction
+		FluidUtils.generateFluidNonMolten("Ethylbenzene", "Ethylbenzene", 136, new short[]{255, 255, 255, 100}, null, null);
+		//This gets used later
+		
 		//Create Coal Tar
 		FluidUtils.generateFluidNonMolten("CoalTar", "Coal Tar", 450, new short[]{32, 32, 32, 100}, null, null);
-
+		
+		// v - Distill (70% Tar oil/10% Naphtha/20% Ethylbenzene)
+		
+		//Create Coal Tar Oil
+		FluidUtils.generateFluidNonMolten("CoalTarOil", "Coal Tar Oil", 240, new short[]{240, 240, 150, 100}, null, null);
+		
+		// v - Wash With Sulfuric Acid
+		
+		//Create Sulfuric Coal Tar Oil
+		FluidUtils.generateFluidNonMolten("SulfuricCoalTarOil", "Sulfuric Coal Tar Oil", 240, new short[]{250, 170, 12, 100}, null, null);
+		
+		// v - Distill (No loss, just time consuming)
+		
+		//Create Naphthalene
+		FluidUtils.generateFluidNonMolten("Naphthalene", "Naphthalene", 115, new short[]{210, 185, 135, 100}, null, null);
+		
+		// v - Oxidize with mercury and nitric acid
+		
+		//Create Phthalic Acid
+		FluidUtils.generateFluidNonMolten("PhthalicAcid", "Phthalic Acid", 207, new short[]{210, 220, 210, 100}, null, null);
+		
+		// v - Dehydrate at 180C+
+		
+		//Create Phthalic Anhydride
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		//Pyrolyse
 		//Lignite Coal
 		GT_Values.RA.addPyrolyseRecipe(
