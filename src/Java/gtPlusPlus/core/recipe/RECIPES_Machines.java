@@ -15,153 +15,153 @@ public class RECIPES_Machines {
 
 	//Outputs
 	//static ItemStack RECIPE_BufferCore_ULV = new ItemStack(GregtechEnergyBuffer.itemBufferCore);
-	static ItemStack RECIPE_SteamCondenser;
-	static ItemStack RECIPE_IronBlastFurnace;
-	static ItemStack RECIPE_IronPlatedBricks;
-	static ItemStack RECIPE_Buffer_ULV = GregtechItemList.Energy_Buffer_1by1_ULV.get(1);
-	static ItemStack RECIPE_Buffer_LV = GregtechItemList.Energy_Buffer_1by1_LV.get(1);
-	static ItemStack RECIPE_Buffer_MV = GregtechItemList.Energy_Buffer_1by1_MV.get(1);
-	static ItemStack RECIPE_Buffer_HV = GregtechItemList.Energy_Buffer_1by1_HV.get(1);
-	static ItemStack RECIPE_Buffer_EV = GregtechItemList.Energy_Buffer_1by1_EV.get(1);
-	static ItemStack RECIPE_Buffer_IV = GregtechItemList.Energy_Buffer_1by1_IV.get(1);
-	static ItemStack RECIPE_Buffer_LuV = GregtechItemList.Energy_Buffer_1by1_LuV.get(1);
-	static ItemStack RECIPE_Buffer_ZPM = GregtechItemList.Energy_Buffer_1by1_ZPM.get(1);
-	static ItemStack RECIPE_Buffer_UV = GregtechItemList.Energy_Buffer_1by1_UV.get(1);
-	static ItemStack RECIPE_Buffer_MAX = GregtechItemList.Energy_Buffer_1by1_MAX.get(1);
+	public static ItemStack RECIPE_SteamCondenser;
+	public static ItemStack RECIPE_IronBlastFurnace;
+	public static ItemStack RECIPE_IronPlatedBricks;
+	public static ItemStack RECIPE_Buffer_ULV = GregtechItemList.Energy_Buffer_1by1_ULV.get(1);
+	public static ItemStack RECIPE_Buffer_LV = GregtechItemList.Energy_Buffer_1by1_LV.get(1);
+	public static ItemStack RECIPE_Buffer_MV = GregtechItemList.Energy_Buffer_1by1_MV.get(1);
+	public static ItemStack RECIPE_Buffer_HV = GregtechItemList.Energy_Buffer_1by1_HV.get(1);
+	public static ItemStack RECIPE_Buffer_EV = GregtechItemList.Energy_Buffer_1by1_EV.get(1);
+	public static ItemStack RECIPE_Buffer_IV = GregtechItemList.Energy_Buffer_1by1_IV.get(1);
+	public static ItemStack RECIPE_Buffer_LuV = GregtechItemList.Energy_Buffer_1by1_LuV.get(1);
+	public static ItemStack RECIPE_Buffer_ZPM = GregtechItemList.Energy_Buffer_1by1_ZPM.get(1);
+	public static ItemStack RECIPE_Buffer_UV = GregtechItemList.Energy_Buffer_1by1_UV.get(1);
+	public static ItemStack RECIPE_Buffer_MAX = GregtechItemList.Energy_Buffer_1by1_MAX.get(1);
 	//Industrial Centrifuge
-	static ItemStack RECIPE_IndustrialCentrifugeController;
-	static ItemStack RECIPE_IndustrialCentrifugeCasing;
+	public static ItemStack RECIPE_IndustrialCentrifugeController;
+	public static ItemStack RECIPE_IndustrialCentrifugeCasing;
 	//Industrial Coke Oven
-	static ItemStack RECIPE_IndustrialCokeOvenController;
-	static ItemStack RECIPE_IndustrialCokeOvenFrame;
-	static ItemStack RECIPE_IndustrialCokeOvenCasingA;
-	static ItemStack RECIPE_IndustrialCokeOvenCasingB;
+	public static ItemStack RECIPE_IndustrialCokeOvenController;
+	public static ItemStack RECIPE_IndustrialCokeOvenFrame;
+	public static ItemStack RECIPE_IndustrialCokeOvenCasingA;
+	public static ItemStack RECIPE_IndustrialCokeOvenCasingB;
 	//Industrial Electrolyzer
-	static ItemStack RECIPE_IndustrialElectrolyzerController;
-	static ItemStack RECIPE_IndustrialElectrolyzerFrame;
+	public static ItemStack RECIPE_IndustrialElectrolyzerController;
+	public static ItemStack RECIPE_IndustrialElectrolyzerFrame;
 	//Industrial Material Press
-	static ItemStack RECIPE_IndustrialMaterialPressController;
-	static ItemStack RECIPE_IndustrialMaterialPressFrame;
+	public static ItemStack RECIPE_IndustrialMaterialPressController;
+	public static ItemStack RECIPE_IndustrialMaterialPressFrame;
 	//Industrial Maceration Stack
-	static ItemStack RECIPE_IndustrialMacerationStackController;
-	static ItemStack RECIPE_IndustrialMacerationStackFrame;
+	public static ItemStack RECIPE_IndustrialMacerationStackController;
+	public static ItemStack RECIPE_IndustrialMacerationStackFrame;
 	//Industrial Wire Factory
-	static ItemStack RECIPE_IndustrialWireFactoryController;
-	static ItemStack RECIPE_IndustrialWireFactoryFrame;
+	public static ItemStack RECIPE_IndustrialWireFactoryController;
+	public static ItemStack RECIPE_IndustrialWireFactoryFrame;
 	//Industrial Multi Tank
-	static ItemStack RECIPE_IndustrialMultiTankController;
-	static ItemStack RECIPE_IndustrialMultiTankFrame;
+	public static ItemStack RECIPE_IndustrialMultiTankController;
+	public static ItemStack RECIPE_IndustrialMultiTankFrame;
 	//Industrial Matter Fabricator
-	static ItemStack RECIPE_IndustrialMatterFabController;
-	static ItemStack RECIPE_IndustrialMatterFabFrame;
-	static ItemStack RECIPE_IndustrialMatterFabCoil;
+	public static ItemStack RECIPE_IndustrialMatterFabController;
+	public static ItemStack RECIPE_IndustrialMatterFabFrame;
+	public static ItemStack RECIPE_IndustrialMatterFabCoil;
 	//Industrial Blast Smelter
-	static ItemStack RECIPE_IndustrialBlastSmelterController;
-	static ItemStack RECIPE_IndustrialBlastSmelterFrame;
-	static ItemStack RECIPE_IndustrialBlastSmelterCoil;
+	public static ItemStack RECIPE_IndustrialBlastSmelterController;
+	public static ItemStack RECIPE_IndustrialBlastSmelterFrame;
+	public static ItemStack RECIPE_IndustrialBlastSmelterCoil;
 	//Industrial Sieve
-	static ItemStack RECIPE_IndustrialSieveController;
-	static ItemStack RECIPE_IndustrialSieveFrame;
-	static ItemStack RECIPE_IndustrialSieveGrate;
+	public static ItemStack RECIPE_IndustrialSieveController;
+	public static ItemStack RECIPE_IndustrialSieveFrame;
+	public static ItemStack RECIPE_IndustrialSieveGrate;
 	//Industrial Tree Farmer
-	static ItemStack RECIPE_TreeFarmController;
-	static ItemStack RECIPE_TreeFarmFrame;
+	public static ItemStack RECIPE_TreeFarmController;
+	public static ItemStack RECIPE_TreeFarmFrame;
 
 
 	//Buffer Cores
-	static ItemStack RECIPE_BufferCore_ULV = ItemUtils.getItemStack("miscutils:item.itemBufferCore1", 1);
-	static ItemStack RECIPE_BufferCore_LV = ItemUtils.getItemStack("miscutils:item.itemBufferCore2", 1);
-	static ItemStack RECIPE_BufferCore_MV = ItemUtils.getItemStack("miscutils:item.itemBufferCore3", 1);
-	static ItemStack RECIPE_BufferCore_HV = ItemUtils.getItemStack("miscutils:item.itemBufferCore4", 1);
-	static ItemStack RECIPE_BufferCore_EV = ItemUtils.getItemStack("miscutils:item.itemBufferCore5", 1);
-	static ItemStack RECIPE_BufferCore_IV = ItemUtils.getItemStack("miscutils:item.itemBufferCore6", 1);
-	static ItemStack RECIPE_BufferCore_LuV = ItemUtils.getItemStack("miscutils:item.itemBufferCore7", 1);
-	static ItemStack RECIPE_BufferCore_ZPM = ItemUtils.getItemStack("miscutils:item.itemBufferCore8", 1);
-	static ItemStack RECIPE_BufferCore_UV = ItemUtils.getItemStack("miscutils:item.itemBufferCore9", 1);
-	static ItemStack RECIPE_BufferCore_MAX = ItemUtils.getItemStack("miscutils:item.itemBufferCore10", 1);
+	public static ItemStack RECIPE_BufferCore_ULV = ItemUtils.getItemStack("miscutils:item.itemBufferCore1", 1);
+	public static ItemStack RECIPE_BufferCore_LV = ItemUtils.getItemStack("miscutils:item.itemBufferCore2", 1);
+	public static ItemStack RECIPE_BufferCore_MV = ItemUtils.getItemStack("miscutils:item.itemBufferCore3", 1);
+	public static ItemStack RECIPE_BufferCore_HV = ItemUtils.getItemStack("miscutils:item.itemBufferCore4", 1);
+	public static ItemStack RECIPE_BufferCore_EV = ItemUtils.getItemStack("miscutils:item.itemBufferCore5", 1);
+	public static ItemStack RECIPE_BufferCore_IV = ItemUtils.getItemStack("miscutils:item.itemBufferCore6", 1);
+	public static ItemStack RECIPE_BufferCore_LuV = ItemUtils.getItemStack("miscutils:item.itemBufferCore7", 1);
+	public static ItemStack RECIPE_BufferCore_ZPM = ItemUtils.getItemStack("miscutils:item.itemBufferCore8", 1);
+	public static ItemStack RECIPE_BufferCore_UV = ItemUtils.getItemStack("miscutils:item.itemBufferCore9", 1);
+	public static ItemStack RECIPE_BufferCore_MAX = ItemUtils.getItemStack("miscutils:item.itemBufferCore10", 1);
 
 
 	//Wire
-	static String wireTier1 = "wireGt08Lead";
-	static String wireTier2 = "wireGt08Tin";
-	static String wireTier3 = "wireGt08Copper";
-	static String wireTier4 = "wireGt08Gold";
-	static String wireTier5 = "wireGt08Aluminium";
-	static String wireTier6 = "wireGt08Tungsten";
-	static String wireTier7 = "wireGt08Naquadah";
-	static String wireTier8 = "wireGt08Osmium";
-	static String wireTier9 = "wireGt08Superconductor";
-	static String wireTier10 = "wireGt16Superconductor";
+	public static String wireTier1 = "wireGt08Lead";
+	public static String wireTier2 = "wireGt08Tin";
+	public static String wireTier3 = "wireGt08Copper";
+	public static String wireTier4 = "wireGt08Gold";
+	public static String wireTier5 = "wireGt08Aluminium";
+	public static String wireTier6 = "wireGt08Tungsten";
+	public static String wireTier7 = "wireGt08Naquadah";
+	public static String wireTier8 = "wireGt08Osmium";
+	public static String wireTier9 = "wireGt08Superconductor";
+	public static String wireTier10 = "wireGt16Superconductor";
 
 	//Wire
-	static String cableTier1 = "cableGt04Lead";
-	static String cableTier2 = "cableGt04Tin";
-	static String cableTier3 = "cableGt04Copper";
-	static String cableTier4 = "cableGt04Gold";
-	static String cableTier5 = "cableGt04Aluminium";
-	static String cableTier6 = "cableGt04Tungsten";
-	static String cableTier7 = "cableGt04Naquadah";
-	static String cableTier8 = "cableGt04Osmium";
-	static String cableTier9 = "cableGt04NiobiumTitanium";
-	static String cableTier10 = "cableGt08NiobiumTitanium";
+	public static String cableTier1 = "cableGt04Lead";
+	public static String cableTier2 = "cableGt04Tin";
+	public static String cableTier3 = "cableGt04Copper";
+	public static String cableTier4 = "cableGt04Gold";
+	public static String cableTier5 = "cableGt04Aluminium";
+	public static String cableTier6 = "cableGt04Tungsten";
+	public static String cableTier7 = "cableGt04Naquadah";
+	public static String cableTier8 = "cableGt04Osmium";
+	public static String cableTier9 = "cableGt04NiobiumTitanium";
+	public static String cableTier10 = "cableGt08NiobiumTitanium";
 
 
 	//Plates
-	static String plateTier1 = "plateLead";
-	static String plateTier2 = "plateTin";
-	static String plateTier3 = "plateCopper";
-	static String plateTier4 = "plateGold";
-	static String plateTier5 = "plateAluminium";
-	static String plateTier6 = "plateMaragingSteel250";
-	static String plateTier7 = "plateTantalloy61";
-	static String plateTier8 = "plateInconel792";
-	static String plateTier9 = "plateZeron100";
-	static String plateTier10 = "plateNaquadahEnriched";
-	static String plateTier11 = "plateNeutronium";
+	public static String plateTier1 = "plateLead";
+	public static String plateTier2 = "plateTin";
+	public static String plateTier3 = "plateCopper";
+	public static String plateTier4 = "plateGold";
+	public static String plateTier5 = "plateAluminium";
+	public static String plateTier6 = "plateMaragingSteel250";
+	public static String plateTier7 = "plateTantalloy61";
+	public static String plateTier8 = "plateInconel792";
+	public static String plateTier9 = "plateZeron100";
+	public static String plateTier10 = "plateNaquadahEnriched";
+	public static String plateTier11 = "plateNeutronium";
 
 	//rods
-	static String rodTier1 = "stickLead";
-	static String rodTier2 = "stickTin";
-	static String rodTier3 = "stickCopper";
-	static String rodTier4 = "stickGold";
-	static String rodTier5 = "stickAluminium";
-	static String rodTier6 = "stickMaragingSteel250";
-	static String rodTier7 = "stickTantalloy61";
-	static String rodTier8 = "stickInconel792";
-	static String rodTier9 = "stickZeron100";
-	static String rodTier10 = "stickNaquadahEnriched";
-	static String rodTier11 = "stickNeutronium";
+	public static String rodTier1 = "stickLead";
+	public static String rodTier2 = "stickTin";
+	public static String rodTier3 = "stickCopper";
+	public static String rodTier4 = "stickGold";
+	public static String rodTier5 = "stickAluminium";
+	public static String rodTier6 = "stickMaragingSteel250";
+	public static String rodTier7 = "stickTantalloy61";
+	public static String rodTier8 = "stickInconel792";
+	public static String rodTier9 = "stickZeron100";
+	public static String rodTier10 = "stickNaquadahEnriched";
+	public static String rodTier11 = "stickNeutronium";
 
-	static String pipeTier1 = "pipeHuge"+"Clay";
-	static String pipeTier2 = "pipeHuge"+"Potin";
-	static String pipeTier3 = "pipeHuge"+"Steel";
-	static String pipeTier4 = "pipeHuge"+"StainlessSteel";
-	static String pipeTier5 = "pipeHuge"+"TungstenSteel";
-	static String pipeTier6 = "pipeHuge"+"MaragingSteel300";
-	static String pipeTier7 = "pipeHuge"+"Tantalloy60";
-	static String pipeTier8 = "pipeHuge"+"Tantalloy61";
-	static String pipeTier9 = "pipeHuge"+"Inconel792";
-	static String pipeTier10 = "pipeHuge"+"HastelloyX";
-	static String pipeTier11 = "pipeHuge"+"Europium";
+	public static String pipeTier1 = "pipeHuge"+"Clay";
+	public static String pipeTier2 = "pipeHuge"+"Potin";
+	public static String pipeTier3 = "pipeHuge"+"Steel";
+	public static String pipeTier4 = "pipeHuge"+"StainlessSteel";
+	public static String pipeTier5 = "pipeHuge"+"TungstenSteel";
+	public static String pipeTier6 = "pipeHuge"+"MaragingSteel300";
+	public static String pipeTier7 = "pipeHuge"+"Tantalloy60";
+	public static String pipeTier8 = "pipeHuge"+"Tantalloy61";
+	public static String pipeTier9 = "pipeHuge"+"Inconel792";
+	public static String pipeTier10 = "pipeHuge"+"HastelloyX";
+	public static String pipeTier11 = "pipeHuge"+"Europium";
 
 
 	//Machine Casings
-	static ItemStack machineCasing_ULV;
-	static ItemStack machineCasing_LV;
-	static ItemStack machineCasing_MV;
-	static ItemStack machineCasing_HV;
-	static ItemStack machineCasing_EV;
-	static ItemStack machineCasing_IV;
-	static ItemStack machineCasing_LuV;
-	static ItemStack machineCasing_ZPM;
-	static ItemStack machineCasing_UV;
-	static ItemStack machineCasing_MAX;
+	public static ItemStack machineCasing_ULV;
+	public static ItemStack machineCasing_LV;
+	public static ItemStack machineCasing_MV;
+	public static ItemStack machineCasing_HV;
+	public static ItemStack machineCasing_EV;
+	public static ItemStack machineCasing_IV;
+	public static ItemStack machineCasing_LuV;
+	public static ItemStack machineCasing_ZPM;
+	public static ItemStack machineCasing_UV;
+	public static ItemStack machineCasing_MAX;
 
 	//Gearbox Casings
-	static ItemStack gearboxCasing_Tier_1;
-	static ItemStack gearboxCasing_Tier_2;
-	static ItemStack gearboxCasing_Tier_3;
-	static ItemStack gearboxCasing_Tier_4;
+	public static ItemStack gearboxCasing_Tier_1;
+	public static ItemStack gearboxCasing_Tier_2;
+	public static ItemStack gearboxCasing_Tier_3;
+	public static ItemStack gearboxCasing_Tier_4;
 
 	//IV MACHINES
 	public static ItemStack IV_MACHINE_Electrolyzer;
@@ -174,92 +174,92 @@ public class RECIPES_Machines {
 
 
 	//Cables
-	static String cableGt02Electrum = "cableGt02Electrum";
+	public static String cableGt02Electrum = "cableGt02Electrum";
 
 
 	//Plates
-	static String plateElectricalSteel= "plateElectricalSteel";
-	static String plateEnergeticAlloy= "plateEnergeticAlloy";
-	static String plateCobalt = "plateCobalt";
-	static String plateBronze = "plateBronze";
-	static String plateSteel = "plateSteel";
+	public static String plateElectricalSteel= "plateElectricalSteel";
+	public static String plateEnergeticAlloy= "plateEnergeticAlloy";
+	public static String plateCobalt = "plateCobalt";
+	public static String plateBronze = "plateBronze";
+	public static String plateSteel = "plateSteel";
 
 	//Pipes
-	static String pipeLargeCopper="pipeLargeCopper";
-	static String pipeHugeSteel="pipeHugeSteel";
-	static String pipeHugeStainlessSteel="pipeHugeStainlessSteel";
-	static String pipeHugeTitanium="pipeHugeTitanium";
+	public static String pipeLargeCopper="pipeLargeCopper";
+	public static String pipeHugeSteel="pipeHugeSteel";
+	public static String pipeHugeStainlessSteel="pipeHugeStainlessSteel";
+	public static String pipeHugeTitanium="pipeHugeTitanium";
 
 	//Lava Boiler
-	static ItemStack boiler_Coal;
-	static ItemStack blockBricks = ItemUtils.getItemStack("minecraft:brick_block", 1);
+	public static ItemStack boiler_Coal;
+	public static ItemStack blockBricks = ItemUtils.getItemStack("minecraft:brick_block", 1);
 
 	//Batteries
-	static String batteryBasic = "batteryBasic";
-	static String batteryAdvanced = "batteryAdvanced";
-	static String batteryElite = "batteryElite";
-	static String batteryMaster = "batteryMaster";
-	static String batteryUltimate = "batteryUltimate";
-	static ItemStack IC2MFE;
-	static ItemStack IC2MFSU;
+	public static String batteryBasic = "batteryBasic";
+	public static String batteryAdvanced = "batteryAdvanced";
+	public static String batteryElite = "batteryElite";
+	public static String batteryMaster = "batteryMaster";
+	public static String batteryUltimate = "batteryUltimate";
+	public static ItemStack IC2MFE;
+	public static ItemStack IC2MFSU;
 
 	//Circuits
-	static String circuitPrimitive = "circuitBasic";
-	static String circuitTier1 = "circuitGood";
-	static String circuitTier2 = "circuitAdvanced";
-	static String circuitTier3 = "circuitData";
-	static String circuitTier4 = "circuitElite";
-	static String circuitTier5 = "circuitMaster";
-	static String circuitTier6 = "circuitUltimate";
-	static String circuitTier7 = "circuitSuperconductor";
-	static String circuitTier8 = "circuitInfinite";
-	static String circuitTier9 = "circuitQuantum";
+	public static String circuitPrimitive = "circuitBasic";
+	public static String circuitTier1 = "circuitGood";
+	public static String circuitTier2 = "circuitAdvanced";
+	public static String circuitTier3 = "circuitData";
+	public static String circuitTier4 = "circuitElite";
+	public static String circuitTier5 = "circuitMaster";
+	public static String circuitTier6 = "circuitUltimate";
+	public static String circuitTier7 = "circuitSuperconductor";
+	public static String circuitTier8 = "circuitInfinite";
+	public static String circuitTier9 = "circuitQuantum";
 
 	//Machine Components
-	static ItemStack electricMotor_LV;
-	static ItemStack electricMotor_MV;
-	static ItemStack electricMotor_HV;
-	static ItemStack electricMotor_EV;
-	static ItemStack electricMotor_IV;
-	static ItemStack electricPump_LV;
-	static ItemStack electricPump_MV;
-	static ItemStack electricPump_HV;
-	static ItemStack electricPump_EV;
-	static ItemStack electricPump_IV;
-	static ItemStack electricPiston_LV;
-	static ItemStack electricPiston_MV;
-	static ItemStack electricPiston_HV;
-	static ItemStack electricPiston_EV;
-	static ItemStack electricPiston_IV;
-	static ItemStack robotArm_LV;
-	static ItemStack robotArm_MV;
-	static ItemStack robotArm_HV;
-	static ItemStack robotArm_EV;
-	static ItemStack robotArm_IV;
-	static ItemStack conveyorModule_LV;
-	static ItemStack conveyorModule_MV;
-	static ItemStack conveyorModule_HV;
-	static ItemStack conveyorModule_EV;
-	static ItemStack conveyorModule_IV;
-	static ItemStack emitter_LV;
-	static ItemStack emitter_MV;
-	static ItemStack emitter_HV;
-	static ItemStack emitter_EV;
-	static ItemStack emitter_IV;
-	static ItemStack fieldGenerator_LV;
-	static ItemStack fieldGenerator_MV;
-	static ItemStack fieldGenerator_HV;
-	static ItemStack fieldGenerator_EV;
-	static ItemStack fieldGenerator_IV;
-	static ItemStack sensor_LV;
-	static ItemStack sensor_MV;
-	static ItemStack sensor_HV;
-	static ItemStack sensor_EV;
-	static ItemStack sensor_IV;
+	public static ItemStack electricMotor_LV;
+	public static ItemStack electricMotor_MV;
+	public static ItemStack electricMotor_HV;
+	public static ItemStack electricMotor_EV;
+	public static ItemStack electricMotor_IV;
+	public static ItemStack electricPump_LV;
+	public static ItemStack electricPump_MV;
+	public static ItemStack electricPump_HV;
+	public static ItemStack electricPump_EV;
+	public static ItemStack electricPump_IV;
+	public static ItemStack electricPiston_LV;
+	public static ItemStack electricPiston_MV;
+	public static ItemStack electricPiston_HV;
+	public static ItemStack electricPiston_EV;
+	public static ItemStack electricPiston_IV;
+	public static ItemStack robotArm_LV;
+	public static ItemStack robotArm_MV;
+	public static ItemStack robotArm_HV;
+	public static ItemStack robotArm_EV;
+	public static ItemStack robotArm_IV;
+	public static ItemStack conveyorModule_LV;
+	public static ItemStack conveyorModule_MV;
+	public static ItemStack conveyorModule_HV;
+	public static ItemStack conveyorModule_EV;
+	public static ItemStack conveyorModule_IV;
+	public static ItemStack emitter_LV;
+	public static ItemStack emitter_MV;
+	public static ItemStack emitter_HV;
+	public static ItemStack emitter_EV;
+	public static ItemStack emitter_IV;
+	public static ItemStack fieldGenerator_LV;
+	public static ItemStack fieldGenerator_MV;
+	public static ItemStack fieldGenerator_HV;
+	public static ItemStack fieldGenerator_EV;
+	public static ItemStack fieldGenerator_IV;
+	public static ItemStack sensor_LV;
+	public static ItemStack sensor_MV;
+	public static ItemStack sensor_HV;
+	public static ItemStack sensor_EV;
+	public static ItemStack sensor_IV;
 
 	//Misc
-	static ItemStack INPUT_RCCokeOvenBlock;
-	static ItemStack INPUT_IECokeOvenBlock;
+	public static ItemStack INPUT_RCCokeOvenBlock;
+	public static ItemStack INPUT_IECokeOvenBlock;
 
 
 

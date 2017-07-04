@@ -4,7 +4,10 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.Recipe_GT;
+import gtPlusPlus.core.recipe.RECIPES_Machines;
 import gtPlusPlus.core.util.fluid.FluidUtils;
+import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.recipe.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaTileEntity_BasicWasher;
 import net.minecraft.item.ItemStack;
@@ -38,5 +41,15 @@ public class GregtechSimpleWasher {
 		
 		//Register the Simple Washer Entity.
 		GregtechItemList.SimpleDustWasher.set(new GregtechMetaTileEntity_BasicWasher(767, "simplewasher.01.tier.00", "Simple Washer", 0).getStackForm(1L));
+		
+		ItemStack plateWrought = ItemUtils.getItemStackOfAmountFromOreDict("plateWroughtIron", 1);
+		
+		//Add Recipe
+		RecipeUtils.addShapedGregtechRecipe(
+				plateWrought, RECIPES_Machines.electricPump_LV, plateWrought,
+				plateWrought, ItemUtils.getItemStackOfAmountFromOreDict("pipeLargeClay", 1), plateWrought,
+				plateWrought, RECIPES_Machines.machineCasing_ULV, plateWrought,
+				GregtechItemList.SimpleDustWasher.get(1));				
+		
 	}
 }
