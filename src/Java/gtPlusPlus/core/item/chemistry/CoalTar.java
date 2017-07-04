@@ -17,14 +17,44 @@ public class CoalTar {
 		//Create Coal Tar
 		FluidUtils.generateFluidNonMolten("CoalTar", "Coal Tar", 450, new short[]{32, 32, 32, 100}, null, null);
 
+		//Pyrolyse
+		//Lignite Coal
+		GT_Values.RA.addPyrolyseRecipe(
+				GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lignite, 16L), //Input 1
+				GT_Values.NF, //Fluid Input
+				8,
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDarkAsh", 2), //Item Output
+				FluidUtils.getFluidStack("fluid.coaltar", 800), //Fluid Output
+				150*20,
+				120);
+		//Coal
+		GT_Values.RA.addPyrolyseRecipe(
+				GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16L), //Input 1
+				GT_Values.NF, //Fluid Input
+				8,
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDarkAsh", 2), //Item Output
+				FluidUtils.getFluidStack("fluid.coaltar", 2200), //Fluid Output
+				120*20,
+				240);
+		//Coal Coke
+		GT_Values.RA.addPyrolyseRecipe(
+				ItemUtils.getItemStack("Railcraft:fuel.coke", 16), //Input 1
+				GT_Values.NF, //Fluid Input
+				8,
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallAsh", 3), //Item Output
+				FluidUtils.getFluidStack("fluid.coaltar", 3400), //Fluid Output
+				100*20,
+				360);
+
+		//Coke Oven
 		//Create Coal Tar From Coal
 		CORE.RA.addCokeOvenRecipe(
 				GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lignite, 16L), //Input 1
 				GT_Values.NI, //Input 2
 				GT_Values.NF, //Fluid Input
-				FluidUtils.getFluidStack("coaltar", 800), //Fluid Output
+				FluidUtils.getFluidStack("fluid.coaltar", 800), //Fluid Output
 				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDarkAsh", 2), //Item Output
-				150*20,  //Time in ticks
+				150*10,  //Time in ticks
 				120); //EU
 
 		//Create Coal Tar From Coal
@@ -32,9 +62,9 @@ public class CoalTar {
 				GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16L), //Input 1
 				GT_Values.NI, //Input 2
 				GT_Values.NF, //Fluid Input
-				FluidUtils.getFluidStack("coaltar", 2200), //Fluid Output
+				FluidUtils.getFluidStack("fluid.coaltar", 2200), //Fluid Output
 				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDarkAsh", 2), //Item Output
-				120*20,  //Time in ticks
+				120*10,  //Time in ticks
 				240); //EU
 
 		//Create Coal Tar From Coal
@@ -42,36 +72,11 @@ public class CoalTar {
 				ItemUtils.getItemStack("Railcraft:fuel.coke", 16), //Input 1
 				GT_Values.NI, //Input 2
 				GT_Values.NF, //Fluid Input
-				FluidUtils.getFluidStack("coaltar", 3400), //Fluid Output
+				FluidUtils.getFluidStack("fluid.coaltar", 3400), //Fluid Output
 				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallAsh", 3), //Item Output
-				120*20,  //Time in ticks
+				120*10,  //Time in ticks
 				360); //EU
-
-
-		/*//Create Coal Tar From Coal
-		GT_Values.RA.addBlastRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict("gemCoal", 16),
-				GT_Values.NI,
-				GT_Values.NF,
-				FluidUtils.getFluidStack("coaltar", 2200),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDarkAsh", 2),
-				GT_Values.NI,
-				120*20,
-				240, //EU
-				2700); //Heat
-
-		//Create Coal Tar From Coal
-		GT_Values.RA.addBlastRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict("gemCoke", 16),
-				GT_Values.NI,
-				GT_Values.NF,
-				FluidUtils.getFluidStack("coaltar", 3400),
-				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallAsh", 3),
-				GT_Values.NI,
-				120*20,
-				360, //EU
-				3100); //Heat
-*/
+		 
 	}
 
 }
