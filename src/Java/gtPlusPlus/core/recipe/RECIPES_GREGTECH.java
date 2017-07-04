@@ -505,7 +505,7 @@ public class RECIPES_GREGTECH {
 
 		GT_Values.RA.addChemicalBathRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumCarbonate", 10),
-				FluidUtils.getFluidStack("hydrofluoricacid", 20000),
+				FluidUtils.getFluidStack("hydrofluoricacid", 10*144),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 5),
 				null,
 				null,
@@ -536,7 +536,7 @@ public class RECIPES_GREGTECH {
 
 	private static void mixerRecipes(){
 		GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 1), null, null, null, FluidUtils.getFluidStack("oxygen", 288), FluidUtils.getFluidStack("sulfurdioxide", 432), null, 600, 60);
-		GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustUranium233", 4), ItemUtils.getItemStackOfAmountFromOreDict("dustUranium235", 1), null, null, FluidUtils.getFluidStack("hydrofluoricacid", 2000), FluidUtils.getFluidStack("molten.uraniumtetrafluoride", 144*3), null, 3000, 500);
+		GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustUranium233", 4), ItemUtils.getItemStackOfAmountFromOreDict("dustUranium235", 1), null, null, FluidUtils.getFluidStack("hydrofluoricacid", 144*5), FluidUtils.getFluidStack("molten.uraniumtetrafluoride", 144*5), null, 3000, 500);
 		//GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("cellFluorine", 1), ItemUtils.getItemStackOfAmountFromOreDict("cellFluorine", 1), null, null, FluidUtils.getFluidStack("molten.uraniumtetrafluoride", 720), FluidUtils.getFluidStack("molten.uraniumhexafluoride", 288), null, 5000, 2000);
 		GT_Values.RA.addMixerRecipe(ItemUtils.getItemStackOfAmountFromOreDict("dustSteel", 20), ItemUtils.getItemStackOfAmountFromOreDict("dustSilicon", 1), ItemUtils.getItemStackOfAmountFromOreDict("dustNickel", 5), ItemUtils.getItemStackOfAmountFromOreDict("dustAluminium", 4), null, null, ItemUtils.getItemStackOfAmountFromOreDict("dustEglinSteel", 30), 1200, 60);
 		}
@@ -554,8 +554,8 @@ public class RECIPES_GREGTECH {
 		GT_Values.RA.addChemicalRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 5), //Input Stack 1
 				null, //Input Stack 2
-				FluidUtils.getFluidStack("hydrofluoricacid", 2500), //Fluid Input
-				FluidUtils.getFluidStack("water", 2500), //Fluid Output
+				FluidUtils.getFluidStack("hydrofluoricacid", 5*144), //Fluid Input
+				FluidUtils.getFluidStack("water", 5*144), //Fluid Output
 				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumFluoride", 5), //Output Stack
 				600*20
 				);
