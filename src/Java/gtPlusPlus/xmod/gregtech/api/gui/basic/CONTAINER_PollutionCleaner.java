@@ -37,13 +37,24 @@ public class CONTAINER_PollutionCleaner extends GT_Container_BasicTank {
         switch (((GT_MetaTileEntity_BasicMachine) mTileEntity.getMetaTileEntity()).mInputSlotCount) {
             case 0:
                 break;
-            case 1:
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 53, 25));
+            case 1: //Chemical Mixer
+            	//Add 3 Item Slots
+            	addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 17, 7));
+                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 35, 7));
+                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 53, 7));
+            	//Add 6 Fluid Slots
+                addSlotToContainer(new GT_Slot_Render(mTileEntity, tStartIndex++, 17, 25));
+                addSlotToContainer(new GT_Slot_Render(mTileEntity, tStartIndex++, 35, 25));
+                addSlotToContainer(new GT_Slot_Render(mTileEntity, tStartIndex++, 53, 25));
+                addSlotToContainer(new GT_Slot_Render(mTileEntity, tStartIndex++, 17, 43));
+                addSlotToContainer(new GT_Slot_Render(mTileEntity, tStartIndex++, 35, 43));
+                addSlotToContainer(new GT_Slot_Render(mTileEntity, tStartIndex++, 53, 43));
+            	
                 break;
-            case 2:
-                //addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 35, 25));
+            case 2: //Pollution Scrubber
+            	//Add 2 Item Slots
                 addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 53, 25));
-                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 107, 25));
+                addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 107, 25));            	
                 break;
             case 3:
                 addSlotToContainer(new Slot(mTileEntity, tStartIndex++, 17, 25));
@@ -175,7 +186,7 @@ public class CONTAINER_PollutionCleaner extends GT_Container_BasicTank {
 
         addSlotToContainer(new Slot(mTileEntity, 1, 80, 63));
         addSlotToContainer(new Slot(mTileEntity, 3, 125, 63));
-        addSlotToContainer(new GT_Slot_Render(mTileEntity, tStartIndex++, 53, 63));
+        //addSlotToContainer(new GT_Slot_Render(mTileEntity, tStartIndex++, 53, 63));
     }
 
     @Override

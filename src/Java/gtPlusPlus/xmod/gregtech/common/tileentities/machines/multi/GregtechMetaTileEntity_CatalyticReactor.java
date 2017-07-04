@@ -22,41 +22,37 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBlockBase {
+public class GregtechMetaTileEntity_CatalyticReactor extends GT_MetaTileEntity_MultiBlockBase {
 
 	private boolean completedCycle = false;
 
-	public GregtechMetaTileEntity_Refinery(final int aID, final String aName, final String aNameRegional) {
+	public GregtechMetaTileEntity_CatalyticReactor(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}
 
-	public GregtechMetaTileEntity_Refinery(final String aName) {
+	public GregtechMetaTileEntity_CatalyticReactor(final String aName) {
 		super(aName);
 	}
 
 	@Override
 	public String[] getDescription() {
 		return new String[]{
-				"Controller Block for the Fission Fuel Processing Unit",
-				"Size(WxHxD): 3x9x3", "Controller (Front middle at bottom)",
-				"3x2x3 Base platform of Hastelloy-X",
-				"1x7x1 Incoloy-DS Fluid Containment Block pillar (Center of base)",
-				"1x4x1 Hastelloy-N Sealant Blocks (Each Incoloy-DS Fluid Containment side and on top)",
-				"1x1x1 Zeron-100 Reactor Shielding (Second Sealant Tower layer, Surrounding Fluid Containment)",
-				"4x Input Hatch (One of base platform)",
-				"2x Output Hatch (One of base platform)",
-				"1x Output Bus (One of base platform)",
-				"2x Maintenance Hatch (One of base platform)",
-				"1x ZPM or better Muffler (One of base platform)",
-		"1x Energy Hatch (One of base platform)"};
+				"Controller Block for the Catalytic Chemical Reactor",
+				"Size(WxHxD): 5x2x5", "Controller (Front middle at bottom)",
+				"6x Input Hatch (One of base layer)",
+				"3x Output Hatch (One of base layer)",
+				"1x Maintenance Hatch (One of base layer)",
+				"1x MV or better Muffler (One of base layer)",
+				"1x Energy Hatch (One of base layer)"
+				};
 	}
 
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{TexturesGtBlock.CASING_BLOCKS_GTPP[18], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER)};
+			return new ITexture[]{TexturesGtBlock.CASING_BLOCKS_GTPP[17], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER)};
 		}
-		return new ITexture[]{TexturesGtBlock.CASING_BLOCKS_GTPP[18]};
+		return new ITexture[]{TexturesGtBlock.CASING_BLOCKS_GTPP[17]};
 	}
 
 	@Override
@@ -342,7 +338,7 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 
 	@Override
 	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-		return new GregtechMetaTileEntity_Refinery(this.mName);
+		return new GregtechMetaTileEntity_CatalyticReactor(this.mName);
 	}
 
 }

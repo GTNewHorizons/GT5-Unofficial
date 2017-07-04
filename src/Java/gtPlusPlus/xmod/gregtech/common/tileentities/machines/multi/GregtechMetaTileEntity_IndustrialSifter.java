@@ -3,7 +3,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 import java.util.*;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -58,9 +57,9 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[78], new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Diesel_Horizontal_Active : TexturesGtBlock.Overlay_Machine_Diesel_Horizontal)};
+			return new ITexture[]{TexturesGtBlock.CASING_BLOCKS_GTPP[21], new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Diesel_Horizontal_Active : TexturesGtBlock.Overlay_Machine_Diesel_Horizontal)};
 		}
-		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[78]};
+		return new ITexture[]{TexturesGtBlock.CASING_BLOCKS_GTPP[21]};
 	}
 
 	@Override

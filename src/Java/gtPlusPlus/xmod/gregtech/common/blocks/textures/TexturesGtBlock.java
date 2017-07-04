@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.blocks.textures;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
+import gregtech.api.interfaces.ITexture;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -10,6 +11,9 @@ import net.minecraft.util.ResourceLocation;
 
 public class TexturesGtBlock {
 
+	
+	public static ITexture[] CASING_BLOCKS_GTPP = new ITexture[256];
+	
 	/*
 	 * Handles Custom Textures.
 	 */

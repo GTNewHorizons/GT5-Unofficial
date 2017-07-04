@@ -367,8 +367,8 @@ public class RECIPES_GREGTECH {
 			final String salt_LiFBeF2ZrF4U235 = "LiFBeF2ZrF4U235".toLowerCase();
 			final String salt_LiFBeF2ZrF4UF4 = "LiFBeF2ZrF4UF4".toLowerCase();
 
-			final FluidStack LithiumFluoride = FluidUtils.getFluidStack("molten.lithiumtetrafluoride", 100); //Re-usable FluidStacks
-			final FluidStack BerylliumFluoride = FluidUtils.getFluidStack("molten.berylliumtetrafluoride", 100); //Re-usable FluidStacks
+			final FluidStack LithiumFluoride = FluidUtils.getFluidStack("molten.lithiumfluoride", 100); //Re-usable FluidStacks
+			final FluidStack BerylliumFluoride = FluidUtils.getFluidStack("molten.berylliumfluoride", 100); //Re-usable FluidStacks
 			final FluidStack ThoriumFluoride = FluidUtils.getFluidStack("molten.thoriumtetrafluoride", 100); //Re-usable FluidStacks
 			final FluidStack ZirconiumFluoride = FluidUtils.getFluidStack("molten.zirconiumtetrafluoride", 100); //Re-usable FluidStacks
 			final FluidStack UraniumTetraFluoride = FluidUtils.getFluidStack("molten.uraniumtetrafluoride", 100); //Re-usable FluidStacks

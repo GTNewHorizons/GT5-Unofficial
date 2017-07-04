@@ -1,25 +1,25 @@
 package gtPlusPlus.xmod.gregtech.common.blocks;
 
-import gregtech.api.enums.Textures;
 import gregtech.api.objects.GT_CopiedBlockTexture;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.GT_Material_Casings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.CasingTextureHandler2;
+import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
 public class GregtechMetaCasingBlocks2
 extends GregtechMetaCasingBlocksAbstract {
 
-	public final static int GTID = 73;
+	public final static int GTID = 16;
 
 	CasingTextureHandler2 TextureHandler = new CasingTextureHandler2();
 
 	public GregtechMetaCasingBlocks2() {
 		super(GregtechMetaCasingItems.class, "gtplusplus.blockcasings.2", GT_Material_Casings.INSTANCE);
 		for (byte i = 0; i < 16; i = (byte) (i + 1)) {
-			Textures.BlockIcons.CASING_BLOCKS[GTID + i] = new GT_CopiedBlockTexture(this, 6, i);
+			TexturesGtBlock.CASING_BLOCKS_GTPP[GTID + i] = new GT_CopiedBlockTexture(this, 6, i);
 		}
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Structural Glass Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Hastelloy-N Sealant Block");
