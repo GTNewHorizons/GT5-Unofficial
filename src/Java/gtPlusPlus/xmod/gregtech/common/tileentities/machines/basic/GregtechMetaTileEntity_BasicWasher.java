@@ -62,10 +62,4 @@ public class GregtechMetaTileEntity_BasicWasher extends GT_MetaTileEntity_BasicM
 		return 8000;
 	}
 
-	@Override
-	public int checkRecipe() {
-		int sr = super.checkRecipe();
-		System.out.println(""+sr);
-		return super.checkRecipe();
-	}
 }

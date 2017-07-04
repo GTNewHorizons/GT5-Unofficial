@@ -29,7 +29,7 @@ public class GregtechSimpleWasher {
 						null,
 						new FluidStack[]{FluidUtils.getFluidStack("water", 100)},
 						null,
-						5,
+						20,
 						8,
 						0);
 			}			
