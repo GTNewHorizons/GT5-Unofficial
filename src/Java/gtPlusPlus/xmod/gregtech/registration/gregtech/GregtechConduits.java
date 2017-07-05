@@ -53,7 +53,7 @@ public class GregtechConduits {
 			wireFactory("Yellorium", 2048, 30630, 4, 16, 2);
 		}
 		if (LoadedMods.EnderIO){
-			wireFactory("RedstoneAlloy", 32, 30645, 1, 4, 1);
+			wireFactory("RedstoneAlloy", 32, 30645, 0, 2, 1);
 		}
 
 		superConductorFactory(GT_Materials.Superconductor, 524288, 30660, 0, 0, 8);
