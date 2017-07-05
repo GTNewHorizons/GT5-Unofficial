@@ -299,31 +299,31 @@ public class GregtechConduits {
 				ItemUtils.getSimpleStack(pipeIngot, 1),
 				ItemList.Shape_Extruder_Pipe_Tiny.get(0),
 				ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Tiny"+output, 2),
-				time, eut);
+				5, eut);
 
 		GT_Values.RA.addExtruderRecipe(
 				ItemUtils.getSimpleStack(pipeIngot, 1),
 				ItemList.Shape_Extruder_Pipe_Small.get(0),
 				ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Small"+output, 1),
-				time+=bonusMulti, eut);
+				10, eut);
 
 		GT_Values.RA.addExtruderRecipe(
 				ItemUtils.getSimpleStack(pipeIngot, 3),
 				ItemList.Shape_Extruder_Pipe_Medium.get(0),
 				ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Medium"+output, 1),
-				time+=bonusMulti, eut);
+				1*20, eut);
 
 		GT_Values.RA.addExtruderRecipe(
 				ItemUtils.getSimpleStack(pipeIngot, 6),
 				ItemList.Shape_Extruder_Pipe_Large.get(0),
 				ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Large"+output, 1),
-				time+=bonusMulti, eut);
+				2*20, eut);
 
 		GT_Values.RA.addExtruderRecipe(
 				ItemUtils.getSimpleStack(pipeIngot, 12),
 				ItemList.Shape_Extruder_Pipe_Huge.get(0),
 				ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1),
-				time+=bonusMulti, eut);
+				4*20, eut);
 
 		if ((eut < 512) && !output.equals("Void")){
 			final ItemStack pipePlateDouble = ItemUtils.getItemStackOfAmountFromOreDict("plateDouble"+output, 1).copy();
