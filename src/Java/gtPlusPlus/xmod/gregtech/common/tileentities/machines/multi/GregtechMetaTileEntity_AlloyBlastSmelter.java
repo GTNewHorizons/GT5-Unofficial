@@ -12,6 +12,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.*;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -40,6 +41,8 @@ extends GT_MetaTileEntity_MultiBlockBase {
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Alloy Blast Smelter", //Outputs 144mb fluid for every inputStack.stackSize; Time to use those hot metals.
+				"20% Faster than the Electric Blast Furnace",
+				"Allows Complex GT++ alloys to be created",
 				"Size: 3x3x4 (Hollow)",
 				"Controller (front middle at bottom)",
 				"16x Blast Smelter Heat Containment Coils (two middle Layers, hollow)",
@@ -48,7 +51,8 @@ extends GT_MetaTileEntity_MultiBlockBase {
 				"1x Energy Hatch (one of bottom)",
 				"1x Maintenance Hatch (one of bottom)",
 				"1x Muffler Hatch (top middle)",
-		"Blast Smelter Casings for the rest"};
+				"Blast Smelter Casings for the rest",
+				CORE.GT_Tooltip};
 	}
 
 	@Override

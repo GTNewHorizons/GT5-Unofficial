@@ -31,6 +31,11 @@ extends GT_MetaTileEntity_BasicTank {
 	}
 
 	@Override
+	public String[] getDescription() {
+		return new String[] {this.mDescription, CORE.GT_Tooltip};
+	}
+
+	@Override
 	public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
 		return new ITexture[0][0][0];
 	}

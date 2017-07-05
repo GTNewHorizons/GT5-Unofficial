@@ -14,6 +14,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -48,7 +49,9 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 				"1x Output Bus (One of base platform)",
 				"2x Maintenance Hatch (One of base platform)",
 				"1x ZPM or better Muffler (One of base platform)",
-		"1x Energy Hatch (One of base platform)"};
+				"1x Energy Hatch (One of base platform)",
+				CORE.GT_Tooltip
+		};
 	}
 
 	@Override

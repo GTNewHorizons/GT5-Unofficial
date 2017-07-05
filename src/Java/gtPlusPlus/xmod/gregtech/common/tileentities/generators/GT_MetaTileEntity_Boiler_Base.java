@@ -8,6 +8,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.*;
 import gregtech.common.tileentities.boilers.GT_MetaTileEntity_Boiler;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_AdvancedBoiler;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_AdvancedBoiler;
@@ -37,6 +38,11 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 		this.mSteamPerSecond = (750 + (250 * aTier));
 		this.mPollutionPerSecond = 20 + (15 * aTier);
 		this.mBoilerTier = aTier;
+	}
+
+	@Override
+	public String[] getDescription() {
+		return new String[]{this.mDescription, "Produces "+this.mPollutionPerSecond+" pollution/sec", CORE.GT_Tooltip};
 	}
 
 	public ITexture getOverlayIcon() {

@@ -14,6 +14,7 @@ import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Pollution;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gtPlusPlus.core.item.general.ItemAirFilter;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.gui.basic.CONTAINER_PollutionCleaner;
 import gtPlusPlus.xmod.gregtech.api.gui.basic.GUI_PollutionCleaner;
@@ -59,6 +60,11 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 	@Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
 		return new GregtechMetaAtmosphericReconditioner(this.mName, this.mTier, this.mDescriptionArray, this.mTextures, this.mGUIName, this.mNEIName);
+	}
+
+	@Override
+	public String[] getDescription() {
+		return new String[]{this.mDescription, "Requires a Turbine Rotor and an Air Filter to run.", CORE.GT_Tooltip};
 	}
 
 	@Override

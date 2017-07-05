@@ -146,34 +146,34 @@ public class MaterialUtils {
 	}
 
 	public static int getTierOfMaterial(final int M){
-		if ((M >= 0) && (M <= 750)){
+		if ((M >= 0) && (M <= 1000)){
 			return 1;
 		}
-		else if((M >= 751) && (M <= 1250)){
+		else if((M >= 1001) && (M <= 2000)){
 			return 2;
 		}
-		else if((M >= 1251) && (M <= 1750)){
+		else if((M >= 2001) && (M <= 3000)){
 			return 3;
 		}
-		else if((M >= 1751) && (M <= 2250)){
+		else if((M >= 3001) && (M <= 4000)){
 			return 4;
 		}
-		else if((M >= 2251) && (M <= 2750)){
+		else if((M >= 4001) && (M <= 5000)){
 			return 5;
 		}
-		else if((M >= 2751) && (M <= 3250)){
+		else if((M >= 5001) && (M <= 6000)){
 			return 6;
 		}
-		else if((M >= 3251) && (M <= 3750)){
+		else if((M >= 6001) && (M <= 7000)){
 			return 7;
 		}
-		else if((M >= 3751) && (M <= 4250)){
+		else if((M >= 7001) && (M <= 8000)){
 			return 8;
 		}
-		else if((M >= 4251) && (M <= 4750)){
+		else if((M >= 8001) && (M <= 9000)){
 			return 9;
 		}
-		else if((M >= 4751) && (M <= 9999)){
+		else if((M >= 9001) && (M <= 9999)){
 			return 10;
 		}
 		else {

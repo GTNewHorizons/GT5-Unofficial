@@ -37,7 +37,7 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 
 	@Override
 	public String[] getDescription() {
-		return new String[] {this.mDescription, CORE.GT_Tooltip};
+		return new String[] {this.mDescription, "Right click to check pollution levels.", "Does not use power.", CORE.GT_Tooltip};
 	}
 
 	@Override

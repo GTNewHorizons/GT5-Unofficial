@@ -14,6 +14,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.Pair;
 import gtPlusPlus.core.util.fluid.FluidUtils;
@@ -207,7 +208,8 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Output hatch (anywhere)",
 				"1x Energy Hatch (anywhere)",
 				"1x Maintenance Hatch (anywhere)",
-				"Multitank Exterior Casings for the rest (16 at least!)"
+				"Multitank Exterior Casings for the rest (16 at least!)",
+				CORE.GT_Tooltip
 		};
 	}
 

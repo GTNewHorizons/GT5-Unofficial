@@ -8,6 +8,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachin
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.Recipe_GT;
+import gtPlusPlus.core.lib.CORE;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -35,6 +36,11 @@ public class GregtechMetaTileEntity_BasicWasher extends GT_MetaTileEntity_BasicM
 
 	public GregtechMetaTileEntity_BasicWasher(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
 		super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
+	}
+
+	@Override
+	public String[] getDescription() {
+		return new String[]{this.mDescription, "Grants no byproducts, but it is fast.", CORE.GT_Tooltip};
 	}
 
 	@Override

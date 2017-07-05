@@ -10,6 +10,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenera
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -28,6 +29,11 @@ extends GT_MetaTileEntity_BasicGenerator
 	public GregtechMetaTileEntityGeothermalGenerator(final String aName, final int aTier, final String aDescription, final ITexture[][][] aTextures) {
 		super(aName, aTier, aDescription, aTextures);
 		this.onConfigLoad();
+	}
+
+	@Override
+	public String[] getDescription() {
+		return new String[]{this.mDescription, "Generates power at " + this.getEfficiency() + "% Efficiency per tick", CORE.GT_Tooltip};
 	}
 
 	@Override
@@ -123,13 +129,6 @@ extends GT_MetaTileEntity_BasicGenerator
 		return new ITexture[]{super.getSidesActive(aColor)[0], new GT_RenderedTexture(Textures.BlockIcons.BOILER_LAVA_FRONT_ACTIVE)};
 	}
 
-
-	@Override
-	public String[] getDescription()
-	{
-		return new String[] {"Generates power from Lava/Pahoehoe at " + this.getEfficiency() + "% Efficiency per tick"};
-	}
-
 	@Override
 	public GT_Recipe_Map getRecipes()
 	{
@@ -137,6 +136,7 @@ extends GT_MetaTileEntity_BasicGenerator
 	}
 
 
+	@Override
 	public int getPollution() {
 		return 100;
 	}

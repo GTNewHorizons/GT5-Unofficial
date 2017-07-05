@@ -19,6 +19,7 @@ import gregtech.api.metatileentity.implementations.*;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.*;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.players.FakeFarmer;
 import gtPlusPlus.core.slots.SlotBuzzSaw.SAWTOOL;
@@ -81,7 +82,8 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 				"Purple: Farm Keeper Blocks",
 				"Dark Purple: Dirt/Grass/Podzol/Humus",
 				"Light Blue: Fence/Fence Gate",
-				"Blue/Yellow: Controller"
+				"Blue/Yellow: Controller",
+				CORE.GT_Tooltip
 		};
 	}
 

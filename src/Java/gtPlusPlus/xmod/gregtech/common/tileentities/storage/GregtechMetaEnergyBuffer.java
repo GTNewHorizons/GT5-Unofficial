@@ -44,7 +44,7 @@ public class GregtechMetaEnergyBuffer extends GregtechMetaTileEntity {
 
 	@Override
 	public String[] getDescription() {
-		return new String[] {this.mDescription, CORE.GT_Tooltip};
+		return new String[] {this.mDescription, "Accepts/Outputs 4Amp", CORE.GT_Tooltip};
 	}
 
 	/*
