@@ -76,6 +76,27 @@ public class BaseItemComponent extends Item{
 		else if (this.componentType == ComponentTypes.PLATEDOUBLE){
 			return "gregtech" + ":" + "materialicons/METALLIC/" + "plateDouble";
 		}
+		else if (this.componentType == ComponentTypes.CELL){
+			return "gregtech" + ":" + "materialicons/METALLIC/" + "cell";
+		}
+		else if (this.componentType == ComponentTypes.PLASMACELL){
+			return "gregtech" + ":" + "materialicons/METALLIC/" + "cellPlasma";
+		}
+		else if (this.componentType == ComponentTypes.BOLT){
+			return "gregtech" + ":" + "materialicons/METALLIC/" + "bolt";
+		}
+		else if (this.componentType == ComponentTypes.RING){
+			return "gregtech" + ":" + "materialicons/METALLIC/" + "ring";
+		}
+		else if (this.componentType == ComponentTypes.ROTOR){
+			return "gregtech" + ":" + "materialicons/METALLIC/" + "rotor";
+		}
+		else if (this.componentType == ComponentTypes.SCREW){
+			return "gregtech" + ":" + "materialicons/METALLIC/" + "screw";
+		}
+		else if (this.componentType == ComponentTypes.INGOT){
+			return "gregtech" + ":" + "materialicons/METALLIC/" + "ingot";
+		}
 		return "gregtech" + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME.toLowerCase();
 	}
 
