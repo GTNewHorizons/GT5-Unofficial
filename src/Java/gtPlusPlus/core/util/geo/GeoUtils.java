@@ -11,11 +11,16 @@ import gtPlusPlus.core.util.networking.NetworkUtils;
 public class GeoUtils {
 
 	public static String determineUsersCountry(){
+		try {
 		if (NetworkUtils.checkNetworkIsAvailableWithValidInterface()){
 			return getUsersCountry();			
 		}
 		else {
 			return "Offline.";
+		}
+		} catch (Throwable T){
+			Utils.LOG_INFO("Failed to initialise GeoUtils.");
+			return "Failed.";
 		}
 	}
 
