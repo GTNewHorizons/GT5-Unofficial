@@ -547,6 +547,23 @@ public class Utils {
 		return output;
 
 	}
+	
+	public static String sanitizeStringKeepBrackets(final String input){
+		String temp;
+		String output;
+
+		temp = input.replace(" ", "");
+		temp = temp.replace("-", "");
+		temp = temp.replace("_", "");
+		temp = temp.replace("?", "");
+		temp = temp.replace("!", "");
+		temp = temp.replace("@", "");
+		temp = temp.replace("#", "");
+		temp = temp.replace(" ", "");
+		output = temp;
+		return output;
+
+	}
 
 	public static String[] parseVersion(final String version){
 		return parseVersion(version, "//.");

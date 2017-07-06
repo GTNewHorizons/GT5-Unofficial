@@ -141,12 +141,7 @@ public class BaseItemComponent extends Item{
 			}
 			if (this.componentMaterial != null){
 				if (!this.componentMaterial.vChemicalFormula.equals("??") && !this.componentMaterial.vChemicalFormula.equals("?")) {
-					if ((this.componentType != ComponentTypes.CELL) || (this.componentType != ComponentTypes.PLASMACELL)){
-						list.add(Utils.sanitizeString(this.componentMaterial.vChemicalFormula));
-					}
-					else {
-						list.add(Utils.sanitizeString(this.componentMaterial.vChemicalFormula));
-					}
+						list.add(Utils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
 				}
 
 				if (this.componentMaterial.isRadioactive){
