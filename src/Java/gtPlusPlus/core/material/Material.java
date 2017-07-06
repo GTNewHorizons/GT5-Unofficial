@@ -80,6 +80,20 @@ public class Material {
 		this.materialState = defaultState;
 		this.RGBA = rgba;
 
+		//Add Components to an array.
+		if (inputs == null){
+			this.vMaterialInput = null;
+		}
+		else {
+			if (inputs.length != 0){
+				for (int i=0; i < inputs.length; i++){
+					if (inputs[i] != null){
+						this.vMaterialInput.add(i, inputs[i]);
+					}
+				}
+			}
+		}
+		
 
 		//Set Melting/Boiling point, if value is -1 calculate it from compound inputs.
 		if (meltingPoint != -1){
@@ -191,19 +205,6 @@ public class Material {
 
 		this.usesBlastFurnace = blastFurnace;
 		this.vVoltageMultiplier = this.getMeltingPointK() >= 2800 ? 60 : 15;
-
-		if (inputs == null){
-			this.vMaterialInput = null;
-		}
-		else {
-			if (inputs.length != 0){
-				for (int i=0; i < inputs.length; i++){
-					if (inputs[i] != null){
-						this.vMaterialInput.add(i, inputs[i]);
-					}
-				}
-			}
-		}
 
 		this.vComponentCount = this.getComponentCount(inputs);
 		this.vSmallestRatio = this.getSmallestRatio(this.vMaterialInput);
@@ -667,9 +668,12 @@ public class Material {
 	final public int calculateMeltingPoint(){
 		int meltingPoint = 0;
 		for (MaterialStack  part : this.vMaterialInput){
-			meltingPoint = (meltingPoint+part.getStackMaterial().getMeltingPointC());
+			int incrementor = part.getStackMaterial().getMeltingPointC();
+			meltingPoint += incrementor;
+			Utils.LOG_INFO("Melting Point for "+this.getLocalizedName()+" increased to "+ incrementor);
 		}
 		int divisor = (this.vMaterialInput.size()>0 ? this.vMaterialInput.size() : 1);
+		Utils.LOG_INFO("Dividing "+meltingPoint+" / "+divisor+" to get average melting point.");
 		meltingPoint = (meltingPoint/divisor);
 		return meltingPoint;
 	}
@@ -677,7 +681,7 @@ public class Material {
 	final public int calculateBoilingPoint(){
 		int boilingPoint = 0;
 		for (MaterialStack  part : this.vMaterialInput){
-			boilingPoint = (boilingPoint+part.getStackMaterial().getBoilingPointC());
+			boilingPoint += part.getStackMaterial().getBoilingPointC();
 		}
 		int divisor = (this.vMaterialInput.size()>0 ? this.vMaterialInput.size() : 1);
 		boilingPoint = (boilingPoint/divisor);
@@ -687,7 +691,7 @@ public class Material {
 	final public long calculateProtons(){
 		long protonCount = 0;
 		for (MaterialStack  part : this.vMaterialInput){
-			protonCount = (protonCount+part.getStackMaterial().getProtons());
+			protonCount += (part.getStackMaterial().getProtons());
 		}
 		int divisor = (this.vMaterialInput.size()>0 ? this.vMaterialInput.size() : 1);
 		protonCount = (protonCount/divisor);
@@ -697,7 +701,7 @@ public class Material {
 	final public long calculateNeutrons(){
 		long neutronCount = 0;
 		for (MaterialStack  part : this.vMaterialInput){
-			neutronCount = (neutronCount+part.getStackMaterial().getNeutrons());
+			neutronCount += (part.getStackMaterial().getNeutrons());
 		}
 		int divisor = (this.vMaterialInput.size()>0 ? this.vMaterialInput.size() : 1);
 		neutronCount = (neutronCount/divisor);

@@ -29,7 +29,7 @@ public class FishTrap extends BlockContainer
 	@SuppressWarnings("deprecation")
 	public FishTrap()
 	{
-		super(Material.wood);
+		super(Material.iron);
 		this.setBlockName("blockFishTrap");
 		this.setCreativeTab(AddToCreativeTab.tabMachines);
 		GameRegistry.registerBlock(this, "blockFishTrap");
