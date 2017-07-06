@@ -168,7 +168,7 @@ public class BaseItemComponent extends Item{
 	@Override
 	public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_, final boolean p_77663_5_) {
 		if (this.componentMaterial != null){
-			EntityUtils.applyRadiationDamageToEntity(this.componentMaterial.vRadioationLevel, world, entityHolding);
+			EntityUtils.applyRadiationDamageToEntity(this.componentMaterial.vRadiationLevel, world, entityHolding);
 		}
 	}
 

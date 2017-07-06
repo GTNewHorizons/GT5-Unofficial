@@ -38,7 +38,7 @@ public class Material {
 
 	private final boolean usesBlastFurnace;
 	public final boolean isRadioactive;
-	public final byte vRadioationLevel;
+	public final byte vRadiationLevel;
 
 	private final int meltingPointK;
 	private final int boilingPointK;
@@ -179,11 +179,11 @@ public class Material {
 		//Sets the Rad level
 		if (radiationLevel != 0){
 			this.isRadioactive = true;
-			this.vRadioationLevel = (byte) radiationLevel;
+			this.vRadiationLevel = (byte) radiationLevel;
 		}
 		else {
 			this.isRadioactive = false;
-			this.vRadioationLevel = (byte) radiationLevel;
+			this.vRadiationLevel = (byte) radiationLevel;
 		}
 
 		//Sets the materials 'tier'. Will probably replace this logic.

@@ -25,6 +25,7 @@ import gtPlusPlus.core.util.array.Pair;
 import gtPlusPlus.core.util.materials.MaterialUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.core.util.wrapper.var;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_DustGeneration;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
@@ -320,6 +321,9 @@ public class ItemUtils {
 					new BaseItemDustUnique("itemDust"+unlocalizedName, materialName, Colour, "Dust")
 			};
 		}
+		
+		RecipeGen_DustGeneration.generateRecipes(material);
+		
 		return output;
 	}
 

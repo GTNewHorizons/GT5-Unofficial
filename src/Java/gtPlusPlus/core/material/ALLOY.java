@@ -506,6 +506,23 @@ public final class ALLOY {
 					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 10)
 			});	//Material Stacks with Percentage of required elements.
 
+	public static final Material EGLIN_STEEL_BASE = new Material(
+			"Eglin Steel Base Compound", //Material Name
+			MaterialState.SOLID, //State
+			new short[]{139,69,19, 0}, //Material Colour
+			-1, //Melting Point in C
+			-1, //Boiling Point in C
+			-1,
+			-1,
+			false, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().NICKEL, 5),
+					new MaterialStack(ELEMENT.getInstance().ALUMINIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().CHROMIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().IRON, 23)
+			});
+	
 	public static final Material EGLIN_STEEL = new Material(
 			"Eglin Steel", //Material Name
 			MaterialState.SOLID, //State
@@ -517,10 +534,10 @@ public final class ALLOY {
 			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(ALLOY.STEEL, 20),
+					new MaterialStack(ALLOY.EGLIN_STEEL_BASE, 10),
 					new MaterialStack(ELEMENT.getInstance().SULFUR, 1),
-					new MaterialStack(ELEMENT.getInstance().NICKEL, 5),
 					new MaterialStack(ELEMENT.getInstance().SILICON, 4),
+					new MaterialStack(ELEMENT.getInstance().CARBON, 1)
 			});
 
 

@@ -157,41 +157,123 @@ public class RecipeGen_DustGeneration  implements Runnable{
 						}
 
 					}
-			
+
 					//Add mixer Recipe
 					if (GT_Values.RA.addMixerRecipe(
-								input1, input2,
-								input3, input4,
-								oxygen,
-								null,
-								outputStacks,
-								(int) Math.max(material.getMass() * 2L * 1, 1),
-								2 * material.vVoltageMultiplier)) //Was 6, but let's try 2. This makes Potin LV, for example.
+							input1, input2,
+							input3, input4,
+							oxygen,
+							null,
+							outputStacks,
+							(int) Math.max(material.getMass() * 2L * 1, 1),
+							2 * material.vVoltageMultiplier)) //Was 6, but let's try 2. This makes Potin LV, for example.
 					{
 						Utils.LOG_INFO("Dust Mixer Recipe: "+material.getLocalizedName()+" - Success");
 					}
 					else {
 						Utils.LOG_INFO("Dust Mixer Recipe: "+material.getLocalizedName()+" - Failed");
 					}
-					
+
 					//Add Shapeless recipe for low tier alloys.
 					if (tVoltageMultiplier <= 30){
 						if (RecipeUtils.addShapedGregtechRecipe(inputStacks, outputStacks)){
-									Utils.LOG_INFO("Dust Shapeless Recipe: "+material.getLocalizedName()+" - Success");						
-								}
-								else {
-									Utils.LOG_INFO("Dust Shapeless Recipe: "+material.getLocalizedName()+" - Failed");
-								}
-							}
+							Utils.LOG_INFO("Dust Shapeless Recipe: "+material.getLocalizedName()+" - Success");						
+						}
+						else {
+							Utils.LOG_INFO("Dust Shapeless Recipe: "+material.getLocalizedName()+" - Failed");
 						}
 					}
 				}
+			}
+		}
 
 
 
 
 
 
+	}
+
+	public static boolean addMixerRecipe_Standalone(Material material){
+		final ItemStack[] inputStacks = material.getMaterialComposites();
+		final ItemStack outputStacks = material.getDust(material.smallestStackSizeWhenProcessing);
+		//Is this a composite?
+		if ((inputStacks != null)){
+			//Is this a composite?
+			Utils.LOG_INFO("mixer length: "+inputStacks.length);
+			if ((inputStacks.length >= 1) && (inputStacks.length <= 4)){
+				//Log Input items
+				Utils.LOG_WARNING(ItemUtils.getArrayStackNames(inputStacks));
+				final long[] inputStackSize = material.vSmallestRatio;
+				Utils.LOG_INFO("mixer is stacksizeVar not null? "+(inputStackSize != null));
+				//Is smallest ratio invalid?
+				if (inputStackSize != null){
+					//set stack sizes on an input ItemStack[]
+					for (short x=0;x<inputStacks.length;x++){
+						if ((inputStacks[x] != null) && (inputStackSize[x] != 0)){
+							inputStacks[x].stackSize = (int) inputStackSize[x];
+						}
+					}
+					//Relog input values, with stack sizes
+					Utils.LOG_INFO(ItemUtils.getArrayStackNames(inputStacks));
+
+					//Get us four ItemStacks to input into the mixer
+					ItemStack input1, input2, input3, input4;
+					input1 = (inputStacks.length >= 1) ? (input1 = (inputStacks[0] == null) ? null : inputStacks[0]) : null;
+					input2 = (inputStacks.length >= 2) ? (input2 = (inputStacks[1] == null) ? null : inputStacks[1]) : null;
+					input3 = (inputStacks.length >= 3) ? (input3 = (inputStacks[2] == null) ? null : inputStacks[2]) : null;
+					input4 = (inputStacks.length >= 4) ? (input4 = (inputStacks[3] == null) ? null : inputStacks[3]) : null;
+
+					//Add mixer Recipe
+
+					FluidStack oxygen = GT_Values.NF;
+					if (material.getComposites() != null){
+						for (final MaterialStack x : material.getComposites()){
+							if (!material.getComposites().isEmpty()){
+								if (x != null){
+									if (x.getStackMaterial() != null){
+										if (x.getStackMaterial().getDust(1) == null){
+											if (x.getStackMaterial().getState() == MaterialState.GAS){
+												oxygen = x.getStackMaterial().getFluid(1000);
+											}
+										}
+									}
+								}
+							}
+						}
+
+					}
+
+					//Add mixer Recipe
+					if (GT_Values.RA.addMixerRecipe(
+							input1, input2,
+							input3, input4,
+							oxygen,
+							null,
+							outputStacks,
+							(int) Math.max(material.getMass() * 2L * 1, 1),
+							2 * material.vVoltageMultiplier)) //Was 6, but let's try 2. This makes Potin LV, for example.
+					{
+						Utils.LOG_INFO("Dust Mixer Recipe: "+material.getLocalizedName()+" - Success");
+						return true;
+					}
+					else {
+						Utils.LOG_INFO("Dust Mixer Recipe: "+material.getLocalizedName()+" - Failed");
+						return false;
+					}
+				}
+				else {
+					Utils.LOG_INFO("inputStackSize == NUll - "+material.getLocalizedName());
+					}
+			}
+			else {
+				Utils.LOG_INFO("InputStacks is out range 1-4 - "+material.getLocalizedName());
+				}
+		}
+		else {
+		Utils.LOG_INFO("InputStacks == NUll - "+material.getLocalizedName());
+		}
+		return false;
 	}
 }
 

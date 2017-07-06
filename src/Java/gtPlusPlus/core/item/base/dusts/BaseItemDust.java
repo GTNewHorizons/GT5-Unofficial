@@ -29,7 +29,11 @@ public class BaseItemDust extends Item{
 	private final int mTier;
 	private final Material dustInfo;
 
-	public BaseItemDust(final String unlocalizedName, final String materialName, final Material matInfo, final int colour, final String pileSize, final int tier, final int sRadioactivity) {
+	public BaseItemDust(final String unlocalizedName, final String materialName, final Material matInfo, final int colour, final String pileSize, final int tier, final int sRadioactivity){
+		this(unlocalizedName, materialName, matInfo, colour, pileSize, tier, sRadioactivity, true);
+	}
+
+	public BaseItemDust(String unlocalizedName, String materialName, Material matInfo, int colour, String pileSize, int tier, int sRadioactivity, boolean addRecipes) {
 		this.setUnlocalizedName(unlocalizedName);
 		this.setUnlocalizedName(unlocalizedName);
 		this.setMaxStackSize(64);
@@ -67,8 +71,10 @@ public class BaseItemDust extends Item{
 		if ((temp != null) && !temp.equals("")){
 			GT_OreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
 		}
-		this.addFurnaceRecipe();
-		this.addMacerationRecipe();
+		if (addRecipes){
+			this.addFurnaceRecipe();
+			this.addMacerationRecipe();
+		}
 	}
 
 	private String getCorrectTexture(final String pileSize){
@@ -264,13 +270,13 @@ public class BaseItemDust extends Item{
 				Utils.LOG_INFO("Found "+input2.getDisplayName());
 			}
 		}*/
-		
+
 		int timeTaken = 250*this.mTier*20;
-		
+
 		if (this.mTier <= 4){
 			timeTaken = 50*this.mTier*20;
 		}
-		
+
 		GT_Values.RA.addBlastRecipe(
 				input1,
 				input2,

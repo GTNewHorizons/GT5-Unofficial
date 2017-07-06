@@ -381,6 +381,7 @@ public final class ModItems {
 
 
 			//Steels
+			MaterialGenerator.generateDusts(ALLOY.EGLIN_STEEL_BASE);
 			MaterialGenerator.generate(ALLOY.EGLIN_STEEL);
 			MaterialGenerator.generate(ALLOY.MARAGING250);
 			MaterialGenerator.generate(ALLOY.MARAGING300);

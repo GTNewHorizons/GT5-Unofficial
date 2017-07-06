@@ -33,7 +33,6 @@ public class MaterialGenerator {
 		generate(matInfo, generateEverything, true);
 	}
 
-	@SuppressWarnings("unused")
 	public static void generate(final Material matInfo, final boolean generateEverything, final boolean generateBlastSmelterRecipes){
 		final String unlocalizedName = matInfo.getUnlocalizedName();
 		final String materialName = matInfo.getLocalizedName();
@@ -47,8 +46,8 @@ public class MaterialGenerator {
 		}
 
 		int sRadiation = 0;
-		if (ItemUtils.isRadioactive(materialName)){
-			sRadiation = matInfo.vRadioationLevel;
+		if (ItemUtils.isRadioactive(materialName) || matInfo.vRadiationLevel != 0){
+			sRadiation = matInfo.vRadiationLevel;
 		}
 
 		if (matInfo.getState() == MaterialState.SOLID){
@@ -128,6 +127,35 @@ public class MaterialGenerator {
 		RecipeGen_ShapedCrafting.generateRecipes(matInfo);
 
 	}
+	
+	public static void generateDusts(final Material matInfo){
+		final String unlocalizedName = matInfo.getUnlocalizedName();
+		final String materialName = matInfo.getLocalizedName();
+		final short[] C = matInfo.getRGBA();
+		final int Colour = Utils.rgbtoHexValue(C[0], C[1], C[2]);
+		int materialTier = matInfo.vTier; //TODO
+
+		if ((materialTier > 10) || (materialTier <= 0)){
+			materialTier = 2;
+		}
+
+		int sRadiation = 0;
+		if (ItemUtils.isRadioactive(materialName) || matInfo.vRadiationLevel != 0){
+			sRadiation = matInfo.vRadiationLevel;
+		}
+
+		if (matInfo.getState() == MaterialState.SOLID){
+					Item temp;
+					temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, sRadiation, false);
+					temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, sRadiation, false);
+					temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", materialTier, sRadiation, false);
+		}
+
+		//Add A jillion Recipes - old code
+		RecipeGen_DustGeneration.addMixerRecipe_Standalone(matInfo);
+		RecipeGen_Fluids.generateRecipes(matInfo);
+	}
+	
 	public static void generateNuclearMaterial(final Material matInfo){
 		generateNuclearMaterial(matInfo, true);
 	}
@@ -140,8 +168,8 @@ public class MaterialGenerator {
 		final int Colour = Utils.rgbtoHexValue(C[0], C[1], C[2]);
 
 		int sRadiation = 0;
-		if (matInfo.vRadioationLevel != 0){
-			sRadiation = matInfo.vRadioationLevel;
+		if (matInfo.vRadiationLevel != 0){
+			sRadiation = matInfo.vRadiationLevel;
 		}
 
 		Item temp;
