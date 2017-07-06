@@ -21,7 +21,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 
 @ChildMod(parent = CORE.MODID, mod = @Mod(modid = "GT++DarkWorld",
 name = "GT++ Dark World",
-version = CORE.VERSION,
+version = "The Version to play. ;)",
 dependencies = "after:Miscutils;after:Gregtech",
 customProperties = @CustomProperty(k = "cofhversion", v = "true")))
 public class GTplusplus_Secondary implements IFuelHandler, IWorldGenerator{
