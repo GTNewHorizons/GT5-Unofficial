@@ -45,15 +45,15 @@ public class RecipeGen_BlastSmelterGT  implements Runnable{
 					//Set a duration
 					int duration = 0;
 					if (M.mBlastFurnaceTemp > 150){
-						duration = (int) ((Math.max(M.getMass() / 50L, 1L) * M.mBlastFurnaceTemp)*0.8);
+						duration = (int) Math.max(M.getMass() / 50L, 1L) * M.mBlastFurnaceTemp;
 					}
 					else {
-						duration = (int) ((Math.max(M.getMass() / 50L, 1L) * 150)*0.8);
+						duration = (int) Math.max(M.getMass() / 50L, 1L) * 150;
 					}
 
 					//Sets the materials 'tier'. Will probably replace this logic.
 					final int x = M.mMeltingPoint;
-					final int vVoltageMultiplier = (x <= 800 ? 8 : (x <= 1600 ? 15 : (x <= 2800 ? 30 : (x <= 3600 ? 60 : (x <= 4200 ? 120 : (x <= 5400 ? 240 : (x <= 7200 ? 480 : 1000)))))));
+					final int vVoltageMultiplier = (x <= 800 ? 8 : (x <= 1600 ? 16 : (x <= 2800 ? 32 : (x <= 3600 ? 64 : (x <= 4200 ? 128 : (x <= 5400 ? 256 : (x <= 7200 ? 512 : 1024)))))));
 
 
 					//Make a simple one Material Materialstack[] and log it for validity.
