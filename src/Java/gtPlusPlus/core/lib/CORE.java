@@ -3,10 +3,10 @@ package gtPlusPlus.core.lib;
 import java.util.*;
 
 import gregtech.api.GregTech_API;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.geo.GeoUtils;
 import gtPlusPlus.core.util.gregtech.recipehandlers.GregtechRecipe;
-import gtPlusPlus.core.util.version.Version;
-import gtPlusPlus.core.util.version.VersionUtils;
+import gtPlusPlus.core.util.networking.NetworkUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import gtPlusPlus.xmod.gregtech.api.objects.XSTR;
@@ -29,14 +29,10 @@ public class CORE {
 
 	public static final String name = "GT++";
 	public static final String MODID = "miscutils";
-	
-	//Version Objects
-	public static final Version VERSION = new Version(1, 5, 5, Version.SUFFIX.Release);
-	public static final Version MASTER_VERSION = VersionUtils.getVersionObjectFromGithub();
-	public static final String VERSION_STRING = VersionUtils.getVersionObjectAsString(VERSION);
-	
+	public static final String VERSION = "1.5.0-Beta";
+	public static final String MASTER_VERSION = NetworkUtils.getContentFromURL("https://raw.githubusercontent.com/draknyte1/GTplusplus/master/Recommended.txt").toLowerCase();
 	public static final String USER_COUNTRY = GeoUtils.determineUsersCountry();
-	public static boolean isModUpToDate = VersionUtils.isModUpToDate();
+	public static boolean isModUpToDate = Utils.isModUpToDate();
 	public static boolean DEBUG = false;
 	public static final boolean LOAD_ALL_CONTENT = false;
 	public static final int GREG_FIRST_ID = 760;
