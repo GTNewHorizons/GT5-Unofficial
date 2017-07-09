@@ -1,14 +1,13 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
-import gregtech.GT_Mod;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.GT_Pollution;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.PollutionUtils;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.player.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTileEntity;
@@ -173,7 +172,7 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 	}
 
 	private void showPollution(final World worldIn, final EntityPlayer playerIn){
-		if(!GT_Mod.gregtechproxy.mPollution){
+		if(!PollutionUtils.mPollution()){
 			PlayerUtils.messagePlayer(playerIn, "This block is useless, Pollution is disabled.");		
 		}
 		else {
@@ -197,7 +196,7 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 	}
 
 	public int getCurrentChunkPollution(IGregTechTileEntity aBaseMetaTileEntity){
-		return GT_Pollution.getPollution(aBaseMetaTileEntity);
+		return PollutionUtils.getPollution(aBaseMetaTileEntity);
 	}
 
 

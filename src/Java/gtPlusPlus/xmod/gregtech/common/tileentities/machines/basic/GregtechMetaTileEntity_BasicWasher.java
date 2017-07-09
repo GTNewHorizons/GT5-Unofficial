@@ -34,9 +34,9 @@ public class GregtechMetaTileEntity_BasicWasher extends GT_MetaTileEntity_BasicM
 		super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
 	}
 
-	public GregtechMetaTileEntity_BasicWasher(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
+	/*public GregtechMetaTileEntity_BasicWasher(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
 		super(aName, aTier, 1, aDescription, aTextures, 1, 1, aGUIName, aNEIName);
-	}
+	}*/
 
 	@Override
 	public String[] getDescription() {
@@ -45,7 +45,7 @@ public class GregtechMetaTileEntity_BasicWasher extends GT_MetaTileEntity_BasicM
 
 	@Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GregtechMetaTileEntity_BasicWasher(this.mName, this.mTier, this.mDescriptionArray, this.mTextures, this.mGUIName, this.mNEIName);
+		return new GregtechMetaTileEntity_BasicWasher(this.mName, this.mTier, this.mDescription, this.mTextures, this.mGUIName, this.mNEIName);
 	}
 
 	@Override

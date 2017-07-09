@@ -72,15 +72,3 @@ class LibProxy2 extends LibraryProxy {
 		}
 	}
 }
-
-/*class Lib { // v1
-	public static void addRecipe(ItemStack aInput, ItemStack aOutput) {
-		System.out.println("shit totally happened v1");
-	}
-}
-
-class Lib2 { // v2
-    public static void addRecipe(ItemStack aInput, ItemStack aOutput, boolean hidden) {
-        System.out.println("shit totally happened v2");
-    }
-}*/

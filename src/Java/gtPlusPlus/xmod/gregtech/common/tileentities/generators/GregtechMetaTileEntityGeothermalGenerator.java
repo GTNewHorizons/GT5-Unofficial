@@ -135,8 +135,6 @@ extends GT_MetaTileEntity_BasicGenerator
 		return GT_Recipe_Map.sHotFuels;
 	}
 
-
-	@Override
 	public int getPollution() {
 		return 100;
 	}

@@ -3,6 +3,7 @@ package gtPlusPlus.core.util.math;
 import java.util.Map;
 import java.util.Random;
 
+import gregtech.api.enums.GT_Values;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.objects.XSTR;
 
@@ -96,7 +97,7 @@ public class MathUtils {
 		} while (((bits-val)+(n-1)) < 0L);
 		return val;
 	}
-	
+
 	/**
 	 * Returns a psuedo-random number between min and max, inclusive.
 	 * The difference between min and max can be at most
@@ -357,6 +358,14 @@ public class MathUtils {
 		else {
 			return b;
 		}
+	}
+
+	public static int safeInt(long number, int margin){
+		return number>Integer.MAX_VALUE-margin ? Integer.MAX_VALUE-margin :(int)number;
+	}
+
+	public static int safeInt(long number){
+		return number>GT_Values.V[GT_Values.V.length-1] ? safeInt(GT_Values.V[GT_Values.V.length-1],1) : number<Integer.MIN_VALUE ? Integer.MIN_VALUE : (int)number;
 	}
 
 }

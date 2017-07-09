@@ -11,11 +11,12 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachin
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.GT_Pollution;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.PollutionUtils;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.basic.CONTAINER_PollutionCleaner;
 import gtPlusPlus.xmod.gregtech.api.gui.basic.GUI_PollutionCleaner;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -53,13 +54,13 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 		super(aName, aTier, 2, aDescription, aTextures, 2, 0, aGUIName, aNEIName);
 	}
 
-	public GregtechMetaAtmosphericReconditioner(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
+	/*public GregtechMetaAtmosphericReconditioner(String aName, int aTier, String[] aDescription, ITexture[][][] aTextures, String aGUIName, String aNEIName) {
 		super(aName, aTier, 2, aDescription, aTextures, 2, 0, aGUIName, aNEIName);
-	}
+	}*/
 
 	@Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GregtechMetaAtmosphericReconditioner(this.mName, this.mTier, this.mDescriptionArray, this.mTextures, this.mGUIName, this.mNEIName);
+		return new GregtechMetaAtmosphericReconditioner(this.mName, this.mTier, this.mDescription, this.mTextures, this.mGUIName, this.mNEIName);
 	}
 
 	@Override
@@ -184,7 +185,7 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 										Utils.LOG_WARNING("mPollutionReduction[1]:"+mPollutionReduction);
 
 										//I stole this code
-										mPollutionReduction = (GT_Utility.safeInt((long)mPollutionReduction*this.mBaseEff)/100000)*mAirSides;
+										mPollutionReduction = (MathUtils.safeInt((long)mPollutionReduction*this.mBaseEff)/100000)*mAirSides;
 										//Utils.LOG_WARNING("mPollutionReduction[2]:"+mPollutionReduction);
 										//mPollutionReduction = GT_Utility.safeInt((long)mPollutionReduction*this.mOptimalAirFlow/10000);
 										//Utils.LOG_WARNING("mPollutionReduction[3]:"+mPollutionReduction);
@@ -235,7 +236,7 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 	}
 
 	public int getCurrentChunkPollution(IGregTechTileEntity aBaseMetaTileEntity){
-		int mCurrentChunkPollution = GT_Pollution.getPollution(aBaseMetaTileEntity);
+		int mCurrentChunkPollution = PollutionUtils.getPollution(aBaseMetaTileEntity);
 		if (mCurrentChunkPollution > 0){
 			mHasPollution = true;
 		}
@@ -336,7 +337,7 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 
 	public boolean removePollution(int toRemove){
 		int before = getCurrentChunkPollution();
-		GT_Pollution.addPollution(this.getBaseMetaTileEntity(), -toRemove);
+		PollutionUtils.addPollution(this.getBaseMetaTileEntity(), -toRemove);
 		int after = getCurrentChunkPollution();
 		return (after<before);	
 	}

@@ -2089,7 +2089,6 @@ public class GregtechBaseMetaTileEntityLossless extends BaseTileEntity implement
 	}
 
 
-	@Override
 	public ITexture[] getTexture(final Block arg0, final byte aSide) {
 		final ITexture rIcon = this.getCoverTexture(aSide);
 		if (rIcon != null) {

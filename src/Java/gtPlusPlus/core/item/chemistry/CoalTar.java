@@ -6,6 +6,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
 import net.minecraft.item.ItemStack;
 
 public class CoalTar {
@@ -114,7 +115,7 @@ public class CoalTar {
 	public static void recipeCoalToCoalTar(){
 		//Pyrolyse
 				//Lignite Coal
-				GT_Values.RA.addPyrolyseRecipe(
+				AddGregtechRecipe.PyrolyseOven(
 						GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lignite, 16L), //Input 1
 						GT_Values.NF, //Fluid Input
 						8,
@@ -123,7 +124,7 @@ public class CoalTar {
 						150*20,
 						120);
 				//Coal
-				GT_Values.RA.addPyrolyseRecipe(
+				AddGregtechRecipe.PyrolyseOven(
 						GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16L), //Input 1
 						GT_Values.NF, //Fluid Input
 						8,
@@ -132,7 +133,7 @@ public class CoalTar {
 						120*20,
 						240);
 				//Coal Coke
-				GT_Values.RA.addPyrolyseRecipe(
+				AddGregtechRecipe.PyrolyseOven(
 						ItemUtils.getItemStack("Railcraft:fuel.coke", 16), //Input 1
 						GT_Values.NF, //Fluid Input
 						8,
