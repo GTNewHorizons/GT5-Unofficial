@@ -22,6 +22,7 @@ public final class AddGregtechRecipe {
 			){
 		//Seconds Conversion
 		int TIME = timeInSeconds*20;
+		int TIMEPYRO = TIME+(TIME/5);
 		CORE.RA.addCokeOvenRecipe(
 				input1,
 				ItemUtils.getGregtechCircuit(circuitNumber),
@@ -36,7 +37,7 @@ public final class AddGregtechRecipe {
 				circuitNumber,
 				output1,
 				outputFluid1,
-				TIME,
+				TIMEPYRO,
 				euTick);
 		
 		
