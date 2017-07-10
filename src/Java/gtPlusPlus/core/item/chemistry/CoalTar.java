@@ -2,6 +2,7 @@ package gtPlusPlus.core.item.chemistry;
 
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_OreDictUnificator;
+import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
@@ -13,6 +14,10 @@ public class CoalTar {
 
 	public static void run(){
 
+		//Special Compatibility for Coke
+		ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(ModItems.itemCoalCoke, 1), "fuelCoke");
+		
+		
 		//Create Coal Gas
 		FluidUtils.generateFluidNonMolten("CoalGas", "Coal Gas", 500, new short[]{48, 48, 48, 100}, null, null);
 
@@ -141,7 +146,7 @@ public class CoalTar {
 
 		//Coke
 		AddGregtechRecipe.addCokeAndPyrolyseRecipes(
-				ItemUtils.getItemStackOfAmountFromOreDict("gemCoalCoke", 8),
+				ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 8),
 				8,
 				GT_Values.NF,
 				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallAsh", 3),

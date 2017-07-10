@@ -6,6 +6,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
 import net.minecraft.entity.monster.*;
@@ -54,7 +55,7 @@ public class Biome_DarkWorld {
 	static class BiomeGenbiomeDarkWorld extends BiomeGenBase {
 		@SuppressWarnings("unchecked")
 		public BiomeGenbiomeDarkWorld() {
-			super(40);
+			super(CORE.DARKBIOME_ID);
 			Utils.LOG_INFO("Dark World Temperature Category: "+getTempCategory());
 			setBiomeName("Dark World");
 			topBlock = Dimension_DarkWorld.blockTopLayer;

@@ -64,7 +64,7 @@ public class RECIPES_GREGTECH {
 				GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16L),
 				22,
 				GT_ModHandler.getSteam(1000),
-				ItemUtils.getItemStackOfAmountFromOreDict("gemCoalCoke", 10),
+				ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 10),
 				FluidUtils.getFluidStack("fluid.coalgas", 2880), 
 				30,
 				120);
@@ -72,10 +72,10 @@ public class RECIPES_GREGTECH {
 		//Coke & Coal
 		CORE.RA.addCokeOvenRecipe(
 				GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 12L),
-				ItemUtils.getItemStackOfAmountFromOreDict("gemCoalCoke", 6),
+				ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 6),
 				GT_ModHandler.getSteam(2000),
 				FluidUtils.getFluidStack("fluid.coalgas", 5040),
-				ItemUtils.getItemStackOfAmountFromOreDict("gemCoalCoke", 14),
+				ItemUtils.getItemStackOfAmountFromOreDict("fuelCoke", 14),
 				60*20,
 				240);
 

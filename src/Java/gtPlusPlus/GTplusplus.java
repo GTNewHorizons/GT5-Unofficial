@@ -145,7 +145,10 @@ public class GTplusplus implements ActionListener {
 		// Features
 		enableCustomAlvearyBlocks = config.getBoolean("enableCustomAlvearyBlocks", "features", false,
 				"Enables Custom Alveary Blocks.");
-
+		
+		//Biomes
+		CORE.DARKBIOME_ID = config.getInt("darkbiome_ID", "worldgen", 238, 1, 254, "The biome within the Dark Dimension.");
+		
 		config.save();
 	}
 

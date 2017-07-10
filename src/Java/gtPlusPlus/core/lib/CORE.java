@@ -31,7 +31,7 @@ public class CORE {
 
 	public static final String name = "GT++";
 	public static final String MODID = "miscutils";
-	public static final String VERSION = "1.5.5-Pre-release";
+	public static final String VERSION = "1.5.6-Pre-release";
 	public static final String MASTER_VERSION = NetworkUtils.getContentFromURL("https://raw.githubusercontent.com/draknyte1/GTplusplus/master/Recommended.txt").toLowerCase();
 	public static final String USER_COUNTRY = GeoUtils.determineUsersCountry();
 	public static boolean isModUpToDate = Utils.isModUpToDate();
@@ -55,6 +55,7 @@ public class CORE {
 
 	//Because I want to be lazy.
 	public static boolean GTNH = false;
+	public static int DARKBIOME_ID = 238;
 
 	/**
 	 * A List containing all the Materials, which are somehow in use by GT and therefor receive a specific Set of Items.
