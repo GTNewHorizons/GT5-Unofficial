@@ -211,7 +211,7 @@ public final class ModItems {
 
 	public static Item itemAirFilter;
 
-	private static Item itemCoalCoke;
+	public static Item itemCoalCoke;
 
 
 	public static final void init(){

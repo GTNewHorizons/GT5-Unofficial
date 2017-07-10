@@ -214,9 +214,14 @@ public class GTplusplus implements ActionListener {
 		
 		//Make Burnables burnable
 		if (!CORE.burnables.isEmpty()){
+			int i=0;
 			for (int x=0;x<CORE.burnables.size();x++){
-				GameRegistry.registerFuelHandler(CORE.burnables.get(x));
+				IFuelHandler burnable = CORE.burnables.get(x);
+				GameRegistry.registerFuelHandler(burnable);
+				Utils.LOG_INFO("[Fuel Handler] Registering "+burnable.getClass().getName());
+				i++;
 			}
+			Utils.LOG_INFO("[Fuel Handler] Registered "+i+" burnables as fuel.");
 		}
 
 		// Utils.LOG_INFO("Activating GT OreDictionary Handler, this can take
