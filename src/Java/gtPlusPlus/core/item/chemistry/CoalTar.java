@@ -15,10 +15,10 @@ public class CoalTar {
 
 		//Create Coal Gas
 		FluidUtils.generateFluidNonMolten("CoalGas", "Coal Gas", 500, new short[]{48, 48, 48, 100}, null, null);
-				
-		
-		
-		
+
+
+
+
 		//Ethanol
 		// v - Dehydrate cells to remove water
 		//Create Ethylene
@@ -75,7 +75,7 @@ public class CoalTar {
 		FluidUtils.generateFluidNonMolten("LithiumPeroxide", "Lithium Peroxide", 446, new short[]{135, 135, 135, 100}, null, null);
 
 		createRecipes();
-		
+
 
 	}
 
@@ -83,7 +83,7 @@ public class CoalTar {
 		recipeCreateEthylene();
 		recipeCreatebenzene();
 		recipeCreateEthylbenzene();
-		
+
 		recipeCoalToCoalTar();
 	}
 
@@ -97,7 +97,7 @@ public class CoalTar {
 				},
 				120*20,
 				80);
-		
+
 		CORE.RA.addDehydratorRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2),
 				FluidUtils.getFluidStack("bioethanol", 2000),
@@ -119,65 +119,36 @@ public class CoalTar {
 
 
 	public static void recipeCoalToCoalTar(){
-		//Pyrolyse
-				//Lignite Coal
-				AddGregtechRecipe.PyrolyseOven(
-						GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lignite, 16L), //Input 1
-						GT_Values.NF, //Fluid Input
-						8,
-						ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDarkAsh", 2), //Item Output
-						FluidUtils.getFluidStack("fluid.coaltar", 800), //Fluid Output
-						150*20,
-						120);
-				//Coal
-				AddGregtechRecipe.PyrolyseOven(
-						GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16L), //Input 1
-						GT_Values.NF, //Fluid Input
-						8,
-						ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDarkAsh", 2), //Item Output
-						FluidUtils.getFluidStack("fluid.coaltar", 2200), //Fluid Output
-						120*20,
-						240);
-				//Coal Coke
-				AddGregtechRecipe.PyrolyseOven(
-						ItemUtils.getItemStack("Railcraft:fuel.coke", 16), //Input 1
-						GT_Values.NF, //Fluid Input
-						8,
-						ItemUtils.getItemStackOfAmountFromOreDict("dustSmallAsh", 3), //Item Output
-						FluidUtils.getFluidStack("fluid.coaltar", 3400), //Fluid Output
-						100*20,
-						360);
+		//Lignite
+		AddGregtechRecipe.addCokeAndPyrolyseRecipes(
+				GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lignite, 16L),
+				8,
+				GT_Values.NF,
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDarkAsh", 2),
+				FluidUtils.getFluidStack("fluid.coaltar", 800), 
+				90,
+				60);
 
-				//Coke Oven
-				//Create Coal Tar From Coal
-				CORE.RA.addCokeOvenRecipe(
-						GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lignite, 16L), //Input 1
-						GT_Values.NI, //Input 2
-						GT_Values.NF, //Fluid Input
-						FluidUtils.getFluidStack("fluid.coaltar", 800), //Fluid Output
-						ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDarkAsh", 2), //Item Output
-						150*10,  //Time in ticks
-						120); //EU
+		//Coal
+		AddGregtechRecipe.addCokeAndPyrolyseRecipes(
+				GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 12L),
+				8,
+				GT_Values.NF,
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDarkAsh", 2),
+				FluidUtils.getFluidStack("fluid.coaltar", 2200), 
+				60,
+				120);
 
-				//Create Coal Tar From Coal
-				CORE.RA.addCokeOvenRecipe(
-						GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 16L), //Input 1
-						GT_Values.NI, //Input 2
-						GT_Values.NF, //Fluid Input
-						FluidUtils.getFluidStack("fluid.coaltar", 2200), //Fluid Output
-						ItemUtils.getItemStackOfAmountFromOreDict("dustSmallDarkAsh", 2), //Item Output
-						120*10,  //Time in ticks
-						240); //EU
+		//Coke
+		AddGregtechRecipe.addCokeAndPyrolyseRecipes(
+				ItemUtils.getItemStackOfAmountFromOreDict("gemCoalCoke", 8),
+				8,
+				GT_Values.NF,
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallAsh", 3),
+				FluidUtils.getFluidStack("fluid.coaltar", 3400), 
+				30,
+				240);
 
-				//Create Coal Tar From Coal
-				CORE.RA.addCokeOvenRecipe(
-						ItemUtils.getItemStack("Railcraft:fuel.coke", 16), //Input 1
-						GT_Values.NI, //Input 2
-						GT_Values.NF, //Fluid Input
-						FluidUtils.getFluidStack("fluid.coaltar", 3400), //Fluid Output
-						ItemUtils.getItemStackOfAmountFromOreDict("dustSmallAsh", 3), //Item Output
-						120*10,  //Time in ticks
-						360); //EU
 	}
 
 
