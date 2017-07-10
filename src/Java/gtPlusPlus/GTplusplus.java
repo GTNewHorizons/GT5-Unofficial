@@ -11,6 +11,7 @@ import java.util.Collection;
 import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GT_Recipe;
@@ -210,6 +211,13 @@ public class GTplusplus implements ActionListener {
 
 		// ~
 		ReflectionUtils.becauseIWorkHard();
+		
+		//Make Burnables burnable
+		if (!CORE.burnables.isEmpty()){
+			for (int x=0;x<CORE.burnables.size();x++){
+				GameRegistry.registerFuelHandler(CORE.burnables.get(x));
+			}
+		}
 
 		// Utils.LOG_INFO("Activating GT OreDictionary Handler, this can take
 		// some time.");

@@ -20,7 +20,7 @@ public class CoreItem extends Item
 	private final EnumRarity rarity;
 	private final EnumChatFormatting descColour;
 	private final String itemDescription;
-	private String itemName;
+	protected String itemName;
 	private final boolean hasEffect;
 
 	//Replace Item - What does this item turn into when held.

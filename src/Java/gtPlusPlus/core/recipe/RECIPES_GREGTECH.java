@@ -53,11 +53,11 @@ public class RECIPES_GREGTECH {
 			//GT Logs to Charcoal Recipe
 			//With Sulfuric Acid
 			CORE.RA.addCokeOvenRecipe(
-					GT_OreDictUnificator.get(OrePrefixes.log, Materials.Wood, 1L), //Input 1
-					GT_OreDictUnificator.get(OrePrefixes.log, Materials.Wood, 1L), //Input 2
+					GT_OreDictUnificator.get(OrePrefixes.log, Materials.Wood, 5L), //Input 1
+					ItemUtils.getGregtechCircuit(5), //Input 2
 					Materials.SulfuricAcid.getFluid(20L), //Fluid Input
 					Materials.Creosote.getFluid(175L), //Fluid Output
-					GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 2L), //Item Output
+					GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 8L), //Item Output
 					800,  //Time in ticks
 					30); //EU
 		}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
@@ -66,8 +66,8 @@ public class RECIPES_GREGTECH {
 			//Coal -> Coke Recipe
 			//With Sulfuric Acid
 			CORE.RA.addCokeOvenRecipe(
-					GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1L), //Input 1
-					GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1L), //Input 2
+					GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 2L), //Input 1
+					ItemUtils.getGregtechCircuit(5), //Input 2
 					Materials.SulfuricAcid.getFluid(60L), //Fluid Input
 					Materials.Creosote.getFluid(250L), //Fluid Output
 					ItemUtils.getItemStack("Railcraft:fuel.coke", 2), //Item Output
@@ -79,8 +79,8 @@ public class RECIPES_GREGTECH {
 			//GT Logs to Charcoal Recipe
 			//Without Sulfuric Acid
 			CORE.RA.addCokeOvenRecipe(
-					GT_OreDictUnificator.get(OrePrefixes.log, Materials.Wood, 1L), //Input 1
-					GT_OreDictUnificator.get(OrePrefixes.log, Materials.Wood, 1L), //Input 2
+					GT_OreDictUnificator.get(OrePrefixes.log, Materials.Wood, 2L), //Input 1
+					ItemUtils.getGregtechCircuit(5), //Input 2
 					FluidUtils.getFluidStack("oxygen", 80), //Fluid Input
 					Materials.Creosote.getFluid(145L), //Fluid Output
 					GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 2L), //Item Output
@@ -90,13 +90,13 @@ public class RECIPES_GREGTECH {
 
 		try {
 			//Coal -> Coke Recipe
-			//Without Sulfuric Acid
+			//Make Coal Gas
 			CORE.RA.addCokeOvenRecipe(
-					GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1L), //Input 1
-					GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1L), //Input 2
-					FluidUtils.getFluidStack("oxygen", 185), //Fluid Input
-					Materials.Creosote.getFluid(200L), //Fluid Output
-					ItemUtils.getItemStack("Railcraft:fuel.coke", 2), //Item Output
+					GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 10L), //Input 1
+					ItemUtils.getGregtechCircuit(1), //Input 2
+					FluidUtils.getFluidStack("steam", 1440), //Fluid Input
+					FluidUtils.getFluidStack("fluid.coalgas", 1440), //Fluid Output
+					ItemUtils.getItemStackOfAmountFromOreDict("gemCoalCoke", 10), //Item Output
 					900,  //Time in ticks
 					120); //EU
 		}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}

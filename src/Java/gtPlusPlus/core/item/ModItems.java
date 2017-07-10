@@ -211,6 +211,8 @@ public final class ModItems {
 
 	public static Item itemAirFilter;
 
+	private static Item itemCoalCoke;
+
 
 	public static final void init(){
 
@@ -232,7 +234,8 @@ public final class ModItems {
 
 
 
-
+		//Register Hydrogen Blobs first, so we can replace old helium blobs.
+		itemCoalCoke = new BaseItemBurnable("itemCoalCoke", "Coking Coal", tabMisc, 64, 0, "Used for metallurgy.", "gemCoalCoke", 3200).setTextureName(CORE.MODID + ":itemCoalCoke");
 
 		//Register Hydrogen Blobs first, so we can replace old helium blobs.
 		itemHydrogenBlob = new CoreItem("itemHydrogenBlob", "Mysterious Hydrogen Blob", tabMisc).setTextureName(CORE.MODID + ":itemHeliumBlob");

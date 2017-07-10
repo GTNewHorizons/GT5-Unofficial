@@ -13,6 +13,12 @@ public class CoalTar {
 
 	public static void run(){
 
+		//Create Coal Gas
+		FluidUtils.generateFluidNonMolten("CoalGas", "Coal Gas", 500, new short[]{48, 48, 48, 100}, null, null);
+				
+		
+		
+		
 		//Ethanol
 		// v - Dehydrate cells to remove water
 		//Create Ethylene

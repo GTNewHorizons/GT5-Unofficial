@@ -2,6 +2,7 @@ package gtPlusPlus.core.lib;
 
 import java.util.*;
 
+import cpw.mods.fml.common.IFuelHandler;
 import gregtech.api.GregTech_API;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.geo.GeoUtils;
@@ -12,6 +13,7 @@ import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import gtPlusPlus.xmod.gregtech.api.objects.XSTR;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_TesseractGenerator;
+import net.minecraft.item.Item;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.config.Configuration;
 
@@ -38,6 +40,7 @@ public class CORE {
 	public static final int GREG_FIRST_ID = 760;
 	public static Map PlayerCache;
 	public static final String[] VOLTAGES = {"ULV","LV","MV","HV","EV","IV","LuV","ZPM","UV","MAX"};
+	public static List<IFuelHandler> burnables = new ArrayList<IFuelHandler>();
 	public static final boolean MAIN_GREGTECH_5U_EXPERIMENTAL_FORK = Meta_GT_Proxy.areWeUsingGregtech5uExperimental();
 	public static final int GREGTECH_API_VERSION = GregTech_API.VERSION;
 	public static IGregtech_RecipeAdder RA;
