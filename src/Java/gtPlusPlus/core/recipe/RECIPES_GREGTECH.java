@@ -54,7 +54,7 @@ public class RECIPES_GREGTECH {
 			//With Sulfuric Acid
 			CORE.RA.addCokeOvenRecipe(
 					GT_OreDictUnificator.get(OrePrefixes.log, Materials.Wood, 5L), //Input 1
-					ItemUtils.getGregtechCircuit(5), //Input 2
+					ItemUtils.getGregtechCircuit(4), //Input 2
 					Materials.SulfuricAcid.getFluid(20L), //Fluid Input
 					Materials.Creosote.getFluid(175L), //Fluid Output
 					GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 8L), //Item Output
@@ -80,7 +80,7 @@ public class RECIPES_GREGTECH {
 			//Without Sulfuric Acid
 			CORE.RA.addCokeOvenRecipe(
 					GT_OreDictUnificator.get(OrePrefixes.log, Materials.Wood, 20L), //Input 1
-					ItemUtils.getGregtechCircuit(1), //Input 2
+					ItemUtils.getGregtechCircuit(2), //Input 2
 					FluidUtils.getFluidStack("oxygen", 1000), //Fluid Input
 					FluidUtils.getFluidStack("fluid.coalgas", 1440), //Fluid Output
 					GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Charcoal, 24L), //Item Output
@@ -93,8 +93,8 @@ public class RECIPES_GREGTECH {
 			//Make Coal Gas
 			CORE.RA.addCokeOvenRecipe(
 					GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 10L), //Input 1
-					ItemUtils.getGregtechCircuit(1), //Input 2
-					FluidUtils.getFluidStack("steam", 1440), //Fluid Input
+					ItemUtils.getGregtechCircuit(3), //Input 2
+					GT_ModHandler.getSteam(1000), //Fluid Input
 					FluidUtils.getFluidStack("fluid.coalgas", 1440), //Fluid Output
 					ItemUtils.getSimpleStack(ModItems.itemCoalCoke, 10), //Item Output
 					900,  //Time in ticks
