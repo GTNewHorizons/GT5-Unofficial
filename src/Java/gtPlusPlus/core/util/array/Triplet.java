@@ -12,15 +12,15 @@ public class Triplet<K,V,C> {
 		this.count = value2;
 	}
 
-	final public K getKey(){
+	final public K getValue_1(){
 		return this.key;
 	}
 
-	final public V getValue(){
+	final public V getValue_2(){
 		return this.value;
 	}
 
-	final public C getSecondValue(){
+	final public C getValue_3(){
 		return this.count;
 	}
 

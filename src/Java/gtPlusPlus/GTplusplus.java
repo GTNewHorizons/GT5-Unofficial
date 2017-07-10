@@ -19,6 +19,7 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
 import gtPlusPlus.core.commands.CommandMath;
 import gtPlusPlus.core.common.CommonProxy;
+import gtPlusPlus.core.handler.BurnableFuelHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.handler.events.LoginEventHandler;
 import gtPlusPlus.core.item.general.RF2EU_Battery;
@@ -214,14 +215,9 @@ public class GTplusplus implements ActionListener {
 		
 		//Make Burnables burnable
 		if (!CORE.burnables.isEmpty()){
-			int i=0;
-			for (int x=0;x<CORE.burnables.size();x++){
-				IFuelHandler burnable = CORE.burnables.get(x);
-				GameRegistry.registerFuelHandler(burnable);
-				Utils.LOG_INFO("[Fuel Handler] Registering "+burnable.getClass().getName());
-				i++;
-			}
-			Utils.LOG_INFO("[Fuel Handler] Registered "+i+" burnables as fuel.");
+				BurnableFuelHandler fuelHandler = new BurnableFuelHandler();
+				GameRegistry.registerFuelHandler(fuelHandler);
+				Utils.LOG_INFO("[Fuel Handler] Registering "+fuelHandler.getClass().getName());
 		}
 
 		// Utils.LOG_INFO("Activating GT OreDictionary Handler, this can take
