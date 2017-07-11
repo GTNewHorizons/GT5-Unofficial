@@ -43,7 +43,7 @@ extends GregtechMeta_MultiBlockBase {
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Industrial Sifter",
-				"Size[WxHxL]: 5x3x5 (Hollow)",
+				"Size[WxHxL]: 5x3x5",
 				"Controller (Center Bottom)",
 				"1x Input Bus (Any top or bottom edge casing)",
 				"4x Output Bus (Any top or bottom edge casing)",

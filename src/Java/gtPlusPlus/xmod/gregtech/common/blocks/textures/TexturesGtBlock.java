@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation;
 public class TexturesGtBlock {
 
 	
-	public static ITexture[] CASING_BLOCKS_GTPP = new ITexture[256];
+	//public static ITexture[] CASING_BLOCKS_GTPP = new ITexture[256];
 	
 	/*
 	 * Handles Custom Textures.
