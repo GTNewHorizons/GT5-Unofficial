@@ -11,6 +11,7 @@ import gregtech.common.covers.*;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 import gregtech.common.items.behaviors.Behaviour_DataStick;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.recipe.RECIPES_Old_Circuits;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -270,6 +271,9 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 		GregtechItemList.Old_Empty_Board_Basic.set(this.addItem(219, "Empty Circuit Board", "A Board Part", new Object[0]));
 		GregtechItemList.Old_Empty_Board_Elite.set(this.addItem(220, "Empty Processor Board", "A Processor Board Part", new Object[0]));
 
+		//Add the old recipes.
+		new RECIPES_Old_Circuits();
+		RECIPES_Old_Circuits.addCircuitRecipes();
 		Utils.LOG_INFO("[Old Feature] Enabling Pre 5.09.28 circuits & recipes.");
 		
 		return true;
