@@ -19,6 +19,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.util.EmptyRecipeMap;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
@@ -182,6 +183,7 @@ public class GTplusplus implements ActionListener {
 		// FirstCall();
 		FMLCommonHandler.instance().bus().register(new LoginEventHandler());
 		Utils.LOG_INFO("Login Handler Initialized");
+		removeCircuitRecipeMap();
 
 		// Handle GT++ Config
 		handleConfigFile(event);
@@ -252,7 +254,6 @@ public class GTplusplus implements ActionListener {
 		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && CORE.configSwitches.enableOldGTcircuits){
 			
 		}
-		removeCircuitRecipeMap();
 	}
 
 	@Mod.EventHandler
@@ -285,11 +286,11 @@ public class GTplusplus implements ActionListener {
 		try {			
 			
 			
-			ReflectionUtils.setFinalStatic(GT_Recipe_Map.class.getDeclaredField("sCircuitAssemblerRecipes"), new GT_Recipe_Map(new HashSet<GT_Recipe>(0), "gt.recipe.removed", "Removed", null, GT_Values.RES_PATH_GUI + "basicmachines/Default", 0, 0, 0, 0, 0, GT_Values.E, 0, GT_Values.E, true, false));
+			ReflectionUtils.setFinalStatic(GT_Recipe_Map.class.getDeclaredField("sCircuitAssemblerRecipes"), new EmptyRecipeMap(new HashSet<GT_Recipe>(0), "gt.recipe.removed", "Removed", null, GT_Values.RES_PATH_GUI + "basicmachines/Default", 0, 0, 0, 0, 0, GT_Values.E, 0, GT_Values.E, true, false));
 						
 			Field jaffar = GT_Recipe_Map.class.getDeclaredField("sCircuitAssemblerRecipes");
 			FieldUtils.removeFinalModifier(jaffar, true);
-			jaffar.set(null, null);
+			jaffar.set(null, new EmptyRecipeMap(new HashSet<GT_Recipe>(0), "gt.recipe.removed", "Removed", null, GT_Values.RES_PATH_GUI + "basicmachines/Default", 0, 0, 0, 0, 0, GT_Values.E, 0, GT_Values.E, true, false));
 			
 			//GT_Recipe_Map.sCircuitAssemblerRecipes.
 			
