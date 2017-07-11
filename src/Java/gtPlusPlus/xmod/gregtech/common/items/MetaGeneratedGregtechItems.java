@@ -2,6 +2,8 @@ package gtPlusPlus.xmod.gregtech.common.items;
 
 import static gtPlusPlus.core.util.Utils.getTcAspectStack;
 
+import codechicken.nei.api.API;
+import cpw.mods.fml.common.Loader;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.ITexture;
@@ -277,6 +279,101 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 		new RECIPES_Old_Circuits();
 		RECIPES_Old_Circuits.addCircuitRecipes();
 		Utils.LOG_INFO("[Old Feature] Enabling Pre 5.09.28 circuits & recipes.");
+
+		Boolean isNEILoaded = Loader.isModLoaded("NotEnoughItems");
+		if (isNEILoaded){
+			String[] CircuitToHide = {
+					"Circuit_Board_Basic",
+				    "Circuit_Board_Advanced",
+				    "Circuit_Board_Elite",
+				    "Circuit_Parts_Advanced",
+				    "Circuit_Parts_Wiring_Basic",
+				    "Circuit_Parts_Wiring_Advanced",
+				    "Circuit_Parts_Wiring_Elite",
+				    "Circuit_Parts_Crystal_Chip_Elite",
+				    "Circuit_Parts_Crystal_Chip_Master",
+				    "Circuit_Primitive",
+				    "Circuit_Basic",
+				    "Circuit_Good",
+				    "Circuit_Advanced",
+				    "Circuit_Data",
+				    "Circuit_Elite",
+				    "Circuit_Master",
+				    "Circuit_Ultimate",
+					"Circuit_Board_Coated", 
+					"Circuit_Board_Phenolic", 
+					"Circuit_Board_Epoxy", 
+					"Circuit_Board_Fiberglass", 
+					"Circuit_Board_Multifiberglass", 
+					"Circuit_Board_Wetware", 
+				    "Circuit_Parts_Resistor", 
+					"Circuit_Parts_ResistorSMD", 
+					"Circuit_Parts_Glass_Tube", 
+					"Circuit_Parts_Vacuum_Tube", 
+					"Circuit_Parts_Coil", 
+					"Circuit_Parts_Diode", 
+					"Circuit_Parts_DiodeSMD", 
+					"Circuit_Parts_Transistor", 
+					"Circuit_Parts_TransistorSMD", 
+					"Circuit_Parts_Capacitor", 
+					"Circuit_Parts_CapacitorSMD", 
+				    "Circuit_Silicon_Ingot", 
+					"Circuit_Silicon_Ingot2", 
+					"Circuit_Silicon_Ingot3", 
+					"Circuit_Silicon_Wafer", 
+					"Circuit_Silicon_Wafer2", 
+					"Circuit_Silicon_Wafer3",
+					"Circuit_Wafer_ILC", 
+					"Circuit_Chip_ILC", 
+					"Circuit_Wafer_Ram", 
+					"Circuit_Chip_Ram", 
+				    "Circuit_Wafer_NAND", 
+					"Circuit_Chip_NAND", 
+					"Circuit_Wafer_NOR", 
+					"Circuit_Chip_NOR", 
+					"Circuit_Wafer_CPU", 
+					"Circuit_Chip_CPU", 
+					"Circuit_Wafer_SoC", 
+					"Circuit_Chip_SoC", 
+					"Circuit_Wafer_SoC2", 
+					"Circuit_Chip_SoC2", 
+					"Circuit_Wafer_PIC", 
+					"Circuit_Chip_PIC", 
+				    "Circuit_Wafer_HPIC", 
+					"Circuit_Chip_HPIC", 
+					"Circuit_Wafer_NanoCPU", 
+					"Circuit_Chip_NanoCPU", 
+					"Circuit_Wafer_QuantumCPU", 
+					"Circuit_Chip_QuantumCPU", 
+				    "Circuit_Chip_CrystalCPU", 
+					"Circuit_Chip_CrystalSoC", 
+					"Circuit_Chip_NeuroCPU", 
+					"Circuit_Chip_Stemcell",
+				    "Circuit_Processor", 
+					"Circuit_Computer", 
+					"Circuit_Nanoprocessor", 
+					"Circuit_Nanocomputer", 
+					"Circuit_Elitenanocomputer", 
+					"Circuit_Quantumprocessor", 
+					"Circuit_Quantumcomputer", 
+					"Circuit_Masterquantumcomputer", 
+				    "Circuit_Quantummainframe", 
+					"Circuit_Crystalprocessor", 
+					"Circuit_Crystalcomputer", 
+					"Circuit_Ultimatecrystalcomputer", 
+					"Circuit_Crystalmainframe", 
+					"Circuit_Neuroprocessor", 
+					"Circuit_Wetwarecomputer", 
+					"Circuit_Wetwaresupercomputer", 
+					"Circuit_Wetwaremainframe", 
+					"Circuit_Parts_RawCrystalChip"					
+			};
+			
+			for (String component : CircuitToHide){
+			API.hideItem(ItemList.valueOf(component).get(1L, new Object[0]));
+			}
+			
+		}
 
 		return true;
 	}
