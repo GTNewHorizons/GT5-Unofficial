@@ -14,7 +14,7 @@ public class TAE {
 
 	public static boolean hookGtTextures() {
 		ITexture[] textureArrayDump = Textures.BlockIcons.CASING_BLOCKS;
-		GT_RenderedTexture[] newTextureArray = new GT_RenderedTexture[1024];
+		ITexture[] newTextureArray = new ITexture[1024];
 		gtTexturesArrayStartOrigin = textureArrayDump.length;
 		System.arraycopy(textureArrayDump, 0, newTextureArray, 0, textureArrayDump.length);
 		Textures.BlockIcons.CASING_BLOCKS  = newTextureArray;

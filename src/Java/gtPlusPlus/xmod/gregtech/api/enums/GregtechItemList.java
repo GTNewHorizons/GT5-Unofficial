@@ -173,7 +173,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Pollution_Creator, 
 	
 	//Basically is an automatic Cauldron
-	SimpleDustWasher
+	SimpleDustWasher, 
+	
+	//Old Style Circuits
+	Circuit_Board_Basic, Circuit_Board_Advanced, Circuit_Board_Elite, Circuit_Parts_Crystal_Chip_Elite, Circuit_Parts_Crystal_Chip_Master, Circuit_Parts_Advanced, Circuit_Parts_Wiring_Basic, Circuit_Parts_Wiring_Advanced, Circuit_Parts_Wiring_Elite, Empty_Board_Basic, Empty_Board_Elite
 	;
 
 	public static final GregtechItemList[]
