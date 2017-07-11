@@ -79,6 +79,8 @@ public class CoalTar {
 		//Lithium Peroxide - 2 LiOOH → Li2O2 + H2O2 + 2 H2O
 		FluidUtils.generateFluidNonMolten("LithiumPeroxide", "Lithium Peroxide", 446, new short[]{135, 135, 135, 100}, null, null);
 
+		//Burn the coal gas!
+		GT_Values.RA.addFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalGas", 1), null, 64, 1);
 		createRecipes();
 
 
