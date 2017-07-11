@@ -6,9 +6,7 @@ import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.objects.*;
-import gregtech.api.util.GT_FoodStat;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.*;
 import gregtech.common.covers.*;
 import gregtech.common.items.behaviors.Behaviour_DataOrb;
 import gregtech.common.items.behaviors.Behaviour_DataStick;
@@ -245,37 +243,34 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 	private boolean registerOldCircuits(){
 		//Enable Old Circuits
 		
-		GregtechItemList.Old_Circuit_Primitive.set(addItem(800, "NAND Chip", "A very simple Circuit", new Object[]{OrePrefixes.circuit.get(Materials.Primitive)}));
-		GregtechItemList.Old_Circuit_Basic.set(addItem(801, "Basic Electronic Circuit", "A basic Circuit", new Object[]{OrePrefixes.circuit.get(Materials.Basic)}));
-		GregtechItemList.Old_Circuit_Good.set(addItem(802, "Good Electronic Circuit", "A good Circuit", new Object[]{OrePrefixes.circuit.get(Materials.Good)}));
-		GregtechItemList.Old_Circuit_Advanced.set(addItem(803, "Advanced Circuit", "An advanced Circuit", new Object[]{OrePrefixes.circuit.get(Materials.Advanced)}));
-		GregtechItemList.Old_Circuit_Data.set(addItem(804, "Data Storage Circuit", "A Data Storage Chip", new Object[]{OrePrefixes.circuit.get(Materials.Data)}));
-		GregtechItemList.Old_Circuit_Elite.set(addItem(805, "Data Control Circuit", "A Processor", new Object[]{OrePrefixes.circuit.get(Materials.Elite)}));
+		GregtechItemList.Old_Circuit_Primitive.set(this.addItem(200, "NAND Chip", "A very simple Circuit", new Object[]{OrePrefixes.circuit.get(Materials.Primitive)}));
+		GregtechItemList.Old_Circuit_Basic.set(this.addItem(201, "Basic Electronic Circuit", "A basic Circuit", new Object[]{OrePrefixes.circuit.get(Materials.Basic)}));
+		GregtechItemList.Old_Circuit_Good.set(this.addItem(202, "Good Electronic Circuit", "A good Circuit", new Object[]{OrePrefixes.circuit.get(Materials.Good)}));
+		GregtechItemList.Old_Circuit_Advanced.set(this.addItem(203, "Advanced Circuit", "An advanced Circuit", new Object[]{OrePrefixes.circuit.get(Materials.Advanced)}));
+		GregtechItemList.Old_Circuit_Data.set(this.addItem(204, "Data Storage Circuit", "A Data Storage Chip", new Object[]{OrePrefixes.circuit.get(Materials.Data)}));
+		GregtechItemList.Old_Circuit_Elite.set(this.addItem(205, "Data Control Circuit", "A Processor", new Object[]{OrePrefixes.circuit.get(Materials.Elite)}));
+		GregtechItemList.Old_Circuit_Master.set(this.addItem(206, "Energy Flow Circuit", "A High Voltage Processor", new Object[]{OrePrefixes.circuit.get(Materials.Master)}));
 
-		GregtechItemList.Old_Circuit_Master.set(addItem(806, "Energy Flow Circuit", "A High Voltage Processor", new Object[]{OrePrefixes.circuit.get(Materials.Master)}));
-
-		GregtechItemList.Old_Tool_DataOrb.set(addItem(807, "Data Orbv[GT++]", "A High Capacity Data Storage", new Object[]{OrePrefixes.circuit.get(Materials.Ultimate), SubTag.NO_UNIFICATION, new Behaviour_DataOrb()}));
+		GregtechItemList.Old_Tool_DataOrb.set(this.addItem(207, "Data Orb [GT++]", "A High Capacity Data Storage", new Object[]{OrePrefixes.circuit.get(Materials.Ultimate), SubTag.NO_UNIFICATION, new Behaviour_DataOrb()}));
 		GregtechItemList.Old_Circuit_Ultimate.set(GregtechItemList.Old_Tool_DataOrb.get(1L, new Object[0]));
 		GT_ModHandler.addShapelessCraftingRecipe(GregtechItemList.Old_Tool_DataOrb.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{GregtechItemList.Old_Tool_DataOrb.get(1L, new Object[0])});
 
-		GregtechItemList.Old_Tool_DataStick.set(addItem(808, "Data Stick [GT++]", "A Low Capacity Data Storage", new Object[]{OrePrefixes.circuit.get(Materials.Data), SubTag.NO_UNIFICATION, new Behaviour_DataStick()}));
+		GregtechItemList.Old_Tool_DataStick.set(this.addItem(208, "Data Stick [GT++]", "A Low Capacity Data Storage", new Object[]{OrePrefixes.circuit.get(Materials.Data), SubTag.NO_UNIFICATION, new Behaviour_DataStick()}));
 		GT_ModHandler.addShapelessCraftingRecipe(GregtechItemList.Old_Tool_DataStick.get(1L, new Object[0]), GT_ModHandler.RecipeBits.NOT_REMOVABLE, new Object[]{GregtechItemList.Old_Tool_DataStick.get(1L, new Object[0])});
 
+		GregtechItemList.Old_Circuit_Board_Basic.set(this.addItem(210, "Basic Circuit Board", "A basic Board", new Object[0]));
+		GregtechItemList.Old_Circuit_Board_Advanced.set(this.addItem(211, "Advanced Circuit Board", "An advanced Board", new Object[0]));
+		GregtechItemList.Old_Circuit_Board_Elite.set(this.addItem(212, "Processor Board", "A Processor Board", new Object[0]));
+		GregtechItemList.Old_Circuit_Parts_Crystal_Chip_Elite.set(this.addItem(213, "Engraved Crystal Chip", "Needed for Circuits", new Object[0]));
+		GregtechItemList.Old_Circuit_Parts_Crystal_Chip_Master.set(this.addItem(214, "Engraved Lapotron Chip", "Needed for Circuits", new Object[0]));
+		GregtechItemList.Old_Circuit_Parts_Advanced.set(this.addItem(215, "Advanced Circuit Parts", "Advanced Circuit Parts", new Object[0]));
+		GregtechItemList.Old_Circuit_Parts_Wiring_Basic.set(this.addItem(216, "Etched Medium Voltage Wiring", "Part of Circuit Boards", new Object[0]));
+		GregtechItemList.Old_Circuit_Parts_Wiring_Advanced.set(this.addItem(217, "Etched High Voltage Wiring", "Part of Circuit Boards", new Object[0]));
+		GregtechItemList.Old_Circuit_Parts_Wiring_Elite.set(this.addItem(218, "Etched Extreme Voltage Wiring", "Part of Circuit Boards", new Object[0]));
+		GregtechItemList.Old_Empty_Board_Basic.set(this.addItem(219, "Empty Circuit Board", "A Board Part", new Object[0]));
+		GregtechItemList.Old_Empty_Board_Elite.set(this.addItem(220, "Empty Processor Board", "A Processor Board Part", new Object[0]));
 
-		GregtechItemList.Old_Circuit_Board_Basic.set(addItem(810, "Basic Circuit Board", "A basic Board", new Object[0]));
-		GregtechItemList.Old_Circuit_Board_Advanced.set(addItem(811, "Advanced Circuit Board", "An advanced Board", new Object[0]));
-		GregtechItemList.Old_Circuit_Board_Elite.set(addItem(812, "Processor Board", "A Processor Board", new Object[0]));
-		GregtechItemList.Old_Circuit_Parts_Crystal_Chip_Elite.set(addItem(813, "Engraved Crystal Chip", "Needed for Circuits", new Object[0]));
-		GregtechItemList.Old_Circuit_Parts_Crystal_Chip_Master.set(addItem(814, "Engraved Lapotron Chip", "Needed for Circuits", new Object[0]));
-		GregtechItemList.Old_Circuit_Parts_Advanced.set(addItem(815, "Advanced Circuit Parts", "Advanced Circuit Parts", new Object[0]));
-		GregtechItemList.Old_Circuit_Parts_Wiring_Basic.set(addItem(816, "Etched Medium Voltage Wiring", "Part of Circuit Boards", new Object[0]));
-		GregtechItemList.Old_Circuit_Parts_Wiring_Advanced.set(addItem(817, "Etched High Voltage Wiring", "Part of Circuit Boards", new Object[0]));
-		GregtechItemList.Old_Circuit_Parts_Wiring_Elite.set(addItem(818, "Etched Extreme Voltage Wiring", "Part of Circuit Boards", new Object[0]));
-		GregtechItemList.Old_Empty_Board_Basic.set(addItem(819, "Empty Circuit Board", "A Board Part", new Object[0]));
-		GregtechItemList.Old_Empty_Board_Elite.set(addItem(820, "Empty Processor Board", "A Processor Board Part", new Object[0]));
-
-
-		Utils.LOG_INFO("[Old Feature] Enabling Pre 5.09.28 circuits & recipes. "+GregtechItemList.Old_Circuit_Basic.get(1).getDisplayName());
+		Utils.LOG_INFO("[Old Feature] Enabling Pre 5.09.28 circuits & recipes.");
 		
 		return true;
 	}

@@ -72,7 +72,7 @@ public class Biome_DarkWorld {
 			enableRain = true;
 			enableSnow = false;
 			rainfall = 0.7F;
-			setHeight(new BiomeGenBase.Height(0.15F, 0.8F));
+			setHeight(new BiomeGenBase.Height(0.15F, 0.65F));
 			waterColorMultiplier = 0x2d0b2d;
 			rootHeight = 48; //Ground level
 

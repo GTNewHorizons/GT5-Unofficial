@@ -158,7 +158,7 @@ public class ChunkProviderModded implements IChunkProvider {
 
 						for (int i3 = 0; i3 < 4; ++i3) {
 							int j3 = i3 + k * 4 << 12 | 0 + j1 * 4 << 8 | k2 * 8 + l2;
-							short short1 = 256;
+							short short1 = 256; //TODO - wots dis do
 							j3 -= short1;
 							double d14 = 0.25D;
 							double d16 = (d11 - d10) * d14;
@@ -361,7 +361,7 @@ public class ChunkProviderModded implements IChunkProvider {
 	 */
 	@Override
 	public void populate(IChunkProvider par1IChunkProvider, int par2, int par3) {
-		BlockFalling.fallInstantly = true;
+		BlockFalling.fallInstantly = false;
 		int k = par2 * 16;
 		int l = par3 * 16;
 		BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(k + 16, l + 16);
