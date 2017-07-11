@@ -26,9 +26,8 @@ public class RECIPES_Old_Circuits  implements IOreRecipeRegistrator {
 			GT_Values.RA.addLaserEngraverRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Emerald, 1L), GT_Utility.copyAmount(0L, new Object[]{aStack}), GregtechItemList.Old_Circuit_Parts_Crystal_Chip_Elite.get(1L, new Object[0]), 256, 480);
 		} 
 
-		else if (aOreDictName.equals(OreDictNames.craftingLensBlue.toString())) {
+		else if (aOreDictName.equals(OreDictNames.craftingLensBlue.toString()) || aOreDictName.equals(OreDictNames.craftingLensCyan.toString()) || aOreDictName.equals(OreDictNames.craftingLensLightBlue.toString())) {
 			GT_Values.RA.addLaserEngraverRecipe(ItemList.IC2_LapotronCrystal.getWildcard(1L, new Object[0]), GT_Utility.copyAmount(0L, new Object[]{aStack}), GregtechItemList.Old_Circuit_Parts_Crystal_Chip_Master.get(3L, new Object[0]), 256, 480);
-
 		}		
 	}
 
@@ -60,12 +59,14 @@ public class RECIPES_Old_Circuits  implements IOreRecipeRegistrator {
 				GT_Values.RA.addAssemblerRecipe(GregtechItemList.Old_Circuit_Board_Advanced.get(1L, new Object[0]), GregtechItemList.Old_Circuit_Parts_Advanced.get(2L, new Object[0]), tMat.getMolten(144L * tMultiplier / 2L), GregtechItemList.Old_Circuit_Advanced.get(1L, new Object[0]), 32, 64);
 				GT_Values.RA.addAssemblerRecipe(GregtechItemList.Old_Circuit_Board_Advanced.get(1L, new Object[0]), GregtechItemList.Old_Circuit_Parts_Crystal_Chip_Elite.get(1L, new Object[0]), tMat.getMolten(144L * tMultiplier / 2L), GregtechItemList.Old_Circuit_Data.get(1L, new Object[0]), 32, 64);
 				GT_Values.RA.addAssemblerRecipe(GregtechItemList.Old_Circuit_Board_Elite.get(1L, new Object[0]), GregtechItemList.Old_Circuit_Data.get(3L, new Object[0]), tMat.getMolten(144L * tMultiplier / 1L), GregtechItemList.Old_Circuit_Elite.get(1L, new Object[0]), 32, 256);
+				GT_Values.RA.addAssemblerRecipe(GregtechItemList.Old_Circuit_Board_Elite.get(1L, new Object[0]), ItemList.Circuit_Parts_Crystal_Chip_Master.get(3L, new Object[0]), tMat.getMolten(144L * tMultiplier / 1L), GregtechItemList.Old_Circuit_Master.get(1L, new Object[0]), 32, 256);
 				GT_Values.RA.addAssemblerRecipe(GregtechItemList.Old_Circuit_Board_Elite.get(1L, new Object[0]), GregtechItemList.Old_Circuit_Parts_Crystal_Chip_Master.get(3L, new Object[0]), tMat.getMolten(144L * tMultiplier / 1L), GregtechItemList.Old_Circuit_Master.get(1L, new Object[0]), 32, 256);
 				GT_Values.RA.addAssemblerRecipe(GregtechItemList.Old_Circuit_Data.get(1L, new Object[0]), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Plastic, 2L), tMat.getMolten(144L * tMultiplier / 2L), GregtechItemList.Old_Tool_DataStick.get(1L, new Object[0]), 128, 64);
 			}
 		}
 
 		GT_Values.RA.addAssemblerRecipe(GregtechItemList.Old_Circuit_Elite.get(2L, new Object[0]), GregtechItemList.Old_Circuit_Parts_Crystal_Chip_Elite.get(18L, new Object[0]), GT_Values.NF, GregtechItemList.Old_Tool_DataOrb.get(1L, new Object[0]), 512, 256);
+		GT_Values.RA.addAssemblerRecipe(GregtechItemList.Old_Circuit_Master.get(2L, new Object[0]), ItemList.Circuit_Parts_Crystal_Chip_Master.get(18L, new Object[0]), GT_Values.NF, ItemList.Energy_LapotronicOrb.get(1L, new Object[0]), 512, 1024);
 		GT_Values.RA.addAssemblerRecipe(GregtechItemList.Old_Circuit_Master.get(2L, new Object[0]), GregtechItemList.Old_Circuit_Parts_Crystal_Chip_Master.get(18L, new Object[0]), GT_Values.NF, ItemList.Energy_LapotronicOrb.get(1L, new Object[0]), 512, 1024);
 		GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Silicon, 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Plastic, 1L), GregtechItemList.Old_Empty_Board_Basic.get(1L, new Object[0]), 32, 16);
 	    GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Silicon, 2L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), GregtechItemList.Old_Empty_Board_Elite.get(1L, new Object[0]), 32, 256);

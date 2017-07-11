@@ -97,5 +97,43 @@ public class ReflectionUtils {
 		//System. out.println(ste[ste.length-depth].getClassName()+"#"+ste[ste.length-depth].getMethodName());
 		return ste[depth].getMethodName();
 	}
+	
+	
+	 /**
+	   * Allows to change the state of an immutable instance. Huh?!?
+	   */
+	public static void setFieldValue(Class clazz,  String fieldName, Object newValue) throws Exception {
+	    Field nameField = clazz.getDeclaredField(fieldName);
+	    setValue(clazz, nameField, newValue);
+	  }
+	
+	  /**
+	   * Allows to change the state of final statics. Huh?!?
+	   */
+	  public static void setDefault(Class clazz, String fieldName, Object newValue) throws Exception {
+	    Field staticField = clazz.getDeclaredField(fieldName);
+	    setValue(null, staticField, newValue);
+	  }
+
+	  /**
+	   * 
+	   * Set the value of a field reflectively.
+	   */
+	  protected static void setValue(Object owner, Field field, Object value) throws Exception {
+	    makeModifiable(field);
+	    field.set(owner, value);
+	  }
+	
+	/**
+	 * Force the field to be modifiable and accessible.
+	 */
+	protected static void makeModifiable(Field nameField) throws Exception {
+	  nameField.setAccessible(true);
+	  int modifiers = nameField.getModifiers();
+	  Field modifierField = nameField.getClass().getDeclaredField("modifiers");
+	  modifiers = modifiers & ~Modifier.FINAL;
+	  modifierField.setAccessible(true);
+	  modifierField.setInt(nameField, modifiers);
+	}
 
 }

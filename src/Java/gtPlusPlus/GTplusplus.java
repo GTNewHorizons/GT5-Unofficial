@@ -70,7 +70,7 @@ public class GTplusplus implements ActionListener {
 				"Adds custom circuits to expand past the Master Tier.");
 		CORE.configSwitches.enableOldGTcircuits = config.getBoolean("enableOldGTcircuits", "gregtech", true,
 				"Restores circuits and their recipes from Pre-5.09.28 times.");
-		
+
 		// Tools
 		CORE.configSwitches.enableSkookumChoochers = config.getBoolean("enableSkookumChoochers", "gregtech", true,
 				"Adds Custom GT Tools, called Skookum Choochers, functioning as a hard hammer and a wrench.");
@@ -147,10 +147,10 @@ public class GTplusplus implements ActionListener {
 		// Features
 		enableCustomAlvearyBlocks = config.getBoolean("enableCustomAlvearyBlocks", "features", false,
 				"Enables Custom Alveary Blocks.");
-		
+
 		//Biomes
 		CORE.DARKBIOME_ID = config.getInt("darkbiome_ID", "worldgen", 238, 1, 254, "The biome within the Dark Dimension.");
-		
+
 		config.save();
 	}
 
@@ -217,12 +217,12 @@ public class GTplusplus implements ActionListener {
 
 		// ~
 		ReflectionUtils.becauseIWorkHard();
-		
+
 		//Make Burnables burnable
 		if (!CORE.burnables.isEmpty()){
-				BurnableFuelHandler fuelHandler = new BurnableFuelHandler();
-				GameRegistry.registerFuelHandler(fuelHandler);
-				Utils.LOG_INFO("[Fuel Handler] Registering "+fuelHandler.getClass().getName());
+			BurnableFuelHandler fuelHandler = new BurnableFuelHandler();
+			GameRegistry.registerFuelHandler(fuelHandler);
+			Utils.LOG_INFO("[Fuel Handler] Registering "+fuelHandler.getClass().getName());
 		}
 
 		// Utils.LOG_INFO("Activating GT OreDictionary Handler, this can take
@@ -243,6 +243,20 @@ public class GTplusplus implements ActionListener {
 	@EventHandler
 	public void serverStarting(final FMLServerStartingEvent event) {
 		event.registerServerCommand(new CommandMath());
+
+		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && CORE.configSwitches.enableOldGTcircuits){
+			try {
+				if (ReflectionUtils.getField(GT_Recipe_Map.class, "sCircuitAssemblerRecipes") != null){
+					ReflectionUtils.setDefault(GT_Recipe_Map.class, "sCircuitAssemblerRecipes", null);	
+					if (ReflectionUtils.getField(GT_Recipe_Map.class, "sCircuitAssemblerRecipes") == null){
+						Utils.LOG_INFO("[Circuit Fix 2] Removed all recipes from circuit assembler recipe map.");							
+					}
+				}
+			}
+			catch (Exception e) {
+				Utils.LOG_INFO("Failed removing circuit assembler recipe map.");
+			}
+		}
 	}
 
 	@Mod.EventHandler

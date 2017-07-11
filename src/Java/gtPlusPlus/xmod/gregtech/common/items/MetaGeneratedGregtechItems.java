@@ -177,7 +177,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 		GregtechItemList.Food_Baked_Raisin_Bread.set(this.addItem(tLastID = 60, "Raisin Bread", "Extra Raisins, Just for ImQ009", new Object[]{new GT_FoodStat(5, 0.5F, EnumAction.eat, null, false, true, false, new int[0]), getTcAspectStack(TC_Aspects.CORPUS, 1L), getTcAspectStack(TC_Aspects.FAMES, 1L), getTcAspectStack(TC_Aspects.IGNIS, 1L)}));
 
 		//Old Circuits
-		if (CORE.configSwitches.enableOldGTcircuits){
+		if (CORE.configSwitches.enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
 			registerOldCircuits();
 		}
 
@@ -284,30 +284,30 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 		if (isNEILoaded){
 			String[] CircuitToHide = {
 					"Circuit_Board_Basic",
-				    "Circuit_Board_Advanced",
-				    "Circuit_Board_Elite",
-				    "Circuit_Parts_Advanced",
-				    "Circuit_Parts_Wiring_Basic",
-				    "Circuit_Parts_Wiring_Advanced",
-				    "Circuit_Parts_Wiring_Elite",
-				    "Circuit_Parts_Crystal_Chip_Elite",
-				    "Circuit_Parts_Crystal_Chip_Master",
-				    "Circuit_Primitive",
-				    "Circuit_Basic",
-				    "Circuit_Integrated_Good",
-				    "Circuit_Good",
-				    "Circuit_Advanced",
-				    "Circuit_Data",
-				    "Circuit_Elite",
-				    "Circuit_Master",
-				    "Circuit_Ultimate",
+					"Circuit_Board_Advanced",
+					"Circuit_Board_Elite",
+					"Circuit_Parts_Advanced",
+					"Circuit_Parts_Wiring_Basic",
+					"Circuit_Parts_Wiring_Advanced",
+					"Circuit_Parts_Wiring_Elite",
+					"Circuit_Parts_Crystal_Chip_Elite",
+					"Circuit_Parts_Crystal_Chip_Master",
+					"Circuit_Primitive",
+					"Circuit_Basic",
+					"Circuit_Integrated_Good",
+					"Circuit_Good",
+					"Circuit_Advanced",
+					"Circuit_Data",
+					"Circuit_Elite",
+					"Circuit_Master",
+					"Circuit_Ultimate",
 					"Circuit_Board_Coated", 
 					"Circuit_Board_Phenolic", 
 					"Circuit_Board_Epoxy", 
 					"Circuit_Board_Fiberglass", 
 					"Circuit_Board_Multifiberglass", 
 					"Circuit_Board_Wetware", 
-				    "Circuit_Parts_Resistor", 
+					"Circuit_Parts_Resistor", 
 					"Circuit_Parts_ResistorSMD", 
 					"Circuit_Parts_Glass_Tube", 
 					"Circuit_Parts_Vacuum_Tube", 
@@ -318,7 +318,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 					"Circuit_Parts_TransistorSMD", 
 					"Circuit_Parts_Capacitor", 
 					"Circuit_Parts_CapacitorSMD", 
-				    "Circuit_Silicon_Ingot", 
+					"Circuit_Silicon_Ingot", 
 					"Circuit_Silicon_Ingot2", 
 					"Circuit_Silicon_Ingot3", 
 					"Circuit_Silicon_Wafer", 
@@ -328,7 +328,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 					"Circuit_Chip_ILC", 
 					"Circuit_Wafer_Ram", 
 					"Circuit_Chip_Ram", 
-				    "Circuit_Wafer_NAND", 
+					"Circuit_Wafer_NAND", 
 					"Circuit_Chip_NAND", 
 					"Circuit_Wafer_NOR", 
 					"Circuit_Chip_NOR", 
@@ -340,17 +340,17 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 					"Circuit_Chip_SoC2", 
 					"Circuit_Wafer_PIC", 
 					"Circuit_Chip_PIC", 
-				    "Circuit_Wafer_HPIC", 
+					"Circuit_Wafer_HPIC", 
 					"Circuit_Chip_HPIC", 
 					"Circuit_Wafer_NanoCPU", 
 					"Circuit_Chip_NanoCPU", 
 					"Circuit_Wafer_QuantumCPU", 
 					"Circuit_Chip_QuantumCPU", 
-				    "Circuit_Chip_CrystalCPU", 
+					"Circuit_Chip_CrystalCPU", 
 					"Circuit_Chip_CrystalSoC", 
 					"Circuit_Chip_NeuroCPU", 
 					"Circuit_Chip_Stemcell",
-				    "Circuit_Processor", 
+					"Circuit_Processor", 
 					"Circuit_Computer", 
 					"Circuit_Nanoprocessor", 
 					"Circuit_Nanocomputer", 
@@ -358,7 +358,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 					"Circuit_Quantumprocessor", 
 					"Circuit_Quantumcomputer", 
 					"Circuit_Masterquantumcomputer", 
-				    "Circuit_Quantummainframe", 
+					"Circuit_Quantummainframe", 
 					"Circuit_Crystalprocessor", 
 					"Circuit_Crystalcomputer", 
 					"Circuit_Ultimatecrystalcomputer", 
@@ -369,11 +369,10 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 					"Circuit_Wetwaremainframe", 
 					"Circuit_Parts_RawCrystalChip"					
 			};
-			
+
 			for (String component : CircuitToHide){
-			API.hideItem(ItemList.valueOf(component).get(1L, new Object[0]));
-			}
-			
+				API.hideItem(ItemList.valueOf(component).get(1L, new Object[0]));
+			}			
 		}
 
 		return true;
