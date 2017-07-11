@@ -109,14 +109,24 @@ public class GT_MetaTileEntity_TieredTank extends GT_MetaTileEntity_BasicTank {
 		return 100;
 	}
 
-	@Override
-	public boolean displaysItemStack() {
-		return false;
+	@Override 	
+	public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer) { 	
+		if (aBaseMetaTileEntity.isClientSide()){ 	
+			//setVars(); 	
+			return true; 	
+		} 	
+		aBaseMetaTileEntity.openGUI(aPlayer); 	
+		return true; 	
 	}
-
+	
 	@Override
-	public boolean displaysStackSize() {
-		return false;
+	public boolean displaysItemStack() { 	
+		return true; 	
+	} 	
+ 	
+	@Override 	
+	public boolean displaysStackSize() { 	
+		return false; 	
 	}
 
 }
