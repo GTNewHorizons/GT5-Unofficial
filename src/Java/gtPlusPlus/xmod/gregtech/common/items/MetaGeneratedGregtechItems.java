@@ -294,6 +294,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 				    "Circuit_Parts_Crystal_Chip_Master",
 				    "Circuit_Primitive",
 				    "Circuit_Basic",
+				    "Circuit_Integrated_Good",
 				    "Circuit_Good",
 				    "Circuit_Advanced",
 				    "Circuit_Data",
