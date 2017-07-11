@@ -284,16 +284,12 @@ public class GTplusplus implements ActionListener {
 	private static boolean removeCircuitRecipeMap(){
 		try {			
 			
-			Utils.LOG_INFO("DEBUG[1]:"+GT_Recipe_Map.class.getDeclaredField("sCircuitAssemblerRecipes").hashCode());
-			ReflectionUtils.setFinalStatic(GT_Recipe_Map.class.getDeclaredField("sCircuitAssemblerRecipes"), new GT_Recipe_Map(new HashSet<GT_Recipe>(0), "gt.recipe.removed", "Removed", null, GT_Values.RES_PATH_GUI + "basicmachines/Default", 0, 0, 0, 0, 0, GT_Values.E, 0, GT_Values.E, true, false));
-			Utils.LOG_INFO("DEBUG[2]:"+GT_Recipe_Map.class.getDeclaredField("sCircuitAssemblerRecipes").hashCode());
 			
+			ReflectionUtils.setFinalStatic(GT_Recipe_Map.class.getDeclaredField("sCircuitAssemblerRecipes"), new GT_Recipe_Map(new HashSet<GT_Recipe>(0), "gt.recipe.removed", "Removed", null, GT_Values.RES_PATH_GUI + "basicmachines/Default", 0, 0, 0, 0, 0, GT_Values.E, 0, GT_Values.E, true, false));
+						
 			Field jaffar = GT_Recipe_Map.class.getDeclaredField("sCircuitAssemblerRecipes");
-			Utils.LOG_INFO("DEBUG[3]:"+jaffar.hashCode());
 			FieldUtils.removeFinalModifier(jaffar, true);
-			Utils.LOG_INFO("DEBUG[4]:"+jaffar.hashCode());
 			jaffar.set(null, null);
-			Utils.LOG_INFO("DEBUG[5]:"+jaffar.hashCode());
 			
 			//GT_Recipe_Map.sCircuitAssemblerRecipes.
 			

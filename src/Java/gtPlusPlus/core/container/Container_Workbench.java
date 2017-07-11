@@ -119,7 +119,7 @@ public class Container_Workbench extends Container {
 		{
 			for (var7 = 0; var7 < 3; ++var7)
 			{
-				this.addSlotToContainer(new Slot(this.craftMatrix, var7 + (var6 * 3), 82 + (var7 * 18), 28 + (var6 * 18)));
+				//this.addSlotToContainer(new Slot(this.craftMatrix, var7 + (var6 * 3), 82 + (var7 * 18), 28 + (var6 * 18)));
 
 				/*if (this.inventoryCrafting.getStackInSlot(o) != null){
 					this.craftMatrix.setInventorySlotContents(o, inventoryCrafting.getStackInSlot(o));
