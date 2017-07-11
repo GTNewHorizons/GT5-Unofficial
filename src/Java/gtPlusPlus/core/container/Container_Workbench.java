@@ -23,7 +23,7 @@ public class Container_Workbench extends Container {
 	public final InventoryWorkbenchChest inventoryChest;
 	public final InventoryWorkbenchTools inventoryTool;
 	public final InventoryWorkbenchHoloSlots inventoryHolo;
-	public final InventoryWorkbenchHoloCrafting inventoryCrafting;
+	//public final InventoryWorkbenchHoloCrafting inventoryCrafting;
 
 	private final World worldObj;
 	private final int posX;
@@ -84,7 +84,7 @@ public class Container_Workbench extends Container {
 		this.inventoryChest = tile.inventoryChest;
 		this.inventoryTool = tile.inventoryTool;
 		this.inventoryHolo = tile.inventoryHolo;
-		this.inventoryCrafting = tile.inventoryCrafting;
+		//this.inventoryCrafting = tile.inventoryCrafting;
 
 		int var6;
 		int var7;
@@ -262,7 +262,7 @@ public class Container_Workbench extends Container {
 
 	private void updateCraftingMatrix() {
 		for (int i = 0; i < this.craftMatrix.getSizeInventory(); i++) {
-			this.craftMatrix.setInventorySlotContents(i, this.tile_entity.inventoryCrafting.getStackInSlot(i));
+			//this.craftMatrix.setInventorySlotContents(i, this.tile_entity.inventoryCrafting.getStackInSlot(i));
 		}
 	}
 
@@ -280,7 +280,7 @@ public class Container_Workbench extends Container {
 
 	private void saveCraftingMatrix() {
 		for (int i = 0; i < this.craftMatrix.getSizeInventory(); i++) {
-			this.tile_entity.inventoryCrafting.setInventorySlotContents(i, this.craftMatrix.getStackInSlot(i));
+			//this.tile_entity.inventoryCrafting.setInventorySlotContents(i, this.craftMatrix.getStackInSlot(i));
 		}
 	}
 

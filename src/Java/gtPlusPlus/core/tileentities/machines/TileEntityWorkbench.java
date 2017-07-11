@@ -23,7 +23,7 @@ public class TileEntityWorkbench extends TileEntity implements INetworkDataProvi
 	public InventoryWorkbenchChest inventoryChest;
 	public InventoryWorkbenchTools inventoryTool;
 	public InventoryWorkbenchHoloSlots inventoryHolo;
-	public InventoryWorkbenchHoloCrafting inventoryCrafting;
+	//public InventoryWorkbenchHoloCrafting inventoryCrafting;
 
 	public IInventory inventoryCraftResult = new InventoryCraftResult();
 
@@ -31,7 +31,7 @@ public class TileEntityWorkbench extends TileEntity implements INetworkDataProvi
 		this.inventoryTool = new InventoryWorkbenchTools();//number of slots - without product slot
 		this.inventoryChest = new InventoryWorkbenchChest();//number of slots - without product slot
 		this.inventoryHolo = new InventoryWorkbenchHoloSlots();
-		this.inventoryCrafting = new InventoryWorkbenchHoloCrafting();
+		//this.inventoryCrafting = new InventoryWorkbenchHoloCrafting();
 		this.canUpdate();
 	}
 
@@ -59,14 +59,14 @@ public class TileEntityWorkbench extends TileEntity implements INetworkDataProvi
 
 		// Write Crafting Matrix to NBT
 		final NBTTagList craftingTag = new NBTTagList();
-		for (int currentIndex = 0; currentIndex < this.inventoryCrafting.getSizeInventory(); ++currentIndex) {
+		/*for (int currentIndex = 0; currentIndex < this.inventoryCrafting.getSizeInventory(); ++currentIndex) {
 			if (this.inventoryCrafting.getStackInSlot(currentIndex) != null) {
 				final NBTTagCompound tagCompound = new NBTTagCompound();
 				tagCompound.setByte("Slot", (byte) currentIndex);
 				this.inventoryCrafting.getStackInSlot(currentIndex).writeToNBT(tagCompound);
 				craftingTag.appendTag(tagCompound);
 			}
-		}
+		}*/
 
 		nbt.setTag("CraftingMatrix", craftingTag);
 		// Write craftingResult to NBT
@@ -90,14 +90,14 @@ public class TileEntityWorkbench extends TileEntity implements INetworkDataProvi
 
 		// Read in the Crafting Matrix from NBT
 		final NBTTagList craftingTag = nbt.getTagList("CraftingMatrix", 10);
-		this.inventoryCrafting = new InventoryWorkbenchHoloCrafting(); //TODO: magic number
+		/*this.inventoryCrafting = new InventoryWorkbenchHoloCrafting(); //TODO: magic number
 		for (int i = 0; i < craftingTag.tagCount(); ++i) {
 			final NBTTagCompound tagCompound = craftingTag.getCompoundTagAt(i);
 			final byte slot = tagCompound.getByte("Slot");
 			if ((slot >= 0) && (slot < this.inventoryCrafting.getSizeInventory())) {
 				this.inventoryCrafting.setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(tagCompound));
 			}
-		}
+		}*/
 
 
 		// Read craftingResult from NBT
