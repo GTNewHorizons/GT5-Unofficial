@@ -1,6 +1,8 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
