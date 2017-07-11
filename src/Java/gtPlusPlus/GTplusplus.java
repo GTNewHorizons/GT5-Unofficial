@@ -183,7 +183,10 @@ public class GTplusplus implements ActionListener {
 		// FirstCall();
 		FMLCommonHandler.instance().bus().register(new LoginEventHandler());
 		Utils.LOG_INFO("Login Handler Initialized");
-		removeCircuitRecipeMap();
+
+		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && CORE.configSwitches.enableOldGTcircuits){
+			removeCircuitRecipeMap(); //Bye shitty recipes.			
+		}
 
 		// Handle GT++ Config
 		handleConfigFile(event);
@@ -244,16 +247,12 @@ public class GTplusplus implements ActionListener {
 
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
-		
+
 	}
 
 	@EventHandler
 	public void serverStarting(final FMLServerStartingEvent event) {
 		event.registerServerCommand(new CommandMath());
-
-		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && CORE.configSwitches.enableOldGTcircuits){
-			
-		}
 	}
 
 	@Mod.EventHandler
@@ -281,35 +280,13 @@ public class GTplusplus implements ActionListener {
 		}
 	}
 
-	
+
 	private static boolean removeCircuitRecipeMap(){
 		try {			
-			
-			
-			ReflectionUtils.setFinalStatic(GT_Recipe_Map.class.getDeclaredField("sCircuitAssemblerRecipes"), new EmptyRecipeMap(new HashSet<GT_Recipe>(0), "gt.recipe.removed", "Removed", null, GT_Values.RES_PATH_GUI + "basicmachines/Default", 0, 0, 0, 0, 0, GT_Values.E, 0, GT_Values.E, true, false));
-						
+			ReflectionUtils.setFinalStatic(GT_Recipe_Map.class.getDeclaredField("sCircuitAssemblerRecipes"), new EmptyRecipeMap(new HashSet<GT_Recipe>(0), "gt.recipe.removed", "Removed", null, GT_Values.RES_PATH_GUI + "basicmachines/Default", 0, 0, 0, 0, 0, GT_Values.E, 0, GT_Values.E, true, false));		
 			Field jaffar = GT_Recipe_Map.class.getDeclaredField("sCircuitAssemblerRecipes");
 			FieldUtils.removeFinalModifier(jaffar, true);
 			jaffar.set(null, new EmptyRecipeMap(new HashSet<GT_Recipe>(0), "gt.recipe.removed", "Removed", null, GT_Values.RES_PATH_GUI + "basicmachines/Default", 0, 0, 0, 0, 0, GT_Values.E, 0, GT_Values.E, true, false));
-			
-			//GT_Recipe_Map.sCircuitAssemblerRecipes.
-			
-			//for (fieldType R : value){
-				
-			//}
-			
-			/*if (ReflectionUtils.getField(GT_Recipe_Map.class, "sCircuitAssemblerRecipes") != null){
-				ReflectionUtils.setDefault(GT_Recipe_Map.class, "sCircuitAssemblerRecipes", null);	
-				if (ReflectionUtils.getField(GT_Recipe_Map.class, "sCircuitAssemblerRecipes") == null){
-					Utils.LOG_INFO("[Circuit Fix 2] Removed all recipes from circuit assembler recipe map.");		
-					//Object sArray = Reflectionutils. gregtech.api.util.GT_Recipe.GT_Recipe_Map.sCircuitAssemblerRecipes;
-					//for (int x : )
-					
-					
-					
-					
-				}
-			}*/
 		}
 		catch (Exception e) {
 			Utils.LOG_INFO("Failed removing circuit assembler recipe map.");
