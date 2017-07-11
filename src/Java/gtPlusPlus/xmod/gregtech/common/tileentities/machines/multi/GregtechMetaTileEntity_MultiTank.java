@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.TAE;
+import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -216,9 +218,9 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{TexturesGtBlock.CASING_BLOCKS_GTPP[11], new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Screen_Logo : TexturesGtBlock.Overlay_Machine_Screen_Logo)};
+			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(11)], new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Screen_Logo : TexturesGtBlock.Overlay_Machine_Screen_Logo)};
 		}
-		return new ITexture[]{TexturesGtBlock.CASING_BLOCKS_GTPP[11]};
+		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(11)]};
 	}
 
 	@Override
@@ -399,7 +401,7 @@ extends GregtechMeta_MultiBlockBase {
 				for (int h = -1; h < 19; h++) {
 					if ((h != 0) || ((((xDir + i) != 0) || ((zDir + j) != 0)) && ((i != 0) || (j != 0)))) {
 						final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-						if ((!this.addMaintenanceToMachineList(tTileEntity, 68)) && (!this.addInputToMachineList(tTileEntity, 68)) && (!this.addOutputToMachineList(tTileEntity, 68)) && (!this.addEnergyInputToMachineList(tTileEntity, 68))) {
+						if ((!this.addMaintenanceToMachineList(tTileEntity, TAE.GTPP_INDEX(11))) && (!this.addInputToMachineList(tTileEntity, TAE.GTPP_INDEX(11))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(11))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(11)))) {
 							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
 								if (h < 3){
 									Utils.LOG_WARNING("Casing Expected.");
@@ -472,7 +474,7 @@ extends GregtechMeta_MultiBlockBase {
 				for (int h = -1; h < 19; h++) {
 					if ((h != 0) || (((xDir + i != 0) || (zDir + j != 0)) && ((i != 0) || (j != 0)))) {
 						IGregTechTileEntity tTileEntity = this.getBaseMetaTileEntity().getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-						if ((!addMaintenanceToMachineList(tTileEntity, 68)) && (!addInputToMachineList(tTileEntity, 68)) && (!addOutputToMachineList(tTileEntity, 68)) && (!addEnergyInputToMachineList(tTileEntity, 68))) {
+						if ((!addMaintenanceToMachineList(tTileEntity, TAE.GTPP_INDEX(11))) && (!addInputToMachineList(tTileEntity, TAE.GTPP_INDEX(11))) && (!addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(11))) && (!addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(11)))) {
 							if (this.getBaseMetaTileEntity().getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
 								if (h < 3){
 									Utils.LOG_WARNING("Casing Expected.");

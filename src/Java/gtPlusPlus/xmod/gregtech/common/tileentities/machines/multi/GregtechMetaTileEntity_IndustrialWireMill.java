@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
 import java.util.ArrayList;
 
+import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -53,9 +54,9 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{TexturesGtBlock.CASING_BLOCKS_GTPP[6], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER)};
+			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(6)], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER)};
 		}
-		return new ITexture[]{TexturesGtBlock.CASING_BLOCKS_GTPP[6]};
+		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(6)]};
 	}
 
 	@Override
@@ -230,7 +231,7 @@ extends GregtechMeta_MultiBlockBase {
 
 
 	public byte getCasingTextureIndex() {
-		return 63;
+		return 1;
 	}
 
 	private boolean addToMachineList(final IGregTechTileEntity tTileEntity) {

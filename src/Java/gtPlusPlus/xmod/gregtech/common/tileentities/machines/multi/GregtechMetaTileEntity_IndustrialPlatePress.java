@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -55,9 +56,9 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{TexturesGtBlock.CASING_BLOCKS_GTPP[4], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER)};
+			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(4)], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_VACUUM_FREEZER)};
 		}
-		return new ITexture[]{TexturesGtBlock.CASING_BLOCKS_GTPP[4]};
+		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(4)]};
 	}
 
 	@Override
@@ -161,7 +162,7 @@ extends GregtechMeta_MultiBlockBase {
 				for (int h = -1; h < 2; h++) {
 					if ((h != 0) || ((((xDir + i) != 0) || ((zDir + j) != 0)) && ((i != 0) || (j != 0)))) {
 						final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-						if ((!this.addMaintenanceToMachineList(tTileEntity, 61)) && (!this.addMufflerToMachineList(tTileEntity, 61)) && (!this.addInputToMachineList(tTileEntity, 61)) && (!this.addOutputToMachineList(tTileEntity, 61)) && (!this.addEnergyInputToMachineList(tTileEntity, 61))) {
+						if ((!this.addMaintenanceToMachineList(tTileEntity, TAE.GTPP_INDEX(4))) && (!this.addMufflerToMachineList(tTileEntity, TAE.GTPP_INDEX(4))) && (!this.addInputToMachineList(tTileEntity, TAE.GTPP_INDEX(4))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(4))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(4)))) {
 							final Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
 							final byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
 							if (((tBlock != ModBlocks.blockCasingsMisc) || (tMeta != 4))) {

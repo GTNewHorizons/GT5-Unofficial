@@ -1,9 +1,8 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
-import static gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks2.GTID;
-
 import java.util.ArrayList;
 
+import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
@@ -57,9 +56,9 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{TexturesGtBlock.CASING_BLOCKS_GTPP[18], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER)};
+			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(18)], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER)};
 		}
-		return new ITexture[]{TexturesGtBlock.CASING_BLOCKS_GTPP[18]};
+		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(18)]};
 	}
 
 	@Override
@@ -88,46 +87,9 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 			}
 		}
 		FluidStack tFluid = null;//GT_Utility.getUndergroundOil(getBaseMetaTileEntity().getWorld(), getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getZCoord());
-		if (tFluid == null) {
+		{
 			return false;
 		}
-		if ((this.getYOfPumpHead() > 0) && (this.getBaseMetaTileEntity().getBlockOffset(ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetX, this.getYOfPumpHead() - 1 - this.getBaseMetaTileEntity().getYCoord(), ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetZ) != Blocks.bedrock)) {
-			if (this.completedCycle) {
-				this.moveOneDown();
-			}
-			tFluid = null;
-			if ((this.mEnergyHatches.size() > 0) && (this.mEnergyHatches.get(0).getEUVar() > (512 + (this.getMaxInputVoltage() * 4)))) {
-				this.completedCycle = true;
-			}
-		} else if (tFluid.amount < 5000) {
-			this.stopMachine();
-			return false;
-		} else {
-			tFluid.amount = tFluid.amount / 5000;
-		}
-		final long tVoltage = this.getMaxInputVoltage();
-		final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-		this.mEfficiency = (10000 - ((this.getIdealStatus() - this.getRepairStatus()) * 1000));
-		this.mEfficiencyIncrease = 10000;
-		final int tEU = 24;
-		final int tDuration = 160;
-		if (tEU <= 16) {
-			this.mEUt = (tEU * (1 << (tTier - 1)) * (1 << (tTier - 1)));
-			this.mMaxProgresstime = (tDuration / (1 << (tTier - 1)));
-		} else {
-			this.mEUt = tEU;
-			this.mMaxProgresstime = tDuration;
-			while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-				this.mEUt *= 4;
-				this.mMaxProgresstime /= 2;
-			}
-		}
-		if (this.mEUt > 0) {
-			this.mEUt = (-this.mEUt);
-		}
-		this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-		this.mOutputFluids = new FluidStack[]{tFluid};
-		return true;
 	}
 
 	private boolean moveOneDown() {
@@ -183,7 +145,7 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 				int Y = 0;
 				if (((xDir + i) != 0) || ((zDir + j) != 0)) {
 					final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, Y, zDir + j);
-					if ((!this.addToMachineList(tTileEntity, GTID+2)) && (!this.addEnergyInputToMachineList(tTileEntity, GTID+1))) {
+					if ((!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(18))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(18)))) {
 
 						if (aBaseMetaTileEntity.getBlockOffset(xDir + i, Y, zDir + j) != ModBlocks.blockCasings2Misc) {
 							Utils.LOG_INFO("Wrong Block.");
@@ -201,7 +163,7 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 				Y = 1;
 				Utils.LOG_INFO("Checking at Y+1 as well.");
 				final IGregTechTileEntity tTileEntity2 = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, Y, zDir + j);
-				if ((!this.addToMachineList(tTileEntity2, GTID+2)) && (!this.addEnergyInputToMachineList(tTileEntity2, GTID+1))) {
+				if ((!this.addToMachineList(tTileEntity2, TAE.GTPP_INDEX(18))) && (!this.addEnergyInputToMachineList(tTileEntity2, TAE.GTPP_INDEX(18)))) {
 
 					if (aBaseMetaTileEntity.getBlockOffset(xDir + i, Y, zDir + j) != ModBlocks.blockCasings2Misc) {
 						Utils.LOG_INFO("Wrong Block.");

@@ -3,6 +3,8 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 import java.util.*;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.TAE;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -57,9 +59,9 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{TexturesGtBlock.CASING_BLOCKS_GTPP[21], new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Diesel_Horizontal_Active : TexturesGtBlock.Overlay_Machine_Diesel_Horizontal)};
+			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(21)], new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_Machine_Diesel_Horizontal_Active : TexturesGtBlock.Overlay_Machine_Diesel_Horizontal)};
 		}
-		return new ITexture[]{TexturesGtBlock.CASING_BLOCKS_GTPP[21]};
+		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(21)]};
 	}
 
 	@Override
@@ -274,7 +276,7 @@ extends GregtechMeta_MultiBlockBase {
 							
 							if (h == 2 || h == 1){						
 							//If not a hatch, continue, else add hatch and continue.
-							if ((!this.addMufflerToMachineList(tTileEntity, 78)) && (!this.addOutputToMachineList(tTileEntity, 78)) && (!this.addDynamoToMachineList(tTileEntity, 78))) {
+							if ((!this.addMufflerToMachineList(tTileEntity, TAE.GTPP_INDEX(21))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(21))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(21)))) {
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
 									Utils.LOG_MACHINE_INFO("Sifter Casing(s) Missing from one of the top layers inner 3x3.");
 									Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
@@ -287,7 +289,7 @@ extends GregtechMeta_MultiBlockBase {
 							}
 							}
 							else {
-								if ((!this.addMufflerToMachineList(tTileEntity, 78)) && (!this.addOutputToMachineList(tTileEntity, 78)) && (!this.addDynamoToMachineList(tTileEntity, 78))) {
+								if ((!this.addMufflerToMachineList(tTileEntity, TAE.GTPP_INDEX(21))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(21))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(21)))) {
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
 										Utils.LOG_MACHINE_INFO("Sifter Casing(s) Missing from one of the bottom layers inner 3x3.");
 										Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
@@ -320,7 +322,7 @@ extends GregtechMeta_MultiBlockBase {
 						//Deal with all 4 sides (Sifter walls)
 						if ((h == 1) || (h == 2)) {
 							if (h == 2){
-								if (!this.addToMachineList(tTileEntity, 78)) {
+								if (!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(21))) {
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
 										Utils.LOG_MACHINE_INFO("Sifter Casings Missing from somewhere in the top layer edge.");
 										Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
@@ -351,7 +353,7 @@ extends GregtechMeta_MultiBlockBase {
 
 						//Deal with top and Bottom edges (Inner 5x5)
 						else if ((h == 0) || (h == 2)) {
-							if ((!this.addToMachineList(tTileEntity, 78)) && (!this.addInputToMachineList(tTileEntity, 78)) && (!this.addOutputToMachineList(tTileEntity, 78)) && (!this.addDynamoToMachineList(tTileEntity, 78))) {
+							if ((!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(21))) && (!this.addInputToMachineList(tTileEntity, TAE.GTPP_INDEX(21))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(21))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(21)))) {
 								if (((xDir + i) != 0) || ((zDir + j) != 0)) {//no controller
 
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {

@@ -1,10 +1,9 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
-import static gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks.GTID;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -60,9 +59,9 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{TexturesGtBlock.CASING_BLOCKS_GTPP[1], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER)};
+			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(1)], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER)};
 		}
-		return new ITexture[]{TexturesGtBlock.CASING_BLOCKS_GTPP[1]};
+		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(1)]};
 	}
 
 	@Override
@@ -190,7 +189,7 @@ extends GregtechMeta_MultiBlockBase {
 		if (!aBaseMetaTileEntity.getAirOffset(xDir, 1, zDir)) {
 			return false;
 		}
-		this.addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 2, zDir), GTID+1);
+		this.addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 2, zDir), TAE.GTPP_INDEX(1));
 
 		final byte tUsedMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, 1, zDir);
 		switch (tUsedMeta) {
@@ -238,7 +237,7 @@ extends GregtechMeta_MultiBlockBase {
 					zr = aBaseMetaTileEntity.getZCoord();
 					//Utils.LOG_WARNING("STEP 3 - x ["+xr+"]  y ["+yr+"]  z ["+zr+"]");
 					final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 0, zDir + j);
-					if ((!this.addMaintenanceToMachineList(tTileEntity, GTID+1)) && (!this.addInputToMachineList(tTileEntity, GTID+1)) && (!this.addOutputToMachineList(tTileEntity, GTID+1)) && (!this.addEnergyInputToMachineList(tTileEntity, GTID+1))) {
+					if ((!this.addMaintenanceToMachineList(tTileEntity, TAE.GTPP_INDEX(1))) && (!this.addInputToMachineList(tTileEntity, TAE.GTPP_INDEX(1))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(1))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(1)))) {
 						if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j) != ModBlocks.blockCasingsMisc) {
 							return false;
 						}

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -100,10 +101,10 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{TexturesGtBlock.CASING_BLOCKS_GTPP[12],
+			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(12)],
 					new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_REPLICATOR_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_REPLICATOR)};
 		}
-		return new ITexture[]{TexturesGtBlock.CASING_BLOCKS_GTPP[12]};
+		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(12)]};
 	}
 
 	@Override
@@ -207,7 +208,7 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 
 						//Deal with top and Bottom edges (Inner 5x5)
 						else if ((h == 0) || (h == 3)) {
-							if ((!this.addToMachineList(tTileEntity, 70)) && (!this.addInputToMachineList(tTileEntity, 70)) && (!this.addOutputToMachineList(tTileEntity, 70)) && (!this.addDynamoToMachineList(tTileEntity, 70))) {
+							if ((!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(12))) && (!this.addInputToMachineList(tTileEntity, TAE.GTPP_INDEX(12))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(12))) && (!this.addDynamoToMachineList(tTileEntity, TAE.GTPP_INDEX(12)))) {
 								if (((xDir + i) != 0) || ((zDir + j) != 0)) {//no controller
 
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
@@ -315,7 +316,8 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 	}
 
 	public boolean turnCasingActive(final boolean status) {
-		if (this.mDynamoHatches != null) {
+		//TODO
+		/*if (this.mDynamoHatches != null) {
 			for (final GT_MetaTileEntity_Hatch_Dynamo hatch : this.mDynamoHatches) {
 				hatch.mMachineBlock = status ? (byte) 70 : (byte) 71;
 			}
@@ -344,7 +346,7 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 			for (final GT_MetaTileEntity_Hatch_InputBus hatch : this.mInputBusses) {
 				hatch.mMachineBlock = status ? (byte) 70 : (byte) 71;
 			}
-		}
+		}*/
 		return true;
 	}
 

@@ -3,6 +3,8 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 import java.util.*;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.TAE;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -55,9 +57,9 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{TexturesGtBlock.CASING_BLOCKS_GTPP[7], new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_MatterFab_Active : TexturesGtBlock.Overlay_MatterFab)};
+			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(7)], new GT_RenderedTexture(aActive ? TexturesGtBlock.Overlay_MatterFab_Active : TexturesGtBlock.Overlay_MatterFab)};
 		}
-		return new ITexture[]{TexturesGtBlock.CASING_BLOCKS_GTPP[7]};
+		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(7)]};
 	}
 
 	@Override
@@ -185,7 +187,7 @@ extends GregtechMeta_MultiBlockBase {
 					if (!((i == 0) && (j == 0) && ((h > 0) && (h < 5))))//((h > 0)&&(h<5)) || (((xDir + i != 0) || (zDir + j != 0)) && ((i != 0) || (j != 0)))
 					{
 						final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-						if ((!this.addMaintenanceToMachineList(tTileEntity, 64)) && (!this.addInputToMachineList(tTileEntity, 64)) && (!this.addOutputToMachineList(tTileEntity, 64)) && (!this.addEnergyInputToMachineList(tTileEntity, 64)) && (!this.ignoreController(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)))) {
+						if ((!this.addMaintenanceToMachineList(tTileEntity, TAE.GTPP_INDEX(7))) && (!this.addInputToMachineList(tTileEntity, TAE.GTPP_INDEX(7))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(7))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(7))) && (!this.ignoreController(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j)))) {
 							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
 								Utils.LOG_INFO("Returned False 1");
 								return false;

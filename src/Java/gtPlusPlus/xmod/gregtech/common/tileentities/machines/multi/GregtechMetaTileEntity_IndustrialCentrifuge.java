@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -31,7 +32,6 @@ import net.minecraftforge.fluids.FluidStack;
 public class GregtechMetaTileEntity_IndustrialCentrifuge
 extends GregtechMeta_MultiBlockBase {
 	private static boolean controller;
-	private static boolean isDisabled = false;
 	private static ITexture frontFace;
 	private static ITexture frontFaceActive;
 	private static CustomIcon GT9_5_Active = new CustomIcon("iconsets/LARGECENTRIFUGE_ACTIVE5");
@@ -74,7 +74,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex + 1], aFacing == aSide ? aActive ? frontFaceActive : frontFace : TexturesGtBlock.CASING_BLOCKS_GTPP[0]};
+		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[1][aColorIndex + 1], aFacing == aSide ? aActive ? frontFaceActive : frontFace : Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(0)]};
 	}
 
 

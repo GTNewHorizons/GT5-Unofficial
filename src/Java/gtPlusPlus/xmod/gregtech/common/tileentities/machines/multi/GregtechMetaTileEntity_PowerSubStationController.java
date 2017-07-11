@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
+import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -11,14 +12,11 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTileEntity_MultiBlockBase {
-
-	private final int recipeCounter = 0;
 
 	public GregtechMetaTileEntity_PowerSubStationController(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -40,10 +38,10 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTil
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{TexturesGtBlock.CASING_BLOCKS_GTPP[12],
+			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(12)],
 					new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER)};
 		}
-		return new ITexture[]{TexturesGtBlock.CASING_BLOCKS_GTPP[12]};
+		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(12)]};
 	}
 
 	@Override
@@ -97,7 +95,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTil
 						else if ((h == 3) && (i != 0) && (j != 0)) {// innen decke (ulv casings + input + muffler)
 							//if(j == 0 && i == 0) {
 
-							if ((!this.addMufflerToMachineList(tTileEntity, 66))) {
+							if ((!this.addMufflerToMachineList(tTileEntity, TAE.GTPP_INDEX(12)))) {
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
 									Utils.LOG_INFO("Found: "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getUnlocalizedName()+" at x:"+(xDir + i)+" y:" +h+" z:"+(zDir + j));
 									Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the top layers inner 3x3.");
@@ -128,7 +126,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTil
 						}*/
 					} else {// Outer 5x5
 						if (h == 0) {// au�en boden (controller, output, energy, maintainance, rest ulv casings)
-							if ((!this.addEnergyInputToMachineList(tTileEntity, 66) && (!this.addDynamoToMachineList(tTileEntity, 66)))) {
+							if ((!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(12)) && (!this.addDynamoToMachineList(tTileEntity, TAE.GTPP_INDEX(12))))) {
 								if (((xDir + i) != 0) || ((zDir + j) != 0)) {//no controller
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
 										Utils.LOG_INFO("Found: "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getUnlocalizedName()+" at x:"+(xDir + i)+" y:" +h+" z:"+(zDir + j));

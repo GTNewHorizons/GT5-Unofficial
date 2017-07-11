@@ -1,9 +1,8 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
-import static gtPlusPlus.xmod.gregtech.common.blocks.GregtechMetaCasingBlocks2.GTID;
-
 import java.util.ArrayList;
 
+import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
@@ -50,9 +49,9 @@ public class GregtechMetaTileEntity_CatalyticReactor extends GT_MetaTileEntity_M
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{TexturesGtBlock.CASING_BLOCKS_GTPP[17], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER)};
+			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(17)], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_MULTI_SMELTER)};
 		}
-		return new ITexture[]{TexturesGtBlock.CASING_BLOCKS_GTPP[17]};
+		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(17)]};
 	}
 
 	@Override
@@ -176,7 +175,7 @@ public class GregtechMetaTileEntity_CatalyticReactor extends GT_MetaTileEntity_M
 				int Y = 0;
 				if (((xDir + i) != 0) || ((zDir + j) != 0)) {
 					final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, Y, zDir + j);
-					if ((!this.addToMachineList(tTileEntity, GTID+2)) && (!this.addEnergyInputToMachineList(tTileEntity, GTID+1))) {
+					if ((!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(17))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(17)))) {
 
 						if (aBaseMetaTileEntity.getBlockOffset(xDir + i, Y, zDir + j) != ModBlocks.blockCasings2Misc) {
 							Utils.LOG_INFO("Wrong Block.");
@@ -194,7 +193,7 @@ public class GregtechMetaTileEntity_CatalyticReactor extends GT_MetaTileEntity_M
 				Y = 1;
 				Utils.LOG_INFO("Checking at Y+1 as well.");
 				final IGregTechTileEntity tTileEntity2 = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, Y, zDir + j);
-				if ((!this.addToMachineList(tTileEntity2, GTID+2)) && (!this.addEnergyInputToMachineList(tTileEntity2, GTID+1))) {
+				if ((!this.addToMachineList(tTileEntity2, TAE.GTPP_INDEX(17))) && (!this.addEnergyInputToMachineList(tTileEntity2, TAE.GTPP_INDEX(17)))) {
 
 					if (aBaseMetaTileEntity.getBlockOffset(xDir + i, Y, zDir + j) != ModBlocks.blockCasings2Misc) {
 						Utils.LOG_INFO("Wrong Block.");

@@ -7,6 +7,8 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import gregtech.api.enums.ConfigCategories;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.TAE;
+import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -78,10 +80,10 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{TexturesGtBlock.CASING_BLOCKS_GTPP[9],
+			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(9)],
 					new GT_RenderedTexture(aActive ? TexturesGtBlock.Casing_Machine_Screen_3 : TexturesGtBlock.Casing_Machine_Screen_1)};
 		}
-		return new ITexture[]{TexturesGtBlock.CASING_BLOCKS_GTPP[9]};
+		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(9)]};
 	}
 
 	@Override
@@ -287,7 +289,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 								return false;
 							}
 						} else if (h == 3) {// innen decke (ulv casings + input + muffler)
-							if ((!this.addMufflerToMachineList(tTileEntity, 66))) {
+							if ((!this.addMufflerToMachineList(tTileEntity, TAE.GTPP_INDEX(9)))) {
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
 									Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the top layers inner 3x3.");
 									return false;
@@ -305,7 +307,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 						}
 					} else {// Outer 5x5
 						if (h == 0) {// au�en boden (controller, output, energy, maintainance, rest ulv casings)
-							if ((!this.addMaintenanceToMachineList(tTileEntity, 66)) && (!this.addInputToMachineList(tTileEntity, 66)) && (!this.addOutputToMachineList(tTileEntity, 66)) && (!this.addEnergyInputToMachineList(tTileEntity, 66))) {
+							if ((!this.addMaintenanceToMachineList(tTileEntity, TAE.GTPP_INDEX(9))) && (!this.addInputToMachineList(tTileEntity, TAE.GTPP_INDEX(9))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(9))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(9)))) {
 								if (((xDir + i) != 0) || ((zDir + j) != 0)) {//no controller
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
 										Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the edges of the bottom layer.");
