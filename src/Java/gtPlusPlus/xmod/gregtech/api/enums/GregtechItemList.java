@@ -67,8 +67,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Sensor_ULV,
 
 	//Circuits
-	Circuit_Primitive, Circuit_Basic, Circuit_Good, Circuit_Advanced,
-	Circuit_Data, Circuit_Elite, Circuit_Master, Tool_DataOrb, Circuit_Ultimate, Tool_DataStick,
+	Old_Circuit_Primitive, Old_Circuit_Basic, Old_Circuit_Good,
+	Old_Circuit_Advanced, Old_Circuit_Data, Old_Circuit_Elite,
+	Old_Circuit_Master, Old_Tool_DataOrb, Old_Circuit_Ultimate, Old_Tool_DataStick,
 	Circuit_IV, Circuit_LuV, Circuit_ZPM,
 	//Circuit Parts
 	Circuit_Board_IV, Circuit_Board_LuV, Circuit_Board_ZPM,
@@ -176,7 +177,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	SimpleDustWasher, 
 	
 	//Old Style Circuits
-	Circuit_Board_Basic, Circuit_Board_Advanced, Circuit_Board_Elite, Circuit_Parts_Crystal_Chip_Elite, Circuit_Parts_Crystal_Chip_Master, Circuit_Parts_Advanced, Circuit_Parts_Wiring_Basic, Circuit_Parts_Wiring_Advanced, Circuit_Parts_Wiring_Elite, Empty_Board_Basic, Empty_Board_Elite
+	Old_Circuit_Board_Basic, Old_Circuit_Board_Advanced, Old_Circuit_Board_Elite,
+	Old_Circuit_Parts_Crystal_Chip_Elite, Old_Circuit_Parts_Crystal_Chip_Master, Old_Circuit_Parts_Advanced,
+	Old_Circuit_Parts_Wiring_Basic, Old_Circuit_Parts_Wiring_Advanced, Old_Circuit_Parts_Wiring_Elite,
+	Old_Empty_Board_Basic, Old_Empty_Board_Elite
 	;
 
 	public static final GregtechItemList[]
