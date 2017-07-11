@@ -175,7 +175,9 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 		GregtechItemList.Food_Baked_Raisin_Bread.set(this.addItem(tLastID = 60, "Raisin Bread", "Extra Raisins, Just for ImQ009", new Object[]{new GT_FoodStat(5, 0.5F, EnumAction.eat, null, false, true, false, new int[0]), getTcAspectStack(TC_Aspects.CORPUS, 1L), getTcAspectStack(TC_Aspects.FAMES, 1L), getTcAspectStack(TC_Aspects.IGNIS, 1L)}));
 
 		//Old Circuits
-		registerOldCircuits();
+		if (CORE.configSwitches.enableOldGTcircuits){
+			registerOldCircuits();
+		}
 
 		if (!CORE.GTNH) {
 			GregtechItemList.Fluid_Cell_144L.set(this.addItem(tLastID = 61, "144L Invar Fluid Cell", "Holds exactly one dust worth of liquid.", new Object[]{new ItemData(Materials.Invar, (OrePrefixes.plate.mMaterialAmount * 8L) + (4L * OrePrefixes.ring.mMaterialAmount), new MaterialStack[0]), getTcAspectStack(TC_Aspects.VACUOS, 2L), getTcAspectStack(TC_Aspects.AQUA, 1L)}));
@@ -243,7 +245,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 
 	private boolean registerOldCircuits(){
 		//Enable Old Circuits
-		
+
 		GregtechItemList.Old_Circuit_Primitive.set(this.addItem(200, "NAND Chip", "A very simple Circuit", new Object[]{OrePrefixes.circuit.get(Materials.Primitive)}));
 		GregtechItemList.Old_Circuit_Basic.set(this.addItem(201, "Basic Electronic Circuit", "A basic Circuit", new Object[]{OrePrefixes.circuit.get(Materials.Basic)}));
 		GregtechItemList.Old_Circuit_Good.set(this.addItem(202, "Good Electronic Circuit", "A good Circuit", new Object[]{OrePrefixes.circuit.get(Materials.Good)}));
@@ -275,7 +277,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 		new RECIPES_Old_Circuits();
 		RECIPES_Old_Circuits.addCircuitRecipes();
 		Utils.LOG_INFO("[Old Feature] Enabling Pre 5.09.28 circuits & recipes.");
-		
+
 		return true;
 	}
 }
