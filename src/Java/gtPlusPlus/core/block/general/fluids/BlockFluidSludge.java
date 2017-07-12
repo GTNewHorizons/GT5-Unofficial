@@ -12,14 +12,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 
-public class BlockFluidJackDaniels extends BlockFluidClassic {
+public class BlockFluidSludge extends BlockFluidClassic {
 
 	@SideOnly(Side.CLIENT)
 	protected IIcon stillIcon;
 	@SideOnly(Side.CLIENT)
 	protected IIcon flowingIcon;
 
-	public BlockFluidJackDaniels(final Fluid fluid, final Material material) {
+	public BlockFluidSludge(final Fluid fluid, final Material material) {
 		super(fluid, material);
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
 	}

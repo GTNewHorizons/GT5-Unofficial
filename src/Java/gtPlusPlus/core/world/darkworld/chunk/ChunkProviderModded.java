@@ -3,10 +3,12 @@ package gtPlusPlus.core.world.darkworld.chunk;
 import java.util.List;
 import java.util.Random;
 
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.*;
@@ -372,7 +374,7 @@ public class ChunkProviderModded implements IChunkProvider {
 		boolean flag = false;
 
 		MinecraftForge.EVENT_BUS
-				.post(new PopulateChunkEvent.Pre(par1IChunkProvider, worldObj, rand, par2, par3, flag));
+		.post(new PopulateChunkEvent.Pre(par1IChunkProvider, worldObj, rand, par2, par3, flag));
 
 		int k1;
 		int l1;
@@ -384,7 +386,13 @@ public class ChunkProviderModded implements IChunkProvider {
 			k1 = k + this.rand.nextInt(16) + 8;
 			l1 = this.rand.nextInt(256);
 			i2 = l + this.rand.nextInt(16) + 8;
-			(new WorldGenLakes(Dimension_DarkWorld.blockFluidLakes)).generate(this.worldObj, this.rand, k1, l1, i2);
+			try {
+				(new WorldGenLakes(Dimension_DarkWorld.blockFluidLakes)).generate(this.worldObj, this.rand, k1, l1, i2);
+			} catch (NullPointerException n){
+				n.getStackTrace();
+				(new WorldGenLakes(Blocks.lava)).generate(this.worldObj, this.rand, k1, l1, i2);
+				Utils.LOG_INFO("Error while generating DarkWorld Lake.");
+			}
 		}
 
 		if (TerrainGen.populate(par1IChunkProvider, worldObj, rand, par2, par3, flag,
@@ -394,8 +402,12 @@ public class ChunkProviderModded implements IChunkProvider {
 			l1 = this.rand.nextInt(this.rand.nextInt(248) + 8);
 			i2 = l + this.rand.nextInt(16) + 8;
 
-			if (l1 < 63 || this.rand.nextInt(10) == 0) {
-				(new WorldGenLakes(Dimension_DarkWorld.blockFluidLakes)).generate(this.worldObj, this.rand, k1, l1, i2);
+			if (l1 < 63 || this.rand.nextInt(10) == 0) { //Changes 63 -> 128
+				try{
+					(new WorldGenLakes(Blocks.lava)).generate(this.worldObj, this.rand, k1, l1, i2);
+				} catch (NullPointerException n){
+					Utils.LOG_INFO("Error while generating DarkWorld Lake. [2]");
+				}
 			}
 		}
 		biomegenbase.decorate(this.worldObj, this.rand, k, l);
@@ -404,7 +416,7 @@ public class ChunkProviderModded implements IChunkProvider {
 		l += 8;
 
 		MinecraftForge.EVENT_BUS
-				.post(new PopulateChunkEvent.Post(par1IChunkProvider, worldObj, rand, par2, par3, flag));
+		.post(new PopulateChunkEvent.Post(par1IChunkProvider, worldObj, rand, par2, par3, flag));
 
 		BlockFalling.fallInstantly = false;
 	}
@@ -462,18 +474,18 @@ public class ChunkProviderModded implements IChunkProvider {
 		BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(par2, par4);
 		return par1EnumCreatureType == EnumCreatureType.monster
 				&& this.scatteredFeatureGenerator.func_143030_a(par2, par3, par4)
-						? this.scatteredFeatureGenerator.getScatteredFeatureSpawnList()
+				? this.scatteredFeatureGenerator.getScatteredFeatureSpawnList()
 						: biomegenbase.getSpawnableList(par1EnumCreatureType);
 	}
 
 	@Override
 	public ChunkPosition func_147416_a(World p_147416_1_, String p_147416_2_, int p_147416_3_, int p_147416_4_, int p_147416_5_) {
-		return /*
-				 * "Stronghold".equals(p_147416_2_) &&
-				 * this.strongholdGenerator != null ?
-				 * this.strongholdGenerator.func_151545_a(p_147416_1_,
-				 * p_147416_3_, p_147416_4_, p_147416_5_) :
-				 */ null;
+		return 
+		  "Village".equals(p_147416_2_) &&
+		  this.villageGenerator != null ?
+		  this.villageGenerator.func_151545_a(p_147416_1_,
+		  p_147416_3_, p_147416_4_, p_147416_5_) :
+		  null;
 	}
 
 	@Override

@@ -40,7 +40,7 @@ extends GregtechMeta_MultiBlockBase {
 	private short multiblockCasingCount = 0;
 	private int mInternalSaveClock = 0;
 	private final short storageMultiplier = 1;
-	private int maximumFluidStorage = 96000;
+	private int maximumFluidStorage = 128000;
 	private FluidStack internalStorageTank = null;
 	private final NBTTagCompound internalCraftingComponentsTag = new NBTTagCompound();
 
@@ -72,7 +72,7 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public void saveNBTData(final NBTTagCompound aNBT) {
 		super.saveNBTData(aNBT);
-		final NBTTagCompound gtCraftingComponentsTag = aNBT.getCompoundTag("GT.CraftingComponents");
+		/*final NBTTagCompound gtCraftingComponentsTag = aNBT.getCompoundTag("GT.CraftingComponents");
 		if (gtCraftingComponentsTag != null){
 
 			Utils.LOG_WARNING("Got Crafting Tag");
@@ -96,13 +96,13 @@ extends GregtechMeta_MultiBlockBase {
 
 				aNBT.setTag("GT.CraftingComponents", gtCraftingComponentsTag);
 			}
-		}
+		}*/
 	}
 
 	@Override
 	public void loadNBTData(final NBTTagCompound aNBT) {
 		super.loadNBTData(aNBT);
-		final NBTTagCompound gtCraftingComponentsTag = aNBT.getCompoundTag("GT.CraftingComponents");
+		/*final NBTTagCompound gtCraftingComponentsTag = aNBT.getCompoundTag("GT.CraftingComponents");
 		String xFluid = null;
 		int xAmount = 0;
 		if (gtCraftingComponentsTag.hasNoTags()){
@@ -129,7 +129,7 @@ extends GregtechMeta_MultiBlockBase {
 				Utils.LOG_WARNING("Setting Internal Tank, loading "+xAmount+"L of "+xFluid);
 				this.setInternalTank(xFluid, xAmount);
 			}
-		}
+		}*/
 	}
 
 	private boolean setInternalTank(final String fluidName, final int amount){
@@ -204,7 +204,7 @@ extends GregtechMeta_MultiBlockBase {
 				"Controller Block for the Multitank",
 				"Size: 3xHx3 (Block behind controller must be air)",
 				"Structure must be at least 4 blocks tall, maximum 20.",
-				"Each casing within the structure adds 96000L storage.",
+				"Each casing within the structure adds 128000L storage.",
 				"Controller (front centered)",
 				"1x Input hatch (anywhere)",
 				"1x Output hatch (anywhere)",
@@ -522,9 +522,8 @@ extends GregtechMeta_MultiBlockBase {
 		return 10000;
 	}
 
-	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return 0;
+		return 5;
 	}
 
 	@Override
@@ -547,13 +546,13 @@ extends GregtechMeta_MultiBlockBase {
 
 	private static int getMaximumTankStorage(final int casingCount){
 		final int multiplier = getStorageMultiplier(casingCount);
-		final int tempTankStorageMax = 96000*multiplier;
-		if (tempTankStorageMax <= 0){return 96000;}
+		final int tempTankStorageMax = 128000*multiplier;
+		if (tempTankStorageMax <= 0){return 128000;}
 		return tempTankStorageMax;
 	}
 
 	private boolean tryForceNBTUpdate(){
-
+/*
 		//Block is invalid.
 		if ((this == null) || (this.getBaseMetaTileEntity() == null)){
 			Utils.LOG_WARNING("Block was not valid for saving data.");
@@ -587,7 +586,7 @@ extends GregtechMeta_MultiBlockBase {
 		this.getBaseMetaTileEntity().getWorld().markBlockForUpdate(x, y, z);
 
 		//Mark block dirty, let chunk know it's data has changed and it must be saved to disk. (Albeit slowly)
-		this.getBaseMetaTileEntity().markDirty();
+		this.getBaseMetaTileEntity().markDirty();*/
 		return true;
 	}
 }

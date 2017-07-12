@@ -1,10 +1,10 @@
 package gtPlusPlus.core.fluids;
 
-import static gtPlusPlus.core.block.ModBlocks.blockFluidJackDaniels;
-import static gtPlusPlus.core.block.ModBlocks.fluidJackDaniels;
+import static gtPlusPlus.core.block.ModBlocks.blockFluidSludge;
+import static gtPlusPlus.core.block.ModBlocks.fluidSludge;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import gtPlusPlus.core.block.general.fluids.BlockFluidJackDaniels;
+import gtPlusPlus.core.block.general.fluids.BlockFluidSludge;
 import gtPlusPlus.core.lib.CORE;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -31,23 +31,22 @@ public class FluidRegistryHandler {
 		run();
 	}
 
-	@SuppressWarnings("unused")
 	private static void run(){
-		fluidJackDaniels();
+		fluidSludge();
 	}
 
-	private static void fluidJackDaniels(){
+	private static void fluidSludge(){
 		//testFluid
-		fluidJackDaniels.setLuminosity(12);
-		fluidJackDaniels.setDensity(1200);
-		fluidJackDaniels.setTemperature(420);
-		fluidJackDaniels.setViscosity(750);
-		fluidJackDaniels.setGaseous(true);
-		fluidJackDaniels.setUnlocalizedName("fluidJackDaniels");
-		FluidRegistry.registerFluid(fluidJackDaniels);
-		blockFluidJackDaniels = new BlockFluidJackDaniels(fluidJackDaniels, Material.water).setBlockName("fluidBlockJackDaniels");
-		GameRegistry.registerBlock(blockFluidJackDaniels, CORE.MODID + "_" + blockFluidJackDaniels.getUnlocalizedName().substring(5));
-		fluidJackDaniels.setUnlocalizedName(blockFluidJackDaniels.getUnlocalizedName());
+		fluidSludge.setLuminosity(8);
+		fluidSludge.setDensity(8196);
+		fluidSludge.setTemperature(295);
+		fluidSludge.setViscosity(3000);
+		fluidSludge.setGaseous(false);
+		fluidSludge.setUnlocalizedName("fluid.sludge");
+		FluidRegistry.registerFluid(fluidSludge);
+		blockFluidSludge = new BlockFluidSludge(fluidSludge, Material.cactus).setBlockName("fluidBlockSludge");
+		GameRegistry.registerBlock(blockFluidSludge, CORE.MODID + "_" + blockFluidSludge.getUnlocalizedName().substring(5));
+		fluidSludge.setUnlocalizedName(blockFluidSludge.getUnlocalizedName());
 	}
 
 }

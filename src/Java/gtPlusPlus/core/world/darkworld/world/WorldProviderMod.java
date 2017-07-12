@@ -15,7 +15,7 @@ public class WorldProviderMod extends WorldProvider {
 	public void registerWorldChunkManager() {
 		this.worldChunkMgr = new WorldChunkManagerCustom(this.worldObj.getSeed(), WorldType.AMPLIFIED);
 		this.isHellWorld = false;
-		this.hasNoSky = true;
+		this.hasNoSky = false;
 		this.dimensionId = Dimension_DarkWorld.DIMID;
 	}
 
@@ -43,6 +43,16 @@ public class WorldProviderMod extends WorldProvider {
 	@Override
 	public boolean canRespawnHere() {
 		return true;
+	}
+
+	@Override
+	public float getSunBrightness(float par1) {
+		return (par1*2F);
+	}
+
+	@Override
+	public float getStarBrightness(float par1) {
+		return (par1*5F);
 	}
 
 	@Override
