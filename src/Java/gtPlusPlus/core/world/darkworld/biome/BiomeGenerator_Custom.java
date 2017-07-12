@@ -2,7 +2,9 @@ package gtPlusPlus.core.world.darkworld.biome;
 
 import java.util.Random;
 
+import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.world.darkworld.gen.WorldGenDeadLilly;
+import gtPlusPlus.core.world.darkworld.gen.WorldGenMinable_Custom;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -104,22 +106,25 @@ public class BiomeGenerator_Custom extends BiomeDecorator {
     public int bigMushroomsPerChunk;
     /** True if decorator should generate surface lava & water */
     public boolean generateLakes;
+    
+    public WorldGenerator fluoriteGen;
 
     public BiomeGenerator_Custom(){
     	//Basic Blocks
-        this.sandGen = new WorldGenSand(Blocks.sand, 12);
-        this.gravelAsSandGen = new WorldGenSand(Blocks.gravel, 8);
-        this.dirtGen = new WorldGenMinable(Blocks.dirt, 32);
-        this.gravelGen = new WorldGenMinable(Blocks.gravel, 12);
+        this.sandGen = new WorldGenMinable_Custom(Blocks.sand, 12);
+        this.gravelAsSandGen = new WorldGenMinable_Custom(Blocks.gravel, 8);
+        this.dirtGen = new WorldGenMinable_Custom(Blocks.dirt, 32);
+        this.gravelGen = new WorldGenMinable_Custom(Blocks.gravel, 12);
         
         
         //Oregen
-        this.coalGen = new WorldGenMinable(Blocks.coal_ore, 16);
-        this.ironGen = new WorldGenMinable(Blocks.iron_ore, 12);
-        this.goldGen = new WorldGenMinable(Blocks.gold_ore, 12);
-        this.redstoneGen = new WorldGenMinable(Blocks.redstone_ore, 10);
-        this.diamondGen = new WorldGenMinable(Blocks.diamond_ore, 12);
-        this.lapisGen = new WorldGenMinable(Blocks.lapis_ore, 8);
+        this.coalGen = new WorldGenMinable_Custom(Blocks.coal_ore, 16);
+        this.ironGen = new WorldGenMinable_Custom(Blocks.iron_ore, 12);
+        this.goldGen = new WorldGenMinable_Custom(Blocks.gold_ore, 12);
+        this.redstoneGen = new WorldGenMinable_Custom(Blocks.redstone_ore, 10);
+        this.diamondGen = new WorldGenMinable_Custom(Blocks.diamond_ore, 12);
+        this.lapisGen = new WorldGenMinable_Custom(Blocks.lapis_ore, 8);
+        this.fluoriteGen = new WorldGenMinable_Custom(ModBlocks.blockOreFluorite, 20);
         
         //Nature
         /*this.yellowFlowerGen = new WorldGenFlowers(Blocks.yellow_flower);
