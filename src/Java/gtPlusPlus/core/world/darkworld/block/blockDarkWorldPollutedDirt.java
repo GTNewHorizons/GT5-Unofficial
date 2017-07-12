@@ -2,9 +2,10 @@ package gtPlusPlus.core.world.darkworld.block;
 
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import gtPlusPlus.core.creative.AddToCreativeTab;
+import net.minecraft.block.BlockDirt;
 import net.minecraft.block.BlockGrass;
 
-public class blockDarkWorldPollutedDirt extends BlockGrass {
+public class blockDarkWorldPollutedDirt extends BlockDirt {
 
 	public blockDarkWorldPollutedDirt() {
 		this.setCreativeTab(AddToCreativeTab.tabBOP);

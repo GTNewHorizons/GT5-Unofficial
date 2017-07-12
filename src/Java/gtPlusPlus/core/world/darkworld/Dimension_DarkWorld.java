@@ -26,7 +26,7 @@ public class Dimension_DarkWorld {
 	public static blockDarkWorldPortal portalBlock;
 	public static itemDarkWorldPortalTrigger portalItem;
 	public static Block blockTopLayer;
-	public static Block blockSecondLayer = Blocks.dirt;
+	public static Block blockSecondLayer;
 	public static Block blockMainFiller = Blocks.stone;
 	public static Block blockSecondaryFiller;
 	public static Block blockFluidLakes = ModBlocks.blockFluidSludge;
