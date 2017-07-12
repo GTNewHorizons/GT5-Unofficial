@@ -11,7 +11,6 @@ public class BurnableFuelHandler implements IFuelHandler{
 
 	@Override
 	public int getBurnTime(ItemStack aStack) {
-		String Modid = ItemUtils.getModId(aStack);
 			//Iterate over my burnables.
 			for (Pair<Integer, ItemStack> temp : CORE.burnables) {
 				
