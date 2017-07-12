@@ -74,7 +74,7 @@ public class GTplusplus implements ActionListener {
 		//Circuits
 		CORE.configSwitches.enableCustomCircuits = config.getBoolean("enableCustomCircuits", "gregtech", true,
 				"Adds custom circuits to expand past the Master Tier.");
-		CORE.configSwitches.enableOldGTcircuits = config.getBoolean("enableOldGTcircuits", "gregtech", true,
+		CORE.configSwitches.enableOldGTcircuits = config.getBoolean("enableOldGTcircuits", "gregtech", false,
 				"Restores circuits and their recipes from Pre-5.09.28 times.");
 
 		// Tools
