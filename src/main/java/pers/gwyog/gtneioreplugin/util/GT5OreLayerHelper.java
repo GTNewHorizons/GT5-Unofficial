@@ -13,7 +13,6 @@ import gregtech.common.GT_Worldgen_GT_Ore_Layer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import pers.gwyog.gtneioreplugin.GTNEIOrePlugin;
-import sun.awt.windows.WWindowPeer;
 
 public class GT5OreLayerHelper {
     public static boolean restrictBiomeSupport = false;
