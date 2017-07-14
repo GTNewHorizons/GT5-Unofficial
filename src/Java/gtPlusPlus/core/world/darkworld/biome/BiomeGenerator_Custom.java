@@ -127,15 +127,15 @@ public class BiomeGenerator_Custom extends BiomeDecorator {
         this.fluoriteGen = new WorldGenMinable_Custom(ModBlocks.blockOreFluorite, 20);
         
         //Nature
-        /*this.yellowFlowerGen = new WorldGenFlowers(Blocks.yellow_flower);
+        this.yellowFlowerGen = new WorldGenFlowers(Blocks.yellow_flower);
         this.mushroomBrownGen = new WorldGenFlowers(Blocks.brown_mushroom);
         this.mushroomRedGen = new WorldGenFlowers(Blocks.red_mushroom);
-        this.bigMushroomGen = new WorldGenBigMushroom();*/
+        this.bigMushroomGen = new WorldGenBigMushroom();
         this.reedGen = new WorldGenReed();
         this.cactusGen = new WorldGenCactus();
         this.waterlilyGen = new WorldGenDeadLilly();
         
-        this.flowersPerChunk = 2;
+        this.flowersPerChunk = 1;
         this.grassPerChunk = 5;
         this.sandPerChunk = 3;
         this.sandPerChunk2 = 5;
