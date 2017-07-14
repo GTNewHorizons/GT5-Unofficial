@@ -16,7 +16,7 @@ You can find the download link there, or simply download it [here](http://pan.ba
 This download link is from a Chinese NetDisk FYI.
 
 ### Build
-If you want a bleeding-edge version of this mod, you can simply download or clone this repository, establish a folder named "libs" and put the dev build of NEI, GT5, and GT6 in the folder.  
+If you want a bleeding-edge version of this mod, you can simply download or clone this repository, establish a folder named "libs" and put the dev builds of suitable version of NEI(e.g. 1.0.5.120-dev), GT5(e.g. 5.09.28-dev), and GT6(e.g. 6.05.00-dev) in the folder.  
 Then you can build this mod in the same way as building other mods. i.e. run "gradlew build" command in the CMD window. Then the build can be found in "./build/libs/" folder.
 
 ### License
