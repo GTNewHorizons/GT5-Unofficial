@@ -176,6 +176,10 @@ public class GTplusplus implements ActionListener {
 	@Mod.EventHandler
 	public void preInit(final FMLPreInitializationEvent event) {
 		Utils.LOG_INFO("Loading " + CORE.name + " V" + CORE.VERSION);
+		
+		// Handle GT++ Config
+		handleConfigFile(event);
+		
 		CORE.DEVENV = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 		Utils.LOG_INFO("Latest is " + CORE.MASTER_VERSION + ". Updated? " + Utils.isModUpToDate());
 		Utils.LOG_INFO("User's Country: " + CORE.USER_COUNTRY);
@@ -184,13 +188,10 @@ public class GTplusplus implements ActionListener {
 		FMLCommonHandler.instance().bus().register(new LoginEventHandler());
 		Utils.LOG_INFO("Login Handler Initialized");
 
-		if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK && CORE.configSwitches.enableOldGTcircuits){
+		if (CORE.configSwitches.enableOldGTcircuits){
 			removeCircuitRecipeMap(); //Bye shitty recipes.			
 		}
-
-		// Handle GT++ Config
-		handleConfigFile(event);
-
+		
 		// HANDLER_GT.mMaterialProperties = new GT_Config(new Configuration(new
 		// File(new File(event.getModConfigurationDirectory(), "GTplusplus"),
 		// "MaterialProperties.cfg")));

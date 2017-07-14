@@ -75,5 +75,31 @@ public class RECIPES_Old_Circuits  implements IOreRecipeRegistrator {
 	    
 		return true;
 	}
+	
+	public static boolean removeNewCircuits(){
+		
+		ItemList.Circuit_Primitive.set(GregtechItemList.Old_Circuit_Primitive.get(1));
+		ItemList.Circuit_Basic.set(GregtechItemList.Old_Circuit_Basic.get(1));
+		ItemList.Circuit_Integrated_Good.set(GregtechItemList.Old_Circuit_Good.get(1));
+		ItemList.Circuit_Good.set(GregtechItemList.Old_Circuit_Good.get(1));
+		ItemList.Circuit_Advanced.set(GregtechItemList.Old_Circuit_Advanced.get(1));
+		ItemList.Circuit_Data.set(GregtechItemList.Old_Circuit_Data.get(1));
+		ItemList.Circuit_Elite.set(GregtechItemList.Old_Circuit_Elite.get(1));
+		ItemList.Circuit_Master.set(GregtechItemList.Old_Circuit_Master.get(1));
+		ItemList.Circuit_Ultimate.set(GregtechItemList.Old_Circuit_Ultimate.get(1));
+		
+		
+		ItemList.Circuit_Board_Basic.set(GregtechItemList.Old_Circuit_Board_Basic.get(1));
+		ItemList.Circuit_Board_Advanced.set(GregtechItemList.Old_Circuit_Board_Advanced.get(1));
+		ItemList.Circuit_Board_Elite.set(GregtechItemList.Old_Circuit_Board_Elite.get(1));
+		ItemList.Circuit_Parts_Advanced.set(GregtechItemList.Old_Circuit_Parts_Advanced.get(1));
+		ItemList.Circuit_Parts_Wiring_Basic.set(GregtechItemList.Old_Circuit_Parts_Wiring_Basic.get(1));
+		ItemList.Circuit_Parts_Wiring_Advanced.set(GregtechItemList.Old_Circuit_Parts_Wiring_Advanced.get(1));
+		ItemList.Circuit_Parts_Wiring_Elite.set(GregtechItemList.Old_Circuit_Parts_Wiring_Elite.get(1));
+		ItemList.Circuit_Parts_Crystal_Chip_Elite.set(GregtechItemList.Old_Circuit_Parts_Crystal_Chip_Elite.get(1));
+		ItemList.Circuit_Parts_Crystal_Chip_Master.set(GregtechItemList.Old_Circuit_Parts_Crystal_Chip_Master.get(1));
+		
+		return true;
+	}
 
 }

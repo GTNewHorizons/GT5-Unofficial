@@ -277,7 +277,6 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 
 		//Add the old recipes.
 		new RECIPES_Old_Circuits();
-		RECIPES_Old_Circuits.addCircuitRecipes();
 		Utils.LOG_INFO("[Old Feature] Enabling Pre 5.09.28 circuits & recipes.");
 
 		Boolean isNEILoaded = Loader.isModLoaded("NotEnoughItems");
@@ -372,7 +371,10 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 
 			for (String component : CircuitToHide){
 				API.hideItem(ItemList.valueOf(component).get(1L, new Object[0]));
-			}			
+			}
+			
+
+			RECIPES_Old_Circuits.removeNewCircuits();
 		}
 
 		return true;
