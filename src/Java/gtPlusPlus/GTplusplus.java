@@ -229,20 +229,6 @@ public class GTplusplus implements ActionListener {
 
 		// ~
 		//ReflectionUtils.becauseIWorkHard();
-		
-		//Circuits
-		if (CORE.configSwitches.enableOldGTcircuits){
-			RECIPES_Old_Circuits.handleCircuits();
-			new RECIPES_Old_Circuits();
-		}
-
-		//Make Burnables burnable
-		if (!CORE.burnables.isEmpty()){
-			BurnableFuelHandler fuelHandler = new BurnableFuelHandler();
-			GameRegistry.registerFuelHandler(fuelHandler);
-			Utils.LOG_INFO("[Fuel Handler] Registering "+fuelHandler.getClass().getName());
-		}
-
 		// Utils.LOG_INFO("Activating GT OreDictionary Handler, this can take
 		// some time.");
 		Utils.LOG_INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");

@@ -4,6 +4,7 @@ import static gtPlusPlus.core.lib.CORE.DEBUG;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.entity.InternalEntityRegistry;
@@ -13,6 +14,7 @@ import gtPlusPlus.core.handler.events.PickaxeBlockBreakEventHandler;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.recipe.RECIPES_Old_Circuits;
 import gtPlusPlus.core.recipe.RECIPE_CONSTANTS;
 import gtPlusPlus.core.tileentities.ModTileEntities;
 import gtPlusPlus.core.util.Utils;
@@ -88,6 +90,20 @@ public class CommonProxy {
 	public void postInit(final FMLPostInitializationEvent e) {
 		Utils.LOG_INFO("Cleaning up, doing postInit.");
 		PlayerCache.initCache();
+
+		//Circuits
+		if (CORE.configSwitches.enableOldGTcircuits){
+			RECIPES_Old_Circuits.handleCircuits();
+			new RECIPES_Old_Circuits();
+		}
+
+		//Make Burnables burnable
+		if (!CORE.burnables.isEmpty()){
+			BurnableFuelHandler fuelHandler = new BurnableFuelHandler();
+			GameRegistry.registerFuelHandler(fuelHandler);
+			Utils.LOG_INFO("[Fuel Handler] Registering "+fuelHandler.getClass().getName());
+		}
+		
 		//Compat Handling
 		COMPAT_HANDLER.InitialiseHandlerThenAddRecipes();
 		COMPAT_HANDLER.RemoveRecipesFromOtherMods();
