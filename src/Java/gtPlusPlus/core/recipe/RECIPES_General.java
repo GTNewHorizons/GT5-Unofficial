@@ -44,11 +44,11 @@ public class RECIPES_General {
 				OUTPUT_Blueprint);
 
 		//Bronze Workbench
-		RecipeUtils.recipeBuilder(
+		/*RecipeUtils.recipeBuilder(
 				RECIPE_BronzePlate, RECIPE_CraftingTable, RECIPE_BronzePlate,
 				RECIPE_BronzePlate, RECIPE_BasicCasingIC2, RECIPE_BronzePlate,
 				RECIPE_BronzePlate, RECIPE_BronzePlate, RECIPE_BronzePlate,
-				OUTPUT_Workbench_Bronze);
+				OUTPUT_Workbench_Bronze);*/
 
 		//Generates recipes for the Dull shard when TC is not installed.
 		if (!LoadedMods.Thaumcraft){

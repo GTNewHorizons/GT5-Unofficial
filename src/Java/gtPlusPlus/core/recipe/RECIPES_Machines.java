@@ -204,13 +204,13 @@ public class RECIPES_Machines {
 	public static ItemStack IC2MFSU;
 
 	//Circuits
-	public static String circuitPrimitive = "circuitBasic";
-	public static String circuitTier1 = "circuitGood";
-	public static String circuitTier2 = "circuitAdvanced";
-	public static String circuitTier3 = "circuitData";
-	public static String circuitTier4 = "circuitElite";
-	public static String circuitTier5 = "circuitMaster";
-	public static String circuitTier6 = "circuitUltimate";
+	public static ItemStack circuitPrimitive = ItemList.Circuit_Primitive.get(1);
+	public static ItemStack circuitTier1 = ItemList.Circuit_Basic.get(1);//"circuitGood";
+	public static ItemStack circuitTier2 = ItemList.Circuit_Good.get(1);//"circuitAdvanced";
+	public static ItemStack circuitTier3 = ItemList.Circuit_Advanced.get(1);//"circuitData";
+	public static ItemStack circuitTier4 = ItemList.Circuit_Elite.get(1);//"circuitElite";
+	public static ItemStack circuitTier5 = ItemList.Circuit_Master.get(1);//"circuitMaster";
+	public static ItemStack circuitTier6 = ItemList.Circuit_Ultimate.get(1);//"circuitUltimate";
 	public static String circuitTier7 = "circuitSuperconductor";
 	public static String circuitTier8 = "circuitInfinite";
 	public static String circuitTier9 = "circuitQuantum";
@@ -729,7 +729,7 @@ public class RECIPES_Machines {
 
 					plateTier1 = "plateTin";
 					pipeTier1 = "pipeLargeClay";
-					circuitTier1 = "circuitPrimitive";
+					circuitTier1 = ItemList.Circuit_Primitive.get(1);
 					plateTier2 = "plateCopper";
 					pipeTier2 = "pipeHugeClay";
 					plateTier3 = "plateBronze";

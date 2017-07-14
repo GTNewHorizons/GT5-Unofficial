@@ -30,6 +30,7 @@ import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.handler.events.LoginEventHandler;
 import gtPlusPlus.core.item.general.RF2EU_Battery;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.recipe.RECIPES_Old_Circuits;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -228,6 +229,12 @@ public class GTplusplus implements ActionListener {
 
 		// ~
 		//ReflectionUtils.becauseIWorkHard();
+		
+		//Circuits
+		if (CORE.configSwitches.enableOldGTcircuits){
+			RECIPES_Old_Circuits.handleCircuits();
+			new RECIPES_Old_Circuits();
+		}
 
 		//Make Burnables burnable
 		if (!CORE.burnables.isEmpty()){
@@ -284,13 +291,15 @@ public class GTplusplus implements ActionListener {
 
 	private static boolean removeCircuitRecipeMap(){
 		try {			
+			Utils.LOG_INFO("[Old Feature - Circuits] Trying to override the Circuit Assembler Recipe map, so that no recipes for new circuits get added.");
 			ReflectionUtils.setFinalStatic(GT_Recipe_Map.class.getDeclaredField("sCircuitAssemblerRecipes"), new EmptyRecipeMap(new HashSet<GT_Recipe>(0), "gt.recipe.removed", "Removed", null, GT_Values.RES_PATH_GUI + "basicmachines/Default", 0, 0, 0, 0, 0, GT_Values.E, 0, GT_Values.E, true, false));		
 			Field jaffar = GT_Recipe_Map.class.getDeclaredField("sCircuitAssemblerRecipes");
 			FieldUtils.removeFinalModifier(jaffar, true);
 			jaffar.set(null, new EmptyRecipeMap(new HashSet<GT_Recipe>(0), "gt.recipe.removed", "Removed", null, GT_Values.RES_PATH_GUI + "basicmachines/Default", 0, 0, 0, 0, 0, GT_Values.E, 0, GT_Values.E, true, false));
+			Utils.LOG_INFO("[Old Feature - Circuits] Successfully replaced circuit assembler recipe map with one that cannot hold recipes.");
 		}
 		catch (Exception e) {
-			Utils.LOG_INFO("Failed removing circuit assembler recipe map.");
+			Utils.LOG_INFO("[Old Feature - Circuits] Failed removing circuit assembler recipe map.");
 			return false;
 		}
 		return true;
