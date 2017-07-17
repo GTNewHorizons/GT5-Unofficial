@@ -115,43 +115,34 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
     }
 
     public cElementalInstanceStackMap decay() {
-        return decay(1F, age, 0);
+        return decay(1F, age, 0);//try to decay without changes
     }
 
-    public cElementalInstanceStackMap decay(Float lifeTimeMult, long age, int postEnergize) {
+    public cElementalInstanceStackMap decay(long apparentAge, int postEnergize) {
+        return decay(1F,apparentAge,postEnergize);
+    }
+
+    public cElementalInstanceStackMap decay(Float lifeTimeMult, long apparentAge, int postEnergize) {
         if (this.energy > 0) {
             this.energy--;
-            return decayCompute(definition.getEnergeticDecayInstant(), lifeTimeMult, age, postEnergize + this.energy);
+            return decayCompute(definition.getEnergeticDecayInstant(), lifeTimeMult, 0, postEnergize + this.energy);
         } else if (definition.getRawLifeTime() < 0) {
             return null;//return null, decay cannot be achieved
         } else if (1F > this.lifeTime) {
-            return decayCompute(definition.getNaturalDecayInstant(), lifeTimeMult, age, postEnergize + this.energy);
-        } else if (((float) this.age) > this.lifeTime) {
-            return decayCompute(definition.getDecayArray(), lifeTimeMult, age, postEnergize + this.energy);
+            return decayCompute(definition.getNaturalDecayInstant(), lifeTimeMult, 0, postEnergize + this.energy);
+        } else if (((float) apparentAge) > this.lifeTime) {
+            return decayCompute(definition.getDecayArray(), lifeTimeMult, 0, postEnergize + this.energy);
         }
         return null;//return null since decay cannot be achieved
     }
 
-    public cElementalInstanceStackMap decay(long age, int postEnergize) {
-        if (this.energy > 0) {
-            this.energy--;
-            return decayCompute(definition.getEnergeticDecayInstant(), lifeTimeMult, age, postEnergize + this.energy);
-        } else if (definition.getRawLifeTime() < 0) {
-            return null;//return null, decay cannot be achieved
-        } else if (1F > this.lifeTime) {
-            return decayCompute(definition.getNaturalDecayInstant(), lifeTimeMult, age, postEnergize + this.energy);
-        } else if (((float) this.age) > this.lifeTime) {
-            return decayCompute(definition.getDecayArray(), lifeTimeMult, age, postEnergize + this.energy);
-        }
-        return null;//return null since decay cannot be achieved
-    }
-
-    private cElementalInstanceStackMap decayCompute(cElementalDecay[] decays, float lifeTimeMult, long age, int energy) {
+    //Use to get direct decay output providing correct decay array
+    public cElementalInstanceStackMap decayCompute(cElementalDecay[] decays, float lifeTimeMult, long newProductsAge, int energy) {
         if (decays == null) return null;//Can not decay so it wont
         else if (decays.length == 0)
             return new cElementalInstanceStackMap();//provide non null 0 length array for annihilation
         else if (decays.length == 1) {//only one type of decay :D, doesn't need dead end
-            return decays[0].getResults(lifeTimeMult, age, energy, this.amount);
+            return decays[0].getResults(lifeTimeMult, newProductsAge, energy, this.amount);
         } else {
             cElementalInstanceStackMap output = new cElementalInstanceStackMap();
             final int differentDecays = decays.length;
@@ -202,7 +193,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
 
             for (int i = 0; i < differentDecays; i++) {
                 if (qttyOfDecay[i] > 0)
-                    output.putUnifyAll(decays[i].getResults(lifeTimeMult, age, energy, qttyOfDecay[i]));
+                    output.putUnifyAll(decays[i].getResults(lifeTimeMult, newProductsAge, energy, qttyOfDecay[i]));
             }
             return output;
         }
@@ -271,5 +262,10 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
     @Override
     public int hashCode() {
         return definition.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return definition.getName()+ '\n' + definition.getSymbol() + '\n' + amount + '\n' + getMass();
     }
 }

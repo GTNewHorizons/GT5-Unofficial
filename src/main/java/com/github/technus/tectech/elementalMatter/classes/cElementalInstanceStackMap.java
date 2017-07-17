@@ -414,4 +414,13 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         }
         return hash;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder build=new StringBuilder("Instance Stack Map\n");
+        for(cElementalInstanceStack stack:map.values()){
+            build.append(stack.toString()).append('\n');
+        }
+        return build.toString();
+    }
 }

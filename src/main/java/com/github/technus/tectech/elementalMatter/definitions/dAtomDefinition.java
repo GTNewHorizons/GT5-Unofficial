@@ -52,7 +52,7 @@ public final class dAtomDefinition extends cElementalDefinition {
     public final byte decayMode;//t neutron to proton+,0,f proton to neutron
     public final boolean stable;
 
-    public final int isotope;
+    public final int neutralCount;
     public final int element;
 
     private final cElementalDefinitionStackMap elementalStacks;
@@ -88,51 +88,49 @@ public final class dAtomDefinition extends cElementalDefinition {
         float mass = 0;
         int cLeptons = 0;
         int cNucleus = 0;
-        int isotope = 0, element = 0;
+        int neutralCount = 0, element = 0;
         int type = 0;
         boolean containsAnti = false;
         for (cElementalDefinitionStack stack : elementalStacks.values()) {
             iElementalDefinition def = stack.definition;
             int amount = stack.amount;
-            mass += amount * def.getMass();
+            mass += stack.getMass();
             if (def.getType() < 0) containsAnti = true;
             type = Math.max(type, Math.abs(def.getType()));
 
             if (def instanceof eLeptonDefinition) {
-                cLeptons += amount * def.getCharge();
+                cLeptons += stack.getCharge();
             } else {
-                cNucleus += amount * def.getCharge();
+                cNucleus += stack.getCharge();
                 if (def.getCharge() == 3) element += amount;
                 else if (def.getCharge() == -3) element -= amount;
-                else if (def.getCharge() == 0) {
-                    isotope += amount;
-                }
+                else if (def.getCharge() == 0) neutralCount += amount;
             }
         }
         this.type = containsAnti ? (byte) -type : (byte) type;
         this.mass = mass;
         this.chargeLeptons = cLeptons;
         this.charge = cNucleus + cLeptons;
-        this.isotope = isotope;
+        this.neutralCount = neutralCount;
         this.element = element;
 
         element = Math.abs(element);
 
-        xstr.setSeed((long) (element + 1) * (isotope + 100));
+        xstr.setSeed((long) (element + 1) * (neutralCount + 100));
 
         //stability curve
         int StableIsotope = stableIzoCurve(element);
-        int izoDiff = isotope - StableIsotope;
+        int izoDiff = neutralCount - StableIsotope;
         int izoDiffAbs = Math.abs(izoDiff);
 
         hash=super.hashCode();
 
-        Float overridenLifeTime=lifetimeOverrides.get(this);
+        Float overriddenLifeTime=lifetimeOverrides.get(this);
         float rawLifeTimeTemp;
-        if(overridenLifeTime!=null)
-            rawLifeTimeTemp = overridenLifeTime;
+        if(overriddenLifeTime!=null)
+            rawLifeTimeTemp = overriddenLifeTime;
         else
-            rawLifeTimeTemp= calculateLifeTime(izoDiff, izoDiffAbs, element, isotope, containsAnti);
+            rawLifeTimeTemp= calculateLifeTime(izoDiff, izoDiffAbs, element, neutralCount, containsAnti);
 
         this.rawLifeTime=rawLifeTimeTemp>stableRawLifeTime?stableRawLifeTime:rawLifeTimeTemp;
 
@@ -224,7 +222,7 @@ public final class dAtomDefinition extends cElementalDefinition {
         return charge - chargeLeptons;
     }
 
-    public int getIonization() {
+    public int getIonizationElementWise() {
         return (element * 3) + chargeLeptons;
     }
 
@@ -266,15 +264,15 @@ public final class dAtomDefinition extends cElementalDefinition {
         final int element = Math.abs(this.element);
         final boolean negative = element < 0;
         try {
-            return (negative ? "~" : "") + nomenclature.Symbol[element] + " N:" + isotope + " I:" + getIonization();
+            return (negative ? "~" : "") + nomenclature.Symbol[element] + " N:" + neutralCount + " I:" + (neutralCount+element) + " C: " + getCharge();
         } catch (Exception e) {
             if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
             try {
                 int s100 = element / 100, s1 = (element / 10) % 10, s10 = (element) % 10;
-                return (negative ? "~" : "") + nomenclature.SymbolIUPAC[10 + s100] + nomenclature.SymbolIUPAC[s10] + nomenclature.SymbolIUPAC[s1] + " N:" + isotope + " I:" + getIonization();
+                return (negative ? "~" : "") + nomenclature.SymbolIUPAC[10 + s100] + nomenclature.SymbolIUPAC[s10] + nomenclature.SymbolIUPAC[s1] + " N:" + neutralCount + " I:" + (neutralCount+element) + " C: " + getCharge();
             } catch (Exception E) {
                 if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
-                return (negative ? "~" : "") + "? N:" + isotope + " I:" + getIonization();
+                return (negative ? "~" : "") + "? N:" + neutralCount + " I:" + (neutralCount+element) + " C: " + getCharge();
             }
         }
     }
@@ -663,9 +661,9 @@ public final class dAtomDefinition extends cElementalDefinition {
         //transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(89),144),OrePrefixes.dust, Materials.Actinium,1);
         transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(90),144), dust, Materials.Thorium,1);
         //transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(91),144),OrePrefixes.dust, Materials.Protactinium,1);
-        transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(92),144), dust, Materials.Uranium,1);
+        ////transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(92),144), dust, Materials.Uranium,1);
         //transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(93),144),OrePrefixes.dust, Materials.Neptunium,1);
-        transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(94),144), dust, Materials.Plutonium,1);
+        ////transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(94),144), dust, Materials.Plutonium,1);
         transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(95),144), dust, Materials.Americium,1);
 
         /* ... */
@@ -702,6 +700,13 @@ public final class dAtomDefinition extends cElementalDefinition {
             temp=new dAtomDefinition(
                     new cElementalDefinitionStack(eLeptonDefinition.lepton_e, 92),
                     new cElementalDefinitionStack(dHadronDefinition.hadron_p, 92),
+                    new cElementalDefinitionStack(dHadronDefinition.hadron_n, 146)
+            );
+            transformation.addOredict(new cElementalDefinitionStack(temp, 144),OrePrefixes.dust, Materials.Uranium/*238*/,1);
+
+            temp=new dAtomDefinition(
+                    new cElementalDefinitionStack(eLeptonDefinition.lepton_e, 92),
+                    new cElementalDefinitionStack(dHadronDefinition.hadron_p, 92),
                     new cElementalDefinitionStack(dHadronDefinition.hadron_n, 143)
             );
             transformation.addOredict(new cElementalDefinitionStack(temp, 144),OrePrefixes.dust, Materials.Uranium235,1);
@@ -709,7 +714,14 @@ public final class dAtomDefinition extends cElementalDefinition {
             temp=new dAtomDefinition(
                     new cElementalDefinitionStack(eLeptonDefinition.lepton_e, 94),
                     new cElementalDefinitionStack(dHadronDefinition.hadron_p, 94),
-                    new cElementalDefinitionStack(dHadronDefinition.hadron_n, 149)
+                    new cElementalDefinitionStack(dHadronDefinition.hadron_n, 145)
+            );
+            transformation.addOredict(new cElementalDefinitionStack(temp, 144),OrePrefixes.dust, Materials.Plutonium/*239*/,1);
+
+            temp=new dAtomDefinition(
+                    new cElementalDefinitionStack(eLeptonDefinition.lepton_e, 94),
+                    new cElementalDefinitionStack(dHadronDefinition.hadron_p, 94),
+                    new cElementalDefinitionStack(dHadronDefinition.hadron_n, 147)
             );
             transformation.addOredict(new cElementalDefinitionStack(temp, 144),OrePrefixes.dust, Materials.Plutonium241,1);
         } catch (tElementalException e) {
@@ -734,6 +746,4 @@ public final class dAtomDefinition extends cElementalDefinition {
     public int hashCode() {
         return hash;
     }
-
-
 }

@@ -1,6 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStack;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackMap;
 import com.github.technus.tectech.elementalMatter.interfaces.iHasElementalDefinition;
@@ -93,10 +94,13 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
         m3=(float)Math.ceil(input.getLifeTime() / Math.pow(input.amount,3));
         if(m3<1) explodeMultiblock();
         if(m3>=Integer.MAX_VALUE) return false;
-        mMaxProgresstime = (int)m3;
+        mMaxProgresstime = 1;//(int)m3;
         mEfficiencyIncrease = 10000;
         m1 = input.getMass()/input.amount;
-        m2 = input.decay().getMass()/input.amount;
+        cElementalInstanceStackMap decayed=input.decayCompute(input.getDefinition().getDecayArray(),1,0,0);
+        m2 = decayed.getMass()/input.amount;
+        TecTech.Logger.info("I " + input.toString());
+        TecTech.Logger.info("O " + decayed.toString());
         return true;
     }
 

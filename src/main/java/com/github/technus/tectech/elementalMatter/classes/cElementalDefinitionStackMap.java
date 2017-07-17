@@ -33,7 +33,7 @@ public final class cElementalDefinitionStackMap/*IMMUTABLE*/ extends cElementalS
 
     //IMMUTABLE DON'T NEED IT
     @Override
-    public cElementalDefinitionStackMap clone() {
+    public final cElementalDefinitionStackMap clone() {
         return this;
     }
 

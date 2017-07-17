@@ -58,7 +58,7 @@ public final class cElementalDecay {
         for (cElementalDefinitionStack stack : outputStacks.values()) {
             decayResult.putUnify(new cElementalInstanceStack(stack.definition,
                     amountDecaying * stack.amount,
-                    lifeMult, age, energy / Math.max(1, stack.amount)));//get instances from stack
+                    lifeMult, age/*new products*/, energy / Math.max(1, stack.amount)));//get instances from stack
         }
         return decayResult;
     }

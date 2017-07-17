@@ -20,7 +20,7 @@ public class GT_GUIContainer_DebugPowerGenerator extends GT_GUIContainerMetaTile
             this.fontRendererObj.drawString("EUT: " + dpg.EUT, 46, 24, 16448255);
             this.fontRendererObj.drawString("TIER: " + VN[GT_Utility.getTier(dpg.EUT<0?-dpg.EUT:dpg.EUT)], 46, 32, 16448255);
             this.fontRendererObj.drawString("AMP: " + dpg.AMP, 46, 40, 16448255);
-            this.fontRendererObj.drawString("SUM: " + (long)dpg.AMP*dpg.EUT, 46, 32, 16448255);
+            this.fontRendererObj.drawString("SUM: " + (long)dpg.AMP*dpg.EUT, 46, 48, 16448255);
         }
     }
 
