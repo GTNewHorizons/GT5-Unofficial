@@ -204,48 +204,6 @@ public class RECIPES_Machines {
 	public static ItemStack IC2MFE;
 	public static ItemStack IC2MFSU;
 
-	//Machine Components
-	public static ItemStack electricMotor_LV;
-	public static ItemStack electricMotor_MV;
-	public static ItemStack electricMotor_HV;
-	public static ItemStack electricMotor_EV;
-	public static ItemStack electricMotor_IV;
-	public static ItemStack electricPump_LV;
-	public static ItemStack electricPump_MV;
-	public static ItemStack electricPump_HV;
-	public static ItemStack electricPump_EV;
-	public static ItemStack electricPump_IV;
-	public static ItemStack electricPiston_LV;
-	public static ItemStack electricPiston_MV;
-	public static ItemStack electricPiston_HV;
-	public static ItemStack electricPiston_EV;
-	public static ItemStack electricPiston_IV;
-	public static ItemStack robotArm_LV;
-	public static ItemStack robotArm_MV;
-	public static ItemStack robotArm_HV;
-	public static ItemStack robotArm_EV;
-	public static ItemStack robotArm_IV;
-	public static ItemStack conveyorModule_LV;
-	public static ItemStack conveyorModule_MV;
-	public static ItemStack conveyorModule_HV;
-	public static ItemStack conveyorModule_EV;
-	public static ItemStack conveyorModule_IV;
-	public static ItemStack emitter_LV;
-	public static ItemStack emitter_MV;
-	public static ItemStack emitter_HV;
-	public static ItemStack emitter_EV;
-	public static ItemStack emitter_IV;
-	public static ItemStack fieldGenerator_LV;
-	public static ItemStack fieldGenerator_MV;
-	public static ItemStack fieldGenerator_HV;
-	public static ItemStack fieldGenerator_EV;
-	public static ItemStack fieldGenerator_IV;
-	public static ItemStack sensor_LV;
-	public static ItemStack sensor_MV;
-	public static ItemStack sensor_HV;
-	public static ItemStack sensor_EV;
-	public static ItemStack sensor_IV;
-
 	//Misc
 	public static ItemStack INPUT_RCCokeOvenBlock;
 	public static ItemStack INPUT_IECokeOvenBlock;
@@ -289,49 +247,6 @@ public class RECIPES_Machines {
 
 			//Lava Boiler
 			boiler_Coal = ItemList.Machine_Bronze_Boiler.get(1);
-
-			//Machine Components
-			electricMotor_LV = ItemList.Electric_Motor_LV.get(1);
-			electricMotor_MV = ItemList.Electric_Motor_MV.get(1);
-			electricMotor_HV = ItemList.Electric_Motor_HV.get(1);
-			electricMotor_EV = ItemList.Electric_Motor_EV.get(1);
-			electricMotor_IV = ItemList.Electric_Motor_IV.get(1);
-			electricPump_LV = ItemList.Electric_Pump_LV.get(1);
-			electricPump_MV = ItemList.Electric_Pump_MV.get(1);
-			electricPump_HV = ItemList.Electric_Pump_HV.get(1);
-			electricPump_EV = ItemList.Electric_Pump_EV.get(1);
-			electricPump_IV = ItemList.Electric_Pump_IV.get(1);
-			electricPiston_LV = ItemList.Electric_Piston_LV.get(1);
-			electricPiston_MV = ItemList.Electric_Piston_MV.get(1);
-			electricPiston_HV = ItemList.Electric_Piston_HV.get(1);
-			electricPiston_EV = ItemList.Electric_Piston_EV.get(1);
-			electricPiston_IV = ItemList.Electric_Piston_IV.get(1);
-			robotArm_LV = ItemList.Robot_Arm_LV.get(1);
-			robotArm_MV = ItemList.Robot_Arm_MV.get(1);
-			robotArm_HV = ItemList.Robot_Arm_HV.get(1);
-			robotArm_EV = ItemList.Robot_Arm_EV.get(1);
-			robotArm_IV = ItemList.Robot_Arm_IV.get(1);
-			conveyorModule_LV = ItemList.Conveyor_Module_LV.get(1);
-			conveyorModule_MV = ItemList.Conveyor_Module_MV.get(1);
-			conveyorModule_HV = ItemList.Conveyor_Module_HV.get(1);
-			conveyorModule_EV = ItemList.Conveyor_Module_EV.get(1);
-			conveyorModule_IV = ItemList.Conveyor_Module_IV.get(1);
-			emitter_LV = ItemList.Emitter_LV.get(1);
-			emitter_MV = ItemList.Emitter_MV.get(1);
-			emitter_HV = ItemList.Emitter_HV.get(1);
-			emitter_EV = ItemList.Emitter_EV.get(1);
-			emitter_IV = ItemList.Emitter_IV.get(1);
-			fieldGenerator_LV = ItemList.Field_Generator_LV.get(1);
-			fieldGenerator_MV = ItemList.Field_Generator_MV.get(1);
-			fieldGenerator_HV = ItemList.Field_Generator_HV.get(1);
-			fieldGenerator_EV = ItemList.Field_Generator_EV.get(1);
-			fieldGenerator_IV = ItemList.Field_Generator_IV.get(1);
-			sensor_LV = ItemList.Sensor_LV.get(1);
-			sensor_MV = ItemList.Sensor_MV.get(1);
-			sensor_HV = ItemList.Sensor_HV.get(1);
-			sensor_EV = ItemList.Sensor_EV.get(1);
-			sensor_IV = ItemList.Sensor_IV.get(1);
-
 
 			//IV MACHINES
 			IV_MACHINE_Electrolyzer = ItemList.Machine_IV_Electrolyzer.get(1);
@@ -485,7 +400,7 @@ public class RECIPES_Machines {
 				RECIPE_SteamCondenser = GregtechItemList.Condensor_MAX.get(1);
 				RecipeUtils.addShapedGregtechRecipe(
 				pipeLargeCopper, pipeHugeSteel, pipeLargeCopper,
-				plateEnergeticAlloy, electricPump_HV, plateEnergeticAlloy,
+				plateEnergeticAlloy, CI.electricPump_HV, plateEnergeticAlloy,
 				plateEnergeticAlloy, pipeLargeCopper, plateEnergeticAlloy,
 				RECIPE_SteamCondenser);
 			}
@@ -671,27 +586,27 @@ public class RECIPES_Machines {
 					RecipeUtils.addShapedGregtechRecipe(
 					plateTier2, plateTier2, plateTier2,
 					plateTier2, pipeTier2, plateTier2,
-					plateTier2, electricPump_LV, plateTier2,
+					plateTier2, CI.electricPump_LV, plateTier2,
 					GregtechItemList.GT_FluidTank_LV.get(1));
 					RecipeUtils.addShapedGregtechRecipe(
 					plateTier3, plateTier3, plateTier3,
 					plateTier3, pipeTier3, plateTier3,
-					plateTier3, electricPump_MV, plateTier3,
+					plateTier3, CI.electricPump_MV, plateTier3,
 					GregtechItemList.GT_FluidTank_MV.get(1));
 					RecipeUtils.addShapedGregtechRecipe(
 					plateTier4, plateTier4, plateTier4,
 					plateTier4, pipeTier4, plateTier4,
-					plateTier4, electricPump_HV, plateTier4,
+					plateTier4, CI.electricPump_HV, plateTier4,
 					GregtechItemList.GT_FluidTank_HV.get(1));
 					RecipeUtils.addShapedGregtechRecipe(
 					plateTier5, plateTier5, plateTier5,
 					plateTier5, pipeTier5, plateTier5,
-					plateTier5, electricPump_EV, plateTier5,
+					plateTier5, CI.electricPump_EV, plateTier5,
 					GregtechItemList.GT_FluidTank_EV.get(1));
 					RecipeUtils.addShapedGregtechRecipe(
 					plateTier6, plateTier6, plateTier6,
 					plateTier6, pipeTier6, plateTier6,
-					plateTier6, electricPump_IV, plateTier6,
+					plateTier6, CI.electricPump_IV, plateTier6,
 					GregtechItemList.GT_FluidTank_IV.get(1));
 					RecipeUtils.addShapedGregtechRecipe(
 					plateTier7, plateTier7, plateTier7,
@@ -746,17 +661,17 @@ public class RECIPES_Machines {
 					RecipeUtils.addShapedGregtechRecipe(
 					plateTier2, plateTier5, plateTier2,
 					plateTier2, pipeTier2, plateTier2,
-					plateTier2, electricPump_LV, plateTier2,
+					plateTier2, CI.electricPump_LV, plateTier2,
 					GregtechItemList.GT_FluidTank_LV.get(1));
 					RecipeUtils.addShapedGregtechRecipe(
 					plateTier6, plateTier7, plateTier6,
 					plateTier3, pipeTier3, plateTier3,
-					plateTier6, electricPump_LV, plateTier6,
+					plateTier6, CI.electricPump_LV, plateTier6,
 					GregtechItemList.GT_FluidTank_MV.get(1));
 					RecipeUtils.addShapedGregtechRecipe(
 					CI.circuitTier1, plateTier8, CI.circuitTier1,
 					plateTier4, pipeTier4, plateTier4,
-					CI.circuitTier1, electricPump_LV, CI.circuitTier1,
+					CI.circuitTier1, CI.electricPump_LV, CI.circuitTier1,
 					GregtechItemList.GT_FluidTank_HV.get(1));
 				}
 			}

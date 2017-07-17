@@ -27,41 +27,81 @@ public class CI {
 
 	//Machine Components
 	public static ItemStack electricMotor_ULV;
+	public static ItemStack electricMotor_LV;
+	public static ItemStack electricMotor_MV;
+	public static ItemStack electricMotor_HV;
+	public static ItemStack electricMotor_EV;
+	public static ItemStack electricMotor_IV;
 	public static ItemStack electricMotor_LuV;
 	public static ItemStack electricMotor_ZPM;
 	public static ItemStack electricMotor_UV;
 	public static ItemStack electricMotor_MAX;
 	public static ItemStack electricPump_ULV;
+	public static ItemStack electricPump_LV;
+	public static ItemStack electricPump_MV;
+	public static ItemStack electricPump_HV;
+	public static ItemStack electricPump_EV;
+	public static ItemStack electricPump_IV;
 	public static ItemStack electricPump_LuV;
 	public static ItemStack electricPump_ZPM;
 	public static ItemStack electricPump_UV;
 	public static ItemStack electricPump_MAX;
 	public static ItemStack electricPiston_ULV;
+	public static ItemStack electricPiston_LV;
+	public static ItemStack electricPiston_MV;
+	public static ItemStack electricPiston_HV;
+	public static ItemStack electricPiston_EV;
+	public static ItemStack electricPiston_IV;
 	public static ItemStack electricPiston_LuV;
 	public static ItemStack electricPiston_ZPM;
 	public static ItemStack electricPiston_UV ;
 	public static ItemStack electricPiston_MAX;
 	public static ItemStack robotArm_ULV;
+	public static ItemStack robotArm_LV;
+	public static ItemStack robotArm_MV;
+	public static ItemStack robotArm_HV;
+	public static ItemStack robotArm_EV;
+	public static ItemStack robotArm_IV;
 	public static ItemStack robotArm_LuV;
 	public static ItemStack robotArm_ZPM;
 	public static ItemStack robotArm_UV;
 	public static ItemStack robotArm_MAX;
 	public static ItemStack conveyorModule_ULV;
+	public static ItemStack conveyorModule_LV;
+	public static ItemStack conveyorModule_MV;
+	public static ItemStack conveyorModule_HV;
+	public static ItemStack conveyorModule_EV;
+	public static ItemStack conveyorModule_IV;
 	public static ItemStack conveyorModule_LuV;
 	public static ItemStack conveyorModule_ZPM;
 	public static ItemStack conveyorModule_UV;
 	public static ItemStack conveyorModule_MAX;
 	public static ItemStack emitter_ULV;
+	public static ItemStack emitter_LV;
+	public static ItemStack emitter_MV;
+	public static ItemStack emitter_HV;
+	public static ItemStack emitter_EV;
+	public static ItemStack emitter_IV;
 	public static ItemStack emitter_LuV;
 	public static ItemStack emitter_ZPM;
 	public static ItemStack emitter_UV;
 	public static ItemStack emitter_MAX;
 	public static ItemStack fieldGenerator_ULV;
+	public static ItemStack fieldGenerator_LV;
+	public static ItemStack fieldGenerator_MV;
+	public static ItemStack fieldGenerator_HV;
+	public static ItemStack fieldGenerator_EV;
+	public static ItemStack fieldGenerator_IV;
 	public static ItemStack fieldGenerator_LuV;
 	public static ItemStack fieldGenerator_ZPM;
 	public static ItemStack fieldGenerator_UV;
 	public static ItemStack fieldGenerator_MAX;
 	public static ItemStack sensor_ULV;
+	public static ItemStack sensor_LV;
+	public static ItemStack sensor_MV;
+	public static ItemStack sensor_HV;
+	public static ItemStack sensor_EV;
+	public static ItemStack sensor_IV;
 	public static ItemStack sensor_LuV;
 	public static ItemStack sensor_ZPM;
 	public static ItemStack sensor_UV;
@@ -155,5 +195,7 @@ public class CI {
 	public static ItemStack getNumberedCircuit(int Meta){
 		return ItemUtils.getGregtechCircuit(Meta);
 	}
+
+	
 
 }
