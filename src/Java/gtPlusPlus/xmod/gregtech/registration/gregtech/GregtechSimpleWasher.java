@@ -4,7 +4,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.Recipe_GT;
-import gtPlusPlus.core.recipe.RECIPES_Machines;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
@@ -49,7 +48,7 @@ public class GregtechSimpleWasher {
 		RecipeUtils.addShapedGregtechRecipe(
 				plateWrought, CI.electricPump_LV, plateWrought,
 				plateWrought, ItemUtils.getItemStackOfAmountFromOreDict("pipeLargeClay", 1), plateWrought,
-				plateWrought, RECIPES_Machines.machineCasing_ULV, plateWrought,
+				plateWrought, CI.machineCasing_ULV, plateWrought,
 				GregtechItemList.SimpleDustWasher.get(1));				
 		
 	}
