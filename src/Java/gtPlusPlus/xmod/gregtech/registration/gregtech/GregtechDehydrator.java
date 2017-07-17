@@ -7,7 +7,7 @@ import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
-import gtPlusPlus.core.recipe.RECIPE_CONSTANTS;
+import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
@@ -164,7 +164,7 @@ public class GregtechDehydrator
 		GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
 		new Object[]{"ECE", "WMW", "GPG",
 			Character.valueOf('M'), ItemList.Hull_LuV,
-			Character.valueOf('P'), RECIPE_CONSTANTS.robotArm_LuV,
+			Character.valueOf('P'), CI.robotArm_LuV,
 			Character.valueOf('E'), coilT3,
 			Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Master),
 			Character.valueOf('W'), OrePrefixes.cableGt04.get(Materials.Naquadah),
@@ -175,7 +175,7 @@ public class GregtechDehydrator
 		GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED,
 		new Object[]{"ECE", "WMW", "GPG",
 			Character.valueOf('M'), ItemList.Hull_ZPM,
-			Character.valueOf('P'), RECIPE_CONSTANTS.robotArm_ZPM,
+			Character.valueOf('P'), CI.robotArm_ZPM,
 			Character.valueOf('E'), coilT4,
 			Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Ultimate),
 			Character.valueOf('W'), OrePrefixes.cableGt04.get(Materials.Osmium),

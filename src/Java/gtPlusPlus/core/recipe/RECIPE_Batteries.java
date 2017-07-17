@@ -2,6 +2,7 @@ package gtPlusPlus.core.recipe;
 
 import gregtech.api.enums.ItemList;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
@@ -30,17 +31,17 @@ public class RECIPE_Batteries {
 
 		RecipeUtils.addShapedGregtechRecipe(
 				GT_Battery_Sodium, RECIPES_Machines.cableTier4, GT_Battery_Sodium,
-				RECIPES_Machines.circuitTier3, machineTransformer_EV, RECIPES_Machines.circuitTier3,
+				CI.circuitTier3, machineTransformer_EV, CI.circuitTier3,
 				GT_Battery_Sodium, RECIPES_Machines.cableTier4, GT_Battery_Sodium,
 				RECIPE_Battery_Sodium);
 		RecipeUtils.addShapedGregtechRecipe(
 				GT_Battery_Cadmium, RECIPES_Machines.cableTier4, GT_Battery_Cadmium,
-				RECIPES_Machines.circuitTier3, machineTransformer_EV, RECIPES_Machines.circuitTier3,
+				CI.circuitTier3, machineTransformer_EV, CI.circuitTier3,
 				GT_Battery_Cadmium, RECIPES_Machines.cableTier4, GT_Battery_Cadmium,
 				RECIPE_Battery_Cadmium);
 		RecipeUtils.addShapedGregtechRecipe(
 				GT_Battery_Lithium, RECIPES_Machines.cableTier4, GT_Battery_Lithium,
-				RECIPES_Machines.circuitTier3, machineTransformer_EV, RECIPES_Machines.circuitTier3,
+				CI.circuitTier3, machineTransformer_EV, CI.circuitTier3,
 				GT_Battery_Lithium, RECIPES_Machines.cableTier4, GT_Battery_Lithium,
 				RECIPE_Battery_Lithium);
 

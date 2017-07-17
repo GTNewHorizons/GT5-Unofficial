@@ -15,7 +15,8 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.RECIPES_Old_Circuits;
-import gtPlusPlus.core.recipe.RECIPE_CONSTANTS;
+import gtPlusPlus.core.recipe.common.CI;
+import gtPlusPlus.core.recipe.LOADER_Machine_Components;
 import gtPlusPlus.core.tileentities.ModTileEntities;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.debug.DEBUG_INIT;
@@ -75,7 +76,7 @@ public class CommonProxy {
 		}
 		ModItems.init();
 		ModBlocks.init();
-		RECIPE_CONSTANTS.initialise();
+		CI.Init();
 		//Prevents my Safes being destroyed.
 		MinecraftForge.EVENT_BUS.register(new PickaxeBlockBreakEventHandler());
 		//Block Handler for all events.

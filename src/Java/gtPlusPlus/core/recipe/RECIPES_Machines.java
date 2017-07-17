@@ -3,6 +3,7 @@ package gtPlusPlus.core.recipe;
 import gregtech.api.enums.*;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
@@ -203,18 +204,6 @@ public class RECIPES_Machines {
 	public static ItemStack IC2MFE;
 	public static ItemStack IC2MFSU;
 
-	//Circuits
-	public static ItemStack circuitPrimitive = ItemList.Circuit_Primitive.get(1);
-	public static ItemStack circuitTier1 = ItemList.Circuit_Basic.get(1);//"circuitGood";
-	public static ItemStack circuitTier2 = ItemList.Circuit_Good.get(1);//"circuitAdvanced";
-	public static ItemStack circuitTier3 = ItemList.Circuit_Advanced.get(1);//"circuitData";
-	public static ItemStack circuitTier4 = ItemList.Circuit_Elite.get(1);//"circuitElite";
-	public static ItemStack circuitTier5 = ItemList.Circuit_Master.get(1);//"circuitMaster";
-	public static ItemStack circuitTier6 = ItemList.Circuit_Ultimate.get(1);//"circuitUltimate";
-	public static String circuitTier7 = "circuitSuperconductor";
-	public static String circuitTier8 = "circuitInfinite";
-	public static String circuitTier9 = "circuitQuantum";
-
 	//Machine Components
 	public static ItemStack electricMotor_LV;
 	public static ItemStack electricMotor_MV;
@@ -382,60 +371,60 @@ public class RECIPES_Machines {
 			"gearGtTungstenSteel", "cableGt02Platinum", "gearGtTungstenSteel",
 			ItemUtils.simpleMetaStack("gregtech:gt.blockmachines", 794, 1));
 			RecipeUtils.addShapedGregtechRecipe(
-			RECIPE_CONSTANTS.electricPiston_LuV, OrePrefixes.circuit.get(Materials.Infinite), RECIPE_CONSTANTS.electricPiston_LuV,
-			RECIPE_CONSTANTS.electricMotor_LuV, machineCasing_LuV, RECIPE_CONSTANTS.electricMotor_LuV,
+			CI.electricPiston_LuV, OrePrefixes.circuit.get(Materials.Infinite), CI.electricPiston_LuV,
+			CI.electricMotor_LuV, machineCasing_LuV, CI.electricMotor_LuV,
 			"gearGtChrome", "cableGt02Tungsten", "gearGtChrome",
 			ItemUtils.simpleMetaStack("gregtech:gt.blockmachines", 795, 1));
 
 			//Buffer Core
 			RecipeUtils.addShapedGregtechRecipe(
 			plateTier1, cableTier1, plateTier1,
-			circuitPrimitive, IC2MFE, circuitPrimitive,
+			CI.circuitPrimitive, IC2MFE, CI.circuitPrimitive,
 			plateTier1, cableTier1, plateTier1,
 			RECIPE_BufferCore_ULV);
 			RecipeUtils.addShapedGregtechRecipe(
 			plateTier2, cableTier2, plateTier2,
-			circuitTier1, IC2MFE, circuitTier1,
+			CI.circuitTier1, IC2MFE, CI.circuitTier1,
 			plateTier2, cableTier2, plateTier2,
 			RECIPE_BufferCore_LV);
 			RecipeUtils.addShapedGregtechRecipe(
 			plateTier3, cableTier3, plateTier3,
-			RECIPE_BufferCore_LV, circuitTier2, RECIPE_BufferCore_LV,
+			RECIPE_BufferCore_LV, CI.circuitTier2, RECIPE_BufferCore_LV,
 			plateTier3, cableTier3, plateTier3,
 			RECIPE_BufferCore_MV);
 			RecipeUtils.addShapedGregtechRecipe(
 			plateTier4, cableTier4, plateTier4,
-			RECIPE_BufferCore_MV, circuitTier3, RECIPE_BufferCore_MV,
+			RECIPE_BufferCore_MV, CI.circuitTier3, RECIPE_BufferCore_MV,
 			plateTier4, cableTier4, plateTier4,
 			RECIPE_BufferCore_HV);
 			RecipeUtils.addShapedGregtechRecipe(
 			plateTier5, cableTier5, plateTier5,
-			RECIPE_BufferCore_HV, circuitTier4, RECIPE_BufferCore_HV,
+			RECIPE_BufferCore_HV, CI.circuitTier4, RECIPE_BufferCore_HV,
 			plateTier5, cableTier5, plateTier5,
 			RECIPE_BufferCore_EV);
 			RecipeUtils.addShapedGregtechRecipe(
 			plateTier6, cableTier6, plateTier6,
-			RECIPE_BufferCore_EV, circuitTier5, RECIPE_BufferCore_EV,
+			RECIPE_BufferCore_EV, CI.circuitTier5, RECIPE_BufferCore_EV,
 			plateTier6, cableTier6, plateTier6,
 			RECIPE_BufferCore_IV);
 			RecipeUtils.addShapedGregtechRecipe(
 			plateTier7, cableTier7, plateTier7,
-			RECIPE_BufferCore_IV, circuitTier6, RECIPE_BufferCore_IV,
+			RECIPE_BufferCore_IV, CI.circuitTier6, RECIPE_BufferCore_IV,
 			plateTier7, cableTier7, plateTier7,
 			RECIPE_BufferCore_LuV);
 			RecipeUtils.addShapedGregtechRecipe(
 			plateTier8, cableTier8, plateTier8,
-			RECIPE_BufferCore_LuV, circuitTier7, RECIPE_BufferCore_LuV,
+			RECIPE_BufferCore_LuV, CI.circuitTier7, RECIPE_BufferCore_LuV,
 			plateTier8, cableTier8, plateTier8,
 			RECIPE_BufferCore_ZPM);
 			RecipeUtils.addShapedGregtechRecipe(
 			plateTier9, cableTier9, plateTier9,
-			RECIPE_BufferCore_ZPM, circuitTier8, RECIPE_BufferCore_ZPM,
+			RECIPE_BufferCore_ZPM, CI.circuitTier8, RECIPE_BufferCore_ZPM,
 			plateTier9, cableTier9, plateTier9,
 			RECIPE_BufferCore_UV);
 			RecipeUtils.addShapedGregtechRecipe(
 			plateTier10, cableTier10, plateTier10,
-			RECIPE_BufferCore_UV, circuitTier9, RECIPE_BufferCore_UV,
+			RECIPE_BufferCore_UV, CI.circuitTier9, RECIPE_BufferCore_UV,
 			plateTier10, cableTier10, plateTier10,
 			RECIPE_BufferCore_MAX);
 
@@ -443,52 +432,52 @@ public class RECIPES_Machines {
 			RecipeUtils.addShapedGregtechRecipe(
 			wireTier1, RECIPE_BufferCore_ULV, wireTier1,
 			wireTier1, machineCasing_ULV, wireTier1,
-			circuitPrimitive, circuitTier1, circuitPrimitive,
+			CI.circuitPrimitive, CI.circuitTier1, CI.circuitPrimitive,
 			RECIPE_Buffer_ULV);
 			RecipeUtils.addShapedGregtechRecipe(
 			wireTier2, RECIPE_BufferCore_LV, wireTier2,
 			wireTier2, machineCasing_LV, wireTier2,
-			circuitTier1, RECIPE_BufferCore_LV, circuitTier1,
+			CI.circuitTier1, RECIPE_BufferCore_LV, CI.circuitTier1,
 			RECIPE_Buffer_LV);
 			RecipeUtils.addShapedGregtechRecipe(
 			wireTier3, RECIPE_BufferCore_MV, wireTier3,
 			wireTier3, machineCasing_MV, wireTier3,
-			circuitTier2, RECIPE_BufferCore_MV, circuitTier2,
+			CI.circuitTier2, RECIPE_BufferCore_MV, CI.circuitTier2,
 			RECIPE_Buffer_MV);
 			RecipeUtils.addShapedGregtechRecipe(
 			wireTier4, RECIPE_BufferCore_HV, wireTier4,
 			wireTier4, machineCasing_HV, wireTier4,
-			circuitTier3, RECIPE_BufferCore_HV, circuitTier3,
+			CI.circuitTier3, RECIPE_BufferCore_HV, CI.circuitTier3,
 			RECIPE_Buffer_HV);
 			RecipeUtils.addShapedGregtechRecipe(
 			wireTier5, RECIPE_BufferCore_EV, wireTier5,
 			wireTier5, machineCasing_EV, wireTier5,
-			circuitTier4, RECIPE_BufferCore_EV, circuitTier4,
+			CI.circuitTier4, RECIPE_BufferCore_EV, CI.circuitTier4,
 			RECIPE_Buffer_EV);
 			RecipeUtils.addShapedGregtechRecipe(
 			wireTier6, RECIPE_BufferCore_IV, wireTier6,
 			wireTier6, machineCasing_IV, wireTier6,
-			circuitTier5, RECIPE_BufferCore_IV, circuitTier5,
+			CI.circuitTier5, RECIPE_BufferCore_IV, CI.circuitTier5,
 			RECIPE_Buffer_IV);
 			RecipeUtils.addShapedGregtechRecipe(
 			wireTier7, RECIPE_BufferCore_LuV, wireTier7,
 			wireTier7, machineCasing_LuV, wireTier7,
-			circuitTier6, RECIPE_BufferCore_LuV, circuitTier6,
+			CI.circuitTier6, RECIPE_BufferCore_LuV, CI.circuitTier6,
 			RECIPE_Buffer_LuV);
 			RecipeUtils.addShapedGregtechRecipe(
 			wireTier8, RECIPE_BufferCore_ZPM, wireTier8,
 			wireTier8, machineCasing_ZPM, wireTier8,
-			circuitTier7, RECIPE_BufferCore_ZPM, circuitTier7,
+			CI.circuitTier7, RECIPE_BufferCore_ZPM, CI.circuitTier7,
 			RECIPE_Buffer_ZPM);
 			RecipeUtils.addShapedGregtechRecipe(
 			wireTier9, RECIPE_BufferCore_UV, wireTier9,
 			wireTier9, machineCasing_UV, wireTier9,
-			circuitTier8, RECIPE_BufferCore_UV, circuitTier8,
+			CI.circuitTier8, RECIPE_BufferCore_UV, CI.circuitTier8,
 			RECIPE_Buffer_UV);
 			RecipeUtils.addShapedGregtechRecipe(
 			plateTier11, RECIPE_BufferCore_MAX, plateTier11,
 			wireTier10, machineCasing_MAX, wireTier10,
-			circuitTier9, RECIPE_BufferCore_MAX, circuitTier9,
+			CI.circuitTier9, RECIPE_BufferCore_MAX, CI.circuitTier9,
 			RECIPE_Buffer_MAX);
 
 			//Steam Condenser
@@ -537,7 +526,7 @@ public class RECIPES_Machines {
 
 				//Industrial Centrifuge
 				RecipeUtils.addShapedGregtechRecipe(
-				circuitTier6, pipeHugeStainlessSteel, circuitTier6,
+				CI.circuitTier6, pipeHugeStainlessSteel, CI.circuitTier6,
 				plateTier6, IV_MACHINE_Centrifuge, plateTier6,
 				plateTier8, machineCasing_IV, plateTier8,
 				RECIPE_IndustrialCentrifugeController);
@@ -559,17 +548,17 @@ public class RECIPES_Machines {
 				if (LoadedMods.Railcraft){
 					//Industrial Coke Oven
 					RecipeUtils.addShapedGregtechRecipe(
-					plateCobalt, circuitTier4, plateCobalt,
+					plateCobalt, CI.circuitTier4, plateCobalt,
 					machineCasing_HV, INPUT_RCCokeOvenBlock, machineCasing_HV,
-					plateCobalt, circuitTier5, plateCobalt,
+					plateCobalt, CI.circuitTier5, plateCobalt,
 					RECIPE_IndustrialCokeOvenController);
 				}
 				if (LoadedMods.ImmersiveEngineering){
 					//Industrial Coke Oven
 					RecipeUtils.addShapedGregtechRecipe(
-					plateTier8, circuitTier4, plateTier8,
+					plateTier8, CI.circuitTier4, plateTier8,
 					machineCasing_HV, INPUT_IECokeOvenBlock, machineCasing_HV,
-					plateTier8, circuitTier3, plateTier8,
+					plateTier8, CI.circuitTier3, plateTier8,
 					RECIPE_IndustrialCokeOvenController);
 				}
 				//Coke Oven Frame Casing
@@ -605,7 +594,7 @@ public class RECIPES_Machines {
 				RECIPE_IndustrialElectrolyzerFrame);
 				//Industrial Electrolyzer
 				RecipeUtils.addShapedGregtechRecipe(
-				"plateStellite", circuitTier6, "plateStellite",
+				"plateStellite", CI.circuitTier6, "plateStellite",
 				machineCasing_EV, IV_MACHINE_Electrolyzer, machineCasing_EV,
 				"plateStellite", "rotorStellite", "plateStellite",
 				RECIPE_IndustrialElectrolyzerController);
@@ -624,9 +613,9 @@ public class RECIPES_Machines {
 				RECIPE_IndustrialMaterialPressFrame);
 				//Industrial Material Press
 				RecipeUtils.addShapedGregtechRecipe(
-				"plateTitanium", circuitTier5, "plateTitanium",
+				"plateTitanium", CI.circuitTier5, "plateTitanium",
 				machineCasing_EV, IV_MACHINE_BendingMachine, machineCasing_EV,
-				"plateTitanium", circuitTier5, "plateTitanium",
+				"plateTitanium", CI.circuitTier5, "plateTitanium",
 				RECIPE_IndustrialMaterialPressController);
 			}
 
@@ -644,7 +633,7 @@ public class RECIPES_Machines {
 				//Industrial Maceration stack
 				RecipeUtils.addShapedGregtechRecipe(
 				"plateTungstenCarbide", IV_MACHINE_Macerator, "plateTungstenCarbide",
-				EV_MACHINE_Macerator, circuitTier7, EV_MACHINE_Macerator,
+				EV_MACHINE_Macerator, CI.circuitTier7, EV_MACHINE_Macerator,
 				"plateTungstenCarbide", machineCasing_IV, "plateTungstenCarbide",
 				RECIPE_IndustrialMacerationStackController);
 			}
@@ -663,7 +652,7 @@ public class RECIPES_Machines {
 				//Industrial Wire Factory
 				RecipeUtils.addShapedGregtechRecipe(
 				"plateZeron100", machineCasing_IV, "plateZeron100",
-				circuitTier6, IV_MACHINE_Wiremill, circuitTier6,
+				CI.circuitTier6, IV_MACHINE_Wiremill, CI.circuitTier6,
 				"plateZeron100", machineCasing_IV, "plateZeron100",
 				RECIPE_IndustrialWireFactoryController);
 			}
@@ -707,29 +696,29 @@ public class RECIPES_Machines {
 					RecipeUtils.addShapedGregtechRecipe(
 					plateTier7, plateTier7, plateTier7,
 					plateTier7, pipeTier7, plateTier7,
-					plateTier7, RECIPE_CONSTANTS.electricPump_LuV, plateTier7,
+					plateTier7, CI.electricPump_LuV, plateTier7,
 					GregtechItemList.GT_FluidTank_LuV.get(1));
 					RecipeUtils.addShapedGregtechRecipe(
 					plateTier8, plateTier8, plateTier8,
 					plateTier8, pipeTier8, plateTier8,
-					plateTier8, RECIPE_CONSTANTS.electricPump_ZPM, plateTier8,
+					plateTier8, CI.electricPump_ZPM, plateTier8,
 					GregtechItemList.GT_FluidTank_ZPM.get(1));
 					RecipeUtils.addShapedGregtechRecipe(
 					plateTier9, plateTier9, plateTier9,
 					plateTier9, pipeTier9, plateTier9,
-					plateTier9, RECIPE_CONSTANTS.electricPump_UV, plateTier9,
+					plateTier9, CI.electricPump_UV, plateTier9,
 					GregtechItemList.GT_FluidTank_UV.get(1));
 					RecipeUtils.addShapedGregtechRecipe(
 					plateTier10, plateTier10, plateTier10,
 					plateTier10, pipeTier10, plateTier10,
-					plateTier10, RECIPE_CONSTANTS.electricPump_MAX, plateTier10,
+					plateTier10, CI.electricPump_MAX, plateTier10,
 					GregtechItemList.GT_FluidTank_MAX.get(1));
 				}
 				else {
 
 					plateTier1 = "plateTin";
 					pipeTier1 = "pipeLargeClay";
-					circuitTier1 = ItemList.Circuit_Primitive.get(1);
+					CI.circuitTier1 = ItemList.Circuit_Primitive.get(1);
 					plateTier2 = "plateCopper";
 					pipeTier2 = "pipeHugeClay";
 					plateTier3 = "plateBronze";
@@ -765,9 +754,9 @@ public class RECIPES_Machines {
 					plateTier6, electricPump_LV, plateTier6,
 					GregtechItemList.GT_FluidTank_MV.get(1));
 					RecipeUtils.addShapedGregtechRecipe(
-					circuitTier1, plateTier8, circuitTier1,
+					CI.circuitTier1, plateTier8, CI.circuitTier1,
 					plateTier4, pipeTier4, plateTier4,
-					circuitTier1, electricPump_LV, circuitTier1,
+					CI.circuitTier1, electricPump_LV, CI.circuitTier1,
 					GregtechItemList.GT_FluidTank_HV.get(1));
 				}
 			}
@@ -786,7 +775,7 @@ public class RECIPES_Machines {
 				//Industrial Multi Tank
 				RecipeUtils.addShapedGregtechRecipe(
 				"pipeHugeTantalloy60", "gearGrisium", "pipeHugeTantalloy60",
-				circuitTier4, RECIPE_IndustrialMultiTankFrame, circuitTier4,
+				CI.circuitTier4, RECIPE_IndustrialMultiTankFrame, CI.circuitTier4,
 				"plateDoubleGrisium", "rotorGrisium", "plateDoubleGrisium",
 				RECIPE_IndustrialMultiTankController);
 			}
@@ -799,9 +788,9 @@ public class RECIPES_Machines {
 
 				//Blast Smelter
 				RecipeUtils.addShapedGregtechRecipe(
-				"plateZirconiumCarbide", circuitTier4, "plateZirconiumCarbide",
+				"plateZirconiumCarbide", CI.circuitTier4, "plateZirconiumCarbide",
 				cableTier4, machineCasing_EV, cableTier4,
-				"plateZirconiumCarbide", circuitTier3, "plateZirconiumCarbide",
+				"plateZirconiumCarbide", CI.circuitTier3, "plateZirconiumCarbide",
 				RECIPE_IndustrialBlastSmelterController);
 				//Blast Smelter Frame Casing
 				RecipeUtils.addShapedGregtechRecipe(
@@ -825,9 +814,9 @@ public class RECIPES_Machines {
 
 				//Matter Fabricator CPU
 				RecipeUtils.addShapedGregtechRecipe(
-				"plateDoubleQuantum", circuitTier5, "plateDoubleQuantum",
+				"plateDoubleQuantum", CI.circuitTier5, "plateDoubleQuantum",
 				cableTier8, machineCasing_LuV, cableTier8,
-				"plateDoubleQuantum", circuitTier5, "plateDoubleQuantum",
+				"plateDoubleQuantum", CI.circuitTier5, "plateDoubleQuantum",
 				RECIPE_IndustrialMatterFabController);
 				//Matter Fabricator Frame Casing
 				RecipeUtils.addShapedGregtechRecipe(
@@ -851,9 +840,9 @@ public class RECIPES_Machines {
 
 				//Industrial Sieve
 				RecipeUtils.addShapedGregtechRecipe(
-				"plateEglinSteel", circuitTier2, "plateEglinSteel",
+				"plateEglinSteel", CI.circuitTier2, "plateEglinSteel",
 				cableTier3, machineCasing_MV, cableTier3,
-				"plateEglinSteel", circuitTier2, "plateEglinSteel",
+				"plateEglinSteel", CI.circuitTier2, "plateEglinSteel",
 				RECIPE_IndustrialSieveController);
 				//Industrial Sieve Casing
 				RecipeUtils.addShapedGregtechRecipe(
