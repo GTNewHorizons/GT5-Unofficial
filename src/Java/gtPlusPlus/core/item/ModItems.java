@@ -562,7 +562,7 @@ public final class ModItems {
 		tI = new BaseItemMisc("Forest", new short[]{130,164,96}, 64, MiscTypes.MUSHROOM, new String[]{"You Found this on the ground.", "Definitely not sure if it's worth eating."});
 
 		//EnderIO Resources
-		if (LoadedMods.EnderIO || LOAD_ALL_CONTENT){
+		if ((LoadedMods.EnderIO || LOAD_ALL_CONTENT) && !CORE.GTNH){
 			Utils.LOG_INFO("EnderIO Found - Loading Resources.");
 			//Enderio Dusts
 			itemDustSoularium = ItemUtils.generateSpecialUseDusts("Soularium", "Soularium", Utils.rgbtoHexValue(95,90,54))[0];
@@ -605,7 +605,7 @@ public final class ModItems {
 		}
 
 		//Thaumcraft
-		if (LoadedMods.Thaumcraft|| LOAD_ALL_CONTENT){
+		if ((LoadedMods.Thaumcraft|| LOAD_ALL_CONTENT) && !CORE.GTNH){
 			Utils.LOG_INFO("Thaumcraft Found - Loading Resources.");
 			//Item Init
 			try {

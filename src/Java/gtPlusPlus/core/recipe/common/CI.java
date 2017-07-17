@@ -8,6 +8,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.recipe.LOADER_Machine_Components;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.item.ItemStack;
@@ -355,11 +356,10 @@ public class CI {
 			type.get(material);
 		}
 		else {
-			if (material instanceof Material){
 				String materialName = ((Material) material).getLocalizedName();
 				ItemUtils.getItemStackOfAmountFromOreDict(type.mRegularLocalName+materialName, 1);
-			}
 		}
+		Utils.LOG_INFO("[Components] Failed getting a tiered component. "+type.mRegularLocalName+" "+tier);
 		return null;
 	}
 
