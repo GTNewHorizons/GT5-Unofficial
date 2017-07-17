@@ -31,7 +31,7 @@ public class Container_Workbench extends Container {
 	private final int posZ;
 
 	public static int HoloSlotNumber = 6;
-	public static int InputSlotNumber = 9; //Number of Slots in the Crafting Grid
+	public static int InputSlotNumber = 0; //Number of Slots in the Crafting Grid
 	public static int StorageSlotNumber = 16; //Number of slots in storage area
 	public static int ToolSlotNumber = 5; // Number of slots in the tool area up top
 	public static int InOutputSlotNumber = InputSlotNumber + StorageSlotNumber + ToolSlotNumber + HoloSlotNumber; //Same plus Output Slot
