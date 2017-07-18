@@ -142,14 +142,14 @@ public class CI {
 	public static ItemStack gearboxCasing_Tier_3;
 	public static ItemStack gearboxCasing_Tier_4;
 
-	public static ItemStack[] component_Plate;
-	public static ItemStack[] component_Rod;
-	public static ItemStack[] component_Ingot;
+	public static String[] component_Plate;
+	public static String[] component_Rod;
+	public static String[] component_Ingot;
 
 	public static void Init(){
 
 		//Tiered Components
-		component_Plate = new ItemStack[]{
+		component_Plate = new String[]{
 				getTieredComponent(OrePrefixes.plate, 0),
 				getTieredComponent(OrePrefixes.plate, 1),
 				getTieredComponent(OrePrefixes.plate, 2),
@@ -163,7 +163,7 @@ public class CI {
 				getTieredComponent(OrePrefixes.plate, 10),
 				getTieredComponent(OrePrefixes.plate, 11)	
 		};
-		component_Rod = new ItemStack[]{
+		component_Rod = new String[]{
 				getTieredComponent(OrePrefixes.stick, 0),
 				getTieredComponent(OrePrefixes.stick, 1),
 				getTieredComponent(OrePrefixes.stick, 2),
@@ -177,7 +177,7 @@ public class CI {
 				getTieredComponent(OrePrefixes.stick, 10),
 				getTieredComponent(OrePrefixes.stick, 11)					
 		};
-		component_Ingot = new ItemStack[]{
+		component_Ingot = new String[]{
 				getTieredComponent(OrePrefixes.ingot, 0),
 				getTieredComponent(OrePrefixes.ingot, 1),
 				getTieredComponent(OrePrefixes.ingot, 2),
@@ -350,16 +350,24 @@ public class CI {
 		return Materials._NULL;
 	}
 
-	public static ItemStack getTieredComponent(OrePrefixes type, int tier){
+	public static String getTieredComponent(OrePrefixes type, int tier){
 		Object material = getMaterialFromTier(tier);
-		if (material instanceof Materials){
-			type.get(material);
+		if (material != null){
+			if (material instanceof Materials){
+				//return (ItemStack) type.get(material);
+				String materialName = ((Materials) material).mDefaultLocalName;
+				Utils.LOG_INFO("Searching for a component named "+type.name()+materialName);
+				//return ItemUtils.getItemStackOfAmountFromOreDict(type.name()+materialName, 1);
+				return (type.name()+materialName);
+			}
+			else {
+				String materialName = (Utils.sanitizeString(((Material) material).getLocalizedName()));
+				Utils.LOG_INFO("Searching for a component named "+type.name()+materialName);
+				//return ItemUtils.getItemStackOfAmountFromOreDict(type.name()+materialName, 1);
+				return (type.name()+materialName);
+			}
 		}
-		else {
-				String materialName = ((Material) material).getLocalizedName();
-				ItemUtils.getItemStackOfAmountFromOreDict(type.mRegularLocalName+materialName, 1);
-		}
-		Utils.LOG_INFO("[Components] Failed getting a tiered component. "+type.mRegularLocalName+" "+tier);
+		Utils.LOG_INFO("[Components] Failed getting a tiered component. "+type.name()+" | "+tier);
 		return null;
 	}
 

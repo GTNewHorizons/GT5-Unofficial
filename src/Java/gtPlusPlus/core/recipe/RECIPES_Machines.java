@@ -190,13 +190,13 @@ public class RECIPES_Machines {
 			boiler_Coal = ItemList.Machine_Bronze_Boiler.get(1);
 
 			//IV MACHINES
-			IV_MACHINE_Electrolyzer = ItemList.Machine_IV_Electrolyzer.get(1);
-			IV_MACHINE_BendingMachine= ItemList.Machine_IV_Bender.get(1);
-			IV_MACHINE_Wiremill= ItemList.Machine_IV_Wiremill.get(1);
-			EV_MACHINE_Macerator= ItemList.Machine_EV_Macerator.get(1);
-			IV_MACHINE_Macerator= ItemList.Machine_IV_Macerator.get(1);
-			IV_MACHINE_MassFabricator= ItemList.Machine_IV_Massfab.get(1);
-			IV_MACHINE_Centrifuge= ItemList.Machine_IV_Centrifuge.get(1);
+			IV_MACHINE_Electrolyzer = ItemList.Machine_EV_Electrolyzer.get(1);
+			IV_MACHINE_BendingMachine= ItemList.Machine_EV_Bender.get(1);
+			IV_MACHINE_Wiremill= ItemList.Machine_EV_Wiremill.get(1);
+			EV_MACHINE_Macerator= ItemList.Machine_HV_Macerator.get(1);
+			IV_MACHINE_Macerator= ItemList.Machine_EV_Macerator.get(1);
+			IV_MACHINE_MassFabricator= ItemList.Machine_EV_Massfab.get(1);
+			IV_MACHINE_Centrifuge= ItemList.Machine_EV_Centrifuge.get(1);
 
 
 		}
@@ -572,19 +572,19 @@ public class RECIPES_Machines {
 				}
 				else {
 
-					CI.component_Plate[1] = (ItemStack) OrePrefixes.plate.get(Materials.Tin);
+					CI.component_Plate[1] = "plateTin";
 					pipeTier1 = "pipeLargeClay";
 					CI.circuitTier1 = ItemList.Circuit_Primitive.get(1);
-					CI.component_Plate[2] = (ItemStack) OrePrefixes.plate.get(Materials.Copper);
+					CI.component_Plate[2] = "plateCopper";
 					pipeTier2 = "pipeHugeClay";
-					CI.component_Plate[3] = (ItemStack) OrePrefixes.plate.get(Materials.Bronze);
+					CI.component_Plate[3] = "plateBronze";
 					pipeTier3 = "pipeMediumBronze";
-					CI.component_Plate[4] = (ItemStack) OrePrefixes.plate.get(Materials.Iron);
+					CI.component_Plate[4] = "plateIron";
 					pipeTier4 = "pipeMediumSteel";
-					CI.component_Plate[5] = (ItemStack) OrePrefixes.plate.get(Materials.Steel);
-					CI.component_Plate[6] = (ItemStack) OrePrefixes.plate.get(Materials.Redstone);
-					CI.component_Plate[7] = (ItemStack) OrePrefixes.plate.get(Materials.RedstoneAlloy);
-					CI.component_Plate[8] = (ItemStack) OrePrefixes.plate.get(Materials.DarkSteel);
+					CI.component_Plate[5] = "plateSteel";
+					CI.component_Plate[6] = "plateRedstone";
+					CI.component_Plate[7] = "plateRedstoneAlloy";
+					CI.component_Plate[8] = "plateDarkSteel";
 					ItemStack waterBucket = ItemUtils.getSimpleStack(Items.water_bucket);
 
 					RecipeUtils.addShapedGregtechRecipe(
@@ -724,6 +724,15 @@ public class RECIPES_Machines {
 				"plankWood", "plankWood", "plankWood",
 				RECIPE_TreeFarmFrame);
 			}
+			
+
+			ItemStack plateWrought = ItemUtils.getItemStackOfAmountFromOreDict("plateWroughtIron", 1);
+			//Add Recipe
+			RecipeUtils.addShapedGregtechRecipe(
+					plateWrought, CI.electricPump_LV, plateWrought,
+					plateWrought, ItemUtils.getItemStackOfAmountFromOreDict("pipeLargeClay", 1), plateWrought,
+					plateWrought, CI.machineCasing_ULV, plateWrought,
+					GregtechItemList.SimpleDustWasher.get(1));	
 
 		}
 

@@ -68,7 +68,7 @@ public class Machine_WorkbenchAdvanced extends BlockContainer
 	public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player, final int side, final float lx, final float ly, final float lz)
 	{
 
-		final ItemStack heldItem = PlayerUtils.getItemStackInPlayersHand(player);
+		/*final ItemStack heldItem = PlayerUtils.getItemStackInPlayersHand(player);
 		if (world.isRemote) {
 			return true;
 		}
@@ -81,15 +81,15 @@ public class Machine_WorkbenchAdvanced extends BlockContainer
 			else if (heldItem.getItem() instanceof IToolWrench){
 				holdingWrench = true;
 			}
-			/*else if (heldItem.getItem() instanceof ITool){
+			else if (heldItem.getItem() instanceof ITool){
 				holdingWrench = true;
-			}*/
-			/*else if (heldItem.getItem() instanceof GT_MetaGenerated_Tool){
+			}
+			else if (heldItem.getItem() instanceof GT_MetaGenerated_Tool){
 				GT_MetaGenerated_Tool testTool = (GT_MetaGenerated_Tool) heldItem.getItem();
 				if (testTool.canWrench(player, x, y, z)){
 					holdingWrench = true;
 				}
-			}*/
+			}
 			else {
 				holdingWrench = false;
 			}
@@ -104,7 +104,7 @@ public class Machine_WorkbenchAdvanced extends BlockContainer
 				return true;
 			}
 			Utils.LOG_INFO("Holding a Wrench, doing wrench things instead.");
-		}
+		}*/
 		return false;
 	}
 

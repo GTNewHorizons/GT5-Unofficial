@@ -262,11 +262,11 @@ public class GregtechConduits {
 		}
 		
 		//Check all pipes are not null
-		Utils.LOG_INFO("Generated pipeTiny from "+ materialName +"? "+ ((ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Tiny"+output, 1) != null) ? true : false));
-		Utils.LOG_INFO("Generated pipeSmall from "+ materialName +"? "+ ((ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Small"+output, 1) != null) ? true : false));
-		Utils.LOG_INFO("Generated pipeNormal from "+ materialName +"? "+ ((ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Medium"+output, 1) != null) ? true : false));
-		Utils.LOG_INFO("Generated pipeLarge from "+ materialName +"? "+ ((ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Large"+output, 1) != null) ? true : false));
-		Utils.LOG_INFO("Generated pipeHuge from "+ materialName +"? "+ ((ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1) != null) ? true : false));
+		Utils.LOG_WARNING("Generated pipeTiny from "+ materialName +"? "+ ((ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Tiny"+output, 1) != null) ? true : false));
+		Utils.LOG_WARNING("Generated pipeSmall from "+ materialName +"? "+ ((ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Small"+output, 1) != null) ? true : false));
+		Utils.LOG_WARNING("Generated pipeNormal from "+ materialName +"? "+ ((ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Medium"+output, 1) != null) ? true : false));
+		Utils.LOG_WARNING("Generated pipeLarge from "+ materialName +"? "+ ((ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Large"+output, 1) != null) ? true : false));
+		Utils.LOG_WARNING("Generated pipeHuge from "+ materialName +"? "+ ((ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1) != null) ? true : false));
 
 		int eut = 120;
 		int time = 0;

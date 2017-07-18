@@ -17,7 +17,6 @@ public class GregtechSimpleWasher {
 
 	public static void run(){
 
-		
 		//Generate Recipe Map for the Dust Washer.
 		ItemStack dustClean;
 		ItemStack dustDirty;
@@ -38,18 +37,8 @@ public class GregtechSimpleWasher {
 			}			
 		}
 		
-		
 		//Register the Simple Washer Entity.
-		GregtechItemList.SimpleDustWasher.set(new GregtechMetaTileEntity_BasicWasher(767, "simplewasher.01.tier.00", "Simple Washer", 0).getStackForm(1L));
-		
-		ItemStack plateWrought = ItemUtils.getItemStackOfAmountFromOreDict("plateWroughtIron", 1);
-		
-		//Add Recipe
-		RecipeUtils.addShapedGregtechRecipe(
-				plateWrought, CI.electricPump_LV, plateWrought,
-				plateWrought, ItemUtils.getItemStackOfAmountFromOreDict("pipeLargeClay", 1), plateWrought,
-				plateWrought, CI.machineCasing_ULV, plateWrought,
-				GregtechItemList.SimpleDustWasher.get(1));				
+		GregtechItemList.SimpleDustWasher.set(new GregtechMetaTileEntity_BasicWasher(767, "simplewasher.01.tier.00", "Simple Washer", 0).getStackForm(1L));		
 		
 	}
 }
