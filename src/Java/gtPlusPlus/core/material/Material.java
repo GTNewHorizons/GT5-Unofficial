@@ -644,7 +644,8 @@ public class Material {
 
 	public final Fluid generatePlasma(){
 		final Materials isValid = Materials.get(this.getLocalizedName());
-		if ((isValid != Materials._NULL) && (isValid != null) && (isValid != Materials.Clay)){
+		if ((isValid != Materials._NULL) && (isValid != null) && (isValid != Materials.Clay) && (isValid != Materials.Clay)
+				&& (isValid != Materials.Phosphorus) && (isValid != Materials.Steel) && (isValid != Materials.Bronze)){
 			if (isValid.mPlasma != null){
 				Utils.LOG_MACHINE_INFO("Using a pre-defined Plasma from GT.");
 				return isValid.mPlasma;

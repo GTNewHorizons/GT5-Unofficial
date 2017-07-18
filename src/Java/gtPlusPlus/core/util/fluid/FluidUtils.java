@@ -229,7 +229,7 @@ public class FluidUtils {
 	}
 
 	public static Fluid addGTPlasma(final Material aMaterial) {
-		if (aMaterial.getLocalizedName().toLowerCase().contains("clay")){
+		if (aMaterial.getLocalizedName().toLowerCase().contains("clay") || aMaterial.getComposites().size()>1 || aMaterial.getLocalizedName().toLowerCase().contains("wrought")){
 			return null;
 		}
 		Utils.LOG_INFO("Generating a "+aMaterial.getLocalizedName()+" Plasma Cell");

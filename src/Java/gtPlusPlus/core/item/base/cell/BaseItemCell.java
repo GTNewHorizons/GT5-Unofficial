@@ -42,29 +42,6 @@ public class BaseItemCell extends BaseItemComponent{
 		if (renderPass == 0){
 			return Utils.rgbtoHexValue(230, 230, 230);
 		}
-
-
-		/*if (tickValue == 20){
-			if (upwards){
-				fluidBright++;
-			}
-			else {
-				fluidBright--;
-			}
-			if (fluidBright <= 0 || fluidBright >= 20){
-				if (fluidBright <= 0) upwards = true;
-				if (fluidBright >= 20) upwards = false;
-			}
-		}
-
-		if (tickValue > 20){
-			tickValue=0;
-		}
-		else {
-			tickValue++;
-		}
-
-		return Utils.rgbtoHexValue(fluidColour[0]+fluidBright, fluidColour[1]+fluidBright, fluidColour[2]+fluidBright);*/
 		return this.componentColour;
 	}
 
