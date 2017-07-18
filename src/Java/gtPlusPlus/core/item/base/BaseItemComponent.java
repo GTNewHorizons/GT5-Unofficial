@@ -97,6 +97,9 @@ public class BaseItemComponent extends Item{
 		else if (this.componentType == ComponentTypes.INGOT){
 			return "gregtech" + ":" + "materialicons/METALLIC/" + "ingot";
 		}
+		else if (this.componentType == ComponentTypes.HOTINGOT){
+			return "gregtech" + ":" + "materialicons/METALLIC/" + "ingotHot";
+		}
 		return "gregtech" + ":" + "materialicons/METALLIC/" + this.componentType.COMPONENT_NAME.toLowerCase();
 	}
 
@@ -106,7 +109,7 @@ public class BaseItemComponent extends Item{
 		if (this.componentType == ComponentTypes.SMALLGEAR){
 			return "Small " + this.materialName+" Gear";
 		}
-		
+
 		if (this.componentMaterial != null) {
 			return (this.componentMaterial.getLocalizedName()+this.componentType.DISPLAY_NAME);
 		}
@@ -162,7 +165,7 @@ public class BaseItemComponent extends Item{
 			}
 			if (this.componentMaterial != null){
 				if (!this.componentMaterial.vChemicalFormula.equals("??") && !this.componentMaterial.vChemicalFormula.equals("?")) {
-						list.add(Utils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
+					list.add(Utils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
 				}
 
 				if (this.componentMaterial.isRadioactive){
