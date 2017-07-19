@@ -69,10 +69,13 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public ArrayList<GT_MetaTileEntity_Hatch_InputData> eInputData = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_OutputData> eOutputData = new ArrayList<>();
 
-    public final float[] eParamsIn = new float[20];
-    public final float[] eParamsOut = new float[20];
-    public final byte[] eParamsInStatus = new byte[20];
-    public final byte[] eParamsOutStatus = new byte[20];
+    // 0 and 10 are from first parametrizer
+    // 1 and 11 are from second etc...
+
+    public final float[] eParamsIn = new float[20];//float number I from parametrizers
+    public final float[] eParamsOut = new float[20];//float number O to parametrizers
+    public final byte[] eParamsInStatus = new byte[20];//LED status for I
+    public final byte[] eParamsOutStatus = new byte[20];//LED status for O
     public final static byte PARAM_UNUSED = 0, PARAM_OK = 1, PARAM_TOO_LOW = 2, PARAM_LOW = 3, PARAM_TOO_HIGH = 4, PARAM_HIGH = 5, PARAM_WRONG = 6;
 
     //TO ENABLE this change value in <init> to false and/or other than 0, can also be added in recipe check or whatever
@@ -169,6 +172,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         super.registerIcons(aBlockIconRegister);
     }
 
+    @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
             return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset + 4], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};

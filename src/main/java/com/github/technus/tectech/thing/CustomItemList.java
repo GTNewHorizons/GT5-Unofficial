@@ -1,5 +1,6 @@
 package com.github.technus.tectech.thing;
 
+import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_microwave;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
@@ -33,7 +34,7 @@ public enum CustomItemList implements IItemContainer {
     debugBlock,
     Machine_Multi_EssentiaToEM, Machine_Multi_EMToEssentia,
     Machine_Multi_MatterToEM, Machine_Multi_EMToMatter, Machine_Multi_EMjunction,
-    Machine_Multi_Transformer, Machine_Multi_Computer, Machine_Multi_Infuser, Machine_Multi_Switch,
+    Machine_Multi_Transformer, Machine_Multi_Computer, Machine_Multi_Microwave, Machine_Multi_Infuser, Machine_Multi_Switch,
     Machine_Multi_BHG, Machine_Multi_Annihilation, Machine_Multi_Decay,
     Machine_Multi_EMmachine, Machine_Multi_Stabilizer, Machine_Multi_Collider, Machine_Multi_Wormhole, Machine_Multi_EMCrafter, Machine_Multi_Scanner, Machine_Multi_Research;
 
