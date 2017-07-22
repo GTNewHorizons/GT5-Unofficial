@@ -1,6 +1,5 @@
 package com.github.technus.tectech.thing;
 
-import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_microwave;
 import gregtech.api.interfaces.IItemContainer;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;

@@ -1,8 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.thing.block.QuantumGlassBlock;
-import gregtech.GT_Mod;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -20,17 +18,13 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
-import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
-import static gregtech.api.GregTech_API.sBlockCasings1;
 import static gregtech.api.GregTech_API.sBlockCasings4;
 
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class GT_MetaTileEntity_EM_microwave extends GT_MetaTileEntity_MultiblockBase_EM {
+public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_MultiblockBase_EM {
     private int powerSetting = 1000;
     private int timerSetting = 0;
     private int timerValue = 0,timerValueBackup=0;
@@ -53,16 +47,16 @@ public class GT_MetaTileEntity_EM_microwave extends GT_MetaTileEntity_Multiblock
     private static final byte[] blockMetaFallback = new byte[]{1};
     //endregion
 
-    public GT_MetaTileEntity_EM_microwave(int aID, String aName, String aNameRegional) {
+    public GT_MetaTileEntity_TM_microwave(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
 
-    public GT_MetaTileEntity_EM_microwave(String aName) {
+    public GT_MetaTileEntity_TM_microwave(String aName) {
         super(aName);
     }
 
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_EM_microwave(this.mName);
+        return new GT_MetaTileEntity_TM_microwave(this.mName);
     }
 
     @Override
