@@ -27,7 +27,7 @@ public class GT_Block_CasingsTT extends GT_Block_Casings_Abstract {
 
     public GT_Block_CasingsTT() {
         super(GT_Item_CasingsTT.class, "gt.blockcasingsTT", GT_Material_Casings.INSTANCE);
-        for (byte i = 0; i < 16; i = (byte) (i + 1)) {
+        for (byte i = 0; i < 15; i = (byte) (i + 1)) {
             Textures.BlockIcons.CASING_BLOCKS[(i + 96)] = new GT_CopiedBlockTexture(this, 6, i);
             /*IMPORTANT for block recoloring**/
         }
@@ -52,7 +52,7 @@ public class GT_Block_CasingsTT extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Ultimate Advanced Molecular Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Ultimate Containment Field Generator");
 
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Debug Sides");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Debug Sides");//NOT REGISTER!
 
 
         CustomItemList.eM_Power.set(new ItemStack(this, 1, 0));
