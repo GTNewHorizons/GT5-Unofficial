@@ -1,0 +1,7 @@
+{
+  "microwave_ding": {
+    "category": "block",
+    "subtitle": "tectech.subtitle.microwave_ding",
+    "sounds": [{"name": "microwave_ding","stream": false}]
+  }
+}

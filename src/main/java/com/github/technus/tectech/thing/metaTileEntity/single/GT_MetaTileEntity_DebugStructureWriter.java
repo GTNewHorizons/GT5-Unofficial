@@ -19,7 +19,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
 import static com.github.technus.tectech.Util.StructureWriter;
-import static com.github.technus.tectech.Util.getUniqueIdentifier;
 
 /**
  * Created by Tec on 23.03.2017.

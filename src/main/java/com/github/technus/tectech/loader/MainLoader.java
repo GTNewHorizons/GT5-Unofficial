@@ -1,6 +1,7 @@
 package com.github.technus.tectech.loader;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.magicAddon.EssentiaCompat;
 import com.github.technus.tectech.magicAddon.EssentiaCompatEnabled;
 import com.github.technus.tectech.magicAddon.definitions.AspectDefinitionCompat;
@@ -14,9 +15,13 @@ import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
+import net.minecraft.client.audio.SoundManager;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.sound.SoundEvent;
 
 import java.util.List;
 
@@ -26,9 +31,10 @@ import static com.github.technus.tectech.magicAddon.EssentiaCompat.essentiaConta
 import static com.github.technus.tectech.magicAddon.definitions.AspectDefinitionCompat.aspectDefinitionCompat;
 
 public final class MainLoader {//TODO add checks for - is mod loaded dreamcraft to enable higher tier machinery. (above UV), or implement a check for GT tier values.
+    public static DamageSource microwaving;
 
     public void load() {
-        ProgressManager.ProgressBar progressBarLoad = ProgressManager.push("TecTech Loader", 4);
+        ProgressManager.ProgressBar progressBarLoad = ProgressManager.push("TecTech Loader", 5);
 
         progressBarLoad.step("Elemental Things");
         new ElementalLoader().run();
@@ -49,6 +55,12 @@ public final class MainLoader {//TODO add checks for - is mod loaded dreamcraft 
         progressBarLoad.step("Machine Things");
         new MachineLoader().run();
         TecTech.Logger.info("Machine Init Done");
+
+        progressBarLoad.step("Add damage types");
+        microwaving=new DamageSource("microwaving");
+        microwaving.setDamageAllowedInCreativeMode();
+        microwaving.setDamageBypassesArmor();
+        TecTech.Logger.info("Damage types addition Done");
 
         ProgressManager.pop(progressBarLoad);
     }
