@@ -28,17 +28,9 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
     public DetravMetaGeneratedTool01() {
         super("detrav.metatool.01");
         INSTANCE = this;
-        //addTool(0, "Prospector's Pick", "", new DetravToolProPick(), new Object[]{DetravToolDictNames.craftingToolProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)});
-        //addTool(2, "Portable Anvil", "", new DetravToolPortableAnvil(), new Object[] {DetravToolDictNames.craftingToolPortableAnvil}, new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM,10));
-        addTool(4, "Smart plunger 1 bucket", "", new DetravToolSmartPlunger(),new Object[] {DetravToolDictNames.craftingToolSmartPlunger},new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L));
-        addTool(6, "Smart plunger 16 buckets", "", new DetravToolSmartPlunger16(),new Object[] {DetravToolDictNames.craftingToolSmartPlunger},new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L));
-        addTool(8, "Smart plunger 64 buckets", "", new DetravToolSmartPlunger64(),new Object[] {DetravToolDictNames.craftingToolSmartPlunger},new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 8L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 5L));
-        addTool(10, "Smart Tree Tap","Changes resin tap",new DetravToolSmartTreeTap(),new Object[] {DetravToolDictNames.craftingToolSmartTreeTap}, new TC_Aspects.TC_AspectStack(TC_Aspects.ARBOR, 5L) );
         addTool(100, "Electric Prospector's Scanner (IV)", "", new DetravToolLVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
         addTool(102, "Electric Prospector's Scanner (LuV)", "", new DetravToolMVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
         addTool(104, "Electric Prospector's Scanner (ZPM)", "", new DetravToolHVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
-        addTool(106, "Portable Battery Charger", "", new DetravToolPortableCharger(), new Object[]{DetravToolDictNames.craftingToolPortableCharger, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.AURAM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
-        addTool(108, "Circuit Confugurator", "", new DetravToolCircuitConfigurator(), new Object[]{DetravToolDictNames.craftingToolCictuitConfigurator, new TC_Aspects.TC_AspectStack(TC_Aspects.COGNITIO,10L) });
 
         setCreativeTab(DetravScannerMod.TAB_DETRAV);
     }
@@ -50,7 +42,8 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
         long tMaxDamage = getToolMaxDamage(aStack);
         Materials tMaterial = getPrimaryMaterial(aStack);
         IToolStats tStats = getToolStats(aStack);
-        int tOffset = aList.size(); //getElectricStats(aStack) != null ? 2 : 1;
+        int tOffset = aList.size(); 
+		//getElectricStats(aStack) != null ? 2 : 1;
         if (tStats != null) {
             String name = aStack.getUnlocalizedName();
             String num = name.substring("gt.detrav.metatool.01.".length());
@@ -285,36 +278,14 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
     public void getDetravSubItems(Item item, CreativeTabs detravCreativeTab, List list) {
 
         ItemStack dStack;
-
-        dStack = getToolWithStatsPlus(106, 1, Materials.Tin, Materials.StainlessSteel, new long[]{4 * 100000L, 32L, 1L, -3L}, 1);
-        setCharge(dStack,4 * 100000L);
+		//Electric Scanners TODO
+        dStack = getToolWithStats(100, 1, Materials.Chrome, Materials.TungstenSteel, new long[]{1600000L, 8192L, 3L, -1L});
+        setCharge(dStack,1600000L);
         list.add(dStack);
-        dStack = getToolWithStatsPlus(106, 1, Materials.Tin, Materials.StainlessSteel, new long[]{4 * 75000L, 32L, 1L, -3L}, 1);
-        setCharge(dStack,4 * 75000L);
+        dStack = getToolWithStats(102, 1, Materials.Iridium, Materials.TungstenSteel, new long[]{1600000L, 32768L, 3L, -1L});
+        setCharge(dStack,1600000L);
         list.add(dStack);
-        dStack = getToolWithStatsPlus(106, 1, Materials.Tin, Materials.StainlessSteel, new long[]{4 * 50000L, 32L, 1L, -3L}, 1);
-        setCharge(dStack,4 * 50000L);
-        list.add(dStack);
-        dStack = getToolWithStatsPlus(106, 1, Materials.AnnealedCopper, Materials.Titanium, new long[]{4 * 400000L, 128L, 2L, -3L}, 1);
-        setCharge(dStack,4 * 400000L);
-        list.add(dStack);
-        dStack = getToolWithStatsPlus(106, 1, Materials.AnnealedCopper, Materials.Titanium, new long[]{4 * 300000L, 128L, 2L, -3L}, 1);
-        setCharge(dStack,4 * 300000L);
-        list.add(dStack);
-        dStack = getToolWithStatsPlus(106, 1, Materials.AnnealedCopper, Materials.Titanium, new long[]{4 * 200000L, 128L, 2L, -3L}, 1);
-        setCharge(dStack,4 * 200000L);
-        list.add(dStack);
-        dStack = getToolWithStatsPlus(106, 1, Materials.Silver, Materials.TungstenSteel, new long[]{4 * 1600000L, 512L, 3L, -3L}, 1);
-        setCharge(dStack,4 * 1600000L);
-        list.add(dStack);
-        dStack = getToolWithStatsPlus(106, 1, Materials.Silver, Materials.TungstenSteel, new long[]{4 * 1200000L, 512L, 3L, -3L}, 1);
-        setCharge(dStack,4 * 1200000L);
-        list.add(dStack);
-        dStack = getToolWithStatsPlus(106, 1, Materials.Silver, Materials.TungstenSteel, new long[]{4 * 800000L, 512L, 3L, -3L}, 1);
-        setCharge(dStack,4 * 800000L);
-        list.add(dStack);
-
-        dStack = getToolWithStats(104, 1, Materials.Neutronium, Materials.TungstenSteel, new long[]{1600000L, 512L, 3L, -1L});
+        dStack = getToolWithStats(104, 1, Materials.Neutronium, Materials.TungstenSteel, new long[]{1600000L, 131072L, 3L, -1L});
         setCharge(dStack,1600000L);
         list.add(dStack);
 

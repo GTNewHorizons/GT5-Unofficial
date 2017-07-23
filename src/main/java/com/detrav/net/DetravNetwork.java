@@ -34,7 +34,6 @@ public class DetravNetwork extends MessageToMessageCodec<FMLProxyPacket, DetravP
         this.mSubChannels = new DetravPacket[]
                 {
                         new DetravProPickPacket00(),
-                        new DetravPortableChargerPacket01(),
                 };
     }
 

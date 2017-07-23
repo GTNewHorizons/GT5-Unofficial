@@ -13,14 +13,8 @@ import net.minecraft.util.ResourceLocation;
 public class Textures01 {
     public static final IIconContainer[] mTextures = new IIconContainer[]
             {
-                    new Textures.ItemIcons.CustomIcon("gt.detrav.metaitem.01/PRO_PICK_HEAD"),
                     new Textures.ItemIcons.CustomIcon("gt.detrav.metatool.01/ELECTRIC_LV_PRO_PICK_HEAD"),
                     new Textures.ItemIcons.CustomIcon("gt.detrav.metatool.01/ELECTRIC_MV_PRO_PICK_HEAD"),
                     new Textures.ItemIcons.CustomIcon("gt.detrav.metatool.01/ELECTRIC_HV_PRO_PICK_HEAD"),
-                    new Textures.ItemIcons.CustomIcon("gt.detrav.metatool.01/PORTABE_CHARGER"),
-                    new Textures.ItemIcons.CustomIcon("gt.detrav.metatool.01/PORTABE_CHARGER_BORDER"),
-                    new Textures.ItemIcons.CustomIcon("gt.detrav.metatool.01/ANVIL_TOOL"),
-                    new Textures.ItemIcons.CustomIcon("gt.detrav.metatool.01/TOOL_TREE_TAP"),
-                    new Textures.ItemIcons.CustomIcon("gt.detrav.metatool.01/CONFIGURATOR")
             };
 }
