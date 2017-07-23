@@ -1,10 +1,8 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStack;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackMap;
-import com.github.technus.tectech.elementalMatter.interfaces.iHasElementalDefinition;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.iConstructible;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -13,14 +11,10 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energ
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.fluids.FluidTankInfo;
 
 import static com.github.technus.tectech.Util.StructureBuilder;
-import static com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition.refMass;
-import static com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition.refUnstableMass;
 import static com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition.stableRawLifeTime;
 import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
-import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
 
 /**
@@ -99,8 +93,8 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
         m1 = input.getMass()/input.amount;
         cElementalInstanceStackMap decayed=input.decayCompute(input.getDefinition().getDecayArray(),1,0,0);
         m2 = decayed.getMass()/input.amount;
-        TecTech.Logger.info("I " + input.toString());
-        TecTech.Logger.info("O " + decayed.toString());
+        //TecTech.Logger.info("I " + input.toString());
+        //TecTech.Logger.info("O " + decayed.toString());
         return true;
     }
 
