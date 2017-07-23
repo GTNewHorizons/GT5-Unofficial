@@ -28,9 +28,9 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
     public DetravMetaGeneratedTool01() {
         super("detrav.metatool.01");
         INSTANCE = this;
-        addTool(100, "Electric Prospector's Scanner (IV)", "", new DetravToolLVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
-        addTool(102, "Electric Prospector's Scanner (LuV)", "", new DetravToolMVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
-        addTool(104, "Electric Prospector's Scanner (ZPM)", "", new DetravToolHVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
+        addTool(100, "Electric Prospector's Scanner (LuV)", "", new DetravToolLVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
+        addTool(102, "Electric Prospector's Scanner (ZPM)", "", new DetravToolMVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
+        addTool(104, "Electric Prospector's Scanner (UV)", "", new DetravToolHVElectricProPick(), new Object[]{DetravToolDictNames.craftingToolElectricProPick, new TC_Aspects.TC_AspectStack(TC_Aspects.INSTRUMENTUM, 2L), new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 4L)}, new TC_Aspects.TC_AspectStack(TC_Aspects.ELECTRUM, 4L));
 
         setCreativeTab(DetravScannerMod.TAB_DETRAV);
     }
@@ -279,14 +279,14 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
 
         ItemStack dStack;
 		//Electric Scanners TODO
-        dStack = getToolWithStats(100, 1, Materials.Chrome, Materials.TungstenSteel, new long[]{25600000L, 8192L, 5L, -1L});
-        setCharge(dStack,25600000L);
-        list.add(dStack);
-        dStack = getToolWithStats(102, 1, Materials.Iridium, Materials.TungstenSteel, new long[]{102400000L, 32768L, 6L, -1L});
+        dStack = getToolWithStats(100, 1, Materials.Iridium, Materials.TungstenSteel, new long[]{102400000L, 32768L, 6L, -1L});
         setCharge(dStack,102400000L);
         list.add(dStack);
-        dStack = getToolWithStats(104, 1, Materials.Neutronium, Materials.TungstenSteel, new long[]{409600000L, 131072L, 7L, -1L});
+        dStack = getToolWithStats(102, 1, Materials.Neutronium, Materials.TungstenSteel, new long[]{409600000L, 131072L, 7L, -1L});
         setCharge(dStack,409600000L);
+        list.add(dStack);
+        dStack = getToolWithStats(104, 1, Materials.Osmium, Materials.TungstenSteel, new long[]{1638400000L, 524288L, 8L, -1L});
+        setCharge(dStack,1638400000L);
         list.add(dStack);
 
     }
