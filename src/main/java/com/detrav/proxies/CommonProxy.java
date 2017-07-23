@@ -2,7 +2,6 @@ package com.detrav.proxies;
 
 import com.detrav.DetravScannerMod;
 
-import com.detrav.enums.DetravItemList;
 import com.detrav.events.DetravLoginEventHandler;
 import com.detrav.gui.DetravGuiProPick;
 import com.detrav.items.DetravMetaGeneratedTool01;

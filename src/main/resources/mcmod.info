@@ -1,14 +1,14 @@
 [
 {
   "modid": "detravscannermod",
-  "name": "Detrav Scanner Mod",
+  "name": "GT Scanner Mod",
   "description": "To locate ores deep underground.",
-  "version": "0.73",
+  "version": "1.0",
   "mcversion": "1.7.10",
-  "url": "https://github.com/Ethryan/DetravScannerMod",
+  "url": "https://github.com/Ethryan/GTScannerMod",
   "updateUrl": "",
-  "authorList": ["Detrav, Ethryan"],
-  "credits": "From Detrav ^_^",
+  "authorList": ["Ethryan"],
+  "credits": "Detrav",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []

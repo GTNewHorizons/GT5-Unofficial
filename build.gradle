@@ -28,7 +28,7 @@ file "build.properties" withReader {
 
 version = "${config.detravscanner.version}"
 group= "com.detrav.detravscannermod" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "detravscannermod"
+archivesBaseName = "GT Scanner Mod"
 
 minecraft {
     version = "${config.minecraft.version}-${config.forge.version}"

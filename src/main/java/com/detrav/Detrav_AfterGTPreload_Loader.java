@@ -1,6 +1,5 @@
 package com.detrav;
 
-import com.detrav.enums.DetravItemList;
 import com.detrav.items.DetravMetaGeneratedTool01;
 import com.detrav.items.processing.*;
 import cpw.mods.fml.common.registry.GameRegistry;
