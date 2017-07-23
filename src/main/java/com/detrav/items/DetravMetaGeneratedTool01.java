@@ -279,13 +279,13 @@ public class DetravMetaGeneratedTool01 extends GT_MetaGenerated_Tool {
 
         ItemStack dStack;
 		//Electric Scanners TODO
-        dStack = getToolWithStats(100, 1, Materials.Chrome, Materials.TungstenSteel, new long[]{25600000L, 8192L, 3L, -1L});
+        dStack = getToolWithStats(100, 1, Materials.Chrome, Materials.TungstenSteel, new long[]{25600000L, 8192L, 5L, -1L});
         setCharge(dStack,25600000L);
         list.add(dStack);
-        dStack = getToolWithStats(102, 1, Materials.Iridium, Materials.TungstenSteel, new long[]{102400000L, 32768L, 3L, -1L});
+        dStack = getToolWithStats(102, 1, Materials.Iridium, Materials.TungstenSteel, new long[]{102400000L, 32768L, 6L, -1L});
         setCharge(dStack,102400000L);
         list.add(dStack);
-        dStack = getToolWithStats(104, 1, Materials.Neutronium, Materials.TungstenSteel, new long[]{409600000L, 131072L, 3L, -1L});
+        dStack = getToolWithStats(104, 1, Materials.Neutronium, Materials.TungstenSteel, new long[]{409600000L, 131072L, 7L, -1L});
         setCharge(dStack,409600000L);
         list.add(dStack);
 
