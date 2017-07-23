@@ -135,7 +135,6 @@ public class DetravProPickPacket00 extends DetravPacket {
                         for (short meta : map[i][j].values()) {
                             String name;
                             short[] rgba;
-                            //Пока только по одному буду
                             Materials tMaterial = null;
                             try {
                                 tMaterial = GregTech_API.sGeneratedMaterials[meta % 1000];

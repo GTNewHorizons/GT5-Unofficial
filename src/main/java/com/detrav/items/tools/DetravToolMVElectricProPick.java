@@ -16,6 +16,6 @@ public class DetravToolMVElectricProPick extends DetravToolLVElectricProPick {
     }
 
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return Textures01.mTextures[2];
+        return Textures01.mTextures[1];
     }
 }

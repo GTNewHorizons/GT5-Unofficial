@@ -42,7 +42,6 @@ public class BehaviourDetravToolElectricProPick extends BehaviourDetravToolProPi
 
         if (!aWorld.isRemote) {
             int data = DetravMetaGeneratedTool01.INSTANCE.getToolGTDetravData(aStack).intValue();
-            //Проверяем если нажат шифт
             if (aPlayer.isSneaking()) {
                 data++;
                 if (data > 3) data = 0;

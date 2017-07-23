@@ -159,7 +159,7 @@ public class DetravToolLVElectricProPick implements IToolStats {
     }
 
     public IIconContainer getIcon(boolean aIsToolHead, ItemStack aStack) {
-        return Textures01.mTextures[1];
+        return Textures01.mTextures[0];
     }
 
     public short[] getRGBa(boolean aIsToolHead, ItemStack aStack) {
