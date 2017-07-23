@@ -52,7 +52,7 @@ public class GT_Block_CasingsTT extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Ultimate Advanced Molecular Casing");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Ultimate Containment Field Generator");
 
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Debug Sides");//NOT REGISTER!
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Debug Sides");//NOT REGISTER AS TEXTURE FOR HATCHES!
 
 
         CustomItemList.eM_Power.set(new ItemStack(this, 1, 0));
