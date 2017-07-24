@@ -118,7 +118,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
         IGregTechTileEntity mte=getBaseMetaTileEntity();
         int xDirShift = ForgeDirection.getOrientation(mte.getBackFacing()).offsetX*2;
         int zDirShift = ForgeDirection.getOrientation(mte.getBackFacing()).offsetZ*2;
-        int toMapTop=256-getBaseMetaTileEntity().getYCoord();
+        int toMapTop=(256-mte.getYCoord())/3;
         float xPos=mte.getXCoord()+0.5f;
         float yPos=mte.getYCoord()+0.5f;
         float zPos=mte.getZCoord()+0.5f;
@@ -127,7 +127,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
         AxisAlignedBB aabb=AxisAlignedBB.getBoundingBox(xPos-1.5+xDirShift,yPos-.5,zPos-1.5+zDirShift,xPos+1.5+xDirShift,yPos+2.5,zPos+1.5+zDirShift);
         allAABB:
-        for(int i=0;i<=(toMapTop/3);i++) {
+        for(int i=0;i<=toMapTop;i++) {
             for (Object entity : mte.getWorld().getEntitiesWithinAABBExcludingEntity(null, aabb)) {
                 float damagingFactor=powerSetting >> (9+i);
                 if(damagingFactor<=0) break allAABB;
@@ -135,7 +135,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
                     if(tickedStuff.add((Entity)entity)) {
                         if (i == 0 && entity instanceof EntityItem) {
                             GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMicrowaveRecipes.findRecipe(
-                                    getBaseMetaTileEntity(), null, true, 128, null, null, new ItemStack[]{((EntityItem) entity).getEntityItem()});
+                                    mte, null, true, 128, null, null, new ItemStack[]{((EntityItem) entity).getEntityItem()});
                             if (tRecipe == null || tRecipe.mInputs[0].stackSize != 1) {
                                 itemsToOutput.add(((EntityItem) entity).getEntityItem());
                             } else {
@@ -155,12 +155,12 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
             aabb.offset(0,3,0);
             aabb.minX-=.5f;
             aabb.maxX+=.5f;
-            aabb.minY-=.5f;
-            aabb.maxY+=.5f;
+            aabb.minZ-=.5f;
+            aabb.maxZ+=.5f;
         }
         mOutputItems=itemsToOutput.toArray(new ItemStack[0]);
         if(timerValue<=0 || timerValueBackup<=0) {
-            getBaseMetaTileEntity().getWorld().playSoundEffect(xPos,yPos,zPos, Reference.MODID+":microwave_ding", 1, 1);
+            mte.getWorld().playSoundEffect(xPos,yPos,zPos, Reference.MODID+":microwave_ding", 1, 1);
             stopMachine();
         }
     }
