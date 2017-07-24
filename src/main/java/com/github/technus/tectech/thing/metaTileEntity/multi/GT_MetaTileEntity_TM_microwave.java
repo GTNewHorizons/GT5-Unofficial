@@ -34,6 +34,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     private int powerSetting = 1000;
     private int timerSetting = 0;
     private int timerValue = 0;
+    private boolean hasBeenPausedThiscycle=false;
 
     //region Structure
     //use multi A energy inputs, use less power the longer it runs
@@ -100,6 +101,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     @Override
     public boolean EM_checkRecipe(ItemStack itemStack) {
+        hasBeenPausedThiscycle=false;
         if(powerSetting<=300 || eParamsInStatus[0] == PARAM_TOO_HIGH || timerSetting<=0 || timerSetting>3000) return false;
         if (timerValue <= 0) {
             timerValue=timerSetting;
@@ -113,6 +115,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     @Override
     public void EM_outputFunction() {
+        if(hasBeenPausedThiscycle) return;//skip timer and actions if paused
         timerValue--;
         IGregTechTileEntity mte=getBaseMetaTileEntity();
         int xDirShift = ForgeDirection.getOrientation(mte.getBackFacing()).offsetX*2;
@@ -186,13 +189,12 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
         timerSetting = (int)eParamsIn[10];
 
         eParamsOut[0] = timerValue;
+    }
 
-        if (eSafeVoid) {
-            eSafeVoid=false;
-            int timerValueBackup=timerValue;
-            stopMachine();
-            timerValue=timerValueBackup;
-        }
+    @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        if(eSafeVoid) hasBeenPausedThiscycle=true;
+        return hasBeenPausedThiscycle || super.onRunningTick(aStack);//consume eu and other resources if not paused
     }
 
     @Override
