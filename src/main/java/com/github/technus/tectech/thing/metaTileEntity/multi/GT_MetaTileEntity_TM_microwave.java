@@ -33,7 +33,7 @@ import static gregtech.api.GregTech_API.sBlockCasings4;
 public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_MultiblockBase_EM  implements iConstructible {
     private int powerSetting = 1000;
     private int timerSetting = 0;
-    private int timerValue = 0,timerValueBackup=0;
+    private int timerValue = 0;
 
     //region Structure
     //use multi A energy inputs, use less power the longer it runs
@@ -102,7 +102,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     public boolean EM_checkRecipe(ItemStack itemStack) {
         if(powerSetting<=300 || eParamsInStatus[0] == PARAM_TOO_HIGH || timerSetting<=0 || timerSetting>3000) return false;
         if (timerValue <= 0) {
-            timerValueBackup=timerValue=timerSetting;
+            timerValue=timerSetting;
         }
         mEUt = -(powerSetting >> 1);
         eAmpereFlow = 1;
@@ -114,7 +114,6 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     @Override
     public void EM_outputFunction() {
         timerValue--;
-        timerValueBackup--;
         IGregTechTileEntity mte=getBaseMetaTileEntity();
         int xDirShift = ForgeDirection.getOrientation(mte.getBackFacing()).offsetX*2;
         int zDirShift = ForgeDirection.getOrientation(mte.getBackFacing()).offsetZ*2;
@@ -159,7 +158,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
             aabb.maxZ+=.5f;
         }
         mOutputItems=itemsToOutput.toArray(new ItemStack[0]);
-        if(timerValue<=0 || timerValueBackup<=0) {
+        if(timerValue<=0) {
             mte.getWorld().playSoundEffect(xPos,yPos,zPos, Reference.MODID+":microwave_ding", 1, 1);
             stopMachine();
         }
@@ -190,6 +189,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
         if (eSafeVoid) {
             eSafeVoid=false;
+            int timerValueBackup=timerValue;
             stopMachine();
             timerValue=timerValueBackup;
         }
@@ -201,22 +201,24 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
+    protected void EM_workJustGotDisabled() {
+        timerValue=0;
+    }
+
+    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("eTimerVal", timerValue);
-        aNBT.setInteger("eTimerValBU", timerValueBackup);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
         timerValue = aNBT.getInteger("eTimerVal");
-        timerValueBackup = aNBT.getInteger("eTimerValBU");
     }
 
     @Override
     public void doExplosion(long aExplosionPower) {
-        super.doExplosion(aExplosionPower);
         explodeMultiblock();
-    }
+    }//Redirecting to explodemultiblock
 }

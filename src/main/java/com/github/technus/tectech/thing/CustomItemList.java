@@ -71,7 +71,7 @@ public enum CustomItemList implements IItemContainer {
     public Block getBlock() {
         if (mHasNotBeenSet)
             throw new IllegalAccessError("The Enum '" + name() + "' has not been set to an Item at this time!");
-        return GT_Utility.getBlockFromStack(getItem());
+        return GT_Utility.getBlockFromStack(new ItemStack(getItem()));
     }
 
     @Override

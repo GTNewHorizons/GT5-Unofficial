@@ -88,6 +88,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public long eRequiredData = 0;
     protected long eAvailableData = 0;
 
+    private boolean previousTickValueForWorkEnabled=false;
+
     //init param states in constructor, or implement it in checkrecipe/outputfunction
 
     //METHODS TO OVERRIDE
@@ -121,7 +123,13 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }//For that extra hatches explosions, and maybe some MOORE EXPLOSIONS
 
     protected void EM_stopMachine() {
-    }//On machine stop
+    }//On machine stop - now called when softhammered to offline state! - it does not cause a full stop like power failure
+
+    @Deprecated
+    protected void EM_workJustGotEnabled(){}//usually check recipe is more useful, therefore this one is deprecated
+    protected void EM_workJustGotDisabled(){}
+    //callback on enable/disable work, they don't care if the multiblock is complete or not
+    //(you can check that with looking at mMachine and other variables)
 
     //machine structure check
     protected boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
@@ -143,6 +151,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         return mUpdate <= -1000;//set to false to disable cyclic update
         //default is once per 50s; mUpdate is decremented every tick
     }
+
+    protected void EM_onFirstTick(){} // callback on first tick
 
 
     //RATHER LEAVE ALONE Section
@@ -362,9 +372,22 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     @Override
+    public final void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        super.onFirstTick(aBaseMetaTileEntity);
+        previousTickValueForWorkEnabled=getBaseMetaTileEntity().isAllowedToWork();//Assign new value
+        EM_onFirstTick();
+    }
+
+    @Override
     public final void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if (mEfficiency < 0) mEfficiency = 0;
+
+            if(getBaseMetaTileEntity().hasWorkJustBeenEnabled()) EM_workJustGotEnabled();
+            if(previousTickValueForWorkEnabled && !getBaseMetaTileEntity().isAllowedToWork())
+                EM_workJustGotDisabled();
+            previousTickValueForWorkEnabled=getBaseMetaTileEntity().isAllowedToWork();//Assign new value
+
             if (--mUpdate == 0 || --mStartUpCheck == 0 || cyclicUpdate() || aBaseMetaTileEntity.hasWorkJustBeenEnabled()) {
                 mInputHatches.clear();
                 mInputBusses.clear();
@@ -637,7 +660,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     @Deprecated
-    @Override
     public final int getAmountOfOutputs() {
         throw new NoSuchMethodError("Deprecated Do not use");
     }
