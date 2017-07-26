@@ -12,11 +12,15 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.registry.GameData;
+import cpw.mods.fml.common.registry.GameRegistry;
 import eu.usrv.yamcore.auxiliary.IngameErrorLog;
 import eu.usrv.yamcore.auxiliary.LogHelper;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_Recipe;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -25,7 +29,6 @@ import java.util.HashMap;
 @Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION, dependencies = "required-after:Forge@[10.13.4.1614,);"
         + "required-after:YAMCore@[0.5.70,);" + "required-after:gregtech;" + "after:CoFHCore;" + "after:Thaumcraft;")
 public class TecTech {
-
     @SidedProxy(clientSide = Reference.CLIENTSIDE, serverSide = Reference.SERVERSIDE)
     public static CommonProxy proxy;
 
@@ -91,6 +94,7 @@ public class TecTech {
         if (!oneTimeFix) {
             oneTimeFix = true;
             if (ModConfig.NERF_FUSION) FixBrokenFusionRecipes();
+            fixBlocks();
         }
     }
 
@@ -120,6 +124,52 @@ public class TecTech {
                     TecTech.Logger.info("Nerfing Recipe " + r.mFluidOutputs[0].getUnlocalizedName());
                 r.mFluidOutputs[0] = new FluidStack(f, r.mFluidInputs[0].amount);
             }
+        }
+    }
+
+    private void fixBlocks(){
+        String modId;
+        for(Block block : GameData.getBlockRegistry().typeSafeIterable()){
+            modId=GameRegistry.findUniqueIdentifierFor(block).modId;
+            if(
+                    modId.equals("minecraft") ||
+                    modId.equals("gregtech") ||
+                    modId.equals(Reference.MODID) ||
+                    modId.equals("IC2") ||
+                    modId.equals("EnderIO") ||
+                    modId.equals("Thaumcraft") ||
+                    modId.equals("lootgames") ||
+                    modId.equals("extracells") ||
+                    modId.equals("ExtraUtilities") ||
+                    modId.equals("Avaritia") ||
+                    modId.equals("avaritiaddons") ||
+                    modId.equals("EnderStorage") ||
+                    modId.equals("enhancedportals") ||
+                    modId.equals("DraconicEvolution") ||
+                    modId.equals("dreamcraft") ||
+                    modId.equals("IC2NuclearControl") ||
+                    modId.equals("IronChest") ||
+                    modId.equals("opensecurity") ||
+                    modId.equals("openmodularturrets") ||
+                    modId.equals("Railcraft") ||
+                    modId.equals("RIO") ||
+                    modId.equals("SGCraft") ||
+                    modId.equals("appliedenergistics2") ||
+                    modId.equals("thaumicenergistics") ||
+                    modId.equals("TwilightForest") ||
+                    modId.equals("GalacticraftCore") ||
+                    modId.equals("GalacticraftMars") ||
+                    modId.equals("GalaxySpace") ||
+                    modId.equals("witchery") ||
+                    modId.equals("miscutils") ||
+                    modId.equals("GT++DarkWorld") ||
+                    modId.equals("utilityworlds")
+
+            ) continue;
+            else if(modId.equals("TConstruct")) {
+                block.slipperiness=1;
+            }
+            block.setResistance(6);
         }
     }
 }

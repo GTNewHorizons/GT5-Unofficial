@@ -1,7 +1,6 @@
 package com.github.technus.tectech.loader;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.magicAddon.EssentiaCompat;
 import com.github.technus.tectech.magicAddon.EssentiaCompatEnabled;
 import com.github.technus.tectech.magicAddon.definitions.AspectDefinitionCompat;
@@ -15,13 +14,10 @@ import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
-import net.minecraft.client.audio.SoundManager;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.event.sound.SoundEvent;
 
 import java.util.List;
 
