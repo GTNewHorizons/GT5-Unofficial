@@ -137,7 +137,7 @@ public class TecTech {
                     modId.equals(Reference.MODID) ||
                     modId.equals("IC2") ||
                     modId.equals("EnderIO") ||
-                    modId.equals("Thaumcraft") ||
+                    //modId.equals("Thaumcraft") || // too op, nerf
                     modId.equals("lootgames") ||
                     modId.equals("extracells") ||
                     modId.equals("ExtraUtilities") ||
@@ -164,7 +164,6 @@ public class TecTech {
                     modId.equals("miscutils") ||
                     modId.equals("GT++DarkWorld") ||
                     modId.equals("utilityworlds")
-
             ) continue;
             else if(modId.equals("TConstruct")) {
                 block.slipperiness=1;
