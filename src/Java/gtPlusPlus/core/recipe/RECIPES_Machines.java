@@ -727,10 +727,17 @@ public class RECIPES_Machines {
 			
 
 			ItemStack plateWrought = ItemUtils.getItemStackOfAmountFromOreDict("plateWroughtIron", 1);
+			ItemStack washerPipe;
+			if (CORE.configSwitches.enableCustom_Pipes){
+				washerPipe = ItemUtils.getItemStackOfAmountFromOreDict("pipeLargeClay", 1);
+			}
+			else {
+				washerPipe = ItemUtils.getItemStackOfAmountFromOreDict("pipeLargeCopper", 1);				
+			}
 			//Add Recipe
 			RecipeUtils.addShapedGregtechRecipe(
 					plateWrought, CI.electricPump_LV, plateWrought,
-					plateWrought, ItemUtils.getItemStackOfAmountFromOreDict("pipeLargeClay", 1), plateWrought,
+					plateWrought, washerPipe, plateWrought,
 					plateWrought, CI.machineCasing_ULV, plateWrought,
 					GregtechItemList.SimpleDustWasher.get(1));	
 
