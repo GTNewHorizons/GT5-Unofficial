@@ -180,7 +180,19 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Old_Circuit_Board_Basic, Old_Circuit_Board_Advanced, Old_Circuit_Board_Elite,
 	Old_Circuit_Parts_Crystal_Chip_Elite, Old_Circuit_Parts_Crystal_Chip_Master, Old_Circuit_Parts_Advanced,
 	Old_Circuit_Parts_Wiring_Basic, Old_Circuit_Parts_Wiring_Advanced, Old_Circuit_Parts_Wiring_Elite,
-	Old_Empty_Board_Basic, Old_Empty_Board_Elite, TESTITEM
+	Old_Empty_Board_Basic, Old_Empty_Board_Elite, 
+	
+	
+	//Debug
+	TESTITEM, 
+	
+	//Tick Accelerators from GTNH	
+	AcceleratorLV, AcceleratorMV, AcceleratorHV, AcceleratorEV,
+	AcceleratorIV, AcceleratorLuV, AcceleratorZPM, AcceleratorUV
+	
+	
+	
+	
 	;
 
 	public static final GregtechItemList[]

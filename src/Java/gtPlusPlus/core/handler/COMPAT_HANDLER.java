@@ -71,6 +71,9 @@ public class COMPAT_HANDLER {
 			GregtechIndustrialTreeFarm.run();
 			GregtechIndustrialSifter.run();
 			GregtechSimpleWasher.run();
+			
+			//New Horizons Content
+			NewHorizonsAccelerator.run();
 		}
 
 	}

@@ -37,6 +37,7 @@ import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_WorldAccelerator;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.common.config.Configuration;
 
@@ -111,6 +112,8 @@ public class GTplusplus implements ActionListener {
 				true, "Diesel egines with different internals, they consume less fuel overall.");
 		CORE.configSwitches.enableMachine_GeothermalEngines = config.getBoolean("enableMachineGeothermalEngines",
 				"gregtech", true, "These may be overpowered, Consult a local geologist.");
+		CORE.configSwitches.enableMachine_WorldAccelerators = config.getBoolean("enableMachineWorldAccelerators",
+				"gregtech", true, "These allow boosting Block/TileEntity Tick times [OP].");
 
 		// Multi machines
 		CORE.configSwitches.enableMultiblock_AlloyBlastSmelter = config.getBoolean("enableMultiblockAlloyBlastSmelter",
@@ -158,6 +161,13 @@ public class GTplusplus implements ActionListener {
 		//Biomes
 		CORE.DARKBIOME_ID = config.getInt("darkbiome_ID", "worldgen", 238, 1, 254, "The biome within the Dark Dimension.");
 
+		//Blacklisted Accelerator TileEntities
+		GT_MetaTileEntity_WorldAccelerator.BlacklistedTileEntiyClassNames = config.getStringList(
+				"BlacklistedTileEntiyClassNames", "gregtech",
+				GT_MetaTileEntity_WorldAccelerator.BlacklistedTileEntiyClassNames,
+				"The Canonical Class-Names of TileEntities that should be ignored by the WorldAccelerator");
+		
+		
 		config.save();
 	}
 
@@ -169,8 +179,7 @@ public class GTplusplus implements ActionListener {
 		Utils.LOG_WARNING("Processing texture: " + TexturesGtTools.SKOOKUM_CHOOCHER.getTextureFile().getResourcePath());
 
 		// Blocks
-		Utils.LOG_WARNING(
-				"Processing texture: " + TexturesGtBlock.Casing_Machine_Dimensional.getTextureFile().getResourcePath());
+		Utils.LOG_WARNING("Processing texture: " + TexturesGtBlock.Casing_Machine_Dimensional.getTextureFile().getResourcePath());
 	}
 
 	// Pre-Init
