@@ -136,7 +136,7 @@ public class TecTech {
                     modId.equals("gregtech") ||
                     modId.equals(Reference.MODID) ||
                     modId.equals("IC2") ||
-                    modId.equals("EnderIO") ||
+                    //modId.equals("EnderIO") || // nerf
                     //modId.equals("Thaumcraft") || // too op, nerf
                     modId.equals("lootgames") ||
                     modId.equals("extracells") ||

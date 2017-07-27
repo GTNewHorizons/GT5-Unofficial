@@ -1,0 +1,60 @@
+package com.github.technus.tectech.thing.block;
+
+import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.auxiliary.Reference;
+import com.github.technus.tectech.thing.tileEntity.TileTurretHeadEM;
+import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import openmodularturrets.tileentity.turretbase.TurretBase;
+
+/**
+ * Created by Bass on 27/07/2017.
+ */
+public class TurretHeadEM extends Block implements ITileEntityProvider {
+    public TurretHeadEM(){
+        super(Material.glass);
+        this.setCreativeTab(TecTech.mainTab);
+        this.setBlockUnbreakable();
+        this.setResistance(6000000.0F);
+        this.setStepSound(Block.soundTypeMetal);
+        this.setBlockBounds(0.2F, 0.0F, 0.2F, 0.8F, 1F, 0.8F);
+        this.setBlockName("turretHeadEM");
+        this.setBlockTextureName(Reference.MODID+":turretHeadEM");
+    }
+
+    @Override
+    public int getRenderType() {
+        return -1;
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
+
+    @Override
+    public boolean canPlaceBlockAt(World worldIn, int x, int y, int z) {
+        return worldIn.getTileEntity(x + 1, y, z) instanceof TurretBase ||
+                worldIn.getTileEntity(x - 1, y, z) instanceof TurretBase ||
+                worldIn.getTileEntity(x,y + 1, z) instanceof TurretBase ||
+                worldIn.getTileEntity(x,y - 1, z) instanceof TurretBase ||
+                worldIn.getTileEntity(x,y, z + 1) instanceof TurretBase ||
+                worldIn.getTileEntity(x,y, z - 1) instanceof TurretBase;
+    }
+
+    @Override
+    public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
+        return false;
+    }
+
+    @Override
+    public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
+        return new TileTurretHeadEM();
+    }
+}
