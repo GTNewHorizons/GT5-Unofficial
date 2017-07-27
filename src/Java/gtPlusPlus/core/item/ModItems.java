@@ -204,6 +204,8 @@ public final class ModItems {
 
 	public static Item itemSmallWroughtIronGear;
 	public static Item itemPlateLithium;
+	public static BaseItemPlate itemPlateEuropium;
+	public static BaseItemPlateDouble itemDoublePlateEuropium;
 
 	public static itemBoilerChassis itemBoilerChassis;
 	public static itemDehydratorCoilWire itemDehydratorCoilWire;
@@ -212,6 +214,8 @@ public final class ModItems {
 	public static Item itemAirFilter;
 
 	public static Item itemCoalCoke;
+
+
 
 
 	public static final void init(){
@@ -544,13 +548,19 @@ public final class ModItems {
 		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateLithium", 1) == null){
 			itemPlateLithium = new BaseItemPlate(MaterialUtils.generateMaterialFromGtENUM(Materials.Lithium));
 		}
-		
+
+		//A plate of Europium.
+		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateEuropium", 1) == null && CORE.configSwitches.enableCustom_Pipes){
+			itemPlateEuropium = new BaseItemPlate(MaterialUtils.generateMaterialFromGtENUM(Materials.Europium));
+			itemDoublePlateEuropium = new BaseItemPlateDouble(MaterialUtils.generateMaterialFromGtENUM(Materials.Europium));
+		}
+
 		itemBoilerChassis = new itemBoilerChassis();
 		itemDehydratorCoilWire = new itemDehydratorCoilWire();
 		itemDehydratorCoil = new itemDehydratorCoil();
-		
+
 		itemAirFilter = new ItemAirFilter();
-		
+
 		//Chemistry
 		CoalTar.run();
 
