@@ -552,6 +552,8 @@ public final class ModItems {
 		//A plate of Europium.
 		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateEuropium", 1) == null && CORE.configSwitches.enableCustom_Pipes){
 			itemPlateEuropium = new BaseItemPlate(MaterialUtils.generateMaterialFromGtENUM(Materials.Europium));
+		}
+		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateDoubleEuropium", 1) == null && CORE.configSwitches.enableCustom_Pipes){
 			itemDoublePlateEuropium = new BaseItemPlateDouble(MaterialUtils.generateMaterialFromGtENUM(Materials.Europium));
 		}
 
