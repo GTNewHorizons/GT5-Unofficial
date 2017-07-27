@@ -27,7 +27,7 @@ public class RecipeGen_Fluids  implements Runnable{
 		//Melting Shapes to fluid
 		if (!material.getFluid(1).getUnlocalizedName().toLowerCase().contains("plasma")){
 			//Dust
-			if (GT_Values.RA.addFluidExtractionRecipe(material.getDust(1), //Input
+			/*if (GT_Values.RA.addFluidExtractionRecipe(material.getDust(1), //Input
 					null, //Input 2
 					material.getFluid(144), //Fluid Output
 					0, //Chance
@@ -38,7 +38,7 @@ public class RecipeGen_Fluids  implements Runnable{
 			}
 			else {
 				Utils.LOG_WARNING("144l fluid extractor from 1 Dust Recipe: "+material.getLocalizedName()+" - Failed");
-			}
+			}*/
 
 			//Ingot
 			if (GT_Values.RA.addFluidExtractionRecipe(material.getIngot(1), //Input
