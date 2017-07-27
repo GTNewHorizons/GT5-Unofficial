@@ -78,7 +78,7 @@ public class BlockEventHandler {
 		//Spawn Dull Shards (Can spawn from Tree Logs, Grass or Stone. Stone going to be the most common source.)
 		if (((event.block == Blocks.stone) || (event.block == Blocks.sandstone) || (event.block == Blocks.log) || (event.block == Blocks.log2) || (event.block == Blocks.grass))
 				&& !LoadedMods.Thaumcraft && (chanceToDropDrainedShard != 0)) {
-			//small chance for one to spawn per stone mined. 1 per 3 stacks~ //TODO MAKE A CONFIG OPTION
+			//small chance for one to spawn per stone mined. 1 per 3 stacks~
 			if (MathUtils.randInt(1, chanceToDropDrainedShard) == 1){
 				//Let's sort out a lucky charm for the player.
 				final int FancyChance = MathUtils.randInt(1, 4);
@@ -126,6 +126,13 @@ public class BlockEventHandler {
 								event.drops.add(this.fluoriteOre.copy());
 							}
 						}
+					}
+				}
+			}
+			else {
+				if (event.block.getUnlocalizedName().toLowerCase().contains("limestone")){
+					if (MathUtils.randInt(1, chanceToDropFluoriteOre) == 1){
+						event.drops.add(this.fluoriteOre.copy());
 					}
 				}
 			}

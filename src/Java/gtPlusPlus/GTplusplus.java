@@ -2,6 +2,7 @@ package gtPlusPlus;
 
 import static gtPlusPlus.core.lib.CORE.DEBUG;
 import static gtPlusPlus.core.lib.CORE.configSwitches.*;
+import static gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GT_MetaTileEntity_WorldAccelerator.BlacklistedTileEntiyClassNames;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -162,9 +163,10 @@ public class GTplusplus implements ActionListener {
 		CORE.DARKBIOME_ID = config.getInt("darkbiome_ID", "worldgen", 238, 1, 254, "The biome within the Dark Dimension.");
 
 		//Blacklisted Accelerator TileEntities
-		GT_MetaTileEntity_WorldAccelerator.BlacklistedTileEntiyClassNames = config.getStringList(
+		BlacklistedTileEntiyClassNames = new String[] { "com.rwtema.extrautils.tileentity.enderquarry.TileEntityEnderQuarry" };
+		BlacklistedTileEntiyClassNames = config.getStringList(
 				"BlacklistedTileEntiyClassNames", "gregtech",
-				GT_MetaTileEntity_WorldAccelerator.BlacklistedTileEntiyClassNames,
+				BlacklistedTileEntiyClassNames,
 				"The Canonical Class-Names of TileEntities that should be ignored by the WorldAccelerator");
 		
 		
