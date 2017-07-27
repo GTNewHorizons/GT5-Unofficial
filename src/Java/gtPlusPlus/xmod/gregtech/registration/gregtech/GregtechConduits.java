@@ -71,10 +71,10 @@ public class GregtechConduits {
 		generateNonGTFluidPipes(GT_Materials.Tantalloy60, ALLOY.TANTALLOY_60, BasePipeID+5, 5000, 4250, true);
 		generateNonGTFluidPipes(GT_Materials.Tantalloy61, ALLOY.TANTALLOY_61, BasePipeID+10, 6000, 5800, true);
 		if (LoadedMods.Thaumcraft){
-			generateNonGTFluidPipes(GT_Materials.Void, null, BasePipeID+15, 250, 25000, true);
+			generateNonGTFluidPipes(GT_Materials.Void, null, BasePipeID+15, 800, 25000, true);
 		}
 		generateGTFluidPipes(Materials.Europium, BasePipeID+20, 12000, 7500, true);
-		generateNonGTFluidPipes(GT_Materials.Potin, ALLOY.POTIN, BasePipeID+25, 375, 2000, true);
+		generateNonGTFluidPipes(GT_Materials.Potin, ALLOY.POTIN, BasePipeID+25, 480, 2000, true);
 		generateNonGTFluidPipes(GT_Materials.MaragingSteel300, ALLOY.MARAGING300, BasePipeID+30, 7000, 2500, true);
 		generateNonGTFluidPipes(GT_Materials.MaragingSteel350, ALLOY.MARAGING350, BasePipeID+35, 8000, 2500, true);
 		generateNonGTFluidPipes(GT_Materials.Inconel690, ALLOY.INCONEL_690, BasePipeID+40, 7500, 4800, true);
@@ -83,7 +83,7 @@ public class GregtechConduits {
 
 		generateGTFluidPipes(Materials.Tungsten, BasePipeID+55, 4320, 7200, true);
 		generateGTFluidPipes(Materials.DarkSteel, BasePipeID+60, 2320, 2750, true);
-		generateGTFluidPipes(Materials.Clay, BasePipeID+65, 75, 500, false);
+		generateGTFluidPipes(Materials.Clay, BasePipeID+65, 100, 500, false);
 		generateGTFluidPipes(Materials.Lead, BasePipeID+70, 720, 1200, true);
 	}
 
@@ -130,6 +130,7 @@ public class GregtechConduits {
 		//makeWires(T, ID, bEC ? 2L : 2L, bEC ? 4L : 4L, 2L, gregtech.api.enums.GT_Values.V[V], true, false);
 	}
 
+	@SuppressWarnings("deprecation")
 	private static void makeWires(final Materials aMaterial, final int aStartID, final long aLossInsulated, final long aLoss, final long aAmperage, final long aVoltage, final boolean aInsulatable, final boolean aAutoInsulated)
 	{
 		Utils.LOG_WARNING("Gregtech5u Content | Registered "+aMaterial.name() +" as a new material for Wire & Cable.");
@@ -207,7 +208,7 @@ public class GregtechConduits {
 	private static void generateGTFluidPipes(final Materials material, final int startID, final int transferRatePerSec, final int heatResistance, final boolean isGasProof){
 		final int transferRatePerTick = transferRatePerSec/20;
 		final long mass = material.getMass();
-		final long voltage = material.mMeltingPoint >= 2800 ? 60 : 15;
+		final long voltage = material.mMeltingPoint >= 2800 ? 64 : 16;
 		GT_OreDictUnificator.registerOre(OrePrefixes.pipeTiny.get(material), new GT_MetaPipeEntity_Fluid(startID, "GT_Pipe_"+material.mDefaultLocalName+"_Tiny", "Tiny "+material.mDefaultLocalName+" Fluid Pipe", 0.25F, material, transferRatePerTick*2, heatResistance, isGasProof).getStackForm(1L));
 		GT_OreDictUnificator.registerOre(OrePrefixes.pipeSmall.get(material), new GT_MetaPipeEntity_Fluid(startID+1, "GT_Pipe_"+material.mDefaultLocalName+"_Small", "Small "+material.mDefaultLocalName+" Fluid Pipe", 0.375F, material, transferRatePerTick*4, heatResistance, isGasProof).getStackForm(1L));
 		GT_OreDictUnificator.registerOre(OrePrefixes.pipeMedium.get(material), new GT_MetaPipeEntity_Fluid(startID+2, "GT_Pipe_"+material.mDefaultLocalName+"", ""+material.mDefaultLocalName+" Fluid Pipe", 0.5F, material, transferRatePerTick*6, heatResistance, isGasProof).getStackForm(1L));
@@ -231,13 +232,15 @@ public class GregtechConduits {
 			mass = ELEMENT.getInstance().IRON.getMass();
 			voltage = 8;
 		}
+		
+		int tVoltageMultiplier = (material.mBlastFurnaceTemp >= 2800) ? 64 : 16;
 
 		GT_OreDictUnificator.registerOre(OrePrefixes.pipeTiny.get(material), new GregtechMetaPipeEntityFluid(startID, "GT_Pipe_"+material.mDefaultLocalName+"_Tiny", "Tiny "+material.mDefaultLocalName+" Fluid Pipe", 0.25F, material, transferRatePerTick*2, heatResistance, isGasProof).getStackForm(1L));
 		GT_OreDictUnificator.registerOre(OrePrefixes.pipeSmall.get(material), new GregtechMetaPipeEntityFluid(startID+1, "GT_Pipe_"+material.mDefaultLocalName+"_Small", "Small "+material.mDefaultLocalName+" Fluid Pipe", 0.375F, material, transferRatePerTick*4, heatResistance, isGasProof).getStackForm(1L));
 		GT_OreDictUnificator.registerOre(OrePrefixes.pipeMedium.get(material), new GregtechMetaPipeEntityFluid(startID+2, "GT_Pipe_"+material.mDefaultLocalName+"", ""+material.mDefaultLocalName+" Fluid Pipe", 0.5F, material, transferRatePerTick*6, heatResistance, isGasProof).getStackForm(1L));
 		GT_OreDictUnificator.registerOre(OrePrefixes.pipeLarge.get(material), new GregtechMetaPipeEntityFluid(startID+3, "GT_Pipe_"+material.mDefaultLocalName+"_Large", "Large "+material.mDefaultLocalName+" Fluid Pipe", 0.75F, material, transferRatePerTick*8, heatResistance, isGasProof).getStackForm(1L));
 		GT_OreDictUnificator.registerOre(OrePrefixes.pipeHuge.get(material), new GregtechMetaPipeEntityFluid(startID+4, "GT_Pipe_"+material.mDefaultLocalName+"_Huge", "Huge "+material.mDefaultLocalName+" Fluid Pipe", 1.0F, material, transferRatePerTick*10, heatResistance, isGasProof).getStackForm(1L));
-		generatePipeRecipes(material.mDefaultLocalName, mass, voltage);
+		generatePipeRecipes(material.mDefaultLocalName, mass, tVoltageMultiplier);
 
 	}
 
@@ -269,11 +272,10 @@ public class GregtechConduits {
 		Utils.LOG_WARNING("Generated pipeHuge from "+ materialName +"? "+ ((ItemUtils.getItemStackOfAmountFromOreDict("pipe"+"Huge"+output, 1) != null) ? true : false));
 
 		int eut = 120;
-		int time = 0;
-		final int bonusMulti = 5*20;
+		int time;
 
 		time = (int) Math.max(Mass * 8L, 1);
-		eut = (int) (10 * vMulti);
+		eut = (int) (8 * vMulti);
 
 
 		//Add the Three Shaped Recipes First
