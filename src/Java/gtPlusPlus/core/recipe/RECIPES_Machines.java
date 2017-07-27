@@ -517,7 +517,7 @@ public class RECIPES_Machines {
 
 			//Tiered Tanks
 			if (CORE.configSwitches.enableMachine_FluidTanks){
-				Utils.LOG_INFO("Is New Horizons Loaded? "+CORE.GTNH);
+				Utils.LOG_WARNING("Is New Horizons Loaded? "+CORE.GTNH);
 				if (!CORE.GTNH){
 					RecipeUtils.addShapedGregtechRecipe(
 					CI.component_Plate[1], CI.component_Plate[1], CI.component_Plate[1],
@@ -583,29 +583,29 @@ public class RECIPES_Machines {
 					pipeTier4 = "pipeMediumSteel";
 					CI.component_Plate[5] = "plateSteel";
 					CI.component_Plate[6] = "plateRedstone";
-					CI.component_Plate[7] = "plateRedstoneAlloy";
+					CI.component_Plate[7] = "plateAluminium";
 					CI.component_Plate[8] = "plateDarkSteel";
 					ItemStack waterBucket = ItemUtils.getSimpleStack(Items.water_bucket);
 
 					RecipeUtils.addShapedGregtechRecipe(
-					CI.component_Plate[1], CI.component_Plate[4], CI.component_Plate[1],
-					CI.component_Plate[1], pipeTier1, CI.component_Plate[1],
-					CI.component_Plate[1], waterBucket, CI.component_Plate[1],
+					CI.component_Plate[1], CI.component_Plate[5], CI.component_Plate[1],
+					CI.component_Plate[4], pipeTier1, CI.component_Plate[4],
+					CI.component_Plate[4], waterBucket, CI.component_Plate[4],
 					GregtechItemList.GT_FluidTank_ULV.get(1));
 					RecipeUtils.addShapedGregtechRecipe(
-					CI.component_Plate[2], CI.component_Plate[5], CI.component_Plate[2],
-					CI.component_Plate[2], pipeTier2, CI.component_Plate[2],
-					CI.component_Plate[2], CI.electricPump_LV, CI.component_Plate[2],
+					CI.component_Plate[5], CI.component_Plate[4], CI.component_Plate[5],
+					CI.component_Plate[3], pipeTier2, CI.component_Plate[3],
+					CI.component_Plate[3], CI.electricPump_LV, CI.component_Plate[3],
 					GregtechItemList.GT_FluidTank_LV.get(1));
 					RecipeUtils.addShapedGregtechRecipe(
-					CI.component_Plate[6], CI.component_Plate[7], CI.component_Plate[6],
-					CI.component_Plate[3], pipeTier3, CI.component_Plate[3],
-					CI.component_Plate[6], CI.electricPump_LV, CI.component_Plate[6],
+					CI.component_Plate[8], CI.component_Plate[3], CI.component_Plate[8],
+					CI.component_Plate[5], pipeTier3, CI.component_Plate[5],
+					CI.component_Plate[5], CI.electricPump_LV, CI.component_Plate[5],
 					GregtechItemList.GT_FluidTank_MV.get(1));
 					RecipeUtils.addShapedGregtechRecipe(
-					CI.circuitTier1, CI.component_Plate[8], CI.circuitTier1,
-					CI.component_Plate[4], pipeTier4, CI.component_Plate[4],
-					CI.circuitTier1, CI.electricPump_LV, CI.circuitTier1,
+					CI.circuitTier1, CI.component_Plate[7], CI.circuitTier1,
+					CI.component_Plate[8], pipeTier4, CI.component_Plate[8],
+					CI.circuitTier1, CI.electricPump_MV, CI.circuitTier1,
 					GregtechItemList.GT_FluidTank_HV.get(1));
 				}
 			}
