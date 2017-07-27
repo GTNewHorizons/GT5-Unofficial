@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech;
 import gregtech.api.util.GT_Config;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.recipe.RECIPES_LaserEngraver;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.common.blocks.fluid.GregtechFluidHandler;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
@@ -42,7 +43,8 @@ public class HANDLER_GT {
 		}
 
 		//Generates recipes for all gregtech smelting and alloy smelting combinations.
-		RecipeGen_BlastSmelterGT.generateRecipes();
+		//RecipeGen_BlastSmelterGT.generateRecipes();
+		new RecipeGen_BlastSmelterGT_Ex();
 
 	}
 
