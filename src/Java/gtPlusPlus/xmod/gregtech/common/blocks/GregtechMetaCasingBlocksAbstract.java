@@ -95,7 +95,7 @@ extends GT_Block_Casings_Abstract {
 	
 	@Override
 	public int getRenderBlockPass() {
-		return 1;
+		return 0;
 	}
 
 	@Override
