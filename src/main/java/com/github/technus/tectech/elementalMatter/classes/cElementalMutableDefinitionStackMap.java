@@ -13,7 +13,6 @@ import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveD
  * Created by danie_000 on 22.01.2017.
  */
 public final class cElementalMutableDefinitionStackMap extends cElementalStackMap {//Transient class for construction of definitions/recipes
-
     //Constructors + Clone, all make a whole new OBJ.
     public cElementalMutableDefinitionStackMap() {
         map = new TreeMap<>();

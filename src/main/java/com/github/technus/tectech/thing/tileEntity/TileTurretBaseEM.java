@@ -5,17 +5,15 @@ import com.github.technus.tectech.elementalMatter.interfaces.iElementalInstanceC
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.MetaTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import openmodularturrets.tileentity.turretbase.TurretBase;
-
-import java.util.ArrayList;
+import openmodularturrets.tileentity.turretbase.TurretBaseTierFiveTileEntity;
 
 /**
  * Created by Bass on 27/07/2017.
  */
-public class TileTurretBaseEM extends TurretBase implements iElementalInstanceContainer {
+
+public class TileTurretBaseEM extends TurretBaseTierFiveTileEntity implements iElementalInstanceContainer {
     public TileTurretBaseEM(int MaxEnergyStorage, int MaxIO) {
         super(MaxEnergyStorage, MaxIO);
     }
@@ -36,10 +34,9 @@ public class TileTurretBaseEM extends TurretBase implements iElementalInstanceCo
         return "turretBaseEM";
     }
 
-
     @Override
     public int getBaseTier() {
-        return 6;
+        return 5;
     }
 
     @Override

@@ -2,8 +2,12 @@ package com.github.technus.tectech.proxy;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.block.QuantumGlassRender;
+import com.github.technus.tectech.thing.block.TurretHeadRenderEM;
+import com.github.technus.tectech.thing.tileEntity.TileTurretHeadEM;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.Loader;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -14,11 +18,18 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
+import static openmodularturrets.client.render.renderers.blockitem.TileEntityRenderers.laserTurretRenderer;
+
 public class ClientProxy extends CommonProxy {
     @Override
     public void registerRenderInfo() {
         QuantumGlassRender.renderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(QuantumGlassRender.renderID, new QuantumGlassRender());
+
+        if(Loader.isModLoaded("openmodularturrets")) {
+            TurretHeadRenderEM turretHeadRenderEM=new TurretHeadRenderEM();
+            ClientRegistry.bindTileEntitySpecialRenderer(TileTurretHeadEM.class, turretHeadRenderEM);
+        }
     }
 
     @Override

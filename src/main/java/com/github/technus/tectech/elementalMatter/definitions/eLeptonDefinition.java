@@ -21,7 +21,6 @@ public final class eLeptonDefinition extends cElementalPrimitive {
     public static final cElementalDefinitionStack lepton_e1 = new cElementalDefinitionStack(lepton_e, 1);
     public static final cElementalDefinitionStack lepton_e_1 = new cElementalDefinitionStack(lepton_e_, 1);
 
-
     private eLeptonDefinition(String name, String symbol, int type, float mass, int charge, int color, int ID) {
         super(name, symbol, type, mass, charge, color, ID);
         //this.itemThing=null;

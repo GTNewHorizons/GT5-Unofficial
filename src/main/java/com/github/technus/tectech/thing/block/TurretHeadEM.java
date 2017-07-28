@@ -3,10 +3,10 @@ package com.github.technus.tectech.thing.block;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.thing.tileEntity.TileTurretHeadEM;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
@@ -17,6 +17,8 @@ import openmodularturrets.tileentity.turretbase.TurretBase;
  * Created by Bass on 27/07/2017.
  */
 public class TurretHeadEM extends Block implements ITileEntityProvider {
+    public static TurretHeadEM INSTANCE;
+
     public TurretHeadEM(){
         super(Material.glass);
         this.setCreativeTab(TecTech.mainTab);
@@ -56,5 +58,11 @@ public class TurretHeadEM extends Block implements ITileEntityProvider {
     @Override
     public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_) {
         return new TileTurretHeadEM();
+    }
+
+    public static void run() {
+        INSTANCE = new TurretHeadEM();
+        GameRegistry.registerBlock(INSTANCE, TurretHeadItemEM.class, INSTANCE.getUnlocalizedName());
+        GameRegistry.registerTileEntity(TileTurretHeadEM.class,"TileTurretHeadEM");
     }
 }

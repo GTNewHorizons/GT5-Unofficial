@@ -1,35 +1,24 @@
 package com.github.technus.tectech.thing.tileEntity;
 
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackMap;
-import com.github.technus.tectech.elementalMatter.definitions.eLeptonDefinition;
-import com.github.technus.tectech.thing.block.QuantumGlassBlock;
-import com.github.technus.tectech.thing.block.QuantumGlassItem;
+import com.github.technus.tectech.thing.item.DebugContainer_EM;
 import com.github.technus.tectech.thing.metaTileEntity.entity.projectileEM;
-import gregtech.api.util.GT_Utility;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import openmodularturrets.entity.projectiles.LaserProjectile;
 import openmodularturrets.entity.projectiles.TurretProjectile;
 import openmodularturrets.handler.ConfigHandler;
 import openmodularturrets.tileentity.turrets.TurretHead;
 import openmodularturrets.util.TurretHeadUtil;
 
-import java.lang.reflect.Field;
-
 /**
  * Created by Bass on 27/07/2017.
  */
 public class TileTurretHeadEM extends TurretHead{
-    private cElementalInstanceStackMap consumedEM;
+    private cElementalInstanceStackMap hatchContentPointer;
 
     public TileTurretHeadEM() {
-        try {
-            GT_Utility.getField(this, "turretTier").setInt(this, 6);
-        }catch (IllegalAccessException e){
-            e.printStackTrace();
-        }
     }
 
     public int getTurretRange() {
@@ -48,27 +37,31 @@ public class TileTurretHeadEM extends TurretHead{
         return ConfigHandler.getLaserTurretSettings().getAccuracy() / 10.0D;
     }
 
+    @Override
+    public void updateEntity() {
+        if(!worldObj.isRemote && base instanceof TileTurretBaseEM)
+            hatchContentPointer =((TileTurretBaseEM) base).getContainerHandler();
+        super.updateEntity();
+    }
+
     public boolean requiresAmmo() {
-        return true;
+        return hatchContentPointer == null || !hatchContentPointer.hasStacks();
     }
 
     public boolean requiresSpecificAmmo() {
-        return true;
+        return true;//to enable failure in shooting when there is no EM to use
     }
 
     public Item getAmmo() {
-        //consume em
-        consumedEM=new cElementalInstanceStackMap().putReplace();
-        return QuantumGlassItem.INSTANCE;
+        return DebugContainer_EM.INSTANCE;//Placeholder item that cannot be achieved, yet still usable for debug
     }
 
     public TurretProjectile createProjectile(World world, Entity target, ItemStack ammo) {
-        if(consumedEM!=null && consumedEM.hasStacks()){
-            projectileEM projectile= new projectileEM(world, TurretHeadUtil.getTurretBase(worldObj, xCoord, yCoord, zCoord));
-            consumedEM=null;
+        //if(hatchContentPointer!=null && hatchContentPointer.hasStacks()){
+            projectileEM projectile= new projectileEM(world, TurretHeadUtil.getTurretBase(worldObj, xCoord, yCoord, zCoord), hatchContentPointer);
             return projectile;
-        }
-        return new LaserProjectile(world, TurretHeadUtil.getTurretBase(worldObj, xCoord, yCoord, zCoord));
+        //}
+        //return new LaserProjectile(world, TurretHeadUtil.getTurretBase(worldObj, xCoord, yCoord, zCoord));
     }
 
     public String getLaunchSoundEffect() {
