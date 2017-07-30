@@ -267,6 +267,10 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         return map.get(def);
     }
 
+    public cElementalInstanceStack get(int i){
+        return map.values().toArray(new cElementalInstanceStack[0])[i];
+    }
+
     public String[] getElementalInfo() {
         final String[] info = new String[map.size() * 4];
         int i = 0;

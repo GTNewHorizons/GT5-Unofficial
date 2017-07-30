@@ -1,4 +1,4 @@
-package com.github.technus.tectech.thing.block;
+package openmodularturrets.blocks.turretbases;
 
 import com.github.technus.tectech.CommonValues;
 import net.minecraft.block.Block;

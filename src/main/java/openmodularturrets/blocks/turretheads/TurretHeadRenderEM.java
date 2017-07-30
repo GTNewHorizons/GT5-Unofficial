@@ -1,4 +1,4 @@
-package com.github.technus.tectech.thing.block;
+package openmodularturrets.blocks.turretheads;
 
 import openmodularturrets.client.render.renderers.blockitem.LaserTurretRenderer;
 

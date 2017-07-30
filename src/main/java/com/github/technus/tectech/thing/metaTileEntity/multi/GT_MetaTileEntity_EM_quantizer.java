@@ -20,6 +20,7 @@ import static com.github.technus.tectech.Util.StructureBuilder;
 import static com.github.technus.tectech.Util.isInputEqual;
 import static com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition.refMass;
 import static com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition.refUnstableMass;
+import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
 import static gregtech.api.enums.GT_Values.V;
 

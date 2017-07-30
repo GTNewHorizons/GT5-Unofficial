@@ -2,8 +2,12 @@ package com.github.technus.tectech.proxy;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.block.QuantumGlassRender;
-import com.github.technus.tectech.thing.block.TurretHeadRenderEM;
-import com.github.technus.tectech.thing.tileEntity.TileTurretHeadEM;
+import openmodularturrets.blocks.turretheads.TurretHeadEM;
+import openmodularturrets.blocks.turretheads.TurretHeadItemRenderEM;
+import openmodularturrets.blocks.turretheads.TurretHeadRenderEM;
+import openmodularturrets.entity.projectiles.projectileEM;
+import openmodularturrets.entity.projectiles.projectileRenderEM;
+import openmodularturrets.tileentity.turret.TileTurretHeadEM;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -14,11 +18,11 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.particle.EntityExplodeFX;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.world.World;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
-
-import static openmodularturrets.client.render.renderers.blockitem.TileEntityRenderers.laserTurretRenderer;
 
 public class ClientProxy extends CommonProxy {
     @Override
@@ -29,6 +33,9 @@ public class ClientProxy extends CommonProxy {
         if(Loader.isModLoaded("openmodularturrets")) {
             TurretHeadRenderEM turretHeadRenderEM=new TurretHeadRenderEM();
             ClientRegistry.bindTileEntitySpecialRenderer(TileTurretHeadEM.class, turretHeadRenderEM);
+            MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TurretHeadEM.INSTANCE), new TurretHeadItemRenderEM(turretHeadRenderEM, new TileTurretHeadEM()));
+
+            RenderingRegistry.registerEntityRenderingHandler(projectileEM.class, new projectileRenderEM());
         }
     }
 

@@ -10,7 +10,9 @@ import com.github.technus.tectech.thing.casing.GT_Container_CasingsTT;
 import com.github.technus.tectech.thing.item.DebugBuilder;
 import com.github.technus.tectech.thing.item.DebugContainer_EM;
 import com.github.technus.tectech.thing.machineTT;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ProgressManager;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
@@ -18,6 +20,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import openmodularturrets.entity.projectiles.projectileEM;
 
 import java.util.List;
 
@@ -30,7 +33,7 @@ public final class MainLoader {//TODO add checks for - is mod loaded dreamcraft 
     public static DamageSource microwaving;
 
     public void load() {
-        ProgressManager.ProgressBar progressBarLoad = ProgressManager.push("TecTech Loader", 5);
+        ProgressManager.ProgressBar progressBarLoad = ProgressManager.push("TecTech Loader", 6);
 
         progressBarLoad.step("Elemental Things");
         new ElementalLoader().run();
@@ -43,6 +46,7 @@ public final class MainLoader {//TODO add checks for - is mod loaded dreamcraft 
         } else {
             essentiaContainerCompat = new EssentiaCompat();
         }
+        TecTech.Logger.info("Thaumcraft Compatibility Done");
 
         progressBarLoad.step("Regular Things");
         new ThingsLoader().run();
@@ -51,6 +55,10 @@ public final class MainLoader {//TODO add checks for - is mod loaded dreamcraft 
         progressBarLoad.step("Machine Things");
         new MachineLoader().run();
         TecTech.Logger.info("Machine Init Done");
+
+        progressBarLoad.step("Register entities");
+        new EntityLoader().run();
+        TecTech.Logger.info("Entities registered");
 
         progressBarLoad.step("Add damage types");
         microwaving=new DamageSource("microwaving");

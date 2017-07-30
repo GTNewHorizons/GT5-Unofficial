@@ -40,6 +40,7 @@ import java.util.Map;
 import static com.github.technus.tectech.CommonValues.*;
 import static com.github.technus.tectech.Util.StructureChecker;
 import static com.github.technus.tectech.Util.StructureCheckerAdvanced;
+import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
 
@@ -57,7 +58,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     protected static Textures.BlockIcons.CustomIcon ScreenOFF;
     protected static Textures.BlockIcons.CustomIcon ScreenON;
-    protected final static int textureOffset = 96;
 
     public ArrayList<GT_MetaTileEntity_Hatch_InputElemental> eInputHatches = new ArrayList<>();
     public ArrayList<GT_MetaTileEntity_Hatch_OutputElemental> eOutputHatches = new ArrayList<>();
