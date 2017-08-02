@@ -23,7 +23,7 @@ import static com.github.technus.tectech.auxiliary.Reference.MODID;
 public class DebugBuilder extends Item {
     public static DebugBuilder INSTANCE;
 
-    DebugBuilder() {
+    private DebugBuilder() {
         super();
         //setMaxStackSize(1);
         setUnlocalizedName("em.debugBuilder");

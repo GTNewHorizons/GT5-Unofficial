@@ -4,6 +4,8 @@ import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.thing.machineTT;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Param;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Param;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -42,6 +44,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch imple
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
         ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/PARAM");

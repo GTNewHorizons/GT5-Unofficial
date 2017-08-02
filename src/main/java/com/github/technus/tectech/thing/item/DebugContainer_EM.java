@@ -29,7 +29,7 @@ import static com.github.technus.tectech.auxiliary.Reference.MODID;
 public class DebugContainer_EM extends Item {
     public static DebugContainer_EM INSTANCE;
 
-    DebugContainer_EM() {
+    private DebugContainer_EM() {
         super();
         setMaxStackSize(1);
         setUnlocalizedName("em.debugContainer");

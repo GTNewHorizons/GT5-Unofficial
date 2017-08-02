@@ -2,6 +2,8 @@ package com.github.technus.tectech.thing.metaTileEntity.pipe;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.thing.machineTT;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
@@ -47,6 +49,7 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements iConnec
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         EMpipe = new Textures.BlockIcons.CustomIcon("iconsets/EM_PIPE");
         EMcandy = new Textures.BlockIcons.CustomIcon("iconsets/EM_CANDY");

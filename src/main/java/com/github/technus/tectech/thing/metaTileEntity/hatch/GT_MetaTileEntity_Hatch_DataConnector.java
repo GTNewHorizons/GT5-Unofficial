@@ -4,6 +4,8 @@ import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.dataFramework.quantumDataPacket;
 import com.github.technus.tectech.thing.machineTT;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.iConnectsToDataPipe;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -41,6 +43,7 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector extends GT_MetaTileE
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
         EM_D_ACTIVE = new Textures.BlockIcons.CustomIcon("iconsets/OVERLAY_EM_D_ACTIVE");

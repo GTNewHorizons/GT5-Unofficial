@@ -2,12 +2,6 @@ package com.github.technus.tectech.proxy;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.block.QuantumGlassRender;
-import openmodularturrets.blocks.turretheads.TurretHeadEM;
-import openmodularturrets.blocks.turretheads.TurretHeadItemRenderEM;
-import openmodularturrets.blocks.turretheads.TurretHeadRenderEM;
-import openmodularturrets.entity.projectiles.projectileEM;
-import openmodularturrets.entity.projectiles.projectileRenderEM;
-import openmodularturrets.tileentity.turret.TileTurretHeadEM;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -22,6 +16,12 @@ import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.util.ForgeDirection;
+import openmodularturrets.blocks.turretheads.TurretHeadEM;
+import openmodularturrets.blocks.turretheads.TurretHeadItemRenderEM;
+import openmodularturrets.blocks.turretheads.TurretHeadRenderEM;
+import openmodularturrets.entity.projectiles.projectileEM;
+import openmodularturrets.entity.projectiles.projectileRenderEM;
+import openmodularturrets.tileentity.turret.TileTurretHeadEM;
 import org.lwjgl.opengl.GL11;
 
 public class ClientProxy extends CommonProxy {

@@ -6,6 +6,8 @@ import com.github.technus.tectech.thing.machineTT;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Uncertainty;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Uncertainty;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_UncertaintyAdv;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -40,6 +42,7 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
         ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/UC");

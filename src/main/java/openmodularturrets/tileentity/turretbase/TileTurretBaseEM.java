@@ -6,9 +6,6 @@ import cpw.mods.fml.common.Optional;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import openmodularturrets.tileentity.turretbase.TurretBaseTierFiveTileEntity;
-
-import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 
 /**
  * Created by Bass on 27/07/2017.

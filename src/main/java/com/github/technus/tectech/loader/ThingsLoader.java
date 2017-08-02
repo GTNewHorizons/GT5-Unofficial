@@ -2,14 +2,13 @@ package com.github.technus.tectech.loader;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
-import openmodularturrets.blocks.turretbases.TurretBaseEM;
-import openmodularturrets.blocks.turretheads.TurretHeadEM;
 import com.github.technus.tectech.thing.casing.GT_Block_CasingsTT;
 import com.github.technus.tectech.thing.casing.GT_Container_CasingsTT;
 import com.github.technus.tectech.thing.item.DebugBuilder;
 import com.github.technus.tectech.thing.item.DebugContainer_EM;
 import cpw.mods.fml.common.Loader;
-import openmodularturrets.entity.projectiles.projectileEM;
+import openmodularturrets.blocks.turretbases.TurretBaseEM;
+import openmodularturrets.blocks.turretheads.TurretHeadEM;
 
 /**
  * Created by danie_000 on 16.11.2016.

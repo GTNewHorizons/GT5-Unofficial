@@ -3,6 +3,8 @@ package com.github.technus.tectech.thing.metaTileEntity.pipe;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.thing.machineTT;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.Textures;
@@ -48,6 +50,7 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements iConn
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         EMpipe = new Textures.BlockIcons.CustomIcon("iconsets/EM_DATA");
         EMcandy = new Textures.BlockIcons.CustomIcon("iconsets/EM_BAR");
