@@ -4,4 +4,7 @@ item.em.debugContainer.name=Debug EM Container
 item.em.debugBuilder.name=Debug Builder
 
 death.attack.microwaving=%1$s was dehydrated by radiation.
-death.attack.microwaving.player=%1$s was was dehydrated by radiation while fighting %2$s.
+death.attack.microwaving.player=%1$s was dehydrated by radiation while fighting %2$s.
+
+death.attack.elementalPollution=%1$s was vaping from the wrong hole.
+death.attack.elementalPollution.player=%1$s was vaping from the wrong hole while fighting %2$s.

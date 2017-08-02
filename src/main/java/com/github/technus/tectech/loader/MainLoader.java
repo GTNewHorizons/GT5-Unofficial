@@ -30,7 +30,7 @@ import static com.github.technus.tectech.magicAddon.EssentiaCompat.essentiaConta
 import static com.github.technus.tectech.magicAddon.definitions.AspectDefinitionCompat.aspectDefinitionCompat;
 
 public final class MainLoader {//TODO add checks for - is mod loaded dreamcraft to enable higher tier machinery. (above UV), or implement a check for GT tier values.
-    public static DamageSource microwaving;
+    public static DamageSource microwaving, elementalPollution;
 
     public void load() {
         ProgressManager.ProgressBar progressBarLoad = ProgressManager.push("TecTech Loader", 6);
@@ -64,6 +64,10 @@ public final class MainLoader {//TODO add checks for - is mod loaded dreamcraft 
         microwaving=new DamageSource("microwaving");
         microwaving.setDamageAllowedInCreativeMode();
         microwaving.setDamageBypassesArmor();
+
+        elementalPollution=new DamageSource("elementalPollution");
+        elementalPollution.setDamageAllowedInCreativeMode();
+        elementalPollution.setDamageBypassesArmor();
         TecTech.Logger.info("Damage types addition Done");
 
         ProgressManager.pop(progressBarLoad);

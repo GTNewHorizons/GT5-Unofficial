@@ -10,14 +10,25 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_Recipe;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.EnumSkyBlock;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import static com.github.technus.tectech.CommonValues.disperseAt;
+import static com.github.technus.tectech.loader.MainLoader.elementalPollution;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;
@@ -136,6 +147,7 @@ public class GT_MetaTileEntity_Hatch_MufflerElemental extends GT_MetaTileEntity_
                     aBaseMetaTileEntity.setLightValue((byte) 0);
                     aBaseMetaTileEntity.getWorld().updateLightByType(EnumSkyBlock.Block, aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord());
                 }
+                vapePollution(aBaseMetaTileEntity);
             } else {
                 if (overflowMatter > 0) {
                     aBaseMetaTileEntity.setActive(true);
@@ -148,6 +160,24 @@ public class GT_MetaTileEntity_Hatch_MufflerElemental extends GT_MetaTileEntity_
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
         //DOES NOT CHECK FOR TOO MUCH, it is done only while putting stuff in (OPTIMIZATION!!!)
+    }
+
+    private void vapePollution(IGregTechTileEntity mte){
+        float xPos=mte.getXCoord()+0.5f;
+        float yPos=mte.getYCoord()+0.5f;
+        float zPos=mte.getZCoord()+0.5f;
+
+        int xDirShift = ForgeDirection.getOrientation(mte.getFrontFacing()).offsetX;
+        int yDirShift = ForgeDirection.getOrientation(mte.getFrontFacing()).offsetY;
+        int zDirShift = ForgeDirection.getOrientation(mte.getFrontFacing()).offsetZ;
+
+        AxisAlignedBB aabb=AxisAlignedBB.getBoundingBox(xPos-.5+xDirShift,yPos-.5+yDirShift,zPos-.5+zDirShift,xPos+.5+xDirShift,yPos+1.5+yDirShift,zPos+.5+zDirShift);
+        for (Object entity : mte.getWorld().getEntitiesWithinAABB(EntityLivingBase.class, aabb)) {
+            float damagingFactor = (float)Math.log(overflowDisperse);
+            ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(Potion.confusion.id,1,(int)(damagingFactor*20)));
+            ((EntityLivingBase) entity).addPotionEffect(new PotionEffect(Potion.wither.id,2,(int)(damagingFactor*15)));
+            ((EntityLivingBase) entity).attackEntityFrom(elementalPollution, damagingFactor);
+        }
     }
 
     @Override

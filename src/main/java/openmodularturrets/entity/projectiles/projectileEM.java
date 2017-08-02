@@ -27,10 +27,6 @@ public class projectileEM extends TurretProjectile {
 
     private float massFactor;
 
-    public projectileEM(World par1World) {
-        super(par1World);
-    }
-
     public projectileEM(World par1World, TurretBase turretBase, cElementalInstanceStackMap avalableEM) {
         super(par1World);
         this.turretBase = turretBase;
@@ -116,7 +112,7 @@ public class projectileEM extends TurretProjectile {
     }
 
     public void onEntityUpdate() {
-        if(this.ticksExisted >= 250) {
+        if(this.ticksExisted >= 75) {
             this.setDead();
         }
     }
