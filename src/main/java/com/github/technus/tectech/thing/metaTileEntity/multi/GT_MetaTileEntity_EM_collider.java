@@ -66,7 +66,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     private static final byte[] blockMeta1 = new byte[]{4, 7, 4, 0, 4, 8};
     private static final byte[] blockMeta2 = new byte[]{4, 7, 5, 0, 6, 9};
     private static final String[] addingMethods = new String[]{"addClassicToMachineList", "addElementalInputToMachineList", "addElementalOutputToMachineList", "addElementalMufflerToMachineList"};
-    private static final byte[] casingTextures = new byte[]{textureOffset, textureOffset + 4, textureOffset + 4, textureOffset + 4};
+    private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4, textureOffset + 4, textureOffset + 4};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0, 4, 4, 4};
     //endregion

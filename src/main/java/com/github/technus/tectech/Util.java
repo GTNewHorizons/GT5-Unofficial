@@ -165,7 +165,7 @@ public class Util {
             byte[] blockMeta,//use numbers 0-9 for casing types
             Method adder,
             String[] addingMethods,
-            byte[] casingTextures,
+            short[] casingTextures,
             Block[] blockTypeFallback,//use numbers 0-9 for casing types
             byte[] blockMetaFallback,//use numbers 0-9 for casing types
             int horizontalOffset, int verticalOffset, int depthOffset,

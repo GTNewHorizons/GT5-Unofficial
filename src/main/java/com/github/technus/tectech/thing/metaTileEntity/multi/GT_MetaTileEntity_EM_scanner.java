@@ -36,7 +36,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
             "addElementalMufflerToMachineList",
             "addElementalOutputToMachineList",
             "addElementalInputToMachineList"};
-    private static final byte[] casingTextures = new byte[]{textureOffset, textureOffset + 4, textureOffset + 4, textureOffset + 4};
+    private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4, textureOffset + 4, textureOffset + 4};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0, 4, 4, 4};
     //endregion

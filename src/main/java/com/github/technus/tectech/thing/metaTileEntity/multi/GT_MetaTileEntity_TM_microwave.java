@@ -49,7 +49,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     private static final byte[] blockMeta = new byte[]{1};
 
     private static final String[] addingMethods = new String[]{"addClassicToMachineList"};
-    private static final byte[] casingTextures = new byte[]{49};
+    private static final short[] casingTextures = new short[]{49};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasings4};
     private static final byte[] blockMetaFallback = new byte[]{1};
     //endregion

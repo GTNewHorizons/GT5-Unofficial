@@ -43,7 +43,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMeta = new byte[]{1, 3, 2};
     private static final String[] addingMethods = new String[]{"addClassicToMachineList", "addHolderToMachineList"};
-    private static final byte[] casingTextures = new byte[]{textureOffset + 3, textureOffset + 3};
+    private static final short[] casingTextures = new short[]{textureOffset + 3, textureOffset + 3};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, Blocks.air};
     private static final byte[] blockMetaFallback = new byte[]{3, 0};
     //endregion
@@ -137,6 +137,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Holder) {
             ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
             return eHolders.add((GT_MetaTileEntity_Hatch_Holder) aMetaTileEntity);
         }
         return false;

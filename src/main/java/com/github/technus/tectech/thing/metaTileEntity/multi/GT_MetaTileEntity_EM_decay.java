@@ -37,7 +37,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
     private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT ,sBlockCasingsTT};
     private static final byte[] blockMeta = new byte[]{4, 5, 8, 6};
     private static final String[] addingMethods = new String[]{"addClassicToMachineList", "addElementalToMachineList"};
-    private static final byte[] casingTextures = new byte[]{textureOffset, textureOffset + 4};
+    private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0, 4};
     //endregion

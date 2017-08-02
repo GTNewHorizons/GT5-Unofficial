@@ -34,7 +34,7 @@ public class GT_MetaTileEntity_EM_crafter extends GT_MetaTileEntity_MultiblockBa
     private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT , QuantumGlassBlock.INSTANCE, sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMeta = new byte[]{4, 10, 5, 0, 6, 9};
     private static final String[] addingMethods = new String[]{"addClassicToMachineList", "addElementalToMachineList"};
-    private static final byte[] casingTextures = new byte[]{textureOffset, textureOffset + 4};
+    private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0, 4};
     //endregion

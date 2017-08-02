@@ -57,7 +57,8 @@ public class TileTurretBaseEM extends TurretBaseTierFiveTileEntity {
     }
 
     private cElementalInstanceStackMap getFromHatch(GT_MetaTileEntity_Hatch_InputElemental hatch) {
-        hatch.mMachineBlock = textureOffset + 4;
+        hatch.mMachineBlock = 4;
+        hatch.mTexturePage = 8;
         return hatch.getContainerHandler();
     }
 }

@@ -32,7 +32,7 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMeta = new byte[]{7, 4};
     private static final String[] addingMethods = new String[]{"addClassicToMachineList"};
-    private static final byte[] casingTextures = new byte[]{textureOffset};
+    private static final short[] casingTextures = new short[]{textureOffset};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0};
     //endregion
