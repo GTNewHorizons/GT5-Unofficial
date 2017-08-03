@@ -188,7 +188,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	
 	//Tick Accelerators from GTNH	
 	AcceleratorLV, AcceleratorMV, AcceleratorHV, AcceleratorEV,
-	AcceleratorIV, AcceleratorLuV, AcceleratorZPM, AcceleratorUV
+	AcceleratorIV, AcceleratorLuV, AcceleratorZPM, AcceleratorUV, 
+	
+	//GT RTG
+	Pellet_RTG_PU238, Pellet_RTG_SR90, Pellet_RTG_PO210, Pellet_RTG_AM241
 	
 	
 	

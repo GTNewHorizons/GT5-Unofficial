@@ -2,6 +2,7 @@ package gtPlusPlus.core.material;
 
 import gregtech.api.enums.Materials;
 import gtPlusPlus.core.material.state.MaterialState;
+import gtPlusPlus.core.util.StringUtils;
 import gtPlusPlus.core.util.materials.MaterialUtils;
 
 public final class ELEMENT {
@@ -108,7 +109,7 @@ public final class ELEMENT {
 	public final Material FRANCIUM = new Material("Francium", MaterialState.SOLID, 25600, new short[]{170, 160, 170}, 27, 677, 87, 136, false, "Fr", 1);//Not a GT Inherited Material
 	public final Material RADIUM = new Material("Radium", MaterialState.SOLID, 25600, new short[]{165, 165, 165}, 700, 1737, 88, 138, false, "Ra", 1);//Not a GT Inherited Material
 	public final Material ACTINIUM = new Material("Actinium", MaterialState.SOLID, 25600, new short[]{150, 165, 165}, 1050, 3200, 89, 138, false, "Ac", 1);//Not a GT Inherited Material
-	public final Material THORIUM = new Material("Thorium", MaterialState.SOLID, 51200, Materials.Thorium.mRGBa, Materials.Thorium.mMeltingPoint, Materials.Thorium.mBlastFurnaceTemp, 90, 142, false, MaterialUtils.superscript("Th"), 1);
+	public final Material THORIUM = new Material("Thorium", MaterialState.SOLID, 51200, Materials.Thorium.mRGBa, Materials.Thorium.mMeltingPoint, Materials.Thorium.mBlastFurnaceTemp, 90, 142, false, StringUtils.superscript("Th"), 1);
 	public final Material PROTACTINIUM = new Material("Protactinium", MaterialState.SOLID, 25600, new short[]{190, 150, 170}, 1568, 4027, 91, 140, false, "Pa", 1);//Not a GT Inherited Material
 	public final Material URANIUM238 = MaterialUtils.generateMaterialFromGtENUM(Materials.Uranium);
 	public final Material URANIUM235 = MaterialUtils.generateMaterialFromGtENUM(Materials.Uranium235);

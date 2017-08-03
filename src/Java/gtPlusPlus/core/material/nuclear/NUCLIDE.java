@@ -3,7 +3,7 @@ package gtPlusPlus.core.material.nuclear;
 import gregtech.api.enums.Materials;
 import gtPlusPlus.core.material.*;
 import gtPlusPlus.core.material.state.MaterialState;
-import gtPlusPlus.core.util.materials.MaterialUtils;
+import gtPlusPlus.core.util.StringUtils;
 
 
 public final class NUCLIDE {
@@ -13,11 +13,16 @@ public final class NUCLIDE {
 	public static NUCLIDE getInstance(){return thisClass;}
 
 	//Custom Isotopes
-	public final Material LITHIUM7 = new Material("Lithium 7", MaterialState.LIQUID, Materials.Lithium.mRGBa, Materials.Lithium.mMeltingPoint, Materials.Lithium.mBlastFurnaceTemp, Materials.Lithium.getProtons(), Materials.Lithium.getNeutrons(), Materials.Lithium.mBlastFurnaceRequired, MaterialUtils.superscript("7Li"), 0);//Not a GT Inherited Material
-	public final Material URANIUM232 = new Material("Uranium 232", MaterialState.SOLID, new short[]{88, 220, 103, 0}, 1132, 4131, 92, 140, false, MaterialUtils.superscript("232U"), 4);//Not a GT Inherited Material
-	public final Material URANIUM233 = new Material("Uranium 233", MaterialState.SOLID, new short[]{73, 220, 83, 0}, 1132, 4131, 92, 141, false, MaterialUtils.superscript("233U"), 2);//Not a GT Inherited Material
-	public final Material THORIUM232 = new Material("Thorium 232", MaterialState.SOLID, new short[]{15, 60, 15, 0}, Materials.Thorium.mMeltingPoint, Materials.Thorium.mBlastFurnaceTemp, 90, 142, false, MaterialUtils.superscript("232Th"), 1);//Not a GT Inherited Material
-	public final Material PLUTONIUM238 = new Material("Plutonium-238", MaterialState.SOLID, Materials.Plutonium241.mDurability, Materials.Plutonium241.mRGBa, Materials.Plutonium241.mMeltingPoint, Materials.Plutonium241.mBlastFurnaceTemp, 94, 144, false, MaterialUtils.superscript("238Pu"), 2);//Not a GT Inherited Material
+	public final Material LITHIUM7 = new Material("Lithium 7", MaterialState.LIQUID, Materials.Lithium.mRGBa, Materials.Lithium.mMeltingPoint, Materials.Lithium.mBlastFurnaceTemp, Materials.Lithium.getProtons(), Materials.Lithium.getNeutrons(), Materials.Lithium.mBlastFurnaceRequired, StringUtils.superscript("7Li"), 0);//Not a GT Inherited Material
+	public final Material URANIUM232 = new Material("Uranium 232", MaterialState.SOLID, new short[]{88, 220, 103, 0}, 1132, 4131, 92, 140, false, StringUtils.superscript("232U"), 4);//Not a GT Inherited Material
+	public final Material URANIUM233 = new Material("Uranium 233", MaterialState.SOLID, new short[]{73, 220, 83, 0}, 1132, 4131, 92, 141, false, StringUtils.superscript("233U"), 2);//Not a GT Inherited Material
+	public final Material THORIUM232 = new Material("Thorium 232", MaterialState.SOLID, new short[]{15, 60, 15, 0}, Materials.Thorium.mMeltingPoint, Materials.Thorium.mBlastFurnaceTemp, 90, 142, false, StringUtils.superscript("232Th"), 1);//Not a GT Inherited Material
+	
+	//RTG Fuels
+	public final Material PLUTONIUM238 = new Material("Plutonium-238", MaterialState.SOLID, Materials.Plutonium241.mDurability, Materials.Plutonium241.mRGBa, Materials.Plutonium241.mMeltingPoint, Materials.Plutonium241.mBlastFurnaceTemp, 94, 144, false, StringUtils.superscript("238Pu"), 2);//Not a GT Inherited Material
+	public final Material STRONTIUM90 = new Material("Strongtium-90", MaterialState.SOLID, Materials.Strontium.mDurability, Materials.Strontium.mRGBa, Materials.Strontium.mMeltingPoint, Materials.Strontium.mBlastFurnaceTemp, 38, 52, false, StringUtils.superscript("90Sr"), 2);//Not a GT Inherited Material
+	public final Material POLONIUM210 = new Material("Polonium-210", MaterialState.SOLID, ELEMENT.getInstance().POLONIUM.vDurability, ELEMENT.getInstance().POLONIUM.getRGBA(), ELEMENT.getInstance().POLONIUM.getMeltingPointK(), ELEMENT.getInstance().POLONIUM.getBoilingPointK(), 84, 126, false, StringUtils.superscript("210Po"), 2);//Not a GT Inherited Material
+	public final Material AMERICIUM241 = new Material("Americium-241", MaterialState.SOLID, Materials.Americium.mDurability, Materials.Americium.mRGBa, Materials.Americium.mMeltingPoint, Materials.Americium.mBlastFurnaceTemp, 95, 146, false, StringUtils.superscript("241Am"), 2);//Not a GT Inherited Material
 
 
 
@@ -30,7 +35,7 @@ public final class NUCLIDE {
 			150, //Protons
 			150, //Neutrons
 			false, //Uses Blast furnace?
-			MaterialUtils.subscript(MaterialUtils.superscript("7")+"LiFBeF2ThF4UF4"), //Chemical Formula
+			StringUtils.subscript(StringUtils.superscript("7")+"LiFBeF2ThF4UF4"), //Chemical Formula
 			5, //Radioactivity Level
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
@@ -49,7 +54,7 @@ public final class NUCLIDE {
 			150, //Protons
 			150, //Neutrons
 			false, //Uses Blast furnace?
-			MaterialUtils.subscript(MaterialUtils.superscript("7")+"LiFBeF2ZrF4UF4"), //Chemical Formula
+			StringUtils.subscript(StringUtils.superscript("7")+"LiFBeF2ZrF4UF4"), //Chemical Formula
 			5, //Radioactivity Level
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
@@ -68,7 +73,7 @@ public final class NUCLIDE {
 			150, //Protons
 			150, //Neutrons
 			false, //Uses Blast furnace?
-			MaterialUtils.subscript(MaterialUtils.superscript("7")+"LiFBeF2ZrF4")+MaterialUtils.superscript("235U"), //Chemical Formula
+			StringUtils.subscript(StringUtils.superscript("7")+"LiFBeF2ZrF4")+StringUtils.superscript("235U"), //Chemical Formula
 			5, //Radioactivity Level
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import gregtech.api.enums.*;
 import gtPlusPlus.core.item.base.cell.BaseItemCell;
 import gtPlusPlus.core.material.state.MaterialState;
+import gtPlusPlus.core.util.StringUtils;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
@@ -569,7 +570,7 @@ public class Material {
 								}
 							}
 						}
-						return MaterialUtils.subscript(dummyFormula);
+						return StringUtils.subscript(dummyFormula);
 						//return dummyFormula;
 					}
 					Utils.LOG_MACHINE_INFO("dummyFormulaArray <= 0");

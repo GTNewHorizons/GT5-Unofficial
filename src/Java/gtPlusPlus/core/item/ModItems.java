@@ -33,6 +33,7 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.*;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.material.nuclear.NUCLIDE;
+import gtPlusPlus.core.util.StringUtils;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.debug.DEBUG_INIT;
 import gtPlusPlus.core.util.fluid.FluidUtils;
@@ -473,7 +474,7 @@ public final class ModItems {
 
 		//Zirconium
 		//Cinter Pellet.
-		itemZirconiumChlorideCinterPellet = new CoreItem("itemZirconiumPellet", "Zirconium Pellet ["+MaterialUtils.subscript("ZrCl4")+"]", tabMisc).setTextureName(CORE.MODID + ":itemShard");
+		itemZirconiumChlorideCinterPellet = new CoreItem("itemZirconiumPellet", "Zirconium Pellet ["+StringUtils.subscript("ZrCl4")+"]", tabMisc).setTextureName(CORE.MODID + ":itemShard");
 		GT_OreDictUnificator.registerOre("pelletZirconium", new ItemStack(itemZirconiumChlorideCinterPellet));
 		//Zirconium Chloride
 		dustZrCl4 = ItemUtils.generateSpecialUseDusts("ZrCl4", "ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; //http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf

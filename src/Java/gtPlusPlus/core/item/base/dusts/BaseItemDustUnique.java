@@ -7,10 +7,10 @@ import java.util.List;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.StringUtils;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.entity.EntityUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
-import gtPlusPlus.core.util.materials.MaterialUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,7 +34,7 @@ public class BaseItemDustUnique extends Item{
 		this.setCreativeTab(tabMisc);
 		this.colour = colour;
 		this.materialName = materialName;
-		this.chemicalNotation = MaterialUtils.subscript(materialName);
+		this.chemicalNotation = StringUtils.subscript(materialName);
 		this.sRadiation = ItemUtils.getRadioactivityLevel(materialName);
 		GameRegistry.registerItem(this, unlocalizedName);
 
@@ -114,61 +114,61 @@ public class BaseItemDustUnique extends Item{
 	}
 
 	static boolean containsSubScript(final String s){
-		if (s.contains(MaterialUtils.superscript("1"))) {
+		if (s.contains(StringUtils.superscript("1"))) {
 			return true;
 		}
-		if (s.contains(MaterialUtils.superscript("2"))) {
+		if (s.contains(StringUtils.superscript("2"))) {
 			return true;
 		}
-		if (s.contains(MaterialUtils.superscript("3"))) {
+		if (s.contains(StringUtils.superscript("3"))) {
 			return true;
 		}
-		if (s.contains(MaterialUtils.superscript("4"))) {
+		if (s.contains(StringUtils.superscript("4"))) {
 			return true;
 		}
-		if (s.contains(MaterialUtils.superscript("5"))) {
+		if (s.contains(StringUtils.superscript("5"))) {
 			return true;
 		}
-		if (s.contains(MaterialUtils.superscript("6"))) {
+		if (s.contains(StringUtils.superscript("6"))) {
 			return true;
 		}
-		if (s.contains(MaterialUtils.superscript("7"))) {
+		if (s.contains(StringUtils.superscript("7"))) {
 			return true;
 		}
-		if (s.contains(MaterialUtils.superscript("8"))) {
+		if (s.contains(StringUtils.superscript("8"))) {
 			return true;
 		}
-		if (s.contains(MaterialUtils.superscript("9"))) {
+		if (s.contains(StringUtils.superscript("9"))) {
 			return true;
 		}
-		if (s.contains(MaterialUtils.subscript("1"))) {
+		if (s.contains(StringUtils.subscript("1"))) {
 			return true;
 		}
-		if (s.contains(MaterialUtils.subscript("2"))) {
+		if (s.contains(StringUtils.subscript("2"))) {
 			return true;
 		}
-		if (s.contains(MaterialUtils.subscript("3"))) {
+		if (s.contains(StringUtils.subscript("3"))) {
 			return true;
 		}
-		if (s.contains(MaterialUtils.subscript("4"))) {
+		if (s.contains(StringUtils.subscript("4"))) {
 			return true;
 		}
-		if (s.contains(MaterialUtils.subscript("5"))) {
+		if (s.contains(StringUtils.subscript("5"))) {
 			return true;
 		}
-		if (s.contains(MaterialUtils.subscript("6"))) {
+		if (s.contains(StringUtils.subscript("6"))) {
 			return true;
 		}
-		if (s.contains(MaterialUtils.subscript("7"))) {
+		if (s.contains(StringUtils.subscript("7"))) {
 			return true;
 		}
-		if (s.contains(MaterialUtils.subscript("8"))) {
+		if (s.contains(StringUtils.subscript("8"))) {
 			return true;
 		}
-		if (s.contains(MaterialUtils.subscript("9"))) {
+		if (s.contains(StringUtils.subscript("9"))) {
 			return true;
 		}
-		final String r = MaterialUtils.subscript(s);
+		final String r = StringUtils.subscript(s);
 		if (r.contains(("1"))) {
 			return false;
 		}
@@ -200,7 +200,7 @@ public class BaseItemDustUnique extends Item{
 	}
 
 	public final String getMaterialName() {
-		return MaterialUtils.subscript(this.materialName);
+		return StringUtils.subscript(this.materialName);
 	}
 
 	@Override

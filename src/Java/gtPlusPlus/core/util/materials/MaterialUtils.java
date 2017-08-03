@@ -5,6 +5,7 @@ import java.util.List;
 import gregtech.api.enums.*;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.state.MaterialState;
+import gtPlusPlus.core.util.StringUtils;
 import gtPlusPlus.core.util.Utils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -40,7 +41,7 @@ public class MaterialUtils {
 		final boolean blastFurnace = material.mBlastFurnaceRequired;
 		final int durability = material.mDurability;
 		MaterialState materialState;
-		final String chemicalFormula = MaterialUtils.subscript(Utils.sanitizeString(material.mChemicalFormula));
+		final String chemicalFormula = StringUtils.subscript(Utils.sanitizeString(material.mChemicalFormula));
 		final Element element = material.mElement;
 		int radioactivity = 0;
 		if (material.isRadioactive()){
@@ -115,34 +116,6 @@ public class MaterialUtils {
 			return false;
 		}
 		return true;
-	}
-
-	public static String superscript(String str) {
-		str = str.replaceAll("0", "\u2070");
-		str = str.replaceAll("1", "\u00B9");
-		str = str.replaceAll("2", "\u00B2");
-		str = str.replaceAll("3", "\u00B3");
-		str = str.replaceAll("4", "\u2074");
-		str = str.replaceAll("5", "\u2075");
-		str = str.replaceAll("6", "\u2076");
-		str = str.replaceAll("7", "\u2077");
-		str = str.replaceAll("8", "\u2078");
-		str = str.replaceAll("9", "\u2079");
-		return str;
-	}
-
-	public static String subscript(String str) {
-		str = str.replaceAll("0", "\u2080");
-		str = str.replaceAll("1", "\u2081");
-		str = str.replaceAll("2", "\u2082");
-		str = str.replaceAll("3", "\u2083");
-		str = str.replaceAll("4", "\u2084");
-		str = str.replaceAll("5", "\u2085");
-		str = str.replaceAll("6", "\u2086");
-		str = str.replaceAll("7", "\u2087");
-		str = str.replaceAll("8", "\u2088");
-		str = str.replaceAll("9", "\u2089");
-		return str;
 	}
 
 	public static int getTierOfMaterial(final int M){
