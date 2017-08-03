@@ -312,6 +312,8 @@ public final class ModItems {
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().CALIFORNIUM, false);
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().EINSTEINIUM, false);
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().FERMIUM, false);
+			
+			
 
 
 
@@ -333,6 +335,10 @@ public final class ModItems {
 			//and radioisotope heater units - one gram of plutonium-238 generates approximately 0.5 W of thermal power.
 			MaterialGenerator.generateNuclearMaterial(NUCLIDE.getInstance().PLUTONIUM238, false);
 
+			//RTG Fuel Materials
+			MaterialGenerator.generateNuclearMaterial(NUCLIDE.getInstance().STRONTIUM90, false);
+			MaterialGenerator.generateNuclearMaterial(NUCLIDE.getInstance().POLONIUM210, false);
+			MaterialGenerator.generateNuclearMaterial(NUCLIDE.getInstance().AMERICIUM241, false);
 
 
 			//Carbides - Tungsten Carbide exists in .09 so don't generate it. - Should still come before alloys though
