@@ -115,7 +115,7 @@ extends GT_MetaTileEntity_BasicTank
 	@Override
 	public long maxEUInput()
 	{
-		return 2048;
+		return 512;
 	}
 
 	@Override
@@ -127,7 +127,7 @@ extends GT_MetaTileEntity_BasicTank
 	@Override
 	public long maxEUStore()
 	{
-		return 100000;
+		return 512*32;
 	}
 
 	@Override
@@ -211,7 +211,7 @@ extends GT_MetaTileEntity_BasicTank
 				break;
 			}
 			PlayerUtils.messagePlayer(aPlayer, "Frequency: " + this.mFrequency);
-			PlayerUtils.messagePlayer(aPlayer, ((getGeneratorEntity() != null) && (getGeneratorEntity() != this)) ? EnumChatFormatting.RED + " (Occupied)" : "");
+			PlayerUtils.messagePlayer(aPlayer, ((getGeneratorEntity(this.mFrequency) != null) && (getGeneratorEntity(this.mFrequency) != this)) ? EnumChatFormatting.RED + " (Occupied)" : "");
 		}
 		return true;
 	}
@@ -236,7 +236,7 @@ extends GT_MetaTileEntity_BasicTank
 			case 3:
 				this.mFrequency += 512;
 			}
-			GT_Utility.sendChatToPlayer(aPlayer, "Frequency: " + this.mFrequency + ((getGeneratorEntity() != null && getGeneratorEntity() != this) ? EnumChatFormatting.RED + " (Occupied)" : ""));
+			GT_Utility.sendChatToPlayer(aPlayer, "Frequency: " + this.mFrequency + ((getGeneratorEntity(this.mFrequency) != null && getGeneratorEntity(this.mFrequency) != this) ? EnumChatFormatting.RED + " (Occupied)" : ""));
 		}
 	}
 

@@ -88,7 +88,7 @@ extends GT_MetaTileEntity_BasicTank
 	@Override
 	public long maxEUInput()
 	{
-		return 2048;
+		return 512;
 	}
 
 	@Override
@@ -100,7 +100,7 @@ extends GT_MetaTileEntity_BasicTank
 	@Override
 	public long maxEUStore()
 	{
-		return 100000;
+		return 512*32;
 	}
 
 	@Override
