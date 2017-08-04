@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.automation;
 
+import java.util.UUID;
+
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -12,10 +14,12 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.player.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import gtPlusPlus.xmod.gregtech.common.helpers.tesseract.TesseractHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
@@ -23,6 +27,7 @@ public class GT_MetaTileEntity_TesseractTerminal
 extends GT_MetaTileEntity_BasicTank
 {
 	public int mFrequency = 0;
+	public UUID mOwner;
 	public boolean mDidWork = false;
 	public static boolean sInterDimensionalTesseractAllowed = true;
 
@@ -126,12 +131,14 @@ extends GT_MetaTileEntity_BasicTank
 	public void saveNBTData(final NBTTagCompound aNBT)
 	{
 		aNBT.setInteger("mFrequency", this.mFrequency);
+		aNBT.setString("mOwner", mOwner.toString());
 	}
 
 	@Override
 	public void loadNBTData(final NBTTagCompound aNBT)
 	{
 		this.mFrequency = aNBT.getInteger("mFrequency");
+		this.mOwner = UUID.fromString(aNBT.getString("mOnwer"));
 	}
 
 	@Override
@@ -139,24 +146,6 @@ extends GT_MetaTileEntity_BasicTank
 	{
 		sInterDimensionalTesseractAllowed = true;
 	}
-
-	/*public boolean onRightclick(EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ)
-	{
-		if (aSide == getBaseMetaTileEntity().getFrontFacing())
-		{
-			float[] tCoords = GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ);
-			switch ((byte)((byte)(int)(tCoords[0] * 2.0F) + 2 * (byte)(int)(tCoords[1] * 2.0F)))
-			{
-			case 0:
-				this.mFrequency -= 1;
-				break;
-			case 1:
-				this.mFrequency += 1;
-			}
-			GT_Utility.sendChatToPlayer(aPlayer, "Frequency: " + this.mFrequency + (getTesseract(this.mFrequency, false) == null ? "" : new StringBuilder().append(EnumChatFormatting.GREEN).append(" (Connected)").toString()));
-		}
-		return true;
-	}*/
 
 	@Override
 	public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer, final byte aSide, final float aX, final float aY, final float aZ){
@@ -211,13 +200,16 @@ extends GT_MetaTileEntity_BasicTank
 
 	public GT_MetaTileEntity_TesseractGenerator getTesseract(final int aFrequency, final boolean aWorkIrrelevant)
 	{
-		final GT_MetaTileEntity_TesseractGenerator rTesseract = CORE.sTesseractGenerators.get(Integer.valueOf(aFrequency));
+		final GT_MetaTileEntity_TesseractGenerator rTesseract = TesseractHelper.getGeneratorByFrequency(PlayerUtils.getPlayerOnServerFromUUID(mOwner), aFrequency);
 		if (rTesseract == null) {
+			return null;
+		}
+		if (!TesseractHelper.isGeneratorOwnedByPlayer(PlayerUtils.getPlayerOnServerFromUUID(mOwner), rTesseract)){
 			return null;
 		}
 		if (rTesseract.mFrequency != aFrequency)
 		{
-			CORE.sTesseractGenerators.put(Integer.valueOf(aFrequency), null);return null;
+			TesseractHelper.setTerminalOwnershipByPlayer(PlayerUtils.getPlayerOnServerFromUUID(mOwner), Integer.valueOf(aFrequency), null);return null;
 		}
 		if (!rTesseract.isValidTesseractGenerator(this.getBaseMetaTileEntity().getOwnerName(), aWorkIrrelevant)) {
 			return null;
@@ -465,10 +457,10 @@ extends GT_MetaTileEntity_BasicTank
 			}
 		}
 	}
-	
+
 	@Override
 	public String[] getDescription() {
-		return new String[]{this.mDescription, "Accesses Tesseracts remotely", CORE.GT_Tooltip};
+		return new String[]{this.mDescription, "Accesses Tesseract Generators remotely", CORE.GT_Tooltip};
 	}
 
 	@Override
@@ -520,6 +512,20 @@ extends GT_MetaTileEntity_BasicTank
 	@Override
 	public boolean displaysStackSize() {
 		return false;
+	}
+
+	@Override
+	public void onCreated(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
+		mOwner = aPlayer.getUniqueID();
+		super.onCreated(aStack, aWorld, aPlayer);
+	}
+
+	@Override
+	public void onRemoval() {
+		try {
+			CORE.sTesseractTerminalOwnershipMap.get(mOwner).remove(this.mFrequency);
+		} catch (Throwable t){}
+		super.onRemoval();
 	}
 
 }

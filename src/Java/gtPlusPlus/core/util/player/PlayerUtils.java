@@ -122,5 +122,21 @@ public class PlayerUtils {
 
 		return null;
 	}
+	
+	public final static EntityPlayer getPlayerEntityByName(String aPlayerName){
+		EntityPlayer player = PlayerUtils.getPlayer(aPlayerName);
+		if (player != null){
+			return player;
+		}		
+		return null;
+	}
+	
+	public final static UUID getPlayersUUIDByName(String aPlayerName){
+		EntityPlayer player = PlayerUtils.getPlayer(aPlayerName);
+		if (player != null){
+			return player.getUniqueID();
+		}		
+		return null;
+	}
 
 }
