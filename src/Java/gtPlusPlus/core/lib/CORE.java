@@ -13,6 +13,7 @@ import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
 import gtPlusPlus.xmod.gregtech.api.objects.XSTR;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_TesseractGenerator;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.config.Configuration;
@@ -62,14 +63,8 @@ public class CORE {
 	 */
 	public static final GT_Materials[] sMU_GeneratedMaterials = new GT_Materials[1000];
 
-	//Tesseract map
-	public static final Map<Integer, GT_MetaTileEntity_TesseractGenerator> sTesseractGenerators = new HashMap<>();
-
-	//GUIS
-	public enum GUI_ENUM
-	{
-		ENERGYBUFFER, TOOLBUILDER, NULL, NULL1, NULL2
-	}
+	//Tesseract map	
+	public static final Map<UUID, Map<Integer, GT_MetaTileEntity_TesseractGenerator>> sTesseractGeneratorOwnershipMap = new HashMap<UUID, Map<Integer, GT_MetaTileEntity_TesseractGenerator>>();
 
 	/**
 	 * File Paths and Resource Paths
