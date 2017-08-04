@@ -10,6 +10,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicTank;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.player.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -538,11 +539,10 @@ extends GT_MetaTileEntity_BasicTank
 			this.mNeededEnergy = 0;
 		}
 	}
-
+	
 	@Override
-	public String[] getDescription()
-	{
-		return new String[] {"Generates a Tesseract for the attached Inventory"};
+	public String[] getDescription() {
+		return new String[]{this.mDescription, "Generates a Tesseract for the attached Inventory", CORE.GT_Tooltip};
 	}
 
 	@Override

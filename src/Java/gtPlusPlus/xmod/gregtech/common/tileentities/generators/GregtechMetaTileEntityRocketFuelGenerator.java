@@ -9,6 +9,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.generators.GregtechRocketFuelGeneratorBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.item.ItemStack;
@@ -19,13 +20,18 @@ extends GregtechRocketFuelGeneratorBase {
 	public int mEfficiency;
 
 	public GregtechMetaTileEntityRocketFuelGenerator(final int aID, final String aName, final String aNameRegional, final int aTier) {
-		super(aID, aName, aNameRegional, aTier, "Requires liquid Fuels.", new ITexture[0]);
+		super(aID, aName, aNameRegional, aTier, "Requires Diesel-type liquid Fuels.", new ITexture[0]);
 		this.onConfigLoad();
 	}
 
 	public GregtechMetaTileEntityRocketFuelGenerator(final String aName, final int aTier, final String aDescription, final ITexture[][][] aTextures) {
 		super(aName, aTier, aDescription, aTextures);
 		this.onConfigLoad();
+	}
+	
+	@Override
+	public String[] getDescription() {
+		return new String[]{this.mDescription, "Generates power at " + this.getEfficiency() + "% Efficiency per tick", CORE.GT_Tooltip};
 	}
 
 	@Override

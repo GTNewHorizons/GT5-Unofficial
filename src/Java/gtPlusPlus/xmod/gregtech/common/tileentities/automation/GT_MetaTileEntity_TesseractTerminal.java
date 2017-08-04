@@ -465,11 +465,10 @@ extends GT_MetaTileEntity_BasicTank
 			}
 		}
 	}
-
+	
 	@Override
-	public String[] getDescription()
-	{
-		return new String[] {"Accesses Tesseracts remotely"};
+	public String[] getDescription() {
+		return new String[]{this.mDescription, "Accesses Tesseracts remotely", CORE.GT_Tooltip};
 	}
 
 	@Override
