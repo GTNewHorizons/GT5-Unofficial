@@ -43,6 +43,7 @@ import static com.github.technus.tectech.CommonValues.*;
 import static com.github.technus.tectech.Util.StructureChecker;
 import static com.github.technus.tectech.Util.StructureCheckerAdvanced;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
+import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;
 
@@ -188,9 +189,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset + 4], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
         }
-        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset + 4]};
+        return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4]};
     }
 
     @Override
@@ -1035,8 +1036,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex >> 7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input)
             return mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
@@ -1080,8 +1080,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex >> 7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input)
             return mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
@@ -1119,8 +1118,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex >> 7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputElemental)
             return eInputHatches.add((GT_MetaTileEntity_Hatch_InputElemental) aMetaTileEntity);
@@ -1136,8 +1134,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
         }
         return false;
@@ -1148,8 +1145,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_MufflerElemental) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eMufflerHatches.add((GT_MetaTileEntity_Hatch_MufflerElemental) aMetaTileEntity);
         }
         return false;
@@ -1161,13 +1157,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Muffler) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return mMufflerHatches.add((GT_MetaTileEntity_Hatch_Muffler) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_MufflerElemental) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eMufflerHatches.add((GT_MetaTileEntity_Hatch_MufflerElemental) aMetaTileEntity);
         }
         return false;
@@ -1179,20 +1173,17 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = getRecipeMap();
             return mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             ((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mRecipeMap = getRecipeMap();
             return mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputElemental) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             //((GT_MetaTileEntity_Hatch_Elemental) aMetaTileEntity).mRecipeMap = getRecipeMap();
             return eInputHatches.add((GT_MetaTileEntity_Hatch_InputElemental) aMetaTileEntity);
         }
@@ -1205,18 +1196,15 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputElemental) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eOutputHatches.add((GT_MetaTileEntity_Hatch_OutputElemental) aMetaTileEntity);
         }
         return false;
@@ -1229,13 +1217,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyMulti) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eEnergyMulti.add((GT_MetaTileEntity_Hatch_EnergyMulti) aMetaTileEntity);
         }
         return false;
@@ -1248,13 +1234,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoMulti) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eDynamoMulti.add((GT_MetaTileEntity_Hatch_DynamoMulti) aMetaTileEntity);
         }
         return false;
@@ -1266,23 +1250,19 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Energy) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return mEnergyHatches.add((GT_MetaTileEntity_Hatch_Energy) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_EnergyMulti) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eEnergyMulti.add((GT_MetaTileEntity_Hatch_EnergyMulti) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Dynamo) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return mDynamoHatches.add((GT_MetaTileEntity_Hatch_Dynamo) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_DynamoMulti) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eDynamoMulti.add((GT_MetaTileEntity_Hatch_DynamoMulti) aMetaTileEntity);
         }
         return false;
@@ -1294,8 +1274,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputElemental) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             //((GT_MetaTileEntity_Hatch_Elemental) aMetaTileEntity).mRecipeMap = getRecipeMap();
             return eInputHatches.add((GT_MetaTileEntity_Hatch_InputElemental) aMetaTileEntity);
         }
@@ -1308,8 +1287,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputElemental) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eOutputHatches.add((GT_MetaTileEntity_Hatch_OutputElemental) aMetaTileEntity);
         }
         return false;
@@ -1321,14 +1299,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             ((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = getRecipeMap();
             return mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBus) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             ((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity).mRecipeMap = getRecipeMap();
             return mInputBusses.add((GT_MetaTileEntity_Hatch_InputBus) aMetaTileEntity);
         }
@@ -1341,13 +1317,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBus) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return mOutputBusses.add((GT_MetaTileEntity_Hatch_OutputBus) aMetaTileEntity);
         }
         return false;
@@ -1361,8 +1335,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Param) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eParamHatches.add((GT_MetaTileEntity_Hatch_Param) aMetaTileEntity);
         }
         return false;
@@ -1376,8 +1349,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Uncertainty) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eUncertainHatches.add((GT_MetaTileEntity_Hatch_Uncertainty) aMetaTileEntity);
         }
         return false;
@@ -1389,18 +1361,15 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Param) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eParamHatches.add((GT_MetaTileEntity_Hatch_Param) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Uncertainty) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eUncertainHatches.add((GT_MetaTileEntity_Hatch_Uncertainty) aMetaTileEntity);
         }
         return false;
@@ -1412,8 +1381,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Maintenance) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return mMaintenanceHatches.add((GT_MetaTileEntity_Hatch_Maintenance) aMetaTileEntity);
         }
         return false;
@@ -1425,13 +1393,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputData) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eInputData.add((GT_MetaTileEntity_Hatch_InputData) aMetaTileEntity);
         }
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputData) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eOutputData.add((GT_MetaTileEntity_Hatch_OutputData) aMetaTileEntity);
         }
         return false;

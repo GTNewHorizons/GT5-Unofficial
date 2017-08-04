@@ -44,6 +44,8 @@ public class TecTech {
 
     public static boolean hasCOFH = false, hasThaumcraft = false;
 
+    public static final byte tectechTexturePage1=8;
+
     public static void AddLoginError(String pMessage) {
         if (Module_AdminErrorLogs != null)
             Module_AdminErrorLogs.AddErrorLogOnAdminJoin(pMessage);
@@ -64,6 +66,8 @@ public class TecTech {
             Logger.debug("Module_AdminErrorLogs is enabled");
             Module_AdminErrorLogs = new IngameErrorLog();
         }
+
+        proxy.addTexturePage(tectechTexturePage1);
 
         GTCustomLoader = new MainLoader();
         dAtomDefinition.overrides.add(new AtomOverrider());

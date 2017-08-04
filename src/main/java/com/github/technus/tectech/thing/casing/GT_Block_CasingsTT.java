@@ -17,19 +17,21 @@ import net.minecraft.world.IBlockAccess;
 
 import java.util.List;
 
+import static com.github.technus.tectech.TecTech.tectechTexturePage1;
+
 /**
  * Created by danie_000 on 03.10.2016.
  */
 public class GT_Block_CasingsTT extends GT_Block_Casings_Abstract {
-
-    public final static short textureOffset = 8 << 7;//Start of PAGE 8 (which is the 9th page)  (8*128)
+    public static final byte texturePage=tectechTexturePage1;
+    public final static short textureOffset = texturePage << 7;//Start of PAGE 8 (which is the 9th page)  (8*128)
     private static IIcon eM0, eM1, eM1s, eM2, eM2s, eM3, eM3s, eM4, eM5, eM6, eM7, eM7s, eM8, eM9, eM10, eM11, eM12, eM13, eM14;
     private static IIcon debug[] = new IIcon[6];
 
     public GT_Block_CasingsTT() {
         super(GT_Item_CasingsTT.class, "gt.blockcasingsTT", GT_Material_Casings.INSTANCE);
         for (byte i = 0; i < 16; i = (byte) (i + 1)) {
-            Textures.BlockIcons.CASING_BLOCKS[i + textureOffset] = new GT_CopiedBlockTexture(this, 6, i);
+            Textures.BlockIcons.casingTexturePages[texturePage][i] = new GT_CopiedBlockTexture(this, 6, i);
             /*IMPORTANT for block recoloring**/
         }
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "High Power Casing");

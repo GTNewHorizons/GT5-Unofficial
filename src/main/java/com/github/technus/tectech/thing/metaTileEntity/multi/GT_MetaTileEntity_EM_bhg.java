@@ -17,6 +17,7 @@ import net.minecraft.util.EnumChatFormatting;
 
 import static com.github.technus.tectech.Util.StructureBuilder;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
+import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
 import static gregtech.api.enums.GT_Values.E;
 
@@ -160,9 +161,9 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset + 12], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][12], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
         }
-        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset + 12]};
+        return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][12]};
     }
 
     @Override

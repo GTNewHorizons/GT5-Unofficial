@@ -15,6 +15,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
+import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
 import static gregtech.api.enums.GT_Values.V;
 
@@ -37,9 +38,9 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset + 1], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][1], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
         }
-        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset + 1]};
+        return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][1]};
     }
 
     @Override

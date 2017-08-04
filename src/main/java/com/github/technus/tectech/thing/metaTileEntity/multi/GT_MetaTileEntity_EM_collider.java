@@ -22,6 +22,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import static com.github.technus.tectech.Util.StructureBuilder;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
+import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
 
 /**
@@ -96,9 +97,9 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset + 4], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
         }
-        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset + 4]};
+        return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4]};
     }
 
     @Override

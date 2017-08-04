@@ -6,6 +6,8 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Loader;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -25,6 +27,12 @@ import openmodularturrets.tileentity.turret.TileTurretHeadEM;
 import org.lwjgl.opengl.GL11;
 
 public class ClientProxy extends CommonProxy {
+    @Override
+    public void addTexturePage(byte page){
+        if(Textures.BlockIcons.casingTexturePages[page]==null)
+            Textures.BlockIcons.casingTexturePages[page]=new ITexture[128];
+    }
+
     @Override
     public void registerRenderInfo() {
         QuantumGlassRender.renderID = RenderingRegistry.getNextAvailableRenderId();

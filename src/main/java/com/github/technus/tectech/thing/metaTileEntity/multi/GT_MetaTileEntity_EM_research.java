@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 import static com.github.technus.tectech.Util.StructureBuilder;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
+import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
 import static gregtech.api.enums.GT_Values.E;
 import static gregtech.api.enums.GT_Values.V;
@@ -102,9 +103,9 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset + 3], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][3], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
         }
-        return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[textureOffset + 3]};
+        return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][3]};
     }
 
     @Override
@@ -136,8 +137,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
         if (aMetaTileEntity == null) return false;
         if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Holder) {
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mMachineBlock = (byte) aBaseCasingIndex;
-            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).mTexturePage = (byte) (aBaseCasingIndex>>7);
+            ((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
             return eHolders.add((GT_MetaTileEntity_Hatch_Holder) aMetaTileEntity);
         }
         return false;

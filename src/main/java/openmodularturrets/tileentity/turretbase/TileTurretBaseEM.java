@@ -4,6 +4,7 @@ import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStac
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -54,8 +55,7 @@ public class TileTurretBaseEM extends TurretBaseTierFiveTileEntity {
     }
 
     private cElementalInstanceStackMap getFromHatch(GT_MetaTileEntity_Hatch_InputElemental hatch) {
-        hatch.mMachineBlock = 4;
-        hatch.mTexturePage = 8;
+        hatch.updateTexture((byte) 8,(byte) 4);
         return hatch.getContainerHandler();
     }
 }
