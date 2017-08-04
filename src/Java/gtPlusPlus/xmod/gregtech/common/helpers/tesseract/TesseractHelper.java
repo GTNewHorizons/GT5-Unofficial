@@ -71,7 +71,7 @@ public class TesseractHelper {
 				return true;
 			}
 		}
-		Utils.LOG_INFO("Failed.");
+		Utils.LOG_INFO("Failed. [setGeneratorOwnershipByPlayer]");
 		return false;
 	}
 
@@ -95,7 +95,7 @@ public class TesseractHelper {
 				}
 			}
 		}
-		Utils.LOG_INFO("Failed.");
+		Utils.LOG_INFO("Failed. [getGeneratorByFrequency]");
 		return null;
 	}
 
@@ -167,7 +167,7 @@ public class TesseractHelper {
 				return true;
 			}
 		}
-		Utils.LOG_INFO("Failed.");
+		Utils.LOG_INFO("Failed. [setTerminalOwnershipByPlayer]");
 		return false;
 	}
 
@@ -191,7 +191,7 @@ public class TesseractHelper {
 				}
 			}
 		}
-		Utils.LOG_INFO("Failed.");
+		Utils.LOG_INFO("Failed. [getTerminalByFrequency]");
 		return null;
 	}
 

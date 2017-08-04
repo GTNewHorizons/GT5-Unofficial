@@ -23,19 +23,19 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
-public class GT_MetaTileEntity_TesseractTerminal
-extends GT_MetaTileEntity_BasicTank
-{
+public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_BasicTank {
 	public int mFrequency = 0;
 	public UUID mOwner;
 	public boolean mDidWork = false;
 	public static boolean sInterDimensionalTesseractAllowed = true;
 
-	public GT_MetaTileEntity_TesseractTerminal(final int aID, final String aName, final String aNameRegional, final int aTier) {
+	public GT_MetaTileEntity_TesseractTerminal(final int aID, final String aName, final String aNameRegional,
+			final int aTier) {
 		super(aID, aName, aNameRegional, aTier, 3, "");
 	}
 
-	public GT_MetaTileEntity_TesseractTerminal(final String aName, final int aTier, final String aDescription, final ITexture[][][] aTextures) {
+	public GT_MetaTileEntity_TesseractTerminal(final String aName, final int aTier, final String aDescription,
+			final ITexture[][][] aTextures) {
 		super(aName, aTier, 3, aDescription, aTextures);
 	}
 
@@ -45,26 +45,22 @@ extends GT_MetaTileEntity_BasicTank
 	}
 
 	@Override
-	public boolean isTransformerUpgradable()
-	{
+	public boolean isTransformerUpgradable() {
 		return false;
 	}
 
 	@Override
-	public boolean isOverclockerUpgradable()
-	{
+	public boolean isOverclockerUpgradable() {
 		return false;
 	}
 
 	@Override
-	public boolean isSimpleMachine()
-	{
+	public boolean isSimpleMachine() {
 		return false;
 	}
 
 	@Override
-	public boolean isFacingValid(final byte aFacing)
-	{
+	public boolean isFacingValid(final byte aFacing) {
 		return true;
 	}
 
@@ -74,171 +70,184 @@ extends GT_MetaTileEntity_BasicTank
 	}
 
 	@Override
-	public boolean isValidSlot(final int aIndex)
-	{
+	public boolean isValidSlot(final int aIndex) {
 		return false;
 	}
 
 	@Override
-	public long getMinimumStoredEU()
-	{
+	public long getMinimumStoredEU() {
 		return this.getBaseMetaTileEntity().getEUCapacity() / 2;
 	}
 
 	@Override
-	public long maxEUInput()
-	{
+	public long maxEUInput() {
 		return 512;
 	}
 
 	@Override
-	public boolean isAccessAllowed(final EntityPlayer aPlayer)
-	{
+	public boolean isAccessAllowed(final EntityPlayer aPlayer) {
 		return true;
 	}
 
 	@Override
-	public long maxEUStore()
-	{
-		return 512*32;
+	public long maxEUStore() {
+		return 512 * 32;
 	}
 
 	@Override
-	public long maxSteamStore()
-	{
+	public long maxSteamStore() {
 		return this.maxEUStore();
 	}
 
 	@Override
-	public boolean ownerControl()
-	{
+	public boolean ownerControl() {
 		return true;
 	}
 
 	@Override
-	public int getProgresstime()
-	{
+	public int getProgresstime() {
 		return this.getTesseract(this.mFrequency, false) != null ? 999 : 0;
 	}
 
 	@Override
-	public int maxProgresstime()
-	{
+	public int maxProgresstime() {
 		return 1000;
 	}
 
 	@Override
-	public void saveNBTData(final NBTTagCompound aNBT)
-	{
+	public void saveNBTData(final NBTTagCompound aNBT) {
 		aNBT.setInteger("mFrequency", this.mFrequency);
 		aNBT.setString("mOwner", mOwner.toString());
 	}
 
 	@Override
-	public void loadNBTData(final NBTTagCompound aNBT)
-	{
+	public void loadNBTData(final NBTTagCompound aNBT) {
 		this.mFrequency = aNBT.getInteger("mFrequency");
 		this.mOwner = UUID.fromString(aNBT.getString("mOnwer"));
 	}
 
 	@Override
-	public void onConfigLoad(final GT_Config aConfig)
-	{
+	public void onConfigLoad(final GT_Config aConfig) {
 		sInterDimensionalTesseractAllowed = true;
 	}
 
 	@Override
-	public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer, final byte aSide, final float aX, final float aY, final float aZ){
-		if (aSide == this.getBaseMetaTileEntity().getFrontFacing()){
-			final float[] tCoords = GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ);
-			switch ((byte)((byte)(int)(tCoords[0] * 2.0F) + (2 * (byte)(int)(tCoords[1] * 2.0F)))){
-			case 0:
-				Utils.LOG_INFO("Freq. -1 | " + this.mFrequency);
-				this.mFrequency -= 1;
-				break;
-			case 1:
-				Utils.LOG_INFO("Freq. +1 | " + this.mFrequency);
-				this.mFrequency += 1;
-			default:
-				//Utils.LOG_INFO("Did not click the correct place.");
-				break;
+	public boolean onRightclick(final IGregTechTileEntity aBaseMetaTileEntity, final EntityPlayer aPlayer,
+			final byte aSide, final float aX, final float aY, final float aZ) {
+
+		if (this.mOwner == null) {
+			if (this.getBaseMetaTileEntity().getOwnerName() != null
+					&& !this.getBaseMetaTileEntity().getOwnerName().equals("")) {
+				if (this.getBaseMetaTileEntity().getOwnerName().toLowerCase()
+						.equals(aPlayer.getDisplayName().toLowerCase())) {
+					this.mOwner = PlayerUtils.getPlayersUUIDByName(this.getBaseMetaTileEntity().getOwnerName());
+				}
 			}
-			PlayerUtils.messagePlayer(aPlayer, "Frequency: " + this.mFrequency);
-			PlayerUtils.messagePlayer(aPlayer, (this.getTesseract(this.mFrequency, false) == null ? "" : new StringBuilder().append(EnumChatFormatting.GREEN).append(" (Connected)").toString()));
+		}
+
+		if (aPlayer.getUniqueID().compareTo(this.mOwner) == 0) {
+			if (aSide == this.getBaseMetaTileEntity().getFrontFacing()) {
+				final float[] tCoords = GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ);
+				switch ((byte) ((byte) (int) (tCoords[0] * 2.0F) + (2 * (byte) (int) (tCoords[1] * 2.0F)))) {
+				case 0:
+					//Utils.LOG_INFO("Freq. -1 | " + this.mFrequency);
+					this.mFrequency -= 1;
+					break;
+				case 1:
+					//Utils.LOG_INFO("Freq. +1 | " + this.mFrequency);
+					this.mFrequency += 1;
+				default:
+					// Utils.LOG_INFO("Did not click the correct place.");
+					break;
+				}
+				PlayerUtils.messagePlayer(aPlayer, "Frequency: " + this.mFrequency);
+				if (this.getTesseract(this.mFrequency, false) != null) {
+					PlayerUtils.messagePlayer(aPlayer,
+							new StringBuilder().append(EnumChatFormatting.GREEN).append(" (Connected)").toString());
+				}
+			}
+		} else {
+			PlayerUtils.messagePlayer(aPlayer, "This is not your Tesseract Terminal to configure.");
 		}
 		return true;
 	}
 
 	@Override
-	public void onScrewdriverRightClick(final byte aSide, final EntityPlayer aPlayer, final float aX, final float aY, final float aZ)
-	{
-		if (aSide == this.getBaseMetaTileEntity().getFrontFacing())
-		{
-			final float[] tCoords = GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ);
-			switch ((byte)((byte)(int)(tCoords[0] * 2.0F) + (2 * (byte)(int)(tCoords[1] * 2.0F))))
-			{
-			case 0:
-				this.mFrequency -= 64;
-				break;
-			case 1:
-				this.mFrequency += 64;
-				break;
-			case 2:
-				this.mFrequency -= 512;
-				break;
-			case 3:
-				this.mFrequency += 512;
+	public void onScrewdriverRightClick(final byte aSide, final EntityPlayer aPlayer, final float aX, final float aY,
+			final float aZ) {
+		if (aPlayer.getUniqueID().compareTo(this.mOwner) == 0) {
+			if (aSide == this.getBaseMetaTileEntity().getFrontFacing()) {
+				final float[] tCoords = GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ);
+				switch ((byte) ((byte) (int) (tCoords[0] * 2.0F) + (2 * (byte) (int) (tCoords[1] * 2.0F)))) {
+				case 0:
+					this.mFrequency -= 64;
+					break;
+				case 1:
+					this.mFrequency += 64;
+					break;
+				case 2:
+					this.mFrequency -= 512;
+					break;
+				case 3:
+					this.mFrequency += 512;
+				}
+				GT_Utility.sendChatToPlayer(aPlayer,
+						"Frequency: " + this.mFrequency
+								+ (this.getTesseract(this.mFrequency, false) == null ? ""
+										: new StringBuilder().append(EnumChatFormatting.GREEN).append(" (Connected)")
+												.toString()));
 			}
-			GT_Utility.sendChatToPlayer(aPlayer, "Frequency: " + this.mFrequency + (this.getTesseract(this.mFrequency, false) == null ? "" : new StringBuilder().append(EnumChatFormatting.GREEN).append(" (Connected)").toString()));
+		} else {
+			PlayerUtils.messagePlayer(aPlayer, "This is not your Tesseract Terminal to configure.");
 		}
 	}
 
-	public boolean allowCoverOnSide(final byte aSide, final int aCoverID)
-	{
+	public boolean allowCoverOnSide(final byte aSide, final int aCoverID) {
 		return aSide != this.getBaseMetaTileEntity().getFrontFacing();
 	}
 
-	public GT_MetaTileEntity_TesseractGenerator getTesseract(final int aFrequency, final boolean aWorkIrrelevant)
-	{
-		final GT_MetaTileEntity_TesseractGenerator rTesseract = TesseractHelper.getGeneratorByFrequency(PlayerUtils.getPlayerOnServerFromUUID(mOwner), aFrequency);
+	public GT_MetaTileEntity_TesseractGenerator getTesseract(final int aFrequency, final boolean aWorkIrrelevant) {
+		final GT_MetaTileEntity_TesseractGenerator rTesseract = TesseractHelper
+				.getGeneratorByFrequency(PlayerUtils.getPlayerOnServerFromUUID(mOwner), aFrequency);
 		if (rTesseract == null) {
 			return null;
 		}
-		if (!TesseractHelper.isGeneratorOwnedByPlayer(PlayerUtils.getPlayerOnServerFromUUID(mOwner), rTesseract)){
+		if (!TesseractHelper.isGeneratorOwnedByPlayer(PlayerUtils.getPlayerOnServerFromUUID(mOwner), rTesseract)) {
 			return null;
 		}
-		if (rTesseract.mFrequency != aFrequency)
-		{
-			TesseractHelper.setTerminalOwnershipByPlayer(PlayerUtils.getPlayerOnServerFromUUID(mOwner), Integer.valueOf(aFrequency), null);return null;
+		if (rTesseract.mFrequency != aFrequency) {
+			TesseractHelper.setTerminalOwnershipByPlayer(PlayerUtils.getPlayerOnServerFromUUID(mOwner),
+					Integer.valueOf(aFrequency), null);
+			return null;
 		}
 		if (!rTesseract.isValidTesseractGenerator(this.getBaseMetaTileEntity().getOwnerName(), aWorkIrrelevant)) {
 			return null;
 		}
-		if ((!sInterDimensionalTesseractAllowed) && (rTesseract.getBaseMetaTileEntity().getWorld() != this.getBaseMetaTileEntity().getWorld())) {
+		if ((!sInterDimensionalTesseractAllowed)
+				&& (rTesseract.getBaseMetaTileEntity().getWorld() != this.getBaseMetaTileEntity().getWorld())) {
 			return null;
 		}
 		return rTesseract;
 	}
 
 	@Override
-	public String[] getInfoData()
-	{
+	public String[] getInfoData() {
 		final GT_MetaTileEntity_TesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
-		if ((tTileEntity != null) && (this.getBaseMetaTileEntity().isAllowedToWork()) && (tTileEntity.isSendingInformation())) {
+		if ((tTileEntity != null) && (this.getBaseMetaTileEntity().isAllowedToWork())
+				&& (tTileEntity.isSendingInformation())) {
 			return tTileEntity.getInfoData();
 		}
-		return new String[] { "Tesseract Generator", "Freqency:", "" + this.mFrequency, this.getTesseract(this.mFrequency, false) != null ? "Active" : "Inactive" };
+		return new String[] { "Tesseract Generator", "Freqency:", "" + this.mFrequency,
+				this.getTesseract(this.mFrequency, false) != null ? "Active" : "Inactive" };
 	}
 
 	@Override
-	public boolean isGivingInformation()
-	{
+	public boolean isGivingInformation() {
 		return true;
 	}
 
 	@Override
-	public boolean isDigitalChest()
-	{
+	public boolean isDigitalChest() {
 		final GT_MetaTileEntity_TesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
 		if ((tTileEntity == null) || (!this.getBaseMetaTileEntity().isAllowedToWork())) {
 			return false;
@@ -247,8 +256,7 @@ extends GT_MetaTileEntity_BasicTank
 	}
 
 	@Override
-	public ItemStack[] getStoredItemData()
-	{
+	public ItemStack[] getStoredItemData() {
 		final GT_MetaTileEntity_TesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
 		if ((tTileEntity == null) || (!this.getBaseMetaTileEntity().isAllowedToWork())) {
 			return null;
@@ -257,8 +265,7 @@ extends GT_MetaTileEntity_BasicTank
 	}
 
 	@Override
-	public void setItemCount(final int aCount)
-	{
+	public void setItemCount(final int aCount) {
 		final GT_MetaTileEntity_TesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
 		if ((tTileEntity == null) || (!this.getBaseMetaTileEntity().isAllowedToWork())) {
 			return;
@@ -267,8 +274,7 @@ extends GT_MetaTileEntity_BasicTank
 	}
 
 	@Override
-	public int getMaxItemCount()
-	{
+	public int getMaxItemCount() {
 		final GT_MetaTileEntity_TesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
 		if ((tTileEntity == null) || (!this.getBaseMetaTileEntity().isAllowedToWork())) {
 			return 0;
@@ -277,8 +283,7 @@ extends GT_MetaTileEntity_BasicTank
 	}
 
 	@Override
-	public boolean isItemValidForSlot(final int aIndex, final ItemStack aStack)
-	{
+	public boolean isItemValidForSlot(final int aIndex, final ItemStack aStack) {
 		final GT_MetaTileEntity_TesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
 		if ((tTileEntity == null) || (!this.getBaseMetaTileEntity().isAllowedToWork())) {
 			return false;
@@ -287,8 +292,7 @@ extends GT_MetaTileEntity_BasicTank
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(final int aSide)
-	{
+	public int[] getAccessibleSlotsFromSide(final int aSide) {
 		final GT_MetaTileEntity_TesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
 		if ((tTileEntity == null) || (!this.getBaseMetaTileEntity().isAllowedToWork())) {
 			return new int[0];
@@ -297,8 +301,7 @@ extends GT_MetaTileEntity_BasicTank
 	}
 
 	@Override
-	public boolean canInsertItem(final int aIndex, final ItemStack aStack, final int aSide)
-	{
+	public boolean canInsertItem(final int aIndex, final ItemStack aStack, final int aSide) {
 		final GT_MetaTileEntity_TesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
 		if ((tTileEntity == null) || (!this.getBaseMetaTileEntity().isAllowedToWork())) {
 			return false;
@@ -307,8 +310,7 @@ extends GT_MetaTileEntity_BasicTank
 	}
 
 	@Override
-	public boolean canExtractItem(final int aIndex, final ItemStack aStack, final int aSide)
-	{
+	public boolean canExtractItem(final int aIndex, final ItemStack aStack, final int aSide) {
 		final GT_MetaTileEntity_TesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
 		if ((tTileEntity == null) || (!this.getBaseMetaTileEntity().isAllowedToWork())) {
 			return false;
@@ -317,8 +319,7 @@ extends GT_MetaTileEntity_BasicTank
 	}
 
 	@Override
-	public int getSizeInventory()
-	{
+	public int getSizeInventory() {
 		final GT_MetaTileEntity_TesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
 		if ((tTileEntity == null) || (!this.getBaseMetaTileEntity().isAllowedToWork())) {
 			return 0;
@@ -327,8 +328,7 @@ extends GT_MetaTileEntity_BasicTank
 	}
 
 	@Override
-	public ItemStack getStackInSlot(final int aIndex)
-	{
+	public ItemStack getStackInSlot(final int aIndex) {
 		final GT_MetaTileEntity_TesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
 		if ((tTileEntity == null) || (!this.getBaseMetaTileEntity().isAllowedToWork())) {
 			return null;
@@ -337,8 +337,7 @@ extends GT_MetaTileEntity_BasicTank
 	}
 
 	@Override
-	public void setInventorySlotContents(final int aIndex, final ItemStack aStack)
-	{
+	public void setInventorySlotContents(final int aIndex, final ItemStack aStack) {
 		final GT_MetaTileEntity_TesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
 		if ((tTileEntity == null) || (!this.getBaseMetaTileEntity().isAllowedToWork())) {
 			return;
@@ -347,8 +346,7 @@ extends GT_MetaTileEntity_BasicTank
 	}
 
 	@Override
-	public ItemStack decrStackSize(final int aIndex, final int aAmount)
-	{
+	public ItemStack decrStackSize(final int aIndex, final int aAmount) {
 		final GT_MetaTileEntity_TesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
 		if ((tTileEntity == null) || (!this.getBaseMetaTileEntity().isAllowedToWork())) {
 			return null;
@@ -357,8 +355,7 @@ extends GT_MetaTileEntity_BasicTank
 	}
 
 	@Override
-	public String getInventoryName()
-	{
+	public String getInventoryName() {
 		final GT_MetaTileEntity_TesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
 		if ((tTileEntity == null) || (!this.getBaseMetaTileEntity().isAllowedToWork())) {
 			return "";
@@ -367,8 +364,7 @@ extends GT_MetaTileEntity_BasicTank
 	}
 
 	@Override
-	public int getInventoryStackLimit()
-	{
+	public int getInventoryStackLimit() {
 		final GT_MetaTileEntity_TesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
 		if ((tTileEntity == null) || (!this.getBaseMetaTileEntity().isAllowedToWork())) {
 			return 0;
@@ -377,8 +373,7 @@ extends GT_MetaTileEntity_BasicTank
 	}
 
 	@Override
-	public boolean canFill(final ForgeDirection aSide, final Fluid aFluid)
-	{
+	public boolean canFill(final ForgeDirection aSide, final Fluid aFluid) {
 		final GT_MetaTileEntity_TesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
 		if ((tTileEntity == null) || (!this.getBaseMetaTileEntity().isAllowedToWork())) {
 			return false;
@@ -387,8 +382,7 @@ extends GT_MetaTileEntity_BasicTank
 	}
 
 	@Override
-	public boolean canDrain(final ForgeDirection aSide, final Fluid aFluid)
-	{
+	public boolean canDrain(final ForgeDirection aSide, final Fluid aFluid) {
 		final GT_MetaTileEntity_TesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
 		if ((tTileEntity == null) || (!this.getBaseMetaTileEntity().isAllowedToWork())) {
 			return false;
@@ -397,8 +391,7 @@ extends GT_MetaTileEntity_BasicTank
 	}
 
 	@Override
-	public FluidTankInfo[] getTankInfo(final ForgeDirection aSide)
-	{
+	public FluidTankInfo[] getTankInfo(final ForgeDirection aSide) {
 		final GT_MetaTileEntity_TesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
 		if ((tTileEntity == null) || (!this.getBaseMetaTileEntity().isAllowedToWork())) {
 			return new FluidTankInfo[0];
@@ -407,8 +400,7 @@ extends GT_MetaTileEntity_BasicTank
 	}
 
 	@Override
-	public int fill_default(final ForgeDirection aDirection, final FluidStack aFluid, final boolean doFill)
-	{
+	public int fill_default(final ForgeDirection aDirection, final FluidStack aFluid, final boolean doFill) {
 		final GT_MetaTileEntity_TesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
 		if ((tTileEntity == null) || (!this.getBaseMetaTileEntity().isAllowedToWork())) {
 			return 0;
@@ -417,8 +409,7 @@ extends GT_MetaTileEntity_BasicTank
 	}
 
 	@Override
-	public FluidStack drain(final ForgeDirection aDirection, final int maxDrain, final boolean doDrain)
-	{
+	public FluidStack drain(final ForgeDirection aDirection, final int maxDrain, final boolean doDrain) {
 		final GT_MetaTileEntity_TesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
 		if ((tTileEntity == null) || (!this.getBaseMetaTileEntity().isAllowedToWork())) {
 			return null;
@@ -427,8 +418,7 @@ extends GT_MetaTileEntity_BasicTank
 	}
 
 	@Override
-	public FluidStack drain(final ForgeDirection aSide, final FluidStack aFluid, final boolean doDrain)
-	{
+	public FluidStack drain(final ForgeDirection aSide, final FluidStack aFluid, final boolean doDrain) {
 		final GT_MetaTileEntity_TesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, false);
 		if ((tTileEntity == null) || (!this.getBaseMetaTileEntity().isAllowedToWork())) {
 			return null;
@@ -436,22 +426,22 @@ extends GT_MetaTileEntity_BasicTank
 		return tTileEntity.drain(aSide, aFluid, doDrain);
 	}
 
-	public void onPostTick()
-	{
-		if ((this.getBaseMetaTileEntity().isServerSide()) && (this.getBaseMetaTileEntity().isAllowedToWork()))
-		{
+	public void onPostTick() {
+		if ((this.getBaseMetaTileEntity().isServerSide()) && (this.getBaseMetaTileEntity().isAllowedToWork())) {
+			// Set owner
+			if (PlayerUtils.getPlayersUUIDByName(this.getBaseMetaTileEntity().getOwnerName()) != null) {
+				if (this.mOwner == null) {
+					this.mOwner = PlayerUtils.getPlayersUUIDByName(this.getBaseMetaTileEntity().getOwnerName());
+				}
+			}
 			final GT_MetaTileEntity_TesseractGenerator tTileEntity = this.getTesseract(this.mFrequency, true);
-			if (tTileEntity != null)
-			{
+			if (tTileEntity != null) {
 				tTileEntity.addEnergyConsumption(this);
-				if ((!this.mDidWork) && (this.getTesseract(this.mFrequency, false) != null))
-				{
+				if ((!this.mDidWork) && (this.getTesseract(this.mFrequency, false) != null)) {
 					this.mDidWork = true;
 					this.getBaseMetaTileEntity().issueBlockUpdate();
 				}
-			}
-			else if (this.mDidWork == true)
-			{
+			} else if (this.mDidWork == true) {
 				this.mDidWork = false;
 				this.getBaseMetaTileEntity().issueBlockUpdate();
 			}
@@ -460,16 +450,18 @@ extends GT_MetaTileEntity_BasicTank
 
 	@Override
 	public String[] getDescription() {
-		return new String[]{this.mDescription, "Accesses Tesseract Generators remotely", CORE.GT_Tooltip};
+		return new String[] { this.mDescription, "Accesses Tesseract Generators remotely", CORE.GT_Tooltip };
 	}
 
 	@Override
-	public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
+	public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
+			final ItemStack aStack) {
 		return false;
 	}
 
 	@Override
-	public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
+	public boolean allowPutStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide,
+			final ItemStack aStack) {
 		return false;
 	}
 
@@ -479,11 +471,16 @@ extends GT_MetaTileEntity_BasicTank
 	}
 
 	@Override
-	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return aSide == aFacing ? new ITexture[]{new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional), new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_Frequency)} : new ITexture[]{new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional), new GT_RenderedTexture(Textures.BlockIcons.VOID)};
+	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+			final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+		return aSide == aFacing
+				? new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
+						new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_Frequency) }
+				: new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
+						new GT_RenderedTexture(Textures.BlockIcons.VOID) };
 	}
 
-	//To-Do?
+	// To-Do?
 	@Override
 	public boolean doesFillContainers() {
 		return false;
@@ -516,7 +513,10 @@ extends GT_MetaTileEntity_BasicTank
 
 	@Override
 	public void onCreated(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
-		mOwner = aPlayer.getUniqueID();
+		if (this.getBaseMetaTileEntity().getOwnerName() != null
+				&& !this.getBaseMetaTileEntity().getOwnerName().equals("")) {
+			this.mOwner = PlayerUtils.getPlayersUUIDByName(this.getBaseMetaTileEntity().getOwnerName());
+		}
 		super.onCreated(aStack, aWorld, aPlayer);
 	}
 
@@ -524,7 +524,8 @@ extends GT_MetaTileEntity_BasicTank
 	public void onRemoval() {
 		try {
 			CORE.sTesseractTerminalOwnershipMap.get(mOwner).remove(this.mFrequency);
-		} catch (Throwable t){}
+		} catch (Throwable t) {
+		}
 		super.onRemoval();
 	}
 
