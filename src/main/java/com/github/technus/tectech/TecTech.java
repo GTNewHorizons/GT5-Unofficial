@@ -132,44 +132,47 @@ public class TecTech {
 
     private void fixBlocks(){
         String modId;
-        for(Block block : GameData.getBlockRegistry().typeSafeIterable()){
-            modId=GameRegistry.findUniqueIdentifierFor(block).modId;
-            if(
-                    modId.equals("minecraft") ||
-                    modId.equals("gregtech") ||
-                    modId.equals(Reference.MODID) ||
-                    modId.equals("IC2") ||
-                    //modId.equals("EnderIO") || // nerf
-                    //modId.equals("Thaumcraft") || // too op, nerf
-                    modId.equals("lootgames") ||
-                    modId.equals("extracells") ||
-                    modId.equals("ExtraUtilities") ||
-                    modId.equals("Avaritia") ||
-                    modId.equals("avaritiaddons") ||
-                    modId.equals("EnderStorage") ||
-                    modId.equals("enhancedportals") ||
-                    modId.equals("DraconicEvolution") ||
-                    modId.equals("dreamcraft") ||
-                    modId.equals("IC2NuclearControl") ||
-                    modId.equals("IronChest") ||
-                    modId.equals("opensecurity") ||
-                    modId.equals("openmodularturrets") ||
-                    modId.equals("Railcraft") ||
-                    modId.equals("RIO") ||
-                    modId.equals("SGCraft") ||
-                    modId.equals("appliedenergistics2") ||
-                    modId.equals("thaumicenergistics") ||
-                    modId.equals("TwilightForest") ||
-                    modId.equals("GalacticraftCore") ||
-                    modId.equals("GalacticraftMars") ||
-                    modId.equals("GalaxySpace") ||
-                    modId.equals("witchery") ||
-                    modId.equals("miscutils") ||
-                    modId.equals("GT++DarkWorld") ||
-                    modId.equals("utilityworlds")
-            ) continue;
-            else if(modId.equals("TConstruct")) {
-                block.slipperiness=1;
+        for(Block block : GameData.getBlockRegistry().typeSafeIterable()) {
+            modId = GameRegistry.findUniqueIdentifierFor(block).modId;
+            if (//Full Whitelisted Mods
+                            modId.equals("minecraft") ||
+                            modId.equals("IC2") ||
+                            modId.equals("gregtech") ||
+                            modId.equals("dreamcraft") ||
+                            modId.equals("miscutils") ||
+                            modId.equals("GT++DarkWorld") ||
+                            modId.equals("TwilightForest") ||
+                            modId.equals("GalacticraftCore") ||
+                            modId.equals("GalacticraftMars") ||
+                            modId.equals("GalaxySpace") ||
+                            //modId.equals("EnderIO") || // nerf
+                            //modId.equals("Thaumcraft") || // too op, nerf
+                            modId.equals("extracells") ||
+                            modId.equals("ExtraUtilities") ||
+                            modId.equals("Avaritia") ||
+                            modId.equals("avaritiaddons") ||
+                            modId.equals("EnderStorage") ||
+                            modId.equals("enhancedportals") ||
+                            modId.equals("DraconicEvolution") ||
+                            modId.equals("IC2NuclearControl") ||
+                            modId.equals("IronChest") ||
+                            modId.equals("opensecurity") ||
+                            modId.equals("openmodularturrets") ||
+                            modId.equals("Railcraft") ||
+                            modId.equals("RIO") ||
+                            modId.equals("SGCraft") ||
+                            modId.equals("appliedenergistics2") ||
+                            modId.equals("thaumicenergistics") ||
+                            modId.equals("witchery") ||
+                            modId.equals("lootgames") ||
+                            modId.equals(Reference.MODID) ||
+                            modId.equals("utilityworlds")) {
+                continue;
+            } else if (modId.equals("TConstruct")) {
+                block.slipperiness = 1;//cos we know it is slippery, right Greg?
+            } else if (modId.equals("OpenBlocks")) {
+                if (GameRegistry.findUniqueIdentifierFor(block).name.equals("grave"))
+                    continue;
             }
             block.setResistance(6);
         }
