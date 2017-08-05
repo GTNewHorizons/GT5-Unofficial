@@ -22,7 +22,7 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaItem_X32;
-import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GregtechMetaTileEntity_RTG_Generator;
+import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GregtechMetaTileEntity_RTG;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 
@@ -210,7 +210,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 				null,
 				0,
 				512,
-				MathUtils.roundToClosestInt(0.4f));
+				MathUtils.roundToClosestInt(0.6f));
 		Recipe_GT.Gregtech_Recipe_Map.sRTGFuels.addRecipe(
 				true,
 				new ItemStack[]{GregtechItemList.Pellet_RTG_AM241.get(1)},
