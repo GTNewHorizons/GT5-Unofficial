@@ -10,6 +10,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT;
 import gregtech.common.GT_Pollution;
+import gtPlusPlus.core.util.PollutionUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.init.Blocks;
@@ -38,7 +39,7 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 					this.mInventory[getStackDisplaySlot()] = null;
 				} else {
 					if (this.mInventory[getStackDisplaySlot()] == null)
-						this.mInventory[getStackDisplaySlot()] = GregtechItemList.Pellet_RTG_AM241.get(1);
+						this.mInventory[getStackDisplaySlot()] = new ItemStack(Blocks.fire, 1);
 					this.mInventory[getStackDisplaySlot()].setStackDisplayName("Generating: "
 							+ (aBaseMetaTileEntity.getUniversalEnergyStored() - getMinimumStoredEU()) + " EU");
 				}
@@ -70,10 +71,7 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 				}
 			}
 			if ((tProducedEU > 0L) && (getPollution() > 0)) {
-				GT_Pollution.addPollution(getBaseMetaTileEntity().getWorld(),
-						new ChunkPosition(getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getYCoord(),
-								getBaseMetaTileEntity().getZCoord()),
-						(int) (tProducedEU * getPollution() / 500 * this.mTier + 1L));
+				PollutionUtils.addPollution(aBaseMetaTileEntity, (int) (tProducedEU * getPollution() / 500 * this.mTier + 1L));
 			}
 		}
 
@@ -164,6 +162,17 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 	}
 
 	public int getPollution() {
+		return 0;
+	}
+	
+	public int getFuelValue(ItemStack aStack) {
+		if ((GT_Utility.isStackInvalid(aStack)) || (getRecipes() == null))
+			return 0;
+		GT_Recipe tFuel = getRecipes().findRecipe(getBaseMetaTileEntity(), false, 9223372036854775807L, null,
+				new ItemStack[] { aStack });
+		if (tFuel != null)
+			//return (int) (tFuel.mSpecialValue * 365L * getEfficiency() / 100L);
+			return tFuel.mEUt;
 		return 0;
 	}
 }
