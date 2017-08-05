@@ -178,8 +178,8 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
 							new StringBuilder().append(EnumChatFormatting.GREEN).append(" (Connected)").toString());
 				}
 			}
-		} else {
-			PlayerUtils.messagePlayer(aPlayer, "This is not your Tesseract Terminal to configure.");
+		} else if (aPlayer.getUniqueID().compareTo(this.mOwner) != 0){
+			GT_Utility.sendChatToPlayer(aPlayer, "This is not your Tesseract Terminal to configure.");
 		}
 		return true;
 	}
@@ -225,8 +225,8 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
 								: new StringBuilder().append(EnumChatFormatting.GREEN).append(" (Connected)")
 								.toString()));
 			}
-		} else {
-			PlayerUtils.messagePlayer(aPlayer, "This is not your Tesseract Terminal to configure.");
+		} else if (aPlayer.getUniqueID().compareTo(this.mOwner) != 0){
+			GT_Utility.sendChatToPlayer(aPlayer, "This is not your Tesseract Terminal to configure.");
 		}
 	}
 
@@ -479,7 +479,10 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
 
 	@Override
 	public String[] getDescription() {
-		return new String[] { this.mDescription, "Accesses Tesseract Generators remotely", CORE.GT_Tooltip };
+		return new String[] { this.mDescription,
+				"Accesses Tesseract Generators remotely",
+				"Connect with pipes to extract items",
+				CORE.GT_Tooltip };
 	}
 
 	@Override

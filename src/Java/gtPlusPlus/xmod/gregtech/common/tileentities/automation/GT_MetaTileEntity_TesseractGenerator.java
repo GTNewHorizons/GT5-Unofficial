@@ -188,41 +188,38 @@ public class GT_MetaTileEntity_TesseractGenerator extends GT_MetaTileEntity_Basi
 			}
 		}
 
-		if (aPlayer.getUniqueID().compareTo(this.mOwner) == 0) {
+		if (aSide == this.getBaseMetaTileEntity().getFrontFacing()) {
+			if (aPlayer.getUniqueID().compareTo(this.mOwner) == 0) {
+				final float[] tCoords = GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ);
+				switch ((byte) ((byte) (int) (tCoords[0] * 2.0F) + (2 * (byte) (int) (tCoords[1] * 2.0F)))) {
+				case 0:
+					Utils.LOG_WARNING("Freq. -1 | " + this.mFrequency);
+					try {
+						CORE.sTesseractGeneratorOwnershipMap.get(mOwner).remove(this.mFrequency);
+					} catch (Throwable t) {
+					}
+					this.mFrequency -= 1;
 
-			if (aSide == this.getBaseMetaTileEntity().getFrontFacing()) {
-				if (aPlayer.getUniqueID().compareTo(this.mOwner) == 0) {
-					final float[] tCoords = GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ);
-					switch ((byte) ((byte) (int) (tCoords[0] * 2.0F) + (2 * (byte) (int) (tCoords[1] * 2.0F)))) {
-					case 0:
-						Utils.LOG_WARNING("Freq. -1 | " + this.mFrequency);
-						try {
-							CORE.sTesseractGeneratorOwnershipMap.get(mOwner).remove(this.mFrequency);
-						} catch (Throwable t) {
-						}
-						this.mFrequency -= 1;
-						
-						break;
-					case 1:
-						Utils.LOG_WARNING("Freq. +1 | " + this.mFrequency);
-						try {
-							CORE.sTesseractGeneratorOwnershipMap.get(mOwner).remove(this.mFrequency);
-						} catch (Throwable t) {
-						}
-						this.mFrequency += 1;
-					default:
-						// Utils.LOG_WARNING("Did not click the correct place.");
-						break;
+					break;
+				case 1:
+					Utils.LOG_WARNING("Freq. +1 | " + this.mFrequency);
+					try {
+						CORE.sTesseractGeneratorOwnershipMap.get(mOwner).remove(this.mFrequency);
+					} catch (Throwable t) {
 					}
-					if (getGeneratorEntity(this.mFrequency) != null && getGeneratorEntity(this.mFrequency) != this){
-						GT_Utility.sendChatToPlayer(aPlayer, "Frequency: " + this.mFrequency + EnumChatFormatting.RED + " (Occupied)");
-					}
-					else {
-						GT_Utility.sendChatToPlayer(aPlayer, "Frequency: " + this.mFrequency);
-					}
-				} else {
-					PlayerUtils.messagePlayer(aPlayer, "This is not your Tesseract Generator to configure.");
+					this.mFrequency += 1;
+				default:
+					// Utils.LOG_WARNING("Did not click the correct place.");
+					break;
 				}
+				if (getGeneratorEntity(this.mFrequency) != null && getGeneratorEntity(this.mFrequency) != this){
+					GT_Utility.sendChatToPlayer(aPlayer, "Frequency: " + this.mFrequency + EnumChatFormatting.RED + " (Occupied)");
+				}
+				else {
+					GT_Utility.sendChatToPlayer(aPlayer, "Frequency: " + this.mFrequency);
+				}
+			} else if (aPlayer.getUniqueID().compareTo(this.mOwner) != 0){
+				GT_Utility.sendChatToPlayer(aPlayer, "This is not your Tesseract Generator to configure.");
 			}
 		}
 
@@ -268,12 +265,11 @@ public class GT_MetaTileEntity_TesseractGenerator extends GT_MetaTileEntity_Basi
 					GT_Utility.sendChatToPlayer(aPlayer, "Frequency: " + this.mFrequency + EnumChatFormatting.RED + " (Occupied)");
 				}
 				else {
-
 					GT_Utility.sendChatToPlayer(aPlayer, "Frequency: " + this.mFrequency);
 				}
 			}
 		} else {
-			PlayerUtils.messagePlayer(aPlayer, "This is not your Tesseract Generator to configure.");
+			GT_Utility.sendChatToPlayer(aPlayer, "This is not your Tesseract Generator to configure.");
 		}
 	}
 
@@ -609,7 +605,10 @@ public class GT_MetaTileEntity_TesseractGenerator extends GT_MetaTileEntity_Basi
 
 	@Override
 	public String[] getDescription() {
-		return new String[] { this.mDescription, "Generates a Tesseract for the attached Inventory", CORE.GT_Tooltip };
+		return new String[] { this.mDescription,
+				"Generates a Tesseract for the attached Inventory",
+				"Connect with pipes to insert items",
+				CORE.GT_Tooltip };
 	}
 
 	@Override
@@ -635,8 +634,8 @@ public class GT_MetaTileEntity_TesseractGenerator extends GT_MetaTileEntity_Basi
 		return aSide == aFacing
 				? new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
 						new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_Frequency) }
-				: new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
-						new GT_RenderedTexture(Textures.BlockIcons.VOID) };
+		: new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
+				new GT_RenderedTexture(Textures.BlockIcons.VOID) };
 	}
 
 	// To-Do?
