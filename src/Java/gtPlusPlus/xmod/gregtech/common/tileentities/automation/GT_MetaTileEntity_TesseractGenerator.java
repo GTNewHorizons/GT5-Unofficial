@@ -195,7 +195,7 @@ public class GT_MetaTileEntity_TesseractGenerator extends GT_MetaTileEntity_Basi
 					final float[] tCoords = GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ);
 					switch ((byte) ((byte) (int) (tCoords[0] * 2.0F) + (2 * (byte) (int) (tCoords[1] * 2.0F)))) {
 					case 0:
-						Utils.LOG_INFO("Freq. -1 | " + this.mFrequency);
+						Utils.LOG_WARNING("Freq. -1 | " + this.mFrequency);
 						try {
 							CORE.sTesseractGeneratorOwnershipMap.get(mOwner).remove(this.mFrequency);
 						} catch (Throwable t) {
@@ -204,14 +204,14 @@ public class GT_MetaTileEntity_TesseractGenerator extends GT_MetaTileEntity_Basi
 						
 						break;
 					case 1:
-						Utils.LOG_INFO("Freq. +1 | " + this.mFrequency);
+						Utils.LOG_WARNING("Freq. +1 | " + this.mFrequency);
 						try {
 							CORE.sTesseractGeneratorOwnershipMap.get(mOwner).remove(this.mFrequency);
 						} catch (Throwable t) {
 						}
 						this.mFrequency += 1;
 					default:
-						// Utils.LOG_INFO("Did not click the correct place.");
+						// Utils.LOG_WARNING("Did not click the correct place.");
 						break;
 					}
 					if (getGeneratorEntity(this.mFrequency) != null && getGeneratorEntity(this.mFrequency) != this){
@@ -549,49 +549,49 @@ public class GT_MetaTileEntity_TesseractGenerator extends GT_MetaTileEntity_Basi
 
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-		//Utils.LOG_INFO("Ticking Generator. 0");
+		//Utils.LOG_WARNING("Ticking Generator. 0");
 		if (this.getBaseMetaTileEntity().isServerSide()) {
-			//Utils.LOG_INFO("Ticking Generator.");
+			//Utils.LOG_WARNING("Ticking Generator.");
 			// Set owner
 			if (PlayerUtils.getPlayersUUIDByName(this.getBaseMetaTileEntity().getOwnerName()) != null) {
 				if (this.mOwner == null) {
-					Utils.LOG_INFO("Setting Generators Owner. 1");
+					Utils.LOG_WARNING("Setting Generators Owner. 1");
 					this.mOwner = PlayerUtils.getPlayersUUIDByName(this.getBaseMetaTileEntity().getOwnerName());
 				}
 			}
 
 			if (this.mFrequency != this.oFrequency) {
 
-				Utils.LOG_INFO("mFreq != oFreq");
+				Utils.LOG_WARNING("mFreq != oFreq");
 
 				if (getGeneratorEntity() == this) {
 					getGeneratorEntity(this.oFrequency);
 					this.getBaseMetaTileEntity().issueBlockUpdate();
-					Utils.LOG_INFO("this Gen == oFreq on map - do block update");
+					Utils.LOG_WARNING("this Gen == oFreq on map - do block update");
 				}
-				Utils.LOG_INFO("mFreq will be set to oFreq");
+				Utils.LOG_WARNING("mFreq will be set to oFreq");
 				this.oFrequency = this.mFrequency;
 			}
 			if ((this.getBaseMetaTileEntity().isAllowedToWork())
 					&& (this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(this.mNeededEnergy, false))) {
-				//Utils.LOG_INFO("Can Work & Has Energy");
+				//Utils.LOG_WARNING("Can Work & Has Energy");
 				if ((getGeneratorEntity(Integer.valueOf(this.mFrequency)) == null)
 						|| (!getGeneratorEntity(Integer.valueOf(this.mFrequency)).isValidTesseractGenerator(null,
 								true))) {
-					//Utils.LOG_INFO("storing TE I think to mFreq map?");
+					//Utils.LOG_WARNING("storing TE I think to mFreq map?");
 					TesseractHelper.setGeneratorOwnershipByPlayer(PlayerUtils.getPlayerOnServerFromUUID(mOwner),
 							this.mFrequency, this);
 				}
 			} else {
 				if (getGeneratorEntity(Integer.valueOf(this.mFrequency)) == this) {
-					Utils.LOG_INFO("this gen == mFreq on map - do block update");
+					Utils.LOG_WARNING("this gen == mFreq on map - do block update");
 					TesseractHelper.removeGenerator(PlayerUtils.getPlayerOnServerFromUUID(mOwner), this.mFrequency);
 					this.getBaseMetaTileEntity().issueBlockUpdate();
 				}
 				this.isWorking = 0;
 			}
 			if (getGeneratorEntity(Integer.valueOf(this.mFrequency)) == this) {
-				//Utils.LOG_INFO("mFreq == this - do work related things");
+				//Utils.LOG_WARNING("mFreq == this - do work related things");
 				if (this.isWorking < 20) {
 					this.isWorking = ((byte) (this.isWorking + 1));
 				}
@@ -693,7 +693,7 @@ public class GT_MetaTileEntity_TesseractGenerator extends GT_MetaTileEntity_Basi
 		if (this.getBaseMetaTileEntity().getOwnerName() != null
 				&& !this.getBaseMetaTileEntity().getOwnerName().equals("")) {
 			this.mOwner = PlayerUtils.getPlayersUUIDByName(this.getBaseMetaTileEntity().getOwnerName());
-			Utils.LOG_INFO("Setting Generators Owner. 2");
+			Utils.LOG_WARNING("Setting Generators Owner. 2");
 		}
 		super.onCreated(aStack, aWorld, aPlayer);
 	}

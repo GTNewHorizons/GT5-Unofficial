@@ -125,6 +125,7 @@ public class CORE {
 		public static boolean enableMachine_RocketEngines = true;
 		public static boolean enableMachine_GeothermalEngines = true;
 		public static boolean enableMachine_WorldAccelerators = true;
+		public static boolean enableMachine_Tesseracts = true;
 		public static boolean enableCustom_Pipes = true;
 		public static boolean enableCustom_Cables = true;
 

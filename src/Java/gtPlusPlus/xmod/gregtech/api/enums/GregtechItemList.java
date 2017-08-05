@@ -191,7 +191,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	AcceleratorIV, AcceleratorLuV, AcceleratorZPM, AcceleratorUV, 
 	
 	//GT RTG
-	Pellet_RTG_PU238, Pellet_RTG_SR90, Pellet_RTG_PO210, Pellet_RTG_AM241
+	Pellet_RTG_PU238, Pellet_RTG_SR90, Pellet_RTG_PO210, Pellet_RTG_AM241, 
+	
+	//Computer Cube
+	Gregtech_Computer_Cube
 	
 	
 	

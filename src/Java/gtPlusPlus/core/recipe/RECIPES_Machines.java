@@ -67,7 +67,9 @@ public class RECIPES_Machines {
 	//Industrial Tree Farmer
 	public static ItemStack RECIPE_TreeFarmController;
 	public static ItemStack RECIPE_TreeFarmFrame;
-
+	//Tesseracts
+	public static ItemStack RECIPE_TesseractGenerator;
+	public static ItemStack RECIPE_TesseractTerminal;
 
 	//Buffer Cores
 	public static ItemStack RECIPE_BufferCore_ULV = ItemUtils.getItemStack("miscutils:item.itemBufferCore1", 1);
@@ -184,7 +186,7 @@ public class RECIPES_Machines {
 		if (LoadedMods.Gregtech){
 
 
-			
+
 
 			//Lava Boiler
 			boiler_Coal = ItemList.Machine_Bronze_Boiler.get(1);
@@ -215,163 +217,170 @@ public class RECIPES_Machines {
 
 	private static void runModRecipes(){
 		if (LoadedMods.Gregtech){
+			
+			//Computer Cube
+			RecipeUtils.addShapedGregtechRecipe(
+					CI.getDataOrb(),ItemList.Cover_Screen.get(1),"circuitMaster",
+					ItemList.Cover_Screen.get(1),CI.machineHull_EV,ItemList.Cover_Screen.get(1),
+					"circuitMaster",ItemList.Cover_Screen.get(1),CI.getDataOrb(),
+					GregtechItemList.Gregtech_Computer_Cube.get(1));
 
 			RecipeUtils.addShapedGregtechRecipe(
-			ItemList.Electric_Piston_EV, OrePrefixes.circuit.get(Materials.Ultimate), ItemList.Electric_Piston_EV,
-			ItemList.Electric_Motor_EV, CI.machineCasing_EV, ItemList.Electric_Motor_EV,
-			"gearGtTitanium", "cableGt02Aluminium", "gearGtTitanium",
-			ItemUtils.simpleMetaStack("gregtech:gt.blockmachines", 793, 1));
+					ItemList.Electric_Piston_EV, OrePrefixes.circuit.get(Materials.Ultimate), ItemList.Electric_Piston_EV,
+					ItemList.Electric_Motor_EV, CI.machineCasing_EV, ItemList.Electric_Motor_EV,
+					"gearGtTitanium", "cableGt02Aluminium", "gearGtTitanium",
+					ItemUtils.simpleMetaStack("gregtech:gt.blockmachines", 793, 1));
 			RecipeUtils.addShapedGregtechRecipe(
-			ItemList.Electric_Piston_IV, OrePrefixes.circuit.get(Materials.Superconductor), ItemList.Electric_Piston_IV,
-			ItemList.Electric_Motor_IV, CI.machineCasing_IV, ItemList.Electric_Motor_IV,
-			"gearGtTungstenSteel", "cableGt02Platinum", "gearGtTungstenSteel",
-			ItemUtils.simpleMetaStack("gregtech:gt.blockmachines", 794, 1));
+					ItemList.Electric_Piston_IV, OrePrefixes.circuit.get(Materials.Superconductor), ItemList.Electric_Piston_IV,
+					ItemList.Electric_Motor_IV, CI.machineCasing_IV, ItemList.Electric_Motor_IV,
+					"gearGtTungstenSteel", "cableGt02Platinum", "gearGtTungstenSteel",
+					ItemUtils.simpleMetaStack("gregtech:gt.blockmachines", 794, 1));
 			RecipeUtils.addShapedGregtechRecipe(
-			CI.electricPiston_LuV, OrePrefixes.circuit.get(Materials.Infinite), CI.electricPiston_LuV,
-			CI.electricMotor_LuV, CI.machineCasing_LuV, CI.electricMotor_LuV,
-			"gearGtChrome", "cableGt02Tungsten", "gearGtChrome",
-			ItemUtils.simpleMetaStack("gregtech:gt.blockmachines", 795, 1));
+					CI.electricPiston_LuV, OrePrefixes.circuit.get(Materials.Infinite), CI.electricPiston_LuV,
+					CI.electricMotor_LuV, CI.machineCasing_LuV, CI.electricMotor_LuV,
+					"gearGtChrome", "cableGt02Tungsten", "gearGtChrome",
+					ItemUtils.simpleMetaStack("gregtech:gt.blockmachines", 795, 1));
 
 			//Buffer Core
 			RecipeUtils.addShapedGregtechRecipe(
-			CI.component_Plate[1], cableTier1, CI.component_Plate[1],
-			CI.circuitPrimitive, IC2MFE, CI.circuitPrimitive,
-			CI.component_Plate[1], cableTier1, CI.component_Plate[1],
-			RECIPE_BufferCore_ULV);
+					CI.component_Plate[1], cableTier1, CI.component_Plate[1],
+					CI.circuitPrimitive, IC2MFE, CI.circuitPrimitive,
+					CI.component_Plate[1], cableTier1, CI.component_Plate[1],
+					RECIPE_BufferCore_ULV);
 			RecipeUtils.addShapedGregtechRecipe(
-			CI.component_Plate[2], cableTier2, CI.component_Plate[2],
-			CI.circuitTier1, IC2MFE, CI.circuitTier1,
-			CI.component_Plate[2], cableTier2, CI.component_Plate[2],
-			RECIPE_BufferCore_LV);
+					CI.component_Plate[2], cableTier2, CI.component_Plate[2],
+					CI.circuitTier1, IC2MFE, CI.circuitTier1,
+					CI.component_Plate[2], cableTier2, CI.component_Plate[2],
+					RECIPE_BufferCore_LV);
 			RecipeUtils.addShapedGregtechRecipe(
-			CI.component_Plate[3], cableTier3, CI.component_Plate[3],
-			RECIPE_BufferCore_LV, CI.circuitTier2, RECIPE_BufferCore_LV,
-			CI.component_Plate[3], cableTier3, CI.component_Plate[3],
-			RECIPE_BufferCore_MV);
+					CI.component_Plate[3], cableTier3, CI.component_Plate[3],
+					RECIPE_BufferCore_LV, CI.circuitTier2, RECIPE_BufferCore_LV,
+					CI.component_Plate[3], cableTier3, CI.component_Plate[3],
+					RECIPE_BufferCore_MV);
 			RecipeUtils.addShapedGregtechRecipe(
-			CI.component_Plate[4], cableTier4, CI.component_Plate[4],
-			RECIPE_BufferCore_MV, CI.circuitTier3, RECIPE_BufferCore_MV,
-			CI.component_Plate[4], cableTier4, CI.component_Plate[4],
-			RECIPE_BufferCore_HV);
+					CI.component_Plate[4], cableTier4, CI.component_Plate[4],
+					RECIPE_BufferCore_MV, CI.circuitTier3, RECIPE_BufferCore_MV,
+					CI.component_Plate[4], cableTier4, CI.component_Plate[4],
+					RECIPE_BufferCore_HV);
 			RecipeUtils.addShapedGregtechRecipe(
-			CI.component_Plate[5], cableTier5, CI.component_Plate[5],
-			RECIPE_BufferCore_HV, CI.circuitTier4, RECIPE_BufferCore_HV,
-			CI.component_Plate[5], cableTier5, CI.component_Plate[5],
-			RECIPE_BufferCore_EV);
+					CI.component_Plate[5], cableTier5, CI.component_Plate[5],
+					RECIPE_BufferCore_HV, CI.circuitTier4, RECIPE_BufferCore_HV,
+					CI.component_Plate[5], cableTier5, CI.component_Plate[5],
+					RECIPE_BufferCore_EV);
 			RecipeUtils.addShapedGregtechRecipe(
-			CI.component_Plate[6], cableTier6, CI.component_Plate[6],
-			RECIPE_BufferCore_EV, CI.circuitTier5, RECIPE_BufferCore_EV,
-			CI.component_Plate[6], cableTier6, CI.component_Plate[6],
-			RECIPE_BufferCore_IV);
+					CI.component_Plate[6], cableTier6, CI.component_Plate[6],
+					RECIPE_BufferCore_EV, CI.circuitTier5, RECIPE_BufferCore_EV,
+					CI.component_Plate[6], cableTier6, CI.component_Plate[6],
+					RECIPE_BufferCore_IV);
 			RecipeUtils.addShapedGregtechRecipe(
-			CI.component_Plate[7], cableTier7, CI.component_Plate[7],
-			RECIPE_BufferCore_IV, CI.circuitTier6, RECIPE_BufferCore_IV,
-			CI.component_Plate[7], cableTier7, CI.component_Plate[7],
-			RECIPE_BufferCore_LuV);
+					CI.component_Plate[7], cableTier7, CI.component_Plate[7],
+					RECIPE_BufferCore_IV, CI.circuitTier6, RECIPE_BufferCore_IV,
+					CI.component_Plate[7], cableTier7, CI.component_Plate[7],
+					RECIPE_BufferCore_LuV);
 			RecipeUtils.addShapedGregtechRecipe(
-			CI.component_Plate[8], cableTier8, CI.component_Plate[8],
-			RECIPE_BufferCore_LuV, CI.circuitTier7, RECIPE_BufferCore_LuV,
-			CI.component_Plate[8], cableTier8, CI.component_Plate[8],
-			RECIPE_BufferCore_ZPM);
+					CI.component_Plate[8], cableTier8, CI.component_Plate[8],
+					RECIPE_BufferCore_LuV, CI.circuitTier7, RECIPE_BufferCore_LuV,
+					CI.component_Plate[8], cableTier8, CI.component_Plate[8],
+					RECIPE_BufferCore_ZPM);
 			RecipeUtils.addShapedGregtechRecipe(
-			CI.component_Plate[9], cableTier9, CI.component_Plate[9],
-			RECIPE_BufferCore_ZPM, CI.circuitTier8, RECIPE_BufferCore_ZPM,
-			CI.component_Plate[9], cableTier9, CI.component_Plate[9],
-			RECIPE_BufferCore_UV);
+					CI.component_Plate[9], cableTier9, CI.component_Plate[9],
+					RECIPE_BufferCore_ZPM, CI.circuitTier8, RECIPE_BufferCore_ZPM,
+					CI.component_Plate[9], cableTier9, CI.component_Plate[9],
+					RECIPE_BufferCore_UV);
 			RecipeUtils.addShapedGregtechRecipe(
-			CI.component_Plate[10], cableTier10, CI.component_Plate[10],
-			RECIPE_BufferCore_UV, CI.circuitTier9, RECIPE_BufferCore_UV,
-			CI.component_Plate[10], cableTier10, CI.component_Plate[10],
-			RECIPE_BufferCore_MAX);
+					CI.component_Plate[10], cableTier10, CI.component_Plate[10],
+					RECIPE_BufferCore_UV, CI.circuitTier9, RECIPE_BufferCore_UV,
+					CI.component_Plate[10], cableTier10, CI.component_Plate[10],
+					RECIPE_BufferCore_MAX);
 
 
 			RecipeUtils.addShapedGregtechRecipe(
-			wireTier1, RECIPE_BufferCore_ULV, wireTier1,
-			wireTier1, CI.machineCasing_ULV, wireTier1,
-			CI.circuitPrimitive, CI.circuitTier1, CI.circuitPrimitive,
-			RECIPE_Buffer_ULV);
+					wireTier1, RECIPE_BufferCore_ULV, wireTier1,
+					wireTier1, CI.machineCasing_ULV, wireTier1,
+					CI.circuitPrimitive, CI.circuitTier1, CI.circuitPrimitive,
+					RECIPE_Buffer_ULV);
 			RecipeUtils.addShapedGregtechRecipe(
-			wireTier2, RECIPE_BufferCore_LV, wireTier2,
-			wireTier2, CI.machineCasing_LV, wireTier2,
-			CI.circuitTier1, RECIPE_BufferCore_LV, CI.circuitTier1,
-			RECIPE_Buffer_LV);
+					wireTier2, RECIPE_BufferCore_LV, wireTier2,
+					wireTier2, CI.machineCasing_LV, wireTier2,
+					CI.circuitTier1, RECIPE_BufferCore_LV, CI.circuitTier1,
+					RECIPE_Buffer_LV);
 			RecipeUtils.addShapedGregtechRecipe(
-			wireTier3, RECIPE_BufferCore_MV, wireTier3,
-			wireTier3, CI.machineCasing_MV, wireTier3,
-			CI.circuitTier2, RECIPE_BufferCore_MV, CI.circuitTier2,
-			RECIPE_Buffer_MV);
+					wireTier3, RECIPE_BufferCore_MV, wireTier3,
+					wireTier3, CI.machineCasing_MV, wireTier3,
+					CI.circuitTier2, RECIPE_BufferCore_MV, CI.circuitTier2,
+					RECIPE_Buffer_MV);
 			RecipeUtils.addShapedGregtechRecipe(
-			wireTier4, RECIPE_BufferCore_HV, wireTier4,
-			wireTier4, CI.machineCasing_HV, wireTier4,
-			CI.circuitTier3, RECIPE_BufferCore_HV, CI.circuitTier3,
-			RECIPE_Buffer_HV);
+					wireTier4, RECIPE_BufferCore_HV, wireTier4,
+					wireTier4, CI.machineCasing_HV, wireTier4,
+					CI.circuitTier3, RECIPE_BufferCore_HV, CI.circuitTier3,
+					RECIPE_Buffer_HV);
 			RecipeUtils.addShapedGregtechRecipe(
-			wireTier5, RECIPE_BufferCore_EV, wireTier5,
-			wireTier5, CI.machineCasing_EV, wireTier5,
-			CI.circuitTier4, RECIPE_BufferCore_EV, CI.circuitTier4,
-			RECIPE_Buffer_EV);
+					wireTier5, RECIPE_BufferCore_EV, wireTier5,
+					wireTier5, CI.machineCasing_EV, wireTier5,
+					CI.circuitTier4, RECIPE_BufferCore_EV, CI.circuitTier4,
+					RECIPE_Buffer_EV);
 			RecipeUtils.addShapedGregtechRecipe(
-			wireTier6, RECIPE_BufferCore_IV, wireTier6,
-			wireTier6, CI.machineCasing_IV, wireTier6,
-			CI.circuitTier5, RECIPE_BufferCore_IV, CI.circuitTier5,
-			RECIPE_Buffer_IV);
+					wireTier6, RECIPE_BufferCore_IV, wireTier6,
+					wireTier6, CI.machineCasing_IV, wireTier6,
+					CI.circuitTier5, RECIPE_BufferCore_IV, CI.circuitTier5,
+					RECIPE_Buffer_IV);
 			RecipeUtils.addShapedGregtechRecipe(
-			wireTier7, RECIPE_BufferCore_LuV, wireTier7,
-			wireTier7, CI.machineCasing_LuV, wireTier7,
-			CI.circuitTier6, RECIPE_BufferCore_LuV, CI.circuitTier6,
-			RECIPE_Buffer_LuV);
+					wireTier7, RECIPE_BufferCore_LuV, wireTier7,
+					wireTier7, CI.machineCasing_LuV, wireTier7,
+					CI.circuitTier6, RECIPE_BufferCore_LuV, CI.circuitTier6,
+					RECIPE_Buffer_LuV);
 			RecipeUtils.addShapedGregtechRecipe(
-			wireTier8, RECIPE_BufferCore_ZPM, wireTier8,
-			wireTier8, CI.machineCasing_ZPM, wireTier8,
-			CI.circuitTier7, RECIPE_BufferCore_ZPM, CI.circuitTier7,
-			RECIPE_Buffer_ZPM);
+					wireTier8, RECIPE_BufferCore_ZPM, wireTier8,
+					wireTier8, CI.machineCasing_ZPM, wireTier8,
+					CI.circuitTier7, RECIPE_BufferCore_ZPM, CI.circuitTier7,
+					RECIPE_Buffer_ZPM);
 			RecipeUtils.addShapedGregtechRecipe(
-			wireTier9, RECIPE_BufferCore_UV, wireTier9,
-			wireTier9, CI.machineCasing_UV, wireTier9,
-			CI.circuitTier8, RECIPE_BufferCore_UV, CI.circuitTier8,
-			RECIPE_Buffer_UV);
+					wireTier9, RECIPE_BufferCore_UV, wireTier9,
+					wireTier9, CI.machineCasing_UV, wireTier9,
+					CI.circuitTier8, RECIPE_BufferCore_UV, CI.circuitTier8,
+					RECIPE_Buffer_UV);
 			RecipeUtils.addShapedGregtechRecipe(
-			CI.component_Plate[11], RECIPE_BufferCore_MAX, CI.component_Plate[11],
-			wireTier10, CI.machineCasing_MAX, wireTier10,
-			CI.circuitTier9, RECIPE_BufferCore_MAX, CI.circuitTier9,
-			RECIPE_Buffer_MAX);
+					CI.component_Plate[11], RECIPE_BufferCore_MAX, CI.component_Plate[11],
+					wireTier10, CI.machineCasing_MAX, wireTier10,
+					CI.circuitTier9, RECIPE_BufferCore_MAX, CI.circuitTier9,
+					RECIPE_Buffer_MAX);
 
 			//Steam Condenser
 			if (CORE.configSwitches.enableMachine_SteamConverter ){
 				RECIPE_SteamCondenser = GregtechItemList.Condensor_MAX.get(1);
 				RecipeUtils.addShapedGregtechRecipe(
-				pipeLargeCopper, pipeHugeSteel, pipeLargeCopper,
-				plateEnergeticAlloy, CI.electricPump_HV, plateEnergeticAlloy,
-				plateEnergeticAlloy, pipeLargeCopper, plateEnergeticAlloy,
-				RECIPE_SteamCondenser);
+						pipeLargeCopper, pipeHugeSteel, pipeLargeCopper,
+						plateEnergeticAlloy, CI.electricPump_HV, plateEnergeticAlloy,
+						plateEnergeticAlloy, pipeLargeCopper, plateEnergeticAlloy,
+						RECIPE_SteamCondenser);
 			}
 
-			
+
 			if (CORE.configSwitches.enableMultiblock_IronBlastFurnace){
-				
+
 				RECIPE_IronBlastFurnace = GregtechItemList.Machine_Iron_BlastFurnace.get(1);
 				RECIPE_IronPlatedBricks = GregtechItemList.Casing_IronPlatedBricks.get(1);
 
 				//Iron BF
 				RecipeUtils.addShapedGregtechRecipe(
-				"plateDoubleAnyIron", "craftingFurnace", "plateDoubleAnyIron",
-				boiler_Coal, CI.machineCasing_ULV, boiler_Coal,
-				"plateDoubleAnyIron", "bucketLava", "plateDoubleAnyIron",
-				RECIPE_IronBlastFurnace);
+						"plateDoubleAnyIron", "craftingFurnace", "plateDoubleAnyIron",
+						boiler_Coal, CI.machineCasing_ULV, boiler_Coal,
+						"plateDoubleAnyIron", "bucketLava", "plateDoubleAnyIron",
+						RECIPE_IronBlastFurnace);
 				//Iron plated Bricks
 				RecipeUtils.addShapedGregtechRecipe(
-				"plateAnyIron", RECIPES_Tools.craftingToolHardHammer, "plateAnyIron",
-				"plateAnyIron", blockBricks, "plateAnyIron",
-				"plateAnyIron", RECIPES_Tools.craftingToolWrench, "plateAnyIron",
-				RECIPE_IronPlatedBricks);
+						"plateAnyIron", RECIPES_Tools.craftingToolHardHammer, "plateAnyIron",
+						"plateAnyIron", blockBricks, "plateAnyIron",
+						"plateAnyIron", RECIPES_Tools.craftingToolWrench, "plateAnyIron",
+						RECIPE_IronPlatedBricks);
 
 				//Add recycle recipes for the Iron Plated Bricks
 				//GT_ModHandler.addPulverisationRecipe(RECIPE_IronPlatedBricks, ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustIron", 6), ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustClay", 2), true);
 				RECIPES_GREGTECH.addPulverisationRecipe(
-				RECIPE_IronPlatedBricks,
-				ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustIron", 6),
-				ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustClay", 2),
-				null);
+						RECIPE_IronPlatedBricks,
+						ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustIron", 6),
+						ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustClay", 2),
+						null);
 				GT_Values.RA.addArcFurnaceRecipe(RECIPE_IronPlatedBricks, new ItemStack[]{ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotWroughtIron", 6), ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustAsh", 2)}, new int[]{0}, 32*20, 32);
 			}
 
@@ -382,16 +391,16 @@ public class RECIPES_Machines {
 
 				//Industrial Centrifuge
 				RecipeUtils.addShapedGregtechRecipe(
-				CI.circuitTier6, pipeHugeStainlessSteel, CI.circuitTier6,
-				CI.component_Plate[6], IV_MACHINE_Centrifuge, CI.component_Plate[6],
-				CI.component_Plate[8], CI.machineCasing_IV, CI.component_Plate[8],
-				RECIPE_IndustrialCentrifugeController);
+						CI.circuitTier6, pipeHugeStainlessSteel, CI.circuitTier6,
+						CI.component_Plate[6], IV_MACHINE_Centrifuge, CI.component_Plate[6],
+						CI.component_Plate[8], CI.machineCasing_IV, CI.component_Plate[8],
+						RECIPE_IndustrialCentrifugeController);
 				//Centrifuge Casing
 				RecipeUtils.addShapedGregtechRecipe(
-				CI.component_Plate[6], "stickTumbaga", CI.component_Plate[6],
-				CI.component_Plate[8], "stickTumbaga", CI.component_Plate[8],
-				CI.component_Plate[6], "stickTumbaga", CI.component_Plate[6],
-				RECIPE_IndustrialCentrifugeCasing);
+						CI.component_Plate[6], "stickTumbaga", CI.component_Plate[6],
+						CI.component_Plate[8], "stickTumbaga", CI.component_Plate[8],
+						CI.component_Plate[6], "stickTumbaga", CI.component_Plate[6],
+						RECIPE_IndustrialCentrifugeCasing);
 			}
 
 			if (CORE.configSwitches.enableMultiblock_IndustrialCokeOven){
@@ -404,37 +413,37 @@ public class RECIPES_Machines {
 				if (LoadedMods.Railcraft){
 					//Industrial Coke Oven
 					RecipeUtils.addShapedGregtechRecipe(
-					plateCobalt, CI.circuitTier4, plateCobalt,
-					CI.machineCasing_HV, INPUT_RCCokeOvenBlock, CI.machineCasing_HV,
-					plateCobalt, CI.circuitTier5, plateCobalt,
-					RECIPE_IndustrialCokeOvenController);
+							plateCobalt, CI.circuitTier4, plateCobalt,
+							CI.machineCasing_HV, INPUT_RCCokeOvenBlock, CI.machineCasing_HV,
+							plateCobalt, CI.circuitTier5, plateCobalt,
+							RECIPE_IndustrialCokeOvenController);
 				}
 				if (LoadedMods.ImmersiveEngineering){
 					//Industrial Coke Oven
 					RecipeUtils.addShapedGregtechRecipe(
-					CI.component_Plate[8], CI.circuitTier4, CI.component_Plate[8],
-					CI.machineCasing_HV, INPUT_IECokeOvenBlock, CI.machineCasing_HV,
-					CI.component_Plate[8], CI.circuitTier3, CI.component_Plate[8],
-					RECIPE_IndustrialCokeOvenController);
+							CI.component_Plate[8], CI.circuitTier4, CI.component_Plate[8],
+							CI.machineCasing_HV, INPUT_IECokeOvenBlock, CI.machineCasing_HV,
+							CI.component_Plate[8], CI.circuitTier3, CI.component_Plate[8],
+							RECIPE_IndustrialCokeOvenController);
 				}
 				//Coke Oven Frame Casing
 				RecipeUtils.addShapedGregtechRecipe(
-				CI.component_Plate[7], CI.component_Rod[7], CI.component_Plate[7],
-				CI.component_Rod[7], "frameGtTantalloy61", CI.component_Rod[7],
-				CI.component_Plate[7], CI.component_Rod[7], CI.component_Plate[7],
-				RECIPE_IndustrialCokeOvenFrame);
+						CI.component_Plate[7], CI.component_Rod[7], CI.component_Plate[7],
+						CI.component_Rod[7], "frameGtTantalloy61", CI.component_Rod[7],
+						CI.component_Plate[7], CI.component_Rod[7], CI.component_Plate[7],
+						RECIPE_IndustrialCokeOvenFrame);
 				//Coke Oven Coil 1
 				RecipeUtils.addShapedGregtechRecipe(
-				plateBronze, plateBronze, plateBronze,
-				"frameGtBronze", CI.gearboxCasing_Tier_1, "frameGtBronze",
-				plateBronze, plateBronze, plateBronze,
-				RECIPE_IndustrialCokeOvenCasingA);
+						plateBronze, plateBronze, plateBronze,
+						"frameGtBronze", CI.gearboxCasing_Tier_1, "frameGtBronze",
+						plateBronze, plateBronze, plateBronze,
+						RECIPE_IndustrialCokeOvenCasingA);
 				//Coke Oven Coil 2
 				RecipeUtils.addShapedGregtechRecipe(
-				plateSteel, plateSteel, plateSteel,
-				"frameGtSteel", CI.gearboxCasing_Tier_2, "frameGtSteel",
-				plateSteel, plateSteel, plateSteel,
-				RECIPE_IndustrialCokeOvenCasingB);
+						plateSteel, plateSteel, plateSteel,
+						"frameGtSteel", CI.gearboxCasing_Tier_2, "frameGtSteel",
+						plateSteel, plateSteel, plateSteel,
+						RECIPE_IndustrialCokeOvenCasingB);
 			}
 
 			if (CORE.configSwitches.enableMultiblock_IndustrialElectrolyzer){
@@ -444,16 +453,16 @@ public class RECIPES_Machines {
 
 				//Electrolyzer Frame Casing
 				RecipeUtils.addShapedGregtechRecipe(
-				"platePotin", "stickLongChrome", "platePotin",
-				"stickLongPotin", "frameGtPotin", "stickLongPotin",
-				"platePotin", "stickLongPotin", "platePotin",
-				RECIPE_IndustrialElectrolyzerFrame);
+						"platePotin", "stickLongChrome", "platePotin",
+						"stickLongPotin", "frameGtPotin", "stickLongPotin",
+						"platePotin", "stickLongPotin", "platePotin",
+						RECIPE_IndustrialElectrolyzerFrame);
 				//Industrial Electrolyzer
 				RecipeUtils.addShapedGregtechRecipe(
-				"plateStellite", CI.circuitTier6, "plateStellite",
-				CI.machineCasing_EV, IV_MACHINE_Electrolyzer, CI.machineCasing_EV,
-				"plateStellite", "rotorStellite", "plateStellite",
-				RECIPE_IndustrialElectrolyzerController);
+						"plateStellite", CI.circuitTier6, "plateStellite",
+						CI.machineCasing_EV, IV_MACHINE_Electrolyzer, CI.machineCasing_EV,
+						"plateStellite", "rotorStellite", "plateStellite",
+						RECIPE_IndustrialElectrolyzerController);
 			}
 
 			if (CORE.configSwitches.enableMultiblock_IndustrialPlatePress){
@@ -463,16 +472,16 @@ public class RECIPES_Machines {
 
 				//Material Press Frame Casing
 				RecipeUtils.addShapedGregtechRecipe(
-				"plateTitanium", "stickLongTumbaga", "plateTitanium",
-				"stickTantalloy60", "frameGtTumbaga", "stickTantalloy60",
-				"plateTitanium", "stickLongTumbaga", "plateTitanium",
-				RECIPE_IndustrialMaterialPressFrame);
+						"plateTitanium", "stickLongTumbaga", "plateTitanium",
+						"stickTantalloy60", "frameGtTumbaga", "stickTantalloy60",
+						"plateTitanium", "stickLongTumbaga", "plateTitanium",
+						RECIPE_IndustrialMaterialPressFrame);
 				//Industrial Material Press
 				RecipeUtils.addShapedGregtechRecipe(
-				"plateTitanium", CI.circuitTier5, "plateTitanium",
-				CI.machineCasing_EV, IV_MACHINE_BendingMachine, CI.machineCasing_EV,
-				"plateTitanium", CI.circuitTier5, "plateTitanium",
-				RECIPE_IndustrialMaterialPressController);
+						"plateTitanium", CI.circuitTier5, "plateTitanium",
+						CI.machineCasing_EV, IV_MACHINE_BendingMachine, CI.machineCasing_EV,
+						"plateTitanium", CI.circuitTier5, "plateTitanium",
+						RECIPE_IndustrialMaterialPressController);
 			}
 
 			if (CORE.configSwitches.enableMultiblock_IndustrialMacerationStack){
@@ -482,16 +491,16 @@ public class RECIPES_Machines {
 
 				//Maceration Frame Casing
 				RecipeUtils.addShapedGregtechRecipe(
-				"platePalladium", "platePalladium", "platePalladium",
-				"stickPlatinum", "frameGtInconel625", "stickPlatinum",
-				"platePalladium", "stickLongPalladium", "platePalladium",
-				RECIPE_IndustrialMacerationStackFrame);
+						"platePalladium", "platePalladium", "platePalladium",
+						"stickPlatinum", "frameGtInconel625", "stickPlatinum",
+						"platePalladium", "stickLongPalladium", "platePalladium",
+						RECIPE_IndustrialMacerationStackFrame);
 				//Industrial Maceration stack
 				RecipeUtils.addShapedGregtechRecipe(
-				"plateTungstenCarbide", IV_MACHINE_Macerator, "plateTungstenCarbide",
-				EV_MACHINE_Macerator, CI.circuitTier7, EV_MACHINE_Macerator,
-				"plateTungstenCarbide", CI.machineCasing_IV, "plateTungstenCarbide",
-				RECIPE_IndustrialMacerationStackController);
+						"plateTungstenCarbide", IV_MACHINE_Macerator, "plateTungstenCarbide",
+						EV_MACHINE_Macerator, CI.circuitTier7, EV_MACHINE_Macerator,
+						"plateTungstenCarbide", CI.machineCasing_IV, "plateTungstenCarbide",
+						RECIPE_IndustrialMacerationStackController);
 			}
 
 			if (CORE.configSwitches.enableMultiblock_IndustrialWireMill){
@@ -501,16 +510,16 @@ public class RECIPES_Machines {
 
 				//Wire Factory Frame Casing
 				RecipeUtils.addShapedGregtechRecipe(
-				"plateBlueSteel", "stickBlueSteel", "plateBlueSteel",
-				"stickBlueSteel", "frameGtBlueSteel", "stickBlueSteel",
-				"plateBlueSteel", "stickBlueSteel", "plateBlueSteel",
-				RECIPE_IndustrialWireFactoryFrame);
+						"plateBlueSteel", "stickBlueSteel", "plateBlueSteel",
+						"stickBlueSteel", "frameGtBlueSteel", "stickBlueSteel",
+						"plateBlueSteel", "stickBlueSteel", "plateBlueSteel",
+						RECIPE_IndustrialWireFactoryFrame);
 				//Industrial Wire Factory
 				RecipeUtils.addShapedGregtechRecipe(
-				"plateZeron100", CI.machineCasing_IV, "plateZeron100",
-				CI.circuitTier6, IV_MACHINE_Wiremill, CI.circuitTier6,
-				"plateZeron100", CI.machineCasing_IV, "plateZeron100",
-				RECIPE_IndustrialWireFactoryController);
+						"plateZeron100", CI.machineCasing_IV, "plateZeron100",
+						CI.circuitTier6, IV_MACHINE_Wiremill, CI.circuitTier6,
+						"plateZeron100", CI.machineCasing_IV, "plateZeron100",
+						RECIPE_IndustrialWireFactoryController);
 			}
 
 
@@ -520,55 +529,55 @@ public class RECIPES_Machines {
 				Utils.LOG_WARNING("Is New Horizons Loaded? "+CORE.GTNH);
 				if (!CORE.GTNH){
 					RecipeUtils.addShapedGregtechRecipe(
-					CI.component_Plate[1], CI.component_Plate[1], CI.component_Plate[1],
-					CI.component_Plate[1], pipeTier1, CI.component_Plate[1],
-					CI.component_Plate[1], GregtechItemList.Fluid_Cell_144L.get(1), CI.component_Plate[1],
-					GregtechItemList.GT_FluidTank_ULV.get(1));
+							CI.component_Plate[1], CI.component_Plate[1], CI.component_Plate[1],
+							CI.component_Plate[1], pipeTier1, CI.component_Plate[1],
+							CI.component_Plate[1], GregtechItemList.Fluid_Cell_144L.get(1), CI.component_Plate[1],
+							GregtechItemList.GT_FluidTank_ULV.get(1));
 					RecipeUtils.addShapedGregtechRecipe(
-					CI.component_Plate[2], CI.component_Plate[2], CI.component_Plate[2],
-					CI.component_Plate[2], pipeTier2, CI.component_Plate[2],
-					CI.component_Plate[2], CI.electricPump_LV, CI.component_Plate[2],
-					GregtechItemList.GT_FluidTank_LV.get(1));
+							CI.component_Plate[2], CI.component_Plate[2], CI.component_Plate[2],
+							CI.component_Plate[2], pipeTier2, CI.component_Plate[2],
+							CI.component_Plate[2], CI.electricPump_LV, CI.component_Plate[2],
+							GregtechItemList.GT_FluidTank_LV.get(1));
 					RecipeUtils.addShapedGregtechRecipe(
-					CI.component_Plate[3], CI.component_Plate[3], CI.component_Plate[3],
-					CI.component_Plate[3], pipeTier3, CI.component_Plate[3],
-					CI.component_Plate[3], CI.electricPump_MV, CI.component_Plate[3],
-					GregtechItemList.GT_FluidTank_MV.get(1));
+							CI.component_Plate[3], CI.component_Plate[3], CI.component_Plate[3],
+							CI.component_Plate[3], pipeTier3, CI.component_Plate[3],
+							CI.component_Plate[3], CI.electricPump_MV, CI.component_Plate[3],
+							GregtechItemList.GT_FluidTank_MV.get(1));
 					RecipeUtils.addShapedGregtechRecipe(
-					CI.component_Plate[4], CI.component_Plate[4], CI.component_Plate[4],
-					CI.component_Plate[4], pipeTier4, CI.component_Plate[4],
-					CI.component_Plate[4], CI.electricPump_HV, CI.component_Plate[4],
-					GregtechItemList.GT_FluidTank_HV.get(1));
+							CI.component_Plate[4], CI.component_Plate[4], CI.component_Plate[4],
+							CI.component_Plate[4], pipeTier4, CI.component_Plate[4],
+							CI.component_Plate[4], CI.electricPump_HV, CI.component_Plate[4],
+							GregtechItemList.GT_FluidTank_HV.get(1));
 					RecipeUtils.addShapedGregtechRecipe(
-					CI.component_Plate[5], CI.component_Plate[5], CI.component_Plate[5],
-					CI.component_Plate[5], pipeTier5, CI.component_Plate[5],
-					CI.component_Plate[5], CI.electricPump_EV, CI.component_Plate[5],
-					GregtechItemList.GT_FluidTank_EV.get(1));
+							CI.component_Plate[5], CI.component_Plate[5], CI.component_Plate[5],
+							CI.component_Plate[5], pipeTier5, CI.component_Plate[5],
+							CI.component_Plate[5], CI.electricPump_EV, CI.component_Plate[5],
+							GregtechItemList.GT_FluidTank_EV.get(1));
 					RecipeUtils.addShapedGregtechRecipe(
-					CI.component_Plate[6], CI.component_Plate[6], CI.component_Plate[6],
-					CI.component_Plate[6], pipeTier6, CI.component_Plate[6],
-					CI.component_Plate[6], CI.electricPump_IV, CI.component_Plate[6],
-					GregtechItemList.GT_FluidTank_IV.get(1));
+							CI.component_Plate[6], CI.component_Plate[6], CI.component_Plate[6],
+							CI.component_Plate[6], pipeTier6, CI.component_Plate[6],
+							CI.component_Plate[6], CI.electricPump_IV, CI.component_Plate[6],
+							GregtechItemList.GT_FluidTank_IV.get(1));
 					RecipeUtils.addShapedGregtechRecipe(
-					CI.component_Plate[7], CI.component_Plate[7], CI.component_Plate[7],
-					CI.component_Plate[7], pipeTier7, CI.component_Plate[7],
-					CI.component_Plate[7], CI.electricPump_LuV, CI.component_Plate[7],
-					GregtechItemList.GT_FluidTank_LuV.get(1));
+							CI.component_Plate[7], CI.component_Plate[7], CI.component_Plate[7],
+							CI.component_Plate[7], pipeTier7, CI.component_Plate[7],
+							CI.component_Plate[7], CI.electricPump_LuV, CI.component_Plate[7],
+							GregtechItemList.GT_FluidTank_LuV.get(1));
 					RecipeUtils.addShapedGregtechRecipe(
-					CI.component_Plate[8], CI.component_Plate[8], CI.component_Plate[8],
-					CI.component_Plate[8], pipeTier8, CI.component_Plate[8],
-					CI.component_Plate[8], CI.electricPump_ZPM, CI.component_Plate[8],
-					GregtechItemList.GT_FluidTank_ZPM.get(1));
+							CI.component_Plate[8], CI.component_Plate[8], CI.component_Plate[8],
+							CI.component_Plate[8], pipeTier8, CI.component_Plate[8],
+							CI.component_Plate[8], CI.electricPump_ZPM, CI.component_Plate[8],
+							GregtechItemList.GT_FluidTank_ZPM.get(1));
 					RecipeUtils.addShapedGregtechRecipe(
-					CI.component_Plate[9], CI.component_Plate[9], CI.component_Plate[9],
-					CI.component_Plate[9], pipeTier9, CI.component_Plate[9],
-					CI.component_Plate[9], CI.electricPump_UV, CI.component_Plate[9],
-					GregtechItemList.GT_FluidTank_UV.get(1));
+							CI.component_Plate[9], CI.component_Plate[9], CI.component_Plate[9],
+							CI.component_Plate[9], pipeTier9, CI.component_Plate[9],
+							CI.component_Plate[9], CI.electricPump_UV, CI.component_Plate[9],
+							GregtechItemList.GT_FluidTank_UV.get(1));
 					RecipeUtils.addShapedGregtechRecipe(
-					CI.component_Plate[10], CI.component_Plate[10], CI.component_Plate[10],
-					CI.component_Plate[10], pipeTier10, CI.component_Plate[10],
-					CI.component_Plate[10], CI.electricPump_MAX, CI.component_Plate[10],
-					GregtechItemList.GT_FluidTank_MAX.get(1));
+							CI.component_Plate[10], CI.component_Plate[10], CI.component_Plate[10],
+							CI.component_Plate[10], pipeTier10, CI.component_Plate[10],
+							CI.component_Plate[10], CI.electricPump_MAX, CI.component_Plate[10],
+							GregtechItemList.GT_FluidTank_MAX.get(1));
 				}
 				else {
 
@@ -588,25 +597,25 @@ public class RECIPES_Machines {
 					ItemStack waterBucket = ItemUtils.getSimpleStack(Items.water_bucket);
 
 					RecipeUtils.addShapedGregtechRecipe(
-					CI.component_Plate[1], CI.component_Plate[5], CI.component_Plate[1],
-					CI.component_Plate[4], pipeTier1, CI.component_Plate[4],
-					CI.component_Plate[4], waterBucket, CI.component_Plate[4],
-					GregtechItemList.GT_FluidTank_ULV.get(1));
+							CI.component_Plate[1], CI.component_Plate[5], CI.component_Plate[1],
+							CI.component_Plate[4], pipeTier1, CI.component_Plate[4],
+							CI.component_Plate[4], waterBucket, CI.component_Plate[4],
+							GregtechItemList.GT_FluidTank_ULV.get(1));
 					RecipeUtils.addShapedGregtechRecipe(
-					CI.component_Plate[5], CI.component_Plate[4], CI.component_Plate[5],
-					CI.component_Plate[3], pipeTier2, CI.component_Plate[3],
-					CI.component_Plate[3], CI.electricPump_LV, CI.component_Plate[3],
-					GregtechItemList.GT_FluidTank_LV.get(1));
+							CI.component_Plate[5], CI.component_Plate[4], CI.component_Plate[5],
+							CI.component_Plate[3], pipeTier2, CI.component_Plate[3],
+							CI.component_Plate[3], CI.electricPump_LV, CI.component_Plate[3],
+							GregtechItemList.GT_FluidTank_LV.get(1));
 					RecipeUtils.addShapedGregtechRecipe(
-					CI.component_Plate[8], CI.component_Plate[3], CI.component_Plate[8],
-					CI.component_Plate[5], pipeTier3, CI.component_Plate[5],
-					CI.component_Plate[5], CI.electricPump_LV, CI.component_Plate[5],
-					GregtechItemList.GT_FluidTank_MV.get(1));
+							CI.component_Plate[8], CI.component_Plate[3], CI.component_Plate[8],
+							CI.component_Plate[5], pipeTier3, CI.component_Plate[5],
+							CI.component_Plate[5], CI.electricPump_LV, CI.component_Plate[5],
+							GregtechItemList.GT_FluidTank_MV.get(1));
 					RecipeUtils.addShapedGregtechRecipe(
-					CI.circuitTier1, CI.component_Plate[7], CI.circuitTier1,
-					CI.component_Plate[8], pipeTier4, CI.component_Plate[8],
-					CI.circuitTier1, CI.electricPump_MV, CI.circuitTier1,
-					GregtechItemList.GT_FluidTank_HV.get(1));
+							CI.circuitTier1, CI.component_Plate[7], CI.circuitTier1,
+							CI.component_Plate[8], pipeTier4, CI.component_Plate[8],
+							CI.circuitTier1, CI.electricPump_MV, CI.circuitTier1,
+							GregtechItemList.GT_FluidTank_HV.get(1));
 				}
 			}
 
@@ -617,16 +626,16 @@ public class RECIPES_Machines {
 
 				//Industrial Multi Tank Casing
 				RecipeUtils.addShapedGregtechRecipe(
-				"stickGrisium", "plateGrisium", "stickGrisium",
-				"plateGrisium", "frameGtGrisium", "plateGrisium",
-				"plateGrisium", "plateGrisium", "plateGrisium",
-				RECIPE_IndustrialMultiTankFrame);
+						"stickGrisium", "plateGrisium", "stickGrisium",
+						"plateGrisium", "frameGtGrisium", "plateGrisium",
+						"plateGrisium", "plateGrisium", "plateGrisium",
+						RECIPE_IndustrialMultiTankFrame);
 				//Industrial Multi Tank
 				RecipeUtils.addShapedGregtechRecipe(
-				"pipeHugeTantalloy60", "gearGrisium", "pipeHugeTantalloy60",
-				CI.circuitTier4, RECIPE_IndustrialMultiTankFrame, CI.circuitTier4,
-				"plateDoubleGrisium", "rotorGrisium", "plateDoubleGrisium",
-				RECIPE_IndustrialMultiTankController);
+						"pipeHugeTantalloy60", "gearGrisium", "pipeHugeTantalloy60",
+						CI.circuitTier4, RECIPE_IndustrialMultiTankFrame, CI.circuitTier4,
+						"plateDoubleGrisium", "rotorGrisium", "plateDoubleGrisium",
+						RECIPE_IndustrialMultiTankController);
 			}
 
 			if (CORE.configSwitches.enableMultiblock_AlloyBlastSmelter){
@@ -637,22 +646,22 @@ public class RECIPES_Machines {
 
 				//Blast Smelter
 				RecipeUtils.addShapedGregtechRecipe(
-				"plateZirconiumCarbide", CI.circuitTier4, "plateZirconiumCarbide",
-				cableTier4, CI.machineCasing_EV, cableTier4,
-				"plateZirconiumCarbide", CI.circuitTier3, "plateZirconiumCarbide",
-				RECIPE_IndustrialBlastSmelterController);
+						"plateZirconiumCarbide", CI.circuitTier4, "plateZirconiumCarbide",
+						cableTier4, CI.machineCasing_EV, cableTier4,
+						"plateZirconiumCarbide", CI.circuitTier3, "plateZirconiumCarbide",
+						RECIPE_IndustrialBlastSmelterController);
 				//Blast Smelter Frame Casing
 				RecipeUtils.addShapedGregtechRecipe(
-				"plateZirconiumCarbide", CI.component_Rod[5], "plateZirconiumCarbide",
-				CI.component_Rod[5], "frameGtTumbaga", CI.component_Rod[5],
-				"plateZirconiumCarbide", CI.component_Rod[5], "plateZirconiumCarbide",
-				RECIPE_IndustrialBlastSmelterFrame);
+						"plateZirconiumCarbide", CI.component_Rod[5], "plateZirconiumCarbide",
+						CI.component_Rod[5], "frameGtTumbaga", CI.component_Rod[5],
+						"plateZirconiumCarbide", CI.component_Rod[5], "plateZirconiumCarbide",
+						RECIPE_IndustrialBlastSmelterFrame);
 				//Blast Smelter Coil
 				RecipeUtils.addShapedGregtechRecipe(
-				"plateStaballoy", "plateStaballoy", "plateStaballoy",
-				"frameGtStaballoy", CI.gearboxCasing_Tier_3, "frameGtStaballoy",
-				"plateStaballoy", "plateStaballoy", "plateStaballoy",
-				RECIPE_IndustrialBlastSmelterCoil);
+						"plateStaballoy", "plateStaballoy", "plateStaballoy",
+						"frameGtStaballoy", CI.gearboxCasing_Tier_3, "frameGtStaballoy",
+						"plateStaballoy", "plateStaballoy", "plateStaballoy",
+						RECIPE_IndustrialBlastSmelterCoil);
 			}
 
 			if (CORE.configSwitches.enableMultiblock_MatterFabricator){
@@ -663,22 +672,22 @@ public class RECIPES_Machines {
 
 				//Matter Fabricator CPU
 				RecipeUtils.addShapedGregtechRecipe(
-				"plateDoubleQuantum", CI.circuitTier5, "plateDoubleQuantum",
-				cableTier8, CI.machineCasing_LuV, cableTier8,
-				"plateDoubleQuantum", CI.circuitTier5, "plateDoubleQuantum",
-				RECIPE_IndustrialMatterFabController);
+						"plateDoubleQuantum", CI.circuitTier5, "plateDoubleQuantum",
+						cableTier8, CI.machineCasing_LuV, cableTier8,
+						"plateDoubleQuantum", CI.circuitTier5, "plateDoubleQuantum",
+						RECIPE_IndustrialMatterFabController);
 				//Matter Fabricator Frame Casing
 				RecipeUtils.addShapedGregtechRecipe(
-				"plateNiobiumCarbide", CI.component_Rod[8], "plateNiobiumCarbide",
-				CI.component_Rod[8], "frameGtInconel690", CI.component_Rod[8],
-				"plateNiobiumCarbide", CI.component_Rod[8], "plateNiobiumCarbide",
-				RECIPE_IndustrialMatterFabFrame);
+						"plateNiobiumCarbide", CI.component_Rod[8], "plateNiobiumCarbide",
+						CI.component_Rod[8], "frameGtInconel690", CI.component_Rod[8],
+						"plateNiobiumCarbide", CI.component_Rod[8], "plateNiobiumCarbide",
+						RECIPE_IndustrialMatterFabFrame);
 				//Matter Fabricator Coil
 				RecipeUtils.addShapedGregtechRecipe(
-				"plateQuantum", "plateQuantum", "plateQuantum",
-				"frameGtStellite", CI.machineCasing_UV, "frameGtStellite",
-				"plateQuantum", "plateQuantum", "plateQuantum",
-				RECIPE_IndustrialMatterFabCoil);
+						"plateQuantum", "plateQuantum", "plateQuantum",
+						"frameGtStellite", CI.machineCasing_UV, "frameGtStellite",
+						"plateQuantum", "plateQuantum", "plateQuantum",
+						RECIPE_IndustrialMatterFabCoil);
 			}
 
 			if (CORE.configSwitches.enableMultiblock_IndustrialSifter){
@@ -689,22 +698,22 @@ public class RECIPES_Machines {
 
 				//Industrial Sieve
 				RecipeUtils.addShapedGregtechRecipe(
-				"plateEglinSteel", CI.circuitTier2, "plateEglinSteel",
-				cableTier3, CI.machineCasing_MV, cableTier3,
-				"plateEglinSteel", CI.circuitTier2, "plateEglinSteel",
-				RECIPE_IndustrialSieveController);
+						"plateEglinSteel", CI.circuitTier2, "plateEglinSteel",
+						cableTier3, CI.machineCasing_MV, cableTier3,
+						"plateEglinSteel", CI.circuitTier2, "plateEglinSteel",
+						RECIPE_IndustrialSieveController);
 				//Industrial Sieve Casing
 				RecipeUtils.addShapedGregtechRecipe(
-				"plateEglinSteel", "plateEglinSteel", "plateEglinSteel",
-				"plateEglinSteel", "frameGtTumbaga", "plateEglinSteel",
-				"plateEglinSteel", "plateEglinSteel", "plateEglinSteel",
-				RECIPE_IndustrialSieveFrame);
+						"plateEglinSteel", "plateEglinSteel", "plateEglinSteel",
+						"plateEglinSteel", "frameGtTumbaga", "plateEglinSteel",
+						"plateEglinSteel", "plateEglinSteel", "plateEglinSteel",
+						RECIPE_IndustrialSieveFrame);
 				//Industrial Sieve Grate
 				RecipeUtils.addShapedGregtechRecipe(
-				"frameGtEglinSteel", "wireFineSteel", "frameGtEglinSteel",
-				"wireFineSteel", "wireFineSteel", "wireFineSteel",
-				"frameGtEglinSteel", "wireFineSteel", "frameGtEglinSteel",
-				RECIPE_IndustrialSieveGrate);
+						"frameGtEglinSteel", "wireFineSteel", "frameGtEglinSteel",
+						"wireFineSteel", "wireFineSteel", "wireFineSteel",
+						"frameGtEglinSteel", "wireFineSteel", "frameGtEglinSteel",
+						RECIPE_IndustrialSieveGrate);
 			}
 
 			if (CORE.configSwitches.enableMultiblock_TreeFarmer){
@@ -713,18 +722,35 @@ public class RECIPES_Machines {
 				RECIPE_TreeFarmFrame = GregtechItemList.TreeFarmer_Structural.get(1);
 				//Industrial Tree Farm Controller
 				RecipeUtils.addShapedGregtechRecipe(
-				"plateEglinSteel", "rotorEglinSteel", "plateEglinSteel",
-				"cableGt02Steel", "pipeMediumSteel", "cableGt02Steel",
-				"plateEglinSteel", CI.machineCasing_MV, "plateEglinSteel",
-				RECIPE_TreeFarmController);
+						"plateEglinSteel", "rotorEglinSteel", "plateEglinSteel",
+						"cableGt02Steel", "pipeMediumSteel", "cableGt02Steel",
+						"plateEglinSteel", CI.machineCasing_MV, "plateEglinSteel",
+						RECIPE_TreeFarmController);
 				//Industrial Tree Farm Frame
 				RecipeUtils.addShapedGregtechRecipe(
-				ItemUtils.getSimpleStack(Blocks.dirt), ItemUtils.getSimpleStack(Blocks.dirt), ItemUtils.getSimpleStack(Blocks.dirt),
-				"plankWood", "frameGtTumbaga", "plankWood",
-				"plankWood", "plankWood", "plankWood",
-				RECIPE_TreeFarmFrame);
+						ItemUtils.getSimpleStack(Blocks.dirt), ItemUtils.getSimpleStack(Blocks.dirt), ItemUtils.getSimpleStack(Blocks.dirt),
+						"plankWood", "frameGtTumbaga", "plankWood",
+						"plankWood", "plankWood", "plankWood",
+						RECIPE_TreeFarmFrame);
 			}
-			
+
+			if (CORE.configSwitches.enableMachine_Tesseracts){
+				//Tesseracts
+				RECIPE_TesseractGenerator = GregtechItemList.GT4_Tesseract_Generator.get(1);
+				RECIPE_TesseractTerminal = GregtechItemList.GT4_Tesseract_Terminal.get(1);
+				//Tesseract Generator
+				RecipeUtils.addShapedGregtechRecipe(
+						"plateTitanium","circuitMaster","plateTitanium",
+						"circuitMaster",ItemUtils.getSimpleStack(Blocks.ender_chest),"circuitMaster",
+						"plateTitanium",GregtechItemList.Gregtech_Computer_Cube.get(1),"plateTitanium",
+						RECIPE_TesseractGenerator);
+				//Tesseract Terminal
+				RecipeUtils.addShapedGregtechRecipe(
+						"plateTitanium","circuitElite","plateTitanium",
+						"circuitElite",ItemUtils.getSimpleStack(Blocks.ender_chest),"circuitElite",
+						"plateTitanium",CI.machineHull_EV,"plateTitanium",
+						RECIPE_TesseractTerminal);
+			}
 
 			ItemStack plateWrought = ItemUtils.getItemStackOfAmountFromOreDict("plateWroughtIron", 1);
 			ItemStack washerPipe;

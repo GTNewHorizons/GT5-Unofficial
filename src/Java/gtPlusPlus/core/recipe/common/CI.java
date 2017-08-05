@@ -370,5 +370,14 @@ public class CI {
 		Utils.LOG_INFO("[Components] Failed getting a tiered component. "+type.name()+" | "+tier);
 		return null;
 	}
+	
+	public static ItemStack getDataOrb(){
+			if (CORE.configSwitches.enableOldGTcircuits){
+				return GregtechItemList.Old_Tool_DataOrb.get(1);
+			}
+			else {
+				return ItemList.Tool_DataOrb.get(1);				
+			}
+	}
 
 }
