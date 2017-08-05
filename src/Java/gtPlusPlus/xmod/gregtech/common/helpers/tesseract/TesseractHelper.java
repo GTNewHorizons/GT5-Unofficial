@@ -28,20 +28,26 @@ public class TesseractHelper {
 	public final static boolean isGeneratorOwnedByPlayer(EntityPlayer player,
 			GT_MetaTileEntity_TesseractGenerator generator) {
 		if (player == null){
+			Utils.LOG_WARNING("Failed. [isGeneratorOwnedByPlayer]");
 			return false;
 		}
+		//Utils.LOG_WARNING("Success. [isGeneratorOwnedByPlayer] 1");
 		UUID playerIdentifier = player.getUniqueID();
 		if (!sTesseractGeneratorOwnershipMap.isEmpty() && playerIdentifier != null) {
+			//Utils.LOG_WARNING("Success. [isGeneratorOwnedByPlayer] 2");
 			Map<Integer, GT_MetaTileEntity_TesseractGenerator> generators = getGeneratorOwnershipByPlayer(player);
 			Set<Entry<Integer, GT_MetaTileEntity_TesseractGenerator>> players = generators.entrySet();
 			Iterator<Entry<Integer, GT_MetaTileEntity_TesseractGenerator>> i = players.iterator();
 			while (i.hasNext()) {
+				//Utils.LOG_WARNING("Success. [isGeneratorOwnedByPlayer] 3");
 				Entry<Integer, GT_MetaTileEntity_TesseractGenerator> current = i.next();
 				if (current.getValue().equals(generator)) {
+					//Utils.LOG_WARNING("Success. [isGeneratorOwnedByPlayer] 4");
 					return true;
 				}
 			}
 		}
+		Utils.LOG_WARNING("Failed. [isGeneratorOwnedByPlayer]");
 		return false;
 	}
 
@@ -52,7 +58,7 @@ public class TesseractHelper {
 			return false;
 		}
 		UUID playerIdentifier = player.getUniqueID();
-		Utils.LOG_INFO("Setting Generator on "+freq+" for "+player.getDisplayName()+".");
+		Utils.LOG_WARNING("Setting Generator on "+freq+" for "+player.getDisplayName()+".");
 		if (playerIdentifier != null) {
 			Map<Integer, GT_MetaTileEntity_TesseractGenerator> playerOwned = sTesseractGeneratorOwnershipMap
 					.get(playerIdentifier);
@@ -60,18 +66,21 @@ public class TesseractHelper {
 				Map<Integer, GT_MetaTileEntity_TesseractGenerator> newOwnershipMap = new HashMap<Integer, GT_MetaTileEntity_TesseractGenerator>();
 				newOwnershipMap.put(freq, generator);
 				sTesseractGeneratorOwnershipMap.put(playerIdentifier, newOwnershipMap);
-				Utils.LOG_INFO("Success! [Empty Map]");
+				Utils.LOG_WARNING("Success! [Empty Map]");
 				return true;
 			} else if (sTesseractGeneratorOwnershipMap.containsKey(playerIdentifier)) {
 				Map<Integer, GT_MetaTileEntity_TesseractGenerator> ownershipMap = sTesseractGeneratorOwnershipMap
 						.get(playerIdentifier);
+				if (!ownershipMap.containsKey(freq)){
+					ownershipMap.put(freq, generator);
+				}
 				ownershipMap.put(freq, generator);
 				sTesseractGeneratorOwnershipMap.put(playerIdentifier, ownershipMap);
-				Utils.LOG_INFO("Success!");
+				Utils.LOG_WARNING("Success!");
 				return true;
 			}
 		}
-		Utils.LOG_INFO("Failed. [setGeneratorOwnershipByPlayer]");
+		Utils.LOG_WARNING("Failed. [setGeneratorOwnershipByPlayer]");
 		return false;
 	}
 
@@ -82,20 +91,23 @@ public class TesseractHelper {
 			return null;
 		}
 		UUID playerIdentifier = player.getUniqueID();
-		Utils.LOG_INFO("Getting Generator on "+freq+" for "+player.getDisplayName()+".");
+		Utils.LOG_WARNING("Getting Generator on "+freq+" for "+player.getDisplayName()+".");
 		if (!sTesseractGeneratorOwnershipMap.isEmpty() && playerIdentifier != null) {
+			//Utils.LOG_WARNING("Success. [getGeneratorByFrequency] 1");
 			Map<Integer, GT_MetaTileEntity_TesseractGenerator> generators = getGeneratorOwnershipByPlayer(player);
 			Set<Entry<Integer, GT_MetaTileEntity_TesseractGenerator>> players = generators.entrySet();
 			Iterator<Entry<Integer, GT_MetaTileEntity_TesseractGenerator>> i = players.iterator();
 			while (i.hasNext()) {
+				//Utils.LOG_WARNING("Success. [getGeneratorByFrequency] 2");
 				Entry<Integer, GT_MetaTileEntity_TesseractGenerator> current = i.next();
 				if (current.getKey().equals(freq)) {
-					Utils.LOG_INFO("Success!");
+					//Utils.LOG_WARNING("Success. [getGeneratorByFrequency] 3");
+					Utils.LOG_WARNING("Success!");
 					return current.getValue();
 				}
 			}
 		}
-		Utils.LOG_INFO("Failed. [getGeneratorByFrequency]");
+		Utils.LOG_WARNING("Failed. [getGeneratorByFrequency]");
 		return null;
 	}
 
@@ -149,25 +161,27 @@ public class TesseractHelper {
 		}
 		UUID playerIdentifier = player.getUniqueID();
 		if (playerIdentifier != null) {
-			Utils.LOG_INFO("Setting Terminal on "+freq+" for "+player.getDisplayName()+".");
+			Utils.LOG_WARNING("Setting Terminal on "+freq+" for "+player.getDisplayName()+".");
 			Map<Integer, GT_MetaTileEntity_TesseractTerminal> playerOwned = sTesseractTerminalOwnershipMap
 					.get(playerIdentifier);
 			if (playerOwned == null || playerOwned.isEmpty()) {
 				Map<Integer, GT_MetaTileEntity_TesseractTerminal> newOwnershipMap = new HashMap<Integer, GT_MetaTileEntity_TesseractTerminal>();
 				newOwnershipMap.put(freq, generator);
 				sTesseractTerminalOwnershipMap.put(playerIdentifier, newOwnershipMap);
-				Utils.LOG_INFO("Success! [Empty Map]");
+				Utils.LOG_WARNING("Success! [Empty Map]");
 				return true;
 			} else if (sTesseractTerminalOwnershipMap.containsKey(playerIdentifier)) {
 				Map<Integer, GT_MetaTileEntity_TesseractTerminal> ownershipMap = sTesseractTerminalOwnershipMap
 						.get(playerIdentifier);
-				ownershipMap.put(freq, generator);
+				if (!ownershipMap.containsKey(freq)){
+					ownershipMap.put(freq, generator);
+				}
 				sTesseractTerminalOwnershipMap.put(playerIdentifier, ownershipMap);
-				Utils.LOG_INFO("Success!");
+				Utils.LOG_WARNING("Success!");
 				return true;
 			}
 		}
-		Utils.LOG_INFO("Failed. [setTerminalOwnershipByPlayer]");
+		Utils.LOG_WARNING("Failed. [setTerminalOwnershipByPlayer]");
 		return false;
 	}
 
@@ -178,7 +192,7 @@ public class TesseractHelper {
 			return null;
 		}
 		UUID playerIdentifier = player.getUniqueID();
-		Utils.LOG_INFO("Getting Terminal on "+freq+" for "+player.getDisplayName()+".");
+		Utils.LOG_WARNING("Getting Terminal on "+freq+" for "+player.getDisplayName()+".");
 		if (!sTesseractTerminalOwnershipMap.isEmpty() && playerIdentifier != null) {
 			Map<Integer, GT_MetaTileEntity_TesseractTerminal> generators = getTerminalOwnershipByPlayer(player);
 			Set<Entry<Integer, GT_MetaTileEntity_TesseractTerminal>> players = generators.entrySet();
@@ -186,12 +200,12 @@ public class TesseractHelper {
 			while (i.hasNext()) {
 				Entry<Integer, GT_MetaTileEntity_TesseractTerminal> current = i.next();
 				if (current.getKey().equals(freq)) {
-					Utils.LOG_INFO("Success!");
+					Utils.LOG_WARNING("Success!");
 					return current.getValue();
 				}
 			}
 		}
-		Utils.LOG_INFO("Failed. [getTerminalByFrequency]");
+		Utils.LOG_WARNING("Failed. [getTerminalByFrequency]");
 		return null;
 	}
 

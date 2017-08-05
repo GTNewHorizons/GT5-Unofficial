@@ -151,13 +151,25 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
 				switch ((byte) ((byte) (int) (tCoords[0] * 2.0F) + (2 * (byte) (int) (tCoords[1] * 2.0F)))) {
 				case 0:
 					//Utils.LOG_INFO("Freq. -1 | " + this.mFrequency);
+					try {
+						CORE.sTesseractTerminalOwnershipMap.get(mOwner).remove(this.mFrequency);
+					} catch (Throwable t) {
+					}
 					this.mFrequency -= 1;
 					break;
 				case 1:
 					//Utils.LOG_INFO("Freq. +1 | " + this.mFrequency);
+					try {
+						CORE.sTesseractTerminalOwnershipMap.get(mOwner).remove(this.mFrequency);
+					} catch (Throwable t) {
+					}
 					this.mFrequency += 1;
 				default:
 					// Utils.LOG_INFO("Did not click the correct place.");
+					try {
+						CORE.sTesseractTerminalOwnershipMap.get(mOwner).remove(this.mFrequency);
+					} catch (Throwable t) {
+					}
 					break;
 				}
 				PlayerUtils.messagePlayer(aPlayer, "Frequency: " + this.mFrequency);
@@ -180,22 +192,38 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
 				final float[] tCoords = GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ);
 				switch ((byte) ((byte) (int) (tCoords[0] * 2.0F) + (2 * (byte) (int) (tCoords[1] * 2.0F)))) {
 				case 0:
+					try {
+						CORE.sTesseractTerminalOwnershipMap.get(mOwner).remove(this.mFrequency);
+					} catch (Throwable t) {
+					}
 					this.mFrequency -= 64;
 					break;
 				case 1:
+					try {
+						CORE.sTesseractTerminalOwnershipMap.get(mOwner).remove(this.mFrequency);
+					} catch (Throwable t) {
+					}
 					this.mFrequency += 64;
 					break;
 				case 2:
+					try {
+						CORE.sTesseractTerminalOwnershipMap.get(mOwner).remove(this.mFrequency);
+					} catch (Throwable t) {
+					}
 					this.mFrequency -= 512;
 					break;
 				case 3:
+					try {
+						CORE.sTesseractTerminalOwnershipMap.get(mOwner).remove(this.mFrequency);
+					} catch (Throwable t) {
+					}
 					this.mFrequency += 512;
 				}
 				GT_Utility.sendChatToPlayer(aPlayer,
 						"Frequency: " + this.mFrequency
-								+ (this.getTesseract(this.mFrequency, false) == null ? ""
-										: new StringBuilder().append(EnumChatFormatting.GREEN).append(" (Connected)")
-												.toString()));
+						+ (this.getTesseract(this.mFrequency, false) == null ? ""
+								: new StringBuilder().append(EnumChatFormatting.GREEN).append(" (Connected)")
+								.toString()));
 			}
 		} else {
 			PlayerUtils.messagePlayer(aPlayer, "This is not your Tesseract Terminal to configure.");
@@ -426,7 +454,8 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
 		return tTileEntity.drain(aSide, aFluid, doDrain);
 	}
 
-	public void onPostTick() {
+	@Override
+	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		if ((this.getBaseMetaTileEntity().isServerSide()) && (this.getBaseMetaTileEntity().isAllowedToWork())) {
 			// Set owner
 			if (PlayerUtils.getPlayersUUIDByName(this.getBaseMetaTileEntity().getOwnerName()) != null) {
@@ -476,8 +505,8 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
 		return aSide == aFacing
 				? new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
 						new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_Frequency) }
-				: new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
-						new GT_RenderedTexture(Textures.BlockIcons.VOID) };
+		: new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
+				new GT_RenderedTexture(Textures.BlockIcons.VOID) };
 	}
 
 	// To-Do?

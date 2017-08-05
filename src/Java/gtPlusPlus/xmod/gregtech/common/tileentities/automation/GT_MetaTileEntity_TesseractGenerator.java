@@ -30,6 +30,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
 public class GT_MetaTileEntity_TesseractGenerator extends GT_MetaTileEntity_BasicTank {
+
 	public static int TESSERACT_ENERGY_COST_DIMENSIONAL = 2048;
 	public static int TESSERACT_ENERGY_COST = 512;
 	public byte isWorking = 0;
@@ -195,10 +196,19 @@ public class GT_MetaTileEntity_TesseractGenerator extends GT_MetaTileEntity_Basi
 					switch ((byte) ((byte) (int) (tCoords[0] * 2.0F) + (2 * (byte) (int) (tCoords[1] * 2.0F)))) {
 					case 0:
 						Utils.LOG_INFO("Freq. -1 | " + this.mFrequency);
+						try {
+							CORE.sTesseractGeneratorOwnershipMap.get(mOwner).remove(this.mFrequency);
+						} catch (Throwable t) {
+						}
 						this.mFrequency -= 1;
+						
 						break;
 					case 1:
 						Utils.LOG_INFO("Freq. +1 | " + this.mFrequency);
+						try {
+							CORE.sTesseractGeneratorOwnershipMap.get(mOwner).remove(this.mFrequency);
+						} catch (Throwable t) {
+						}
 						this.mFrequency += 1;
 					default:
 						// Utils.LOG_INFO("Did not click the correct place.");
@@ -227,15 +237,31 @@ public class GT_MetaTileEntity_TesseractGenerator extends GT_MetaTileEntity_Basi
 				final float[] tCoords = GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ);
 				switch ((byte) ((byte) (int) (tCoords[0] * 2.0F) + (2 * (byte) (int) (tCoords[1] * 2.0F)))) {
 				case 0:
+					try {
+						CORE.sTesseractGeneratorOwnershipMap.get(mOwner).remove(this.mFrequency);
+					} catch (Throwable t) {
+					}
 					this.mFrequency -= 64;
 					break;
 				case 1:
+					try {
+						CORE.sTesseractGeneratorOwnershipMap.get(mOwner).remove(this.mFrequency);
+					} catch (Throwable t) {
+					}
 					this.mFrequency += 64;
 					break;
 				case 2:
+					try {
+						CORE.sTesseractGeneratorOwnershipMap.get(mOwner).remove(this.mFrequency);
+					} catch (Throwable t) {
+					}
 					this.mFrequency -= 512;
 					break;
 				case 3:
+					try {
+						CORE.sTesseractGeneratorOwnershipMap.get(mOwner).remove(this.mFrequency);
+					} catch (Throwable t) {
+					}
 					this.mFrequency += 512;
 				}
 				if (getGeneratorEntity(this.mFrequency) != null && getGeneratorEntity(this.mFrequency) != this){
@@ -515,12 +541,21 @@ public class GT_MetaTileEntity_TesseractGenerator extends GT_MetaTileEntity_Basi
 				&& ((aWorkIrrelevant) || (this.isWorking >= 20));
 	}
 
-	public void onPostTick() {
+	@Override
+	public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+		// TODO Auto-generated method stub
+		super.onPreTick(aBaseMetaTileEntity, aTick);
+	}
+
+	@Override
+	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+		//Utils.LOG_INFO("Ticking Generator. 0");
 		if (this.getBaseMetaTileEntity().isServerSide()) {
-			Utils.LOG_INFO("Ticking Generator.");
+			//Utils.LOG_INFO("Ticking Generator.");
 			// Set owner
 			if (PlayerUtils.getPlayersUUIDByName(this.getBaseMetaTileEntity().getOwnerName()) != null) {
 				if (this.mOwner == null) {
+					Utils.LOG_INFO("Setting Generators Owner. 1");
 					this.mOwner = PlayerUtils.getPlayersUUIDByName(this.getBaseMetaTileEntity().getOwnerName());
 				}
 			}
@@ -539,11 +574,11 @@ public class GT_MetaTileEntity_TesseractGenerator extends GT_MetaTileEntity_Basi
 			}
 			if ((this.getBaseMetaTileEntity().isAllowedToWork())
 					&& (this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(this.mNeededEnergy, false))) {
-				Utils.LOG_INFO("Can Work & Has Energy");
+				//Utils.LOG_INFO("Can Work & Has Energy");
 				if ((getGeneratorEntity(Integer.valueOf(this.mFrequency)) == null)
 						|| (!getGeneratorEntity(Integer.valueOf(this.mFrequency)).isValidTesseractGenerator(null,
 								true))) {
-					Utils.LOG_INFO("storing TE I think to mFreq map?");
+					//Utils.LOG_INFO("storing TE I think to mFreq map?");
 					TesseractHelper.setGeneratorOwnershipByPlayer(PlayerUtils.getPlayerOnServerFromUUID(mOwner),
 							this.mFrequency, this);
 				}
@@ -556,7 +591,7 @@ public class GT_MetaTileEntity_TesseractGenerator extends GT_MetaTileEntity_Basi
 				this.isWorking = 0;
 			}
 			if (getGeneratorEntity(Integer.valueOf(this.mFrequency)) == this) {
-				Utils.LOG_INFO("mFreq == this - do work related things");
+				//Utils.LOG_INFO("mFreq == this - do work related things");
 				if (this.isWorking < 20) {
 					this.isWorking = ((byte) (this.isWorking + 1));
 				}
@@ -569,6 +604,7 @@ public class GT_MetaTileEntity_TesseractGenerator extends GT_MetaTileEntity_Basi
 			}
 			this.mNeededEnergy = 0;
 		}
+		super.onPostTick(aBaseMetaTileEntity, aTick);
 	}
 
 	@Override
@@ -657,6 +693,7 @@ public class GT_MetaTileEntity_TesseractGenerator extends GT_MetaTileEntity_Basi
 		if (this.getBaseMetaTileEntity().getOwnerName() != null
 				&& !this.getBaseMetaTileEntity().getOwnerName().equals("")) {
 			this.mOwner = PlayerUtils.getPlayersUUIDByName(this.getBaseMetaTileEntity().getOwnerName());
+			Utils.LOG_INFO("Setting Generators Owner. 2");
 		}
 		super.onCreated(aStack, aWorld, aPlayer);
 	}
