@@ -17,6 +17,7 @@ import gtPlusPlus.core.recipe.RECIPES_Old_Circuits;
 import gtPlusPlus.core.util.StringUtils;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
@@ -188,8 +189,8 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 				null,
 				null,
 				0,
-				0,
-				GregtechMetaTileEntity_RTG_Generator.convertDaysToTicks(87.7f));
+				64,
+				MathUtils.roundToClosestInt(87.7f));
 		Recipe_GT.Gregtech_Recipe_Map.sRTGFuels.addRecipe(
 				true,
 				new ItemStack[]{GregtechItemList.Pellet_RTG_SR90.get(1)},
@@ -198,8 +199,8 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 				null,
 				null,
 				0,
-				0,
-				GregtechMetaTileEntity_RTG_Generator.convertDaysToTicks(28.8f));
+				32,
+				MathUtils.roundToClosestInt(28.8f));
 		Recipe_GT.Gregtech_Recipe_Map.sRTGFuels.addRecipe(
 				true,
 				new ItemStack[]{GregtechItemList.Pellet_RTG_PO210.get(1)},
@@ -208,8 +209,8 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 				null,
 				null,
 				0,
-				0,
-				GregtechMetaTileEntity_RTG_Generator.convertDaysToTicks(0.4f));
+				512,
+				MathUtils.roundToClosestInt(0.4f));
 		Recipe_GT.Gregtech_Recipe_Map.sRTGFuels.addRecipe(
 				true,
 				new ItemStack[]{GregtechItemList.Pellet_RTG_AM241.get(1)},
@@ -218,8 +219,8 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 				null,
 				null,
 				0,
-				0,
-				GregtechMetaTileEntity_RTG_Generator.convertDaysToTicks(432));
+				16,
+				MathUtils.roundToClosestInt(432));
 		//Computer Cube
 		GregtechItemList.Gregtech_Computer_Cube.set(this.addItem(tLastID = 55, "Gregtech Computer Cube", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 8L), getTcAspectStack(TC_Aspects.METALLUM, 8L), getTcAspectStack(TC_Aspects.POTENTIA, 8L)}));
 		this.setElectricStats(32000 + tLastID, Integer.MAX_VALUE, GT_Values.V[5], 5L, -3L, true);
