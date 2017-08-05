@@ -21,7 +21,9 @@ import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.items.Gregtech_MetaItem_X32;
+import gtPlusPlus.xmod.gregtech.common.tileentities.generators.GregtechMetaTileEntity_RTG_Generator;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.ItemStack;
 
 public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 	public MetaGeneratedGregtechItems INSTANCE;
@@ -178,11 +180,50 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 		GregtechItemList.Pellet_RTG_SR90.set(this.addItem(42, StringUtils.superscript("90")+"Sr Pellet", "", new Object[]{getTcAspectStack(TC_Aspects.RADIO, 4L), getTcAspectStack(TC_Aspects.POTENTIA, 2L), getTcAspectStack(TC_Aspects.METALLUM, 2L)}));
 		GregtechItemList.Pellet_RTG_PO210.set(this.addItem(43, StringUtils.superscript("210")+"Po Pellet", "", new Object[]{getTcAspectStack(TC_Aspects.RADIO, 4L), getTcAspectStack(TC_Aspects.POTENTIA, 2L), getTcAspectStack(TC_Aspects.METALLUM, 2L)}));
 		GregtechItemList.Pellet_RTG_AM241.set(this.addItem(44, StringUtils.superscript("241")+"Am Pellet", "", new Object[]{getTcAspectStack(TC_Aspects.RADIO, 4L), getTcAspectStack(TC_Aspects.POTENTIA, 2L), getTcAspectStack(TC_Aspects.METALLUM, 2L)}));
-
+		Recipe_GT.Gregtech_Recipe_Map.sRTGFuels.addRecipe(
+				true,
+				new ItemStack[]{GregtechItemList.Pellet_RTG_PU238.get(1)},
+				new ItemStack[]{},
+				null,
+				null,
+				null,
+				0,
+				0,
+				GregtechMetaTileEntity_RTG_Generator.convertDaysToTicks(87.7f));
+		Recipe_GT.Gregtech_Recipe_Map.sRTGFuels.addRecipe(
+				true,
+				new ItemStack[]{GregtechItemList.Pellet_RTG_SR90.get(1)},
+				new ItemStack[]{},
+				null,
+				null,
+				null,
+				0,
+				0,
+				GregtechMetaTileEntity_RTG_Generator.convertDaysToTicks(28.8f));
+		Recipe_GT.Gregtech_Recipe_Map.sRTGFuels.addRecipe(
+				true,
+				new ItemStack[]{GregtechItemList.Pellet_RTG_PO210.get(1)},
+				new ItemStack[]{},
+				null,
+				null,
+				null,
+				0,
+				0,
+				GregtechMetaTileEntity_RTG_Generator.convertDaysToTicks(0.4f));
+		Recipe_GT.Gregtech_Recipe_Map.sRTGFuels.addRecipe(
+				true,
+				new ItemStack[]{GregtechItemList.Pellet_RTG_AM241.get(1)},
+				new ItemStack[]{},
+				null,
+				null,
+				null,
+				0,
+				0,
+				GregtechMetaTileEntity_RTG_Generator.convertDaysToTicks(432));
 		//Computer Cube
 		GregtechItemList.Gregtech_Computer_Cube.set(this.addItem(tLastID = 55, "Gregtech Computer Cube", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 8L), getTcAspectStack(TC_Aspects.METALLUM, 8L), getTcAspectStack(TC_Aspects.POTENTIA, 8L)}));
 		this.setElectricStats(32000 + tLastID, Integer.MAX_VALUE, GT_Values.V[5], 5L, -3L, true);
-		
+
 		//FOOOOOOOOOOOOOOD
 		GregtechItemList.Food_Baked_Raisin_Bread.set(this.addItem(tLastID = 60, "Raisin Bread", "Extra Raisins, Just for ImQ009", new Object[]{new GT_FoodStat(5, 0.5F, EnumAction.eat, null, false, true, false, new int[0]), getTcAspectStack(TC_Aspects.CORPUS, 1L), getTcAspectStack(TC_Aspects.FAMES, 1L), getTcAspectStack(TC_Aspects.IGNIS, 1L)}));
 
@@ -285,7 +326,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 		GregtechItemList.Old_Circuit_Parts_Wiring_Elite.set(this.addItem(218, "Etched Extreme Voltage Wiring", "Part of Circuit Boards", new Object[0]));
 		GregtechItemList.Old_Empty_Board_Basic.set(this.addItem(219, "Empty Circuit Board", "A Board Part", new Object[0]));
 		GregtechItemList.Old_Empty_Board_Elite.set(this.addItem(220, "Empty Processor Board", "A Processor Board Part", new Object[0]));
-		
+
 		return true;
 	}
 }

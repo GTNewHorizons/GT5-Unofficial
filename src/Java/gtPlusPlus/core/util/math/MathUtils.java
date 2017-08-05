@@ -197,6 +197,20 @@ public class MathUtils {
 		}
 		return result;
 	}
+	
+	
+	//Smooth Rounding Function
+		/**
+		 * Returns a long.
+		 * The returned number is d rounded to the nearest flat long.
+		 * Supports Doubles as input.
+		 *
+		 * @param current Current value.
+		 * @return long Rounded value.
+		 */
+		public static long roundToClosestLong(final double d) {
+			return (long) (Math.round(d * 2) / 2.0);
+		}
 
 
 	/**

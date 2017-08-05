@@ -54,7 +54,7 @@ public class Recipe_GT extends GT_Recipe{
 				break;
 				// Thermal Generator
 			case 2:
-				//Gregtech_Recipe_Map.sHotFuels.addRecipe(this);
+				Gregtech_Recipe_Map.sRTGFuels.addRecipe(this);
 				break;
 				// Plasma Generator
 			case 4:
@@ -251,6 +251,12 @@ public class Recipe_GT extends GT_Recipe{
 		//Basic Washer Map
 		public static final GT_Recipe_Map sSimpleWasherRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(3), "gt.recipe.simplewasher", "Simple Dust Washer", null, RES_PATH_GUI + "basicmachines/PotionBrewer", 1, 1, 0, 0, 1, E, 1, E, true, true);
         
+		
+		//RTG FUel Map
+		public static final GT_Recipe.GT_Recipe_Map_Fuel sRTGFuels = new Recipe_GT.GT_Recipe_Map_Fuel(
+				new HashSet(10), "gt.recipe.RTGgenerators", "RTG", null,
+				"gregtech:textures/gui/basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
+		
 		
 		/**
 		 * HashMap of Recipes based on their Items
