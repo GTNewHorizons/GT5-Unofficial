@@ -9,6 +9,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -17,6 +18,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Direction;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -35,6 +37,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     private int timerSetting = 0;
     private int timerValue = 0;
     private boolean hasBeenPausedThiscycle=false;
+    private boolean flipped=false;
 
     //region Structure
     //use multi A energy inputs, use less power the longer it runs
@@ -44,6 +47,13 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
             {"0C0", "0C0", "0C0", " 000 ",},
             {"0C0", "0C0", "0C0", " 000 ",},
             {"00000", "00000", "00000", "0   0",},
+    };
+    private static final String[][] shapeFlipped = new String[][]{
+            {shape[0][3],shape[0][2],shape[0][1],shape[0][0],},
+            {shape[1][3],shape[1][2],shape[1][1],shape[1][0],},
+            {shape[2][3],shape[2][2],shape[2][1],shape[2][0],},
+            {shape[3][3],shape[3][2],shape[3][1],shape[3][0],},
+            {shape[4][3],shape[4][2],shape[4][1],shape[4][0],},
     };
     private static final Block[] blockType = new Block[]{sBlockCasings4};
     private static final byte[] blockMeta = new byte[]{1};
@@ -70,6 +80,8 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         if (aSide == aFacing) {
             return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[49], new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_ELECTRIC_BLAST_FURNACE)};
+        }else if(aSide == GT_Utility.getOppositeSide(aFacing)) {
+            return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[49], aActive ? Textures.BlockIcons.CASING_BLOCKS[52] : Textures.BlockIcons.CASING_BLOCKS[53]};
         }
         return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[49]};
     }
@@ -81,12 +93,32 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     @Override
     public boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return EM_StructureCheckAdvanced(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0);
+        if(flipped){//some optimization
+            if(EM_StructureCheckAdvanced(shapeFlipped, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 1, 0)){
+                flipped=true;
+                return true;
+            }
+            if(EM_StructureCheckAdvanced(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0)){
+                flipped=false;
+                return true;
+            }
+        }else{
+            if(EM_StructureCheckAdvanced(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0)){
+                flipped=false;
+                return true;
+            }
+            if(EM_StructureCheckAdvanced(shapeFlipped, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 1, 0)){
+                flipped=true;
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public void construct(int qty) {
-        StructureBuilder(shape, blockType, blockMeta,2, 2, 0, getBaseMetaTileEntity());
+        if((qty&0x1)==1) StructureBuilder(shape, blockType, blockMeta,2, 2, 0, getBaseMetaTileEntity());
+        else StructureBuilder(shapeFlipped, blockType, blockMeta,2, 1, 0, getBaseMetaTileEntity());
     }
 
     @Override
@@ -95,7 +127,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
                 CommonValues.bassMark,
                 "High Frequency Oven",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "From live to done in seconds!",
-                EnumChatFormatting.BLUE + "I said nuke the chinese, I meant microwave supper!",
+                EnumChatFormatting.BLUE + "I said nuke the... I meant microwave supper!",
         };
     }
 
@@ -120,22 +152,28 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
         IGregTechTileEntity mte=getBaseMetaTileEntity();
         int xDirShift = ForgeDirection.getOrientation(mte.getBackFacing()).offsetX*2;
         int zDirShift = ForgeDirection.getOrientation(mte.getBackFacing()).offsetZ*2;
-        int toMapTop=(256-mte.getYCoord())/3;
         float xPos=mte.getXCoord()+0.5f;
         float yPos=mte.getYCoord()+0.5f;
         float zPos=mte.getZCoord()+0.5f;
         ArrayList<ItemStack> itemsToOutput=new ArrayList<>();
         HashSet<Entity> tickedStuff=new HashSet<>();
 
-        AxisAlignedBB aabb=AxisAlignedBB.getBoundingBox(xPos-1.5+xDirShift,yPos-.5,zPos-1.5+zDirShift,xPos+1.5+xDirShift,yPos+2.5,zPos+1.5+zDirShift);
-        allAABB:
-        for(int i=0;i<=toMapTop;i++) {
+        AxisAlignedBB aabb=AxisAlignedBB.getBoundingBox(
+                xPos-1.5+xDirShift,
+                yPos-(flipped?2.5:.5),
+                zPos-1.5+zDirShift,
+                xPos+1.5+xDirShift,
+                yPos+(flipped?.5:2.5),
+                zPos+1.5+zDirShift);
+
+        int damagingFactor = powerSetting >> 9;
+        boolean inside=true;
+
+        do {
             for (Object entity : mte.getWorld().getEntitiesWithinAABBExcludingEntity(null, aabb)) {
-                float damagingFactor=powerSetting >> (9+i);
-                if(damagingFactor<=0) break allAABB;
                 if (entity instanceof Entity) {
                     if(tickedStuff.add((Entity)entity)) {
-                        if (i == 0 && entity instanceof EntityItem) {
+                        if (inside && entity instanceof EntityItem) {
                             GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMicrowaveRecipes.findRecipe(
                                     mte, null, true, 128, null, null, new ItemStack[]{((EntityItem) entity).getEntityItem()});
                             if (tRecipe == null || tRecipe.mInputs[0].stackSize != 1) {
@@ -145,6 +183,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
                                 newStuff.stackSize = ((EntityItem) entity).getEntityItem().stackSize;
                                 itemsToOutput.add(newStuff);
                             }
+                            ((EntityItem) entity).delayBeforeCanPickup=2;
                             ((EntityItem) entity).setDead();
                         } else if (entity instanceof EntityLiving) {
                             ((EntityLiving) entity).attackEntityFrom(microwaving, damagingFactor);
@@ -154,13 +193,17 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
                     }
                 }
             }
-            aabb.offset(0,3,0);
+            aabb.offset(0,flipped?-3:3,0);
             aabb.minX-=.5f;
             aabb.maxX+=.5f;
             aabb.minZ-=.5f;
             aabb.maxZ+=.5f;
-        }
+            inside=false;
+            damagingFactor>>=1;
+        } while(damagingFactor>0);
+
         mOutputItems=itemsToOutput.toArray(new ItemStack[0]);
+
         if(timerValue<=0) {
             mte.getWorld().playSoundEffect(xPos,yPos,zPos, Reference.MODID+":microwave_ding", 1, 1);
             stopMachine();
