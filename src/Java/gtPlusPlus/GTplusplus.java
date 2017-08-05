@@ -115,6 +115,8 @@ public class GTplusplus implements ActionListener {
 				"gregtech", true, "These may be overpowered, Consult a local geologist.");
 		CORE.configSwitches.enableMachine_WorldAccelerators = config.getBoolean("enableMachineWorldAccelerators",
 				"gregtech", true, "These allow boosting Block/TileEntity Tick times [OP].");
+		CORE.configSwitches.enableMachine_Tesseracts = config.getBoolean("enableMachineTesseracts",
+				"gregtech", true, "Tesseracts for wireless item/fluid movement.");
 
 		// Multi machines
 		CORE.configSwitches.enableMultiblock_AlloyBlastSmelter = config.getBoolean("enableMultiblockAlloyBlastSmelter",

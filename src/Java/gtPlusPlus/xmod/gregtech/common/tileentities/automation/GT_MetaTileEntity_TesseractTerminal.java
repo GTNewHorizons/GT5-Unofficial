@@ -150,7 +150,7 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
 				final float[] tCoords = GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ);
 				switch ((byte) ((byte) (int) (tCoords[0] * 2.0F) + (2 * (byte) (int) (tCoords[1] * 2.0F)))) {
 				case 0:
-					//Utils.LOG_INFO("Freq. -1 | " + this.mFrequency);
+					//Utils.LOG_WARNING("Freq. -1 | " + this.mFrequency);
 					try {
 						CORE.sTesseractTerminalOwnershipMap.get(mOwner).remove(this.mFrequency);
 					} catch (Throwable t) {
@@ -158,14 +158,14 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
 					this.mFrequency -= 1;
 					break;
 				case 1:
-					//Utils.LOG_INFO("Freq. +1 | " + this.mFrequency);
+					//Utils.LOG_WARNING("Freq. +1 | " + this.mFrequency);
 					try {
 						CORE.sTesseractTerminalOwnershipMap.get(mOwner).remove(this.mFrequency);
 					} catch (Throwable t) {
 					}
 					this.mFrequency += 1;
 				default:
-					// Utils.LOG_INFO("Did not click the correct place.");
+					// Utils.LOG_WARNING("Did not click the correct place.");
 					try {
 						CORE.sTesseractTerminalOwnershipMap.get(mOwner).remove(this.mFrequency);
 					} catch (Throwable t) {
