@@ -27,21 +27,21 @@ public class NewHorizonsAccelerator {
 
 	private static void run1(){
 		GregtechItemList.AcceleratorLV.set(new GT_MetaTileEntity_WorldAccelerator(
-				11100, "basicmachine.accelerator.tier.01", "Basic World Accelerator", 1).getStackForm(1L));
+				841, "basicmachine.accelerator.tier.01", "Basic World Accelerator", 1).getStackForm(1L));
 		GregtechItemList.AcceleratorMV.set(new GT_MetaTileEntity_WorldAccelerator(
-				11101, "basicmachine.accelerator.tier.02", "Advanced World Accelerator", 2).getStackForm(1L));
+				842, "basicmachine.accelerator.tier.02", "Advanced World Accelerator", 2).getStackForm(1L));
 		GregtechItemList.AcceleratorHV.set(new GT_MetaTileEntity_WorldAccelerator(
-				11102, "basicmachine.accelerator.tier.03", "Advanced World Accelerator II", 3).getStackForm(1L));
+				843, "basicmachine.accelerator.tier.03", "Advanced World Accelerator II", 3).getStackForm(1L));
 		GregtechItemList.AcceleratorEV.set(new GT_MetaTileEntity_WorldAccelerator(
-				11103, "basicmachine.accelerator.tier.04", "Advanced World Accelerator III", 4).getStackForm(1L));
+				844, "basicmachine.accelerator.tier.04", "Advanced World Accelerator III", 4).getStackForm(1L));
 		GregtechItemList.AcceleratorIV.set(new GT_MetaTileEntity_WorldAccelerator(
-				11104, "basicmachine.accelerator.tier.05", "Advanced World Accelerator IV", 5).getStackForm(1L));
+				845, "basicmachine.accelerator.tier.05", "Advanced World Accelerator IV", 5).getStackForm(1L));
 		GregtechItemList.AcceleratorLuV.set(new GT_MetaTileEntity_WorldAccelerator(
-				11105, "basicmachine.accelerator.tier.06", "Elite World Accelerator", 6).getStackForm(1L));
+				846, "basicmachine.accelerator.tier.06", "Elite World Accelerator", 6).getStackForm(1L));
 		GregtechItemList.AcceleratorZPM.set(new GT_MetaTileEntity_WorldAccelerator(
-				11106, "basicmachine.accelerator.tier.07", "Elite World Accelerator II", 7).getStackForm(1L));
+				847, "basicmachine.accelerator.tier.07", "Elite World Accelerator II", 7).getStackForm(1L));
 		GregtechItemList.AcceleratorUV.set(new GT_MetaTileEntity_WorldAccelerator(
-				11107, "basicmachine.accelerator.tier.08", "Ultimate Time Anomaly", 8).getStackForm(1L));
+				848, "basicmachine.accelerator.tier.08", "Ultimate Time Anomaly", 8).getStackForm(1L));
 		
 		
 		GT_ModHandler.addCraftingRecipe(GregtechItemList.AcceleratorLV.get(1L),
