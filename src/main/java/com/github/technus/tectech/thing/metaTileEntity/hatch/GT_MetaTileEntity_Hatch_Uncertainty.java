@@ -2,7 +2,6 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.thing.machineTT;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Uncertainty;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Uncertainty;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_UncertaintyAdv;
@@ -25,7 +24,7 @@ import net.minecraftforge.fluids.FluidStack;
 /**
  * Created by danie_000 on 15.12.2016.
  */
-public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch implements machineTT {
+public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch {
     private static Textures.BlockIcons.CustomIcon ScreenON;
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     public short[] matrix = new short[]{500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500};

@@ -2,7 +2,6 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.thing.machineTT;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Dyes;
@@ -33,7 +32,7 @@ import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Mult
 /**
  * Created by danie_000 on 12.12.2016.
  */
-public class GT_MetaTileEntity_Hatch_MufflerElemental extends GT_MetaTileEntity_Hatch implements machineTT {
+public class GT_MetaTileEntity_Hatch_MufflerElemental extends GT_MetaTileEntity_Hatch {
     private static Textures.BlockIcons.CustomIcon EM_T_SIDES;
     private static Textures.BlockIcons.CustomIcon EM_T_ACTIVE;
     private static Textures.BlockIcons.CustomIcon MufflerEM;

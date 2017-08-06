@@ -1,7 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.thing.machineTT;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -15,7 +14,7 @@ import static gregtech.api.enums.GT_Values.V;
 /**
  * Created by danie_000 on 16.12.2016.
  */
-public class GT_MetaTileEntity_Hatch_DynamoMulti extends GT_MetaTileEntity_Hatch implements machineTT {
+public class GT_MetaTileEntity_Hatch_DynamoMulti extends GT_MetaTileEntity_Hatch {
     public final int Amperes;
 
     public GT_MetaTileEntity_Hatch_DynamoMulti(int aID, String aName, String aNameRegional, int aTier, int aAmp) {

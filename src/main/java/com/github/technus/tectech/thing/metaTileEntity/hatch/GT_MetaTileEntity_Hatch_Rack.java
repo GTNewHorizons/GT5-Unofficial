@@ -3,7 +3,6 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
-import com.github.technus.tectech.thing.machineTT;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Rack;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Rack;
 import cpw.mods.fml.common.Loader;
@@ -32,7 +31,7 @@ import static com.github.technus.tectech.Util.getUniqueIdentifier;
 /**
  * Created by Tec on 03.04.2017.
  */
-public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch implements machineTT {
+public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
     private static Textures.BlockIcons.CustomIcon EM_R;
     private static Textures.BlockIcons.CustomIcon EM_R_ACTIVE;
     public int heat = 0;

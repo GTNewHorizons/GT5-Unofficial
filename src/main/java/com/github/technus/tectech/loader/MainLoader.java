@@ -5,11 +5,11 @@ import com.github.technus.tectech.magicAddon.EssentiaCompat;
 import com.github.technus.tectech.magicAddon.EssentiaCompatEnabled;
 import com.github.technus.tectech.magicAddon.definitions.AspectDefinitionCompat;
 import com.github.technus.tectech.magicAddon.definitions.AspectDefinitionCompatEnabled;
+import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.casing.GT_Container_CasingsTT;
 import com.github.technus.tectech.thing.item.DebugBuilder;
 import com.github.technus.tectech.thing.item.DebugContainer_EM;
-import com.github.technus.tectech.thing.machineTT;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -93,9 +93,9 @@ public final class MainLoader {//TODO add checks for - is mod loaded dreamcraft 
 
             @Override
             public void displayAllReleventItems(List stuffToShow) {
-                for (int i = 1; i < GregTech_API.METATILEENTITIES.length; i++) {
-                    if (GregTech_API.METATILEENTITIES[i] instanceof machineTT) {
-                        stuffToShow.add(new ItemStack(GregTech_API.sBlockMachines, 1, i));
+                for(CustomItemList item: CustomItemList.values()){
+                    if (item.hasBeenSet() && item.getBlock() == GregTech_API.sBlockMachines) {
+                        stuffToShow.add(item.get(1));
                     }
                 }
                 super.displayAllReleventItems(stuffToShow);
@@ -107,7 +107,7 @@ public final class MainLoader {//TODO add checks for - is mod loaded dreamcraft 
 
         progressBarPostLoad.step("Register Extra Hazmat Suits");
         registerExtraHazmats();
-        TecTech.Logger.info("CreativeTab initiation complete");
+        TecTech.Logger.info("Hazmat additions done");
 
         ProgressManager.pop(progressBarPostLoad);
     }

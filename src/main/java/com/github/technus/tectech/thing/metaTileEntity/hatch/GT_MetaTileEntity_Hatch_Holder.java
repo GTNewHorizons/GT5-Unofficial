@@ -1,7 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.thing.machineTT;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Holder;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Holder;
 import cpw.mods.fml.relauncher.Side;
@@ -21,7 +20,7 @@ import net.minecraft.util.EnumChatFormatting;
 /**
  * Created by Tec on 03.04.2017.
  */
-public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch implements machineTT {
+public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch {
     private static Textures.BlockIcons.CustomIcon EM_H;
     private static Textures.BlockIcons.CustomIcon EM_H_ACTIVE;
 

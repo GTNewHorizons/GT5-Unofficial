@@ -2,7 +2,6 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.dataFramework.quantumDataPacket;
-import com.github.technus.tectech.thing.machineTT;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.iConnectsToDataPipe;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -25,7 +24,7 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 /**
  * Created by danie_000 on 11.12.2016.
  */
-public abstract class GT_MetaTileEntity_Hatch_DataConnector extends GT_MetaTileEntity_Hatch implements iConnectsToDataPipe, machineTT {
+public abstract class GT_MetaTileEntity_Hatch_DataConnector extends GT_MetaTileEntity_Hatch implements iConnectsToDataPipe {
     private static Textures.BlockIcons.CustomIcon EM_D_SIDES;
     private static Textures.BlockIcons.CustomIcon EM_D_ACTIVE;
     private static Textures.BlockIcons.CustomIcon EM_D_CONN;

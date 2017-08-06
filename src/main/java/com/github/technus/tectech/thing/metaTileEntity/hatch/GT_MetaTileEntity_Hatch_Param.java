@@ -1,7 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.thing.machineTT;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Param;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Param;
 import cpw.mods.fml.relauncher.Side;
@@ -23,7 +22,7 @@ import net.minecraftforge.fluids.FluidStack;
 /**
  * Created by danie_000 on 15.12.2016.
  */
-public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch implements machineTT {
+public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
     public int exponent = 0;
     public int value2 = 0;
     public int value1 = 0;

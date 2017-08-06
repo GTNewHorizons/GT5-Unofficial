@@ -1,7 +1,6 @@
 package com.github.technus.tectech.thing.metaTileEntity.pipe;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.thing.machineTT;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.GT_Mod;
@@ -30,7 +29,7 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
 /**
  * Created by Tec on 26.02.2017.
  */
-public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements iConnectsToEMpipe, machineTT {
+public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements iConnectsToEMpipe {
     private static Textures.BlockIcons.CustomIcon EMpipe;
     private static Textures.BlockIcons.CustomIcon EMcandy;
     public byte connectionCount = 0;
