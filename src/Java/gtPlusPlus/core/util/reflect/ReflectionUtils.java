@@ -103,7 +103,7 @@ public class ReflectionUtils {
 	   * Allows to change the state of an immutable instance. Huh?!?
 	   */
 	public static void setFieldValue(Class clazz,  String fieldName, Object newValue) throws Exception {
-	    Field nameField = clazz.getDeclaredField(fieldName);
+	    Field nameField = getField(clazz, fieldName);
 	    setValue(clazz, nameField, newValue);
 	  }
 	
