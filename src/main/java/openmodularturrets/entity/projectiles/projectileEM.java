@@ -52,7 +52,9 @@ public class projectileEM extends TurretProjectile {
                 avalableEM.removeAmount(false,consumeFromThis.definition.getStackForm(1));
             }
         }
-        //todo add subspace pollution
+        //todo make the recipe require some overflow hatches
+
+        //todo add more subspace pollution
     }
 
     protected void onImpact(MovingObjectPosition movingobjectposition) {

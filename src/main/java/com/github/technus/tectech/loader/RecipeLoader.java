@@ -16,12 +16,8 @@ public class RecipeLoader implements Runnable {
 
 
 
-        if (Loader.isModLoaded("dreamcraft")) runDreamRun();//TODO init recipes for GTNH version
+        if (Loader.isModLoaded("dreamcraft")) new DreamCraftRecipeLoader().run();//TODO init recipes for GTNH version
         else runBloodRun();//TODO init recipes for NON-GTNH version
-    }
-
-    private void runDreamRun(){
-
     }
 
     private void runBloodRun(){
