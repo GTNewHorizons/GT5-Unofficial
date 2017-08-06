@@ -20,6 +20,7 @@ import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator {
@@ -49,6 +50,25 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 		return ticks*voltage;
 	}
 
+	@Override
+	public void saveNBTData(NBTTagCompound aNBT) {
+		super.saveNBTData(aNBT);
+		aNBT.setLong("mTicksToBurnFor", this.mTicksToBurnFor);
+		aNBT.setInteger("mVoltage", this.mVoltage);
+		aNBT.setInteger("mDaysRemaining", this.mDaysRemaining);
+		aNBT.setInteger("mDayTick", this.mDayTick);
+	}
+
+	@Override
+	public void loadNBTData(NBTTagCompound aNBT) {
+		super.loadNBTData(aNBT);
+		//this.mMachineBlock = aNBT.getByte("mMachineBlock");
+		this.mTicksToBurnFor = aNBT.getLong("mTicksToBurnFor");
+		this.mVoltage = aNBT.getInteger("mVoltage");
+		this.mDaysRemaining = aNBT.getInteger("mDaysRemaining");
+		this.mDayTick = aNBT.getInteger("mDayTick");
+	}
+
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		if (aBaseMetaTileEntity.isServerSide()){
 			if (this.mDayTick < 24000){
@@ -59,7 +79,7 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 				this.mDaysRemaining = this.removeDayOfTime();
 			}
 		}
-		
+
 
 		if ((aBaseMetaTileEntity.isServerSide()) && (aBaseMetaTileEntity.isAllowedToWork()) && (aTick % 10L == 0L)) {
 			long tProducedEU = 0L;
@@ -167,11 +187,11 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 
 	public ITexture[] getTop(byte aColor) {
 		return new ITexture[] { super.getTop(aColor)[0],
-				new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP) };
+				new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_FLUID_SIDE) };
 	}
 
 	public ITexture[] getSides(byte aColor) {
-				return new ITexture[]{gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier]};
+		return new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE) ,gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier]};
 	}
 
 	public ITexture[] getFrontActive(byte aColor) {
@@ -191,11 +211,11 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 
 	public ITexture[] getTopActive(byte aColor) {
 		return new ITexture[] { super.getTopActive(aColor)[0],
-				new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE) };
+				new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_FLUID_SIDE_ACTIVE) };
 	}
 
 	public ITexture[] getSidesActive(byte aColor) {
-		return new ITexture[]{gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier]};
+		return new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE) ,gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[this.mTier]};
 	}
 
 	public int getPollution() {
@@ -212,7 +232,8 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 			int voltage = tFuel.mEUt;
 			this.mVoltage = voltage;
 			int sfsf = this.mTier;
-			
+			this.mDaysRemaining = tFuel.mSpecialValue*365;
+
 			//Do some voodoo.
 			int mTier2;
 			//mTier2 = ReflectionUtils.getField(this.getClass(), "mTier");
@@ -238,8 +259,8 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 				Utils.LOG_INFO("Failed setting mTier.");
 				e.printStackTrace();
 			}
-			
-			this.mTicksToBurnFor = getTotalEUGenerated(convertDaysToTicks(tFuel.mSpecialValue), voltage);
+
+			this.mTicksToBurnFor = getTotalEUGenerated(convertDaysToTicks(tFuel.mSpecialValue*365), voltage);
 			if (mTicksToBurnFor >= Integer.MAX_VALUE){
 				mTicksToBurnFor = Integer.MAX_VALUE;
 				Utils.LOG_INFO("Fuel went over Int limit, setting to MAX_VALUE.");
@@ -255,7 +276,7 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 	public long maxEUOutput() {
 		return ((getBaseMetaTileEntity().isAllowedToWork()) ? this.mVoltage : 0L);
 	}
-	
+
 	@Override
 	public long getOutputTier() {
 		//Utils.LOG_INFO(""+this.mVoltage + " | " + (this.mCurrentRecipe == null));
@@ -274,8 +295,8 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 	@Override
 	public String[] getInfoData() {
 		return new String[] { "RTG", "Active:"+this.getBaseMetaTileEntity().isActive(), "Current Output: " + this.mVoltage + " EU/t",
-				"EU Remaining: " + ""+this.mTicksToBurnFor*this.mVoltage + " EU",
-				"Days of Fuel remaining: "+this.mDaysRemaining,
+				"Days of Fuel remaining: "+this.mDaysRemaining*365,
+				"Hours of Fuel remaining: "+(this.mDaysRemaining*365/3f),
 				"Current Recipe input: "+ this.mCurrentRecipe != null ? this.mCurrentRecipe.mInputs[0].getDisplayName() + " x1" : "NUll"
 		};
 	}
