@@ -60,12 +60,8 @@ public final class MainLoader {//TODO add checks for - is mod loaded dreamcraft 
         TecTech.Logger.info("Entities registered");
 
         progressBarLoad.step("Add damage types");
-        microwaving=new DamageSource("microwaving");
-        microwaving.setDamageBypassesArmor();
-
-        elementalPollution=new DamageSource("elementalPollution");
-        elementalPollution.setDamageBypassesArmor();
-        elementalPollution.isUnblockable();
+        microwaving=new DamageSource("microwaving").setDamageBypassesArmor();
+        elementalPollution=new DamageSource("elementalPollution").setDamageBypassesArmor();
         TecTech.Logger.info("Damage types addition Done");
 
         ProgressManager.pop(progressBarLoad);
