@@ -83,16 +83,12 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 		this.mDayTick = aNBT.getInteger("mDayTick");
 		
 		
-		final NBTTagList list = aNBT.getTagList("mRecipeItem", 10);
-		ItemStack[] inventory = new ItemStack[1];
-		for(int i = 0;i<list.tagCount();i++){
-			final NBTTagCompound data = list.getCompoundTagAt(i);
-			final int slot = data.getInteger("mSlot");
-			if((slot >= 0) && (slot < 1)){
-				inventory[slot] = ItemStack.loadItemStackFromNBT(data);
-			}
+	final NBTTagList list = aNBT.getTagList("mRecipeItem", 10);
+	final NBTTagCompound data = list.getCompoundTagAt(0);
+	ItemStack lastUsedFuel = ItemStack.loadItemStackFromNBT(data);
+	   if (lastUsedFuel != null){
+	    	this.mCurrentRecipe = getRecipes().findRecipe(getBaseMetaTileEntity(), false, 9223372036854775807L, null, new ItemStack[] { lastUsedFuel });
 		}
-		this.mCurrentRecipe = getRecipes().findRecipe(getBaseMetaTileEntity(), false, 9223372036854775807L, null, new ItemStack[] { inventory[0] });
 	}
 
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
