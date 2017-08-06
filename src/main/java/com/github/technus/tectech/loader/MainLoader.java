@@ -11,9 +11,11 @@ import com.github.technus.tectech.thing.item.DebugBuilder;
 import com.github.technus.tectech.thing.item.DebugContainer_EM;
 import com.github.technus.tectech.thing.machineTT;
 import cpw.mods.fml.common.ProgressManager;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
+import gregtech.api.util.GT_ModHandler;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -25,6 +27,7 @@ import static com.github.technus.tectech.TecTech.hasThaumcraft;
 import static com.github.technus.tectech.TecTech.mainTab;
 import static com.github.technus.tectech.magicAddon.EssentiaCompat.essentiaContainerCompat;
 import static com.github.technus.tectech.magicAddon.definitions.AspectDefinitionCompat.aspectDefinitionCompat;
+import static gregtech.api.enums.GT_Values.W;
 
 public final class MainLoader {//TODO add checks for - is mod loaded dreamcraft to enable higher tier machinery. (above UV), or implement a check for GT tier values.
     public static DamageSource microwaving, elementalPollution;
@@ -59,19 +62,18 @@ public final class MainLoader {//TODO add checks for - is mod loaded dreamcraft 
 
         progressBarLoad.step("Add damage types");
         microwaving=new DamageSource("microwaving");
-        microwaving.setDamageAllowedInCreativeMode();
         microwaving.setDamageBypassesArmor();
 
         elementalPollution=new DamageSource("elementalPollution");
-        elementalPollution.setDamageAllowedInCreativeMode();
         elementalPollution.setDamageBypassesArmor();
+        elementalPollution.isUnblockable();
         TecTech.Logger.info("Damage types addition Done");
 
         ProgressManager.pop(progressBarLoad);
     }
 
     public void postLoad() {
-        ProgressManager.ProgressBar progressBarPostLoad = ProgressManager.push("TecTech Post Loader", 4);
+        ProgressManager.ProgressBar progressBarPostLoad = ProgressManager.push("TecTech Post Loader", 5);
 
         progressBarPostLoad.step("Thaumcraft Compatibility");
         if (hasThaumcraft) {
@@ -106,15 +108,77 @@ public final class MainLoader {//TODO add checks for - is mod loaded dreamcraft 
         };
         progressBarPostLoad.step("Creative Tab part2");
         registerThingsInTabs();
+        TecTech.Logger.info("CreativeTab initiation complete");
+
+        progressBarPostLoad.step("Register Extra Hazmat Suits");
+        registerExtraHazmats();
+        TecTech.Logger.info("CreativeTab initiation complete");
 
         ProgressManager.pop(progressBarPostLoad);
     }
 
-    public void registerThingsInTabs() {
+    private void registerThingsInTabs() {
         QuantumGlassBlock.INSTANCE.setCreativeTab(mainTab);
         GT_Container_CasingsTT.sBlockCasingsTT.setCreativeTab(mainTab);
         DebugContainer_EM.INSTANCE.setCreativeTab(mainTab);
         DebugBuilder.INSTANCE.setCreativeTab(mainTab);
-        TecTech.Logger.info("CreativeTab initiation complete");
+    }
+
+    private void registerExtraHazmats() {
+        GregTech_API.sFrostHazmatList.add(new ItemStack(GameRegistry.findItem("EMT","itemArmorQuantumChestplate"),1,W));
+        GregTech_API.sFrostHazmatList.add(new ItemStack(GameRegistry.findItem("GraviSuite","graviChestPlate"),1,W));
+        GregTech_API.sFrostHazmatList.add(GT_ModHandler.getIC2Item("quantumHelmet", 1L, W));
+        GregTech_API.sFrostHazmatList.add(GT_ModHandler.getIC2Item("quantumBodyarmor", 1L, W));
+        GregTech_API.sFrostHazmatList.add(GT_ModHandler.getIC2Item("quantumLeggings", 1L, W));
+        GregTech_API.sFrostHazmatList.add(GT_ModHandler.getIC2Item("quantumBoots", 1L, W));
+
+        GregTech_API.sHeatHazmatList.add(new ItemStack(GameRegistry.findItem("EMT","itemArmorQuantumChestplate"),1,W));
+        GregTech_API.sHeatHazmatList.add(new ItemStack(GameRegistry.findItem("GraviSuite","graviChestPlate"),1,W));
+        GregTech_API.sHeatHazmatList.add(GT_ModHandler.getIC2Item("quantumHelmet", 1L, W));
+        GregTech_API.sHeatHazmatList.add(GT_ModHandler.getIC2Item("quantumBodyarmor", 1L, W));
+        GregTech_API.sHeatHazmatList.add(GT_ModHandler.getIC2Item("quantumLeggings", 1L, W));
+        GregTech_API.sHeatHazmatList.add(GT_ModHandler.getIC2Item("quantumBoots", 1L, W));
+
+        GregTech_API.sBioHazmatList.add(new ItemStack(GameRegistry.findItem("EMT","itemArmorQuantumChestplate"),1,W));
+        GregTech_API.sBioHazmatList.add(new ItemStack(GameRegistry.findItem("GraviSuite","graviChestPlate"),1,W));
+        GregTech_API.sBioHazmatList.add(GT_ModHandler.getIC2Item("quantumHelmet", 1L, W));
+        GregTech_API.sBioHazmatList.add(GT_ModHandler.getIC2Item("quantumBodyarmor", 1L, W));
+        GregTech_API.sBioHazmatList.add(GT_ModHandler.getIC2Item("quantumLeggings", 1L, W));
+        GregTech_API.sBioHazmatList.add(GT_ModHandler.getIC2Item("quantumBoots", 1L, W));
+        
+        GregTech_API.sBioHazmatList.add(GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, W);
+        GregTech_API.sBioHazmatList.add(GT_ModHandler.getIC2Item("nanoHelmet", 1L, W));
+        GregTech_API.sBioHazmatList.add(GT_ModHandler.getIC2Item("nanoBodyarmor", 1L, W));
+        GregTech_API.sBioHazmatList.add(GT_ModHandler.getIC2Item("nanoLeggings", 1L, W));
+        GregTech_API.sBioHazmatList.add(GT_ModHandler.getIC2Item("nanoBoots", 1L, W));
+
+        GregTech_API.sGasHazmatList.add(new ItemStack(GameRegistry.findItem("EMT","itemArmorQuantumChestplate"),1,W));
+        GregTech_API.sGasHazmatList.add(new ItemStack(GameRegistry.findItem("GraviSuite","graviChestPlate"),1,W));
+        GregTech_API.sGasHazmatList.add(GT_ModHandler.getIC2Item("quantumHelmet", 1L, W));
+        GregTech_API.sGasHazmatList.add(GT_ModHandler.getIC2Item("quantumBodyarmor", 1L, W));
+        GregTech_API.sGasHazmatList.add(GT_ModHandler.getIC2Item("quantumLeggings", 1L, W));
+        GregTech_API.sGasHazmatList.add(GT_ModHandler.getIC2Item("quantumBoots", 1L, W));
+        
+        GregTech_API.sGasHazmatList.add(GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, W);
+        GregTech_API.sGasHazmatList.add(GT_ModHandler.getIC2Item("nanoHelmet", 1L, W));
+        GregTech_API.sGasHazmatList.add(GT_ModHandler.getIC2Item("nanoBodyarmor", 1L, W));
+        GregTech_API.sGasHazmatList.add(GT_ModHandler.getIC2Item("nanoLeggings", 1L, W));
+        GregTech_API.sGasHazmatList.add(GT_ModHandler.getIC2Item("nanoBoots", 1L, W));
+
+        GregTech_API.sRadioHazmatList.add(new ItemStack(GameRegistry.findItem("EMT","itemArmorQuantumChestplate"),1,W));
+        GregTech_API.sRadioHazmatList.add(new ItemStack(GameRegistry.findItem("GraviSuite","graviChestPlate"),1,W));
+        GregTech_API.sRadioHazmatList.add(GT_ModHandler.getIC2Item("quantumHelmet", 1L, W));
+        GregTech_API.sRadioHazmatList.add(GT_ModHandler.getIC2Item("quantumBodyarmor", 1L, W));
+        GregTech_API.sRadioHazmatList.add(GT_ModHandler.getIC2Item("quantumLeggings", 1L, W));
+        GregTech_API.sRadioHazmatList.add(GT_ModHandler.getIC2Item("quantumBoots", 1L, W));
+
+        GregTech_API.sElectroHazmatList.add(new ItemStack(GameRegistry.findItem("EMT","itemArmorQuantumChestplate"),1,W));
+        GregTech_API.sElectroHazmatList.add(new ItemStack(GameRegistry.findItem("GraviSuite","graviChestPlate"),1,W));
+        GregTech_API.sElectroHazmatList.add(GT_ModHandler.getIC2Item("quantumHelmet", 1L, W));
+        GregTech_API.sElectroHazmatList.add(GT_ModHandler.getIC2Item("quantumBodyarmor", 1L, W));
+        GregTech_API.sElectroHazmatList.add(GT_ModHandler.getIC2Item("quantumLeggings", 1L, W));
+        GregTech_API.sElectroHazmatList.add(GT_ModHandler.getIC2Item("quantumBoots", 1L, W));
+        
+        //todo add GC GS stuff
     }
 }

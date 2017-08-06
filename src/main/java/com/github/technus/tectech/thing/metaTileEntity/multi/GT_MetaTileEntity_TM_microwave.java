@@ -13,6 +13,7 @@ import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -185,10 +186,9 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
                             }
                             ((EntityItem) entity).delayBeforeCanPickup=2;
                             ((EntityItem) entity).setDead();
-                        } else if (entity instanceof EntityLiving) {
-                            ((EntityLiving) entity).attackEntityFrom(microwaving, damagingFactor);
-                        } else if (entity instanceof EntityPlayerMP) {
-                            ((EntityPlayerMP) entity).attackEntityFrom(microwaving, damagingFactor);
+                        } else if (entity instanceof EntityLivingBase) {
+                            if(!GT_Utility.isWearingFullElectroHazmat((EntityLivingBase) entity))
+                                ((EntityLiving) entity).attackEntityFrom(microwaving, damagingFactor);
                         }
                     }
                 }
