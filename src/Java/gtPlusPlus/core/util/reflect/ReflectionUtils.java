@@ -97,51 +97,76 @@ public class ReflectionUtils {
 		//System. out.println(ste[ste.length-depth].getClassName()+"#"+ste[ste.length-depth].getMethodName());
 		return ste[depth].getMethodName();
 	}
-	
-	
-	 /**
-	   * Allows to change the state of an immutable instance. Huh?!?
-	   */
-	public static void setFieldValue(Class clazz,  String fieldName, Object newValue) throws Exception {
-	    Field nameField = getField(clazz, fieldName);
-	    setValue(clazz, nameField, newValue);
-	  }
-	
-	  /**
-	   * Allows to change the state of final statics. Huh?!?
-	   */
-	  public static void setDefault(Class clazz, String fieldName, Object newValue) throws Exception {
-	    Field staticField = clazz.getDeclaredField(fieldName);
-	    setValue(null, staticField, newValue);
-	  }
 
-	  /**
-	   * 
-	   * Set the value of a field reflectively.
-	   */
-	  protected static void setValue(Object owner, Field field, Object value) throws Exception {
-	    makeModifiable(field);
-	    field.set(owner, value);
-	  }
-	
+
+	/**
+	 * Allows to change the state of an immutable instance. Huh?!?
+	 */
+	public static void setFieldValue(Class clazz,  String fieldName, Object newValue) throws Exception {
+		Field nameField = getField(clazz, fieldName);
+		setValue(clazz, nameField, newValue);
+	}
+
+	/**
+	 * Allows to change the state of final statics. Huh?!?
+	 */
+	public static void setDefault(Class clazz, String fieldName, Object newValue) throws Exception {
+		Field staticField = clazz.getDeclaredField(fieldName);
+		setValue(null, staticField, newValue);
+	}
+
+	/**
+	 * 
+	 * Set the value of a field reflectively.
+	 */
+	protected static void setValue(Object owner, Field field, Object value) throws Exception {
+		makeModifiable(field);
+		field.set(owner, value);
+	}
+
 	/**
 	 * Force the field to be modifiable and accessible.
 	 */
 	protected static void makeModifiable(Field nameField) throws Exception {
-	  nameField.setAccessible(true);
-	  int modifiers = nameField.getModifiers();
-	  Field modifierField = nameField.getClass().getDeclaredField("modifiers");
-	  modifiers = modifiers & ~Modifier.FINAL;
-	  modifierField.setAccessible(true);
-	  modifierField.setInt(nameField, modifiers);
+		nameField.setAccessible(true);
+		int modifiers = nameField.getModifiers();
+		Field modifierField = nameField.getClass().getDeclaredField("modifiers");
+		modifiers = modifiers & ~Modifier.FINAL;
+		modifierField.setAccessible(true);
+		modifierField.setInt(nameField, modifiers);
 	}
 
 	public static void setFinalStatic(Field field, Object newValue) throws Exception {
-	      field.setAccessible(true);
-	      Field modifiersField = Field.class.getDeclaredField("modifiers");
-	      modifiersField.setAccessible(true);
-	      modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-	      field.set(null, newValue);
-	   }
-	
+		field.setAccessible(true);
+		Field modifiersField = Field.class.getDeclaredField("modifiers");
+		modifiersField.setAccessible(true);
+		modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+		field.set(null, newValue);
+	}
+
+
+
+
+
+	/**
+	 * Allows to change the state of an immutable instance. Huh?!?
+	 */
+	public static void setByte(Class clazz,  String fieldName, Byte newValue) throws Exception {
+		/*Field nameField = getField(clazz, fieldName);
+		nameField.setAccessible(true);
+		int modifiers = nameField.getModifiers();
+		Field modifierField = nameField.getClass().getDeclaredField("modifiers");
+		modifiers = modifiers & ~Modifier.FINAL;
+		modifierField.setAccessible(true);
+		modifierField.set(nameField, modifiers);
+		nameField.set(clazz, newValue);*/
+
+		final Field fieldA = clazz.getDeclaredField(fieldName);
+		fieldA.setAccessible( true );
+		fieldA.setInt(clazz, newValue );
+
+	}
+
+
+
 }
