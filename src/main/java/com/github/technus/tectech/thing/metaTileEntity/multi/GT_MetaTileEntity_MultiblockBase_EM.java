@@ -42,7 +42,6 @@ import java.util.Map;
 import static com.github.technus.tectech.CommonValues.*;
 import static com.github.technus.tectech.Util.StructureChecker;
 import static com.github.technus.tectech.Util.StructureCheckerAdvanced;
-import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static gregtech.api.enums.GT_Values.V;
 import static gregtech.api.enums.GT_Values.VN;

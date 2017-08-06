@@ -11,7 +11,6 @@ import com.github.technus.tectech.thing.item.DebugBuilder;
 import com.github.technus.tectech.thing.item.DebugContainer_EM;
 import com.github.technus.tectech.thing.machineTT;
 import cpw.mods.fml.common.ProgressManager;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
