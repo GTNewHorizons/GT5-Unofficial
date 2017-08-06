@@ -49,8 +49,6 @@ public class projectileEM extends TurretProjectile {
                 if (consumeFromThis.definition.getCharge() == 0) this.gravity = massFactor/100f;
                 else this.gravity = Math.min(0.0025F/Math.abs(consumeFromThis.definition.getCharge()),massFactor/100f);
 
-                antiMatter=true;//todo remove
-
                 avalableEM.removeAmount(false,consumeFromThis.definition.getStackForm(1));
             }
         }
