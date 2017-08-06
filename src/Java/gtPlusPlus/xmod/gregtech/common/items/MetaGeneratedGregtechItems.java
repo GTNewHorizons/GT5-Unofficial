@@ -210,7 +210,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 				null,
 				0,
 				512,
-				MathUtils.roundToClosestInt(0.6f));
+				MathUtils.roundToClosestInt(1f));
 		Recipe_GT.Gregtech_Recipe_Map.sRTGFuels.addRecipe(
 				true,
 				new ItemStack[]{GregtechItemList.Pellet_RTG_AM241.get(1)},
@@ -220,7 +220,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 				null,
 				0,
 				16,
-				MathUtils.roundToClosestInt(432));
+				MathUtils.roundToClosestInt(432/2));
 		//Computer Cube
 		GregtechItemList.Gregtech_Computer_Cube.set(this.addItem(tLastID = 55, "Gregtech Computer Cube", "Reusable", new Object[]{getTcAspectStack(TC_Aspects.ELECTRUM, 8L), getTcAspectStack(TC_Aspects.METALLUM, 8L), getTcAspectStack(TC_Aspects.POTENTIA, 8L)}));
 		this.setElectricStats(32000 + tLastID, Integer.MAX_VALUE, GT_Values.V[5], 5L, -3L, true);
