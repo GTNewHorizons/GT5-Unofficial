@@ -125,59 +125,73 @@ public final class MainLoader {//TODO add checks for - is mod loaded dreamcraft 
     }
 
     private void registerExtraHazmats() {
-        GregTech_API.sFrostHazmatList.add(new ItemStack(GameRegistry.findItem("EMT","itemArmorQuantumChestplate"),1,W));
-        GregTech_API.sFrostHazmatList.add(new ItemStack(GameRegistry.findItem("GraviSuite","graviChestPlate"),1,W));
-        GregTech_API.sFrostHazmatList.add(GT_ModHandler.getIC2Item("quantumHelmet", 1L, W));
-        GregTech_API.sFrostHazmatList.add(GT_ModHandler.getIC2Item("quantumBodyarmor", 1L, W));
-        GregTech_API.sFrostHazmatList.add(GT_ModHandler.getIC2Item("quantumLeggings", 1L, W));
-        GregTech_API.sFrostHazmatList.add(GT_ModHandler.getIC2Item("quantumBoots", 1L, W));
+        ItemStack EMT_iqC=GT_ModHandler.getModItem("EMT","itemArmorQuantumChestplate",1,W);
+        ItemStack GRAVI_gC=GT_ModHandler.getModItem("GraviSuite","graviChestPlate",1,W);
+        ItemStack GRAVI_anC=GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, W);
 
-        GregTech_API.sHeatHazmatList.add(new ItemStack(GameRegistry.findItem("EMT","itemArmorQuantumChestplate"),1,W));
-        GregTech_API.sHeatHazmatList.add(new ItemStack(GameRegistry.findItem("GraviSuite","graviChestPlate"),1,W));
-        GregTech_API.sHeatHazmatList.add(GT_ModHandler.getIC2Item("quantumHelmet", 1L, W));
-        GregTech_API.sHeatHazmatList.add(GT_ModHandler.getIC2Item("quantumBodyarmor", 1L, W));
-        GregTech_API.sHeatHazmatList.add(GT_ModHandler.getIC2Item("quantumLeggings", 1L, W));
-        GregTech_API.sHeatHazmatList.add(GT_ModHandler.getIC2Item("quantumBoots", 1L, W));
+        ItemStack IC2_qH=GT_ModHandler.getIC2Item("quantumHelmet", 1L, W);
+        ItemStack IC2_qC=GT_ModHandler.getIC2Item("quantumBodyarmor", 1L, W);
+        ItemStack IC2_qL=GT_ModHandler.getIC2Item("quantumLeggings", 1L, W);
+        ItemStack IC2_qB=GT_ModHandler.getIC2Item("quantumBoots", 1L, W);
 
-        GregTech_API.sBioHazmatList.add(new ItemStack(GameRegistry.findItem("EMT","itemArmorQuantumChestplate"),1,W));
-        GregTech_API.sBioHazmatList.add(new ItemStack(GameRegistry.findItem("GraviSuite","graviChestPlate"),1,W));
-        GregTech_API.sBioHazmatList.add(GT_ModHandler.getIC2Item("quantumHelmet", 1L, W));
-        GregTech_API.sBioHazmatList.add(GT_ModHandler.getIC2Item("quantumBodyarmor", 1L, W));
-        GregTech_API.sBioHazmatList.add(GT_ModHandler.getIC2Item("quantumLeggings", 1L, W));
-        GregTech_API.sBioHazmatList.add(GT_ModHandler.getIC2Item("quantumBoots", 1L, W));
+        ItemStack IC2_nH=GT_ModHandler.getIC2Item("nanoHelmet", 1L, W);
+        ItemStack IC2_nC=GT_ModHandler.getIC2Item("nanoBodyarmor", 1L, W);
+        ItemStack IC2_nL=GT_ModHandler.getIC2Item("nanoLeggings", 1L, W);
+        ItemStack IC2_nB=GT_ModHandler.getIC2Item("nanoBoots", 1L, W);
+
+        GregTech_API.sFrostHazmatList.add(EMT_iqC);
+        GregTech_API.sFrostHazmatList.add(GRAVI_gC);
+        GregTech_API.sFrostHazmatList.add(IC2_qH);
+        GregTech_API.sFrostHazmatList.add(IC2_qC);
+        GregTech_API.sFrostHazmatList.add(IC2_qL);
+        GregTech_API.sFrostHazmatList.add(IC2_qB);
+
+        GregTech_API.sHeatHazmatList.add(EMT_iqC);
+        GregTech_API.sHeatHazmatList.add(GRAVI_gC);
+        GregTech_API.sHeatHazmatList.add(IC2_qH);
+        GregTech_API.sHeatHazmatList.add(IC2_qC);
+        GregTech_API.sHeatHazmatList.add(IC2_qL);
+        GregTech_API.sHeatHazmatList.add(IC2_qB);
+
+        GregTech_API.sBioHazmatList.add(EMT_iqC);
+        GregTech_API.sBioHazmatList.add(GRAVI_gC);
+        GregTech_API.sBioHazmatList.add(IC2_qH);
+        GregTech_API.sBioHazmatList.add(IC2_qC);
+        GregTech_API.sBioHazmatList.add(IC2_qL);
+        GregTech_API.sBioHazmatList.add(IC2_qB);
         
-        GregTech_API.sBioHazmatList.add(GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, W);
-        GregTech_API.sBioHazmatList.add(GT_ModHandler.getIC2Item("nanoHelmet", 1L, W));
-        GregTech_API.sBioHazmatList.add(GT_ModHandler.getIC2Item("nanoBodyarmor", 1L, W));
-        GregTech_API.sBioHazmatList.add(GT_ModHandler.getIC2Item("nanoLeggings", 1L, W));
-        GregTech_API.sBioHazmatList.add(GT_ModHandler.getIC2Item("nanoBoots", 1L, W));
+        GregTech_API.sBioHazmatList.add(GRAVI_anC);
+        GregTech_API.sBioHazmatList.add(IC2_nH);
+        GregTech_API.sBioHazmatList.add(IC2_nC);
+        GregTech_API.sBioHazmatList.add(IC2_nL);
+        GregTech_API.sBioHazmatList.add(IC2_nB);
 
-        GregTech_API.sGasHazmatList.add(new ItemStack(GameRegistry.findItem("EMT","itemArmorQuantumChestplate"),1,W));
-        GregTech_API.sGasHazmatList.add(new ItemStack(GameRegistry.findItem("GraviSuite","graviChestPlate"),1,W));
-        GregTech_API.sGasHazmatList.add(GT_ModHandler.getIC2Item("quantumHelmet", 1L, W));
-        GregTech_API.sGasHazmatList.add(GT_ModHandler.getIC2Item("quantumBodyarmor", 1L, W));
-        GregTech_API.sGasHazmatList.add(GT_ModHandler.getIC2Item("quantumLeggings", 1L, W));
-        GregTech_API.sGasHazmatList.add(GT_ModHandler.getIC2Item("quantumBoots", 1L, W));
+        GregTech_API.sGasHazmatList.add(EMT_iqC);
+        GregTech_API.sGasHazmatList.add(GRAVI_gC);
+        GregTech_API.sGasHazmatList.add(IC2_qH);
+        GregTech_API.sGasHazmatList.add(IC2_qC);
+        GregTech_API.sGasHazmatList.add(IC2_qL);
+        GregTech_API.sGasHazmatList.add(IC2_qB);
         
-        GregTech_API.sGasHazmatList.add(GT_ModHandler.getModItem("GraviSuite", "advNanoChestPlate", 1, W);
-        GregTech_API.sGasHazmatList.add(GT_ModHandler.getIC2Item("nanoHelmet", 1L, W));
-        GregTech_API.sGasHazmatList.add(GT_ModHandler.getIC2Item("nanoBodyarmor", 1L, W));
-        GregTech_API.sGasHazmatList.add(GT_ModHandler.getIC2Item("nanoLeggings", 1L, W));
-        GregTech_API.sGasHazmatList.add(GT_ModHandler.getIC2Item("nanoBoots", 1L, W));
+        GregTech_API.sGasHazmatList.add(GRAVI_anC);
+        GregTech_API.sGasHazmatList.add(IC2_nH);
+        GregTech_API.sGasHazmatList.add(IC2_nC);
+        GregTech_API.sGasHazmatList.add(IC2_nL);
+        GregTech_API.sGasHazmatList.add(IC2_nB);
 
-        GregTech_API.sRadioHazmatList.add(new ItemStack(GameRegistry.findItem("EMT","itemArmorQuantumChestplate"),1,W));
-        GregTech_API.sRadioHazmatList.add(new ItemStack(GameRegistry.findItem("GraviSuite","graviChestPlate"),1,W));
-        GregTech_API.sRadioHazmatList.add(GT_ModHandler.getIC2Item("quantumHelmet", 1L, W));
-        GregTech_API.sRadioHazmatList.add(GT_ModHandler.getIC2Item("quantumBodyarmor", 1L, W));
-        GregTech_API.sRadioHazmatList.add(GT_ModHandler.getIC2Item("quantumLeggings", 1L, W));
-        GregTech_API.sRadioHazmatList.add(GT_ModHandler.getIC2Item("quantumBoots", 1L, W));
+        GregTech_API.sRadioHazmatList.add(EMT_iqC);
+        GregTech_API.sRadioHazmatList.add(GRAVI_gC);
+        GregTech_API.sRadioHazmatList.add(IC2_qH);
+        GregTech_API.sRadioHazmatList.add(IC2_qC);
+        GregTech_API.sRadioHazmatList.add(IC2_qL);
+        GregTech_API.sRadioHazmatList.add(IC2_qB);
 
-        GregTech_API.sElectroHazmatList.add(new ItemStack(GameRegistry.findItem("EMT","itemArmorQuantumChestplate"),1,W));
-        GregTech_API.sElectroHazmatList.add(new ItemStack(GameRegistry.findItem("GraviSuite","graviChestPlate"),1,W));
-        GregTech_API.sElectroHazmatList.add(GT_ModHandler.getIC2Item("quantumHelmet", 1L, W));
-        GregTech_API.sElectroHazmatList.add(GT_ModHandler.getIC2Item("quantumBodyarmor", 1L, W));
-        GregTech_API.sElectroHazmatList.add(GT_ModHandler.getIC2Item("quantumLeggings", 1L, W));
-        GregTech_API.sElectroHazmatList.add(GT_ModHandler.getIC2Item("quantumBoots", 1L, W));
+        GregTech_API.sElectroHazmatList.add(EMT_iqC);
+        GregTech_API.sElectroHazmatList.add(GRAVI_gC);
+        GregTech_API.sElectroHazmatList.add(IC2_qH);
+        GregTech_API.sElectroHazmatList.add(IC2_qC);
+        GregTech_API.sElectroHazmatList.add(IC2_qL);
+        GregTech_API.sElectroHazmatList.add(IC2_qB);
         
         //todo add GC GS stuff
     }
