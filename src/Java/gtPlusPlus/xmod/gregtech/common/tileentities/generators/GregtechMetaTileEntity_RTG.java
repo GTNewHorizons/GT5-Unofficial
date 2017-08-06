@@ -105,7 +105,6 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 
 		if ((aBaseMetaTileEntity.isServerSide()) && (aBaseMetaTileEntity.isAllowedToWork()) && (aTick % 10L == 0L)) {
 			long tProducedEU = 0L;
-			//Utils.LOG_INFO("Output Voltage:"+this.getOutputTier()+"eu/t");
 			if (this.mFluid == null) {
 				if (aBaseMetaTileEntity.getUniversalEnergyStored() < maxEUOutput() + getMinimumStoredEU()) {
 					this.mInventory[getStackDisplaySlot()] = null;
@@ -155,7 +154,7 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 	@Override
 	public String[] getDescription() {
 		return new String[]{this.mDescription,
-				"Fuel is measured in minecraft days",
+				"Fuel is measured in minecraft days (Check with Scanner)",
 				"RTG changes output voltage depending on fuel",
 				"Generates power at " + this.getEfficiency() + "% Efficiency per tick",
 				"Output Voltage: "+this.getOutputTier()+" EU/t",
@@ -329,11 +328,9 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 
 	@Override
 	public long getOutputTier() {
-		//Utils.LOG_INFO(""+this.mVoltage + " | " + (this.mCurrentRecipe == null));
 		if (this.mCurrentRecipe != null){
 			return this.mVoltage = this.mCurrentRecipe.mEUt;
 		}
-		//Utils.LOG_INFO("x");
 		return 0;
 	}
 
@@ -345,8 +342,8 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 	@Override
 	public String[] getInfoData() {
 		return new String[] { "RTG", "Active:"+this.getBaseMetaTileEntity().isActive(), "Current Output: " + this.mVoltage + " EU/t",
-				"Days of Fuel remaining: "+this.mDaysRemaining*365,
-				"Hours of Fuel remaining: "+(this.mDaysRemaining*365/3f),
+				"Days of Fuel remaining: "+(mTicksToBurnFor/20/60/20)),
+				"Hours of Fuel remaining: "+(mTicksToBurnFor/20/60/60),
 				"Current Recipe input: "+ this.mCurrentRecipe != null ? this.mCurrentRecipe.mInputs[0].getDisplayName() + " x1" : "NUll"
 		};
 	}
