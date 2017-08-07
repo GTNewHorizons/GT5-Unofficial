@@ -182,6 +182,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	//Tree Farm
 	Industrial_TreeFarm, TreeFarmer_Structural,
 	
+	//Sifter
 	Industrial_Sifter, 
 	
 	//Advanced Boilers
@@ -218,6 +219,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	
 	//Computer Cube
 	Gregtech_Computer_Cube, 
+	
+	//Cyclotron
+	COMET_Cyclotron
 	
 	
 	
