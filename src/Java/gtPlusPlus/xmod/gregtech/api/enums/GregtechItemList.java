@@ -144,12 +144,34 @@ public enum GregtechItemList implements GregtechItemContainer {
 	GT4_Tesseract_Generator, GT4_Tesseract_Terminal,
 
 	//Casings Tier 2 [17-32]
+	//Structural Glass
 	Casing_StructuralGlass,
-	Casing_Refinery_External, Casing_Refinery_Structural, Casing_Refinery_Internal,
-	Casing_PlaceHolder4, Casing_Sifter, Casing_SifterGrate,
-	Casing_PlaceHolder7, Casing_PlaceHolder8, Casing_PlaceHolder9,
-	Casing_PlaceHolder10, Casing_PlaceHolder11, Casing_PlaceHolder12,
-	Casing_PlaceHolder13, Casing_PlaceHolder14, Casing_PlaceHolder15,
+	
+	//Fission Fuel Refinery
+	Casing_Refinery_External,
+	Casing_Refinery_Structural,
+	Casing_Refinery_Internal,
+	
+	//Unknown
+	Casing_PlaceHolder4,
+	
+	//Industrial Sifter
+	Casing_Sifter,
+	Casing_SifterGrate,
+	
+	//Unknown
+	Casing_PlaceHolder7, 
+	Casing_PlaceHolder8, 
+	
+	//Cyclotron
+	Casing_Cyclotron_Coil,
+	Casing_Cyclotron_External,
+	
+	Casing_PlaceHolder11, 
+	Casing_PlaceHolder12,
+	Casing_PlaceHolder13, 
+	Casing_PlaceHolder14, 
+	Casing_PlaceHolder15,
 
 	//LFTR
 	ThoriumReactor,

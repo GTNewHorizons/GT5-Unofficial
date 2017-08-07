@@ -202,19 +202,19 @@ public abstract class GregtechMetaTileEntity_Cyclotron extends GT_MetaTileEntity
     }
     
     public Block getCasing() {
-        return GregTech_API.sBlockCasings4;
+        return ModBlocks.blockCasings2Misc;
     }
     
     public int getCasingMeta() {
-        return 0;
+        return 10;
     }
 
     public Block getCyclotronCoil() {
-        return GregTech_API.sBlockCasings4;
+        return ModBlocks.blockCasings2Misc;
     }
 
     public int getCyclotronCoilMeta() {
-        return 0;
+        return 9;
     }
 
     @Override

@@ -29,8 +29,8 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Large Sieve Grate"); 		//79
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Placeholder Casing");	//80
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Incoloy Casing"); 		//81
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Placeholder Casing");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Placeholder Casing");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Cyclotron Coil");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Cyclotron Outer Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Placeholder Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".12.name", "Placeholder Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Placeholder Casing");
@@ -45,8 +45,8 @@ extends GregtechMetaCasingBlocksAbstract {
 		GregtechItemList.Casing_SifterGrate.set(new ItemStack(this, 1, 6));
 		GregtechItemList.Casing_PlaceHolder7.set(new ItemStack(this, 1, 7));
 		GregtechItemList.Casing_PlaceHolder8.set(new ItemStack(this, 1, 8));
-		GregtechItemList.Casing_PlaceHolder9.set(new ItemStack(this, 1, 9));
-		GregtechItemList.Casing_PlaceHolder10.set(new ItemStack(this, 1, 10));
+		GregtechItemList.Casing_Cyclotron_Coil.set(new ItemStack(this, 1, 9));
+		GregtechItemList.Casing_Cyclotron_External.set(new ItemStack(this, 1, 10));
 		GregtechItemList.Casing_PlaceHolder11.set(new ItemStack(this, 1, 11));
 		GregtechItemList.Casing_PlaceHolder12.set(new ItemStack(this, 1, 12));
 		GregtechItemList.Casing_PlaceHolder13.set(new ItemStack(this, 1, 13));

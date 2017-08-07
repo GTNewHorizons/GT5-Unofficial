@@ -23,6 +23,7 @@ public final class ModBlocks {
 	// WIP TODO public static Block blockToolBuilder;
 	public static Block blockGriefSaver;
 	public static Block blockCasingsMisc;
+	public static Block blockCasings2Misc;
 	public static Block blockMetaTileEntity;
 	public static Block blockHeliumGenerator;
 	public static Block blockNHG;
@@ -32,7 +33,6 @@ public final class ModBlocks {
 
 	public static Fluid fluidSludge = new Fluid("fluid.sludge");
 	public static Block blockFluidSludge;
-	public static Block blockCasings2Misc;
 
 	public static Block blockFirePit;
 
