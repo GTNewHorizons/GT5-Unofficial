@@ -1,33 +1,25 @@
-package gregtech.common.tileentities.machines.multi;
+package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
-import gregtech.GT_Mod;
 import gregtech.api.enums.Dyes;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_Container_MultiMachine;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gregtech.common.gui.GT_GUIContainer_CyclotronReactor;
+import gregtech.common.gui.GT_GUIContainer_FusionReactor;
+import gtPlusPlus.core.block.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 
-import java.util.ArrayList;
-
-public abstract class GregtechMetaTileEntity_Cyclotron extends GT_MetaTileEntity_MultiBlockBase {
+public class GregtechMetaTileEntity_Cyclotron extends GT_MetaTileEntity_MultiBlockBase {
 
     public GT_Recipe mLastRecipe;
     public int mEUStore;
@@ -44,7 +36,8 @@ public abstract class GregtechMetaTileEntity_Cyclotron extends GT_MetaTileEntity
         return 6;
     }
 
-    public long maxEUStore() {
+    @Override
+	public long maxEUStore() {
         return (640010000L/4) * (Math.min(16, this.mEnergyHatches.size())) / 16L;
     }
 
@@ -55,15 +48,16 @@ public abstract class GregtechMetaTileEntity_Cyclotron extends GT_MetaTileEntity
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_CyclotronReactor(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "CyclotronComputer.png", GT_Recipe.GT_Recipe_Map.sCyclotronRecipes.mNEIName);
+        return new GT_GUIContainer_FusionReactor(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "CyclotronComputer.png", GT_Recipe.GT_Recipe_Map.sFusionRecipes.mNEIName);
     }
 
     @Override
-    public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GregtechMetaTileEntity_Cyclotron(mName);
-    }
+    public MetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
+		return new GregtechMetaTileEntity_Cyclotron(this.mName);
+	}
 
-    public boolean allowCoverOnSide(byte aSide, GT_ItemStack aStack) {
+    @Override
+	public boolean allowCoverOnSide(byte aSide, GT_ItemStack aStack) {
         return aSide != getBaseMetaTileEntity().getFrontFacing();
     }
 
@@ -234,15 +228,16 @@ public abstract class GregtechMetaTileEntity_Cyclotron extends GT_MetaTileEntity
         		"All Hatches must be ZPM or better"};
     }
 
-    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+    @Override
+	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
         ITexture[] sTexture;
         if (aSide == aFacing) {
-            sTexture = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_Cyclotron_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa)), new GT_RenderedTexture(getIconOverlay())};
+            sTexture = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa)), new GT_RenderedTexture(getIconOverlay())};
         } else {
             if (!aActive) {
-                sTexture = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_Cyclotron_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa))};
+                sTexture = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS, Dyes.getModulation(-1, Dyes._NULL.mRGBa))};
             } else {
-                sTexture = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_Cyclotron_GLASS_YELLOW, Dyes.getModulation(-1, Dyes._NULL.mRGBa))};
+                sTexture = new ITexture[]{new GT_RenderedTexture(Textures.BlockIcons.MACHINE_CASING_FUSION_GLASS_YELLOW, Dyes.getModulation(-1, Dyes._NULL.mRGBa))};
             }
         }
         return sTexture;

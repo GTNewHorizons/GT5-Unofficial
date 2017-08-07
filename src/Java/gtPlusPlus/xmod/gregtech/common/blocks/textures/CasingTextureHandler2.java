@@ -38,7 +38,7 @@ public class CasingTextureHandler2 {
 				return TexturesGtBlock._PlaceHolder.getIcon();
 				//Cyclotron Coil
 			case 9:
-				return TexturesGtBlock.Casing_Machine_Metal_Panel_B.getIcon();
+				return TexturesGtBlock.Overlay_Machine_Cyber_A.getIcon();
 				//Cyclotron External Casing
 			case 10:
 				return TexturesGtBlock.Casing_Material_HastelloyX.getIcon();

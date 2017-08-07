@@ -2,7 +2,6 @@ package gtPlusPlus.xmod.gregtech.common.blocks.textures;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.IIconContainer;
-import gregtech.api.interfaces.ITexture;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -149,6 +148,10 @@ public class TexturesGtBlock {
 	public static final CustomIcon Casing_Machine_Metal_Sheet_A = Internal_Casing_Machine_Metal_Sheet_A;
 	private static final CustomIcon Internal_Casing_Machine_Metal_Sheet_B = new CustomIcon("chrono/MetalSheet2");
 	public static final CustomIcon Casing_Machine_Metal_Sheet_B = Internal_Casing_Machine_Metal_Sheet_B;
+	private static final CustomIcon Internal_Overlay_Machine_Cyber_A = new CustomIcon("chrono/CyberPanel");
+	public static final CustomIcon Overlay_Machine_Cyber_A = Internal_Overlay_Machine_Cyber_A;
+	private static final CustomIcon Internal_Overlay_Machine_Cyber_B = new CustomIcon("chrono/CyberPanel2");
+	public static final CustomIcon Overlay_Machine_Cyber_B = Internal_Overlay_Machine_Cyber_B;
 	
 	//Overlays
 	//Fan Textures
