@@ -9,6 +9,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.*;
+import gtPlusPlus.core.lib.CORE;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -31,10 +32,14 @@ extends GT_MetaTileEntity_MultiBlockBase
 		super(aID, aName, aNameRegional);
 	}
 
+	public GT4Entity_ThermalBoiler(String mName) {
+		super(mName);
+	}
+
 	@Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity)
 	{
-		return new GT4Entity_ThermalBoiler(damageFactorLow, mNEI, mNEI);
+		return new GT4Entity_ThermalBoiler(this.mName);
 	}
 
 	@Override
@@ -91,8 +96,45 @@ extends GT_MetaTileEntity_MultiBlockBase
 		return true;
 	}
 
-	public boolean checkMachine(ItemStack aStack)
+	@Override
+	public boolean explodesOnComponentBreak(ItemStack aStack)
 	{
+		return false;
+	}
+
+	@Override
+	public int getMaxEfficiency(ItemStack aStack)
+	{
+		return 10000;
+	}
+
+	@Override
+	public int getPollutionPerTick(ItemStack aStack)
+	{
+		return 0;
+	}
+
+	public int getAmountOfOutputs()
+	{
+		return 1;
+	}
+
+	@Override
+	public String[] getDescription()
+	{
+		return new String[]{"Converts Heat into Steam",
+	    		CORE.GT_Tooltip};
+	}
+
+
+	@Override
+	public ITexture[] getTexture(IGregTechTileEntity arg0, byte arg1, byte arg2, byte arg3, boolean arg4, boolean arg5) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean checkMachine(IGregTechTileEntity arg0, ItemStack arg1) {
 		byte tSide = getBaseMetaTileEntity().getBackFacing();
 		if (getBaseMetaTileEntity().getAirAtSideAndDistance(getBaseMetaTileEntity().getBackFacing(), 1))
 		{
@@ -133,47 +175,5 @@ extends GT_MetaTileEntity_MultiBlockBase
 			return false;
 		}
 		return true;
-	}
-
-	@Override
-	public boolean explodesOnComponentBreak(ItemStack aStack)
-	{
-		return false;
-	}
-
-	@Override
-	public int getMaxEfficiency(ItemStack aStack)
-	{
-		return 10000;
-	}
-
-	@Override
-	public int getPollutionPerTick(ItemStack aStack)
-	{
-		return 0;
-	}
-
-	public int getAmountOfOutputs()
-	{
-		return 1;
-	}
-
-	@Override
-	public String[] getDescription()
-	{
-		return new String[]{"Converts Heat into Steam"};
-	}
-
-
-	@Override
-	public ITexture[] getTexture(IGregTechTileEntity arg0, byte arg1, byte arg2, byte arg3, boolean arg4, boolean arg5) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean checkMachine(IGregTechTileEntity arg0, ItemStack arg1) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 }
