@@ -3,13 +3,15 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 import java.util.Collection;
 
 import gregtech.api.GregTech_API;
-import gregtech.api.enums.ItemList;
+import gregtech.api.enums.*;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.*;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -122,15 +124,26 @@ extends GT_MetaTileEntity_MultiBlockBase
 	@Override
 	public String[] getDescription()
 	{
-		return new String[]{"Converts Heat into Steam",
-	    		CORE.GT_Tooltip};
+		return new String[]{
+				"Thermal Boiler Controller",
+				"Converts Heat into Steam",
+				"Size: 3x3x3 (Hollow)",
+				"Controller (front middle)",
+				"1x Input Hatch (Centre of back)",
+				"2x Output Hatch (Centre of sides)",
+				"1x Maintenance Hatch (Centre of top)",
+				"20x Blast Smelter Heat Containment Coils",
+				CORE.GT_Tooltip};
 	}
 
 
 	@Override
-	public ITexture[] getTexture(IGregTechTileEntity arg0, byte arg1, byte arg2, byte arg3, boolean arg4, boolean arg5) {
-		// TODO Auto-generated method stub
-		return null;
+	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+		if (aSide == aFacing) {
+			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(1)],
+					new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER)};
+		}
+		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(1)]};
 	}
 
 	@Override
@@ -139,8 +152,10 @@ extends GT_MetaTileEntity_MultiBlockBase
 		if (getBaseMetaTileEntity().getAirAtSideAndDistance(getBaseMetaTileEntity().getBackFacing(), 1))
 		{
 			int META = 0;
+			int CASING = TAE.GTPP_INDEX(1);
 			if (((getBaseMetaTileEntity().getBlockAtSideAndDistance(getBaseMetaTileEntity().getBackFacing(), 2) != GregTech_API.sBlockCasings1) || (getBaseMetaTileEntity().getMetaIDAtSideAndDistance(getBaseMetaTileEntity().getBackFacing(), 2) != META)) && 
-					(!addToMachineList(getBaseMetaTileEntity().getIGregTechTileEntityAtSideAndDistance(getBaseMetaTileEntity().getBackFacing(), 2), 1))) {
+					(!addToMachineList(getBaseMetaTileEntity().getIGregTechTileEntityAtSideAndDistance(getBaseMetaTileEntity().getBackFacing(), 2), CASING))) {
+				Utils.LOG_INFO("false 1");
 				return false;
 			}
 			int tX = getBaseMetaTileEntity().getXCoord();int tY = getBaseMetaTileEntity().getYCoord();int tZ = getBaseMetaTileEntity().getZCoord();
@@ -154,7 +169,8 @@ extends GT_MetaTileEntity_MultiBlockBase
 								{
 									if (getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)) == META) {}
 								}
-								else if (!addToMachineList(getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)), 1)) {
+								else if (!addToMachineList(getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)), CASING)) {
+									Utils.LOG_INFO("false 2");
 									return false;
 								}
 							}
@@ -163,6 +179,7 @@ extends GT_MetaTileEntity_MultiBlockBase
 								if (getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)) == META) {}
 							}
 							else {
+								Utils.LOG_INFO("false 3");								
 								return false;
 							}
 						}
@@ -172,8 +189,10 @@ extends GT_MetaTileEntity_MultiBlockBase
 		}
 		else
 		{
+			Utils.LOG_INFO("false 4");			
 			return false;
 		}
+		Utils.LOG_INFO("true 1");	
 		return true;
 	}
 }

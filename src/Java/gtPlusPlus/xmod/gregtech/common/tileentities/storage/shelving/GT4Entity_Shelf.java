@@ -1,10 +1,11 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.storage.shelving;
 
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.*;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicHull_NonElectric;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 import net.minecraft.entity.item.EntityItem;
@@ -12,15 +13,19 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class GT4Entity_Shelf extends MetaTileEntity {
+public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
 	public byte mType = 0;
 
-	public GT4Entity_Shelf(int aID, String aName, String aNameRegional) {
-		super(aID, aName, aNameRegional, 1);
+	public GT4Entity_Shelf(final int aID, final String aName, final String aNameRegional, final String aDescription) {
+		super(aID, aName, aNameRegional, 0, aDescription);
 	}
 
-	public GT4Entity_Shelf(String aName) {
-		super(aName, 1);
+	public GT4Entity_Shelf(final String aName, final String aDescription, final ITexture[][][] aTextures) {
+		super(aName, 0, aDescription, aTextures);
+	}
+
+	public GT4Entity_Shelf(final String aName, final String[] aDescription, final ITexture[][][] aTextures) {
+		super(aName, 0, aDescription, aTextures);
 	}
 
 	@Override
@@ -120,7 +125,7 @@ public class GT4Entity_Shelf extends MetaTileEntity {
 
 	@Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GT4Entity_Shelf(this.mName);
+		return new GT4Entity_Shelf(this.mName, this.mDescriptionArray, this.mTextures);
 	}
 
 	@Override
@@ -147,13 +152,6 @@ public class GT4Entity_Shelf extends MetaTileEntity {
 		return aSide != getBaseMetaTileEntity().getFrontFacing();
 	}
 
-	public int getTextureIndex(byte aSide, byte aFacing, boolean aActive, boolean aRedstone) {
-		if (aSide == aFacing) {
-			return 208 + this.mType;
-		}
-		return 10;
-	}
-
 	@Override
 	public String[] getDescription() {
 		return new String[] { "Decorative Item Storage", CORE.GT_Tooltip };
@@ -175,8 +173,24 @@ public class GT4Entity_Shelf extends MetaTileEntity {
 	}
 
 	@Override
-	public ITexture[] getTexture(IGregTechTileEntity p0, byte p1, byte p2, byte p3, boolean p4, boolean p5) {
-		// TODO Auto-generated method stub
-		return null;
+	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aConnections, final byte aColorIndex, final boolean aConnected, final boolean aRedstone) {
+		return this.mTextures[Math.min(2, aSide)][aColorIndex + 1];
+	}
+
+	@Override
+	public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
+		final ITexture[][][] rTextures = new ITexture[3][17][];
+		for (byte i = -1; i < 16; ++i) {
+			final ITexture[] tmp0 = { new GT_RenderedTexture(Textures.BlockIcons.COVER_WOOD_PLATE,
+					Dyes.getModulation(i, Dyes._NULL.mRGBa)) };
+			rTextures[0][i + 1] = tmp0;
+			final ITexture[] tmp2 = { new GT_RenderedTexture(Textures.BlockIcons.COVER_WOOD_PLATE,
+					Dyes.getModulation(i, Dyes._NULL.mRGBa)) };
+			rTextures[1][i + 1] = tmp2;
+			final ITexture[] tmp3 = { new GT_RenderedTexture(Textures.BlockIcons.COVER_WOOD_PLATE,
+					Dyes.getModulation(i, Dyes._NULL.mRGBa)) };
+			rTextures[2][i + 1] = tmp3;
+		}
+		return rTextures;
 	}
 }

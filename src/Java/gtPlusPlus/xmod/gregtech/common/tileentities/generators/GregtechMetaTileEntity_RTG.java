@@ -27,6 +27,7 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 	private GT_Recipe mCurrentRecipe;
 	private int mDaysRemaining = 0;
 	private int mDayTick = 0;
+	private byte mNewTier = 0;
 
 	public int removeDayOfTime(){
 		if (this.mDaysRemaining > 0){
@@ -53,6 +54,7 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 		aNBT.setInteger("mVoltage", this.mVoltage);
 		aNBT.setInteger("mDaysRemaining", this.mDaysRemaining);
 		aNBT.setInteger("mDayTick", this.mDayTick);
+		aNBT.setByte("mNewTier", this.mNewTier);
 		
 		
 		if (this.mCurrentRecipe != null){
@@ -76,6 +78,19 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 		this.mVoltage = aNBT.getInteger("mVoltage");
 		this.mDaysRemaining = aNBT.getInteger("mDaysRemaining");
 		this.mDayTick = aNBT.getInteger("mDayTick");
+		this.mNewTier = aNBT.getByte("mNewTier");
+		
+		try {
+			ReflectionUtils.setByte(this, "mTier", this.mNewTier);
+		}
+		catch (Exception e) {
+			if (this.getBaseMetaTileEntity() != null){
+				IGregTechTileEntity thisTile = this.getBaseMetaTileEntity();
+				if (thisTile.isAllowedToWork() || thisTile.isActive()){
+					thisTile.setActive(false);
+				}
+			}
+		}
 		
 		
 	final NBTTagList list = aNBT.getTagList("mRecipeItem", 10);
@@ -296,41 +311,45 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 			//this.mDaysRemaining = tFuel.mSpecialValue*365;
 
 			//Do some voodoo.
-			byte mTier2 = 0;
+			byte mTier2;
 			//mTier2 = ReflectionUtils.getField(this.getClass(), "mTier");
 			try {
-				if (this.mCurrentRecipe.mInputs[0] == GregtechItemList.Pellet_RTG_AM241.get(1)){
+				if (ItemStack.areItemStacksEqual(tFuel.mInputs[0], GregtechItemList.Pellet_RTG_AM241.get(1))){
 					mTier2 = 1;
 				}
-				else if (this.mCurrentRecipe.mInputs[0] == GregtechItemList.Pellet_RTG_PO210.get(1)){
+				else if (ItemStack.areItemStacksEqual(tFuel.mInputs[0], GregtechItemList.Pellet_RTG_PO210.get(1))){
 					mTier2 = 3;
 				}
-				else if (this.mCurrentRecipe.mInputs[0] == GregtechItemList.Pellet_RTG_PU238.get(1)){
+				else if (ItemStack.areItemStacksEqual(tFuel.mInputs[0], GregtechItemList.Pellet_RTG_PU238.get(1))){
 					mTier2 = 2;
 				}
-				else if (this.mCurrentRecipe.mInputs[0] == GregtechItemList.Pellet_RTG_SR90.get(1)){
+				else if (ItemStack.areItemStacksEqual(tFuel.mInputs[0], GregtechItemList.Pellet_RTG_SR90.get(1))){
 					mTier2 = 1;
 				}
 				else {
+					//Utils.LOG_INFO("test:"+tFuel.mInputs[0].getDisplayName() + " | " + (ItemStack.areItemStacksEqual(tFuel.mInputs[0], GregtechItemList.Pellet_RTG_PU238.get(1))));
 					mTier2 = 0;
 				}
-				ReflectionUtils.setByte(super.getClass(), "mTier", mTier2);
+				ReflectionUtils.setByte(this, "mTier", mTier2);
+				this.mNewTier = mTier2;
 				//ReflectionUtils.setFinalStatic(mTier2, GT_Values.V[0]);
 			} catch (Exception e) {
 				Utils.LOG_INFO("Failed setting mTier.");
 				e.printStackTrace();
 			}
 
-			this.mTicksToBurnFor = getTotalEUGenerated(convertDaysToTicks(tFuel.mSpecialValue*365), voltage);
+			this.mTicksToBurnFor = getTotalEUGenerated(convertDaysToTicks(tFuel.mSpecialValue), voltage);
 			if (mTicksToBurnFor >= Integer.MAX_VALUE){
 				mTicksToBurnFor = Integer.MAX_VALUE;
 				Utils.LOG_INFO("Fuel went over Int limit, setting to MAX_VALUE.");
 			}
 			this.mDaysRemaining = MathUtils.roundToClosestInt(mTicksToBurnFor/20/60/3);
+			Utils.LOG_INFO("step | "+(int) (mTicksToBurnFor * getEfficiency() / 100L));
 			return (int) (mTicksToBurnFor * getEfficiency() / 100L);
 			//return (int) (tFuel.mSpecialValue * 365L * getEfficiency() / 100L);
 			//return tFuel.mEUt;
 		}
+		Utils.LOG_INFO("Not sure");
 		return 0;
 	}
 
@@ -354,9 +373,11 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 
 	@Override
 	public String[] getInfoData() {
-		return new String[] { "RTG", "Active:"+this.getBaseMetaTileEntity().isActive(), "Current Output: " + this.mVoltage + " EU/t",
+		return new String[] { "RTG - Running at tier "+this.mTier, 
+				"Active: "+this.getBaseMetaTileEntity().isActive(), "Current Output: " + this.mVoltage + " EU/t",
 				"Days of Fuel remaining: "+(mTicksToBurnFor/20/60/20),
 				"Hours of Fuel remaining: "+(mTicksToBurnFor/20/60/60),
+				"Ticks of "+this.mVoltage+"v remaining: "+(mTicksToBurnFor),
 				"Current Recipe input: "+ this.mCurrentRecipe != null ? this.mCurrentRecipe.mInputs[0].getDisplayName() + " x1" : "NUll"
 		};
 	}

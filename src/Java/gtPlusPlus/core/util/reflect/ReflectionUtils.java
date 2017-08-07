@@ -145,19 +145,21 @@ public class ReflectionUtils {
 	}
 
 
-	public static void setByte(Class clazz,  String fieldName, byte newValue) throws Exception {
-		/*Field nameField = getField(clazz, fieldName);
+	public static void setByte(Object clazz,  String fieldName, byte newValue) throws Exception {
+		Field nameField = getField(clazz.getClass(), fieldName);
 		nameField.setAccessible(true);
 		int modifiers = nameField.getModifiers();
 		Field modifierField = nameField.getClass().getDeclaredField("modifiers");
 		modifiers = modifiers & ~Modifier.FINAL;
 		modifierField.setAccessible(true);
-		modifierField.set(nameField, modifiers);
-		nameField.set(clazz, newValue);*/
+		modifierField.setInt(nameField, modifiers);
+		//Utils.LOG_INFO("O-"+(byte) nameField.get(clazz) + " | "+newValue);
+		nameField.setByte(clazz, newValue);
+		//Utils.LOG_INFO("N-"+(byte) nameField.get(clazz));
 
-		final Field fieldA = clazz.getDeclaredField(fieldName);
-		fieldA.setAccessible( true );
-		fieldA.setByte(clazz, newValue );
+		/*final Field fieldA = getField(clazz.getClass(), fieldName);
+		fieldA.setAccessible(true);
+		fieldA.setByte(clazz, newValue);*/
 
 	}
 
