@@ -1,27 +1,30 @@
-package gregtechmod.common.tileentities.storage;
+package gtPlusPlus.xmod.gregtech.common.tileentities.storage.shelving;
 
-import gregtechmod.api.interfaces.IGregTechTileEntity;
-import gregtechmod.api.metatileentity.MetaTileEntity;
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.MetaTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 
-public class GT_MetaTileEntity_Shelf_Desk
-  extends GT_MetaTileEntity_Shelf
+public class GT4Entity_Shelf_Desk
+  extends GT4Entity_Shelf
 {
-  public GT_MetaTileEntity_Shelf_Desk(int aID, String aName, String aNameRegional)
+  public GT4Entity_Shelf_Desk(int aID, String aName, String aNameRegional)
   {
     super(aID, aName, aNameRegional);
   }
   
-  public GT_MetaTileEntity_Shelf_Desk() {}
-  
-  public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity)
-  {
-    return new GT_MetaTileEntity_Shelf_Desk();
+  public GT4Entity_Shelf_Desk(String mName) {
+	  super(mName);
   }
   
-  public int getTextureIndex(byte aSide, byte aFacing, boolean aActive, boolean aRedstone)
+  @Override
+public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity)
+  {
+    return new GT4Entity_Shelf_Desk(this.mName);
+  }
+  
+  @Override
+public int getTextureIndex(byte aSide, byte aFacing, boolean aActive, boolean aRedstone)
   {
     if (aSide == aFacing) {
       return 222;
@@ -35,22 +38,23 @@ public class GT_MetaTileEntity_Shelf_Desk
     return 40;
   }
   
-  public void onRightclick(EntityPlayer aPlayer)
+  @Override
+public void onRightclick(EntityPlayer aPlayer)
   {
-    ItemStack tStack = aPlayer.field_71071_by.func_70301_a(aPlayer.field_71071_by.field_70461_c);
+    ItemStack tStack = aPlayer.inventory.getStackInSlot(aPlayer.inventory.currentItem);
     if (tStack == null)
     {
-      if ((this.mInventory[0] != null) && (this.mInventory[0].field_77994_a > 0))
+      if ((this.mInventory[0] != null) && (this.mInventory[0].stackSize > 0))
       {
-        aPlayer.field_71071_by.func_70299_a(aPlayer.field_71071_by.field_70461_c, this.mInventory[0]);
-        getBaseMetaTileEntity().func_70299_a(0, null);
+        aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, this.mInventory[0]);
+        getBaseMetaTileEntity().setInventorySlotContents(0, null);
         this.mType = 0;
       }
     }
     else if (this.mInventory[0] == null)
     {
-      aPlayer.field_71071_by.func_70299_a(aPlayer.field_71071_by.field_70461_c, null);
-      getBaseMetaTileEntity().func_70299_a(0, tStack);
+      aPlayer.inventory.setInventorySlotContents(aPlayer.inventory.currentItem, null);
+      getBaseMetaTileEntity().setInventorySlotContents(0, tStack);
     }
   }
 }

@@ -5,6 +5,9 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_TesseractGenerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_TesseractTerminal;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GT4Entity_AutoCrafter;
+import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GT4Entity_ThermalBoiler;
+import gtPlusPlus.xmod.gregtech.common.tileentities.storage.shelving.*;
 
 public class Gregtech4Content
 {
@@ -32,13 +35,13 @@ public class Gregtech4Content
 	private static void thermalBoiler(){
 		//Gregtech 4 Workbenches
 		Utils.LOG_INFO("Gregtech 4 Content | Registering Thermal Boiler.");
-		GregtechItemList.GT4_Thermal_Boiler.set(new GT_MetaTileEntity_Multi_ThermalBoiler(810, "gtplusplus.thermal.boiler", "Thermal Boiler").getStackForm(1L));
+		GregtechItemList.GT4_Thermal_Boiler.set(new GT4Entity_ThermalBoiler(810, "gtplusplus.thermal.boiler", "Thermal Boiler").getStackForm(1L));
 	}
 	
 	private static void multiCrafter(){
 		//Gregtech 4 Workbenches
 		Utils.LOG_INFO("Gregtech 4 Content | Registering Multiblock Crafter.");
-		GregtechItemList.GT4_Multi_Crafter.set(new GT_MetaTileEntity_TesseractTerminal(811, "tesseract.terminal", "Tesseract Terminal", 4).getStackForm(1L));
+		GregtechItemList.GT4_Multi_Crafter.set(new GT4Entity_AutoCrafter(811, "gtplusplus.autocrafter.multi", "Large Autocrafter").getStackForm(1L));
 	}
 
 	private static void tesseracts(){
@@ -51,11 +54,11 @@ public class Gregtech4Content
 	private static void shelves(){
 		//Gregtech 4 Workbenches
 		Utils.LOG_INFO("Gregtech 4 Content | Registering Shelves.");
-		GregtechItemList.GT4_Shelf.set(new GT_MetaTileEntity_Shelf(870, "gtplusplus.shelf.wooden", "Wood encased Shelf").getStackForm(1L));
-		GregtechItemList.GT4_Shelf_Iron.set(new GT_MetaTileEntity_Shelf_Iron(871, "gtplusplus.shelf.iron", "Metal encased Shelf").getStackForm(1L));
-		GregtechItemList.GT4_Shelf_FileCabinet.set(new GT_MetaTileEntity_Shelf_FileCabinet(872, "gtplusplus.shelf.filecabinet", "File Cabinet").getStackForm(1L));
-	    GregtechItemList.GT4_Shelf_Desk.set(new GT_MetaTileEntity_Shelf_Desk8(873, "gtplusplus.shelf.desk", "Metal encased Desk").getStackForm(1L));
-		GregtechItemList.GT4_Shelf_Compartment.set(new GT_MetaTileEntity_Shelf_Compartment(874, "gtplusplus.shelf.compartment", "Compartment").getStackForm(1L));
+		GregtechItemList.GT4_Shelf.set(new GT4Entity_Shelf(870, "gtplusplus.shelf.wooden", "Wood encased Shelf").getStackForm(1L));
+		GregtechItemList.GT4_Shelf_Iron.set(new GT4Entity_Shelf_Iron(871, "gtplusplus.shelf.iron", "Metal encased Shelf").getStackForm(1L));
+		GregtechItemList.GT4_Shelf_FileCabinet.set(new GT4Entity_Shelf_FileCabinet(872, "gtplusplus.shelf.filecabinet", "File Cabinet").getStackForm(1L));
+	    GregtechItemList.GT4_Shelf_Desk.set(new GT4Entity_Shelf_Desk(873, "gtplusplus.shelf.desk", "Metal encased Desk").getStackForm(1L));
+		GregtechItemList.GT4_Shelf_Compartment.set(new GT4Entity_Shelf_Compartment(874, "gtplusplus.shelf.compartment", "Compartment").getStackForm(1L));
 		}
 	
 }

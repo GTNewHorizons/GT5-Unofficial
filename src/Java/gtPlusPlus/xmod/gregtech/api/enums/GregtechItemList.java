@@ -221,7 +221,13 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Gregtech_Computer_Cube, 
 	
 	//Cyclotron
-	COMET_Cyclotron
+	COMET_Cyclotron, 
+	
+	//GT4 Multiblocks
+	GT4_Thermal_Boiler, GT4_Multi_Crafter, 
+	
+	//GT4 Shelves
+	GT4_Shelf, GT4_Shelf_Iron, GT4_Shelf_FileCabinet, GT4_Shelf_Desk, GT4_Shelf_Compartment
 	
 	
 	

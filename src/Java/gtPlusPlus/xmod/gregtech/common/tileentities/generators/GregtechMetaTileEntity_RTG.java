@@ -1,17 +1,12 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.generators;
 
-import java.lang.reflect.Field;
-
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicGenerator;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.*;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.PollutionUtils;
 import gtPlusPlus.core.util.Utils;
@@ -91,6 +86,7 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 		}
 	}
 
+	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		if (aBaseMetaTileEntity.isServerSide()){
 			if (this.mDayTick < 24000){
@@ -187,49 +183,59 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 		super(aName, aTier, aDescription, aTextures);
 	}
 
+	@Override
 	public boolean isOutputFacing(byte aSide) {
 		return ((aSide > 1) && (aSide != getBaseMetaTileEntity().getFrontFacing())
 				&& (aSide != getBaseMetaTileEntity().getBackFacing()));
 	}
 
+	@Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
 		return new GregtechMetaTileEntity_RTG(this.mName, this.mTier, this.mDescription, this.mTextures);
 	}
 
+	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipes() {
 		return Recipe_GT.Gregtech_Recipe_Map.sRTGFuels;
 	}
 
+	@Override
 	public int getCapacity() {
 		return 0;
 	}
 
+	@Override
 	public int getEfficiency() {
 		return this.mEfficiency = 100;
 	}
 
+	@Override
 	public ITexture[] getFront(byte aColor) {
 		return new ITexture[] { super.getFront(aColor)[0],
 				new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP),
 				new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE) };
 	}
 
+	@Override
 	public ITexture[] getBack(byte aColor) {
 		return new ITexture[] { super.getBack(aColor)[0],
 				new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP) };
 	}
 
+	@Override
 	public ITexture[] getBottom(byte aColor) {
 		return new ITexture[] { super.getBottom(aColor)[0],
 				new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP) };
 	}
 
+	@Override
 	public ITexture[] getTop(byte aColor) {
 		return new ITexture[] { super.getTop(aColor)[0],
 				new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP),
 				new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_FLUID_SIDE) };
 	}
 
+	@Override
 	public ITexture[] getSides(byte aColor) {
 		return new ITexture[]{
 				gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS[this.mTier][(0)],
@@ -237,28 +243,33 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 				gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[getTier()]};
 	}
 
+	@Override
 	public ITexture[] getFrontActive(byte aColor) {
 		return new ITexture[] { super.getFrontActive(aColor)[0],
 				new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE),
 				new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE) };
 	}
 
+	@Override
 	public ITexture[] getBackActive(byte aColor) {
 		return new ITexture[] { super.getBackActive(aColor)[0],
 				new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE) };
 	}
 
+	@Override
 	public ITexture[] getBottomActive(byte aColor) {
 		return new ITexture[] { super.getBottomActive(aColor)[0],
 				new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE) };
 	}
 
+	@Override
 	public ITexture[] getTopActive(byte aColor) {
 		return new ITexture[] { super.getTopActive(aColor)[0],
 				new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE),
 				new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_FLUID_SIDE_ACTIVE) };
 	}
 
+	@Override
 	public ITexture[] getSidesActive(byte aColor) {
 		return new ITexture[]{
 				gregtech.api.enums.Textures.BlockIcons.MACHINE_CASINGS[this.mTier][(0)],
@@ -266,10 +277,12 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 				gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[getTier()]};
 	}
 
+	@Override
 	public int getPollution() {
 		return 0;
 	}
 
+	@Override
 	public int getFuelValue(ItemStack aStack) {
 		if ((GT_Utility.isStackInvalid(aStack)) || (getRecipes() == null))
 			return 0;
@@ -301,7 +314,7 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 				else {
 					mTier2 = 0;
 				}
-				ReflectionUtils.setByte(super.getClass(), "mTier", (byte) mTier2);
+				ReflectionUtils.setByte(super.getClass(), "mTier", mTier2);
 				//ReflectionUtils.setFinalStatic(mTier2, GT_Values.V[0]);
 			} catch (Exception e) {
 				Utils.LOG_INFO("Failed setting mTier.");
@@ -342,7 +355,7 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 	@Override
 	public String[] getInfoData() {
 		return new String[] { "RTG", "Active:"+this.getBaseMetaTileEntity().isActive(), "Current Output: " + this.mVoltage + " EU/t",
-				"Days of Fuel remaining: "+(mTicksToBurnFor/20/60/20)),
+				"Days of Fuel remaining: "+(mTicksToBurnFor/20/60/20),
 				"Hours of Fuel remaining: "+(mTicksToBurnFor/20/60/60),
 				"Current Recipe input: "+ this.mCurrentRecipe != null ? this.mCurrentRecipe.mInputs[0].getDisplayName() + " x1" : "NUll"
 		};
