@@ -3,11 +3,8 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.storage.shelving;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 
-public class GT4Entity_Shelf_FileCabinet
-extends GT4Entity_Shelf
-{
-	public GT4Entity_Shelf_FileCabinet(int aID, String aName, String aNameRegional)
-	{
+public class GT4Entity_Shelf_FileCabinet extends GT4Entity_Shelf {
+	public GT4Entity_Shelf_FileCabinet(int aID, String aName, String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}
 
@@ -16,14 +13,12 @@ extends GT4Entity_Shelf
 	}
 
 	@Override
-	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity)
-	{
+	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
 		return new GT4Entity_Shelf_FileCabinet(this.mName);
 	}
 
 	@Override
-	public int getTextureIndex(byte aSide, byte aFacing, boolean aActive, boolean aRedstone)
-	{
+	public int getTextureIndex(byte aSide, byte aFacing, boolean aActive, boolean aRedstone) {
 		if (aSide == aFacing) {
 			return 223;
 		}
