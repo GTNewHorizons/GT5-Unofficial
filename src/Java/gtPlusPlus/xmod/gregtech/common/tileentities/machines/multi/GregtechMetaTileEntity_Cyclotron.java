@@ -220,7 +220,13 @@ public abstract class GregtechMetaTileEntity_Cyclotron extends GT_MetaTileEntity
     @Override
     public String[] getDescription() {
         return new String[]{
-        		"Super Magnetic Speed Shooter", 
+        		"Super Magnetic Speed Shooter",
+        		"------------------------------------------------------------",
+        		"Particles are accelerated over 186 revolutions to 80% light speed",
+        		"Can produce a continuous beam current of 2.2 mA at 590 MeV",
+        		"Which will be extracted from the Isochronous cyclotron",
+        		"------------------------------------------------------------",
+        		"Consists of the same layout as a Fusion Reactor",
         		"Cyclotron Machine Casings around Cyclotron Coil Blocks", 
         		"2-16 Input Hatches", 
         		"1-16 Output Hatches", 
