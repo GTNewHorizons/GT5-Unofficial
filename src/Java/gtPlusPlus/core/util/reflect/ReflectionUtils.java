@@ -145,13 +145,7 @@ public class ReflectionUtils {
 	}
 
 
-
-
-
-	/**
-	 * Allows to change the state of an immutable instance. Huh?!?
-	 */
-	public static void setByte(Class clazz,  String fieldName, Byte newValue) throws Exception {
+	public static void setByte(Class clazz,  String fieldName, byte newValue) throws Exception {
 		/*Field nameField = getField(clazz, fieldName);
 		nameField.setAccessible(true);
 		int modifiers = nameField.getModifiers();
@@ -163,7 +157,7 @@ public class ReflectionUtils {
 
 		final Field fieldA = clazz.getDeclaredField(fieldName);
 		fieldA.setAccessible( true );
-		fieldA.setInt(clazz, newValue );
+		fieldA.setByte(clazz, newValue );
 
 	}
 
