@@ -6,6 +6,7 @@ import com.github.technus.tectech.thing.casing.GT_Block_CasingsTT;
 import com.github.technus.tectech.thing.casing.GT_Container_CasingsTT;
 import com.github.technus.tectech.thing.item.DebugBuilder;
 import com.github.technus.tectech.thing.item.DebugContainer_EM;
+import com.github.technus.tectech.thing.item.ParametrizerMemoryCard;
 import cpw.mods.fml.common.Loader;
 import openmodularturrets.blocks.turretbases.TurretBaseEM;
 import openmodularturrets.blocks.turretheads.TurretHeadEM;
@@ -30,6 +31,7 @@ public class ThingsLoader implements Runnable {
 
         DebugContainer_EM.run();
         DebugBuilder.run();
+        ParametrizerMemoryCard.run();
         TecTech.Logger.info("Debug Items registered");
     }
 }

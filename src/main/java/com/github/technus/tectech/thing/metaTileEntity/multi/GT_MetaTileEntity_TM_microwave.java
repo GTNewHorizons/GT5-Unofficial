@@ -264,4 +264,9 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     public void doExplosion(long aExplosionPower) {
         explodeMultiblock();
     }//Redirecting to explodemultiblock
+
+    @Override
+    public byte getTileEntityBaseType() {
+        return 1;
+    }
 }

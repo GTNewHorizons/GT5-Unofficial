@@ -193,7 +193,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     @Override
-    public final byte getTileEntityBaseType() {
+    public byte getTileEntityBaseType() {
         return 3;
     }
 

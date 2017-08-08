@@ -10,6 +10,7 @@ import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.casing.GT_Container_CasingsTT;
 import com.github.technus.tectech.thing.item.DebugBuilder;
 import com.github.technus.tectech.thing.item.DebugContainer_EM;
+import com.github.technus.tectech.thing.item.ParametrizerMemoryCard;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -117,6 +118,7 @@ public final class MainLoader {//TODO add checks for - is mod loaded dreamcraft 
         GT_Container_CasingsTT.sBlockCasingsTT.setCreativeTab(mainTab);
         DebugContainer_EM.INSTANCE.setCreativeTab(mainTab);
         DebugBuilder.INSTANCE.setCreativeTab(mainTab);
+        ParametrizerMemoryCard.INSTANCE.setCreativeTab(mainTab);
     }
 
     private void registerExtraHazmats() {
