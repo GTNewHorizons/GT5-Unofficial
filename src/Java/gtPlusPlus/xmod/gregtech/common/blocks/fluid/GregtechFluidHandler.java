@@ -48,8 +48,9 @@ public class GregtechFluidHandler {
 			FluidUtils.addFluid("hydrofluoricAcid", "Industrial Strength Hydrofluoric Acid", GT_Materials.HydrofluoricAcid, 1, 120, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.HydrofluoricAcid, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
 			generateIC2FluidCell("HydrofluoricAcid");
 
-			FluidUtils.addFluid("sulfurDioxide", "Sulfur Dioxide", GT_Materials.SulfurDioxide, 4, -100, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfurDioxide, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
-			generateIC2FluidCell("SulfurDioxide");
+			//FluidUtils.generateFluid("sulfurDioxide", "Sulfur Dioxide", GT_Materials.SulfurDioxide, 4, -100, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfurDioxide, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+			//generateIC2FluidCell("SulfurDioxide");
+			FluidUtils.generateFluidNoPrefix("SulfurDioxide", "High quality Sulfur Dioxide", 263, GT_Materials.SulfurDioxide.mRGBa);
 
 			FluidUtils.addFluid("sulfurousAcid", "Sulfurous Acid", GT_Materials.SulfurousAcid, 4, 75, GT_OreDictUnificator.get(OrePrefixes.cell, GT_Materials.SulfurousAcid, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
 			generateIC2FluidCell("SulfurousAcid");

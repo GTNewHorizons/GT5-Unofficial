@@ -252,6 +252,7 @@ public class ItemUtils {
 			Utils.LOG_INFO("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(4));
 			Utils.LOG_INFO("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(5));
 		}
+		try{
 
 		//Adds a check to grab dusts using GT methodology if possible.
 		ItemStack returnValue = null;
@@ -266,12 +267,18 @@ public class ItemUtils {
 
 		if (returnValue == null){
 			returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);
-			if ((returnValue.getItem().getClass() != ModItems.AAA_Broken.getClass()) || (returnValue.getItem() != ModItems.AAA_Broken)){
-				return returnValue.copy();
+			if (returnValue != null){
+				if ((returnValue.getItem().getClass() != ModItems.AAA_Broken.getClass()) || (returnValue.getItem() != ModItems.AAA_Broken)){
+					return returnValue.copy();
+				}
 			}
 		}
 		Utils.LOG_INFO(oredictName+" was not valid.");
 		return null;
+		}
+		catch (Throwable t){
+			return null;
+		}
 	}
 
 	public static ItemStack getGregtechDust(final Materials material, final int amount){
@@ -321,9 +328,9 @@ public class ItemUtils {
 					new BaseItemDustUnique("itemDust"+unlocalizedName, materialName, Colour, "Dust")
 			};
 		}
-		
+
 		RecipeGen_DustGeneration.generateRecipes(material);
-		
+
 		return output;
 	}
 
@@ -568,7 +575,7 @@ public class ItemUtils {
 	public static String getModId(ItemStack key) {
 		return getModId(key.getItem());
 	}
-	
+
 	//Take 2 - GT/GT++ Dusts
 	public static ItemStack getGregtechDust(final String oredictName, final int amount){
 		final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
@@ -585,7 +592,7 @@ public class ItemUtils {
 		}
 		return getNonTinkersDust(oredictName, amount);
 	}
-	
+
 	//Anything But Tinkers Dust
 	public static ItemStack getNonTinkersDust(final String oredictName, final int amount){
 		final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
