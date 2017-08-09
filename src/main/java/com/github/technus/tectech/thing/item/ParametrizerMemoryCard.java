@@ -33,13 +33,13 @@ public class ParametrizerMemoryCard extends Item {
     private ParametrizerMemoryCard() {
         super();
         setMaxStackSize(1);
+        setHasSubtypes(true);
         setUnlocalizedName("em.parametrizerMemoryCard");
         setTextureName(MODID + ":itemParametrizerMemoryCardUnlocked");
     }
 
     @Override
     public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
-        NBTTagCompound tNBT = aStack.getTagCompound();
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (aPlayer instanceof EntityPlayerMP) {
             aStack.stackSize = 1;
@@ -47,8 +47,9 @@ public class ParametrizerMemoryCard extends Item {
                 IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
                 if (metaTE != null && metaTE instanceof GT_MetaTileEntity_Hatch_Param) {
                     GT_MetaTileEntity_Hatch_Param parametrizer = ((GT_MetaTileEntity_Hatch_Param) metaTE);
-                    
-                    if (tNBT.hasKey("cardLocked")) {
+                    if(aStack.getTagCompound()==null) aStack.setTagCompound(new NBTTagCompound());
+                    NBTTagCompound tNBT=aStack.getTagCompound();
+                    if (aStack.getItemDamage()==1) {
                         //write to parametrizer
                         parametrizer.exponent = tNBT.getInteger("exponent");
                         parametrizer.value2 = tNBT.getInteger("value2");
@@ -65,19 +66,25 @@ public class ParametrizerMemoryCard extends Item {
                         tNBT.setFloat("value1f", parametrizer.value1f);
                         tNBT.setFloat("value2f", parametrizer.value2f);
                     }
+                    return true;
                 }
-                return true;
-            } else {
-                //change mode
-                if(tNBT.hasKey("cardLocked")) {
-                    tNBT.removeTag("cardLocked");
-                }else{
-                    tNBT.setBoolean("cardLocked",true);
-                }
-                return true;
             }
         }
         return aPlayer instanceof EntityPlayerMP;
+    }
+
+    @Override
+    public ItemStack onItemRightClick(ItemStack aStack, World aWorld, EntityPlayer aPlayer) {
+        if (aPlayer instanceof EntityPlayerMP && aPlayer.isSneaking()) {
+            aStack.stackSize = 1;
+            if(aStack.getItemDamage()==1) {
+                aStack.setItemDamage(0);
+            }else{
+                aStack.setItemDamage(1);
+            }
+            return aStack;
+        }
+        return aStack;
     }
 
     @Override
@@ -85,21 +92,23 @@ public class ParametrizerMemoryCard extends Item {
         NBTTagCompound tNBT = aStack.getTagCompound();
         aList.add(CommonValues.bassMark);
         aList.add("Stores Parameters");
-        if(tNBT.hasKey("cardLocked")) {
-            aList.add(EnumChatFormatting.BLUE + "Use on Parametrizer to load parameters");
+
+        if(aStack.getItemDamage()==1) {
+            aList.add(EnumChatFormatting.BLUE + "Use on Parametrizer to configure it");
         }else{
             aList.add(EnumChatFormatting.BLUE + "Use on Parametrizer to save parameters");
         }
+        aList.add(EnumChatFormatting.BLUE + "Use somewhere else to lock/unlock");
 
-        if(tNBT.hasKey("param")) {
-            aList.add("Parameters ID: "+EnumChatFormatting.AQUA + tNBT.getInteger("param"));
+        if(tNBT!=null && tNBT.hasKey("param")) {
+            aList.add("Hatch ID: "+EnumChatFormatting.AQUA + tNBT.getInteger("param"));
             aList.add("Value 0: "+EnumChatFormatting.AQUA + tNBT.getFloat("value1f"));
             aList.add("Value 1: "+EnumChatFormatting.AQUA + tNBT.getFloat("value2f"));
             aList.add("Mantissa 0: "+EnumChatFormatting.AQUA + tNBT.getInteger("value1"));
             aList.add("Mantissa 1: "+EnumChatFormatting.AQUA + tNBT.getInteger("value2"));
             aList.add("Exponent: "+EnumChatFormatting.AQUA + tNBT.getInteger("exponent"));
         }
-        aList.add(EnumChatFormatting.BLUE + "Use somewhere else to lock/unlock");
+
     }
 
     public static void run() {
@@ -115,19 +124,8 @@ public class ParametrizerMemoryCard extends Item {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(ItemStack aStack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-        if(aStack.getTagCompound().hasKey("cardLocked")) {
-            return locked;
-        }else{
-            return unlocked;
-        }
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(ItemStack aStack, int pass) {
-        if(aStack.getTagCompound().hasKey("cardLocked")) {
+    public IIcon getIconFromDamage(int damage) {
+        if(damage==1) {
             return locked;
         }else{
             return unlocked;
