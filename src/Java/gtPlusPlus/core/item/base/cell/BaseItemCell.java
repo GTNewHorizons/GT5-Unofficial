@@ -46,7 +46,10 @@ public class BaseItemCell extends BaseItemComponent{
 
 	@Override
 	public int getColorFromItemStack(final ItemStack stack, final int renderPass) {
-		if (renderPass == 0){
+		if (renderPass == 0 && !CORE.configSwitches.useGregtechTextures){
+			return Utils.rgbtoHexValue(230, 230, 230);
+		}
+		if (renderPass == 1 && CORE.configSwitches.useGregtechTextures){
 			return Utils.rgbtoHexValue(230, 230, 230);
 		}
 		return this.componentColour;

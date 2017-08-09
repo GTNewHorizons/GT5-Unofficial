@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.base.ingots;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
 import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.lib.CORE;
@@ -19,7 +21,7 @@ public class BaseItemIngotHot extends BaseItemIngot{
 	private int tickCounter = 0;
 	private final int tickCounterMax = 200;
 	private final int mTier;
-	
+
 	private IIcon base;
 	private IIcon overlay;
 
@@ -60,7 +62,17 @@ public class BaseItemIngotHot extends BaseItemIngot{
 		super.onUpdate(iStack, world, entityHolding, p_77663_4_, p_77663_5_);
 	}
 
-	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean requiresMultipleRenderPasses(){
+		if (CORE.configSwitches.useGregtechTextures){
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
 	@Override
 	public void registerIcons(final IIconRegister i) {
 
@@ -74,14 +86,19 @@ public class BaseItemIngotHot extends BaseItemIngot{
 		}
 		//this.overlay = cellMaterial.getFluid(1000).getFluid().get
 	}	
-	
+
 	@Override
 	public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
-		if(pass == 0 || !CORE.configSwitches.useGregtechTextures) {
+		if(pass == 0 && CORE.configSwitches.useGregtechTextures) {
 			return this.base;
 		}
-		return this.overlay;
+		else if(pass == 1 && CORE.configSwitches.useGregtechTextures) {
+			return this.overlay;
+		}
+		else {
+			return this.overlay;
+		}
 	}
-	
+
 
 }
