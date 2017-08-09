@@ -16,7 +16,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.RECIPES_Old_Circuits;
 import gtPlusPlus.core.recipe.common.CI;
-import gtPlusPlus.core.recipe.LOADER_Machine_Components;
 import gtPlusPlus.core.tileentities.ModTileEntities;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.debug.DEBUG_INIT;
@@ -93,7 +92,7 @@ public class CommonProxy {
 		PlayerCache.initCache();
 
 		//Circuits
-		if (CORE.configSwitches.enableOldGTcircuits){
+		if (CORE.configSwitches.enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
 			RECIPES_Old_Circuits.handleCircuits();
 			new RECIPES_Old_Circuits();
 		}

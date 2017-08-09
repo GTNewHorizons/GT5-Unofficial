@@ -200,7 +200,7 @@ public class GTplusplus implements ActionListener {
 		FMLCommonHandler.instance().bus().register(new LoginEventHandler());
 		Utils.LOG_INFO("Login Handler Initialized");
 
-		if (CORE.configSwitches.enableOldGTcircuits){
+		if (CORE.configSwitches.enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
 			removeCircuitRecipeMap(); //Bye shitty recipes.			
 		}
 		

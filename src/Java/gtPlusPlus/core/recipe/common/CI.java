@@ -370,7 +370,7 @@ public class CI {
 	}
 	
 	public static ItemStack getDataOrb(){
-			if (CORE.configSwitches.enableOldGTcircuits){
+			if (CORE.configSwitches.enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
 				return GregtechItemList.Old_Tool_DataOrb.get(1);
 			}
 			else {
