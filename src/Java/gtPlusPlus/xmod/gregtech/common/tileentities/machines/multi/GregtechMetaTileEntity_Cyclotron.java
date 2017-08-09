@@ -11,7 +11,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
-import gregtech.common.gui.GT_GUIContainer_FusionReactor;
 import gtPlusPlus.core.block.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -48,7 +47,8 @@ public class GregtechMetaTileEntity_Cyclotron extends GT_MetaTileEntity_MultiBlo
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_FusionReactor(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "CyclotronComputer.png", GT_Recipe.GT_Recipe_Map.sFusionRecipes.mNEIName);
+        //return new GT_GUIContainer_FusionReactor(aPlayerInventory, aBaseMetaTileEntity, getLocalName(), "CyclotronComputer.png", GT_Recipe.GT_Recipe_Map.sFusionRecipes.mNEIName);
+        return null;
     }
 
     @Override
@@ -312,4 +312,8 @@ public class GregtechMetaTileEntity_Cyclotron extends GT_MetaTileEntity_MultiBlo
     public boolean isGivingInformation() {
         return true;
     }
+
+	public int getAmountOfOutputs() {
+		return 1;
+	}
 }
