@@ -51,8 +51,8 @@ public class RECIPES_Old_Circuits  implements IOreRecipeRegistrator {
 		GT_Values.RA.addFormingPressRecipe(GregtechItemList.Old_Empty_Board_Elite.get(1L, new Object[0]), GregtechItemList.Old_Circuit_Parts_Wiring_Elite.get(4L, new Object[0]), GregtechItemList.Old_Circuit_Board_Elite.get(1L, new Object[0]), 32, 256);
 
 		GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Lapis, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L), GregtechItemList.Old_Circuit_Parts_Advanced.get(2L, new Object[0]), 32, 64);
-	    GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Lazurite, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L), GregtechItemList.Old_Circuit_Parts_Advanced.get(2L, new Object[0]), 32, 64);
-		
+		GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Lazurite, 1L), GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Glowstone, 1L), GregtechItemList.Old_Circuit_Parts_Advanced.get(2L, new Object[0]), 32, 64);
+
 		int tMultiplier;
 		for (Materials tMat : Materials.values()) {
 			if ((tMat.mStandardMoltenFluid != null) && (tMat.contains(SubTag.SOLDERING_MATERIAL)))
@@ -76,35 +76,39 @@ public class RECIPES_Old_Circuits  implements IOreRecipeRegistrator {
 		GT_Values.RA.addAssemblerRecipe(GregtechItemList.Old_Circuit_Master.get(2L, new Object[0]), ItemList.Circuit_Parts_Crystal_Chip_Master.get(18L, new Object[0]), GT_Values.NF, ItemList.Energy_LapotronicOrb.get(1L, new Object[0]), 512, 1024);
 		GT_Values.RA.addAssemblerRecipe(GregtechItemList.Old_Circuit_Master.get(2L, new Object[0]), GregtechItemList.Old_Circuit_Parts_Crystal_Chip_Master.get(18L, new Object[0]), GT_Values.NF, ItemList.Energy_LapotronicOrb.get(1L, new Object[0]), 512, 1024);
 		GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Silicon, 1L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Plastic, 1L), GregtechItemList.Old_Empty_Board_Basic.get(1L, new Object[0]), 32, 16);
-	    GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Silicon, 2L), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Polytetrafluoroethylene, 1L), GregtechItemList.Old_Empty_Board_Elite.get(1L, new Object[0]), 32, 256);
-	    
-	    
-	    
+		
+		Materials plasticType = Materials.get("Polytetrafluoroethylene") != null ? Materials.get("Polytetrafluoroethylene") : Materials.Plastic;
+		GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Silicon, 2L), GT_OreDictUnificator.get(OrePrefixes.plate, plasticType, 1L), GregtechItemList.Old_Empty_Board_Elite.get(1L, new Object[0]), 32, 256);
+
+
+
 		return true;
 	}
-	
+
 	public static boolean handleCircuits(){
-		
+
 		hideCircuitsNEI();
 		addCircuitRecipes();
 		removeNewCircuits();
 		return true;
 	}
-	
+
 	private static boolean removeNewCircuits(){
 		Utils.LOG_INFO("[Old Feature - Circuits] Overriding .28+ circuit values in the GT5u Itemlist with values from GT++.");
-		
+
 		ItemList.Circuit_Primitive.set(GregtechItemList.Old_Circuit_Primitive.get(1));
 		ItemList.Circuit_Basic.set(GregtechItemList.Old_Circuit_Basic.get(1));
-		ItemList.Circuit_Integrated_Good.set(GregtechItemList.Old_Circuit_Good.get(1));
+		if (ItemList.valueOf("Circuit_Integrated_Good") != null){
+			ItemList.valueOf("Circuit_Integrated_Good").set(GregtechItemList.Old_Circuit_Good.get(1));
+		}
 		ItemList.Circuit_Good.set(GregtechItemList.Old_Circuit_Good.get(1));
 		ItemList.Circuit_Advanced.set(GregtechItemList.Old_Circuit_Advanced.get(1));
 		//ItemList.Circuit_Data.set(GregtechItemList.Old_Circuit_Data.get(1));
 		ItemList.Circuit_Elite.set(GregtechItemList.Old_Circuit_Elite.get(1));
 		ItemList.Circuit_Master.set(GregtechItemList.Old_Circuit_Master.get(1));
 		ItemList.Circuit_Ultimate.set(GregtechItemList.Old_Circuit_Ultimate.get(1));
-		
-		
+
+
 		ItemList.Circuit_Board_Basic.set(GregtechItemList.Old_Circuit_Board_Basic.get(1));
 		ItemList.Circuit_Board_Advanced.set(GregtechItemList.Old_Circuit_Board_Advanced.get(1));
 		ItemList.Circuit_Board_Elite.set(GregtechItemList.Old_Circuit_Board_Elite.get(1));
@@ -114,10 +118,10 @@ public class RECIPES_Old_Circuits  implements IOreRecipeRegistrator {
 		ItemList.Circuit_Parts_Wiring_Elite.set(GregtechItemList.Old_Circuit_Parts_Wiring_Elite.get(1));
 		ItemList.Circuit_Parts_Crystal_Chip_Elite.set(GregtechItemList.Old_Circuit_Parts_Crystal_Chip_Elite.get(1));
 		ItemList.Circuit_Parts_Crystal_Chip_Master.set(GregtechItemList.Old_Circuit_Parts_Crystal_Chip_Master.get(1));
-		
+
 		return true;
 	}
-	
+
 	private static boolean hideCircuitsNEI(){
 		Boolean isNEILoaded = Loader.isModLoaded("NotEnoughItems");
 		if (isNEILoaded){
