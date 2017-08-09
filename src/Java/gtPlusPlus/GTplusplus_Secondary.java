@@ -11,6 +11,7 @@ import cpw.mods.fml.common.Mod.CustomProperty;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
@@ -19,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
+@MCVersion(value = "1.7.10")
 @ChildMod(parent = CORE.MODID, mod = @Mod(modid = "GT++DarkWorld",
 name = "GT++ Dark World",
 version = CORE.VERSION,

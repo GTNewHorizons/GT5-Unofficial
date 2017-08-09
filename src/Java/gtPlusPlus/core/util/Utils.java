@@ -11,6 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
@@ -201,6 +202,11 @@ public class Utils {
 		//if (!CORE.DEBUG){
 		FMLLog.warning("GT++ |"+line+"| "+whatToLog+" | "+msg);
 		//}
+	}
+
+	//Non-Dev Comments
+	public static void LOG_ASM(final String s){
+		FMLRelaunchLog.info("", s);
 	}
 
 	public static void paintBox(final Graphics g, final int MinA, final int MinB, final int MaxA, final int MaxB){
@@ -547,7 +553,7 @@ public class Utils {
 		return output;
 
 	}
-	
+
 	public static String sanitizeStringKeepBrackets(final String input){
 		String temp;
 		String output;

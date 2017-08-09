@@ -64,7 +64,7 @@ public class Preloader_GT_OreDict {
 		}
 	}
 
-	private boolean removeCircuit(ItemStack circuit) {
+	public static boolean removeCircuit(ItemStack circuit) {
 		int damageValue = circuit.getItemDamage() - 32000;
 		if (circuit.getItem() instanceof GT_MetaGenerated_Item_01) { // 700-720
 			if (damageValue >= 700 && damageValue <= 720) {
@@ -99,7 +99,7 @@ public class Preloader_GT_OreDict {
 	}
 
 	// Simplification of Life.
-	private boolean isInstanceOf(Class clazz, Object obj) {
+	private static boolean isInstanceOf(Class clazz, Object obj) {
 		return clazz.isInstance(obj);
 	}
 
