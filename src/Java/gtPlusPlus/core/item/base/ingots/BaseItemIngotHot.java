@@ -1,13 +1,16 @@
 package gtPlusPlus.core.item.base.ingots;
 
 import gregtech.api.enums.GT_Values;
+import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 public class BaseItemIngotHot extends BaseItemIngot{
@@ -16,6 +19,9 @@ public class BaseItemIngotHot extends BaseItemIngot{
 	private int tickCounter = 0;
 	private final int tickCounterMax = 200;
 	private final int mTier;
+	
+	private IIcon base;
+	private IIcon overlay;
 
 	public BaseItemIngotHot(final Material material) {
 		super(material, ComponentTypes.HOTINGOT);
@@ -54,5 +60,28 @@ public class BaseItemIngotHot extends BaseItemIngot{
 		super.onUpdate(iStack, world, entityHolding, p_77663_4_, p_77663_5_);
 	}
 
+	
+	@Override
+	public void registerIcons(final IIconRegister i) {
+
+		if (CORE.configSwitches.useGregtechTextures){
+			this.base = i.registerIcon("gregtech" + ":" + "materialicons/METALLIC/" + "ingotHot");
+			this.overlay = i.registerIcon("gregtech" + ":" + "materialicons/METALLIC/" + "ingotHot_OVERLAY");
+		}
+		else {
+			this.base = i.registerIcon(CORE.MODID + ":" + "item"+BaseItemComponent.ComponentTypes.HOTINGOT.getComponent());
+			//this.overlay = i.registerIcon(CORE.MODID + ":" + "item"+BaseItemComponent.ComponentTypes.HOTINGOT.getComponent()+"_Overlay");
+		}
+		//this.overlay = cellMaterial.getFluid(1000).getFluid().get
+	}	
+	
+	@Override
+	public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
+		if(pass == 0 || !CORE.configSwitches.useGregtechTextures) {
+			return this.base;
+		}
+		return this.overlay;
+	}
+	
 
 }

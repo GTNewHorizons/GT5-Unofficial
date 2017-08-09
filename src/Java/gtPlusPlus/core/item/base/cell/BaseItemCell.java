@@ -29,8 +29,15 @@ public class BaseItemCell extends BaseItemComponent{
 
 	@Override
 	public void registerIcons(final IIconRegister i) {
-		this.base = i.registerIcon(CORE.MODID + ":" + "item"+this.Cell.getComponent());
-		this.overlay = i.registerIcon(CORE.MODID + ":" + "item"+this.Cell.getComponent()+"_Overlay");
+
+		if (CORE.configSwitches.useGregtechTextures){
+			this.base = i.registerIcon("gregtech" + ":" + "materialicons/METALLIC/" + "cell");
+			this.overlay = i.registerIcon("gregtech" + ":" + "materialicons/METALLIC/" + "cell_OVERLAY");
+		}
+		else {
+			this.base = i.registerIcon(CORE.MODID + ":" + "item"+this.Cell.getComponent());
+			this.overlay = i.registerIcon(CORE.MODID + ":" + "item"+this.Cell.getComponent()+"_Overlay");
+		}
 		//this.overlay = cellMaterial.getFluid(1000).getFluid().get
 	}
 
