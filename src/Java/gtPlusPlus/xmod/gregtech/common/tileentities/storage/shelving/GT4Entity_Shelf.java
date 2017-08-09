@@ -24,10 +24,6 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
 		super(aName, 0, aDescription, aTextures);
 	}
 
-	public GT4Entity_Shelf(final String aName, final String[] aDescription, final ITexture[][][] aTextures) {
-		super(aName, 0, aDescription, aTextures);
-	}
-
 	@Override
 	public boolean isSimpleMachine() {
 		return true;
@@ -125,7 +121,7 @@ public class GT4Entity_Shelf extends GT_MetaTileEntity_BasicHull_NonElectric {
 
 	@Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GT4Entity_Shelf(this.mName, this.mDescriptionArray, this.mTextures);
+		return new GT4Entity_Shelf(this.mName, this.mDescription, this.mTextures);
 	}
 
 	@Override
