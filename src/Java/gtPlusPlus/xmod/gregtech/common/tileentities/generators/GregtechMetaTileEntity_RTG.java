@@ -228,7 +228,7 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 	public ITexture[] getFront(byte aColor) {
 		return new ITexture[] { super.getFront(aColor)[0],
 				new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP),
-				new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE) };
+				new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_MASSFAB) };
 	}
 
 	@Override
@@ -262,7 +262,7 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 	public ITexture[] getFrontActive(byte aColor) {
 		return new ITexture[] { super.getFrontActive(aColor)[0],
 				new GT_RenderedTexture(Textures.BlockIcons.NAQUADAH_REACTOR_SOLID_TOP_ACTIVE),
-				new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_ASSEMBLY_LINE_ACTIVE) };
+				new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_FRONT_MASSFAB_ACTIVE) };
 	}
 
 	@Override
@@ -292,7 +292,7 @@ public class GregtechMetaTileEntity_RTG extends GT_MetaTileEntity_BasicGenerator
 				gregtech.api.enums.Textures.BlockIcons.OVERLAYS_ENERGY_OUT_MULTI[getTier()]};
 	}
 
-	@Override
+	
 	public int getPollution() {
 		return 0;
 	}
