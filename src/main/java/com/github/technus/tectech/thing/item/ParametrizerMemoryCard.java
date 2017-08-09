@@ -98,7 +98,7 @@ public class ParametrizerMemoryCard extends Item {
         }else{
             aList.add(EnumChatFormatting.BLUE + "Use on Parametrizer to save parameters");
         }
-        aList.add(EnumChatFormatting.BLUE + "Use somewhere else to lock/unlock");
+        aList.add(EnumChatFormatting.BLUE + "Sneak right click to lock/unlock");
 
         if(tNBT!=null && tNBT.hasKey("param")) {
             aList.add("Hatch ID: "+EnumChatFormatting.AQUA + tNBT.getInteger("param"));
