@@ -1,8 +1,6 @@
 package gtPlusPlus.core.recipe.common;
 
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.*;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ALLOY;
@@ -239,7 +237,7 @@ public class CI {
 	}	
 
 	public static Object getTieredCircuit(int tier){
-		if (CORE.configSwitches.enableOldGTcircuits){
+		if (CORE.configSwitches.enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
 			if (tier == 0){
 				return GregtechItemList.Old_Circuit_Primitive.get(1);
 			}
