@@ -23,22 +23,17 @@ public class BlockHint extends EntityFX {
         noClip = true;
         particleMaxAge = 200 + TecTech.Rnd.nextInt(200);
         for (int i = 0; i < 6; i++) icons[i] = block.getIcon(i, meta);
-        setParticleIcon(icons[TecTech.Rnd.nextInt(6)]);
     }
 
     @Override
     public void renderParticle(Tessellator tes, float subTickTime, float p_70539_3_, float p_70539_4_, float p_70539_5_, float p_70539_6_, float p_70539_7_) {
-
         float size = .5f;
-
-
         float X = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) subTickTime - interpPosX);
         float Y = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) subTickTime - interpPosY) - size / 2;
         float Z = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) subTickTime - interpPosZ);
         GL11.glDisable(GL11.GL_CULL_FACE);
-        GL11.glEnable(GL11.GL_BLEND);
         GL11.glDepthMask(false);
-        tes.setColorRGBA_F(.8F, .9F, 1F, .5F);
+        tes.setColorRGBA_F(.8F, .9F, 1F, .75f);
 
         //var8, var9 - X U
         //var 10, var 11 - Y V
@@ -48,7 +43,6 @@ public class BlockHint extends EntityFX {
             double U=icons[i].getMaxU();
             double v=icons[i].getMinV();
             double V=icons[i].getMaxV();
-
             switch (i){//{DOWN, UP, NORTH, SOUTH, WEST, EAST}
                 case 0:
                     tes.addVertexWithUV(X, Y, Z + size, u, V);
@@ -88,9 +82,7 @@ public class BlockHint extends EntityFX {
                     break;
             }
         }
-
         GL11.glEnable(GL11.GL_CULL_FACE);
-        GL11.glDisable(GL11.GL_BLEND);
         GL11.glDepthMask(true);
     }
 

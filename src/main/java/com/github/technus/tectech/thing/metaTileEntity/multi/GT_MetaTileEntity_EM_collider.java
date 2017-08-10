@@ -1,6 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.iConstructible;
@@ -14,7 +15,6 @@ import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
@@ -159,12 +159,20 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         IGregTechTileEntity iGregTechTileEntity=getBaseMetaTileEntity();
         int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX*4;
         int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ*4;
-        if(iGregTechTileEntity.getBlockOffset(xDir,0,zDir).getMaterial() == Material.air)
-            iGregTechTileEntity.getWorld().setBlock(
+        if(hintsOnly){
+            TecTech.proxy.hint_particle(iGregTechTileEntity.getWorld(),
                     iGregTechTileEntity.getXCoord()+xDir,
                     iGregTechTileEntity.getYCoord(),
                     iGregTechTileEntity.getZCoord()+zDir,
-                    Blocks.lapis_block);
+                    TT_Container_Casings.sHintCasingsTT,12);
+        } else{
+            if(iGregTechTileEntity.getBlockOffset(xDir,0,zDir).getMaterial() == Material.air)
+                iGregTechTileEntity.getWorld().setBlock(
+                        iGregTechTileEntity.getXCoord()+xDir,
+                        iGregTechTileEntity.getYCoord(),
+                        iGregTechTileEntity.getZCoord()+zDir,
+                        TT_Container_Casings.sHintCasingsTT,12,2);
+        }
         if ((qty & 1) == 1)
             StructureBuilder(shape, blockType, blockMeta1, 11, 1, 18, iGregTechTileEntity,hintsOnly);
         else

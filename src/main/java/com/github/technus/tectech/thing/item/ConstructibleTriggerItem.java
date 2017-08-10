@@ -33,21 +33,31 @@ public class ConstructibleTriggerItem extends Item {
     @Override
     public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
+        if(tTileEntity==null) return aPlayer instanceof EntityPlayerMP;
         if (aPlayer instanceof EntityPlayerMP) {
-            if (aPlayer.isSneaking() && aPlayer.capabilities.isCreativeMode && tTileEntity != null && tTileEntity instanceof IGregTechTileEntity) {
-                IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-                if (metaTE != null && metaTE instanceof iConstructible) {
-                    ((iConstructible) metaTE).construct(aStack.stackSize, false);
+            if (aPlayer.isSneaking() && aPlayer.capabilities.isCreativeMode) {
+                if(tTileEntity instanceof IGregTechTileEntity) {
+                    IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
+                    if (metaTE != null && metaTE instanceof iConstructible) {
+                        ((iConstructible) metaTE).construct(aStack.stackSize, false);
+                        return true;
+                    }
+                }else if(tTileEntity instanceof iConstructible){
+                    ((iConstructible) tTileEntity).construct(aStack.stackSize, false);
                     return true;
                 }
             }
         }
         if(aWorld.isRemote){
-            if ((!aPlayer.isSneaking() || !aPlayer.capabilities.isCreativeMode) && tTileEntity != null && tTileEntity instanceof IGregTechTileEntity) {
-                IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-                if (metaTE != null && metaTE instanceof iConstructible) {
-                    ((iConstructible) metaTE).construct(aStack.stackSize, true);
-                    return true;
+            if ((!aPlayer.isSneaking() || !aPlayer.capabilities.isCreativeMode)) {
+                if(tTileEntity instanceof IGregTechTileEntity) {
+                    IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
+                    if (metaTE != null && metaTE instanceof iConstructible) {
+                        ((iConstructible) metaTE).construct(aStack.stackSize, true);
+                        return true;
+                    }
+                } else if(tTileEntity instanceof iConstructible){
+                    ((iConstructible) tTileEntity).construct(aStack.stackSize,true);
                 }
             }
         }
