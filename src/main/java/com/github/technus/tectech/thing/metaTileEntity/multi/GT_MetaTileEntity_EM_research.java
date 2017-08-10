@@ -87,6 +87,11 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         //for (GT_MetaTileEntity_Hatch_Holder r : eHolders) {
         //    r.getBaseMetaTileEntity().setActive(true);
         //}//Look in Computer code
+
+        //check for item in controller and holder
+        //find research
+        //DO IT
+
         return false;
     }
 
