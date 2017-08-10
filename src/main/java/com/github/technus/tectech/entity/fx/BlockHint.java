@@ -33,7 +33,7 @@ public class BlockHint extends EntityFX {
         float Z = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) subTickTime - interpPosZ);
         GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glDepthMask(false);
-        tes.setColorRGBA_F(.8F, .9F, 1F, .75f);
+        tes.setColorRGBA_F(.9F, .95F, 1F, .75f);
 
         //var8, var9 - X U
         //var 10, var 11 - Y V
