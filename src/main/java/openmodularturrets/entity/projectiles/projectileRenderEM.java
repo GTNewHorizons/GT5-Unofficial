@@ -34,7 +34,7 @@ public class projectileRenderEM extends Render {
         float f4 = (float)(b0 * 10) / 32.0F;
         float f5 = (float)(5 + b0 * 10) / 32.0F;
         float f10 = 0.05625F;
-        GL11.glEnable('耺');
+        GL11.glEnable('\u803a');
         float f11 = - par9;
         if(f11 > 0.0F) {
             float i = -MathHelper.sin(f11 * 3.0F) * f11;
@@ -60,7 +60,7 @@ public class projectileRenderEM extends Render {
         }
 
         GL11.glEnable(2896);
-        GL11.glDisable('耺');
+        GL11.glDisable('\u803a');
         GL11.glPopMatrix();
     }
 

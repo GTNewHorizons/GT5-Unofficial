@@ -68,6 +68,9 @@ public class ConstructibleTriggerItem extends Item {
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
         aList.add(CommonValues.tecMark);
         aList.add("Triggers Constructible Interface");
+        aList.add(EnumChatFormatting.BLUE + "Shows multiblock construction details,");
+        aList.add(EnumChatFormatting.BLUE + "just Use on a multiblock controller.");
+        aList.add(EnumChatFormatting.BLUE + "(Sneak Use in creative to build)");
         aList.add(EnumChatFormatting.BLUE + "Quantity affects construction details");
     }
 
