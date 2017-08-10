@@ -24,7 +24,7 @@ public class TecTechConfig extends ConfigManager {
         ModAdminErrorLogs_Enabled = false;
         //DEBUG_MODE = false;
         BOOM_ENABLE = true;
-        NERF_FUSION = true;
+        NERF_FUSION = false;
         ENABLE_TURRET_EXPLOSIONS = true;
         TURRET_DAMAGE_FACTOR=10;
         TURRET_EXPLOSION_FACTOR=1;
@@ -37,9 +37,9 @@ public class TecTechConfig extends ConfigManager {
         //DEBUG_MODE = _mainConfig.getBoolean("DebugPrint", "Debug", DEBUG_MODE,
         //        "Enables logging");
         BOOM_ENABLE = _mainConfig.getBoolean("BoomEnable", "Features", BOOM_ENABLE,
-                "Set to false to disable explosions on everything bad that you can do (this will not be available after release)");
+                "Set to false to disable explosions on everything bad that you can do");
         NERF_FUSION = _mainConfig.getBoolean("NerfFusion", "Features", NERF_FUSION,
-                "Set to false to disable nerfing of plasmas heavier than Fe");
+                "Set to true to enable removal of plasmas heavier than Fe");
         ENABLE_TURRET_EXPLOSIONS = _mainConfig.getBoolean("TurretBoomEnable", "Features", ENABLE_TURRET_EXPLOSIONS,
                 "Set to false to disable explosions caused by EM turrets");
         TURRET_DAMAGE_FACTOR = _mainConfig.getFloat("TurretDamageFactor", "Features", TURRET_DAMAGE_FACTOR, 0, Short.MAX_VALUE,
