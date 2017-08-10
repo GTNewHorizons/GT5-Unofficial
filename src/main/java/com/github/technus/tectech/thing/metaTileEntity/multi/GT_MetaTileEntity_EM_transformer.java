@@ -12,7 +12,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
-import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
+import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static gregtech.api.GregTech_API.sBlockCasings1;
 
 /**

@@ -1,6 +1,7 @@
 package com.github.technus.tectech;
 
 import com.github.technus.tectech.auxiliary.TecTechConfig;
+import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -305,11 +306,12 @@ public class Util {
                                            Block[] blockType,//use numbers 0-9 for casing types
                                            byte[] blockMeta,//use numbers 0-9 for casing types
                                            int horizontalOffset, int verticalOffset, int depthOffset,
-                                           IGregTechTileEntity aBaseMetaTileEntity) {
+                                           IGregTechTileEntity aBaseMetaTileEntity, boolean hintsOnly) {
+        World world = aBaseMetaTileEntity.getWorld();
+        if ((world.isRemote && !hintsOnly)||(!world.isRemote && hintsOnly)) return false;
+
         //TE Rotation
         byte facing = aBaseMetaTileEntity.getFrontFacing();
-        World world = aBaseMetaTileEntity.getWorld();
-        if (world.isRemote) return false;
 
         int x, y, z, a, b, c, pointer;
         final int
@@ -378,34 +380,64 @@ public class Util {
 
                         //Check block
                         if (world.blockExists(x, y, z)) {//this actually checks if the chunk is loaded
-                            switch (block) {
+                            if(hintsOnly){
+                                switch (block) {
+                                case '-'://must be air
+                                    TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 13);
+                                    break;
+                                case '+'://must not be air
+                                    TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 14);
+                                    break;
+                                default: //check for block
+                                    if ((pointer = block - '0') >= 0) {
+                                        TecTech.proxy.hint_particle(world,x, y, z, blockType[pointer], blockMeta[pointer]);
+                                    } else if ((pointer = block - ' ') >= 0) {
+                                        switch(pointer){
+                                            case 0: TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 0); break;
+                                            case 1: TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 1); break;
+                                            case 2: TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 2); break;
+                                            case 3: TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 3); break;
+                                            case 4: TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 4); break;
+                                            case 5: TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 5); break;
+                                            case 6: TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 6); break;
+                                            case 7: TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 7); break;
+                                            case 8: TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 8); break;
+                                            case 9: TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 9); break;
+                                            case 10:TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 10); break;
+                                            case 11:TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 11); break;
+                                            default:TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 12);
+                                        }
+                                    } else TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 15);
+                                }
+                            }else{
+                                switch (block) {
                                 case '-'://must be air
                                     world.setBlock(x, y, z, Blocks.air, 0, 2);
                                     break;
                                 case '+'://must not be air
-                                    world.setBlock(x, y, z, Blocks.stone, 15, 2);
+                                    world.setBlock(x, y, z, TT_Container_Casings.sBlockCasingsTT, 14, 2);
                                     break;
                                 default: //check for block
                                     if ((pointer = block - '0') >= 0) {
                                         world.setBlock(x, y, z, blockType[pointer], blockMeta[pointer], 2);
                                     } else if ((pointer = block - ' ') >= 0) {
                                         switch(pointer){
-                                            case 0: world.setBlock(x, y, z, Blocks.wool, 11, 2); break;
-                                            case 1: world.setBlock(x, y, z, Blocks.wool, 3, 2); break;
-                                            case 2: world.setBlock(x, y, z, Blocks.wool, 0, 2); break;
-                                            case 3: world.setBlock(x, y, z, Blocks.wool, 8, 2); break;
-                                            case 4: world.setBlock(x, y, z, Blocks.wool, 7, 2); break;
-                                            case 5: world.setBlock(x, y, z, Blocks.wool, 15, 2); break;
-                                            case 6: world.setBlock(x, y, z, Blocks.stained_hardened_clay, 11, 2); break;
-                                            case 7: world.setBlock(x, y, z, Blocks.stained_hardened_clay, 3, 2); break;
-                                            case 8: world.setBlock(x, y, z, Blocks.stained_hardened_clay, 0, 2); break;
-                                            case 9: world.setBlock(x, y, z, Blocks.stained_hardened_clay, 8, 2); break;
-                                            case 10:world.setBlock(x, y, z, Blocks.stained_hardened_clay, 7, 2); break;
-                                            case 11:world.setBlock(x, y, z, Blocks.stained_hardened_clay, 15, 2); break;
-                                            default:world.setBlock(x, y, z, Blocks.lapis_block, 0, 2);
+                                            case 0: world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 0, 2); break;
+                                            case 1: world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 1,2); break;
+                                            case 2: world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 2,2); break;
+                                            case 3: world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 3,2); break;
+                                            case 4: world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 4,2); break;
+                                            case 5: world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 5, 2); break;
+                                            case 6: world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 6, 2); break;
+                                            case 7: world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 7,2); break;
+                                            case 8: world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 8,2); break;
+                                            case 9: world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 9,2); break;
+                                            case 10:world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 10,2); break;
+                                            case 11:world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 11, 2); break;
+                                            default:world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 12, 2);
                                         }
-
-                                    }
+                                    } else world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 15,2);
+                                }
                             }
                         }
                         a++;//block in horizontal layer

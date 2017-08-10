@@ -5,24 +5,24 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 /**
  * Created by Tec on 05.04.2017.
  */
-public class vec3pos implements Comparable<vec3pos> {
+public class Vec3pos implements Comparable<Vec3pos> {
     public final int x, z;
     public final short y;
 
-    public vec3pos(int x, short y, int z) {
+    public Vec3pos(int x, short y, int z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
-    public vec3pos(IGregTechTileEntity te) {
+    public Vec3pos(IGregTechTileEntity te) {
         this.x = te.getXCoord();
         this.y = te.getYCoord();
         this.z = te.getZCoord();
     }
 
     @Override
-    public int compareTo(vec3pos o) {
+    public int compareTo(Vec3pos o) {
         int tmp=y-o.y;
         if (tmp!=0) return tmp;
         tmp=x-o.x;
@@ -32,8 +32,8 @@ public class vec3pos implements Comparable<vec3pos> {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof  vec3pos){
-            vec3pos v=(vec3pos) obj;
+        if(obj instanceof Vec3pos){
+            Vec3pos v=(Vec3pos) obj;
             return x==v.x && z==v.z && y==v.y;
         }
         return false;

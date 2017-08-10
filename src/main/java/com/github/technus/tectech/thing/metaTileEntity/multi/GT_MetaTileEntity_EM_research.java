@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import static com.github.technus.tectech.Util.StructureBuilder;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
-import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
+import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static gregtech.api.enums.GT_Values.E;
 import static gregtech.api.enums.GT_Values.V;
 
@@ -78,8 +78,8 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public void construct(int qty) {
-        StructureBuilder(shape, blockType, blockMeta,1, 3, 4, getBaseMetaTileEntity());
+    public void construct(int qty, boolean hintsOnly) {
+        StructureBuilder(shape, blockType, blockMeta,1, 3, 4, getBaseMetaTileEntity(),hintsOnly);
     }
 
     @Override

@@ -20,10 +20,10 @@ import static com.github.technus.tectech.auxiliary.Reference.MODID;
 /**
  * Created by Tec on 15.03.2017.
  */
-public class DebugBuilder extends Item {
-    public static DebugBuilder INSTANCE;
+public class ConstructibleTriggerItem extends Item {
+    public static ConstructibleTriggerItem INSTANCE;
 
-    private DebugBuilder() {
+    private ConstructibleTriggerItem() {
         super();
         //setMaxStackSize(1);
         setUnlocalizedName("em.debugBuilder");
@@ -34,10 +34,19 @@ public class DebugBuilder extends Item {
     public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
         if (aPlayer instanceof EntityPlayerMP) {
-            if (tTileEntity != null && tTileEntity instanceof IGregTechTileEntity) {
+            if (aPlayer.isSneaking() && aPlayer.capabilities.isCreativeMode && tTileEntity != null && tTileEntity instanceof IGregTechTileEntity) {
                 IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
                 if (metaTE != null && metaTE instanceof iConstructible) {
-                    ((iConstructible) metaTE).construct(aStack.stackSize);
+                    ((iConstructible) metaTE).construct(aStack.stackSize, false);
+                    return true;
+                }
+            }
+        }
+        if(aWorld.isRemote){
+            if ((!aPlayer.isSneaking() || !aPlayer.capabilities.isCreativeMode) && tTileEntity != null && tTileEntity instanceof IGregTechTileEntity) {
+                IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
+                if (metaTE != null && metaTE instanceof iConstructible) {
+                    ((iConstructible) metaTE).construct(aStack.stackSize, true);
                     return true;
                 }
             }
@@ -48,12 +57,12 @@ public class DebugBuilder extends Item {
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
         aList.add(CommonValues.tecMark);
-        aList.add("Constructs Multiblocks");
-        aList.add(EnumChatFormatting.BLUE + "Quantity affects construction");
+        aList.add("Triggers Constructible Interface");
+        aList.add(EnumChatFormatting.BLUE + "Quantity affects construction details");
     }
 
     public static void run() {
-        INSTANCE = new DebugBuilder();
+        INSTANCE = new ConstructibleTriggerItem();
         GameRegistry.registerItem(INSTANCE, INSTANCE.getUnlocalizedName());
     }
 }

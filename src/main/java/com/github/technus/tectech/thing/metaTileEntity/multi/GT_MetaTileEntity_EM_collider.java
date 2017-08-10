@@ -2,7 +2,7 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
-import com.github.technus.tectech.thing.casing.GT_Container_CasingsTT;
+import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.iConstructible;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -23,7 +23,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import static com.github.technus.tectech.Util.StructureBuilder;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
-import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
+import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -59,12 +59,12 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             {"F2222#\"#2222","F41155555114","F2222#\"#2222",},
     };
     private static final Block[] blockType = new Block[]{
-            GT_Container_CasingsTT.sBlockCasingsTT,
-            GT_Container_CasingsTT.sBlockCasingsTT,
-            GT_Container_CasingsTT.sBlockCasingsTT,
+            TT_Container_Casings.sBlockCasingsTT,
+            TT_Container_Casings.sBlockCasingsTT,
+            TT_Container_Casings.sBlockCasingsTT,
             QuantumGlassBlock.INSTANCE,
-            GT_Container_CasingsTT.sBlockCasingsTT,
-            GT_Container_CasingsTT.sBlockCasingsTT
+            TT_Container_Casings.sBlockCasingsTT,
+            TT_Container_Casings.sBlockCasingsTT
     };
     private static final byte[] blockMeta1 = new byte[]{4, 7, 4, 0, 4, 8};
     private static final byte[] blockMeta2 = new byte[]{4, 7, 5, 0, 6, 9};
@@ -123,7 +123,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     public boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX*2;
         int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ*2;
-        if (iGregTechTileEntity.getBlockOffset(xDir, 0, zDir) != GT_Container_CasingsTT.sBlockCasingsTT) {
+        if (iGregTechTileEntity.getBlockOffset(xDir, 0, zDir) != TT_Container_Casings.sBlockCasingsTT) {
             eTier = 0;
             return false;
         }
@@ -155,7 +155,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public void construct(int qty) {
+    public void construct(int qty, boolean hintsOnly) {
         IGregTechTileEntity iGregTechTileEntity=getBaseMetaTileEntity();
         int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX*4;
         int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ*4;
@@ -166,9 +166,9 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
                     iGregTechTileEntity.getZCoord()+zDir,
                     Blocks.lapis_block);
         if ((qty & 1) == 1)
-            StructureBuilder(shape, blockType, blockMeta1, 11, 1, 18, iGregTechTileEntity);
+            StructureBuilder(shape, blockType, blockMeta1, 11, 1, 18, iGregTechTileEntity,hintsOnly);
         else
-            StructureBuilder(shape, blockType, blockMeta2, 11, 1, 18, iGregTechTileEntity);
+            StructureBuilder(shape, blockType, blockMeta2, 11, 1, 18, iGregTechTileEntity,hintsOnly);
     }
 
     @Override

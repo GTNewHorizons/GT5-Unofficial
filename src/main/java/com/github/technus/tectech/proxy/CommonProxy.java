@@ -2,6 +2,7 @@ package com.github.technus.tectech.proxy;
 
 import cpw.mods.fml.common.network.IGuiHandler;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
@@ -12,7 +13,8 @@ public class CommonProxy implements IGuiHandler {
 
     public void registerRenderInfo() {}
 
-    public void particles(IGregTechTileEntity aMuffler, byte facing) {}//CUTE!
+    public void hint_particle(World world, int x, int y, int z, Block block, int meta){}
+    public void em_particle(IGregTechTileEntity aMuffler, byte facing) {}//CUTE!
 
     @Override
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {

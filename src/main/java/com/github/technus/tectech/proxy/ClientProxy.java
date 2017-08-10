@@ -1,6 +1,7 @@
 package com.github.technus.tectech.proxy;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.entity.fx.BlockHint;
 import com.github.technus.tectech.thing.block.QuantumGlassRender;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -9,6 +10,7 @@ import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.particle.EntityExplodeFX;
@@ -48,7 +50,16 @@ public class ClientProxy extends CommonProxy {
     }
 
     @Override
-    public void particles(IGregTechTileEntity aMuffler, byte facing) {//CUTE!
+    public void hint_particle(World world, int x, int y, int z, Block block, int meta) {
+        Minecraft.getMinecraft().effectRenderer.addEffect(new BlockHint(world,x,y,z,block,meta));
+
+        EntityFX particle = new EntityExplodeFX(world, x + TecTech.Rnd.nextFloat() * 0.5F, y + TecTech.Rnd.nextFloat() * 0.5F, z + TecTech.Rnd.nextFloat() * 0.5F, 0, 0, 0);
+        particle.setRBGColorF(0, 0.6F * TecTech.Rnd.nextFloat(), 0.8f);
+        Minecraft.getMinecraft().effectRenderer.addEffect(particle);
+    }
+
+    @Override
+    public void em_particle(IGregTechTileEntity aMuffler, byte facing) {//CUTE!
         ForgeDirection aDir = ForgeDirection.getOrientation(facing);
         float xPos = aDir.offsetX * 0.76F + aMuffler.getXCoord() + 0.25F;
         float yPos = aDir.offsetY * 0.76F + aMuffler.getYCoord() + 0.25F;

@@ -1,7 +1,7 @@
 itemGroup.TecTech=TecTech Interdimensional
 tile.quantumGlass.name=Quantum Glass
 item.em.debugContainer.name=Debug EM Container
-item.em.debugBuilder.name=Debug Builder
+item.em.debugBuilder.name=Multiblock Machine Blueprint
 item.em.parametrizerMemoryCard.name=Parametrizer Memory Card
 
 death.attack.microwaving=%1$s was dehydrated by radiation.

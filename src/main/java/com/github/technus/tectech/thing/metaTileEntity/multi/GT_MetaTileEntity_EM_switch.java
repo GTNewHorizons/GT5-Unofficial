@@ -1,10 +1,10 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.dataFramework.quantumDataPacket;
+import com.github.technus.tectech.dataFramework.QuantumDataPacket;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
-import com.github.technus.tectech.vec3pos;
+import com.github.technus.tectech.Vec3pos;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -16,7 +16,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
-import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
+import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static gregtech.api.enums.GT_Values.V;
 
 /**
@@ -100,8 +100,8 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
             }
             total += total / 100F;
 
-            final vec3pos pos = new vec3pos(getBaseMetaTileEntity());
-            quantumDataPacket pack = new quantumDataPacket(pos, 0);
+            final Vec3pos pos = new Vec3pos(getBaseMetaTileEntity());
+            QuantumDataPacket pack = new QuantumDataPacket(pos, 0);
             for (GT_MetaTileEntity_Hatch_InputData i : eInputData) {
                 if (i.q == null || i.q.contains(pos)) continue;
                 pack = pack.unifyPacketWith(i.q);
@@ -119,9 +119,9 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
                     if (part > 0) {
                         remaining -= part;
                         if (remaining > 0)
-                            out.q = new quantumDataPacket(pack, part);
+                            out.q = new QuantumDataPacket(pack, part);
                         else if (part + remaining > 0) {
-                            out.q = new quantumDataPacket(pack, part + remaining);
+                            out.q = new QuantumDataPacket(pack, part + remaining);
                             break;
                         } else break;
                     }

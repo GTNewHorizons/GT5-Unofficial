@@ -16,7 +16,7 @@ import net.minecraft.util.EnumChatFormatting;
 
 import static com.github.technus.tectech.Util.StructureBuilder;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
-import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
+import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static gregtech.api.GregTech_API.mEUtoRF;
 
 /**
@@ -62,8 +62,8 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
-    public void construct(int qty) {
-        StructureBuilder(shape, blockType, blockMeta,1, 2, 0, getBaseMetaTileEntity());
+    public void construct(int qty, boolean hintsOnly) {
+        StructureBuilder(shape, blockType, blockMeta,1, 2, 0, getBaseMetaTileEntity(),hintsOnly);
     }
 
     @Override

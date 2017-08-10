@@ -7,8 +7,8 @@ import com.github.technus.tectech.magicAddon.definitions.AspectDefinitionCompat;
 import com.github.technus.tectech.magicAddon.definitions.AspectDefinitionCompatEnabled;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
-import com.github.technus.tectech.thing.casing.GT_Container_CasingsTT;
-import com.github.technus.tectech.thing.item.DebugBuilder;
+import com.github.technus.tectech.thing.casing.TT_Container_Casings;
+import com.github.technus.tectech.thing.item.ConstructibleTriggerItem;
 import com.github.technus.tectech.thing.item.DebugContainer_EM;
 import com.github.technus.tectech.thing.item.ParametrizerMemoryCard;
 import cpw.mods.fml.common.ProgressManager;
@@ -115,9 +115,10 @@ public final class MainLoader {//TODO add checks for - is mod loaded dreamcraft 
 
     private void registerThingsInTabs() {
         QuantumGlassBlock.INSTANCE.setCreativeTab(mainTab);
-        GT_Container_CasingsTT.sBlockCasingsTT.setCreativeTab(mainTab);
+        TT_Container_Casings.sBlockCasingsTT.setCreativeTab(mainTab);
+        TT_Container_Casings.sHintCasingsTT.setCreativeTab(mainTab);
         DebugContainer_EM.INSTANCE.setCreativeTab(mainTab);
-        DebugBuilder.INSTANCE.setCreativeTab(mainTab);
+        ConstructibleTriggerItem.INSTANCE.setCreativeTab(mainTab);
         ParametrizerMemoryCard.INSTANCE.setCreativeTab(mainTab);
     }
 

@@ -4,12 +4,12 @@ import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
-import com.github.technus.tectech.dataFramework.quantumDataPacket;
+import com.github.technus.tectech.dataFramework.QuantumDataPacket;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Rack;
 import com.github.technus.tectech.thing.metaTileEntity.iConstructible;
-import com.github.technus.tectech.vec3pos;
+import com.github.technus.tectech.Vec3pos;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import static com.github.technus.tectech.Util.StructureBuilder;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
-import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
+import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static gregtech.api.enums.GT_Values.V;
 
 /**
@@ -153,8 +153,8 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     @Override
     public void EM_outputFunction() {
         if (eOutputData.size() > 0) {
-            final vec3pos pos = new vec3pos(getBaseMetaTileEntity());
-            quantumDataPacket pack = new quantumDataPacket(pos, eAvailableData);
+            final Vec3pos pos = new Vec3pos(getBaseMetaTileEntity());
+            QuantumDataPacket pack = new QuantumDataPacket(pos, eAvailableData);
             for (GT_MetaTileEntity_Hatch_InputData i : eInputData) {
                 if (i.q == null || i.q.contains(pos)) continue;
                 pack = pack.unifyPacketWith(i.q);
@@ -211,18 +211,18 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public void construct(int qty) {
+    public void construct(int qty, boolean hintsOnly) {
         IGregTechTileEntity igt=getBaseMetaTileEntity();
-        StructureBuilder(front, blockType, blockMeta, 1, 2, 0, igt);
-        StructureBuilder(cap, blockType, blockMeta, 1, 2, -1, igt);
+        StructureBuilder(front, blockType, blockMeta, 1, 2, 0, igt,hintsOnly);
+        StructureBuilder(cap, blockType, blockMeta, 1, 2, -1, igt,hintsOnly);
 
         byte offset=-2;
         for (int rackSlices = qty>12?12:qty; rackSlices>0 ; rackSlices--) {
-            StructureBuilder(slice, blockType, blockMeta, 1, 2, offset--, igt);
+            StructureBuilder(slice, blockType, blockMeta, 1, 2, offset--, igt,hintsOnly);
         }
 
-        StructureBuilder(cap, blockType, blockMeta, 1, 2, offset--, igt);
-        StructureBuilder(terminator, blockType, blockMeta, 1, 2, offset,igt);
+        StructureBuilder(cap, blockType, blockMeta, 1, 2, offset--, igt,hintsOnly);
+        StructureBuilder(terminator, blockType, blockMeta, 1, 2, offset,igt,hintsOnly);
     }
 
     @Override

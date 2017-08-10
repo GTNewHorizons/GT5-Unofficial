@@ -18,7 +18,7 @@ import net.minecraft.util.EnumChatFormatting;
 import static com.github.technus.tectech.Util.StructureBuilder;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
-import static com.github.technus.tectech.thing.casing.GT_Container_CasingsTT.sBlockCasingsTT;
+import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static gregtech.api.enums.GT_Values.E;
 
 /**
@@ -145,9 +145,9 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
     }
 
     @Override
-    public void construct(int qty) {
-        if((qty&1)==1) StructureBuilder(shape, blockType, blockMeta,16, 16, 0, getBaseMetaTileEntity());
-        else StructureBuilder(shape2, blockType2, blockMeta2,16, 16, 0, getBaseMetaTileEntity());
+    public void construct(int qty, boolean hintsOnly) {
+        if((qty&1)==1) StructureBuilder(shape, blockType, blockMeta,16, 16, 0, getBaseMetaTileEntity(),hintsOnly);
+        else StructureBuilder(shape2, blockType2, blockMeta2,16, 16, 0, getBaseMetaTileEntity(),hintsOnly);
     }
 
     @Override

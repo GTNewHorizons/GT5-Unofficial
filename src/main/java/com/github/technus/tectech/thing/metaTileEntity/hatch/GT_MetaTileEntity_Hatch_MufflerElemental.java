@@ -153,7 +153,7 @@ public class GT_MetaTileEntity_Hatch_MufflerElemental extends GT_MetaTileEntity_
                 }
             }
         } else if (aBaseMetaTileEntity.isClientSide() && getBaseMetaTileEntity().isActive()) {
-            TecTech.proxy.particles(getBaseMetaTileEntity(), getBaseMetaTileEntity().getFrontFacing());
+            TecTech.proxy.em_particle(getBaseMetaTileEntity(), getBaseMetaTileEntity().getFrontFacing());
         }
         super.onPostTick(aBaseMetaTileEntity, aTick);
         //DOES NOT CHECK FOR TOO MUCH, it is done only while putting stuff in (OPTIMIZATION!!!)

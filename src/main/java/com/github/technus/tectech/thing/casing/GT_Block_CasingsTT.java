@@ -167,10 +167,6 @@ public class GT_Block_CasingsTT extends GT_Block_Casings_Abstract {
         return getIcon(aSide, tMeta);
     }
 
-    public int colorMultiplier(IBlockAccess aWorld, int aX, int aY, int aZ) {
-        return super.colorMultiplier(aWorld, aX, aY, aZ);
-    }
-
     @Override
     public void getSubBlocks(Item aItem, CreativeTabs par2CreativeTabs, List aList) {
         for (int i = 0; i <= 15; i++) {

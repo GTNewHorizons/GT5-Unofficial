@@ -1,7 +1,7 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.dataFramework.quantumDataPacket;
+import com.github.technus.tectech.dataFramework.QuantumDataPacket;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.iConnectsToDataPipe;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -29,7 +29,7 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector extends GT_MetaTileE
     private static Textures.BlockIcons.CustomIcon EM_D_ACTIVE;
     private static Textures.BlockIcons.CustomIcon EM_D_CONN;
 
-    public quantumDataPacket q;
+    public QuantumDataPacket q;
 
     public short id = -1;
 
@@ -73,7 +73,7 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector extends GT_MetaTileE
         super.loadNBTData(aNBT);
         id = aNBT.getShort("eID");
         if (aNBT.hasKey("eDATA"))
-            q = new quantumDataPacket(aNBT.getCompoundTag("eDATA"));
+            q = new QuantumDataPacket(aNBT.getCompoundTag("eDATA"));
     }
 
     @Override

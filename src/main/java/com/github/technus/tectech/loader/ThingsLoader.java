@@ -3,8 +3,9 @@ package com.github.technus.tectech.loader;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.casing.GT_Block_CasingsTT;
-import com.github.technus.tectech.thing.casing.GT_Container_CasingsTT;
-import com.github.technus.tectech.thing.item.DebugBuilder;
+import com.github.technus.tectech.thing.casing.GT_Block_HintTT;
+import com.github.technus.tectech.thing.casing.TT_Container_Casings;
+import com.github.technus.tectech.thing.item.ConstructibleTriggerItem;
 import com.github.technus.tectech.thing.item.DebugContainer_EM;
 import com.github.technus.tectech.thing.item.ParametrizerMemoryCard;
 import cpw.mods.fml.common.Loader;
@@ -16,8 +17,10 @@ import openmodularturrets.blocks.turretheads.TurretHeadEM;
  */
 public class ThingsLoader implements Runnable {
     public void run() {
-        GT_Container_CasingsTT.sBlockCasingsTT = new GT_Block_CasingsTT();
+        TT_Container_Casings.sBlockCasingsTT = new GT_Block_CasingsTT();
         TecTech.Logger.info("Elemental Casing registered");
+        TT_Container_Casings.sHintCasingsTT = new GT_Block_HintTT();
+        TecTech.Logger.info("Hint Blocks registered");
 
         QuantumGlassBlock.run();
         TecTech.Logger.info("Quantum Glass registered");
@@ -30,7 +33,7 @@ public class ThingsLoader implements Runnable {
         }
 
         DebugContainer_EM.run();
-        DebugBuilder.run();
+        ConstructibleTriggerItem.run();
         ParametrizerMemoryCard.run();
         TecTech.Logger.info("Debug Items registered");
     }
