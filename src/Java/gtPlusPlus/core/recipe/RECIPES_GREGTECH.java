@@ -454,7 +454,7 @@ public class RECIPES_GREGTECH {
 		GT_Values.RA.addFuel(ItemUtils.simpleMetaStack("EnderIO:bucketRocket_fuel", 0, 1), null, 112, 0);
 		GT_Values.RA.addFuel(ItemUtils.simpleMetaStack("EnderIO:bucketHootch", 0, 1), null, 36, 0);
 
-
+		HotFuel.addNewHotFuel(GT_ModHandler.getLava(83), GT_ModHandler.getWater(6), GT_ModHandler.getSteam(800), 0);
 
 		//CORE.RA.addFuel(UtilsItems.simpleMetaStack("EnderIO:bucketRocket_fuel", 0, 1), null, 112, 0);
 		GT_Values.RA.addFuel(ItemUtils.getSimpleStack(Items.lava_bucket), null, 32, 2);
