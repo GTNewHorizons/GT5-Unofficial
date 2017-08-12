@@ -1,5 +1,9 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic;
 
+import static gregtech.api.enums.GT_Values.V;
+
+import java.util.*;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -9,6 +13,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_TieredMachineBlock;
 import gregtech.api.objects.GT_RenderedTexture;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.player.PlayerUtils;
 import net.minecraft.block.Block;
@@ -19,12 +24,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import static gregtech.api.enums.GT_Values.V;
 
 public class GT_MetaTileEntity_WorldAccelerator extends GT_MetaTileEntity_TieredMachineBlock {
 
@@ -68,7 +67,8 @@ public class GT_MetaTileEntity_WorldAccelerator extends GT_MetaTileEntity_Tiered
 				String.format("Accelerating things (Radius: %d EU/t: %d Speed Bonus: x%d)", mTier,
 						getEnergyDemand(mTier, false), mAccelerateStatic[mTier]),
 				"Use a screwdriver to change mode", "To accelerate TileEntities, this machine has to be adjacent to it",
-				"This machine accepts up to 8 Amps", "Accelerating TileEntities doubles Energy-Demand" };
+				"This machine accepts up to 8 Amps", "Accelerating TileEntities doubles Energy-Demand", CORE.GT_Tooltip};
+		
 	}
 
 	public GT_MetaTileEntity_WorldAccelerator(String pName, int pTier, int pInvSlotCount, String pDescription,

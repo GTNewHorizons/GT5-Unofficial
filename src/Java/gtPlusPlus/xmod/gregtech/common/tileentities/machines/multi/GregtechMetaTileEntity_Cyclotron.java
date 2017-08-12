@@ -1,7 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
-import gregtech.api.enums.Dyes;
-import gregtech.api.enums.Textures;
+import gregtech.api.enums.*;
 import gregtech.api.gui.GT_Container_MultiMachine;
 import gregtech.api.interfaces.IIconContainer;
 import gregtech.api.interfaces.ITexture;
@@ -37,7 +36,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GT_MetaTileEntity_MultiBlo
 
     @Override
 	public long maxEUStore() {
-        return (640010000L/4) * (Math.min(16, this.mEnergyHatches.size())) / 16L;
+        return Integer.MAX_VALUE;
     }
 
     @Override
@@ -167,21 +166,21 @@ public class GregtechMetaTileEntity_Cyclotron extends GT_MetaTileEntity_MultiBlo
     }
 
     private boolean addIfEnergyInjector(int aX, int aY, int aZ, IGregTechTileEntity aBaseMetaTileEntity) {
-        if (addEnergyInputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntity(aX, aY, aZ), 53)) {
+        if (addEnergyInputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntity(aX, aY, aZ), TAE.GTPP_INDEX(25))) {
             return true;
         }
         return isAdvancedMachineCasing(aX, aY, aZ);
     }
 
     private boolean addIfInjector(int aX, int aY, int aZ, IGregTechTileEntity aTileEntity) {
-        if (addInputToMachineList(aTileEntity.getIGregTechTileEntity(aX, aY, aZ), 53)) {
+        if (addInputToMachineList(aTileEntity.getIGregTechTileEntity(aX, aY, aZ), TAE.GTPP_INDEX(25))) {
             return true;
         }
         return isAdvancedMachineCasing(aX, aY, aZ);
     }
 
     private boolean addIfExtractor(int aX, int aY, int aZ, IGregTechTileEntity aTileEntity) {
-        if (addOutputToMachineList(aTileEntity.getIGregTechTileEntity(aX, aY, aZ), 53)) {
+        if (addOutputToMachineList(aTileEntity.getIGregTechTileEntity(aX, aY, aZ), TAE.GTPP_INDEX(25))) {
             return true;
         }
         return isAdvancedMachineCasing(aX, aY, aZ);
@@ -218,14 +217,14 @@ public class GregtechMetaTileEntity_Cyclotron extends GT_MetaTileEntity_MultiBlo
         		"------------------------------------------------------------",
         		"Particles are accelerated over 186 revolutions to 80% light speed",
         		"Can produce a continuous beam current of 2.2 mA at 590 MeV",
-        		"Which will be extracted from the Isochronous cyclotron",
+        		"Which will be extracted from the Isochronous Cyclotron",
         		"------------------------------------------------------------",
         		"Consists of the same layout as a Fusion Reactor",
         		"Cyclotron Machine Casings around Cyclotron Coil Blocks", 
         		"2-16 Input Hatches", 
         		"1-16 Output Hatches", 
         		"1-16 Energy Hatches", 
-        		"All Hatches must be ZPM or better"};
+        		"All Hatches must be LuV or better"};
     }
 
     @Override
@@ -304,8 +303,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GT_MetaTileEntity_MultiBlo
         return new String[]{
                 "COMET - Compact Cyclotron MK "+tier,
                 "EU Required: "+powerRequired+"EU/t",
-                "Stored EU: "+mEUStore+" / "+maxEUStore(),
-                "Plasma Output: "+plasmaOut+"L/t"};
+                "Stored EU: "+mEUStore+" / "+maxEUStore()};
     }
 
     @Override
