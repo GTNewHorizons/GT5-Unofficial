@@ -12,6 +12,7 @@ import gregtech.api.util.*;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -59,10 +60,22 @@ extends GT_MetaTileEntity_MultiBlockBase
 	@Override
 	public boolean checkRecipe(ItemStack aStack)
 	{
-		Collection<GT_Recipe> hotFuels = GT_Recipe.GT_Recipe_Map.sHotFuels.mRecipeList;
+		Collection<GT_Recipe> hotFuels = Recipe_GT.Gregtech_Recipe_Map.sThermalFuels.mRecipeList;
 		for (GT_Recipe tRecipe : hotFuels) {
+			Utils.LOG_INFO("iterating hot fuels ");
+			Utils.LOG_INFO("aStack: "+aStack.getDisplayName());
+			Utils.LOG_INFO("========================");
+			Utils.LOG_INFO("Dumping Input: " + ItemUtils.getArrayStackNames(tRecipe.mInputs));
+			Utils.LOG_INFO("Dumping Inputs " + ItemUtils.getFluidArrayStackNames(tRecipe.mFluidInputs));
+			Utils.LOG_INFO("Dumping Duration: " + tRecipe.mDuration);
+			Utils.LOG_INFO("Dumping EU/t: " + tRecipe.mEUt);
+			Utils.LOG_INFO("Dumping Output: " + ItemUtils.getArrayStackNames(tRecipe.mOutputs));
+			Utils.LOG_INFO("Dumping Output: " + ItemUtils.getFluidArrayStackNames(tRecipe.mFluidOutputs));
+			Utils.LOG_INFO("========================");
+			
 			if (depleteInput(tRecipe.getRepresentativeInput(0)))
 			{
+				Utils.LOG_INFO("found something");
 				this.mEUt = 400;
 				this.mMaxProgresstime = (tRecipe.mEUt * 2 / 5);
 				this.mEfficiencyIncrease = (this.mMaxProgresstime * 30);
@@ -90,6 +103,7 @@ extends GT_MetaTileEntity_MultiBlockBase
 		if (this.mEUt > 0)
 		{
 			int tGeneratedEU = (int)(this.mEUt * 2L * this.mEfficiency / 10000L);
+			Utils.LOG_INFO("tGeneratedEU: "+tGeneratedEU);
 			if ((tGeneratedEU > 0) && (depleteInput(GT_ModHandler.getWater((tGeneratedEU + 160) / 160)))) {
 				addOutput(GT_ModHandler.getSteam(tGeneratedEU));
 			}

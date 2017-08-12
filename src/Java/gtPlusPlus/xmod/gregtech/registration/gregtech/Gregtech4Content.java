@@ -4,12 +4,16 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.recipe.RecipeUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_TesseractGenerator;
 import gtPlusPlus.xmod.gregtech.common.tileentities.automation.GT_MetaTileEntity_TesseractTerminal;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GT4Entity_AutoCrafter;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi.GT4Entity_ThermalBoiler;
 import gtPlusPlus.xmod.gregtech.common.tileentities.storage.shelving.*;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 
 public class Gregtech4Content {
 
@@ -72,8 +76,10 @@ public class Gregtech4Content {
 		GregtechItemList.GT4_Thermal_Boiler
 				.set(new GT4Entity_ThermalBoiler(875, "gtplusplus.thermal.boiler", "Thermal Boiler").getStackForm(1L));
 		
+		
+		
 		//Thermal Boiler Manual
-	    GT_Utility.getWrittenBook(
+	    ItemStack manual_Boiler = GT_Utility.getWrittenBook(
 	    		"Manual_Thermal_Boiler", "Thermal Boiler Manual", "Alkalus", 
 	    		new String[] {
 	    				"This Book explains how to set up and run your Thermal Boiler. We are not responsible for any Damage done by this Book itself nor its content.", 
@@ -91,6 +97,8 @@ public class Gregtech4Content {
 	    				"The Thermal Boiler will produce 800 Liters of Steam per tick for about 5 or 6 Liters of Water per tick at reaching 100% Efficiency. In case of Lava it consumes 1666 Liters every Second.", 
 	    				"A Thermal Boiler is worth about 33 small Thermal Generators, and as the Boilers get much less Efficient, when not having enough Fuel, you should consider making a large Nether Pump for Lava, or a good Nuclear Reactor for molten Salt.", 
 	    				"Input and Output Slots are fully optional, you can place multiple ones of them or even none on the Machine. A Machine without Input couldn't process any Recipes, while a Machine without Output just voids all outputted Items and Liquids.", "It might be useful to use the Screwdriver on the Output Hatches to determine what is outputted where." });
+		
+	    RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{ItemUtils.getSimpleStack(Items.writable_book), ItemUtils.getSimpleStack(Items.lava_bucket)}, manual_Boiler);
 		}
 		
 	}

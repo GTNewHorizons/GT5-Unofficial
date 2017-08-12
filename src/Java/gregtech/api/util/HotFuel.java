@@ -1,25 +1,24 @@
 package gregtech.api.util;
 
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public class HotFuel {
 
-	public static void addNewHotFuel(FluidStack aInput1, FluidStack aInput2, FluidStack aOutput1, int aSpecialValue) {
+	public static void addNewHotFuel(FluidStack aInput1, FluidStack aInput2, FluidStack aOutput1, ItemStack[] outputItems, int[] chances, int aSpecialValue) {
 		GT_Recipe x = new GT_Recipe(
 				true,
 				null,
+				outputItems,
 				null,
-				null,
-				null,
+				chances,
 				new FluidStack[]{aInput1, aInput2},
 				new FluidStack[]{aOutput1},
 				1, //1 Tick
 				0, //No Eu produced
 				aSpecialValue //Magic Number
 		);
-			GT_Recipe_Map.sHotFuels.addRecipe(x);
+		Recipe_GT.Gregtech_Recipe_Map.sThermalFuels.addRecipe(x);
 	}
 	
 	

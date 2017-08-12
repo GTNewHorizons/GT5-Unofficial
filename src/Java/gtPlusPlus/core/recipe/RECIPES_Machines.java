@@ -801,9 +801,12 @@ public class RECIPES_Machines {
 				
 				RecipeUtils.addShapedGregtechRecipe(
 						"plateStainlessSteel", "plateStainlessSteel", "plateStainlessSteel",
-						"circuitAdvanced", CI.machineHull_HV, "circuitAdvanced",
+						"circuitAdvanced", CI.machineCasing_HV, "circuitAdvanced",
 						"plateStainlessSteel", "plateStainlessSteel", "plateStainlessSteel",
 						RECIPE_ThermalBoilerCasing);
+				
+				//Lava Filter Recipe
+				GT_Values.RA.addAssemblerRecipe(ItemUtils.getItemStackWithMeta(LoadedMods.IndustrialCraft2, "IC2:itemPartCarbonMesh", "RawCarbonMesh", 0, 8), GT_Values.NI, ItemUtils.getSimpleStack(ModItems.itemLavaFilter), 80*20, 16);
 			}
 
 	
