@@ -167,7 +167,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Casing_Cyclotron_Coil,
 	Casing_Cyclotron_External,
 	
-	Casing_PlaceHolder11, 
+	//Thermal Boiler
+	Casing_ThermalContainment, 
+	
+	
 	Casing_PlaceHolder12,
 	Casing_PlaceHolder13, 
 	Casing_PlaceHolder14, 

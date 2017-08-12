@@ -146,6 +146,7 @@ public class CORE {
 		public static boolean enableMultiblock_NuclearFuelRefinery = true;
 		public static boolean enableMultiblock_TreeFarmer = true;
 		public static boolean enableMultiblock_IndustrialSifter = true;
+		public static boolean enableMachine_ThermalBoiler = true;
 
 		//Visuals
 		public static boolean enableTreeFarmerParticles = true;

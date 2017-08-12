@@ -44,7 +44,7 @@ public class CasingTextureHandler2 {
 				return TexturesGtBlock.Casing_Material_HastelloyX.getIcon();
 				//Multitank Exterior Casing
 			case 11:
-				return TexturesGtBlock._PlaceHolder.getIcon();
+				return TexturesGtBlock.Casing_Material_Tantalloy61.getIcon();
 				//Reactor Casing I
 			case 12:
 				return TexturesGtBlock._PlaceHolder.getIcon();

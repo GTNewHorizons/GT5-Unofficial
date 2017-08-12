@@ -212,9 +212,11 @@ public final class ModItems {
 	public static itemDehydratorCoilWire itemDehydratorCoilWire;
 	public static itemDehydratorCoil itemDehydratorCoil;
 
+	public static Item itemLavaFilter;
 	public static Item itemAirFilter;
 
 	public static Item itemCoalCoke;
+
 
 
 
@@ -569,6 +571,7 @@ public final class ModItems {
 		itemDehydratorCoil = new itemDehydratorCoil();
 
 		itemAirFilter = new ItemAirFilter();
+		itemLavaFilter = new ItemLavaFilter();
 
 		//Chemistry
 		CoalTar.run();

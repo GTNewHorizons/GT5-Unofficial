@@ -154,7 +154,9 @@ public class GTplusplus implements ActionListener {
 				"Refines molten chemicals into nuclear fuels.");
 		CORE.configSwitches.enableMultiblock_IndustrialSifter = config.getBoolean("enableMultiblock_IndustrialSifter",
 				"gregtech", true, "Large scale sifting.");
-
+		CORE.configSwitches.enableMachine_ThermalBoiler = config.getBoolean("enableMachineThermalBoiler",
+				"gregtech", true, "Thermal Boiler from GT4. Can Filter Lava for resources.");
+		
 		// Options
 		RF2EU_Battery.rfPerEU = config.getInt("rfUsedPerEUForUniversalBatteries", "configurables", 4, 1, 1000,
 				"How much RF is a single unit of EU worth? (Most mods use 4:1 ratio)");

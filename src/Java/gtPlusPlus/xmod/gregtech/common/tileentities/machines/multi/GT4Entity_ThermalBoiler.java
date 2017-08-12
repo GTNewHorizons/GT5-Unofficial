@@ -2,7 +2,6 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
 import java.util.Collection;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -10,6 +9,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.*;
+import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
@@ -129,13 +129,12 @@ extends GT_MetaTileEntity_MultiBlockBase
 				"Converts Heat into Steam",
 				"Size: 3x3x3 (Hollow)",
 				"Controller (front middle)",
-				"1x Input Hatch (Centre of back)",
-				"2x Output Hatch (Centre of sides)",
+				"1x Output Hatch (Centre of back)",
+				"2x Input Hatch (Centre of sides)",
 				"1x Maintenance Hatch (Centre of top)",
-				"20x Blast Smelter Heat Containment Coils",
+				"Thermal Containment Casings for the rest",
 				CORE.GT_Tooltip};
 	}
-
 
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
@@ -151,9 +150,9 @@ extends GT_MetaTileEntity_MultiBlockBase
 		byte tSide = getBaseMetaTileEntity().getBackFacing();
 		if (getBaseMetaTileEntity().getAirAtSideAndDistance(getBaseMetaTileEntity().getBackFacing(), 1))
 		{
-			int META = 0;
+			int META = 11;
 			int CASING = TAE.GTPP_INDEX(1);
-			if (((getBaseMetaTileEntity().getBlockAtSideAndDistance(getBaseMetaTileEntity().getBackFacing(), 2) != GregTech_API.sBlockCasings1) || (getBaseMetaTileEntity().getMetaIDAtSideAndDistance(getBaseMetaTileEntity().getBackFacing(), 2) != META)) && 
+			if (((getBaseMetaTileEntity().getBlockAtSideAndDistance(getBaseMetaTileEntity().getBackFacing(), 2) != ModBlocks.blockCasings2Misc) || (getBaseMetaTileEntity().getMetaIDAtSideAndDistance(getBaseMetaTileEntity().getBackFacing(), 2) != META)) && 
 					(!addToMachineList(getBaseMetaTileEntity().getIGregTechTileEntityAtSideAndDistance(getBaseMetaTileEntity().getBackFacing(), 2), CASING))) {
 				Utils.LOG_INFO("false 1");
 				return false;
@@ -165,7 +164,7 @@ extends GT_MetaTileEntity_MultiBlockBase
 						for (byte k = 0; k < 3; k = (byte)(k + 1)) {
 							if (((i == 0) || (j == 0)) && (k == 1))
 							{
-								if (getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)) == GregTech_API.sBlockCasings1)
+								if (getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)) == ModBlocks.blockCasings2Misc)
 								{
 									if (getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)) == META) {}
 								}
@@ -174,7 +173,7 @@ extends GT_MetaTileEntity_MultiBlockBase
 									return false;
 								}
 							}
-							else if (getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)) == GregTech_API.sBlockCasings1)
+							else if (getBaseMetaTileEntity().getBlock(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)) == ModBlocks.blockCasings2Misc)
 							{
 								if (getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)) == META) {}
 							}

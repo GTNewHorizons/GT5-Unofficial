@@ -71,7 +71,11 @@ public class RECIPES_Machines {
 	//Tesseracts
 	public static ItemStack RECIPE_TesseractGenerator;
 	public static ItemStack RECIPE_TesseractTerminal;
-
+	//Thermal Boiler
+	public static ItemStack RECIPE_ThermalBoilerController;
+	public static ItemStack RECIPE_ThermalBoilerCasing;
+	
+	
 	//Buffer Cores
 	public static ItemStack RECIPE_BufferCore_ULV = ItemUtils.getItemStack("miscutils:item.itemBufferCore1", 1);
 	public static ItemStack RECIPE_BufferCore_LV = ItemUtils.getItemStack("miscutils:item.itemBufferCore2", 1);
@@ -776,6 +780,30 @@ public class RECIPES_Machines {
 						"dustCarbon", "dustCarbon", "dustCarbon",
 						"plateCarbon", "plateCarbon", "plateCarbon",
 						ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 0, 1));
+			}
+			
+			if (CORE.configSwitches.enableMachine_ThermalBoiler){
+				RECIPE_ThermalBoilerController = GregtechItemList.GT4_Thermal_Boiler.get(1);
+				RECIPE_ThermalBoilerCasing = GregtechItemList.Casing_ThermalContainment.get(4);
+				ItemStack centrifugeHV = ItemList.Machine_HV_Centrifuge.get(1);
+				
+				RecipeUtils.addShapedGregtechRecipe(
+						"craftingGeothermalGenerator", centrifugeHV, "craftingGeothermalGenerator",
+						"gearTitanium", "circuitElite", "gearTitanium",
+						"craftingGeothermalGenerator", centrifugeHV, "craftingGeothermalGenerator",
+						RECIPE_ThermalBoilerController);
+				
+				RecipeUtils.addShapedGregtechRecipe(
+						"craftingGeothermalGenerator", centrifugeHV, "craftingGeothermalGenerator",
+						"gearTungstenSteel", "circuitElite", "gearTungstenSteel",
+						"craftingGeothermalGenerator", centrifugeHV, "craftingGeothermalGenerator",
+						RECIPE_ThermalBoilerController);
+				
+				RecipeUtils.addShapedGregtechRecipe(
+						"plateStainlessSteel", "plateStainlessSteel", "plateStainlessSteel",
+						"circuitAdvanced", CI.machineHull_HV, "circuitAdvanced",
+						"plateStainlessSteel", "plateStainlessSteel", "plateStainlessSteel",
+						RECIPE_ThermalBoilerCasing);
 			}
 
 	
