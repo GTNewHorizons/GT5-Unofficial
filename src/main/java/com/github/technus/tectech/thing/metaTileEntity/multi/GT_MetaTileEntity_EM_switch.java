@@ -1,19 +1,21 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.Vec3pos;
 import com.github.technus.tectech.dataFramework.QuantumDataPacket;
+import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
-import com.github.technus.tectech.Vec3pos;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraftforge.common.util.ForgeDirection;
 
+import static com.github.technus.tectech.Util.StructureBuilder;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -22,7 +24,25 @@ import static gregtech.api.enums.GT_Values.V;
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBase_EM {
+public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable{
+    //region Structure
+    private static final String[][] shape = new String[][]{
+            {"   "," . ","   ",},
+            {"   "," 0 ","   ",},
+            {"   ","   ","   ",},
+    };
+    private static final Block[] blockType = new Block[]{sBlockCasingsTT};
+    private static final byte[] blockMeta = new byte[]{3};
+    private static final String[] addingMethods = new String[]{"addClassicToMachineList"};
+    private static final short[] casingTextures = new short[]{textureOffset};
+    private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT};
+    private static final byte[] blockMetaFallback = new byte[]{1};
+    private static final String[] description = new String[]{
+            EnumChatFormatting.AQUA+"Hint Details:",
+            "1 - Classic/Data Hatches or Computer casing",
+    };
+    //endregion
+
     public GT_MetaTileEntity_EM_switch(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
     }
@@ -45,29 +65,17 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
 
     @Override
     public boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX;
-        int yDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetY;
-        int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ;
-        if (iGregTechTileEntity.getBlockOffset(xDir, yDir, zDir) != sBlockCasingsTT || iGregTechTileEntity.getMetaIDOffset(xDir, yDir, zDir) != 3)
-            return false;
-        for (int i = -1; i < 2; i++) {
-            for (int j = -1; j < 2; j++) {
-                for (int h = -1; h < 2; h++) {
-                    if ((i != 0 || j != 0 || h != 0)/*exclude center*/ && (xDir + i != 0 || yDir + h != 0 || zDir + j != 0)/*exclude this*/) {
-                        IGregTechTileEntity tTileEntity = iGregTechTileEntity.getIGregTechTileEntityOffset(xDir + i, yDir + h, zDir + j);
-                        if (!addEnergyIOToMachineList(tTileEntity, textureOffset + 1) &&
-                                (!addDataConnectorToMachineList(tTileEntity, textureOffset + 1)) &&
-                                (!addMaintenanceToMachineList(tTileEntity, textureOffset + 1))) {
-                            if (iGregTechTileEntity.getBlockOffset(xDir + i, yDir + h, zDir + j) != sBlockCasingsTT ||
-                                    iGregTechTileEntity.getMetaIDOffset(xDir + i, yDir + h, zDir + j) != 1) {
-                                return false;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return true;
+        return EM_StructureCheckAdvanced(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
+    }
+
+    @Override
+    public void construct(int stackSize, boolean hintsOnly) {
+        StructureBuilder(shape, blockType, blockMeta,1, 1, 0, getBaseMetaTileEntity(),hintsOnly);
+    }
+
+    @Override
+    public String[] getStructureDescription(int stackSize) {
+        return description;
     }
 
     @Override

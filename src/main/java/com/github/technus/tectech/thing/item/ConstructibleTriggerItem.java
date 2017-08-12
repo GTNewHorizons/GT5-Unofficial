@@ -10,6 +10,7 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.common.tileentities.machines.multi.GT_MetaTileEntity_ElectricBlastFurnace;
 import net.minecraft.block.Block;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
@@ -17,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.FakePlayer;
 
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +45,7 @@ public class ConstructibleTriggerItem extends Item {
     @Override
     public boolean onItemUseFirst(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int aSide, float hitX, float hitY, float hitZ) {
         TileEntity tTileEntity = aWorld.getTileEntity(aX, aY, aZ);
-        if(tTileEntity==null) return aPlayer instanceof EntityPlayerMP;
+        if(tTileEntity==null || aPlayer instanceof FakePlayer) return aPlayer instanceof EntityPlayerMP;
         if (aPlayer instanceof EntityPlayerMP) {
             //struct gen
             if (aPlayer.isSneaking() && aPlayer.capabilities.isCreativeMode) {
@@ -54,6 +56,7 @@ public class ConstructibleTriggerItem extends Item {
                         return true;
                     } else if (multiblockMap.containsKey(metaTE.getClass())) {
                         multiblockMap.get(metaTE.getClass()).construct(aStack.stackSize, false, tTileEntity, ((IGregTechTileEntity) tTileEntity).getFrontFacing());
+                        return true;
                     }
                 } else if (tTileEntity instanceof IConstructable) {
                     ((IConstructable) tTileEntity).construct(aStack.stackSize, false);
@@ -63,9 +66,7 @@ public class ConstructibleTriggerItem extends Item {
                     return true;
                 }
             }
-        }
-        //particles and text client side
-        if(aWorld.isRemote){
+        }else if (aPlayer instanceof EntityClientPlayerMP){//particles and text client side
             if ((!aPlayer.isSneaking() || !aPlayer.capabilities.isCreativeMode)) {
                 if(tTileEntity instanceof IGregTechTileEntity) {
                     IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
