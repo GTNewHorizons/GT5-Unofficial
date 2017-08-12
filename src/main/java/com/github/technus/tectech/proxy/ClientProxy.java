@@ -13,10 +13,12 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.client.particle.EntityExplodeFX;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -109,5 +111,13 @@ public class ClientProxy extends CommonProxy {
             fontRenderer.setUnicodeFlag(origFont);
         } else
             fontRenderer.drawSplitString(str, x, y, maxWidth, color);
+    }
+
+    @Override
+    public void printInchat(String... strings) {
+        GuiNewChat chat = Minecraft.getMinecraft().ingameGUI.getChatGUI();
+        for (String s : strings) {
+            chat.printChatMessage(new ChatComponentText(s));
+        }
     }
 }

@@ -22,7 +22,6 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.GT_GUIContainer_FusionReactor;
-import gregtech.nei.GT_NEI_DefaultHandler;
 import gregtech.nei.NEI_GT_Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -206,22 +205,22 @@ public class TT_NEI_ResearchHandler extends TemplateRecipeHandler {
 
 	public void drawExtras(int aRecipeIndex) {
 		int tEUt = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mEUt;
-		int tDuration = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mDuration;
+		int computation = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mDuration;
 		String[] recipeDesc = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.getNeiDesc();
 		if (recipeDesc == null) {
-			if (tEUt != 0) {
-				drawText(10, 73, trans("152","Total: ") + tDuration * tEUt + " EU", -16777216);
-				drawText(10, 83, trans("153","Usage: ") + tEUt + " EU/t", -16777216);
-				if (this.mRecipeMap.mShowVoltageAmperageInNEI) {
-					drawText(10, 93, trans("154","Voltage: ") + tEUt / this.mRecipeMap.mAmperage + " EU", -16777216);
-					drawText(10, 103, trans("155","Amperage: ") + this.mRecipeMap.mAmperage, -16777216);
-				} else {
-					drawText(10, 93, trans("156","Voltage: unspecified"), -16777216);
-					drawText(10, 103, trans("157","Amperage: unspecified"), -16777216);
-				}
-			}
-			if (tDuration > 0) {
-				drawText(10, 113, "Computation: "+String.format("%.2f ", 0.05F * tDuration), -16777216);
+			//if (tEUt != 0) {
+			//	drawText(10, 73, trans("152","Total: ") + computation * tEUt + " EU", -16777216);
+			//	drawText(10, 83, trans("153","Usage: ") + tEUt + " EU/t", -16777216);
+			//	if (this.mRecipeMap.mShowVoltageAmperageInNEI) {
+			//		drawText(10, 93, trans("154","Voltage: ") + tEUt / this.mRecipeMap.mAmperage + " EU", -16777216);
+			//		drawText(10, 103, trans("155","Amperage: ") + this.mRecipeMap.mAmperage, -16777216);
+			//	} else {
+			//		drawText(10, 93, trans("156","Voltage: unspecified"), -16777216);
+			//		drawText(10, 103, trans("157","Amperage: unspecified"), -16777216);
+			//	}
+			//}
+			if (computation > 0) {
+				drawText(10, 113, "Computation: "+String.format("%.2f ", 0.05F * computation), -16777216);
 			}
 			int tSpecial = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue;
 			if (tSpecial == -100 && GT_Mod.gregtechproxy.mLowGravProcessing) {

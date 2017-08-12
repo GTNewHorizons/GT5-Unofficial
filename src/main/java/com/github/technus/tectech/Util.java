@@ -12,6 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -307,17 +308,29 @@ public class Util {
                                            byte[] blockMeta,//use numbers 0-9 for casing types
                                            int horizontalOffset, int verticalOffset, int depthOffset,
                                            IGregTechTileEntity aBaseMetaTileEntity, boolean hintsOnly) {
-        World world = aBaseMetaTileEntity.getWorld();
+        byte facing = aBaseMetaTileEntity.getFrontFacing();
+        return StructureBuilder(structure,blockType,blockMeta,
+                horizontalOffset,verticalOffset,depthOffset,
+                aBaseMetaTileEntity.getTileEntity(aBaseMetaTileEntity.getXCoord(),aBaseMetaTileEntity.getYCoord(),aBaseMetaTileEntity.getZCoord()),
+                facing,hintsOnly);
+    }
+
+    public static boolean StructureBuilder(String[][] structure,//0-9 casing, +- air no air, A... ignore 'A'-CHAR+1 blocks
+                                           Block[] blockType,//use numbers 0-9 for casing types
+                                           byte[] blockMeta,//use numbers 0-9 for casing types
+                                           int horizontalOffset, int verticalOffset, int depthOffset,
+                                           TileEntity tileEntity, int facing, boolean hintsOnly) {
+        if(!tileEntity.hasWorldObj()) return false;
+        World world = tileEntity.getWorldObj();
         if ((world.isRemote && !hintsOnly)||(!world.isRemote && hintsOnly)) return false;
 
         //TE Rotation
-        byte facing = aBaseMetaTileEntity.getFrontFacing();
 
         int x, y, z, a, b, c, pointer;
         final int
-                baseX=aBaseMetaTileEntity.getXCoord(),
-                baseZ=aBaseMetaTileEntity.getZCoord(),
-                baseY=aBaseMetaTileEntity.getYCoord();
+                baseX=tileEntity.xCoord,
+                baseZ=tileEntity.zCoord,
+                baseY=tileEntity.yCoord;
         //a,b,c - relative to block face!
         //x,y,z - relative to block position on map!
 
@@ -393,18 +406,8 @@ public class Util {
                                         TecTech.proxy.hint_particle(world,x, y, z, blockType[pointer], blockMeta[pointer]);
                                     } else if ((pointer = block - ' ') >= 0) {
                                         switch(pointer){
-                                            case 0: TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 0); break;
-                                            case 1: TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 1); break;
-                                            case 2: TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 2); break;
-                                            case 3: TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 3); break;
-                                            case 4: TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 4); break;
-                                            case 5: TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 5); break;
-                                            case 6: TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 6); break;
-                                            case 7: TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 7); break;
-                                            case 8: TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 8); break;
-                                            case 9: TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 9); break;
-                                            case 10:TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 10); break;
-                                            case 11:TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 11); break;
+                                            case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10: case 11:
+                                                TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, pointer); break;
                                             default:TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 12);
                                         }
                                     } else TecTech.proxy.hint_particle(world,x, y, z, TT_Container_Casings.sHintCasingsTT, 15);
@@ -422,18 +425,8 @@ public class Util {
                                         world.setBlock(x, y, z, blockType[pointer], blockMeta[pointer], 2);
                                     } else if ((pointer = block - ' ') >= 0) {
                                         switch(pointer){
-                                            case 0: world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 0, 2); break;
-                                            case 1: world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 1,2); break;
-                                            case 2: world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 2,2); break;
-                                            case 3: world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 3,2); break;
-                                            case 4: world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 4,2); break;
-                                            case 5: world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 5, 2); break;
-                                            case 6: world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 6, 2); break;
-                                            case 7: world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 7,2); break;
-                                            case 8: world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 8,2); break;
-                                            case 9: world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 9,2); break;
-                                            case 10:world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 10,2); break;
-                                            case 11:world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 11, 2); break;
+                                            case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10: case 11:
+                                                world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, pointer, 2); break;
                                             default:world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 12, 2);
                                         }
                                     } else world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 15,2);

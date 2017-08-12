@@ -9,7 +9,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class TT_recipeAdder extends GT_RecipeAdder {
     public static boolean addResearchableAssemblylineRecipe(ItemStack aResearchItem, int computationRequired, ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt) {
-        if ((aResearchItem==null)||(computationRequired<=0)||(aInputs == null) || (aOutput == null) || aInputs.length>15 || aInputs.length<4) {
+        if ((aResearchItem==null)||(computationRequired<=0)||(aInputs == null) || (aOutput == null) || aInputs.length>15) {
             return false;
         }
         if ((aDuration = GregTech_API.sRecipeFile.get("assemblingline", aOutput, aDuration)) <= 0) {

@@ -2,7 +2,7 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.auxiliary.Reference;
-import com.github.technus.tectech.thing.metaTileEntity.iConstructible;
+import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -31,7 +31,7 @@ import static gregtech.api.GregTech_API.sBlockCasings4;
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_MultiblockBase_EM  implements iConstructible {
+public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_MultiblockBase_EM  implements IConstructable {
     private int powerSetting = 1000;
     private int timerSetting = 0;
     private int timerValue = 0;
@@ -61,6 +61,11 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     private static final short[] casingTextures = new short[]{49};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasings4};
     private static final byte[] blockMetaFallback = new byte[]{1};
+    private static final String[] description = new String[]{
+            EnumChatFormatting.AQUA+"Hint Details:",
+            "1 - Classic Hatches or High Power Casing",
+            "Also acts like a hopper so give it an Output Bus",
+    };
     //endregion
 
     public GT_MetaTileEntity_TM_microwave(int aID, String aName, String aNameRegional) {
@@ -115,9 +120,14 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    public void construct(int qty, boolean hintsOnly) {
-        if((qty&0x1)==1) StructureBuilder(shape, blockType, blockMeta,2, 2, 0, getBaseMetaTileEntity(),hintsOnly);
+    public void construct(int stackSize, boolean hintsOnly) {
+        if((stackSize &0x1)==1) StructureBuilder(shape, blockType, blockMeta,2, 2, 0, getBaseMetaTileEntity(),hintsOnly);
         else StructureBuilder(shapeFlipped, blockType, blockMeta,2, 1, 0, getBaseMetaTileEntity(),hintsOnly);
+    }
+
+    @Override
+    public String[] getStructureDescription(int stackSize) {
+        return description;
     }
 
     @Override

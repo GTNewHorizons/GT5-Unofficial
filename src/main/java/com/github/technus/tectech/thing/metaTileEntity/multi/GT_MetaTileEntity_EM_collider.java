@@ -4,7 +4,7 @@ import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
-import com.github.technus.tectech.thing.metaTileEntity.iConstructible;
+import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -28,7 +28,7 @@ import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBloc
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockBase_EM implements iConstructible {
+public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
     private byte eTier = 0;
@@ -72,6 +72,14 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4, textureOffset + 4, textureOffset + 4};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0, 4, 4, 4};
+    private static final String[] description = new String[]{
+            EnumChatFormatting.AQUA+"Hint Details:",
+            "1 - Classic Hatches or High Power Casing",
+            "2 - Elemental Input Hatches or Molecular Casing",
+            "3 - Elemental Output Hatches or Molecular Casing",
+            "4 - Elemental Overflow Hatches or Molecular Casing",
+            "Default - Another Controller facing opposite direction",
+    };
     //endregion
 
     public GT_MetaTileEntity_EM_collider(int aID, String aName, String aNameRegional) {
@@ -155,7 +163,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public void construct(int qty, boolean hintsOnly) {
+    public void construct(int stackSize, boolean hintsOnly) {
         IGregTechTileEntity iGregTechTileEntity=getBaseMetaTileEntity();
         int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX*4;
         int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ*4;
@@ -173,10 +181,15 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
                         iGregTechTileEntity.getZCoord()+zDir,
                         TT_Container_Casings.sHintCasingsTT,12,2);
         }
-        if ((qty & 1) == 1)
+        if ((stackSize & 1) == 1)
             StructureBuilder(shape, blockType, blockMeta1, 11, 1, 18, iGregTechTileEntity,hintsOnly);
         else
             StructureBuilder(shape, blockType, blockMeta2, 11, 1, 18, iGregTechTileEntity,hintsOnly);
+    }
+
+    @Override
+    public String[] getStructureDescription(int stackSize) {
+        return description;
     }
 
     @Override

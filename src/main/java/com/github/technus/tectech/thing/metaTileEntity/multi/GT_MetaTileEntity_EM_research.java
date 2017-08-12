@@ -3,7 +3,7 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Holder;
-import com.github.technus.tectech.thing.metaTileEntity.iConstructible;
+import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -28,7 +28,7 @@ import static gregtech.api.enums.GT_Values.V;
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockBase_EM implements iConstructible {
+public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     private final ArrayList<GT_MetaTileEntity_Hatch_Holder> eHolders = new ArrayList<>();
 
     //region structure
@@ -47,6 +47,11 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     private static final short[] casingTextures = new short[]{textureOffset + 3, textureOffset + 3};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, Blocks.air};
     private static final byte[] blockMetaFallback = new byte[]{3, 0};
+    private static final String[] description = new String[]{
+            EnumChatFormatting.AQUA+"Hint Details:",
+            "1 - Classic/Data Hatches or Computer casing",
+            "2 - Holder Hatch",
+    };
     //endregion
 
     public GT_MetaTileEntity_EM_research(int aID, String aName, String aNameRegional) {
@@ -78,8 +83,13 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public void construct(int qty, boolean hintsOnly) {
+    public void construct(int stackSize, boolean hintsOnly) {
         StructureBuilder(shape, blockType, blockMeta,1, 3, 4, getBaseMetaTileEntity(),hintsOnly);
+    }
+
+    @Override
+    public String[] getStructureDescription(int stackSize) {
+        return description;
     }
 
     @Override

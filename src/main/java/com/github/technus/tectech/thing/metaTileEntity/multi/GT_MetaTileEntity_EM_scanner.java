@@ -2,7 +2,7 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
-import com.github.technus.tectech.thing.metaTileEntity.iConstructible;
+import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
@@ -16,7 +16,7 @@ import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBloc
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBase_EM implements iConstructible {
+public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
 
     //region structure
     private static final String[][] shape = new String[][]{
@@ -27,18 +27,25 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
             {"01110", "1C1", "1C1", "1C1", "01110",},
             {"01110", "1C1", "1C1", "1C1", "01110",},
             {"00100", "01110", "11\"11", "01110", "00100",},
-            {"!!!!!", "!000!", "!0#0!", "!000!", "!!!!!",},
+            {"#####", "#000#", "#0!0#", "#000#", "#####",},
     };
     private static final Block[] blockType = new Block[]{sBlockCasingsTT, QuantumGlassBlock.INSTANCE, sBlockCasingsTT};
     private static final byte[] blockMeta = new byte[]{4, 0, 0};
     private static final String[] addingMethods = new String[]{
             "addClassicToMachineList",
-            "addElementalMufflerToMachineList",
+            "addElementalInputToMachineList",
             "addElementalOutputToMachineList",
-            "addElementalInputToMachineList"};
+            "addElementalMufflerToMachineList"};
     private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4, textureOffset + 4, textureOffset + 4};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0, 4, 4, 4};
+    private static final String[] description = new String[]{
+            EnumChatFormatting.AQUA+"Hint Details:",
+            "1 - Classic Hatches or High Power Casing",
+            "2 - Elemental Input Hatches or Molecular Casing",
+            "3 - Elemental Output Hatches or Molecular Casing",
+            "4 - Elemental Overflow Hatches or Molecular Casing",
+    };
     //endregion
 
     public GT_MetaTileEntity_EM_scanner(int aID, String aName, String aNameRegional) {
@@ -61,8 +68,13 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
-    public void construct(int qty, boolean hintsOnly) {
+    public void construct(int stackSize, boolean hintsOnly) {
         StructureBuilder(shape, blockType, blockMeta,2, 2, 0, getBaseMetaTileEntity(),hintsOnly);
+    }
+
+    @Override
+    public String[] getStructureDescription(int stackSize) {
+        return description;
     }
 
     @Override
