@@ -129,10 +129,13 @@ extends GT_MetaTileEntity_MultiBlockBase
 				"Converts Heat into Steam",
 				"Size: 3x3x3 (Hollow)",
 				"Controller (front middle)",
-				"1x Output Hatch (Centre of back)",
-				"2x Input Hatch (Centre of sides)",
+				"2x Output Hatch",
+				"2x Input Hatch",
 				"1x Maintenance Hatch (Centre of top)",
 				"Thermal Containment Casings for the rest",
+				"Input & Output hatches can go be configured how you wish",
+				"Place them in the middle block of the Back, Bottom and Sides",
+				"Consult user manual for more information",
 				CORE.GT_Tooltip};
 	}
 
