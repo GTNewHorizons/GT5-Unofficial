@@ -24,7 +24,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import static com.github.technus.tectech.CommonValues.*;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
-import static gregtech.api.enums.GT_Values.V;
+import static com.github.technus.tectech.Util.V;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;
 
 /**
