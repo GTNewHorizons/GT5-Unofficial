@@ -4,7 +4,7 @@ import codechicken.nei.api.IConfigureNEI;
 import com.github.technus.tectech.recipe.TT_recipe;
 import cpw.mods.fml.common.FMLCommonHandler;
 
-public class TT_NEI_config implements IConfigureNEI {
+public class NEI_TT_Config implements IConfigureNEI {//must be NEI*Config
     public static boolean sIsAdded = true;
     public static TT_NEI_ResearchHandler TT_RH;
 
@@ -16,10 +16,10 @@ public class TT_NEI_config implements IConfigureNEI {
     }
 
     public String getName() {
-        return "GregTech NEI Plugin";
+        return "TecTech NEI Plugin";
     }
 
     public String getVersion() {
-        return "(5.03a)";
+        return "(1.0)";
     }
 }

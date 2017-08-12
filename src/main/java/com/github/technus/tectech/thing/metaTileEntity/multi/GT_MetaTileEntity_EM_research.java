@@ -2,34 +2,45 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Holder;
+import com.github.technus.tectech.recipe.TT_recipe;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Holder;
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.EnumChatFormatting;
 
 import java.util.ArrayList;
 
-import static com.github.technus.tectech.Util.StructureBuilder;
+import static com.github.technus.tectech.Util.*;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static gregtech.api.enums.GT_Values.E;
-import static com.github.technus.tectech.Util.V;
 
 /**
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     private final ArrayList<GT_MetaTileEntity_Hatch_Holder> eHolders = new ArrayList<>();
+    private GT_Recipe.GT_Recipe_AssemblyLine tRecipe;
+    private long computationRemaining,computationRequired;
 
     //region structure
     private static final String[][] shape = new String[][]{
@@ -44,9 +55,9 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMeta = new byte[]{1, 3, 2};
     private static final String[] addingMethods = new String[]{"addClassicToMachineList", "addHolderToMachineList"};
-    private static final short[] casingTextures = new short[]{textureOffset + 3, textureOffset + 3};
+    private static final short[] casingTextures = new short[]{textureOffset + 1, textureOffset + 3};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, Blocks.air};
-    private static final byte[] blockMetaFallback = new byte[]{3, 0};
+    private static final byte[] blockMetaFallback = new byte[]{1, 0};
     private static final String[] description = new String[]{
             EnumChatFormatting.AQUA+"Hint Details:",
             "1 - Classic/Data Hatches or Computer casing",
@@ -93,16 +104,122 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
+    public void saveNBTData(NBTTagCompound aNBT) {
+        super.saveNBTData(aNBT);
+        aNBT.setLong("eComputationRemaining",computationRemaining);
+        aNBT.setLong("eComputationRequired",computationRequired);
+    }
+
+    @Override
+    public void loadNBTData(NBTTagCompound aNBT) {
+        super.loadNBTData(aNBT);
+        computationRemaining=aNBT.getLong("eComputationRemaining");
+        computationRequired=aNBT.getLong("eComputationRequired");
+    }
+
+    @Override
+    protected void EM_onFirstTick() {
+        if(computationRemaining>0) {
+            tRecipe = null;
+            if (!eHolders.isEmpty() && eHolders.get(0).mInventory[0] != null &&
+                    ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)) {
+                ItemStack researchItem = eHolders.get(0).mInventory[0];
+                for (GT_Recipe.GT_Recipe_AssemblyLine tRecipe : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
+                    if (GT_Utility.areStacksEqual(tRecipe.mResearchItem, researchItem, true)) {
+                        this.tRecipe = tRecipe;
+                    }
+                }
+            }
+            if (tRecipe == null) {
+                mMaxProgresstime = 0;
+                mEfficiencyIncrease = 0;
+                for (GT_MetaTileEntity_Hatch_Holder r : eHolders)
+                    r.getBaseMetaTileEntity().setActive(false);
+            }
+        }
+    }
+
+    @Override
     public boolean EM_checkRecipe(ItemStack itemStack) {
-        //for (GT_MetaTileEntity_Hatch_Holder r : eHolders) {
-        //    r.getBaseMetaTileEntity().setActive(true);
-        //}//Look in Computer code
+        if(!eHolders.isEmpty() && eHolders.get(0).mInventory[0]!=null &&
+                ItemList.Tool_DataStick.isStackEqual(itemStack, false, true)){
+            ItemStack researchItem=eHolders.get(0).mInventory[0];
+            for(GT_Recipe.GT_Recipe_AssemblyLine tRecipe:GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes){
+                if(GT_Utility.areStacksEqual(tRecipe.mResearchItem, researchItem, true)){
+                    this.tRecipe=tRecipe;
+                    //if found
+                    for(GT_Recipe ttRecipe: TT_recipe.TT_Recipe_Map.sResearchableFakeRecipes.mRecipeList){
+                        if(GT_Utility.areStacksEqual(ttRecipe.mInputs[0], researchItem, true)){
+                            computationRequired=computationRemaining=ttRecipe.mDuration*20L;
+                            mMaxProgresstime=20;
+                            mEfficiencyIncrease=10000;
+                            eRequiredData=1;//require constant pc connection doesn't matter how fast is the computer
+                            eAmpereFlow=1;
+                            mEUt=(int)V[8];
+                            eHolders.get(0).getBaseMetaTileEntity().setActive(true);
+                            return true;
+                        }
+                    }
 
-        //check for item in controller and holder
-        //find research
-        //DO IT
-
+                }
+            }
+        }
+        computationRequired=computationRemaining=0;
+        mMaxProgresstime=0;
+        mEfficiencyIncrease = 0;
+        for (GT_MetaTileEntity_Hatch_Holder r : eHolders)
+            r.getBaseMetaTileEntity().setActive(false);
         return false;
+    }
+
+    @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        if(computationRemaining<=0) {
+            computationRemaining=0;
+            mProgresstime=mMaxProgresstime;
+            return true;
+        }else{
+            computationRemaining-=eAvailableData;
+            mProgresstime=1;
+            return super.onRunningTick(aStack);
+        }
+    }
+
+    @Override
+    public void EM_outputFunction() {
+        if(tRecipe!=null && !eHolders.isEmpty() && ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)){
+            eHolders.get(0).getBaseMetaTileEntity().setActive(false);
+            eHolders.get(0).mInventory[0]=null;
+
+            mInventory[1].setStackDisplayName(GT_LanguageManager.getTranslation(tRecipe.mOutput.getDisplayName())+" Construction Data");
+            NBTTagCompound tNBT = mInventory[1].getTagCompound();//code above makes it not null
+
+            tNBT.setTag("output", tRecipe.mOutput.writeToNBT(new NBTTagCompound()));
+            tNBT.setInteger("time", tRecipe.mDuration);
+            tNBT.setInteger("eu", tRecipe.mEUt);
+            for(int i = 0 ; i < tRecipe.mInputs.length ; i++){
+                tNBT.setTag(""+i, tRecipe.mInputs[i].writeToNBT(new NBTTagCompound()));
+            }
+            for(int i = 0 ; i < tRecipe.mFluidInputs.length ; i++){
+                tNBT.setTag("f"+i, tRecipe.mFluidInputs[i].writeToNBT(new NBTTagCompound()));
+            }
+            tNBT.setString("author", "EM Assembling Line Recipe Generator");
+            NBTTagList tNBTList = new NBTTagList();
+            tNBTList.appendTag(new NBTTagString("Construction plan for "+tRecipe.mOutput.stackSize+" "+GT_LanguageManager.getTranslation(tRecipe.mOutput.getDisplayName())+". Needed EU/t: "+tRecipe.mEUt+" Production time: "+(tRecipe.mDuration/20)));
+            for(int i=0;i<tRecipe.mInputs.length;i++){
+                if(tRecipe.mInputs[i]!=null){
+                    tNBTList.appendTag(new NBTTagString("Input Bus "+(i+1)+": "+tRecipe.mInputs[i].stackSize+" "+GT_LanguageManager.getTranslation(tRecipe.mInputs[i].getDisplayName())));
+                }
+            }
+            for(int i=0;i<tRecipe.mFluidInputs.length;i++){
+                if(tRecipe.mFluidInputs[i]!=null){
+                    tNBTList.appendTag(new NBTTagString("Input Hatch "+(i+1)+": "+tRecipe.mFluidInputs[i].amount+"L "+GT_LanguageManager.getTranslation(tRecipe.mFluidInputs[i].getLocalizedName())));
+                }
+            }
+            tNBT.setTag("pages", tNBTList);
+        }
+        computationRequired=computationRemaining=0;
+        tRecipe=null;
     }
 
     @Override
@@ -141,7 +258,8 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    protected void EM_stopMachine() {
+    public void stopMachine() {
+        super.stopMachine();
         for (GT_MetaTileEntity_Hatch_Holder r : eHolders)
             r.getBaseMetaTileEntity().setActive(false);
     }
@@ -164,5 +282,46 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         } catch (NoSuchMethodException e) {
             if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
         }
+    }
+
+    @Override
+    public int getInventoryStackLimit() {
+        return 1;
+    }
+
+    public String[] getInfoData() {
+        long storedEnergy = 0;
+        long maxEnergy = 0;
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
+            if (isValidMetaTileEntity(tHatch)) {
+                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
+                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+            }
+        }
+        for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : eEnergyMulti) {
+            if (isValidMetaTileEntity(tHatch)) {
+                storedEnergy += tHatch.getBaseMetaTileEntity().getStoredEU();
+                maxEnergy += tHatch.getBaseMetaTileEntity().getEUCapacity();
+            }
+        }
+
+        return new String[]{
+                "Energy Hatches:",
+                EnumChatFormatting.GREEN + Long.toString(storedEnergy) + EnumChatFormatting.RESET + " EU / " +
+                        EnumChatFormatting.YELLOW + Long.toString(maxEnergy) + EnumChatFormatting.RESET + " EU",
+                (mEUt <= 0 ? "Probably uses: " : "Probably makes: ") +
+                        EnumChatFormatting.RED + Integer.toString(Math.abs(mEUt)) + EnumChatFormatting.RESET + " EU/t at " +
+                        EnumChatFormatting.RED + eAmpereFlow + EnumChatFormatting.RESET + " A",
+                "Tier Rating: " + EnumChatFormatting.YELLOW + VN[getMaxEnergyInputTier()] + EnumChatFormatting.RESET + " / " + EnumChatFormatting.GREEN + VN[getMinEnergyInputTier()] + EnumChatFormatting.RESET +
+                        " Amp Rating: " + EnumChatFormatting.GREEN + eMaxAmpereFlow + EnumChatFormatting.RESET + " A",
+                "Problems: " + EnumChatFormatting.RED + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET +
+                        " Efficiency: " + EnumChatFormatting.YELLOW + Float.toString(mEfficiency / 100.0F) + EnumChatFormatting.RESET + " %",
+                "PowerPass: " + EnumChatFormatting.BLUE + ePowerPass + EnumChatFormatting.RESET +
+                        " SafeVoid: " + EnumChatFormatting.BLUE + eSafeVoid,
+                "Computation Available: " + EnumChatFormatting.GREEN + eAvailableData + EnumChatFormatting.RESET,
+                "Computation Remaining:",
+                EnumChatFormatting.GREEN + Long.toString(computationRemaining / 20L) + EnumChatFormatting.RESET + " / " +
+                        EnumChatFormatting.YELLOW + Long.toString(computationRequired / 20L)
+        };
     }
 }

@@ -249,7 +249,8 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    protected void EM_stopMachine() {
+    public void stopMachine() {
+        super.stopMachine();
         timerValue=0;
     }
 
