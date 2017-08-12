@@ -15,7 +15,7 @@ public class GregtechCyclotron {
 
 	private static void run1() {
 		GregtechItemList.COMET_Cyclotron
-				.set(new GregtechMetaTileEntity_Cyclotron(801, "cyclotron.tier.single", "COMET - Compact Cyclotron", 6)
+				.set(new GregtechMetaTileEntity_Cyclotron(828, "cyclotron.tier.single", "COMET - Compact Cyclotron", 6)
 						.getStackForm(1L));
 	}
 
