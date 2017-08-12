@@ -391,7 +391,7 @@ public class RECIPES_Machines {
 
 				//Industrial Centrifuge
 				RecipeUtils.addShapedGregtechRecipe(
-						CI.circuitTier6, pipeHugeStainlessSteel, CI.circuitTier6,
+						CI.circuitTier5, pipeHugeStainlessSteel, CI.circuitTier5,
 						CI.component_Plate[6], IV_MACHINE_Centrifuge, CI.component_Plate[6],
 						CI.component_Plate[8], CI.machineCasing_IV, CI.component_Plate[8],
 						RECIPE_IndustrialCentrifugeController);
@@ -459,7 +459,7 @@ public class RECIPES_Machines {
 						RECIPE_IndustrialElectrolyzerFrame);
 				//Industrial Electrolyzer
 				RecipeUtils.addShapedGregtechRecipe(
-						"plateStellite", CI.circuitTier6, "plateStellite",
+						"plateStellite", CI.circuitTier5, "plateStellite",
 						CI.machineCasing_EV, IV_MACHINE_Electrolyzer, CI.machineCasing_EV,
 						"plateStellite", "rotorStellite", "plateStellite",
 						RECIPE_IndustrialElectrolyzerController);
@@ -517,7 +517,7 @@ public class RECIPES_Machines {
 				//Industrial Wire Factory
 				RecipeUtils.addShapedGregtechRecipe(
 						"plateZeron100", CI.machineCasing_IV, "plateZeron100",
-						CI.circuitTier6, IV_MACHINE_Wiremill, CI.circuitTier6,
+						CI.circuitTier5, IV_MACHINE_Wiremill, CI.circuitTier5,
 						"plateZeron100", CI.machineCasing_IV, "plateZeron100",
 						RECIPE_IndustrialWireFactoryController);
 			}
