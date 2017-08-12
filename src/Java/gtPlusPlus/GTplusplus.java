@@ -115,6 +115,8 @@ public class GTplusplus implements ActionListener {
 				"gregtech", true, "These allow boosting Block/TileEntity Tick times [OP].");
 		CORE.configSwitches.enableMachine_Tesseracts = config.getBoolean("enableMachineTesseracts",
 				"gregtech", true, "Tesseracts for wireless item/fluid movement.");
+		CORE.configSwitches.enableMachine_SimpleWasher = config.getBoolean("enableMachineSimpleWasher",
+				"gregtech", true, "Very basic automated cauldron for dust washing.");
 
 		// Multi machines
 		CORE.configSwitches.enableMultiblock_AlloyBlastSmelter = config.getBoolean("enableMultiblockAlloyBlastSmelter",

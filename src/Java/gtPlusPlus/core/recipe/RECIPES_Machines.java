@@ -751,21 +751,25 @@ public class RECIPES_Machines {
 						"plateTitanium",CI.machineHull_EV,"plateTitanium",
 						RECIPE_TesseractTerminal);
 			}
+			
+			if (CORE.configSwitches.enableMachine_SimpleWasher){
+				ItemStack plateWrought = ItemUtils.getItemStackOfAmountFromOreDict("plateWroughtIron", 1);
+				ItemStack washerPipe;
+				if (CORE.configSwitches.enableCustom_Pipes){
+					washerPipe = ItemUtils.getItemStackOfAmountFromOreDict("pipeLargeClay", 1);
+				}
+				else {
+					washerPipe = ItemUtils.getItemStackOfAmountFromOreDict("pipeLargeCopper", 1);				
+				}
+				//Add Recipe
+				RecipeUtils.addShapedGregtechRecipe(
+						plateWrought, CI.electricPump_LV, plateWrought,
+						plateWrought, washerPipe, plateWrought,
+						plateWrought, CI.machineCasing_ULV, plateWrought,
+						GregtechItemList.SimpleDustWasher.get(1));
+			}
 
-			ItemStack plateWrought = ItemUtils.getItemStackOfAmountFromOreDict("plateWroughtIron", 1);
-			ItemStack washerPipe;
-			if (CORE.configSwitches.enableCustom_Pipes){
-				washerPipe = ItemUtils.getItemStackOfAmountFromOreDict("pipeLargeClay", 1);
-			}
-			else {
-				washerPipe = ItemUtils.getItemStackOfAmountFromOreDict("pipeLargeCopper", 1);				
-			}
-			//Add Recipe
-			RecipeUtils.addShapedGregtechRecipe(
-					plateWrought, CI.electricPump_LV, plateWrought,
-					plateWrought, washerPipe, plateWrought,
-					plateWrought, CI.machineCasing_ULV, plateWrought,
-					GregtechItemList.SimpleDustWasher.get(1));	
+	
 
 		}
 
