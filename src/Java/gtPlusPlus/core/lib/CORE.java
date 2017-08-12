@@ -126,6 +126,7 @@ public class CORE {
 		public static boolean enableMachine_WorldAccelerators = true;
 		public static boolean enableMachine_Tesseracts = true;
 		public static boolean enableMachine_SimpleWasher = true;
+		public static boolean enableMachine_Pollution = true;
 		public static boolean enableCustom_Pipes = true;
 		public static boolean enableCustom_Cables = true;
 

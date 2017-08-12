@@ -117,6 +117,8 @@ public class GTplusplus implements ActionListener {
 				"gregtech", true, "Tesseracts for wireless item/fluid movement.");
 		CORE.configSwitches.enableMachine_SimpleWasher = config.getBoolean("enableMachineSimpleWasher",
 				"gregtech", true, "Very basic automated cauldron for dust washing.");
+		CORE.configSwitches.enableMachine_Pollution = config.getBoolean("enableMachinePollution",
+				"gregtech", true, "Pollution Detector & Scrubbers.");
 
 		// Multi machines
 		CORE.configSwitches.enableMultiblock_AlloyBlastSmelter = config.getBoolean("enableMultiblockAlloyBlastSmelter",

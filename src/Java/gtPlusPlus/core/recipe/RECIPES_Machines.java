@@ -1,6 +1,7 @@
 package gtPlusPlus.core.recipe;
 
 import gregtech.api.enums.*;
+import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.common.CI;
@@ -767,6 +768,14 @@ public class RECIPES_Machines {
 						plateWrought, washerPipe, plateWrought,
 						plateWrought, CI.machineCasing_ULV, plateWrought,
 						GregtechItemList.SimpleDustWasher.get(1));
+			}
+			
+			if (CORE.configSwitches.enableMachine_Pollution){
+				RecipeUtils.addShapedGregtechRecipe(
+						"plateCarbon", "plateCarbon", "plateCarbon",
+						"dustCarbon", "dustCarbon", "dustCarbon",
+						"plateCarbon", "plateCarbon", "plateCarbon",
+						ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 0, 1));
 			}
 
 	
