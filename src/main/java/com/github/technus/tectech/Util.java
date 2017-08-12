@@ -311,7 +311,7 @@ public class Util {
         byte facing = aBaseMetaTileEntity.getFrontFacing();
         return StructureBuilder(structure,blockType,blockMeta,
                 horizontalOffset,verticalOffset,depthOffset,
-                aBaseMetaTileEntity.getTileEntity(aBaseMetaTileEntity.getXCoord(),aBaseMetaTileEntity.getYCoord(),aBaseMetaTileEntity.getZCoord()),
+                aBaseMetaTileEntity.getWorld().getTileEntity(aBaseMetaTileEntity.getXCoord(),aBaseMetaTileEntity.getYCoord(),aBaseMetaTileEntity.getZCoord()),
                 facing,hintsOnly);
     }
 
@@ -783,5 +783,21 @@ public class Util {
 
     public static String getUniqueIdentifier(ItemStack is) {
         return GameRegistry.findUniqueIdentifierFor(is.getItem()).modId + ":" + is.getUnlocalizedName();
+    }
+
+
+    public static final String[] VN = new String[]{"ULV", "LV", "MV", "HV", "EV", "IV", "LuV", "ZPM", "UV", "UHV", "UEV", "UIV", "UMV", "UXV", "OpV", "MAX"};
+    public static final long[] V = new long[]{8L, 32L, 128L, 512L, 2048L, 8192L, 32768L, 131072L, 524288L, 2097152L, 8388608L, 33554432L, 134217728L, 536870912L, 1073741824L, Integer.MAX_VALUE-7};
+    public static byte getTier(long l) {
+        byte i = -1;
+
+        do {
+            ++i;
+            if (i >= V.length) {
+                return i;
+            }
+        } while(l > V[i]);
+
+        return i;
     }
 }

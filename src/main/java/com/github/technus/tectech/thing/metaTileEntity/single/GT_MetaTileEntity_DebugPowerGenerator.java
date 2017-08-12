@@ -1,6 +1,8 @@
 package com.github.technus.tectech.thing.metaTileEntity.single;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_Container_DebugPowerGenerator;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_GUIContainer_DebugPowerGenerator;
 import cpw.mods.fml.relauncher.Side;
@@ -48,7 +50,7 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], (aSide != this.getBaseMetaTileEntity().getFrontFacing()) ? (aActive?Textures.BlockIcons.OVERLAYS_ENERGY_OUT_POWER[mTier]:Textures.BlockIcons.OVERLAYS_ENERGY_IN_POWER[mTier]) : new GT_RenderedTexture(GENNY)};
+        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], (aSide != this.getBaseMetaTileEntity().getFrontFacing()) ? (aActive? GT_MetaTileEntity_Hatch_DynamoMulti.overlay[mTier]: GT_MetaTileEntity_Hatch_EnergyMulti.overlay[mTier]) : new GT_RenderedTexture(GENNY)};
     }
 
     @Override

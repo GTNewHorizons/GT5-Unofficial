@@ -34,7 +34,7 @@ import static gregtech.api.GregTech_API.sBlockCasings1;
 public class ConstructibleTriggerItem extends Item {
     public static ConstructibleTriggerItem INSTANCE;
 
-    public static HashMap<Class,MultiblockInfoContainer> multiblockMap= new HashMap<>();
+    public static HashMap<String,MultiblockInfoContainer> multiblockMap= new HashMap<>();
 
     private ConstructibleTriggerItem() {
         super();
@@ -53,19 +53,16 @@ public class ConstructibleTriggerItem extends Item {
                     IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
                     if (metaTE instanceof IConstructable) {
                         ((IConstructable) metaTE).construct(aStack.stackSize, false);
-                        return true;
-                    } else if (multiblockMap.containsKey(metaTE.getClass())) {
-                        multiblockMap.get(metaTE.getClass()).construct(aStack.stackSize, false, tTileEntity, ((IGregTechTileEntity) tTileEntity).getFrontFacing());
-                        return true;
+                    } else if (multiblockMap.containsKey(metaTE.getClass().getCanonicalName())) {
+                        multiblockMap.get(metaTE.getClass().getCanonicalName()).construct(aStack.stackSize, false, tTileEntity, ((IGregTechTileEntity) tTileEntity).getFrontFacing());
                     }
                 } else if (tTileEntity instanceof IConstructable) {
                     ((IConstructable) tTileEntity).construct(aStack.stackSize, false);
-                    return true;
-                } else if (multiblockMap.containsKey(tTileEntity.getClass())) {
-                    multiblockMap.get(tTileEntity.getClass()).construct(aStack.stackSize, false, tTileEntity, aSide);
-                    return true;
+                } else if (multiblockMap.containsKey(tTileEntity.getClass().getCanonicalName())) {
+                    multiblockMap.get(tTileEntity.getClass().getCanonicalName()).construct(aStack.stackSize, false, tTileEntity, aSide);
                 }
             }
+            return true;
         }else if (aPlayer instanceof EntityClientPlayerMP){//particles and text client side
             if ((!aPlayer.isSneaking() || !aPlayer.capabilities.isCreativeMode)) {
                 if(tTileEntity instanceof IGregTechTileEntity) {
@@ -73,41 +70,41 @@ public class ConstructibleTriggerItem extends Item {
                     if (metaTE instanceof IConstructable) {
                         ((IConstructable) metaTE).construct(aStack.stackSize, true);
                         TecTech.proxy.printInchat(((IConstructable) metaTE).getStructureDescription(aStack.stackSize));
-                        return true;
-                    } else if(multiblockMap.containsKey(metaTE.getClass())){
-                        multiblockMap.get(metaTE.getClass()).construct(aStack.stackSize,true,tTileEntity,((IGregTechTileEntity) tTileEntity).getFrontFacing());
-                        TecTech.proxy.printInchat(multiblockMap.get(metaTE.getClass()).getDescription(aStack.stackSize));
-                        return true;
+                        return false;
+                    } else if(multiblockMap.containsKey(metaTE.getClass().getCanonicalName())){
+                        multiblockMap.get(metaTE.getClass().getCanonicalName()).construct(aStack.stackSize,true,tTileEntity,((IGregTechTileEntity) tTileEntity).getFrontFacing());
+                        TecTech.proxy.printInchat(multiblockMap.get(metaTE.getClass().getCanonicalName()).getDescription(aStack.stackSize));
+                        return false;
                     }
                 } else if(tTileEntity instanceof IConstructable){
                     ((IConstructable) tTileEntity).construct(aStack.stackSize,true);
                     TecTech.proxy.printInchat(((IConstructable) tTileEntity).getStructureDescription(aStack.stackSize));
-                    return true;
-                } else if(multiblockMap.containsKey(tTileEntity.getClass())){
-                    multiblockMap.get(tTileEntity.getClass()).construct(aStack.stackSize,true,tTileEntity, aSide);
-                    TecTech.proxy.printInchat(multiblockMap.get(tTileEntity.getClass()).getDescription(aStack.stackSize));
-                    return true;
+                    return false;
+                } else if(multiblockMap.containsKey(tTileEntity.getClass().getCanonicalName())){
+                    multiblockMap.get(tTileEntity.getClass().getCanonicalName()).construct(aStack.stackSize,true,tTileEntity, aSide);
+                    TecTech.proxy.printInchat(multiblockMap.get(tTileEntity.getClass().getCanonicalName()).getDescription(aStack.stackSize));
+                    return false;
                 }
             } else {
                 if(tTileEntity instanceof IGregTechTileEntity) {
                     IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
                     if (metaTE instanceof IConstructable) {
                         TecTech.proxy.printInchat(((IConstructable) metaTE).getStructureDescription(aStack.stackSize));
-                        return true;
-                    } else if(multiblockMap.containsKey(metaTE.getClass())){
-                        TecTech.proxy.printInchat(multiblockMap.get(metaTE.getClass()).getDescription(aStack.stackSize));
-                        return true;
+                        return false;
+                    } else if(multiblockMap.containsKey(metaTE.getClass().getCanonicalName())){
+                        TecTech.proxy.printInchat(multiblockMap.get(metaTE.getClass().getCanonicalName()).getDescription(aStack.stackSize));
+                        return false;
                     }
                 } else if(tTileEntity instanceof IConstructable){
                     TecTech.proxy.printInchat(((IConstructable) tTileEntity).getStructureDescription(aStack.stackSize));
-                    return true;
-                } else if(multiblockMap.containsKey(tTileEntity.getClass())){
-                    TecTech.proxy.printInchat(multiblockMap.get(tTileEntity.getClass()).getDescription(aStack.stackSize));
-                    return true;
+                    return false;
+                } else if(multiblockMap.containsKey(tTileEntity.getClass().getCanonicalName())){
+                    TecTech.proxy.printInchat(multiblockMap.get(tTileEntity.getClass().getCanonicalName()).getDescription(aStack.stackSize));
+                    return false;
                 }
             }
         }
-        return aPlayer instanceof EntityPlayerMP;
+        return false;
     }
 
     @Override
@@ -124,7 +121,7 @@ public class ConstructibleTriggerItem extends Item {
         INSTANCE = new ConstructibleTriggerItem();
         GameRegistry.registerItem(INSTANCE, INSTANCE.getUnlocalizedName());
 
-        multiblockMap.put(GT_MetaTileEntity_ElectricBlastFurnace.class, new MultiblockInfoContainer() {
+        multiblockMap.put(GT_MetaTileEntity_ElectricBlastFurnace.class.getCanonicalName(), new MultiblockInfoContainer() {
             //region Structure
             private final String[][] shape = new String[][]{
                     {"000","111","111"," . ",},

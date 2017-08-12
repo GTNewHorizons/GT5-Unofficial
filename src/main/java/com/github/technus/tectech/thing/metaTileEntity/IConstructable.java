@@ -8,6 +8,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public interface IConstructable {
     void construct(int stackSize, boolean hintsOnly);
+
     @SideOnly(Side.CLIENT)
     String[] getStructureDescription(int stackSize);
 }

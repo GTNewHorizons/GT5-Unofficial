@@ -2,6 +2,7 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.Util;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStack;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStack;
@@ -821,12 +822,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     //new Method
     public final int getMaxEnergyInputTier() {
-        return GT_Utility.getTier(maxEUinputMax);
+        return Util.getTier(maxEUinputMax);
     }
 
     //new Method
     public final int getMinEnergyInputTier() {
-        return GT_Utility.getTier(maxEUinputMin);
+        return Util.getTier(maxEUinputMin);
     }
 
     //new Method

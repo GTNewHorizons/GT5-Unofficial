@@ -23,22 +23,11 @@ public class GT_Item_HintTT extends GT_Item_Casings_Abstract {
         aList.add(tecMark);
         aList.add("Helps while building");
         switch (aStack.getItemDamage()) {
-            case 0:
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-            case 10:
-            case 11:
+            case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10: case 11:
                 aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Placeholder for a certain group.");
                 break;
             case 12:
-                aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Default placeholder in case of overflow.");
+                aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "General placeholder.");
                 break;
             case 13:
                 aList.add(EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Make sure it contains Air material.");

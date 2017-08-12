@@ -41,13 +41,16 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     public float overflowMatter = 0f;
     public short id = -1;
     private byte deathDelay = 2;
+    public final int eTier;
 
     public GT_MetaTileEntity_Hatch_ElementalContainer(int aID, String aName, String aNameRegional, int aTier, String descr) {
         super(aID, aName, aNameRegional, aTier, 0, descr);
+        eTier=aTier;
     }
 
     public GT_MetaTileEntity_Hatch_ElementalContainer(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
+        eTier=aTier;
     }
 
     @Override
@@ -185,11 +188,11 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     }
 
     public int getMaxStacksCount() {
-        return mTier * 2;
+        return eTier * 2;
     }
 
     public int getMaxStackSize() {
-        return mTier * (mTier - 7) * 1000;
+        return eTier * (eTier - 7) * 1000;
     }
 
     @Override
