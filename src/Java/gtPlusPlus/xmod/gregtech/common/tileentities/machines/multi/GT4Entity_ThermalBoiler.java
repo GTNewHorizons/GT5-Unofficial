@@ -8,7 +8,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.*;
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.item.general.ItemAirFilter;
 import gtPlusPlus.core.item.general.ItemLavaFilter;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
@@ -167,12 +166,13 @@ extends GT_MetaTileEntity_MultiBlockBase
 				"Converts Heat into Steam",
 				"Size: 3x3x3 (Hollow)",
 				"Controller (front middle)",
-				"2x Output Hatch",
+				"2x Output Hatch/Bus",
 				"2x Input Hatch",
 				"1x Maintenance Hatch (Centre of top)",
 				"Thermal Containment Casings for the rest",
 				"Input & Output hatches can go be configured how you wish",
 				"Place them in the middle block of the Back, Bottom and Sides",
+				"Use 2 Output Hatches by default, change one to a Bus if filtering Lava",
 				"Consult user manual for more information",
 				CORE.GT_Tooltip};
 	}
@@ -232,32 +232,37 @@ extends GT_MetaTileEntity_MultiBlockBase
 	}
 
 	public boolean damageFilter(){
-		ItemStack filter = this.mInventory[0];
+		ItemStack filter = this.mInventory[1];
 		if (filter != null){
 			if (filter.getItem() instanceof ItemLavaFilter){
 
 				long currentUse = ItemLavaFilter.getFilterDamage(filter);
 
 				//Remove broken Filter
-				if (filter.getItemDamage() == 0 && currentUse >= 100-1){			
-					this.mInventory[0] = null;
+				if (currentUse >= 100-1){			
+					this.mInventory[1] = null;
 					return false;				
 				}	
 				else {
 					//Do Damage
-					ItemAirFilter.setFilterDamage(filter, currentUse+1);
-					Utils.LOG_WARNING("Lava Filter Damage: "+currentUse);
+					ItemLavaFilter.setFilterDamage(filter, currentUse+1);
 					return true;
 				}			
 			}		
 		}
+
 		return false;
 	}
 
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-		if (aTick % 600L == 0L){
-			damageFilter();
+		if (aBaseMetaTileEntity.isServerSide()){
+			//Utils.LOG_INFO("tick: "+aTick);
+			if (this.mEUt > 0){
+				if (aTick % 600L == 0L){
+					damageFilter();
+				}
+			}
 		}
 		super.onPostTick(aBaseMetaTileEntity, aTick);
 	}

@@ -76,6 +76,9 @@ public class ItemLavaFilter extends CoreItem {
 				return true;
 			}
 		}
+		else {
+			createNBT(aStack);
+			}
 		return false;
 	}
 
@@ -110,7 +113,7 @@ public class ItemLavaFilter extends CoreItem {
 			durability = EnumChatFormatting.RED;
 		}
 		list.add(durability+""+(100-getFilterDamage(stack))+EnumChatFormatting.GRAY+" / "+100);
-		super.addInformation(stack, player, list, bool);
+		//super.addInformation(stack, player, list, bool);
 	}
 
 	@Override
