@@ -11,7 +11,6 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Config;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.player.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.tesseract.TesseractHelper;
@@ -81,7 +80,7 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
 
 	@Override
 	public long maxEUInput() {
-		return 512;
+		return 128;
 	}
 
 	@Override
@@ -469,6 +468,7 @@ public class GT_MetaTileEntity_TesseractTerminal extends GT_MetaTileEntity_Basic
 				if ((!this.mDidWork) && (this.getTesseract(this.mFrequency, false) != null)) {
 					this.mDidWork = true;
 					this.getBaseMetaTileEntity().issueBlockUpdate();
+					this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(128, false);
 				}
 			} else if (this.mDidWork == true) {
 				this.mDidWork = false;
