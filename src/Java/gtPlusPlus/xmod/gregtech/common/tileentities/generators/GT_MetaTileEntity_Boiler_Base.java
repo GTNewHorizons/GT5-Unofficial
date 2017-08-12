@@ -28,14 +28,14 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 	public GT_MetaTileEntity_Boiler_Base(int aID, String aNameRegional, int aBoilerTier) {
 		super(aID, "electricboiler." + aBoilerTier + ".tier.single", aNameRegional,
 				"Produces " + (750 + (250 * aBoilerTier)) + "L of Steam per second");
-		this.mSteamPerSecond = (750 + (250 * aBoilerTier));
+		this.mSteamPerSecond = (750 * aBoilerTier);
 		this.mPollutionPerSecond = 20 + (15 * aBoilerTier);
 		this.mBoilerTier = aBoilerTier;
 	}
 
 	public GT_MetaTileEntity_Boiler_Base(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
 		super(aName, aTier, aDescription, aTextures);
-		this.mSteamPerSecond = (750 + (250 * aTier));
+		this.mSteamPerSecond = (750 * aBoilerTier);
 		this.mPollutionPerSecond = 20 + (15 * aTier);
 		this.mBoilerTier = aTier;
 	}

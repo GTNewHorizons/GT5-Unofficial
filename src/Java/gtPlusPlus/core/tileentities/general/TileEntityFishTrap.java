@@ -124,17 +124,17 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 		if (lootWeight <= 5) {
 			loot = ItemUtils.getSimpleStack(Items.slime_ball);
 		}
-		else if (lootWeight <= 15) {
+		else if (lootWeight <= 10) {
 			loot = ItemUtils.getSimpleStack(Items.bone);
 		}
-		else if (lootWeight <= 25) {
+		else if (lootWeight <= 20) {
 			loot = ItemUtils.getSimpleStack(Blocks.sand);
 		}
-		else if (lootWeight <= 35) {
+		else if (lootWeight <= 30) {
 			loot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(seaweed, 1);
 		}
 		// Pam Fish
-		else if (lootWeight <= 70) {
+		else if (lootWeight <= 60) {
 			if (LoadedMods.PamsHarvestcraft) {
 				loot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
 						prefix + harvestcraftFish[MathUtils.randInt(0, harvestcraftFish.length - 1)] + suffix, 1);
@@ -144,8 +144,16 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 			}
 		}
 		// Minecraft Fish
-		else if (lootWeight <= 100) {
+		else if (lootWeight <= 99) {
 			loot = ItemUtils.getSimpleStack(minecraftFish[MathUtils.randInt(0, minecraftFish.length - 1)], 1);
+		}
+		else if (lootWeight == 100){
+			if (MathUtils.randInt(0, 1) == 0){
+			loot = ItemUtils.getSimpleStack(Items.emerald);
+			}
+			else {
+				loot = ItemUtils.getSimpleStack(Items.diamond);
+			}
 		}
 		else {
 			loot = ItemUtils.getSimpleStack(Blocks.diamond_ore);

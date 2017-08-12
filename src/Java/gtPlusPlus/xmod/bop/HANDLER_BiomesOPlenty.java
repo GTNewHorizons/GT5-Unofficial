@@ -8,9 +8,9 @@ public class HANDLER_BiomesOPlenty {
 	
 	
 	public static void preInit(){
-		if (LoadedMods.BiomesOPlenty){
+		//if (LoadedMods.BiomesOPlenty){
 			BOP_Block_Registrator.run();
-		}
+		//}
 
 	}
 
