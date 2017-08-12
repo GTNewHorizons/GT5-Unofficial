@@ -1,7 +1,5 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
-import java.util.Collection;
-
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -10,15 +8,20 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.*;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.item.general.ItemAirFilter;
+import gtPlusPlus.core.item.general.ItemLavaFilter;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 public class GT4Entity_ThermalBoiler
 extends GT_MetaTileEntity_MultiBlockBase
 {
+
+	private int mSuperEfficencyIncrease = 0;
+
 	@Override
 	public boolean isFacingValid(byte aFacing)
 	{
@@ -52,64 +55,85 @@ extends GT_MetaTileEntity_MultiBlockBase
 	}
 
 	@Override
-	public int getDamageToComponent(ItemStack aStack)
-	{
-		return GT_Utility.areStacksEqual(aStack, ItemList.Component_LavaFilter.getWildcard(1L, new Object[0])) ? 1 : 0;
+	public int getDamageToComponent(ItemStack aStack){
+		Utils.LOG_INFO("Trying to damage component.");
+		return ItemList.Component_LavaFilter.get(1L).getClass().isInstance(aStack) ? 1 : 0;
 	}
 
 	@Override
-	public boolean checkRecipe(ItemStack aStack)
-	{
-		Collection<GT_Recipe> hotFuels = Recipe_GT.Gregtech_Recipe_Map.sThermalFuels.mRecipeList;
-		for (GT_Recipe tRecipe : hotFuels) {
-			Utils.LOG_INFO("iterating hot fuels ");
-			Utils.LOG_INFO("aStack: "+aStack.getDisplayName());
-			Utils.LOG_INFO("========================");
-			Utils.LOG_INFO("Dumping Input: " + ItemUtils.getArrayStackNames(tRecipe.mInputs));
-			Utils.LOG_INFO("Dumping Inputs " + ItemUtils.getFluidArrayStackNames(tRecipe.mFluidInputs));
-			Utils.LOG_INFO("Dumping Duration: " + tRecipe.mDuration);
-			Utils.LOG_INFO("Dumping EU/t: " + tRecipe.mEUt);
-			Utils.LOG_INFO("Dumping Output: " + ItemUtils.getArrayStackNames(tRecipe.mOutputs));
-			Utils.LOG_INFO("Dumping Output: " + ItemUtils.getFluidArrayStackNames(tRecipe.mFluidOutputs));
-			Utils.LOG_INFO("========================");
-			
-			if (depleteInput(tRecipe.getRepresentativeInput(0)))
-			{
-				Utils.LOG_INFO("found something");
-				this.mEUt = 400;
-				this.mMaxProgresstime = (tRecipe.mEUt * 2 / 5);
-				this.mEfficiencyIncrease = (this.mMaxProgresstime * 30);
-				if (tRecipe.getOutput(0) != null) {
-					this.mOutputItems = new ItemStack[] { GT_Utility.copy(new Object[] { tRecipe.getOutput(0) }) };
-				}
-				if (GT_Utility.areStacksEqual(aStack, ItemList.Component_LavaFilter.getWildcard(1L, new Object[0]))) {
-					if ((tRecipe.getOutput(1) != null) && (getBaseMetaTileEntity().getRandomNumber(1000) < 100)) {
-						this.mOutputItems = new ItemStack[] { GT_Utility.copy(new Object[] { tRecipe.getOutput(1) }) };
-					} else if ((tRecipe.getOutput(2) != null) && (getBaseMetaTileEntity().getRandomNumber(900) < 50)) {
-						this.mOutputItems = new ItemStack[] { GT_Utility.copy(new Object[] { tRecipe.getOutput(2) }) };
-					} else if ((tRecipe.getOutput(3) != null) && (getBaseMetaTileEntity().getRandomNumber(850) < 25)) {
-						this.mOutputItems = new ItemStack[] { GT_Utility.copy(new Object[] { tRecipe.getOutput(3) }) };
+	public boolean checkRecipe(final ItemStack aStack) {
+		this.mSuperEfficencyIncrease=0;
+
+		for (GT_Recipe tRecipe : Recipe_GT.Gregtech_Recipe_Map.sThermalFuels.mRecipeList) {
+			FluidStack tFluid = tRecipe.mFluidInputs[0];
+			if (tFluid != null) {
+				if (depleteInput(tFluid)) {
+					this.mMaxProgresstime = Math.max(1, runtimeBoost(tRecipe.mSpecialValue * 2));
+					this.mEUt = getEUt();
+					this.mEfficiencyIncrease = (this.mMaxProgresstime * getEfficiencyIncrease());
+
+					if (ItemList.Component_LavaFilter.get(1L).getClass().isInstance(aStack)) {
+						int loot_MAXCHANCE = 100000;
+						if ((tRecipe.getOutput(0) != null) && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE) < tRecipe.getOutputChance(0))) {
+							this.mOutputItems = new ItemStack[] { GT_Utility.copy(new Object[] { tRecipe.getOutput(0) }) };
+						} 
+						if ((tRecipe.getOutput(1) != null) && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE) < tRecipe.getOutputChance(1))) {
+							this.mOutputItems = new ItemStack[] { GT_Utility.copy(new Object[] { tRecipe.getOutput(1) }) };
+						} 
+						if ((tRecipe.getOutput(2) != null) && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE) < tRecipe.getOutputChance(2))) {
+							this.mOutputItems = new ItemStack[] { GT_Utility.copy(new Object[] { tRecipe.getOutput(2) }) };
+						} 
+						if ((tRecipe.getOutput(3) != null) && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE) < tRecipe.getOutputChance(3))) {
+							this.mOutputItems = new ItemStack[] { GT_Utility.copy(new Object[] { tRecipe.getOutput(3) }) };
+						} 
+						if ((tRecipe.getOutput(4) != null) && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE) < tRecipe.getOutputChance(4))) {
+							this.mOutputItems = new ItemStack[] { GT_Utility.copy(new Object[] { tRecipe.getOutput(4) }) };
+						} 
+						if ((tRecipe.getOutput(5) != null) && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE) < tRecipe.getOutputChance(5))) {
+							this.mOutputItems = new ItemStack[] { GT_Utility.copy(new Object[] { tRecipe.getOutput(5) }) };
+						} 
+						if ((tRecipe.getOutput(6) != null) && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE) < tRecipe.getOutputChance(6))) {
+							this.mOutputItems = new ItemStack[] { GT_Utility.copy(new Object[] { tRecipe.getOutput(6) }) };
+						}
 					}
+
+					return true;
 				}
-				return true;
 			}
 		}
+		this.mMaxProgresstime = 0;
+		this.mEUt = 0;
 		return false;
 	}
 
 	@Override
-	public boolean onRunningTick(ItemStack aStack)
-	{
-		if (this.mEUt > 0)
-		{
-			int tGeneratedEU = (int)(this.mEUt * 2L * this.mEfficiency / 10000L);
-			Utils.LOG_INFO("tGeneratedEU: "+tGeneratedEU);
-			if ((tGeneratedEU > 0) && (depleteInput(GT_ModHandler.getWater((tGeneratedEU + 160) / 160)))) {
-				addOutput(GT_ModHandler.getSteam(tGeneratedEU));
+	public boolean onRunningTick(ItemStack aStack) {
+		if (this.mEUt > 0) {
+			if(this.mSuperEfficencyIncrease>0)this.mEfficiency = Math.min(10000, this.mEfficiency + this.mSuperEfficencyIncrease);
+			int tGeneratedEU = (int) (this.mEUt * 2L * this.mEfficiency / 10000L);
+			if (tGeneratedEU > 0) {
+				long amount = (tGeneratedEU + 160) / 160;
+				if (depleteInput(Materials.Water.getFluid(amount)) || depleteInput(GT_ModHandler.getDistilledWater(amount))) {
+					addOutput(GT_ModHandler.getSteam(tGeneratedEU));
+				} else {
+					explodeMultiblock();
+				}
 			}
 			return true;
 		}
 		return true;
+	}
+
+	public int getEUt() {
+		return 600;
+	}
+
+	public int getEfficiencyIncrease() {
+		return 12;
+	}
+
+	int runtimeBoost(int mTime) {
+		return mTime * 150 / 100;
 	}
 
 	@Override
@@ -132,7 +156,7 @@ extends GT_MetaTileEntity_MultiBlockBase
 
 	public int getAmountOfOutputs()
 	{
-		return 1;
+		return 7;
 	}
 
 	@Override
@@ -171,7 +195,6 @@ extends GT_MetaTileEntity_MultiBlockBase
 			int CASING = TAE.GTPP_INDEX(1);
 			if (((getBaseMetaTileEntity().getBlockAtSideAndDistance(getBaseMetaTileEntity().getBackFacing(), 2) != ModBlocks.blockCasings2Misc) || (getBaseMetaTileEntity().getMetaIDAtSideAndDistance(getBaseMetaTileEntity().getBackFacing(), 2) != META)) && 
 					(!addToMachineList(getBaseMetaTileEntity().getIGregTechTileEntityAtSideAndDistance(getBaseMetaTileEntity().getBackFacing(), 2), CASING))) {
-				Utils.LOG_INFO("false 1");
 				return false;
 			}
 			int tX = getBaseMetaTileEntity().getXCoord();int tY = getBaseMetaTileEntity().getYCoord();int tZ = getBaseMetaTileEntity().getZCoord();
@@ -186,7 +209,6 @@ extends GT_MetaTileEntity_MultiBlockBase
 									if (getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)) == META) {}
 								}
 								else if (!addToMachineList(getBaseMetaTileEntity().getIGregTechTileEntity(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)), CASING)) {
-									Utils.LOG_INFO("false 2");
 									return false;
 								}
 							}
@@ -194,8 +216,7 @@ extends GT_MetaTileEntity_MultiBlockBase
 							{
 								if (getBaseMetaTileEntity().getMetaID(tX + (tSide == 5 ? k : tSide < 4 ? i : -k), tY + j, tZ + (tSide < 4 ? -k : tSide == 3 ? k : i)) == META) {}
 							}
-							else {
-								Utils.LOG_INFO("false 3");								
+							else {							
 								return false;
 							}
 						}
@@ -204,11 +225,41 @@ extends GT_MetaTileEntity_MultiBlockBase
 			}
 		}
 		else
-		{
-			Utils.LOG_INFO("false 4");			
+		{		
 			return false;
 		}
-		Utils.LOG_INFO("true 1");	
 		return true;
 	}
+
+	public boolean damageFilter(){
+		ItemStack filter = this.mInventory[0];
+		if (filter != null){
+			if (filter.getItem() instanceof ItemLavaFilter){
+
+				long currentUse = ItemLavaFilter.getFilterDamage(filter);
+
+				//Remove broken Filter
+				if (filter.getItemDamage() == 0 && currentUse >= 100-1){			
+					this.mInventory[0] = null;
+					return false;				
+				}	
+				else {
+					//Do Damage
+					ItemAirFilter.setFilterDamage(filter, currentUse+1);
+					Utils.LOG_WARNING("Lava Filter Damage: "+currentUse);
+					return true;
+				}			
+			}		
+		}
+		return false;
+	}
+
+	@Override
+	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+		if (aTick % 600L == 0L){
+			damageFilter();
+		}
+		super.onPostTick(aBaseMetaTileEntity, aTick);
+	}
+
 }

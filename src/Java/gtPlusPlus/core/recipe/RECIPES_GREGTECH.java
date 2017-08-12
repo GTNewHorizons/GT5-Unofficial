@@ -457,8 +457,7 @@ public class RECIPES_GREGTECH {
 
 		HotFuel.addNewHotFuel(
 				GT_ModHandler.getLava(83),
-				GT_ModHandler.getWater(6),
-				GT_ModHandler.getSteam(800), 
+				GT_Values.NF,
 				new ItemStack[]{
 						ItemUtils.getItemStackOfAmountFromOreDict("nuggetCopper", 1),
 						ItemUtils.getItemStackOfAmountFromOreDict("nuggetTin", 1),
