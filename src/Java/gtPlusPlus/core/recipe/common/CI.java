@@ -271,25 +271,32 @@ public class CI {
 		}
 		else {
 			if (tier == 0){
-				return ItemList.Circuit_Primitive.get(1);
+				//return ItemList.Circuit_Primitive.get(1);	
+				return "circuitPrimitive";
 			}
 			else if (tier == 1){
-				return ItemList.Circuit_Basic.get(1);				
+				//return ItemList.Circuit_Basic.get(1);		
+				return "circuitBasic";			
 			}
 			else if (tier == 2){
-				return ItemList.Circuit_Good.get(1);				
+				//return ItemList.Circuit_Good.get(1);		
+				return "circuitGood";			
 			}
 			else if (tier == 3){
-				return ItemList.Circuit_Advanced.get(1);				
+				//return ItemList.Circuit_Advanced.get(1);		
+				return "circuitAdvanced";			
 			}
 			else if (tier == 4){
-				return ItemList.Circuit_Elite.get(1);				
+				//return ItemList.Circuit_Elite.get(1);		
+				return "circuitElite";			
 			}
 			else if (tier == 5){
-				return ItemList.Circuit_Master.get(1);				
+				//return ItemList.Circuit_Master.get(1);	
+				return "circuitMaster";				
 			}
 			else if (tier == 6){
-				return ItemList.Circuit_Ultimate.get(1);				
+				//return ItemList.Circuit_Ultimate.get(1);	
+				return "circuitUltimate";
 			}
 			else if (tier == 7){
 				return "circuitSuperconductor";				
@@ -368,14 +375,14 @@ public class CI {
 		Utils.LOG_INFO("[Components] Failed getting a tiered component. "+type.name()+" | "+tier);
 		return null;
 	}
-	
+
 	public static ItemStack getDataOrb(){
-			if (CORE.configSwitches.enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
-				return GregtechItemList.Old_Tool_DataOrb.get(1);
-			}
-			else {
-				return ItemList.Tool_DataOrb.get(1);				
-			}
+		if (CORE.configSwitches.enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
+			return GregtechItemList.Old_Tool_DataOrb.get(1);
+		}
+		else {
+			return ItemList.Tool_DataOrb.get(1);				
+		}
 	}
 
 }
