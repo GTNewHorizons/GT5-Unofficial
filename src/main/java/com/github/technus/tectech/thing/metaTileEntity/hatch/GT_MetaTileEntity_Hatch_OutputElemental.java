@@ -15,13 +15,17 @@ public class GT_MetaTileEntity_Hatch_OutputElemental extends GT_MetaTileEntity_H
         super(aID, aName, aNameRegional, aTier, "Elemental Output for Multiblocks (" + 1000 * aTier * (aTier - 7) + "U, " + aTier * 2 + " stacks)");
     }
 
-    public GT_MetaTileEntity_Hatch_OutputElemental(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
-        super(aName, aTier, aDescription, aTextures);
+    //public GT_MetaTileEntity_Hatch_OutputElemental(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    //    super(aName, aTier, aDescription, aTextures);
+    //}
+
+    public GT_MetaTileEntity_Hatch_OutputElemental(String aName, int aTier, int eTier,String aDescription, ITexture[][][] aTextures) {
+        super(aName, aTier, eTier, aDescription, aTextures);
     }
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_OutputElemental(mName, mTier, mDescription, mTextures);
+        return new GT_MetaTileEntity_Hatch_OutputElemental(mName, mTier, eTier, mDescription, mTextures);
     }
 
     @Override

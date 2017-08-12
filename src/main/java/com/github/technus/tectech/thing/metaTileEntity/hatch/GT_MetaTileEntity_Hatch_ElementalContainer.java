@@ -48,9 +48,14 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
         eTier=aTier;
     }
 
-    public GT_MetaTileEntity_Hatch_ElementalContainer(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    //public GT_MetaTileEntity_Hatch_ElementalContainer(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
+    //    super(aName, aTier, 0, aDescription, aTextures);
+    //    eTier=aTier;
+    //}
+
+    public GT_MetaTileEntity_Hatch_ElementalContainer(String aName, int aTier, int eTier, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
-        eTier=aTier;
+        this.eTier=eTier;
     }
 
     @Override

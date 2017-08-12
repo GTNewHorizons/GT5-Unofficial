@@ -33,10 +33,16 @@ public class GT_MetaTileEntity_Hatch_DynamoMulti extends GT_MetaTileEntity_Hatch
         eTier=aTier;
     }
 
-    public GT_MetaTileEntity_Hatch_DynamoMulti(String aName, int aTier, int aAmp, String aDescription, ITexture[][][] aTextures) {
+    //public GT_MetaTileEntity_Hatch_DynamoMulti(String aName, int aTier, int aAmp, String aDescription, ITexture[][][] aTextures) {
+    //    super(aName, aTier, 0, aDescription, aTextures);
+    //    Amperes = aAmp;
+    //    eTier=aTier;
+    //}
+
+    public GT_MetaTileEntity_Hatch_DynamoMulti(String aName, int aTier, int eTier, int aAmp, String aDescription, ITexture[][][] aTextures) {
         super(aName, aTier, 0, aDescription, aTextures);
         Amperes = aAmp;
-        eTier=aTier;
+        this.eTier=eTier;
     }
 
     @Override
@@ -101,7 +107,7 @@ public class GT_MetaTileEntity_Hatch_DynamoMulti extends GT_MetaTileEntity_Hatch
 
     @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-        return new GT_MetaTileEntity_Hatch_DynamoMulti(mName, mTier, Amperes, mDescription, mTextures);
+        return new GT_MetaTileEntity_Hatch_DynamoMulti(mName, mTier, eTier, Amperes, mDescription, mTextures);
     }
 
     @Override
