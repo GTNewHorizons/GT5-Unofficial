@@ -108,7 +108,9 @@ extends GT_MetaTileEntity_MultiBlockBase
 	@Override
 	public boolean onRunningTick(ItemStack aStack) {
 		if (this.mEUt > 0) {
-			if(this.mSuperEfficencyIncrease>0)this.mEfficiency = Math.min(10000, this.mEfficiency + this.mSuperEfficencyIncrease);
+			if(this.mSuperEfficencyIncrease>0){
+				this.mEfficiency = Math.min(10000, this.mEfficiency + this.mSuperEfficencyIncrease);
+			}
 			int tGeneratedEU = (int) (this.mEUt * 2L * this.mEfficiency / 10000L);
 			if (tGeneratedEU > 0) {
 				long amount = (tGeneratedEU + 160) / 160;
@@ -124,7 +126,7 @@ extends GT_MetaTileEntity_MultiBlockBase
 	}
 
 	public int getEUt() {
-		return 600;
+		return 400;
 	}
 
 	public int getEfficiencyIncrease() {
