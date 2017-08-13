@@ -32,6 +32,12 @@ public class aOredictQuantizationInfo implements iExchangeInfo {
         out=emOut;
     }
 
+    public aOredictQuantizationInfo( OrePrefixes prefix, String materialName, int qty, iHasElementalDefinition emOut){
+        in=OreDictionary.getOreID(prefix.name() + materialName);
+        amount=qty;
+        out=emOut;
+    }
+
     @Override
     public Integer input() {
         return in;
