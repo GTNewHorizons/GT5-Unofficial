@@ -18,3 +18,4 @@ SetupDevWorkspaces.bat
 *.iml
 *.ipr
 *.iws
+*.bat
