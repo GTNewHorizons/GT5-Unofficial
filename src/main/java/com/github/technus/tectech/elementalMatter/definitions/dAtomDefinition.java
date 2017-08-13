@@ -4,6 +4,8 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.classes.*;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
+import com.github.technus.tectech.gtppAddon.GtppAtomLoader;
+import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.objects.XSTR;
@@ -727,6 +729,8 @@ public final class dAtomDefinition extends cElementalDefinition {
         } catch (tElementalException e) {
             if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
         }
+
+        if(Loader.isModLoaded("miscutils")) new GtppAtomLoader().run();
     }
 
     public static dAtomDefinition getFirstStableIsotope(int element) {

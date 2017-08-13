@@ -75,8 +75,13 @@ public class bTransformationInfo {
         oredictDequantization.put(em.getDefinition(),new aOredictDequantizationInfo(em,name,qty));
     }
 
-    public void addOredict(iHasElementalDefinition em, OrePrefixes prefix, Materials material,  int qty){
+    public void addOredict(iHasElementalDefinition em, OrePrefixes prefix, Materials material, int qty){
         oredictQuantization.put(OreDictionary.getOreID(prefix.name() + material.mName),new aOredictQuantizationInfo(prefix,material,qty,em));
         oredictDequantization.put(em.getDefinition(),new aOredictDequantizationInfo(em,prefix,material,qty));
+    }
+
+    public void addOredict(iHasElementalDefinition em, OrePrefixes prefix, String materialName, int qty){
+        oredictQuantization.put(OreDictionary.getOreID(prefix.name() + materialName),new aOredictQuantizationInfo(prefix,materialName,qty,em));
+        oredictDequantization.put(em.getDefinition(),new aOredictDequantizationInfo(em,prefix,materialName,qty));
     }
 }
