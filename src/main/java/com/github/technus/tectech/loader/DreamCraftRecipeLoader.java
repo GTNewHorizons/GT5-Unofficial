@@ -61,7 +61,7 @@ public class DreamCraftRecipeLoader implements Runnable {
         }, CustomItemList.Machine_Multi_Research.get(1), 12000, 100000);
 
         //Oject Holder
-        GT_Values.RA.addAssemblylineRecipe(ItemList.Robot_Arm_ZPM.get(1), 72000, new ItemStack[]{
+        GT_Values.RA.addAssemblylineRecipe(ItemList.Hatch_Input_Bus_ZPM.get(1), 72000, new ItemStack[]{
                 ItemList.Hatch_Input_Bus_ZPM.get(1),
                 ItemList.Robot_Arm_ZPM.get(2),
                 ItemList.Electric_Motor_ZPM.get(2),
