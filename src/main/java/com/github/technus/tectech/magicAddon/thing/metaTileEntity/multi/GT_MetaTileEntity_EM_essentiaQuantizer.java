@@ -51,7 +51,7 @@ public class GT_MetaTileEntity_EM_essentiaQuantizer extends GT_MetaTileEntity_Mu
             "1 - Classic Hatches or High Power Casing",
             "2 - Elemental Output Hatch",
             "3 - Elemental Overflow Hatches or Elemental Casing",
-            "Default - Some sort of Essentia Storage",
+            "General - Some sort of Essentia Storage",
     };
     //endregion
 

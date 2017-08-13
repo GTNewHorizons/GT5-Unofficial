@@ -78,7 +78,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
             "2 - Elemental Input Hatches or Molecular Casing",
             "3 - Elemental Output Hatches or Molecular Casing",
             "4 - Elemental Overflow Hatches or Molecular Casing",
-            "Default - Another Controller facing opposite direction",
+            "General - Another Controller facing opposite direction",
     };
     //endregion
 
