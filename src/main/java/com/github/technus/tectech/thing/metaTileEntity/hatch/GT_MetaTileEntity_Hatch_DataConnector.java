@@ -90,8 +90,7 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector extends GT_MetaTileE
         }
     }
 
-    public void moveAround(IGregTechTileEntity aBaseMetaTileEntity) {
-    }
+    public abstract void moveAround(IGregTechTileEntity aBaseMetaTileEntity);
 
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {

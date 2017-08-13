@@ -9,11 +9,11 @@ import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.recipe.TT_recipe;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import gregtech.GT_Mod;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.gui.GT_GUIContainer_BasicMachine;
 import gregtech.api.objects.ItemData;
@@ -22,7 +22,6 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.gui.GT_GUIContainer_FusionReactor;
-import gregtech.nei.NEI_GT_Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Blocks;
@@ -50,9 +49,9 @@ public class TT_NEI_ResearchHandler extends TemplateRecipeHandler {
 
     public TT_NEI_ResearchHandler(TT_recipe.TT_Recipe_Map aRecipeMap) {
         this.mRecipeMap = aRecipeMap;
-        this.transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(65, 13, 36, 18), getOverlayIdentifier(), new Object[0]));
-        if (!NEI_GT_Config.sIsAdded) {
-            FMLInterModComms.sendRuntimeMessage(GT_Values.GT, "NEIPlugins", "register-crafting-handler", Reference.MODID+"@" + getRecipeName() + "@" + getOverlayIdentifier());
+        this.transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(65, 13, 36, 18), getOverlayIdentifier()));
+        if (!NEI_TT_Config.sIsAdded) {
+            FMLInterModComms.sendRuntimeMessage(TecTech.instance, "NEIPlugins", "register-crafting-handler", Reference.MODID+"@" + getRecipeName() + "@" + getOverlayIdentifier());
             GuiCraftingRecipe.craftinghandlers.add(this);
             GuiUsageRecipe.usagehandlers.add(this);
         }
@@ -69,8 +68,8 @@ public class TT_NEI_ResearchHandler extends TemplateRecipeHandler {
     }
 
     public TemplateRecipeHandler newInstance() {
-        TT_NEI_config.TT_RH=new TT_NEI_ResearchHandler(mRecipeMap);
-        return TT_NEI_config.TT_RH;
+        NEI_TT_Config.TT_RH=new TT_NEI_ResearchHandler(mRecipeMap);
+        return NEI_TT_Config.TT_RH;
     }
 
     public void loadCraftingRecipes(String outputId, Object... results) {
@@ -101,7 +100,7 @@ public class TT_NEI_ResearchHandler extends TemplateRecipeHandler {
             tResults.add(GT_Utility.getFluidDisplayStack(tFluid, false));
             for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
                 if (tData.fluid.isFluidEqual(tFluid)) {
-                    tResults.add(GT_Utility.copy(new Object[]{tData.filledContainer}));
+                    tResults.add(GT_Utility.copy(tData.filledContainer));
                 }
             }
         }
@@ -135,7 +134,7 @@ public class TT_NEI_ResearchHandler extends TemplateRecipeHandler {
             tInputs.add(GT_Utility.getFluidDisplayStack(tFluid, false));
             for (FluidContainerRegistry.FluidContainerData tData : FluidContainerRegistry.getRegisteredFluidContainerData()) {
                 if (tData.fluid.isFluidEqual(tFluid)) {
-                    tInputs.add(GT_Utility.copy(new Object[]{tData.filledContainer}));
+                    tInputs.add(GT_Utility.copy(tData.filledContainer));
                 }
             }
         }
@@ -208,19 +207,19 @@ public class TT_NEI_ResearchHandler extends TemplateRecipeHandler {
 		int computation = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mDuration;
 		String[] recipeDesc = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.getNeiDesc();
 		if (recipeDesc == null) {
-			//if (tEUt != 0) {
-			//	drawText(10, 73, trans("152","Total: ") + computation * tEUt + " EU", -16777216);
-			//	drawText(10, 83, trans("153","Usage: ") + tEUt + " EU/t", -16777216);
-			//	if (this.mRecipeMap.mShowVoltageAmperageInNEI) {
-			//		drawText(10, 93, trans("154","Voltage: ") + tEUt / this.mRecipeMap.mAmperage + " EU", -16777216);
-			//		drawText(10, 103, trans("155","Amperage: ") + this.mRecipeMap.mAmperage, -16777216);
-			//	} else {
-			//		drawText(10, 93, trans("156","Voltage: unspecified"), -16777216);
-			//		drawText(10, 103, trans("157","Amperage: unspecified"), -16777216);
-			//	}
-			//}
+			if (tEUt != 0) {
+				//drawText(10, 73, trans("152","Total: ") + computation * tEUt + " EU", -16777216);
+				drawText(10, 83, trans("153","Usage: ") + tEUt + " EU/t", -16777216);
+				if (this.mRecipeMap.mShowVoltageAmperageInNEI) {
+					drawText(10, 93, trans("154","Voltage: ") + tEUt / this.mRecipeMap.mAmperage + " EU", -16777216);
+					drawText(10, 103, trans("155","Amperage: ") + this.mRecipeMap.mAmperage, -16777216);
+				} else {
+					drawText(10, 93, trans("156","Voltage: unspecified"), -16777216);
+					drawText(10, 103, trans("157","Amperage: unspecified"), -16777216);
+				}
+			}
 			if (computation > 0) {
-				drawText(10, 113, "Computation: "+String.format("%.2f ", 0.05F * computation), -16777216);
+				drawText(10, 113, "Computation: "+computation, -16777216);
 			}
 			int tSpecial = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue;
 			if (tSpecial == -100 && GT_Mod.gregtechproxy.mLowGravProcessing) {

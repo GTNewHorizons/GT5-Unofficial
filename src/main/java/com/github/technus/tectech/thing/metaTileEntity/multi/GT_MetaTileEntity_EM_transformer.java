@@ -111,6 +111,11 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
     }
 
     @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        return true;
+    }
+
+    @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if ((aTick & 31) == 31) {
             ePowerPass = aBaseMetaTileEntity.isAllowedToWork();

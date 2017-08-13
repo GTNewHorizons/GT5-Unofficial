@@ -110,7 +110,8 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         }
         mMaxProgresstime = 0;
         mEfficiencyIncrease = 0;
-        EM_stopMachine();//to stop all hatches
+        for (GT_MetaTileEntity_Hatch_Rack r : eRacks)
+            r.getBaseMetaTileEntity().setActive(false);
         return false;
     }
 
@@ -181,7 +182,8 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    protected void EM_stopMachine() {
+    public void stopMachine() {
+        super.stopMachine();
         for (GT_MetaTileEntity_Hatch_Rack r : eRacks)
             r.getBaseMetaTileEntity().setActive(false);
     }
