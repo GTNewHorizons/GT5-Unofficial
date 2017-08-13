@@ -134,7 +134,7 @@ public class ConstructibleTriggerItem extends Item {
                     EnumChatFormatting.AQUA+"Hint Details:",
                     "1 - Classic Hatches or Heat Proof Casing",
                     "2 - Muffler Hatch",
-                    "Default - Coil blocks"
+                    "General - Coil blocks"
             };
             //endregion
 
