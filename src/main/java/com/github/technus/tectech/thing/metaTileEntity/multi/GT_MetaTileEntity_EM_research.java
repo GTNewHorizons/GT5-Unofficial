@@ -203,7 +203,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
             for(int i = 0 ; i < tRecipe.mFluidInputs.length ; i++){
                 tNBT.setTag("f"+i, tRecipe.mFluidInputs[i].writeToNBT(new NBTTagCompound()));
             }
-            tNBT.setString("author", "EM Assembling Line Recipe Generator");
+            tNBT.setString("author", EnumChatFormatting.BLUE + "Tec" + EnumChatFormatting.DARK_BLUE + "Tech" + EnumChatFormatting.WHITE +" Assembling Line Recipe Generator");
             NBTTagList tNBTList = new NBTTagList();
             tNBTList.appendTag(new NBTTagString("Construction plan for "+tRecipe.mOutput.stackSize+" "+GT_LanguageManager.getTranslation(tRecipe.mOutput.getDisplayName())+". Needed EU/t: "+tRecipe.mEUt+" Production time: "+(tRecipe.mDuration/20)));
             for(int i=0;i<tRecipe.mInputs.length;i++){
