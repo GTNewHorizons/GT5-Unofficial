@@ -71,8 +71,9 @@ extends GT_MetaTileEntity_MultiBlockBase
 					this.mEUt = getEUt();
 					this.mEfficiencyIncrease = (this.mMaxProgresstime * getEfficiencyIncrease());
 
+					int loot_MAXCHANCE = 100000;
 					if (ItemList.Component_LavaFilter.get(1L).getClass().isInstance(aStack)) {
-						int loot_MAXCHANCE = 100000;
+
 						if ((tRecipe.getOutput(0) != null) && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE) < tRecipe.getOutputChance(0))) {
 							this.mOutputItems = new ItemStack[] { GT_Utility.copy(new Object[] { tRecipe.getOutput(0) }) };
 						} 
@@ -91,10 +92,15 @@ extends GT_MetaTileEntity_MultiBlockBase
 						if ((tRecipe.getOutput(5) != null) && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE) < tRecipe.getOutputChance(5))) {
 							this.mOutputItems = new ItemStack[] { GT_Utility.copy(new Object[] { tRecipe.getOutput(5) }) };
 						} 
+
+					}
+					//Give Obsidian without Lava Filter
+					if (tFluid.isFluidEqual(GT_ModHandler.getLava(86))){
 						if ((tRecipe.getOutput(6) != null) && (getBaseMetaTileEntity().getRandomNumber(loot_MAXCHANCE) < tRecipe.getOutputChance(6))) {
 							this.mOutputItems = new ItemStack[] { GT_Utility.copy(new Object[] { tRecipe.getOutput(6) }) };
 						}
 					}
+
 
 					return true;
 				}
