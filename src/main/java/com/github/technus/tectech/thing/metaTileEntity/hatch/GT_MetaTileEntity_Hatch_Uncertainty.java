@@ -55,7 +55,7 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        if (mTier > 6) return new GT_GUIContainer_UncertaintyAdv(aPlayerInventory, aBaseMetaTileEntity);
+        if (mTier >= 10) return new GT_GUIContainer_UncertaintyAdv(aPlayerInventory, aBaseMetaTileEntity);
         return new GT_GUIContainer_Uncertainty(aPlayerInventory, aBaseMetaTileEntity);
     }
 

@@ -17,7 +17,7 @@ public final class GT_GUIContainer_UncertaintyAdv extends GT_GUIContainerMetaTil
     }
 
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        proxy.renderUnicodeString("Schrödinger X", 46, 7, 167, 0xffffff);
+        proxy.renderUnicodeString("Schr\u00F6dinger X", 46, 7, 167, 0xffffff);
         if (this.mContainer != null && ((GT_Container_Uncertainty) this.mContainer).status == 0)
             proxy.renderUnicodeString("Status: OK", 46, 16, 167, 0xffffff);
         else
