@@ -40,4 +40,6 @@ public class CommonProxy implements IGuiHandler {
     public void broadcast(String str) {
         MinecraftServer.getServer().getConfigurationManager().sendChatMsg(new ChatComponentText(str));
     }
+
+    public void printInchat(String... strings){}
 }

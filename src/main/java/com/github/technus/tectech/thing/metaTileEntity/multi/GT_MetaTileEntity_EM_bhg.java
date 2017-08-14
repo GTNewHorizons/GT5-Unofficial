@@ -2,7 +2,7 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
-import com.github.technus.tectech.thing.metaTileEntity.iConstructible;
+import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -24,7 +24,7 @@ import static gregtech.api.enums.GT_Values.E;
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_EM implements iConstructible {
+public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
     private static Textures.BlockIcons.CustomIcon ScreenON;
 
@@ -76,6 +76,11 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
     private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT};
     private static final byte[] blockMetaFallback = new byte[]{0, 4};
+    private static final String[] description = new String[]{
+            EnumChatFormatting.AQUA+"Hint Details:",
+            "1 - Classic Hatches or High Power Casing",
+            "2 - Elemental Hatches or Molecular Casing",
+    };
     //endregion
 
     //region Structure dank - glass sphere for the looks
@@ -132,22 +137,27 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
 
     @Override
     public boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        //TODO enable later when you implement 3d models
-        //if(EM_StructureCheckAdvanced(shape2, blockType2, blockMeta2, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 16, 16, 0)){
-        //    glassDome=true;
-        //    return true;
-        //}
+        if(EM_StructureCheckAdvanced(shape2, blockType2, blockMeta2, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 16, 16, 0)){
+            glassDome=true;
+            return true;
+        }
         if(EM_StructureCheckAdvanced(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 16, 16, 0)){
             glassDome=false;
             return true;
         }
+        //todo check tiers of hatches!!!!
         return false;
     }
 
     @Override
-    public void construct(int qty, boolean hintsOnly) {
-        if((qty&1)==1) StructureBuilder(shape, blockType, blockMeta,16, 16, 0, getBaseMetaTileEntity(),hintsOnly);
+    public void construct(int stackSize, boolean hintsOnly) {
+        if((stackSize &1)==1) StructureBuilder(shape, blockType, blockMeta,16, 16, 0, getBaseMetaTileEntity(),hintsOnly);
         else StructureBuilder(shape2, blockType2, blockMeta2,16, 16, 0, getBaseMetaTileEntity(),hintsOnly);
+    }
+
+    @Override
+    public String[] getStructureDescription(int stackSize) {
+        return description;
     }
 
     @Override

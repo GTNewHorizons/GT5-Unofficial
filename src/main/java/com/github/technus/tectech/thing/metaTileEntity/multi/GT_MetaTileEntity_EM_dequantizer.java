@@ -8,7 +8,7 @@ import com.github.technus.tectech.elementalMatter.interfaces.iExchangeInfo;
 import com.github.technus.tectech.elementalMatter.interfaces.iHasElementalDefinition;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
-import com.github.technus.tectech.thing.metaTileEntity.iConstructible;
+import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
@@ -24,27 +24,33 @@ import static com.github.technus.tectech.elementalMatter.definitions.dAtomDefini
 import static com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition.refUnstableMass;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
-import static gregtech.api.enums.GT_Values.V;
+import static com.github.technus.tectech.Util.V;
 
 /**
  * Created by danie_000 on 17.12.2016.
  */
-public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_MultiblockBase_EM implements iConstructible {
+public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
 
     //region Structure
     //use multi A energy inputs, use less power the longer it runs
     private static final String[][] shape = new String[][]{
-            {"!!!", "!.!", "!!!",},
+            {"   ", " . ", "   ",},
             {"010", "111", "010",},
             {"\"\"\"", "\"1\"", "\"\"\"",},
-            {"121", "2 2", "121",},
+            {"121", "2!2", "121",},
     };
     private static final Block[] blockType = new Block[]{sBlockCasingsTT, sBlockCasingsTT, QuantumGlassBlock.INSTANCE};
     private static final byte[] blockMeta = new byte[]{0, 4, 0};
-    private static final String[] addingMethods = new String[]{"addElementalInputToMachineList", "addClassicToMachineList", "addElementalMufflerToMachineList"};
-    private static final short[] casingTextures = new short[]{textureOffset + 4, textureOffset, textureOffset + 4};
+    private static final String[] addingMethods = new String[]{"addClassicToMachineList", "addElementalInputToMachineList", "addElementalMufflerToMachineList"};
+    private static final short[] casingTextures = new short[]{textureOffset, textureOffset + 4, textureOffset + 4};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
-    private static final byte[] blockMetaFallback = new byte[]{4, 0, 4};
+    private static final byte[] blockMetaFallback = new byte[]{0, 4, 4};
+    private static final String[] description = new String[]{
+            EnumChatFormatting.AQUA + "Hint Details:",
+            "1 - Classic Hatches or High Power Casing",
+            "2 - Elemental Input Hatch",
+            "3 - Elemental Overflow Hatches or Molecular Casing",
+    };
     //endregion
 
     public GT_MetaTileEntity_EM_dequantizer(int aID, String aName, String aNameRegional) {
@@ -65,8 +71,13 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
     }
 
     @Override
-    public void construct(int qty, boolean hintsOnly) {
-        StructureBuilder(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(),hintsOnly);
+    public void construct(int stackSize, boolean hintsOnly) {
+        StructureBuilder(shape, blockType, blockMeta, 1, 1, 0, getBaseMetaTileEntity(), hintsOnly);
+    }
+
+    @Override
+    public String[] getStructureDescription(int stackSize) {
+        return description;
     }
 
     @Override

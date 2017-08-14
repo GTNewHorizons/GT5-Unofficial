@@ -36,7 +36,7 @@ public enum CustomItemList implements IItemContainer {
     Machine_Multi_Transformer, Machine_Multi_Computer, Machine_Multi_Microwave, Machine_Multi_Infuser, Machine_Multi_Switch,
     Machine_Multi_BHG, Machine_Multi_Annihilation, Machine_Multi_Decay,
     Machine_Multi_EMmachine, Machine_Multi_Stabilizer, Machine_Multi_Collider, Machine_Multi_Wormhole, Machine_Multi_EMCrafter, Machine_Multi_Scanner, Machine_Multi_Research,
-    hint_0,hint_1,hint_2,hint_3,hint_4,hint_5,hint_6,hint_7,hint_8,hint_9,hint_10,hint_11,hint_default,hint_air,hint_noAir,hint_error;
+    hint_0,hint_1,hint_2,hint_3,hint_4,hint_5,hint_6,hint_7,hint_8,hint_9,hint_10,hint_11, hint_general,hint_air,hint_noAir,hint_error;
 
 
     private ItemStack mStack = null;

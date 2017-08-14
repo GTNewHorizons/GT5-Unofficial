@@ -23,7 +23,7 @@ public class GT_Block_HintTT extends GT_Block_Casings_Abstract {
     private static IIcon hint[] = new IIcon[16];
 
     public GT_Block_HintTT() {
-        super(GT_Item_CasingsTT.class, "gt.blockhintTT", GT_Material_Casings.INSTANCE);
+        super(GT_Item_HintTT.class, "gt.blockhintTT", GT_Material_Casings.INSTANCE);
 
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".0.name", "Hint 1 dot");//id is -1
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".1.name", "Hint 2 dots");
@@ -37,7 +37,7 @@ public class GT_Block_HintTT extends GT_Block_Casings_Abstract {
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".9.name", "Hint 10 dots");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".10.name", "Hint 11 dots");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".11.name", "Hint 12 dots");
-        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Hint default");
+        GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".12.name", "Hint general");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".13.name", "Hint air");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".14.name", "Hint no air");
         GT_LanguageManager.addStringLocalization(getUnlocalizedName() + ".15.name", "Hint error");
@@ -55,7 +55,7 @@ public class GT_Block_HintTT extends GT_Block_Casings_Abstract {
         CustomItemList.hint_9.set(new ItemStack(this, 1, 9));
         CustomItemList.hint_10.set(new ItemStack(this, 1, 10));
         CustomItemList.hint_11.set(new ItemStack(this, 1, 11));
-        CustomItemList.hint_default.set(new ItemStack(this, 1, 12));
+        CustomItemList.hint_general.set(new ItemStack(this, 1, 12));
         CustomItemList.hint_air.set(new ItemStack(this, 1, 13));
         CustomItemList.hint_noAir.set(new ItemStack(this, 1, 14));
         CustomItemList.hint_error.set(new ItemStack(this, 1, 15));

@@ -112,13 +112,6 @@ public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch {
         return 1;
     }
 
-    //@Override
-    //public void onRemoval() {
-    //    if(mInventory!=null && (heat>0 || (getBaseMetaTileEntity()!=null && getBaseMetaTileEntity().isActive())))
-    //        for(int i=0;i<mInventory.length;i++)
-    //            mInventory[i]=null;
-    //}
-
     @Override
     public String[] getDescription() {
         return new String[]{

@@ -26,9 +26,15 @@ public class aOredictDequantizationInfo implements iExchangeInfo {
         amount = qty;
     }
 
-    public aOredictDequantizationInfo(iHasElementalDefinition emIn, OrePrefixes prefix, Materials material,  int qty) {
+    public aOredictDequantizationInfo(iHasElementalDefinition emIn, OrePrefixes prefix, Materials material, int qty) {
         in = emIn;
         out = OreDictionary.getOreID(prefix.name() + material.mName);
+        amount = qty;
+    }
+
+    public aOredictDequantizationInfo(iHasElementalDefinition emIn, OrePrefixes prefix, String materialName, int qty) {
+        in = emIn;
+        out = OreDictionary.getOreID(prefix.name() + materialName);
         amount = qty;
     }
 

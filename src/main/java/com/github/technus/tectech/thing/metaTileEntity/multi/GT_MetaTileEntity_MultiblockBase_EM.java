@@ -2,6 +2,7 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.Util;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStack;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStack;
@@ -39,11 +40,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.github.technus.tectech.CommonValues.*;
-import static com.github.technus.tectech.Util.StructureChecker;
-import static com.github.technus.tectech.Util.StructureCheckerAdvanced;
+import static com.github.technus.tectech.Util.*;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
-import static gregtech.api.enums.GT_Values.V;
-import static gregtech.api.enums.GT_Values.VN;
 
 /**
  * Created by danie_000 on 27.10.2016.
@@ -123,9 +121,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     protected void EM_extraExplosions() {
     }//For that extra hatches explosions, and maybe some MOORE EXPLOSIONS
 
-    protected void EM_stopMachine() {
-    }//On machine stop - now called when softhammered to offline state! - it does not cause a full stop like power failure
-
     @Deprecated
     protected void EM_workJustGotEnabled(){}//usually check recipe is more useful, therefore this one is deprecated
     protected void EM_workJustGotDisabled(){}
@@ -155,6 +150,36 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     protected void EM_onFirstTick(){} // callback on first tick
 
+    //Override but call supermethod at start!
+    @Override
+    public void stopMachine() {
+        mOutputItems = null;
+        mOutputFluids = null;
+        mEfficiency = 0;
+        mProgresstime = 0;
+        mMaxProgresstime = 0;
+        mEfficiencyIncrease = 0;
+        getBaseMetaTileEntity().disableWorking();
+
+        for (GT_MetaTileEntity_Hatch_OutputData data : eOutputData) {
+            data.q = null;
+        }
+
+        float mass = 0;
+        if (outputEM == null) return;
+        for (cElementalInstanceStackMap tree : outputEM)
+            mass += tree.getMass();
+        if (mass > 0) {
+            if (eMufflerHatches.size() < 1) explodeMultiblock();
+            mass /= eMufflerHatches.size();
+            for (GT_MetaTileEntity_Hatch_MufflerElemental dump : eMufflerHatches) {
+                if (dump.addOverflowMatter(mass)) explodeMultiblock();
+            }
+        }
+        outputEM = null;
+
+        hatchesStatusUpdate();
+    }//On machine stop - now called when softhammered to offline state! - it does not cause a full stop like power failure
 
     //RATHER LEAVE ALONE Section
 
@@ -385,10 +410,10 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         if (aBaseMetaTileEntity.isServerSide()) {
             if (mEfficiency < 0) mEfficiency = 0;
 
-            if(getBaseMetaTileEntity().hasWorkJustBeenEnabled()) EM_workJustGotEnabled();
-            if(previousTickValueForWorkEnabled && !getBaseMetaTileEntity().isAllowedToWork())
+            if (getBaseMetaTileEntity().hasWorkJustBeenEnabled()) EM_workJustGotEnabled();
+            if (previousTickValueForWorkEnabled && !getBaseMetaTileEntity().isAllowedToWork())
                 EM_workJustGotDisabled();
-            previousTickValueForWorkEnabled=getBaseMetaTileEntity().isAllowedToWork();//Assign new value
+            previousTickValueForWorkEnabled = getBaseMetaTileEntity().isAllowedToWork();//Assign new value
 
             if (--mUpdate == 0 || --mStartUpCheck == 0 || cyclicUpdate() || aBaseMetaTileEntity.hasWorkJustBeenEnabled()) {
                 mInputHatches.clear();
@@ -513,7 +538,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                     mCrowbar = true;
                                 } else {
                                     if (tHatch.mAuto && !(mWrench && mScrewdriver && mSoftHammer && mHardHammer && mSolderingTool && mCrowbar))
-                                        tHatch.isRecipeInputEqual(true);
+                                        tHatch.autoMaintainance();
                                     if (tHatch.mWrench) mWrench = true;
                                     if (tHatch.mScrewdriver) mScrewdriver = true;
                                     if (tHatch.mSoftHammer) mSoftHammer = true;
@@ -539,7 +564,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                     int qty = (int) Math.floor(remaining / instance.definition.getMass());
                                     if (qty > 0) {
                                         qty = Math.min(qty, instance.amount);
-                                        if(voider.addOverflowMatter(instance.definition.getMass() * qty))
+                                        if (voider.addOverflowMatter(instance.definition.getMass() * qty))
                                             voider.setOverflowMatter(voider.overflowMax);
                                         in.getContainerHandler().removeAmount(false, new cElementalDefinitionStack(instance.definition, qty));
                                     }
@@ -550,7 +575,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                     int qty = (int) Math.floor(remaining / instance.definition.getMass());
                                     if (qty > 0) {
                                         qty = Math.min(qty, instance.amount);
-                                        if(voider.addOverflowMatter(instance.definition.getMass() * qty))
+                                        if (voider.addOverflowMatter(instance.definition.getMass() * qty))
                                             voider.setOverflowMatter(voider.overflowMax);
                                         out.getContainerHandler().removeAmount(false, new cElementalDefinitionStack(instance.definition, qty));
                                     }
@@ -565,8 +590,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
                         if (mMaxProgresstime > 0 && doRandomMaintenanceDamage()) {//Start
                             if (onRunningTick(mInventory[1])) {//Compute EU
-                                if (!polluteEnvironment(getPollutionPerTick(mInventory[1])))
-                                    stopMachine();
+                                if (!polluteEnvironment(getPollutionPerTick(mInventory[1]))) stopMachine();//todo add em pollution
 
                                 if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime && recipeAt == Tick) {//progress increase and done
                                     hatchesStatusUpdate();
@@ -578,7 +602,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                         if (tStack != null) addOutput(tStack);
                                     mOutputItems = null;
 
-                                    if(mOutputFluids!=null) {
+                                    if (mOutputFluids != null) {
                                         if (mOutputFluids.length == 1) {
                                             for (FluidStack tStack : mOutputFluids)
                                                 if (tStack != null) addOutput(tStack);
@@ -595,18 +619,22 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                             mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
                                         }
                                         updateSlots();
-                                    } else stopMachine();
+                                    }// else {//not allowed to work
+                                    //    stopMachine();
+                                    //}
                                 }
-                            }
-                        } else {
-                            if (recipeAt == Tick || aBaseMetaTileEntity.hasWorkJustBeenEnabled()) {
-                                if (aBaseMetaTileEntity.isAllowedToWork()) {
-                                    if (checkRecipe(mInventory[1])) {
-                                        mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
-                                    }
-                                    updateSlots();
-                                } else stopMachine();
-                            }
+                            }// else {//failed to consume power/resources - inside on running tick
+                            //    stopMachine();
+                            //}
+                        } else if (recipeAt == Tick || aBaseMetaTileEntity.hasWorkJustBeenEnabled()) {
+                            if (aBaseMetaTileEntity.isAllowedToWork()) {
+                                if (checkRecipe(mInventory[1])) {
+                                    mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
+                                }
+                                updateSlots();
+                            }// else {//not allowed to work
+                            //    stopMachine();
+                            //}
                         }
 
                         {//DO ONCE
@@ -692,12 +720,15 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if (eRequiredData > 0 && eRequiredData > eAvailableData) return false;
+        if (eRequiredData > 0 && eRequiredData > eAvailableData) {
+            stopMachine();
+            return false;
+        }
         if (this.mEUt > 0) {
             this.EMaddEnergyOutput((long) mEUt * (long) mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
             return true;
         } else if (this.mEUt < 0 && !this.EMdrainEnergyInput((long) (-this.mEUt) * getMaxEfficiency(aStack) / (long) Math.max(1000, this.mEfficiency), eAmpereFlow)) {
-            this.stopMachine();
+            stopMachine();
             return false;
         } else return true;
     }
@@ -822,12 +853,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     //new Method
     public final int getMaxEnergyInputTier() {
-        return GT_Utility.getTier(maxEUinputMax);
+        return Util.getTier(maxEUinputMax);
     }
 
     //new Method
     public final int getMinEnergyInputTier() {
-        return GT_Utility.getTier(maxEUinputMin);
+        return Util.getTier(maxEUinputMin);
     }
 
     //new Method
@@ -846,39 +877,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             out.putUnifyAll(hatch.getContainerHandler());
         }
         return out.hasStacks()?out:null;
-    }
-
-    @Override
-    public final void stopMachine() {
-        mOutputItems = null;
-        mOutputFluids = null;
-        //mEUt = 0;
-        mEfficiency = 0;
-        mProgresstime = 0;
-        mMaxProgresstime = 0;
-        mEfficiencyIncrease = 0;
-        getBaseMetaTileEntity().disableWorking();
-
-        for (GT_MetaTileEntity_Hatch_OutputData data : eOutputData) {
-            data.q = null;
-        }
-
-        float mass = 0;
-        if (outputEM == null) return;
-        for (cElementalInstanceStackMap tree : outputEM)
-            mass += tree.getMass();
-        if (mass > 0) {
-            if (eMufflerHatches.size() < 1) explodeMultiblock();
-            mass /= eMufflerHatches.size();
-            for (GT_MetaTileEntity_Hatch_MufflerElemental dump : eMufflerHatches) {
-                if (dump.addOverflowMatter(mass)) explodeMultiblock();
-            }
-        }
-        outputEM = null;
-
-        hatchesStatusUpdate();
-
-        EM_stopMachine();
     }
 
     @Override
