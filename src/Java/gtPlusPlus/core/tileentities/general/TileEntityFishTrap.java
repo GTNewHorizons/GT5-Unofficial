@@ -28,8 +28,8 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 
 	public TileEntityFishTrap() {
 		this.inventoryContents = new InventoryFishTrap();// number of slots -
-															// without product
-															// slot
+		// without product
+		// slot
 		this.setTileLocation();
 	}
 
@@ -147,9 +147,23 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 		else if (lootWeight <= 99) {
 			loot = ItemUtils.getSimpleStack(minecraftFish[MathUtils.randInt(0, minecraftFish.length - 1)], 1);
 		}
+
 		else if (lootWeight == 100){
-			if (MathUtils.randInt(0, 1) == 0){
-			loot = ItemUtils.getSimpleStack(Items.emerald);
+			int rareLoot = MathUtils.randInt(1, 10);
+			if (rareLoot <= 4) {
+				loot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("nuggetIron", 1);
+				if (loot == null){
+					loot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotIron", 1);
+				}
+			}
+			else if (rareLoot <= 7) {
+				loot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("nuggetGold", 1);
+				if (loot == null){
+					loot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotGold", 1);
+				}
+			}			
+			else if (rareLoot <= 9){
+				loot = ItemUtils.getSimpleStack(Items.emerald);
 			}
 			else {
 				loot = ItemUtils.getSimpleStack(Items.diamond);
@@ -333,7 +347,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 			accessibleSides[r]=r;
 		}
 		return accessibleSides;
-		
+
 	}
 
 	@Override
