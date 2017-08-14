@@ -209,7 +209,7 @@ public class TT_NEI_ResearchHandler extends TemplateRecipeHandler {
             int tSpecial = ((CachedDefaultRecipe) this.arecipes.get(aRecipeIndex)).mRecipe.mSpecialValue;
             short ampere=(short) (tSpecial & 0xFFFF),minComputationPerSec=(short)(tSpecial>>>16);
 			if (tEUt != 0) {
-				//drawText(10, 73, trans("152","Total: ") + computation * tEUt + " EU", -16777216);
+				drawText(10, 73, trans("152","Max Total: ") + ((1+((computation-minComputationPerSec)/minComputationPerSec)) * (long)tEUt * ampere * 20) + " EU", -16777216);
 				drawText(10, 83, trans("153","Usage: ") + ((long)tEUt*ampere) + " EU/t", -16777216);
 				if (this.mRecipeMap.mShowVoltageAmperageInNEI) {
 					drawText(10, 93, trans("154","Voltage: ") + tEUt + " EU", -16777216);
@@ -220,7 +220,7 @@ public class TT_NEI_ResearchHandler extends TemplateRecipeHandler {
 				}
 			}
             drawText(10, 113, "Computation: "+computation, -16777216);
-            drawText(10, 123, "Computation: "+minComputationPerSec + " /s", -16777216);
+            drawText(10, 123, "Min Computation: "+minComputationPerSec + " /s", -16777216);
 		} else {
 			int i = 0;
 			for (String descLine : recipeDesc) {
