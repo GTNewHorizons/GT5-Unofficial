@@ -220,7 +220,7 @@ public class TT_NEI_ResearchHandler extends TemplateRecipeHandler {
 				}
 			}
             drawText(10, 113, "Computation: "+computation, -16777216);
-            drawText(10, 123, "min. Computation/s: "+minComputationPerSec, -16777216);
+            drawText(10, 123, "Computation: "+minComputationPerSec + " /s", -16777216);
 		} else {
 			int i = 0;
 			for (String descLine : recipeDesc) {
