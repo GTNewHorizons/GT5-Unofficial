@@ -153,9 +153,9 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                             computationRequired=computationRemaining=ttRecipe.mDuration*20L;
                             mMaxProgresstime=20;
                             mEfficiencyIncrease=10000;
-                            eRequiredData=1;//require constant pc connection doesn't matter how fast is the computer
-                            eAmpereFlow=1;
-                            mEUt=(int)V[8];
+                            eRequiredData=(short)(ttRecipe.mSpecialValue>>>16);
+                            eAmpereFlow=(short)(ttRecipe.mSpecialValue&0xFFFF);
+                            mEUt=ttRecipe.mEUt;
                             eHolders.get(0).getBaseMetaTileEntity().setActive(true);
                             return true;
                         }

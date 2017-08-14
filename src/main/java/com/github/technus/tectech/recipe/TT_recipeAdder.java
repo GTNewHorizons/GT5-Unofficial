@@ -8,13 +8,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public class TT_recipeAdder extends GT_RecipeAdder {
-    public static boolean addResearchableAssemblylineRecipe(ItemStack aResearchItem, int computationRequired, ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int aDuration, int aEUt) {
+    public static boolean addResearchableAssemblylineRecipe(ItemStack aResearchItem, int totalComputationRequired, short computationRequiredPerSec, int researchEUt, short researchAmperage, ItemStack[] aInputs, FluidStack[] aFluidInputs, ItemStack aOutput, int assDuration, int assEUt) {
         if(aInputs==null)aInputs=new ItemStack[0];
         if(aFluidInputs==null)aFluidInputs=new FluidStack[0];
-        if ((aResearchItem==null)||(computationRequired<=0)||(aOutput == null) || aInputs.length>15) {
+        if ((aResearchItem==null)||(totalComputationRequired<=0)||(aOutput == null) || aInputs.length>15) {
             return false;
         }
-        if ((aDuration = GregTech_API.sRecipeFile.get("assemblingline", aOutput, aDuration)) <= 0) {
+        if ((assDuration = GregTech_API.sRecipeFile.get("assemblingline", aOutput, assDuration)) <= 0) {
             return false;
         }
         for(ItemStack tItem : aInputs){
@@ -22,9 +22,11 @@ public class TT_recipeAdder extends GT_RecipeAdder {
                 System.out.println("addAssemblingLineRecipe "+aResearchItem.getDisplayName()+" --> "+aOutput.getUnlocalizedName()+" there is some null item in that recipe");
             }
         }
-        TT_recipe.TT_Recipe_Map.sResearchableFakeRecipes.addFakeRecipe(false, new ItemStack[]{aResearchItem}, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Writes Research result")}, null, null, computationRequired, 30, 0);
-        GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.addFakeRecipe(false, aInputs, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Reads Research result")}, aFluidInputs, null, aDuration, aEUt, 0,true);
-        GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(new GT_Recipe.GT_Recipe_AssemblyLine( aResearchItem, 0/*ignored*/, aInputs, aFluidInputs, aOutput, aDuration, aEUt));
+        if(researchAmperage<=0) researchAmperage=1;
+        if(computationRequiredPerSec<=0) computationRequiredPerSec=1;
+        TT_recipe.TT_Recipe_Map.sResearchableFakeRecipes.addFakeRecipe(false, new ItemStack[]{aResearchItem}, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Writes Research result")}, null, null, totalComputationRequired, researchEUt, researchAmperage|(computationRequiredPerSec<<16));
+        GT_Recipe.GT_Recipe_Map.sAssemblylineVisualRecipes.addFakeRecipe(false, aInputs, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataStick.getWithName(1L, "Reads Research result")}, aFluidInputs, null, assDuration, assEUt, 0,true);
+        GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes.add(new GT_Recipe.GT_Recipe_AssemblyLine( aResearchItem, 0/*ignored*/, aInputs, aFluidInputs, aOutput, assDuration, assEUt));
         return true;
     }
 
