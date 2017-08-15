@@ -26,7 +26,7 @@ import static com.github.technus.tectech.Util.StructureWriter;
  * Created by Tec on 23.03.2017.
  */
 public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_TieredMachineBlock {
-    private static Textures.BlockIcons.CustomIcon MARK;
+    private static GT_RenderedTexture MARK;
     public short numbers[] = new short[6];
     public boolean size = false;
     public String[] result = new String[]{"Undefined"};
@@ -48,12 +48,12 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        MARK = new Textures.BlockIcons.CustomIcon("iconsets/MARK");
+        MARK = new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("iconsets/MARK"));
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], (aSide != this.getBaseMetaTileEntity().getFrontFacing()) ? new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE) : new GT_RenderedTexture(MARK)};
+        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], (aSide != aFacing) ? new GT_RenderedTexture(Textures.BlockIcons.OVERLAY_TELEPORTER_ACTIVE) : MARK};
     }
 
     @Override
