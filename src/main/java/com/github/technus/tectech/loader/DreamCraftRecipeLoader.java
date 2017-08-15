@@ -57,7 +57,8 @@ public class DreamCraftRecipeLoader implements Runnable {
         //Advanced Computer Casing
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.eM_Computer_Casing.get(1, o), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 8), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 64), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Superconductor, 4)}, Materials.Tungsten.getMolten(2000), CustomItemList.eM_Computer_Bus.get(1, o), 800, 122880);
         //endregion
-
+        //Active Transformer
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{com.dreammaster.gthandler.CustomItemList.WetTransformer_ZPM_LuV.get(1, o), com.dreammaster.gthandler.CustomItemList.HighEnergyFlowCircuit.get(2, o), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Superconductor, 4), ItemList.Circuit_Chip_UHPIC.get(4, o)}, Materials.Tungsten.getMolten(500), CustomItemList.Machine_Multi_Transformer.get(1, o), 400, 30720);
         //region multiblocks assline
         //Research Station
         GT_Values.RA.addAssemblylineRecipe(com.dreammaster.gthandler.CustomItemList.ScannerZPM.get(1), 144000, new ItemStack[]{
