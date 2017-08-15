@@ -17,6 +17,8 @@ public class DreamCraftRecipeLoader implements Runnable {
     @Override
     public void run() {
         Object[] o = new Object[0];
+
+        //region multiamp hatches
         //Dynamo Hatches UV-UIV
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Hatch_Dynamo_UV.get(1, o), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.NaquadahAlloy, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 2)}, Materials.Silver.getMolten(1000), CustomItemList.eM_dynamomulti4_UV.get(1, o), 100, 122880);
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Transformer_MAX_UV.get(1, o), CustomItemList.eM_dynamomulti4_UV.get(1, o), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.NaquadahAlloy, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Osmium, 4)}, Materials.Electrum.getMolten(1000), CustomItemList.eM_dynamomulti16_UV.get(1, o), 200, 122880);
@@ -43,6 +45,9 @@ public class DreamCraftRecipeLoader implements Runnable {
         //GT_Values.RA.addAssemblerRecipe(new ItemStack[]{com.dreammaster.gthandler.CustomItemList.Hatch_Energy_UIV.get(1, o), GT_OreDictUnificator.get(OrePrefixes.wireGt04, Materials.NetherStar, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BlackPlutonium, 2)}, Materials.Silver.getMolten(8000), CustomItemList.eM_energymulti4_UIV.get(1, o), 100, 8000000);
         //GT_Values.RA.addAssemblerRecipe(new ItemStack[]{com.dreammaster.gthandler.CustomItemList.Transformer_UMV_UIV.get(1, o), CustomItemList.eM_energymulti4_UIV.get(1, o), GT_OreDictUnificator.get(OrePrefixes.wireGt08, Materials.NetherStar, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BlackPlutonium, 4)}, Materials.Electrum.getMolten(8000), CustomItemList.eM_energymulti16_UIV.get(1, o), 200, 8000000);
         //GT_Values.RA.addAssemblerRecipe(new ItemStack[]{com.dreammaster.gthandler.CustomItemList.WetTransformer_UMV_UIV.get(1, o), CustomItemList.eM_energymulti16_UIV.get(1, o), GT_OreDictUnificator.get(OrePrefixes.wireGt12, Materials.NetherStar, 2), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.BlackPlutonium, 6)}, Materials.Tungsten.getMolten(8000), CustomItemList.eM_energymulti64_UIV.get(1, o), 400, 8000000);
+        //endregion
+
+        //region casing
         //High Power Casing
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Iridium, 1), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 16), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.NiobiumTitanium, 2)}, Materials.Tungsten.getMolten(500), CustomItemList.eM_Power.get(1, o), 400, 30720);
         //Computer Casing
@@ -51,6 +56,9 @@ public class DreamCraftRecipeLoader implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1), ItemList.Electric_Motor_IV.get(2, o), GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 2),  GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.StainlessSteel, 16), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Aluminium, 2)}, Materials.Helium.getGas(1000), CustomItemList.eM_Computer_Vent.get(1, o), 400, 1920);
         //Advanced Computer Casing
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.eM_Computer_Casing.get(1, o), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 8), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 64), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Superconductor, 4)}, Materials.Tungsten.getMolten(2000), CustomItemList.eM_Computer_Bus.get(1, o), 800, 122880);
+        //endregion
+
+        //region multiblocks assline
         //Research Station
         GT_Values.RA.addAssemblylineRecipe(com.dreammaster.gthandler.CustomItemList.ScannerZPM.get(1), 144000, new ItemStack[]{
                 ItemList.Hull_ZPM.get(1),
@@ -80,5 +88,6 @@ public class DreamCraftRecipeLoader implements Runnable {
                 Materials.UUMatter.getFluid(500),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 1000)
         }, CustomItemList.holder_Hatch.get(1), 1200, 100000);
+        //endregion
     }
 }
