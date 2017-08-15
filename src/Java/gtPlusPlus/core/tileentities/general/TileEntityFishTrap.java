@@ -95,19 +95,64 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 			int checkingSlot = 0;
 			final ItemStack loot = this.generateLootForFishTrap();
 			try {
+				Utils.LOG_INFO("Trying to add "+loot.getDisplayName()+" | "+loot.getItemDamage());
 				for (final ItemStack contents : this.getInventory().getInventory()) {
+					
 					if (contents == null) {
+						Utils.LOG_INFO("Adding Item To Empty Slot. "+(checkingSlot+1));
 						this.getInventory().setInventorySlotContents(checkingSlot, loot);
 						this.markDirty();
 						return true;
 					}
+					
 					else if (contents.getItem() == loot.getItem() && contents.stackSize <= contents.getMaxStackSize() - 1) {
 						if (contents.stackSize < contents.getMaxStackSize()) {
-							contents.stackSize++;
-							this.markDirty();
-							return true;
+							if (contents.getHasSubtypes()){
+								if (contents.getItemDamage() == loot.getItemDamage()){
+									Utils.LOG_INFO("1-Trying to add one more "+loot.getDisplayName()+" to an existing stack of "+contents.getDisplayName()+" with a size of "+contents.stackSize);
+									contents.stackSize++;
+									this.markDirty();
+									return true;
+								}
+								else {	
+									Utils.LOG_INFO("2-Trying to add one more "+loot.getDisplayName()+" to an existing stack of "+contents.getDisplayName()+" with a size of "+contents.stackSize);
+									//
+								}
+							}
+							else {	
+								Utils.LOG_INFO("3-Trying to add one more "+loot.getDisplayName()+" to an existing stack of "+contents.getDisplayName()+" with a size of "+contents.stackSize);
+								contents.stackSize++;
+								this.markDirty();
+								return true;
+							}
+							
 						}
 					}
+
+					/*if (ItemUtils.simpleMetaStack(loot.getItem(), loot.getItemDamage(), 1) == ItemUtils.simpleMetaStack(contents.getItem(), contents.getItemDamage(), 1)){
+						Utils.LOG_INFO("Found Item With Existing Stack & Meta.");
+						if (contents.stackSize <= contents.getMaxStackSize() - 1){
+							Utils.LOG_INFO("Existing stack is not max stack size.");
+							if (contents.stackSize < contents.getMaxStackSize()) {
+								Utils.LOG_INFO("Adding Item To partially filled Slot.");
+								contents.stackSize++;
+								this.markDirty();
+								return true;
+							}
+						}
+					}
+					else if (contents.getItem() == loot.getItem() && contents.getItemDamage() != loot.getItemDamage()) {
+						Utils.LOG_INFO("Found Item With Existing Stack & Different Meta.");
+						if (contents.stackSize <= contents.getMaxStackSize() - 1){
+							Utils.LOG_INFO("Existing stack is not max stack size.");
+							if (contents.stackSize < contents.getMaxStackSize()) {
+								Utils.LOG_INFO("Adding Item To partially filled Slot.");
+								contents.stackSize++;
+								this.markDirty();
+								return true;
+							}
+						}
+					}*/
 					checkingSlot++;
 				}
 			}
@@ -130,22 +175,26 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 		else if (lootWeight <= 20) {
 			loot = ItemUtils.getSimpleStack(Blocks.sand);
 		}
+		// Junk Loot
 		else if (lootWeight <= 30) {
-			loot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(seaweed, 1);
+			if (LoadedMods.PamsHarvestcraft) {
+				loot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(seaweed, 1);
+			}
+			else {
+				loot = ItemUtils.getSimpleStack(Blocks.dirt);
+			}
 		}
 		// Pam Fish
-		else if (lootWeight <= 60) {
-			if (LoadedMods.PamsHarvestcraft) {
+		else if (lootWeight <= 99) {
+			int lootSwitch = MathUtils.randInt(0, 1);
+			if (LoadedMods.PamsHarvestcraft && lootSwitch==0) {
 				loot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken(
 						prefix + harvestcraftFish[MathUtils.randInt(0, harvestcraftFish.length - 1)] + suffix, 1);
 			}
 			else {
-				loot = ItemUtils.getSimpleStack(minecraftFish[MathUtils.randInt(0, minecraftFish.length - 1)], 1);
+				int fishID = MathUtils.randInt(0, minecraftFish.length - 1);
+				loot = minecraftFish[fishID];
 			}
-		}
-		// Minecraft Fish
-		else if (lootWeight <= 99) {
-			loot = ItemUtils.getSimpleStack(minecraftFish[MathUtils.randInt(0, minecraftFish.length - 1)], 1);
 		}
 
 		else if (lootWeight == 100){
@@ -172,6 +221,8 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 		else {
 			loot = ItemUtils.getSimpleStack(Blocks.diamond_ore);
 		}
+		loot.stackSize=1;
+		Utils.LOG_INFO("Adding x"+loot.stackSize+" "+loot.getDisplayName()+".");
 		return loot;
 	}
 
@@ -230,7 +281,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 			calculateTickrate = 2000;
 		}
 		else if (this.waterSides == 6) {
-			calculateTickrate = 900;
+			calculateTickrate = 100;
 		}
 		this.baseTickRate = calculateTickrate;
 	}
@@ -270,9 +321,12 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 			"Crayfish", "Eel", "Frog", "Grouper", "Herring", "Jellyfish", "Mudfish", "Octopus", "Perch", "Scallop",
 			"Shrimp", "Snail", "Snapper", "Tilapia", "Trout", "Tuna", "Turtle", "Walleye" };
 
-	private static final ItemStack[] minecraftFish = { ItemUtils.getItemStack("minecraft:fish", 1),
-			ItemUtils.getItemStack("minecraft:fish:1", 1), ItemUtils.getItemStack("minecraft:fish:2", 1),
-			ItemUtils.getItemStack("minecraft:fish:3", 1) };
+	private static final ItemStack[] minecraftFish = { 
+			ItemUtils.simpleMetaStack(Items.fish, 0, 1).copy(),
+			ItemUtils.simpleMetaStack(Items.fish, 1, 1).copy(),
+			ItemUtils.simpleMetaStack(Items.fish, 2, 1).copy(),
+			ItemUtils.simpleMetaStack(Items.fish, 3, 1).copy()
+	};
 
 	public static void pamsHarvestCraftCompat() {
 		for (int i = 0; i < harvestcraftFish.length; i++) {
