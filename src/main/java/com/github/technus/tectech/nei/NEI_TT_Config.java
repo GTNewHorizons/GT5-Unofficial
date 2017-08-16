@@ -11,7 +11,7 @@ public class NEI_TT_Config implements IConfigureNEI {//must be NEI*Config
     public void loadConfig() {
         sIsAdded = false;
         if(FMLCommonHandler.instance().getEffectiveSide().isClient())
-            TT_RH =new TT_NEI_ResearchHandler(TT_recipe.TT_Recipe_Map.sResearchableFakeRecipes);
+            TT_RH =new TT_NEI_ResearchHandler(TT_recipe.GT_Recipe_MapTT.sResearchableFakeRecipes);
         sIsAdded = true;
     }
 

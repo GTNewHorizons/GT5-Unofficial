@@ -3,6 +3,7 @@ package com.github.technus.tectech.proxy;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.entity.fx.BlockHint;
 import com.github.technus.tectech.thing.block.QuantumGlassRender;
+import com.github.technus.tectech.thing.block.QuantumStuffRender;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -41,6 +42,9 @@ public class ClientProxy extends CommonProxy {
     public void registerRenderInfo() {
         QuantumGlassRender.renderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(QuantumGlassRender.renderID, new QuantumGlassRender());
+
+        QuantumStuffRender.renderID = RenderingRegistry.getNextAvailableRenderId();
+        RenderingRegistry.registerBlockHandler(QuantumStuffRender.renderID, new QuantumStuffRender());
 
         if(Loader.isModLoaded("openmodularturrets")) {
             TurretHeadRenderEM turretHeadRenderEM=new TurretHeadRenderEM();

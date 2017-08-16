@@ -44,9 +44,9 @@ public class TT_NEI_ResearchHandler extends TemplateRecipeHandler {
         GuiContainerManager.addTooltipHandler(new GT_RectHandler());
     }
 
-    protected final TT_recipe.TT_Recipe_Map mRecipeMap;
+    protected final TT_recipe.GT_Recipe_MapTT mRecipeMap;
 
-    public TT_NEI_ResearchHandler(TT_recipe.TT_Recipe_Map aRecipeMap) {
+    public TT_NEI_ResearchHandler(TT_recipe.GT_Recipe_MapTT aRecipeMap) {
         this.mRecipeMap = aRecipeMap;
         this.transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(65, 13, 36, 18), getOverlayIdentifier()));
         if (!NEI_TT_Config.sIsAdded) {

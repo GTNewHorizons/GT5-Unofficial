@@ -8,6 +8,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import static com.github.technus.tectech.Util.StructureBuilder;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
@@ -23,9 +24,9 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
             {"     ", " 222 ", " 2.2 ", " 222 ", "     ",},
             {"00000", "00000", "00000", "00000", "00000",},
             {"00100", "01110", "11111", "01110", "00100",},
-            {"01110", "1C1", "1C1", "1C1", "01110",},
-            {"01110", "1C1", "1C1", "1C1", "01110",},
-            {"01110", "1C1", "1C1", "1C1", "01110",},
+            {"01110", "1---1", "1---1", "1---1", "01110",},
+            {"01110", "1---1", "1-A-1", "1---1", "01110",},
+            {"01110", "1---1", "1---1", "1---1", "01110",},
             {"00100", "01110", "11\"11", "01110", "00100",},
             {"#####", "#000#", "#0!0#", "#000#", "#####",},
     };
@@ -84,5 +85,15 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                 "What is existing here?",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "I HAVE NO IDEA (yet)!"
         };
+    }
+
+    @Override
+    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+        if(aBaseMetaTileEntity.isActive() && (aTick & 0x2)==0 && aBaseMetaTileEntity.isClientSide()){
+            int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX*3;
+            int yDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetY*3;
+            int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ*3;
+            aBaseMetaTileEntity.getWorld().markBlockRangeForRenderUpdate(xDir,yDir,zDir,xDir,yDir,zDir);
+        }
     }
 }

@@ -1,5 +1,6 @@
 itemGroup.TecTech=TecTech Interdimensional
 tile.quantumGlass.name=Quantum Glass
+tile.quantumStuff.name=Quantum Stuff
 item.em.debugContainer.name=Debug EM Container
 item.em.debugBuilder.name=Multiblock Machine Blueprint
 item.em.parametrizerMemoryCard.name=Parametrizer Memory Card
