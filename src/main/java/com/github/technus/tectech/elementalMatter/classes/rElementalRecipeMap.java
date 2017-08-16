@@ -36,15 +36,15 @@ public class rElementalRecipeMap {//TODO FIX
         return recipes.remove(map);//suspicious but ok, equals and hashcode methods are adjusted for that
     }
 
+    public HashMap<Short, rElementalRecipe> findExact(cElementalInstanceStackMap in) {
+        return recipes.get(in.toDefinitionMapForComparison());//suspicious but ok, equals and hashcode methods are adjusted for that
+    }
+
     //Recipe founding should not check amounts - this checks if the types of matter in map are equal to any recipe!
     //Return a recipeShortMap when the content of input is equal (ignoring amounts and instance data)
     @Deprecated
     public HashMap<Short, rElementalRecipe> findExact(cElementalStackMap in) {
         return recipes.get(in);//suspicious but ok, equals and hashcode methods are adjusted for that
-    }
-
-    public HashMap<Short, rElementalRecipe> findExact(cElementalInstanceStackMap in) {
-        return recipes.get(in.toDefinitionMapForComparison());//suspicious but ok, equals and hashcode methods are adjusted for that
     }
 
     //this does check if the map contains all the requirements for any recipe, and the required amounts

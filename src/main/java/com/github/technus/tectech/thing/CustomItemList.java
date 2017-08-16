@@ -31,11 +31,16 @@ public enum CustomItemList implements IItemContainer {
     Parametrizer_Hatch, Uncertainty_Hatch, UncertaintyX_Hatch, dataIn_Hatch, dataOut_Hatch,
     eM_Containment, eM_Containment_Field, eM_Containment_Advanced, eM_Coil, eM_Teleportation, eM_Dimensional, eM_Ultimate_Containment, eM_Ultimate_Containment_Advanced, eM_Ultimate_Containment_Field, eM_Spacetime, eM_Computer_Casing, eM_Computer_Bus, eM_Computer_Vent, eM_Hollow, eM_Power,
     debugBlock,
+    Machine_Multi_Microwave,
+    Machine_Multi_Transformer,
+    Machine_Multi_Computer, Machine_Multi_Switch, Machine_Multi_Research,
+    Machine_Multi_MatterToEM, Machine_Multi_EMToMatter, Machine_Multi_EMjunction, Machine_Multi_Scanner,
     Machine_Multi_EssentiaToEM, Machine_Multi_EMToEssentia,
-    Machine_Multi_MatterToEM, Machine_Multi_EMToMatter, Machine_Multi_EMjunction,
-    Machine_Multi_Transformer, Machine_Multi_Computer, Machine_Multi_Microwave, Machine_Multi_Infuser, Machine_Multi_Switch,
-    Machine_Multi_BHG, Machine_Multi_Annihilation, Machine_Multi_Decay,
-    Machine_Multi_EMmachine, Machine_Multi_Stabilizer, Machine_Multi_Collider, Machine_Multi_Wormhole, Machine_Multi_EMCrafter, Machine_Multi_Scanner, Machine_Multi_Research,
+    Machine_Multi_Infuser, Machine_Multi_Collider,
+    Machine_Multi_Decay, Machine_Multi_EMmachine,
+    Machine_Multi_Stabilizer, Machine_Multi_EMCrafter,
+    Machine_Multi_Wormhole, Machine_Multi_Annihilation,
+    Machine_Multi_BHG,
     hint_0,hint_1,hint_2,hint_3,hint_4,hint_5,hint_6,hint_7,hint_8,hint_9,hint_10,hint_11, hint_general,hint_air,hint_noAir,hint_error;
 
 
