@@ -3,7 +3,6 @@ package com.github.technus.tectech.recipe;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStackMap;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_research;
-import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.GT_RecipeAdder;
@@ -61,8 +60,7 @@ public class TT_recipeAdder extends GT_RecipeAdder {
         if(computationRequiredPerSec<=0) computationRequiredPerSec=1;
         else if(computationRequiredPerSec > Short.MAX_VALUE) computationRequiredPerSec=Short.MAX_VALUE;
         TT_recipe.GT_Recipe_MapTT.sResearchableFakeRecipes.addFakeRecipe(false, new ItemStack[]{aResearchItem}, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataOrb.getWithName(1L, "Writes Research result for "+ GT_MetaTileEntity_EM_research.machine)}, null, null, totalComputationRequired, researchEUt, researchAmperage|(computationRequiredPerSec<<16));
-        TT_recipe.TT_Recipe_Map.sEMmachineRecipes.add(GameRegistry.findUniqueIdentifierFor(aOutput.getItem()).modId+":"+aOutput.getUnlocalizedName()+":"+aOutput.getItemDamage(),
-                new TT_recipe.TT_assLineRecipe(false,aResearchItem,aInputs,new ItemStack[]{aOutput},new ItemStack[]{ItemList.Tool_DataOrb.getWithName(1L, "Reads Research result")},
+        TT_recipe.TT_Recipe_Map.sMachineRecipes.add(new TT_recipe.TT_assLineRecipe(false,aResearchItem,aInputs,new ItemStack[]{aOutput},new ItemStack[]{ItemList.Tool_DataOrb.getWithName(1L, "Reads Research result")},
                         aFluidInputs,machineDuration,machineEUt,machineAmperage,eInputs));
         return true;
     }
@@ -79,9 +77,7 @@ public class TT_recipeAdder extends GT_RecipeAdder {
         if(computationRequiredPerSec<=0) computationRequiredPerSec=1;
         else if(computationRequiredPerSec > Short.MAX_VALUE) computationRequiredPerSec=Short.MAX_VALUE;
         TT_recipe.GT_Recipe_MapTT.sResearchableFakeRecipes.addFakeRecipe(false, new ItemStack[]{aResearchItem}, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataOrb.getWithName(1L, "Writes Research result for "+GT_MetaTileEntity_EM_research.crafter)}, null, null, totalComputationRequired, researchEUt, researchAmperage|(computationRequiredPerSec<<16));
-        GameRegistry.UniqueIdentifier id=GameRegistry.findUniqueIdentifierFor(aOutput.getItem());
-        TT_recipe.TT_Recipe_Map.sEMcrafterRecipes.add(id.modId+":"+id.name+":"+aOutput.getItemDamage(),
-                new TT_recipe.TT_assLineRecipe(false,aResearchItem,null,new ItemStack[]{aOutput},new ItemStack[]{ItemList.Tool_DataOrb.getWithName(1L, "Reads Research result")},
+        TT_recipe.TT_Recipe_Map.sCrafterRecipes.add(new TT_recipe.TT_assLineRecipe(false,aResearchItem,null,new ItemStack[]{aOutput},new ItemStack[]{ItemList.Tool_DataOrb.getWithName(1L, "Reads Research result")},
                         null,crafterDuration,crafterEUt,crafterAmperage,eInputs,null,catalyst,check));
         return true;
     }

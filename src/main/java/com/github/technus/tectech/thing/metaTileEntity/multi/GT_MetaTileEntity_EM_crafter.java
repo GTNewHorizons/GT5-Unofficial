@@ -17,6 +17,7 @@ import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBloc
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_crafter extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+    public final static String crafter="EM Crafting";
     //region structure
     private static final String[][] shape = new String[][]{
             {"A000","0   0","0 . 0","0   0","A000",},

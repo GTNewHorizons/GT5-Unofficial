@@ -1,6 +1,7 @@
 package com.github.technus.tectech.recipe;
 
 import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStackMap;
+import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStack;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackMap;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GT_Recipe;
@@ -114,8 +115,8 @@ public class TT_recipe extends GT_Recipe {
     }
 
     public static class TT_Recipe_Map<T extends TT_recipe> {
-        public static TT_Recipe_Map<TT_assLineRecipe> sEMcrafterRecipes = new TT_Recipe_Map();
-        public static TT_Recipe_Map<TT_assLineRecipe> sEMmachineRecipes = new TT_Recipe_Map();
+        public static TT_Recipe_Map<TT_assLineRecipe> sCrafterRecipes = new TT_Recipe_Map<>();
+        public static TT_Recipe_Map<TT_assLineRecipe> sMachineRecipes = new TT_Recipe_Map<>();
 
         public final HashMap<String,T> mRecipeMap;
         
@@ -132,9 +133,9 @@ public class TT_recipe extends GT_Recipe {
             return mRecipeMap.get(dataHandler.stackTagCompound.getString("mapID"));
         }
 
-        public void add(String identifier, T recipe){
-            if(identifier.length()==0) return;
-            mRecipeMap.put(identifier,recipe);
+        public void add(T recipe){
+            GameRegistry.UniqueIdentifier uid=GameRegistry.findUniqueIdentifierFor(recipe.mOutputs[0].getItem());
+            mRecipeMap.put(uid+":"+recipe.mOutputs[0].getItemDamage(),recipe);
         }
 
         public Collection<T> recipeList(){
@@ -152,7 +153,6 @@ public class TT_recipe extends GT_Recipe {
 
     public static class TT_assLineRecipe extends TT_recipe{
         public final ItemStack mResearchItem;
-        public final String id;
 
         public TT_assLineRecipe(boolean aOptimize, ItemStack researchItem,
                                 ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems,
@@ -160,8 +160,6 @@ public class TT_recipe extends GT_Recipe {
                                 cElementalDefinitionStackMap[] in, cElementalDefinitionStackMap[] out, cElementalDefinitionStackMap[] catalyst, AdditionalCheck check) {
             super(aOptimize, aInputs, aOutputs, aSpecialItems, null, aFluidInputs, null, aDuration, aEUt, aSpecialValue, in, out, catalyst, check);
             mResearchItem=researchItem;
-            GameRegistry.UniqueIdentifier id=GameRegistry.findUniqueIdentifierFor(aOutputs[0].getItem());
-            this.id=id.modId+":"+id.name+":"+aOutputs[0].getItemDamage();
         }
 
         public TT_assLineRecipe(boolean aOptimize, ItemStack researchItem,
@@ -169,6 +167,25 @@ public class TT_recipe extends GT_Recipe {
                                 FluidStack[] aFluidInputs, int aDuration, int aEUt, int aSpecialValue,
                                 cElementalDefinitionStackMap[] in) {
             this(aOptimize, researchItem, aInputs, aOutputs, aSpecialItems, aFluidInputs, aDuration, aEUt, aSpecialValue, in, null, null,null);
+        }
+    }
+
+    public static class TT_EMRecipe extends TT_recipe{
+        public final cElementalInstanceStack mResearchEM;
+
+        public TT_EMRecipe(boolean aOptimize, cElementalInstanceStack researchEM,
+                                ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems,
+                                FluidStack[] aFluidInputs, int aDuration, int aEUt, int aSpecialValue,
+                                cElementalDefinitionStackMap[] in, cElementalDefinitionStackMap[] out, cElementalDefinitionStackMap[] catalyst, AdditionalCheck check) {
+            super(aOptimize, aInputs, aOutputs, aSpecialItems, null, aFluidInputs, null, aDuration, aEUt, aSpecialValue, in, out, catalyst, check);
+            mResearchEM=researchEM;
+        }
+
+        public TT_EMRecipe(boolean aOptimize, cElementalInstanceStack researchEM,
+                                ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems,
+                                FluidStack[] aFluidInputs, int aDuration, int aEUt, int aSpecialValue,
+                                cElementalDefinitionStackMap[] in) {
+            this(aOptimize, researchEM, aInputs, aOutputs, aSpecialItems, aFluidInputs, aDuration, aEUt, aSpecialValue, in, null, null,null);
         }
     }
 }
