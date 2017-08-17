@@ -11,6 +11,8 @@ import net.minecraft.util.EnumChatFormatting;
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBase_EM {
+    public final static String machine="EM Machinery";
+    
     private static final String[][] shape = new String[][]{
             {"",//left to right top
                     "",
