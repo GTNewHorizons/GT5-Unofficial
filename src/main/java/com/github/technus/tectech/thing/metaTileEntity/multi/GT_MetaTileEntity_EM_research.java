@@ -30,6 +30,7 @@ import net.minecraft.util.EnumChatFormatting;
 import java.util.ArrayList;
 
 import static com.github.technus.tectech.Util.*;
+import static com.github.technus.tectech.recipe.TT_recipe.E_RECIPE_ID;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -295,7 +296,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
 
                 tNBT.setString("eMachineType", machineType);
                 GameRegistry.UniqueIdentifier uid=GameRegistry.findUniqueIdentifierFor(aRecipe.mOutputs[0].getItem());
-                tNBT.setString("eRecipeID", uid+":"+aRecipe.mOutputs[0].getItemDamage());
+                tNBT.setString(E_RECIPE_ID, uid+":"+aRecipe.mOutputs[0].getItemDamage());
                 tNBT.setString("author", EnumChatFormatting.BLUE + "Tec" + EnumChatFormatting.DARK_BLUE + "Tech" + EnumChatFormatting.WHITE + ' ' + machineType+ " Recipe Generator");
             }
         }
