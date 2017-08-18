@@ -3,7 +3,8 @@ package com.github.technus.tectech.recipe;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStack;
 import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStackMap;
-import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_research;
+import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_crafter;
+import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_machine;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.GT_RecipeAdder;
@@ -60,7 +61,7 @@ public class TT_recipeAdder extends GT_RecipeAdder {
         else if(researchAmperage > Short.MAX_VALUE) researchAmperage=Short.MAX_VALUE;
         if(computationRequiredPerSec<=0) computationRequiredPerSec=1;
         else if(computationRequiredPerSec > Short.MAX_VALUE) computationRequiredPerSec=Short.MAX_VALUE;
-        TT_recipe.GT_Recipe_MapTT.sResearchableFakeRecipes.addFakeRecipe(false, new ItemStack[]{aResearchItem}, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataOrb.getWithName(1L, "Writes Research result for "+ GT_MetaTileEntity_EM_research.machine)}, null, null, totalComputationRequired, researchEUt, researchAmperage|(computationRequiredPerSec<<16));
+        TT_recipe.GT_Recipe_MapTT.sResearchableFakeRecipes.addFakeRecipe(false, new ItemStack[]{aResearchItem}, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataOrb.getWithName(1L, "Writes Research result for "+ GT_MetaTileEntity_EM_machine.machine)}, null, null, totalComputationRequired, researchEUt, researchAmperage|(computationRequiredPerSec<<16));
         TT_recipe.TT_Recipe_Map.sMachineRecipes.add(new TT_recipe.TT_assLineRecipe(false,aResearchItem,aInputs,new ItemStack[]{aOutput},new ItemStack[]{ItemList.Tool_DataOrb.getWithName(1L, "Reads Research result")},
                         aFluidInputs,machineDuration,machineEUt,machineAmperage,eInputs));
         return true;
@@ -77,7 +78,7 @@ public class TT_recipeAdder extends GT_RecipeAdder {
         else if(researchAmperage > Short.MAX_VALUE) researchAmperage=Short.MAX_VALUE;
         if(computationRequiredPerSec<=0) computationRequiredPerSec=1;
         else if(computationRequiredPerSec > Short.MAX_VALUE) computationRequiredPerSec=Short.MAX_VALUE;
-        TT_recipe.GT_Recipe_MapTT.sResearchableFakeRecipes.addFakeRecipe(false, new ItemStack[]{aResearchItem}, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataOrb.getWithName(1L, "Writes Research result for "+GT_MetaTileEntity_EM_research.crafter)}, null, null, totalComputationRequired, researchEUt, researchAmperage|(computationRequiredPerSec<<16));
+        TT_recipe.GT_Recipe_MapTT.sResearchableFakeRecipes.addFakeRecipe(false, new ItemStack[]{aResearchItem}, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataOrb.getWithName(1L, "Writes Research result for "+ GT_MetaTileEntity_EM_crafter.crafter)}, null, null, totalComputationRequired, researchEUt, researchAmperage|(computationRequiredPerSec<<16));
         TT_recipe.TT_Recipe_Map.sCrafterRecipes.add(new TT_recipe.TT_assLineRecipe(false,aResearchItem,null,new ItemStack[]{aOutput},new ItemStack[]{ItemList.Tool_DataOrb.getWithName(1L, "Reads Research result")},
                         null,crafterDuration,crafterEUt,crafterAmperage,eInputs,null,catalyst,check));
         return true;
