@@ -1,7 +1,9 @@
 package com.github.technus.tectech.recipe;
 
+import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.auxiliary.TecTechConfig;
+import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStack;
 import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStackMap;
-import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStack;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackMap;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GT_Recipe;
@@ -13,6 +15,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 public class TT_recipe extends GT_Recipe {
+    public static final String E_RECIPE_ID = "eRecipeID";
     public final cElementalDefinitionStackMap input[],output[], eCatalyst[];
     public final AdditionalCheck additionalCheck;
 
@@ -118,8 +121,9 @@ public class TT_recipe extends GT_Recipe {
         public static TT_Recipe_Map<TT_assLineRecipe> sCrafterRecipes = new TT_Recipe_Map<>();
         public static TT_Recipe_Map<TT_assLineRecipe> sMachineRecipes = new TT_Recipe_Map<>();
 
-        public final HashMap<String,T> mRecipeMap;
-        
+        private final HashMap<String,T> mRecipeMap;
+
+
         public TT_Recipe_Map(){
             mRecipeMap =new HashMap<>(16);
         }
@@ -130,7 +134,7 @@ public class TT_recipe extends GT_Recipe {
         
         public T findRecipe(ItemStack dataHandler){
             if(dataHandler==null || dataHandler.stackTagCompound==null) return null;
-            return mRecipeMap.get(dataHandler.stackTagCompound.getString("mapID"));
+            return mRecipeMap.get(dataHandler.stackTagCompound.getString(E_RECIPE_ID));
         }
 
         public void add(T recipe){
@@ -171,9 +175,9 @@ public class TT_recipe extends GT_Recipe {
     }
 
     public static class TT_EMRecipe extends TT_recipe{
-        public final cElementalInstanceStack mResearchEM;
+        public final cElementalDefinitionStack mResearchEM;
 
-        public TT_EMRecipe(boolean aOptimize, cElementalInstanceStack researchEM,
+        public TT_EMRecipe(boolean aOptimize, cElementalDefinitionStack researchEM,
                                 ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems,
                                 FluidStack[] aFluidInputs, int aDuration, int aEUt, int aSpecialValue,
                                 cElementalDefinitionStackMap[] in, cElementalDefinitionStackMap[] out, cElementalDefinitionStackMap[] catalyst, AdditionalCheck check) {
@@ -181,11 +185,46 @@ public class TT_recipe extends GT_Recipe {
             mResearchEM=researchEM;
         }
 
-        public TT_EMRecipe(boolean aOptimize, cElementalInstanceStack researchEM,
+        public TT_EMRecipe(boolean aOptimize, cElementalDefinitionStack researchEM,
                                 ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems,
                                 FluidStack[] aFluidInputs, int aDuration, int aEUt, int aSpecialValue,
                                 cElementalDefinitionStackMap[] in) {
             this(aOptimize, researchEM, aInputs, aOutputs, aSpecialItems, aFluidInputs, aDuration, aEUt, aSpecialValue, in, null, null,null);
+        }
+    }
+
+    public static class TT_Recipe_Map_EM<T extends TT_EMRecipe> {
+        public static TT_Recipe_Map_EM<TT_EMRecipe> sCrafterRecipesEM = new TT_Recipe_Map_EM<>();
+        public static TT_Recipe_Map_EM<TT_EMRecipe> sMachineRecipesEM = new TT_Recipe_Map_EM<>();
+
+        private final HashMap<cElementalDefinitionStack,T> mRecipeMap;
+
+        public TT_Recipe_Map_EM(){
+            mRecipeMap =new HashMap<>(16);
+        }
+
+        public T findRecipe(cElementalDefinitionStack stack){
+            return mRecipeMap.get(stack);
+        }
+
+        public T findRecipe(ItemStack dataHandler){
+            if(dataHandler==null || dataHandler.stackTagCompound==null) return null;
+            try {
+                return mRecipeMap.get(cElementalDefinitionStack.fromNBT(dataHandler.stackTagCompound.getCompoundTag(E_RECIPE_ID)));
+            }catch (Exception e){
+                if (TecTechConfig.DEBUG_MODE)
+                    TecTech.Logger.debug("EM INSTANTIATION FAULT");
+                    TecTech.Logger.debug(e.getMessage());
+                return null;
+            }
+        }
+
+        public void add(T recipe){
+            mRecipeMap.put(recipe.mResearchEM,recipe);
+        }
+
+        public Collection<T> recipeList(){
+            return mRecipeMap.values();
         }
     }
 }
