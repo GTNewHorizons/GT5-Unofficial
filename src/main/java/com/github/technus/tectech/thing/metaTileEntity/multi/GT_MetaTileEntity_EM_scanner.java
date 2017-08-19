@@ -85,7 +85,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     public boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         if (!EM_StructureCheckAdvanced(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0))
             return false;
-        return eInputHatches.size() != 1 || eOutputHatches.size() != 1 && eOutputHatches.get(0).getBaseMetaTileEntity().getFrontFacing() == iGregTechTileEntity.getFrontFacing();
+        return eInputHatches.size() == 1 && eOutputHatches.size() == 1 && eOutputHatches.get(0).getBaseMetaTileEntity().getFrontFacing() == iGregTechTileEntity.getFrontFacing();
     }
 
     @Override
@@ -215,6 +215,19 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
         mMaxProgresstime=0;
         mEfficiencyIncrease = 0;
         return false;
+    }
+
+    @Override
+    public boolean onRunningTick(ItemStack aStack) {
+        if(computationRemaining<=0) {
+            computationRemaining=0;
+            mProgresstime=mMaxProgresstime;
+            return true;
+        }else{
+            computationRemaining-=eAvailableData;
+            mProgresstime=1;
+            return super.onRunningTick(aStack);
+        }
     }
 
     @Override
