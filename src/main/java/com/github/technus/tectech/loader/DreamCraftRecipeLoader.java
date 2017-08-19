@@ -6,6 +6,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -59,8 +60,12 @@ public class DreamCraftRecipeLoader implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1), ItemList.Electric_Motor_IV.get(2, o), GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 2),  GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.StainlessSteel, 16), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Aluminium, 2)}, Materials.Helium.getGas(1000), CustomItemList.eM_Computer_Vent.get(1, o), 400, 1920, true);
         //Advanced Computer Casing
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.eM_Computer_Casing.get(1, o), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 8), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 64), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Superconductor, 4)}, Materials.Tungsten.getMolten(2000), CustomItemList.eM_Computer_Bus.get(1, o), 800, 122880, true);
-        //endregion
+        //Parameterize
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.eM_Computer_Casing.get(1, o), ItemList.Circuit_Masterquantumcomputer.get(4, o), ItemList.Cover_Screen.get(1, o ), CustomItemList.DATApipe.get(8, o), new ItemStack(Blocks.stone_button, 16, 32767)}, Materials.Tungsten.getMolten(2000), CustomItemList.Parametrizer_Hatch.get(1, o), 800, 122880, true);
+        //Uncertainity
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.eM_Computer_Casing.get(1, o), ItemList.Circuit_Ultimatecrystalcomputer.get(4, o), ItemList.Cover_Screen.get(1, o ), CustomItemList.DATApipe.get(16, o), new ItemStack(Blocks.stone_button, 16, 32767)}, Materials.Tungsten.getMolten(2000), CustomItemList.Uncertainty_Hatch.get(1, o), 1200, 122880, true);
 
+        //endregion
         //Active Transformer
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{com.dreammaster.gthandler.CustomItemList.WetTransformer_ZPM_LuV.get(1, o), com.dreammaster.gthandler.CustomItemList.HighEnergyFlowCircuit.get(2, o), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Superconductor, 4), ItemList.Circuit_Chip_UHPIC.get(4, o)}, Materials.Tungsten.getMolten(500), CustomItemList.Machine_Multi_Transformer.get(1, o), 400, 30720);
         //Network Switch
