@@ -3,6 +3,8 @@ package com.github.technus.tectech.recipe;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStack;
 import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStackMap;
+import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
+import com.github.technus.tectech.thing.item.DefinitionContainer_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_crafter;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_machine;
 import gregtech.api.enums.ItemList;
@@ -54,7 +56,7 @@ public class TT_recipeAdder extends GT_RecipeAdder {
         }
         for(ItemStack tItem : aInputs){
             if(tItem==null){
-                TecTech.Logger.error("addAssemblingLineRecipe "+aResearchItem.getDisplayName()+" --> "+aOutput.getUnlocalizedName()+" there is some null item in that recipe");
+                TecTech.Logger.error("addEMmachineRecipe "+aResearchItem.getDisplayName()+" --> "+aOutput.getUnlocalizedName()+" there is some null item in that recipe");
             }
         }
         if(researchAmperage<=0) researchAmperage=1;
@@ -85,7 +87,7 @@ public class TT_recipeAdder extends GT_RecipeAdder {
     }
 
     public static boolean addScannableEMmachineRecipe(
-            cElementalDefinitionStack aResearchEM, int totalComputationRequired, int computationRequiredPerSec, int researchEUt, int researchAmperage,
+            iElementalDefinition aResearchEM, int totalComputationRequired, int computationRequiredPerSec, int researchEUt, int researchAmperage,
             ItemStack[] aInputs, FluidStack[] aFluidInputs, cElementalDefinitionStackMap[] eInputs,
             ItemStack aOutput, int machineDuration, int machineEUt, int machineAmperage) {
         if(aInputs==null)aInputs=nullItem;
@@ -95,21 +97,23 @@ public class TT_recipeAdder extends GT_RecipeAdder {
         }
         for(ItemStack tItem : aInputs){
             if(tItem==null){
-                TecTech.Logger.error("addAssemblingLineRecipe "+aResearchEM+" --> "+aOutput.getUnlocalizedName()+" there is some null item in that recipe");
+                TecTech.Logger.error("addEMmachineRecipe "+aResearchEM+" --> "+aOutput.getUnlocalizedName()+" there is some null item in that recipe");
             }
         }
         if(researchAmperage<=0) researchAmperage=1;
         else if(researchAmperage > Short.MAX_VALUE) researchAmperage=Short.MAX_VALUE;
         if(computationRequiredPerSec<=0) computationRequiredPerSec=1;
         else if(computationRequiredPerSec > Short.MAX_VALUE) computationRequiredPerSec=Short.MAX_VALUE;
-        //todo replace //TT_recipe.GT_Recipe_MapTT.sResearchableFakeRecipes.addFakeRecipe(false, new ItemStack[]{aResearchEM}, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataOrb.getWithName(1L, "Writes Research result for "+ GT_MetaTileEntity_EM_research.machine)}, null, null, totalComputationRequired, researchEUt, researchAmperage|(computationRequiredPerSec<<16));
-        TT_recipe.TT_Recipe_Map_EM.sMachineRecipesEM.add(new TT_recipe.TT_EMRecipe(false,aResearchEM,aInputs,new ItemStack[]{aOutput},new ItemStack[]{ItemList.Tool_DataOrb.getWithName(1L, "Reads Research result")},
+        ItemStack placeholder=new ItemStack(DefinitionContainer_EM.INSTANCE);
+        DefinitionContainer_EM.setContent(placeholder,new cElementalDefinitionStackMap(new cElementalDefinitionStack(aResearchEM,1)));
+        GT_Recipe thisRecipe=TT_recipe.GT_Recipe_MapTT.sScannableFakeRecipes.addFakeRecipe(false, new ItemStack[]{placeholder}, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataOrb.getWithName(1L, "Writes Research result for "+ GT_MetaTileEntity_EM_machine.machine)}, null, null, totalComputationRequired, researchEUt, researchAmperage|(computationRequiredPerSec<<16));
+        TT_recipe.TT_Recipe_Map_EM.sMachineRecipesEM.add(new TT_recipe.TT_EMRecipe(false,thisRecipe,aResearchEM,aInputs,new ItemStack[]{aOutput},new ItemStack[]{ItemList.Tool_DataOrb.getWithName(1L, "Reads Research result")},
                 aFluidInputs,machineDuration,machineEUt,machineAmperage,eInputs));
         return true;
     }
 
     public static boolean addScannableEMcrafterRecipe(
-            cElementalDefinitionStack  aResearchEM, int totalComputationRequired, int computationRequiredPerSec, int researchEUt, int researchAmperage,
+            iElementalDefinition aResearchEM, int totalComputationRequired, int computationRequiredPerSec, int researchEUt, int researchAmperage,
             cElementalDefinitionStackMap[] eInputs, cElementalDefinitionStackMap[] catalyst, TT_recipe.AdditionalCheck check,
             ItemStack aOutput, int crafterDuration, int crafterEUt, int crafterAmperage) {
         if ((aResearchEM==null)||(totalComputationRequired<=0)||(aOutput == null)) {
@@ -119,8 +123,10 @@ public class TT_recipeAdder extends GT_RecipeAdder {
         else if(researchAmperage > Short.MAX_VALUE) researchAmperage=Short.MAX_VALUE;
         if(computationRequiredPerSec<=0) computationRequiredPerSec=1;
         else if(computationRequiredPerSec > Short.MAX_VALUE) computationRequiredPerSec=Short.MAX_VALUE;
-        //todo replace //TT_recipe.GT_Recipe_MapTT.sResearchableFakeRecipes.addFakeRecipe(false, new ItemStack[]{aResearchEM}, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataOrb.getWithName(1L, "Writes Research result for "+GT_MetaTileEntity_EM_research.crafter)}, null, null, totalComputationRequired, researchEUt, researchAmperage|(computationRequiredPerSec<<16));
-        TT_recipe.TT_Recipe_Map_EM.sCrafterRecipesEM.add(new TT_recipe.TT_EMRecipe(false,aResearchEM,null,new ItemStack[]{aOutput},new ItemStack[]{ItemList.Tool_DataOrb.getWithName(1L, "Reads Research result")},
+        ItemStack placeholder=new ItemStack(DefinitionContainer_EM.INSTANCE);
+        DefinitionContainer_EM.setContent(placeholder,new cElementalDefinitionStackMap(new cElementalDefinitionStack(aResearchEM,1)));
+        GT_Recipe thisRecipe=TT_recipe.GT_Recipe_MapTT.sScannableFakeRecipes.addFakeRecipe(false, new ItemStack[]{placeholder}, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataOrb.getWithName(1L, "Writes Research result for "+GT_MetaTileEntity_EM_crafter.crafter)}, null, null, totalComputationRequired, researchEUt, researchAmperage|(computationRequiredPerSec<<16));
+        TT_recipe.TT_Recipe_Map_EM.sCrafterRecipesEM.add(new TT_recipe.TT_EMRecipe(false,thisRecipe,aResearchEM,null,new ItemStack[]{aOutput},new ItemStack[]{ItemList.Tool_DataOrb.getWithName(1L, "Reads Research result")},
                 null,crafterDuration,crafterEUt,crafterAmperage,eInputs,null,catalyst,check));
         return true;
     }
