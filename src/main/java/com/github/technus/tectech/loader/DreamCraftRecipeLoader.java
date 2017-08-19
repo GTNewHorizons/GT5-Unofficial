@@ -1,7 +1,5 @@
 package com.github.technus.tectech.loader;
 
-import com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition;
-import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import gregtech.api.enums.GT_Values;
@@ -14,8 +12,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-
-import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 
 /**
  * Created by Tec on 06.08.2017.
@@ -118,9 +114,5 @@ public class DreamCraftRecipeLoader implements Runnable {
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 1000)
         }, CustomItemList.holder_Hatch.get(1), 1200, 100000);
         //endregion
-
-        if(DEBUG_MODE) {
-            TT_recipeAdder.addScannableEMcrafterRecipe(dAtomDefinition.getFirstStableIsotope(6), 100, 1, 32000, 6, null, null, null, CustomItemList.debugBlock.get(1), 32, 32000, 12);
-        }
     }
 }
