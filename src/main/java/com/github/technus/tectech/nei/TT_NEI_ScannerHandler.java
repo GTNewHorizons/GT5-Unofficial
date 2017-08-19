@@ -35,7 +35,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-public class TT_NEI_ResearchHandler extends TemplateRecipeHandler {
+public class TT_NEI_ScannerHandler extends TemplateRecipeHandler {
     public static final int sOffsetX = 5;
     public static final int sOffsetY = 11;
 
@@ -46,9 +46,9 @@ public class TT_NEI_ResearchHandler extends TemplateRecipeHandler {
 
     protected final TT_recipe.GT_Recipe_MapTT mRecipeMap;
 
-    public TT_NEI_ResearchHandler(TT_recipe.GT_Recipe_MapTT aRecipeMap) {
+    public TT_NEI_ScannerHandler(TT_recipe.GT_Recipe_MapTT aRecipeMap) {
         this.mRecipeMap = aRecipeMap;
-        this.transferRects.add(new TemplateRecipeHandler.RecipeTransferRect(new Rectangle(65, 13, 36, 18), getOverlayIdentifier()));
+        this.transferRects.add(new RecipeTransferRect(new Rectangle(65, 13, 36, 18), getOverlayIdentifier()));
         if (!NEI_TT_Config.sIsAdded) {
             FMLInterModComms.sendRuntimeMessage(TecTech.instance, "NEIPlugins", "register-crafting-handler", Reference.MODID+"@" + getRecipeName() + "@" + getOverlayIdentifier());
             GuiCraftingRecipe.craftinghandlers.add(this);
@@ -67,8 +67,8 @@ public class TT_NEI_ResearchHandler extends TemplateRecipeHandler {
     }
 
     public TemplateRecipeHandler newInstance() {
-        NEI_TT_Config.TT_RH=new TT_NEI_ResearchHandler(mRecipeMap);
-        return NEI_TT_Config.TT_RH;
+        NEI_TT_Config.TT_SH=new TT_NEI_ScannerHandler(mRecipeMap);
+        return NEI_TT_Config.TT_SH;
     }
 
     public void loadCraftingRecipes(String outputId, Object... results) {
@@ -175,7 +175,7 @@ public class TT_NEI_ResearchHandler extends TemplateRecipeHandler {
     }
 
     public List<String> handleItemTooltip(GuiRecipe gui, ItemStack aStack, List<String> currenttip, int aRecipeIndex) {
-        TemplateRecipeHandler.CachedRecipe tObject = this.arecipes.get(aRecipeIndex);
+        CachedRecipe tObject = this.arecipes.get(aRecipeIndex);
         if ((tObject instanceof CachedDefaultRecipe)) {
             CachedDefaultRecipe tRecipe = (CachedDefaultRecipe) tObject;
             for (PositionedStack tStack : tRecipe.mOutputs) {
@@ -352,7 +352,7 @@ public class TT_NEI_ResearchHandler extends TemplateRecipeHandler {
     }
 
     public class CachedDefaultRecipe
-            extends TemplateRecipeHandler.CachedRecipe {
+            extends CachedRecipe {
         public final GT_Recipe mRecipe;
         public final List<PositionedStack> mOutputs;
         public final List<PositionedStack> mInputs;

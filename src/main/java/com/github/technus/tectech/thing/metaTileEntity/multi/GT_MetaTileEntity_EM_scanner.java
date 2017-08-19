@@ -1,8 +1,12 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStack;
+import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackMap;
+import com.github.technus.tectech.recipe.TT_recipe;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
+import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
@@ -18,6 +22,9 @@ import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBloc
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+    TT_recipe.TT_EMRecipe.TT_EMRecipe eRecipe;
+    private String machineType;
+    private long computationRemaining,computationRequired;
 
     //region structure
     private static final String[][] shape = new String[][]{
@@ -95,5 +102,46 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
             int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ*3;
             aBaseMetaTileEntity.getWorld().markBlockRangeForRenderUpdate(xDir,yDir,zDir,xDir,yDir,zDir);
         }
+    }
+
+    @Override
+    public boolean EM_checkRecipe(ItemStack itemStack) {
+        eRecipe=null;
+        if(!eInputHatches.isEmpty() && eInputHatches.get(0).getContainerHandler().hasStacks() && !eOutputHatches.isEmpty()) {
+            cElementalInstanceStackMap researchEM = eInputHatches.get(0).getContainerHandler();
+            if(ItemList.Tool_DataOrb.isStackEqual(itemStack, false, true)) {
+                for(cElementalInstanceStack stackEM:researchEM.values()){
+                    eRecipe = TT_recipe.TT_Recipe_Map_EM.sMachineRecipesEM.findRecipe(stackEM.definition);
+                    if(eRecipe!=null) {
+                        machineType=GT_MetaTileEntity_EM_machine.machine;
+                        break;
+                    }
+                    eRecipe = TT_recipe.TT_Recipe_Map_EM.sCrafterRecipesEM.findRecipe(stackEM.definition);
+                    if(eRecipe!=null) {
+                        machineType=GT_MetaTileEntity_EM_crafter.crafter;
+                        break;
+                    }
+                }
+                if(eRecipe!=null){
+                    computationRequired = computationRemaining = eRecipe.mDuration * 20L;
+                    mMaxProgresstime = 20;
+                    mEfficiencyIncrease = 10000;
+                    eRequiredData = (short) (eRecipe.mSpecialValue >>> 16);
+                    eAmpereFlow = (short) (eRecipe.mSpecialValue & 0xFFFF);
+                    mEUt = eRecipe.mEUt;
+                    eOutputHatches.get(0).getBaseMetaTileEntity().setActive(true);
+                    return true;
+                }
+            }
+        }
+        computationRequired=computationRemaining=0;
+        mMaxProgresstime=0;
+        mEfficiencyIncrease = 0;
+        return false;
+    }
+
+    @Override
+    public int getInventoryStackLimit() {
+        return 1;
     }
 }

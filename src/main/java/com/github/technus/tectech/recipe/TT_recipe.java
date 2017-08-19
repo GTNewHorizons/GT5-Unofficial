@@ -1,9 +1,10 @@
 package com.github.technus.tectech.recipe;
 
 import com.github.technus.tectech.auxiliary.TecTechConfig;
-import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStack;
+import com.github.technus.tectech.elementalMatter.classes.cElementalDefinition;
 import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStackMap;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackMap;
+import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GT_Recipe;
 import net.minecraft.item.ItemStack;
@@ -147,7 +148,8 @@ public class TT_recipe extends GT_Recipe {
     }
 
     public static class GT_Recipe_MapTT extends GT_Recipe.GT_Recipe_Map {
-        public static GT_Recipe_MapTT sResearchableFakeRecipes =new GT_Recipe_MapTT(new HashSet(30), "gt.recipe.researchStation", "Research station", (String)null, "gregtech:textures/gui/multimachines/ResearchFake", 1, 1, 1, 0, 1, "", 1, "", true, false);//nei to false - using custom handler
+        public static GT_Recipe_MapTT sResearchableFakeRecipes =new GT_Recipe_MapTT(new HashSet<GT_Recipe>(32), "gt.recipe.researchStation", "Research station", (String)null, "gregtech:textures/gui/multimachines/ResearchFake", 1, 1,1,0,1,"", 1, "", true, false);//nei to false - using custom handler
+        public static GT_Recipe_MapTT sScannableFakeRecipes = new GT_Recipe_MapTT(new HashSet<GT_Recipe>(32),"gt.recipe.em_scanner","EM Scanner Research",(String)null,"gregtech:textures/gui/multimachines/ResearchFake",1,1,1,0,1,"",1,"",true,false);
 
         public GT_Recipe_MapTT(Collection<GT_Recipe> aRecipeList, String aUnlocalizedName, String aLocalName, String aNEIName, String aNEIGUIPath, int aUsualInputCount, int aUsualOutputCount, int aMinimalInputItems, int aMinimalInputFluids, int aAmperage, String aNEISpecialValuePre, int aNEISpecialValueMultiplier, String aNEISpecialValuePost, boolean aShowVoltageAmperageInNEI, boolean aNEIAllowed) {
             super(aRecipeList, aUnlocalizedName, aLocalName, aNEIName, aNEIGUIPath, aUsualInputCount, aUsualOutputCount, aMinimalInputItems, aMinimalInputFluids, aAmperage, aNEISpecialValuePre, aNEISpecialValueMultiplier, aNEISpecialValuePost, aShowVoltageAmperageInNEI, aNEIAllowed);
@@ -174,9 +176,9 @@ public class TT_recipe extends GT_Recipe {
     }
 
     public static class TT_EMRecipe extends TT_recipe{
-        public final cElementalDefinitionStack mResearchEM;
+        public final iElementalDefinition mResearchEM;
 
-        public TT_EMRecipe(boolean aOptimize, cElementalDefinitionStack researchEM,
+        public TT_EMRecipe(boolean aOptimize, iElementalDefinition researchEM,
                                 ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems,
                                 FluidStack[] aFluidInputs, int aDuration, int aEUt, int aSpecialValue,
                                 cElementalDefinitionStackMap[] in, cElementalDefinitionStackMap[] out, cElementalDefinitionStackMap[] catalyst, AdditionalCheck check) {
@@ -184,7 +186,7 @@ public class TT_recipe extends GT_Recipe {
             mResearchEM=researchEM;
         }
 
-        public TT_EMRecipe(boolean aOptimize, cElementalDefinitionStack researchEM,
+        public TT_EMRecipe(boolean aOptimize, iElementalDefinition researchEM,
                                 ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems,
                                 FluidStack[] aFluidInputs, int aDuration, int aEUt, int aSpecialValue,
                                 cElementalDefinitionStackMap[] in) {
@@ -193,23 +195,27 @@ public class TT_recipe extends GT_Recipe {
     }
 
     public static class TT_Recipe_Map_EM<T extends TT_EMRecipe> {
-        public static TT_Recipe_Map_EM<TT_EMRecipe> sCrafterRecipesEM = new TT_Recipe_Map_EM<>();
-        public static TT_Recipe_Map_EM<TT_EMRecipe> sMachineRecipesEM = new TT_Recipe_Map_EM<>();
+        public static TT_Recipe_Map_EM<TT_EMRecipe> sCrafterRecipesEM = new TT_Recipe_Map_EM<>("EM Crafter Recipes","gt.recipe.em_crafter",null);
+        public static TT_Recipe_Map_EM<TT_EMRecipe> sMachineRecipesEM = new TT_Recipe_Map_EM<>("EM Machinert Recipe","gt.recipe.em_machinery",null);
 
-        private final HashMap<cElementalDefinitionStack,T> mRecipeMap;
+        private final HashMap<iElementalDefinition,T> mRecipeMap;
+        public final String mNEIName,mUnlocalizedName,mNEIGUIPath;
 
-        public TT_Recipe_Map_EM(){
+        public TT_Recipe_Map_EM(String mNEIName,String mUnlocalizedName,String mNEIGUIPath){
             mRecipeMap =new HashMap<>(16);
+            this.mNEIName=mNEIName;
+            this.mUnlocalizedName=mUnlocalizedName;
+            this.mNEIGUIPath=mNEIGUIPath;
         }
 
-        public T findRecipe(cElementalDefinitionStack stack){
+        public T findRecipe(iElementalDefinition stack){
             return mRecipeMap.get(stack);
         }
 
         public T findRecipe(ItemStack dataHandler){
             if(dataHandler==null || dataHandler.stackTagCompound==null) return null;
             try {
-                return mRecipeMap.get(cElementalDefinitionStack.fromNBT(dataHandler.stackTagCompound.getCompoundTag(E_RECIPE_ID)));
+                return mRecipeMap.get(cElementalDefinition.fromNBT(dataHandler.stackTagCompound.getCompoundTag(E_RECIPE_ID)));
             }catch (Exception e){
                 if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
                 return null;

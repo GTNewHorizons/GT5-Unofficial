@@ -1,11 +1,14 @@
 package com.github.technus.tectech.loader;
 
+import com.github.technus.tectech.elementalMatter.definitions.cPrimitiveDefinition;
+import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -92,5 +95,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 1000)
         }, CustomItemList.holder_Hatch.get(1), 1200, 100000);
         //endregion
+
+        TT_recipeAdder.addScannableEMcrafterRecipe(cPrimitiveDefinition.space__,100,100,3000,2,null,null,null, new ItemStack(Blocks.bedrock),30,30,3);
     }
 }
