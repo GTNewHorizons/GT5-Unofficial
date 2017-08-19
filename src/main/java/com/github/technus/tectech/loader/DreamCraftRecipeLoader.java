@@ -227,8 +227,7 @@ public class DreamCraftRecipeLoader implements Runnable {
 
         //Quantum Computer
         GT_Values.RA.addAssemblylineRecipe(ItemList.Tool_DataOrb.get(1), 20000, new ItemStack[]{
-                CustomItemList.Machine_Multi_Transformer.get(1),
-                CustomItemList.eM_Computer_Bus.get(1),
+                CustomItemList.Machine_Multi_Switch.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 2),
                 ItemList.Tool_DataOrb.get(1),
                 ItemList.Cover_Screen.get(1, o),
@@ -243,8 +242,7 @@ public class DreamCraftRecipeLoader implements Runnable {
 
         //Research Station
         GT_Values.RA.addAssemblylineRecipe(com.dreammaster.gthandler.CustomItemList.ScannerZPM.get(1), 80000, new ItemStack[]{
-                CustomItemList.Machine_Multi_Transformer.get(1),
-                CustomItemList.eM_Computer_Bus.get(1),
+                CustomItemList.Machine_Multi_Switch.get(1),
                 ItemList.Sensor_ZPM.get(8),
                 ItemList.Circuit_Crystalmainframe.get(4),
                 ItemList.Field_Generator_ZPM.get(1),
