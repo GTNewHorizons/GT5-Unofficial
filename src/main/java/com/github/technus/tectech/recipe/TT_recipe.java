@@ -1,6 +1,5 @@
 package com.github.technus.tectech.recipe;
 
-import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStack;
 import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStackMap;
@@ -212,9 +211,7 @@ public class TT_recipe extends GT_Recipe {
             try {
                 return mRecipeMap.get(cElementalDefinitionStack.fromNBT(dataHandler.stackTagCompound.getCompoundTag(E_RECIPE_ID)));
             }catch (Exception e){
-                if (TecTechConfig.DEBUG_MODE)
-                    TecTech.Logger.debug("EM INSTANTIATION FAULT");
-                    TecTech.Logger.debug(e.getMessage());
+                if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
                 return null;
             }
         }
