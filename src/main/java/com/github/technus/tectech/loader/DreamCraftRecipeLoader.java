@@ -3,10 +3,12 @@ package com.github.technus.tectech.loader;
 import com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
+import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -54,30 +56,32 @@ public class DreamCraftRecipeLoader implements Runnable {
 
         //region casing
         //Data Pipe
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Parts_GlassFiber.get(8, o), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silver, 8)}, Materials.Polytetrafluoroethylene.getMolten(144), CustomItemList.DATApipe.get(1, o), 200, 30720);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{ItemList.Circuit_Parts_GlassFiber.get(8, o), GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silver, 8)}, Materials.Polytetrafluoroethylene.getMolten(144), CustomItemList.DATApipe.get(1, o), 200, 30720, true);
         //High Power Casing
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Iridium, 1), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 16), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.NiobiumTitanium, 2)}, Materials.Tungsten.getMolten(500), CustomItemList.eM_Power.get(1, o), 400, 30720);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Iridium, 1), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 16), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.NiobiumTitanium, 2)}, Materials.Tungsten.getMolten(576), CustomItemList.eM_Power.get(1, o), 400, 30720, true);
 
         //Computer Casing
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.eM_Power.get(1, o), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 8),  GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 4), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 32), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.NiobiumTitanium, 2)}, Materials.Tungsten.getMolten(1000), CustomItemList.eM_Computer_Casing.get(1, o), 400, 122880, true);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.eM_Power.get(1, o), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 8),  GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 4), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 32), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.NiobiumTitanium, 2)}, Materials.Tungsten.getMolten(1296), CustomItemList.eM_Computer_Casing.get(1, o), 400, 122880, true);
         //Computer Vent Casing
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1), ItemList.Electric_Motor_IV.get(2, o), GT_OreDictUnificator.get(OrePrefixes.rotor, Materials.StainlessSteel, 2),  GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.StainlessSteel, 16), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Aluminium, 2)}, Materials.Helium.getGas(1000), CustomItemList.eM_Computer_Vent.get(1, o), 400, 1920, true);
         //Advanced Computer Casing
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.eM_Computer_Casing.get(1, o), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 8), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 64), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Superconductor, 4)}, Materials.Tungsten.getMolten(2000), CustomItemList.eM_Computer_Bus.get(1, o), 800, 122880, true);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.eM_Computer_Casing.get(1, o), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 8), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 64), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Superconductor, 4)}, Materials.Tungsten.getMolten(2592), CustomItemList.eM_Computer_Bus.get(1, o), 800, 122880, true);
         //Parameterize
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.eM_Computer_Casing.get(1, o), ItemList.Circuit_Masterquantumcomputer.get(4, o), ItemList.Cover_Screen.get(1, o ), CustomItemList.DATApipe.get(8, o), new ItemStack(Blocks.stone_button, 16, 32767)}, Materials.Tungsten.getMolten(2000), CustomItemList.Parametrizer_Hatch.get(1, o), 800, 122880, true);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.eM_Computer_Casing.get(1, o), ItemList.Circuit_Masterquantumcomputer.get(4, o), ItemList.Cover_Screen.get(1, o ), CustomItemList.DATApipe.get(8, o), new ItemStack(Blocks.stone_button, 16, 32767)}, Materials.Tungsten.getMolten(2592), CustomItemList.Parametrizer_Hatch.get(1, o), 800, 122880, true);
         //Uncertainity
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.eM_Computer_Casing.get(1, o), ItemList.Circuit_Ultimatecrystalcomputer.get(4, o), ItemList.Cover_Screen.get(1, o ), CustomItemList.DATApipe.get(16, o), new ItemStack(Blocks.stone_button, 16, 32767)}, Materials.Tungsten.getMolten(2000), CustomItemList.Uncertainty_Hatch.get(1, o), 1200, 122880, true);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.eM_Computer_Casing.get(1, o), ItemList.Circuit_Ultimatecrystalcomputer.get(4, o), ItemList.Cover_Screen.get(1, o ), CustomItemList.DATApipe.get(16, o), new ItemStack(Blocks.stone_button, 16, 32767)}, Materials.Tungsten.getMolten(2592), CustomItemList.Uncertainty_Hatch.get(1, o), 1200, 122880, true);
 
         //endregion
         //Active Transformer
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{com.dreammaster.gthandler.CustomItemList.WetTransformer_ZPM_LuV.get(1, o), com.dreammaster.gthandler.CustomItemList.HighEnergyFlowCircuit.get(2, o), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Superconductor, 4), ItemList.Circuit_Chip_UHPIC.get(4, o)}, Materials.Tungsten.getMolten(500), CustomItemList.Machine_Multi_Transformer.get(1, o), 400, 30720);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{com.dreammaster.gthandler.CustomItemList.WetTransformer_ZPM_LuV.get(1, o), com.dreammaster.gthandler.CustomItemList.HighEnergyFlowCircuit.get(2, o), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Superconductor, 4), ItemList.Circuit_Chip_UHPIC.get(4, o)}, Materials.Tungsten.getMolten(576), CustomItemList.Machine_Multi_Transformer.get(1, o), 400, 30720, true);
         //Network Switch
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.Machine_Multi_Transformer.get(1, o), ItemList.Circuit_Ultimatecrystalcomputer.get(2, o), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 64), CustomItemList.DATApipe.get(4, o), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Superconductor, 4)}, Materials.Tungsten.getMolten(1000), CustomItemList.Machine_Multi_Switch.get(1, o), 800, 122880, true);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.Machine_Multi_Transformer.get(1, o), ItemList.Circuit_Ultimatecrystalcomputer.get(2, o), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 64), CustomItemList.DATApipe.get(4, o), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Superconductor, 4)}, Materials.Tungsten.getMolten(1296), CustomItemList.Machine_Multi_Switch.get(1, o), 800, 122880, true);
         //Quantum Computer
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.Machine_Multi_Transformer.get(1, o), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 2), ItemList.Cover_Screen.get(1, o ), CustomItemList.DATApipe.get(8, o), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Superconductor, 8)}, Materials.Tungsten.getMolten(1000), CustomItemList.Machine_Multi_Computer.get(1, o), 800, 122880, true);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.Machine_Multi_Transformer.get(1, o), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 2), ItemList.Cover_Screen.get(1, o ), CustomItemList.DATApipe.get(8, o), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Superconductor, 8)}, Materials.Tungsten.getMolten(1296), CustomItemList.Machine_Multi_Computer.get(1, o), 800, 122880, true);
         //Molecular Casing
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.eM_Power.get(1, o), GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Osmiridium, 6),  GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.TungstenSteel, 24), ItemList.Field_Generator_IV.get(2, o)}, Materials.Trinium.getMolten(1000), CustomItemList.eM_Containment.get(1, o), 800, 500000, true);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.eM_Power.get(1, o), GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Osmiridium, 6),  GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.TungstenSteel, 24), ItemList.Field_Generator_IV.get(2, o)}, Materials.Trinium.getMolten(1296), CustomItemList.eM_Containment.get(1, o), 800, 500000, true);
+        //Qunatum Glass
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.eM_Containment.get(1, o), GT_ModHandler.getIC2Item("reinforcedGlass", 1L)}, Materials.Trinium.getMolten(576), new ItemStack(QuantumGlassBlock.INSTANCE, 1), 200, 500000, true);
         //region multiblocks assline
         //Research Station
         GT_Values.RA.addAssemblylineRecipe(com.dreammaster.gthandler.CustomItemList.ScannerZPM.get(1), 144000, new ItemStack[]{
