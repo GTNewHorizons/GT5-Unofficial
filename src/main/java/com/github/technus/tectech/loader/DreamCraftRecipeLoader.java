@@ -44,7 +44,8 @@ public class DreamCraftRecipeLoader implements Runnable {
         //High Power Casing
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Iridium, 1),
-                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 2),
+                GT_OreDictUnificator.get(OrePrefixes.plateDouble, Materials.Iridium, 6),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 1),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 16),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 16),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.NiobiumTitanium, 2)
@@ -227,6 +228,7 @@ public class DreamCraftRecipeLoader implements Runnable {
         //Quantum Computer
         GT_Values.RA.addAssemblylineRecipe(ItemList.Tool_DataOrb.get(1), 20000, new ItemStack[]{
                 CustomItemList.Machine_Multi_Transformer.get(1),
+                CustomItemList.eM_Computer_Bus.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 2),
                 ItemList.Tool_DataOrb.get(1),
                 ItemList.Cover_Screen.get(1, o),
@@ -242,6 +244,7 @@ public class DreamCraftRecipeLoader implements Runnable {
         //Research Station
         GT_Values.RA.addAssemblylineRecipe(com.dreammaster.gthandler.CustomItemList.ScannerZPM.get(1), 80000, new ItemStack[]{
                 CustomItemList.Machine_Multi_Transformer.get(1),
+                CustomItemList.eM_Computer_Bus.get(1),
                 ItemList.Sensor_ZPM.get(8),
                 ItemList.Circuit_Crystalmainframe.get(4),
                 ItemList.Field_Generator_ZPM.get(1),
