@@ -53,6 +53,7 @@ public class DreamCraftRecipeLoader implements Runnable {
         //region casing
         //High Power Casing
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.Iridium, 1), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Master, 4), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 16), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.NiobiumTitanium, 2)}, Materials.Tungsten.getMolten(500), CustomItemList.eM_Power.get(1, o), 400, 30720);
+
         //Computer Casing
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.eM_Power.get(1, o), GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 8),  GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 4), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 32), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.NiobiumTitanium, 2)}, Materials.Tungsten.getMolten(1000), CustomItemList.eM_Computer_Casing.get(1, o), 400, 122880, true);
         //Computer Vent Casing

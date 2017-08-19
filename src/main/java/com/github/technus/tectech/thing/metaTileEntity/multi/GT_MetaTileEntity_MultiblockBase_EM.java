@@ -926,7 +926,10 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     public void cleanInstanceStack(cElementalInstanceStack target) {
         if (target == null) return;
-        float mass = target.getMass();
+        cleanMass(target.getMass());
+    }
+
+    public void cleanMass(float mass) {
         if (mass > 0) {
             if (eMufflerHatches.size() < 1) explodeMultiblock();
             mass /= eMufflerHatches.size();

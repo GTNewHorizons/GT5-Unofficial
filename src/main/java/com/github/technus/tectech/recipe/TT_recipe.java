@@ -177,20 +177,22 @@ public class TT_recipe extends GT_Recipe {
 
     public static class TT_EMRecipe extends TT_recipe{
         public final iElementalDefinition mResearchEM;
+        public final GT_Recipe scannerRecipe;
 
-        public TT_EMRecipe(boolean aOptimize, iElementalDefinition researchEM,
+        public TT_EMRecipe(boolean aOptimize, GT_Recipe scannerRecipe, iElementalDefinition researchEM,
                                 ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems,
                                 FluidStack[] aFluidInputs, int aDuration, int aEUt, int aSpecialValue,
                                 cElementalDefinitionStackMap[] in, cElementalDefinitionStackMap[] out, cElementalDefinitionStackMap[] catalyst, AdditionalCheck check) {
             super(aOptimize, aInputs, aOutputs, aSpecialItems, null, aFluidInputs, null, aDuration, aEUt, aSpecialValue, in, out, catalyst, check);
             mResearchEM=researchEM;
+            this.scannerRecipe=scannerRecipe;
         }
 
-        public TT_EMRecipe(boolean aOptimize, iElementalDefinition researchEM,
+        public TT_EMRecipe(boolean aOptimize, GT_Recipe scannerRecipe, iElementalDefinition researchEM,
                                 ItemStack[] aInputs, ItemStack[] aOutputs, Object aSpecialItems,
                                 FluidStack[] aFluidInputs, int aDuration, int aEUt, int aSpecialValue,
                                 cElementalDefinitionStackMap[] in) {
-            this(aOptimize, researchEM, aInputs, aOutputs, aSpecialItems, aFluidInputs, aDuration, aEUt, aSpecialValue, in, null, null,null);
+            this(aOptimize, scannerRecipe, researchEM, aInputs, aOutputs, aSpecialItems, aFluidInputs, aDuration, aEUt, aSpecialValue, in, null, null,null);
         }
     }
 

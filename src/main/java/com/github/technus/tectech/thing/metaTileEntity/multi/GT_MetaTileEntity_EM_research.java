@@ -46,6 +46,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     private GT_Recipe.GT_Recipe_AssemblyLine tRecipe;
     private TT_recipe.TT_assLineRecipe aRecipe;
     private String machineType;
+    private ItemStack holdItem;
     private long computationRemaining,computationRequired;
 
     //region structure
@@ -114,6 +115,9 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         super.saveNBTData(aNBT);
         aNBT.setLong("eComputationRemaining",computationRemaining);
         aNBT.setLong("eComputationRequired",computationRequired);
+        if(holdItem!=null)
+            aNBT.setTag("eHold", holdItem.writeToNBT(new NBTTagCompound()));
+        else aNBT.removeTag("eHold");
     }
 
     @Override
@@ -121,6 +125,9 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         super.loadNBTData(aNBT);
         computationRemaining=aNBT.getLong("eComputationRemaining");
         computationRequired=aNBT.getLong("eComputationRequired");
+        if(aNBT.hasKey("eHold"))
+            holdItem =ItemStack.loadItemStackFromNBT(aNBT.getCompoundTag("eHold"));
+        else holdItem=null;
     }
 
     @Override
@@ -129,18 +136,17 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         if(computationRemaining>0) {
             aRecipe=null;
             tRecipe=null;
-            if (!eHolders.isEmpty() && eHolders.get(0).mInventory[0] != null) {
-                ItemStack researchItem = eHolders.get(0).mInventory[0];
+            if (holdItem != null) {
                 if (ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)) {
                     for (GT_Recipe.GT_Recipe_AssemblyLine tRecipe : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
-                        if (GT_Utility.areStacksEqual(tRecipe.mResearchItem, researchItem, true)) {
+                        if (GT_Utility.areStacksEqual(tRecipe.mResearchItem, holdItem, true)) {
                             this.tRecipe = tRecipe;
                             break;
                         }
                     }
                 } else if (ItemList.Tool_DataOrb.isStackEqual(mInventory[1], false, true)) {
                     for (TT_recipe.TT_assLineRecipe assRecipeTT : TT_recipe.TT_Recipe_Map.sMachineRecipes.recipeList()) {
-                        if (GT_Utility.areStacksEqual(assRecipeTT.mResearchItem, researchItem, true)) {
+                        if (GT_Utility.areStacksEqual(assRecipeTT.mResearchItem, holdItem, true)) {
                             this.aRecipe = assRecipeTT;
                             machineType = machine;
                             break;
@@ -148,7 +154,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                     }
                     if (aRecipe == null) {
                         for (TT_recipe.TT_assLineRecipe assRecipeTT : TT_recipe.TT_Recipe_Map.sCrafterRecipes.recipeList()) {
-                            if (GT_Utility.areStacksEqual(assRecipeTT.mResearchItem, researchItem, true)) {
+                            if (GT_Utility.areStacksEqual(assRecipeTT.mResearchItem, holdItem, true)) {
                                 this.aRecipe = assRecipeTT;
                                 machineType = crafter;
                                 break;
@@ -158,6 +164,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                 }
             }
             if (tRecipe == null && aRecipe == null) {
+                holdItem=null;
                 computationRequired=computationRemaining=0;
                 mMaxProgresstime = 0;
                 mEfficiencyIncrease = 0;
@@ -172,14 +179,14 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         tRecipe=null;
         aRecipe=null;
         if(!eHolders.isEmpty() && eHolders.get(0).mInventory[0]!=null) {
-            ItemStack researchItem = eHolders.get(0).mInventory[0];
+            holdItem = eHolders.get(0).mInventory[0].copy();
             if(ItemList.Tool_DataStick.isStackEqual(itemStack, false, true)) {
                 for (GT_Recipe.GT_Recipe_AssemblyLine assRecipe : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
-                    if (GT_Utility.areStacksEqual(assRecipe.mResearchItem, researchItem, true)) {
+                    if (GT_Utility.areStacksEqual(assRecipe.mResearchItem, holdItem, true)) {
                         this.tRecipe = assRecipe;
                         //if found
                         for (GT_Recipe ttRecipe : TT_recipe.GT_Recipe_MapTT.sResearchableFakeRecipes.mRecipeList) {
-                            if (GT_Utility.areStacksEqual(ttRecipe.mInputs[0], researchItem, true)) {
+                            if (GT_Utility.areStacksEqual(ttRecipe.mInputs[0], holdItem, true)) {
                                 computationRequired = computationRemaining = ttRecipe.mDuration * 20L;
                                 mMaxProgresstime = 20;
                                 mEfficiencyIncrease = 10000;
@@ -194,12 +201,12 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                 }
             }else if(ItemList.Tool_DataOrb.isStackEqual(itemStack, false, true)){
                 for (TT_recipe.TT_assLineRecipe assRecipeTT:TT_recipe.TT_Recipe_Map.sMachineRecipes.recipeList()){
-                    if (GT_Utility.areStacksEqual(assRecipeTT.mResearchItem, researchItem, true)) {
+                    if (GT_Utility.areStacksEqual(assRecipeTT.mResearchItem, holdItem, true)) {
                         this.aRecipe = assRecipeTT;
                         machineType=machine;
                         //if found
                         for (GT_Recipe ttRecipe : TT_recipe.GT_Recipe_MapTT.sResearchableFakeRecipes.mRecipeList) {
-                            if (GT_Utility.areStacksEqual(ttRecipe.mInputs[0], researchItem, true)) {
+                            if (GT_Utility.areStacksEqual(ttRecipe.mInputs[0], holdItem, true)) {
                                 computationRequired = computationRemaining = ttRecipe.mDuration * 20L;
                                 mMaxProgresstime = 20;
                                 mEfficiencyIncrease = 10000;
@@ -213,12 +220,12 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                     }
                 }
                 for (TT_recipe.TT_assLineRecipe assRecipeTT:TT_recipe.TT_Recipe_Map.sCrafterRecipes.recipeList()){
-                    if (GT_Utility.areStacksEqual(assRecipeTT.mResearchItem, researchItem, true)) {
+                    if (GT_Utility.areStacksEqual(assRecipeTT.mResearchItem, holdItem, true)) {
                         this.aRecipe = assRecipeTT;
                         machineType=crafter;
                         //if found
                         for (GT_Recipe ttRecipe : TT_recipe.GT_Recipe_MapTT.sResearchableFakeRecipes.mRecipeList) {
-                            if (GT_Utility.areStacksEqual(ttRecipe.mInputs[0], researchItem, true)) {
+                            if (GT_Utility.areStacksEqual(ttRecipe.mInputs[0], holdItem, true)) {
                                 computationRequired = computationRemaining = ttRecipe.mDuration * 20L;
                                 mMaxProgresstime = 20;
                                 mEfficiencyIncrease = 10000;
@@ -233,6 +240,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                 }
             }
         }
+        holdItem=null;
         computationRequired=computationRemaining=0;
         mMaxProgresstime=0;
         mEfficiencyIncrease = 0;
@@ -291,7 +299,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
                 eHolders.get(0).getBaseMetaTileEntity().setActive(false);
                 eHolders.get(0).mInventory[0] = null;
 
-                mInventory[1].setStackDisplayName(GT_LanguageManager.getTranslation(tRecipe.mOutput.getDisplayName()) + ' ' + machineType +" Construction Data");
+                mInventory[1].setStackDisplayName(GT_LanguageManager.getTranslation(aRecipe.mOutputs[0].getDisplayName()) + ' ' + machineType +" Construction Data");
                 NBTTagCompound tNBT = mInventory[1].getTagCompound();//code above makes it not null
 
                 tNBT.setString("eMachineType", machineType);
@@ -303,6 +311,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         computationRequired=computationRemaining=0;
         tRecipe=null;
         aRecipe=null;
+        holdItem=null;
     }
 
     @Override
@@ -345,6 +354,10 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         super.stopMachine();
         for (GT_MetaTileEntity_Hatch_Holder r : eHolders)
             r.getBaseMetaTileEntity().setActive(false);
+        computationRequired=computationRemaining=0;
+        tRecipe=null;
+        aRecipe=null;
+        holdItem=null;
     }
 
     //NEW METHOD
@@ -372,6 +385,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
         return 1;
     }
 
+    @Override
     public String[] getInfoData() {
         long storedEnergy = 0;
         long maxEnergy = 0;
