@@ -72,6 +72,8 @@ public class DreamCraftRecipeLoader implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.Machine_Multi_Transformer.get(1, o), ItemList.Circuit_Ultimatecrystalcomputer.get(2, o), GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 64), CustomItemList.DATApipe.get(4, o), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Superconductor, 4)}, Materials.Tungsten.getMolten(1000), CustomItemList.Machine_Multi_Switch.get(1, o), 800, 122880, true);
         //Quantum Computer
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.Machine_Multi_Transformer.get(1, o), GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Superconductor, 2), ItemList.Cover_Screen.get(1, o ), CustomItemList.DATApipe.get(8, o), GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Superconductor, 8)}, Materials.Tungsten.getMolten(1000), CustomItemList.Machine_Multi_Computer.get(1, o), 800, 122880, true);
+        //Molecular Casing
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.eM_Power.get(1, o), GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Osmiridium, 6),  GT_OreDictUnificator.get(OrePrefixes.bolt, Materials.TungstenSteel, 24), ItemList.Field_Generator_IV.get(2, o)}, Materials.Trinium.getMolten(1000), CustomItemList.eM_Containment.get(1, o), 800, 500000, true);
         //region multiblocks assline
         //Research Station
         GT_Values.RA.addAssemblylineRecipe(com.dreammaster.gthandler.CustomItemList.ScannerZPM.get(1), 144000, new ItemStack[]{
