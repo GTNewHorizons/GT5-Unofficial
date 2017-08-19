@@ -70,7 +70,9 @@ public class TecTech {
         proxy.addTexturePage(tectechTexturePage1);
 
         GTCustomLoader = new MainLoader();
+
         dAtomDefinition.overrides.add(new AtomOverrider());
+        TecTech.Logger.info("Added Atom Overrider");
     }
 
     @EventHandler
