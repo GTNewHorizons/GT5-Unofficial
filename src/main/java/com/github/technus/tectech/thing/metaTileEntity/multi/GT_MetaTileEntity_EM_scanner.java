@@ -192,7 +192,6 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                         researchEM.remove(objectResearched.definition);
                         break;
                     }
-                    //todo implement molecular in depth info scan
                     cleanInstanceStack(stackEM);
                     researchEM.remove(stackEM.definition);
                 }
@@ -206,7 +205,9 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                     quantumStuff(true);
                     return true;
                 }
-            }
+            }//else{
+            //todo implement molecular in depth info scan
+            //}
         }
         quantumStuff(false);
         objectResearched=null;
