@@ -42,9 +42,9 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     //use multi A energy inputs, use less power the longer it runs
     private static final String[][] shape = new String[][]{
             {"00000", "00000", "00.00", "0   0",},
-            {"0C0", "0C0", "0C0", " 000 ",},
-            {"0C0", "0C0", "0C0", " 000 ",},
-            {"0C0", "0C0", "0C0", " 000 ",},
+            {"0---0", "0---0", "0---0", " 000 ",},
+            {"0---0", "0---0", "0---0", " 000 ",},
+            {"0---0", "0---0", "0---0", " 000 ",},
             {"00000", "00000", "00000", "0   0",},
     };
     private static final String[][] shapeFlipped = new String[][]{

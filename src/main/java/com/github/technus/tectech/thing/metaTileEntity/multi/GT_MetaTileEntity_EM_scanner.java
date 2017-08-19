@@ -131,9 +131,9 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     @Override
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if(aBaseMetaTileEntity.isActive() && (aTick & 0x2)==0 && aBaseMetaTileEntity.isClientSide()){
-            int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX*3;
-            int yDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetY*3;
-            int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ*3;
+            int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX*4+aBaseMetaTileEntity.getXCoord();
+            int yDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetY*4+aBaseMetaTileEntity.getYCoord();
+            int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ*4+aBaseMetaTileEntity.getZCoord();
             aBaseMetaTileEntity.getWorld().markBlockRangeForRenderUpdate(xDir,yDir,zDir,xDir,yDir,zDir);
         }
     }
@@ -306,19 +306,18 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     private void quantumStuff(boolean shouldExist){
         IGregTechTileEntity base=getBaseMetaTileEntity();
         if(base!=null && base.getWorld()!=null) {
-            int xDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetX * 3;
-            int yDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetY * 3;
-            int zDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetZ * 3;
+            int xDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetX * 4+base.getXCoord();
+            int yDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetY * 4+base.getYCoord();
+            int zDir = ForgeDirection.getOrientation(base.getBackFacing()).offsetZ * 4+base.getZCoord();
             Block block = base.getWorld().getBlock(xDir, yDir, zDir);
             if (shouldExist) {
-                if (block != null && block.getMaterial() == Material.air)
-                    getBaseMetaTileEntity().getWorld().setBlock(xDir, yDir, zDir, QuantumStuffBlock.INSTANCE);
+                if(block != null && block.getMaterial()== Material.air)
+                base.getWorld().setBlock(xDir, yDir, zDir, QuantumStuffBlock.INSTANCE,0,2);
             } else {
                 if (block instanceof QuantumStuffBlock)
-                    getBaseMetaTileEntity().getWorld().setBlock(xDir, yDir, zDir, Blocks.air);
+                    base.getWorld().setBlock(xDir, yDir, zDir, Blocks.air,0,2);
             }
         }
-        if(eOutputHatches!=null && !eOutputHatches.isEmpty()) eOutputHatches.get(0).getBaseMetaTileEntity().setActive(shouldExist);
         eDismatleBoom=shouldExist;
     }
 }
