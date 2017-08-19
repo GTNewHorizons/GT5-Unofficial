@@ -67,9 +67,15 @@ public class DreamCraftRecipeLoader implements Runnable {
         //Uncertainity
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.eM_Computer_Casing.get(1, o), ItemList.Circuit_Ultimatecrystalcomputer.get(4, o), ItemList.Cover_Screen.get(1, o ), CustomItemList.DATApipe.get(16, o), new ItemStack(Blocks.stone_button, 16, 32767)}, Materials.Tungsten.getMolten(2592), CustomItemList.Uncertainty_Hatch.get(1, o), 1200, 122880, true);
         //Data Input Hatch
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.eM_Computer_Casing.get(1, o),  ItemList.Hatch_Input_Bus_LuV.get(1, o), ItemList.Circuit_Crystalcomputer.get(1, o), CustomItemList.DATApipe.get(2, o)}, Materials.Tungsten.getMolten(1296), CustomItemList.dataIn_Hatch.get(1, o), 1200, 122880, true);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.eM_Computer_Casing.get(1, o),  ItemList.Hatch_Input_Bus_LuV.get(1, o), ItemList.Circuit_Crystalcomputer.get(1, o), CustomItemList.DATApipe.get(2, o)}, Materials.Tungsten.getMolten(1296), CustomItemList.dataIn_Hatch.get(1, o), 800, 122880, true);
         //Data Output Hatch
-        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.eM_Computer_Casing.get(1, o),  ItemList.Hatch_Output_Bus_LuV.get(1, o), ItemList.Circuit_Crystalcomputer.get(1, o), CustomItemList.DATApipe.get(2, o)}, Materials.Tungsten.getMolten(1296), CustomItemList.dataOut_Hatch.get(1, o), 1200, 122880, true);
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.eM_Computer_Casing.get(1, o),  ItemList.Hatch_Output_Bus_LuV.get(1, o), ItemList.Circuit_Crystalcomputer.get(1, o), CustomItemList.DATApipe.get(2, o)}, Materials.Tungsten.getMolten(1296), CustomItemList.dataOut_Hatch.get(1, o), 800, 122880, true);
+        //Elemental Input Hatch
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.eM_Containment.get(1, o), ItemList.Hatch_Input_UV.get(1, o), GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Naquadah, 2), ItemList.Sensor_UV.get(2, o)}, Materials.Tungsten.getMolten(1296), CustomItemList.eM_in_UV.get(1, o), 800, 500000, true);
+        //Elemental Output Hatch
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.eM_Containment.get(1, o), ItemList.Hatch_Output_UV.get(1, o),  GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Naquadah, 2), ItemList.Emitter_UV.get(2, o)}, Materials.Tungsten.getMolten(1296), CustomItemList.eM_out_UV.get(1, o), 800, 500000, true);
+        //UV Overflown Hatch
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{CustomItemList.eM_Containment.get(1, o), ItemList.Hatch_Muffler_UV.get(1, o),  ItemList.Field_Generator_UV.get(1, o)}, Materials.Tungsten.getMolten(1296), CustomItemList.eM_muffler_UV.get(1, o), 800, 500000, true);
 
         //endregion
         //Active Transformer
