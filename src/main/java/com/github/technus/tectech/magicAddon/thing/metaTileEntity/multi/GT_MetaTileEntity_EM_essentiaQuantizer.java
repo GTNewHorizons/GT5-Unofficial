@@ -41,7 +41,7 @@ public class GT_MetaTileEntity_EM_essentiaQuantizer extends GT_MetaTileEntity_Mu
             {"010","1!1","010",},
     };
     private static final Block[] blockType = new Block[]{QuantumGlassBlock.INSTANCE, sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
-    private static final byte[] blockMeta = new byte[]{0,4,0,10};
+    private static final byte[] blockMeta = new byte[]{0,4,0,8};
     private static final String[] addingMethods = new String[]{"addClassicToMachineList", "addElementalOutputToMachineList", "addElementalMufflerToMachineList"};
     private static final short[] casingTextures = new short[]{textureOffset, textureOffset+4, textureOffset + 4};
     private static final Block[] blockTypeFallback = new Block[]{sBlockCasingsTT, sBlockCasingsTT, sBlockCasingsTT};
