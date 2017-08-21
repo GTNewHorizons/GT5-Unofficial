@@ -5,7 +5,6 @@ import com.github.technus.tectech.entity.fx.BlockHint;
 import com.github.technus.tectech.thing.block.QuantumGlassRender;
 import com.github.technus.tectech.thing.block.QuantumStuffRender;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.Textures;
@@ -18,17 +17,10 @@ import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.client.particle.EntityExplodeFX;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.util.ForgeDirection;
-import openmodularturrets.blocks.turretheads.TurretHeadEM;
-import openmodularturrets.blocks.turretheads.TurretHeadItemRenderEM;
-import openmodularturrets.blocks.turretheads.TurretHeadRenderEM;
-import openmodularturrets.entity.projectiles.projectileEM;
-import openmodularturrets.entity.projectiles.projectileRenderEM;
-import openmodularturrets.tileentity.turret.TileTurretHeadEM;
+import openmodularturrets.TT_turret_loader;
 import org.lwjgl.opengl.GL11;
 
 public class ClientProxy extends CommonProxy {
@@ -46,13 +38,7 @@ public class ClientProxy extends CommonProxy {
         QuantumStuffRender.renderID = RenderingRegistry.getNextAvailableRenderId();
         RenderingRegistry.registerBlockHandler(QuantumStuffRender.renderID, new QuantumStuffRender());
 
-        if(Loader.isModLoaded("openmodularturrets")) {
-            TurretHeadRenderEM turretHeadRenderEM=new TurretHeadRenderEM();
-            ClientRegistry.bindTileEntitySpecialRenderer(TileTurretHeadEM.class, turretHeadRenderEM);
-            MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TurretHeadEM.INSTANCE), new TurretHeadItemRenderEM(turretHeadRenderEM, new TileTurretHeadEM()));
-
-            RenderingRegistry.registerEntityRenderingHandler(projectileEM.class, new projectileRenderEM());
-        }
+        if(Loader.isModLoaded("openmodularturrets")) new TT_turret_loader().run();
     }
 
     @Override
