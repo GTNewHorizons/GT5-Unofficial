@@ -2,7 +2,6 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackMap;
 import com.github.technus.tectech.elementalMatter.classes.tElementalException;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalInstanceContainer;
@@ -23,8 +22,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
 import static com.github.technus.tectech.CommonValues.*;
-import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static com.github.technus.tectech.Util.V;
+import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
+import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;
 
 /**
@@ -97,7 +97,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
         try {
             content = cElementalInstanceStackMap.fromNBT(aNBT.getCompoundTag("eM_Stacks"));
         } catch (tElementalException e) {
-            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) e.printStackTrace();
             if (content == null) content = new cElementalInstanceStackMap();
         }
     }
@@ -212,19 +212,23 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
 
     @Override
     public String[] getInfoData() {
-        if (id > 0) {
-            if (content == null || content.size() == 0)
-                return new String[]{"ID: " + EnumChatFormatting.AQUA + id, "No Stacks"};
-            else {
-                final String[] lines = content.getElementalInfo();
-                final String[] output = new String[lines.length + 1];
-                output[0] = "ID: " + EnumChatFormatting.AQUA + id;
-                System.arraycopy(lines, 0, output, 1, lines.length);
-                return output;
+        if(DEBUG_MODE) {
+            if (id > 0) {
+                if (content == null || content.size() == 0)
+                    return new String[]{"ID: " + EnumChatFormatting.AQUA + id, "No Stacks"};
+                else {
+                    final String[] lines = content.getElementalInfo();
+                    final String[] output = new String[lines.length + 1];
+                    output[0] = "ID: " + EnumChatFormatting.AQUA + id;
+                    System.arraycopy(lines, 0, output, 1, lines.length);
+                    return output;
+                }
             }
+            if (content == null || content.size() == 0) return new String[]{"No Stacks"};
+            return content.getElementalInfo();
+        } else {
+            return new String[0];
         }
-        if (content == null || content.size() == 0) return new String[]{"No Stacks"};
-        return content.getElementalInfo();
     }
 
     public float updateSlots() {

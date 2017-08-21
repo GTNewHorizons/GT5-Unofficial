@@ -24,7 +24,7 @@ import net.minecraft.util.EnumChatFormatting;
  * Created by Tec on 23.03.2017.
  */
 public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_TieredMachineBlock {
-    private static Textures.BlockIcons.CustomIcon GENNY;
+    private static GT_RenderedTexture GENNY;
     public int EUT=0,AMP=0;
     public boolean producing=true;
 
@@ -45,12 +45,12 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         super.registerIcons(aBlockIconRegister);
-        GENNY = new Textures.BlockIcons.CustomIcon("iconsets/GENNY");
+        GENNY = new GT_RenderedTexture(new Textures.BlockIcons.CustomIcon("iconsets/GENNY"));
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], (aSide != this.getBaseMetaTileEntity().getFrontFacing()) ? (aActive? GT_MetaTileEntity_Hatch_DynamoMulti.overlay[mTier]: GT_MetaTileEntity_Hatch_EnergyMulti.overlay[mTier]) : new GT_RenderedTexture(GENNY)};
+        return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[mTier][aColorIndex + 1], (aSide != aFacing) ? (aActive? GT_MetaTileEntity_Hatch_DynamoMulti.overlay[mTier]: GT_MetaTileEntity_Hatch_EnergyMulti.overlay[mTier]) : GENNY};
     }
 
     @Override

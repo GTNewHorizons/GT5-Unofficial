@@ -211,9 +211,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
-        if (aSide == aFacing) {
-            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
-        }
+        if (aSide == aFacing) return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
         return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][4]};
     }
 
@@ -660,7 +658,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                     if (isValidMetaTileEntity(tHatch)) {
                                         euVar = tHatch.maxEUOutput();
                                         if (tHatch.getBaseMetaTileEntity().getStoredEU() <= (tHatch.maxEUStore() - euVar) &&
-                                                aBaseMetaTileEntity.decreaseStoredEnergyUnits(euVar + (euVar >> 7), false))
+                                                aBaseMetaTileEntity.decreaseStoredEnergyUnits(euVar + Math.min(euVar >> 7,1), false))
                                             tHatch.setEUVar(tHatch.getBaseMetaTileEntity().getStoredEU() + euVar);
                                     }
                                 }
@@ -668,7 +666,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                     if (isValidMetaTileEntity(tHatch)) {
                                         euVar = tHatch.maxEUOutput() * tHatch.Amperes;
                                         if (tHatch.getBaseMetaTileEntity().getStoredEU() <= tHatch.maxEUStore() - euVar &&
-                                                aBaseMetaTileEntity.decreaseStoredEnergyUnits(euVar + (euVar >> 7), false))
+                                                aBaseMetaTileEntity.decreaseStoredEnergyUnits(euVar + Math.min(euVar >> 7,tHatch.Amperes), false))
                                             tHatch.setEUVar(tHatch.getBaseMetaTileEntity().getStoredEU() + euVar);
                                     }
                                 }
@@ -928,7 +926,10 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     public void cleanInstanceStack(cElementalInstanceStack target) {
         if (target == null) return;
-        float mass = target.getMass();
+        cleanMass(target.getMass());
+    }
+
+    public void cleanMass(float mass) {
         if (mass > 0) {
             if (eMufflerHatches.size() < 1) explodeMultiblock();
             mass /= eMufflerHatches.size();
