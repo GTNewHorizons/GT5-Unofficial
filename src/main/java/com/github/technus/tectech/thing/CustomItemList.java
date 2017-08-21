@@ -31,7 +31,7 @@ public enum CustomItemList implements IItemContainer {
     Parametrizer_Hatch, Uncertainty_Hatch, UncertaintyX_Hatch, dataIn_Hatch, dataOut_Hatch,
     eM_Containment, eM_Containment_Field, eM_Containment_Advanced, eM_Coil, eM_Teleportation, eM_Dimensional, eM_Ultimate_Containment, eM_Ultimate_Containment_Advanced, eM_Ultimate_Containment_Field, eM_Spacetime, eM_Computer_Casing, eM_Computer_Bus, eM_Computer_Vent, eM_Hollow, eM_Power,
     debugBlock,
-    Machine_Multi_Microwave,
+    Machine_Multi_Microwave, Machine_Multi_teslaCoil,
     Machine_Multi_Transformer,
     Machine_Multi_Computer, Machine_Multi_Switch, Machine_Multi_Research,
     Machine_Multi_MatterToEM, Machine_Multi_EMToMatter, Machine_Multi_EMjunction, Machine_Multi_Scanner,
