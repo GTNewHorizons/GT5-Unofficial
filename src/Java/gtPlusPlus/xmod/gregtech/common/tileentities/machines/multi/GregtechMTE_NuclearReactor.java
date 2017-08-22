@@ -43,7 +43,6 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 	protected int fuelConsumption = 0;
 	protected int fuelValue = 0;
 	protected int fuelRemaining = 0;
-	protected double realOptFlow = 0;
 	protected boolean boostEu = false;
 	protected boolean heliumSparging = false;
 
@@ -91,7 +90,7 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 				"Fuel Value: "+this.fuelValue+" EU/L",
 				"Fuel Remaining: "+this.fuelRemaining+" Litres",
 				"Current Efficiency: "+(this.mEfficiency/5)+"%",
-				"Current Efficiency: "+(this.mEfficiency),
+				"Current Efficiency (Raw): "+(this.mEfficiency),
 				"Boosted Output: "+this.boostEu+".",
 				"Boosted Output gives 4x EU/t for double fuel usage.",
 				"It requires you to have 100% Efficiency."};
@@ -186,12 +185,12 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 						/*
 							else { //carbon moderation rods are at 1,1 & -1,-1 & 1,-1 & -1,1
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-									Utils.LOG_INFO("LFTR Casing(s) Missing from one of the top layers inner 3x3.");
-									Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+									Utils.LOG_WARNING("LFTR Casing(s) Missing from one of the top layers inner 3x3.");
+									Utils.LOG_WARNING("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 									return false;
 								}
 								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 12) {
-									Utils.LOG_INFO("LFTR Casing(s) Missing from one of the top layers inner 3x3.");
+									Utils.LOG_WARNING("LFTR Casing(s) Missing from one of the top layers inner 3x3.");
 									return false;
 								}
 							}*/
@@ -378,17 +377,15 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 		final ArrayList<FluidStack> tFluids = this.getStoredFluids();
 		final Collection<GT_Recipe> tRecipeList = Recipe_GT.Gregtech_Recipe_Map.sLiquidFluorineThoriumReactorRecipes.mRecipeList;
 		if((tFluids.size() > 0) && (tRecipeList != null)) { //Does input hatch have a LFTR fuel?
-			Utils.LOG_INFO("Found more than one input fluid and a list of valid recipes.");
-			final boolean containsFLIBE = false;
-			final boolean containsPrimarySalt = false;
+			Utils.LOG_WARNING("Found more than one input fluid and a list of valid recipes.");
 			for (final FluidStack hatchFluid1 : tFluids) { //Loops through hatches
-				Utils.LOG_INFO("Looping through Input hatches - Found "+hatchFluid1.getLocalizedName());
+				Utils.LOG_WARNING("Looping through Input hatches - Found "+hatchFluid1.getLocalizedName());
 				for(final GT_Recipe aFuel : tRecipeList) { //Loops through LFTR fuel recipes
-					Utils.LOG_INFO("Looping through Recipes. "+aFuel.mSpecialValue);
+					Utils.LOG_WARNING("Looping through Recipes. "+aFuel.mSpecialValue);
 					FluidStack tLiquid;
 					final FluidStack testStack = aFuel.mFluidInputs[1];
 					if ((tLiquid = testStack) != null) { //Create fluidstack from current recipe
-						Utils.LOG_INFO("Creating a fluidstack from the current recipe. "+testStack.getLocalizedName());
+						Utils.LOG_WARNING("Creating a fluidstack from the current recipe. "+testStack.getLocalizedName());
 						if (hatchFluid1.isFluidEqual(tLiquid)) { //Has a LFTR fluid
 							this.fuelConsumption = this.boostEu ? (aFuel.mSpecialValue/4096) : (aFuel.mSpecialValue/2048); //Calc fuel consumption
 					
@@ -404,37 +401,37 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 										if(tFluids.contains(NUCLIDE.LiFBeF2ThF4UF4.getFluid(2))){
 											
 											FluidStack depletionStack = FluidUtils.getFluidStack(tLiquid, (this.boostEu ? (aFuel.mSpecialValue/4096) : (aFuel.mSpecialValue/2048)));
-											Utils.LOG_INFO("Input hatch contains some FLiBe Fuel, using "+this.fuelConsumption+" | "+aFuel.mSpecialValue+" | "+depletionStack.amount);
+											Utils.LOG_WARNING("Input hatch contains some FLiBe Fuel, using "+this.fuelConsumption+" | "+aFuel.mSpecialValue+" | "+depletionStack.amount);
 											if(this.depleteInput(depletionStack)) { //Deplete that amount
-												Utils.LOG_INFO("Depleted some FLiBe fluid");
+												Utils.LOG_WARNING("Depleted some FLiBe fluid");
 											}
 											
 											this.depleteInput(NUCLIDE.LiFBeF2ThF4UF4.getFluid(this.boostEu ? 2 : 1));
-											Utils.LOG_INFO("Depleted "+(this.boostEu ? 2 : 1)+"L of LiFBeF2ThF4UF4 fluid");
+											Utils.LOG_WARNING("Depleted "+(this.boostEu ? 2 : 1)+"L of LiFBeF2ThF4UF4 fluid");
 										}
 										//1/2 as Efficient
 										if (tFluids.contains(NUCLIDE.LiFBeF2ZrF4UF4.getFluid(4))){
 											
 											FluidStack depletionStack = FluidUtils.getFluidStack(tLiquid, (this.boostEu ? (aFuel.mSpecialValue/4096) : (aFuel.mSpecialValue/2048)));
-											Utils.LOG_INFO("Input hatch contains some FLiBe Fuel, using "+this.fuelConsumption+" | "+aFuel.mSpecialValue+" | "+depletionStack.amount);
+											Utils.LOG_WARNING("Input hatch contains some FLiBe Fuel, using "+this.fuelConsumption+" | "+aFuel.mSpecialValue+" | "+depletionStack.amount);
 											if(this.depleteInput(depletionStack)) { //Deplete that amount
-												Utils.LOG_INFO("Depleted some FLiBe fluid");
+												Utils.LOG_WARNING("Depleted some FLiBe fluid");
 											}
 											
 											this.depleteInput(NUCLIDE.LiFBeF2ZrF4UF4.getFluid(this.boostEu ? 4 : 2));
-											Utils.LOG_INFO("Depleted "+(this.boostEu ? 4 : 2)+"L of LiFBeF2ZrF4UF4 fluid");
+											Utils.LOG_WARNING("Depleted "+(this.boostEu ? 4 : 2)+"L of LiFBeF2ZrF4UF4 fluid");
 										}
 										//10x less Efficient.
 										if (tFluids.contains(NUCLIDE.LiFBeF2ZrF4U235.getFluid(20))) {
 											
 											FluidStack depletionStack = FluidUtils.getFluidStack(tLiquid, (this.boostEu ? (aFuel.mSpecialValue/4096) : (aFuel.mSpecialValue/2048)));
-											Utils.LOG_INFO("Input hatch contains some FLiBe Fuel, using "+this.fuelConsumption+" | "+aFuel.mSpecialValue+" | "+depletionStack.amount);
+											Utils.LOG_WARNING("Input hatch contains some FLiBe Fuel, using "+this.fuelConsumption+" | "+aFuel.mSpecialValue+" | "+depletionStack.amount);
 											if(this.depleteInput(depletionStack)) { //Deplete that amount
-												Utils.LOG_INFO("Depleted some FLiBe fluid");
+												Utils.LOG_WARNING("Depleted some FLiBe fluid");
 											}
 											
 											this.depleteInput(NUCLIDE.LiFBeF2ZrF4U235.getFluid(this.boostEu ? 20 : 10));
-											Utils.LOG_INFO("Depleted "+(this.boostEu ? 20 : 10)+"L of LiFBeF2ZrF4U235 fluid");
+											Utils.LOG_WARNING("Depleted "+(this.boostEu ? 20 : 10)+"L of LiFBeF2ZrF4U235 fluid");
 										}
 									}
 								} else {
@@ -447,7 +444,7 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 									if (this.depleteInput(Materials.Helium.getGas(1000L))){
 										//Make an empty fluid stack for possible sparging output
 										FluidStack[] spargeOutput = new FluidStack[]{};
-										Utils.LOG_INFO("Doing a Sparge with Helium - "+this.heliumSparging);
+										Utils.LOG_WARNING("Doing a Sparge with Helium - "+this.heliumSparging);
 										this.heliumSparging = false;
 										spargeOutput = this.getByproductsOfSparge(Materials.Helium.getGas(1000L));
 										
@@ -455,7 +452,7 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 										try {
 											if (spargeOutput.length >= 1){
 												for (final FluidStack F : spargeOutput){
-													Utils.LOG_INFO("Adding Sparge Output - "+F.getLocalizedName());
+													Utils.LOG_WARNING("Adding Sparge Output - "+F.getLocalizedName());
 													this.addOutput(F);
 												}
 											}
@@ -467,13 +464,13 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 									if (this.depleteInput(Materials.Fluorine.getGas(100L))){
 										//Make an empty fluid stack for possible sparging output
 										FluidStack[] spargeOutput = new FluidStack[]{};
-										Utils.LOG_INFO("Doing a Sparge with Fluorine");
+										Utils.LOG_WARNING("Doing a Sparge with Fluorine");
 										spargeOutput = this.getByproductsOfSparge(Materials.Fluorine.getGas(100L));
 										this.heliumSparging = true;
 										//If Sparging occurred, try add the outputs to the output hatches.
 										if (spargeOutput.length > 0){
 											for (final FluidStack F : spargeOutput){
-												Utils.LOG_INFO("Adding Sparge Output - "+F.getLocalizedName());
+												Utils.LOG_WARNING("Adding Sparge Output - "+F.getLocalizedName());
 												this.addOutput(F);
 											}
 										}
@@ -482,7 +479,7 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 
 
 								if (aFuel != null){
-									//Utils.LOG_INFO("Saving previous Recipe.");
+									//Utils.LOG_WARNING("Saving previous Recipe.");
 									//this.mLastRecipe = aFuel;
 								}
 
@@ -500,10 +497,10 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 								else if (this.mEfficiency > 500){
 									this.mEfficiency = 500;
 								}
-								Utils.LOG_INFO("Efficiency == "+this.mEfficiency);
+								Utils.LOG_WARNING("Efficiency == "+this.mEfficiency);
 
 								this.mEUt = (this.mEfficiency < 500 ? 2048 : (8196)); //Output 0 if startup is less than 20%
-								Utils.LOG_INFO("Generating "+this.mEUt+"EU/t @ an efficiency level of "+this.mEfficiency);
+								Utils.LOG_WARNING("Generating "+this.mEUt+"EU/t @ an efficiency level of "+this.mEfficiency);
 								
 								this.mProgresstime = 1;
 								this.mMaxProgresstime = 1;
@@ -582,7 +579,7 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 						MathUtils.roundToClosestInt(MathUtils.randInt(10, 100)/10)
 				};
 				final int heliumContent = (1000-outputChances[0]-outputChances[1]-outputChances[2]-outputChances[3]-outputChances[4]);
-				Utils.LOG_INFO("Helium remaining: "+heliumContent);
+				Utils.LOG_WARNING("Helium remaining: "+heliumContent);
 				outputArrayOfGases = new FluidStack[]{
 						ELEMENT.getInstance().XENON.getFluid(outputChances[0]),
 						ELEMENT.getInstance().NEON.getFluid(outputChances[1]),
@@ -600,7 +597,7 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 						MathUtils.roundToClosestInt(MathUtils.randDouble(1, 50)/10)
 				};
 				final int fluorineContent = (100-outputChances[0]-outputChances[1]-outputChances[2]-outputChances[3]);
-				Utils.LOG_INFO("Fluorine remaining: "+fluorineContent);
+				Utils.LOG_WARNING("Fluorine remaining: "+fluorineContent);
 				outputArrayOfGases = new FluidStack[]{
 						FLUORIDES.LITHIUM_FLUORIDE.getFluid(outputChances[0]),
 						FLUORIDES.NEPTUNIUM_HEXAFLUORIDE.getFluid(outputChances[1]),
@@ -628,15 +625,13 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 			
 			
 			if (this.mDynamoHatches != null) {
-				int hatchNo = 0;
 				for (GT_MetaTileEntity_Hatch_Dynamo tHatch : this.mDynamoHatches) {
 					if (tHatch.mTier >= 5){
 						if (isValidMetaTileEntity(tHatch)){
 							tHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(this.mEUt, false);
-							//Utils.LOG_INFO("Adding "+this.mEUt+"eu to internal storage of dynamo "+hatchNo+".");
+							//Utils.LOG_WARNING("Adding "+this.mEUt+"eu to internal storage of dynamo "+hatchNo+".");
 						}						
 					}
-					hatchNo++;
 				}
 			}
 			
