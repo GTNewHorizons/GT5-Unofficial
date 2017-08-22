@@ -3,10 +3,8 @@ package com.github.technus.tectech.loader;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import com.github.technus.tectech.thing.item.ConstructableTriggerItem;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import net.minecraft.init.Blocks;
@@ -28,6 +26,10 @@ public class DreamCraftRecipeLoader implements Runnable {
                 GT_ModHandler.getIC2Item("reinforcedGlass", 1L)
         }, Materials.Trinium.getMolten(576), new ItemStack(QuantumGlassBlock.INSTANCE, 1), 200, 500000, true);
 
+        //Blueprint
+        GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(ConstructableTriggerItem.INSTANCE, 1),
+                GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
+                new Object[]{Dyes.dyeBlue, OrePrefixes.plate.get(Materials.Paper), Dyes.dyeBlue, Dyes.dyeWhite});
 
         //region pipes
 
@@ -210,6 +212,14 @@ public class DreamCraftRecipeLoader implements Runnable {
 
         //region multiblocks
 
+        //Microwave Grinder todo HV recipe
+        GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
+                com.dreammaster.gthandler.CustomItemList.WetTransformer_ZPM_LuV.get(1, o),
+                com.dreammaster.gthandler.CustomItemList.HighEnergyFlowCircuit.get(1, o),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 16),
+                ItemList.Circuit_Chip_UHPIC.get(2, o),
+        }, Materials.TungstenSteel.getMolten(576), CustomItemList.Machine_Multi_Microwave.get(1, o), 400, 500, true);
+
         //Active Transformer
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 com.dreammaster.gthandler.CustomItemList.WetTransformer_ZPM_LuV.get(1, o),
@@ -256,7 +266,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                 Materials.UUMatter.getFluid(1000),
                 Materials.Iridium.getMolten(1296),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
-                Materials.Helium.getGas(1000),
+                Materials.Osmium.getMolten(1296),
         }, CustomItemList.Machine_Multi_Research.get(1), 12000, 100000);
 
         //Matter Junction
@@ -267,12 +277,12 @@ public class DreamCraftRecipeLoader implements Runnable {
                 ItemList.Robot_Arm_LuV.get(2),
                 ItemList.Electric_Piston_LuV.get(2),
                 ItemList.Circuit_Wetwaresupercomputer.get(2),
-                GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Superconductor, 4),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Superconductor, 4),
         }, new FluidStack[]{
                 Materials.UUMatter.getFluid(1000),
                 Materials.Naquadah.getMolten(1296),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
-                Materials.Hydrogen.getGas(1000),
+                Materials.Osmium.getMolten(1296),
         }, CustomItemList.Machine_Multi_EMjunction.get(1), 12000, 100000);
 
         //Matter Quantizer
@@ -282,12 +292,12 @@ public class DreamCraftRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Naquadah, 4),
                 ItemList.Emitter_UV.get(2),
                 ItemList.Circuit_Wetwaresupercomputer.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Superconductor, 2),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Superconductor, 2),
         }, new FluidStack[]{
                 Materials.UUMatter.getFluid(1000),
                 Materials.Naquadah.getMolten(1296),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
-                Materials.Hydrogen.getGas(1000),
+                Materials.Osmium.getMolten(1296),
         }, CustomItemList.Machine_Multi_MatterToEM.get(1), 12000, 100000);
 
         //Matter DeQuantizer
@@ -297,12 +307,12 @@ public class DreamCraftRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Naquadah, 4),
                 ItemList.Sensor_UV.get(2),
                 ItemList.Circuit_Wetwaresupercomputer.get(1),
-                GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Superconductor, 2),
+                GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Superconductor, 2),
         }, new FluidStack[]{
                 Materials.UUMatter.getFluid(1000),
                 Materials.Naquadah.getMolten(1296),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
-                Materials.Hydrogen.getGas(1000),
+                Materials.Osmium.getMolten(1296),
         }, CustomItemList.Machine_Multi_EMToMatter.get(1), 12000, 100000);
 
         //Essentia Quantizer
@@ -317,7 +327,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                 Materials.UUMatter.getFluid(2000),
                 Materials.Void.getMolten(2592),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 4000),
-                Materials.Hydrogen.getGas(2000),
+                Materials.Osmium.getMolten(1296),
         }, CustomItemList.Machine_Multi_EssentiaToEM.get(1), 24000, 400000);
 
         //Essentia DeQuantizer
@@ -332,8 +342,23 @@ public class DreamCraftRecipeLoader implements Runnable {
                 Materials.UUMatter.getFluid(2000),
                 Materials.Void.getMolten(2592),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 4000),
-                Materials.Hydrogen.getGas(2000),
+                Materials.Osmium.getMolten(1296),
         }, CustomItemList.Machine_Multi_EMToEssentia.get(1), 24000, 400000);
+
+        //EM Scanner todo
+        TT_recipeAdder.addResearchableAssemblylineRecipe(CustomItemList.Machine_Multi_Research.get(1),
+                150000,128, 500000, 16,  new ItemStack[]{
+                        CustomItemList.Machine_Multi_EMjunction.get(1),
+                        GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Neutronium, 4),
+                        ItemList.Sensor_UV.get(2),
+                        ItemList.Circuit_Wetwaresupercomputer.get(1),
+                        GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Draconium, 2),
+                }, new FluidStack[]{
+                        Materials.UUMatter.getFluid(2000),
+                        Materials.Iridium.getMolten(2592),
+                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 4000),
+                        Materials.Osmium.getMolten(1296),
+                }, CustomItemList.Machine_Multi_Scanner.get(1), 24000, 400000);
         //endregion
     }
 }
