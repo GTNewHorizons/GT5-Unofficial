@@ -10,6 +10,13 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Output;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
@@ -333,36 +340,31 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 
 	public boolean turnCasingActive(final boolean status) {
 		//TODO
-		/*if (this.mDynamoHatches != null) {
+		if (this.mDynamoHatches != null) {
 			for (final GT_MetaTileEntity_Hatch_Dynamo hatch : this.mDynamoHatches) {
-				hatch.mMachineBlock = status ? (byte) 70 : (byte) 71;
+				hatch.mMachineBlock = status ? (byte) TAE.GTPP_INDEX(12) : (byte) TAE.GTPP_INDEX(13);
 			}
 		}
 		if (this.mMufflerHatches != null) {
 			for (final GT_MetaTileEntity_Hatch_Muffler hatch : this.mMufflerHatches) {
-				hatch.mMachineBlock = status ? (byte) 70 : (byte) 71;
+				hatch.mMachineBlock = status ? (byte) TAE.GTPP_INDEX(12) : (byte) TAE.GTPP_INDEX(13);
 			}
 		}
 		if (this.mOutputHatches != null) {
 			for (final GT_MetaTileEntity_Hatch_Output hatch : this.mOutputHatches) {
-				hatch.mMachineBlock = status ? (byte) 70 : (byte) 71;
+				hatch.mMachineBlock = status ? (byte) TAE.GTPP_INDEX(12) : (byte) TAE.GTPP_INDEX(13);
 			}
 		}
 		if (this.mInputHatches != null) {
 			for (final GT_MetaTileEntity_Hatch_Input hatch : this.mInputHatches) {
-				hatch.mMachineBlock = status ? (byte) 70 : (byte) 71;
+				hatch.mMachineBlock = status ? (byte) TAE.GTPP_INDEX(12) : (byte) TAE.GTPP_INDEX(13);
 			}
 		}
-		if (this.mOutputBusses != null) {
-			for (final GT_MetaTileEntity_Hatch_OutputBus hatch : this.mOutputBusses) {
-				hatch.mMachineBlock = status ? (byte) 70 : (byte) 71;
+		if (this.mMaintenanceHatches != null) {
+			for (final GT_MetaTileEntity_Hatch_Maintenance hatch : this.mMaintenanceHatches) {
+				hatch.mMachineBlock = status ? (byte) TAE.GTPP_INDEX(12) : (byte) TAE.GTPP_INDEX(13);
 			}
 		}
-		if (this.mInputBusses != null) {
-			for (final GT_MetaTileEntity_Hatch_InputBus hatch : this.mInputBusses) {
-				hatch.mMachineBlock = status ? (byte) 70 : (byte) 71;
-			}
-		}*/
 		return true;
 	}
 
