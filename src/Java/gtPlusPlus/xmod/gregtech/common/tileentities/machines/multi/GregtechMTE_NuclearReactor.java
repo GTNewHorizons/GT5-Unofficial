@@ -28,6 +28,7 @@ import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.material.nuclear.NUCLIDE;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -89,9 +90,11 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 				"Fuel Consumption: "+this.fuelConsumption+"L/t",
 				"Fuel Value: "+this.fuelValue+" EU/L",
 				"Fuel Remaining: "+this.fuelRemaining+" Litres",
-				"Current Efficiency: "+(this.mEfficiency/100)+"%",
-				"Optimal Fuel Flow: "+(int)this.realOptFlow+" L/t",
-				"Current Speed: "+(this.mEfficiency/100)+"%",};
+				"Current Efficiency: "+(this.mEfficiency/5)+"%",
+				"Current Efficiency: "+(this.mEfficiency),
+				"Boosted Output: "+this.boostEu+".",
+				"Boosted Output gives 4x EU/t for double fuel usage.",
+				"It requires you to have 100% Efficiency."};
 	}
 
 	@Override
@@ -388,10 +391,7 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 						Utils.LOG_INFO("Creating a fluidstack from the current recipe. "+testStack.getLocalizedName());
 						if (hatchFluid1.isFluidEqual(tLiquid)) { //Has a LFTR fluid
 							this.fuelConsumption = this.boostEu ? (aFuel.mSpecialValue/4096) : (aFuel.mSpecialValue/2048); //Calc fuel consumption
-							Utils.LOG_INFO("Input hatch contains some FLiBe Fuel, using "+this.fuelConsumption);
-							if(this.depleteInput(tLiquid)) { //Deplete that amount
-								Utils.LOG_INFO("Depleted some FLiBe fluid");
-
+					
 								this.mMaxProgresstime = 500;
 								
 								if(tFluids.contains(NUCLIDE.LiFBeF2ThF4UF4.getFluid(1)) ||
@@ -402,16 +402,37 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 										//U235 fuel is 10x less efficient than UF4 with Thorium, UF4 with Zirconium is only 2x less efficient than UF4 with Thorium.
 										//Most Efficient
 										if(tFluids.contains(NUCLIDE.LiFBeF2ThF4UF4.getFluid(2))){
+											
+											FluidStack depletionStack = FluidUtils.getFluidStack(tLiquid, (this.boostEu ? (aFuel.mSpecialValue/4096) : (aFuel.mSpecialValue/2048)));
+											Utils.LOG_INFO("Input hatch contains some FLiBe Fuel, using "+this.fuelConsumption+" | "+aFuel.mSpecialValue+" | "+depletionStack.amount);
+											if(this.depleteInput(depletionStack)) { //Deplete that amount
+												Utils.LOG_INFO("Depleted some FLiBe fluid");
+											}
+											
 											this.depleteInput(NUCLIDE.LiFBeF2ThF4UF4.getFluid(this.boostEu ? 2 : 1));
 											Utils.LOG_INFO("Depleted "+(this.boostEu ? 2 : 1)+"L of LiFBeF2ThF4UF4 fluid");
 										}
 										//1/2 as Efficient
 										if (tFluids.contains(NUCLIDE.LiFBeF2ZrF4UF4.getFluid(4))){
+											
+											FluidStack depletionStack = FluidUtils.getFluidStack(tLiquid, (this.boostEu ? (aFuel.mSpecialValue/4096) : (aFuel.mSpecialValue/2048)));
+											Utils.LOG_INFO("Input hatch contains some FLiBe Fuel, using "+this.fuelConsumption+" | "+aFuel.mSpecialValue+" | "+depletionStack.amount);
+											if(this.depleteInput(depletionStack)) { //Deplete that amount
+												Utils.LOG_INFO("Depleted some FLiBe fluid");
+											}
+											
 											this.depleteInput(NUCLIDE.LiFBeF2ZrF4UF4.getFluid(this.boostEu ? 4 : 2));
 											Utils.LOG_INFO("Depleted "+(this.boostEu ? 4 : 2)+"L of LiFBeF2ZrF4UF4 fluid");
 										}
 										//10x less Efficient.
 										if (tFluids.contains(NUCLIDE.LiFBeF2ZrF4U235.getFluid(20))) {
+											
+											FluidStack depletionStack = FluidUtils.getFluidStack(tLiquid, (this.boostEu ? (aFuel.mSpecialValue/4096) : (aFuel.mSpecialValue/2048)));
+											Utils.LOG_INFO("Input hatch contains some FLiBe Fuel, using "+this.fuelConsumption+" | "+aFuel.mSpecialValue+" | "+depletionStack.amount);
+											if(this.depleteInput(depletionStack)) { //Deplete that amount
+												Utils.LOG_INFO("Depleted some FLiBe fluid");
+											}
+											
 											this.depleteInput(NUCLIDE.LiFBeF2ZrF4U235.getFluid(this.boostEu ? 20 : 10));
 											Utils.LOG_INFO("Depleted "+(this.boostEu ? 20 : 10)+"L of LiFBeF2ZrF4U235 fluid");
 										}
@@ -495,8 +516,7 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 							}
 						}
 					}
-				}
-			}
+				}			
 		}
 		this.mEUt = 0;
 		this.mEfficiency = 0;
@@ -599,13 +619,21 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 		if (aBaseMetaTileEntity.isActive()){
 			//this.getBaseMetaTileEntity().increaseStoredEnergyUnits(this.mEUt, false);
 			
+			if (this.mEfficiency >= 500){
+				this.boostEu = true;
+			}
+			else {
+				this.boostEu = false;
+			}
+			
+			
 			if (this.mDynamoHatches != null) {
 				int hatchNo = 0;
 				for (GT_MetaTileEntity_Hatch_Dynamo tHatch : this.mDynamoHatches) {
 					if (tHatch.mTier >= 5){
 						if (isValidMetaTileEntity(tHatch)){
 							tHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(this.mEUt, false);
-							Utils.LOG_INFO("Adding "+this.mEUt+"eu to internal storage of dynamo "+hatchNo+".");
+							//Utils.LOG_INFO("Adding "+this.mEUt+"eu to internal storage of dynamo "+hatchNo+".");
 						}						
 					}
 					hatchNo++;
