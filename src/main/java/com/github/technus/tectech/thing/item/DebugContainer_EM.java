@@ -1,7 +1,6 @@
 package com.github.technus.tectech.thing.item;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackMap;
 import com.github.technus.tectech.elementalMatter.classes.tElementalException;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalInstanceContainer;
@@ -22,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.github.technus.tectech.auxiliary.Reference.MODID;
+import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 
 /**
  * Created by Tec on 15.03.2017.
@@ -50,7 +50,7 @@ public class DebugContainer_EM extends Item {
                         try {
                             content.putUnifyAll(cElementalInstanceStackMap.fromNBT(tNBT.getCompoundTag("content")));
                         } catch (tElementalException e) {
-                            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+                            if (DEBUG_MODE) e.printStackTrace();
                             return true;
                         }
                         ((iElementalInstanceContainer) metaTE).purgeOverflow();

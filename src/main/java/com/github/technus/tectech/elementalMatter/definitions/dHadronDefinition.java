@@ -1,13 +1,13 @@
 package com.github.technus.tectech.elementalMatter.definitions;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.classes.*;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.ArrayList;
 
+import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.elementalMatter.definitions.eBosonDefinition.boson_Y__;
 
 /**
@@ -216,7 +216,7 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
                         new cElementalDecay(0.001F, new dHadronDefinition(false, contentOfBaryon), Particles[0], Particles[1], boson_Y__),
                         eBosonDefinition.deadEnd}; //decay into quarks
             } catch (tElementalException e) {
-                if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+                if (DEBUG_MODE) e.printStackTrace();
                 return new cElementalDecay[]{eBosonDefinition.deadEnd};
             }
         }
@@ -252,7 +252,7 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
         try {
             return new dHadronDefinition(false, antiElements);
         } catch (tElementalException e) {
-            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) e.printStackTrace();
             return null;
         }
     }
@@ -303,7 +303,7 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
         try {
             return new dHadronDefinition(stacks);
         } catch (tElementalException e) {
-            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) e.printStackTrace();
             return null;
         }
     }
@@ -321,7 +321,7 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
             hadron_n = new dHadronDefinition(new cElementalDefinitionStackMap(eQuarkDefinition.quark_u.getStackForm(1), eQuarkDefinition.quark_d.getStackForm(2)));
             hadron_n_ = (dHadronDefinition) (hadron_n.getAnti());
         } catch (tElementalException e) {
-            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) e.printStackTrace();
             protonMass = -1;
             neutronMass = -1;
         }
@@ -333,9 +333,9 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
         try {
             cElementalDefinition.addCreatorFromNBT(nbtType, dHadronDefinition.class.getMethod("fromNBT", NBTTagCompound.class),(byte)-64);
         } catch (Exception e) {
-            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) e.printStackTrace();
         }
-        if(TecTechConfig.DEBUG_MODE)
+        if(DEBUG_MODE)
             TecTech.Logger.info("Registered Elemental Matter Class: Hadron "+nbtType+" "+(-64));
     }
 

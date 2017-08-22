@@ -212,7 +212,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
 
     @Override
     public String[] getInfoData() {
-        if(DEBUG_MODE) {
+        if(TecTech.ModConfig.EASY_SCAN) {
             if (id > 0) {
                 if (content == null || content.size() == 0)
                     return new String[]{"ID: " + EnumChatFormatting.AQUA + id, "No Stacks"};
@@ -227,7 +227,14 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
             if (content == null || content.size() == 0) return new String[]{"No Stacks"};
             return content.getElementalInfo();
         } else {
-            return new String[0];
+            if(id>0){
+                if (content == null || content.size() == 0)
+                    return new String[]{"ID: " + EnumChatFormatting.AQUA + id, "No Stacks"};
+                return new String[]{"ID: " + EnumChatFormatting.AQUA + id, "Contains EM"};
+            }
+            if (content == null || content.size() == 0) 
+                return new String[]{"No Stacks"};
+            return new String[]{"Contains EM"};
         }
     }
 

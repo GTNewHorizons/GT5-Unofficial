@@ -1,6 +1,5 @@
 package com.github.technus.tectech.recipe;
 
-import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.classes.cElementalDefinition;
 import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStackMap;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackMap;
@@ -13,6 +12,8 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+
+import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 
 public class TT_recipe extends GT_Recipe {
     public static final String E_RECIPE_ID = "eRecipeID";
@@ -219,7 +220,7 @@ public class TT_recipe extends GT_Recipe {
             try {
                 return mRecipeMap.get(cElementalDefinition.fromNBT(dataHandler.stackTagCompound.getCompoundTag(E_RECIPE_ID)));
             }catch (Exception e){
-                if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+                if (DEBUG_MODE) e.printStackTrace();
                 return null;
             }
         }
