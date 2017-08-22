@@ -1,12 +1,12 @@
 package com.github.technus.tectech.magicAddon.definitions;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.classes.*;
 import com.github.technus.tectech.elementalMatter.definitions.eBosonDefinition;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
 import net.minecraft.nbt.NBTTagCompound;
 
+import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.elementalMatter.classes.cElementalDecay.noDecay;
 import static com.github.technus.tectech.magicAddon.definitions.AspectDefinitionCompat.aspectDefinitionCompat;
 
@@ -113,7 +113,7 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
         try {
             return new dComplexAspectDefinition(stacks);
         } catch (tElementalException e) {
-            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) e.printStackTrace();
             return null;
         }
     }
@@ -191,9 +191,9 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
         try {
             cElementalDefinition.addCreatorFromNBT(nbtType, dComplexAspectDefinition.class.getMethod("fromNBT", NBTTagCompound.class),(byte)-96);
         } catch (Exception e) {
-            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) e.printStackTrace();
         }
-        if(TecTechConfig.DEBUG_MODE)
+        if(DEBUG_MODE)
             TecTech.Logger.info("Registered Elemental Matter Class: ComplexAspect "+nbtType+" "+(-96));
     }
 

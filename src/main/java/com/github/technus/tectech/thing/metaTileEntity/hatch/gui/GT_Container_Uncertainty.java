@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.Iterator;
 
-public final class GT_Container_Uncertainty extends GT_ContainerMetaTile_Machine {
+public class GT_Container_Uncertainty extends GT_ContainerMetaTile_Machine {
     public short[] matrix = new short[]{500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500, 500};
     public byte selection = -1, mode = 0, status = -128;
 

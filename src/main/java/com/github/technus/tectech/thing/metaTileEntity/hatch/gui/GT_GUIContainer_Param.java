@@ -7,7 +7,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import static com.github.technus.tectech.TecTech.proxy;
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
-public final class GT_GUIContainer_Param extends GT_GUIContainerMetaTile_Machine {
+public class GT_GUIContainer_Param extends GT_GUIContainerMetaTile_Machine {
     public GT_GUIContainer_Param(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(new GT_Container_Param(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "Parametrizer.png");
     }

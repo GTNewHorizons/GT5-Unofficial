@@ -1,6 +1,5 @@
 package com.github.technus.tectech;
 
-import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.GregTech_API;
@@ -23,6 +22,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 import static gregtech.api.enums.GT_Values.E;
 
 /**
@@ -138,12 +138,12 @@ public class Util {
                                     pointer = block - '0';
                                     //countable air -> net.minecraft.block.BlockAir
                                     if (world.getBlock(x, y, z) != blockType[pointer]) {
-                                        if (TecTechConfig.DEBUG_MODE)
+                                        if (DEBUG_MODE)
                                             TecTech.Logger.info("Struct-block-error " + x + " " + y + " " + z + " / " + a + " " + b + " " + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + " " + blockType[pointer].getUnlocalizedName());
                                         return false;
                                     }
                                     if (world.getBlockMetadata(x, y, z) != blockMeta[pointer]) {
-                                        if (TecTechConfig.DEBUG_MODE)
+                                        if (DEBUG_MODE)
                                             TecTech.Logger.info("Struct-meta-id-error " + x + " " + y + " " + z + " / " + a + " " + b + " " + c + " / " + world.getBlockMetadata(x, y, z) + " " + blockMeta[pointer]);
                                         return false;
                                     }
@@ -262,12 +262,12 @@ public class Util {
                                     if ((pointer = block - '0') >= 0) {
                                         //countable air -> net.minecraft.block.BlockAir
                                         if (world.getBlock(x, y, z) != blockType[pointer]) {
-                                            if (TecTechConfig.DEBUG_MODE)
+                                            if (DEBUG_MODE)
                                                 TecTech.Logger.info("Struct-block-error " + x + " " + y + " " + z + " / " + a + " " + b + " " + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + " " + blockType[pointer].getUnlocalizedName());
                                             return false;
                                         }
                                         if (world.getBlockMetadata(x, y, z) != blockMeta[pointer]) {
-                                            if (TecTechConfig.DEBUG_MODE)
+                                            if (DEBUG_MODE)
                                                 TecTech.Logger.info("Struct-meta-id-error " + x + " " + y + " " + z + " / " + a + " " + b + " " + c + " / " + world.getBlockMetadata(x, y, z) + " " + blockMeta[pointer]);
                                             return false;
                                         }
@@ -276,18 +276,18 @@ public class Util {
                                         try {
                                             if (igt == null || !(boolean) adder.invoke(imt, addingMethods[pointer], igt, casingTextures[pointer])) {
                                                 if (world.getBlock(x, y, z) != blockTypeFallback[pointer]) {
-                                                    if (TecTechConfig.DEBUG_MODE)
+                                                    if (DEBUG_MODE)
                                                         TecTech.Logger.info("Fallback-struct-block-error " + x + " " + y + " " + z + " / " + a + " " + b + " " + c + " / " + world.getBlock(x, y, z).getUnlocalizedName() + " " + blockTypeFallback[pointer].getUnlocalizedName());
                                                     return false;
                                                 }
                                                 if (world.getBlockMetadata(x, y, z) != blockMetaFallback[pointer]) {
-                                                    if (TecTechConfig.DEBUG_MODE)
+                                                    if (DEBUG_MODE)
                                                         TecTech.Logger.info("Fallback-Struct-meta-id-error " + x + " " + y + " " + z + " / " + a + " " + b + " " + c + " / " + world.getBlockMetadata(x, y, z) + " " + blockMetaFallback[pointer]);
                                                     return false;
                                                 }
                                             }
                                         } catch (InvocationTargetException | IllegalAccessException e) {
-                                            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+                                            if (DEBUG_MODE) e.printStackTrace();
                                             return false;
                                         }
                                     }

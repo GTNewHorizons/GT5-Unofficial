@@ -1,7 +1,6 @@
 package openmodularturrets.blocks.turretheads;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.auxiliary.Reference;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -27,7 +26,7 @@ public class TurretHeadEM extends Block implements ITileEntityProvider {
         this.setStepSound(Block.soundTypeMetal);
         this.setBlockBounds(0.2F, 0.0F, 0.2F, 0.8F, 1F, 0.8F);
         this.setBlockName("turretHeadEM");
-        this.setBlockTextureName(Reference.MODID+":turretHeadEM");
+        //this.setBlockTextureName(Reference.MODID+":turretHeadEM");
     }
 
     @Override

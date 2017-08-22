@@ -25,6 +25,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.HashMap;
 
+import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
+
 @Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION, dependencies = "required-after:Forge@[10.13.4.1614,);"
         + "required-after:YAMCore@[0.5.70,);" + "required-after:gregtech;" + "after:CoFHCore;" + "after:Thaumcraft;" + "after:dreamcraft;" + "after:miscutils;")
 public class TecTech {
@@ -108,13 +110,15 @@ public class TecTech {
         for (Materials m : Materials.values()) {
             FluidStack p = m.getPlasma(1);
             if (p != null) {
-                if (TecTechConfig.DEBUG_MODE) TecTech.Logger.info("Found Plasma of " + m.mName);
+                if (DEBUG_MODE)
+                    TecTech.Logger.info("Found Plasma of " + m.mName);
                 if (m.mElement != null &&
                         (m.mElement.mProtons >= Materials.Iron.mElement.mProtons ||
                                 -m.mElement.mProtons >= Materials.Iron.mElement.mProtons ||
                                 m.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons ||
                                 -m.mElement.mNeutrons >= Materials.Iron.mElement.mNeutrons)) {
-                    if (TecTechConfig.DEBUG_MODE) TecTech.Logger.info("Attempting to bind " + m.mName);
+                    if (DEBUG_MODE)
+                        TecTech.Logger.info("Attempting to bind " + m.mName);
                     if (m.getMolten(1) != null) binds.put(p.getFluid(), m.getMolten(1).getFluid());
                     else if (m.getGas(1) != null) binds.put(p.getFluid(), m.getGas(1).getFluid());
                     else if (m.getFluid(1) != null) binds.put(p.getFluid(), m.getFluid(1).getFluid());
@@ -125,7 +129,7 @@ public class TecTech {
         for (GT_Recipe r : GT_Recipe.GT_Recipe_Map.sFusionRecipes.mRecipeList) {
             Fluid f = binds.get(r.mFluidOutputs[0].getFluid());
             if (f != null) {
-                if (TecTechConfig.DEBUG_MODE)
+                if (DEBUG_MODE)
                     TecTech.Logger.info("Nerfing Recipe " + r.mFluidOutputs[0].getUnlocalizedName());
                 r.mFluidOutputs[0] = new FluidStack(f, r.mFluidInputs[0].amount);
             }

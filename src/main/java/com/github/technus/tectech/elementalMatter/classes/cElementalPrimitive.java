@@ -1,7 +1,6 @@
 package com.github.technus.tectech.elementalMatter.classes;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
 import net.minecraft.client.Minecraft;
 import net.minecraft.crash.CrashReport;
@@ -10,6 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveDefinition.null__;
 
 /**
@@ -164,9 +164,9 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
         try {
             cElementalDefinition.addCreatorFromNBT(nbtType, cElementalPrimitive.class.getMethod("fromNBT", NBTTagCompound.class),(byte)-128);
         } catch (Exception e) {
-            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) e.printStackTrace();
         }
-        if(TecTechConfig.DEBUG_MODE)
+        if(DEBUG_MODE)
             TecTech.Logger.info("Registered Elemental Matter Class: Primitive "+nbtType+" "+(-128));
     }
 

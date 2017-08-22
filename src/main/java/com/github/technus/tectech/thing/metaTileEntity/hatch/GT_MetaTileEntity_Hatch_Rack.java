@@ -2,7 +2,6 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Rack;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Rack;
 import cpw.mods.fml.common.Loader;
@@ -27,6 +26,7 @@ import java.util.Map;
 
 import static com.github.technus.tectech.CommonValues.multiCheckAt;
 import static com.github.technus.tectech.Util.getUniqueIdentifier;
+import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 
 /**
  * Created by Tec on 03.04.2017.
@@ -307,7 +307,8 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
             this.maxHeat = maxHeat;
             this.subZero = subZero;
             componentBinds.put(unlocalizedName, this);
-            if (TecTechConfig.DEBUG_MODE) TecTech.Logger.info("Component registered: " + unlocalizedName);
+            if (DEBUG_MODE)
+                TecTech.Logger.info("Component registered: " + unlocalizedName);
         }
 
         @Override

@@ -3,7 +3,6 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 import cofh.api.energy.IEnergyContainerItem;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -15,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
 import static com.github.technus.tectech.Util.StructureBuilder;
+import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static gregtech.api.GregTech_API.mEUtoRF;
@@ -147,8 +147,7 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
             if (this.getEUVar() < 0) this.setEUVar(0);
             return remove;
         } catch (Exception e) {
-            if (TecTechConfig.DEBUG_MODE)
-                e.printStackTrace();
+            if (DEBUG_MODE) e.printStackTrace();
         }
         return 0;
     }
@@ -163,8 +162,7 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
             if (this.getEUVar() < 0) this.setEUVar(0);
             return RF;
         } catch (Exception e) {
-            if (TecTechConfig.DEBUG_MODE)
-                e.printStackTrace();
+            if (DEBUG_MODE) e.printStackTrace();
         }
         return 0;
     }

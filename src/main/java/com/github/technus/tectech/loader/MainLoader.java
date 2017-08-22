@@ -8,7 +8,7 @@ import com.github.technus.tectech.magicAddon.definitions.AspectDefinitionCompatE
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
-import com.github.technus.tectech.thing.item.ConstructibleTriggerItem;
+import com.github.technus.tectech.thing.item.ConstructableTriggerItem;
 import com.github.technus.tectech.thing.item.DebugContainer_EM;
 import com.github.technus.tectech.thing.item.ParametrizerMemoryCard;
 import cpw.mods.fml.common.ProgressManager;
@@ -118,7 +118,7 @@ public final class MainLoader {//TODO add checks for - is mod loaded dreamcraft 
         TT_Container_Casings.sBlockCasingsTT.setCreativeTab(mainTab);
         TT_Container_Casings.sHintCasingsTT.setCreativeTab(mainTab);
         DebugContainer_EM.INSTANCE.setCreativeTab(mainTab);
-        ConstructibleTriggerItem.INSTANCE.setCreativeTab(mainTab);
+        ConstructableTriggerItem.INSTANCE.setCreativeTab(mainTab);
         ParametrizerMemoryCard.INSTANCE.setCreativeTab(mainTab);
     }
 

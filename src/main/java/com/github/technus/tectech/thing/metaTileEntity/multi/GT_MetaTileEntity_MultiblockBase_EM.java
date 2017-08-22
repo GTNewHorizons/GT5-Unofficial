@@ -3,7 +3,7 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
-import com.github.technus.tectech.auxiliary.TecTechConfig;
+import com.github.technus.tectech.Vec3pos;
 import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStack;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStack;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackMap;
@@ -11,7 +11,6 @@ import com.github.technus.tectech.elementalMatter.classes.tElementalException;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.gui.GT_Container_MultiMachineEM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.gui.GT_GUIContainer_MultiMachineEM;
-import com.github.technus.tectech.Vec3pos;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -41,6 +40,7 @@ import java.util.Map;
 
 import static com.github.technus.tectech.CommonValues.*;
 import static com.github.technus.tectech.Util.*;
+import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 
 /**
@@ -336,7 +336,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                     outputEM[i] = cElementalInstanceStackMap.fromNBT(
                             aNBT.getCompoundTag("outputEM").getCompoundTag(Integer.toString(i)));
                 } catch (tElementalException e) {
-                    if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+                    if (DEBUG_MODE) e.printStackTrace();
                     outputEM[i] = new cElementalInstanceStackMap();
                 }
         } else outputEM = new cElementalInstanceStackMap[0];
@@ -802,7 +802,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         if (euVar > getEUVar() ||
                 EU > maxEUinputMax ||
                 (euVar - 1) / maxEUinputMin + 1 > eMaxAmpereFlow) {// euVar==0? --> (euVar - 1) / maxEUinputMin + 1 = 1!
-            if (TecTechConfig.DEBUG_MODE) {
+            if (DEBUG_MODE) {
                 TecTech.Logger.debug("L1 " + euVar + " " + getEUVar() + " " + (euVar > getEUVar()));
                 TecTech.Logger.debug("L2 " + EU + " " + maxEUinputMax + " " + (EU > maxEUinputMax));
                 TecTech.Logger.debug("L3 " + euVar + " " + eMaxAmpereFlow);
@@ -1502,7 +1502,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                         return;
                     }
         } catch (Exception e) {
-            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) e.printStackTrace();
         }
     }
 
@@ -1530,7 +1530,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             adderMethodMap.put("addDataConnectorToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addDataConnectorToMachineList", IGregTechTileEntity.class, int.class));
             adderMethod = GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addThing", String.class, IGregTechTileEntity.class, int.class);
         } catch (NoSuchMethodException e) {
-            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) e.printStackTrace();
         }
     }
 
@@ -1539,7 +1539,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         try {
             return (boolean) adderMethodMap.get(methodName).invoke(this, igt, casing);
         } catch (InvocationTargetException | IllegalAccessException e) {
-            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) e.printStackTrace();
         }
         return false;
     }
