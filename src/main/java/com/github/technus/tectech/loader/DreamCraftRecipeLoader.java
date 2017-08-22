@@ -1,5 +1,6 @@
 package com.github.technus.tectech.loader;
 
+import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import gregtech.api.enums.GT_Values;
@@ -216,6 +217,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 16),
                 ItemList.Circuit_Chip_UHPIC.get(2, o),
         }, Materials.TungstenSteel.getMolten(576), CustomItemList.Machine_Multi_Transformer.get(1, o), 400, 30720, true);
+
         //Network Switch
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 CustomItemList.Machine_Multi_Transformer.get(1, o),
@@ -258,7 +260,8 @@ public class DreamCraftRecipeLoader implements Runnable {
         }, CustomItemList.Machine_Multi_Research.get(1), 12000, 100000);
 
         //Matter Junction
-        GT_Values.RA.addAssemblylineRecipe(CustomItemList.Machine_Multi_Switch.get(1), 80000, new ItemStack[]{
+        TT_recipeAdder.addResearchableAssemblylineRecipe(CustomItemList.Machine_Multi_Switch.get(1),
+                8000,32, 500000, 4, new ItemStack[]{
                 CustomItemList.Machine_Multi_Transformer.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Naquadah, 4),
                 ItemList.Robot_Arm_LuV.get(2),
@@ -272,8 +275,9 @@ public class DreamCraftRecipeLoader implements Runnable {
                 Materials.Hydrogen.getGas(1000),
         }, CustomItemList.Machine_Multi_EMjunction.get(1), 12000, 100000);
 
-        //Matter Quantesizer
-        GT_Values.RA.addAssemblylineRecipe(ItemList.Hatch_Input_UV.get(1), 80000, new ItemStack[]{
+        //Matter Quantizer
+        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Hatch_Input_UV.get(1),
+                12000,32, 500000, 6, new ItemStack[]{
                 CustomItemList.Machine_Multi_Transformer.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Naquadah, 4),
                 ItemList.Emitter_UV.get(2),
@@ -286,8 +290,9 @@ public class DreamCraftRecipeLoader implements Runnable {
                 Materials.Hydrogen.getGas(1000),
         }, CustomItemList.Machine_Multi_MatterToEM.get(1), 12000, 100000);
 
-        //Matter DeQuantesizer
-        GT_Values.RA.addAssemblylineRecipe(ItemList.Hatch_Output_UV.get(1), 80000, new ItemStack[]{
+        //Matter DeQuantizer
+        TT_recipeAdder.addResearchableAssemblylineRecipe(ItemList.Hatch_Output_UV.get(1),
+                12000,32, 500000, 6, new ItemStack[]{
                 CustomItemList.Machine_Multi_Transformer.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Naquadah, 4),
                 ItemList.Sensor_UV.get(2),
@@ -300,8 +305,9 @@ public class DreamCraftRecipeLoader implements Runnable {
                 Materials.Hydrogen.getGas(1000),
         }, CustomItemList.Machine_Multi_EMToMatter.get(1), 12000, 100000);
 
-        //Essentia Quantesizer
-        GT_Values.RA.addAssemblylineRecipe(CustomItemList.Machine_Multi_MatterToEM.get(1), 120000, new ItemStack[]{
+        //Essentia Quantizer
+        TT_recipeAdder.addResearchableAssemblylineRecipe(CustomItemList.Machine_Multi_MatterToEM.get(1),
+                15000,32, 500000, 8, new ItemStack[]{
                 CustomItemList.Machine_Multi_MatterToEM.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Neutronium, 4),
                 ItemList.Emitter_UV.get(2),
@@ -314,8 +320,9 @@ public class DreamCraftRecipeLoader implements Runnable {
                 Materials.Hydrogen.getGas(2000),
         }, CustomItemList.Machine_Multi_EssentiaToEM.get(1), 24000, 400000);
 
-        //Essentia DeQuantesizer
-        GT_Values.RA.addAssemblylineRecipe(CustomItemList.Machine_Multi_EMToMatter.get(1), 120000, new ItemStack[]{
+        //Essentia DeQuantizer
+        TT_recipeAdder.addResearchableAssemblylineRecipe(CustomItemList.Machine_Multi_EMToMatter.get(1),
+                15000,32, 500000, 8,  new ItemStack[]{
                 CustomItemList.Machine_Multi_EMToMatter.get(1),
                 GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Neutronium, 4),
                 ItemList.Sensor_UV.get(2),
