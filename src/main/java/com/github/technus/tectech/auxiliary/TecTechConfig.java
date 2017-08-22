@@ -22,7 +22,6 @@ public class TecTechConfig extends ConfigManager {
     @Override
     protected void PreInit() {
         ModAdminErrorLogs_Enabled = false;
-        //DEBUG_MODE = false;
         BOOM_ENABLE = true;
         NERF_FUSION = false;
         ENABLE_TURRET_EXPLOSIONS = true;
@@ -34,8 +33,6 @@ public class TecTechConfig extends ConfigManager {
     protected void Init() {
         ModAdminErrorLogs_Enabled = _mainConfig.getBoolean("AdminErrorLog", "Modules", ModAdminErrorLogs_Enabled,
                 "If set to true, every op/admin will receive all errors occoured during the startup phase as ingame message on join");
-        //DEBUG_MODE = _mainConfig.getBoolean("DebugPrint", "Debug", DEBUG_MODE,
-        //        "Enables logging");
         BOOM_ENABLE = _mainConfig.getBoolean("BoomEnable", "Features", BOOM_ENABLE,
                 "Set to false to disable explosions on everything bad that you can do");
         NERF_FUSION = _mainConfig.getBoolean("NerfFusion", "Features", NERF_FUSION,
