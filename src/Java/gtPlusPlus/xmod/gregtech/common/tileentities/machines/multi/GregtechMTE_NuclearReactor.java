@@ -597,8 +597,21 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		//Add Power if active
 		if (aBaseMetaTileEntity.isActive()){
-			Utils.LOG_INFO("Adding "+this.mEUt+"eu to internal storage.");
-			this.getBaseMetaTileEntity().increaseStoredEnergyUnits(this.mEUt, false);
+			//this.getBaseMetaTileEntity().increaseStoredEnergyUnits(this.mEUt, false);
+			
+			if (this.mDynamoHatches != null) {
+				int hatchNo = 0;
+				for (GT_MetaTileEntity_Hatch_Dynamo tHatch : this.mDynamoHatches) {
+					if (tHatch.mTier >= 5){
+						if (isValidMetaTileEntity(tHatch)){
+							tHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(this.mEUt, false);
+							Utils.LOG_INFO("Adding "+this.mEUt+"eu to internal storage of dynamo "+hatchNo+".");
+						}						
+					}
+					hatchNo++;
+				}
+			}
+			
 		}
 		super.onPostTick(aBaseMetaTileEntity, aTick);
 	}

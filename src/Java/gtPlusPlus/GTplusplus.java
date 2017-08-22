@@ -20,6 +20,7 @@ import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.Materials;
 import gregtech.api.util.EmptyRecipeMap;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
@@ -242,6 +243,10 @@ public class GTplusplus implements ActionListener {
 			this.dumpGtRecipeMap(Gregtech_Recipe_Map.sCokeOvenRecipes);
 			this.dumpGtRecipeMap(Gregtech_Recipe_Map.sMatterFab2Recipes);
 			this.dumpGtRecipeMap(Gregtech_Recipe_Map.sAlloyBlastSmelterRecipes);
+		}
+		
+		for (Materials s : gtPlusPlus.core.material.gregtech.CustomGTMaterials.Custom_GT_Materials){
+			Utils.LOG_INFO("Verification for New Material: "+s.mName);
 		}
 
 		// ~
