@@ -85,7 +85,7 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 				"Liquid Fluoride Thorium Reactor",
 				tRunning,
 				tMaintainance,
-				"Current Output: "+((this.mEUt*this.mEfficiency)/10000)+" EU/t",
+				"Current Output: "+this.mEUt+" EU/t",
 				"Fuel Consumption: "+this.fuelConsumption+"L/t",
 				"Fuel Value: "+this.fuelValue+" EU/L",
 				"Fuel Remaining: "+this.fuelRemaining+" Litres",
@@ -243,10 +243,10 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 		}
 
 		
-		if (this.mEnergyHatches != null) {
-			for (int i = 0; i < this.mEnergyHatches.size(); i++) {
-				if (this.mEnergyHatches.get(i).mTier < 5){
-					Utils.LOG_INFO("You require at LEAST IV tier Energy Hatches.");
+		if (this.mDynamoHatches != null) {
+			for (int i = 0; i < this.mDynamoHatches.size(); i++) {
+				if (this.mDynamoHatches.get(i).mTier < 5){
+					Utils.LOG_INFO("You require at LEAST IV tier Dynamo Hatches.");
 					Utils.LOG_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
 					return false;
 				}
@@ -274,23 +274,23 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 			}
 		}
 		if (this.mMufflerHatches.size() != 4){
-			Utils.LOG_INFO("You require EXACTLY 4 muffler hatches on top. FOUR.");
+			Utils.LOG_INFO("You require EXACTLY 4 muffler hatches on top. FOUR. You have "+this.mMufflerHatches.size());
 			return false;
 		}
-		if (this.mInputHatches.size() >= 4){
-			Utils.LOG_INFO("You require 4 or more input hatches.");
+		if (this.mInputHatches.size() < 4){
+			Utils.LOG_INFO("You require 4 or more input hatches. You have "+this.mInputHatches.size());
 			return false;
 		}
-		if (this.mOutputHatches.size() >= 10){
-			Utils.LOG_INFO("You require 4 or more output hatches.");
+		if (this.mOutputHatches.size() < 10){
+			Utils.LOG_INFO("You require 10 or more output hatches. You have "+this.mOutputHatches.size());
 			return false;
 		}
-		if (this.mEnergyHatches.size() != 4){
-			Utils.LOG_INFO("You require EXACTLY 4 dynamo hatches. FOUR.");
+		if (this.mDynamoHatches.size() != 4){
+			Utils.LOG_INFO("You require EXACTLY 4 dynamo hatches. FOUR. You have "+this.mDynamoHatches.size());
 			return false;
 		}
 		if (this.mMaintenanceHatches.size() != 2){
-			Utils.LOG_INFO("You require EXACTLY 2 muffler hatches. TWO.");
+			Utils.LOG_INFO("You require EXACTLY 2 muffler hatches. TWO. You have "+this.mMaintenanceHatches.size());
 			return false;
 		}
 		this.mWrench = true;
@@ -481,9 +481,9 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 								}
 								Utils.LOG_INFO("Efficiency == "+this.mEfficiency);
 
-								this.mEUt = (this.mEfficiency < 500 ? 2048 : (8196*4)); //Output 0 if startup is less than 20%
+								this.mEUt = (this.mEfficiency < 500 ? 2048 : (8196)); //Output 0 if startup is less than 20%
 								Utils.LOG_INFO("Generating "+this.mEUt+"EU/t @ an efficiency level of "+this.mEfficiency);
-
+								
 								this.mProgresstime = 1;
 								this.mMaxProgresstime = 1;
 								this.mEfficiencyIncrease = 15;
@@ -506,7 +506,7 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 
 
 	public int getAmountOfOutputs() {
-		return 1;
+		return 10;
 	}
 
 	@Override
@@ -591,6 +591,16 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 			}
 		}
 		return outputArrayOfGases;
+	}
+
+	@Override
+	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
+		//Add Power if active
+		if (aBaseMetaTileEntity.isActive()){
+			Utils.LOG_INFO("Adding "+this.mEUt+"eu to internal storage.");
+			this.getBaseMetaTileEntity().increaseStoredEnergyUnits(this.mEUt, false);
+		}
+		super.onPostTick(aBaseMetaTileEntity, aTick);
 	}
 
 }
