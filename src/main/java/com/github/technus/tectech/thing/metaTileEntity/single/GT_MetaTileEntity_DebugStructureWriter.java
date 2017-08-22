@@ -20,7 +20,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
 import static com.github.technus.tectech.Util.StructureWriter;
-import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 
 /**
  * Created by Tec on 23.03.2017.
@@ -104,9 +103,8 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isAllowedToWork()) {
             result = StructureWriter(this.getBaseMetaTileEntity(), numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5], false);
-            if (DEBUG_MODE)
-                for (String s : result)
-                    TecTech.Logger.info(s);
+            for (String s : result)
+                TecTech.Logger.info(s);
             aBaseMetaTileEntity.disableWorking();
         }
     }
@@ -114,9 +112,8 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         result = StructureWriter(this.getBaseMetaTileEntity(), numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5], true);
-        if (DEBUG_MODE)
-            for (String s : result)
-                TecTech.Logger.info(s);
+        for (String s : result)
+            TecTech.Logger.info(s);
     }
 
     @Override

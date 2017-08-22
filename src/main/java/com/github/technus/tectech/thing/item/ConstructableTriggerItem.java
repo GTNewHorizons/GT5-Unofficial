@@ -31,12 +31,12 @@ import static gregtech.api.GregTech_API.sBlockCasings1;
 /**
  * Created by Tec on 15.03.2017.
  */
-public class ConstructibleTriggerItem extends Item {
-    public static ConstructibleTriggerItem INSTANCE;
+public class ConstructableTriggerItem extends Item {
+    public static ConstructableTriggerItem INSTANCE;
 
     public static HashMap<String,MultiblockInfoContainer> multiblockMap= new HashMap<>();
 
-    private ConstructibleTriggerItem() {
+    private ConstructableTriggerItem() {
         super();
         setUnlocalizedName("em.debugBuilder");
         setTextureName(MODID + ":itemDebugBuilder");
@@ -118,7 +118,7 @@ public class ConstructibleTriggerItem extends Item {
     }
 
     public static void run() {
-        INSTANCE = new ConstructibleTriggerItem();
+        INSTANCE = new ConstructableTriggerItem();
         GameRegistry.registerItem(INSTANCE, INSTANCE.getUnlocalizedName());
 
         multiblockMap.put(GT_MetaTileEntity_ElectricBlastFurnace.class.getCanonicalName(), new MultiblockInfoContainer() {

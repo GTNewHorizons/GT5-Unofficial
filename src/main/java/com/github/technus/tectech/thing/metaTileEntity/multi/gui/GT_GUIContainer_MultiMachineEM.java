@@ -28,11 +28,11 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
             if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 1) != 0)
                 fontRendererObj.drawString("Pipe is loose.", 10, -10, 16448255);
             if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 2) != 0)
-                fontRendererObj.drawString("Screws are missing.", 10, -2, 16448255);
+                fontRendererObj.drawString("Screws are loose.", 10, -2, 16448255);
             if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 4) != 0)
                 fontRendererObj.drawString("Something is stuck.", 10, 6, 16448255);
             if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 8) != 0)
-                fontRendererObj.drawString("Platings are dented.", 10, 14, 16448255);
+                fontRendererObj.drawString("Plating is dented.", 10, 14, 16448255);
             if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 16) != 0)
                 fontRendererObj.drawString("Circuitry burned out.", 10, 22, 16448255);
             if ((((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode & 32) != 0)
@@ -46,7 +46,7 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
 
             if (((GT_Container_MultiMachineEM) mContainer).mDisplayErrorCode == 0) {
                 if (((GT_Container_MultiMachineEM) mContainer).mActive == 0) {
-                    fontRendererObj.drawString("Hit with Soft Hammer", 10, -10, 16448255);
+                    fontRendererObj.drawString("Soft Hammer or press Button", 10, -10, 16448255);
                     fontRendererObj.drawString("to (re-)start the Machine", 10, -2, 16448255);
                     fontRendererObj.drawString("if it doesn't start.", 10, 6, 16448255);
                 } else {

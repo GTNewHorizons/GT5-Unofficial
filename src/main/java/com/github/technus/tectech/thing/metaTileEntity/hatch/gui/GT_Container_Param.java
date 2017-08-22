@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.Iterator;
 
-public final class GT_Container_Param extends GT_ContainerMetaTile_Machine {
+public class GT_Container_Param extends GT_ContainerMetaTile_Machine {
     public int exponent = 0;
     public int value2 = 0;
     public int value1 = 0;

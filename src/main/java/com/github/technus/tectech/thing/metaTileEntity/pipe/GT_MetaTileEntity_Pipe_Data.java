@@ -32,7 +32,7 @@ import static gregtech.api.enums.Dyes.MACHINE_METAL;
  */
 public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements iConnectsToDataPipe {
     private static Textures.BlockIcons.CustomIcon EMpipe;
-    private static Textures.BlockIcons.CustomIcon EMcandy;
+    private static Textures.BlockIcons.CustomIcon EMbar;
     public byte connectionCount = 0;
 
     public GT_MetaTileEntity_Pipe_Data(int aID, String aName, String aNameRegional) {
@@ -52,13 +52,13 @@ public class GT_MetaTileEntity_Pipe_Data extends MetaPipeEntity implements iConn
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister aBlockIconRegister) {
         EMpipe = new Textures.BlockIcons.CustomIcon("iconsets/EM_DATA");
-        EMcandy = new Textures.BlockIcons.CustomIcon("iconsets/EM_BAR");
+        EMbar = new Textures.BlockIcons.CustomIcon("iconsets/EM_BAR");
         super.registerIcons(aBlockIconRegister);
     }
 
     @Override
     public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections, byte aColorIndex, boolean aConnected, boolean aRedstone) {
-        return new ITexture[]{new GT_RenderedTexture(EMpipe), new GT_RenderedTexture(EMcandy, Dyes.getModulation(aColorIndex, MACHINE_METAL.getRGBA()))};
+        return new ITexture[]{new GT_RenderedTexture(EMpipe), new GT_RenderedTexture(EMbar, Dyes.getModulation(aColorIndex, MACHINE_METAL.getRGBA()))};
     }
 
     @Override

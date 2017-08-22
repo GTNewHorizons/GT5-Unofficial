@@ -6,7 +6,7 @@ import com.github.technus.tectech.thing.block.QuantumStuffBlock;
 import com.github.technus.tectech.thing.casing.GT_Block_CasingsTT;
 import com.github.technus.tectech.thing.casing.GT_Block_HintTT;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
-import com.github.technus.tectech.thing.item.ConstructibleTriggerItem;
+import com.github.technus.tectech.thing.item.ConstructableTriggerItem;
 import com.github.technus.tectech.thing.item.DebugContainer_EM;
 import com.github.technus.tectech.thing.item.DefinitionContainer_EM;
 import com.github.technus.tectech.thing.item.ParametrizerMemoryCard;
@@ -37,7 +37,7 @@ public class ThingsLoader implements Runnable {
             TecTech.Logger.info("TurretBaseEM registered");
         }
 
-        ConstructibleTriggerItem.run();
+        ConstructableTriggerItem.run();
         ParametrizerMemoryCard.run();
         TecTech.Logger.info("Useful item registered");
 
