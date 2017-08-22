@@ -147,14 +147,14 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 						if ((h == 0) || (h == 3)) {
 
 							//If not a hatch, continue, else add hatch and continue.
-							if ((!this.addMufflerToMachineList(tTileEntity, 70)) && (!this.addOutputToMachineList(tTileEntity, 70)) && (!this.addDynamoToMachineList(tTileEntity, 70))) {
+							if ((!this.addMufflerToMachineList(tTileEntity, TAE.GTPP_INDEX(12))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(12))) && (!this.addDynamoToMachineList(tTileEntity, TAE.GTPP_INDEX(12)))) {
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-									Utils.LOG_INFO("LFTR Casing(s) Missing from one of the top layers inner 3x3.");
+									Utils.LOG_INFO("Hastelloy-N Reactor Casing(s) Missing from one of the top layers inner 3x3.");
 									Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 									return false;
 								}
 								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 12) {
-									Utils.LOG_INFO("LFTR Casing(s) Missing from one of the top layers inner 3x3. Wrong Meta for Casing.");
+									Utils.LOG_INFO("Hastelloy-N Reactor Casing(s) Missing from one of the top layers inner 3x3. Wrong Meta for Casing.");
 									return false;
 								}
 							}
@@ -194,12 +194,12 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 						//Deal with all 4 sides (Reactor walls)
 						if ((h == 1) || (h == 2)) {
 							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-								Utils.LOG_INFO("Glass Casings Missing from somewhere in the second layer.");
+								Utils.LOG_INFO("Reactor Shielding Missing from somewhere in the second layer.");
 								Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 								return false;
 							}
 							if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 13) {
-								Utils.LOG_INFO("Glass Casings Missing from somewhere in the second layer.");
+								Utils.LOG_INFO("Reactor Shielding Missing from somewhere in the second layer.");
 								Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 								return false;
 							}
@@ -211,12 +211,12 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 								if (((xDir + i) != 0) || ((zDir + j) != 0)) {//no controller
 
 									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-										Utils.LOG_INFO("LFTR Casing(s) Missing from one of the edges on the top layer.");
+										Utils.LOG_INFO("Hastelloy-N Reactor Casing(s) Missing from one of the edges on the top layer.");
 										Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 										return false;
 									}
 									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 12) {
-										Utils.LOG_INFO("LFTR Casing(s) Missing from one of the edges on the top layer. "+h);
+										Utils.LOG_INFO("Hastelloy-N Reactor Casing(s) Missing from one of the edges on the top layer. "+h);
 										Utils.LOG_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 										if (h ==0){
 											if (tTileEntity instanceof GregtechMTE_NuclearReactor){
@@ -235,14 +235,11 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 			}
 		}
 
-		if (this.mMufflerHatches.size() != 4){
-			Utils.LOG_INFO("You require EXACTLY 4 muffler hatches on top. FOUR.");
-			return false;
-		}
+		
 		if (this.mEnergyHatches != null) {
 			for (int i = 0; i < this.mEnergyHatches.size(); i++) {
 				if (this.mEnergyHatches.get(i).mTier < 5){
-					Utils.LOG_INFO("You require at LEAST V tier Energy Hatches.");
+					Utils.LOG_INFO("You require at LEAST IV tier Energy Hatches.");
 					Utils.LOG_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
 					return false;
 				}
@@ -252,7 +249,7 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 			for (int i = 0; i < this.mOutputHatches.size(); i++) {
 
 				if ((this.mOutputHatches.get(i).mTier < 5) && (this.mOutputHatches.get(i).getBaseMetaTileEntity() instanceof GregtechMTE_NuclearReactor)){
-					Utils.LOG_INFO("You require at LEAST V tier Output Hatches.");
+					Utils.LOG_INFO("You require at LEAST IV tier Output Hatches.");
 					Utils.LOG_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
 					Utils.LOG_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getInventoryName());
 					return false;
@@ -262,12 +259,32 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 		if (this.mInputHatches != null) {
 			for (int i = 0; i < this.mInputHatches.size(); i++) {
 				if (this.mInputHatches.get(i).mTier < 5){
-					Utils.LOG_INFO("You require at LEAST V tier Input Hatches.");
+					Utils.LOG_INFO("You require at LEAST IV tier Input Hatches.");
 					Utils.LOG_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getXCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getYCoord()+","+this.mOutputHatches.get(i).getBaseMetaTileEntity().getZCoord());
 					Utils.LOG_INFO(this.mOutputHatches.get(i).getBaseMetaTileEntity().getInventoryName());
 					return false;
 				}
 			}
+		}
+		if (this.mMufflerHatches.size() != 4){
+			Utils.LOG_INFO("You require EXACTLY 4 muffler hatches on top. FOUR.");
+			return false;
+		}
+		if (this.mInputHatches.size() >= 4){
+			Utils.LOG_INFO("You require 4 or more input hatches.");
+			return false;
+		}
+		if (this.mOutputHatches.size() >= 10){
+			Utils.LOG_INFO("You require 4 or more output hatches.");
+			return false;
+		}
+		if (this.mEnergyHatches.size() != 4){
+			Utils.LOG_INFO("You require EXACTLY 4 dynamo hatches. FOUR.");
+			return false;
+		}
+		if (this.mMaintenanceHatches.size() != 2){
+			Utils.LOG_INFO("You require EXACTLY 2 muffler hatches. TWO.");
+			return false;
 		}
 		this.mWrench = true;
 		this.mScrewdriver = true;

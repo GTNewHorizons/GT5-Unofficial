@@ -14,6 +14,7 @@ import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.enums.TextureSet;
 import gregtech.api.interfaces.IMaterialHandler;
 import gregtech.api.objects.MaterialStack;
+import gtPlusPlus.core.util.Utils;
 
 public class CustomGTMaterials {
 
@@ -40,6 +41,7 @@ public class CustomGTMaterials {
 	
 	private final static boolean registerMaterial(Materials r){
 		Custom_GT_Materials.add(r);
+		Utils.LOG_INFO("Registered new Gregtech material - "+r.mName);
 		return true;
 	}	
 	
