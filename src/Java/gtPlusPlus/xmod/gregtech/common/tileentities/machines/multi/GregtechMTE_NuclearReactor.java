@@ -329,7 +329,7 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 
 	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return 5;
+		return this.boostEu ? 8 : 4;
 	}
 
 	@Override
