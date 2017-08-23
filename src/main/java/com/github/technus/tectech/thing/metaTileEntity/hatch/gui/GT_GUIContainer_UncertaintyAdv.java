@@ -9,7 +9,7 @@ import static com.github.technus.tectech.TecTech.proxy;
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 import static org.lwjgl.opengl.GL11.*;
 
-public final class GT_GUIContainer_UncertaintyAdv extends GT_GUIContainerMetaTile_Machine {
+public class GT_GUIContainer_UncertaintyAdv extends GT_GUIContainerMetaTile_Machine {
     protected static final short sX = 52, sY = 33, bU = 0, rU = 70, fU = 192, V = 210, Vs = 216;
 
     public GT_GUIContainer_UncertaintyAdv(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {

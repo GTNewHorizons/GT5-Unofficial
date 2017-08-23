@@ -2,7 +2,6 @@ package com.github.technus.tectech.thing.metaTileEntity.single;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_Container_DebugStructureWriter;
 import com.github.technus.tectech.thing.metaTileEntity.single.gui.GT_GUIContainer_DebugStructureWriter;
 import cpw.mods.fml.relauncher.Side;
@@ -104,9 +103,8 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isAllowedToWork()) {
             result = StructureWriter(this.getBaseMetaTileEntity(), numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5], false);
-            if (TecTechConfig.DEBUG_MODE)
-                for (String s : result)
-                    TecTech.Logger.info(s);
+            for (String s : result)
+                TecTech.Logger.info(s);
             aBaseMetaTileEntity.disableWorking();
         }
     }
@@ -114,9 +112,8 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
     @Override
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         result = StructureWriter(this.getBaseMetaTileEntity(), numbers[0], numbers[1], numbers[2], numbers[3], numbers[4], numbers[5], true);
-        if (TecTechConfig.DEBUG_MODE)
-            for (String s : result)
-                TecTech.Logger.info(s);
+        for (String s : result)
+            TecTech.Logger.info(s);
     }
 
     @Override

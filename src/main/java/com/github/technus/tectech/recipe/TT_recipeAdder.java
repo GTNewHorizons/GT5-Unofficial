@@ -25,7 +25,7 @@ public class TT_recipeAdder extends GT_RecipeAdder {
         }
         for(ItemStack tItem : aInputs){
             if(tItem==null){
-                TecTech.Logger.error("addAssemblingLineRecipe "+aResearchItem.getDisplayName()+" --> "+aOutput.getUnlocalizedName()+" there is some null item in that recipe");
+                TecTech.Logger.error("addResearchableAssemblingLineRecipe "+aResearchItem.getDisplayName()+" --> "+aOutput.getUnlocalizedName()+" there is some null item in that recipe");
             }
         }
         if(researchAmperage<=0) researchAmperage=1;
@@ -56,7 +56,7 @@ public class TT_recipeAdder extends GT_RecipeAdder {
         }
         for(ItemStack tItem : aInputs){
             if(tItem==null){
-                TecTech.Logger.error("addEMmachineRecipe "+aResearchItem.getDisplayName()+" --> "+aOutput.getUnlocalizedName()+" there is some null item in that recipe");
+                TecTech.Logger.error("addResearchableEMmachineRecipe "+aResearchItem.getDisplayName()+" --> "+aOutput.getUnlocalizedName()+" there is some null item in that recipe");
             }
         }
         if(researchAmperage<=0) researchAmperage=1;
@@ -97,7 +97,7 @@ public class TT_recipeAdder extends GT_RecipeAdder {
         }
         for(ItemStack tItem : aInputs){
             if(tItem==null){
-                TecTech.Logger.error("addEMmachineRecipe "+aResearchEM+" --> "+aOutput.getUnlocalizedName()+" there is some null item in that recipe");
+                TecTech.Logger.error("addScannableEMmachineRecipe "+aResearchEM+" --> "+aOutput.getUnlocalizedName()+" there is some null item in that recipe");
             }
         }
         if(researchAmperage<=0) researchAmperage=1;

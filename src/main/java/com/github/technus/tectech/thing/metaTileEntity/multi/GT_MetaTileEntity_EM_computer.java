@@ -4,12 +4,11 @@ import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
 import com.github.technus.tectech.Vec3pos;
-import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.dataFramework.QuantumDataPacket;
+import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Rack;
-import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -24,10 +23,11 @@ import net.minecraft.util.EnumChatFormatting;
 import java.util.ArrayList;
 
 import static com.github.technus.tectech.Util.StructureBuilder;
+import static com.github.technus.tectech.Util.V;
+import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
-import static com.github.technus.tectech.Util.V;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -79,7 +79,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public boolean EM_checkRecipe(ItemStack itemStack) {
+    public boolean checkRecipe_EM(ItemStack itemStack) {
         eAvailableData = 0;
         maxTemp = 0;
         short thingsActive = 0;
@@ -116,12 +116,12 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    protected long EM_getAvailableData() {
+    protected long getAvailableData_EM() {
         return eAvailableData;
     }
 
     @Override
-    public void EM_checkParams() {
+    public void checkParams_EM() {
         if (eParamsIn[0] <= 0)
             eParamsInStatus[0] = PARAM_TOO_LOW;
         else if (eParamsIn[0] < 1)
@@ -157,7 +157,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public void EM_outputFunction() {
+    public void outputAfterRecipe_EM() {
         if (eOutputData.size() > 0) {
             final Vec3pos pos = new Vec3pos(getBaseMetaTileEntity());
             QuantumDataPacket pack = new QuantumDataPacket(pos, eAvailableData);
@@ -189,26 +189,26 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         for (GT_MetaTileEntity_Hatch_Rack rack : eRacks)
             if (isValidMetaTileEntity(rack))
                 rack.getBaseMetaTileEntity().setActive(false);
         eRacks.clear();
-        if (!EM_StructureCheckAdvanced(front, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, 0))
+        if (!structureCheck_EM(front, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, 0))
             return false;
-        if (!EM_StructureCheckAdvanced(cap, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, -1))
+        if (!structureCheck_EM(cap, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, -1))
             return false;
         byte offset = -2, totalLen = 4;
         for (; offset > -16; ) {
-            if (!EM_StructureCheckAdvanced(slice, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, offset))
+            if (!structureCheck_EM(slice, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, offset))
                 break;
             totalLen++;
             offset--;
         }
         if (totalLen > 16) return false;
-        if (!EM_StructureCheckAdvanced(cap, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, ++offset))
+        if (!structureCheck_EM(cap, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, ++offset))
             return false;
-        if (!EM_StructureCheckAdvanced(terminator, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, --offset))
+        if (!structureCheck_EM(terminator, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 2, --offset))
             return false;
         eCertainMode = (byte) Math.min(totalLen / 3, 5);
         for (GT_MetaTileEntity_Hatch_Rack rack : eRacks)
@@ -238,7 +238,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    protected void EM_extraExplosions() {
+    protected void extraExplosions_EM() {
         for (MetaTileEntity tTileEntity : eRacks) tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
     }
 
@@ -272,7 +272,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         try {
             adderMethodMap.put("addRackToMachineList", GT_MetaTileEntity_EM_computer.class.getMethod("addRackToMachineList", IGregTechTileEntity.class, int.class));
         } catch (NoSuchMethodException e) {
-            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+            if (DEBUG_MODE) e.printStackTrace();
         }
     }
 }

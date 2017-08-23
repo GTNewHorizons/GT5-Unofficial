@@ -68,8 +68,8 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
     }
 
     @Override
-    public boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return essentiaContainerCompat.check(this) && EM_StructureCheckAdvanced(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
+    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+        return essentiaContainerCompat.check(this) && structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
     }
 
     @Override
@@ -101,7 +101,7 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
     }
 
     @Override
-    public boolean EM_checkRecipe(ItemStack itemStack) {
+    public boolean checkRecipe_EM(ItemStack itemStack) {
         container=essentiaContainerCompat.getContainer(this);
         if (eInputHatches.size() < 1 || container==null) {
             stopMachine();
@@ -112,7 +112,7 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
             cElementalInstanceStack stack = inputHatchContainer.getFirst();
             inputHatchContainer.removeAmount(false,new cElementalInstanceStack(stack.definition,1));
             if(!essentiaContainerCompat.putElementalInstanceStack(container,stack))
-                cleanInstanceStack(stack);
+                cleanStackEM_EM(stack);
             mMaxProgresstime = 20;
             mEfficiencyIncrease = 10000;
             eAmpereFlow=1;

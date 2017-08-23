@@ -1,7 +1,6 @@
 package com.github.technus.tectech.thing.item;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStackMap;
 import com.github.technus.tectech.elementalMatter.classes.tElementalException;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -15,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.github.technus.tectech.auxiliary.Reference.MODID;
+import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 
 /**
  * Created by Tec on 15.03.2017.
@@ -40,7 +40,7 @@ public class DefinitionContainer_EM extends Item {
                 try {
                     oldMap=cElementalDefinitionStackMap.fromNBT(tNBT.getCompoundTag("content"));
                 } catch (tElementalException e) {
-                    if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+                    if (DEBUG_MODE) e.printStackTrace();
                 }
             }
             tNBT.setTag("info", definitions.getInfoNBT());
@@ -58,7 +58,7 @@ public class DefinitionContainer_EM extends Item {
             try {
                 return cElementalDefinitionStackMap.fromNBT(tNBT.getCompoundTag("content"));
             } catch (tElementalException e) {
-                if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+                if (DEBUG_MODE) e.printStackTrace();
             }
         }
         return null;
@@ -74,7 +74,7 @@ public class DefinitionContainer_EM extends Item {
                 try {
                     oldMap=cElementalDefinitionStackMap.fromNBT(tNBT.getCompoundTag("content"));
                 } catch (tElementalException e) {
-                    if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+                    if (DEBUG_MODE) e.printStackTrace();
                 }
             }
             tNBT.removeTag("info");
