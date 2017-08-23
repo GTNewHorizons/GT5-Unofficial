@@ -219,7 +219,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    public void checkParams_EM() {
+    public void updateParameters_EM() {
         if (eParamsIn[0] <= 300)
             eParamsInStatus[0] = PARAM_TOO_LOW;
         else if (eParamsIn[0] < 1000)

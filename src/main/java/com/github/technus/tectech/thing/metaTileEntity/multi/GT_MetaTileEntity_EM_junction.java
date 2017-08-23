@@ -77,7 +77,7 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public void checkParams_EM() {
+    public void updateParameters_EM() {
         for (int i = 0; i < 10; i++) {
             if ((int) eParamsIn[i] < 0) eParamsInStatus[i] = PARAM_TOO_LOW;
             else if ((int) eParamsIn[i] == 0) eParamsInStatus[i] = PARAM_UNUSED;

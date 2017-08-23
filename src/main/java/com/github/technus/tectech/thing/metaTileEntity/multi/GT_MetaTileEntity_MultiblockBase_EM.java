@@ -102,7 +102,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     // My code handles AMPS, if you want overclocking just modify mEUt and mMaxProgressTime, leave amps as usual!
     // Set mEUt, Efficiencies, required computation, time, check input etc.
 
-    public void checkParams_EM() {
+    public void updateParameters_EM() {
     }
     // update status of parameters in guis and "machine state"
     // Called before check recipe, before outputting, and every second the machine is active
@@ -983,7 +983,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             param.input1f = eParamsOut[paramID];
             param.input2f = eParamsOut[paramID + 10];
         }
-        checkParams_EM();
+        updateParameters_EM();
 
         eAvailableData = getAvailableData_EM();
 
