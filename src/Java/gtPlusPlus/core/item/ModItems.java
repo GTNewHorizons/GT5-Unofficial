@@ -316,9 +316,6 @@ public final class ModItems {
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().CALIFORNIUM, false);
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().EINSTEINIUM, false);
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().FERMIUM, false);
-			
-			
-
 
 
 			//Nuclear Isotopes
@@ -354,6 +351,12 @@ public final class ModItems {
 			MaterialGenerator.generate(ALLOY.TANTALUM_CARBIDE);
 			MaterialGenerator.generate(ALLOY.NIOBIUM_CARBIDE);
 
+			//LFTR Fuel components
+			MaterialGenerator.generate(FLUORIDES.HYDROXIDE); //LFTR fuel component
+			MaterialGenerator.generate(FLUORIDES.AMMONIA); //LFTR fuel component
+			MaterialGenerator.generate(FLUORIDES.AMMONIUM); //LFTR fuel component
+			MaterialGenerator.generate(FLUORIDES.AMMONIUM_BIFLUORIDE); //LFTR fuel component
+			MaterialGenerator.generate(FLUORIDES.BERYLLIUM_HYDROXIDE); //LFTR fuel component
 
 			//Generate Fluorides
 			MaterialGenerator.generateNuclearMaterial(FLUORIDES.FLUORITE);
@@ -368,7 +371,7 @@ public final class ModItems {
 			MaterialGenerator.generateNuclearMaterial(FLUORIDES.NEPTUNIUM_HEXAFLUORIDE);
 			MaterialGenerator.generateNuclearMaterial(FLUORIDES.TECHNETIUM_HEXAFLUORIDE);
 			MaterialGenerator.generateNuclearMaterial(FLUORIDES.SELENIUM_HEXAFLUORIDE);
-
+			
 			//Generate Reactor Fuel Salts
 			MaterialGenerator.generateNuclearMaterial(NUCLIDE.LiFBeF2ZrF4U235);
 			MaterialGenerator.generateNuclearMaterial(NUCLIDE.LiFBeF2ZrF4UF4);
