@@ -128,7 +128,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         int xDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetX*2;
         int zDir = ForgeDirection.getOrientation(iGregTechTileEntity.getBackFacing()).offsetZ*2;
         if (iGregTechTileEntity.getBlockOffset(xDir, 0, zDir) != TT_Container_Casings.sBlockCasingsTT) {
@@ -148,10 +148,10 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
         boolean test;
         switch (eTier) {
             case 1:
-                test = EM_StructureCheckAdvanced(shape, blockType, blockMeta1,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback, 11, 1, 18);
+                test = structureCheck_EM(shape, blockType, blockMeta1,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback, 11, 1, 18);
                 break;
             case 2:
-                test = EM_StructureCheckAdvanced(shape, blockType, blockMeta2,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback, 11, 1, 18);
+                test = structureCheck_EM(shape, blockType, blockMeta2,addingMethods,casingTextures,blockTypeFallback,blockMetaFallback, 11, 1, 18);
                 break;
             default:
                 eTier = 0;

@@ -82,8 +82,8 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
-    public boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        if (!EM_StructureCheckAdvanced(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0))
+    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+        if (!structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 2, 2, 0))
             return false;
         return eInputHatches.size() == 1 && eOutputHatches.size() == 1 && eOutputHatches.get(0).getBaseMetaTileEntity().getFrontFacing() == iGregTechTileEntity.getFrontFacing();
     }
@@ -139,7 +139,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
-    protected void EM_onFirstTick() {
+    protected void onFirstTick_EM() {
         if(getBaseMetaTileEntity().isClientSide()) return;
         if(computationRemaining>0) {
             eRecipe=null;
@@ -167,7 +167,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
-    public boolean EM_checkRecipe(ItemStack itemStack) {
+    public boolean checkRecipe_EM(ItemStack itemStack) {
         eRecipe=null;
         if(!eInputHatches.isEmpty() && eInputHatches.get(0).getContainerHandler().hasStacks() && !eOutputHatches.isEmpty()) {
             cElementalInstanceStackMap researchEM = eInputHatches.get(0).getContainerHandler();
@@ -179,7 +179,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                         scannerRecipe=eRecipe.scannerRecipe;
                         machineType=GT_MetaTileEntity_EM_machine.machine;
                         objectResearched=new cElementalDefinitionStack(stackEM.definition,1);
-                        //cleanMass(objectResearched.getMass());
+                        //cleanMassEM_EM(objectResearched.getMass());
                         researchEM.remove(objectResearched.definition);
                         break;
                     }
@@ -188,11 +188,11 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                         scannerRecipe=eRecipe.scannerRecipe;
                         machineType=GT_MetaTileEntity_EM_crafter.crafter;
                         objectResearched=new cElementalDefinitionStack(stackEM.definition,1);
-                        //cleanMass(objectResearched.getMass());
+                        //cleanMassEM_EM(objectResearched.getMass());
                         researchEM.remove(objectResearched.definition);
                         break;
                     }
-                    cleanInstanceStack(stackEM);
+                    cleanStackEM_EM(stackEM);
                     researchEM.remove(stackEM.definition);
                 }
                 if(eRecipe!=null && scannerRecipe!=null){//make sure it werks
@@ -231,7 +231,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
-    public void EM_outputFunction() {
+    public void outputAfterRecipe_EM() {
         if (eRecipe != null && ItemList.Tool_DataOrb.isStackEqual(mInventory[1], false, true)){
 
             mInventory[1].setStackDisplayName(GT_LanguageManager.getTranslation(eRecipe.mOutputs[0].getDisplayName()) + ' ' + machineType +" Construction Data");
@@ -275,7 +275,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                 (mEUt <= 0 ? "Probably uses: " : "Probably makes: ") +
                         EnumChatFormatting.RED + Integer.toString(Math.abs(mEUt)) + EnumChatFormatting.RESET + " EU/t at " +
                         EnumChatFormatting.RED + eAmpereFlow + EnumChatFormatting.RESET + " A",
-                "Tier Rating: " + EnumChatFormatting.YELLOW + VN[getMaxEnergyInputTier()] + EnumChatFormatting.RESET + " / " + EnumChatFormatting.GREEN + VN[getMinEnergyInputTier()] + EnumChatFormatting.RESET +
+                "Tier Rating: " + EnumChatFormatting.YELLOW + VN[getMaxEnergyInputTier_EM()] + EnumChatFormatting.RESET + " / " + EnumChatFormatting.GREEN + VN[getMinEnergyInputTier_EM()] + EnumChatFormatting.RESET +
                         " Amp Rating: " + EnumChatFormatting.GREEN + eMaxAmpereFlow + EnumChatFormatting.RESET + " A",
                 "Problems: " + EnumChatFormatting.RED + (getIdealStatus() - getRepairStatus()) + EnumChatFormatting.RESET +
                         " Efficiency: " + EnumChatFormatting.YELLOW + Float.toString(mEfficiency / 100.0F) + EnumChatFormatting.RESET + " %",

@@ -136,12 +136,12 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
     }
 
     @Override
-    public boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        if(EM_StructureCheckAdvanced(shape2, blockType2, blockMeta2, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 16, 16, 0)){
+    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+        if(structureCheck_EM(shape2, blockType2, blockMeta2, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 16, 16, 0)){
             glassDome=true;
             return true;
         }
-        if(EM_StructureCheckAdvanced(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 16, 16, 0)){
+        if(structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 16, 16, 0)){
             glassDome=false;
             return true;
         }

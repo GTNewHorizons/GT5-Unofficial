@@ -61,8 +61,8 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    public boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return EM_StructureCheckAdvanced(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
+    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+        return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    public boolean EM_checkRecipe(ItemStack itemStack) {//TODO implement by item quantization, implement instance quantization
+    public boolean checkRecipe_EM(ItemStack itemStack) {//TODO implement by item quantization, implement instance quantization
         if (GregTech_API.sPostloadFinished) {
             ItemStack[] inI = getStoredInputs().toArray(new ItemStack[0]);
             if (inI.length > 0) {
@@ -161,7 +161,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    public void EM_outputFunction() {
+    public void outputAfterRecipe_EM() {
         if (eOutputHatches.size() < 1) {
             stopMachine();
             return;
