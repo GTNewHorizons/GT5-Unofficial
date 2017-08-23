@@ -40,7 +40,7 @@ public class CustomGTMaterials {
 	public static Materials Zirconolite = materialBuilder(1235, TextureSet.SET_METALLIC, new int[]{1,2,3}, "Zirconolite", Dyes.dyeBlack, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Zirconium, 1), new MaterialStack(Titanium, 2), new MaterialStack(Oxygen, 7)));
 	
 	public static final void run(){
-		Utils.LOG_INFO("Trying to initialise custom materials.");
+		Utils.LOG_INFO("[Custom] Trying to initialise custom materials.");
 	}
 	
 	private final static boolean registerMaterial(Materials r){

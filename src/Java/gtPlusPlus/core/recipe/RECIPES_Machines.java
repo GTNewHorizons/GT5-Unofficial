@@ -785,6 +785,76 @@ public class RECIPES_Machines {
 						"dustCarbon", "dustCarbon", "dustCarbon",
 						"plateCarbon", "plateCarbon", "plateCarbon",
 						ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 0, 1));
+
+				//Pollution Detector
+				RecipeUtils.addShapedGregtechRecipe(
+						CI.component_Plate[1], CI.sensor_MV, CI.component_Plate[1],
+						CI.component_Plate[2], CI.electricMotor_ULV, CI.component_Plate[2],
+						CI.getTieredCircuit(1), CI.machineHull_LV, CI.getTieredCircuit(0),
+						GregtechItemList.Pollution_Detector.get(1));
+
+				//ULV
+				RecipeUtils.addShapedGregtechRecipe(
+						CI.component_Plate[0], ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 0, 1), CI.component_Plate[0],
+						CI.component_Plate[0], CI.electricMotor_ULV, CI.component_Plate[0],
+						CI.getTieredCircuit(0), CI.machineHull_ULV, CI.getTieredCircuit(0),
+						GregtechItemList.Pollution_Cleaner_ULV.get(1));
+				//LV
+				RecipeUtils.addShapedGregtechRecipe(
+						CI.component_Plate[1], ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 0, 1), CI.component_Plate[1],
+						CI.component_Plate[1], CI.electricMotor_LV, CI.component_Plate[1],
+						CI.getTieredCircuit(1), CI.machineHull_LV, CI.getTieredCircuit(1),
+						GregtechItemList.Pollution_Cleaner_LV.get(1));
+				//MV
+				RecipeUtils.addShapedGregtechRecipe(
+						CI.component_Plate[2], ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 0, 1), CI.component_Plate[2],
+						CI.component_Plate[2], CI.electricMotor_MV, CI.component_Plate[2],
+						CI.getTieredCircuit(2), CI.machineHull_MV, CI.getTieredCircuit(2),
+						GregtechItemList.Pollution_Cleaner_MV.get(1));
+				//HV
+				RecipeUtils.addShapedGregtechRecipe(
+						CI.component_Plate[3], ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 0, 1), CI.component_Plate[3],
+						CI.component_Plate[3], CI.electricMotor_HV, CI.component_Plate[3],
+						CI.getTieredCircuit(3), CI.machineHull_HV, CI.getTieredCircuit(3),
+						GregtechItemList.Pollution_Cleaner_HV.get(1));
+				//EV
+				RecipeUtils.addShapedGregtechRecipe(
+						CI.component_Plate[4], ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 0, 1), CI.component_Plate[4],
+						CI.component_Plate[4], CI.electricMotor_EV, CI.component_Plate[4],
+						CI.getTieredCircuit(4), CI.machineHull_EV, CI.getTieredCircuit(4),
+						GregtechItemList.Pollution_Cleaner_EV.get(1));
+				//IV
+				RecipeUtils.addShapedGregtechRecipe(
+						CI.component_Plate[5], ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 1, 1), CI.component_Plate[5],
+						CI.component_Plate[5], CI.electricMotor_IV, CI.component_Plate[5],
+						CI.getTieredCircuit(5), CI.machineHull_IV, CI.getTieredCircuit(5),
+						GregtechItemList.Pollution_Cleaner_IV.get(1));
+				//LuV
+				RecipeUtils.addShapedGregtechRecipe(
+						CI.component_Plate[6], ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 1, 1), CI.component_Plate[6],
+						CI.component_Plate[6], CI.electricMotor_LuV, CI.component_Plate[6],
+						CI.getTieredCircuit(6), CI.machineHull_LuV, CI.getTieredCircuit(6),
+						GregtechItemList.Pollution_Cleaner_LuV.get(1));
+				//ZPM
+				RecipeUtils.addShapedGregtechRecipe(
+						CI.component_Plate[7], ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 1, 1), CI.component_Plate[7],
+						CI.component_Plate[7], CI.electricMotor_ZPM, CI.component_Plate[7],
+						CI.getTieredCircuit(7), CI.machineHull_ZPM, CI.getTieredCircuit(7),
+						GregtechItemList.Pollution_Cleaner_ZPM.get(1));
+				//UV
+				RecipeUtils.addShapedGregtechRecipe(
+						CI.component_Plate[8], ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 1, 1), CI.component_Plate[8],
+						CI.component_Plate[8], CI.electricMotor_UV, CI.component_Plate[8],
+						CI.getTieredCircuit(8), CI.machineHull_UV, CI.getTieredCircuit(8),
+						GregtechItemList.Pollution_Cleaner_UV.get(1));
+				//MAX
+				RecipeUtils.addShapedGregtechRecipe(
+						CI.component_Plate[9], ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 1, 1), CI.component_Plate[9],
+						CI.component_Plate[9], CI.electricMotor_MAX, CI.component_Plate[9],
+						CI.getTieredCircuit(9), CI.machineHull_MAX, CI.getTieredCircuit(9),
+						GregtechItemList.Pollution_Cleaner_MAX.get(1));
+
+
 			}
 
 			if (CORE.configSwitches.enableMachine_ThermalBoiler){
@@ -825,7 +895,7 @@ public class RECIPES_Machines {
 				RecipeUtils.addShapedGregtechRecipe(
 						controlCircuit, "cableGt12NaquadahAlloy", controlCircuit,
 						"plateDoubleHastelloyN", ItemList.Cover_Screen.get(1), "plateDoubleHastelloyN",
-						"plateThorium232", CI.machineCasing_UV, "plateThorium232",
+						"plateThorium232", CI.machineHull_UV, "plateThorium232",
 						RECIPE_LFTRController);
 
 				RecipeUtils.addShapedGregtechRecipe(
@@ -834,17 +904,17 @@ public class RECIPES_Machines {
 						"plateDoubleZeron100", CI.craftingToolHammer_Hard, "plateDoubleZeron100",
 						RECIPE_LFTRInnerCasing);
 
-				ItemStack IC2HeatPlate = ItemUtils.getCorrectStacktype("IC2:ic2.reactorPlatingHeat", 1);
+				ItemStack IC2HeatPlate = ItemUtils.getItemStackWithMeta(LoadedMods.IndustrialCraft2, "IC2:itemreactorPlatingHeat", "ReactorHeatPlating", 0, 1);
 				RecipeUtils.addShapedGregtechRecipe(
 						"plateDoubleHastelloyN", IC2HeatPlate, "plateDoubleHastelloyN",
 						IC2HeatPlate, "frameGtHastelloyC276", IC2HeatPlate,
 						"plateDoubleHastelloyN", IC2HeatPlate, "plateDoubleHastelloyN",
 						RECIPE_LFTROuterCasing);
-				
+
 				//LFTR Control Circuit
 				ItemStack circuitT5 = ItemList.Circuit_Master.get(1);
-				GT_Values.RA.addAssemblerRecipe(circuitT5, CI.fieldGenerator_MV, controlCircuit, 240*20, 240);
-				
+				GT_Values.RA.addAssemblerRecipe(circuitT5, CI.fieldGenerator_MV, controlCircuit, 240*20, 500);
+
 			}
 		}
 		Utils.LOG_INFO("Done loading recipes for the Various machine blocks.");
