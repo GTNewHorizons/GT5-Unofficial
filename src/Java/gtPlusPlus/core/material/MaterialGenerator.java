@@ -17,7 +17,9 @@ import gtPlusPlus.core.item.base.rotors.BaseItemRotor;
 import gtPlusPlus.core.item.base.screws.BaseItemScrew;
 import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.loaders.*;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -33,7 +35,7 @@ public class MaterialGenerator {
 		generate(matInfo, generateEverything, true);
 	}
 
-	public static void generate(final Material matInfo, final boolean generateEverything, final boolean generateBlastSmelterRecipes){
+	public static boolean generate(final Material matInfo, final boolean generateEverything, final boolean generateBlastSmelterRecipes){
 		final String unlocalizedName = matInfo.getUnlocalizedName();
 		final String materialName = matInfo.getLocalizedName();
 		final short[] C = matInfo.getRGBA();
@@ -114,6 +116,10 @@ public class MaterialGenerator {
 			temp = new BaseItemNugget(matInfo);
 			temp = new BaseItemPlate(matInfo);
 			temp = new BaseItemPlateDouble(matInfo);
+		}		
+		else if (matInfo.getState() == MaterialState.PURE_LIQUID){
+			//FluidUtils.generateFluidNoPrefix(unlocalizedName,	materialName, matInfo.getMeltingPointK(), C);
+			return true;
 		}
 
 		//Add A jillion Recipes - old code
@@ -125,7 +131,7 @@ public class MaterialGenerator {
 		RecipeGen_Fluids.generateRecipes(matInfo);
 		RecipeGen_Plates.generateRecipes(matInfo);
 		RecipeGen_ShapedCrafting.generateRecipes(matInfo);
-
+		return true;
 	}
 	
 	public static void generateDusts(final Material matInfo){

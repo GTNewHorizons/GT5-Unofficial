@@ -105,7 +105,7 @@ public class FLUORIDES {
 
 	public static final Material BERYLLIUM_FLUORIDE = new Material(
 			"Beryllium Fluoride", //Material Name
-			MaterialState.LIQUID, //State
+			MaterialState.PURE_LIQUID, //State
 			new short[]{120, 180, 120, 0}, //Material Colour
 			Materials.Beryllium.mMeltingPoint, //Melting Point in C
 			Materials.Beryllium.mBlastFurnaceTemp, //Boiling Point in C
@@ -134,9 +134,88 @@ public class FLUORIDES {
 			});
 
 
+	//LFTR sub components
+	
+	public static final Material HYDROXIDE = new Material(
+			"Hydroxide", //Material Name
+			MaterialState.PURE_LIQUID, //State
+			new short[]{240, 220, 240, 0}, //Material Colour
+			-1, //Melting Point in C
+			-1, //Boiling Point in C
+			-1, //Protons
+			-1,
+			false, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 1),
+					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 1)
+			});
+	
+	public static final Material AMMONIA = new Material(
+			"Ammonia", //Material Name
+			MaterialState.PURE_LIQUID, //State
+			new short[]{240, 220, 240, 0}, //Material Colour
+			-77, //Melting Point in C
+			-33, //Boiling Point in C
+			-1, //Protons
+			-1,
+			false, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().NITROGEN, 1),
+					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 3)
+			});
+	
+	public static final Material AMMONIUM = new Material(
+			"Ammonium", //Material Name
+			MaterialState.PURE_LIQUID, //State
+			new short[]{240, 220, 240, 0}, //Material Colour
+			-1, //Melting Point in C
+			-1, //Boiling Point in C
+			-1, //Protons
+			-1,
+			false, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().NITROGEN, 1),
+					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 4)
+			});
+	
+	public static final Material AMMONIUM_BIFLUORIDE = new Material(
+			"Ammonium Bifluoride", //Material Name
+			MaterialState.PURE_LIQUID, //State
+			new short[]{240, 220, 240, 0}, //Material Colour
+			126, //Melting Point in C
+			240, //Boiling Point in C
+			-1, //Protons
+			-1,
+			false, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(FLUORIDES.AMMONIUM, 1),
+					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 1),
+					new MaterialStack(ELEMENT.getInstance().FLUORINE, 2)
+			});
+	
+	public static final Material BERYLLIUM_HYDROXIDE = new Material(
+			"Beryllium Hydroxide", //Material Name
+			MaterialState.PURE_LIQUID, //State
+			new short[]{180, 250, 180, 0}, //Material Colour
+			1000, //Melting Point in C
+			-1, //Boiling Point in C
+			-1,
+			-1,
+			false, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().BERYLLIUM, 1),
+					new MaterialStack(FLUORIDES.HYDROXIDE, 2)
+			});
+	
+	
+	
+	
 	//LFTR Output
-
-
 	public static final Material NEPTUNIUM_HEXAFLUORIDE = new Material(
 			"Neptunium Hexafluoride", //Material Name
 			MaterialState.GAS, //State
