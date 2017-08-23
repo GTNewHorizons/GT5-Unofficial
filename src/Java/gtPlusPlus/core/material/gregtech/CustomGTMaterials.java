@@ -39,9 +39,13 @@ public class CustomGTMaterials {
 	public static Materials Geikielite = materialBuilder(1234, TextureSet.SET_SHINY, new int[]{1,2,3}, "Geikielite", Dyes.dyeBlack, Arrays.asList(new MaterialStack(Titanium, 1), new MaterialStack(Magnesium, 1), new MaterialStack(Oxygen, 3)));
 	public static Materials Zirconolite = materialBuilder(1235, TextureSet.SET_METALLIC, new int[]{1,2,3}, "Zirconolite", Dyes.dyeBlack, Arrays.asList(new MaterialStack(Calcium, 1), new MaterialStack(Zirconium, 1), new MaterialStack(Titanium, 2), new MaterialStack(Oxygen, 7)));
 	
+	public static final void run(){
+		Utils.LOG_INFO("Trying to initialise custom materials.");
+	}
+	
 	private final static boolean registerMaterial(Materials r){
 		Custom_GT_Materials.add(r);
-		Utils.LOG_INFO("Registered new Gregtech material - "+r.mName);
+		Utils.LOG_INFO("[Custom] Registered new Gregtech material - "+r.mName);
 		return true;
 	}	
 	

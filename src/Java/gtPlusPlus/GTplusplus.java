@@ -31,6 +31,7 @@ import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.handler.events.LoginEventHandler;
 import gtPlusPlus.core.item.general.RF2EU_Battery;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.material.gregtech.CustomGTMaterials;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
@@ -207,6 +208,11 @@ public class GTplusplus implements ActionListener {
 		FMLCommonHandler.instance().bus().register(new LoginEventHandler());
 		Utils.LOG_INFO("Login Handler Initialized");
 
+		//Early load materials
+		try {
+			CustomGTMaterials.run();
+		} catch (Throwable t){}
+		
 		if (CORE.configSwitches.enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
 			removeCircuitRecipeMap(); //Bye shitty recipes.			
 		}

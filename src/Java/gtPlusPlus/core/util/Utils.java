@@ -22,6 +22,7 @@ import gtPlusPlus.core.proxy.ClientProxy;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import ic2.core.Ic2Items;
 import ic2.core.init.InternalName;
 import ic2.core.item.resources.ItemCell;
@@ -179,7 +180,8 @@ public class Utils {
 	//Non-Dev Comments
 	public static void LOG_MACHINE_INFO(final String s){
 		if (CORE.configSwitches.MACHINE_INFO || ClientProxy.playerName.toLowerCase().contains("draknyte1")){
-			modLogger.info("Machine Info: "+s);
+			String name1 = gtPlusPlus.core.util.reflect.ReflectionUtils.getMethodName(2);
+			modLogger.info("Machine Info: "+s+" | "+name1);
 		}
 	}
 
