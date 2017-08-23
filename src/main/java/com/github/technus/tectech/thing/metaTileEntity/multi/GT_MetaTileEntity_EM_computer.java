@@ -121,7 +121,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public void checkParams_EM() {
+    public void updateParameters_EM() {
         if (eParamsIn[0] <= 0)
             eParamsInStatus[0] = PARAM_TOO_LOW;
         else if (eParamsIn[0] < 1)
