@@ -121,7 +121,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     protected void extraExplosions_EM() {
     }//For that extra hatches explosions, and maybe some MOORE EXPLOSIONS
 
-    protected void workGotDisabled_EM(){}
+    protected void workGotDisabled_EM(){}//called at end of onPostTick
     //callback on enable/disable work, they don't care if the multiblock is complete or not
     //(you can check that with looking at mMachine and other variables)
 
@@ -157,7 +157,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         return 0;
     }
 
-    //Override but usually call super method at start!
+    //Override if needed but usually call super method at start!
+    //On machine stop - NOT called when softhammered to offline state! - it SHOULD cause a full stop like power failure does
+    //Can be overriden to alter stopping behaviour, to do things on soft hammer scenario -> workGotDisabled_EM
     @Override
     public void stopMachine() {
         mOutputItems = null;
@@ -186,7 +188,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         outputEM = null;
 
         hatchesStatusUpdate_EM();
-    }//On machine stop - now called when softhammered to offline state! - it does not cause a full stop like power failure
+    }
 
     //RATHER LEAVE ALONE Section
 
@@ -410,9 +412,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             if (mEfficiency < 0) mEfficiency = 0;
-
-            if (previousTickValueForWorkEnabled && !getBaseMetaTileEntity().isAllowedToWork()) workGotDisabled_EM();
-            previousTickValueForWorkEnabled = getBaseMetaTileEntity().isAllowedToWork();//Assign new value
 
             if (--mUpdate == 0 || --mStartUpCheck == 0 || cyclicUpdate() || aBaseMetaTileEntity.hasWorkJustBeenEnabled()) {
                 mInputHatches.clear();
@@ -681,6 +680,10 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                     stopMachine();
                 }
             }
+
+            if (previousTickValueForWorkEnabled && !getBaseMetaTileEntity().isAllowedToWork()) workGotDisabled_EM();
+            previousTickValueForWorkEnabled = getBaseMetaTileEntity().isAllowedToWork();//Assign new value
+
             aBaseMetaTileEntity.setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & -512) | (mWrench ? 0 : 1) | (mScrewdriver ? 0 : 2) | (mSoftHammer ? 0 : 4) | (mHardHammer ? 0 : 8) | (mSolderingTool ? 0 : 16) | (mCrowbar ? 0 : 32) | (mMachine ? 0 : 64) | ((eCertainStatus == 0) ? 0 : 128) | (eParameters ? 0 : 256));
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
             boolean active = aBaseMetaTileEntity.isActive() && mPollution > 0;
