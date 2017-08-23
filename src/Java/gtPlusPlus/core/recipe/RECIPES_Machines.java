@@ -881,7 +881,7 @@ public class RECIPES_Machines {
 						RECIPE_ThermalBoilerCasing);
 
 				//Lava Filter Recipe
-				GT_Values.RA.addAssemblerRecipe(ItemUtils.getItemStackWithMeta(LoadedMods.IndustrialCraft2, "IC2:itemPartCarbonMesh", "RawCarbonMesh", 0, 8), GT_Values.NI, ItemUtils.getSimpleStack(ModItems.itemLavaFilter), 80*20, 16);
+				GT_Values.RA.addAssemblerRecipe(ItemUtils.getItemStackWithMeta(LoadedMods.IndustrialCraft2, "IC2:itemPartCarbonMesh", "RawCarbonMesh", 0, 16), CI.getNumberedCircuit(18), ItemUtils.getSimpleStack(ModItems.itemLavaFilter), 80*20, 16);
 			}
 
 			if (CORE.configSwitches.enableMultiblock_LiquidFluorideThoriumReactor){

@@ -63,7 +63,7 @@ public class ItemBlockGtBlock extends ItemBlock{
 
 	@Override
 	public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_, final boolean p_77663_5_) {
-		EntityUtils.applyRadiationDamageToEntity(this.sRadiation, world, entityHolding);
+		EntityUtils.applyRadiationDamageToEntity(iStack.stackSize, this.sRadiation, world, entityHolding);
 	}
 
 }
