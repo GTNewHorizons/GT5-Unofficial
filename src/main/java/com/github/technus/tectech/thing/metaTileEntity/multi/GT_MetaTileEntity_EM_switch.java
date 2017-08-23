@@ -64,8 +64,8 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     }
 
     @Override
-    public boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return EM_StructureCheckAdvanced(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
+    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+        return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     }
 
     @Override
-    public boolean EM_checkRecipe(ItemStack itemStack) {
+    public boolean checkRecipe_EM(ItemStack itemStack) {
         short thingsActive = 0;
         for (GT_MetaTileEntity_Hatch_InputData di : eInputData)
             if (di.q != null)
@@ -99,7 +99,7 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     }
 
     @Override
-    public void EM_outputFunction() {
+    public void outputAfterRecipe_EM() {
         if (eOutputData.size() > 0) {
             float total = 0;
             for (int i = 0; i < 10; i++) {//each param pair
@@ -139,7 +139,7 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     }
 
     @Override
-    public void EM_checkParams() {
+    public void checkParams_EM() {
         for (int i = 0; i < 10; i++) {
             if (eParamsIn[i] < 0) eParamsInStatus[i] = PARAM_TOO_LOW;
             else if (eParamsIn[i] == 0) eParamsInStatus[i] = PARAM_UNUSED;

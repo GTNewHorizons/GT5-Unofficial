@@ -26,7 +26,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                 GT_ModHandler.getIC2Item("reinforcedGlass", 1L)
         }, Materials.Trinium.getMolten(576), new ItemStack(QuantumGlassBlock.INSTANCE, 1), 200, 500000, true);
 
-        //Blueprint
+        //BLUEprint
         GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(ConstructableTriggerItem.INSTANCE, 1),
                 GT_ModHandler.RecipeBits.BUFFERED | GT_ModHandler.RecipeBits.NOT_REMOVABLE,
                 new Object[]{Dyes.dyeBlue, OrePrefixes.plate.get(Materials.Paper), Dyes.dyeBlue, Dyes.dyeWhite});
@@ -345,7 +345,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                 Materials.Osmium.getMolten(1296),
         }, CustomItemList.Machine_Multi_EMToEssentia.get(1), 24000, 400000);
 
-        //EM Scanner todo
+        //EM Scanner todo ItemStack[] FluidStack[]
         TT_recipeAdder.addResearchableAssemblylineRecipe(CustomItemList.Machine_Multi_Research.get(1),
                 150000,128, 500000, 16,  new ItemStack[]{
                         CustomItemList.Machine_Multi_EMjunction.get(1),

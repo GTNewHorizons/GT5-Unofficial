@@ -53,8 +53,8 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public boolean EM_checkMachine(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
-        return EM_StructureCheckAdvanced(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
+    public boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
+        return structureCheck_EM(shape, blockType, blockMeta, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback, 1, 1, 0);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public void EM_checkParams() {
+    public void checkParams_EM() {
         for (int i = 0; i < 10; i++) {
             if ((int) eParamsIn[i] < 0) eParamsInStatus[i] = PARAM_TOO_LOW;
             else if ((int) eParamsIn[i] == 0) eParamsInStatus[i] = PARAM_UNUSED;
@@ -97,7 +97,7 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public boolean EM_checkRecipe(ItemStack itemStack) {
+    public boolean checkRecipe_EM(ItemStack itemStack) {
         for (GT_MetaTileEntity_Hatch_InputElemental in : eInputHatches)
             if (in.getContainerHandler().hasStacks()) {
                 mEUt = -(int) V[8];
@@ -112,14 +112,14 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public void EM_outputFunction() {
+    public void outputAfterRecipe_EM() {
         for (int i = 0; i < 10; i++) {
             final int inIndex = (int) (eParamsIn[i]) - 1;
             if (inIndex < 0 || inIndex > eInputHatches.size()) continue;
             final int outIndex = (int) (eParamsIn[i + 10]) - 1;
             GT_MetaTileEntity_Hatch_InputElemental in = eInputHatches.get(inIndex);
             if (outIndex == -1) {//param==0 -> null the content
-                cleanHatchContent(in);
+                cleanHatchContentEM_EM(in);
             } else {
                 if (outIndex < 0 || outIndex > eOutputHatches.size()) continue;
                 GT_MetaTileEntity_Hatch_OutputElemental out = eOutputHatches.get(outIndex);
