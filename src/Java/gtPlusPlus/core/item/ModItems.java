@@ -217,6 +217,8 @@ public final class ModItems {
 
 	public static Item itemCoalCoke;
 
+	public static CoreItem itemCircuitLFTR;
+
 
 
 
@@ -480,6 +482,10 @@ public final class ModItems {
 		dustLi2BeF4 = ItemUtils.generateSpecialUseDusts("Li2BeF4", "Li2BeF4 Fuel Compound", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/FLiBe
 		fluidFLiBeSalt = FluidUtils.generateFluid("Li2BeF4", "Li2BeF4", 7430, new short[]{255, 255, 255, 100});
 
+		//LFTR Control Circuit
+		itemCircuitLFTR = new CoreItem("itemCircuitLFTR", ""+EnumChatFormatting.GREEN+"Thorium Reactor Control Circuit", AddToCreativeTab.tabMisc, 1, 0, "Helps your LFTR not explode", EnumRarity.epic, EnumChatFormatting.DARK_GREEN, false, null);
+
+		
 		//Zirconium
 		//Cinter Pellet.
 		itemZirconiumChlorideCinterPellet = new CoreItem("itemZirconiumPellet", "Zirconium Pellet ["+StringUtils.subscript("ZrCl4")+"]", tabMisc).setTextureName(CORE.MODID + ":itemShard");

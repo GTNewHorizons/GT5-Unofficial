@@ -143,6 +143,16 @@ public class CI {
 	public static String[] component_Plate;
 	public static String[] component_Rod;
 	public static String[] component_Ingot;
+	
+	//Crafting Tools
+	public static String craftingToolWrench = "craftingToolWrench";
+	public static String craftingToolHammer_Hard = "craftingToolHardHammer";
+	public static String craftingToolHammer_Soft = "craftingToolSoftHammer";
+	public static String craftingToolScrewdriver = "craftingToolScrewdriver";
+	public static String craftingToolFile = "craftingToolFile";
+	public static String craftingToolKnife = "craftingToolKnife";
+	public static String craftingToolCrowbar = "craftingToolCrowbar";
+	public static String craftingToolWireCutter = "craftingToolWirecutter";
 
 	public static void Init(){
 

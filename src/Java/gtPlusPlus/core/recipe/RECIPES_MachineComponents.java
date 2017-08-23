@@ -93,10 +93,6 @@ public class RECIPES_MachineComponents {
 	public static String smallGearTier9 = "gearGtSmallOsmium";
 	public static String smallGearTier10 = "gearGtSmallNeutronium";
 
-	//Crafting Tools
-	public static String craftingToolWrench = "craftingToolWrench";
-	public static String craftingToolScrewdriver = "craftingToolScrewdriver";
-
 	public static final void RECIPES_LOAD(){
 		Utils.LOG_INFO("Loading Recipes for the Various Circuits and Machine components.");
 		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
@@ -135,22 +131,22 @@ public class RECIPES_MachineComponents {
 		//Electric Pump
 		RecipeUtils.addShapedGregtechRecipe(
 				cableTier7, rotorTier7, itemRubberRing,
-				craftingToolScrewdriver, pipeTier7, craftingToolWrench,
+				CI.craftingToolScrewdriver, pipeTier7, CI.craftingToolWrench,
 				itemRubberRing, CI.electricMotor_LuV, cableTier7,
 				CI.electricPump_LuV);
 		RecipeUtils.addShapedGregtechRecipe(
 				cableTier8, rotorTier8, itemRubberRing,
-				craftingToolScrewdriver, pipeTier8, craftingToolWrench,
+				CI.craftingToolScrewdriver, pipeTier8, CI.craftingToolWrench,
 				itemRubberRing, CI.electricMotor_ZPM, cableTier8,
 				CI.electricPump_ZPM);
 		RecipeUtils.addShapedGregtechRecipe(
 				cableTier9, rotorTier9, itemRubberRing,
-				craftingToolScrewdriver, pipeTier9, craftingToolWrench,
+				CI.craftingToolScrewdriver, pipeTier9, CI.craftingToolWrench,
 				itemRubberRing, CI.electricMotor_UV, cableTier9,
 				CI.electricPump_UV);
 		RecipeUtils.addShapedGregtechRecipe(
 				cableTier10, rotorTier10, itemRubberRing,
-				craftingToolScrewdriver, pipeTier10, craftingToolWrench,
+				CI.craftingToolScrewdriver, pipeTier10, CI.craftingToolWrench,
 				itemRubberRing, CI.electricMotor_MAX, cableTier10,
 				CI.electricPump_MAX);
 
@@ -301,7 +297,7 @@ public class RECIPES_MachineComponents {
 
 		RecipeUtils.addShapedGregtechRecipe(
 				cableTier0, rotorTier0, itemRubberRing,
-				craftingToolScrewdriver, pipeTier0, craftingToolWrench,
+				CI.craftingToolScrewdriver, pipeTier0, CI.craftingToolWrench,
 				itemRubberRing, CI.electricMotor_ULV, cableTier0,
 				CI.electricPump_ULV);
 
@@ -350,7 +346,7 @@ public class RECIPES_MachineComponents {
 				CI.electricMotor_MAX);
 		RecipeUtils.addShapedGregtechRecipe(
 				cableTier10, rotorTier10, itemRubberRing,
-				craftingToolScrewdriver, pipeTier10, craftingToolWrench,
+				CI.craftingToolScrewdriver, pipeTier10, CI.craftingToolWrench,
 				itemRubberRing, CI.electricMotor_MAX, cableTier10,
 				CI.electricPump_MAX);
 		RecipeUtils.addShapedGregtechRecipe(

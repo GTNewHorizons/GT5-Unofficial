@@ -228,11 +228,11 @@ public class Material {
 			this.vChemicalFormula = this.getToolTip(chemicalSymbol, OrePrefixes.dust.mMaterialAmount / M, true);
 		}
 		else if (!this.vChemicalSymbol.equals("")){
-			Utils.LOG_MACHINE_INFO("materialInput is null, using a valid chemical symbol.");
+			Utils.LOG_WARNING("materialInput is null, using a valid chemical symbol.");
 			this.vChemicalFormula = this.vChemicalSymbol;
 		}
 		else{
-			Utils.LOG_MACHINE_INFO("MaterialInput == null && chemicalSymbol probably equals nothing");
+			Utils.LOG_WARNING("MaterialInput == null && chemicalSymbol probably equals nothing");
 			this.vChemicalFormula = "??";
 		}
 
@@ -268,13 +268,13 @@ public class Material {
 			}
 		}
 
-		Utils.LOG_MACHINE_INFO("Creating a Material instance for "+materialName);
-		Utils.LOG_MACHINE_INFO("Formula: "+this.vChemicalFormula + " Smallest Stack: "+this.smallestStackSizeWhenProcessing+" Smallest Ratio:"+ratio);
-		Utils.LOG_MACHINE_INFO("Protons: "+this.vProtons);
-		Utils.LOG_MACHINE_INFO("Neutrons: "+this.vNeutrons);
-		Utils.LOG_MACHINE_INFO("Mass: "+this.vMass+"/units");
-		Utils.LOG_MACHINE_INFO("Melting Point: "+this.meltingPointC+"C.");
-		Utils.LOG_MACHINE_INFO("Boiling Point: "+this.boilingPointC+"C.");
+		Utils.LOG_WARNING("Creating a Material instance for "+materialName);
+		Utils.LOG_WARNING("Formula: "+this.vChemicalFormula + " Smallest Stack: "+this.smallestStackSizeWhenProcessing+" Smallest Ratio:"+ratio);
+		Utils.LOG_WARNING("Protons: "+this.vProtons);
+		Utils.LOG_WARNING("Neutrons: "+this.vNeutrons);
+		Utils.LOG_WARNING("Mass: "+this.vMass+"/units");
+		Utils.LOG_WARNING("Melting Point: "+this.meltingPointC+"C.");
+		Utils.LOG_WARNING("Boiling Point: "+this.boilingPointC+"C.");
 	}
 
 	public final String getLocalizedName(){
@@ -428,21 +428,21 @@ public class Material {
 			if (!this.vMaterialInput.isEmpty()){
 				final ItemStack[] temp = new ItemStack[this.vMaterialInput.size()];
 				for (int i=0;i<this.vMaterialInput.size();i++){
-					//Utils.LOG_MACHINE_INFO("i:"+i);
+					//Utils.LOG_WARNING("i:"+i);
 					ItemStack testNull = null;
 					try {
 						testNull = this.vMaterialInput.get(i).getValidStack();
 					} catch (final Throwable r){
-						Utils.LOG_MACHINE_INFO("Failed gathering material stack for "+this.localizedName+".");
-						Utils.LOG_MACHINE_INFO("What Failed: Length:"+this.vMaterialInput.size()+" current:"+i);
+						Utils.LOG_WARNING("Failed gathering material stack for "+this.localizedName+".");
+						Utils.LOG_WARNING("What Failed: Length:"+this.vMaterialInput.size()+" current:"+i);
 					}
 					try {
 						if (testNull != null){
-							//Utils.LOG_MACHINE_INFO("not null");
+							//Utils.LOG_WARNING("not null");
 							temp[i] = this.vMaterialInput.get(i).getValidStack();
 						}
 					} catch (final Throwable r){
-						Utils.LOG_MACHINE_INFO("Failed setting slot "+i+", using "+this.localizedName);
+						Utils.LOG_WARNING("Failed setting slot "+i+", using "+this.localizedName);
 					}
 				}
 				return temp;
@@ -490,9 +490,9 @@ public class Material {
 	public final long[] getSmallestRatio(final ArrayList<MaterialStack> tempInput){
 		if (tempInput != null){
 			if (!tempInput.isEmpty()){
-				Utils.LOG_MACHINE_INFO("length: "+tempInput.size());
-				Utils.LOG_MACHINE_INFO("(inputs != null): "+(tempInput != null));
-				//Utils.LOG_MACHINE_INFO("length: "+inputs.length);
+				Utils.LOG_WARNING("length: "+tempInput.size());
+				Utils.LOG_WARNING("(inputs != null): "+(tempInput != null));
+				//Utils.LOG_WARNING("length: "+inputs.length);
 				final long[] tempRatio = new long[tempInput.size()];
 				for (int x=0;x<tempInput.size();x++){
 					//tempPercentage = tempPercentage+inputs[x].percentageToUse;
@@ -509,7 +509,7 @@ public class Material {
 					for (int r=0;r<tempRatio.length;r++){
 						tempRatioStringThing1 = tempRatioStringThing1 + tempRatio[r] +" : ";
 					}
-					Utils.LOG_MACHINE_INFO("Default Ratio: "+tempRatioStringThing1);
+					Utils.LOG_WARNING("Default Ratio: "+tempRatioStringThing1);
 
 					String tempRatioStringThing = "";
 					int tempSmallestCraftingUseSize = 0;
@@ -518,7 +518,7 @@ public class Material {
 						tempSmallestCraftingUseSize = (int) (tempSmallestCraftingUseSize + smallestRatio[r]);
 					}
 					//this.smallestStackSizeWhenProcessing = tempSmallestCraftingUseSize;
-					Utils.LOG_MACHINE_INFO("Smallest Ratio: "+tempRatioStringThing);
+					Utils.LOG_WARNING("Smallest Ratio: "+tempRatioStringThing);
 					return smallestRatio;
 				}
 			}
@@ -530,7 +530,7 @@ public class Material {
 		if (!aShowQuestionMarks && (this.vChemicalFormula.equals("?")||this.vChemicalFormula.equals("??"))) {
 			return "";
 		}
-		Utils.LOG_MACHINE_INFO("===============| Calculating Atomic Formula for "+this.localizedName+" |===============");
+		Utils.LOG_WARNING("===============| Calculating Atomic Formula for "+this.localizedName+" |===============");
 		if (!chemSymbol.equals("")) {
 			return chemSymbol;
 		}
@@ -573,13 +573,13 @@ public class Material {
 						return StringUtils.subscript(dummyFormula);
 						//return dummyFormula;
 					}
-					Utils.LOG_MACHINE_INFO("dummyFormulaArray <= 0");
+					Utils.LOG_WARNING("dummyFormulaArray <= 0");
 				}
-				Utils.LOG_MACHINE_INFO("dummyFormulaArray == null");
+				Utils.LOG_WARNING("dummyFormulaArray == null");
 			}
-			Utils.LOG_MACHINE_INFO("tempInput.length <= 0");
+			Utils.LOG_WARNING("tempInput.length <= 0");
 		}
-		Utils.LOG_MACHINE_INFO("tempInput == null");
+		Utils.LOG_WARNING("tempInput == null");
 		return "??";
 
 	}
@@ -593,7 +593,7 @@ public class Material {
 		} catch (final Throwable e){}
 
 		if (Materials.get(this.localizedName).mFluid == null){
-			Utils.LOG_MACHINE_INFO("Generating our own fluid.");
+			Utils.LOG_WARNING("Generating our own fluid.");
 
 			//Generate a Cell if we need to
 			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+this.getUnlocalizedName(), 1) == null){
@@ -639,7 +639,7 @@ public class Material {
 				return this.generatePlasma();
 			}
 		}
-		Utils.LOG_MACHINE_INFO("Getting the fluid from a GT material instead.");
+		Utils.LOG_WARNING("Getting the fluid from a GT material instead.");
 		return Materials.get(this.localizedName).mFluid;
 	}
 
@@ -648,11 +648,11 @@ public class Material {
 		if ((isValid != Materials._NULL) && (isValid != null) && (isValid != Materials.Clay) && (isValid != Materials.Clay)
 				&& (isValid != Materials.Phosphorus) && (isValid != Materials.Steel) && (isValid != Materials.Bronze)){
 			if (isValid.mPlasma != null){
-				Utils.LOG_MACHINE_INFO("Using a pre-defined Plasma from GT.");
+				Utils.LOG_WARNING("Using a pre-defined Plasma from GT.");
 				return isValid.mPlasma;
 			}
 		}
-		Utils.LOG_MACHINE_INFO("Generating our own Plasma.");
+		Utils.LOG_WARNING("Generating our own Plasma.");
 		return FluidUtils.addGTPlasma(this);
 		//return null;
 	}
@@ -660,9 +660,9 @@ public class Material {
 
 
 	final public FluidStack getFluid(final int fluidAmount) {
-		Utils.LOG_MACHINE_INFO("Attempting to get "+fluidAmount+"L of "+this.vMoltenFluid.getName());
+		//Utils.LOG_WARNING("Attempting to get "+fluidAmount+"L of "+this.vMoltenFluid.getName());
 		final FluidStack moltenFluid = new FluidStack(this.vMoltenFluid, fluidAmount);
-		Utils.LOG_MACHINE_INFO("Info: "+moltenFluid.getFluid().getName()+" Info: "+moltenFluid.amount+" Info: "+moltenFluid.getFluidID());
+		//Utils.LOG_WARNING("Info: "+moltenFluid.getFluid().getName()+" Info: "+moltenFluid.amount+" Info: "+moltenFluid.getFluidID());
 		return moltenFluid;
 	}
 
@@ -672,10 +672,10 @@ public class Material {
 		for (MaterialStack  part : this.vMaterialInput){
 			int incrementor = part.getStackMaterial().getMeltingPointC();
 			meltingPoint += incrementor;
-			Utils.LOG_MACHINE_INFO("Melting Point for "+this.getLocalizedName()+" increased to "+ incrementor);
+			Utils.LOG_WARNING("Melting Point for "+this.getLocalizedName()+" increased to "+ incrementor);
 		}
 		int divisor = (this.vMaterialInput.size()>0 ? this.vMaterialInput.size() : 1);
-		Utils.LOG_MACHINE_INFO("Dividing "+meltingPoint+" / "+divisor+" to get average melting point.");
+		Utils.LOG_WARNING("Dividing "+meltingPoint+" / "+divisor+" to get average melting point.");
 		meltingPoint = (meltingPoint/divisor);
 		return meltingPoint;
 	}

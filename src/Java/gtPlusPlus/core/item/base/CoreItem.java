@@ -132,6 +132,26 @@ public class CoreItem extends Item
 		GameRegistry.registerItem(this, unlocalizedName);
 	}
 
+	//6
+	/*
+	 * Name, Tab, Stack, Dmg, Description, Rarity, Text Colour, Effect
+	 */
+	public CoreItem(final String unlocalizedName, final String displayName, final CreativeTabs creativeTab, final int stackSize, final int maxDmg, final String description, final EnumRarity regRarity, final EnumChatFormatting colour, final boolean Effect, final ItemStack OverrideItem)
+	{
+		this.setUnlocalizedName(unlocalizedName);
+		this.itemName = displayName;
+		this.setTextureName(CORE.MODID + ":" + unlocalizedName);
+		this.setCreativeTab(creativeTab);
+		this.setMaxStackSize(stackSize);
+		this.setMaxDamage(maxDmg);
+		this.rarity = regRarity;
+		this.itemDescription = description;
+		this.descColour = colour;
+		this.hasEffect = Effect;
+		this.turnsInto = OverrideItem;
+		GameRegistry.registerItem(this, unlocalizedName);
+	}
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {

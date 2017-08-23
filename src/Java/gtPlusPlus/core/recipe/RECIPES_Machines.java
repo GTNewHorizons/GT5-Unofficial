@@ -74,8 +74,13 @@ public class RECIPES_Machines {
 	//Thermal Boiler
 	public static ItemStack RECIPE_ThermalBoilerController;
 	public static ItemStack RECIPE_ThermalBoilerCasing;
-	
-	
+
+	//Thorium Reactor
+	public static ItemStack RECIPE_LFTRController;
+	public static ItemStack RECIPE_LFTROuterCasing;
+	public static ItemStack RECIPE_LFTRInnerCasing;
+
+
 	//Buffer Cores
 	public static ItemStack RECIPE_BufferCore_ULV = ItemUtils.getItemStack("miscutils:item.itemBufferCore1", 1);
 	public static ItemStack RECIPE_BufferCore_LV = ItemUtils.getItemStack("miscutils:item.itemBufferCore2", 1);
@@ -222,7 +227,7 @@ public class RECIPES_Machines {
 
 	private static void runModRecipes(){
 		if (LoadedMods.Gregtech){
-			
+
 			//Computer Cube
 			RecipeUtils.addShapedGregtechRecipe(
 					CI.getDataOrb(),ItemList.Cover_Screen.get(1),"circuitMaster",
@@ -756,7 +761,7 @@ public class RECIPES_Machines {
 						"plateTitanium",CI.machineHull_EV,"plateTitanium",
 						RECIPE_TesseractTerminal);
 			}
-			
+
 			if (CORE.configSwitches.enableMachine_SimpleWasher){
 				ItemStack plateWrought = ItemUtils.getItemStackOfAmountFromOreDict("plateWroughtIron", 1);
 				ItemStack washerPipe;
@@ -773,47 +778,145 @@ public class RECIPES_Machines {
 						plateWrought, CI.machineCasing_ULV, plateWrought,
 						GregtechItemList.SimpleDustWasher.get(1));
 			}
-			
+
 			if (CORE.configSwitches.enableMachine_Pollution){
 				RecipeUtils.addShapedGregtechRecipe(
 						"plateCarbon", "plateCarbon", "plateCarbon",
 						"dustCarbon", "dustCarbon", "dustCarbon",
 						"plateCarbon", "plateCarbon", "plateCarbon",
 						ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 0, 1));
+
+				//Pollution Detector
+				RecipeUtils.addShapedGregtechRecipe(
+						CI.component_Plate[1], CI.sensor_MV, CI.component_Plate[1],
+						CI.component_Plate[2], CI.electricMotor_ULV, CI.component_Plate[2],
+						CI.getTieredCircuit(1), CI.machineHull_LV, CI.getTieredCircuit(0),
+						GregtechItemList.Pollution_Detector.get(1));
+
+				//ULV
+				RecipeUtils.addShapedGregtechRecipe(
+						CI.component_Plate[0], ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 0, 1), CI.component_Plate[0],
+						CI.component_Plate[0], CI.electricMotor_ULV, CI.component_Plate[0],
+						CI.getTieredCircuit(0), CI.machineHull_ULV, CI.getTieredCircuit(0),
+						GregtechItemList.Pollution_Cleaner_ULV.get(1));
+				//LV
+				RecipeUtils.addShapedGregtechRecipe(
+						CI.component_Plate[1], ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 0, 1), CI.component_Plate[1],
+						CI.component_Plate[1], CI.electricMotor_LV, CI.component_Plate[1],
+						CI.getTieredCircuit(1), CI.machineHull_LV, CI.getTieredCircuit(1),
+						GregtechItemList.Pollution_Cleaner_LV.get(1));
+				//MV
+				RecipeUtils.addShapedGregtechRecipe(
+						CI.component_Plate[2], ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 0, 1), CI.component_Plate[2],
+						CI.component_Plate[2], CI.electricMotor_MV, CI.component_Plate[2],
+						CI.getTieredCircuit(2), CI.machineHull_MV, CI.getTieredCircuit(2),
+						GregtechItemList.Pollution_Cleaner_MV.get(1));
+				//HV
+				RecipeUtils.addShapedGregtechRecipe(
+						CI.component_Plate[3], ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 0, 1), CI.component_Plate[3],
+						CI.component_Plate[3], CI.electricMotor_HV, CI.component_Plate[3],
+						CI.getTieredCircuit(3), CI.machineHull_HV, CI.getTieredCircuit(3),
+						GregtechItemList.Pollution_Cleaner_HV.get(1));
+				//EV
+				RecipeUtils.addShapedGregtechRecipe(
+						CI.component_Plate[4], ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 0, 1), CI.component_Plate[4],
+						CI.component_Plate[4], CI.electricMotor_EV, CI.component_Plate[4],
+						CI.getTieredCircuit(4), CI.machineHull_EV, CI.getTieredCircuit(4),
+						GregtechItemList.Pollution_Cleaner_EV.get(1));
+				//IV
+				RecipeUtils.addShapedGregtechRecipe(
+						CI.component_Plate[5], ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 1, 1), CI.component_Plate[5],
+						CI.component_Plate[5], CI.electricMotor_IV, CI.component_Plate[5],
+						CI.getTieredCircuit(5), CI.machineHull_IV, CI.getTieredCircuit(5),
+						GregtechItemList.Pollution_Cleaner_IV.get(1));
+				//LuV
+				RecipeUtils.addShapedGregtechRecipe(
+						CI.component_Plate[6], ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 1, 1), CI.component_Plate[6],
+						CI.component_Plate[6], CI.electricMotor_LuV, CI.component_Plate[6],
+						CI.getTieredCircuit(6), CI.machineHull_LuV, CI.getTieredCircuit(6),
+						GregtechItemList.Pollution_Cleaner_LuV.get(1));
+				//ZPM
+				RecipeUtils.addShapedGregtechRecipe(
+						CI.component_Plate[7], ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 1, 1), CI.component_Plate[7],
+						CI.component_Plate[7], CI.electricMotor_ZPM, CI.component_Plate[7],
+						CI.getTieredCircuit(7), CI.machineHull_ZPM, CI.getTieredCircuit(7),
+						GregtechItemList.Pollution_Cleaner_ZPM.get(1));
+				//UV
+				RecipeUtils.addShapedGregtechRecipe(
+						CI.component_Plate[8], ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 1, 1), CI.component_Plate[8],
+						CI.component_Plate[8], CI.electricMotor_UV, CI.component_Plate[8],
+						CI.getTieredCircuit(8), CI.machineHull_UV, CI.getTieredCircuit(8),
+						GregtechItemList.Pollution_Cleaner_UV.get(1));
+				//MAX
+				RecipeUtils.addShapedGregtechRecipe(
+						CI.component_Plate[9], ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 1, 1), CI.component_Plate[9],
+						CI.component_Plate[9], CI.electricMotor_MAX, CI.component_Plate[9],
+						CI.getTieredCircuit(9), CI.machineHull_MAX, CI.getTieredCircuit(9),
+						GregtechItemList.Pollution_Cleaner_MAX.get(1));
+
+
 			}
-			
+
 			if (CORE.configSwitches.enableMachine_ThermalBoiler){
 				RECIPE_ThermalBoilerController = GregtechItemList.GT4_Thermal_Boiler.get(1);
 				RECIPE_ThermalBoilerCasing = GregtechItemList.Casing_ThermalContainment.get(4);
 				ItemStack centrifugeHV = ItemList.Machine_HV_Centrifuge.get(1);
-				
+
 				RecipeUtils.addShapedGregtechRecipe(
 						"craftingGeothermalGenerator", centrifugeHV, "craftingGeothermalGenerator",
 						"gearTitanium", "circuitElite", "gearTitanium",
 						"craftingGeothermalGenerator", centrifugeHV, "craftingGeothermalGenerator",
 						RECIPE_ThermalBoilerController);
-				
+
 				RecipeUtils.addShapedGregtechRecipe(
 						"craftingGeothermalGenerator", centrifugeHV, "craftingGeothermalGenerator",
 						"gearTungstenSteel", "circuitElite", "gearTungstenSteel",
 						"craftingGeothermalGenerator", centrifugeHV, "craftingGeothermalGenerator",
 						RECIPE_ThermalBoilerController);
-				
+
 				RecipeUtils.addShapedGregtechRecipe(
 						"plateStainlessSteel", "plateStainlessSteel", "plateStainlessSteel",
 						"circuitAdvanced", CI.machineCasing_HV, "circuitAdvanced",
 						"plateStainlessSteel", "plateStainlessSteel", "plateStainlessSteel",
 						RECIPE_ThermalBoilerCasing);
-				
+
 				//Lava Filter Recipe
 				GT_Values.RA.addAssemblerRecipe(ItemUtils.getItemStackWithMeta(LoadedMods.IndustrialCraft2, "IC2:itemPartCarbonMesh", "RawCarbonMesh", 0, 8), GT_Values.NI, ItemUtils.getSimpleStack(ModItems.itemLavaFilter), 80*20, 16);
 			}
 
-	
+			if (CORE.configSwitches.enableMultiblock_LiquidFluorideThoriumReactor){
 
+				//Thorium Reactor
+				RECIPE_LFTRController = GregtechItemList.ThoriumReactor.get(1);
+				RECIPE_LFTRInnerCasing = GregtechItemList.Casing_Reactor_II.get(1); //Zeron
+				RECIPE_LFTROuterCasing = GregtechItemList.Casing_Reactor_I.get(1); //Hastelloy
+
+				ItemStack controlCircuit = ItemUtils.getSimpleStack(ModItems.itemCircuitLFTR);
+				RecipeUtils.addShapedGregtechRecipe(
+						controlCircuit, "cableGt12NaquadahAlloy", controlCircuit,
+						"plateDoubleHastelloyN", ItemList.Cover_Screen.get(1), "plateDoubleHastelloyN",
+						"plateThorium232", CI.machineHull_UV, "plateThorium232",
+						RECIPE_LFTRController);
+
+				RecipeUtils.addShapedGregtechRecipe(
+						"plateDoubleZeron100", CI.craftingToolScrewdriver, "plateDoubleZeron100",
+						"gearTalonite", CI.fieldGenerator_ULV, "gearTalonite",
+						"plateDoubleZeron100", CI.craftingToolHammer_Hard, "plateDoubleZeron100",
+						RECIPE_LFTRInnerCasing);
+
+				ItemStack IC2HeatPlate = ItemUtils.getItemStackWithMeta(LoadedMods.IndustrialCraft2, "IC2:itemreactorPlatingHeat", "ReactorHeatPlating", 0, 1);
+				RecipeUtils.addShapedGregtechRecipe(
+						"plateDoubleHastelloyN", IC2HeatPlate, "plateDoubleHastelloyN",
+						IC2HeatPlate, "frameGtHastelloyC276", IC2HeatPlate,
+						"plateDoubleHastelloyN", IC2HeatPlate, "plateDoubleHastelloyN",
+						RECIPE_LFTROuterCasing);
+
+				//LFTR Control Circuit
+				ItemStack circuitT5 = ItemList.Circuit_Master.get(1);
+				GT_Values.RA.addAssemblerRecipe(circuitT5, CI.fieldGenerator_MV, controlCircuit, 240*20, 500);
+
+			}
 		}
-
-
 		Utils.LOG_INFO("Done loading recipes for the Various machine blocks.");
 	}
 }

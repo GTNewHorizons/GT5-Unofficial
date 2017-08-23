@@ -1,5 +1,6 @@
 package gtPlusPlus;
 
+import java.io.File;
 import java.util.Random;
 
 import org.apache.logging.log4j.Level;
@@ -16,9 +17,12 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
 import gtPlusPlus.core.world.darkworld.biome.Biome_DarkWorld;
+import gtPlusPlus.xmod.gregtech.HANDLER_GT;
+import gtPlusPlus.xmod.gregtech.api.util.GTPP_Config;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.common.config.Configuration;
 
 @MCVersion(value = "1.7.10")
 @ChildMod(parent = CORE.MODID, mod = @Mod(modid = "GT++DarkWorld",
@@ -64,6 +68,10 @@ public class GTplusplus_Secondary implements IFuelHandler, IWorldGenerator{
 		DarkWorld_Dimension.instance = GTplusplus.instance;
 		DarkWorld_Biome.preInit(event);
 		DarkWorld_Dimension.preInit(event);
+		
+		//Load/Set Custom Ore Gen
+		HANDLER_GT.sCustomWorldgenFile = new GTPP_Config(new Configuration(new File(new File(event.getModConfigurationDirectory(), "GTplusplus"), "WorldGeneration.cfg")));
+		
 	}
 
 	@EventHandler
