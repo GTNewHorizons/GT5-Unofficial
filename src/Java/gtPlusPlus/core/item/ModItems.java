@@ -483,7 +483,7 @@ public final class ModItems {
 		fluidFLiBeSalt = FluidUtils.generateFluid("Li2BeF4", "Li2BeF4", 7430, new short[]{255, 255, 255, 100});
 
 		//LFTR Control Circuit
-		itemCircuitLFTR = new CoreItem("itemCircuitLFTR", ""+EnumChatFormatting.GREEN+"Thorium Reactor Control Circuit", AddToCreativeTab.tabMisc, 1, 0, "Helps your LFTR not explode", EnumRarity.epic, EnumChatFormatting.GREEN, false, null);
+		itemCircuitLFTR = new CoreItem("itemCircuitLFTR", ""+EnumChatFormatting.GREEN+"Thorium Reactor Control Circuit", AddToCreativeTab.tabMisc, 1, 0, "Helps your LFTR not explode", EnumRarity.epic, EnumChatFormatting.DARK_GREEN, false, null);
 
 		
 		//Zirconium
