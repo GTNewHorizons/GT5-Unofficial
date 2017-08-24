@@ -13,6 +13,7 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.player.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -98,7 +99,21 @@ extends GT_MetaTileEntity_MultiBlockBase
 		return new String[]{
 				"Highly Advanced Autocrafter",
 				"Right Click with a Screwdriver to change mode",
-				"This Machine Can Assemble or Disassemble",
+				"This Machine Can Craft, Assemble or Disassemble",
+				"--------------------------------------",
+				"Insert a Memory stick into the GUI",
+				"to automate a crafting table recipe",
+				"Requires recipe to be scanned in a project table",
+				"--------------------------------------",
+				"Hatches & Busses can be placed anywhere",
+				"1x Input Bus",
+				"1x Input Hatch",
+				"1x Output Bus",
+				"1x Output Hatch",
+				"1x Muffler Hatch",
+				"1x Maintenance Hatch",
+				"1x Energy Hatch",
+				"--------------------------------------",
 				CORE.GT_Tooltip
 				};
 	}
@@ -141,6 +156,15 @@ extends GT_MetaTileEntity_MultiBlockBase
 				}
 			}
 		}
+		
+		if ((this.mInputHatches.size() >= 1) || (this.mOutputHatches.size() >= 1) ||
+				(this.mInputBusses.size() >= 1) || (this.mOutputBusses.size() >= 1) || 
+				(this.mMufflerHatches.size() != 1) || (this.mMaintenanceHatches.size() != 1) ||
+				(this.mEnergyHatches.size() >= 1)){
+			Utils.LOG_INFO("Wrong Hatch count.");
+			return false;
+		}
+		
 		return tAmount >= 16;
 		
 	}
@@ -153,6 +177,12 @@ extends GT_MetaTileEntity_MultiBlockBase
 	@Override
 	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
 		isDisassembling = Utils.invertBoolean(isDisassembling);
+		if (this.isDisassembling){
+			PlayerUtils.messagePlayer(aPlayer, "You are now running the Auto-Crafter in mode: §cDisassembly");			
+		}
+		else {
+			PlayerUtils.messagePlayer(aPlayer, "You are now running the Auto-Crafter in mode: §aAssembly");			
+		}
 		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 	}
 	
@@ -296,4 +326,31 @@ extends GT_MetaTileEntity_MultiBlockBase
 		Utils.LOG_INFO("test - bad");
 		return false;
 	}
+	
+	
+	@Override
+	public String[] getInfoData() {
+
+		final String tRunning = (this.mMaxProgresstime>0 ? "Auto-Crafter running":"Auto-Crafter stopped");
+		final String tMaintainance = (this.getIdealStatus() == this.getRepairStatus() ? "No Maintainance issues" : "Needs Maintainance");
+		String tMode;
+		if (this.isDisassembling){
+			tMode = "§cDisassembly";			
+		}
+		else {
+			tMode = "§aAssembly";			
+		}
+		
+		return new String[]{
+				"Large Scale Auto-Asesembler v1.01c",
+				tRunning,
+				tMaintainance,
+				"Mode: "+tMode};
+	}
+
+	@Override
+	public boolean isGivingInformation() {
+		return true;
+	}
+	
 }
