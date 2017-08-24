@@ -29,7 +29,7 @@ public class FR_ItemRegistry {
 	public static MB_ItemFrame hiveFrameAccelerated;
 	public static MB_ItemFrame hiveFrameVoid;
 	public static MB_ItemFrame hiveFrameMutagenic;
-	public static MB_ItemFrame haveFrameBusy;
+	public static MB_ItemFrame hiveFrameBusy;
 
 	//Extra Bee Frame Items
 	public static MB_ItemFrame hiveFrameCocoa;
@@ -48,10 +48,10 @@ public class FR_ItemRegistry {
 		//frameProven = registerItem(new FR_ItemHiveFrame(720, 0.3f), "frameProven");
 
 		//Magic Bee like Frames
-		hiveFrameAccelerated = new MB_ItemFrame(MB_FrameType.ACCELERATED, "Longevity for bees isn't very common.");
-		hiveFrameVoid = new MB_ItemFrame(MB_FrameType.VOID, EnumRarity.rare, "??? (Dungeon Loot)");
+		hiveFrameAccelerated = new MB_ItemFrame(MB_FrameType.ACCELERATED, "Longevity for bees isn't very common, especially if they're working harder.");
+		hiveFrameVoid = new MB_ItemFrame(MB_FrameType.VOID, EnumRarity.rare, "Makes your bee die in the blink of an eye.");
 		hiveFrameMutagenic = new MB_ItemFrame(MB_FrameType.MUTAGENIC, EnumRarity.epic, "Evolution of the fittest, finest and fastest.");
-		haveFrameBusy = new MB_ItemFrame(MB_FrameType.BUSY, "Busy bee, Busy Bee, make more honey please for me.");
+		hiveFrameBusy = new MB_ItemFrame(MB_FrameType.BUSY, "Your bee will work harder and longer than you expected.");
 		ChestGenHooks.addItem(ChestGenHooks.STRONGHOLD_CORRIDOR, new WeightedRandomChestContent(new ItemStack(hiveFrameVoid), 1, 1, 14));
 		ChestGenHooks.addItem(ChestGenHooks.STRONGHOLD_LIBRARY, new WeightedRandomChestContent(new ItemStack(hiveFrameVoid), 1, 3, 18));
 		ChestGenHooks.addItem(ChestGenHooks.DUNGEON_CHEST, new WeightedRandomChestContent(new ItemStack(hiveFrameVoid), 1, 1, 14));

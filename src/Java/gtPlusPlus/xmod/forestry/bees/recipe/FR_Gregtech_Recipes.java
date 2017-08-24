@@ -10,14 +10,16 @@ import net.minecraft.item.ItemStack;
 
 public class FR_Gregtech_Recipes {
 
-	private static String rod_ElectrumFlux = "stickElectrumFlux";
-	private static String rod_LongElectrumFlux = "stickLongElectrumFlux";
+	private static String rod_Electrum = "stickElectrum";
+	private static String rod_LongElectrum = "stickLongElectrum";
 	private static String foil_Electrum = "foilElectrum";
 	private static String rod_Uranium = "stickUranium";
 	private static String rod_LongUranium = "stickLongUranium";
 	private static String foil_Uranium235 = "foilUranium235";
 	private static ItemStack hiveFrameAccelerated = ItemUtils.getSimpleStack(FR_ItemRegistry.hiveFrameAccelerated);
 	private static ItemStack hiveFrameMutagenic = ItemUtils.getSimpleStack(FR_ItemRegistry.hiveFrameMutagenic);
+	private static ItemStack hiveFrameVoid = ItemUtils.getSimpleStack(FR_ItemRegistry.hiveFrameVoid);
+	private static ItemStack hiveFrameBusy = ItemUtils.getSimpleStack(FR_ItemRegistry.hiveFrameBusy);
 
 
 	private static ItemStack hiveFrameCocoa = ItemUtils.getSimpleStack(FR_ItemRegistry.hiveFrameCocoa);
@@ -36,39 +38,51 @@ public class FR_Gregtech_Recipes {
 	public static void registerItems(){
 
 		//Magic Bee Like Frames
-		RecipeUtils.recipeBuilder(
-				rod_LongElectrumFlux, rod_ElectrumFlux, rod_LongElectrumFlux,
-				rod_LongElectrumFlux, foil_Electrum, rod_LongElectrumFlux,
-				rod_ElectrumFlux, rod_ElectrumFlux, rod_ElectrumFlux,
+		RecipeUtils.addShapedGregtechRecipe(
+				rod_LongElectrum, rod_Electrum, rod_LongElectrum,
+				rod_LongElectrum, foil_Electrum, rod_LongElectrum,
+				rod_Electrum, rod_Electrum, rod_Electrum,
 				hiveFrameAccelerated);
 
-		RecipeUtils.recipeBuilder(
+		RecipeUtils.addShapedGregtechRecipe(
 				rod_LongUranium, rod_Uranium, rod_LongUranium,
 				rod_LongUranium, foil_Uranium235, rod_LongUranium,
 				rod_Uranium, rod_Uranium, rod_Uranium,
 				hiveFrameMutagenic);
+		
+		RecipeUtils.addShapedGregtechRecipe(
+				"stickLongThaumium", "stickThaumium", "stickLongThaumium",
+				"stickLongThaumium", ItemUtils.getSimpleStack(Items.ender_pearl), "stickLongThaumium",
+				"stickThaumium", "stickThaumium", "stickThaumium",
+				hiveFrameMutagenic);
+		
+		RecipeUtils.addShapedGregtechRecipe(
+				"stickLongBlueSteel", "stickBlueSteel", "stickLongBlueSteel",
+				"stickLongBlueSteel", ItemUtils.getSimpleStack(Items.nether_star), "stickLongBlueSteel",
+				"stickBlueSteel", "stickBlueSteel", "stickBlueSteel",
+				hiveFrameBusy);
 
 		if (!LoadedMods.ExtraBees){
 			//Extra Bee Like Frames
-			RecipeUtils.recipeBuilder(
+			RecipeUtils.addShapedGregtechRecipe(
 					null, itemCocoaBeans, null,
 					itemCocoaBeans, hiveFrameImpregnated, itemCocoaBeans,
 					null, itemCocoaBeans, null,
 					hiveFrameCocoa);
 
-			RecipeUtils.recipeBuilder(
+			RecipeUtils.addShapedGregtechRecipe(
 					hiveFrameImpregnated, blockIronBars, null,
 					null, null, null,
 					null, null, null,
 					hiveFrameCaged);
 
-			RecipeUtils.recipeBuilder(
+			RecipeUtils.addShapedGregtechRecipe(
 					hiveFrameImpregnated, blockSoulSand, null,
 					null, null, null,
 					null, null, null,
 					hiveFrameSoul);
 
-			RecipeUtils.recipeBuilder(
+			RecipeUtils.addShapedGregtechRecipe(
 					null, itemClayDust, null,
 					itemClayDust, hiveFrameImpregnated, itemClayDust,
 					null, itemClayDust, null,
