@@ -302,8 +302,9 @@ public final class ALLOY {
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().IRON, 06),
+					new MaterialStack(ELEMENT.getInstance().COBALT, 2),
 					new MaterialStack(ELEMENT.getInstance().MOLYBDENUM, 24),
-					new MaterialStack(ELEMENT.getInstance().CHROMIUM, 8),
+					new MaterialStack(ELEMENT.getInstance().CHROMIUM, 6),
 					new MaterialStack(ELEMENT.getInstance().NICKEL, 62)
 			});
 
@@ -319,9 +320,11 @@ public final class ALLOY {
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
 					new MaterialStack(ELEMENT.getInstance().IRON, 18),
-					new MaterialStack(ELEMENT.getInstance().MOLYBDENUM, 9),
+					new MaterialStack(ELEMENT.getInstance().MANGANESE, 2),
+					new MaterialStack(ELEMENT.getInstance().SILICON, 2),
+					new MaterialStack(ELEMENT.getInstance().MOLYBDENUM, 8),
 					new MaterialStack(ELEMENT.getInstance().CHROMIUM, 22),
-					new MaterialStack(ELEMENT.getInstance().NICKEL, 51)
+					new MaterialStack(ELEMENT.getInstance().NICKEL, 48)
 			});
 
 	public static final Material HASTELLOY_N = new Material(
@@ -335,10 +338,11 @@ public final class ALLOY {
 			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().YTTRIUM, 10),
+					new MaterialStack(ELEMENT.getInstance().YTTRIUM, 8),
 					new MaterialStack(ELEMENT.getInstance().MOLYBDENUM, 16),
-					new MaterialStack(ELEMENT.getInstance().CHROMIUM, 10),
-					new MaterialStack(ELEMENT.getInstance().NICKEL, 64)
+					new MaterialStack(ELEMENT.getInstance().CHROMIUM, 8),
+					new MaterialStack(ELEMENT.getInstance().TITANIUM, 8),
+					new MaterialStack(ELEMENT.getInstance().NICKEL, 60)
 			});
 
 	public static final Material HASTELLOY_C276 = new Material(
@@ -352,10 +356,12 @@ public final class ALLOY {
 			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().COBALT, 02),
+					new MaterialStack(ELEMENT.getInstance().COBALT, 2),
 					new MaterialStack(ELEMENT.getInstance().MOLYBDENUM, 16),
-					new MaterialStack(ELEMENT.getInstance().CHROMIUM, 16),
-					new MaterialStack(ELEMENT.getInstance().NICKEL, 66)
+					new MaterialStack(ELEMENT.getInstance().TUNGSTEN, 2),
+					new MaterialStack(ELEMENT.getInstance().COPPER, 2),
+					new MaterialStack(ELEMENT.getInstance().CHROMIUM, 14),
+					new MaterialStack(ELEMENT.getInstance().NICKEL, 64)
 			});
 
 	public static final Material INCOLOY_020 = new Material(

@@ -919,7 +919,7 @@ public class RECIPES_Machines {
 				//Fission Fuel Plant
 				RecipeUtils.addShapedGregtechRecipe(
 						CI.getTieredCircuit(5), CI.craftingToolSolderingIron, CI.getTieredCircuit(5),
-						"plate", GregtechItemList.Gregtech_Computer_Cube.get(1), "",
+						"plateDenseTungstenSteel", GregtechItemList.Gregtech_Computer_Cube.get(1), "plateDenseTungstenSteel",
 						"gearStellite", CI.machineHull_LuV, "gearStellite",
 						GregtechItemList.Industrial_FuelRefinery.get(1));
 				
