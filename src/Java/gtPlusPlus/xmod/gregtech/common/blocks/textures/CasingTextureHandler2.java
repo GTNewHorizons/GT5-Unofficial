@@ -28,7 +28,7 @@ public class CasingTextureHandler2 {
 				return TexturesGtBlock.Casing_Machine_Metal_Panel_A.getIcon();
 				//Sifter Sieve
 			case 6:
-				return TexturesGtBlock.Casing_Machine_Metal_Grate_A_Solid.getIcon();
+				return TexturesGtBlock.Casing_Machine_Metal_Grate_A.getIcon();
 				
 				//Maceration Stack Casings
 			case 7:
@@ -47,7 +47,7 @@ public class CasingTextureHandler2 {
 				return TexturesGtBlock.Casing_Material_Tantalloy61.getIcon();
 				//Reactor Casing I
 			case 12:
-				return TexturesGtBlock.Casing_Machine_Advanced.getIcon();
+				return TexturesGtBlock.Casing_Machine_Simple_Top.getIcon();
 				//Reactor Casing II
 			case 13:
 				return TexturesGtBlock._PlaceHolder.getIcon();
