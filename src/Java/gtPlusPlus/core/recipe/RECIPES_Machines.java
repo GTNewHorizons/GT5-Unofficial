@@ -894,7 +894,7 @@ public class RECIPES_Machines {
 				ItemStack controlCircuit = ItemUtils.getSimpleStack(ModItems.itemCircuitLFTR);
 				RecipeUtils.addShapedGregtechRecipe(
 						controlCircuit, "cableGt12NaquadahAlloy", controlCircuit,
-						"plateDoubleHastelloyN", ItemList.Cover_Screen.get(1), "plateDoubleHastelloyN",
+						"plateDoubleHastelloyN", GregtechItemList.Gregtech_Computer_Cube.get(1), "plateDoubleHastelloyN",
 						"plateThorium232", CI.machineHull_UV, "plateThorium232",
 						RECIPE_LFTRController);
 

@@ -4,37 +4,57 @@ import java.io.*;
 import java.net.*;
 import java.util.Enumeration;
 
+import gtPlusPlus.core.util.Utils;
+
 public class NetworkUtils {
 
 	public static String getContentFromURL(final String args) {
 		if (checkNetworkIsAvailableWithValidInterface()){
-				try {
-					URL url;
-					// get URL content
-					url = new URL(args);
-					final URLConnection conn = url.openConnection();
-					// open the stream and put it into BufferedReader
-					final BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-					String inputLine;
-					String tempLine = null;
-					while ((inputLine = br.readLine()) != null) {
-						tempLine = inputLine;
-					}
-					br.close();
-					return tempLine;
+			try {
+				URL url;
+				// get URL content
+				url = new URL(args);
+				final URLConnection conn = url.openConnection();
+				// open the stream and put it into BufferedReader
+				final BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+				String inputLine;
+				String tempLine = null;
+				while ((inputLine = br.readLine()) != null) {
+					tempLine = inputLine;
 				}
-				catch (final MalformedURLException e) {}
-				catch (final IOException e) {}				
+				br.close();
+				return tempLine;
+			}
+			catch (final MalformedURLException e) {
+				Utils.LOG_INFO("Bad URL for Version Check.");
+			}
+			catch (final IOException e) {
+				Utils.LOG_INFO("IOException during Version Check.");
+			}				
 		}
+		Utils.LOG_INFO("Network Not Available during Version Check.");
 		return "offline";
 	}
 
 	public static boolean checkNetworkIsAvailableWithValidInterface(){
 		try {
 			if (hasValidNetworkInterface()){
-				if (checkAddressWithTimeout("http://www.google.com", 10) || checkAddressWithTimeout("http://www.baidu.com", 10) || checkAddressWithTimeout("https://github.com/draknyte1/GTplusplus", 10) || checkAddressWithTimeout("www.yahoo.com", 10)){
+				if (checkAddressWithTimeout("http://www.google.com", 10) ||
+						checkAddressWithTimeout("http://www.baidu.com", 10) ||
+						checkAddressWithTimeout("https://github.com/draknyte1/GTplusplus", 10) ||
+						checkAddressWithTimeout("www.yahoo.com", 10)/* ||
+						netIsAvailableGoogle() ||
+						netIsAvailableBaidu() ||
+						netIsAvailableGithub() ||
+						netIsAvailableOther()*/){
 					return true;
 				}
+				else {
+					Utils.LOG_INFO("No sites responded to network connectivity test.");
+				}
+			}
+			else {
+				Utils.LOG_INFO("Network Adapter was not valid.");
 			}
 		}
 		catch (SocketException e) {}
@@ -95,9 +115,17 @@ public class NetworkUtils {
 		}
 		return false;
 	}
-	
+
 	private static boolean checkAddressWithTimeout(String URL, int timeout) {
-		try {			
+		
+		 try {
+		        InetAddress.getByName(URL).isReachable(3000); //Replace with your name
+		        return true;
+		    } catch (Exception e) {
+		        return false;
+		    }
+		
+		/*try {			
 			final InetAddress[] addresses = InetAddress.getAllByName(URL);
 			for (final InetAddress address : addresses) {
 				if (address.isReachable(timeout)) {
@@ -108,7 +136,7 @@ public class NetworkUtils {
 		} catch (final Exception e) {
 			return false;
 		}
-		return false;
+		return false;*/
 	}
 
 	private static boolean hasValidNetworkInterface() throws SocketException{

@@ -39,8 +39,8 @@ public class LoginEventHandler {
 				if (!this.localPlayerRef.worldObj.isRemote){
 					PlayerCache.appendParamChanges(this.localPlayersName, this.localPlayersUUID.toString());
 
-					if (!CORE.isModUpToDate){
-						Utils.LOG_INFO("You're not using the latest recommended version of GT++, consider updating.");
+					if (!Utils.isModUpToDate()){
+						Utils.LOG_INFO("[GT++] You're not using the latest recommended version of GT++, consider updating.");
 						if (!CORE.MASTER_VERSION.toLowerCase().equals("offline")) {
 							Utils.LOG_INFO("Latest version is: "+CORE.MASTER_VERSION);
 						}

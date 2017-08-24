@@ -33,7 +33,9 @@ import gtPlusPlus.core.item.general.RF2EU_Battery;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.gregtech.CustomGTMaterials;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.geo.GeoUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.networking.NetworkUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -196,6 +198,10 @@ public class GTplusplus implements ActionListener {
 	@Mod.EventHandler
 	public void preInit(final FMLPreInitializationEvent event) {
 		Utils.LOG_INFO("Loading " + CORE.name + " V" + CORE.VERSION);
+		
+		//HTTP Requests
+		CORE.MASTER_VERSION = NetworkUtils.getContentFromURL("https://raw.githubusercontent.com/draknyte1/GTplusplus/master/Recommended.txt").toLowerCase();
+		CORE.USER_COUNTRY = GeoUtils.determineUsersCountry();
 		
 		// Handle GT++ Config
 		handleConfigFile(event);
