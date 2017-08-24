@@ -171,7 +171,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Casing_ThermalContainment, 
 	
 	
-	Casing_PlaceHolder12,
+	Casing_Autocrafter,
 	Casing_PlaceHolder13, 
 	Casing_PlaceHolder14, 
 	Casing_PlaceHolder15,

@@ -47,7 +47,7 @@ public class CasingTextureHandler2 {
 				return TexturesGtBlock.Casing_Material_Tantalloy61.getIcon();
 				//Reactor Casing I
 			case 12:
-				return TexturesGtBlock._PlaceHolder.getIcon();
+				return TexturesGtBlock.Casing_Machine_Advanced.getIcon();
 				//Reactor Casing II
 			case 13:
 				return TexturesGtBlock._PlaceHolder.getIcon();
