@@ -199,6 +199,9 @@ extends GT_MetaTileEntity_MultiBlockBase
 				final long tVoltage = this.getMaxInputVoltage();
 				final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 				final GT_Recipe tRecipe = this.getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, GT_Values.V[this.mTier], tFluids,	tInputs);
+				if (tRecipe == null){
+					Utils.LOG_INFO("Recipe is Null.");
+				}
 				if (tRecipe != null && tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
 					Utils.LOG_INFO("test2");
 					this.mEfficiency = 10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000;
@@ -257,15 +260,20 @@ extends GT_MetaTileEntity_MultiBlockBase
 		final ItemStack[] tInputs = tInputList.toArray(new ItemStack[tInputList.size()]);
 		
 		ItemStack inputItem = tInputs[0];
-		
+		int outputSlots = this.mOutputBusses.get(0).getSizeInventory();
+		this.mOutputItems = new ItemStack[outputSlots];
 		if (inputItem != null) {
+			Utils.LOG_INFO("test 1");
 			NBTTagCompound tNBT = inputItem.getTagCompound();
 			if (tNBT != null) {
+				Utils.LOG_INFO("test 2");
 				tNBT = tNBT.getCompoundTag("GT.CraftingComponents");
 				if (tNBT != null) {
+					Utils.LOG_INFO("test 3");
 					this.mEUt = 16 * (1 << this.mTier - 1) * (1 << this.mTier - 1);
 					this.mMaxProgresstime = 80;
 					for (int i = 0; i < this.mOutputItems.length; ++i) {
+						Utils.LOG_INFO("test 4 | "+i);
 						if (this.getBaseMetaTileEntity().getRandomNumber(100) < 50 + 10 * this.mTier) {
 							this.mOutputItems[i] = GT_Utility.loadItem(tNBT, "Ingredient." + i);
 							if (this.mOutputItems[i] != null) {
@@ -285,6 +293,7 @@ extends GT_MetaTileEntity_MultiBlockBase
 				}
 			}
 		}
+		Utils.LOG_INFO("test - bad");
 		return false;
 	}
 }
