@@ -20,7 +20,7 @@ public final class NUCLIDE {
 	
 	//RTG Fuels
 	public final Material PLUTONIUM238 = new Material("Plutonium-238", MaterialState.SOLID, Materials.Plutonium241.mDurability, Materials.Plutonium241.mRGBa, Materials.Plutonium241.mMeltingPoint, Materials.Plutonium241.mBlastFurnaceTemp, 94, 144, false, StringUtils.superscript("238Pu"), 2);//Not a GT Inherited Material
-	public final Material STRONTIUM90 = new Material("Strongtium-90", MaterialState.SOLID, Materials.Strontium.mDurability, Materials.Strontium.mRGBa, Materials.Strontium.mMeltingPoint, Materials.Strontium.mBlastFurnaceTemp, 38, 52, false, StringUtils.superscript("90Sr"), 2);//Not a GT Inherited Material
+	public final Material STRONTIUM90 = new Material("Strontium-90", MaterialState.SOLID, Materials.Strontium.mDurability, Materials.Strontium.mRGBa, Materials.Strontium.mMeltingPoint, Materials.Strontium.mBlastFurnaceTemp, 38, 52, false, StringUtils.superscript("90Sr"), 2);//Not a GT Inherited Material
 	public final Material POLONIUM210 = new Material("Polonium-210", MaterialState.SOLID, ELEMENT.getInstance().POLONIUM.vDurability, ELEMENT.getInstance().POLONIUM.getRGBA(), ELEMENT.getInstance().POLONIUM.getMeltingPointK(), ELEMENT.getInstance().POLONIUM.getBoilingPointK(), 84, 126, false, StringUtils.superscript("210Po"), 2);//Not a GT Inherited Material
 	public final Material AMERICIUM241 = new Material("Americium-241", MaterialState.SOLID, Materials.Americium.mDurability, Materials.Americium.mRGBa, Materials.Americium.mMeltingPoint, Materials.Americium.mBlastFurnaceTemp, 95, 146, false, StringUtils.superscript("241Am"), 2);//Not a GT Inherited Material
 

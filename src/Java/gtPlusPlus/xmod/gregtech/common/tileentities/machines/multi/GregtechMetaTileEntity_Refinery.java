@@ -2,25 +2,18 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
 import java.util.ArrayList;
 
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.TAE;
-import gregtech.api.enums.Textures;
+import gregtech.api.enums.*;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.CustomRecipeMap;
-import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Utility;
-import gregtech.api.util.Recipe_GT;
+import gregtech.api.util.*;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -42,10 +35,10 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 		return new String[]{
 				"Controller Block for the Fission Fuel Processing Unit",
 				"Size(WxHxD): 3x9x3", "Controller (Front middle at bottom)",
-				"3x2x3 Base platform of Hastelloy-X",
-				"1x6x1 Incoloy-DS Fluid Containment Block pillar (Center of base, From layer 3 upwards)",
+				"3x2x3 Base platform of Hastelloy-X (7x Casings)",
+				"1x5x1 Incoloy-DS Fluid Containment Block pillar (Center of base, From layer 3 upwards)",
 				"4x Zeron-100 Reactor Shielding (Each side of Second Sealant Tower layer, Surrounding Incoloy-DS Fluid Containment)",
-				"Hastelloy-N Sealant Blocks (Each side of Incoloy-DS Fluid Containment casings, except layer 2 and one on top)",
+				"17x Hastelloy-N Sealant Blocks (Each side of Incoloy-DS Fluid Containment casings, except layer 2 and one on top)",
 				"4x Input Hatch (One of base platform)",
 				"2x Output Hatch (One of base platform)",
 				"1x Output Bus (One of base platform)",

@@ -153,6 +153,7 @@ public class CI {
 	public static String craftingToolKnife = "craftingToolKnife";
 	public static String craftingToolCrowbar = "craftingToolCrowbar";
 	public static String craftingToolWireCutter = "craftingToolWirecutter";
+	public static String craftingToolSolderingIron = "craftingToolSolderingIron";
 
 	public static void Init(){
 
@@ -392,6 +393,72 @@ public class CI {
 		}
 		else {
 			return ItemList.Tool_DataOrb.get(1);				
+		}
+	}
+	
+	public static final ItemStack getTieredMachineHull(int tier){
+		if (tier == 0){
+			return machineHull_ULV;
+		}
+		else if (tier == 1){
+			return machineHull_LV;
+		}
+		else if (tier == 2){
+			return machineHull_MV;
+		}
+		else if (tier == 3){
+			return machineHull_HV;
+		}
+		else if (tier == 4){
+			return machineHull_EV;
+		}
+		else if (tier == 5){
+			return machineHull_IV;
+		}
+		else if (tier == 6){
+			return machineHull_LuV;
+		}
+		else if (tier == 7){
+			return machineHull_ZPM;
+		}
+		else if (tier == 8){
+			return machineHull_UV;
+		}
+		else {
+			return machineHull_MAX;			
+		}
+	}
+	
+	public static final ItemStack getTieredMachineCasing(int tier){
+		if (tier == 0){
+			return machineCasing_ULV;
+		}
+		else if (tier == 1){
+			return machineCasing_LV;
+		}
+		else if (tier == 2){
+			return machineCasing_MV;
+		}
+		else if (tier == 3){
+			return machineCasing_HV;
+		}
+		else if (tier == 4){
+			return machineCasing_EV;
+		}
+		else if (tier == 5){
+			return machineCasing_IV;
+		}
+		else if (tier == 6){
+			return machineCasing_LuV;
+		}
+		else if (tier == 7){
+			return machineCasing_ZPM;
+		}
+		else if (tier == 8){
+			return machineCasing_UV;
+		}
+		else {
+			return machineCasing_MAX;			
 		}
 	}
 

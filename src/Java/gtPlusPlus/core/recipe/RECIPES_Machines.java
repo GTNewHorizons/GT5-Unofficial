@@ -904,7 +904,7 @@ public class RECIPES_Machines {
 						"plateDoubleZeron100", CI.craftingToolHammer_Hard, "plateDoubleZeron100",
 						RECIPE_LFTRInnerCasing);
 
-				ItemStack IC2HeatPlate = ItemUtils.getItemStackWithMeta(LoadedMods.IndustrialCraft2, "IC2:itemreactorPlatingHeat", "ReactorHeatPlating", 0, 1);
+				ItemStack IC2HeatPlate = ItemUtils.getItemStack("IC2:reactorPlatingHeat", 1);
 				RecipeUtils.addShapedGregtechRecipe(
 						"plateDoubleHastelloyN", IC2HeatPlate, "plateDoubleHastelloyN",
 						IC2HeatPlate, "frameGtHastelloyC276", IC2HeatPlate,
@@ -913,7 +913,44 @@ public class RECIPES_Machines {
 
 				//LFTR Control Circuit
 				ItemStack circuitT5 = ItemList.Circuit_Master.get(1);
-				GT_Values.RA.addAssemblerRecipe(circuitT5, CI.fieldGenerator_MV, controlCircuit, 240*20, 500);
+				GT_Values.RA.addAssemblerRecipe(circuitT5, CI.fieldGenerator_HV, controlCircuit, 240*20, 500);
+				
+				
+				//Fission Fuel Plant
+				RecipeUtils.addShapedGregtechRecipe(
+						CI.getTieredCircuit(5), CI.craftingToolSolderingIron, CI.getTieredCircuit(5),
+						"plate", GregtechItemList.Gregtech_Computer_Cube.get(1), "",
+						"gearStellite", CI.machineHull_LuV, "gearStellite",
+						GregtechItemList.Industrial_FuelRefinery.get(1));
+				
+				//Incoloy Casing
+				RecipeUtils.addShapedGregtechRecipe(
+						"plateIncoloyDS", "pipeHugeStaballoy", "plateIncoloyDS",
+						"gearIncoloyDS", GregtechItemList.GT_FluidTank_EV.get(1), "gearIncoloyDS",
+						"plateIncoloyDS", "pipeHugeStaballoy", "plateIncoloyDS",
+						GregtechItemList.Casing_Refinery_Internal.get(1));
+				
+				//Hastelloy-N Sealant Casing
+				RecipeUtils.addShapedGregtechRecipe(
+						"plateIncoloyMA956", "plateHastelloyN", "plateIncoloyMA956",
+						"plateHastelloyN", "frameGtHastelloyC276", "plateHastelloyN",
+						"plateIncoloyMA956", "plateHastelloyN", "plateIncoloyMA956",
+						GregtechItemList.Casing_Refinery_External.get(1));
+				
+				//Hastelloy-X Structural Casing
+				RecipeUtils.addShapedGregtechRecipe(
+						"ringInconel792", "gearHastelloyX", CI.component_Plate[5],
+						CI.craftingToolHammer_Hard, "frameGtHastelloyC276", CI.craftingToolWrench,
+						CI.component_Plate[5], CI.getTieredMachineCasing(4), "ringInconel792",
+						GregtechItemList.Casing_Refinery_Structural.get(1));
+				
+				
+				
+				
+				
+				
+				
+				
 
 			}
 		}
