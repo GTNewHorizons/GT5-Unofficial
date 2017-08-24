@@ -280,7 +280,7 @@ public class RECIPES_GREGTECH {
 
 			}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 
-			//CaF2 + H2SO4 → CaSO4(solid) + 2 HF
+			//CaF2 + H2SO4 â†’ CaSO4(solid) + 2 HF
 			try {
 
 				CORE.RA.addDehydratorRecipe(
@@ -303,6 +303,26 @@ public class RECIPES_GREGTECH {
 						230); //EU
 
 			}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+			
+			//(NH4)2BeF4 → 2 NH3 + 2 HF + BeF2
+			try {
+				CORE.RA.addDehydratorRecipe(
+						new ItemStack[]{
+								ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 5)
+						}, //Item input (Array, up to 2)
+						FluidUtils.getFluidStack("ammoniumtetrafluoroberyllate", 5000), //Fluid input (slot 1)
+						null, //Fluid output (slot 2)
+						new ItemStack[]{
+								ItemUtils.getItemStackOfAmountFromOreDict("cellAmmonia", 2),
+								ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 2),
+								ItemUtils.getItemStackOfAmountFromOreDict("cellBerylliumFluoride", 1)
+						}, //Output Array of Items - Upto 9,
+						new int[]{0, 0, 0},
+						5*60*20, //Time in ticks
+						120); //EU
+
+			}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+			
 		}
 
 	}
@@ -466,7 +486,7 @@ public class RECIPES_GREGTECH {
 						ItemUtils.getItemStackOfAmountFromOreDict("nuggetTantalum", 1),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustSmallTungstate", 1),
 						ItemUtils.getSimpleStack(Blocks.obsidian)
-						},
+				},
 				new int[]{2000, 1000, 250, 250, 250, 250, 500},
 				0);
 
@@ -576,8 +596,61 @@ public class RECIPES_GREGTECH {
 				ItemUtils.getItemStackOfAmountFromOreDict("dustLithium7", 16),
 				FluidUtils.getFluidStack("water", 1000),
 				FluidUtils.getFluidStack("lithiumhydroxide", 144*4),
-				null,
+				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1),
 				300*20);
+
+
+
+		//LFTR Fuel Related Compounds
+
+		//Hydroxide
+		GT_Values.RA.addChemicalRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1),
+				GT_Values.NF,
+				FluidUtils.getFluidStack("hydroxide", 2000),
+				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2),
+				8*20);
+		//Ammonia
+		GT_Values.RA.addChemicalRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustMagnetite", 0),
+				FluidUtils.getFluidStack("nitrogen", 1000),
+				FluidUtils.getFluidStack("ammonia", 2000),
+				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1),
+				14*20);
+		//Ammonium
+		GT_Values.RA.addChemicalRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("cellAmmonia", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1),
+				GT_Values.NF,
+				FluidUtils.getFluidStack("ammonium", 2000),
+				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2),
+				20*20);
+		//Ammonium Bifluoride
+		GT_Values.RA.addChemicalRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("cellHydrofluoricAcid", 1),
+				GT_Values.NI,
+				FluidUtils.getFluidStack("ammonium", 1000),
+				FluidUtils.getFluidStack("ammoniumbifluoride", 2000),
+				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1),
+				26*20);
+		//Beryllium Hydroxide
+		GT_Values.RA.addChemicalRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("dustBeryllium", 7),
+				GT_Values.NI,
+				FluidUtils.getFluidStack("hydroxide", 1000),
+				FluidUtils.getFluidStack("berylliumhydroxide", 2008),
+				GT_Values.NI,
+				8*20);
+		//Ammonium Tetrafluoroberyllate
+		GT_Values.RA.addChemicalRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("cellBerylliumHydroxide", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("cellAmmoniumBifluoride", 1),
+				GT_Values.NF,
+				FluidUtils.getFluidStack("ammoniumtetrafluoroberyllate", 2000),
+				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2),
+				32*20);
 	}
 
 	private static void blastFurnaceRecipes(){

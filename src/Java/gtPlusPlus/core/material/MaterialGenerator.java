@@ -119,7 +119,7 @@ public class MaterialGenerator {
 				temp = new BaseItemPlateDouble(matInfo);
 			}		
 			else if (matInfo.getState() == MaterialState.PURE_LIQUID){
-				//FluidUtils.generateFluidNoPrefix(unlocalizedName,	materialName, matInfo.getMeltingPointK(), C);
+				FluidUtils.generateFluidNoPrefix(unlocalizedName,	materialName, matInfo.getMeltingPointK(), C);
 				return true;
 			}
 

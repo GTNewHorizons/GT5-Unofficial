@@ -212,6 +212,20 @@ public class FLUORIDES {
 					new MaterialStack(FLUORIDES.HYDROXIDE, 2)
 			});
 	
+	public static final Material AMMONIUM_TETRAFLUOROBERYLLATE = new Material(
+			"Ammonium Tetrafluoroberyllate", //Material Name
+			MaterialState.PURE_LIQUID, //State
+			new short[]{140, 220, 140, 0}, //Material Colour
+			280, //Melting Point in C
+			-1, //Boiling Point in C
+			-1, //Protons
+			-1,
+			false, //Uses Blast furnace?
+			//Material Stacks with Percentage of required elements.
+			new MaterialStack[]{
+					new MaterialStack(FLUORIDES.AMMONIUM, 2),
+					new MaterialStack(FLUORIDES.BERYLLIUM_HYDROXIDE, 1)
+			});
 	
 	
 	
