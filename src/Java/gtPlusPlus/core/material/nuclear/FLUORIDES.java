@@ -105,12 +105,12 @@ public class FLUORIDES {
 
 	public static final Material BERYLLIUM_FLUORIDE = new Material(
 			"Beryllium Fluoride", //Material Name
-			MaterialState.PURE_LIQUID, //State
-			new short[]{120, 180, 120, 0}, //Material Colour
-			Materials.Beryllium.mMeltingPoint, //Melting Point in C
-			Materials.Beryllium.mBlastFurnaceTemp, //Boiling Point in C
-			((ELEMENT.getInstance().BERYLLIUM.getProtons()+(ELEMENT.getInstance().FLUORINE.getProtons()*2))/3), //Protons
-			((ELEMENT.getInstance().BERYLLIUM.getNeutrons()+(ELEMENT.getInstance().FLUORINE.getNeutrons()*2))/3), //Neutrons
+			MaterialState.LIQUID, //State
+			new short[]{120, 210, 120, 0}, //Material Colour
+			-1,
+			-1,
+			-1,
+			-1,
 			false, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
