@@ -35,6 +35,7 @@ public class BaseItemDecidust extends Item{
 		return (this.materialName+ " Decidust");
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
 		if ((this.materialName != null) && (this.materialName != "") && !this.materialName.equals("")){

@@ -65,12 +65,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 
 	private EntityPlayerMP farmerAI;
 
-	private SAWTOOL mCurrentMachineTool = SAWTOOL.NONE;
 	private boolean canChop = false;
-
-	private final int cuttingNumber = 0;
-	private final int cuttingNumber2 = 0;
-	private final int cuttingNumber3 = 0;
 
 	public GregtechMetaTileEntityTreeFarm(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -253,10 +248,8 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		final SAWTOOL currentInputItem = TreeFarmHelper.isCorrectMachinePart(aStack);
 		if (currentInputItem != SAWTOOL.NONE){
 			if (currentInputItem == SAWTOOL.SAW){
-				this.mCurrentMachineTool = SAWTOOL.SAW;
 			}
 			else {
-				this.mCurrentMachineTool = SAWTOOL.BUZZSAW;
 			}
 			isValid = true;
 		}
@@ -423,6 +416,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 
 
 
+	@SuppressWarnings("unused")
 	private boolean findLogs(final IGregTechTileEntity aBaseMetaTileEntity){
 
 		Utils.LOG_MACHINE_INFO("called findLogs()");
@@ -556,6 +550,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		return true;
 	}
 
+	@SuppressWarnings("deprecation")
 	private boolean plantSaplings(final IGregTechTileEntity aBaseMetaTileEntity){
 		Utils.LOG_MACHINE_INFO("called plantSaplings()");
 		final World world = aBaseMetaTileEntity.getWorld();

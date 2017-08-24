@@ -9,14 +9,11 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.StringUtils;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.entity.EntityUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 
 public class BaseItemDustUnique extends Item{
 
@@ -97,11 +94,8 @@ public class BaseItemDustUnique extends Item{
 	}
 
 	protected final int sRadiation;
-	@Override
-	public void onUpdate(final ItemStack iStack, final World world, final Entity entityHolding, final int p_77663_4_, final boolean p_77663_5_) {
-		EntityUtils.applyRadiationDamageToEntity(this.sRadiation, world, entityHolding);
-	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
 		if (this.sRadiation > 0){

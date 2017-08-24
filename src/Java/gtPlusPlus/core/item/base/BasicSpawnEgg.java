@@ -185,6 +185,7 @@ public class BasicSpawnEgg extends ItemMonsterPlacer
 	/**
 	 * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
 	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(final Item parItem, final CreativeTabs parTab, final List parList){

@@ -4,7 +4,7 @@ import java.util.Comparator;
 
 import net.minecraft.item.crafting.*;
 
-public class Workbench_RecipeSorter implements Comparator
+public class Workbench_RecipeSorter implements Comparator<Object>
 {
 	final Workbench_CraftingHandler CraftingManagerCrafter;
 

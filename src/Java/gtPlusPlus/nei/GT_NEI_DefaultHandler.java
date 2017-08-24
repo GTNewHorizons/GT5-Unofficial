@@ -71,7 +71,7 @@ extends TemplateRecipeHandler {
 	public void loadCraftingRecipes(final ItemStack aResult) {
 		final ItemData tPrefixMaterial = GT_OreDictUnificator.getAssociation(aResult);
 
-		final ArrayList<ItemStack> tResults = new ArrayList();
+		final ArrayList<ItemStack> tResults = new ArrayList<ItemStack>();
 		tResults.add(aResult);
 		tResults.add(GT_OreDictUnificator.get(true, aResult));
 		if ((tPrefixMaterial != null) && (!tPrefixMaterial.mBlackListed) && (!tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty())) {
@@ -99,14 +99,13 @@ extends TemplateRecipeHandler {
 				}
 			}
 		}
-		final CachedDefaultRecipe tNEIRecipe;
 	}
 
 	@Override
 	public void loadUsageRecipes(final ItemStack aInput) {
 		final ItemData tPrefixMaterial = GT_OreDictUnificator.getAssociation(aInput);
 
-		final ArrayList<ItemStack> tInputs = new ArrayList();
+		final ArrayList<ItemStack> tInputs = new ArrayList<ItemStack>();
 		tInputs.add(aInput);
 		tInputs.add(GT_OreDictUnificator.get(false, aInput));
 		if ((tPrefixMaterial != null) && (!tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty())) {
@@ -134,7 +133,6 @@ extends TemplateRecipeHandler {
 				}
 			}
 		}
-		final CachedDefaultRecipe tNEIRecipe;
 	}
 
 	@Override
@@ -322,14 +320,14 @@ extends TemplateRecipeHandler {
 			if (this.permutated) {
 				return;
 			}
-			final ArrayList<ItemStack> tDisplayStacks = new ArrayList();
+			final ArrayList<ItemStack> tDisplayStacks = new ArrayList<ItemStack>();
 			for (final ItemStack tStack : this.items) {
 				if (GT_Utility.isStackValid(tStack)) {
 					if (tStack.getItemDamage() == 32767) {
 						final List<ItemStack> permutations = codechicken.nei.ItemList.itemMap.get(tStack.getItem());
 						if (!permutations.isEmpty()) {
 							ItemStack stack;
-							for (final Iterator i$ = permutations.iterator(); i$.hasNext(); tDisplayStacks.add(GT_Utility.copyAmount(tStack.stackSize, new Object[]{stack}))) {
+							for (final Iterator<ItemStack> i$ = permutations.iterator(); i$.hasNext(); tDisplayStacks.add(GT_Utility.copyAmount(tStack.stackSize, new Object[]{stack}))) {
 								stack = (ItemStack) i$.next();
 							}
 						} else {
@@ -354,8 +352,8 @@ extends TemplateRecipeHandler {
 	public class CachedDefaultRecipe
 	extends TemplateRecipeHandler.CachedRecipe {
 		public final GT_Recipe mRecipe;
-		public final List<PositionedStack> mOutputs = new ArrayList();
-		public final List<PositionedStack> mInputs = new ArrayList();
+		public final List<PositionedStack> mOutputs = new ArrayList<PositionedStack>();
+		public final List<PositionedStack> mInputs = new ArrayList<PositionedStack>();
 
 		public CachedDefaultRecipe(final GT_Recipe aRecipe) {
 			super();

@@ -189,7 +189,7 @@ public class BaseItemComponent extends Item{
 		if (this.componentMaterial != null){
 			if (entityHolding instanceof EntityPlayer){
 				if (!((EntityPlayer) entityHolding).capabilities.isCreativeMode){
-					EntityUtils.applyRadiationDamageToEntity(this.componentMaterial.vRadiationLevel, world, entityHolding);	
+					EntityUtils.applyRadiationDamageToEntity(iStack.stackSize, this.componentMaterial.vRadiationLevel, world, entityHolding);	
 				}
 			}
 		}

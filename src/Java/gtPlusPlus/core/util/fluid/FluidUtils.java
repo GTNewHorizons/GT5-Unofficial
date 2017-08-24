@@ -311,6 +311,9 @@ public class FluidUtils {
 		if ((aFullContainer != null) && (aEmptyContainer != null) && !FluidContainerRegistry.registerFluidContainer(new FluidStack(rFluid, aFluidAmount), aFullContainer, aEmptyContainer)) {
 			GT_Values.RA.addFluidCannerRecipe(aFullContainer, container(aFullContainer, false), null, new FluidStack(rFluid, aFluidAmount));
 		}
+		else {
+			//Utils.LOG_INFO("Failed creating recipes to fill/empty cells of "+aName+".");
+		}
 		return rFluid;
 	}
 

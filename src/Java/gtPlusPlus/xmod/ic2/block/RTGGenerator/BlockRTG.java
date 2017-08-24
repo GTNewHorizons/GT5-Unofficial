@@ -42,6 +42,7 @@ extends BlockMultiID
 		GameRegistry.registerTileEntity(TileEntityKineticWindGenerator.class, "Wind Ripper Mach II");
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void getSubBlocks(final Item j, final CreativeTabs tabs, final List itemList) {
 		final Item item = Item.getItemFromBlock(this);

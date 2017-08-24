@@ -316,9 +316,6 @@ public final class ModItems {
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().CALIFORNIUM, false);
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().EINSTEINIUM, false);
 			MaterialGenerator.generateNuclearMaterial(ELEMENT.getInstance().FERMIUM, false);
-			
-			
-
 
 
 			//Nuclear Isotopes
@@ -354,6 +351,13 @@ public final class ModItems {
 			MaterialGenerator.generate(ALLOY.TANTALUM_CARBIDE);
 			MaterialGenerator.generate(ALLOY.NIOBIUM_CARBIDE);
 
+			//LFTR Fuel components
+			MaterialGenerator.generate(FLUORIDES.HYDROXIDE); //LFTR fuel component
+			MaterialGenerator.generate(FLUORIDES.AMMONIA); //LFTR fuel component
+			MaterialGenerator.generate(FLUORIDES.AMMONIUM); //LFTR fuel component
+			MaterialGenerator.generate(FLUORIDES.AMMONIUM_BIFLUORIDE); //LFTR fuel component
+			MaterialGenerator.generate(FLUORIDES.BERYLLIUM_HYDROXIDE); //LFTR fuel component
+			MaterialGenerator.generate(FLUORIDES.AMMONIUM_TETRAFLUOROBERYLLATE); //LFTR fuel component
 
 			//Generate Fluorides
 			MaterialGenerator.generateNuclearMaterial(FLUORIDES.FLUORITE);
@@ -368,7 +372,7 @@ public final class ModItems {
 			MaterialGenerator.generateNuclearMaterial(FLUORIDES.NEPTUNIUM_HEXAFLUORIDE);
 			MaterialGenerator.generateNuclearMaterial(FLUORIDES.TECHNETIUM_HEXAFLUORIDE);
 			MaterialGenerator.generateNuclearMaterial(FLUORIDES.SELENIUM_HEXAFLUORIDE);
-
+			
 			//Generate Reactor Fuel Salts
 			MaterialGenerator.generateNuclearMaterial(NUCLIDE.LiFBeF2ZrF4U235);
 			MaterialGenerator.generateNuclearMaterial(NUCLIDE.LiFBeF2ZrF4UF4);
@@ -583,6 +587,7 @@ public final class ModItems {
 		CoalTar.run();
 
 		//Misc Items
+		@SuppressWarnings("unused")
 		Item tI;
 		tI = new BaseItemMisc("Chilly", new short[]{0,64,196}, 32, MiscTypes.POTION, new String[]{"It's Blue"});
 		tI = new BaseItemMisc("4000DC's", new short[]{180,100,30}, 1, MiscTypes.BIGKEY, new String[]{"It opens things."});
@@ -700,7 +705,7 @@ public final class ModItems {
 			RfEuBattery = new RF2EU_Battery();
 
 			//Baubles Mod Test
-			try {final Class baublesTest = Class.forName("baubles.api.IBauble");
+			try {final Class<?> baublesTest = Class.forName("baubles.api.IBauble");
 			if (baublesTest != null){
 				COMPAT_Baubles.run();
 			}

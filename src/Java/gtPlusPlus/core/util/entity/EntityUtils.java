@@ -1,6 +1,7 @@
 package gtPlusPlus.core.util.entity;
 
 import cpw.mods.fml.common.registry.EntityRegistry;
+import gregtech.api.util.GT_Utility;
 import ic2.core.IC2Potion;
 import ic2.core.item.armor.ItemArmorHazmat;
 import net.minecraft.block.Block;
@@ -40,21 +41,22 @@ public class EntityUtils {
 		EntityRegistry.addSpawn(classy, 6, 1, 5, EntityType, baseBiomeGen); //change the values to vary the spawn rarity, biome, etc.
 	}
 
-	public static boolean applyRadiationDamageToEntity(final int damage, final World world, final Entity entityHolding){
+	public static boolean applyRadiationDamageToEntity(final int stackSize, final int radiationLevel, final World world, final Entity entityHolding){
 		if (!world.isRemote){
-			if ((damage > 0) && (entityHolding instanceof EntityLivingBase)) {
+			if ((radiationLevel > 0) && (entityHolding instanceof EntityLivingBase)) {
 				final EntityLivingBase entityLiving = (EntityLivingBase) entityHolding;
-				if (!ItemArmorHazmat.hasCompleteHazmat(entityLiving)) {
+				if (!ItemArmorHazmat.hasCompleteHazmat(entityLiving) || !GT_Utility.isWearingFullRadioHazmat(entityLiving)) {
 					int duration;
 					if (entityLiving.getActivePotionEffect(IC2Potion.radiation) != null){
 						//Utils.LOG_INFO("t");
-						duration = (damage*5)+entityLiving.getActivePotionEffect(IC2Potion.radiation).getDuration();
+						duration = (radiationLevel*5)+entityLiving.getActivePotionEffect(IC2Potion.radiation).getDuration();
 					}
 					else {
 						//Utils.LOG_INFO("f");
-						duration = damage*30;
+						duration = radiationLevel*30;
 					}
-					IC2Potion.radiation.applyTo(entityLiving, duration, damage * 15);
+					//IC2Potion.radiation.applyTo(entityLiving, duration, damage * 15);
+					GT_Utility.applyRadioactivity(entityLiving, radiationLevel, stackSize);
 				}
 			}
 			return true;

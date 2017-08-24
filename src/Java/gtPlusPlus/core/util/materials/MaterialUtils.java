@@ -14,6 +14,7 @@ public class MaterialUtils {
 
 	public static short firstID = 791;
 
+	@SuppressWarnings({ "rawtypes", "unused" })
 	private static Class[][] commonTypes =
 		{{Materials.class, int.class, TextureSet.class, float.class, int.class,
 			int.class, int.class, int.class, int.class, int.class, int.class,
@@ -32,6 +33,7 @@ public class MaterialUtils {
 	}
 
 	public static Material generateMaterialFromGtENUM(final Materials material){
+		@SuppressWarnings("deprecation")
 		String name = material.name();
 		final short[] rgba = material.mRGBa;
 		final int melting = material.mMeltingPoint;

@@ -20,6 +20,7 @@ public class ClassUtils {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static Method getMethodViaReflection(final Class<?> lookupClass, final String methodName, final boolean invoke) throws Exception{
 		final Class<? extends Class> lookup = lookupClass.getClass();
 		final Method m = lookup.getDeclaredMethod(methodName);
@@ -30,7 +31,7 @@ public class ClassUtils {
 		return m;
 	}
 
-	public static Class getNonPublicClass(final String className){
+	public static Class<?> getNonPublicClass(final String className){
 		Class<?> c = null;
 		try {
 			c = Class.forName(className);
@@ -60,7 +61,7 @@ public class ClassUtils {
 
 				try {
 					final Object o = constructor.newInstance();
-					return (Class) o;
+					return (Class<?>) o;
 				} catch (InstantiationException | IllegalAccessException
 						| IllegalArgumentException | InvocationTargetException e) {
 					// TODO Auto-generated catch block

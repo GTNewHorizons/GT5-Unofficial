@@ -56,7 +56,7 @@ public class BaseItemBrain extends Item{
 	// This is a fun method which allows us to run some code when our item is
 	// shown in a creative tab. I am going to use it to add all the brain
 	// types.
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(final Item item, final CreativeTabs tab, final List itemList)
@@ -84,7 +84,7 @@ public class BaseItemBrain extends Item{
 	}
 
 	// This code will allow us to tell the items apart in game. You can change
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	// texture based on nbt data, but I won't be covering that.
 	@Override
 	@SideOnly(Side.CLIENT)
