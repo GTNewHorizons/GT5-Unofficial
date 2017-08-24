@@ -254,7 +254,7 @@ public class Recipe_GT extends GT_Recipe{
 		
 		//RTG Fuel Map
 		public static final GT_Recipe.GT_Recipe_Map_Fuel sRTGFuels = new Recipe_GT.GT_Recipe_Map_Fuel(
-				new HashSet(10), "gt.recipe.RTGgenerators", "RTG", null,
+				new HashSet<GT_Recipe>(10), "gt.recipe.RTGgenerators", "RTG", null,
 				"gregtech:textures/gui/basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 365, " Minecraft Days", true, true);
 		
 		//Thermal Boiler map

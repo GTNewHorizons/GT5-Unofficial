@@ -587,6 +587,7 @@ public final class ModItems {
 		CoalTar.run();
 
 		//Misc Items
+		@SuppressWarnings("unused")
 		Item tI;
 		tI = new BaseItemMisc("Chilly", new short[]{0,64,196}, 32, MiscTypes.POTION, new String[]{"It's Blue"});
 		tI = new BaseItemMisc("4000DC's", new short[]{180,100,30}, 1, MiscTypes.BIGKEY, new String[]{"It opens things."});
@@ -704,7 +705,7 @@ public final class ModItems {
 			RfEuBattery = new RF2EU_Battery();
 
 			//Baubles Mod Test
-			try {final Class baublesTest = Class.forName("baubles.api.IBauble");
+			try {final Class<?> baublesTest = Class.forName("baubles.api.IBauble");
 			if (baublesTest != null){
 				COMPAT_Baubles.run();
 			}

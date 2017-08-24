@@ -12,7 +12,7 @@ public class ClientProxyFinder {
 				final SidedProxy sidedProxy = field.getAnnotation(SidedProxy.class);
 				final Object fieldValue = field.get(modInstance);
 				try {
-					final Class clientSideClass = Class.forName(sidedProxy.clientSide());
+					final Class<?> clientSideClass = Class.forName(sidedProxy.clientSide());
 					if(clientSideClass.isAssignableFrom(fieldValue.getClass())) {
 						final Object clientProxy = clientSideClass.cast(fieldValue);
 						//do what you want with client proxy instance

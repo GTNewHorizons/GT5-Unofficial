@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 public class Workbench_CraftingHandler {
 
 	private static final Workbench_CraftingHandler instance = new Workbench_CraftingHandler();
-	private final List recipes = new ArrayList();
+	private final List<IRecipe> recipes = new ArrayList<IRecipe>();
 
 	public static final Workbench_CraftingHandler getInstance() {
 		return instance;
@@ -66,7 +66,7 @@ public class Workbench_CraftingHandler {
 			}
 		}
 
-		final HashMap hashmap = new HashMap();
+		final HashMap<Character, ItemStack> hashmap = new HashMap<Character, ItemStack>();
 
 		for (; i < par2ArrayOfObj.length; i += 2)
 		{
@@ -110,7 +110,7 @@ public class Workbench_CraftingHandler {
 
 	public void addShapelessRecipe(final ItemStack par1ItemStack, final Object par2ArrayOfObj[])
 	{
-		final ArrayList arraylist = new ArrayList();
+		final ArrayList<ItemStack> arraylist = new ArrayList<ItemStack>();
 		final Object aobj[] = par2ArrayOfObj;
 		final int i = aobj.length;
 
@@ -146,9 +146,6 @@ public class Workbench_CraftingHandler {
 	public ItemStack findMatchingRecipe(final InventoryCrafting par1InventoryCrafting, final World par2World)
 	{
 		int i = 0;
-		ItemStack itemstack = null;
-		ItemStack itemstack1 = null;
-
 		for (int j = 0; j < par1InventoryCrafting.getSizeInventory(); j++)
 		{
 			final ItemStack itemstack2 = par1InventoryCrafting.getStackInSlot(j);
@@ -160,12 +157,10 @@ public class Workbench_CraftingHandler {
 
 			if (i == 0)
 			{
-				itemstack = itemstack2;
 			}
 
 			if (i == 1)
 			{
-				itemstack1 = itemstack2;
 			}
 
 			i++;
@@ -202,7 +197,7 @@ public class Workbench_CraftingHandler {
 	}
 
 
-	public List getRecipeList()
+	public List<IRecipe> getRecipeList()
 	{
 		return this.recipes;
 	}

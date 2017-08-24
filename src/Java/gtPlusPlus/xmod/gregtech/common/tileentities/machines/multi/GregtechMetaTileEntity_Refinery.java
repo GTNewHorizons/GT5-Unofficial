@@ -2,6 +2,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
 import java.util.ArrayList;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
@@ -26,8 +27,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBlockBase {
 
-	private boolean completedCycle = false;
-
+	public GT_Recipe mLastRecipe;
+	
 	public GregtechMetaTileEntity_Refinery(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}
@@ -68,7 +69,7 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 		return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "LFTR.png");
 	}
 
-	@Override
+	/*@Override
 	public boolean checkRecipe(final ItemStack aStack) {
 
 		ArrayList<FluidStack> tFluidList = getStoredFluids();
@@ -127,7 +128,43 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 		}
 		Utils.LOG_INFO("Bad Recipe. [1]");
 		return false;
-	}
+	}*/
+	
+	@Override
+    public boolean checkRecipe(ItemStack aStack) {
+        ArrayList<FluidStack> tFluidList = getStoredFluids();
+        int tFluidList_sS=tFluidList.size();
+        for (int i = 0; i < tFluidList_sS - 1; i++) {
+            for (int j = i + 1; j < tFluidList_sS; j++) {
+                if (GT_Utility.areFluidsEqual((FluidStack) tFluidList.get(i), (FluidStack) tFluidList.get(j))) {
+                    if (((FluidStack) tFluidList.get(i)).amount >= ((FluidStack) tFluidList.get(j)).amount) {
+                        tFluidList.remove(j--); tFluidList_sS=tFluidList.size();
+                    } else {
+                        tFluidList.remove(i--); tFluidList_sS=tFluidList.size();
+                        break;
+                    }
+                }
+            }
+        }
+        if (tFluidList.size() > 1) {
+            FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
+            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sFusionRecipes.findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, GT_Values.V[4], tFluids, new ItemStack[]{});
+            if ((tRecipe == null && !mRunningOnLoad) || (maxEUStore() < tRecipe.mSpecialValue)) {
+                this.mLastRecipe = null;
+                return false;
+            }
+            if (mRunningOnLoad || tRecipe.isRecipeInputEqual(true, tFluids, new ItemStack[]{})) {
+            this.mLastRecipe = tRecipe;
+            this.mEUt = this.mLastRecipe.mEUt;
+            this.mMaxProgresstime = this.mLastRecipe.mDuration;
+            this.mEfficiencyIncrease = 10000;
+            this.mOutputFluids = this.mLastRecipe.mFluidOutputs;
+            mRunningOnLoad = false;
+            return true;
+            }
+        }
+        return false;
+    }
 
 	@Override
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {

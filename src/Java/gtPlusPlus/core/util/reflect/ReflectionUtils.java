@@ -102,7 +102,7 @@ public class ReflectionUtils {
 	/**
 	 * Allows to change the state of an immutable instance. Huh?!?
 	 */
-	public static void setFieldValue(Class clazz,  String fieldName, Object newValue) throws Exception {
+	public static void setFieldValue(Class<?> clazz,  String fieldName, Object newValue) throws Exception {
 		Field nameField = getField(clazz, fieldName);
 		setValue(clazz, nameField, newValue);
 	}
@@ -110,7 +110,7 @@ public class ReflectionUtils {
 	/**
 	 * Allows to change the state of final statics. Huh?!?
 	 */
-	public static void setDefault(Class clazz, String fieldName, Object newValue) throws Exception {
+	public static void setDefault(Class<?> clazz, String fieldName, Object newValue) throws Exception {
 		Field staticField = clazz.getDeclaredField(fieldName);
 		setValue(null, staticField, newValue);
 	}

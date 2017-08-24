@@ -6,8 +6,8 @@ import gtPlusPlus.core.interfaces.IGuiManagerMiscUtils;
 
 public class Gui_ID_Registry
 {
-	private static final Map<Class<? extends IGuiManagerMiscUtils>, MU_GuiId> classMap = new HashMap();
-	private static final Map<Integer, MU_GuiId> idMap = new HashMap();
+	private static final Map<Class<? extends IGuiManagerMiscUtils>, MU_GuiId> classMap = new HashMap<Class<? extends IGuiManagerMiscUtils>, MU_GuiId>();
+	private static final Map<Integer, MU_GuiId> idMap = new HashMap<Integer, MU_GuiId>();
 	private static int nextId = 0;
 
 	static
@@ -33,7 +33,7 @@ public class Gui_ID_Registry
 		MU_GuiId guiId = classMap.get(guiHandlerClass);
 		if (guiId == null) {
 			for (final Map.Entry<Class<? extends IGuiManagerMiscUtils>, MU_GuiId> classGuiIdEntry : classMap.entrySet()) {
-				if (((Class)classGuiIdEntry.getKey()).isAssignableFrom(guiHandlerClass))
+				if (((Class<?>)classGuiIdEntry.getKey()).isAssignableFrom(guiHandlerClass))
 				{
 					guiId = classGuiIdEntry.getValue();
 					break;

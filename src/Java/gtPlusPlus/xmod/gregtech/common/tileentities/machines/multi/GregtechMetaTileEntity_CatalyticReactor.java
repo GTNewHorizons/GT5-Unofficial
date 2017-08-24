@@ -58,6 +58,7 @@ public class GregtechMetaTileEntity_CatalyticReactor extends GT_MetaTileEntity_M
 		return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "LFTR.png");
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
 		if ((this.mInventory[1] == null) || (this.mInventory[1].isItemEqual(GT_ModHandler.getIC2Item("miningPipe", 1L)) && (this.mInventory[1].stackSize < this.mInventory[1].getMaxStackSize()))) {

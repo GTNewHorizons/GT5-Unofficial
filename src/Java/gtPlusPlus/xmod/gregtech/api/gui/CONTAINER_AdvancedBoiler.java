@@ -60,7 +60,7 @@ public class CONTAINER_AdvancedBoiler
         this.mWaterAmount = Math.min(54, Math.max(0, this.mWaterAmount * 54 / (this.maxStorage-100)));
         this.mProcessingEnergy = Math.min(14, Math.max(this.mProcessingEnergy > 0 ? 1 : 0, this.mProcessingEnergy * 14 / 1000));
 
-        Iterator var2 = this.crafters.iterator();
+        Iterator<?> var2 = this.crafters.iterator();
         while (var2.hasNext()) {
             ICrafting var1 = (ICrafting) var2.next();
             var1.sendProgressBarUpdate(this, 100, this.mTemperature);

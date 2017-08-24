@@ -113,7 +113,8 @@ public class Biome_DarkWorld {
 			return 0xF67A14;
 		}
 		
-		private boolean addToMonsterSpawnLists(Class EntityClass, int a, int b, int c){
+		@SuppressWarnings("unchecked")
+		private boolean addToMonsterSpawnLists(Class<?> EntityClass, int a, int b, int c){
 			this.spawnableMonsterList.add(new SpawnListEntry(EntityClass, a, b, c));
 			this.spawnableCaveCreatureList.add(new SpawnListEntry(EntityClass, a, b, c));
 			return true;
