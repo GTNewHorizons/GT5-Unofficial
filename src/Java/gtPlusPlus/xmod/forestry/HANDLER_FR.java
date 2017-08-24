@@ -4,7 +4,6 @@ import cpw.mods.fml.common.Optional;
 import forestry.core.proxy.Proxies;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.xmod.forestry.bees.alveary.AlvearyHandler;
 import gtPlusPlus.xmod.forestry.bees.items.FR_ItemRegistry;
 import gtPlusPlus.xmod.forestry.bees.recipe.FR_Gregtech_Recipes;
 import net.minecraft.block.Block;
@@ -17,7 +16,7 @@ public class HANDLER_FR {
 		if (LoadedMods.Forestry){
 			FR_ItemRegistry.Register();
 			if (CORE.configSwitches.enableCustomAlvearyBlocks){
-				AlvearyHandler.run();
+				//AlvearyHandler.run();
 			}
 		}
 	}

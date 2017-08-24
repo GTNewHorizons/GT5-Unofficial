@@ -16,9 +16,6 @@ import gtPlusPlus.core.tileentities.general.TileEntityHeliumGenerator;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbenchAdvanced;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.xmod.forestry.bees.alveary.TileAlvearyFrameHousing;
-import gtPlusPlus.xmod.forestry.bees.alveary.gui.CONTAINER_FrameHousing;
-import gtPlusPlus.xmod.forestry.bees.alveary.gui.GUI_FrameHousing;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
@@ -53,7 +50,7 @@ public class GuiHandler implements IGuiHandler {
 		if (te != null){
 			if (ID == GUI1){
 				if (CORE.configSwitches.enableCustomAlvearyBlocks){
-					return new CONTAINER_FrameHousing((TileAlvearyFrameHousing)te, player);
+					//return new CONTAINER_FrameHousing((TileAlvearyFrameHousing)te, player);
 				}
 			}
 			else if (ID == GUI2){
@@ -103,7 +100,7 @@ public class GuiHandler implements IGuiHandler {
 			if (ID == GUI1){
 				if (CORE.configSwitches.enableCustomAlvearyBlocks){
 					Utils.LOG_WARNING("Opening Gui with Id: "+ID+" Alveary Frame Housing");
-					return new GUI_FrameHousing((TileAlvearyFrameHousing) te, player);
+					//return new GUI_FrameHousing((TileAlvearyFrameHousing) te, player);
 				}
 			}
 			else  if (ID == GUI2){
