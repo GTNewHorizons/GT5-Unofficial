@@ -35,6 +35,7 @@ public class BaseItemCentidust extends Item{
 		return (this.materialName+ " Centidust");
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
 		if ((this.materialName != null) && (this.materialName != "") && !this.materialName.equals("")){

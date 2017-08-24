@@ -7,6 +7,7 @@ import java.util.*;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.objects.GT_ItemStack;
+import gtPlusPlus.core.util.Utils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -19,7 +20,7 @@ public class CustomRecipeMap/* extends GT_Recipe_Map*/{
 
 	//public static final CustomRecipeMap sOreWasherRecipes = new GT_Recipe_Map_OreWasher(new HashSet<GT_Recipe>(0), "ic.recipe.orewasher", "Ore Washer", "ic2.blockOreWashingPlant", RES_PATH_GUI + "basicmachines/OreWasher", 1, 3, 1, 1, 1, E, 1, E, true, false);
 	//Fission Fuel Plant Recipes
-	public static final CustomRecipeMap sFissionFuelProcessing = new CustomRecipeMap(new HashSet<GT_Recipe>(50), "gt.recipe.fissionfuel", "Fission Fuel Processing", null, RES_PATH_GUI + "basicmachines/FissionFuel", 0, 0, 0, 9, 1, E, 1, E, true, true);
+	public static final CustomRecipeMap sFissionFuelProcessing = new CustomRecipeMap(new HashSet<GT_Recipe>(50), "gt.recipe.fissionfuel", "Fission Fuel Processing", null, RES_PATH_GUI + "basicmachines/FissionFuel", 0, 0, 0, 4, 1, E, 1, E, true, true);
 
 	/**
 	 * HashMap of Recipes based on their Items
@@ -205,6 +206,7 @@ public class CustomRecipeMap/* extends GT_Recipe_Map*/{
 	public GT_Recipe findRecipe(final IHasWorldObjectAndCoords aTileEntity, final GT_Recipe aRecipe, final boolean aNotUnificated, final long aVoltage, final FluidStack[] aFluids, final ItemStack aSpecialSlot, ItemStack... aInputs) {
 		// No Recipes? Well, nothing to be found then.
 		if (this.mRecipeList.isEmpty()) {
+			Utils.LOG_INFO("BAD RECIPE");
 			return null;
 		}
 
@@ -213,6 +215,7 @@ public class CustomRecipeMap/* extends GT_Recipe_Map*/{
 		if (GregTech_API.sPostloadFinished) {
 			if (this.mMinimalInputFluids > 0) {
 				if (aFluids == null) {
+					Utils.LOG_INFO("BAD RECIPE [1]");
 					return null;
 				}
 				int tAmount = 0;
@@ -222,11 +225,13 @@ public class CustomRecipeMap/* extends GT_Recipe_Map*/{
 					}
 				}
 				if (tAmount < this.mMinimalInputFluids) {
+					Utils.LOG_INFO("BAD RECIPE [2]");
 					return null;
 				}
 			}
 			if (this.mMinimalInputItems > 0) {
 				if (aInputs == null) {
+					Utils.LOG_INFO("BAD RECIPE [3]");
 					return null;
 				}
 				int tAmount = 0;
@@ -236,6 +241,7 @@ public class CustomRecipeMap/* extends GT_Recipe_Map*/{
 					}
 				}
 				if (tAmount < this.mMinimalInputItems) {
+					Utils.LOG_INFO("BAD RECIPE [4]");
 					return null;
 				}
 			}
@@ -296,6 +302,7 @@ public class CustomRecipeMap/* extends GT_Recipe_Map*/{
 		}
 
 		// And nothing has been found.
+		Utils.LOG_INFO("BAD RECIPE [5]");
 		return null;
 	}
 

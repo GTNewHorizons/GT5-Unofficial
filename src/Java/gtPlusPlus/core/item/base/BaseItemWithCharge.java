@@ -26,6 +26,7 @@ public class BaseItemWithCharge extends Item{
 		this.int_Max_Charge = constructor_Max_Charge;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
 		int NBT_Charge = this.int_Charge;

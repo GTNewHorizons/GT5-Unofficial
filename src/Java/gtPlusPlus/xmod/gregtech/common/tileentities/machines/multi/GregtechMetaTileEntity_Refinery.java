@@ -68,67 +68,6 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
 		return new GT_GUIContainer_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "LFTR.png");
 	}
-
-	/*@Override
-	public boolean checkRecipe(final ItemStack aStack) {
-
-		ArrayList<FluidStack> tFluidList = getStoredFluids();
-		for (int i = 0; i < tFluidList.size() - 1; i++) {
-			for (int j = i + 1; j < tFluidList.size(); j++) {
-				if (GT_Utility.areFluidsEqual((FluidStack) tFluidList.get(i), (FluidStack) tFluidList.get(j))) {
-					if (((FluidStack) tFluidList.get(i)).amount >= ((FluidStack) tFluidList.get(j)).amount) {
-						tFluidList.remove(j--);
-					} else {
-						tFluidList.remove(i--);
-						break;
-					}
-				}
-			}
-		}
-
-		long tVoltage = getMaxInputVoltage();
-		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-		FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
-		if (tFluids.length > 0) {
-			Utils.LOG_INFO("Good Recipe. [1]");
-			for(int i = 0;i<tFluids.length;i++){
-				Utils.LOG_INFO("Good Recipe. [1-"+i+"]");
-				GT_Recipe tRecipe = CustomRecipeMap.sFissionFuelProcessing.findRecipe(getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], new FluidStack[]{tFluids[i]}, new ItemStack[]{});
-				if (tRecipe != null) {
-					Utils.LOG_INFO("Good Recipe. [2]");
-					if (tRecipe.isRecipeInputEqual(true, tFluids, new ItemStack[]{})) {
-						Utils.LOG_INFO("Good Recipe. [3]");
-						this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-						this.mEfficiencyIncrease = 10000;
-						if (tRecipe.mEUt <= 16) {
-							this.mEUt = (tRecipe.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
-							this.mMaxProgresstime = (tRecipe.mDuration / (1 << tTier - 1));
-						} else {
-							this.mEUt = tRecipe.mEUt;
-							this.mMaxProgresstime = tRecipe.mDuration;
-							while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-								this.mEUt *= 4;
-								this.mMaxProgresstime /= 2;
-							}
-						}
-						if (this.mEUt > 0) {
-							this.mEUt = (-this.mEUt);
-						}
-						this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-						this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0)};
-						this.mOutputFluids = tRecipe.mFluidOutputs.clone();
-						updateSlots();
-						return true;
-					}
-				}
-				else {
-					Utils.LOG_INFO("Could not find valid Recipe. [1]");
-				}
-			}
-		}
-		Utils.LOG_INFO("Bad Recipe. [1]");
-		return false;
-	}*/
 	
 	@Override
     public boolean checkRecipe(ItemStack aStack) {
@@ -148,18 +87,17 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
         }
         if (tFluidList.size() > 1) {
             FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
-            GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sFusionRecipes.findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, GT_Values.V[4], tFluids, new ItemStack[]{});
-            if ((tRecipe == null && !mRunningOnLoad) || (maxEUStore() < tRecipe.mSpecialValue)) {
+            GT_Recipe tRecipe = CustomRecipeMap.sFissionFuelProcessing.findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, GT_Values.V[4], tFluids, new ItemStack[]{});
+            if (tRecipe == null) {
                 this.mLastRecipe = null;
                 return false;
             }
-            if (mRunningOnLoad || tRecipe.isRecipeInputEqual(true, tFluids, new ItemStack[]{})) {
+            if (tRecipe.isRecipeInputEqual(true, tFluids, new ItemStack[]{})) {
             this.mLastRecipe = tRecipe;
             this.mEUt = this.mLastRecipe.mEUt;
             this.mMaxProgresstime = this.mLastRecipe.mDuration;
             this.mEfficiencyIncrease = 10000;
             this.mOutputFluids = this.mLastRecipe.mFluidOutputs;
-            mRunningOnLoad = false;
             return true;
             }
         }
@@ -178,11 +116,11 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 					if ((!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(18))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(18)))) {
 
 						if (aBaseMetaTileEntity.getBlockOffset(xDir + i, Y, zDir + j) != ModBlocks.blockCasings2Misc) {
-							Utils.LOG_INFO("1 Wrong Block. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, Y, zDir).getLocalizedName());
+							Utils.LOG_INFO("1 Wrong Block. Found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, Y, zDir + j).getLocalizedName());
 							return false;
 						}
 						if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, Y, zDir + j) != 2) {
-							Utils.LOG_INFO("Wrong Meta. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, Y, zDir).getLocalizedName()+" | Expected Meta 2 | Got Meta "+aBaseMetaTileEntity.getMetaIDOffset(xDir, Y, zDir));
+							Utils.LOG_INFO("1 Wrong Meta. Found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, Y, zDir + j).getLocalizedName()+" | Expected Meta 2 | Got Meta "+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, Y, zDir + j));
 							return false;
 						}
 					}
@@ -200,7 +138,7 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 						return false;
 					}
 					if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, Y, zDir + j) != 2) {
-						Utils.LOG_INFO("Wrong Meta. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, Y, zDir).getLocalizedName()+" | Expected Meta 2 | Got Meta "+aBaseMetaTileEntity.getMetaIDOffset(xDir, Y, zDir));
+						Utils.LOG_INFO("2 Wrong Meta. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, Y, zDir).getLocalizedName()+" | Expected Meta 2 | Got Meta "+aBaseMetaTileEntity.getMetaIDOffset(xDir, Y, zDir));
 						return false;
 					}
 				}
@@ -217,7 +155,7 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 					return false;
 				}
 				if (aBaseMetaTileEntity.getMetaIDOffset(xDir, y, zDir) != 3) {
-					Utils.LOG_INFO("Wrong Meta. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, y, zDir).getLocalizedName()+" | Expected Meta 3 | Got Meta "+aBaseMetaTileEntity.getMetaIDOffset(xDir, y, zDir));
+					Utils.LOG_INFO("3 Wrong Meta. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, y, zDir).getLocalizedName()+" | Expected Meta 3 | Got Meta "+aBaseMetaTileEntity.getMetaIDOffset(xDir, y, zDir));
 					return false;
 				}				
 			}
@@ -227,7 +165,7 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 					return false;
 				}
 				if (aBaseMetaTileEntity.getMetaIDOffset(xDir, y + 1, zDir) != 1) {
-					Utils.LOG_INFO("Wrong Meta. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, y+1, zDir).getLocalizedName()+" | Expected Meta 1 | Got Meta "+aBaseMetaTileEntity.getMetaIDOffset(xDir, y + 1, zDir));
+					Utils.LOG_INFO("8 Wrong Meta. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, y+1, zDir).getLocalizedName()+" | Expected Meta 1 | Got Meta "+aBaseMetaTileEntity.getMetaIDOffset(xDir, y + 1, zDir));
 					return false;
 				}
 			}
@@ -236,7 +174,7 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 				if (y==3){
 					if (aBaseMetaTileEntity.getBlockOffset(xDir + 1, y, zDir) == ModBlocks.blockCasingsMisc) {
 						if (aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, y, zDir) != 13) {
-							Utils.LOG_INFO("Wrong Meta. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, y, zDir).getLocalizedName()+" | Expected Meta 13 | Got Meta "+aBaseMetaTileEntity.getMetaIDOffset(xDir, y, zDir));
+							Utils.LOG_INFO("4 Wrong Meta. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, y, zDir).getLocalizedName()+" | Expected Meta 13 | Got Meta "+aBaseMetaTileEntity.getMetaIDOffset(xDir, y, zDir));
 							return false;
 						}
 						Utils.LOG_INFO("Found Zeron-Casing at "+(aBaseMetaTileEntity.getYCoord()+y));
@@ -253,7 +191,7 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 				if (y==3){
 					if (aBaseMetaTileEntity.getBlockOffset(xDir + 1, y, zDir) == ModBlocks.blockCasingsMisc) {
 						if (aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, y, zDir) != 13) {
-							Utils.LOG_INFO("Wrong Meta. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, y, zDir).getLocalizedName()+" | Expected Meta 13 | Got Meta "+aBaseMetaTileEntity.getMetaIDOffset(xDir, y, zDir));
+							Utils.LOG_INFO("5 Wrong Meta. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, y, zDir).getLocalizedName()+" | Expected Meta 13 | Got Meta "+aBaseMetaTileEntity.getMetaIDOffset(xDir, y, zDir));
 							return false;
 						}
 						Utils.LOG_INFO("Found Zeron-Casing at "+(aBaseMetaTileEntity.getYCoord()+y));
@@ -270,7 +208,7 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 				if (y==3){
 					if (aBaseMetaTileEntity.getBlockOffset(xDir + 1, y, zDir) == ModBlocks.blockCasingsMisc) {
 						if (aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, y, zDir) != 13) {
-							Utils.LOG_INFO("Wrong Meta. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, y, zDir).getLocalizedName()+" | Expected Meta 13 | Got Meta "+aBaseMetaTileEntity.getMetaIDOffset(xDir, y, zDir));
+							Utils.LOG_INFO("6 Wrong Meta. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, y, zDir).getLocalizedName()+" | Expected Meta 13 | Got Meta "+aBaseMetaTileEntity.getMetaIDOffset(xDir, y, zDir));
 							return false;
 						}
 						Utils.LOG_INFO("Found Zeron-Casing at "+(aBaseMetaTileEntity.getYCoord()+y));
@@ -286,7 +224,7 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 				if (y==3){
 					if (aBaseMetaTileEntity.getBlockOffset(xDir + 1, y, zDir) == ModBlocks.blockCasingsMisc) {
 						if (aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, y, zDir) != 13) {
-							Utils.LOG_INFO("Wrong Meta. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, y, zDir).getLocalizedName()+" | Expected Meta 13 | Got Meta "+aBaseMetaTileEntity.getMetaIDOffset(xDir, y, zDir));
+							Utils.LOG_INFO("7 Wrong Meta. Found "+aBaseMetaTileEntity.getBlockOffset(xDir, y, zDir).getLocalizedName()+" | Expected Meta 13 | Got Meta "+aBaseMetaTileEntity.getMetaIDOffset(xDir, y, zDir));
 							return false;
 						}
 						Utils.LOG_INFO("Found Zeron-Casing at "+(aBaseMetaTileEntity.getYCoord()+y));

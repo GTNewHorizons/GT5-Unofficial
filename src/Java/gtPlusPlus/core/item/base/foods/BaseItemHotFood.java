@@ -56,6 +56,7 @@ public class BaseItemHotFood extends BaseItemFood{
 		super.onUpdate(iStack, world, entityHolding, p_77663_4_, p_77663_5_);
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
 		if ((this.materialName != null) && (this.materialName != "") && !this.materialName.equals("")){
