@@ -67,72 +67,8 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		if ((this.mInventory[1] == null) || (this.mInventory[1].isItemEqual(GT_ModHandler.getIC2Item("miningPipe", 1L)) && (this.mInventory[1].stackSize < this.mInventory[1].getMaxStackSize()))) {
-			final ArrayList<ItemStack> tItems = this.getStoredInputs();
-			for (ItemStack tStack : tItems) {
-				if (tStack.isItemEqual(GT_ModHandler.getIC2Item("miningPipe", 1L))) {
-					if (tStack.stackSize < 2) {
-						tStack = null;
-					} else {
-						tStack.stackSize--;
-					}
-
-				}
-				if (this.mInventory[1] == null) {
-					this.mInventory[1] = GT_ModHandler.getIC2Item("miningPipe", 1L);
-				} else {
-					this.mInventory[1].stackSize++;
-				}
-			}
-		}
-		FluidStack tFluid = null;//GT_Utility.getUndergroundOil(getBaseMetaTileEntity().getWorld(), getBaseMetaTileEntity().getXCoord(), getBaseMetaTileEntity().getZCoord());
-		{
-			return false;
-		}
-	}
-
-	private boolean moveOneDown() {
-		if ((this.mInventory[1] == null) || (this.mInventory[1].stackSize < 1)
-				|| (!GT_Utility.areStacksEqual(this.mInventory[1], GT_ModHandler.getIC2Item("miningPipe", 1L)))) {
-			return false;
-		}
-		final int xDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetX;
-		final int zDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetZ;
-		final int yHead = this.getYOfPumpHead();
-		if (yHead < 1) {
-			return false;
-		}
-		if (this.getBaseMetaTileEntity().getBlock(this.getBaseMetaTileEntity().getXCoord() + xDir, yHead - 1, this.getBaseMetaTileEntity().getZCoord() + zDir) == Blocks.bedrock) {
-			return false;
-		}
-		if (!(this.getBaseMetaTileEntity().getWorld().setBlock(this.getBaseMetaTileEntity().getXCoord() + xDir, yHead - 1, this.getBaseMetaTileEntity().getZCoord() + zDir, GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 1L))))) {
-			return false;
-		}
-		if (yHead != this.getBaseMetaTileEntity().getYCoord()) {
-			this.getBaseMetaTileEntity().getWorld().setBlock(this.getBaseMetaTileEntity().getXCoord() + xDir, yHead, this.getBaseMetaTileEntity().getZCoord() + zDir, GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipe", 1L)));
-		}
-		this.getBaseMetaTileEntity().decrStackSize(1, 1);
-		return true;
-	}
-
-	private int getYOfPumpHead() {
-		final int xDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetX;
-		final int zDir = ForgeDirection.getOrientation(this.getBaseMetaTileEntity().getBackFacing()).offsetZ;
-		int y = this.getBaseMetaTileEntity().getYCoord() - 1;
-		while (this.getBaseMetaTileEntity().getBlock(this.getBaseMetaTileEntity().getXCoord() + xDir, y, this.getBaseMetaTileEntity().getZCoord() + zDir) == GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipe", 1L))) {
-			y--;
-		}
-		if (y == (this.getBaseMetaTileEntity().getYCoord() - 1)) {
-			if (this.getBaseMetaTileEntity().getBlock(this.getBaseMetaTileEntity().getXCoord() + xDir, y, this.getBaseMetaTileEntity().getZCoord() + zDir) != GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 1L))) {
-				return y + 1;
-			}
-		} else if ((this.getBaseMetaTileEntity().getBlock(this.getBaseMetaTileEntity().getXCoord() + xDir, y, this.getBaseMetaTileEntity().getZCoord() + zDir) != GT_Utility
-				.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 1L))) && (this.mInventory[1] != null) && (this.mInventory[1].stackSize > 0) && GT_Utility.areStacksEqual(this.mInventory[1], GT_ModHandler.getIC2Item("miningPipe", 1L))) {
-			this.getBaseMetaTileEntity().getWorld().setBlock(this.getBaseMetaTileEntity().getXCoord() + xDir, y, this.getBaseMetaTileEntity().getZCoord() + zDir,
-					GT_Utility.getBlockFromStack(GT_ModHandler.getIC2Item("miningPipeTip", 1L)));
-			this.getBaseMetaTileEntity().decrStackSize(0, 1);
-		}
-		return y;
+		
+		return false;
 	}
 
 	@Override
@@ -287,7 +223,7 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 
 	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return 0;
+		return 200;
 	}
 
 	@Override
@@ -296,7 +232,7 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 	}
 
 	public int getAmountOfOutputs() {
-		return 3;
+		return 5;
 	}
 
 	@Override

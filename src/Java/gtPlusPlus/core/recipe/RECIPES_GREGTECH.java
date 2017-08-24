@@ -390,7 +390,7 @@ public class RECIPES_GREGTECH {
 					FluidUtils.getFluidStack(LiFBeF2ZrF4UF4, 10000), //Output Fluid 1
 					null, //Output Fluid 2
 					60*60*20, //Duration
-					4740);
+					500);
 
 			//7LiF - BeF2 - ZrF4 - U235 - 590C
 			CORE.RA.addFissionFuel(
@@ -402,7 +402,7 @@ public class RECIPES_GREGTECH {
 					FluidUtils.getFluidStack(LiFBeF2ZrF4U235, 10000), //Output Fluid 1
 					null, //Output Fluid 2
 					45*60*20, //Duration
-					4740);
+					500);
 
 			//7liF - BeF2 - ThF4 - UF4 - 566C
 			CORE.RA.addFissionFuel(
@@ -414,7 +414,7 @@ public class RECIPES_GREGTECH {
 					FluidUtils.getFluidStack(LiFBeF2ThF4UF4, 10000), //Output Fluid 1
 					null, //Output Fluid 2
 					60*60*20, //Duration
-					4740);
+					500);
 
 		}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 	}
