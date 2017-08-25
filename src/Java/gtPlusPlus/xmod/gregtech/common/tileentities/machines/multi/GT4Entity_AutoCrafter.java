@@ -301,7 +301,7 @@ extends GT_MetaTileEntity_MultiBlockBase
 				if (tNBT != null) {
 					Utils.LOG_INFO("test 3");
 					this.mEUt = 16 * (1 << this.mTier - 1) * (1 << this.mTier - 1);
-					this.mMaxProgresstime = 80;
+					this.mMaxProgresstime = 400;
 					for (int i = 0; i < this.mOutputItems.length; ++i) {
 						Utils.LOG_INFO("test 4 | "+i);
 						if (this.getBaseMetaTileEntity().getRandomNumber(100) < 50 + 10 * this.mTier) {
@@ -314,11 +314,11 @@ extends GT_MetaTileEntity_MultiBlockBase
 					if (this.mTier > 5) {
 						this.mMaxProgresstime >>= this.mTier - 5;
 					}
-					if (this.mMaxProgresstime == 80) {
+					if (this.mMaxProgresstime == 400) {
 						return false;
 					}
 					final ItemStack input2 = inputItem;
-					--input2.stackSize;
+					inputItem.stackSize--;
 					return true;
 				}
 			}
