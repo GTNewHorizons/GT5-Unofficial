@@ -6,6 +6,7 @@ import gregtech.api.enums.*;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
@@ -157,11 +158,18 @@ extends GT_MetaTileEntity_MultiBlockBase
 			}
 		}
 		
-		if ((this.mInputHatches.size() >= 1) || (this.mOutputHatches.size() >= 1) ||
-				(this.mInputBusses.size() >= 1) || (this.mOutputBusses.size() >= 1) || 
+		if ((this.mInputHatches.size() == 0) || (this.mOutputHatches.size() == 0) ||
+				(this.mInputBusses.size() == 0) || (this.mOutputBusses.size() == 0) || 
 				(this.mMufflerHatches.size() != 1) || (this.mMaintenanceHatches.size() != 1) ||
-				(this.mEnergyHatches.size() >= 1)){
+				(this.mEnergyHatches.size() == 0)){
 			Utils.LOG_INFO("Wrong Hatch count.");
+			Utils.LOG_INFO("|"+this.mInputHatches.size()+
+					"|"+this.mOutputHatches.size()+
+					"|"+this.mInputBusses.size()+
+					"|"+this.mOutputBusses.size()+
+					"|"+this.mMufflerHatches.size()+
+					"|"+this.mMaintenanceHatches.size()+
+					"|"+this.mEnergyHatches.size()+"|");
 			return false;
 		}
 		
@@ -290,9 +298,22 @@ extends GT_MetaTileEntity_MultiBlockBase
 		final ItemStack[] tInputs = tInputList.toArray(new ItemStack[tInputList.size()]);
 		
 		ItemStack inputItem = tInputs[0];
+		if (tInputs[0].stackSize <= 0){
+			tInputs[0] = null;
+			this.updateSlots();
+		}
 		int outputSlots = this.mOutputBusses.get(0).getSizeInventory();
+		
+		if (this.mOutputBusses.size() > 1){
+			outputSlots=0;
+			for (GT_MetaTileEntity_Hatch_OutputBus r : this.mOutputBusses){
+				outputSlots+=r.getSizeInventory();
+			}
+		}
+		
 		this.mOutputItems = new ItemStack[outputSlots];
-		if (inputItem != null) {
+		Utils.LOG_INFO("1 Size: "+inputItem.stackSize);
+		if (inputItem != null && inputItem.stackSize > 0) {
 			Utils.LOG_INFO("test 1");
 			NBTTagCompound tNBT = inputItem.getTagCompound();
 			if (tNBT != null) {
@@ -317,12 +338,18 @@ extends GT_MetaTileEntity_MultiBlockBase
 					if (this.mMaxProgresstime == 400) {
 						return false;
 					}
+					Utils.LOG_INFO("2 Size: "+inputItem.stackSize);
 					final ItemStack input2 = inputItem;
 					inputItem.stackSize--;
+					if (inputItem.stackSize <= 0){
+						tInputs[0] = null;
+					}
+					this.updateSlots();
 					return true;
 				}
 			}
 		}
+		
 		Utils.LOG_INFO("test - bad");
 		return false;
 	}
