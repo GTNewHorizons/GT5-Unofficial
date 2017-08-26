@@ -82,31 +82,50 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     public boolean checkRecipe_EM(ItemStack itemStack) {
         eAvailableData = 0;
         maxTemp = 0;
-        short thingsActive = 0;
-        int rackComputation;
-
-        for (GT_MetaTileEntity_Hatch_Rack r : eRacks) {
-            if (!isValidMetaTileEntity(r)) continue;
-            if (r.heat > maxTemp) maxTemp = r.heat;
-            rackComputation = r.tickComponents(eParamsIn[0], eParamsIn[10]);
-            if (rackComputation > 0) {
-                eAvailableData += rackComputation;
-                thingsActive += 4;
+        if(eParamsIn[0]>=0 && eParamsIn[10]>=0){
+            float eut=V[8] * eParamsIn[10];
+            if(eut<Integer.MAX_VALUE-7)
+                mEUt = -(int)eut;
+            else{
+                mEUt = -(int)V[8];
+                mMaxProgresstime = 0;
+                mEfficiencyIncrease = 0;
+                for (GT_MetaTileEntity_Hatch_Rack r : eRacks)
+                    r.getBaseMetaTileEntity().setActive(false);
+                return false;
             }
-            r.getBaseMetaTileEntity().setActive(true);
-        }
+            short thingsActive = 0;
+            int rackComputation;
 
-        for (GT_MetaTileEntity_Hatch_InputData di : eInputData)
-            if (di.q != null)//ok for power losses
-                thingsActive++;
+            for (GT_MetaTileEntity_Hatch_Rack r : eRacks) {
+                if (!isValidMetaTileEntity(r)) continue;
+                if (r.heat > maxTemp) maxTemp = r.heat;
+                rackComputation = r.tickComponents(eParamsIn[0], eParamsIn[10]);
+                if (rackComputation > 0) {
+                    eAvailableData += rackComputation;
+                    thingsActive += 4;
+                }
+                r.getBaseMetaTileEntity().setActive(true);
+            }
 
-        if (thingsActive > 0 && eCertainStatus == 0) {
-            thingsActive += eOutputData.size();
-            mEUt = -(int) (V[8] * eParamsIn[10]);
-            eAmpereFlow = 1 + (thingsActive >> 2);
-            mMaxProgresstime = 20;
-            mEfficiencyIncrease = 10000;
-            return true;
+            for (GT_MetaTileEntity_Hatch_InputData di : eInputData)
+                if (di.q != null)//ok for power losses
+                    thingsActive++;
+
+            if (thingsActive > 0 && eCertainStatus == 0) {
+                thingsActive += eOutputData.size();
+                eAmpereFlow = 1 + (thingsActive >> 2);
+                mMaxProgresstime = 20;
+                mEfficiencyIncrease = 10000;
+                return true;
+            } else {
+                eAvailableData=0;
+                mEUt = -(int)V[8];
+                eAmpereFlow = 1;
+                mMaxProgresstime = 20;
+                mEfficiencyIncrease = 10000;
+                return true;
+            }
         }
         mMaxProgresstime = 0;
         mEfficiencyIncrease = 0;
@@ -122,7 +141,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public void updateParameters_EM() {
-        if (eParamsIn[0] <= 0)
+        if (eParamsIn[0] < 0)
             eParamsInStatus[0] = PARAM_TOO_LOW;
         else if (eParamsIn[0] < 1)
             eParamsInStatus[0] = PARAM_LOW;
@@ -132,7 +151,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
             eParamsInStatus[0] = PARAM_HIGH;
         else eParamsInStatus[0] = PARAM_TOO_HIGH;
 
-        if (eParamsIn[10] <= 0.7f)
+        if (eParamsIn[10] < 0.7f)
             eParamsInStatus[10] = PARAM_TOO_LOW;
         else if (eParamsIn[10] < 0.8f)
             eParamsInStatus[10] = PARAM_LOW;
@@ -184,6 +203,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     @Override
     public void stopMachine() {
         super.stopMachine();
+        eAvailableData=0;
         for (GT_MetaTileEntity_Hatch_Rack r : eRacks)
             r.getBaseMetaTileEntity().setActive(false);
     }

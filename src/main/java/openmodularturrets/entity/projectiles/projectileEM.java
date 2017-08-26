@@ -27,8 +27,16 @@ public class projectileEM extends TurretProjectile {
 
     private float massFactor;
 
-    public projectileEM(World par1World, TurretBase turretBase, cElementalInstanceStackMap avalableEM) {
+    public projectileEM(World par1World) {
         super(par1World);
+    }
+
+    public projectileEM(World par1World, TurretBase turretBase) {
+        super(par1World, turretBase);
+    }
+
+    public projectileEM(World par1World, TurretBase turretBase, cElementalInstanceStackMap avalableEM) {
+        super(par1World, turretBase);
         this.turretBase = turretBase;
         boolean onlyQuarks=true;
         if(avalableEM!=null && avalableEM.hasStacks()) {
