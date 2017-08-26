@@ -923,10 +923,19 @@ public class RECIPES_Machines {
 						"gearStellite", CI.machineHull_LuV, "gearStellite",
 						GregtechItemList.Industrial_FuelRefinery.get(1));
 				
+				ItemStack mInnerTank;
+				
+				if (CORE.GTNH){
+					mInnerTank = GregtechItemList.GT_FluidTank_HV.get(1);
+				}
+				else {
+					mInnerTank = GregtechItemList.GT_FluidTank_EV.get(1);					
+				}
+				
 				//Incoloy Casing
 				RecipeUtils.addShapedGregtechRecipe(
 						"plateIncoloyDS", "pipeHugeStaballoy", "plateIncoloyDS",
-						"gearIncoloyDS", GregtechItemList.GT_FluidTank_EV.get(1), "gearIncoloyDS",
+						"gearIncoloyDS", mInnerTank, "gearIncoloyDS",
 						"plateIncoloyDS", "pipeHugeStaballoy", "plateIncoloyDS",
 						GregtechItemList.Casing_Refinery_Internal.get(1));
 				
