@@ -24,11 +24,11 @@ import net.minecraftforge.fluids.FluidStack;
 public class GT4Entity_AutoCrafter
 extends GT_MetaTileEntity_MultiBlockBase
 {
-	
+
 	private boolean isDisassembling = false;
 	private byte mTier = 1;
 	private final int mHeatingCapacity = 4700;
-	
+
 	@Override
 	public boolean isFacingValid(byte aFacing)
 	{
@@ -116,7 +116,7 @@ extends GT_MetaTileEntity_MultiBlockBase
 				"1x Energy Hatch",
 				"--------------------------------------",
 				CORE.GT_Tooltip
-				};
+		};
 	}
 
 	@Override
@@ -157,7 +157,7 @@ extends GT_MetaTileEntity_MultiBlockBase
 				}
 			}
 		}
-		
+
 		if ((this.mInputHatches.size() == 0) || (this.mOutputHatches.size() == 0) ||
 				(this.mInputBusses.size() == 0) || (this.mOutputBusses.size() == 0) || 
 				(this.mMufflerHatches.size() != 1) || (this.mMaintenanceHatches.size() != 1) ||
@@ -172,14 +172,14 @@ extends GT_MetaTileEntity_MultiBlockBase
 					"|"+this.mEnergyHatches.size()+"|");
 			return false;
 		}
-		
+
 		return tAmount >= 16;
-		
+
 	}
-	
+
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-			return GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
+		return GT_Recipe.GT_Recipe_Map.sAssemblerRecipes;
 	}	
 
 	@Override
@@ -193,13 +193,13 @@ extends GT_MetaTileEntity_MultiBlockBase
 		}
 		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 	}
-	
+
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		
+
 		final long tVoltage = this.getMaxInputVoltage();
 		final byte tTier = this.mTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-		
+
 		if (this.isDisassembling){
 			return doDisassembly();
 		}
@@ -270,9 +270,9 @@ extends GT_MetaTileEntity_MultiBlockBase
 			return false;
 		}
 	}
-	
+
 	public boolean doDisassembly(){
-		
+
 		final ArrayList<ItemStack> tInputList = this.getStoredInputs();
 		for (int tInputList_sS = tInputList.size(), i = 0; i < tInputList_sS - 1; ++i) {
 			for (int j = i + 1; j < tInputList_sS; ++j) {
@@ -288,21 +288,21 @@ extends GT_MetaTileEntity_MultiBlockBase
 			}
 		}
 		final ItemStack[] tInputs = tInputList.toArray(new ItemStack[tInputList.size()]);
-		
+
 		ItemStack inputItem = tInputs[0];
 		if (tInputs[0].stackSize <= 0){
 			tInputs[0] = null;
 			this.updateSlots();
 		}
 		int outputSlots = this.mOutputBusses.get(0).getSizeInventory();
-		
+
 		if (this.mOutputBusses.size() > 1){
 			outputSlots=0;
 			for (GT_MetaTileEntity_Hatch_OutputBus r : this.mOutputBusses){
 				outputSlots+=r.getSizeInventory();
 			}
 		}
-		
+
 		this.mOutputItems = new ItemStack[outputSlots];
 		if (inputItem != null && inputItem.stackSize > 0) {
 			NBTTagCompound tNBT = inputItem.getTagCompound();
@@ -310,7 +310,7 @@ extends GT_MetaTileEntity_MultiBlockBase
 				tNBT = tNBT.getCompoundTag("GT.CraftingComponents");
 				if (tNBT != null) {
 					this.mEUt = 16 * (1 << this.mTier - 1) * (1 << this.mTier - 1);
-					this.mMaxProgresstime = 400;
+					this.mMaxProgresstime = (100-(8*this.mTier));
 					for (int i = 0; i < this.mOutputItems.length; ++i) {
 						if (this.getBaseMetaTileEntity().getRandomNumber(100) < 50 + 10 * this.mTier) {
 							this.mOutputItems[i] = GT_Utility.loadItem(tNBT, "Ingredient." + i);
@@ -322,22 +322,24 @@ extends GT_MetaTileEntity_MultiBlockBase
 					if (this.mTier > 5) {
 						this.mMaxProgresstime >>= this.mTier - 5;
 					}
-					if (this.mMaxProgresstime == 400) {
+					if (this.mMaxProgresstime <= 20) {
 						return false;
 					}
-					inputItem.stackSize--;
-					if (inputItem.stackSize <= 0){
-						tInputs[0] = null;
+					else {
+						inputItem.stackSize--;
+						if (inputItem.stackSize <= 0){
+							tInputs[0] = null;
+						}
+						this.updateSlots();
+						return true;
 					}
-					this.updateSlots();
-					return true;
 				}
 			}
 		}
 		return false;
 	}
-	
-	
+
+
 	@Override
 	public String[] getInfoData() {
 
@@ -350,7 +352,7 @@ extends GT_MetaTileEntity_MultiBlockBase
 		else {
 			tMode = "§aAssembly";			
 		}
-		
+
 		return new String[]{
 				"Large Scale Auto-Asesembler v1.01c",
 				tRunning,
@@ -374,5 +376,5 @@ extends GT_MetaTileEntity_MultiBlockBase
 		this.isDisassembling = aNBT.getBoolean("isDisassembling");
 		super.loadNBTData(aNBT);
 	}
-	
+
 }
