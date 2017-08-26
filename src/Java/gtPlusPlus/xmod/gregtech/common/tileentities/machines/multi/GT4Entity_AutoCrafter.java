@@ -26,7 +26,7 @@ extends GT_MetaTileEntity_MultiBlockBase
 {
 	
 	private boolean isDisassembling = false;
-	private final int mTier = 6;
+	private byte mTier = 1;
 	private final int mHeatingCapacity = 4700;
 	
 	@Override
@@ -86,7 +86,7 @@ extends GT_MetaTileEntity_MultiBlockBase
 	@Override
 	public int getPollutionPerTick(ItemStack aStack)
 	{
-		return 0;
+		return 200;
 	}
 
 	public int getAmountOfOutputs()
@@ -196,12 +196,14 @@ extends GT_MetaTileEntity_MultiBlockBase
 	
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
+		
+		final long tVoltage = this.getMaxInputVoltage();
+		final byte tTier = this.mTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+		
 		if (this.isDisassembling){
-			Utils.LOG_INFO("Breaking things down.");
 			return doDisassembly();
 		}
 		else {
-			Utils.LOG_INFO("Putting the pieces together.");
 			final ArrayList<ItemStack> tInputList = this.getStoredInputs();
 			for (int tInputList_sS = tInputList.size(), i = 0; i < tInputList_sS - 1; ++i) {
 				for (int j = i + 1; j < tInputList_sS; ++j) {
@@ -233,24 +235,17 @@ extends GT_MetaTileEntity_MultiBlockBase
 			}
 			final FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
 			if (tInputList.size() > 0) {
-				Utils.LOG_INFO("test1");
-				final long tVoltage = this.getMaxInputVoltage();
-				final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 				final GT_Recipe tRecipe = this.getRecipeMap().findRecipe(this.getBaseMetaTileEntity(), false, GT_Values.V[this.mTier], tFluids,	tInputs);
 				if (tRecipe == null){
-					Utils.LOG_INFO("Recipe is Null.");
 				}
 				if (tRecipe != null && tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
-					Utils.LOG_INFO("test2");
 					this.mEfficiency = 10000 - (this.getIdealStatus() - this.getRepairStatus()) * 1000;
 					this.mEfficiencyIncrease = 10000;
 					final int tHeatCapacityDivTiers = (this.mHeatingCapacity - tRecipe.mSpecialValue) / 900;
 					if (tRecipe.mEUt <= 16) {
-						Utils.LOG_INFO("test3");
 						this.mEUt = tRecipe.mEUt * (1 << tTier - 1) * (1 << tTier - 1);
 						this.mMaxProgresstime = tRecipe.mDuration / (1 << tTier - 1);
 					} else {
-						Utils.LOG_INFO("test4");
 						this.mEUt = tRecipe.mEUt;
 						this.mMaxProgresstime = tRecipe.mDuration;
 						int m = 2;
@@ -261,17 +256,14 @@ extends GT_MetaTileEntity_MultiBlockBase
 						}
 					}
 					if (tHeatCapacityDivTiers > 0) {
-						Utils.LOG_INFO("test5");
 						this.mEUt *= (int) Math.pow(0.95, tHeatCapacityDivTiers);
 					}
 					if (this.mEUt > 0) {
-						Utils.LOG_INFO("test6");
 						this.mEUt = -this.mEUt;
 					}
 					this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
 					this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0), tRecipe.getOutput(1)};
 					this.updateSlots();
-					Utils.LOG_INFO("test7");
 					return true;
 				}
 			}
@@ -312,19 +304,14 @@ extends GT_MetaTileEntity_MultiBlockBase
 		}
 		
 		this.mOutputItems = new ItemStack[outputSlots];
-		Utils.LOG_INFO("1 Size: "+inputItem.stackSize);
 		if (inputItem != null && inputItem.stackSize > 0) {
-			Utils.LOG_INFO("test 1");
 			NBTTagCompound tNBT = inputItem.getTagCompound();
 			if (tNBT != null) {
-				Utils.LOG_INFO("test 2");
 				tNBT = tNBT.getCompoundTag("GT.CraftingComponents");
 				if (tNBT != null) {
-					Utils.LOG_INFO("test 3");
 					this.mEUt = 16 * (1 << this.mTier - 1) * (1 << this.mTier - 1);
 					this.mMaxProgresstime = 400;
 					for (int i = 0; i < this.mOutputItems.length; ++i) {
-						Utils.LOG_INFO("test 4 | "+i);
 						if (this.getBaseMetaTileEntity().getRandomNumber(100) < 50 + 10 * this.mTier) {
 							this.mOutputItems[i] = GT_Utility.loadItem(tNBT, "Ingredient." + i);
 							if (this.mOutputItems[i] != null) {
@@ -338,8 +325,6 @@ extends GT_MetaTileEntity_MultiBlockBase
 					if (this.mMaxProgresstime == 400) {
 						return false;
 					}
-					Utils.LOG_INFO("2 Size: "+inputItem.stackSize);
-					final ItemStack input2 = inputItem;
 					inputItem.stackSize--;
 					if (inputItem.stackSize <= 0){
 						tInputs[0] = null;
@@ -349,8 +334,6 @@ extends GT_MetaTileEntity_MultiBlockBase
 				}
 			}
 		}
-		
-		Utils.LOG_INFO("test - bad");
 		return false;
 	}
 	
