@@ -362,5 +362,17 @@ extends GT_MetaTileEntity_MultiBlockBase
 	public boolean isGivingInformation() {
 		return true;
 	}
+
+	@Override
+	public void saveNBTData(NBTTagCompound aNBT) {
+		aNBT.setBoolean("isDisassembling", this.isDisassembling);
+		super.saveNBTData(aNBT);
+	}
+
+	@Override
+	public void loadNBTData(NBTTagCompound aNBT) {
+		this.isDisassembling = aNBT.getBoolean("isDisassembling");
+		super.loadNBTData(aNBT);
+	}
 	
 }
