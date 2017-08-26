@@ -75,7 +75,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public final float[] eParamsOut = new float[20];//float number O to parametrizers
     public final byte[] eParamsInStatus = new byte[20];//LED status for I
     public final byte[] eParamsOutStatus = new byte[20];//LED status for O
-    public final static byte PARAM_UNUSED = 0, PARAM_OK = 1, PARAM_TOO_LOW = 2, PARAM_LOW = 3, PARAM_TOO_HIGH = 4, PARAM_HIGH = 5, PARAM_WRONG = 6;
+    public final static byte    PARAM_UNUSED = 0,
+            PARAM_TOO_LOW = 1,  PARAM_LOW = 2,
+            PARAM_WRONG = 3,    PARAM_OK = 4,
+            PARAM_TOO_HIGH = 5, PARAM_HIGH = 6;
+    // 0,2,4,6 - ok
+    //  1,3,5  - nok
 
     //TO ENABLE this change value in <init> to false and/or other than 0, can also be added in recipe check or whatever
     public boolean eParameters = true, ePowerPass = false, eSafeVoid = false, eDismatleBoom = false;
@@ -148,6 +153,10 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     protected void onFirstTick_EM(){} // callback on first tick
 
+    protected void notAllowedToWork_stopMachine_EM(){
+        stopMachine();
+    }
+
     @Override
     public int getPollutionPerTick(ItemStack itemStack) {
         return 0;
@@ -175,18 +184,18 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         }
 
         float mass = 0;
-        if (outputEM == null) return;
-        for (cElementalInstanceStackMap tree : outputEM)
-            mass += tree.getMass();
-        if (mass > 0) {
-            if (eMufflerHatches.size() < 1) explodeMultiblock();
-            mass /= eMufflerHatches.size();
-            for (GT_MetaTileEntity_Hatch_MufflerElemental dump : eMufflerHatches) {
-                if (dump.addOverflowMatter(mass)) explodeMultiblock();
+        if (outputEM != null) {
+            for (cElementalInstanceStackMap tree : outputEM)
+                mass += tree.getMass();
+            if (mass > 0) {
+                if (eMufflerHatches.size() < 1) explodeMultiblock();
+                mass /= eMufflerHatches.size();
+                for (GT_MetaTileEntity_Hatch_MufflerElemental dump : eMufflerHatches) {
+                    if (dump.addOverflowMatter(mass)) explodeMultiblock();
+                }
             }
+            outputEM = null;
         }
-        outputEM = null;
-
         hatchesStatusUpdate_EM();
     }
 
@@ -618,9 +627,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                             mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
                                         }
                                         updateSlots();
-                                    }// else {//not allowed to work
-                                    //    stopMachine();
-                                    //}
+                                    } else notAllowedToWork_stopMachine_EM();
                                 }
                             }// else {//failed to consume power/resources - inside on running tick
                             //    stopMachine();
@@ -631,11 +638,10 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                     mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
                                 }
                                 updateSlots();
-                            }// else {//not allowed to work
-                            //    stopMachine();
-                            //}
+                            } else notAllowedToWork_stopMachine_EM();
                         }
 
+                        //region power pass
                         {//DO ONCE
                             long euVar;
                             for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
@@ -673,10 +679,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                 }
                             }
                         }
+                        //endregion
                     } else {//not repaired
                         stopMachine();
                     }
-                } else {//not machine
+                } else {//not complete
                     stopMachine();
                 }
             }

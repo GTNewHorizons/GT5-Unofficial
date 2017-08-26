@@ -5,6 +5,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 import org.lwjgl.opengl.GL11;
 
+import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_MultiblockBase_EM.*;
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
 /**
@@ -13,7 +14,7 @@ import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
 public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Machine {
     String mName = "";
-    private static byte cntr = 0;
+    private static byte counter = 0;
 
     public GT_GUIContainer_MultiMachineEM(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile) {
         super(new GT_Container_MultiMachineEM(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "multimachines/" + (aTextureFile == null ? "MultiblockDisplay" : aTextureFile));
@@ -64,7 +65,7 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
         y -= 26;
         drawTexturedModalRect(x, y, 0, 0, xSize, ySize + 26);
         if (this.mContainer != null && ((GT_Container_MultiMachineEM) this.mContainer).eParamsInStatus != null) {
-            cntr = (byte) ((1 + cntr) % 6);
+            counter = (byte) ((1 + counter) % 6);
             GL11.glColor4f(1f, 1f, 1f, 1f);
 
             if (((GT_Container_MultiMachineEM) mContainer).ePowerPass)
@@ -132,7 +133,7 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
                             rU + ((state & 8) == 0 ? 44 : 12),
                             Vs + 12, 6, 6);
                     break;
-                case 5://xox ooo xox
+                case 5://xox oxo xox
                     drawTexturedModalRect(x, y,
                             rU + ((state & 1) == 0 ? 32 : 0),
                             Vs, 6, 6);
@@ -156,31 +157,31 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
     private void LEDdrawP(int x, int y, int i, int j, byte status) {
         final int v = 192, su = 8, sv = 6, u = 11;
         switch (status) {
-            case 6:
-                if (cntr < 2) {
+            case PARAM_WRONG:
+                if (counter < 2) {
                     drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * j, su, sv);
                     break;
-                } else if (cntr < 4) {
+                } else if (counter < 4) {
                     drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (8 + j), su, sv);
                     break;
                 }
-            case 1://ok
+            case PARAM_OK://ok
                 drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (4 + j), su, sv);
                 break;
-            case 2://too low blink
-                if (cntr < 3) {
+            case PARAM_TOO_LOW://too low blink
+                if (counter < 3) {
                     drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * j, su, sv);
                     break;
                 }
-            case 3:// too low
+            case PARAM_LOW:// too low
                 drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (2 + j), su, sv);
                 break;
-            case 4://too high blink
-                if (cntr < 3) {
+            case PARAM_TOO_HIGH://too high blink
+                if (counter < 3) {
                     drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (8 + j), su, sv);
                     break;
                 }
-            case 5:// too high
+            case PARAM_HIGH:// too high
                 drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (6 + j), su, sv);
                 break;
         }
