@@ -2,12 +2,15 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
+import com.github.technus.tectech.thing.metaTileEntity.multi.gui.GT_Container_MultiMachineEM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.gui.GT_GUIContainer_MultiMachineEM;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -71,6 +74,16 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
     @Override
     public void construct(int stackSize, boolean hintsOnly) {
         StructureBuilder(shape, blockType, blockMeta,1, 1, 0, getBaseMetaTileEntity(),hintsOnly);
+    }
+
+    @Override
+    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity,true,false,false);
+    }
+
+    @Override
+    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "EMDisplay.png",true,false,false);
     }
 
     @Override

@@ -201,7 +201,7 @@ public class MachineLoader implements Runnable {
 
         Machine_Multi_EMmachine.set(new GT_MetaTileEntity_EM_machine(15360, "multimachine.em.processing", "Quantum Processing Machine").getStackForm(1L));
 
-        Machine_Multi_EMCrafter.set(new GT_MetaTileEntity_EM_crafter(15370, "multimachine.em.crafter", "Matter Assembler").getStackForm(1L));
+        Machine_Multi_EMCrafter.set(new GT_MetaTileEntity_EM_crafting(15370, "multimachine.em.crafter", "Matter Assembler").getStackForm(1L));
 
         Machine_Multi_Stabilizer.set(new GT_MetaTileEntity_EM_stabilizer(15380, "multimachine.em.stabilizer", "Elemental Stabilizer").getStackForm(1L));
 

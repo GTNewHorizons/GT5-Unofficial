@@ -151,7 +151,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                     } else {
                         eRecipe = TT_recipe.TT_Recipe_Map_EM.sCrafterRecipesEM.findRecipe(objectResearched.definition);
                         if (eRecipe != null) {
-                            machineType = GT_MetaTileEntity_EM_crafter.crafter;
+                            machineType = GT_MetaTileEntity_EM_crafting.crafter;
                         }
                     }
                 }
@@ -186,7 +186,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                     eRecipe = TT_recipe.TT_Recipe_Map_EM.sCrafterRecipesEM.findRecipe(stackEM.definition);
                     if(eRecipe!=null) {
                         scannerRecipe=eRecipe.scannerRecipe;
-                        machineType=GT_MetaTileEntity_EM_crafter.crafter;
+                        machineType= GT_MetaTileEntity_EM_crafting.crafter;
                         objectResearched=new cElementalDefinitionStack(stackEM.definition,1);
                         //cleanMassEM_EM(objectResearched.getMass());
                         researchEM.remove(objectResearched.definition);

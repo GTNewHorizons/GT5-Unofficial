@@ -15,10 +15,20 @@ import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Machine {
     String mName = "";
     private static byte counter = 0;
+    public final boolean ePowerPassButton, eSafeVoidButton, allowedToWorkButton;
+
+    public GT_GUIContainer_MultiMachineEM(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile, boolean enablePowerPass, boolean enableSafeVoid, boolean enablePowerButton) {
+        super(new GT_Container_MultiMachineEM(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "multimachines/" + (aTextureFile == null ? "MultiblockDisplay" : aTextureFile));
+        mName = aName;
+        ePowerPassButton=enablePowerPass;
+        eSafeVoidButton=enableSafeVoid;
+        allowedToWorkButton=enablePowerButton;
+    }
 
     public GT_GUIContainer_MultiMachineEM(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, String aName, String aTextureFile) {
         super(new GT_Container_MultiMachineEM(aInventoryPlayer, aTileEntity), RES_PATH_GUI + "multimachines/" + (aTextureFile == null ? "MultiblockDisplay" : aTextureFile));
         mName = aName;
+        ePowerPassButton=eSafeVoidButton=allowedToWorkButton=true;
     }
 
     @Override
@@ -68,13 +78,19 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
             counter = (byte) ((1 + counter) % 6);
             GL11.glColor4f(1f, 1f, 1f, 1f);
 
-            if (((GT_Container_MultiMachineEM) mContainer).ePowerPass)
+            if(!ePowerPassButton)
+                drawTexturedModalRect(x + 151, y + 23, 215, 23, 18, 18);
+            else if (((GT_Container_MultiMachineEM) mContainer).ePowerPass)
                 drawTexturedModalRect(x + 151, y + 23, 183, 23, 18, 18);
 
-            if (((GT_Container_MultiMachineEM) mContainer).eSafeVoid)
+            if(!eSafeVoidButton)
+                drawTexturedModalRect(x + 151, y + 41, 215, 41, 18, 18);
+            else if (((GT_Container_MultiMachineEM) mContainer).eSafeVoid)
                 drawTexturedModalRect(x + 151, y + 41, 183, 41, 18, 18);
 
-            if (((GT_Container_MultiMachineEM) mContainer).allowedToWork)
+            if(!allowedToWorkButton)
+                drawTexturedModalRect(x + 151, y + 57, 215, 57, 18, 18);
+            else if (((GT_Container_MultiMachineEM) mContainer).allowedToWork)
                 drawTexturedModalRect(x + 151, y + 57, 183, 57, 18, 18);
 
             x += 11;

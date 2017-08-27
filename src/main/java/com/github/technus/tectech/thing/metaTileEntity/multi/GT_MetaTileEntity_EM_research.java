@@ -34,7 +34,7 @@ import static com.github.technus.tectech.recipe.TT_recipe.E_RECIPE_ID;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
-import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_crafter.crafter;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_crafting.crafter;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_machine.machine;
 import static gregtech.api.enums.GT_Values.E;
 
