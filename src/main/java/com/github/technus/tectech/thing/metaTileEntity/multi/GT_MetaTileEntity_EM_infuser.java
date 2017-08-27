@@ -4,11 +4,14 @@ import cofh.api.energy.IEnergyContainerItem;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
+import com.github.technus.tectech.thing.metaTileEntity.multi.gui.GT_Container_MultiMachineEM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.gui.GT_GUIContainer_MultiMachineEM;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -44,11 +47,13 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     public GT_MetaTileEntity_EM_infuser(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
         minRepairStatus = (byte) getIdealStatus();
+        eDismantleBoom=true;
     }
 
     public GT_MetaTileEntity_EM_infuser(String aName) {
         super(aName);
         minRepairStatus = (byte) getIdealStatus();
+        eDismantleBoom=true;
     }
 
     @Override
@@ -58,6 +63,16 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
 
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_EM_infuser(this.mName);
+    }
+
+    @Override
+    public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_Container_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity,true,false,true);
+    }
+
+    @Override
+    public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "EMDisplay.png",true,false,true);
     }
 
     @Override
@@ -82,18 +97,15 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
             if (ofThis instanceof IElectricItem) {
                 mEfficiencyIncrease = 10000;
                 mMaxProgresstime = 20;
-                eDismatleBoom = true;
                 return true;
             } else if (TecTech.hasCOFH && ofThis instanceof IEnergyContainerItem) {
                 mEfficiencyIncrease = 10000;
                 mMaxProgresstime = 20;
-                eDismatleBoom = true;
                 return true;
             }
         }
         mEfficiencyIncrease = 0;
         mMaxProgresstime = 0;
-        eDismatleBoom = false;
         eAmpereFlow = 0;
         mEUt = 0;
         return false;
@@ -115,13 +127,6 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
             }
         }
         this.getBaseMetaTileEntity().disableWorking();
-    }
-
-    @Override
-    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if ((aTick & 31) == 31) {
-            eSafeVoid = false;
-        }
     }
 
     @Override

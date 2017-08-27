@@ -51,7 +51,13 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
             GT_MetaTileEntity_MultiblockBase_EM base = (GT_MetaTileEntity_MultiblockBase_EM) this.mTileEntity.getMetaTileEntity();
             switch (aSlotIndex) {
                 case 1:
-                    if(ePowerPassButton) base.ePowerPass ^= true;
+                    if(ePowerPassButton) {
+                        base.ePowerPass ^= true;
+                        if (!allowedToWorkButton) {//TRANSFORMER HACK
+                            if (base.ePowerPass) base.getBaseMetaTileEntity().enableWorking();
+                            else base.getBaseMetaTileEntity().disableWorking();
+                        }
+                    }
                     break;
                 case 2:
                     if(eSafeVoidButton) base.eSafeVoid ^= true;

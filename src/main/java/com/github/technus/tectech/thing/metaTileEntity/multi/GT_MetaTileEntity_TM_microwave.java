@@ -293,9 +293,4 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     public byte getTileEntityBaseType() {
         return 1;
     }
-
-    @Override
-    public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        ePowerPass=false;
-    }
 }

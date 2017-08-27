@@ -71,10 +71,12 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
 
     public GT_MetaTileEntity_EM_scanner(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        eDismantleBoom=true;
     }
 
     public GT_MetaTileEntity_EM_scanner(String aName) {
         super(aName);
+        eDismantleBoom=true;
     }
 
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
@@ -318,6 +320,5 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                     base.getWorld().setBlock(xDir, yDir, zDir, Blocks.air,0,2);
             }
         }
-        eDismatleBoom=shouldExist;
     }
 }
