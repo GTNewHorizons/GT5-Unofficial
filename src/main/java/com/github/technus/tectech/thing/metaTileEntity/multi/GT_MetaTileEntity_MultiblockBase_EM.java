@@ -83,7 +83,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     //  1,3,5  - nok
 
     //TO ENABLE this change value in <init> to false and/or other than 0, can also be added in recipe check or whatever
-    public boolean eParameters = true, ePowerPass = false, eSafeVoid = false, eDismatleBoom = false;
+    public boolean eParameters = true, ePowerPass = false, eSafeVoid = false, eDismantleBoom = false;
     public byte eCertainMode = 0, eCertainStatus = 0, minRepairStatus = 3;
 
     protected long eMaxAmpereFlow = 0;//don't modify! unless YOU REALLY HAVE TO
@@ -254,7 +254,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         aNBT.setBoolean("eParam", eParameters);
         aNBT.setBoolean("ePass", ePowerPass);
         aNBT.setBoolean("eVoid", eSafeVoid);
-        aNBT.setBoolean("eBoom", eDismatleBoom);
+        aNBT.setBoolean("eBoom", eDismantleBoom);
         aNBT.setBoolean("eOK", mMachine);
 
         //Ensures compatibility
@@ -327,7 +327,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         eParameters = aNBT.getBoolean("eParam");
         ePowerPass = aNBT.getBoolean("ePass");
         eSafeVoid = aNBT.getBoolean("eVoid");
-        eDismatleBoom = aNBT.getBoolean("eBoom");
+        eDismantleBoom = aNBT.getBoolean("eBoom");
         mMachine = aNBT.getBoolean("eOK");
 
         //Ensures compatibility
@@ -462,7 +462,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 mMachine = checkMachine(aBaseMetaTileEntity, mInventory[1]);
 
                 if (!mMachine)
-                    if (eDismatleBoom && mMaxProgresstime > 0) explodeMultiblock();
+                    if ((ePowerPass && getEUVar()>V[3]) || (eDismantleBoom && mMaxProgresstime > 0))
+                        explodeMultiblock();
                     else if (outputEM != null)
                         for (cElementalInstanceStackMap tree : outputEM)
                             if (tree.hasStacks()) {
@@ -595,6 +596,46 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                         if (multiCheckAt == Tick)
                             hatchesStatusUpdate_EM();
 
+                        //region power pass and controller charging
+                        {//DO
+                            long euVar;
+                            for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
+                                if (this.getEUVar() > this.getMinimumStoredEU()) break;
+                                if (isValidMetaTileEntity(tHatch)) {
+                                    euVar = tHatch.maxEUInput();
+                                    if (tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(euVar, false))
+                                        this.setEUVar(this.getEUVar() + euVar);
+                                }
+                            }
+                            for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : eEnergyMulti) {
+                                if (this.getEUVar() > this.getMinimumStoredEU()) break;
+                                if (isValidMetaTileEntity(tHatch)) {
+                                    euVar = tHatch.maxEUInput() * tHatch.Amperes;
+                                    if (tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(euVar, false))
+                                        this.setEUVar(this.getEUVar() + euVar);
+                                }
+                            }
+                            if (ePowerPass) {
+                                for (GT_MetaTileEntity_Hatch_Dynamo tHatch : mDynamoHatches) {
+                                    if (isValidMetaTileEntity(tHatch)) {
+                                        euVar = tHatch.maxEUOutput();
+                                        if (tHatch.getBaseMetaTileEntity().getStoredEU() <= (tHatch.maxEUStore() - euVar) &&
+                                                aBaseMetaTileEntity.decreaseStoredEnergyUnits(euVar + Math.min(euVar >> 7,1), false))
+                                            tHatch.setEUVar(tHatch.getBaseMetaTileEntity().getStoredEU() + euVar);
+                                    }
+                                }
+                                for (GT_MetaTileEntity_Hatch_DynamoMulti tHatch : eDynamoMulti) {
+                                    if (isValidMetaTileEntity(tHatch)) {
+                                        euVar = tHatch.maxEUOutput() * tHatch.Amperes;
+                                        if (tHatch.getBaseMetaTileEntity().getStoredEU() <= tHatch.maxEUStore() - euVar &&
+                                                aBaseMetaTileEntity.decreaseStoredEnergyUnits(euVar + Math.min(euVar >> 7,tHatch.Amperes), false))
+                                            tHatch.setEUVar(tHatch.getBaseMetaTileEntity().getStoredEU() + euVar);
+                                    }
+                                }
+                            }
+                        }
+                        //endregion
+
                         if (mMaxProgresstime > 0 && doRandomMaintenanceDamage()) {//Start
                             if (onRunningTick(mInventory[1])) {//Compute EU
                                 if (!polluteEnvironment(getPollutionPerTick(mInventory[1]))) stopMachine();
@@ -640,46 +681,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                 updateSlots();
                             } else notAllowedToWork_stopMachine_EM();
                         }
-
-                        //region power pass
-                        {//DO ONCE
-                            long euVar;
-                            for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches) {
-                                if (this.getEUVar() > this.getMinimumStoredEU()) break;
-                                if (isValidMetaTileEntity(tHatch)) {
-                                    euVar = tHatch.maxEUInput();
-                                    if (tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(euVar, false))
-                                        this.setEUVar(this.getEUVar() + euVar);
-                                }
-                            }
-                            for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : eEnergyMulti) {
-                                if (this.getEUVar() > this.getMinimumStoredEU()) break;
-                                if (isValidMetaTileEntity(tHatch)) {
-                                    euVar = tHatch.maxEUInput() * tHatch.Amperes;
-                                    if (tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(euVar, false))
-                                        this.setEUVar(this.getEUVar() + euVar);
-                                }
-                            }
-                            if (ePowerPass) {
-                                for (GT_MetaTileEntity_Hatch_Dynamo tHatch : mDynamoHatches) {
-                                    if (isValidMetaTileEntity(tHatch)) {
-                                        euVar = tHatch.maxEUOutput();
-                                        if (tHatch.getBaseMetaTileEntity().getStoredEU() <= (tHatch.maxEUStore() - euVar) &&
-                                                aBaseMetaTileEntity.decreaseStoredEnergyUnits(euVar + Math.min(euVar >> 7,1), false))
-                                            tHatch.setEUVar(tHatch.getBaseMetaTileEntity().getStoredEU() + euVar);
-                                    }
-                                }
-                                for (GT_MetaTileEntity_Hatch_DynamoMulti tHatch : eDynamoMulti) {
-                                    if (isValidMetaTileEntity(tHatch)) {
-                                        euVar = tHatch.maxEUOutput() * tHatch.Amperes;
-                                        if (tHatch.getBaseMetaTileEntity().getStoredEU() <= tHatch.maxEUStore() - euVar &&
-                                                aBaseMetaTileEntity.decreaseStoredEnergyUnits(euVar + Math.min(euVar >> 7,tHatch.Amperes), false))
-                                            tHatch.setEUVar(tHatch.getBaseMetaTileEntity().getStoredEU() + euVar);
-                                    }
-                                }
-                            }
-                        }
-                        //endregion
                     } else {//not repaired
                         stopMachine();
                     }
@@ -1512,7 +1513,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches)
                     hatch.getBaseMetaTileEntity().setActive(false);
             }
-            if (eDismatleBoom && mMaxProgresstime > 0) explodeMultiblock();
+            if ((ePowerPass && getEUVar()>V[3]) || (eDismantleBoom && mMaxProgresstime > 0))
+                explodeMultiblock();
             else if (outputEM != null)
                 for (cElementalInstanceStackMap output : outputEM)
                     if (output.hasStacks()) {

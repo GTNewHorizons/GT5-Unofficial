@@ -50,6 +50,7 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
         mHardHammer = true;
         mSolderingTool = true;
         mCrowbar = true;
+        eDismantleBoom=true;
     }
 
     public GT_MetaTileEntity_EM_transformer(String aName) {
@@ -60,6 +61,7 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
         mHardHammer = true;
         mSolderingTool = true;
         mCrowbar = true;
+        eDismantleBoom=true;
     }
 
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
@@ -119,7 +121,6 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
         }
         eAmpereFlow = 0;
         mEUt = 0;
-        eDismatleBoom = ePowerPass;
         return ePowerPass;
     }
 
@@ -132,7 +133,6 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
     public void onPreTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if ((aTick & 31) == 31) {
             ePowerPass = aBaseMetaTileEntity.isAllowedToWork();
-            eSafeVoid = false;
         }
     }
 
