@@ -5,10 +5,16 @@ import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStac
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackMap;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
+import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -16,12 +22,16 @@ import static com.github.technus.tectech.Util.StructureBuilder;
 import static com.github.technus.tectech.Util.VN;
 import static com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition.stableRawLifeTime;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
+import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 
 /**
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+    private static Textures.BlockIcons.CustomIcon ScreenOFF;
+    private static Textures.BlockIcons.CustomIcon ScreenON;
+
     //region structure
     private static final String[][] shape = new String[][]{
             {"0C0","A   ","A . ","A   ","0C0",},
@@ -57,6 +67,22 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
 
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_EM_decay(this.mName);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister aBlockIconRegister) {
+        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/EM_DECAY");
+        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/EM_DECAY_ACTIVE");
+        super.registerIcons(aBlockIconRegister);
+    }
+
+    @Override
+    public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aFacing, byte aColorIndex, boolean aActive, boolean aRedstone) {
+        if (aSide == aFacing) {
+            return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][12], new GT_RenderedTexture(aActive ? ScreenON : ScreenOFF)};
+        }
+        return new ITexture[]{Textures.BlockIcons.casingTexturePages[texturePage][12]};
     }
 
     @Override

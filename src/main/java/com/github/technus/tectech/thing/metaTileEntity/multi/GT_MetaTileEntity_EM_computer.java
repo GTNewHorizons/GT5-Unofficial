@@ -9,6 +9,8 @@ import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_OutputData;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Rack;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -17,6 +19,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
@@ -33,6 +36,9 @@ import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBloc
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+    private static Textures.BlockIcons.CustomIcon ScreenOFF;
+    private static Textures.BlockIcons.CustomIcon ScreenON;
+
     private final ArrayList<GT_MetaTileEntity_Hatch_Rack> eRacks = new ArrayList<>();
     private int maxTemp = 0;
 
@@ -68,6 +74,14 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
 
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_EM_computer(this.mName);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerIcons(IIconRegister aBlockIconRegister) {
+        ScreenOFF = new Textures.BlockIcons.CustomIcon("iconsets/EM_COMPUTER");
+        ScreenON = new Textures.BlockIcons.CustomIcon("iconsets/EM_COMPUTER_ACTIVE");
+        super.registerIcons(aBlockIconRegister);
     }
 
     @Override
