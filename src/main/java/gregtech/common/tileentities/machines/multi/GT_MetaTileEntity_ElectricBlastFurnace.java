@@ -136,9 +136,8 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
                     //Long time calculation
                     long xMaxProgresstime = ((long)tRecipe.mDuration)<<1;
                     if(xMaxProgresstime>Integer.MAX_VALUE-1){
-                        //make impossible if too long
-                        mEUt=Integer.MAX_VALUE-1;
-                        mMaxProgresstime=Integer.MAX_VALUE-1;
+                    	//In case recipe is too OP for that machine
+                    	return false;
                     }else{
                         mEUt=tRecipe.mEUt>>2;
                         if (tHeatCapacityDivTiers > 0) mEUt = (int) (mEUt * (Math.pow(0.95, tHeatCapacityDivTiers))); // power bonus of the coil
@@ -162,8 +161,8 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
                     }
                     if (tHeatCapacityDivTiers > 0) xEUt = (int) (xEUt * (Math.pow(0.95, tHeatCapacityDivTiers))); // power bonus of the coil
                     if(xEUt>Integer.MAX_VALUE-1){
-                        mEUt = Integer.MAX_VALUE-1;
-                        mMaxProgresstime = Integer.MAX_VALUE-1;
+                    	//In case recipe is too OP for that machine
+                    	return false;
                     }else{
                         mEUt = (int)xEUt;
                         if(mEUt==0)
@@ -173,9 +172,6 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
                     }
                 }
                 
-                //In case recipe is too OP for that machine
-                if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
-                    return false;
                 if (this.mEUt > 0) {
                     this.mEUt = (-this.mEUt);
                 }
