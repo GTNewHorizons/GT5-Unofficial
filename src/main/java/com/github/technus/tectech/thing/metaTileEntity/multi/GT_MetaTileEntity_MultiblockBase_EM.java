@@ -147,11 +147,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         //default is once per 50s; mUpdate is decremented every tick
     }
 
-    //triggered if machine is not allowed to work after completing a recipe
-    protected void notAllowedToWork_stopMachine_EM(){
-        stopMachine();
-    }
-
     @Override
     public int getPollutionPerTick(ItemStack itemStack) {
         return 0;
@@ -159,6 +154,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     public int getPollutionPerTick_EM(ItemStack itemStack) {
         return 0;
+    }
+
+    //triggered if machine is not allowed to work after completing a recipe
+    protected void notAllowedToWork_stopMachine_EM(){
+        stopMachine();
     }
 
     //Override if needed but usually call super method at start!
@@ -733,17 +733,14 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if (eRequiredData > 0 && eRequiredData > eAvailableData) {
+        if (eRequiredData > eAvailableData ||
+                (this.mEUt < 0 && !this.drainEnergyInput_EM((long) (-this.mEUt) * getMaxEfficiency(aStack) / (long) Math.max(1000, this.mEfficiency), eAmpereFlow))) {
             stopMachine();
             return false;
         }
-        if (this.mEUt > 0) {
+        if (this.mEUt > 0)
             this.addEnergyOutput_EM((long) mEUt * (long) mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
-            return true;
-        } else if (this.mEUt < 0 && !this.drainEnergyInput_EM((long) (-this.mEUt) * getMaxEfficiency(aStack) / (long) Math.max(1000, this.mEfficiency), eAmpereFlow)) {
-            stopMachine();
-            return false;
-        } else return true;
+        return true;
     }
 
     //region energy
@@ -1027,10 +1024,14 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     @Override
-    public void explodeMultiblock() {//BEST METHOD EVER!!!
+    public final void explodeMultiblock() {
         if(explodedThisTick)return;
+        extraExplosions_EM();
+        explodeMultiblock_EM();
         explodedThisTick=true;
+    }
 
+    private void explodeMultiblock_EM(){
         if (!TecTech.ModConfig.BOOM_ENABLE) {
             TecTech.proxy.broadcast("Multi Explode BOOM! " + getBaseMetaTileEntity().getXCoord() + " " + getBaseMetaTileEntity().getYCoord() + " " + getBaseMetaTileEntity().getZCoord());
             StackTraceElement[] ste = Thread.currentThread().getStackTrace();
@@ -1056,7 +1057,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         for (MetaTileEntity tTileEntity : eDynamoMulti) tTileEntity.getBaseMetaTileEntity().doExplosion(V[14]);
         for (MetaTileEntity tTileEntity : eInputData) tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
         for (MetaTileEntity tTileEntity : eOutputData) tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
-        extraExplosions_EM();
         getBaseMetaTileEntity().doExplosion(V[15]);
     }
 
