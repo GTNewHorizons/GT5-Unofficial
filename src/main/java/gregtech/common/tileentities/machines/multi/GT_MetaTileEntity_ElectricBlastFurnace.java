@@ -169,7 +169,7 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
                             mMaxProgresstime = 1;//set time to 1 tick
                     }
                 }
-                this.mEUt = (int) (this.mEUt * (Math.pow(0.95, tHeatCapacityDivTiers))); // power bonus of the coil
+                if (this.mEUt > 0) this.mEUt = (int) (this.mEUt * (Math.pow(0.95, tHeatCapacityDivTiers))); // power bonus of the coil
                 //In case recipe is too OP for that machine
                 if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                     return false;
