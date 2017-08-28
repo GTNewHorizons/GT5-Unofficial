@@ -21,6 +21,8 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
+import static gregtech.api.enums.GT_Values.V;
+
 import java.util.ArrayList;
 
 public class GT_MetaTileEntity_ElectricBlastFurnace
@@ -128,16 +130,51 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
                 this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
                 this.mEfficiencyIncrease = 10000;
                 int tHeatCapacityDivTiers = (mHeatingCapacity - tRecipe.mSpecialValue)/900;
-		        calculateOverclockedNessMulti(tRecipe.mEUt, tRecipe.mDuration, 1, tVoltage);
+		        // calculate overclock with coil bonus
+                byte mTier=(byte)Math.max(0,GT_Utility.getTier(tVoltage));
+                if(mTier==0){
+                    //Long time calculation
+                    long xMaxProgresstime = ((long)tRecipe.mDuration)<<1;
+                    if(xMaxProgresstime>Integer.MAX_VALUE-1){
+                        //make impossible if too long
+                        mEUt=Integer.MAX_VALUE-1;
+                        mMaxProgresstime=Integer.MAX_VALUE-1;
+                    }else{
+                        mEUt=tRecipe.mEUt>>2;
+                        mMaxProgresstime=(int)xMaxProgresstime;
+                    }
+                }else{
+                    //Long EUt calculation
+                    long xEUt=tRecipe.mEUt;
+                    //Isnt too low EUt check?
+                    long tempEUt = xEUt<V[1] ? V[1] : xEUt;
+
+                    mMaxProgresstime = tRecipe.mDuration;
+
+                    int k = tHeatCapacityDivTiers/2; // allowed upgraded overclock
+                    while (tempEUt <= V[mTier -1]) {
+                        tempEUt<<=2;//this actually controls overclocking
+                        //xEUt *= 4;//this is effect of everclocking
+                        mMaxProgresstime>>= k-- > 0 ? 2 : 1;// overclock effect with coil bonus
+                        xEUt = mMaxProgresstime==0 ? xEUt>>1 : xEUt<<2;//U know, if the time is less than 1 tick make the machine use less power
+                    }
+                    if(xEUt>Integer.MAX_VALUE-1){
+                        mEUt = Integer.MAX_VALUE-1;
+                        mMaxProgresstime = Integer.MAX_VALUE-1;
+                    }else{
+                        mEUt = (int)xEUt;
+                        if(mEUt==0)
+                            mEUt = 1;
+                        if(mMaxProgresstime==0)
+                            mMaxProgresstime = 1;//set time to 1 tick
+                    }
+                }
+                this.mEUt = (int) (this.mEUt * (Math.pow(0.95, tHeatCapacityDivTiers))); // power bonus of the coil
                 //In case recipe is too OP for that machine
                 if (mMaxProgresstime == Integer.MAX_VALUE - 1 && mEUt == Integer.MAX_VALUE - 1)
                     return false;
                 if (this.mEUt > 0) {
                     this.mEUt = (-this.mEUt);
-                }
-                if(tHeatCapacityDivTiers>0){
-                    this.mEUt = (int) (this.mEUt * (Math.pow(0.95, tHeatCapacityDivTiers)));
-                    this.mMaxProgresstime >>=tHeatCapacityDivTiers/2;
                 }
                 this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
                 this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0), tRecipe.getOutput(1)};
