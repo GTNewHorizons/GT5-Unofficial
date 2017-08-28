@@ -268,11 +268,6 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    protected void workGotDisabled_EM() {
-        timerValue=0;
-    }
-
-    @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
         aNBT.setInteger("eTimerVal", timerValue);
@@ -283,11 +278,6 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
         super.loadNBTData(aNBT);
         timerValue = aNBT.getInteger("eTimerVal");
     }
-
-    @Override
-    public void doExplosion(long aExplosionPower) {
-        explodeMultiblock();
-    }//Redirecting to explodemultiblock
 
     @Override
     public byte getTileEntityBaseType() {

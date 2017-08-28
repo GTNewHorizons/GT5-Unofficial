@@ -92,7 +92,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public long eRequiredData = 0;
     protected long eAvailableData = 0;
 
-    private boolean previousTickValueForWorkEnabled=false;
+    private boolean explodedThisTick=false;
 
     //init param states in constructor, or implement it in checkrecipe/outputfunction
 
@@ -126,10 +126,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     protected void extraExplosions_EM() {
     }//For that extra hatches explosions, and maybe some MOORE EXPLOSIONS
 
-    protected void workGotDisabled_EM(){}//called at end of onPostTick
-    //callback on enable/disable work, they don't care if the multiblock is complete or not
-    //(you can check that with looking at mMachine and other variables)
-
     //machine structure check
     protected boolean checkMachine_EM(IGregTechTileEntity iGregTechTileEntity, ItemStack itemStack) {
         return false;
@@ -151,8 +147,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         //default is once per 50s; mUpdate is decremented every tick
     }
 
-    protected void onFirstTick_EM(){} // callback on first tick
-
+    //triggered if machine is not allowed to work after completing a recipe
     protected void notAllowedToWork_stopMachine_EM(){
         stopMachine();
     }
@@ -168,9 +163,26 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     //Override if needed but usually call super method at start!
     //On machine stop - NOT called when softhammered to offline state! - it SHOULD cause a full stop like power failure does
-    //Can be overriden to alter stopping behaviour, to do things on soft hammer scenario -> workGotDisabled_EM
     @Override
     public void stopMachine() {
+        if (outputEM != null) {
+            float mass = 0;
+            for (cElementalInstanceStackMap tree : outputEM)
+                mass += tree.getMass();
+            if (mass > 0) {
+                if (eMufflerHatches.size() < 1) explodeMultiblock();
+                else {
+                    mass /= eMufflerHatches.size();
+                    for (GT_MetaTileEntity_Hatch_MufflerElemental dump : eMufflerHatches)
+                        if (dump.addOverflowMatter(mass)) explodeMultiblock();
+                }
+            }
+            outputEM = null;
+        }
+
+        for (GT_MetaTileEntity_Hatch_OutputData data : eOutputData)
+            data.q = null;
+
         mOutputItems = null;
         mOutputFluids = null;
         mEfficiency = 0;
@@ -178,25 +190,15 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         mMaxProgresstime = 0;
         mEfficiencyIncrease = 0;
         getBaseMetaTileEntity().disableWorking();
-
-        for (GT_MetaTileEntity_Hatch_OutputData data : eOutputData) {
-            data.q = null;
-        }
-
-        float mass = 0;
-        if (outputEM != null) {
-            for (cElementalInstanceStackMap tree : outputEM)
-                mass += tree.getMass();
-            if (mass > 0) {
-                if (eMufflerHatches.size() < 1) explodeMultiblock();
-                mass /= eMufflerHatches.size();
-                for (GT_MetaTileEntity_Hatch_MufflerElemental dump : eMufflerHatches) {
-                    if (dump.addOverflowMatter(mass)) explodeMultiblock();
-                }
-            }
-            outputEM = null;
-        }
         hatchesStatusUpdate_EM();
+    }
+
+    @Override
+    public String[] getDescription() {
+        return new String[]{
+                CommonValues.tecMark,
+                "Nothing special just override me."
+        };
     }
 
     //RATHER LEAVE ALONE Section
@@ -376,26 +378,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             eParamsOutStatus[i] = paramOs.getByte(Integer.toString(i));
     }
 
-    @Override
-    public final long maxEUStore() {
-        return (maxEUinputMin * eMaxAmpereFlow) << 3;
-    }
-
-    @Override
-    public final long getMinimumStoredEU() {
-        return maxEUStore() >> 1;
-    }
-
-    @Override
-    public final long maxAmperesIn() {
-        return 0L;
-    }
-
-    @Override
-    public final long maxAmperesOut() {
-        return 0L;
-    }
-
     private boolean cyclicUpdate() {
         if (cyclicUpdate_EM()) {
             mUpdate = 0;
@@ -409,17 +391,37 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         return checkMachine_EM(iGregTechTileEntity, itemStack);
     }
 
-    @Override
-    public final void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
-        super.onFirstTick(aBaseMetaTileEntity);
-        previousTickValueForWorkEnabled=getBaseMetaTileEntity().isAllowedToWork();//Assign new value
-        onFirstTick_EM();
+    //can be used to check structures of multi-blocks larger than one chunk, but...
+    //ALL THE HATCHES AND THE CONTROLLER SHOULD BE IN ONE CHUNK OR IN LOADED CHUNKS
+    @Deprecated
+    public final boolean structureCheck_EM(
+            String[][] structure,//0-9 casing, +- air no air, a-z ignore
+            Block[] blockType,//use numbers 0-9 for casing types
+            byte[] blockMeta,//use numbers 0-9 for casing types
+            int horizontalOffset, int verticalOffset, int depthOffset) {
+        return StructureChecker(structure, blockType, blockMeta,
+                horizontalOffset, verticalOffset, depthOffset, getBaseMetaTileEntity(), !mMachine);
+    }
+
+    public final boolean structureCheck_EM(
+            String[][] structure,//0-9 casing, +- air no air, a-z ignore
+            Block[] blockType,//use numbers 0-9 for casing types
+            byte[] blockMeta,//use numbers 0-9 for casing types
+            String[] addingMethods,
+            short[] casingTextures,
+            Block[] blockTypeFallback,//use numbers 0-9 for casing types
+            byte[] blockMetaFallback,//use numbers 0-9 for casing types
+            int horizontalOffset, int verticalOffset, int depthOffset) {
+        return StructureCheckerAdvanced(structure, blockType, blockMeta,
+                adderMethod, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback,
+                horizontalOffset, verticalOffset, depthOffset, getBaseMetaTileEntity(), !mMachine);
     }
 
     //CAREFUL!!! it calls most of the callbacks
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
+            explodedThisTick=false;
             if (mEfficiency < 0) mEfficiency = 0;
 
             if (--mUpdate == 0 || --mStartUpCheck == 0 || cyclicUpdate() || aBaseMetaTileEntity.hasWorkJustBeenEnabled()) {
@@ -461,15 +463,13 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                     ((BaseTileEntity) getBaseMetaTileEntity()).ignoreUnloadedChunks = mMachine;
                 mMachine = checkMachine(aBaseMetaTileEntity, mInventory[1]);
 
-                if (!mMachine)
-                    if ((ePowerPass && getEUVar()>V[3]) || (eDismantleBoom && mMaxProgresstime > 0))
+                if (!mMachine) {
+                    if ((ePowerPass && getEUVar() > V[3]) || (eDismantleBoom && mMaxProgresstime > 0))
                         explodeMultiblock();
-                    else if (outputEM != null)
+                    if (outputEM != null)
                         for (cElementalInstanceStackMap tree : outputEM)
-                            if (tree.hasStacks()) {
-                                explodeMultiblock();
-                                break;
-                            }
+                            if (tree.hasStacks()) explodeMultiblock();
+                }
 
                 if (eUncertainHatches.size() > 1) mMachine = false;
 
@@ -679,7 +679,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                     mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
                                 }
                                 updateSlots();
-                            } else notAllowedToWork_stopMachine_EM();
+                            } //else notAllowedToWork_stopMachine_EM(); //it is already stopped here
                         }
                     } else {//not repaired
                         stopMachine();
@@ -688,9 +688,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                     stopMachine();
                 }
             }
-
-            if (previousTickValueForWorkEnabled && !getBaseMetaTileEntity().isAllowedToWork()) workGotDisabled_EM();
-            previousTickValueForWorkEnabled = getBaseMetaTileEntity().isAllowedToWork();//Assign new value
 
             aBaseMetaTileEntity.setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & -512) | (mWrench ? 0 : 1) | (mScrewdriver ? 0 : 2) | (mSoftHammer ? 0 : 4) | (mHardHammer ? 0 : 8) | (mSolderingTool ? 0 : 16) | (mCrowbar ? 0 : 32) | (mMachine ? 0 : 64) | ((eCertainStatus == 0) ? 0 : 128) | (eParameters ? 0 : 256));
             aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
@@ -747,6 +744,28 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             stopMachine();
             return false;
         } else return true;
+    }
+
+    //region energy
+
+    @Override
+    public final long maxEUStore() {
+        return (maxEUinputMin * eMaxAmpereFlow) << 3;
+    }
+
+    @Override
+    public final long getMinimumStoredEU() {
+        return maxEUStore() >> 1;
+    }
+
+    @Override
+    public final long maxAmperesIn() {
+        return 0L;
+    }
+
+    @Override
+    public final long maxAmperesOut() {
+        return 0L;
     }
 
     @Deprecated
@@ -876,6 +895,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public final int getMinEnergyInputTier_EM() {
         return Util.getTier(maxEUinputMin);
     }
+    //endregion
 
     //new Method
     public final cElementalInstanceStackMap getInputsClone_EM(){
@@ -906,6 +926,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         purgeAllOverflowEM_EM();
     }
 
+    //region em cleaning
     private void purgeAllOverflowEM_EM() {
         float mass = 0;
         for (GT_MetaTileEntity_Hatch_InputElemental tHatch : eInputHatches) {
@@ -919,14 +940,10 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             tHatch.overflowMatter = 0;
         }
         if (mass > 0) {
-            if (eMufflerHatches.size() < 1) {
-                explodeMultiblock();
-                return;
-            }
+            if (eMufflerHatches.size() < 1) explodeMultiblock();
             mass /= eMufflerHatches.size();
-            for (GT_MetaTileEntity_Hatch_MufflerElemental dump : eMufflerHatches) {
+            for (GT_MetaTileEntity_Hatch_MufflerElemental dump : eMufflerHatches)
                 if (dump.addOverflowMatter(mass)) explodeMultiblock();
-            }
         }
     }
 
@@ -936,9 +953,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         if (mass > 0) {
             if (eMufflerHatches.size() < 1) explodeMultiblock();
             mass /= eMufflerHatches.size();
-            for (GT_MetaTileEntity_Hatch_MufflerElemental dump : eMufflerHatches) {
+            for (GT_MetaTileEntity_Hatch_MufflerElemental dump : eMufflerHatches)
                 if (dump.addOverflowMatter(mass)) explodeMultiblock();
-            }
         }
     }
 
@@ -951,9 +967,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         if (mass > 0) {
             if (eMufflerHatches.size() < 1) explodeMultiblock();
             mass /= eMufflerHatches.size();
-            for (GT_MetaTileEntity_Hatch_MufflerElemental dump : eMufflerHatches) {
+            for (GT_MetaTileEntity_Hatch_MufflerElemental dump : eMufflerHatches)
                 if (dump.addOverflowMatter(mass)) explodeMultiblock();
-            }
         }
     }
 
@@ -964,17 +979,14 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             mass = map.removeOverflow(0, 0);
 
         if (mass > 0) {
-            if (eMufflerHatches.size() < 1) {
-                explodeMultiblock();
-                return;
-            }
+            if (eMufflerHatches.size() < 1) explodeMultiblock();
             mass /= eMufflerHatches.size();
-            for (GT_MetaTileEntity_Hatch_MufflerElemental dump : eMufflerHatches) {
+            for (GT_MetaTileEntity_Hatch_MufflerElemental dump : eMufflerHatches)
                 if (dump.addOverflowMatter(mass)) explodeMultiblock();
-            }
         }
         outputEM = null;
     }
+    //endregion
 
     @Override
     public final boolean checkRecipe(ItemStack itemStack) {//do recipe checks, based on "machine content and state"
@@ -1016,6 +1028,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     @Override
     public void explodeMultiblock() {//BEST METHOD EVER!!!
+        if(explodedThisTick)return;
+        explodedThisTick=true;
+
         if (!TecTech.ModConfig.BOOM_ENABLE) {
             TecTech.proxy.broadcast("Multi Explode BOOM! " + getBaseMetaTileEntity().getXCoord() + " " + getBaseMetaTileEntity().getYCoord() + " " + getBaseMetaTileEntity().getZCoord());
             StackTraceElement[] ste = Thread.currentThread().getStackTrace();
@@ -1045,6 +1060,40 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         getBaseMetaTileEntity().doExplosion(V[15]);
     }
 
+    @Override
+    public void doExplosion(long aExplosionPower) {
+        explodeMultiblock();
+    }//Redirecting to explodemultiblock
+
+    @Override
+    public void onRemoval() {
+        try {
+            if (eOutputHatches != null) {
+                for (GT_MetaTileEntity_Hatch_ElementalContainer hatch_elemental : eOutputHatches)
+                    hatch_elemental.id = -1;
+                for (GT_MetaTileEntity_Hatch_ElementalContainer hatch_elemental : eInputHatches)
+                    hatch_elemental.id = -1;
+                for (GT_MetaTileEntity_Hatch_OutputData hatch_data : eOutputData) {
+                    hatch_data.id = -1;
+                    hatch_data.q = null;
+                }
+                for (GT_MetaTileEntity_Hatch_DataConnector hatch_data : eInputData)
+                    hatch_data.id = -1;
+                for (GT_MetaTileEntity_Hatch_Uncertainty hatch : eUncertainHatches)
+                    hatch.getBaseMetaTileEntity().setActive(false);
+                for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches)
+                    hatch.getBaseMetaTileEntity().setActive(false);
+            }
+            if ((ePowerPass && getEUVar()>V[3]) || (eDismantleBoom && mMaxProgresstime > 0)) explodeMultiblock();
+            if (outputEM != null)
+                for (cElementalInstanceStackMap output : outputEM)
+                    if (output.hasStacks()) explodeMultiblock();
+        } catch (Exception e) {
+            if (DEBUG_MODE) e.printStackTrace();
+        }
+    }
+
+    //region adder methods
     @Override
     public final boolean addToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
         if (aTileEntity == null) return false;
@@ -1417,6 +1466,45 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         }
         return false;
     }
+    //endregion
+
+    public static void run() {
+        try {
+            adderMethodMap.put("addToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addToMachineList", IGregTechTileEntity.class, int.class));
+            adderMethodMap.put("addClassicToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addClassicToMachineList", IGregTechTileEntity.class, int.class));
+            adderMethodMap.put("addElementalToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addElementalToMachineList", IGregTechTileEntity.class, int.class));
+            adderMethodMap.put("addMufflerToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addMufflerToMachineList", IGregTechTileEntity.class, int.class));
+            adderMethodMap.put("addClassicMufflerToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addClassicMufflerToMachineList", IGregTechTileEntity.class, int.class));
+            adderMethodMap.put("addElementalMufflerToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addElementalMufflerToMachineList", IGregTechTileEntity.class, int.class));
+            adderMethodMap.put("addInputToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addInputToMachineList", IGregTechTileEntity.class, int.class));
+            adderMethodMap.put("addOutputToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addOutputToMachineList", IGregTechTileEntity.class, int.class));
+            adderMethodMap.put("addEnergyInputToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addEnergyInputToMachineList", IGregTechTileEntity.class, int.class));
+            adderMethodMap.put("addDynamoToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addDynamoToMachineList", IGregTechTileEntity.class, int.class));
+            adderMethodMap.put("addEnergyIOToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addEnergyIOToMachineList", IGregTechTileEntity.class, int.class));
+            adderMethodMap.put("addElementalInputToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addElementalInputToMachineList", IGregTechTileEntity.class, int.class));
+            adderMethodMap.put("addElementalOutputToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addElementalOutputToMachineList", IGregTechTileEntity.class, int.class));
+            adderMethodMap.put("addClassicInputToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addClassicInputToMachineList", IGregTechTileEntity.class, int.class));
+            adderMethodMap.put("addClassicOutputToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addClassicOutputToMachineList", IGregTechTileEntity.class, int.class));
+            adderMethodMap.put("addParametrizerToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addParametrizerToMachineList", IGregTechTileEntity.class, int.class));
+            adderMethodMap.put("addUncertainToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addUncertainToMachineList", IGregTechTileEntity.class, int.class));
+            adderMethodMap.put("addMaintenanceToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addMaintenanceToMachineList", IGregTechTileEntity.class, int.class));
+            adderMethodMap.put("addClassicMaintenanceToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addClassicMaintenanceToMachineList", IGregTechTileEntity.class, int.class));
+            adderMethodMap.put("addDataConnectorToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addDataConnectorToMachineList", IGregTechTileEntity.class, int.class));
+            adderMethod = GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addThing", String.class, IGregTechTileEntity.class, int.class);
+        } catch (NoSuchMethodException e) {
+            if (DEBUG_MODE) e.printStackTrace();
+        }
+    }
+
+    //CALLBACK
+    public boolean addThing(String methodName, IGregTechTileEntity igt, int casing) {
+        try {
+            return (boolean) adderMethodMap.get(methodName).invoke(this, igt, casing);
+        } catch (InvocationTargetException | IllegalAccessException e) {
+            if (DEBUG_MODE) e.printStackTrace();
+        }
+        return false;
+    }
 
     @Override
     public String[] getInfoData() {//TODO Do it
@@ -1458,109 +1546,5 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     @Override
     public boolean isGivingInformation() {
         return true;
-    }
-
-    //can be used to check structures of multi-blocks larger than one chunk, but...
-    //ALL THE HATCHES AND THE CONTROLLER SHOULD BE IN ONE CHUNK OR IN LOADED CHUNKS
-    @Deprecated
-    public final boolean structureCheck_EM(
-            String[][] structure,//0-9 casing, +- air no air, a-z ignore
-            Block[] blockType,//use numbers 0-9 for casing types
-            byte[] blockMeta,//use numbers 0-9 for casing types
-            int horizontalOffset, int verticalOffset, int depthOffset) {
-        return StructureChecker(structure, blockType, blockMeta,
-                horizontalOffset, verticalOffset, depthOffset, getBaseMetaTileEntity(), !mMachine);
-    }
-
-    public final boolean structureCheck_EM(
-            String[][] structure,//0-9 casing, +- air no air, a-z ignore
-            Block[] blockType,//use numbers 0-9 for casing types
-            byte[] blockMeta,//use numbers 0-9 for casing types
-            String[] addingMethods,
-            short[] casingTextures,
-            Block[] blockTypeFallback,//use numbers 0-9 for casing types
-            byte[] blockMetaFallback,//use numbers 0-9 for casing types
-            int horizontalOffset, int verticalOffset, int depthOffset) {
-        return StructureCheckerAdvanced(structure, blockType, blockMeta,
-                adderMethod, addingMethods, casingTextures, blockTypeFallback, blockMetaFallback,
-                horizontalOffset, verticalOffset, depthOffset, getBaseMetaTileEntity(), !mMachine);
-    }
-
-    @Override
-    public String[] getDescription() {
-        return new String[]{
-                CommonValues.tecMark,
-                "Nothing special just override me."
-        };
-    }
-
-    @Override
-    public void onRemoval() {
-        try {
-            if (eOutputHatches != null) {
-                for (GT_MetaTileEntity_Hatch_ElementalContainer hatch_elemental : eOutputHatches)
-                    hatch_elemental.id = -1;
-                for (GT_MetaTileEntity_Hatch_ElementalContainer hatch_elemental : eInputHatches)
-                    hatch_elemental.id = -1;
-                for (GT_MetaTileEntity_Hatch_OutputData hatch_data : eOutputData) {
-                    hatch_data.id = -1;
-                    hatch_data.q = null;
-                }
-                for (GT_MetaTileEntity_Hatch_DataConnector hatch_data : eInputData)
-                    hatch_data.id = -1;
-                for (GT_MetaTileEntity_Hatch_Uncertainty hatch : eUncertainHatches)
-                    hatch.getBaseMetaTileEntity().setActive(false);
-                for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches)
-                    hatch.getBaseMetaTileEntity().setActive(false);
-            }
-            if ((ePowerPass && getEUVar()>V[3]) || (eDismantleBoom && mMaxProgresstime > 0))
-                explodeMultiblock();
-            else if (outputEM != null)
-                for (cElementalInstanceStackMap output : outputEM)
-                    if (output.hasStacks()) {
-                        explodeMultiblock();
-                        return;
-                    }
-        } catch (Exception e) {
-            if (DEBUG_MODE) e.printStackTrace();
-        }
-    }
-
-    public static void run() {
-        try {
-            adderMethodMap.put("addToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addClassicToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addClassicToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addElementalToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addElementalToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addMufflerToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addMufflerToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addClassicMufflerToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addClassicMufflerToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addElementalMufflerToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addElementalMufflerToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addInputToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addInputToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addOutputToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addOutputToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addEnergyInputToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addEnergyInputToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addDynamoToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addDynamoToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addEnergyIOToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addEnergyIOToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addElementalInputToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addElementalInputToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addElementalOutputToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addElementalOutputToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addClassicInputToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addClassicInputToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addClassicOutputToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addClassicOutputToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addParametrizerToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addParametrizerToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addUncertainToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addUncertainToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addMaintenanceToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addMaintenanceToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addClassicMaintenanceToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addClassicMaintenanceToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethodMap.put("addDataConnectorToMachineList", GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addDataConnectorToMachineList", IGregTechTileEntity.class, int.class));
-            adderMethod = GT_MetaTileEntity_MultiblockBase_EM.class.getMethod("addThing", String.class, IGregTechTileEntity.class, int.class);
-        } catch (NoSuchMethodException e) {
-            if (DEBUG_MODE) e.printStackTrace();
-        }
-    }
-
-    //CALLBACK
-    public boolean addThing(String methodName, IGregTechTileEntity igt, int casing) {
-        try {
-            return (boolean) adderMethodMap.get(methodName).invoke(this, igt, casing);
-        } catch (InvocationTargetException | IllegalAccessException e) {
-            if (DEBUG_MODE) e.printStackTrace();
-        }
-        return false;
     }
 }

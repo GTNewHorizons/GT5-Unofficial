@@ -131,45 +131,46 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    protected void onFirstTick_EM() {
-        if(getBaseMetaTileEntity().isClientSide()) return;
-        if(computationRemaining>0) {
-            aRecipe=null;
-            tRecipe=null;
-            if (holdItem != null) {
-                if (ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)) {
-                    for (GT_Recipe.GT_Recipe_AssemblyLine tRecipe : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
-                        if (GT_Utility.areStacksEqual(tRecipe.mResearchItem, holdItem, true)) {
-                            this.tRecipe = tRecipe;
-                            break;
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        if(aBaseMetaTileEntity.isServerSide()) {
+            if (computationRemaining > 0) {
+                aRecipe = null;
+                tRecipe = null;
+                if (holdItem != null) {
+                    if (ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)) {
+                        for (GT_Recipe.GT_Recipe_AssemblyLine tRecipe : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
+                            if (GT_Utility.areStacksEqual(tRecipe.mResearchItem, holdItem, true)) {
+                                this.tRecipe = tRecipe;
+                                break;
+                            }
                         }
-                    }
-                } else if (ItemList.Tool_DataOrb.isStackEqual(mInventory[1], false, true)) {
-                    for (TT_recipe.TT_assLineRecipe assRecipeTT : TT_recipe.TT_Recipe_Map.sMachineRecipes.recipeList()) {
-                        if (GT_Utility.areStacksEqual(assRecipeTT.mResearchItem, holdItem, true)) {
-                            this.aRecipe = assRecipeTT;
-                            machineType = machine;
-                            break;
-                        }
-                    }
-                    if (aRecipe == null) {
-                        for (TT_recipe.TT_assLineRecipe assRecipeTT : TT_recipe.TT_Recipe_Map.sCrafterRecipes.recipeList()) {
+                    } else if (ItemList.Tool_DataOrb.isStackEqual(mInventory[1], false, true)) {
+                        for (TT_recipe.TT_assLineRecipe assRecipeTT : TT_recipe.TT_Recipe_Map.sMachineRecipes.recipeList()) {
                             if (GT_Utility.areStacksEqual(assRecipeTT.mResearchItem, holdItem, true)) {
                                 this.aRecipe = assRecipeTT;
-                                machineType = crafter;
+                                machineType = machine;
                                 break;
+                            }
+                        }
+                        if (aRecipe == null) {
+                            for (TT_recipe.TT_assLineRecipe assRecipeTT : TT_recipe.TT_Recipe_Map.sCrafterRecipes.recipeList()) {
+                                if (GT_Utility.areStacksEqual(assRecipeTT.mResearchItem, holdItem, true)) {
+                                    this.aRecipe = assRecipeTT;
+                                    machineType = crafter;
+                                    break;
+                                }
                             }
                         }
                     }
                 }
-            }
-            if (tRecipe == null && aRecipe == null) {
-                holdItem=null;
-                computationRequired=computationRemaining=0;
-                mMaxProgresstime = 0;
-                mEfficiencyIncrease = 0;
-                for (GT_MetaTileEntity_Hatch_Holder r : eHolders)
-                r.getBaseMetaTileEntity().setActive(false);
+                if (tRecipe == null && aRecipe == null) {
+                    holdItem = null;
+                    computationRequired = computationRemaining = 0;
+                    mMaxProgresstime = 0;
+                    mEfficiencyIncrease = 0;
+                    for (GT_MetaTileEntity_Hatch_Holder r : eHolders)
+                        r.getBaseMetaTileEntity().setActive(false);
+                }
             }
         }
     }
