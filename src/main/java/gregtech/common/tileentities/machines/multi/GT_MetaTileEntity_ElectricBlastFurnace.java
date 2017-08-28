@@ -141,7 +141,7 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
                         mMaxProgresstime=Integer.MAX_VALUE-1;
                     }else{
                         mEUt=tRecipe.mEUt>>2;
-                        mEUt = (int) (mEUt * (Math.pow(0.95, tHeatCapacityDivTiers))); // power bonus of the coil
+                        if (tHeatCapacityDivTiers > 0) mEUt = (int) (mEUt * (Math.pow(0.95, tHeatCapacityDivTiers))); // power bonus of the coil
                         mMaxProgresstime=(int)xMaxProgresstime;
                     }
                 }else{
@@ -156,8 +156,9 @@ public class GT_MetaTileEntity_ElectricBlastFurnace
                     while (tempEUt <= V[mTier -1]) {
                         tempEUt<<=2;//this actually controls overclocking
                         //xEUt *= 4;//this is effect of everclocking
-                        mMaxProgresstime>>= k-- > 0 ? 2 : 1;// overclock effect with coil bonus
-                        xEUt = mMaxProgresstime==0 ? xEUt>>1 : xEUt<<2;//U know, if the time is less than 1 tick make the machine use less power
+                        mMaxProgresstime>>= k > 0 ? 2 : 1;// overclock effect with coil bonus
+                        xEUt = mMaxProgresstime==0 ? xEUt>>(k > 0 ? 2 : 1) : xEUt<<2;//U know, if the time is less than 1 tick make the machine use less power
+                        k--;
                     }
                     if (tHeatCapacityDivTiers > 0) xEUt = (int) (xEUt * (Math.pow(0.95, tHeatCapacityDivTiers))); // power bonus of the coil
                     if(xEUt>Integer.MAX_VALUE-1){
