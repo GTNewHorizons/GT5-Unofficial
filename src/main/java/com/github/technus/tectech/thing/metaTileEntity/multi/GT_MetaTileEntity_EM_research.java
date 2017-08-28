@@ -34,7 +34,7 @@ import static com.github.technus.tectech.recipe.TT_recipe.E_RECIPE_ID;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
-import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_crafter.crafter;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_crafting.crafter;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_machine.machine;
 import static gregtech.api.enums.GT_Values.E;
 
@@ -131,45 +131,46 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    protected void onFirstTick_EM() {
-        if(getBaseMetaTileEntity().isClientSide()) return;
-        if(computationRemaining>0) {
-            aRecipe=null;
-            tRecipe=null;
-            if (holdItem != null) {
-                if (ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)) {
-                    for (GT_Recipe.GT_Recipe_AssemblyLine tRecipe : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
-                        if (GT_Utility.areStacksEqual(tRecipe.mResearchItem, holdItem, true)) {
-                            this.tRecipe = tRecipe;
-                            break;
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        if(aBaseMetaTileEntity.isServerSide()) {
+            if (computationRemaining > 0) {
+                aRecipe = null;
+                tRecipe = null;
+                if (holdItem != null) {
+                    if (ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)) {
+                        for (GT_Recipe.GT_Recipe_AssemblyLine tRecipe : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
+                            if (GT_Utility.areStacksEqual(tRecipe.mResearchItem, holdItem, true)) {
+                                this.tRecipe = tRecipe;
+                                break;
+                            }
                         }
-                    }
-                } else if (ItemList.Tool_DataOrb.isStackEqual(mInventory[1], false, true)) {
-                    for (TT_recipe.TT_assLineRecipe assRecipeTT : TT_recipe.TT_Recipe_Map.sMachineRecipes.recipeList()) {
-                        if (GT_Utility.areStacksEqual(assRecipeTT.mResearchItem, holdItem, true)) {
-                            this.aRecipe = assRecipeTT;
-                            machineType = machine;
-                            break;
-                        }
-                    }
-                    if (aRecipe == null) {
-                        for (TT_recipe.TT_assLineRecipe assRecipeTT : TT_recipe.TT_Recipe_Map.sCrafterRecipes.recipeList()) {
+                    } else if (ItemList.Tool_DataOrb.isStackEqual(mInventory[1], false, true)) {
+                        for (TT_recipe.TT_assLineRecipe assRecipeTT : TT_recipe.TT_Recipe_Map.sMachineRecipes.recipeList()) {
                             if (GT_Utility.areStacksEqual(assRecipeTT.mResearchItem, holdItem, true)) {
                                 this.aRecipe = assRecipeTT;
-                                machineType = crafter;
+                                machineType = machine;
                                 break;
+                            }
+                        }
+                        if (aRecipe == null) {
+                            for (TT_recipe.TT_assLineRecipe assRecipeTT : TT_recipe.TT_Recipe_Map.sCrafterRecipes.recipeList()) {
+                                if (GT_Utility.areStacksEqual(assRecipeTT.mResearchItem, holdItem, true)) {
+                                    this.aRecipe = assRecipeTT;
+                                    machineType = crafter;
+                                    break;
+                                }
                             }
                         }
                     }
                 }
-            }
-            if (tRecipe == null && aRecipe == null) {
-                holdItem=null;
-                computationRequired=computationRemaining=0;
-                mMaxProgresstime = 0;
-                mEfficiencyIncrease = 0;
-                for (GT_MetaTileEntity_Hatch_Holder r : eHolders)
-                r.getBaseMetaTileEntity().setActive(false);
+                if (tRecipe == null && aRecipe == null) {
+                    holdItem = null;
+                    computationRequired = computationRemaining = 0;
+                    mMaxProgresstime = 0;
+                    mEfficiencyIncrease = 0;
+                    for (GT_MetaTileEntity_Hatch_Holder r : eHolders)
+                        r.getBaseMetaTileEntity().setActive(false);
+                }
             }
         }
     }

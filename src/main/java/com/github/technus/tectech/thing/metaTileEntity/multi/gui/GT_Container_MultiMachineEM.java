@@ -15,13 +15,23 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
     public byte[] eParamsOutStatus = new byte[20];
     public byte eCertainMode = 5, eCertainStatus = 127;
     public boolean ePowerPass = false, eSafeVoid = false, allowedToWork = false;
+    public final boolean ePowerPassButton, eSafeVoidButton, allowedToWorkButton;
+
+    public GT_Container_MultiMachineEM(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, boolean enablePowerPass, boolean enableSafeVoid, boolean enablePowerButton) {
+        super(aInventoryPlayer, aTileEntity);
+        ePowerPassButton=enablePowerPass;
+        eSafeVoidButton=enableSafeVoid;
+        allowedToWorkButton=enablePowerButton;
+    }
 
     public GT_Container_MultiMachineEM(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity) {
         super(aInventoryPlayer, aTileEntity);
+        ePowerPassButton=eSafeVoidButton=allowedToWorkButton=true;
     }
 
     public GT_Container_MultiMachineEM(InventoryPlayer aInventoryPlayer, IGregTechTileEntity aTileEntity, boolean bindInventory) {
         super(aInventoryPlayer, aTileEntity, bindInventory);
+        ePowerPassButton=eSafeVoidButton=allowedToWorkButton=true;
     }
 
     @Override
@@ -41,16 +51,24 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
             GT_MetaTileEntity_MultiblockBase_EM base = (GT_MetaTileEntity_MultiblockBase_EM) this.mTileEntity.getMetaTileEntity();
             switch (aSlotIndex) {
                 case 1:
-                    base.ePowerPass ^= true;
+                    if(ePowerPassButton) {
+                        base.ePowerPass ^= true;
+                        if (!allowedToWorkButton) {//TRANSFORMER HACK
+                            if (base.ePowerPass) base.getBaseMetaTileEntity().enableWorking();
+                            else base.getBaseMetaTileEntity().disableWorking();
+                        }
+                    }
                     break;
                 case 2:
-                    base.eSafeVoid ^= true;
+                    if(eSafeVoidButton) base.eSafeVoid ^= true;
                     break;
                 case 3:
-                    if (base.getBaseMetaTileEntity().isAllowedToWork()) {
-                        base.getBaseMetaTileEntity().disableWorking();
-                    } else {
-                        base.getBaseMetaTileEntity().enableWorking();
+                    if(allowedToWorkButton) {
+                        if (base.getBaseMetaTileEntity().isAllowedToWork()) {
+                            base.getBaseMetaTileEntity().disableWorking();
+                        } else {
+                            base.getBaseMetaTileEntity().enableWorking();
+                        }
                     }
                     break;
             }
@@ -62,7 +80,7 @@ public class GT_Container_MultiMachineEM extends GT_ContainerMetaTile_Machine {
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
         if ((this.mTileEntity.isClientSide()) || (this.mTileEntity.getMetaTileEntity() == null) || (this.eParamsInStatus == null))
-            return;//INTELLIJ IS TALKING BULLSHIT HERE IT CAN BE NULL!!!
+            return;
         this.eParamsInStatus = ((GT_MetaTileEntity_MultiblockBase_EM) this.mTileEntity.getMetaTileEntity()).eParamsInStatus;
         this.eParamsOutStatus = ((GT_MetaTileEntity_MultiblockBase_EM) this.mTileEntity.getMetaTileEntity()).eParamsOutStatus;
         this.eCertainMode = ((GT_MetaTileEntity_MultiblockBase_EM) this.mTileEntity.getMetaTileEntity()).eCertainMode;

@@ -29,6 +29,8 @@ import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveD
 import static com.github.technus.tectech.recipe.TT_recipe.E_RECIPE_ID;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_crafting.crafter;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_machine.machine;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -71,10 +73,12 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
 
     public GT_MetaTileEntity_EM_scanner(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        eDismantleBoom=true;
     }
 
     public GT_MetaTileEntity_EM_scanner(String aName) {
         super(aName);
+        eDismantleBoom=true;
     }
 
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
@@ -139,30 +143,31 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
-    protected void onFirstTick_EM() {
-        if(getBaseMetaTileEntity().isClientSide()) return;
-        if(computationRemaining>0) {
-            eRecipe=null;
-            if (objectResearched!=null) {
-                if(ItemList.Tool_DataOrb.isStackEqual(mInventory[1], false, true)) {
-                    eRecipe = TT_recipe.TT_Recipe_Map_EM.sMachineRecipesEM.findRecipe(objectResearched.definition);
-                    if(eRecipe!=null) {
-                        machineType=GT_MetaTileEntity_EM_machine.machine;
-                    } else {
-                        eRecipe = TT_recipe.TT_Recipe_Map_EM.sCrafterRecipesEM.findRecipe(objectResearched.definition);
+    public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
+        if(aBaseMetaTileEntity.isServerSide()) {
+            if (computationRemaining > 0) {
+                eRecipe = null;
+                if (objectResearched != null) {
+                    if (ItemList.Tool_DataOrb.isStackEqual(mInventory[1], false, true)) {
+                        eRecipe = TT_recipe.TT_Recipe_Map_EM.sMachineRecipesEM.findRecipe(objectResearched.definition);
                         if (eRecipe != null) {
-                            machineType = GT_MetaTileEntity_EM_crafter.crafter;
+                            machineType = machine;
+                        } else {
+                            eRecipe = TT_recipe.TT_Recipe_Map_EM.sCrafterRecipesEM.findRecipe(objectResearched.definition);
+                            if (eRecipe != null) {
+                                machineType = crafter;
+                            }
                         }
                     }
                 }
+                if (eRecipe == null) {
+                    quantumStuff(false);
+                    objectResearched = null;
+                    computationRequired = computationRemaining = 0;
+                    mMaxProgresstime = 0;
+                    mEfficiencyIncrease = 0;
+                } else quantumStuff(true);
             }
-            if (eRecipe == null) {
-                quantumStuff(false);
-                objectResearched=null;
-                computationRequired=computationRemaining=0;
-                mMaxProgresstime = 0;
-                mEfficiencyIncrease = 0;
-            } else quantumStuff(true);
         }
     }
 
@@ -177,7 +182,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                     eRecipe = TT_recipe.TT_Recipe_Map_EM.sMachineRecipesEM.findRecipe(stackEM.definition);
                     if(eRecipe!=null) {
                         scannerRecipe=eRecipe.scannerRecipe;
-                        machineType=GT_MetaTileEntity_EM_machine.machine;
+                        machineType= machine;
                         objectResearched=new cElementalDefinitionStack(stackEM.definition,1);
                         //cleanMassEM_EM(objectResearched.getMass());
                         researchEM.remove(objectResearched.definition);
@@ -186,7 +191,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                     eRecipe = TT_recipe.TT_Recipe_Map_EM.sCrafterRecipesEM.findRecipe(stackEM.definition);
                     if(eRecipe!=null) {
                         scannerRecipe=eRecipe.scannerRecipe;
-                        machineType=GT_MetaTileEntity_EM_crafter.crafter;
+                        machineType= crafter;
                         objectResearched=new cElementalDefinitionStack(stackEM.definition,1);
                         //cleanMassEM_EM(objectResearched.getMass());
                         researchEM.remove(objectResearched.definition);
@@ -318,6 +323,5 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                     base.getWorld().setBlock(xDir, yDir, zDir, Blocks.air,0,2);
             }
         }
-        eDismatleBoom=shouldExist;
     }
 }
