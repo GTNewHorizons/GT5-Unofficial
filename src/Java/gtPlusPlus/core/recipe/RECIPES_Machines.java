@@ -925,8 +925,8 @@ public class RECIPES_Machines {
 				
 				ItemStack mInnerTank;
 				
-				if (CORE.GTNH){
-					mInnerTank = GregtechItemList.GT_FluidTank_HV.get(1);
+				if (CORE.GTNH || !CORE.configSwitches.enableMachine_FluidTanks){
+					mInnerTank = ItemList.Quantum_Tank_LV.get(1);
 				}
 				else {
 					mInnerTank = GregtechItemList.GT_FluidTank_EV.get(1);					
