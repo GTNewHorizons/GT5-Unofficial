@@ -7,10 +7,13 @@ import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.GTplusplus;
-import gtPlusPlus.core.client.renderer.RenderMiningExplosivesPrimed;
+import gtPlusPlus.core.client.renderer.*;
 import gtPlusPlus.core.common.CommonProxy;
 import gtPlusPlus.core.common.compat.COMPAT_PlayerAPI;
 import gtPlusPlus.core.entity.EntityPrimedMiningExplosive;
+import gtPlusPlus.core.entity.monster.EntitySickBlaze;
+import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
+import gtPlusPlus.core.entity.projectile.EntityToxinballSmall;
 import gtPlusPlus.core.handler.render.FirepitRender;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.tileentities.general.TileEntityFirepit;
@@ -18,6 +21,7 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.particles.EntityParticleFXMysterious;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.renderer.entity.RenderIronGolem;
 import net.minecraft.entity.Entity;
 
 public class ClientProxy extends CommonProxy{
@@ -66,6 +70,9 @@ public class ClientProxy extends CommonProxy{
 		//RenderingRegistry.registerEntityRenderingHandler(EntityGrenade.class, new RenderSnowball(ModItems.tutGrenade));		
 		Utils.LOG_INFO("Registering Custom Renderer for Mining Explosives.");
 	    RenderingRegistry.registerEntityRenderingHandler(EntityPrimedMiningExplosive.class, new RenderMiningExplosivesPrimed());
+	    RenderingRegistry.registerEntityRenderingHandler(EntitySickBlaze.class, new RenderSickBlaze());
+	    RenderingRegistry.registerEntityRenderingHandler(EntityStaballoyConstruct.class, new RenderIronGolem());
+	    RenderingRegistry.registerEntityRenderingHandler(EntityToxinballSmall.class, new RenderToxinball(1F));
 
 		//ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBloodSteelChest.class, new BloodSteelChestRenderer());
 		//MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.tutChest), new ItemRenderBloodSteelChest());

@@ -17,14 +17,14 @@ import net.minecraft.util.*;
 import net.minecraft.village.Village;
 import net.minecraft.world.World;
 
-public class EntityStaballoyWarrior extends EntityGolem {
+public class EntityStaballoyConstruct extends EntityGolem {
 	/** deincrements, and a distance-to-home check is done at 0 */
 	private int homeCheckTimer;
 	Village villageObj;
 	private int attackTimer;
 	private int holdRoseTick;
 
-	public EntityStaballoyWarrior(World world) {
+	public EntityStaballoyConstruct(World world) {
 		super(world);
 		this.setSize(1.4F, 2.9F);
 		this.getNavigator().setAvoidsWater(true);
@@ -274,10 +274,6 @@ public class EntityStaballoyWarrior extends EntityGolem {
 	 */
 	@Override
 	public void onDeath(DamageSource p_70645_1_) {
-		if (!this.isPlayerCreated() && this.attackingPlayer != null && this.villageObj != null) {
-			this.villageObj.setReputationForPlayer(this.attackingPlayer.getCommandSenderName(), -5);
-		}
-
 		super.onDeath(p_70645_1_);
 	}
 }

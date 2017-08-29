@@ -19,6 +19,7 @@ public class EntitySickBlaze extends EntityBlaze {
 	/** ticks until heightOffset is randomized */
 	private int heightOffsetUpdateTime;
 	private int field_70846_g;
+	private final int mDataWatcherID = 30;
 
 	public EntitySickBlaze(World p_i1731_1_) {
 		super(p_i1731_1_);
@@ -35,7 +36,7 @@ public class EntitySickBlaze extends EntityBlaze {
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		this.dataWatcher.addObject(16, new Byte((byte) 0));
+		this.dataWatcher.addObject(mDataWatcherID, new Byte((byte) 0));
 	}
 
 	/**
@@ -209,12 +210,12 @@ public class EntitySickBlaze extends EntityBlaze {
 
 	@Override
 	public boolean func_70845_n() {
-		return (this.dataWatcher.getWatchableObjectByte(16) & 1) != 0;
+		return (this.dataWatcher.getWatchableObjectByte(mDataWatcherID) & 1) != 0;
 	}
 
 	@Override
 	public void func_70844_e(boolean p_70844_1_) {
-		byte b0 = this.dataWatcher.getWatchableObjectByte(16);
+		byte b0 = this.dataWatcher.getWatchableObjectByte(mDataWatcherID);
 
 		if (p_70844_1_) {
 			b0 = (byte) (b0 | 1);
@@ -223,7 +224,7 @@ public class EntitySickBlaze extends EntityBlaze {
 			b0 &= -2;
 		}
 
-		this.dataWatcher.updateObject(16, Byte.valueOf(b0));
+		this.dataWatcher.updateObject(mDataWatcherID, Byte.valueOf(b0));
 	}
 
 	/**
