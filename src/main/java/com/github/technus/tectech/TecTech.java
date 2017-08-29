@@ -23,7 +23,9 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 
@@ -137,42 +139,42 @@ public class TecTech {
     }
 
     private void fixBlocks(){
+        HashSet<String> modIDs=new HashSet<>(Arrays.asList(
+                "minecraft",
+                "IC2",
+                "gregtech",
+                "dreamcraft",
+                "miscutils",
+                "GT++DarkWorld",
+                "TwilightForest",
+                "GalacticraftCore",
+                "GalacticraftMars",
+                "GalaxySpace",
+                "extracells",
+                "ExtraUtilities",
+                "Avaritia",
+                "avaritiaddons",
+                "EnderStorage",
+                "enhancedportals",
+                "DraconicEvolution",
+                "IC2NuclearControl",
+                "IronChest",
+                "opensecurity",
+                "openmodularturrets",
+                "Railcraft",
+                "RIO",
+                "SGCraft",
+                "appliedenergistics2",
+                "thaumicenergistics",
+                "witchery",
+                "lootgames",
+                Reference.MODID,
+                "utilityworlds"
+        ));
         String modId;
         for(Block block : GameData.getBlockRegistry().typeSafeIterable()) {
             modId = GameRegistry.findUniqueIdentifierFor(block).modId;
-            if (//Full Whitelisted Mods
-                            modId.equals("minecraft") ||
-                            modId.equals("IC2") ||
-                            modId.equals("gregtech") ||
-                            modId.equals("dreamcraft") ||
-                            modId.equals("miscutils") ||
-                            modId.equals("GT++DarkWorld") ||
-                            modId.equals("TwilightForest") ||
-                            modId.equals("GalacticraftCore") ||
-                            modId.equals("GalacticraftMars") ||
-                            modId.equals("GalaxySpace") ||
-                            //modId.equals("EnderIO") || // nerf
-                            //modId.equals("Thaumcraft") || // too op, nerf
-                            modId.equals("extracells") ||
-                            modId.equals("ExtraUtilities") ||
-                            modId.equals("Avaritia") ||
-                            modId.equals("avaritiaddons") ||
-                            modId.equals("EnderStorage") ||
-                            modId.equals("enhancedportals") ||
-                            modId.equals("DraconicEvolution") ||
-                            modId.equals("IC2NuclearControl") ||
-                            modId.equals("IronChest") ||
-                            modId.equals("opensecurity") ||
-                            modId.equals("openmodularturrets") ||
-                            modId.equals("Railcraft") ||
-                            modId.equals("RIO") ||
-                            modId.equals("SGCraft") ||
-                            modId.equals("appliedenergistics2") ||
-                            modId.equals("thaumicenergistics") ||
-                            modId.equals("witchery") ||
-                            modId.equals("lootgames") ||
-                            modId.equals(Reference.MODID) ||
-                            modId.equals("utilityworlds")) {
+            if (modIDs.contains(modId)) {//Full Whitelisted Mods
                 continue;
             } else if (modId.equals("TConstruct")) {
                 block.slipperiness = 1;//cos we know it is slippery, right Greg?
