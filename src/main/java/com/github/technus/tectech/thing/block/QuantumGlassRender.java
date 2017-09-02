@@ -12,7 +12,6 @@ import org.lwjgl.opengl.GL11;
  * Created by danie_000 on 19.12.2016.
  */
 public final class QuantumGlassRender implements ISimpleBlockRenderingHandler {
-    public static int renderID;
 
     public QuantumGlassRender() {
     }
@@ -120,6 +119,6 @@ public final class QuantumGlassRender implements ISimpleBlockRenderingHandler {
 
     @Override
     public int getRenderId() {
-        return QuantumGlassRender.renderID;
+        return QuantumGlassBlock.renderID;
     }
 }

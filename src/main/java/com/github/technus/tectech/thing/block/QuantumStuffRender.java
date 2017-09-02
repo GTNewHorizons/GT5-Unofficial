@@ -14,8 +14,6 @@ import org.lwjgl.opengl.GL11;
  * Created by danie_000 on 19.12.2016.
  */
 public final class QuantumStuffRender implements ISimpleBlockRenderingHandler {
-    public static int renderID;
-    private static Vec3 pos;
     private static Tessellator tes=Tessellator.instance;
 
     public QuantumStuffRender() {}
@@ -79,7 +77,7 @@ public final class QuantumStuffRender implements ISimpleBlockRenderingHandler {
     }
 
     private void tesAbuse(int x, int y, int z, float sx, float sy, float sz, float rotX, float rotY, float rotZ,float sideU, float sideV){
-        pos=Vec3.createVectorHelper(sx,sy,sz);
+        Vec3 pos = Vec3.createVectorHelper(sx, sy, sz);
         pos.rotateAroundX(rotX);
         pos.rotateAroundY(rotY);
         pos.rotateAroundZ(rotZ);
@@ -94,6 +92,6 @@ public final class QuantumStuffRender implements ISimpleBlockRenderingHandler {
 
     @Override
     public int getRenderId() {
-        return QuantumStuffRender.renderID;
+        return QuantumStuffBlock.renderID;
     }
 }

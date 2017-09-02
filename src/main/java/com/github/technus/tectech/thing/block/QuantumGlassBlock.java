@@ -18,6 +18,7 @@ import static com.github.technus.tectech.auxiliary.Reference.MODID;
  */
 public final class QuantumGlassBlock extends BlockBase {
     public static IIcon stuff;
+    public static int renderID;
     public static QuantumGlassBlock INSTANCE;
 
     public QuantumGlassBlock() {
@@ -66,6 +67,7 @@ public final class QuantumGlassBlock extends BlockBase {
         return false;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {
         Block block = p_149646_1_.getBlock(p_149646_2_, p_149646_3_, p_149646_4_);
@@ -74,10 +76,11 @@ public final class QuantumGlassBlock extends BlockBase {
 
     @Override
     public int getRenderType() {
-        return QuantumGlassRender.renderID;
+        return QuantumGlassBlock.renderID;
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister p_149651_1_) {
         super.registerBlockIcons(p_149651_1_);
         stuff = this.blockIcon;
