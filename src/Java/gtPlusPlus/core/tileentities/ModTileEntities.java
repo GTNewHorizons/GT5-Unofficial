@@ -20,6 +20,7 @@ public class ModTileEntities {
 		GameRegistry.registerTileEntity(TileEntityWorkbenchAdvanced.class, "TileWorkbenchAdvanced");
 		GameRegistry.registerTileEntity(TileEntityFishTrap.class, "TileFishTrap");
 		GameRegistry.registerTileEntity(TileEntityFirepit.class, "TileFirePit");
+		GameRegistry.registerTileEntity(TileEntityInfiniteFluid.class, "TileInfiniteFluid");
 
 	}
 

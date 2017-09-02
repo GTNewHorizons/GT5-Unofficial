@@ -41,6 +41,7 @@ public final class ModBlocks {
 	public static Block blockMiningExplosive;
 	
 	public static Block blockHellfire;
+	public static Block blockInfiniteFLuidTank;
 
 	public static void init() {
 		Utils.LOG_INFO("Initializing Blocks.");
@@ -63,6 +64,7 @@ public final class ModBlocks {
 		blockHeliumGenerator = new HeliumGenerator();
 		blockFirePit = new FirePit();
 		blockFishTrap = new FishTrap();
+		blockInfiniteFLuidTank = new FluidTankInfinite();
 		blockOreFluorite = new BlockBaseOre("oreFluorite", "Fluorite", Material.rock, BlockTypes.ORE, Utils.rgbtoHexValue(120, 120, 30), 3);
 		blockMiningExplosive = new MiningExplosives();
 		blockHellfire = new HellFire();

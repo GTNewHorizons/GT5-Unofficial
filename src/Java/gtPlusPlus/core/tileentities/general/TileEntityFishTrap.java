@@ -101,7 +101,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 			int checkingSlot = 0;
 			final ItemStack loot = this.generateLootForFishTrap().copy();
 			try {
-				Utils.LOG_INFO("Trying to add "+loot.getDisplayName()+" | "+loot.getItemDamage());
+				//Utils.LOG_INFO("Trying to add "+loot.getDisplayName()+" | "+loot.getItemDamage());
 				for (final ItemStack contents : this.getInventory().getInventory()) {
 
 
