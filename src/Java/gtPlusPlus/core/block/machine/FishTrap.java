@@ -8,10 +8,14 @@ import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
+import gtPlusPlus.core.util.inventory.InventoryUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -89,5 +93,38 @@ public class FishTrap extends BlockContainer
 	public TileEntity createNewTileEntity(final World world, final int p_149915_2_) {
 		return new TileEntityFishTrap();
 	}
+
+	@Override
+	public void onBlockAdded(World world, int x, int y, int z) {
+		super.onBlockAdded(world, x, y, z);
+	}
+
+	@Override
+	public void breakBlock(World world, int x, int y, int z, Block block, int number) {
+	    InventoryUtils.dropInventoryItems(world, x, y, z, block);
+	    super.breakBlock(world, x, y, z, block, number);
+	    }
+
+	@Override
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
+		if (stack.hasDisplayName()) {
+	        ((TileEntityFishTrap) world.getTileEntity(x,y,z)).setCustomName(stack.getDisplayName());
+	    }
+		}
+	
+	/*@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState blockstate) {
+		TileEntityFishTrap te = (TileEntityFishTrap) world.getTileEntity(pos);
+	    InventoryHelper.dropInventoryItems(world, pos, te);
+	    super.breakBlock(world, pos, blockstate);
+	}
+
+
+	@Override
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+	    if (stack.hasDisplayName()) {
+	        ((TileEntityFishTrap) worldIn.getTileEntity(pos)).setCustomName(stack.getDisplayName());
+	    }
+	}*/
 
 }

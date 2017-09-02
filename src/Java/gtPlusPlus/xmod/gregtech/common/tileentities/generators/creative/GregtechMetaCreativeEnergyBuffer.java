@@ -156,7 +156,7 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 	public long[] getStoredEnergy(){
 		long tScale = this.getBaseMetaTileEntity().getEUCapacity();
 		long tStored = this.getBaseMetaTileEntity().getStoredEU();
-		this.setEUVar(Long.MAX_VALUE);
+		//this.setEUVar(Long.MAX_VALUE);
 		return new long[] { tStored, tScale };
 	}
 
