@@ -50,10 +50,10 @@ public class FluidTankInfinite extends BlockContainer {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(final IIconRegister p_149651_1_) {
-		this.blockIcon = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "cover_crafting");
-		this.textureTop = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "cover_crafting");
-		this.textureBottom = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "cover_crafting");
-		this.textureFront = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "cover_crafting");
+		this.blockIcon = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "Generic_Creative_Texture");
+		this.textureTop = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "Generic_Creative_Texture");
+		this.textureBottom = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "Generic_Creative_Texture");
+		this.textureFront = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "Generic_Creative_Texture");
 	}
 
 	/**

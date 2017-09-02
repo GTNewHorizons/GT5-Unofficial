@@ -238,10 +238,10 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 			calculateTickrate = 0;
 		}
 		else if ((this.waterSides > 2) && (this.waterSides < 4)) {
-			calculateTickrate = 36;
+			calculateTickrate = 3600;
 		}
 		else if ((this.waterSides >= 4) && (this.waterSides < 6)) {
-			calculateTickrate = 2;
+			calculateTickrate = 2400;
 		}
 		else if (this.waterSides == 6) {
 			calculateTickrate = 1200;
