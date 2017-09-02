@@ -28,6 +28,7 @@ public class TileEntityInfiniteFluid extends TileEntity implements IFluidHandler
 	}
 
 	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+		needsUpdate = true;
 		return this.tank.drain(resource.amount, doDrain);
 	}
 
@@ -72,6 +73,7 @@ public class TileEntityInfiniteFluid extends TileEntity implements IFluidHandler
 	}
 
 	public float getAdjustedVolume() {
+		needsUpdate = true;
 		float amount = tank.getFluidAmount();
 		float capacity = tank.getCapacity();
 		float volume = (amount / capacity) * 0.8F;
@@ -79,6 +81,13 @@ public class TileEntityInfiniteFluid extends TileEntity implements IFluidHandler
 	}
 
 	public void updateEntity() {
+		
+		if (this.tank.getFluid() != null){
+			FluidStack bigStorage = this.tank.getFluid();
+			bigStorage.amount = this.tank.getCapacity();
+			this.tank.setFluid(bigStorage);
+		}
+		
 		if (needsUpdate) {
 			
 			if (this.tank.getFluid() != null){

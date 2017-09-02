@@ -101,7 +101,10 @@ public class PlayerUtils {
 	public static ItemStack getItemStackInPlayersHand(final EntityPlayer player){
 		ItemStack heldItem = null;
 		try{heldItem = player.getHeldItem();
-		}catch(final NullPointerException e){return null;}
+		}catch(final NullPointerException e){
+			e.printStackTrace();
+			return null;
+			}
 		if (heldItem != null){
 			return heldItem;
 		}
@@ -109,11 +112,23 @@ public class PlayerUtils {
 	}
 
 	@SideOnly(Side.CLIENT)
-	public static Item getItemInPlayersHand(){
+	public static Item getItemInPlayersHandClient(){
 		final Minecraft mc = Minecraft.getMinecraft();
 		Item heldItem = null;
 
 		try{heldItem = mc.thePlayer.getHeldItem().getItem();
+		}catch(final NullPointerException e){return null;}
+
+		if (heldItem != null){
+			return heldItem;
+		}
+
+		return null;
+	}
+	
+	public static Item getItemInPlayersHand(EntityPlayer player){
+		Item heldItem = null;
+		try{heldItem = player.getHeldItem().getItem();
 		}catch(final NullPointerException e){return null;}
 
 		if (heldItem != null){
