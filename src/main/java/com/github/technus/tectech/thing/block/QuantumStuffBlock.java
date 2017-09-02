@@ -22,6 +22,7 @@ import static com.github.technus.tectech.auxiliary.Reference.MODID;
  */
 public final class QuantumStuffBlock extends BlockBase {
     public static IIcon stuff;
+    public static int renderID;
     public static QuantumStuffBlock INSTANCE;
 
     public QuantumStuffBlock() {
@@ -41,6 +42,7 @@ public final class QuantumStuffBlock extends BlockBase {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister p_149651_1_) {
         super.registerBlockIcons(p_149651_1_);
         stuff = this.blockIcon;
@@ -82,7 +84,7 @@ public final class QuantumStuffBlock extends BlockBase {
 
     @Override
     public int getRenderType() {
-        return QuantumStuffRender.renderID;
+        return QuantumStuffBlock.renderID;
     }
 
     public static void run() {
