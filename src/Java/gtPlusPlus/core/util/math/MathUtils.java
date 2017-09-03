@@ -143,6 +143,10 @@ public class MathUtils {
 		final double roundOff = Math.round(c * 100.00) / 100.00;
 		return roundOff;
 	}
+	
+	public static int findPercentageOfInt(int input, int percentage){
+		return (int)(input*(percentage/100.0f));
+	}
 
 
 	//Smooth Rounding Function

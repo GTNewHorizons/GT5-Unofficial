@@ -16,6 +16,7 @@ import gtPlusPlus.core.recipe.*;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
+import gtPlusPlus.xmod.gregtech.recipes.MultiblockRecipeMapHandler;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.*;
 import net.minecraft.item.ItemStack;
 
@@ -41,6 +42,10 @@ public class COMPAT_HANDLER {
 
 	public static void registerGregtechMachines() {
 		if (Gregtech) {
+			
+			//Register some custom recipe maps for any enabled multiblocks.
+			MultiblockRecipeMapHandler.run();
+			
 			new RECIPES_LaserEngraver();
 			GregtechEnergyBuffer.run();
 			GregtechLFTR.run();

@@ -20,6 +20,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
+import gtPlusPlus.xmod.gregtech.recipes.MultiblockRecipeMapHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -72,7 +73,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes;
+		return MultiblockRecipeMapHandler.mMultiElectrolyzer;
 	}
 
 	@Override
@@ -233,7 +234,7 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 		}
-		return tAmount >= 16;
+		return tAmount >= 12;
 	}
 
 	@Override
