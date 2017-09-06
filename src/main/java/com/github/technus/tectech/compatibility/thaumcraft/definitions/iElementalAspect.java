@@ -1,4 +1,4 @@
-package com.github.technus.tectech.magicAddon.definitions;
+package com.github.technus.tectech.compatibility.thaumcraft.definitions;
 
 /**
  * Created by Tec on 21.05.2017.

@@ -1,8 +1,8 @@
-package com.github.technus.tectech.magicAddon;
+package com.github.technus.tectech.compatibility.thaumcraft;
 
 import com.github.technus.tectech.elementalMatter.classes.cElementalDefinition;
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStack;
-import com.github.technus.tectech.magicAddon.definitions.iElementalAspect;
+import com.github.technus.tectech.compatibility.thaumcraft.definitions.iElementalAspect;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_MultiblockBase_EM;
 import net.minecraft.tileentity.TileEntity;
 import thaumcraft.api.aspects.Aspect;
@@ -11,7 +11,7 @@ import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.common.tiles.TileEssentiaReservoir;
 import thaumcraft.common.tiles.TileJarFillable;
 
-import static com.github.technus.tectech.magicAddon.definitions.AspectDefinitionCompat.aspectToDef;
+import static com.github.technus.tectech.compatibility.thaumcraft.definitions.AspectDefinitionCompat.aspectToDef;
 
 /**
  * Created by Tec on 21.05.2017.

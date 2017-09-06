@@ -23,7 +23,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import static com.github.technus.tectech.CommonValues.disperseAt;
+import static com.github.technus.tectech.CommonValues.DISPERSE_AT;
 import static com.github.technus.tectech.loader.MainLoader.elementalPollution;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 import static com.github.technus.tectech.Util.V;
@@ -89,7 +89,7 @@ public class GT_MetaTileEntity_Hatch_MufflerElemental extends GT_MetaTileEntity_
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.tecMark,
+                CommonValues.TEC_MARK,
                 mDescription,
                 "Mass capacity: " + EnumChatFormatting.AQUA + String.format(java.util.Locale.ENGLISH, "%+.2E", overflowMax) + " eV/c^2",
                 "Disposal Speed: " + EnumChatFormatting.AQUA + String.format(java.util.Locale.ENGLISH, "%+.2E", overflowDisperse) + " (eV/c^2)/s",
@@ -146,7 +146,7 @@ public class GT_MetaTileEntity_Hatch_MufflerElemental extends GT_MetaTileEntity_
 
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
-        if (aBaseMetaTileEntity.isServerSide() && (aTick % 20) == disperseAt) {
+        if (aBaseMetaTileEntity.isServerSide() && (aTick % 20) == DISPERSE_AT) {
             if (aBaseMetaTileEntity.isActive()) {
                 overflowMatter -= overflowDisperse;
                 if (overflowMatter < 0) {

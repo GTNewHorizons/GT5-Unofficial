@@ -1,4 +1,4 @@
-package com.github.technus.tectech.gtppAddon;
+package com.github.technus.tectech.compatibility.gtpp;
 
 import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStack;
 import gregtech.api.enums.OrePrefixes;

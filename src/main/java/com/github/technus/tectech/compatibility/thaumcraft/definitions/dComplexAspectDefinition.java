@@ -1,4 +1,4 @@
-package com.github.technus.tectech.magicAddon.definitions;
+package com.github.technus.tectech.compatibility.thaumcraft.definitions;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.classes.*;
@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.elementalMatter.classes.cElementalDecay.noDecay;
-import static com.github.technus.tectech.magicAddon.definitions.AspectDefinitionCompat.aspectDefinitionCompat;
+import static com.github.technus.tectech.compatibility.thaumcraft.definitions.AspectDefinitionCompat.aspectDefinitionCompat;
 
 /**
  * Created by Tec on 06.05.2017.

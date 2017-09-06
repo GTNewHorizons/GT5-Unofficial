@@ -1,4 +1,4 @@
-package com.github.technus.tectech.loader;
+package com.github.technus.tectech.compatibility.dreamcraft;
 
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;

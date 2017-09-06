@@ -8,7 +8,7 @@ import net.minecraft.util.EnumChatFormatting;
 
 import java.util.List;
 
-import static com.github.technus.tectech.CommonValues.tecMark;
+import static com.github.technus.tectech.CommonValues.TEC_MARK;
 
 /**
  * Created by danie_000 on 03.10.2016.
@@ -20,7 +20,7 @@ public class GT_Item_CasingsTT extends GT_Item_Casings_Abstract {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-        aList.add(tecMark);
+        aList.add(TEC_MARK);
         switch (aStack.getItemDamage()) {
             case 0://"High Power Casing"
                 aList.add("Well suited for high power applications.");

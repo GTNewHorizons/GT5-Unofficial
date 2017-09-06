@@ -146,7 +146,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.bassMark,
+                CommonValues.BASS_MARK,
                 "High Frequency Oven",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "From live to done in seconds!",
                 EnumChatFormatting.BLUE + "I said nuke the... I meant microwave supper!",

@@ -1,10 +1,10 @@
 package com.github.technus.tectech.loader;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.magicAddon.EssentiaCompat;
-import com.github.technus.tectech.magicAddon.EssentiaCompatEnabled;
-import com.github.technus.tectech.magicAddon.definitions.AspectDefinitionCompat;
-import com.github.technus.tectech.magicAddon.definitions.AspectDefinitionCompatEnabled;
+import com.github.technus.tectech.compatibility.thaumcraft.EssentiaCompat;
+import com.github.technus.tectech.compatibility.thaumcraft.EssentiaCompatEnabled;
+import com.github.technus.tectech.compatibility.thaumcraft.definitions.AspectDefinitionCompat;
+import com.github.technus.tectech.compatibility.thaumcraft.definitions.AspectDefinitionCompatEnabled;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
@@ -25,8 +25,8 @@ import java.util.List;
 
 import static com.github.technus.tectech.TecTech.hasThaumcraft;
 import static com.github.technus.tectech.TecTech.mainTab;
-import static com.github.technus.tectech.magicAddon.EssentiaCompat.essentiaContainerCompat;
-import static com.github.technus.tectech.magicAddon.definitions.AspectDefinitionCompat.aspectDefinitionCompat;
+import static com.github.technus.tectech.compatibility.thaumcraft.EssentiaCompat.essentiaContainerCompat;
+import static com.github.technus.tectech.compatibility.thaumcraft.definitions.AspectDefinitionCompat.aspectDefinitionCompat;
 import static gregtech.api.enums.GT_Values.W;
 
 public final class MainLoader {//TODO add checks for - is mod loaded dreamcraft to enable higher tier machinery. (above UV), or implement a check for GT tier values.
