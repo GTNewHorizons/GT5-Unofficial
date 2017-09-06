@@ -106,11 +106,11 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
             byte Tick = (byte) (aTick % 20);
-            if (decayAt == Tick) {
+            if (DECAY_AT == Tick) {
                 purgeOverflow();
                 content.tickContent(postEnergize);//Hatches don't life time mult things
                 purgeOverflow();
-            } else if (overflowAt == Tick) {
+            } else if (OVERFLOW_AT == Tick) {
                 if (overflowMatter <= 0) {
                     deathDelay = 3;
                 } else {
@@ -137,7 +137,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
                     }
                     deathDelay--;
                 }
-            } else if (moveAt == Tick) {
+            } else if (MOVE_AT == Tick) {
                 if (content.hasStacks()) moveAround(aBaseMetaTileEntity);
                 getBaseMetaTileEntity().setActive(content.hasStacks());
             }
@@ -245,7 +245,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.tecMark,
+                CommonValues.TEC_MARK,
                 mDescription,
                 "Max stacks amount: " + EnumChatFormatting.AQUA + getMaxStacksCount(),
                 "Stack capacity: " + EnumChatFormatting.AQUA + getMaxStackSize(),

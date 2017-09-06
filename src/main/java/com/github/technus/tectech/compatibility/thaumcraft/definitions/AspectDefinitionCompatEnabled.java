@@ -1,4 +1,4 @@
-package com.github.technus.tectech.magicAddon.definitions;
+package com.github.technus.tectech.compatibility.thaumcraft.definitions;
 
 import com.github.technus.tectech.elementalMatter.classes.cElementalDefinition;
 import com.github.technus.tectech.elementalMatter.classes.tElementalException;
@@ -7,7 +7,7 @@ import thaumcraft.api.aspects.Aspect;
 
 import java.util.ArrayList;
 
-import static com.github.technus.tectech.magicAddon.definitions.ePrimalAspectDefinition.*;
+import static com.github.technus.tectech.compatibility.thaumcraft.definitions.ePrimalAspectDefinition.*;
 
 /**
  * Created by Tec on 21.05.2017.

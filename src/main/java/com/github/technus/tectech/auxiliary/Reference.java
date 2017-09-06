@@ -1,6 +1,6 @@
 package com.github.technus.tectech.auxiliary;
 
-public class Reference {
+public final class Reference {
     public static final String MODID = "tectech";
     public static final String NAME = "TecTech - Tec Technology!";
     public static final String VERSION = "GRADLETOKEN_VERSION";

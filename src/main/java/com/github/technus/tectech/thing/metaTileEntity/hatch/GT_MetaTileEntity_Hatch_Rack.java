@@ -24,7 +24,7 @@ import net.minecraft.util.EnumChatFormatting;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.technus.tectech.CommonValues.multiCheckAt;
+import static com.github.technus.tectech.CommonValues.MULTI_CHECK_AT;
 import static com.github.technus.tectech.Util.getUniqueIdentifier;
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 
@@ -180,7 +180,7 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            if (aTick % 20 == multiCheckAt) {
+            if (aTick % 20 == MULTI_CHECK_AT) {
                 if (this.heat > 0) {
                     float heatC = 0;
                     for (int i = 0; i < mInventory.length; i++) {
@@ -221,7 +221,7 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.tecMark,
+                CommonValues.TEC_MARK,
                 mDescription,
                 EnumChatFormatting.AQUA + "Holds Computer Components"
         };

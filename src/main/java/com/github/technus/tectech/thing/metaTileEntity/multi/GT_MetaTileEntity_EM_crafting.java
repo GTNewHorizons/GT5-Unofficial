@@ -101,7 +101,7 @@ public class GT_MetaTileEntity_EM_crafting extends GT_MetaTileEntity_MultiblockB
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.tecMark,
+                CommonValues.TEC_MARK,
                 "The most precise way of making stuff.",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "(Trans-Planck process)"
         };

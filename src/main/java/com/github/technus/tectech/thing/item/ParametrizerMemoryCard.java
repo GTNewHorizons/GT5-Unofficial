@@ -90,7 +90,7 @@ public class ParametrizerMemoryCard extends Item {
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
         NBTTagCompound tNBT = aStack.getTagCompound();
-        aList.add(CommonValues.bassMark);
+        aList.add(CommonValues.BASS_MARK);
         aList.add("Stores Parameters");
 
         if(aStack.getItemDamage()==1) {
