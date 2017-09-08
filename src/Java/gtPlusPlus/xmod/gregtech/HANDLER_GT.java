@@ -6,6 +6,7 @@ import java.util.List;
 
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_Config;
+import gregtech.api.util.MultiblockRecipeMapHandler;
 import gregtech.api.world.GT_Worldgen;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.lib.CORE;
@@ -62,7 +63,8 @@ public class HANDLER_GT {
 	}
 
 	public static void postInit(){
-
+		//Register some custom recipe maps for any enabled multiblocks.
+		MultiblockRecipeMapHandler.run();
 	}
 
 }

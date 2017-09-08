@@ -10,14 +10,16 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.CustomRecipeMap;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
-import gtPlusPlus.xmod.gregtech.recipes.MultiblockRecipeMapHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -65,11 +67,6 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
-	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return MultiblockRecipeMapHandler.mMultiWireMill;
-	}
-
-	@Override
 	public boolean isFacingValid(final byte aFacing) {
 		return aFacing > 1;
 	}
@@ -81,7 +78,11 @@ extends GregtechMeta_MultiBlockBase {
 			final long tVoltage = this.getMaxInputVoltage();
 			final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
-			final GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sWiremillRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], null, new ItemStack[]{tInput});
+
+			final GT_Recipe_Map map = GT_Recipe_Map.sWiremillRecipes;			
+			final GT_Recipe tRecipe = map.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], null, new ItemStack[]{tInput});
+
+			tRecipe.mDuration = MathUtils.findPercentageOfInt(tRecipe.mDuration, 80);	
 			if (tRecipe != null) {
 
 				final int tValidOutputSlots = this.getValidOutputSlots(this.getBaseMetaTileEntity(), tRecipe, new ItemStack[]{tInput});
@@ -231,7 +232,7 @@ extends GregtechMeta_MultiBlockBase {
 
 
 	public byte getCasingTextureIndex() {
-		return 1;
+		return (byte) TAE.GTPP_INDEX(6);
 	}
 
 	private boolean addToMachineList(final IGregTechTileEntity tTileEntity) {

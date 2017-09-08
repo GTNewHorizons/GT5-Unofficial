@@ -12,15 +12,17 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.CustomRecipeMap;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
-import gtPlusPlus.xmod.gregtech.recipes.MultiblockRecipeMapHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -69,16 +71,6 @@ extends GregtechMeta_MultiBlockBase {
 	public Object getClientGUI(final int aID, final InventoryPlayer aPlayerInventory, final IGregTechTileEntity aBaseMetaTileEntity) {
 		return new GUI_MultiMachine(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "MacerationStack.png");
 	}
-
-	@Override
-	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return MultiblockRecipeMapHandler.mMultiMacerator;
-	}
-
-	/*@Override
-	public boolean isCorrectMachinePart(ItemStack aStack) {
-		return true;
-	}*/
 
 	@Override
 	public boolean isFacingValid(final byte aFacing) {
@@ -134,16 +126,20 @@ extends GregtechMeta_MultiBlockBase {
 		}
 
 		//Make a recipe instance for the rest of the method.
-		final GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(this.getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
+		final GT_Recipe_Map map = GT_Recipe_Map.sMaceratorRecipes;
+		final GT_Recipe tRecipe = map.findRecipe(this.getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
 
+
+		tRecipe.mDuration = MathUtils.findPercentageOfInt(tRecipe.mDuration, 80);	
+		
 
 		final int tValidOutputSlots = this.getValidOutputSlots(this.getBaseMetaTileEntity(), tRecipe, tInputs);
-		Utils.LOG_WARNING("Maceration Stack - Valid Output Hatches: "+tValidOutputSlots);
+		Utils.LOG_INFO("Maceration Stack - Valid Output Hatches: "+tValidOutputSlots);
 
 		//More than or one input
 		if ((tInputList.size() > 0) && (tValidOutputSlots >= 1)) {
 			if ((tRecipe != null) && (tRecipe.isRecipeInputEqual(true, null, tInputs))) {
-				Utils.LOG_WARNING("Valid Recipe found - size "+tRecipe.mOutputs.length);
+				Utils.LOG_INFO("Valid Recipe found - size "+tRecipe.mOutputs.length);
 				this.mEfficiency = (10000 - ((this.getIdealStatus() - this.getRepairStatus()) * 1000));
 				this.mEfficiencyIncrease = 10000;
 
@@ -153,15 +149,15 @@ extends GregtechMeta_MultiBlockBase {
 				final ItemStack[] outputs = new ItemStack[tRecipe.mOutputs.length];
 				for (int i = 0; i < tRecipe.mOutputs.length; i++){
 					if (i==0) {
-						Utils.LOG_WARNING("Adding the default output");
+						Utils.LOG_INFO("Adding the default output");
 						outputs[0] =  tRecipe.getOutput(i);
 					}
 					else if (this.getBaseMetaTileEntity().getRandomNumber(7500) < tRecipe.getOutputChance(i)){
-						Utils.LOG_WARNING("Adding a bonus output");
+						Utils.LOG_INFO("Adding a bonus output");
 						outputs[i] = tRecipe.getOutput(i);
 					}
 					else {
-						Utils.LOG_WARNING("Adding null output");
+						Utils.LOG_INFO("Adding null output");
 						outputs[i] = null;
 					}
 				}

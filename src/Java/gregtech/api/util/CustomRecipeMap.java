@@ -22,6 +22,14 @@ public class CustomRecipeMap/* extends GT_Recipe_Map*/{
 	//Fission Fuel Plant Recipes
 	public static final CustomRecipeMap sFissionFuelProcessing = new CustomRecipeMap(new HashSet<GT_Recipe>(50), "gt.recipe.fissionfuel", "Fission Fuel Processing", null, RES_PATH_GUI + "basicmachines/FissionFuel", 0, 0, 0, 4, 1, E, 1, E, true, true);
 
+	
+	public static final CustomRecipeMap mMultiWireMill = new CustomRecipeMap(new HashSet<GT_Recipe>(500), "gt.recipe.multi.wiremill", "Multiblock Wiremill", null, RES_PATH_GUI + "basicmachines/FissionFuel", 1, 1, 0, 0, 1, E, 1, E, true, true);
+	public static final CustomRecipeMap mMultiMacerator = new CustomRecipeMap(new HashSet<GT_Recipe>(500), "gt.recipe.multi.macerator", "Maceration Stack", null, RES_PATH_GUI + "basicmachines/FissionFuel", 1, 3, 0, 0, 1, E, 1, E, true, true);
+	public static final CustomRecipeMap mMultiCentrifuge = new CustomRecipeMap(new HashSet<GT_Recipe>(500), "gt.recipe.multi.centrifuge", "Multiblock Centrifuge", null, RES_PATH_GUI + "basicmachines/FissionFuel", 2, 6, 0, 0, 1, E, 1, E, true, true);
+	public static final CustomRecipeMap mMultiElectrolyzer = new CustomRecipeMap(new HashSet<GT_Recipe>(500), "gt.recipe.multi.electrolyzer", "Multiblock Electrolyzer", null, RES_PATH_GUI + "basicmachines/FissionFuel", 2, 6, 0, 0, 1, E, 1, E, true, true);
+
+	
+	
 	/**
 	 * HashMap of Recipes based on their Items
 	 */
@@ -101,7 +109,7 @@ public class CustomRecipeMap/* extends GT_Recipe_Map*/{
 		return this.addRecipe(aRecipe, true, false, false);
 	}
 
-	protected GT_Recipe addRecipe(final GT_Recipe aRecipe, final boolean aCheckForCollisions, final boolean aFakeRecipe, final boolean aHidden) {
+	public GT_Recipe addRecipe(final GT_Recipe aRecipe, final boolean aCheckForCollisions, final boolean aFakeRecipe, final boolean aHidden) {
 		aRecipe.mHidden = aHidden;
 		aRecipe.mFakeRecipe = aFakeRecipe;
 		if ((aRecipe.mFluidInputs.length < this.mMinimalInputFluids) && (aRecipe.mInputs.length < this.mMinimalInputItems)) {
@@ -255,27 +263,38 @@ public class CustomRecipeMap/* extends GT_Recipe_Map*/{
 		// Check the Recipe which has been used last time in order to not have to search for it again, if possible.
 		if (aRecipe != null) {
 			if (!aRecipe.mFakeRecipe && aRecipe.mCanBeBuffered && aRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) {
+				Utils.LOG_INFO("BAD RECIPE [a]");
 				return aRecipe.mEnabled && ((aVoltage * this.mAmperage) >= aRecipe.mEUt) ? aRecipe : null;
 			}
 		}
 
 		// Now look for the Recipes inside the Item HashMaps, but only when the Recipes usually have Items.
 		if ((this.mUsualInputCount > 0) && (aInputs != null)) {
+			Utils.LOG_INFO("BAD RECIPE [b0]");
 			for (final ItemStack tStack : aInputs) {
+				Utils.LOG_INFO("BAD RECIPE [b1]");
 				if (tStack != null) {
+					Utils.LOG_INFO("BAD RECIPE [b2] | "+tStack.getDisplayName());
 					Collection<GT_Recipe>
 					tRecipes = this.mRecipeItemMap.get(new GT_ItemStack(tStack));
 					if (tRecipes != null) {
+						Utils.LOG_INFO("BAD RECIPE [b3]");
 						for (final GT_Recipe tRecipe : tRecipes) {
+							Utils.LOG_INFO("BAD RECIPE [b4]");
 							if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) {
+								Utils.LOG_INFO("BAD RECIPE [b5]");
 								return tRecipe.mEnabled && ((aVoltage * this.mAmperage) >= tRecipe.mEUt) ? tRecipe : null;
 							}
 						}
 					}
+					Utils.LOG_INFO("BAD RECIPE [b6]");
 					tRecipes = this.mRecipeItemMap.get(new GT_ItemStack(GT_Utility.copyMetaData(W, tStack)));
 					if (tRecipes != null) {
+						Utils.LOG_INFO("BAD RECIPE [b7]");
 						for (final GT_Recipe tRecipe : tRecipes) {
+							Utils.LOG_INFO("BAD RECIPE [b8]");
 							if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) {
+								Utils.LOG_INFO("BAD RECIPE [b9]");
 								return tRecipe.mEnabled && ((aVoltage * this.mAmperage) >= tRecipe.mEUt) ? tRecipe : null;
 							}
 						}
@@ -285,14 +304,20 @@ public class CustomRecipeMap/* extends GT_Recipe_Map*/{
 		}
 
 		// If the minimal Amount of Items for the Recipe is 0, then it could be a Fluid-Only Recipe, so check that Map too.
-		if ((this.mMinimalInputItems == 0) && (aFluids != null)) {
+		if ((this.mMinimalInputItems == 0) && (aFluids != null && aFluids.length > 0)) {
+			Utils.LOG_INFO("BAD RECIPE [c0] "+aFluids.length);
 			for (final FluidStack aFluid : aFluids) {
+				Utils.LOG_INFO("BAD RECIPE [c1]");
 				if (aFluid != null) {
+					Utils.LOG_INFO("BAD RECIPE [c2]");
 					final Collection<GT_Recipe>
 					tRecipes = this.mRecipeFluidMap.get(aFluid.getFluid());
 					if (tRecipes != null) {
+						Utils.LOG_INFO("BAD RECIPE [c3]");
 						for (final GT_Recipe tRecipe : tRecipes) {
+							Utils.LOG_INFO("BAD RECIPE [c4]");
 							if (!tRecipe.mFakeRecipe && tRecipe.isRecipeInputEqual(false, true, aFluids, aInputs)) {
+								Utils.LOG_INFO("BAD RECIPE [c5]");
 								return tRecipe.mEnabled && ((aVoltage * this.mAmperage) >= tRecipe.mEUt) ? tRecipe : null;
 							}
 						}
