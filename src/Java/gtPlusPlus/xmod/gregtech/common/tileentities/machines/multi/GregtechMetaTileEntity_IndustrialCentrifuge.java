@@ -19,6 +19,7 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
@@ -117,6 +118,7 @@ extends GregtechMeta_MultiBlockBase {
 		final FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
 		if ((tInputList.size() > 0) || (tFluids.length > 0)) {
 			final GT_Recipe tRecipe = map.findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
+			tRecipe.mDuration = MathUtils.findPercentageOfInt(tRecipe.mDuration, 80);
 			if (tRecipe != null) {
 				Utils.LOG_WARNING("Recipe was not invalid");
 				this.mLastRecipe = tRecipe;

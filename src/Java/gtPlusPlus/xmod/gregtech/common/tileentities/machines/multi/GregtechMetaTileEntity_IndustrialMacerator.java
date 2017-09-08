@@ -12,11 +12,13 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
@@ -46,6 +48,11 @@ extends GregtechMeta_MultiBlockBase {
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Industrial Maceration Stack",
+				"Processes material several factors faster than single block macerators",
+				"Has extra chances on bonus outputs",
+				"Processes 8*tier materials at a time",
+				"ULV = Tier 0, LV = Tier 1, etc.",
+				"-------------------------------------------------------",
 				"Size[WxHxL]: 3x6x3 (Hollow)",
 				"Controller (Center Bottom)",
 				"1x Input Bus (Any bottom layer casing)",
@@ -108,7 +115,9 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-
+		byte tTier = (byte)Math.max(1, GT_Utility.getTier(getMaxInputVoltage()));
+		//int processing = 8*tTier;
+		int processing = 1;
 		//Get inputs.
 		final ArrayList<ItemStack> tInputList = this.getStoredInputs();
 		for (int i = 0; i < (tInputList.size() - 1); i++) {
@@ -131,46 +140,36 @@ extends GregtechMeta_MultiBlockBase {
 		if (this.mOutputBusses.size() != 5){
 			return false;
 		}
+		for (int rx=0;rx<processing;rx++){
+			//Make a recipe instance for the rest of the method.
+			final GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(this.getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
+			tRecipe.mDuration = MathUtils.findPercentageOfInt(tRecipe.mDuration, 60);
 
-		//Make a recipe instance for the rest of the method.
-		final GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(this.getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
+			final int tValidOutputSlots = this.getValidOutputSlots(this.getBaseMetaTileEntity(), tRecipe, tInputs);
+			Utils.LOG_WARNING("Maceration Stack - Valid Output Hatches: "+tValidOutputSlots);
 
+			//More than or one input
+			if ((tInputList.size() > 0) && (tValidOutputSlots >= 1)) {
+				if ((tRecipe != null) && (tRecipe.isRecipeInputEqual(true, null, tInputs))) {
+					if (processRecipeXTimes(processing, tRecipe)){
+						
+						//final ItemStack[] outputs = new ItemStack[tRecipe.mOutputs.length];
+						
+						
+						
+						//this.mOutputItems = outputs;
+						this.mEfficiency = (10000 - ((getIdealStatus() - getRepairStatus()) * 1000));
+						this.mEfficiencyIncrease = 10000;
 
-		final int tValidOutputSlots = this.getValidOutputSlots(this.getBaseMetaTileEntity(), tRecipe, tInputs);
-		Utils.LOG_WARNING("Maceration Stack - Valid Output Hatches: "+tValidOutputSlots);
-
-		//More than or one input
-		if ((tInputList.size() > 0) && (tValidOutputSlots >= 1)) {
-			if ((tRecipe != null) && (tRecipe.isRecipeInputEqual(true, null, tInputs))) {
-				Utils.LOG_WARNING("Valid Recipe found - size "+tRecipe.mOutputs.length);
-				this.mEfficiency = (10000 - ((this.getIdealStatus() - this.getRepairStatus()) * 1000));
-				this.mEfficiencyIncrease = 10000;
-
-
-				this.mEUt = (-tRecipe.mEUt);
-				this.mMaxProgresstime = Math.max(1, (tRecipe.mDuration/5));
-				final ItemStack[] outputs = new ItemStack[tRecipe.mOutputs.length];
-				for (int i = 0; i < tRecipe.mOutputs.length; i++){
-					if (i==0) {
-						Utils.LOG_WARNING("Adding the default output");
-						outputs[0] =  tRecipe.getOutput(i);
+						this.mEUt = (-4 * (1 << tTier - 1) * (1 << tTier - 1) * tTier / 2);
+						this.mMaxProgresstime = Math.max(1, 256 / (1 << tTier - 1));
 					}
-					else if (this.getBaseMetaTileEntity().getRandomNumber(7500) < tRecipe.getOutputChance(i)){
-						Utils.LOG_WARNING("Adding a bonus output");
-						outputs[i] = tRecipe.getOutput(i);
-					}
-					else {
-						Utils.LOG_WARNING("Adding null output");
-						outputs[i] = null;
-					}
+					//this.mMaxProgresstime = Math.max(1, (tRecipe.mDuration));
+					this.sendLoopStart((byte) 20);
+					this.updateSlots();
 				}
-
-				this.mOutputItems = outputs;
-				this.sendLoopStart((byte) 20);
-				this.updateSlots();
-				return true;
 			}
-		}
+		}		
 		return false;
 	}
 
@@ -259,6 +258,32 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean isOverclockerUpgradable() {
+		return true;
+	}
+
+	private boolean processRecipeXTimes(int times, GT_Recipe tRecipe){
+
+		byte tTier = (byte)Math.max(1, GT_Utility.getTier(getMaxInputVoltage()));
+		int j = 0;
+		this.mOutputItems = new ItemStack[8 * tTier];	
+		
+	      for (int i = 0; (i < 256) && (j < this.mOutputItems.length); ++i) {
+					if (i==0) {
+						Utils.LOG_WARNING("Adding the default output");						
+						this.mOutputItems[0] =  tRecipe.getOutput(0);						
+						Utils.LOG_INFO("Ading output. "+i+" | "+tRecipe.mOutputs.length + " | "+this.mOutputItems[0].stackSize+" | "+tRecipe.getOutput(0).stackSize);
+					}
+					else if (this.getBaseMetaTileEntity().getRandomNumber(7500) < tRecipe.getOutputChance(i)){
+						Utils.LOG_WARNING("Adding a bonus output");
+						this.mOutputItems[i] = tRecipe.getOutput(i);
+					}
+					else {
+						Utils.LOG_WARNING("Adding null output");
+						this.mOutputItems[i] = null;	  
+					}
+	        	++j;
+	        }		
+		updateSlots();
 		return true;
 	}
 }
