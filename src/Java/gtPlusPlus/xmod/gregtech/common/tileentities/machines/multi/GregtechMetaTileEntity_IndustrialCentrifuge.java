@@ -14,14 +14,11 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.CustomRecipeMap;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock.CustomIcon;
@@ -86,6 +83,11 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
+	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+		return GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes;
+	}
+
+	@Override
 	public boolean isFacingValid(final byte aFacing) {
 		return aFacing > 1;
 	}
@@ -100,7 +102,7 @@ extends GregtechMeta_MultiBlockBase {
 		}*/
 
 		Utils.LOG_WARNING("Centrifuge Debug - 1");
-		final GT_Recipe_Map map = GT_Recipe_Map.sCentrifugeRecipes;
+		final GT_Recipe.GT_Recipe_Map map = this.getRecipeMap();
 		if (map == null) {
 			Utils.LOG_WARNING("Centrifuge Debug - False - No recipe map");
 			return false;
@@ -115,7 +117,6 @@ extends GregtechMeta_MultiBlockBase {
 		final FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
 		if ((tInputList.size() > 0) || (tFluids.length > 0)) {
 			final GT_Recipe tRecipe = map.findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
-			tRecipe.mDuration = MathUtils.findPercentageOfInt(tRecipe.mDuration, 80);	
 			if (tRecipe != null) {
 				Utils.LOG_WARNING("Recipe was not invalid");
 				this.mLastRecipe = tRecipe;

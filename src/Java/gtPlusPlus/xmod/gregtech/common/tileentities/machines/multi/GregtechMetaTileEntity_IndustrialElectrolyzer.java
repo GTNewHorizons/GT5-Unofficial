@@ -13,14 +13,11 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_RenderedTexture;
-import gregtech.api.util.CustomRecipeMap;
 import gregtech.api.util.GT_Recipe;
-import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.block.Block;
@@ -74,6 +71,11 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	@Override
+	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
+		return GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes;
+	}
+
+	@Override
 	public boolean isFacingValid(final byte aFacing) {
 		return aFacing > 1;
 	}
@@ -120,15 +122,7 @@ extends GregtechMeta_MultiBlockBase {
 		if ((tInputList.size() > 0) && (tValidOutputSlots >= 1)) {
 			final long tVoltage = this.getMaxInputVoltage();
 			final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-			
-			
-			
-			final GT_Recipe_Map map = GT_Recipe_Map.sElectrolyzerRecipes;
-			final GT_Recipe tRecipe = map.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
-			
-			tRecipe.mDuration = MathUtils.findPercentageOfInt(tRecipe.mDuration, 80);	
-			
-			
+			final GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
 			if ((tRecipe != null) && (7500 >= tRecipe.mSpecialValue) && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
 				this.mEfficiency = (10000 - ((this.getIdealStatus() - this.getRepairStatus()) * 1000));
 				this.mEfficiencyIncrease = 10000;
@@ -239,7 +233,7 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 		}
-		return tAmount >= 12;
+		return tAmount >= 16;
 	}
 
 	@Override
