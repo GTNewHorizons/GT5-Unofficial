@@ -212,13 +212,14 @@ public class DreamCraftRecipeLoader implements Runnable {
 
         //region multiblocks
 
-        //Microwave Grinder todo HV recipe
+        //Microwave Grinder
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
-                com.dreammaster.gthandler.CustomItemList.WetTransformer_ZPM_LuV.get(1, o),
-                com.dreammaster.gthandler.CustomItemList.HighEnergyFlowCircuit.get(1, o),
-                GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 16),
-                ItemList.Circuit_Chip_UHPIC.get(2, o),
-        }, Materials.TungstenSteel.getMolten(576), CustomItemList.Machine_Multi_Microwave.get(1, o), 400, 500, true);
+                ItemList.Machine_HV_Microwave.get(1,o),
+                GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 4),
+                GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 4),
+                GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.AnnealedCopper, 16),
+                ItemList.Upgrade_Overclocker.get(4, o),
+        }, Materials.Copper.getMolten(576), CustomItemList.Machine_Multi_Microwave.get(1, o), 800, 480, true);
 
         //Active Transformer
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
@@ -328,7 +329,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                 Materials.Void.getMolten(2592),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 4000),
                 Materials.Osmium.getMolten(1296),
-        }, CustomItemList.Machine_Multi_EssentiaToEM.get(1), 24000, 400000);
+        }, CustomItemList.Machine_Multi_EssentiaToEM.get(1), 24000, 500000);
 
         //Essentia DeQuantizer
         TT_recipeAdder.addResearchableAssemblylineRecipe(CustomItemList.Machine_Multi_EMToMatter.get(1),
@@ -343,22 +344,24 @@ public class DreamCraftRecipeLoader implements Runnable {
                 Materials.Void.getMolten(2592),
                 new FluidStack(FluidRegistry.getFluid("ic2coolant"), 4000),
                 Materials.Osmium.getMolten(1296),
-        }, CustomItemList.Machine_Multi_EMToEssentia.get(1), 24000, 400000);
+        }, CustomItemList.Machine_Multi_EMToEssentia.get(1), 24000, 500000);
 
-        //EM Scanner todo ItemStack[] FluidStack[]
+        //EM Scanner
         TT_recipeAdder.addResearchableAssemblylineRecipe(CustomItemList.Machine_Multi_Research.get(1),
                 150000,128, 500000, 16,  new ItemStack[]{
                         CustomItemList.Machine_Multi_EMjunction.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Neutronium, 4),
-                        ItemList.Sensor_UV.get(2),
-                        ItemList.Circuit_Wetwaresupercomputer.get(1),
-                        GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Draconium, 2),
+                        CustomItemList.eM_Computer_Bus.get(4),
+                        ItemList.Field_Generator_UV.get(4),
+                        ItemList.Sensor_UV.get(4),
+                        com.dreammaster.gthandler.CustomItemList.NanoCircuit.get(4),
+                        com.dreammaster.gthandler.CustomItemList.MysteriousCrystalLens.get(4),
+                        GT_OreDictUnificator.get(OrePrefixes.cableGt02, Materials.Draconium, 4),
                 }, new FluidStack[]{
                         Materials.UUMatter.getFluid(2000),
-                        Materials.Iridium.getMolten(2592),
+                        Materials.Neutronium.getMolten(2592),
                         new FluidStack(FluidRegistry.getFluid("ic2coolant"), 4000),
-                        Materials.Osmium.getMolten(1296),
-                }, CustomItemList.Machine_Multi_Scanner.get(1), 24000, 400000);
+                        Materials.Osmiridium.getMolten(1296),
+                }, CustomItemList.Machine_Multi_Scanner.get(1), 24000, 500000);
         //endregion
     }
 }
