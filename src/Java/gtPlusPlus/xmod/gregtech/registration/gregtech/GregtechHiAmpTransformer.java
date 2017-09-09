@@ -6,6 +6,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTransformerHiAmp;
+import net.minecraft.item.ItemStack;
 
 public class GregtechHiAmpTransformer {
 
@@ -35,6 +36,25 @@ public class GregtechHiAmpTransformer {
 		GregtechItemList.Transformer_HA_MAX_UV.set(new GregtechMetaTransformerHiAmp(mID++, "transformer.ha.tier.08",
 				"UV Hi-Amp Transformer", 8, "Any Voltage -> UV (Use Soft Hammer to invert)").getStackForm(1L));
 
+		ItemStack mItem_1;
+		ItemStack mItem_2;
+		ItemStack mItem_3;
+			try {
+				mItem_1 = ItemList.valueOf("Casing_Coil_TungstenSteel").get(1);
+			} catch (Throwable t){	
+				mItem_1 = ItemList.Circuit_Elite.get(1);
+			}
+			try {
+				mItem_2 = ItemList.valueOf("Casing_Coil_Naquadah").get(1);
+			} catch (Throwable t){	
+				mItem_2 = ItemList.Circuit_Master.get(1);
+			}
+			try {
+				mItem_3 = ItemList.valueOf("Casing_Coil_NaquadahAlloy").get(1);
+			} catch (Throwable t){	
+				mItem_3 = ItemList.Circuit_Ultimate.get(1);
+			}
+		
 		GT_ModHandler.addCraftingRecipe(GregtechItemList.Transformer_HA_LV_ULV.get(1L, new Object[0]), bitsd,
 				new Object[] { " BB", "CM ", " BB", Character.valueOf('M'), ItemList.Hull_ULV, Character.valueOf('C'),
 						OrePrefixes.wireGt16.get(Materials.Tin), Character.valueOf('B'),
@@ -66,17 +86,17 @@ public class GregtechHiAmpTransformer {
 				new Object[] { "KBB", "CM ", "KBB", Character.valueOf('M'), ItemList.Hull_LuV, Character.valueOf('C'),
 						OrePrefixes.wireGt16.get(Materials.Naquadah), Character.valueOf('B'),
 						OrePrefixes.wireGt16.get(Materials.VanadiumGallium), Character.valueOf('K'),
-						ItemList.Casing_Coil_TungstenSteel });
+						mItem_1 });
 		GT_ModHandler.addCraftingRecipe(GregtechItemList.Transformer_HA_UV_ZPM.get(1L, new Object[0]), bitsd,
 				new Object[] { "KBB", "CM ", "KBB", Character.valueOf('M'), ItemList.Hull_ZPM, Character.valueOf('C'),
 						OrePrefixes.wireGt04.get(Materials.NaquadahAlloy), Character.valueOf('B'),
 						OrePrefixes.wireGt16.get(Materials.Naquadah), Character.valueOf('K'),
-						ItemList.Casing_Coil_Naquadah });
+						mItem_2 });
 		GT_ModHandler.addCraftingRecipe(GregtechItemList.Transformer_HA_MAX_UV.get(1L, new Object[0]), bitsd,
 				new Object[] { "KBB", "CM ", "KBB", Character.valueOf('M'), ItemList.Hull_UV, Character.valueOf('C'),
 						OrePrefixes.wireGt01.get(Materials.Superconductor), Character.valueOf('B'),
 						OrePrefixes.wireGt04.get(Materials.NaquadahAlloy), Character.valueOf('K'),
-						ItemList.Casing_Coil_NaquadahAlloy });
+						mItem_3 });
 	}
 	
 }

@@ -33,7 +33,7 @@ import net.minecraft.entity.Entity;
 
 public class ClientProxy extends CommonProxy implements Runnable{
 
-	private final HashSet mCapeList = new HashSet();
+	private final HashSet<String> mCapeList = new HashSet<String>();
 	private final GTPP_CapeRenderer mCapeRenderer;
 
 	public ClientProxy(){

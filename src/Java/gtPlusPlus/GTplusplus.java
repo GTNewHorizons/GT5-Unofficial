@@ -20,7 +20,6 @@ import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.Materials;
 import gregtech.api.util.EmptyRecipeMap;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
@@ -31,7 +30,6 @@ import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.handler.events.LoginEventHandler;
 import gtPlusPlus.core.item.general.RF2EU_Battery;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.material.gregtech.CustomGTMaterials;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.geo.GeoUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
@@ -219,9 +217,9 @@ public class GTplusplus implements ActionListener {
 		Utils.LOG_INFO("Login Handler Initialized");
 
 		//Early load materials
-		try {
+		/*try {
 			CustomGTMaterials.run();
-		} catch (Throwable t){}
+		} catch (Throwable t){}*/
 		
 		if (CORE.configSwitches.enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
 			removeCircuitRecipeMap(); //Bye shitty recipes.			
@@ -261,9 +259,9 @@ public class GTplusplus implements ActionListener {
 			this.dumpGtRecipeMap(Gregtech_Recipe_Map.sAlloyBlastSmelterRecipes);
 		}
 		
-		for (Materials s : gtPlusPlus.core.material.gregtech.CustomGTMaterials.Custom_GT_Materials){
+		/*for (Materials s : gtPlusPlus.core.material.gregtech.CustomGTMaterials.Custom_GT_Materials){
 			Utils.LOG_INFO("Verification for New Material: "+s.mName);
-		}
+		}*/
 
 		// Utils.LOG_INFO("Activating GT OreDictionary Handler, this can take
 		// some time.");

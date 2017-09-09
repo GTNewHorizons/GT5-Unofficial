@@ -11,7 +11,7 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.objects.MaterialStack;
 
 public class MaterialBuilder {
-	public static final int DIESEL = 0, GAS = 1, THERMAL = 2, SEMIFLUID = 3, PLASMA = 4, MAGIC = 5;
+	/*public static final int DIESEL = 0, GAS = 1, THERMAL = 2, SEMIFLUID = 3, PLASMA = 4, MAGIC = 5;
 	
 	private int metaItemSubID;
 	private TextureSet iconSet;
@@ -250,5 +250,5 @@ public class MaterialBuilder {
 		this.canBeCracked = canBeCracked;
 		return this;
 	}
-
+*/
 }

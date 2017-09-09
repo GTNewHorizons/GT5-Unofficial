@@ -32,7 +32,7 @@ public class CustomGTMaterials {
 	
 	**/
 	
-	public static List<Materials> Custom_GT_Materials = new ArrayList<Materials>();
+	/*public static List<Materials> Custom_GT_Materials = new ArrayList<Materials>();
 	
 	public static Materials Zirconium = materialBuilder_Element(1232, TextureSet.SET_METALLIC, 		6.0F, 256, 2, 1|2|8|32|64|128, 200, 200, 200, 0, "Zirconium", "Zirconium", 0, 0, 1811, 0, false, false, 3, 1, 1, Dyes.dyeLightGray, Element.Zr, Arrays.asList(new TC_Aspects.TC_AspectStack(TC_Aspects.METALLUM, 3)));
 	public static Materials Geikielite = materialBuilder(1234, TextureSet.SET_SHINY, new int[]{1,2,3}, "Geikielite", Dyes.dyeBlack, Arrays.asList(new MaterialStack(Titanium, 1), new MaterialStack(Magnesium, 1), new MaterialStack(Oxygen, 3)));
@@ -89,6 +89,6 @@ public class CustomGTMaterials {
 		registerMaterial(newMat);		
 		return newMat;
 	}
-
+*/
 
 }
