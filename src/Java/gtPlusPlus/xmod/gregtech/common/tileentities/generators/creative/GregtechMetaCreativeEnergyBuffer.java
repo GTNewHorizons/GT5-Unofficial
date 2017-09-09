@@ -87,7 +87,7 @@ public class GregtechMetaCreativeEnergyBuffer extends GregtechMetaEnergyBuffer {
 
 	@Override
 	public long getMinimumStoredEU() {
-		return Long.MAX_VALUE;
+		return 0;
 	}
 
 	@Override
