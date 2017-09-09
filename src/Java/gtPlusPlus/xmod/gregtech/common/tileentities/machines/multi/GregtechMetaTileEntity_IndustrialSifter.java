@@ -227,11 +227,7 @@ extends GregtechMeta_MultiBlockBase {
 				this.mMaxProgresstime = Math.max(1, (cloneRecipe.mDuration/5));
 				final ItemStack[] outputs = new ItemStack[cloneRecipe.mOutputs.length];
 				for (int i = 0; i < cloneRecipe.mOutputs.length; i++){
-					if (i==0) {
-						Utils.LOG_WARNING("Adding the default output");
-						outputs[0] =  cloneRecipe.getOutput(i);
-					}
-					else if (this.getBaseMetaTileEntity().getRandomNumber(7500) < cloneRecipe.getOutputChance(i)){
+					if (this.getBaseMetaTileEntity().getRandomNumber(7500) < cloneRecipe.getOutputChance(i)){
 						Utils.LOG_WARNING("Adding a bonus output");
 						outputs[i] = cloneRecipe.getOutput(i);
 					}
