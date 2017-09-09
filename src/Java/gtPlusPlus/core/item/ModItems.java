@@ -218,6 +218,8 @@ public final class ModItems {
 	public static Item itemCoalCoke;
 
 	public static CoreItem itemCircuitLFTR;
+	
+	public static Item itemDebugAreaClear;
 
 
 
@@ -233,6 +235,8 @@ public final class ModItems {
 		if (CORE.DEBUG){
 			DEBUG_INIT.registerItems();
 		}
+		
+		itemDebugAreaClear = new ItemAreaClear();
 
 
 		//Some Simple forms of materials

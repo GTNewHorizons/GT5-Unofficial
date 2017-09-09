@@ -2,6 +2,7 @@ package gtPlusPlus.core.util.entity;
 
 import cpw.mods.fml.common.registry.EntityRegistry;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.util.array.BlockPos;
 import ic2.core.IC2Potion;
 import ic2.core.item.armor.ItemArmorHazmat;
 import net.minecraft.block.Block;
@@ -34,6 +35,13 @@ public class EntityUtils {
 		final int blockY = MathHelper.floor_double(parEntity.boundingBox.minY)-1;
 		final int blockZ = MathHelper.floor_double(parEntity.posZ);
 		return parEntity.worldObj.getBlock(blockX, blockY, blockZ);
+	}
+	
+	public static BlockPos findBlockPosUnderEntity(final Entity parEntity){
+		final int blockX = MathHelper.floor_double(parEntity.posX);
+		final int blockY = MathHelper.floor_double(parEntity.boundingBox.minY)-1;
+		final int blockZ = MathHelper.floor_double(parEntity.posZ);
+		return new BlockPos(blockX, blockY, blockZ);
 	}
 
 	//TODO

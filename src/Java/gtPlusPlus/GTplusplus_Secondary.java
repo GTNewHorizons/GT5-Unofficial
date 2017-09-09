@@ -17,11 +17,19 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
 import gtPlusPlus.core.world.darkworld.biome.Biome_DarkWorld;
+import gtPlusPlus.core.world.darkworld.block.blockDarkWorldGround;
+import gtPlusPlus.core.world.darkworld.block.blockDarkWorldPollutedDirt;
+import gtPlusPlus.core.world.darkworld.block.blockDarkWorldPortal;
+import gtPlusPlus.core.world.darkworld.block.blockDarkWorldPortalFrame;
+import gtPlusPlus.core.world.darkworld.item.itemDarkWorldPortalTrigger;
 import gtPlusPlus.xmod.gregtech.HANDLER_GT;
 import gtPlusPlus.xmod.gregtech.api.util.GTPP_Config;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.config.Configuration;
 
 @MCVersion(value = "1.7.10")
@@ -63,6 +71,9 @@ public class GTplusplus_Secondary implements IFuelHandler, IWorldGenerator{
 	public void preInit(final FMLPreInitializationEvent event) {
 		Utils.LOG_INFO("Loading " + MODID2 + " V" + VERSION2);
 
+		//Setup
+		setVars();
+		
 		// Load Dark World
 		DarkWorld_Biome.instance = GTplusplus.instance;
 		DarkWorld_Dimension.instance = GTplusplus.instance;
@@ -72,6 +83,20 @@ public class GTplusplus_Secondary implements IFuelHandler, IWorldGenerator{
 		//Load/Set Custom Ore Gen
 		HANDLER_GT.sCustomWorldgenFile = new GTPP_Config(new Configuration(new File(new File(event.getModConfigurationDirectory(), "GTplusplus"), "WorldGeneration.cfg")));
 		
+	}
+	
+	void setVars(){
+		Dimension_DarkWorld.DIMID = DimensionManager.getNextFreeDimId();
+		Dimension_DarkWorld.portalBlock = new blockDarkWorldPortal();
+		Dimension_DarkWorld.portalItem = (itemDarkWorldPortalTrigger) (new itemDarkWorldPortalTrigger().setUnlocalizedName("dimensionDarkWorld_trigger"));
+		Item.itemRegistry.addObject(423, "dimensionDarkWorld_trigger", Dimension_DarkWorld.portalItem);
+		Dimension_DarkWorld.blockTopLayer = new blockDarkWorldGround();
+		Dimension_DarkWorld.blockSecondLayer = new blockDarkWorldPollutedDirt();
+		GameRegistry.registerBlock(Dimension_DarkWorld.blockTopLayer, "blockDarkWorldGround");
+		GameRegistry.registerBlock(Dimension_DarkWorld.blockSecondLayer, "blockDarkWorldGround2");
+		Blocks.fire.setFireInfo(Dimension_DarkWorld.blockTopLayer, 30, 20);
+		Dimension_DarkWorld.blockPortalFrame = new blockDarkWorldPortalFrame();
+		GameRegistry.registerBlock(Dimension_DarkWorld.blockPortalFrame, "blockDarkWorldPortalFrame");
 	}
 
 	@EventHandler

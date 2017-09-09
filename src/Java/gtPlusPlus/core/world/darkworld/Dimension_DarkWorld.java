@@ -34,22 +34,6 @@ public class Dimension_DarkWorld {
 	public static Block blockPortalFrame;
 
 	static {
-
-		DIMID = DimensionManager.getNextFreeDimId();
-		portalBlock = new blockDarkWorldPortal();
-		portalItem = (itemDarkWorldPortalTrigger) (new itemDarkWorldPortalTrigger().setUnlocalizedName("dimensionDarkWorld_trigger"));
-		Item.itemRegistry.addObject(423, "dimensionDarkWorld_trigger", portalItem);
-		blockTopLayer = new blockDarkWorldGround();
-		blockSecondLayer = new blockDarkWorldPollutedDirt();
-		GameRegistry.registerBlock(blockTopLayer, "blockDarkWorldGround");
-		GameRegistry.registerBlock(blockSecondLayer, "blockDarkWorldGround2");
-		Blocks.fire.setFireInfo(blockTopLayer, 30, 20);
-		blockPortalFrame = new blockDarkWorldPortalFrame();
-		GameRegistry.registerBlock(blockPortalFrame, "blockDarkWorldPortalFrame");
-		
-		if (LoadedMods.BuildCraft){
-			//blockFluidLakes = 
-		}
 		
 	}
 
