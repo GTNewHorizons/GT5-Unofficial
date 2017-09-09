@@ -39,16 +39,18 @@ public class LoginEventHandler {
 				if (!this.localPlayerRef.worldObj.isRemote){
 					PlayerCache.appendParamChanges(this.localPlayersName, this.localPlayersUUID.toString());
 
-					if (!Utils.isModUpToDate()){
-						Utils.LOG_INFO("[GT++] You're not using the latest recommended version of GT++, consider updating.");
-						if (!CORE.MASTER_VERSION.toLowerCase().equals("offline")) {
-							Utils.LOG_INFO("Latest version is: "+CORE.MASTER_VERSION);
+					if (CORE.configSwitches.enableUpdateChecker){
+						if (!Utils.isModUpToDate()){
+							Utils.LOG_INFO("[GT++] You're not using the latest recommended version of GT++, consider updating.");
+							if (!CORE.MASTER_VERSION.toLowerCase().equals("offline")) {
+								Utils.LOG_INFO("Latest version is: "+CORE.MASTER_VERSION);
+							}
+							Utils.LOG_INFO("You currently have: "+CORE.VERSION);
+							ShortTimer(this.localPlayerRef, 20);						
 						}
-						Utils.LOG_INFO("You currently have: "+CORE.VERSION);
-						ShortTimer(this.localPlayerRef, 20);						
-					}
-					else {
-						Utils.LOG_INFO("You're using the latest recommended version of GT++.");
+						else {
+							Utils.LOG_INFO("You're using the latest recommended version of GT++.");
+						}
 					}
 
 				}
@@ -100,7 +102,7 @@ public class LoginEventHandler {
 
 		}
 	}
-	
+
 	//Handles notifying the player about a version update.
 	public Timer ShortTimer(EntityPlayer localPlayer, final int seconds) {
 		Timer timer;
@@ -108,7 +110,7 @@ public class LoginEventHandler {
 		timer.schedule(new NotifyPlayer(localPlayer), seconds * 1000);
 		return timer;
 	}
-	
+
 	//Timer Task for notifying the player.
 	class NotifyPlayer extends TimerTask {
 		final EntityPlayer toMessage;

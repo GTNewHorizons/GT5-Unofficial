@@ -47,16 +47,16 @@ public class GTPP_CapeRenderer
                 tResource = this.mCapes[1];
             }
             else if (aPlayer.getDisplayName().equalsIgnoreCase("doomsquirter")) {
-                tResource = this.mCapes[0];
+                tResource = this.mCapes[1];
             }
             else  if (aPlayer.getDisplayName().equalsIgnoreCase("ukdunc")) {
-                tResource = this.mCapes[0];
+                tResource = this.mCapes[1];
             }
             else if (aPlayer.getDisplayName().equalsIgnoreCase("cantankerousrex")) {
                 tResource = this.mCapes[1];
             }
             else if (aPlayer.getDisplayName().equalsIgnoreCase("123_456_789")) {
-                tResource = this.mCapes[0];
+                tResource = this.mCapes[1];
             }
             else if (this.mCapeList.contains(aPlayer.getDisplayName().toLowerCase())) {
                 tResource = this.mCapes[0];

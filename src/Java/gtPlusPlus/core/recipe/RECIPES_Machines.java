@@ -779,7 +779,7 @@ public class RECIPES_Machines {
 						GregtechItemList.SimpleDustWasher.get(1));
 			}
 
-			if (CORE.configSwitches.enableMachine_Pollution){
+			if (CORE.configSwitches.enableMachine_Pollution && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
 				RecipeUtils.addShapedGregtechRecipe(
 						"plateCarbon", "plateCarbon", "plateCarbon",
 						"dustCarbon", "dustCarbon", "dustCarbon",

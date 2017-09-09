@@ -95,6 +95,9 @@ public class CORE {
 
 	public static class configSwitches {
 
+		//Updates
+		public static boolean enableUpdateChecker = true;
+		
 		//Debug
 		public static boolean disableEnderIOIntegration = false;
 		public static boolean MACHINE_INFO = true;
