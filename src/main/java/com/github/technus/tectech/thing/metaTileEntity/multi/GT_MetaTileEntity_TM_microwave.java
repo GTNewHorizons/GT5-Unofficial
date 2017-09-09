@@ -188,9 +188,13 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
                 yPos+(flipped?.5:2.5),
                 zPos+1.5+zDirShift);
 
-        int damagingFactor = powerSetting >> 9;
-        boolean inside=true;
+        int damagingFactor =
+                Math.min(powerSetting >> 6,8)+
+                Math.min(powerSetting >> 8,24)+
+                Math.min(powerSetting >> 12,48)+
+                         powerSetting >> 18;
 
+        boolean inside=true;
         do {
             for (Object entity : mte.getWorld().getEntitiesWithinAABBExcludingEntity(null, aabb)) {
                 if (entity instanceof Entity) {

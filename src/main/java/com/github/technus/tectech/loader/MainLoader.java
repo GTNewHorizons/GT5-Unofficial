@@ -29,7 +29,7 @@ import static com.github.technus.tectech.compatibility.thaumcraft.EssentiaCompat
 import static com.github.technus.tectech.compatibility.thaumcraft.definitions.AspectDefinitionCompat.aspectDefinitionCompat;
 import static gregtech.api.enums.GT_Values.W;
 
-public final class MainLoader {//TODO add checks for - is mod loaded dreamcraft to enable higher tier machinery. (above UV), or implement a check for GT tier values.
+public final class MainLoader {
     public static DamageSource microwaving, elementalPollution;
 
     public void load() {
