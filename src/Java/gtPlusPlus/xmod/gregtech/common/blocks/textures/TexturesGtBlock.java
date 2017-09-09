@@ -123,6 +123,10 @@ public class TexturesGtBlock {
 	public static final CustomIcon Casing_Machine_Redstone_Off = Internal_Casing_Machine_Redstone_Off;
 	private static final CustomIcon Internal_Casing_Machine_Redstone_On = new CustomIcon("TileEntities/cover_redstone_emitter");
 	public static final CustomIcon Casing_Machine_Redstone_On = Internal_Casing_Machine_Redstone_On;
+	
+	//Centrifuge Casing
+	private static final CustomIcon Internal_Casing_Centrifuge = new CustomIcon("TileEntities/MACHINE_CASING_CENTRIFUGE");
+	public static final CustomIcon Casing_Material_Centrifuge = Internal_Casing_Centrifuge;
 
 	//MACHINE_CASING_FARM_MANAGER_STRUCTURAL
 	//Farm Manager Casings

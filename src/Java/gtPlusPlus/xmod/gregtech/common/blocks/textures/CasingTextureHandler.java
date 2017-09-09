@@ -16,7 +16,7 @@ public class CasingTextureHandler {
 			switch (aMeta) {
 			//Centrifuge
 			case 0:
-				return TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();
+				return TexturesGtBlock.Casing_Material_Centrifuge.getIcon();
 				//Coke Oven Frame
 			case 1:
 				return TexturesGtBlock.Casing_Material_Tantalloy61.getIcon();
