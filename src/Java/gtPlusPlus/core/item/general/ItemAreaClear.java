@@ -1,7 +1,5 @@
 package gtPlusPlus.core.item.general;
 
-import com.mojang.realmsclient.gui.ChatFormatting;
-
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.CoreItem;
 import gtPlusPlus.core.lib.CORE;
@@ -22,7 +20,7 @@ public class ItemAreaClear extends CoreItem {
 	public IIcon[] mIcon = new IIcon[1];
 
 	public ItemAreaClear() {
-		super("itemDebugClearing", AddToCreativeTab.tabMachines, 1, 100, ChatFormatting.OBFUSCATED+"F A M C Y   N A M E", EnumRarity.rare,
+		super("itemDebugClearing", AddToCreativeTab.tabMachines, 1, 100, EnumChatFormatting.OBFUSCATED+"F A M C Y   N A M E", EnumRarity.rare,
 				EnumChatFormatting.BOLD, false, null);
 	}
 
