@@ -20,6 +20,7 @@ import gtPlusPlus.core.entity.monster.EntitySickBlaze;
 import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
 import gtPlusPlus.core.entity.projectile.EntityToxinballSmall;
 import gtPlusPlus.core.handler.render.FirepitRender;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.tileentities.general.TileEntityFirepit;
 import gtPlusPlus.core.util.Utils;
@@ -33,24 +34,28 @@ import net.minecraft.entity.Entity;
 public class ClientProxy extends CommonProxy implements Runnable{
 
 	private final HashSet mCapeList = new HashSet();
-    private final GTPP_CapeRenderer mCapeRenderer;
-	 
-    public ClientProxy(){
-    	mCapeRenderer = new GTPP_CapeRenderer(mCapeList);
-    }
+	private final GTPP_CapeRenderer mCapeRenderer;
 
-    @SubscribeEvent
-    public void receiveRenderSpecialsEvent(net.minecraftforge.client.event.RenderPlayerEvent.Specials.Pre aEvent) {
-        mCapeRenderer.receiveRenderSpecialsEvent(aEvent);
-    }
-    
+	public ClientProxy(){
+		mCapeRenderer = new GTPP_CapeRenderer(mCapeList);
+	}
+
+	@SubscribeEvent
+	public void receiveRenderSpecialsEvent(net.minecraftforge.client.event.RenderPlayerEvent.Specials.Pre aEvent) {
+		if (CORE.mEnableCape){
+		mCapeRenderer.receiveRenderSpecialsEvent(aEvent);
+		}
+	}
+
 	@SideOnly(Side.CLIENT)
 	public static String playerName = "";
 
 	@Override
 	public void preInit(final FMLPreInitializationEvent e) {
 		super.preInit(e);
-		onPreLoad();
+		if (CORE.mEnableCape){
+			onPreLoad();			
+		}
 		//Do this weird things for textures.
 		GTplusplus.loadTextures();
 		//We boot up the sneak manager.
@@ -80,14 +85,14 @@ public class ClientProxy extends CommonProxy implements Runnable{
 		//RenderingRegistry.registerEntityRenderingHandler(EntityBloodSteelHostileMob.class, new RenderBloodSteelMobHostile(new ModelBloodSteelMob(), 0));
 		//RenderingRegistry.registerEntityRenderingHandler(EntityGrenade.class, new RenderSnowball(ModItems.tutGrenade));		
 		Utils.LOG_INFO("Registering Custom Renderer for Mining Explosives.");
-	    RenderingRegistry.registerEntityRenderingHandler(EntityPrimedMiningExplosive.class, new RenderMiningExplosivesPrimed());
-	    RenderingRegistry.registerEntityRenderingHandler(EntitySickBlaze.class, new RenderSickBlaze());
-	    RenderingRegistry.registerEntityRenderingHandler(EntityStaballoyConstruct.class, new RenderIronGolem());
-	    RenderingRegistry.registerEntityRenderingHandler(EntityToxinballSmall.class, new RenderToxinball(1F));
+		RenderingRegistry.registerEntityRenderingHandler(EntityPrimedMiningExplosive.class, new RenderMiningExplosivesPrimed());
+		RenderingRegistry.registerEntityRenderingHandler(EntitySickBlaze.class, new RenderSickBlaze());
+		RenderingRegistry.registerEntityRenderingHandler(EntityStaballoyConstruct.class, new RenderIronGolem());
+		RenderingRegistry.registerEntityRenderingHandler(EntityToxinballSmall.class, new RenderToxinball(1F));
 
 		//ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBloodSteelChest.class, new BloodSteelChestRenderer());
 		//MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.tutChest), new ItemRenderBloodSteelChest());
-	    Utils.LOG_INFO("Registering Custom Renderer for the Fire Pit.");
+		Utils.LOG_INFO("Registering Custom Renderer for the Fire Pit.");
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFirepit.class, new FirepitRender());
 	}
 
@@ -147,32 +152,36 @@ public class ClientProxy extends CommonProxy implements Runnable{
 	}
 
 
-	
+
 	public void onPreLoad() {
-        String arr$[] = {
-                "draknyte1", "fobius"
-        };
-        int len$ = arr$.length;
-        for (int i$ = 0; i$ < len$; i$++) {
-            String tName = arr$[i$];
-            mCapeList.add(tName.toLowerCase());
-        }
-        (new Thread(this)).start();
-    }
-	
+		if (CORE.mEnableCape){
+			String arr$[] = {
+					"draknyte1", "fobius"
+			};
+			int len$ = arr$.length;
+			for (int i$ = 0; i$ < len$; i$++) {
+				String tName = arr$[i$];
+				mCapeList.add(tName.toLowerCase());
+			}
+			(new Thread(this)).start();
+		}
+	}
+
 	public void run() {
-        try {
-            Utils.LOG_INFO("Skip: GT++ Mod: Downloading Cape List.");
-            @SuppressWarnings("resource")
-            Scanner tScanner = new Scanner(new URL("https://github.com/draknyte1/GTplusplus/blob/master/SupporterList.txt").openStream());
-            while (tScanner.hasNextLine()) {
-                String tName = tScanner.nextLine();
-                if (!this.mCapeList.contains(tName.toLowerCase())) {
-                    this.mCapeList.add(tName.toLowerCase());
-                }
-            }
-        } catch (Throwable e) {
-        }
-    }
+		try {
+			if (CORE.mEnableCape){
+				Utils.LOG_INFO("Skip: GT++ Mod: Downloading Cape List.");
+				@SuppressWarnings("resource")
+				Scanner tScanner = new Scanner(new URL("https://github.com/draknyte1/GTplusplus/blob/master/SupporterList.txt").openStream());
+				while (tScanner.hasNextLine()) {
+					String tName = tScanner.nextLine();
+					if (!this.mCapeList.contains(tName.toLowerCase())) {
+						this.mCapeList.add(tName.toLowerCase());
+					}
+				}
+			}
+		} catch (Throwable e) {
+		}
+	}
 
 }

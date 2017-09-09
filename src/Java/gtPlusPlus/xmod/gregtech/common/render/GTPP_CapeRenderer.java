@@ -17,7 +17,7 @@ import java.util.Collection;
 
 public class GTPP_CapeRenderer
         extends RenderPlayer {
-    private final ResourceLocation[] mCapes = {new ResourceLocation("miscutils:textures/Orange.png"), new ResourceLocation("miscutils:textures/TesterCape.png"), new ResourceLocation("miscutils:textures/TesterCape.png"), new ResourceLocation("miscutils:textures/TesterCape.png")};
+    private final ResourceLocation[] mCapes = {new ResourceLocation("miscutils:textures/Orange.png"), new ResourceLocation("miscutils:textures/TesterCape.png"), new ResourceLocation("miscutils:textures/TesterCape.png"), new ResourceLocation("miscutils:textures/DevCape.png")};
     private final Collection<String> mCapeList;
 
     public GTPP_CapeRenderer(Collection<String> aCapeList) {
@@ -41,24 +41,24 @@ public class GTPP_CapeRenderer
         try {
             ResourceLocation tResource = null;
             if (aPlayer.getDisplayName().equalsIgnoreCase("draknyte1")) {
+                tResource = this.mCapes[3];
+            }
+            else if (aPlayer.getDisplayName().equalsIgnoreCase("fobius")) {
                 tResource = this.mCapes[1];
             }
-            if (this.mCapeList.contains(aPlayer.getDisplayName().toLowerCase())) {
+            else if (aPlayer.getDisplayName().equalsIgnoreCase("doomsquirter")) {
                 tResource = this.mCapes[0];
             }
-            if (aPlayer.getDisplayName().equalsIgnoreCase("fobius")) {
+            else  if (aPlayer.getDisplayName().equalsIgnoreCase("ukdunc")) {
+                tResource = this.mCapes[0];
+            }
+            else if (aPlayer.getDisplayName().equalsIgnoreCase("cantankerousrex")) {
                 tResource = this.mCapes[1];
             }
-            if (aPlayer.getDisplayName().equalsIgnoreCase("doomsquirter")) {
+            else if (aPlayer.getDisplayName().equalsIgnoreCase("123_456_789")) {
                 tResource = this.mCapes[0];
             }
-            if (aPlayer.getDisplayName().equalsIgnoreCase("ukdunc")) {
-                tResource = this.mCapes[0];
-            }
-            if (aPlayer.getDisplayName().equalsIgnoreCase("cantankerousrex")) {
-                tResource = this.mCapes[1];
-            }
-            if (aPlayer.getDisplayName().equalsIgnoreCase("123_456_789")) {
+            else if (this.mCapeList.contains(aPlayer.getDisplayName().toLowerCase())) {
                 tResource = this.mCapes[0];
             }
             if ((tResource != null) && (!aPlayer.getHideCape())) {
