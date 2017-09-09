@@ -14,7 +14,7 @@ public class ItemBlockGtFrameBox extends ItemBlock{
 		super(block);
 		final BlockBaseModular baseBlock = (BlockBaseModular) block;
 		this.blockColour = baseBlock.getRenderColor(1);
-		GT_OreDictUnificator.registerOre("frameGt"+block.getUnlocalizedName().replace("tile.", "").replace("tile.BlockGtFrame", "").replace("-", "").replace("_", "").replace(" ", "").replace("FrameBox", ""), ItemUtils.getSimpleStack(this));
+		//GT_OreDictUnificator.registerOre("frameGt"+block.getUnlocalizedName().replace("tile.", "").replace("tile.BlockGtFrame", "").replace("-", "").replace("_", "").replace(" ", "").replace("FrameBox", ""), ItemUtils.getSimpleStack(this));
 	}
 
 	public int getRenderColor(final int aMeta) {

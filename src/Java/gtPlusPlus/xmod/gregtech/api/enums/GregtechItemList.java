@@ -230,7 +230,13 @@ public enum GregtechItemList implements GregtechItemContainer {
 	GT4_Thermal_Boiler, GT4_Multi_Crafter, 
 	
 	//GT4 Shelves
-	GT4_Shelf, GT4_Shelf_Iron, GT4_Shelf_FileCabinet, GT4_Shelf_Desk, GT4_Shelf_Compartment
+	GT4_Shelf, GT4_Shelf_Iron, GT4_Shelf_FileCabinet, GT4_Shelf_Desk, GT4_Shelf_Compartment, 
+	
+	
+	//Hi Amp Transformers
+	Transformer_HA_LV_ULV, Transformer_HA_MV_LV, Transformer_HA_HV_MV,
+	Transformer_HA_EV_HV, Transformer_HA_IV_EV, Transformer_HA_LuV_IV,
+	Transformer_HA_ZPM_LuV, Transformer_HA_UV_ZPM, Transformer_HA_MAX_UV
 	
 	
 	

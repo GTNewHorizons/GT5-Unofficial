@@ -4,10 +4,12 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockGtBlock;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockGtFrameBox;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -65,18 +67,22 @@ public class BlockBaseModular extends BasicBlock{
 		//setOreDict(unlocalizedName, blockType);
 		if (this.thisBlockType.equals(BlockTypes.STANDARD.name().toUpperCase())){
 			GameRegistry.registerBlock(this, ItemBlockGtBlock.class, Utils.sanitizeString(blockType.getTexture()+unlocalizedName));
+			GT_OreDictUnificator.registerOre("block"+getUnlocalizedName().replace("tile.block", "").replace("tile.", "").replace("of", "").replace("Of", "").replace("Block", "").replace("-", "").replace("_", "").replace(" ", ""), ItemUtils.getSimpleStack(this));
 			//Utils.LOG_INFO("Registered Block in Block Registry as: "+"Block of "+blockMaterial);
 		}
 		else if (this.thisBlockType.equals(BlockTypes.FRAME.name().toUpperCase())){
 			GameRegistry.registerBlock(this, ItemBlockGtFrameBox.class, Utils.sanitizeString(blockType.getTexture()+unlocalizedName));
+			GT_OreDictUnificator.registerOre("frameGt"+getUnlocalizedName().replace("tile.", "").replace("tile.BlockGtFrame", "").replace("-", "").replace("_", "").replace(" ", "").replace("FrameBox", ""), ItemUtils.getSimpleStack(this));
 			//Utils.LOG_INFO("Registered Block in Block Registry as: "+blockMaterial+" Frame Box");
 		}
 		else if (this.thisBlockType.equals(BlockTypes.ORE.name().toUpperCase())){
 			GameRegistry.registerBlock(this, ItemBlockGtBlock.class, Utils.sanitizeString(blockType.getTexture()+unlocalizedName));
+			GT_OreDictUnificator.registerOre("block"+getUnlocalizedName().replace("tile.block", "").replace("tile.", "").replace("of", "").replace("Of", "").replace("Block", "").replace("-", "").replace("_", "").replace(" ", ""), ItemUtils.getSimpleStack(this));
 			//Utils.LOG_INFO("Registered Block in Block Registry as: "+blockMaterial+" Frame Box");
 		}
 		else {
 			GameRegistry.registerBlock(this, ItemBlockGtBlock.class, Utils.sanitizeString(blockType.getTexture()+unlocalizedName));
+			GT_OreDictUnificator.registerOre("block"+getUnlocalizedName().replace("tile.block", "").replace("tile.", "").replace("of", "").replace("Of", "").replace("Block", "").replace("-", "").replace("_", "").replace(" ", ""), ItemUtils.getSimpleStack(this));
 			//Utils.LOG_INFO("Registered Block in Block Registry as: "+blockMaterial);
 		}
 
