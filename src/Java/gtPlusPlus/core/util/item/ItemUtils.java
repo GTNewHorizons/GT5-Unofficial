@@ -246,11 +246,11 @@ public class ItemUtils {
 
 	public static ItemStack getItemStackOfAmountFromOreDictNoBroken(final String oredictName, final int amount){
 		if (CORE.DEBUG){
-			Utils.LOG_INFO("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(1));
-			Utils.LOG_INFO("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(2));
-			Utils.LOG_INFO("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(3));
-			Utils.LOG_INFO("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(4));
-			Utils.LOG_INFO("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(5));
+			Utils.LOG_WARNING("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(1));
+			Utils.LOG_WARNING("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(2));
+			Utils.LOG_WARNING("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(3));
+			Utils.LOG_WARNING("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(4));
+			Utils.LOG_WARNING("Looking up: "+oredictName+" - from method: "+ReflectionUtils.getMethodName(5));
 		}
 		try{
 
@@ -273,7 +273,7 @@ public class ItemUtils {
 				}
 			}
 		}
-		Utils.LOG_INFO(oredictName+" was not valid.");
+		Utils.LOG_WARNING(oredictName+" was not valid.");
 		return null;
 		}
 		catch (Throwable t){
@@ -288,7 +288,7 @@ public class ItemUtils {
 				return returnValue.copy();
 			}
 		}
-		Utils.LOG_INFO(material+" was not valid.");
+		Utils.LOG_WARNING(material+" was not valid.");
 		return null;
 	}
 
@@ -347,7 +347,7 @@ public class ItemUtils {
 	}
 
 	public static MultiPickaxeBase generateMultiPick(final boolean GT_Durability, final ToolMaterial customMaterial, final String name, final int durability, final short[] rgba, final Object enchantment){
-		Utils.LOG_INFO("Generating a Multi-Pick out of "+name);
+		Utils.LOG_WARNING("Generating a Multi-Pick out of "+name);
 		final short[] rgb = rgba;
 		int dur = customMaterial.getMaxUses();
 		Utils.LOG_WARNING("Determined durability for "+name+" is "+dur);
@@ -384,7 +384,7 @@ public class ItemUtils {
 		if (MP_Redstone.isValid){
 			return MP_Redstone;
 		}
-		Utils.LOG_INFO("Pickaxe was not valid.");
+		Utils.LOG_WARNING("Pickaxe was not valid.");
 		return null;
 	}
 

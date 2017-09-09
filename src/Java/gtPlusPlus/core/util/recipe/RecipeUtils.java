@@ -23,20 +23,20 @@ public class RecipeUtils {
 
 		final ArrayList<Object> validSlots = new ArrayList<>();
 		if (resultItem == null){
-			Utils.LOG_INFO("Found a recipe with an invalid output, yet had a valid inputs. Skipping.");
+			Utils.LOG_WARNING("Found a recipe with an invalid output, yet had a valid inputs. Skipping.");
 			return false;
 		}
 
 		if ((slot_1 == null) && (slot_2 == null) && (slot_3 == null) &&
 				(slot_4 == null) && (slot_5 == null) && (slot_6 == null) &&
 				(slot_7 == null) && (slot_8 == null) && (slot_9 == null)){
-			Utils.LOG_INFO("Found a recipe with 0 inputs, yet had a valid output.");
-			Utils.LOG_INFO("Error found while adding a recipe for: "+resultItem.getDisplayName()+" | Please report this issue on Github.");
+			Utils.LOG_WARNING("Found a recipe with 0 inputs, yet had a valid output.");
+			Utils.LOG_WARNING("Error found while adding a recipe for: "+resultItem.getDisplayName()+" | Please report this issue on Github.");
 			RegistrationHandler.recipesFailed++;
 			return false;
 		}
 
-		//Utils.LOG_INFO("Trying to add a recipe for "+resultItem.toString());
+		//Utils.LOG_WARNING("Trying to add a recipe for "+resultItem.toString());
 		String a,b,c,d,e,f,g,h,i;
 		if (slot_1 == null){ a = " ";} else { a = "1";validSlots.add('1');validSlots.add(slot_1);}
 		Utils.LOG_WARNING(a);
@@ -110,7 +110,7 @@ public class RecipeUtils {
 
 		try {
 			GameRegistry.addRecipe(new ShapedOreRecipe(resultItem.copy(), validSlots.toArray()));
-			//Utils.LOG_INFO("Success! Added a recipe for "+resultItem.getDisplayName());
+			//Utils.LOG_WARNING("Success! Added a recipe for "+resultItem.getDisplayName());
 			if (!COMPAT_HANDLER.areInitItemsLoaded){
 				RegistrationHandler.recipesSuccess++;
 			}
@@ -140,7 +140,7 @@ public class RecipeUtils {
 
 		final ArrayList<Object> validSlots = new ArrayList<>();
 
-		Utils.LOG_INFO("Trying to add a recipe for "+Output.toString());
+		Utils.LOG_WARNING("Trying to add a recipe for "+Output.toString());
 		String a,b,c,d,e,f,g,h,i;
 		if (slot_1 == null){ a = " ";} else { a = "1";validSlots.add('1');validSlots.add(slot_1);}
 		Utils.LOG_WARNING(a);
@@ -184,7 +184,7 @@ public class RecipeUtils {
 			//GameRegistry.addRecipe(new ShapelessOreRecipe(Output, outputAmount), (Object[]) validSlots.toArray());
 			GameRegistry.addRecipe(new ShapelessOreRecipe(Output, validSlots.toArray()));
 			//GameRegistry.addShapelessRecipe(new ItemStack(output_ITEM, 1), new Object[] {slot_1, slot_2});
-			Utils.LOG_INFO("Success! Added a recipe for "+Output.getDisplayName());
+			Utils.LOG_WARNING("Success! Added a recipe for "+Output.getDisplayName());
 			RegistrationHandler.recipesSuccess++;
 		}
 		catch(final RuntimeException k){
@@ -263,10 +263,10 @@ public class RecipeUtils {
 		if ((x instanceof Item) || (x instanceof ItemStack)){
 			if (x instanceof Item){
 				final ItemStack r = new ItemStack((Item) x);
-				Utils.LOG_INFO("Removing Recipe for "+r.getUnlocalizedName());
+				Utils.LOG_WARNING("Removing Recipe for "+r.getUnlocalizedName());
 			}
 			else {
-				Utils.LOG_INFO("Removing Recipe for "+((ItemStack) x).getUnlocalizedName());
+				Utils.LOG_WARNING("Removing Recipe for "+((ItemStack) x).getUnlocalizedName());
 			}
 			if (x instanceof ItemStack){
 				final Item r = ((ItemStack) x).getItem();
@@ -274,15 +274,15 @@ public class RecipeUtils {
 					x = r;
 				}
 				else {
-					Utils.LOG_INFO("Recipe removal failed - Tell Alkalus.");
+					Utils.LOG_WARNING("Recipe removal failed - Tell Alkalus.");
 					return false;
 				}
 			}
 			if (RecipeUtils.attemptRecipeRemoval((Item) x)){
-				Utils.LOG_INFO("Recipe removal successful");
+				Utils.LOG_WARNING("Recipe removal successful");
 				return true;
 			}
-			Utils.LOG_INFO("Recipe removal failed - Tell Alkalus.");
+			Utils.LOG_WARNING("Recipe removal failed - Tell Alkalus.");
 			return false;
 		}
 		return false;
@@ -297,7 +297,7 @@ public class RecipeUtils {
 			final ItemStack is = items.next().getRecipeOutput();
 			if ((is != null) && (is.getItem() == I)){
 				items.remove();
-				Utils.LOG_INFO("Remove a recipe with "+I.getUnlocalizedName()+" as output.");
+				Utils.LOG_WARNING("Remove a recipe with "+I.getUnlocalizedName()+" as output.");
 				continue;
 			}
 		}
@@ -316,7 +316,7 @@ public class RecipeUtils {
 			Utils.LOG_WARNING("Should be all gone now after double checking, so return true.");
 			return true;
 		}
-		Utils.LOG_INFO("Return false, because something went wrong.");
+		Utils.LOG_WARNING("Return false, because something went wrong.");
 		return false;
 	}
 
@@ -342,7 +342,7 @@ public class RecipeUtils {
 		}
 		else {
 			if (OutputItem != null){
-				Utils.LOG_INFO("Adding recipe for "+OutputItem.getDisplayName()+" failed. Error 62.");
+				Utils.LOG_WARNING("Adding recipe for "+OutputItem.getDisplayName()+" failed. Error 62.");
 			}
 			RegistrationHandler.recipesFailed++;
 			return false;
@@ -352,7 +352,7 @@ public class RecipeUtils {
 	public static boolean addShapedGregtechRecipe(final Object[] inputs, ItemStack output){
 
 		if (inputs.length != 9){
-			Utils.LOG_INFO("Input array for "+output.getDisplayName()+" does not equal 9. "+inputs.length+" is the actual size.");
+			Utils.LOG_WARNING("Input array for "+output.getDisplayName()+" does not equal 9. "+inputs.length+" is the actual size.");
 
 			RegistrationHandler.recipesFailed++;
 			return false;
@@ -361,17 +361,17 @@ public class RecipeUtils {
 		for (int x=0;x<9;x++){
 			if (inputs[x] == null){
 				inputs[x] = " ";
-				Utils.LOG_INFO("Input slot "+x+" changed from NULL to a blank space.");
+				Utils.LOG_WARNING("Input slot "+x+" changed from NULL to a blank space.");
 			}
 			else if (!(inputs[x] instanceof ItemStack) && !(inputs[x] instanceof String)){
 				if (output != null){
-					Utils.LOG_INFO("Invalid Item inserted into inputArray. Item:"+output.getDisplayName()+" has a bad recipe. Please report to Alkalus.");
+					Utils.LOG_WARNING("Invalid Item inserted into inputArray. Item:"+output.getDisplayName()+" has a bad recipe. Please report to Alkalus.");
 
 					RegistrationHandler.recipesFailed++;
 					return false;
 				}
 				else {
-					Utils.LOG_INFO("Output is Null for a recipe. Report to Alkalus.");
+					Utils.LOG_WARNING("Output is Null for a recipe. Report to Alkalus.");
 					output = ItemUtils.getItemStackOfAmountFromOreDict("sadibasdkjnad", 1);
 				}
 			}
@@ -390,13 +390,13 @@ public class RecipeUtils {
 						'G', inputs[6],
 						'H', inputs[7],
 						'I', inputs[8]})){
-			Utils.LOG_INFO("Success! Added a recipe for "+output.getDisplayName());
+			Utils.LOG_WARNING("Success! Added a recipe for "+output.getDisplayName());
 			RegistrationHandler.recipesSuccess++;
 			return true;
 		}
 		else {
 			if (output != null){
-				Utils.LOG_INFO("Adding recipe for "+output.getDisplayName()+" failed. Error 61.");
+				Utils.LOG_WARNING("Adding recipe for "+output.getDisplayName()+" failed. Error 61.");
 			}
 			return false;
 		}
@@ -406,7 +406,7 @@ public class RecipeUtils {
 		//Catch Invalid Recipes
 		if (inputItems.length > 9 || inputItems.length < 1){
 			if (OutputItem != null){
-				Utils.LOG_INFO("Invalid input array for shapeless recipe, which should output "+OutputItem.getDisplayName());
+				Utils.LOG_WARNING("Invalid input array for shapeless recipe, which should output "+OutputItem.getDisplayName());
 			}
 			return false;
 		}

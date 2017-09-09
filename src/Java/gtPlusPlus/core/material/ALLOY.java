@@ -567,13 +567,10 @@ public final class ALLOY {
 			true, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(ALLOY.LEAGRISIUM, 25),
-					new MaterialStack(ALLOY.ENERGYCRYSTAL, 25),
-					new MaterialStack(ALLOY.ZIRCONIUM_CARBIDE, 25),
-					new MaterialStack(ELEMENT.getInstance().MANGANESE, 5),
-					new MaterialStack(ELEMENT.getInstance().MOLYBDENUM, 5),
-					new MaterialStack(ELEMENT.getInstance().TUNGSTEN, 5),
-					new MaterialStack(ELEMENT.getInstance().BERYLLIUM, 5),
+					new MaterialStack(ALLOY.STELLITE, 25),
+					new MaterialStack(ELEMENT.getInstance().GALLIUM, 5),
+					new MaterialStack(ELEMENT.getInstance().AMERICIUM, 5),
+					new MaterialStack(ELEMENT.getInstance().PALLADIUM, 5),
 					new MaterialStack(ELEMENT.getInstance().BISMUTH, 5)
 			});
 

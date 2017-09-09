@@ -64,7 +64,7 @@ public class HANDLER_GT {
 
 	public static void postInit(){
 		//Register some custom recipe maps for any enabled multiblocks.
-		MultiblockRecipeMapHandler.run();
+		//MultiblockRecipeMapHandler.run();
 	}
 
 }
