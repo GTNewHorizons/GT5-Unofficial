@@ -166,8 +166,8 @@ public class GTplusplus implements ActionListener {
 				"How much RF is a single unit of EU worth? (Most mods use 4:1 ratio)");
 
 		// Features
-		enableCustomAlvearyBlocks = config.getBoolean("enableCustomAlvearyBlocks", "features", false,
-				"Enables Custom Alveary Blocks.");
+		CORE.mEnableCape = config.getBoolean("enableSupporterCape", "features", true,
+				"Enables Custom GT++ Cape.");
 
 		//Biomes
 		CORE.DARKBIOME_ID = config.getInt("darkbiome_ID", "worldgen", 238, 1, 254, "The biome within the Dark Dimension.");
@@ -198,6 +198,10 @@ public class GTplusplus implements ActionListener {
 	@Mod.EventHandler
 	public void preInit(final FMLPreInitializationEvent event) {
 		Utils.LOG_INFO("Loading " + CORE.name + " V" + CORE.VERSION);
+		
+		if(!Utils.isServer()){
+			CORE.mEnableCape = true;
+		}
 		
 		//HTTP Requests
 		CORE.MASTER_VERSION = NetworkUtils.getContentFromURL("https://raw.githubusercontent.com/draknyte1/GTplusplus/master/Recommended.txt").toLowerCase();
@@ -261,8 +265,6 @@ public class GTplusplus implements ActionListener {
 			Utils.LOG_INFO("Verification for New Material: "+s.mName);
 		}
 
-		// ~
-		//ReflectionUtils.becauseIWorkHard();
 		// Utils.LOG_INFO("Activating GT OreDictionary Handler, this can take
 		// some time.");
 		Utils.LOG_INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");

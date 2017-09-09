@@ -1,9 +1,14 @@
 package gtPlusPlus.core.proxy;
 
+import java.net.URL;
+import java.util.HashSet;
+import java.util.Scanner;
+
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.GTplusplus;
@@ -19,27 +24,33 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.tileentities.general.TileEntityFirepit;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.particles.EntityParticleFXMysterious;
+import gtPlusPlus.xmod.gregtech.common.render.GTPP_CapeRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.entity.RenderIronGolem;
 import net.minecraft.entity.Entity;
 
-public class ClientProxy extends CommonProxy{
+public class ClientProxy extends CommonProxy implements Runnable{
 
-	/*private final HashSet<String> mCapeList = new HashSet<String>();
-	private final CapeHandler mCapeRenderer;
+	private final HashSet mCapeList = new HashSet();
+    private final GTPP_CapeRenderer mCapeRenderer;
+	 
+    public ClientProxy(){
+    	mCapeRenderer = new GTPP_CapeRenderer(mCapeList);
+    }
 
-	ClientProxy(){
-		mCapeRenderer = new CapeHandler(mCapeList);
-	}
-	 */
-
+    @SubscribeEvent
+    public void receiveRenderSpecialsEvent(net.minecraftforge.client.event.RenderPlayerEvent.Specials.Pre aEvent) {
+        mCapeRenderer.receiveRenderSpecialsEvent(aEvent);
+    }
+    
 	@SideOnly(Side.CLIENT)
 	public static String playerName = "";
 
 	@Override
 	public void preInit(final FMLPreInitializationEvent e) {
 		super.preInit(e);
+		onPreLoad();
 		//Do this weird things for textures.
 		GTplusplus.loadTextures();
 		//We boot up the sneak manager.
@@ -136,5 +147,32 @@ public class ClientProxy extends CommonProxy{
 	}
 
 
+	
+	public void onPreLoad() {
+        String arr$[] = {
+                "draknyte1", "fobius"
+        };
+        int len$ = arr$.length;
+        for (int i$ = 0; i$ < len$; i$++) {
+            String tName = arr$[i$];
+            mCapeList.add(tName.toLowerCase());
+        }
+        (new Thread(this)).start();
+    }
+	
+	public void run() {
+        try {
+            Utils.LOG_INFO("Skip: GT++ Mod: Downloading Cape List.");
+            @SuppressWarnings("resource")
+            Scanner tScanner = new Scanner(new URL("https://github.com/draknyte1/GTplusplus/blob/master/SupporterList.txt").openStream());
+            while (tScanner.hasNextLine()) {
+                String tName = tScanner.nextLine();
+                if (!this.mCapeList.contains(tName.toLowerCase())) {
+                    this.mCapeList.add(tName.toLowerCase());
+                }
+            }
+        } catch (Throwable e) {
+        }
+    }
 
 }

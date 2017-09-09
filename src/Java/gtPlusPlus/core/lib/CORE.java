@@ -45,6 +45,9 @@ public class CORE {
 	public static final boolean MAIN_GREGTECH_5U_EXPERIMENTAL_FORK = Meta_GT_Proxy.areWeUsingGregtech5uExperimental();
 	public static final int GREGTECH_API_VERSION = GregTech_API.VERSION;
 	public static IGregtech_RecipeAdder RA;
+	
+	public static boolean mEnableCape = false;
+	
 	@Deprecated
 	public static IGregtech_RecipeAdder sRecipeAdder;
 	public static GregtechRecipe GT_Recipe = new GregtechRecipe();
