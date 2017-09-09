@@ -12,7 +12,6 @@ import gregtech.api.enums.Materials;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
 import gregtech.api.enums.TextureSet;
-import gregtech.api.interfaces.IMaterialHandler;
 import gregtech.api.objects.MaterialStack;
 import gtPlusPlus.core.util.Utils;
 

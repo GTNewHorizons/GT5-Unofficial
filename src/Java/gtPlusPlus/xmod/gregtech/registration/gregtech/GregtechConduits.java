@@ -56,9 +56,9 @@ public class GregtechConduits {
 			wireFactory("RedstoneAlloy", 32, 30645, 0, 2, 1);
 		}
 
-		superConductorFactory(GT_Materials.Superconductor, 524288, 30660, 0, 0, 8);
+		//superConductorFactory(GT_Materials.Superconductor, 524288, 30660, 0, 0, 8);
 		if (LoadedMods.Thaumcraft){
-			superConductorFactory(GT_Materials.Void, 512, 30661, 0, 0, 8);
+			//superConductorFactory(GT_Materials.Void, 512, 30661, 0, 0, 8);
 		}
 
 
@@ -189,16 +189,16 @@ public class GregtechConduits {
 			V = 0;
 		}
 		//makeWires(T, ID, 2L, 4L, 2L, GT_Values.V[V], true, false);
-		makeSuperConductors(T, ID, insulatedLoss, uninsulatedLoss, Amps, GT_Values.V[V], true, false);
+		//makeSuperConductors(T, ID, insulatedLoss, uninsulatedLoss, Amps, GT_Values.V[V], true, false);
 		//makeWires(T, ID, bEC ? 2L : 2L, bEC ? 4L : 4L, 2L, gregtech.api.enums.GT_Values.V[V], true, false);
 	}
 
-	private static void makeSuperConductors(final GT_Materials aMaterial, final int aStartID, final long aLossInsulated, final long aLoss, final long aAmperage, final long aVoltage, final boolean aInsulatable, final boolean aAutoInsulated)
+	/*private static void makeSuperConductors(final GT_Materials aMaterial, final int aStartID, final long aLossInsulated, final long aLoss, final long aAmperage, final long aVoltage, final boolean aInsulatable, final boolean aAutoInsulated)
 	{
 		Utils.LOG_WARNING("Gregtech5u Content | Registered "+aMaterial.name() +" as a new Super Conductor.");
 		registerOre(GregtechOrePrefixes.type2, aMaterial, new GregtechMetaPipeEntity_SuperConductor(aStartID + 5, "wire." + aMaterial.name().toLowerCase() + ".16", "16x " + aMaterial.mDefaultLocalName + " Wire", 1.0F, aMaterial, aLoss, 16L * aAmperage, aVoltage, false, !aAutoInsulated).getStackForm(1L));
 
-	}
+	}*/
 
 	private static boolean registerOre(final GregtechOrePrefixes aPrefix, final Object aMaterial, final ItemStack aStack) {
 		return GT_OreDictUnificator.registerOre(aPrefix.get(aMaterial), aStack);
