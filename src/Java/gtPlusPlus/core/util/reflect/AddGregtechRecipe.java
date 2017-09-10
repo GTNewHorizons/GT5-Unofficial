@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.item.ItemStack;
@@ -91,13 +92,15 @@ public final class AddGregtechRecipe {
 						int.class, 
 						int.class);
 				if (addRecipe != null){
-					return (boolean) addRecipe.invoke(IGT_RecipeAdder, aResearchItem, aResearchTime, aInputs, aFluidInputs, aOutput, aDuration, aEUt);
+					return (boolean) addRecipe.invoke(aResearchItem, aResearchTime, aInputs, aFluidInputs, aOutput, aDuration, aEUt);
 				}
 			}
 		}
 		catch (SecurityException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			Utils.LOG_INFO("[Assembly Line] - Failed to add recipe, due to GT being .09 branch. Research: "+aResearchItem.getDisplayName()+" | Result: "+aOutput.getDisplayName());
 			return false;
-		}
+		}	
+		Utils.LOG_INFO("[Assembly Line] - Failed to add recipe. Research: "+aResearchItem.getDisplayName()+" | Result: "+aOutput.getDisplayName());
 		return false;
 	}
 
