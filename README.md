@@ -9,7 +9,7 @@ https://github.com/Technus/TecTech/blob/master/src/main/java/com/github/technus/
 - Required After
 
 
-MIT License
+# MIT License
 
 Copyright (c) [year] [fullname]
 
