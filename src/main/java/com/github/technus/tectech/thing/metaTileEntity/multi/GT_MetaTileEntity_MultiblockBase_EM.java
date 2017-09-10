@@ -202,6 +202,15 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     //RATHER LEAVE ALONE Section
+    protected boolean EM_areChunksAroundLoaded(){
+        if(isValidMetaTileEntity(this) && getBaseMetaTileEntity().isServerSide()){
+            IGregTechTileEntity base=getBaseMetaTileEntity();
+            final int x=base.getXCoord();
+            final int y=base.getYCoord();
+            final int z=base.getZCoord();
+            return base.getWorld().checkChunksExist(x-48,y-48,z-48,x+48,y+48,z+48);
+        }else return false;
+    }
 
     public GT_MetaTileEntity_MultiblockBase_EM(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -464,7 +473,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 mMachine = checkMachine(aBaseMetaTileEntity, mInventory[1]);
 
                 if (!mMachine) {
-                    if ((ePowerPass && getEUVar() > V[3]) || (eDismantleBoom && mMaxProgresstime > 0))
+                    if ((ePowerPass && getEUVar() > V[3]) || (eDismantleBoom && mMaxProgresstime > 0 && EM_areChunksAroundLoaded()))
                         explodeMultiblock();
                     if (outputEM != null)
                         for (cElementalInstanceStackMap tree : outputEM)
@@ -1084,7 +1093,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches)
                     hatch.getBaseMetaTileEntity().setActive(false);
             }
-            if ((ePowerPass && getEUVar()>V[3]) || (eDismantleBoom && mMaxProgresstime > 0)) explodeMultiblock();
+            if ((ePowerPass && getEUVar()>V[3]) || (eDismantleBoom && mMaxProgresstime > 0 && EM_areChunksAroundLoaded())) explodeMultiblock();
             if (outputEM != null)
                 for (cElementalInstanceStackMap output : outputEM)
                     if (output.hasStacks()) explodeMultiblock();
