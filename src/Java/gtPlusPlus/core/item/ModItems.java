@@ -221,6 +221,8 @@ public final class ModItems {
 	
 	public static Item itemDebugAreaClear;
 
+	public static Item itemGemShards;
+
 
 
 
@@ -229,7 +231,7 @@ public final class ModItems {
 
 		//Default item used when recipes fail, handy for debugging.
 		AAA_Broken = new BaseItemIngot_OLD("AAA_Broken", "Errors - Tell Alkalus", Utils.rgbtoHexValue(128, 128, 128), 0);
-		itemAlkalusDisk = new CoreItem("itemAlkalusDisk", AddToCreativeTab.tabMisc, 1, 0, "Unknown Use", EnumRarity.rare, EnumChatFormatting.AQUA, false, null);
+		itemAlkalusDisk = new BaseItemDamageable("itemAlkalusDisk", AddToCreativeTab.tabMisc, 1, 0, "Unknown Use", EnumRarity.rare, EnumChatFormatting.AQUA, false, null);
 
 		//Debug Loading
 		if (CORE.DEBUG){
@@ -283,6 +285,9 @@ public final class ModItems {
 
 		itemBlueprintBase = new ItemBlueprint("itemBlueprint");
 
+		itemGemShards = new ItemGemShards("itemGemShards", "Gem Shards", AddToCreativeTab.tabMisc, 32, 0, "They glitter in the light", EnumRarity.rare, EnumChatFormatting.GRAY, false, Utils.rgbtoHexValue(182, 114, 18)).setTextureName(CORE.MODID + ":itemHeliumBlob");
+
+		
 		//Start meta Item Generation
 		ItemsFoods.load();
 

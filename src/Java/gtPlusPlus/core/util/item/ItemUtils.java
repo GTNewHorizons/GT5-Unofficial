@@ -58,6 +58,13 @@ public class ItemUtils {
 			return null;
 		}
 	}
+	
+	public static final int WILDCARD_VALUE = Short.MAX_VALUE;
+	public static ItemStack getWildcardStack(Item x){
+		ItemStack y = new ItemStack(x, 1, WILDCARD_VALUE);
+		return y;
+	}
+	
 
 	public static ItemStack getIC2Cell(final String S){
 		final ItemStack moreTemp = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+S, 1);

@@ -66,6 +66,40 @@ public final class AddGregtechRecipe {
 		}
 		return false;
 	}
+	
+	
+	
+	public static boolean addAssemblylineRecipe(
+			ItemStack aResearchItem,
+			int aResearchTime,
+			ItemStack[] aInputs,
+			FluidStack[] aFluidInputs,
+			ItemStack aOutput, 
+			int aDuration, int aEUt){
+
+		try {
+			IGT_RecipeAdder IGT_RecipeAdder = GT_Values.RA;
+			if (IGT_RecipeAdder != null){
+				Class<? extends IGT_RecipeAdder> classRA = IGT_RecipeAdder.getClass();
+				Method addRecipe = classRA.getMethod(
+						"addAssemblylineRecipe",
+						ItemStack.class,
+						int.class,
+						ItemStack.class,
+						FluidStack.class,
+						ItemStack.class,
+						int.class, 
+						int.class);
+				if (addRecipe != null){
+					return (boolean) addRecipe.invoke(IGT_RecipeAdder, aResearchItem, aResearchTime, aInputs, aFluidInputs, aOutput, aDuration, aEUt);
+				}
+			}
+		}
+		catch (SecurityException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			return false;
+		}
+		return false;
+	}
 
 	public static boolean addCircuitAssemblerRecipe(
 			ItemStack[] aInputs,
