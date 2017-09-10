@@ -14,7 +14,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -192,7 +191,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
                 Math.min(powerSetting >> 6,8)+
                 Math.min(powerSetting >> 8,24)+
                 Math.min(powerSetting >> 12,48)+
-                         powerSetting >> 18;
+                        (powerSetting >> 18);
 
         boolean inside=true;
         do {
@@ -213,7 +212,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
                             ((EntityItem) entity).setDead();
                         } else if (entity instanceof EntityLivingBase) {
                             if(!GT_Utility.isWearingFullElectroHazmat((EntityLivingBase) entity))
-                                ((EntityLiving) entity).attackEntityFrom(microwaving, damagingFactor);
+                                ((EntityLivingBase) entity).attackEntityFrom(microwaving, damagingFactor);
                         }
                     }
                 }
