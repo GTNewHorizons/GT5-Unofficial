@@ -2,6 +2,7 @@ package gtPlusPlus.core.util.reflect;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.interfaces.internal.IGT_RecipeAdder;
@@ -67,9 +68,9 @@ public final class AddGregtechRecipe {
 		}
 		return false;
 	}
-	
-	
-	
+
+
+
 	public static boolean addAssemblylineRecipe(
 			ItemStack aResearchItem,
 			int aResearchTime,
@@ -82,7 +83,29 @@ public final class AddGregtechRecipe {
 			IGT_RecipeAdder IGT_RecipeAdder = GT_Values.RA;
 			if (IGT_RecipeAdder != null){
 				Class<? extends IGT_RecipeAdder> classRA = IGT_RecipeAdder.getClass();
-				Method addRecipe = classRA.getMethod(
+
+				for(Method current : classRA.getDeclaredMethods()){
+					//Utils.LOG_INFO("-----------------------------------------------");
+					////Utils.LOG_INFO("Found method: "+current.getName());
+					//Utils.LOG_INFO("With Parameters: ");
+					//Utils.LOG_INFO("===============================================");
+					for (Class<?> P : current.getParameterTypes()){
+						//Utils.LOG_INFO(""+P.getName());
+						//Utils.LOG_INFO(""+P.getClass().getName());
+					}
+					//Utils.LOG_INFO("===============================================");
+				}
+				
+				try {
+					Method testRA = GT_Values.RA.getClass().getMethod("addAssemblylineRecipe", GT_Values.RA.getClass(), aResearchItem.getClass(), int.class, aInputs.getClass(), aFluidInputs.getClass(), aOutput.getClass(), int.class, int.class);
+				testRA.invoke(aResearchItem, aResearchTime, aInputs, aFluidInputs, aOutput, aDuration, aEUt);
+				}
+				catch (Throwable masndj){
+					masndj.printStackTrace();
+				}
+				
+
+				Method addRecipe = classRA.getDeclaredMethod(
 						"addAssemblylineRecipe",
 						ItemStack.class,
 						int.class,
@@ -97,7 +120,8 @@ public final class AddGregtechRecipe {
 			}
 		}
 		catch (SecurityException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			Utils.LOG_INFO("[Assembly Line] - Failed to add recipe, due to GT being .09 branch. Research: "+aResearchItem.getDisplayName()+" | Result: "+aOutput.getDisplayName());
+			Utils.LOG_INFO("[Assembly Line] - Failed to add recipe, due to GT not being .09 branch. Research: "+aResearchItem.getDisplayName()+" | Result: "+aOutput.getDisplayName());
+			e.printStackTrace();
 			return false;
 		}	
 		Utils.LOG_INFO("[Assembly Line] - Failed to add recipe. Research: "+aResearchItem.getDisplayName()+" | Result: "+aOutput.getDisplayName());
