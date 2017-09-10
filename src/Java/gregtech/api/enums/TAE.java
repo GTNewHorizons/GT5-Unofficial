@@ -14,7 +14,7 @@ public class TAE {
 	public static boolean hasArrayBeenExpanded = false;
 
 	public static boolean hookGtTextures() {
-		ITexture[] textureArrayDump = Textures.BlockIcons.CASING_BLOCKS;
+		/*ITexture[] textureArrayDump = Textures.BlockIcons.CASING_BLOCKS;
 		ITexture[] newTextureArray = new ITexture[1024];
 		Utils.LOG_INFO("|======| Texture Array Start Length: "+textureArrayDump.length+" |======|");
 		for (int r=0;r<textureArrayDump.length;r++){
@@ -31,7 +31,8 @@ public class TAE {
 		else {
 			hasArrayBeenExpanded = false;
 		}
-		return hasArrayBeenExpanded;		
+		return hasArrayBeenExpanded;*/	
+		return true;
 	}
 
 	public static boolean registerTextures(GT_RenderedTexture textureToRegister) {
