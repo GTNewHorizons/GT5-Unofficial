@@ -191,6 +191,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 
 	@Override
 	public void updateEntity() {
+		try{
 		if (!this.worldObj.isRemote) {
 			this.tickCount++;
 			// Utils.LOG_WARNING("Ticking "+this.tickCount);
@@ -230,6 +231,8 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 			}
 
 		}
+		}
+		catch (Throwable t){}
 	}
 
 	public void calculateTickrate() {
