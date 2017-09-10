@@ -78,7 +78,7 @@ public final class AddGregtechRecipe {
 			FluidStack[] aFluidInputs,
 			ItemStack aOutput, 
 			int aDuration, int aEUt){
-
+/*
 		try {
 			IGT_RecipeAdder IGT_RecipeAdder = GT_Values.RA;
 			if (IGT_RecipeAdder != null){
@@ -125,7 +125,7 @@ public final class AddGregtechRecipe {
 			return false;
 		}	
 		Utils.LOG_INFO("[Assembly Line] - Failed to add recipe. Research: "+aResearchItem.getDisplayName()+" | Result: "+aOutput.getDisplayName());
-		return false;
+		*/return false;
 	}
 
 	public static boolean addCircuitAssemblerRecipe(

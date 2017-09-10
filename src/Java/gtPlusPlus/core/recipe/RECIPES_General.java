@@ -141,7 +141,7 @@ public class RECIPES_General {
 		}
 
 		//Alkalus Coin		
-		AddGregtechRecipe.addAssemblylineRecipe(
+		/*AddGregtechRecipe.addAssemblylineRecipe(
 				ItemUtils.getSimpleStack(ModItems.itemAlkalusDisk),
 				288000,
 				new ItemStack[]{
@@ -160,7 +160,7 @@ public class RECIPES_General {
         		Materials.Europium.getFluid(144*8)},
 				ItemUtils.getSimpleStack(Dimension_DarkWorld.portalItem),
 				30*20*60,
-				100000);
+				100000);*/
 		
 		}
 
