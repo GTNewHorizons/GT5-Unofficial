@@ -19,3 +19,4 @@ SetupDevWorkspaces.bat
 *.ipr
 *.iws
 *.bat
+.idea/workspace.xml
