@@ -13,6 +13,7 @@ import gtPlusPlus.core.inventories.BaseInventoryBackpack;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
 import gtPlusPlus.core.tileentities.general.TileEntityHeliumGenerator;
+import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbenchAdvanced;
 import gtPlusPlus.core.util.Utils;
@@ -23,7 +24,7 @@ import net.minecraft.world.World;
 
 public class GuiHandler implements IGuiHandler {
 
-	public static final int GUI1 = 0;      //Frame Alveary
+	public static final int GUI1 = 0;      //Project Table
 	public static final int GUI2 = 1;      //Helium Generator
 	public static final int GUI3 = 2;      //BackpackHandler
 	public static final int GUI4 = 3;      //Workbench
@@ -49,9 +50,7 @@ public class GuiHandler implements IGuiHandler {
 
 		if (te != null){
 			if (ID == GUI1){
-				if (CORE.configSwitches.enableCustomAlvearyBlocks){
-					//return new CONTAINER_FrameHousing((TileAlvearyFrameHousing)te, player);
-				}
+				return new Container_ProjectTable(player.inventory, (TileEntityProjectTable)te);
 			}
 			else if (ID == GUI2){
 				//HeliumGenerator
@@ -98,10 +97,7 @@ public class GuiHandler implements IGuiHandler {
 		final TileEntity te = world.getTileEntity(x, y, z);
 		if (te != null){
 			if (ID == GUI1){
-				if (CORE.configSwitches.enableCustomAlvearyBlocks){
-					Utils.LOG_WARNING("Opening Gui with Id: "+ID+" Alveary Frame Housing");
-					//return new GUI_FrameHousing((TileAlvearyFrameHousing) te, player);
-				}
+				return new GUI_ProjectTable(player.inventory, (TileEntityProjectTable)te);
 			}
 			else  if (ID == GUI2){
 				Utils.LOG_WARNING("Opening Gui with Id: "+ID+" RTG");

@@ -51,19 +51,19 @@ public class Preloader_DummyContainer extends DummyModContainer {
 	
 	@EventHandler
 	public void load(final FMLInitializationEvent e) {
-		Utils.LOG_INFO("Begin resource allocation for " + CORE_Preloader.MODID + " V" + CORE_Preloader.VERSION);
+		Utils.LOG_INFO("[GT++ ASM] Begin resource allocation for " + CORE_Preloader.MODID + " V" + CORE_Preloader.VERSION);
 	}
 	
 	@Subscribe
 	public void preInit(FMLPreInitializationEvent event) {
-		Utils.LOG_INFO("Loading " + CORE_Preloader.MODID + " V" + CORE_Preloader.VERSION);
+		Utils.LOG_INFO("[GT++ ASM] Loading " + CORE_Preloader.MODID + " V" + CORE_Preloader.VERSION);
 		// Handle GT++ Config
 		handleConfigFile(event);
 	}
 
 	@Subscribe
 	public void postInit(FMLPostInitializationEvent evt) {
-		Utils.LOG_INFO("Finished loading GT++ Pre-Loader.");
+		Utils.LOG_INFO("[GT++ ASM] Finished loading GT++ Pre-Loader.");
 	}
 	
 	public static void handleConfigFile(final FMLPreInitializationEvent event) {
