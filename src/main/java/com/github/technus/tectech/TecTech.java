@@ -44,7 +44,6 @@ public class TecTech {
     public static TecTechConfig ModConfig;
     public static XSTR Rnd = null;
     public static CreativeTabs mainTab = null;
-    private static boolean oneTimeFix = false;
 
     public static boolean hasCOFH = false, hasThaumcraft = false;
 
@@ -92,6 +91,8 @@ public class TecTech {
     @EventHandler
     public void PostLoad(FMLPostInitializationEvent PostEvent) {
         GTCustomLoader.postLoad();
+        if (ModConfig.NERF_FUSION) FixBrokenFusionRecipes();
+        fixBlocks();
     }
 
     @EventHandler
@@ -100,11 +101,6 @@ public class TecTech {
 
     @EventHandler
     public void onServerAboutToStart(FMLServerAboutToStartEvent ev) {
-        if (!oneTimeFix) {
-            oneTimeFix = true;
-            if (ModConfig.NERF_FUSION) FixBrokenFusionRecipes();
-            fixBlocks();
-        }
     }
 
     private void FixBrokenFusionRecipes() {
@@ -151,7 +147,6 @@ public class TecTech {
                 "GalacticraftMars",
                 "GalaxySpace",
                 "extracells",
-                "ExtraUtilities",
                 "Avaritia",
                 "avaritiaddons",
                 "EnderStorage",
