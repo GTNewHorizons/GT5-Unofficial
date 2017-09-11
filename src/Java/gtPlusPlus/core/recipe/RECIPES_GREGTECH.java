@@ -489,6 +489,26 @@ public class RECIPES_GREGTECH {
 				},
 				new int[]{2000, 1000, 250, 250, 250, 250, 500},
 				0);
+		
+		HotFuel.addNewHotFuel(
+				FluidUtils.getFluidStack("ic2pahoehoelava", 83),
+				GT_Values.NF,
+				new ItemStack[]{
+						ItemUtils.getItemStackOfAmountFromOreDict("nuggetCopper", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("nuggetTin", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("nuggetElectrum", 1),
+						ItemUtils.getSimpleStack(Blocks.obsidian)
+				},
+				new int[]{1000, 500, 125, 1850},
+				0);
+		
+		/*HotFuel.addNewHotFuel(
+				FluidUtils.getFluidStack("ic2hotcoolant", 100),
+				GT_Values.NF,
+				new ItemStack[]{},
+				new int[]{},
+				0);*/
+		
 
 		//CORE.RA.addFuel(UtilsItems.simpleMetaStack("EnderIO:bucketRocket_fuel", 0, 1), null, 112, 0);
 		GT_Values.RA.addFuel(ItemUtils.getSimpleStack(Items.lava_bucket), null, 32, 2);
