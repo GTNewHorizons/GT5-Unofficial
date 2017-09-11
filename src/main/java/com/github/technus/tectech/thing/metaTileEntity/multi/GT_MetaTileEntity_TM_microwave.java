@@ -35,7 +35,7 @@ import static gregtech.api.GregTech_API.sBlockCasings4;
  */
 public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_MultiblockBase_EM  implements IConstructable {
     private int powerSetting = 1000;
-    private int timerSetting = 0;
+    private int timerSetting = 360;
     private int timerValue = 0;
     private boolean hasBeenPausedThiscycle=false;
     private boolean flipped=false;
@@ -72,10 +72,14 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     public GT_MetaTileEntity_TM_microwave(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        eParamsIn[0] =powerSetting;
+        eParamsIn[10]=timerSetting;
     }
 
     public GT_MetaTileEntity_TM_microwave(String aName) {
         super(aName);
+        eParamsIn[0] =powerSetting;
+        eParamsIn[10]=timerSetting;
     }
 
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
