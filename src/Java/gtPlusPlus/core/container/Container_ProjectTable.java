@@ -37,6 +37,7 @@ public class Container_ProjectTable extends Container {
 		this.tile_entity = tile;
 		this.inventoryGrid = tile.inventoryGrid;
 		this.inventoryOutputs = tile.inventoryOutputs;
+		this.tile_entity.setContainer(this);
 
 		int var6;
 		int var7;
@@ -49,10 +50,10 @@ public class Container_ProjectTable extends Container {
 		
 
 		//Output slots
-		this.addSlotToContainer(new SlotDataStick(this.inventoryOutputs, 0, 26+(18*4), 7));
-		this.addSlotToContainer(new SlotNoInput(this.inventoryOutputs, 1, 26+(18*4), 43));
+		this.addSlotToContainer(new SlotDataStick(this.inventoryOutputs, 0, 26+(18*6), 7));
+		this.addSlotToContainer(new SlotNoInput(this.inventoryOutputs, 1, 26+(18*6), 43));
 	
-		this.addSlotToContainer(new SlotCraftingNoCollect(inventory.player, this.craftMatrix, this.craftResult, 0, 26+(18*3), 25));
+		this.addSlotToContainer(new SlotCraftingNoCollect(inventory.player, this.craftMatrix, this.craftResult, 0, 26+(18*4), 25));
 	       
 		
 		int o = 0;
@@ -62,7 +63,7 @@ public class Container_ProjectTable extends Container {
 			for (var7 = 0; var7 < 3; ++var7)
 			{
 				//Utils.LOG_WARNING("Adding slots at var:"+(var7 + var6 * 4)+" x:"+(8 + var7 * 18)+" y:"+(7 + var6 * 18));
-				this.addSlotToContainer(new Slot(this.craftMatrix, nextFreeSlot, 8 + (var7 * 18), 7 + (var6 * 18)));
+				this.addSlotToContainer(new Slot(this.craftMatrix, nextFreeSlot, 8+18 + (var7 * 18), 8 + (var6 * 18)));
 				this.slotGrid[o] = nextFreeSlot;
 				nextFreeSlot++;
 				o++;
@@ -105,9 +106,9 @@ public class Container_ProjectTable extends Container {
         if (!this.worldObj.isRemote){
             for (int i = 0; i < 9; ++i){
                 ItemStack itemstack = this.craftMatrix.getStackInSlotOnClosing(i);
-               /* if (itemstack != null){
+                if (itemstack != null){
                     p_75134_1_.dropPlayerItemWithRandomChoice(itemstack, false);
-                }*/
+                }
             }
         }
     }
@@ -214,6 +215,23 @@ public class Container_ProjectTable extends Container {
 	public boolean func_94530_a(ItemStack p_94530_1_, Slot p_94530_2_){
         return p_94530_2_.inventory != this.craftResult && super.func_94530_a(p_94530_1_, p_94530_2_);
     }
+	
+	public ItemStack getOutputContent(){
+		ItemStack output = this.craftResult.getStackInSlot(0);
+		if (output != null){
+			return output;
+		}
+		return null;		
+	}
+	
+	public ItemStack[] getInputComponents(){
+		ItemStack inputs[] = new ItemStack[9];
+		for (int r=0;r<this.craftMatrix.getSizeInventory();r++){
+			ItemStack temp = this.craftMatrix.getStackInSlot(r);
+			inputs[r] = temp;
+		}
+		return inputs;		
+	}
 
 
 }

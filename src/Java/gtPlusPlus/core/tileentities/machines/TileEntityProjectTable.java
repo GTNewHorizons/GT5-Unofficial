@@ -3,6 +3,7 @@ package gtPlusPlus.core.tileentities.machines;
 import java.util.List;
 import java.util.Vector;
 
+import gtPlusPlus.core.container.Container_ProjectTable;
 import gtPlusPlus.core.inventories.*;
 import gtPlusPlus.core.inventories.projecttable.InventoryProjectMain;
 import gtPlusPlus.core.inventories.projecttable.InventoryProjectOutput;
@@ -13,8 +14,10 @@ import ic2.api.network.INetworkUpdateListener;
 import ic2.api.tile.IWrenchable;
 import ic2.core.IC2;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCraftResult;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -24,11 +27,20 @@ public class TileEntityProjectTable extends TileEntity implements INetworkDataPr
 	
 	public InventoryProjectMain inventoryGrid;
 	public InventoryProjectOutput inventoryOutputs;
+	
+	/** The crafting matrix inventory (3x3). */
+    public InventoryCrafting craftMatrix;
+    public IInventory craftResult;
+    private Container_ProjectTable container;
 
 	public TileEntityProjectTable(){
 		this.inventoryGrid = new InventoryProjectMain();//number of slots - without product slot
 		this.inventoryOutputs = new InventoryProjectOutput();//number of slots - without product slot
 		this.canUpdate();
+	}
+	
+	public void setContainer(Container_ProjectTable container){
+		this.container = container;
 	}
 
 	@SuppressWarnings("static-method")
@@ -114,9 +126,16 @@ public class TileEntityProjectTable extends TileEntity implements INetworkDataPr
 		
 		//Data stick
 		ItemStack dataStick = this.inventoryOutputs.getStackInSlot(0);
-		if (dataStick != null){
-			Utils.LOG_INFO("Found Data Stick.");
-			ItemStack newStick = NBTUtils.writeItemsToNBT(dataStick, this.inventoryGrid.getInventory());
+		if (dataStick != null && this.container != null){
+			Utils.LOG_INFO("Found Data Stick and valid container.");
+			
+			
+			ItemStack outputComponent = container.getOutputContent();
+			ItemStack[] craftInputComponent = container.getInputComponents();
+			
+			
+			ItemStack newStick = NBTUtils.writeItemsToNBT(dataStick, new ItemStack[]{outputComponent}, "Output");
+			newStick = NBTUtils.writeItemsToNBT(newStick, craftInputComponent);
 			NBTUtils.setBookTitle(newStick, "Encrypted Project Data");
 			int slotm=0;
 			Utils.LOG_INFO("Uploading to Data Stick.");

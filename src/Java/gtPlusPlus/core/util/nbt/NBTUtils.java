@@ -46,6 +46,26 @@ public class NBTUtils {
 		}
 		return inventory;
 	}
+	
+	public static ItemStack[] readItemsFromNBT(ItemStack itemstack, String customkey){
+		NBTTagCompound tNBT = getNBT(itemstack);
+		final NBTTagList list = tNBT.getTagList(customkey, 10);
+		ItemStack inventory[] = new ItemStack[list.tagCount()];
+		for(int i = 0;i<list.tagCount();i++){
+			final NBTTagCompound data = list.getCompoundTagAt(i);
+			final int slot = data.getInteger("Slot");
+			if((slot >= 0) && (slot < list.tagCount())){
+				if (ItemStack.loadItemStackFromNBT(data) == ItemUtils.getSimpleStack(ZZZ_Empty)){
+					inventory[slot] = null;
+				}
+				else {
+					inventory[slot] = ItemStack.loadItemStackFromNBT(data);
+				}
+
+			}
+		}
+		return inventory;
+	}
 
 	public static ItemStack writeItemsToNBT(ItemStack itemstack, ItemStack[] stored){
 		NBTTagCompound tNBT = getNBT(itemstack);
@@ -67,6 +87,23 @@ public class NBTUtils {
 			}
 		}
 		tNBT.setTag("Items", list);
+		itemstack.setTagCompound(tNBT);
+		return itemstack;
+	}
+	
+	public static ItemStack writeItemsToNBT(ItemStack itemstack, ItemStack[] stored, String customkey){
+		NBTTagCompound tNBT = getNBT(itemstack);
+		final NBTTagList list = new NBTTagList();
+		for(int i = 0;i<stored.length;i++){
+			final ItemStack stack = stored[i];
+			if(stack != null){
+				final NBTTagCompound data = new NBTTagCompound();
+				stack.writeToNBT(data);
+				data.setInteger("Slot", i);
+				list.appendTag(data);
+			}
+		}
+		tNBT.setTag(customkey, list);
 		itemstack.setTagCompound(tNBT);
 		return itemstack;
 	}
