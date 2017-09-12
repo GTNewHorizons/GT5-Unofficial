@@ -26,7 +26,7 @@ public class Container_ProjectTable extends Container {
 	public static int StorageSlotNumber = 9; //Number of slots in storage area
 	public static int InOutputSlotNumber = StorageSlotNumber; //Same plus Output Slot
 	public static int InventorySlotNumber = 36; //Inventory Slots (Inventory and Hotbar)
-	public static int InventoryOutSlotNumber = InventorySlotNumber + 1; //Inventory Slot Number + Output
+	public static int InventoryOutSlotNumber = InventorySlotNumber + 2; //Inventory Slot Number + Output
 	public static int FullSlotNumber = InventorySlotNumber + InOutputSlotNumber; //All slots
 
 	private final int[] slotOutputs = new int[2];
@@ -48,8 +48,8 @@ public class Container_ProjectTable extends Container {
 		int o=0;
 
 		//Output slots
-		this.addSlotToContainer(new SlotDataStick(this.inventoryOutputs, 0, 136, 64));
-		this.addSlotToContainer(new SlotNoInput(this.inventoryOutputs, 1, 136, 64));
+		this.addSlotToContainer(new SlotDataStick(this.inventoryOutputs, 0, 26+(18*4), 7));
+		this.addSlotToContainer(new SlotNoInput(this.inventoryOutputs, 1, 26+(18*4), 43));
 		
 		for (int i=1; i<2; i++){
 			this.slotOutputs[o] = i;
@@ -99,16 +99,16 @@ public class Container_ProjectTable extends Container {
 			}
 
 			if (aSlotIndex == 0){
-				Utils.LOG_WARNING("Player Clicked on the Data Stick slot");
+				Utils.LOG_INFO("Player Clicked on the Data Stick slot");
 				//TODO
 			}if (aSlotIndex == 1){
-				Utils.LOG_WARNING("Player Clicked on the output slot");
+				Utils.LOG_INFO("Player Clicked on the output slot");
 				//TODO
 			}
 
 			for (final int x : this.slotGrid){
 				if (aSlotIndex == x){
-					Utils.LOG_WARNING("Player Clicked slot "+aSlotIndex+" in the crafting Grid");
+					Utils.LOG_INFO("Player Clicked slot "+aSlotIndex+" in the crafting Grid");
 				}
 			}			
 		}
@@ -118,7 +118,7 @@ public class Container_ProjectTable extends Container {
 	
 	@Override
 	public boolean canInteractWith(final EntityPlayer par1EntityPlayer){
-		if (this.worldObj.getBlock(this.posX, this.posY, this.posZ) != ModBlocks.blockWorkbench){
+		if (this.worldObj.getBlock(this.posX, this.posY, this.posZ) != ModBlocks.blockProjectTable){
 			return false;
 		}
 
@@ -129,7 +129,10 @@ public class Container_ProjectTable extends Container {
 	@Override
 	public ItemStack transferStackInSlot(final EntityPlayer par1EntityPlayer, final int par2)
 	{
-		ItemStack var3 = null;
+		
+		return null;
+		
+		/*ItemStack var3 = null;
 		final Slot var4 = (Slot)this.inventorySlots.get(par2);
 
 		if ((var4 != null) && var4.getHasStack())
@@ -182,7 +185,7 @@ public class Container_ProjectTable extends Container {
 			var4.onPickupFromSlot(par1EntityPlayer, var5);
 		}
 
-		return var3;
+		return var3;*/
 	}
 
 	//Can merge Slot

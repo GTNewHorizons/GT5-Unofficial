@@ -1,5 +1,6 @@
 package gtPlusPlus.core.inventories.projecttable;
 
+import gtPlusPlus.core.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -69,7 +70,17 @@ public class InventoryProjectMain implements IInventory{
 	@Override
 	public ItemStack getStackInSlot(final int slot)
 	{
+		//Utils.LOG_INFO("getStackInSlot["+slot+"]");
+		try {
+		if (slot>= this.inventory.length){
+			//Utils.LOG_INFO("Returning invalid slot item.");
+			return null;
+		}
 		return this.inventory[slot];
+		} catch (Throwable t){
+			t.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override
@@ -104,6 +115,9 @@ public class InventoryProjectMain implements IInventory{
 	@Override
 	public void setInventorySlotContents(final int slot, final ItemStack stack)
 	{
+		if (slot >= this.inventory.length){
+			return;
+		}
 		this.inventory[slot] = stack;
 
 		if ((stack != null) && (stack.stackSize > this.getInventoryStackLimit()))

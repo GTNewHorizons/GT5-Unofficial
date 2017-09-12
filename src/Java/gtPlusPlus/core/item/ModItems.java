@@ -48,6 +48,7 @@ public final class ModItems {
 
 	public static ToolMaterial STABALLOY = EnumHelper.addToolMaterial("Staballoy", 3, 2500, 7, 1.0F, 18);
 
+	public static Item ZZZ_Empty;
 	public static Item AAA_Broken;
 	public static Item itemAlkalusDisk;
 
@@ -231,6 +232,8 @@ public final class ModItems {
 
 		//Default item used when recipes fail, handy for debugging.
 		AAA_Broken = new BaseItemIngot_OLD("AAA_Broken", "Errors - Tell Alkalus", Utils.rgbtoHexValue(128, 128, 128), 0);
+		ZZZ_Empty = new ItemEmpty();
+		
 		itemAlkalusDisk = new BaseItemDamageable("itemAlkalusDisk", AddToCreativeTab.tabMisc, 1, 0, "Unknown Use", EnumRarity.rare, EnumChatFormatting.AQUA, false, null);
 
 		//Debug Loading

@@ -25,10 +25,33 @@ public class GT4Entity_AutoCrafter
 extends GT_MetaTileEntity_MultiBlockBase
 {
 
-	private boolean isDisassembling = false;
+	private MODE mMachineMode = MODE.ASSEMBLY;
 	private byte mTier = 1;
 	private final int mHeatingCapacity = 4700;
 
+	public static enum MODE{
+		CRAFTING("DISASSEMBLY","ASSEMBLY"),
+		ASSEMBLY("CRAFTING","DISASSEMBLY"),
+		DISASSEMBLY("ASSEMBLY","CRAFTING");
+		
+		private final String lastMode;
+		private final String nextMode;
+		
+		MODE(String previous, String next){
+			this.lastMode = previous;
+			this.nextMode = next;
+		}
+		
+		public MODE nextMode(){
+			return MODE.valueOf(this.nextMode);
+		}
+		
+		public MODE lastMode(){
+			return MODE.valueOf(this.lastMode);
+		}
+		
+	}
+	
 	@Override
 	public boolean isFacingValid(byte aFacing)
 	{
@@ -184,12 +207,15 @@ extends GT_MetaTileEntity_MultiBlockBase
 
 	@Override
 	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
-		isDisassembling = Utils.invertBoolean(isDisassembling);
-		if (this.isDisassembling){
-			PlayerUtils.messagePlayer(aPlayer, "You are now running the Auto-Crafter in mode: §cDisassembly");			
+		mMachineMode = mMachineMode.nextMode();
+		if (mMachineMode == MODE.CRAFTING){
+			PlayerUtils.messagePlayer(aPlayer, "You are now running the Auto-Crafter in mode: §dAuto-Crafting");			
+		}
+		else if (mMachineMode == MODE.ASSEMBLY){
+			PlayerUtils.messagePlayer(aPlayer, "You are now running the Auto-Crafter in mode: §aAssembly");				
 		}
 		else {
-			PlayerUtils.messagePlayer(aPlayer, "You are now running the Auto-Crafter in mode: §aAssembly");			
+			PlayerUtils.messagePlayer(aPlayer, "You are now running the Auto-Crafter in mode: §cDisassembly");		
 		}
 		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 	}
@@ -200,8 +226,11 @@ extends GT_MetaTileEntity_MultiBlockBase
 		final long tVoltage = this.getMaxInputVoltage();
 		final byte tTier = this.mTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
-		if (this.isDisassembling){
+		if (mMachineMode == MODE.DISASSEMBLY){
 			return doDisassembly();
+		}
+		else if (mMachineMode == MODE.CRAFTING){
+			return false;
 		}
 		else {
 			final ArrayList<ItemStack> tInputList = this.getStoredInputs();
@@ -346,11 +375,15 @@ extends GT_MetaTileEntity_MultiBlockBase
 		final String tRunning = (this.mMaxProgresstime>0 ? "Auto-Crafter running":"Auto-Crafter stopped");
 		final String tMaintainance = (this.getIdealStatus() == this.getRepairStatus() ? "No Maintainance issues" : "Needs Maintainance");
 		String tMode;
-		if (this.isDisassembling){
+		if (mMachineMode == MODE.DISASSEMBLY){
 			tMode = "§cDisassembly";			
 		}
-		else {
-			tMode = "§aAssembly";			
+		else if (mMachineMode == MODE.ASSEMBLY){
+			tMode = "§aAssembly";	
+			
+		}
+		else {	
+			tMode = "§dAuto-Crafting";		
 		}
 
 		return new String[]{
@@ -365,15 +398,26 @@ extends GT_MetaTileEntity_MultiBlockBase
 		return true;
 	}
 
+
+	//else if (mMachineMode == MODE.ASEEMBLY){
+	
+	private String getMode(){
+		return this.mMachineMode.name();
+	}
+	
+	
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
-		aNBT.setBoolean("isDisassembling", this.isDisassembling);
+		String mMode = getMode();
+		aNBT.setString("mMode", mMode);
 		super.saveNBTData(aNBT);
 	}
 
 	@Override
 	public void loadNBTData(NBTTagCompound aNBT) {
-		this.isDisassembling = aNBT.getBoolean("isDisassembling");
+		String modeString = aNBT.getString("mMode");
+		MODE newMode = MODE.valueOf(modeString);
+		this.mMachineMode = newMode;
 		super.loadNBTData(aNBT);
 	}
 

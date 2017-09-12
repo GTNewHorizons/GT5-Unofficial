@@ -6,6 +6,8 @@ import java.util.Vector;
 import gtPlusPlus.core.inventories.*;
 import gtPlusPlus.core.inventories.projecttable.InventoryProjectMain;
 import gtPlusPlus.core.inventories.projecttable.InventoryProjectOutput;
+import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.nbt.NBTUtils;
 import ic2.api.network.INetworkDataProvider;
 import ic2.api.network.INetworkUpdateListener;
 import ic2.api.tile.IWrenchable;
@@ -106,6 +108,40 @@ public class TileEntityProjectTable extends TileEntity implements INetworkDataPr
 		this.prevFacing = this.facing;
 
 	}
+
+	@Override
+	public void updateEntity() {
+		
+		//Data stick
+		ItemStack dataStick = this.inventoryOutputs.getStackInSlot(0);
+		if (dataStick != null){
+			Utils.LOG_INFO("Found Data Stick.");
+			ItemStack newStick = NBTUtils.writeItemsToNBT(dataStick, this.inventoryGrid.getInventory());
+			NBTUtils.setBookTitle(newStick, "Encrypted Project Data");
+			int slotm=0;
+			Utils.LOG_INFO("Uploading to Data Stick.");
+			for (ItemStack is : NBTUtils.readItemsFromNBT(newStick)){
+				if (is != null){
+					Utils.LOG_INFO("Uploaded "+is.getDisplayName()+" into memory slot "+slotm+".");
+				}
+				else {					
+					Utils.LOG_INFO("Left memory slot "+slotm+" blank.");
+				}
+				slotm++;
+			}
+			Utils.LOG_INFO("Encrypting Data Stick.");
+			this.inventoryOutputs.setInventorySlotContents(1, newStick);
+			this.inventoryOutputs.setInventorySlotContents(0, null);
+		}		
+		super.updateEntity();
+	}
+
+	@Override
+	public boolean canUpdate() {
+		return true;
+	}
+	
+
 
 
 

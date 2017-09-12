@@ -88,7 +88,7 @@ public class Machine_ProjectTable extends BlockContainer
 		}
 
 		final TileEntity te = world.getTileEntity(x, y, z);
-		if ((te != null) && (te instanceof TileEntityWorkbench))
+		if ((te != null) && (te instanceof TileEntityProjectTable))
 		{
 			if (!holdingWrench){
 				player.openGui(GTplusplus.instance, 0, world, x, y, z);
