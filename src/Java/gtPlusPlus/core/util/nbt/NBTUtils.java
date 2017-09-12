@@ -2,6 +2,8 @@ package gtPlusPlus.core.util.nbt;
 
 import static gtPlusPlus.core.item.ModItems.ZZZ_Empty;
 
+import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.item.ItemUtils;
@@ -106,6 +108,33 @@ public class NBTUtils {
 		tNBT.setTag(customkey, list);
 		itemstack.setTagCompound(tNBT);
 		return itemstack;
+	}
+	
+	public static ItemStack writeItemsToGtCraftingComponents(ItemStack rStack, ItemStack[] stored, boolean copyTags){
+		
+		if (copyTags){
+			for (int i = 0; i < stored.length; i++) {
+	            if (stored[i] != null && stored[i].hasTagCompound()) {
+	                rStack.setTagCompound((NBTTagCompound) stored[i].getTagCompound().copy());
+	                break;
+	            }
+	        }
+		}		
+		
+		 NBTTagCompound rNBT = rStack.getTagCompound(), tNBT = new NBTTagCompound();
+         if (rNBT == null) rNBT = new NBTTagCompound();
+         for (int i = 0; i < 9; i++) {
+             ItemStack tStack = stored[i];
+             if (tStack != null && GT_Utility.getContainerItem(tStack, true) == null && !(tStack.getItem() instanceof GT_MetaGenerated_Tool)) {
+                 tStack = GT_Utility.copyAmount(1, tStack);
+                 if(GT_Utility.isStackValid(tStack)){
+                 GT_ModHandler.dischargeElectricItem(tStack, Integer.MAX_VALUE, Integer.MAX_VALUE, true, false, true);
+                 tNBT.setTag("Ingredient." + i, tStack.writeToNBT(new NBTTagCompound()));}
+             }
+         }
+         rNBT.setTag("GT.CraftingComponents", tNBT);
+         rStack.setTagCompound(rNBT);
+		return rStack;
 	}
 
 

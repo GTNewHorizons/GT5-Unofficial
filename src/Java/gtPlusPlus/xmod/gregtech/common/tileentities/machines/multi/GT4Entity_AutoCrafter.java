@@ -402,101 +402,117 @@ extends GT_MetaTileEntity_MultiBlockBase
 			//Read stored data from encrypter data stick.
 			ItemStack storedData_Output[] = NBTUtils.readItemsFromNBT(aStack, "Output");
 			ItemStack storedData_Input[] = NBTUtils.readItemsFromNBT(aStack);
-			ItemStack loadedData[] = new ItemStack[9];
-			if (storedData_Input.length >= 1){
-				int number = 0;
-				for (ItemStack a : storedData_Input){
-					if (a.getItem() == ModItems.ZZZ_Empty){
-						Utils.LOG_INFO("Allocating free memory into crafting manager slot "+number+".");
-						loadedData[number] = null;
-						//ContainerWorkbench.craftMatrix.setInventorySlotContents(number, null);
-						//ContainerWorkbench.craftMatrix.markDirty();
+			if (storedData_Output != null && storedData_Input != null){
+				this.mEUt = 16 * (1 << this.mTier - 1) * (1 << this.mTier - 1);
+				this.mMaxProgresstime = (100-(8*this.mTier));
+
+
+
+
+				ItemStack loadedData[] = new ItemStack[9];
+				if (storedData_Input.length >= 1){
+					int number = 0;
+					for (ItemStack a : storedData_Input){
+						if (a.getItem() == ModItems.ZZZ_Empty){
+							Utils.LOG_INFO("Allocating free memory into crafting manager slot "+number+".");
+							loadedData[number] = null;
+							//ContainerWorkbench.craftMatrix.setInventorySlotContents(number, null);
+							//ContainerWorkbench.craftMatrix.markDirty();
+						}
+						else {
+							Utils.LOG_INFO("Downloading "+a.getDisplayName()+" into crafting manager slot "+number+".");
+							loadedData[number] = a;
+							//ContainerWorkbench.craftMatrix.setInventorySlotContents(number, a);
+							//ContainerWorkbench.craftMatrix.markDirty();
+						}
+						number++;
 					}
-					else {
-						Utils.LOG_INFO("Downloading "+a.getDisplayName()+" into crafting manager slot "+number+".");
-						loadedData[number] = a;
-						//ContainerWorkbench.craftMatrix.setInventorySlotContents(number, a);
-						//ContainerWorkbench.craftMatrix.markDirty();
-					}
-					number++;
 				}
-			}
 
-			if (storedData_Output.length >= 1){
-				int number = 0;
-				for (ItemStack a : storedData_Output){
-					if (a.getItem() == ModItems.ZZZ_Empty){
-						Utils.LOG_INFO("Allocating free memory into crafting manager Output slot "+number+".");
+				if (storedData_Output.length >= 1){
+					int number = 0;
+					for (ItemStack a : storedData_Output){
+						if (a.getItem() == ModItems.ZZZ_Empty){
+							Utils.LOG_INFO("Allocating free memory into crafting manager Output slot "+number+".");
 
-						//ContainerWorkbench.craftMatrix.setInventorySlotContents(number, null);
-						//ContainerWorkbench.craftMatrix.markDirty();
+							//ContainerWorkbench.craftMatrix.setInventorySlotContents(number, null);
+							//ContainerWorkbench.craftMatrix.markDirty();
+						}
+						else {
+							Utils.LOG_INFO("Downloading "+a.getDisplayName()+" into crafting manager Output slot "+number+".");
+
+							//ContainerWorkbench.craftMatrix.setInventorySlotContents(number, a);
+							//ContainerWorkbench.craftMatrix.markDirty();
+						}
+						number++;
 					}
-					else {
-						Utils.LOG_INFO("Downloading "+a.getDisplayName()+" into crafting manager Output slot "+number+".");
+				}
 
-						//ContainerWorkbench.craftMatrix.setInventorySlotContents(number, a);
-						//ContainerWorkbench.craftMatrix.markDirty();
+				boolean areInputsCorrect[] = new boolean[9];
+				int counter=0;
+				for (ItemStack inputItem : loadedData){
+					Utils.LOG_INFO("Required Input Iteration. Size: "+loadedData.length);
+					if (inputItem == null){
+						Utils.LOG_INFO("Require Input was null setting to true. ["+counter+"]");
+						areInputsCorrect[counter] = true;
 					}
-					number++;
-				}
-			}
-
-			boolean areInputsCorrect[] = new boolean[9];
-			int counter=0;
-			for (ItemStack inputItem : loadedData){
-				Utils.LOG_INFO("Required Input Iteration. Size: "+loadedData.length);
-				if (inputItem == null){
-					Utils.LOG_INFO("Require Input was null setting to true. ["+counter+"]");
-					areInputsCorrect[counter] = true;
-				}
-				else if (inputItem != null){
-					//Check input busses for recipe components
-					for (GT_MetaTileEntity_Hatch_InputBus x : this.mInputBusses){
-						Utils.LOG_INFO("Input Bus Iteration. Looking for "+inputItem.getDisplayName());
-						if (x.mInventory.length > 0){
-							for (ItemStack r : x.mInventory){	
-								if (r != null){
-									Utils.LOG_INFO("Input Bus Inventory Iteration - Found:" +r.getDisplayName());		
-									if (GT_Utility.areStacksEqual(r, inputItem)){
-										this.depleteInput(inputItem);
-										areInputsCorrect[counter] = true;
-										Utils.LOG_INFO("Require Input was found setting to true. ["+counter+"]");
+					else if (inputItem != null){
+						//Check input busses for recipe components
+						for (GT_MetaTileEntity_Hatch_InputBus x : this.mInputBusses){
+							Utils.LOG_INFO("Input Bus Iteration. Looking for "+inputItem.getDisplayName());
+							if (x.mInventory.length > 0){
+								for (ItemStack r : x.mInventory){	
+									if (r != null){
+										Utils.LOG_INFO("Input Bus Inventory Iteration - Found:" +r.getDisplayName());		
+										if (GT_Utility.areStacksEqual(r, inputItem)){
+											this.depleteInput(inputItem);
+											areInputsCorrect[counter] = true;
+											Utils.LOG_INFO("Require Input was found setting to true. ["+counter+"]");
+										}
 									}
 								}
 							}
 						}
-					}					
-				}
-				counter++;
-			}
 
-			int mCorrectInputs=0;
-			for (boolean isValid : areInputsCorrect){
-				if (isValid){
-					mCorrectInputs++;
+					}
+					counter++;				
+				}
+				if (this.mTier > 5) {
+					this.mMaxProgresstime >>= this.mTier - 5;
+				}
+
+				int mCorrectInputs=0;
+				for (boolean isValid : areInputsCorrect){
+					if (isValid){
+						mCorrectInputs++;
+					}
+					else {
+						//Utils.LOG_INFO("Input in Slot "+mCorrectInputs+" was not valid.");
+					}
+				}
+
+				if (mCorrectInputs == 9){
+					ItemStack mOutputItem = storedData_Output[0];				
+					NBTUtils.writeItemsToGtCraftingComponents(mOutputItem, loadedData, true);
+					this.addOutput(mOutputItem);
 				}
 				else {
-					Utils.LOG_INFO("Input in Slot "+mCorrectInputs+" was not valid.");
+					this.mMaxProgresstime = 0;
 				}
+
+
+				//if the are all found remove inputs
+
+				//if they are all found produce output
+
+
+				//Do Crafting
+				//Utils.LOG_INFO("Crafting Grid Size: "+ContainerWorkbench.craftMatrix.getSizeInventory());
+				//Utils.LOG_INFO("Crafting Grid Result: "+ContainerWorkbench.craftResult.getSizeInventory());
+				//Utils.LOG_INFO("Crafting Grid Result: "+ContainerWorkbench.craftResult.getStackInSlot(0));
+
+
 			}
-
-			if (mCorrectInputs == 9){
-				this.addOutput(storedData_Output[0]);
-			}
-
-
-			//if the are all found remove inputs
-
-			//if they are all found produce output
-
-
-			//Do Crafting
-			//Utils.LOG_INFO("Crafting Grid Size: "+ContainerWorkbench.craftMatrix.getSizeInventory());
-			//Utils.LOG_INFO("Crafting Grid Result: "+ContainerWorkbench.craftResult.getSizeInventory());
-			//Utils.LOG_INFO("Crafting Grid Result: "+ContainerWorkbench.craftResult.getStackInSlot(0));
-
-
-
 
 
 		}
