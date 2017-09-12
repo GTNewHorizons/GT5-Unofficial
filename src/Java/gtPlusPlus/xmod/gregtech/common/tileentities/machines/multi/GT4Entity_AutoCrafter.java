@@ -18,6 +18,8 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.nbt.NBTUtils;
 import gtPlusPlus.core.util.player.PlayerUtils;
+import gtPlusPlus.xmod.gregtech.common.helpers.CraftingHelper;
+import gtPlusPlus.xmod.gregtech.common.helpers.autocrafter.AC_Helper_Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ContainerWorkbench;
@@ -37,9 +39,9 @@ extends GT_MetaTileEntity_MultiBlockBase
 	private MODE mMachineMode = MODE.ASSEMBLY;
 	private byte mTier = 1;
 	private final int mHeatingCapacity = 4700;
-	
+
 	/** The crafting matrix inventory (3x3). */
-    public ContainerWorkbench ContainerWorkbench;
+	public CraftingHelper mInventoryCrafter;
 
 	public static enum MODE{
 		CRAFTING("DISASSEMBLY","ASSEMBLY"),
@@ -208,6 +210,7 @@ extends GT_MetaTileEntity_MultiBlockBase
 			return false;
 		}
 
+		mInventoryCrafter = new CraftingHelper(this);
 		return tAmount >= 16;
 
 	}
@@ -242,50 +245,67 @@ extends GT_MetaTileEntity_MultiBlockBase
 			return doDisassembly();
 		}
 		else if (mMachineMode == MODE.CRAFTING){
-			
-			GT_MetaTileEntity_Hatch_InputBus craftingInput = null;
-			
-			//Set Crafting input hatch
-			if (!this.mInputBusses.isEmpty()){
-				for (GT_MetaTileEntity_Hatch_InputBus x : this.mInputBusses){
-					if (x.mInventory.length == 9){
-						craftingInput = x;
+
+			//Try - Debug
+			try{
+
+				GT_MetaTileEntity_Hatch_InputBus craftingInput = null;
+
+				//Set Crafting input hatch
+				if (!this.mInputBusses.isEmpty()){
+					for (GT_MetaTileEntity_Hatch_InputBus x : this.mInputBusses){
+						if (x.mInventory.length == 9){
+							craftingInput = x;
+						}
 					}
 				}
-			}
-			//Return if no input hatch set.
-			if (craftingInput == null){
-				Utils.LOG_INFO("Cannot do Auto-Crafting without a 9-slot Input Bus [MV].");
-				return false;
+				//Return if no input hatch set.
+				if (craftingInput == null){
+					Utils.LOG_INFO("Cannot do Auto-Crafting without a 9-slot Input Bus [MV].");
+					return false;
+
+				}
+
+				//Read stored data from encrypter data stick.
+				ItemStack storedData[] = NBTUtils.readItemsFromNBT(aStack);
+				ItemStack loadedData[] = new ItemStack[9];
+				if (storedData.length >= 1){
+					int number = 0;
+					for (ItemStack a : storedData){
+						if (a.getItem() == ModItems.ZZZ_Empty){
+							Utils.LOG_INFO("Allocating free memory into crafting manager slot "+number+".");
+							loadedData[number] = null;
+							//ContainerWorkbench.craftMatrix.setInventorySlotContents(number, null);
+							//ContainerWorkbench.craftMatrix.markDirty();
+						}
+						else {
+							Utils.LOG_INFO("Downloading "+a.getDisplayName()+" into crafting manager slot "+number+".");
+							loadedData[number] = a;
+							//ContainerWorkbench.craftMatrix.setInventorySlotContents(number, a);
+							//ContainerWorkbench.craftMatrix.markDirty();
+						}
+						number++;
+					}
+				}
+				
+				if (mInventoryCrafter != null){
+					Utils.LOG_INFO("Now crafting with "+mInventoryCrafter.mInventoryName);
+					this.mInventoryCrafter.inventory.putItemsIntoGrid(loadedData);					
+				}
+
+				//Do Crafting
+				//Utils.LOG_INFO("Crafting Grid Size: "+ContainerWorkbench.craftMatrix.getSizeInventory());
+				//Utils.LOG_INFO("Crafting Grid Result: "+ContainerWorkbench.craftResult.getSizeInventory());
+				//Utils.LOG_INFO("Crafting Grid Result: "+ContainerWorkbench.craftResult.getStackInSlot(0));
+
+
+
+
 
 			}
-			
-			//Read stored data from encrypter data stick.
-			ItemStack storedData[] = NBTUtils.readItemsFromNBT(aStack);
-			if (storedData.length >= 1){
-				int number = 0;
-				for (ItemStack a : storedData){
-					if (a.getItem() == ModItems.ZZZ_Empty){
-						a=null;
-						Utils.LOG_INFO("Allocating free memory into crafting manager slot "+number+".");
-						ContainerWorkbench.craftMatrix.setInventorySlotContents(number, null);
-						ContainerWorkbench.craftMatrix.markDirty();
-					}
-					else {
-						Utils.LOG_INFO("Downloading "+a.getDisplayName()+" into crafting manager slot "+number+".");
-						ContainerWorkbench.craftMatrix.setInventorySlotContents(number, a);
-						ContainerWorkbench.craftMatrix.markDirty();
-					}
-					number++;
-				}
-			}
-			
-			//Do Crafting
-			Utils.LOG_INFO("Crafting Grid Size: "+ContainerWorkbench.craftMatrix.getSizeInventory());
-			Utils.LOG_INFO("Crafting Grid Result: "+ContainerWorkbench.craftResult.getSizeInventory());
-			Utils.LOG_INFO("Crafting Grid Result: "+ContainerWorkbench.craftResult.getStackInSlot(0));
-			
-						
+			//End Debug
+			catch (Throwable t){}
+
 
 			return false;
 		}
@@ -476,6 +496,30 @@ extends GT_MetaTileEntity_MultiBlockBase
 		MODE newMode = MODE.valueOf(modeString);
 		this.mMachineMode = newMode;
 		super.loadNBTData(aNBT);
+	}
+
+	@Override
+	public void explodeMultiblock() {
+		AC_Helper_Utils.removeCrafter(this);
+		super.explodeMultiblock();
+	}
+
+	@Override
+	public void onExplosion() {
+		AC_Helper_Utils.removeCrafter(this);
+		super.onExplosion();
+	}
+
+	@Override
+	public void onRemoval() {
+		AC_Helper_Utils.removeCrafter(this);
+		super.onRemoval();
+	}
+
+	@Override
+	public void doExplosion(long aExplosionPower) {
+		AC_Helper_Utils.removeCrafter(this);
+		super.doExplosion(aExplosionPower);
 	}
 
 }

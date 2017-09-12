@@ -2,6 +2,8 @@ package gtPlusPlus.core.lib;
 
 import java.util.*;
 
+import com.mojang.authlib.GameProfile;
+
 import gregtech.api.GregTech_API;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.Pair;
@@ -27,7 +29,7 @@ public class CORE {
 	//Math Related
 	public static final float PI = (float) Math.PI;
 	public static volatile Random RANDOM = new XSTR();
-	
+
 	public static boolean DEVENV = false;
 
 	public static final String name = "GT++";
@@ -45,9 +47,11 @@ public class CORE {
 	public static final boolean MAIN_GREGTECH_5U_EXPERIMENTAL_FORK = Meta_GT_Proxy.areWeUsingGregtech5uExperimental();
 	public static final int GREGTECH_API_VERSION = GregTech_API.VERSION;
 	public static IGregtech_RecipeAdder RA;
-	
+
 	public static boolean mEnableCape = false;
-	
+
+	public static GameProfile gameProfile = new GameProfile(UUID.nameUUIDFromBytes("gtplusplus.core".getBytes()), "[GT++]");
+
 	@Deprecated
 	public static IGregtech_RecipeAdder sRecipeAdder;
 	public static GregtechRecipe GT_Recipe = new GregtechRecipe();
@@ -97,7 +101,7 @@ public class CORE {
 
 		//Updates
 		public static boolean enableUpdateChecker = true;
-		
+
 		//Debug
 		public static boolean disableEnderIOIntegration = false;
 		public static boolean MACHINE_INFO = true;
