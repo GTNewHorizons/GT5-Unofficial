@@ -23,12 +23,6 @@ public class Container_ProjectTable extends Container {
 	private final int posY;
 	private final int posZ;
 
-	public static int StorageSlotNumber = 9; //Number of slots in storage area
-	public static int InOutputSlotNumber = StorageSlotNumber; //Same plus Output Slot
-	public static int InventorySlotNumber = 36; //Inventory Slots (Inventory and Hotbar)
-	public static int InventoryOutSlotNumber = InventorySlotNumber + 2; //Inventory Slot Number + Output
-	public static int FullSlotNumber = InventorySlotNumber + InOutputSlotNumber; //All slots
-
 	private final int[] slotOutputs = new int[2];
 	private final int[] slotGrid = new int[9];
 
@@ -45,33 +39,28 @@ public class Container_ProjectTable extends Container {
 		this.posY = tile.yCoord;
 		this.posZ = tile.zCoord;
 
-		int o=0;
+		int nextFreeSlot = 0;
+		
 
 		//Output slots
 		this.addSlotToContainer(new SlotDataStick(this.inventoryOutputs, 0, 26+(18*4), 7));
 		this.addSlotToContainer(new SlotNoInput(this.inventoryOutputs, 1, 26+(18*4), 43));
-		
-		for (int i=1; i<2; i++){
-			this.slotOutputs[o] = i;
-			o++;
-		}
 	
 
-		o=0;
-
+		int o = 0;
 		//Storage Side
 		for (var6 = 0; var6 < 3; ++var6)
 		{
 			for (var7 = 0; var7 < 3; ++var7)
 			{
 				//Utils.LOG_WARNING("Adding slots at var:"+(var7 + var6 * 4)+" x:"+(8 + var7 * 18)+" y:"+(7 + var6 * 18));
-				this.addSlotToContainer(new Slot(this.inventoryGrid, var7 + (var6 * 4), 8 + (var7 * 18), 7 + (var6 * 18)));
-				this.slotGrid[o] = o+2;
+				this.addSlotToContainer(new Slot(this.inventoryGrid, nextFreeSlot, 8 + (var7 * 18), 7 + (var6 * 18)));
+				this.slotGrid[o] = nextFreeSlot;
+				nextFreeSlot++;
 				o++;
 			}
 		}
 
-		o=0;
 
 		//Player Inventory
 		for (var6 = 0; var6 < 3; ++var6)

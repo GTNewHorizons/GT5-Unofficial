@@ -6,17 +6,26 @@ import gregtech.api.enums.*;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.nbt.NBTUtils;
 import gtPlusPlus.core.util.player.PlayerUtils;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ContainerWorkbench;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCraftResult;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -28,30 +37,33 @@ extends GT_MetaTileEntity_MultiBlockBase
 	private MODE mMachineMode = MODE.ASSEMBLY;
 	private byte mTier = 1;
 	private final int mHeatingCapacity = 4700;
+	
+	/** The crafting matrix inventory (3x3). */
+    public ContainerWorkbench ContainerWorkbench;
 
 	public static enum MODE{
 		CRAFTING("DISASSEMBLY","ASSEMBLY"),
 		ASSEMBLY("CRAFTING","DISASSEMBLY"),
 		DISASSEMBLY("ASSEMBLY","CRAFTING");
-		
+
 		private final String lastMode;
 		private final String nextMode;
-		
+
 		MODE(String previous, String next){
 			this.lastMode = previous;
 			this.nextMode = next;
 		}
-		
+
 		public MODE nextMode(){
 			return MODE.valueOf(this.nextMode);
 		}
-		
+
 		public MODE lastMode(){
 			return MODE.valueOf(this.lastMode);
 		}
-		
+
 	}
-	
+
 	@Override
 	public boolean isFacingValid(byte aFacing)
 	{
@@ -230,6 +242,51 @@ extends GT_MetaTileEntity_MultiBlockBase
 			return doDisassembly();
 		}
 		else if (mMachineMode == MODE.CRAFTING){
+			
+			GT_MetaTileEntity_Hatch_InputBus craftingInput = null;
+			
+			//Set Crafting input hatch
+			if (!this.mInputBusses.isEmpty()){
+				for (GT_MetaTileEntity_Hatch_InputBus x : this.mInputBusses){
+					if (x.mInventory.length == 9){
+						craftingInput = x;
+					}
+				}
+			}
+			//Return if no input hatch set.
+			if (craftingInput == null){
+				Utils.LOG_INFO("Cannot do Auto-Crafting without a 9-slot Input Bus [MV].");
+				return false;
+
+			}
+			
+			//Read stored data from encrypter data stick.
+			ItemStack storedData[] = NBTUtils.readItemsFromNBT(aStack);
+			if (storedData.length >= 1){
+				int number = 0;
+				for (ItemStack a : storedData){
+					if (a.getItem() == ModItems.ZZZ_Empty){
+						a=null;
+						Utils.LOG_INFO("Allocating free memory into crafting manager slot "+number+".");
+						ContainerWorkbench.craftMatrix.setInventorySlotContents(number, null);
+						ContainerWorkbench.craftMatrix.markDirty();
+					}
+					else {
+						Utils.LOG_INFO("Downloading "+a.getDisplayName()+" into crafting manager slot "+number+".");
+						ContainerWorkbench.craftMatrix.setInventorySlotContents(number, a);
+						ContainerWorkbench.craftMatrix.markDirty();
+					}
+					number++;
+				}
+			}
+			
+			//Do Crafting
+			Utils.LOG_INFO("Crafting Grid Size: "+ContainerWorkbench.craftMatrix.getSizeInventory());
+			Utils.LOG_INFO("Crafting Grid Result: "+ContainerWorkbench.craftResult.getSizeInventory());
+			Utils.LOG_INFO("Crafting Grid Result: "+ContainerWorkbench.craftResult.getStackInSlot(0));
+			
+						
+
 			return false;
 		}
 		else {
@@ -380,7 +437,7 @@ extends GT_MetaTileEntity_MultiBlockBase
 		}
 		else if (mMachineMode == MODE.ASSEMBLY){
 			tMode = "§aAssembly";	
-			
+
 		}
 		else {	
 			tMode = "§dAuto-Crafting";		
@@ -400,12 +457,12 @@ extends GT_MetaTileEntity_MultiBlockBase
 
 
 	//else if (mMachineMode == MODE.ASEEMBLY){
-	
+
 	private String getMode(){
 		return this.mMachineMode.name();
 	}
-	
-	
+
+
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 		String mMode = getMode();
