@@ -9,11 +9,17 @@ import gtPlusPlus.core.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.*;
+import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.World;
 
 public class Container_ProjectTable extends Container {
 
+	/** The crafting matrix inventory (3x3). */
+    public InventoryCrafting craftMatrix = new InventoryCrafting(this, 3, 3);
+    public IInventory craftResult = new InventoryCraftResult();
+	
 	protected TileEntityProjectTable tile_entity;
 	public final InventoryProjectMain inventoryGrid;
 	public final InventoryProjectOutput inventoryOutputs;
@@ -46,7 +52,9 @@ public class Container_ProjectTable extends Container {
 		this.addSlotToContainer(new SlotDataStick(this.inventoryOutputs, 0, 26+(18*4), 7));
 		this.addSlotToContainer(new SlotNoInput(this.inventoryOutputs, 1, 26+(18*4), 43));
 	
-
+		this.addSlotToContainer(new SlotCraftingNoCollect(inventory.player, this.craftMatrix, this.craftResult, 0, 26+(18*3), 25));
+	       
+		
 		int o = 0;
 		//Storage Side
 		for (var6 = 0; var6 < 3; ++var6)
@@ -54,7 +62,7 @@ public class Container_ProjectTable extends Container {
 			for (var7 = 0; var7 < 3; ++var7)
 			{
 				//Utils.LOG_WARNING("Adding slots at var:"+(var7 + var6 * 4)+" x:"+(8 + var7 * 18)+" y:"+(7 + var6 * 18));
-				this.addSlotToContainer(new Slot(this.inventoryGrid, nextFreeSlot, 8 + (var7 * 18), 7 + (var6 * 18)));
+				this.addSlotToContainer(new Slot(this.craftMatrix, nextFreeSlot, 8 + (var7 * 18), 7 + (var6 * 18)));
 				this.slotGrid[o] = nextFreeSlot;
 				nextFreeSlot++;
 				o++;
@@ -76,8 +84,33 @@ public class Container_ProjectTable extends Container {
 		{
 			this.addSlotToContainer(new Slot(inventory, var6, 8 + (var6 * 18), 142));
 		}
+		
+        this.onCraftMatrixChanged(this.craftMatrix);
 
 	}
+	
+	/**
+     * Callback for when the crafting matrix is changed.
+     */
+    public void onCraftMatrixChanged(IInventory p_75130_1_)
+    {
+        this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.worldObj));
+    }
+    
+    /**
+     * Called when the container is closed.
+     */
+    public void onContainerClosed(EntityPlayer p_75134_1_){
+        super.onContainerClosed(p_75134_1_);
+        if (!this.worldObj.isRemote){
+            for (int i = 0; i < 9; ++i){
+                ItemStack itemstack = this.craftMatrix.getStackInSlotOnClosing(i);
+               /* if (itemstack != null){
+                    p_75134_1_.dropPlayerItemWithRandomChoice(itemstack, false);
+                }*/
+            }
+        }
+    }
 
 	@Override
 	public ItemStack slotClick(final int aSlotIndex, final int aMouseclick, final int aShifthold, final EntityPlayer aPlayer){
@@ -178,10 +211,9 @@ public class Container_ProjectTable extends Container {
 	}
 
 	//Can merge Slot
-	@Override
-	public boolean func_94530_a(final ItemStack p_94530_1_, final Slot p_94530_2_) {
-		return super.func_94530_a(p_94530_1_, p_94530_2_);
-	}
+	public boolean func_94530_a(ItemStack p_94530_1_, Slot p_94530_2_){
+        return p_94530_2_.inventory != this.craftResult && super.func_94530_a(p_94530_1_, p_94530_2_);
+    }
 
 
 }
