@@ -1,6 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import gregtech.api.enums.*;
 import gregtech.api.interfaces.ITexture;
@@ -16,6 +17,7 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.array.ArrayUtils;
 import gtPlusPlus.core.util.nbt.NBTUtils;
 import gtPlusPlus.core.util.player.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.helpers.CraftingHelper;
@@ -448,80 +450,84 @@ extends GT_MetaTileEntity_MultiBlockBase
 					}
 				}
 
-				boolean areInputsCorrect[] = new boolean[9];
-				int counter=0;
-				for (ItemStack inputItem : loadedData){
-					Utils.LOG_INFO("Required Input Iteration. Size: "+loadedData.length);
-					if (inputItem == null){
-						Utils.LOG_INFO("Require Input was null setting to true. ["+counter+"]");
-						areInputsCorrect[counter] = true;
+				//Remove inputs here
+				ArrayList<ItemStack> mInputArray = new ArrayList<ItemStack>();
+				ItemStack allInputs[];
+
+				for (GT_MetaTileEntity_Hatch_InputBus x : this.mInputBusses){
+					if (x.mInventory.length > 0){
+						for (ItemStack r : x.mInventory){	
+							if (r != null){
+								mInputArray.add(r);
+							}
+						}
 					}
-					else if (inputItem != null){
-						//Check input busses for recipe components
-						for (GT_MetaTileEntity_Hatch_InputBus x : this.mInputBusses){
-							Utils.LOG_INFO("Input Bus Iteration. Looking for "+inputItem.getDisplayName());
-							if (x.mInventory.length > 0){
-								for (ItemStack r : x.mInventory){	
-									if (r != null){
-										Utils.LOG_INFO("Input Bus Inventory Iteration - Found:" +r.getDisplayName());		
-										if (GT_Utility.areStacksEqual(r, inputItem)){
-											this.depleteInput(inputItem);
-											areInputsCorrect[counter] = true;
-											Utils.LOG_INFO("Require Input was found setting to true. ["+counter+"]");
-										}
+				}
+
+				if (mInputArray.isEmpty()){
+					return false;
+				}
+				else {
+					List<ItemStack> list = mInputArray;			
+					allInputs = list.toArray(new ItemStack[list.size()]);
+
+					if (allInputs != null && allInputs.length > 0){
+
+						//Setup some vars
+						boolean areInputsCorrect[] = new boolean[9];
+						int counter=0;
+
+						for (ItemStack inputItem : loadedData){
+							for (ItemStack r : allInputs){	
+								if (r != null){
+									Utils.LOG_INFO("Input Bus Inventory Iteration - Found:" +r.getDisplayName());		
+									if (GT_Utility.areStacksEqual(r, inputItem)){
+										this.depleteInput(inputItem);
+										areInputsCorrect[counter] = true;
+										Utils.LOG_INFO("Require Input was found setting to true. ["+counter+"]");
 									}
 								}
 							}
+							counter++;
 						}
 
+						if (this.mTier > 5) {
+							this.mMaxProgresstime >>= this.mTier - 5;
+						}
+
+						int mCorrectInputs=0;
+						for (boolean isValid : areInputsCorrect){
+							if (isValid){
+								mCorrectInputs++;
+							}
+							else {
+								//Utils.LOG_INFO("Input in Slot "+mCorrectInputs+" was not valid.");
+							}
+						}
+
+						if (mCorrectInputs == 9){
+							ItemStack mOutputItem = storedData_Output[0];				
+							NBTUtils.writeItemsToGtCraftingComponents(mOutputItem, loadedData, true);
+							this.addOutput(mOutputItem);
+						}	
+						
+						
+						
+						
+						
+						
 					}
-					counter++;				
-				}
-				if (this.mTier > 5) {
-					this.mMaxProgresstime >>= this.mTier - 5;
-				}
-
-				int mCorrectInputs=0;
-				for (boolean isValid : areInputsCorrect){
-					if (isValid){
-						mCorrectInputs++;
-					}
-					else {
-						//Utils.LOG_INFO("Input in Slot "+mCorrectInputs+" was not valid.");
-					}
-				}
-
-				if (mCorrectInputs == 9){
-					ItemStack mOutputItem = storedData_Output[0];				
-					NBTUtils.writeItemsToGtCraftingComponents(mOutputItem, loadedData, true);
-					this.addOutput(mOutputItem);
-				}
-				else {
-					this.mMaxProgresstime = 0;
-				}
-
-
-				//if the are all found remove inputs
-
-				//if they are all found produce output
-
-
-				//Do Crafting
-				//Utils.LOG_INFO("Crafting Grid Size: "+ContainerWorkbench.craftMatrix.getSizeInventory());
-				//Utils.LOG_INFO("Crafting Grid Result: "+ContainerWorkbench.craftResult.getSizeInventory());
-				//Utils.LOG_INFO("Crafting Grid Result: "+ContainerWorkbench.craftResult.getStackInSlot(0));
-
-
+				}				
 			}
-
-
 		}
 		//End Debug
 		catch (Throwable t){
 			t.printStackTrace();
+			this.mMaxProgresstime = 0;
 		}
 
 
+		this.mMaxProgresstime = 0;
 		return false;
 	}
 
