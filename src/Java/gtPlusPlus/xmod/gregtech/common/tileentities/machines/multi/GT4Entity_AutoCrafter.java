@@ -21,13 +21,7 @@ import gtPlusPlus.core.util.player.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.helpers.CraftingHelper;
 import gtPlusPlus.xmod.gregtech.common.helpers.autocrafter.AC_Helper_Utils;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ContainerWorkbench;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCraftResult;
-import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -245,123 +239,7 @@ extends GT_MetaTileEntity_MultiBlockBase
 			return doDisassembly();
 		}
 		else if (mMachineMode == MODE.CRAFTING){
-
-			//Try - Debug
-			try{
-
-				GT_MetaTileEntity_Hatch_InputBus craftingInput = null;
-
-				//Set Crafting input hatch
-				if (!this.mInputBusses.isEmpty()){
-					for (GT_MetaTileEntity_Hatch_InputBus x : this.mInputBusses){
-						if (x.mInventory.length == 9){
-							craftingInput = x;
-						}
-					}
-				}
-				//Return if no input hatch set.
-				if (craftingInput == null){
-					Utils.LOG_INFO("Cannot do Auto-Crafting without a 9-slot Input Bus [MV].");
-					return false;
-
-				}
-
-				//Read stored data from encrypter data stick.
-				ItemStack storedData_Output[] = NBTUtils.readItemsFromNBT(aStack, "Output");
-				ItemStack storedData_Input[] = NBTUtils.readItemsFromNBT(aStack);
-				ItemStack loadedData[] = new ItemStack[9];
-				if (storedData_Input.length >= 1){
-					int number = 0;
-					for (ItemStack a : storedData_Input){
-						if (a.getItem() == ModItems.ZZZ_Empty){
-							Utils.LOG_INFO("Allocating free memory into crafting manager slot "+number+".");
-							loadedData[number] = null;
-							//ContainerWorkbench.craftMatrix.setInventorySlotContents(number, null);
-							//ContainerWorkbench.craftMatrix.markDirty();
-						}
-						else {
-							Utils.LOG_INFO("Downloading "+a.getDisplayName()+" into crafting manager slot "+number+".");
-							loadedData[number] = a;
-							//ContainerWorkbench.craftMatrix.setInventorySlotContents(number, a);
-							//ContainerWorkbench.craftMatrix.markDirty();
-						}
-						number++;
-					}
-				}
-
-				if (storedData_Output.length >= 1){
-					int number = 0;
-					for (ItemStack a : storedData_Output){
-						if (a.getItem() == ModItems.ZZZ_Empty){
-							Utils.LOG_INFO("Allocating free memory into crafting manager Output slot "+number+".");
-							loadedData[number] = null;
-							//ContainerWorkbench.craftMatrix.setInventorySlotContents(number, null);
-							//ContainerWorkbench.craftMatrix.markDirty();
-						}
-						else {
-							Utils.LOG_INFO("Downloading "+a.getDisplayName()+" into crafting manager Output slot "+number+".");
-							loadedData[number] = a;
-							//ContainerWorkbench.craftMatrix.setInventorySlotContents(number, a);
-							//ContainerWorkbench.craftMatrix.markDirty();
-						}
-						number++;
-					}
-				}
-
-				boolean areInputsCorrect[] = new boolean[9];
-				int counter=0;
-				for (ItemStack inputItem : loadedData){
-
-					if (inputItem == null){
-						areInputsCorrect[counter] = true;
-					}
-
-					//Check input busses for recipe components
-					for (GT_MetaTileEntity_Hatch_InputBus x : this.mInputBusses){
-						if (x.mInventory.length > 0){
-							for (ItemStack r : x.mInventory){								
-								if (r == inputItem){
-									this.depleteInput(inputItem);
-									areInputsCorrect[counter] = true;
-								}
-							}
-						}					
-					}
-					counter++;
-				}
-
-				int mCorrectInputs=0;
-				for (boolean isValid : areInputsCorrect){
-					if (isValid){
-						mCorrectInputs++;
-					}
-				}
-				
-				if (mCorrectInputs == 9){
-					this.addOutput(storedData_Output[0]);
-				}
-
-
-				//if the are all found remove inputs
-
-				//if they are all found produce output
-
-
-				//Do Crafting
-				//Utils.LOG_INFO("Crafting Grid Size: "+ContainerWorkbench.craftMatrix.getSizeInventory());
-				//Utils.LOG_INFO("Crafting Grid Result: "+ContainerWorkbench.craftResult.getSizeInventory());
-				//Utils.LOG_INFO("Crafting Grid Result: "+ContainerWorkbench.craftResult.getStackInSlot(0));
-
-
-
-
-
-			}
-			//End Debug
-			catch (Throwable t){}
-
-
-			return false;
+			return doCrafting(aStack);
 		}
 		else {
 			final ArrayList<ItemStack> tInputList = this.getStoredInputs();
@@ -496,6 +374,138 @@ extends GT_MetaTileEntity_MultiBlockBase
 				}
 			}
 		}
+		return false;
+	}
+
+	private boolean doCrafting(ItemStack aStack){
+
+		//Try - Debug
+		try{
+
+			GT_MetaTileEntity_Hatch_InputBus craftingInput = null;
+
+			//Set Crafting input hatch
+			if (!this.mInputBusses.isEmpty()){
+				for (GT_MetaTileEntity_Hatch_InputBus x : this.mInputBusses){
+					if (x.mInventory.length == 9){
+						craftingInput = x;
+					}
+				}
+			}
+			//Return if no input hatch set.
+			if (craftingInput == null){
+				Utils.LOG_INFO("Cannot do Auto-Crafting without a 9-slot Input Bus [MV].");
+				return false;
+
+			}
+
+			//Read stored data from encrypter data stick.
+			ItemStack storedData_Output[] = NBTUtils.readItemsFromNBT(aStack, "Output");
+			ItemStack storedData_Input[] = NBTUtils.readItemsFromNBT(aStack);
+			ItemStack loadedData[] = new ItemStack[9];
+			if (storedData_Input.length >= 1){
+				int number = 0;
+				for (ItemStack a : storedData_Input){
+					if (a.getItem() == ModItems.ZZZ_Empty){
+						Utils.LOG_INFO("Allocating free memory into crafting manager slot "+number+".");
+						loadedData[number] = null;
+						//ContainerWorkbench.craftMatrix.setInventorySlotContents(number, null);
+						//ContainerWorkbench.craftMatrix.markDirty();
+					}
+					else {
+						Utils.LOG_INFO("Downloading "+a.getDisplayName()+" into crafting manager slot "+number+".");
+						loadedData[number] = a;
+						//ContainerWorkbench.craftMatrix.setInventorySlotContents(number, a);
+						//ContainerWorkbench.craftMatrix.markDirty();
+					}
+					number++;
+				}
+			}
+
+			if (storedData_Output.length >= 1){
+				int number = 0;
+				for (ItemStack a : storedData_Output){
+					if (a.getItem() == ModItems.ZZZ_Empty){
+						Utils.LOG_INFO("Allocating free memory into crafting manager Output slot "+number+".");
+
+						//ContainerWorkbench.craftMatrix.setInventorySlotContents(number, null);
+						//ContainerWorkbench.craftMatrix.markDirty();
+					}
+					else {
+						Utils.LOG_INFO("Downloading "+a.getDisplayName()+" into crafting manager Output slot "+number+".");
+
+						//ContainerWorkbench.craftMatrix.setInventorySlotContents(number, a);
+						//ContainerWorkbench.craftMatrix.markDirty();
+					}
+					number++;
+				}
+			}
+
+			boolean areInputsCorrect[] = new boolean[9];
+			int counter=0;
+			for (ItemStack inputItem : loadedData){
+				Utils.LOG_INFO("Required Input Iteration. Size: "+loadedData.length);
+				if (inputItem == null){
+					Utils.LOG_INFO("Require Input was null setting to true. ["+counter+"]");
+					areInputsCorrect[counter] = true;
+				}
+				else if (inputItem != null){
+					//Check input busses for recipe components
+					for (GT_MetaTileEntity_Hatch_InputBus x : this.mInputBusses){
+						Utils.LOG_INFO("Input Bus Iteration. Looking for "+inputItem.getDisplayName());
+						if (x.mInventory.length > 0){
+							for (ItemStack r : x.mInventory){	
+								if (r != null){
+									Utils.LOG_INFO("Input Bus Inventory Iteration - Found:" +r.getDisplayName());		
+									if (GT_Utility.areStacksEqual(r, inputItem)){
+										this.depleteInput(inputItem);
+										areInputsCorrect[counter] = true;
+										Utils.LOG_INFO("Require Input was found setting to true. ["+counter+"]");
+									}
+								}
+							}
+						}
+					}					
+				}
+				counter++;
+			}
+
+			int mCorrectInputs=0;
+			for (boolean isValid : areInputsCorrect){
+				if (isValid){
+					mCorrectInputs++;
+				}
+				else {
+					Utils.LOG_INFO("Input in Slot "+mCorrectInputs+" was not valid.");
+				}
+			}
+
+			if (mCorrectInputs == 9){
+				this.addOutput(storedData_Output[0]);
+			}
+
+
+			//if the are all found remove inputs
+
+			//if they are all found produce output
+
+
+			//Do Crafting
+			//Utils.LOG_INFO("Crafting Grid Size: "+ContainerWorkbench.craftMatrix.getSizeInventory());
+			//Utils.LOG_INFO("Crafting Grid Result: "+ContainerWorkbench.craftResult.getSizeInventory());
+			//Utils.LOG_INFO("Crafting Grid Result: "+ContainerWorkbench.craftResult.getStackInSlot(0));
+
+
+
+
+
+		}
+		//End Debug
+		catch (Throwable t){
+			t.printStackTrace();
+		}
+
+
 		return false;
 	}
 
