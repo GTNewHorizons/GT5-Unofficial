@@ -1,10 +1,12 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Config;
@@ -12,12 +14,15 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTileEntity_MultiBlockBase {
 
+	private static boolean controller;
+	
 	public GregtechMetaTileEntity_PowerSubStationController(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}
@@ -31,17 +36,17 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTil
 		return new String[]{
 				"Controller Block for the Power Sub-Station",
 				"Stores quite a lot of power.",
-				"Size(WxHxD): 1x5x1, Controller (One above the Bottom)",
+				"Size(WxHxD): 5x3x5, Controller (One above the Bottom)",
 				CORE.GT_Tooltip};
 	}
 
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		if (aSide == aFacing) {
-			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(12)],
-					new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER_ACTIVE : Textures.BlockIcons.OVERLAY_FRONT_LARGE_BOILER)};
+			return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(24)],
+					new GT_RenderedTexture(aActive ? Textures.BlockIcons.OVERLAY_TOP_ROCK_BREAKER_ACTIVE : Textures.BlockIcons.OVERLAY_TOP_ROCK_BREAKER)};
 		}
-		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(12)]};
+		return new ITexture[]{Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(24)]};
 	}
 
 	@Override
@@ -61,93 +66,147 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTil
 
 	@Override
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
-		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
+		Utils.LOG_MACHINE_INFO("Checking structure for Industrial Power Sub-Station.");
+		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 2;
+		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 2;
+		
+		/*if (!aBaseMetaTileEntity.getAirOffset(xDir, 1, zDir)) {
+			Utils.LOG_MACHINE_INFO("Don't know why this exists?");
+			return false;
+		}*/
+		
+		int tAmount = 0;
+		controller = false;
 		for (int i = -2; i < 3; i++) {
 			for (int j = -2; j < 3; j++) {
-				for (int h = 0; h < 4; h++) {
-
-					//Utils.LOG_INFO("Logging Variables - xDir:"+xDir+" zDir:"+zDir+" h:"+h+" i:"+i+" j:"+j);
-
+				for (int h = 0; h < 3; h++) {
+					
 					final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
-					/*if (tTileEntity != Block.getBlockFromItem(UtilsItems.getItem("IC2:blockAlloyGlass"))) {
-							Utils.LOG_INFO("h:"+h+" i:"+i+" j:"+j);
-							double tX = tTileEntity.getXCoord();
-							double tY = tTileEntity.getYCoord();
-							double tZ = tTileEntity.getZCoord();
-							Utils.LOG_INFO("Found Glass at X:"+tX+" Y:"+tY+" Z:"+tZ);
-							//return false;
-						}*/
-					if (((i != -2) && (i != 2)) && ((j != -2) && (j != 2))) {// innerer 3x3 ohne h�he
-						if ((h == 0) && (i != 0) && (j != 0)) {// innen boden (kantal coils)
-							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-								Utils.LOG_INFO("Matter Generation Coils missings from the bottom layer, inner 3x3. - Wrong Block");
-								Utils.LOG_INFO("Found: "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getUnlocalizedName()+" at x:"+(xDir + i)+" y:" +h+" z:"+(zDir + j));
-								//tTileEntity.getWorld().setBlock(xDir+i, h, zDir+j, Blocks.diamond_block);
-								//Utils.LOG_INFO("Changed into : "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getUnlocalizedName());
-								return false;
-							}
-							if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 4) {
-								Utils.LOG_INFO("Matter Generation Coils missings from the bottom layer, inner 3x3. - Wrong Meta");
-								return false;
-							}
-						}
-						else if ((h == 3) && (i != 0) && (j != 0)) {// innen decke (ulv casings + input + muffler)
-							//if(j == 0 && i == 0) {
 
-							if ((!this.addMufflerToMachineList(tTileEntity, TAE.GTPP_INDEX(12)))) {
-								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-									Utils.LOG_INFO("Found: "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getUnlocalizedName()+" at x:"+(xDir + i)+" y:" +h+" z:"+(zDir + j));
-									Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the top layers inner 3x3.");
+					// Sifter Floor/Roof inner 5x5
+					if (((i != -2) && (i != 2)) && ((j != -2) && (j != 2))) {
+
+						// Sifter Floor & Roof (Inner 5x5) + Mufflers, Dynamos and Fluid outputs.
+						if ((h == 0) || (h == 2 || h == 1)) {
+							
+							if (h == 2 || h == 1){						
+							//If not a hatch, continue, else add hatch and continue.
+							if ((!this.addMufflerToMachineList(tTileEntity, TAE.GTPP_INDEX(24))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(24))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(24)))) {
+								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
+									Utils.LOG_MACHINE_INFO("Sifter Casing(s) Missing from one of the top layers inner 3x3.");
+									Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 									return false;
 								}
-								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 4) {
-									Utils.LOG_INFO("Found: "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getUnlocalizedName()+" at x:"+(xDir + i)+" y:" +h+" z:"+(zDir + j));
-									Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the top layers inner 3x3.");
+								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 6) {
+									Utils.LOG_MACHINE_INFO("Sifter Casing(s) Missing from one of the top layers inner 3x3. Wrong Meta for Casing. Found:"+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()+" with meta:"+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j));
 									return false;
 								}
 							}
-							//}
-
-						} /*else {// top air
-							if ((i != -2 && i != 2) && (j != -2 && j != 2) && h == 3) {
-							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-								Utils.LOG_INFO("Matter Generation Coils missings from the top layer, inner 3x3. - Wrong Block");
-								Utils.LOG_INFO("Found: "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getUnlocalizedName()+" at x:"+(xDir + i)+" y:" +h+" z:"+(zDir + j));
-								//tTileEntity.getWorld().setBlock(xDir+i, h, zDir+j, Blocks.diamond_block);
-								//Utils.LOG_INFO("Changed into : "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getUnlocalizedName());
-								return false;
 							}
-							if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 4) {
-								Utils.LOG_INFO("Matter Generation Coils missings from the top layer, inner 3x3. - Wrong Meta");
-								return false;
-							}
-							}
-						}*/
-					} else {// Outer 5x5
-						if (h == 0) {// au�en boden (controller, output, energy, maintainance, rest ulv casings)
-							if ((!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(12)) && (!this.addDynamoToMachineList(tTileEntity, TAE.GTPP_INDEX(12))))) {
-								if (((xDir + i) != 0) || ((zDir + j) != 0)) {//no controller
-									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasingsMisc) {
-										Utils.LOG_INFO("Found: "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getUnlocalizedName()+" at x:"+(xDir + i)+" y:" +h+" z:"+(zDir + j));
-										Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the edges of the bottom layer. "+(aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()));
+							else {
+								if ((!this.addMufflerToMachineList(tTileEntity, TAE.GTPP_INDEX(24))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(24))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(24)))) {
+									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
+										Utils.LOG_MACHINE_INFO("Sifter Casing(s) Missing from one of the bottom layers inner 3x3.");
+										Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 										return false;
 									}
-									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 4) {
-										Utils.LOG_INFO("Matter Fabricator Casings Missing from one of the edges of the bottom layer. 2");
+									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 5) {
+										Utils.LOG_MACHINE_INFO("Sifter Casing(s) Missing from one of the bottom layers inner 3x3. Wrong Meta for Casing. Found:"+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()+" with meta:"+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j));
 										return false;
 									}
+									tAmount++;
 								}
 							}
-						} else {
-
 						}
 					}
+
+					//Dealt with inner 5x5, now deal with the exterior.
+					else {
+
+						//Deal with all 4 sides (Sifter walls)
+						if ((h == 1) || (h == 2)) {
+							if (h == 2){
+								if (!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(24))) {
+									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
+										Utils.LOG_MACHINE_INFO("Sifter Casings Missing from somewhere in the top layer edge.");
+										Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										return false;
+									}
+									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 5) {
+										Utils.LOG_MACHINE_INFO("Sifter Casings Missing from somewhere in the top layer edge.");
+										Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										return false;
+									}
+									tAmount++;
+								}
+							}
+							else {
+								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
+									Utils.LOG_MACHINE_INFO("Sifter Casings Missing from somewhere in the second layer.");
+									Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+									return false;
+								}
+								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 5) {
+									Utils.LOG_MACHINE_INFO("Sifter Casings Missing from somewhere in the second layer.");
+									Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+									return false;
+								}
+								tAmount++;
+							}
+						}
+
+						//Deal with top and Bottom edges (Inner 5x5)
+						else if ((h == 0) || (h == 2)) {
+							if ((!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(24))) && (!this.addInputToMachineList(tTileEntity, TAE.GTPP_INDEX(24))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(24))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(24)))) {
+								if (((xDir + i) != 0) || ((zDir + j) != 0)) {//no controller
+
+									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
+										Utils.LOG_MACHINE_INFO("Sifter Casing(s) Missing from one of the edges on the top layer.");
+										Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										return false;
+									}
+									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 5) {
+										Utils.LOG_MACHINE_INFO("Sifter Casing(s) Missing from one of the edges on the top layer. "+h);
+										Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										if (h ==0){
+											if (tTileEntity instanceof GregtechMetaTileEntity_IndustrialSifter){
+
+											}
+										}
+										else {
+											return false;
+										}
+									}
+								}
+							}
+						}
+					}
+					
 				}
 			}
 		}
-		Utils.LOG_INFO("Multiblock Formed.");
-		return true;
+		if ((this.mInputBusses.size() != 1) || (this.mOutputBusses.size() != 1)
+				|| (this.mMaintenanceHatches.size() != 1) || (this.mEnergyHatches.size() >= 1)
+				|| (this.mDynamoHatches.size() >= 1)) {
+			Utils.LOG_MACHINE_INFO("Returned False 3");
+			Utils.LOG_MACHINE_INFO("Input Buses: "+this.mInputBusses.size()+" | expected: 1");
+			Utils.LOG_MACHINE_INFO("Output Buses: "+this.mOutputBusses.size()+" | expected: 1");
+			Utils.LOG_MACHINE_INFO("Energy Hatches: "+this.mEnergyHatches.size()+" | expected: >= 1");
+			Utils.LOG_MACHINE_INFO("Dynamo Hatches: "+this.mDynamoHatches.size()+" | expected: >= 1");
+			Utils.LOG_MACHINE_INFO("Maint. Hatches: "+this.mMaintenanceHatches.size()+" | expected: 1");
+			return false;
+		}
+		
+		Utils.LOG_INFO("Structure Built? "+(tAmount>35));
+		
+		return tAmount >= 35;
+	}
+	
+	public boolean ignoreController(final Block tTileEntity) {
+		if (!controller && (tTileEntity == GregTech_API.sBlockMachines)) {
+			return true;
+		}
+		return false;
 	}
 
 	@Override

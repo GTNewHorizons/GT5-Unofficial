@@ -30,12 +30,12 @@ public class CasingTextureHandler2 {
 			case 6:
 				return TexturesGtBlock.Casing_Machine_Metal_Grate_A.getIcon();
 				
-				//Maceration Stack Casings
+				//Vanadium Radox Battery
 			case 7:
-				return TexturesGtBlock._PlaceHolder.getIcon();
-				//Broken Pink Fusion Casings
+				return TexturesGtBlock.Overlay_Machine_Cyber_B.getIcon();
+				//Power Sub-Station Casing
 			case 8:
-				return TexturesGtBlock._PlaceHolder.getIcon();
+				return TexturesGtBlock.Casing_Machine_Metal_Sheet_A.getIcon();
 				//Cyclotron Coil
 			case 9:
 				return TexturesGtBlock.Overlay_Machine_Cyber_A.getIcon();

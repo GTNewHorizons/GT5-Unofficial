@@ -26,8 +26,8 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Placeholder Casing"); //IS A PLACEHOLDER DO NOT CHANGE
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Industrial Sieve Casing"); 	//78
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Large Sieve Grate"); 		//79
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Placeholder Casing");	//80
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Incoloy Casing"); 		//81
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Vanadium Radox Power Cell");	//80
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Sub-Station External Casing"); 		//81
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Cyclotron Coil");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Cyclotron Outer Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Thermal Containment Casing");

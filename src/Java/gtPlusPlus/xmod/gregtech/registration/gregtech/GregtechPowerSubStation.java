@@ -20,7 +20,7 @@ public class GregtechPowerSubStation {
 	private static void run1() {
 		// Steam Condensors
 		GregtechItemList.PowerSubStation.set(new GregtechMetaTileEntity_PowerSubStationController(812,
-				"substation.01.input.single", "Power Substation Node").getStackForm(1L));
+				"substation.01.input.single", "Power Station Control Node").getStackForm(1L));
 
 	}
 }
