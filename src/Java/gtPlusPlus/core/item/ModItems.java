@@ -223,6 +223,8 @@ public final class ModItems {
 	public static Item itemDebugAreaClear;
 
 	public static Item itemGemShards;
+	
+	public static Item itemHalfCompleteCasings;
 
 
 
@@ -289,7 +291,8 @@ public final class ModItems {
 		itemBlueprintBase = new ItemBlueprint("itemBlueprint");
 
 		itemGemShards = new ItemGemShards("itemGemShards", "Gem Shards", AddToCreativeTab.tabMisc, 32, 0, "They glitter in the light", EnumRarity.rare, EnumChatFormatting.GRAY, false, Utils.rgbtoHexValue(182, 114, 18)).setTextureName(CORE.MODID + ":itemHeliumBlob");
-
+		itemHalfCompleteCasings = new ItemHalfCompleteCasings("itemHalfCompleteCasings", "Half Complete Casing", AddToCreativeTab.tabMisc, 32, 0, "This isn't quite finished yet.", EnumRarity.common, EnumChatFormatting.GRAY, false, Utils.rgbtoHexValue(255, 255, 255)).setTextureName("gregtech" + ":" + "gt.metaitem.01" + "761");
+		
 		
 		//Start meta Item Generation
 		ItemsFoods.load();

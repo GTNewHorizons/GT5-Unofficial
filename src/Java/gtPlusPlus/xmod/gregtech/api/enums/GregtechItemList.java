@@ -160,9 +160,9 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Casing_Sifter,
 	Casing_SifterGrate,
 	
-	//Unknown
-	Casing_PlaceHolder7, 
-	Casing_PlaceHolder8, 
+	//Power Substation
+	Casing_Vanadium_Redox, 
+	Casing_Power_SubStation, 
 	
 	//Cyclotron
 	Casing_Cyclotron_Coil,

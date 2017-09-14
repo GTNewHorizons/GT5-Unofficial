@@ -420,9 +420,14 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void assemblerRecipes(){
-		//GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Titanium, 6L), ItemList.Casing_Turbine.get(1L, new Object[0]), ItemList.Casing_Turbine2.get(1L, new Object[0]), 50, 16);
-		//GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.TungstenSteel, 6L), ItemList.Casing_Turbine.get(1L, new Object[0]), ItemList.Casing_Turbine3.get(1L, new Object[0]), 50, 16);
-
+		//ItemUtils.getSimpleStack(GregtechItemList.Casing_Vanadium_Redox.get(1)
+		addAR(ItemUtils.getItemStackOfAmountFromOreDict("cellVanadium", 32), ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 32), ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 0, 2), 16, 64);
+		addAR(ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 1, 4), ItemUtils.getItemStackOfAmountFromOreDict("frameGtVanadiumSteel", 8), ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 2, 8), 32, 64);
+		addAR(ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 2, 1), ItemUtils.getItemStackOfAmountFromOreDict("cellNitrogen", 1), ItemUtils.getSimpleStack(GregtechItemList.Casing_Vanadium_Redox.get(1), 1), 64, 64);
+	}
+	
+	private static boolean addAR(ItemStack inputA, ItemStack inputB, ItemStack outputA, int seconds, int voltage){
+		return GT_Values.RA.addAssemblerRecipe(inputA, inputB, outputA, seconds*20, voltage);
 	}
 
 	private static void distilleryRecipes(){
