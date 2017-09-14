@@ -311,15 +311,11 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTil
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		this.mActualStoredEU = this.getEUVar();
 
-		if (this.mActualStoredEU >= 0 && this.getBaseMetaTileEntity().isActive()){
-			if (mMaxProgresstime >= 5002 || this.mMaxProgresstime <= 0){
-				this.mProgresstime = 0;
-				this.mMaxProgresstime = 2;
-			}
-			else{
-				this.mProgresstime++;
-				this.mMaxProgresstime = mProgresstime+2;
-			}
+
+		//Handle Progress Time
+		if (this.mActualStoredEU >= 0 && this.getBaseMetaTileEntity().isAllowedToWork()){
+			this.mProgresstime = 20;
+			this.mMaxProgresstime = 40;				
 		}
 		else {
 			this.mProgresstime = 0;
@@ -327,30 +323,29 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTil
 		}
 
 		//Do work
-		if (this.getBaseMetaTileEntity().isActive()){
+		if (this.getBaseMetaTileEntity().isAllowedToWork()){
+
+			//Input Power
 			if (this.mActualStoredEU < this.maxEUStore() && mMaxProgresstime > 0){
+				if (this.getBaseMetaTileEntity().isAllowedToWork()){
+					this.getBaseMetaTileEntity().enableWorking();
+				}
 				for (GT_MetaTileEntity_Hatch_Energy energy : this.mEnergyHatches){
 					long stored = energy.getEUVar();
 					long voltage = energy.maxEUInput();
 					if (stored > 0){
 						energy.setEUVar((stored-voltage));
 						this.getBaseMetaTileEntity().increaseStoredEnergyUnits(voltage, false);
-						if (mMaxProgresstime >= 5002){
-							this.mProgresstime = 0;
-							this.mMaxProgresstime = 2;
-						}
-						else{
-							this.mProgresstime++;
-							this.mMaxProgresstime = mProgresstime+2;
-						}
 					}
 				}
 			}
 			else {
 
 			}
+
+			//Output Power
 			if (this.mActualStoredEU > 0){
-				this.addEnergyOutput(512);			
+				this.addEnergyOutput(1);			
 			}
 		}		
 		super.onPostTick(aBaseMetaTileEntity, aTick);
@@ -381,9 +376,10 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTil
 		if (aEU <= 0L)
 			return true;
 		for (GT_MetaTileEntity_Hatch_Dynamo tHatch : this.mDynamoHatches) {
-			if ((isValidMetaTileEntity(tHatch))
-					&& (tHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(aEU, false))) {
-				return true;
+			if ((isValidMetaTileEntity(tHatch))	&& (tHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(tHatch.getOutputTier()*20, false))) {
+				if ((isValidMetaTileEntity(this))	&& (this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(tHatch.getOutputTier()*20, false))){
+					return true;
+				}
 			}
 		}
 
@@ -403,8 +399,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTil
 
 	@Override
 	public long getMinimumStoredEU() {
-		// TODO Auto-generated method stub
-		return super.getMinimumStoredEU();
+		return 0;
 	}
 
 	@Override
