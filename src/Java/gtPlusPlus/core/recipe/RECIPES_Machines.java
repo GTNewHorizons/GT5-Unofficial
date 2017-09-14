@@ -785,6 +785,12 @@ public class RECIPES_Machines {
 						"dustCarbon", "dustCarbon", "dustCarbon",
 						"plateCarbon", "plateCarbon", "plateCarbon",
 						ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 0, 1));
+				
+				RecipeUtils.addShapedGregtechRecipe(
+						"plateCarbon", "plateCarbon", "plateCarbon",
+						"cellLithiumPeroxide", "dustCarbon", "cellLithiumPeroxide",
+						"plateCarbon", "plateCarbon", "plateCarbon",
+						ItemUtils.simpleMetaStack(ModItems.itemAirFilter, 1, 1));
 
 				//Pollution Detector
 				RecipeUtils.addShapedGregtechRecipe(
