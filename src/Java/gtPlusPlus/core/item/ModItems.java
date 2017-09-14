@@ -219,12 +219,14 @@ public final class ModItems {
 	public static Item itemCoalCoke;
 
 	public static CoreItem itemCircuitLFTR;
-	
+
 	public static Item itemDebugAreaClear;
 
 	public static Item itemGemShards;
-	
+
 	public static Item itemHalfCompleteCasings;
+
+	public static Item itemPlateVanadium;
 
 
 
@@ -235,14 +237,14 @@ public final class ModItems {
 		//Default item used when recipes fail, handy for debugging.
 		AAA_Broken = new BaseItemIngot_OLD("AAA_Broken", "Errors - Tell Alkalus", Utils.rgbtoHexValue(128, 128, 128), 0);
 		ZZZ_Empty = new ItemEmpty();
-		
+
 		itemAlkalusDisk = new BaseItemDamageable("itemAlkalusDisk", AddToCreativeTab.tabMisc, 1, 0, "Unknown Use", EnumRarity.rare, EnumChatFormatting.AQUA, false, null);
 
 		//Debug Loading
 		if (CORE.DEBUG){
 			DEBUG_INIT.registerItems();
 		}
-		
+
 		itemDebugAreaClear = new ItemAreaClear();
 
 
@@ -291,9 +293,9 @@ public final class ModItems {
 		itemBlueprintBase = new ItemBlueprint("itemBlueprint");
 
 		itemGemShards = new ItemGemShards("itemGemShards", "Gem Shards", AddToCreativeTab.tabMisc, 32, 0, "They glitter in the light", EnumRarity.rare, EnumChatFormatting.GRAY, false, Utils.rgbtoHexValue(182, 114, 18)).setTextureName(CORE.MODID + ":itemHeliumBlob");
-		itemHalfCompleteCasings = new ItemHalfCompleteCasings("itemHalfCompleteCasings", "Half Complete Casing", AddToCreativeTab.tabMisc, 32, 0, "This isn't quite finished yet.", EnumRarity.common, EnumChatFormatting.GRAY, false, Utils.rgbtoHexValue(255, 255, 255)).setTextureName("gregtech" + ":" + "gt.metaitem.01" + "761");
-		
-		
+		itemHalfCompleteCasings = new ItemHalfCompleteCasings("itemHalfCompleteCasings", "Half Complete Casing", AddToCreativeTab.tabMisc, 32, 0, "This isn't quite finished yet.", EnumRarity.common, EnumChatFormatting.GRAY, false, Utils.rgbtoHexValue(255, 255, 255)).setTextureName("gregtech" + ":" + "gt.metaitem.01/" + "761");
+
+
 		//Start meta Item Generation
 		ItemsFoods.load();
 
@@ -387,7 +389,7 @@ public final class ModItems {
 			MaterialGenerator.generateNuclearMaterial(FLUORIDES.NEPTUNIUM_HEXAFLUORIDE);
 			MaterialGenerator.generateNuclearMaterial(FLUORIDES.TECHNETIUM_HEXAFLUORIDE);
 			MaterialGenerator.generateNuclearMaterial(FLUORIDES.SELENIUM_HEXAFLUORIDE);
-			
+
 			//Generate Reactor Fuel Salts
 			MaterialGenerator.generateNuclearMaterial(NUCLIDE.LiFBeF2ZrF4U235);
 			MaterialGenerator.generateNuclearMaterial(NUCLIDE.LiFBeF2ZrF4UF4);
@@ -504,7 +506,7 @@ public final class ModItems {
 		//LFTR Control Circuit
 		itemCircuitLFTR = new CoreItem("itemCircuitLFTR", ""+EnumChatFormatting.GREEN+"Thorium Reactor Control Circuit", AddToCreativeTab.tabMisc, 1, 0, "Helps your LFTR not explode", EnumRarity.epic, EnumChatFormatting.DARK_GREEN, false, null);
 
-		
+
 		//Zirconium
 		//Cinter Pellet.
 		itemZirconiumChlorideCinterPellet = new CoreItem("itemZirconiumPellet", "Zirconium Pellet ["+StringUtils.subscript("ZrCl4")+"]", tabMisc).setTextureName(CORE.MODID + ":itemShard");
@@ -608,6 +610,11 @@ public final class ModItems {
 		tI = new BaseItemMisc("4000DC's", new short[]{180,100,30}, 1, MiscTypes.BIGKEY, new String[]{"It opens things."});
 		tI = new BaseItemMisc("Dull", new short[]{64,64,64}, 64, MiscTypes.GEM, null);
 		tI = new BaseItemMisc("Forest", new short[]{130,164,96}, 64, MiscTypes.MUSHROOM, new String[]{"You Found this on the ground.", "Definitely not sure if it's worth eating."});
+
+		//Vanadium
+		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateVanadium", 1) == null){
+			itemPlateVanadium = new BaseItemPlate(MaterialUtils.generateMaterialFromGtENUM(Materials.Vanadium));
+			}
 
 		//EnderIO Resources
 		if ((LoadedMods.EnderIO || LOAD_ALL_CONTENT) && !CORE.GTNH){

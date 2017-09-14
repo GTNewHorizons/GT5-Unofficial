@@ -421,13 +421,20 @@ public class RECIPES_GREGTECH {
 
 	private static void assemblerRecipes(){
 		//ItemUtils.getSimpleStack(GregtechItemList.Casing_Vanadium_Redox.get(1)
-		addAR(ItemUtils.getItemStackOfAmountFromOreDict("cellVanadium", 32), ItemUtils.getItemStackOfAmountFromOreDict("cellOxygen", 32), ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 0, 2), 16, 64);
-		addAR(ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 1, 4), ItemUtils.getItemStackOfAmountFromOreDict("frameGtVanadiumSteel", 8), ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 2, 8), 32, 64);
-		addAR(ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 2, 1), ItemUtils.getItemStackOfAmountFromOreDict("cellNitrogen", 1), ItemUtils.getSimpleStack(GregtechItemList.Casing_Vanadium_Redox.get(1), 1), 64, 64);
-	}
+		addAR(ItemUtils.getItemStackOfAmountFromOreDict("plateVanadium", 32), ItemUtils.getItemStackOfAmountFromOreDict("frameGtVanadiumSteel", 8), FluidUtils.getFluidStack("oxygen", 8000), ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 0, 4), 16, 64);
+		addAR(ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 0, 2), ItemUtils.getItemStackOfAmountFromOreDict("plateVanadiumGallium", 8), FluidUtils.getFluidStack("molten.tantalum", 144*4), ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 1, 8), 32, 128);
+		addAR(ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 1, 1), ItemUtils.getItemStackOfAmountFromOreDict("plateLead", 4), FluidUtils.getFluidStack("nitrogen", 1000), ItemUtils.getSimpleStack(GregtechItemList.Casing_Vanadium_Redox.get(1), 1), 64, 256);
+		addAR(ItemUtils.getItemStackOfAmountFromOreDict("plateIncoloy020", 16), ItemUtils.getItemStackOfAmountFromOreDict("frameGtIncoloyMA956", 4), null, GregtechItemList.Casing_Power_SubStation.get(4), 80, 128);
+		}
 	
 	private static boolean addAR(ItemStack inputA, ItemStack inputB, ItemStack outputA, int seconds, int voltage){
-		return GT_Values.RA.addAssemblerRecipe(inputA, inputB, outputA, seconds*20, voltage);
+		//return GT_Values.RA.addAssemblerRecipe(inputA, inputB, outputA, seconds*20, voltage);
+				return addAR(inputA, inputB, null, outputA, seconds*20, voltage);
+	}
+	
+	private static boolean addAR(ItemStack inputA, ItemStack inputB, FluidStack inputFluidA, ItemStack outputA, int seconds, int voltage){
+//return GT_Values.RA.addAssemblerRecipe(inputA, inputB, outputA, seconds*20, voltage);
+		return GT_Values.RA.addAssemblerRecipe(inputA, inputB, inputFluidA, outputA, seconds*20, voltage);
 	}
 
 	private static void distilleryRecipes(){

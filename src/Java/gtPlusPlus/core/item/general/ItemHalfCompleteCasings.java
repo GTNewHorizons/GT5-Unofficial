@@ -55,10 +55,10 @@ public class ItemHalfCompleteCasings extends BaseItemColourable{
 	@Override
 	public int getColorFromItemStack(ItemStack stack, int HEX_OxFFFFFF) {
 		if (this.getDamage(stack)==0){
-			return Utils.rgbtoHexValue(150, 150, 220);
+			return Utils.rgbtoHexValue(52, 52, 52);
 		}
 		else if (this.getDamage(stack)==1){
-			return Utils.rgbtoHexValue(175, 182, 75);
+			return Utils.rgbtoHexValue(80, 90, 222);
 		}
 		else if (this.getDamage(stack)==2){
 			return Utils.rgbtoHexValue(182, 77, 177);

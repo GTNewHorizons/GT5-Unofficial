@@ -962,6 +962,15 @@ public class RECIPES_Machines {
 				
 
 			}
+			
+			if (CORE.configSwitches.enableMultiblock_PowerSubstation){
+			RecipeUtils.recipeBuilder(
+					null, "plateIncoloy020", null,
+					"plateIncoloy020", "frameGtIncoloyMA956", "plateIncoloy020",
+					null, "plateIncoloy020", null,
+					GregtechItemList.Casing_Power_SubStation.get(1));
+			}
+			
 		}
 		Utils.LOG_INFO("Done loading recipes for the Various machine blocks.");
 	}
