@@ -1,6 +1,7 @@
 package gtPlusPlus.core.item.chemistry;
 
 import gregtech.api.enums.*;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
@@ -98,8 +99,11 @@ public class CoalTar {
 		recipeNaphthaleneToPhthalicAcid();
 		recipePhthalicAcidToPhthalicAnhydride();
 		recipe2Ethylanthraquinone();
+		recipe2Ethylanthrahydroquinone();
+		recipeHydrogenPeroxide();
+		recipeLithiumHydroperoxide();
+		recipeLithiumPeroxide();
 	}
-
 
 	public static void recipeCreateEthylene(){
 		CORE.RA.addDehydratorRecipe(
@@ -267,7 +271,7 @@ public class CoalTar {
 				},
 				60*20,
 				120);
-		
+
 	}
 
 	private static void recipe2Ethylanthraquinone() {
@@ -278,7 +282,72 @@ public class CoalTar {
 				FluidUtils.getFluidStack("fluid.2ethylanthraquinone", 2000+(144*4)),
 				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2),
 				20*16);
-		
+
 	}
-	
+
+	private static void recipe2Ethylanthrahydroquinone() {
+		GT_Values.RA.addChemicalRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("platePalladium", 0),
+				ItemUtils.getItemStackOfAmountFromOreDict("cell2Ethylanthraquinone", 1),
+				FluidUtils.getFluidStack("hydrogen", 500),
+				FluidUtils.getFluidStack("fluid.2ethylanthrahydroquinone", 1200),
+				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1),
+				20*40);
+
+	}
+
+	private static void recipeHydrogenPeroxide() {		
+		GT_Values.RA.addElectrolyzerRecipe(
+				GT_ModHandler.getAirCell(15),
+				ItemUtils.getItemStackOfAmountFromOreDict("cell2Ethylanthrahydroquinone", 5),
+				FluidUtils.getFluidStack("fluid.anthracene", 50),
+				FluidUtils.getFluidStack("fluid.2ethylanthrahydroquinone", 4450),
+				ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenPeroxide", 2),
+				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 13), 
+				null, 
+				null,
+				null,
+				null,
+				new int[]{10000, 10000}, 
+				20*90, 
+				240);		
+	}
+
+
+	private static void recipeLithiumHydroperoxide() {
+		GT_Values.RA.addElectrolyzerRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroxide", 7),
+				ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenPeroxide", 1),
+				FluidUtils.getFluidStack("fluid.cellhydrogenperoxide", 50),
+				null,
+				ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroperoxide", 14),
+				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1), 
+				null, 
+				null,
+				null,
+				null,
+				new int[]{10000, 10000}, 
+				20*60, 
+				240);		
+	}
+
+
+	private static void recipeLithiumPeroxide() {
+		CORE.RA.addDehydratorRecipe(
+				new ItemStack[]{
+						ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumHydroperoxide", 2),
+						ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 3)
+				}, 
+				null, 
+				null, 
+				new ItemStack[]{
+						ItemUtils.getItemStackOfAmountFromOreDict("dustLithiumPeroxide", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenPeroxide", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 2)
+				},
+				new int[]{10000, 10000, 10000}, 
+				20*100, 
+				240);
+	}
+
 }
