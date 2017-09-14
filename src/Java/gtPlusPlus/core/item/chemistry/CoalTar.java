@@ -260,10 +260,10 @@ public class CoalTar {
 
 	private static void recipePhthalicAcidToPhthalicAnhydride() {
 		CORE.RA.addDehydratorRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2),
-				FluidUtils.getFluidStack("fluid.phthalicacid", 2000),
+				ItemUtils.getGregtechCircuit(6),
+				FluidUtils.getFluidStack("fluid.phthalicacid", 144),
 				new ItemStack[]{
-						ItemUtils.getItemStackOfAmountFromOreDict("cellPhthalicAnhydride", 2)
+						ItemUtils.getItemStackOfAmountFromOreDict("dustPhthalicAnhydride", 1)
 				},
 				60*20,
 				120);
@@ -272,11 +272,11 @@ public class CoalTar {
 
 	private static void recipe2Ethylanthraquinone() {
 		GT_Values.RA.addChemicalRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict("cellPhthalicAnhydride", 2),
-				ItemUtils.getItemStackOfAmountFromOreDict("CellEthylbenzene", 2),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustPhthalicAnhydride", 4),
+				ItemUtils.getItemStackOfAmountFromOreDict("cellEthylbenzene", 2),
 				null,
-				FluidUtils.getFluidStack("fluid.2ethylanthraquinone", 4000),
-				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 4),
+				FluidUtils.getFluidStack("fluid.2ethylanthraquinone", 2000+(144*4)),
+				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2),
 				20*16);
 		
 	}
