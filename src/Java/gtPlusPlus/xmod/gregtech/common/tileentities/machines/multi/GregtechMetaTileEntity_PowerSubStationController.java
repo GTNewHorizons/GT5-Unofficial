@@ -14,6 +14,7 @@ import gregtech.api.util.GT_Config;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -24,6 +25,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTileEntity_MultiBlockBase {
 
 	private static boolean controller;
+	protected int mAverageEuUsage = 0;
 
 	public GregtechMetaTileEntity_PowerSubStationController(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -37,8 +39,17 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTil
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Power Sub-Station",
-				"Stores quite a lot of power.",
-				"Size(WxHxD): 5x4x5, Controller (One above the Bottom)",
+				"Stores quite a lot of power",
+				"Consumes 1% of the average voltage of all energy type hatches",
+				"Energy consumed goes to cooling the Vanadium Radox power storage",
+				"Size(WxHxD): 5x4x5, Controller (Bottom, Centre)",
+				"--------------------------------------------------------------------------",
+				"Bottom layer is made up of Sub-Station external casings (5x1x5)",
+				"The inner 3x2x3 area on the next two layers is made up of Vanadium Radox Power Cells",
+				"A single layer of Sub-Station casings goes around the outside of this 3x2x3",
+				"On top, another layer of Sub-Station casings",
+				"Hatches can be placed nearly anywhere",
+				"--------------------------------------------------------------------------",
 				CORE.GT_Tooltip};
 	}
 
@@ -233,6 +244,21 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTil
 			return false;
 		}
 
+		//mAverageEuUsage
+		int tempAvg = 0;
+		int hatchCount = 0;
+		for (GT_MetaTileEntity_Hatch_Energy re : this.mEnergyHatches){
+			tempAvg += re.getInputTier();
+			hatchCount++;
+		}
+		for (GT_MetaTileEntity_Hatch_Dynamo re : this.mDynamoHatches){
+			tempAvg += re.getOutputTier();
+			hatchCount++;
+		}
+		if (hatchCount > 0){
+			this.mAverageEuUsage = (tempAvg/hatchCount);
+		}
+
 		Utils.LOG_INFO("Structure Built? "+""+tAmount+" | "+(tAmount>=35));
 
 		return tAmount >= 35;
@@ -291,6 +317,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTil
 		aNBT.setLong("mPowerStorageBuffer", this.mPowerStorageBuffer);
 		aNBT.setInteger("mPowerStorageMultiplier", this.mPowerStorageMultiplier);
 		aNBT.setLong("mActualStoredEU", this.mActualStoredEU);
+		aNBT.setInteger("mAverageEuUsage", this.mAverageEuUsage);
 		super.saveNBTData(aNBT);
 	}
 
@@ -299,6 +326,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTil
 		this.mPowerStorageBuffer = aNBT.getLong("mPowerStorageBuffer");
 		this.mPowerStorageMultiplier = aNBT.getInteger("mPowerStorageMultiplier");
 		this.mActualStoredEU = aNBT.getLong("mActualStoredEU");
+		this.mAverageEuUsage = aNBT.getInteger("mAverageEuUsage");
 		super.loadNBTData(aNBT);
 	}
 
@@ -315,7 +343,9 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTil
 		//Handle Progress Time
 		if (this.mActualStoredEU >= 0 && this.getBaseMetaTileEntity().isAllowedToWork()){
 			this.mProgresstime = 20;
-			this.mMaxProgresstime = 40;				
+			this.mMaxProgresstime = 40;	
+			//Use 10% of average EU determined by adding in/output voltage of all hatches and averaging.
+			this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(MathUtils.roundToClosestInt(mAverageEuUsage/100), false);
 		}
 		else {
 			this.mProgresstime = 0;
@@ -345,7 +375,16 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTil
 
 			//Output Power
 			if (this.mActualStoredEU > 0){
-				this.addEnergyOutput(1);			
+				addEnergyOutput(1);	
+				addEnergyOutput(1);	
+				addEnergyOutput(1);	
+				addEnergyOutput(1);	
+				addEnergyOutput(1);	
+				addEnergyOutput(1);	
+				addEnergyOutput(1);	
+				addEnergyOutput(1);	
+				addEnergyOutput(1);	
+				addEnergyOutput(1);	
 			}
 		}		
 		super.onPostTick(aBaseMetaTileEntity, aTick);
@@ -375,14 +414,21 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTil
 	public boolean addEnergyOutput(long aEU) {
 		if (aEU <= 0L)
 			return true;
+		long nStoredPower = this.getEUVar();
+		int hatchCount = 0;
 		for (GT_MetaTileEntity_Hatch_Dynamo tHatch : this.mDynamoHatches) {
-			if ((isValidMetaTileEntity(tHatch))	&& (tHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(tHatch.getOutputTier()*20, false))) {
-				if ((isValidMetaTileEntity(this))	&& (this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(tHatch.getOutputTier()*20, false))){
-					return true;
-				}
+			if ((isValidMetaTileEntity(tHatch))	&& (tHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(tHatch.getOutputTier()*2, false))) {
+				this.setEUVar(this.getEUVar()-(tHatch.getOutputTier()*2));
+				//this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(tHatch.getOutputTier()*2, false);
+				//Utils.LOG_INFO("Hatch "+hatchCount+" has "+tHatch.getEUVar()+"eu stored. Avg used is "+(this.mAverageEuUsage));
 			}
+			hatchCount++;
 		}
-
+		long nNewStoredPower = this.getEUVar();
+		if (nNewStoredPower < nStoredPower){
+			Utils.LOG_ERROR("Used "+(nStoredPower-nNewStoredPower)+"eu.");
+			return true;
+		}
 		return false;
 	}
 
@@ -392,32 +438,8 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTil
 	}
 
 	@Override
-	public long getEUVar() {
-		// TODO Auto-generated method stub
-		return super.getEUVar();
-	}
-
-	@Override
 	public long getMinimumStoredEU() {
 		return 0;
-	}
-
-	@Override
-	public int dechargerSlotStartIndex() {
-		// TODO Auto-generated method stub
-		return super.dechargerSlotStartIndex();
-	}
-
-	@Override
-	public int dechargerSlotCount() {
-		// TODO Auto-generated method stub
-		return super.dechargerSlotCount();
-	}
-
-	@Override
-	public int getCapacity() {
-		// TODO Auto-generated method stub
-		return super.getCapacity();
 	}
 
 }

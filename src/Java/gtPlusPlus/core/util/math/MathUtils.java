@@ -144,7 +144,7 @@ public class MathUtils {
 		return roundOff;
 	}
 	
-	public static int findPercentageOfInt(int input, int percentage){
+	public static int findPercentageOfInt(long input, float percentage){
 		return (int)(input*(percentage/100.0f));
 	}
 
