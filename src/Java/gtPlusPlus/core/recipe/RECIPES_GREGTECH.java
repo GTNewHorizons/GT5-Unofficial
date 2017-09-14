@@ -8,6 +8,7 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.nuclear.NUCLIDE;
+import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
@@ -44,6 +45,7 @@ public class RECIPES_GREGTECH {
 		mixerRecipes();
 		macerationRecipes();
 		centrifugeRecipes();
+		benderRecipes();
 		addFuels();
 	}
 
@@ -303,7 +305,7 @@ public class RECIPES_GREGTECH {
 						230); //EU
 
 			}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
-			
+
 			//(NH4)2BeF4 → 2 NH3 + 2 HF + BeF2
 			try {
 				CORE.RA.addDehydratorRecipe(
@@ -322,7 +324,7 @@ public class RECIPES_GREGTECH {
 						120); //EU
 
 			}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
-			
+
 		}
 
 	}
@@ -425,15 +427,15 @@ public class RECIPES_GREGTECH {
 		addAR(ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 0, 2), ItemUtils.getItemStackOfAmountFromOreDict("plateVanadiumGallium", 8), FluidUtils.getFluidStack("molten.tantalum", 144*4), ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 1, 8), 32, 128);
 		addAR(ItemUtils.simpleMetaStack(ModItems.itemHalfCompleteCasings, 1, 1), ItemUtils.getItemStackOfAmountFromOreDict("plateLead", 4), FluidUtils.getFluidStack("nitrogen", 1000), ItemUtils.getSimpleStack(GregtechItemList.Casing_Vanadium_Redox.get(1), 1), 64, 256);
 		addAR(ItemUtils.getItemStackOfAmountFromOreDict("plateIncoloy020", 16), ItemUtils.getItemStackOfAmountFromOreDict("frameGtIncoloyMA956", 4), null, GregtechItemList.Casing_Power_SubStation.get(4), 80, 128);
-		}
-	
+	}
+
 	private static boolean addAR(ItemStack inputA, ItemStack inputB, ItemStack outputA, int seconds, int voltage){
 		//return GT_Values.RA.addAssemblerRecipe(inputA, inputB, outputA, seconds*20, voltage);
-				return addAR(inputA, inputB, null, outputA, seconds*20, voltage);
+		return addAR(inputA, inputB, null, outputA, seconds*20, voltage);
 	}
-	
+
 	private static boolean addAR(ItemStack inputA, ItemStack inputB, FluidStack inputFluidA, ItemStack outputA, int seconds, int voltage){
-//return GT_Values.RA.addAssemblerRecipe(inputA, inputB, outputA, seconds*20, voltage);
+		//return GT_Values.RA.addAssemblerRecipe(inputA, inputB, outputA, seconds*20, voltage);
 		return GT_Values.RA.addAssemblerRecipe(inputA, inputB, inputFluidA, outputA, seconds*20, voltage);
 	}
 
@@ -501,7 +503,7 @@ public class RECIPES_GREGTECH {
 				},
 				new int[]{2000, 1000, 250, 250, 250, 250, 500},
 				0);
-		
+
 		HotFuel.addNewHotFuel(
 				FluidUtils.getFluidStack("ic2pahoehoelava", 83),
 				GT_Values.NF,
@@ -513,14 +515,14 @@ public class RECIPES_GREGTECH {
 				},
 				new int[]{1000, 500, 125, 1850},
 				0);
-		
+
 		/*HotFuel.addNewHotFuel(
 				FluidUtils.getFluidStack("ic2hotcoolant", 100),
 				GT_Values.NF,
 				new ItemStack[]{},
 				new int[]{},
 				0);*/
-		
+
 
 		//CORE.RA.addFuel(UtilsItems.simpleMetaStack("EnderIO:bucketRocket_fuel", 0, 1), null, 112, 0);
 		GT_Values.RA.addFuel(ItemUtils.getSimpleStack(Items.lava_bucket), null, 32, 2);
@@ -714,6 +716,13 @@ public class RECIPES_GREGTECH {
 				0,
 				120*20,
 				30);
+	}
+
+	private static void benderRecipes(){
+
+		if (CORE.configSwitches.enableMultiblock_PowerSubstation){
+			GT_Values.RA.addBenderRecipe(ItemUtils.getItemStackOfAmountFromOreDict("ingotVanadium", 1), ItemUtils.getItemStackOfAmountFromOreDict("plateVanadium", 1), 8, 16);
+		}
 	}
 
 	private static void compressorRecipes(){

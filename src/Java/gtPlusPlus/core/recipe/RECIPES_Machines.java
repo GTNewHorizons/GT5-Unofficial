@@ -914,63 +914,71 @@ public class RECIPES_Machines {
 				//LFTR Control Circuit
 				ItemStack circuitT5 = ItemList.Circuit_Master.get(1);
 				GT_Values.RA.addAssemblerRecipe(circuitT5, CI.fieldGenerator_HV, controlCircuit, 240*20, 500);
-				
-				
+
+
 				//Fission Fuel Plant
 				RecipeUtils.addShapedGregtechRecipe(
 						CI.getTieredCircuit(5), CI.craftingToolSolderingIron, CI.getTieredCircuit(5),
 						"plateDenseTungstenSteel", GregtechItemList.Gregtech_Computer_Cube.get(1), "plateDenseTungstenSteel",
 						"gearStellite", CI.machineHull_LuV, "gearStellite",
 						GregtechItemList.Industrial_FuelRefinery.get(1));
-				
+
 				ItemStack mInnerTank;
-				
+
 				if (CORE.GTNH || !CORE.configSwitches.enableMachine_FluidTanks){
 					mInnerTank = ItemList.Quantum_Tank_LV.get(1);
 				}
 				else {
 					mInnerTank = GregtechItemList.GT_FluidTank_EV.get(1);					
 				}
-				
+
 				//Incoloy Casing
 				RecipeUtils.addShapedGregtechRecipe(
 						"plateIncoloyDS", "pipeHugeStaballoy", "plateIncoloyDS",
 						"gearIncoloyDS", mInnerTank, "gearIncoloyDS",
 						"plateIncoloyDS", "pipeHugeStaballoy", "plateIncoloyDS",
 						GregtechItemList.Casing_Refinery_Internal.get(1));
-				
+
 				//Hastelloy-N Sealant Casing
 				RecipeUtils.addShapedGregtechRecipe(
 						"plateIncoloyMA956", "plateHastelloyN", "plateIncoloyMA956",
 						"plateHastelloyN", "frameGtHastelloyC276", "plateHastelloyN",
 						"plateIncoloyMA956", "plateHastelloyN", "plateIncoloyMA956",
 						GregtechItemList.Casing_Refinery_External.get(1));
-				
+
 				//Hastelloy-X Structural Casing
 				RecipeUtils.addShapedGregtechRecipe(
 						"ringInconel792", "gearHastelloyX", CI.component_Plate[5],
 						CI.craftingToolHammer_Hard, "frameGtHastelloyC276", CI.craftingToolWrench,
 						CI.component_Plate[5], CI.getTieredMachineCasing(4), "ringInconel792",
 						GregtechItemList.Casing_Refinery_Structural.get(1));
-				
-				
-				
-				
-				
-				
-				
-				
+
+
+
+
+
+
+
+
 
 			}
-			
+
 			if (CORE.configSwitches.enableMultiblock_PowerSubstation){
+
+			}
 			RecipeUtils.recipeBuilder(
 					null, "plateIncoloy020", null,
 					"plateIncoloy020", "frameGtIncoloyMA956", "plateIncoloy020",
 					null, "plateIncoloy020", null,
 					GregtechItemList.Casing_Power_SubStation.get(1));
-			}
-			
+
+			RecipeUtils.recipeBuilder(
+					"plateIncoloyMA956", GregtechItemList.Battery_RE_EV_Lithium.get(1), "plateIncoloyMA956",
+					GregtechItemList.Casing_Power_SubStation.get(1), GregtechItemList.Casing_Vanadium_Redox.get(1), GregtechItemList.Casing_Power_SubStation.get(1),
+					"plateIncoloy020", "plateIncoloyMA956", "plateIncoloy020",
+					GregtechItemList.PowerSubStation.get(1));
+
+
 		}
 		Utils.LOG_INFO("Done loading recipes for the Various machine blocks.");
 	}
