@@ -9,6 +9,7 @@ import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 public class CoalTar {
 
@@ -92,6 +93,61 @@ public class CoalTar {
 		recipeCreateEthylbenzene();
 
 		recipeCoalToCoalTar();
+		recipeCoalTarToCoalTarOil();
+	}
+
+	private static void recipeCoalTarToCoalTarOil() {
+		// v - Distill (60% Tar oil/15% Naphtha/20% Ethylbenzene/5% Anthracene)
+		//Create Coal Tar Oil
+		//FluidUtils.generateFluidNonMolten("CoalTarOil", "Coal Tar Oil", 240, new short[]{240, 240, 150, 100}, null, null);
+		GT_Values.RA.addDistilleryRecipe(
+				1, //Circuit
+				FluidUtils.getFluidStack("fluid.coaltar", 1000), //aInput
+				FluidUtils.getFluidStack("fluid.coaltaroil", 600), //aOutput
+				null, //aSolidOutput
+				600, //aDuration
+				64,//aEUt
+				false //Hidden?
+				);	
+		GT_Values.RA.addDistilleryRecipe(
+				2, //Circuit
+				FluidUtils.getFluidStack("fluid.coaltar", 1000), //aInput
+				FluidUtils.getFluidStack("liquid_naphtha", 150), //aOutput
+				null, //aSolidOutput
+				300, //aDuration
+				30,//aEUt
+				false //Hidden?
+				);
+		GT_Values.RA.addDistilleryRecipe(
+				3, //Circuit
+				FluidUtils.getFluidStack("fluid.coaltar", 1000), //aInput
+				FluidUtils.getFluidStack("fluid.ethylbenzene", 200), //aOutput
+				null, //aSolidOutput
+				450, //aDuration
+				86,//aEUt
+				false //Hidden?
+				);
+		GT_Values.RA.addDistilleryRecipe(
+				4, //Circuit
+				FluidUtils.getFluidStack("fluid.coaltar", 1000), //aInput
+				FluidUtils.getFluidStack("fluid.anthracene", 50), //aOutput
+				null, //aSolidOutput
+				900, //aDuration
+				30,//aEUt
+				false //Hidden?
+				);
+		GT_Values.RA.addDistillationTowerRecipe(
+				FluidUtils.getFluidStack("fluid.coaltar", 1000),
+				new FluidStack[]{
+						FluidUtils.getFluidStack("fluid.coaltaroil", 600), //aOutput
+						FluidUtils.getFluidStack("liquid_naphtha", 150), //aOutput
+						FluidUtils.getFluidStack("fluid.ethylbenzene", 200), //aOutput
+						FluidUtils.getFluidStack("fluid.anthracene", 50), //aOutput
+				},
+				null,
+				900,
+				60);
+		
 	}
 
 	public static void recipeCreateEthylene(){

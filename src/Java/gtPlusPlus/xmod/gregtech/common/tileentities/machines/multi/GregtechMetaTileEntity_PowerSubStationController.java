@@ -244,8 +244,8 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTil
 			Utils.LOG_MACHINE_INFO("Returned False 3");
 			Utils.LOG_MACHINE_INFO("Input Buses: "+this.mInputBusses.size()+" | expected: 1 | "+(this.mInputBusses.size() != 1));
 			Utils.LOG_MACHINE_INFO("Output Buses: "+this.mOutputBusses.size()+" | expected: 1 | "+(this.mOutputBusses.size() != 1));
-			Utils.LOG_MACHINE_INFO("Energy Hatches: "+this.mEnergyHatches.size()+" | expected: < 1 | "+(this.mEnergyHatches.size() < 1));
-			Utils.LOG_MACHINE_INFO("Dynamo Hatches: "+this.mDynamoHatches.size()+" | expected: < 1 | "+(this.mDynamoHatches.size() < 1));
+			Utils.LOG_MACHINE_INFO("Energy Hatches: "+this.mEnergyHatches.size()+" | expected: >= 1 | "+(this.mEnergyHatches.size() < 1));
+			Utils.LOG_MACHINE_INFO("Dynamo Hatches: "+this.mDynamoHatches.size()+" | expected: >= 1 | "+(this.mDynamoHatches.size() < 1));
 			Utils.LOG_MACHINE_INFO("Maint. Hatches: "+this.mMaintenanceHatches.size()+" | expected: 1 | "+(this.mMaintenanceHatches.size() != 1));
 			return false;
 		}
