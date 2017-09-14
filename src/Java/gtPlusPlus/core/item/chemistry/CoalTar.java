@@ -41,6 +41,16 @@ public class CoalTar {
 		//Create Anthracene
 		FluidUtils.generateFluidNonMolten("Anthracene", "Anthracene", 340, new short[]{255, 255, 255, 100}, null, null);
 
+		//Toluene
+		FluidStack fluidToluene = null;
+		
+		if (FluidUtils.getFluidStack("liquid_toluene", 1) == null){
+			fluidToluene = FluidUtils.getFluidStack(FluidUtils.generateFluidNonMolten("Toluene", "Toluene", -95, new short[]{140, 70, 20, 100}, null, null),1000);
+		
+		}
+		else {
+			fluidToluene = FluidUtils.getFluidStack("liquid_toluene", 1000);
+		}
 
 
 		//Create Coal Tar
@@ -105,6 +115,8 @@ public class CoalTar {
 		recipeLithiumPeroxide();
 	}
 
+	
+
 	public static void recipeCreateEthylene(){
 		CORE.RA.addDehydratorRecipe(
 				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2),
@@ -128,7 +140,21 @@ public class CoalTar {
 	}
 
 	public static void recipeCreateBenzene(){
-
+		//Create Benzene - (Toluene + Hydrogen | 95% Benzene / 5% methane)		
+		CORE.RA.addDehydratorRecipe(
+				new ItemStack[]{
+						ItemUtils.getItemStackOfAmountFromOreDict("cellToluene", 10),
+						ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 10)
+				}, 
+				null, 
+				null,
+				new ItemStack[]{
+						ItemUtils.getItemStackOfAmountFromOreDict("cellMethane", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("cellBenzene", 19)
+				},
+				new int[]{10000, 10000}, 
+				20*100, 
+				90);
 	}
 
 	public static void recipeCreateEthylbenzene(){
