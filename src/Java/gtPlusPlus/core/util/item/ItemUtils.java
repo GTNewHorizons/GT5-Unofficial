@@ -567,7 +567,7 @@ public class ItemUtils {
 			return null;
 		}
 		final ItemStack[] outputs = new ItemStack[blockDrops.size()];
-		final short forCounter = 0;
+		short forCounter = 0;
 		for (final ItemStack I : blockDrops){
 			outputs[forCounter++] = I;
 		}
