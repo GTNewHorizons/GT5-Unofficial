@@ -45,11 +45,13 @@ public class COMPAT_HANDLER {
 
 			//Free IDs
 			/*
+			829
+			---
 			837
 			to
 			839
 			---
-			849
+			851
 			to
 			868
 			---
