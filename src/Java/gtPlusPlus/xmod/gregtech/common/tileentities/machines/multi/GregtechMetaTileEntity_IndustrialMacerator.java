@@ -48,6 +48,7 @@ extends GregtechMeta_MultiBlockBase {
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Industrial Maceration Stack",
+				"60% faster than using single block machines of the same voltage",
 				"Processes material several factors faster than single block macerators",
 				"Has extra chances on bonus outputs",
 				"Processes 8*tier materials at a time",
@@ -142,8 +143,8 @@ extends GregtechMeta_MultiBlockBase {
 		}
 		for (int rx=0;rx<processing;rx++){
 			//Make a recipe instance for the rest of the method.
-			final GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(this.getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
-			tRecipe.mDuration = MathUtils.findPercentageOfInt(tRecipe.mDuration, 60);
+			GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sMaceratorRecipes.findRecipe(this.getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
+			tRecipe = this.reduceRecipeTimeByPercentage(tRecipe, 60F);
 
 			final int tValidOutputSlots = this.getValidOutputSlots(this.getBaseMetaTileEntity(), tRecipe, tInputs);
 			Utils.LOG_WARNING("Maceration Stack - Valid Output Hatches: "+tValidOutputSlots);

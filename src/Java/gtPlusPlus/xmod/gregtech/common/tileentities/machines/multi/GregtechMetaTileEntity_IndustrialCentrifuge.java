@@ -57,6 +57,7 @@ extends GregtechMeta_MultiBlockBase {
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Industrial Centrifuge",
+				"40% faster than using single block machines of the same voltage",
 				"Size: 3x3x3 (Hollow)",
 				"Controller (Front Center) [Orange]",
 				"1x Maintenance Hatch (Rear Center) [Green]",
@@ -117,8 +118,8 @@ extends GregtechMeta_MultiBlockBase {
 		final ArrayList<FluidStack> tFluidList = this.getStoredFluids();
 		final FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
 		if ((tInputList.size() > 0) || (tFluids.length > 0)) {
-			final GT_Recipe tRecipe = map.findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
-			tRecipe.mDuration = MathUtils.findPercentageOfInt(tRecipe.mDuration, 80);
+			GT_Recipe tRecipe = map.findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
+			tRecipe = this.reduceRecipeTimeByPercentage(tRecipe, 40F);
 			if (tRecipe != null) {
 				Utils.LOG_WARNING("Recipe was not invalid");
 				this.mLastRecipe = tRecipe;

@@ -45,6 +45,7 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public String[] getDescription() {
 		return new String[]{"Controller Block for the Industrial Electrolyzer",
+				"40% faster than using single block machines of the same voltage",
 				"Size: 3x3x3 (Hollow)",
 				"Controller (front centered)",
 				"1x Input Bus (anywhere)",
@@ -123,8 +124,8 @@ extends GregtechMeta_MultiBlockBase {
 		if ((tInputList.size() > 0) && (tValidOutputSlots >= 1)) {
 			final long tVoltage = this.getMaxInputVoltage();
 			final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-			final GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
-			tRecipe.mDuration = MathUtils.findPercentageOfInt(tRecipe.mDuration, 80);
+			GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
+			tRecipe = this.reduceRecipeTimeByPercentage(tRecipe, 40F);
 			if ((tRecipe != null) && (7500 >= tRecipe.mSpecialValue) && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
 				this.mEfficiency = (10000 - ((this.getIdealStatus() - this.getRepairStatus()) * 1000));
 				this.mEfficiencyIncrease = 10000;

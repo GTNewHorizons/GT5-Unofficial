@@ -131,13 +131,13 @@ public class RECIPES_Machines {
 	public static String pipeTier11 = "pipeHuge"+"Europium";
 
 	//IV MACHINES
-	public static ItemStack IV_MACHINE_Electrolyzer;
-	public static ItemStack IV_MACHINE_Centrifuge;
-	public static ItemStack IV_MACHINE_BendingMachine;
-	public static ItemStack IV_MACHINE_Wiremill;
+	public static ItemStack EV_MACHINE_Electrolyzer;
+	public static ItemStack EV_MACHINE_Centrifuge;
+	public static ItemStack EV_MACHINE_BendingMachine;
+	public static ItemStack EV_MACHINE_Wiremill;
+	public static ItemStack HV_MACHINE_Macerator;
 	public static ItemStack EV_MACHINE_Macerator;
-	public static ItemStack IV_MACHINE_Macerator;
-	public static ItemStack IV_MACHINE_MassFabricator;
+	public static ItemStack EV_MACHINE_MassFabricator;
 
 
 	//Cables
@@ -202,13 +202,13 @@ public class RECIPES_Machines {
 			boiler_Coal = ItemList.Machine_Bronze_Boiler.get(1);
 
 			//IV MACHINES
-			IV_MACHINE_Electrolyzer = ItemList.Machine_EV_Electrolyzer.get(1);
-			IV_MACHINE_BendingMachine= ItemList.Machine_EV_Bender.get(1);
-			IV_MACHINE_Wiremill= ItemList.Machine_EV_Wiremill.get(1);
-			EV_MACHINE_Macerator= ItemList.Machine_HV_Macerator.get(1);
-			IV_MACHINE_Macerator= ItemList.Machine_EV_Macerator.get(1);
-			IV_MACHINE_MassFabricator= ItemList.Machine_EV_Massfab.get(1);
-			IV_MACHINE_Centrifuge= ItemList.Machine_EV_Centrifuge.get(1);
+			EV_MACHINE_Electrolyzer = ItemList.Machine_EV_Electrolyzer.get(1);
+			EV_MACHINE_BendingMachine= ItemList.Machine_EV_Bender.get(1);
+			EV_MACHINE_Wiremill= ItemList.Machine_EV_Wiremill.get(1);
+			HV_MACHINE_Macerator= ItemList.Machine_HV_Macerator.get(1);
+			EV_MACHINE_Macerator= ItemList.Machine_EV_Macerator.get(1);
+			EV_MACHINE_MassFabricator= ItemList.Machine_EV_Massfab.get(1);
+			EV_MACHINE_Centrifuge= ItemList.Machine_EV_Centrifuge.get(1);
 
 
 		}
@@ -402,7 +402,7 @@ public class RECIPES_Machines {
 				//Industrial Centrifuge
 				RecipeUtils.addShapedGregtechRecipe(
 						CI.circuitTier5, pipeHugeStainlessSteel, CI.circuitTier5,
-						CI.component_Plate[6], IV_MACHINE_Centrifuge, CI.component_Plate[6],
+						CI.component_Plate[6], EV_MACHINE_Centrifuge, CI.component_Plate[6],
 						CI.component_Plate[8], CI.machineCasing_IV, CI.component_Plate[8],
 						RECIPE_IndustrialCentrifugeController);
 				//Centrifuge Casing
@@ -470,7 +470,7 @@ public class RECIPES_Machines {
 				//Industrial Electrolyzer
 				RecipeUtils.addShapedGregtechRecipe(
 						"plateStellite", CI.circuitTier5, "plateStellite",
-						CI.machineCasing_EV, IV_MACHINE_Electrolyzer, CI.machineCasing_EV,
+						CI.machineCasing_EV, EV_MACHINE_Electrolyzer, CI.machineCasing_EV,
 						"plateStellite", "rotorStellite", "plateStellite",
 						RECIPE_IndustrialElectrolyzerController);
 			}
@@ -489,7 +489,7 @@ public class RECIPES_Machines {
 				//Industrial Material Press
 				RecipeUtils.addShapedGregtechRecipe(
 						"plateTitanium", CI.circuitTier5, "plateTitanium",
-						CI.machineCasing_EV, IV_MACHINE_BendingMachine, CI.machineCasing_EV,
+						CI.machineCasing_EV, EV_MACHINE_BendingMachine, CI.machineCasing_EV,
 						"plateTitanium", CI.circuitTier5, "plateTitanium",
 						RECIPE_IndustrialMaterialPressController);
 			}
@@ -507,8 +507,8 @@ public class RECIPES_Machines {
 						RECIPE_IndustrialMacerationStackFrame);
 				//Industrial Maceration stack
 				RecipeUtils.addShapedGregtechRecipe(
-						"plateTungstenCarbide", IV_MACHINE_Macerator, "plateTungstenCarbide",
-						EV_MACHINE_Macerator, CI.circuitTier7, EV_MACHINE_Macerator,
+						"plateTungstenCarbide", EV_MACHINE_Macerator, "plateTungstenCarbide",
+						HV_MACHINE_Macerator, CI.circuitTier7, HV_MACHINE_Macerator,
 						"plateTungstenCarbide", CI.machineCasing_IV, "plateTungstenCarbide",
 						RECIPE_IndustrialMacerationStackController);
 			}
@@ -527,7 +527,7 @@ public class RECIPES_Machines {
 				//Industrial Wire Factory
 				RecipeUtils.addShapedGregtechRecipe(
 						"plateZeron100", CI.machineCasing_IV, "plateZeron100",
-						CI.circuitTier5, IV_MACHINE_Wiremill, CI.circuitTier5,
+						CI.circuitTier5, EV_MACHINE_Wiremill, CI.circuitTier5,
 						"plateZeron100", CI.machineCasing_IV, "plateZeron100",
 						RECIPE_IndustrialWireFactoryController);
 			}

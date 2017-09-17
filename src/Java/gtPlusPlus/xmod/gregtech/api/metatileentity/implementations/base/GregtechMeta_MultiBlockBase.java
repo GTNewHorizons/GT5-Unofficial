@@ -19,6 +19,7 @@ import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.Pair;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import net.minecraft.entity.player.EntityPlayer;
@@ -961,6 +962,38 @@ public abstract class GregtechMeta_MultiBlockBase extends MetaTileEntity {
 	    }
 	 
 	    return tValidOutputHatches;
+	}
+	
+	public GT_Recipe reduceRecipeTimeByPercentage(GT_Recipe tRecipe, float percentage){
+		int cloneTime = 0;
+		GT_Recipe baseRecipe;
+		GT_Recipe cloneRecipe = null;
+		
+		baseRecipe = tRecipe.copy();
+		if (cloneRecipe != baseRecipe || cloneRecipe == null){
+			cloneRecipe = baseRecipe.copy();
+			Utils.LOG_WARNING("Setting Recipe");
+		}	
+		if (cloneTime != baseRecipe.mDuration || cloneTime == 0){
+			cloneTime = baseRecipe.mDuration;
+			Utils.LOG_WARNING("Setting Time");
+		}
+		
+		if (cloneRecipe.mDuration > 0){
+			int originalTime = cloneRecipe.mDuration;
+			int tempTime = MathUtils.findPercentageOfInt(cloneRecipe.mDuration, (100-percentage));
+			cloneRecipe.mDuration = tempTime;
+			if (cloneRecipe.mDuration < originalTime){
+				return cloneRecipe;
+			}
+			else {
+				return tRecipe;
+			}
+		}
+		return null;
+		
+		
+		
 	}
 
 

@@ -41,6 +41,7 @@ extends GregtechMeta_MultiBlockBase {
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Industrial Wire Factory",
+				"60% faster than using single block machines of the same voltage",
 				"Size: 3x5x3 [WxLxH] (Hollow)", "Controller (front centered)",
 				"2x Input Bus (side centered)",
 				"2x Output Bus (side centered)",
@@ -81,8 +82,8 @@ extends GregtechMeta_MultiBlockBase {
 			final long tVoltage = this.getMaxInputVoltage();
 			final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
-			final GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sWiremillRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], null, new ItemStack[]{tInput});
-			tRecipe.mDuration = MathUtils.findPercentageOfInt(tRecipe.mDuration, 80);
+			GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sWiremillRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], null, new ItemStack[]{tInput});
+			tRecipe = this.reduceRecipeTimeByPercentage(tRecipe, 60F);
 			if (tRecipe != null) {
 
 				final int tValidOutputSlots = this.getValidOutputSlots(this.getBaseMetaTileEntity(), tRecipe, new ItemStack[]{tInput});
