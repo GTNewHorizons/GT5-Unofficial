@@ -9,7 +9,7 @@ public class CasingTextureHandler2 {
 			switch (aMeta) {
 			//Centrifuge
 			case 0:
-				return TexturesGtBlock.Casing_Machine_Dimensional_Adv.getIcon();
+				return TexturesGtBlock.Casing_Material_RedSteel.getIcon();
 				//Coke Oven Frame
 			case 1:
 				return TexturesGtBlock.Casing_Material_HastelloyX.getIcon();
@@ -21,8 +21,7 @@ public class CasingTextureHandler2 {
 				return TexturesGtBlock.Casing_Material_Fluid_IncoloyDS.getIcon();
 				//Material Press Casings
 			case 4:
-				return TexturesGtBlock.Casing_Machine_Farm_Manager.getIcon();
-				
+				return TexturesGtBlock.Casing_Material_Grisium.getIcon();				
 				//Sifter Structural
 			case 5:
 				return TexturesGtBlock.Casing_Machine_Metal_Panel_A.getIcon();

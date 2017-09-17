@@ -24,34 +24,33 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class GregtechMetaTileEntity_IndustrialThermalCentrifuge
+public class GregtechMetaTileEntity_IndustrialWashPlant
 extends GregtechMeta_MultiBlockBase {
-	public GregtechMetaTileEntity_IndustrialThermalCentrifuge(final int aID, final String aName, final String aNameRegional) {
+	public GregtechMetaTileEntity_IndustrialWashPlant(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
 	}
 
-	public GregtechMetaTileEntity_IndustrialThermalCentrifuge(final String aName) {
+	public GregtechMetaTileEntity_IndustrialWashPlant(final String aName) {
 		super(aName);
 	}
 
 	@Override
 	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-		return new GregtechMetaTileEntity_IndustrialThermalCentrifuge(this.mName);
+		return new GregtechMetaTileEntity_IndustrialWashPlant(this.mName);
 	}
 
 	@Override
 	public String[] getDescription() {
 		return new String[]{
-				"Controller Block for the Industrial Thermal Centrifuge",
-				"40% faster than using single block machines of the same voltage",
-				"Size: 3x2x3 [WxLxH] (Hollow)", "Controller (front centered)",
+				"Controller Block for the Industrial Ore Washing Plant",
+				"60% faster than using single block machines of the same voltage",
+				"Size: 7x2x5 [WxHxL] (open)",
+				"Controller (front centered)",
 				"1x Input Bus (Any casing)",
 				"1x Output Bus (Any casing)",
 				"1x Maintenance Hatch (Any casing)",
 				"1x Muffler Hatch (Any casing)",
 				"1x Energy Hatch (Any casing)",
-				"Solid Steel Machine Casings for the rest (16 at least!)",
-				"Causes " + (20 * getPollutionPerTick(null)) + " Pollution per second",
 				CORE.GT_Tooltip
 				
 		};
@@ -72,7 +71,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
-		return GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes;
+		return GT_Recipe.GT_Recipe_Map.sOreWasherRecipes;
 	}
 
 	@Override
@@ -87,8 +86,8 @@ extends GregtechMeta_MultiBlockBase {
 			final long tVoltage = this.getMaxInputVoltage();
 			final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
-			GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], null, new ItemStack[]{tInput});
-			tRecipe = this.reduceRecipeTimeByPercentage(tRecipe, 40F);
+			GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sOreWasherRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], null, new ItemStack[]{tInput});
+			tRecipe = this.reduceRecipeTimeByPercentage(tRecipe, 60F);
 			if (tRecipe != null) {
 
 				final int tValidOutputSlots = this.getValidOutputSlots(this.getBaseMetaTileEntity(), tRecipe, new ItemStack[]{tInput});

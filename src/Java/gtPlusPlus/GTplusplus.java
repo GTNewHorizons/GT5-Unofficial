@@ -159,7 +159,11 @@ public class GTplusplus implements ActionListener {
 				"Refines molten chemicals into nuclear fuels.");
 		CORE.configSwitches.enableMultiblock_IndustrialSifter = config.getBoolean("enableMultiblock_IndustrialSifter",
 				"gregtech", true, "Large scale sifting.");
-		CORE.configSwitches.enableMachine_ThermalBoiler = config.getBoolean("enableMachineThermalBoiler",
+		CORE.configSwitches.enableMultiblock_IndustrialThermalCentrifuge = config.getBoolean("enableMultiblock_IndustrialThermalCentrifuge",
+				"gregtech", true, "Your warm spin for the ore thing.");
+		CORE.configSwitches.enableMultiblock_IndustrialWashPlant = config.getBoolean("enableMultiblock_IndustrialWashPlant",
+				"gregtech", true, "Used to wash the dirt, riiiiight offff..");
+		CORE.configSwitches.enableMultiblock_ThermalBoiler = config.getBoolean("enableMachineThermalBoiler",
 				"gregtech", true, "Thermal Boiler from GT4. Can Filter Lava for resources.");
 
 		// Options

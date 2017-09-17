@@ -71,7 +71,7 @@ public class Gregtech4Content {
 
 	private static void thermalBoiler() {
 		// Gregtech 4 Thermal Boiler
-		if (CORE.configSwitches.enableMachine_ThermalBoiler){
+		if (CORE.configSwitches.enableMultiblock_ThermalBoiler){
 		Utils.LOG_INFO("Gregtech 4 Content | Registering Thermal Boiler.");
 		GregtechItemList.GT4_Thermal_Boiler
 				.set(new GT4Entity_ThermalBoiler(875, "gtplusplus.thermal.boiler", "Thermal Boiler").getStackForm(1L));

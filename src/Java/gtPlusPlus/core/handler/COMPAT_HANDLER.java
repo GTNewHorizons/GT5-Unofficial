@@ -75,6 +75,8 @@ public class COMPAT_HANDLER {
 			GregtechRTG.run();
 			GregtechCyclotron.run();
 			GregtechHiAmpTransformer.run();
+			GregtechIndustrialThermalCentrifuge.run();
+			GregtechIndustrialWashPlant.run();
 			
 			//New Horizons Content
 			NewHorizonsAccelerator.run();

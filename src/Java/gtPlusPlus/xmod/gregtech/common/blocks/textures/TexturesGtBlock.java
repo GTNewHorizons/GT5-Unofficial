@@ -97,6 +97,8 @@ public class TexturesGtBlock {
 
 	private static final CustomIcon Internal_Casing_Grisium = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_GRISIUM");
 	public static final CustomIcon Casing_Material_Grisium = Internal_Casing_Grisium;
+	private static final CustomIcon Internal_Casing_RedSteel = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_RED_STEEL");
+	public static final CustomIcon Casing_Material_RedSteel = Internal_Casing_RedSteel;
 	private static final CustomIcon Internal_Casing_Incoloy020 = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_INCOLOY_020");
 	public static final CustomIcon Casing_Material_Incoloy020 = Internal_Casing_Incoloy020;
 	private static final CustomIcon Internal_Casing_IncoloyDS = new CustomIcon("TileEntities/MACHINE_CASING_STABLE_INCOLOY_DS");

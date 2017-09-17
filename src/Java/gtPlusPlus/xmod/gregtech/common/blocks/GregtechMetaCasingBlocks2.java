@@ -19,15 +19,15 @@ extends GregtechMetaCasingBlocksAbstract {
 		for (byte i = 0; i < 16; i = (byte) (i + 1)) {
 			TAE.registerTextures(new GT_CopiedBlockTexture(this, 6, i));
 		}
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Structural Glass Casing");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".0.name", "Thermal Processing Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".1.name", "Hastelloy-N Sealant Block");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".2.name", "Hastelloy-X Structural Block");
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Incoloy-DS Fluid Containment Block"); //76
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Placeholder Casing"); //IS A PLACEHOLDER DO NOT CHANGE
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Industrial Sieve Casing"); 	//78
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Large Sieve Grate"); 		//79
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Vanadium Redox Power Cell");	//80
-		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Sub-Station External Casing"); 		//81
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".3.name", "Incoloy-DS Fluid Containment Block");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".4.name", "Wash Plant Casing");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".5.name", "Industrial Sieve Casing");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".6.name", "Large Sieve Grate");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".7.name", "Vanadium Redox Power Cell");
+		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".8.name", "Sub-Station External Casing"); 
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".9.name", "Cyclotron Coil");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".10.name", "Cyclotron Outer Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".11.name", "Thermal Containment Casing");
@@ -35,11 +35,11 @@ extends GregtechMetaCasingBlocksAbstract {
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".13.name", "Placeholder Casing");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".14.name", "Placeholder Casing ");
 		GT_LanguageManager.addStringLocalization(this.getUnlocalizedName() + ".15.name", "Placeholder Casing ");
-		GregtechItemList.Casing_StructuralGlass.set(new ItemStack(this, 1, 0));
+		GregtechItemList.Casing_ThermalCentrifuge.set(new ItemStack(this, 1, 0));
 		GregtechItemList.Casing_Refinery_External.set(new ItemStack(this, 1, 1));
 		GregtechItemList.Casing_Refinery_Structural.set(new ItemStack(this, 1, 2));
 		GregtechItemList.Casing_Refinery_Internal.set(new ItemStack(this, 1, 3));
-		GregtechItemList.Casing_PlaceHolder4.set(new ItemStack(this, 1, 4));
+		GregtechItemList.Casing_WashPlant.set(new ItemStack(this, 1, 4));
 		GregtechItemList.Casing_Sifter.set(new ItemStack(this, 1, 5));
 		GregtechItemList.Casing_SifterGrate.set(new ItemStack(this, 1, 6));
 		GregtechItemList.Casing_Vanadium_Redox.set(new ItemStack(this, 1, 7));

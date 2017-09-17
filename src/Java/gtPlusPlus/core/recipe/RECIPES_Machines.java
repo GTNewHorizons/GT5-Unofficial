@@ -863,7 +863,7 @@ public class RECIPES_Machines {
 
 			}
 
-			if (CORE.configSwitches.enableMachine_ThermalBoiler){
+			if (CORE.configSwitches.enableMultiblock_ThermalBoiler){
 				RECIPE_ThermalBoilerController = GregtechItemList.GT4_Thermal_Boiler.get(1);
 				RECIPE_ThermalBoilerCasing = GregtechItemList.Casing_ThermalContainment.get(4);
 				ItemStack centrifugeHV = ItemList.Machine_HV_Centrifuge.get(1);

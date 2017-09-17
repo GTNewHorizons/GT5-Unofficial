@@ -146,7 +146,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 
 	//Casings Tier 2 [17-32]
 	//Structural Glass
-	Casing_StructuralGlass,
+	Casing_ThermalCentrifuge,
 	
 	//Fission Fuel Refinery
 	Casing_Refinery_External,
@@ -154,7 +154,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Casing_Refinery_Internal,
 	
 	//Unknown
-	Casing_PlaceHolder4,
+	Casing_WashPlant,
 	
 	//Industrial Sifter
 	Casing_Sifter,
@@ -237,7 +237,13 @@ public enum GregtechItemList implements GregtechItemContainer {
 	//Hi Amp Transformers
 	Transformer_HA_LV_ULV, Transformer_HA_MV_LV, Transformer_HA_HV_MV,
 	Transformer_HA_EV_HV, Transformer_HA_IV_EV, Transformer_HA_LuV_IV,
-	Transformer_HA_ZPM_LuV, Transformer_HA_UV_ZPM, Transformer_HA_MAX_UV
+	Transformer_HA_ZPM_LuV, Transformer_HA_UV_ZPM, Transformer_HA_MAX_UV, 
+	
+	//Large Thermal Centrifuge
+	Industrial_ThermalCentrifuge,
+	
+	//industrial Ore-Washer
+	Industrial_WashPlant,
 	
 	
 	
