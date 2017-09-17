@@ -34,7 +34,7 @@ public class ItemHalfCompleteCasings extends BaseItemColourable{
 	
 	@Override
 	public String getItemStackDisplayName(final ItemStack tItem) {
-		String prefix = " Half Complete Casing ";
+		String prefix = "Half Complete Casing ";
 		String casingType = "";
 		if (tItem.getItemDamage() == 0){
 			casingType = "I";
