@@ -42,6 +42,22 @@ public class COMPAT_HANDLER {
 
 	public static void registerGregtechMachines() {
 		if (Gregtech) {			
+
+			//Free IDs
+			/*
+			837
+			to
+			839
+			---
+			849
+			to
+			868
+			---
+			886
+			to
+			950
+			*/
+
 			new RECIPES_LaserEngraver();
 			GregtechEnergyBuffer.run();
 			GregtechLFTR.run();
@@ -77,7 +93,7 @@ public class COMPAT_HANDLER {
 			GregtechHiAmpTransformer.run();
 			GregtechIndustrialThermalCentrifuge.run();
 			GregtechIndustrialWashPlant.run();
-			
+
 			//New Horizons Content
 			NewHorizonsAccelerator.run();
 		}
