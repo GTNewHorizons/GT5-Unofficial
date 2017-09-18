@@ -403,7 +403,8 @@ public class Util {
                                     break;
                                 default: //check for block
                                     if ((pointer = block - '0') >= 0) {
-                                        TecTech.proxy.hint_particle(world,x, y, z, blockType[pointer], blockMeta[pointer]);
+                                        if(world.getBlock(x,y,z)!=blockType[pointer] || world.getBlockMetadata(x,y,z)!=blockMeta[pointer])
+                                            TecTech.proxy.hint_particle(world,x, y, z, blockType[pointer], blockMeta[pointer]);
                                     } else if ((pointer = block - ' ') >= 0) {
                                         switch(pointer){
                                             case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10: case 11:
