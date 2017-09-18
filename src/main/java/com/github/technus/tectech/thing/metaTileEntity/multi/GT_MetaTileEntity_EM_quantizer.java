@@ -2,8 +2,14 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.elementalMatter.classes.*;
-import com.github.technus.tectech.elementalMatter.interfaces.iHasElementalDefinition;
+import com.github.technus.tectech.elementalMatter.core.*;
+import com.github.technus.tectech.elementalMatter.core.classes.*;
+import com.github.technus.tectech.elementalMatter.core.containers.cElementalInstanceStack;
+import com.github.technus.tectech.elementalMatter.core.transformations.aFluidQuantizationInfo;
+import com.github.technus.tectech.elementalMatter.core.transformations.aItemQuantizationInfo;
+import com.github.technus.tectech.elementalMatter.core.transformations.aOredictQuantizationInfo;
+import com.github.technus.tectech.elementalMatter.core.transformations.bTransformationInfo;
+import com.github.technus.tectech.elementalMatter.core.interfaces.iHasElementalDefinition;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import gregtech.api.GregTech_API;
@@ -17,8 +23,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import static com.github.technus.tectech.Util.*;
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition.refMass;
-import static com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition.refUnstableMass;
+import static com.github.technus.tectech.elementalMatter.definitions.complex.dAtomDefinition.refMass;
+import static com.github.technus.tectech.elementalMatter.definitions.complex.dAtomDefinition.refUnstableMass;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 

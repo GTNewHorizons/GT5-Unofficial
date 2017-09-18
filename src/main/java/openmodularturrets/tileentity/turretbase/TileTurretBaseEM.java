@@ -1,6 +1,6 @@
 package openmodularturrets.tileentity.turretbase;
 
-import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackMap;
+import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import cpw.mods.fml.common.Optional;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;

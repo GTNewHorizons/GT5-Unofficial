@@ -1,7 +1,7 @@
 package com.github.technus.tectech.loader;
 
 import com.github.technus.tectech.compatibility.dreamcraft.DreamCraftRecipeLoader;
-import com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition;
+import com.github.technus.tectech.elementalMatter.definitions.complex.dAtomDefinition;
 import cpw.mods.fml.common.Loader;
 
 /**

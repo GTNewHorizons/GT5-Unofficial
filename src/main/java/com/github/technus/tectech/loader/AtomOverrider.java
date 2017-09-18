@@ -1,13 +1,13 @@
 package com.github.technus.tectech.loader;
 
-import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStack;
-import com.github.technus.tectech.elementalMatter.classes.tElementalException;
-import com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition;
-import com.github.technus.tectech.elementalMatter.definitions.dHadronDefinition;
-import com.github.technus.tectech.elementalMatter.definitions.eLeptonDefinition;
+import com.github.technus.tectech.elementalMatter.core.containers.cElementalDefinitionStack;
+import com.github.technus.tectech.elementalMatter.core.tElementalException;
+import com.github.technus.tectech.elementalMatter.definitions.complex.dAtomDefinition;
+import com.github.technus.tectech.elementalMatter.definitions.complex.dHadronDefinition;
+import com.github.technus.tectech.elementalMatter.definitions.primitive.eLeptonDefinition;
 
-import static com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition.addOverride;
-import static com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition.stableRawLifeTime;
+import static com.github.technus.tectech.elementalMatter.definitions.complex.dAtomDefinition.addOverride;
+import static com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefinition.stableRawLifeTime;
 
 /**
  * Created by Tec on 29.05.2017.

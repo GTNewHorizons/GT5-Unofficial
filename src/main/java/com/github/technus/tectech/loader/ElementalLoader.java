@@ -1,9 +1,11 @@
 package com.github.technus.tectech.loader;
 
-import com.github.technus.tectech.elementalMatter.classes.cElementalPrimitive;
-import com.github.technus.tectech.elementalMatter.definitions.*;
+import com.github.technus.tectech.elementalMatter.core.templates.cElementalPrimitive;
 import com.github.technus.tectech.compatibility.thaumcraft.definitions.dComplexAspectDefinition;
 import com.github.technus.tectech.compatibility.thaumcraft.definitions.ePrimalAspectDefinition;
+import com.github.technus.tectech.elementalMatter.definitions.complex.dAtomDefinition;
+import com.github.technus.tectech.elementalMatter.definitions.complex.dHadronDefinition;
+import com.github.technus.tectech.elementalMatter.definitions.primitive.*;
 
 /**
  * Created by danie_000 on 16.11.2016.

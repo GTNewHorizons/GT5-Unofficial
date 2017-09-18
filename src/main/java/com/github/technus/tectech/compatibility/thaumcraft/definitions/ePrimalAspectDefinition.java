@@ -1,8 +1,8 @@
 package com.github.technus.tectech.compatibility.thaumcraft.definitions;
 
-import com.github.technus.tectech.elementalMatter.classes.cElementalPrimitive;
+import com.github.technus.tectech.elementalMatter.core.templates.cElementalPrimitive;
 
-import static com.github.technus.tectech.elementalMatter.classes.cElementalDecay.noDecay;
+import static com.github.technus.tectech.elementalMatter.core.cElementalDecay.noDecay;
 import static com.github.technus.tectech.compatibility.thaumcraft.definitions.AspectDefinitionCompat.aspectDefinitionCompat;
 
 /**
