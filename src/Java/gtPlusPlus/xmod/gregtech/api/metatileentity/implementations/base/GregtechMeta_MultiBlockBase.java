@@ -937,38 +937,58 @@ public abstract class GregtechMeta_MultiBlockBase extends MetaTileEntity {
 	}
 
 	public int getValidOutputSlots(final IGregTechTileEntity machineCalling, final GT_Recipe sRecipes, final ItemStack[] sInputs){
-		Utils.LOG_WARNING("Finding valid output slots for "+machineCalling.getInventoryName());
-		final ArrayList<ItemStack> tInputList = this.getStoredInputs();
-	    final GT_Recipe tRecipe = sRecipes;
-	    final int outputItemCount = tRecipe.mOutputs.length;
-	    int tValidOutputHatches = 0;
-	 
-	    for (final GT_MetaTileEntity_Hatch_OutputBus tHatch : this.mOutputBusses) {
-	        if (!isValidMetaTileEntity(tHatch)) continue;
-	 
-	        int tEmptySlots = 0;
-	        boolean foundRoom = false;
-	        final IInventory tHatchInv = tHatch.getBaseMetaTileEntity();
-	        for(int i = 0; i < tHatchInv.getSizeInventory() && !foundRoom; ++i)
-	        {
-	            if(tHatchInv.getStackInSlot(i) != null) continue;
-	           
-	            tEmptySlots++;
-	            if(tEmptySlots < outputItemCount) continue;
-	           
-	            tValidOutputHatches++;
-	            foundRoom = true;
-	        }
-	    }
-	 
-	    return tValidOutputHatches;
+		Utils.LOG_INFO("Finding valid output slots for "+machineCalling.getInventoryName());
+
+		try{
+			
+			if (sRecipes == null){
+				return 0;
+			}
+			
+			final ArrayList<ItemStack> tInputList = this.getStoredInputs();
+			final GT_Recipe tRecipe = sRecipes;
+			final int outputItemCount;
+			if (tRecipe.mOutputs != null){
+				outputItemCount= tRecipe.mOutputs.length;	    	
+			}
+			else {
+				outputItemCount= 0;
+			}
+			int tValidOutputHatches = 0;
+
+			for (final GT_MetaTileEntity_Hatch_OutputBus tHatch : this.mOutputBusses) {
+				if (!isValidMetaTileEntity(tHatch)) continue;
+
+				int tEmptySlots = 0;
+				boolean foundRoom = false;
+				final IInventory tHatchInv = tHatch.getBaseMetaTileEntity();
+				for(int i = 0; i < tHatchInv.getSizeInventory() && !foundRoom; ++i)
+				{
+					if(tHatchInv.getStackInSlot(i) != null) continue;
+
+					tEmptySlots++;
+					if(tEmptySlots < outputItemCount) continue;
+
+					tValidOutputHatches++;
+					foundRoom = true;
+				}
+			}
+			if (tValidOutputHatches < 0){
+				tValidOutputHatches = 0;
+			}
+
+			return tValidOutputHatches;
+		} catch (Throwable t){
+			t.printStackTrace();
+			return 0;
+		}
 	}
-	
+
 	public GT_Recipe reduceRecipeTimeByPercentage(GT_Recipe tRecipe, float percentage){
 		int cloneTime = 0;
 		GT_Recipe baseRecipe;
 		GT_Recipe cloneRecipe = null;
-		
+
 		baseRecipe = tRecipe.copy();
 		if (cloneRecipe != baseRecipe || cloneRecipe == null){
 			cloneRecipe = baseRecipe.copy();
@@ -978,7 +998,7 @@ public abstract class GregtechMeta_MultiBlockBase extends MetaTileEntity {
 			cloneTime = baseRecipe.mDuration;
 			Utils.LOG_WARNING("Setting Time");
 		}
-		
+
 		if (cloneRecipe.mDuration > 0){
 			int originalTime = cloneRecipe.mDuration;
 			int tempTime = MathUtils.findPercentageOfInt(cloneRecipe.mDuration, (100-percentage));
@@ -991,9 +1011,9 @@ public abstract class GregtechMeta_MultiBlockBase extends MetaTileEntity {
 			}
 		}
 		return null;
-		
-		
-		
+
+
+
 	}
 
 
