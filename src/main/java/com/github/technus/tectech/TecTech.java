@@ -2,7 +2,7 @@ package com.github.technus.tectech;
 
 import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
-import com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition;
+import com.github.technus.tectech.elementalMatter.definitions.complex.dAtomDefinition;
 import com.github.technus.tectech.loader.AtomOverrider;
 import com.github.technus.tectech.loader.MainLoader;
 import com.github.technus.tectech.proxy.CommonProxy;

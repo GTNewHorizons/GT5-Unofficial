@@ -1,13 +1,19 @@
 package com.github.technus.tectech.compatibility.thaumcraft.definitions;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.elementalMatter.classes.*;
-import com.github.technus.tectech.elementalMatter.definitions.eBosonDefinition;
-import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
+import com.github.technus.tectech.elementalMatter.core.*;
+import com.github.technus.tectech.elementalMatter.core.classes.*;
+import com.github.technus.tectech.elementalMatter.core.templates.cElementalDefinition;
+import com.github.technus.tectech.elementalMatter.core.containers.cElementalDefinitionStack;
+import com.github.technus.tectech.elementalMatter.core.transformations.aFluidDequantizationInfo;
+import com.github.technus.tectech.elementalMatter.core.transformations.aItemDequantizationInfo;
+import com.github.technus.tectech.elementalMatter.core.transformations.aOredictDequantizationInfo;
+import com.github.technus.tectech.elementalMatter.definitions.primitive.eBosonDefinition;
+import com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefinition;
 import net.minecraft.nbt.NBTTagCompound;
 
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.elementalMatter.classes.cElementalDecay.noDecay;
+import static com.github.technus.tectech.elementalMatter.core.cElementalDecay.noDecay;
 import static com.github.technus.tectech.compatibility.thaumcraft.definitions.AspectDefinitionCompat.aspectDefinitionCompat;
 
 /**

@@ -1,9 +1,9 @@
 package com.github.technus.tectech.recipe;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStack;
-import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStackMap;
-import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
+import com.github.technus.tectech.elementalMatter.core.containers.cElementalDefinitionStack;
+import com.github.technus.tectech.elementalMatter.core.cElementalDefinitionStackMap;
+import com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefinition;
 import com.github.technus.tectech.thing.item.DefinitionContainer_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_crafting;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_machine;
