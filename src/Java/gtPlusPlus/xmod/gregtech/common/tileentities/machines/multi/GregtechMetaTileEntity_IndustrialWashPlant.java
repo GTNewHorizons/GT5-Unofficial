@@ -2,25 +2,22 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
 import java.util.ArrayList;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -52,7 +49,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Muffler Hatch (Any casing)",
 				"1x Energy Hatch (Any casing)",
 				CORE.GT_Tooltip
-				
+
 		};
 	}
 
@@ -125,24 +122,75 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
-		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
-		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-		if (!(aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir))) {
-			return false;
+		
+		//Get Facing direction
+		int mDirectionX  = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
+		
+		int mCurrentDirectionX;
+		int mCurrentDirectionZ;
+		int mOffsetX_Lower = 0;
+		int mOffsetX_Upper = 0;
+		int mOffsetZ_Lower = 0;
+		int mOffsetZ_Upper = 0;
+		
+
+		Utils.LOG_INFO("mDirectionX "+(mDirectionX));
+		if (mDirectionX == 0){
+			mCurrentDirectionX = 2;
+			mCurrentDirectionZ = 3;
+			mOffsetX_Lower = -2;
+			mOffsetX_Upper = 2;
+			mOffsetZ_Lower = -3;
+			mOffsetZ_Upper = 3;
+			Utils.LOG_INFO("Controler is facing Z direction.");
 		}
+		else {
+			mCurrentDirectionX = 3;
+			mCurrentDirectionZ = 2;	
+			mOffsetX_Lower = -3;
+			mOffsetX_Upper = 3;
+			mOffsetZ_Lower = -2;
+			mOffsetZ_Upper = 2;	
+			Utils.LOG_INFO("Controler is facing X direction.");	
+		}
+		
+		//if (aBaseMetaTileEntity.fac)
+		
+		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * mCurrentDirectionX;
+		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * mCurrentDirectionZ;
+		
+		Utils.LOG_INFO("xDir"+(xDir));
+		Utils.LOG_INFO("zDir"+(zDir)); 
+		/*if (!(aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir))) {
+			return false;
+		}*/
 		int tAmount = 0;
-		for (int i = -1; i < 2; ++i) {
-			for (int j = -1; j < 2; ++j) {
-				for (int h = -1; h < 1; ++h) {
+		for (int i = mOffsetX_Lower; i <=mOffsetX_Upper; ++i) {
+			for (int j = mOffsetZ_Lower; j <= mOffsetZ_Upper; ++j) {
+				for (int h = -1; h < 2; ++h) {
 					if ((h != 0) || ((((xDir + i != 0) || (zDir + j != 0))) && (((i != 0) || (j != 0))))) {
 						IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h,
 								zDir + j);
 						if (!addToMachineList(tTileEntity)) {
+							Utils.LOG_INFO("X: "+i+" | Z: "+j);
 							Block tBlock = aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j);
 							byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
-							if ((((tBlock != ModBlocks.blockCasings2Misc) || (tMeta != 0)))
-									&& (((tBlock != GregTech_API.sBlockCasings3) || (tMeta != 9)))) {
-								return false;
+							if ((tBlock != getCasingBlock()) && (tMeta != getCasingMeta())) {
+								if ((i != mOffsetX_Lower && j !=  mOffsetZ_Lower
+										&& i != mOffsetX_Upper && j != mOffsetZ_Upper) && (h == 0 || h == 1)){
+									if (tBlock == Blocks.air){
+										Utils.LOG_INFO("Found Air");
+									}
+									else if (tBlock == Blocks.water){
+										Utils.LOG_INFO("Found Water");
+									}
+								}
+								else {
+									Utils.LOG_INFO("[x] Did not form - Found: "+tBlock.getLocalizedName() + " | "+tBlock.getDamageValue(aBaseMetaTileEntity.getWorld(), aBaseMetaTileEntity.getXCoord()+ i, aBaseMetaTileEntity.getYCoord(), aBaseMetaTileEntity.getZCoord() + j));
+									Utils.LOG_INFO("[x] Did not form - Found: "+(aBaseMetaTileEntity.getXCoord()+xDir + i) +" | "+ aBaseMetaTileEntity.getYCoord()+" | "+ (aBaseMetaTileEntity.getZCoord()+zDir + j));
+									return false;
+								}
+								
 							}
 							++tAmount;
 						}
@@ -150,7 +198,13 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 		}
-		return (tAmount >= 16);
+		if ((tAmount >= 8)){
+			Utils.LOG_INFO("Made structure.");
+		}
+		else {
+			Utils.LOG_INFO("Did not make structure.");
+		}
+		return (tAmount >= 8);
 	}
 
 	@Override
@@ -179,12 +233,12 @@ extends GregtechMeta_MultiBlockBase {
 
 
 	public byte getCasingMeta() {
-		return 0;
+		return 4;
 	}
 
 
 	public byte getCasingTextureIndex() {
-		return (byte) TAE.GTPP_INDEX(16);
+		return (byte) TAE.GTPP_INDEX(20);
 	}
 
 	private boolean addToMachineList(final IGregTechTileEntity tTileEntity) {

@@ -128,9 +128,9 @@ extends GregtechMeta_MultiBlockBase {
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
 		int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
 		int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-		if (!(aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir))) {
+		/*if (!(aBaseMetaTileEntity.getAirOffset(xDir, 0, zDir))) {
 			return false;
-		}
+		}*/
 		int tAmount = 0;
 		for (int i = -1; i < 2; ++i) {
 			for (int j = -1; j < 2; ++j) {
@@ -143,6 +143,7 @@ extends GregtechMeta_MultiBlockBase {
 							byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
 							if ((((tBlock != ModBlocks.blockCasings2Misc) || (tMeta != 0)))
 									&& (((tBlock != GregTech_API.sBlockCasings3) || (tMeta != 9)))) {
+								Utils.LOG_INFO("Wrong Block?");
 								return false;
 							}
 							++tAmount;
@@ -151,7 +152,8 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 		}
-		return (tAmount >= 16);
+		Utils.LOG_INFO("Trying to assemble structure. Completed? "+(tAmount >= 8));
+		return (tAmount >= 8);
 	}
 
 	@Override
