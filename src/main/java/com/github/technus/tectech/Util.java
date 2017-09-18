@@ -322,7 +322,7 @@ public class Util {
                                            TileEntity tileEntity, int facing, boolean hintsOnly) {
         if(!tileEntity.hasWorldObj()) return false;
         World world = tileEntity.getWorldObj();
-        if ((world.isRemote && !hintsOnly)||(!world.isRemote && hintsOnly)) return false;
+        if (!world.isRemote && hintsOnly) return false;
 
         //TE Rotation
 
@@ -424,11 +424,11 @@ public class Util {
                                     if ((pointer = block - '0') >= 0) {
                                         world.setBlock(x, y, z, blockType[pointer], blockMeta[pointer], 2);
                                     } else if ((pointer = block - ' ') >= 0) {
-                                        switch(pointer){
-                                            case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10: case 11:
-                                                world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, pointer, 2); break;
-                                            default:world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 12, 2);
-                                        }
+                                        //switch(pointer){
+                                        //    case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10: case 11:
+                                        //        world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, pointer, 2); break;
+                                        //    default:world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 12, 2);
+                                        //}
                                     } else world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 15,2);
                                 }
                             }

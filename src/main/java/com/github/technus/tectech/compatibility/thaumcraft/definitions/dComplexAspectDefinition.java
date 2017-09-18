@@ -2,7 +2,6 @@ package com.github.technus.tectech.compatibility.thaumcraft.definitions;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.core.*;
-import com.github.technus.tectech.elementalMatter.core.classes.*;
 import com.github.technus.tectech.elementalMatter.core.templates.cElementalDefinition;
 import com.github.technus.tectech.elementalMatter.core.containers.cElementalDefinitionStack;
 import com.github.technus.tectech.elementalMatter.core.transformations.aFluidDequantizationInfo;

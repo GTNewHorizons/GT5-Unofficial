@@ -64,7 +64,7 @@ public class ConstructableTriggerItem extends Item {
             }
             return true;
         }else if (aPlayer instanceof EntityClientPlayerMP){//particles and text client side
-            if ((!aPlayer.isSneaking() || !aPlayer.capabilities.isCreativeMode)) {
+            //if ((!aPlayer.isSneaking() || !aPlayer.capabilities.isCreativeMode)) {
                 if(tTileEntity instanceof IGregTechTileEntity) {
                     IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
                     if (metaTE instanceof IConstructable) {
@@ -85,24 +85,24 @@ public class ConstructableTriggerItem extends Item {
                     TecTech.proxy.printInchat(multiblockMap.get(tTileEntity.getClass().getCanonicalName()).getDescription(aStack.stackSize));
                     return false;
                 }
-            } else {
-                if(tTileEntity instanceof IGregTechTileEntity) {
-                    IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
-                    if (metaTE instanceof IConstructable) {
-                        TecTech.proxy.printInchat(((IConstructable) metaTE).getStructureDescription(aStack.stackSize));
-                        return false;
-                    } else if(multiblockMap.containsKey(metaTE.getClass().getCanonicalName())){
-                        TecTech.proxy.printInchat(multiblockMap.get(metaTE.getClass().getCanonicalName()).getDescription(aStack.stackSize));
-                        return false;
-                    }
-                } else if(tTileEntity instanceof IConstructable){
-                    TecTech.proxy.printInchat(((IConstructable) tTileEntity).getStructureDescription(aStack.stackSize));
-                    return false;
-                } else if(multiblockMap.containsKey(tTileEntity.getClass().getCanonicalName())){
-                    TecTech.proxy.printInchat(multiblockMap.get(tTileEntity.getClass().getCanonicalName()).getDescription(aStack.stackSize));
-                    return false;
-                }
-            }
+            //} else {
+            //    if(tTileEntity instanceof IGregTechTileEntity) {
+            //        IMetaTileEntity metaTE = ((IGregTechTileEntity) tTileEntity).getMetaTileEntity();
+            //        if (metaTE instanceof IConstructable) {
+            //            TecTech.proxy.printInchat(((IConstructable) metaTE).getStructureDescription(aStack.stackSize));
+            //            return false;
+            //        } else if(multiblockMap.containsKey(metaTE.getClass().getCanonicalName())){
+            //            TecTech.proxy.printInchat(multiblockMap.get(metaTE.getClass().getCanonicalName()).getDescription(aStack.stackSize));
+            //            return false;
+            //        }
+            //    } else if(tTileEntity instanceof IConstructable){
+            //        TecTech.proxy.printInchat(((IConstructable) tTileEntity).getStructureDescription(aStack.stackSize));
+            //        return false;
+            //    } else if(multiblockMap.containsKey(tTileEntity.getClass().getCanonicalName())){
+            //        TecTech.proxy.printInchat(multiblockMap.get(tTileEntity.getClass().getCanonicalName()).getDescription(aStack.stackSize));
+            //        return false;
+            //    }
+            //}
         }
         return false;
     }
