@@ -3,7 +3,6 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.core.*;
-import com.github.technus.tectech.elementalMatter.core.classes.*;
 import com.github.technus.tectech.elementalMatter.core.containers.cElementalInstanceStack;
 import com.github.technus.tectech.elementalMatter.core.transformations.aFluidQuantizationInfo;
 import com.github.technus.tectech.elementalMatter.core.transformations.aItemQuantizationInfo;
