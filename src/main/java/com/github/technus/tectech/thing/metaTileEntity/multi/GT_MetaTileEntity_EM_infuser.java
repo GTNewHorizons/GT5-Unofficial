@@ -132,7 +132,7 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.tecMark,
+                CommonValues.TEC_MARK,
                 "Power Transfer Extreme!",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Insanely fast charging!",
                 EnumChatFormatting.BLUE + "Doesn't work while broken!",
@@ -143,7 +143,7 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     private long doChargeItemStack(IElectricItem item, ItemStack stack) {
         try {
             double euDiff = item.getMaxCharge(stack) - ElectricItem.manager.getCharge(stack);
-            if (euDiff > 0) this.setEUVar(this.getEUVar() - this.getEUVar() >> 5);
+            if (euDiff > 0) this.setEUVar(this.getEUVar() - (this.getEUVar() >> 5));
             long remove = (long) Math.ceil(
                     ElectricItem.manager.charge(stack,
                             Math.min(euDiff, this.getEUVar())

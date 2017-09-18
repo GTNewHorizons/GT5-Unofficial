@@ -3,7 +3,7 @@ package com.github.technus.tectech.elementalMatter.definitions;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.classes.*;
 import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
-import com.github.technus.tectech.gtppAddon.GtppAtomLoader;
+import com.github.technus.tectech.compatibility.gtpp.GtppAtomLoader;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;

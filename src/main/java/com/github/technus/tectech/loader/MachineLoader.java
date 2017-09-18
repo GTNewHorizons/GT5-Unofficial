@@ -1,7 +1,7 @@
 package com.github.technus.tectech.loader;
 
-import com.github.technus.tectech.magicAddon.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_essentiaDequantizer;
-import com.github.technus.tectech.magicAddon.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_essentiaQuantizer;
+import com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_essentiaDequantizer;
+import com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_essentiaQuantizer;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
 import com.github.technus.tectech.thing.metaTileEntity.multi.*;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.GT_MetaTileEntity_Pipe_Data;

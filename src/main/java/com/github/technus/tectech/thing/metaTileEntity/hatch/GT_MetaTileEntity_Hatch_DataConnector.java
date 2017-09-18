@@ -18,7 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fluids.FluidStack;
 
-import static com.github.technus.tectech.CommonValues.moveAt;
+import static com.github.technus.tectech.CommonValues.MOVE_AT;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
 
 /**
@@ -79,7 +79,7 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector extends GT_MetaTileE
     @Override
     public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
         if (aBaseMetaTileEntity.isServerSide()) {
-            if (moveAt == aTick % 20) {
+            if (MOVE_AT == aTick % 20) {
                 if (q == null) {
                     getBaseMetaTileEntity().setActive(false);
                 } else {
@@ -153,7 +153,7 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector extends GT_MetaTileE
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.tecMark,
+                CommonValues.TEC_MARK,
                 mDescription,
                 "High speed fibre optics connector.",
                 EnumChatFormatting.AQUA + "Must be painted to work"

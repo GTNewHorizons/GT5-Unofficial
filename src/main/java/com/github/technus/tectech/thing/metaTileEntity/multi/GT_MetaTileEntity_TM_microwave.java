@@ -14,7 +14,6 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -36,9 +35,9 @@ import static gregtech.api.GregTech_API.sBlockCasings4;
  */
 public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_MultiblockBase_EM  implements IConstructable {
     private int powerSetting = 1000;
-    private int timerSetting = 0;
+    private int timerSetting = 360;
     private int timerValue = 0;
-    private boolean hasBeenPausedThiscycle=false;
+    private boolean hasBeenPausedThisCycle =false;
     private boolean flipped=false;
 
     //region Structure
@@ -73,10 +72,14 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     public GT_MetaTileEntity_TM_microwave(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
+        eParamsIn[0] =powerSetting;
+        eParamsIn[10]=timerSetting;
     }
 
     public GT_MetaTileEntity_TM_microwave(String aName) {
         super(aName);
+        eParamsIn[0] =powerSetting;
+        eParamsIn[10]=timerSetting;
     }
 
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
@@ -146,7 +149,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.bassMark,
+                CommonValues.BASS_MARK,
                 "High Frequency Oven",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "From live to done in seconds!",
                 EnumChatFormatting.BLUE + "I said nuke the... I meant microwave supper!",
@@ -155,7 +158,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     @Override
     public boolean checkRecipe_EM(ItemStack itemStack) {
-        hasBeenPausedThiscycle=false;
+        hasBeenPausedThisCycle =false;
         if(powerSetting<=300 || eParamsInStatus[0] == PARAM_TOO_HIGH || timerSetting<=0 || timerSetting>3000) return false;
         if (timerValue <= 0) {
             timerValue=timerSetting;
@@ -169,7 +172,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     @Override
     public void outputAfterRecipe_EM() {
-        if(hasBeenPausedThiscycle) return;//skip timer and actions if paused
+        if(hasBeenPausedThisCycle) return;//skip timer and actions if paused
         timerValue--;
         IGregTechTileEntity mte=getBaseMetaTileEntity();
         int xDirShift = ForgeDirection.getOrientation(mte.getBackFacing()).offsetX*2;
@@ -188,9 +191,13 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
                 yPos+(flipped?.5:2.5),
                 zPos+1.5+zDirShift);
 
-        int damagingFactor = powerSetting >> 9;
-        boolean inside=true;
+        int damagingFactor =
+                Math.min(powerSetting >> 6,8)+
+                Math.min(powerSetting >> 8,24)+
+                Math.min(powerSetting >> 12,48)+
+                        (powerSetting >> 18);
 
+        boolean inside=true;
         do {
             for (Object entity : mte.getWorld().getEntitiesWithinAABBExcludingEntity(null, aabb)) {
                 if (entity instanceof Entity) {
@@ -209,7 +216,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
                             ((EntityItem) entity).setDead();
                         } else if (entity instanceof EntityLivingBase) {
                             if(!GT_Utility.isWearingFullElectroHazmat((EntityLivingBase) entity))
-                                ((EntityLiving) entity).attackEntityFrom(microwaving, damagingFactor);
+                                ((EntityLivingBase) entity).attackEntityFrom(microwaving, damagingFactor);
                         }
                     }
                 }
@@ -257,8 +264,8 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if(eSafeVoid) hasBeenPausedThiscycle=true;
-        return hasBeenPausedThiscycle || super.onRunningTick(aStack);//consume eu and other resources if not paused
+        if(eSafeVoid) hasBeenPausedThisCycle =true;
+        return hasBeenPausedThisCycle || super.onRunningTick(aStack);//consume eu and other resources if not paused
     }
 
     @Override

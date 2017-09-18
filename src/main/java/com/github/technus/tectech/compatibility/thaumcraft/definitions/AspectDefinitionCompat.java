@@ -1,4 +1,4 @@
-package com.github.technus.tectech.magicAddon.definitions;
+package com.github.technus.tectech.compatibility.thaumcraft.definitions;
 
 
 import com.github.technus.tectech.elementalMatter.classes.cElementalDefinition;

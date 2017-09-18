@@ -1,4 +1,4 @@
-package com.github.technus.tectech.loader;
+package com.github.technus.tectech.compatibility.dreamcraft;
 
 /**
  * Created by Tec on 06.08.2017.

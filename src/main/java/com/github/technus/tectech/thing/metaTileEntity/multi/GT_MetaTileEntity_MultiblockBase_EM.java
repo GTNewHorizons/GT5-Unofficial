@@ -196,12 +196,21 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.tecMark,
+                CommonValues.TEC_MARK,
                 "Nothing special just override me."
         };
     }
 
     //RATHER LEAVE ALONE Section
+    protected boolean EM_areChunksAroundLoaded(){
+        if(isValidMetaTileEntity(this) && getBaseMetaTileEntity().isServerSide()){
+            IGregTechTileEntity base=getBaseMetaTileEntity();
+            final int x=base.getXCoord();
+            final int y=base.getYCoord();
+            final int z=base.getZCoord();
+            return base.getWorld().checkChunksExist(x-48,y-48,z-48,x+48,y+48,z+48);
+        }else return false;
+    }
 
     public GT_MetaTileEntity_MultiblockBase_EM(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
@@ -464,7 +473,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 mMachine = checkMachine(aBaseMetaTileEntity, mInventory[1]);
 
                 if (!mMachine) {
-                    if ((ePowerPass && getEUVar() > V[3]) || (eDismantleBoom && mMaxProgresstime > 0))
+                    if ((ePowerPass && getEUVar() > V[3]) || (eDismantleBoom && mMaxProgresstime > 0 && EM_areChunksAroundLoaded()))
                         explodeMultiblock();
                     if (outputEM != null)
                         for (cElementalInstanceStackMap tree : outputEM)
@@ -532,9 +541,9 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
             if (mStartUpCheck < 0) {//E
                 if (mMachine) {//S
                     final byte Tick = (byte) (aTick % 20);
-                    if (multiPurge1At == Tick || multiPurge2At == Tick)
+                    if (MULTI_PURGE_1_AT == Tick || MULTI_PURGE_2_AT == Tick)
                         purgeAllOverflowEM_EM();
-                    else if (multiCheckAt == Tick)
+                    else if (MULTI_CHECK_AT == Tick)
                         for (GT_MetaTileEntity_Hatch_Maintenance tHatch : mMaintenanceHatches) {
                             if (isValidMetaTileEntity(tHatch)) {
                                 if (disableMaintenance) {
@@ -563,7 +572,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                 }
                             }
                         }
-                    else if (moveAt == Tick && eSafeVoid) {
+                    else if (MOVE_AT == Tick && eSafeVoid) {
                         for (GT_MetaTileEntity_Hatch_MufflerElemental voider : eMufflerHatches) {
                             if (voider.overflowMax < voider.getOverflowMatter()) continue;
                             float remaining = voider.overflowMax - voider.getOverflowMatter();
@@ -593,7 +602,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                     }
 
                     if (getRepairStatus() >= minRepairStatus) {//S
-                        if (multiCheckAt == Tick)
+                        if (MULTI_CHECK_AT == Tick)
                             hatchesStatusUpdate_EM();
 
                         //region power pass and controller charging
@@ -641,7 +650,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                                 if (!polluteEnvironment(getPollutionPerTick(mInventory[1]))) stopMachine();
                                 if (!polluteEnvironment_EM(getPollutionPerTick_EM(mInventory[1]))) stopMachine();
 
-                                if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime && recipeAt == Tick) {//progress increase and done
+                                if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime && RECIPE_AT == Tick) {//progress increase and done
                                     hatchesStatusUpdate_EM();
 
                                     outputAfterRecipe_EM();
@@ -673,7 +682,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                             }// else {//failed to consume power/resources - inside on running tick
                             //    stopMachine();
                             //}
-                        } else if (recipeAt == Tick || aBaseMetaTileEntity.hasWorkJustBeenEnabled()) {
+                        } else if (RECIPE_AT == Tick || aBaseMetaTileEntity.hasWorkJustBeenEnabled()) {
                             if (aBaseMetaTileEntity.isAllowedToWork()) {
                                 if (checkRecipe(mInventory[1])) {
                                     mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
@@ -1084,7 +1093,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                 for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches)
                     hatch.getBaseMetaTileEntity().setActive(false);
             }
-            if ((ePowerPass && getEUVar()>V[3]) || (eDismantleBoom && mMaxProgresstime > 0)) explodeMultiblock();
+            if ((ePowerPass && getEUVar()>V[3]) || (eDismantleBoom && mMaxProgresstime > 0 && EM_areChunksAroundLoaded())) explodeMultiblock();
             if (outputEM != null)
                 for (cElementalInstanceStackMap output : outputEM)
                     if (output.hasStacks()) explodeMultiblock();

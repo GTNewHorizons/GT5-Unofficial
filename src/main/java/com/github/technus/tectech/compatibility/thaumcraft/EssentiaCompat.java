@@ -1,4 +1,4 @@
-package com.github.technus.tectech.magicAddon;
+package com.github.technus.tectech.compatibility.thaumcraft;
 
 import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStack;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_MultiblockBase_EM;
