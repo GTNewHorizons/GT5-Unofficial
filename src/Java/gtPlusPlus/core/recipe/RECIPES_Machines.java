@@ -1023,7 +1023,7 @@ public class RECIPES_Machines {
 						"plateStainlessSteel",CI.sensor_EV,"plateStainlessSteel",
 						GregtechItemList.Circuit_Parts_Wiring_ZPM.get(1),GregtechItemList.Gregtech_Computer_Cube.get(1),GregtechItemList.Circuit_Parts_Wiring_ZPM.get(1),
 						"plateStainlessSteel",CI.emitter_EV,"plateStainlessSteel",
-						GregtechItemList.Casing_Autocrafter.get(1));
+						GregtechItemList.GT4_Multi_Crafter.get(1));
 				
 				RecipeUtils.recipeBuilder( 
 						"plateStainlessSteel",CI.craftingToolSolderingIron,"plateStainlessSteel",
