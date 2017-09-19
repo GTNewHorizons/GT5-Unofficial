@@ -65,6 +65,7 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 				"2x Maint. Hatch",
 				"--Mufflers go in the top 3x3--",
 				"4x IV+ Mufflers",
+				"Causes " + (20 * getPollutionPerTick(null)) + " Pollution per second",
 				CORE.GT_Tooltip};
 	}
 

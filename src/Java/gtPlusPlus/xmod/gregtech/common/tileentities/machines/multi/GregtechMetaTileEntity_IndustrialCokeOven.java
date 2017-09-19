@@ -54,6 +54,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Maintenance Hatch (one of bottom)",
 				"1x Muffler Hatch (top middle)",
 				"Structural Coke Oven Casings for the rest",
+				"Causes " + (20 * getPollutionPerTick(null)) + " Pollution per second",
 				CORE.GT_Tooltip};
 	}
 
@@ -257,9 +258,8 @@ extends GregtechMeta_MultiBlockBase {
 		return 10000;
 	}
 
-	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return 0;
+		return 8;
 	}
 
 	/* @Override

@@ -77,6 +77,7 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 				"1x Energy Hatch (Any bottom layer casing)",
 				"24x IC2 Reinforced Glass for the walls",
 				"Matter Fabricator Casings for the edges & top (40 at least!)",
+				"Causes " + (20 * getPollutionPerTick(null)) + " Pollution per second",
 				CORE.GT_Tooltip};
 	}
 
@@ -386,9 +387,8 @@ public class GregtechMetaTileEntity_MassFabricator extends GregtechMeta_MultiBlo
 		return 10000;
 	}
 
-	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return 0;
+		return 20;
 	}
 
 	@Override

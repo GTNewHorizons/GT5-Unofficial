@@ -55,15 +55,19 @@ extends GregtechMeta_MultiBlockBase {
 		return new String[]{
 				"Controller Block for the Industrial Ore Washing Plant",
 				"60% faster than using single block machines of the same voltage",
-				"Size: 7x2x5 [WxHxL] (open)",
+				"Size: 5x3x7 [WxHxL] (open)",
+				"The inner 3x2x5 is air or water",
 				"Controller (front centered)",
 				"1x Input Bus (Any casing)",
 				"1x Output Bus (Any casing)",
+				"1x Input Hatch (Any casing)",
+				"1x Output Hatch (Any casing)",
 				"1x Maintenance Hatch (Any casing)",
 				"1x Energy Hatch (Any casing)",
+				"Wash Plant Casing (The rest)",
+				"Causes " + (20 * getPollutionPerTick(null)) + " Pollution per second",
 				CORE.GT_Tooltip
-
-		};
+				};
 	}
 
 	@Override
@@ -248,7 +252,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return 0;
+		return 20;
 	}
 
 	@Override

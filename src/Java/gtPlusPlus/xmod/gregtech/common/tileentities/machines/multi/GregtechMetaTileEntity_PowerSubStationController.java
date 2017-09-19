@@ -56,6 +56,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTil
 				"1x Output Bus",
 				"1x Maintenance hatch",
 				"--------------------------------------------------------------------------",
+				"Causes " + (20 * getPollutionPerTick(null)) + " Pollution per second",
 				CORE.GT_Tooltip};
 	}
 

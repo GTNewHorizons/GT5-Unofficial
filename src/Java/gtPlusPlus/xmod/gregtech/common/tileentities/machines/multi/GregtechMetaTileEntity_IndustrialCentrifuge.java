@@ -68,6 +68,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Output Bus",
 				"1x [EV] Energy Hatch (Can be higher Tier) [Blue]",
 				"Centrifuge Casings for the rest (16 at least)",
+				"Causes " + (20 * getPollutionPerTick(null)) + " Pollution per second",
 				CORE.GT_Tooltip};
 	}
 
@@ -272,9 +273,8 @@ extends GregtechMeta_MultiBlockBase {
 		return 10000;
 	}
 
-	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return 0;
+		return 13;
 	}
 
 	@Override
