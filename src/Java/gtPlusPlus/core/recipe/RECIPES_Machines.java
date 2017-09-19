@@ -970,19 +970,46 @@ public class RECIPES_Machines {
 			}
 
 			if (CORE.configSwitches.enableMultiblock_PowerSubstation){
+				RecipeUtils.recipeBuilder(
+						null, "plateIncoloy020", null,
+						"plateIncoloy020", "frameGtIncoloyMA956", "plateIncoloy020",
+						null, "plateIncoloy020", null,
+						GregtechItemList.Casing_Power_SubStation.get(1));
 
+				RecipeUtils.recipeBuilder(
+						"plateIncoloyMA956", GregtechItemList.Battery_RE_EV_Lithium.get(1), "plateIncoloyMA956",
+						GregtechItemList.Casing_Power_SubStation.get(1), GregtechItemList.Casing_Vanadium_Redox.get(1), GregtechItemList.Casing_Power_SubStation.get(1),
+						"plateIncoloy020", "plateIncoloyMA956", "plateIncoloy020",
+						GregtechItemList.PowerSubStation.get(1));
 			}
-			RecipeUtils.recipeBuilder(
-					null, "plateIncoloy020", null,
-					"plateIncoloy020", "frameGtIncoloyMA956", "plateIncoloy020",
-					null, "plateIncoloy020", null,
-					GregtechItemList.Casing_Power_SubStation.get(1));
+			
+			if (CORE.configSwitches.enableMultiblock_IndustrialThermalCentrifuge){
+				RecipeUtils.recipeBuilder(
+						"plateRedSteel", CI.craftingToolHammer_Hard, "plateRedSteel",
+						"plateRedSteel", "frameGtBlackSteel", "plateRedSteel",
+						"plateRedSteel", CI.craftingToolWrench, "plateRedSteel",
+						GregtechItemList.Casing_ThermalCentrifuge.get(2));
 
-			RecipeUtils.recipeBuilder(
-					"plateIncoloyMA956", GregtechItemList.Battery_RE_EV_Lithium.get(1), "plateIncoloyMA956",
-					GregtechItemList.Casing_Power_SubStation.get(1), GregtechItemList.Casing_Vanadium_Redox.get(1), GregtechItemList.Casing_Power_SubStation.get(1),
-					"plateIncoloy020", "plateIncoloyMA956", "plateIncoloy020",
-					GregtechItemList.PowerSubStation.get(1));
+				RecipeUtils.recipeBuilder(
+						"plateRedSteel","circuitData","plateRedSteel",
+						"stickTalonite",GregtechItemList.Casing_ThermalCentrifuge.get(1),"stickTalonite",
+						"plateRedSteel","gearTalonite","plateRedSteel",
+						GregtechItemList.Industrial_ThermalCentrifuge.get(1));
+			}
+			
+			if (CORE.configSwitches.enableMultiblock_IndustrialWashPlant){
+				RecipeUtils.recipeBuilder(
+						"plateGrisium", CI.craftingToolHammer_Hard, "plateGrisium",
+						"plateTalonite", "frameGtGrisium", "plateTalonite",
+						"plateGrisium", CI.craftingToolWrench, "plateGrisium",
+						GregtechItemList.Casing_WashPlant.get(2));
+
+				RecipeUtils.recipeBuilder( 
+						"plateGrisium",CI.electricPump_MV,"plateGrisium",
+						"plateTalonite",GregtechItemList.Casing_WashPlant.get(1),"plateTalonite",
+						"plateGrisium","circuitData","plateGrisium",
+						GregtechItemList.Industrial_WashPlant.get(1));
+			}
 
 
 		}
