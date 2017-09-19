@@ -63,6 +63,7 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Input Hatch (Any casing)",
 				"1x Output Hatch (Any casing)",
 				"1x Maintenance Hatch (Any casing)",
+				"1x Muffler Hatch (Any casing)",
 				"1x Energy Hatch (Any casing)",
 				"Wash Plant Casing (The rest)",
 				"Causes " + (20 * getPollutionPerTick(null)) + " Pollution per second",
@@ -236,6 +237,23 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 		}
+		
+		if ((this.mInputBusses.size() < 1) || (this.mOutputBusses.size() < 1)
+				|| (this.mInputHatches.size() < 1) || (this.mOutputHatches.size() < 1)
+				|| (this.mMaintenanceHatches.size() != 1) || (this.mEnergyHatches.size() < 1)
+				|| (this.mMufflerHatches.size() < 1)) {
+			Utils.LOG_MACHINE_INFO("Returned False");
+			Utils.LOG_MACHINE_INFO("Input Buses: "+this.mInputBusses.size()+" | expected: >= 1 | "+(this.mInputBusses.size() >= 1));
+			Utils.LOG_MACHINE_INFO("Output Buses: "+this.mOutputBusses.size()+" | expected: >= 1 | "+(this.mOutputBusses.size() >= 1));
+			Utils.LOG_MACHINE_INFO("Input Hatches: "+this.mInputHatches.size()+" | expected: >= 1 | "+(this.mInputHatches.size() >= 1));
+			Utils.LOG_MACHINE_INFO("Output Hatches: "+this.mOutputHatches.size()+" | expected: >= 1 | "+(this.mOutputHatches.size() >= 1));
+			Utils.LOG_MACHINE_INFO("Energy Hatches: "+this.mEnergyHatches.size()+" | expected: >= 1 | "+(this.mEnergyHatches.size() >= 1));
+			Utils.LOG_MACHINE_INFO("Muffler Hatches: "+this.mMufflerHatches.size()+" | expected: >= 1 | "+(this.mMufflerHatches.size() >= 1));
+			Utils.LOG_MACHINE_INFO("Maint. Hatches: "+this.mMaintenanceHatches.size()+" | expected: 1 | "+(this.mMaintenanceHatches.size() != 1));
+			return false;
+		}
+		
+		
 		if ((tAmount >= 8)){
 			Utils.LOG_WARNING("Made structure.");
 		}
