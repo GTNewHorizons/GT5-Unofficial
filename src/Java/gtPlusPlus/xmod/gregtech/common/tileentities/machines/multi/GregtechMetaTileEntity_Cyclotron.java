@@ -1,5 +1,8 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
+import java.util.ArrayList;
+
+import gregtech.GT_Mod;
 import gregtech.api.enums.*;
 import gregtech.api.gui.GT_Container_MultiMachine;
 import gregtech.api.interfaces.IIconContainer;
@@ -7,6 +10,7 @@ import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Muffler;
@@ -15,19 +19,22 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockB
 import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Utility;
 import gregtech.api.util.Recipe_GT;
 import gregtech.common.gui.GT_GUIContainer_FusionReactor;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
 
-public class GregtechMetaTileEntity_Cyclotron extends GT_MetaTileEntity_MultiBlockBase {
+public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBase {
 
 	public GT_Recipe mLastRecipe;
 	public int mEUStore;
@@ -46,7 +53,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GT_MetaTileEntity_MultiBlo
 
 	@Override
 	public long maxEUStore() {
-		return Integer.MAX_VALUE;
+		return 1800000000L;
 	}
 
 	@Override
@@ -115,7 +122,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GT_MetaTileEntity_MultiBlo
 				&& (addIfInjector(xCenter - 1, yCenter - 1, zCenter - 6, aBaseMetaTileEntity)) && (addIfInjector(xCenter - 1, yCenter - 1, zCenter + 6, aBaseMetaTileEntity))
 				&& (addIfInjector(xCenter - 6, yCenter - 1, zCenter + 1, aBaseMetaTileEntity)) && (addIfInjector(xCenter + 6, yCenter - 1, zCenter + 1, aBaseMetaTileEntity))
 				&& (addIfInjector(xCenter - 6, yCenter - 1, zCenter - 1, aBaseMetaTileEntity)) && (addIfInjector(xCenter + 6, yCenter - 1, zCenter - 1, aBaseMetaTileEntity))
-				&& (this.mEnergyHatches.size() >= 1) && (this.mOutputHatches.size() >= 1) && (this.mInputHatches.size() >= 2)) {
+				&& (this.mEnergyHatches.size() >= 1) && (this.mOutputBusses.size() >= 1) && (this.mInputHatches.size() >= 2)) {
 			int mEnergyHatches_sS = this.mEnergyHatches.size();
 			for (int i = 0; i < mEnergyHatches_sS; i++) {
 				if (this.mEnergyHatches.get(i).mTier < tier()){
@@ -123,9 +130,9 @@ public class GregtechMetaTileEntity_Cyclotron extends GT_MetaTileEntity_MultiBlo
 					return false;
 				}
 			}
-			int mOutputHatches_sS = this.mOutputHatches.size();
+			int mOutputHatches_sS = this.mOutputBusses.size();
 			for (int i = 0; i < mOutputHatches_sS; i++) {
-				if (this.mOutputHatches.get(i).mTier < tier()){
+				if (this.mOutputBusses.get(i).mTier < tier()){
 					// Utils.LOG_INFO("bad output hatch");
 					return false;
 				}
@@ -143,11 +150,11 @@ public class GregtechMetaTileEntity_Cyclotron extends GT_MetaTileEntity_MultiBlo
 			mHardHammer = true;
 			mSolderingTool = true;
 			mCrowbar = true;
-			// Utils.LOG_INFO("Built Cyclotron.");
+			Utils.LOG_INFO("Built Cyclotron.");
 			turnCasingActive(true);
 			return true;
 		}    
-		// Utils.LOG_INFO("Failed building Cyclotron.");
+		Utils.LOG_INFO("Failed building Cyclotron.");
 		return false;
 	}
 
@@ -244,8 +251,8 @@ public class GregtechMetaTileEntity_Cyclotron extends GT_MetaTileEntity_MultiBlo
 				"2-16 Input Busses", 
 				"1-16 Output Busses", 
 				"1-16 Energy Hatches", 
-		"All Hatches must be IV or better",
-		CORE.GT_Tooltip};
+				"All Hatches must be IV or better",
+				CORE.GT_Tooltip};
 	}
 
 	@Override
@@ -264,28 +271,156 @@ public class GregtechMetaTileEntity_Cyclotron extends GT_MetaTileEntity_MultiBlo
 	}
 
 	public IIconContainer getIconOverlay() {
-		if (this.getBaseMetaTileEntity().isActive())
+		if (this.getBaseMetaTileEntity().isActive()){
 			return TexturesGtBlock.Overlay_Machine_Dimensional_Orange;
+		}
 		return TexturesGtBlock.Overlay_Machine_Dimensional_Blue;
 
 	}
 
-	@Override
 	public boolean isCorrectMachinePart(ItemStack aStack) {
 		return true;
 	}
 
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
+		Utils.LOG_INFO("Recipe Check.");
+		ArrayList<ItemStack> tItemList = getStoredInputs();
+		ItemStack[] tItemInputs = (ItemStack[]) tItemList.toArray(new ItemStack[tItemList.size()]);
+		ArrayList<FluidStack> tInputList = getStoredFluids();
+		FluidStack[] tFluidInputs = (FluidStack[]) tInputList.toArray(new FluidStack[tInputList.size()]);
+		long tVoltage = getMaxInputVoltage();
+		byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+
+		GT_Recipe tRecipe = Recipe_GT.Gregtech_Recipe_Map.sCyclotronRecipes.findRecipe(getBaseMetaTileEntity(), false,
+				gregtech.api.enums.GT_Values.V[tTier], tFluidInputs, tItemInputs);
+		if (tRecipe != null){
+			if (tRecipe.isRecipeInputEqual(true, tFluidInputs, tItemInputs)) {
+				
+				this.mEfficiency = (10000 - ((getIdealStatus() - getRepairStatus()) * 1000));
+				this.mEfficiencyIncrease = 10000;
+				this.mEUt = tRecipe.mEUt;
+				this.mMaxProgresstime = tRecipe.mDuration;
+				
+				while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+					this.mEUt *= 4;
+					this.mMaxProgresstime /= 2;
+				}
+				
+				if (this.mEUt > 0) {
+					this.mEUt = (-this.mEUt);
+				}
+				
+				this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+				
+				final ItemStack[] outputs = new ItemStack[tRecipe.mOutputs.length];				
+				for (int i = 0; i < tRecipe.mOutputs.length; i++){
+					if (this.getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(i)){
+						Utils.LOG_WARNING("Adding a bonus output");
+						outputs[i] = tRecipe.getOutput(i);
+					}
+					else {
+						Utils.LOG_WARNING("Adding null output");
+						outputs[i] = null;
+					}
+				}
+
+				this.mOutputItems = outputs;
+				this.mOutputFluids = new FluidStack[] {tRecipe.getFluidOutput(0)};
+				return true;
+			}
+		}		
 		return false;
 	}
 
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		if (aBaseMetaTileEntity.isServerSide()) {
-
+			if (mEfficiency < 0)
+				mEfficiency = 0;
+			if (mRunningOnLoad && checkMachine(aBaseMetaTileEntity, mInventory[1])) {
+				this.mEUStore = (int) aBaseMetaTileEntity.getStoredEU();
+				checkRecipe(mInventory[1]);
+			}
+			if (--mUpdate == 0 || --mStartUpCheck == 0) {
+				mInputHatches.clear();
+				mInputBusses.clear();
+				mOutputHatches.clear();
+				mOutputBusses.clear();
+				mDynamoHatches.clear();
+				mEnergyHatches.clear();
+				mMufflerHatches.clear();
+				mMaintenanceHatches.clear();
+				mMachine = checkMachine(aBaseMetaTileEntity, mInventory[1]);
+			}
+			if (mStartUpCheck < 0) {
+				if (mMachine) {
+					if (this.mEnergyHatches != null) {
+						for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches)
+							if (isValidMetaTileEntity(tHatch)) {
+								if (aBaseMetaTileEntity.getStoredEU() + (2048) < maxEUStore()
+										&& tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(2048, false)) {
+									aBaseMetaTileEntity.increaseStoredEnergyUnits(2048, true);
+								}
+							}
+					}
+					if (this.mEUStore <= 0 && mMaxProgresstime > 0) {
+						stopMachine();
+					}
+					if (getRepairStatus() > 0) {
+						if (mMaxProgresstime > 0 && doRandomMaintenanceDamage()) {
+							this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(mEUt, true);
+							if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
+								if (mOutputItems != null)
+									for (ItemStack tStack : mOutputItems) if (tStack != null) addOutput(tStack);
+								if (mOutputFluids != null)
+									for (FluidStack tStack : mOutputFluids) if (tStack != null) addOutput(tStack);
+								mEfficiency = Math.max(0, Math.min(mEfficiency + mEfficiencyIncrease, getMaxEfficiency(mInventory[1]) - ((getIdealStatus() - getRepairStatus()) * 1000)));
+								mOutputItems = null;
+								mProgresstime = 0;
+								mMaxProgresstime = 0;
+								mEfficiencyIncrease = 0;
+								if (mOutputFluids != null && mOutputFluids.length > 0) {
+									try {
+										GT_Mod.instance.achievements.issueAchivementHatchFluid(aBaseMetaTileEntity.getWorld().getPlayerEntityByName(aBaseMetaTileEntity.getOwnerName()), mOutputFluids[0]);
+									} catch (Exception e) {
+									}
+								}
+								this.mEUStore = (int) aBaseMetaTileEntity.getStoredEU();
+								if (aBaseMetaTileEntity.isAllowedToWork())
+									checkRecipe(mInventory[1]);
+							}
+						} else {
+							if (aTick % 100 == 0 || aBaseMetaTileEntity.hasWorkJustBeenEnabled() || aBaseMetaTileEntity.hasInventoryBeenModified()) {
+								turnCasingActive(mMaxProgresstime > 0);
+								if (aBaseMetaTileEntity.isAllowedToWork()) {
+									this.mEUStore = (int) aBaseMetaTileEntity.getStoredEU();
+									if (checkRecipe(mInventory[1])) {
+										if (this.mEUStore < this.mLastRecipe.mSpecialValue) {
+											mMaxProgresstime = 0;
+											turnCasingActive(false);
+										}
+										aBaseMetaTileEntity.decreaseStoredEnergyUnits(this.mLastRecipe.mSpecialValue, true);
+									}
+								}
+								if (mMaxProgresstime <= 0)
+									mEfficiency = Math.max(0, mEfficiency - 1000);
+							}
+						}
+					} else {
+						this.mLastRecipe = null;
+						stopMachine();
+					}
+				} else {
+					turnCasingActive(false);
+					this.mLastRecipe = null;
+					stopMachine();
+				}
+			}
+			aBaseMetaTileEntity.setErrorDisplayID((aBaseMetaTileEntity.getErrorDisplayID() & ~127) | (mWrench ? 0 : 1) | (mScrewdriver ? 0 : 2) | (mSoftHammer ? 0 : 4) | (mHardHammer ? 0 : 8)
+					| (mSolderingTool ? 0 : 16) | (mCrowbar ? 0 : 32) | (mMachine ? 0 : 64));
+			aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
 		}
-		super.onPostTick(aBaseMetaTileEntity, aTick);
 	}
 
 	@Override
@@ -304,7 +439,6 @@ public class GregtechMetaTileEntity_Cyclotron extends GT_MetaTileEntity_MultiBlo
 		return 50;
 	}
 
-	@Override
 	public int getDamageToComponent(ItemStack aStack) {
 		return 0;
 	}
@@ -315,7 +449,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GT_MetaTileEntity_MultiBlo
 
 	@Override
 	public String[] getInfoData() {
-		String tier = tier() == 6 ? "I" : "II";
+		String tier = tier() == 5 ? "I" : "II";
 		float plasmaOut = 0;
 		int powerRequired = 0;
 		if (this.mLastRecipe != null) {

@@ -330,7 +330,7 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 	
 	public boolean addCyclotronRecipe(ItemStack aInput, FluidStack aFluidInput, ItemStack[] aOutputs,
 			FluidStack aFluidOutput, int[] aChances, int aDuration, int aEUt, int aSpecialValue) {
-		if ((aInput == null) || (aOutputs == null) || (aFluidInput == null)) {
+		if (aOutputs == null) {
 			return false;
 		}
 		for (ItemStack tStack : aOutputs) {

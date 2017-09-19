@@ -158,7 +158,7 @@ extends GT_MetaTileEntity_MultiBlockBase
 	@Override
 	public int getPollutionPerTick(ItemStack aStack)
 	{
-		return 0;
+		return 32;
 	}
 
 	public int getAmountOfOutputs()

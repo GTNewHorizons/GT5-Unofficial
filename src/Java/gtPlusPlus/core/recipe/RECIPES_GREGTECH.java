@@ -761,7 +761,7 @@ public class RECIPES_GREGTECH {
 	
 	private static void cyclotronRecipes() {
 		CORE.RA.addCyclotronRecipe(
-				null,
+				CI.getNumberedCircuit(0),
 				FluidUtils.getFluidStack("molten.bismuth", 1),
 				new ItemStack[]{GregtechItemList.Pellet_RTG_PO210.get(1)},
 				null,
