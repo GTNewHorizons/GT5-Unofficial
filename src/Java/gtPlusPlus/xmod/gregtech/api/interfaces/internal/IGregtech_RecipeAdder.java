@@ -103,5 +103,8 @@ public interface IGregtech_RecipeAdder {
 			FluidStack aInput7, FluidStack aInput8, FluidStack aInput9,
 			FluidStack aOutput1, FluidStack aOutput2,
 			int aDuration, int aEUt);
+	
+	public boolean addCyclotronRecipe(ItemStack aInput, FluidStack aFluidInput, ItemStack[] aOutputs,
+			FluidStack aFluidOutput, int[] aChances, int aDuration, int aEUt, int aSpecialValue);
 
 }

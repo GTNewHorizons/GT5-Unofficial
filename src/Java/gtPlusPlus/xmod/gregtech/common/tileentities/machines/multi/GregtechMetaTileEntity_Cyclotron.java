@@ -18,6 +18,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.Recipe_GT;
 import gregtech.common.gui.GT_GUIContainer_FusionReactor;
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
@@ -40,7 +41,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GT_MetaTileEntity_MultiBlo
 	}
 
 	public int tier(){
-		return 6;
+		return 5;
 	}
 
 	@Override
@@ -240,10 +241,11 @@ public class GregtechMetaTileEntity_Cyclotron extends GT_MetaTileEntity_MultiBlo
 				"------------------------------------------------------------",
 				"Consists of the same layout as a Fusion Reactor",
 				"Cyclotron Machine Casings around Cyclotron Coil Blocks", 
-				"2-16 Input Hatches", 
-				"1-16 Output Hatches", 
+				"2-16 Input Busses", 
+				"1-16 Output Busses", 
 				"1-16 Energy Hatches", 
-		"All Hatches must be LuV or better"};
+		"All Hatches must be IV or better",
+		CORE.GT_Tooltip};
 	}
 
 	@Override
@@ -263,8 +265,8 @@ public class GregtechMetaTileEntity_Cyclotron extends GT_MetaTileEntity_MultiBlo
 
 	public IIconContainer getIconOverlay() {
 		if (this.getBaseMetaTileEntity().isActive())
-			return TexturesGtBlock.Overlay_MatterFab_Active;
-		return TexturesGtBlock.Overlay_MatterFab;
+			return TexturesGtBlock.Overlay_Machine_Dimensional_Orange;
+		return TexturesGtBlock.Overlay_Machine_Dimensional_Blue;
 
 	}
 

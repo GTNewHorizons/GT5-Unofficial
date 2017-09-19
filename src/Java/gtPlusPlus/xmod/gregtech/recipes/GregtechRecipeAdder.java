@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.recipes;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.util.CustomRecipeMap;
+import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
@@ -325,6 +326,25 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		//Recipe_GT.Gregtech_Recipe_Map.sFissionFuelProcessing.addRecipe(null, inputs, outputs, aDuration, aEUt, 0);
 		CustomRecipeMap.sFissionFuelProcessing.addRecipe(null, inputs, outputs, aDuration, aEUt, 0);
 		return true;
+	}
+	
+	public boolean addCyclotronRecipe(ItemStack aInput, FluidStack aFluidInput, ItemStack[] aOutputs,
+			FluidStack aFluidOutput, int[] aChances, int aDuration, int aEUt, int aSpecialValue) {
+		if ((aInput == null) || (aOutputs == null) || (aFluidInput == null)) {
+			return false;
+		}
+		for (ItemStack tStack : aOutputs) {
+			if (tStack != null) {
+				if ((aDuration = GregTech_API.sRecipeFile.get("cyclotron", aInput, aDuration)) <= 0) {
+					return false;
+				}
+				Recipe_GT.Gregtech_Recipe_Map.sCyclotronRecipes.addRecipe(true, new ItemStack[] { aInput }, aOutputs,
+						null, aChances, new FluidStack[] { aFluidInput }, new FluidStack[] { aFluidOutput },
+						Math.max(1, aDuration), Math.max(1, aEUt), aSpecialValue);
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

@@ -46,8 +46,9 @@ public class RECIPES_GREGTECH {
 		macerationRecipes();
 		centrifugeRecipes();
 		benderRecipes();
+		cyclotronRecipes();
 		addFuels();
-	}
+	}	
 
 	private static void cokeOvenRecipes(){
 		Utils.LOG_INFO("Loading Recipes for Industrial Coking Oven.");
@@ -756,6 +757,18 @@ public class RECIPES_GREGTECH {
 					2);
 		}
 		return true;
+	}
+	
+	private static void cyclotronRecipes() {
+		CORE.RA.addCyclotronRecipe(
+				null,
+				FluidUtils.getFluidStack("molten.bismuth", 1),
+				new ItemStack[]{GregtechItemList.Pellet_RTG_PO210.get(1)},
+				null,
+				new int[]{100}, 
+				20*300, 
+				2040, 
+				500*20);		
 	}
 
 }
