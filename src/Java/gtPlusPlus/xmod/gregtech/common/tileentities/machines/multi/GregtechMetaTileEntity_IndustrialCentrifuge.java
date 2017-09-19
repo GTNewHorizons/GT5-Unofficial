@@ -57,7 +57,7 @@ extends GregtechMeta_MultiBlockBase {
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Industrial Centrifuge",
-				"40% faster than using single block machines of the same voltage",
+				"50% faster than using single block machines of the same voltage",
 				"Size: 3x3x3 (Hollow)",
 				"Controller (Front Center) [Orange]",
 				"1x Maintenance Hatch (Rear Center) [Green]",
@@ -99,123 +99,90 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
-		/*if (!isCorrectMachinePart(mInventory[1])) {
-			return false;
-		}*/
-
-		Utils.LOG_WARNING("Centrifuge Debug - 1");
-		final GT_Recipe.GT_Recipe_Map map = this.getRecipeMap();
-		if (map == null) {
-			Utils.LOG_WARNING("Centrifuge Debug - False - No recipe map");
-			return false;
-		}
-		Utils.LOG_WARNING("Centrifuge Debug - 2");
-		final ArrayList<ItemStack> tInputList = this.getStoredInputs();
-		final long tVoltage = this.getMaxInputVoltage();
-		final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-		Utils.LOG_WARNING("Centrifuge Debug - Tier variable: "+tTier);
-		final ItemStack[] tInputs = tInputList.toArray(new ItemStack[tInputList.size()]);
-		final ArrayList<FluidStack> tFluidList = this.getStoredFluids();
-		final FluidStack[] tFluids = tFluidList.toArray(new FluidStack[tFluidList.size()]);
-		if ((tInputList.size() > 0) || (tFluids.length > 0)) {
-			GT_Recipe tRecipe = map.findRecipe(this.getBaseMetaTileEntity(), this.mLastRecipe, false, gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
-			tRecipe = this.reduceRecipeTimeByPercentage(tRecipe, 40F);
-			if (tRecipe != null) {
-				Utils.LOG_WARNING("Recipe was not invalid");
-				this.mLastRecipe = tRecipe;
-				this.mEUt = 0;
-				this.mOutputItems = null;
-				this.mOutputFluids = null;
-				if (!tRecipe.isRecipeInputEqual(true, tFluids, tInputs)) {
-
-					Utils.LOG_WARNING("False: 1");
-					return false;
+		ArrayList tInputList = getStoredInputs();
+		int tInputList_sS = tInputList.size();
+		for (int i = 0; i < tInputList_sS - 1; ++i) {
+			for (int j = i + 1; j < tInputList_sS; ++j) {
+				if (GT_Utility.areStacksEqual((ItemStack) tInputList.get(i), (ItemStack) tInputList.get(j))) {
+					if (((ItemStack) tInputList.get(i)).stackSize >= ((ItemStack) tInputList.get(j)).stackSize) {
+						tInputList.remove(j--);
+						tInputList_sS = tInputList.size();
+					} else {
+						tInputList.remove(i--);
+						tInputList_sS = tInputList.size();
+						break;
+					}
 				}
+			}
+		}
+		ItemStack[] tInputs = (ItemStack[]) tInputList.toArray(new ItemStack[tInputList.size()]);
 
-				this.mMaxProgresstime = tRecipe.mDuration;
-				this.mEfficiency = (10000 - ((this.getIdealStatus() - this.getRepairStatus()) * 1000));
+		ArrayList tFluidList = getStoredFluids();
+		int tFluidList_sS = tFluidList.size();
+		for (int i = 0; i < tFluidList_sS - 1; ++i) {
+			for (int j = i + 1; j < tFluidList_sS; ++j) {
+				if (GT_Utility.areFluidsEqual((FluidStack) tFluidList.get(i), (FluidStack) tFluidList.get(j))) {
+					if (((FluidStack) tFluidList.get(i)).amount >= ((FluidStack) tFluidList.get(j)).amount) {
+						tFluidList.remove(j--);
+						tFluidList_sS = tFluidList.size();
+					} else {
+						tFluidList.remove(i--);
+						tFluidList_sS = tFluidList.size();
+						break;
+					}
+				}
+			}
+		}
+		FluidStack[] tFluids = (FluidStack[]) tFluidList.toArray(new FluidStack[tFluidList.size()]);
+		if (tInputList.size() > 0) {
+			long tVoltage = getMaxInputVoltage();
+			byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+			GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes.findRecipe(getBaseMetaTileEntity(), false,
+					gregtech.api.enums.GT_Values.V[tTier], tFluids, tInputs);
+			tRecipe = this.reduceRecipeTimeByPercentage(tRecipe, 50F);			
+			if ((tRecipe != null) && (tRecipe.isRecipeInputEqual(true, tFluids, tInputs))) {
+				this.mEfficiency = (10000 - ((getIdealStatus() - getRepairStatus()) * 1000));
 				this.mEfficiencyIncrease = 10000;
-				Utils.LOG_WARNING("Centrifuge Debug - 2 - Max Progress Time: "+this.mMaxProgresstime);
+				int tHeatCapacityDivTiers = (tRecipe.mSpecialValue) + 2;
 				if (tRecipe.mEUt <= 16) {
-					Utils.LOG_WARNING("Centrifuge Debug - Using < 16eu/t");
-					this.mEUt = (tRecipe.mEUt * (1 << (tTier - 1)) * (1 << (tTier - 1)));
-					this.mMaxProgresstime = (tRecipe.mDuration / (1 << (tTier - 1)));
-					Utils.LOG_WARNING("Centrifuge Debug - 3.1 - Max Progress Time: "+this.mMaxProgresstime+" EU/t"+this.mEUt + " Obscure GT Value "+gregtech.api.enums.GT_Values.V[(tTier - 1)]);
+					this.mEUt = (tRecipe.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
+					this.mMaxProgresstime = (tRecipe.mDuration / (1 << tTier - 1));
 				} else {
-					Utils.LOG_WARNING("Centrifuge Debug - using > 16eu/t");
 					this.mEUt = tRecipe.mEUt;
 					this.mMaxProgresstime = tRecipe.mDuration;
-					Utils.LOG_WARNING("Centrifuge Debug - 3.2 - Max Progress Time: "+this.mMaxProgresstime+" EU/t"+this.mEUt + " Obscure GT Value "+gregtech.api.enums.GT_Values.V[(tTier - 1)]);
+					int i = 2;
 					while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
 						this.mEUt *= 4;
-						this.mMaxProgresstime /= 2;
-						Utils.LOG_WARNING("Centrifuge Debug - 4 - Max Progress Time: "+this.mMaxProgresstime+" EU/t"+this.mEUt);
+						this.mMaxProgresstime /= ((tHeatCapacityDivTiers >= i) ? 4 : 2);
+						i += 2;
 					}
 				}
-				this.mEUt *= 1;
+				if (tHeatCapacityDivTiers > 0)
+					this.mEUt = (int) (this.mEUt * Math.pow(0.95D, tHeatCapacityDivTiers));
 				if (this.mEUt > 0) {
 					this.mEUt = (-this.mEUt);
-					Utils.LOG_WARNING("Centrifuge Debug - 5 - Max Progress Time: "+this.mMaxProgresstime+" EU/t"+this.mEUt);
-				}
-				ItemStack[] tOut = new ItemStack[tRecipe.mOutputs.length];
-				for (int h = 0; h < tRecipe.mOutputs.length; h++) {
-					tOut[h] = tRecipe.getOutput(h).copy();
-					tOut[h].stackSize = 0;
-				}
-				FluidStack tFOut = null;
-				if (tRecipe.getFluidOutput(0) != null) {
-					tFOut = tRecipe.getFluidOutput(0).copy();
-				}
-				for (int f = 0; f < tOut.length; f++) {
-					if ((tRecipe.mOutputs[f] != null) && (tOut[f] != null)) {
-						for (int g = 0; g < 1; g++) {
-							if (this.getBaseMetaTileEntity().getRandomNumber(10000) < tRecipe.getOutputChance(f)) {
-								tOut[f].stackSize += tRecipe.mOutputs[f].stackSize;
-							}
-						}
-					}
-				}
-				if (tFOut != null) {
-					final int tSize = tFOut.amount;
-					tFOut.amount = tSize * 6;
 				}
 				this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-				this.mMaxProgresstime /= 4;
-				if (this.mMaxProgresstime <= 0){
-					this.mMaxProgresstime++;
-				}
-				Utils.LOG_WARNING("Centrifuge Debug - 6 - Max Progress Time: "+this.mMaxProgresstime+" EU/t"+this.mEUt);
-				final List<ItemStack> overStacks = new ArrayList<>();
-				for (int f = 0; f < tOut.length; f++) {
-					if (tOut[f].getMaxStackSize() < tOut[f].stackSize) {
-						while (tOut[f].getMaxStackSize() < tOut[f].stackSize) {
-							final ItemStack tmp = tOut[f].copy();
-							tmp.stackSize = tmp.getMaxStackSize();
-							tOut[f].stackSize = tOut[f].stackSize - tOut[f].getMaxStackSize();
-							overStacks.add(tmp);
-						}
+				
+				ItemStack mNewOutputs[] = new ItemStack[tRecipe.mOutputs.length];
+				
+				for (int i = 0; i < tRecipe.mOutputs.length; i++){
+					if (this.getBaseMetaTileEntity().getRandomNumber(7500) < tRecipe.getOutputChance(i)){
+						//Utils.LOG_INFO("Adding a bonus output | "+tRecipe.getOutputChance(i));
+						mNewOutputs[i] = tRecipe.getOutput(i);
+					}
+					else {
+						//Utils.LOG_INFO("Adding null output");
+						mNewOutputs[i] = null;
 					}
 				}
-				if (overStacks.size() > 0) {
-					ItemStack[] tmp = new ItemStack[overStacks.size()];
-					tmp = overStacks.toArray(tmp);
-					tOut = ArrayUtils.addAll(tOut, tmp);
-				}
-				final List<ItemStack> tSList = new ArrayList<>();
-				for (final ItemStack tS : tOut) {
-					if (tS.stackSize > 0) {
-						tSList.add(tS);
-					}
-				}
-				tOut = tSList.toArray(new ItemStack[tSList.size()]);
-				this.mOutputItems = tOut;
-				this.mOutputFluids = new FluidStack[]{tFOut};
-				this.updateSlots();
-				Utils.LOG_WARNING("Centrifuge: True");
+				
+				this.mOutputItems = mNewOutputs;
+				this.mOutputFluids = new FluidStack[] { tRecipe.getFluidOutput(0) };
+				updateSlots();
 				return true;
 			}
 		}
-		Utils.LOG_WARNING("Centrifuge: Recipe was invalid.");
 		return false;
 	}
 

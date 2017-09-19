@@ -43,7 +43,7 @@ extends GregtechMeta_MultiBlockBase {
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Industrial Thermal Centrifuge",
-				"40% faster than using single block machines of the same voltage",
+				"60% faster than using single block machines of the same voltage",
 				"Size: 3x2x3 [WxLxH] (Hollow)", "Controller (front centered)",
 				"1x Input Bus (Any casing)",
 				"1x Output Bus (Any casing)",
@@ -88,7 +88,7 @@ extends GregtechMeta_MultiBlockBase {
 			final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
 			GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], null, new ItemStack[]{tInput});
-			tRecipe = this.reduceRecipeTimeByPercentage(tRecipe, 40F);
+			tRecipe = this.reduceRecipeTimeByPercentage(tRecipe, 60F);
 			if (tRecipe != null) {
 
 				final int tValidOutputSlots = this.getValidOutputSlots(this.getBaseMetaTileEntity(), tRecipe, new ItemStack[]{tInput});
@@ -114,7 +114,16 @@ extends GregtechMeta_MultiBlockBase {
 							this.mEUt = (-this.mEUt);
 						}
 						this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-						this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0)};
+						
+						ItemStack mNewOutputs[] = new ItemStack[16];
+						
+
+						
+						for (int f=0;f<tRecipe.mOutputs.length;f++){
+							mNewOutputs[f] = tRecipe.getOutput(f);
+						}
+						
+						this.mOutputItems = mNewOutputs;
 						this.updateSlots();
 						return true;
 					}
