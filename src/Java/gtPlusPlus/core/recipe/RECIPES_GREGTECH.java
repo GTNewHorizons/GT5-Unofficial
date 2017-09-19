@@ -647,11 +647,11 @@ public class RECIPES_GREGTECH {
 				8*20);
 		//Ammonia
 		GT_Values.RA.addChemicalRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogen", 3),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustMagnetite", 0),
 				FluidUtils.getFluidStack("nitrogen", 1000),
-				FluidUtils.getFluidStack("ammonia", 2000),
-				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1),
+				FluidUtils.getFluidStack("ammonia", 1000),
+				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 3),
 				14*20);
 		//Ammonium
 		GT_Values.RA.addChemicalRecipe(
