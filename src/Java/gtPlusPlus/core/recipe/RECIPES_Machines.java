@@ -1,6 +1,7 @@
 package gtPlusPlus.core.recipe;
 
 import gregtech.api.enums.*;
+import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
@@ -1009,6 +1010,26 @@ public class RECIPES_Machines {
 						"plateTalonite",GregtechItemList.Casing_WashPlant.get(1),"plateTalonite",
 						"plateGrisium","circuitData","plateGrisium",
 						GregtechItemList.Industrial_WashPlant.get(1));
+			}
+			
+			if (CORE.configSwitches.enableMultiblock_LargeAutoCrafter){
+				RecipeUtils.recipeBuilder(
+						"plateStainlessSteel", CI.craftingToolHammer_Hard, "plateStainlessSteel",
+						"plateStellite", "frameGtStainlessSteel", "plateStellite",
+						"plateStainlessSteel", CI.craftingToolWrench, "plateStainlessSteel",
+						GregtechItemList.Casing_Autocrafter.get(2));
+
+				RecipeUtils.recipeBuilder( 
+						"plateStainlessSteel",CI.sensor_EV,"plateStainlessSteel",
+						GregtechItemList.Circuit_Parts_Wiring_ZPM.get(1),GregtechItemList.Gregtech_Computer_Cube.get(1),GregtechItemList.Circuit_Parts_Wiring_ZPM.get(1),
+						"plateStainlessSteel",CI.emitter_EV,"plateStainlessSteel",
+						GregtechItemList.Casing_Autocrafter.get(1));
+				
+				RecipeUtils.recipeBuilder( 
+						"plateStainlessSteel",CI.craftingToolSolderingIron,"plateStainlessSteel",
+						CI.robotArm_ULV, ItemList.Casing_SolidSteel.get(1), CI.robotArm_ULV,
+						"plateStainlessSteel",CI.emitter_ULV,"plateStainlessSteel",
+						ItemUtils.getSimpleStack(ModBlocks.blockProjectTable));
 			}
 
 

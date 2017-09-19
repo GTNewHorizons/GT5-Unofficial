@@ -159,6 +159,8 @@ public class GTplusplus implements ActionListener {
 				"Refines molten chemicals into nuclear fuels.");
 		CORE.configSwitches.enableMultiblock_IndustrialSifter = config.getBoolean("enableMultiblock_IndustrialSifter",
 				"gregtech", true, "Large scale sifting.");
+		CORE.configSwitches.enableMultiblock_LargeAutoCrafter = config.getBoolean("enableMultiblock_LargeAutoCrafter",
+				"gregtech", true, "Can Assemble, Disassemble and Craft Project data from Data Sticks.");
 		CORE.configSwitches.enableMultiblock_IndustrialThermalCentrifuge = config.getBoolean("enableMultiblock_IndustrialThermalCentrifuge",
 				"gregtech", true, "Your warm spin for the ore thing.");
 		CORE.configSwitches.enableMultiblock_IndustrialWashPlant = config.getBoolean("enableMultiblock_IndustrialWashPlant",
