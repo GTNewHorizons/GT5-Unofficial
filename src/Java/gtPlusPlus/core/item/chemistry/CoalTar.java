@@ -5,6 +5,7 @@ import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
@@ -206,37 +207,33 @@ public class CoalTar {
 		//Create Coal Tar Oil
 		//FluidUtils.generateFluidNonMolten("CoalTarOil", "Coal Tar Oil", 240, new short[]{240, 240, 150, 100}, null, null);
 		GT_Values.RA.addDistilleryRecipe(
-				1, //Circuit
+				CI.getNumberedCircuit(1), //Circuit
 				FluidUtils.getFluidStack("fluid.coaltar", 1000), //aInput
 				FluidUtils.getFluidStack("fluid.coaltaroil", 600), //aOutput
-				null, //aSolidOutput
 				600, //aDuration
 				64,//aEUt
 				false //Hidden?
 				);	
 		GT_Values.RA.addDistilleryRecipe(
-				2, //Circuit
+				CI.getNumberedCircuit(2), //Circuit
 				FluidUtils.getFluidStack("fluid.coaltar", 1000), //aInput
 				FluidUtils.getFluidStack("liquid_naphtha", 150), //aOutput
-				null, //aSolidOutput
 				300, //aDuration
 				30,//aEUt
 				false //Hidden?
 				);
 		GT_Values.RA.addDistilleryRecipe(
-				3, //Circuit
+				CI.getNumberedCircuit(3), //Circuit
 				FluidUtils.getFluidStack("fluid.coaltar", 1000), //aInput
 				FluidUtils.getFluidStack("fluid.ethylbenzene", 200), //aOutput
-				null, //aSolidOutput
 				450, //aDuration
 				86,//aEUt
 				false //Hidden?
 				);
 		GT_Values.RA.addDistilleryRecipe(
-				4, //Circuit
+				CI.getNumberedCircuit(4), //Circuit
 				FluidUtils.getFluidStack("fluid.coaltar", 1000), //aInput
 				FluidUtils.getFluidStack("fluid.anthracene", 50), //aOutput
-				null, //aSolidOutput
 				900, //aDuration
 				30,//aEUt
 				false //Hidden?
@@ -265,10 +262,9 @@ public class CoalTar {
 				ItemUtils.getItemStackOfAmountFromOreDict("cellSulfuricCoalTarOil", 16),
 				20*16);
 		GT_Values.RA.addDistilleryRecipe(
-				5, //Circuit
+				CI.getNumberedCircuit(6), //Circuit
 				FluidUtils.getFluidStack("fluid.sulfuriccoaltaroil", 1000), //aInput
 				FluidUtils.getFluidStack("fluid.naphthalene", 1000), //aOutput
-				null, //aSolidOutput
 				1200, //aDuration
 				30,//aEUt
 				false //Hidden?
