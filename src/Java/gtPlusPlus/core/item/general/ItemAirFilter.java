@@ -61,7 +61,6 @@ public class ItemAirFilter extends Item {
 			suffixName = " [Tier 2]";
 		}
 		return (itemName+suffixName);
-		
 	}
 
 	@Override
