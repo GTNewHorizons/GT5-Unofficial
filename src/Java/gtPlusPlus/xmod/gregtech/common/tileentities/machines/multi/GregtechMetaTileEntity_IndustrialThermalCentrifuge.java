@@ -152,7 +152,7 @@ extends GregtechMeta_MultiBlockBase {
 							byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
 							if ((((tBlock != ModBlocks.blockCasings2Misc) || (tMeta != 0)))
 									&& (((tBlock != GregTech_API.sBlockCasings3) || (tMeta != 9)))) {
-								Utils.LOG_INFO("Wrong Block?");
+								Utils.LOG_WARNING("Wrong Block?");
 								return false;
 							}
 							++tAmount;
@@ -161,7 +161,7 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 		}
-		Utils.LOG_INFO("Trying to assemble structure. Completed? "+(tAmount >= 8));
+		Utils.LOG_WARNING("Trying to assemble structure. Completed? "+(tAmount >= 8));
 		return (tAmount >= 8);
 	}
 

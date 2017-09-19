@@ -97,7 +97,7 @@ extends GregtechMeta_MultiBlockBase {
 	public boolean checkRecipe(final ItemStack aStack) {
 
 		if (!checkForWater()){
-			Utils.LOG_INFO("Did not find enough cleaning solution.");
+			Utils.LOG_WARNING("Did not find enough cleaning solution.");
 			return false;
 		}
 
@@ -135,7 +135,7 @@ extends GregtechMeta_MultiBlockBase {
 						//this.mOutputItems = new ItemStack[] { tRecipe.getOutput(0) };
 						ItemStack mNewOutputs[] = new ItemStack[tRecipe.mOutputs.length];
 						for (int f=0;f<tRecipe.mOutputs.length;f++){
-							Utils.LOG_INFO("Step 5 - Adding Output");
+							Utils.LOG_WARNING("Step 5 - Adding Output");
 							mNewOutputs[f] = tRecipe.mOutputs[f].copy();
 						}
 						this.mOutputItems = mNewOutputs;
@@ -145,7 +145,7 @@ extends GregtechMeta_MultiBlockBase {
 						//this.mOutputFluids = new FluidStack[] { tRecipe.getFluidOutput(0) };
 						FluidStack outputFluids[] = new FluidStack[1];						
 						if (true){
-							Utils.LOG_INFO("Adding Sludge");
+							Utils.LOG_WARNING("Adding Sludge");
 							outputFluids[0] = FluidUtils.getFluidStack("fluid.sludge", 100);
 						}						
 						this.mOutputFluids = outputFluids;
@@ -340,7 +340,7 @@ extends GregtechMeta_MultiBlockBase {
 											for (FluidStack stored : this.getStoredFluids()){
 												if (stored.isFluidEqual(FluidUtils.getFluidStack("water", 1))){
 													if (stored.amount >= 1000){
-														//Utils.LOG_INFO("Going to try swap an air block for water from inut bus.");
+														//Utils.LOG_WARNING("Going to try swap an air block for water from inut bus.");
 														stored.amount -= 1000;
 														Block fluidUsed = null;
 														if (tBlock == Blocks.air || tBlock == Blocks.flowing_water){
@@ -360,12 +360,12 @@ extends GregtechMeta_MultiBlockBase {
 									}
 									if (tBlock == Blocks.water){
 										++tAmount;
-										//Utils.LOG_INFO("Found Water");
+										//Utils.LOG_WARNING("Found Water");
 									}
 									else if (tBlock == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)){
 										++tAmount;
 										++tAmount;
-										//Utils.LOG_INFO("Found Distilled Water");										
+										//Utils.LOG_WARNING("Found Distilled Water");										
 									}
 								}
 								else {

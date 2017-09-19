@@ -179,12 +179,12 @@ extends GT_MetaTileEntity_MultiBlockBase
 						final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
 						if (!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(28))) {
 							if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h,	zDir + j) != ModBlocks.blockCasings2Misc) {
-								Utils.LOG_INFO("Bad Block. Found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h,	zDir + j) .getLocalizedName());
-								Utils.LOG_INFO("Block Found at x:"+(aBaseMetaTileEntity.getXCoord()+xDir+i)+" | y:"+(aBaseMetaTileEntity.getYCoord()+h)+" | z:"+(aBaseMetaTileEntity.getZCoord()+zDir+j));
+								Utils.LOG_WARNING("Bad Block. Found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h,	zDir + j) .getLocalizedName());
+								Utils.LOG_WARNING("Block Found at x:"+(aBaseMetaTileEntity.getXCoord()+xDir+i)+" | y:"+(aBaseMetaTileEntity.getYCoord()+h)+" | z:"+(aBaseMetaTileEntity.getZCoord()+zDir+j));
 								return false;
 							}
 							if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 12) {
-								Utils.LOG_INFO("Bad Meta.");
+								Utils.LOG_WARNING("Bad Meta.");
 								return false;
 							}
 							++tAmount;
@@ -198,8 +198,8 @@ extends GT_MetaTileEntity_MultiBlockBase
 				(this.mInputBusses.size() == 0) || (this.mOutputBusses.size() == 0) || 
 				(this.mMufflerHatches.size() != 1) || (this.mMaintenanceHatches.size() != 1) ||
 				(this.mEnergyHatches.size() == 0)){
-			Utils.LOG_INFO("Wrong Hatch count.");
-			Utils.LOG_INFO("|"+this.mInputHatches.size()+
+			Utils.LOG_WARNING("Wrong Hatch count.");
+			Utils.LOG_WARNING("|"+this.mInputHatches.size()+
 					"|"+this.mOutputHatches.size()+
 					"|"+this.mInputBusses.size()+
 					"|"+this.mOutputBusses.size()+
@@ -395,7 +395,7 @@ extends GT_MetaTileEntity_MultiBlockBase
 		}
 		//Return if no input hatch set.
 		if (craftingInput == null){
-			Utils.LOG_INFO("Cannot do Auto-Crafting without a 9-slot Input Bus [MV].");
+			Utils.LOG_WARNING("Cannot do Auto-Crafting without a 9-slot Input Bus [MV].");
 			return false;
 
 		}
@@ -420,11 +420,11 @@ extends GT_MetaTileEntity_MultiBlockBase
 					int number = 0;
 					for (ItemStack a : storedData_Input){
 						if (a.getItem() == ModItems.ZZZ_Empty){
-							//Utils.LOG_INFO("Allocating free memory into crafting manager slot "+number+".");
+							//Utils.LOG_WARNING("Allocating free memory into crafting manager slot "+number+".");
 							loadedData[number] = null;
 						}
 						else {
-							//Utils.LOG_INFO("Downloading "+a.getDisplayName()+" into crafting manager slot "+number+".");
+							//Utils.LOG_WARNING("Downloading "+a.getDisplayName()+" into crafting manager slot "+number+".");
 							loadedData[number] = a;
 						}
 						number++;
@@ -459,7 +459,7 @@ extends GT_MetaTileEntity_MultiBlockBase
 						this.mEUt = 8 * (1 << this.mTier - 1) * (1 << this.mTier - 1);
 						this.mMaxProgresstime = MathUtils.roundToClosestInt((50-(5*MathUtils.randDouble(((this.mTier-2) <= 0 ? 1 : (this.mTier-2)), this.mTier))));
 
-						Utils.LOG_INFO("MPT: "+mMaxProgresstime+" | "+mEUt);
+						Utils.LOG_WARNING("MPT: "+mMaxProgresstime+" | "+mEUt);
 						this.getBaseMetaTileEntity().setActive(true);
 
 						//Setup some vars
@@ -475,7 +475,7 @@ extends GT_MetaTileEntity_MultiBlockBase
 								}
 								for (ItemStack r : allInputs){
 									if (r != null){
-										//Utils.LOG_INFO("Input Bus Inventory Iteration - Found:" +r.getDisplayName()+" | "+allInputs.length);		
+										//Utils.LOG_WARNING("Input Bus Inventory Iteration - Found:" +r.getDisplayName()+" | "+allInputs.length);		
 										if (GT_Utility.areStacksEqual(r, inputItem)){
 											if (this.getBaseMetaTileEntity().isServerSide()){							
 												toUse[counter] = inputItem;
@@ -495,7 +495,7 @@ extends GT_MetaTileEntity_MultiBlockBase
 								mCorrectInputs++;
 							}
 							else {
-								Utils.LOG_INFO("Input in Slot "+mCorrectInputs+" was not valid.");
+								Utils.LOG_WARNING("Input in Slot "+mCorrectInputs+" was not valid.");
 							}
 						}
 

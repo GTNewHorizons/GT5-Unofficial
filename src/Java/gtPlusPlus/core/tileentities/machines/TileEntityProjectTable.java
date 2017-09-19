@@ -127,7 +127,7 @@ public class TileEntityProjectTable extends TileEntity implements INetworkDataPr
 		//Data stick
 		ItemStack dataStick = this.inventoryOutputs.getStackInSlot(0);
 		if (dataStick != null && this.container != null){
-			Utils.LOG_INFO("Found Data Stick and valid container.");
+			Utils.LOG_WARNING("Found Data Stick and valid container.");
 			
 			
 			ItemStack outputComponent = container.getOutputContent();
@@ -138,17 +138,17 @@ public class TileEntityProjectTable extends TileEntity implements INetworkDataPr
 			newStick = NBTUtils.writeItemsToNBT(newStick, craftInputComponent);
 			NBTUtils.setBookTitle(newStick, "Encrypted Project Data");
 			int slotm=0;
-			Utils.LOG_INFO("Uploading to Data Stick.");
+			Utils.LOG_WARNING("Uploading to Data Stick.");
 			for (ItemStack is : NBTUtils.readItemsFromNBT(newStick)){
 				if (is != null){
-					Utils.LOG_INFO("Uploaded "+is.getDisplayName()+" into memory slot "+slotm+".");
+					Utils.LOG_WARNING("Uploaded "+is.getDisplayName()+" into memory slot "+slotm+".");
 				}
 				else {					
-					Utils.LOG_INFO("Left memory slot "+slotm+" blank.");
+					Utils.LOG_WARNING("Left memory slot "+slotm+" blank.");
 				}
 				slotm++;
 			}
-			Utils.LOG_INFO("Encrypting Data Stick.");
+			Utils.LOG_WARNING("Encrypting Data Stick.");
 			this.inventoryOutputs.setInventorySlotContents(1, newStick);
 			this.inventoryOutputs.setInventorySlotContents(0, null);
 		}		
