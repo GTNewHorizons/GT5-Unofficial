@@ -63,14 +63,17 @@ public class ItemAreaClear extends CoreItem {
 		for (int j=0; j<10; j++){
 			for (int i=0; i<25; i++){
 				if (!world.isAirBlock(pos.xPos+i, pos.yPos+j, pos.zPos) &&
-						world.getBlock(pos.xPos+i, pos.yPos+j, pos.zPos) != Blocks.bedrock &&
-						world.getBlock(pos.xPos+i, pos.yPos+j, pos.zPos) != Blocks.glowstone){
+						world.getBlock(pos.xPos+i, pos.yPos+j, pos.zPos) != Blocks.bedrock){
 					int chance = MathUtils.randInt(0, 100);
 					if (chance <= 0){
-						world.setBlock(pos.xPos+i, pos.yPos+j, pos.zPos, Blocks.glowstone);						
+						if (pos.yPos+j <= 50){
+							world.setBlock(pos.xPos+i, pos.yPos+j, pos.zPos, Blocks.glowstone);	
+						}
 					}
 					else {
-						world.setBlock(pos.xPos+i, pos.yPos+j, pos.zPos, Blocks.air);
+						if ((world.getBlock(pos.xPos+i, pos.yPos+j, pos.zPos) == Blocks.glowstone && ((pos.yPos+j) > 50)) || world.getBlock(pos.xPos+i, pos.yPos+j, pos.zPos) != Blocks.glowstone){
+							world.setBlock(pos.xPos+i, pos.yPos+j, pos.zPos, Blocks.air);
+						}
 					}
 				}
 			}
