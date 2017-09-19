@@ -262,6 +262,9 @@ public class Recipe_GT extends GT_Recipe{
 				"Thermal Generator Fuel", null, "gregtech:textures/gui/basicmachines/Default", 1, 1, 0, 0, 1,
 				"Fuel Value: ", 1000, " EU", true, false);
 		
+		//Cyclotron recipe map
+		public static final GT_Recipe_Map sCyclotronRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(200), "gt.recipe.cyclotron", "COMET - Compact Cyclotron", null, RES_PATH_GUI + "basicmachines/BlastSmelter", 1, 1, 1, 0, 1, E, 1, E, true, true);
+
 		
 		/**
 		 * HashMap of Recipes based on their Items

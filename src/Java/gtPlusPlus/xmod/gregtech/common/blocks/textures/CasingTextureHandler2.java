@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.blocks.textures;
 
+import gregtech.api.enums.Textures;
 import net.minecraft.util.IIcon;
 
 public class CasingTextureHandler2 {
@@ -40,7 +41,7 @@ public class CasingTextureHandler2 {
 				return TexturesGtBlock.Overlay_Machine_Cyber_A.getIcon();
 				//Cyclotron External Casing
 			case 10:
-				return TexturesGtBlock.Casing_Material_HastelloyX.getIcon();
+				return Textures.BlockIcons.MACHINE_CASING_RADIATIONPROOF.getIcon();
 				//Multitank Exterior Casing
 			case 11:
 				return TexturesGtBlock.Casing_Material_Tantalloy61.getIcon();
