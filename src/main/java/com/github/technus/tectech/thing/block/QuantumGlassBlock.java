@@ -10,6 +10,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 
 import static com.github.technus.tectech.auxiliary.Reference.MODID;
 
@@ -90,5 +91,19 @@ public final class QuantumGlassBlock extends BlockBase {
         INSTANCE = new QuantumGlassBlock();
         GameRegistry.registerBlock(INSTANCE, QuantumGlassItem.class, INSTANCE.getUnlocalizedName());
         GregTech_API.registerMachineBlock(INSTANCE, -1);
+    }
+
+    @Override
+    public void breakBlock(World aWorld, int aX, int aY, int aZ, Block aBlock, int aMeta) {
+        if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
+            GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+        }
+    }
+
+    @Override
+    public void onBlockAdded(World aWorld, int aX, int aY, int aZ) {
+        if (GregTech_API.isMachineBlock(this, aWorld.getBlockMetadata(aX, aY, aZ))) {
+            GregTech_API.causeMachineUpdate(aWorld, aX, aY, aZ);
+        }
     }
 }
