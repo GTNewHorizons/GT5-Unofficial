@@ -2,11 +2,16 @@ package gtPlusPlus.core.util.nbt;
 
 import static gtPlusPlus.core.item.ModItems.ZZZ_Empty;
 
+import java.util.Iterator;
+import java.util.Map;
+
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -137,5 +142,63 @@ public class NBTUtils {
 		return rStack;
 	}
 
+	public static void setBoolean(ItemStack aStack, String aTag, boolean aBoolean) {
+		NBTTagCompound tNBT = getNBT(aStack);
+		tNBT.setBoolean(aTag, aBoolean);
+		GT_Utility.ItemNBT.setNBT(aStack, tNBT);
+	}
+
+	public static boolean getBoolean(ItemStack aStack, String aTag) {
+		NBTTagCompound tNBT = getNBT(aStack);
+		return tNBT.getBoolean(aTag);
+	}
+	
+	public static void setInteger(ItemStack aStack, String aTag, int aInt) {
+		NBTTagCompound tNBT = getNBT(aStack);
+		tNBT.setInteger(aTag, aInt);
+		GT_Utility.ItemNBT.setNBT(aStack, tNBT);
+	}
+
+	public static int getInteger(ItemStack aStack, String aTag) {
+		NBTTagCompound tNBT = getNBT(aStack);
+		return tNBT.getInteger(aTag);
+	}
+	
+	public static void setString(ItemStack aStack, String aTag, String aString) {
+		NBTTagCompound tNBT = getNBT(aStack);
+		tNBT.setString(aTag, aString);
+		GT_Utility.ItemNBT.setNBT(aStack, tNBT);
+	}
+
+	public static String getString(ItemStack aStack, String aTag) {
+		NBTTagCompound tNBT = getNBT(aStack);
+		return tNBT.getString(aTag);
+	}
+	
+	public static boolean tryIterateNBTData(ItemStack aStack){
+		NBTTagCompound aNBT = NBTUtils.getNBT(aStack);
+		if (aNBT != null){
+			if (!aNBT.hasNoTags()){
+				int tagCount = 0;
+				Map<?, ?> mInternalMap = ReflectionUtils.getField(aNBT, "tagMap");
+
+				if (mInternalMap != null){
+					mInternalMap.forEach( (k,v) -> System.out.println("Key: " + k + ": Value: " + v));
+				}
+				else {
+					Utils.LOG_INFO("Data map reflected from NBTTagCompound was not valid.");	
+					return false;
+				}				
+			}
+			else {
+				return false;
+			}
+		}
+		else {
+			return false;
+		}
+	return true;
+	}
+	
 
 }

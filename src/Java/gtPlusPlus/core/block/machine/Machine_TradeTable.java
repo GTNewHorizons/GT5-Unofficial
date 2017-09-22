@@ -6,6 +6,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.item.base.itemblock.ItemBlockNBT;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.machines.TileEntityTradeTable;
 import gtPlusPlus.core.util.Utils;
@@ -32,7 +33,7 @@ public class Machine_TradeTable extends BlockContainer
 		super(Material.leaves);
 		this.setBlockName("blockTradeBench");
 		this.setCreativeTab(AddToCreativeTab.tabMachines);
-		GameRegistry.registerBlock(this, "blockTradeBench");
+		GameRegistry.registerBlock(this, ItemBlockNBT.class, "blockTradeBench");
 		LanguageRegistry.addName(this, "Trade-o-Mat");
 
 	}

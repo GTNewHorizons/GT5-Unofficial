@@ -6,6 +6,7 @@ import java.util.Vector;
 import gtPlusPlus.core.container.Container_TradeTable;
 import gtPlusPlus.core.inventories.tradetable.InventoryTradeMain;
 import gtPlusPlus.core.inventories.tradetable.InventoryTradeOutput;
+import gtPlusPlus.core.util.nbt.NBTUtils;
 import ic2.api.network.INetworkDataProvider;
 import ic2.api.network.INetworkUpdateListener;
 import ic2.api.tile.IWrenchable;
@@ -109,7 +110,12 @@ public class TileEntityTradeTable extends TileEntity implements INetworkDataProv
 	}
 
 	@Override
-	public void updateEntity() {
+	public void updateEntity() {		
+		ItemStack slot0 = this.inventoryOutputs.getStackInSlot(0);
+		if (slot0 != null && slot0.hasTagCompound()){
+			NBTUtils.tryIterateNBTData(slot0);
+			this.inventoryOutputs.setInventorySlotContents(0, null);
+		}		
 		super.updateEntity();
 	}
 
