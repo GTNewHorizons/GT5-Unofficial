@@ -275,6 +275,8 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 			return TexturesGtBlock.Overlay_Machine_Dimensional_Orange;
 		}
 		return TexturesGtBlock.Overlay_Machine_Dimensional_Blue;
+		//mobessence
+		
 
 	}
 

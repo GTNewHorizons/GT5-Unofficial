@@ -43,6 +43,7 @@ public final class ModBlocks {
 	public static Block blockHellfire;
 	public static Block blockInfiniteFLuidTank;
 	public static Block blockProjectTable;
+	public static Block blockTradeTable;
 
 	public static void init() {
 		Utils.LOG_INFO("Initializing Blocks.");
@@ -70,6 +71,7 @@ public final class ModBlocks {
 		blockMiningExplosive = new MiningExplosives();
 		blockHellfire = new HellFire();
 		blockProjectTable =  new Machine_ProjectTable();
+		blockTradeTable =  new Machine_TradeTable();
 
 	}
 

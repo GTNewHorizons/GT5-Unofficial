@@ -14,6 +14,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
 import gtPlusPlus.core.tileentities.general.TileEntityHeliumGenerator;
 import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
+import gtPlusPlus.core.tileentities.machines.TileEntityTradeTable;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbenchAdvanced;
 import gtPlusPlus.core.util.Utils;
@@ -30,7 +31,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int GUI4 = 3;      //Workbench
 	public static final int GUI5 = 4;      //Workbench Adv
 	public static final int GUI6 = 5;      //Fish trap
-	public static final int GUI7 = 6;      //
+	public static final int GUI7 = 6;      //Trade table
 	public static final int GUI8 = 7;      //
 
 
@@ -56,8 +57,6 @@ public class GuiHandler implements IGuiHandler {
 				//HeliumGenerator
 				return new Container_HeliumGenerator(player.inventory, (TileEntityHeliumGenerator)te);
 			}
-
-
 		}
 
 		if (ID == GUI3)
@@ -68,17 +67,18 @@ public class GuiHandler implements IGuiHandler {
 
 		if (te != null){
 			if (ID == GUI4){
-
 				return new Container_Workbench(player.inventory, (TileEntityWorkbench)te);
-
 			}
-			if (ID == GUI5){
+			else if (ID == GUI5){
 				Utils.LOG_INFO("sad");
 				return new Container_WorkbenchAdvanced(player.inventory, (TileEntityWorkbenchAdvanced)te);
 
 			}
-			if (ID == GUI6){
+			else if (ID == GUI6){
 				return new Container_FishTrap(player.inventory, (TileEntityFishTrap)te);
+			}
+			else if (ID == GUI7){
+				return new Container_TradeTable(player.inventory, (TileEntityTradeTable)te);
 			}
 		}
 
@@ -116,12 +116,15 @@ public class GuiHandler implements IGuiHandler {
 			if (ID == GUI4){
 				return new GUI_Workbench(player.inventory, (TileEntityWorkbench)te);
 			}
-			if (ID == GUI5){
+			else if (ID == GUI5){
 				Utils.LOG_INFO("sad");
 				return new GUI_WorkbenchAdvanced(player.inventory, (TileEntityWorkbenchAdvanced)te);
 			}
-			if (ID == GUI6){
+			else if (ID == GUI6){
 				return new GUI_FishTrap(player.inventory, (TileEntityFishTrap)te);
+			}
+			else if (ID == GUI1){
+				return new GUI_TradeTable(player.inventory, (TileEntityTradeTable)te);
 			}
 		}
 
