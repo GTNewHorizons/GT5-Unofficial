@@ -50,8 +50,8 @@ public class Container_ProjectTable extends Container {
 		
 
 		//Output slots
-		this.addSlotToContainer(new SlotDataStick(this.inventoryOutputs, 0, 26+(18*6), 7));
-		this.addSlotToContainer(new SlotNoInput(this.inventoryOutputs, 1, 26+(18*6), 43));
+		this.addSlotToContainer(new SlotDataStick(this.inventoryOutputs, 0, 26+(18*6), 8));
+		this.addSlotToContainer(new SlotNoInput(this.inventoryOutputs, 1, 26+(18*6), 44));
 	
 		this.addSlotToContainer(new SlotCraftingNoCollect(inventory.player, this.craftMatrix, this.craftResult, 0, 26+(18*4), 25));
 	       

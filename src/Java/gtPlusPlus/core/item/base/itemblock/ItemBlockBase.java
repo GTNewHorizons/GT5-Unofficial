@@ -14,7 +14,6 @@ public class ItemBlockBase extends ItemBlock {
 
 	@Override
 	public int getColorFromItemStack(final ItemStack p_82790_1_, final int p_82790_2_) {
-
 		return super.getColorFromItemStack(p_82790_1_, p_82790_2_);
 	}
 

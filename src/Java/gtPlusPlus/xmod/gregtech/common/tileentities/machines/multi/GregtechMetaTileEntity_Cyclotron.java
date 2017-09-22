@@ -150,11 +150,11 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 			mHardHammer = true;
 			mSolderingTool = true;
 			mCrowbar = true;
-			Utils.LOG_INFO("Built Cyclotron.");
+			//Utils.LOG_INFO("Built Cyclotron.");
 			turnCasingActive(true);
 			return true;
 		}    
-		Utils.LOG_INFO("Failed building Cyclotron.");
+		//Utils.LOG_INFO("Failed building Cyclotron.");
 		return false;
 	}
 
@@ -286,7 +286,7 @@ public class GregtechMetaTileEntity_Cyclotron extends GregtechMeta_MultiBlockBas
 
 	@Override
 	public boolean checkRecipe(ItemStack aStack) {
-		Utils.LOG_INFO("Recipe Check.");
+		//Utils.LOG_INFO("Recipe Check.");
 		ArrayList<ItemStack> tItemList = getStoredInputs();
 		ItemStack[] tItemInputs = (ItemStack[]) tItemList.toArray(new ItemStack[tItemList.size()]);
 		ArrayList<FluidStack> tInputList = getStoredFluids();

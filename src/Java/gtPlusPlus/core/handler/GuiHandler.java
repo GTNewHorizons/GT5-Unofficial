@@ -123,7 +123,7 @@ public class GuiHandler implements IGuiHandler {
 			else if (ID == GUI6){
 				return new GUI_FishTrap(player.inventory, (TileEntityFishTrap)te);
 			}
-			else if (ID == GUI1){
+			else if (ID == GUI7){
 				return new GUI_TradeTable(player.inventory, (TileEntityTradeTable)te);
 			}
 		}

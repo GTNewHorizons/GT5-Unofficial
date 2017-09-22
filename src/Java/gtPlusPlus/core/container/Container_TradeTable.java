@@ -1,21 +1,15 @@
 package gtPlusPlus.core.container;
 
 import gtPlusPlus.core.block.ModBlocks;
-import gtPlusPlus.core.inventories.InventoryWorkbenchChest;
-import gtPlusPlus.core.inventories.projecttable.InventoryProjectMain;
-import gtPlusPlus.core.inventories.projecttable.InventoryProjectOutput;
 import gtPlusPlus.core.inventories.tradetable.InventoryTradeMain;
 import gtPlusPlus.core.inventories.tradetable.InventoryTradeOutput;
 import gtPlusPlus.core.slots.*;
-import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
 import gtPlusPlus.core.tileentities.machines.TileEntityTradeTable;
 import gtPlusPlus.core.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.*;
-import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.World;
 
 public class Container_TradeTable extends Container {
@@ -50,11 +44,10 @@ public class Container_TradeTable extends Container {
 
 
 		//Output slots
-		//this.addSlotToContainer(new SlotDataStick(this.inventoryOutputs, 0, 26+(18*6), 7));
-		//this.addSlotToContainer(new SlotNoInput(this.inventoryOutputs, 1, 26+(18*6), 43));
+		this.addSlotToContainer(new SlotDataStick(this.inventoryOutputs, 0, 26+(18*6), 8));
+		this.addSlotToContainer(new SlotNoInput(this.inventoryOutputs, 1, 26+(18*6), 44));
 
 		//this.addSlotToContainer(new SlotCraftingNoCollect(inventory.player, this.craftMatrix, this.craftResult, 0, 26+(18*4), 25));
-
 
 		int o = 0;
 		//Storage Side
@@ -86,7 +79,6 @@ public class Container_TradeTable extends Container {
 		}
 
 		//this.onCraftMatrixChanged(this.craftMatrix);
-
 	}
 
 	/**
@@ -132,7 +124,7 @@ public class Container_TradeTable extends Container {
 
 	@Override
 	public boolean canInteractWith(final EntityPlayer par1EntityPlayer){
-		if (this.worldObj.getBlock(this.posX, this.posY, this.posZ) != ModBlocks.blockProjectTable){
+		if (this.worldObj.getBlock(this.posX, this.posY, this.posZ) != ModBlocks.blockTradeTable){
 			return false;
 		}
 
