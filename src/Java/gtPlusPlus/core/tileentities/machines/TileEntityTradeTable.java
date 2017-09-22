@@ -8,6 +8,8 @@ import gtPlusPlus.core.container.Container_TradeTable;
 import gtPlusPlus.core.inventories.*;
 import gtPlusPlus.core.inventories.projecttable.InventoryProjectMain;
 import gtPlusPlus.core.inventories.projecttable.InventoryProjectOutput;
+import gtPlusPlus.core.inventories.tradetable.InventoryTradeMain;
+import gtPlusPlus.core.inventories.tradetable.InventoryTradeOutput;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.nbt.NBTUtils;
 import ic2.api.network.INetworkDataProvider;
@@ -26,8 +28,8 @@ import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityTradeTable extends TileEntity implements INetworkDataProvider, INetworkUpdateListener, IWrenchable{
 	
-	public InventoryProjectMain inventoryGrid;
-	public InventoryProjectOutput inventoryOutputs;
+	public InventoryTradeMain inventoryGrid;
+	public InventoryTradeOutput inventoryOutputs;
 	
 	/** The crafting matrix inventory (3x3). */
     public InventoryCrafting craftMatrix;
@@ -35,8 +37,8 @@ public class TileEntityTradeTable extends TileEntity implements INetworkDataProv
     private Container_TradeTable container;
 
 	public TileEntityTradeTable(){
-		this.inventoryGrid = new InventoryProjectMain();//number of slots - without product slot
-		this.inventoryOutputs = new InventoryProjectOutput();//number of slots - without product slot
+		this.inventoryGrid = new InventoryTradeMain();//number of slots - without product slot
+		this.inventoryOutputs = new InventoryTradeOutput();//number of slots - without product slot
 		this.canUpdate();
 	}
 	

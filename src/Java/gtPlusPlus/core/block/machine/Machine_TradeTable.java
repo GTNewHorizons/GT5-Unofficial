@@ -9,7 +9,8 @@ import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
+import gtPlusPlus.core.tileentities.machines.TileEntityTradeTable;
+import gtPlusPlus.core.tileentities.machines.TileEntityTradeTable;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.player.PlayerUtils;
@@ -59,10 +60,10 @@ public class Machine_TradeTable extends BlockContainer
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(final IIconRegister p_149651_1_)
 	{
-		this.blockIcon = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "machine_top");
-		this.textureTop = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "cover_crafting");
-		this.textureBottom = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "machine_top");
-		this.textureFront = p_149651_1_.registerIcon(CORE.MODID + ":" + "TileEntities/" + "machine_top");
+		this.blockIcon = p_149651_1_.registerIcon(CORE.MODID + ":" + "SwirlYellow");
+		this.textureTop = p_149651_1_.registerIcon(CORE.MODID + ":" + "workbench_top");
+		this.textureBottom = p_149651_1_.registerIcon(CORE.MODID + ":" + "SwirlYellow");
+		this.textureFront = p_149651_1_.registerIcon(CORE.MODID + ":" + "SwirlYellow");
 	}
 
 	/**
@@ -88,7 +89,7 @@ public class Machine_TradeTable extends BlockContainer
 		}
 
 		final TileEntity te = world.getTileEntity(x, y, z);
-		if ((te != null) && (te instanceof TileEntityProjectTable))
+		if ((te != null) && (te instanceof TileEntityTradeTable))
 		{
 			if (!holdingWrench){
 				player.openGui(GTplusplus.instance, 6, world, x, y, z);
@@ -101,7 +102,7 @@ public class Machine_TradeTable extends BlockContainer
 
 	@Override
 	public TileEntity createNewTileEntity(final World world, final int p_149915_2_) {
-		return new TileEntityProjectTable();
+		return new TileEntityTradeTable();
 	}
 
 	public static boolean isWrench(final ItemStack item){

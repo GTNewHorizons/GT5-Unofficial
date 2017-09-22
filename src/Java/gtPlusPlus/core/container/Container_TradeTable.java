@@ -1,8 +1,11 @@
 package gtPlusPlus.core.container;
 
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.inventories.InventoryWorkbenchChest;
 import gtPlusPlus.core.inventories.projecttable.InventoryProjectMain;
 import gtPlusPlus.core.inventories.projecttable.InventoryProjectOutput;
+import gtPlusPlus.core.inventories.tradetable.InventoryTradeMain;
+import gtPlusPlus.core.inventories.tradetable.InventoryTradeOutput;
 import gtPlusPlus.core.slots.*;
 import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
 import gtPlusPlus.core.tileentities.machines.TileEntityTradeTable;
@@ -17,13 +20,9 @@ import net.minecraft.world.World;
 
 public class Container_TradeTable extends Container {
 
-	/** The crafting matrix inventory (3x3). */
-    public InventoryCrafting craftMatrix = new InventoryCrafting(this, 3, 3);
-    public IInventory craftResult = new InventoryCraftResult();
-	
 	protected TileEntityTradeTable tile_entity;
-	public final InventoryProjectMain inventoryGrid;
-	public final InventoryProjectOutput inventoryOutputs;
+	public final InventoryTradeMain inventoryChest;
+	public final InventoryTradeOutput inventoryOutputs;
 
 	private final World worldObj;
 	private final int posX;
@@ -36,7 +35,7 @@ public class Container_TradeTable extends Container {
 
 	public Container_TradeTable(final InventoryPlayer inventory, final TileEntityTradeTable te){
 		this.tile_entity = te;
-		this.inventoryGrid = te.inventoryGrid;
+		this.inventoryChest = te.inventoryGrid;
 		this.inventoryOutputs = te.inventoryOutputs;
 		this.tile_entity.setContainer(this);
 
@@ -48,15 +47,15 @@ public class Container_TradeTable extends Container {
 		this.posZ = te.zCoord;
 
 		int nextFreeSlot = 0;
-		
+
 
 		//Output slots
-		this.addSlotToContainer(new SlotDataStick(this.inventoryOutputs, 0, 26+(18*6), 7));
-		this.addSlotToContainer(new SlotNoInput(this.inventoryOutputs, 1, 26+(18*6), 43));
-	
-		this.addSlotToContainer(new SlotCraftingNoCollect(inventory.player, this.craftMatrix, this.craftResult, 0, 26+(18*4), 25));
-	       
-		
+		//this.addSlotToContainer(new SlotDataStick(this.inventoryOutputs, 0, 26+(18*6), 7));
+		//this.addSlotToContainer(new SlotNoInput(this.inventoryOutputs, 1, 26+(18*6), 43));
+
+		//this.addSlotToContainer(new SlotCraftingNoCollect(inventory.player, this.craftMatrix, this.craftResult, 0, 26+(18*4), 25));
+
+
 		int o = 0;
 		//Storage Side
 		for (var6 = 0; var6 < 3; ++var6)
@@ -64,13 +63,12 @@ public class Container_TradeTable extends Container {
 			for (var7 = 0; var7 < 3; ++var7)
 			{
 				//Utils.LOG_WARNING("Adding slots at var:"+(var7 + var6 * 4)+" x:"+(8 + var7 * 18)+" y:"+(7 + var6 * 18));
-				this.addSlotToContainer(new Slot(this.craftMatrix, nextFreeSlot, 8+18 + (var7 * 18), 8 + (var6 * 18)));
+				this.addSlotToContainer(new Slot(this.inventoryChest, nextFreeSlot, 8+18 + (var7 * 18), 8 + (var6 * 18)));
 				this.slotGrid[o] = nextFreeSlot;
 				nextFreeSlot++;
 				o++;
 			}
-		}
-
+		}		
 
 		//Player Inventory
 		for (var6 = 0; var6 < 3; ++var6)
@@ -86,33 +84,25 @@ public class Container_TradeTable extends Container {
 		{
 			this.addSlotToContainer(new Slot(inventory, var6, 8 + (var6 * 18), 142));
 		}
-		
-        this.onCraftMatrixChanged(this.craftMatrix);
+
+		//this.onCraftMatrixChanged(this.craftMatrix);
 
 	}
-	
+
 	/**
-     * Callback for when the crafting matrix is changed.
-     */
-    public void onCraftMatrixChanged(IInventory p_75130_1_)
-    {
-        this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.worldObj));
-    }
-    
-    /**
-     * Called when the container is closed.
-     */
-    public void onContainerClosed(EntityPlayer p_75134_1_){
-        super.onContainerClosed(p_75134_1_);
-        if (!this.worldObj.isRemote){
-            for (int i = 0; i < 9; ++i){
-                ItemStack itemstack = this.craftMatrix.getStackInSlotOnClosing(i);
-                if (itemstack != null){
-                    p_75134_1_.dropPlayerItemWithRandomChoice(itemstack, false);
-                }
-            }
-        }
-    }
+	 * Called when the container is closed.
+	 */
+	public void onContainerClosed(EntityPlayer p_75134_1_){
+		super.onContainerClosed(p_75134_1_);
+		if (!this.worldObj.isRemote){
+			for (int i = 0; i < 9; ++i){
+				ItemStack itemstack = this.inventoryChest.getStackInSlotOnClosing(i);
+				if (itemstack != null){
+					p_75134_1_.dropPlayerItemWithRandomChoice(itemstack, false);
+				}
+			}
+		}
+	}
 
 	@Override
 	public ItemStack slotClick(final int aSlotIndex, final int aMouseclick, final int aShifthold, final EntityPlayer aPlayer){
@@ -139,7 +129,7 @@ public class Container_TradeTable extends Container {
 		//Utils.LOG_WARNING("Player Clicked slot "+aSlotIndex+" in the Grid");
 		return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
 	}
-	
+
 	@Override
 	public boolean canInteractWith(final EntityPlayer par1EntityPlayer){
 		if (this.worldObj.getBlock(this.posX, this.posY, this.posZ) != ModBlocks.blockProjectTable){
@@ -153,9 +143,9 @@ public class Container_TradeTable extends Container {
 	@Override
 	public ItemStack transferStackInSlot(final EntityPlayer par1EntityPlayer, final int par2)
 	{
-		
+
 		return null;
-		
+
 		/*ItemStack var3 = null;
 		final Slot var4 = (Slot)this.inventorySlots.get(par2);
 
@@ -212,13 +202,8 @@ public class Container_TradeTable extends Container {
 		return var3;*/
 	}
 
-	//Can merge Slot
-	public boolean func_94530_a(ItemStack p_94530_1_, Slot p_94530_2_){
-        return p_94530_2_.inventory != this.craftResult && super.func_94530_a(p_94530_1_, p_94530_2_);
-    }
-	
 	public ItemStack getOutputContent(){
-		ItemStack output = this.craftResult.getStackInSlot(0);
+		ItemStack output = this.inventoryOutputs.getStackInSlot(0);
 		if (output != null){
 			return output;
 		}
@@ -227,8 +212,8 @@ public class Container_TradeTable extends Container {
 	
 	public ItemStack[] getInputComponents(){
 		ItemStack inputs[] = new ItemStack[9];
-		for (int r=0;r<this.craftMatrix.getSizeInventory();r++){
-			ItemStack temp = this.craftMatrix.getStackInSlot(r);
+		for (int r=0;r<this.inventoryChest.getSizeInventory();r++){
+			ItemStack temp = this.inventoryChest.getStackInSlot(r);
 			inputs[r] = temp;
 		}
 		return inputs;		
