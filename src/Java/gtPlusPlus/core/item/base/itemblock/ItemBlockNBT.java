@@ -11,9 +11,8 @@ import net.minecraft.world.World;
 
 public class ItemBlockNBT extends ItemBlock {
 
-	public ItemBlockNBT(final Block block, final CreativeTabs tab) {
+	public ItemBlockNBT(final Block block) {
 		super(block);
-		this.setCreativeTab(tab);
 	}
 
 	@Override

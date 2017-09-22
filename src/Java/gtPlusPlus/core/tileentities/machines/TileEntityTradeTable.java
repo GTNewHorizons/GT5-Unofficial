@@ -17,16 +17,16 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityTradeTable extends TileEntity implements INetworkDataProvider, INetworkUpdateListener, IWrenchable{
-	
+
 	public InventoryTradeMain inventoryGrid;
 	public InventoryTradeOutput inventoryOutputs;
-    private Container_TradeTable container;
+	private Container_TradeTable container;
 
 	public TileEntityTradeTable(){
 		this.inventoryGrid = new InventoryTradeMain();//number of slots - without product slot
 		this.inventoryOutputs = new InventoryTradeOutput();//number of slots - without product slot
 	}
-	
+
 	public void setContainer(Container_TradeTable container_TradeTable){
 		this.container = container_TradeTable;
 	}
@@ -110,12 +110,14 @@ public class TileEntityTradeTable extends TileEntity implements INetworkDataProv
 	}
 
 	@Override
-	public void updateEntity() {		
-		ItemStack slot0 = this.inventoryOutputs.getStackInSlot(0);
-		if (slot0 != null && slot0.hasTagCompound()){
-			NBTUtils.tryIterateNBTData(slot0);
-			this.inventoryOutputs.setInventorySlotContents(0, null);
-		}		
+	public void updateEntity() {	
+		if (!this.worldObj.isRemote){	
+			ItemStack slot0 = this.inventoryOutputs.getStackInSlot(0);
+			if (slot0 != null && slot0.hasTagCompound()){
+				NBTUtils.tryIterateNBTData(slot0);
+				this.inventoryOutputs.setInventorySlotContents(0, null);
+			}		
+		}
 		super.updateEntity();
 	}
 
@@ -123,7 +125,7 @@ public class TileEntityTradeTable extends TileEntity implements INetworkDataProv
 	public boolean canUpdate() {
 		return true;
 	}
-	
+
 
 
 
