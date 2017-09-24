@@ -6,6 +6,7 @@ import java.util.Vector;
 import gtPlusPlus.core.container.Container_TradeTable;
 import gtPlusPlus.core.inventories.tradetable.InventoryTradeMain;
 import gtPlusPlus.core.inventories.tradetable.InventoryTradeOutput;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.nbt.NBTUtils;
 import ic2.api.network.INetworkDataProvider;
 import ic2.api.network.INetworkUpdateListener;
@@ -112,11 +113,20 @@ public class TileEntityTradeTable extends TileEntity implements INetworkDataProv
 	@Override
 	public void updateEntity() {	
 		if (!this.worldObj.isRemote){	
-			ItemStack slot0 = this.inventoryOutputs.getStackInSlot(0);
-			if (slot0 != null && slot0.hasTagCompound()){
-				NBTUtils.tryIterateNBTData(slot0);
-				this.inventoryOutputs.setInventorySlotContents(0, null);
-			}		
+
+			try{
+
+				ItemStack slot0 = this.inventoryOutputs.getStackInSlot(0);
+				if (slot0 != null && slot0.hasTagCompound()){
+					NBTUtils.tryIterateNBTData(slot0);
+					this.inventoryOutputs.setInventorySlotContents(0, null);
+				}	
+
+			}
+			catch (Throwable t){
+				Utils.LOG_INFO("NBT utils not found.");
+			}
+
 		}
 		super.updateEntity();
 	}
