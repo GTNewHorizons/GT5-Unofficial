@@ -27,7 +27,7 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Dies
 	}
 	
 	public int getPollution() {
-		return (int) (2.0D * Math.pow(2.0D, this.mTier - 1));
+		return (int) (2.0D * Math.pow(2.0D, this.mTier));
 	}
 	
 	public int getCapacity() {
@@ -49,7 +49,7 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Dies
 
 	@Override
 	public String[] getDescription() {
-		return new String[]{this.mDescription, CORE.GT_Tooltip};
+		return new String[]{this.mDescription, "Produces "+(this.getPollution()*20)+" pollution/sec", "Fuel Efficiency: "+this.getEfficiency() + "%", CORE.GT_Tooltip};
 	}
 	
 }
