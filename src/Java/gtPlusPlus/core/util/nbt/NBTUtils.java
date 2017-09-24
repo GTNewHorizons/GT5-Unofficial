@@ -175,7 +175,7 @@ public class NBTUtils {
 	}
 
 	public static boolean tryIterateNBTData(ItemStack aStack) {
-		try {
+		/*try {
 			NBTTagCompound aNBT = NBTUtils.getNBT(aStack);
 			if (aNBT != null) {
 				if (!aNBT.hasNoTags()) {
@@ -197,7 +197,8 @@ public class NBTUtils {
 			return true;
 		} catch (Throwable t) {
 			return false;
-		}
+		}*/
+		return false;
 	}
 
 }
