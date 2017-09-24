@@ -7,6 +7,7 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.util.GT_Recipe;
 import gregtech.common.tileentities.generators.GT_MetaTileEntity_DieselGenerator;
+import gtPlusPlus.core.lib.CORE;
 
 public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_DieselGenerator{
 	
@@ -46,4 +47,9 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Dies
 		return GT_Recipe.GT_Recipe_Map.sDenseLiquidFuels;
 	}
 
+	@Override
+	public String[] getDescription() {
+		return new String[]{this.mDescription, CORE.GT_Tooltip};
+	}
+	
 }
