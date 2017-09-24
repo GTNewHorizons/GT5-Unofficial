@@ -47,9 +47,9 @@ public class COMPAT_HANDLER {
 			/*
 			829
 			---
-			837
-			to
-			839
+			//837
+			//to
+			//839
 			---
 			851
 			to
@@ -95,6 +95,7 @@ public class COMPAT_HANDLER {
 			GregtechHiAmpTransformer.run();
 			GregtechIndustrialThermalCentrifuge.run();
 			GregtechIndustrialWashPlant.run();
+			GregtechSemiFluidgenerators.run();
 
 			//New Horizons Content
 			NewHorizonsAccelerator.run();

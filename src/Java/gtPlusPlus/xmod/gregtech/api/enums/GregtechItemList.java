@@ -243,7 +243,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Industrial_ThermalCentrifuge,
 	
 	//industrial Ore-Washer
-	Industrial_WashPlant,
+	Industrial_WashPlant, 
+	
+	//Semi-Fluid generators
+	Generator_SemiFluid_LV, Generator_SemiFluid_MV, Generator_SemiFluid_HV,
 	
 	
 	
