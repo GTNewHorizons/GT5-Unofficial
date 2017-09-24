@@ -113,10 +113,10 @@ public class TileEntityTradeTable extends TileEntity implements INetworkDataProv
 	@Override
 	public void updateEntity() {	
 		if (!this.worldObj.isRemote){	
-
+			ItemStack slot0;
 			try{
 
-				ItemStack slot0 = this.inventoryOutputs.getStackInSlot(0);
+				slot0 = this.inventoryOutputs.getStackInSlot(0);
 				if (slot0 != null && slot0.hasTagCompound()){
 					NBTUtils.tryIterateNBTData(slot0);
 					this.inventoryOutputs.setInventorySlotContents(0, null);
@@ -124,7 +124,8 @@ public class TileEntityTradeTable extends TileEntity implements INetworkDataProv
 
 			}
 			catch (Throwable t){
-				Utils.LOG_INFO("NBT utils not found.");
+				t.printStackTrace();
+				this.inventoryOutputs.setInventorySlotContents(0, null);
 			}
 
 		}

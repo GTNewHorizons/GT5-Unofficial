@@ -1,6 +1,7 @@
 package gtPlusPlus.core.recipe.common;
 
 import gregtech.api.enums.*;
+import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.ALLOY;
@@ -15,6 +16,12 @@ public class CI {
 
 	//null
 	public static ItemStack _NULL = ItemUtils.getSimpleStack(ModItems.AAA_Broken);
+	
+	//bits
+	public static long bits = GT_ModHandler.RecipeBits.NOT_REMOVABLE | GT_ModHandler.RecipeBits.REVERSIBLE
+			| GT_ModHandler.RecipeBits.BUFFERED;
+	public static long bitsd = GT_ModHandler.RecipeBits.DISMANTLEABLE | GT_ModHandler.RecipeBits.NOT_REMOVABLE
+			| GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED;
 
 	//Circuits
 	public static Object circuitPrimitive;

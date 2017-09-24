@@ -1,6 +1,7 @@
 package gtPlusPlus.core.recipe;
 
 import gregtech.api.enums.*;
+import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
@@ -648,6 +649,27 @@ public class RECIPES_Machines {
 						"plateDoubleGrisium", "rotorGrisium", "plateDoubleGrisium",
 						RECIPE_IndustrialMultiTankController);
 			}
+			
+			ItemStack mSemiFluidgen = ItemUtils.simpleMetaStack("IC2:blockGenerator:7", 7, 1);
+			//Semi-Fluid Generators
+			GT_ModHandler.addCraftingRecipe(GregtechItemList.Generator_SemiFluid_LV.get(1L, new Object[0]), CI.bitsd,
+					new Object[] { "PCP", "EME", "GWG", Character.valueOf('M'), ItemList.Hull_LV, Character.valueOf('P'),
+							ItemList.Electric_Piston_LV, Character.valueOf('E'), ItemList.Electric_Motor_LV,
+							Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Basic), Character.valueOf('W'),
+							mSemiFluidgen, Character.valueOf('G'),
+							OrePrefixes.gearGt.get(Materials.Steel) });
+			GT_ModHandler.addCraftingRecipe(GregtechItemList.Generator_SemiFluid_MV.get(1L, new Object[0]), CI.bitsd,
+					new Object[] { "PCP", "EME", "GWG", Character.valueOf('M'), ItemList.Hull_MV, Character.valueOf('P'),
+							ItemList.Electric_Piston_MV, Character.valueOf('E'), ItemList.Electric_Motor_MV,
+							Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Good), Character.valueOf('W'),
+							mSemiFluidgen, Character.valueOf('G'),
+							OrePrefixes.gearGt.get(Materials.Aluminium) });
+			GT_ModHandler.addCraftingRecipe(GregtechItemList.Generator_SemiFluid_HV.get(1L, new Object[0]), CI.bitsd,
+					new Object[] { "PCP", "EME", "GWG", Character.valueOf('M'), ItemList.Hull_HV, Character.valueOf('P'),
+							ItemList.Electric_Piston_HV, Character.valueOf('E'), ItemList.Electric_Motor_HV,
+							Character.valueOf('C'), OrePrefixes.circuit.get(Materials.Advanced), Character.valueOf('W'),
+							mSemiFluidgen, Character.valueOf('G'),
+							OrePrefixes.gearGt.get(Materials.StainlessSteel) });
 
 			if (CORE.configSwitches.enableMultiblock_AlloyBlastSmelter){
 				//Industrial Blast Smelter

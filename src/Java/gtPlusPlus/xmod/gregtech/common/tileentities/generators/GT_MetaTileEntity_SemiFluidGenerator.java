@@ -35,11 +35,11 @@ public class GT_MetaTileEntity_SemiFluidGenerator extends GT_MetaTileEntity_Dies
 
 	public void onConfigLoad() {
 		this.mEfficiency = GregTech_API.sMachineFile.get(ConfigCategories.machineconfig,
-				"SemiFluidGenerator.efficiency.tier." + this.mTier, 100 - (this.mTier * 5));
+				"SemiFluidGenerator.efficiency.tier." + this.mTier, 100 - (this.mTier * 10));
 	}
 	
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
-		return new GT_MetaTileEntity_DieselGenerator(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
+		return new GT_MetaTileEntity_SemiFluidGenerator(this.mName, this.mTier, this.mDescriptionArray, this.mTextures);
 	}
 
 	public GT_Recipe.GT_Recipe_Map getRecipes() {
