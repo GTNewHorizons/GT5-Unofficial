@@ -6,6 +6,7 @@ import gtPlusPlus.core.entity.projectile.EntityToxinballSmall;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityBlaze;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -13,7 +14,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class EntitySickBlaze extends EntityBlaze {
+public class EntitySickBlaze extends EntityMob {
 	/** Random offset used in floating behaviour */
 	private float heightOffset = 0.5F;
 	/** ticks until heightOffset is randomized */
@@ -76,7 +77,7 @@ public class EntitySickBlaze extends EntityBlaze {
 	 */
 	@Override
 	public float getBrightness(float p_70013_1_) {
-		return 1.0F;
+		return p_70013_1_;
 	}
 
 	/**
@@ -143,7 +144,6 @@ public class EntitySickBlaze extends EntityBlaze {
 
 				if (this.field_70846_g == 1) {
 					this.attackTime = 60;
-					this.func_70844_e(true);
 				}
 				else if (this.field_70846_g <= 4) {
 					this.attackTime = 6;
@@ -151,7 +151,6 @@ public class EntitySickBlaze extends EntityBlaze {
 				else {
 					this.attackTime = 100;
 					this.field_70846_g = 0;
-					this.func_70844_e(false);
 				}
 
 				if (this.field_70846_g > 1) {
@@ -191,7 +190,7 @@ public class EntitySickBlaze extends EntityBlaze {
 	 */
 	@Override
 	public boolean isBurning() {
-		return this.func_70845_n();
+		return false;
 	}
 
 	/**
@@ -208,25 +207,6 @@ public class EntitySickBlaze extends EntityBlaze {
 				this.dropItem(getDropItem(), 1);
 			}
 		}
-	}
-
-	@Override
-	public boolean func_70845_n() {
-		return (this.dataWatcher.getWatchableObjectByte(mDataWatcherID) & 1) != 0;
-	}
-
-	@Override
-	public void func_70844_e(boolean p_70844_1_) {
-		byte b0 = this.dataWatcher.getWatchableObjectByte(mDataWatcherID);
-
-		if (p_70844_1_) {
-			b0 = (byte) (b0 | 1);
-		}
-		else {
-			b0 &= -2;
-		}
-
-		this.dataWatcher.updateObject(mDataWatcherID, Byte.valueOf(b0));
 	}
 
 	/**
