@@ -30,6 +30,8 @@ public class EntitySickBlaze extends EntityBlaze {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
+		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1.5D);
 		this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(6.0D);
 	}
 
@@ -103,8 +105,8 @@ public class EntitySickBlaze extends EntityBlaze {
 		}
 
 		if (this.rand.nextInt(24) == 0) {
-			this.worldObj.playSoundEffect(this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D, "fire.fire",
-					1.0F + this.rand.nextFloat(), this.rand.nextFloat() * 0.7F + 0.3F);
+			/*this.worldObj.playSoundEffect(this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D, "fire.fire",
+					1.0F + this.rand.nextFloat(), this.rand.nextFloat() * 0.7F + 0.3F);*/
 		}
 
 		if (!this.onGround && this.motionY < 0.0D) {
@@ -112,7 +114,7 @@ public class EntitySickBlaze extends EntityBlaze {
 		}
 
 		for (int i = 0; i < 2; ++i) {
-			this.worldObj.spawnParticle("largesmoke", this.posX + (this.rand.nextDouble() - 0.5D) * this.width,
+			this.worldObj.spawnParticle("crit", this.posX + (this.rand.nextDouble() - 0.5D) * this.width,
 					this.posY + this.rand.nextDouble() * this.height,
 					this.posZ + (this.rand.nextDouble() - 0.5D) * this.width, 0.0D, 0.0D, 0.0D);
 		}
@@ -180,7 +182,7 @@ public class EntitySickBlaze extends EntityBlaze {
 
 	@Override
 	protected Item getDropItem() {
-		return Items.blaze_rod;
+		return Items.slime_ball;
 	}
 
 	/**
@@ -203,7 +205,7 @@ public class EntitySickBlaze extends EntityBlaze {
 			int j = this.rand.nextInt(2 + p_70628_2_);
 
 			for (int k = 0; k < j; ++k) {
-				this.dropItem(Items.blaze_rod, 1);
+				this.dropItem(getDropItem(), 1);
 			}
 		}
 	}

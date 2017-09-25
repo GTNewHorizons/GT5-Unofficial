@@ -31,15 +31,15 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 		this.setSize(1.4F, 2.9F);
 		this.getNavigator().setAvoidsWater(true);
 		this.tasks.addTask(1, new EntityAIAttackOnCollide(this, 1.0D, true));
-		this.tasks.addTask(2, new EntityAIMoveTowardsTarget(this, 0.9D, 32.0F));
-		this.tasks.addTask(3, new EntityAIMoveThroughVillage(this, 0.6D, true));
-		this.tasks.addTask(4, new EntityAIMoveTowardsRestriction(this, 1.0D));
-		this.tasks.addTask(5, new EntityAIWander(this, 0.6D));
-		this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
-		this.tasks.addTask(7, new EntityAILookIdle(this));
+		//this.tasks.addTask(2, new EntityAIMoveTowardsTarget(this, 0.9D, 32.0F));
+		//this.tasks.addTask(3, new EntityAIMoveThroughVillage(this, 0.6D, true));
+		this.tasks.addTask(2, new EntityAIMoveTowardsRestriction(this, 1.0D));
+		this.tasks.addTask(3, new EntityAIWander(this, 0.6D));
+		this.tasks.addTask(4, new EntityAIWatchClosest(this, EntityPlayer.class, 6.0F));
+		this.tasks.addTask(5, new EntityAILookIdle(this));
 		this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-		this.targetTasks.addTask(2,
-				new EntityAINearestAttackableTarget(this, EntityLiving.class, 0, false, true, IMob.mobSelector));
+		//this.targetTasks.addTask(2,
+				//new EntityAINearestAttackableTarget(this, EntityLiving.class, 0, false, true, IMob.mobSelector));
 	}
 
 	@Override
@@ -220,7 +220,7 @@ public class EntityStaballoyConstruct extends EntityIronGolem {
 
 	@Override
 	protected void func_145780_a(int p_145780_1_, int p_145780_2_, int p_145780_3_, Block p_145780_4_) {
-		this.playSound("mob.irongolem.walk", 1.0F, 1.0F);
+		//this.playSound("mob.irongolem.walk", 1.0F, 1.0F);
 	}
 
 	/**

@@ -11,7 +11,14 @@ import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
+import net.minecraft.entity.monster.EntityBlaze;
+import net.minecraft.entity.monster.EntityCaveSpider;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntityGhast;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntitySpider;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -77,20 +84,18 @@ public class Biome_DarkWorld {
 			this.spawnableCaveCreatureList.clear();
 			
 			//Enemies
-			this.spawnableMonsterList.add(new SpawnListEntry(EntityGhast.class, 5, 1, 5));			
-
-			this.spawnableMonsterList.add(new SpawnListEntry(EntitySickBlaze.class, 5, 1, 5));
-			this.spawnableMonsterList.add(new SpawnListEntry(EntityStaballoyConstruct.class, 5, 1, 5));
+			this.spawnableMonsterList.add(new SpawnListEntry(EntitySickBlaze.class, 10, 4, 10));			
+			this.spawnableMonsterList.add(new SpawnListEntry(EntitySickBlaze.class, 60, 1, 2));
+			this.spawnableMonsterList.add(new SpawnListEntry(EntityStaballoyConstruct.class, 30, 1, 2));
+			//this.spawnableMonsterList.add(new SpawnListEntry(EntityStaballoyConstruct.class, 5, 1, 5));
 			
-			/**addToMonsterSpawnLists(EntityBlaze.class, 5, 1, 5);
+			addToMonsterSpawnLists(EntityBlaze.class, 5, 1, 5);
 			addToMonsterSpawnLists(EntityCaveSpider.class, 5, 1, 5);
 			addToMonsterSpawnLists(EntityCreeper.class, 4, 1, 2);
 			addToMonsterSpawnLists(EntityEnderman.class, 5, 1, 5);
-			addToMonsterSpawnLists(EntityMagmaCube.class, 5, 1, 5);
-			addToMonsterSpawnLists(EntityPigZombie.class, 5, 1, 5);
 			addToMonsterSpawnLists(EntitySkeleton.class, 5, 1, 5);
 			addToMonsterSpawnLists(EntitySpider.class, 5, 1, 5);
-			addToMonsterSpawnLists(EntityZombie.class, 5, 1, 5);**/
+			addToMonsterSpawnLists(EntityZombie.class, 5, 1, 5);
 
 			//Passive
 			this.spawnableCreatureList.add(new SpawnListEntry(EntityCow.class, 5, 5, 10));
@@ -120,8 +125,8 @@ public class Biome_DarkWorld {
 		
 		@SuppressWarnings("unchecked")
 		private boolean addToMonsterSpawnLists(Class<?> EntityClass, int a, int b, int c){
-			this.spawnableMonsterList.add(new SpawnListEntry(EntityClass, a, b, c));
-			//this.spawnableCaveCreatureList.add(new SpawnListEntry(EntityClass, a, b, c));
+			//this.spawnableMonsterList.add(new SpawnListEntry(EntityClass, a, b, c));
+			this.spawnableCaveCreatureList.add(new SpawnListEntry(EntityClass, a, b, c));
 			return true;
 		}
 
