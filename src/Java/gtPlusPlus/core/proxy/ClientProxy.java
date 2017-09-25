@@ -18,8 +18,10 @@ import gtPlusPlus.core.common.compat.COMPAT_PlayerAPI;
 import gtPlusPlus.core.entity.EntityPrimedMiningExplosive;
 import gtPlusPlus.core.entity.monster.EntitySickBlaze;
 import gtPlusPlus.core.entity.monster.EntityStaballoyConstruct;
+import gtPlusPlus.core.entity.projectile.EntitySulfuricAcidPotion;
 import gtPlusPlus.core.entity.projectile.EntityToxinballSmall;
 import gtPlusPlus.core.handler.render.FirepitRender;
+import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.tileentities.general.TileEntityFirepit;
@@ -29,7 +31,10 @@ import gtPlusPlus.xmod.gregtech.common.render.GTPP_CapeRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.entity.RenderIronGolem;
+import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.projectile.EntitySnowball;
+import net.minecraft.init.Items;
 
 public class ClientProxy extends CommonProxy implements Runnable{
 
@@ -89,7 +94,9 @@ public class ClientProxy extends CommonProxy implements Runnable{
 		RenderingRegistry.registerEntityRenderingHandler(EntitySickBlaze.class, new RenderSickBlaze());
 		RenderingRegistry.registerEntityRenderingHandler(EntityStaballoyConstruct.class, new RenderIronGolem());
 		RenderingRegistry.registerEntityRenderingHandler(EntityToxinballSmall.class, new RenderToxinball(1F));
+		RenderingRegistry.registerEntityRenderingHandler(EntitySulfuricAcidPotion.class, new RenderPotionthrow(ModItems.itemSulfuricPotion));
 
+		
 		//ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBloodSteelChest.class, new BloodSteelChestRenderer());
 		//MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.tutChest), new ItemRenderBloodSteelChest());
 		Utils.LOG_INFO("Registering Custom Renderer for the Fire Pit.");
