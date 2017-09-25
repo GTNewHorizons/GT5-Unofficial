@@ -18,8 +18,6 @@ public class ItemSulfuricAcidPotion extends CoreItem {
 
 	public ItemSulfuricAcidPotion(String unlocalizedName, String displayName, String description) {
 		super(unlocalizedName, displayName, AddToCreativeTab.tabMisc, 16, 0, description, EnumRarity.common, EnumChatFormatting.GRAY, false, null);
-		GT_Values.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(Items.glass_bottle), ItemUtils.getSimpleStack(ModItems.itemSulfuricPotion), FluidUtils.getFluidStack("sulfuricacid", 250), null);
-		GT_Values.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(ModItems.itemSulfuricPotion), ItemUtils.getSimpleStack(Items.glass_bottle), null, FluidUtils.getFluidStack("sulfuricacid", 250));
 	}
 	
 	public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player) {

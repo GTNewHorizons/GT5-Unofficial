@@ -227,18 +227,10 @@ public class GTplusplus implements ActionListener {
 		FMLCommonHandler.instance().bus().register(new LoginEventHandler());
 		Utils.LOG_INFO("Login Handler Initialized");
 
-		//Early load materials
-		/*try {
-			CustomGTMaterials.run();
-		} catch (Throwable t){}*/
-
 		if (CORE.configSwitches.enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
 			removeCircuitRecipeMap(); //Bye shitty recipes.			
-		}
-
-		// HANDLER_GT.mMaterialProperties = new GT_Config(new Configuration(new
-		// File(new File(event.getModConfigurationDirectory(), "GTplusplus"),
-		// "MaterialProperties.cfg")));
+		}	
+		
 		proxy.preInit(event);
 	}
 
@@ -246,16 +238,7 @@ public class GTplusplus implements ActionListener {
 	@Mod.EventHandler
 	public void init(final FMLInitializationEvent event) {
 		proxy.init(event);
-
-		Utils.LOG_INFO("[Proxy] Calling Entity registrator.");
-		proxy.registerEntities();
-		Utils.LOG_INFO("[Proxy] Calling Tile Entity registrator.");
-		proxy.registerTileEntities();
-		Utils.LOG_INFO("[Proxy] Calling Render registrator.");
-		proxy.registerRenderThings();
-
 		proxy.registerNetworkStuff();
-
 	}
 
 	// Post-Init
@@ -270,17 +253,10 @@ public class GTplusplus implements ActionListener {
 			this.dumpGtRecipeMap(Gregtech_Recipe_Map.sAlloyBlastSmelterRecipes);
 		}
 
-		/*for (Materials s : gtPlusPlus.core.material.gregtech.CustomGTMaterials.Custom_GT_Materials){
-			Utils.LOG_INFO("Verification for New Material: "+s.mName);
-		}*/
-
-		// Utils.LOG_INFO("Activating GT OreDictionary Handler, this can take
-		// some time.");
 		Utils.LOG_INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		Utils.LOG_INFO("| Recipes succesfully Loaded: " + RegistrationHandler.recipesSuccess + " | Failed: "
 				+ RegistrationHandler.recipesFailed + " |");
 		Utils.LOG_INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		// Meta_GT_Proxy.activateOreDictHandler();
 		Utils.LOG_INFO("Finally, we are finished. Have some cripsy bacon as a reward.");
 	}
 

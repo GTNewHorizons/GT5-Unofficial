@@ -64,8 +64,14 @@ public class CommonProxy {
 		}
 		AddToCreativeTab.initialiseTabs();
 		COMPAT_IntermodStaging.preInit();
-		//Apparently I should do this here. Might put it in Init for a test.
-		//Growthcraft_Handler.run();
+		
+		//Registration of entities and renderers
+		Utils.LOG_INFO("[Proxy] Calling Entity registrator.");
+		registerEntities();
+		Utils.LOG_INFO("[Proxy] Calling Tile Entity registrator.");
+		registerTileEntities();
+		
+		
 	}
 
 	public void init(final FMLInitializationEvent e) {
@@ -81,6 +87,9 @@ public class CommonProxy {
 		//Block Handler for all events.
 		MinecraftForge.EVENT_BUS.register(new BlockEventHandler());
 
+		Utils.LOG_INFO("[Proxy] Calling Render registrator.");
+		registerRenderThings();
+		
 		//Compat Handling
 		COMPAT_HANDLER.registerMyModsOreDictEntries();
 		COMPAT_HANDLER.intermodOreDictionarySupport();

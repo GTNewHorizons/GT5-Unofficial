@@ -33,8 +33,6 @@ import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.entity.RenderIronGolem;
 import net.minecraft.client.renderer.entity.RenderSnowball;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.projectile.EntitySnowball;
-import net.minecraft.init.Items;
 
 public class ClientProxy extends CommonProxy implements Runnable{
 
@@ -48,7 +46,7 @@ public class ClientProxy extends CommonProxy implements Runnable{
 	@SubscribeEvent
 	public void receiveRenderSpecialsEvent(net.minecraftforge.client.event.RenderPlayerEvent.Specials.Pre aEvent) {
 		if (CORE.mEnableCape){
-		mCapeRenderer.receiveRenderSpecialsEvent(aEvent);
+			mCapeRenderer.receiveRenderSpecialsEvent(aEvent);
 		}
 	}
 
@@ -74,7 +72,6 @@ public class ClientProxy extends CommonProxy implements Runnable{
 		if (LoadedMods.PlayerAPI){
 			this.init_PlayerAPI_INIT();
 		}
-
 		super.init(e);
 	}
 
@@ -95,7 +92,7 @@ public class ClientProxy extends CommonProxy implements Runnable{
 		RenderingRegistry.registerEntityRenderingHandler(EntityStaballoyConstruct.class, new RenderIronGolem());
 		RenderingRegistry.registerEntityRenderingHandler(EntityToxinballSmall.class, new RenderToxinball(1F));
 		Utils.LOG_INFO("Registering Custom Renderer for Sulfuric potion.");
-		RenderingRegistry.registerEntityRenderingHandler(EntitySulfuricAcidPotion.class, new RenderPotionthrow(ModItems.itemSulfuricPotion));
+		RenderingRegistry.registerEntityRenderingHandler(EntitySulfuricAcidPotion.class, new RenderSnowball(ModItems.itemSulfuricPotion));
 
 		
 		//ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBloodSteelChest.class, new BloodSteelChestRenderer());
@@ -141,11 +138,6 @@ public class ClientProxy extends CommonProxy implements Runnable{
 	{
 
 	}
-
-	/*@SubscribeEvent
-    public void receiveRenderSpecialsEvent(net.minecraftforge.client.event.RenderPlayerEvent.Specials.Pre aEvent) {
-        mCapeRenderer.receiveRenderSpecialsEvent(aEvent);
-    }*/
 
 	@Optional.Method(modid = "PlayerAPI")
 	private void init_PlayerAPI_PRE(){

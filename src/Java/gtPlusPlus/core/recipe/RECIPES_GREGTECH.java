@@ -31,6 +31,7 @@ public class RECIPES_GREGTECH {
 		cokeOvenRecipes();
 		matterFabRecipes();
 		assemblerRecipes();
+		fluidcannerRecipes();
 		distilleryRecipes();
 		extractorRecipes();
 		fluidExtractorRecipes();
@@ -49,6 +50,11 @@ public class RECIPES_GREGTECH {
 		cyclotronRecipes();
 		addFuels();
 	}	
+
+	private static void fluidcannerRecipes() {
+		GT_Values.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(Items.glass_bottle), ItemUtils.getSimpleStack(ModItems.itemSulfuricPotion), FluidUtils.getFluidStack("sulfuricacid", 250), null);
+		GT_Values.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(ModItems.itemSulfuricPotion), ItemUtils.getSimpleStack(Items.glass_bottle), null, FluidUtils.getFluidStack("sulfuricacid", 250));		
+	}
 
 	private static void cokeOvenRecipes(){
 		Utils.LOG_INFO("Loading Recipes for Industrial Coking Oven.");
