@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.client.model.ModelSickBlaze;
 import gtPlusPlus.core.entity.monster.EntitySickBlaze;
+import gtPlusPlus.core.lib.CORE;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.*;
 import net.minecraft.util.ResourceLocation;
@@ -11,7 +12,7 @@ import net.minecraft.util.ResourceLocation;
 @SideOnly(Side.CLIENT)
 public class RenderSickBlaze extends RenderLiving
 {
-    private static final ResourceLocation blazeTextures = new ResourceLocation("textures/entity/slime.png");
+    private static final ResourceLocation blazeTextures = new ResourceLocation(CORE.MODID+":"+"textures/entity/sickBlaze.png");
     private int field_77068_a;
 
     public RenderSickBlaze()

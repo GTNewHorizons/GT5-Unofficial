@@ -12,7 +12,6 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
 import net.minecraft.entity.monster.EntityGhast;
-import net.minecraft.entity.monster.EntityGiantZombie;
 import net.minecraft.entity.passive.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -78,12 +77,10 @@ public class Biome_DarkWorld {
 			this.spawnableCaveCreatureList.clear();
 			
 			//Enemies
-			this.spawnableMonsterList.add(new SpawnListEntry(EntityGhast.class, 5, 1, 5));
-			this.spawnableMonsterList.add(new SpawnListEntry(EntityGiantZombie.class, 20, 1, 1));
-			
+			this.spawnableMonsterList.add(new SpawnListEntry(EntityGhast.class, 5, 1, 5));			
 
-			addToMonsterSpawnLists(EntitySickBlaze.class, 5, 1, 5);
-			addToMonsterSpawnLists(EntityStaballoyConstruct.class, 5, 1, 5);
+			this.spawnableMonsterList.add(new SpawnListEntry(EntitySickBlaze.class, 5, 1, 5));
+			this.spawnableMonsterList.add(new SpawnListEntry(EntityStaballoyConstruct.class, 5, 1, 5));
 			
 			/**addToMonsterSpawnLists(EntityBlaze.class, 5, 1, 5);
 			addToMonsterSpawnLists(EntityCaveSpider.class, 5, 1, 5);

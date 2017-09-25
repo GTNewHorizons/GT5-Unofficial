@@ -3,9 +3,6 @@ package gtPlusPlus;
 import java.io.File;
 import java.util.Random;
 
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-
 import cofh.mod.ChildMod;
 import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.Mod.CustomProperty;
@@ -44,19 +41,13 @@ public class GTplusplus_Secondary implements IFuelHandler, IWorldGenerator{
 	public static final String VERSION2 = "0.1";
 
 	// Dark World Handler
-	Biome_DarkWorld DarkWorld_Biome = new Biome_DarkWorld();
-	Dimension_DarkWorld DarkWorld_Dimension = new Dimension_DarkWorld();
+	Biome_DarkWorld DarkWorld_Biome;
+	Dimension_DarkWorld DarkWorld_Dimension;
 	public static int globalDarkWorldPortalSpawnTimer = 0;
 
 	@EventHandler
 	public void load(final FMLInitializationEvent e) {
 		Utils.LOG_INFO("Begin resource allocation for " + MODID2 + " V" + VERSION2);
-		try {
-			initMod();
-		} catch (final Throwable $) {
-			final ModContainer This = FMLCommonHandler.instance().findContainerFor(this);
-			LogManager.getLogger(This.getModId()).log(Level.ERROR, "There was a problem loading " + This.getName(), $);
-		}
 
 		//Load Dark World and Biome
 		GameRegistry.registerFuelHandler(this);
@@ -73,6 +64,9 @@ public class GTplusplus_Secondary implements IFuelHandler, IWorldGenerator{
 
 		//Setup
 		setVars();
+		
+		DarkWorld_Biome = new Biome_DarkWorld();
+		DarkWorld_Dimension = new Dimension_DarkWorld();
 		
 		// Load Dark World
 		DarkWorld_Biome.instance = GTplusplus.instance;
@@ -130,10 +124,6 @@ public class GTplusplus_Secondary implements IFuelHandler, IWorldGenerator{
 		if (world.provider.dimensionId == 0) {
 
 		}
-
-	}
-
-	private static void initMod() {
 
 	}
 

@@ -2,11 +2,13 @@ package gtPlusPlus.core.entity.monster;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.math.MathUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.monster.EntityGolem;
+import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -17,7 +19,7 @@ import net.minecraft.util.*;
 import net.minecraft.village.Village;
 import net.minecraft.world.World;
 
-public class EntityStaballoyConstruct extends EntityGolem {
+public class EntityStaballoyConstruct extends EntityIronGolem {
 	/** deincrements, and a distance-to-home check is done at 0 */
 	private int homeCheckTimer;
 	Village villageObj;
@@ -43,7 +45,7 @@ public class EntityStaballoyConstruct extends EntityGolem {
 	@Override
 	protected void entityInit() {
 		super.entityInit();
-		this.dataWatcher.addObject(16, Byte.valueOf((byte) 0));
+		this.dataWatcher.addObject(17, Byte.valueOf((byte) 0));
 	}
 
 	/**
@@ -60,19 +62,9 @@ public class EntityStaballoyConstruct extends EntityGolem {
 	@Override
 	protected void updateAITick() {
 		if (--this.homeCheckTimer <= 0) {
-			this.homeCheckTimer = 70 + this.rand.nextInt(50);
-			this.villageObj = this.worldObj.villageCollectionObj.findNearestVillage(MathHelper.floor_double(this.posX),
-					MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ), 32);
-
-			if (this.villageObj == null) {
+		this.homeCheckTimer = 70 + this.rand.nextInt(50);			
 				this.detachHome();
 			}
-			else {
-				ChunkCoordinates chunkcoordinates = this.villageObj.getCenter();
-				this.setHomeArea(chunkcoordinates.posX, chunkcoordinates.posY, chunkcoordinates.posZ,
-						(int) (this.villageObj.getVillageRadius() * 0.6F));
-			}
-		}
 
 		super.updateAITick();
 	}
@@ -80,8 +72,8 @@ public class EntityStaballoyConstruct extends EntityGolem {
 	@Override
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(100.0D);
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.25D);
+		this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(500.0D);
+		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5D);
 	}
 
 	/**
@@ -125,6 +117,8 @@ public class EntityStaballoyConstruct extends EntityGolem {
 			int k = MathHelper.floor_double(this.posZ);
 			Block block = this.worldObj.getBlock(i, j, k);
 
+			
+			
 			if (block.getMaterial() != Material.air) {
 				this.worldObj.spawnParticle(
 						"blockcrack_" + Block.getIdFromBlock(block) + "_" + this.worldObj.getBlockMetadata(i, j, k),
@@ -195,7 +189,7 @@ public class EntityStaballoyConstruct extends EntityGolem {
 	}
 
 	public Village getVillage() {
-		return this.villageObj;
+		return null;
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -236,17 +230,21 @@ public class EntityStaballoyConstruct extends EntityGolem {
 	 */
 	@Override
 	protected void dropFewItems(boolean p_70628_1_, int p_70628_2_) {
+		int lootingChance = p_70628_2_+1;
 		int j = this.rand.nextInt(3);
 		int k;
 
 		for (k = 0; k < j; ++k) {
-			this.func_145778_a(Item.getItemFromBlock(Blocks.red_flower), 1, 0.0F);
+			this.entityDropItem(ItemUtils.getItemStackOfAmountFromOreDict("blockStaballoy", 1), 0f);
 		}
 
 		k = 3 + this.rand.nextInt(3);
 
 		for (int l = 0; l < k; ++l) {
-			this.dropItem(Items.iron_ingot, 1);
+			this.entityDropItem(ItemUtils.getItemStackOfAmountFromOreDict("ingotStaballoy", lootingChance), 0f);
+			if (MathUtils.randInt(0, 2) == 0){
+				this.entityDropItem(ItemUtils.getItemStackOfAmountFromOreDict("plateStaballoy", lootingChance), 0f);
+			}
 		}
 	}
 
