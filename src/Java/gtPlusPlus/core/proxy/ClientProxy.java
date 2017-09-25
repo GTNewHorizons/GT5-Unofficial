@@ -94,6 +94,7 @@ public class ClientProxy extends CommonProxy implements Runnable{
 		RenderingRegistry.registerEntityRenderingHandler(EntitySickBlaze.class, new RenderSickBlaze());
 		RenderingRegistry.registerEntityRenderingHandler(EntityStaballoyConstruct.class, new RenderIronGolem());
 		RenderingRegistry.registerEntityRenderingHandler(EntityToxinballSmall.class, new RenderToxinball(1F));
+		Utils.LOG_INFO("Registering Custom Renderer for Sulfuric potion.");
 		RenderingRegistry.registerEntityRenderingHandler(EntitySulfuricAcidPotion.class, new RenderPotionthrow(ModItems.itemSulfuricPotion));
 
 		

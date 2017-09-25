@@ -173,9 +173,14 @@ public class NBTUtils {
 		NBTTagCompound tNBT = getNBT(aStack);
 		return tNBT.getString(aTag);
 	}
+	
+	public static boolean doesStringExist(ItemStack aStack, String aTag) {
+		NBTTagCompound tNBT = getNBT(aStack);
+		return tNBT.hasKey(aTag);
+	}
 
 	public static boolean tryIterateNBTData(ItemStack aStack) {
-		/*try {
+		try {
 			NBTTagCompound aNBT = NBTUtils.getNBT(aStack);
 			if (aNBT != null) {
 				if (!aNBT.hasNoTags()) {
@@ -183,7 +188,7 @@ public class NBTUtils {
 					Map<?, ?> mInternalMap = ReflectionUtils.getField(aNBT, "tagMap");
 
 					if (mInternalMap != null) {
-						mInternalMap.forEach((k, v) -> System.out.println("Key: " + k + ": Value: " + v));
+						mInternalMap.forEach((k, v) -> Utils.LOG_INFO("Key: " + k + ": Value: " + v));
 					} else {
 						Utils.LOG_INFO("Data map reflected from NBTTagCompound was not valid.");
 						return false;
@@ -197,8 +202,7 @@ public class NBTUtils {
 			return true;
 		} catch (Throwable t) {
 			return false;
-		}*/
-		return false;
+		}
 	}
 
 }

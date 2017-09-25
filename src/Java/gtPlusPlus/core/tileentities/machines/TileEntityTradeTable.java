@@ -120,6 +120,7 @@ public class TileEntityTradeTable extends TileEntity implements INetworkDataProv
 				if (slot0 != null && slot0.hasTagCompound()){
 					NBTUtils.tryIterateNBTData(slot0);
 					this.inventoryOutputs.setInventorySlotContents(0, null);
+					this.inventoryOutputs.setInventorySlotContents(1, slot0);
 				}	
 
 			}

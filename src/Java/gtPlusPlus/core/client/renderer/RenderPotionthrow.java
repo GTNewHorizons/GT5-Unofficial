@@ -18,13 +18,13 @@ import org.lwjgl.opengl.GL12;
 @SideOnly(Side.CLIENT)
 public class RenderPotionthrow extends Render
 {
-    private Item field_94151_a;
-    private int field_94150_f;
+    private Item mRenderItem;
+    private int mDamage;
 
     public RenderPotionthrow(Item p_i1259_1_, int p_i1259_2_)
     {
-        this.field_94151_a = p_i1259_1_;
-        this.field_94150_f = p_i1259_2_;
+        this.mRenderItem = p_i1259_1_;
+        this.mDamage = p_i1259_2_;
     }
 
     public RenderPotionthrow(Item p_i1260_1_)
@@ -40,7 +40,7 @@ public class RenderPotionthrow extends Render
      */
     public void doRender(Entity p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_)
     {
-        IIcon iicon = this.field_94151_a.getIconFromDamage(this.field_94150_f);
+        IIcon iicon = this.mRenderItem.getIconFromDamage(this.mDamage);
 
         if (iicon != null)
         {
