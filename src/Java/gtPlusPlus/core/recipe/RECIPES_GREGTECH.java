@@ -12,6 +12,7 @@ import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.init.Blocks;
@@ -53,12 +54,102 @@ public class RECIPES_GREGTECH {
 	}	
 
 	private static void blastSmelterRecipes() {
-		/*CORE.RA.addBlastSmelterRecipe(
-				new ItemStack[]{},
-				FluidUtils.getFluidStack(fluidName, amount), 
+		
+		//Black Bronze
+		CORE.RA.addBlastSmelterRecipe(
+				new ItemStack[]{
+						ItemUtils.getItemStackOfAmountFromOreDict("dustGold", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustSilver", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 3),						
+				},
+				FluidUtils.getFluidStack("molten.blackbronze", 5*144), 
 				0,
-				aDuration,
-				aEUt)*/
+				MathUtils.findPercentageOfInt(200*20, 80),
+				120);
+		
+		//Black Steel
+		CORE.RA.addBlastSmelterRecipe(
+				new ItemStack[]{
+						ItemUtils.getItemStackOfAmountFromOreDict("dustNickel", 5),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustSteel", 15),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustGold", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustSilver", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 3)						
+				},
+				FluidUtils.getFluidStack("molten.blacksteel", 25*144), 
+				0,
+				MathUtils.findPercentageOfInt(60*20, 80),
+				120);
+		
+		//Red Steel
+		CORE.RA.addBlastSmelterRecipe(
+				new ItemStack[]{
+						ItemUtils.getItemStackOfAmountFromOreDict("dustSilver", 4),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 4),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustZinc", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustBismuth", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustSteel", 10),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustBlackSteel", 20)						
+				},
+				FluidUtils.getFluidStack("molten.redsteel", 40*144), 
+				0,
+				MathUtils.findPercentageOfInt(65*20, 80),
+				120);
+		
+		//Blue Steel
+		CORE.RA.addBlastSmelterRecipe(
+				new ItemStack[]{
+						ItemUtils.getItemStackOfAmountFromOreDict("dustGold", 12),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 18),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustZinc", 5),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustSteel", 30),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustBlackSteel", 60)	
+						
+				},
+				FluidUtils.getFluidStack("molten.bluesteel", 125*144), 
+				0,
+				MathUtils.findPercentageOfInt(70*20, 80),
+				120);
+		
+		//TungstenSteel
+		CORE.RA.addBlastSmelterRecipe(
+				new ItemStack[]{
+						ItemUtils.getItemStackOfAmountFromOreDict("ingotTungsten", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("ingotSteel", 1)						
+				},
+				FluidUtils.getFluidStack("molten.tungstensteel", 2*144), 
+				0,
+				MathUtils.findPercentageOfInt(300*20, 80),
+				120);
+		
+		//Stainless Steel
+		CORE.RA.addBlastSmelterRecipe(
+				new ItemStack[]{
+						ItemUtils.getItemStackOfAmountFromOreDict("dustIron", 6),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustNickel", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustManganese", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustChrome", 1)						
+				},
+				FluidUtils.getFluidStack("molten.stainlesssteel", 9*144), 
+				0,
+				MathUtils.findPercentageOfInt(85*20, 80),
+				120);
+		
+		//Eglin
+		CORE.RA.addBlastSmelterRecipe(
+				new ItemStack[]{
+						ItemUtils.getItemStackOfAmountFromOreDict("dustNickel", 5),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustIron", 23),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustAluminium", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustChrome", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustSulfur", 3),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustCarbon", 3),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustSilicon", 12)						
+				},
+				FluidUtils.getFluidStack("molten.eglinsteel", 48*144), 
+				0,
+				MathUtils.findPercentageOfInt(30*20, 80),
+				120);
 		
 	}
 

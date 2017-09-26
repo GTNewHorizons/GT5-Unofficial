@@ -42,9 +42,11 @@ public class RecipeGen_BlastSmelterGT_Ex implements IOreRecipeRegistrator {
 					}
 				}
 			}
-		case ingot:           
-			if (aMaterial.mBlastFurnaceRequired) {
-				addBlastRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), null, null, null, aMaterial.mBlastFurnaceTemp > 1750 ? GT_OreDictUnificator.get(OrePrefixes.ingotHot, aMaterial.mSmeltInto, GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L), 1L) : GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L), null, (int) Math.max(aMaterial.getMass() / 40L, 1L) * aMaterial.mBlastFurnaceTemp, 120, aMaterial);
+		case ingot:
+			if ((null != (tDustStack = GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L))) && (!aMaterial.contains(SubTag.NO_SMELTING))) {
+				if (aMaterial.mBlastFurnaceRequired) {
+					addBlastRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), null, null, null, aMaterial.mBlastFurnaceTemp > 1750 ? GT_OreDictUnificator.get(OrePrefixes.ingotHot, aMaterial.mSmeltInto, tDustStack, 1L) : GT_Utility.copyAmount(1L, new Object[]{tDustStack}), null, (int) Math.max(aMaterial.getMass() / 40L, 1L) * aMaterial.mBlastFurnaceTemp, 120, aMaterial);
+				}
 			}
 			break;
 		case dustSmall:           
@@ -104,16 +106,9 @@ public class RecipeGen_BlastSmelterGT_Ex implements IOreRecipeRegistrator {
 				//Cannot handle two input fluids
 				return false;
 			}
+			
 			FluidStack mInputfluidstack;
-			if (fluid1 != null && fluid2 == null){
-				mInputfluidstack = fluid1;
-			}
-			else if (fluid1 == null && fluid2 != null){
-				mInputfluidstack = fluid2;
-			}
-			else {
-				mInputfluidstack = null;
-			}
+			mInputfluidstack = (fluid1 != null) ? fluid1 : fluid2;
 			
 			//Try with new handler
 			//Add Blast Smelter Recipe.
