@@ -58,6 +58,7 @@ public class RECIPES_GREGTECH {
 		//Black Bronze
 		CORE.RA.addBlastSmelterRecipe(
 				new ItemStack[]{
+						ItemUtils.getGregtechCircuit(13),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustGold", 1),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustSilver", 1),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 3),						
@@ -70,6 +71,7 @@ public class RECIPES_GREGTECH {
 		//Black Steel
 		CORE.RA.addBlastSmelterRecipe(
 				new ItemStack[]{
+						ItemUtils.getGregtechCircuit(5),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustNickel", 5),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustSteel", 15),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustGold", 1),
@@ -84,6 +86,7 @@ public class RECIPES_GREGTECH {
 		//Red Steel
 		CORE.RA.addBlastSmelterRecipe(
 				new ItemStack[]{
+						ItemUtils.getGregtechCircuit(6),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustSilver", 4),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 4),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustZinc", 1),
@@ -99,6 +102,7 @@ public class RECIPES_GREGTECH {
 		//Blue Steel
 		CORE.RA.addBlastSmelterRecipe(
 				new ItemStack[]{
+						ItemUtils.getGregtechCircuit(5),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustGold", 12),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 18),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustZinc", 5),
@@ -114,6 +118,7 @@ public class RECIPES_GREGTECH {
 		//TungstenSteel
 		CORE.RA.addBlastSmelterRecipe(
 				new ItemStack[]{
+						ItemUtils.getGregtechCircuit(2),
 						ItemUtils.getItemStackOfAmountFromOreDict("ingotTungsten", 1),
 						ItemUtils.getItemStackOfAmountFromOreDict("ingotSteel", 1)						
 				},
@@ -125,6 +130,7 @@ public class RECIPES_GREGTECH {
 		//Stainless Steel
 		CORE.RA.addBlastSmelterRecipe(
 				new ItemStack[]{
+						ItemUtils.getGregtechCircuit(14),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustIron", 6),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustNickel", 1),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustManganese", 1),
@@ -138,6 +144,7 @@ public class RECIPES_GREGTECH {
 		//Eglin
 		CORE.RA.addBlastSmelterRecipe(
 				new ItemStack[]{
+						ItemUtils.getGregtechCircuit(7),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustNickel", 5),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustIron", 23),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustAluminium", 1),
