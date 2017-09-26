@@ -83,15 +83,29 @@ public interface IGregtech_RecipeAdder {
 	 * Adds a Recipe for the Alloy Blast Smelter. (up to 9 Inputs)
 	 *
 	 * @param aInput   = ItemStack[] (not null, and respects StackSize)
-	 * @param aFluidOutput   = Output of the UU-Matter (not null, and respects StackSize)
-	 * @param aChances 	= Output Change (can be == 0)
+	 * @param aFluidOutput   = Output of the Molten Metal (not null, and respects StackSize)
+	 * @param aChances 	= Output Chance (can be == 0)
 	 * @param aDuration 	= Duration (must be >= 0)
-	 * @param aEUt			= EU needed for heating up (must be >= 0)
+	 * @param aEUt			= EU per tick needed for heating up (must be >= 0)
 	 * @return true if the Recipe got added, otherwise false.
 	 */
 	public boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aOutput, int aChance, int aDuration, int aEUt);
 
+	/**
+	 * Adds a Recipe for the Alloy Blast Smelter. (up to 9 Inputs)
+	 *
+	 * @param aInput   = ItemStack[] (not null, and respects StackSize)
+	 * @param aFluidInput   = Input of a fluid (can be null, and respects StackSize)
+	 * @param aFluidOutput   = Output of the Molten Metal (not null, and respects StackSize)
+	 * @param aChances 	= Output Chance (can be == 0)
+	 * @param aDuration 	= Duration (must be >= 0)
+	 * @param aEUt			= EU per tick needed for heating up (must be >= 0)
+	 * @return true if the Recipe got added, otherwise false.
+	 */
+	public boolean addBlastSmelterRecipe(ItemStack[] aInput, FluidStack aInputFluid, FluidStack aOutput, int aChance, int aDuration, int aEUt);
 
+	
+	
 	public boolean addLFTRRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aOutput1, int aDuration, int aEUt);
 	public boolean addLFTRRecipe(ItemStack aInput1, FluidStack aInput2, ItemStack aOutput1, FluidStack aOutput2, int aDuration, int aEUt);
 	public boolean addLFTRRecipe(FluidStack aInput1, FluidStack aInput2, FluidStack aOutput1, int aDuration, int aEUt);

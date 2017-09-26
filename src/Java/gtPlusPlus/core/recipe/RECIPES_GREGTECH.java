@@ -48,8 +48,19 @@ public class RECIPES_GREGTECH {
 		centrifugeRecipes();
 		benderRecipes();
 		cyclotronRecipes();
+		blastSmelterRecipes();
 		addFuels();
 	}	
+
+	private static void blastSmelterRecipes() {
+		/*CORE.RA.addBlastSmelterRecipe(
+				new ItemStack[]{},
+				FluidUtils.getFluidStack(fluidName, amount), 
+				0,
+				aDuration,
+				aEUt)*/
+		
+	}
 
 	private static void fluidcannerRecipes() {
 		GT_Values.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(Items.glass_bottle), ItemUtils.getSimpleStack(ModItems.itemSulfuricPotion), FluidUtils.getFluidStack("sulfuricacid", 250), null);
