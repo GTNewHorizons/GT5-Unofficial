@@ -129,7 +129,7 @@ public class GT_MetaTileEntity_DebugPowerGenerator extends GT_MetaTileEntity_Tie
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_GENERAL,
                 this.mDescription,
                 EnumChatFormatting.BLUE + "Infinite Producer/Consumer",
                 EnumChatFormatting.BLUE + "Since i wanted one..."

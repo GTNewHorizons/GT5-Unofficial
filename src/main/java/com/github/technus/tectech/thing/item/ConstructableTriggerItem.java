@@ -109,7 +109,7 @@ public class ConstructableTriggerItem extends Item {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
-        aList.add(CommonValues.TEC_MARK);
+        aList.add(CommonValues.TEC_MARK_GENERAL);
         aList.add("Triggers Constructable Interface");
         aList.add(EnumChatFormatting.BLUE + "Shows multiblock construction details,");
         aList.add(EnumChatFormatting.BLUE + "just Use on a multiblock controller.");

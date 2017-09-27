@@ -6,7 +6,11 @@ import net.minecraft.util.EnumChatFormatting;
  * Created by danie_000 on 11.01.2017.
  */
 public final class CommonValues {
-    public final static String TEC_MARK =
+    public final static String TEC_MARK_GENERAL =
+            EnumChatFormatting.BLUE + "Tec" +
+                    EnumChatFormatting.DARK_BLUE + "Tech" +
+                    EnumChatFormatting.BLUE + ": Interdimensional";
+    public final static String TEC_MARK_EM =
             EnumChatFormatting.BLUE + "Tec" +
                     EnumChatFormatting.DARK_BLUE + "Tech" +
                     EnumChatFormatting.BLUE + ": Elemental Matter";

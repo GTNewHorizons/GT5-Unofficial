@@ -336,7 +336,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_EM,
                 "Philosophers didn't even...",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "dream about it!"
         };

@@ -103,7 +103,7 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_GENERAL,
                 "Power substation",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "All the transformation!",
                 EnumChatFormatting.BLUE + "Only 0.78125% power loss, HAYO!",

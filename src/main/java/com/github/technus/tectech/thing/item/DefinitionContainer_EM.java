@@ -86,7 +86,7 @@ public class DefinitionContainer_EM extends Item {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
-        aList.add(CommonValues.TEC_MARK);
+        aList.add(CommonValues.TEC_MARK_EM);
         try {
             NBTTagCompound tNBT = aStack.getTagCompound();
             if (tNBT != null && tNBT.hasKey("info")) {

@@ -19,7 +19,7 @@ public class TurretBaseItemEM extends ItemBlock {
     }
 
     public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List list, boolean p_77624_4_) {
-        list.add(CommonValues.TEC_MARK);
+        list.add(CommonValues.TEC_MARK_EM);
         list.add("");
         list.add(EnumChatFormatting.AQUA + "--" + StatCollector.translateToLocal("tooptip.energy.label") + "--");
         list.add(StatCollector.translateToLocal("tooltip.rf.max") + ": " + EnumChatFormatting.WHITE + 1000000000);

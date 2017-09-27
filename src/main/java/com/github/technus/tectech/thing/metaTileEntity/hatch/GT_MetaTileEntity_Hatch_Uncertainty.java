@@ -171,7 +171,7 @@ public class GT_MetaTileEntity_Hatch_Uncertainty extends GT_MetaTileEntity_Hatch
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_EM,
                 mDescription,
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Schrödinger equation in a box"
         };

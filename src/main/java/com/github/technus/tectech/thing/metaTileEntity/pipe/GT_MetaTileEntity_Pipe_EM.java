@@ -91,7 +91,7 @@ public class GT_MetaTileEntity_Pipe_EM extends MetaPipeEntity implements iConnec
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_EM,
                 "Quantum tunneling device.",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Not a portal!!!",
                 EnumChatFormatting.AQUA + "Must be painted to work",

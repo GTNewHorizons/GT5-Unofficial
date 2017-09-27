@@ -123,7 +123,7 @@ public class GT_MetaTileEntity_Hatch_DynamoMulti extends GT_MetaTileEntity_Hatch
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_GENERAL,
                 mDescription
                 //"Amperes Out: "+ EnumChatFormatting.AQUA+Amperes+" A"
         };

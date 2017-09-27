@@ -8,7 +8,7 @@ import net.minecraft.util.EnumChatFormatting;
 
 import java.util.List;
 
-import static com.github.technus.tectech.CommonValues.TEC_MARK;
+import static com.github.technus.tectech.CommonValues.TEC_MARK_GENERAL;
 
 /**
  * Created by danie_000 on 03.10.2016.
@@ -20,7 +20,7 @@ public class GT_Item_HintTT extends GT_Item_Casings_Abstract {
 
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer aPlayer, List aList, boolean aF3_H) {
-        aList.add(TEC_MARK);
+        aList.add(TEC_MARK_GENERAL);
         aList.add("Helps while building");
         switch (aStack.getItemDamage()) {
             case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10: case 11:
