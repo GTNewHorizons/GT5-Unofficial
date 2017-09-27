@@ -24,7 +24,7 @@ public class DreamCraftRecipeLoader implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 CustomItemList.eM_Containment.get(1, o),
                 GT_ModHandler.getIC2Item("reinforcedGlass", 1L)
-        }, Materials.Trinium.getMolten(576), new ItemStack(QuantumGlassBlock.INSTANCE, 1), 200, 500000, true);
+        }, Materials.Trinium.getMolten(576), new ItemStack(QuantumGlassBlock.INSTANCE, 1), 200, 500000);
 
         //BLUEprint
         GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(ConstructableTriggerItem.INSTANCE, 1),
@@ -52,7 +52,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 16),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 16),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.NiobiumTitanium, 2)
-        }, Materials.TungstenSteel.getMolten(576), CustomItemList.eM_Power.get(1, o), 100, 30720, true);
+        }, Materials.TungstenSteel.getMolten(576), CustomItemList.eM_Power.get(1, o), 100, 30720);
 
         //Computer Casing
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
@@ -60,7 +60,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.StainlessSteel, 8),
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Ultimate, 1),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.NiobiumTitanium, 2)
-        }, Materials.Aluminium.getMolten(1296), CustomItemList.eM_Computer_Casing.get(1, o), 200, 122880, true);
+        }, Materials.Aluminium.getMolten(1296), CustomItemList.eM_Computer_Casing.get(1, o), 200, 122880);
         //Computer Vent Casing
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 GT_OreDictUnificator.get(OrePrefixes.frameGt, Materials.StainlessSteel, 1),
@@ -69,7 +69,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.pipeTiny, Materials.StainlessSteel, 16),
                 GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Copper, 16),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 1)
-        }, Materials.SolderingAlloy.getMolten(1296), CustomItemList.eM_Computer_Vent.get(1, o), 100, 1920, true);
+        }, Materials.SolderingAlloy.getMolten(1296), CustomItemList.eM_Computer_Vent.get(1, o), 100, 1920);
         //Advanced Computer Casing
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 CustomItemList.eM_Computer_Casing.get(1, o),
@@ -87,7 +87,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.screw, Materials.TungstenSteel, 24),
                 GT_OreDictUnificator.get(OrePrefixes.ring, Materials.TungstenSteel, 24),
                 ItemList.Field_Generator_IV.get(1, o)
-        }, Materials.Osmium.getMolten(1296), CustomItemList.eM_Containment.get(1, o), 800, 500000, true);
+        }, Materials.Osmium.getMolten(1296), CustomItemList.eM_Containment.get(1, o), 800, 500000);
 
         //endregion
 
@@ -175,7 +175,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                 CustomItemList.DATApipe.get(4, o),
                 ItemList.Cover_Screen.get(1, o ),
                 new ItemStack(Blocks.stone_button, 16),
-        }, Materials.Iridium.getMolten(2592), CustomItemList.Parametrizer_Hatch.get(1, o), 800, 122880, true);
+        }, Materials.Iridium.getMolten(2592), CustomItemList.Parametrizer_Hatch.get(1, o), 800, 122880);
         //Uncertainty
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 CustomItemList.eM_Computer_Casing.get(1, o),
@@ -219,7 +219,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.circuit, Materials.Advanced, 4),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.AnnealedCopper, 16),
                 ItemList.Upgrade_Overclocker.get(4, o),
-        }, Materials.Copper.getMolten(576), CustomItemList.Machine_Multi_Microwave.get(1, o), 800, 480, true);
+        }, Materials.Copper.getMolten(576), CustomItemList.Machine_Multi_Microwave.get(1, o), 800, 480);
 
         //Active Transformer
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
@@ -227,7 +227,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                 com.dreammaster.gthandler.CustomItemList.HighEnergyFlowCircuit.get(1, o),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 16),
                 ItemList.Circuit_Chip_UHPIC.get(2, o),
-        }, Materials.TungstenSteel.getMolten(576), CustomItemList.Machine_Multi_Transformer.get(1, o), 400, 30720, true);
+        }, Materials.TungstenSteel.getMolten(576), CustomItemList.Machine_Multi_Transformer.get(1, o), 400, 30720);
 
         //Network Switch
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
@@ -236,7 +236,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 64),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Copper, 64),
                 CustomItemList.DATApipe.get(4, o),
-        }, Materials.Iridium.getMolten(1296), CustomItemList.Machine_Multi_Switch.get(1, o), 800, 122880, true);
+        }, Materials.Iridium.getMolten(1296), CustomItemList.Machine_Multi_Switch.get(1, o), 800, 122880);
 
         //Quantum Computer
         GT_Values.RA.addAssemblylineRecipe(ItemList.Tool_DataOrb.get(1), 20000, new ItemStack[]{
