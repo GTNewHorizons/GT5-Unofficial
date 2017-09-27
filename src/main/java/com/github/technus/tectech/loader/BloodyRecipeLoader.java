@@ -3,7 +3,6 @@ package com.github.technus.tectech.loader;
 import com.github.technus.tectech.recipe.TT_recipeAdder;
 import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
-import com.github.technus.tectech.thing.casing.GT_Block_HintTT;
 import com.github.technus.tectech.thing.item.ConstructableTriggerItem;
 import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;

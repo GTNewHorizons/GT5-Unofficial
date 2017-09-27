@@ -2,8 +2,6 @@ package com.github.technus.tectech.loader;
 
 import com.github.technus.tectech.compatibility.dreamcraft.DreamCraftRecipeLoader;
 import com.github.technus.tectech.elementalMatter.definitions.complex.dAtomDefinition;
-import com.github.technus.tectech.thing.block.QuantumGlassBlock;
-import com.github.technus.tectech.thing.casing.GT_Block_HintTT;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.Materials;
