@@ -245,7 +245,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_EM,
                 mDescription,
                 "Max stacks amount: " + EnumChatFormatting.AQUA + getMaxStacksCount(),
                 "Stack capacity: " + EnumChatFormatting.AQUA + getMaxStackSize(),

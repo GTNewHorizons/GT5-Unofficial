@@ -100,7 +100,7 @@ public class GT_MetaTileEntity_EM_annihilation extends GT_MetaTileEntity_Multibl
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_EM,
                 "Things+Anti Things don't like each other.",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Matter into power!"
         };

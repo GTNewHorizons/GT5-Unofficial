@@ -70,7 +70,7 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_EM,
                 "Reroutes Matter",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Axis aligned movement!"
         };

@@ -221,7 +221,7 @@ public class GT_MetaTileEntity_Hatch_Rack extends GT_MetaTileEntity_Hatch {
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_EM,
                 mDescription,
                 EnumChatFormatting.AQUA + "Holds Computer Components"
         };

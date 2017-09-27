@@ -115,7 +115,7 @@ public class GT_MetaTileEntity_Hatch_Holder extends GT_MetaTileEntity_Hatch {
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_EM,
                 mDescription,
                 EnumChatFormatting.AQUA + "Advanced Holding Mechanism!"
         };

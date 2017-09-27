@@ -105,7 +105,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_EM,
                 "What is existing here?",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "I HAVE NO IDEA (yet)!"
         };

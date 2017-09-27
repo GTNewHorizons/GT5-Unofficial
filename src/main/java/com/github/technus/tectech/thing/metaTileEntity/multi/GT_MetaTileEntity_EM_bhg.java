@@ -179,7 +179,7 @@ public class GT_MetaTileEntity_EM_bhg extends GT_MetaTileEntity_MultiblockBase_E
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_EM,
                 "Singularity based power generation.",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Super unstable!!!"
         };

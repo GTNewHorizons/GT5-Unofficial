@@ -43,7 +43,7 @@ public class GT_MetaTileEntity_EM_machine extends GT_MetaTileEntity_MultiblockBa
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_EM,
                 "Processing quantum matter since...",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "the time u started using it."
         };
