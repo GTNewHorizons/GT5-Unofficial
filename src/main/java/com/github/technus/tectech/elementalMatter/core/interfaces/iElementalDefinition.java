@@ -1,6 +1,7 @@
 package com.github.technus.tectech.elementalMatter.core.interfaces;
 
-import com.github.technus.tectech.elementalMatter.core.*;
+import com.github.technus.tectech.elementalMatter.core.cElementalDecay;
+import com.github.technus.tectech.elementalMatter.core.cElementalDefinitionStackMap;
 import com.github.technus.tectech.elementalMatter.core.containers.cElementalDefinitionStack;
 import com.github.technus.tectech.elementalMatter.core.transformations.aFluidDequantizationInfo;
 import com.github.technus.tectech.elementalMatter.core.transformations.aItemDequantizationInfo;

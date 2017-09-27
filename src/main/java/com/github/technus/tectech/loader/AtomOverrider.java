@@ -6,8 +6,8 @@ import com.github.technus.tectech.elementalMatter.definitions.complex.dAtomDefin
 import com.github.technus.tectech.elementalMatter.definitions.complex.dHadronDefinition;
 import com.github.technus.tectech.elementalMatter.definitions.primitive.eLeptonDefinition;
 
-import static com.github.technus.tectech.elementalMatter.definitions.complex.dAtomDefinition.addOverride;
 import static com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefinition.stableRawLifeTime;
+import static com.github.technus.tectech.elementalMatter.definitions.complex.dAtomDefinition.addOverride;
 
 /**
  * Created by Tec on 29.05.2017.
