@@ -1,9 +1,9 @@
 package com.github.technus.tectech.recipe;
 
-import com.github.technus.tectech.elementalMatter.core.templates.cElementalDefinition;
 import com.github.technus.tectech.elementalMatter.core.cElementalDefinitionStackMap;
 import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefinition;
+import com.github.technus.tectech.elementalMatter.core.templates.cElementalDefinition;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GT_Recipe;
 import net.minecraft.item.ItemStack;

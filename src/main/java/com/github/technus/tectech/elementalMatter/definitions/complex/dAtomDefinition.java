@@ -1,12 +1,15 @@
 package com.github.technus.tectech.elementalMatter.definitions.complex;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.elementalMatter.core.*;
-import com.github.technus.tectech.elementalMatter.core.templates.cElementalDefinition;
-import com.github.technus.tectech.elementalMatter.core.containers.cElementalDefinitionStack;
-import com.github.technus.tectech.elementalMatter.core.transformations.*;
-import com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefinition;
 import com.github.technus.tectech.compatibility.gtpp.GtppAtomLoader;
+import com.github.technus.tectech.elementalMatter.core.cElementalDecay;
+import com.github.technus.tectech.elementalMatter.core.cElementalDefinitionStackMap;
+import com.github.technus.tectech.elementalMatter.core.cElementalMutableDefinitionStackMap;
+import com.github.technus.tectech.elementalMatter.core.containers.cElementalDefinitionStack;
+import com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefinition;
+import com.github.technus.tectech.elementalMatter.core.tElementalException;
+import com.github.technus.tectech.elementalMatter.core.templates.cElementalDefinition;
+import com.github.technus.tectech.elementalMatter.core.transformations.*;
 import com.github.technus.tectech.elementalMatter.definitions.primitive.eBosonDefinition;
 import com.github.technus.tectech.elementalMatter.definitions.primitive.eLeptonDefinition;
 import com.github.technus.tectech.elementalMatter.definitions.primitive.eNeutrinoDefinition;

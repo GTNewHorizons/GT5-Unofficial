@@ -24,9 +24,9 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import static com.github.technus.tectech.CommonValues.DISPERSE_AT;
+import static com.github.technus.tectech.Util.V;
 import static com.github.technus.tectech.loader.MainLoader.elementalPollution;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
-import static com.github.technus.tectech.Util.V;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;
 
 /**

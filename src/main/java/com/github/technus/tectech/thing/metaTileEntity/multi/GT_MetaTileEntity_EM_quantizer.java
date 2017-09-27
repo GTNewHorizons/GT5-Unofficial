@@ -2,13 +2,13 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.elementalMatter.core.*;
+import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.elementalMatter.core.containers.cElementalInstanceStack;
+import com.github.technus.tectech.elementalMatter.core.interfaces.iHasElementalDefinition;
 import com.github.technus.tectech.elementalMatter.core.transformations.aFluidQuantizationInfo;
 import com.github.technus.tectech.elementalMatter.core.transformations.aItemQuantizationInfo;
 import com.github.technus.tectech.elementalMatter.core.transformations.aOredictQuantizationInfo;
 import com.github.technus.tectech.elementalMatter.core.transformations.bTransformationInfo;
-import com.github.technus.tectech.elementalMatter.core.interfaces.iHasElementalDefinition;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import gregtech.api.GregTech_API;

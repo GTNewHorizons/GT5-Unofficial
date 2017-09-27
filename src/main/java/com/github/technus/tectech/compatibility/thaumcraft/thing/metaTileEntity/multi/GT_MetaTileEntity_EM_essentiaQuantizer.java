@@ -2,9 +2,9 @@ package com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.elementalMatter.core.containers.cElementalInstanceStack;
-import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.compatibility.thaumcraft.definitions.ePrimalAspectDefinition;
+import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.elementalMatter.core.containers.cElementalInstanceStack;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
@@ -19,11 +19,11 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import static com.github.technus.tectech.Util.StructureBuilder;
+import static com.github.technus.tectech.Util.V;
 import static com.github.technus.tectech.compatibility.thaumcraft.EssentiaCompat.essentiaContainerCompat;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static gregtech.api.enums.GT_Values.E;
-import static com.github.technus.tectech.Util.V;
 
 /**
  * Created by danie_000 on 17.12.2016.
