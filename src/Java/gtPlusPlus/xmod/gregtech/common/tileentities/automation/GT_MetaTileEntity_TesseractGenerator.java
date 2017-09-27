@@ -148,13 +148,19 @@ public class GT_MetaTileEntity_TesseractGenerator extends GT_MetaTileEntity_Basi
 	@Override
 	public void saveNBTData(final NBTTagCompound aNBT) {
 		aNBT.setInteger("mFrequency", this.mFrequency);
-		aNBT.setString("mOwner", mOwner.toString());
+		if (mOwner != null)
+			aNBT.setString("mOwner", mOwner.toString());
 	}
 
 	@Override
 	public void loadNBTData(final NBTTagCompound aNBT) {
 		this.mFrequency = aNBT.getInteger("mFrequency");
-		this.mOwner = UUID.fromString(aNBT.getString("mOnwer"));
+		try {
+			this.mOwner = UUID.fromString(aNBT.getString("mOnwer"));
+		}
+		catch (IllegalArgumentException i){
+
+		}
 	}
 
 	@Override

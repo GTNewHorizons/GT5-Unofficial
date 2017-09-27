@@ -152,6 +152,7 @@ extends GregtechMeta_MultiBlockBase {
 		//Make a recipe instance for the rest of the method.
 		final GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sSifterRecipes.findRecipe(this.getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
 		
+		if (tRecipe != null)
 		baseRecipe = tRecipe.copy();
 		
 		if (cloneRecipe != tRecipe || cloneRecipe == null){
