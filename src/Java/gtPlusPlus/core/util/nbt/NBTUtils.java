@@ -15,7 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
 public class NBTUtils {
-	
+
 	public static NBTTagCompound getNBT(ItemStack aStack) {
 		NBTTagCompound rNBT = aStack.getTagCompound();
 		return ((rNBT == null) ? new NBTTagCompound() : rNBT);
@@ -173,7 +173,7 @@ public class NBTUtils {
 		NBTTagCompound tNBT = getNBT(aStack);
 		return tNBT.getString(aTag);
 	}
-	
+
 	public static boolean doesStringExist(ItemStack aStack, String aTag) {
 		NBTTagCompound tNBT = getNBT(aStack);
 		return tNBT.hasKey(aTag);
@@ -188,7 +188,10 @@ public class NBTUtils {
 					Map<?, ?> mInternalMap = ReflectionUtils.getField(aNBT, "tagMap");
 
 					if (mInternalMap != null) {
-						mInternalMap.forEach((k, v) -> Utils.LOG_INFO("Key: " + k + ": Value: " + v));
+						//mInternalMap.forEach((k, v) -> Utils.LOG_INFO("Key: " + k + ": Value: " + v));
+						for(Map.Entry<?,?> e:mInternalMap.entrySet()){
+							Utils.LOG_INFO("Key: " + e.getKey().toString() + " | Value: " + e.getValue().toString());
+						}
 					} else {
 						Utils.LOG_INFO("Data map reflected from NBTTagCompound was not valid.");
 						return false;
