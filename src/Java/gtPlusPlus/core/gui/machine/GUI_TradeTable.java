@@ -4,28 +4,44 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.container.Container_ProjectTable;
 import gtPlusPlus.core.container.Container_TradeTable;
-import gtPlusPlus.core.container.Container_Workbench;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
 import gtPlusPlus.core.tileentities.machines.TileEntityTradeTable;
-import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
 import gtPlusPlus.core.util.Utils;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
 @SideOnly(Side.CLIENT)
 public class GUI_TradeTable extends GuiContainer {
+	
+	TileEntityTradeTable mThisTable;
+	final String mOwnerName;
 
 	private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(CORE.MODID, "textures/gui/ProjectTable.png");
 
-	public GUI_TradeTable(final InventoryPlayer player_inventory, final TileEntityTradeTable te){
+	public GUI_TradeTable(final InventoryPlayer player_inventory, final TileEntityTradeTable te, final String mOwnerName){
 		super(new Container_TradeTable(player_inventory, te));
+		
+		if (te == null){
+			this.mThisTable = null;
+			this.mOwnerName = mOwnerName;
+			Utils.LOG_INFO("Set invalid TE in GUI");
+		}
+		else {
+			mThisTable = te;
+			this.mOwnerName = mOwnerName;
+			Utils.LOG_INFO("Set valid TE in GUI");			
+		}
 	}
 
+	@Override
+	protected void drawGuiContainerForegroundLayer(final int i, final int j){
+		this.fontRendererObj.drawString(I18n.format("Owner: "+this.mOwnerName, new Object[0]), 28, 6, 4210752);
+		//this.fontRendererObj.drawString(I18n.format("container.inventory", new Object[0]), 8, this.ySize - 96 + 2, 4210752);
+	}
+	
 	@Override
 	protected void drawGuiContainerBackgroundLayer(final float f, final int i, final int j){
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);

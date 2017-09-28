@@ -28,10 +28,14 @@ public class Container_TradeTable extends Container {
 
 
 	public Container_TradeTable(final InventoryPlayer inventory, final TileEntityTradeTable te){
+		
 		this.tile_entity = te;
 		this.inventoryChest = te.inventoryGrid;
 		this.inventoryOutputs = te.inventoryOutputs;
 		this.tile_entity.setContainer(this);
+		
+		if (te.isServerSide())
+		Utils.LOG_INFO("Container - "+te.mOwnerName);
 
 		int var6;
 		int var7;

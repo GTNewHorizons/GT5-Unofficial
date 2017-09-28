@@ -11,6 +11,7 @@ import gtPlusPlus.core.gui.machine.*;
 import gtPlusPlus.core.interfaces.IGuiManager;
 import gtPlusPlus.core.inventories.BaseInventoryBackpack;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.tileentities.base.TileEntityBase;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
 import gtPlusPlus.core.tileentities.general.TileEntityHeliumGenerator;
 import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
@@ -124,7 +125,7 @@ public class GuiHandler implements IGuiHandler {
 				return new GUI_FishTrap(player.inventory, (TileEntityFishTrap)te);
 			}
 			else if (ID == GUI7){
-				return new GUI_TradeTable(player.inventory, (TileEntityTradeTable)te);
+				return new GUI_TradeTable(player.inventory, (TileEntityTradeTable)te, ((TileEntityBase) te).getOwner());
 			}
 		}
 

@@ -1,6 +1,11 @@
 package gtPlusPlus.core.item.base.itemblock;
 
+import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.blocks.GT_Block_Ores_Abstract;
+import gregtech.common.blocks.GT_TileEntity_Ores;
+import gtPlusPlus.core.tileentities.base.TileEntityBase;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.player.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -9,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public class ItemBlockNBT extends ItemBlock {
@@ -27,7 +33,7 @@ public class ItemBlockNBT extends ItemBlock {
 	public void onUpdate(ItemStack item, World world, Entity entity, int p_77663_4_, boolean p_77663_5_) {
 		if (entity instanceof EntityPlayerMP) {
 			EntityPlayerMP mPlayer = (EntityPlayerMP) entity;
-			
+
 			NBTTagCompound rNBT = item.getTagCompound();
 			rNBT = ((rNBT == null) ? new NBTTagCompound() : rNBT);
 			if (!rNBT.hasKey("mOwner")){
@@ -52,6 +58,32 @@ public class ItemBlockNBT extends ItemBlock {
 			rNBT.setBoolean("mOP", false);
 		}
 		GT_Utility.ItemNBT.setNBT(item, rNBT);
-	}	
+	}
+
+	@Override		
+	public boolean placeBlockAt(ItemStack aStack, EntityPlayer aPlayer, World aWorld, int aX, int aY, int aZ, int side,
+			float hitX, float hitY, float hitZ, int aMeta) {
+		
+		
+
+		if (!(aWorld.setBlock(aX, aY, aZ, this.field_150939_a, 0, 3))) {
+			return false;
+		}
+		if (aWorld.getBlock(aX, aY, aZ) == this.field_150939_a) {
+			this.field_150939_a.onBlockPlacedBy(aWorld, aX, aY, aZ, aPlayer, aStack);
+			this.field_150939_a.onPostBlockPlaced(aWorld, aX, aY, aZ, aMeta);
+		}
+		
+		TileEntityBase tTileEntity = (TileEntityBase) aWorld.getTileEntity(aX, aY, aZ);
+		if (tTileEntity != null && aPlayer != null) {
+			if (tTileEntity.isServerSide()){				
+				Utils.LOG_INFO("Setting Tile Entity information");
+				NBTTagCompound aNBT = GT_Utility.ItemNBT.getNBT(aStack);				
+				tTileEntity.setOwnerInformation(aNBT.getString("mOwner"), aNBT.getString("mUUID"), aNBT.getBoolean("mOP"));
+			}
+		}
+
+		return true;
+	}
 
 }
