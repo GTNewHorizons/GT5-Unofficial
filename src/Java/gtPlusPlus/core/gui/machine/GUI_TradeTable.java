@@ -17,7 +17,7 @@ import net.minecraft.util.ResourceLocation;
 public class GUI_TradeTable extends GuiContainer {
 	
 	TileEntityTradeTable mThisTable;
-	final String mOwnerName;
+	String mOwnerName;
 
 	private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(CORE.MODID, "textures/gui/ProjectTable.png");
 
@@ -30,15 +30,17 @@ public class GUI_TradeTable extends GuiContainer {
 			Utils.LOG_INFO("Set invalid TE in GUI");
 		}
 		else {
+			if (te.isServerSide()){
 			mThisTable = te;
 			this.mOwnerName = mOwnerName;
-			Utils.LOG_INFO("Set valid TE in GUI");			
+			Utils.LOG_INFO("Set valid TE in GUI");	
+			}
 		}
 	}
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(final int i, final int j){
-		this.fontRendererObj.drawString(I18n.format("Owner: "+this.mOwnerName, new Object[0]), 28, 6, 4210752);
+		this.fontRendererObj.drawString(I18n.format("Owner - "+this.mOwnerName, new Object[0]), 28, 66, 4210752);
 		//this.fontRendererObj.drawString(I18n.format("container.inventory", new Object[0]), 8, this.ySize - 96 + 2, 4210752);
 	}
 	

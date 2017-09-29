@@ -13,6 +13,7 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -110,32 +111,46 @@ public class BlockEventHandler {
 		//Spawns Fluorite from Lime Stone
 		if (chanceToDropFluoriteOre != 0){
 			if (!this.oreLimestone.isEmpty() || !this.blockLimestone.isEmpty()){
-				if (!this.oreLimestone.isEmpty()) {
-					for (final ItemStack temp : this.oreLimestone){
-						if (ItemUtils.getSimpleStack(Item.getItemFromBlock(event.block)) == temp) {
-							if (MathUtils.randInt(1, chanceToDropFluoriteOre) == 1){
-								event.drops.add(this.fluoriteOre.copy());
-							}
+
+				ArrayList<Block> mBlockTypes = new ArrayList<Block>();
+				if (!this.oreLimestone.isEmpty()){
+					for (int i=0;i<this.oreLimestone.size();i++){
+						mBlockTypes.add(Block.getBlockFromItem(this.oreLimestone.get(i).getItem()));
+					}
+				}
+				if (!this.blockLimestone.isEmpty()){
+					for (int i=0;i<this.blockLimestone.size();i++){
+						if (!mBlockTypes.contains(Block.getBlockFromItem(this.oreLimestone.get(i).getItem()))){
+							mBlockTypes.add(Block.getBlockFromItem(this.oreLimestone.get(i).getItem()));
 						}
 					}
 				}
-				if (!this.blockLimestone.isEmpty()) {
-					for (final ItemStack temp : this.blockLimestone){
-						if (ItemUtils.getSimpleStack(Item.getItemFromBlock(event.block)) == temp) {
+
+				Utils.LOG_WARNING("Found Limestone in OreDict.");
+				if (!mBlockTypes.isEmpty()) {
+					Utils.LOG_WARNING("1a | "+event.block.getUnlocalizedName());
+					for (final Block temp : mBlockTypes){
+						Utils.LOG_WARNING("2a - "+temp.getUnlocalizedName());
+						if (event.block == temp) {
+							Utils.LOG_WARNING("3a - found "+temp.getUnlocalizedName());
 							if (MathUtils.randInt(1, chanceToDropFluoriteOre) == 1){
+								Utils.LOG_WARNING("4a");
 								event.drops.add(this.fluoriteOre.copy());
 							}
 						}
 					}
 				}
 			}
-			else {
-				if (event.block.getUnlocalizedName().toLowerCase().contains("limestone")){
-					if (MathUtils.randInt(1, chanceToDropFluoriteOre) == 1){
-						event.drops.add(this.fluoriteOre.copy());
-					}
+
+
+			if (event.block.getUnlocalizedName().toLowerCase().contains("limestone")){
+				Utils.LOG_WARNING("1c");
+				if (MathUtils.randInt(1, chanceToDropFluoriteOre) == 1){
+					Utils.LOG_WARNING("2c");
+					event.drops.add(this.fluoriteOre.copy());
 				}
 			}
+
 			if (event.block == Blocks.sandstone){
 				if (MathUtils.randInt(1, chanceToDropFluoriteOre*20) == 1){
 					event.drops.add(this.fluoriteOre.copy());
