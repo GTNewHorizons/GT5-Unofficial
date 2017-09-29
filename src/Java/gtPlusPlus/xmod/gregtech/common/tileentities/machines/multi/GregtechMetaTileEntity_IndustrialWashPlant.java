@@ -101,7 +101,75 @@ extends GregtechMeta_MultiBlockBase {
 			Utils.LOG_WARNING("Did not find enough cleaning solution.");
 			return false;
 		}
+		Utils.LOG_INFO("1");
 
+		/*ArrayList<ItemStack> tInputList = getStoredInputs();
+		ArrayList<FluidStack> tFluidInputs = getStoredFluids();
+		for (ItemStack tInput : tInputList) {
+			Utils.LOG_INFO("2");
+			long tVoltage = getMaxInputVoltage();
+			byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+			GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sOreWasherRecipes.findRecipe(getBaseMetaTileEntity(), false,
+					gregtech.api.enums.GT_Values.V[tTier],
+					new FluidStack[] { (tFluidInputs.isEmpty()) ? null : (FluidStack) tFluidInputs.get(0) },
+					new ItemStack[] { tInput });
+			
+			tRecipe = this.reduceRecipeTimeByPercentage(tRecipe, 60);
+			
+			if (tRecipe != null) {
+				Utils.LOG_INFO("3");
+					this.mEfficiency = (10000 - ((getIdealStatus() - getRepairStatus()) * 1000));
+					this.mEfficiencyIncrease = 10000;
+
+					this.mEUt = tRecipe.mEUt;
+					if (tRecipe.mEUt <= 16) {
+						Utils.LOG_INFO("3.1");
+						this.mEUt = (tRecipe.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
+						this.mMaxProgresstime = (tRecipe.mDuration / (1 << tTier - 1));
+					} else {
+						Utils.LOG_INFO("3.2");
+						this.mEUt = tRecipe.mEUt;
+						this.mMaxProgresstime = tRecipe.mDuration;
+						while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+							Utils.LOG_INFO("3.3");
+							this.mEUt *= 4;
+							this.mMaxProgresstime /= 2;
+						}
+					}
+					Utils.LOG_INFO("4");
+					if (this.mEUt > 0) {
+						Utils.LOG_INFO("4.1");
+						this.mEUt = (-this.mEUt);
+					}
+					this.mMaxProgresstime = (this.mMaxProgresstime * 2 / (1 + 3));
+					this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+					if (tRecipe.mOutputs.length > 0){
+						//this.mOutputItems = new ItemStack[] { tRecipe.getOutput(0) };
+						ItemStack mNewOutputs[] = new ItemStack[tRecipe.mOutputs.length];
+						for (int f=0;f<tRecipe.mOutputs.length;f++){
+							Utils.LOG_INFO("Step 5 - Adding Output");
+							mNewOutputs[f] = tRecipe.mOutputs[f].copy();
+						}
+						this.mOutputItems = mNewOutputs;
+						updateSlots();
+					}
+					if (tRecipe.mFluidOutputs.length >= 0){
+						//this.mOutputFluids = new FluidStack[] { tRecipe.getFluidOutput(0) };
+						FluidStack outputFluids[] = new FluidStack[1];						
+						if (true){
+							Utils.LOG_INFO("Adding Sludge");
+							outputFluids[0] = FluidUtils.getFluidStack("potion.poison", 10);
+						}						
+						this.mOutputFluids = outputFluids;
+						updateSlots();
+					}
+					updateSlots();
+					Utils.LOG_INFO("5");
+					return true;
+				}			
+		}
+		return false;*/
+		
 		ArrayList<ItemStack> tInputList = getStoredInputs();
 		ArrayList<FluidStack> tFluidInputs = getStoredFluids();
 		for (ItemStack tInput : tInputList) {
@@ -110,8 +178,11 @@ extends GregtechMeta_MultiBlockBase {
 			GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sOreWasherRecipes.findRecipe(getBaseMetaTileEntity(), false,
 					gregtech.api.enums.GT_Values.V[tTier],
 					new FluidStack[] { (tFluidInputs.isEmpty()) ? null : (FluidStack) tFluidInputs.get(0) },
-					new ItemStack[] { tInput });
+					new ItemStack[] { this.mInventory[1], tInput });
 			if (tRecipe != null) {
+				if (tRecipe.isRecipeInputEqual(true,
+						new FluidStack[] { (tFluidInputs.isEmpty()) ? null : (FluidStack) tFluidInputs.get(0) },
+						new ItemStack[] { tInput, this.mInventory[1] })) {
 					this.mEfficiency = (10000 - ((getIdealStatus() - getRepairStatus()) * 1000));
 					this.mEfficiencyIncrease = 10000;
 
@@ -130,31 +201,24 @@ extends GregtechMeta_MultiBlockBase {
 					if (this.mEUt > 0) {
 						this.mEUt = (-this.mEUt);
 					}
-					this.mMaxProgresstime = (this.mMaxProgresstime * 2 / (1 + 3));
+					this.mMaxProgresstime = (this.mMaxProgresstime * 2 / (1 + 5));
 					this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
 					if (tRecipe.mOutputs.length > 0){
 						//this.mOutputItems = new ItemStack[] { tRecipe.getOutput(0) };
 						ItemStack mNewOutputs[] = new ItemStack[tRecipe.mOutputs.length];
 						for (int f=0;f<tRecipe.mOutputs.length;f++){
-							Utils.LOG_WARNING("Step 5 - Adding Output");
+							Utils.LOG_INFO("Step 5 - Adding Output");
 							mNewOutputs[f] = tRecipe.mOutputs[f].copy();
 						}
 						this.mOutputItems = mNewOutputs;
 						updateSlots();
 					}
-					if (tRecipe.mFluidOutputs.length >= 0){
-						//this.mOutputFluids = new FluidStack[] { tRecipe.getFluidOutput(0) };
-						FluidStack outputFluids[] = new FluidStack[1];						
-						if (true){
-							Utils.LOG_WARNING("Adding Sludge");
-							outputFluids[0] = FluidUtils.getFluidStack("fluid.sludge", 100);
-						}						
-						this.mOutputFluids = outputFluids;
-						updateSlots();
-					}
+					if (tRecipe.mFluidOutputs.length > 0)
+						this.mOutputFluids = new FluidStack[] { tRecipe.getFluidOutput(0) };
 					updateSlots();
 					return true;
-				}			
+				}
+			}
 		}
 		return false;
 	}
