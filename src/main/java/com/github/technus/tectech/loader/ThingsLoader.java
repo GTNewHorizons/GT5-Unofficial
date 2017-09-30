@@ -3,6 +3,7 @@ package com.github.technus.tectech.loader;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.block.QuantumStuffBlock;
+import com.github.technus.tectech.thing.block.ReactorSimBlock;
 import com.github.technus.tectech.thing.casing.GT_Block_CasingsTT;
 import com.github.technus.tectech.thing.casing.GT_Block_HintTT;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
@@ -36,6 +37,9 @@ public class ThingsLoader implements Runnable {
             TurretBaseEM.run();
             TecTech.Logger.info("TurretBaseEM registered");
         }
+
+        ReactorSimBlock.run();
+        TecTech.Logger.info("Reactor Simulator registered");
 
         ConstructableTriggerItem.run();
         ParametrizerMemoryCard.run();
