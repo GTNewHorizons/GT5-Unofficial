@@ -205,10 +205,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     protected boolean areChunksAroundLoaded_EM(){
         if(isValidMetaTileEntity(this) && getBaseMetaTileEntity().isServerSide()){
             IGregTechTileEntity base=getBaseMetaTileEntity();
-            final int x=base.getXCoord();
-            final int y=base.getYCoord();
-            final int z=base.getZCoord();
-            return base.getWorld().checkChunksExist(x-48,y-48,z-48,x+48,y+48,z+48);
+            return base.getWorld().doChunksNearChunkExist(base.getXCoord(),base.getYCoord(),base.getZCoord(),3);
             //todo check if it is actually checking if chunks are loaded
         }else return false;
     }
