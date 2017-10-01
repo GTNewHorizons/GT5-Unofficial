@@ -43,6 +43,12 @@ public class XSTR extends Random {
     private static final long SEEDER_INCREMENT = 0xbb67ae8584caa73bL;
     private static final double DOUBLE_UNIT = 0x1.0p-53;  // 1.0  / (1L << 53)
     private static final float FLOAT_UNIT = 0x1.0p-24f; // 1.0f / (1 << 24)
+    public final static XSTR XSTR_INSTANCE=new XSTR(){
+        @Override
+        public synchronized void setSeed(long seed) {
+            throw new NoSuchMethodError("This is meant to be shared!, leave seed state alone!");
+        }
+    };
 
     /*
      MODIFIED BY: Robotia

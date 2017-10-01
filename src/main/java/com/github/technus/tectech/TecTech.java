@@ -38,11 +38,11 @@ public class TecTech {
     @Instance(Reference.MODID)
     public static TecTech instance;
 
+    public static final XSTR Rnd = XSTR.XSTR_INSTANCE;
     public static final LogHelper Logger = new LogHelper(Reference.MODID);
     private static IngameErrorLog Module_AdminErrorLogs = null;
     public static MainLoader GTCustomLoader = null;
     public static TecTechConfig ModConfig;
-    public static XSTR Rnd = null;
     public static CreativeTabs mainTab = null;
 
     public static boolean hasCOFH = false, hasThaumcraft = false;
@@ -57,7 +57,6 @@ public class TecTech {
     @EventHandler
     public void PreLoad(FMLPreInitializationEvent PreEvent) {
         Logger.setDebugOutput(true);
-        Rnd = new XSTR();
 
         ModConfig = new TecTechConfig(PreEvent.getModConfigurationDirectory(), Reference.COLLECTIONNAME,
                 Reference.MODID);
