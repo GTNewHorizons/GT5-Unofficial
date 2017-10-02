@@ -523,10 +523,10 @@ public final class ALLOY {
 			false, //Uses Blast furnace?
 			//Material Stacks with Percentage of required elements.
 			new MaterialStack[]{
-					new MaterialStack(ELEMENT.getInstance().NICKEL, 5),
-					new MaterialStack(ELEMENT.getInstance().ALUMINIUM, 1),
-					new MaterialStack(ELEMENT.getInstance().CHROMIUM, 1),
-					new MaterialStack(ELEMENT.getInstance().IRON, 23)
+
+					new MaterialStack(ELEMENT.getInstance().IRON, 13),
+					new MaterialStack(MaterialUtils.generateMaterialFromGtENUM(Materials.Kanthal), 3),
+					new MaterialStack(MaterialUtils.generateMaterialFromGtENUM(Materials.Invar), 15)
 			});
 	
 	public static final Material EGLIN_STEEL = new Material(
