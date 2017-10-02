@@ -4,70 +4,76 @@ import gregtech.api.enums.*;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 public class CoalTar {
+	
+	private static Fluid Coal_Gas;
+	private static Fluid Ethylene;
+	private static Fluid Benzene;
+	private static Fluid Ethylbenzene;
+	private static Fluid Anthracene;
+	private static Fluid Toluene;
+	private static Fluid Coal_Tar;
+	private static Fluid Coal_Tar_Oil;
+	private static Fluid Sulfuric_Coal_Tar_Oil;
+	private static Fluid Naphthalene;
+	private static Fluid Phthalic_Acid;
+	private static Fluid Ethylanthraquinone2;
+	private static Fluid Ethylanthrahydroquinone2;
+	private static Fluid Hydrogen_Peroxide;
+	private static Fluid Lithium_Peroxide;
 
 	public static void run(){
 
 		//Special Compatibility for Coke
 		ItemUtils.addItemToOreDictionary(ItemUtils.getSimpleStack(ModItems.itemCoalCoke, 1), "fuelCoke");
-
-
 		//Create Coal Gas
-		FluidUtils.generateFluidNonMolten("CoalGas", "Coal Gas", 500, new short[]{48, 48, 48, 100}, null, null);
-
-
-
-
+		Coal_Gas = FluidUtils.generateFluidNonMolten("CoalGas", "Coal Gas", 500, new short[]{48, 48, 48, 100}, null, null);
 		//Ethanol
 		// v - Dehydrate cells to remove water
 		//Create Ethylene
-		FluidUtils.generateFluidNonMolten("Ethylene", "Ethylene", -103, new short[]{255, 255, 255, 100}, null, null);
+		Ethylene = FluidUtils.generateFluidNonMolten("Ethylene", "Ethylene", -103, new short[]{255, 255, 255, 100}, null, null);
 		//Create Benzene - (Toluene + Hydrogen | 95% Benzene / 5% methane)
-		FluidUtils.generateFluidNonMolten("Benzene", "Benzene", 81, new short[]{150, 75, 0, 100}, null, null);
+		Benzene = FluidUtils.generateFluidNonMolten("Benzene", "Benzene", 81, new short[]{150, 75, 0, 100}, null, null);
 		//Create Ethylbenzene - Ethylbenzene is produced in on a large scale by combining benzene and ethylene in an acid-catalyzed chemical reaction
 		//Use Chemical Reactor
-		FluidUtils.generateFluidNonMolten("Ethylbenzene", "Ethylbenzene", 136, new short[]{255, 255, 255, 100}, null, null);
-
-
-
+		Ethylbenzene = FluidUtils.generateFluidNonMolten("Ethylbenzene", "Ethylbenzene", 136, new short[]{255, 255, 255, 100}, null, null);
 		//Create Anthracene
-		FluidUtils.generateFluidNonMolten("Anthracene", "Anthracene", 340, new short[]{255, 255, 255, 100}, null, null);
-
-		//Toluene
-		FluidStack fluidToluene = null;
-		
+		Anthracene = FluidUtils.generateFluidNonMolten("Anthracene", "Anthracene", 340, new short[]{255, 255, 255, 100}, null, null);
+		//Toluene		
 		if (FluidUtils.getFluidStack("liquid_toluene", 1) == null){
-			fluidToluene = FluidUtils.getFluidStack(FluidUtils.generateFluidNonMolten("Toluene", "Toluene", -95, new short[]{140, 70, 20, 100}, null, null),1000);
-		
+			Toluene = FluidUtils.generateFluidNonMolten("Toluene", "Toluene", -95, new short[]{140, 70, 20, 100}, null, null);
 		}
 		else {
-			fluidToluene = FluidUtils.getFluidStack("liquid_toluene", 1000);
+			Toluene = FluidUtils.getFluidStack("liquid_toluene", 1000).getFluid();
+			Item itemCellToluene = new BaseItemComponent("Toluene", "Toluene", new short[]{140, 70, 20, 100});
 		}
 
-
 		//Create Coal Tar
-		FluidUtils.generateFluidNonMolten("CoalTar", "Coal Tar", 450, new short[]{32, 32, 32, 100}, null, null);
+		Coal_Tar = FluidUtils.generateFluidNonMolten("CoalTar", "Coal Tar", 450, new short[]{32, 32, 32, 100}, null, null);
 		// v - Distill (60% Tar oil/15% Naphtha/20% Ethylbenzene/5% Anthracene)
 		//Create Coal Tar Oil
-		FluidUtils.generateFluidNonMolten("CoalTarOil", "Coal Tar Oil", 240, new short[]{240, 240, 150, 100}, null, null);
+		Coal_Tar_Oil = FluidUtils.generateFluidNonMolten("CoalTarOil", "Coal Tar Oil", 240, new short[]{240, 240, 150, 100}, null, null);
 		// v - Wash With Sulfuric Acid
 		//Create Sulfuric Coal Tar Oil
-		FluidUtils.generateFluidNonMolten("SulfuricCoalTarOil", "Sulfuric Coal Tar Oil", 240, new short[]{250, 170, 12, 100}, null, null);
+		Sulfuric_Coal_Tar_Oil = FluidUtils.generateFluidNonMolten("SulfuricCoalTarOil", "Sulfuric Coal Tar Oil", 240, new short[]{250, 170, 12, 100}, null, null);
 		// v - Distill (No loss, just time consuming)
 		//Create Naphthalene
-		FluidUtils.generateFluidNonMolten("Naphthalene", "Naphthalene", 115, new short[]{210, 185, 135, 100}, null, null);
+		Naphthalene = FluidUtils.generateFluidNonMolten("Naphthalene", "Naphthalene", 115, new short[]{210, 185, 135, 100}, null, null);
 		// v - Oxidize with mercury and nitric acid
 		//Create Phthalic Acid
-		FluidUtils.generateFluidNonMolten("PhthalicAcid", "Phthalic Acid", 207, new short[]{210, 220, 210, 100}, null, null);
+		Phthalic_Acid = FluidUtils.generateFluidNonMolten("PhthalicAcid", "Phthalic Acid", 207, new short[]{210, 220, 210, 100}, null, null);
 		// v - Dehydrate at 180C+
 		//Create Phthalic Anhydride
 		ItemUtils.generateSpecialUseDusts("PhthalicAnhydride", "Phthalic Anhydride", Utils.rgbtoHexValue(175, 175, 175));
@@ -76,13 +82,13 @@ public class CoalTar {
 
 		//Create 2-Ethylanthraquinone
 		//2-Ethylanthraquinone is prepared from the reaction of phthalic anhydride and ethylbenzene
-		FluidUtils.generateFluidNonMolten("2Ethylanthraquinone", "2-Ethylanthraquinone", 415, new short[]{227, 255, 159, 100}, null, null);
+		Ethylanthraquinone2 = FluidUtils.generateFluidNonMolten("2Ethylanthraquinone", "2-Ethylanthraquinone", 415, new short[]{227, 255, 159, 100}, null, null);
 		//Create 2-Ethylanthrahydroquinone
 		//Palladium plate + Hydrogen(250) + 2-Ethylanthraquinone(500) = 600 Ethylanthrahydroquinone
-		FluidUtils.generateFluidNonMolten("2Ethylanthrahydroquinone", "2-Ethylanthrahydroquinone", 415, new short[]{207, 225, 129, 100}, null, null);
+		Ethylanthrahydroquinone2 = FluidUtils.generateFluidNonMolten("2Ethylanthrahydroquinone", "2-Ethylanthrahydroquinone", 415, new short[]{207, 225, 129, 100}, null, null);
 		//Create Hydrogen Peroxide
 		//Compressed Air(1500) + Ethylanthrahydroquinone(500) + Anthracene(5) = 450 Ethylanthraquinone && 200 Peroxide
-		FluidUtils.generateFluidNonMolten("HydrogenPeroxide", "Hydrogen Peroxide", 150, new short[]{210, 255, 255, 100}, null, null);
+		Hydrogen_Peroxide = FluidUtils.generateFluidNonMolten("HydrogenPeroxide", "Hydrogen Peroxide", 150, new short[]{210, 255, 255, 100}, null, null);
 
 
 
@@ -90,7 +96,7 @@ public class CoalTar {
 		ItemUtils.generateSpecialUseDusts("LithiumHydroperoxide", "Lithium Hydroperoxide", Utils.rgbtoHexValue(125, 125, 125));
 		// v - Dehydrate
 		//Lithium Peroxide - 2 LiOOH → Li2O2 + H2O2 + 2 H2O
-		FluidUtils.generateFluidNonMolten("LithiumPeroxide", "Lithium Peroxide", 446, new short[]{135, 135, 135, 100}, null, null);
+		Lithium_Peroxide = FluidUtils.generateFluidNonMolten("LithiumPeroxide", "Lithium Peroxide", 446, new short[]{135, 135, 135, 100}, null, null);
 
 		//Burn the coal gas!
 		GT_Values.RA.addFuel(ItemUtils.getItemStackOfAmountFromOreDict("cellCoalGas", 1), null, 64, 1);

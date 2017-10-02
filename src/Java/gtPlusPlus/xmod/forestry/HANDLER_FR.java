@@ -29,9 +29,9 @@ public class HANDLER_FR extends BlockRegistry {
 
 	public static void Init(){
 		if (LoadedMods.Forestry){
-			apiculture = new BlockDenseBeeHouse();
-			apiculture.setBlockName("gtpp." + "beehouse");
-			GameRegistry.registerBlock(apiculture, ItemBlockForestry.class, StringUtil.cleanBlockName(apiculture));
+			//apiculture = new BlockDenseBeeHouse();
+			//apiculture.setBlockName("gtpp." + "beehouse");
+			//GameRegistry.registerBlock(apiculture, ItemBlockForestry.class, StringUtil.cleanBlockName(apiculture));
 		}
 	}
 
