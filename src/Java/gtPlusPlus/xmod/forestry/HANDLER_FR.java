@@ -1,14 +1,10 @@
 package gtPlusPlus.xmod.forestry;
 
 import cpw.mods.fml.common.Optional;
-import cpw.mods.fml.common.registry.GameRegistry;
 import forestry.core.blocks.BlockRegistry;
-import forestry.core.items.ItemBlockForestry;
 import forestry.core.proxy.Proxies;
-import forestry.core.utils.StringUtil;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.xmod.forestry.bees.blocks.BlockDenseBeeHouse;
 import gtPlusPlus.xmod.forestry.bees.items.FR_ItemRegistry;
 import gtPlusPlus.xmod.forestry.bees.recipe.FR_Gregtech_Recipes;
 import net.minecraft.block.Block;
@@ -16,7 +12,7 @@ import net.minecraft.world.World;
 
 public class HANDLER_FR extends BlockRegistry {
 
-	public static BlockDenseBeeHouse apiculture;
+	//public static BlockDenseBeeHouse apiculture;
 
 	public static void preInit(){
 		if (LoadedMods.Forestry){

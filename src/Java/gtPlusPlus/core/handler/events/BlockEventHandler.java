@@ -7,23 +7,22 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class BlockEventHandler {
 	private final Random random = new Random();
+	public static ArrayList<ItemStack> oreLimestone;
+	public static ArrayList<ItemStack> blockLimestone;
+	public static ItemStack fluoriteOre;
 
 	@SubscribeEvent
 	public void onBlockLeftClicked(final PlayerInteractEvent event) {
@@ -69,13 +68,12 @@ public class BlockEventHandler {
 	}
 
 
-	ArrayList<ItemStack> oreLimestone = OreDictionary.getOres("oreLimestone");
-	ArrayList<ItemStack> blockLimestone = OreDictionary.getOres("limestone");
-	ItemStack fluoriteOre = ItemUtils.getSimpleStack(Item.getItemFromBlock(ModBlocks.blockOreFluorite));
+	
 
 	//Used to handle Thaumcraft Shards when TC is not installed.
 	@SubscribeEvent
 	public void harvestDrops(final BlockEvent.HarvestDropsEvent event) {
+		try {
 		//Spawn Dull Shards (Can spawn from Tree Logs, Grass or Stone. Stone going to be the most common source.)
 		if (((event.block == Blocks.stone) || (event.block == Blocks.sandstone) || (event.block == Blocks.log) || (event.block == Blocks.log2) || (event.block == Blocks.grass))
 				&& !LoadedMods.Thaumcraft && (chanceToDropDrainedShard != 0)) {
@@ -110,18 +108,18 @@ public class BlockEventHandler {
 
 		//Spawns Fluorite from Lime Stone
 		if (chanceToDropFluoriteOre != 0){
-			if (!this.oreLimestone.isEmpty() || !this.blockLimestone.isEmpty()){
+			if (!oreLimestone.isEmpty() || !blockLimestone.isEmpty()){
 
 				ArrayList<Block> mBlockTypes = new ArrayList<Block>();
-				if (!this.oreLimestone.isEmpty()){
-					for (int i=0;i<this.oreLimestone.size();i++){
-						mBlockTypes.add(Block.getBlockFromItem(this.oreLimestone.get(i).getItem()));
+				if (!oreLimestone.isEmpty()){
+					for (int i=0;i<oreLimestone.size();i++){
+						mBlockTypes.add(Block.getBlockFromItem(oreLimestone.get(i).getItem()));
 					}
 				}
-				if (!this.blockLimestone.isEmpty()){
-					for (int i=0;i<this.blockLimestone.size();i++){
-						if (!mBlockTypes.contains(Block.getBlockFromItem(this.oreLimestone.get(i).getItem()))){
-							mBlockTypes.add(Block.getBlockFromItem(this.oreLimestone.get(i).getItem()));
+				if (!blockLimestone.isEmpty()){
+					for (int i=0;i<blockLimestone.size();i++){
+						if (!mBlockTypes.contains(Block.getBlockFromItem(blockLimestone.get(i).getItem()))){
+							mBlockTypes.add(Block.getBlockFromItem(blockLimestone.get(i).getItem()));
 						}
 					}
 				}
@@ -135,7 +133,7 @@ public class BlockEventHandler {
 							Utils.LOG_WARNING("3a - found "+temp.getUnlocalizedName());
 							if (MathUtils.randInt(1, chanceToDropFluoriteOre) == 1){
 								Utils.LOG_WARNING("4a");
-								event.drops.add(this.fluoriteOre.copy());
+								event.drops.add(fluoriteOre.copy());
 							}
 						}
 					}
@@ -147,15 +145,20 @@ public class BlockEventHandler {
 				Utils.LOG_WARNING("1c");
 				if (MathUtils.randInt(1, chanceToDropFluoriteOre) == 1){
 					Utils.LOG_WARNING("2c");
-					event.drops.add(this.fluoriteOre.copy());
+					event.drops.add(fluoriteOre.copy());
 				}
 			}
 
 			if (event.block == Blocks.sandstone){
 				if (MathUtils.randInt(1, chanceToDropFluoriteOre*20) == 1){
-					event.drops.add(this.fluoriteOre.copy());
+					event.drops.add(fluoriteOre.copy());
 				}
 			}
+		}
+		}
+		catch (Throwable r){
+			Utils.LOG_INFO("Block Event Handler Failed. Please Report this to Alkalus.");
+			r.printStackTrace();
 		}
 	}
 
