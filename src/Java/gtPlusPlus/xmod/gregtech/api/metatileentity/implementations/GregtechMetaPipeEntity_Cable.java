@@ -1,19 +1,28 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations;
 
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.Textures;
+import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntityCable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
+import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
 import net.minecraft.util.EnumChatFormatting;
 
 import static gregtech.api.enums.GT_Values.VN;
 
+import gregtech.api.enums.Dyes;
+
 public class GregtechMetaPipeEntity_Cable extends GT_MetaPipeEntity_Cable implements IMetaTileEntityCable {
-	public GregtechMetaPipeEntity_Cable(final int aID, final String aName, final String aNameRegional, final float aThickNess, final Materials aMaterial, final long aCableLossPerMeter, final long aAmperage, final long aVoltage, final boolean aInsulated, final boolean aCanShock) {
+	
+	private short[] vRGB = null;
+	
+	public GregtechMetaPipeEntity_Cable(final int aID, final String aName, final String aNameRegional, final float aThickNess, final Materials aMaterial, final long aCableLossPerMeter, final long aAmperage, final long aVoltage, final boolean aInsulated, final boolean aCanShock, final short[] aRGB) {
 		super(aID, aName, aNameRegional, aThickNess, aMaterial, aCableLossPerMeter, aAmperage, aVoltage, aInsulated, aCanShock);
+		this.vRGB = aRGB;
 	}
 
 	public GregtechMetaPipeEntity_Cable(final String aName, final float aThickNess, final Materials aMaterial, final long aCableLossPerMeter, final long aAmperage, final long aVoltage, final boolean aInsulated, final boolean aCanShock) {
@@ -33,5 +42,53 @@ public class GregtechMetaPipeEntity_Cable extends GT_MetaPipeEntity_Cable implem
 				"Loss/Meter/Ampere: %%%" + EnumChatFormatting.RED + mCableLossPerMeter + EnumChatFormatting.GRAY + "%%% EU-Volt",
 				CORE.GT_Tooltip
 		};
+	}
+	
+	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections,
+			byte aColorIndex, boolean aConnected, boolean aRedstone) {
+		
+		if (this.vRGB == null){
+			this.vRGB = new short[]{128, 128, 128, 0};
+		}
+		
+		if (!(this.mInsulated))
+			return new ITexture[] { new GT_RenderedTexture(this.mMaterial.mIconSet.mTextures[69],
+					Dyes.getModulation(aColorIndex, this.vRGB)) };
+		if (aConnected) {
+			float tThickNess = getThickNess();
+			if (tThickNess < 0.124F)
+				return new ITexture[] { new GT_RenderedTexture(Textures.BlockIcons.INSULATION_FULL,
+						Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+			if (tThickNess < 0.374F)
+				return new ITexture[] {
+						new GT_RenderedTexture(this.mMaterial.mIconSet.mTextures[69], this.vRGB),
+						new GT_RenderedTexture(Textures.BlockIcons.INSULATION_TINY,
+								Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+			if (tThickNess < 0.499F)
+				return new ITexture[] {
+						new GT_RenderedTexture(this.mMaterial.mIconSet.mTextures[69], this.vRGB),
+						new GT_RenderedTexture(Textures.BlockIcons.INSULATION_SMALL,
+								Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+			if (tThickNess < 0.624F)
+				return new ITexture[] {
+						new GT_RenderedTexture(this.mMaterial.mIconSet.mTextures[69], this.vRGB),
+						new GT_RenderedTexture(Textures.BlockIcons.INSULATION_MEDIUM,
+								Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+			if (tThickNess < 0.749F)
+				return new ITexture[] {
+						new GT_RenderedTexture(this.mMaterial.mIconSet.mTextures[69], this.vRGB),
+						new GT_RenderedTexture(Textures.BlockIcons.INSULATION_MEDIUM_PLUS,
+								Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+			if (tThickNess < 0.874F)
+				return new ITexture[] {
+						new GT_RenderedTexture(this.mMaterial.mIconSet.mTextures[69], this.vRGB),
+						new GT_RenderedTexture(Textures.BlockIcons.INSULATION_LARGE,
+								Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+			return new ITexture[] { new GT_RenderedTexture(this.mMaterial.mIconSet.mTextures[69], this.vRGB),
+					new GT_RenderedTexture(Textures.BlockIcons.INSULATION_HUGE,
+							Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
+		}
+		return new ITexture[] { new GT_RenderedTexture(Textures.BlockIcons.INSULATION_FULL,
+				Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
 	}
 }
