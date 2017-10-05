@@ -120,5 +120,9 @@ public interface IGregtech_RecipeAdder {
 	
 	public boolean addCyclotronRecipe(ItemStack aInput, FluidStack aFluidInput, ItemStack[] aOutputs,
 			FluidStack aFluidOutput, int[] aChances, int aDuration, int aEUt, int aSpecialValue);
+	
+	public boolean addMixerRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aInput3, ItemStack aInput4,
+			FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, int aDuration, int aEUt);
+		
 
 }

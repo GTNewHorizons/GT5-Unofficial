@@ -375,5 +375,23 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		}
 		return false;
 	}
+	
+	public boolean addMixerRecipe(ItemStack aInput1, ItemStack aInput2, ItemStack aInput3, ItemStack aInput4,
+			FluidStack aFluidInput, FluidStack aFluidOutput, ItemStack aOutput1, ItemStack aOutput2, ItemStack aOutput3, ItemStack aOutput4, int aDuration, int aEUt) {
+		if (((aInput1 == null) && (aFluidInput == null)) || ((aOutput1 == null) && (aFluidOutput == null))) {
+			return false;
+		}
+		if ((aOutput1 != null) && ((aDuration = GregTech_API.sRecipeFile.get("advancedmixer", aOutput1, aDuration)) <= 0)) {
+			return false;
+		}
+		if ((aFluidOutput != null) && ((aDuration = GregTech_API.sRecipeFile.get("advancedmixer",
+				aFluidOutput.getFluid().getName(), aDuration)) <= 0)) {
+			return false;
+		}
+		Recipe_GT.Gregtech_Recipe_Map.sAdvancedMixerRecipes.addRecipe(true, new ItemStack[] { aInput1, aInput2, aInput3, aInput4 },
+				new ItemStack[] { aOutput1, aOutput2, aOutput3, aOutput4 }, null, null, new FluidStack[] { aFluidInput },
+				new FluidStack[] { aFluidOutput }, aDuration, aEUt, 0);
+		return true;
+	}
 
 }

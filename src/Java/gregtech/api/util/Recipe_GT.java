@@ -265,6 +265,10 @@ public class Recipe_GT extends GT_Recipe{
 		//Cyclotron recipe map
 		public static final GT_Recipe_Map sCyclotronRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(200), "gt.recipe.cyclotron", "COMET - Compact Cyclotron", null, RES_PATH_GUI + "basicmachines/BlastSmelter", 1, 1, 1, 0, 1, E, 1, E, true, true);
 
+		//Advanced Mixer
+		public static final GT_Recipe_Map sAdvancedMixerRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(1000), "gt.recipe.advanced.mixer",
+				"Advanced Material Combiner", null, "gregtech:textures/gui/basicmachines/MixerAdvanced", 4, 4, 1, 0, 2, "", 1, "", true, true);
+		
 		
 		/**
 		 * HashMap of Recipes based on their Items

@@ -7,6 +7,7 @@ import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.nuclear.NUCLIDE;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
@@ -50,6 +51,7 @@ public class RECIPES_GREGTECH {
 		benderRecipes();
 		cyclotronRecipes();
 		blastSmelterRecipes();
+		advancedMixerRecipes();
 		addFuels();
 	}	
 
@@ -947,6 +949,23 @@ public class RECIPES_GREGTECH {
 				20*300, 
 				2040, 
 				500*20);		
+	}
+	
+	private static void advancedMixerRecipes(){
+		//HgBa2Ca2Cu3O8
+		CORE.RA.addMixerRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("cellMercury", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustBarium", 2),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustCalcium", 2),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustCopper", 3),
+				FluidUtils.getFluidStack("oxygen", 8000),
+				null,
+				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 1),
+				ALLOY.HG1223.getDust(16),
+				null,
+				null,
+				30*20,
+				500);
 	}
 
 }

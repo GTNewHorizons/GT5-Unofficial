@@ -446,7 +446,7 @@ public final class ModItems {
 			MaterialGenerator.generate(ALLOY.LEAGRISIUM);
 			
 			//Super Conductor
-			MaterialGenerator.generate(ALLOY.HG1223, false);
+			MaterialGenerator.generate(ALLOY.HG1223, false, false);
 			
 
 			//Must be the final Alloy to Generate

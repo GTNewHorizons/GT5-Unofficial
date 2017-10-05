@@ -96,8 +96,8 @@ public class MaterialGenerator {
 				} else {
 					Item temp;
 					if (generateEverything == true){
-					Block tempBlock;
-					tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
+						Block tempBlock;
+						tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
 					}
 					temp = new BaseItemIngot(matInfo);
 					temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, sRadiation);
@@ -110,8 +110,10 @@ public class MaterialGenerator {
 			}
 			else if (matInfo.getState() == MaterialState.LIQUID){
 				Item temp;
-				Block tempBlock;
-				tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
+				if (generateEverything == true){
+					Block tempBlock;
+					tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
+				}
 				temp = new BaseItemIngot(matInfo);
 				temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, sRadiation);
 				temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, sRadiation);
@@ -128,7 +130,9 @@ public class MaterialGenerator {
 			//Add A jillion Recipes - old code
 			RecipeGen_AlloySmelter.generateRecipes(matInfo);
 			RecipeGen_Assembler.generateRecipes(matInfo);
-			RecipeGen_BlastSmelter.generateARecipe(matInfo);
+			if (generateBlastSmelterRecipes){
+				RecipeGen_BlastSmelter.generateARecipe(matInfo);
+			}
 			RecipeGen_DustGeneration.generateRecipes(matInfo);
 			RecipeGen_Extruder.generateRecipes(matInfo);
 			RecipeGen_Fluids.generateRecipes(matInfo);
@@ -177,34 +181,34 @@ public class MaterialGenerator {
 	@SuppressWarnings("unused")
 	public static void generateNuclearMaterial(final Material matInfo, final boolean generatePlates){
 		try {
-		final String unlocalizedName = matInfo.getUnlocalizedName();
-		final String materialName = matInfo.getLocalizedName();
-		final short[] C = matInfo.getRGBA();
-		final int Colour = Utils.rgbtoHexValue(C[0], C[1], C[2]);
+			final String unlocalizedName = matInfo.getUnlocalizedName();
+			final String materialName = matInfo.getLocalizedName();
+			final short[] C = matInfo.getRGBA();
+			final int Colour = Utils.rgbtoHexValue(C[0], C[1], C[2]);
 
-		int sRadiation = 0;
-		if (matInfo.vRadiationLevel != 0){
-			sRadiation = matInfo.vRadiationLevel;
-		}
+			int sRadiation = 0;
+			if (matInfo.vRadiationLevel != 0){
+				sRadiation = matInfo.vRadiationLevel;
+			}
 
-		Item temp;
-		Block tempBlock;
+			Item temp;
+			Block tempBlock;
 
-		tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
-		temp = new BaseItemIngot(matInfo);
-		temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", 3, sRadiation);
-		temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", 2, sRadiation);
-		temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", 1, sRadiation);
-		temp = new BaseItemNugget(matInfo);
-		temp = new BaseItemPlate(matInfo);
-		temp = new BaseItemPlateDouble(matInfo);
+			tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
+			temp = new BaseItemIngot(matInfo);
+			temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", 3, sRadiation);
+			temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", 2, sRadiation);
+			temp = new BaseItemDust("itemDustSmall"+unlocalizedName, materialName, matInfo, Colour, "Small", 1, sRadiation);
+			temp = new BaseItemNugget(matInfo);
+			temp = new BaseItemPlate(matInfo);
+			temp = new BaseItemPlateDouble(matInfo);
 
-		RecipeGen_Plates.generateRecipes(matInfo);
-		RecipeGen_Extruder.generateRecipes(matInfo);
-		RecipeGen_ShapedCrafting.generateRecipes(matInfo);
-		RecipeGen_Fluids.generateRecipes(matInfo);
-		RecipeGen_Assembler.generateRecipes(matInfo);
-		RecipeGen_DustGeneration.generateRecipes(matInfo, true);
+			RecipeGen_Plates.generateRecipes(matInfo);
+			RecipeGen_Extruder.generateRecipes(matInfo);
+			RecipeGen_ShapedCrafting.generateRecipes(matInfo);
+			RecipeGen_Fluids.generateRecipes(matInfo);
+			RecipeGen_Assembler.generateRecipes(matInfo);
+			RecipeGen_DustGeneration.generateRecipes(matInfo, true);
 		} catch (Throwable t){
 			Utils.LOG_INFO(""+matInfo.getLocalizedName()+" failed to generate.");
 		}
