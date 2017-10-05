@@ -29,10 +29,25 @@ public class GregtechMetaPipeEntity_Cable extends GT_MetaPipeEntity_Cable implem
 		super(aName, aThickNess, aMaterial, aCableLossPerMeter, aAmperage, aVoltage, aInsulated, aCanShock);
 		this.vRGB = aRGB;
 	}
+	
+	public GregtechMetaPipeEntity_Cable(final int aID, final String aName, final String aNameRegional, final float aThickNess, final long aCableLossPerMeter, final long aAmperage, final long aVoltage, final boolean aInsulated, final boolean aCanShock, final short[] aRGB) {
+		super(aID, aName, aNameRegional, aThickNess, null, aCableLossPerMeter, aAmperage, aVoltage, aInsulated, aCanShock);
+		this.vRGB = aRGB;
+	}
+
+	public GregtechMetaPipeEntity_Cable(final String aName, final float aThickNess, final long aCableLossPerMeter, final long aAmperage, final long aVoltage, final boolean aInsulated, final boolean aCanShock, final short[] aRGB) {
+		super(aName, aThickNess, null, aCableLossPerMeter, aAmperage, aVoltage, aInsulated, aCanShock);
+		this.vRGB = aRGB;
+	}
 
 	@Override
 	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-		return new GregtechMetaPipeEntity_Cable(this.mName, this.mThickNess, this.mMaterial, this.mCableLossPerMeter, this.mAmperage, this.mVoltage, this.mInsulated, this.mCanShock, this.vRGB);
+		if (this.mMaterial == null){
+			return new GregtechMetaPipeEntity_Cable(this.mName, this.mThickNess, this.mCableLossPerMeter, this.mAmperage, this.mVoltage, this.mInsulated, this.mCanShock, this.vRGB);
+		}
+		else {
+			return new GregtechMetaPipeEntity_Cable(this.mName, this.mThickNess, this.mMaterial, this.mCableLossPerMeter, this.mAmperage, this.mVoltage, this.mInsulated, this.mCanShock, this.vRGB);
+		}
 	}
 
 	@Override
@@ -48,12 +63,23 @@ public class GregtechMetaPipeEntity_Cable extends GT_MetaPipeEntity_Cable implem
 	public ITexture[] getTexture(IGregTechTileEntity aBaseMetaTileEntity, byte aSide, byte aConnections,
 			byte aColorIndex, boolean aConnected, boolean aRedstone) {
 		
-		if (this.vRGB == null){
+		if (this.vRGB == null || this.vRGB.length < 3 || this.vRGB.length > 4){
 			this.vRGB = new short[]{200, 0, 200, 0};
 		}
+		if (this.vRGB.length != 4){
+			short[] tempRGB = this.vRGB;
+			this.vRGB = new short[]{tempRGB[0], tempRGB[1], tempRGB[2], 0};
+		}
+		
+		Materials wireMaterial = this.mMaterial;
+		
+		if (wireMaterial == null){
+			wireMaterial = Materials.Iron;
+		}
+		
 		
 		if (!(this.mInsulated))
-			return new ITexture[] { new GT_RenderedTexture(this.mMaterial.mIconSet.mTextures[69],
+			return new ITexture[] { new GT_RenderedTexture(wireMaterial.mIconSet.mTextures[69],
 					Dyes.getModulation(aColorIndex, this.vRGB)) };
 		if (aConnected) {
 			float tThickNess = getThickNess();
@@ -62,30 +88,30 @@ public class GregtechMetaPipeEntity_Cable extends GT_MetaPipeEntity_Cable implem
 						Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
 			if (tThickNess < 0.374F)
 				return new ITexture[] {
-						new GT_RenderedTexture(this.mMaterial.mIconSet.mTextures[69], this.vRGB),
+						new GT_RenderedTexture(wireMaterial.mIconSet.mTextures[69], this.vRGB),
 						new GT_RenderedTexture(Textures.BlockIcons.INSULATION_TINY,
 								Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
 			if (tThickNess < 0.499F)
 				return new ITexture[] {
-						new GT_RenderedTexture(this.mMaterial.mIconSet.mTextures[69], this.vRGB),
+						new GT_RenderedTexture(wireMaterial.mIconSet.mTextures[69], this.vRGB),
 						new GT_RenderedTexture(Textures.BlockIcons.INSULATION_SMALL,
 								Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
 			if (tThickNess < 0.624F)
 				return new ITexture[] {
-						new GT_RenderedTexture(this.mMaterial.mIconSet.mTextures[69], this.vRGB),
+						new GT_RenderedTexture(wireMaterial.mIconSet.mTextures[69], this.vRGB),
 						new GT_RenderedTexture(Textures.BlockIcons.INSULATION_MEDIUM,
 								Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
 			if (tThickNess < 0.749F)
 				return new ITexture[] {
-						new GT_RenderedTexture(this.mMaterial.mIconSet.mTextures[69], this.vRGB),
+						new GT_RenderedTexture(wireMaterial.mIconSet.mTextures[69], this.vRGB),
 						new GT_RenderedTexture(Textures.BlockIcons.INSULATION_MEDIUM_PLUS,
 								Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
 			if (tThickNess < 0.874F)
 				return new ITexture[] {
-						new GT_RenderedTexture(this.mMaterial.mIconSet.mTextures[69], this.vRGB),
+						new GT_RenderedTexture(wireMaterial.mIconSet.mTextures[69], this.vRGB),
 						new GT_RenderedTexture(Textures.BlockIcons.INSULATION_LARGE,
 								Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
-			return new ITexture[] { new GT_RenderedTexture(this.mMaterial.mIconSet.mTextures[69], this.vRGB),
+			return new ITexture[] { new GT_RenderedTexture(wireMaterial.mIconSet.mTextures[69], this.vRGB),
 					new GT_RenderedTexture(Textures.BlockIcons.INSULATION_HUGE,
 							Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
 		}

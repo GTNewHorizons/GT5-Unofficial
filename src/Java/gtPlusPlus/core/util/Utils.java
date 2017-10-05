@@ -572,6 +572,44 @@ public class Utils {
 		return output;
 
 	}
+	
+	public static int calculateVoltageTier(int Voltage){
+		int V;
+		if (Voltage == 8){
+			V = 0;
+		}
+		else if (Voltage == 32){
+			V = 1;
+		}
+		else if (Voltage == 128){
+			V = 2;
+		}
+		else if (Voltage == 512){
+			V = 3;
+		}
+		else if (Voltage == 2048){
+			V = 4;
+		}
+		else if (Voltage == 8196){
+			V = 5;
+		}
+		else if (Voltage == 32768){
+			V = 6;
+		}
+		else if (Voltage == 131072){
+			V = 7;
+		}
+		else if (Voltage == 524288){
+			V = 8;
+		}
+		else if (Voltage == Integer.MAX_VALUE){
+			V = 9;
+		}
+		else {
+			V = -1;
+		}
+		return V;
+	}
 
 	public static String[] parseVersion(final String version){
 		return parseVersion(version, "//.");

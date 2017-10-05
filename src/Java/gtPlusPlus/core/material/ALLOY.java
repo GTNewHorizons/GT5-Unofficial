@@ -546,7 +546,22 @@ public final class ALLOY {
 					new MaterialStack(ELEMENT.getInstance().CARBON, 1)
 			});
 
-
+	public static final Material HG1223 = new Material(
+			"HG-1223", //Material Name
+			MaterialState.LIQUID, //State
+			new short[]{39,85,159, 0}, //Material Colour
+			-1, //Melting Point in C
+			-1, //Boiling Point in C
+			-1,
+			-1,
+			false, //Uses Blast furnace?
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().MERCURY, 1),
+					new MaterialStack(ELEMENT.getInstance().BARIUM, 2),
+					new MaterialStack(ELEMENT.getInstance().CALCIUM, 2),
+					new MaterialStack(ELEMENT.getInstance().COPPER, 3),
+					new MaterialStack(ELEMENT.getInstance().OXYGEN, 8)
+			});
 
 
 

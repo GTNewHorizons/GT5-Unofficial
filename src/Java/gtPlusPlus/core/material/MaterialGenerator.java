@@ -95,8 +95,10 @@ public class MaterialGenerator {
 					}
 				} else {
 					Item temp;
+					if (generateEverything == true){
 					Block tempBlock;
 					tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
+					}
 					temp = new BaseItemIngot(matInfo);
 					temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, sRadiation);
 					temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, sRadiation);
