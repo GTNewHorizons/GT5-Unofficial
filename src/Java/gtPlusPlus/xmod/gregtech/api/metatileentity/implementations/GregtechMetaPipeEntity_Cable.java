@@ -25,13 +25,14 @@ public class GregtechMetaPipeEntity_Cable extends GT_MetaPipeEntity_Cable implem
 		this.vRGB = aRGB;
 	}
 
-	public GregtechMetaPipeEntity_Cable(final String aName, final float aThickNess, final Materials aMaterial, final long aCableLossPerMeter, final long aAmperage, final long aVoltage, final boolean aInsulated, final boolean aCanShock) {
+	public GregtechMetaPipeEntity_Cable(final String aName, final float aThickNess, final Materials aMaterial, final long aCableLossPerMeter, final long aAmperage, final long aVoltage, final boolean aInsulated, final boolean aCanShock, final short[] aRGB) {
 		super(aName, aThickNess, aMaterial, aCableLossPerMeter, aAmperage, aVoltage, aInsulated, aCanShock);
+		this.vRGB = aRGB;
 	}
 
 	@Override
 	public IMetaTileEntity newMetaEntity(final IGregTechTileEntity aTileEntity) {
-		return new GregtechMetaPipeEntity_Cable(this.mName, this.mThickNess, this.mMaterial, this.mCableLossPerMeter, this.mAmperage, this.mVoltage, this.mInsulated, this.mCanShock);
+		return new GregtechMetaPipeEntity_Cable(this.mName, this.mThickNess, this.mMaterial, this.mCableLossPerMeter, this.mAmperage, this.mVoltage, this.mInsulated, this.mCanShock, this.vRGB);
 	}
 
 	@Override
@@ -48,7 +49,7 @@ public class GregtechMetaPipeEntity_Cable extends GT_MetaPipeEntity_Cable implem
 			byte aColorIndex, boolean aConnected, boolean aRedstone) {
 		
 		if (this.vRGB == null){
-			this.vRGB = new short[]{128, 128, 128, 0};
+			this.vRGB = new short[]{200, 0, 200, 0};
 		}
 		
 		if (!(this.mInsulated))
