@@ -246,7 +246,12 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Industrial_WashPlant, 
 	
 	//Semi-Fluid generators
-	Generator_SemiFluid_LV, Generator_SemiFluid_MV, Generator_SemiFluid_HV,
+	Generator_SemiFluid_LV, Generator_SemiFluid_MV, Generator_SemiFluid_HV, 
+	
+	//Advanced Mixer 4x4
+	Machine_Advanced_LV_Mixer, Machine_Advanced_MV_Mixer, Machine_Advanced_HV_Mixer, 
+	Machine_Advanced_EV_Mixer, Machine_Advanced_IV_Mixer, Machine_Advanced_LuV_Mixer, 
+	Machine_Advanced_ZPM_Mixer, Machine_Advanced_UV_Mixer,
 	
 	
 	
