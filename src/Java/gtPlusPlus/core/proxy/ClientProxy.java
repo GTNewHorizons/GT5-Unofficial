@@ -170,7 +170,7 @@ public class ClientProxy extends CommonProxy implements Runnable{
 	public void run() {
 		try {
 			if (CORE.mEnableCape){
-				Utils.LOG_INFO("Skip: GT++ Mod: Downloading Cape List.");
+				Utils.LOG_INFO("GT++ Mod: Downloading Cape List.");
 				@SuppressWarnings("resource")
 				Scanner tScanner = new Scanner(new URL("https://github.com/draknyte1/GTplusplus/blob/master/SupporterList.txt").openStream());
 				while (tScanner.hasNextLine()) {
@@ -181,6 +181,7 @@ public class ClientProxy extends CommonProxy implements Runnable{
 				}
 			}
 		} catch (Throwable e) {
+			Utils.LOG_INFO("Failed to download GT++ cape list.");
 		}
 	}
 

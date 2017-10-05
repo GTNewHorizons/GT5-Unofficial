@@ -247,6 +247,7 @@ public class GTplusplus implements ActionListener {
 		proxy.registerNetworkStuff();
 		
 		//Set Variables for Fluorite Block handling
+		Utils.LOG_INFO("Setting some Variables for the block break event handler.");
 		BlockEventHandler.oreLimestone = OreDictionary.getOres("oreLimestone");
 		BlockEventHandler.blockLimestone = OreDictionary.getOres("limestone");
 		BlockEventHandler.fluoriteOre = ItemUtils.getSimpleStack(Item.getItemFromBlock(ModBlocks.blockOreFluorite));

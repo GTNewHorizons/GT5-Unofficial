@@ -173,19 +173,19 @@ public class RECIPES_GREGTECH {
 				120);
 
 		//HSS-G
-			CORE.RA.addBlastSmelterRecipe(
-					new ItemStack[]{
-							ItemUtils.getGregtechCircuit(5),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustTungsten", 5),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustSteel", 5),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustVanadium", 2),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustMolybdenum", 4),
-							ItemUtils.getItemStackOfAmountFromOreDict("dustChrome", 2)						
-					},
-					FluidUtils.getFluidStack("molten.hssg", 18*144), 
-					0,
-					MathUtils.findPercentageOfInt(900*20, 80),
-					120);
+		CORE.RA.addBlastSmelterRecipe(
+				new ItemStack[]{
+						ItemUtils.getGregtechCircuit(5),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustTungsten", 5),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustSteel", 5),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustVanadium", 2),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustMolybdenum", 4),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustChrome", 2)						
+				},
+				FluidUtils.getFluidStack("molten.hssg", 18*144), 
+				0,
+				MathUtils.findPercentageOfInt(900*20, 80),
+				120);
 
 		//HSS-E
 		CORE.RA.addBlastSmelterRecipe(
@@ -908,6 +908,13 @@ public class RECIPES_GREGTECH {
 		GT_ModHandler.addPulverisationRecipe(
 				ItemUtils.getSimpleStack(Item.getItemFromBlock(ModBlocks.blockOreFluorite)),
 				ItemUtils.getItemStackOfAmountFromOreDict("dustFluorite", 4));
+
+		if (ItemUtils.simpleMetaStack("chisel:limestone", 0, 1) != null){
+			GT_ModHandler.addPulverisationRecipe(
+					ItemUtils.getItemStackOfAmountFromOreDict("limestone", 1),
+					ItemUtils.getItemStackOfAmountFromOreDict("dustCalcite", 4));
+		}
+
 	}
 
 	public static boolean addPulverisationRecipe(final ItemStack aInput, ItemStack aOutput1, ItemStack aOutput2, final ItemStack aOutput3) {

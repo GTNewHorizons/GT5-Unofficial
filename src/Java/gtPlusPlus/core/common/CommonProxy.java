@@ -37,7 +37,7 @@ public class CommonProxy {
 				Utils.LOG_INFO("We're using Gregtech 5.09 Experimental.");
 			}
 			else {
-				Utils.LOG_INFO("We're using Gregtech 5.08 or an equivalent fork.");
+				Utils.LOG_INFO("We're using Gregtech 5.08 or an earlier fork.");
 			}
 			Utils.LOG_INFO("Setting up our own GT_Proxy.");
 			GtProxy = new Meta_GT_Proxy();
