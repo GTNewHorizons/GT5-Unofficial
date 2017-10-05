@@ -1,12 +1,9 @@
 package gtPlusPlus.core.entity.projectile;
 
 import gregtech.api.util.GT_Utility;
-import gregtech.common.GT_Pollution;
-import gtPlusPlus.core.util.PollutionUtils;
 import gtPlusPlus.core.util.array.BlockPos;
 import gtPlusPlus.core.util.entity.EntityUtils;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.core.util.player.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityThrowable;

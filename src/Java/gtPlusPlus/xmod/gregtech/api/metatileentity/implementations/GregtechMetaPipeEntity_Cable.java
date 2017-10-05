@@ -104,15 +104,15 @@ public class GregtechMetaPipeEntity_Cable extends GT_MetaPipeEntity_Cable implem
 			if (tThickNess < 0.749F)
 				return new ITexture[] {
 						new GT_RenderedTexture(wireMaterial.mIconSet.mTextures[69], this.vRGB),
-						new GT_RenderedTexture(Textures.BlockIcons.INSULATION_MEDIUM_PLUS,
+						new GT_RenderedTexture(Textures.BlockIcons.INSULATION_LARGE,
 								Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
 			if (tThickNess < 0.874F)
 				return new ITexture[] {
 						new GT_RenderedTexture(wireMaterial.mIconSet.mTextures[69], this.vRGB),
-						new GT_RenderedTexture(Textures.BlockIcons.INSULATION_LARGE,
+						new GT_RenderedTexture(Textures.BlockIcons.INSULATION_HUGE,
 								Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
 			return new ITexture[] { new GT_RenderedTexture(wireMaterial.mIconSet.mTextures[69], this.vRGB),
-					new GT_RenderedTexture(Textures.BlockIcons.INSULATION_HUGE,
+					new GT_RenderedTexture(Textures.BlockIcons.INSULATION_FULL,
 							Dyes.getModulation(aColorIndex, Dyes.CABLE_INSULATION.mRGBa)) };
 		}
 		return new ITexture[] { new GT_RenderedTexture(Textures.BlockIcons.INSULATION_FULL,

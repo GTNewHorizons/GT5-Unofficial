@@ -66,6 +66,9 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 				"--Mufflers go in the top 3x3--",
 				"4x IV+ Mufflers",
 				"Causes " + (20 * getPollutionPerTick(null)) + " Pollution per second",
+				"Outputs U233 every 10 seconds, on average",
+				"Input Fluorine and Helium for bonus byproducts",
+				"Input Li2BeF4 and a molten salt as fuel.",
 				CORE.GT_Tooltip};
 	}
 
@@ -488,7 +491,6 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 									//this.mLastRecipe = aFuel;
 								}
 
-
 								this.fuelValue = aFuel.mSpecialValue;
 								this.fuelRemaining = hatchFluid1.amount; //Record available fuel
 
@@ -630,6 +632,10 @@ public class GregtechMTE_NuclearReactor extends GT_MetaTileEntity_MultiBlockBase
 				this.turnCasingActive(false);
 			}
 			
+			if (MathUtils.randInt(1, 200) == 1){
+				Utils.LOG_INFO("Adding U233");
+				this.addOutput(NUCLIDE.getInstance().URANIUM233.getFluid(MathUtils.randInt(1, 10)));
+			}
 			
 			if (this.mDynamoHatches != null) {
 				for (GT_MetaTileEntity_Hatch_Dynamo tHatch : this.mDynamoHatches) {

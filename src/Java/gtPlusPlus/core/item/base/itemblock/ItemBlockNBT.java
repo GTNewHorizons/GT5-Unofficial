@@ -1,9 +1,6 @@
 package gtPlusPlus.core.item.base.itemblock;
 
-import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Block_Ores_Abstract;
-import gregtech.common.blocks.GT_TileEntity_Ores;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.player.PlayerUtils;
@@ -14,7 +11,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public class ItemBlockNBT extends ItemBlock {
