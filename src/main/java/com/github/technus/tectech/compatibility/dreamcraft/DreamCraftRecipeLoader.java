@@ -389,7 +389,7 @@ public class DreamCraftRecipeLoader implements Runnable {
                         GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Neutronium, 64),
                 }, new FluidStack[]{
                         Materials.Glass.getMolten(2304),
-                        Materials.PolyphenyleneSulfide.getMolten(1872),
+                        Materials.Silicone.getMolten(1872),
                         new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
                         Materials.Trinium.getMolten(1296),
                 }, CustomItemList.eM_Coil.get(4), 800, 2000000);
