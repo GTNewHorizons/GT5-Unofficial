@@ -189,7 +189,7 @@ public class TexturesCentrifugeMultiblock {
 					return this.CENTRIFUGE[2].getIcon();
 				}
 			}
-			return Textures.BlockIcons.MACHINE_CASING_SOLID_STEEL.getIcon();
+			return TexturesGtBlock.Casing_Material_Centrifuge.getIcon();
 		}
 		final boolean[] tConnectedSides = {(aWorld.getBlock(xCoord, yCoord - 1, zCoord) == thisBlock) && (aWorld.getBlockMetadata(xCoord, yCoord - 1, zCoord) == tMeta), (aWorld.getBlock(xCoord, yCoord + 1, zCoord) == thisBlock) && (aWorld.getBlockMetadata(xCoord, yCoord + 1, zCoord) == tMeta), (aWorld.getBlock(xCoord + 1, yCoord, zCoord) == thisBlock) && (aWorld.getBlockMetadata(xCoord + 1, yCoord, zCoord) == tMeta), (aWorld.getBlock(xCoord, yCoord, zCoord + 1) == thisBlock) && (aWorld.getBlockMetadata(xCoord, yCoord, zCoord + 1) == tMeta), (aWorld.getBlock(xCoord - 1, yCoord, zCoord) == thisBlock) && (aWorld.getBlockMetadata(xCoord - 1, yCoord, zCoord) == tMeta), (aWorld.getBlock(xCoord, yCoord, zCoord - 1) == thisBlock) && (aWorld.getBlockMetadata(xCoord, yCoord, zCoord - 1) == tMeta)};
 		switch (aSide) {
