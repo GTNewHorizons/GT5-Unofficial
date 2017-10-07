@@ -393,6 +393,19 @@ public class DreamCraftRecipeLoader implements Runnable {
                         new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
                         Materials.Trinium.getMolten(1296),
                 }, CustomItemList.eM_Coil.get(4), 800, 2000000);
+
+        //Multi Infuser
+        TT_recipeAdder.addResearchableAssemblylineRecipe(CustomItemList.Machine_Multi_Transformer.get(1),
+                192000,512, 2000000, 32, new ItemStack[]{
+                        CustomItemList.Machine_Multi_Transformer.get(1),
+                        CustomItemList.eM_Coil.get(8),
+                        CustomItemList.eM_Power.get( 8),
+                        GT_OreDictUnificator.get(OrePrefixes.screw, Materials.Neodymium, 16),
+                }, new FluidStack[]{
+                        Materials.Electrum.getMolten(2592),
+                        Materials.Neutronium.getMolten(1872),
+                        new FluidStack(FluidRegistry.getFluid("ic2coolant"), 2000),
+                }, CustomItemList.Machine_Multi_Infuser.get(1), 8000, 2000000);
         //endregion
     }
 }
