@@ -444,10 +444,10 @@ public final class ModItems {
 
 			//Leagrisium
 			MaterialGenerator.generate(ALLOY.LEAGRISIUM);
-			
+
 			//Super Conductor
 			MaterialGenerator.generate(ALLOY.HG1223, false, false);
-			
+
 
 			//Must be the final Alloy to Generate
 			MaterialGenerator.generate(ALLOY.QUANTUM);
@@ -619,7 +619,7 @@ public final class ModItems {
 		//Vanadium
 		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateVanadium", 1) == null){
 			itemPlateVanadium = new BaseItemPlate(MaterialUtils.generateMaterialFromGtENUM(Materials.Vanadium));
-			}
+		}
 
 		//EnderIO Resources
 		if ((LoadedMods.EnderIO || LOAD_ALL_CONTENT) && !CORE.GTNH){

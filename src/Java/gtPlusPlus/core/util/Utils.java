@@ -523,8 +523,35 @@ public class Utils {
 			Utils.LOG_WARNING("7 "+methode.isAccessible());
 			final ItemStack temp = (ItemStack) methode.invoke(item, cellID++, yourName, new Block[0]);
 			Utils.LOG_WARNING("Successfully created "+temp.getDisplayName()+"s.");
-			FluidContainerRegistry.registerFluidContainer(FluidUtils.getFluidStack(s.toLowerCase(), 0), temp.copy(), Ic2Items.cell.copy());
+			FluidContainerRegistry.registerFluidContainer(FluidUtils.getFluidStack(s.toLowerCase(), 1000), temp.copy(), Ic2Items.cell.copy());
 			ItemUtils.addItemToOreDictionary(temp.copy(), "cell"+s);
+			return temp;
+		}
+		catch(final Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static ItemStack createInternalNameAndFluidCellNoOreDict(final String s){
+		Utils.LOG_WARNING("1");
+		final InternalName yourName = EnumHelper.addEnum(InternalName.class, s, new Class[0], new Object[0]);
+		Utils.LOG_WARNING("2 "+yourName.name());
+		final ItemCell item = (ItemCell)Ic2Items.cell.getItem();
+		Utils.LOG_WARNING("3 "+item.getUnlocalizedName());
+		try
+		{
+			Utils.LOG_WARNING("4");
+			final Class<? extends ItemCell> clz = item.getClass();
+			Utils.LOG_WARNING("5 "+clz.getSimpleName());
+			final Method methode = clz.getDeclaredMethod("addCell", int.class, InternalName.class, Block[].class);
+			Utils.LOG_WARNING("6 "+methode.getName());
+			methode.setAccessible(true);
+			Utils.LOG_WARNING("7 "+methode.isAccessible());
+			final ItemStack temp = (ItemStack) methode.invoke(item, cellID++, yourName, new Block[0]);
+			Utils.LOG_WARNING("Successfully created "+temp.getDisplayName()+"s.");
+			FluidContainerRegistry.registerFluidContainer(FluidUtils.getFluidStack(s.toLowerCase(), 1000), temp.copy(), Ic2Items.cell.copy());
+			//ItemUtils.addItemToOreDictionary(temp.copy(), "cell"+s);
 			return temp;
 		}
 		catch(final Exception e){

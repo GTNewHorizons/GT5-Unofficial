@@ -6,9 +6,14 @@ import gtPlusPlus.core.item.base.BaseItemComponent;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.fluid.FluidUtils;
+import gtPlusPlus.core.util.item.ItemUtils;
+import ic2.core.Ic2Items;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 
 public class BaseItemCell extends BaseItemComponent{
 
@@ -19,6 +24,19 @@ public class BaseItemCell extends BaseItemComponent{
 	public BaseItemCell(final Material material) {
 		super(material, BaseItemComponent.ComponentTypes.CELL);
 		this.fluidColour = (short[]) ((material == null) ? this.extraData : material.getRGBA());
+		//FluidContainerRegistry.registerFluidContainer(material.getFluid(1000), ItemUtils.getSimpleStack(this), Ic2Items.cell.copy());
+	}
+	
+	public BaseItemCell(final String unlocalName, final String localName, final short[] RGBa) {
+		super(unlocalName, localName, RGBa);
+		this.fluidColour = RGBa;
+		FluidContainerRegistry.registerFluidContainer(FluidUtils.getFluidStack(unlocalName.toLowerCase(), 0), ItemUtils.getSimpleStack(this), Ic2Items.cell.copy());
+	}
+	
+	public BaseItemCell(final String unlocalName, final String localName, final short[] RGBa, final Fluid cellFluid) {
+		super(unlocalName, localName, RGBa);
+		this.fluidColour = RGBa;
+		FluidContainerRegistry.registerFluidContainer(FluidUtils.getFluidStack(cellFluid, 1000), ItemUtils.getSimpleStack(this), Ic2Items.cell.copy());
 	}
 
 	@Override
