@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.gui.GT_GUIContainer_MultiMachine;
@@ -81,6 +82,17 @@ extends GT_MetaTileEntity_MultiBlockBase {
 	public boolean isCorrectMachinePart(final ItemStack aStack) {
 		return true;
 	}
+	
+	public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
+        super.startSoundLoop(aIndex, aX, aY, aZ);
+        if (aIndex == 1) {
+            GT_Utility.doSoundAtClient((String) GregTech_API.sSoundList.get(Integer.valueOf(208)), 10, 1.0F, aX, aY, aZ);
+        }
+    }
+
+    public void startProcess() {
+        sendLoopStart((byte) 1);
+    }
 
 	@Override
 	public boolean isFacingValid(final byte aFacing) {
@@ -163,8 +175,6 @@ extends GT_MetaTileEntity_MultiBlockBase {
 			return false;
 		}
 		this.addMufflerToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir, 3, zDir), TAE.GTPP_INDEX(15));
-
-		final byte tUsedMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + 1, 2, zDir);
 
 		this.mHeatingCapacity = 20000;
 

@@ -53,7 +53,7 @@ extends GregtechMeta_MultiBlockBase {
 				"Thermal processing Casings for the rest (8 at least!)",
 				"Causes " + (20 * getPollutionPerTick(null)) + " Pollution per second",
 				CORE.GT_Tooltip
-				
+
 		};
 	}
 
@@ -73,6 +73,17 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
 		return GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes;
+	}
+
+	public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
+		super.startSoundLoop(aIndex, aX, aY, aZ);
+		if (aIndex == 1) {
+			GT_Utility.doSoundAtClient((String) GregTech_API.sSoundList.get(Integer.valueOf(207)), 10, 1.0F, aX, aY, aZ);
+		}
+	}
+
+	public void startProcess() {
+		sendLoopStart((byte) 1);
 	}
 
 	@Override
@@ -114,15 +125,15 @@ extends GregtechMeta_MultiBlockBase {
 							this.mEUt = (-this.mEUt);
 						}
 						this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-						
-						ItemStack mNewOutputs[] = new ItemStack[16];
-						
 
-						
+						ItemStack mNewOutputs[] = new ItemStack[16];
+
+
+
 						for (int f=0;f<tRecipe.mOutputs.length;f++){
 							mNewOutputs[f] = tRecipe.getOutput(f);
 						}
-						
+
 						this.mOutputItems = mNewOutputs;
 						this.updateSlots();
 						return true;

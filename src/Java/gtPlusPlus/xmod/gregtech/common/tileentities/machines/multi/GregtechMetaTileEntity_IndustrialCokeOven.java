@@ -3,6 +3,7 @@ package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
@@ -76,6 +77,17 @@ extends GregtechMeta_MultiBlockBase {
 		return Recipe_GT.Gregtech_Recipe_Map.sCokeOvenRecipes;
 
 	}
+	
+	public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
+        super.startSoundLoop(aIndex, aX, aY, aZ);
+        if (aIndex == 1) {
+            GT_Utility.doSoundAtClient((String) GregTech_API.sSoundList.get(Integer.valueOf(207)), 10, 1.0F, aX, aY, aZ);
+        }
+    }
+
+    public void startProcess() {
+        sendLoopStart((byte) 1);
+}
 
 	/* @Override
 	public boolean isCorrectMachinePart(ItemStack aStack) {
@@ -184,9 +196,6 @@ extends GregtechMeta_MultiBlockBase {
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
 		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX;
 		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ;
-		int xr = aBaseMetaTileEntity.getXCoord();
-		int yr = aBaseMetaTileEntity.getYCoord();
-		int zr = aBaseMetaTileEntity.getZCoord();
 		this.mLevel = 0;
 		if (!aBaseMetaTileEntity.getAirOffset(xDir, 1, zDir)) {
 			return false;
@@ -224,20 +233,8 @@ extends GregtechMeta_MultiBlockBase {
 			}
 		}
 		for (int i = -1; i < 2; i++) {
-			xr = aBaseMetaTileEntity.getXCoord();
-			yr = aBaseMetaTileEntity.getYCoord();
-			zr = aBaseMetaTileEntity.getZCoord();
-			//Utils.LOG_WARNING("STEP 1 - x ["+xr+"]  y ["+yr+"]  z ["+zr+"]");
 			for (int j = -1; j < 2; j++) {
-				xr = aBaseMetaTileEntity.getXCoord();
-				yr = aBaseMetaTileEntity.getYCoord();
-				zr = aBaseMetaTileEntity.getZCoord();
-				//Utils.LOG_WARNING("STEP 2 - x ["+xr+"]  y ["+yr+"]  z ["+zr+"]");
 				if (((xDir + i) != 0) || ((zDir + j) != 0)) {
-					xr = aBaseMetaTileEntity.getXCoord();
-					yr = aBaseMetaTileEntity.getYCoord();
-					zr = aBaseMetaTileEntity.getZCoord();
-					//Utils.LOG_WARNING("STEP 3 - x ["+xr+"]  y ["+yr+"]  z ["+zr+"]");
 					final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 0, zDir + j);
 					if ((!this.addMaintenanceToMachineList(tTileEntity, TAE.GTPP_INDEX(1))) && (!this.addInputToMachineList(tTileEntity, TAE.GTPP_INDEX(1))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(1))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(1)))) {
 						if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 0, zDir + j) != ModBlocks.blockCasingsMisc) {
