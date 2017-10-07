@@ -76,7 +76,12 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
-		return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[TAE.GTPP_INDEX(0)][aColorIndex + 1], aFacing == aSide ? aActive ? frontFaceActive : frontFace : Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(0)]};
+		try {
+			return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[TAE.GTPP_INDEX(0)][aColorIndex + 1], aFacing == aSide ? aActive ? frontFaceActive : frontFace : Textures.BlockIcons.CASING_BLOCKS[TAE.GTPP_INDEX(0)]};
+		}
+		catch (Throwable t){
+			return new ITexture[]{Textures.BlockIcons.MACHINE_CASINGS[0][aColorIndex + 1], aFacing == aSide ? aActive ? frontFaceActive : frontFace : Textures.BlockIcons.CASING_BLOCKS[0]};
+			}
 	}
 
 
@@ -164,9 +169,9 @@ extends GregtechMeta_MultiBlockBase {
 					this.mEUt = (-this.mEUt);
 				}
 				this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-				
+
 				ItemStack mNewOutputs[] = new ItemStack[tRecipe.mOutputs.length];
-				
+
 				for (int i = 0; i < tRecipe.mOutputs.length; i++){
 					if (this.getBaseMetaTileEntity().getRandomNumber(7500) < tRecipe.getOutputChance(i)){
 						//Utils.LOG_INFO("Adding a bonus output | "+tRecipe.getOutputChance(i));
@@ -177,7 +182,7 @@ extends GregtechMeta_MultiBlockBase {
 						mNewOutputs[i] = null;
 					}
 				}
-				
+
 				this.mOutputItems = mNewOutputs;
 				this.mOutputFluids = new FluidStack[] { tRecipe.getFluidOutput(0) };
 				updateSlots();

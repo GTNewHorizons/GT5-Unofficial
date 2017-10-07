@@ -8,7 +8,6 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.GT_Material_Casings;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.CasingTextureHandler;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -61,8 +60,6 @@ extends GregtechMetaCasingBlocksAbstract {
 	public IIcon getIcon(final int aSide, final int aMeta) { //Texture ID's. case 0 == ID[57]
 		return CasingTextureHandler.getIcon(aSide, aMeta);
 	}
-
-
 
 	@Override
 	@SideOnly(Side.CLIENT)

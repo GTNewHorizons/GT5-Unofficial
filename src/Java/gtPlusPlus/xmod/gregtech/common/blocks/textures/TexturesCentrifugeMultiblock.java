@@ -81,7 +81,7 @@ public class TexturesCentrifugeMultiblock {
 
 	public IIcon handleCasingsGT58(final IBlockAccess aWorld, final int xCoord, final int yCoord, final int zCoord, final int aSide, final GregtechMetaCasingBlocks thisBlock) {
 		final int tMeta = aWorld.getBlockMetadata(xCoord, yCoord, zCoord);
-		if (((tMeta != 6) && (tMeta != 8) && (tMeta != 0))) {
+		if (tMeta != 0) {
 			return CasingTextureHandler.getIcon(aSide, tMeta);
 		}
 		final int tStartIndex = tMeta == 6 ? 1 : 13;

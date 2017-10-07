@@ -35,14 +35,15 @@ public class TAE {
 		return true;
 	}
 
-	public static boolean registerTextures(GT_RenderedTexture textureToRegister) {
-		Textures.BlockIcons.CASING_BLOCKS[gtPPLastUsedIndex++] = textureToRegister;
+	/*public static boolean registerTextures(GT_RenderedTexture textureToRegister) {
+		Textures.BlockIcons.CASING_BLOCKS[gtPPLastUsedIndex] = textureToRegister;
 		//Just so I know registration is done.
 		return true;
-	}
+	}*/
 
 	public static boolean registerTextures(GT_CopiedBlockTexture gt_CopiedBlockTexture) {
-		Textures.BlockIcons.CASING_BLOCKS[gtPPLastUsedIndex++] = gt_CopiedBlockTexture;
+		Textures.BlockIcons.CASING_BLOCKS[gtPPLastUsedIndex] = gt_CopiedBlockTexture;
+		gtPPLastUsedIndex++;
 		//Just so I know registration is done.
 		return true;
 	}

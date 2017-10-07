@@ -34,7 +34,7 @@ public class CasingTextureHandler {
 				return TexturesGtBlock.Casing_Material_Potin.getIcon();
 				//Broken Blue Fusion Casings
 			case 6:
-				return Textures.BlockIcons.MACHINE_CASING_FUSION.getIcon();
+				return TexturesGtBlock.Casing_Material_MaragingSteel.getIcon();
 				//Maceration Stack Casings
 			case 7:
 				return TexturesGtBlock.Casing_Material_Tumbaga.getIcon();
