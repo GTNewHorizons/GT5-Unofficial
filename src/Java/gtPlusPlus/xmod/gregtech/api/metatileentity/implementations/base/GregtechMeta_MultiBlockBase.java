@@ -1004,12 +1004,15 @@ public abstract class GregtechMeta_MultiBlockBase extends MetaTileEntity {
 			int tempTime = MathUtils.findPercentageOfInt(cloneRecipe.mDuration, (100-percentage));
 			cloneRecipe.mDuration = tempTime;
 			if (cloneRecipe.mDuration < originalTime){
+				Utils.LOG_INFO("Generated recipe with a smaller time. | "+originalTime+" | "+cloneRecipe.mDuration+" |");
 				return cloneRecipe;
 			}
 			else {
+				Utils.LOG_INFO("Did not generate recipe with a smaller time. | "+originalTime+" | "+cloneRecipe.mDuration+" |");
 				return tRecipe;
 			}
 		}
+		Utils.LOG_INFO("Error generating recipe, returning null.");
 		return null;
 
 

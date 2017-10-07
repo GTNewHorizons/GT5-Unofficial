@@ -45,6 +45,7 @@ extends GT_MetaTileEntity_MultiBlockBase {
 				"Controller Block for the Alloy Blast Smelter", //Outputs 144mb fluid for every inputStack.stackSize; Time to use those hot metals.
 				"20% Faster than the Electric Blast Furnace",
 				"Allows Complex GT++ alloys to be created",
+				"Circuit for recipe goes in the Input Bus",
 				"Size: 3x3x4 (Hollow)",
 				"Controller (front middle at bottom)",
 				"16x Blast Smelter Heat Containment Coils (two middle Layers, hollow)",
@@ -207,6 +208,15 @@ extends GT_MetaTileEntity_MultiBlockBase {
 			}
 		}
 		this.mHeatingCapacity += 100 * (GT_Utility.getTier(this.getMaxInputVoltage()) - 2);
+
+		if (	this.mMaintenanceHatches.size() != 1 || 
+				this.mMufflerHatches.size() != 1 || 
+				this.mInputBusses.size() < 1 || 
+				this.mOutputHatches.size() < 1 || 
+				this.mEnergyHatches.size() != 1 )  {
+			return false;
+		}
+
 		return true;
 	}
 
