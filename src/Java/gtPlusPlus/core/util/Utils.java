@@ -2,6 +2,7 @@ package gtPlusPlus.core.util;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -26,6 +27,7 @@ import ic2.core.Ic2Items;
 import ic2.core.init.InternalName;
 import ic2.core.item.resources.ItemCell;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
@@ -503,6 +505,13 @@ public class Utils {
 			return false;
 		}
 		return true;
+	}
+	
+	public static File getMcDir(){
+		if (MinecraftServer.getServer() != null && MinecraftServer.getServer().isDedicatedServer()){
+			return new File(".");
+		}
+		return Minecraft.getMinecraft().mcDataDir;
 	}
 
 	private static short cellID = 15;
