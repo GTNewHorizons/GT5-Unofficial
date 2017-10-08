@@ -214,17 +214,21 @@ public class RECIPES_Old_Circuits  implements IOreRecipeRegistrator {
 					"Circuit_Wetwarecomputer", 
 					"Circuit_Wetwaresupercomputer", 
 					"Circuit_Wetwaremainframe", 
-					"Circuit_Parts_RawCrystalChip,",
+					"Circuit_Parts_RawCrystalChip",
 					//Circuits Additions in .30/.31
 					"Circuit_Board_Plastic",
 					"Circuit_Parts_GlassFiber",
 					"Circuit_Parts_PetriDish",
-					"Circuit_Microprocessor"
-					
+					"Circuit_Microprocessor"					
 			};
 
 			for (String component : CircuitToHide){
+				try {
 				API.hideItem(ItemList.valueOf(component).get(1L, new Object[0]));
+				} catch (IllegalArgumentException I){
+					Utils.LOG_INFO("Could not find "+component+" in the Gregtech item list.");
+					Utils.LOG_INFO("This is NOT an error, simply a notification.");
+				}
 			}			
 		}
 		return true;

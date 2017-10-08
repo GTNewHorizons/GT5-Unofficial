@@ -40,20 +40,34 @@ sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 archivesBaseName = "GT-PlusPlus"
-version = "1.6.07-release"
+version = "1.6.09-release"
 minecraft.version = "1.7.10-10.13.4.1448-1.7.10"
+
+
+jar{
+    archiveName = archivesBaseName+"-"+version+".jar"
+    manifest{
+        attributes 'FMLCorePlugin': 'gtPlusPlus.preloader.asm.Preloader_FMLLoadingPlugin'
+        attributes 'FMLCorePluginContainsFMLMod': 'true'
+    }
+}
+
 
 task sourceJar(type: Jar) {
     from sourceSets.main.allSource
     classifier = 'sources'
+	manifest {
+        attributes 'FMLCorePlugin': 'gtPlusPlus.preloader.asm.Preloader_FMLLoadingPlugin'
+        attributes 'FMLCorePluginContainsFMLMod': 'true'
+    }
 }
 
 task devJar(type: Jar) {
     from sourceSets.main.output
     classifier = 'dev'
     manifest {
-        //attributes 'FMLCorePlugin': 'WhateverLoaderClass'
-        //attributes 'FMLCorePluginContainsFMLMod': 'true'
+        attributes 'FMLCorePlugin': 'gtPlusPlus.preloader.asm.Preloader_FMLLoadingPlugin'
+        attributes 'FMLCorePluginContainsFMLMod': 'true'
     }
 }
 

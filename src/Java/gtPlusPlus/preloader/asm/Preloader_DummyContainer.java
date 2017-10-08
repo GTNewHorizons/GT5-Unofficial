@@ -2,6 +2,7 @@ package gtPlusPlus.preloader.asm;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
@@ -9,6 +10,7 @@ import com.google.common.eventbus.Subscribe;
 import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.versioning.ArtifactVersion;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.preloader.CORE_Preloader;
 import net.minecraftforge.common.config.Configuration;
@@ -29,7 +31,7 @@ public class Preloader_DummyContainer extends DummyModContainer {
 		meta.updateUrl = "";
 		meta.screenshots = new String[0];
 		meta.logoFile = "";
-		meta.dependencies = CORE_Preloader.DEPENDENCIES;
+		meta.dependencies = (List<ArtifactVersion>) CORE_Preloader.DEPENDENCIES;
 
 	}
 	
