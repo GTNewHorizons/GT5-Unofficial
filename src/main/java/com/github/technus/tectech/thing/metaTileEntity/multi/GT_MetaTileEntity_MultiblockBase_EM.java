@@ -88,9 +88,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     protected long eMaxAmpereFlow = 0;//don't modify! unless YOU REALLY HAVE TO
     private long maxEUinputMin = 0, maxEUinputMax = 0;
-    public long eAmpereFlow = 1;
-    public long eRequiredData = 0;
-    protected long eAvailableData = 0;
+
+    public long eAmpereFlow = 1; // analogue of EU/t but for amperes used (so eu/t is actually eu*A/t) USE ONLY POSITIVE NUMBERS!
+
+    public long eRequiredData = 0; // data required to operate
+    protected long eAvailableData = 0; // data being available
 
     private boolean explodedThisTick=false;
 
@@ -740,17 +742,41 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
 
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if (eRequiredData > eAvailableData ||
-                (this.mEUt < 0 && !this.drainEnergyInput_EM((long) (-this.mEUt) * getMaxEfficiency(aStack) / (long) Math.max(1000, this.mEfficiency), eAmpereFlow))) {
+        if (eRequiredData > eAvailableData) {
+            energyFlow(aStack,false);
             stopMachine();
             return false;
         }
-        if (this.mEUt > 0)
+        return energyFlow(aStack,true);
+    }
+
+    //new method
+    private boolean energyFlow(ItemStack aStack,boolean allowProduction) {
+        long temp = mEUt * eAmpereFlow;//quick scope sign
+        if (allowProduction && temp > 0) {
             this.addEnergyOutput_EM((long) mEUt * (long) mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
+        } else if (temp < 0) {
+            if (!this.drainEnergyInput_EM((long) (-mEUt) * getMaxEfficiency(aStack) / Math.max(1000L, this.mEfficiency), eAmpereFlow)) {
+                stopMachine();
+                return false;
+            }
+        }
         return true;
     }
 
     //region energy
+    public final boolean energyFlowWithoutEffieciencyComputation(int eu,long ampere) {
+        long temp = eu * ampere;//quick scope sign
+        if (temp > 0) {
+            this.addEnergyOutput_EM(eu, ampere);
+        } else if (temp < 0) {
+            if (!this.drainEnergyInput_EM(-eu, ampere)) {
+                stopMachine();
+                return false;
+            }
+        }
+        return true;
+    }
 
     @Override
     public final long maxEUStore() {
@@ -777,17 +803,23 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public final boolean addEnergyOutput(long EU) {
         if (EU <= 0L) return true;
         for (GT_MetaTileEntity_Hatch tHatch : eDynamoMulti)
-            if (isValidMetaTileEntity(tHatch) && tHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(EU, false))
-                return true;
+            if (isValidMetaTileEntity(tHatch)){
+                if(tHatch.maxEUOutput()<EU) explodeMultiblock();
+                if(tHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(EU, false))
+                    return true;
+            }
         for (GT_MetaTileEntity_Hatch tHatch : mDynamoHatches)
-            if (isValidMetaTileEntity(tHatch) && tHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(EU, false))
-                return true;
+            if (isValidMetaTileEntity(tHatch)){
+                if(tHatch.maxEUOutput()<EU) explodeMultiblock();
+                if(tHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(EU, false))
+                    return true;
+            }
         return false;
     }
 
-    //new method
-    public final boolean addEnergyOutput_EM(long EU, long Amperes) {
-        if (EU <= 0L || Amperes <= 0) return true;
+    private boolean addEnergyOutput_EM(long EU, long Amperes) {
+        if(EU<0) EU=-EU;
+        if(Amperes<0) Amperes=-Amperes;
         long euVar = EU * Amperes;
         long diff;
         for (GT_MetaTileEntity_Hatch_Dynamo tHatch : mDynamoHatches) {
@@ -828,21 +860,21 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public final boolean drainEnergyInput(long EU) {
         if (EU <= 0L) return true;
         for (GT_MetaTileEntity_Hatch tHatch : eEnergyMulti)
-            if (isValidMetaTileEntity(tHatch) && tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(EU, false))
+            if (isValidMetaTileEntity(tHatch) && tHatch.maxEUInput()>EU && tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(EU, false))
                 return true;
         for (GT_MetaTileEntity_Hatch tHatch : mEnergyHatches)
-            if (isValidMetaTileEntity(tHatch) && tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(EU, false))
+            if (isValidMetaTileEntity(tHatch) && tHatch.maxEUInput()>EU && tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(EU, false))
                 return true;
         return false;
     }
 
-    //new method
-    public final boolean drainEnergyInput_EM(long EU, long Amperes) {
-        if (EU <= 0L || Amperes <= 0) return true;
+    private boolean drainEnergyInput_EM(long EU, long Amperes) {
+        if(EU<0) EU=-EU;
+        if(Amperes<0) Amperes=-Amperes;
         long euVar = EU * Amperes;
-        if (euVar > getEUVar() ||
-                EU > maxEUinputMax ||
-                (euVar - 1) / maxEUinputMin + 1 > eMaxAmpereFlow) {// euVar==0? --> (euVar - 1) / maxEUinputMin + 1 = 1!
+        if (euVar > getEUVar() || //not enough power
+                EU > maxEUinputMax || //TIER IS BASED ON BEST HATCH! not total EU input
+                (euVar - 1) / maxEUinputMin + 1 > eMaxAmpereFlow) {// euVar==0? --> (euVar - 1) / maxEUinputMin + 1 = 1! //if not too much A
             if (DEBUG_MODE) {
                 TecTech.Logger.debug("L1 " + euVar + " " + getEUVar() + " " + (euVar > getEUVar()));
                 TecTech.Logger.debug("L2 " + EU + " " + maxEUinputMax + " " + (EU > maxEUinputMax));
@@ -857,8 +889,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     //new method
-    public final boolean overclockAndPutValuesIn_EM(long EU, int time) {//TODO rewise
-        if (EU == 0) {
+    public final boolean overclockAndPutValuesIn_EM(long EU, int time) {//TODO revise
+        if (EU == 0L) {
             mEUt = 0;
             mMaxProgresstime = time;
             return true;
@@ -880,7 +912,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         return true;
     }//Use in EM check recipe return statement if you want overclocking
 
-    @Override
+    @Override // same as gt sum of all hatches
     public final long getMaxInputVoltage() {
         long rVoltage = 0;
         for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches)
@@ -888,6 +920,16 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : eEnergyMulti)
             if (isValidMetaTileEntity(tHatch)) rVoltage += tHatch.maxEUInput();
         return rVoltage;
+    }
+
+    //new Method
+    public final long getMaxInputEnergy(){
+        long energy = 0;
+        for (GT_MetaTileEntity_Hatch_Energy tHatch : mEnergyHatches)
+            if (isValidMetaTileEntity(tHatch)) energy += tHatch.maxEUInput();
+        for (GT_MetaTileEntity_Hatch_EnergyMulti tHatch : eEnergyMulti)
+            if (isValidMetaTileEntity(tHatch)) energy += tHatch.maxEUInput() * tHatch.Amperes;
+        return energy;
     }
 
     //new Method
@@ -899,6 +941,11 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public final int getMinEnergyInputTier_EM() {
         return Util.getTier(maxEUinputMin);
     }
+
+    public final long getMaxAmpereFlowAtMinTierOfEnergyHatches(){
+        return eAmpereFlow;
+    }
+
     //endregion
 
     //new Method
@@ -1034,11 +1081,6 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     public final void explodeMultiblock() {
         if(explodedThisTick)return;
         extraExplosions_EM();
-        explodeMultiblock_EM();
-        explodedThisTick=true;
-    }
-
-    private void explodeMultiblock_EM(){
         if (!TecTech.ModConfig.BOOM_ENABLE) {
             TecTech.proxy.broadcast("Multi Explode BOOM! " + getBaseMetaTileEntity().getXCoord() + " " + getBaseMetaTileEntity().getYCoord() + " " + getBaseMetaTileEntity().getZCoord());
             StackTraceElement[] ste = Thread.currentThread().getStackTrace();
@@ -1065,6 +1107,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         for (MetaTileEntity tTileEntity : eInputData) tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
         for (MetaTileEntity tTileEntity : eOutputData) tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
         getBaseMetaTileEntity().doExplosion(V[15]);
+        explodedThisTick=true;
     }
 
     @Override
