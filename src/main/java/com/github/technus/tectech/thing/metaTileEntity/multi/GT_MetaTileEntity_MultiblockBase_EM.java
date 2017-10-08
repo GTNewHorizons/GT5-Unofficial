@@ -756,7 +756,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         if (allowProduction && temp > 0) {
             this.addEnergyOutput_EM((long) mEUt * (long) mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
         } else if (temp < 0) {
-            if (!this.drainEnergyInput_EM((long) (-mEUt) * getMaxEfficiency(aStack) / Math.max(1000L, this.mEfficiency), eAmpereFlow)) {
+            if (!this.drainEnergyInput_EM((long) mEUt * getMaxEfficiency(aStack) / Math.max(1000L, this.mEfficiency), eAmpereFlow)) {
                 stopMachine();
                 return false;
             }
@@ -770,7 +770,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         if (temp > 0) {
             this.addEnergyOutput_EM(eu, ampere);
         } else if (temp < 0) {
-            if (!this.drainEnergyInput_EM(-eu, ampere)) {
+            if (!this.drainEnergyInput_EM(eu, ampere)) {
                 stopMachine();
                 return false;
             }
