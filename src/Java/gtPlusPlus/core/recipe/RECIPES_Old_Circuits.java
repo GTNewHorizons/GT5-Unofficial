@@ -107,7 +107,10 @@ public class RECIPES_Old_Circuits  implements IOreRecipeRegistrator {
 		ItemList.Circuit_Elite.set(GregtechItemList.Old_Circuit_Elite.get(1));
 		ItemList.Circuit_Master.set(GregtechItemList.Old_Circuit_Master.get(1));
 		ItemList.Circuit_Ultimate.set(GregtechItemList.Old_Circuit_Ultimate.get(1));
-
+		
+		//set data orbs and sticks to their new replacements
+		ItemList.Tool_DataStick.set(GregtechItemList.Old_Tool_DataStick.get(1));
+		ItemList.Tool_DataOrb.set(GregtechItemList.Old_Tool_DataOrb.get(1));
 
 		ItemList.Circuit_Board_Basic.set(GregtechItemList.Old_Circuit_Board_Basic.get(1));
 		ItemList.Circuit_Board_Advanced.set(GregtechItemList.Old_Circuit_Board_Advanced.get(1));
@@ -211,7 +214,13 @@ public class RECIPES_Old_Circuits  implements IOreRecipeRegistrator {
 					"Circuit_Wetwarecomputer", 
 					"Circuit_Wetwaresupercomputer", 
 					"Circuit_Wetwaremainframe", 
-					"Circuit_Parts_RawCrystalChip"					
+					"Circuit_Parts_RawCrystalChip,",
+					//Circuits Additions in .30/.31
+					"Circuit_Board_Plastic",
+					"Circuit_Parts_GlassFiber",
+					"Circuit_Parts_PetriDish",
+					"Circuit_Microprocessor"
+					
 			};
 
 			for (String component : CircuitToHide){

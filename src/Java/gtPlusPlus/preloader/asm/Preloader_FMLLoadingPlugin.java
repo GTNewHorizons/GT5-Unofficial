@@ -8,6 +8,8 @@ import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 @MCVersion(value = "1.7.10")
 public class Preloader_FMLLoadingPlugin implements IFMLLoadingPlugin  {
 
+	//-Dfml.coreMods.load=gtPlusPlus.preloader.asm.Preloader_FMLLoadingPlugin
+	
 	@Override
 	public String getAccessTransformerClass() {
 		return null;
