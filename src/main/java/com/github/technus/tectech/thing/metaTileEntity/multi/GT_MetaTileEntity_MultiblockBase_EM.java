@@ -1080,13 +1080,14 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     @Override
     public final void explodeMultiblock() {
         if(explodedThisTick)return;
-        extraExplosions_EM();
+        explodedThisTick=true;
         if (!TecTech.ModConfig.BOOM_ENABLE) {
             TecTech.proxy.broadcast("Multi Explode BOOM! " + getBaseMetaTileEntity().getXCoord() + " " + getBaseMetaTileEntity().getYCoord() + " " + getBaseMetaTileEntity().getZCoord());
             StackTraceElement[] ste = Thread.currentThread().getStackTrace();
             TecTech.proxy.broadcast("Multi Explode BOOM! " + ste[2].toString());
             return;
         }
+        extraExplosions_EM();
         GT_Pollution.addPollution(getBaseMetaTileEntity(), 600000);
         mInventory[1] = null;
         for (MetaTileEntity tTileEntity : mInputBusses) tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
@@ -1107,12 +1108,12 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         for (MetaTileEntity tTileEntity : eInputData) tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
         for (MetaTileEntity tTileEntity : eOutputData) tTileEntity.getBaseMetaTileEntity().doExplosion(V[9]);
         getBaseMetaTileEntity().doExplosion(V[15]);
-        explodedThisTick=true;
     }
 
     @Override
     public void doExplosion(long aExplosionPower) {
         explodeMultiblock();
+        super.doExplosion(aExplosionPower);
     }//Redirecting to explodemultiblock
 
     @Override

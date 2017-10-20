@@ -143,13 +143,13 @@ public final class dAtomDefinition extends cElementalDefinition {
         else
             rawLifeTimeTemp= calculateLifeTime(izoDiff, izoDiffAbs, element, neutralCount, containsAnti);
 
-        this.rawLifeTime=rawLifeTimeTemp>stableRawLifeTime?stableRawLifeTime:rawLifeTimeTemp;
+        this.rawLifeTime=rawLifeTimeTemp> STABLE_RAW_LIFE_TIME ? STABLE_RAW_LIFE_TIME :rawLifeTimeTemp;
 
         if (izoDiff == 0)
             this.decayMode = 0;
         else
             this.decayMode = izoDiff > 0 ? (byte) Math.min(2, 1 + izoDiffAbs / 4) : (byte) -Math.min(2, 1 + izoDiffAbs / 4);
-        this.stable = this.rawLifeTime>=stableRawLifeTime;
+        this.stable = this.rawLifeTime>= STABLE_RAW_LIFE_TIME;
     }
 
     private static int stableIzoCurve(int element) {
@@ -517,7 +517,7 @@ public final class dAtomDefinition extends cElementalDefinition {
                 final int izoDiff = isotope - StableIsotope;
                 final int izoDiffAbs = Math.abs(izoDiff);
                 final float rawLifeTime = calculateLifeTime(izoDiff, izoDiffAbs, element, isotope, false);
-                if (rawLifeTime>=stableRawLifeTime) {
+                if (rawLifeTime>= STABLE_RAW_LIFE_TIME) {
                     TreeSet<Integer> isotopes = stableIsotopes.get(element);
                     if (isotopes == null) stableIsotopes.put(element, isotopes = new TreeSet<>());
                     isotopes.add(isotope);

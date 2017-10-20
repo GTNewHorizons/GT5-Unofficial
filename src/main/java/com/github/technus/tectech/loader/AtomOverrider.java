@@ -6,7 +6,7 @@ import com.github.technus.tectech.elementalMatter.definitions.complex.dAtomDefin
 import com.github.technus.tectech.elementalMatter.definitions.complex.dHadronDefinition;
 import com.github.technus.tectech.elementalMatter.definitions.primitive.eLeptonDefinition;
 
-import static com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefinition.stableRawLifeTime;
+import static com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefinition.STABLE_RAW_LIFE_TIME;
 import static com.github.technus.tectech.elementalMatter.definitions.complex.dAtomDefinition.addOverride;
 
 /**
@@ -20,13 +20,13 @@ public class AtomOverrider implements Runnable{
                     new cElementalDefinitionStack(eLeptonDefinition.lepton_e, 2),
                     dHadronDefinition.hadron_p2,
                     new cElementalDefinitionStack(dHadronDefinition.hadron_n, 3)
-            ), stableRawLifeTime);//He3
+            ), STABLE_RAW_LIFE_TIME);//He3
 
             addOverride(new dAtomDefinition(
                     eLeptonDefinition.lepton_e1,
                     dHadronDefinition.hadron_p1,
                     dHadronDefinition.hadron_n1
-            ), stableRawLifeTime);//D
+            ), STABLE_RAW_LIFE_TIME);//D
 
             addOverride(new dAtomDefinition(
                     eLeptonDefinition.lepton_e1,
