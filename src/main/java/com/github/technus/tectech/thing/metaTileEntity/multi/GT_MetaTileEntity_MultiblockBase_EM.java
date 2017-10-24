@@ -743,8 +743,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     @Override
     public boolean onRunningTick(ItemStack aStack) {
         if (eRequiredData > eAvailableData) {
-            energyFlow(aStack,false);
-            stopMachine();
+            if(energyFlow(aStack,false))
+                stopMachine();
             return false;
         }
         return energyFlow(aStack,true);
@@ -756,7 +756,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         if (allowProduction && temp > 0) {
             this.addEnergyOutput_EM((long) mEUt * (long) mEfficiency / getMaxEfficiency(aStack), eAmpereFlow);
         } else if (temp < 0) {
-            if (!this.drainEnergyInput_EM((long) mEUt * getMaxEfficiency(aStack) / Math.max(1000L, this.mEfficiency), eAmpereFlow)) {
+            if (!this.drainEnergyInput_EM(mEUt,(long) mEUt * getMaxEfficiency(aStack) / Math.max(1000L, this.mEfficiency), eAmpereFlow)) {
                 stopMachine();
                 return false;
             }
@@ -868,23 +868,24 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         return false;
     }
 
-    private boolean drainEnergyInput_EM(long EU, long Amperes) {
-        if(EU<0) EU=-EU;
+    private boolean drainEnergyInput_EM(long EUt, long EUtEff, long Amperes) {
+        if(EUt<0) EUt=-EUt;
+        if(EUtEff<0) EUtEff=-EUtEff;
         if(Amperes<0) Amperes=-Amperes;
-        long euVar = EU * Amperes;
-        if (euVar > getEUVar() || //not enough power
-                EU > maxEUinputMax || //TIER IS BASED ON BEST HATCH! not total EU input
-                (euVar - 1) / maxEUinputMin + 1 > eMaxAmpereFlow) {// euVar==0? --> (euVar - 1) / maxEUinputMin + 1 = 1! //if not too much A
+        long EUuse = EUtEff * Amperes;
+        if (EUuse > getEUVar() || //not enough power
+                EUt > maxEUinputMax || //TIER IS BASED ON BEST HATCH! not total EUtEff input
+                ((EUt*Amperes) - 1) / maxEUinputMin + 1 > eMaxAmpereFlow) {// EUuse==0? --> (EUuse - 1) / maxEUinputMin + 1 = 1! //if not too much A
             if (DEBUG_MODE) {
-                TecTech.Logger.debug("L1 " + euVar + " " + getEUVar() + " " + (euVar > getEUVar()));
-                TecTech.Logger.debug("L2 " + EU + " " + maxEUinputMax + " " + (EU > maxEUinputMax));
-                TecTech.Logger.debug("L3 " + euVar + " " + eMaxAmpereFlow);
-                TecTech.Logger.debug("L4 " + ((euVar - 1) / maxEUinputMin + 1) + " " + eMaxAmpereFlow + " " + ((euVar - 1) / maxEUinputMin + 1 > eMaxAmpereFlow));
+                TecTech.Logger.debug("L1 " + EUuse + " " + getEUVar() + " " + (EUuse > getEUVar()));
+                TecTech.Logger.debug("L2 " + EUtEff + " " + maxEUinputMax + " " + (EUtEff > maxEUinputMax));
+                TecTech.Logger.debug("L3 " + EUuse + " " + eMaxAmpereFlow);
+                TecTech.Logger.debug("L4 " + ((EUuse - 1) / maxEUinputMin + 1) + " " + eMaxAmpereFlow + " " + ((EUuse - 1) / maxEUinputMin + 1 > eMaxAmpereFlow));
             }
             return false;
         }
         //sub eu
-        setEUVar(getEUVar() - euVar);
+        setEUVar(getEUVar() - EUuse);
         return true;
     }
 
