@@ -770,7 +770,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         if (temp > 0) {
             this.addEnergyOutput_EM(eu, ampere);
         } else if (temp < 0) {
-            if (!this.drainEnergyInput_EM(eu, ampere)) {
+            if (!this.drainEnergyInput_EM(eu,eu, ampere)) {
                 stopMachine();
                 return false;
             }
