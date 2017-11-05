@@ -7,7 +7,6 @@ import java.io.File;
 import org.apache.logging.log4j.Level;
 import org.objectweb.asm.*;
 
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.preloader.CORE_Preloader;
@@ -53,18 +52,11 @@ public class Preloader_ClassTransformer implements IClassTransformer {
 			MethodVisitor methodVisitor = super.visitMethod(access, name, desc, signature, exceptions);
 			if(name.equals("registerOreImpl") && desc.equals("(Ljava/lang/String;Lnet/minecraft/item/ItemStack;)V")) {
 				FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Found target method.");
-				return new RegisterOreImplVisitor(methodVisitor);
+				return new RegisterOreImplVisitor(methodVisitor, false);
 			}
 			else if(name.equals("registerOreImpl") && desc.equals("(Ljava/lang/String;Ladd;)V")) {
 				FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Found target method. [Obfuscated]");
-				return new RegisterOreImplVisitor(methodVisitor);
-			}
-			else {
-				//FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Dd not find target method.");
-				//FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Found: "+name);
-				//FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, ""+desc);
-				//FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, ""+signature);
-				//FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, ""+exceptions);
+				return new RegisterOreImplVisitor(methodVisitor, true);
 			}
 			return methodVisitor;
 		}
@@ -73,23 +65,33 @@ public class Preloader_ClassTransformer implements IClassTransformer {
 
 	private static final class RegisterOreImplVisitor extends MethodVisitor {
 
-		public RegisterOreImplVisitor(MethodVisitor mv) {
+		private final boolean mObfuscated;
+		
+		public RegisterOreImplVisitor(MethodVisitor mv, boolean obfuscated) {
 			super(ASM5, mv);
+			this.mObfuscated = obfuscated;
 		}
 
-		@SuppressWarnings("deprecation")
 		@Override
 		public void visitCode() {
 			FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Fixing Forge's poor attempt at an oreDictionary.");
 			super.visitCode();
 			super.visitVarInsn(ALOAD, 0);
 			super.visitVarInsn(ALOAD, 1);
+			if (!mObfuscated){
 			super.visitMethodInsn(INVOKESTATIC, 
-					//"gtPlusPlus/preloader/Preloader_GT_OreDict", "removeCircuit", "(Lnet/minecraft/item/ItemStack;)Z, false");
 					"gtPlusPlus/preloader/Preloader_GT_OreDict", 
 					"shouldPreventRegistration",
 					"(Ljava/lang/String;Lnet/minecraft/item/ItemStack;)Z",
 					false);
+			}
+			else {
+				super.visitMethodInsn(INVOKESTATIC, 
+						"gtPlusPlus/preloader/Preloader_GT_OreDict", 
+						"shouldPreventRegistration",
+						"(Ljava/lang/String;Ladd;)Z",
+						false);
+			}
 			Label endLabel = new Label();
 			super.visitJumpInsn(IFEQ, endLabel);
 			super.visitInsn(RETURN);
