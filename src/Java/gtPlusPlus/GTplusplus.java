@@ -8,7 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -42,7 +41,6 @@ import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.oredict.OreDictionary;
@@ -72,6 +70,11 @@ public class GTplusplus implements ActionListener {
 				"Enables all sorts of debug logging. (Don't use unless told to, breaks other things.)");
 		disableEnderIOIntegration = config.getBoolean("disableEnderIO", "debug", false,
 				"Disables EnderIO Integration.");
+		MACHINE_INFO = config.getBoolean("enableMachineInfoLogging", "debug", false,
+				"Makes many machines display lots of debug logging.");
+		showHiddenNEIItems = config.getBoolean("showHiddenNEIItems", "debug", false,
+				"Makes all items hidden from NEI display.");
+		
 
 		// Machines
 		enableThaumcraftShardUnification = config.getBoolean("enableThaumcraftShardUnification", "machines", false,

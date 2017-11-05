@@ -43,6 +43,7 @@ public class LoadedMods {
 	public static boolean DreamCraft = false; //GT: New Horizons
 	public static boolean BiomesOPlenty = false;
 	public static boolean PamsHarvestcraft = false;
+	public static boolean GalacticraftCore = false;
 
 
 
@@ -218,6 +219,11 @@ public class LoadedMods {
 		if (Loader.isModLoaded("Baubles") == true){
 			Baubles  = true;
 			Utils.LOG_INFO("Components enabled for: Baubles");
+			totalMods++;
+		}
+		if (Loader.isModLoaded("GalacticraftCore") == true){
+			GalacticraftCore  = true;
+			Utils.LOG_INFO("Components enabled for: Galacticraft Core");
 			totalMods++;
 		}
 		if (Loader.isModLoaded("OpenComputers") == true){

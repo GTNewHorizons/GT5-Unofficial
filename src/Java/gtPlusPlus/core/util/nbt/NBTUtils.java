@@ -208,4 +208,26 @@ public class NBTUtils {
 		}
 	}
 
+
+
+	//Botania soulbind handling
+	public static boolean setBotanicaSoulboundOwner(ItemStack aStack, String aName) {
+		final String TAG_SOULBIND = "soulbind";
+		NBTTagCompound tNBT = getNBT(aStack);
+		tNBT.setString(TAG_SOULBIND, aName);
+		GT_Utility.ItemNBT.setNBT(aStack, tNBT);
+		if (NBTUtils.doesStringExist(aStack, TAG_SOULBIND)){
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	public static String getBotanicaSoulboundOwner(ItemStack aStack) {
+		final String TAG_SOULBIND = "soulbind";
+		NBTTagCompound tNBT = getNBT(aStack);
+		return tNBT.getString(TAG_SOULBIND);
+	}
+
 }

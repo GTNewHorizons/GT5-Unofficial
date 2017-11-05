@@ -34,7 +34,7 @@ public class CORE {
 
 	public static final String name = "GT++";
 	public static final String MODID = "miscutils";
-	public static final String VERSION = "1.6.52-release";
+	public static final String VERSION = "1.6.55-release";
 	public static String MASTER_VERSION = NetworkUtils.getContentFromURL("https://raw.githubusercontent.com/draknyte1/GTplusplus/master/Recommended.txt").toLowerCase();
 	public static String USER_COUNTRY = GeoUtils.determineUsersCountry();
 	public static boolean isModUpToDate = Utils.isModUpToDate();
@@ -105,6 +105,7 @@ public class CORE {
 		//Debug
 		public static boolean disableEnderIOIntegration = false;
 		public static boolean MACHINE_INFO = true;
+		public static boolean showHiddenNEIItems = false;
 
 		//Tools
 		public static boolean enableSkookumChoochers = true;
@@ -121,7 +122,6 @@ public class CORE {
 		public static boolean enableAlternativeDivisionSigilRecipe = false;
 
 		//Feature Related
-		public static boolean enableCustomAlvearyBlocks = false;
 		public static boolean enableCustomCircuits = true;
 		public static boolean enableOldGTcircuits = false;
 

@@ -44,7 +44,7 @@ extends GregtechMeta_MultiBlockBase {
 		return new String[]{
 				"Controller Block for the Industrial Thermal Centrifuge",
 				"60% faster than using single block machines of the same voltage",
-				"Size: 3x2x3 [WxLxH] (Hollow)", "Controller (front centered)",
+				"Size: 3x2x3 [LxHxW]", "Controller (front centered)",
 				"1x Input Bus (Any casing)",
 				"1x Output Bus (Any casing)",
 				"1x Maintenance Hatch (Any casing)",
