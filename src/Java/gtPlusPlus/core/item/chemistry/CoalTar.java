@@ -17,7 +17,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 public class CoalTar {
-	
+
 	private static Fluid Coal_Gas;
 	private static Fluid Ethylene;
 	private static Fluid Benzene;
@@ -122,28 +122,36 @@ public class CoalTar {
 		recipeLithiumPeroxide();
 	}
 
-	
+
 
 	public static void recipeCreateEthylene(){
-		CORE.RA.addDehydratorRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2),
-				FluidUtils.getFluidStack("fluid.bioethanol", 2000),
-				new ItemStack[]{
-						ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("cellEthylene", 1)
-				},
-				120*20,
-				80);
 
-		CORE.RA.addDehydratorRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2),
-				FluidUtils.getFluidStack("bioethanol", 2000),
-				new ItemStack[]{
-						ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 1),
-						ItemUtils.getItemStackOfAmountFromOreDict("cellEthylene", 1)
-				},
-				120*20,
-				80);
+		FluidStack bioEth1 = FluidUtils.getFluidStack("fluid.bioethanol", 2000);
+		FluidStack bioEth2 = FluidUtils.getFluidStack("bioethanol", 2000);
+
+		if (bioEth1 != null){
+			CORE.RA.addDehydratorRecipe(
+					ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2),
+					bioEth1,
+					new ItemStack[]{
+							ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 1),
+							ItemUtils.getItemStackOfAmountFromOreDict("cellEthylene", 1)
+					},
+					120*20,
+					80);
+		}
+
+		if (bioEth1 != null){
+			CORE.RA.addDehydratorRecipe(
+					ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2),
+					bioEth2,
+					new ItemStack[]{
+							ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 1),
+							ItemUtils.getItemStackOfAmountFromOreDict("cellEthylene", 1)
+					},
+					120*20,
+					80);
+		}
 	}
 
 	public static void recipeCreateBenzene(){
