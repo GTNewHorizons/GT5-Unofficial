@@ -40,19 +40,19 @@ public class HANDLER_Mekanism {
 					tSteelCasing);
 
 			//Energy Storage
-			ItemStack tAdvancedEnergyCube = ItemUtils.simpleMetaStack("Mekanism:EnergyCube", 0, 1);
+			ItemStack tAdvancedEnergyCube = ItemUtils.simpleMetaStack("Mekanism:EnergyCube", 0, 1).copy();
 			NBTUtils.setString(tAdvancedEnergyCube, "tier", "Advanced");
-			ItemStack tBasicEnergyCube = ItemUtils.simpleMetaStack("Mekanism:EnergyCube", 0, 1);
+			ItemStack tBasicEnergyCube = ItemUtils.simpleMetaStack("Mekanism:EnergyCube", 0, 1).copy();
 			NBTUtils.setString(tBasicEnergyCube, "tier", "Basic");
 
 			//Gas tanks
-			ItemStack tBasicGasTank = ItemUtils.simpleMetaStack("Mekanism:GasTank", 0, 1);
+			ItemStack tBasicGasTank = ItemUtils.simpleMetaStack("Mekanism:GasTank", 0, 1).copy();
 			NBTUtils.setInteger(tBasicGasTank, "tier", 0);
-			ItemStack tAdvancedGasTank = ItemUtils.simpleMetaStack("Mekanism:GasTank", 0, 1);
+			ItemStack tAdvancedGasTank = ItemUtils.simpleMetaStack("Mekanism:GasTank", 0, 1).copy();
 			NBTUtils.setInteger(tAdvancedGasTank, "tier", 1);
-			ItemStack tEliteGasTank = ItemUtils.simpleMetaStack("Mekanism:GasTank", 0, 1);
+			ItemStack tEliteGasTank = ItemUtils.simpleMetaStack("Mekanism:GasTank", 0, 1).copy();
 			NBTUtils.setInteger(tEliteGasTank, "tier", 2);
-			ItemStack tMasterGasTank = ItemUtils.simpleMetaStack("Mekanism:GasTank", 0, 1);
+			ItemStack tMasterGasTank = ItemUtils.simpleMetaStack("Mekanism:GasTank", 0, 1).copy();
 			NBTUtils.setInteger(tMasterGasTank, "tier", 3);
 
 			//Machines that use Osmium
@@ -60,44 +60,44 @@ public class HANDLER_Mekanism {
 			ItemStack tMachineBlock = ItemUtils.simpleMetaStack("Mekanism:MachineBlock:6", 6, 1);
 
 			//Smelting
-			ItemStack tMachineBlock_0_Basic = tMachineBlock_Basic;
+			ItemStack tMachineBlock_0_Basic = tMachineBlock_Basic.copy();
 			NBTUtils.setInteger(tMachineBlock_0_Basic, "recipeType", 0);
-			ItemStack tMachineBlock_0 = tMachineBlock;
+			ItemStack tMachineBlock_0 = tMachineBlock.copy();
 			NBTUtils.setInteger(tMachineBlock_0, "recipeType", 0);
 			//Enriching
-			ItemStack tMachineBlock_1_Basic = tMachineBlock_Basic;
+			ItemStack tMachineBlock_1_Basic = tMachineBlock_Basic.copy();
 			NBTUtils.setInteger(tMachineBlock_1_Basic, "recipeType", 1);
-			ItemStack tMachineBlock_1 = tMachineBlock;
+			ItemStack tMachineBlock_1 = tMachineBlock.copy();
 			NBTUtils.setInteger(tMachineBlock_1, "recipeType", 1);
 			//Crushing
-			ItemStack tMachineBlock_2_Basic = tMachineBlock_Basic;
+			ItemStack tMachineBlock_2_Basic = tMachineBlock_Basic.copy();
 			NBTUtils.setInteger(tMachineBlock_2_Basic, "recipeType", 2);
-			ItemStack tMachineBlock_2 = tMachineBlock;
+			ItemStack tMachineBlock_2 = tMachineBlock.copy();
 			NBTUtils.setInteger(tMachineBlock_2, "recipeType", 2);
 			//Compressing
-			ItemStack tMachineBlock_3_Basic = tMachineBlock_Basic;
+			ItemStack tMachineBlock_3_Basic = tMachineBlock_Basic.copy();
 			NBTUtils.setInteger(tMachineBlock_3_Basic, "recipeType", 3);
-			ItemStack tMachineBlock_3 = tMachineBlock;
+			ItemStack tMachineBlock_3 = tMachineBlock.copy();
 			NBTUtils.setInteger(tMachineBlock_3, "recipeType", 3);
 			//Combining
-			ItemStack tMachineBlock_4_Basic = tMachineBlock_Basic;
+			ItemStack tMachineBlock_4_Basic = tMachineBlock_Basic.copy();
 			NBTUtils.setInteger(tMachineBlock_4_Basic, "recipeType", 4);
-			ItemStack tMachineBlock_4 = tMachineBlock;
+			ItemStack tMachineBlock_4 = tMachineBlock.copy();
 			NBTUtils.setInteger(tMachineBlock_4, "recipeType", 4);
 			//Purifying
-			ItemStack tMachineBlock_5_Basic = tMachineBlock_Basic;
+			ItemStack tMachineBlock_5_Basic = tMachineBlock_Basic.copy();
 			NBTUtils.setInteger(tMachineBlock_5_Basic, "recipeType", 5);
-			ItemStack tMachineBlock_5 = tMachineBlock;
+			ItemStack tMachineBlock_5 = tMachineBlock.copy();
 			NBTUtils.setInteger(tMachineBlock_5, "recipeType", 5);
 			//Injecting
-			ItemStack tMachineBlock_6_Basic = tMachineBlock_Basic;
+			ItemStack tMachineBlock_6_Basic = tMachineBlock_Basic.copy();
 			NBTUtils.setInteger(tMachineBlock_6_Basic, "recipeType", 6);
-			ItemStack tMachineBlock_6 = tMachineBlock;
+			ItemStack tMachineBlock_6 = tMachineBlock.copy();
 			NBTUtils.setInteger(tMachineBlock_6, "recipeType", 6);
 			//Infusing
-			ItemStack tMachineBlock_7_Basic = tMachineBlock_Basic;
+			ItemStack tMachineBlock_7_Basic = tMachineBlock_Basic.copy();
 			NBTUtils.setInteger(tMachineBlock_7_Basic, "recipeType", 7);
-			ItemStack tMachineBlock_7 = tMachineBlock;
+			ItemStack tMachineBlock_7 = tMachineBlock.copy();
 			NBTUtils.setInteger(tMachineBlock_7, "recipeType", 7);
 
 			//Infuser
