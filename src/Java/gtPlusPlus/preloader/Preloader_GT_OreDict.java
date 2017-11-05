@@ -101,6 +101,16 @@ public class Preloader_GT_OreDict {
 						}
 					}
 				}	
+				//Shard
+				if (Class.forName("mekanism.common.item.ItemShard") != null) {
+					Class<?> MekIngot = Class.forName("mekanism.common.item.ItemShard");
+					if (isInstanceOf(MekIngot, bannedItem.getItem())) {
+						if (bannedItem.getItemDamage() == 2){
+							FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Removing "+bannedItem.getDisplayName()+" from the OreDictionary to balance Mekanism.");
+							return true;
+						}
+					}
+				}
 				//Clump
 				if (Class.forName("mekanism.common.item.ItemClump") != null) {
 					Class<?> MekIngot = Class.forName("mekanism.common.item.ItemClump");
