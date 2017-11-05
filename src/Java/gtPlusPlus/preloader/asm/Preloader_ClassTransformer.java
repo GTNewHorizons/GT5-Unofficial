@@ -51,7 +51,7 @@ public class Preloader_ClassTransformer implements IClassTransformer {
 		public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
 			MethodVisitor methodVisitor = super.visitMethod(access, name, desc, signature, exceptions);
 			if(name.equals("registerOreImpl") && desc.equals("(Ljava/lang/String;Lnet/minecraft/item/ItemStack;)V")) {
-				FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Found target method.");
+				FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Found target method. [Unobfuscated]");
 				return new RegisterOreImplVisitor(methodVisitor, false);
 			}
 			else if(name.equals("registerOreImpl") && desc.equals("(Ljava/lang/String;Ladd;)V")) {
@@ -79,6 +79,7 @@ public class Preloader_ClassTransformer implements IClassTransformer {
 			super.visitVarInsn(ALOAD, 0);
 			super.visitVarInsn(ALOAD, 1);
 			if (!mObfuscated){
+				FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Injecting target method. [Unobfuscated]");				
 			super.visitMethodInsn(INVOKESTATIC, 
 					"gtPlusPlus/preloader/Preloader_GT_OreDict", 
 					"shouldPreventRegistration",
@@ -86,6 +87,7 @@ public class Preloader_ClassTransformer implements IClassTransformer {
 					false);
 			}
 			else {
+				FMLRelaunchLog.log("[GT++ ASM] OreDictTransformer", Level.INFO, "Injecting target method. [Obfuscated]");
 				super.visitMethodInsn(INVOKESTATIC, 
 						"gtPlusPlus/preloader/Preloader_GT_OreDict", 
 						"shouldPreventRegistration",

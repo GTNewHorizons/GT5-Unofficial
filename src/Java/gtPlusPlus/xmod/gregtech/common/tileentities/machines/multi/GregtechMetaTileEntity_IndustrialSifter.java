@@ -14,13 +14,13 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
+import gregtech.common.blocks.GT_Block_Machines;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
-import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -28,7 +28,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class GregtechMetaTileEntity_IndustrialSifter
 extends GregtechMeta_MultiBlockBase {
-	private static boolean controller;
+	private boolean controller;
 
 	public GregtechMetaTileEntity_IndustrialSifter(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -115,12 +115,12 @@ extends GregtechMeta_MultiBlockBase {
 	int[] cloneChances;
 	GT_Recipe baseRecipe;
 	GT_Recipe cloneRecipe;
-	
+
 	@Override
 	public boolean checkRecipe(final ItemStack aStack) {
 
 		Utils.LOG_WARNING("1");
-		
+
 		//Get inputs.
 		final ArrayList<ItemStack> tInputList = this.getStoredInputs();
 		for (int i = 0; i < (tInputList.size() - 1); i++) {
@@ -135,7 +135,7 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 		}
-		
+
 		Utils.LOG_WARNING("2");
 
 		//Temp var
@@ -145,16 +145,16 @@ extends GregtechMeta_MultiBlockBase {
 		if (this.mOutputBusses.size() != 4){
 			return false;
 		}
-		
-		
+
+
 		Utils.LOG_WARNING("3");
 
 		//Make a recipe instance for the rest of the method.
 		final GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sSifterRecipes.findRecipe(this.getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
-		
+
 		if (tRecipe != null)
-		baseRecipe = tRecipe.copy();
-		
+			baseRecipe = tRecipe.copy();
+
 		if (cloneRecipe != tRecipe || cloneRecipe == null){
 			cloneRecipe = tRecipe.copy();
 			Utils.LOG_WARNING("Setting Recipe");
@@ -167,23 +167,23 @@ extends GregtechMeta_MultiBlockBase {
 			cloneChances = tRecipe.mChances.clone();
 			Utils.LOG_WARNING("Setting Chances");
 		}
-		
+
 		for (int r=0;r<cloneChances.length;r++){
 			Utils.LOG_WARNING("Original map Output["+r+"] chance = "+cloneChances[r]);
 		}
-		
+
 		Utils.LOG_WARNING("3.1");
-		
+
 		//Change bonus chances
 		int[] outputChances;
-		
+
 		Utils.LOG_WARNING("3.2");
-		
+
 		if (cloneRecipe.mChances != null){
 			outputChances = cloneRecipe.mChances.clone();
-			
+
 			Utils.LOG_WARNING("3.3");
-			
+
 			for (int r=0;r<outputChances.length;r++){
 				Utils.LOG_WARNING("Output["+r+"] chance = "+outputChances[r]);
 				if (outputChances[r]<10000){
@@ -204,16 +204,16 @@ extends GregtechMeta_MultiBlockBase {
 			}
 
 			Utils.LOG_WARNING("3.4");
-			
+
 			//Rebuff Drop Rates for % output
 			cloneRecipe.mChances = outputChances;
-			
+
 		}
-		
-		
+
+
 		Utils.LOG_WARNING("4");
-	
-		
+
+
 		final int tValidOutputSlots = this.getValidOutputSlots(this.getBaseMetaTileEntity(), cloneRecipe, tInputs);
 		Utils.LOG_WARNING("Sifter - Valid Output Hatches: "+tValidOutputSlots);
 
@@ -254,130 +254,101 @@ extends GregtechMeta_MultiBlockBase {
 		Utils.LOG_MACHINE_INFO("Checking structure for Industrial Sifter.");
 		final int xDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetX * 2;
 		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 2;
-		
-		/*if (!aBaseMetaTileEntity.getAirOffset(xDir, 1, zDir)) {
-			Utils.LOG_MACHINE_INFO("Don't know why this exists?");
-			return false;
-		}*/
-		
+
 		int tAmount = 0;
 		controller = false;
 		for (int i = -2; i < 3; i++) {
 			for (int j = -2; j < 3; j++) {
 				for (int h = 0; h < 3; h++) {
-					
+
 					final IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h, zDir + j);
 
-					// Sifter Floor/Roof inner 5x5
-					if (((i != -2) && (i != 2)) && ((j != -2) && (j != 2))) {
+					String sHeight = "";
+					if (h == 2){
+						sHeight = "top";
+					}
+					else if (h == 1){
+						sHeight = "middle";
+					}
+					else {
+						sHeight = "bottom";
+					}
 
-						// Sifter Floor & Roof (Inner 5x5) + Mufflers, Dynamos and Fluid outputs.
-						if ((h == 0) || (h == 2 || h == 1)) {
-							
-							if (h == 2 || h == 1){						
-							//If not a hatch, continue, else add hatch and continue.
-							if ((!this.addMufflerToMachineList(tTileEntity, TAE.GTPP_INDEX(21))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(21))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(21)))) {
+					// Sifter Floor/Roof inner 3x3
+					if (((i != -2) && (i != 2)) && ((j != -2) && (j != 2))) {
+						if (h != 0){						
+							if (!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(21))) {
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
-									Utils.LOG_MACHINE_INFO("Sifter Casing(s) Missing from one of the top layers inner 3x3.");
+									Utils.LOG_MACHINE_INFO("Sifter Casing(s) Missing from one of the "+sHeight+" layers inner 3x3.");
 									Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 									return false;
 								}
 								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 6) {
-									Utils.LOG_MACHINE_INFO("Sifter Casing(s) Missing from one of the top layers inner 3x3. Wrong Meta for Casing. Found:"+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()+" with meta:"+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j));
+									Utils.LOG_MACHINE_INFO("Sifter Casing(s) Missing from one of the "+sHeight+" layers inner 3x3. Wrong Meta for Casing. Found:"+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()+" with meta:"+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j));
 									return false;
 								}
 							}
-							}
-							else {
-								if ((!this.addMufflerToMachineList(tTileEntity, TAE.GTPP_INDEX(21))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(21))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(21)))) {
-									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
-										Utils.LOG_MACHINE_INFO("Sifter Casing(s) Missing from one of the bottom layers inner 3x3.");
-										Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
-										return false;
-									}
-									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 5) {
-										Utils.LOG_MACHINE_INFO("Sifter Casing(s) Missing from one of the bottom layers inner 3x3. Wrong Meta for Casing. Found:"+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()+" with meta:"+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j));
-										return false;
-									}
-									tAmount++;
-								}
-							}
 						}
-
-						// Inside 2 layers, mostly air
-						/*else {
-							// Sifter Inner 5x5
-							//if ((i != -1 && i != 1) && (j != -1 && j != 1)) {
-							if (!aBaseMetaTileEntity.getAirOffset(xDir + i, h, zDir + j)) {
-								Utils.LOG_MACHINE_INFO("Make sure the inner 3x3 of the Multiblock is Air.");
-								return false;
-							}
-
-						}*/
-					}
-
-					//Dealt with inner 5x5, now deal with the exterior.
-					else {
-
-						//Deal with all 4 sides (Sifter walls)
-						if ((h == 1) || (h == 2)) {
-							if (h == 2){
-								if (!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(21))) {
-									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
-										Utils.LOG_MACHINE_INFO("Sifter Casings Missing from somewhere in the top layer edge.");
-										Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
-										return false;
-									}
-									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 5) {
-										Utils.LOG_MACHINE_INFO("Sifter Casings Missing from somewhere in the top layer edge.");
-										Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
-										return false;
-									}
-									tAmount++;
-								}
-							}
-							else {
+						else {
+							if (!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(21))) {
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
-									Utils.LOG_MACHINE_INFO("Sifter Casings Missing from somewhere in the second layer.");
+									Utils.LOG_MACHINE_INFO("Sifter Casing(s) Missing from one of the "+sHeight+" layers inner 3x3.");
 									Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 									return false;
 								}
 								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 5) {
-									Utils.LOG_MACHINE_INFO("Sifter Casings Missing from somewhere in the second layer.");
-									Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+									Utils.LOG_MACHINE_INFO("Sifter Casing(s) Missing from one of the "+sHeight+" layers inner 3x3. Wrong Meta for Casing. Found:"+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName()+" with meta:"+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j));
 									return false;
 								}
 								tAmount++;
 							}
 						}
+					}					
+					else {
+						//Dealt with inner 5x5, now deal with the exterior.
+						//Deal with all 4 sides (Sifter walls)
+						boolean checkController = false;
+						if (((xDir + i) != 0) || ((zDir + j) != 0) && h == 0) {//no controller
+							checkController = true;
+						}
+						else {
+							checkController = false;
+						}
 
-						//Deal with top and Bottom edges (Inner 5x5)
-						else if ((h == 0) || (h == 2)) {
-							if ((!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(21))) && (!this.addInputToMachineList(tTileEntity, TAE.GTPP_INDEX(21))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(21))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(21)))) {
-								if (((xDir + i) != 0) || ((zDir + j) != 0)) {//no controller
-
-									if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
-										Utils.LOG_MACHINE_INFO("Sifter Casing(s) Missing from one of the edges on the top layer.");
-										Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
-										return false;
-									}
-									if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 5) {
-										Utils.LOG_MACHINE_INFO("Sifter Casing(s) Missing from one of the edges on the top layer. "+h);
-										Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
-										if (h ==0){
-											if (tTileEntity instanceof GregtechMetaTileEntity_IndustrialSifter){
-
-											}
-										}
-										else {
+						if (!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(21))) {
+							if (!checkController){
+								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
+									if (tTileEntity instanceof GregtechMetaTileEntity_IndustrialSifter || aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) == GregTech_API.sBlockMachines){
+										if (h != 0){
+											Utils.LOG_MACHINE_INFO("Found a secondary controller at the wrong Y level.");
 											return false;
 										}
 									}
+									else {
+										Utils.LOG_MACHINE_INFO("Sifter Casings Missing from somewhere in the "+sHeight+" layer edge.");
+										Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
+										return false;
+									}
+								}							
+														
+							if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 5) {
+								if (tTileEntity instanceof GregtechMetaTileEntity_IndustrialSifter || aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) == GregTech_API.sBlockMachines){
+									
+								}
+								else {
+									Utils.LOG_MACHINE_INFO("Sifter Casings Missing from somewhere in the "+sHeight+" layer edge.");
+									Utils.LOG_MACHINE_INFO("Incorrect Meta value for block, expected 5.");
+									Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j)+".");
+									return false;
 								}
 							}
 						}
+							tAmount++;							
+						}
+						else {
+							tAmount++;			
+						}
 					}
-					
 				}
 			}
 		}
@@ -391,7 +362,7 @@ extends GregtechMeta_MultiBlockBase {
 			return false;
 		}
 		final int height = this.getBaseMetaTileEntity().getYCoord();
-		
+
 		final GT_MetaTileEntity_Hatch_OutputBus[] tmpHatches = new GT_MetaTileEntity_Hatch_OutputBus[4];
 		for (int i = 0; i < this.mOutputBusses.size(); i++) {
 			final int hatchNumber = this.mOutputBusses.get(i).getBaseMetaTileEntity().getYCoord() - 1 - height;
@@ -406,9 +377,9 @@ extends GregtechMeta_MultiBlockBase {
 		for (int i = 0; i < tmpHatches.length; i++) {
 			this.mOutputBusses.add(tmpHatches[i]);
 		}
-		
-		Utils.LOG_INFO("Structure Built? "+(tAmount>35));
-		
+
+		Utils.LOG_INFO("Industrial Sifter - Structure Built? "+(tAmount>=35));
+
 		return tAmount >= 35;
 	}
 
