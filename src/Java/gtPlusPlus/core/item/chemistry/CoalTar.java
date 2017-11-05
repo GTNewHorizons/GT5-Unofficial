@@ -141,7 +141,7 @@ public class CoalTar {
 					80);
 		}
 
-		if (bioEth1 != null){
+		if (bioEth2 != null){
 			CORE.RA.addDehydratorRecipe(
 					ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2),
 					bioEth2,
