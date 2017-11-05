@@ -44,6 +44,7 @@ public class LoadedMods {
 	public static boolean BiomesOPlenty = false;
 	public static boolean PamsHarvestcraft = false;
 	public static boolean GalacticraftCore = false;
+	public static boolean Mekanism = false;
 
 
 
@@ -156,6 +157,11 @@ public class LoadedMods {
 		if (Loader.isModLoaded("Railcraft") == true){
 			Railcraft  = true;
 			Utils.LOG_INFO("Components enabled for: Railcraft");
+			totalMods++;
+		}
+		if (Loader.isModLoaded("Mekanism") == true){
+			Mekanism  = true;
+			Utils.LOG_INFO("Components enabled for: Mekanism - This feature is not configurable and balances Mekanism to suit GT.");
 			totalMods++;
 		}
 		if (Loader.isModLoaded("Growthcraft") == true){

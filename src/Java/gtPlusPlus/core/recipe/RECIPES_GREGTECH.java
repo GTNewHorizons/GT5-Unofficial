@@ -219,8 +219,13 @@ public class RECIPES_GREGTECH {
 	}
 
 	private static void fluidcannerRecipes() {
+		//Sulfuric Acid
 		GT_Values.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(Items.glass_bottle), ItemUtils.getSimpleStack(ModItems.itemSulfuricPotion), FluidUtils.getFluidStack("sulfuricacid", 250), null);
 		GT_Values.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(ModItems.itemSulfuricPotion), ItemUtils.getSimpleStack(Items.glass_bottle), null, FluidUtils.getFluidStack("sulfuricacid", 250));		
+		
+		//Hydrofluoric Acid
+		GT_Values.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(Items.glass_bottle), ItemUtils.getSimpleStack(ModItems.itemHydrofluoricPotion), FluidUtils.getFluidStack("hydrofluoricacid", 250), null);
+		GT_Values.RA.addFluidCannerRecipe(ItemUtils.getSimpleStack(ModItems.itemHydrofluoricPotion), ItemUtils.getSimpleStack(Items.glass_bottle), null, FluidUtils.getFluidStack("hydrofluoricacid", 250));
 	}
 
 	private static void cokeOvenRecipes(){
