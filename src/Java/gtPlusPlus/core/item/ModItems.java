@@ -23,6 +23,8 @@ import gtPlusPlus.core.item.chemistry.CoalTar;
 import gtPlusPlus.core.item.effects.RarityUncommon;
 import gtPlusPlus.core.item.general.*;
 import gtPlusPlus.core.item.general.chassis.*;
+import gtPlusPlus.core.item.general.throwables.ItemHydrofluoricAcidPotion;
+import gtPlusPlus.core.item.general.throwables.ItemSulfuricAcidPotion;
 import gtPlusPlus.core.item.init.ItemsFoods;
 import gtPlusPlus.core.item.init.ItemsMultiTools;
 import gtPlusPlus.core.item.tool.misc.SandstoneHammer;
@@ -229,6 +231,7 @@ public final class ModItems {
 	public static Item itemPlateVanadium;
 
 	public static Item itemSulfuricPotion;
+	public static Item itemHydrofluoricPotion;
 
 
 
@@ -296,7 +299,7 @@ public final class ModItems {
 		itemGemShards = new ItemGemShards("itemGemShards", "Gem Shards", AddToCreativeTab.tabMisc, 32, 0, "They glitter in the light", EnumRarity.rare, EnumChatFormatting.GRAY, false, Utils.rgbtoHexValue(182, 114, 18)).setTextureName(CORE.MODID + ":itemHeliumBlob");
 		itemHalfCompleteCasings = new ItemHalfCompleteCasings("itemHalfCompleteCasings", "Half Complete Casing", AddToCreativeTab.tabMisc, 32, 0, "This isn't quite finished yet.", EnumRarity.common, EnumChatFormatting.GRAY, false, Utils.rgbtoHexValue(255, 255, 255)).setTextureName("gregtech" + ":" + "gt.metaitem.01/" + "761");
 		itemSulfuricPotion = new ItemSulfuricAcidPotion("itemSulfuricPotion", "Thowable Vial of Sulfuric Acid", "Burn your foes alive!").setTextureName(CORE.MODID + ":itemSulfuricAcidPotion");
-
+		itemHydrofluoricPotion = new ItemHydrofluoricAcidPotion("itemHydrofluoricPotion", "Thowable Vial of Hydrofluoric Acid", "They won't see this coming, nor anything after!").setTextureName(CORE.MODID + ":itemSulfuricAcidPotion");
 		//Start meta Item Generation
 		ItemsFoods.load();
 
@@ -564,7 +567,7 @@ public final class ModItems {
 		}
 
 		//Juice
-		FluidUtils.generateFluidNonMolten("RaisinJuice", "Raisin Juice", 2, new short[]{51, 0, 51, 100}, ItemUtils.getItemStackOfAmountFromOreDict("foodRaisin", 1), ItemUtils.getItemStackOfAmountFromOreDict("fruitRaisin", 1));
+		FluidUtils.generateFluidNonMolten("RaisinJuice", "Raisin Juice", 2, new short[]{51, 0, 51, 100}, ItemUtils.getItemStackOfAmountFromOreDictNoBroken("foodRaisins", 1), ItemUtils.getItemStackOfAmountFromOreDictNoBroken("fruitRaisins", 1), 50);
 		
 
 		//Test items

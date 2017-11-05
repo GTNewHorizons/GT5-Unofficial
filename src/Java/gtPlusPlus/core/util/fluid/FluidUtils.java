@@ -435,8 +435,12 @@ public class FluidUtils {
 		Utils.LOG_INFO("FLUID GENERATION FAILED FOR "+localizedName);
 		return null;
 	}
-
+	
 	public final static Fluid generateFluidNonMolten(final String unlocalizedName, final String localizedName, final int MeltingPoint, final short[] RGBA, ItemStack dustStack, final ItemStack dustStack2){
+		return generateFluidNonMolten(unlocalizedName, localizedName, MeltingPoint, RGBA, dustStack, dustStack2, 144);
+	}
+
+	public final static Fluid generateFluidNonMolten(final String unlocalizedName, final String localizedName, final int MeltingPoint, final short[] RGBA, ItemStack dustStack, final ItemStack dustStack2, final int amountPerItem){
 		if (dustStack == null){
 			dustStack = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dust"+Utils.sanitizeString(localizedName), 1);
 		}
@@ -464,7 +468,7 @@ public class FluidUtils {
 				GT_Values.RA.addFluidExtractionRecipe(
 						dustStack, //Input
 						null, //Input 2
-						FluidUtils.getFluidStack(gtFluid, 144), //Fluid Output
+						FluidUtils.getFluidStack(gtFluid, amountPerItem), //Fluid Output
 						0, //Chance
 						1*20, //Duration
 						16 //Eu Tick
@@ -474,7 +478,7 @@ public class FluidUtils {
 				GT_Values.RA.addFluidExtractionRecipe(
 						dustStack2, //Input
 						null, //Input 2
-						FluidUtils.getFluidStack(gtFluid, 144), //Fluid Output
+						FluidUtils.getFluidStack(gtFluid, amountPerItem), //Fluid Output
 						0, //Chance
 						1*20, //Duration
 						16 //Eu Tick

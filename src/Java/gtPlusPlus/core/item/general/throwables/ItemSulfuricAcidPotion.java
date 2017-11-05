@@ -1,14 +1,9 @@
-package gtPlusPlus.core.item.general;
+package gtPlusPlus.core.item.general.throwables;
 
-import gregtech.api.enums.GT_Values;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.entity.projectile.EntitySulfuricAcidPotion;
-import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.item.base.CoreItem;
-import gtPlusPlus.core.util.fluid.FluidUtils;
-import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;

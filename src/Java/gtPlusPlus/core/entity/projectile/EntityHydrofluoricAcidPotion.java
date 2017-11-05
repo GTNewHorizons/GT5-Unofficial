@@ -5,24 +5,29 @@ import gtPlusPlus.core.util.array.BlockPos;
 import gtPlusPlus.core.util.entity.EntityUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityThrowable;
 import net.minecraft.init.Blocks;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
-public class EntitySulfuricAcidPotion extends EntityThrowable {
+public class EntityHydrofluoricAcidPotion extends EntityThrowable {
 
-	public EntitySulfuricAcidPotion(World world) {
+	public EntityHydrofluoricAcidPotion(World world) {
 		super(world);
 	}
 
-	public EntitySulfuricAcidPotion(World world, EntityLivingBase entity) {
+	public EntityHydrofluoricAcidPotion(World world, EntityLivingBase entity) {
 		super(world, entity);
 	}
 
-	public EntitySulfuricAcidPotion(World world, double posX, double posY, double posZ) {
+	public EntityHydrofluoricAcidPotion(World world, double posX, double posY, double posZ) {
 		super(world, posX, posY, posZ);
 	}
 
@@ -37,9 +42,18 @@ public class EntitySulfuricAcidPotion extends EntityThrowable {
 			byte b0 = 6;
 			if (!GT_Utility.isWearingFullRadioHazmat((EntityLivingBase) object.entityHit)){
 				object.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), (float) b0);
-				EntityUtils.setEntityOnFire(object.entityHit, 10);
+				EntityUtils.setEntityOnFire(object.entityHit, 5);
+
+				if (object.entityHit instanceof EntityPlayer){
+					EntityPlayer mPlayer = (EntityPlayer) object.entityHit;
+					mPlayer.addPotionEffect(new PotionEffect(Potion.blindness.getId(), 200, 1));
+					mPlayer.addPotionEffect(new PotionEffect(Potion.moveSlowdown.getId(), 300, 2));
+					mPlayer.addPotionEffect(new PotionEffect(Potion.confusion.getId(), 250, 2));					 
+				}
+				
 				object.entityHit.fireResistance = 0;
 				ravage(EntityUtils.findBlockPosUnderEntity(object.entityHit));
+				
 			}
 		}
 		if (object.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK){			
@@ -65,7 +79,7 @@ public class EntitySulfuricAcidPotion extends EntityThrowable {
 
 	private boolean ravage(BlockPos blockpos){
 
-		int radius = 1;		
+		int radius = 2;		
 
 		for (int i=(blockpos.xPos-radius);i<(blockpos.xPos+radius);i++){
 			for (int j=(blockpos.yPos-radius);j<(blockpos.yPos+radius);j++){
