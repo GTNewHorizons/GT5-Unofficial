@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
@@ -58,13 +59,13 @@ public class ItemUtils {
 			return null;
 		}
 	}
-	
+
 	public static final int WILDCARD_VALUE = Short.MAX_VALUE;
 	public static ItemStack getWildcardStack(Item x){
 		ItemStack y = new ItemStack(x, 1, WILDCARD_VALUE);
 		return y;
 	}
-	
+
 
 	public static ItemStack getIC2Cell(final String S){
 		final ItemStack moreTemp = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+S, 1);
@@ -261,27 +262,27 @@ public class ItemUtils {
 		}
 		try{
 
-		//Adds a check to grab dusts using GT methodology if possible.
-		ItemStack returnValue = null;
-		if (oredictName.toLowerCase().contains("dust")){
-			String MaterialName = oredictName.toLowerCase().replace("dust", "");
-			Materials m = Materials.get(MaterialName);
-			returnValue = getGregtechDust(m, amount);
-			if (returnValue != null){
-				return returnValue;
-			}
-		}
-
-		if (returnValue == null){
-			returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);
-			if (returnValue != null){
-				if ((returnValue.getItem().getClass() != ModItems.AAA_Broken.getClass()) || (returnValue.getItem() != ModItems.AAA_Broken)){
-					return returnValue.copy();
+			//Adds a check to grab dusts using GT methodology if possible.
+			ItemStack returnValue = null;
+			if (oredictName.toLowerCase().contains("dust")){
+				String MaterialName = oredictName.toLowerCase().replace("dust", "");
+				Materials m = Materials.get(MaterialName);
+				returnValue = getGregtechDust(m, amount);
+				if (returnValue != null){
+					return returnValue;
 				}
 			}
-		}
-		Utils.LOG_WARNING(oredictName+" was not valid.");
-		return null;
+
+			if (returnValue == null){
+				returnValue = getItemStackOfAmountFromOreDict(oredictName, amount);
+				if (returnValue != null){
+					if ((returnValue.getItem().getClass() != ModItems.AAA_Broken.getClass()) || (returnValue.getItem() != ModItems.AAA_Broken)){
+						return returnValue.copy();
+					}
+				}
+			}
+			Utils.LOG_WARNING(oredictName+" was not valid.");
+			return null;
 		}
 		catch (Throwable t){
 			return null;
@@ -575,8 +576,20 @@ public class ItemUtils {
 	}
 
 	private static String getModId(Item item) {
-		GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(item);
-		return id == null || id.modId.equals("") ? "minecraft" : id.modId;
+		try {
+			GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(item);
+			String modname = (id.modId == null ? id.name : id.modId);
+			return id == null || id.modId.equals("") ? "minecraft" : modname;
+		} catch (Throwable t){
+			try {
+				UniqueIdentifier t2 = GameRegistry.findUniqueIdentifierFor(Block.getBlockFromItem(item));
+				String modname = (t2.modId == null ? t2.name : t2.modId);
+				return t2 == null || t2.modId.equals("") ? "minecraft" : modname;
+			}
+			catch (Throwable t3){
+				return "bad modid";
+			}
+		}
 	}
 
 	public static String getModId(ItemStack key) {
