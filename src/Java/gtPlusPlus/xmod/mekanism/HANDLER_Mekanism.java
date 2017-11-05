@@ -42,6 +42,16 @@ public class HANDLER_Mekanism {
 			ItemStack tBasicEnergyCube = ItemUtils.simpleMetaStack("Mekanism:EnergyCube", 0, 1);
 			NBTUtils.setString(tBasicEnergyCube, "tier", "Basic");
 			
+			//Gas tanks
+			ItemStack tBasicGasTank = ItemUtils.simpleMetaStack("Mekanism:GasTank", 0, 1);
+			NBTUtils.setInteger(tBasicGasTank, "tier", 0);
+			ItemStack tAdvancedGasTank = ItemUtils.simpleMetaStack("Mekanism:GasTank", 0, 1);
+			NBTUtils.setInteger(tAdvancedGasTank, "tier", 1);
+			ItemStack tEliteGasTank = ItemUtils.simpleMetaStack("Mekanism:GasTank", 0, 1);
+			NBTUtils.setInteger(tEliteGasTank, "tier", 2);
+			ItemStack tMasterGasTank = ItemUtils.simpleMetaStack("Mekanism:GasTank", 0, 1);
+			NBTUtils.setInteger(tMasterGasTank, "tier", 3);
+			
 			//Machines that use Osmium
 			ItemStack tMachineBlock_Basic = ItemUtils.simpleMetaStack("Mekanism:MachineBlock:5", 5, 1);
 			ItemStack tMachineBlock = ItemUtils.simpleMetaStack("Mekanism:MachineBlock:6", 6, 1);
@@ -187,7 +197,29 @@ public class HANDLER_Mekanism {
 					tAdvancedAlloy, tCircuitAdvanced, tAdvancedAlloy, 
 					"plateStainlessSteel", tMachineBlock_7_Basic, "plateStainlessSteel", 
 					tAdvancedAlloy, tCircuitAdvanced, tAdvancedAlloy,  
-					tMachineBlock_7);			
+					tMachineBlock_7);	
+			
+			//Gas Tanks
+			addNewRecipe(
+					"plateRedstone", "plateAluminium", "plateRedstone",
+					"plateAluminium", null, "plateAluminium",
+					"plateRedstone", "plateAluminium", "plateRedstone",
+					tBasicGasTank);
+			addNewRecipe(
+					tAdvancedAlloy, "plateStainlessSteel", tAdvancedAlloy,
+					"plateStainlessSteel", tBasicGasTank, "plateStainlessSteel",
+					tAdvancedAlloy, "plateStainlessSteel", tAdvancedAlloy,
+					tAdvancedGasTank);
+			addNewRecipe(
+					"alloyElite", "plateTitanium", "alloyElite",
+					"plateTitanium", tAdvancedGasTank, "plateTitanium",
+					"alloyElite", "plateTitanium", "alloyElite",
+					tEliteGasTank);
+			addNewRecipe(
+					"alloyUltimate", "plateTungsten", "alloyUltimate",
+					"plateTungsten", tEliteGasTank, "plateTungsten",
+					"alloyUltimate", "plateTungsten", "alloyUltimate",
+					tMasterGasTank);			
 		}
 	}
 	
