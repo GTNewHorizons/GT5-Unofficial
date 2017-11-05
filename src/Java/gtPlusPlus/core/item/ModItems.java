@@ -563,6 +563,9 @@ public final class ModItems {
 
 		}
 
+		//Juice
+		FluidUtils.generateFluidNonMolten("RaisinJuice", "Raisin Juice", 2, new short[]{51, 0, 51, 100}, ItemUtils.getItemStackOfAmountFromOreDict("foodRaisin", 1), ItemUtils.getItemStackOfAmountFromOreDict("fruitRaisin", 1));
+		
 
 		//Test items
 		metaItem2 = new BaseEuItem();
