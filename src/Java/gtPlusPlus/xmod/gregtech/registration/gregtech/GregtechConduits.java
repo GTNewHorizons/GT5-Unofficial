@@ -91,7 +91,9 @@ public class GregtechConduits {
 		generateNonGTFluidPipes(GT_Materials.HastelloyX, ALLOY.HASTELLOY_X, BasePipeID+50, 10000, 4200, true);
 
 		generateGTFluidPipes(Materials.Tungsten, BasePipeID+55, 4320, 7200, true);
-		generateGTFluidPipes(Materials.DarkSteel, BasePipeID+60, 2320, 2750, true);
+		if (LoadedMods.EnderIO){
+			generateGTFluidPipes(Materials.DarkSteel, BasePipeID+60, 2320, 2750, true);
+		}
 		generateGTFluidPipes(Materials.Clay, BasePipeID+65, 100, 500, false);
 		generateGTFluidPipes(Materials.Lead, BasePipeID+70, 720, 1200, true);
 	}
@@ -154,9 +156,9 @@ public class GregtechConduits {
 			registerOre(OrePrefixes.cableGt08, aMaterial, new GregtechMetaPipeEntity_Cable(aStartID + 9, "cable." + aMaterial.getLocalizedName().toLowerCase() + ".08", "8x " + aMaterial.getLocalizedName() + " Cable", 0.625F, aLossInsulated, 8L * aAmperage, aVoltage, true, false, aMaterial.getRGBA()).getStackForm(1L));
 			registerOre(OrePrefixes.cableGt12, aMaterial, new GregtechMetaPipeEntity_Cable(aStartID + 10, "cable." + aMaterial.getLocalizedName().toLowerCase() + ".12", "12x " + aMaterial.getLocalizedName() + " Cable", 0.875F, aLossInsulated, 12L * aAmperage, aVoltage, true, false, aMaterial.getRGBA()).getStackForm(1L));
 		}
-		
+
 		generateWireRecipes(aMaterial);
-		
+
 	}
 
 	private static void superConductorFactory(final GT_Materials Material, final int Voltage, final int ID, final long insulatedLoss, final long uninsulatedLoss, final long Amps){

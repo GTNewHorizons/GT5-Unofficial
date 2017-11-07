@@ -162,6 +162,28 @@ public class NBTUtils {
 		NBTTagCompound tNBT = getNBT(aStack);
 		return tNBT.getInteger(aTag);
 	}
+	
+	public static void setLong(ItemStack aStack, String aTag, long aInt) {
+		NBTTagCompound tNBT = getNBT(aStack);
+		tNBT.setLong(aTag, aInt);
+		GT_Utility.ItemNBT.setNBT(aStack, tNBT);
+	}
+
+	public static long getLong(ItemStack aStack, String aTag) {
+		NBTTagCompound tNBT = getNBT(aStack);
+		return tNBT.getLong(aTag);
+	}
+	
+	public static void setFloat(ItemStack aStack, String aTag, float aInt) {
+		NBTTagCompound tNBT = getNBT(aStack);
+		tNBT.setFloat(aTag, aInt);
+		GT_Utility.ItemNBT.setNBT(aStack, tNBT);
+	}
+
+	public static float getFloat(ItemStack aStack, String aTag) {
+		NBTTagCompound tNBT = getNBT(aStack);
+		return tNBT.getFloat(aTag);
+	}
 
 	public static void setString(ItemStack aStack, String aTag, String aString) {
 		NBTTagCompound tNBT = getNBT(aStack);

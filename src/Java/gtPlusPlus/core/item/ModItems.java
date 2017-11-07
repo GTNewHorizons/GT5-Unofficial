@@ -19,6 +19,7 @@ import gtPlusPlus.core.item.base.misc.BaseItemMisc;
 import gtPlusPlus.core.item.base.misc.BaseItemMisc.MiscTypes;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate;
 import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
+import gtPlusPlus.core.item.bauble.HealthBoostBauble;
 import gtPlusPlus.core.item.chemistry.CoalTar;
 import gtPlusPlus.core.item.effects.RarityUncommon;
 import gtPlusPlus.core.item.general.*;
@@ -568,7 +569,7 @@ public final class ModItems {
 
 		//Juice
 		FluidUtils.generateFluidNonMolten("RaisinJuice", "Raisin Juice", 2, new short[]{51, 0, 51, 100}, ItemUtils.getItemStackOfAmountFromOreDictNoBroken("foodRaisins", 1), ItemUtils.getItemStackOfAmountFromOreDictNoBroken("fruitRaisins", 1), 50);
-		
+
 
 		//Test items
 		metaItem2 = new BaseEuItem();
@@ -625,6 +626,11 @@ public final class ModItems {
 		//Vanadium
 		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateVanadium", 1) == null){
 			itemPlateVanadium = new BaseItemPlate(MaterialUtils.generateMaterialFromGtENUM(Materials.Vanadium));
+		}
+
+		//Baubles
+		if (LoadedMods.Baubles){
+			tI = new HealthBoostBauble();
 		}
 
 		//EnderIO Resources
