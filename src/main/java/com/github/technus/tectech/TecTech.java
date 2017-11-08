@@ -170,8 +170,6 @@ public class TecTech {
             modId = GameRegistry.findUniqueIdentifierFor(block).modId;
             if (modIDs.contains(modId)) {//Full Whitelisted Mods
                 continue;
-            } else if (modId.equals("TConstruct")) {
-                block.slipperiness = 1;//cos we know it is slippery, right Greg?
             } else if (modId.equals("OpenBlocks")) {
                 if (GameRegistry.findUniqueIdentifierFor(block).name.equals("grave"))
                     continue;

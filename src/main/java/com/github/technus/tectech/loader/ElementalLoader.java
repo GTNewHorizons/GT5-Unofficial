@@ -5,6 +5,7 @@ import com.github.technus.tectech.compatibility.thaumcraft.definitions.ePrimalAs
 import com.github.technus.tectech.elementalMatter.core.templates.cElementalPrimitive;
 import com.github.technus.tectech.elementalMatter.definitions.complex.dAtomDefinition;
 import com.github.technus.tectech.elementalMatter.definitions.complex.dHadronDefinition;
+import com.github.technus.tectech.elementalMatter.definitions.complex.iaea.iaeaNuclide;
 import com.github.technus.tectech.elementalMatter.definitions.primitive.*;
 
 /**
@@ -26,6 +27,8 @@ public class ElementalLoader implements Runnable {
         eBosonDefinition.run();
 
         dHadronDefinition.run();
+
+        iaeaNuclide.run();
 
         dAtomDefinition.run();
 

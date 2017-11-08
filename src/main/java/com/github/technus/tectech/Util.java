@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -801,5 +802,17 @@ public class Util {
         } while(l > V[i]);
 
         return i;
+    }
+
+    public static String[] splitButDifferent(String string,String delimiter){
+        String[] strings= new String[StringUtils.countMatches(string,delimiter)+1];
+        int lastEnd=0;
+        for(int i=0;i<strings.length-1;i++){
+            int nextEnd=string.indexOf(delimiter,lastEnd);
+            strings[i]=string.substring(lastEnd,nextEnd);
+            lastEnd=nextEnd+delimiter.length();
+        }
+        strings[strings.length-1]=string.substring(lastEnd);
+        return strings;
     }
 }

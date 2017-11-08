@@ -1,6 +1,7 @@
 package com.github.technus.tectech.elementalMatter.definitions.complex;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.XSTR;
 import com.github.technus.tectech.compatibility.gtpp.GtppAtomLoader;
 import com.github.technus.tectech.elementalMatter.core.cElementalDecay;
 import com.github.technus.tectech.elementalMatter.core.cElementalDefinitionStackMap;
@@ -16,12 +17,12 @@ import com.github.technus.tectech.elementalMatter.definitions.primitive.eNeutrin
 import cpw.mods.fml.common.Loader;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.objects.XSTR;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.*;
 
+import static com.github.technus.tectech.XSTR.XSTR_INSTANCE;
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.elementalMatter.definitions.primitive.eBosonDefinition.boson_Y__;
 import static com.github.technus.tectech.elementalMatter.definitions.primitive.eBosonDefinition.deadEnd;
@@ -379,6 +380,102 @@ public final class dAtomDefinition extends cElementalDefinition {
             }
         }
         return getNaturalDecayInstant();
+    }
+
+    private cElementalDecay[] ElectronCapture() {
+        final cElementalMutableDefinitionStackMap tree = new cElementalMutableDefinitionStackMap(elementalStacks.values());
+        if (tree.removeAmount(false, eLeptonDefinition.lepton_e1) && tree.removeAmount(false, dHadronDefinition.hadron_p1)) {
+            try {
+                tree.putUnify(dHadronDefinition.hadron_n1);
+                return new cElementalDecay[]{
+                        new cElementalDecay(0.5f, this),
+                        new cElementalDecay(0.5f, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable()), 1), eNeutrinoDefinition.lepton_Ve1),
+                        deadEnd
+                };
+            } catch (Exception e) {
+                if (DEBUG_MODE) e.printStackTrace();
+            }
+        }
+        return getNaturalDecayInstant();
+    }
+
+    private cElementalDecay[] Fission(boolean spontaneousCheck) {
+        final cElementalMutableDefinitionStackMap light = new cElementalMutableDefinitionStackMap(elementalStacks.values());
+        final cElementalMutableDefinitionStackMap heavy = new cElementalMutableDefinitionStackMap();
+        final ArrayList<cElementalDefinitionStack> particles = new ArrayList<>(4);
+        final double[] liquidDrop=liquidDropFunction(Math.abs(element)>97);
+
+        for(cElementalDefinitionStack stack:light.values()){
+            if(spontaneousCheck && stack.definition instanceof dHadronDefinition &&
+                    (stack.amount<=80 || (stack.amount<90 && XSTR_INSTANCE.nextInt(10)<stack.amount-80)))
+                return getNaturalDecayInstant();
+            if(stack.definition.getCharge()==0){
+                if(stack.definition instanceof dHadronDefinition){
+                    double neutrals=stack.amount*liquidDrop[2];
+                    int neutrals_cnt=(int)Math.floor(neutrals);
+                    neutrals_cnt+=neutrals-neutrals_cnt>XSTR_INSTANCE.nextDouble()?1:0;
+                    particles.add(new cElementalDefinitionStack(stack.definition, neutrals_cnt));
+
+                    int heavy_cnt=(int)Math.ceil(stack.amount*liquidDrop[1]);
+                    while(heavy_cnt+neutrals_cnt>stack.amount)
+                        heavy_cnt--;
+                    light.removeAmount(false,new cElementalDefinitionStack(stack.definition,heavy_cnt+neutrals_cnt));
+                    heavy.putReplace(new cElementalDefinitionStack(stack.definition, heavy_cnt));
+                }else{
+                    particles.add(stack);
+                    light.remove(stack.definition);
+                }
+            }else{
+                int heavy_cnt=(int)Math.ceil(stack.amount*liquidDrop[0]);
+                cElementalDefinitionStack new_stack=new cElementalDefinitionStack(stack.definition, heavy_cnt);
+                light.removeAmount(false,new_stack);
+                heavy.putReplace(new_stack);
+            }
+        }
+
+        try {
+            particles.add(new cElementalDefinitionStack(new dAtomDefinition(light.toImmutable()),1));
+            particles.add(new cElementalDefinitionStack(new dAtomDefinition(heavy.toImmutable()),1));
+            return new cElementalDecay[]{
+                    new cElementalDecay(0.5f,this),
+                    new cElementalDecay(0.5f, particles.toArray(new cElementalDefinitionStack[0])),
+                    deadEnd
+            };
+        } catch (Exception e) {
+            if (DEBUG_MODE) e.printStackTrace();
+        }
+        return getNaturalDecayInstant();
+    }
+
+    private static double[] liquidDropFunction(boolean asymmetric) {
+        double[] out = new double[3];
+
+        out[0] = XSTR_INSTANCE.nextGaussian();
+
+        if (out[0] < 1 && out[0] >= -1)
+            if (XSTR_INSTANCE.nextBoolean())
+                out[0] = XSTR_INSTANCE.nextDouble() * 2d - 1d;
+
+        if (asymmetric && out[0] > XSTR_INSTANCE.nextDouble() && XSTR_INSTANCE.nextInt(3) == 0)
+           out[0] = -out[0];
+
+        //scale to splitting ratio
+        out[0]=out[0]*0.025d+.575d;
+
+        if(out[0]<0 || out [0]>1)
+            return liquidDropFunction(asymmetric);
+        if(out[0]<.5d)
+            out[0]=1d-out[0];
+
+        //extra neutrals
+        out[2]=0.012d+XSTR_INSTANCE.nextDouble()*0.01d;
+
+        if (asymmetric)
+            out[1]=out[0];
+        else
+            out[1]=out[0]-out[2]*.5d;
+
+        return out;
     }
 
     @Override

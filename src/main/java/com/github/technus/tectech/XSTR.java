@@ -120,8 +120,8 @@ public class XSTR extends Random {
      * @return Returns an XSRandom object with the same state as the original
      */
     @Override
-    public gregtech.api.objects.XSTR clone() {
-        return new gregtech.api.objects.XSTR(getSeed());
+    public XSTR clone() {
+        return new XSTR(getSeed());
     }
 
     /**
@@ -142,8 +142,8 @@ public class XSTR extends Random {
         return (int) x;
     }
 
-    boolean haveNextNextGaussian = false;
-    double nextNextGaussian = 0;
+    private boolean haveNextNextGaussian = false;
+    private double nextNextGaussian = 0;
 
     synchronized public double nextGaussian() {
         // See Knuth, ACP, Section 3.4.1 Algorithm C.

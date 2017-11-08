@@ -131,4 +131,20 @@ abstract class cElementalStackMap implements Comparable<cElementalStackMap> {
             if(entry.getValue().amount<=0) map.remove(entry.getKey());
         }
     }
+
+    public double getMass(){
+        double mass=0;
+        for(cElementalDefinitionStack stack:map.values()){
+            mass+=stack.getMass();
+        }
+        return mass;
+    }
+
+    public long getCharge(){
+        long charge=0;
+        for(cElementalDefinitionStack stack:map.values()){
+            charge+=stack.getCharge();
+        }
+        return charge;
+    }
 }
