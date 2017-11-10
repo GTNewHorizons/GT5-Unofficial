@@ -16,6 +16,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.nbt.ModularArmourUtils.BT;
 import gtPlusPlus.core.util.nbt.NBTUtils;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -35,7 +36,7 @@ public class BaseBauble extends Item implements IBauble{
 	 * Implementation suggestions taken from Botania.
 	 */
 	
-	private final BaubleType mThisBauble;
+	private BaubleType mThisBauble;
 	private final String mDisplayName;
 	private List<String> damageNegations = new ArrayList<String>();
 	Multimap<String, AttributeModifier> attributes = HashMultimap.create();
@@ -81,6 +82,15 @@ public class BaseBauble extends Item implements IBauble{
 	@Override
 	public BaubleType getBaubleType(ItemStack arg0) {
 		return mThisBauble;
+	}
+	
+	public boolean SetBaubleType(BT arg0) {
+		BaubleType temp = this.mThisBauble;
+		this.mThisBauble = arg0.getType();
+		if (this.mThisBauble != temp){
+			return true;
+		}
+		return false;
 	}
 
 	@Override
