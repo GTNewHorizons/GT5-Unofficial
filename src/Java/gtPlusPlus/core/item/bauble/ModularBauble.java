@@ -19,18 +19,93 @@ import net.minecraft.util.EnumChatFormatting;
 
 public class ModularBauble extends BaseBauble{
 
-	
+
 	public ModularBauble() {
-		super(BaubleType.AMULET, "Does Fancy Things.");
-		addDamageNegation(DamageSource.wither);
+		super(BaubleType.AMULET, "Modular Bauble");
 		this.setTextureName(CORE.MODID + ":" + "itemKeyGold");
 	}
 
 	@Override
 	void fillModifiers(Multimap<String, AttributeModifier> attributes, ItemStack stack) {
-		attributes.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "Bauble modifier", 40, 0));
+
+		//Get Stats
+		int mStatlevel = 0;
+		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_DAMAGE)) > 0){
+			if (mStatlevel == 1){
+				attributes.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "AD"+mStatlevel, 1, 0));
+			}
+			else if (mStatlevel == 2){
+				attributes.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "AD"+mStatlevel, 2, 0));
+			}
+			else if (mStatlevel == 3){
+				attributes.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "AD"+mStatlevel, 4, 0));
+			}
+			else if (mStatlevel == 4){
+				attributes.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "AD"+mStatlevel, 8, 0));
+			}
+			else if (mStatlevel == 5){
+				attributes.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "AD"+mStatlevel, 16, 0));
+			}
+		}
+		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_DEF)) > 0){
+			if (mStatlevel == 1){
+				attributes.put(SharedMonsterAttributes.knockbackResistance.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "BD"+mStatlevel, 1, 0));
+			}
+			else if (mStatlevel == 2){
+				attributes.put(SharedMonsterAttributes.knockbackResistance.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "BD"+mStatlevel, 2, 0));
+			}
+			else if (mStatlevel == 3){
+				attributes.put(SharedMonsterAttributes.knockbackResistance.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "BD"+mStatlevel, 3, 0));
+			}
+			else if (mStatlevel == 4){
+				attributes.put(SharedMonsterAttributes.knockbackResistance.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "BD"+mStatlevel, 6, 0));
+			}
+			else if (mStatlevel == 5){
+				attributes.put(SharedMonsterAttributes.knockbackResistance.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "BD"+mStatlevel, 10, 0));
+			}
+		}
+		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_HP)) > 0){
+			if (mStatlevel == 1){
+				attributes.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "HP"+mStatlevel, 15, 0));
+			}
+			else if (mStatlevel == 2){
+				attributes.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "HP"+mStatlevel, 20, 0));
+			}
+			else if (mStatlevel == 3){
+				attributes.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "HP"+mStatlevel, 25, 0));
+			}
+			else if (mStatlevel == 4){
+				attributes.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "HP"+mStatlevel, 30, 0));
+			}
+			else if (mStatlevel == 5){
+				attributes.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "HP"+mStatlevel, 40, 0));
+			}
+		}
+		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_SPEED)) > 0){
+			if (mStatlevel == 1){
+				attributes.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "SP"+mStatlevel, 1, 0));
+			}
+			else if (mStatlevel == 2){
+				attributes.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "SP"+mStatlevel, 2, 0));
+			}
+			else if (mStatlevel == 3){
+				attributes.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "SP"+mStatlevel, 3, 0));
+			}
+			else if (mStatlevel == 4){
+				attributes.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "SP"+mStatlevel, 4, 0));
+			}
+			else if (mStatlevel == 5){
+				attributes.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "SP"+mStatlevel, 5, 0));
+			}
+		}
+		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_MINING)) > 0){
+		}
+		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_HOLY)) > 0){
+		}
+
 	}
-	
+
+	@SuppressWarnings({ "unchecked"})
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		//Bauble Type
@@ -46,7 +121,7 @@ public class ModularBauble extends BaseBauble{
 			list.add(EnumChatFormatting.GRAY+"Current Form: "+EnumChatFormatting.RED+"Belt"+EnumChatFormatting.GRAY+".");	
 			list.add(EnumChatFormatting.GRAY+"You can change this into a Ring or an Amulet.");		
 		}
-		
+
 		//Get Stats
 		int mStatlevel = 0;
 		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_DAMAGE)) > 0){
@@ -67,14 +142,34 @@ public class ModularBauble extends BaseBauble{
 		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_HOLY)) > 0){
 			list.add(EnumChatFormatting.GRAY+"Holy Boost: "+EnumChatFormatting.GOLD+mStatlevel+EnumChatFormatting.GRAY+".");	
 		}
-		
+
 		super.addInformation(stack, player, list, bool);
 	}
 
 	@Override
-	public boolean addDamageNegation(DamageSource damageSource) {
-		// TODO Auto-generated method stub
-		return super.addDamageNegation(damageSource);
+	public boolean addDamageNegation(DamageSource damageSource,ItemStack aStack) {	
+		
+		this.clearDamageNegation();
+		int mStatlevel = 0;
+		if ((mStatlevel = ModularArmourUtils.getModifierLevel(aStack, Modifiers.BOOST_HOLY)) > 0){
+			addDamageNegation(DamageSource.cactus);
+			if (mStatlevel == 1){
+				addDamageNegation(DamageSource.inWall);
+			}
+			else if (mStatlevel == 2){
+				addDamageNegation(DamageSource.drown);
+			}
+			else if (mStatlevel == 3){
+				addDamageNegation(DamageSource.starve);
+			}
+			else if (mStatlevel == 4){
+				addDamageNegation(DamageSource.fall);
+			}
+			else if (mStatlevel == 5){
+				addDamageNegation(DamageSource.lava);
+			}
+		}		
+		return super.addDamageNegation(damageSource, null);
 	}
 
 	@Override
@@ -110,8 +205,8 @@ public class ModularBauble extends BaseBauble{
 		// TODO Auto-generated method stub
 		super.onUnequipped(stack, player);
 	}
-	
-	
-	
-	
+
+
+
+
 }

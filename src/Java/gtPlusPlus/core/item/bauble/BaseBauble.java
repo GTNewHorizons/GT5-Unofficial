@@ -66,7 +66,15 @@ public class BaseBauble extends Item implements IBauble{
 	}
 	
 	public boolean addDamageNegation(DamageSource damageSource){
-		return damageNegations.add(damageSource.drown.damageType);
+		return addDamageNegation(damageSource, null);
+	}
+	
+	public boolean addDamageNegation(DamageSource damageSource,ItemStack aStack){
+		return damageNegations.add(damageSource.damageType);
+	}
+	
+	public void clearDamageNegation(){
+		damageNegations.clear();
 	}
 	
 	@Override

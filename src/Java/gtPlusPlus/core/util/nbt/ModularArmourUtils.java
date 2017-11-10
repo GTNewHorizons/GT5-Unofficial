@@ -125,4 +125,15 @@ public class ModularArmourUtils {
 		}
 	}
 	
+	public static ItemStack setDefaultStats(ItemStack aStack){
+		ItemStack tempStack = aStack;
+		setModifierLevel(tempStack, Modifiers.BOOST_DAMAGE, 0);
+		setModifierLevel(tempStack, Modifiers.BOOST_DEF, 0);
+		setModifierLevel(tempStack, Modifiers.BOOST_HOLY, 0);
+		setModifierLevel(tempStack, Modifiers.BOOST_HP, 0);
+		setModifierLevel(tempStack, Modifiers.BOOST_MINING, 0);
+		setModifierLevel(tempStack, Modifiers.BOOST_SPEED, 0);
+		return tempStack;
+	}
+	
 }

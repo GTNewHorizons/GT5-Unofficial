@@ -20,6 +20,7 @@ import gtPlusPlus.core.item.base.misc.BaseItemMisc.MiscTypes;
 import gtPlusPlus.core.item.base.plates.BaseItemPlate;
 import gtPlusPlus.core.item.base.plates.BaseItemPlateDouble;
 import gtPlusPlus.core.item.bauble.HealthBoostBauble;
+import gtPlusPlus.core.item.bauble.ModularBauble;
 import gtPlusPlus.core.item.chemistry.CoalTar;
 import gtPlusPlus.core.item.effects.RarityUncommon;
 import gtPlusPlus.core.item.general.*;
@@ -631,6 +632,7 @@ public final class ModItems {
 		//Baubles
 		if (LoadedMods.Baubles){
 			tI = new HealthBoostBauble();
+			tI = new ModularBauble();
 		}
 
 		//EnderIO Resources

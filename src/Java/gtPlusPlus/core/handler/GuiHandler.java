@@ -14,6 +14,7 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
 import gtPlusPlus.core.tileentities.general.TileEntityHeliumGenerator;
+import gtPlusPlus.core.tileentities.machines.TileEntityModularityTable;
 import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
 import gtPlusPlus.core.tileentities.machines.TileEntityTradeTable;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
@@ -55,8 +56,7 @@ public class GuiHandler implements IGuiHandler {
 				return new Container_ProjectTable(player.inventory, (TileEntityProjectTable)te);
 			}
 			else if (ID == GUI2){
-				//HeliumGenerator
-				return new Container_HeliumGenerator(player.inventory, (TileEntityHeliumGenerator)te);
+				return new Container_ModularityTable(player.inventory, (TileEntityModularityTable) te);
 			}
 		}
 
@@ -101,8 +101,7 @@ public class GuiHandler implements IGuiHandler {
 				return new GUI_ProjectTable(player.inventory, (TileEntityProjectTable)te);
 			}
 			else  if (ID == GUI2){
-				Utils.LOG_WARNING("Opening Gui with Id: "+ID+" RTG");
-				return new GUI_HeliumGenerator(player.inventory, (TileEntityHeliumGenerator) te);
+				return new GUI_ModularityTable(player.inventory, (TileEntityModularityTable) te);
 			}
 		}
 
