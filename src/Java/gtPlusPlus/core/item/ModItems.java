@@ -235,6 +235,8 @@ public final class ModItems {
 	public static Item itemSulfuricPotion;
 	public static Item itemHydrofluoricPotion;
 
+	public static Item itemModularBauble;
+
 
 
 
@@ -632,7 +634,7 @@ public final class ModItems {
 		//Baubles
 		if (LoadedMods.Baubles){
 			tI = new HealthBoostBauble();
-			tI = new ModularBauble();
+			itemModularBauble = new ModularBauble();
 		}
 
 		//EnderIO Resources

@@ -3,16 +3,27 @@ package gtPlusPlus.core.tileentities.machines;
 import java.util.List;
 import java.util.Vector;
 
+import gregtech.api.enums.ItemList;
+import gregtech.common.items.GT_MetaGenerated_Item_01;
 import gtPlusPlus.core.container.Container_ProjectTable;
 import gtPlusPlus.core.inventories.projecttable.InventoryProjectMain;
 import gtPlusPlus.core.inventories.projecttable.InventoryProjectOutput;
+import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.item.bauble.ModularBauble;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.nbt.ModularArmourUtils;
+import gtPlusPlus.core.util.nbt.ModularArmourUtils.BT;
+import gtPlusPlus.core.util.nbt.ModularArmourUtils.Modifiers;
+import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
+import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
 import gtPlusPlus.core.util.nbt.NBTUtils;
 import ic2.api.network.INetworkDataProvider;
 import ic2.api.network.INetworkUpdateListener;
 import ic2.api.tile.IWrenchable;
 import ic2.core.IC2;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -122,33 +133,123 @@ public class TileEntityProjectTable extends TileEntity implements INetworkDataPr
 		if (!this.worldObj.isRemote){
 			//Data stick
 			ItemStack dataStick = this.inventoryOutputs.getStackInSlot(0);
-			if (dataStick != null && this.container != null && container.getOutputContent() != null){
-				Utils.LOG_WARNING("Found Data Stick and valid container.");
+			if (dataStick != null && this.container != null && container.getOutputContent() != null){				
+				if ((dataStick.getItem() instanceof GT_MetaGenerated_Item_01 && dataStick.getItemDamage() == 32708) 
+						|| (dataStick == ItemList.Tool_DataStick.get(1)) 
+						|| (dataStick == GregtechItemList.Old_Tool_DataStick.get(1)) 
+						|| (dataStick.getItem() instanceof MetaGeneratedGregtechItems && dataStick.getItemDamage() == 32208)){				
+
+					Utils.LOG_INFO("Found Data Stick and valid container.");
 
 
-				ItemStack outputComponent = container.getOutputContent();
-				ItemStack[] craftInputComponent = container.getInputComponents();
+					ItemStack outputComponent = container.getOutputContent();
+					ItemStack[] craftInputComponent = container.getInputComponents();
 
 
-				ItemStack newStick = NBTUtils.writeItemsToNBT(dataStick, new ItemStack[]{outputComponent}, "Output");
-				newStick = NBTUtils.writeItemsToNBT(newStick, craftInputComponent);
-				NBTUtils.setBookTitle(newStick, "Encrypted Project Data");
-				NBTUtils.setBoolean(newStick, "mEncrypted", true);
-				int slotm=0;
-				Utils.LOG_WARNING("Uploading to Data Stick.");
-				for (ItemStack is : NBTUtils.readItemsFromNBT(newStick)){
-					if (is != null){
-						Utils.LOG_WARNING("Uploaded "+is.getDisplayName()+" into memory slot "+slotm+".");
+					ItemStack newStick = NBTUtils.writeItemsToNBT(dataStick, new ItemStack[]{outputComponent}, "Output");
+					newStick = NBTUtils.writeItemsToNBT(newStick, craftInputComponent);
+					NBTUtils.setBookTitle(newStick, "Encrypted Project Data");
+					NBTUtils.setBoolean(newStick, "mEncrypted", true);
+					int slotm=0;
+					Utils.LOG_WARNING("Uploading to Data Stick.");
+					for (ItemStack is : NBTUtils.readItemsFromNBT(newStick)){
+						if (is != null){
+							Utils.LOG_WARNING("Uploaded "+is.getDisplayName()+" into memory slot "+slotm+".");
+						}
+						else {					
+							Utils.LOG_WARNING("Left memory slot "+slotm+" blank.");
+						}
+						slotm++;
 					}
-					else {					
-						Utils.LOG_WARNING("Left memory slot "+slotm+" blank.");
-					}
-					slotm++;
+					Utils.LOG_WARNING("Encrypting Data Stick.");
+					this.inventoryOutputs.setInventorySlotContents(1, newStick);
+					this.inventoryOutputs.setInventorySlotContents(0, null);
 				}
-				Utils.LOG_WARNING("Encrypting Data Stick.");
-				this.inventoryOutputs.setInventorySlotContents(1, newStick);
-				this.inventoryOutputs.setInventorySlotContents(0, null);
-			}		
+			}
+
+			//Utils.LOG_INFO("Doing thing 1");
+			if (dataStick != null)
+				if (dataStick.getItem() instanceof ModularBauble){
+					Utils.LOG_INFO("Doing thing 2");
+					ItemStack tBauble = dataStick;
+					dataStick = null;
+					this.inventoryOutputs.setInventorySlotContents(0, dataStick);
+					if (this.inventoryGrid != null){
+						Utils.LOG_INFO("Doing things");
+						ItemStack[] tStack = container.getInputComponents();
+						if (tStack != null){
+							//Utils.LOG_INFO(""+tStack.length);
+							if (tBauble != null){
+								for (int i=0;i<tStack.length;i++){
+
+									ItemStack testStack;
+									if ((testStack = container.inventoryGrid.getStackInSlot(i)) != null){
+										Utils.LOG_INFO("FOUND: "+testStack.getDisplayName());
+									}
+
+									if (tStack[i] != null){					
+										Utils.LOG_INFO("found "+tStack[i].getDisplayName());
+										try {
+											if (tStack[i].getItem() == Items.feather){
+												ModularArmourUtils.setBaubleType(tBauble, BT.TYPE_BELT);
+												Utils.LOG_INFO("buffed Modular bauble");
+												tStack[i] = null;
+												container.inventoryGrid.setInventorySlotContents(i, null);
+												this.inventoryGrid.setInventorySlotContents(i, null);
+											}
+
+											if (tStack[i].getItem() == Items.egg){
+												ModularArmourUtils.setModifierLevel(tBauble, Modifiers.BOOST_HOLY, ModularArmourUtils.getModifierLevel(tBauble, Modifiers.BOOST_HOLY)+1);
+												Utils.LOG_INFO("buffed Modular bauble");
+												tStack[i] = null;
+												container.inventoryGrid.setInventorySlotContents(i, null);
+												this.inventoryGrid.setInventorySlotContents(i, null);
+											}
+
+											if (tStack[i].getItem() == Items.cooked_beef){
+												ModularArmourUtils.setModifierLevel(tBauble, Modifiers.BOOST_HP, ModularArmourUtils.getModifierLevel(tBauble, Modifiers.BOOST_HP)+1);
+												Utils.LOG_INFO("buffed Modular bauble");
+												tStack[i] = null;
+												container.inventoryGrid.setInventorySlotContents(i, null);
+												this.inventoryGrid.setInventorySlotContents(i, null);
+											}
+
+											if (tStack[i] == ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:17019", 17019, 1)){
+												ModularArmourUtils.setModifierLevel(tBauble, Modifiers.BOOST_DEF, ModularArmourUtils.getModifierLevel(tBauble, Modifiers.BOOST_DEF)+1);
+												Utils.LOG_INFO("buffed Modular bauble");
+												tStack[i] = null;
+												container.inventoryGrid.setInventorySlotContents(i, null);
+											}
+											if (tStack[i] == ItemList.Electric_Motor_LV.get(1)){
+												ModularArmourUtils.setModifierLevel(tBauble, Modifiers.BOOST_DAMAGE, ModularArmourUtils.getModifierLevel(tBauble, Modifiers.BOOST_DAMAGE)+1);
+												Utils.LOG_INFO("buffed Modular bauble");
+												tStack[i] = null;
+												container.inventoryGrid.setInventorySlotContents(i, null);
+											}
+											else if (tStack[i] == ItemList.Electric_Motor_MV.get(1)){
+												ModularArmourUtils.setModifierLevel(tBauble, Modifiers.BOOST_DAMAGE, ModularArmourUtils.getModifierLevel(tBauble, Modifiers.BOOST_DAMAGE)+2);
+												Utils.LOG_INFO("buffed Modular bauble");
+												tStack[i] = null;
+												container.inventoryGrid.setInventorySlotContents(i, null);
+											}
+											else if (tStack[i] == ItemList.Electric_Motor_HV.get(1)){
+												ModularArmourUtils.setModifierLevel(tBauble, Modifiers.BOOST_DAMAGE, ModularArmourUtils.getModifierLevel(tBauble, Modifiers.BOOST_DAMAGE)+3);
+												Utils.LOG_INFO("buffed Modular bauble");
+												tStack[i] = null;
+												container.inventoryGrid.setInventorySlotContents(i, null);
+											}
+										}
+										catch (Throwable t){
+
+										}
+									}
+								}
+								Utils.LOG_INFO("set new Modular bauble");
+								this.inventoryOutputs.setInventorySlotContents(1, tBauble);
+							}
+						}
+					}
+				}
 		}
 		super.updateEntity();
 	}

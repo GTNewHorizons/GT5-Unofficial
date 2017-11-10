@@ -33,6 +33,9 @@ public class Container_ModularityTable extends Container {
 
 
 	public Container_ModularityTable(final InventoryPlayer inventory, final TileEntityModularityTable tile){
+		
+		Utils.LOG_INFO("container created");
+		
 		this.tile_entity = tile;
 		this.inventoryGrid = tile.inventoryGrid;
 		this.inventoryOutputs = tile.inventoryOutputs;

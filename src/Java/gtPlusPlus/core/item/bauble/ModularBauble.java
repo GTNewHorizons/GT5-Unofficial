@@ -5,10 +5,15 @@ import java.util.List;
 import com.google.common.collect.Multimap;
 
 import baubles.api.BaubleType;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.nbt.ModularArmourUtils;
 import gtPlusPlus.core.util.nbt.ModularArmourUtils.BT;
 import gtPlusPlus.core.util.nbt.ModularArmourUtils.Modifiers;
+import gtPlusPlus.core.util.nbt.NBTUtils;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -16,6 +21,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IIcon;
 
 public class ModularBauble extends BaseBauble{
 
@@ -142,13 +148,18 @@ public class ModularBauble extends BaseBauble{
 		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_HOLY)) > 0){
 			list.add(EnumChatFormatting.GRAY+"Holy Boost: "+EnumChatFormatting.GOLD+mStatlevel+EnumChatFormatting.GRAY+".");	
 		}
+		if (NBTUtils.getBotanicaSoulboundOwner(stack) != null){
+			if (!NBTUtils.getBotanicaSoulboundOwner(stack).equals("")){
+				list.add(EnumChatFormatting.GRAY+"Relic Owner: "+EnumChatFormatting.GREEN+NBTUtils.getBotanicaSoulboundOwner(stack)+EnumChatFormatting.GRAY+".");	
+			}
+		}
 
 		super.addInformation(stack, player, list, bool);
 	}
 
 	@Override
 	public boolean addDamageNegation(DamageSource damageSource,ItemStack aStack) {	
-		
+
 		this.clearDamageNegation();
 		int mStatlevel = 0;
 		if ((mStatlevel = ModularArmourUtils.getModifierLevel(aStack, Modifiers.BOOST_HOLY)) > 0){
@@ -186,7 +197,24 @@ public class ModularBauble extends BaseBauble{
 		else {
 			this.SetBaubleType(BT.TYPE_RING);
 		}
-		return super.canEquip(arg0, arg1);
+
+		String mOwner;
+		if (NBTUtils.getBotanicaSoulboundOwner(arg0) == null || NBTUtils.getBotanicaSoulboundOwner(arg0).equals("")){
+			return true;
+		}
+		else if ((mOwner = NBTUtils.getBotanicaSoulboundOwner(arg0)) != null){
+			String mPlayerName = arg1.getCommandSenderName();
+			if (mOwner.toLowerCase().equals(mPlayerName.toLowerCase())){
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		else {
+			return false;
+		}
+
 	}
 
 	@Override
@@ -196,7 +224,11 @@ public class ModularBauble extends BaseBauble{
 
 	@Override
 	public void onEquipped(ItemStack stack, EntityLivingBase entity) {
-		// TODO Auto-generated method stub
+		if (entity instanceof EntityPlayer){
+			if (NBTUtils.getBotanicaSoulboundOwner(stack) == null || NBTUtils.getBotanicaSoulboundOwner(stack).equals("")){
+				NBTUtils.setBotanicaSoulboundOwner(stack, entity.getCommandSenderName());
+			}	
+		}
 		super.onEquipped(stack, entity);
 	}
 
@@ -207,6 +239,84 @@ public class ModularBauble extends BaseBauble{
 	}
 
 
+	@SideOnly(Side.CLIENT)
+	private IIcon mTextureAmulet;
+	@SideOnly(Side.CLIENT)
+	private IIcon mTextureRing;
+	@SideOnly(Side.CLIENT)
+	private IIcon mTextureBelt;
+
+	@Override
+	public IIcon getIconFromDamage(int p_77617_1_) {
+		// TODO Auto-generated method stub
+		return super.getIconFromDamage(p_77617_1_);
+	}
+
+	@Override
+	public IIcon getIconIndex(ItemStack p_77650_1_) {
+		// TODO Auto-generated method stub
+		return super.getIconIndex(p_77650_1_);
+	}
+
+	@Override
+	public IIcon getIconFromDamageForRenderPass(int p_77618_1_, int p_77618_2_) {
+		// TODO Auto-generated method stub
+		return super.getIconFromDamageForRenderPass(p_77618_1_, p_77618_2_);
+	}
+
+	@Override
+	protected String getIconString() {
+		// TODO Auto-generated method stub
+		return super.getIconString();
+	}
+
+	@Override
+	public IIcon getIcon(ItemStack stack, int pass) {
+		// TODO Auto-generated method stub
+		return super.getIcon(stack, pass);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
+		if (usingItem == null) { return itemIcon; }
+		try {
+			if (ModularArmourUtils.getBaubleType(stack) == BaubleType.AMULET){
+				return iconArray[0];
+			}
+			if (ModularArmourUtils.getBaubleType(stack) == BaubleType.RING){
+				return iconArray[1];
+			}
+			if (ModularArmourUtils.getBaubleType(stack) == BaubleType.BELT){
+				return iconArray[2];
+			}
+			else {
+				return iconArray[0];
+			}
+		}
+		catch (Throwable t){
+			return itemIcon;
+		}
+	}
+
+
+	private IIcon iconArray[] = new IIcon[3];
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IIconRegister register) {
+		// you cannot initialize iconArray when declared nor in the constructor, as it is client-side only, so do it here:
+		if (LoadedMods.Thaumcraft){
+			iconArray[0] = register.registerIcon("thaumcraft" + ":" + "bauble_amulet");
+			iconArray[1] = register.registerIcon("thaumcraft" + ":" + "bauble_ring");
+			iconArray[2] = register.registerIcon("thaumcraft" + ":" + "bauble_belt");
+		}
+		else {
+			iconArray[0] = register.registerIcon("miscutils" + ":" + "itemHeavyPlate");
+			iconArray[1] = register.registerIcon("baubles" + ":" + "ring");
+			iconArray[2] = register.registerIcon("miscutils" + ":" + "itemPineapple");
+		}	
+	}
 
 
 }

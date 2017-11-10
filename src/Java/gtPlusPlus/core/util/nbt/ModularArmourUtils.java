@@ -33,7 +33,7 @@ public class ModularArmourUtils {
 			return this.MODIFIER_NAME;
 		}		
 		public boolean isValidLevel(int i){
-			if (i >= 0 && i <= 10){
+			if (i >= 0 && i <= 5){
 				return true;
 			}
 			return false;
@@ -84,6 +84,11 @@ public class ModularArmourUtils {
 		if (aMod.isValidLevel(aInt)){
 			tNBT.setInteger(aMod.getModifier(), aInt);
 			GT_Utility.ItemNBT.setNBT(aStack, tNBT);			
+		}
+		else {
+			if (getModifierLevel(aStack, aMod) > 5){
+				setModifierLevel(aStack, aMod, 5);			
+			}
 		}
 	}
 

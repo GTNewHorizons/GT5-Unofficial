@@ -8,6 +8,7 @@ import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.machines.TileEntityModularityTable;
+import gtPlusPlus.core.util.Utils;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -67,6 +68,7 @@ public class Machine_ModularityTable extends BlockContainer
 		final TileEntity te = world.getTileEntity(x, y, z);
 		if ((te != null) && (te instanceof TileEntityModularityTable)){
 				player.openGui(GTplusplus.instance, 1, world, x, y, z);
+				Utils.LOG_INFO("Player opened GUI");
 				return true;
 		}
 		return false;

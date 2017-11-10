@@ -22,7 +22,8 @@ public class TileEntityModularityTable extends TileEntity {
 	public IInventory craftResult;
 	private Container_ModularityTable container;
 
-	public TileEntityModularityTable(){
+	public TileEntityModularityTable(){ 
+		Utils.LOG_INFO("I am created.");
 		this.inventoryGrid = new InventoryProjectMain();//number of slots - without product slot
 		this.inventoryOutputs = new InventoryProjectOutput();//number of slots - without product slot
 		this.canUpdate();
