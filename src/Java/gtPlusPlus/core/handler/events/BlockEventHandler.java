@@ -133,6 +133,7 @@ public class BlockEventHandler {
 							Utils.LOG_WARNING("3a - found "+temp.getUnlocalizedName());
 							if (MathUtils.randInt(1, chanceToDropFluoriteOre) == 1){
 								Utils.LOG_WARNING("4a");
+								event.drops.clear();
 								event.drops.add(fluoriteOre.copy());
 							}
 						}
@@ -145,12 +146,14 @@ public class BlockEventHandler {
 				Utils.LOG_WARNING("1c");
 				if (MathUtils.randInt(1, chanceToDropFluoriteOre) == 1){
 					Utils.LOG_WARNING("2c");
+					event.drops.clear();
 					event.drops.add(fluoriteOre.copy());
 				}
 			}
 
 			if (event.block == Blocks.sandstone){
 				if (MathUtils.randInt(1, chanceToDropFluoriteOre*20) == 1){
+					event.drops.clear();
 					event.drops.add(fluoriteOre.copy());
 				}
 			}
