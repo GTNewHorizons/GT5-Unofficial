@@ -162,7 +162,7 @@ public class NBTUtils {
 		NBTTagCompound tNBT = getNBT(aStack);
 		return tNBT.getInteger(aTag);
 	}
-	
+
 	public static void setLong(ItemStack aStack, String aTag, long aInt) {
 		NBTTagCompound tNBT = getNBT(aStack);
 		tNBT.setLong(aTag, aInt);
@@ -173,7 +173,7 @@ public class NBTUtils {
 		NBTTagCompound tNBT = getNBT(aStack);
 		return tNBT.getLong(aTag);
 	}
-	
+
 	public static void setFloat(ItemStack aStack, String aTag, float aInt) {
 		NBTTagCompound tNBT = getNBT(aStack);
 		tNBT.setFloat(aTag, aInt);
@@ -210,8 +210,9 @@ public class NBTUtils {
 					Map<?, ?> mInternalMap = ReflectionUtils.getField(aNBT, "tagMap");
 
 					if (mInternalMap != null) {
-						//mInternalMap.forEach((k, v) -> Utils.LOG_INFO("Key: " + k + ": Value: " + v));
-						for(Map.Entry<?,?> e:mInternalMap.entrySet()){
+						// mInternalMap.forEach((k, v) -> Utils.LOG_INFO("Key: "
+						// + k + ": Value: " + v));
+						for (Map.Entry<?, ?> e : mInternalMap.entrySet()) {
 							Utils.LOG_INFO("Key: " + e.getKey().toString() + " | Value: " + e.getValue().toString());
 						}
 					} else {
@@ -230,18 +231,15 @@ public class NBTUtils {
 		}
 	}
 
-
-
-	//Botania soulbind handling
+	// Botania soulbind handling
 	public static boolean setBotanicaSoulboundOwner(ItemStack aStack, String aName) {
 		final String TAG_SOULBIND = "soulbind";
 		NBTTagCompound tNBT = getNBT(aStack);
 		tNBT.setString(TAG_SOULBIND, aName);
 		GT_Utility.ItemNBT.setNBT(aStack, tNBT);
-		if (NBTUtils.doesStringExist(aStack, TAG_SOULBIND)){
+		if (NBTUtils.doesStringExist(aStack, TAG_SOULBIND)) {
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}

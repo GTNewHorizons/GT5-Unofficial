@@ -29,19 +29,20 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 
-@Optional.InterfaceList(value = {@Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles"), @Optional.Interface(iface = "baubles.api.BaubleType", modid = "Baubles")})
-public class BaseBauble extends Item implements IBauble{
+@Optional.InterfaceList(value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles"),
+		@Optional.Interface(iface = "baubles.api.BaubleType", modid = "Baubles") })
+public class BaseBauble extends Item implements IBauble {
 
 	/**
 	 * Implementation suggestions taken from Botania.
 	 */
-	
+
 	private BaubleType mThisBauble;
 	private final String mDisplayName;
 	private List<String> damageNegations = new ArrayList<String>();
 	Multimap<String, AttributeModifier> attributes = HashMultimap.create();
-	
-	public BaseBauble(BaubleType type, String displayName){
+
+	public BaseBauble(BaubleType type, String displayName) {
 		this.mThisBauble = type;
 		this.mDisplayName = displayName;
 		MinecraftForge.EVENT_BUS.register(this);
@@ -50,33 +51,33 @@ public class BaseBauble extends Item implements IBauble{
 		this.setUnlocalizedName(Utils.sanitizeString(displayName.toLowerCase()));
 		GameRegistry.registerItem(this, getUnlocalizedName());
 	}
-	
+
 	@Override
 	public String getItemStackDisplayName(final ItemStack tItem) {
 		return this.mDisplayName;
 	}
-	
+
 	@SubscribeEvent
 	public void onPlayerAttacked(LivingAttackEvent event) {
-		if(event.entityLiving instanceof EntityPlayer) {
+		if (event.entityLiving instanceof EntityPlayer) {
 			EntityPlayer player = (EntityPlayer) event.entityLiving;
-			if(getCorrectBauble(player) != null && damageNegations.contains(event.source.damageType))
+			if (getCorrectBauble(player) != null && damageNegations.contains(event.source.damageType))
 				event.setCanceled(true);
 		}
 	}
-	
-	public boolean addDamageNegation(DamageSource damageSource){
+
+	public boolean addDamageNegation(DamageSource damageSource) {
 		return addDamageNegation(damageSource, null);
 	}
-	
-	public boolean addDamageNegation(DamageSource damageSource,ItemStack aStack){
+
+	public boolean addDamageNegation(DamageSource damageSource, ItemStack aStack) {
 		return damageNegations.add(damageSource.damageType);
 	}
-	
-	public void clearDamageNegation(){
+
+	public void clearDamageNegation() {
 		damageNegations.clear();
 	}
-	
+
 	@Override
 	public boolean canEquip(ItemStack arg0, EntityLivingBase arg1) {
 		return EntityPlayer.class.isInstance(arg1) ? true : false;
@@ -91,15 +92,15 @@ public class BaseBauble extends Item implements IBauble{
 	public BaubleType getBaubleType(ItemStack arg0) {
 		return mThisBauble;
 	}
-	
+
 	public boolean SetBaubleType(BT arg0) {
 		return SetBaubleType(arg0.getType());
 	}
-	
+
 	public boolean SetBaubleType(BaubleType arg0) {
 		BaubleType temp = this.mThisBauble;
 		this.mThisBauble = arg0;
-		if (this.mThisBauble != temp){
+		if (this.mThisBauble != temp) {
 			return true;
 		}
 		return false;
@@ -107,7 +108,7 @@ public class BaseBauble extends Item implements IBauble{
 
 	@Override
 	public void onEquipped(ItemStack stack, EntityLivingBase entity) {
-		if(entity != null && EntityPlayer.class.isInstance(entity)) {
+		if (entity != null && EntityPlayer.class.isInstance(entity)) {
 			onEquippedOrLoadedIntoWorld(stack, entity);
 			setPlayerHashcode(stack, entity.hashCode());
 		}
@@ -115,12 +116,12 @@ public class BaseBauble extends Item implements IBauble{
 
 	@Override
 	public void onWornTick(ItemStack stack, EntityLivingBase player) {
-		if(getPlayerHashcode(stack) != player.hashCode()) {
+		if (getPlayerHashcode(stack) != player.hashCode()) {
 			onEquippedOrLoadedIntoWorld(stack, player);
 			setPlayerHashcode(stack, player.hashCode());
 		}
 	}
-	
+
 	public void onEquippedOrLoadedIntoWorld(ItemStack stack, EntityLivingBase player) {
 		attributes.clear();
 		fillModifiers(attributes, stack);
@@ -134,11 +135,10 @@ public class BaseBauble extends Item implements IBauble{
 		player.getAttributeMap().removeAttributeModifiers(attributes);
 	}
 
-
 	void fillModifiers(Multimap<String, AttributeModifier> attributes, ItemStack stack) {
-	
+
 	}
-	
+
 	public ItemStack getCorrectBauble(EntityPlayer player) {
 		InventoryBaubles baubles = PlayerHandler.getPlayerBaubles(player);
 		ItemStack stack1 = baubles.getStackInSlot(1);
@@ -149,15 +149,15 @@ public class BaseBauble extends Item implements IBauble{
 	private boolean isCorrectBauble(ItemStack stack) {
 		return stack != null && (stack.getItem() == this);
 	}
-	
+
 	@Override
 	public int getEntityLifespan(ItemStack itemStack, World world) {
 		return Integer.MAX_VALUE;
 	}
-	
+
 	public static UUID getBaubleUUID(ItemStack stack) {
 		long most = NBTUtils.getLong(stack, "baubleUUIDMost");
-		if(most == 0) {
+		if (most == 0) {
 			UUID uuid = UUID.randomUUID();
 			NBTUtils.setLong(stack, "baubleUUIDMost", uuid.getMostSignificantBits());
 			NBTUtils.setLong(stack, "baubleUUIDLeast", uuid.getLeastSignificantBits());
@@ -171,7 +171,7 @@ public class BaseBauble extends Item implements IBauble{
 	public static int getPlayerHashcode(ItemStack stack) {
 		return NBTUtils.getInteger(stack, "mPlayerHashcode");
 	}
-	
+
 	public static void setPlayerHashcode(ItemStack stack, int hash) {
 		NBTUtils.setInteger(stack, "mPlayerHashcode", hash);
 	}
