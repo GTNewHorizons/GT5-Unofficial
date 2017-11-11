@@ -20,6 +20,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
@@ -291,7 +292,6 @@ public class ModularBauble extends BaseBauble{
 		else {
 			return false;
 		}
-
 	}
 
 	@Override
@@ -309,13 +309,6 @@ public class ModularBauble extends BaseBauble{
 		super.onEquipped(stack, entity);
 	}
 
-	@Override
-	public void onUnequipped(ItemStack stack, EntityLivingBase player) {
-		// TODO Auto-generated method stub
-		super.onUnequipped(stack, player);
-	}
-
-
 	@SideOnly(Side.CLIENT)
 	private IIcon mTextureAmulet;
 	@SideOnly(Side.CLIENT)
@@ -324,48 +317,18 @@ public class ModularBauble extends BaseBauble{
 	private IIcon mTextureBelt;
 
 	@Override
-	public IIcon getIconFromDamage(int p_77617_1_) {
-		// TODO Auto-generated method stub
-		return super.getIconFromDamage(p_77617_1_);
-	}
-
-	@Override
-	public IIcon getIconIndex(ItemStack p_77650_1_) {
-		// TODO Auto-generated method stub
-		return super.getIconIndex(p_77650_1_);
-	}
-
-	@Override
-	public IIcon getIconFromDamageForRenderPass(int p_77618_1_, int p_77618_2_) {
-		// TODO Auto-generated method stub
-		return super.getIconFromDamageForRenderPass(p_77618_1_, p_77618_2_);
-	}
-
-	@Override
-	protected String getIconString() {
-		// TODO Auto-generated method stub
-		return super.getIconString();
-	}
-
-	@Override
-	public IIcon getIcon(ItemStack stack, int pass) {
-		// TODO Auto-generated method stub
-		return super.getIcon(stack, pass);
-	}
-
-	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
 		if (usingItem == null) { return mfallback; }
 		try {
 			if (ModularArmourUtils.getBaubleType(stack) == BaubleType.AMULET){
-				return iconArray[0];
+				return mTextureAmulet;
 			}
 			if (ModularArmourUtils.getBaubleType(stack) == BaubleType.RING){
-				return iconArray[1];
+				return mTextureRing;
 			}
 			if (ModularArmourUtils.getBaubleType(stack) == BaubleType.BELT){
-				return iconArray[2];
+				return mTextureBelt;
 			}
 			else {
 				return mfallback;
@@ -381,33 +344,55 @@ public class ModularBauble extends BaseBauble{
 	private IIcon mfallback;
 
 	@Override
+	public IIcon getIconFromDamage(int meta) {
+	    return this.iconArray[meta];
+	}
+	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister register) {
 		this.mfallback = register.registerIcon("baubles" + ":" + "ring");
 		// you cannot initialize iconArray when declared nor in the constructor, as it is client-side only, so do it here:
 		if (LoadedMods.Thaumcraft){
-			iconArray[0] = register.registerIcon("thaumcraft" + ":" + "bauble_amulet");
-			iconArray[1] = register.registerIcon("thaumcraft" + ":" + "bauble_ring");
-			iconArray[2] = register.registerIcon("thaumcraft" + ":" + "bauble_belt");
+			mTextureAmulet = register.registerIcon("thaumcraft" + ":" + "bauble_amulet");
+			mTextureRing = register.registerIcon("thaumcraft" + ":" + "bauble_ring");
+			mTextureBelt = register.registerIcon("thaumcraft" + ":" + "bauble_belt");
 		}
 		else {
-			iconArray[0] = register.registerIcon("miscutils" + ":" + "itemHeavyPlate");
-			iconArray[1] = register.registerIcon("baubles" + ":" + "ring");
-			iconArray[2] = register.registerIcon("miscutils" + ":" + "itemPineapple");
-		}	
+			mTextureAmulet = register.registerIcon("miscutils" + ":" + "itemAmulet");
+			mTextureRing = register.registerIcon("baubles" + ":" + "ring");
+			mTextureBelt = register.registerIcon("miscutils" + ":" + "itemBelt");
+		}
+		iconArray[0] = mTextureAmulet;
+		iconArray[1] = mTextureRing;
+		iconArray[2] = mTextureBelt;
+		
 	}
-
-	private BaubleType mTypeArray[] = new BaubleType[]{
-			BaubleType.AMULET,
-			BaubleType.RING,
-			BaubleType.BELT
-	};
 
 	@Override
 	public void onWornTick(ItemStack stack, EntityLivingBase player) {
 		int mTemp = ModularArmourUtils.getBaubleTypeID(stack);		
 		SetBaubleType(ModularArmourUtils.getBaubleByID(mTemp));
+		
+		if (stack.getItemDamage() != 0 && ModularArmourUtils.getBaubleType(stack) == BaubleType.AMULET){
+			this.setDamage(stack, 0);
+		}
+		else if (stack.getItemDamage() != 1 && ModularArmourUtils.getBaubleType(stack) == BaubleType.RING){
+			this.setDamage(stack, 1);
+		}
+		else if (stack.getItemDamage() != 2 && ModularArmourUtils.getBaubleType(stack) == BaubleType.BELT){
+			this.setDamage(stack, 2);
+		}
+		else {
+			this.setDamage(stack, 0);
+		}
+		
 		super.onWornTick(stack, player);
+	}
+
+	@Override
+	public boolean showDurabilityBar(ItemStack stack) {
+		return false;
 	}
 
 
