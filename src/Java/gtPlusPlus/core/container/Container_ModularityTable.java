@@ -1,14 +1,18 @@
 package gtPlusPlus.core.container;
 
 import gtPlusPlus.core.block.ModBlocks;
+import gtPlusPlus.core.inventories.modulartable.InventoryModularMain;
+import gtPlusPlus.core.inventories.modulartable.InventoryModularOutput;
 import gtPlusPlus.core.inventories.projecttable.InventoryProjectMain;
 import gtPlusPlus.core.inventories.projecttable.InventoryProjectOutput;
 import gtPlusPlus.core.slots.*;
 import gtPlusPlus.core.tileentities.machines.TileEntityModularityTable;
+import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
 import gtPlusPlus.core.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.*;
+import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.World;
@@ -16,26 +20,21 @@ import net.minecraft.world.World;
 public class Container_ModularityTable extends Container {
 
 	/** The crafting matrix inventory (3x3). */
-    public InventoryCrafting craftMatrix = new InventoryCrafting(this, 3, 3);
-    public IInventory craftResult = new InventoryCraftResult();
-	
+
 	protected TileEntityModularityTable tile_entity;
-	public final InventoryProjectMain inventoryGrid;
-	public final InventoryProjectOutput inventoryOutputs;
+	public final InventoryModularMain inventoryGrid;
+	public final InventoryModularOutput inventoryOutputs;
 
 	private final World worldObj;
 	private final int posX;
 	private final int posY;
 	private final int posZ;
 
-	private final int[] slotOutputs = new int[2];
+	private final int[] slotOutputs = new int[3];
 	private final int[] slotGrid = new int[9];
 
 
 	public Container_ModularityTable(final InventoryPlayer inventory, final TileEntityModularityTable tile){
-		
-		Utils.LOG_INFO("container created");
-		
 		this.tile_entity = tile;
 		this.inventoryGrid = tile.inventoryGrid;
 		this.inventoryOutputs = tile.inventoryOutputs;
@@ -49,29 +48,14 @@ public class Container_ModularityTable extends Container {
 		this.posZ = tile.zCoord;
 
 		int nextFreeSlot = 0;
-		
+
 
 		//Output slots
-		this.addSlotToContainer(new SlotDataStick(this.inventoryOutputs, 0, 26+(18*6), 8));
-		this.addSlotToContainer(new SlotNoInput(this.inventoryOutputs, 1, 26+(18*6), 44));
-	
-		this.addSlotToContainer(new SlotCraftingNoCollect(inventory.player, this.craftMatrix, this.craftResult, 0, 26+(18*4), 25));
-	       
-		
-		int o = 0;
-		//Storage Side
-		for (var6 = 0; var6 < 3; ++var6)
-		{
-			for (var7 = 0; var7 < 3; ++var7)
-			{
-				//Utils.LOG_WARNING("Adding slots at var:"+(var7 + var6 * 4)+" x:"+(8 + var7 * 18)+" y:"+(7 + var6 * 18));
-				this.addSlotToContainer(new Slot(this.craftMatrix, nextFreeSlot, 8+18 + (var7 * 18), 8 + (var6 * 18)));
-				this.slotGrid[o] = nextFreeSlot;
-				nextFreeSlot++;
-				o++;
-			}
-		}
+		this.addSlotToContainer(new SlotModularBauble(this.inventoryOutputs, 0, 26+(18*6), 8));
+		this.addSlotToContainer(new SlotModularBaubleUpgrades(this.inventoryOutputs, 1, 26+(18*5), 8));
+		this.addSlotToContainer(new SlotNoInput(this.inventoryOutputs, 2, 26+(18*6), 44));   
 
+		int o = 0;
 
 		//Player Inventory
 		for (var6 = 0; var6 < 3; ++var6)
@@ -87,33 +71,33 @@ public class Container_ModularityTable extends Container {
 		{
 			this.addSlotToContainer(new Slot(inventory, var6, 8 + (var6 * 18), 142));
 		}
-		
-        this.onCraftMatrixChanged(this.craftMatrix);
+
+		//this.onCraftMatrixChanged(this.craftMatrix);
 
 	}
-	
+
 	/**
-     * Callback for when the crafting matrix is changed.
-     */
-    public void onCraftMatrixChanged(IInventory p_75130_1_)
+	 * Callback for when the crafting matrix is changed.
+	 */
+	/* public void onCraftMatrixChanged(IInventory p_75130_1_)
     {
         this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.worldObj));
-    }
-    
-    /**
-     * Called when the container is closed.
-     */
-    public void onContainerClosed(EntityPlayer p_75134_1_){
-        super.onContainerClosed(p_75134_1_);
-        if (!this.worldObj.isRemote){
-            for (int i = 0; i < 9; ++i){
+    }*/
+
+	/**
+	 * Called when the container is closed.
+	 */
+	public void onContainerClosed(EntityPlayer p_75134_1_){
+		super.onContainerClosed(p_75134_1_);
+		if (!this.worldObj.isRemote){
+			/*    for (int i = 0; i < 9; ++i){
                 ItemStack itemstack = this.craftMatrix.getStackInSlotOnClosing(i);
                 if (itemstack != null){
                     p_75134_1_.dropPlayerItemWithRandomChoice(itemstack, false);
                 }
-            }
-        }
-    }
+            }*/
+		}
+	}
 
 	@Override
 	public ItemStack slotClick(final int aSlotIndex, final int aMouseclick, final int aShifthold, final EntityPlayer aPlayer){
@@ -124,26 +108,32 @@ public class Container_ModularityTable extends Container {
 			}
 
 			if (aSlotIndex == 0){
-				Utils.LOG_INFO("Player Clicked on the Data Stick slot");
+				Utils.LOG_INFO("Player Clicked on the bauble slot");
 				//TODO
-			}if (aSlotIndex == 1){
+			}
+			else if (aSlotIndex == 1){
+				Utils.LOG_INFO("Player Clicked on the upgrade slot");
+				//TODO
+			}
+			else if (aSlotIndex == 2){
 				Utils.LOG_INFO("Player Clicked on the output slot");
 				//TODO
 			}
-
-			for (final int x : this.slotGrid){
-				if (aSlotIndex == x){
-					Utils.LOG_INFO("Player Clicked slot "+aSlotIndex+" in the crafting Grid");
+			else {
+				for (final int x : this.slotGrid){
+					if (aSlotIndex == x){
+						Utils.LOG_INFO("Player Clicked slot "+aSlotIndex+" in the crafting Grid");
+					}
 				}
-			}			
+			}
 		}
 		//Utils.LOG_WARNING("Player Clicked slot "+aSlotIndex+" in the Grid");
 		return super.slotClick(aSlotIndex, aMouseclick, aShifthold, aPlayer);
 	}
-	
+
 	@Override
 	public boolean canInteractWith(final EntityPlayer par1EntityPlayer){
-		if (this.worldObj.getBlock(this.posX, this.posY, this.posZ) != ModBlocks.blockProjectTable){
+		if (this.worldObj.getBlock(this.posX, this.posY, this.posZ) != ModBlocks.blockModularTable){
 			return false;
 		}
 
@@ -154,9 +144,9 @@ public class Container_ModularityTable extends Container {
 	@Override
 	public ItemStack transferStackInSlot(final EntityPlayer par1EntityPlayer, final int par2)
 	{
-		
+
 		return null;
-		
+
 		/*ItemStack var3 = null;
 		final Slot var4 = (Slot)this.inventorySlots.get(par2);
 
@@ -214,18 +204,18 @@ public class Container_ModularityTable extends Container {
 	}
 
 	//Can merge Slot
-	public boolean func_94530_a(ItemStack p_94530_1_, Slot p_94530_2_){
+	/*public boolean func_94530_a(ItemStack p_94530_1_, Slot p_94530_2_){
         return p_94530_2_.inventory != this.craftResult && super.func_94530_a(p_94530_1_, p_94530_2_);
-    }
-	
-	public ItemStack getOutputContent(){
+    }*/
+
+	/*public ItemStack getOutputContent(){
 		ItemStack output = this.craftResult.getStackInSlot(0);
 		if (output != null){
 			return output;
 		}
 		return null;		
 	}
-	
+
 	public ItemStack[] getInputComponents(){
 		ItemStack inputs[] = new ItemStack[9];
 		for (int r=0;r<this.craftMatrix.getSizeInventory();r++){
@@ -233,7 +223,7 @@ public class Container_ModularityTable extends Container {
 			inputs[r] = temp;
 		}
 		return inputs;		
-	}
+	}*/
 
 
 }

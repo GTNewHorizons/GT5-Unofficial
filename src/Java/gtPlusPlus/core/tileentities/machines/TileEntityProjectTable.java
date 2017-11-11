@@ -197,9 +197,31 @@ public class TileEntityProjectTable extends TileEntity implements INetworkDataPr
 												container.inventoryGrid.setInventorySlotContents(i, null);
 												this.inventoryGrid.setInventorySlotContents(i, null);
 											}
+											if (tStack[i].getItem() == Items.bed){
+												ModularArmourUtils.setBaubleType(tBauble, BT.TYPE_RING);
+												Utils.LOG_INFO("buffed Modular bauble");
+												tStack[i] = null;
+												container.inventoryGrid.setInventorySlotContents(i, null);
+												this.inventoryGrid.setInventorySlotContents(i, null);
+											}
+											if (tStack[i].getItem() == Items.boat){
+												ModularArmourUtils.setBaubleType(tBauble, BT.TYPE_AMULET);
+												Utils.LOG_INFO("buffed Modular bauble");
+												tStack[i] = null;
+												container.inventoryGrid.setInventorySlotContents(i, null);
+												this.inventoryGrid.setInventorySlotContents(i, null);
+											}
 
 											if (tStack[i].getItem() == Items.egg){
 												ModularArmourUtils.setModifierLevel(tBauble, Modifiers.BOOST_HOLY, ModularArmourUtils.getModifierLevel(tBauble, Modifiers.BOOST_HOLY)+1);
+												Utils.LOG_INFO("buffed Modular bauble");
+												tStack[i] = null;
+												container.inventoryGrid.setInventorySlotContents(i, null);
+												this.inventoryGrid.setInventorySlotContents(i, null);
+											}
+											
+											if (tStack[i].getItem() == Items.baked_potato){
+												ModularArmourUtils.setModifierLevel(tBauble, Modifiers.BOOST_DEF, ModularArmourUtils.getModifierLevel(tBauble, Modifiers.BOOST_DEF)+1);
 												Utils.LOG_INFO("buffed Modular bauble");
 												tStack[i] = null;
 												container.inventoryGrid.setInventorySlotContents(i, null);

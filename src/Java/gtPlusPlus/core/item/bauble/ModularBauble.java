@@ -13,6 +13,7 @@ import gtPlusPlus.core.util.nbt.ModularArmourUtils;
 import gtPlusPlus.core.util.nbt.ModularArmourUtils.BT;
 import gtPlusPlus.core.util.nbt.ModularArmourUtils.Modifiers;
 import gtPlusPlus.core.util.nbt.NBTUtils;
+import gtPlusPlus.core.util.player.PlayerUtils;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -37,70 +38,70 @@ public class ModularBauble extends BaseBauble{
 		//Get Stats
 		int mStatlevel = 0;
 		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_DAMAGE)) > 0){
-			if (mStatlevel == 1){
+			if (mStatlevel > 0 && mStatlevel < 20){
 				attributes.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "AD"+mStatlevel, 1, 0));
 			}
-			else if (mStatlevel == 2){
+			else if (mStatlevel > 20 && mStatlevel < 45){
 				attributes.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "AD"+mStatlevel, 2, 0));
 			}
-			else if (mStatlevel == 3){
+			else if (mStatlevel >= 45 && mStatlevel < 75){
 				attributes.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "AD"+mStatlevel, 4, 0));
 			}
-			else if (mStatlevel == 4){
+			else if (mStatlevel >= 75 && mStatlevel < 99){
 				attributes.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "AD"+mStatlevel, 8, 0));
 			}
-			else if (mStatlevel == 5){
+			else if (mStatlevel >= 100){
 				attributes.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "AD"+mStatlevel, 16, 0));
 			}
 		}
 		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_DEF)) > 0){
-			if (mStatlevel == 1){
+			if (mStatlevel > 0 && mStatlevel < 20){
 				attributes.put(SharedMonsterAttributes.knockbackResistance.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "BD"+mStatlevel, 1, 0));
 			}
-			else if (mStatlevel == 2){
+			else if (mStatlevel > 20 && mStatlevel < 45){
 				attributes.put(SharedMonsterAttributes.knockbackResistance.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "BD"+mStatlevel, 2, 0));
 			}
-			else if (mStatlevel == 3){
+			else if (mStatlevel > 45 && mStatlevel < 75){
 				attributes.put(SharedMonsterAttributes.knockbackResistance.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "BD"+mStatlevel, 3, 0));
 			}
-			else if (mStatlevel == 4){
+			else if (mStatlevel > 75 && mStatlevel < 99){
 				attributes.put(SharedMonsterAttributes.knockbackResistance.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "BD"+mStatlevel, 6, 0));
 			}
-			else if (mStatlevel == 5){
+			else if (mStatlevel >= 100){
 				attributes.put(SharedMonsterAttributes.knockbackResistance.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "BD"+mStatlevel, 10, 0));
 			}
 		}
 		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_HP)) > 0){
-			if (mStatlevel == 1){
+			if (mStatlevel > 0 && mStatlevel < 20){
 				attributes.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "HP"+mStatlevel, 15, 0));
 			}
-			else if (mStatlevel == 2){
+			else if (mStatlevel > 20 && mStatlevel < 45){
 				attributes.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "HP"+mStatlevel, 20, 0));
 			}
-			else if (mStatlevel == 3){
+			else if (mStatlevel > 45 && mStatlevel < 75){
 				attributes.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "HP"+mStatlevel, 25, 0));
 			}
-			else if (mStatlevel == 4){
+			else if (mStatlevel > 75 && mStatlevel < 99){
 				attributes.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "HP"+mStatlevel, 30, 0));
 			}
-			else if (mStatlevel == 5){
+			else if (mStatlevel >= 100){
 				attributes.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "HP"+mStatlevel, 40, 0));
 			}
 		}
 		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_SPEED)) > 0){
-			if (mStatlevel == 1){
+			if (mStatlevel > 0 && mStatlevel < 20){
 				attributes.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "SP"+mStatlevel, 1, 0));
 			}
-			else if (mStatlevel == 2){
+			else if (mStatlevel > 20 && mStatlevel < 45){
 				attributes.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "SP"+mStatlevel, 2, 0));
 			}
-			else if (mStatlevel == 3){
+			else if (mStatlevel > 45 && mStatlevel < 75){
 				attributes.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "SP"+mStatlevel, 3, 0));
 			}
-			else if (mStatlevel == 4){
+			else if (mStatlevel > 75 && mStatlevel < 99){
 				attributes.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "SP"+mStatlevel, 4, 0));
 			}
-			else if (mStatlevel == 5){
+			else if (mStatlevel >= 100){
 				attributes.put(SharedMonsterAttributes.movementSpeed.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "SP"+mStatlevel, 5, 0));
 			}
 		}
@@ -131,23 +132,63 @@ public class ModularBauble extends BaseBauble{
 		//Get Stats
 		int mStatlevel = 0;
 		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_DAMAGE)) > 0){
-			list.add(EnumChatFormatting.GRAY+"Damage Boost: "+EnumChatFormatting.DARK_RED+mStatlevel+EnumChatFormatting.GRAY+".");	
+			list.add(EnumChatFormatting.GRAY+"Damage Boost: "+EnumChatFormatting.DARK_RED+mStatlevel+EnumChatFormatting.GRAY+"/100.");	
 		}
-		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_DEF)) > 0){
-			list.add(EnumChatFormatting.GRAY+"Defence Boost: "+EnumChatFormatting.BLUE+mStatlevel+EnumChatFormatting.GRAY+".");	
-		}
+		
 		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_HP)) > 0){
-			list.add(EnumChatFormatting.GRAY+"Health Boost: "+EnumChatFormatting.RED+mStatlevel+EnumChatFormatting.GRAY+".");	
+			list.add(EnumChatFormatting.GRAY+"Health Boost: "+EnumChatFormatting.RED+mStatlevel+EnumChatFormatting.GRAY+"/100.");	
 		}
 		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_SPEED)) > 0){
-			list.add(EnumChatFormatting.GRAY+"Speed Boost: "+EnumChatFormatting.WHITE+mStatlevel+EnumChatFormatting.GRAY+".");	
+			list.add(EnumChatFormatting.GRAY+"Speed Boost: "+EnumChatFormatting.WHITE+mStatlevel+EnumChatFormatting.GRAY+"/100.");	
 		}
 		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_MINING)) > 0){
-			list.add(EnumChatFormatting.GRAY+"Mining Boost: "+EnumChatFormatting.DARK_GRAY+mStatlevel+EnumChatFormatting.GRAY+".");	
+			list.add(EnumChatFormatting.GRAY+"Mining Boost: "+EnumChatFormatting.DARK_GRAY+mStatlevel+EnumChatFormatting.GRAY+"/100.");	
 		}
 		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_HOLY)) > 0){
-			list.add(EnumChatFormatting.GRAY+"Holy Boost: "+EnumChatFormatting.GOLD+mStatlevel+EnumChatFormatting.GRAY+".");	
+			list.add(EnumChatFormatting.GRAY+"Holy Boost: "+EnumChatFormatting.GOLD+mStatlevel+EnumChatFormatting.GRAY+"/100.");	
 		}
+		
+		//Defence Boost
+		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_DEF)) > 0){
+			list.add(EnumChatFormatting.GRAY+"Defence Boost: "+EnumChatFormatting.BLUE+mStatlevel+EnumChatFormatting.GRAY+"/100.");	
+						
+			if (mStatlevel >= 1){
+				list.add(EnumChatFormatting.GRAY+"Protected From: "+EnumChatFormatting.BLUE+"Cactus"+EnumChatFormatting.GRAY+".");	
+			}
+			if (mStatlevel >= 10){
+				list.add(EnumChatFormatting.GRAY+"Protected From: "+EnumChatFormatting.BLUE+"Falling Blocks"+EnumChatFormatting.GRAY+".");	
+			}
+			if (mStatlevel >= 20){
+				list.add(EnumChatFormatting.GRAY+"Protected From: "+EnumChatFormatting.BLUE+"Wall Suffocation"+EnumChatFormatting.GRAY+".");	
+			}
+			if (mStatlevel >= 35){
+				list.add(EnumChatFormatting.GRAY+"Protected From: "+EnumChatFormatting.BLUE+"Drowning"+EnumChatFormatting.GRAY+".");	
+			}
+			if (mStatlevel >= 50){
+				list.add(EnumChatFormatting.GRAY+"Protected From: "+EnumChatFormatting.BLUE+"Starvation"+EnumChatFormatting.GRAY+".");	
+			}
+			if (mStatlevel >= 60){
+				list.add(EnumChatFormatting.GRAY+"Protected From: "+EnumChatFormatting.BLUE+"Falling"+EnumChatFormatting.GRAY+".");	
+			}
+			if (mStatlevel >= 75){
+				list.add(EnumChatFormatting.GRAY+"Protected From: "+EnumChatFormatting.BLUE+"Lava"+EnumChatFormatting.GRAY+".");	
+			}
+			if (mStatlevel >= 80){
+				list.add(EnumChatFormatting.GRAY+"Protected From: "+EnumChatFormatting.BLUE+"Magic"+EnumChatFormatting.GRAY+".");	
+			}
+			if (mStatlevel >= 95){
+				list.add(EnumChatFormatting.GRAY+"Protected From: "+EnumChatFormatting.BLUE+"Wither"+EnumChatFormatting.GRAY+".");	
+			}
+			if (mStatlevel >= 100){
+				list.add(EnumChatFormatting.GRAY+"Protected From: "+EnumChatFormatting.BLUE+"Fire"+EnumChatFormatting.GRAY+".");	
+			}
+			if (mStatlevel >= 100){
+				list.add(EnumChatFormatting.GRAY+"Protected From: "+EnumChatFormatting.BLUE+"Void"+EnumChatFormatting.GRAY+".");
+			}
+			
+		}
+		
+		
 		if (NBTUtils.getBotanicaSoulboundOwner(stack) != null){
 			if (!NBTUtils.getBotanicaSoulboundOwner(stack).equals("")){
 				list.add(EnumChatFormatting.GRAY+"Relic Owner: "+EnumChatFormatting.GREEN+NBTUtils.getBotanicaSoulboundOwner(stack)+EnumChatFormatting.GRAY+".");	
@@ -163,21 +204,41 @@ public class ModularBauble extends BaseBauble{
 		this.clearDamageNegation();
 		int mStatlevel = 0;
 		if ((mStatlevel = ModularArmourUtils.getModifierLevel(aStack, Modifiers.BOOST_HOLY)) > 0){
-			addDamageNegation(DamageSource.cactus);
-			if (mStatlevel == 1){
+			if (mStatlevel >= 1){
+				addDamageNegation(DamageSource.cactus);
+			}
+			if (mStatlevel >= 10){
+				addDamageNegation(DamageSource.fallingBlock);
+			}
+			if (mStatlevel >= 20){
 				addDamageNegation(DamageSource.inWall);
 			}
-			else if (mStatlevel == 2){
+			if (mStatlevel >= 35){
 				addDamageNegation(DamageSource.drown);
 			}
-			else if (mStatlevel == 3){
+			if (mStatlevel >= 50){
 				addDamageNegation(DamageSource.starve);
 			}
-			else if (mStatlevel == 4){
+			if (mStatlevel >= 60){
 				addDamageNegation(DamageSource.fall);
 			}
-			else if (mStatlevel == 5){
+			if (mStatlevel >= 75){
 				addDamageNegation(DamageSource.lava);
+			}
+			if (mStatlevel >= 80){
+				addDamageNegation(DamageSource.magic);
+			}
+			if (mStatlevel >= 95){
+				addDamageNegation(DamageSource.wither);
+			}
+			if (mStatlevel >= 100){
+				addDamageNegation(DamageSource.inFire);
+			}
+			if (mStatlevel >= 100){
+				addDamageNegation(DamageSource.onFire);
+			}
+			if (mStatlevel >= 100){
+				addDamageNegation(DamageSource.outOfWorld);
 			}
 		}		
 		return super.addDamageNegation(damageSource, null);
@@ -196,6 +257,9 @@ public class ModularBauble extends BaseBauble{
 		}
 		else {
 			this.SetBaubleType(BT.TYPE_RING);
+		}
+		if (PlayerUtils.isPlayerOP((EntityPlayer) arg1)){
+			return true; //Let OPs wear other peoples shit.
 		}
 
 		String mOwner;
@@ -279,7 +343,7 @@ public class ModularBauble extends BaseBauble{
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
-		if (usingItem == null) { return itemIcon; }
+		if (usingItem == null) { return mfallback; }
 		try {
 			if (ModularArmourUtils.getBaubleType(stack) == BaubleType.AMULET){
 				return iconArray[0];
@@ -291,20 +355,22 @@ public class ModularBauble extends BaseBauble{
 				return iconArray[2];
 			}
 			else {
-				return iconArray[0];
+				return mfallback;
 			}
 		}
 		catch (Throwable t){
-			return itemIcon;
+			return mfallback;
 		}
 	}
 
 
 	private IIcon iconArray[] = new IIcon[3];
+	private IIcon mfallback;
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister register) {
+		this.mfallback = register.registerIcon("baubles" + ":" + "ring");
 		// you cannot initialize iconArray when declared nor in the constructor, as it is client-side only, so do it here:
 		if (LoadedMods.Thaumcraft){
 			iconArray[0] = register.registerIcon("thaumcraft" + ":" + "bauble_amulet");

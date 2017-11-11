@@ -1,32 +1,41 @@
 package gtPlusPlus.core.tileentities.machines;
 
+import static gtPlusPlus.core.tileentities.machines.TileEntityModularityTable.mValidUpgradeListFormChange;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import gregtech.api.enums.ItemList;
+import gregtech.api.enums.Materials;
 import gtPlusPlus.core.container.Container_ModularityTable;
-import gtPlusPlus.core.container.Container_ProjectTable;
-import gtPlusPlus.core.inventories.projecttable.InventoryProjectMain;
-import gtPlusPlus.core.inventories.projecttable.InventoryProjectOutput;
+import gtPlusPlus.core.inventories.modulartable.InventoryModularMain;
+import gtPlusPlus.core.inventories.modulartable.InventoryModularOutput;
+import gtPlusPlus.core.item.bauble.ModularBauble;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.nbt.NBTUtils;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCrafting;
+import gtPlusPlus.core.util.array.Pair;
+import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.nbt.ModularArmourUtils;
+import gtPlusPlus.core.util.nbt.ModularArmourUtils.BT;
+import gtPlusPlus.core.util.nbt.ModularArmourUtils.Modifiers;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 public class TileEntityModularityTable extends TileEntity {
 
-	public InventoryProjectMain inventoryGrid;
-	public InventoryProjectOutput inventoryOutputs;
-
-	/** The crafting matrix inventory (3x3). */
-	public InventoryCrafting craftMatrix;
-	public IInventory craftResult;
+	public InventoryModularMain inventoryGrid;
+	public InventoryModularOutput inventoryOutputs;
 	private Container_ModularityTable container;
 
 	public TileEntityModularityTable(){ 
 		Utils.LOG_INFO("I am created.");
-		this.inventoryGrid = new InventoryProjectMain();//number of slots - without product slot
-		this.inventoryOutputs = new InventoryProjectOutput();//number of slots - without product slot
+		this.inventoryGrid = new InventoryModularMain();//number of slots - without product slot
+		this.inventoryOutputs = new InventoryModularOutput();//number of slots - without product slot
 		this.canUpdate();
+		generateAllValidUpgrades();
 	}
 
 	public void setContainer(Container_ModularityTable container_ModularityTable){
@@ -45,7 +54,6 @@ public class TileEntityModularityTable extends TileEntity {
 	@Override
 	public void writeToNBT(final NBTTagCompound nbt){
 		super.writeToNBT(nbt);
-		this.inventoryGrid.writeToNBT(this.getTag(nbt, "ContentsGrid"));
 		this.inventoryOutputs.writeToNBT(this.getTag(nbt, "ContentsOutput"));
 
 	}
@@ -53,41 +61,41 @@ public class TileEntityModularityTable extends TileEntity {
 	@Override
 	public void readFromNBT(final NBTTagCompound nbt){
 		super.readFromNBT(nbt);
-		this.inventoryGrid.readFromNBT(nbt.getCompoundTag("ContentsGrid"));
 		this.inventoryOutputs.readFromNBT(nbt.getCompoundTag("ContentsOutput"));
 	}
 
 	@Override
 	public void updateEntity() {
 		if (!this.worldObj.isRemote){
+			boolean removeInputA = false;
+			boolean removeInputB = false;
 			//Data stick
-			ItemStack dataStick = this.inventoryOutputs.getStackInSlot(0);
-			if (dataStick != null && this.container != null && container.getOutputContent() != null){
-				Utils.LOG_WARNING("Found Data Stick and valid container.");
+			ItemStack tBauble = this.inventoryOutputs.getStackInSlot(0);
+			ItemStack tUpgrade = this.inventoryOutputs.getStackInSlot(1);
+			if (tBauble != null && tUpgrade != null && this.container != null){
+				if (tBauble.getItem() instanceof ModularBauble){
+					if (tUpgrade != null && tBauble != null){
+						removeInputA = true;
 
+						Utils.LOG_INFO("found "+tUpgrade.getDisplayName());
+						try {											
+							removeInputB = addUpgrade(tUpgrade, tBauble);
+							if (!removeInputB){
+								Utils.LOG_INFO("Failed to add "+tUpgrade.getDisplayName());
+							}
+						}
+						catch (Throwable t){
 
-				ItemStack outputComponent = container.getOutputContent();
-				ItemStack[] craftInputComponent = container.getInputComponents();
+						}
 
-
-				ItemStack newStick = NBTUtils.writeItemsToNBT(dataStick, new ItemStack[]{outputComponent}, "Output");
-				newStick = NBTUtils.writeItemsToNBT(newStick, craftInputComponent);
-				NBTUtils.setBookTitle(newStick, "Encrypted Project Data");
-				NBTUtils.setBoolean(newStick, "mEncrypted", true);
-				int slotm=0;
-				Utils.LOG_WARNING("Uploading to Data Stick.");
-				for (ItemStack is : NBTUtils.readItemsFromNBT(newStick)){
-					if (is != null){
-						Utils.LOG_WARNING("Uploaded "+is.getDisplayName()+" into memory slot "+slotm+".");
+						Utils.LOG_INFO("set new Modular bauble");
+						if (removeInputA && removeInputB){
+							this.inventoryOutputs.setInventorySlotContents(0, null);
+							this.inventoryOutputs.setInventorySlotContents(1, null);
+							this.inventoryOutputs.setInventorySlotContents(2, tBauble);
+						}										
 					}
-					else {					
-						Utils.LOG_WARNING("Left memory slot "+slotm+" blank.");
-					}
-					slotm++;
 				}
-				Utils.LOG_WARNING("Encrypting Data Stick.");
-				this.inventoryOutputs.setInventorySlotContents(1, newStick);
-				this.inventoryOutputs.setInventorySlotContents(0, null);
 			}		
 		}
 		super.updateEntity();
@@ -98,8 +106,90 @@ public class TileEntityModularityTable extends TileEntity {
 		return true;
 	}
 
+	public static Map<ItemStack, Pair<Modifiers, Integer>> mValidUpgradeList = new HashMap<ItemStack, Pair<Modifiers, Integer>>();
+	public static Map<ItemStack, BT> mValidUpgradeListFormChange = new HashMap<ItemStack, BT>();
 
+	private static boolean generateAllValidUpgrades(){
 
+		//Form Change
+		generateUpgradeFormData(ItemList.Sensor_MV.get(1), BT.TYPE_RING);
+		generateUpgradeFormData(ItemList.Electric_Piston_MV.get(1), BT.TYPE_BELT);
+		generateUpgradeFormData(ItemList.Emitter_MV.get(1), BT.TYPE_AMULET);
 
+		//Damage Boost
+		generateUpgradeData(ItemList.Electric_Motor_LV.get(1), Modifiers.BOOST_DAMAGE, 1);
+		generateUpgradeData(ItemList.Electric_Motor_MV.get(1), Modifiers.BOOST_DAMAGE, 2);
+		generateUpgradeData(ItemList.Electric_Motor_HV.get(1), Modifiers.BOOST_DAMAGE, 3);
+		generateUpgradeData(ItemList.Electric_Motor_EV.get(1), Modifiers.BOOST_DAMAGE, 4);
+		generateUpgradeData(ItemList.Electric_Motor_IV.get(1), Modifiers.BOOST_DAMAGE, 5);
+
+		//Defence Boost
+		generateUpgradeData(Materials.Aluminium.getPlates(1), Modifiers.BOOST_DEF, 1);
+		generateUpgradeData(Materials.StainlessSteel.getPlates(1), Modifiers.BOOST_DEF, 2);
+		generateUpgradeData(Materials.Tungsten.getPlates(1), Modifiers.BOOST_DEF, 3);
+		generateUpgradeData(Materials.TungstenSteel.getPlates(1), Modifiers.BOOST_DEF, 4);
+		generateUpgradeData(Materials.Naquadah.getPlates(1), Modifiers.BOOST_DEF, 5);
+
+		//Hp Boost
+		generateUpgradeData(ItemUtils.simpleMetaStack(Items.golden_apple, 0, 1), Modifiers.BOOST_HP, 1);
+		generateUpgradeData(ItemUtils.simpleMetaStack(Items.golden_apple, 1, 1), Modifiers.BOOST_HP, 2);
+		generateUpgradeData(ItemUtils.simpleMetaStack(Items.nether_star, 0, 1), Modifiers.BOOST_HP, 3);
+		generateUpgradeData(ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32725", 32725, 1), Modifiers.BOOST_HP, 4);
+		generateUpgradeData(ItemUtils.simpleMetaStack("gregtech:gt.metaitem.01:32726", 32726, 1), Modifiers.BOOST_HP, 5);
+
+		return true;
+	}
+
+	public static boolean generateUpgradeData(ItemStack tStack, Modifiers tMod, int tLevel){
+		Pair<Modifiers, Integer> tTemp = new Pair<Modifiers, Integer>(tMod, tLevel);
+		if (mValidUpgradeList.put(tStack, tTemp) != null){
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean generateUpgradeFormData(ItemStack tStack, BT tMod){
+		if (mValidUpgradeListFormChange.put(tStack, tMod) != null){
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean addUpgrade(ItemStack tStack, ItemStack tBauble){
+
+		if (mValidUpgradeListFormChange.containsKey(tStack)){
+			return true;
+		}
+		else {
+			Iterator<Entry<ItemStack, BT>> it = mValidUpgradeListFormChange.entrySet().iterator();
+			while (it.hasNext()) {
+				Entry<ItemStack, BT> pair = it.next();
+				if (pair.getKey().getItem() == tStack.getItem()
+						&& pair.getKey().getItemDamage() == tStack.getItemDamage()){
+					ModularArmourUtils.setBaubleType(tBauble, mValidUpgradeListFormChange.get(tStack));
+					return true;
+				}
+			}
+		}
+		if (mValidUpgradeList.containsKey(tStack)){
+			return true;
+		}
+		else {
+			Iterator<Entry<ItemStack, Pair<Modifiers, Integer>>> it = mValidUpgradeList.entrySet().iterator();
+			while (it.hasNext()) {
+				Entry<ItemStack, Pair<Modifiers, Integer>> pair = it.next();
+				if (pair.getKey().getItem() == tStack.getItem()
+						&& pair.getKey().getItemDamage() == tStack.getItemDamage()){
+					Pair<Modifiers, Integer> newPair = pair.getValue();
+					ModularArmourUtils.setModifierLevel(tBauble, newPair);
+					return true;
+				}
+			}
+		}
+		Utils.LOG_INFO("Could not find valid upgrade: "+tStack.getDisplayName()+".");
+		Utils.LOG_INFO("Bool1: "+mValidUpgradeListFormChange.containsKey(tStack));
+		Utils.LOG_INFO("Bool2: "+mValidUpgradeList.containsKey(tStack));
+		return false;
+	}
 
 }

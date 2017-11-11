@@ -2,6 +2,8 @@ package gtPlusPlus.core.util.nbt;
 
 import baubles.api.BaubleType;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.util.array.Pair;
+import gtPlusPlus.core.util.nbt.ModularArmourUtils.Modifiers;
 import net.minecraft.block.Block.SoundType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,7 +35,7 @@ public class ModularArmourUtils {
 			return this.MODIFIER_NAME;
 		}		
 		public boolean isValidLevel(int i){
-			if (i >= 0 && i <= 5){
+			if (i >= 0 && i <= 100){
 				return true;
 			}
 			return false;
@@ -79,6 +81,14 @@ public class ModularArmourUtils {
 		}
 	}
 	
+	public static void setModifierLevel(ItemStack aStack, Pair<Modifiers, Integer> mPair) {
+		setModifierLevel(aStack, mPair.getKey(), mPair.getValue().intValue());
+	}
+	
+	public static void setModifierLevel(ItemStack aStack, Modifiers aMod, Integer aInt) {
+		setModifierLevel(aStack, aMod, aInt.intValue());
+	}
+	
 	public static void setModifierLevel(ItemStack aStack, Modifiers aMod, int aInt) {
 		NBTTagCompound tNBT = NBTUtils.getNBT(aStack);
 		if (aMod.isValidLevel(aInt)){
@@ -86,8 +96,8 @@ public class ModularArmourUtils {
 			GT_Utility.ItemNBT.setNBT(aStack, tNBT);			
 		}
 		else {
-			if (getModifierLevel(aStack, aMod) > 5){
-				setModifierLevel(aStack, aMod, 5);			
+			if (getModifierLevel(aStack, aMod) > 100){
+				setModifierLevel(aStack, aMod, 100);			
 			}
 		}
 	}

@@ -7,7 +7,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.container.Container_ModularityTable;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.machines.TileEntityModularityTable;
-import gtPlusPlus.core.util.Utils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -20,12 +19,14 @@ public class GUI_ModularityTable extends GuiContainer {
 
 	public GUI_ModularityTable(final InventoryPlayer player_inventory, final TileEntityModularityTable tile){
 		super(new Container_ModularityTable(player_inventory, tile));
-		Utils.LOG_INFO("valid gui created");
 	}
 
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(final int i, final int j){
+		//this.fontRendererObj.drawString(I18n.format("Workbench", new Object[0]), 28, 6, 4210752);
+		//this.fontRendererObj.drawString(I18n.format("container.inventory", new Object[0]), 8, this.ySize - 96 + 2, 4210752);
+
 	}
 
 
@@ -38,14 +39,25 @@ public class GUI_ModularityTable extends GuiContainer {
 		this.drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
 	}
 
+
+	//This method is called when the Gui is first called!
 	@Override
 	public void initGui(){
+		//You have to add this line for the Gui to function properly!
 		super.initGui();
+
+		//The parameters of GuiButton are(id, x, y, width, height, text);
+		//this.buttonList.add(new GuiButton( 1, 367, 132, 18, 18, "X"));
+		//this.buttonList.add(new GuiButton( 2, 385, 132, 18, 18, "Y"));
+		//NOTE: the id always has to be different or else it might get called twice or never!
+
+		//Add any other buttons here too!
 	}
 
 	@Override
 	protected void actionPerformed(final GuiButton B){
-		
+
+
 	}
 
 }
