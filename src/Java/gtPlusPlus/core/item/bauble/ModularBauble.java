@@ -9,6 +9,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.nbt.ModularArmourUtils;
 import gtPlusPlus.core.util.nbt.ModularArmourUtils.BT;
 import gtPlusPlus.core.util.nbt.ModularArmourUtils.Modifiers;
@@ -72,7 +73,7 @@ public class ModularBauble extends BaseBauble{
 			}
 		}
 		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_HP)) > 0){
-			if (mStatlevel > 0 && mStatlevel < 20){
+			/*if (mStatlevel > 0 && mStatlevel < 20){
 				attributes.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "HP"+mStatlevel, 15, 0));
 			}
 			else if (mStatlevel > 20 && mStatlevel < 45){
@@ -86,7 +87,19 @@ public class ModularBauble extends BaseBauble{
 			}
 			else if (mStatlevel >= 100){
 				attributes.put(SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(), new AttributeModifier(getBaubleUUID(stack), "HP"+mStatlevel, 40, 0));
+			}*/
+			
+			if (mStatlevel > 0 && mStatlevel <= 100){
+				int bonus = (int) (mStatlevel/5);
+				attributes.put(
+						SharedMonsterAttributes.maxHealth.getAttributeUnlocalizedName(),
+						new AttributeModifier(
+								getBaubleUUID(stack),
+								"HP"+mStatlevel,
+								bonus*2,
+								0));
 			}
+			
 		}
 		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_SPEED)) > 0){
 			if (mStatlevel > 0 && mStatlevel < 20){
@@ -136,7 +149,7 @@ public class ModularBauble extends BaseBauble{
 		}
 
 		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_HP)) > 0){
-			list.add(EnumChatFormatting.GRAY+"Health Boost: "+EnumChatFormatting.RED+mStatlevel+EnumChatFormatting.GRAY+"/100.");	
+			list.add(EnumChatFormatting.GRAY+"Health Boost: "+EnumChatFormatting.RED+mStatlevel+EnumChatFormatting.GRAY+"/100. Bonus "+((int) mStatlevel/5)+" hearts.");	
 		}
 		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_SPEED)) > 0){
 			list.add(EnumChatFormatting.GRAY+"Speed Boost: "+EnumChatFormatting.WHITE+mStatlevel+EnumChatFormatting.GRAY+"/100.");	

@@ -4,12 +4,10 @@ import static gtPlusPlus.core.tileentities.machines.TileEntityModularityTable.mV
 import static gtPlusPlus.core.tileentities.machines.TileEntityModularityTable.mValidUpgradeListFormChange;
 
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.Pair;
-import gtPlusPlus.core.util.nbt.ModularArmourUtils;
 import gtPlusPlus.core.util.nbt.ModularArmourUtils.BT;
 import gtPlusPlus.core.util.nbt.ModularArmourUtils.Modifiers;
 import net.minecraft.inventory.IInventory;

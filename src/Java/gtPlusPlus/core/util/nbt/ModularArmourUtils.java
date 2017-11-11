@@ -96,9 +96,13 @@ public class ModularArmourUtils {
 	}
 	
 	public static void setModifierLevel(ItemStack aStack, Modifiers aMod, int aInt) {
+		
+		int mCurrentLevel = getModifierLevel(aStack, aMod);
+		int mNewTotalLevel = mCurrentLevel+aInt;
+		
 		NBTTagCompound tNBT = NBTUtils.getNBT(aStack);
-		if (aMod.isValidLevel(aInt)){
-			tNBT.setInteger(aMod.getModifier(), aInt);
+		if (aMod.isValidLevel(mNewTotalLevel)){
+			tNBT.setInteger(aMod.getModifier(), mNewTotalLevel);
 			GT_Utility.ItemNBT.setNBT(aStack, tNBT);			
 		}
 		else {
@@ -106,6 +110,10 @@ public class ModularArmourUtils {
 				setModifierLevel(aStack, aMod, 100);			
 			}
 		}
+	}
+	
+	public static int getModifierLevel(ItemStack aStack, Pair<Modifiers, Integer> newPair) {
+		return getModifierLevel(aStack, newPair.getKey());
 	}
 
 	public static int getModifierLevel(ItemStack aStack, Modifiers aMod) {

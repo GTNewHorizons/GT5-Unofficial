@@ -88,12 +88,15 @@ public class TileEntityModularityTable extends TileEntity {
 
 						}
 
-						Utils.LOG_INFO("set new Modular bauble");
 						if (removeInputA && removeInputB){
+							Utils.LOG_INFO("set new Modular bauble");
 							this.inventoryOutputs.setInventorySlotContents(0, null);
 							this.inventoryOutputs.setInventorySlotContents(1, null);
 							this.inventoryOutputs.setInventorySlotContents(2, tBauble);
-						}										
+						}	
+						else {
+							Utils.LOG_INFO("1: "+removeInputA+" | 2: "+removeInputB);
+						}
 					}
 				}
 			}		
@@ -157,6 +160,7 @@ public class TileEntityModularityTable extends TileEntity {
 
 	public static boolean addUpgrade(ItemStack tStack, ItemStack tBauble){
 
+		try {
 			Iterator<Entry<ItemStack, BT>> it = mValidUpgradeListFormChange.entrySet().iterator();
 			while (it.hasNext()) {
 				Entry<ItemStack, BT> pair = it.next();
@@ -166,19 +170,25 @@ public class TileEntityModularityTable extends TileEntity {
 					return true;
 				}
 			}
-		
+		} catch (Throwable t){
+
+		}
+		try {
 			Iterator<Entry<ItemStack, Pair<Modifiers, Integer>>> it2 = mValidUpgradeList.entrySet().iterator();
 			while (it2.hasNext()) {
 				Entry<ItemStack, Pair<Modifiers, Integer>> pair = it2.next();
 				if (pair.getKey().getItem() == tStack.getItem()
 						&& pair.getKey().getItemDamage() == tStack.getItemDamage()){
 					Pair<Modifiers, Integer> newPair = pair.getValue();
+					int mCurrentLevel = ModularArmourUtils.getModifierLevel(tBauble, newPair);
 					ModularArmourUtils.setModifierLevel(tBauble, newPair);
 					return true;
 				}
 			}
-		
-		//Utils.LOG_INFO("Could not find valid upgrade: "+tStack.getDisplayName()+".");
+		} catch (Throwable t){
+
+		}
+		Utils.LOG_INFO("Could not find valid upgrade: "+tStack.getDisplayName()+".");
 		//Utils.LOG_INFO("Bool1: "+mValidUpgradeListFormChange.containsKey(tStack));
 		//Utils.LOG_INFO("Bool2: "+mValidUpgradeList.containsKey(tStack));
 		return false;
