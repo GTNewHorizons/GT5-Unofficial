@@ -51,6 +51,6 @@ public class SlotModularBaubleUpgrades extends Slot{
 
 	@Override
 	public int getSlotStackLimit() {
-		return 1;
+		return 64;
 	}
 }

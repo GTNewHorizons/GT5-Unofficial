@@ -360,7 +360,7 @@ public class ModularBauble extends BaseBauble{
 		}
 		else {
 			mTextureAmulet = register.registerIcon("miscutils" + ":" + "itemAmulet");
-			mTextureRing = register.registerIcon("baubles" + ":" + "ring");
+			mTextureRing = register.registerIcon("miscutils" + ":" + "itemRingWearable");
 			mTextureBelt = register.registerIcon("miscutils" + ":" + "itemBelt");
 		}
 		iconArray[0] = mTextureAmulet;
@@ -370,23 +370,7 @@ public class ModularBauble extends BaseBauble{
 	}
 
 	@Override
-	public void onWornTick(ItemStack stack, EntityLivingBase player) {
-		int mTemp = ModularArmourUtils.getBaubleTypeID(stack);		
-		SetBaubleType(ModularArmourUtils.getBaubleByID(mTemp));
-		
-		if (stack.getItemDamage() != 0 && ModularArmourUtils.getBaubleType(stack) == BaubleType.AMULET){
-			this.setDamage(stack, 0);
-		}
-		else if (stack.getItemDamage() != 1 && ModularArmourUtils.getBaubleType(stack) == BaubleType.RING){
-			this.setDamage(stack, 1);
-		}
-		else if (stack.getItemDamage() != 2 && ModularArmourUtils.getBaubleType(stack) == BaubleType.BELT){
-			this.setDamage(stack, 2);
-		}
-		else {
-			this.setDamage(stack, 0);
-		}
-		
+	public void onWornTick(ItemStack stack, EntityLivingBase player) {	
 		super.onWornTick(stack, player);
 	}
 

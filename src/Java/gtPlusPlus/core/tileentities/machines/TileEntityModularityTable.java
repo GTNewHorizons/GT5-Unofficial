@@ -90,8 +90,16 @@ public class TileEntityModularityTable extends TileEntity {
 
 						if (removeInputA && removeInputB){
 							Utils.LOG_INFO("set new Modular bauble");
+							if (this.inventoryOutputs.getStackInSlot(1).stackSize > 1){
+								ItemStack mTempStack = this.inventoryOutputs.getStackInSlot(1);
+								mTempStack.stackSize--;
+								this.inventoryOutputs.setInventorySlotContents(1, mTempStack);
+							}
+							else {
+								this.inventoryOutputs.setInventorySlotContents(1, null);
+								
+							}
 							this.inventoryOutputs.setInventorySlotContents(0, null);
-							this.inventoryOutputs.setInventorySlotContents(1, null);
 							this.inventoryOutputs.setInventorySlotContents(2, tBauble);
 						}	
 						else {
@@ -166,7 +174,9 @@ public class TileEntityModularityTable extends TileEntity {
 				Entry<ItemStack, BT> pair = it.next();
 				if (pair.getKey().getItem() == tStack.getItem()
 						&& pair.getKey().getItemDamage() == tStack.getItemDamage()){
-					ModularArmourUtils.setBaubleType(tBauble, mValidUpgradeListFormChange.get(tStack).getThis());
+					ModularArmourUtils.setBaubleType(tBauble, pair.getValue());
+					tBauble.setItemDamage(ModularArmourUtils.getBaubleTypeID(tBauble));
+					//ModularArmourUtils.setBaubleType(tBauble, mValidUpgradeListFormChange.get(tStack).getThis());
 					return true;
 				}
 			}
