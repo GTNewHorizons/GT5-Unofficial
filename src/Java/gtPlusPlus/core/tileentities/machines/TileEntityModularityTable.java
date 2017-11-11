@@ -157,27 +157,19 @@ public class TileEntityModularityTable extends TileEntity {
 
 	public static boolean addUpgrade(ItemStack tStack, ItemStack tBauble){
 
-		if (mValidUpgradeListFormChange.containsKey(tStack)){
-			return true;
-		}
-		else {
 			Iterator<Entry<ItemStack, BT>> it = mValidUpgradeListFormChange.entrySet().iterator();
 			while (it.hasNext()) {
 				Entry<ItemStack, BT> pair = it.next();
 				if (pair.getKey().getItem() == tStack.getItem()
 						&& pair.getKey().getItemDamage() == tStack.getItemDamage()){
-					ModularArmourUtils.setBaubleType(tBauble, mValidUpgradeListFormChange.get(tStack));
+					ModularArmourUtils.setBaubleType(tBauble, mValidUpgradeListFormChange.get(tStack).getThis());
 					return true;
 				}
 			}
-		}
-		if (mValidUpgradeList.containsKey(tStack)){
-			return true;
-		}
-		else {
-			Iterator<Entry<ItemStack, Pair<Modifiers, Integer>>> it = mValidUpgradeList.entrySet().iterator();
-			while (it.hasNext()) {
-				Entry<ItemStack, Pair<Modifiers, Integer>> pair = it.next();
+		
+			Iterator<Entry<ItemStack, Pair<Modifiers, Integer>>> it2 = mValidUpgradeList.entrySet().iterator();
+			while (it2.hasNext()) {
+				Entry<ItemStack, Pair<Modifiers, Integer>> pair = it2.next();
 				if (pair.getKey().getItem() == tStack.getItem()
 						&& pair.getKey().getItemDamage() == tStack.getItemDamage()){
 					Pair<Modifiers, Integer> newPair = pair.getValue();
@@ -185,10 +177,10 @@ public class TileEntityModularityTable extends TileEntity {
 					return true;
 				}
 			}
-		}
-		Utils.LOG_INFO("Could not find valid upgrade: "+tStack.getDisplayName()+".");
-		Utils.LOG_INFO("Bool1: "+mValidUpgradeListFormChange.containsKey(tStack));
-		Utils.LOG_INFO("Bool2: "+mValidUpgradeList.containsKey(tStack));
+		
+		//Utils.LOG_INFO("Could not find valid upgrade: "+tStack.getDisplayName()+".");
+		//Utils.LOG_INFO("Bool1: "+mValidUpgradeListFormChange.containsKey(tStack));
+		//Utils.LOG_INFO("Bool2: "+mValidUpgradeList.containsKey(tStack));
 		return false;
 	}
 

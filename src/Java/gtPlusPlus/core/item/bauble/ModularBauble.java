@@ -134,7 +134,7 @@ public class ModularBauble extends BaseBauble{
 		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_DAMAGE)) > 0){
 			list.add(EnumChatFormatting.GRAY+"Damage Boost: "+EnumChatFormatting.DARK_RED+mStatlevel+EnumChatFormatting.GRAY+"/100.");	
 		}
-		
+
 		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_HP)) > 0){
 			list.add(EnumChatFormatting.GRAY+"Health Boost: "+EnumChatFormatting.RED+mStatlevel+EnumChatFormatting.GRAY+"/100.");	
 		}
@@ -147,11 +147,11 @@ public class ModularBauble extends BaseBauble{
 		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_HOLY)) > 0){
 			list.add(EnumChatFormatting.GRAY+"Holy Boost: "+EnumChatFormatting.GOLD+mStatlevel+EnumChatFormatting.GRAY+"/100.");	
 		}
-		
+
 		//Defence Boost
 		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_DEF)) > 0){
 			list.add(EnumChatFormatting.GRAY+"Defence Boost: "+EnumChatFormatting.BLUE+mStatlevel+EnumChatFormatting.GRAY+"/100.");	
-						
+
 			if (mStatlevel >= 1){
 				list.add(EnumChatFormatting.GRAY+"Protected From: "+EnumChatFormatting.BLUE+"Cactus"+EnumChatFormatting.GRAY+".");	
 			}
@@ -185,10 +185,10 @@ public class ModularBauble extends BaseBauble{
 			if (mStatlevel >= 100){
 				list.add(EnumChatFormatting.GRAY+"Protected From: "+EnumChatFormatting.BLUE+"Void"+EnumChatFormatting.GRAY+".");
 			}
-			
+
 		}
-		
-		
+
+
 		if (NBTUtils.getBotanicaSoulboundOwner(stack) != null){
 			if (!NBTUtils.getBotanicaSoulboundOwner(stack).equals("")){
 				list.add(EnumChatFormatting.GRAY+"Relic Owner: "+EnumChatFormatting.GREEN+NBTUtils.getBotanicaSoulboundOwner(stack)+EnumChatFormatting.GRAY+".");	
@@ -382,6 +382,19 @@ public class ModularBauble extends BaseBauble{
 			iconArray[1] = register.registerIcon("baubles" + ":" + "ring");
 			iconArray[2] = register.registerIcon("miscutils" + ":" + "itemPineapple");
 		}	
+	}
+
+	private BaubleType mTypeArray[] = new BaubleType[]{
+			BaubleType.AMULET,
+			BaubleType.RING,
+			BaubleType.BELT
+	};
+
+	@Override
+	public void onWornTick(ItemStack stack, EntityLivingBase player) {
+		int mTemp = ModularArmourUtils.getBaubleTypeID(stack);		
+		SetBaubleType(ModularArmourUtils.getBaubleByID(mTemp));
+		super.onWornTick(stack, player);
 	}
 
 

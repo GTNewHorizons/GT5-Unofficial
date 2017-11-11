@@ -2,6 +2,7 @@ package gtPlusPlus.core.util.nbt;
 
 import baubles.api.BaubleType;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.Pair;
 import gtPlusPlus.core.util.nbt.ModularArmourUtils.Modifiers;
 import net.minecraft.block.Block.SoundType;
@@ -57,6 +58,11 @@ public class ModularArmourUtils {
 		public BaubleType getType(){
 			return this.mType;
 		}
+		
+		public BT getThis(){
+			return this;
+		}
+		
 		public BaubleType getBaubleByID(int tID){
 			if (tID == 0){
 				return BaubleType.AMULET;
@@ -108,6 +114,7 @@ public class ModularArmourUtils {
 	}
 	
 	public static void setBaubleType(ItemStack aStack, BT aMod) {
+		Utils.LOG_INFO("Changing bauble type.");
 		NBTTagCompound tNBT = NBTUtils.getNBT(aStack);
 		if (aMod != null){
 			tNBT.setInteger("mBaubleType", aMod.getID());

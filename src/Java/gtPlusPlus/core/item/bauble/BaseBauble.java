@@ -93,8 +93,12 @@ public class BaseBauble extends Item implements IBauble{
 	}
 	
 	public boolean SetBaubleType(BT arg0) {
+		return SetBaubleType(arg0.getType());
+	}
+	
+	public boolean SetBaubleType(BaubleType arg0) {
 		BaubleType temp = this.mThisBauble;
-		this.mThisBauble = arg0.getType();
+		this.mThisBauble = arg0;
 		if (this.mThisBauble != temp){
 			return true;
 		}
