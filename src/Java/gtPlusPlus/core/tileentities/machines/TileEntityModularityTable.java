@@ -239,11 +239,11 @@ public class TileEntityModularityTable extends TileEntityBase implements ISidedI
 
 	@Override
 	public ItemStack getStackInSlot(int slot) {
-		if (slot < this.inventoryGrid.getSizeInventory()){
-			return this.inventoryGrid.getStackInSlot(slot);
+		if (slot >= this.inventoryGrid.getSizeInventory()){
+			return this.inventoryOutputs.getStackInSlot(slot-9);
 		}
-		else if (slot < (this.inventoryGrid.getSizeInventory()+this.inventoryOutputs.getSizeInventory())){
-			return this.inventoryOutputs.getStackInSlot(slot);
+		else if (slot < this.inventoryGrid.getSizeInventory()){
+			return this.inventoryGrid.getStackInSlot(slot);
 		}
 		else {
 			return null;
@@ -255,8 +255,8 @@ public class TileEntityModularityTable extends TileEntityBase implements ISidedI
 		if (slot < this.inventoryGrid.getSizeInventory()){
 			return this.inventoryGrid.decrStackSize(slot, count);
 		}
-		else if (slot < (this.inventoryGrid.getSizeInventory()+this.inventoryOutputs.getSizeInventory())){
-			return this.inventoryOutputs.decrStackSize(slot, count);
+		else if (slot >= this.inventoryGrid.getSizeInventory()){
+			return this.inventoryOutputs.decrStackSize(slot-9, count);
 		}
 		else {
 			return null;
@@ -270,12 +270,12 @@ public class TileEntityModularityTable extends TileEntityBase implements ISidedI
 
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
-		if (slot < this.inventoryGrid.getSizeInventory()){
+		if (slot >= this.inventoryGrid.getSizeInventory()){
+			this.inventoryOutputs.setInventorySlotContents(slot-9, stack);
+		}
+		else if (slot < this.inventoryGrid.getSizeInventory()){
 			this.inventoryGrid.setInventorySlotContents(slot, stack);
 		}
-		else if (slot < (this.inventoryGrid.getSizeInventory()+this.inventoryOutputs.getSizeInventory())){
-			this.inventoryOutputs.setInventorySlotContents(slot, stack);
-		}	
 	}
 
 	@Override
@@ -308,11 +308,11 @@ public class TileEntityModularityTable extends TileEntityBase implements ISidedI
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
-		if (slot < this.inventoryGrid.getSizeInventory()){
-			return this.inventoryGrid.isItemValidForSlot(slot, itemstack);
+		if (slot >= this.inventoryGrid.getSizeInventory()){
+			return this.inventoryOutputs.isItemValidForSlot(slot-9, itemstack);
 		}
-		else if (slot < (this.inventoryGrid.getSizeInventory()+this.inventoryOutputs.getSizeInventory())){
-			return this.inventoryOutputs.isItemValidForSlot(slot, itemstack);
+		else if (slot < this.inventoryGrid.getSizeInventory()){
+			return this.inventoryGrid.isItemValidForSlot(slot, itemstack);
 		}
 		else {
 			return false;
@@ -333,11 +333,11 @@ public class TileEntityModularityTable extends TileEntityBase implements ISidedI
 	public boolean canInsertItem(int slot, ItemStack item, int side) {
 		Utils.LOG_INFO("Slot:"+slot+" | side? "+side);
 
-		if (side == 1){
-			return this.inventoryOutputs.isItemValidForSlot(0, item);			
-		}
+		/*if (side == 1){
+			return this.inventoryOutputs.isItemValidForSlot(slot-9, item);
+		}	*/	
 		if (slot >= 9){
-			return this.inventoryOutputs.isItemValidForSlot(slot, item);
+			return this.inventoryOutputs.isItemValidForSlot(slot-9, item);
 		}
 		else {
 			return this.inventoryGrid.isItemValidForSlot(slot, item);
