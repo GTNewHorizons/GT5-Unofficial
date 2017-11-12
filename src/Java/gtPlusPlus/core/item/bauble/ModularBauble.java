@@ -388,4 +388,20 @@ public class ModularBauble extends BaseBauble {
 		return false;
 	}
 
+	@Override
+	public Item setFull3D() {
+		// TODO Auto-generated method stub
+		return super.setFull3D();
+	}
+
+	@Override
+	public boolean isFull3D() {
+		return true;
+	}
+
+	@Override
+	public boolean isRepairable() {
+		return false;
+	}
+
 }
