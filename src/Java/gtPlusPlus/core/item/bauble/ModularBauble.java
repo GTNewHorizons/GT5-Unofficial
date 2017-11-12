@@ -41,7 +41,6 @@ public class ModularBauble extends BaseBauble {
 
 	public ModularBauble() {
 		super(BaubleType.AMULET, "Modular Bauble");
-		this.setTextureName(CORE.MODID + ":" + "itemKeyGold");
 	}
 
 	@Override
@@ -325,18 +324,18 @@ public class ModularBauble extends BaseBauble {
 		}
 		try {
 			if (ModularArmourUtils.getBaubleType(stack) == BaubleType.AMULET) {
-				return mTextureAmulet;
+				return mfallback = mTextureAmulet;
 			}
 			if (ModularArmourUtils.getBaubleType(stack) == BaubleType.RING) {
-				return mTextureRing;
+				return mfallback = mTextureRing;
 			}
 			if (ModularArmourUtils.getBaubleType(stack) == BaubleType.BELT) {
-				return mTextureBelt;
+				return mfallback = mTextureBelt;
 			} else {
-				return mfallback;
+				return mfallback = mTextureRing;
 			}
 		} catch (Throwable t) {
-			return mfallback;
+			return mfallback = mTextureRing;
 		}
 	}
 
@@ -348,7 +347,7 @@ public class ModularBauble extends BaseBauble {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister register) {
-		this.mfallback = register.registerIcon("baubles" + ":" + "ring");
+		this.mfallback = register.registerIcon("miscutils" + ":" + "itemAmulet");
 		// you cannot initialize iconArray when declared nor in the constructor,
 		// as it is client-side only, so do it here:
 		if (LoadedMods.Thaumcraft) {

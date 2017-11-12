@@ -347,7 +347,7 @@ public class TileEntityModularityTable extends TileEntityBase implements ISidedI
 	@Override
 	public boolean canExtractItem(int slot, ItemStack item, int side) {
 		Utils.LOG_INFO("Slot:"+slot+" | side? "+side);
-		if (slot <= 8 || slot == 11){
+		if (slot == 11 || slot <= 8){
 			return true;
 		}
 		return false;
