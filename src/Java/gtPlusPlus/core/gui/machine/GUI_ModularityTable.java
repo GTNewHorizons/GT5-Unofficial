@@ -7,6 +7,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.core.container.Container_ModularityTable;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.machines.TileEntityModularityTable;
+import gtPlusPlus.core.util.Utils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
@@ -33,11 +34,15 @@ public class GUI_ModularityTable extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(final int i, final int j){
+		if (this.mThisTile.getRecipeTime() > -1){
+			this.mRecipeTime = this.mThisTile.getRecipeTime();
+		}
+		//Utils.LOG_INFO("Container: "+this.mRecipeTime);
 		this.fontRendererObj.drawString(I18n.format("Modularity Table", new Object[0]), 8, 6, 4210752);
 		if (mRecipeTime > -1){
-			this.fontRendererObj.drawString(I18n.format("Time", new Object[0]), 8, 6, 4210752);	
-			this.fontRendererObj.drawString(I18n.format("Remaining", new Object[0]), 8, 6, 4210752);	
-			this.fontRendererObj.drawString(I18n.format(""+this.mRecipeTime, new Object[0]), 8, 6, 4210752);			
+			this.fontRendererObj.drawString(I18n.format("Time", new Object[0]), 84, 42, 4210752);	
+			this.fontRendererObj.drawString(I18n.format("Remaining", new Object[0]), 84, 50, 4210752);	
+			this.fontRendererObj.drawString(I18n.format(""+this.mRecipeTime+" Ticks", new Object[0]), 84, 58, 4210752);			
 		}
 		this.fontRendererObj.drawString(I18n.format("container.inventory", new Object[0]), 8, this.ySize - 96 + 2, 4210752);
 

@@ -41,6 +41,7 @@ public class Container_ModularityTable extends Container {
 		this.inventoryOutputs = tile.inventoryOutputs;
 		this.tile_entity.setContainer(this);
 		this.mRecipeTime = this.tile_entity.getRecipeTime();
+		Utils.LOG_INFO("Container: "+this.mRecipeTime);
 
 		int var6;
 		int var7;
