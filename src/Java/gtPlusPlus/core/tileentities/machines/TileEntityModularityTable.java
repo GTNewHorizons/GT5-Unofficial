@@ -11,23 +11,25 @@ import gtPlusPlus.core.container.Container_ModularityTable;
 import gtPlusPlus.core.inventories.modulartable.InventoryModularMain;
 import gtPlusPlus.core.inventories.modulartable.InventoryModularOutput;
 import gtPlusPlus.core.item.bauble.ModularBauble;
-import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.tileentities.base.TileEntityBase;
 import gtPlusPlus.core.util.array.Pair;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.nbt.ModularArmourUtils;
 import gtPlusPlus.core.util.nbt.ModularArmourUtils.BT;
 import gtPlusPlus.core.util.nbt.ModularArmourUtils.Modifiers;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 
-public class TileEntityModularityTable extends TileEntity {
+public class TileEntityModularityTable extends TileEntityBase implements ISidedInventory{
 
 	public InventoryModularMain inventoryGrid;
 	public InventoryModularOutput inventoryOutputs;
 	public InventoryModularOutput mTempRecipeStorage;
 	private Container_ModularityTable container;
+	private String customName;
 	private int mRecipeTimeRemaining = -1;
 
 	public TileEntityModularityTable() {
@@ -41,11 +43,11 @@ public class TileEntityModularityTable extends TileEntity {
 	public void setContainer(Container_ModularityTable container_ModularityTable) {
 		this.container = container_ModularityTable;
 	}
-	
+
 	public Container_ModularityTable getContainer() {
 		return this.container;
 	}
-	
+
 	public int getRecipeTime(){
 		return this.mRecipeTimeRemaining;
 	}
@@ -65,8 +67,9 @@ public class TileEntityModularityTable extends TileEntity {
 		this.inventoryOutputs.writeToNBT(this.getTag(nbt, "ContentsOutput"));
 		this.inventoryGrid.writeToNBT(this.getTag(nbt, "ContentsGrid"));
 		this.mTempRecipeStorage.writeToNBT(this.getTag(nbt, "ContentsRecipeTemp"));
-		
-
+		if (this.hasCustomInventoryName()) {
+			nbt.setString("CustomName", this.getCustomName());
+		}
 	}
 
 	@Override
@@ -76,94 +79,20 @@ public class TileEntityModularityTable extends TileEntity {
 		this.inventoryOutputs.readFromNBT(nbt.getCompoundTag("ContentsOutput"));
 		this.inventoryGrid.readFromNBT(nbt.getCompoundTag("ContentsGrid"));
 		this.mTempRecipeStorage.readFromNBT(nbt.getCompoundTag("ContentsRecipeTemp"));
+		if (nbt.hasKey("CustomName", 8)) {
+			this.setCustomName(nbt.getString("CustomName"));
+		}
 	}
 
-	@Override
-	public void updateEntity() {
-		if (!this.worldObj.isRemote) {
-			
-			//Check for active recipe
-			if (this.mRecipeTimeRemaining > -1 || (this.mTempRecipeStorage != null) && (this.mTempRecipeStorage.getRecipeTime() > -1)){
-				if ((this.mTempRecipeStorage != null) && this.mTempRecipeStorage.getRecipeTime() > -1){
-					if (this.mRecipeTimeRemaining < this.mTempRecipeStorage.getRecipeTime()){
-						this.mRecipeTimeRemaining = this.mTempRecipeStorage.getRecipeTime();
-						this.markDirty();
-					}
-				}
-				if (this.mInputstackA != null && this.mInputstackB != null && this.mOutputStack != null){
-					this.mTempRecipeStorage.setInventorySlotContents(0, this.mInputstackA);
-					this.mTempRecipeStorage.setInventorySlotContents(1, this.mInputstackB);
-					this.mTempRecipeStorage.setInventorySlotContents(2, this.mOutputStack);
-					this.mTempRecipeStorage.setRecipeTime(this.mRecipeTimeRemaining);
-					this.markDirty();
-				}
-			}
-			
-			boolean removeInputA = false;
-			boolean removeInputB = false;
-			// Data stick
-			ItemStack tBauble = this.inventoryOutputs.getStackInSlot(0);
-			ItemStack tUpgrade = this.inventoryOutputs.getStackInSlot(1);
-			if (tBauble != null && tUpgrade != null && this.container != null) {
-				if (tBauble.getItem() instanceof ModularBauble && this.mRecipeTimeRemaining == -1) {
-					if (tUpgrade != null && tBauble != null) {
-						removeInputA = true;
-						this.setInputStacks(tBauble, tUpgrade);
-						try {
-							removeInputB = addUpgrade(tUpgrade, tBauble);
-							if (!removeInputB) {
-							}
-						} catch (Throwable t) {
-						}
-						if (removeInputA && removeInputB) {
-							if (this.setOutputStack(tBauble)){
-								if (this.inventoryOutputs.getStackInSlot(1).stackSize > 1) {
-									ItemStack mTempStack = this.inventoryOutputs.getStackInSlot(1);
-									mTempStack.stackSize--;
-									this.inventoryOutputs.setInventorySlotContents(1, mTempStack);
-								} else {
-									this.inventoryOutputs.setInventorySlotContents(1, null);
-								}
-								this.inventoryOutputs.setInventorySlotContents(0, null);
-								
-								this.mRecipeTimeRemaining = 80;
-								this.markDirty();
-							}							
-						} else {
-							Utils.LOG_INFO("1: " + removeInputA + " | 2: " + removeInputB);
-						}
-					}
-				}
-			}
-			
-			if (mRecipeTimeRemaining == 0){
-				this.inventoryOutputs.setInventorySlotContents(2, this.getPendingOutputItem());	
-				clearRecipeData();
-				this.mTempRecipeStorage.setRecipeTime(this.mRecipeTimeRemaining);
-				this.markDirty();
-			}
-			/*else if (mRecipeTimeRemaining == -1){
-				mRecipeTimeRemaining = -1;
-			}*/
-			else if (mRecipeTimeRemaining > 0){
-				mRecipeTimeRemaining--;
-				this.mTempRecipeStorage.setRecipeTime(this.mRecipeTimeRemaining);
-				//Utils.LOG_INFO("Remaining: "+this.mRecipeTimeRemaining);
-			}
-			
-		}
-		super.updateEntity();
-	}
-	
 	protected ItemStack mOutputStack; //Upgraded Bauble
 	protected ItemStack mInputstackA; //Bauble
 	protected ItemStack mInputstackB; //Upgrade
-	
+
 	public ItemStack getPendingOutputItem(){
 		this.mRecipeTimeRemaining--;
 		return this.mOutputStack;
 	}
-	
+
 	public ItemStack[] getCurrentInputItems(){
 		if (this.mRecipeTimeRemaining < 0){
 			return null;
@@ -172,7 +101,7 @@ public class TileEntityModularityTable extends TileEntity {
 			return new ItemStack[]{this.mInputstackA, this.mInputstackB};
 		}
 	}
-	
+
 	public boolean setInputStacks(ItemStack tBauble, ItemStack tUpgrade){
 		if (tBauble != null){
 			this.mInputstackA = tBauble;
@@ -191,7 +120,7 @@ public class TileEntityModularityTable extends TileEntity {
 		}
 		return false;
 	}
-	
+
 	public boolean setOutputStack(ItemStack mNewBauble){
 		if (mNewBauble != null){
 			this.mOutputStack = mNewBauble;
@@ -202,7 +131,7 @@ public class TileEntityModularityTable extends TileEntity {
 			return false;		
 		}
 	}
-	
+
 	public boolean clearRecipeData(){
 		this.mInputstackA = null;
 		this.mInputstackB = null;
@@ -289,7 +218,6 @@ public class TileEntityModularityTable extends TileEntity {
 				if (pair.getKey().getItem() == tStack.getItem()
 						&& pair.getKey().getItemDamage() == tStack.getItemDamage()) {
 					Pair<Modifiers, Integer> newPair = pair.getValue();
-					int mCurrentLevel = ModularArmourUtils.getModifierLevel(tBauble, newPair);
 					ModularArmourUtils.setModifierLevel(tBauble, newPair);
 					return true;
 				}
@@ -300,4 +228,213 @@ public class TileEntityModularityTable extends TileEntity {
 		return false;
 	}
 
+	@Override
+	public int getSizeInventory() {
+		return 11;
+	}
+
+	@Override
+	public ItemStack getStackInSlot(int slot) {
+		if (slot < this.inventoryGrid.getSizeInventory()){
+			return this.inventoryGrid.getStackInSlot(slot);
+		}
+		else if (slot < (this.inventoryGrid.getSizeInventory()+this.inventoryOutputs.getSizeInventory())){
+			return this.inventoryOutputs.getStackInSlot(slot);
+		}
+		else {
+			return null;
+		}		
+	}
+
+	@Override
+	public ItemStack decrStackSize(int slot, int count) {
+		if (slot < this.inventoryGrid.getSizeInventory()){
+			return this.inventoryGrid.decrStackSize(slot, count);
+		}
+		else if (slot < (this.inventoryGrid.getSizeInventory()+this.inventoryOutputs.getSizeInventory())){
+			return this.inventoryOutputs.decrStackSize(slot, count);
+		}
+		else {
+			return null;
+		}	
+	}
+
+	@Override
+	public ItemStack getStackInSlotOnClosing(int slot) {
+		return this.getStackInSlot(slot);
+	}
+
+	@Override
+	public void setInventorySlotContents(int slot, ItemStack stack) {
+		if (slot < this.inventoryGrid.getSizeInventory()){
+			this.inventoryGrid.setInventorySlotContents(slot, stack);
+		}
+		else if (slot < (this.inventoryGrid.getSizeInventory()+this.inventoryOutputs.getSizeInventory())){
+			this.inventoryOutputs.setInventorySlotContents(slot, stack);
+		}	
+	}
+
+	@Override
+	public int getInventoryStackLimit() {
+		return 64;
+	}
+
+	@Override
+	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
+		return true;
+	}
+
+	@Override
+	public void openInventory() {
+		this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, 1);
+		this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
+		this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
+		this.inventoryGrid.openInventory();		
+		this.inventoryOutputs.openInventory();	
+	}
+
+	@Override
+	public void closeInventory() {
+		this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, 1);
+		this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
+		this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
+		this.inventoryGrid.openInventory();		
+		this.inventoryOutputs.openInventory();	
+	}
+
+	@Override
+	public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
+		if (slot < this.inventoryGrid.getSizeInventory()){
+			return this.inventoryGrid.isItemValidForSlot(slot, itemstack);
+		}
+		else if (slot < (this.inventoryGrid.getSizeInventory()+this.inventoryOutputs.getSizeInventory())){
+			return this.inventoryOutputs.isItemValidForSlot(slot, itemstack);
+		}
+		else {
+			return false;
+		}	
+	}
+
+	@Override
+	public int[] getAccessibleSlotsFromSide(int side) {
+		int[] accessibleSides = new int[this.getSizeInventory()];
+		if (side == 0){
+
+		}
+		else if (side == 1){
+			for (int r=0; r<this.inventoryOutputs.getSizeInventory(); r++){
+				accessibleSides[r]=r;
+			}
+		}
+		else if (side > 1){
+			for (int r=0; r<this.inventoryGrid.getSizeInventory(); r++){
+				accessibleSides[r]=r;
+			}
+		}		
+		return accessibleSides;
+
+	}
+
+	@Override
+	public boolean canInsertItem(int p_102007_1_, ItemStack p_102007_2_, int p_102007_3_) {
+		return false;
+	}
+
+	@Override
+	public boolean canExtractItem(int p_102008_1_, ItemStack p_102008_2_, int p_102008_3_) {
+		return true;
+	}
+
+	public String getCustomName() {
+		return this.customName;
+	}
+
+	public void setCustomName(String customName) {
+		this.customName = customName;
+	}
+
+	@Override
+	public String getInventoryName() {
+		return this.hasCustomInventoryName() ? this.customName : "container.fishrap";
+	}
+
+	@Override
+	public boolean hasCustomInventoryName() {
+		return this.customName != null && !this.customName.equals("");
+	}
+
+	@Override
+	public boolean onPreTick() {
+		//Check for active recipe
+		if (this.mRecipeTimeRemaining > -1 || (this.mTempRecipeStorage != null) && (this.mTempRecipeStorage.getRecipeTime() > -1)){
+			if ((this.mTempRecipeStorage != null) && this.mTempRecipeStorage.getRecipeTime() > -1){
+				if (this.mRecipeTimeRemaining < this.mTempRecipeStorage.getRecipeTime()){
+					this.mRecipeTimeRemaining = this.mTempRecipeStorage.getRecipeTime();
+					this.markDirty();
+				}
+			}
+			if (this.mInputstackA != null && this.mInputstackB != null && this.mOutputStack != null){
+				this.mTempRecipeStorage.setInventorySlotContents(0, this.mInputstackA);
+				this.mTempRecipeStorage.setInventorySlotContents(1, this.mInputstackB);
+				this.mTempRecipeStorage.setInventorySlotContents(2, this.mOutputStack);
+				this.mTempRecipeStorage.setRecipeTime(this.mRecipeTimeRemaining);
+				this.markDirty();
+			}
+		}		
+		return true;
+	}
+
+	@Override
+	public boolean onPostTick() {
+		if (mRecipeTimeRemaining == 0){
+			this.inventoryOutputs.setInventorySlotContents(2, this.getPendingOutputItem());	
+			clearRecipeData();
+			this.mTempRecipeStorage.setRecipeTime(this.mRecipeTimeRemaining);
+			this.markDirty();
+		}
+		else if (mRecipeTimeRemaining > 0){
+			mRecipeTimeRemaining--;
+			this.mTempRecipeStorage.setRecipeTime(this.mRecipeTimeRemaining);
+		}
+		return true;
+	}
+
+	@Override
+	public boolean processRecipe() {
+		boolean removeInputA = false;
+		boolean removeInputB = false;
+		// Data stick
+		ItemStack tBauble = this.inventoryOutputs.getStackInSlot(0);
+		ItemStack tUpgrade = this.inventoryOutputs.getStackInSlot(1);
+		if (tBauble != null && tUpgrade != null && this.container != null) {
+			if (tBauble.getItem() instanceof ModularBauble && this.mRecipeTimeRemaining == -1) {
+				if (tUpgrade != null && tBauble != null) {
+					removeInputA = true;
+					this.setInputStacks(tBauble, tUpgrade);
+					try {
+						removeInputB = addUpgrade(tUpgrade, tBauble);
+						if (!removeInputB) {
+						}
+					} catch (Throwable t) {
+					}
+					if (removeInputA && removeInputB) {
+						if (this.setOutputStack(tBauble)){
+							if (this.inventoryOutputs.getStackInSlot(1).stackSize > 1) {
+								ItemStack mTempStack = this.inventoryOutputs.getStackInSlot(1);
+								mTempStack.stackSize--;
+								this.inventoryOutputs.setInventorySlotContents(1, mTempStack);
+							} else {
+								this.inventoryOutputs.setInventorySlotContents(1, null);
+							}
+							this.inventoryOutputs.setInventorySlotContents(0, null);
+							this.mRecipeTimeRemaining = 80;
+							this.markDirty();
+							return true;
+						}							
+					}
+				}
+			}
+		}
+		return false;
+	}
 }

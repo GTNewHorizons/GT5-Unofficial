@@ -2,6 +2,8 @@ package gtPlusPlus.core.item.bauble;
 
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
+
 import com.google.common.collect.Multimap;
 
 import baubles.api.BaubleType;
@@ -160,49 +162,57 @@ public class ModularBauble extends BaseBauble {
 		if ((mStatlevel = ModularArmourUtils.getModifierLevel(stack, Modifiers.BOOST_DEF)) > 0) {
 			list.add(EnumChatFormatting.GRAY + "Defence Boost: " + EnumChatFormatting.BLUE + mStatlevel
 					+ EnumChatFormatting.GRAY + "/100.");
-			if (mStatlevel >= 1) {
-				list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Cactus"
-						+ EnumChatFormatting.GRAY + ".");
+
+			if ((Keyboard.isKeyDown(42)) || (Keyboard.isKeyDown(54))) {
+
+				if (mStatlevel >= 1) {
+					list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Cactus"
+							+ EnumChatFormatting.GRAY + ".");
+				}
+				if (mStatlevel >= 10) {
+					list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Falling Blocks"
+							+ EnumChatFormatting.GRAY + ".");
+				}
+				if (mStatlevel >= 20) {
+					list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Wall Suffocation"
+							+ EnumChatFormatting.GRAY + ".");
+				}
+				if (mStatlevel >= 35) {
+					list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Drowning"
+							+ EnumChatFormatting.GRAY + ".");
+				}
+				if (mStatlevel >= 50) {
+					list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Starvation"
+							+ EnumChatFormatting.GRAY + ".");
+				}
+				if (mStatlevel >= 60) {
+					list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Falling"
+							+ EnumChatFormatting.GRAY + ".");
+				}
+				if (mStatlevel >= 75) {
+					list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Lava"
+							+ EnumChatFormatting.GRAY + ".");
+				}
+				if (mStatlevel >= 80) {
+					list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Magic"
+							+ EnumChatFormatting.GRAY + ".");
+				}
+				if (mStatlevel >= 95) {
+					list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Wither"
+							+ EnumChatFormatting.GRAY + ".");
+				}
+				if (mStatlevel >= 100) {
+					list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Fire"
+							+ EnumChatFormatting.GRAY + ".");
+				}
+				if (mStatlevel >= 100) {
+					list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Void"
+							+ EnumChatFormatting.GRAY + ".");
+				}
+				
 			}
-			if (mStatlevel >= 10) {
-				list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Falling Blocks"
-						+ EnumChatFormatting.GRAY + ".");
-			}
-			if (mStatlevel >= 20) {
-				list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Wall Suffocation"
-						+ EnumChatFormatting.GRAY + ".");
-			}
-			if (mStatlevel >= 35) {
-				list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Drowning"
-						+ EnumChatFormatting.GRAY + ".");
-			}
-			if (mStatlevel >= 50) {
-				list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Starvation"
-						+ EnumChatFormatting.GRAY + ".");
-			}
-			if (mStatlevel >= 60) {
-				list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Falling"
-						+ EnumChatFormatting.GRAY + ".");
-			}
-			if (mStatlevel >= 75) {
-				list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Lava"
-						+ EnumChatFormatting.GRAY + ".");
-			}
-			if (mStatlevel >= 80) {
-				list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Magic"
-						+ EnumChatFormatting.GRAY + ".");
-			}
-			if (mStatlevel >= 95) {
-				list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Wither"
-						+ EnumChatFormatting.GRAY + ".");
-			}
-			if (mStatlevel >= 100) {
-				list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Fire"
-						+ EnumChatFormatting.GRAY + ".");
-			}
-			if (mStatlevel >= 100) {
-				list.add(EnumChatFormatting.GRAY + "Protected From: " + EnumChatFormatting.BLUE + "Void"
-						+ EnumChatFormatting.GRAY + ".");
+			else {
+				list.add(EnumChatFormatting.GRAY + "<Press Shift to view protections>");
 			}
 		}
 

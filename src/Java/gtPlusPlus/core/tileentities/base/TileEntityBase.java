@@ -3,11 +3,15 @@ package gtPlusPlus.core.tileentities.base;
 import java.util.UUID;
 
 import gtPlusPlus.core.util.Utils;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
-public class TileEntityBase extends TileEntity {
+public abstract class TileEntityBase extends TileEntity implements ISidedInventory {
 
+	private String customName;
 	public String mOwnerName = "null";
 	public String mOwnerUUID = "null";	
 	private boolean mIsOwnerOP = false;
@@ -23,7 +27,13 @@ public class TileEntityBase extends TileEntity {
 
 	@Override
 	public void writeToNBT(final NBTTagCompound nbt){
+
 		super.writeToNBT(nbt);
+
+		if (this.hasCustomInventoryName()) {
+			nbt.setString("CustomName", this.getCustomName());
+		}
+
 		nbt.setBoolean("mIsOwnerOP", this.mIsOwnerOP);
 		nbt.setString("mOwnerName", this.mOwnerName);
 		nbt.setString("mOwnerUUID", this.mOwnerUUID);
@@ -31,29 +41,85 @@ public class TileEntityBase extends TileEntity {
 
 	@Override
 	public void readFromNBT(final NBTTagCompound nbt){
+
+		super.readFromNBT(nbt);
+
+		if (nbt.hasKey("CustomName", 8)) {
+			this.setCustomName(nbt.getString("CustomName"));
+		}
+
 		this.mIsOwnerOP = nbt.getBoolean("mIsOwnerOP");
 		this.mOwnerName = nbt.getString("mOwnerName");
 		this.mOwnerUUID = nbt.getString("mOwnerUUID");
-		super.readFromNBT(nbt);
 	}
 
 	@Override
 	public void updateEntity() {
-		super.updateEntity();
+		try{
+			if (this.isServerSide()){
+				onPreTick();
+			}
+		} catch (Throwable t){
+			Utils.LOG_ERROR("Tile Entity Encountered an error in it's pre-tick stage.");
+			t.printStackTrace();
+		}
+		try{
+			if (this.isServerSide()){
+				onTick();
+			}
+		} catch (Throwable t){
+			Utils.LOG_ERROR("Tile Entity Encountered an error in it's tick stage.");
+			t.printStackTrace();
+		}
+		try{
+			if (this.isServerSide()){
+				onPostTick();
+			}
+		} catch (Throwable t){
+			Utils.LOG_ERROR("Tile Entity Encountered an error in it's post-tick stage.");
+			t.printStackTrace();
+		}
 	}
+
+	public boolean onPreTick(){
+
+		return true;
+	}
+
+	public boolean onTick(){
+		try{
+			if (this.isServerSide()){
+				processRecipe();
+			}
+		} catch (Throwable t){
+			Utils.LOG_ERROR("Tile Entity Encountered an error in it's processing of a recipe stage.");
+			t.printStackTrace();
+		}
+		return true;
+	}
+
+	public boolean onPostTick(){
+
+		return true;
+	}
+	
+	public boolean processRecipe(){
+		return true;
+	}
+	
 
 	@Override
 	public boolean canUpdate() {
 		return true;
 	}
-	
+
 	public String getOwner(){
 		if (this.mOwnerName == null){
 			return "null";
 		}
 		return this.mOwnerName;
 	}
-	
+
 	public UUID getOwnerUUID(){
 		return UUID.fromString(this.mOwnerUUID);
 	}
@@ -69,7 +135,6 @@ public class TileEntityBase extends TileEntity {
 				this.mOwnerName = mName;
 				this.mOwnerUUID = mUUID;
 				this.mIsOwnerOP = mOP;
-				Utils.LOG_INFO("Finished setting TE information. owner: "+this.mOwnerName+" | UUID: "+this.mOwnerUUID+" | OP: "+this.mIsOwnerOP);
 			}
 		}
 	}
@@ -85,5 +150,62 @@ public class TileEntityBase extends TileEntity {
 		}
 		return false;
 	}
+
+	public String getCustomName() {
+		return this.customName;
+	}
+
+	public void setCustomName(String customName) {
+		this.customName = customName;
+	}
+
+	@Override
+	public String getInventoryName() {
+		return this.hasCustomInventoryName() ? this.customName : "container.fishrap";
+	}
+
+	@Override
+	public boolean hasCustomInventoryName() {
+		return this.customName != null && !this.customName.equals("");
+	}
+
+	@Override
+	public abstract int getSizeInventory();
+
+	@Override
+	public abstract ItemStack getStackInSlot(int p_70301_1_);
+
+	@Override
+	public abstract ItemStack decrStackSize(int p_70298_1_, int p_70298_2_);
+
+	@Override
+	public abstract ItemStack getStackInSlotOnClosing(int p_70304_1_);
+
+	@Override
+	public abstract void setInventorySlotContents(int p_70299_1_, ItemStack p_70299_2_);
+
+	@Override
+	public abstract int getInventoryStackLimit();
+
+	@Override
+	public abstract boolean isUseableByPlayer(EntityPlayer p_70300_1_);
+
+	@Override
+	public abstract void openInventory();
+
+	@Override
+	public abstract void closeInventory();
+
+	@Override
+	public abstract boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_);
+
+	@Override
+	public abstract int[] getAccessibleSlotsFromSide(int p_94128_1_);
+
+	@Override
+	public abstract boolean canInsertItem(int p_102007_1_, ItemStack p_102007_2_, int p_102007_3_);
+
+	@Override
+	public abstract boolean canExtractItem(int p_102008_1_, ItemStack p_102008_2_, int p_102008_3_);
 
 }
