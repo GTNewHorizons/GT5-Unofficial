@@ -24,6 +24,7 @@ public class Container_ModularityTable extends Container {
 	protected TileEntityModularityTable tile_entity;
 	public final InventoryModularMain inventoryGrid;
 	public final InventoryModularOutput inventoryOutputs;
+	public int mRecipeTime;
 
 	private final World worldObj;
 	private final int posX;
@@ -39,6 +40,7 @@ public class Container_ModularityTable extends Container {
 		this.inventoryGrid = tile.inventoryGrid;
 		this.inventoryOutputs = tile.inventoryOutputs;
 		this.tile_entity.setContainer(this);
+		this.mRecipeTime = this.tile_entity.getRecipeTime();
 
 		int var6;
 		int var7;
@@ -56,6 +58,19 @@ public class Container_ModularityTable extends Container {
 		this.addSlotToContainer(new SlotNoInput(this.inventoryOutputs, 2, 26+(18*6), 44));   
 
 		int o = 0;
+		
+		//Storage Side
+				for (var6 = 0; var6 < 3; ++var6)
+				{
+					for (var7 = 0; var7 < 3; ++var7)
+					{
+						//Utils.LOG_WARNING("Adding slots at var:"+(var7 + var6 * 4)+" x:"+(8 + var7 * 18)+" y:"+(7 + var6 * 18));
+						this.addSlotToContainer(new SlotModularBaubleUpgrades(this.inventoryGrid, nextFreeSlot, 8+18 + (var7 * 18), 17 + (var6 * 18)));
+						this.slotGrid[o] = nextFreeSlot;
+						nextFreeSlot++;
+						o++;
+					}
+				}
 
 		//Player Inventory
 		for (var6 = 0; var6 < 3; ++var6)
@@ -97,6 +112,13 @@ public class Container_ModularityTable extends Container {
                 }
             }*/
 		}
+	}
+	
+	public TileEntityModularityTable getTileentityViaContainer(){
+		if (this.tile_entity != null){
+			return this.tile_entity;
+		}
+		return null;
 	}
 
 	@Override

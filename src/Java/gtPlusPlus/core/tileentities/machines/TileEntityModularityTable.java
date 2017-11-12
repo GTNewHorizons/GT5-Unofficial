@@ -27,6 +27,7 @@ public class TileEntityModularityTable extends TileEntity {
 	public InventoryModularMain inventoryGrid;
 	public InventoryModularOutput inventoryOutputs;
 	private Container_ModularityTable container;
+	private int mRecipeTimeRemaining = 0;
 
 	public TileEntityModularityTable() {
 		this.inventoryGrid = new InventoryModularMain();
@@ -37,6 +38,14 @@ public class TileEntityModularityTable extends TileEntity {
 
 	public void setContainer(Container_ModularityTable container_ModularityTable) {
 		this.container = container_ModularityTable;
+	}
+	
+	public Container_ModularityTable getContainer() {
+		return this.container;
+	}
+	
+	public int getRecipeTime(){
+		return this.mRecipeTimeRemaining;
 	}
 
 	@SuppressWarnings("static-method")
@@ -50,13 +59,16 @@ public class TileEntityModularityTable extends TileEntity {
 	@Override
 	public void writeToNBT(final NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
+		nbt.setInteger("mRecipeTime", this.mRecipeTimeRemaining);
 		this.inventoryOutputs.writeToNBT(this.getTag(nbt, "ContentsOutput"));
+		
 
 	}
 
 	@Override
 	public void readFromNBT(final NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
+		this.mRecipeTimeRemaining = nbt.getInteger("mRecipeTime");
 		this.inventoryOutputs.readFromNBT(nbt.getCompoundTag("ContentsOutput"));
 	}
 
@@ -87,13 +99,24 @@ public class TileEntityModularityTable extends TileEntity {
 								this.inventoryOutputs.setInventorySlotContents(1, null);
 							}
 							this.inventoryOutputs.setInventorySlotContents(0, null);
-							this.inventoryOutputs.setInventorySlotContents(2, tBauble);
+							this.mRecipeTimeRemaining = 500;
 						} else {
 							Utils.LOG_INFO("1: " + removeInputA + " | 2: " + removeInputB);
 						}
 					}
 				}
 			}
+			
+			if (mRecipeTimeRemaining == 0){
+				this.inventoryOutputs.setInventorySlotContents(2, tBauble);				
+			}
+			else if (mRecipeTimeRemaining == -1){
+				mRecipeTimeRemaining = -1;
+			}
+			else if (mRecipeTimeRemaining > 0){
+				mRecipeTimeRemaining--;
+			}
+			
 		}
 		super.updateEntity();
 	}

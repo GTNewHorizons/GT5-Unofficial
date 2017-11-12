@@ -9,23 +9,37 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.machines.TileEntityModularityTable;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 
 @SideOnly(Side.CLIENT)
 public class GUI_ModularityTable extends GuiContainer {
 
-	private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(CORE.MODID, "textures/gui/ProjectTable.png");
-
+	private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(CORE.MODID, "textures/gui/ModularityTable.png");
+	private Container_ModularityTable mThisContainer;
+	private TileEntityModularityTable mThisTile;
+	private int mRecipeTime = -1;
+	
 	public GUI_ModularityTable(final InventoryPlayer player_inventory, final TileEntityModularityTable tile){
 		super(new Container_ModularityTable(player_inventory, tile));
+		this.mThisContainer = tile.getContainer();
+		this.mThisTile = tile;
+		if (this.mThisTile.getRecipeTime() > -1){
+			this.mRecipeTime = this.mThisTile.getRecipeTime();
+		}
 	}
 
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(final int i, final int j){
-		//this.fontRendererObj.drawString(I18n.format("Workbench", new Object[0]), 28, 6, 4210752);
-		//this.fontRendererObj.drawString(I18n.format("container.inventory", new Object[0]), 8, this.ySize - 96 + 2, 4210752);
+		this.fontRendererObj.drawString(I18n.format("Modularity Table", new Object[0]), 8, 6, 4210752);
+		if (mRecipeTime > -1){
+			this.fontRendererObj.drawString(I18n.format("Time", new Object[0]), 8, 6, 4210752);	
+			this.fontRendererObj.drawString(I18n.format("Remaining", new Object[0]), 8, 6, 4210752);	
+			this.fontRendererObj.drawString(I18n.format(""+this.mRecipeTime, new Object[0]), 8, 6, 4210752);			
+		}
+		this.fontRendererObj.drawString(I18n.format("container.inventory", new Object[0]), 8, this.ySize - 96 + 2, 4210752);
 
 	}
 
