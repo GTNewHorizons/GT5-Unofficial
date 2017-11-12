@@ -260,7 +260,7 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 			if(mInventory[SLOT_ROTOR].getItem() instanceof GT_MetaGenerated_Tool_01 &&
 					((GT_MetaGenerated_Tool) mInventory[SLOT_ROTOR].getItem()).getToolStats(mInventory[SLOT_ROTOR]).getSpeedMultiplier()>0 &&
 					GT_MetaGenerated_Tool.getPrimaryMaterial(mInventory[SLOT_ROTOR]).mToolSpeed>0 ) {
-				long damageValue = (10L*(long) Math.min(-mTier / mDamageFactorLow, Math.pow(-mTier, this.mDamageFactorHigh)));
+				long damageValue = ((10L*(long) Math.min(-mTier / mDamageFactorLow, Math.pow(-mTier, this.mDamageFactorHigh)))/10);
 
 				if (damageValue <= 1){
 					if (this.mOptimalAirFlow > 0){

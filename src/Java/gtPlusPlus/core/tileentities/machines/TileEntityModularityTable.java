@@ -243,7 +243,7 @@ public class TileEntityModularityTable extends TileEntityBase implements ISidedI
 			return this.inventoryGrid.getStackInSlot(slot);
 		}
 		else if (slot < (this.inventoryGrid.getSizeInventory()+this.inventoryOutputs.getSizeInventory())){
-			return this.inventoryOutputs.getStackInSlot(slot-9);
+			return this.inventoryOutputs.getStackInSlot(slot);
 		}
 		else {
 			return null;
@@ -256,7 +256,7 @@ public class TileEntityModularityTable extends TileEntityBase implements ISidedI
 			return this.inventoryGrid.decrStackSize(slot, count);
 		}
 		else if (slot < (this.inventoryGrid.getSizeInventory()+this.inventoryOutputs.getSizeInventory())){
-			return this.inventoryOutputs.decrStackSize(slot-9, count);
+			return this.inventoryOutputs.decrStackSize(slot, count);
 		}
 		else {
 			return null;
@@ -274,7 +274,7 @@ public class TileEntityModularityTable extends TileEntityBase implements ISidedI
 			this.inventoryGrid.setInventorySlotContents(slot, stack);
 		}
 		else if (slot < (this.inventoryGrid.getSizeInventory()+this.inventoryOutputs.getSizeInventory())){
-			this.inventoryOutputs.setInventorySlotContents(slot-9, stack);
+			this.inventoryOutputs.setInventorySlotContents(slot, stack);
 		}	
 	}
 
@@ -312,7 +312,7 @@ public class TileEntityModularityTable extends TileEntityBase implements ISidedI
 			return this.inventoryGrid.isItemValidForSlot(slot, itemstack);
 		}
 		else if (slot < (this.inventoryGrid.getSizeInventory()+this.inventoryOutputs.getSizeInventory())){
-			return this.inventoryOutputs.isItemValidForSlot(slot-9, itemstack);
+			return this.inventoryOutputs.isItemValidForSlot(slot, itemstack);
 		}
 		else {
 			return false;
@@ -321,20 +321,7 @@ public class TileEntityModularityTable extends TileEntityBase implements ISidedI
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
-		int[] accessibleSides = new int[this.getSizeInventory()];
-		/*if (side == 0){
-
-		}
-		else if (side == 1){
-			for (int r=0; r<this.inventoryOutputs.getSizeInventory(); r++){
-				accessibleSides[r]=9+r;
-			}
-		}
-		else if (side > 1){
-			for (int r=0; r<this.inventoryGrid.getSizeInventory(); r++){
-				accessibleSides[r]=r;
-			}
-		}	*/	
+		int[] accessibleSides = new int[this.getSizeInventory()];	
 		for (int r=0; r<this.getSizeInventory(); r++){
 			accessibleSides[r]=r;
 		}
@@ -346,11 +333,14 @@ public class TileEntityModularityTable extends TileEntityBase implements ISidedI
 	public boolean canInsertItem(int slot, ItemStack item, int side) {
 		Utils.LOG_INFO("Slot:"+slot+" | side? "+side);
 
-		if (slot <= 8){
-			return this.inventoryGrid.isItemValidForSlot(slot, item);
+		if (side == 1){
+			return this.inventoryOutputs.isItemValidForSlot(0, item);			
+		}
+		if (slot >= 9){
+			return this.inventoryOutputs.isItemValidForSlot(slot, item);
 		}
 		else {
-			return this.inventoryOutputs.isItemValidForSlot(slot, item);
+			return this.inventoryGrid.isItemValidForSlot(slot, item);
 		}
 	}
 

@@ -80,7 +80,14 @@ public class InventoryModularOutput implements IInventory {
 
 	@Override
 	public ItemStack getStackInSlot(final int slot) {
-		return this.inventory[slot];
+		int slotNew = 0;
+		if (slot >= 2){
+			slotNew = (slot-9);
+			if (slotNew < 0 || slotNew > 2){
+				slotNew = 0;
+			}
+		}
+		return this.inventory[slotNew];
 	}
 
 	@Override
@@ -179,10 +186,17 @@ public class InventoryModularOutput implements IInventory {
 	 */
 	@Override
 	public boolean isItemValidForSlot(final int slot, final ItemStack itemstack) {
+		int slotNew = 0;
+		if (slot >= 2){
+			slotNew = (slot-9);
+			if (slotNew < 0 || slotNew > 2){
+				slotNew = 0;
+			}
+		}
 		// Don't want to be able to store the inventory item within itself
 		// Bad things will happen, like losing your inventory
 		// Actually, this needs a custom Slot to work
-		if (slot == 0){
+		if (slotNew == 0){
 			return TileEntityModularityTable.isValidUpgrade(itemstack);			
 		}
 		return TileEntityModularityTable.isValidModularPiece(itemstack);
