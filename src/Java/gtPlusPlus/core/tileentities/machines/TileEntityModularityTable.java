@@ -1,5 +1,8 @@
 package gtPlusPlus.core.tileentities.machines;
 
+import static gtPlusPlus.core.tileentities.machines.TileEntityModularityTable.mValidUpgradeList;
+import static gtPlusPlus.core.tileentities.machines.TileEntityModularityTable.mValidUpgradeListFormChange;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -12,6 +15,7 @@ import gtPlusPlus.core.inventories.modulartable.InventoryModularMain;
 import gtPlusPlus.core.inventories.modulartable.InventoryModularOutput;
 import gtPlusPlus.core.item.bauble.ModularBauble;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.Pair;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.nbt.ModularArmourUtils;
@@ -239,7 +243,7 @@ public class TileEntityModularityTable extends TileEntityBase implements ISidedI
 			return this.inventoryGrid.getStackInSlot(slot);
 		}
 		else if (slot < (this.inventoryGrid.getSizeInventory()+this.inventoryOutputs.getSizeInventory())){
-			return this.inventoryOutputs.getStackInSlot(slot);
+			return this.inventoryOutputs.getStackInSlot(slot-9);
 		}
 		else {
 			return null;
@@ -252,7 +256,7 @@ public class TileEntityModularityTable extends TileEntityBase implements ISidedI
 			return this.inventoryGrid.decrStackSize(slot, count);
 		}
 		else if (slot < (this.inventoryGrid.getSizeInventory()+this.inventoryOutputs.getSizeInventory())){
-			return this.inventoryOutputs.decrStackSize(slot, count);
+			return this.inventoryOutputs.decrStackSize(slot-9, count);
 		}
 		else {
 			return null;
@@ -270,7 +274,7 @@ public class TileEntityModularityTable extends TileEntityBase implements ISidedI
 			this.inventoryGrid.setInventorySlotContents(slot, stack);
 		}
 		else if (slot < (this.inventoryGrid.getSizeInventory()+this.inventoryOutputs.getSizeInventory())){
-			this.inventoryOutputs.setInventorySlotContents(slot, stack);
+			this.inventoryOutputs.setInventorySlotContents(slot-9, stack);
 		}	
 	}
 
@@ -308,7 +312,7 @@ public class TileEntityModularityTable extends TileEntityBase implements ISidedI
 			return this.inventoryGrid.isItemValidForSlot(slot, itemstack);
 		}
 		else if (slot < (this.inventoryGrid.getSizeInventory()+this.inventoryOutputs.getSizeInventory())){
-			return this.inventoryOutputs.isItemValidForSlot(slot, itemstack);
+			return this.inventoryOutputs.isItemValidForSlot(slot-9, itemstack);
 		}
 		else {
 			return false;
@@ -318,31 +322,45 @@ public class TileEntityModularityTable extends TileEntityBase implements ISidedI
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
 		int[] accessibleSides = new int[this.getSizeInventory()];
-		if (side == 0){
+		/*if (side == 0){
 
 		}
 		else if (side == 1){
 			for (int r=0; r<this.inventoryOutputs.getSizeInventory(); r++){
-				accessibleSides[r]=r;
+				accessibleSides[r]=9+r;
 			}
 		}
 		else if (side > 1){
 			for (int r=0; r<this.inventoryGrid.getSizeInventory(); r++){
 				accessibleSides[r]=r;
 			}
-		}		
+		}	*/	
+		for (int r=0; r<this.getSizeInventory(); r++){
+			accessibleSides[r]=r;
+		}
 		return accessibleSides;
 
 	}
 
 	@Override
-	public boolean canInsertItem(int p_102007_1_, ItemStack p_102007_2_, int p_102007_3_) {
-		return false;
+	public boolean canInsertItem(int slot, ItemStack item, int side) {
+		Utils.LOG_INFO("Slot:"+slot+" | side? "+side);
+
+		if (slot <= 8){
+			return this.inventoryGrid.isItemValidForSlot(slot, item);
+		}
+		else {
+			return this.inventoryOutputs.isItemValidForSlot(slot, item);
+		}
 	}
 
 	@Override
-	public boolean canExtractItem(int p_102008_1_, ItemStack p_102008_2_, int p_102008_3_) {
-		return true;
+	public boolean canExtractItem(int slot, ItemStack item, int side) {
+		Utils.LOG_INFO("Slot:"+slot+" | side? "+side);
+		if (slot <= 8 || slot == 11){
+			return true;
+		}
+		return false;
 	}
 
 	public String getCustomName() {
@@ -437,4 +455,35 @@ public class TileEntityModularityTable extends TileEntityBase implements ISidedI
 		}
 		return false;
 	}
+	
+	public static boolean isValidModularPiece(final ItemStack itemstack){
+		if (itemstack.getItem() instanceof ModularBauble){
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isValidUpgrade(final ItemStack itemstack) {
+		boolean isValid = false;
+		if (itemstack != null){			
+			Iterator<Entry<ItemStack, BT>> it = mValidUpgradeListFormChange.entrySet().iterator();
+			while (it.hasNext()) {
+				Entry<ItemStack, BT> pair = it.next();
+				if (pair.getKey().getItem() == itemstack.getItem()
+						&& pair.getKey().getItemDamage() == itemstack.getItemDamage()){
+					isValid = true;
+				}
+			}
+			Iterator<Entry<ItemStack, Pair<Modifiers, Integer>>> it2 = mValidUpgradeList.entrySet().iterator();
+			while (it2.hasNext()) {
+				Entry<ItemStack, Pair<Modifiers, Integer>> pair = it2.next();
+				if (pair.getKey().getItem() == itemstack.getItem()
+						&& pair.getKey().getItemDamage() == itemstack.getItemDamage()){
+					isValid = true;
+				}
+			}			
+		}
+		return isValid;
+	}
+	
 }

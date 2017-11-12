@@ -1,5 +1,6 @@
 package gtPlusPlus.core.inventories.modulartable;
 
+import gtPlusPlus.core.tileentities.machines.TileEntityModularityTable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -181,7 +182,10 @@ public class InventoryModularOutput implements IInventory {
 		// Don't want to be able to store the inventory item within itself
 		// Bad things will happen, like losing your inventory
 		// Actually, this needs a custom Slot to work
-		return true;
+		if (slot == 0){
+			return TileEntityModularityTable.isValidUpgrade(itemstack);			
+		}
+		return TileEntityModularityTable.isValidModularPiece(itemstack);
 	}
 
 }

@@ -1,5 +1,7 @@
 package gtPlusPlus.core.inventories.modulartable;
 
+import gtPlusPlus.core.slots.SlotModularBauble;
+import gtPlusPlus.core.tileentities.machines.TileEntityModularityTable;
 import gtPlusPlus.core.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -191,12 +193,11 @@ public class InventoryModularMain implements IInventory{
 	 * even when this returns false
 	 */
 	@Override
-	public boolean isItemValidForSlot(final int slot, final ItemStack itemstack)
-	{
+	public boolean isItemValidForSlot(final int slot, final ItemStack itemstack){
 		// Don't want to be able to store the inventory item within itself
 		// Bad things will happen, like losing your inventory
 		// Actually, this needs a custom Slot to work
-		return true;
+		return TileEntityModularityTable.isValidUpgrade(itemstack);
 	}
 
 }
