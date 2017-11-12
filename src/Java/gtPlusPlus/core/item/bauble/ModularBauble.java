@@ -17,10 +17,12 @@ import gtPlusPlus.core.util.nbt.ModularArmourUtils.Modifiers;
 import gtPlusPlus.core.util.nbt.NBTUtils;
 import gtPlusPlus.core.util.player.PlayerUtils;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
@@ -316,20 +318,20 @@ public class ModularBauble extends BaseBauble {
 		super.onEquipped(stack, entity);
 	}
 
-	@Override
+	/*@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) {
 		if (usingItem == null) {
 			return mfallback;
 		}
 		try {
-			if (ModularArmourUtils.getBaubleType(stack) == BaubleType.AMULET) {
+			if (stack.getItemDamage() == 0) {
 				return mfallback = mTextureAmulet;
 			}
-			if (ModularArmourUtils.getBaubleType(stack) == BaubleType.RING) {
+			else if (stack.getItemDamage() == 1) {
 				return mfallback = mTextureRing;
 			}
-			if (ModularArmourUtils.getBaubleType(stack) == BaubleType.BELT) {
+			else if (stack.getItemDamage() == 2) {
 				return mfallback = mTextureBelt;
 			} else {
 				return mfallback = mTextureRing;
@@ -337,11 +339,21 @@ public class ModularBauble extends BaseBauble {
 		} catch (Throwable t) {
 			return mfallback = mTextureRing;
 		}
-	}
+	}*/
 
 	@Override
 	public IIcon getIconFromDamage(int meta) {
-		return this.iconArray[meta];
+		if (meta < this.iconArray.length && this.iconArray[meta] != null){
+			return this.iconArray[meta];
+		}
+		return this.mfallback;
+	}
+	
+	@Override
+	public void getSubItems(Item item, CreativeTabs tab, List list) {
+	    for (int i = 0; i < 3; i ++) {
+	        list.add(new ItemStack(item, 1, i));
+	    }
 	}
 
 	@Override
@@ -351,17 +363,18 @@ public class ModularBauble extends BaseBauble {
 		// you cannot initialize iconArray when declared nor in the constructor,
 		// as it is client-side only, so do it here:
 		if (LoadedMods.Thaumcraft) {
-			mTextureAmulet = register.registerIcon("thaumcraft" + ":" + "bauble_amulet");
-			mTextureRing = register.registerIcon("thaumcraft" + ":" + "bauble_ring");
-			mTextureBelt = register.registerIcon("thaumcraft" + ":" + "bauble_belt");
+			iconArray[0] = register.registerIcon("thaumcraft" + ":" + "bauble_amulet");
+			iconArray[1] = register.registerIcon("thaumcraft" + ":" + "bauble_ring");
+			iconArray[2] = register.registerIcon("thaumcraft" + ":" + "bauble_belt");
 		} else {
-			mTextureAmulet = register.registerIcon("miscutils" + ":" + "itemAmulet");
-			mTextureRing = register.registerIcon("miscutils" + ":" + "itemRingWearable");
-			mTextureBelt = register.registerIcon("miscutils" + ":" + "itemBelt");
+			iconArray[0] = register.registerIcon("miscutils" + ":" + "itemAmulet");
+			iconArray[1] = register.registerIcon("miscutils" + ":" + "itemRingWearable");
+			iconArray[2] = register.registerIcon("miscutils" + ":" + "itemBelt");
 		}
-		iconArray[0] = mTextureAmulet;
-		iconArray[1] = mTextureRing;
-		iconArray[2] = mTextureBelt;
+		
+		mTextureAmulet = iconArray[0];
+		mTextureRing = iconArray[1];
+		mTextureBelt = iconArray[2];
 
 	}
 
