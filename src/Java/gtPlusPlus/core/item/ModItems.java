@@ -24,6 +24,7 @@ import gtPlusPlus.core.item.bauble.ModularBauble;
 import gtPlusPlus.core.item.chemistry.CoalTar;
 import gtPlusPlus.core.item.effects.RarityUncommon;
 import gtPlusPlus.core.item.general.*;
+import gtPlusPlus.core.item.general.books.ItemBaseBook;
 import gtPlusPlus.core.item.general.chassis.*;
 import gtPlusPlus.core.item.general.throwables.ItemHydrofluoricAcidPotion;
 import gtPlusPlus.core.item.general.throwables.ItemSulfuricAcidPotion;
@@ -43,12 +44,14 @@ import gtPlusPlus.core.util.debug.DEBUG_INIT;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.materials.MaterialUtils;
+import net.minecraft.block.Block;
 import net.minecraft.item.*;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.Fluid;
 public final class ModItems {
+
 
 	public static ToolMaterial STABALLOY = EnumHelper.addToolMaterial("Staballoy", 3, 2500, 7, 1.0F, 18);
 
@@ -236,9 +239,7 @@ public final class ModItems {
 	public static Item itemHydrofluoricPotion;
 
 	public static Item itemModularBauble;
-
-
-
+	public static Item itemCustomBook;
 
 	public static final void init(){
 
@@ -306,6 +307,8 @@ public final class ModItems {
 		itemHydrofluoricPotion = new ItemHydrofluoricAcidPotion("itemHydrofluoricPotion", "Thowable Vial of Hydrofluoric Acid", "They won't see this coming, nor anything after!").setTextureName(CORE.MODID + ":itemPotion");
 		//Start meta Item Generation
 		ItemsFoods.load();
+		
+		itemCustomBook = new ItemBaseBook();
 
 		try{
 

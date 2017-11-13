@@ -1,6 +1,7 @@
 package gtPlusPlus.core.lib;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.mojang.authlib.GameProfile;
 
@@ -74,6 +75,9 @@ public class CORE {
 	public static final Map<UUID, Map<Integer, GT_MetaTileEntity_TesseractGenerator>> sTesseractGeneratorOwnershipMap = new HashMap<UUID, Map<Integer, GT_MetaTileEntity_TesseractGenerator>>();
 	public static final Map<UUID, Map<Integer, GT_MetaTileEntity_TesseractTerminal>> sTesseractTerminalOwnershipMap = new HashMap<UUID, Map<Integer, GT_MetaTileEntity_TesseractTerminal>>();
 
+	//Book List
+	public static final Map<String, ItemStack> sBookList = new ConcurrentHashMap<String, ItemStack>();
+	
 	/**
 	 * File Paths and Resource Paths
 	 */

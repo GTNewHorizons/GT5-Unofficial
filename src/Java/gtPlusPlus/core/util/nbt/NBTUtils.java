@@ -250,4 +250,14 @@ public class NBTUtils {
 		return tNBT.getString(TAG_SOULBIND);
 	}
 
+	public static boolean hasKey(ItemStack stack, String key){
+		if (stack.hasTagCompound())				{
+			final NBTTagCompound itemData = stack.getTagCompound();
+			if (itemData.hasKey(key)){
+				return true;
+			}
+		}
+		return false;
+	}
+
 }

@@ -76,7 +76,7 @@ public class Gregtech4Content {
 		
 		
 		//Thermal Boiler Manual
-	    ItemStack manual_Boiler = GT_Utility.getWrittenBook(
+	    ItemStack manual_Boiler = Utils.getWrittenBook(
 	    		"Manual_Thermal_Boiler", "Thermal Boiler Manual", "Alkalus", 
 	    		new String[] {
 	    				"This Book explains how to set up and run your Thermal Boiler. We are not responsible for any Damage done by this Book itself nor its content.", 

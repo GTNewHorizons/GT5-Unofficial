@@ -13,24 +13,34 @@ import org.apache.logging.log4j.Logger;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
+import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
+import gregtech.api.util.GT_LanguageManager;
+import gregtech.api.util.GT_Log;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.GTplusplus;
+import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.proxy.ClientProxy;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.nbt.NBTUtils;
 import ic2.core.Ic2Items;
 import ic2.core.init.InternalName;
 import ic2.core.item.resources.ItemCell;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
@@ -756,6 +766,56 @@ public class Utils {
 		}
 	}
 
+	
+	private static int sBookCount = 0;
+	public static int getBookCount(){
+		return sBookCount;
+	}
+	public static ItemStack getWrittenBook(String aMapping, String aTitle, String aAuthor, String[] aPages) {
+		if (GT_Utility.isStringInvalid(aMapping))
+			return null;
+		ItemStack rStack = (ItemStack) CORE.sBookList.get(aMapping);
+		if (rStack != null)
+			return GT_Utility.copyAmount(1L, new Object[]{rStack});
+		if ((GT_Utility.isStringInvalid(aTitle)) || (GT_Utility.isStringInvalid(aAuthor)) || (aPages.length <= 0))
+			return null;
+		sBookCount += 1;
+		rStack = new ItemStack(ModItems.itemCustomBook, 1);
+		NBTTagCompound tNBT = new NBTTagCompound();
+		tNBT.setString("title", GT_LanguageManager.addStringLocalization(
+				new StringBuilder().append("Book.").append(aTitle).append(".Name").toString(), aTitle));
+		tNBT.setString("author", aAuthor);
+		NBTTagList tNBTList = new NBTTagList();
+		for (byte i = 0; i < aPages.length; i = (byte) (i + 1)) {
+			aPages[i] = GT_LanguageManager.addStringLocalization(
+					new StringBuilder().append("Book.").append(aTitle).append(".Page").append((i < 10)
+							? new StringBuilder().append("0").append(i).toString()
+							: Byte.valueOf(i)).toString(),
+					aPages[i]);
+			if (i < 48) {
+				if (aPages[i].length() < 256)
+					tNBTList.appendTag(new NBTTagString(aPages[i]));
+				else
+					GT_Log.err.println(new StringBuilder().append("WARNING: String for written Book too long! -> ")
+							.append(aPages[i]).toString());
+			} else {
+				GT_Log.err.println(new StringBuilder().append("WARNING: Too much Pages for written Book! -> ")
+						.append(aTitle).toString());
+				break;
+			}
+		}
+		tNBTList.appendTag(new NBTTagString(new StringBuilder().append("Credits to ").append(aAuthor)
+				.append(" for writing this Book. This was Book Nr. ").append(sBookCount)
+				.append(" at its creation. Gotta get 'em all!").toString()));
+		tNBT.setTag("pages", tNBTList);
+		rStack.setTagCompound(tNBT);
+		GT_Log.out.println(new StringBuilder().append("GT_Mod: Added Book to Book List  -  Mapping: '").append(aMapping)
+				.append("'  -  Name: '").append(aTitle).append("'  -  Author: '").append(aAuthor).append("'")
+				.toString());
+		NBTUtils.setInteger(rStack, "mMeta", sBookCount);
+		CORE.sBookList.put(aMapping, rStack);
+		return GT_Utility.copy(new Object[]{rStack});
+	}
 
 
 }
