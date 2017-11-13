@@ -12,11 +12,14 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.nbt.NBTUtils;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreenBook;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemWritableBook;
+import net.minecraft.world.World;
 
 public class ItemBaseBook extends ItemWritableBook{
 
@@ -78,19 +81,13 @@ public class ItemBaseBook extends ItemWritableBook{
 		return false;
 	}
 
-	/*@Override
-	public int getDamage(ItemStack stack) {
-		try {
-		return NBTUtils.getIntegerTagCompound(stack, "stats", "mMeta");
-		}
-		catch (Throwable t) {
-			return 0;
-		}
-	}
-
 	@Override
-	public void setDamage(ItemStack stack, int damage) {
-		NBTUtils.createIntegerTagCompound(stack, "stats", "mMeta", damage);
-	}*/
+	public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player) {
+		//player.displayGUIBook(item);
+		if (player.worldObj.isRemote){
+			Minecraft.getMinecraft().displayGuiScreen(new GuiScreenBook(player, item, false));
+		}
+        return item;
+	}
 	
 }
