@@ -6,6 +6,7 @@ import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.util.GT_OreDictUnificator;
+import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.lib.CORE;
@@ -19,6 +20,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemWritableBook;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 public class ItemBaseBook extends ItemWritableBook{
@@ -59,15 +61,27 @@ public class ItemBaseBook extends ItemWritableBook{
 			return NBTUtils.getString(tItem, "title");
 		}
 		else if (tItem.getItemDamage() > -1 && tItem.getItemDamage() <= mBookMap.size()){
-			return mBookMap.get(tItem.getItemDamage()).mTitle;
+			return "[NBT issue] "+mBookMap.get(tItem.getItemDamage()).mTitle;
 		}
 		//NBTUtils.tryIterateNBTData(tItem);
 		return "GT++ Storybook";
 	}
 
 	@Override
-	public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List p_77624_3_, boolean p_77624_4_) {
+	public void addInformation(ItemStack tItem, EntityPlayer player, List list, boolean bool) {
 		// TODO Auto-generated method stub
+		if (NBTUtils.hasKey(tItem, "author")){
+			list.add(EnumChatFormatting.GRAY+"Author: "+NBTUtils.getString(tItem, "author"));
+		}
+		else if (mBookMap.get(tItem.getItemDamage()).mAuthor != null){
+			list.add(EnumChatFormatting.GRAY+"Author: "+mBookMap.get(tItem.getItemDamage()).mAuthor);
+		}
+		if (NBTUtils.hasKey(tItem, "title")){
+			list.add(EnumChatFormatting.GRAY+"Pages: "+NBTUtils.getString(tItem, "pages"));
+		}
+		else if (mBookMap.get(tItem.getItemDamage()).mPages != null){
+			list.add(EnumChatFormatting.GRAY+"Pages: "+mBookMap.get(tItem.getItemDamage()).mPages.length);
+		}
 		//super.addInformation(p_77624_1_, p_77624_2_, p_77624_3_, p_77624_4_);
 	}
 
@@ -84,8 +98,15 @@ public class ItemBaseBook extends ItemWritableBook{
 	@Override
 	public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player) {
 		//player.displayGUIBook(item);
+		int i = item.getItemDamage();
+		ItemStack bookstack = GT_Utility.getWrittenBook(				
+				mBookMap.get(i).mMapping, 
+				mBookMap.get(i).mTitle, 
+				mBookMap.get(i).mAuthor, 
+				mBookMap.get(i).mPages);
+		
 		if (player.worldObj.isRemote){
-			Minecraft.getMinecraft().displayGuiScreen(new GuiScreenBook(player, item, false));
+			Minecraft.getMinecraft().displayGuiScreen(new GuiScreenBook(player, bookstack, false));
 		}
         return item;
 	}
