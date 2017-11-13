@@ -308,7 +308,6 @@ public final class ModItems {
 		//Start meta Item Generation
 		ItemsFoods.load();
 		
-		itemCustomBook = new ItemBaseBook();
 
 		try{
 
@@ -807,5 +806,7 @@ public final class ModItems {
 
 		//ItemBlockGtFrameBox = new ItemBlockGtFrameBox(ModBlocks.blockGtFrameSet1);
 		//GameRegistry.registerItem(ItemBlockGtFrameBox, "itemGtFrameBoxSet1");
+		
+		itemCustomBook = new ItemBaseBook();
 	}
 }

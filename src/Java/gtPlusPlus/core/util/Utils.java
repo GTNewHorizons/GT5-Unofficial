@@ -1,5 +1,7 @@
 package gtPlusPlus.core.util;
 
+import static gtPlusPlus.core.handler.BookHandler.mBookKeeperCount;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.io.File;
@@ -21,6 +23,7 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.GTplusplus;
+import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
@@ -780,7 +783,7 @@ public class Utils {
 		if ((GT_Utility.isStringInvalid(aTitle)) || (GT_Utility.isStringInvalid(aAuthor)) || (aPages.length <= 0))
 			return null;
 		sBookCount += 1;
-		rStack = new ItemStack(ModItems.itemCustomBook, 1);
+		rStack = new ItemStack(ModItems.itemCustomBook, 1, sBookCount);
 		NBTTagCompound tNBT = new NBTTagCompound();
 		tNBT.setString("title", GT_LanguageManager.addStringLocalization(
 				new StringBuilder().append("Book.").append(aTitle).append(".Name").toString(), aTitle));
@@ -809,11 +812,12 @@ public class Utils {
 				.append(" at its creation. Gotta get 'em all!").toString()));
 		tNBT.setTag("pages", tNBTList);
 		rStack.setTagCompound(tNBT);
-		GT_Log.out.println(new StringBuilder().append("GT_Mod: Added Book to Book List  -  Mapping: '").append(aMapping)
+		GT_Log.out.println(new StringBuilder().append("GT++_Mod: Added Book to Book++ List  -  Mapping: '").append(aMapping)
 				.append("'  -  Name: '").append(aTitle).append("'  -  Author: '").append(aAuthor).append("'")
 				.toString());
-		NBTUtils.setInteger(rStack, "mMeta", sBookCount);
+		NBTUtils.createIntegerTagCompound(rStack, "stats", "mMeta", sBookCount);
 		CORE.sBookList.put(aMapping, rStack);
+		Utils.LOG_INFO("Creating book: "+aTitle+" by "+aAuthor+". Using Meta "+sBookCount+".");
 		return GT_Utility.copy(new Object[]{rStack});
 	}
 

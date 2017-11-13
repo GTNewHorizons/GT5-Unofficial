@@ -64,7 +64,7 @@ public class CommonProxy {
 		}
 		AddToCreativeTab.initialiseTabs();
 		COMPAT_IntermodStaging.preInit();
-		
+		BookHandler.run();
 		//Registration of entities and renderers
 		Utils.LOG_INFO("[Proxy] Calling Entity registrator.");
 		registerEntities();

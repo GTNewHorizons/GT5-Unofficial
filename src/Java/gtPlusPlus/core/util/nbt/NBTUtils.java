@@ -259,5 +259,76 @@ public class NBTUtils {
 		}
 		return false;
 	}
+	
+	public static boolean createIntegerTagCompound(ItemStack rStack, String tagName, String keyName, int keyValue){
+		final NBTTagCompound tagMain = new NBTTagCompound();
+		final NBTTagCompound tagNBT = new NBTTagCompound();
+		tagNBT.setInteger(keyName, keyValue);
+		tagMain.setTag(tagName, tagNBT);		
+		rStack.setTagCompound(tagMain);	
+		return true;
+	}
+	
+	public static boolean createLongTagCompound(ItemStack rStack, String tagName, String keyName, long keyValue){
+		final NBTTagCompound tagMain = new NBTTagCompound();
+		final NBTTagCompound tagNBT = new NBTTagCompound();
+		tagNBT.setLong(keyName, keyValue);
+		tagMain.setTag(tagName, tagNBT);		
+		rStack.setTagCompound(tagMain);	
+		return true;
+	}
+	
+	public static boolean createStringTagCompound(ItemStack rStack, String tagName, String keyName, String keyValue){
+		final NBTTagCompound tagMain = new NBTTagCompound();
+		final NBTTagCompound tagNBT = new NBTTagCompound();
+		tagNBT.setString(keyName, keyValue);
+		tagMain.setTag(tagName, tagNBT);		
+		rStack.setTagCompound(tagMain);	
+		return true;
+	}
+	
+	public static int getIntegerTagCompound(ItemStack aStack, String tagName, String keyName){
+		NBTTagCompound aNBT = aStack.getTagCompound();
+		if (aNBT != null) {
+			aNBT = aNBT.getCompoundTag(tagName);
+			if (aNBT != null) {
+				return aNBT.getInteger(keyName);
+			}
+		}
+		return 0;
+	}
+	
+	public static long getLongTagCompound(ItemStack aStack, String tagName, String keyName){
+		NBTTagCompound aNBT = aStack.getTagCompound();
+		if (aNBT != null) {
+			aNBT = aNBT.getCompoundTag(tagName);
+			if (aNBT != null) {
+				return aNBT.getLong(keyName);
+			}
+		}
+		return 0L;
+	}
+	
+	public static String getStringTagCompound(ItemStack aStack, String tagName, String keyName){
+		NBTTagCompound aNBT = aStack.getTagCompound();
+		if (aNBT != null) {
+			aNBT = aNBT.getCompoundTag(tagName);
+			if (aNBT != null) {
+				return aNBT.getString(keyName);
+			}
+		}
+		return null;
+	}
+	
+	public static boolean hasKeyInTagCompound(ItemStack stack, String tag, String key){
+		NBTTagCompound aNBT = stack.getTagCompound();
+		if (aNBT != null) {
+			aNBT = aNBT.getCompoundTag(tag);
+			if (aNBT.hasKey(key)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

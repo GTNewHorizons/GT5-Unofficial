@@ -27,6 +27,7 @@ import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.commands.CommandMath;
 import gtPlusPlus.core.common.CommonProxy;
+import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.handler.events.LoginEventHandler;
@@ -268,7 +269,7 @@ public class GTplusplus implements ActionListener {
 			this.dumpGtRecipeMap(Gregtech_Recipe_Map.sMatterFab2Recipes);
 			this.dumpGtRecipeMap(Gregtech_Recipe_Map.sAlloyBlastSmelterRecipes);
 		}
-
+		BookHandler.runLater();
 		Utils.LOG_INFO("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		Utils.LOG_INFO("| Recipes succesfully Loaded: " + RegistrationHandler.recipesSuccess + " | Failed: "
 				+ RegistrationHandler.recipesFailed + " |");
