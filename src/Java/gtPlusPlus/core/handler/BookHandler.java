@@ -54,11 +54,18 @@ public class BookHandler {
 
 		//Test Novel
 		book_ModularBauble = writeBookTemplate(
-				"Manual_Modular_Bauble", "How to: Modular baubles", "Alkalus", 
+				"Manual_Modular_Bauble", "How to: Modular Baubles", "Alkalus", 
 				new String[] {
-						"There was once a sad and lonely oak tree.",
-						"There was once a sad and lonely oak tree.",
-						"There was once a sad and lonely oak tree.",
+						"Concept: This idea came from wanting flexibility.",
+						"First step, Build a Modularity table to begin customisation of your Bauble."
+						+ " After this has been constructed, you can now combine the upgrades listed within this book to improve the baubles level /100.",
+						"Defence:"
+						+ " Can be upgraded by combining metal plates with the bauble."
+						+ "+1 | Aluminium Plate"
+						+ "+2 | Stainless Steel Plate"
+						+ "+3 | Tungsten Plate"
+						+ "+4 | TungstenSteel Plate"
+						+ "+5 | Naquadah Plate",
 						"There was once a sad and lonely oak tree.",
 						"There was once a sad and lonely oak tree.",
 						"There was once a sad and lonely oak tree."});
@@ -72,9 +79,9 @@ public class BookHandler {
 	public static ItemStack ItemBookWritten_Test;
 	
 	public static void runLater(){
-		ItemBookWritten_ThermalBoiler = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 1, 1);
-		//ItemBookWritten_ModularBaubles = writeBook(book_ModularBauble);
-		//ItemBookWritten_Test = writeBook(book_TestNovel);
+		ItemBookWritten_ThermalBoiler = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 0, 1);
+		ItemBookWritten_ModularBaubles = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 1, 1);
+		ItemBookWritten_Test = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 2, 1);
 		RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{ItemUtils.getSimpleStack(Items.writable_book), ItemUtils.getSimpleStack(Items.lava_bucket)}, ItemBookWritten_ThermalBoiler);
 	}
 	

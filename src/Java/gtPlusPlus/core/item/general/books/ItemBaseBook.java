@@ -39,15 +39,15 @@ public class ItemBaseBook extends ItemWritableBook{
 		for (int i = 0; i < BookHandler.mBookMap.size(); i ++) {
 			ItemStack bookstack = new ItemStack(item, 1, i);
 			
-			bookstack = Utils.getWrittenBook(
+			/*bookstack = Utils.getWrittenBook(
 					bookstack,
 					i,
 					mBookMap.get(i).mMapping, 
 					mBookMap.get(i).mTitle, 
 					mBookMap.get(i).mAuthor, 
-					mBookMap.get(i).mPages);
+					mBookMap.get(i).mPages);*/
 
-			//NBTUtils.createIntegerTagCompound(bookstack, "stats", "mMeta", i);
+			NBTUtils.createIntegerTagCompound(bookstack, "stats", "mMeta", i);
 
 			GT_OreDictUnificator.registerOre("bookWritten", bookstack);
 			GT_OreDictUnificator.registerOre("craftingBook", bookstack);
@@ -61,7 +61,7 @@ public class ItemBaseBook extends ItemWritableBook{
 			return NBTUtils.getString(tItem, "title");
 		}
 		else if (tItem.getItemDamage() > -1 && tItem.getItemDamage() <= mBookMap.size()){
-			return "[NBT issue] "+mBookMap.get(tItem.getItemDamage()).mTitle;
+			return EnumChatFormatting.ITALIC+""+mBookMap.get(tItem.getItemDamage()).mTitle;
 		}
 		//NBTUtils.tryIterateNBTData(tItem);
 		return "GT++ Storybook";
@@ -74,13 +74,13 @@ public class ItemBaseBook extends ItemWritableBook{
 			list.add(EnumChatFormatting.GRAY+"Author: "+NBTUtils.getString(tItem, "author"));
 		}
 		else if (mBookMap.get(tItem.getItemDamage()).mAuthor != null){
-			list.add(EnumChatFormatting.GRAY+"Author: "+mBookMap.get(tItem.getItemDamage()).mAuthor);
+			list.add(EnumChatFormatting.WHITE+"Author: "+mBookMap.get(tItem.getItemDamage()).mAuthor);
 		}
 		if (NBTUtils.hasKey(tItem, "title")){
 			list.add(EnumChatFormatting.GRAY+"Pages: "+NBTUtils.getString(tItem, "pages"));
 		}
 		else if (mBookMap.get(tItem.getItemDamage()).mPages != null){
-			list.add(EnumChatFormatting.GRAY+"Pages: "+mBookMap.get(tItem.getItemDamage()).mPages.length);
+			list.add(EnumChatFormatting.WHITE+"Pages: "+mBookMap.get(tItem.getItemDamage()).mPages.length);
 		}
 		//super.addInformation(p_77624_1_, p_77624_2_, p_77624_3_, p_77624_4_);
 	}
