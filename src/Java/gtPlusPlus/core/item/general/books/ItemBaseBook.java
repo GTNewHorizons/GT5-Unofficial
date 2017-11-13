@@ -1,5 +1,7 @@
 package gtPlusPlus.core.item.general.books;
 
+import static gtPlusPlus.core.handler.BookHandler.mBookMap;
+
 import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -7,6 +9,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.nbt.NBTUtils;
 import net.minecraft.creativetab.CreativeTabs;
@@ -23,8 +26,6 @@ public class ItemBaseBook extends ItemWritableBook{
 		this.setTextureName(CORE.MODID+":"+"itemBook");
 		this.setUnlocalizedName("itembookgt");
 		GameRegistry.registerItem(this, "bookGT");
-		GT_OreDictUnificator.registerOre("bookWritten", ItemUtils.getWildcardStack(this));
-		GT_OreDictUnificator.registerOre("craftingBook", ItemUtils.getWildcardStack(this));
 	
 	}
 
@@ -32,8 +33,19 @@ public class ItemBaseBook extends ItemWritableBook{
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
 		for (int i = 0; i < BookHandler.mBookMap.size(); i ++) {
 			ItemStack bookstack = new ItemStack(item, 1, i);
-			NBTUtils.createIntegerTagCompound(bookstack, "stats", "mMeta", i);
-			NBTUtils.setString(bookstack, "title", BookHandler.mBookMap.get(i).mTitle);
+			
+			bookstack = Utils.getWrittenBook(
+					bookstack,
+					i,
+					mBookMap.get(i).mMapping, 
+					mBookMap.get(i).mTitle, 
+					mBookMap.get(i).mAuthor, 
+					mBookMap.get(i).mPages);
+
+			//NBTUtils.createIntegerTagCompound(bookstack, "stats", "mMeta", i);
+
+			GT_OreDictUnificator.registerOre("bookWritten", bookstack);
+			GT_OreDictUnificator.registerOre("craftingBook", bookstack);
 			list.add(bookstack);
 		}
 	}
@@ -43,7 +55,10 @@ public class ItemBaseBook extends ItemWritableBook{
 		if (NBTUtils.hasKey(tItem, "title")){
 			return NBTUtils.getString(tItem, "title");
 		}
-		NBTUtils.tryIterateNBTData(tItem);
+		else if (tItem.getItemDamage() > -1 && tItem.getItemDamage() <= mBookMap.size()){
+			return mBookMap.get(tItem.getItemDamage()).mTitle;
+		}
+		//NBTUtils.tryIterateNBTData(tItem);
 		return "GT++ Storybook";
 	}
 

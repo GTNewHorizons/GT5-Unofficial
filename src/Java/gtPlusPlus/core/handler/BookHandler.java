@@ -3,6 +3,7 @@ package gtPlusPlus.core.handler;
 import java.util.HashMap;
 import java.util.Map;
 
+import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
@@ -71,14 +72,10 @@ public class BookHandler {
 	public static ItemStack ItemBookWritten_Test;
 	
 	public static void runLater(){
-		ItemBookWritten_ThermalBoiler = writeBook(book_ThermalBoiler);
-		ItemBookWritten_ModularBaubles = writeBook(book_ModularBauble);
-		ItemBookWritten_Test = writeBook(book_TestNovel);
+		ItemBookWritten_ThermalBoiler = ItemUtils.simpleMetaStack(ModItems.itemCustomBook, 1, 1);
+		//ItemBookWritten_ModularBaubles = writeBook(book_ModularBauble);
+		//ItemBookWritten_Test = writeBook(book_TestNovel);
 		RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{ItemUtils.getSimpleStack(Items.writable_book), ItemUtils.getSimpleStack(Items.lava_bucket)}, ItemBookWritten_ThermalBoiler);
-	}
-	
-	private static ItemStack writeBook(BookTemplate mTemplate){
-		return Utils.getWrittenBook(mTemplate.mMapping, mTemplate.mTitle, mTemplate.mAuthor, mTemplate.mPages);
 	}
 	
 	private static BookTemplate writeBookTemplate(String aMapping, String aTitle, String aAuthor, String[] aPages){
