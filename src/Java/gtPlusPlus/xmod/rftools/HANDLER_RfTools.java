@@ -1,7 +1,6 @@
 package gtPlusPlus.xmod.rftools;
 
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.xmod.rftools.blocks.RFT_Block_Registrator;
 
 public class HANDLER_RfTools {
 

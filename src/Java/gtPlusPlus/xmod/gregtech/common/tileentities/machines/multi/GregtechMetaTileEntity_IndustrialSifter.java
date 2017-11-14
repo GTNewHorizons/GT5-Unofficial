@@ -353,12 +353,12 @@ extends GregtechMeta_MultiBlockBase {
 			}
 		}
 		if ((this.mInputBusses.size() != 1) || (this.mOutputBusses.size() != 4)
-				|| (this.mMaintenanceHatches.size() != 1) || (this.mEnergyHatches.size() != 1)) {
-			Utils.LOG_MACHINE_INFO("Returned False 3");
-			Utils.LOG_MACHINE_INFO("Input Buses: "+this.mInputBusses.size()+" | expected: 1");
-			Utils.LOG_MACHINE_INFO("Output Buses: "+this.mOutputBusses.size()+" | expected: 4");
-			Utils.LOG_MACHINE_INFO("Energy Hatches: "+this.mEnergyHatches.size()+" | expected: 1");
-			Utils.LOG_MACHINE_INFO("Maint. hatches: "+this.mMaintenanceHatches.size()+" | expected: 1");
+				|| (this.mMaintenanceHatches.size() != 1) || (this.mEnergyHatches.size() < 1)) {
+			Utils.LOG_INFO("Returned False 3");
+			Utils.LOG_INFO("Input Buses: "+this.mInputBusses.size()+" | expected: 1");
+			Utils.LOG_INFO("Output Buses: "+this.mOutputBusses.size()+" | expected: 4");
+			Utils.LOG_INFO("Energy Hatches: "+this.mEnergyHatches.size()+" | expected: 1");
+			Utils.LOG_INFO("Maint. hatches: "+this.mMaintenanceHatches.size()+" | expected: 1");
 			return false;
 		}
 		final int height = this.getBaseMetaTileEntity().getYCoord();
