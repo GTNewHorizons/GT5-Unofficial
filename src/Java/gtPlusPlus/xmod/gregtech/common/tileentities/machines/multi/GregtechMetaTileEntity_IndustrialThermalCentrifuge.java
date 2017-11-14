@@ -43,17 +43,17 @@ extends GregtechMeta_MultiBlockBase {
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Industrial Thermal Centrifuge",
-				"60% faster than using single block machines of the same voltage",
-				"Size: 3x2x3 [LxHxW]", "Controller (front centered)",
+				"40% faster than using single block machines of the same voltage",
+				"Size: 3x2x3 [WxLxH] (Hollow)", "Controller (front centered)",
 				"1x Input Bus (Any casing)",
 				"1x Output Bus (Any casing)",
 				"1x Maintenance Hatch (Any casing)",
 				"1x Muffler Hatch (Any casing)",
 				"1x Energy Hatch (Any casing)",
-				"Thermal processing Casings for the rest (8 at least!)",
+				"Solid Steel Machine Casings for the rest (16 at least!)",
 				"Causes " + (20 * getPollutionPerTick(null)) + " Pollution per second",
 				CORE.GT_Tooltip
-
+				
 		};
 	}
 
@@ -75,17 +75,6 @@ extends GregtechMeta_MultiBlockBase {
 		return GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes;
 	}
 
-	public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
-		super.startSoundLoop(aIndex, aX, aY, aZ);
-		if (aIndex == 1) {
-			GT_Utility.doSoundAtClient((String) GregTech_API.sSoundList.get(Integer.valueOf(207)), 10, 1.0F, aX, aY, aZ);
-		}
-	}
-
-	public void startProcess() {
-		sendLoopStart((byte) 1);
-	}
-
 	@Override
 	public boolean isFacingValid(final byte aFacing) {
 		return aFacing > 1;
@@ -99,7 +88,7 @@ extends GregtechMeta_MultiBlockBase {
 			final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
 			GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], null, new ItemStack[]{tInput});
-			tRecipe = this.reduceRecipeTimeByPercentage(tRecipe, 60F);
+			tRecipe = this.reduceRecipeTimeByPercentage(tRecipe, 40F);
 			if (tRecipe != null) {
 
 				final int tValidOutputSlots = this.getValidOutputSlots(this.getBaseMetaTileEntity(), tRecipe, new ItemStack[]{tInput});
@@ -125,16 +114,7 @@ extends GregtechMeta_MultiBlockBase {
 							this.mEUt = (-this.mEUt);
 						}
 						this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-
-						ItemStack mNewOutputs[] = new ItemStack[16];
-
-
-
-						for (int f=0;f<tRecipe.mOutputs.length;f++){
-							mNewOutputs[f] = tRecipe.getOutput(f);
-						}
-
-						this.mOutputItems = mNewOutputs;
+						this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0)};
 						this.updateSlots();
 						return true;
 					}
@@ -163,7 +143,7 @@ extends GregtechMeta_MultiBlockBase {
 							byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
 							if ((((tBlock != ModBlocks.blockCasings2Misc) || (tMeta != 0)))
 									&& (((tBlock != GregTech_API.sBlockCasings3) || (tMeta != 9)))) {
-								Utils.LOG_WARNING("Wrong Block?");
+								Utils.LOG_INFO("Wrong Block?");
 								return false;
 							}
 							++tAmount;
@@ -172,18 +152,7 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 		}
-		if ((this.mInputBusses.size() < 1) || (this.mOutputBusses.size() < 1)
-				|| (this.mMaintenanceHatches.size() != 1) || (this.mEnergyHatches.size() < 1)
-				|| (this.mMufflerHatches.size() < 1)) {
-			Utils.LOG_MACHINE_INFO("Returned False");
-			Utils.LOG_MACHINE_INFO("Input Buses: "+this.mInputBusses.size()+" | expected: >= 1 | "+(this.mInputBusses.size() >= 1));
-			Utils.LOG_MACHINE_INFO("Output Buses: "+this.mOutputBusses.size()+" | expected: >= 1 | "+(this.mOutputBusses.size() >= 1));
-			Utils.LOG_MACHINE_INFO("Energy Hatches: "+this.mEnergyHatches.size()+" | expected: >= 1 | "+(this.mEnergyHatches.size() >= 1));
-			Utils.LOG_MACHINE_INFO("Muffler Hatches: "+this.mMufflerHatches.size()+" | expected: >= 1 | "+(this.mMufflerHatches.size() >= 1));
-			Utils.LOG_MACHINE_INFO("Maint. Hatches: "+this.mMaintenanceHatches.size()+" | expected: 1 | "+(this.mMaintenanceHatches.size() != 1));
-			return false;
-		}
-		Utils.LOG_WARNING("Trying to assemble structure. Completed? "+(tAmount >= 8));
+		Utils.LOG_INFO("Trying to assemble structure. Completed? "+(tAmount >= 8));
 		return (tAmount >= 8);
 	}
 
@@ -192,8 +161,9 @@ extends GregtechMeta_MultiBlockBase {
 		return 10000;
 	}
 
+	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return 45;
+		return 0;
 	}
 
 	@Override
