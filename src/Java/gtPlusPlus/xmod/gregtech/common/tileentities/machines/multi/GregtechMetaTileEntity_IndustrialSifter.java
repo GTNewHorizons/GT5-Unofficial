@@ -55,7 +55,6 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Energy Hatch (Any top or bottom edge casing)",
 				"9x Sieve Grate (Top and Middle 3x3)",
 				"Sieve Casings for the rest (47)",
-				"Causes " + (20 * getPollutionPerTick(null)) + " Pollution per second",
 				CORE.GT_Tooltip};
 	}
 
@@ -397,7 +396,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return 12;
+		return 0;
 	}
 
 	@Override

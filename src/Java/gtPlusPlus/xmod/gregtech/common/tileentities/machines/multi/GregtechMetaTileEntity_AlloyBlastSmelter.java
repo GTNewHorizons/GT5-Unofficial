@@ -56,7 +56,6 @@ extends GT_MetaTileEntity_MultiBlockBase {
 				"1x Maintenance Hatch (one of bottom)",
 				"1x Muffler Hatch (top middle)",
 				"Blast Smelter Casings for the rest",
-				"Causes " + (20 * getPollutionPerTick(null)) + " Pollution per second",
 				CORE.GT_Tooltip};
 	}
 

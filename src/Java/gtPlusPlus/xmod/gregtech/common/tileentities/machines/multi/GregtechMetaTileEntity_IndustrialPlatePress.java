@@ -51,7 +51,6 @@ extends GregtechMeta_MultiBlockBase {
 				"1x Maintenance Hatch (anywhere)",
 				"1x Muffler (anywhere)",
 				"Material Press Machine Casings for the rest (16 at least!)",
-				"Causes " + (20 * getPollutionPerTick(null)) + " Pollution per second",
 				CORE.GT_Tooltip};
 	}
 
@@ -185,8 +184,9 @@ extends GregtechMeta_MultiBlockBase {
 		return 10000;
 	}
 
+	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return 17;
+		return 0;
 	}
 
 	@Override

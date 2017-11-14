@@ -85,7 +85,6 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 				"Dark Purple: Dirt/Grass/Podzol/Humus",
 				"Light Blue: Fence/Fence Gate",
 				"Blue/Yellow: Controller",
-				"Causes " + (20 * getPollutionPerTick(null)) + " Pollution per second",
 				CORE.GT_Tooltip
 		};
 	}

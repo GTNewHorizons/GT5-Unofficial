@@ -150,7 +150,6 @@ extends GT_MetaTileEntity_MultiBlockBase
 				"1x Maintenance Hatch",
 				"1x Energy Hatch",
 				"--------------------------------------",
-				"Causes " + (20 * getPollutionPerTick(null)) + " Pollution per second",
 				CORE.GT_Tooltip
 		};
 	}
