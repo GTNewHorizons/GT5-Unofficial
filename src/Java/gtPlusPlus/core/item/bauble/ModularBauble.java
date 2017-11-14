@@ -36,7 +36,6 @@ public class ModularBauble extends BaseBauble {
 	private IIcon mTextureRing;
 	@SideOnly(Side.CLIENT)
 	private IIcon mTextureBelt;
-	@SideOnly(Side.CLIENT)
 	private IIcon iconArray[] = new IIcon[3];
 	@SideOnly(Side.CLIENT)
 	private IIcon mfallback;
@@ -342,6 +341,7 @@ public class ModularBauble extends BaseBauble {
 	}*/
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IIcon getIconFromDamage(int meta) {
 		if (meta < this.iconArray.length && this.iconArray[meta] != null){
 			return this.iconArray[meta];

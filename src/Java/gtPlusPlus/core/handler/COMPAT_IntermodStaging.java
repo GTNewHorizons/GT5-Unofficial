@@ -7,7 +7,6 @@ import gtPlusPlus.xmod.gregtech.HANDLER_GT;
 import gtPlusPlus.xmod.growthcraft.HANDLER_GC;
 import gtPlusPlus.xmod.ic2.HANDLER_IC2;
 import gtPlusPlus.xmod.mekanism.HANDLER_Mekanism;
-import gtPlusPlus.xmod.rftools.HANDLER_RfTools;
 import gtPlusPlus.xmod.thermalfoundation.HANDLER_TF;
 
 public class COMPAT_IntermodStaging {
@@ -20,7 +19,6 @@ public class COMPAT_IntermodStaging {
 		HANDLER_IC2.preInit();
 		HANDLER_Computronics.preInit();
 		HANDLER_BiomesOPlenty.preInit();
-		HANDLER_RfTools.preInit();
 		HANDLER_Mekanism.preInit();
 
 	}
@@ -33,7 +31,6 @@ public class COMPAT_IntermodStaging {
 		HANDLER_IC2.init();
 		HANDLER_Computronics.init();
 		HANDLER_BiomesOPlenty.init();
-		HANDLER_RfTools.init();
 		HANDLER_Mekanism.init();
 	}
 
@@ -45,7 +42,6 @@ public class COMPAT_IntermodStaging {
 		HANDLER_IC2.postInit();
 		HANDLER_Computronics.postInit();
 		HANDLER_BiomesOPlenty.postInit();
-		HANDLER_RfTools.postInit();
 		HANDLER_Mekanism.postInit();
 	}
 
