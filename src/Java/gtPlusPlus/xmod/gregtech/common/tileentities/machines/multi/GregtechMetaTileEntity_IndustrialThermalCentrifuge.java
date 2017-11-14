@@ -43,14 +43,14 @@ extends GregtechMeta_MultiBlockBase {
 	public String[] getDescription() {
 		return new String[]{
 				"Controller Block for the Industrial Thermal Centrifuge",
-				"40% faster than using single block machines of the same voltage",
+				"60% faster than using single block machines of the same voltage",
 				"Size: 3x2x3 [WxLxH] (Hollow)", "Controller (front centered)",
 				"1x Input Bus (Any casing)",
 				"1x Output Bus (Any casing)",
 				"1x Maintenance Hatch (Any casing)",
 				"1x Muffler Hatch (Any casing)",
 				"1x Energy Hatch (Any casing)",
-				"Solid Steel Machine Casings for the rest (16 at least!)",
+				"Thermal processing Casings for the rest (8 at least!)",
 				"Causes " + (20 * getPollutionPerTick(null)) + " Pollution per second",
 				CORE.GT_Tooltip
 				
@@ -88,7 +88,7 @@ extends GregtechMeta_MultiBlockBase {
 			final byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
 
 			GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes.findRecipe(this.getBaseMetaTileEntity(), false, gregtech.api.enums.GT_Values.V[tTier], null, new ItemStack[]{tInput});
-			tRecipe = this.reduceRecipeTimeByPercentage(tRecipe, 40F);
+			tRecipe = this.reduceRecipeTimeByPercentage(tRecipe, 60F);
 			if (tRecipe != null) {
 
 				final int tValidOutputSlots = this.getValidOutputSlots(this.getBaseMetaTileEntity(), tRecipe, new ItemStack[]{tInput});
@@ -114,7 +114,16 @@ extends GregtechMeta_MultiBlockBase {
 							this.mEUt = (-this.mEUt);
 						}
 						this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-						this.mOutputItems = new ItemStack[]{tRecipe.getOutput(0)};
+						
+						ItemStack mNewOutputs[] = new ItemStack[16];
+						
+
+						
+						for (int f=0;f<tRecipe.mOutputs.length;f++){
+							mNewOutputs[f] = tRecipe.getOutput(f);
+						}
+						
+						this.mOutputItems = mNewOutputs;
 						this.updateSlots();
 						return true;
 					}
@@ -143,7 +152,7 @@ extends GregtechMeta_MultiBlockBase {
 							byte tMeta = aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j);
 							if ((((tBlock != ModBlocks.blockCasings2Misc) || (tMeta != 0)))
 									&& (((tBlock != GregTech_API.sBlockCasings3) || (tMeta != 9)))) {
-								Utils.LOG_INFO("Wrong Block?");
+								Utils.LOG_WARNING("Wrong Block?");
 								return false;
 							}
 							++tAmount;
@@ -152,7 +161,7 @@ extends GregtechMeta_MultiBlockBase {
 				}
 			}
 		}
-		Utils.LOG_INFO("Trying to assemble structure. Completed? "+(tAmount >= 8));
+		Utils.LOG_WARNING("Trying to assemble structure. Completed? "+(tAmount >= 8));
 		return (tAmount >= 8);
 	}
 
@@ -161,9 +170,8 @@ extends GregtechMeta_MultiBlockBase {
 		return 10000;
 	}
 
-	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return 0;
+		return 45;
 	}
 
 	@Override
