@@ -61,11 +61,11 @@ public class BookHandler {
 						+ " After this has been constructed, you can now combine the upgrades listed within this book to improve the baubles level /100.",
 						"Defence:"
 						+ " Can be upgraded by combining metal plates with the bauble."
-						+ "+1 | Aluminium Plate"
-						+ "+2 | Stainless Steel Plate"
-						+ "+3 | Tungsten Plate"
-						+ "+4 | TungstenSteel Plate"
-						+ "+5 | Naquadah Plate",
+						+ " | +1 | Aluminium Plate"
+						+ " | +2 | Stainless Steel Plate"
+						+ " | +3 | Tungsten Plate"
+						+ " | +4 | TungstenSteel Plate"
+						+ " | +5 | Naquadah Plate",
 						"There was once a sad and lonely oak tree.",
 						"There was once a sad and lonely oak tree.",
 						"There was once a sad and lonely oak tree."});

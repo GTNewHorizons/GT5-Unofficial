@@ -206,7 +206,7 @@ public class NBTUtils {
 			NBTTagCompound aNBT = NBTUtils.getNBT(aStack);
 			if (aNBT != null) {
 				if (!aNBT.hasNoTags()) {
-					int tagCount = 0;
+					// int tagCount = 0;
 					Map<?, ?> mInternalMap = ReflectionUtils.getField(aNBT, "tagMap");
 
 					if (mInternalMap != null) {
@@ -250,44 +250,44 @@ public class NBTUtils {
 		return tNBT.getString(TAG_SOULBIND);
 	}
 
-	public static boolean hasKey(ItemStack stack, String key){
-		if (stack.hasTagCompound())				{
+	public static boolean hasKey(ItemStack stack, String key) {
+		if (stack.hasTagCompound()) {
 			final NBTTagCompound itemData = stack.getTagCompound();
-			if (itemData.hasKey(key)){
+			if (itemData.hasKey(key)) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
-	public static boolean createIntegerTagCompound(ItemStack rStack, String tagName, String keyName, int keyValue){
+
+	public static boolean createIntegerTagCompound(ItemStack rStack, String tagName, String keyName, int keyValue) {
 		final NBTTagCompound tagMain = new NBTTagCompound();
 		final NBTTagCompound tagNBT = new NBTTagCompound();
 		tagNBT.setInteger(keyName, keyValue);
-		tagMain.setTag(tagName, tagNBT);		
-		rStack.setTagCompound(tagMain);	
+		tagMain.setTag(tagName, tagNBT);
+		rStack.setTagCompound(tagMain);
 		return true;
 	}
-	
-	public static boolean createLongTagCompound(ItemStack rStack, String tagName, String keyName, long keyValue){
+
+	public static boolean createLongTagCompound(ItemStack rStack, String tagName, String keyName, long keyValue) {
 		final NBTTagCompound tagMain = new NBTTagCompound();
 		final NBTTagCompound tagNBT = new NBTTagCompound();
 		tagNBT.setLong(keyName, keyValue);
-		tagMain.setTag(tagName, tagNBT);		
-		rStack.setTagCompound(tagMain);	
+		tagMain.setTag(tagName, tagNBT);
+		rStack.setTagCompound(tagMain);
 		return true;
 	}
-	
-	public static boolean createStringTagCompound(ItemStack rStack, String tagName, String keyName, String keyValue){
+
+	public static boolean createStringTagCompound(ItemStack rStack, String tagName, String keyName, String keyValue) {
 		final NBTTagCompound tagMain = new NBTTagCompound();
 		final NBTTagCompound tagNBT = new NBTTagCompound();
 		tagNBT.setString(keyName, keyValue);
-		tagMain.setTag(tagName, tagNBT);		
-		rStack.setTagCompound(tagMain);	
+		tagMain.setTag(tagName, tagNBT);
+		rStack.setTagCompound(tagMain);
 		return true;
 	}
-	
-	public static int getIntegerTagCompound(ItemStack aStack, String tagName, String keyName){
+
+	public static int getIntegerTagCompound(ItemStack aStack, String tagName, String keyName) {
 		NBTTagCompound aNBT = aStack.getTagCompound();
 		if (aNBT != null) {
 			aNBT = aNBT.getCompoundTag(tagName);
@@ -297,8 +297,8 @@ public class NBTUtils {
 		}
 		return 0;
 	}
-	
-	public static long getLongTagCompound(ItemStack aStack, String tagName, String keyName){
+
+	public static long getLongTagCompound(ItemStack aStack, String tagName, String keyName) {
 		NBTTagCompound aNBT = aStack.getTagCompound();
 		if (aNBT != null) {
 			aNBT = aNBT.getCompoundTag(tagName);
@@ -308,8 +308,8 @@ public class NBTUtils {
 		}
 		return 0L;
 	}
-	
-	public static String getStringTagCompound(ItemStack aStack, String tagName, String keyName){
+
+	public static String getStringTagCompound(ItemStack aStack, String tagName, String keyName) {
 		NBTTagCompound aNBT = aStack.getTagCompound();
 		if (aNBT != null) {
 			aNBT = aNBT.getCompoundTag(tagName);
@@ -319,8 +319,8 @@ public class NBTUtils {
 		}
 		return null;
 	}
-	
-	public static boolean hasKeyInTagCompound(ItemStack stack, String tag, String key){
+
+	public static boolean hasKeyInTagCompound(ItemStack stack, String tag, String key) {
 		NBTTagCompound aNBT = stack.getTagCompound();
 		if (aNBT != null) {
 			aNBT = aNBT.getCompoundTag(tag);

@@ -4,8 +4,6 @@ import baubles.api.BaubleType;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.Pair;
-import gtPlusPlus.core.util.nbt.ModularArmourUtils.Modifiers;
-import net.minecraft.block.Block.SoundType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 

@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class LoggingUtils {
 
-	public static void profileLog(final Object o){
+	public static void profileLog(final Object o) {
 		try {
 			String content;
 			final File file = new File("GregtechTimingsTC.txt");
@@ -18,10 +18,9 @@ public class LoggingUtils {
 				bw.write(System.lineSeparator());
 				bw.close();
 			}
-			if (o instanceof String){
+			if (o instanceof String) {
 				content = (String) o;
-			}
-			else {
+			} else {
 				content = o.toString();
 			}
 			final FileWriter fw = new FileWriter(file.getAbsoluteFile(), true);
@@ -36,13 +35,12 @@ public class LoggingUtils {
 		}
 	}
 
-	public static boolean logCurrentSystemTime(final String message){
+	public static boolean logCurrentSystemTime(final String message) {
 		final Date date = new Date(System.currentTimeMillis());
 		try {
-			profileLog(message+" | "+date.toString());
+			profileLog(message + " | " + date.toString());
 			return true;
-		}
-		catch (final Throwable r) {
+		} catch (final Throwable r) {
 			return false;
 		}
 
