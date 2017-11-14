@@ -164,9 +164,9 @@ public abstract class GregtechMeta_MultiBlockBase
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity,
 			long aTick) {
-		this.mChargeHatches.clear();
-		this.mDischargeHatches.clear();
 		super.onPostTick(aBaseMetaTileEntity, aTick);
+		//this.mChargeHatches.clear();
+		//this.mDischargeHatches.clear();
 	}
 
 	@Override
@@ -203,10 +203,7 @@ public abstract class GregtechMeta_MultiBlockBase
 		IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
 		if (aMetaTileEntity == null)
 			return false;
-		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch) {
-			((GT_MetaTileEntity_Hatch) aMetaTileEntity)
-					.updateTexture(aBaseCasingIndex);
-		}
+		
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBattery)
 			return this.mChargeHatches.add(
 					(GT_MetaTileEntity_Hatch_InputBattery) aMetaTileEntity);

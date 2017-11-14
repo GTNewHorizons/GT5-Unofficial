@@ -17,6 +17,8 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -244,12 +246,12 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 				}
 			}
 		}
-		if ((this.mInputBusses.size() != 1) || (this.mOutputBusses.size() != 1)
+		if ((this.mChargeHatches.size() < 1) || (this.mDischargeHatches.size() < 1)
 				|| (this.mMaintenanceHatches.size() != 1) || (this.mEnergyHatches.size() < 1)
 				|| (this.mDynamoHatches.size() < 1)) {
 			Utils.LOG_MACHINE_INFO("Returned False 3");
-			Utils.LOG_MACHINE_INFO("Input Buses: "+this.mInputBusses.size()+" | expected: 1 | "+(this.mInputBusses.size() != 1));
-			Utils.LOG_MACHINE_INFO("Output Buses: "+this.mOutputBusses.size()+" | expected: 1 | "+(this.mOutputBusses.size() != 1));
+			Utils.LOG_MACHINE_INFO("Charge Buses: "+this.mChargeHatches.size()+" | expected: 1 | "+(this.mChargeHatches.size() != 1));
+			Utils.LOG_MACHINE_INFO("Discharge Buses: "+this.mDischargeHatches.size()+" | expected: 1 | "+(this.mDischargeHatches.size() != 1));
 			Utils.LOG_MACHINE_INFO("Energy Hatches: "+this.mEnergyHatches.size()+" | expected: >= 1 | "+(this.mEnergyHatches.size() < 1));
 			Utils.LOG_MACHINE_INFO("Dynamo Hatches: "+this.mDynamoHatches.size()+" | expected: >= 1 | "+(this.mDynamoHatches.size() < 1));
 			Utils.LOG_MACHINE_INFO("Maint. Hatches: "+this.mMaintenanceHatches.size()+" | expected: 1 | "+(this.mMaintenanceHatches.size() != 1));
@@ -363,6 +365,13 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		this.mActualStoredEU = this.getEUVar();
+		
+		if (this.mActualStoredEU < 0){
+			this.mActualStoredEU = 0;
+		}
+		if (this.getEUVar() < 0){
+			this.setEUVar(0);
+		}
 
 		if (aBaseMetaTileEntity.isServerSide()){
 			this.mTotalRunTime++;
@@ -390,6 +399,17 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 			if (this.mActualStoredEU < this.maxEUStore() && mMaxProgresstime > 0){
 				if (this.getBaseMetaTileEntity().isAllowedToWork()){
 					this.getBaseMetaTileEntity().enableWorking();
+				}
+				for (GT_MetaTileEntity_Hatch_OutputBattery energy : this.mDischargeHatches){
+					long stored = energy.getEUVar();
+					long voltage = energy.maxEUInput();
+					if (stored > 0){
+						energy.setEUVar((stored-voltage));
+						this.mTotalEnergyAdded+=voltage;
+						if (this.getBaseMetaTileEntity().increaseStoredEnergyUnits(voltage, false)){
+							//Utils.LOG_INFO("Draining Discharge Hatch #1");
+						}
+					}
 				}
 				for (GT_MetaTileEntity_Hatch_Energy energy : this.mEnergyHatches){
 					long stored = energy.getEUVar();
@@ -431,14 +451,28 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	public boolean drainEnergyInput(long aEU) {
 		if (aEU <= 0L)
 			return true;
+		long nStoredPower = this.getEUVar();
+		for (GT_MetaTileEntity_Hatch_OutputBattery tHatch : this.mDischargeHatches) {
+			if ((isValidMetaTileEntity(tHatch))	&& (tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(aEU, false))){
+				if (this.mActualStoredEU<this.maxEUStore()){
+
+				}
+				Utils.LOG_INFO("Draining Discharge Hatch #2");
+			}
+		}
 		for (GT_MetaTileEntity_Hatch_Energy tHatch : this.mEnergyHatches) {
 			if ((isValidMetaTileEntity(tHatch))	&& (tHatch.getBaseMetaTileEntity().decreaseStoredEnergyUnits(aEU, false))){
 				if (this.mActualStoredEU<this.maxEUStore()){
 					//this.getBaseMetaTileEntity().increaseStoredEnergyUnits(aEU, false);
 				}
-				return true;
 			}
+		}		
+		long nNewStoredPower = this.getEUVar();
+		if (nNewStoredPower < nStoredPower){
+			Utils.LOG_ERROR("Used "+(nStoredPower-nNewStoredPower)+"eu.");
+			return true;
 		}
+
 		return false;
 	}
 
@@ -448,7 +482,19 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 			return true;
 		long nStoredPower = this.getEUVar();
 		int hatchCount = 0;
+		//Utils.LOG_INFO("Charge Hatches: "+this.mChargeHatches.size());
+		for (GT_MetaTileEntity_Hatch_InputBattery tHatch : this.mChargeHatches) {
+			//Utils.LOG_INFO("Storing Power in a Charge Hatch");
+			if ((isValidMetaTileEntity(tHatch))	&& (tHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(tHatch.maxEUInput(), false))) {
+				this.setEUVar(this.getEUVar()-(tHatch.maxEUInput()));
+				this.mTotalEnergyConsumed+=(tHatch.maxEUInput());
+				//this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(tHatch.getOutputTier()*2, false);
+				//Utils.LOG_INFO("Hatch "+hatchCount+" has "+tHatch.getEUVar()+"eu stored. Avg used is "+(this.mAverageEuUsage));
+			}
+			hatchCount++;
+		}
 		for (GT_MetaTileEntity_Hatch_Dynamo tHatch : this.mDynamoHatches) {
+			//Utils.LOG_INFO("Storing Power in a Dynamo Hatch");
 			if ((isValidMetaTileEntity(tHatch))	&& (tHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(tHatch.getOutputTier()*2, false))) {
 				this.setEUVar(this.getEUVar()-(tHatch.getOutputTier()*2));
 				this.mTotalEnergyConsumed+=(tHatch.getOutputTier()*2);
