@@ -253,6 +253,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Machine_Advanced_EV_Mixer, Machine_Advanced_IV_Mixer, Machine_Advanced_LuV_Mixer, 
 	Machine_Advanced_ZPM_Mixer, Machine_Advanced_UV_Mixer,
 	
+	//Custom hatches
+	Hatch_Input_Battery_MV, Hatch_Input_Battery_EV, 
+	Hatch_Output_Battery_MV, Hatch_Output_Battery_EV,
+	
 	
 	
 	

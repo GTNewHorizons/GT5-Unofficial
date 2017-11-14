@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
+import java.util.concurrent.TimeUnit;
+
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.TAE;
 import gregtech.api.enums.Textures;
@@ -8,7 +10,6 @@ import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Config;
 import gtPlusPlus.core.block.ModBlocks;
@@ -16,16 +17,21 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTileEntity_MultiBlockBase {
+public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMeta_MultiBlockBase {
 
 	private static boolean controller;
 	protected int mAverageEuUsage = 0;
+	protected long mTotalEnergyAdded = 0;
+	protected long mTotalEnergyConsumed = 0;
+	protected long mTotalEnergyLost = 0;
+	protected long mTotalRunTime = 0;
 
 	public GregtechMetaTileEntity_PowerSubStationController(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -52,8 +58,8 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTil
 				"Hatches can be placed nearly anywhere",
 				"Minimum 1x Energy Input Hatch",
 				"Minimum 1x Energy Dynamo Hatch",
-				"1x Input Bus",
-				"1x Output Bus",
+				"1x Charge Bus",
+				"1x Discharge Bus",
 				"1x Maintenance hatch",
 				"--------------------------------------------------------------------------",
 				CORE.GT_Tooltip};
@@ -317,13 +323,19 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTil
 	long mActualStoredEU = 0;
 
 
-
+	//mTotalEnergyAdded
 	@Override
 	public void saveNBTData(NBTTagCompound aNBT) {
 		aNBT.setLong("mPowerStorageBuffer", this.mPowerStorageBuffer);
 		aNBT.setInteger("mPowerStorageMultiplier", this.mPowerStorageMultiplier);
 		aNBT.setLong("mActualStoredEU", this.mActualStoredEU);
 		aNBT.setInteger("mAverageEuUsage", this.mAverageEuUsage);
+
+		//Usage Stats
+		aNBT.setLong("mTotalEnergyAdded", this.mTotalEnergyAdded);
+		aNBT.setLong("mTotalEnergyLost", this.mTotalEnergyLost);
+		aNBT.setLong("mTotalEnergyConsumed", this.mTotalEnergyConsumed);
+		aNBT.setLong("mTotalRunTime", this.mTotalRunTime);
 		super.saveNBTData(aNBT);
 	}
 
@@ -333,6 +345,13 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTil
 		this.mPowerStorageMultiplier = aNBT.getInteger("mPowerStorageMultiplier");
 		this.mActualStoredEU = aNBT.getLong("mActualStoredEU");
 		this.mAverageEuUsage = aNBT.getInteger("mAverageEuUsage");
+
+		//Usage Stats
+		this.mTotalEnergyAdded = aNBT.getLong("mTotalEnergyAdded");
+		this.mTotalEnergyLost = aNBT.getLong("mTotalEnergyLost");
+		this.mTotalEnergyConsumed = aNBT.getLong("mTotalEnergyConsumed");
+		this.mTotalRunTime = aNBT.getLong("mTotalRunTime");
+
 		super.loadNBTData(aNBT);
 	}
 
@@ -345,13 +364,19 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTil
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity, long aTick) {
 		this.mActualStoredEU = this.getEUVar();
 
+		if (aBaseMetaTileEntity.isServerSide()){
+			this.mTotalRunTime++;
+		}
 
 		//Handle Progress Time
 		if (this.mActualStoredEU >= 0 && this.getBaseMetaTileEntity().isAllowedToWork()){
 			this.mProgresstime = 20;
 			this.mMaxProgresstime = 40;	
 			//Use 10% of average EU determined by adding in/output voltage of all hatches and averaging.
-			this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(MathUtils.roundToClosestInt(mAverageEuUsage/100), false);
+			int mDecrease = MathUtils.roundToClosestInt(mAverageEuUsage);
+			this.mTotalEnergyLost+=mDecrease;
+			this.setEUVar(this.getEUVar()-mDecrease);
+			//this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(mDecrease, false);
 		}
 		else {
 			this.mProgresstime = 0;
@@ -371,6 +396,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTil
 					long voltage = energy.maxEUInput();
 					if (stored > 0){
 						energy.setEUVar((stored-voltage));
+						this.mTotalEnergyAdded+=voltage;
 						this.getBaseMetaTileEntity().increaseStoredEnergyUnits(voltage, false);
 					}
 				}
@@ -425,6 +451,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTil
 		for (GT_MetaTileEntity_Hatch_Dynamo tHatch : this.mDynamoHatches) {
 			if ((isValidMetaTileEntity(tHatch))	&& (tHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(tHatch.getOutputTier()*2, false))) {
 				this.setEUVar(this.getEUVar()-(tHatch.getOutputTier()*2));
+				this.mTotalEnergyConsumed+=(tHatch.getOutputTier()*2);
 				//this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(tHatch.getOutputTier()*2, false);
 				//Utils.LOG_INFO("Hatch "+hatchCount+" has "+tHatch.getEUVar()+"eu stored. Avg used is "+(this.mAverageEuUsage));
 			}
@@ -446,6 +473,44 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GT_MetaTil
 	@Override
 	public long getMinimumStoredEU() {
 		return 0;
+	}
+
+	//mAverageEuUsage
+
+	@Override
+	public String[] getInfoData() {
+
+		long seconds = (this.mTotalRunTime/20);
+
+		int weeks = (int) (TimeUnit.SECONDS.toDays(seconds) / 7);
+		int days = (int) (TimeUnit.SECONDS.toDays(seconds) - 7 * weeks);
+		long hours = TimeUnit.SECONDS.toHours(seconds) - TimeUnit.DAYS.toHours(days) - TimeUnit.DAYS.toHours(7*weeks);
+		long minutes = TimeUnit.SECONDS.toMinutes(seconds) - (TimeUnit.SECONDS.toHours(seconds) * 60);
+		long second = TimeUnit.SECONDS.toSeconds(seconds) - (TimeUnit.SECONDS.toMinutes(seconds) *60);
+
+
+
+		return new String[]{
+				"Ergon Energy - District Sub-Station",
+				"EU Required: "+this.mAverageEuUsage+"EU/t",
+				"Stats for Nerds",
+				"Total Input: "+this.mTotalEnergyAdded+"EU",
+				"Total Output: "+this.mTotalEnergyConsumed+"EU",
+				"Total Wasted: "+this.mTotalEnergyLost+"EU",
+
+				"Total Time Since Build: ",
+				""+weeks+" Weeks.",
+				""+days+" Days.",
+				""+hours+" Hours.",
+				""+minutes+" Minutes.",
+				""+second+" Seconds.",
+				"Total Time in ticks: "+this.mTotalRunTime};
+
+	};
+
+	@Override
+	public boolean isGivingInformation() {
+		return true;
 	}
 
 }
