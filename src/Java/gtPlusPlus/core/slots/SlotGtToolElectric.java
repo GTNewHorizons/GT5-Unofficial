@@ -13,26 +13,25 @@ public class SlotGtToolElectric extends SlotGtTool {
 	public int tier;
 	private ItemStack content;
 
-	public SlotGtToolElectric(final IInventory base, final int x, final int y, final int z, final int tier, final boolean allowRedstoneDust)
-	{
+	public SlotGtToolElectric(final IInventory base, final int x, final int y, final int z, final int tier,
+			final boolean allowRedstoneDust) {
 		super(base, x, y, z);
 		this.tier = tier;
 		this.allowRedstoneDust = allowRedstoneDust;
 	}
 
-	public boolean accepts(final ItemStack stack)
-	{
+	public boolean accepts(final ItemStack stack) {
 		if (stack == null) {
 			return false;
 		}
 		if ((stack.getItem() == Items.redstone) && (!this.allowRedstoneDust)) {
 			return false;
 		}
-		return (Info.itemEnergy.getEnergyValue(stack) > 0.0D) || (ElectricItem.manager.discharge(stack, (1.0D / 0.0D), this.tier, true, true, true) > 0.0D);
+		return (Info.itemEnergy.getEnergyValue(stack) > 0.0D)
+				|| (ElectricItem.manager.discharge(stack, (1.0D / 0.0D), this.tier, true, true, true) > 0.0D);
 	}
 
-	public double discharge(final double amount, final boolean ignoreLimit)
-	{
+	public double discharge(final double amount, final boolean ignoreLimit) {
 		if (amount <= 0.0D) {
 			throw new IllegalArgumentException("Amount must be > 0.");
 		}
@@ -41,8 +40,7 @@ public class SlotGtToolElectric extends SlotGtTool {
 			return 0.0D;
 		}
 		double realAmount = ElectricItem.manager.discharge(stack, amount, this.tier, ignoreLimit, true, false);
-		if (realAmount <= 0.0D)
-		{
+		if (realAmount <= 0.0D) {
 			realAmount = Info.itemEnergy.getEnergyValue(stack);
 			if (realAmount <= 0.0D) {
 				return 0.0D;
@@ -55,43 +53,39 @@ public class SlotGtToolElectric extends SlotGtTool {
 		return realAmount;
 	}
 
-	public void setTier(final int tier1)
-	{
+	public void setTier(final int tier1) {
 		this.tier = tier1;
 	}
 
 	public boolean allowRedstoneDust = true;
 
-	public ItemStack get()
-	{
+	public ItemStack get() {
 		return this.get(0);
 	}
 
-	public ItemStack get(final int index)
-	{
+	public ItemStack get(final int index) {
 		return this.content;
 	}
 
-	public void put(final ItemStack content)
-	{
+	public void put(final ItemStack content) {
 		this.put(0, content);
 	}
 
-	public void put(final int index, final ItemStack content)
-	{
+	public void put(final int index, final ItemStack content) {
 		this.content = content;
 		this.onChanged();
 	}
 
-	public void onChanged() {}
+	public void onChanged() {
+	}
 
 	@Override
 	public boolean isItemValid(final ItemStack itemstack) {
-		if ((itemstack.getItem() instanceof GT_MetaGenerated_Tool) || (itemstack.getItem() instanceof IElectricItem)){
-			Utils.LOG_WARNING(itemstack.getDisplayName()+" is a valid Tool.");
+		if ((itemstack.getItem() instanceof GT_MetaGenerated_Tool) || (itemstack.getItem() instanceof IElectricItem)) {
+			Utils.LOG_WARNING(itemstack.getDisplayName() + " is a valid Tool.");
 			return true;
 		}
-		Utils.LOG_WARNING(itemstack.getDisplayName()+" is not a valid Tool.");
+		Utils.LOG_WARNING(itemstack.getDisplayName() + " is not a valid Tool.");
 		return false;
 	}
 

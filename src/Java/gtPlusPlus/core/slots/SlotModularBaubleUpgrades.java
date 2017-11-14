@@ -14,7 +14,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class SlotModularBaubleUpgrades extends Slot{
+public class SlotModularBaubleUpgrades extends Slot {
 
 	public SlotModularBaubleUpgrades(final IInventory inventory, final int slot, final int x, final int y) {
 		super(inventory, slot, x, y);
@@ -24,27 +24,27 @@ public class SlotModularBaubleUpgrades extends Slot{
 	@Override
 	public boolean isItemValid(final ItemStack itemstack) {
 		boolean isValid = false;
-		if (itemstack != null){
-			Utils.LOG_INFO("trying to insert "+itemstack.getDisplayName());
-			Utils.LOG_INFO("Valid Upgrade count: "+mValidUpgradeList.size());
-			
+		if (itemstack != null) {
+			Utils.LOG_INFO("trying to insert " + itemstack.getDisplayName());
+			Utils.LOG_INFO("Valid Upgrade count: " + mValidUpgradeList.size());
+
 			Iterator<Entry<ItemStack, BT>> it = mValidUpgradeListFormChange.entrySet().iterator();
 			while (it.hasNext()) {
 				Entry<ItemStack, BT> pair = it.next();
 				if (pair.getKey().getItem() == itemstack.getItem()
-						&& pair.getKey().getItemDamage() == itemstack.getItemDamage()){
+						&& pair.getKey().getItemDamage() == itemstack.getItemDamage()) {
 					isValid = true;
 				}
 			}
-			
+
 			Iterator<Entry<ItemStack, Pair<Modifiers, Integer>>> it2 = mValidUpgradeList.entrySet().iterator();
 			while (it2.hasNext()) {
 				Entry<ItemStack, Pair<Modifiers, Integer>> pair = it2.next();
 				if (pair.getKey().getItem() == itemstack.getItem()
-						&& pair.getKey().getItemDamage() == itemstack.getItemDamage()){
+						&& pair.getKey().getItemDamage() == itemstack.getItemDamage()) {
 					isValid = true;
 				}
-			}			
+			}
 		}
 		return isValid;
 	}

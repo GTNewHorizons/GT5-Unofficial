@@ -5,7 +5,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class SlotModularBauble extends Slot{
+public class SlotModularBauble extends Slot {
 
 	public SlotModularBauble(final IInventory inventory, final int slot, final int x, final int y) {
 		super(inventory, slot, x, y);
@@ -16,8 +16,8 @@ public class SlotModularBauble extends Slot{
 	public boolean isItemValid(final ItemStack itemstack) {
 		boolean isValid = false;
 
-		if (itemstack != null){
-			if (itemstack.getItem() instanceof ModularBauble){				
+		if (itemstack != null) {
+			if (itemstack.getItem() instanceof ModularBauble) {
 				isValid = true;
 			}
 		}

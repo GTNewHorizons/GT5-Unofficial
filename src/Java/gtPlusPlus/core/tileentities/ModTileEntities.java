@@ -11,13 +11,16 @@ import gtPlusPlus.core.util.Utils;
 
 public class ModTileEntities {
 
-
-	public static void init(){
+	public static void init() {
 		Utils.LOG_INFO("Registering Tile Entities.");
-		//GameRegistry.registerTileEntity(TileEntityReverter.class, "TE_blockGriefSaver");
-		//GameRegistry.registerTileEntity(TileEntityReverter.class, "Tower Reverter");
-		//GameRegistry.registerTileEntity(TileEntityNHG.class, "NuclearFueledHeliumGenerator");
-		//GameRegistry.registerTileEntity(TileEntityCharger.class, "TE_Charger");
+		// GameRegistry.registerTileEntity(TileEntityReverter.class,
+		// "TE_blockGriefSaver");
+		// GameRegistry.registerTileEntity(TileEntityReverter.class, "Tower
+		// Reverter");
+		// GameRegistry.registerTileEntity(TileEntityNHG.class,
+		// "NuclearFueledHeliumGenerator");
+		// GameRegistry.registerTileEntity(TileEntityCharger.class,
+		// "TE_Charger");
 		GameRegistry.registerTileEntity(TileEntityHeliumGenerator.class, "HeliumGenerator");
 		GameRegistry.registerTileEntity(TileEntityWorkbench.class, "TileWorkbench");
 		GameRegistry.registerTileEntity(TileEntityWorkbenchAdvanced.class, "TileWorkbenchAdvanced");
@@ -27,7 +30,7 @@ public class ModTileEntities {
 		GameRegistry.registerTileEntity(TileEntityProjectTable.class, "TileProjectTable");
 		GameRegistry.registerTileEntity(TileEntityTradeTable.class, "TileTradeTable");
 		GameRegistry.registerTileEntity(TileEntityModularityTable.class, "TileEntityModularityTable");
-		
+
 	}
 
 }

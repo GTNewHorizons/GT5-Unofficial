@@ -6,7 +6,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class SlotGtTool extends Slot{
+public class SlotGtTool extends Slot {
 
 	public SlotGtTool(final IInventory inventory, final int x, final int y, final int z) {
 		super(inventory, x, y, z);
@@ -15,11 +15,11 @@ public class SlotGtTool extends Slot{
 
 	@Override
 	public boolean isItemValid(final ItemStack itemstack) {
-		if (itemstack.getItem() instanceof GT_MetaGenerated_Tool){
-			Utils.LOG_WARNING(itemstack.getDisplayName()+" is a valid Tool.");
+		if (itemstack.getItem() instanceof GT_MetaGenerated_Tool) {
+			Utils.LOG_WARNING(itemstack.getDisplayName() + " is a valid Tool.");
 			return true;
 		}
-		Utils.LOG_WARNING(itemstack.getDisplayName()+" is not a valid Tool.");
+		Utils.LOG_WARNING(itemstack.getDisplayName() + " is not a valid Tool.");
 		return false;
 	}
 

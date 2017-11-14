@@ -5,7 +5,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class SlotFrame extends Slot{
+public class SlotFrame extends Slot {
 
 	public SlotFrame(final IInventory inventory, final int x, final int y, final int z) {
 		super(inventory, x, y, z);

@@ -16,18 +16,18 @@ public class AddToCreativeTab {
 	public static CreativeTabs tabOther;
 	public static CreativeTabs tabBOP;
 
-	public static void initialiseTabs(){
+	public static void initialiseTabs() {
 		tabBlock = new MiscUtilCreativeTabBlock("MiscUtilBlockTab");
 		tabMisc = new MiscUtilCreativeTabMisc("MiscUtilMiscTab");
 		tabTools = new MiscUtilCreativeTabTools("MiscUtilToolsTab");
 		tabMachines = new MiscUtilCreativeTabMachines("MiscUtilMachineTab");
 		tabOther = new MiscUtilCreativeTabOther("MiscUtilOtherTab");
-		if (LoadedMods.BiomesOPlenty){
+		if (LoadedMods.BiomesOPlenty) {
 			tabBOP = new MiscUtilsBOPTab("MiscUtilBOP");
 		}
 
-		if (CORE.DEBUG){
-			//tabCombat = new MiscUtilCreativeTabCombat("MiscUtilCombatTab");
+		if (CORE.DEBUG) {
+			// tabCombat = new MiscUtilCreativeTabCombat("MiscUtilCombatTab");
 		}
 	}
 }
