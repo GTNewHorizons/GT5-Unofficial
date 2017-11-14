@@ -52,6 +52,8 @@ public class RECIPES_GREGTECH {
 		cyclotronRecipes();
 		blastSmelterRecipes();
 		advancedMixerRecipes();
+		sifterRecipes();
+		electroMagneticSeperatorRecipes();
 		addFuels();
 	}	
 
@@ -954,6 +956,49 @@ public class RECIPES_GREGTECH {
 				20*300, 
 				2040, 
 				500*20);		
+	}
+	
+	private static void sifterRecipes() {
+		//Zirconium
+		GT_Values.RA.addSifterRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedTin", 1),
+				new ItemStack[]{
+						ItemUtils.getItemStackOfAmountFromOreDict("dustTin", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyZinc", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1)
+						},
+				new int[]{10000, 5000, 1500, 1000, 500, 500},
+				20*30,
+				60);	
+
+		//Zirconium
+		GT_Values.RA.addSifterRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedCassiterite", 1),
+				new ItemStack[]{
+						ItemUtils.getItemStackOfAmountFromOreDict("dustCassiterite", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustTinyTin", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1),
+						ItemUtils.getItemStackOfAmountFromOreDict("dustZirconium", 1)
+						},
+				new int[]{10000, 5000, 1500, 1000, 500, 500},
+				20*30,
+				60);
+	}
+	
+	private static void electroMagneticSeperatorRecipes(){
+		GT_Values.RA.addElectromagneticSeparatorRecipe(
+				ItemUtils.getItemStackOfAmountFromOreDict("crushedPurifiedBauxite", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustBauxite", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("dustSmallRutile", 1),
+				ItemUtils.getItemStackOfAmountFromOreDict("nuggetZirconium", 1),
+				new int[]{10000, 2500, 4000},
+				20*20,
+				24);
 	}
 	
 	private static void advancedMixerRecipes(){
