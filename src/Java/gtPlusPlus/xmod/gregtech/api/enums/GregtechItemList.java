@@ -255,7 +255,12 @@ public enum GregtechItemList implements GregtechItemContainer {
 	
 	//Custom hatches
 	Hatch_Input_Battery_MV, Hatch_Input_Battery_EV, 
-	Hatch_Output_Battery_MV, Hatch_Output_Battery_EV,
+	Hatch_Output_Battery_MV, Hatch_Output_Battery_EV, 
+	
+	//Wireless Chargers
+	Charger_LV,	Charger_MV, Charger_HV,
+	Charger_EV,	Charger_IV,	Charger_LuV, 
+	Charger_ZPM, Charger_UV, Charger_MAX,
 	
 	
 	
