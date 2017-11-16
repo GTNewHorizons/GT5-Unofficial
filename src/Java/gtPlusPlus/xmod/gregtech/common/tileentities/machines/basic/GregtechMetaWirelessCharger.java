@@ -17,6 +17,7 @@ import gtPlusPlus.core.util.entity.EntityUtils;
 import gtPlusPlus.core.util.player.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMetaTileEntity;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
+import gtPlusPlus.xmod.gregtech.common.helpers.ChargingHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -25,6 +26,8 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 
+	private boolean mHasBeenMapped = false;
+	
 	public GregtechMetaWirelessCharger(final int aID, final String aName, final String aNameRegional, final int aTier, final String aDescription, final int aSlotCount) {
 		super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
 	}
@@ -43,6 +46,22 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 				"Mixed mode is more conservative of power and as a result only",
 				"gets half the distances each singular mode gets.",
 				CORE.GT_Tooltip};
+	}
+	
+	public int getTier(){
+		return this.mTier;
+	}
+	
+	public int getMode(){
+		return this.mMode;
+	}
+	
+	public Map<UUID, EntityPlayer> getLocalMap(){
+		return this.mLocalChargingMap;
+	}
+	
+	public Map<EntityPlayer, UUID> getLongRangeMap(){
+		return this.mWirelessChargingMap;
 	}
 
 	@Override
@@ -335,8 +354,11 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 		super.onPostTick(aBaseMetaTileEntity, aTick);
 		if (this.getBaseMetaTileEntity().isServerSide()) {
 
+			if (!mHasBeenMapped && ChargingHelper.addEntry(getTileEntityPosition(), this)){
+				mHasBeenMapped = true;
+			}
 
-			if (aTick % 20 == 0){
+			if (aTick % 20 == 0 && mHasBeenMapped){
 				if (!aBaseMetaTileEntity.getWorld().playerEntities.isEmpty()){
 					for (Object mTempPlayer : aBaseMetaTileEntity.getWorld().playerEntities){
 						if (mTempPlayer instanceof EntityPlayer || mTempPlayer instanceof EntityPlayerMP){
@@ -347,13 +369,15 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 								if (getDistanceBetweenTwoPositions(getTileEntityPosition(), getPositionOfEntity(mTemp)) < tempRange){
 									if (!mLocalChargingMap.containsKey(mTemp.getPersistentID())){
 										mLocalChargingMap.put(mTemp.getPersistentID(), mTemp);
+										ChargingHelper.addValidPlayer(mTemp, this);
 										PlayerUtils.messagePlayer(mTemp, "You have entered charging range. ["+tempRange+"m].");
 									}
 								}
 								else {
 									if (mLocalChargingMap.containsKey(mTemp.getPersistentID())){
 										if (mLocalChargingMap.remove(mTemp.getPersistentID()) != null){
-											PlayerUtils.messagePlayer(mTemp, "You have left charging range. ["+tempRange+"m].");	
+											PlayerUtils.messagePlayer(mTemp, "You have left charging range. ["+tempRange+"m].");
+											ChargingHelper.removeValidPlayer(mTemp, this);	
 										}
 									}
 								}
@@ -364,12 +388,14 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 									if (!mWirelessChargingMap.containsKey(mTemp)){
 										mWirelessChargingMap.put(mTemp, mTemp.getPersistentID());
 										PlayerUtils.messagePlayer(mTemp, "You have entered charging range. ["+tempRange+"m].");
+										ChargingHelper.addValidPlayer(mTemp, this);
 									}
 								}
 								else {
 									if (mWirelessChargingMap.containsKey(mTemp)){
 										if (mWirelessChargingMap.remove(mTemp) != null){
-											PlayerUtils.messagePlayer(mTemp, "You have left charging range. ["+tempRange+"m].");	
+											PlayerUtils.messagePlayer(mTemp, "You have left charging range. ["+tempRange+"m].");
+											ChargingHelper.removeValidPlayer(mTemp, this);		
 										}
 									}
 								}
@@ -384,18 +410,18 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 		}		
 	}
 
-	private BlockPos getTileEntityPosition(){
+	public BlockPos getTileEntityPosition(){
 		return new BlockPos(this.getBaseMetaTileEntity().getXCoord(), this.getBaseMetaTileEntity().getYCoord(), this.getBaseMetaTileEntity().getZCoord());
 	}
 
-	private BlockPos getPositionOfEntity(Entity mEntity){
+	public BlockPos getPositionOfEntity(Entity mEntity){
 		if (mEntity == null){
 			return null;
 		}
 		return EntityUtils.findBlockPosUnderEntity(mEntity);
 	}
 
-	private double getDistanceBetweenTwoPositions(BlockPos objectA, BlockPos objectB){
+	public double getDistanceBetweenTwoPositions(BlockPos objectA, BlockPos objectB){
 		int[] objectArray1 = new int[]{objectA.xPos, objectA.yPos, objectA.zPos};
 		int[] objectArray2 = new int[]{objectB.xPos, objectB.yPos, objectB.zPos};
 		if (objectA == null || objectB == null){
@@ -411,6 +437,9 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 	@Override
 	public void onRemoval() {
 		mWirelessChargingMap.clear();
+		mLocalChargingMap.clear();
+		ChargingHelper.removeEntry(getTileEntityPosition(), this);
+		
 		super.onRemoval();
 	}
 
@@ -445,6 +474,10 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 	@Override
 	public void onServerStart() {
 		mWirelessChargingMap.clear();
+		mLocalChargingMap.clear();
+		if (!mHasBeenMapped && ChargingHelper.addEntry(getTileEntityPosition(), this)){
+			mHasBeenMapped = true;
+		}
 		super.onServerStart();
 	}
 
