@@ -256,6 +256,7 @@ public class ChargingHelper {
 
 		for (ItemStack mTemp : mItems){
 			mItemSlot++;
+			Utils.LOG_INFO("Trying to Tick slot "+mItemSlot);
 			//Is item Electrical
 			if (isItemValid(mTemp)){
 
@@ -266,6 +267,10 @@ public class ChargingHelper {
 
 					double mItemMaxCharge = ((IElectricItem) mTemp.getItem()).getMaxCharge(mTemp);
 					double mitemCurrentCharge = ElectricItem.manager.getCharge(mTemp);
+
+					if (mitemCurrentCharge >= mItemMaxCharge){
+						continue;
+					}
 
 					//Try get charge direct from NBT for GT and IC2 stacks
 					try {
@@ -316,31 +321,44 @@ public class ChargingHelper {
 					else if ((mitemCurrentCharge + (mVoltageIncrease*5)) <= (mItemMaxCharge - (mVoltageIncrease*5))){
 						mMulti = 5;
 					}
-					else if ((mitemCurrentCharge + mVoltageIncrease) <= (mItemMaxCharge - mVoltageIncrease)){
-						mMulti = 1;
-					}
 					else {
 						mMulti = 1;
 					}
 
+
 					int mMultiVoltage = (int) (mMulti*mVoltageIncrease);
 
-					if ((mitemCurrentCharge + (mVoltageIncrease*mMulti)) <= (mItemMaxCharge - (mVoltageIncrease*mMulti))){
-						GT_ModHandler.chargeElectricItem(mTemp, mMultiVoltage, mTier, false, false);					
-						//ElectricItem.manager.charge(mTemp, (mItemMaxCharge), mTier, false, false);
-						mEntity.setEUVar((long) (mEuStored-(mVoltage*mMulti)));
-						mEuStored = mEntity.getEUVar();
-						Utils.LOG_INFO("Charged "+mTemp.getDisplayName()+" | Slot: "+mItemSlot+" | EU Multiplier: "+mMulti+" | EU/t input: "+mVoltageIncrease+" | EU/t consumed by Tile: "+mVoltage+" | Item Max Charge: "+mItemMaxCharge+" | Item Start Charge: "+mitemCurrentCharge+" | Item New Charge"+ElectricItem.manager.getCharge(mTemp));
-						mChargedItems++;
+					if ((mitemCurrentCharge + mMultiVoltage) <= mItemMaxCharge){
+						if (GT_ModHandler.chargeElectricItem(mTemp, mMultiVoltage, mTier, true, false) == 0){
+							for (int i=0; i<mMulti;i++){
+								if (ElectricItem.manager.charge(mTemp, mVoltageIncrease, mTier, false, false) == 0){
+									continue;
+								}
+							}
+						}
+						if (ElectricItem.manager.getCharge(mTemp) > mitemCurrentCharge){
+							mEntity.setEUVar((long) (mEuStored-(mVoltage*mMulti)));
+							mEuStored = mEntity.getEUVar();
+							Utils.LOG_INFO("Charged "+mTemp.getDisplayName()+" | Slot: "+mItemSlot+" | EU Multiplier: "+mMulti+" | EU/t input: "+mVoltageIncrease+" | EU/t consumed by Tile: "+mVoltage+" | Item Max Charge: "+mItemMaxCharge+" | Item Start Charge: "+mitemCurrentCharge+" | Item New Charge"+ElectricItem.manager.getCharge(mTemp));
+							mChargedItems++;
+						}
 					}
 
 
 				}
 			}
+			else {
+				if (mTemp != null){
+					Utils.LOG_INFO("Found Non-Valid item."+mTemp.getDisplayName());
+				}
+			}
 		}
+
+		//Return Values
 		if (mChargedItems < 1){
 			return mEuStoredOriginal;
 		}
+
 		return mEntity.getEUVar();
 	}
 
