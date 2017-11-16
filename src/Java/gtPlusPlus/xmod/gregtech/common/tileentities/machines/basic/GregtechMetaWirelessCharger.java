@@ -45,6 +45,7 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 				"Mixed: Provides both 2A of long range and 1A per player locally.",
 				"Mixed mode is more conservative of power and as a result only",
 				"gets half the distances each singular mode gets.",
+				"Long-Range mode currently disabled.",
 				CORE.GT_Tooltip};
 	}
 
@@ -158,7 +159,7 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 			this.mMode++;
 		}
 		if (this.mMode == 0){
-			PlayerUtils.messagePlayer(aPlayer, "Now in Long-Range Mode.");				
+			PlayerUtils.messagePlayer(aPlayer, "Now in Long-Range Mode. [Disabled]");				
 		}
 		else if (this.mMode == 1){
 			PlayerUtils.messagePlayer(aPlayer, "Now in Local Charge Mode.");				
@@ -394,7 +395,7 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 									}
 								}
 							}
-							if (this.mMode == 0 || this.mMode == 2){
+							/*if (this.mMode == 0 || this.mMode == 2){
 								int tempRange = (int) (this.mMode == 0 ? 4*GT_Values.V[this.mTier] : 2*GT_Values.V[this.mTier]);
 								if (getDistanceBetweenTwoPositions(getTileEntityPosition(), getPositionOfEntity(mTemp)) < tempRange){
 									if (!mWirelessChargingMap.containsKey(mTemp)){
@@ -411,7 +412,7 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 										}
 									}
 								}
-							} 
+							} */
 
 						}
 					}
@@ -487,7 +488,7 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 
 		}
 		else {
-			PlayerUtils.messagePlayer(aPlayer, "Long-range Mode: "+tempRange+"m");	
+			PlayerUtils.messagePlayer(aPlayer, "Long-range Mode: "+tempRange+"m [Disabled]");	
 
 		}
 
