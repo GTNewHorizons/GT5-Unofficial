@@ -184,7 +184,7 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 	@Override public boolean isOutputFacing(final byte aSide)				{return aSide==this.getBaseMetaTileEntity().getFrontFacing();}
 	@Override public boolean isTeleporterCompatible()				{return false;}
 	@Override public long getMinimumStoredEU()						{return 0;}
-	@Override public long maxEUStore()								{return GT_Values.V[this.mTier]*32;}
+	@Override public long maxEUStore()								{return GT_Values.V[this.mTier]*128;}
 
 	@Override
 	public int getCapacity() {
@@ -207,10 +207,10 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 			return 2;
 		}
 		else if (this.mMode == 1){
-			return this.mLocalChargingMap.size();
+			return this.mLocalChargingMap.size()*8;
 		}
 		else {
-			return (this.mLocalChargingMap.size()+this.mWirelessChargingMap.size());
+			return ((this.mLocalChargingMap.size()*4)+this.mWirelessChargingMap.size());
 		}
 	}
 
