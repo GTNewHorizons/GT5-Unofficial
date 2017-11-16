@@ -448,6 +448,9 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 
 	@Override
 	public void onRemoval() {
+		
+		ChargingHelper.removeEntry(getTileEntityPosition(), this);
+		
 		mWirelessChargingMap.clear();
 		mLocalChargingMap.clear();
 		if (!this.getBaseMetaTileEntity().getWorld().playerEntities.isEmpty()){
@@ -459,7 +462,6 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 			}
 		}
 
-		ChargingHelper.removeEntry(getTileEntityPosition(), this);
 
 		super.onRemoval();
 	}
@@ -500,6 +502,18 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 			mHasBeenMapped = true;
 		}
 		super.onServerStart();
+	}
+
+	@Override
+	public void onExplosion() {
+		ChargingHelper.removeEntry(getTileEntityPosition(), this);
+		super.onExplosion();
+	}
+
+	@Override
+	public void doExplosion(long aExplosionPower) {
+		ChargingHelper.removeEntry(getTileEntityPosition(), this);
+		super.doExplosion(aExplosionPower);
 	}
 
 }
