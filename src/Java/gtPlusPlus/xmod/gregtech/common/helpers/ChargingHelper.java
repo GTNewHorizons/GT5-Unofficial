@@ -9,10 +9,16 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.util.GT_ModHandler;
+import gregtech.common.items.GT_MetaGenerated_Item_01;
+import gregtech.common.items.GT_MetaGenerated_Item_02;
+import gregtech.common.items.GT_MetaGenerated_Item_03;
+import gregtech.common.items.GT_MetaGenerated_Tool_01;
+import gregtech.common.tools.GT_Tool;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.BlockPos;
 import gtPlusPlus.core.util.array.Pair;
 import gtPlusPlus.core.util.math.MathUtils;
+import gtPlusPlus.core.util.nbt.NBTUtils;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaWirelessCharger;
 import ic2.api.info.Info;
 import ic2.api.item.ElectricItem;
@@ -43,22 +49,22 @@ public class ChargingHelper {
 						//Utils.LOG_INFO("Found Server-Side.");
 
 						mTickTimer++;				
-						if (mTickTimer % 20 == 0){					
+						if (mTickTimer % 10 == 0){					
 
 							long mVoltage = 0;
 							long mEuStored = 0;
 
-							if (!mChargerMap.isEmpty()  && mValidPlayers.containsKey(mPlayerMan)){
+							if (!mChargerMap.isEmpty() && mValidPlayers.containsKey(mPlayerMan)){
+
+								InventoryPlayer mPlayerInventory = mPlayerMan.inventory;
+								ItemStack[] mArmourContents = mPlayerInventory.armorInventory.clone();
+								ItemStack[] mInventoryContents = mPlayerInventory.mainInventory.clone();
 
 								for (GregtechMetaWirelessCharger mEntityTemp : mChargerMap.values()){
 									if (mEntityTemp != null){
 										mVoltage = mEntityTemp.getInputTier();
 										mEuStored = mEntityTemp.getEUVar();
 										if (mVoltage > 0 && mEuStored >= mVoltage){								
-
-											InventoryPlayer mPlayerInventory = mPlayerMan.inventory;
-											ItemStack[] mArmourContents = mPlayerInventory.armorInventory;
-											ItemStack[] mInventoryContents = mPlayerInventory.mainInventory;
 
 											Map<EntityPlayer, UUID> LR = mEntityTemp.getLongRangeMap();
 											Map<UUID, EntityPlayer> LO = mEntityTemp.getLocalMap();
@@ -215,7 +221,7 @@ public class ChargingHelper {
 		}
 		return mEntityTemp.getDistanceBetweenTwoPositions(mEntityTemp.getTileEntityPosition(), mEntityTemp.getPositionOfEntity(mPlayerMan));
 	}
-	
+
 	public long chargeItems(GregtechMetaWirelessCharger mEntity, ItemStack[] mItems, EntityPlayer mPlayer){
 		if (mEntity == null){
 			return -100;
@@ -229,42 +235,106 @@ public class ChargingHelper {
 	}
 
 	public long chargeItemsEx(GregtechMetaWirelessCharger mEntity, ItemStack[] mItems, EntityPlayer mPlayer){
+
+		//Bad Entity
 		if (mEntity == null){
 			return -100;
 		}
+		//Bad Inventory
 		if (mItems == null || mItems.length == 0){
 			return mEntity.getEUVar();
 		}
+		//Set Variables to Charge
 		int mChargedItems = 0;
 		final int mTier = mEntity.getTier();
 		final long mVoltage = mEntity.maxEUInput();
 		long mEuStored = mEntity.getEUVar();
 		final long mEuStoredOriginal = mEntity.getEUVar();
+		//For Inventory Contents
+
+		int mItemSlot = 0;
+
 		for (ItemStack mTemp : mItems){
+			mItemSlot++;
+			//Is item Electrical
 			if (isItemValid(mTemp)){
-				double mItemTier = ((IElectricItem) mTemp.getItem()).getTransferLimit(mTemp);
-				if (mEuStored >= mItemTier){
+
+				//Transfer Limit
+				double mItemEuTLimit = ((IElectricItem) mTemp.getItem()).getTransferLimit(mTemp);
+				//Check if Tile has more or equal EU to what can be transferred into the item.
+				if (mEuStored >= mItemEuTLimit){
+
 					double mItemMaxCharge = ((IElectricItem) mTemp.getItem()).getMaxCharge(mTemp);
 					double mitemCurrentCharge = ElectricItem.manager.getCharge(mTemp);
-					
-					double mVoltageDecrease;
-					if (mItemTier >= mVoltage){
-						mVoltageDecrease = mVoltage;
+
+					//Try get charge direct from NBT for GT and IC2 stacks
+					try {
+						if (mTemp.getItem() instanceof GT_MetaGenerated_Tool_01 
+								|| mTemp.getItem() instanceof GT_MetaGenerated_Item_01 
+								|| mTemp.getItem() instanceof GT_MetaGenerated_Item_02 
+								|| Class.forName("gregtech.common.items.GT_MetaGenerated_Item_03").isInstance(mTemp.getItem()) 
+								|| mTemp.getItem().getClass().getName().toLowerCase().equals(("gregtech.common.items.GT_MetaGenerated_Tool_01").toLowerCase())){
+							if (!NBTUtils.hasKey(mTemp, "GT.ItemCharge")){
+								if (!mTemp.getDisplayName().toLowerCase().contains("battery")){
+									if (!GT_ModHandler.isElectricItem(mTemp)){
+										continue;
+									}
+								}
+								else {
+									mitemCurrentCharge = 0;
+								}
+							}
+							else {
+								mitemCurrentCharge = NBTUtils.getLong(mTemp, "GT.ItemCharge");
+							}
+						}
+						else if (mTemp.getItem() instanceof IElectricItem){
+							mitemCurrentCharge = NBTUtils.getLong(mTemp, "charge");
+						}
+					} catch (ClassNotFoundException e) {
+
+					}				
+
+					double mVoltageIncrease;
+					if (mItemEuTLimit >= mVoltage){
+						mVoltageIncrease = mVoltage;
 					}
-					else if (mItemTier < mVoltage){
-						mVoltageDecrease = mItemTier;						
+					else if (mItemEuTLimit < mVoltage){
+						mVoltageIncrease = mItemEuTLimit;						
 					}
 					else {
-						mVoltageDecrease = mItemTier;
+						mVoltageIncrease = mItemEuTLimit;
 					}
-					
-					if ((mitemCurrentCharge + mVoltageDecrease) <= (mItemMaxCharge - mVoltageDecrease)){
-						ElectricItem.manager.charge(mTemp, mVoltageDecrease, mTier, false, false);
-						mEntity.setEUVar((long) (mEuStored-mVoltage));
+
+					int mMulti;
+					if ((mitemCurrentCharge + (mVoltageIncrease*20)) <= (mItemMaxCharge - (mVoltageIncrease*20))){
+						mMulti = 20;
+					}
+					else if ((mitemCurrentCharge + (mVoltageIncrease*10)) <= (mItemMaxCharge - (mVoltageIncrease*10))){
+						mMulti = 10;
+					}
+					else if ((mitemCurrentCharge + (mVoltageIncrease*5)) <= (mItemMaxCharge - (mVoltageIncrease*5))){
+						mMulti = 5;
+					}
+					else if ((mitemCurrentCharge + mVoltageIncrease) <= (mItemMaxCharge - mVoltageIncrease)){
+						mMulti = 1;
+					}
+					else {
+						mMulti = 1;
+					}
+
+					int mMultiVoltage = (int) (mMulti*mVoltageIncrease);
+
+					if ((mitemCurrentCharge + (mVoltageIncrease*mMulti)) <= (mItemMaxCharge - (mVoltageIncrease*mMulti))){
+						GT_ModHandler.chargeElectricItem(mTemp, mMultiVoltage, mTier, false, false);					
+						//ElectricItem.manager.charge(mTemp, (mItemMaxCharge), mTier, false, false);
+						mEntity.setEUVar((long) (mEuStored-(mVoltage*mMulti)));
 						mEuStored = mEntity.getEUVar();
+						Utils.LOG_INFO("Charged "+mTemp.getDisplayName()+" | Slot: "+mItemSlot+" | EU Multiplier: "+mMulti+" | EU/t input: "+mVoltageIncrease+" | EU/t consumed by Tile: "+mVoltage+" | Item Max Charge: "+mItemMaxCharge+" | Item Start Charge: "+mitemCurrentCharge+" | Item New Charge"+ElectricItem.manager.getCharge(mTemp));
 						mChargedItems++;
-						Utils.LOG_INFO("Charged "+mTemp.getDisplayName()+" by "+mItemTier+" for "+mPlayer.getCommandSenderName());
 					}
+
+
 				}
 			}
 		}
@@ -278,6 +348,9 @@ public class ChargingHelper {
 		if (itemstack == null){
 			return false;
 		}
+		if (GT_ModHandler.isElectricItem(itemstack)){
+			return true;
+		}
 		if ((accepts(itemstack)) || (itemstack.getItem() instanceof IElectricItem)) {
 			return true;
 		}
@@ -288,10 +361,6 @@ public class ChargingHelper {
 		if (stack == null) {
 			return false;
 		}
-		if (GT_ModHandler.isElectricItem(stack)){
-			return true;
-		}
-		
 		return (Info.itemEnergy.getEnergyValue(stack) > 0.0D)
 				|| (ElectricItem.manager.discharge(stack, (1.0D / 0.0D), 4, true, true, true) > 0.0D);
 	}
