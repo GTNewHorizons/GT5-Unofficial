@@ -241,7 +241,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public int getPollutionPerTick(final ItemStack aStack) {
-		return 0;
+		return 20;
 	}
 
 	@Override

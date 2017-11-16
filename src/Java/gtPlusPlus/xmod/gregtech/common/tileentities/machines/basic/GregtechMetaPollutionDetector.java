@@ -15,6 +15,7 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
@@ -25,6 +26,7 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 	private int mArrayPos = 0;
 	private int mTickTimer = 0;
 	private int mSecondTimer = 0;
+	private long mRedstoneLevel = 0;
 
 	public GregtechMetaPollutionDetector(final int aID, final String aName, final String aNameRegional, final int aTier, final String aDescription, final int aSlotCount) {
 		super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
@@ -36,9 +38,21 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 
 	@Override
 	public String[] getDescription() {
-		return new String[] {this.mDescription, "Right click to check pollution levels.", "Does not use power.", CORE.GT_Tooltip};
+		return new String[] {this.mDescription, "Right click to check pollution levels.",
+				"Configure with screwdriver to set redstone output amount.",
+				"Does not use power.", CORE.GT_Tooltip};
 	}
 
+	@Override
+	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing,
+			final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
+		return aSide == aFacing
+				? new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
+						new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Screen_Frequency) }
+		: new ITexture[] { new GT_RenderedTexture(TexturesGtBlock.Casing_Machine_Dimensional),
+				new GT_RenderedTexture(Textures.BlockIcons.VOID) };
+	}
+	
 	@Override
 	public ITexture[][][] getTextureSet(final ITexture[] aTextures) {
 		final ITexture[][][] rTextures = new ITexture[10][17][];
@@ -57,10 +71,10 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 		return rTextures;
 	}
 
-	@Override
+	/*@Override
 	public ITexture[] getTexture(final IGregTechTileEntity aBaseMetaTileEntity, final byte aSide, final byte aFacing, final byte aColorIndex, final boolean aActive, final boolean aRedstone) {
 		return this.mTextures[(aActive ? 5 : 0) + (aSide == aFacing ? 0 : aSide == GT_Utility.getOppositeSide(aFacing) ? 1 : aSide == 0 ? 2 : aSide == 1 ? 3 : 4)][aColorIndex + 1];
-	}
+	}*/
 
 
 	public ITexture[] getFront(final byte aColor) {
@@ -205,7 +219,7 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 		return new String[] {
 				this.getLocalName(),
 				"Current Pollution: "+this.mCurrentPollution,
-				"Average/10 minutes:"+getAveragePollutionOverLastTen()};
+				"Emit Redstone at pollution level: "+this.mRedstoneLevel};
 	}
 
 	@Override
@@ -303,12 +317,14 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 	public void saveNBTData(final NBTTagCompound aNBT) {
 		aNBT.setInteger("mCurrentPollution", this.mCurrentPollution);
 		aNBT.setInteger("mAveragePollution", this.mAveragePollution);
+		aNBT.setLong("mRedstoneLevel", this.mRedstoneLevel);
 	}
 
 	@Override
 	public void loadNBTData(final NBTTagCompound aNBT) {
 		this.mCurrentPollution = aNBT.getInteger("mCurrentPollution");
 		this.mAveragePollution = aNBT.getInteger("mAveragePollution");
+		this.mRedstoneLevel = aNBT.getLong("mRedstoneLevel");
 	}
 
 	@Override
@@ -324,11 +340,26 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 		}
 	}
 
-
+	public boolean allowCoverOnSide(final byte aSide, final int aCoverID) {
+		return aSide != this.getBaseMetaTileEntity().getFrontFacing();
+	}
 
 	@Override
 	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
 		super.onPostTick(aBaseMetaTileEntity, aTick);
+		
+		if (this.getCurrentChunkPollution() >= this.mRedstoneLevel){
+			this.markDirty();
+			for (int i=0;i<6;i++){
+				this.getBaseMetaTileEntity().setStrongOutputRedstoneSignal((byte) i, (byte) 16);
+			}
+		}
+		else {
+			for (int i=0;i<6;i++){
+				this.getBaseMetaTileEntity().setStrongOutputRedstoneSignal((byte) i, (byte) 0);
+			}
+		}
+		
 		if (this.getBaseMetaTileEntity().isServerSide()) {
 			//TickTimer - 20 times a second
 			if (this.mTickTimer >= 0 || this.mTickTimer <= 19){
@@ -376,6 +407,61 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 		}
 		Utils.LOG_INFO("| DEBUG: "+returnValue +" | ArrayPos:"+this.mArrayPos+" | Counter:"+counter+" | Total:"+total+" |");
 		return returnValue;
+	}
+
+	@Override
+	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer,
+			float aX, float aY, float aZ) {
+		
+			if (aSide == this.getBaseMetaTileEntity().getFrontFacing()) {
+				final float[] tCoords = GT_Utility.getClickedFacingCoords(aSide, aX, aY, aZ);
+				switch ((byte) ((byte) (int) (tCoords[0] * 2.0F) + (2 * (byte) (int) (tCoords[1] * 2.0F)))) {
+				case 0:
+					this.mRedstoneLevel -= 5000;
+					break;
+				case 1:
+					this.mRedstoneLevel += 5000;
+					break;
+				case 2:
+					this.mRedstoneLevel -= 50000;
+					break;
+				case 3:
+					this.mRedstoneLevel += 50000;
+				}
+				this.markDirty();
+					GT_Utility.sendChatToPlayer(aPlayer, "Emit Redstone at Pollution Level: " + this.mRedstoneLevel);
+			}
+		
+		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
+	}
+
+	@Override
+	public boolean allowGeneralRedstoneOutput() {
+		if (this.getCurrentChunkPollution() >= this.mRedstoneLevel){
+			this.markDirty();
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity,
+			EntityPlayer aPlayer, byte aSide, float aX, float aY, float aZ) {
+		return super.onRightclick(aBaseMetaTileEntity, aPlayer, aSide, aX, aY, aZ);
+	}
+
+	@Override
+	public void onMachineBlockUpdate() {
+		super.onMachineBlockUpdate();
+	}
+
+	@Override
+	public boolean hasSidedRedstoneOutputBehavior() {
+		if (this.getCurrentChunkPollution() >= this.mRedstoneLevel){
+			this.markDirty();
+			return true;
+		}
+		return false;
 	}
 
 }
