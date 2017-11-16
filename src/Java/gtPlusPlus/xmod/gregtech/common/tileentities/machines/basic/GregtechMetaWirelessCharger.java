@@ -41,11 +41,12 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 		return new String[] {this.mDescription,
 				"3 Modes, Long-Range, Local and Mixed.", 
 				"Long-Range: Can supply 2A of power to a single player upto "+(GT_Values.V[this.mTier]*4)+"m away.",
-				"Local: Can supply 1A to each player within "+this.mTier*10+"m.",
+				"Local: Can supply several Amps to each player within "+this.mTier*20+"m.",
 				"Mixed: Provides both 2A of long range and 1A per player locally.",
 				"Mixed mode is more conservative of power and as a result only",
-				"gets half the distances each singular mode gets.",
+				"Gets half the distances each singular mode gets.",
 				"Long-Range mode currently disabled.",
+				"Free Double Distance boost to local mode.",
 				CORE.GT_Tooltip};
 	}
 
@@ -378,7 +379,7 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 							EntityPlayer mTemp = (EntityPlayer) mTempPlayer;
 
 							if (this.mMode == 1 || this.mMode == 2){
-								int tempRange = (this.mMode == 1 ? this.mTier*10 : this.mTier*5);
+								int tempRange = (this.mMode == 1 ? this.mTier*20 : this.mTier*10);
 								if (getDistanceBetweenTwoPositions(getTileEntityPosition(), getPositionOfEntity(mTemp)) < tempRange){
 									if (!mLocalChargingMap.containsKey(mTemp.getPersistentID())){
 										mLocalChargingMap.put(mTemp.getPersistentID(), mTemp);
@@ -477,14 +478,14 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 			tempRange = (int) (this.mMode == 0 ? 4*GT_Values.V[this.mTier] : 2*GT_Values.V[this.mTier]);			
 		}
 		else {
-			tempRange = this.mMode == 1 ? this.mTier*10 : this.mTier*5;			
+			tempRange = this.mMode == 1 ? this.mTier*20 : this.mTier*10;			
 		}
 
 		if (this.mMode == 2){
-			PlayerUtils.messagePlayer(aPlayer, "Mixed Mode | Local: "+this.mTier*5+"m | Long: "+tempRange+"m");	
+			PlayerUtils.messagePlayer(aPlayer, "Mixed Mode | Local: "+this.mTier*10+"m | Long: "+tempRange+"m [Disabled]");	
 		}
 		else if (this.mMode == 1){
-			PlayerUtils.messagePlayer(aPlayer, "Local Mode: "+this.mTier*10+"m");	
+			PlayerUtils.messagePlayer(aPlayer, "Local Mode: "+this.mTier*20+"m");	
 
 		}
 		else {
