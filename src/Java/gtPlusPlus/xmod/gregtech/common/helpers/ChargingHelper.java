@@ -8,6 +8,7 @@ import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.items.GT_MetaGenerated_Tool;
+import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.BlockPos;
 import gtPlusPlus.core.util.array.Pair;
@@ -116,7 +117,7 @@ public class ChargingHelper {
 
 										}
 										else {
-											Utils.LOG_INFO("Voltage: "+mVoltage+" | Eu Storage: "+mEuStored);
+											//Utils.LOG_INFO("Voltage: "+mVoltage+" | Eu Storage: "+mEuStored);
 										}
 									}
 								}
@@ -236,16 +237,35 @@ public class ChargingHelper {
 		}
 		int mChargedItems = 0;
 		final int mTier = mEntity.getTier();
-		final long mVoltage = mEntity.getInputTier();
+		final long mVoltage = mEntity.maxEUInput();
 		long mEuStored = mEntity.getEUVar();
 		final long mEuStoredOriginal = mEntity.getEUVar();
 		for (ItemStack mTemp : mItems){
 			if (isItemValid(mTemp)){
-				ElectricItem.manager.charge(mTemp, mVoltage, mTier, false, false);
-				mEntity.setEUVar(mEuStored-mVoltage);
-				mEuStored = mEntity.getEUVar();
-				mChargedItems++;
-				Utils.LOG_INFO("Charged "+mTemp.getDisplayName()+" by "+mVoltage+" for "+mPlayer.getCommandSenderName());
+				double mItemTier = ((IElectricItem) mTemp.getItem()).getTransferLimit(mTemp);
+				if (mEuStored >= mItemTier){
+					double mItemMaxCharge = ((IElectricItem) mTemp.getItem()).getMaxCharge(mTemp);
+					double mitemCurrentCharge = ElectricItem.manager.getCharge(mTemp);
+					
+					double mVoltageDecrease;
+					if (mItemTier >= mVoltage){
+						mVoltageDecrease = mVoltage;
+					}
+					else if (mItemTier < mVoltage){
+						mVoltageDecrease = mItemTier;						
+					}
+					else {
+						mVoltageDecrease = mItemTier;
+					}
+					
+					if ((mitemCurrentCharge + mVoltageDecrease) <= (mItemMaxCharge - mVoltageDecrease)){
+						ElectricItem.manager.charge(mTemp, mVoltageDecrease, mTier, false, false);
+						mEntity.setEUVar((long) (mEuStored-mVoltage));
+						mEuStored = mEntity.getEUVar();
+						mChargedItems++;
+						Utils.LOG_INFO("Charged "+mTemp.getDisplayName()+" by "+mItemTier+" for "+mPlayer.getCommandSenderName());
+					}
+				}
 			}
 		}
 		if (mChargedItems < 1){
@@ -255,7 +275,10 @@ public class ChargingHelper {
 	}
 
 	public boolean isItemValid(final ItemStack itemstack) {
-		if ((accepts(itemstack)) || (itemstack.getItem() instanceof GT_MetaGenerated_Tool) || (itemstack.getItem() instanceof IElectricItem)) {
+		if (itemstack == null){
+			return false;
+		}
+		if ((accepts(itemstack)) || (itemstack.getItem() instanceof IElectricItem)) {
 			return true;
 		}
 		return false;
@@ -265,6 +288,10 @@ public class ChargingHelper {
 		if (stack == null) {
 			return false;
 		}
+		if (GT_ModHandler.isElectricItem(stack)){
+			return true;
+		}
+		
 		return (Info.itemEnergy.getEnergyValue(stack) > 0.0D)
 				|| (ElectricItem.manager.discharge(stack, (1.0D / 0.0D), 4, true, true, true) > 0.0D);
 	}
