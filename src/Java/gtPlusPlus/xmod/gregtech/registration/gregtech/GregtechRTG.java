@@ -15,7 +15,7 @@ public class GregtechRTG {
 
 	private static void run1() {
 		GregtechItemList.RTG.set(
-				new GregtechMetaTileEntity_RTG(869, "rtg.01.tier.single", "Radioisotope Thermoelectric Generator", 3)
+				new GregtechMetaTileEntity_RTG(869, "basicgenerator.rtg.tier.01", "Radioisotope Thermoelectric Generator", 3)
 						.getStackForm(1L));
 	}
 

@@ -239,10 +239,11 @@ public class Recipe_GT extends GT_Recipe{
 		public static final GT_Recipe_Map sMatterFab2Recipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(200), "gt.recipe.matterfab2", "Matter Fabricator", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, E, 1, E, true, true);
 		//public static final Gregtech_Recipe_Map sMatterFabRecipes = new Gregtech_Recipe_Map(new HashSet<GregtechRecipe>(200), "gt.recipe.matterfab", "Matter Fabricator", null, RES_PATH_GUI + "basicmachines/Massfabricator", 1, 3, 1, 1, 1, E, 1, E, true, true);
 		public static final Gregtech_Recipe_Map_Fuel sRocketFuels = new Gregtech_Recipe_Map_Fuel(new HashSet<GT_Recipe>(10), "gt.recipe.rocketenginefuel", "Rocket Engine Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 3000, " EU", true, true);
-		public static final Gregtech_Recipe_Map_Fuel sGeoThermalFuels = new Gregtech_Recipe_Map_Fuel(new HashSet<GT_Recipe>(10), "gt.recipe.geothermalfuel", "GeoThermal Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
+		public static final GT_Recipe_Map sGeoThermalFuels = new GT_Recipe_Map(new HashSet<GT_Recipe>(10), "gt.recipe.geothermalfuel", "GeoThermal Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
 		public static final GT_Recipe_Map sChemicalDehydratorRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(200), "gt.recipe.chemicaldehydrator", "Chemical Dehydrator", null, RES_PATH_GUI + "basicmachines/Dehydrator", 2, 9, 0, 0, 1, E, 1, E, true, true);
 		public static final GT_Recipe_Map sAlloyBlastSmelterRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(200), "gt.recipe.alloyblastsmelter", "Alloy Blast Smelter", null, RES_PATH_GUI + "basicmachines/BlastSmelter", 9, 1, 1, 0, 1, E, 1, E, true, true);
-
+		public static final GT_Recipe_Map sSteamTurbineFuels = new GT_Recipe_Map(new HashSet<GT_Recipe>(10), "gt.recipe.geothermalfuel", "GeoThermal Fuel", null, RES_PATH_GUI + "basicmachines/Default", 1, 1, 0, 0, 1, "Fuel Value: ", 1000, " EU", true, true);
+		
 		//LFTR recipes
 		public static final GT_Recipe_Map sLiquidFluorineThoriumReactorRecipes = new GT_Recipe_Map(new HashSet<GT_Recipe>(50), "gt.recipe.lftr", "Liquid Fluoride Thorium Reactor", null, RES_PATH_GUI + "basicmachines/LFTR", 0, 0, 0, 2, 1, "Start: ", 1, " EU", true, true);
 		//Fission Fuel Plant Recipes

@@ -704,6 +704,7 @@ public class RECIPES_GREGTECH {
 				new int[]{},
 				0);*/
 
+		ThermalFuel.addSteamTurbineFuel(FluidUtils.getFluidStack("steam", 1024));
 
 		//CORE.RA.addFuel(UtilsItems.simpleMetaStack("EnderIO:bucketRocket_fuel", 0, 1), null, 112, 0);
 		GT_Values.RA.addFuel(ItemUtils.getSimpleStack(Items.lava_bucket), null, 32, 2);

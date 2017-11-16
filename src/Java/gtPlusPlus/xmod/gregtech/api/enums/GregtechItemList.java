@@ -260,7 +260,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	//Wireless Chargers
 	Charger_LV,	Charger_MV, Charger_HV,
 	Charger_EV,	Charger_IV,	Charger_LuV, 
-	Charger_ZPM, Charger_UV, Charger_MAX,
+	Charger_ZPM, Charger_UV, Charger_MAX, 
+	
+	//Generator Array
+	Generator_Array_Controller,
 	
 	
 	
