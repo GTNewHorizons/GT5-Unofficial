@@ -27,7 +27,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 
 	private boolean mHasBeenMapped = false;
-	
+
 	public GregtechMetaWirelessCharger(final int aID, final String aName, final String aNameRegional, final int aTier, final String aDescription, final int aSlotCount) {
 		super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
 	}
@@ -47,19 +47,19 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 				"gets half the distances each singular mode gets.",
 				CORE.GT_Tooltip};
 	}
-	
+
 	public int getTier(){
 		return this.mTier;
 	}
-	
+
 	public int getMode(){
 		return this.mMode;
 	}
-	
+
 	public Map<UUID, EntityPlayer> getLocalMap(){
 		return this.mLocalChargingMap;
 	}
-	
+
 	public Map<EntityPlayer, UUID> getLongRangeMap(){
 		return this.mWirelessChargingMap;
 	}
@@ -139,6 +139,18 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 
 	@Override
 	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+		mWirelessChargingMap.clear();
+		mLocalChargingMap.clear();
+		
+		if (!this.getBaseMetaTileEntity().getWorld().playerEntities.isEmpty()){
+			for (Object mTempPlayer : this.getBaseMetaTileEntity().getWorld().playerEntities){
+				if (mTempPlayer instanceof EntityPlayer || mTempPlayer instanceof EntityPlayerMP){
+					EntityPlayer mTemp = (EntityPlayer) mTempPlayer;
+					ChargingHelper.removeValidPlayer(mTemp, this);
+				}
+			}
+		}
+		
 		if (this.mMode >= 2){
 			this.mMode = 0;
 		}
@@ -438,8 +450,17 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 	public void onRemoval() {
 		mWirelessChargingMap.clear();
 		mLocalChargingMap.clear();
+		if (!this.getBaseMetaTileEntity().getWorld().playerEntities.isEmpty()){
+			for (Object mTempPlayer : this.getBaseMetaTileEntity().getWorld().playerEntities){
+				if (mTempPlayer instanceof EntityPlayer || mTempPlayer instanceof EntityPlayerMP){
+					EntityPlayer mTemp = (EntityPlayer) mTempPlayer;
+					ChargingHelper.removeValidPlayer(mTemp, this);
+				}
+			}
+		}
+
 		ChargingHelper.removeEntry(getTileEntityPosition(), this);
-		
+
 		super.onRemoval();
 	}
 

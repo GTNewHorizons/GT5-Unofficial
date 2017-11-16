@@ -4,9 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.relauncher.Side;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.items.GT_MetaGenerated_Tool;
 import gtPlusPlus.core.util.Utils;
@@ -20,13 +19,119 @@ import ic2.api.item.IElectricItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 
 public class ChargingHelper {
 
+	private static Map<EntityPlayer, Pair<GregtechMetaWirelessCharger, Byte>> mValidPlayers = new HashMap<EntityPlayer, Pair<GregtechMetaWirelessCharger, Byte>>();
 	protected static Map<BlockPos, GregtechMetaWirelessCharger> mChargerMap = new HashMap<BlockPos, GregtechMetaWirelessCharger>();
 	private int mTickTimer = 0;
 
+	//Called whenever the player is updated or ticked. 
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	public void onPlayerTick(LivingUpdateEvent event) {
+		if (event.entity != null && event.entityLiving != null){		
+			if (event.entityLiving instanceof EntityPlayer){
+				EntityPlayer mPlayerMan = (EntityPlayer) event.entityLiving;
+
+
+				if (mPlayerMan != null){
+					//Utils.LOG_INFO("Found Player.");
+
+					if (Utils.isServer()){
+						//Utils.LOG_INFO("Found Server-Side.");
+
+						mTickTimer++;				
+						if (mTickTimer % 20 == 0){					
+
+							long mVoltage = 0;
+							long mEuStored = 0;
+
+							if (!mChargerMap.isEmpty()  && mValidPlayers.containsKey(mPlayerMan)){
+
+								for (GregtechMetaWirelessCharger mEntityTemp : mChargerMap.values()){
+									if (mEntityTemp != null){
+										mVoltage = mEntityTemp.getInputTier();
+										mEuStored = mEntityTemp.getEUVar();
+										if (mVoltage > 0 && mEuStored >= mVoltage){								
+
+											InventoryPlayer mPlayerInventory = mPlayerMan.inventory;
+											ItemStack[] mArmourContents = mPlayerInventory.armorInventory;
+											ItemStack[] mInventoryContents = mPlayerInventory.mainInventory;
+
+											Map<EntityPlayer, UUID> LR = mEntityTemp.getLongRangeMap();
+											Map<UUID, EntityPlayer> LO = mEntityTemp.getLocalMap();
+
+											long mStartingEu = mEntityTemp.getEUVar();
+											long mCurrentEu = mEntityTemp.getEUVar();
+											long mEuUsed = 0;
+											if (mEntityTemp.getMode() == 0){
+
+												if (!LR.isEmpty() && LR.containsKey(mPlayerMan)){
+													mCurrentEu = chargeItems(mEntityTemp, mArmourContents, mPlayerMan);
+													mCurrentEu = chargeItems(mEntityTemp, mInventoryContents, mPlayerMan);
+												}
+											}
+											else if (mEntityTemp.getMode() == 1){
+												if (!LO.isEmpty() && LO.containsValue(mPlayerMan)){
+													mCurrentEu = chargeItems(mEntityTemp, mArmourContents, mPlayerMan);
+													mCurrentEu = chargeItems(mEntityTemp, mInventoryContents, mPlayerMan);
+												}
+											}
+											else {
+												if (!LR.isEmpty() && LR.containsKey(mPlayerMan)){
+													mCurrentEu = chargeItems(mEntityTemp, mArmourContents, mPlayerMan);
+													mCurrentEu = chargeItems(mEntityTemp, mInventoryContents, mPlayerMan);
+												}
+												if (!LO.isEmpty() && LO.containsValue(mPlayerMan)){
+													mCurrentEu = chargeItems(mEntityTemp, mArmourContents, mPlayerMan);
+													mCurrentEu = chargeItems(mEntityTemp, mInventoryContents, mPlayerMan);
+												}
+											}	
+
+											if ((mEuUsed = (mStartingEu - mCurrentEu)) <= 0 && mEntityTemp != null){
+												long mMaxDistance;
+												if (mEntityTemp.getMode() == 0){
+													mMaxDistance = (4*GT_Values.V[mEntityTemp.getTier()]);
+												}
+												else if (mEntityTemp.getMode() == 1){
+													mMaxDistance = (mEntityTemp.getTier()*10);
+												}
+												else {
+													mMaxDistance = (4*GT_Values.V[mEntityTemp.getTier()]/2);										
+												}
+												double mDistance = calculateDistance(mEntityTemp, mPlayerMan);
+												long mVoltageCost = MathUtils.findPercentageOfInt(mMaxDistance, (float) mDistance);
+
+												if (mVoltageCost > 0){
+													if (mVoltageCost > mEntityTemp.maxEUInput()){
+														mEntityTemp.setEUVar((mEntityTemp.getEUVar()-mEntityTemp.maxEUInput()));
+													}
+													else {
+														mEntityTemp.setEUVar((mEntityTemp.getEUVar()-mVoltageCost));
+													}
+												}
+
+											}
+
+										}
+										else {
+											Utils.LOG_INFO("Voltage: "+mVoltage+" | Eu Storage: "+mEuStored);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
 	public static boolean addEntry(BlockPos mPos, GregtechMetaWirelessCharger mEntity){
+		if (mEntity == null){
+			return false;
+		}
 		if (!mChargerMap.containsKey(mPos)){
 			if (mChargerMap.put(mPos, mEntity) == null){
 				return true;
@@ -39,8 +144,11 @@ public class ChargingHelper {
 			return false;
 		}
 	}
-	
+
 	public static boolean removeEntry(BlockPos mPos, GregtechMetaWirelessCharger mEntity){
+		if (mEntity == null){
+			return false;
+		}
 		if (mChargerMap.containsKey(mPos)){
 			if (mChargerMap.remove(mPos, mEntity)){
 				return true;
@@ -54,139 +162,76 @@ public class ChargingHelper {
 		}
 	}
 
-	private static Map<EntityPlayer, Pair<GregtechMetaWirelessCharger, Byte>> mValidPlayers = new HashMap<EntityPlayer, Pair<GregtechMetaWirelessCharger, Byte>>();
-
 	public static boolean addValidPlayer(EntityPlayer mPlayer, GregtechMetaWirelessCharger mEntity){
-		if (!mValidPlayers.containsKey(mPlayer)){
+		if (mEntity == null){
+			return false;
+		}
+		Utils.LOG_INFO("trying to map new player");
+		if (mValidPlayers.containsKey(mPlayer)){
+			Utils.LOG_INFO("Key contains player already?");
+			return false;
+		}
+		else {
+			Utils.LOG_INFO("key not found, adding");
 			Pair<GregtechMetaWirelessCharger, Byte> mEntry = new Pair<GregtechMetaWirelessCharger, Byte>(mEntity, (byte) mEntity.getMode());
 			if (mValidPlayers.put(mPlayer, mEntry) == null){
 				Utils.LOG_INFO("Added a Player to the Tick Map.");
 				return true;
 			}
 			else {
+				Utils.LOG_INFO("Tried to add player but it was already there?");
 				return false;
 			}
 		}
-		else {
+	}
+
+	public static boolean removeValidPlayer(EntityPlayer mPlayer, GregtechMetaWirelessCharger mEntity){
+		if (mEntity == null){
 			return false;
 		}
-	}
-	
-	public static boolean removeValidPlayer(EntityPlayer mPlayer, GregtechMetaWirelessCharger mEntity){
+		Utils.LOG_INFO("trying to remove player from map");
 		if (mValidPlayers.containsKey(mPlayer)){
+			Utils.LOG_INFO("key found, removing");
 			Pair<GregtechMetaWirelessCharger, Byte> mEntry = new Pair<GregtechMetaWirelessCharger, Byte>(mEntity, (byte) mEntity.getMode());
 			if (mValidPlayers.remove(mPlayer, mEntry)){
 				Utils.LOG_INFO("Removed a Player to the Tick Map.");
 				return true;
 			}
 			else {
+				Utils.LOG_INFO("Tried to remove player but it was not there?");
 				return false;
 			}
 		}
 		else {
+			Utils.LOG_INFO("Key does not contain player?");
 			return false;
 		}
 	}
-	
-	
-	//Called whenever the player is updated or ticked. 
-	@SubscribeEvent
-	public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-		if (event.player != null){
-			Utils.LOG_INFO("Found Player.");
-			if (event.side == Side.SERVER){
-				Utils.LOG_INFO("Found Server-Side.");
 
-				mTickTimer++;				
-
-				if (mTickTimer % 20 == 0){					
-					
-					long mVoltage = 0;
-					long mEuStored = 0;
-
-					if (!mChargerMap.isEmpty()  && mValidPlayers.containsKey(event.player)){
-
-						for (GregtechMetaWirelessCharger mEntityTemp : mChargerMap.values()){
-							mVoltage = mEntityTemp.getInputTier();
-							mEuStored = mEntityTemp.getEUVar();
-							if (mVoltage > 0 && mEuStored >= mVoltage){								
-								
-								InventoryPlayer mPlayerInventory = event.player.inventory;
-								ItemStack[] mArmourContents = mPlayerInventory.armorInventory;
-								ItemStack[] mInventoryContents = mPlayerInventory.mainInventory;
-
-								Map<EntityPlayer, UUID> LR = mEntityTemp.getLongRangeMap();
-								Map<UUID, EntityPlayer> LO = mEntityTemp.getLocalMap();
-
-								long mStartingEu = mEntityTemp.getEUVar();
-								long mCurrentEu = mEntityTemp.getEUVar();
-								long mEuUsed = 0;
-								if (mEntityTemp.getMode() == 0){
-									
-									if (!LR.isEmpty() && LR.containsKey(event.player)){
-										mCurrentEu = chargeItems(mEntityTemp, mArmourContents, event.player);
-										mCurrentEu = chargeItems(mEntityTemp, mInventoryContents, event.player);
-									}
-								}
-								else if (mEntityTemp.getMode() == 1){
-									if (!LO.isEmpty() && LO.containsValue(event.player)){
-										mCurrentEu = chargeItems(mEntityTemp, mArmourContents, event.player);
-										mCurrentEu = chargeItems(mEntityTemp, mInventoryContents, event.player);
-									}
-								}
-								else {
-									if (!LR.isEmpty() && LR.containsKey(event.player)){
-										mCurrentEu = chargeItems(mEntityTemp, mArmourContents, event.player);
-										mCurrentEu = chargeItems(mEntityTemp, mInventoryContents, event.player);
-									}
-									if (!LO.isEmpty() && LO.containsValue(event.player)){
-										mCurrentEu = chargeItems(mEntityTemp, mArmourContents, event.player);
-										mCurrentEu = chargeItems(mEntityTemp, mInventoryContents, event.player);
-									}
-								}	
-								
-								if ((mEuUsed = (mStartingEu - mCurrentEu)) <= 0){
-									long mMaxDistance;
-									if (mEntityTemp.getMode() == 0){
-										mMaxDistance = (4*GT_Values.V[mEntityTemp.getTier()]);
-									}
-									else if (mEntityTemp.getMode() == 1){
-										mMaxDistance = (mEntityTemp.getTier()*10);
-									}
-									else {
-										mMaxDistance = (4*GT_Values.V[mEntityTemp.getTier()]/2);										
-									}
-									double mDistance = calculateDistance(mEntityTemp, event);
-									long mVoltageCost = MathUtils.findPercentageOfInt(mMaxDistance, (float) mDistance);
-									
-									if (mVoltageCost > 0){
-										if (mVoltageCost > mEntityTemp.maxEUInput()){
-											mEntityTemp.setEUVar((mEntityTemp.getEUVar()-mEntityTemp.maxEUInput()));
-										}
-										else {
-											mEntityTemp.setEUVar((mEntityTemp.getEUVar()-mVoltageCost));
-										}
-									}
-			
-								}
-								
-							}
-							else {
-								Utils.LOG_INFO("Voltage: "+mVoltage+" | Eu Storage: "+mEuStored);
-							}
-						}
-					}
-				}
-			}
+	public double calculateDistance(GregtechMetaWirelessCharger mEntityTemp, EntityPlayer mPlayerMan){
+		if (mEntityTemp == null || mPlayerMan == null){
+			return 0;
 		}
+		return mEntityTemp.getDistanceBetweenTwoPositions(mEntityTemp.getTileEntityPosition(), mEntityTemp.getPositionOfEntity(mPlayerMan));
 	}
 	
-	public double calculateDistance(GregtechMetaWirelessCharger mEntityTemp, TickEvent.PlayerTickEvent event){
-		return mEntityTemp.getDistanceBetweenTwoPositions(mEntityTemp.getTileEntityPosition(), mEntityTemp.getPositionOfEntity(event.player));
+	public long chargeItems(GregtechMetaWirelessCharger mEntity, ItemStack[] mItems, EntityPlayer mPlayer){
+		if (mEntity == null){
+			return -100;
+		}
+		if (mItems == null || mItems.length == 0){
+			return mEntity.getEUVar();
+		}
+		long mInitialValue = mEntity.getEUVar();
+		long mReturnValue = chargeItemsEx(mEntity, mItems, mPlayer);		
+		return ((mReturnValue < mInitialValue) ? mReturnValue : mInitialValue);
 	}
 
-	public long chargeItems(GregtechMetaWirelessCharger mEntity, ItemStack[] mItems, EntityPlayer mPlayer){
-		if (mEntity == null || mItems == null || mItems.length == 0){
+	public long chargeItemsEx(GregtechMetaWirelessCharger mEntity, ItemStack[] mItems, EntityPlayer mPlayer){
+		if (mEntity == null){
+			return -100;
+		}
+		if (mItems == null || mItems.length == 0){
 			return mEntity.getEUVar();
 		}
 		int mChargedItems = 0;
@@ -222,30 +267,6 @@ public class ChargingHelper {
 		}
 		return (Info.itemEnergy.getEnergyValue(stack) > 0.0D)
 				|| (ElectricItem.manager.discharge(stack, (1.0D / 0.0D), 4, true, true, true) > 0.0D);
-	}
-
-	//Called when the client ticks. 
-	@SubscribeEvent
-	public void onClientTick(TickEvent.ClientTickEvent event) {
-
-	}
-
-	//Called when the server ticks. Usually 20 ticks a second. 
-	@SubscribeEvent
-	public void onServerTick(TickEvent.ServerTickEvent event) {
-
-	}
-
-	//Called when a new frame is displayed (See fps) 
-	@SubscribeEvent
-	public void onRenderTick(TickEvent.RenderTickEvent event) {
-
-	}
-
-	//Called when the world ticks
-	@SubscribeEvent
-	public void onWorldTick(TickEvent.WorldTickEvent event) {
-
 	}
 
 }
