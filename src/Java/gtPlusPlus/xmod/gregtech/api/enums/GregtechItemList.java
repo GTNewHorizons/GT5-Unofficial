@@ -173,7 +173,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	
 	
 	Casing_Autocrafter,
-	Casing_PlaceHolder13, 
+	Casing_CuttingFactoryFrame, 
 	Casing_PlaceHolder14, 
 	Casing_PlaceHolder15,
 
@@ -263,7 +263,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Charger_ZPM, Charger_UV, Charger_MAX, 
 	
 	//Generator Array
-	Generator_Array_Controller,
+	Generator_Array_Controller, 
+	
+	//Cutting Factory Controller
+	Industrial_CuttingFactoryController,
 	
 	
 	

@@ -138,32 +138,32 @@ public class GregtechMetaTileEntityGeneratorArray extends GT_MetaTileEntity_Mult
 
 		if(!mMachine.equals(mInventory[1].getUnlocalizedName()))mLastRecipe=null;
 		mMachine = mInventory[1].getUnlocalizedName();
-		Utils.LOG_INFO("mMachine: "+mMachine);
+		Utils.LOG_WARNING("mMachine: "+mMachine);
 		ArrayList<FluidStack> tFluids = getStoredFluids();
 		Collection<GT_Recipe> tRecipeList = this.getRecipeMap().mRecipeList;
-		Utils.LOG_INFO("tRecipeList: "+tRecipeList);
+		Utils.LOG_WARNING("tRecipeList: "+tRecipeList);
 
 		if(tFluids.size() > 0 && tRecipeList != null) { //Does input hatch have a diesel fuel?
-			Utils.LOG_INFO("1");
+			Utils.LOG_WARNING("1");
 			for (FluidStack hatchFluid1 : tFluids) { //Loops through hatches
-				Utils.LOG_INFO("2");
+				Utils.LOG_WARNING("2");
 				for(GT_Recipe aFuel : tRecipeList) { //Loops through diesel fuel recipes
-					Utils.LOG_INFO("3");
+					Utils.LOG_WARNING("3");
 					/*if (aFuel != null){
 						for (FluidStack x : aFuel.mFluidInputs){
 							if (x != null){
-								Utils.LOG_INFO("Recipe: "+x.getLocalizedName());								
+								Utils.LOG_WARNING("Recipe: "+x.getLocalizedName());								
 							}
 						}
 					}*/
 					FluidStack tLiquid;
 					tLiquid = FluidUtils.getFluidStack(aFuel.mFluidInputs[0], aFuel.mFluidInputs[0].amount);
-					Utils.LOG_INFO("5");
+					Utils.LOG_WARNING("5");
 					fuelConsumption = aFuel.mFluidInputs[0].amount;
 					if(depleteInput(tLiquid)) { //Deplete that amount
-						Utils.LOG_INFO("6");
+						Utils.LOG_WARNING("6");
 						boostEu = true;
-						Utils.LOG_INFO("7");                               
+						Utils.LOG_WARNING("7");                               
 
 						fuelValue = aFuel.mEUt*aFuel.mDuration;
 						fuelRemaining = hatchFluid1.amount; //Record available fuel
@@ -171,7 +171,7 @@ public class GregtechMetaTileEntityGeneratorArray extends GT_MetaTileEntity_Mult
 						//this.mProgresstime = 1;
 						this.mMaxProgresstime = 20;
 						this.mEfficiencyIncrease = 9500;
-						Utils.LOG_INFO("9");
+						Utils.LOG_WARNING("9");
 						return true;
 					}
 				}

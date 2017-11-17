@@ -98,7 +98,8 @@ public class COMPAT_HANDLER {
 			GregtechAdvancedMixer.run();
 			GregtechWirelessChargers.run();
 			GregtechIndustrialGeneratorArray.run();
-
+			GregtechIndustrialCuttingFactory.run();
+			
 			//New Horizons Content
 			NewHorizonsAccelerator.run();
 		}
