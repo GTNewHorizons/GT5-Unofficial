@@ -240,6 +240,8 @@ public final class ModItems {
 
 	public static Item itemModularBauble;
 	public static Item itemCustomBook;
+	
+	public static Item itemGrindleTablet;
 
 	public static final void init(){
 
@@ -616,6 +618,8 @@ public final class ModItems {
 
 		itemAirFilter = new ItemAirFilter();
 		itemLavaFilter = new ItemLavaFilter();
+		
+		itemGrindleTablet = new BaseItemGrindle();
 
 		//Chemistry
 		CoalTar.run();

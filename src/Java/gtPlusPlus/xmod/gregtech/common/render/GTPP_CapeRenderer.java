@@ -17,7 +17,7 @@ import java.util.Collection;
 
 public class GTPP_CapeRenderer
         extends RenderPlayer {
-    private final ResourceLocation[] mCapes = {new ResourceLocation("miscutils:textures/OrangeHD.png"), new ResourceLocation("miscutils:textures/TesterCapeHD.png"), new ResourceLocation("miscutils:textures/FancyCapeHD.png"), new ResourceLocation("miscutils:textures/TesterCapeHD.png")};
+    private final ResourceLocation[] mCapes = {new ResourceLocation("miscutils:textures/OrangeHD.png"), new ResourceLocation("miscutils:textures/TesterCapeHD.png"), new ResourceLocation("miscutils:textures/FancyCapeHD.png"), new ResourceLocation("miscutils:textures/DevCapeHD.png")};
     private final Collection<String> mCapeList;
 
     public GTPP_CapeRenderer(Collection<String> aCapeList) {

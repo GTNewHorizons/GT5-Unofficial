@@ -7,9 +7,11 @@ import gtPlusPlus.core.container.*;
 import gtPlusPlus.core.gui.beta.Gui_ID_Registry;
 import gtPlusPlus.core.gui.beta.MU_GuiId;
 import gtPlusPlus.core.gui.item.GuiBaseBackpack;
+import gtPlusPlus.core.gui.item.GuiBaseGrindle;
 import gtPlusPlus.core.gui.machine.*;
 import gtPlusPlus.core.interfaces.IGuiManager;
 import gtPlusPlus.core.inventories.BaseInventoryBackpack;
+import gtPlusPlus.core.inventories.BaseInventoryGrindle;
 import gtPlusPlus.core.tileentities.base.TileEntityBase;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
 import gtPlusPlus.core.tileentities.machines.TileEntityModularityTable;
@@ -33,6 +35,7 @@ public class GuiHandler implements IGuiHandler {
 	public static final int GUI6 = 5;      //Fish trap
 	public static final int GUI7 = 6;      //Trade table
 	public static final int GUI8 = 7;      //
+	public static final int GUI9 = 8;      //
 
 
 
@@ -80,6 +83,10 @@ public class GuiHandler implements IGuiHandler {
 				return new Container_TradeTable(player.inventory, (TileEntityTradeTable)te);
 			}
 		}
+		
+		if (ID == GUI9){
+			return new Container_Grindle(player, player.inventory, new BaseInventoryGrindle(player.getHeldItem()));
+		}
 
 
 
@@ -124,6 +131,10 @@ public class GuiHandler implements IGuiHandler {
 			else if (ID == GUI7){
 				return new GUI_TradeTable(player.inventory, (TileEntityTradeTable)te, ((TileEntityBase) te).getOwner());
 			}
+		}
+		
+		if (ID == GUI9){
+			return new GuiBaseGrindle(new Container_Grindle(player, player.inventory, new BaseInventoryGrindle(player.getHeldItem())));
 		}
 
 		return null;
