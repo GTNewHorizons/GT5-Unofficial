@@ -399,7 +399,7 @@ GT_MetaTileEntity_DeluxeMachine {
 
 	public ITexture[] getSides(final byte aColor) {
 		return new ITexture[]{this.getCasingTexture(), new GT_RenderedTexture(
-				TexturesGtBlock.Overlay_Machine_Dimensional_Blue)};
+				TexturesGtBlock.Overlay_Machine_Dimensional_Orange)};
 	}
 
 	public ITexture[] getFrontActive(final byte aColor) {
