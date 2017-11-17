@@ -62,6 +62,12 @@ public class TexturesGtBlock {
 	public static final CustomIcon _PlaceHolder = Internal_PlaceHolder;
 
 
+	//Controllers
+	private static final CustomIcon Internal_Casing_Fusion_Simple_Front = new CustomIcon("TileEntities/MACHINE_CASING_FUSION_FRONT");
+	public static final CustomIcon Casing_Fusion_Simple_Front = Internal_Casing_Fusion_Simple_Front;
+	private static final CustomIcon Internal_Casing_Fusion_Simple_Front_Active = new CustomIcon("TileEntities/MACHINE_CASING_FUSION_FRONT_ACTIVE");
+	public static final CustomIcon Casing_Fusion_Simple_Front_Active = Internal_Casing_Fusion_Simple_Front_Active;
+	
 	//Machine Casings
 	//Simple
 	private static final CustomIcon Internal_Casing_Machine_Simple_Top = new CustomIcon("TileEntities/machine_top");

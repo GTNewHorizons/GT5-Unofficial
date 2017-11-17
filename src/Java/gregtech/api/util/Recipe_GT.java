@@ -271,6 +271,12 @@ public class Recipe_GT extends GT_Recipe{
 				"Advanced Material Combiner", null, "gregtech:textures/gui/basicmachines/MixerAdvanced", 4, 4, 1, 0, 2, "", 1, "", true, true);
 		
 		
+		//Mini Fusion
+		public static final GT_Recipe_Map sSlowFusionRecipes = new GT_Recipe_Map(new HashSet(50), "gt.recipe.slowfusionreactor",
+				"Slow Fusion Reactor", null, "gregtech:textures/gui/basicmachines/Default", 0, 0, 0, 2, 1, "Start: ", 1,
+				" EU", true, false);
+		
+		
 		/**
 		 * HashMap of Recipes based on their Items
 		 */

@@ -191,7 +191,7 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 		}
 		else {
 			PlayerUtils.messagePlayer(playerIn, "This chunk contains "+getCurrentChunkPollution()+" pollution.");
-			PlayerUtils.messagePlayer(playerIn, "Average over last ten minutes: "+getAveragePollutionOverLastTen()+" pollution.");
+			PlayerUtils.messagePlayer(playerIn, "Emit Redstone at pollution level: "+this.mRedstoneLevel);
 		}
 	}
 

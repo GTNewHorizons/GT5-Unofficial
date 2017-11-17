@@ -266,7 +266,10 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Generator_Array_Controller, 
 	
 	//Cutting Factory Controller
-	Industrial_CuttingFactoryController,
+	Industrial_CuttingFactoryController, 
+	
+	//Tiny Fusion
+	Miniature_Fusion,
 	
 	
 	

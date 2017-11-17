@@ -177,6 +177,8 @@ public class GTplusplus implements ActionListener {
 				"gregtech", true, "Used to wash the dirt, riiiiight offff..");
 		CORE.configSwitches.enableMultiblock_ThermalBoiler = config.getBoolean("enableMachineThermalBoiler",
 				"gregtech", true, "Thermal Boiler from GT4. Can Filter Lava for resources.");
+		CORE.configSwitches.enableMultiblock_IndustrialCuttingMachine = config.getBoolean("enableMultiblock_IndustrialCuttingMachine",
+				"gregtech", true, "Very fast and efficient Cutting Machine.");
 
 		// Options
 		RF2EU_Battery.rfPerEU = config.getInt("rfUsedPerEUForUniversalBatteries", "configurables", 4, 1, 1000,
