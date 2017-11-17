@@ -17,7 +17,7 @@ import java.util.Collection;
 
 public class GTPP_CapeRenderer
         extends RenderPlayer {
-    private final ResourceLocation[] mCapes = {new ResourceLocation("miscutils:textures/Orange.png"), new ResourceLocation("miscutils:textures/TesterCape.png"), new ResourceLocation("miscutils:textures/FancyCape.png"), new ResourceLocation("miscutils:textures/DevCape.png")};
+    private final ResourceLocation[] mCapes = {new ResourceLocation("miscutils:textures/OrangeHD.png"), new ResourceLocation("miscutils:textures/TesterCapeHD.png"), new ResourceLocation("miscutils:textures/FancyCapeHD.png"), new ResourceLocation("miscutils:textures/TesterCapeHD.png")};
     private final Collection<String> mCapeList;
 
     public GTPP_CapeRenderer(Collection<String> aCapeList) {
@@ -26,9 +26,9 @@ public class GTPP_CapeRenderer
     }
 
     private final String[] mOrangeCapes = {"ImmortalPharaoh7", "Walmart_Employee", "ArchonCerulean", "asturrial"}; //Orange.png
-    private final String[] mBlueCapes = {"fobius", "cantankerousrex", "stephen_2015", "Dyonovan", "Bear989Sr", "CrazyJ1984"}; //Fancycape.png
-    private final String[] mTestCapes = {"123_456_789", "doomsquirter", "ukdunc"}; //TesterCape.png
-    private final String[] mDevCapes = {"draknyte1", "redmage17"}; //Capes for Developers
+     private final String[] mTestCapes = {"123_456_789", "doomsquirter", "ukdunc"}; //TesterCape.png
+     private final String[] mBlueCapes = {"fobius", "cantankerousrex", "stephen_2015", "Dyonovan", "Bear989Sr", "CrazyJ1984"}; //Fancycape.png
+     private final String[] mDevCapes = {"draknyte1", "redmage17"}; //Capes for Developers
     
     
     public void receiveRenderSpecialsEvent(RenderPlayerEvent.Specials.Pre aEvent) {
@@ -52,12 +52,12 @@ public class GTPP_CapeRenderer
                     tResource = this.mCapes[0];
                 }
             }
-            for (String mName : mBlueCapes){
+            for (String mName : mTestCapes){
             	if (mName.toLowerCase().contains(aPlayer.getDisplayName().toLowerCase())) {
                     tResource = this.mCapes[1];
                 }
             }
-            for (String mName : mTestCapes){
+            for (String mName : mBlueCapes){
             	if (mName.toLowerCase().contains(aPlayer.getDisplayName().toLowerCase())) {
                     tResource = this.mCapes[2];
                 }
