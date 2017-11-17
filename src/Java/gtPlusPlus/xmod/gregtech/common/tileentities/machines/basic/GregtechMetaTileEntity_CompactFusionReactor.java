@@ -147,16 +147,16 @@ GT_MetaTileEntity_DeluxeMachine {
 	long mFusionPoint = 20000000L;
 	@Override
 	public int checkRecipe() {
-		Utils.LOG_INFO("Recipe Tick 1.");
+		Utils.LOG_WARNING("Recipe Tick 1.");
 		if (!this.mCanProcessRecipe) {
-			Utils.LOG_INFO("Recipe Tick 1.1 - Cannot Process Recipe.");
+			Utils.LOG_WARNING("Recipe Tick 1.1 - Cannot Process Recipe.");
 			if (this.mChargeConsumed < mFusionPoint) {
-				Utils.LOG_INFO("Recipe Tick 1.2 - Cannot Ignite Fusion, Charge too low.");
+				Utils.LOG_WARNING("Recipe Tick 1.2 - Cannot Ignite Fusion, Charge too low.");
 				this.mCharging = true;
 				this.mCanProcessRecipe = false;
 				if (this.getBaseMetaTileEntity().decreaseStoredEnergyUnits(
 						(mFusionPoint / 100), false)) {
-					Utils.LOG_INFO("Recipe Tick 1.3 - Charging Internal storage. "+(mFusionPoint / 100)+"/"+mFusionPoint);
+					Utils.LOG_WARNING("Recipe Tick 1.3 - Charging Internal storage. "+(mFusionPoint / 100)+"/"+mFusionPoint);
 					mChargeConsumed += (mFusionPoint / 100);
 				}
 			} else {
@@ -166,13 +166,13 @@ GT_MetaTileEntity_DeluxeMachine {
 
 			}
 		} else {
-			Utils.LOG_INFO("Recipe Tick 1.1 - Try to Process Recipe.");
+			Utils.LOG_WARNING("Recipe Tick 1.1 - Try to Process Recipe.");
 			if (checkRecipeMulti()) {
-				Utils.LOG_INFO("Recipe Tick 1.2 - Process Recipe was Successful.");
+				Utils.LOG_WARNING("Recipe Tick 1.2 - Process Recipe was Successful.");
 				return 2;
 			}
 		}
-		Utils.LOG_INFO("Recipe Tick 2. - Process Recipe failed.");
+		Utils.LOG_WARNING("Recipe Tick 2. - Process Recipe failed.");
 		return 0;
 	}
 
@@ -435,22 +435,22 @@ GT_MetaTileEntity_DeluxeMachine {
 			long aTick) {
 		//super.onPostTick(aBaseMetaTileEntity, aTick); 
 		if (aBaseMetaTileEntity.isServerSide()) {
-			Utils.LOG_INFO("1");
+			Utils.LOG_WARNING("1");
 			if (mEfficiency < 0)
 				mEfficiency = 0;
 			if (mRunningOnLoad) {
-				Utils.LOG_INFO("2");
+				Utils.LOG_WARNING("2");
 				this.mEUStore = (int) aBaseMetaTileEntity.getStoredEU();
 				checkRecipeMulti();
 			}
 			if (--mUpdate == 0 || --mStartUpCheck == 0) {
-				Utils.LOG_INFO("3");
+				Utils.LOG_WARNING("3");
 				mMachine = true;
 			}
 			if (mStartUpCheck < 0) {
-				Utils.LOG_INFO("4");
+				Utils.LOG_WARNING("4");
 				if (mMachine) {
-					Utils.LOG_INFO("5");
+					Utils.LOG_WARNING("5");
 
 					if (aBaseMetaTileEntity.getStoredEU()
 							+ (2048 * tierOverclock()) < maxEUStore()) {
@@ -458,12 +458,12 @@ GT_MetaTileEntity_DeluxeMachine {
 								2048 * tierOverclock(), true);
 					}
 					if (this.mEUStore <= 0 && mMaxProgresstime > 0) {
-						Utils.LOG_INFO("6");
+						Utils.LOG_WARNING("6");
 						stopMachine();
 						this.mLastRecipe = null;
 					}
 					if (mMaxProgresstime > 0) {
-						Utils.LOG_INFO("7");
+						Utils.LOG_WARNING("7");
 						this.getBaseMetaTileEntity()
 						.decreaseStoredEnergyUnits(mEUt, true);
 						if (mMaxProgresstime > 0 && ++mProgresstime >= mMaxProgresstime) {
@@ -485,21 +485,21 @@ GT_MetaTileEntity_DeluxeMachine {
 								checkRecipeMulti();
 						}
 					} else {
-						Utils.LOG_INFO("8");
+						Utils.LOG_WARNING("8");
 						if (aTick % 100 == 0
 								|| aBaseMetaTileEntity.hasWorkJustBeenEnabled()
 								|| aBaseMetaTileEntity
 								.hasInventoryBeenModified()) {
-							Utils.LOG_INFO("9");
+							Utils.LOG_WARNING("9");
 							// turnCasingActive(mMaxProgresstime > 0);
 							if (aBaseMetaTileEntity.isAllowedToWork()) {
-								Utils.LOG_INFO("10");
+								Utils.LOG_WARNING("10");
 								this.mEUStore = (int) aBaseMetaTileEntity
 										.getStoredEU();
 								if (checkRecipeMulti()) {
-									Utils.LOG_INFO("11");
+									Utils.LOG_WARNING("11");
 									if (this.mEUStore < this.mLastRecipe.mSpecialValue) {
-										Utils.LOG_INFO("12");
+										Utils.LOG_WARNING("12");
 										mMaxProgresstime = 0;
 										// turnCasingActive(false);
 									}
@@ -515,12 +515,12 @@ GT_MetaTileEntity_DeluxeMachine {
 					}
 				} else {
 					// turnCasingActive(false);
-					Utils.LOG_INFO("Bad");
+					Utils.LOG_WARNING("Bad");
 					this.mLastRecipe = null;
 					stopMachine();
 				}
 			}
-			Utils.LOG_INFO("Good");
+			Utils.LOG_WARNING("Good");
 			aBaseMetaTileEntity.setActive(mMaxProgresstime > 0);
 		}
 	}
