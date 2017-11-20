@@ -4,6 +4,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.block.general.*;
+import gtPlusPlus.core.block.general.antigrief.BlockWitherProof;
 import gtPlusPlus.core.block.machine.*;
 import gtPlusPlus.core.fluids.FluidRegistryHandler;
 import gtPlusPlus.core.lib.CORE;
@@ -45,6 +46,8 @@ public final class ModBlocks {
 	public static Block blockProjectTable;
 	public static Block blockTradeTable;
 	public static Block blockModularTable;
+	
+	public static Block blockWitherGuard;
 
 	public static void init() {
 		Utils.LOG_INFO("Initializing Blocks.");
@@ -74,6 +77,7 @@ public final class ModBlocks {
 		blockProjectTable =  new Machine_ProjectTable();
 		blockTradeTable =  new Machine_TradeTable();
 		blockModularTable =  new Machine_ModularityTable();
+		blockWitherGuard = new BlockWitherProof();
 
 	}
 

@@ -59,9 +59,9 @@ public class GuiBaseGrindle extends GuiContainer {
 		if (this.inventory.getStackInSlot(0) != null){
 			this.fontRendererObj.drawString(I18n.format(""+NBTUtils.getBookTitle(this.inventory.getStackInSlot(0)), new Object[0]), 10, 8, Utils.rgbtoHexValue(125, 255, 125));
 
-			if (!NBTUtils.tryIterateNBTData(this.inventory.getStackInSlot(0))){
-				this.fontRendererObj.drawString(I18n.format("Very Bad prospection data.", new Object[0]), 10, 38, Utils.rgbtoHexValue(255, 125, 125));
-			}
+			//if (!NBTUtils.tryIterateNBTData(this.inventory.getStackInSlot(0))){
+			//	this.fontRendererObj.drawString(I18n.format("Very Bad prospection data.", new Object[0]), 10, 38, Utils.rgbtoHexValue(255, 125, 125));
+			//}
 			
 			NBTTagCompound tNBT = ItemNBT.getNBT(this.inventory.getStackInSlot(0));
 			byte tTier = tNBT.getByte("prospection_tier");
@@ -94,7 +94,6 @@ public class GuiBaseGrindle extends GuiContainer {
 							this.fontRendererObj.drawString(I18n.format(mOreTypes[i], new Object[0]), 10, 68+((i-6)*8), Utils.rgbtoHexValue(125, 255, 125));
 						}						
 					}
-					Utils.LOG_INFO("test - "+tOres);
 					tNBTList.appendTag(new NBTTagString("Prospection Data From: X" + tDataArray[0] + " Z:" + tDataArray[2] + " Dim:" + tDataArray[3] + " Produces " + tDataArray[4] + "L " + tDataArray[5] + " " + tOres));
 					tNBT.setTag("pages", tNBTList);
 					
