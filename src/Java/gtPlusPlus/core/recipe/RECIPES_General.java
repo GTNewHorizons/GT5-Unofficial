@@ -139,6 +139,12 @@ public class RECIPES_General {
 					new ItemStack(ModItems.itemAlkalusDisk, 1, OreDictionary.WILDCARD_VALUE));
 			l++;
 		}
+		
+		RecipeUtils.addShapedGregtechRecipe(
+				"stickBlackSteel", "plateTungstenSteel", "stickBlackSteel",
+				"plateTungstenSteel", "blockIron", "plateTungstenSteel",
+				"stickBlackSteel", "plateTungstenSteel", "stickBlackSteel", 
+				ItemUtils.getSimpleStack(ModBlocks.blockWitherGuard));
 
 		//Alkalus Coin		
 		/*AddGregtechRecipe.addAssemblylineRecipe(
