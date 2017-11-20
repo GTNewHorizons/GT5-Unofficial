@@ -32,6 +32,9 @@ import gtPlusPlus.core.tileentities.machines.TileEntityTradeTable;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbenchAdvanced;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.xmod.thaumcraft.common.tile.TileFastAlchemyFurnace;
+import gtPlusPlus.xmod.thaumcraft.gui.ContainerFastAlchemyFurnace;
+import gtPlusPlus.xmod.thaumcraft.gui.GuiFastAlchemyFurnace;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
@@ -94,6 +97,9 @@ public class GuiHandler implements IGuiHandler {
 			else if (ID == GUI7){
 				return new Container_TradeTable(player.inventory, (TileEntityTradeTable)te);
 			}
+			else if (ID == GUI8){
+				return new ContainerFastAlchemyFurnace(player.inventory, (TileFastAlchemyFurnace)te);
+			}
 		}
 
 		if (ID == GUI9){
@@ -142,6 +148,9 @@ public class GuiHandler implements IGuiHandler {
 			}
 			else if (ID == GUI7){
 				return new GUI_TradeTable(player.inventory, (TileEntityTradeTable)te, ((TileEntityBase) te).getOwner());
+			}
+			else if (ID == GUI8){
+				return new GuiFastAlchemyFurnace(player.inventory, (TileFastAlchemyFurnace)te);
 			}
 		}
 

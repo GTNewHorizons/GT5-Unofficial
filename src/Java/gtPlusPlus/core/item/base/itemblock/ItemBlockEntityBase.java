@@ -5,11 +5,13 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockBase extends ItemBlock {
+public class ItemBlockEntityBase extends ItemBlock {
 
-	public ItemBlockBase(final Block block) {
+	public ItemBlockEntityBase(final Block block) {
 		super(block);
-		this.setCreativeTab(AddToCreativeTab.tabBlock);
+		this.setMaxDamage(0);
+		this.setHasSubtypes(true);
+		this.setCreativeTab(AddToCreativeTab.tabMachines);
 	}
 
 	@Override

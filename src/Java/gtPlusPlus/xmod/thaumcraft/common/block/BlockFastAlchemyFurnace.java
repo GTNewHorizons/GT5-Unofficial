@@ -10,12 +10,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.GuiHandler;
+import gtPlusPlus.xmod.thaumcraft.common.ItemBlockThaumcraft;
 import gtPlusPlus.xmod.thaumcraft.common.tile.TileFastAlchemyFurnace;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockContainer;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
@@ -24,17 +26,15 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import thaumcraft.common.Thaumcraft;
-import thaumcraft.common.blocks.BlockStoneDevice;
-import thaumcraft.common.config.ConfigBlocks;
 import thaumcraft.common.lib.utils.InventoryUtils;
 
-public class BlockFastAlchemyFurnace extends BlockStoneDevice {
+public class BlockFastAlchemyFurnace extends BlockContainer {
 
 	public IIcon[] iconFurnace;
 	public IIcon[] iconPedestal;
 
 	public BlockFastAlchemyFurnace() {
+		super(Material.iron);
 		this.iconFurnace = new IIcon[5];
 		this.iconPedestal = new IIcon[2];
 		this.setCreativeTab(AddToCreativeTab.tabMachines);
@@ -43,7 +43,7 @@ public class BlockFastAlchemyFurnace extends BlockStoneDevice {
 		this.setResistance(25.0f);
 		this.setStepSound(Block.soundTypeStone);
 		this.setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
-		GameRegistry.registerBlock(this, "blockFastAlchemyFurnace");
+		GameRegistry.registerBlock(this, ItemBlockThaumcraft.class, "blockFastAlchemyFurnace");
 		LanguageRegistry.addName(this, "Upgraded Alchemical Furnace");
 	}
 
@@ -122,13 +122,13 @@ public class BlockFastAlchemyFurnace extends BlockStoneDevice {
 	@Override
 	public boolean onBlockEventReceived(final World par1World, final int par2, final int par3, final int par4,
 			final int par5, final int par6) {
-		if (par5 == 1) {
+		/*if (par5 == 1) {
 			if (par1World.isRemote) {
 				Thaumcraft.proxy.blockSparkle(par1World, par2, par3, par4, 11960575, 2);
 				par1World.playAuxSFX(2001, par2, par3, par4, Block.getIdFromBlock(Blocks.stonebrick) + 0);
 			}
 			return true;
-		}
+		}*/
 		return super.onBlockEventReceived(par1World, par2, par3, par4, par5, par6);
 	}
 
@@ -192,10 +192,10 @@ public class BlockFastAlchemyFurnace extends BlockStoneDevice {
 		this.iconFurnace[4] = ir.registerIcon("thaumcraft:al_furnace_top_filled");
 	}
 
-	@Override
+	/*@Override
 	public int getRenderType() {
 		return ConfigBlocks.blockStoneDeviceRI;
-	}
+	}*/
 
 	@Override
 	public boolean isOpaqueCube() {
@@ -243,8 +243,6 @@ public class BlockFastAlchemyFurnace extends BlockStoneDevice {
 				}
 				return this.iconFurnace[2];
 			}
-		} else if ((metadata == 1) || (metadata == 5) || (metadata == 8) || (metadata == 12)) {
-			return super.getIcon(iblockaccess, i, j, k, side);
 		}
 		return this.iconFurnace[0];
 	}

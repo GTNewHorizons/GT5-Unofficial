@@ -4,6 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -13,15 +14,15 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.ForgeDirection;
+import thaumcraft.api.TileThaumcraft;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.common.config.ConfigItems;
 import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
-import thaumcraft.common.tiles.TileAlchemyFurnace;
 import thaumcraft.common.tiles.TileAlembic;
 import thaumcraft.common.tiles.TileBellows;
 
-public class TileFastAlchemyFurnace extends TileAlchemyFurnace {
+public class TileFastAlchemyFurnace extends TileThaumcraft implements ISidedInventory {
 	private static final int[] slots_bottom;
 	private static final int[] slots_top;
 	private static final int[] slots_sides;
@@ -103,7 +104,6 @@ public class TileFastAlchemyFurnace extends TileAlchemyFurnace {
 		return (this.customName != null) && (this.customName.length() > 0);
 	}
 
-	@Override
 	public void setGuiDisplayName(final String par1Str) {
 		this.customName = par1Str;
 	}
@@ -168,7 +168,6 @@ public class TileFastAlchemyFurnace extends TileAlchemyFurnace {
 		return 64;
 	}
 
-	@Override
 	@SideOnly(Side.CLIENT)
 	public int getCookProgressScaled(final int par1) {
 		if (this.smeltTime <= 0) {
@@ -177,13 +176,11 @@ public class TileFastAlchemyFurnace extends TileAlchemyFurnace {
 		return (this.furnaceCookTime * par1) / this.smeltTime;
 	}
 
-	@Override
 	@SideOnly(Side.CLIENT)
 	public int getContentsScaled(final int par1) {
 		return (this.vis * par1) / this.maxVis;
 	}
 
-	@Override
 	@SideOnly(Side.CLIENT)
 	public int getBurnTimeRemainingScaled(final int par1) {
 		if (this.currentItemBurnTime == 0) {
@@ -192,7 +189,6 @@ public class TileFastAlchemyFurnace extends TileAlchemyFurnace {
 		return (this.furnaceBurnTime * par1) / this.currentItemBurnTime;
 	}
 
-	@Override
 	public boolean isBurning() {
 		return this.furnaceBurnTime > 0;
 	}
@@ -229,9 +225,10 @@ public class TileFastAlchemyFurnace extends TileAlchemyFurnace {
 				while (deep < 5) {
 					++deep;
 					tile = this.worldObj.getTileEntity(this.xCoord, this.yCoord + deep, this.zCoord);
-					if (!(tile instanceof TileAlembic)) {
+					if (!(tile instanceof TileAlembic) || !(tile instanceof TileFastArcaneAlembic)) {
 						break;
 					}
+
 					final TileAlembic alembic = (TileAlembic) tile;
 					if ((alembic.aspect != null) && (alembic.amount < alembic.maxAmount)
 							&& (this.aspects.getAmount(alembic.aspect) > 0)) {
@@ -325,13 +322,11 @@ public class TileFastAlchemyFurnace extends TileAlchemyFurnace {
 		return true;
 	}
 
-	@Override
 	public void getBellows() {
 		this.bellows = TileBellows.getBellows(this.worldObj, this.xCoord, this.yCoord, this.zCoord,
 				ForgeDirection.VALID_DIRECTIONS);
 	}
 
-	@Override
 	public void smeltItem() {
 		if (this.canSmelt()) {
 			AspectList al = ThaumcraftCraftingManager.getObjectTags(this.furnaceItemStacks[0]);
@@ -395,7 +390,6 @@ public class TileFastAlchemyFurnace extends TileAlchemyFurnace {
 		return (par3 != 0) || (par1 != 1) || (par2ItemStack.getItem() == Items.bucket);
 	}
 
-	@Override
 	public Aspect takeRandomAspect(final AspectList exlude) {
 		if (this.aspects.size() > 0) {
 			final AspectList temp = this.aspects.copy();
@@ -414,7 +408,6 @@ public class TileFastAlchemyFurnace extends TileAlchemyFurnace {
 		return null;
 	}
 
-	@Override
 	public boolean takeFromContainer(final Aspect tag, final int amount) {
 		if ((this.aspects != null) && (this.aspects.getAmount(tag) >= amount)) {
 			this.aspects.remove(tag, amount);

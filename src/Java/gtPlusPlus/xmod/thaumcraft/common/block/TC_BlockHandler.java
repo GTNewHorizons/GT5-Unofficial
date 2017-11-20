@@ -4,10 +4,12 @@ import net.minecraft.block.Block;
 
 public class TC_BlockHandler {
 
-	static Block blockFurnace;
-	
+	public static Block blockFastAlchemyFurnace;
+	public static Block blockFastArcaneAlembic;
+
 	public static void run(){
-		blockFurnace = new BlockFastAlchemyFurnace();
+		blockFastAlchemyFurnace = new BlockFastAlchemyFurnace();
+		blockFastArcaneAlembic = new BlockFastArcaneAlembic();
 	}
-	
+
 }
