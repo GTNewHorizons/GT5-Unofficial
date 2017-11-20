@@ -3,12 +3,24 @@ package gtPlusPlus.core.handler;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import gtPlusPlus.GTplusplus;
-import gtPlusPlus.core.container.*;
+import gtPlusPlus.core.container.Container_BackpackBase;
+import gtPlusPlus.core.container.Container_FishTrap;
+import gtPlusPlus.core.container.Container_Grindle;
+import gtPlusPlus.core.container.Container_ModularityTable;
+import gtPlusPlus.core.container.Container_ProjectTable;
+import gtPlusPlus.core.container.Container_TradeTable;
+import gtPlusPlus.core.container.Container_Workbench;
+import gtPlusPlus.core.container.Container_WorkbenchAdvanced;
 import gtPlusPlus.core.gui.beta.Gui_ID_Registry;
 import gtPlusPlus.core.gui.beta.MU_GuiId;
 import gtPlusPlus.core.gui.item.GuiBaseBackpack;
 import gtPlusPlus.core.gui.item.GuiBaseGrindle;
-import gtPlusPlus.core.gui.machine.*;
+import gtPlusPlus.core.gui.machine.GUI_FishTrap;
+import gtPlusPlus.core.gui.machine.GUI_ModularityTable;
+import gtPlusPlus.core.gui.machine.GUI_ProjectTable;
+import gtPlusPlus.core.gui.machine.GUI_TradeTable;
+import gtPlusPlus.core.gui.machine.GUI_Workbench;
+import gtPlusPlus.core.gui.machine.GUI_WorkbenchAdvanced;
 import gtPlusPlus.core.interfaces.IGuiManager;
 import gtPlusPlus.core.inventories.BaseInventoryBackpack;
 import gtPlusPlus.core.inventories.BaseInventoryGrindle;
@@ -34,8 +46,8 @@ public class GuiHandler implements IGuiHandler {
 	public static final int GUI5 = 4;      //Workbench Adv
 	public static final int GUI6 = 5;      //Fish trap
 	public static final int GUI7 = 6;      //Trade table
-	public static final int GUI8 = 7;      //
-	public static final int GUI9 = 8;      //
+	public static final int GUI8 = 7;      //Alchemical Furnace
+	public static final int GUI9 = 8;      //Grindle
 
 
 
@@ -83,7 +95,7 @@ public class GuiHandler implements IGuiHandler {
 				return new Container_TradeTable(player.inventory, (TileEntityTradeTable)te);
 			}
 		}
-		
+
 		if (ID == GUI9){
 			return new Container_Grindle(player, player.inventory, new BaseInventoryGrindle(player.getHeldItem()));
 		}
@@ -132,7 +144,7 @@ public class GuiHandler implements IGuiHandler {
 				return new GUI_TradeTable(player.inventory, (TileEntityTradeTable)te, ((TileEntityBase) te).getOwner());
 			}
 		}
-		
+
 		if (ID == GUI9){
 			return new GuiBaseGrindle(new Container_Grindle(player, player.inventory, new BaseInventoryGrindle(player.getHeldItem())));
 		}

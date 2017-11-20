@@ -42,6 +42,9 @@ public class ItemUtils {
 	public static ItemStack getSimpleStack(final Block x){
 		return getSimpleStack(Item.getItemFromBlock(x), 1);
 	}
+	public static ItemStack getSimpleStack(final Block x, final int i){
+		return getSimpleStack(Item.getItemFromBlock(x), i);
+	}
 	public static ItemStack getSimpleStack(final Item x, final int i){
 		try {
 			final ItemStack r = new ItemStack(x, i);
@@ -61,8 +64,8 @@ public class ItemUtils {
 	}
 
 	public static final int WILDCARD_VALUE = Short.MAX_VALUE;
-	public static ItemStack getWildcardStack(Item x){
-		ItemStack y = new ItemStack(x, 1, WILDCARD_VALUE);
+	public static ItemStack getWildcardStack(final Item x){
+		final ItemStack y = new ItemStack(x, 1, WILDCARD_VALUE);
 		return y;
 	}
 
@@ -265,8 +268,8 @@ public class ItemUtils {
 			//Adds a check to grab dusts using GT methodology if possible.
 			ItemStack returnValue = null;
 			if (oredictName.toLowerCase().contains("dust")){
-				String MaterialName = oredictName.toLowerCase().replace("dust", "");
-				Materials m = Materials.get(MaterialName);
+				final String MaterialName = oredictName.toLowerCase().replace("dust", "");
+				final Materials m = Materials.get(MaterialName);
 				returnValue = getGregtechDust(m, amount);
 				if (returnValue != null){
 					return returnValue;
@@ -284,7 +287,7 @@ public class ItemUtils {
 			Utils.LOG_WARNING(oredictName+" was not valid.");
 			return null;
 		}
-		catch (Throwable t){
+		catch (final Throwable t){
 			return null;
 		}
 	}
@@ -317,7 +320,7 @@ public class ItemUtils {
 		return output;
 	}
 
-	public static Item generateSpecialUsePlate(String internalName, String displayName, short[] rgb, int radioactivity){
+	public static Item generateSpecialUsePlate(final String internalName, final String displayName, final short[] rgb, final int radioactivity){
 		return new BaseItemPlate_OLD(internalName, displayName, Utils.rgbtoHexValue(rgb[0], rgb[1], rgb[2]), radioactivity);
 	}
 
@@ -344,7 +347,7 @@ public class ItemUtils {
 
 	public static MultiPickaxeBase generateMultiPick(final boolean GT_Durability, final Materials material){
 		final ToolMaterial customMaterial = Utils.generateToolMaterialFromGT(material);
-		int enchantLevel = material.mEnchantmentToolsLevel;		
+		final int enchantLevel = material.mEnchantmentToolsLevel;
 		final Object enchant = new Pair(material.mEnchantmentTools, enchantLevel);
 		return generateMultiPick(GT_Durability, customMaterial, material.mDefaultLocalName, material.mDurability, material.mRGBa, enchant);
 	}
@@ -575,24 +578,24 @@ public class ItemUtils {
 		return outputs;
 	}
 
-	private static String getModId(Item item) {
+	private static String getModId(final Item item) {
 		try {
-			GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(item);
-			String modname = (id.modId == null ? id.name : id.modId);
-			return id == null || id.modId.equals("") ? "minecraft" : modname;
-		} catch (Throwable t){
+			final GameRegistry.UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(item);
+			final String modname = (id.modId == null ? id.name : id.modId);
+			return (id == null) || id.modId.equals("") ? "minecraft" : modname;
+		} catch (final Throwable t){
 			try {
-				UniqueIdentifier t2 = GameRegistry.findUniqueIdentifierFor(Block.getBlockFromItem(item));
-				String modname = (t2.modId == null ? t2.name : t2.modId);
-				return t2 == null || t2.modId.equals("") ? "minecraft" : modname;
+				final UniqueIdentifier t2 = GameRegistry.findUniqueIdentifierFor(Block.getBlockFromItem(item));
+				final String modname = (t2.modId == null ? t2.name : t2.modId);
+				return (t2 == null) || t2.modId.equals("") ? "minecraft" : modname;
 			}
-			catch (Throwable t3){
+			catch (final Throwable t3){
 				return "bad modid";
 			}
 		}
 	}
 
-	public static String getModId(ItemStack key) {
+	public static String getModId(final ItemStack key) {
 		return getModId(key.getItem());
 	}
 
@@ -602,13 +605,13 @@ public class ItemUtils {
 		if (!oreDictList.isEmpty()){
 			ItemStack returnvalue;
 			for (int xrc=0;xrc<oreDictList.size();xrc++){
-				String modid = getModId(oreDictList.get(xrc).getItem());
+				final String modid = getModId(oreDictList.get(xrc).getItem());
 				if (modid.equals("gregtech") || modid.equals(CORE.MODID)){
 					returnvalue = oreDictList.get(xrc).copy();
 					returnvalue.stackSize = amount;
 					return returnvalue;
 				}
-			}			
+			}
 		}
 		return getNonTinkersDust(oredictName, amount);
 	}
@@ -619,13 +622,13 @@ public class ItemUtils {
 		if (!oreDictList.isEmpty()){
 			ItemStack returnvalue;
 			for (int xrc=0;xrc<oreDictList.size();xrc++){
-				String modid = getModId(oreDictList.get(xrc).getItem());
+				final String modid = getModId(oreDictList.get(xrc).getItem());
 				if (!modid.equals("tconstruct")){
 					returnvalue = oreDictList.get(xrc).copy();
 					returnvalue.stackSize = amount;
 					return returnvalue;
 				}
-			}			
+			}
 		}
 		//If only Tinkers dust exists, bow down and just use it.
 		return getItemStackOfAmountFromOreDictNoBroken(oredictName, amount);
