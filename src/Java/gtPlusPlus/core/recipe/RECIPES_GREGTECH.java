@@ -233,10 +233,11 @@ public class RECIPES_GREGTECH {
 						ItemUtils.getItemStackOfAmountFromOreDict("dustIridium", 3),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustOsmium", 1)
 				},
+				Materials.Helium.getGas(1000),
 				FluidUtils.getFluidStack("molten.osmiridium", 4*144),
 				0,
-				MathUtils.findPercentageOfInt(1920*20, 80),
-				500);
+				MathUtils.findPercentageOfInt(500*20, 80),
+				1920);
 
 		//Naq Alloy
 		CORE.RA.addBlastSmelterRecipe(
@@ -245,10 +246,11 @@ public class RECIPES_GREGTECH {
 						ItemUtils.getItemStackOfAmountFromOreDict("dustNaquadah", 1),
 						ItemUtils.getItemStackOfAmountFromOreDict("dustOsmiridium", 1)
 				},
+				Materials.Argon.getGas(1000),
 				FluidUtils.getFluidStack("molten.naquadahalloy", 2*144),
 				0,
-				MathUtils.findPercentageOfInt(30720*20, 80),
-				500);
+				MathUtils.findPercentageOfInt(500*20, 80),
+				30720);
 
 		//Nickel-Zinc-Ferrite
 		if (Materials.get("NickelZincFerrite") != null){
@@ -300,7 +302,7 @@ public class RECIPES_GREGTECH {
 					},
 					FluidUtils.getFluidStack("molten.tungstencarbide", 2*144),
 					0,
-					MathUtils.findPercentageOfInt((int) Math.max(Materials.TungstenCarbide.getMass() / 40L, 1L) * Materials.TungstenCarbide.mBlastFurnaceTemp*20, 80),
+					MathUtils.findPercentageOfInt((int) Math.max(Materials.TungstenCarbide.getMass() / 40L, 1L) * Materials.TungstenCarbide.mBlastFurnaceTemp, 80),
 					480);
 		}
 
@@ -309,13 +311,13 @@ public class RECIPES_GREGTECH {
 		if (Materials.get("VanadiumGallium") != null){
 			CORE.RA.addBlastSmelterRecipe(
 					new ItemStack[]{
-							ItemUtils.getGregtechCircuit(2),
+							ItemUtils.getGregtechCircuit(12),
 							ItemUtils.getItemStackOfAmountFromOreDict("dustGallium", 1),
 							ItemUtils.getItemStackOfAmountFromOreDict("dustVanadium", 3)
 					},
 					FluidUtils.getFluidStack("molten.vanadiumgallium", 4*144),
 					0,
-					MathUtils.findPercentageOfInt((int) Math.max(Materials.VanadiumGallium.getMass() / 40L, 1L) * Materials.VanadiumGallium.mBlastFurnaceTemp*20, 80),
+					MathUtils.findPercentageOfInt((int) Math.max(Materials.VanadiumGallium.getMass() / 40L, 1L) * Materials.VanadiumGallium.mBlastFurnaceTemp, 80),
 					480);
 		}
 
