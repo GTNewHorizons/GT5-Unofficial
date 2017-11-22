@@ -10,7 +10,6 @@ import gregtech.api.gui.GT_GUIContainer_MultiMachine;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
@@ -18,13 +17,14 @@ import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 
 public class GregtechMetaTileEntity_AlloyBlastSmelter
-extends GT_MetaTileEntity_MultiBlockBase {
+extends GregtechMeta_MultiBlockBase {
 	private int mHeatingCapacity = 0;
 
 	public GregtechMetaTileEntity_AlloyBlastSmelter(final int aID, final String aName, final String aNameRegional) {
@@ -55,6 +55,7 @@ extends GT_MetaTileEntity_MultiBlockBase {
 				"1x Energy Hatch (one of bottom)",
 				"1x Maintenance Hatch (one of bottom)",
 				"1x Muffler Hatch (top middle)",
+				"1x Fluid Input Hatch (optional, top layer)",
 				"Blast Smelter Casings for the rest",
 				CORE.GT_Tooltip};
 	}
@@ -81,17 +82,19 @@ extends GT_MetaTileEntity_MultiBlockBase {
 	public boolean isCorrectMachinePart(final ItemStack aStack) {
 		return true;
 	}
-	
-	public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
-        super.startSoundLoop(aIndex, aX, aY, aZ);
-        if (aIndex == 1) {
-            GT_Utility.doSoundAtClient((String) GregTech_API.sSoundList.get(Integer.valueOf(208)), 10, 1.0F, aX, aY, aZ);
-        }
-    }
 
-    public void startProcess() {
-        sendLoopStart((byte) 1);
-    }
+	@Override
+	public void startSoundLoop(final byte aIndex, final double aX, final double aY, final double aZ) {
+		super.startSoundLoop(aIndex, aX, aY, aZ);
+		if (aIndex == 1) {
+			GT_Utility.doSoundAtClient(GregTech_API.sSoundList.get(Integer.valueOf(208)), 10, 1.0F, aX, aY, aZ);
+		}
+	}
+
+	@Override
+	public void startProcess() {
+		this.sendLoopStart((byte) 1);
+	}
 
 	@Override
 	public boolean isFacingValid(final byte aFacing) {
@@ -192,11 +195,13 @@ extends GT_MetaTileEntity_MultiBlockBase {
 					if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 1, zDir + j) != 14) {
 						return false;
 					}
-					if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 3, zDir + j) != ModBlocks.blockCasingsMisc) {
-						return false;
-					}
-					if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 3, zDir + j) != 15) {
-						return false;
+					if (!this.addFluidInputToMachineList(aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, 3, zDir + j), 11)) {
+						if (aBaseMetaTileEntity.getBlockOffset(xDir + i, 3, zDir + j) != ModBlocks.blockCasingsMisc) {
+							return false;
+						}
+						if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, 3, zDir + j) != 15) {
+							return false;
+						}
 					}
 				}
 			}
@@ -218,11 +223,11 @@ extends GT_MetaTileEntity_MultiBlockBase {
 		}
 		this.mHeatingCapacity += 100 * (GT_Utility.getTier(this.getMaxInputVoltage()) - 2);
 
-		if (	this.mMaintenanceHatches.size() != 1 || 
-				this.mMufflerHatches.size() != 1 || 
-				this.mInputBusses.size() < 1 || 
-				this.mOutputHatches.size() < 1 || 
-				this.mEnergyHatches.size() != 1 )  {
+		if (	(this.mMaintenanceHatches.size() != 1) ||
+				(this.mMufflerHatches.size() != 1) ||
+				(this.mInputBusses.size() < 1) ||
+				(this.mOutputHatches.size() < 1) ||
+				(this.mEnergyHatches.size() != 1) )  {
 			return false;
 		}
 
@@ -244,6 +249,7 @@ extends GT_MetaTileEntity_MultiBlockBase {
 		return 0;
 	}
 
+	@Override
 	public int getAmountOfOutputs() {
 		return 2;
 	}
