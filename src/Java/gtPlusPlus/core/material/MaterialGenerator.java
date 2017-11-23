@@ -19,8 +19,15 @@ import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
-import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
-import gtPlusPlus.xmod.gregtech.loaders.*;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_AlloySmelter;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Assembler;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_BlastSmelter;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_DustGeneration;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Extruder;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Fluids;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Plates;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_Recycling;
+import gtPlusPlus.xmod.gregtech.loaders.RecipeGen_ShapedCrafting;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
@@ -49,7 +56,7 @@ public class MaterialGenerator {
 			}
 
 			int sRadiation = 0;
-			if (ItemUtils.isRadioactive(materialName) || matInfo.vRadiationLevel != 0){
+			if (ItemUtils.isRadioactive(materialName) || (matInfo.vRadiationLevel != 0)){
 				sRadiation = matInfo.vRadiationLevel;
 			}
 
@@ -121,7 +128,7 @@ public class MaterialGenerator {
 				temp = new BaseItemNugget(matInfo);
 				temp = new BaseItemPlate(matInfo);
 				temp = new BaseItemPlateDouble(matInfo);
-			}		
+			}
 			else if (matInfo.getState() == MaterialState.PURE_LIQUID){
 				FluidUtils.generateFluidNoPrefix(unlocalizedName,	materialName, matInfo.getMeltingPointK(), C);
 				return true;
@@ -138,8 +145,9 @@ public class MaterialGenerator {
 			RecipeGen_Fluids.generateRecipes(matInfo);
 			RecipeGen_Plates.generateRecipes(matInfo);
 			RecipeGen_ShapedCrafting.generateRecipes(matInfo);
+			RecipeGen_Recycling.generateRecipes(matInfo);
 			return true;
-		} catch (Throwable t)
+		} catch (final Throwable t)
 		{
 			Utils.LOG_INFO(""+matInfo.getLocalizedName()+" failed to generate.");
 			return false;
@@ -158,7 +166,7 @@ public class MaterialGenerator {
 		}
 
 		int sRadiation = 0;
-		if (ItemUtils.isRadioactive(materialName) || matInfo.vRadiationLevel != 0){
+		if (ItemUtils.isRadioactive(materialName) || (matInfo.vRadiationLevel != 0)){
 			sRadiation = matInfo.vRadiationLevel;
 		}
 
@@ -172,6 +180,7 @@ public class MaterialGenerator {
 		//Add A jillion Recipes - old code
 		RecipeGen_DustGeneration.addMixerRecipe_Standalone(matInfo);
 		RecipeGen_Fluids.generateRecipes(matInfo);
+		//RecipeGen_Recycling.generateRecipes(matInfo);
 	}
 
 	public static void generateNuclearMaterial(final Material matInfo){
@@ -209,7 +218,8 @@ public class MaterialGenerator {
 			RecipeGen_Fluids.generateRecipes(matInfo);
 			RecipeGen_Assembler.generateRecipes(matInfo);
 			RecipeGen_DustGeneration.generateRecipes(matInfo, true);
-		} catch (Throwable t){
+			RecipeGen_Recycling.generateRecipes(matInfo);
+		} catch (final Throwable t){
 			Utils.LOG_INFO(""+matInfo.getLocalizedName()+" failed to generate.");
 		}
 	}

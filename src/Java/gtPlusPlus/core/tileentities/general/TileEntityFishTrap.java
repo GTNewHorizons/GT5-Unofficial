@@ -9,7 +9,6 @@ import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
-import gtPlusPlus.xmod.gregtech.api.objects.XSTR;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -101,24 +100,24 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 			int checkingSlot = 0;
 			final ItemStack loot = this.generateLootForFishTrap().copy();
 			try {
-				//Utils.LOG_INFO("Trying to add "+loot.getDisplayName()+" | "+loot.getItemDamage());
+				//Utils.LOG_WARNING("Trying to add "+loot.getDisplayName()+" | "+loot.getItemDamage());
 				for (final ItemStack contents : this.getInventory().getInventory()) {
 
 
 					if (GT_Utility.areStacksEqual(loot, contents)){
 						if (contents.stackSize < contents.getMaxStackSize()) {
-							//Utils.LOG_INFO("3-Trying to add one more "+loot.getDisplayName()+"meta: "+loot.getItemDamage()+" to an existing stack of "+contents.getDisplayName()+" with a size of "+contents.stackSize);
+							//Utils.LOG_WARNING("3-Trying to add one more "+loot.getDisplayName()+"meta: "+loot.getItemDamage()+" to an existing stack of "+contents.getDisplayName()+" with a size of "+contents.stackSize);
 							contents.stackSize++;
 							this.markDirty();
-							return true;							
+							return true;
 						}
 					}
 					checkingSlot++;
 				}
 				checkingSlot = 0;
 				for (final ItemStack contents : this.getInventory().getInventory()) {
-					if (contents == null) {						
-						//Utils.LOG_INFO("Adding Item To Empty Slot. "+(checkingSlot+1));
+					if (contents == null) {
+						//Utils.LOG_WARNING("Adding Item To Empty Slot. "+(checkingSlot+1));
 						this.getInventory().setInventorySlotContents(checkingSlot, loot);
 						this.markDirty();
 						return true;
@@ -126,7 +125,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 					checkingSlot++;
 				}
 			}
-			catch (NullPointerException n) {
+			catch (final NullPointerException n) {
 			}
 		}
 		this.markDirty();
@@ -142,8 +141,11 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 		else if (lootWeight <= 10) {
 			loot = ItemUtils.getSimpleStack(Items.bone);
 		}
-		else if (lootWeight <= 20) {
+		else if (lootWeight <= 15) {
 			loot = ItemUtils.getSimpleStack(Blocks.sand);
+		}
+		else if (lootWeight <= 20) {
+			loot = ItemUtils.simpleMetaStack(Items.dye, 0, 1);
 		}
 		// Junk Loot
 		else if (lootWeight <= 23) {
@@ -156,12 +158,12 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 		}
 		// Pam Fish
 		else if (lootWeight <= 99) {
-			Random xstr = new Random();
+			final Random xstr = new Random();
 			loot = FishingHooks.getRandomFishable(xstr, 100);
 		}
 
 		else if (lootWeight == 100){
-			int rareLoot = MathUtils.randInt(1, 10);
+			final int rareLoot = MathUtils.randInt(1, 10);
 			if (rareLoot <= 4) {
 				loot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("nuggetIron", 1);
 				if (loot == null){
@@ -173,7 +175,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 				if (loot == null){
 					loot = ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotGold", 1);
 				}
-			}			
+			}
 			else if (rareLoot <= 9){
 				loot = ItemUtils.getSimpleStack(Items.emerald);
 			}
@@ -192,47 +194,47 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 	@Override
 	public void updateEntity() {
 		try{
-		if (!this.worldObj.isRemote) {
-			this.tickCount++;
-			// Utils.LOG_WARNING("Ticking "+this.tickCount);
-			// Check if the Tile is within water once per second.
-			if ((this.tickCount % 20) == 0) {
-				this.isInWater = this.isSurroundedByWater();
-			}
-			else {
-
-			}
-
-			if (this.isInWater) {
-				this.calculateTickrate();
-			}
-
-			// Try add some loot once every 30 seconds.
-			if ((this.tickCount % this.baseTickRate) == 0) {
-				if (this.isInWater) {
-					// Add loot
-					// Utils.LOG_WARNING("Adding Loot to the fishtrap at
-					// x["+this.locationX+"] y["+this.locationY+"]
-					// z["+this.locationZ+"] (Ticking for loot every
-					// "+this.baseTickRate+" ticks)");
-					this.tryAddLoot();
-					this.markDirty();
+			if (!this.worldObj.isRemote) {
+				this.tickCount++;
+				// Utils.LOG_WARNING("Ticking "+this.tickCount);
+				// Check if the Tile is within water once per second.
+				if ((this.tickCount % 20) == 0) {
+					this.isInWater = this.isSurroundedByWater();
 				}
 				else {
-					Utils.LOG_INFO("This Trap does not have enough water around it.");
-					Utils.LOG_WARNING("Not adding Loot to the fishtrap at x[" + this.locationX + "] y[" + this.locationY
-							+ "] z[" + this.locationZ + "] (Ticking for loot every " + this.baseTickRate + " ticks)");
-					this.markDirty();
-				}
-				this.tickCount = 0;
-			}
-			if (this.tickCount > (this.baseTickRate + 500)) {
-				this.tickCount = 0;
-			}
 
+				}
+
+				if (this.isInWater) {
+					this.calculateTickrate();
+				}
+
+				// Try add some loot once every 30 seconds.
+				if ((this.tickCount % this.baseTickRate) == 0) {
+					if (this.isInWater) {
+						// Add loot
+						// Utils.LOG_WARNING("Adding Loot to the fishtrap at
+						// x["+this.locationX+"] y["+this.locationY+"]
+						// z["+this.locationZ+"] (Ticking for loot every
+						// "+this.baseTickRate+" ticks)");
+						this.tryAddLoot();
+						this.markDirty();
+					}
+					else {
+						Utils.LOG_WARNING("This Trap does not have enough water around it.");
+						Utils.LOG_WARNING("Not adding Loot to the fishtrap at x[" + this.locationX + "] y[" + this.locationY
+								+ "] z[" + this.locationZ + "] (Ticking for loot every " + this.baseTickRate + " ticks)");
+						this.markDirty();
+					}
+					this.tickCount = 0;
+				}
+				if (this.tickCount > (this.baseTickRate + 500)) {
+					this.tickCount = 0;
+				}
+
+			}
 		}
-		}
-		catch (Throwable t){}
+		catch (final Throwable t){}
 	}
 
 	public void calculateTickrate() {
@@ -293,13 +295,6 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 			"Crayfish", "Eel", "Frog", "Grouper", "Herring", "Jellyfish", "Mudfish", "Octopus", "Perch", "Scallop",
 			"Shrimp", "Snail", "Snapper", "Tilapia", "Trout", "Tuna", "Turtle", "Walleye" };
 
-	private static final ItemStack[] minecraftFish = { 
-			ItemUtils.simpleMetaStack(Items.fish, 0, 1).copy(),
-			ItemUtils.simpleMetaStack(Items.fish, 1, 1).copy(),
-			ItemUtils.simpleMetaStack(Items.fish, 2, 1).copy(),
-			ItemUtils.simpleMetaStack(Items.fish, 3, 1).copy()
-	};
-
 	public static void pamsHarvestCraftCompat() {
 		for (int i = 0; i < harvestcraftFish.length; i++) {
 
@@ -312,22 +307,22 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int slot) {
+	public ItemStack getStackInSlot(final int slot) {
 		return this.getInventory().getStackInSlot(slot);
 	}
 
 	@Override
-	public ItemStack decrStackSize(int slot, int count) {
+	public ItemStack decrStackSize(final int slot, final int count) {
 		return this.getInventory().decrStackSize(slot, count);
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int slot) {
+	public ItemStack getStackInSlotOnClosing(final int slot) {
 		return this.getInventory().getStackInSlotOnClosing(slot);
 	}
 
 	@Override
-	public void setInventorySlotContents(int slot, ItemStack stack) {
+	public void setInventorySlotContents(final int slot, final ItemStack stack) {
 		this.getInventory().setInventorySlotContents(slot, stack);
 	}
 
@@ -337,7 +332,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
+	public boolean isUseableByPlayer(final EntityPlayer entityplayer) {
 		return this.getInventory().isUseableByPlayer(entityplayer);
 	}
 
@@ -346,7 +341,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 		this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, 1);
 		this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
 		this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
-		this.getInventory().openInventory();		
+		this.getInventory().openInventory();
 	}
 
 	@Override
@@ -354,17 +349,17 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 		this.worldObj.addBlockEvent(this.xCoord, this.yCoord, this.zCoord, this.getBlockType(), 1, 1);
 		this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this.getBlockType());
 		this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord - 1, this.zCoord, this.getBlockType());
-		this.getInventory().closeInventory();		
+		this.getInventory().closeInventory();
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack itemstack) {
+	public boolean isItemValidForSlot(final int slot, final ItemStack itemstack) {
 		return this.getInventory().isItemValidForSlot(slot, itemstack);
 	}
 
 	@Override
-	public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
-		int[] accessibleSides = new int[this.getSizeInventory()];
+	public int[] getAccessibleSlotsFromSide(final int p_94128_1_) {
+		final int[] accessibleSides = new int[this.getSizeInventory()];
 		for (int r=0; r<this.getInventory().getSizeInventory(); r++){
 			accessibleSides[r]=r;
 		}
@@ -373,12 +368,12 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 	}
 
 	@Override
-	public boolean canInsertItem(int p_102007_1_, ItemStack p_102007_2_, int p_102007_3_) {
+	public boolean canInsertItem(final int p_102007_1_, final ItemStack p_102007_2_, final int p_102007_3_) {
 		return false;
 	}
 
 	@Override
-	public boolean canExtractItem(int p_102008_1_, ItemStack p_102008_2_, int p_102008_3_) {
+	public boolean canExtractItem(final int p_102008_1_, final ItemStack p_102008_2_, final int p_102008_3_) {
 		return true;
 	}
 
@@ -386,7 +381,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 		return this.customName;
 	}
 
-	public void setCustomName(String customName) {
+	public void setCustomName(final String customName) {
 		this.customName = customName;
 	}
 
@@ -397,7 +392,7 @@ public class TileEntityFishTrap extends TileEntity implements ISidedInventory {
 
 	@Override
 	public boolean hasCustomInventoryName() {
-		return this.customName != null && !this.customName.equals("");
+		return (this.customName != null) && !this.customName.equals("");
 	}
 
 }

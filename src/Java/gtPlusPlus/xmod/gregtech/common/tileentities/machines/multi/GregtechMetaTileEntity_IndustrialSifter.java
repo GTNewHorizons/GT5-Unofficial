@@ -14,7 +14,6 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
-import gregtech.common.blocks.GT_Block_Machines;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
@@ -53,7 +52,7 @@ extends GregtechMeta_MultiBlockBase {
 				"4x Output Bus (Any top or bottom edge casing)",
 				"1x Maintenance Hatch (Any top or bottom edge casing)",
 				"1x Energy Hatch (Any top or bottom edge casing)",
-				"9x Sieve Grate (Top and Middle 3x3)",
+				"18x Sieve Grate (Top and Middle 3x3)",
 				"Sieve Casings for the rest (47)",
 				CORE.GT_Tooltip};
 	}
@@ -151,24 +150,25 @@ extends GregtechMeta_MultiBlockBase {
 		//Make a recipe instance for the rest of the method.
 		final GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sSifterRecipes.findRecipe(this.getBaseMetaTileEntity(), false, 9223372036854775807L, null, tInputs);
 
-		if (tRecipe != null)
-			baseRecipe = tRecipe.copy();
+		if (tRecipe != null) {
+			this.baseRecipe = tRecipe.copy();
+		}
 
-		if (cloneRecipe != tRecipe || cloneRecipe == null){
-			cloneRecipe = tRecipe.copy();
+		if ((this.cloneRecipe != tRecipe) || (this.cloneRecipe == null)){
+			this.cloneRecipe = tRecipe.copy();
 			Utils.LOG_WARNING("Setting Recipe");
-		}		
-		if (mInputStacks != tRecipe.mInputs || mInputStacks == null){
-			mInputStacks = tRecipe.mInputs;
+		}
+		if ((this.mInputStacks != tRecipe.mInputs) || (this.mInputStacks == null)){
+			this.mInputStacks = tRecipe.mInputs;
 			Utils.LOG_WARNING("Setting Recipe Inputs");
 		}
-		if (cloneChances != tRecipe.mChances || cloneChances == null){
-			cloneChances = tRecipe.mChances.clone();
+		if ((this.cloneChances != tRecipe.mChances) || (this.cloneChances == null)){
+			this.cloneChances = tRecipe.mChances.clone();
 			Utils.LOG_WARNING("Setting Chances");
 		}
 
-		for (int r=0;r<cloneChances.length;r++){
-			Utils.LOG_WARNING("Original map Output["+r+"] chance = "+cloneChances[r]);
+		for (int r=0;r<this.cloneChances.length;r++){
+			Utils.LOG_WARNING("Original map Output["+r+"] chance = "+this.cloneChances[r]);
 		}
 
 		Utils.LOG_WARNING("3.1");
@@ -178,24 +178,24 @@ extends GregtechMeta_MultiBlockBase {
 
 		Utils.LOG_WARNING("3.2");
 
-		if (cloneRecipe.mChances != null){
-			outputChances = cloneRecipe.mChances.clone();
+		if (this.cloneRecipe.mChances != null){
+			outputChances = this.cloneRecipe.mChances.clone();
 
 			Utils.LOG_WARNING("3.3");
 
 			for (int r=0;r<outputChances.length;r++){
 				Utils.LOG_WARNING("Output["+r+"] chance = "+outputChances[r]);
 				if (outputChances[r]<10000){
-					int temp = outputChances[r];
-					if (outputChances[r] < 8000 && outputChances[r] >= 1){
+					final int temp = outputChances[r];
+					if ((outputChances[r] < 8000) && (outputChances[r] >= 1)){
 						outputChances[r] = temp+1200;
 						Utils.LOG_WARNING("Output["+r+"] chance now = "+outputChances[r]);
 					}
-					else if (outputChances[r] < 9000 && outputChances[r] >= 8000){
+					else if ((outputChances[r] < 9000) && (outputChances[r] >= 8000)){
 						outputChances[r] = temp+400;
 						Utils.LOG_WARNING("Output["+r+"] chance now = "+outputChances[r]);
 					}
-					else if (outputChances[r] <= 9900 && outputChances[r] >= 9000){
+					else if ((outputChances[r] <= 9900) && (outputChances[r] >= 9000)){
 						outputChances[r] = temp+100;
 						Utils.LOG_WARNING("Output["+r+"] chance now = "+outputChances[r]);
 					}
@@ -205,7 +205,7 @@ extends GregtechMeta_MultiBlockBase {
 			Utils.LOG_WARNING("3.4");
 
 			//Rebuff Drop Rates for % output
-			cloneRecipe.mChances = outputChances;
+			this.cloneRecipe.mChances = outputChances;
 
 		}
 
@@ -213,24 +213,24 @@ extends GregtechMeta_MultiBlockBase {
 		Utils.LOG_WARNING("4");
 
 
-		final int tValidOutputSlots = this.getValidOutputSlots(this.getBaseMetaTileEntity(), cloneRecipe, tInputs);
+		final int tValidOutputSlots = this.getValidOutputSlots(this.getBaseMetaTileEntity(), this.cloneRecipe, tInputs);
 		Utils.LOG_WARNING("Sifter - Valid Output Hatches: "+tValidOutputSlots);
 
 		//More than or one input
 		if ((tInputList.size() > 0) && (tValidOutputSlots >= 1)) {
-			if ((cloneRecipe != null) && (cloneRecipe.isRecipeInputEqual(true, null, tInputs))) {
-				Utils.LOG_WARNING("Valid Recipe found - size "+cloneRecipe.mOutputs.length);
+			if ((this.cloneRecipe != null) && (this.cloneRecipe.isRecipeInputEqual(true, null, tInputs))) {
+				Utils.LOG_WARNING("Valid Recipe found - size "+this.cloneRecipe.mOutputs.length);
 				this.mEfficiency = (10000 - ((this.getIdealStatus() - this.getRepairStatus()) * 1000));
 				this.mEfficiencyIncrease = 10000;
 
 
-				this.mEUt = (-cloneRecipe.mEUt);
-				this.mMaxProgresstime = Math.max(1, (cloneRecipe.mDuration/5));
-				final ItemStack[] outputs = new ItemStack[cloneRecipe.mOutputs.length];
-				for (int i = 0; i < cloneRecipe.mOutputs.length; i++){
-					if (this.getBaseMetaTileEntity().getRandomNumber(7500) < cloneRecipe.getOutputChance(i)){
+				this.mEUt = (-this.cloneRecipe.mEUt);
+				this.mMaxProgresstime = Math.max(1, (this.cloneRecipe.mDuration/5));
+				final ItemStack[] outputs = new ItemStack[this.cloneRecipe.mOutputs.length];
+				for (int i = 0; i < this.cloneRecipe.mOutputs.length; i++){
+					if (this.getBaseMetaTileEntity().getRandomNumber(7500) < this.cloneRecipe.getOutputChance(i)){
 						Utils.LOG_WARNING("Adding a bonus output");
-						outputs[i] = cloneRecipe.getOutput(i);
+						outputs[i] = this.cloneRecipe.getOutput(i);
 					}
 					else {
 						Utils.LOG_WARNING("Adding null output");
@@ -255,7 +255,7 @@ extends GregtechMeta_MultiBlockBase {
 		final int zDir = ForgeDirection.getOrientation(aBaseMetaTileEntity.getBackFacing()).offsetZ * 2;
 
 		int tAmount = 0;
-		controller = false;
+		this.controller = false;
 		for (int i = -2; i < 3; i++) {
 			for (int j = -2; j < 3; j++) {
 				for (int h = 0; h < 3; h++) {
@@ -275,7 +275,7 @@ extends GregtechMeta_MultiBlockBase {
 
 					// Sifter Floor/Roof inner 3x3
 					if (((i != -2) && (i != 2)) && ((j != -2) && (j != 2))) {
-						if (h != 0){						
+						if (h != 0){
 							if (!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(21))) {
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
 									Utils.LOG_MACHINE_INFO("Sifter Casing(s) Missing from one of the "+sHeight+" layers inner 3x3.");
@@ -302,12 +302,12 @@ extends GregtechMeta_MultiBlockBase {
 								tAmount++;
 							}
 						}
-					}					
+					}
 					else {
 						//Dealt with inner 5x5, now deal with the exterior.
 						//Deal with all 4 sides (Sifter walls)
 						boolean checkController = false;
-						if (((xDir + i) != 0) || ((zDir + j) != 0) && h == 0) {//no controller
+						if (((xDir + i) != 0) || (((zDir + j) != 0) && (h == 0))) {//no controller
 							checkController = true;
 						}
 						else {
@@ -317,7 +317,7 @@ extends GregtechMeta_MultiBlockBase {
 						if (!this.addToMachineList(tTileEntity, TAE.GTPP_INDEX(21))) {
 							if (!checkController){
 								if (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) != ModBlocks.blockCasings2Misc) {
-									if (tTileEntity instanceof GregtechMetaTileEntity_IndustrialSifter || aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) == GregTech_API.sBlockMachines){
+									if ((tTileEntity instanceof GregtechMetaTileEntity_IndustrialSifter) || (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) == GregTech_API.sBlockMachines)){
 										if (h != 0){
 											Utils.LOG_MACHINE_INFO("Found a secondary controller at the wrong Y level.");
 											return false;
@@ -328,24 +328,24 @@ extends GregtechMeta_MultiBlockBase {
 										Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j).getLocalizedName());
 										return false;
 									}
-								}							
-														
-							if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 5) {
-								if (tTileEntity instanceof GregtechMetaTileEntity_IndustrialSifter || aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) == GregTech_API.sBlockMachines){
-									
 								}
-								else {
-									Utils.LOG_MACHINE_INFO("Sifter Casings Missing from somewhere in the "+sHeight+" layer edge.");
-									Utils.LOG_MACHINE_INFO("Incorrect Meta value for block, expected 5.");
-									Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j)+".");
-									return false;
+
+								if (aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j) != 5) {
+									if ((tTileEntity instanceof GregtechMetaTileEntity_IndustrialSifter) || (aBaseMetaTileEntity.getBlockOffset(xDir + i, h, zDir + j) == GregTech_API.sBlockMachines)){
+
+									}
+									else {
+										Utils.LOG_MACHINE_INFO("Sifter Casings Missing from somewhere in the "+sHeight+" layer edge.");
+										Utils.LOG_MACHINE_INFO("Incorrect Meta value for block, expected 5.");
+										Utils.LOG_MACHINE_INFO("Instead, found "+aBaseMetaTileEntity.getMetaIDOffset(xDir + i, h, zDir + j)+".");
+										return false;
+									}
 								}
 							}
-						}
-							tAmount++;							
+							tAmount++;
 						}
 						else {
-							tAmount++;			
+							tAmount++;
 						}
 					}
 				}
@@ -383,7 +383,7 @@ extends GregtechMeta_MultiBlockBase {
 	}
 
 	public boolean ignoreController(final Block tTileEntity) {
-		if (!controller && (tTileEntity == GregTech_API.sBlockMachines)) {
+		if (!this.controller && (tTileEntity == GregTech_API.sBlockMachines)) {
 			return true;
 		}
 		return false;
