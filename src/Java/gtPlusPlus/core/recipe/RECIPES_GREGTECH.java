@@ -280,18 +280,6 @@ public class RECIPES_GREGTECH {
 					120);
 		}
 
-
-
-
-
-
-
-
-
-
-
-
-
 		//TungstenCarbide
 		if (Materials.get("TungstenCarbide") != null){
 			CORE.RA.addBlastSmelterRecipe(
@@ -332,8 +320,48 @@ public class RECIPES_GREGTECH {
 					},
 					FluidUtils.getFluidStack("molten.darksteel", 2*144),
 					0,
-					MathUtils.findPercentageOfInt(500*20, 80),
+					MathUtils.findPercentageOfInt(200*20, 80),
 					120);
+		}
+		//Pulsating Iron
+		if (ItemUtils.getItemStackOfAmountFromOreDict("dustIron", 1) != ItemUtils.getSimpleStack(ModItems.AAA_Broken)){
+			CORE.RA.addBlastSmelterRecipe(
+					new ItemStack[]{
+							ItemUtils.getGregtechCircuit(2),
+							ItemUtils.getItemStackOfAmountFromOreDict("dustIron", 1),
+							ItemUtils.getSimpleStack(Items.ender_pearl)
+					},
+					FluidUtils.getFluidStack("molten.pulsatingiron", 2*144),
+					0,
+					MathUtils.findPercentageOfInt(8*20, 80),
+					120);
+		}
+		//Energetic Alloy
+		if (ItemUtils.getItemStackOfAmountFromOreDict("dustEnergeticAlloy", 1) != ItemUtils.getSimpleStack(ModItems.AAA_Broken)){
+			CORE.RA.addBlastSmelterRecipe(
+					new ItemStack[]{
+							ItemUtils.getGregtechCircuit(12),
+							ItemUtils.getItemStackOfAmountFromOreDict("dustIron", 1),
+							ItemUtils.getSimpleStack(Items.glowstone_dust)
+					},
+					FluidUtils.getFluidStack("molten.redstone", 144),
+					FluidUtils.getFluidStack("molten.energeticalloy", 144),
+					0,
+					MathUtils.findPercentageOfInt(9*20, 80),
+					120);
+		}
+		//Vibrant Alloy
+		if (ItemUtils.getItemStackOfAmountFromOreDict("dustVibrantAlloy", 1) != ItemUtils.getSimpleStack(ModItems.AAA_Broken)){
+			CORE.RA.addBlastSmelterRecipe(
+					new ItemStack[]{
+							ItemUtils.getGregtechCircuit(12),
+							ItemUtils.getItemStackOfAmountFromOreDict("dustEnergeticAlloy", 1),
+							ItemUtils.getSimpleStack(Items.ender_pearl)
+					},
+					FluidUtils.getFluidStack("molten.vibrantalloy", 144),
+					0,
+					MathUtils.findPercentageOfInt(16*20, 80),
+					480);
 		}
 
 	}
