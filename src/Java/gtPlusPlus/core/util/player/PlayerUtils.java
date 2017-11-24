@@ -1,6 +1,9 @@
 package gtPlusPlus.core.util.player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -104,7 +107,7 @@ public class PlayerUtils {
 		}catch(final NullPointerException e){
 			e.printStackTrace();
 			return null;
-			}
+		}
 		if (heldItem != null){
 			return heldItem;
 		}
@@ -125,32 +128,32 @@ public class PlayerUtils {
 
 		return null;
 	}
-	
-	public static Item getItemInPlayersHand(EntityPlayer player){
+
+	public static Item getItemInPlayersHand(final EntityPlayer player){
 		Item heldItem = null;
-		try{heldItem = player.getHeldItem().getItem();
+		try{
+			heldItem = player.getHeldItem().getItem();
 		}catch(final NullPointerException e){return null;}
 
 		if (heldItem != null){
 			return heldItem;
 		}
-
 		return null;
 	}
-	
-	public final static EntityPlayer getPlayerEntityByName(String aPlayerName){
-		EntityPlayer player = PlayerUtils.getPlayer(aPlayerName);
+
+	public final static EntityPlayer getPlayerEntityByName(final String aPlayerName){
+		final EntityPlayer player = PlayerUtils.getPlayer(aPlayerName);
 		if (player != null){
 			return player;
-		}		
+		}
 		return null;
 	}
-	
-	public final static UUID getPlayersUUIDByName(String aPlayerName){
-		EntityPlayer player = PlayerUtils.getPlayer(aPlayerName);
+
+	public final static UUID getPlayersUUIDByName(final String aPlayerName){
+		final EntityPlayer player = PlayerUtils.getPlayer(aPlayerName);
 		if (player != null){
 			return player.getUniqueID();
-		}		
+		}
 		return null;
 	}
 

@@ -5,6 +5,7 @@ import gtPlusPlus.core.tileentities.general.TileEntityFirepit;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
 import gtPlusPlus.core.tileentities.general.TileEntityHeliumGenerator;
 import gtPlusPlus.core.tileentities.general.TileEntityInfiniteFluid;
+import gtPlusPlus.core.tileentities.general.TileEntityXpConverter;
 import gtPlusPlus.core.tileentities.machines.TileEntityModularityTable;
 import gtPlusPlus.core.tileentities.machines.TileEntityProjectTable;
 import gtPlusPlus.core.tileentities.machines.TileEntityTradeTable;
@@ -18,14 +19,6 @@ public class ModTileEntities {
 
 	public static void init() {
 		Utils.LOG_INFO("Registering Tile Entities.");
-		// GameRegistry.registerTileEntity(TileEntityReverter.class,
-		// "TE_blockGriefSaver");
-		// GameRegistry.registerTileEntity(TileEntityReverter.class, "Tower
-		// Reverter");
-		// GameRegistry.registerTileEntity(TileEntityNHG.class,
-		// "NuclearFueledHeliumGenerator");
-		// GameRegistry.registerTileEntity(TileEntityCharger.class,
-		// "TE_Charger");
 		GameRegistry.registerTileEntity(TileEntityHeliumGenerator.class, "HeliumGenerator");
 		GameRegistry.registerTileEntity(TileEntityWorkbench.class, "TileWorkbench");
 		GameRegistry.registerTileEntity(TileEntityWorkbenchAdvanced.class, "TileWorkbenchAdvanced");
@@ -37,6 +30,7 @@ public class ModTileEntities {
 		GameRegistry.registerTileEntity(TileEntityModularityTable.class, "TileEntityModularityTable");
 		GameRegistry.registerTileEntity(TileFastAlchemyFurnace.class, "TileFastAlchemyFurnace");
 		GameRegistry.registerTileEntity(TileFastArcaneAlembic.class, "TileFastArcaneAlembic");
+		GameRegistry.registerTileEntity(TileEntityXpConverter.class, "TileEntityXpConverter");
 
 	}
 

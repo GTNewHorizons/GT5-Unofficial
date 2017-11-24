@@ -14,10 +14,12 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class FishTrap extends BlockContainer
@@ -95,23 +97,28 @@ public class FishTrap extends BlockContainer
 	}
 
 	@Override
-	public void onBlockAdded(World world, int x, int y, int z) {
+	public void onBlockAdded(final World world, final int x, final int y, final int z) {
 		super.onBlockAdded(world, x, y, z);
 	}
 
 	@Override
-	public void breakBlock(World world, int x, int y, int z, Block block, int number) {
-	    InventoryUtils.dropInventoryItems(world, x, y, z, block);
-	    super.breakBlock(world, x, y, z, block, number);
-	    }
+	public void breakBlock(final World world, final int x, final int y, final int z, final Block block, final int number) {
+		InventoryUtils.dropInventoryItems(world, x, y, z, block);
+		super.breakBlock(world, x, y, z, block, number);
+	}
 
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack) {
+	public void onBlockPlacedBy(final World world, final int x, final int y, final int z, final EntityLivingBase entity, final ItemStack stack) {
 		if (stack.hasDisplayName()) {
-	        ((TileEntityFishTrap) world.getTileEntity(x,y,z)).setCustomName(stack.getDisplayName());
-	    }
+			((TileEntityFishTrap) world.getTileEntity(x,y,z)).setCustomName(stack.getDisplayName());
 		}
-	
+	}
+
+	@Override
+	public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y, final int z) {
+		return false;
+	}
+
 	/*@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState blockstate) {
 		TileEntityFishTrap te = (TileEntityFishTrap) world.getTileEntity(pos);

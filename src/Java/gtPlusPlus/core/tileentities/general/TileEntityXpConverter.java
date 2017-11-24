@@ -1,6 +1,8 @@
 package gtPlusPlus.core.tileentities.general;
 
 import gtPlusPlus.core.util.enchanting.EnchantingUtils;
+import gtPlusPlus.core.util.player.PlayerUtils;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -91,6 +93,14 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 						this.yCoord, this.zCoord, tank, 0));
 			}
 		}
+
+		if ((from == ForgeDirection.UP) || (from == ForgeDirection.DOWN)){
+			this.tankEssence = tank;
+		}
+		else {
+			this.tankLiquidXp = tank;
+		}
+
 		return stack;
 	}
 
@@ -125,7 +135,7 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 	@Override
 	public void updateEntity() {
 
-		if (this.tankEssence.getFluid() != null){
+		/*if (this.tankEssence.getFluid() != null){
 			final FluidStack bigStorage = this.tankEssence.getFluid();
 			bigStorage.amount = this.tankEssence.getCapacity();
 			this.tankEssence.setFluid(bigStorage);
@@ -135,20 +145,19 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 			final FluidStack bigStorage = this.tankLiquidXp.getFluid();
 			bigStorage.amount = this.tankLiquidXp.getCapacity();
 			this.tankLiquidXp.setFluid(bigStorage);
-		}
+		}*/
 
 		if (this.needsUpdate) {
 
-			if (this.tankEssence.getFluid() != null){
+			/*if (this.tankEssence.getFluid() != null){
 				final FluidStack bigStorage = this.tankEssence.getFluid();
 				bigStorage.amount = this.tankEssence.getCapacity();
 				this.tankEssence.setFluid(bigStorage);
-			}
+			}*/
 
 			if (this.tankLiquidXp.getFluid() != null){
-				final FluidStack bigStorage = this.tankLiquidXp.getFluid();
-				bigStorage.amount = this.tankLiquidXp.getCapacity();
-				this.tankLiquidXp.setFluid(bigStorage);
+				final FluidStack bigStorage = EnchantingUtils.getEssenceFromLiquidXp(this.tankLiquidXp.getFluidAmount());
+				this.tankEssence.setFluid(bigStorage);
 			}
 
 			if (this.updateTimer == 0) {
@@ -188,6 +197,14 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 	public void onDataPacket(final NetworkManager net, final S35PacketUpdateTileEntity pkt) {
 		final NBTTagCompound tag = pkt.func_148857_g();
 		this.readFromNBT(tag);
+	}
+
+	public void onScrewdriverRightClick(final byte aSide, final EntityPlayer aPlayer, final float aX, final float aY, final float aZ) {
+		PlayerUtils.messagePlayer(aPlayer, "Screwdriver Rightclick.");
+	}
+
+	public void onRightClick(final byte aSide, final EntityPlayer aPlayer, final int aX, final int aY, final int aZ) {
+		PlayerUtils.messagePlayer(aPlayer, "Rightclick.");
 	}
 
 }

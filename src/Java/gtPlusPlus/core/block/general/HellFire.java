@@ -1,6 +1,11 @@
 package gtPlusPlus.core.block.general;
 
-import static net.minecraftforge.common.util.ForgeDirection.*;
+import static net.minecraftforge.common.util.ForgeDirection.DOWN;
+import static net.minecraftforge.common.util.ForgeDirection.EAST;
+import static net.minecraftforge.common.util.ForgeDirection.NORTH;
+import static net.minecraftforge.common.util.ForgeDirection.SOUTH;
+import static net.minecraftforge.common.util.ForgeDirection.UP;
+import static net.minecraftforge.common.util.ForgeDirection.WEST;
 
 import java.util.IdentityHashMap;
 import java.util.Map.Entry;
@@ -21,6 +26,7 @@ import net.minecraft.block.BlockFire;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -44,29 +50,29 @@ public class HellFire extends BlockFire {
 		this.setCreativeTab(AddToCreativeTab.tabBlock);
 		GameRegistry.registerBlock(this, "blockHellFire");
 		LanguageRegistry.addName(this, "Hellish Fire");
-		enableBrutalFire();
+		this.enableBrutalFire();
 	}
 
 	private void enableBrutalFire() {
-		for (Object o : Block.blockRegistry.getKeys())
+		for (final Object o : Block.blockRegistry.getKeys())
 		{
-			String name = (String)o;
-			Block b = Block.getBlockFromName(name);
+			final String name = (String)o;
+			final Block b = Block.getBlockFromName(name);
 
-			if (b == Blocks.grass || b == Blocks.mycelium){
-				int spread = 3;
-				int flamm = 3;
+			if ((b == Blocks.grass) || (b == Blocks.mycelium)){
+				final int spread = 3;
+				final int flamm = 3;
 				this.setFireInfo(b, spread * 4, flamm * 4);
 			}
 
 			if (b != Blocks.air)
 			{
-				int spread = Blocks.fire.getEncouragement(b);
-				int flamm = Blocks.fire.getFlammability(b);
+				final int spread = Blocks.fire.getEncouragement(b);
+				final int flamm = Blocks.fire.getFlammability(b);
 				this.setFireInfo(b, spread * 4, flamm * 4);
 			}
 		}
-		
+
 		//Special Case madness
 		this.setFireInfo(Blocks.brown_mushroom_block, 20, 100);
 		this.setFireInfo(Blocks.red_mushroom_block, 20, 100);
@@ -89,7 +95,7 @@ public class HellFire extends BlockFire {
 	@Override
 	public void updateTick(final World world, final int x, final int y, final int z, Random random) {
 
-		random = new XSTR();		
+		random = new XSTR();
 
 		if (world.getGameRules().getGameRuleBooleanValue("doFireTick")) {
 			final boolean flag = world.getBlock(x, y - 1, z).isFireSource(world, x, y - 1, z, UP);
@@ -296,13 +302,18 @@ public class HellFire extends BlockFire {
 
 	//Burn
 	@Override
-	public void onEntityWalking(World world, int i, int j, int k, Entity entity) {
+	public void onEntityWalking(final World world, final int i, final int j, final int k, final Entity entity) {
 		entity.setFire(10);
+	}
+
+	@Override
+	public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y, final int z) {
+		return false;
 	}
 
 	//Burn
 	@Override
-	public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity) {
+	public void onEntityCollidedWithBlock(final World world, final int i, final int j, final int k, final Entity entity) {
 		entity.setFire(10);
 	}
 
@@ -399,7 +410,7 @@ public class HellFire extends BlockFire {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(final IIconRegister IIconRegister) {
-		this.IIconArray = new IIcon[] { 
+		this.IIconArray = new IIcon[] {
 				IIconRegister.registerIcon(CORE.MODID + ":" + "hellfire/" + "blockHellFire" + "_layer_0"),
 				IIconRegister.registerIcon(CORE.MODID + ":" + "hellfire/" + "blockHellFire" + "_layer_1") };
 	}

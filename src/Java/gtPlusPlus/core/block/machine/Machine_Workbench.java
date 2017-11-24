@@ -17,10 +17,12 @@ import ic2.core.item.tool.ItemToolWrench;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 @Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = "EnderIO")
@@ -147,6 +149,11 @@ public class Machine_Workbench extends BlockContainer
 				return false;
 			}
 		}
+		return false;
+	}
+
+	@Override
+	public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y, final int z) {
 		return false;
 	}
 

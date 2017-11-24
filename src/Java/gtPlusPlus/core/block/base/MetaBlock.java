@@ -4,8 +4,10 @@ import java.util.List;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.IBlockAccess;
 
 public class MetaBlock extends MultiTextureBlock {
 
@@ -23,6 +25,11 @@ public class MetaBlock extends MultiTextureBlock {
 		for (int i = 0; i < 6; i ++) {
 			list.add(new ItemStack(item, 1, i));
 		}
+	}
+
+	@Override
+	public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y, final int z) {
+		return false;
 	}
 
 }

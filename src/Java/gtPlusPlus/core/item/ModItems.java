@@ -8,7 +8,12 @@ import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.common.compat.COMPAT_Baubles;
 import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.item.base.*;
+import gtPlusPlus.core.item.base.BaseEuItem;
+import gtPlusPlus.core.item.base.BaseItemBackpack;
+import gtPlusPlus.core.item.base.BaseItemBurnable;
+import gtPlusPlus.core.item.base.BaseItemDamageable;
+import gtPlusPlus.core.item.base.BaseItemTCShard;
+import gtPlusPlus.core.item.base.CoreItem;
 import gtPlusPlus.core.item.base.dusts.decimal.BaseItemCentidust;
 import gtPlusPlus.core.item.base.dusts.decimal.BaseItemDecidust;
 import gtPlusPlus.core.item.base.foods.BaseItemFood;
@@ -23,19 +28,36 @@ import gtPlusPlus.core.item.bauble.HealthBoostBauble;
 import gtPlusPlus.core.item.bauble.ModularBauble;
 import gtPlusPlus.core.item.chemistry.CoalTar;
 import gtPlusPlus.core.item.effects.RarityUncommon;
-import gtPlusPlus.core.item.general.*;
+import gtPlusPlus.core.item.general.BaseItemGrindle;
+import gtPlusPlus.core.item.general.BufferCore;
+import gtPlusPlus.core.item.general.ItemAirFilter;
+import gtPlusPlus.core.item.general.ItemAreaClear;
+import gtPlusPlus.core.item.general.ItemBasicFirestarter;
+import gtPlusPlus.core.item.general.ItemBlueprint;
+import gtPlusPlus.core.item.general.ItemEmpty;
+import gtPlusPlus.core.item.general.ItemGemShards;
+import gtPlusPlus.core.item.general.ItemHalfCompleteCasings;
+import gtPlusPlus.core.item.general.ItemLavaFilter;
+import gtPlusPlus.core.item.general.RF2EU_Battery;
 import gtPlusPlus.core.item.general.books.ItemBaseBook;
-import gtPlusPlus.core.item.general.chassis.*;
+import gtPlusPlus.core.item.general.chassis.itemBoilerChassis;
+import gtPlusPlus.core.item.general.chassis.itemDehydratorCoil;
+import gtPlusPlus.core.item.general.chassis.itemDehydratorCoilWire;
 import gtPlusPlus.core.item.general.throwables.ItemHydrofluoricAcidPotion;
 import gtPlusPlus.core.item.general.throwables.ItemSulfuricAcidPotion;
 import gtPlusPlus.core.item.init.ItemsFoods;
 import gtPlusPlus.core.item.init.ItemsMultiTools;
 import gtPlusPlus.core.item.tool.misc.SandstoneHammer;
-import gtPlusPlus.core.item.tool.staballoy.*;
+import gtPlusPlus.core.item.tool.staballoy.MultiPickaxeBase;
+import gtPlusPlus.core.item.tool.staballoy.MultiSpadeBase;
+import gtPlusPlus.core.item.tool.staballoy.StaballoyAxe;
+import gtPlusPlus.core.item.tool.staballoy.StaballoyPickaxe;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.CORE.configSwitches;
 import gtPlusPlus.core.lib.LoadedMods;
-import gtPlusPlus.core.material.*;
+import gtPlusPlus.core.material.ALLOY;
+import gtPlusPlus.core.material.ELEMENT;
+import gtPlusPlus.core.material.MaterialGenerator;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.material.nuclear.NUCLIDE;
 import gtPlusPlus.core.util.StringUtils;
@@ -44,12 +66,15 @@ import gtPlusPlus.core.util.debug.DEBUG_INIT;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.materials.MaterialUtils;
-import net.minecraft.block.Block;
-import net.minecraft.item.*;
+import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 public final class ModItems {
 
 
@@ -240,7 +265,7 @@ public final class ModItems {
 
 	public static Item itemModularBauble;
 	public static Item itemCustomBook;
-	
+
 	public static Item itemGrindleTablet;
 
 	public static final void init(){
@@ -309,7 +334,7 @@ public final class ModItems {
 		itemHydrofluoricPotion = new ItemHydrofluoricAcidPotion("itemHydrofluoricPotion", "Thowable Vial of Hydrofluoric Acid", "They won't see this coming, nor anything after!").setTextureName(CORE.MODID + ":itemPotion");
 		//Start meta Item Generation
 		ItemsFoods.load();
-		
+
 
 		try{
 
@@ -590,6 +615,14 @@ public final class ModItems {
 		//Create Multi-tools
 		ItemsMultiTools.load();
 
+		//Xp Fluids - Dev
+		if (!FluidRegistry.isFluidRegistered("mobessence")){
+			FluidUtils.generateFluidNoPrefix("mobessence", "mobessence", 0, new short[]{125, 175, 125, 100});
+		}
+		if (!FluidRegistry.isFluidRegistered("xpjuice")){
+			FluidUtils.generateFluidNoPrefix("xpjuice", "xpjuice", 0, new short[]{50, 150, 50, 100});
+		}
+
 		//Just an unusual plate needed for some black magic.
 		itemPlateClay = new BaseItemPlate(MaterialUtils.generateMaterialFromGtENUM(Materials.Clay));
 		itemDoublePlateClay = new BaseItemPlateDouble(MaterialUtils.generateMaterialFromGtENUM(Materials.Clay));
@@ -605,10 +638,10 @@ public final class ModItems {
 		}
 
 		//A plate of Europium.
-		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateEuropium", 1) == null && CORE.configSwitches.enableCustom_Pipes){
+		if ((ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateEuropium", 1) == null) && CORE.configSwitches.enableCustom_Pipes){
 			itemPlateEuropium = new BaseItemPlate(MaterialUtils.generateMaterialFromGtENUM(Materials.Europium));
 		}
-		if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateDoubleEuropium", 1) == null && CORE.configSwitches.enableCustom_Pipes){
+		if ((ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateDoubleEuropium", 1) == null) && CORE.configSwitches.enableCustom_Pipes){
 			itemDoublePlateEuropium = new BaseItemPlateDouble(MaterialUtils.generateMaterialFromGtENUM(Materials.Europium));
 		}
 
@@ -618,7 +651,7 @@ public final class ModItems {
 
 		itemAirFilter = new ItemAirFilter();
 		itemLavaFilter = new ItemLavaFilter();
-		
+
 		itemGrindleTablet = new BaseItemGrindle();
 
 		//Chemistry
@@ -662,7 +695,7 @@ public final class ModItems {
 			itemPlatePulsatingIron = ItemUtils.generateSpecialUsePlate("itemPlate"+"PhasedIron", "Phased Iron", new short[]{50, 91, 21}, 0);
 			itemPlateEnergeticAlloy = ItemUtils.generateSpecialUsePlate("itemPlate"+"EnergeticAlloy", "Energetic Alloy", new short[]{252, 152, 45}, 0);
 			itemPlateVibrantAlloy = ItemUtils.generateSpecialUsePlate("itemPlate"+"VibrantAlloy", "Vibrant Alloy", new short[]{204, 242, 142}, 0);
-			itemPlateConductiveIron = ItemUtils.generateSpecialUsePlate("itemPlate"+"ConductiveIron", "Conductive Iron", new short[]{164, 109, 100}, 0);		
+			itemPlateConductiveIron = ItemUtils.generateSpecialUsePlate("itemPlate"+"ConductiveIron", "Conductive Iron", new short[]{164, 109, 100}, 0);
 
 			//Register dumb naming conventions - Who chose fucking phased Iron/Gold?
 			GT_OreDictUnificator.registerOre("dustPhasedGold", ItemUtils.getSimpleStack(itemDustVibrantAlloy));
@@ -677,7 +710,7 @@ public final class ModItems {
 		//Big Reactors
 		if (LoadedMods.Big_Reactors|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("BigReactors Found - Loading Resources.");
-			//Item Init			
+			//Item Init
 			itemPlateBlutonium = ItemUtils.generateSpecialUsePlate("itemPlate"+"Blutonium", "Blutonium", new short[]{0, 0, 255}, 0);
 			itemPlateBlutonium = ItemUtils.generateSpecialUsePlate("itemPlate"+"Cyanite", "Cyanite", new short[]{0, 191, 255}, 0);
 			itemPlateLudicrite = ItemUtils.generateSpecialUsePlate("itemPlate"+"Ludicrite", "Ludicrite", new short[]{167, 5, 179}, 0);
@@ -692,7 +725,7 @@ public final class ModItems {
 			//Item Init
 			try {
 				ItemUtils.getItemForOreDict("Thaumcraft:ItemResource", "ingotVoidMetal", "Void Metal Ingot", 16);
-				itemPlateVoidMetal = ItemUtils.generateSpecialUsePlate("itemPlate"+"Void", "Void", new short[]{82, 17, 82}, 0);			
+				itemPlateVoidMetal = ItemUtils.generateSpecialUsePlate("itemPlate"+"Void", "Void", new short[]{82, 17, 82}, 0);
 				GT_OreDictUnificator.registerOre("plateVoidMetal", new ItemStack(ModItems.itemPlateVoidMetal));
 			} catch (final NullPointerException e){
 				e.getClass();
@@ -742,7 +775,7 @@ public final class ModItems {
 		if (LoadedMods.RFTools|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("rfTools Found - Loading Resources.");
 			//Item Init
-			itemPlateDimensionShard = ItemUtils.generateSpecialUsePlate("itemPlate"+"DimensionShard", "Dimensional Shard", new short[]{170, 230, 230}, 0);			
+			itemPlateDimensionShard = ItemUtils.generateSpecialUsePlate("itemPlate"+"DimensionShard", "Dimensional Shard", new short[]{170, 230, 230}, 0);
 		}
 		else {
 			Utils.LOG_WARNING("rfTools not Found - Skipping Resources.");
@@ -810,7 +843,7 @@ public final class ModItems {
 
 		//ItemBlockGtFrameBox = new ItemBlockGtFrameBox(ModBlocks.blockGtFrameSet1);
 		//GameRegistry.registerItem(ItemBlockGtFrameBox, "itemGtFrameBoxSet1");
-		
+
 		itemCustomBook = new ItemBaseBook();
 	}
 }

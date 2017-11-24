@@ -1,22 +1,19 @@
 package gtPlusPlus.core.block.machine;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gtPlusPlus.GTplusplus;
 import gtPlusPlus.core.block.base.BlockBaseNBT;
-import gtPlusPlus.core.creative.AddToCreativeTab;
-import gtPlusPlus.core.item.base.itemblock.ItemBlockNBT;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.machines.TileEntityTradeTable;
 import gtPlusPlus.core.util.Utils;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class Machine_TradeTable extends BlockBaseNBT
@@ -53,9 +50,9 @@ public class Machine_TradeTable extends BlockBaseNBT
 		final TileEntity te = world.getTileEntity(x, y, z);
 		if ((te != null) && (te instanceof TileEntityTradeTable))
 		{
-				//Utils.LOG_INFO("Clicked on TE - ok");
-				player.openGui(GTplusplus.instance, 6, world, x, y, z);
-				return true;
+			//Utils.LOG_INFO("Clicked on TE - ok");
+			player.openGui(GTplusplus.instance, 6, world, x, y, z);
+			return true;
 		}
 		else {
 			Utils.LOG_INFO("Bad TE");
@@ -66,6 +63,11 @@ public class Machine_TradeTable extends BlockBaseNBT
 	@Override
 	public TileEntity createNewTileEntity(final World world, final int p_149915_2_) {
 		return new TileEntityTradeTable();
+	}
+
+	@Override
+	public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y, final int z) {
+		return false;
 	}
 
 }

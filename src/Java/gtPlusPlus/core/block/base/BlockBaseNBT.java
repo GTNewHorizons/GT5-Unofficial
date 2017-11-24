@@ -9,10 +9,12 @@ import gtPlusPlus.core.item.base.itemblock.ItemBlockNBT;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public abstract class BlockBaseNBT extends BlockContainer
@@ -25,7 +27,7 @@ public abstract class BlockBaseNBT extends BlockContainer
 	private IIcon textureFront;
 
 	@SuppressWarnings("deprecation")
-	public BlockBaseNBT(Material material, String unlocalName, String displayName){
+	public BlockBaseNBT(final Material material, final String unlocalName, final String displayName){
 		super(material);
 		this.setBlockName(unlocalName);
 		this.setCreativeTab(AddToCreativeTab.tabMachines);
@@ -46,28 +48,33 @@ public abstract class BlockBaseNBT extends BlockContainer
 	public abstract TileEntity createNewTileEntity(final World world, final int p_149915_2_);
 
 	@Override
-	public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+	public void breakBlock(final World world, final int x, final int y, final int z, final Block block, final int meta) {
 		super.breakBlock(world, x, y, z, block, meta);
 	}
 
 	@Override
-	public void onBlockDestroyedByPlayer(World world, int x, int y, int z, int meta) {
+	public void onBlockDestroyedByPlayer(final World world, final int x, final int y, final int z, final int meta) {
 		super.onBlockDestroyedByPlayer(world, x, y, z, meta);
 	}
 
 	@Override
-	public void onBlockDestroyedByExplosion(World world, int x, int y, int z, Explosion explosion) {
+	public void onBlockDestroyedByExplosion(final World world, final int x, final int y, final int z, final Explosion explosion) {
 		super.onBlockDestroyedByExplosion(world, x, y, z, explosion);
 	}
 
 	@Override
-	public void onBlockHarvested(World world, int x, int y, int z, int meta, EntityPlayer player) {
+	public void onBlockHarvested(final World world, final int x, final int y, final int z, final int meta, final EntityPlayer player) {
 		super.onBlockHarvested(world, x, y, z, meta, player);
 	}
 
 	@Override
-	public void onBlockExploded(World world, int x, int y, int z, Explosion explosion) {
+	public void onBlockExploded(final World world, final int x, final int y, final int z, final Explosion explosion) {
 		super.onBlockExploded(world, x, y, z, explosion);
+	}
+
+	@Override
+	public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y, final int z) {
+		return false;
 	}
 
 }

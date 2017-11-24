@@ -12,9 +12,11 @@ import gtPlusPlus.core.util.Utils;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class Machine_ModularityTable extends BlockContainer
@@ -67,9 +69,9 @@ public class Machine_ModularityTable extends BlockContainer
 		}
 		final TileEntity te = world.getTileEntity(x, y, z);
 		if ((te != null) && (te instanceof TileEntityModularityTable)){
-				player.openGui(GTplusplus.instance, 1, world, x, y, z);
-				Utils.LOG_INFO("Player opened GUI");
-				return true;
+			player.openGui(GTplusplus.instance, 1, world, x, y, z);
+			Utils.LOG_INFO("Player opened GUI");
+			return true;
 		}
 		return false;
 	}
@@ -77,6 +79,11 @@ public class Machine_ModularityTable extends BlockContainer
 	@Override
 	public TileEntity createNewTileEntity(final World world, final int p_149915_2_) {
 		return new TileEntityModularityTable();
+	}
+
+	@Override
+	public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y, final int z) {
+		return false;
 	}
 
 }

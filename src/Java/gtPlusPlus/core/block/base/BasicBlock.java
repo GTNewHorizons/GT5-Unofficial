@@ -5,7 +5,9 @@ import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BasicBlock extends BlockContainer {
@@ -60,6 +62,11 @@ public class BasicBlock extends BlockContainer {
 	@Override
 	public TileEntity createNewTileEntity(final World p_149915_1_, final int p_149915_2_) {
 		return null;
+	}
+
+	@Override
+	public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y, final int z) {
+		return false;
 	}
 
 }

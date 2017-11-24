@@ -4,6 +4,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.interfaces.IToolStats;
+import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockEntityBase;
 import gtPlusPlus.core.lib.CORE;
@@ -13,9 +15,13 @@ import gtPlusPlus.core.util.player.PlayerUtils;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockTankXpConverter extends BlockContainer {
@@ -66,16 +72,48 @@ public class BlockTankXpConverter extends BlockContainer {
 			return true;
 		}
 		else {
-			final TileEntityXpConverter tank = (TileEntityXpConverter) world.getTileEntity(x, y, z);
-			if (tank != null){
-				if (tank.tankEssence.getFluid() != null){
-					PlayerUtils.messagePlayer(player, "This tank contains "+tank.tankEssence.getFluidAmount()+"L of "+tank.tankEssence.getFluid().getLocalizedName());
+			boolean mDidScrewDriver = false;
+			//Check For Screwdriver
+			try {
+				final ItemStack mHandStack = PlayerUtils.getItemStackInPlayersHand(player);
+				final Item mHandItem = PlayerUtils.getItemInPlayersHand(player);
+				if (mHandItem instanceof IToolStats){
+					if (((mHandItem instanceof GT_MetaGenerated_Tool_01) && ((mHandItem.getDamage(mHandStack) == 22) || (mHandItem.getDamage(mHandStack) == 150)))){
+						final TileEntityXpConverter tile = (TileEntityXpConverter) world.getTileEntity(x, y, z);
+						if (tile != null){
+							mDidScrewDriver = true;
+							tile.onScrewdriverRightClick((byte) side, player, x, y, z);
+						}
+
+					}
 				}
-				if (tank.tankLiquidXp.getFluid() != null){
-					PlayerUtils.messagePlayer(player, "This tank contains "+tank.tankLiquidXp.getFluidAmount()+"L of "+tank.tankLiquidXp.getFluid().getLocalizedName());
+			}
+			catch (final Throwable t){
+				mDidScrewDriver = false;
+			}
+
+			if (!mDidScrewDriver){
+
+
+				try {
+					final TileEntityXpConverter tile = (TileEntityXpConverter) world.getTileEntity(x, y, z);
+					if (tile != null){
+						tile.onRightClick((byte) side, player, x, y, z);
+					}
 				}
-				if ((tank.tankEssence.getFluid() != null) && (tank.tankLiquidXp.getFluid() != null)){
-					PlayerUtils.messagePlayer(player, "This is worth "+EnchantingUtils.getLevelForLiquid(tank.tankLiquidXp.getFluidAmount()));
+				catch (final Throwable t){}
+
+				final TileEntityXpConverter tank = (TileEntityXpConverter) world.getTileEntity(x, y, z);
+				if (tank != null){
+					if (tank.tankEssence.getFluid() != null){
+						PlayerUtils.messagePlayer(player, "This tank contains "+tank.tankEssence.getFluidAmount()+"L of "+tank.tankEssence.getFluid().getLocalizedName());
+					}
+					if (tank.tankLiquidXp.getFluid() != null){
+						PlayerUtils.messagePlayer(player, "This tank contains "+tank.tankLiquidXp.getFluidAmount()+"L of "+tank.tankLiquidXp.getFluid().getLocalizedName());
+					}
+					if ((tank.tankEssence.getFluid() != null) && (tank.tankLiquidXp.getFluid() != null)){
+						PlayerUtils.messagePlayer(player, "This is worth "+EnchantingUtils.getLevelForLiquid(tank.tankLiquidXp.getFluidAmount())+" levels.");
+					}
 				}
 			}
 		}
@@ -100,6 +138,11 @@ public class BlockTankXpConverter extends BlockContainer {
 	@Override
 	public void onBlockAdded(final World world, final int x, final int y, final int z) {
 		super.onBlockAdded(world, x, y, z);
+	}
+
+	@Override
+	public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y, final int z) {
+		return false;
 	}
 
 }

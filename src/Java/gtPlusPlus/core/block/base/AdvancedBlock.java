@@ -4,7 +4,9 @@ import gtPlusPlus.core.lib.CORE;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class AdvancedBlock extends Block {
@@ -25,6 +27,11 @@ public class AdvancedBlock extends Block {
 	@Override
 	public boolean onBlockActivated(final World p_149727_1_, final int p_149727_2_, final int p_149727_3_, final int p_149727_4_, final EntityPlayer p_149727_5_, final int p_149727_6_, final float p_149727_7_, final float p_149727_8_, final float p_149727_9_)
 	{
+		return false;
+	}
+
+	@Override
+	public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y, final int z) {
 		return false;
 	}
 
