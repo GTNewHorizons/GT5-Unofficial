@@ -93,6 +93,11 @@ public final class LogHelper {
 		}
 		
 		FMLLog.log(_mModID.toUpperCase() + tt, pLogLevel, pMessage, args);
+        System.out.println(
+            _mModID.toUpperCase() + 
+            " " +
+            String.format(pMessage, args)
+        );
 	}
 
 	
