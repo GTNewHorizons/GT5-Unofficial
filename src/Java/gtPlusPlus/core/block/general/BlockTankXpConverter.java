@@ -8,7 +8,7 @@ import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockEntityBase;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.tileentities.general.TileEntityXpConverter;
-import gtPlusPlus.core.util.enchantment.EnchantmentUtils;
+import gtPlusPlus.core.util.enchanting.EnchantingUtils;
 import gtPlusPlus.core.util.player.PlayerUtils;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -75,7 +75,7 @@ public class BlockTankXpConverter extends BlockContainer {
 					PlayerUtils.messagePlayer(player, "This tank contains "+tank.tankLiquidXp.getFluidAmount()+"L of "+tank.tankLiquidXp.getFluid().getLocalizedName());
 				}
 				if ((tank.tankEssence.getFluid() != null) && (tank.tankLiquidXp.getFluid() != null)){
-					PlayerUtils.messagePlayer(player, "This is worth "+EnchantmentUtils.getLevelForLiquid(tank.tankLiquidXp.getFluidAmount()));
+					PlayerUtils.messagePlayer(player, "This is worth "+EnchantingUtils.getLevelForLiquid(tank.tankLiquidXp.getFluidAmount()));
 				}
 			}
 		}

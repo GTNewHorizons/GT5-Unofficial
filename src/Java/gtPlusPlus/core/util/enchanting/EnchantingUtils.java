@@ -1,10 +1,10 @@
-package gtPlusPlus.core.util.enchantment;
+package gtPlusPlus.core.util.enchanting;
 
 import gtPlusPlus.core.util.Utils;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-public class EnchantmentUtils {
+public class EnchantingUtils {
 
 
 	public static final int XP_PER_BOTTLE = 8;

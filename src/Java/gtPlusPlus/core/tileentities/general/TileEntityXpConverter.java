@@ -1,6 +1,6 @@
 package gtPlusPlus.core.tileentities.general;
 
-import gtPlusPlus.core.util.enchantment.EnchantmentUtils;
+import gtPlusPlus.core.util.enchanting.EnchantingUtils;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -16,7 +16,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 
-	public FluidTank tankEssence = new FluidTank((int) (64000*EnchantmentUtils.RATIO_MOB_ESSENCE_TO_LIQUID_XP));
+	public FluidTank tankEssence = new FluidTank((int) (64000*EnchantingUtils.RATIO_MOB_ESSENCE_TO_LIQUID_XP));
 	public FluidTank tankLiquidXp = new FluidTank(64000);
 	private boolean needsUpdate = false;
 	private int updateTimer = 0;
@@ -27,10 +27,10 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 	@Override
 	public int fill(final ForgeDirection from, final FluidStack resource, final boolean doFill) {
 		this.needsUpdate = true;
-		if (resource.isFluidEqual(EnchantmentUtils.getLiquidXP(1))){
+		if (resource.isFluidEqual(EnchantingUtils.getLiquidXP(1))){
 			return this.tankLiquidXp.fill(resource, doFill);
 		}
-		else if (resource.isFluidEqual(EnchantmentUtils.getMobEssence(1))){
+		else if (resource.isFluidEqual(EnchantingUtils.getMobEssence(1))){
 			return this.tankEssence.fill(resource, doFill);
 		}
 		else {
@@ -41,10 +41,10 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 	@Override
 	public FluidStack drain(final ForgeDirection from, final FluidStack resource, final boolean doDrain) {
 		this.needsUpdate = true;
-		if (resource.isFluidEqual(EnchantmentUtils.getLiquidXP(1))){
+		if (resource.isFluidEqual(EnchantingUtils.getLiquidXP(1))){
 			return this.tankLiquidXp.drain(resource.amount, doDrain);
 		}
-		else if (resource.isFluidEqual(EnchantmentUtils.getMobEssence(1))){
+		else if (resource.isFluidEqual(EnchantingUtils.getMobEssence(1))){
 			return this.tankEssence.drain(resource.amount, doDrain);
 		}
 		else {

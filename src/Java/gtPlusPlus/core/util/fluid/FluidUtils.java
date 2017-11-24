@@ -11,7 +11,7 @@ import gtPlusPlus.core.item.base.cell.BaseItemPlasmaCell;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.enchantment.EnchantmentUtils;
+import gtPlusPlus.core.util.enchanting.EnchantingUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import net.minecraft.init.Items;
@@ -524,11 +524,11 @@ public class FluidUtils {
 
 
 	public static FluidStack getMobEssence(final int amount){
-		return EnchantmentUtils.getMobEssence(amount);
+		return EnchantingUtils.getMobEssence(amount);
 	}
 
 	public static FluidStack getLiquidXP(final int amount){
-		return EnchantmentUtils.getLiquidXP(amount);
+		return EnchantingUtils.getLiquidXP(amount);
 	}
 
 
