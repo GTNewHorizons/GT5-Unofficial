@@ -502,11 +502,11 @@ public class GT_Worldgenerator_Space implements IWorldGenerator {
 								if (tWorldGen.executeWorldgen(pWorld, pRandom, pBiome, Integer.MIN_VALUE, pX, pZ, pChunkGenerator, pChunkProvider))
 								{
 									temp = false;
-									break;
 								}
 							} catch (Throwable e) {
 								e.printStackTrace(GT_Log.err);
 							}
+                            break;
 						}
 					}
 				}
