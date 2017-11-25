@@ -4,7 +4,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gregtech.api.interfaces.IToolStats;
 import gregtech.common.items.GT_MetaGenerated_Tool_01;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.item.base.itemblock.ItemBlockEntityBase;
@@ -75,17 +74,15 @@ public class BlockTankXpConverter extends BlockContainer {
 			boolean mDidScrewDriver = false;
 			//Check For Screwdriver
 			try {
-				final ItemStack mHandStack = PlayerUtils.getItemStackInPlayersHand(player);
-				final Item mHandItem = PlayerUtils.getItemInPlayersHand(player);
-				if (mHandItem instanceof IToolStats){
-					if (((mHandItem instanceof GT_MetaGenerated_Tool_01) && ((mHandItem.getDamage(mHandStack) == 22) || (mHandItem.getDamage(mHandStack) == 150)))){
-						final TileEntityXpConverter tile = (TileEntityXpConverter) world.getTileEntity(x, y, z);
-						if (tile != null){
-							mDidScrewDriver = true;
-							tile.onScrewdriverRightClick((byte) side, player, x, y, z);
-						}
-
+				final ItemStack mHandStack = PlayerUtils.getItemStackInPlayersHand(world, player.getDisplayName());
+				final Item mHandItem = mHandStack.getItem();
+				if (((mHandItem instanceof GT_MetaGenerated_Tool_01) && ((mHandItem.getDamage(mHandStack) == 22) || (mHandItem.getDamage(mHandStack) == 150)))){
+					final TileEntityXpConverter tile = (TileEntityXpConverter) world.getTileEntity(x, y, z);
+					if (tile != null){
+						mDidScrewDriver = true;
+						tile.onScrewdriverRightClick((byte) side, player, x, y, z);
 					}
+
 				}
 			}
 			catch (final Throwable t){
