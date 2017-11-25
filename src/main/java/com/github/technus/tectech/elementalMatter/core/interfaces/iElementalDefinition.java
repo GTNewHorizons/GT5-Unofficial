@@ -12,7 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
  * Created by danie_000 on 11.11.2016.
  */
 public interface iElementalDefinition extends Comparable<iElementalDefinition>,Cloneable {//IMMUTABLE
-    float STABLE_RAW_LIFE_TIME =1.5e25f;
+    float STABLE_RAW_LIFE_TIME =1.5e36f;
 
     //Nomenclature
     String getName();

@@ -2,8 +2,6 @@ package com.github.technus.tectech;
 
 import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
-import com.github.technus.tectech.elementalMatter.definitions.complex.dAtomDefinition;
-import com.github.technus.tectech.loader.AtomOverrider;
 import com.github.technus.tectech.loader.MainLoader;
 import com.github.technus.tectech.proxy.CommonProxy;
 import cpw.mods.fml.common.Loader;
@@ -73,7 +71,6 @@ public class TecTech {
 
         GTCustomLoader = new MainLoader();
 
-        dAtomDefinition.overrides.add(new AtomOverrider());
         TecTech.Logger.info("Added Atom Overrider");
     }
 

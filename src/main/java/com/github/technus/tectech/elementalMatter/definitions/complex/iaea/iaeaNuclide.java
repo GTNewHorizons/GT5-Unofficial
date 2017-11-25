@@ -9,6 +9,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.TreeMap;
 
 import static com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefinition.STABLE_RAW_LIFE_TIME;
 
@@ -17,17 +19,21 @@ public final class iaeaNuclide {
 
     //Nuclide			 T1/2 	 T1/2 [s]	 Decay Modes		  ? 	 Q 	 Q?-	 Q?	 QEC	 Q?- n	 Sn	 Sp	 Binding/A	 Atomic Mass	 Mass Excess	 Discovery
     //Abund. [mole fract.]		 BR [%]		[?N]	[barn]	[keV]	[keV]	[keV]	[keV]	[keV]	[keV]	[keV]	[? AMU]	[keV]
+
+    //Z,N,symb,radius, unc, energy, unc, jp, half-life operator, half_life, unc,unit, half_life [s], unc, decay, decay %, unc, decay, decay %, unc, decay, decay %, unc,isospin,magn. dipole, unc, elect. quad , unc,Qb-,unc,Qb- n,unc,Qa, unc, Qec, unc,Sn,unc, Sp,unc,Binding/A,unc,atomic mass, unc, mass excess,unc,
+    //Z,N,symbol,energy , unc, jp,half-life operator, half_life, unc,unit, half_life [s], unc, decay, decay %, unc, decay, decay %, unc, decay, decay %, unc,isospin,magn. dipole, unc, elect. quadrupole , unc,
     private static final HashMap<Integer,iaeaNuclide> NUCLIDES=new HashMap<>();
 
     public static void run(){
+        String line="";
+
         try {
-            ResourceLocation loc = new ResourceLocation(Reference.MODID+":nuclides.tsv");
+            ResourceLocation loc = new ResourceLocation(Reference.MODID+":nuclides.csv");
             BufferedReader reader = new BufferedReader(new InputStreamReader(Minecraft.getMinecraft().getResourceManager().getResource(loc).getInputStream()));
             ArrayList<String[]> blockOfData=new ArrayList<>(4);
-            String line;
             while((line=reader.readLine())!=null) {
-                String[] split= Util.splitButDifferent(line,"\t");
-                if(split.length!=19) throw new Error("Invalid count ("+split.length+") of separators in IAEA database " + line);
+                String[] split= Util.splitButDifferent(line,",");
+                if(split.length!=19) throw new Error("Invalid count ("+split.length+") of separators in IAEA nuclides database " + line);
                 if(split[1].length()>0 && !blockOfData.isEmpty()) {
                     new iaeaNuclide(blockOfData.toArray(new String[0][]));
                     blockOfData.clear();
@@ -38,9 +44,39 @@ public final class iaeaNuclide {
                 new iaeaNuclide(blockOfData.toArray(new String[0][]));
                 blockOfData.clear();
             }
-        }catch (Throwable e){
+        }catch (Exception e){
+            System.out.println(line);
             e.printStackTrace();
-            throw new Error(e.getMessage());
+        }
+
+        try {
+            ResourceLocation loc = new ResourceLocation(Reference.MODID+":nuclidesTable.csv");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(Minecraft.getMinecraft().getResourceManager().getResource(loc).getInputStream()));
+            while((line=reader.readLine())!=null) {
+                String[] split= Util.splitButDifferent(line,",");
+                if(split.length!=47) throw new Error("Invalid count ("+split.length+") of separators in IAEA nuvlidesTable database " + line);
+                get(Integer.parseInt(split[0]),Integer.parseInt(split[1])).getMoreData(split);
+            }
+        }catch (Exception e){
+            System.out.println(line);
+            e.printStackTrace();
+        }
+
+        try {
+            ResourceLocation loc = new ResourceLocation(Reference.MODID+":energyLevels.csv");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(Minecraft.getMinecraft().getResourceManager().getResource(loc).getInputStream()));
+            while((line=reader.readLine())!=null) {
+                String[] split= Util.splitButDifferent(line,",");
+                if(split.length!=27) throw new Error("Invalid count ("+split.length+") of separators in IAEA energyLevels database " + line);
+                new energeticState(split);
+            }
+        }catch (Exception e){
+            System.out.println(line);
+            e.printStackTrace();
+        }
+
+        for(String s:decays){
+            System.out.println(s);
         }
     }
 
@@ -50,17 +86,15 @@ public final class iaeaNuclide {
 
     public final short N,Z;
     public final float Thalf;//sec
-    //public final HashMap<String,Float> decaymodes;
-
     public final float mass;//eV/c^2
     public final short discovery;//year
+    public TreeMap<Float,energeticState> energeticStates;
 
 
     private iaeaNuclide(String[][] rows){
         N=Short.parseShort(rows[1][2]);
         Z=Short.parseShort(rows[1][0]);
         NUCLIDES.put((((int)Z)<<16)+N,this);
-
 
         String[] parts = Util.splitButDifferent(rows[0][16], "|");
         double Mass=doubleOrNaN(parts[0],"mass");
@@ -74,6 +108,11 @@ public final class iaeaNuclide {
         }else{
             parts = Util.splitButDifferent(rows[0][4], "|");
             Thalf = (float)doubleOrNaN(parts[0],"half life");
+            //if(Thalf>STABLE_RAW_LIFE_TIME) System.out.println("KEK KEK"+N+" "+Z+" "+Thalf);
+        }
+
+        for(int i=0;i<rows.length;i++){
+            add(rows[i][5]);
         }
 
 
@@ -84,6 +123,12 @@ public final class iaeaNuclide {
         //System.out.println("KEKEKEK");
     }
 
+    private void getMoreData(String[] cells){
+        add(cells[14]);
+        add(cells[17]);
+        add(cells[20]);
+    }
+
     private double doubleOrNaN(String s, String name){
         s=s.replaceAll("#","");
         if(s.length()>0) {
@@ -91,9 +136,76 @@ public final class iaeaNuclide {
                 return Double.parseDouble(s);
             } catch (Exception e) {
                 System.out.println("Invalid Value " + name + " " + N + " " + Z + " " + s);
-                return Double.NaN;
+                e.printStackTrace();
             }
         }
         return Double.NaN;
+    }
+
+    public static class energeticState{
+        public final float energy;
+        public final float Thalf;
+        public TreeMap<Float,String> decaymodes;
+
+        private energeticState(iaeaNuclide nuclide,float Thalf,TreeMap<Float,String> decaymodes){
+            energy=0;
+            this.Thalf=Thalf;
+            this.decaymodes=decaymodes;
+            if(nuclide.energeticStates==null)
+                nuclide.energeticStates=new TreeMap<>();
+            nuclide.energeticStates.put(energy,this);
+        }
+
+        private energeticState(String[] cells){
+            iaeaNuclide nuclide=get((int)doubleOrNaN(cells[0],"protons"),(int)doubleOrNaN(cells[1],"neutrons"));
+            if(nuclide==null)
+                throw new Error("Missing nuclide "+(int)doubleOrNaN(cells[0],"protons")+" "+(int)doubleOrNaN(cells[1],"neutrons"));
+            this.energy=(float) (doubleOrNaN(cells[3],"energy level",nuclide)*1000);//to eV
+            this.Thalf=(float) doubleOrNaN(cells[10],"half life",nuclide);
+            if(nuclide.energeticStates==null)
+                nuclide.energeticStates=new TreeMap<>();
+            nuclide.energeticStates.put(energy,this);
+
+            add(cells[12]);
+            add(cells[15]);
+            add(cells[18]);
+        }
+
+        private double doubleOrNaN(String s, String name){
+            return doubleOrNaN(s,name,null);
+        }
+
+        private double doubleOrNaN(String s, String name, iaeaNuclide nuclide){
+            s = s.replaceAll("#", "");
+            if (s.length() > 0) {
+                try {
+                    return Double.parseDouble(s);
+                } catch (Exception e) {
+                    if(nuclide==null){
+                        System.out.println("Invalid Value " + name + " " + s);
+                    }else {
+                        System.out.println("Invalid Value " + name + " " + nuclide.N + " " + nuclide.Z + " " + s);
+                    }
+                    e.printStackTrace();
+                }
+            }
+            return Double.NaN;
+        }
+    }
+
+    private static HashSet<String> decays=new HashSet<>();
+    private static void add(String s){
+        int len=decays.size();
+        decays.add(s);
+        if(decays.size()>len){
+            System.out.println(s);
+        }
+    }
+    public enum decayType{
+        ;
+        public final String name;
+        decayType(String name){
+            this.name=name;
+        }
     }
 }

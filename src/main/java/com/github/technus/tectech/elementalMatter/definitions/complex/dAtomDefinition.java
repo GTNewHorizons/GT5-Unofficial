@@ -11,6 +11,7 @@ import com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefi
 import com.github.technus.tectech.elementalMatter.core.tElementalException;
 import com.github.technus.tectech.elementalMatter.core.templates.cElementalDefinition;
 import com.github.technus.tectech.elementalMatter.core.transformations.*;
+import com.github.technus.tectech.elementalMatter.definitions.complex.iaea.iaeaNuclide;
 import com.github.technus.tectech.elementalMatter.definitions.primitive.eBosonDefinition;
 import com.github.technus.tectech.elementalMatter.definitions.primitive.eLeptonDefinition;
 import com.github.technus.tectech.elementalMatter.definitions.primitive.eNeutrinoDefinition;
@@ -46,6 +47,8 @@ public final class dAtomDefinition extends cElementalDefinition {
 
     private static final HashMap<dAtomDefinition,Float> lifetimeOverrides = new HashMap<>();
     public static final ArrayList<Runnable> overrides = new ArrayList<>();
+
+    public final iaeaNuclide iaea;
 
     public static void addOverride(dAtomDefinition atom, float rawLifeTime){
         lifetimeOverrides.put(atom,rawLifeTime);
@@ -128,7 +131,6 @@ public final class dAtomDefinition extends cElementalDefinition {
 
         element = Math.abs(element);
 
-        xstr.setSeed((long) (element + 1) * (neutralCount + 100));
 
         //stability curve
         int StableIsotope = stableIzoCurve(element);
@@ -137,20 +139,32 @@ public final class dAtomDefinition extends cElementalDefinition {
 
         hash=super.hashCode();
 
-        Float overriddenLifeTime=lifetimeOverrides.get(this);
-        float rawLifeTimeTemp;
-        if(overriddenLifeTime!=null)
-            rawLifeTimeTemp = overriddenLifeTime;
-        else
-            rawLifeTimeTemp= calculateLifeTime(izoDiff, izoDiffAbs, element, neutralCount, containsAnti);
+        iaea=iaeaNuclide.get(element,neutralCount);
+        if(iaea!=null){
+            xstr.setSeed((long) (element + 1) * (neutralCount + 100));
+            this.rawLifeTime=containsAnti ? iaea.Thalf * 1.5514433E-21f * (1f + xstr.nextFloat() * 9f):iaea.Thalf;
+        }else{
+            Float overriddenLifeTime=lifetimeOverrides.get(this);
+            float rawLifeTimeTemp;
+            if(overriddenLifeTime!=null)
+                rawLifeTimeTemp = overriddenLifeTime;
+            else {
+                xstr.setSeed((long) (element + 1) * (neutralCount + 100));
+                rawLifeTimeTemp = calculateLifeTime(izoDiff, izoDiffAbs, element, neutralCount, containsAnti);
+            }
+            this.rawLifeTime=rawLifeTimeTemp> STABLE_RAW_LIFE_TIME ? STABLE_RAW_LIFE_TIME :rawLifeTimeTemp;
+        }
 
-        this.rawLifeTime=rawLifeTimeTemp> STABLE_RAW_LIFE_TIME ? STABLE_RAW_LIFE_TIME :rawLifeTimeTemp;
 
-        if (izoDiff == 0)
-            this.decayMode = 0;
-        else
-            this.decayMode = izoDiff > 0 ? (byte) Math.min(2, 1 + izoDiffAbs / 4) : (byte) -Math.min(2, 1 + izoDiffAbs / 4);
-        this.stable = this.rawLifeTime>= STABLE_RAW_LIFE_TIME;
+        if(iaea==null || iaea.energeticStates==null || iaea.energeticStates.get(0f)==null) {
+            if (izoDiff == 0)
+                this.decayMode = 0;
+            else
+                this.decayMode = izoDiff > 0 ? (byte) Math.min(2, 1 + izoDiffAbs / 4) : (byte) -Math.min(2, 1 + izoDiffAbs / 4);
+        }else{
+            this.decayMode=Byte.MAX_VALUE;
+        }
+        this.stable = this.rawLifeTime >= STABLE_RAW_LIFE_TIME;
     }
 
     private static int stableIzoCurve(int element) {
@@ -308,12 +322,18 @@ public final class dAtomDefinition extends cElementalDefinition {
                     return Emmision(dHadronDefinition.hadron_n1);
                 case 2:
                     return MbetaDecay();
+                case Byte.MAX_VALUE:
+                    return iaeaDecay();
                 default:
                     return getNaturalDecayInstant();
             }
         } else {
             return getNaturalDecayInstant();
         }
+    }
+
+    private cElementalDecay[] iaeaDecay(){
+        return null;
     }
 
     private cElementalDecay[] Emmision(cElementalDefinitionStack emit) {
@@ -403,14 +423,14 @@ public final class dAtomDefinition extends cElementalDefinition {
         final cElementalMutableDefinitionStackMap light = new cElementalMutableDefinitionStackMap(elementalStacks.values());
         final cElementalMutableDefinitionStackMap heavy = new cElementalMutableDefinitionStackMap();
         final ArrayList<cElementalDefinitionStack> particles = new ArrayList<>(4);
-        final double[] liquidDrop=liquidDropFunction(Math.abs(element)>97);
+        final double[] liquidDrop=liquidDropFunction(Math.abs(element)<=97);
 
         for(cElementalDefinitionStack stack:light.values()){
             if(spontaneousCheck && stack.definition instanceof dHadronDefinition &&
                     (stack.amount<=80 || (stack.amount<90 && XSTR_INSTANCE.nextInt(10)<stack.amount-80)))
                 return getNaturalDecayInstant();
             if(stack.definition.getCharge()==0){
-                if(stack.definition instanceof dHadronDefinition){
+                //if(stack.definition instanceof dHadronDefinition){
                     double neutrals=stack.amount*liquidDrop[2];
                     int neutrals_cnt=(int)Math.floor(neutrals);
                     neutrals_cnt+=neutrals-neutrals_cnt>XSTR_INSTANCE.nextDouble()?1:0;
@@ -421,12 +441,14 @@ public final class dAtomDefinition extends cElementalDefinition {
                         heavy_cnt--;
                     light.removeAmount(false,new cElementalDefinitionStack(stack.definition,heavy_cnt+neutrals_cnt));
                     heavy.putReplace(new cElementalDefinitionStack(stack.definition, heavy_cnt));
-                }else{
-                    particles.add(stack);
-                    light.remove(stack.definition);
-                }
+                //}else{
+                //    particles.add(stack);
+                //    light.remove(stack.definition);
+                //}
             }else{
                 int heavy_cnt=(int)Math.ceil(stack.amount*liquidDrop[0]);
+                if(heavy_cnt%2==1 && XSTR_INSTANCE.nextFloat()>0.05f)
+                    heavy_cnt--;
                 cElementalDefinitionStack new_stack=new cElementalDefinitionStack(stack.definition, heavy_cnt);
                 light.removeAmount(false,new_stack);
                 heavy.putReplace(new_stack);
@@ -456,24 +478,24 @@ public final class dAtomDefinition extends cElementalDefinition {
             if (XSTR_INSTANCE.nextBoolean())
                 out[0] = XSTR_INSTANCE.nextDouble() * 2d - 1d;
 
-        if (asymmetric && out[0] > XSTR_INSTANCE.nextDouble() && XSTR_INSTANCE.nextInt(3) == 0)
-           out[0] = -out[0];
+        if (asymmetric && out[0] > XSTR_INSTANCE.nextDouble() && XSTR_INSTANCE.nextInt(4) == 0)
+            out[0] = -out[0];
 
         //scale to splitting ratio
-        out[0]=out[0]*0.025d+.575d;
+        out[0] = out[0] * 0.05d + .6d;
 
-        if(out[0]<0 || out [0]>1)
+        if (out[0] < 0 || out[0] > 1)
             return liquidDropFunction(asymmetric);
-        if(out[0]<.5d)
-            out[0]=1d-out[0];
+        if (out[0] < .5d)
+            out[0] = 1d - out[0];
 
         //extra neutrals
-        out[2]=0.012d+XSTR_INSTANCE.nextDouble()*0.01d;
+        out[2] = 0.012d + XSTR_INSTANCE.nextDouble() * 0.01d;
 
         if (asymmetric)
-            out[1]=out[0];
+            out[1] = out[0];
         else
-            out[1]=out[0]-out[2]*.5d;
+            out[1] = out[0] - out[2] * .5d;
 
         return out;
     }
@@ -522,33 +544,33 @@ public final class dAtomDefinition extends cElementalDefinition {
         return new cElementalDecay[]{new cElementalDecay(0.75F, decaysInto.toArray(new cElementalDefinitionStack[decaysInto.size()])), eBosonDefinition.deadEnd};
     }
 
+    //@Override
+    //public iElementalDefinition getAnti() {
+    //    cElementalDefinitionStack[] stacks = this.elementalStacks.values();
+    //    cElementalDefinitionStack[] antiElements = new cElementalDefinitionStack[stacks.length];
+    //    for (int i = 0; i < antiElements.length; i++) {
+    //        antiElements[i] = new cElementalDefinitionStack(stacks[i].definition.getAnti(), stacks[i].amount);
+    //    }
+    //    try {
+    //        return new dAtomDefinition(false, antiElements);
+    //    } catch (tElementalException e) {
+    //        if (DEBUG_MODE) e.printStackTrace();
+    //        return null;
+    //    }
+    //}
+
     @Override
     public iElementalDefinition getAnti() {
-        cElementalDefinitionStack[] stacks = this.elementalStacks.values();
-        cElementalDefinitionStack[] antiElements = new cElementalDefinitionStack[stacks.length];
-        for (int i = 0; i < antiElements.length; i++) {
-            antiElements[i] = new cElementalDefinitionStack(stacks[i].definition.getAnti(), stacks[i].amount);
-        }
+        cElementalMutableDefinitionStackMap anti = new cElementalMutableDefinitionStackMap();
+        for (cElementalDefinitionStack stack : elementalStacks.values())
+            anti.putReplace(new cElementalDefinitionStack(stack.definition.getAnti(), stack.amount));
         try {
-            return new dAtomDefinition(false, antiElements);
+            return new dAtomDefinition(anti.toImmutable());
         } catch (tElementalException e) {
             if (DEBUG_MODE) e.printStackTrace();
             return null;
         }
     }
-
-    //@Override
-    //public iElementalDefinition getAnti() {
-    //    cElementalMutableDefinitionStackMap anti = new cElementalMutableDefinitionStackMap();
-    //    for (cElementalDefinitionStack stack : elementalStacks.values())
-    //        anti.putReplace(new cElementalDefinitionStack(stack.definition.getAnti(), stack.amount));
-    //    try {
-    //        return new dAtomDefinition(anti.toImmutable());
-    //    } catch (tElementalException e) {
-    //        if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
-    //        return null;
-    //    }
-    //}
 
     @Override
     public aFluidDequantizationInfo someAmountIntoFluidStack() {
@@ -606,7 +628,7 @@ public final class dAtomDefinition extends cElementalDefinition {
         }
 
         //populate stable isotopes
-        for (int element = 1; element < 84; element++)//Up to Astatine exclusive
+        for (int element = 1; element < 83; element++)//Up to Bismuth exclusive
             for (int isotope = 0; isotope < 130; isotope++) {
                 xstr.setSeed((long) (element + 1) * (isotope + 100));
                 //stability curve
@@ -614,7 +636,8 @@ public final class dAtomDefinition extends cElementalDefinition {
                 final int izoDiff = isotope - StableIsotope;
                 final int izoDiffAbs = Math.abs(izoDiff);
                 final float rawLifeTime = calculateLifeTime(izoDiff, izoDiffAbs, element, isotope, false);
-                if (rawLifeTime>= STABLE_RAW_LIFE_TIME) {
+                iaeaNuclide nuclide=iaeaNuclide.get(element,isotope);
+                if (rawLifeTime>= STABLE_RAW_LIFE_TIME || (nuclide!=null && nuclide.Thalf>=STABLE_RAW_LIFE_TIME)) {
                     TreeSet<Integer> isotopes = stableIsotopes.get(element);
                     if (isotopes == null) stableIsotopes.put(element, isotopes = new TreeSet<>());
                     isotopes.add(isotope);
@@ -622,7 +645,7 @@ public final class dAtomDefinition extends cElementalDefinition {
             }
 
         //populate unstable isotopes
-        for (int element = 84; element < 150; element++)
+        for (int element = 83; element < 150; element++)
             for (int isotope = 100; isotope < 180; isotope++) {
                 xstr.setSeed((long) (element + 1) * (isotope + 100));
                 //stability curve
@@ -756,11 +779,11 @@ public final class dAtomDefinition extends cElementalDefinition {
         transformation.addFluid(new cElementalDefinitionStack(getFirstStableIsotope(80), 144),Materials.Mercury.mFluid.getID(), 144);
         //transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(81), 144),OrePrefixes.dust, Materials.Thallium,1);
         transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(82), 144), dust, Materials.Lead,1);
-        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(83), 144), dust, Materials.Bismuth,1);
 
         /*----UNSTABLE ATOMS----**/
-        refUnstableMass = getFirstStableIsotope(83).getMass() * 144F;
+        refUnstableMass = getFirstStableIsotope(82).getMass() * 144F;
 
+        transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(83), 144), dust, Materials.Bismuth,1);
         //transformation.addOredict(new cElementalDefinitionStack(getBestUnstableIsotope(84),144),OrePrefixes.dust, Materials.Polonium,1);
         //transformation.addFluid(new cElementalDefinitionStack(getBestUnstableIsotope(85),144),Materials.Astatine.mPlasma.getID(), 144);
         transformation.addFluid(new cElementalDefinitionStack(getBestUnstableIsotope(86),144),Materials.Radon.mGas.getID(), 144);
