@@ -1,3 +1,4 @@
+//Creative Tabs
 itemGroup.MiscUtilBlockTab=[GT++] Blocks
 itemGroup.MiscUtilMiscTab=[GT++] Items
 itemGroup.MiscUtilCombatTab=[GT++] Combat
@@ -5,77 +6,33 @@ itemGroup.MiscUtilToolsTab=[GT++] Tools
 itemGroup.MiscUtilMachineTab=[GT++] Machines
 itemGroup.MiscUtilOtherTab=[GT++] Items II
 
-item.itemPLACEHOLDER_Circuit.name=Quark Manipulator (UV)
+//Debug
+item.AAA_Broken.name=[Non-existent Item] Report This Recipe On Github, Please.
+item.itemBedLocator_Base.name=Bed Locator [NBT Test]
+item.itemBaseItemWithCharge.name=Base Chargeable Item
+item.miscutils_itemDebugShapeSpawner.name=[Debug] Shapes
 
-item.itemPlateEnrichedSoularium.name=Enriched Soularium Plate
-
-item.itemHeliumBlob.name=Mysterious Hydrogen Substance
-
+//Alternative Materials
 item.itemPlateBatteryAlloy.name=Plate of Battery Alloy
 item.itemIngotBatteryAlloy.name=Ingot of Battery Alloy
-
 item.itemStickyRubber.name=Gumlet of Sticky Rubber
 
+//Unused Fuel rods
 item.itemFuelRod_Empty.name=Empty Fuel Rod
 item.itemFuelRod_Thorium.name=Thorium Fuel Rod
 item.itemFuelRod_Uranium.name=Uranium Fuel Rod
 item.itemFuelRod_Plutonium.name=Plutonium Fuel Rod
 
-
-item.itemBedLocator_Base.name=Bed Locator [NBT Test]
-item.itemBaseItemWithCharge.name=Base Chargeable Item
-
-item.miscutils_itemDebugShapeSpawner.name=[Debug] Shapes
-
-tile.fluidJackDaniels.name=Jack Daniels
-tile.blockGriefSaver.name=Anti-Griefer [WIP]
-tile.helium_collector.name=Helium Collector
-tile.blockNuclearFueledHeliumGenerator.name=Nuclear Fueled Helium Generator [NFHG]
-tile.blockMachineCharger.name=Charging Machine
-container.Charger=Charging Machine
-container.NHG=Nuclear Fueled Helium Generator
-container.helium_collector.name=Helium Collector
-tile.blockStaballoy.name=Block of Staballoy
-tile.blockBloodSteel.name=Block of Blood Steel
-
-
+//Tile Entities
 tile.blockToolBuilder.name=GregTech Tool Constructor
+
+//Tools
 item.itemBufferCore.name=Buffer Core
 item.itemStaballoyPickaxe.name=Tunnel Digger
 item.itemStaballoyAxe.name=Tree Feller
 item.itemSandstoneHammer.name=Cobblestone Breaker
 
-
-item.bucket.fluid.grc.jackDanielsWhiskey0.name=Jack Daniels (0)
-item.bucket.fluid.grc.jackDanielsWhiskey1.name=Jack Daniels (1)
-item.bucket.fluid.grc.jackDanielsWhiskey2.name=Jack Daniels (2)
-item.bucket.fluid.grc.jackDanielsWhiskey3.name=Jack Daniels (3)
-item.bucket.fluid.grc.jackDanielsWhiskey4.name=Jack Daniels (4)
-fluid.grc.jackDanielsWhiskey=Jack Daniels
-fluid.grc.jackDanielsWhiskey0=Jack Daniels (0)
-fluid.grc.jackDanielsWhiskey1=Jack Daniels (1)
-fluid.grc.jackDanielsWhiskey2=Jack Daniels (2)
-fluid.grc.jackDanielsWhiskey3=Jack Daniels (3)
-fluid.grc.jackDanielsWhiskey4=Jack Daniels (4)
-fluid.fluidJackDaniels=Jack Daniels
-fluid.grc.jackDanielsWhiskey0.Modifier=Jack Daniels (0)
-fluid.grc.jackDanielsWhiskey1.Modifier=Jack Daniels (1)
-fluid.grc.jackDanielsWhiskey2.Modifier=Jack Daniels (2)
-fluid.grc.jackDanielsWhiskey3.Modifier=Jack Daniels (3)
-fluid.grc.jackDanielsWhiskey4.Modifier=Jack Daniels (4)
-tile.fluidBlockJackDaniels.name=Jack Daniels
-tile.fluid.grc.jackDanielsWhiskey0.name=Jack Daniels (0)
-tile.fluid.grc.jackDanielsWhiskey1.name=Jack Daniels (1)
-tile.fluid.grc.jackDanielsWhiskey2.name=Jack Daniels (2)
-tile.fluid.grc.jackDanielsWhiskey3.name=Jack Daniels (3)
-tile.fluid.grc.jackDanielsWhiskey4.name=Jack Daniels (4)
-fluid.psc_JD.ferment.2=Fermenting Jack Daniels
-fluid.psc_JD.dmature=D Matured Jack Daniels
-fluid.psc_JD.mature=Jack Daniels
-fluid.psc_JD.distill=Jack Daniels Wash
-fluid.psc_JD.name=Jack Daniels
-fluid.psc_JD=Jack Daniels
-
+//Thermal Foundation Stuff
 item.MiscUtils.bucket.bucketPyrotheum.name=Blazing Pyrotheum Bucket
 item.MiscUtils.bucket.bucketCryotheum.name=Gelid Cryotheum Bucket
 item.MiscUtils.bucket.bucketEnder.name=Resonant Ender Bucket
@@ -85,11 +42,9 @@ item.MiscUtils.material.rodBlizz.name=Blizz Rod
 item.MiscUtils.material.dustBlizz.name=Blizz Powder
 tile.MiscUtils.fluid.pyrotheum.name=Blazing Pyrotheum
 tile.MiscUtils.fluid.cryotheum.name=Gelid Cryotheum
-
-tile.miscutils.fluid.cryotheum.name=Gelid Cryotheum
-tile.miscutils.fluid.pyrotheum.name=Blazing Pyrotheum
 tile.miscutils.fluid.ender.name=Resonant Ender
 
+//Forestry Stuff
 item.frameAccelerated.name=Accelerated Frame
 item.frameVoid.name=Void Frame
 item.frameMutagenic.name=Mutagenic Frame
@@ -100,22 +55,33 @@ item.frameSoul.name=Soul Frame
 item.frameHealing.name=Healing Frame
 item.frameNova.name=Nova Frame
 
+//IC2 stuff
 item.itemEnergeticRotorBlade.name=Energetic Alloy Rotor Blade
 item.itemTungstenSteelRotorBlade.name=TungstenSteel Rotor Blade
 item.itemVibrantRotorBlade.name=Vibrant Alloy Rotor Blade
 item.itemIridiumRotorBlade.name=Iridium Rotor Blade
-
 item.itemEnergeticShaft.name=Energetic Alloy Shaft
 item.itemTungstenSteelShaft.name=TungstenSteel Shaft
 item.itemVibrantShaft.name=Vibrant Alloy Shaft
 item.itemIridiumShaft.name=Iridium Shaft
-
 item.itemMagnaliumRotorBlade.name=Magnalium Rotor Blade
 item.itemUltimetRotorBlade.name=Ultimet Blade
 item.itemMagnaliumShaft.name=Magnalium Shaft
 item.itemUltimetShaft.name=Ultimet Shaft
 
-item.itemHotIngotRaisinBread.name= Hot Loaf of Raisin Bread
-item.AAA_Broken.name=[Non-existent Item] Report This Recipe On Github, Please.
+
+//Misc Items
+item.itemPLACEHOLDER_Circuit.name=Quark Manipulator (UV)
+item.itemPlateEnrichedSoularium.name=Enriched Soularium Plate
+item.itemHeliumBlob.name=Mysterious Hydrogen Substance
 item.itemAlkalusDisk.name=Alkalus Disk
+item.itemHotIngotRaisinBread.name= Hot Loaf of Raisin Bread
 item.itemIngotRaisinBread.name=§5ImQ009's §fRaisin Bread
+
+//Misc Blocks
+tile.blockCompressedObsidian.0.name=Compressed Obsidian (9)
+tile.blockCompressedObsidian.1.name=Compressed Obsidian (81)
+tile.blockCompressedObsidian.2.name=Compressed Obsidian (729)
+tile.blockCompressedObsidian.3.name=Compressed Obsidian (6561)
+tile.blockCompressedObsidian.4.name=Compressed Obsidian (59049)
+tile.blockCompressedObsidian.5.name=Inverted Obsidian

@@ -163,7 +163,7 @@ public class ItemUtils {
 	}
 
 	@SuppressWarnings("unused")
-	public static ItemStack simpleMetaStack(final Item item, final int meta, final int itemstackSize){
+	public static ItemStack simpleMetaStack(final Item item, final int meta, final int size){
 		try {
 			if (item == null){
 				return null;
@@ -176,7 +176,7 @@ public class ItemUtils {
 					em = em1;
 				}
 				if (em != null){
-					final ItemStack metaStack = new ItemStack(em,itemstackSize,meta);
+					final ItemStack metaStack = new ItemStack(em,size,meta);
 					return metaStack;
 				}
 			}
@@ -185,6 +185,10 @@ public class ItemUtils {
 			//Utils.LOG_ERROR(item.getUnlocalizedName()+" not found. [NULL]");
 			return null;
 		}
+	}
+
+	public static ItemStack simpleMetaStack(final Block block, final int meta, final int size) {
+		return simpleMetaStack(Item.getItemFromBlock(block), meta, size);
 	}
 
 	public static ItemStack getCorrectStacktype(final String fqrn, final int stackSize){
@@ -633,5 +637,6 @@ public class ItemUtils {
 		//If only Tinkers dust exists, bow down and just use it.
 		return getItemStackOfAmountFromOreDictNoBroken(oredictName, amount);
 	}
+
 
 }

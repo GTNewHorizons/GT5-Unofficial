@@ -1,5 +1,7 @@
 package gtPlusPlus.core.recipe;
 
+import static gtPlusPlus.core.util.item.ItemUtils.getSimpleStack;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_ModHandler;
@@ -35,6 +37,7 @@ public class RECIPES_General {
 		if (LoadedMods.Gregtech){
 			RECIPE_BasicCasingIC2 = ItemUtils.getItemStack("IC2:blockMachine", 1);
 			run();
+			addCompressedObsidian();
 		}
 	}
 
@@ -133,9 +136,15 @@ public class RECIPES_General {
 
 		RecipeUtils.addShapedGregtechRecipe(
 				"stickBlackSteel", "plateTungstenSteel", "stickBlackSteel",
-				"plateTungstenSteel", ItemUtils.getSimpleStack(Items.nether_star), "plateTungstenSteel",
+				"plateTungstenSteel", getSimpleStack(Items.nether_star), "plateTungstenSteel",
 				"stickBlackSteel", "plateTungstenSteel", "stickBlackSteel",
 				ItemUtils.getSimpleStack(ModBlocks.blockWitherGuard, 32));
+
+		RecipeUtils.addShapedGregtechRecipe(
+				getSimpleStack(Items.experience_bottle), ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 2, 1), getSimpleStack(Items.experience_bottle),
+				ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 5, 1), getSimpleStack(Items.nether_star), ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 5, 1),
+				getSimpleStack(Items.experience_bottle), ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 2, 1), getSimpleStack(Items.experience_bottle),
+				ItemUtils.getSimpleStack(ModBlocks.blockXpConverter, 1));
 
 		//Alkalus Coin
 		/*AddGregtechRecipe.addAssemblylineRecipe(
@@ -159,6 +168,38 @@ public class RECIPES_General {
 				30*20*60,
 				100000);*/
 
+	}
+
+	private static boolean addCompressedObsidian(){
+		//Invert Obsidian
+		RecipeUtils.addShapedGregtechRecipe(
+				getSimpleStack(Items.redstone), getSimpleStack(Items.glowstone_dust), getSimpleStack(Items.redstone),
+				getSimpleStack(Items.glowstone_dust), ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 1, 1), getSimpleStack(Items.glowstone_dust),
+				getSimpleStack(Items.redstone), getSimpleStack(Items.glowstone_dust), getSimpleStack(Items.redstone),
+				ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 5, 1));
+
+		final ItemStack[] mItems = new ItemStack[6];
+		mItems[0] = ItemUtils.getSimpleStack(Blocks.obsidian);
+		for (int r=0;r<5;r++){
+			mItems[r+1] = ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, r, 1);
+		}
+
+		//Compressed Obsidian 1-5
+		for (int r=0;r<5;r++){
+
+			final ItemStack input = mItems[r];
+			final ItemStack output = mItems[r+1];
+
+			RecipeUtils.addShapedGregtechRecipe(
+					input, input, input,
+					input, input, input,
+					input, input, input,
+					output);
+
+			RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{output}, ItemUtils.getSimpleStack(input, 9));
+
+		}
+		return true;
 	}
 
 }
