@@ -1,5 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
+import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import gregtech.api.enums.SubTag;
@@ -21,6 +22,8 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
         OrePrefixes.pipeRestrictiveMedium.add(this);
         OrePrefixes.pipeRestrictiveSmall.add(this);
         OrePrefixes.pipeRestrictiveTiny.add(this);
+        OrePrefixes.pipeQuadruple.add(this);
+        OrePrefixes.pipeNonuple.add(this);
     }
 
     @Override
@@ -44,6 +47,14 @@ public class ProcessingPipe implements gregtech.api.interfaces.IOreRecipeRegistr
             case pipeRestrictiveTiny:
                 gregtech.api.enums.GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(aOreDictName.replaceFirst("Restrictive", ""), null, 1L, false, true), GT_OreDictUnificator.get(OrePrefixes.ring, Materials.Steel, aPrefix.mSecondaryMaterial.mAmount / OrePrefixes.ring.mMaterialAmount), GT_Utility.copyAmount(1L, new Object[]{aStack}), (int) (aPrefix.mSecondaryMaterial.mAmount * 400L / OrePrefixes.ring.mMaterialAmount), 4);
                 break;
+            case pipeQuadruple:
+            	GT_ModHandler.addCraftingRecipe(GT_Utility.copyAmount(1, new Object[]{aStack}), GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"PP ", "PP ", "   ", 'P', GT_OreDictUnificator.get(aOreDictName.replaceFirst("Quadruple", "Medium"), null, 1L, false, true)});
+            	gregtech.api.enums.GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(aOreDictName.replaceFirst("Quadruple", "Medium"), null, 4L, false, true), ItemList.Circuit_Integrated.getWithDamage(0, 4), GT_Utility.copyAmount(1L, new Object[]{aStack}), 40 ,8);
+            	break;
+            case pipeNonuple:
+            	GT_ModHandler.addCraftingRecipe(GT_Utility.copyAmount(1, new Object[]{aStack}), GT_ModHandler.RecipeBits.REVERSIBLE, new Object[]{"PPP", "PPP", "PPP", 'P', GT_OreDictUnificator.get(aOreDictName.replaceFirst("Nonuple", "Small"), null, 1L, false, true)});
+            	gregtech.api.enums.GT_Values.RA.addAssemblerRecipe(GT_OreDictUnificator.get(aOreDictName.replaceFirst("Nonuple", "Small"), null, 9L, false, true), ItemList.Circuit_Integrated.getWithDamage(0, 9), GT_Utility.copyAmount(1L, new Object[]{aStack}), 60 ,8);
+            	break;
         }
     }
 }

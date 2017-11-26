@@ -16,6 +16,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.tileentity.ICoverable;
 import gregtech.api.interfaces.tileentity.ITurnable;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
+import gregtech.api.objects.GT_ItemStack;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_PlayedSound;
 import gregtech.api.util.GT_Recipe;
@@ -137,14 +138,81 @@ public class GT_Client extends GT_Proxy
         GL11.glLineWidth(2.0F);
         GL11.glColor4f(0.0F, 0.0F, 0.0F, 0.5F);
         GL11.glBegin(1);
-        GL11.glVertex3d(0.5D, 0.0D, -0.25D);
-        GL11.glVertex3d(-0.5D, 0.0D, -0.25D);
-        GL11.glVertex3d(0.5D, 0.0D, 0.25D);
-        GL11.glVertex3d(-0.5D, 0.0D, 0.25D);
-        GL11.glVertex3d(0.25D, 0.0D, -0.5D);
-        GL11.glVertex3d(0.25D, 0.0D, 0.5D);
-        GL11.glVertex3d(-0.25D, 0.0D, -0.5D);
-        GL11.glVertex3d(-0.25D, 0.0D, 0.5D);
+        GL11.glVertex3d(+.50D, .0D, -.25D);
+        GL11.glVertex3d(-.50D, .0D, -.25D);
+        GL11.glVertex3d(+.50D, .0D, +.25D);
+        GL11.glVertex3d(-.50D, .0D, +.25D);
+        GL11.glVertex3d(+.25D, .0D, -.50D);
+        GL11.glVertex3d(+.25D, .0D, +.50D);
+        GL11.glVertex3d(-.25D, .0D, -.50D);
+        GL11.glVertex3d(-.25D, .0D, +.50D);
+        GL11.glLineWidth(2.0F);
+        TileEntity tTile = aEvent.player.worldObj.getTileEntity(aEvent.target.blockX, aEvent.target.blockY, aEvent.target.blockZ);
+        if (tTile instanceof BaseMetaPipeEntity) {
+        	int[][] GridSwitchArr = new int[][]{
+            	{0, 5, 3, 1, 2, 4},
+            	{5, 0, 1, 3, 2, 4},
+            	{1, 3, 0, 5, 2, 4},
+            	{3, 1, 5, 0, 2, 4},
+            	{4, 2, 3, 1, 0, 5},
+            	{2, 4, 3, 1, 5, 0},
+            }; 
+        	int tConnections = ((BaseMetaPipeEntity) tTile).mConnections;
+        	for (byte i = 0; i < 6; i++) {
+        		if ((tConnections & (1 << i)) != 0) {
+        			switch (GridSwitchArr[aEvent.target.sideHit][i]) {
+        	        case 0:
+        	        	GL11.glVertex3d(+.25D, .0D, +.25D);
+        	        	GL11.glVertex3d(-.25D, .0D, -.25D);
+        	        	GL11.glVertex3d(-.25D, .0D, +.25D);
+        	        	GL11.glVertex3d(+.25D, .0D, -.25D);
+        	        	break;
+        	        case 1:
+        	        	GL11.glVertex3d(-.25D, .0D, +.50D);
+        				GL11.glVertex3d(+.25D, .0D, +.25D);
+        				GL11.glVertex3d(-.25D, .0D, +.25D);
+        				GL11.glVertex3d(+.25D, .0D, +.50D);
+        	        	break;
+        	        case 2:
+        	        	GL11.glVertex3d(-.50D, .0D, -.25D);
+        				GL11.glVertex3d(-.25D, .0D, +.25D);
+        				GL11.glVertex3d(-.50D, .0D, +.25D);
+        				GL11.glVertex3d(-.25D, .0D, -.25D);
+        	        	break;
+        	        case 3:
+        	        	GL11.glVertex3d(-.25D, .0D, -.50D);
+        				GL11.glVertex3d(+.25D, .0D, -.25D);
+        				GL11.glVertex3d(-.25D, .0D, -.25D);
+        				GL11.glVertex3d(+.25D, .0D, -.50D);
+        	        	break;
+        	        case 4:
+        	        	GL11.glVertex3d(+.50D, .0D, -.25D);
+        				GL11.glVertex3d(+.25D, .0D, +.25D);
+        				GL11.glVertex3d(+.50D, .0D, +.25D);
+        				GL11.glVertex3d(+.25D, .0D, -.25D);
+        	        	break;
+        	        case 5:
+        	        	GL11.glVertex3d(+.50D, .0D, +.50D);
+        	        	GL11.glVertex3d(+.25D, .0D, +.25D);
+        	        	GL11.glVertex3d(+.50D, .0D, +.25D);
+        	        	GL11.glVertex3d(+.25D, .0D, +.50D);
+        	        	GL11.glVertex3d(+.50D, .0D, -.50D);
+        	        	GL11.glVertex3d(+.25D, .0D, -.25D);
+        	        	GL11.glVertex3d(+.50D, .0D, -.25D);
+        	        	GL11.glVertex3d(+.25D, .0D, -.50D);
+        	        	GL11.glVertex3d(-.50D, .0D, +.50D);
+        	        	GL11.glVertex3d(-.25D, .0D, +.25D);
+        	        	GL11.glVertex3d(-.50D, .0D, +.25D);
+        	        	GL11.glVertex3d(-.25D, .0D, +.50D);
+        	        	GL11.glVertex3d(-.50D, .0D, -.50D);
+        	        	GL11.glVertex3d(-.25D, .0D, -.25D);
+        	        	GL11.glVertex3d(-.50D, .0D, -.25D);
+        	        	GL11.glVertex3d(-.25D, .0D, -.50D);
+        	        	break;
+        	        }
+        		}
+        	}
+        }
         GL11.glEnd();
         GL11.glPopMatrix();
     }
@@ -376,7 +444,7 @@ public class GT_Client extends GT_Proxy
             TileEntity aTileEntity = aEvent.player.worldObj.getTileEntity(aEvent.target.blockX, aEvent.target.blockY, aEvent.target.blockZ);
             try {
                 Class.forName("codechicken.lib.vec.Rotation");
-                if (((aTileEntity instanceof BaseMetaPipeEntity)) && (((ICoverable) aTileEntity).getCoverIDAtSide((byte) aEvent.target.sideHit) == 0) && ((GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sCovers.keySet())) || (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sCrowbarList)) || (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sScrewdriverList)))) {
+                if (((aTileEntity instanceof BaseMetaPipeEntity)) && (((ICoverable) aTileEntity).getCoverIDAtSide((byte) aEvent.target.sideHit) == 0) && ((GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sCovers.keySet())) || (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sCrowbarList)) || (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sWireCutterList)) || (GT_Utility.isStackInList(aEvent.currentItem, GregTech_API.sScrewdriverList)))) {
                     drawGrid(aEvent);
                     return;
                 }
@@ -585,15 +653,25 @@ public class GT_Client extends GT_Proxy
         try {
             EntityPlayer player = Minecraft.getMinecraft().thePlayer;
             if (player == null) return 0;
-            ItemStack held = player.getCurrentEquippedItem();
-            if (held == null) return 0;
-            int[] ids = OreDictionary.getOreIDs(held);
+            ItemStack tCurrentItem = player.getCurrentEquippedItem();
+            if (tCurrentItem == null) return 0;
+            int[] ids = OreDictionary.getOreIDs(tCurrentItem);
             int hide = 0;
             for (int i : ids) {
                 if (OreDictionary.getOreName(i).equals("craftingToolSolderingIron")) {
                     hide |= 0x1;
                     break;
                 }
+            }
+            if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWrenchList)
+            		|| GT_Utility.isStackInList(tCurrentItem, GregTech_API.sScrewdriverList)
+            		|| GT_Utility.isStackInList(tCurrentItem, GregTech_API.sHardHammerList)
+            		|| GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSoftHammerList)
+            		|| GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWireCutterList)
+            		|| GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSolderingToolList)
+            		|| GT_Utility.isStackInList(tCurrentItem, GregTech_API.sCrowbarList)
+            		|| GregTech_API.sCovers.containsKey(new GT_ItemStack(tCurrentItem))) {
+            	hide |= 0x2;
             }
             return hide;
         }catch(Exception e){

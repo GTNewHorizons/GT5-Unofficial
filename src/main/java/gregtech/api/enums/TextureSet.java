@@ -103,8 +103,8 @@ public class TextureSet {
         mTextures[81] = new Textures.BlockIcons.CustomIcon(aTextMatIconDir + mSetName + "/pipeLarge");
         mTextures[82] = new Textures.BlockIcons.CustomIcon(aTextMatIconDir + mSetName + "/pipeHuge");
         mTextures[83] = new Textures.BlockIcons.CustomIcon(aTextMatIconDir + mSetName + "/frameGt");
-        mTextures[84] = new Textures.BlockIcons.CustomIcon(aTextMatIconDir + mSetName + aTextVoidDir);
-        mTextures[85] = new Textures.BlockIcons.CustomIcon(aTextMatIconDir + mSetName + aTextVoidDir);
+        mTextures[84] = new Textures.BlockIcons.CustomIcon(aTextMatIconDir + mSetName + "/pipeQuadruple");
+        mTextures[85] = new Textures.BlockIcons.CustomIcon(aTextMatIconDir + mSetName + "/pipeNonuple");
         mTextures[86] = new Textures.BlockIcons.CustomIcon(aTextMatIconDir + mSetName + aTextVoidDir);
         mTextures[87] = new Textures.BlockIcons.CustomIcon(aTextMatIconDir + mSetName + aTextVoidDir);
         mTextures[88] = new Textures.BlockIcons.CustomIcon(aTextMatIconDir + mSetName + aTextVoidDir);

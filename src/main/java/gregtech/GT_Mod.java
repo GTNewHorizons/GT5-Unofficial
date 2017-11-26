@@ -287,6 +287,9 @@ public class GT_Mod implements IGT_Mod {
         gregtechproxy.enableRedGraniteOres = GregTech_API.sWorldgenFile.get("general", "enableRedGraniteOres", gregtechproxy.enableRedGraniteOres);
         gregtechproxy.enableMarbleOres = GregTech_API.sWorldgenFile.get("general", "enableMarbleOres", gregtechproxy.enableMarbleOres);
         gregtechproxy.enableBasaltOres = GregTech_API.sWorldgenFile.get("general", "enableBasaltOres", gregtechproxy.enableBasaltOres);
+        gregtechproxy.gt6Pipe = tMainConfig.get("general", "GT6StyledPipesConnection", true).getBoolean(true);
+        gregtechproxy.gt6Cable = tMainConfig.get("general", "GT6StyledWiresConnection", true).getBoolean(true);
+        gregtechproxy.costlyCableConnection = tMainConfig.get("general", "CableConnectionRequiresSolderingMaterial", false).getBoolean(false);
 
         GregTech_API.mUseOnlyGoodSolderingMaterials = GregTech_API.sRecipeFile.get(ConfigCategories.Recipes.harderrecipes, "useonlygoodsolderingmaterials", GregTech_API.mUseOnlyGoodSolderingMaterials);
         gregtechproxy.mChangeHarvestLevels = GregTech_API.sMaterialProperties.get("havestLevel", "activateHarvestLevelChange", false);//TODO CHECK
@@ -1240,7 +1243,6 @@ public class GT_Mod implements IGT_Mod {
         		GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Coal, 1),
         		GT_OreDictUnificator.get(OrePrefixes.block, Materials.Coal, 1),
         		GT_OreDictUnificator.get(OrePrefixes.crushed, Materials.Coal, 1),
-        		GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Carbon, 1),
         		GT_OreDictUnificator.get(OrePrefixes.dust, Materials.Lignite, 1),
         		GT_OreDictUnificator.get(OrePrefixes.gem, Materials.Lignite, 1),
         		GT_OreDictUnificator.get(OrePrefixes.block, Materials.Lignite, 1),

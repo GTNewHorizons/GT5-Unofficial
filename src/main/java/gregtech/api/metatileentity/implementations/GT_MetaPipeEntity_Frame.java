@@ -91,4 +91,10 @@ public class GT_MetaPipeEntity_Frame extends MetaPipeEntity {
     public final boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
         return false;
     }
+
+    @Override
+    public int connect(byte aSide) {return 0;}
+
+    @Override
+    public void disconnect(byte aSide) {/* Do nothing*/}
 }

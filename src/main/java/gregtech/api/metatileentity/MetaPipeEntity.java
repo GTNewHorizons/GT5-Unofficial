@@ -2,7 +2,9 @@ package gregtech.api.metatileentity;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.GT_Mod;
 import gregtech.api.GregTech_API;
+import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.objects.GT_ItemStack;
@@ -45,7 +47,7 @@ import static gregtech.api.enums.GT_Values.V;
  * Call the Constructor like the following example inside the Load Phase, to register it.
  * "new GT_MetaTileEntity_E_Furnace(54, "GT_E_Furnace", "Automatic E-Furnace");"
  */
-public abstract class MetaPipeEntity implements IMetaTileEntity {
+public abstract class MetaPipeEntity implements IMetaTileEntity, IConnectable {
     /**
      * The Inventory of the MetaTileEntity. Amount of Slots can be larger than 256. HAYO!
      */
@@ -203,6 +205,14 @@ public abstract class MetaPipeEntity implements IMetaTileEntity {
         return false;
     }
 
+    public boolean onWireCutterRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        return false;
+    }
+
+    public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+        return false;
+    }
+
     @Override
     public void onExplosion() {/*Do nothing*/}
 
@@ -305,12 +315,12 @@ public abstract class MetaPipeEntity implements IMetaTileEntity {
 
     @Override
     public boolean isLiquidInput(byte aSide) {
-        return true;
+        return false;
     }
 
     @Override
     public boolean isLiquidOutput(byte aSide) {
-        return true;
+        return false;
     }
 
     /**
@@ -706,5 +716,32 @@ public abstract class MetaPipeEntity implements IMetaTileEntity {
 	@Override
 	public String getAlternativeModeText() {
 		return "";
+	}
+
+	public String trans(String aKey, String aEnglish){
+    	return GT_LanguageManager.addStringLocalization("Interaction_DESCRIPTION_Index_"+aKey, aEnglish, false);
+    }
+
+	@Override
+	public int connect(byte aSide) {
+		if (aSide >= 6) return 0;
+		mConnections |= (1 << aSide);
+		byte tSide = GT_Utility.getOppositeSide(aSide);
+		IGregTechTileEntity tTileEntity = getBaseMetaTileEntity().getIGregTechTileEntityAtSide(aSide);
+		IMetaTileEntity tPipe = tTileEntity instanceof IGregTechTileEntity ? ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() : null;
+		if (this.getClass().isInstance(tPipe) && (((MetaPipeEntity) tPipe).mConnections & (1 << tSide)) == 0)
+			((MetaPipeEntity) tPipe).connect(tSide);
+    	return 1;
+	}
+
+	@Override
+	public void disconnect(byte aSide) {
+		if (aSide >= 6) return;
+		mConnections &= ~(1 << aSide);
+		byte tSide = GT_Utility.getOppositeSide(aSide);
+		IGregTechTileEntity tTileEntity = getBaseMetaTileEntity().getIGregTechTileEntityAtSide(aSide);
+		IMetaTileEntity tPipe = tTileEntity == null ? null : tTileEntity.getMetaTileEntity(); 
+		if (this.getClass().isInstance(tPipe) && (((MetaPipeEntity) tPipe).mConnections & (1 << tSide)) != 0)
+			((MetaPipeEntity) tPipe).disconnect(tSide);
 	}
 }

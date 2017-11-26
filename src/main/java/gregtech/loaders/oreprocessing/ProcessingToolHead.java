@@ -116,9 +116,9 @@ public class ProcessingToolHead implements gregtech.api.interfaces.IOreRecipeReg
                 if (!aNoWorking) GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.toolHeadSense, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"GGG", " f ", "   ", 'G', OrePrefixes.gem.get(aMaterial)});
                 break;
             case toolHeadShovel:
-                //GT_ModHandler.addShapelessCraftingRecipe(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(GT_MetaGenerated_Tool_01.SHOVEL, 1, aMaterial, aMaterial.mHandleMaterial, null), new Object[]{aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
-                //if (aSpecialRecipeReq1) GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.toolHeadShovel, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"fPh", 'P', OrePrefixes.plate.get(aMaterial), 'I', OrePrefixes.ingot.get(aMaterial)});
-                //if (!aNoWorking) GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.toolHeadShovel, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"fG", 'G', OrePrefixes.gem.get(aMaterial)});
+                GT_ModHandler.addShapelessCraftingRecipe(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(GT_MetaGenerated_Tool_01.SHOVEL, 1, aMaterial, aMaterial.mHandleMaterial, null), new Object[]{aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});
+                if (aSpecialRecipeReq1) GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.toolHeadShovel, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"fPh", 'P', OrePrefixes.plate.get(aMaterial), 'I', OrePrefixes.ingot.get(aMaterial)});
+                if (!aNoWorking) GT_ModHandler.addCraftingRecipe(GT_OreDictUnificator.get(OrePrefixes.toolHeadShovel, aMaterial, 1L), GT_Proxy.tBits, new Object[]{"fG", 'G', OrePrefixes.gem.get(aMaterial)});
                 break;
             case toolHeadSword:
                 //GT_ModHandler.addShapelessCraftingRecipe(GT_MetaGenerated_Tool_01.INSTANCE.getToolWithStats(GT_MetaGenerated_Tool_01.SWORD, 1, aMaterial, aMaterial.mHandleMaterial, null), new Object[]{aOreDictName, OrePrefixes.stick.get(aMaterial.mHandleMaterial)});

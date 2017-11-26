@@ -67,11 +67,6 @@ public class GT_MetaTileEntity_Hatch_Output extends GT_MetaTileEntity_Hatch {
     }
 
     @Override
-    public boolean isLiquidOutput(byte aSide) {
-        return aSide == getBaseMetaTileEntity().getFrontFacing();
-    }
-
-    @Override
     public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
         return new GT_MetaTileEntity_Hatch_Output(mName, mTier, mDescriptionArray, mTextures);
     }

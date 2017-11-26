@@ -3,6 +3,7 @@ package gregtech.common.blocks;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.Materials;
+import gregtech.api.interfaces.metatileentity.IConnectable;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Cable;
 import gregtech.api.metatileentity.implementations.GT_MetaPipeEntity_Fluid;
@@ -157,6 +158,9 @@ public class GT_Item_Machines
                     tTileEntity.setOwnerName(aPlayer.getDisplayName());
                 }
                 tTileEntity.getMetaTileEntity().initDefaultModes(aStack.getTagCompound());
+                if (tTileEntity.getMetaTileEntity() instanceof IConnectable) {
+                	((IConnectable) tTileEntity.getMetaTileEntity()).connect(GT_Utility.getOppositeSide(side));
+                }
             }
         } else if (!aWorld.setBlock(aX, aY, aZ, this.field_150939_a, tDamage, 3)) {
             return false;

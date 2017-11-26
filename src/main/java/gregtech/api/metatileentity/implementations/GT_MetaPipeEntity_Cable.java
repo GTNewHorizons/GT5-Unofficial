@@ -16,11 +16,13 @@ import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.metatileentity.BaseMetaPipeEntity;
 import gregtech.api.metatileentity.MetaPipeEntity;
 import gregtech.api.objects.GT_RenderedTexture;
+import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
 import gregtech.common.GT_Client;
 import ic2.api.energy.tile.IEnergySink;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -31,6 +33,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static gregtech.api.enums.GT_Values.VN;
 
@@ -44,6 +47,7 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     public long mRestRF;
     public int mOverheat;
     public static short mMaxOverheat=(short) (GT_Mod.gregtechproxy.mWireHeatingTicks * 100);
+    private boolean mCheckConnections = !GT_Mod.gregtechproxy.gt6Cable;
 
     private int[] lastAmperage;
     private long lastWorldTick;
@@ -107,34 +111,6 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
     public void onEntityCollidedWithBlock(World aWorld, int aX, int aY, int aZ, Entity aEntity) {
         if (mCanShock && (((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections & -128) == 0 && aEntity instanceof EntityLivingBase && !isCoverOnSide((BaseMetaPipeEntity) getBaseMetaTileEntity(), (EntityLivingBase) aEntity))
             GT_Utility.applyElectricityDamage((EntityLivingBase) aEntity, mTransferredVoltageLast20, mTransferredAmperageLast20);
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
-    	float tSpace = (1f - mThickNess)/2;
-    	float tSide0 = tSpace;
-    	float tSide1 = 1f - tSpace;
-    	float tSide2 = tSpace;
-    	float tSide3 = 1f - tSpace;
-    	float tSide4 = tSpace;
-    	float tSide5 = 1f - tSpace;
-    	
-    	if(getBaseMetaTileEntity().getCoverIDAtSide((byte) 0) != 0){tSide0=tSide2=tSide4=0;tSide3=tSide5=1;}
-    	if(getBaseMetaTileEntity().getCoverIDAtSide((byte) 1) != 0){tSide2=tSide4=0;tSide1=tSide3=tSide5=1;}
-    	if(getBaseMetaTileEntity().getCoverIDAtSide((byte) 2) != 0){tSide0=tSide2=tSide4=0;tSide1=tSide5=1;}
-    	if(getBaseMetaTileEntity().getCoverIDAtSide((byte) 3) != 0){tSide0=tSide4=0;tSide1=tSide3=tSide5=1;}
-    	if(getBaseMetaTileEntity().getCoverIDAtSide((byte) 4) != 0){tSide0=tSide2=tSide4=0;tSide1=tSide3=1;}
-    	if(getBaseMetaTileEntity().getCoverIDAtSide((byte) 5) != 0){tSide0=tSide2=0;tSide1=tSide3=tSide5=1;}
-    	
-    	byte tConn = ((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections;
-    	if((tConn & (1 << ForgeDirection.DOWN.ordinal()) ) != 0) tSide0 = 0f;
-    	if((tConn & (1 << ForgeDirection.UP.ordinal())   ) != 0) tSide1 = 1f;
-    	if((tConn & (1 << ForgeDirection.NORTH.ordinal())) != 0) tSide2 = 0f;
-    	if((tConn & (1 << ForgeDirection.SOUTH.ordinal())) != 0) tSide3 = 1f;
-    	if((tConn & (1 << ForgeDirection.WEST.ordinal()) ) != 0) tSide4 = 0f;
-    	if((tConn & (1 << ForgeDirection.EAST.ordinal()) ) != 0) tSide5 = 1f;
-    	
-    	return AxisAlignedBB.getBoundingBox(aX + tSide4, aY + tSide0, aZ + tSide2, aX + tSide5, aY + tSide1, aZ + tSide3);
     }
 
     @Override
@@ -287,7 +263,7 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
             }
 
             if(mOverheat>=mMaxOverheat) {
-                //todo someday
+                //TODO someday
                 //int newMeta=aBaseMetaTileEntity.getMetaTileID()-6;
                 //if(mInsulated &&
                 //        GregTech_API.METATILEENTITIES[newMeta] instanceof GT_MetaPipeEntity_Cable &&
@@ -311,45 +287,74 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
                 mTransferredVoltageLast20 = 0;
                 mTransferredAmperageLast20OK=mTransferredAmperageLast20;
                 mTransferredAmperageLast20 = 0;
-                mConnections = 0;
                 for (byte i = 0, j = 0; i < 6; i++) {
-                    j = GT_Utility.getOppositeSide(i);
-                    if (aBaseMetaTileEntity.getCoverBehaviorAtSide(i).alwaysLookConnected(i, aBaseMetaTileEntity.getCoverIDAtSide(i), aBaseMetaTileEntity.getCoverDataAtSide(i), aBaseMetaTileEntity) || aBaseMetaTileEntity.getCoverBehaviorAtSide(i).letsEnergyIn(i, aBaseMetaTileEntity.getCoverIDAtSide(i), aBaseMetaTileEntity.getCoverDataAtSide(i), aBaseMetaTileEntity) || aBaseMetaTileEntity.getCoverBehaviorAtSide(i).letsEnergyOut(i, aBaseMetaTileEntity.getCoverIDAtSide(i), aBaseMetaTileEntity.getCoverDataAtSide(i), aBaseMetaTileEntity)) {
-                        TileEntity tTileEntity = aBaseMetaTileEntity.getTileEntityAtSide(i);
-                        if (tTileEntity instanceof IColoredTileEntity) {
-                            if (aBaseMetaTileEntity.getColorization() >= 0) {
-                                byte tColor = ((IColoredTileEntity) tTileEntity).getColorization();
-                                if (tColor >= 0 && tColor != aBaseMetaTileEntity.getColorization()) continue;
-                            }
-                        }
-                        if (tTileEntity instanceof IEnergyConnected && (((IEnergyConnected) tTileEntity).inputEnergyFrom(j) || ((IEnergyConnected) tTileEntity).outputsEnergyTo(j))) {
-                            mConnections |= (1 << i);
-                            continue;
-                        }
-                        if (tTileEntity instanceof IGregTechTileEntity && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof IMetaTileEntityCable) {
-                            if (((IGregTechTileEntity) tTileEntity).getCoverBehaviorAtSide(j).alwaysLookConnected(j, ((IGregTechTileEntity) tTileEntity).getCoverIDAtSide(j), ((IGregTechTileEntity) tTileEntity).getCoverDataAtSide(j), ((IGregTechTileEntity) tTileEntity)) || ((IGregTechTileEntity) tTileEntity).getCoverBehaviorAtSide(j).letsEnergyIn(j, ((IGregTechTileEntity) tTileEntity).getCoverIDAtSide(j), ((IGregTechTileEntity) tTileEntity).getCoverDataAtSide(j), ((IGregTechTileEntity) tTileEntity)) || ((IGregTechTileEntity) tTileEntity).getCoverBehaviorAtSide(j).letsEnergyOut(j, ((IGregTechTileEntity) tTileEntity).getCoverIDAtSide(j), ((IGregTechTileEntity) tTileEntity).getCoverDataAtSide(j), ((IGregTechTileEntity) tTileEntity))) {
-                                mConnections |= (1 << i);
-                                continue;
-                            }
-                        }
-                        if (tTileEntity instanceof IEnergySink && ((IEnergySink) tTileEntity).acceptsEnergyFrom((TileEntity) aBaseMetaTileEntity, ForgeDirection.getOrientation(j))) {
-                            mConnections |= (1 << i);
-                            continue;
-                        }
-                        if (GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver && ((IEnergyReceiver) tTileEntity).canConnectEnergy(ForgeDirection.getOrientation(j))) {
-                            mConnections |= (1 << i);
-                            continue;
-                        }
-                        /*
-					    if (tTileEntity instanceof IEnergyEmitter && ((IEnergyEmitter)tTileEntity).emitsEnergyTo((TileEntity)aBaseMetaTileEntity, ForgeDirection.getOrientation(j))) {
-				    		mConnections |= (1<<i);
-				    		continue;
-					    }*/
-                    }
+                    if ((mCheckConnections || (mConnections & (1 << i)) == 0) && connect(i) == 0) disconnect(i);
                 }
+                if (GT_Mod.gregtechproxy.gt6Pipe) mCheckConnections = false;
             }
         }else if(aBaseMetaTileEntity.isClientSide() && GT_Client.changeDetected==4) aBaseMetaTileEntity.issueTextureUpdate();
     }
+
+    @Override
+    public boolean onWireCutterRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    	return onConnectionToolRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ);
+    }
+
+    @Override
+    public boolean onSolderingToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    	return onConnectionToolRightClick(aSide, aWrenchingSide, aPlayer, aX, aY, aZ);
+    }
+
+    private boolean onConnectionToolRightClick(byte aSide, byte aWrenchingSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
+    	if (GT_Mod.gregtechproxy.gt6Cable) {
+    		byte tSide = GT_Utility.determineWrenchingSide(aSide, aX, aY, aZ);
+    		if ((mConnections & (1 << tSide)) == 0) {
+    			if (GT_Mod.gregtechproxy.costlyCableConnection && !GT_ModHandler.consumeSolderingMaterial(aPlayer)) return false;
+    			if (connect(tSide) > 0)
+    				GT_Utility.sendChatToPlayer(aPlayer, trans("214", "Connected"));
+    		}
+    		else {
+    			disconnect(tSide);
+    			GT_Utility.sendChatToPlayer(aPlayer, trans("215", "Disconnected"));
+    		}
+    		return true;
+    	}
+        return false;
+    }
+
+	@Override
+	public int connect(byte aSide) {
+		int rConnect = 0;
+		if (aSide >= 6) return rConnect;
+		byte tSide = GT_Utility.getOppositeSide(aSide);
+		TileEntity tTileEntity = getBaseMetaTileEntity().getTileEntityAtSide(aSide);
+		if (tTileEntity != null) {
+			if (getBaseMetaTileEntity().getCoverBehaviorAtSide(aSide).alwaysLookConnected(aSide, getBaseMetaTileEntity().getCoverIDAtSide(aSide), getBaseMetaTileEntity().getCoverDataAtSide(aSide), getBaseMetaTileEntity()) || getBaseMetaTileEntity().getCoverBehaviorAtSide(aSide).letsEnergyIn(aSide, getBaseMetaTileEntity().getCoverIDAtSide(aSide), getBaseMetaTileEntity().getCoverDataAtSide(aSide), getBaseMetaTileEntity()) || getBaseMetaTileEntity().getCoverBehaviorAtSide(aSide).letsEnergyOut(aSide, getBaseMetaTileEntity().getCoverIDAtSide(aSide), getBaseMetaTileEntity().getCoverDataAtSide(aSide), getBaseMetaTileEntity())) {
+	            if (tTileEntity instanceof IColoredTileEntity) {
+	                if (getBaseMetaTileEntity().getColorization() >= 0) {
+	                    byte tColor = ((IColoredTileEntity) tTileEntity).getColorization();
+	                    if (tColor >= 0 && tColor != getBaseMetaTileEntity().getColorization())
+	                    	return rConnect;
+	                }
+	            }
+	            if ((tTileEntity instanceof IEnergyConnected && (((IEnergyConnected) tTileEntity).inputEnergyFrom(tSide) || ((IEnergyConnected) tTileEntity).outputsEnergyTo(tSide)))
+	            		|| (tTileEntity instanceof IGregTechTileEntity && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof IMetaTileEntityCable
+	                    		&& (((IGregTechTileEntity) tTileEntity).getCoverBehaviorAtSide(tSide).alwaysLookConnected(tSide, ((IGregTechTileEntity) tTileEntity).getCoverIDAtSide(tSide), ((IGregTechTileEntity) tTileEntity).getCoverDataAtSide(tSide), ((IGregTechTileEntity) tTileEntity)) || ((IGregTechTileEntity) tTileEntity).getCoverBehaviorAtSide(tSide).letsEnergyIn(tSide, ((IGregTechTileEntity) tTileEntity).getCoverIDAtSide(tSide), ((IGregTechTileEntity) tTileEntity).getCoverDataAtSide(tSide), ((IGregTechTileEntity) tTileEntity)) || ((IGregTechTileEntity) tTileEntity).getCoverBehaviorAtSide(tSide).letsEnergyOut(tSide, ((IGregTechTileEntity) tTileEntity).getCoverIDAtSide(tSide), ((IGregTechTileEntity) tTileEntity).getCoverDataAtSide(tSide), ((IGregTechTileEntity) tTileEntity))))
+	            		|| (tTileEntity instanceof IEnergySink && ((IEnergySink) tTileEntity).acceptsEnergyFrom((TileEntity) getBaseMetaTileEntity(), ForgeDirection.getOrientation(tSide)))
+	            		|| (GregTech_API.mOutputRF && tTileEntity instanceof IEnergyReceiver && ((IEnergyReceiver) tTileEntity).canConnectEnergy(ForgeDirection.getOrientation(tSide)))
+	            		/*|| (tTileEntity instanceof IEnergyEmitter && ((IEnergyEmitter)tTileEntity).emitsEnergyTo((TileEntity)getBaseMetaTileEntity(), ForgeDirection.getOrientation(tSide)))*/) {
+	                rConnect = 1;
+	            }
+	        }
+		} else if (getBaseMetaTileEntity().getOffsetX(aSide, 1) >> 4 != getBaseMetaTileEntity().getXCoord() >> 4 
+    			|| getBaseMetaTileEntity().getOffsetZ(aSide, 1) >> 4 != getBaseMetaTileEntity().getZCoord() >> 4) { // if chunk unloaded
+    		rConnect = -1;
+		}
+        if (rConnect > 0) {
+        	super.connect(aSide);
+        }
+        return rConnect;
+	}
 
     @Override
     public boolean allowPullStack(IGregTechTileEntity aBaseMetaTileEntity, int aIndex, byte aSide, ItemStack aStack) {
@@ -372,18 +377,23 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
 
     @Override
     public float getThickNess() {
-        if(GT_Mod.instance.isClientSide() && GT_Client.hideValue==1) return 0.0625F;
+        if(GT_Mod.instance.isClientSide() && (GT_Client.hideValue & 0x1) != 0) return 0.0625F;
         return mThickNess;
     }
 
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
-        //
+        if (GT_Mod.gregtechproxy.gt6Cable)
+        	aNBT.setByte("mConnections", mConnections);
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
-        //
+        if (GT_Mod.gregtechproxy.gt6Cable) {
+        	if (!aNBT.hasKey("mConnections"))
+        		mCheckConnections = true;
+        	mConnections = aNBT.getByte("mConnections");
+        }
     }
 
     @Override
@@ -408,5 +418,49 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
                 "Max EU/p (20t): "+
                     EnumChatFormatting.GREEN + Long.toString(mTransferredVoltageLast20OK) + EnumChatFormatting.RESET +" EU"
         };
+    }
+
+    @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
+    	if (GT_Mod.instance.isClientSide() && (GT_Client.hideValue & 0x2) != 0)
+    		return AxisAlignedBB.getBoundingBox(aX, aY, aZ, aX + 1, aY + 1, aZ + 1);
+    	else
+    		return getActualCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
+    }
+
+    private AxisAlignedBB getActualCollisionBoundingBoxFromPool(World aWorld, int aX, int aY, int aZ) {
+    	float tSpace = (1f - mThickNess)/2;
+    	float tSide0 = tSpace;
+    	float tSide1 = 1f - tSpace;
+    	float tSide2 = tSpace;
+    	float tSide3 = 1f - tSpace;
+    	float tSide4 = tSpace;
+    	float tSide5 = 1f - tSpace;
+    	
+    	if(getBaseMetaTileEntity().getCoverIDAtSide((byte) 0) != 0){tSide0=tSide2=tSide4=0;tSide3=tSide5=1;}
+    	if(getBaseMetaTileEntity().getCoverIDAtSide((byte) 1) != 0){tSide2=tSide4=0;tSide1=tSide3=tSide5=1;}
+    	if(getBaseMetaTileEntity().getCoverIDAtSide((byte) 2) != 0){tSide0=tSide2=tSide4=0;tSide1=tSide5=1;}
+    	if(getBaseMetaTileEntity().getCoverIDAtSide((byte) 3) != 0){tSide0=tSide4=0;tSide1=tSide3=tSide5=1;}
+    	if(getBaseMetaTileEntity().getCoverIDAtSide((byte) 4) != 0){tSide0=tSide2=tSide4=0;tSide1=tSide3=1;}
+    	if(getBaseMetaTileEntity().getCoverIDAtSide((byte) 5) != 0){tSide0=tSide2=0;tSide1=tSide3=tSide5=1;}
+    	
+    	byte tConn = ((BaseMetaPipeEntity) getBaseMetaTileEntity()).mConnections;
+    	if((tConn & (1 << ForgeDirection.DOWN.ordinal()) ) != 0) tSide0 = 0f;
+    	if((tConn & (1 << ForgeDirection.UP.ordinal())   ) != 0) tSide1 = 1f;
+    	if((tConn & (1 << ForgeDirection.NORTH.ordinal())) != 0) tSide2 = 0f;
+    	if((tConn & (1 << ForgeDirection.SOUTH.ordinal())) != 0) tSide3 = 1f;
+    	if((tConn & (1 << ForgeDirection.WEST.ordinal()) ) != 0) tSide4 = 0f;
+    	if((tConn & (1 << ForgeDirection.EAST.ordinal()) ) != 0) tSide5 = 1f;
+    	
+    	return AxisAlignedBB.getBoundingBox(aX + tSide4, aY + tSide0, aZ + tSide2, aX + tSide5, aY + tSide1, aZ + tSide3);
+    }
+
+    @Override
+    public void addCollisionBoxesToList(World aWorld, int aX, int aY, int aZ, AxisAlignedBB inputAABB, List<AxisAlignedBB> outputAABB, Entity collider) {
+    	super.addCollisionBoxesToList(aWorld, aX, aY, aZ, inputAABB, outputAABB, collider);
+    	if (GT_Mod.instance.isClientSide() && (GT_Client.hideValue & 0x2) != 0) {
+    		AxisAlignedBB aabb = getActualCollisionBoundingBoxFromPool(aWorld, aX, aY, aZ);
+    		if (inputAABB.intersectsWith(aabb)) outputAABB.add(aabb);
+    	}
     }
 }

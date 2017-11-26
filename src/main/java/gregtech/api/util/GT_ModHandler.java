@@ -1718,21 +1718,12 @@ public class GT_ModHandler {
                 EntityPlayer tPlayer = (EntityPlayer) aPlayer;
                 if (tPlayer.capabilities.isCreativeMode) return true;
                 if (isElectricItem(aStack) && ic2.api.item.ElectricItem.manager.getCharge(aStack) > 1000.0d) {
-                    for (int i = 0; i < tPlayer.inventory.mainInventory.length; i++) {
-                        if (GT_Utility.isStackInList(tPlayer.inventory.mainInventory[i], GregTech_API.sSolderingMetalList)) {
-                            if (tPlayer.inventory.mainInventory[i].stackSize < 1) return false;
-                            if (tPlayer.inventory.mainInventory[i].stackSize == 1) {
-                                tPlayer.inventory.mainInventory[i] = null;
-                            } else {
-                                tPlayer.inventory.mainInventory[i].stackSize--;
-                            }
-                            if (tPlayer.inventoryContainer != null) tPlayer.inventoryContainer.detectAndSendChanges();
-                            if (canUseElectricItem(aStack, 10000)) {
-                                return GT_ModHandler.useElectricItem(aStack, 10000, (EntityPlayer) aPlayer);
-                            }
-                            GT_ModHandler.useElectricItem(aStack, (int) ic2.api.item.ElectricItem.manager.getCharge(aStack), (EntityPlayer) aPlayer);
-                            return false;
+                    if (consumeSolderingMaterial(tPlayer)) {
+                    	if (canUseElectricItem(aStack, 10000)) {
+                            return GT_ModHandler.useElectricItem(aStack, 10000, (EntityPlayer) aPlayer);
                         }
+                        GT_ModHandler.useElectricItem(aStack, (int) ic2.api.item.ElectricItem.manager.getCharge(aStack), (EntityPlayer) aPlayer);
+                        return false;
                     }
                 }
             } else {
@@ -1741,6 +1732,26 @@ public class GT_ModHandler {
             }
         }
         return false;
+    }
+
+    /**
+     * Simply consumes some soldering material
+     */
+    public static boolean consumeSolderingMaterial(EntityPlayer aPlayer) {
+    	if (aPlayer.capabilities.isCreativeMode) return true;
+        for (int i = 0; i < aPlayer.inventory.mainInventory.length; i++) {
+            if (GT_Utility.isStackInList(aPlayer.inventory.mainInventory[i], GregTech_API.sSolderingMetalList)) {
+                if (aPlayer.inventory.mainInventory[i].stackSize < 1) return false;
+                if (aPlayer.inventory.mainInventory[i].stackSize == 1) {
+                    aPlayer.inventory.mainInventory[i] = null;
+                } else {
+                    aPlayer.inventory.mainInventory[i].stackSize--;
+                }
+                if (aPlayer.inventoryContainer != null) aPlayer.inventoryContainer.detectAndSendChanges();
+                return true;
+            }
+        }
+    	return false;
     }
 
     /**

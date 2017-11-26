@@ -814,8 +814,19 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
                     return true;
                 }
 
+                if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sWireCutterList)) {
+                    if (mMetaTileEntity.onWireCutterRightClick(aSide, tSide, aPlayer, aX, aY, aZ)) {
+                        GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 1000, aPlayer);
+                        GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, xCoord, yCoord, zCoord);
+                    }
+                    return true;
+                }
+
                 if (GT_Utility.isStackInList(tCurrentItem, GregTech_API.sSolderingToolList)) {
-                    if (GT_ModHandler.useSolderingIron(tCurrentItem, aPlayer)) {
+                	if (mMetaTileEntity.onSolderingToolRightClick(aSide, tSide, aPlayer, aX, aY, aZ)) {
+                        GT_ModHandler.damageOrDechargeItem(tCurrentItem, 1, 500, aPlayer);
+                        GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(100), 1.0F, -1, xCoord, yCoord, zCoord);
+                    } else if (GT_ModHandler.useSolderingIron(tCurrentItem, aPlayer)) {
                         mStrongRedstone ^= (1 << tSide);
                         GT_Utility.sendChatToPlayer(aPlayer, trans("091","Redstone Output at Side ") + tSide + trans("092"," set to: ") + ((mStrongRedstone & (1 << tSide)) != 0 ? trans("093","Strong") : trans("094","Weak")));
                         GT_Utility.sendSoundToPlayers(worldObj, GregTech_API.sSoundList.get(103), 3.0F, -1, xCoord, yCoord, zCoord);
