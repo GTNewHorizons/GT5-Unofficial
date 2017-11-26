@@ -24,8 +24,9 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 	public FluidTank tankEssence = new FluidTank((int) (64000*EnchantingUtils.RATIO_MOB_ESSENCE_TO_LIQUID_XP));
 	public FluidTank tankLiquidXp = new FluidTank(64000);
 	private boolean needsUpdate = false;
-	private int updateTimer = 0;
 	private boolean mConvertToEssence = true;
+	private int updateTimer = 0;
+	private long mTickTime = 0;
 
 	public TileEntityXpConverter() {
 	}
@@ -204,11 +205,9 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 	public void updateEntity() {
 
 		if (this.isServerSide()){
-
-			//Utils.LOG_WARNING("Ticking. | mConvertToEssence: "+this.mConvertToEssence);
+			this.mTickTime++;
 
 			if (this.needsUpdate) {
-
 				if (this.updateTimer == 0) {
 					this.updateTimer = 10; // every 10 ticks it will send an update
 				} else {
@@ -240,6 +239,14 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 					Utils.LOG_WARNING("A->B");
 				}
 			}
+		}
+		else {
+		}
+		this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+		this.markDirty();
+
+		if ((this.mTickTime % 20) == 0){
+
 		}
 
 	}
