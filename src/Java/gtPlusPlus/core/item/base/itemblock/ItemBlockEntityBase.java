@@ -28,8 +28,8 @@ public class ItemBlockEntityBase extends ItemBlock {
 	@Override
 	public final void addInformation(final ItemStack stack, final EntityPlayer aPlayer, final List list, final boolean bool) {
 		if (Block.getBlockFromItem(stack.getItem()) instanceof BlockTankXpConverter){
-			list.add(EnumChatFormatting.GRAY+"Liquid Xp can be filled or drained from all four sides.");
-			list.add(EnumChatFormatting.GRAY+"Mob Essence can be filled or drained from the top and bottom.");
+			list.add(EnumChatFormatting.GRAY+"Can convert Liquid Xp to Mob Essence and back.");
+			list.add(EnumChatFormatting.GRAY+"Right click with a Screwdriver to change mode.");
 		}
 		else if (Block.getBlockFromItem(stack.getItem()) instanceof BlockTankXpConverter){
 			//list.add(EnumChatFormatting.GRAY+"A pile of " + materialName + " dust.");

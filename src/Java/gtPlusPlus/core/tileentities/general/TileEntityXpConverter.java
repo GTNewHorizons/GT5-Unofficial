@@ -53,26 +53,26 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 	@Override
 	public int fill(final ForgeDirection from, final FluidStack resource, final boolean doFill) {
 		this.needsUpdate = true;
-		Utils.LOG_INFO("Ticking. | mConvertToEssence: "+this.mConvertToEssence);
+		Utils.LOG_WARNING("Ticking. | mConvertToEssence: "+this.mConvertToEssence);
 		if (this.mConvertToEssence){
 			if (resource.isFluidEqual(EnchantingUtils.getLiquidXP(1))){
-				Utils.LOG_INFO("fill(tankLiquidXp)");
+				Utils.LOG_WARNING("fill(tankLiquidXp)");
 				return this.tankLiquidXp.fill(resource, doFill);
 			}
 			else {
-				Utils.LOG_INFO("Looking for Liquid Xp, Instead found "+resource.getLocalizedName()+".");
+				Utils.LOG_WARNING("Looking for Liquid Xp, Instead found "+resource.getLocalizedName()+".");
 			}
 		}
 		else {
 			if (resource.isFluidEqual(EnchantingUtils.getMobEssence(1))){
-				Utils.LOG_INFO("fill(tankEssence)");
+				Utils.LOG_WARNING("fill(tankEssence)");
 				return this.tankEssence.fill(resource, doFill);
 			}
 			else {
-				Utils.LOG_INFO("Looking for Essence, Instead found "+resource.getLocalizedName()+".");
+				Utils.LOG_WARNING("Looking for Essence, Instead found "+resource.getLocalizedName()+".");
 			}
 		}
-		Utils.LOG_INFO("fill(0)");
+		Utils.LOG_WARNING("fill(0)");
 		return 0;
 	}
 
@@ -81,24 +81,24 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 		this.needsUpdate = true;
 		if (this.mConvertToEssence){
 			if (resource.isFluidEqual(EnchantingUtils.getMobEssence(1))){
-				Utils.LOG_INFO("drain(mConvertToEssence)");
+				Utils.LOG_WARNING("drain(mConvertToEssence)");
 				return this.tankEssence.drain(resource.amount, doDrain);
 			}
 		}
 		else {
 			if (resource.isFluidEqual(EnchantingUtils.getLiquidXP(1))){
-				Utils.LOG_INFO("drain(tankLiquidXp)");
+				Utils.LOG_WARNING("drain(tankLiquidXp)");
 				return this.tankLiquidXp.drain(resource.amount, doDrain);
 			}
 		}
-		Utils.LOG_INFO("drain(null)");
+		Utils.LOG_WARNING("drain(null)");
 		return null;
 	}
 
 	@Override
 	public FluidStack drain(final ForgeDirection from, final int maxDrain, final boolean doDrain) {
 		this.needsUpdate = true;
-		Utils.LOG_INFO("drain(Ex)");
+		Utils.LOG_WARNING("drain(Ex)");
 		final FluidStack fluid_Essence = this.tankEssence.getFluid();
 		final FluidStack fluid_Xp = this.tankLiquidXp.getFluid();
 		if ((fluid_Essence == null) && (fluid_Xp == null)) {
@@ -143,7 +143,7 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 			this.tankLiquidXp = tank;
 		}
 
-		Utils.LOG_INFO("drain(Ex2)");
+		Utils.LOG_WARNING("drain(Ex2)");
 		return stack;
 	}
 
@@ -151,17 +151,17 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 	public boolean canFill(final ForgeDirection from, final Fluid fluid) {
 		if (this.mConvertToEssence){
 			if (this.tankEssence.getFluidAmount() < this.tankEssence.getCapacity()){
-				Utils.LOG_INFO("canFill(mConvertToEssence)");
+				Utils.LOG_WARNING("canFill(mConvertToEssence)");
 				return true;
 			}
 		}
 		else {
 			if (this.tankLiquidXp.getFluidAmount()  < this.tankLiquidXp.getCapacity()){
-				Utils.LOG_INFO("canFill(tankLiquidXp)");
+				Utils.LOG_WARNING("canFill(tankLiquidXp)");
 				return true;
 			}
 		}
-		Utils.LOG_INFO("canFill(false)");
+		Utils.LOG_WARNING("canFill(false)");
 		return false;
 	}
 
@@ -177,7 +177,7 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 				return true;
 			}
 		}
-		Utils.LOG_INFO("canDrain(false)");
+		Utils.LOG_WARNING("canDrain(false)");
 		return false;
 	}
 
@@ -192,7 +192,7 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 	}
 
 	public float getAdjustedVolume() {
-		Utils.LOG_INFO("AdjustedVolume()");
+		Utils.LOG_WARNING("AdjustedVolume()");
 		this.needsUpdate = true;
 		final float amount = this.tankLiquidXp.getFluidAmount();
 		final float capacity = this.tankLiquidXp.getCapacity();
@@ -205,7 +205,7 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 
 		if (this.isServerSide()){
 
-			//Utils.LOG_INFO("Ticking. | mConvertToEssence: "+this.mConvertToEssence);
+			//Utils.LOG_WARNING("Ticking. | mConvertToEssence: "+this.mConvertToEssence);
 
 			if (this.needsUpdate) {
 
@@ -227,7 +227,7 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 					this.tankEssence.fill(bigStorage, true);
 					this.tankLiquidXp.drain(100, true);
 					this.needsUpdate = true;
-					Utils.LOG_INFO("B->A");
+					Utils.LOG_WARNING("B->A");
 				}
 			}
 			else {
@@ -237,7 +237,7 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 					this.tankLiquidXp.fill(bigStorage, true);
 					this.tankEssence.drain((int) rm, true);
 					this.needsUpdate = true;
-					Utils.LOG_INFO("A->B");
+					Utils.LOG_WARNING("A->B");
 				}
 			}
 		}
