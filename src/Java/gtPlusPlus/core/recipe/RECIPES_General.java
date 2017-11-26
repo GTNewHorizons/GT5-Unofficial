@@ -171,7 +171,7 @@ public class RECIPES_General {
 
 		RecipeUtils.addShapelessGregtechRecipe(
 				new ItemStack[]{
-						ItemUtils.getItemStackOfAmountFromOreDictNoBroken(CI.craftingToolKnife, 1), ItemUtils.getSimpleStack(Blocks.reeds)},
+						ItemUtils.getItemStackOfAmountFromOreDictNoBroken(CI.craftingToolKnife, 1), ItemUtils.getSimpleStack(Items.reeds)},
 				ItemUtils.getSimpleStack(ModItems.itemFiber, 16)
 				);
 
