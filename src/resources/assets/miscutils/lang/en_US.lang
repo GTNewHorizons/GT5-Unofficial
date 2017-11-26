@@ -23,6 +23,9 @@ item.itemFuelRod_Thorium.name=Thorium Fuel Rod
 item.itemFuelRod_Uranium.name=Uranium Fuel Rod
 item.itemFuelRod_Plutonium.name=Plutonium Fuel Rod
 
+//Entities
+entity.miscutils.constructStaballoy.name=Staballoy Construct
+
 //Tile Entities
 tile.blockToolBuilder.name=GregTech Tool Constructor
 

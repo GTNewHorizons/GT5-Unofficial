@@ -26,6 +26,9 @@ public class BlockCompressedObsidian extends BlockObsidian {
 
 	public BlockCompressedObsidian() {
 		this.setBlockName("blockCompressedObsidian");
+		this.setHardness(50.0F);
+		this.setResistance(2000.0F);
+		this.setStepSound(soundTypePiston);
 		this.setCreativeTab(AddToCreativeTab.tabMachines);
 		GameRegistry.registerBlock(this, ItemBlockMeta.class, "blockCompressedObsidian");
 	}

@@ -4,6 +4,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseOre;
 import gtPlusPlus.core.block.general.BlockCompressedObsidian;
+import gtPlusPlus.core.block.general.BlockNet;
 import gtPlusPlus.core.block.general.BlockTankXpConverter;
 import gtPlusPlus.core.block.general.FirePit;
 import gtPlusPlus.core.block.general.FluidTankInfinite;
@@ -62,6 +63,7 @@ public final class ModBlocks {
 	public static Block blockWitherGuard;
 	public static Block blockXpConverter;
 	public static Block blockCompressedObsidian;
+	public static Block blockNet;
 
 	public static void init() {
 		Utils.LOG_INFO("Initializing Blocks.");
@@ -94,6 +96,7 @@ public final class ModBlocks {
 		blockWitherGuard = new BlockWitherProof();
 		blockXpConverter = new BlockTankXpConverter();
 		blockCompressedObsidian = new BlockCompressedObsidian();
+		blockNet = new BlockNet();
 
 	}
 

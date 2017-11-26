@@ -119,11 +119,11 @@ public class BlockTankXpConverter extends BlockContainer {
 				if (tank != null) {
 					if (tank.tankEssence.getFluid() != null) {
 						PlayerUtils.messagePlayer(player, "This tank contains " + tank.tankEssence.getFluidAmount()
-								+ "L of " + tank.tankEssence.getFluid().getLocalizedName());
+						+ "L of " + tank.tankEssence.getFluid().getLocalizedName());
 					}
 					if (tank.tankLiquidXp.getFluid() != null) {
 						PlayerUtils.messagePlayer(player, "This tank contains " + tank.tankLiquidXp.getFluidAmount()
-								+ "L of " + tank.tankLiquidXp.getFluid().getLocalizedName());
+						+ "L of " + tank.tankLiquidXp.getFluid().getLocalizedName());
 					}
 					if ((tank.tankEssence.getFluid() != null) && (tank.tankLiquidXp.getFluid() != null)) {
 						PlayerUtils.messagePlayer(player, "This is worth "
@@ -209,7 +209,7 @@ public class BlockTankXpConverter extends BlockContainer {
 		if ((this.mRainbowTick < 0) || (this.mRainbowTick > this.mRainbowTickMax)) {
 			this.mRainbowTick = 0;
 		}
-		// Utils.LOG_INFO("x: "+this.mRainbowTick);
+		//Utils.LOG_INFO("x: "+this.mRainbowTick);
 		if (this.mRainbowTick <= this.mRainbowTickMax) {
 			Triplet<Integer, Integer, Integer> mT = this.mRainbowMap.get(this.mRainbowTick);
 			try {
@@ -244,6 +244,40 @@ public class BlockTankXpConverter extends BlockContainer {
 	@Override
 	public int tickRate(final World p_149738_1_) {
 		return 20;
+	}
+
+	@Override
+	public int getLightValue() {
+		final int mTicker = this.mRainbowTick;
+		if ((mTicker == 0) || (mTicker == 17)){
+			return 1;
+		}
+		else if ((mTicker == 1) || (mTicker == 16)){
+			return 2;
+		}
+		else if ((mTicker == 2) || (mTicker == 15)){
+			return 3;
+		}
+		else if ((mTicker == 3) || (mTicker == 14)){
+			return 4;
+		}
+		else if ((mTicker == 4) || (mTicker == 13)){
+			return 6;
+		}
+		else if ((mTicker == 5) || (mTicker == 12)){
+			return 8;
+		}
+		else if ((mTicker == 6) || (mTicker == 11)){
+			return 10;
+		}
+		else if ((mTicker == 7) || (mTicker == 10)){
+			return 12;
+		}
+		else if ((mTicker == 8) || (mTicker == 9)){
+			return 14;
+		}
+		return 0;
+
 	}
 
 }

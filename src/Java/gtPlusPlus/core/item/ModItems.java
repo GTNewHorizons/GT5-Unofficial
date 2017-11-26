@@ -268,6 +268,8 @@ public final class ModItems {
 
 	public static Item itemGrindleTablet;
 
+	public static Item itemRope;
+
 	public static final void init(){
 
 		//Default item used when recipes fail, handy for debugging.
@@ -290,19 +292,18 @@ public final class ModItems {
 		GT_OreDictUnificator.registerOre("ingotRubber", ItemUtils.getItemStack(CORE.MODID+":itemStickyRubber", 1));
 
 
-
-
-		//Register Hydrogen Blobs first, so we can replace old helium blobs.
 		itemCoalCoke = new BaseItemBurnable("itemCoalCoke", "Coking Coal", tabMisc, 64, 0, "Used for metallurgy.", "fuelCoke", 3200, 0).setTextureName(CORE.MODID + ":itemCoalCoke");
 
 		//Register Hydrogen Blobs first, so we can replace old helium blobs.
 		itemHydrogenBlob = new CoreItem("itemHydrogenBlob", "Mysterious Hydrogen Blob", tabMisc).setTextureName(CORE.MODID + ":itemHeliumBlob");
-		//GT_OreDictUnificator.registerOre("dustHydrogen", new ItemStack(ModItems.itemHydrogenBlob));
 		//Register Old Helium Blob, this will be replaced when held by a player.
 		itemHeliumBlob = new CoreItem("itemHeliumBlob", tabMisc, ItemUtils.getSimpleStack(itemHydrogenBlob)).setTextureName(CORE.MODID + ":itemHydrogenBlob");
 
 		//Register this neato device, for making some fires.
 		itemBasicFireMaker = new ItemBasicFirestarter();
+
+		//Register Rope
+		itemRope = new CoreItem("itemRope", "Rope", tabMisc);
 
 		//Make some backpacks
 		//Primary colours
