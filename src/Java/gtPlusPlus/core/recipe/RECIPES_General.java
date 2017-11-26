@@ -8,6 +8,7 @@ import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
@@ -167,6 +168,31 @@ public class RECIPES_General {
 				ItemUtils.getSimpleStack(Dimension_DarkWorld.portalItem),
 				30*20*60,
 				100000);*/
+
+		RecipeUtils.addShapelessGregtechRecipe(
+				new ItemStack[]{
+						ItemUtils.getItemStackOfAmountFromOreDictNoBroken(CI.craftingToolKnife, 1), ItemUtils.getSimpleStack(Blocks.reeds)},
+				ItemUtils.getSimpleStack(ModItems.itemFiber, 16)
+				);
+
+		RecipeUtils.addShapelessGregtechRecipe(
+				new ItemStack[]{
+						ItemUtils.getItemStackOfAmountFromOreDictNoBroken(CI.craftingToolKnife, 1), ItemUtils.getSimpleStack(Blocks.sapling)},
+				ItemUtils.getSimpleStack(ModItems.itemFiber, 32)
+				);
+
+		RecipeUtils.recipeBuilder(
+				null, ItemUtils.getSimpleStack(ModItems.itemFiber, 1), null,
+				ItemUtils.getSimpleStack(ModItems.itemFiber, 1), CI.craftingToolKnife, ItemUtils.getSimpleStack(ModItems.itemFiber, 1),
+				null, ItemUtils.getSimpleStack(ModItems.itemFiber, 1), null,
+				ItemUtils.getSimpleStack(ModItems.itemRope, 3));
+
+		RecipeUtils.recipeBuilder(
+				ItemUtils.getSimpleStack(ModItems.itemRope, 1), ItemUtils.getSimpleStack(ModItems.itemRope, 1), ItemUtils.getSimpleStack(ModItems.itemRope, 1),
+				ItemUtils.getSimpleStack(ModItems.itemRope, 1), ItemUtils.getSimpleStack(ModItems.itemRope, 1), ItemUtils.getSimpleStack(ModItems.itemRope, 1),
+				null, null, null,
+				ItemUtils.getSimpleStack(ModBlocks.blockNet, 2));
+
 
 	}
 

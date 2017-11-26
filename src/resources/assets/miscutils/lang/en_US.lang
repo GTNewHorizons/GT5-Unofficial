@@ -83,8 +83,9 @@ item.itemIngotRaisinBread.name=§5ImQ009's §fRaisin Bread
 
 //Misc Blocks
 tile.blockCompressedObsidian.0.name=Compressed Obsidian (9)
-tile.blockCompressedObsidian.1.name=Compressed Obsidian (81)
-tile.blockCompressedObsidian.2.name=Compressed Obsidian (729)
-tile.blockCompressedObsidian.3.name=Compressed Obsidian (6561)
-tile.blockCompressedObsidian.4.name=Compressed Obsidian (59049)
+tile.blockCompressedObsidian.1.name=Double Compressed Obsidian (81)
+tile.blockCompressedObsidian.2.name=Triple Compressed Obsidian (729)
+tile.blockCompressedObsidian.3.name=Quadruple Compressed Obsidian (6561)
+tile.blockCompressedObsidian.4.name=Quintuple Compressed Obsidian (59049)
 tile.blockCompressedObsidian.5.name=Inverted Obsidian
+tile.blockNet.name=Net

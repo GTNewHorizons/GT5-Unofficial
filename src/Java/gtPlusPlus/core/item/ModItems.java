@@ -269,6 +269,7 @@ public final class ModItems {
 	public static Item itemGrindleTablet;
 
 	public static Item itemRope;
+	public static Item itemFiber;
 
 	public static final void init(){
 
@@ -303,6 +304,7 @@ public final class ModItems {
 		itemBasicFireMaker = new ItemBasicFirestarter();
 
 		//Register Rope
+		itemFiber = new CoreItem("itemFiber", "Plant Fiber", tabMisc);
 		itemRope = new CoreItem("itemRope", "Rope", tabMisc);
 
 		//Make some backpacks
