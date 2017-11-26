@@ -1,6 +1,7 @@
 package com.detrav.commands;
 
 import gregtech.api.GregTech_API;
+import gregtech.api.enums.Materials;
 import gregtech.api.util.GT_LanguageManager;
 import gregtech.common.blocks.GT_TileEntity_Ores;
 import net.minecraft.block.Block;
@@ -107,8 +108,9 @@ public class DetravScannerCommand implements ICommand {
                         TileEntity entity = c.getTileEntityUnsafe(x, y, z);
                         if (entity != null) {
                             GT_TileEntity_Ores gt_entity = (GT_TileEntity_Ores) entity;
-                            String name = GT_LanguageManager.getTranslation(
-                                    b.getUnlocalizedName() + "." + gt_entity.getMetaData() + ".name");
+                            short meta = gt_entity.getMetaData();
+                            String name = Materials.getLocalizedNameForItem(
+                            		GT_LanguageManager.getTranslation(b.getUnlocalizedName() + "." + meta + ".name"), meta);
                             if(name.startsWith("Small")) continue;
                             if (fName == null || name.toLowerCase().contains(fName)) {
                                 if (!ores.containsKey(name))
