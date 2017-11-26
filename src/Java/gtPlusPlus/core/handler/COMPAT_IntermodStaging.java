@@ -6,7 +6,6 @@ import gtPlusPlus.xmod.forestry.HANDLER_FR;
 import gtPlusPlus.xmod.gregtech.HANDLER_GT;
 import gtPlusPlus.xmod.growthcraft.HANDLER_GC;
 import gtPlusPlus.xmod.ic2.HANDLER_IC2;
-import gtPlusPlus.xmod.mekanism.HANDLER_Mekanism;
 import gtPlusPlus.xmod.thaumcraft.common.HANDLER_Thaumcraft;
 import gtPlusPlus.xmod.thermalfoundation.HANDLER_TF;
 
@@ -20,9 +19,8 @@ public class COMPAT_IntermodStaging {
 		HANDLER_IC2.preInit();
 		HANDLER_Computronics.preInit();
 		HANDLER_BiomesOPlenty.preInit();
-		HANDLER_Mekanism.preInit();
+		//HANDLER_Mekanism.preInit();
 		HANDLER_Thaumcraft.preInit();
-
 	}
 
 	public static void init(){
@@ -33,7 +31,7 @@ public class COMPAT_IntermodStaging {
 		HANDLER_IC2.init();
 		HANDLER_Computronics.init();
 		HANDLER_BiomesOPlenty.init();
-		HANDLER_Mekanism.init();
+		//HANDLER_Mekanism.init();
 		HANDLER_Thaumcraft.init();
 	}
 
@@ -45,7 +43,7 @@ public class COMPAT_IntermodStaging {
 		HANDLER_IC2.postInit();
 		HANDLER_Computronics.postInit();
 		HANDLER_BiomesOPlenty.postInit();
-		HANDLER_Mekanism.postInit();
+		//HANDLER_Mekanism.postInit();
 		HANDLER_Thaumcraft.postInit();
 	}
 

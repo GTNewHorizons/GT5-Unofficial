@@ -45,6 +45,7 @@ public class LoadedMods {
 	public static boolean PamsHarvestcraft = false;
 	public static boolean GalacticraftCore = false;
 	public static boolean Mekanism = false;
+	public static boolean RedTech = false;
 
 
 
@@ -242,8 +243,13 @@ public class LoadedMods {
 			Utils.LOG_INFO("Components disabled for: Computronics - This feature will enable itself if you remove Computronics.");
 			totalMods++;
 		}
+		if (Loader.isModLoaded("GTRedtech") == true){
+			RedTech  = true;
+			Utils.LOG_INFO("Components enabled for: GTRedtech");
+			totalMods++;
+		}
 		else {
-			Utils.LOG_INFO("Components enabled for: Computronics - This feature will disable itself if you add Computronics.");			
+			Utils.LOG_INFO("Components enabled for: Computronics - This feature will disable itself if you add Computronics.");
 		}
 
 		Utils.LOG_INFO("Content found for "+totalMods+" mods");
