@@ -1,5 +1,7 @@
 package gtPlusPlus.core.tileentities.general;
 
+import org.lwjgl.input.Keyboard;
+
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.enchanting.EnchantingUtils;
 import gtPlusPlus.core.util.player.PlayerUtils;
@@ -26,6 +28,26 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 	private boolean mConvertToEssence = true;
 
 	public TileEntityXpConverter() {
+	}
+
+	private void changeMode(){
+		if (this.mConvertToEssence){
+			this.mConvertToEssence = false;
+			return;
+		}
+		else {
+			this.mConvertToEssence = true;
+			return;
+		}
+	}
+
+	private boolean isServerSide(){
+		if (this.getWorldObj().isRemote){
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
 
 	@Override
@@ -181,7 +203,7 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 	@Override
 	public void updateEntity() {
 
-		if (!this.getWorldObj().isRemote){
+		if (this.isServerSide()){
 
 			//Utils.LOG_INFO("Ticking. | mConvertToEssence: "+this.mConvertToEssence);
 
@@ -226,7 +248,7 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 	public void readFromNBT(final NBTTagCompound tag) {
 		this.tankEssence.readFromNBT(tag);
 		this.tankLiquidXp.readFromNBT(tag);
-		tag.setBoolean("mConvertToEssence", this.mConvertToEssence);
+		this.mConvertToEssence = tag.getBoolean("mConvertToEssence");
 		super.readFromNBT(tag);
 	}
 
@@ -234,7 +256,7 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 	public void writeToNBT(final NBTTagCompound tag) {
 		this.tankEssence.writeToNBT(tag);
 		this.tankLiquidXp.writeToNBT(tag);
-		this.mConvertToEssence = tag.getBoolean("mConvertToEssence");
+		tag.setBoolean("mConvertToEssence", this.mConvertToEssence);
 		super.writeToNBT(tag);
 	}
 
@@ -252,22 +274,36 @@ public class TileEntityXpConverter extends TileEntity implements IFluidHandler {
 	}
 
 	public void onScrewdriverRightClick(final byte aSide, final EntityPlayer aPlayer, final float aX, final float aY, final float aZ) {
-
-		if (!this.getWorldObj().isRemote){
-
+		if (this.isServerSide()){
 			if (this.mConvertToEssence){
 				PlayerUtils.messagePlayer(aPlayer, "Converting from Mob Essence to Liquid Xp.");
-				this.mConvertToEssence = false;
 			}
 			else {
 				PlayerUtils.messagePlayer(aPlayer, "Converting from Liquid Xp to Mob Essence.");
-				this.mConvertToEssence = true;
 			}
+			//Mode Change
+			this.changeMode();
 		}
-
 	}
 
 	public void onRightClick(final byte aSide, final EntityPlayer aPlayer, final int aX, final int aY, final int aZ) {
+
+		if ((Keyboard.isKeyDown(42)) || (Keyboard.isKeyDown(54))) {
+			String mInput;
+			String mOutput;
+
+			if (this.mConvertToEssence){
+				mInput = "Liquid Xp";
+				mOutput = "Mob Essence";
+			}
+			else {
+				mInput = "Mob Essence";
+				mOutput = "Liquid Xp";
+			}
+
+			PlayerUtils.messagePlayer(aPlayer, "Input: "+mInput+".");
+			PlayerUtils.messagePlayer(aPlayer, "Output: "+mOutput+".");
+		}
 
 	}
 
