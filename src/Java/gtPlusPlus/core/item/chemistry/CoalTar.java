@@ -177,7 +177,7 @@ public class CoalTar {
 				ItemUtils.getItemStackOfAmountFromOreDict("cellEthylene", 2), 
 				ItemUtils.getItemStackOfAmountFromOreDict("cellBenzene", 2), 
 				null,
-				FluidUtils.getFluidStack("", 4000),
+				FluidUtils.getFluidStack("fluid.ethylbenzene", 4000),
 				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 4), 
 				300);
 	}
