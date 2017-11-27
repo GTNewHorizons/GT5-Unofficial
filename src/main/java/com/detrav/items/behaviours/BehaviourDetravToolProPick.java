@@ -78,7 +78,8 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
         if (aTileEntity != null) {
             if (aTileEntity instanceof GT_TileEntity_Ores) {
                 GT_TileEntity_Ores gt_entity = (GT_TileEntity_Ores) aTileEntity;
-                String name = GT_LanguageManager.getTranslation("gt.blockores." + gt_entity.getMetaData() + ".name");
+                short meta = gt_entity.getMetaData();
+                String name = Materials.getLocalizedNameForItem(GT_LanguageManager.getTranslation("gt.blockores." + meta + ".name"), meta);
                 addChatMassageByValue(aPlayer, -1, name);
                 if (!aPlayer.capabilities.isCreativeMode)
                     aItem.doDamage(aStack, this.mCosts);
@@ -117,9 +118,8 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
                                     && ((GT_TileEntity_Ores) tTileEntity).mNatural == true) {
                                 tMetaID = (short)((GT_TileEntity_Ores) tTileEntity).getMetaData();
                                 try {
-
-                                    String name = GT_LanguageManager.getTranslation(
-                                            tBlock.getUnlocalizedName() + "." + tMetaID + ".name");
+                                    String name = Materials.getLocalizedNameForItem(
+                                    		GT_LanguageManager.getTranslation(tBlock.getUnlocalizedName() + "." + tMetaID + ".name"), tMetaID);
                                     if (name.startsWith("Small")) if (data != 1) continue;
                                     if (name.startsWith("Small")) if(data!=1) continue;
                                     if (!ores.containsKey(name))
@@ -147,8 +147,9 @@ public class BehaviourDetravToolProPick extends Behaviour_None {
                                 try {
                                     try {
                                         tMetaID = (short)tAssotiation.mMaterial.mMaterial.mMetaItemSubID;
-                                        String name = GT_LanguageManager.getTranslation(
-                                                "gt.blockores." + tMetaID + ".name");
+                                        
+                                        String name = Materials.getLocalizedNameForItem(GT_LanguageManager.getTranslation(
+                                                "gt.blockores." + tMetaID + ".name"), tMetaID);
                                         if (!ores.containsKey(name))
                                             ores.put(name, 1);
                                         else {
