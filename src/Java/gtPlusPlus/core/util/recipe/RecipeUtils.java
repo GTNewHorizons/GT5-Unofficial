@@ -119,12 +119,12 @@ public class RecipeUtils {
 			}
 			return true;
 		}
-		catch(NullPointerException | ClassCastException k){
-			k.getMessage();
-			k.getClass();
-			k.printStackTrace();
-			k.getLocalizedMessage();
-			Utils.LOG_WARNING("@@@: Invalid Recipe detected for: "+resultItem.getUnlocalizedName());
+		catch(RuntimeException k){
+			//k.getMessage();
+			//k.getClass();
+			//k.printStackTrace();
+			//k.getLocalizedMessage();
+			Utils.LOG_INFO("@@@: Invalid Recipe detected for: "+resultItem.getUnlocalizedName());
 			if (!COMPAT_HANDLER.areInitItemsLoaded){
 				RegistrationHandler.recipesFailed++;
 			}

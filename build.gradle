@@ -29,7 +29,7 @@ resources { srcDirs = ["$projectDir/src/resources"] }
 }
 
 dependencies {
-    compile files('mods/gregtech_1.7.10-5.08.30.jar')
+    compile files('mods/gregtech_1.7.10-5.08.33.jar')
 	compile files('mods/industrialcraft-2-2.2.720-experimental-dev.jar')
 	compile fileTree(dir: 'libs', include: '*.jar')
 }
@@ -40,7 +40,7 @@ sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 archivesBaseName = "GT-PlusPlus"
-version = "1.6.98-release"
+version = "1.6.99-release"
 minecraft.version = "1.7.10-10.13.4.1448-1.7.10"
 
 
