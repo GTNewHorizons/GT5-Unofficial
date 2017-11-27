@@ -21,7 +21,6 @@ import net.minecraft.world.World;
 
 public class BlockCompressedObsidian extends BlockObsidian {
 
-	@SideOnly(Side.CLIENT)
 	private final IIcon textureArray[] = new IIcon[6];
 
 	public BlockCompressedObsidian() {

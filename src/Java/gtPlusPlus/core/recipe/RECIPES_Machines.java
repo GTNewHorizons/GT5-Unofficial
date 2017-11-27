@@ -247,13 +247,13 @@ public class RECIPES_Machines {
 					GregtechItemList.Gregtech_Computer_Cube.get(1));
 
 			RecipeUtils.addShapedGregtechRecipe(
-					ItemList.Electric_Piston_EV, OrePrefixes.circuit.get(Materials.Ultimate), ItemList.Electric_Piston_EV,
-					ItemList.Electric_Motor_EV, CI.machineCasing_EV, ItemList.Electric_Motor_EV,
+					CI.electricPiston_EV, OrePrefixes.circuit.get(Materials.Ultimate), CI.electricPiston_EV,
+					CI.electricMotor_EV, CI.machineCasing_EV, CI.electricMotor_EV,
 					"gearGtTitanium", "cableGt02Aluminium", "gearGtTitanium",
 					ItemUtils.simpleMetaStack("gregtech:gt.blockmachines", 793, 1));
 			RecipeUtils.addShapedGregtechRecipe(
-					ItemList.Electric_Piston_IV, OrePrefixes.circuit.get(Materials.Superconductor), ItemList.Electric_Piston_IV,
-					ItemList.Electric_Motor_IV, CI.machineCasing_IV, ItemList.Electric_Motor_IV,
+					CI.electricPiston_IV, OrePrefixes.circuit.get(Materials.Superconductor), CI.electricPiston_IV,
+					CI.electricMotor_IV, CI.machineCasing_IV, CI.electricMotor_IV,
 					"gearGtTungstenSteel", "cableGt02Platinum", "gearGtTungstenSteel",
 					ItemUtils.simpleMetaStack("gregtech:gt.blockmachines", 794, 1));
 			RecipeUtils.addShapedGregtechRecipe(
@@ -926,8 +926,8 @@ public class RECIPES_Machines {
 
 				//Thorium Reactor
 				RECIPE_LFTRController = GregtechItemList.ThoriumReactor.get(1);
-				RECIPE_LFTRInnerCasing = GregtechItemList.Casing_Reactor_II.get(Casing_Amount); //Zeron
-				RECIPE_LFTROuterCasing = GregtechItemList.Casing_Reactor_I.get(Casing_Amount); //Hastelloy
+				RECIPE_LFTRInnerCasing = GregtechItemList.Casing_Reactor_II.get(1); //Zeron
+				RECIPE_LFTROuterCasing = GregtechItemList.Casing_Reactor_I.get(1); //Hastelloy
 
 				ItemStack controlCircuit = ItemUtils.getSimpleStack(ModItems.itemCircuitLFTR);
 				RecipeUtils.addShapedGregtechRecipe(
