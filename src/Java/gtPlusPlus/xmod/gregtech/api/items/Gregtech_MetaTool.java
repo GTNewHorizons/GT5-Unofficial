@@ -37,7 +37,10 @@ import net.minecraftforge.event.world.BlockEvent;
  * This is an example on how you can create a Tool ItemStack, in this case a Bismuth Wrench:
  * GT_MetaGenerated_Tool.sInstances.get("gt.metatool.01").getToolWithStats(16, 1, Materials.Bismuth, Materials.Bismuth, null);
  */
-@Optional.InterfaceList(value = {@Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = MOD_ID_RC), @Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = "BuildCraft")})
+@Optional.InterfaceList({@Optional.Interface(iface = "forestry.api.arboriculture.IToolGrafter", modid = "Forestry"),
+	@Optional.Interface(iface = "mods.railcraft.api.core.items.IToolCrowbar", modid = "Railcraft"),
+	@Optional.Interface(iface = "buildcraft.api.tools.IToolWrench", modid = "BuildCraft"),
+	@Optional.Interface(iface = "crazypants.enderio.api.tool.ITool", modid = "EnderIO")})
 public abstract class Gregtech_MetaTool extends GT_MetaGenerated_Tool implements IDamagableItem, IToolCrowbar, IToolWrench {
 	/**
 	 * All instances of this Item Class are listed here.

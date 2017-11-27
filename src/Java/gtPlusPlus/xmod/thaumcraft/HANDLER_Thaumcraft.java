@@ -1,4 +1,4 @@
-package gtPlusPlus.xmod.thaumcraft.common;
+package gtPlusPlus.xmod.thaumcraft;
 
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.xmod.thaumcraft.common.block.TC_BlockHandler;
@@ -23,5 +23,4 @@ public class HANDLER_Thaumcraft {
 		}
 	}
 	
-
 }

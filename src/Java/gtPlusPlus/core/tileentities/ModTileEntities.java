@@ -1,6 +1,7 @@
 package gtPlusPlus.core.tileentities;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.tileentities.general.TileEntityFirepit;
 import gtPlusPlus.core.tileentities.general.TileEntityFishTrap;
 import gtPlusPlus.core.tileentities.general.TileEntityHeliumGenerator;
@@ -12,8 +13,7 @@ import gtPlusPlus.core.tileentities.machines.TileEntityTradeTable;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbench;
 import gtPlusPlus.core.tileentities.machines.TileEntityWorkbenchAdvanced;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.xmod.thaumcraft.common.tile.TileFastAlchemyFurnace;
-import gtPlusPlus.xmod.thaumcraft.common.tile.TileFastArcaneAlembic;
+import gtPlusPlus.xmod.thaumcraft.common.tile.TCTileEntities;
 
 public class ModTileEntities {
 
@@ -26,12 +26,15 @@ public class ModTileEntities {
 		GameRegistry.registerTileEntity(TileEntityFirepit.class, "TileFirePit");
 		GameRegistry.registerTileEntity(TileEntityInfiniteFluid.class, "TileInfiniteFluid");
 		GameRegistry.registerTileEntity(TileEntityProjectTable.class, "TileProjectTable");
-		GameRegistry.registerTileEntity(TileEntityTradeTable.class, "TileTradeTable");
+		GameRegistry.registerTileEntity(TileEntityTradeTable.class, "TileTradeTable");		
 		GameRegistry.registerTileEntity(TileEntityModularityTable.class, "TileEntityModularityTable");
-		GameRegistry.registerTileEntity(TileFastAlchemyFurnace.class, "TileFastAlchemyFurnace");
-		GameRegistry.registerTileEntity(TileFastArcaneAlembic.class, "TileFastArcaneAlembic");
 		GameRegistry.registerTileEntity(TileEntityXpConverter.class, "TileEntityXpConverter");
 
+		
+		//Mod TEs
+		if (LoadedMods.Thaumcraft){
+			TCTileEntities.init();
+		}
 	}
 
 }
