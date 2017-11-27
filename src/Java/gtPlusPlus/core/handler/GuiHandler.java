@@ -14,7 +14,7 @@ import gtPlusPlus.core.container.Container_WorkbenchAdvanced;
 import gtPlusPlus.core.gui.beta.Gui_ID_Registry;
 import gtPlusPlus.core.gui.beta.MU_GuiId;
 import gtPlusPlus.core.gui.item.GuiBaseBackpack;
-import gtPlusPlus.core.gui.item.GuiBaseGrindle;
+import gtPlusPlus.core.gui.item.GuiScreenGrindle;
 import gtPlusPlus.core.gui.machine.GUI_FishTrap;
 import gtPlusPlus.core.gui.machine.GUI_ModularityTable;
 import gtPlusPlus.core.gui.machine.GUI_ProjectTable;
@@ -155,7 +155,7 @@ public class GuiHandler implements IGuiHandler {
 		}
 
 		if (ID == GUI9){
-			return new GuiBaseGrindle(new Container_Grindle(player, player.inventory, new BaseInventoryGrindle(player.getHeldItem())));
+			return new GuiScreenGrindle(new Container_Grindle(player, player.inventory, new BaseInventoryGrindle(player.getHeldItem())), player);
 		}
 
 		return null;
