@@ -54,7 +54,7 @@ public class FR_Gregtech_Recipes {
 				"stickLongThaumium", "stickThaumium", "stickLongThaumium",
 				"stickLongThaumium", ItemUtils.getSimpleStack(Items.ender_pearl), "stickLongThaumium",
 				"stickThaumium", "stickThaumium", "stickThaumium",
-				hiveFrameMutagenic);
+				hiveFrameVoid);
 		
 		RecipeUtils.addShapedGregtechRecipe(
 				"stickLongBlueSteel", "stickBlueSteel", "stickLongBlueSteel",
@@ -64,25 +64,25 @@ public class FR_Gregtech_Recipes {
 
 		if (!LoadedMods.ExtraBees){
 			//Extra Bee Like Frames
-			RecipeUtils.addShapedGregtechRecipe(
+			RecipeUtils.recipeBuilder(
 					null, itemCocoaBeans, null,
 					itemCocoaBeans, hiveFrameImpregnated, itemCocoaBeans,
 					null, itemCocoaBeans, null,
 					hiveFrameCocoa);
 
-			RecipeUtils.addShapedGregtechRecipe(
+			RecipeUtils.recipeBuilder(
 					hiveFrameImpregnated, blockIronBars, null,
 					null, null, null,
 					null, null, null,
 					hiveFrameCaged);
 
-			RecipeUtils.addShapedGregtechRecipe(
+			RecipeUtils.recipeBuilder(
 					hiveFrameImpregnated, blockSoulSand, null,
 					null, null, null,
 					null, null, null,
 					hiveFrameSoul);
 
-			RecipeUtils.addShapedGregtechRecipe(
+			RecipeUtils.recipeBuilder(
 					null, itemClayDust, null,
 					itemClayDust, hiveFrameImpregnated, itemClayDust,
 					null, itemClayDust, null,

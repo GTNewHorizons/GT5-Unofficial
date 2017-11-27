@@ -340,6 +340,13 @@ public class RecipeUtils {
 		if (addShapedGregtechRecipe(o, OutputItem)){
 			return true;
 		}
+		else if (recipeBuilder(
+				InputItem1, InputItem2, InputItem3,
+				InputItem4, InputItem5, InputItem6,
+				InputItem7, InputItem8, InputItem9, 
+				OutputItem)){
+			return true;
+		}
 		else {
 			if (OutputItem != null){
 				Utils.LOG_WARNING("Adding recipe for "+OutputItem.getDisplayName()+" failed. Error 62.");
