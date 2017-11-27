@@ -1,6 +1,8 @@
 package gtPlusPlus.core.util.fluid;
 
-import gregtech.api.enums.*;
+import gregtech.api.enums.Dyes;
+import gregtech.api.enums.GT_Values;
+import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_LanguageManager;
 import gtPlusPlus.core.fluids.GenericFluid;
 import gtPlusPlus.core.item.base.BaseItemComponent;
@@ -9,12 +11,17 @@ import gtPlusPlus.core.item.base.cell.BaseItemPlasmaCell;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.enchanting.EnchantingUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidContainerItem;
 
 public class FluidUtils {
 
@@ -87,24 +94,24 @@ public class FluidUtils {
 	public static Fluid generateFluid(final String displayName, final String fluidName, final int tempK, final short[] rgba ,final int aState){
 		Fluid generatedFluid = null;
 		switch (aState) {
-		case 0: {
-			generatedFluid = new GenericFluid(displayName, fluidName, 0, 100, tempK, 10000, false, rgba);
-			break;
-		}
-		default:
-		case 1:
-		case 4: {
-			generatedFluid = new GenericFluid(displayName, fluidName, 0, 100, tempK, 1000, false, rgba);
-			break;
-		}
-		case 2: {
-			generatedFluid = new GenericFluid(displayName, fluidName, 0, -100, tempK, 200, true, rgba);
-			break;
-		}
-		case 3: {
-			generatedFluid = new GenericFluid(displayName, fluidName, 15, -10000, tempK, 10, true, rgba);
-			break;
-		}
+			case 0: {
+				generatedFluid = new GenericFluid(displayName, fluidName, 0, 100, tempK, 10000, false, rgba);
+				break;
+			}
+			default:
+			case 1:
+			case 4: {
+				generatedFluid = new GenericFluid(displayName, fluidName, 0, 100, tempK, 1000, false, rgba);
+				break;
+			}
+			case 2: {
+				generatedFluid = new GenericFluid(displayName, fluidName, 0, -100, tempK, 200, true, rgba);
+				break;
+			}
+			case 3: {
+				generatedFluid = new GenericFluid(displayName, fluidName, 15, -10000, tempK, 10, true, rgba);
+				break;
+			}
 		}
 		return generatedFluid;
 	}
@@ -122,24 +129,24 @@ public class FluidUtils {
 		final int tempK = material.getMeltingPointC();
 		Fluid generatedFluid = null;
 		switch (aState) {
-		case 0: {
-			generatedFluid = new GenericFluid(material, 0, 100, tempK, 10000, false);
-			break;
-		}
-		default:
-		case 1:
-		case 4: {
-			generatedFluid = new GenericFluid(material, 0, 100, tempK, 1000, false);
-			break;
-		}
-		case 2: {
-			generatedFluid = new GenericFluid(material, 0, -100, tempK, 200, true);
-			break;
-		}
-		case 3: {
-			generatedFluid = new GenericFluid(material, 15, -10000, tempK, 10, true);
-			break;
-		}
+			case 0: {
+				generatedFluid = new GenericFluid(material, 0, 100, tempK, 10000, false);
+				break;
+			}
+			default:
+			case 1:
+			case 4: {
+				generatedFluid = new GenericFluid(material, 0, 100, tempK, 1000, false);
+				break;
+			}
+			case 2: {
+				generatedFluid = new GenericFluid(material, 0, -100, tempK, 200, true);
+				break;
+			}
+			case 3: {
+				generatedFluid = new GenericFluid(material, 15, -10000, tempK, 10, true);
+				break;
+			}
 		}
 		return generatedFluid;
 	}
@@ -167,30 +174,30 @@ public class FluidUtils {
 		GT_LanguageManager.addStringLocalization(rFluid.getUnlocalizedName(), (aLocalized == null) ? aName : aLocalized);
 		if (FluidRegistry.registerFluid(rFluid)) {
 			switch (aState) {
-			case 0: {
-				rFluid.setGaseous(false);
-				rFluid.setViscosity(10000);
-				break;
-			}
-			case 1:
-			case 4: {
-				rFluid.setGaseous(false);
-				rFluid.setViscosity(1000);
-				break;
-			}
-			case 2: {
-				rFluid.setGaseous(true);
-				rFluid.setDensity(-100);
-				rFluid.setViscosity(200);
-				break;
-			}
-			case 3: {
-				rFluid.setGaseous(true);
-				rFluid.setDensity(-10000);
-				rFluid.setViscosity(10);
-				rFluid.setLuminosity(15);
-				break;
-			}
+				case 0: {
+					rFluid.setGaseous(false);
+					rFluid.setViscosity(10000);
+					break;
+				}
+				case 1:
+				case 4: {
+					rFluid.setGaseous(false);
+					rFluid.setViscosity(1000);
+					break;
+				}
+				case 2: {
+					rFluid.setGaseous(true);
+					rFluid.setDensity(-100);
+					rFluid.setViscosity(200);
+					break;
+				}
+				case 3: {
+					rFluid.setGaseous(true);
+					rFluid.setDensity(-10000);
+					rFluid.setViscosity(10);
+					rFluid.setLuminosity(15);
+					break;
+				}
 			}
 		}
 		else {
@@ -201,18 +208,18 @@ public class FluidUtils {
 		}
 		if (aMaterial != null) {
 			switch (aState) {
-			case 1: {
-				aMaterial.mFluid = (rFluid);
-				break;
-			}
-			case 2: {
-				aMaterial.mGas = (rFluid);
-				break;
-			}
-			case 3: {
-				aMaterial.mPlasma = (rFluid);
-				break;
-			}
+				case 1: {
+					aMaterial.mFluid = (rFluid);
+					break;
+				}
+				case 2: {
+					aMaterial.mGas = (rFluid);
+					break;
+				}
+				case 3: {
+					aMaterial.mPlasma = (rFluid);
+					break;
+				}
 			}
 		}
 		if ((aFullContainer != null) && (aEmptyContainer != null) && !FluidContainerRegistry.registerFluidContainer(new FluidStack(rFluid, aFluidAmount), aFullContainer, aEmptyContainer)) {
@@ -234,7 +241,7 @@ public class FluidUtils {
 	}
 
 	public static Fluid addGTPlasma(final Material aMaterial) {
-		if (aMaterial.getLocalizedName().toLowerCase().contains("clay") || aMaterial.getComposites().size()>1 || aMaterial.getLocalizedName().toLowerCase().contains("wrought")){
+		if (aMaterial.getLocalizedName().toLowerCase().contains("clay") || (aMaterial.getComposites().size()>1) || aMaterial.getLocalizedName().toLowerCase().contains("wrought")){
 			return null;
 		}
 		Utils.LOG_INFO("Generating a "+aMaterial.getLocalizedName()+" Plasma Cell");
@@ -277,30 +284,30 @@ public class FluidUtils {
 		GT_LanguageManager.addStringLocalization(rFluid.getUnlocalizedName(), (aLocalized == null) ? aName : aLocalized);
 		if (FluidRegistry.registerFluid(rFluid)) {
 			switch (aState) {
-			case 0: {
-				rFluid.setGaseous(false);
-				rFluid.setViscosity(10000);
-				break;
-			}
-			case 1:
-			case 4: {
-				rFluid.setGaseous(false);
-				rFluid.setViscosity(1000);
-				break;
-			}
-			case 2: {
-				rFluid.setGaseous(true);
-				rFluid.setDensity(-100);
-				rFluid.setViscosity(200);
-				break;
-			}
-			case 3: {
-				rFluid.setGaseous(true);
-				rFluid.setDensity(-10000);
-				rFluid.setViscosity(10);
-				rFluid.setLuminosity(15);
-				break;
-			}
+				case 0: {
+					rFluid.setGaseous(false);
+					rFluid.setViscosity(10000);
+					break;
+				}
+				case 1:
+				case 4: {
+					rFluid.setGaseous(false);
+					rFluid.setViscosity(1000);
+					break;
+				}
+				case 2: {
+					rFluid.setGaseous(true);
+					rFluid.setDensity(-100);
+					rFluid.setViscosity(200);
+					break;
+				}
+				case 3: {
+					rFluid.setGaseous(true);
+					rFluid.setDensity(-10000);
+					rFluid.setViscosity(10);
+					rFluid.setLuminosity(15);
+					break;
+				}
 			}
 		}
 		else {
@@ -435,8 +442,8 @@ public class FluidUtils {
 		Utils.LOG_INFO("FLUID GENERATION FAILED FOR "+localizedName);
 		return null;
 	}
-	
-	public final static Fluid generateFluidNonMolten(final String unlocalizedName, final String localizedName, final int MeltingPoint, final short[] RGBA, ItemStack dustStack, final ItemStack dustStack2){
+
+	public final static Fluid generateFluidNonMolten(final String unlocalizedName, final String localizedName, final int MeltingPoint, final short[] RGBA, final ItemStack dustStack, final ItemStack dustStack2){
 		return generateFluidNonMolten(unlocalizedName, localizedName, MeltingPoint, RGBA, dustStack, dustStack2, 144);
 	}
 
@@ -513,6 +520,15 @@ public class FluidUtils {
 			new BaseItemCell(unlocalizedName, localizedName, RGBA, gtFluid);
 		}
 		return gtFluid;
+	}
+
+
+	public static FluidStack getMobEssence(final int amount){
+		return EnchantingUtils.getMobEssence(amount);
+	}
+
+	public static FluidStack getLiquidXP(final int amount){
+		return EnchantingUtils.getLiquidXP(amount);
 	}
 
 

@@ -173,7 +173,7 @@ public enum GregtechItemList implements GregtechItemContainer {
 	
 	
 	Casing_Autocrafter,
-	Casing_PlaceHolder13, 
+	Casing_CuttingFactoryFrame, 
 	Casing_PlaceHolder14, 
 	Casing_PlaceHolder15,
 
@@ -252,6 +252,24 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Machine_Advanced_LV_Mixer, Machine_Advanced_MV_Mixer, Machine_Advanced_HV_Mixer, 
 	Machine_Advanced_EV_Mixer, Machine_Advanced_IV_Mixer, Machine_Advanced_LuV_Mixer, 
 	Machine_Advanced_ZPM_Mixer, Machine_Advanced_UV_Mixer,
+	
+	//Custom hatches
+	Hatch_Input_Battery_MV, Hatch_Input_Battery_EV, 
+	Hatch_Output_Battery_MV, Hatch_Output_Battery_EV, 
+	
+	//Wireless Chargers
+	Charger_LV,	Charger_MV, Charger_HV,
+	Charger_EV,	Charger_IV,	Charger_LuV, 
+	Charger_ZPM, Charger_UV, Charger_MAX, 
+	
+	//Generator Array
+	Generator_Array_Controller, 
+	
+	//Cutting Factory Controller
+	Industrial_CuttingFactoryController, 
+	
+	//Tiny Fusion
+	Miniature_Fusion,
 	
 	
 	

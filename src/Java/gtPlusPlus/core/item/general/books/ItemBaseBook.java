@@ -2,18 +2,21 @@ package gtPlusPlus.core.item.general.books;
 
 import static gtPlusPlus.core.handler.BookHandler.mBookMap;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.nbt.NBTUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiScreenBook;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -96,6 +99,7 @@ public class ItemBaseBook extends ItemWritableBook{
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player) {
 		//player.displayGUIBook(item);
 		int i = item.getItemDamage();
@@ -106,7 +110,16 @@ public class ItemBaseBook extends ItemWritableBook{
 				mBookMap.get(i).mPages);
 		
 		if (player.worldObj.isRemote){
-			Minecraft.getMinecraft().displayGuiScreen(new GuiScreenBook(player, bookstack, false));
+			try {
+				Class<?> clazz = Class.forName("net.minecraft.client.gui.GuiScreenBook");
+				Constructor<?> ctor = clazz.getConstructor(EntityPlayer.class, ItemStack.class, boolean.class);
+				Object object = ctor.newInstance(new Object[] { player, bookstack, false });
+				Minecraft.getMinecraft().displayGuiScreen((GuiScreen) object);
+			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			//Minecraft.getMinecraft().displayGuiScreen(new GuiScreenBook(player, bookstack, false));
 		}
         return item;
 	}

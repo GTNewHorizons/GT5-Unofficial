@@ -23,8 +23,24 @@ public class RecipeGen_ShapedCrafting  implements Runnable{
 	public static void generateRecipes(final Material material){
 		Utils.LOG_WARNING("Generating Shaped Crafting recipes for "+material.getLocalizedName()); //TODO
 
+		
+		//Nuggets
+		GT_ModHandler.addShapelessCraftingRecipe(
+				material.getIngot(1),
+				new Object[]{
+						material.getNugget(1),
+						material.getNugget(1),
+						material.getNugget(1),
+						material.getNugget(1),
+						material.getNugget(1),
+						material.getNugget(1),
+						material.getNugget(1),
+						material.getNugget(1),
+						material.getNugget(1)
+						});
+		
 		//Plates
-
+		
 		//Single Plate Shaped/Shapeless
 		GT_ModHandler.addCraftingRecipe(
 				material.getPlate(1),

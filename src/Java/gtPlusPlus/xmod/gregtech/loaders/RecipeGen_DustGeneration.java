@@ -177,7 +177,7 @@ public class RecipeGen_DustGeneration  implements Runnable{
 					//Add Shapeless recipe for low tier alloys.
 					if (tVoltageMultiplier <= 30){
 						if (RecipeUtils.addShapedGregtechRecipe(inputStacks, outputStacks)){
-							Utils.LOG_INFO("Dust Shapeless Recipe: "+material.getLocalizedName()+" - Success");						
+							Utils.LOG_INFO("Dust Shapeless Recipe: "+material.getLocalizedName()+" - Success");
 						}
 						else {
 							Utils.LOG_INFO("Dust Shapeless Recipe: "+material.getLocalizedName()+" - Failed");
@@ -194,7 +194,7 @@ public class RecipeGen_DustGeneration  implements Runnable{
 
 	}
 
-	public static boolean addMixerRecipe_Standalone(Material material){
+	public static boolean addMixerRecipe_Standalone(final Material material){
 		final ItemStack[] inputStacks = material.getMaterialComposites();
 		final ItemStack outputStacks = material.getDust(material.smallestStackSizeWhenProcessing);
 		//Is this a composite?
@@ -264,14 +264,14 @@ public class RecipeGen_DustGeneration  implements Runnable{
 				}
 				else {
 					Utils.LOG_INFO("inputStackSize == NUll - "+material.getLocalizedName());
-					}
+				}
 			}
 			else {
 				Utils.LOG_INFO("InputStacks is out range 1-4 - "+material.getLocalizedName());
-				}
+			}
 		}
 		else {
-		Utils.LOG_INFO("InputStacks == NUll - "+material.getLocalizedName());
+			Utils.LOG_INFO("InputStacks == NUll - "+material.getLocalizedName());
 		}
 		return false;
 	}

@@ -3,8 +3,22 @@ package gtPlusPlus.core.block;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.BlockBaseOre;
-import gtPlusPlus.core.block.general.*;
-import gtPlusPlus.core.block.machine.*;
+import gtPlusPlus.core.block.general.BlockCompressedObsidian;
+import gtPlusPlus.core.block.general.BlockNet;
+import gtPlusPlus.core.block.general.BlockTankXpConverter;
+import gtPlusPlus.core.block.general.FirePit;
+import gtPlusPlus.core.block.general.FluidTankInfinite;
+import gtPlusPlus.core.block.general.HellFire;
+import gtPlusPlus.core.block.general.LightGlass;
+import gtPlusPlus.core.block.general.MiningExplosives;
+import gtPlusPlus.core.block.general.antigrief.BlockWitherProof;
+import gtPlusPlus.core.block.machine.FishTrap;
+import gtPlusPlus.core.block.machine.HeliumGenerator;
+import gtPlusPlus.core.block.machine.Machine_ModularityTable;
+import gtPlusPlus.core.block.machine.Machine_ProjectTable;
+import gtPlusPlus.core.block.machine.Machine_TradeTable;
+import gtPlusPlus.core.block.machine.Machine_Workbench;
+import gtPlusPlus.core.block.machine.Machine_WorkbenchAdvanced;
 import gtPlusPlus.core.fluids.FluidRegistryHandler;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
@@ -37,14 +51,19 @@ public final class ModBlocks {
 	public static Block blockFirePit;
 
 	public static Block blockOreFluorite;
-	
+
 	public static Block blockMiningExplosive;
-	
+
 	public static Block blockHellfire;
 	public static Block blockInfiniteFLuidTank;
 	public static Block blockProjectTable;
 	public static Block blockTradeTable;
 	public static Block blockModularTable;
+
+	public static Block blockWitherGuard;
+	public static Block blockXpConverter;
+	public static Block blockCompressedObsidian;
+	public static Block blockNet;
 
 	public static void init() {
 		Utils.LOG_INFO("Initializing Blocks.");
@@ -74,6 +93,10 @@ public final class ModBlocks {
 		blockProjectTable =  new Machine_ProjectTable();
 		blockTradeTable =  new Machine_TradeTable();
 		blockModularTable =  new Machine_ModularityTable();
+		blockWitherGuard = new BlockWitherProof();
+		blockXpConverter = new BlockTankXpConverter();
+		blockCompressedObsidian = new BlockCompressedObsidian();
+		blockNet = new BlockNet();
 
 	}
 

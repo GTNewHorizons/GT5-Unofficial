@@ -35,6 +35,14 @@ public class RecipeGen_AlloySmelter  implements Runnable{
 				material.getGear(1),
 				(int) Math.max(material.getMass() * 2L, 1L),
 				2 * tVoltageMultiplier);
+		
+		//Ingot
+		GT_Values.RA.addAlloySmelterRecipe(
+				material.getNugget(9),
+				ItemList.Shape_Mold_Ingot.get(1),
+				material.getIngot(1),
+				(int) Math.max(material.getMass() * 2L, 1L),
+				2 * tVoltageMultiplier);
 
 	}
 

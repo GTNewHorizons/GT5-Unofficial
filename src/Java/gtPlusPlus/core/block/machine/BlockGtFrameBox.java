@@ -4,6 +4,7 @@ import gtPlusPlus.core.block.base.BasicBlock.BlockTypes;
 import gtPlusPlus.core.block.base.MetaBlock;
 import gtPlusPlus.core.lib.CORE;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.world.IBlockAccess;
 
 public class BlockGtFrameBox extends MetaBlock {
@@ -30,6 +31,11 @@ public class BlockGtFrameBox extends MetaBlock {
 
 		}
 		return super.colorMultiplier(p_149720_1_, p_149720_2_, p_149720_3_, p_149720_4_);
+	}
+
+	@Override
+	public boolean canCreatureSpawn(final EnumCreatureType type, final IBlockAccess world, final int x, final int y, final int z) {
+		return false;
 	}
 
 }

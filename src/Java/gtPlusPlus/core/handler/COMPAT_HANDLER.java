@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import gregtech.api.util.GT_OreDictUnificator;
-import gregtech.api.util.MultiblockRecipeMapHandler;
 import gtPlusPlus.core.common.compat.*;
 import gtPlusPlus.core.handler.Recipes.LateRegistrationHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
@@ -55,7 +54,7 @@ public class COMPAT_HANDLER {
 			to
 			868
 			---
-			886
+			890
 			to
 			950
 			*/
@@ -97,7 +96,11 @@ public class COMPAT_HANDLER {
 			GregtechIndustrialWashPlant.run();
 			GregtechSemiFluidgenerators.run();
 			GregtechAdvancedMixer.run();
-
+			GregtechWirelessChargers.run();
+			GregtechIndustrialGeneratorArray.run();
+			GregtechIndustrialCuttingFactory.run();
+			GregtechMiniRaFusion.run();
+			
 			//New Horizons Content
 			NewHorizonsAccelerator.run();
 		}

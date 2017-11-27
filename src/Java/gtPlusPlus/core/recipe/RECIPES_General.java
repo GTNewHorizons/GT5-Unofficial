@@ -1,28 +1,22 @@
 package gtPlusPlus.core.recipe;
 
+import static gtPlusPlus.core.util.item.ItemUtils.getSimpleStack;
+
 import cpw.mods.fml.common.registry.GameRegistry;
-import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_ModHandler;
-import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
+import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.recipe.RecipeUtils;
-import gtPlusPlus.core.util.reflect.AddGregtechRecipe;
-import gtPlusPlus.core.world.darkworld.Dimension_DarkWorld;
 import gtPlusPlus.xmod.bop.blocks.BOP_Block_Registrator;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class RECIPES_General {
@@ -44,6 +38,7 @@ public class RECIPES_General {
 		if (LoadedMods.Gregtech){
 			RECIPE_BasicCasingIC2 = ItemUtils.getItemStack("IC2:blockMachine", 1);
 			run();
+			addCompressedObsidian();
 		}
 	}
 
@@ -102,18 +97,18 @@ public class RECIPES_General {
 				"stickWood", "treeSapling", "stickWood",
 				"stickWood", "dustBone", "stickWood",
 				ItemUtils.getSimpleStack(BOP_Block_Registrator.sapling_Rainforest))){
-			Utils.LOG_INFO("Added a recipe for Rainforest oak Saplings.");	
+			Utils.LOG_INFO("Added a recipe for Rainforest oak Saplings.");
 		}
 
 		//Iron bars
-		ItemStack ironBars = ItemUtils.getItemStack("minecraft:iron_bars", 1);
+		final ItemStack ironBars = ItemUtils.getItemStack("minecraft:iron_bars", 1);
 		//Fish Trap
 		if (RecipeUtils.recipeBuilder(
 				ironBars, ironBars, ironBars,
 				ironBars, "frameGtWroughtIron", ironBars,
 				ironBars, ironBars, ironBars,
 				ItemUtils.getSimpleStack(ModBlocks.blockFishTrap))){
-			Utils.LOG_INFO("Added a recipe for the Fish Trap.");	
+			Utils.LOG_INFO("Added a recipe for the Fish Trap.");
 		}
 
 		//Alkalus Coin
@@ -122,17 +117,17 @@ public class RECIPES_General {
 				"gemFlawlessRuby", ItemList.Credit_Greg_Naquadah.get(1), "gemFlawlessSapphire",
 				"gemExquisiteEmerald", "gemFlawlessEmerald", "gemExquisiteSapphire",
 				ItemUtils.getSimpleStack(ModItems.itemAlkalusDisk))){
-			Utils.LOG_INFO("Added a recipe for The Alkalus Disk.");	
+			Utils.LOG_INFO("Added a recipe for The Alkalus Disk.");
 		}
 
-		String fancyGems[] = new String[]{"gemExquisiteDiamond", "gemExquisiteEmerald", "gemExquisiteRuby", "gemExquisiteSapphire"};
-		ItemStack gemShards[] = new ItemStack[]{ItemUtils.simpleMetaStack(ModItems.itemGemShards, 0, 1),
+		final String fancyGems[] = new String[]{"gemExquisiteDiamond", "gemExquisiteEmerald", "gemExquisiteRuby", "gemExquisiteSapphire"};
+		final ItemStack gemShards[] = new ItemStack[]{ItemUtils.simpleMetaStack(ModItems.itemGemShards, 0, 1),
 				ItemUtils.simpleMetaStack(ModItems.itemGemShards, 1, 1),
 				ItemUtils.simpleMetaStack(ModItems.itemGemShards, 2, 1),
 				ItemUtils.simpleMetaStack(ModItems.itemGemShards, 3, 1)};
-		
+
 		int l=0;
-		for (String gem : fancyGems){
+		for (final String gem : fancyGems){
 			GameRegistry.addShapelessRecipe(
 					gemShards[l],
 					ItemUtils.getItemStackOfAmountFromOreDict(gem, 1),
@@ -140,7 +135,19 @@ public class RECIPES_General {
 			l++;
 		}
 
-		//Alkalus Coin		
+		RecipeUtils.addShapedGregtechRecipe(
+				"stickBlackSteel", "plateTungstenSteel", "stickBlackSteel",
+				"plateTungstenSteel", getSimpleStack(Items.nether_star), "plateTungstenSteel",
+				"stickBlackSteel", "plateTungstenSteel", "stickBlackSteel",
+				ItemUtils.getSimpleStack(ModBlocks.blockWitherGuard, 32));
+
+		RecipeUtils.addShapedGregtechRecipe(
+				getSimpleStack(Items.experience_bottle), ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 2, 1), getSimpleStack(Items.experience_bottle),
+				ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 5, 1), getSimpleStack(Items.nether_star), ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 5, 1),
+				getSimpleStack(Items.experience_bottle), ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 2, 1), getSimpleStack(Items.experience_bottle),
+				ItemUtils.getSimpleStack(ModBlocks.blockXpConverter, 1));
+
+		//Alkalus Coin
 		/*AddGregtechRecipe.addAssemblylineRecipe(
 				ItemUtils.getSimpleStack(ModItems.itemAlkalusDisk),
 				288000,
@@ -154,16 +161,73 @@ public class RECIPES_General {
         		GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 16L),
         		GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 16L),
         		GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 16L),
-        		GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NiobiumTitanium, 2L)}, 
+        		GT_OreDictUnificator.get(OrePrefixes.cableGt04, Materials.NiobiumTitanium, 2L)},
 				new FluidStack[]{
         		Materials.Osmium.getMolten(144*32),
         		Materials.Europium.getFluid(144*8)},
 				ItemUtils.getSimpleStack(Dimension_DarkWorld.portalItem),
 				30*20*60,
 				100000);*/
-		
-		}
+
+		RecipeUtils.addShapelessGregtechRecipe(
+				new ItemStack[]{
+						ItemUtils.getItemStackOfAmountFromOreDictNoBroken(CI.craftingToolKnife, 1), ItemUtils.getSimpleStack(Items.reeds)},
+				ItemUtils.getSimpleStack(ModItems.itemFiber, 16)
+				);
+
+		RecipeUtils.addShapelessGregtechRecipe(
+				new ItemStack[]{
+						ItemUtils.getItemStackOfAmountFromOreDictNoBroken(CI.craftingToolKnife, 1), ItemUtils.getSimpleStack(Blocks.sapling)},
+				ItemUtils.getSimpleStack(ModItems.itemFiber, 32)
+				);
+
+		RecipeUtils.recipeBuilder(
+				null, ItemUtils.getSimpleStack(ModItems.itemFiber, 1), null,
+				ItemUtils.getSimpleStack(ModItems.itemFiber, 1), CI.craftingToolKnife, ItemUtils.getSimpleStack(ModItems.itemFiber, 1),
+				null, ItemUtils.getSimpleStack(ModItems.itemFiber, 1), null,
+				ItemUtils.getSimpleStack(ModItems.itemRope, 3));
+
+		RecipeUtils.recipeBuilder(
+				ItemUtils.getSimpleStack(ModItems.itemRope, 1), ItemUtils.getSimpleStack(ModItems.itemRope, 1), ItemUtils.getSimpleStack(ModItems.itemRope, 1),
+				ItemUtils.getSimpleStack(ModItems.itemRope, 1), ItemUtils.getSimpleStack(ModItems.itemRope, 1), ItemUtils.getSimpleStack(ModItems.itemRope, 1),
+				null, null, null,
+				ItemUtils.getSimpleStack(ModBlocks.blockNet, 2));
+
 
 	}
+
+	private static boolean addCompressedObsidian(){
+		//Invert Obsidian
+		RecipeUtils.addShapedGregtechRecipe(
+				getSimpleStack(Items.redstone), getSimpleStack(Items.glowstone_dust), getSimpleStack(Items.redstone),
+				getSimpleStack(Items.glowstone_dust), ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 1, 1), getSimpleStack(Items.glowstone_dust),
+				getSimpleStack(Items.redstone), getSimpleStack(Items.glowstone_dust), getSimpleStack(Items.redstone),
+				ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, 5, 1));
+
+		final ItemStack[] mItems = new ItemStack[6];
+		mItems[0] = ItemUtils.getSimpleStack(Blocks.obsidian);
+		for (int r=0;r<5;r++){
+			mItems[r+1] = ItemUtils.simpleMetaStack(ModBlocks.blockCompressedObsidian, r, 1);
+		}
+
+		//Compressed Obsidian 1-5
+		for (int r=0;r<5;r++){
+
+			final ItemStack input = mItems[r];
+			final ItemStack output = mItems[r+1];
+
+			RecipeUtils.addShapedGregtechRecipe(
+					input, input, input,
+					input, input, input,
+					input, input, input,
+					output);
+
+			RecipeUtils.addShapelessGregtechRecipe(new ItemStack[]{output}, ItemUtils.getSimpleStack(input, 9));
+
+		}
+		return true;
+	}
+
+}
 
 

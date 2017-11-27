@@ -182,7 +182,6 @@ extends GT_MetaTileEntity_MultiBlockBase
 				"Place them in the middle block of the Back, Bottom and Sides",
 				"Use 2 Output Hatches by default, change one to a Bus if filtering Lava",
 				"Consult user manual for more information",
-				"Causes " + (20 * getPollutionPerTick(null)) + " Pollution per second",
 				CORE.GT_Tooltip};
 	}
 

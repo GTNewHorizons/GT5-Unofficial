@@ -44,7 +44,7 @@ extends GregtechMeta_MultiBlockBase {
 		return new String[]{
 				"Controller Block for the Industrial Thermal Centrifuge",
 				"60% faster than using single block machines of the same voltage",
-				"Size: 3x2x3 [LxHxW]", "Controller (front centered)",
+				"Size: 3x2x3 [WxLxH] (Hollow)", "Controller (front centered)",
 				"1x Input Bus (Any casing)",
 				"1x Output Bus (Any casing)",
 				"1x Maintenance Hatch (Any casing)",
@@ -53,7 +53,7 @@ extends GregtechMeta_MultiBlockBase {
 				"Thermal processing Casings for the rest (8 at least!)",
 				"Causes " + (20 * getPollutionPerTick(null)) + " Pollution per second",
 				CORE.GT_Tooltip
-
+				
 		};
 	}
 
@@ -73,17 +73,6 @@ extends GregtechMeta_MultiBlockBase {
 	@Override
 	public GT_Recipe.GT_Recipe_Map getRecipeMap() {
 		return GT_Recipe.GT_Recipe_Map.sThermalCentrifugeRecipes;
-	}
-
-	public void startSoundLoop(byte aIndex, double aX, double aY, double aZ) {
-		super.startSoundLoop(aIndex, aX, aY, aZ);
-		if (aIndex == 1) {
-			GT_Utility.doSoundAtClient((String) GregTech_API.sSoundList.get(Integer.valueOf(207)), 10, 1.0F, aX, aY, aZ);
-		}
-	}
-
-	public void startProcess() {
-		sendLoopStart((byte) 1);
 	}
 
 	@Override
@@ -125,15 +114,15 @@ extends GregtechMeta_MultiBlockBase {
 							this.mEUt = (-this.mEUt);
 						}
 						this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-
+						
 						ItemStack mNewOutputs[] = new ItemStack[16];
+						
 
-
-
+						
 						for (int f=0;f<tRecipe.mOutputs.length;f++){
 							mNewOutputs[f] = tRecipe.getOutput(f);
 						}
-
+						
 						this.mOutputItems = mNewOutputs;
 						this.updateSlots();
 						return true;
@@ -171,17 +160,6 @@ extends GregtechMeta_MultiBlockBase {
 					}
 				}
 			}
-		}
-		if ((this.mInputBusses.size() < 1) || (this.mOutputBusses.size() < 1)
-				|| (this.mMaintenanceHatches.size() != 1) || (this.mEnergyHatches.size() < 1)
-				|| (this.mMufflerHatches.size() < 1)) {
-			Utils.LOG_MACHINE_INFO("Returned False");
-			Utils.LOG_MACHINE_INFO("Input Buses: "+this.mInputBusses.size()+" | expected: >= 1 | "+(this.mInputBusses.size() >= 1));
-			Utils.LOG_MACHINE_INFO("Output Buses: "+this.mOutputBusses.size()+" | expected: >= 1 | "+(this.mOutputBusses.size() >= 1));
-			Utils.LOG_MACHINE_INFO("Energy Hatches: "+this.mEnergyHatches.size()+" | expected: >= 1 | "+(this.mEnergyHatches.size() >= 1));
-			Utils.LOG_MACHINE_INFO("Muffler Hatches: "+this.mMufflerHatches.size()+" | expected: >= 1 | "+(this.mMufflerHatches.size() >= 1));
-			Utils.LOG_MACHINE_INFO("Maint. Hatches: "+this.mMaintenanceHatches.size()+" | expected: 1 | "+(this.mMaintenanceHatches.size() != 1));
-			return false;
 		}
 		Utils.LOG_WARNING("Trying to assemble structure. Completed? "+(tAmount >= 8));
 		return (tAmount >= 8);

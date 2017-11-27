@@ -4,13 +4,19 @@ import java.util.ArrayList;
 
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
+import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.material.*;
+import gtPlusPlus.core.material.ALLOY;
+import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.material.MaterialStack;
 import gtPlusPlus.core.material.nuclear.FLUORIDES;
 import gtPlusPlus.core.material.nuclear.NUCLIDE;
+import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 public class RecipeGen_BlastSmelter  implements Runnable{
 
@@ -87,10 +93,10 @@ public class RecipeGen_BlastSmelter  implements Runnable{
 			}
 
 			if (duration <= 0){
-				int second = 20;
+				final int second = 20;
 				duration = 14*second*mMaterialListSize;
 			}
-			
+
 			Utils.LOG_WARNING("[BAS] Size: "+mMaterialListSize);
 
 
@@ -125,7 +131,7 @@ public class RecipeGen_BlastSmelter  implements Runnable{
 						}
 						if (GT_Values.RA.addFluidExtractionRecipe(M.getTinyDust(1), null, M.getFluid(16), 100, duration/9, 120)){
 							Utils.LOG_WARNING("[BAS] Success, Also added a Fluid Extractor recipe.");
-						}						
+						}
 					}
 				}
 				else {
@@ -189,11 +195,21 @@ public class RecipeGen_BlastSmelter  implements Runnable{
 						//Builds me an ItemStack[] of the materials. - Without a circuit - this gets a good count for the 144L fluid multiplier
 						components = new ItemStack[9];
 						inputStackCount=0;
+						FluidStack componentsFluid = null;
 						for (int irc=0;irc<M.getComposites().size();irc++){
 							if (M.getComposites().get(irc) != null){
 								final int r = (int) M.vSmallestRatio[irc];
 								inputStackCount = inputStackCount+r;
-								components[irc] = M.getComposites().get(irc).getDustStack(r);
+								if ((M.getComposites().get(irc).getStackMaterial().getState() != MaterialState.SOLID) && ((M.getComposites().get(irc).getDustStack(r) == null) || (M.getComposites().get(irc).getDustStack(r) == ItemUtils.getSimpleStack(ModItems.AAA_Broken)))){
+									final int xr = M.getComposites().get(irc).getPartsPerOneHundred();
+									if ((xr > 0) && (xr <= 100)){
+										final int mathmatics = (xr <= 10 ? 1000 : ((xr/10)*1000));
+										componentsFluid = FluidUtils.getFluidStack(M.getComposites().get(irc).getStackMaterial().getFluid(mathmatics), mathmatics);
+									}
+								}
+								else {
+									components[irc] = M.getComposites().get(irc).getDustStack(r);
+								}
 							}
 						}
 
@@ -230,7 +246,7 @@ public class RecipeGen_BlastSmelter  implements Runnable{
 
 						//Adds Recipe
 						if (M.requiresBlastFurnace()) {
-							if (CORE.RA.addBlastSmelterRecipe(components, M.getFluid(fluidAmount), 100, duration, 500)){
+							if (CORE.RA.addBlastSmelterRecipe(components, componentsFluid, M.getFluid(fluidAmount), 100, duration, 500)){
 								Utils.LOG_WARNING("[BAS] Success.");
 							}
 							else {
@@ -238,7 +254,7 @@ public class RecipeGen_BlastSmelter  implements Runnable{
 							}
 						}
 						else {
-							if (CORE.RA.addBlastSmelterRecipe(components, M.getFluid(fluidAmount), 100, duration, 240)){
+							if (CORE.RA.addBlastSmelterRecipe(components, componentsFluid, M.getFluid(fluidAmount), 100, duration, 240)){
 								Utils.LOG_WARNING("[BAS] Success.");
 							}
 							else {

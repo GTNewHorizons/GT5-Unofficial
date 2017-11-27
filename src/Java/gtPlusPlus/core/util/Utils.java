@@ -1,12 +1,16 @@
 package gtPlusPlus.core.util;
 
-import static gtPlusPlus.core.handler.BookHandler.mBookKeeperCount;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.io.File;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.logging.log4j.LogManager;
@@ -15,7 +19,6 @@ import org.apache.logging.log4j.Logger;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
-import gregtech.api.GregTech_API;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
@@ -23,7 +26,6 @@ import gregtech.api.util.GT_LanguageManager;
 import gregtech.api.util.GT_Log;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.GTplusplus;
-import gtPlusPlus.core.handler.BookHandler;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
@@ -38,7 +40,6 @@ import ic2.core.item.resources.ItemCell;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -49,7 +50,9 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class Utils {
@@ -183,8 +186,21 @@ public class Utils {
 
 	// Non-Dev Comments
 	public static void LOG_MACHINE_INFO(final String s) {
-		if (CORE.configSwitches.MACHINE_INFO || ClientProxy.playerName.toLowerCase().contains("draknyte1")) {
-			String name1 = gtPlusPlus.core.util.reflect.ReflectionUtils.getMethodName(2);
+
+		boolean localPlayer = false;
+		try {
+			if (ClientProxy.playerName != null){
+				if (ClientProxy.playerName.toLowerCase().contains("draknyte1")){
+					localPlayer = true;
+				}
+			}
+		}
+		catch (final Throwable t){
+
+		}
+
+		if (CORE.configSwitches.MACHINE_INFO || localPlayer) {
+			final String name1 = gtPlusPlus.core.util.reflect.ReflectionUtils.getMethodName(2);
 			modLogger.info("Machine Info: " + s + " | " + name1);
 		}
 	}
@@ -504,7 +520,7 @@ public class Utils {
 	}
 
 	public static File getMcDir() {
-		if (MinecraftServer.getServer() != null && MinecraftServer.getServer().isDedicatedServer()) {
+		if ((MinecraftServer.getServer() != null) && MinecraftServer.getServer().isDedicatedServer()) {
 			return new File(".");
 		}
 		return Minecraft.getMinecraft().mcDataDir;
@@ -604,7 +620,7 @@ public class Utils {
 
 	}
 
-	public static int calculateVoltageTier(int Voltage) {
+	public static int calculateVoltageTier(final int Voltage) {
 		int V;
 		if (Voltage == 8) {
 			V = 0;
@@ -732,34 +748,39 @@ public class Utils {
 		return sBookCount;
 	}
 
-	public static ItemStack getWrittenBook(ItemStack aBook, int aID, String aMapping, String aTitle, String aAuthor,
-			String[] aPages) {
-		if (GT_Utility.isStringInvalid(aMapping))
+	public static ItemStack getWrittenBook(final ItemStack aBook, final int aID, final String aMapping, final String aTitle, final String aAuthor,
+			final String[] aPages) {
+		if (GT_Utility.isStringInvalid(aMapping)) {
 			return null;
-		ItemStack rStack = (ItemStack) CORE.sBookList.get(aMapping);
-		if (rStack != null)
+		}
+		ItemStack rStack = CORE.sBookList.get(aMapping);
+		if (rStack != null) {
 			return GT_Utility.copyAmount(1L, new Object[] { rStack });
-		if ((GT_Utility.isStringInvalid(aTitle)) || (GT_Utility.isStringInvalid(aAuthor)) || (aPages.length <= 0))
+		}
+		if ((GT_Utility.isStringInvalid(aTitle)) || (GT_Utility.isStringInvalid(aAuthor)) || (aPages.length <= 0)) {
 			return null;
+		}
 		sBookCount += 1;
-		int vMeta = (aID == -1 ? sBookCount : aID);
+		final int vMeta = (aID == -1 ? sBookCount : aID);
 		rStack = (aBook == null ? new ItemStack(ModItems.itemCustomBook, 1, vMeta) : aBook);
-		NBTTagCompound tNBT = new NBTTagCompound();
+		final NBTTagCompound tNBT = new NBTTagCompound();
 		tNBT.setString("title", GT_LanguageManager.addStringLocalization(
 				new StringBuilder().append("Book.").append(aTitle).append(".Name").toString(), aTitle));
 		tNBT.setString("author", aAuthor);
-		NBTTagList tNBTList = new NBTTagList();
+		final NBTTagList tNBTList = new NBTTagList();
 		for (byte i = 0; i < aPages.length; i = (byte) (i + 1)) {
 			aPages[i] = GT_LanguageManager
 					.addStringLocalization(new StringBuilder().append("Book.").append(aTitle).append(".Page")
 							.append((i < 10) ? new StringBuilder().append("0").append(i).toString() : Byte.valueOf(i))
 							.toString(), aPages[i]);
 			if (i < 48) {
-				if (aPages[i].length() < 256)
+				if (aPages[i].length() < 256) {
 					tNBTList.appendTag(new NBTTagString(aPages[i]));
-				else
+				}
+				else {
 					GT_Log.err.println(new StringBuilder().append("WARNING: String for written Book too long! -> ")
 							.append(aPages[i]).toString());
+				}
 			} else {
 				GT_Log.err.println(new StringBuilder().append("WARNING: Too much Pages for written Book! -> ")
 						.append(aTitle).toString());

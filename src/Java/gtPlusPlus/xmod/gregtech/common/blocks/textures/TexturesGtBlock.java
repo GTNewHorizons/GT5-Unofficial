@@ -10,9 +10,9 @@ import net.minecraft.util.ResourceLocation;
 
 public class TexturesGtBlock {
 
-	
+
 	//public static ITexture[] CASING_BLOCKS_GTPP = new ITexture[256];
-	
+
 	/*
 	 * Handles Custom Textures.
 	 */
@@ -62,6 +62,12 @@ public class TexturesGtBlock {
 	public static final CustomIcon _PlaceHolder = Internal_PlaceHolder;
 
 
+	//Controllers
+	private static final CustomIcon Internal_Casing_Fusion_Simple_Front = new CustomIcon("TileEntities/MACHINE_CASING_FUSION_FRONT");
+	public static final CustomIcon Casing_Fusion_Simple_Front = Internal_Casing_Fusion_Simple_Front;
+	private static final CustomIcon Internal_Casing_Fusion_Simple_Front_Active = new CustomIcon("TileEntities/MACHINE_CASING_FUSION_FRONT_ACTIVE");
+	public static final CustomIcon Casing_Fusion_Simple_Front_Active = Internal_Casing_Fusion_Simple_Front_Active;
+	
 	//Machine Casings
 	//Simple
 	private static final CustomIcon Internal_Casing_Machine_Simple_Top = new CustomIcon("TileEntities/machine_top");
@@ -125,7 +131,7 @@ public class TexturesGtBlock {
 	public static final CustomIcon Casing_Machine_Redstone_Off = Internal_Casing_Machine_Redstone_Off;
 	private static final CustomIcon Internal_Casing_Machine_Redstone_On = new CustomIcon("TileEntities/cover_redstone_emitter");
 	public static final CustomIcon Casing_Machine_Redstone_On = Internal_Casing_Machine_Redstone_On;
-	
+
 	//Centrifuge Casing
 	private static final CustomIcon Internal_Casing_Centrifuge = new CustomIcon("TileEntities/MACHINE_CASING_CENTRIFUGE");
 	public static final CustomIcon Casing_Material_Centrifuge = Internal_Casing_Centrifuge;
@@ -158,7 +164,7 @@ public class TexturesGtBlock {
 	public static final CustomIcon Overlay_Machine_Cyber_A = Internal_Overlay_Machine_Cyber_A;
 	private static final CustomIcon Internal_Overlay_Machine_Cyber_B = new CustomIcon("chrono/CyberPanel2");
 	public static final CustomIcon Overlay_Machine_Cyber_B = Internal_Overlay_Machine_Cyber_B;
-	
+
 	//Overlays
 	//Fan Textures
 	private static final CustomIcon Internal_Overlay_Machine_Vent = new CustomIcon("TileEntities/machine_top_vent_rotating");
@@ -199,6 +205,15 @@ public class TexturesGtBlock {
 	public static final CustomIcon Overlay_Crafting_Bronze = Internal_Overlay_Crafting_Bronze;
 	private static final CustomIcon Internal_Overlay_Crafting_Steel = new CustomIcon("TileEntities/cover_crafting");
 	public static final CustomIcon Overlay_Crafting_Steel = Internal_Overlay_Crafting_Steel;
+	
+	//Hatch Overlays
+	//Charger Texture
+	private static final CustomIcon Internal_Overlay_Hatch_Charger = new CustomIcon("TileEntities/cover_charger");
+	public static final CustomIcon Overlay_Hatch_Charger = Internal_Overlay_Hatch_Charger;
+	//Discharger Texture
+	private static final CustomIcon Internal_Overlay_Hatch_Discharger = new CustomIcon("TileEntities/cover_discharge");
+	public static final CustomIcon Overlay_Hatch_Discharger = Internal_Overlay_Hatch_Discharger;
+	
 	//Dimensional
 	private static final CustomIcon Internal_Overlay_Machine_Dimensional_Blue = new CustomIcon("TileEntities/adv_machine_dimensional_cover_blue");
 	public static final CustomIcon Overlay_Machine_Dimensional_Blue = Internal_Overlay_Machine_Dimensional_Blue;

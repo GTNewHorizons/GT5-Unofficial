@@ -264,7 +264,7 @@ public class GregtechMetaAtmosphericReconditioner extends GT_MetaTileEntity_Basi
 
 				if (damageValue <= 1){
 					if (this.mOptimalAirFlow > 0){
-						damageValue = (this.mOptimalAirFlow/10);
+						damageValue = (this.mOptimalAirFlow/10/2);
 					}
 					else {
 						return false;

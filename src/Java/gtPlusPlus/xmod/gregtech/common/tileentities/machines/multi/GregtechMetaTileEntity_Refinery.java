@@ -45,7 +45,6 @@ public class GregtechMetaTileEntity_Refinery extends GT_MetaTileEntity_MultiBloc
 				"1x Maintenance Hatch (One of base platform)",
 				"1x ZPM or better Muffler (One of base platform)",
 				"1x Energy Hatch (One of base platform)",
-				"Causes " + (20 * getPollutionPerTick(null)) + " Pollution per second",
 				CORE.GT_Tooltip
 		};
 	}

@@ -1,16 +1,11 @@
 package gtPlusPlus.xmod.gregtech;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_Config;
-import gregtech.api.util.MultiblockRecipeMapHandler;
-import gregtech.api.world.GT_Worldgen;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.recipe.RECIPES_LaserEngraver;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.util.GTPP_Config;
 import gtPlusPlus.xmod.gregtech.api.world.GTPP_Worldgen;
@@ -19,7 +14,6 @@ import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import gtPlusPlus.xmod.gregtech.loaders.*;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
-import net.minecraftforge.common.config.Configuration;
 
 public class HANDLER_GT {
 
@@ -28,7 +22,6 @@ public class HANDLER_GT {
 	public static GTPP_Config sCustomWorldgenFile = null;
 	public static final List<GTPP_Worldgen> sCustomWorldgenList = new ArrayList<GTPP_Worldgen>();
 
-	@SuppressWarnings("unused")
 	public static void preInit(){
 		new MetaGeneratedGregtechItems();
 		
@@ -38,7 +31,6 @@ public class HANDLER_GT {
 		GregtechFluidHandler.run();
 	}
 
-	@SuppressWarnings("unused")
 	public static void init(){
 
 		//Load General Blocks and set up some Basic Meta Tile Entitie states
