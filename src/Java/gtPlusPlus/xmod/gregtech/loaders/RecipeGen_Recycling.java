@@ -132,9 +132,9 @@ public class RecipeGen_Recycling implements Runnable{
 
 	public static ItemStack get(final OrePrefixes aPrefix, final Object aMaterial, final ItemStack aReplacement,
 			final long aAmount) {
-		if (OrePrefixes.mPreventableComponents.contains(aPrefix) && aPrefix.mDisabledItems.contains(aMaterial)) {
-			return aReplacement;
-		}
+		/*if (OrePrefixes.mPreventableComponents.contains(aPrefix) && aPrefix.mDisabledItems.contains(aMaterial)) {
+			return aReplacement; //TODO
+		}*/
 		return get(aPrefix.get(aMaterial), aReplacement, aAmount, false, true);
 	}
 
