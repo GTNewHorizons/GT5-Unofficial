@@ -77,7 +77,7 @@ public class CoalTar {
 		Phthalic_Acid = FluidUtils.generateFluidNonMolten("PhthalicAcid", "Phthalic Acid", 207, new short[]{210, 220, 210, 100}, null, null);
 		// v - Dehydrate at 180C+
 		//Create Phthalic Anhydride
-		ItemUtils.generateSpecialUseDusts("PhthalicAnhydride", "Phthalic Anhydride", Utils.rgbtoHexValue(175, 175, 175));
+		ItemUtils.generateSpecialUseDusts("PhthalicAnhydride", "Phthalic Anhydride", "C6H4(CO)2O", Utils.rgbtoHexValue(175, 175, 175));
 
 
 
@@ -94,7 +94,7 @@ public class CoalTar {
 
 
 		//Lithium Hydroperoxide - LiOH + H2O2 → LiOOH + 2 H2O
-		ItemUtils.generateSpecialUseDusts("LithiumHydroperoxide", "Lithium Hydroperoxide", Utils.rgbtoHexValue(125, 125, 125));
+		ItemUtils.generateSpecialUseDusts("LithiumHydroperoxide", "Lithium Hydroperoxide", "HLiO2", Utils.rgbtoHexValue(125, 125, 125));
 		// v - Dehydrate
 		//Lithium Peroxide - 2 LiOOH → Li2O2 + H2O2 + 2 H2O
 		Lithium_Peroxide = FluidUtils.generateFluidNonMolten("LithiumPeroxide", "Lithium Peroxide", 446, new short[]{135, 135, 135, 100}, null, null);
@@ -340,7 +340,7 @@ public class CoalTar {
 				FluidUtils.getFluidStack("fluid.anthracene", 50),
 				FluidUtils.getFluidStack("fluid.2ethylanthrahydroquinone", 4450),
 				ItemUtils.getItemStackOfAmountFromOreDict("cellHydrogenPeroxide", 2),
-				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 13), 
+				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 18), 
 				null, 
 				null,
 				null,

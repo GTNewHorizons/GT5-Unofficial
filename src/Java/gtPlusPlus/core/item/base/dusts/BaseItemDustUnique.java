@@ -22,8 +22,12 @@ public class BaseItemDustUnique extends Item{
 	protected String pileType;
 	String name = "";
 	String chemicalNotation = "";
-
+	
 	public BaseItemDustUnique(final String unlocalizedName, final String materialName, final int colour, final String pileSize) {
+		this(unlocalizedName, materialName, "", colour, pileSize);
+	}
+
+	public BaseItemDustUnique(final String unlocalizedName, final String materialName, final String mChemicalFormula, final int colour, final String pileSize) {
 		this.setUnlocalizedName(unlocalizedName);
 		this.setUnlocalizedName(unlocalizedName);
 		this.setMaxStackSize(64);
@@ -31,7 +35,12 @@ public class BaseItemDustUnique extends Item{
 		this.setCreativeTab(tabMisc);
 		this.colour = colour;
 		this.materialName = materialName;
-		this.chemicalNotation = StringUtils.subscript(materialName);
+		if (mChemicalFormula.equals("") || mChemicalFormula.equals("NullFormula")){
+			this.chemicalNotation = StringUtils.subscript(materialName);			
+		}
+		else {
+			this.chemicalNotation = StringUtils.subscript(mChemicalFormula);			
+		}
 		this.sRadiation = ItemUtils.getRadioactivityLevel(materialName);
 		GameRegistry.registerItem(this, unlocalizedName);
 

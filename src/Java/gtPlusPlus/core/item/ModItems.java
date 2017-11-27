@@ -525,26 +525,26 @@ public final class ModItems {
 		dustAqua = ItemUtils.generateSpecialUseDusts(ELEMENT.getInstance().AQUA, true)[0];
 
 		//Nuclear Fuel Dusts
-		dustLithiumCarbonate = ItemUtils.generateSpecialUseDusts("LithiumCarbonate", "Lithium Carbonate", Utils.rgbtoHexValue(240, 240, 240))[0]; //https://en.wikipedia.org/wiki/Lithium_carbonate
-		dustLithiumPeroxide = ItemUtils.generateSpecialUseDusts("LithiumPeroxide", "Lithium Peroxide", Utils.rgbtoHexValue(250, 250, 250))[0]; //https://en.wikipedia.org/wiki/Lithium_peroxide
-		dustLithiumHydroxide = ItemUtils.generateSpecialUseDusts("LithiumHydroxide", "Lithium Hydroxide", Utils.rgbtoHexValue(250, 250, 250))[0]; //https://en.wikipedia.org/wiki/Lithium_hydroxide
+		dustLithiumCarbonate = ItemUtils.generateSpecialUseDusts("LithiumCarbonate", "Lithium Carbonate", "Li2CO3", Utils.rgbtoHexValue(240, 240, 240))[0]; //https://en.wikipedia.org/wiki/Lithium_carbonate
+		dustLithiumPeroxide = ItemUtils.generateSpecialUseDusts("LithiumPeroxide", "Lithium Peroxide", "Li2O2", Utils.rgbtoHexValue(250, 250, 250))[0]; //https://en.wikipedia.org/wiki/Lithium_peroxide
+		dustLithiumHydroxide = ItemUtils.generateSpecialUseDusts("LithiumHydroxide", "Lithium Hydroxide", "LiOH", Utils.rgbtoHexValue(250, 250, 250))[0]; //https://en.wikipedia.org/wiki/Lithium_hydroxide
 
 		if ((ItemUtils.getItemStackOfAmountFromOreDict("dustQuicklime", 1).getItem() == ModItems.AAA_Broken) || !LoadedMods.IHL){
-			dustQuicklime = ItemUtils.generateSpecialUseDusts("Quicklime", "Quicklime", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_oxide
+			dustQuicklime = ItemUtils.generateSpecialUseDusts("Quicklime", "Quicklime", "CaO", Utils.rgbtoHexValue(255, 255, 175))[0]; //https://en.wikipedia.org/wiki/Calcium_oxide
 		}
-		dustCalciumHydroxide = ItemUtils.generateSpecialUseDusts("CalciumHydroxide", "Hydrated Lime", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_hydroxide
-		dustCalciumCarbonate = ItemUtils.generateSpecialUseDusts("CalciumCarbonate", "Calcium Carbonate", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_carbonate
+		dustCalciumHydroxide = ItemUtils.generateSpecialUseDusts("CalciumHydroxide", "Hydrated Lime", "Ca(OH)2", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_hydroxide
+		dustCalciumCarbonate = ItemUtils.generateSpecialUseDusts("CalciumCarbonate", "Calcium Carbonate", "CaCO3", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_carbonate
 		if ((ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGypsum", 1) == null) || (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustCalciumSulfate", 1) == null)){
-			dustCalciumSulfate = ItemUtils.generateSpecialUseDusts("Gypsum", "Calcium Sulfate (Gypsum)", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_sulfate
+			dustCalciumSulfate = ItemUtils.generateSpecialUseDusts("Gypsum", "Calcium Sulfate (Gypsum)", "CaSO4", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_sulfate
 			GT_OreDictUnificator.registerOre("dustCalciumSulfate", ItemUtils.getSimpleStack(dustCalciumSulfate));
 		}
 		else {
 			GT_OreDictUnificator.registerOre("dustCalciumSulfate", ItemUtils.getItemStackOfAmountFromOreDictNoBroken("dustGypsum", 1));
 		}
-		dustLi2CO3CaOH2 = ItemUtils.generateSpecialUseDusts("Li2CO3CaOH2", "Li2CO3 + Ca(OH)2 Compound", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_carbonate
+		dustLi2CO3CaOH2 = ItemUtils.generateSpecialUseDusts("Li2CO3CaOH2", "Li2CO3 + Ca(OH)2 Compound", "Li2CO3CaOH2", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/Calcium_carbonate
 
 		//FLiBe Fuel Compounds
-		dustLi2BeF4 = ItemUtils.generateSpecialUseDusts("Li2BeF4", "Li2BeF4 Fuel Compound", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/FLiBe
+		dustLi2BeF4 = ItemUtils.generateSpecialUseDusts("Li2BeF4", "Li2BeF4 Fuel Compound", "Li2BeF4", Utils.rgbtoHexValue(255, 255, 255))[0]; //https://en.wikipedia.org/wiki/FLiBe
 		fluidFLiBeSalt = FluidUtils.generateFluid("Li2BeF4", "Li2BeF4", 7430, new short[]{255, 255, 255, 100});
 
 		//LFTR Control Circuit
@@ -556,8 +556,8 @@ public final class ModItems {
 		itemZirconiumChlorideCinterPellet = new CoreItem("itemZirconiumPellet", "Zirconium Pellet ["+StringUtils.subscript("ZrCl4")+"]", tabMisc).setTextureName(CORE.MODID + ":itemShard");
 		GT_OreDictUnificator.registerOre("pelletZirconium", new ItemStack(itemZirconiumChlorideCinterPellet));
 		//Zirconium Chloride
-		dustZrCl4 = ItemUtils.generateSpecialUseDusts("ZrCl4", "ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; //http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
-		dustCookedZrCl4 = ItemUtils.generateSpecialUseDusts("CookedZrCl4", "Cooked ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; //http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
+		dustZrCl4 = ItemUtils.generateSpecialUseDusts("ZrCl4", "ZrCl4", "ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; //http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
+		dustCookedZrCl4 = ItemUtils.generateSpecialUseDusts("CookedZrCl4", "Cooked ZrCl4", "ZrCl4", Utils.rgbtoHexValue(180, 180, 180))[0]; //http://www.iaea.org/inis/collection/NCLCollectionStore/_Public/39/036/39036750.pdf
 		//Zirconium Tetrafluoride
 		GT_OreDictUnificator.registerOre("cellZrF4", ItemUtils.getItemStackOfAmountFromOreDict("cellZirconiumTetrafluoride", 1));
 		GT_OreDictUnificator.registerOre("dustZrF4", ItemUtils.getItemStackOfAmountFromOreDict("dustZirconiumTetrafluoride", 1));
@@ -683,13 +683,13 @@ public final class ModItems {
 		if ((LoadedMods.EnderIO || LOAD_ALL_CONTENT) && !CORE.GTNH){
 			Utils.LOG_INFO("EnderIO Found - Loading Resources.");
 			//Enderio Dusts
-			itemDustSoularium = ItemUtils.generateSpecialUseDusts("Soularium", "Soularium", Utils.rgbtoHexValue(95,90,54))[0];
-			itemDustRedstoneAlloy = ItemUtils.generateSpecialUseDusts("RedstoneAlloy", "Redstone Alloy", Utils.rgbtoHexValue(178,34,34))[0];
-			itemDustElectricalSteel = ItemUtils.generateSpecialUseDusts("ElectricalSteel", "Electrical Steel", Utils.rgbtoHexValue(194,194,194))[0];
-			itemDustPulsatingIron = ItemUtils.generateSpecialUseDusts("PulsatingIron", "Pulsating Iron", Utils.rgbtoHexValue(50,91,21))[0];
-			itemDustEnergeticAlloy = ItemUtils.generateSpecialUseDusts("EnergeticAlloy", "Energetic Alloy", Utils.rgbtoHexValue(252,151,45))[0];
-			itemDustVibrantAlloy = ItemUtils.generateSpecialUseDusts("VibrantAlloy", "Vibrant Alloy", Utils.rgbtoHexValue(204,242,142))[0];
-			itemDustConductiveIron = ItemUtils.generateSpecialUseDusts("ConductiveIron", "Conductive Iron", Utils.rgbtoHexValue(164,109,100))[0];
+			itemDustSoularium = ItemUtils.generateSpecialUseDusts("Soularium", "Soularium", ""+Materials.Soulsand.mChemicalFormula+Materials.Gold.mChemicalFormula, Utils.rgbtoHexValue(95,90,54))[0];
+			itemDustRedstoneAlloy = ItemUtils.generateSpecialUseDusts("RedstoneAlloy", "Redstone Alloy", ""+Materials.Redstone.mChemicalFormula+Materials.Silicon.mChemicalFormula, Utils.rgbtoHexValue(178,34,34))[0];
+			itemDustElectricalSteel = ItemUtils.generateSpecialUseDusts("ElectricalSteel", "Electrical Steel", "(Fe50C)3Si", Utils.rgbtoHexValue(194,194,194))[0];
+			itemDustPulsatingIron = ItemUtils.generateSpecialUseDusts("PulsatingIron", "Pulsating Iron", ""+Materials.Iron.mChemicalFormula+Materials.Enderpearl.mChemicalFormula, Utils.rgbtoHexValue(50,91,21))[0];
+			itemDustEnergeticAlloy = ItemUtils.generateSpecialUseDusts("EnergeticAlloy", "Energetic Alloy", ""+Materials.Gold.mChemicalFormula+Materials.Redstone.mChemicalFormula+Materials.Glowstone.mChemicalFormula, Utils.rgbtoHexValue(252,151,45))[0];
+			itemDustVibrantAlloy = ItemUtils.generateSpecialUseDusts("VibrantAlloy", "Vibrant Alloy", "("+Materials.Gold.mChemicalFormula+Materials.Redstone.mChemicalFormula+Materials.Glowstone.mChemicalFormula+")"+Materials.Enderpearl, Utils.rgbtoHexValue(204,242,142))[0];
+			itemDustConductiveIron = ItemUtils.generateSpecialUseDusts("ConductiveIron", "Conductive Iron", ""+Materials.Iron.mChemicalFormula+Materials.Redstone.mChemicalFormula, Utils.rgbtoHexValue(164,109,100))[0];
 
 			//EnderIO Plates
 			itemPlateSoularium = ItemUtils.generateSpecialUsePlate("itemPlate"+"Soularium", "Soularium", new short[]{95, 90, 54}, 0);
@@ -739,19 +739,6 @@ public final class ModItems {
 			Utils.LOG_WARNING("Thaumcraft not Found - Skipping Resources.");
 		}
 
-		//ExtraUtils
-		if (LoadedMods.Extra_Utils|| LOAD_ALL_CONTENT){
-			Utils.LOG_INFO("ExtraUtilities Found - Loading Resources.");
-			try {
-				//MaterialGenerator.generate(ALLOY.BEDROCKIUM);
-			} catch (final NullPointerException e){
-				e.getClass();
-			}
-		}
-		else {
-			Utils.LOG_WARNING("ExtraUtilities not Found - Skipping Resources.");
-		}
-
 		//Pneumaticraft
 		if (LoadedMods.PneumaticCraft|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("PneumaticCraft Found - Loading Resources.");
@@ -790,13 +777,14 @@ public final class ModItems {
 			RfEuBattery = new RF2EU_Battery();
 
 			//Baubles Mod Test
-			try {final Class<?> baublesTest = Class.forName("baubles.api.IBauble");
-			if (baublesTest != null){
-				COMPAT_Baubles.run();
-			}
-			else {
-				Utils.LOG_INFO("Baubles Not Found - Skipping Resources.");
-			}
+			try {
+				final Class<?> baublesTest = Class.forName("baubles.api.IBauble");
+				if (baublesTest != null){
+					COMPAT_Baubles.run();
+				}
+				else {
+					Utils.LOG_INFO("Baubles Not Found - Skipping Resources.");
+				}
 			} catch(final Throwable T){
 				Utils.LOG_INFO("Baubles Not Found - Skipping Resources.");
 			}

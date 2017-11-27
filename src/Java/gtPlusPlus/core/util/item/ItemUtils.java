@@ -324,11 +324,16 @@ public class ItemUtils {
 		return output;
 	}
 
+	//NullFormula
 	public static Item[] generateSpecialUseDusts(final String unlocalizedName, final String materialName, final int Colour){
+		return generateSpecialUseDusts(unlocalizedName, materialName, "NullFormula", Colour);
+	}
+	
+	public static Item[] generateSpecialUseDusts(final String unlocalizedName, final String materialName, String mChemForm, final int Colour){
 		final Item[] output = {
-				new BaseItemDustUnique("itemDust"+unlocalizedName, materialName, Colour, "Dust"),
-				new BaseItemDustUnique("itemDustSmall"+unlocalizedName, materialName, Colour, "Small"),
-				new BaseItemDustUnique("itemDustTiny"+unlocalizedName, materialName, Colour, "Tiny")};
+				new BaseItemDustUnique("itemDust"+unlocalizedName, materialName, mChemForm, Colour, "Dust"),
+				new BaseItemDustUnique("itemDustSmall"+unlocalizedName, materialName, mChemForm, Colour, "Small"),
+				new BaseItemDustUnique("itemDustTiny"+unlocalizedName, materialName, mChemForm, Colour, "Tiny")};
 		return output;
 	}
 
