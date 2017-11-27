@@ -290,7 +290,7 @@ public class RECIPES_GREGTECH {
 					},
 					FluidUtils.getFluidStack("molten.tungstencarbide", 2*144),
 					0,
-					MathUtils.findPercentageOfInt((int) Math.max(Materials.TungstenCarbide.getMass() / 40L, 1L) * Materials.TungstenCarbide.mBlastFurnaceTemp, 80),
+					MathUtils.findPercentageOfInt((int) Math.max(Materials.get("TungstenCarbide").getMass() / 40L, 1L) * Materials.get("TungstenCarbide").mBlastFurnaceTemp, 80),
 					480);
 		}
 
