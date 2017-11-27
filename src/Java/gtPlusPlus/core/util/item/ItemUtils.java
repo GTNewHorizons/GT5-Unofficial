@@ -86,7 +86,15 @@ public class ItemUtils {
 		final ItemStack temp = GT_ModHandler.getModItem("IC2", "itemCellEmpty", 1L, meta);
 		return temp != null ? temp : null;
 	}
-
+	
+	public static ItemStack getEmptyCell(){
+		return getEmptyCell(1);
+	}
+	
+	public static ItemStack getEmptyCell(int i){
+		final ItemStack temp = GT_ModHandler.getModItem("IC2", "itemCellEmpty", i, 0);
+		return temp != null ? temp : null;
+	}
 
 	public static void getItemForOreDict(final String FQRN, final String oreDictName, final String itemName, final int meta){
 		try {

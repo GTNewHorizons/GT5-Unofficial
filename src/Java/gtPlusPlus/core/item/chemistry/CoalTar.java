@@ -58,6 +58,7 @@ public class CoalTar {
 		else {
 			Toluene = FluidUtils.getFluidStack("liquid_toluene", 1000).getFluid();
 			Item itemCellToluene = new BaseItemComponent("Toluene", "Toluene", new short[]{140, 70, 20, 100});
+			GT_Values.RA.addFluidCannerRecipe(ItemUtils.getEmptyCell(), ItemUtils.getSimpleStack(itemCellToluene), FluidUtils.getFluidStack("liquid_toluene", 1000), null);
 		}
 
 		//Create Coal Tar
