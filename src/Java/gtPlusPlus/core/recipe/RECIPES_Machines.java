@@ -176,12 +176,12 @@ public class RECIPES_Machines {
 	public static ItemStack INPUT_RCCokeOvenBlock;
 	public static ItemStack INPUT_IECokeOvenBlock;
 
-
-
-	//RobotArm, Conveyor, Emitter, Sensor, Field Generator
-
-
-	public static final void RECIPES_LOAD(){
+        //Output Determiner
+	public static int Casing_Amount;
+	        
+	
+	
+        public static final void RECIPES_LOAD(){
 		run();
 		Utils.LOG_INFO("Loading Recipes for the Various machine blocks.");
 	}
@@ -230,6 +230,15 @@ public class RECIPES_Machines {
 	private static void runModRecipes(){
 		if (LoadedMods.Gregtech){
 
+			//Determines Casing Recipe Output
+			if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
+			Casing_Amount=2;
+		         }
+	                else {
+			Casing_Amount=1;
+			}
+			
+			
 			//Computer Cube
 			RecipeUtils.addShapedGregtechRecipe(
 					CI.getDataOrb(),ItemList.Cover_Screen.get(1),"circuitMaster",
@@ -371,7 +380,7 @@ public class RECIPES_Machines {
 			if (CORE.configSwitches.enableMultiblock_IronBlastFurnace){
 
 				RECIPE_IronBlastFurnace = GregtechItemList.Machine_Iron_BlastFurnace.get(1);
-				RECIPE_IronPlatedBricks = GregtechItemList.Casing_IronPlatedBricks.get(1);
+				RECIPE_IronPlatedBricks = GregtechItemList.Casing_IronPlatedBricks.get(Casing_Amount);
 
 				//Iron BF
 				RecipeUtils.addShapedGregtechRecipe(
@@ -399,7 +408,7 @@ public class RECIPES_Machines {
 			if (CORE.configSwitches.enableMultiblock_IndustrialCentrifuge){
 				//Industrial Centrifuge
 				RECIPE_IndustrialCentrifugeController = GregtechItemList.Industrial_Centrifuge.get(1);
-				RECIPE_IndustrialCentrifugeCasing = GregtechItemList.Casing_Centrifuge1.get(1);
+				RECIPE_IndustrialCentrifugeCasing = GregtechItemList.Casing_Centrifuge1.get(Casing_Amount);
 
 				//Industrial Centrifuge
 				RecipeUtils.addShapedGregtechRecipe(
@@ -418,9 +427,9 @@ public class RECIPES_Machines {
 			if (CORE.configSwitches.enableMultiblock_IndustrialCokeOven){
 				//Industrial Coke Oven
 				RECIPE_IndustrialCokeOvenController = GregtechItemList.Industrial_CokeOven.get(1);
-				RECIPE_IndustrialCokeOvenFrame = GregtechItemList.Casing_CokeOven.get(1);
-				RECIPE_IndustrialCokeOvenCasingA = GregtechItemList.Casing_CokeOven_Coil1.get(1);
-				RECIPE_IndustrialCokeOvenCasingB = GregtechItemList.Casing_CokeOven_Coil2.get(1);
+				RECIPE_IndustrialCokeOvenFrame = GregtechItemList.Casing_CokeOven.get(Casing_Amount);
+				RECIPE_IndustrialCokeOvenCasingA = GregtechItemList.Casing_CokeOven_Coil1.get(Casing_Amount);
+				RECIPE_IndustrialCokeOvenCasingB = GregtechItemList.Casing_CokeOven_Coil2.get(Casing_Amount);
 
 				if (LoadedMods.Railcraft){
 					//Industrial Coke Oven
@@ -461,7 +470,7 @@ public class RECIPES_Machines {
 			if (CORE.configSwitches.enableMultiblock_IndustrialElectrolyzer){
 				//Industrial Electrolyzer
 				RECIPE_IndustrialElectrolyzerController = GregtechItemList.Industrial_Electrolyzer.get(1);
-				RECIPE_IndustrialElectrolyzerFrame = GregtechItemList.Casing_Electrolyzer.get(1);
+				RECIPE_IndustrialElectrolyzerFrame = GregtechItemList.Casing_Electrolyzer.get(Casing_Amount);
 
 				//Electrolyzer Frame Casing
 				RecipeUtils.addShapedGregtechRecipe(
@@ -480,7 +489,7 @@ public class RECIPES_Machines {
 			if (CORE.configSwitches.enableMultiblock_IndustrialPlatePress){
 				//Industrial Material Press
 				RECIPE_IndustrialMaterialPressController = GregtechItemList.Industrial_PlatePress.get(1);
-				RECIPE_IndustrialMaterialPressFrame = GregtechItemList.Casing_MaterialPress.get(1);
+				RECIPE_IndustrialMaterialPressFrame = GregtechItemList.Casing_MaterialPress.get(Casing_Amount);
 
 				//Material Press Frame Casing
 				RecipeUtils.addShapedGregtechRecipe(
@@ -499,7 +508,7 @@ public class RECIPES_Machines {
 			if (CORE.configSwitches.enableMultiblock_IndustrialMacerationStack){
 				//Industrial Maceration Stack
 				RECIPE_IndustrialMacerationStackController = GregtechItemList.Industrial_MacerationStack.get(1);
-				RECIPE_IndustrialMacerationStackFrame = GregtechItemList.Casing_MacerationStack.get(1);
+				RECIPE_IndustrialMacerationStackFrame = GregtechItemList.Casing_MacerationStack.get(Casing_Amount);
 
 				//Maceration Frame Casing
 				RecipeUtils.addShapedGregtechRecipe(
@@ -518,7 +527,7 @@ public class RECIPES_Machines {
 			if (CORE.configSwitches.enableMultiblock_IndustrialWireMill){
 				//Industrial Wire Factory
 				RECIPE_IndustrialWireFactoryController = GregtechItemList.Industrial_WireFactory.get(1);
-				RECIPE_IndustrialWireFactoryFrame = GregtechItemList.Casing_WireFactory.get(1);
+				RECIPE_IndustrialWireFactoryFrame = GregtechItemList.Casing_WireFactory.get(Casing_Amount);
 
 				//Wire Factory Frame Casing
 				RecipeUtils.addShapedGregtechRecipe(
@@ -634,7 +643,7 @@ public class RECIPES_Machines {
 			if (CORE.configSwitches.enableMultiblock_MultiTank){
 				//Industrial Multi Tank
 				RECIPE_IndustrialMultiTankController = GregtechItemList.Industrial_MultiTank.get(1);
-				RECIPE_IndustrialMultiTankFrame = GregtechItemList.Casing_MultitankExterior.get(1);
+				RECIPE_IndustrialMultiTankFrame = GregtechItemList.Casing_MultitankExterior.get(Casing_Amount);
 
 				//Industrial Multi Tank Casing
 				RecipeUtils.addShapedGregtechRecipe(
@@ -674,8 +683,8 @@ public class RECIPES_Machines {
 			if (CORE.configSwitches.enableMultiblock_AlloyBlastSmelter){
 				//Industrial Blast Smelter
 				RECIPE_IndustrialBlastSmelterController = GregtechItemList.Industrial_AlloyBlastSmelter.get(1);
-				RECIPE_IndustrialBlastSmelterFrame = GregtechItemList.Casing_BlastSmelter.get(1);
-				RECIPE_IndustrialBlastSmelterCoil = GregtechItemList.Casing_Coil_BlastSmelter.get(1);
+				RECIPE_IndustrialBlastSmelterFrame = GregtechItemList.Casing_BlastSmelter.get(Casing_Amount);
+				RECIPE_IndustrialBlastSmelterCoil = GregtechItemList.Casing_Coil_BlastSmelter.get(Casing_Amount);
 
 				//Blast Smelter
 				RecipeUtils.addShapedGregtechRecipe(
@@ -700,8 +709,8 @@ public class RECIPES_Machines {
 			if (CORE.configSwitches.enableMultiblock_MatterFabricator){
 				//Industrial Matter Fabricator
 				RECIPE_IndustrialMatterFabController = GregtechItemList.Industrial_MassFab.get(1);
-				RECIPE_IndustrialMatterFabFrame = GregtechItemList.Casing_MatterFab.get(1);
-				RECIPE_IndustrialMatterFabCoil = GregtechItemList.Casing_MatterGen.get(1);
+				RECIPE_IndustrialMatterFabFrame = GregtechItemList.Casing_MatterFab.get(Casing_Amount);
+				RECIPE_IndustrialMatterFabCoil = GregtechItemList.Casing_MatterGen.get(Casing_Amount);
 
 				//Matter Fabricator CPU
 				RecipeUtils.addShapedGregtechRecipe(
@@ -726,8 +735,8 @@ public class RECIPES_Machines {
 			if (CORE.configSwitches.enableMultiblock_IndustrialSifter){
 				//Industrial Sieve
 				RECIPE_IndustrialSieveController = GregtechItemList.Industrial_Sifter.get(1);
-				RECIPE_IndustrialSieveFrame = GregtechItemList.Casing_Sifter.get(1);
-				RECIPE_IndustrialSieveGrate = GregtechItemList.Casing_SifterGrate.get(1);
+				RECIPE_IndustrialSieveFrame = GregtechItemList.Casing_Sifter.get(Casing_Amount);
+				RECIPE_IndustrialSieveGrate = GregtechItemList.Casing_SifterGrate.get(Casing_Amount);
 
 				//Industrial Sieve
 				RecipeUtils.addShapedGregtechRecipe(
@@ -752,7 +761,7 @@ public class RECIPES_Machines {
 			if (CORE.configSwitches.enableMultiblock_TreeFarmer){
 				//Industrial Tree Farmer
 				RECIPE_TreeFarmController = GregtechItemList.Industrial_TreeFarm.get(1);
-				RECIPE_TreeFarmFrame = GregtechItemList.TreeFarmer_Structural.get(1);
+				RECIPE_TreeFarmFrame = GregtechItemList.TreeFarmer_Structural.get(Casing_Amount);
 				//Industrial Tree Farm Controller
 				RecipeUtils.addShapedGregtechRecipe(
 						"plateEglinSteel", "rotorEglinSteel", "plateEglinSteel",
@@ -917,8 +926,8 @@ public class RECIPES_Machines {
 
 				//Thorium Reactor
 				RECIPE_LFTRController = GregtechItemList.ThoriumReactor.get(1);
-				RECIPE_LFTRInnerCasing = GregtechItemList.Casing_Reactor_II.get(1); //Zeron
-				RECIPE_LFTROuterCasing = GregtechItemList.Casing_Reactor_I.get(1); //Hastelloy
+				RECIPE_LFTRInnerCasing = GregtechItemList.Casing_Reactor_II.get(Casing_Amount); //Zeron
+				RECIPE_LFTROuterCasing = GregtechItemList.Casing_Reactor_I.get(Casing_Amount); //Hastelloy
 
 				ItemStack controlCircuit = ItemUtils.getSimpleStack(ModItems.itemCircuitLFTR);
 				RecipeUtils.addShapedGregtechRecipe(
@@ -966,21 +975,21 @@ public class RECIPES_Machines {
 						"plateIncoloyDS", "pipeHugeStaballoy", "plateIncoloyDS",
 						"gearIncoloyDS", mInnerTank, "gearIncoloyDS",
 						"plateIncoloyDS", "pipeHugeStaballoy", "plateIncoloyDS",
-						GregtechItemList.Casing_Refinery_Internal.get(1));
+						GregtechItemList.Casing_Refinery_Internal.get(Casing_Amount));
 
 				//Hastelloy-N Sealant Casing
 				RecipeUtils.addShapedGregtechRecipe(
 						"plateIncoloyMA956", "plateHastelloyN", "plateIncoloyMA956",
 						"plateHastelloyN", "frameGtHastelloyC276", "plateHastelloyN",
 						"plateIncoloyMA956", "plateHastelloyN", "plateIncoloyMA956",
-						GregtechItemList.Casing_Refinery_External.get(1));
+						GregtechItemList.Casing_Refinery_External.get(Casing_Amount));
 
 				//Hastelloy-X Structural Casing
 				RecipeUtils.addShapedGregtechRecipe(
 						"ringInconel792", "gearHastelloyX", CI.component_Plate[5],
 						CI.craftingToolHammer_Hard, "frameGtHastelloyC276", CI.craftingToolWrench,
 						CI.component_Plate[5], CI.getTieredMachineCasing(4), "ringInconel792",
-						GregtechItemList.Casing_Refinery_Structural.get(1));
+						GregtechItemList.Casing_Refinery_Structural.get(Casing_Amount));
 
 
 
@@ -997,7 +1006,7 @@ public class RECIPES_Machines {
 						null, "plateIncoloy020", null,
 						"plateIncoloy020", "frameGtIncoloyMA956", "plateIncoloy020",
 						null, "plateIncoloy020", null,
-						GregtechItemList.Casing_Power_SubStation.get(1));
+						GregtechItemList.Casing_Power_SubStation.get(Casing_Amount));
 
 				RecipeUtils.recipeBuilder(
 						"plateIncoloyMA956", GregtechItemList.Battery_RE_EV_Lithium.get(1), "plateIncoloyMA956",
@@ -1011,7 +1020,7 @@ public class RECIPES_Machines {
 						"plateRedSteel", CI.craftingToolHammer_Hard, "plateRedSteel",
 						"plateRedSteel", "frameGtBlackSteel", "plateRedSteel",
 						"plateRedSteel", CI.craftingToolWrench, "plateRedSteel",
-						GregtechItemList.Casing_ThermalCentrifuge.get(2));
+						GregtechItemList.Casing_ThermalCentrifuge.get(Casing_Amount));
 
 				RecipeUtils.recipeBuilder(
 						"plateRedSteel","circuitData","plateRedSteel",
@@ -1025,7 +1034,7 @@ public class RECIPES_Machines {
 						"plateGrisium", CI.craftingToolHammer_Hard, "plateGrisium",
 						"plateTalonite", "frameGtGrisium", "plateTalonite",
 						"plateGrisium", CI.craftingToolWrench, "plateGrisium",
-						GregtechItemList.Casing_WashPlant.get(2));
+						GregtechItemList.Casing_WashPlant.get(Casing_Amount));
 
 				RecipeUtils.recipeBuilder( 
 						"plateGrisium",CI.electricPump_MV,"plateGrisium",
@@ -1039,7 +1048,7 @@ public class RECIPES_Machines {
 						"plateStainlessSteel", CI.craftingToolHammer_Hard, "plateStainlessSteel",
 						"plateStellite", "frameGtStainlessSteel", "plateStellite",
 						"plateStainlessSteel", CI.craftingToolWrench, "plateStainlessSteel",
-						GregtechItemList.Casing_Autocrafter.get(2));
+						GregtechItemList.Casing_Autocrafter.get(Casing_Amount));
 
 				RecipeUtils.recipeBuilder( 
 						"plateStainlessSteel",CI.sensor_EV,"plateStainlessSteel",
