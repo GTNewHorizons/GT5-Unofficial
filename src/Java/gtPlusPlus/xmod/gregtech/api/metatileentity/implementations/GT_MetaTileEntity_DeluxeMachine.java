@@ -337,7 +337,7 @@ public abstract class GT_MetaTileEntity_DeluxeMachine extends GT_MetaTileEntity_
     @Override
     public boolean onRightclick(IGregTechTileEntity aBaseMetaTileEntity, EntityPlayer aPlayer) {
         if (aBaseMetaTileEntity.isClientSide()) return true;
-        if(!GT_Mod.gregtechproxy.mForceFreeFace) {
+        if(!false) {
         	aBaseMetaTileEntity.openGUI(aPlayer);
         	return true;
         }
@@ -439,7 +439,7 @@ public abstract class GT_MetaTileEntity_DeluxeMachine extends GT_MetaTileEntity_
                     }
                     if (mProgresstime > 5) mStuttering = false;
                     XSTR aXSTR = new XSTR();
-                    if(GT_Mod.gregtechproxy.mAprilFool && aXSTR.nextInt(5000)==0)GT_Utility.sendSoundToPlayers(aBaseMetaTileEntity.getWorld(), GregTech_API.sSoundList.get(5), 10.0F, -1.0F, aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(),aBaseMetaTileEntity.getZCoord());
+                    if(false && aXSTR.nextInt(5000)==0)GT_Utility.sendSoundToPlayers(aBaseMetaTileEntity.getWorld(), GregTech_API.sSoundList.get(5), 10.0F, -1.0F, aBaseMetaTileEntity.getXCoord(), aBaseMetaTileEntity.getYCoord(),aBaseMetaTileEntity.getZCoord());
                 } else {
                     if (!mStuttering) {
                         stutterProcess();
@@ -721,7 +721,7 @@ public abstract class GT_MetaTileEntity_DeluxeMachine extends GT_MetaTileEntity_
     public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
         if (aSide == getBaseMetaTileEntity().getFrontFacing() || aSide == mMainFacing) {
             mAllowInputFromOutputSide = !mAllowInputFromOutputSide;
-            GT_Utility.sendChatToPlayer(aPlayer, mAllowInputFromOutputSide ? trans("095","Input from Output Side allowed") : trans("096","Input from Output Side forbidden"));
+            GT_Utility.sendChatToPlayer(aPlayer, mAllowInputFromOutputSide ? ("Input from Output Side allowed") : ("Input from Output Side forbidden"));
         }
     }
 
@@ -785,7 +785,7 @@ public abstract class GT_MetaTileEntity_DeluxeMachine extends GT_MetaTileEntity_
         GT_Recipe tRecipe = tMap.findRecipe(getBaseMetaTileEntity(), mLastRecipe, false, V[mTier], new FluidStack[]{getFillableStack()}, getSpecialSlot(), getAllInputs());
         if (tRecipe == null) return DID_NOT_FIND_RECIPE;
 
-        if (GT_Mod.gregtechproxy.mLowGravProcessing && tRecipe.mSpecialValue == -100 &&
+        if (false && tRecipe.mSpecialValue == -100 &&
                 !isValidForLowGravity(tRecipe,getBaseMetaTileEntity().getWorld().provider.dimensionId))
             return FOUND_RECIPE_BUT_DID_NOT_MEET_REQUIREMENTS;
         if (tRecipe.mCanBeBuffered) mLastRecipe = tRecipe;

@@ -243,8 +243,8 @@ GT_MetaTileEntity_MultiBlockBase {
 			return false;
 		}
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBattery) {
-			((GT_MetaTileEntity_Hatch) aMetaTileEntity)
-			.updateTexture(aBaseCasingIndex);
+			//((GT_MetaTileEntity_Hatch) aMetaTileEntity);
+			//.updateTexture(aBaseCasingIndex);
 			return this.mChargeHatches.add(
 					(GT_MetaTileEntity_Hatch_InputBattery) aMetaTileEntity);
 		}
@@ -261,8 +261,8 @@ GT_MetaTileEntity_MultiBlockBase {
 			return false;
 		}
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBattery) {
-			((GT_MetaTileEntity_Hatch) aMetaTileEntity)
-			.updateTexture(aBaseCasingIndex);
+			//((GT_MetaTileEntity_Hatch) aMetaTileEntity)
+			//.updateTexture(aBaseCasingIndex);
 			return this.mDischargeHatches.add(
 					(GT_MetaTileEntity_Hatch_OutputBattery) aMetaTileEntity);
 		}
@@ -279,7 +279,7 @@ GT_MetaTileEntity_MultiBlockBase {
 			return false;
 		}
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-			((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+			//((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
 			((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = this.getRecipeMap();
 			return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
 		}
@@ -295,7 +295,7 @@ GT_MetaTileEntity_MultiBlockBase {
 			return false;
 		}
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-			((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+			//((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
 			return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
 		}
 		return false;

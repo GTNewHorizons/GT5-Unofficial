@@ -233,4 +233,8 @@ public class GregtechMetaTileEntityGeneratorArray extends GT_MetaTileEntity_Mult
 	public boolean explodesOnComponentBreak(ItemStack aStack) {
 		return false;
 	}
+
+	public int getAmountOfOutputs() {
+		return 1;
+	}
 }

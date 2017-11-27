@@ -15,7 +15,6 @@ import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
@@ -435,7 +434,6 @@ public class GregtechMetaPollutionDetector extends GregtechMetaTileEntity {
 		super.onScrewdriverRightClick(aSide, aPlayer, aX, aY, aZ);
 	}
 
-	@Override
 	public boolean allowGeneralRedstoneOutput() {
 		if (this.getCurrentChunkPollution() >= this.mRedstoneLevel){
 			this.markDirty();

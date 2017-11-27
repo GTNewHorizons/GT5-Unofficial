@@ -10,6 +10,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.gui.hatches.charge.CONTAINER_Electric_2by2;
 import gtPlusPlus.xmod.gregtech.api.gui.hatches.charge.CONTAINER_Electric_4by4;
@@ -26,9 +27,7 @@ GT_MetaTileEntity_Hatch {
 	public GT_MetaTileEntity_Hatch_OutputBattery(int aID, String aName,
 			String aNameRegional, int aTier) {
 		super(aID, aName, aNameRegional, aTier, getSlots(aTier),
-				new String[]{"Dischargeable Item Bus for Multiblocks",
-						"Capacity: " + getSlots(aTier) + " stack"
-								+ (getSlots(aTier) >= 2 ? "s" : "")});
+				"Dischargeable Item Bus for Multiblocks");
 	}
 
 	public GT_MetaTileEntity_Hatch_OutputBattery(String aName, int aTier,
@@ -38,22 +37,21 @@ GT_MetaTileEntity_Hatch {
 						aDescription, aTextures);
 	}
 
-	public GT_MetaTileEntity_Hatch_OutputBattery(String aName, int aTier,
-			String[] aDescription, ITexture[][][] aTextures) {
-		super(aName, aTier,
-				aTier < 1 ? 1 : aTier == 1 ? 4 : aTier == 2 ? 9 : 16,
-						aDescription, aTextures);
+
+	@Override
+	public String[] getDescription() {
+		return new String[]{this.mDescription, "Capacity: " + getSlots(this.mTier) + " stack"+ (getSlots(this.mTier) >= 2 ? "s" : ""), CORE.GT_Tooltip};
 	}
 
 	@Override
 	public boolean isEnetOutput() {
 		return true;
 	}
-	
+
 	@Override
-    public boolean isOutputFacing(byte aSide) {
-        return aSide == getBaseMetaTileEntity().getFrontFacing();
-    }
+	public boolean isOutputFacing(byte aSide) {
+		return aSide == getBaseMetaTileEntity().getFrontFacing();
+	}
 
 	@Override
 	public long getMinimumStoredEU() {
@@ -105,7 +103,7 @@ GT_MetaTileEntity_Hatch {
 	@Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
 		return new GT_MetaTileEntity_Hatch_OutputBattery(mName, mTier,
-				mDescriptionArray, mTextures);
+				mDescription, mTextures);
 	}
 
 	@Override
@@ -195,14 +193,14 @@ GT_MetaTileEntity_Hatch {
 	public int dechargerSlotCount() {
 		return mTier == 2 ? 4 : 16;
 	}
-	
+
 	@Override
 	public void onPostTick(IGregTechTileEntity aBaseMetaTileEntity,	long aTimer) {
 		if (aBaseMetaTileEntity.isServerSide()
 				&& aBaseMetaTileEntity.hasInventoryBeenModified()) {
 			fillStacksIntoFirstSlots();
 		}		
-		
+
 		if (aBaseMetaTileEntity.isServerSide()){
 			if (aBaseMetaTileEntity.getMetaTileEntity() instanceof MetaTileEntity) {
 				MetaTileEntity mMetaTileEntity = (MetaTileEntity) aBaseMetaTileEntity.getMetaTileEntity();				
@@ -220,7 +218,6 @@ GT_MetaTileEntity_Hatch {
 		}
 		super.onPostTick(aBaseMetaTileEntity, aTimer);
 	}
-	
-	
+
 
 }

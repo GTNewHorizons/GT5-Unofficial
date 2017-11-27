@@ -12,6 +12,7 @@ import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.GT_ModHandler;
 import gregtech.api.util.GT_Utility;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.gui.hatches.charge.CONTAINER_Electric_2by2;
 import gtPlusPlus.xmod.gregtech.api.gui.hatches.charge.CONTAINER_Electric_4by4;
@@ -29,10 +30,7 @@ GT_MetaTileEntity_Hatch {
 
 	public GT_MetaTileEntity_Hatch_InputBattery(int aID, String aName,
 			String aNameRegional, int aTier) {
-		super(aID, aName, aNameRegional, aTier, getSlots(aTier),
-				new String[]{"Chargeable Item Bus for Multiblocks",
-						"Capacity: " + getSlots(aTier) + " stack"
-								+ (getSlots(aTier) >= 2 ? "s" : "")});
+		super(aID, aName, aNameRegional, aTier, getSlots(aTier), "Chargeable Item Bus for Multiblocks");
 	}
 
 	public GT_MetaTileEntity_Hatch_InputBattery(String aName, int aTier,
@@ -42,11 +40,9 @@ GT_MetaTileEntity_Hatch {
 						aDescription, aTextures);
 	}
 
-	public GT_MetaTileEntity_Hatch_InputBattery(String aName, int aTier,
-			String[] aDescription, ITexture[][][] aTextures) {
-		super(aName, aTier,
-				aTier < 1 ? 1 : aTier == 1 ? 4 : aTier == 2 ? 4 : 16,
-						aDescription, aTextures);
+	@Override
+	public String[] getDescription() {
+		return new String[]{this.mDescription, "Capacity: " + getSlots(this.mTier) + " stack"+ (getSlots(this.mTier) >= 2 ? "s" : ""), CORE.GT_Tooltip};
 	}
 
 	@Override
@@ -115,7 +111,7 @@ GT_MetaTileEntity_Hatch {
 	@Override
 	public MetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
 		return new GT_MetaTileEntity_Hatch_InputBattery(mName, mTier,
-				mDescriptionArray, mTextures);
+				mDescription, mTextures);
 	}
 
 	@Override

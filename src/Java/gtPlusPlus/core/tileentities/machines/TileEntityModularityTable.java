@@ -166,11 +166,11 @@ public class TileEntityModularityTable extends TileEntityBase implements ISidedI
 		generateUpgradeData(ItemList.Electric_Motor_IV.get(1), Modifiers.BOOST_DAMAGE, 5);
 
 		// Defence Boost
-		generateUpgradeData(Materials.Aluminium.getPlates(1), Modifiers.BOOST_DEF, 1);
-		generateUpgradeData(Materials.StainlessSteel.getPlates(1), Modifiers.BOOST_DEF, 2);
-		generateUpgradeData(Materials.Tungsten.getPlates(1), Modifiers.BOOST_DEF, 3);
-		generateUpgradeData(Materials.TungstenSteel.getPlates(1), Modifiers.BOOST_DEF, 4);
-		generateUpgradeData(Materials.Naquadah.getPlates(1), Modifiers.BOOST_DEF, 5);
+		generateUpgradeData(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateAluminium", 1), Modifiers.BOOST_DEF, 1);
+		generateUpgradeData(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateStainlessSteel", 1), Modifiers.BOOST_DEF, 2);
+		generateUpgradeData(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateTungsten", 1), Modifiers.BOOST_DEF, 3);
+		generateUpgradeData(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateTungstenSteel", 1), Modifiers.BOOST_DEF, 4);
+		generateUpgradeData(ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateNaquadah", 1), Modifiers.BOOST_DEF, 5);
 
 		// Hp Boost
 		generateUpgradeData(ItemUtils.simpleMetaStack(Items.golden_apple, 0, 1), Modifiers.BOOST_HP, 1);
