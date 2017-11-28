@@ -338,7 +338,19 @@ public class ItemUtils {
 	}
 
 	public static Item generateSpecialUsePlate(final String internalName, final String displayName, final short[] rgb, final int radioactivity){
-		return new BaseItemPlate_OLD(internalName, displayName, Utils.rgbtoHexValue(rgb[0], rgb[1], rgb[2]), radioactivity);
+		return generateSpecialUsePlate(internalName, displayName, Utils.rgbtoHexValue(rgb[0], rgb[1], rgb[2]), radioactivity);
+	}
+	
+	public static Item generateSpecialUsePlate(final String internalName, final String displayName, final String mFormula, final short[] rgb, final int radioactivity){
+		return generateSpecialUsePlate(internalName, displayName, mFormula, Utils.rgbtoHexValue(rgb[0], rgb[1], rgb[2]), radioactivity);
+	}
+	
+	public static Item generateSpecialUsePlate(final String internalName, final String displayName, final int rgb, final int radioactivity){
+		return new BaseItemPlate_OLD(internalName, displayName, rgb, radioactivity);
+	}
+	
+	public static Item generateSpecialUsePlate(final String internalName, final String displayName, final String mFormula, final int rgb, final int radioactivity){
+		return new BaseItemPlate_OLD(internalName, displayName, mFormula, rgb, radioactivity);
 	}
 
 	public static Item[] generateSpecialUseDusts(final Material material, final boolean onlyLargeDust){

@@ -17,18 +17,17 @@ import net.minecraft.item.ItemStack;
 
 public class BaseItemDustUnique extends Item{
 
-	protected int colour;
-	protected String materialName;
-	protected String pileType;
-	String name = "";
-	String chemicalNotation = "";
+	protected final int colour;
+	protected final int sRadiation;
+	protected final String materialName;
+	protected final String name;
+	protected final String chemicalNotation;
 	
 	public BaseItemDustUnique(final String unlocalizedName, final String materialName, final int colour, final String pileSize) {
-		this(unlocalizedName, materialName, "", colour, pileSize);
+		this(unlocalizedName, materialName, "NullFormula", colour, pileSize);
 	}
 
 	public BaseItemDustUnique(final String unlocalizedName, final String materialName, final String mChemicalFormula, final int colour, final String pileSize) {
-		this.setUnlocalizedName(unlocalizedName);
 		this.setUnlocalizedName(unlocalizedName);
 		this.setMaxStackSize(64);
 		this.setTextureName(this.getCorrectTexture(pileSize));
@@ -43,6 +42,16 @@ public class BaseItemDustUnique extends Item{
 		}
 		this.sRadiation = ItemUtils.getRadioactivityLevel(materialName);
 		GameRegistry.registerItem(this, unlocalizedName);
+
+		if (this.getUnlocalizedName().contains("DustTiny")){
+			this.name = "Tiny Pile of "+this.materialName+ " Dust";
+		}
+		else if (this.getUnlocalizedName().contains("DustSmall")){
+			this.name = "Small Pile of "+this.materialName+ " Dust";
+		}
+		else {
+			this.name = this.materialName+ " Dust";
+		}
 
 		String temp = "";
 		Utils.LOG_WARNING("Unlocalized name for OreDict nameGen: "+this.getUnlocalizedName());
@@ -72,16 +81,6 @@ public class BaseItemDustUnique extends Item{
 
 	@Override
 	public String getItemStackDisplayName(final ItemStack iStack) {
-
-		if (this.getUnlocalizedName().contains("DustTiny")){
-			this.name = "Tiny Pile of "+this.materialName+ " Dust";
-		}
-		else if (this.getUnlocalizedName().contains("DustSmall")){
-			this.name = "Small Pile of "+this.materialName+ " Dust";
-		}
-		else {
-			this.name = this.materialName+ " Dust";
-		}
 		return this.name;
 	}
 
@@ -102,7 +101,6 @@ public class BaseItemDustUnique extends Item{
 		return "gregtech" + ":" + "materialicons/SHINY/dust";
 	}
 
-	protected final int sRadiation;
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
@@ -110,97 +108,11 @@ public class BaseItemDustUnique extends Item{
 		if (this.sRadiation > 0){
 			list.add(CORE.GT_Tooltip_Radioactive);
 		}
-		if (containsSubScript(this.chemicalNotation)){
+		if (StringUtils.containsSuperOrSubScript(this.chemicalNotation)){
 			list.add(this.chemicalNotation);
 		}
 		super.addInformation(stack, aPlayer, list, bool);
-	}
-
-	static boolean containsSubScript(final String s){
-		if (s.contains(StringUtils.superscript("1"))) {
-			return true;
-		}
-		if (s.contains(StringUtils.superscript("2"))) {
-			return true;
-		}
-		if (s.contains(StringUtils.superscript("3"))) {
-			return true;
-		}
-		if (s.contains(StringUtils.superscript("4"))) {
-			return true;
-		}
-		if (s.contains(StringUtils.superscript("5"))) {
-			return true;
-		}
-		if (s.contains(StringUtils.superscript("6"))) {
-			return true;
-		}
-		if (s.contains(StringUtils.superscript("7"))) {
-			return true;
-		}
-		if (s.contains(StringUtils.superscript("8"))) {
-			return true;
-		}
-		if (s.contains(StringUtils.superscript("9"))) {
-			return true;
-		}
-		if (s.contains(StringUtils.subscript("1"))) {
-			return true;
-		}
-		if (s.contains(StringUtils.subscript("2"))) {
-			return true;
-		}
-		if (s.contains(StringUtils.subscript("3"))) {
-			return true;
-		}
-		if (s.contains(StringUtils.subscript("4"))) {
-			return true;
-		}
-		if (s.contains(StringUtils.subscript("5"))) {
-			return true;
-		}
-		if (s.contains(StringUtils.subscript("6"))) {
-			return true;
-		}
-		if (s.contains(StringUtils.subscript("7"))) {
-			return true;
-		}
-		if (s.contains(StringUtils.subscript("8"))) {
-			return true;
-		}
-		if (s.contains(StringUtils.subscript("9"))) {
-			return true;
-		}
-		final String r = StringUtils.subscript(s);
-		if (r.contains(("1"))) {
-			return false;
-		}
-		if (r.contains(("2"))) {
-			return false;
-		}
-		if (r.contains(("3"))) {
-			return false;
-		}
-		if (r.contains(("4"))) {
-			return false;
-		}
-		if (r.contains(("5"))) {
-			return false;
-		}
-		if (r.contains(("6"))) {
-			return false;
-		}
-		if (r.contains(("7"))) {
-			return false;
-		}
-		if (r.contains(("8"))) {
-			return false;
-		}
-		if (r.contains(("9"))) {
-			return false;
-		}
-		return false;
-	}
+	}	
 
 	public final String getMaterialName() {
 		return StringUtils.subscript(this.materialName);

@@ -2,7 +2,6 @@ package gtPlusPlus.core.common;
 
 import static gtPlusPlus.core.lib.CORE.DEBUG;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.core.block.ModBlocks;
@@ -20,9 +19,9 @@ import gtPlusPlus.core.tileentities.ModTileEntities;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.debug.DEBUG_INIT;
 import gtPlusPlus.core.util.player.PlayerCache;
+import gtPlusPlus.xmod.eio.handler.HandlerTooltip_EIO;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import net.minecraft.entity.Entity;
-import net.minecraftforge.common.MinecraftForge;
 
 public class CommonProxy {
 
@@ -30,8 +29,7 @@ public class CommonProxy {
 
 	public CommonProxy(){
 		//Should Register Gregtech Materials I've Made
-		MinecraftForge.EVENT_BUS.register(this);
-		FMLCommonHandler.instance().bus().register(this);
+		Utils.registerEvent(this);
 		if (LoadedMods.Gregtech){
 			if (CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
 				Utils.LOG_INFO("We're using Gregtech 5.09 Experimental.");
@@ -82,10 +80,21 @@ public class CommonProxy {
 		ModItems.init();
 		ModBlocks.init();
 		CI.Init();
+		
+		/**
+		 * Register the Event Handlers.
+		 */
+		
 		//Prevents my Safes being destroyed.
-		MinecraftForge.EVENT_BUS.register(new PickaxeBlockBreakEventHandler());
+		Utils.registerEvent(new PickaxeBlockBreakEventHandler());
 		//Block Handler for all events.
-		MinecraftForge.EVENT_BUS.register(new BlockEventHandler());
+		Utils.registerEvent(new BlockEventHandler());
+		//Handles Custom tooltips for EIO.
+		Utils.registerEvent(new HandlerTooltip_EIO());
+		
+		/**
+		 * End of Subscribe Event registration.
+		 */
 
 		Utils.LOG_INFO("[Proxy] Calling Render registrator.");
 		registerRenderThings();

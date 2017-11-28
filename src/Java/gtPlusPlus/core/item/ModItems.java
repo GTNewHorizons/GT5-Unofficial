@@ -66,6 +66,7 @@ import gtPlusPlus.core.util.debug.DEBUG_INIT;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.materials.MaterialUtils;
+import gtPlusPlus.xmod.eio.material.MaterialEIO;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
@@ -683,22 +684,22 @@ public final class ModItems {
 		if ((LoadedMods.EnderIO || LOAD_ALL_CONTENT) && !CORE.GTNH){
 			Utils.LOG_INFO("EnderIO Found - Loading Resources.");
 			//Enderio Dusts
-			itemDustSoularium = ItemUtils.generateSpecialUseDusts("Soularium", "Soularium", ""+Materials.Soulsand.mChemicalFormula+Materials.Gold.mChemicalFormula, Utils.rgbtoHexValue(95,90,54))[0];
-			itemDustRedstoneAlloy = ItemUtils.generateSpecialUseDusts("RedstoneAlloy", "Redstone Alloy", ""+Materials.Redstone.mChemicalFormula+Materials.Silicon.mChemicalFormula, Utils.rgbtoHexValue(178,34,34))[0];
-			itemDustElectricalSteel = ItemUtils.generateSpecialUseDusts("ElectricalSteel", "Electrical Steel", "(Fe50C)3Si", Utils.rgbtoHexValue(194,194,194))[0];
-			itemDustPulsatingIron = ItemUtils.generateSpecialUseDusts("PulsatingIron", "Pulsating Iron", ""+Materials.Iron.mChemicalFormula+Materials.Enderpearl.mChemicalFormula, Utils.rgbtoHexValue(50,91,21))[0];
-			itemDustEnergeticAlloy = ItemUtils.generateSpecialUseDusts("EnergeticAlloy", "Energetic Alloy", ""+Materials.Gold.mChemicalFormula+Materials.Redstone.mChemicalFormula+Materials.Glowstone.mChemicalFormula, Utils.rgbtoHexValue(252,151,45))[0];
-			itemDustVibrantAlloy = ItemUtils.generateSpecialUseDusts("VibrantAlloy", "Vibrant Alloy", "("+Materials.Gold.mChemicalFormula+Materials.Redstone.mChemicalFormula+Materials.Glowstone.mChemicalFormula+")"+Materials.Enderpearl, Utils.rgbtoHexValue(204,242,142))[0];
-			itemDustConductiveIron = ItemUtils.generateSpecialUseDusts("ConductiveIron", "Conductive Iron", ""+Materials.Iron.mChemicalFormula+Materials.Redstone.mChemicalFormula, Utils.rgbtoHexValue(164,109,100))[0];
+			itemDustSoularium = ItemUtils.generateSpecialUseDusts("Soularium", "Soularium", MaterialEIO.SOULARIUM.vChemicalFormula, MaterialEIO.SOULARIUM.getRgbAsHex())[0];
+			itemDustRedstoneAlloy = ItemUtils.generateSpecialUseDusts("RedstoneAlloy", "Redstone Alloy", MaterialEIO.REDSTONE_ALLOY.vChemicalFormula, MaterialEIO.REDSTONE_ALLOY.getRgbAsHex())[0];
+			itemDustElectricalSteel = ItemUtils.generateSpecialUseDusts("ElectricalSteel", "Electrical Steel", MaterialEIO.ELECTRICAL_STEEL.vChemicalFormula, MaterialEIO.ELECTRICAL_STEEL.getRgbAsHex())[0];
+			itemDustPulsatingIron = ItemUtils.generateSpecialUseDusts("PulsatingIron", "Pulsating Iron", MaterialEIO.PULSATING_IRON.vChemicalFormula, MaterialEIO.PULSATING_IRON.getRgbAsHex())[0];
+			itemDustEnergeticAlloy = ItemUtils.generateSpecialUseDusts("EnergeticAlloy", "Energetic Alloy", MaterialEIO.ENERGETIC_ALLOY.vChemicalFormula, MaterialEIO.ENERGETIC_ALLOY.getRgbAsHex())[0];
+			itemDustVibrantAlloy = ItemUtils.generateSpecialUseDusts("VibrantAlloy", "Vibrant Alloy", MaterialEIO.VIBRANT_ALLOY.vChemicalFormula, MaterialEIO.VIBRANT_ALLOY.getRgbAsHex())[0];
+			itemDustConductiveIron = ItemUtils.generateSpecialUseDusts("ConductiveIron", "Conductive Iron", MaterialEIO.CONDUCTIVE_IRON.vChemicalFormula, MaterialEIO.CONDUCTIVE_IRON.getRgbAsHex())[0];
 
 			//EnderIO Plates
-			itemPlateSoularium = ItemUtils.generateSpecialUsePlate("itemPlate"+"Soularium", "Soularium", new short[]{95, 90, 54}, 0);
-			itemPlateRedstoneAlloy = ItemUtils.generateSpecialUsePlate("itemPlate"+"RedstoneAlloy", "Redstone Alloy", new short[]{178,34,34}, 0);
-			itemPlateElectricalSteel = ItemUtils.generateSpecialUsePlate("itemPlate"+"ElectricalSteel", "Electrical Steel", new short[]{194, 194, 194}, 0);
-			itemPlatePulsatingIron = ItemUtils.generateSpecialUsePlate("itemPlate"+"PhasedIron", "Phased Iron", new short[]{50, 91, 21}, 0);
-			itemPlateEnergeticAlloy = ItemUtils.generateSpecialUsePlate("itemPlate"+"EnergeticAlloy", "Energetic Alloy", new short[]{252, 152, 45}, 0);
-			itemPlateVibrantAlloy = ItemUtils.generateSpecialUsePlate("itemPlate"+"VibrantAlloy", "Vibrant Alloy", new short[]{204, 242, 142}, 0);
-			itemPlateConductiveIron = ItemUtils.generateSpecialUsePlate("itemPlate"+"ConductiveIron", "Conductive Iron", new short[]{164, 109, 100}, 0);
+			itemPlateSoularium = ItemUtils.generateSpecialUsePlate("Soularium", "Soularium", MaterialEIO.SOULARIUM.vChemicalFormula, MaterialEIO.SOULARIUM.getRgbAsHex(), 0);
+			itemPlateRedstoneAlloy = ItemUtils.generateSpecialUsePlate("RedstoneAlloy", "Redstone Alloy", MaterialEIO.REDSTONE_ALLOY.vChemicalFormula, MaterialEIO.REDSTONE_ALLOY.getRgbAsHex(), 0);
+			itemPlateElectricalSteel = ItemUtils.generateSpecialUsePlate("ElectricalSteel", "Electrical Steel", MaterialEIO.ELECTRICAL_STEEL.vChemicalFormula, MaterialEIO.ELECTRICAL_STEEL.getRgbAsHex(), 0);
+			itemPlatePulsatingIron = ItemUtils.generateSpecialUsePlate("PhasedIron", "Phased Iron", MaterialEIO.PULSATING_IRON.vChemicalFormula, MaterialEIO.PULSATING_IRON.getRgbAsHex(), 0);
+			itemPlateEnergeticAlloy = ItemUtils.generateSpecialUsePlate("EnergeticAlloy", "Energetic Alloy", MaterialEIO.ENERGETIC_ALLOY.vChemicalFormula, MaterialEIO.ENERGETIC_ALLOY.getRgbAsHex(), 0);
+			itemPlateVibrantAlloy = ItemUtils.generateSpecialUsePlate("VibrantAlloy", "Vibrant Alloy", MaterialEIO.VIBRANT_ALLOY.vChemicalFormula, MaterialEIO.VIBRANT_ALLOY.getRgbAsHex(), 0);
+			itemPlateConductiveIron = ItemUtils.generateSpecialUsePlate("ConductiveIron", "Conductive Iron", MaterialEIO.CONDUCTIVE_IRON.vChemicalFormula, MaterialEIO.CONDUCTIVE_IRON.getRgbAsHex(), 0);
 
 			//Register dumb naming conventions - Who chose fucking phased Iron/Gold?
 			GT_OreDictUnificator.registerOre("dustPhasedGold", ItemUtils.getSimpleStack(itemDustVibrantAlloy));
