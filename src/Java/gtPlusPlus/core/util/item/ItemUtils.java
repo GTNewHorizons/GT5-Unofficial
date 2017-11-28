@@ -258,7 +258,18 @@ public class ItemUtils {
 	}
 
 	public static ItemStack getItemStackOfAmountFromOreDict(final String oredictName, final int amount){
-		final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictName);
+		
+		String mTemp = oredictName;
+		
+		//Banned Materials and replacements for GT5.8 compat.		
+		if (oredictName.toLowerCase().contains("rutile")){
+			mTemp.replace("Rutile", "Titanium");
+		}
+		if (oredictName.toLowerCase().contains("vanadiumsteel")){
+			mTemp.replace("VanadiumSteel", "StainlessSteel");
+		}
+		
+		final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(mTemp);
 		if (!oreDictList.isEmpty()){
 			final ItemStack returnValue = oreDictList.get(0).copy();
 			returnValue.stackSize = amount;
