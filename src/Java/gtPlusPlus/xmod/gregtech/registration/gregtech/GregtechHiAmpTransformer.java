@@ -61,12 +61,12 @@ public class GregtechHiAmpTransformer {
 						OrePrefixes.wireGt16.get(Materials.Lead) });
 		GT_ModHandler.addCraftingRecipe(GregtechItemList.Transformer_HA_MV_LV.get(1L, new Object[0]), bitsd,
 				new Object[] { " BB", "CM ", " BB", Character.valueOf('M'), ItemList.Hull_LV, Character.valueOf('C'),
-						OrePrefixes.wireGt16.get(Materials.AnyCopper), Character.valueOf('B'),
+						OrePrefixes.wireGt16.get(Materials.Copper), Character.valueOf('B'),
 						OrePrefixes.wireGt16.get(Materials.Tin) });
 		GT_ModHandler.addCraftingRecipe(GregtechItemList.Transformer_HA_HV_MV.get(1L, new Object[0]), bitsd,
 				new Object[] { " BB", "CM ", " BB", Character.valueOf('M'), ItemList.Hull_MV, Character.valueOf('C'),
 						OrePrefixes.wireGt16.get(Materials.Gold), Character.valueOf('B'),
-						OrePrefixes.wireGt16.get(Materials.AnyCopper) });
+						OrePrefixes.wireGt16.get(Materials.AnnealedCopper) });
 		GT_ModHandler.addCraftingRecipe(GregtechItemList.Transformer_HA_EV_HV.get(1L, new Object[0]), bitsd,
 				new Object[] { "KBB", "CM ", "KBB", Character.valueOf('M'), ItemList.Hull_HV, Character.valueOf('C'),
 						OrePrefixes.wireGt16.get(Materials.Aluminium), Character.valueOf('B'),
