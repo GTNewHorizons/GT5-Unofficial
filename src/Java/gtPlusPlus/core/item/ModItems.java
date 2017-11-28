@@ -715,9 +715,9 @@ public final class ModItems {
 		if (LoadedMods.Big_Reactors|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("BigReactors Found - Loading Resources.");
 			//Item Init
-			itemPlateBlutonium = ItemUtils.generateSpecialUsePlate("itemPlate"+"Blutonium", "Blutonium", new short[]{0, 0, 255}, 0);
-			itemPlateBlutonium = ItemUtils.generateSpecialUsePlate("itemPlate"+"Cyanite", "Cyanite", new short[]{0, 191, 255}, 0);
-			itemPlateLudicrite = ItemUtils.generateSpecialUsePlate("itemPlate"+"Ludicrite", "Ludicrite", new short[]{167, 5, 179}, 0);
+			itemPlateBlutonium = ItemUtils.generateSpecialUsePlate("Blutonium", "Blutonium", new short[]{0, 0, 255}, 0);
+			itemPlateBlutonium = ItemUtils.generateSpecialUsePlate("Cyanite", "Cyanite", new short[]{0, 191, 255}, 0);
+			itemPlateLudicrite = ItemUtils.generateSpecialUsePlate("Ludicrite", "Ludicrite", new short[]{167, 5, 179}, 0);
 		}
 		else {
 			Utils.LOG_WARNING("BigReactors not Found - Skipping Resources.");
@@ -729,7 +729,7 @@ public final class ModItems {
 			//Item Init
 			try {
 				ItemUtils.getItemForOreDict("Thaumcraft:ItemResource", "ingotVoidMetal", "Void Metal Ingot", 16);
-				itemPlateVoidMetal = ItemUtils.generateSpecialUsePlate("itemPlate"+"Void", "Void", new short[]{82, 17, 82}, 0);
+				itemPlateVoidMetal = ItemUtils.generateSpecialUsePlate("Void", "Void", new short[]{82, 17, 82}, 0);
 				GT_OreDictUnificator.registerOre("plateVoidMetal", new ItemStack(ModItems.itemPlateVoidMetal));
 			} catch (final NullPointerException e){
 				e.getClass();
@@ -744,7 +744,7 @@ public final class ModItems {
 		if (LoadedMods.PneumaticCraft|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("PneumaticCraft Found - Loading Resources.");
 			//Item Init
-			itemPlateCompressedIron = ItemUtils.generateSpecialUsePlate("itemPlate"+"CompressedIron", "Compressed Iron", new short[]{128, 128, 128}, 0);
+			itemPlateCompressedIron = ItemUtils.generateSpecialUsePlate("CompressedIron", "Compressed Iron", new short[]{128, 128, 128}, 0);
 		}
 		else {
 			Utils.LOG_WARNING("PneumaticCraft not Found - Skipping Resources.");
@@ -766,7 +766,7 @@ public final class ModItems {
 		if (LoadedMods.RFTools|| LOAD_ALL_CONTENT){
 			Utils.LOG_INFO("rfTools Found - Loading Resources.");
 			//Item Init
-			itemPlateDimensionShard = ItemUtils.generateSpecialUsePlate("itemPlate"+"DimensionShard", "Dimensional Shard", new short[]{170, 230, 230}, 0);
+			itemPlateDimensionShard = ItemUtils.generateSpecialUsePlate("DimensionShard", "Dimensional Shard", new short[]{170, 230, 230}, 0);
 		}
 		else {
 			Utils.LOG_WARNING("rfTools not Found - Skipping Resources.");
@@ -798,7 +798,7 @@ public final class ModItems {
 		//Special Item Handling Case
 		if (configSwitches.enableAlternativeBatteryAlloy) {
 			//ModItems.itemIngotBatteryAlloy = new BaseItemIngot("itemIngotBatteryAlloy", "Battery Alloy", new short[]{35, 228, 141}, 0); TODO
-			ModItems.itemPlateBatteryAlloy = ItemUtils.generateSpecialUsePlate("itemPlateBatteryAlloy", "Battery Alloy", new short[]{35, 228, 141}, 0);
+			ModItems.itemPlateBatteryAlloy = ItemUtils.generateSpecialUsePlate("BatteryAlloy", "Battery Alloy", new short[]{35, 228, 141}, 0);
 
 		}
 
