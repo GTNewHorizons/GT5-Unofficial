@@ -19,14 +19,12 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.nbt.ModularArmourUtils.BT;
 import gtPlusPlus.core.util.nbt.NBTUtils;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 
 @Optional.InterfaceList(value = { @Optional.Interface(iface = "baubles.api.IBauble", modid = "Baubles"),
@@ -45,7 +43,7 @@ public class BaseBauble extends Item implements IBauble {
 	public BaseBauble(BaubleType type, String displayName) {
 		this.mThisBauble = type;
 		this.mDisplayName = displayName;
-		MinecraftForge.EVENT_BUS.register(this);
+		Utils.registerEvent(this);
 		this.setMaxStackSize(1);
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
 		this.setUnlocalizedName(Utils.sanitizeString(displayName.toLowerCase()));

@@ -236,7 +236,7 @@ public class GTplusplus implements ActionListener {
 		Utils.LOG_INFO("User's Country: " + CORE.USER_COUNTRY);
 
 		// FirstCall();
-		FMLCommonHandler.instance().bus().register(new LoginEventHandler());
+		Utils.registerEvent(new LoginEventHandler());
 		Utils.LOG_INFO("Login Handler Initialized");
 
 		if (CORE.configSwitches.enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){

@@ -3,7 +3,7 @@ package gtPlusPlus.core.common.compat;
 import api.player.client.ClientPlayerAPI;
 import gtPlusPlus.core.common.BasePlayer;
 import gtPlusPlus.core.handler.events.SneakManager;
-import net.minecraftforge.common.MinecraftForge;
+import gtPlusPlus.core.util.Utils;
 
 public class COMPAT_PlayerAPI {
 
@@ -23,7 +23,7 @@ public class COMPAT_PlayerAPI {
 
 	public static class clientProxy{
 		public static void initPre(){
-			MinecraftForge.EVENT_BUS.register(SneakManager.instance);
+			Utils.registerEvent(SneakManager.instance);
 		}
 
 		public static void Init(){

@@ -1,12 +1,10 @@
 package gtPlusPlus.xmod.gregtech.registration.gregtech;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import gtPlusPlus.xmod.gregtech.common.helpers.ChargingHelper;
 import gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GregtechMetaWirelessCharger;
-import net.minecraftforge.common.MinecraftForge;
 
 public class GregtechWirelessChargers {
 
@@ -21,8 +19,7 @@ public class GregtechWirelessChargers {
 					| GT_ModHandler.RecipeBits.REVERSIBLE | GT_ModHandler.RecipeBits.BUFFERED;
 			int mID = 890;		
 
-			FMLCommonHandler.instance().bus().register(new ChargingHelper());
-			MinecraftForge.EVENT_BUS.register(new ChargingHelper());
+			Utils.registerEvent(new ChargingHelper());
 
 			GregtechItemList.Charger_LV.set(new GregtechMetaWirelessCharger(mID++, "wificharger.01.tier.single",
 					"Wireless Charger MK I", 1, "Hopefully won't give you cancer.", 0).getStackForm(1L));

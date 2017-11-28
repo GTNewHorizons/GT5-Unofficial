@@ -48,7 +48,7 @@ extends GregtechMeta_MultiBlockBase {
 		return new String[]{
 				"Controller Block for the Industrial Ore Washing Plant",
 				"80% faster than using single block machines of the same voltage",
-				"Size: 7x2x5 [WxHxL] (open)",
+				"Size: 7x3x5 [WxHxL] (open)",
 				"X     X",
 				"X     X",
 				"XXXXX",

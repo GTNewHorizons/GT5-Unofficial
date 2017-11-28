@@ -49,6 +49,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -229,6 +230,12 @@ public class Utils {
 	// Non-Dev Comments
 	public static void LOG_ASM(final String s) {
 		FMLRelaunchLog.info("", s);
+	}
+	
+	//Register an event to both busses.
+	public static void registerEvent(Object o){
+		MinecraftForge.EVENT_BUS.register(o);
+		FMLCommonHandler.instance().bus().register(o);
 	}
 
 	public static void paintBox(final Graphics g, final int MinA, final int MinB, final int MaxA, final int MaxB) {

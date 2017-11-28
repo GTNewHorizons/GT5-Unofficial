@@ -8,15 +8,12 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
-import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Maintenance;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
-import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base.GregtechMeta_MultiBlockBase;
 import net.minecraft.block.Block;
@@ -44,7 +41,7 @@ extends GregtechMeta_MultiBlockBase {
 		return new String[]{
 				"Controller Block for the Industrial Thermal Centrifuge",
 				"60% faster than using single block machines of the same voltage",
-				"Size: 3x2x3 [WxLxH] (Hollow)", "Controller (front centered)",
+				"Size: 3x2x3 [WxHxL]", "Controller (front centered)",
 				"1x Input Bus (Any casing)",
 				"1x Output Bus (Any casing)",
 				"1x Maintenance Hatch (Any casing)",
@@ -143,8 +140,8 @@ extends GregtechMeta_MultiBlockBase {
 		int tAmount = 0;
 		for (int i = -1; i < 2; ++i) {
 			for (int j = -1; j < 2; ++j) {
-				for (int h = -1; h < 1; ++h) {
-					if ((h != 0) || ((((xDir + i != 0) || (zDir + j != 0))) && (((i != 0) || (j != 0))))) {
+				for (int h = -1; h < 0; ++h) {
+					//if ((h != 0) || ((((xDir + i != 0) || (zDir + j != 0))) && (((i != 0) || (j != 0))))) {
 						IGregTechTileEntity tTileEntity = aBaseMetaTileEntity.getIGregTechTileEntityOffset(xDir + i, h,
 								zDir + j);
 						if (!addToMachineList(tTileEntity)) {
@@ -157,7 +154,7 @@ extends GregtechMeta_MultiBlockBase {
 							}
 							++tAmount;
 						}
-					}
+					//}
 				}
 			}
 		}
