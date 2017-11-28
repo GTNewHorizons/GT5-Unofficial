@@ -155,16 +155,16 @@ GT_MetaTileEntity_MultiBlockBase {
 					(100 - percentage));
 			cloneRecipe.mDuration = tempTime;
 			if (cloneRecipe.mDuration < originalTime) {
-				Utils.LOG_INFO("Generated recipe with a smaller time. | "
+				Utils.LOG_MACHINE_INFO("Generated recipe with a smaller time. | "
 						+ originalTime + " | " + cloneRecipe.mDuration + " |");
 				return cloneRecipe;
 			} else {
-				Utils.LOG_INFO("Did not generate recipe with a smaller time. | "
+				Utils.LOG_MACHINE_INFO("Did not generate recipe with a smaller time. | "
 						+ originalTime + " | " + cloneRecipe.mDuration + " |");
 				return tRecipe;
 			}
 		}
-		Utils.LOG_INFO("Error generating recipe, returning null.");
+		Utils.LOG_MACHINE_INFO("Error generating recipe, returning null.");
 		return null;
 
 	}
