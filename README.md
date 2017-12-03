@@ -1,37 +1,19 @@
 # Welcome to the GT++ wiki!  
+
+## License  
+Copyright 2016-2018  
+All rights reserved.  
+Distribution of the software in any form is only allowed with explicit, prior permission from the owner.  
+  
+## Derivative Works  
+These mods are provided freely and may be decompiled and modified for private use, either with a decompiler or a bytecode editor. Public use of modified or derivative versions is prohibited unless you are given specific written permission. Distribution of the source code, modified (including custom compilation) or otherwise, is prohibited by anyone except the author, except in the case of a derivative mod that has been given prior approval. Creating derivative works for commercial use is expressly forbidden and the owner reserves full right to seek damages.  
    
 Please read this before you submit any issues.  
-[Mod Issues] (https://github.com/draknyte1/GTplusplus/wiki/Github-Issue-Format)  
+[Github Issue Template - Click here](https://github.com/draknyte1/GTplusplus/wiki/Github-Issue-Format)  
   
 I will Happily take the form of code criticism or suggestions in the form of PRs,  
 Any bugs/issues or mod ideas/suggestions, please submit here as issues.  
-[Modpack Permissions](https://github.com/draknyte1/GTplusplus/issues/24#issuecomment-252458551)  
+[Modpack Permissions - Click here](https://github.com/draknyte1/GTplusplus/issues/24#issuecomment-252458551)  
   
 ## Download   
 [Recommended Version](https://github.com/draknyte1/GTplusplus/wiki/Downloads!#click-here-to-download)  
-  
-### Features  
-[GT++](https://github.com/draknyte1/GTplusplus/wiki/Features#gt-1)  
-[Gregtech](https://github.com/draknyte1/GTplusplus/wiki/Features#gregtech)  
-[IC2exp](https://github.com/draknyte1/GTplusplus/wiki/Features#ic2)  
-[Thaumcraft4](https://github.com/draknyte1/GTplusplus/wiki/Features#thaumcraft)  
-[Extra-Utils](https://github.com/draknyte1/GTplusplus/wiki/Features#extra-utilities)  
-[More-Planets](https://github.com/draknyte1/GTplusplus/wiki/Features#more-planets)  
-[Forbidden Magic](https://github.com/draknyte1/GTplusplus/wiki/Features#forbidden-magic)  
-[Growthcraft](https://github.com/draknyte1/GTplusplus/wiki/Features#growthcraft)  
-[Forestry](https://github.com/draknyte1/GTplusplus/wiki/Features#forestry)  
-[Extra Bees](https://github.com/draknyte1/GTplusplus/wiki/Features#extra-bees)  
-[Thermal Foundation](https://github.com/draknyte1/GTplusplus/wiki/Features#thermal-foundation)  
-[Psychedelicraft](https://github.com/draknyte1/GTplusplus/wiki/Features#psychedelicraft)  
-[Immersive Engineering](https://github.com/draknyte1/GTplusplus/wiki/Features#immersive-engineering)  
-[IHL](https://github.com/draknyte1/GTplusplus/wiki/Features#ihl)  
-[PneumaticCraft](https://github.com/draknyte1/GTplusplus/wiki/Features#pneumaticcraft)  
-[Compact Windmills](https://github.com/draknyte1/GTplusplus/wiki/Features#compact-windmills)  
-[Railcraft](https://github.com/draknyte1/GTplusplus/wiki/Features#railcraft)  
-[EnderIO](https://github.com/draknyte1/GTplusplus/wiki/Features#enderio)  
-[Big Reactors](https://github.com/draknyte1/GTplusplus/wiki/Features#big-reactors)  
-[Simply Jetpacks](https://github.com/draknyte1/GTplusplus/wiki/Features#simply-jetpacks)  
-[RFtools](https://github.com/draknyte1/GTplusplus/wiki/Features#rftools)  
-[CoFHCore](https://github.com/draknyte1/GTplusplus/wiki/Features#cofhcore)  
-
-[Upcoming/Dev Features](https://github.com/draknyte1/GTplusplus/wiki/Features#upcoming-features-probably-in-dev-versions-if-you-want-to-test)  
