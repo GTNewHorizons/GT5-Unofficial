@@ -55,15 +55,16 @@ public class ItemEntityCatcher extends Item implements IEntityCatcher {
 
 		Entity mEntityToSpawn;
 		int mEntityID;
-		Utils.LOG_INFO("getStoredEntity(1)");
+		Utils.LOG_WARNING("getStoredEntity(1)");
 
 		mEntityID = NBTUtils.getInteger(aStack, "mEntityID");
 		mEntityToSpawn = EntityList.createEntityByID(mEntityID, aWorld);
 		if (mEntityToSpawn != null) {
-			Utils.LOG_INFO("getStoredEntity(2)");
+			Utils.LOG_WARNING("getStoredEntity(2)");
 			return mEntityToSpawn;
 		}
 
+		Utils.LOG_INFO("Failed to get stored entity. - getStoredEntity()");
 		return null;
 	}
 
@@ -75,7 +76,7 @@ public class ItemEntityCatcher extends Item implements IEntityCatcher {
 			return false;
 		}
 		
-		Utils.LOG_INFO("setStoredEntity(1)");
+		Utils.LOG_WARNING("setStoredEntity(1)");
 
 		NBTTagCompound mEntityData;
 		Class<? extends Entity> mEntityClass;
@@ -83,7 +84,7 @@ public class ItemEntityCatcher extends Item implements IEntityCatcher {
 		String mEntityName;
 		int mEntityID, mEntityHashcode;
 		UUID mUuidPersistent, mUuidUnique;
-		Utils.LOG_INFO("setStoredEntity(2)");
+		Utils.LOG_WARNING("setStoredEntity(2)");
 
 		mEntityData = aEntity.getEntityData();
 		mEntityClass = aEntity.getClass();
@@ -94,7 +95,7 @@ public class ItemEntityCatcher extends Item implements IEntityCatcher {
 		mEntityHashcode = aEntity.hashCode();
 		mUuidPersistent = aEntity.getPersistentID();
 		mUuidUnique = aEntity.getUniqueID();
-		Utils.LOG_INFO("setStoredEntity(3)");
+		Utils.LOG_WARNING("setStoredEntity(3)");
 
 		NBTUtils.createTagCompound(aStack, "mEntityData", mEntityData);
 		NBTUtils.setString(aStack,"mEntityName", mEntityName);
@@ -104,7 +105,7 @@ public class ItemEntityCatcher extends Item implements IEntityCatcher {
 		NBTUtils.setString(aStack,"mUuidUnique", mUuidUnique.toString());
 		NBTUtils.setInteger(aStack,"mEntityHashcode", mEntityHashcode);
 		NBTUtils.setBoolean(aStack,"mHasEntity", true);
-		Utils.LOG_INFO("setStoredEntity(4)");
+		Utils.LOG_WARNING("setStoredEntity(4)");
 		return true;
 	}
 
@@ -146,12 +147,12 @@ public class ItemEntityCatcher extends Item implements IEntityCatcher {
 		EntityLiving mEntityToSpawn = (EntityLiving) getStoredEntity(aWorld, aStack);
 		Class<? extends Entity> mEntityClass = getStoredEntityClass(aStack);
 		
-		Utils.LOG_INFO("spawnStoredEntity(1)");
+		Utils.LOG_WARNING("spawnStoredEntity(1)");
 
 		if (mEntityToSpawn != null && mEntityClass != null) {
-			Utils.LOG_INFO("spawnStoredEntity(2)");
+			Utils.LOG_WARNING("spawnStoredEntity(2)");
 			if (mEntityToSpawn.getEntityData() != mEntityData) {
-				Utils.LOG_INFO("spawnStoredEntity(x)");
+				Utils.LOG_WARNING("spawnStoredEntity(x)");
 				NBTUtils.setEntityCustomData(mEntityToSpawn, mEntityData);
 			}
 
@@ -160,17 +161,17 @@ public class ItemEntityCatcher extends Item implements IEntityCatcher {
 			if (mEntityToSpawn instanceof EntityLiving) {
 				((EntityLiving) mEntityToSpawn).onSpawnWithEgg(null);
 				aWorld.spawnEntityInWorld(mEntityToSpawn);
-				Utils.LOG_INFO("spawnStoredEntity(3)");
+				Utils.LOG_WARNING("spawnStoredEntity(3)");
 			}
 			if (mEntityToSpawn instanceof EntityLiving) {
 				((EntityLiving) mEntityToSpawn).playLivingSound();
-				Utils.LOG_INFO("spawnStoredEntity(4)");
+				Utils.LOG_WARNING("spawnStoredEntity(4)");
 			}
-			Utils.LOG_INFO("spawnStoredEntity(5)");
+			Utils.LOG_WARNING("spawnStoredEntity(5)");
 			NBTUtils.setBoolean(aStack,"mHasEntity", false);
 			return true;
 		}
-
+		Utils.LOG_INFO("Failed to spawn stored entity. - spawnStoredEntity()");
 		return false;
 	}
 
@@ -201,11 +202,18 @@ public class ItemEntityCatcher extends Item implements IEntityCatcher {
 	public boolean onItemUse(ItemStack itemstack, EntityPlayer player, World world, int x, int y, int z, int side,
 			float xOffset, float yOffset, float zOffset) {
 		if (Utils.isServer()) {
-			Utils.LOG_INFO("Trying to release (1)");
+			Utils.LOG_WARNING("Trying to release (1)");
 			if (NBTUtils.hasKey(itemstack,"mHasEntity")
 					&& NBTUtils.getBoolean(itemstack,"mHasEntity")) {
-				Utils.LOG_INFO("Trying to release (2)");
-				return spawnStoredEntity(world, itemstack, new BlockPos(x, y+1, z));
+				Utils.LOG_WARNING("Trying to release (2)");
+				boolean mDidSpawn =  spawnStoredEntity(world, itemstack, new BlockPos(x, y+1, z));
+				
+				if (!mDidSpawn){
+					PlayerUtils.messagePlayer(player, "You failed to release a "+NBTUtils.getString(itemstack,"mEntityName")+".");					
+				}
+				
+				return mDidSpawn;
+				
 			}
 		}
 		return super.onItemUse(itemstack, player, world, x, y, z, side, xOffset, yOffset, zOffset);
@@ -215,12 +223,12 @@ public class ItemEntityCatcher extends Item implements IEntityCatcher {
 	@Override
 	public boolean itemInteractionForEntity(ItemStack aStack, EntityPlayer aPlayer, EntityLivingBase aEntity) {
 		if (Utils.isServer()) {
-			Utils.LOG_INFO("Trying to catch (1)");
+			Utils.LOG_WARNING("Trying to catch (1)");
 			if (!hasEntity(aStack)) {
-				Utils.LOG_INFO("Trying to catch (2)");
+				Utils.LOG_WARNING("Trying to catch (2)");
 				boolean mStored = setStoredEntity(aPlayer.worldObj, aStack, aEntity);
 				if (mStored) {
-					Utils.LOG_INFO("Trying to catch (3)");
+					Utils.LOG_WARNING("Trying to catch (3)");
 					aEntity.setDead();
 					PlayerUtils.messagePlayer(aPlayer, "You have captured a "+NBTUtils.getString(aStack,"mEntityName")+" in the Jar.");
 					//NBTUtils.tryIterateNBTData(aStack);
