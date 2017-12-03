@@ -10,6 +10,7 @@ import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -449,6 +450,14 @@ public class NBTUtils {
 		} catch (Throwable t) {
 			return false;
 		}
+	}
+	
+	public static NBTTagCompound getEntityCustomData(Entity aEntity){
+		return ReflectionUtils.getField(aEntity, "customEntityData");
+	}
+	
+	public static boolean setEntityCustomData(Entity aEntity, NBTTagCompound aTag){
+		return ReflectionUtils.setField(aEntity, "customEntityData", aTag);
 	}
 
 }

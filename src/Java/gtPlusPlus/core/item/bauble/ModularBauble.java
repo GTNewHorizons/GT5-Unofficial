@@ -9,7 +9,6 @@ import com.google.common.collect.Multimap;
 import baubles.api.BaubleType;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.nbt.ModularArmourUtils;
 import gtPlusPlus.core.util.nbt.ModularArmourUtils.BT;
