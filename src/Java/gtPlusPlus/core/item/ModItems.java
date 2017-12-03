@@ -40,6 +40,7 @@ import gtPlusPlus.core.item.general.ItemHalfCompleteCasings;
 import gtPlusPlus.core.item.general.ItemLavaFilter;
 import gtPlusPlus.core.item.general.RF2EU_Battery;
 import gtPlusPlus.core.item.general.books.ItemBaseBook;
+import gtPlusPlus.core.item.general.capture.ItemEntityCatcher;
 import gtPlusPlus.core.item.general.chassis.itemBoilerChassis;
 import gtPlusPlus.core.item.general.chassis.itemDehydratorCoil;
 import gtPlusPlus.core.item.general.chassis.itemDehydratorCoilWire;
@@ -271,6 +272,8 @@ public final class ModItems {
 
 	public static Item itemRope;
 	public static Item itemFiber;
+	
+	public static Item itemDragonJar;
 
 	public static final void init(){
 
@@ -657,6 +660,8 @@ public final class ModItems {
 		itemLavaFilter = new ItemLavaFilter();
 
 		itemGrindleTablet = new BaseItemGrindle();
+		
+		itemDragonJar = new ItemEntityCatcher();
 
 		//Chemistry
 		CoalTar.run();

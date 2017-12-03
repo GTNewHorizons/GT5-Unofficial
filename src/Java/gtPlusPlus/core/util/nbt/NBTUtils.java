@@ -207,29 +207,20 @@ public class NBTUtils {
 			NBTTagCompound aNBT = NBTUtils.getNBT(aStack);
 			if (aNBT != null) {
 				if (!aNBT.hasNoTags()) {
-					// int tagCount = 0;
 					Map<?, ?> mInternalMap = ReflectionUtils.getField(aNBT, "tagMap");
-
 					if (mInternalMap != null) {
-						// mInternalMap.forEach((k, v) -> Utils.LOG_INFO("Key: "
-						// + k + ": Value: " + v));
 						for (Map.Entry<?, ?> e : mInternalMap.entrySet()) {
-							Utils.LOG_INFO("Key: " + e.getKey().toString() + " | Value: " + e.getValue().toString());
+							Utils.LOG_INFO("Key: " + e.getKey().toString() + " | Value: " + e.getValue());
 						}
+						return true;
 					} else {
 						Utils.LOG_INFO("Data map reflected from NBTTagCompound was not valid.");
 						return false;
 					}
-				} else {
-					return false;
-				}
-			} else {
-				return false;
-			}
-			return true;
-		} catch (Throwable t) {
-			return false;
-		}
+				} 
+			} 
+		} catch (Throwable t) {}
+		return false;
 	}
 
 	// Botania soulbind handling

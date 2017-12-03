@@ -3,10 +3,14 @@ package gtPlusPlus.core.item.general.capture;
 import java.util.List;
 import java.util.UUID;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import gtPlusPlus.api.interfaces.IEntityCatcher;
+import gtPlusPlus.core.creative.AddToCreativeTab;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.BlockPos;
 import gtPlusPlus.core.util.nbt.NBTUtils;
+import gtPlusPlus.core.util.player.PlayerUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -15,19 +19,28 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
 public class ItemEntityCatcher extends Item implements IEntityCatcher {
-	
-	//PlayerInteractEvent.EntityInteract;
-	
-	public ItemEntityCatcher(){
-		Utils.registerEvent(this);
+
+	// PlayerInteractEvent.EntityInteract;
+
+
+	public ItemEntityCatcher() {
+		//Probably won't ever need this event handler.
+		//Utils.registerEvent(this);
+		this.setUnlocalizedName("itemDragonJar");
+		this.setTextureName(CORE.MODID + ":" + getUnlocalizedName());
+		this.setCreativeTab(AddToCreativeTab.tabMisc);
+		this.setMaxStackSize(16);
+		this.setMaxDamage(0);
+		GameRegistry.registerItem(this, getUnlocalizedName());
 	}
-	
+
 	@Override
 	public boolean hasEntity(ItemStack aStack) {
-		if (NBTUtils.hasKey(aStack, "mHasEntity")){
+		if (NBTUtils.hasKey(aStack, "mHasEntity")) {
 			return NBTUtils.getBoolean(aStack, "mHasEntity");
 		}
 		return false;
@@ -35,110 +48,127 @@ public class ItemEntityCatcher extends Item implements IEntityCatcher {
 
 	@Override
 	public Entity getStoredEntity(World aWorld, ItemStack aStack) {
-		if (aStack == null || !NBTUtils.getBooleanTagCompound(aStack, "mEntity", "mHasEntity")){
+		if (aStack == null || !hasEntity(aStack)) {
+			Utils.LOG_INFO("Cannot get stored entity.");
 			return null;
 		}
 
 		Entity mEntityToSpawn;
 		int mEntityID;
+		Utils.LOG_INFO("getStoredEntity(1)");
 
-		mEntityID = NBTUtils.getIntegerTagCompound(aStack, "mEntity", "mEntityID");		
+		mEntityID = NBTUtils.getInteger(aStack, "mEntityID");
 		mEntityToSpawn = EntityList.createEntityByID(mEntityID, aWorld);
 		if (mEntityToSpawn != null) {
+			Utils.LOG_INFO("getStoredEntity(2)");
 			return mEntityToSpawn;
 		}
 
-		return null;		
+		return null;
 	}
 
 	@Override
 	public boolean setStoredEntity(World aWorld, ItemStack aStack, Entity aEntity) {
-		if (aEntity == null){
-			NBTUtils.setBoolean(aStack, "mHasEntity", true);
+		if (aEntity == null) {
+			NBTUtils.setBoolean(aStack, "mHasEntity", false);
+			Utils.LOG_INFO("Bad Entity being stored.");
 			return false;
 		}
+		
+		Utils.LOG_INFO("setStoredEntity(1)");
 
 		NBTTagCompound mEntityData;
 		Class<? extends Entity> mEntityClass;
 		String mClassName;
+		String mEntityName;
 		int mEntityID, mEntityHashcode;
 		UUID mUuidPersistent, mUuidUnique;
+		Utils.LOG_INFO("setStoredEntity(2)");
 
 		mEntityData = aEntity.getEntityData();
 		mEntityClass = aEntity.getClass();
 		mClassName = mEntityClass.getName();
-		//mEntityID = aEntity.getEntityId();		
+		mEntityName = aEntity.getCommandSenderName();
+		// mEntityID = aEntity.getEntityId();
 		mEntityID = EntityList.getEntityID(aEntity);
 		mEntityHashcode = aEntity.hashCode();
 		mUuidPersistent = aEntity.getPersistentID();
 		mUuidUnique = aEntity.getUniqueID();
+		Utils.LOG_INFO("setStoredEntity(3)");
 
 		NBTUtils.createTagCompound(aStack, "mEntityData", mEntityData);
-		NBTUtils.createIntegerTagCompound(aStack, "mEntity", "mEntityID", mEntityID);
-		NBTUtils.createStringTagCompound(aStack, "mEntity", "mClassName", mClassName);
-		NBTUtils.createStringTagCompound(aStack, "mEntity", "mUuidPersistent", mUuidPersistent.toString());
-		NBTUtils.createStringTagCompound(aStack, "mEntity", "mUuidUnique", mUuidUnique.toString());
-		NBTUtils.createIntegerTagCompound(aStack, "mEntity", "mEntityHashcode", mEntityHashcode);
-		NBTUtils.createBooleanTagCompound(aStack, "mEntity", "mHasEntity", true);
+		NBTUtils.setString(aStack,"mEntityName", mEntityName);
+		NBTUtils.setInteger(aStack,"mEntityID", mEntityID);
+		NBTUtils.setString(aStack,"mClassName", mClassName);
+		NBTUtils.setString(aStack,"mUuidPersistent", mUuidPersistent.toString());
+		NBTUtils.setString(aStack,"mUuidUnique", mUuidUnique.toString());
+		NBTUtils.setInteger(aStack,"mEntityHashcode", mEntityHashcode);
+		NBTUtils.setBoolean(aStack,"mHasEntity", true);
+		Utils.LOG_INFO("setStoredEntity(4)");
 		return true;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public Class<? extends Entity> getStoredEntityClass(ItemStack aStack) {
-		if (aStack == null || !NBTUtils.getBooleanTagCompound(aStack, "mEntity", "mHasEntity")){
+		if (aStack == null || !hasEntity(aStack)) {
 			return null;
 		}
-
 		Class<? extends Entity> mEntityClass;
 		String mClassName;
-
-		mClassName = NBTUtils.getStringTagCompound(aStack, "mEntity", "mClassName");
-
+		mClassName = NBTUtils.getString(aStack,"mClassName");
 		try {
 			mEntityClass = (Class<? extends Entity>) Class.forName(mClassName);
 			if (mEntityClass != null) {
 				return mEntityClass;
 			}
 		}
-		catch (ClassNotFoundException e) {}		
+		catch (ClassNotFoundException e) {
+		}
 		return null;
 	}
 
 	@Override
 	public boolean spawnStoredEntity(World aWorld, ItemStack aStack, BlockPos aPos) {
-		if (aStack == null || !NBTUtils.getBooleanTagCompound(aStack, "mEntity", "mHasEntity")){
+		if (aStack == null || !hasEntity(aStack)) {
+			Utils.LOG_INFO("Cannot release, either invalid Itemstack or no entity stored.");
 			return false;
 		}
 
 		NBTTagCompound mEntityData = NBTUtils.getTagCompound(aStack, "mEntityData");
-		
-		int mEntityID = NBTUtils.getIntegerTagCompound(aStack, "mEntity", "mEntityID");
-		String mClassName = NBTUtils.getStringTagCompound(aStack, "mEntity", "mClassName");
-		UUID mUuidPersistent = UUID.fromString(NBTUtils.getStringTagCompound(aStack, "mEntity", "mUuidPersistent"));
-		UUID mUuidUnique = UUID.fromString(NBTUtils.getStringTagCompound(aStack, "mEntity", "mUuidUnique"));
-		int mEntityHashcode = NBTUtils.getIntegerTagCompound(aStack, "mEntity", "mEntityHashcode");
+
+		int mEntityID = NBTUtils.getInteger(aStack,"mEntityID");
+		String mClassName = NBTUtils.getString(aStack,"mClassName");
+		UUID mUuidPersistent = UUID.fromString(NBTUtils.getString(aStack,"mUuidPersistent"));
+		UUID mUuidUnique = UUID.fromString(NBTUtils.getString(aStack,"mUuidUnique"));
+		int mEntityHashcode = NBTUtils.getInteger(aStack,"mEntityHashcode");
 
 		EntityLiving mEntityToSpawn = (EntityLiving) getStoredEntity(aWorld, aStack);
 		Class<? extends Entity> mEntityClass = getStoredEntityClass(aStack);
 		
+		Utils.LOG_INFO("spawnStoredEntity(1)");
+
 		if (mEntityToSpawn != null && mEntityClass != null) {
-			if (mEntityToSpawn.getEntityData() != mEntityData){
+			Utils.LOG_INFO("spawnStoredEntity(2)");
+			if (mEntityToSpawn.getEntityData() != mEntityData) {
+				Utils.LOG_INFO("spawnStoredEntity(x)");
 				NBTUtils.setEntityCustomData(mEntityToSpawn, mEntityData);
 			}
 
-
-			mEntityToSpawn.setLocationAndAngles(aPos.xPos, aPos.yPos, aPos.zPos, aWorld.rand.nextFloat() * 360.0F, 0.0F);
-			if (mEntityToSpawn instanceof EntityLiving){
+			mEntityToSpawn.setLocationAndAngles(aPos.xPos, aPos.yPos, aPos.zPos, aWorld.rand.nextFloat() * 360.0F,
+					0.0F);
+			if (mEntityToSpawn instanceof EntityLiving) {
 				((EntityLiving) mEntityToSpawn).onSpawnWithEgg(null);
 				aWorld.spawnEntityInWorld(mEntityToSpawn);
+				Utils.LOG_INFO("spawnStoredEntity(3)");
 			}
-			if (mEntityToSpawn instanceof EntityLiving){
+			if (mEntityToSpawn instanceof EntityLiving) {
 				((EntityLiving) mEntityToSpawn).playLivingSound();
+				Utils.LOG_INFO("spawnStoredEntity(4)");
 			}
-			NBTUtils.createBooleanTagCompound(aStack, "mEntity", "mHasEntity", false);
-
-
+			Utils.LOG_INFO("spawnStoredEntity(5)");
+			NBTUtils.setBoolean(aStack,"mHasEntity", false);
+			return true;
 		}
 
 		return false;
@@ -151,7 +181,15 @@ public class ItemEntityCatcher extends Item implements IEntityCatcher {
 
 	@Override
 	public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List p_77624_3_, boolean p_77624_4_) {
-		super.addInformation(p_77624_1_, p_77624_2_, p_77624_3_, p_77624_4_);
+		if (hasEntity(p_77624_1_)){
+			String mName = NBTUtils.getString(p_77624_1_,"mEntityName");
+			if (mName != null && !mName.equals("") && mName != ""){
+				p_77624_3_.add(EnumChatFormatting.GRAY+"Contains a "+mName+".");				
+			}
+		}
+		else {
+			p_77624_3_.add(EnumChatFormatting.GRAY+"Does not contain anything.");
+		}
 	}
 
 	@Override
@@ -161,20 +199,43 @@ public class ItemEntityCatcher extends Item implements IEntityCatcher {
 
 	@Override
 	public boolean onItemUse(ItemStack itemstack, EntityPlayer player, World world, int x, int y, int z, int side,
-			float xOffset, float yOffset, float zOffset) {		
-		if (NBTUtils.hasKeyInTagCompound(itemstack, "mEntity", "mHasEntity") && NBTUtils.getBooleanTagCompound(itemstack, "mEntity", "mHasEntity")){
-			return spawnStoredEntity(world, itemstack, new BlockPos(x, y, z));
+			float xOffset, float yOffset, float zOffset) {
+		if (Utils.isServer()) {
+			Utils.LOG_INFO("Trying to release (1)");
+			if (NBTUtils.hasKey(itemstack,"mHasEntity")
+					&& NBTUtils.getBoolean(itemstack,"mHasEntity")) {
+				Utils.LOG_INFO("Trying to release (2)");
+				return spawnStoredEntity(world, itemstack, new BlockPos(x, y+1, z));
+			}
 		}
-		else {
-			return super.onItemUse(itemstack, player, world, x, y, z, side, xOffset, yOffset, zOffset);			
-		}		
+		return super.onItemUse(itemstack, player, world, x, y, z, side, xOffset, yOffset, zOffset);
+
 	}
 
 	@Override
-	public boolean itemInteractionForEntity(ItemStack aStack, EntityPlayer aPlayer,	EntityLivingBase aEntity) {
+	public boolean itemInteractionForEntity(ItemStack aStack, EntityPlayer aPlayer, EntityLivingBase aEntity) {
+		if (Utils.isServer()) {
+			Utils.LOG_INFO("Trying to catch (1)");
+			if (!hasEntity(aStack)) {
+				Utils.LOG_INFO("Trying to catch (2)");
+				boolean mStored = setStoredEntity(aPlayer.worldObj, aStack, aEntity);
+				if (mStored) {
+					Utils.LOG_INFO("Trying to catch (3)");
+					aEntity.setDead();
+					PlayerUtils.messagePlayer(aPlayer, "You have captured a "+NBTUtils.getString(aStack,"mEntityName")+" in the Jar.");
+					//NBTUtils.tryIterateNBTData(aStack);
+				}
+			}
+		}
 		return super.itemInteractionForEntity(aStack, aPlayer, aEntity);
 	}
 
-
+	@Override
+	public String getItemStackDisplayName(ItemStack aStack) {
+		if (hasEntity(aStack)){
+			return "Captured Dragon Jar";
+		}
+		return "Dragon Capture Jar";
+	}
 
 }
