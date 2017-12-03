@@ -632,6 +632,26 @@ public class RECIPES_GREGTECH {
 						230); //EU
 
 			}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
+			
+			//Be(OH)2 + 2 (NH4)HF2 → (NH4)2BeF4 + 2 H2O
+			try {
+				CORE.RA.addDehydratorRecipe(
+						new ItemStack[]{
+								ItemUtils.getItemStackOfAmountFromOreDict("cellBerylliumHydroxide", 2),
+								ItemUtils.getItemStackOfAmountFromOreDict("cellAmmoniumBifluoride", 4)
+						}, //Item input (Array, up to 2)
+						null, //Fluid input (slot 1)
+						FluidUtils.getFluidStack("ammoniumtetrafluoroberyllate", 6000), //Fluid output (slot 2)
+						new ItemStack[]{
+								ItemUtils.getItemStackOfAmountFromOreDict("cellWater", 4),
+								ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2)
+						}, //Output Array of Items - Upto 9,
+						new int[]{0, 0, 0},
+						32*20, //Time in ticks
+						64); //EU				
+				
+
+			}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 
 			//(NH4)2BeF4 → 2 NH3 + 2 HF + BeF2
 			try {
@@ -648,7 +668,7 @@ public class RECIPES_GREGTECH {
 						}, //Output Array of Items - Upto 9,
 						new int[]{0, 0, 0},
 						5*60*20, //Time in ticks
-						120); //EU
+						120); //EU				
 
 			}catch (final NullPointerException e){Utils.LOG_INFO("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");}
 
@@ -1002,17 +1022,9 @@ public class RECIPES_GREGTECH {
 				ItemUtils.getItemStackOfAmountFromOreDict("dustBeryllium", 7),
 				GT_Values.NI,
 				FluidUtils.getFluidStack("hydroxide", 1000),
-				FluidUtils.getFluidStack("berylliumhydroxide", 2008),
+				FluidUtils.getFluidStack("berylliumhydroxide", 2000),
 				GT_Values.NI,
 				8*20);
-		//Ammonium Tetrafluoroberyllate
-		GT_Values.RA.addChemicalRecipe(
-				ItemUtils.getItemStackOfAmountFromOreDict("cellBerylliumHydroxide", 1),
-				ItemUtils.getItemStackOfAmountFromOreDict("cellAmmoniumBifluoride", 1),
-				GT_Values.NF,
-				FluidUtils.getFluidStack("ammoniumtetrafluoroberyllate", 2000),
-				ItemUtils.getItemStackOfAmountFromOreDict("cellEmpty", 2),
-				32*20);
 	}
 
 	private static void blastFurnaceRecipes(){

@@ -7,6 +7,7 @@ import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.creative.AddToCreativeTab;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
+import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.entity.EntityUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
@@ -164,7 +165,7 @@ public class BaseItemComponent extends Item{
 				//list.add(EnumChatFormatting.GRAY+"A " + materialName + " Ring.");
 			}
 			if (this.componentMaterial != null){
-				if (!this.componentMaterial.vChemicalFormula.equals("??") && !this.componentMaterial.vChemicalFormula.equals("?")) {
+				if (!this.componentMaterial.vChemicalFormula.equals("??") && !this.componentMaterial.vChemicalFormula.equals("?") && this.componentMaterial.getState() != MaterialState.PURE_LIQUID) {
 					list.add(Utils.sanitizeStringKeepBrackets(this.componentMaterial.vChemicalFormula));
 				}
 

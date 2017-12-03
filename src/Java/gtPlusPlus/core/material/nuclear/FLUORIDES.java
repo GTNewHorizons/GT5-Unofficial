@@ -25,6 +25,7 @@ public class FLUORIDES {
 					new MaterialStack(ELEMENT.getInstance().FLUORINE, 2)
 			});
 
+	//ThF4
 	public static final Material THORIUM_TETRAFLUORIDE = new Material(
 			"Thorium Tetrafluoride", //Material Name
 			MaterialState.LIQUID, //State
@@ -40,6 +41,7 @@ public class FLUORIDES {
 					new MaterialStack(ELEMENT.getInstance().FLUORINE, 4)
 			});
 
+	//ThF6
 	public static final Material THORIUM_HEXAFLUORIDE = new Material(
 			"Thorium Hexafluoride", //Material Name
 			MaterialState.LIQUID, //State
@@ -56,6 +58,7 @@ public class FLUORIDES {
 					new MaterialStack(ELEMENT.getInstance().FLUORINE, 12)
 			});
 
+	//UF4
 	public static final Material URANIUM_TETRAFLUORIDE = new Material(
 			"Uranium Tetrafluoride", //Material Name
 			MaterialState.LIQUID, //State
@@ -71,6 +74,7 @@ public class FLUORIDES {
 					new MaterialStack(ELEMENT.getInstance().FLUORINE, 4)
 			});
 
+	//UF6
 	public static final Material URANIUM_HEXAFLUORIDE = new Material(
 			"Uranium Hexafluoride", //Material Name
 			MaterialState.LIQUID, //State
@@ -86,8 +90,7 @@ public class FLUORIDES {
 					new MaterialStack(ELEMENT.getInstance().FLUORINE, 2)
 			});
 
-	//
-
+	//ZrF4
 	public static final Material ZIRCONIUM_TETRAFLUORIDE = new Material(
 			"Zirconium Tetrafluoride", //Material Name
 			MaterialState.LIQUID, //State
@@ -103,6 +106,7 @@ public class FLUORIDES {
 					new MaterialStack(ELEMENT.getInstance().FLUORINE, 4)
 			});
 
+	//BeF2
 	public static final Material BERYLLIUM_FLUORIDE = new Material(
 			"Beryllium Fluoride", //Material Name
 			MaterialState.LIQUID, //State
@@ -118,6 +122,7 @@ public class FLUORIDES {
 					new MaterialStack(ELEMENT.getInstance().FLUORINE, 2)
 			});
 
+	//LiF
 	public static final Material LITHIUM_FLUORIDE = new Material(
 			"Lithium Fluoride", //Material Name
 			MaterialState.LIQUID, //State
@@ -136,6 +141,7 @@ public class FLUORIDES {
 
 	//LFTR sub components
 	
+	//OH
 	public static final Material HYDROXIDE = new Material(
 			"Hydroxide", //Material Name
 			MaterialState.PURE_LIQUID, //State
@@ -151,6 +157,7 @@ public class FLUORIDES {
 					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 1)
 			});
 	
+	//NH3
 	public static final Material AMMONIA = new Material(
 			"Ammonia", //Material Name
 			MaterialState.PURE_LIQUID, //State
@@ -166,6 +173,7 @@ public class FLUORIDES {
 					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 3)
 			});
 	
+	//NH4
 	public static final Material AMMONIUM = new Material(
 			"Ammonium", //Material Name
 			MaterialState.PURE_LIQUID, //State
@@ -181,6 +189,7 @@ public class FLUORIDES {
 					new MaterialStack(ELEMENT.getInstance().HYDROGEN, 4)
 			});
 	
+	//(NH4)HF2
 	public static final Material AMMONIUM_BIFLUORIDE = new Material(
 			"Ammonium Bifluoride", //Material Name
 			MaterialState.PURE_LIQUID, //State
@@ -197,6 +206,7 @@ public class FLUORIDES {
 					new MaterialStack(ELEMENT.getInstance().FLUORINE, 2)
 			});
 	
+	//Be(OH)2
 	public static final Material BERYLLIUM_HYDROXIDE = new Material(
 			"Beryllium Hydroxide", //Material Name
 			MaterialState.PURE_LIQUID, //State
@@ -212,6 +222,7 @@ public class FLUORIDES {
 					new MaterialStack(FLUORIDES.HYDROXIDE, 2)
 			});
 	
+	// (NH4)2Be(OH)2 / (NH4)2BeF4
 	public static final Material AMMONIUM_TETRAFLUOROBERYLLATE = new Material(
 			"Ammonium Tetrafluoroberyllate", //Material Name
 			MaterialState.PURE_LIQUID, //State
