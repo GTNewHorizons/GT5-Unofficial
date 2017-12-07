@@ -99,6 +99,10 @@ public class GTplusplus implements ActionListener {
 		CORE.configSwitches.enableMultiSizeTools = config.getBoolean("enableMultiSizeTools", "gregtech", true,
 				"Adds Custom GT Shovels and Pickaxes which mine in a 3x3 style. One of each whill be generated for each Gregtech Material which has Dense Plates and Long Rods available.");
 
+		// GT-Fixes
+		CORE.configSwitches.enableNitroFix = config.getBoolean("enableNitroFix", "gregtech", false,
+				"Restores the old Nitro-Diesel recipes.");
+		
 		// Pipes & Cables
 		CORE.configSwitches.enableCustom_Pipes = config.getBoolean("enableCustom_Pipes", "gregtech", true,
 				"Adds Custom GT Fluid Pipes.");
