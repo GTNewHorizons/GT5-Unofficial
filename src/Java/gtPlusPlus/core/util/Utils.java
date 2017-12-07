@@ -3,6 +3,7 @@ package gtPlusPlus.core.util;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.io.File;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,6 +20,7 @@ import org.apache.logging.log4j.Logger;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
+import gregtech.GT_Mod;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.TC_Aspects;
 import gregtech.api.enums.TC_Aspects.TC_AspectStack;
@@ -30,10 +32,12 @@ import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.proxy.ClientProxy;
+import gtPlusPlus.core.util.array.Pair;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.core.util.nbt.NBTUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import ic2.core.Ic2Items;
 import ic2.core.init.InternalName;
 import ic2.core.item.resources.ItemCell;
@@ -231,7 +235,7 @@ public class Utils {
 	public static void LOG_ASM(final String s) {
 		FMLRelaunchLog.info("", s);
 	}
-	
+
 	//Register an event to both busses.
 	public static void registerEvent(Object o){
 		MinecraftForge.EVENT_BUS.register(o);
@@ -806,6 +810,57 @@ public class Utils {
 		CORE.sBookList.put(aMapping, rStack);
 		Utils.LOG_INFO("Creating book: " + aTitle + " by " + aAuthor + ". Using Meta " + vMeta + ".");
 		return GT_Utility.copy(new Object[] { rStack });
+	}
+
+	@SuppressWarnings({ "unused", "unchecked" })
+	public static Pair<Integer, Integer> getGregtechVersion(){
+		Pair<Integer, Integer> version;
+		if (GT_Mod.VERSION == 509){
+			Class<GT_Mod> clazz;
+			try {
+				clazz = (Class<GT_Mod>) Class.forName("gregtech.GT_Mod");
+				Field mSubversion = ReflectionUtils.getField(clazz, "SUBVERSION");
+				if (mSubversion != null){
+					int mSub = 0;
+					mSub = mSubversion.getInt(clazz);
+					if (mSub != 0){
+						version = new Pair<Integer, Integer>(9, mSub);
+						return version;
+					}
+				}
+			}
+			catch (Throwable t){}
+		}
+		//5.08.33
+		else if (GT_Mod.VERSION == 508){
+			version = new Pair<Integer, Integer>(8, 33);
+			return version;
+
+		}
+		//5.07.07
+		else if (GT_Mod.VERSION == 507){
+			version = new Pair<Integer, Integer>(7, 7);
+			return version;
+
+		}
+		//Returb Bad Value
+		version = new Pair<Integer, Integer>(0, 0);
+		return version;	
+	}
+	
+	public static int getGregtechVersionAsInt(){
+		Pair<Integer, Integer> ver = getGregtechVersion();
+		return 50000+(ver.getKey()*100)+(ver.getValue());
+	}
+	
+	public static String getGregtechVersionAsString(){
+		Pair<Integer, Integer> ver = getGregtechVersion();
+		return "5."+ver.getKey()+"."+ver.getValue();		
+	}
+	
+	public static int getGregtechSubVersion(){
+		Pair<Integer, Integer> ver = getGregtechVersion();		
+		return ver.getValue();		
 	}
 
 }
