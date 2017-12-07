@@ -269,21 +269,24 @@ public class CI {
 				return GregtechItemList.Old_Circuit_Advanced.get(1);				
 			}
 			else if (tier == 4){
-				return GregtechItemList.Old_Circuit_Elite.get(1);				
+				return GregtechItemList.Old_Circuit_Data.get(1);				
 			}
 			else if (tier == 5){
-				return GregtechItemList.Old_Circuit_Master.get(1);				
+				return GregtechItemList.Old_Circuit_Elite.get(1);				
 			}
 			else if (tier == 6){
-				return GregtechItemList.Old_Circuit_Ultimate.get(1);				
+				return GregtechItemList.Old_Circuit_Master.get(1);				
 			}
 			else if (tier == 7){
-				return GregtechItemList.Circuit_IV.get(1);				
+				return GregtechItemList.Old_Circuit_Ultimate.get(1);				
 			}
 			else if (tier == 8){
-				return GregtechItemList.Circuit_LuV.get(1);				
+				return GregtechItemList.Circuit_IV.get(1);				
 			}
 			else if (tier == 9){
+				return GregtechItemList.Circuit_LuV.get(1);				
+			}
+			else if (tier == 10){
 				return GregtechItemList.Circuit_ZPM.get(1);				
 			}
 		}
@@ -306,23 +309,27 @@ public class CI {
 			}
 			else if (tier == 4){
 				//return ItemList.Circuit_Elite.get(1);		
-				return "circuitElite";			
+				return "circuitData";			
 			}
 			else if (tier == 5){
+				//return ItemList.Circuit_Elite.get(1);		
+				return "circuitElite";			
+			}
+			else if (tier == 6){
 				//return ItemList.Circuit_Master.get(1);	
 				return "circuitMaster";				
 			}
-			else if (tier == 6){
+			else if (tier == 7){
 				//return ItemList.Circuit_Ultimate.get(1);	
 				return "circuitUltimate";
 			}
-			else if (tier == 7){
+			else if (tier == 8){
 				return "circuitSuperconductor";				
 			}
-			else if (tier == 8){
+			else if (tier == 9){
 				return "circuitInfinite";				
 			}
-			else if (tier == 9){
+			else if (tier == 10){
 				return "circuitQuantum";				
 			}
 		}

@@ -674,8 +674,15 @@ public class ItemUtils {
 		return getItemStackOfAmountFromOreDictNoBroken(oredictName, amount);
 	}
 	public static ItemStack getGregtechOreStack(OrePrefixes mPrefix, Materials mMat, int mAmount) {
-		ItemStack gregstack = ItemUtils.getItemStackOfAmountFromOreDict(mPrefix.name().toLowerCase()+mMat.mDefaultLocalName, mAmount);
-		return (gregstack != null ? gregstack : null);
+		String mItemName = mPrefix.name()+mMat.mName;
+		Utils.LOG_INFO("[Component Maker] Trying to get "+mItemName+".");
+		ItemStack gregstack = ItemUtils.getItemStackOfAmountFromOreDict(mItemName, mAmount);		
+		if (gregstack == null){
+			Utils.LOG_INFO("[Component Maker] Failed to get "+mItemName+".");
+			return null;
+		}	
+		Utils.LOG_INFO("[Component Maker] Found "+mItemName+".");
+		return (gregstack);
 	}
 
 
