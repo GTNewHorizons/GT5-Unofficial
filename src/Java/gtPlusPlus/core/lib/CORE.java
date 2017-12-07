@@ -133,6 +133,9 @@ public class CORE {
 		//Feature Related
 		public static boolean enableCustomCircuits = true;
 		public static boolean enableOldGTcircuits = false;
+		
+		//GT Fixes
+		public static boolean enableNitroFix = false;
 
 		//Single Block Machines
 		public static boolean enableMachine_SolarGenerators = false;

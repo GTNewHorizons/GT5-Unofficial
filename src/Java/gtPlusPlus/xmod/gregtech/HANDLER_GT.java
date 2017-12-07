@@ -14,6 +14,7 @@ import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechItems;
 import gtPlusPlus.xmod.gregtech.common.items.MetaGeneratedGregtechTools;
 import gtPlusPlus.xmod.gregtech.loaders.*;
 import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechConduits;
+import gtPlusPlus.xmod.gregtech.registration.gregtech.GregtechNitroDieselFix;
 
 public class HANDLER_GT {
 
@@ -29,6 +30,11 @@ public class HANDLER_GT {
 			GT_Materials.init(mMaterialProperties);
 		}
 		GregtechFluidHandler.run();
+		
+		if (CORE.configSwitches.enableNitroFix){
+			GregtechNitroDieselFix.run();
+		}
+		
 	}
 
 	public static void init(){
