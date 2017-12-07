@@ -673,6 +673,10 @@ public class ItemUtils {
 		//If only Tinkers dust exists, bow down and just use it.
 		return getItemStackOfAmountFromOreDictNoBroken(oredictName, amount);
 	}
+	public static ItemStack getGregtechOreStack(OrePrefixes mPrefix, Materials mMat, int mAmount) {
+		ItemStack gregstack = ItemUtils.getItemStackOfAmountFromOreDict(mPrefix.name().toLowerCase()+mMat.mDefaultLocalName, mAmount);
+		return (gregstack != null ? gregstack : null);
+	}
 
 
 }

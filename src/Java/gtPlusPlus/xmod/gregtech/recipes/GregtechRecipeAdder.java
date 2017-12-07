@@ -5,6 +5,7 @@ import gregtech.api.enums.Materials;
 import gregtech.api.util.CustomRecipeMap;
 import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.Recipe_GT;
+import gregtech.common.GT_RecipeAdder;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.interfaces.internal.IGregtech_RecipeAdder;
@@ -393,5 +394,55 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 				new FluidStack[] { aFluidOutput }, aDuration, aEUt, 0);
 		return true;
 	}
+	
+	//Machine Component Assembler
+	 public boolean addComponentMakerRecipe(ItemStack[] aInputs, FluidStack aFluidInput, ItemStack aOutput1, int aDuration, int aEUt) {
+	    	if (areItemsAndFluidsBothNull(aInputs, new FluidStack[]{aFluidInput})) {
+	    		return false;
+	    	}
+	    	if (aOutput1 == null) {
+	    		return false;
+	    	}
+	    	if ((aDuration = GregTech_API.sRecipeFile.get("machinecomponents", aOutput1, aDuration)) <= 0) {
+	            return false;
+	        }
+	    	Recipe_GT.Gregtech_Recipe_Map.sComponentAssemblerRecipes.addRecipe(true, aInputs, new ItemStack[]{aOutput1}, null, new FluidStack[]{aFluidInput}, null, aDuration, aEUt, 0);
+	        return true;
+	    }
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 private boolean areItemsAndFluidsBothNull(final ItemStack[] items, final FluidStack[] fluids) {
+			boolean itemsNull = true;
+			if (items != null) {
+				for (final ItemStack itemStack : items) {
+					if (itemStack != null) {
+						itemsNull = false;
+						break;
+					}
+				}
+			}
+			boolean fluidsNull = true;
+			if (fluids != null) {
+				for (final FluidStack fluidStack : fluids) {
+					if (fluidStack != null) {
+						fluidsNull = false;
+						break;
+					}
+				}
+			}
+			return itemsNull && fluidsNull;
+		}
+	
 
 }

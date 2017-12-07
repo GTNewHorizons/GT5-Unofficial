@@ -8,6 +8,8 @@ import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.interfaces.tileentity.IHasWorldObjectAndCoords;
 import gregtech.api.objects.GT_ItemStack;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map_Assembler;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.item.ItemStack;
@@ -276,6 +278,10 @@ public class Recipe_GT extends GT_Recipe{
 				"Slow Fusion Reactor", null, "gregtech:textures/gui/basicmachines/Default", 0, 0, 0, 2, 1, "Start: ", 1,
 				" EU", true, false);
 		
+		
+		//Component Assembler
+		public static final GT_Recipe_Map sComponentAssemblerRecipes = new GT_Recipe_Map_Assembler(new HashSet<GT_Recipe>(300), "gt.recipe.componentassembler", "Component Assembler", null, RES_PATH_GUI + "basicmachines/Assembler", 6, 1, 1, 0, 1, E, 1, E, true, true);
+        
 		
 		/**
 		 * HashMap of Recipes based on their Items

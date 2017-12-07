@@ -29,11 +29,7 @@ public class HANDLER_GT {
 		if (mMaterialProperties != null){
 			GT_Materials.init(mMaterialProperties);
 		}
-		GregtechFluidHandler.run();
-		
-		if (CORE.configSwitches.enableNitroFix){
-			GregtechNitroDieselFix.run();
-		}
+		GregtechFluidHandler.run();		
 		
 	}
 
@@ -61,6 +57,9 @@ public class HANDLER_GT {
 	}
 
 	public static void postInit(){
+		if (CORE.configSwitches.enableNitroFix){
+			GregtechNitroDieselFix.run();
+		}
 		//Register some custom recipe maps for any enabled multiblocks.
 		//MultiblockRecipeMapHandler.run();
 	}

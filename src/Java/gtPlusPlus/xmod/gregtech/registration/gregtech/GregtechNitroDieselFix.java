@@ -28,6 +28,7 @@ public class GregtechNitroDieselFix {
 	@SuppressWarnings("unchecked")
 	public static void run(){
 		if (CORE.configSwitches.enableNitroFix){
+			Utils.LOG_INFO("Gregtech5u Content | Attempting to Fix Nitro-Diesel production.");
 
 			if (GT_Mod.VERSION == 509){
 				Utils.LOG_INFO("[Nitro] Found GT 5.09.");
@@ -51,14 +52,14 @@ public class GregtechNitroDieselFix {
 									Utils.LOG_INFO("[Nitro] Created new instance of Material builder, for Nitro fix.");
 									
 									//Get Methods
-									Method addFluid = mb.getMethod("addFluid");
-									Method addCell = mb.getMethod("addCell");									
-									Method setColour = mb.getMethod("setColour", Dyes.class);
-									Method setFuelPower = mb.getMethod("setFuelPower", int.class);
-									Method setMaterials = mb.getMethod("setMaterialList", List.class);
-									Method setTemp = mb.getMethod("setLiquidTemperature", int.class);
-									Method setRGB = mb.getMethod("setRGB", int.class, int.class, int.class);							
-									Method construct = mb.getMethod("constructMaterial");
+									Method addFluid = mb.getDeclaredMethod("addFluid");
+									Method addCell = mb.getDeclaredMethod("addCell");									
+									Method setColour = mb.getDeclaredMethod("setColor", Dyes.class);
+									Method setFuelPower = mb.getDeclaredMethod("setFuelPower", int.class);
+									Method setMaterials = mb.getDeclaredMethod("setMaterialList", List.class);
+									Method setTemp = mb.getDeclaredMethod("setLiquidTemperature", int.class);
+									Method setRGB = mb.getDeclaredMethod("setRGB", int.class, int.class, int.class);							
+									Method construct = mb.getDeclaredMethod("constructMaterial");
 									Utils.LOG_INFO("[Nitro] Got internal methods for setting fields.");
 									
 									//Invoke the methods
@@ -69,10 +70,10 @@ public class GregtechNitroDieselFix {
 									setMaterials.invoke(df, Arrays.asList(new MaterialStack(Materials.Glyceryl, 1), new MaterialStack(Materials.Fuel, 4)));
 									setTemp.invoke(df, 295);
 									setRGB.invoke(df, 200, 255, 0);									
-									construct.invoke(df);
+									Materials mNitroFix = (Materials) construct.invoke(df);
 									Utils.LOG_INFO("[Nitro] Invoked 8 method calls successfully.");	
 									
-									GT_Mod.gregtechproxy.addFluid("NitroFuel_Old", "Nitro Diesel [Old]", ((Materials) df), 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, ((Materials) df), 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
+									GT_Mod.gregtechproxy.addFluid("NitroFuel_Old", "Nitro Diesel [Old]", mNitroFix, 1, 295, GT_OreDictUnificator.get(OrePrefixes.cell, mNitroFix, 1L), ItemList.Cell_Empty.get(1L, new Object[0]), 1000);
 									Utils.LOG_INFO("[Nitro] Added a fluid.");
 									
 									
@@ -131,13 +132,22 @@ public class GregtechNitroDieselFix {
 									Materials mFuels[] = {Materials.LightFuel, Materials.Fuel, Materials.Diesel};									
 									for (Materials fuel : mFuels){
 										boolean didAdd[] = new boolean[3];
-										Utils.LOG_INFO("[Nitro] Getting ready to add back in the old nitro-diesel recipe, using "+fuel.mDefaultLocalName+" as the fuel input.");
-										didAdd[0] = GT_Values.RA.addMixerRecipe(fuel.getCells(4), Materials.Glycerol.getCells(1), GT_Values.NI, GT_Values.NI, GT_Values.NF, GT_Values.NF, ((Materials) df).getCells(5), 20, 30);
-										didAdd[1] = GT_Values.RA.addMixerRecipe(fuel.getCells(4), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.Glycerol.getFluid(1000L),((Materials) df).getFluid(5000L), ItemList.Cell_Empty.get(4L), 20, 30);
-										didAdd[2] = GT_Values.RA.addMixerRecipe(Materials.Glycerol.getCells(1), GT_Values.NI,GT_Values.NI,GT_Values.NI, fuel.getFluid(4000L),((Materials) df).getFluid(5000L), ItemList.Cell_Empty.get(1L), 20, 30);
-										Utils.LOG_INFO("[Nitro] Did the recipe add? 1: "+didAdd[0]+" |  2: "+didAdd[1]+" |  3: "+didAdd[2]);
+										Utils.LOG_INFO("[Nitro] Getting ready to add back in the old nitro-diesel recipe to the mixer, using "+fuel.mDefaultLocalName+" as the fuel input.");
+										didAdd[0] = GT_Values.RA.addMixerRecipe(fuel.getCells(4), Materials.Glycerol.getCells(1), GT_Values.NI, GT_Values.NI, GT_Values.NF, GT_Values.NF, mNitroFix.getCells(5), 20, 30);
+										didAdd[1] = GT_Values.RA.addMixerRecipe(fuel.getCells(4), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.Glycerol.getFluid(1000L),mNitroFix.getFluid(5000L), ItemList.Cell_Empty.get(4L), 20, 30);
+										didAdd[2] = GT_Values.RA.addMixerRecipe(Materials.Glycerol.getCells(1), GT_Values.NI,GT_Values.NI,GT_Values.NI, fuel.getFluid(4000L),mNitroFix.getFluid(5000L), ItemList.Cell_Empty.get(1L), 20, 30);
+										Utils.LOG_INFO("[Nitro] Did the recipes add? 1: "+didAdd[0]+" |  2: "+didAdd[1]+" |  3: "+didAdd[2]);
+									}		
 									
-									}								
+									for (Materials fuel : mFuels){
+										boolean didAdd[] = new boolean[3];
+										Utils.LOG_INFO("[Nitro] Getting ready to add back in the old nitro-diesel recipe to the chemical reactors, using "+fuel.mDefaultLocalName+" as the fuel input.");										
+										didAdd[0] = GT_Values.RA.addChemicalRecipe(fuel.getCells(4), Materials.Glycerol.getCells(1), GT_Values.NF, GT_Values.NF, mNitroFix.getCells(5), 20, 30);
+										didAdd[1] = GT_Values.RA.addChemicalRecipe(fuel.getCells(4), GT_Values.NI, Materials.Glycerol.getFluid(1000L),mNitroFix.getFluid(5000L), ItemList.Cell_Empty.get(4L), 20, 30);
+										didAdd[2] = GT_Values.RA.addChemicalRecipe(Materials.Glycerol.getCells(1), GT_Values.NI, fuel.getFluid(4000L),mNitroFix.getFluid(5000L), ItemList.Cell_Empty.get(1L), 20, 30);
+										Utils.LOG_INFO("[Nitro] Did the recipes add? 1: "+didAdd[0]+" |  2: "+didAdd[1]+" |  3: "+didAdd[2]);
+									}	
+									
 									Utils.LOG_INFO("[Nitro] Getting ready to add back in the old glycerol recipe!");
 							        GT_Values.RA.addChemicalRecipe(Materials.Nitrogen.getCells(1), Materials.Carbon.getDust(1), Materials.Water.getFluid(2000L), Materials.Glycerol.getFluid(3000L), ItemList.Cell_Empty.get(1), 3000, 30);
 									Utils.LOG_INFO("[Nitro] Added recipes.");
@@ -153,7 +163,9 @@ public class GregtechNitroDieselFix {
 					}
 				}
 				catch (ClassNotFoundException | NoSuchFieldException | IllegalArgumentException | IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-					
+					Utils.LOG_INFO("[Nitro] ================ Error ================");
+					e.printStackTrace();
+					Utils.LOG_INFO("[Nitro] ================ Error ================");
 				}				
 			}
 		}

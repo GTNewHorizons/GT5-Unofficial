@@ -100,6 +100,7 @@ public class COMPAT_HANDLER {
 			GregtechIndustrialGeneratorArray.run();
 			GregtechIndustrialCuttingFactory.run();
 			GregtechMiniRaFusion.run();
+			GregtechComponentAssembler.run();
 			
 			//New Horizons Content
 			NewHorizonsAccelerator.run();

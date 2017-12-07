@@ -269,7 +269,11 @@ public enum GregtechItemList implements GregtechItemContainer {
 	Industrial_CuttingFactoryController, 
 	
 	//Tiny Fusion
-	Miniature_Fusion,
+	Miniature_Fusion, 
+	
+	//Component Makers
+	Machine_LV_Component_Maker, Machine_MV_Component_Maker, Machine_HV_Component_Maker, 
+	Machine_EV_Component_Maker, Machine_IV_Component_Maker,
 	
 	
 	
