@@ -20,9 +20,8 @@ public final class eBosonDefinition extends cElementalPrimitive {
     }
 
     public static void run() {
-        boson_Y__.init(null, -1F, 0, 1,
-                new cElementalDecay(boson_Y__),
-                deadEnd);
+        boson_Y__.init(null, -1F, 0, 0,
+                deadEndHalf);
         boson_H__.init(null, 1.56e-22F, 0, 0,
                 new cElementalDecay(0.96F, new cElementalDefinitionStack(boson_Y__, 4)),
                 new cElementalDecay(0.02F, eLeptonDefinition.lepton_t, eLeptonDefinition.lepton_t_),
@@ -33,5 +32,10 @@ public final class eBosonDefinition extends cElementalPrimitive {
     @Override
     public String getName() {
         return "Boson: " + name;
+    }
+
+    @Override
+    public boolean isTimeSpanHalfLife() {
+        return false;
     }
 }

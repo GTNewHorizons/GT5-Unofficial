@@ -118,7 +118,7 @@ abstract class cElementalStackMap implements Comparable<cElementalStackMap> {
     }
 
     @Override
-    public int hashCode() {//Hash only definitions to compare contents not amounts or data
+    public final int hashCode() {//Hash only definitions to compare contents not amounts or data
         int hash = -(map.size() << 4);
         for (cElementalDefinitionStack s : map.values()) {
             hash += s.definition.hashCode();

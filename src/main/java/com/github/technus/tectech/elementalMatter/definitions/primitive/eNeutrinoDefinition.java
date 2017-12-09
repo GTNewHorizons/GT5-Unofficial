@@ -24,35 +24,32 @@ public final class eNeutrinoDefinition extends cElementalPrimitive {
     }
 
     public static void run() {
-        lepton_Ve.init(lepton_Ve_, 1F, 1, 0,
-                new cElementalDecay(0.95F, nothing),
-                new cElementalDecay(0.1F, lepton_Ve),
-                eBosonDefinition.deadEndHalf);
+        lepton_Ve.init(lepton_Ve_, 1F, 0, 0,
+                cElementalDecay.noProduct);
         lepton_Vm.init(lepton_Vm_, 1F, 1, 0,
-                new cElementalDecay(0.9F, nothing),
-                new cElementalDecay(0.1F, lepton_Vm),
+                new cElementalDecay(0.95F, nothing),
                 eBosonDefinition.deadEndHalf);
         lepton_Vt.init(lepton_Vt_, 1F, 1, 0,
-                new cElementalDecay(0.85F, nothing),
-                new cElementalDecay(0.1F, lepton_Vt),
-                eBosonDefinition.deadEndHalf);
-
-        lepton_Ve_.init(lepton_Ve, 1F, 1, 0,
-                new cElementalDecay(0.95F, nothing),
-                new cElementalDecay(0.1F, lepton_Ve_),
-                eBosonDefinition.deadEndHalf);
-        lepton_Vm_.init(lepton_Vm, 1F, 1, 0,
                 new cElementalDecay(0.9F, nothing),
-                new cElementalDecay(0.1F, lepton_Vm_),
+                eBosonDefinition.deadEnd);
+
+        lepton_Ve_.init(lepton_Ve, 1F, 0, 0,
+                cElementalDecay.noProduct);
+        lepton_Vm_.init(lepton_Vm, 1F, 1, 0,
+                new cElementalDecay(0.95F, nothing),
                 eBosonDefinition.deadEndHalf);
         lepton_Vt_.init(lepton_Vt, 1F, 1, 0,
-                new cElementalDecay(0.85F, nothing),
-                new cElementalDecay(0.1F, lepton_Vt_),
-                eBosonDefinition.deadEndHalf);
+                new cElementalDecay(0.9F, nothing),
+                eBosonDefinition.deadEnd);
     }
 
     @Override
     public String getName() {
         return "Lepton: " + name;
+    }
+
+    @Override
+    public boolean isTimeSpanHalfLife() {
+        return true;
     }
 }

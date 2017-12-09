@@ -108,7 +108,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
             byte Tick = (byte) (aTick % 20);
             if (DECAY_AT == Tick) {
                 purgeOverflow();
-                content.tickContent(postEnergize);//Hatches don't life time mult things
+                content.tickContentByOneSecond(1,postEnergize);//Hatches don't life time mult things
                 purgeOverflow();
             } else if (OVERFLOW_AT == Tick) {
                 if (overflowMatter <= 0) {

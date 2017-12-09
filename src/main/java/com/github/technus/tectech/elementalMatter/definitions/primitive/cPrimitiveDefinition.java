@@ -32,4 +32,9 @@ public final class cPrimitiveDefinition extends cElementalPrimitive {
     public String getName() {
         return "Primitive: " + name;
     }
+
+    @Override
+    public boolean isTimeSpanHalfLife() {
+        return false;
+    }
 }

@@ -95,4 +95,9 @@ public final class eQuarkDefinition extends cElementalPrimitive {
     public String getName() {
         return "Quark: " + name;
     }
+
+    @Override
+    public boolean isTimeSpanHalfLife() {
+        return true;
+    }
 }

@@ -38,5 +38,10 @@ public final class ePrimalAspectDefinition extends cElementalPrimitive implement
     public Object materializeIntoAspect() {
         return aspectDefinitionCompat.getAspect(this);
     }
+
+    @Override
+    public boolean isTimeSpanHalfLife() {
+        return false;
+    }
 }
 

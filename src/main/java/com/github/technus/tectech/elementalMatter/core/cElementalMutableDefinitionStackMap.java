@@ -94,7 +94,7 @@ public final class cElementalMutableDefinitionStackMap extends cElementalStackMa
         if (testOnly)
             return target.amount >= instance.amount;
         else {
-            final int diff = target.amount - instance.amount;
+            final long diff = target.amount - instance.amount;
             if (diff > 0) {
                 map.put(target.definition, new cElementalDefinitionStack(target.definition, diff));
                 return true;
@@ -113,7 +113,7 @@ public final class cElementalMutableDefinitionStackMap extends cElementalStackMa
         if (testOnly)
             return target.amount >= stack.getAmount();
         else {
-            final int diff = target.amount - stack.getAmount();
+            final long diff = target.amount - stack.getAmount();
             if (diff > 0) {
                 map.put(target.definition, new cElementalDefinitionStack(target.definition, diff));
                 return true;

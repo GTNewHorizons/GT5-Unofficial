@@ -125,7 +125,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         if (testOnly)
             return target.amount >= instance.amount;
         else {
-            final int diff = target.amount - instance.amount;
+            final long diff = target.amount - instance.amount;
             if (diff > 0) {
                 target.amount = diff;
                 return true;
@@ -144,7 +144,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         if (testOnly)
             return target.amount >= stack.getAmount();
         else {
-            final int diff = target.amount - stack.getAmount();
+            final long diff = target.amount - stack.getAmount();
             if (diff > 0) {
                 target.amount = diff;
                 return true;
@@ -198,7 +198,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
     }
 
     //Remove overflow
-    public float removeOverflow(int stacksCount, int stackCapacity) {
+    public float removeOverflow(int stacksCount, long stackCapacity) {
         float massRemoved = 0;
 
         if (map.size() > stacksCount) {
@@ -320,32 +320,23 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
     }
 
     //Tick Content
-    public void tickContent(float lifeTimeMult, int postEnergize) {
-        for (cElementalInstanceStack instance : this.values()) {
-            cElementalInstanceStackMap newThings = instance.decay(lifeTimeMult, instance.age += 20, postEnergize);
-            if (newThings == null) {
-                instance.nextColor();
-            } else {
-                map.remove(instance.definition);
-                for (cElementalInstanceStack newInstance : newThings.values())
-                    putUnify(newInstance);
-            }
-        }
-
+    public void tickContentByOneSecond(float lifeTimeMult, int postEnergize) {
+        tickContent(lifeTimeMult,postEnergize,1);
     }
 
-    public void tickContent(int postEnergize) {
+    public void tickContent(float lifeTimeMult, int postEnergize, int seconds){
         for (cElementalInstanceStack instance : this.values()) {
-            cElementalInstanceStackMap newThings = instance.decay(instance.age += 20, postEnergize);
-            if (newThings == null) {
+            cElementalInstanceStackMap newInstances = instance.decay(lifeTimeMult, instance.age += seconds, postEnergize);
+            if (newInstances == null) {
                 instance.nextColor();
             } else {
                 map.remove(instance.definition);
-                for (cElementalInstanceStack newInstance : newThings.values())
+                for (cElementalInstanceStack newInstance : newInstances.values()) {
                     putUnify(newInstance);
+                    newInstance.nextColor();
+                }
             }
         }
-
     }
 
     //NBT

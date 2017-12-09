@@ -34,13 +34,13 @@ public final class iaeaNuclide {
             while((line=reader.readLine())!=null) {
                 String[] split= Util.splitButDifferent(line,",");
                 if(split.length!=19) throw new Error("Invalid count ("+split.length+") of separators in IAEA nuclides database " + line);
-                if(split[1].length()>0 && !blockOfData.isEmpty()) {
+                if(split[1].length()>0 && blockOfData.size()>0) {
                     new iaeaNuclide(blockOfData.toArray(new String[0][]));
                     blockOfData.clear();
                 }
                 blockOfData.add(split);
             }
-            if(!blockOfData.isEmpty()) {
+            if(blockOfData.size()>0) {
                 new iaeaNuclide(blockOfData.toArray(new String[0][]));
                 blockOfData.clear();
             }
@@ -78,6 +78,10 @@ public final class iaeaNuclide {
         for(String s:decays){
             System.out.println(s);
         }
+
+        for(iaeaNuclide nuclide:NUCLIDES.values()){
+            //todo fix decays
+        }
     }
 
     public static iaeaNuclide get(int protons, int neutrons){
@@ -108,25 +112,16 @@ public final class iaeaNuclide {
         }else{
             parts = Util.splitButDifferent(rows[0][4], "|");
             Thalf = (float)doubleOrNaN(parts[0],"half life");
-            //if(Thalf>STABLE_RAW_LIFE_TIME) System.out.println("KEK KEK"+N+" "+Z+" "+Thalf);
         }
-
-        for(int i=0;i<rows.length;i++){
-            add(rows[i][5]);
-        }
-
-
-        //for(String[] S:rows) {
-        //    for(String s:S)System.out.print(s+" ");
-        //    System.out.println();
-        //}
-        //System.out.println("KEKEKEK");
     }
 
     private void getMoreData(String[] cells){
-        add(cells[14]);
-        add(cells[17]);
-        add(cells[20]);
+        if(add(cells[14])); //System.out.println(Z+" "+N);
+        if(add(cells[17])); //System.out.println(Z+" "+N);
+        if(add(cells[20])); //System.out.println(Z+" "+N);
+        TreeMap<Float,String> decaymodes=new TreeMap<>();
+
+        new energeticState(this,Thalf,decaymodes);
     }
 
     private double doubleOrNaN(String s, String name){
@@ -162,13 +157,15 @@ public final class iaeaNuclide {
                 throw new Error("Missing nuclide "+(int)doubleOrNaN(cells[0],"protons")+" "+(int)doubleOrNaN(cells[1],"neutrons"));
             this.energy=(float) (doubleOrNaN(cells[3],"energy level",nuclide)*1000);//to eV
             this.Thalf=(float) doubleOrNaN(cells[10],"half life",nuclide);
-            if(nuclide.energeticStates==null)
-                nuclide.energeticStates=new TreeMap<>();
+            if(nuclide.energeticStates==null) {
+                new Exception("Should be initialized before doing this... "+ nuclide.N +" "+nuclide.Z).printStackTrace();
+                nuclide.energeticStates = new TreeMap<>();
+            }
             nuclide.energeticStates.put(energy,this);
 
-            add(cells[12]);
-            add(cells[15]);
-            add(cells[18]);
+            if(add(cells[12])); //System.out.println(nuclide.Z+" "+nuclide.N);
+            if(add(cells[15])); //System.out.println(nuclide.Z+" "+nuclide.N);
+            if(add(cells[18])); //System.out.println(nuclide.Z+" "+nuclide.N);
         }
 
         private double doubleOrNaN(String s, String name){
@@ -194,12 +191,14 @@ public final class iaeaNuclide {
     }
 
     private static HashSet<String> decays=new HashSet<>();
-    private static void add(String s){
+    private static boolean add(String s){
         int len=decays.size();
         decays.add(s);
         if(decays.size()>len){
             System.out.println(s);
+            return true;
         }
+        return false;
     }
     public enum decayType{
         ;

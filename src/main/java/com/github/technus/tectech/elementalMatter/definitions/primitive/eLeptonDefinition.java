@@ -26,9 +26,7 @@ public final class eLeptonDefinition extends cElementalPrimitive {
     }
 
     public static void run() {
-        lepton_e.init(lepton_e_, 100000F, 2, 3,
-                new cElementalDecay(0.9F, lepton_e),
-                new cElementalDecay(0.05F, nothing),
+        lepton_e.init(lepton_e_, STABLE_RAW_LIFE_TIME, 0, 1,
                 eBosonDefinition.deadEnd,//makes photons and don't care
                 new cElementalDecay(lepton_e, eBosonDefinition.boson_Y__));
         lepton_m.init(lepton_m_, 2.197019e-6F, 0, 1,
@@ -40,9 +38,7 @@ public final class eLeptonDefinition extends cElementalPrimitive {
                 new cElementalDecay(0.05F, lepton_m, eNeutrinoDefinition.lepton_Vm_, eNeutrinoDefinition.lepton_Vt, eBosonDefinition.boson_H__),
                 eBosonDefinition.deadEnd);//makes photons and don't care
 
-        lepton_e_.init(lepton_e, 100000F, 2, 3,
-                new cElementalDecay(0.9F, lepton_e_),
-                new cElementalDecay(0.05F, nothing),
+        lepton_e_.init(lepton_e, STABLE_RAW_LIFE_TIME, 0, 1,
                 eBosonDefinition.deadEnd,//makes photons and don't care
                 new cElementalDecay(lepton_e_, eBosonDefinition.boson_Y__));
         lepton_m_.init(lepton_m, 2.197e-6F, 0, 1,
@@ -58,5 +54,10 @@ public final class eLeptonDefinition extends cElementalPrimitive {
     @Override
     public String getName() {
         return "Lepton: " + name;
+    }
+
+    @Override
+    public boolean isTimeSpanHalfLife() {
+        return true;
     }
 }

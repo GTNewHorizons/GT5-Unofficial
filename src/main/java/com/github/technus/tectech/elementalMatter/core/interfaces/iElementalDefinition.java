@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
  */
 public interface iElementalDefinition extends Comparable<iElementalDefinition>,Cloneable {//IMMUTABLE
     float STABLE_RAW_LIFE_TIME =1.5e36f;
+    float NO_DECAY_RAW_LIFE_TIME=-1;
 
     //Nomenclature
     String getName();
@@ -30,7 +31,9 @@ public interface iElementalDefinition extends Comparable<iElementalDefinition>,C
 
     cElementalDecay[] getNaturalDecayInstant();//natural decay if lifespan <1tick
 
-    cElementalDecay[] getEnergeticDecayInstant();//energetic decay if lifespan <1tick
+    cElementalDecay[] getEnergyInducedDecay(long energy);//energetic decay
+
+    boolean usesSpecialEnergeticDecayHandling();
 
     float getMass();//mass... MeV/c^2
 
@@ -39,7 +42,9 @@ public interface iElementalDefinition extends Comparable<iElementalDefinition>,C
     //dynamically changing stuff
     byte getColor();//-1 nope cannot 0 it can but undefined
 
-    float getRawLifeTime();//defined in static fields or generated
+    float getRawTimeSpan();//defined in static fields or generated
+
+    boolean isTimeSpanHalfLife();
 
     cElementalDefinitionStackMap getSubParticles();//contents... null if none
 

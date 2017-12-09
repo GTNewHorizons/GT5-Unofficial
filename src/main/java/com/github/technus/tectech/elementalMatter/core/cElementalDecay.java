@@ -48,11 +48,11 @@ public final class cElementalDecay {
         this.probability = probability;
     }
 
-    public cElementalInstanceStackMap getResults(float lifeMult, long age, int energy, int amountDecaying) {
+    public cElementalInstanceStackMap getResults(float lifeMult, long age, long energy, long amountDecaying) {
         cElementalInstanceStackMap decayResult = new cElementalInstanceStackMap();
         if (outputStacks == null) return decayResult;//This is to prevent null pointer exceptions.
         //Deny decay code is in instance!
-        int qtty = 0;
+        long qtty = 0;
         for (cElementalDefinitionStack stack : outputStacks.values()) qtty += stack.amount;
         if (qtty <= 0) return decayResult;
         //energy /= qtty;

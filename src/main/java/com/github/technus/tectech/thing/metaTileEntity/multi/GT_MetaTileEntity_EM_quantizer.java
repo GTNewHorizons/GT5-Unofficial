@@ -153,7 +153,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
         float mass = into.getMass();
         float euMult = mass / refMass;
         eAmpereFlow = (int) Math.ceil(euMult);
-        if (mass > refUnstableMass || into.getDefinition().getRawLifeTime() < 1.5e25f) {
+        if (mass > refUnstableMass || into.getDefinition().getRawTimeSpan() < 1.5e25f) {
             mEUt = (int) -V[10];
         } else {
             mEUt = (int) -V[8];

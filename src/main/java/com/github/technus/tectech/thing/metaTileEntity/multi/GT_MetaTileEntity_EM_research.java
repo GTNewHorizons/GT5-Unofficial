@@ -179,7 +179,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     public boolean checkRecipe_EM(ItemStack itemStack) {
         tRecipe=null;
         aRecipe=null;
-        if(!eHolders.isEmpty() && eHolders.get(0).mInventory[0]!=null) {
+        if(eHolders.size()>0 && eHolders.get(0).mInventory[0]!=null) {
             holdItem = eHolders.get(0).mInventory[0].copy();
             if(ItemList.Tool_DataStick.isStackEqual(itemStack, false, true)) {
                 for (GT_Recipe.GT_Recipe_AssemblyLine assRecipe : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
@@ -265,7 +265,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public void outputAfterRecipe_EM() {
-        if(!eHolders.isEmpty()) {
+        if(eHolders.size()>0) {
             if (tRecipe != null && ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)){
                 eHolders.get(0).getBaseMetaTileEntity().setActive(false);
                 eHolders.get(0).mInventory[0] = null;

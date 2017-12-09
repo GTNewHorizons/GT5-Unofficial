@@ -33,6 +33,8 @@ import static gregtech.api.enums.OrePrefixes.dust;
  * Created by danie_000 on 18.11.2016.
  */
 public final class dAtomDefinition extends cElementalDefinition {
+    public static final long ATOM_COMPLEXITY_LIMIT=65536L;
+
     private final int hash;
     public static final bTransformationInfo transformation=new bTransformationInfo(16,0,64);
     public static float refMass, refUnstableMass;
@@ -69,6 +71,8 @@ public final class dAtomDefinition extends cElementalDefinition {
 
     public final int neutralCount;
     public final int element;
+
+    public final boolean specialEnergeticDecayHandling;
 
     private final cElementalDefinitionStackMap elementalStacks;
 
@@ -108,7 +112,7 @@ public final class dAtomDefinition extends cElementalDefinition {
         boolean containsAnti = false;
         for (cElementalDefinitionStack stack : elementalStacks.values()) {
             iElementalDefinition def = stack.definition;
-            int amount = stack.amount;
+            int amount = (int)stack.amount;
             mass += stack.getMass();
             if (def.getType() < 0) containsAnti = true;
             type = Math.max(type, Math.abs(def.getType()));
@@ -131,7 +135,6 @@ public final class dAtomDefinition extends cElementalDefinition {
 
         element = Math.abs(element);
 
-
         //stability curve
         int StableIsotope = stableIzoCurve(element);
         int izoDiff = neutralCount - StableIsotope;
@@ -139,20 +142,22 @@ public final class dAtomDefinition extends cElementalDefinition {
 
         hash=super.hashCode();
 
-        iaea=iaeaNuclide.get(element,neutralCount);
+        xstr.setSeed((element + 1L) * (neutralCount + 100L));
+        this.iaea=iaeaNuclide.get(element,neutralCount);
         if(iaea!=null){
-            xstr.setSeed((long) (element + 1) * (neutralCount + 100));
             this.rawLifeTime=containsAnti ? iaea.Thalf * 1.5514433E-21f * (1f + xstr.nextFloat() * 9f):iaea.Thalf;
+            this.specialEnergeticDecayHandling=iaea.energeticStates!=null && iaea.energeticStates.size()>1;//todo fix since it also has base level
+            //todo add energetic decays?
         }else{
             Float overriddenLifeTime=lifetimeOverrides.get(this);
             float rawLifeTimeTemp;
             if(overriddenLifeTime!=null)
                 rawLifeTimeTemp = overriddenLifeTime;
             else {
-                xstr.setSeed((long) (element + 1) * (neutralCount + 100));
                 rawLifeTimeTemp = calculateLifeTime(izoDiff, izoDiffAbs, element, neutralCount, containsAnti);
             }
             this.rawLifeTime=rawLifeTimeTemp> STABLE_RAW_LIFE_TIME ? STABLE_RAW_LIFE_TIME :rawLifeTimeTemp;
+            this.specialEnergeticDecayHandling=false;
         }
 
 
@@ -227,12 +232,15 @@ public final class dAtomDefinition extends cElementalDefinition {
 
     private static boolean canTheyBeTogether(cElementalDefinitionStackMap stacks) {
         boolean nuclei = false;
-        for (cElementalDefinitionStack stack : stacks.values())
+        long qty=0;
+        for (cElementalDefinitionStack stack : stacks.values()) {
             if (stack.definition instanceof dHadronDefinition) {
                 if (((dHadronDefinition) stack.definition).amount != 3) return false;
                 nuclei = true;
             } else if (!(stack.definition instanceof eLeptonDefinition)) return false;
-        return nuclei;
+            qty+=stack.amount;
+        }
+        return nuclei && qty<ATOM_COMPLEXITY_LIMIT;
     }
 
     @Override
@@ -263,8 +271,13 @@ public final class dAtomDefinition extends cElementalDefinition {
     }
 
     @Override
-    public float getRawLifeTime() {
+    public float getRawTimeSpan() {
         return rawLifeTime;
+    }
+
+    @Override
+    public boolean isTimeSpanHalfLife() {
+        return true;
     }
 
     @Override
@@ -323,16 +336,19 @@ public final class dAtomDefinition extends cElementalDefinition {
                 case 2:
                     return MbetaDecay();
                 case Byte.MAX_VALUE:
-                    return iaeaDecay();
-                default:
-                    return getNaturalDecayInstant();
+                    return iaeaDecay(0);
             }
-        } else {
-            return getNaturalDecayInstant();
         }
+        return getNaturalDecayInstant();
     }
 
-    private cElementalDecay[] iaeaDecay(){
+    private cElementalDecay[] iaeaDecay(long energy){
+        //todo
+        if(energy==0){
+
+        }else{
+
+        }
         return null;
     }
 
@@ -501,7 +517,11 @@ public final class dAtomDefinition extends cElementalDefinition {
     }
 
     @Override
-    public cElementalDecay[] getEnergeticDecayInstant() {
+    public cElementalDecay[] getEnergyInducedDecay(long energy) {
+        if (specialEnergeticDecayHandling) {
+            //todo map energetic states
+            return iaeaDecay(energy);
+        }
         //strip leptons
         boolean doIt = true;
         ArrayList<cElementalDefinitionStack> decaysInto = new ArrayList<cElementalDefinitionStack>();
@@ -526,6 +546,11 @@ public final class dAtomDefinition extends cElementalDefinition {
             }
             return new cElementalDecay[]{new cElementalDecay(0.75F, decaysInto.toArray(new cElementalDefinitionStack[decaysInto.size()])), eBosonDefinition.deadEnd};
         }
+    }
+
+    @Override
+    public boolean usesSpecialEnergeticDecayHandling() {
+        return specialEnergeticDecayHandling;
     }
 
     @Override
@@ -588,6 +613,7 @@ public final class dAtomDefinition extends cElementalDefinition {
     }
 
     private final static class nomenclature {
+        private nomenclature(){}
         static final private String[] Symbol = new String[]{"Nt", "H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne", "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr", "Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe", "Cs", "Ba", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu", "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Po", "At", "Rn", "Fr", "Ra", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr", "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds", "Rg", "Cn", "Nh", "Fl", "Mc", "Lv", "Ts", "Og"};
         static final private String[] Name = new String[]{"Neutronium", "Hydrogen", "Helium", "Lithium", "Beryllium", "Boron", "Carbon", "Nitrogen", "Oxygen", "Fluorine", "Neon", "Sodium", "Magnesium", "Aluminium", "Silicon", "Phosphorus", "Sulfur", "Chlorine", "Argon", "Potassium", "Calcium", "Scandium", "Titanium", "Vanadium", "Chromium", "Manganese", "Iron", "Cobalt", "Nickel", "Copper", "Zinc", "Gallium", "Germanium", "Arsenic", "Selenium", "Bromine", "Krypton", "Rubidium", "Strontium", "Yttrium", "Zirconium", "Niobium", "Molybdenum", "Technetium", "Ruthenium", "Rhodium", "Palladium", "Silver", "Cadmium", "Indium", "Tin", "Antimony", "Tellurium", "Iodine", "Xenon", "Caesium", "Barium", "Lanthanum", "Cerium", "Praseodymium", "Neodymium", "Promethium", "Samarium", "Europium", "Gadolinium", "Terbium", "Dysprosium", "Holmium", "Erbium", "Thulium", "Ytterbium", "Lutetium", "Hafnium", "Tantalum", "Tungsten", "Rhenium", "Osmium", "Iridium", "Platinum", "Gold", "Mercury", "Thallium", "Lead", "Bismuth", "Polonium", "Astatine", "Radon", "Francium", "Radium", "Actinium", "Thorium", "Protactinium", "Uranium", "Neptunium", "Plutonium", "Americium", "Curium", "Berkelium", "Californium", "Einsteinium", "Fermium", "Mendelevium", "Nobelium", "Lawrencium", "Rutherfordium", "Dubnium", "Seaborgium", "Bohrium", "Hassium", "Meitnerium", "Darmstadtium", "Roentgenium", "Copernicium", "Nihonium", "Flerovium", "Moscovium", "Livermorium", "Tennessine", "Oganesson"};
         static final private String[] SymbolIUPAC = new String[]{"n", "u", "b", "t", "q", "p", "h", "s", "o", "e", "N", "U", "B", "T", "Q", "P", "H", "S", "O", "E"};

@@ -108,9 +108,14 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
     }
 
     @Override
-    public cElementalDecay[] getEnergeticDecayInstant() {
+    public cElementalDecay[] getEnergyInducedDecay(long energy) {
         if (energeticDecayInstant < 0) return elementalDecays;
         return new cElementalDecay[]{elementalDecays[energeticDecayInstant]};
+    }
+
+    @Override
+    public boolean usesSpecialEnergeticDecayHandling() {
+        return false;
     }
 
     @Override
@@ -119,7 +124,7 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
     }
 
     @Override
-    public float getRawLifeTime() {
+    public float getRawTimeSpan() {
         return rawLifeTime;
     }
 

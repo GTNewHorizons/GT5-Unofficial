@@ -63,11 +63,11 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
 
     //public but u can just try{}catch(){} the constructor it still calls this method
     private static boolean canTheyBeTogether(cElementalDefinitionStackMap stacks) {
-        int amount = 0;
+        long amount = 0;
         for (cElementalDefinitionStack aspects : stacks.values()) {
-            if (aspects.definition instanceof dComplexAspectDefinition || aspects.definition instanceof ePrimalAspectDefinition)
-                amount += aspects.amount;
-            else return false;
+            if (!(aspects.definition instanceof dComplexAspectDefinition) && !(aspects.definition instanceof ePrimalAspectDefinition))
+                return false;
+            amount += aspects.amount;
         }
         return amount==2;
     }
@@ -126,8 +126,13 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
     }
 
     @Override
-    public float getRawLifeTime() {
+    public float getRawTimeSpan() {
         return -1;
+    }
+
+    @Override
+    public boolean isTimeSpanHalfLife() {
+        return false;
     }
 
     @Override
@@ -151,8 +156,13 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
     }
 
     @Override
-    public cElementalDecay[] getEnergeticDecayInstant() {
+    public cElementalDecay[] getEnergyInducedDecay(long energy) {
         return new cElementalDecay[]{new cElementalDecay(0.75F, aspectStacks), eBosonDefinition.deadEnd};
+    }
+
+    @Override
+    public boolean usesSpecialEnergeticDecayHandling() {
+        return false;
     }
 
     @Override

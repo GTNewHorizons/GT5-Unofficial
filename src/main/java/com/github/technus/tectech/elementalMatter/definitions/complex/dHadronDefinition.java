@@ -106,13 +106,12 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
 
     //public but u can just try{}catch(){} the constructor it still calls this method
     private static boolean canTheyBeTogether(cElementalDefinitionStackMap stacks) {
-        int amount = 0;
+        long amount = 0;
         for (cElementalDefinitionStack quarks : stacks.values()) {
             if (!(quarks.definition instanceof eQuarkDefinition)) return false;
             amount += quarks.amount;
         }
-        if (amount < 2 || amount > 12) return false;
-        return true;
+        return amount >= 2 && amount <= 12;
     }
 
     @Override
@@ -164,11 +163,14 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
 
     @Override
     public cElementalDecay[] getNaturalDecayInstant() {
+        cElementalDefinitionStack[] quarkStacks = this.quarkStacks.values();
+        if (amount == 2 && quarkStacks.length == 2 && quarkStacks[0].definition.getMass() == quarkStacks[1].definition.getMass() && quarkStacks[0].definition.getType() == -quarkStacks[1].definition.getType())
+            return cElementalDecay.noProduct;
         ArrayList<cElementalDefinitionStack> decaysInto = new ArrayList<>();
-        for (cElementalDefinitionStack quarkStack : quarkStacks.values()) {
-            if (quarkStack.definition.getType() == 1 || quarkStack.definition.getType() == -1) {
+        for (cElementalDefinitionStack quarks : quarkStacks) {
+            if (quarks.definition.getType() == 1 || quarks.definition.getType() == -1) {
                 //covers both quarks and antiquarks
-                decaysInto.add(quarkStack);
+                decaysInto.add(quarks);
             } else {
                 //covers both quarks and antiquarks
                 decaysInto.add(new cElementalDefinitionStack(boson_Y__, 2));
@@ -181,18 +183,23 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
     }
 
     @Override
-    public cElementalDecay[] getEnergeticDecayInstant() {
+    public cElementalDecay[] getEnergyInducedDecay(long energy) {
         cElementalDefinitionStack[] quarkStacks = this.quarkStacks.values();
         if (amount == 2 && quarkStacks.length == 2 && quarkStacks[0].definition.getMass() == quarkStacks[1].definition.getMass() && quarkStacks[0].definition.getType() == -quarkStacks[1].definition.getType())
-            return new cElementalDecay[]{eBosonDefinition.deadEnd};
+            return cElementalDecay.noProduct;
         return new cElementalDecay[]{new cElementalDecay(0.75F, quarkStacks), eBosonDefinition.deadEnd}; //decay into quarks
+    }
+
+    @Override
+    public boolean usesSpecialEnergeticDecayHandling() {
+        return false;
     }
 
     @Override
     public cElementalDecay[] getDecayArray() {
         cElementalDefinitionStack[] quarkStacks = this.quarkStacks.values();
         if (amount == 2 && quarkStacks.length == 2 && quarkStacks[0].definition.getMass() == quarkStacks[1].definition.getMass() && quarkStacks[0].definition.getType() == -quarkStacks[1].definition.getType())
-            return new cElementalDecay[]{eBosonDefinition.deadEnd};
+            return cElementalDecay.noProduct;
         else if (amount != 3)
             return new cElementalDecay[]{new cElementalDecay(0.95F, quarkStacks), eBosonDefinition.deadEnd}; //decay into quarks
         else {
@@ -221,9 +228,9 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
 
             try {
                 return new cElementalDecay[]{
-                        new cElementalDecay(0.98F, new dHadronDefinition(false, contentOfBaryon), Particles[0], Particles[1]),
+                        new cElementalDecay(0.99F, new dHadronDefinition(false, contentOfBaryon), Particles[0], Particles[1]),
                         new cElementalDecay(0.001F, new dHadronDefinition(false, contentOfBaryon), Particles[0], Particles[1], boson_Y__),
-                        eBosonDefinition.deadEnd}; //decay into quarks
+                        eBosonDefinition.deadEnd};
             } catch (tElementalException e) {
                 if (DEBUG_MODE) e.printStackTrace();
                 return new cElementalDecay[]{eBosonDefinition.deadEnd};
@@ -242,8 +249,13 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
     }
 
     @Override
-    public float getRawLifeTime() {
+    public float getRawTimeSpan() {
         return rawLifeTime;
+    }
+
+    @Override
+    public boolean isTimeSpanHalfLife() {
+        return true;
     }
 
     @Override

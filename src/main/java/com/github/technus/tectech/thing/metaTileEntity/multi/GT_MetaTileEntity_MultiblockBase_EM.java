@@ -578,7 +578,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                             float remaining = voider.overflowMax - voider.getOverflowMatter();
                             for (GT_MetaTileEntity_Hatch_InputElemental in : eInputHatches) {
                                 for (cElementalInstanceStack instance : in.getContainerHandler().values()) {
-                                    int qty = (int) Math.floor(remaining / instance.definition.getMass());
+                                    long qty = (long) Math.floor(remaining / instance.definition.getMass());
                                     if (qty > 0) {
                                         qty = Math.min(qty, instance.amount);
                                         if (voider.addOverflowMatter(instance.definition.getMass() * qty))
@@ -589,7 +589,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
                             }
                             for (GT_MetaTileEntity_Hatch_OutputElemental out : eOutputHatches) {
                                 for (cElementalInstanceStack instance : out.getContainerHandler().values()) {
-                                    int qty = (int) Math.floor(remaining / instance.definition.getMass());
+                                    long qty = (long)Math.floor(remaining / instance.definition.getMass());
                                     if (qty > 0) {
                                         qty = Math.min(qty, instance.amount);
                                         if (voider.addOverflowMatter(instance.definition.getMass() * qty))
