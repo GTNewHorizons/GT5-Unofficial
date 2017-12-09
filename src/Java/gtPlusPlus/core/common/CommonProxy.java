@@ -10,8 +10,10 @@ import gtPlusPlus.core.entity.InternalEntityRegistry;
 import gtPlusPlus.core.handler.*;
 import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.handler.events.PickaxeBlockBreakEventHandler;
+import gtPlusPlus.core.handler.events.ZombieBackupSpawnEventHandler;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.CORE.configSwitches;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.RECIPES_Old_Circuits;
 import gtPlusPlus.core.recipe.common.CI;
@@ -68,8 +70,8 @@ public class CommonProxy {
 		registerEntities();
 		Utils.LOG_INFO("[Proxy] Calling Tile Entity registrator.");
 		registerTileEntities();
-		
-		
+
+
 	}
 
 	public void init(final FMLInitializationEvent e) {
@@ -80,25 +82,30 @@ public class CommonProxy {
 		ModItems.init();
 		ModBlocks.init();
 		CI.Init();
-		
+
 		/**
 		 * Register the Event Handlers.
 		 */
-		
+
 		//Prevents my Safes being destroyed.
 		Utils.registerEvent(new PickaxeBlockBreakEventHandler());
 		//Block Handler for all events.
 		Utils.registerEvent(new BlockEventHandler());
 		//Handles Custom tooltips for EIO.
 		Utils.registerEvent(new HandlerTooltip_EIO());
-		
+
+		if (configSwitches.disableZombieReinforcement){
+			//Make Zombie reinforcements fuck off.
+			Utils.registerEvent(new ZombieBackupSpawnEventHandler());
+		}
+
 		/**
 		 * End of Subscribe Event registration.
 		 */
 
 		Utils.LOG_INFO("[Proxy] Calling Render registrator.");
 		registerRenderThings();
-		
+
 		//Compat Handling
 		COMPAT_HANDLER.registerMyModsOreDictEntries();
 		COMPAT_HANDLER.intermodOreDictionarySupport();
@@ -121,7 +128,7 @@ public class CommonProxy {
 			GameRegistry.registerFuelHandler(fuelHandler);
 			Utils.LOG_INFO("[Fuel Handler] Registering "+fuelHandler.getClass().getName());
 		}
-		
+
 		//Compat Handling
 		COMPAT_HANDLER.InitialiseHandlerThenAddRecipes();
 		COMPAT_HANDLER.RemoveRecipesFromOtherMods();
@@ -138,7 +145,7 @@ public class CommonProxy {
 	public void registerNetworkStuff(){
 		GuiHandler.init();
 	}
-	
+
 	public void registerEntities(){
 		InternalEntityRegistry.registerEntities();
 	}

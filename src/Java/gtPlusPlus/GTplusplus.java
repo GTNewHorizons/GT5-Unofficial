@@ -33,6 +33,7 @@ import gtPlusPlus.core.handler.events.BlockEventHandler;
 import gtPlusPlus.core.handler.events.LoginEventHandler;
 import gtPlusPlus.core.item.general.RF2EU_Battery;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.CORE.configSwitches;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.geo.GeoUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
@@ -63,7 +64,7 @@ public class GTplusplus implements ActionListener {
 				new File(event.getModConfigurationDirectory(), "GTplusplus/GTplusplus.cfg"));
 		config.load();
 
-		CORE.configSwitches.enableUpdateChecker = config.getBoolean("enableUpdateChecker", "debug", true,
+		configSwitches.enableUpdateChecker = config.getBoolean("enableUpdateChecker", "debug", true,
 				"Stops mod checking for updates.");
 
 		// Debug
@@ -88,100 +89,100 @@ public class GTplusplus implements ActionListener {
 				false, "Utilizes Neutronium instead.");
 
 		//Circuits
-		CORE.configSwitches.enableCustomCircuits = config.getBoolean("enableCustomCircuits", "gregtech", true,
+		configSwitches.enableCustomCircuits = config.getBoolean("enableCustomCircuits", "gregtech", true,
 				"Adds custom circuits to expand past the Master Tier.");
-		CORE.configSwitches.enableOldGTcircuits = config.getBoolean("enableOldGTcircuits", "gregtech", false,
+		configSwitches.enableOldGTcircuits = config.getBoolean("enableOldGTcircuits", "gregtech", false,
 				"Restores circuits and their recipes from Pre-5.09.28 times.");
 
 		// Tools
-		CORE.configSwitches.enableSkookumChoochers = config.getBoolean("enableSkookumChoochers", "gregtech", true,
+		configSwitches.enableSkookumChoochers = config.getBoolean("enableSkookumChoochers", "gregtech", true,
 				"Adds Custom GT Tools, called Skookum Choochers, functioning as a hard hammer and a wrench.");
-		CORE.configSwitches.enableMultiSizeTools = config.getBoolean("enableMultiSizeTools", "gregtech", true,
+		configSwitches.enableMultiSizeTools = config.getBoolean("enableMultiSizeTools", "gregtech", true,
 				"Adds Custom GT Shovels and Pickaxes which mine in a 3x3 style. One of each whill be generated for each Gregtech Material which has Dense Plates and Long Rods available.");
 
 		// GT-Fixes
-		CORE.configSwitches.enableNitroFix = config.getBoolean("enableNitroFix", "gregtech", false,
+		configSwitches.enableNitroFix = config.getBoolean("enableNitroFix", "gregtech", false,
 				"Restores the old Nitro-Diesel recipes.");
 		
 		// Pipes & Cables
-		CORE.configSwitches.enableCustom_Pipes = config.getBoolean("enableCustom_Pipes", "gregtech", true,
+		configSwitches.enableCustom_Pipes = config.getBoolean("enableCustom_Pipes", "gregtech", true,
 				"Adds Custom GT Fluid Pipes.");
-		CORE.configSwitches.enableCustom_Cables = config.getBoolean("enableCustom_Cables", "gregtech", true,
+		configSwitches.enableCustom_Cables = config.getBoolean("enableCustom_Cables", "gregtech", true,
 				"Adds Custom GT Cables.");
 
 		// Block Drops
-		CORE.configSwitches.chanceToDropDrainedShard = config.getInt("chanceToDropDrainedShard", "blockdrops", 196, 0,
+		configSwitches.chanceToDropDrainedShard = config.getInt("chanceToDropDrainedShard", "blockdrops", 196, 0,
 				10000, "Drained shards have a 1 in X chance to drop.");
-		CORE.configSwitches.chanceToDropFluoriteOre = config.getInt("chanceToDropFluoriteOre", "blockdrops", 32, 0,
+		configSwitches.chanceToDropFluoriteOre = config.getInt("chanceToDropFluoriteOre", "blockdrops", 32, 0,
 				10000, "Fluorite Ore has a 1 in X chance to drop from Limestone and a 1 in X*20 from Sandstone..");
 
 		// Single machines
-		CORE.configSwitches.enableMachine_SolarGenerators = config.getBoolean("enableSolarGenerators", "gregtech",
+		configSwitches.enableMachine_SolarGenerators = config.getBoolean("enableSolarGenerators", "gregtech",
 				false, "These may be overpowered, Consult a local electrician.");
-		CORE.configSwitches.enableMachine_Safes = config.getBoolean("enableMachineSafes", "gregtech", true,
+		configSwitches.enableMachine_Safes = config.getBoolean("enableMachineSafes", "gregtech", true,
 				"These protect your goodies/rare stuff.");
-		CORE.configSwitches.enableMachine_Dehydrators = config.getBoolean("enableMachineDehydrators", "gregtech", true,
+		configSwitches.enableMachine_Dehydrators = config.getBoolean("enableMachineDehydrators", "gregtech", true,
 				"These dehydrate stuff.");
-		CORE.configSwitches.enableMachine_SteamConverter = config.getBoolean("enableMachineSteamConverter", "gregtech",
+		configSwitches.enableMachine_SteamConverter = config.getBoolean("enableMachineSteamConverter", "gregtech",
 				true, "Converts IC2 steam -> Railcraft steam.");
-		CORE.configSwitches.enableMachine_FluidTanks = config.getBoolean("enableMachineFluidTanks", "gregtech", true,
+		configSwitches.enableMachine_FluidTanks = config.getBoolean("enableMachineFluidTanks", "gregtech", true,
 				"Portable fluid tanks.");
-		CORE.configSwitches.enableMachine_RocketEngines = config.getBoolean("enableMachineRocketEngines", "gregtech",
+		configSwitches.enableMachine_RocketEngines = config.getBoolean("enableMachineRocketEngines", "gregtech",
 				true, "Diesel egines with different internals, they consume less fuel overall.");
-		CORE.configSwitches.enableMachine_GeothermalEngines = config.getBoolean("enableMachineGeothermalEngines",
+		configSwitches.enableMachine_GeothermalEngines = config.getBoolean("enableMachineGeothermalEngines",
 				"gregtech", true, "These may be overpowered, Consult a local geologist.");
-		CORE.configSwitches.enableMachine_WorldAccelerators = config.getBoolean("enableMachineWorldAccelerators",
+		configSwitches.enableMachine_WorldAccelerators = config.getBoolean("enableMachineWorldAccelerators",
 				"gregtech", true, "These allow boosting Block/TileEntity Tick times [OP].");
-		CORE.configSwitches.enableMachine_Tesseracts = config.getBoolean("enableMachineTesseracts",
+		configSwitches.enableMachine_Tesseracts = config.getBoolean("enableMachineTesseracts",
 				"gregtech", true, "Tesseracts for wireless item/fluid movement.");
-		CORE.configSwitches.enableMachine_SimpleWasher = config.getBoolean("enableMachineSimpleWasher",
+		configSwitches.enableMachine_SimpleWasher = config.getBoolean("enableMachineSimpleWasher",
 				"gregtech", true, "Very basic automated cauldron for dust washing.");
-		CORE.configSwitches.enableMachine_Pollution = config.getBoolean("enableMachinePollution",
+		configSwitches.enableMachine_Pollution = config.getBoolean("enableMachinePollution",
 				"gregtech", true, "Pollution Detector & Scrubbers.");
 
 		// Multi machines
-		CORE.configSwitches.enableMultiblock_AlloyBlastSmelter = config.getBoolean("enableMultiblockAlloyBlastSmelter",
+		configSwitches.enableMultiblock_AlloyBlastSmelter = config.getBoolean("enableMultiblockAlloyBlastSmelter",
 				"gregtech", true,
 				"Required to smelt most high tier materials from GT++. Also smelts everything else to molten metal.");
-		CORE.configSwitches.enableMultiblock_IndustrialCentrifuge = config
+		configSwitches.enableMultiblock_IndustrialCentrifuge = config
 				.getBoolean("enableMultiblockIndustrialCentrifuge", "gregtech", true, "Spin, Spin, Spiiiin.");
-		CORE.configSwitches.enableMultiblock_IndustrialCokeOven = config.getBoolean(
+		configSwitches.enableMultiblock_IndustrialCokeOven = config.getBoolean(
 				"enableMultiblockIndustrialCokeOven", "gregtech", true,
 				"Pyro Oven Alternative, older, more realistic, better.");
-		CORE.configSwitches.enableMultiblock_IndustrialElectrolyzer = config.getBoolean(
+		configSwitches.enableMultiblock_IndustrialElectrolyzer = config.getBoolean(
 				"enableMultiblockIndustrialElectrolyzer", "gregtech", true,
 				"Electrolyzes things with extra bling factor.");
-		CORE.configSwitches.enableMultiblock_IndustrialMacerationStack = config.getBoolean(
+		configSwitches.enableMultiblock_IndustrialMacerationStack = config.getBoolean(
 				"enableMultiblockIndustrialMacerationStack", "gregtech", true,
 				"A hyper efficient maceration tower, nets more bonus outputs.");
-		CORE.configSwitches.enableMultiblock_IndustrialPlatePress = config.getBoolean(
+		configSwitches.enableMultiblock_IndustrialPlatePress = config.getBoolean(
 				"enableMultiblockIndustrialPlatePress", "gregtech", true, "Industrial bendering machine thingo.");
-		CORE.configSwitches.enableMultiblock_IndustrialWireMill = config.getBoolean(
+		configSwitches.enableMultiblock_IndustrialWireMill = config.getBoolean(
 				"enableMultiblockIndustrialWireMill", "gregtech", true, "Produces fine wire and exotic cables.");
-		CORE.configSwitches.enableMultiblock_IronBlastFurnace = config.getBoolean("enableMultiblockIronBlastFurnace",
+		configSwitches.enableMultiblock_IronBlastFurnace = config.getBoolean("enableMultiblockIronBlastFurnace",
 				"gregtech", true, "Skip the Bronze age, very slowly.");
-		CORE.configSwitches.enableMultiblock_MatterFabricator = config.getBoolean("enableMultiblockMatterFabricator",
+		configSwitches.enableMultiblock_MatterFabricator = config.getBoolean("enableMultiblockMatterFabricator",
 				"gregtech", true, "?FAB?RIC?ATE MA?TT?ER.");
-		CORE.configSwitches.enableMultiblock_MultiTank = config.getBoolean("enableMultiblockMultiTank", "gregtech",
+		configSwitches.enableMultiblock_MultiTank = config.getBoolean("enableMultiblockMultiTank", "gregtech",
 				true, "Tall tanks, each layer adds extra fluid storage.");
-		CORE.configSwitches.enableMultiblock_PowerSubstation = config.getBoolean("enableMultiblockPowerSubstation",
+		configSwitches.enableMultiblock_PowerSubstation = config.getBoolean("enableMultiblockPowerSubstation",
 				"gregtech", true, "For managing large power grids.");
-		CORE.configSwitches.enableMultiblock_LiquidFluorideThoriumReactor = config.getBoolean(
+		configSwitches.enableMultiblock_LiquidFluorideThoriumReactor = config.getBoolean(
 				"enableMultiblockLiquidFluorideThoriumReactor", "gregtech", true, "For supplying large power grids.");
-		CORE.configSwitches.enableMultiblock_NuclearFuelRefinery = config.getBoolean(
+		configSwitches.enableMultiblock_NuclearFuelRefinery = config.getBoolean(
 				"enableMultiblock_NuclearFuelRefinery", "gregtech", true,
 				"Refines molten chemicals into nuclear fuels.");
-		CORE.configSwitches.enableMultiblock_IndustrialSifter = config.getBoolean("enableMultiblock_IndustrialSifter",
+		configSwitches.enableMultiblock_IndustrialSifter = config.getBoolean("enableMultiblock_IndustrialSifter",
 				"gregtech", true, "Large scale sifting.");
-		CORE.configSwitches.enableMultiblock_LargeAutoCrafter = config.getBoolean("enableMultiblock_LargeAutoCrafter",
+		configSwitches.enableMultiblock_LargeAutoCrafter = config.getBoolean("enableMultiblock_LargeAutoCrafter",
 				"gregtech", true, "Can Assemble, Disassemble and Craft Project data from Data Sticks.");
-		CORE.configSwitches.enableMultiblock_IndustrialThermalCentrifuge = config.getBoolean("enableMultiblock_IndustrialThermalCentrifuge",
+		configSwitches.enableMultiblock_IndustrialThermalCentrifuge = config.getBoolean("enableMultiblock_IndustrialThermalCentrifuge",
 				"gregtech", true, "Your warm spin for the ore thing.");
-		CORE.configSwitches.enableMultiblock_IndustrialWashPlant = config.getBoolean("enableMultiblock_IndustrialWashPlant",
+		configSwitches.enableMultiblock_IndustrialWashPlant = config.getBoolean("enableMultiblock_IndustrialWashPlant",
 				"gregtech", true, "Used to wash the dirt, riiiiight offff..");
-		CORE.configSwitches.enableMultiblock_ThermalBoiler = config.getBoolean("enableMachineThermalBoiler",
+		configSwitches.enableMultiblock_ThermalBoiler = config.getBoolean("enableMachineThermalBoiler",
 				"gregtech", true, "Thermal Boiler from GT4. Can Filter Lava for resources.");
-		CORE.configSwitches.enableMultiblock_IndustrialCuttingMachine = config.getBoolean("enableMultiblock_IndustrialCuttingMachine",
+		configSwitches.enableMultiblock_IndustrialCuttingMachine = config.getBoolean("enableMultiblock_IndustrialCuttingMachine",
 				"gregtech", true, "Very fast and efficient Cutting Machine.");
 
 		// Options
@@ -189,8 +190,10 @@ public class GTplusplus implements ActionListener {
 				"How much RF is a single unit of EU worth? (Most mods use 4:1 ratio)");
 
 		// Features
-		CORE.mEnableCape = config.getBoolean("enableSupporterCape", "features", true,
-				"Enables Custom GT++ Cape.");
+		configSwitches.enableCustomCapes = config.getBoolean("enableSupporterCape", "features", true,
+				"Enables Custom GT++ Cape.");		
+		configSwitches.disableZombieReinforcement = config.getBoolean("disableZombieReinforcement", "features", false,
+				"Disables Zombie Reinforcement on hard difficutly.");
 
 		//Biomes
 		CORE.DARKBIOME_ID = config.getInt("darkbiome_ID", "worldgen", 238, 1, 254, "The biome within the Dark Dimension.");
@@ -223,7 +226,7 @@ public class GTplusplus implements ActionListener {
 		Utils.LOG_INFO("Loading " + CORE.name + " V" + CORE.VERSION);
 
 		if(!Utils.isServer()){
-			CORE.mEnableCape = true;
+			configSwitches.enableCustomCapes = true;
 		}
 
 		//HTTP Requests
@@ -234,7 +237,7 @@ public class GTplusplus implements ActionListener {
 		handleConfigFile(event);
 
 		CORE.DEVENV = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
-		if (CORE.configSwitches.enableUpdateChecker){
+		if (configSwitches.enableUpdateChecker){
 			Utils.LOG_INFO("Latest is " + CORE.MASTER_VERSION + ". Updated? " + Utils.isModUpToDate());
 		}
 		Utils.LOG_INFO("User's Country: " + CORE.USER_COUNTRY);
@@ -243,7 +246,7 @@ public class GTplusplus implements ActionListener {
 		Utils.registerEvent(new LoginEventHandler());
 		Utils.LOG_INFO("Login Handler Initialized");
 
-		if (CORE.configSwitches.enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
+		if (configSwitches.enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
 			removeCircuitRecipeMap(); //Bye shitty recipes.			
 		}	
 		

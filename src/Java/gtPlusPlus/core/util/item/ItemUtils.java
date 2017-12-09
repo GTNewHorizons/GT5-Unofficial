@@ -684,6 +684,22 @@ public class ItemUtils {
 		Utils.LOG_INFO("[Component Maker] Found "+mItemName+".");
 		return (gregstack);
 	}
+	
+	public static ItemStack[] getStackOfAllOreDictGroup(String oredictname){
+		final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictname);
+		if (!oreDictList.isEmpty()){
+			final ItemStack[] returnValues = new ItemStack[oreDictList.size()];			
+			for (int i=0;i<oreDictList.size();i++){
+				if (oreDictList.get(i) != null){
+					returnValues[i] = oreDictList.get(i);					
+				}
+			}			
+			return returnValues.length>0 ? returnValues : null;
+		}
+		else {
+			return null;
+		}
+	}
 
 
 }

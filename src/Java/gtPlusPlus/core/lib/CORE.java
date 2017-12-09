@@ -54,7 +54,6 @@ public class CORE {
 	public static final int GREGTECH_API_VERSION = GregTech_API.VERSION;
 	public static IGregtech_RecipeAdder RA;
 
-	public static boolean mEnableCape = false;
 
 	public static GameProfile gameProfile = new GameProfile(UUID.nameUUIDFromBytes("gtplusplus.core".getBytes()), "[GT++]");
 
@@ -131,8 +130,10 @@ public class CORE {
 		public static boolean enableAlternativeDivisionSigilRecipe = false;
 
 		//Feature Related
+		public static boolean enableCustomCapes = false;
 		public static boolean enableCustomCircuits = true;
 		public static boolean enableOldGTcircuits = false;
+		public static boolean disableZombieReinforcement = false;
 		
 		//GT Fixes
 		public static boolean enableNitroFix = false;

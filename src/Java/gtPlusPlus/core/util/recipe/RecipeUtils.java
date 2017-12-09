@@ -322,6 +322,51 @@ public class RecipeUtils {
 
 
 
+	public static boolean addShapedGregtechRecipeForTypes(
+			final Object InputItem1, final Object InputItem2, final Object InputItem3,
+			final Object InputItem4, final Object InputItem5, final Object InputItem6,
+			final Object InputItem7, final Object InputItem8, final Object InputItem9,
+			final ItemStack OutputItem){
+
+		int using = 0, recipeSlotCurrent = 0;
+		boolean[] hasMultiStack = new boolean[9];
+		boolean inUse[] = {false, false, false};		
+		ItemStack array[][] = new ItemStack[3][9];
+		
+		Object[] inputs = {
+				InputItem1, InputItem2, InputItem3,
+				InputItem4, InputItem5, InputItem6, 
+				InputItem7, InputItem8, InputItem9};
+		
+		for (Object o : inputs){
+			if (o.getClass().isArray()){
+				if (inUse[using] == false){
+					inUse[using] = true;
+					array[using] = (ItemStack[]) o;
+					hasMultiStack[recipeSlotCurrent] = true;
+					using++;					
+				}
+			}
+			else {
+				hasMultiStack[recipeSlotCurrent] = false;
+			}
+			recipeSlotCurrent++;
+		}
+		
+		int using2 = 0;
+		for (boolean t : inUse){
+			
+			if (t){
+				if (array[using2] != null){
+					//addShapedGregtechRecipe
+				}
+			}
+			using2++;
+		}
+		
+		
+		return false;
+	}
 
 
 

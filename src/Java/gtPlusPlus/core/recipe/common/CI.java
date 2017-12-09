@@ -291,49 +291,52 @@ public class CI {
 			}
 		}
 		else {
-			if (tier == 0){
-				//return ItemList.Circuit_Primitive.get(1);	
-				return "circuitPrimitive";
-			}
-			else if (tier == 1){
-				//return ItemList.Circuit_Basic.get(1);		
-				return "circuitBasic";			
-			}
-			else if (tier == 2){
-				//return ItemList.Circuit_Good.get(1);		
-				return "circuitGood";			
-			}
-			else if (tier == 3){
-				//return ItemList.Circuit_Advanced.get(1);		
-				return "circuitAdvanced";			
-			}
-			else if (tier == 4){
-				//return ItemList.Circuit_Elite.get(1);		
-				return "circuitData";			
-			}
-			else if (tier == 5){
-				//return ItemList.Circuit_Elite.get(1);		
-				return "circuitElite";			
-			}
-			else if (tier == 6){
-				//return ItemList.Circuit_Master.get(1);	
-				return "circuitMaster";				
-			}
-			else if (tier == 7){
-				//return ItemList.Circuit_Ultimate.get(1);	
-				return "circuitUltimate";
-			}
-			else if (tier == 8){
-				return "circuitSuperconductor";				
-			}
-			else if (tier == 9){
-				return "circuitInfinite";				
-			}
-			else if (tier == 10){
-				return "circuitQuantum";				
-			}
+			return getTieredCircuitOreDictName(tier);
 		}
 		return _NULL;
+	}
+	
+	public static ItemStack[] getAllCircuitsOfTier(int tier){		
+		return ItemUtils.getStackOfAllOreDictGroup(getTieredCircuitOreDictName(tier));
+	}
+	
+	public static String getTieredCircuitOreDictName(int tier){
+		if (tier == 0){
+			return "circuitPrimitive";
+		}
+		else if (tier == 1){	
+			return "circuitBasic";			
+		}
+		else if (tier == 2){	
+			return "circuitGood";			
+		}
+		else if (tier == 3){		
+			return "circuitAdvanced";			
+		}
+		else if (tier == 4){	
+			return "circuitData";			
+		}
+		else if (tier == 5){	
+			return "circuitElite";			
+		}
+		else if (tier == 6){	
+			return "circuitMaster";				
+		}
+		else if (tier == 7){
+			return "circuitUltimate";
+		}
+		else if (tier == 8){
+			return "circuitSuperconductor";				
+		}
+		else if (tier == 9){
+			return "circuitInfinite";				
+		}
+		else if (tier == 10){
+			return "circuitQuantum";				
+		}
+		else {
+			return "circuitPrimitive";
+		}
 	}
 
 	public static ItemStack getNumberedCircuit(int Meta){
