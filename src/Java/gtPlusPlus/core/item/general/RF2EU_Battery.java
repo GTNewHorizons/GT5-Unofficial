@@ -25,15 +25,15 @@ import net.minecraft.world.World;
 
 public class RF2EU_Battery extends ItemEnergyContainer implements IElectricItem, IElectricItemManager, IFuelHandler{
 
-	public static int rfPerEU = 4;
+	public static double rfPerEU = 3.4;
 	private final String unlocalizedName = "rfEUBattery";
 	private final ItemStack thisStack;
 	private final static int maxValueEU = 100000000;
-	private final static int maxValueRF = maxValueEU * rfPerEU;
+	private final static int maxValueRF = (int) (maxValueEU * rfPerEU);
 	protected double chargeEU = 0;
 
 	public RF2EU_Battery(){
-		super(maxValueRF, maxValueRF, maxValueRF);
+		super(maxValueRF);
 		GameRegistry.registerFuelHandler(this);
 		//this.setMaxDamage(Integer.MAX_VALUE);
 		//this.setDamage(UtilsItems.getSimpleStack(this), 0);
