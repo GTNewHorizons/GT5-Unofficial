@@ -686,7 +686,7 @@ public final class ModItems {
 		}
 
 		//EnderIO Resources
-		if ((LoadedMods.EnderIO || LOAD_ALL_CONTENT) && !CORE.GTNH){
+		if ((LoadedMods.EnderIO || LOAD_ALL_CONTENT)){
 			Utils.LOG_INFO("EnderIO Found - Loading Resources.");
 			//Enderio Dusts
 			itemDustSoularium = ItemUtils.generateSpecialUseDusts("Soularium", "Soularium", MaterialEIO.SOULARIUM.vChemicalFormula, MaterialEIO.SOULARIUM.getRgbAsHex())[0];
