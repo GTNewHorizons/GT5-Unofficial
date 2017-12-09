@@ -7,12 +7,23 @@ import net.minecraftforge.event.entity.living.ZombieEvent;
 
 public class ZombieBackupSpawnEventHandler {
 	
+	/**
+	 * 
+	 * Do we really need this pathetic mechanic to exist when it doesn't work properly at all? 
+	 * Or , well, maybe you enjoy Zombies spawning IN YOUR FUCKING FACE?!
+	 * 
+	 */
+	
 	@SubscribeEvent
 	public void onZombieReinforcement(final ZombieEvent.SummonAidEvent event) {
-		if (event.summonChance > 0){
-			event.setResult(Result.DENY);
-			Utils.LOG_MACHINE_INFO("Stopped a Reinforcement Zombie spawning.");
-		}
+		Utils.LOG_MACHINE_INFO("ZombieEvent.SummonAidEvent.");
+		event.setResult(Result.DENY);
+	}
+	
+	@SubscribeEvent
+	public void onZombieReinforcement(final ZombieEvent event) {
+		Utils.LOG_MACHINE_INFO("ZombieEvent.");
+		event.setResult(Result.DENY);
 	}
 	
 }
