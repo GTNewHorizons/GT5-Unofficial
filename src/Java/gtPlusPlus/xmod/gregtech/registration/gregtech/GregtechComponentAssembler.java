@@ -456,7 +456,7 @@ public class GregtechComponentAssembler {
 				for (ItemStack mCircuitType : oreDictList) {
 					final ItemStack returnValue = mCircuitType.copy();
 					returnValue.stackSize = 1;					
-					ItemStack Input[] = { returnValue, cableStack, returnValue, magrodStack };
+					ItemStack Input[] = { gemStack, cableStack, returnValue, magrodStack };
 					mAdd[mcount++] = CORE.RA.addComponentMakerRecipe(Input, GT_Values.NF,
 							ItemList.valueOf("Sensor_" + GT_Values.VN[tier]).get(1), (tier * 40),
 							((int) GT_Values.V[tier] / 16) * 15);					
