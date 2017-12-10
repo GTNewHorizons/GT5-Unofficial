@@ -54,7 +54,7 @@ import gtPlusPlus.core.item.tool.staballoy.MultiSpadeBase;
 import gtPlusPlus.core.item.tool.staballoy.StaballoyAxe;
 import gtPlusPlus.core.item.tool.staballoy.StaballoyPickaxe;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.CORE.configSwitches;
+import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.material.ALLOY;
 import gtPlusPlus.core.material.ELEMENT;
@@ -573,7 +573,7 @@ public final class ModItems {
 
 
 		//Load Tree Farmer
-		if (CORE.configSwitches.enableMultiblock_TreeFarmer){ //https://en.wikipedia.org/wiki/UAN
+		if (CORE.ConfigSwitches.enableMultiblock_TreeFarmer){ //https://en.wikipedia.org/wiki/UAN
 			dustFertUN18 = ItemUtils.generateSpecialUseDusts("UN18Fertiliser", "UN-18 Fertiliser", Utils.rgbtoHexValue(60, 155, 60))[0];
 			dustFertUN32 = ItemUtils.generateSpecialUseDusts("UN32Fertiliser", "UN-32 Fertiliser", Utils.rgbtoHexValue(55, 190, 55))[0];
 
@@ -645,10 +645,10 @@ public final class ModItems {
 		}
 
 		//A plate of Europium.
-		if ((ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateEuropium", 1) == null) && CORE.configSwitches.enableCustom_Pipes){
+		if ((ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateEuropium", 1) == null) && CORE.ConfigSwitches.enableCustom_Pipes){
 			itemPlateEuropium = new BaseItemPlate(MaterialUtils.generateMaterialFromGtENUM(Materials.Europium));
 		}
-		if ((ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateDoubleEuropium", 1) == null) && CORE.configSwitches.enableCustom_Pipes){
+		if ((ItemUtils.getItemStackOfAmountFromOreDictNoBroken("plateDoubleEuropium", 1) == null) && CORE.ConfigSwitches.enableCustom_Pipes){
 			itemDoublePlateEuropium = new BaseItemPlateDouble(MaterialUtils.generateMaterialFromGtENUM(Materials.Europium));
 		}
 
@@ -801,7 +801,7 @@ public final class ModItems {
 
 
 		//Special Item Handling Case
-		if (configSwitches.enableAlternativeBatteryAlloy) {
+		if (ConfigSwitches.enableAlternativeBatteryAlloy) {
 			//ModItems.itemIngotBatteryAlloy = new BaseItemIngot("itemIngotBatteryAlloy", "Battery Alloy", new short[]{35, 228, 141}, 0); TODO
 			ModItems.itemPlateBatteryAlloy = ItemUtils.generateSpecialUsePlate("BatteryAlloy", "Battery Alloy", new short[]{35, 228, 141}, 0);
 

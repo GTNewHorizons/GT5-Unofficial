@@ -40,10 +40,10 @@ public class GregtechConduits {
 	{
 		if (Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Custom Cables/Wires/Pipes.");
-			if (CORE.configSwitches.enableCustom_Cables) {
+			if (CORE.ConfigSwitches.enableCustom_Cables) {
 				run1();
 			}
-			if (CORE.configSwitches.enableCustom_Pipes) {
+			if (CORE.ConfigSwitches.enableCustom_Pipes) {
 				run2();
 			}
 		}

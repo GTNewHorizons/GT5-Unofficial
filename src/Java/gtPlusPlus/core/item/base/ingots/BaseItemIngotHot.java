@@ -65,7 +65,7 @@ public class BaseItemIngotHot extends BaseItemIngot{
 	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean requiresMultipleRenderPasses(){
-		if (CORE.configSwitches.useGregtechTextures){
+		if (CORE.ConfigSwitches.useGregtechTextures){
 			return true;
 		}
 		else {
@@ -76,7 +76,7 @@ public class BaseItemIngotHot extends BaseItemIngot{
 	@Override
 	public void registerIcons(final IIconRegister i) {
 
-		if (CORE.configSwitches.useGregtechTextures){
+		if (CORE.ConfigSwitches.useGregtechTextures){
 			this.base = i.registerIcon("gregtech" + ":" + "materialicons/METALLIC/" + "ingotHot");
 			this.overlay = i.registerIcon("gregtech" + ":" + "materialicons/METALLIC/" + "ingotHot_OVERLAY");
 		}
@@ -89,10 +89,10 @@ public class BaseItemIngotHot extends BaseItemIngot{
 
 	@Override
 	public IIcon getIconFromDamageForRenderPass(final int damage, final int pass) {
-		if(pass == 0 && CORE.configSwitches.useGregtechTextures) {
+		if(pass == 0 && CORE.ConfigSwitches.useGregtechTextures) {
 			return this.base;
 		}
-		else if(pass == 1 && CORE.configSwitches.useGregtechTextures) {
+		else if(pass == 1 && CORE.ConfigSwitches.useGregtechTextures) {
 			return this.overlay;
 		}
 		else {

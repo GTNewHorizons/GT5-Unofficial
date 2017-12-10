@@ -19,7 +19,7 @@ public class ItemsMultiTools {
 
 		//Load Multitools
 		final boolean gtStyleTools = LoadedMods.Gregtech;
-		if (CORE.configSwitches.enableMultiSizeTools){
+		if (CORE.ConfigSwitches.enableMultiSizeTools){
 
 			//GT Materials
 			final Materials[] rm = Materials.values();

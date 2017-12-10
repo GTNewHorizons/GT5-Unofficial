@@ -3,7 +3,7 @@ package gtPlusPlus.core.lib;
 import static gtPlusPlus.core.lib.CORE.GTNH;
 
 import cpw.mods.fml.common.Loader;
-import gtPlusPlus.core.lib.CORE.configSwitches;
+import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechTextures;
 import gtPlusPlus.xmod.gregtech.recipes.GregtechRecipeAdder;
@@ -90,7 +90,7 @@ public class LoadedMods {
 			Utils.LOG_INFO("Components enabled for: BuildCraft");
 			totalMods++;
 		}
-		if ((Loader.isModLoaded("EnderIO") == true) && !configSwitches.disableEnderIOIntegration){
+		if ((Loader.isModLoaded("EnderIO") == true) && !ConfigSwitches.disableEnderIOIntegration){
 			EnderIO = true;
 			Utils.LOG_INFO("Components enabled for: EnderIO");
 			totalMods++;

@@ -14,7 +14,7 @@ import net.minecraftforge.fluids.FluidStack;
 public class GregtechSimpleWasher {
 
 	public static void run() {
-		if (CORE.configSwitches.enableMachine_SimpleWasher){
+		if (CORE.ConfigSwitches.enableMachine_SimpleWasher){
 			generateDirtyDustRecipes();
 			generateDirtyCrushedRecipes();
 			// Register the Simple Washer Entity.

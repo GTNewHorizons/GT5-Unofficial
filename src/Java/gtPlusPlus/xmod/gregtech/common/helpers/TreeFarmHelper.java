@@ -1,6 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.helpers;
 
-import static gtPlusPlus.core.lib.CORE.configSwitches.enableTreeFarmerParticles;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableTreeFarmerParticles;
 
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import gregtech.api.enums.OrePrefixes;

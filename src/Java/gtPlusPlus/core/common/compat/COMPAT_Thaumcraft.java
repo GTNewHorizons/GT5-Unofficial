@@ -1,7 +1,7 @@
 package gtPlusPlus.core.common.compat;
 
 import gregtech.api.util.GT_OreDictUnificator;
-import gtPlusPlus.core.lib.CORE.configSwitches;
+import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.item.ItemUtils;
 
@@ -9,7 +9,7 @@ public class COMPAT_Thaumcraft {
 
 	public static void OreDict(){
 
-		if (configSwitches.enableThaumcraftShardUnification){
+		if (ConfigSwitches.enableThaumcraftShardUnification){
 			run();
 		}
 	}

@@ -150,7 +150,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 			GregtechItemList.Circuit_Parts_Wiring_LuV.set(this.addItem(tLastID = 720, "Etched LuV Voltage Wiring", "Part of Circuit Boards", new Object[0]));
 			GregtechItemList.Circuit_Parts_Wiring_ZPM.set(this.addItem(tLastID = 721, "Etched ZPM Voltage Wiring", "Part of Circuit Boards", new Object[0]));
 
-			if (CORE.configSwitches.enableCustomCircuits){
+			if (CORE.ConfigSwitches.enableCustomCircuits){
 				ItemUtils.addItemToOreDictionary(GregtechItemList.Circuit_IV.get(1), "circuitSuperconductor");
 				ItemUtils.addItemToOreDictionary(GregtechItemList.Circuit_LuV.get(1), "circuitInfinite");
 			}
@@ -229,7 +229,7 @@ public class MetaGeneratedGregtechItems extends Gregtech_MetaItem_X32 {
 		GregtechItemList.Food_Baked_Raisin_Bread.set(this.addItem(tLastID = 60, "Raisin Bread", "Extra Raisins, Just for ImQ009", new Object[]{new GT_FoodStat(5, 0.5F, EnumAction.eat, null, false, true, false, new int[0]), getTcAspectStack(TC_Aspects.CORPUS, 1L), getTcAspectStack(TC_Aspects.FAMES, 1L), getTcAspectStack(TC_Aspects.IGNIS, 1L)}));
 
 		//Old Circuits
-		if (CORE.configSwitches.enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
+		if (CORE.ConfigSwitches.enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
 			registerOldCircuits();
 		}
 

@@ -12,7 +12,7 @@ public class GregtechIndustrialWashPlant {
 	public static void run() {
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
 			Utils.LOG_INFO("Gregtech5u Content | Registering Industrial Wash Plant Multiblock.");
-			if (CORE.configSwitches.enableMultiblock_IndustrialWashPlant) {
+			if (CORE.ConfigSwitches.enableMultiblock_IndustrialWashPlant) {
 				run1();
 			}
 		}

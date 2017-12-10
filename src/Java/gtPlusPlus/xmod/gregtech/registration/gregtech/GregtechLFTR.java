@@ -10,7 +10,7 @@ public class GregtechLFTR {
 	public static void run() {
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
 			Utils.LOG_INFO("Gregtech5u Content | Registering Liquid Fluorine Thorium Reactor [LFTR].");
-			if (CORE.configSwitches.enableMultiblock_LiquidFluorideThoriumReactor) {
+			if (CORE.ConfigSwitches.enableMultiblock_LiquidFluorideThoriumReactor) {
 				run1();
 			}
 		}

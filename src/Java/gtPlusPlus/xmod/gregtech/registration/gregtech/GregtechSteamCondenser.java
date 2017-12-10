@@ -10,7 +10,7 @@ public class GregtechSteamCondenser {
 	public static void run() {
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
 			Utils.LOG_INFO("Gregtech5u Content | Registering Steam Condensor.");
-			if (CORE.configSwitches.enableMachine_SteamConverter) {
+			if (CORE.ConfigSwitches.enableMachine_SteamConverter) {
 				run1();
 			}
 		}

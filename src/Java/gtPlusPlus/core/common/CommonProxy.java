@@ -13,7 +13,7 @@ import gtPlusPlus.core.handler.events.PickaxeBlockBreakEventHandler;
 import gtPlusPlus.core.handler.events.ZombieBackupSpawnEventHandler;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
-import gtPlusPlus.core.lib.CORE.configSwitches;
+import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.RECIPES_Old_Circuits;
 import gtPlusPlus.core.recipe.common.CI;
@@ -94,7 +94,7 @@ public class CommonProxy {
 		//Handles Custom tooltips for EIO.
 		Utils.registerEvent(new HandlerTooltip_EIO());
 
-		if (configSwitches.disableZombieReinforcement){
+		if (ConfigSwitches.disableZombieReinforcement){
 			//Make Zombie reinforcements fuck off.
 			Utils.registerEvent(new ZombieBackupSpawnEventHandler());
 		}
@@ -117,7 +117,7 @@ public class CommonProxy {
 		PlayerCache.initCache();
 
 		//Circuits
-		if (CORE.configSwitches.enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
+		if (CORE.ConfigSwitches.enableOldGTcircuits && CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
 			RECIPES_Old_Circuits.handleCircuits();
 			new RECIPES_Old_Circuits();
 		}

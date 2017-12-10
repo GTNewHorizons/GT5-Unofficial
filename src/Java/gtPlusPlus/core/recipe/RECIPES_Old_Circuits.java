@@ -274,7 +274,7 @@ public class RECIPES_Old_Circuits  implements IOreRecipeRegistrator {
 
 	private static boolean hideCircuitsNEI(){
 		Boolean isNEILoaded = Loader.isModLoaded("NotEnoughItems");
-		if (isNEILoaded && !CORE.configSwitches.showHiddenNEIItems){
+		if (isNEILoaded && !CORE.ConfigSwitches.showHiddenNEIItems){
 			Utils.LOG_INFO("[Old Feature - Circuits] Hiding .28+ circuits in NEI.");
 			String[] CircuitToHide = {
 					"Circuit_Board_Basic",

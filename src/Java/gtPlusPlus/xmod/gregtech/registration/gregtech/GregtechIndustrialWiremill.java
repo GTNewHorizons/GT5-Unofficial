@@ -10,7 +10,7 @@ public class GregtechIndustrialWiremill {
 	public static void run() {
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
 			Utils.LOG_INFO("Gregtech5u Content | Registering Industrial Wire Factory Multiblock.");
-			if (CORE.configSwitches.enableMultiblock_IndustrialWireMill) {
+			if (CORE.ConfigSwitches.enableMultiblock_IndustrialWireMill) {
 				run1();
 			}
 		}

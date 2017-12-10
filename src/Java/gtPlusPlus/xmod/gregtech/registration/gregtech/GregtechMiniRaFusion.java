@@ -21,7 +21,7 @@ import net.minecraftforge.fluids.FluidStack;
 public class GregtechMiniRaFusion {
 
 	public static void run() {
-		//if (CORE.configSwitches.enableMachine_SimpleWasher){
+		//if (CORE.ConfigSwitches.enableMachine_SimpleWasher){
 			generateSlowFusionRecipes();
 			// Register the Simple Fusion Entity.
 			GregtechItemList.Miniature_Fusion

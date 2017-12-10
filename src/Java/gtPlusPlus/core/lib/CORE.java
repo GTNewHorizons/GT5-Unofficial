@@ -11,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.mojang.authlib.GameProfile;
 
 import gregtech.api.GregTech_API;
+import gtPlusPlus.api.analytics.SegmentAnalytics;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.Pair;
 import gtPlusPlus.core.util.geo.GeoUtils;
@@ -27,6 +28,11 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.config.Configuration;
 
 public class CORE {
+
+	//Analytics handler
+	public static SegmentAnalytics mAnalytics;
+
+
 
 	protected CORE(){
 		//import cpw.mods.fml.common.Optional;
@@ -105,7 +111,7 @@ public class CORE {
 
 	//public static final Materials2[] MiscGeneratedMaterials = new Materials2[1000];
 
-	public static class configSwitches {
+	public static class ConfigSwitches {
 
 		//Updates
 		public static boolean enableUpdateChecker = true;

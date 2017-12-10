@@ -22,7 +22,7 @@ import gtPlusPlus.core.entity.projectile.EntitySulfuricAcidPotion;
 import gtPlusPlus.core.entity.projectile.EntityToxinballSmall;
 import gtPlusPlus.core.handler.render.FirepitRender;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.lib.CORE.configSwitches;
+import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.tileentities.general.TileEntityFirepit;
 import gtPlusPlus.core.util.Utils;
@@ -44,7 +44,7 @@ public class ClientProxy extends CommonProxy implements Runnable{
 
 	@SubscribeEvent
 	public void receiveRenderSpecialsEvent(net.minecraftforge.client.event.RenderPlayerEvent.Specials.Pre aEvent) {
-		if (configSwitches.enableCustomCapes){
+		if (ConfigSwitches.enableCustomCapes){
 			mCapeRenderer.receiveRenderSpecialsEvent(aEvent);
 		}
 	}
@@ -55,7 +55,7 @@ public class ClientProxy extends CommonProxy implements Runnable{
 	@Override
 	public void preInit(final FMLPreInitializationEvent e) {
 		super.preInit(e);
-		if (configSwitches.enableCustomCapes){
+		if (ConfigSwitches.enableCustomCapes){
 			onPreLoad();			
 		}
 		//Do this weird things for textures.
@@ -153,7 +153,7 @@ public class ClientProxy extends CommonProxy implements Runnable{
 
 
 	public void onPreLoad() {
-		if (configSwitches.enableCustomCapes){
+		if (ConfigSwitches.enableCustomCapes){
 			String arr$[] = {
 					"draknyte1", "fobius"
 			};
@@ -168,7 +168,7 @@ public class ClientProxy extends CommonProxy implements Runnable{
 
 	public void run() {
 		try {
-			if (configSwitches.enableCustomCapes){
+			if (ConfigSwitches.enableCustomCapes){
 				Utils.LOG_INFO("GT++ Mod: Downloading Cape List.");
 				@SuppressWarnings("resource")
 				Scanner tScanner = new Scanner(new URL("https://github.com/draknyte1/GTplusplus/blob/master/SupporterList.txt").openStream());

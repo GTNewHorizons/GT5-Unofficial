@@ -204,7 +204,7 @@ public class Utils {
 
 		}
 
-		if (CORE.configSwitches.MACHINE_INFO || localPlayer) {
+		if (CORE.ConfigSwitches.MACHINE_INFO || localPlayer) {
 			final String name1 = gtPlusPlus.core.util.reflect.ReflectionUtils.getMethodName(2);
 			modLogger.info("Machine Info: " + s + " | " + name1);
 		}

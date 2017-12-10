@@ -19,7 +19,7 @@ public class RECIPES_LaserEngraver implements IOreRecipeRegistrator {
 	public void registerOre(final OrePrefixes aPrefix, final Materials aMaterial, final String aOreDictName, final String aModName, final ItemStack aStack) {
 		if (aOreDictName.equals(OreDictNames.craftingLensBlue.toString())) {
 
-			if (CORE.configSwitches.enableCustomCircuits && !CORE.GTNH){
+			if (CORE.ConfigSwitches.enableCustomCircuits && !CORE.GTNH){
 				if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("foilYttriumBariumCuprate", 1) != null){
 					GT_Values.RA.addLaserEngraverRecipe(GT_OreDictUnificator.get(OrePrefixes.foil, Materials.YttriumBariumCuprate, 2L), GT_Utility.copyAmount(0L, new Object[]{aStack}), GregtechItemList.Circuit_Parts_Wiring_IV.get(1L, new Object[0]), 64, 480);
 				}
@@ -45,7 +45,7 @@ public class RECIPES_LaserEngraver implements IOreRecipeRegistrator {
 
 
 		} else if (aOreDictName.equals(OreDictNames.craftingLensYellow.toString())) {
-			if (CORE.configSwitches.enableCustomCircuits && !CORE.GTNH){
+			if (CORE.ConfigSwitches.enableCustomCircuits && !CORE.GTNH){
 				if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("foilOsmium", 1) != null){
 					GT_Values.RA.addLaserEngraverRecipe(GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmium, 2L), GT_Utility.copyAmount(0L, new Object[]{aStack}), GregtechItemList.Circuit_Parts_Wiring_LuV.get(1L, new Object[0]), 64, 1024);
 				}
@@ -58,7 +58,7 @@ public class RECIPES_LaserEngraver implements IOreRecipeRegistrator {
 		} else if (aOreDictName.equals(OreDictNames.craftingLensCyan.toString())) {
 		} else if (aOreDictName.equals(OreDictNames.craftingLensRed.toString())) {
 		} else if (aOreDictName.equals(OreDictNames.craftingLensGreen.toString())) {
-			if (CORE.configSwitches.enableCustomCircuits && !CORE.GTNH){
+			if (CORE.ConfigSwitches.enableCustomCircuits && !CORE.GTNH){
 				if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("foilNaquadah", 1) != null){
 					GT_Values.RA.addLaserEngraverRecipe(GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Naquadah, 2L), GT_Utility.copyAmount(0L, new Object[]{aStack}), GregtechItemList.Circuit_Parts_Wiring_ZPM.get(1L, new Object[0]), 64, 2000);
 				}

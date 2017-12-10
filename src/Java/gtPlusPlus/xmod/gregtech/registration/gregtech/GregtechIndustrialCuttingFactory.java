@@ -10,7 +10,7 @@ public class GregtechIndustrialCuttingFactory {
 	public static void run() {
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
 			Utils.LOG_INFO("Gregtech5u Content | Registering Industrial Cutting Factory Multiblock.");
-			if (CORE.configSwitches.enableMultiblock_IndustrialCuttingMachine) {
+			if (CORE.ConfigSwitches.enableMultiblock_IndustrialCuttingMachine) {
 				run1();
 			}
 		}

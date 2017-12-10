@@ -236,7 +236,7 @@ extends GregtechMeta_MultiBlockBase {
 
 	@Override
 	public boolean checkMachine(final IGregTechTileEntity aBaseMetaTileEntity, final ItemStack aStack) {
-		/*if (configSwitches.disableCentrifugeFormation){
+		/*if (ConfigSwitches.disableCentrifugeFormation){
 			EntityPlayerMP player = MinecraftServer.getServer().getConfigurationManager().func_152612_a(this.getBaseMetaTileEntity().getOwnerName());
 			if (!player.getEntityWorld().isRemote && isDisabled == false)
 				PlayerUtils.messagePlayer(player, "This Multiblock is disabled via the config. [Only re-enable if you're bugtesting.]");

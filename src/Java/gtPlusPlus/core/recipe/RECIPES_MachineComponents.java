@@ -382,7 +382,7 @@ public class RECIPES_MachineComponents {
 	}
 
 	private static void GregtechMachinePhase(){
-		if (CORE.configSwitches.enableCustomCircuits && !CORE.GTNH){
+		if (CORE.ConfigSwitches.enableCustomCircuits && !CORE.GTNH){
 			Utils.LOG_INFO("Adding Gregtech machine recipes for the circuits.");
 			GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Silicon, 1L), GregtechItemList.Circuit_Parts_Wiring_IV.get(4L, new Object[0]), GregtechItemList.Circuit_Board_IV.get(1L, new Object[0]), 32, 256);
 			GT_Values.RA.addFormingPressRecipe(GT_OreDictUnificator.get(OrePrefixes.plate, Materials.Silicon, 1L), GregtechItemList.Circuit_Parts_Wiring_LuV.get(4L, new Object[0]), GregtechItemList.Circuit_Board_LuV.get(1L, new Object[0]), 64, 512);

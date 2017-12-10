@@ -3,7 +3,7 @@ package gtPlusPlus.core.common.compat;
 
 import static gtPlusPlus.core.handler.COMPAT_HANDLER.RemoveRecipeQueue;
 
-import gtPlusPlus.core.lib.CORE.configSwitches;
+import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.ShapedRecipeObject;
 import gtPlusPlus.core.util.item.ItemUtils;
@@ -37,7 +37,7 @@ public class COMPAT_IC2 {
 
 	private static final void run(){
 
-		if (configSwitches.disableIC2Recipes){
+		if (ConfigSwitches.disableIC2Recipes){
 
 
 

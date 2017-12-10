@@ -59,7 +59,7 @@ public class BaseItemComponent extends Item{
 	}
 
 	public String getCorrectTextures(){
-		if (!CORE.configSwitches.useGregtechTextures){
+		if (!CORE.ConfigSwitches.useGregtechTextures){
 			return CORE.MODID + ":" + "item"+this.componentType.COMPONENT_NAME;
 		}
 		if (this.componentType == ComponentTypes.GEAR){

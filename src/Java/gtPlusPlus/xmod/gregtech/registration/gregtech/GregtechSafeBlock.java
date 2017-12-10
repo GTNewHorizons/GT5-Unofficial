@@ -11,7 +11,7 @@ public class GregtechSafeBlock {
 	public static void run() {
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
 			Utils.LOG_INFO("Gregtech5u Content | Registering Lockable Safe Blocks.");
-			if (CORE.configSwitches.enableMachine_Safes) {
+			if (CORE.ConfigSwitches.enableMachine_Safes) {
 				run1();
 			}
 		}

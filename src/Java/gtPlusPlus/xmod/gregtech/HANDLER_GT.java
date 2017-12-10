@@ -5,7 +5,9 @@ import java.util.List;
 
 import gregtech.api.util.GT_Config;
 import gtPlusPlus.core.handler.COMPAT_HANDLER;
+import gtPlusPlus.core.handler.OldCircuitHandler;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechOrePrefixes.GT_Materials;
 import gtPlusPlus.xmod.gregtech.api.util.GTPP_Config;
 import gtPlusPlus.xmod.gregtech.api.world.GTPP_Worldgen;
@@ -29,6 +31,11 @@ public class HANDLER_GT {
 		if (mMaterialProperties != null){
 			GT_Materials.init(mMaterialProperties);
 		}
+		
+		if (ConfigSwitches.enableOldGTcircuits){
+			OldCircuitHandler.preInit();
+		}
+		
 		GregtechFluidHandler.run();		
 		
 	}
@@ -45,11 +52,15 @@ public class HANDLER_GT {
 		GregtechConduits.run();
 
 		//Only loads if the config option is true (default: true)
-		if (CORE.configSwitches.enableSkookumChoochers){
+		if (CORE.ConfigSwitches.enableSkookumChoochers){
 			new MetaGeneratedGregtechTools();
 			new ProcessingToolHeadChoocher().run();
 		}
 
+		if (ConfigSwitches.enableOldGTcircuits){
+			OldCircuitHandler.init();
+		}
+		
 		//Generates recipes for all gregtech smelting and alloy smelting combinations.
 		//RecipeGen_BlastSmelterGT.generateRecipes();
 		new RecipeGen_BlastSmelterGT_Ex();
@@ -57,9 +68,14 @@ public class HANDLER_GT {
 	}
 
 	public static void postInit(){
-		if (CORE.configSwitches.enableNitroFix){
+		if (CORE.ConfigSwitches.enableNitroFix){
 			GregtechNitroDieselFix.run();
 		}
+
+		if (ConfigSwitches.enableOldGTcircuits){
+			OldCircuitHandler.postInit();
+		}
+		
 		//Register some custom recipe maps for any enabled multiblocks.
 		//MultiblockRecipeMapHandler.run();
 	}

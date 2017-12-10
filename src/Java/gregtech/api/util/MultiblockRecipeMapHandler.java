@@ -16,16 +16,16 @@ public class MultiblockRecipeMapHandler{
 
 	public static void run() {
 
-		if(CORE.configSwitches.enableMultiblock_IndustrialElectrolyzer){
+		if(CORE.ConfigSwitches.enableMultiblock_IndustrialElectrolyzer){
 			generateSimpleMultimachineRecipeMap(GT_Recipe.GT_Recipe_Map.sElectrolyzerRecipes, CustomRecipeMap.mMultiElectrolyzer);
 		}
-		if(CORE.configSwitches.enableMultiblock_IndustrialCentrifuge){
+		if(CORE.ConfigSwitches.enableMultiblock_IndustrialCentrifuge){
 			generateSimpleMultimachineRecipeMap(GT_Recipe.GT_Recipe_Map.sCentrifugeRecipes, CustomRecipeMap.mMultiCentrifuge);
 		}
-		if(CORE.configSwitches.enableMultiblock_IndustrialMacerationStack){
+		if(CORE.ConfigSwitches.enableMultiblock_IndustrialMacerationStack){
 			generateSimpleMultimachineRecipeMap(GT_Recipe.GT_Recipe_Map.sMaceratorRecipes, CustomRecipeMap.mMultiMacerator);
 		}
-		if(CORE.configSwitches.enableMultiblock_IndustrialWireMill){
+		if(CORE.ConfigSwitches.enableMultiblock_IndustrialWireMill){
 			generateSimpleMultimachineRecipeMap(GT_Recipe.GT_Recipe_Map.sWiremillRecipes, CustomRecipeMap.mMultiWireMill);
 		}
 

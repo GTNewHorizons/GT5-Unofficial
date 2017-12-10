@@ -27,7 +27,7 @@ public class GregtechNitroDieselFix {
 
 	@SuppressWarnings("unchecked")
 	public static void run(){
-		if (CORE.configSwitches.enableNitroFix){
+		if (CORE.ConfigSwitches.enableNitroFix){
 			Utils.LOG_INFO("Gregtech5u Content | Attempting to Fix Nitro-Diesel production.");
 			try {
 				int mSub = Utils.getGregtechSubVersion();

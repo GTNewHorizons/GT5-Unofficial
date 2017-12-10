@@ -1060,7 +1060,7 @@ public class RECIPES_GREGTECH {
 
 	private static void benderRecipes(){
 
-		if (CORE.configSwitches.enableMultiblock_PowerSubstation){
+		if (CORE.ConfigSwitches.enableMultiblock_PowerSubstation){
 			GT_Values.RA.addBenderRecipe(ItemUtils.getItemStackOfAmountFromOreDict("ingotVanadium", 1), ItemUtils.getItemStackOfAmountFromOreDict("plateVanadium", 1), 8, 16);
 		}
 	}

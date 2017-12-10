@@ -11,7 +11,7 @@ public class GregtechIndustrialSifter {
 	public static void run() {
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
 			Utils.LOG_INFO("Gregtech5u Content | Registering Industrial Sifter Multiblock.");
-			if (CORE.configSwitches.enableMultiblock_IndustrialSifter) { // TODO
+			if (CORE.ConfigSwitches.enableMultiblock_IndustrialSifter) { // TODO
 				run1();
 			}
 		}

@@ -10,7 +10,7 @@ public class GregtechTieredFluidTanks {
 	public static void run() {
 		if (LoadedMods.Gregtech) {
 			Utils.LOG_INFO("Gregtech5u Content | Registering Portable Fluid Tanks.");
-			if (CORE.configSwitches.enableMachine_FluidTanks) {
+			if (CORE.ConfigSwitches.enableMachine_FluidTanks) {
 				run1();
 			}
 		}

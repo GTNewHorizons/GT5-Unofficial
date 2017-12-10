@@ -10,7 +10,7 @@ public class GregtechIndustrialMacerator {
 	public static void run() {
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
 			Utils.LOG_INFO("Gregtech5u Content | Registering Industrial Maceration Stack Multiblock.");
-			if (CORE.configSwitches.enableMultiblock_IndustrialMacerationStack) {
+			if (CORE.ConfigSwitches.enableMultiblock_IndustrialMacerationStack) {
 				run1();
 			}
 		}

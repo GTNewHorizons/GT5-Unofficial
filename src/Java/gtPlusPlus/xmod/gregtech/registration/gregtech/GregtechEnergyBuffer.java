@@ -19,7 +19,7 @@ public class GregtechEnergyBuffer
 	{
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech){
 			Utils.LOG_INFO("Gregtech5u Content | Registering Energy Buffer Blocks.");
-			if (CORE.configSwitches.enableMachine_RocketEngines) {
+			if (CORE.ConfigSwitches.enableMachine_RocketEngines) {
 				run1();
 			}
 		}

@@ -17,7 +17,7 @@ public class NewHorizonsAccelerator {
 	public static void run() {
 		if (LoadedMods.Gregtech && !CORE.GTNH) {
 			Utils.LOG_INFO("New Horizons Content | Registering World Accelerators.");
-			if (CORE.configSwitches.enableMachine_WorldAccelerators) {
+			if (CORE.ConfigSwitches.enableMachine_WorldAccelerators) {
 				run1();
 			}
 		}

@@ -16,7 +16,7 @@ public class GregtechGeothermalThermalGenerator {
 	public static void run() {
 		if (LoadedMods.Gregtech) {
 			Utils.LOG_INFO("Gregtech5u Content | Registering Industrial Geothermal Engines.");
-			if (CORE.configSwitches.enableMachine_GeothermalEngines) {
+			if (CORE.ConfigSwitches.enableMachine_GeothermalEngines) {
 				run1();
 			}
 		}

@@ -9,7 +9,7 @@ public class GregtechTreeFarmerTE {
 	public static void run() {
 		if (gtPlusPlus.core.lib.LoadedMods.Gregtech) {
 			Utils.LOG_INFO("Gregtech5u Content | Registering Tree Farmer Structural Block.");
-			if (CORE.configSwitches.enableMultiblock_TreeFarmer) {
+			if (CORE.ConfigSwitches.enableMultiblock_TreeFarmer) {
 				run1();
 			}
 		}

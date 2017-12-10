@@ -48,7 +48,7 @@ public class BaseItemCell extends BaseItemComponent{
 	@Override
 	public void registerIcons(final IIconRegister i) {
 
-		if (CORE.configSwitches.useGregtechTextures){
+		if (CORE.ConfigSwitches.useGregtechTextures){
 			this.base = i.registerIcon("gregtech" + ":" + "materialicons/METALLIC/" + "cell");
 			this.overlay = i.registerIcon("gregtech" + ":" + "materialicons/METALLIC/" + "cell_OVERLAY");
 		}
@@ -64,10 +64,10 @@ public class BaseItemCell extends BaseItemComponent{
 
 	@Override
 	public int getColorFromItemStack(final ItemStack stack, final int renderPass) {
-		if (renderPass == 0 && !CORE.configSwitches.useGregtechTextures){
+		if (renderPass == 0 && !CORE.ConfigSwitches.useGregtechTextures){
 			return Utils.rgbtoHexValue(230, 230, 230);
 		}
-		if (renderPass == 1 && CORE.configSwitches.useGregtechTextures){
+		if (renderPass == 1 && CORE.ConfigSwitches.useGregtechTextures){
 			return Utils.rgbtoHexValue(230, 230, 230);
 		}
 		return this.componentColour;

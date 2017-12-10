@@ -17,7 +17,7 @@ public class GregtechPollutionDevices {
 	}
 
 	private static void run1() {
-		if (CORE.configSwitches.enableMachine_Pollution){
+		if (CORE.ConfigSwitches.enableMachine_Pollution){
 			// 759
 			GregtechItemList.Pollution_Detector.set(
 					new GregtechMetaPollutionDetector(756, "pollutiondetector.01.tier.single", "Pollution Detection Device",

@@ -1,7 +1,7 @@
 package gtPlusPlus.core.handler.events;
 
-import static gtPlusPlus.core.lib.CORE.configSwitches.chanceToDropDrainedShard;
-import static gtPlusPlus.core.lib.CORE.configSwitches.chanceToDropFluoriteOre;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.chanceToDropDrainedShard;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.chanceToDropFluoriteOre;
 
 import java.util.ArrayList;
 import java.util.Random;
