@@ -4,6 +4,7 @@ import java.util.List;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import gregtech.api.enums.GT_Values;
 import gtPlusPlus.core.item.base.BaseItemWithDamageValue;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
@@ -25,7 +26,7 @@ public class BufferCore extends BaseItemWithDamageValue{
 
 	@Override
 	public String getItemStackDisplayName(final ItemStack stack) {
-		return super.getItemStackDisplayName(stack)+" ["+CORE.VOLTAGES[this.coreTier-1]+"].";
+		return super.getItemStackDisplayName(stack)+" ["+GT_Values.VN[this.coreTier-1]+"].";
 	}
 
 	@Override

@@ -22,19 +22,19 @@ public class PlayerUtils {
 	}
 
 	public static EntityPlayer getPlayer(final String name){
-		final List<EntityPlayer> i = new ArrayList<>();
-		final Iterator<EntityPlayer> crunchifyIterator = MinecraftServer.getServer().getConfigurationManager().playerEntityList.iterator();
-		while (crunchifyIterator.hasNext()) {
-			i.add((crunchifyIterator.next()));
-		}
 		try{
+			final List<EntityPlayer> i = new ArrayList<>();
+			final Iterator<EntityPlayerMP> iterator = MinecraftServer.getServer().getConfigurationManager().playerEntityList.iterator();
+			while (iterator.hasNext()) {
+				i.add((EntityPlayer) (iterator.next()));
+			}
 			for (final EntityPlayer temp : i) {
 				if (temp.getDisplayName().toLowerCase().equals(name.toLowerCase())){
 					return temp;
 				}
 			}
 		}
-		catch(final NullPointerException e){}
+		catch(final Throwable e){}
 		return null;
 	}
 

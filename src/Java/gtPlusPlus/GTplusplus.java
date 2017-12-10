@@ -33,6 +33,7 @@ import gtPlusPlus.core.util.networking.NetworkUtils;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.oredict.OreDictionary;
@@ -68,8 +69,14 @@ public class GTplusplus implements ActionListener {
 	public void preInit(final FMLPreInitializationEvent event) {
 		Utils.LOG_INFO("Loading " + CORE.name + " V" + CORE.VERSION);
 
+		//Get Graphics Mode.
+		CORE.mFancyGraphics = Minecraft.isFancyGraphicsEnabled();
+
 		if(!Utils.isServer()){
 			enableCustomCapes = true;
+			if (Minecraft.getMinecraft().thePlayer != null){
+				CORE.mLocalProfile = Minecraft.getMinecraft().thePlayer.getGameProfile();
+			}
 		}
 
 		//Give this a go mate.

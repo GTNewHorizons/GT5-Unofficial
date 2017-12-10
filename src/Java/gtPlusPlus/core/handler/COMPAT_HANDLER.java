@@ -5,12 +5,12 @@ import static gtPlusPlus.core.lib.LoadedMods.Gregtech;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import gregtech.api.enums.GT_Values;
 import gregtech.api.util.GT_OreDictUnificator;
 import gtPlusPlus.core.common.compat.*;
 import gtPlusPlus.core.handler.Recipes.LateRegistrationHandler;
 import gtPlusPlus.core.handler.Recipes.RegistrationHandler;
 import gtPlusPlus.core.item.ModItems;
-import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.*;
 import gtPlusPlus.core.util.Utils;
@@ -35,7 +35,7 @@ public class COMPAT_HANDLER {
 		GT_OreDictUnificator.registerOre("craftingToolSandHammer", new ItemStack(ModItems.itemSandstoneHammer));
 
 		for(int i=1; i<=10; i++){
-			GT_OreDictUnificator.registerOre("bufferCore_"+CORE.VOLTAGES[i-1], new ItemStack(ItemUtils.getItem("miscutils:item.itemBufferCore"+i)));
+			GT_OreDictUnificator.registerOre("bufferCore_"+GT_Values.VN[i-1], new ItemStack(ItemUtils.getItem("miscutils:item.itemBufferCore"+i)));
 		}
 	}
 
