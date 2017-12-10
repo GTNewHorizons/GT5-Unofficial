@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -862,5 +864,28 @@ public class Utils {
 		Pair<Integer, Integer> ver = getGregtechVersion();		
 		return ver.getValue();		
 	}
+	
+	public static SecureRandom generateSecureRandom(){
+		SecureRandom secRan;
+		String secRanType;		
+		
+		if (SystemUtils.isWindows()){
+			secRanType = "Windows-PRNG";
+		}
+		else {
+			secRanType = "NativePRNG";
+		}		
+		try {
+			secRan = SecureRandom.getInstance(secRanType);
+			// Default constructor would have returned insecure SHA1PRNG algorithm, so make an explicit call.
+			byte[] b = new byte[64] ;
+			secRan.nextBytes(b);
+			return secRan;
+		}
+		catch (NoSuchAlgorithmException e) {
+			return null;
+		} 
+	}	
+	
 
 }

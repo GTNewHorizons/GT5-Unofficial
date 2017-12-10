@@ -14,16 +14,16 @@ import java.util.concurrent.Phaser;
  * able to block until they're uploaded.
  *
  * <pre><code>
- * BlockingFlush blockingFlush = BlockingFlush.create();
- * Analytics analytics = Analytics.builder(writeKey)
- *      .plugin(blockingFlush)
+ * BlockingFlush mBlockingFlush = BlockingFlush.create();
+ * Analytics mAnalytics = Analytics.builder(writeKey)
+ *      .plugin(mBlockingFlush)
  *      .build();
  *
  * // Do some work.
  *
- * analytics.flush(); // Trigger a flush.
- * blockingFlush.block(); // Block until the flush completes.
- * analytics.shutdown(); // Shut down after the flush is complete.
+ * mAnalytics.flush(); // Trigger a flush.
+ * mBlockingFlush.block(); // Block until the flush completes.
+ * mAnalytics.shutdown(); // Shut down after the flush is complete.
  * </code></pre>
  */
 public class BlockingFlush {
