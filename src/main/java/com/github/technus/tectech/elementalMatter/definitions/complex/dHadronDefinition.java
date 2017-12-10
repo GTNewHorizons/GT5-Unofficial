@@ -183,11 +183,16 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
     }
 
     @Override
-    public cElementalDecay[] getEnergyInducedDecay(long energy) {
+    public cElementalDecay[] getEnergyInducedDecay(long energyLevel) {
         cElementalDefinitionStack[] quarkStacks = this.quarkStacks.values();
         if (amount == 2 && quarkStacks.length == 2 && quarkStacks[0].definition.getMass() == quarkStacks[1].definition.getMass() && quarkStacks[0].definition.getType() == -quarkStacks[1].definition.getType())
             return cElementalDecay.noProduct;
         return new cElementalDecay[]{new cElementalDecay(0.75F, quarkStacks), eBosonDefinition.deadEnd}; //decay into quarks
+    }
+
+    @Override
+    public float getEnergyDiffBetweenStates(long currentEnergyLevel, long newEnergyLevel) {
+        return DEFAULT_ENERGY_REQUIREMENT*(newEnergyLevel-currentEnergyLevel);
     }
 
     @Override
@@ -249,7 +254,7 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
     }
 
     @Override
-    public float getRawTimeSpan() {
+    public float getRawTimeSpan(long currentEnergy) {
         return rawLifeTime;
     }
 

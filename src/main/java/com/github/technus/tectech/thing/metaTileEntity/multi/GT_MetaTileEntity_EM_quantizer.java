@@ -22,6 +22,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import static com.github.technus.tectech.Util.*;
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefinition.DEFAULT_ENERGY_LEVEL;
 import static com.github.technus.tectech.elementalMatter.definitions.complex.dAtomDefinition.refMass;
 import static com.github.technus.tectech.elementalMatter.definitions.complex.dAtomDefinition.refUnstableMass;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
@@ -153,7 +154,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
         float mass = into.getMass();
         float euMult = mass / refMass;
         eAmpereFlow = (int) Math.ceil(euMult);
-        if (mass > refUnstableMass || into.getDefinition().getRawTimeSpan() < 1.5e25f) {
+        if (mass > refUnstableMass || into.getDefinition().getRawTimeSpan(DEFAULT_ENERGY_LEVEL) < 1.5e25f) {
             mEUt = (int) -V[10];
         } else {
             mEUt = (int) -V[8];

@@ -62,17 +62,17 @@ public final class dAtomDefinition extends cElementalDefinition {
     public final int charge;
     //int -electric charge in 1/3rds of electron charge for optimization
     public final int chargeLeptons;
-    public final float rawLifeTime;
+    private float rawLifeTime;
     //generation max present inside - minus if contains any anti quark
     public final byte type;
 
     public final byte decayMode;//t neutron to proton+,0,f proton to neutron
-    public final boolean stable;
+    //public final boolean stable;
 
     public final int neutralCount;
     public final int element;
 
-    public final boolean specialEnergeticDecayHandling;
+    private final boolean iaeaDefinitionExistsAndHasEnergyLevels;
 
     private final cElementalDefinitionStackMap elementalStacks;
 
@@ -127,7 +127,7 @@ public final class dAtomDefinition extends cElementalDefinition {
             }
         }
         this.type = containsAnti ? (byte) -type : (byte) type;
-        this.mass = mass;
+        //this.mass = mass;
         this.chargeLeptons = cLeptons;
         this.charge = cNucleus + cLeptons;
         this.neutralCount = neutralCount;
@@ -140,15 +140,28 @@ public final class dAtomDefinition extends cElementalDefinition {
         int izoDiff = neutralCount - StableIsotope;
         int izoDiffAbs = Math.abs(izoDiff);
 
-        hash=super.hashCode();
-
         xstr.setSeed((element + 1L) * (neutralCount + 100L));
         this.iaea=iaeaNuclide.get(element,neutralCount);
         if(iaea!=null){
-            this.rawLifeTime=containsAnti ? iaea.Thalf * 1.5514433E-21f * (1f + xstr.nextFloat() * 9f):iaea.Thalf;
-            this.specialEnergeticDecayHandling=iaea.energeticStates!=null && iaea.energeticStates.size()>1;//todo fix since it also has base level
-            //todo add energetic decays?
+            if(Float.isNaN(iaea.mass)) this.mass=mass;
+            else this.mass=iaea.mass;
+
+            if(Float.isNaN(iaea.halfTime)) {
+                Float overriddenLifeTime=lifetimeOverrides.get(this);
+                float rawLifeTimeTemp;
+                if(overriddenLifeTime!=null)
+                    rawLifeTimeTemp = overriddenLifeTime;
+                else {
+                    rawLifeTimeTemp = calculateLifeTime(izoDiff, izoDiffAbs, element, neutralCount, containsAnti);
+                }
+                this.rawLifeTime=rawLifeTimeTemp> STABLE_RAW_LIFE_TIME ? STABLE_RAW_LIFE_TIME :rawLifeTimeTemp;
+            }else {
+                this.rawLifeTime = containsAnti ? iaea.halfTime * 1.5514433E-21f * (1f + xstr.nextFloat() * 9f) : iaea.halfTime;
+            }
+            this.iaeaDefinitionExistsAndHasEnergyLevels =iaea.energeticStatesArray.length>1;
         }else{
+            this.mass=mass;
+
             Float overriddenLifeTime=lifetimeOverrides.get(this);
             float rawLifeTimeTemp;
             if(overriddenLifeTime!=null)
@@ -157,11 +170,11 @@ public final class dAtomDefinition extends cElementalDefinition {
                 rawLifeTimeTemp = calculateLifeTime(izoDiff, izoDiffAbs, element, neutralCount, containsAnti);
             }
             this.rawLifeTime=rawLifeTimeTemp> STABLE_RAW_LIFE_TIME ? STABLE_RAW_LIFE_TIME :rawLifeTimeTemp;
-            this.specialEnergeticDecayHandling=false;
+
+            this.iaeaDefinitionExistsAndHasEnergyLevels =false;
         }
 
-
-        if(iaea==null || iaea.energeticStates==null || iaea.energeticStates.get(0f)==null) {
+        if(iaea==null || iaea.energeticStatesArray[0].energy!=0) {
             if (izoDiff == 0)
                 this.decayMode = 0;
             else
@@ -169,7 +182,9 @@ public final class dAtomDefinition extends cElementalDefinition {
         }else{
             this.decayMode=Byte.MAX_VALUE;
         }
-        this.stable = this.rawLifeTime >= STABLE_RAW_LIFE_TIME;
+        //this.stable = this.rawLifeTime >= STABLE_RAW_LIFE_TIME;
+
+        hash=super.hashCode();
     }
 
     private static int stableIzoCurve(int element) {
@@ -271,8 +286,15 @@ public final class dAtomDefinition extends cElementalDefinition {
     }
 
     @Override
-    public float getRawTimeSpan() {
-        return rawLifeTime;
+    public float getRawTimeSpan(long currentEnergy) {
+        if(currentEnergy<=0) return rawLifeTime;
+        if(iaeaDefinitionExistsAndHasEnergyLevels){
+            if(currentEnergy>=iaea.energeticStatesArray.length){
+                return iaea.energeticStatesArray[iaea.energeticStatesArray.length-1].Thalf/(currentEnergy-iaea.energeticStatesArray.length+1);
+            }
+            return iaea.energeticStatesArray[(int)currentEnergy].Thalf;
+        }
+        return rawLifeTime/(currentEnergy+1);
     }
 
     @Override
@@ -291,7 +313,7 @@ public final class dAtomDefinition extends cElementalDefinition {
         final boolean negative = element < 0;
         try {
             if (type != 1) return (negative ? "~? " : "? ") + nomenclature.Name[element];
-            return negative ? "~" + nomenclature.Name[element] : nomenclature.Name[element];
+            return negative ? "~" + nomenclature.Name[-element] : nomenclature.Name[element];
         } catch (Exception e) {
             if (DEBUG_MODE) e.printStackTrace();
             return (negative ? "Element: ~" : "Element: ") + element;
@@ -344,11 +366,6 @@ public final class dAtomDefinition extends cElementalDefinition {
 
     private cElementalDecay[] iaeaDecay(long energy){
         //todo
-        if(energy==0){
-
-        }else{
-
-        }
         return null;
     }
 
@@ -517,10 +534,9 @@ public final class dAtomDefinition extends cElementalDefinition {
     }
 
     @Override
-    public cElementalDecay[] getEnergyInducedDecay(long energy) {
-        if (specialEnergeticDecayHandling) {
-            //todo map energetic states
-            return iaeaDecay(energy);
+    public cElementalDecay[] getEnergyInducedDecay(long energyLevel) {
+        if (iaeaDefinitionExistsAndHasEnergyLevels) {
+            return iaeaDecay(energyLevel);
         }
         //strip leptons
         boolean doIt = true;
@@ -549,8 +565,34 @@ public final class dAtomDefinition extends cElementalDefinition {
     }
 
     @Override
+    public float getEnergyDiffBetweenStates(long currentEnergyLevel,long newEnergyLevel) {
+        if(iaeaDefinitionExistsAndHasEnergyLevels){
+            float result=0;
+            boolean backwards=newEnergyLevel<currentEnergyLevel;
+            if(backwards){
+                long temp=currentEnergyLevel;
+                currentEnergyLevel=newEnergyLevel;
+                newEnergyLevel=temp;
+            }
+
+            if(currentEnergyLevel<=0){
+                if(newEnergyLevel<=0) return DEFAULT_ENERGY_REQUIREMENT*(newEnergyLevel-currentEnergyLevel);
+                else result+=DEFAULT_ENERGY_REQUIREMENT*(-currentEnergyLevel);
+            }else result-=iaea.energeticStatesArray[(int)Math.min(iaea.energeticStatesArray.length-1,currentEnergyLevel)].energy;
+            if(newEnergyLevel>=iaea.energeticStatesArray.length){
+                if(currentEnergyLevel>=iaea.energeticStatesArray.length) return DEFAULT_ENERGY_REQUIREMENT*(newEnergyLevel-currentEnergyLevel);
+                else result+=DEFAULT_ENERGY_REQUIREMENT*(newEnergyLevel-iaea.energeticStatesArray.length+1);
+                result+=iaea.energeticStatesArray[iaea.energeticStatesArray.length-1].energy;
+            }else result+=iaea.energeticStatesArray[(int)Math.max(0,newEnergyLevel)].energy;
+
+            return backwards?-result:result;
+        }
+        return DEFAULT_ENERGY_REQUIREMENT*(newEnergyLevel-currentEnergyLevel);
+    }
+
+    @Override
     public boolean usesSpecialEnergeticDecayHandling() {
-        return specialEnergeticDecayHandling;
+        return iaeaDefinitionExistsAndHasEnergyLevels;
     }
 
     @Override
@@ -663,7 +705,7 @@ public final class dAtomDefinition extends cElementalDefinition {
                 final int izoDiffAbs = Math.abs(izoDiff);
                 final float rawLifeTime = calculateLifeTime(izoDiff, izoDiffAbs, element, isotope, false);
                 iaeaNuclide nuclide=iaeaNuclide.get(element,isotope);
-                if (rawLifeTime>= STABLE_RAW_LIFE_TIME || (nuclide!=null && nuclide.Thalf>=STABLE_RAW_LIFE_TIME)) {
+                if (rawLifeTime>= STABLE_RAW_LIFE_TIME || (nuclide!=null && nuclide.halfTime >=STABLE_RAW_LIFE_TIME)) {
                     TreeSet<Integer> isotopes = stableIsotopes.get(element);
                     if (isotopes == null) stableIsotopes.put(element, isotopes = new TreeSet<>());
                     isotopes.add(isotope);

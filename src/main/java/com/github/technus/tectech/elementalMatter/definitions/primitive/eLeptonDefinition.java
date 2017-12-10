@@ -41,10 +41,10 @@ public final class eLeptonDefinition extends cElementalPrimitive {
         lepton_e_.init(lepton_e, STABLE_RAW_LIFE_TIME, 0, 1,
                 eBosonDefinition.deadEnd,//makes photons and don't care
                 new cElementalDecay(lepton_e_, eBosonDefinition.boson_Y__));
-        lepton_m_.init(lepton_m, 2.197e-6F, 0, 1,
+        lepton_m_.init(lepton_m, 2.197019e-6F, 0, 1,
                 new cElementalDecay(0.9F, lepton_e_, eNeutrinoDefinition.lepton_Ve, eNeutrinoDefinition.lepton_Vm_),
                 eBosonDefinition.deadEnd);//makes photons and don't care
-        lepton_t_.init(lepton_t, 2.9e-13F, 1, 3,
+        lepton_t_.init(lepton_t, 2.906e-13F, 1, 3,
                 new cElementalDecay(0.8F, lepton_m_, eNeutrinoDefinition.lepton_Vm, eNeutrinoDefinition.lepton_Vt_, eBosonDefinition.boson_Y__),
                 new cElementalDecay(0.1F, lepton_e_, eNeutrinoDefinition.lepton_Ve, eNeutrinoDefinition.lepton_Vm_),
                 new cElementalDecay(0.05F, lepton_m_, eNeutrinoDefinition.lepton_Vm, eNeutrinoDefinition.lepton_Vt_, eBosonDefinition.boson_H__),

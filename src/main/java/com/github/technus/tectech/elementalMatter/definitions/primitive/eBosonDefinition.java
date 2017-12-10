@@ -20,8 +20,7 @@ public final class eBosonDefinition extends cElementalPrimitive {
     }
 
     public static void run() {
-        boson_Y__.init(null, -1F, 0, 0,
-                deadEndHalf);
+        boson_Y__.init(null, NO_DECAY_RAW_LIFE_TIME, -1, -1, cElementalDecay.noDecay);
         boson_H__.init(null, 1.56e-22F, 0, 0,
                 new cElementalDecay(0.96F, new cElementalDefinitionStack(boson_Y__, 4)),
                 new cElementalDecay(0.02F, eLeptonDefinition.lepton_t, eLeptonDefinition.lepton_t_),

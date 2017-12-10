@@ -27,19 +27,19 @@ public final class eNeutrinoDefinition extends cElementalPrimitive {
         lepton_Ve.init(lepton_Ve_, 1F, 0, 0,
                 cElementalDecay.noProduct);
         lepton_Vm.init(lepton_Vm_, 1F, 1, 0,
-                new cElementalDecay(0.95F, nothing),
+                new cElementalDecay(0.825F, nothing),
                 eBosonDefinition.deadEndHalf);
         lepton_Vt.init(lepton_Vt_, 1F, 1, 0,
-                new cElementalDecay(0.9F, nothing),
+                new cElementalDecay(0.75F, nothing),
                 eBosonDefinition.deadEnd);
 
         lepton_Ve_.init(lepton_Ve, 1F, 0, 0,
                 cElementalDecay.noProduct);
         lepton_Vm_.init(lepton_Vm, 1F, 1, 0,
-                new cElementalDecay(0.95F, nothing),
+                new cElementalDecay(0.825F, nothing),
                 eBosonDefinition.deadEndHalf);
         lepton_Vt_.init(lepton_Vt, 1F, 1, 0,
-                new cElementalDecay(0.9F, nothing),
+                new cElementalDecay(0.75F, nothing),
                 eBosonDefinition.deadEnd);
     }
 

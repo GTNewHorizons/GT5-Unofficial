@@ -9,7 +9,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.TreeMap;
 
 import static com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefinition.STABLE_RAW_LIFE_TIME;
@@ -75,13 +74,8 @@ public final class iaeaNuclide {
             e.printStackTrace();
         }
 
-        for(String s:decays){
-            System.out.println(s);
-        }
-
-        for(iaeaNuclide nuclide:NUCLIDES.values()){
-            //todo fix decays
-        }
+        for(iaeaNuclide nuclide:NUCLIDES.values())
+            nuclide.makeArrayOfEnergyStates();
     }
 
     public static iaeaNuclide get(int protons, int neutrons){
@@ -89,10 +83,11 @@ public final class iaeaNuclide {
     }
 
     public final short N,Z;
-    public final float Thalf;//sec
+    public final float halfTime;//sec
     public final float mass;//eV/c^2
     public final short discovery;//year
-    public TreeMap<Float,energeticState> energeticStates;
+    private TreeMap<Float,energeticState> energeticStates;
+    public energeticState[] energeticStatesArray;
 
 
     private iaeaNuclide(String[][] rows){
@@ -108,27 +103,32 @@ public final class iaeaNuclide {
         discovery=(short)doubleOrNaN(rows[0][18],"discovery");
 
         if(rows[0][3].contains("STABLE")){
-            Thalf= STABLE_RAW_LIFE_TIME;
+            halfTime = STABLE_RAW_LIFE_TIME;
         }else{
             parts = Util.splitButDifferent(rows[0][4], "|");
-            Thalf = (float)doubleOrNaN(parts[0],"half life");
+            halfTime = (float)doubleOrNaN(parts[0],"half life");
         }
     }
 
     private void getMoreData(String[] cells){
-        if(add(cells[14])); //System.out.println(Z+" "+N);
-        if(add(cells[17])); //System.out.println(Z+" "+N);
-        if(add(cells[20])); //System.out.println(Z+" "+N);
-        TreeMap<Float,String> decaymodes=new TreeMap<>();
+        //if(add(cells[14]))System.out.println(N+" "+Z);
+        //if(add(cells[17]))System.out.println(N+" "+Z);
+        //if(add(cells[20]))System.out.println(N+" "+Z);
+        new energeticState(this, halfTime,getDecaysFixed(cells[14],doubleOrNaN(cells[15],"chance1"),cells[17],doubleOrNaN(cells[18],"chance1"),cells[20],doubleOrNaN(cells[21],"chance1")));
+    }
 
-        new energeticState(this,Thalf,decaymodes);
+    private static final energeticState[] empty=new energeticState[0];
+    private void makeArrayOfEnergyStates(){
+        if(energeticStates==null || energeticStates.size()==0)energeticStatesArray=empty;
+        else energeticStatesArray=energeticStates.values().toArray(new energeticState[energeticStates.size()]);
     }
 
     private double doubleOrNaN(String s, String name){
         s=s.replaceAll("#","");
         if(s.length()>0) {
             try {
-                return Double.parseDouble(s);
+                double value=Double.parseDouble(s);
+                return value != 0 ?value:Float.NaN;
             } catch (Exception e) {
                 System.out.println("Invalid Value " + name + " " + N + " " + Z + " " + s);
                 e.printStackTrace();
@@ -140,9 +140,9 @@ public final class iaeaNuclide {
     public static class energeticState{
         public final float energy;
         public final float Thalf;
-        public TreeMap<Float,String> decaymodes;
+        public final iaeaDecay[] decaymodes;
 
-        private energeticState(iaeaNuclide nuclide,float Thalf,TreeMap<Float,String> decaymodes){
+        private energeticState(iaeaNuclide nuclide,float Thalf,iaeaDecay[] decaymodes){
             energy=0;
             this.Thalf=Thalf;
             this.decaymodes=decaymodes;
@@ -155,7 +155,8 @@ public final class iaeaNuclide {
             iaeaNuclide nuclide=get((int)doubleOrNaN(cells[0],"protons"),(int)doubleOrNaN(cells[1],"neutrons"));
             if(nuclide==null)
                 throw new Error("Missing nuclide "+(int)doubleOrNaN(cells[0],"protons")+" "+(int)doubleOrNaN(cells[1],"neutrons"));
-            this.energy=(float) (doubleOrNaN(cells[3],"energy level",nuclide)*1000);//to eV
+            this.energy=(float) (doubleOrNaN(cells[3],"energy level",nuclide)*1000f);//to eV
+            if(energy<0) throw new Error("Invalid energy "+ nuclide.N +" "+nuclide.Z+ " "+cells[3]);
             this.Thalf=(float) doubleOrNaN(cells[10],"half life",nuclide);
             if(nuclide.energeticStates==null) {
                 new Exception("Should be initialized before doing this... "+ nuclide.N +" "+nuclide.Z).printStackTrace();
@@ -163,9 +164,10 @@ public final class iaeaNuclide {
             }
             nuclide.energeticStates.put(energy,this);
 
-            if(add(cells[12])); //System.out.println(nuclide.Z+" "+nuclide.N);
-            if(add(cells[15])); //System.out.println(nuclide.Z+" "+nuclide.N);
-            if(add(cells[18])); //System.out.println(nuclide.Z+" "+nuclide.N);
+            //if(add(cells[12]))System.out.println(nuclide.N+" "+nuclide.Z);
+            //if(add(cells[15]))System.out.println(nuclide.N+" "+nuclide.Z);
+            //if(add(cells[18]))System.out.println(nuclide.N+" "+nuclide.Z);
+            this.decaymodes=getDecaysFixed(cells[12],doubleOrNaN(cells[13],"chance 1",nuclide),cells[15],doubleOrNaN(cells[16],"chance 2",nuclide),cells[18],doubleOrNaN(cells[19],"chance 3",nuclide));
         }
 
         private double doubleOrNaN(String s, String name){
@@ -190,21 +192,35 @@ public final class iaeaNuclide {
         }
     }
 
-    private static HashSet<String> decays=new HashSet<>();
-    private static boolean add(String s){
-        int len=decays.size();
-        decays.add(s);
-        if(decays.size()>len){
-            System.out.println(s);
-            return true;
-        }
-        return false;
+    //private static HashSet<String> decays=new HashSet<>();
+    //private static boolean add(String s){
+    //    int len=decays.size();
+    //    if(decays.add(s)){
+    //        System.out.println(s);
+    //        return true;
+    //    }
+    //    return false;
+    //}
+
+    private static iaeaDecay[] getDecaysFixed(String decay1, double chance1,String decay2, double chance2,String decay3, double chance3){
+        TreeMap<Double,iaeaDecay> decays=new TreeMap<>();
+        if(decay1.length()>0)
+            decays.put(chance1/100D,new iaeaDecay((float)(chance1/100D),decay1));
+        if(decay2.length()>0)
+            decays.put(chance2/100D,new iaeaDecay((float)(chance2/100D),decay3));
+        if(decay3.length()>0)
+            decays.put(chance3/100D,new iaeaDecay((float)(chance3/100D),decay3));
+        decays.put(1D,iaeaDecay.DEAD_END);
+        return decays.values().toArray(new iaeaDecay[decays.size()]);
     }
-    public enum decayType{
-        ;
-        public final String name;
-        decayType(String name){
-            this.name=name;
+
+    public static class iaeaDecay{
+        public final float chance;
+        public final String decayName;
+        public static final iaeaDecay DEAD_END=new iaeaDecay(1f,"DEAD_END");
+        private iaeaDecay(float chance,String decayName){
+            this.chance=chance;
+            this.decayName=decayName;
         }
     }
 }

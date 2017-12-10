@@ -126,7 +126,7 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
     }
 
     @Override
-    public float getRawTimeSpan() {
+    public float getRawTimeSpan(long currentEnergy) {
         return -1;
     }
 
@@ -156,8 +156,13 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
     }
 
     @Override
-    public cElementalDecay[] getEnergyInducedDecay(long energy) {
+    public cElementalDecay[] getEnergyInducedDecay(long energyLevel) {
         return new cElementalDecay[]{new cElementalDecay(0.75F, aspectStacks), eBosonDefinition.deadEnd};
+    }
+
+    @Override
+    public float getEnergyDiffBetweenStates(long currentEnergyLevel, long newEnergyLevel) {
+        return DEFAULT_ENERGY_REQUIREMENT*(newEnergyLevel-currentEnergyLevel);
     }
 
     @Override
