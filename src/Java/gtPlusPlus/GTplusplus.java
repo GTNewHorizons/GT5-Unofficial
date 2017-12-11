@@ -147,7 +147,12 @@ public class GTplusplus implements ActionListener {
 
 	@Mod.EventHandler
 	public void serverStopping(final FMLServerStoppingEvent event) {
-
+		//Flush all data to Server at the end of the day.
+		if (SegmentAnalytics.sAnalyticsMasterList.size() > 0){
+			for (SegmentAnalytics sa : SegmentAnalytics.sAnalyticsMasterList.values()){
+				sa.flushAllData();
+			}
+		}
 	}
 
 	@Override

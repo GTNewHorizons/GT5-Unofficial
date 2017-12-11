@@ -35,6 +35,8 @@ public class LoginEventHandler {
 			new SegmentAnalytics(event.player);			
 		}
 		catch (Throwable t){
+			t.printStackTrace();
+			SegmentAnalytics.LOG("====================================================.");
 			SegmentAnalytics.LOG("Failed to create Analytics submission during log in process.");
 			SegmentAnalytics.LOG("Disabling.");
 			SegmentAnalytics.isEnabled = false;

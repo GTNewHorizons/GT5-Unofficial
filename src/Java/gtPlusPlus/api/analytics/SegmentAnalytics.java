@@ -20,23 +20,23 @@ import ic2.core.IC2;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class SegmentAnalytics {	
-	
+
 	//Globally Enabled
 	public static boolean isEnabled = true;
-	
+
 	//Analytics Map with IDs
-	 public static final Map<Integer, SegmentAnalytics> sAnalyticsMasterList = new ConcurrentHashMap<Integer, SegmentAnalytics>();
+	public static final Map<Integer, SegmentAnalytics> sAnalyticsMasterList = new ConcurrentHashMap<Integer, SegmentAnalytics>();
 	//ID count
-	 private static int sAnalyticsMapID = 0;
-	 
+	private static int sAnalyticsMapID = 0;
+
 	//Analytics Player Mapping
-	 public static final Map<UUID, Integer> sAnalyticsToPlayermap = new ConcurrentHashMap<UUID, Integer>();
-	
+	public static final Map<UUID, Integer> sAnalyticsToPlayermap = new ConcurrentHashMap<UUID, Integer>();
+
 	//Set some Vars
 	final BlockingFlush mBlockingFlush;
 	final Analytics mAnalytics;
 	final UUIDGenerator mUuidGenerator;
-	
+
 	final GameProfile mLocalProfile;
 	final String aLocalName;
 	final UUID aUUID;
@@ -46,13 +46,13 @@ public class SegmentAnalytics {
 	//Build a new instance of this class
 	public SegmentAnalytics(EntityPlayer mPlayer){
 		LOG("Generating a new instance of Segment Analytics Handler 2.1.0 for "+mPlayer.getDisplayName());
-		
+
 		int currentID = sAnalyticsMapID;
 		sAnalyticsMapID++;
-		
+
 		sAnalyticsMasterList.put(currentID, this);
 		sAnalyticsToPlayermap.put(mPlayer.getUniqueID(), currentID);		
-		
+
 		this.mLocalProfile = mPlayer.getGameProfile();
 		this.aLocalName = mLocalProfile.getName();
 		this.aUUID = PlayerUtils.getPlayersUUIDByName(aLocalName);
@@ -68,7 +68,7 @@ public class SegmentAnalytics {
 				.plugin(mBlockingFlush.plugin())
 				.plugin(new AnalyticsLoggingPlugin())
 				.build();
-		
+
 		//Let us submit a doorknock to Segment to let them know who this is.
 		submitInitData(mPlayer);
 	}
@@ -111,7 +111,7 @@ public class SegmentAnalytics {
 				.anonymousId(anonymousId) //Save Random Session UUID
 				.traits(properties));
 
-		mAnalytics.flush();
+		flushAllData();
 	}
 
 	public void submitTrackingData(String aActionPerformed){
@@ -122,7 +122,15 @@ public class SegmentAnalytics {
 		mAnalytics.enqueue(TrackMessage.builder(aActionPerformed) //
 				//.properties(properties) //Save Stats
 				.anonymousId(anonymousId) //Save Random Session UUID
-				.userId(aUserName)); // Save Username as UUID, for future sessions to attach to.		
+				.userId(aUserName)); // Save Username as UUID, for future sessions to attach to.	
+		
+		flushAllData();
+	}
+	
+	public void flushAllData(){
+		LOG("Flushing all data from Queue to Segment Analytics database.");
+		this.flushAllData();
+		mAnalytics.flush();
 	}
 
 	public UUID generateIdForSession(){
@@ -130,21 +138,55 @@ public class SegmentAnalytics {
 	}
 
 	private final byte[] generateUUID(){
-		return mUuidGenerator.next(4);
+		byte[] mUUID;
+
+		if (this.mUuidGenerator != null){
+			try {
+				if ((mUUID = mUuidGenerator.next(4)) != null){
+					LOG("Generated Type 4 UUID for Session ID.");
+					return mUUID;
+				}
+				else if ((mUUID = mUuidGenerator.next(1)) != null){
+					LOG("Generated Type 1 UUID for Session ID.");
+					return mUUID;
+				}
+			}
+			catch (Throwable t){
+				t.printStackTrace();
+			}
+		}
+
+		LOG("Generated Type 3 UUID for Session ID.");
+		return UUIDUtils.getBytesFromUUID(UUID.randomUUID());
+
 	}
 
 	public final String getStringForm(UUID mID){
 		return mID.toString();
 	}
-	
+
 	// Non-Dev Comments
 	public static void LOG(final String s) {
-			Utils.getLogger().info("[Analytics] "+s);
+		Utils.getLogger().info("[Analytics] "+s);
 	}
-	
+
 	public static SegmentAnalytics getAnalyticsForPlayer(EntityPlayer mPlayer){
-		if (SegmentAnalytics.sAnalyticsToPlayermap.containsKey(mPlayer)){
-			return SegmentAnalytics.sAnalyticsMasterList.get(SegmentAnalytics.sAnalyticsToPlayermap.get(mPlayer.getUniqueID()));
+		try {
+			if (mPlayer != null){
+				if (SegmentAnalytics.sAnalyticsToPlayermap.containsKey(mPlayer.getUniqueID())){
+					int ID = sAnalyticsToPlayermap.get(mPlayer.getUniqueID());
+					return SegmentAnalytics.sAnalyticsMasterList.get(ID);
+				}
+				else {
+					LOG("Map does not contain Player.");
+				}
+			}		
+			else {
+				LOG("Invalid Player.");	
+			}
+		}
+		catch (Throwable t){
+			t.printStackTrace();
 		}
 		return null;
 	}
