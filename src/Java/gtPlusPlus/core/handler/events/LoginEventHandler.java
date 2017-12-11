@@ -46,7 +46,7 @@ public class LoginEventHandler {
 
 					//Submit Analytics
 					try {
-						CORE.mAnalytics.SubmitNewUserSession();
+						CORE.mAnalytics.submitInitData();
 					}
 					catch (Throwable t){
 						Utils.LOG_INFO("Failed to submit analytics data.");

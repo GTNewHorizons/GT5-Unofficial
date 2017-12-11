@@ -42,6 +42,7 @@ public class ConfigHandler {
 				"Alkaluscraft Related - Removes IC2 Cables Except glass fibre. Few other Misc Tweaks.");
 		enableAlternativeDivisionSigilRecipe = config.getBoolean("enableAlternativeDivisionSigilRecipe", "machines",
 				false, "Utilizes Neutronium instead.");
+		boilerSteamPerSecond = config.getInt("boilerSteamPerSecond", "machines", 750, 0, 10000, "Sets the steam per second value in LV,MV,HV boilers (respectively 1x,2x,3x this number for the tiers)");
 	
 		//Circuits
 		enableCustomCircuits = config.getBoolean("enableCustomCircuits", "gregtech", true,

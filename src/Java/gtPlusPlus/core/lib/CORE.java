@@ -166,6 +166,7 @@ public class CORE {
 		 public static boolean enableThaumcraftShardUnification = false;
 		 public static boolean disableIC2Recipes = false;
 		 public static boolean enableAlternativeDivisionSigilRecipe = false;
+		 public static int boilerSteamPerSecond = 750;
 
 		 //Feature Related
 		 public static boolean enableCustomCapes = false;
