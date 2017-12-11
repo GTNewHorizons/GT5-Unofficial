@@ -1,7 +1,8 @@
-# TecTech [![Build Status](https://jenkins.datamats.com/buildStatus/icon?job=TecTech)](https://jenkins.datamats.com/job/TecTech)
+# TecTech [![Build Status](http://jenkins.usrv.de:8081/buildStatus/icon?job=Tec%20Tech)](http://jenkins.usrv.de:8081/job/Tec%20Tech)
 GT additions EXTREME
 
 # Jenkins Builds
+http://jenkins.usrv.de:8081/job/Tec%20Tech/
 https://jenkins.datamats.com/job/TecTech/
 
 # Runtime Dependencies?

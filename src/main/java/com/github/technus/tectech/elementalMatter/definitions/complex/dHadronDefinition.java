@@ -1,8 +1,10 @@
 package com.github.technus.tectech.elementalMatter.definitions.complex;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.core.cElementalDecay;
 import com.github.technus.tectech.elementalMatter.core.cElementalDefinitionStackMap;
+import com.github.technus.tectech.elementalMatter.core.cElementalMutableDefinitionStackMap;
 import com.github.technus.tectech.elementalMatter.core.containers.cElementalDefinitionStack;
 import com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefinition;
 import com.github.technus.tectech.elementalMatter.core.tElementalException;
@@ -268,33 +270,33 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
         return type;
     }
 
-    @Override
-    public iElementalDefinition getAnti() {
-        cElementalDefinitionStack[] stacks = this.quarkStacks.values();
-        cElementalDefinitionStack[] antiElements = new cElementalDefinitionStack[stacks.length];
-        for (int i = 0; i < antiElements.length; i++) {
-            antiElements[i] = new cElementalDefinitionStack(stacks[i].definition.getAnti(), stacks[i].amount);
-        }
-        try {
-            return new dHadronDefinition(false, antiElements);
-        } catch (tElementalException e) {
-            if (DEBUG_MODE) e.printStackTrace();
-            return null;
-        }
-    }
-
     //@Override
     //public iElementalDefinition getAnti() {
-    //    cElementalMutableDefinitionStackMap anti = new cElementalMutableDefinitionStackMap();
-    //    for (cElementalDefinitionStack stack : quarkStacks.values())
-    //        anti.putReplace(new cElementalDefinitionStack(stack.definition.getAnti(), stack.amount));
+    //    cElementalDefinitionStack[] stacks = this.quarkStacks.values();
+    //    cElementalDefinitionStack[] antiElements = new cElementalDefinitionStack[stacks.length];
+    //    for (int i = 0; i < antiElements.length; i++) {
+    //        antiElements[i] = new cElementalDefinitionStack(stacks[i].definition.getAnti(), stacks[i].amount);
+    //    }
     //    try {
-    //        return new dHadronDefinition(anti.toImmutable());
+    //        return new dHadronDefinition(false, antiElements);
     //    } catch (tElementalException e) {
-    //        if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+    //        if (DEBUG_MODE) e.printStackTrace();
     //        return null;
     //    }
     //}
+
+    @Override
+    public iElementalDefinition getAnti() {
+        cElementalMutableDefinitionStackMap anti = new cElementalMutableDefinitionStackMap();
+        for (cElementalDefinitionStack stack : quarkStacks.values())
+            anti.putReplace(new cElementalDefinitionStack(stack.definition.getAnti(), stack.amount));
+        try {
+            return new dHadronDefinition(anti.toImmutable());
+        } catch (tElementalException e) {
+            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+            return null;
+        }
+    }
 
     @Override
     public aFluidDequantizationInfo someAmountIntoFluidStack() {

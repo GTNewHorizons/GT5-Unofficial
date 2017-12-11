@@ -34,6 +34,7 @@ import static gregtech.api.enums.OrePrefixes.dust;
  */
 public final class dAtomDefinition extends cElementalDefinition {
     public static final long ATOM_COMPLEXITY_LIMIT=65536L;
+    private static final byte BYTE_OFFSET=32;
 
     private final int hash;
     public static final bTransformationInfo transformation=new bTransformationInfo(16,0,64);
@@ -180,7 +181,7 @@ public final class dAtomDefinition extends cElementalDefinition {
             else
                 this.decayMode = izoDiff > 0 ? (byte) Math.min(2, 1 + izoDiffAbs / 4) : (byte) -Math.min(2, 1 + izoDiffAbs / 4);
         }else{
-            this.decayMode=Byte.MAX_VALUE;
+            this.decayMode = izoDiff > 0 ? (byte) (Math.min(2, 1 + izoDiffAbs / 4)+ BYTE_OFFSET) : (byte) (-Math.min(2, 1 + izoDiffAbs / 4) + BYTE_OFFSET);
         }
         //this.stable = this.rawLifeTime >= STABLE_RAW_LIFE_TIME;
 
@@ -345,115 +346,213 @@ public final class dAtomDefinition extends cElementalDefinition {
 
     @Override
     public cElementalDecay[] getDecayArray() {
+        ArrayList<cElementalDecay> decaysList=new ArrayList<>(4);
+        return getDecayArray(decaysList,decayMode);
+    }
+
+    private cElementalDecay[] getDecayArray(ArrayList<cElementalDecay> decaysList,int decayMode) {
         if (this.type == 1) {
             switch (decayMode) {
                 case -2:
-                    return PbetaDecay();
+                    if(PbetaDecay(decaysList,1))
+                        return decaysList.toArray(new cElementalDecay[decaysList.size()]);
+                    break;
                 case -1:
-                    return Emmision(dHadronDefinition.hadron_p1);
+                    if(Emmision(decaysList,1,dHadronDefinition.hadron_p1))
+                        return decaysList.toArray(new cElementalDecay[decaysList.size()]);
+                    break;
                 case 0:
-                    return alphaDecay();
+                    if(alphaDecay(decaysList,1))
+                        return decaysList.toArray(new cElementalDecay[decaysList.size()]);
+                    break;
                 case 1:
-                    return Emmision(dHadronDefinition.hadron_n1);
+                    if(Emmision(decaysList,1,dHadronDefinition.hadron_n1))
+                        return decaysList.toArray(new cElementalDecay[decaysList.size()]);
+                    break;
                 case 2:
-                    return MbetaDecay();
-                case Byte.MAX_VALUE:
-                    return iaeaDecay(0);
+                    if(MbetaDecay(decaysList,1))
+                        return decaysList.toArray(new cElementalDecay[decaysList.size()]);
+                    break;
+                default:
+                    if(decayMode>8){
+                        if(iaeaDecay(decaysList,0))
+                            return decaysList.toArray(new cElementalDecay[decaysList.size()]);
+                        return getDecayArray(decaysList,decayMode-BYTE_OFFSET);
+                    }
             }
         }
-        return getNaturalDecayInstant();
+        return cElementalDecay.noDecay;
     }
 
-    private cElementalDecay[] iaeaDecay(long energy){
-        //todo
-        return null;
+    private boolean iaeaDecay(ArrayList<cElementalDecay> decaysList,long energy){
+        iaeaNuclide.energeticState state;
+        if(energy>iaea.energeticStatesArray.length) state = iaea.energeticStatesArray[iaea.energeticStatesArray.length-1];
+        else if(energy<=0) state = iaea.energeticStatesArray[0];
+        else state=iaea.energeticStatesArray[(int)energy];
+        for (int i=0;i<state.decaymodes.length;i++){
+            if(!getDecay(decaysList,state.decaymodes[i])) {
+                decaysList.clear();
+                return false;
+            }
+        }
+        return true;
     }
 
-    private cElementalDecay[] Emmision(cElementalDefinitionStack emit) {
-        final cElementalMutableDefinitionStackMap tree = new cElementalMutableDefinitionStackMap(elementalStacks.values());
+    private boolean getDecay(ArrayList<cElementalDecay> decaysList,iaeaNuclide.iaeaDecay decay){
+        switch (decay.decayName){
+            case "14C":
+                break;
+            case "24NE":
+                break;
+            case "2B+":
+                break;
+            case "2B-":
+                break;
+            case "2EC":
+                break;
+            case "2N":
+                return Emmision(decaysList,decay.chance,dHadronDefinition.hadron_n2);
+            case "2P":
+                return Emmision(decaysList,decay.chance,dHadronDefinition.hadron_p2);
+            case "34SI":
+                break;
+            case "3H":
+                break;
+            case "3HE":
+                break;
+            case "8BE":
+                break;
+            case "A": case "A?":
+                return alphaDecay(decaysList,decay.chance);
+            case "B+":
+                return PbetaDecay(decaysList,decay.chance);
+            case "B++EC": case "EC+B+":
+                break;
+            case "B+2P":
+                break;
+            case "B+A":
+                break;
+            case "B+P":
+                break;
+            case "B-":
+                return MbetaDecay(decaysList,decay.chance);
+            case "B-2N":
+                break;
+            case "B-A":
+                break;
+            case "B-F":
+                break;
+            case "B-N":
+                break;
+            case "B-P":
+                break;
+            case "D":
+                break;
+            case "EC":
+                break;
+            case "EC2P":
+                break;
+            case "ECA":
+                break;
+            case "ECF": case "ECSF": case "EC(+SF)":
+                break;
+            case "ECP":
+                break;
+            case "ECP+EC2P":
+                break;
+            case "IT+EC+B+":
+                break;
+            case "N":
+                return Emmision(decaysList,decay.chance,dHadronDefinition.hadron_n1);
+            case "P":
+                return Emmision(decaysList,decay.chance,dHadronDefinition.hadron_p1);
+            case "SF":
+                return Fission(decaysList,decay.chance,false);
+            case "SF(+EC+B+)": case "SF+EC+B+":
+                break;
+            case "SF+EC+B-":
+                break;
+            case "IT": case "IT?": case "G":
+                decaysList.add(new cElementalDecay(decay.chance, this, eBosonDefinition.boson_Y__));
+                return true;
+            case "DEAD_END":
+                decaysList.add(deadEnd);
+                return true;
+            default: throw new Error("Unsupported decay mode: " + decay.decayName + " "+ neutralCount+" "+element);
+        }
+        return false;
+    }
+
+    private boolean Emmision(ArrayList<cElementalDecay> decaysList, float probability, cElementalDefinitionStack emit) {
+        final cElementalMutableDefinitionStackMap tree = elementalStacks.toMutable();
         if (tree.removeAmount(false, emit)) {
             try {
-                return new cElementalDecay[]{
-                        new cElementalDecay(0.5f, this),
-                        new cElementalDecay(0.5f, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable()), 1), emit),
-                        deadEnd
-                };
+                decaysList.add(new cElementalDecay(probability, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable()), 1), emit));
+                return true;
             } catch (Exception e) {
                 if (DEBUG_MODE) e.printStackTrace();
             }
         }
-        return getNaturalDecayInstant();
+        return false;
     }
 
-    private cElementalDecay[] alphaDecay() {
-        final cElementalMutableDefinitionStackMap tree = new cElementalMutableDefinitionStackMap(elementalStacks.values());
+    private boolean alphaDecay(ArrayList<cElementalDecay> decaysList,float probability) {
+        final cElementalMutableDefinitionStackMap tree = elementalStacks.toMutable();
         if (tree.removeAllAmounts(false, dHadronDefinition.hadron_n2, dHadronDefinition.hadron_p2)) {
             try {
-                return new cElementalDecay[]{
-                        new cElementalDecay(0.5f, this),
-                        new cElementalDecay(0.5f, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable()), 1), alpha),
-                        deadEnd
-                };
+                decaysList.add(new cElementalDecay(probability, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable()), 1), alpha));
+                return true;
             } catch (Exception e) {
                 if (DEBUG_MODE) e.printStackTrace();
             }
         }
-        return getNaturalDecayInstant();
+        return false;
     }
 
-    private cElementalDecay[] MbetaDecay() {
-        final cElementalMutableDefinitionStackMap tree = new cElementalMutableDefinitionStackMap(elementalStacks.values());
+    private boolean MbetaDecay(ArrayList<cElementalDecay> decaysList,float probability) {
+        final cElementalMutableDefinitionStackMap tree = elementalStacks.toMutable();
         if (tree.removeAmount(false, dHadronDefinition.hadron_n1)) {
             try {
                 tree.putUnify(dHadronDefinition.hadron_p1);
-                return new cElementalDecay[]{
-                        new cElementalDecay(0.5f, this),
-                        new cElementalDecay(0.5f, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable()), 1), eLeptonDefinition.lepton_e1, eNeutrinoDefinition.lepton_Ve_1),
-                        deadEnd
-                };
+                decaysList.add(new cElementalDecay(probability, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable()), 1), eLeptonDefinition.lepton_e1, eNeutrinoDefinition.lepton_Ve_1));
+                return true;
             } catch (Exception e) {
                 if (DEBUG_MODE) e.printStackTrace();
             }
         }
-        return getNaturalDecayInstant();
+        return false;
     }
 
-    private cElementalDecay[] PbetaDecay() {
-        final cElementalMutableDefinitionStackMap tree = new cElementalMutableDefinitionStackMap(elementalStacks.values());
+    private boolean PbetaDecay(ArrayList<cElementalDecay> decaysList,float probability) {
+        final cElementalMutableDefinitionStackMap tree = elementalStacks.toMutable();
         if (tree.removeAmount(false, dHadronDefinition.hadron_p1)) {
             try {
                 tree.putUnify(dHadronDefinition.hadron_n1);
-                return new cElementalDecay[]{
-                        new cElementalDecay(0.5f, this),
-                        new cElementalDecay(0.5f, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable()), 1), eLeptonDefinition.lepton_e_1, eNeutrinoDefinition.lepton_Ve1),
-                        deadEnd
-                };
+                decaysList.add(new cElementalDecay(probability, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable()), 1), eLeptonDefinition.lepton_e_1, eNeutrinoDefinition.lepton_Ve1));
+                return true;
             } catch (Exception e) {
                 if (DEBUG_MODE) e.printStackTrace();
             }
         }
-        return getNaturalDecayInstant();
+        return false;
     }
 
-    private cElementalDecay[] ElectronCapture() {
-        final cElementalMutableDefinitionStackMap tree = new cElementalMutableDefinitionStackMap(elementalStacks.values());
+    private boolean ElectronCapture(ArrayList<cElementalDecay> decaysList,float probability) {
+        final cElementalMutableDefinitionStackMap tree = elementalStacks.toMutable();
         if (tree.removeAmount(false, eLeptonDefinition.lepton_e1) && tree.removeAmount(false, dHadronDefinition.hadron_p1)) {
             try {
                 tree.putUnify(dHadronDefinition.hadron_n1);
-                return new cElementalDecay[]{
-                        new cElementalDecay(0.5f, this),
-                        new cElementalDecay(0.5f, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable()), 1), eNeutrinoDefinition.lepton_Ve1),
-                        deadEnd
-                };
+                decaysList.add(new cElementalDecay(0.5f, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable()), 1), eNeutrinoDefinition.lepton_Ve1));
+                return true;
             } catch (Exception e) {
                 if (DEBUG_MODE) e.printStackTrace();
             }
         }
-        return getNaturalDecayInstant();
+        return false;
     }
 
-    private cElementalDecay[] Fission(boolean spontaneousCheck) {
-        final cElementalMutableDefinitionStackMap light = new cElementalMutableDefinitionStackMap(elementalStacks.values());
+    private boolean Fission(ArrayList<cElementalDecay> decaysList,float probability,boolean spontaneousCheck) {
+        final cElementalMutableDefinitionStackMap light = elementalStacks.toMutable();
         final cElementalMutableDefinitionStackMap heavy = new cElementalMutableDefinitionStackMap();
         final ArrayList<cElementalDefinitionStack> particles = new ArrayList<>(4);
         final double[] liquidDrop=liquidDropFunction(Math.abs(element)<=97);
@@ -461,7 +560,7 @@ public final class dAtomDefinition extends cElementalDefinition {
         for(cElementalDefinitionStack stack:light.values()){
             if(spontaneousCheck && stack.definition instanceof dHadronDefinition &&
                     (stack.amount<=80 || (stack.amount<90 && XSTR_INSTANCE.nextInt(10)<stack.amount-80)))
-                return getNaturalDecayInstant();
+                return false;
             if(stack.definition.getCharge()==0){
                 //if(stack.definition instanceof dHadronDefinition){
                     double neutrals=stack.amount*liquidDrop[2];
@@ -491,15 +590,12 @@ public final class dAtomDefinition extends cElementalDefinition {
         try {
             particles.add(new cElementalDefinitionStack(new dAtomDefinition(light.toImmutable()),1));
             particles.add(new cElementalDefinitionStack(new dAtomDefinition(heavy.toImmutable()),1));
-            return new cElementalDecay[]{
-                    new cElementalDecay(0.5f,this),
-                    new cElementalDecay(0.5f, particles.toArray(new cElementalDefinitionStack[0])),
-                    deadEnd
-            };
+            decaysList.add(new cElementalDecay(0.5f, particles.toArray(new cElementalDefinitionStack[particles.size()])));
+            return true;
         } catch (Exception e) {
             if (DEBUG_MODE) e.printStackTrace();
         }
-        return getNaturalDecayInstant();
+        return false;
     }
 
     private static double[] liquidDropFunction(boolean asymmetric) {
@@ -536,32 +632,15 @@ public final class dAtomDefinition extends cElementalDefinition {
     @Override
     public cElementalDecay[] getEnergyInducedDecay(long energyLevel) {
         if (iaeaDefinitionExistsAndHasEnergyLevels) {
-            return iaeaDecay(energyLevel);
-        }
-        //strip leptons
-        boolean doIt = true;
-        ArrayList<cElementalDefinitionStack> decaysInto = new ArrayList<cElementalDefinitionStack>();
-        ArrayList<cElementalDefinitionStack> newAtom = new ArrayList<cElementalDefinitionStack>();
-        for (cElementalDefinitionStack elementalStack : elementalStacks.values()) {
-            if (elementalStack.definition instanceof eLeptonDefinition && doIt) {
-                doIt = false;
-                if (elementalStack.amount > 1)
-                    newAtom.add(new cElementalDefinitionStack(elementalStack.definition, elementalStack.amount - 1));
-                decaysInto.add(new cElementalDefinitionStack(elementalStack.definition, 1));
-            } else {
-                newAtom.add(elementalStack);
+            ArrayList<cElementalDecay> decays=new ArrayList<>(4);
+            if(iaeaDecay(decays,energyLevel)){
+                return decays.toArray(new cElementalDecay[decays.size()]);
             }
         }
-        try {
-            decaysInto.add(new cElementalDefinitionStack(new dAtomDefinition(newAtom.toArray(new cElementalDefinitionStack[newAtom.size()])), 1));
-            return new cElementalDecay[]{new cElementalDecay(0.95F, decaysInto.toArray(new cElementalDefinitionStack[decaysInto.size()])), eBosonDefinition.deadEnd};
-        } catch (tElementalException e) {
-            if (DEBUG_MODE) e.printStackTrace();
-            for (cElementalDefinitionStack things : newAtom) {
-                decaysInto.add(things);
-            }
-            return new cElementalDecay[]{new cElementalDecay(0.75F, decaysInto.toArray(new cElementalDefinitionStack[decaysInto.size()])), eBosonDefinition.deadEnd};
+        if(energyLevel< Math.abs(charge)/3+neutralCount) {
+            return new cElementalDecay[]{new cElementalDecay(1, this, eBosonDefinition.boson_Y__)};
         }
+        return getNaturalDecayInstant();
     }
 
     @Override

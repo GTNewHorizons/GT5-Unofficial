@@ -148,19 +148,21 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
     }
 
     public cElementalInstanceStackMap decay(Float lifeTimeMult, long apparentAge, long postEnergize) {
+        long newEnergyLevel=postEnergize+this.energy;
+        if(newEnergyLevel>0) newEnergyLevel-=1;
+        else if(newEnergyLevel<0) newEnergyLevel+=1;
         if (this.energy > 0 && !definition.usesSpecialEnergeticDecayHandling()) {
-            this.energy--;
             setLifeTimeMultipleOfBaseValue(getLifeTimeMult());
-            return decayCompute(definition.getEnergyInducedDecay(this.energy), lifeTimeMult, -1, postEnergize + this.energy);
+            return decayCompute(definition.getEnergyInducedDecay(this.energy), lifeTimeMult, -1, newEnergyLevel);
         }else if (definition.getRawTimeSpan(energy) < 0) {
             return null;//return null, decay cannot be achieved
         } else if(definition.isTimeSpanHalfLife()){
-            return exponentialDecayCompute(energy>0?definition.getEnergyInducedDecay(this.energy):definition.getDecayArray(), lifeTimeMult, -1, postEnergize + this.energy);
+            return exponentialDecayCompute(energy>0?definition.getEnergyInducedDecay(this.energy):definition.getDecayArray(), lifeTimeMult, -1, newEnergyLevel);
         } else{
             if (1F > this.lifeTime) {
-                return decayCompute(energy>0?definition.getEnergyInducedDecay(this.energy):definition.getNaturalDecayInstant(), lifeTimeMult, 0, postEnergize + this.energy);
+                return decayCompute(energy>0?definition.getEnergyInducedDecay(this.energy):definition.getNaturalDecayInstant(), lifeTimeMult, 0, newEnergyLevel);
             } else if (((float) apparentAge) > this.lifeTime) {
-                return decayCompute(energy>0?definition.getEnergyInducedDecay(this.energy):definition.getDecayArray(), lifeTimeMult, 0, postEnergize + this.energy);
+                return decayCompute(energy>0?definition.getEnergyInducedDecay(this.energy):definition.getDecayArray(), lifeTimeMult, 0, newEnergyLevel);
             }
         }
         return null;//return null since decay cannot be achieved
@@ -193,7 +195,14 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
             if(newProductsAge<0){
                 for(cElementalInstanceStack s:products.values()){
                     if(s.definition.equals(definition)){
-                        s.age=age;
+                        s.age=this.age;
+                        s.energy=this.energy;
+                    }
+                }
+            }else{
+                for(cElementalInstanceStack s:products.values()){
+                    if(s.definition.equals(definition)){
+                        s.energy=this.energy;
                     }
                 }
             }
@@ -254,7 +263,14 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
             if(newProductsAge<0){
                 for(cElementalInstanceStack s:output.values()){
                     if(s.definition.equals(definition)){
-                        s.age=age;
+                        s.age=this.age;
+                        s.energy=this.energy;
+                    }
+                }
+            }else{
+                for(cElementalInstanceStack s:output.values()){
+                    if(s.definition.equals(definition)){
+                        s.energy=this.energy;
                     }
                 }
             }
