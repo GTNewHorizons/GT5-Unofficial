@@ -27,15 +27,15 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 
 	public GT_MetaTileEntity_Boiler_Base(int aID, String aNameRegional, int aBoilerTier) {
 		super(aID, "electricboiler." + aBoilerTier + ".tier.single", aNameRegional,
-				"Produces " + (750 * aBoilerTier) + "L of Steam per second");
-		this.mSteamPerSecond = (750 * aBoilerTier);
+				"Produces " + (CORE.configSwitches.boilerSteamPerSecond * aBoilerTier) + "L of Steam per second");
+		this.mSteamPerSecond = (CORE.configSwitches.boilerSteamPerSecond * aBoilerTier);
 		this.mPollutionPerSecond = 20 + (15 * aBoilerTier);
 		this.mBoilerTier = aBoilerTier;
 	}
 
 	public GT_MetaTileEntity_Boiler_Base(String aName, int aTier, String aDescription, ITexture[][][] aTextures) {
 		super(aName, aTier, aDescription, aTextures);
-		this.mSteamPerSecond = (750 * aTier);
+		this.mSteamPerSecond = (CORE.configSwitches.boilerSteamPerSecond * aTier);
 		this.mPollutionPerSecond = 20 + (15 * aTier);
 		this.mBoilerTier = aTier;
 	}
@@ -196,13 +196,13 @@ public class GT_MetaTileEntity_Boiler_Base extends GT_MetaTileEntity_Boiler {
 		if ((aBaseMetaTileEntity.isServerSide()) && (aTick > 20L)) {
 			// Utils.LOG_INFO("Ticking Boiler");
 
-			if (aTick % 60L == 0L) {
+			//if (aTick % 60L == 0L) {
 				// Utils.LOG_INFO("Temp:"+this.mTemperature);
 				// Utils.LOG_INFO("getCapacity():"+this.getCapacity());
 				// Utils.LOG_INFO("maxProgresstime():"+this.maxProgresstime());
 				// Utils.LOG_INFO("mSteamPerSecond:"+this.mSteamPerSecond);
 				// Utils.LOG_INFO("mProcessingEnergy:"+this.mProcessingEnergy);
-			}
+			//}
 
 			if (this.mTemperature <= 20) {
 				this.mTemperature = 20;

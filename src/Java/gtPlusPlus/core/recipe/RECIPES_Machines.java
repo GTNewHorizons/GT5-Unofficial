@@ -930,12 +930,19 @@ public class RECIPES_Machines {
 				RECIPE_LFTROuterCasing = GregtechItemList.Casing_Reactor_I.get(1); //Hastelloy
 
 				ItemStack controlCircuit = ItemUtils.getSimpleStack(ModItems.itemCircuitLFTR);
-				RecipeUtils.addShapedGregtechRecipe(
-						controlCircuit, "cableGt12NaquadahAlloy", controlCircuit,
-						"plateDoubleHastelloyN", GregtechItemList.Gregtech_Computer_Cube.get(1), "plateDoubleHastelloyN",
-						"plateThorium232", CI.machineHull_UV, "plateThorium232",
-						RECIPE_LFTRController);
-
+				if(!CORE.GTNH) {
+					RecipeUtils.addShapedGregtechRecipe(
+							controlCircuit, "cableGt12NaquadahAlloy", controlCircuit,
+							"plateDoubleHastelloyN", GregtechItemList.Gregtech_Computer_Cube.get(1), "plateDoubleHastelloyN",
+							"plateThorium232", CI.machineHull_UV, "plateThorium232",
+							RECIPE_LFTRController);
+				} else  {
+					RecipeUtils.addShapedGregtechRecipe(
+							controlCircuit, "cableGt12NaquadahAlloy", controlCircuit,
+							"plateDoubleHastelloyN", GregtechItemList.Gregtech_Computer_Cube.get(1), "plateDoubleHastelloyN",
+							"plateThorium232", CI.machineHull_LuV, "plateThorium232",
+							RECIPE_LFTRController);
+				}
 				RecipeUtils.addShapedGregtechRecipe(
 						"plateDoubleZeron100", CI.craftingToolScrewdriver, "plateDoubleZeron100",
 						"gearTalonite", CI.fieldGenerator_ULV, "gearTalonite",

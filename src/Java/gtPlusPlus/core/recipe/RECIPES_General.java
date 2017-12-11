@@ -7,6 +7,7 @@ import gregtech.api.enums.ItemList;
 import gregtech.api.util.GT_ModHandler;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.recipe.common.CI;
 import gtPlusPlus.core.util.Utils;
@@ -42,7 +43,7 @@ public class RECIPES_General {
 		}
 	}
 
-	private static void run(){
+	private static void run() {
 		//Workbench Blueprint
 		RecipeUtils.recipeBuilder(
 				RECIPE_Paper, RECIPE_LapisDust, NULL,
@@ -58,7 +59,7 @@ public class RECIPES_General {
 				OUTPUT_Workbench_Bronze);*/
 
 		//Generates recipes for the Dull shard when TC is not installed.
-		if (!LoadedMods.Thaumcraft){
+		if (!LoadedMods.Thaumcraft) {
 			//Dull Shard to Aer
 			RecipeUtils.recipeBuilder(
 					RECIPE_HydrogenDust, RECIPE_HydrogenDust, RECIPE_HydrogenDust,
@@ -100,15 +101,28 @@ public class RECIPES_General {
 			Utils.LOG_INFO("Added a recipe for Rainforest oak Saplings.");
 		}
 
-		//Iron bars
-		final ItemStack ironBars = ItemUtils.getItemStack("minecraft:iron_bars", 1);
-		//Fish Trap
-		if (RecipeUtils.recipeBuilder(
-				ironBars, ironBars, ironBars,
-				ironBars, "frameGtWroughtIron", ironBars,
-				ironBars, ironBars, ironBars,
-				ItemUtils.getSimpleStack(ModBlocks.blockFishTrap))){
-			Utils.LOG_INFO("Added a recipe for the Fish Trap.");
+		if (!CORE.GTNH) {
+			//Iron bars
+			final ItemStack ironBars = ItemUtils.getItemStack("minecraft:iron_bars", 1);
+			//Fish Trap
+			if (RecipeUtils.recipeBuilder(
+					ironBars, ironBars, ironBars,
+					ironBars, "frameGtWroughtIron", ironBars,
+					ironBars, ironBars, ironBars,
+					ItemUtils.getSimpleStack(ModBlocks.blockFishTrap))){
+				Utils.LOG_INFO("Added a recipe for the Fish Trap.");
+			}
+		} else {
+			//Steel Bars
+			final ItemStack steelBars = ItemUtils.getItemStack("dreamcraft:item.SteelBars", 1);
+			//Fish Trap
+			if (RecipeUtils.recipeBuilder(
+					steelBars, steelBars, steelBars,
+					steelBars, "frameGtWroughtIron", steelBars,
+					steelBars, steelBars, steelBars,
+					ItemUtils.getSimpleStack(ModBlocks.blockFishTrap))) {
+				Utils.LOG_INFO("Added a recipe for the Fish Trap.");
+			}
 		}
 
 		//Alkalus Coin

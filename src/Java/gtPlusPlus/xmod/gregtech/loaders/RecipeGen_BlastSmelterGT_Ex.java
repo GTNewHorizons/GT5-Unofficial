@@ -32,12 +32,12 @@ public class RecipeGen_BlastSmelterGT_Ex implements IOreRecipeRegistrator {
 
 	public void registerOre(OrePrefixes aPrefix, Materials aMaterial, String aOreDictName, String aModName, ItemStack aStack) {
 
-		boolean mIgnoreHighTemp = CORE.GTNH ? true : false;
+		boolean keepHighTempRecipes = !CORE.GTNH;
 
 		switch (aPrefix) {
 		case dust:			
 			ItemStack tDustStack;
-			if (mIgnoreHighTemp && aMaterial.mBlastFurnaceTemp <= 3600 || !mIgnoreHighTemp){
+			if (keepHighTempRecipes || aMaterial.mBlastFurnaceTemp <= 3600){
 				if ((null != (tDustStack = GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L))) && (!aMaterial.contains(SubTag.NO_SMELTING))) {
 					if (aMaterial.mBlastFurnaceRequired) {
 						addBlastRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), null, null, null, aMaterial.mBlastFurnaceTemp > 1750 ? GT_OreDictUnificator.get(OrePrefixes.ingotHot, aMaterial.mSmeltInto, tDustStack, 1L) : GT_Utility.copyAmount(1L, new Object[]{tDustStack}), null, (int) Math.max(aMaterial.getMass() / 40L, 1L) * aMaterial.mBlastFurnaceTemp, 120, aMaterial);
@@ -48,7 +48,7 @@ public class RecipeGen_BlastSmelterGT_Ex implements IOreRecipeRegistrator {
 				}
 			}
 		case ingot:
-			if (mIgnoreHighTemp && aMaterial.mBlastFurnaceTemp <= 3600 || !mIgnoreHighTemp){
+			if (keepHighTempRecipes || aMaterial.mBlastFurnaceTemp <= 3600){
 				if ((null != (tDustStack = GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L))) && (!aMaterial.contains(SubTag.NO_SMELTING))) {
 					if (aMaterial.mBlastFurnaceRequired) {
 						addBlastRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), null, null, null, aMaterial.mBlastFurnaceTemp > 1750 ? GT_OreDictUnificator.get(OrePrefixes.ingotHot, aMaterial.mSmeltInto, tDustStack, 1L) : GT_Utility.copyAmount(1L, new Object[]{tDustStack}), null, (int) Math.max(aMaterial.getMass() / 40L, 1L) * aMaterial.mBlastFurnaceTemp, 120, aMaterial);
@@ -57,14 +57,14 @@ public class RecipeGen_BlastSmelterGT_Ex implements IOreRecipeRegistrator {
 			}
 			break;
 		case dustSmall: 
-			if (mIgnoreHighTemp && aMaterial.mBlastFurnaceTemp <= 3600 || !mIgnoreHighTemp){          
+			if (keepHighTempRecipes || aMaterial.mBlastFurnaceTemp <= 3600){
 				if (aMaterial.mBlastFurnaceRequired) {
 					addBlastRecipe(GT_Utility.copyAmount(4L, new Object[]{aStack}), null, null, null, aMaterial.mBlastFurnaceTemp > 1750 ? GT_OreDictUnificator.get(OrePrefixes.ingotHot, aMaterial.mSmeltInto, GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L), 1L) : GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L), null, (int) Math.max(aMaterial.getMass() / 40L, 1L) * aMaterial.mBlastFurnaceTemp, 120, aMaterial);
 				}
 			}
 			break;
 		case dustTiny:  
-			if (mIgnoreHighTemp && aMaterial.mBlastFurnaceTemp <= 3600 || !mIgnoreHighTemp){             
+			if (keepHighTempRecipes || aMaterial.mBlastFurnaceTemp <= 3600){
 				if (!aMaterial.contains(gregtech.api.enums.SubTag.NO_SMELTING)) {
 					if (aMaterial.mBlastFurnaceRequired) {
 						addBlastRecipe(GT_Utility.copyAmount(9L, new Object[]{aStack}), null, null, null, aMaterial.mBlastFurnaceTemp > 1750 ? GT_OreDictUnificator.get(OrePrefixes.ingotHot, aMaterial.mSmeltInto, GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L), 1L) : GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial.mSmeltInto, 1L), null, (int) Math.max(aMaterial.getMass() / 40L, 1L) * aMaterial.mBlastFurnaceTemp, 120, aMaterial);
@@ -74,7 +74,7 @@ public class RecipeGen_BlastSmelterGT_Ex implements IOreRecipeRegistrator {
 			}
 			break;
 		default:
-			if (mIgnoreHighTemp && aMaterial.mBlastFurnaceTemp <= 3600 || !mIgnoreHighTemp){
+			if (keepHighTempRecipes || aMaterial.mBlastFurnaceTemp <= 3600){
 				if (!aMaterial.contains(SubTag.NO_SMELTING)) {
 					if ((aMaterial.mBlastFurnaceRequired) || (aMaterial.mDirectSmelting.mBlastFurnaceRequired)) {
 						addBlastRecipe(GT_Utility.copyAmount(1L, new Object[]{aStack}), null, null, null, aMaterial.mBlastFurnaceTemp > 1750 ? GT_OreDictUnificator.get(OrePrefixes.ingotHot, aMaterial, GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L), 1L) : GT_OreDictUnificator.get(OrePrefixes.ingot, aMaterial, 1L), null, (int) Math.max(aMaterial.getMass() / 4L, 1L) * aMaterial.mBlastFurnaceTemp, 120, aMaterial);
@@ -106,7 +106,7 @@ public class RecipeGen_BlastSmelterGT_Ex implements IOreRecipeRegistrator {
 			//If both inputs are null, then we don't want to try.
 			return false;
 		}
-		else if (input1 == null || input2 == null){
+		else {
 			count = 1;
 		}
 		//Set up input components.

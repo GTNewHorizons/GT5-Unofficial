@@ -413,19 +413,19 @@ public class NBTUtils {
 								createStringTagCompound(aStack, "mEntityTag", (String) e.getKey(), (String) e.getValue());
 							}
 							else if (e.getValue().getClass() == Boolean.class || e.getValue().getClass() == boolean.class){
-								createBooleanTagCompound(aStack, "mEntityTag", (String) e.getKey(), (boolean) e.getValue());							
+								createBooleanTagCompound(aStack, "mEntityTag", (String) e.getKey(), (Boolean) e.getValue());
 							}
 							else if (e.getValue().getClass() == Integer.class || e.getValue().getClass() == int.class){
-								createIntegerTagCompound(aStack, "mEntityTag", (String) e.getKey(), (int) e.getValue());							
+								createIntegerTagCompound(aStack, "mEntityTag", (String) e.getKey(), (Integer) e.getValue());
 							}
 							else if (e.getValue().getClass() == Double.class || e.getValue().getClass() == double.class){
-								createDoubleTagCompound(aStack, "mEntityTag", (String) e.getKey(), (double) e.getValue());							
+								createDoubleTagCompound(aStack, "mEntityTag", (String) e.getKey(), (Double) e.getValue());
 							}
 							else if (e.getValue().getClass() == Long.class || e.getValue().getClass() == long.class){
-								createLongTagCompound(aStack, "mEntityTag", (String) e.getKey(), (long) e.getValue());							
+								createLongTagCompound(aStack, "mEntityTag", (String) e.getKey(), (Long) e.getValue());
 							}
 							else if (e.getValue().getClass() == Float.class || e.getValue().getClass() == float.class){
-								createFloatTagCompound(aStack, "mEntityTag", (String) e.getKey(), (float) e.getValue());							
+								createFloatTagCompound(aStack, "mEntityTag", (String) e.getKey(), (Float) e.getValue());
 							}
 							else {
 

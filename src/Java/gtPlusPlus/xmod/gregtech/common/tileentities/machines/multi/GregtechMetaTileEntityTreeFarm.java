@@ -49,6 +49,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.util.ArrayList;
+
 public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlockBase {
 
 	/* private */ private int treeCheckTicks = 0;
@@ -59,9 +61,9 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 
 	private short energyHatchRetryCount = 0;
 
-	//Too Many logs, lag breaker
-	private final boolean takingBreak = false;
-	private final int logsToBreakAfter = 500;
+	//Too Many logs, lag breaker -- CONVERTED to local variables
+	//private final boolean takingBreak = false;
+	//private final int logsToBreakAfter = 500;
 
 	private EntityPlayerMP farmerAI;
 
@@ -305,7 +307,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 								return false;
 							}
 						}
-						//Deal with Bottom edges (Add Hatches/Busses first, othercheck make sure it's dirt) //TODO change the casings to not dirt~
+						//Deal with Bottom edges (Add Hatches/Busses first, othercheck make sure it's dirt) //TODO change the casings to not dirt~?
 						else if (h == 0) {
 							if ((!this.addMaintenanceToMachineList(tTileEntity, 77)) && (!this.addInputToMachineList(tTileEntity, 77)) && (!this.addOutputToMachineList(tTileEntity, 77)) && (!this.addEnergyInputToMachineList(tTileEntity, 77))) {
 								if (((xDir + i) != 0) || ((zDir + j) != 0)) {//no controller
@@ -375,7 +377,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 
 	@Override
 	public int getDamageToComponent(final ItemStack aStack) {
-		return 1;
+		return 0;//moved to cut log instead
 	}
 
 	public int getAmountOfOutputs() {
@@ -427,6 +429,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		final World world = aBaseMetaTileEntity.getWorld();
 		int posX, posY, posZ;
 
+		int logsToBreakAfter = 500;
 		if (this.mInternalPower >= 128) {
 
 			OUTER :	for (int h=0;h<150;h++){
@@ -434,17 +437,18 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 					for (int j = -7; j <= 7; j++) {
 
 
-
+						//can be simplified...
 						//Cut too many logs, do this to prevent lag.
-						if (logsCut >= this.logsToBreakAfter){
+						boolean takingBreak = false;
+						if (logsCut >= logsToBreakAfter){
 							stopCheck = true;
 						}
 						//Already Breaking but first two layers are empty, let's do a full check.
-						else if ((logsCut == 0) && (h == 2) && this.takingBreak){
+						else if ((logsCut == 0) && (h == 2) && takingBreak){
 							stopCheck = false;
 						}
 						//No Trees Grown and not breaking, take a break, reduce lag.
-						else if ((logsCut == 0) && (h == 3) && !this.takingBreak){
+						else if ((logsCut == 0) && (h == 3) && !takingBreak){
 							stopCheck = true;
 						}
 						else {
@@ -453,7 +457,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 
 						if (stopCheck){
 							Utils.LOG_MACHINE_INFO("Either found too many logs, so taking a break mid cut for lag conservation, or found no trees to cut, so stopping");
-							Utils.LOG_MACHINE_INFO("found: "+logsCut +" and check up to h:"+h+" - Taking Break:"+this.takingBreak);
+							Utils.LOG_MACHINE_INFO("found: "+logsCut +" and check up to h:"+h+" - Taking Break:"+ takingBreak);
 							stopCheck = false;
 							break OUTER;
 						}
@@ -503,7 +507,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		}
 
 		this.canChop = false;
-		if (logsCut >= this.logsToBreakAfter){
+		if (logsCut >= logsToBreakAfter){
 			TreeFarmHelper.cleanUp(aBaseMetaTileEntity);
 		}
 		return false;
@@ -668,6 +672,13 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 	private boolean cutLog(final World world, final int x, final int y, final int z){
 		//Utils.LOG_MACHINE_INFO("Cutting Log");
 		try {
+			//Actually damage item...
+			if(!GT_ModHandler.damageOrDechargeItem(this.mInventory[1], 1, 10, this.farmerAI)){
+				if (mInventory[1].stackSize == 0) mInventory[1] = null;
+				return false;
+			}
+			if (mInventory[1].stackSize == 0) mInventory[1] = null;
+
 			final Block block = world.getBlock(x, y, z);
 			int chanceForLeaves = 1000;
 			//is it leaves or a log? if leaves, heavily reduce chance to obtain rubber/output
@@ -711,10 +722,8 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 			//Remove drop that was added to the bus.
 			world.setBlockToAir(x, y, z);
 			new BlockBreakParticles(world, x, y, z, block);
-			damageOrDechargeItem(this.mInventory[1], 1, 10, this.farmerAI);
+			//damageOrDechargeItem(this.mInventory[1], 1, 10, this.farmerAI); done above
 			return true;
-
-
 		} catch (final NullPointerException e){}
 		return false;
 	}
@@ -993,42 +1002,42 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 
 	}
 
-
-	public static boolean damageOrDechargeItem(ItemStack aStack, int aDamage, int aDecharge, EntityLivingBase aPlayer) {
-		if ((GT_Utility.isStackInvalid(aStack)) || ((aStack.getMaxStackSize() <= 1) && (aStack.stackSize > 1)))
-			return false;
-		if ((aPlayer != null) && (aPlayer instanceof EntityPlayer)
-				&& (((EntityPlayer) aPlayer).capabilities.isCreativeMode))
-			return true;
-		if (aStack.getItem() instanceof IDamagableItem)
-			return ((IDamagableItem) aStack.getItem()).doDamageToItem(aStack, aDamage);
-		if (GT_ModHandler.isElectricItem(aStack)) {
-			if (GT_ModHandler.canUseElectricItem(aStack, aDecharge)) {
-				if ((aPlayer != null) && (aPlayer instanceof EntityPlayer)) {
-					return GT_ModHandler.useElectricItem(aStack, aDecharge, (EntityPlayer) aPlayer);
-				}
-				return (GT_ModHandler.dischargeElectricItem(aStack, aDecharge, 2147483647, true, false, true) >= aDecharge);
-			}
-		}
-		else if (aStack.getItem().isDamageable()) {
-			if (aPlayer == null)
-				aStack.setItemDamage(aStack.getItemDamage() + aDamage);
-			else {
-				aStack.damageItem(aDamage, aPlayer);
-			}
-			if (aStack.getItemDamage() >= aStack.getMaxDamage()) {
-				aStack.setItemDamage(aStack.getMaxDamage() + 1);
-				ItemStack tStack = GT_Utility.getContainerItem(aStack, true);
-				if (tStack != null) {
-					aStack.func_150996_a(tStack.getItem());
-					aStack.setItemDamage(tStack.getItemDamage());
-					aStack.stackSize = tStack.stackSize;
-					aStack.setTagCompound(tStack.getTagCompound());
-				}
-			}
-			return true;
-		}
-		return false;
-	}
+    //@Deprecated
+	//public static boolean damageOrDechargeItem(ItemStack aStack, int aDamage, int aDecharge, EntityLivingBase aPlayer) {
+	//	if ((GT_Utility.isStackInvalid(aStack)) || ((aStack.getMaxStackSize() <= 1) && (aStack.stackSize > 1)))
+	//		return false;
+	//	if ((aPlayer != null) && (aPlayer instanceof EntityPlayer)
+	//			&& (((EntityPlayer) aPlayer).capabilities.isCreativeMode))
+	//		return true;
+	//	if (aStack.getItem() instanceof IDamagableItem)
+	//		return ((IDamagableItem) aStack.getItem()).doDamageToItem(aStack, aDamage);
+	//	if (GT_ModHandler.isElectricItem(aStack)) {
+	//		if (GT_ModHandler.canUseElectricItem(aStack, aDecharge)) {
+	//			if ((aPlayer != null) && (aPlayer instanceof EntityPlayer)) {
+	//				return GT_ModHandler.useElectricItem(aStack, aDecharge, (EntityPlayer) aPlayer);
+	//			}
+	//			return (GT_ModHandler.dischargeElectricItem(aStack, aDecharge, 2147483647, true, false, true) >= aDecharge);
+	//		}
+	//	}
+	//	else if (aStack.getItem().isDamageable()) {
+	//		if (aPlayer == null)
+	//			aStack.setItemDamage(aStack.getItemDamage() + aDamage);
+	//		else {
+	//			aStack.damageItem(aDamage, aPlayer);
+	//		}
+	//		if (aStack.getItemDamage() >= aStack.getMaxDamage()) {
+	//			aStack.setItemDamage(aStack.getMaxDamage() + 1);
+	//			ItemStack tStack = GT_Utility.getContainerItem(aStack, true);
+	//			if (tStack != null) {
+	//				aStack.func_150996_a(tStack.getItem());
+	//				aStack.setItemDamage(tStack.getItemDamage());
+	//				aStack.stackSize = tStack.stackSize;
+	//				aStack.setTagCompound(tStack.getTagCompound());
+	//			}
+	//		}
+	//		return true;
+	//	}
+	//	return false;
+	//}
 
 }

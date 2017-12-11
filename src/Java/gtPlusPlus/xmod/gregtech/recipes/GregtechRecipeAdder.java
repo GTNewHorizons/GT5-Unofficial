@@ -255,10 +255,6 @@ public class GregtechRecipeAdder implements IGregtech_RecipeAdder {
 		}catch (final NullPointerException e){Utils.LOG_WARNING("FAILED TO LOAD RECIPES - NULL POINTER SOMEWHERE");return false;}
 	}
 
-
-
-
-
 	@Override
 	public boolean addBlastSmelterRecipe(final ItemStack[] aInput, FluidStack aOutput, final int aChance, int aDuration, final int aEUt) {
 		if ((aInput == null) || (aOutput == null)) {

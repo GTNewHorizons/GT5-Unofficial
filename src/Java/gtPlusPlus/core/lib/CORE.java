@@ -41,7 +41,8 @@ public class CORE {
 
 	//Math Related
 	public static final float PI = (float) Math.PI;
-	public static volatile Random RANDOM = new XSTR();
+	public static volatile Random RANDOM = new XSTR();
+
 	//Env. Variables
 	public static Configuration Config;
 
@@ -49,7 +50,8 @@ public class CORE {
 	public static boolean DEBUG = false;
 	public static boolean mFancyGraphics;
 	//Only can be set in Dev, no config or setting elsewhere.
-	public static final boolean LOAD_ALL_CONTENT = false;;
+	public static final boolean LOAD_ALL_CONTENT = false;;
+
 	//Mod Variables
 
 	public static final String name = "GT++";
@@ -71,7 +73,9 @@ public class CORE {
 	//Local Client Player, null if Server Side
 	public static GameProfile mLocalProfile;
 	//GT++ Fake Player Profile
-	public static GameProfile gameProfile = new GameProfile(UUID.nameUUIDFromBytes("gtplusplus.core".getBytes()), "[GT++]");	;	//Tooltips;
+	public static GameProfile gameProfile = new GameProfile(UUID.nameUUIDFromBytes("gtplusplus.core".getBytes()), "[GT++]");
+	;
+	//Tooltips;
 	public static final String GT_Tooltip = "Added by: " + EnumChatFormatting.DARK_GREEN+"Alkalus "+EnumChatFormatting.GRAY+"- "+EnumChatFormatting.RED+"[GT++]";
 	public static final String GT_Tooltip_Radioactive = EnumChatFormatting.GRAY+"Warning: "+EnumChatFormatting.GREEN+"Radioactive! "+EnumChatFormatting.GOLD+" Avoid direct handling without hazmat protection.";
 	public static final String noItem = "";
@@ -85,7 +89,8 @@ public class CORE {
 	
 	/**
 	 * Lists/Maps
-	 */
+	 */
+
 	 //Burnables List
 	 public static List<Pair<Integer, ItemStack>> burnables = new ArrayList<Pair<Integer, ItemStack>>();
 
