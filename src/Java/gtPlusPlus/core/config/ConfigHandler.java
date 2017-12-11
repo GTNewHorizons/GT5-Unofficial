@@ -9,7 +9,6 @@ import static gtPlusPlus.xmod.gregtech.common.tileentities.machines.basic.GT_Met
 import java.io.File;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import gtPlusPlus.core.lib.CORE.ConfigSwitches;
 import net.minecraftforge.common.config.Configuration;
 
 public class ConfigHandler {
@@ -19,7 +18,7 @@ public class ConfigHandler {
 				new File(event.getModConfigurationDirectory(), "GTplusplus/GTplusplus.cfg"));
 		config.load();
 	
-		ConfigSwitches.enableUpdateChecker = config.getBoolean("enableUpdateChecker", "debug", true,
+		enableUpdateChecker = config.getBoolean("enableUpdateChecker", "debug", true,
 				"Stops mod checking for updates.");
 	
 		// Debug

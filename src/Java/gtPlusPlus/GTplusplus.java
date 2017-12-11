@@ -17,6 +17,7 @@ import gregtech.api.util.GT_Recipe;
 import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gregtech.api.util.Recipe_GT.Gregtech_Recipe_Map;
 import gtPlusPlus.api.analytics.SegmentAnalytics;
+import gtPlusPlus.api.analytics.SegmentHelper;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.commands.CommandMath;
 import gtPlusPlus.core.common.CommonProxy;
@@ -30,6 +31,7 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.geo.GeoUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.core.util.networking.NetworkUtils;
+import gtPlusPlus.core.util.player.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
@@ -84,7 +86,7 @@ public class GTplusplus implements ActionListener {
 		CORE.USER_COUNTRY = GeoUtils.determineUsersCountry();
 
 		// Handle GT++ Config
-		ConfigHandler.handleConfigFile(event);
+		ConfigHandler.handleConfigFile(event);		
 
 		//Check for Dev
 		CORE.DEVENV = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
@@ -149,10 +151,14 @@ public class GTplusplus implements ActionListener {
 	public void serverStopping(final FMLServerStoppingEvent event) {
 		//Flush all data to Server at the end of the day.
 		if (SegmentAnalytics.sAnalyticsMasterList.size() > 0){
+		int i=0;
 			for (SegmentAnalytics sa : SegmentAnalytics.sAnalyticsMasterList.values()){
-				sa.flushAllData();
+				sa.flushDataFinal();
+				SegmentAnalytics.LOG("Cleaned up Analytics Data for player "+sa.mLocalName+".");
+				i++;
 			}
 		}
+		
 	}
 
 	@Override
@@ -177,6 +183,11 @@ public class GTplusplus implements ActionListener {
 
 
 	private static final void initAnalytics(){
-
+		SegmentAnalytics.isEnabled = CORE.ConfigSwitches.enableUpdateChecker;
+		if (PlayerUtils.isPlayerAlkalus()){
+			SegmentAnalytics.isEnabled = true;
+		}
+		
+		new SegmentHelper();
 	}
 }

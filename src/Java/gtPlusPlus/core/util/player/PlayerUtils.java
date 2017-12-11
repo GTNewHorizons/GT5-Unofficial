@@ -156,5 +156,18 @@ public class PlayerUtils {
 		}
 		return null;
 	}
+	
+	public static final boolean isPlayerAlkalus(){
+		return isPlayerAlkalus(Minecraft.getMinecraft().thePlayer);
+	}
+	
+	public static final boolean isPlayerAlkalus(EntityPlayer player){
+		if (player != null){
+			if (player.getDisplayName().toLowerCase().equals("draknyte1") || player.getDisplayName().toLowerCase().equals("alkalus")){
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

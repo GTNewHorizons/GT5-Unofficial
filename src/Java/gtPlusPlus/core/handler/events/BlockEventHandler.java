@@ -4,10 +4,13 @@ import static gtPlusPlus.core.lib.CORE.ConfigSwitches.chanceToDropDrainedShard;
 import static gtPlusPlus.core.lib.CORE.ConfigSwitches.chanceToDropFluoriteOre;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Random;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gtPlusPlus.api.analytics.SegmentAnalytics;
+import gtPlusPlus.api.analytics.SegmentHelper;
 import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
@@ -162,8 +165,12 @@ public class BlockEventHandler {
 		}
 		
 		//Try submit some data for this event.		
-		SegmentAnalytics.getAnalyticsForPlayer(event.harvester).submitTrackingData("Action_Block_Broken");
-				
+		//SegmentAnalytics.getAnalyticsForPlayer(event.harvester).submitTrackingData("Action_Block_Broken", event.block.getLocalizedName());
+		Map<String, Object> properties = new LinkedHashMap<>();
+		properties.put("blockType", event.block.getLocalizedName());
+		SegmentHelper.getInstance().trackUser(event.harvester.getUniqueID().toString(), "Action_Block_Broken", properties);	
+		
+		
 		}
 		catch (Throwable r){
 			Utils.LOG_INFO("Block Event Handler Failed. Please Report this to Alkalus.");

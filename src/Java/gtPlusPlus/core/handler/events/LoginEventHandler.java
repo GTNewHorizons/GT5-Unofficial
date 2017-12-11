@@ -5,11 +5,14 @@ import java.util.*;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import gtPlusPlus.api.analytics.SegmentAnalytics;
+import gtPlusPlus.api.analytics.SegmentHelper;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.proxy.ClientProxy;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.player.PlayerCache;
 import gtPlusPlus.core.util.player.PlayerUtils;
+import ic2.core.IC2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 
@@ -32,14 +35,22 @@ public class LoginEventHandler {
 		}	
 
 		try {			
-			new SegmentAnalytics(event.player);			
+			//new SegmentAnalytics(event.player);	
+			
+			
+			Map<String, Object> properties = new LinkedHashMap<>();
+			properties.put("username", this.localPlayersName);
+			properties.put("gt_version", Utils.getGregtechVersionAsString());
+			if (LoadedMods.IndustrialCraft2){
+				properties.put("ic2_version", IC2.VERSION);
+			}
+			properties.put("country_code", CORE.USER_COUNTRY);
+			properties.put("gtnh", CORE.GTNH);			
+			SegmentHelper.getInstance().addUser(this.localPlayersUUID.toString(), properties);
+			
 		}
 		catch (Throwable t){
-			t.printStackTrace();
-			SegmentAnalytics.LOG("====================================================.");
 			SegmentAnalytics.LOG("Failed to create Analytics submission during log in process.");
-			SegmentAnalytics.LOG("Disabling.");
-			SegmentAnalytics.isEnabled = false;
 		}
 
 		try {

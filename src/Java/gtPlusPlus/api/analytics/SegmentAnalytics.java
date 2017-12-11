@@ -2,12 +2,19 @@ package gtPlusPlus.api.analytics;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Phaser;
 
 import com.mojang.authlib.GameProfile;
 import com.segment.analytics.Analytics;
+import com.segment.analytics.Callback;
+import com.segment.analytics.Log;
+import com.segment.analytics.MessageInterceptor;
 import com.segment.analytics.messages.IdentifyMessage;
+import com.segment.analytics.messages.Message;
 import com.segment.analytics.messages.TrackMessage;
 
 import gtPlusPlus.core.lib.CORE;
@@ -37,40 +44,66 @@ public class SegmentAnalytics {
 	final Analytics mAnalytics;
 	final UUIDGenerator mUuidGenerator;
 
-	final GameProfile mLocalProfile;
-	final String aLocalName;
-	final UUID aUUID;
-	final String aUserName;
-	final String anonymousId;
+	public final GameProfile mLocalProfile;
+	public final String mLocalName;
+	public final UUID mUUID;
+	public final String mUserName;
+	public final String mAnonymousId;
+	final protected Phaser mPhaser;
 
 	//Build a new instance of this class
 	public SegmentAnalytics(EntityPlayer mPlayer){
 		LOG("Generating a new instance of Segment Analytics Handler 2.1.0 for "+mPlayer.getDisplayName());
 
+		//Give this Object an ID
 		int currentID = sAnalyticsMapID;
 		sAnalyticsMapID++;
 
+		//Map this Object to it's ID and a Player UUID.
 		sAnalyticsMasterList.put(currentID, this);
-		sAnalyticsToPlayermap.put(mPlayer.getUniqueID(), currentID);		
+		sAnalyticsToPlayermap.put(mPlayer.getUniqueID(), currentID);
 
+		//Create a Phaser
+		this.mPhaser = new Phaser(1);	
+
+		//Set vars for player
 		this.mLocalProfile = mPlayer.getGameProfile();
-		this.aLocalName = mLocalProfile.getName();
-		this.aUUID = PlayerUtils.getPlayersUUIDByName(aLocalName);
-		this.aUserName = aUUID.toString();
-		this.anonymousId = getStringForm(generateIdForSession());
+		this.mLocalName = mLocalProfile.getName();
+		this.mUUID = PlayerUtils.getPlayersUUIDByName(mLocalName);
+		this.mUserName = mUUID.toString();
+		this.mAnonymousId = getStringForm(generateIdForSession());
 
 		//Create a new UUID generator.
 		this.mUuidGenerator = new UUIDGenerator();
 
 		//Use Segment Analytics instead of plain Google Analytics.
 		this.mBlockingFlush = BlockingFlush.create(); 
-		this.mAnalytics = Analytics.builder("API_KEY_GOES_HERE") //
+		this.mAnalytics = Analytics.builder("API_KEY_GOES_HERE")
+				.log(Log.NONE) //Try enable http logging?
 				.plugin(mBlockingFlush.plugin())
 				.plugin(new AnalyticsLoggingPlugin())
+				.callback(new Callback() {
+					@Override 
+					public void success(Message message) {
+						mPhaser.arrive();
+					}
+
+					@Override 
+					public void failure(Message message, Throwable throwable) {
+						mPhaser.arrive();
+					}
+				})
+				.messageInterceptor(new MessageInterceptor() {
+					@Override 
+					public Message intercept(Message message) {
+						mPhaser.register();
+						return message;
+					}
+				})
 				.build();
 
-		//Let us submit a doorknock to Segment to let them know who this is.
-		submitInitData(mPlayer);
+
+		initTimer(mPlayer);
 	}
 
 	//Sets vars and stops Analytics running if the player profile is invalid.
@@ -79,11 +112,11 @@ public class SegmentAnalytics {
 		if (mLocalProfile == null || !isEnabled){			
 			return false;
 		}
-		if (aLocalName == null || aUUID == null || aUserName == null || anonymousId == null){
+		if (mLocalName == null || mUUID == null || mUserName == null || mAnonymousId == null){
 			//LOG("One player var remained null, returning false.");
 			return false;
 		}
-		if (aLocalName != null && aUUID != null && aUserName != null && anonymousId != null){
+		if (mLocalName != null && mUUID != null && mUserName != null && mAnonymousId != null){
 			//LOG("All player vars are ok, returning true.");
 			return true;
 		}
@@ -97,7 +130,7 @@ public class SegmentAnalytics {
 			return;
 		}
 		Map<String, Object> properties = new LinkedHashMap<>();
-		properties.put("username", aLocalName);
+		properties.put("username", mLocalName);
 		properties.put("gt_version", Utils.getGregtechVersionAsString());
 		if (LoadedMods.IndustrialCraft2){
 			properties.put("ic2_version", IC2.VERSION);
@@ -107,30 +140,57 @@ public class SegmentAnalytics {
 
 		LOG("Created new Data packet, queued for submission.");		
 		mAnalytics.enqueue(IdentifyMessage.builder()
-				.userId(aUserName) //Save Username as UUID, for future sessions to attach to.
-				.anonymousId(anonymousId) //Save Random Session UUID
-				.traits(properties));
+				.userId(mUserName) //Save Username as UUID, for future sessions to attach to.
+				.traits(properties)
+				//.anonymousId(mAnonymousId) //Save Random Session UUID
+				);
 
-		flushAllData();
+		flushData();
 	}
 
 	public void submitTrackingData(String aActionPerformed){
+		submitTrackingData(aActionPerformed, null);
+	}
+
+	public void submitTrackingData(String aActionPerformed, Object aObject){
 		if (!canProcess()){
 			return;
 		}		
-		LOG("Queued submission of data for event "+aActionPerformed+".");	
-		mAnalytics.enqueue(TrackMessage.builder(aActionPerformed) //
-				//.properties(properties) //Save Stats
-				.anonymousId(anonymousId) //Save Random Session UUID
-				.userId(aUserName)); // Save Username as UUID, for future sessions to attach to.	
 		
-		flushAllData();
+		Map<String, Object> properties = new LinkedHashMap<>();
+		properties.put("blockType", aObject);
+		String mObjectAsString = "Unknown";
+		
+		if (aObject != null){
+			mObjectAsString = aObject.toString();
+		}
+		
+		LOG("Queued submission of data for event "+aActionPerformed+". This was performed on "+mObjectAsString+".");	
+		mAnalytics.enqueue(TrackMessage.builder(aActionPerformed) //
+				.userId(mUserName) // Save Username as UUID, for future sessions to attach to.	
+				.properties(properties) //Save Stats
+				//.anonymousId(mAnonymousId) //Save Random Session UUID
+			);
+			
+		flushData();
 	}
-	
-	public void flushAllData(){
-		LOG("Flushing all data from Queue to Segment Analytics database.");
-		this.flushAllData();
+
+	public void flushData(){
 		mAnalytics.flush();
+	}
+
+	public void flushDataFinal(){
+		LOG("Flushing all data from Queue to Segment Analytics database.");
+		mAnalytics.flush();
+	    mBlockingFlush.block();
+		mPhaser.arriveAndAwaitAdvance();
+		mAnalytics.shutdown();
+		/*try {
+			this.finalize();
+		}
+		catch (Throwable e) {
+			Utils.LOG_INFO("Could not finalize Analytics Object.");
+		}*/
 	}
 
 	public UUID generateIdForSession(){
@@ -189,6 +249,31 @@ public class SegmentAnalytics {
 			t.printStackTrace();
 		}
 		return null;
+	}
+
+	public final Analytics getAnalyticObject() {
+		return mAnalytics;
+	}
+
+
+	public Timer initTimer(EntityPlayer mPlayer) {
+		Timer timer;
+		timer = new Timer();
+		timer.schedule(new initPlayer(mPlayer), 5 * 1000);
+		return timer;
+	}
+
+	//Timer Task for notifying the player.
+	class initPlayer extends TimerTask {
+		final EntityPlayer aPlayer;
+		public initPlayer(EntityPlayer mPlayer) {
+			this.aPlayer = mPlayer;
+		}
+		@Override
+		public void run() {
+			//Let us submit a doorknock to Segment to let them know who this is.
+			submitInitData(aPlayer);
+		}
 	}
 
 }

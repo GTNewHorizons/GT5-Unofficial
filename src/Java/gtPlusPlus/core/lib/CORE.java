@@ -11,7 +11,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.mojang.authlib.GameProfile;
 
 import gregtech.api.GregTech_API;
-import gtPlusPlus.api.analytics.SegmentAnalytics;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.Pair;
 import gtPlusPlus.core.util.geo.GeoUtils;
@@ -30,8 +29,6 @@ import net.minecraftforge.common.config.Configuration;
 public class CORE {
 
 	//import cpw.mods.fml.common.Optional;
-
-
 
 	//Analytics handler
 	//public static SegmentAnalytics mAnalytics;
