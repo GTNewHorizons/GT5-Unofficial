@@ -183,6 +183,10 @@ public class Utils {
 		final Logger gtPlusPlusLogger = LogManager.getLogger("GT++");
 		return gtPlusPlusLogger;
 	}
+	
+	public static final Logger getLogger(){
+		return modLogger;
+	}
 
 	// Non-Dev Comments
 	public static void LOG_INFO(final String s) {

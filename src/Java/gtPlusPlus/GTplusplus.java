@@ -74,9 +74,6 @@ public class GTplusplus implements ActionListener {
 
 		if(!Utils.isServer()){
 			enableCustomCapes = true;
-			if (Minecraft.getMinecraft().thePlayer != null){
-				CORE.mLocalProfile = Minecraft.getMinecraft().thePlayer.getGameProfile();
-			}
 		}
 
 		//Give this a go mate.
@@ -175,6 +172,6 @@ public class GTplusplus implements ActionListener {
 
 
 	private static final void initAnalytics(){
-		CORE.mAnalytics = new SegmentAnalytics();
+
 	}
 }

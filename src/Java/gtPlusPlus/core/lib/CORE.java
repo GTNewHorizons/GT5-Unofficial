@@ -34,7 +34,7 @@ public class CORE {
 
 
 	//Analytics handler
-	public static SegmentAnalytics mAnalytics;
+	//public static SegmentAnalytics mAnalytics;
 
 	public static Map PlayerCache;	
 
@@ -69,8 +69,6 @@ public class CORE {
 	public static final int GREGTECH_API_VERSION = GregTech_API.VERSION;
 	public static IGregtech_RecipeAdder RA;
 
-	//Local Client Player, null if Server Side
-	public static GameProfile mLocalProfile;
 	//GT++ Fake Player Profile
 	public static GameProfile gameProfile = new GameProfile(UUID.nameUUIDFromBytes("gtplusplus.core".getBytes()), "[GT++]");
 	;
@@ -98,7 +96,7 @@ public class CORE {
 	 public static final Map<UUID, Map<Integer, GT_MetaTileEntity_TesseractGenerator>> sTesseractGeneratorOwnershipMap = new HashMap<UUID, Map<Integer, GT_MetaTileEntity_TesseractGenerator>>();
 	 public static final Map<UUID, Map<Integer, GT_MetaTileEntity_TesseractTerminal>> sTesseractTerminalOwnershipMap = new HashMap<UUID, Map<Integer, GT_MetaTileEntity_TesseractTerminal>>();
 
-	 //BookMapt
+	 //BookMap
 	 public static final Map<String, ItemStack> sBookList = new ConcurrentHashMap<String, ItemStack>();
 
 

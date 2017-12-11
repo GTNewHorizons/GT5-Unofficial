@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import gtPlusPlus.api.analytics.SegmentAnalytics;
 import gtPlusPlus.core.item.ModItems;
+import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
@@ -40,7 +42,7 @@ public class BlockEventHandler {
 				event.world.setBlock(fireX, fireY, fireZ, Blocks.fire); // Replace it with Fire
 				event.useBlock = Event.Result.DENY; // Prevent the Fire from being extinguished (also prevents Block#onBlockClicked from being called)
 			}
-		}*/
+		}*/				
 	}
 
 	@SubscribeEvent
@@ -158,6 +160,10 @@ public class BlockEventHandler {
 				}
 			}
 		}
+		
+		//Try submit some data for this event.
+		SegmentAnalytics.getAnalyticsForPlayer(event.harvester).submitTrackingData("Action_Block_Broken");
+				
 		}
 		catch (Throwable r){
 			Utils.LOG_INFO("Block Event Handler Failed. Please Report this to Alkalus.");

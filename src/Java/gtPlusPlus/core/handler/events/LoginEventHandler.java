@@ -1,11 +1,10 @@
 package gtPlusPlus.core.handler.events;
 
-import static gtPlusPlus.core.lib.CORE.mLocalProfile;
-
 import java.util.*;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
+import gtPlusPlus.api.analytics.SegmentAnalytics;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.proxy.ClientProxy;
 import gtPlusPlus.core.util.Utils;
@@ -29,11 +28,17 @@ public class LoginEventHandler {
 
 		//Set this for easier use elsewhere.
 		if (event.player.getEntityWorld().isRemote){
-			ClientProxy.playerName = this.localPlayersName;
-			if (mLocalProfile == null){
-				mLocalProfile = this.localPlayerRef.getGameProfile();
-			}
-		}		
+			ClientProxy.playerName = this.localPlayersName;			
+		}	
+
+		try {			
+			new SegmentAnalytics(event.player);			
+		}
+		catch (Throwable t){
+			SegmentAnalytics.LOG("Failed to create Analytics submission during log in process.");
+			SegmentAnalytics.LOG("Disabling.");
+			SegmentAnalytics.isEnabled = false;
+		}
 
 		try {
 
@@ -44,14 +49,6 @@ public class LoginEventHandler {
 				if (!this.localPlayerRef.worldObj.isRemote){
 					PlayerCache.appendParamChanges(this.localPlayersName, this.localPlayersUUID.toString());
 
-					//Submit Analytics
-					try {
-						CORE.mAnalytics.submitInitData();
-					}
-					catch (Throwable t){
-						Utils.LOG_INFO("Failed to submit analytics data.");
-					}
-					
 					if (CORE.ConfigSwitches.enableUpdateChecker){
 						if (!Utils.isModUpToDate()){
 							Utils.LOG_INFO("[GT++] You're not using the latest recommended version of GT++, consider updating.");
