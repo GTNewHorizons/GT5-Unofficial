@@ -165,12 +165,8 @@ public class BlockEventHandler {
 		}
 		
 		//Try submit some data for this event.		
-		//SegmentAnalytics.getAnalyticsForPlayer(event.harvester).submitTrackingData("Action_Block_Broken", event.block.getLocalizedName());
-		Map<String, Object> properties = new LinkedHashMap<>();
-		properties.put("blockType", event.block.getLocalizedName());
-		SegmentHelper.getInstance().trackUser(event.harvester.getUniqueID().toString(), "Action_Block_Broken", properties);	
-		
-		
+		SegmentAnalytics.getAnalyticsForPlayer(event.harvester).submitTrackingData("Action_Block_Broken", event.block.getLocalizedName());
+				
 		}
 		catch (Throwable r){
 			Utils.LOG_INFO("Block Event Handler Failed. Please Report this to Alkalus.");

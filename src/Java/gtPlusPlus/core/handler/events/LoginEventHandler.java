@@ -35,19 +35,7 @@ public class LoginEventHandler {
 		}	
 
 		try {			
-			//new SegmentAnalytics(event.player);	
-			
-			
-			Map<String, Object> properties = new LinkedHashMap<>();
-			properties.put("username", this.localPlayersName);
-			properties.put("gt_version", Utils.getGregtechVersionAsString());
-			if (LoadedMods.IndustrialCraft2){
-				properties.put("ic2_version", IC2.VERSION);
-			}
-			properties.put("country_code", CORE.USER_COUNTRY);
-			properties.put("gtnh", CORE.GTNH);			
-			SegmentHelper.getInstance().addUser(this.localPlayersUUID.toString(), properties);
-			
+			new SegmentAnalytics(event.player);			
 		}
 		catch (Throwable t){
 			SegmentAnalytics.LOG("Failed to create Analytics submission during log in process.");

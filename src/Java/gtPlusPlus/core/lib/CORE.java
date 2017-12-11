@@ -31,7 +31,7 @@ public class CORE {
 	//import cpw.mods.fml.common.Optional;
 
 	//Analytics handler
-	//public static SegmentAnalytics mAnalytics;
+	//public static SegmentAnalytics mHelper;
 
 	public static Map PlayerCache;	
 

@@ -10,13 +10,6 @@ import java.util.concurrent.Phaser;
 
 import com.mojang.authlib.GameProfile;
 import com.segment.analytics.Analytics;
-import com.segment.analytics.Callback;
-import com.segment.analytics.Log;
-import com.segment.analytics.MessageInterceptor;
-import com.segment.analytics.messages.IdentifyMessage;
-import com.segment.analytics.messages.Message;
-import com.segment.analytics.messages.TrackMessage;
-
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
@@ -41,7 +34,7 @@ public class SegmentAnalytics {
 
 	//Set some Vars
 	final BlockingFlush mBlockingFlush;
-	final Analytics mAnalytics;
+	final SegmentHelper mHelper;
 	final UUIDGenerator mUuidGenerator;
 
 	public final GameProfile mLocalProfile;
@@ -53,7 +46,7 @@ public class SegmentAnalytics {
 
 	//Build a new instance of this class
 	public SegmentAnalytics(EntityPlayer mPlayer){
-		LOG("Generating a new instance of Segment Analytics Handler 2.1.0 for "+mPlayer.getDisplayName());
+		LOG("Initializing Segment for "+mPlayer.getDisplayName());
 
 		//Give this Object an ID
 		int currentID = sAnalyticsMapID;
@@ -78,31 +71,7 @@ public class SegmentAnalytics {
 
 		//Use Segment Analytics instead of plain Google Analytics.
 		this.mBlockingFlush = BlockingFlush.create(); 
-		this.mAnalytics = Analytics.builder("API_KEY_GOES_HERE")
-				.log(Log.NONE) //Try enable http logging?
-				.plugin(mBlockingFlush.plugin())
-				.plugin(new AnalyticsLoggingPlugin())
-				.callback(new Callback() {
-					@Override 
-					public void success(Message message) {
-						mPhaser.arrive();
-					}
-
-					@Override 
-					public void failure(Message message, Throwable throwable) {
-						mPhaser.arrive();
-					}
-				})
-				.messageInterceptor(new MessageInterceptor() {
-					@Override 
-					public Message intercept(Message message) {
-						mPhaser.register();
-						return message;
-					}
-				})
-				.build();
-
-
+		this.mHelper = SegmentHelper.getInstance();
 		initTimer(mPlayer);
 	}
 
@@ -138,14 +107,16 @@ public class SegmentAnalytics {
 		properties.put("country_code", CORE.USER_COUNTRY);
 		properties.put("gtnh", CORE.GTNH);		
 
-		LOG("Created new Data packet, queued for submission.");		
-		mAnalytics.enqueue(IdentifyMessage.builder()
+		LOG("Created new Data packet, queued for submission.");	
+
+		//Old Code, now passed to Helper Class
+		/*mHelper.enqueue(IdentifyMessage.builder()
 				.userId(mUserName) //Save Username as UUID, for future sessions to attach to.
 				.traits(properties)
 				//.anonymousId(mAnonymousId) //Save Random Session UUID
-				);
+				);*/
 
-		flushData();
+		mHelper.addUser(this.mUserName, properties);
 	}
 
 	public void submitTrackingData(String aActionPerformed){
@@ -156,35 +127,39 @@ public class SegmentAnalytics {
 		if (!canProcess()){
 			return;
 		}		
-		
+
 		Map<String, Object> properties = new LinkedHashMap<>();
 		properties.put("blockType", aObject);
 		String mObjectAsString = "Unknown";
-		
+
 		if (aObject != null){
 			mObjectAsString = aObject.toString();
 		}
-		
+
 		LOG("Queued submission of data for event "+aActionPerformed+". This was performed on "+mObjectAsString+".");	
-		mAnalytics.enqueue(TrackMessage.builder(aActionPerformed) //
+
+		mHelper.trackUser(this.mUserName, aActionPerformed, properties);
+
+		//Old Code, now passed to Helper Class
+		/*mHelper.enqueue(TrackMessage.builder(aActionPerformed) //
 				.userId(mUserName) // Save Username as UUID, for future sessions to attach to.	
 				.properties(properties) //Save Stats
 				//.anonymousId(mAnonymousId) //Save Random Session UUID
 			);
-			
 		flushData();
+		 */
 	}
 
 	public void flushData(){
-		mAnalytics.flush();
+		getAnalyticObject().flush();
 	}
 
 	public void flushDataFinal(){
 		LOG("Flushing all data from Queue to Segment Analytics database.");
-		mAnalytics.flush();
-	    mBlockingFlush.block();
+		getAnalyticObject().flush();
+		mBlockingFlush.block();
 		mPhaser.arriveAndAwaitAdvance();
-		mAnalytics.shutdown();
+		getAnalyticObject().shutdown();
 		/*try {
 			this.finalize();
 		}
@@ -227,7 +202,9 @@ public class SegmentAnalytics {
 
 	// Non-Dev Comments
 	public static void LOG(final String s) {
-		Utils.getLogger().info("[Analytics] "+s);
+		if (CORE.DEBUG){
+			Utils.getLogger().info("[Analytics] "+s);
+		}
 	}
 
 	public static SegmentAnalytics getAnalyticsForPlayer(EntityPlayer mPlayer){
@@ -252,14 +229,14 @@ public class SegmentAnalytics {
 	}
 
 	public final Analytics getAnalyticObject() {
-		return mAnalytics;
+		return mHelper.getAnalyticsClient();
 	}
 
 
 	public Timer initTimer(EntityPlayer mPlayer) {
 		Timer timer;
 		timer = new Timer();
-		timer.schedule(new initPlayer(mPlayer), 5 * 1000);
+		timer.schedule(new initPlayer(mPlayer), 2 * 1000);
 		return timer;
 	}
 

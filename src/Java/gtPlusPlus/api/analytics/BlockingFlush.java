@@ -15,15 +15,15 @@ import java.util.concurrent.Phaser;
  *
  * <pre><code>
  * BlockingFlush mBlockingFlush = BlockingFlush.create();
- * Analytics mAnalytics = Analytics.builder(writeKey)
+ * Analytics mHelper = Analytics.builder(writeKey)
  *      .plugin(mBlockingFlush)
  *      .build();
  *
  * // Do some work.
  *
- * mAnalytics.flush(); // Trigger a flush.
+ * mHelper.flush(); // Trigger a flush.
  * mBlockingFlush.block(); // Block until the flush completes.
- * mAnalytics.shutdown(); // Shut down after the flush is complete.
+ * mHelper.shutdown(); // Shut down after the flush is complete.
  * </code></pre>
  */
 public class BlockingFlush {
