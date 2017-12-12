@@ -21,6 +21,7 @@ import java.util.ArrayList;
 
 import static com.github.technus.tectech.Util.StructureBuilder;
 import static com.github.technus.tectech.Util.V;
+import static com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefinition.STABLE_RAW_LIFE_TIME;
 import static com.github.technus.tectech.elementalMatter.definitions.complex.dAtomDefinition.refMass;
 import static com.github.technus.tectech.elementalMatter.definitions.complex.dAtomDefinition.refUnstableMass;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
@@ -89,7 +90,7 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
                 if (info != null) {
                     if (map.removeAllAmounts(false, (iHasElementalDefinition) info.input())) {
                         mOutputFluids = new FluidStack[]{(FluidStack) info.output()};
-                        startRecipe((iHasElementalDefinition) info.input());
+                        startRecipe((iHasElementalDefinition) info.input(),stack.getEnergy());
                         return true;
                     }
                 }
@@ -98,7 +99,7 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
                 if (info != null) {
                     if (map.removeAllAmounts(false, (iHasElementalDefinition) info.input())) {
                         mOutputItems = new ItemStack[]{(ItemStack) info.output()};
-                        startRecipe((iHasElementalDefinition) info.input());
+                        startRecipe((iHasElementalDefinition) info.input(),stack.getEnergy());
                         return true;
                     }
                 }
@@ -109,7 +110,7 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
                         ArrayList<ItemStack> items = OreDictionary.getOres(((aOredictDequantizationInfo) info).out);
                         if (items != null && items.size() > 0) {
                             mOutputItems = new ItemStack[]{items.get(0)};
-                            startRecipe((iHasElementalDefinition) info.input());
+                            startRecipe((iHasElementalDefinition) info.input(),stack.getEnergy());
                             return true;
                         }
                     }
@@ -121,13 +122,13 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
         return false;
     }
 
-    private void startRecipe(iHasElementalDefinition from) {
+    private void startRecipe(iHasElementalDefinition from, long energy) {
         mMaxProgresstime = 20;
         mEfficiencyIncrease = 10000;
         float mass = from.getMass();
         float euMult = mass / refMass;
         eAmpereFlow = (int) Math.ceil(euMult);
-        if (mass > refUnstableMass || from.getDefinition().getRawLifeTime() < 1.5e25f) {
+        if (mass > refUnstableMass || from.getDefinition().getRawTimeSpan(energy) < STABLE_RAW_LIFE_TIME) {
             mEUt = (int) -V[10];
         } else {
             mEUt = (int) -V[8];

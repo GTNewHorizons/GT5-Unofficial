@@ -7,6 +7,7 @@ import com.github.technus.tectech.elementalMatter.core.interfaces.iHasElementalD
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -16,7 +17,7 @@ import static com.github.technus.tectech.elementalMatter.definitions.primitive.c
  * Created by danie_000 on 22.01.2017.
  */
 public final class cElementalInstanceStackMap implements Comparable<cElementalInstanceStackMap> {
-    private TreeMap<iElementalDefinition, cElementalInstanceStack> map;
+    TreeMap<iElementalDefinition, cElementalInstanceStack> map;
 
     //Constructors
     public cElementalInstanceStackMap() {
@@ -125,7 +126,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         if (testOnly)
             return target.amount >= instance.amount;
         else {
-            final int diff = target.amount - instance.amount;
+            final long diff = target.amount - instance.amount;
             if (diff > 0) {
                 target.amount = diff;
                 return true;
@@ -144,7 +145,7 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         if (testOnly)
             return target.amount >= stack.getAmount();
         else {
-            final int diff = target.amount - stack.getAmount();
+            final long diff = target.amount - stack.getAmount();
             if (diff > 0) {
                 target.amount = diff;
                 return true;
@@ -190,15 +191,35 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
     }
 
     public boolean removeAllAmounts(boolean testOnly, cElementalStackMap container) {
-        return removeAllAmounts(testOnly, container.values());
+        boolean test=true;
+        for (Iterator<Map.Entry<iElementalDefinition, cElementalDefinitionStack>> entries = container.map.entrySet().iterator(); entries.hasNext(); ) {
+            Map.Entry<iElementalDefinition, cElementalDefinitionStack> entry = entries.next();
+            test &= removeAmount(true, entry.getValue());
+        }
+        if (testOnly || !test) return test;
+        for (Iterator<Map.Entry<iElementalDefinition, cElementalDefinitionStack>> entries = container.map.entrySet().iterator(); entries.hasNext(); ) {
+            Map.Entry<iElementalDefinition, cElementalDefinitionStack> entry = entries.next();
+            removeAmount(false, entry.getValue());
+        }
+        return true;
     }
 
     public boolean removeAllAmounts(boolean testOnly, cElementalInstanceStackMap container) {
-        return removeAllAmounts(testOnly, container.values());
+        boolean test=true;
+        for (Iterator<Map.Entry<iElementalDefinition, cElementalInstanceStack>> entries = container.map.entrySet().iterator(); entries.hasNext(); ) {
+            Map.Entry<iElementalDefinition, cElementalInstanceStack> entry = entries.next();
+            test &= removeAmount(true, entry.getValue());
+        }
+        if (testOnly || !test) return test;
+        for (Iterator<Map.Entry<iElementalDefinition, cElementalInstanceStack>> entries = container.map.entrySet().iterator(); entries.hasNext(); ) {
+            Map.Entry<iElementalDefinition, cElementalInstanceStack> entry = entries.next();
+            test &= removeAmount(false, entry.getValue());
+        }
+        return true;
     }
 
     //Remove overflow
-    public float removeOverflow(int stacksCount, int stackCapacity) {
+    public float removeOverflow(int stacksCount, long stackCapacity) {
         float massRemoved = 0;
 
         if (map.size() > stacksCount) {
@@ -320,32 +341,23 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
     }
 
     //Tick Content
-    public void tickContent(float lifeTimeMult, int postEnergize) {
-        for (cElementalInstanceStack instance : this.values()) {
-            cElementalInstanceStackMap newThings = instance.decay(lifeTimeMult, instance.age += 20, postEnergize);
-            if (newThings == null) {
-                instance.nextColor();
-            } else {
-                map.remove(instance.definition);
-                for (cElementalInstanceStack newInstance : newThings.values())
-                    putUnify(newInstance);
-            }
-        }
-
+    public void tickContentByOneSecond(float lifeTimeMult, int postEnergize) {
+        tickContent(lifeTimeMult,postEnergize,1);
     }
 
-    public void tickContent(int postEnergize) {
+    public void tickContent(float lifeTimeMult, int postEnergize, int seconds){
         for (cElementalInstanceStack instance : this.values()) {
-            cElementalInstanceStackMap newThings = instance.decay(instance.age += 20, postEnergize);
-            if (newThings == null) {
+            cElementalInstanceStackMap newInstances = instance.decay(lifeTimeMult, instance.age += seconds, postEnergize);
+            if (newInstances == null) {
                 instance.nextColor();
             } else {
                 map.remove(instance.definition);
-                for (cElementalInstanceStack newInstance : newThings.values())
+                for (cElementalInstanceStack newInstance : newInstances.values()) {
                     putUnify(newInstance);
+                    newInstance.nextColor();
+                }
             }
         }
-
     }
 
     //NBT

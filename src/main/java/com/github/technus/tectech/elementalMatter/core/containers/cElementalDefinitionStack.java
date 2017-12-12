@@ -12,9 +12,9 @@ import static com.github.technus.tectech.elementalMatter.definitions.primitive.c
  */
 public final class cElementalDefinitionStack implements iHasElementalDefinition {
     public final iElementalDefinition definition;
-    public final int amount;
+    public final long amount;
 
-    public cElementalDefinitionStack(iElementalDefinition def, int amount) {
+    public cElementalDefinitionStack(iElementalDefinition def, long amount) {
         this.definition = def == null ? null__ : def;
         this.amount = amount;
     }
@@ -30,11 +30,11 @@ public final class cElementalDefinitionStack implements iHasElementalDefinition 
     }
 
     @Override
-    public int getAmount() {
+    public long getAmount() {
         return amount;
     }
 
-    public int getCharge() {
+    public long getCharge() {
         return definition.getCharge() * amount;
     }
 
@@ -45,24 +45,24 @@ public final class cElementalDefinitionStack implements iHasElementalDefinition 
     public NBTTagCompound toNBT() {
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setTag("d", definition.toNBT());
-        nbt.setInteger("q", amount);
+        nbt.setLong("q", amount);
         return nbt;
     }
 
     public static cElementalDefinitionStack fromNBT(NBTTagCompound nbt) {
         return new cElementalDefinitionStack(
                 cElementalDefinition.fromNBT(nbt.getCompoundTag("d")),
-                nbt.getInteger("q"));
+                nbt.getLong("q"));
     }
 
-    public cElementalDefinitionStack addAmountIntoNewInstance(int amount) {
+    public cElementalDefinitionStack addAmountIntoNewInstance(long amount) {
         if(amount==0) return this;
         return new cElementalDefinitionStack(definition, amount + this.amount);
     }
 
     public cElementalDefinitionStack addAmountIntoNewInstance(cElementalDefinitionStack... other) {
         if (other == null || other.length == 0) return this;
-        int i = 0;
+        long i = 0;
         for (cElementalDefinitionStack stack : other)
             i += stack.amount;
         return addAmountIntoNewInstance(i);

@@ -128,7 +128,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
         mMaxProgresstime = 1;//(int)m3;
         mEfficiencyIncrease = 10000;
         m1 = input.getMass()/input.amount;
-        cElementalInstanceStackMap decayed=input.decayCompute(input.getDefinition().getDecayArray(),1,0,0);
+        cElementalInstanceStackMap decayed=input.decay();
         m2 = decayed.getMass()/input.amount;
         //TecTech.Logger.info("I " + input.toString());
         //TecTech.Logger.info("O " + decayed.toString());

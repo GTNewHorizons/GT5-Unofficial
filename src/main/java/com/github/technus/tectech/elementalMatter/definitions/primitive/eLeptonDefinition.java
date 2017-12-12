@@ -17,7 +17,9 @@ public final class eLeptonDefinition extends cElementalPrimitive {
             lepton_t_ = new eLeptonDefinition("Antitauon", "\u03c4+", -3, 1776.83e6F, 3, -1, 20);
 
     public static final cElementalDefinitionStack lepton_e1 = new cElementalDefinitionStack(lepton_e, 1);
+    public static final cElementalDefinitionStack lepton_e2 = new cElementalDefinitionStack(lepton_e, 2);
     public static final cElementalDefinitionStack lepton_e_1 = new cElementalDefinitionStack(lepton_e_, 1);
+    public static final cElementalDefinitionStack lepton_e_2 = new cElementalDefinitionStack(lepton_e_, 2);
 
     private eLeptonDefinition(String name, String symbol, int type, float mass, int charge, int color, int ID) {
         super(name, symbol, type, mass, charge, color, ID);
@@ -26,9 +28,7 @@ public final class eLeptonDefinition extends cElementalPrimitive {
     }
 
     public static void run() {
-        lepton_e.init(lepton_e_, 100000F, 2, 3,
-                new cElementalDecay(0.9F, lepton_e),
-                new cElementalDecay(0.05F, nothing),
+        lepton_e.init(lepton_e_, STABLE_RAW_LIFE_TIME, 0, 1,
                 eBosonDefinition.deadEnd,//makes photons and don't care
                 new cElementalDecay(lepton_e, eBosonDefinition.boson_Y__));
         lepton_m.init(lepton_m_, 2.197019e-6F, 0, 1,
@@ -40,15 +40,13 @@ public final class eLeptonDefinition extends cElementalPrimitive {
                 new cElementalDecay(0.05F, lepton_m, eNeutrinoDefinition.lepton_Vm_, eNeutrinoDefinition.lepton_Vt, eBosonDefinition.boson_H__),
                 eBosonDefinition.deadEnd);//makes photons and don't care
 
-        lepton_e_.init(lepton_e, 100000F, 2, 3,
-                new cElementalDecay(0.9F, lepton_e_),
-                new cElementalDecay(0.05F, nothing),
+        lepton_e_.init(lepton_e, STABLE_RAW_LIFE_TIME, 0, 1,
                 eBosonDefinition.deadEnd,//makes photons and don't care
                 new cElementalDecay(lepton_e_, eBosonDefinition.boson_Y__));
-        lepton_m_.init(lepton_m, 2.197e-6F, 0, 1,
+        lepton_m_.init(lepton_m, 2.197019e-6F, 0, 1,
                 new cElementalDecay(0.9F, lepton_e_, eNeutrinoDefinition.lepton_Ve, eNeutrinoDefinition.lepton_Vm_),
                 eBosonDefinition.deadEnd);//makes photons and don't care
-        lepton_t_.init(lepton_t, 2.9e-13F, 1, 3,
+        lepton_t_.init(lepton_t, 2.906e-13F, 1, 3,
                 new cElementalDecay(0.8F, lepton_m_, eNeutrinoDefinition.lepton_Vm, eNeutrinoDefinition.lepton_Vt_, eBosonDefinition.boson_Y__),
                 new cElementalDecay(0.1F, lepton_e_, eNeutrinoDefinition.lepton_Ve, eNeutrinoDefinition.lepton_Vm_),
                 new cElementalDecay(0.05F, lepton_m_, eNeutrinoDefinition.lepton_Vm, eNeutrinoDefinition.lepton_Vt_, eBosonDefinition.boson_H__),
@@ -58,5 +56,10 @@ public final class eLeptonDefinition extends cElementalPrimitive {
     @Override
     public String getName() {
         return "Lepton: " + name;
+    }
+
+    @Override
+    public boolean isTimeSpanHalfLife() {
+        return true;
     }
 }

@@ -3,7 +3,6 @@ package com.github.technus.tectech.elementalMatter.definitions.primitive;
 import com.github.technus.tectech.elementalMatter.core.templates.cElementalPrimitive;
 
 import static com.github.technus.tectech.elementalMatter.core.cElementalDecay.noDecay;
-import static com.github.technus.tectech.elementalMatter.core.cElementalDecay.noProduct;
 
 /**
  * Created by danie_000 on 22.10.2016.
@@ -21,15 +20,20 @@ public final class cPrimitiveDefinition extends cElementalPrimitive {
     }
 
     public static void run() {
-        nbtE__.init(null__, -1F, -1, -1, noDecay);
-        null__.init(null__, -1F, -1, -1, noProduct);
-        space__.init(space__, -1F, -1, -1, noProduct);
-        magic.init(magic_, -1F, -1, -1, noDecay);
-        magic_.init(magic, -1F, -1, -1, noDecay);
+        nbtE__.init(null__, NO_DECAY_RAW_LIFE_TIME, -1, -1, noDecay);
+        null__.init(null__, NO_DECAY_RAW_LIFE_TIME, -1, -1, noDecay);
+        space__.init(space__, NO_DECAY_RAW_LIFE_TIME, -1, -1, noDecay);
+        magic.init(magic_, NO_DECAY_RAW_LIFE_TIME, -1, -1, noDecay);
+        magic_.init(magic, NO_DECAY_RAW_LIFE_TIME, -1, -1, noDecay);
     }
 
     @Override
     public String getName() {
         return "Primitive: " + name;
+    }
+
+    @Override
+    public boolean isTimeSpanHalfLife() {
+        return false;
     }
 }

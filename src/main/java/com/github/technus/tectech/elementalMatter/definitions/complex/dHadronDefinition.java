@@ -1,23 +1,28 @@
 package com.github.technus.tectech.elementalMatter.definitions.complex;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.core.cElementalDecay;
 import com.github.technus.tectech.elementalMatter.core.cElementalDefinitionStackMap;
+import com.github.technus.tectech.elementalMatter.core.cElementalMutableDefinitionStackMap;
 import com.github.technus.tectech.elementalMatter.core.containers.cElementalDefinitionStack;
 import com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefinition;
 import com.github.technus.tectech.elementalMatter.core.tElementalException;
 import com.github.technus.tectech.elementalMatter.core.templates.cElementalDefinition;
-import com.github.technus.tectech.elementalMatter.core.transformations.aFluidDequantizationInfo;
-import com.github.technus.tectech.elementalMatter.core.transformations.aItemDequantizationInfo;
-import com.github.technus.tectech.elementalMatter.core.transformations.aOredictDequantizationInfo;
+import com.github.technus.tectech.elementalMatter.core.transformations.*;
 import com.github.technus.tectech.elementalMatter.definitions.primitive.eBosonDefinition;
 import com.github.technus.tectech.elementalMatter.definitions.primitive.eQuarkDefinition;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.elementalMatter.definitions.complex.dAtomDefinition.transformation;
 import static com.github.technus.tectech.elementalMatter.definitions.primitive.eBosonDefinition.boson_Y__;
+import static gregtech.api.enums.OrePrefixes.dust;
 
 /**
  * Created by danie_000 on 17.11.2016.
@@ -28,7 +33,7 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
     private static final byte nbtType = (byte) 'h';
     //Helpers
     public static dHadronDefinition hadron_p, hadron_n, hadron_p_, hadron_n_;
-    public static cElementalDefinitionStack hadron_p1, hadron_n1, hadron_p2, hadron_n2;
+    public static cElementalDefinitionStack hadron_p1, hadron_n1, hadron_p2, hadron_n2, hadron_p3, hadron_n3, hadron_p5;
     private static float protonMass = 0F;
     private static float neutronMass = 0F;
 
@@ -106,13 +111,12 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
 
     //public but u can just try{}catch(){} the constructor it still calls this method
     private static boolean canTheyBeTogether(cElementalDefinitionStackMap stacks) {
-        int amount = 0;
+        long amount = 0;
         for (cElementalDefinitionStack quarks : stacks.values()) {
             if (!(quarks.definition instanceof eQuarkDefinition)) return false;
             amount += quarks.amount;
         }
-        if (amount < 2 || amount > 12) return false;
-        return true;
+        return amount >= 2 && amount <= 12;
     }
 
     @Override
@@ -164,11 +168,14 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
 
     @Override
     public cElementalDecay[] getNaturalDecayInstant() {
+        cElementalDefinitionStack[] quarkStacks = this.quarkStacks.values();
+        if (amount == 2 && quarkStacks.length == 2 && quarkStacks[0].definition.getMass() == quarkStacks[1].definition.getMass() && quarkStacks[0].definition.getType() == -quarkStacks[1].definition.getType())
+            return cElementalDecay.noProduct;
         ArrayList<cElementalDefinitionStack> decaysInto = new ArrayList<>();
-        for (cElementalDefinitionStack quarkStack : quarkStacks.values()) {
-            if (quarkStack.definition.getType() == 1 || quarkStack.definition.getType() == -1) {
+        for (cElementalDefinitionStack quarks : quarkStacks) {
+            if (quarks.definition.getType() == 1 || quarks.definition.getType() == -1) {
                 //covers both quarks and antiquarks
-                decaysInto.add(quarkStack);
+                decaysInto.add(quarks);
             } else {
                 //covers both quarks and antiquarks
                 decaysInto.add(new cElementalDefinitionStack(boson_Y__, 2));
@@ -181,18 +188,28 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
     }
 
     @Override
-    public cElementalDecay[] getEnergeticDecayInstant() {
+    public cElementalDecay[] getEnergyInducedDecay(long energyLevel) {
         cElementalDefinitionStack[] quarkStacks = this.quarkStacks.values();
         if (amount == 2 && quarkStacks.length == 2 && quarkStacks[0].definition.getMass() == quarkStacks[1].definition.getMass() && quarkStacks[0].definition.getType() == -quarkStacks[1].definition.getType())
-            return new cElementalDecay[]{eBosonDefinition.deadEnd};
+            return cElementalDecay.noProduct;
         return new cElementalDecay[]{new cElementalDecay(0.75F, quarkStacks), eBosonDefinition.deadEnd}; //decay into quarks
+    }
+
+    @Override
+    public float getEnergyDiffBetweenStates(long currentEnergyLevel, long newEnergyLevel) {
+        return DEFAULT_ENERGY_REQUIREMENT*(newEnergyLevel-currentEnergyLevel);
+    }
+
+    @Override
+    public boolean usesSpecialEnergeticDecayHandling() {
+        return false;
     }
 
     @Override
     public cElementalDecay[] getDecayArray() {
         cElementalDefinitionStack[] quarkStacks = this.quarkStacks.values();
         if (amount == 2 && quarkStacks.length == 2 && quarkStacks[0].definition.getMass() == quarkStacks[1].definition.getMass() && quarkStacks[0].definition.getType() == -quarkStacks[1].definition.getType())
-            return new cElementalDecay[]{eBosonDefinition.deadEnd};
+            return cElementalDecay.noProduct;
         else if (amount != 3)
             return new cElementalDecay[]{new cElementalDecay(0.95F, quarkStacks), eBosonDefinition.deadEnd}; //decay into quarks
         else {
@@ -221,9 +238,9 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
 
             try {
                 return new cElementalDecay[]{
-                        new cElementalDecay(0.98F, new dHadronDefinition(false, contentOfBaryon), Particles[0], Particles[1]),
+                        new cElementalDecay(0.99F, new dHadronDefinition(false, contentOfBaryon), Particles[0], Particles[1]),
                         new cElementalDecay(0.001F, new dHadronDefinition(false, contentOfBaryon), Particles[0], Particles[1], boson_Y__),
-                        eBosonDefinition.deadEnd}; //decay into quarks
+                        eBosonDefinition.deadEnd};
             } catch (tElementalException e) {
                 if (DEBUG_MODE) e.printStackTrace();
                 return new cElementalDecay[]{eBosonDefinition.deadEnd};
@@ -242,8 +259,13 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
     }
 
     @Override
-    public float getRawLifeTime() {
+    public float getRawTimeSpan(long currentEnergy) {
         return rawLifeTime;
+    }
+
+    @Override
+    public boolean isTimeSpanHalfLife() {
+        return true;
     }
 
     @Override
@@ -251,33 +273,33 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
         return type;
     }
 
-    @Override
-    public iElementalDefinition getAnti() {
-        cElementalDefinitionStack[] stacks = this.quarkStacks.values();
-        cElementalDefinitionStack[] antiElements = new cElementalDefinitionStack[stacks.length];
-        for (int i = 0; i < antiElements.length; i++) {
-            antiElements[i] = new cElementalDefinitionStack(stacks[i].definition.getAnti(), stacks[i].amount);
-        }
-        try {
-            return new dHadronDefinition(false, antiElements);
-        } catch (tElementalException e) {
-            if (DEBUG_MODE) e.printStackTrace();
-            return null;
-        }
-    }
-
     //@Override
     //public iElementalDefinition getAnti() {
-    //    cElementalMutableDefinitionStackMap anti = new cElementalMutableDefinitionStackMap();
-    //    for (cElementalDefinitionStack stack : quarkStacks.values())
-    //        anti.putReplace(new cElementalDefinitionStack(stack.definition.getAnti(), stack.amount));
+    //    cElementalDefinitionStack[] stacks = this.quarkStacks.values();
+    //    cElementalDefinitionStack[] antiElements = new cElementalDefinitionStack[stacks.length];
+    //    for (int i = 0; i < antiElements.length; i++) {
+    //        antiElements[i] = new cElementalDefinitionStack(stacks[i].definition.getAnti(), stacks[i].amount);
+    //    }
     //    try {
-    //        return new dHadronDefinition(anti.toImmutable());
+    //        return new dHadronDefinition(false, antiElements);
     //    } catch (tElementalException e) {
-    //        if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+    //        if (DEBUG_MODE) e.printStackTrace();
     //        return null;
     //    }
     //}
+
+    @Override
+    public iElementalDefinition getAnti() {
+        cElementalMutableDefinitionStackMap anti = new cElementalMutableDefinitionStackMap();
+        for (cElementalDefinitionStack stack : quarkStacks.values())
+            anti.putReplace(new cElementalDefinitionStack(stack.definition.getAnti(), stack.amount));
+        try {
+            return new dHadronDefinition(anti.toImmutable_unsafeMightLeaveExposedElementalTree());
+        } catch (tElementalException e) {
+            if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
+            return null;
+        }
+    }
 
     @Override
     public aFluidDequantizationInfo someAmountIntoFluidStack() {
@@ -338,6 +360,9 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
         hadron_n1 = new cElementalDefinitionStack(hadron_n, 1);
         hadron_p2 = new cElementalDefinitionStack(hadron_p, 2);
         hadron_n2 = new cElementalDefinitionStack(hadron_n, 2);
+        hadron_p3 = new cElementalDefinitionStack(hadron_p, 3);
+        hadron_n3 = new cElementalDefinitionStack(hadron_n, 3);
+        hadron_p5 = new cElementalDefinitionStack(hadron_p, 5);
 
         try {
             cElementalDefinition.addCreatorFromNBT(nbtType, dHadronDefinition.class.getMethod("fromNBT", NBTTagCompound.class),(byte)-64);
@@ -346,6 +371,16 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
         }
         if(DEBUG_MODE)
             TecTech.Logger.info("Registered Elemental Matter Class: Hadron "+nbtType+" "+(-64));
+    }
+
+    public static void setTransformations(){
+        //Added to atom map, but should be in its own
+        cElementalDefinitionStack neutrons=new cElementalDefinitionStack(dHadronDefinition.hadron_n, 100000);
+        transformation.oredictDequantization.put(neutrons.definition,new aOredictDequantizationInfo(neutrons, dust, Materials.Neutronium,1));
+        bTransformationInfo.oredictQuantization.put(
+                OreDictionary.getOreID(OrePrefixes.ingotHot.name()+Materials.Neutronium.mName),
+                new aOredictQuantizationInfo(OrePrefixes.ingotHot,Materials.Neutronium,1 ,neutrons)
+        );
     }
 
     @Override

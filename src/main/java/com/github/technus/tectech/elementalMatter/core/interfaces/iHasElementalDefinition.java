@@ -6,11 +6,11 @@ package com.github.technus.tectech.elementalMatter.core.interfaces;
 public interface iHasElementalDefinition extends Comparable<iHasElementalDefinition>,Cloneable {
     iElementalDefinition getDefinition();
 
-    int getAmount();
+    long getAmount();
+
+    long getCharge();
 
     float getMass();
-
-    int getCharge();
 
     iHasElementalDefinition clone();
 }

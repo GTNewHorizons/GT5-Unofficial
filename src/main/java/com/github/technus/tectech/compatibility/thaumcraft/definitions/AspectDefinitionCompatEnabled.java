@@ -30,7 +30,7 @@ public final class AspectDefinitionCompatEnabled extends AspectDefinitionCompat 
 
         ArrayList<Aspect> list=Aspect.getCompoundAspects();
         Aspect[] array=list.toArray(new Aspect[0]);
-        while (!list.isEmpty()) {
+        while (list.size()>0) {
             for (Aspect aspect : array) {
                 if (list.contains(aspect)) {
                     Aspect[] content = aspect.getComponents();
