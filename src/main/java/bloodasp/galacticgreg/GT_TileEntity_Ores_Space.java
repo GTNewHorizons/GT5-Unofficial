@@ -90,18 +90,18 @@ public class GT_TileEntity_Ores_Space {
 					// Unable to lookup replacement state. Means: The block is unknown, and shall not be replaced
 					if (tRS == ReplaceState.Unknown) 
 					{
-						//GalacticGreg.Logger.trace("Not placing ore Meta %d, as target block is unknown", pMetaData);
+						GalacticGreg.Logger.trace("Not placing ore Meta %d, as target block is unknown", pMetaData);
 						return false;
 					}
 					else if(tRS == ReplaceState.Airblock && !pAir)
 					{
-						//GalacticGreg.Logger.trace("Not placing ore Meta %d in midair, as AIR is FALSE", pMetaData);
+						GalacticGreg.Logger.trace("Not placing ore Meta %d in midair, as AIR is FALSE", pMetaData);
 						return false;
 					}
 					if (tRS == ReplaceState.CannotReplace)
 					{
 						// wrong metaData ID for target block
-						//GalacticGreg.Logger.trace("Not placing ore Meta %d, as the state is CANNOTREPLACE", pMetaData);
+						GalacticGreg.Logger.trace("Not placing ore Meta %d, as the state is CANNOTREPLACE", pMetaData);
 						return false;
 					}
 					
