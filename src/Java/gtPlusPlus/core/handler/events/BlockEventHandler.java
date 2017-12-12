@@ -73,100 +73,101 @@ public class BlockEventHandler {
 	}
 
 
-	
+
 
 	//Used to handle Thaumcraft Shards when TC is not installed.
 	@SubscribeEvent
 	public void harvestDrops(final BlockEvent.HarvestDropsEvent event) {
 		try {
-		//Spawn Dull Shards (Can spawn from Tree Logs, Grass or Stone. Stone going to be the most common source.)
-		if (((event.block == Blocks.stone) || (event.block == Blocks.sandstone) || (event.block == Blocks.log) || (event.block == Blocks.log2) || (event.block == Blocks.grass))
-				&& !LoadedMods.Thaumcraft && (chanceToDropDrainedShard != 0)) {
-			//small chance for one to spawn per stone mined. 1 per 3 stacks~
-			if (MathUtils.randInt(1, chanceToDropDrainedShard) == 1){
-				//Let's sort out a lucky charm for the player.
-				final int FancyChance = MathUtils.randInt(1, 4);
-				if (MathUtils.randInt(1, 100) < 90){
-					event.drops.add(new ItemStack(ModItems.shardDull));
-				}
-				//Make a Fire Shard
-				else if (FancyChance == 1){
-					event.drops.add(new ItemStack(ModItems.shardIgnis));
-				}
-				//Make a Water Shard.
-				else if (FancyChance == 2){
-					event.drops.add(new ItemStack(ModItems.shardAqua));
-				}
-				//Make an Earth Shard.
-				else if (FancyChance == 3){
-					event.drops.add(new ItemStack(ModItems.shardTerra));
-				}
-				//Make an Air Shard.
-				else if (FancyChance == 4){
-					event.drops.add(new ItemStack(ModItems.shardAer));
-				}
-			}
-			else {
-				Utils.LOG_WARNING("invalid chance");
-			}
-		}
-
-		//Spawns Fluorite from Lime Stone
-		if (chanceToDropFluoriteOre != 0){
-			if (!oreLimestone.isEmpty() || !blockLimestone.isEmpty()){
-
-				ArrayList<Block> mBlockTypes = new ArrayList<Block>();
-				if (!oreLimestone.isEmpty()){
-					for (int i=0;i<oreLimestone.size();i++){
-						mBlockTypes.add(Block.getBlockFromItem(oreLimestone.get(i).getItem()));
+			//Spawn Dull Shards (Can spawn from Tree Logs, Grass or Stone. Stone going to be the most common source.)
+			if (((event.block == Blocks.stone) || (event.block == Blocks.sandstone) || (event.block == Blocks.log) || (event.block == Blocks.log2) || (event.block == Blocks.grass))
+					&& !LoadedMods.Thaumcraft && (chanceToDropDrainedShard != 0)) {
+				//small chance for one to spawn per stone mined. 1 per 3 stacks~
+				if (MathUtils.randInt(1, chanceToDropDrainedShard) == 1){
+					//Let's sort out a lucky charm for the player.
+					final int FancyChance = MathUtils.randInt(1, 4);
+					if (MathUtils.randInt(1, 100) < 90){
+						event.drops.add(new ItemStack(ModItems.shardDull));
+					}
+					//Make a Fire Shard
+					else if (FancyChance == 1){
+						event.drops.add(new ItemStack(ModItems.shardIgnis));
+					}
+					//Make a Water Shard.
+					else if (FancyChance == 2){
+						event.drops.add(new ItemStack(ModItems.shardAqua));
+					}
+					//Make an Earth Shard.
+					else if (FancyChance == 3){
+						event.drops.add(new ItemStack(ModItems.shardTerra));
+					}
+					//Make an Air Shard.
+					else if (FancyChance == 4){
+						event.drops.add(new ItemStack(ModItems.shardAer));
 					}
 				}
-				if (!blockLimestone.isEmpty()){
-					for (int i=0;i<blockLimestone.size();i++){
-						if (!mBlockTypes.contains(Block.getBlockFromItem(blockLimestone.get(i).getItem()))){
-							mBlockTypes.add(Block.getBlockFromItem(blockLimestone.get(i).getItem()));
+				else {
+					Utils.LOG_WARNING("invalid chance");
+				}
+			}
+
+			//Spawns Fluorite from Lime Stone
+			if (chanceToDropFluoriteOre != 0){
+				if (!oreLimestone.isEmpty() || !blockLimestone.isEmpty()){
+
+					ArrayList<Block> mBlockTypes = new ArrayList<Block>();
+					if (!oreLimestone.isEmpty()){
+						for (int i=0;i<oreLimestone.size();i++){
+							mBlockTypes.add(Block.getBlockFromItem(oreLimestone.get(i).getItem()));
 						}
 					}
-				}
+					if (!blockLimestone.isEmpty()){
+						for (int i=0;i<blockLimestone.size();i++){
+							if (!mBlockTypes.contains(Block.getBlockFromItem(blockLimestone.get(i).getItem()))){
+								mBlockTypes.add(Block.getBlockFromItem(blockLimestone.get(i).getItem()));
+							}
+						}
+					}
 
-				Utils.LOG_WARNING("Found Limestone in OreDict.");
-				if (!mBlockTypes.isEmpty()) {
-					Utils.LOG_WARNING("1a | "+event.block.getUnlocalizedName());
-					for (final Block temp : mBlockTypes){
-						Utils.LOG_WARNING("2a - "+temp.getUnlocalizedName());
-						if (event.block == temp) {
-							Utils.LOG_WARNING("3a - found "+temp.getUnlocalizedName());
-							if (MathUtils.randInt(1, chanceToDropFluoriteOre) == 1){
-								Utils.LOG_WARNING("4a");
-								event.drops.clear();
-								event.drops.add(fluoriteOre.copy());
+					Utils.LOG_WARNING("Found Limestone in OreDict.");
+					if (!mBlockTypes.isEmpty()) {
+						Utils.LOG_WARNING("1a | "+event.block.getUnlocalizedName());
+						for (final Block temp : mBlockTypes){
+							Utils.LOG_WARNING("2a - "+temp.getUnlocalizedName());
+							if (event.block == temp) {
+								Utils.LOG_WARNING("3a - found "+temp.getUnlocalizedName());
+								if (MathUtils.randInt(1, chanceToDropFluoriteOre) == 1){
+									Utils.LOG_WARNING("4a");
+									event.drops.clear();
+									event.drops.add(fluoriteOre.copy());
+								}
 							}
 						}
 					}
 				}
-			}
 
 
-			if (event.block.getUnlocalizedName().toLowerCase().contains("limestone")){
-				Utils.LOG_WARNING("1c");
-				if (MathUtils.randInt(1, chanceToDropFluoriteOre) == 1){
-					Utils.LOG_WARNING("2c");
-					event.drops.clear();
-					event.drops.add(fluoriteOre.copy());
+				if (event.block.getUnlocalizedName().toLowerCase().contains("limestone")){
+					Utils.LOG_WARNING("1c");
+					if (MathUtils.randInt(1, chanceToDropFluoriteOre) == 1){
+						Utils.LOG_WARNING("2c");
+						event.drops.clear();
+						event.drops.add(fluoriteOre.copy());
+					}
+				}
+
+				if (event.block == Blocks.sandstone){
+					if (MathUtils.randInt(1, chanceToDropFluoriteOre*20) == 1){
+						event.drops.clear();
+						event.drops.add(fluoriteOre.copy());
+					}
 				}
 			}
 
-			if (event.block == Blocks.sandstone){
-				if (MathUtils.randInt(1, chanceToDropFluoriteOre*20) == 1){
-					event.drops.clear();
-					event.drops.add(fluoriteOre.copy());
-				}
+			//Try submit some data for this event.	
+			if (event.harvester != null){
+				//SegmentAnalytics.getAnalyticsForPlayer(event.harvester).submitTrackingData("Broke Block", event.block.getLocalizedName());
 			}
-		}
-		
-		//Try submit some data for this event.		
-		SegmentAnalytics.getAnalyticsForPlayer(event.harvester).submitTrackingData("Action_Block_Broken", event.block.getLocalizedName());
-				
 		}
 		catch (Throwable r){
 			Utils.LOG_INFO("Block Event Handler Failed. Please Report this to Alkalus.");

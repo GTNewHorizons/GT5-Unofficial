@@ -42,6 +42,7 @@ public class SegmentAnalytics {
 	public final UUID mUUID;
 	public final String mUserName;
 	public final String mAnonymousId;
+	protected Map<String, Object> mProperties = new LinkedHashMap<>();
 	final protected Phaser mPhaser;
 
 	//Build a new instance of this class
@@ -98,25 +99,33 @@ public class SegmentAnalytics {
 		if (!canProcess()){
 			return;
 		}
-		Map<String, Object> properties = new LinkedHashMap<>();
-		properties.put("username", mLocalName);
-		properties.put("gt_version", Utils.getGregtechVersionAsString());
+		mProperties = new LinkedHashMap<>();
+		mProperties.put("username", mLocalName);
+		mProperties.put("gt_version", Utils.getGregtechVersionAsString());
 		if (LoadedMods.IndustrialCraft2){
-			properties.put("ic2_version", IC2.VERSION);
+			mProperties.put("ic2_version", IC2.VERSION);
 		}
-		properties.put("country_code", CORE.USER_COUNTRY);
-		properties.put("gtnh", CORE.GTNH);		
+		mProperties.put("country_code", CORE.USER_COUNTRY);
+		mProperties.put("gtnh", CORE.GTNH);		
 
 		LOG("Created new Data packet, queued for submission.");	
 
 		//Old Code, now passed to Helper Class
 		/*mHelper.enqueue(IdentifyMessage.builder()
 				.userId(mUserName) //Save Username as UUID, for future sessions to attach to.
-				.traits(properties)
+				.traits(mProperties)
 				//.anonymousId(mAnonymousId) //Save Random Session UUID
 				);*/
 
-		mHelper.addUser(this.mUserName, properties);
+		mHelper.addUser(this.mUserName, mProperties);
+		
+		if (CORE.GTNH){
+			mHelper.groupUser("GT:NewHorizons", this.mUserName);
+		}
+		else {
+			mHelper.groupUser("GT:Vanilla", this.mUserName);			
+		}
+		
 	}
 
 	public void submitTrackingData(String aActionPerformed){
@@ -143,7 +152,7 @@ public class SegmentAnalytics {
 		//Old Code, now passed to Helper Class
 		/*mHelper.enqueue(TrackMessage.builder(aActionPerformed) //
 				.userId(mUserName) // Save Username as UUID, for future sessions to attach to.	
-				.properties(properties) //Save Stats
+				.properties(mProperties) //Save Stats
 				//.anonymousId(mAnonymousId) //Save Random Session UUID
 			);
 		flushData();
@@ -230,6 +239,10 @@ public class SegmentAnalytics {
 
 	public final Analytics getAnalyticObject() {
 		return mHelper.getAnalyticsClient();
+	}
+	
+	public final Map<String, Object> getPlayerProperties(){
+		return this.mProperties;
 	}
 
 
