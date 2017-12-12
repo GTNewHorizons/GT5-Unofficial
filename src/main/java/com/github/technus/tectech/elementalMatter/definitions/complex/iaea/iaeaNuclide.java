@@ -212,17 +212,17 @@ public final class iaeaNuclide {
         if(decay3.length()>0 && !Double.isNaN(chance3))normalization+=chance3;
         normalization/=100d;
         TreeMap<Double,iaeaDecay> decays=new TreeMap<>();
-        if(decay1.length()>0) {
+        if(decay1.length()>0 && !Double.isNaN(chance1)) {
             div=chance1/normalization;
-            if(!Double.isNaN(div)) decays.put(div, new iaeaDecay((float) (div), decay1));
+            decays.put(div, new iaeaDecay((float) (div), decay1));
         }
-        if(decay2.length()>0) {
+        if(decay1.length()>0 && !Double.isNaN(chance1)) {
             div=chance2/normalization;
-            if(!Double.isNaN(div)) decays.put(div, new iaeaDecay((float) (div), decay2));
+            decays.put(div, new iaeaDecay((float) (div), decay2));
         }
-        if(decay3.length()>0) {
+        if(decay1.length()>0 && !Double.isNaN(chance1)) {
             div=chance3/normalization;
-            if(!Double.isNaN(div)) decays.put(div, new iaeaDecay((float) (div), decay3));
+            decays.put(div, new iaeaDecay((float) (div), decay3));
         }
         //if(DEBUG_MODE){
         //    System.out.println("INVALID SUM?\t"+normalization+"\t"+decay1+"\t"+chance1+"\t"+decay2+"\t"+chance2+"\t"+decay3+"\t"+chance3);
