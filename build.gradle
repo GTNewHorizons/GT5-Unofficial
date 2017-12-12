@@ -19,7 +19,7 @@ apply plugin: 'forge'
 
 // Never remove the MC version or you will break autobuild!
 // New 3-segment versioning. 0.9 MUST remain static, as this indicates "GT5" mode of this mod
-version = "1.7.10-0.9.7"
+version = "1.7.10-0.9.8"
 group= "bloodasp.galactigreg" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "GalacticGreg"
 
