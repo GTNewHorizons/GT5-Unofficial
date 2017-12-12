@@ -3,6 +3,7 @@ package bloodasp.galacticgreg;
 import gregtech.api.GregTech_API;
 import gregtech.api.util.GT_Log;
 import gregtech.common.blocks.GT_TileEntity_Ores;
+import gregtech.common.blocks.GT_Block_Ores_Abstract;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
@@ -108,8 +109,8 @@ public class GT_TileEntity_Ores_Space {
 						pMetaData += pDimensionDef.getStoneType().getOffset();
 					else
 						pMetaData += pCustomGTOreOffset;
-
-					pWorld.setBlock(pX, pY, pZ, GregTech_API.sBlockOres1, GT_TileEntity_Ores.getHarvestData((short) 1, pMetaData), 0);
+                    // This fix seems like cargo cult coding...The Abstract class just returns 0 for the harvest level. But it aligns with the GT5U method, so yay?
+					pWorld.setBlock(pX, pY, pZ, GregTech_API.sBlockOres1, GT_TileEntity_Ores.getHarvestData((short) pMetaData, ( (GT_Block_Ores_Abstract)GregTech_API.sBlockOres1).getBaseBlockHarvestLevel(pMetaData % 16000 / 1000)), 0);
 					TileEntity tTileEntity = pWorld.getTileEntity(pX, pY, pZ);
 					if ((tTileEntity instanceof GT_TileEntity_Ores)) {
 						((GT_TileEntity_Ores) tTileEntity).mMetaData = ((short) pMetaData);
