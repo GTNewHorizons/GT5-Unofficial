@@ -32,6 +32,10 @@ public final class cElementalDefinitionStackMap/*IMMUTABLE*/ extends cElementalS
         map = new TreeMap<>(in);
     }
 
+    cElementalDefinitionStackMap(cElementalMutableDefinitionStackMap unsafeMap){
+        map=unsafeMap.map;
+    }
+
     //IMMUTABLE DON'T NEED IT
     @Override
     public final cElementalDefinitionStackMap clone() {

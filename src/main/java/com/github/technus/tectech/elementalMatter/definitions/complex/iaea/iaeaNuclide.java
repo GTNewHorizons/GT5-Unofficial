@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.TreeMap;
 
 import static com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefinition.STABLE_RAW_LIFE_TIME;
@@ -111,9 +112,9 @@ public final class iaeaNuclide {
     }
 
     private void getMoreData(String[] cells){
-        //if(add(cells[14]))System.out.println(N+" "+Z);
-        //if(add(cells[17]))System.out.println(N+" "+Z);
-        //if(add(cells[20]))System.out.println(N+" "+Z);
+        if(add(cells[14]))System.out.println(N+" "+Z);
+        if(add(cells[17]))System.out.println(N+" "+Z);
+        if(add(cells[20]))System.out.println(N+" "+Z);
         new energeticState(this, halfTime,getDecaysFixed(cells[14],doubleOrNaN(cells[15],"chance1"),cells[17],doubleOrNaN(cells[18],"chance1"),cells[20],doubleOrNaN(cells[21],"chance1")));
     }
 
@@ -164,9 +165,9 @@ public final class iaeaNuclide {
             }
             nuclide.energeticStates.put(energy,this);
 
-            //if(add(cells[12]))System.out.println(nuclide.N+" "+nuclide.Z);
-            //if(add(cells[15]))System.out.println(nuclide.N+" "+nuclide.Z);
-            //if(add(cells[18]))System.out.println(nuclide.N+" "+nuclide.Z);
+            if(add(cells[12]))System.out.println(nuclide.N+" "+nuclide.Z);
+            if(add(cells[15]))System.out.println(nuclide.N+" "+nuclide.Z);
+            if(add(cells[18]))System.out.println(nuclide.N+" "+nuclide.Z);
             this.decaymodes=getDecaysFixed(cells[12],doubleOrNaN(cells[13],"chance 1",nuclide),cells[15],doubleOrNaN(cells[16],"chance 2",nuclide),cells[18],doubleOrNaN(cells[19],"chance 3",nuclide));
         }
 
@@ -192,15 +193,15 @@ public final class iaeaNuclide {
         }
     }
 
-    //private static HashSet<String> decays=new HashSet<>();
-    //private static boolean add(String s){
-    //    int len=decays.size();
-    //    if(decays.add(s)){
-    //        System.out.println(s);
-    //        return true;
-    //    }
-    //    return false;
-    //}
+    private static HashSet<String> decays=new HashSet<>();
+    private static boolean add(String s){
+        int len=decays.size();
+        if(decays.add(s)){
+            System.out.println(s);
+            return true;
+        }
+        return false;
+    }
 
     private static iaeaDecay[] getDecaysFixed(String decay1, double chance1,String decay2, double chance2,String decay3, double chance3){
         TreeMap<Double,iaeaDecay> decays=new TreeMap<>();

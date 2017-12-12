@@ -17,7 +17,9 @@ public final class eNeutrinoDefinition extends cElementalPrimitive {
             lepton_Vt_ = new eNeutrinoDefinition("Antitauon neutrino", "~\u03bd\u03c4", -3, 15e6F, 0, -1, 26);
 
     public static final cElementalDefinitionStack lepton_Ve1 = new cElementalDefinitionStack(lepton_Ve, 1);
+    public static final cElementalDefinitionStack lepton_Ve2 = new cElementalDefinitionStack(lepton_Ve, 2);
     public static final cElementalDefinitionStack lepton_Ve_1 = new cElementalDefinitionStack(lepton_Ve_, 1);
+    public static final cElementalDefinitionStack lepton_Ve_2 = new cElementalDefinitionStack(lepton_Ve_, 2);
 
     private eNeutrinoDefinition(String name, String symbol, int type, float mass, int charge, int color, int ID) {
         super(name, symbol, type, mass, charge, color, ID);

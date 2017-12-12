@@ -53,6 +53,9 @@ public final class cElementalMutableDefinitionStackMap extends cElementalStackMa
     public cElementalDefinitionStackMap toImmutable() {
         return new cElementalDefinitionStackMap(map);
     }
+    public cElementalDefinitionStackMap toImmutable_unsafeMightLeaveExposedElementalTree() {
+        return new cElementalDefinitionStackMap(this);
+    }
 
     @Override
     @Deprecated

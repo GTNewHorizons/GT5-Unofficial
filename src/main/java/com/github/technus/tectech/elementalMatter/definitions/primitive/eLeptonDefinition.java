@@ -17,7 +17,9 @@ public final class eLeptonDefinition extends cElementalPrimitive {
             lepton_t_ = new eLeptonDefinition("Antitauon", "\u03c4+", -3, 1776.83e6F, 3, -1, 20);
 
     public static final cElementalDefinitionStack lepton_e1 = new cElementalDefinitionStack(lepton_e, 1);
+    public static final cElementalDefinitionStack lepton_e2 = new cElementalDefinitionStack(lepton_e, 2);
     public static final cElementalDefinitionStack lepton_e_1 = new cElementalDefinitionStack(lepton_e_, 1);
+    public static final cElementalDefinitionStack lepton_e_2 = new cElementalDefinitionStack(lepton_e_, 2);
 
     private eLeptonDefinition(String name, String symbol, int type, float mass, int charge, int color, int ID) {
         super(name, symbol, type, mass, charge, color, ID);

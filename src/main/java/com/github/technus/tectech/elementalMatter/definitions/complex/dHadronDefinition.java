@@ -9,17 +9,20 @@ import com.github.technus.tectech.elementalMatter.core.containers.cElementalDefi
 import com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefinition;
 import com.github.technus.tectech.elementalMatter.core.tElementalException;
 import com.github.technus.tectech.elementalMatter.core.templates.cElementalDefinition;
-import com.github.technus.tectech.elementalMatter.core.transformations.aFluidDequantizationInfo;
-import com.github.technus.tectech.elementalMatter.core.transformations.aItemDequantizationInfo;
-import com.github.technus.tectech.elementalMatter.core.transformations.aOredictDequantizationInfo;
+import com.github.technus.tectech.elementalMatter.core.transformations.*;
 import com.github.technus.tectech.elementalMatter.definitions.primitive.eBosonDefinition;
 import com.github.technus.tectech.elementalMatter.definitions.primitive.eQuarkDefinition;
+import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
+import static com.github.technus.tectech.elementalMatter.definitions.complex.dAtomDefinition.transformation;
 import static com.github.technus.tectech.elementalMatter.definitions.primitive.eBosonDefinition.boson_Y__;
+import static gregtech.api.enums.OrePrefixes.dust;
 
 /**
  * Created by danie_000 on 17.11.2016.
@@ -30,7 +33,7 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
     private static final byte nbtType = (byte) 'h';
     //Helpers
     public static dHadronDefinition hadron_p, hadron_n, hadron_p_, hadron_n_;
-    public static cElementalDefinitionStack hadron_p1, hadron_n1, hadron_p2, hadron_n2;
+    public static cElementalDefinitionStack hadron_p1, hadron_n1, hadron_p2, hadron_n2, hadron_p3, hadron_n3;
     private static float protonMass = 0F;
     private static float neutronMass = 0F;
 
@@ -291,7 +294,7 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
         for (cElementalDefinitionStack stack : quarkStacks.values())
             anti.putReplace(new cElementalDefinitionStack(stack.definition.getAnti(), stack.amount));
         try {
-            return new dHadronDefinition(anti.toImmutable());
+            return new dHadronDefinition(anti.toImmutable_unsafeMightLeaveExposedElementalTree());
         } catch (tElementalException e) {
             if (TecTechConfig.DEBUG_MODE) e.printStackTrace();
             return null;
@@ -357,6 +360,8 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
         hadron_n1 = new cElementalDefinitionStack(hadron_n, 1);
         hadron_p2 = new cElementalDefinitionStack(hadron_p, 2);
         hadron_n2 = new cElementalDefinitionStack(hadron_n, 2);
+        hadron_p3 = new cElementalDefinitionStack(hadron_p, 3);
+        hadron_n3 = new cElementalDefinitionStack(hadron_n, 3);
 
         try {
             cElementalDefinition.addCreatorFromNBT(nbtType, dHadronDefinition.class.getMethod("fromNBT", NBTTagCompound.class),(byte)-64);
@@ -365,6 +370,16 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
         }
         if(DEBUG_MODE)
             TecTech.Logger.info("Registered Elemental Matter Class: Hadron "+nbtType+" "+(-64));
+    }
+
+    public static void setTransformations(){
+        //Added to atom map, but should be in its own
+        cElementalDefinitionStack neutrons=new cElementalDefinitionStack(dHadronDefinition.hadron_n, 100000);
+        transformation.oredictDequantization.put(neutrons.definition,new aOredictDequantizationInfo(neutrons, dust, Materials.Neutronium,1));
+        bTransformationInfo.oredictQuantization.put(
+                OreDictionary.getOreID(OrePrefixes.ingotHot.name()+Materials.Neutronium.mName),
+                new aOredictQuantizationInfo(OrePrefixes.ingotHot,Materials.Neutronium,1 ,neutrons)
+        );
     }
 
     @Override
