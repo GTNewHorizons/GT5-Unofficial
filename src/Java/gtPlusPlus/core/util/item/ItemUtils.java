@@ -3,6 +3,8 @@ package gtPlusPlus.core.util.item;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 import gregtech.api.enums.Materials;
@@ -86,11 +88,11 @@ public class ItemUtils {
 		final ItemStack temp = GT_ModHandler.getModItem("IC2", "itemCellEmpty", 1L, meta);
 		return temp != null ? temp : null;
 	}
-	
+
 	public static ItemStack getEmptyCell(){
 		return getEmptyCell(1);
 	}
-	
+
 	public static ItemStack getEmptyCell(int i){
 		final ItemStack temp = GT_ModHandler.getModItem("IC2", "itemCellEmpty", i, 0);
 		return temp != null ? temp : null;
@@ -258,9 +260,9 @@ public class ItemUtils {
 	}
 
 	public static ItemStack getItemStackOfAmountFromOreDict(final String oredictName, final int amount){
-		
+
 		String mTemp = oredictName;
-		
+
 		//Banned Materials and replacements for GT5.8 compat.		
 		if (oredictName.toLowerCase().contains("rutile")){
 			mTemp.replace("Rutile", "Titanium");
@@ -268,7 +270,7 @@ public class ItemUtils {
 		if (oredictName.toLowerCase().contains("vanadiumsteel")){
 			mTemp.replace("VanadiumSteel", "StainlessSteel");
 		}
-		
+
 		final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(mTemp);
 		if (!oreDictList.isEmpty()){
 			final ItemStack returnValue = oreDictList.get(0).copy();
@@ -339,7 +341,7 @@ public class ItemUtils {
 	public static Item[] generateSpecialUseDusts(final String unlocalizedName, final String materialName, final int Colour){
 		return generateSpecialUseDusts(unlocalizedName, materialName, "NullFormula", Colour);
 	}
-	
+
 	public static Item[] generateSpecialUseDusts(final String unlocalizedName, final String materialName, String mChemForm, final int Colour){
 		final Item[] output = {
 				new BaseItemDustUnique("itemDust"+unlocalizedName, materialName, mChemForm, Colour, "Dust"),
@@ -351,15 +353,15 @@ public class ItemUtils {
 	public static Item generateSpecialUsePlate(final String internalName, final String displayName, final short[] rgb, final int radioactivity){
 		return generateSpecialUsePlate(internalName, displayName, Utils.rgbtoHexValue(rgb[0], rgb[1], rgb[2]), radioactivity);
 	}
-	
+
 	public static Item generateSpecialUsePlate(final String internalName, final String displayName, final String mFormula, final short[] rgb, final int radioactivity){
 		return generateSpecialUsePlate(internalName, displayName, mFormula, Utils.rgbtoHexValue(rgb[0], rgb[1], rgb[2]), radioactivity);
 	}
-	
+
 	public static Item generateSpecialUsePlate(final String internalName, final String displayName, final int rgb, final int radioactivity){
 		return new BaseItemPlate_OLD(internalName, displayName, rgb, radioactivity);
 	}
-	
+
 	public static Item generateSpecialUsePlate(final String internalName, final String displayName, final String mFormula, final int rgb, final int radioactivity){
 		return new BaseItemPlate_OLD(internalName, displayName, mFormula, rgb, radioactivity);
 	}
@@ -674,17 +676,20 @@ public class ItemUtils {
 		return getItemStackOfAmountFromOreDictNoBroken(oredictName, amount);
 	}
 	public static ItemStack getGregtechOreStack(OrePrefixes mPrefix, Materials mMat, int mAmount) {
-		String mItemName = mPrefix.name()+mMat.mName;
-		Utils.LOG_INFO("[Component Maker] Trying to get "+mItemName+".");
+
+		String mName = MaterialUtils.getMaterialName(mMat);
+
+		String mItemName = mPrefix.name()+mName;
+		//Utils.LOG_INFO("[Component Maker] Trying to get "+mItemName+".");
 		ItemStack gregstack = ItemUtils.getItemStackOfAmountFromOreDict(mItemName, mAmount);		
 		if (gregstack == null){
-			Utils.LOG_INFO("[Component Maker] Failed to get "+mItemName+".");
+			//Utils.LOG_INFO("[Component Maker] Failed to get "+mItemName+".");
 			return null;
 		}	
-		Utils.LOG_INFO("[Component Maker] Found "+mItemName+".");
+		//Utils.LOG_INFO("[Component Maker] Found "+mItemName+".");
 		return (gregstack);
 	}
-	
+
 	public static ItemStack[] getStackOfAllOreDictGroup(String oredictname){
 		final ArrayList<ItemStack> oreDictList = OreDictionary.getOres(oredictname);
 		if (!oreDictList.isEmpty()){

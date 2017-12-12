@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
+
 import gregtech.GT_Mod;
 import gregtech.api.enums.Dyes;
 import gregtech.api.enums.GT_Values;
@@ -17,8 +19,11 @@ import gregtech.api.enums.TextureSet;
 import gregtech.api.objects.MaterialStack;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Recipe;
+import gregtech.api.util.GT_Recipe.GT_Recipe_Map;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.materials.MaterialUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -66,12 +71,22 @@ public class GregtechNitroDieselFix {
 
 
 							/**
+							 * Reflectively get all the values to maintain 5.08.xx compat
+							 */
+							
+
+							GT_Recipe_Map recipeMapMultiblockChemReactor;
+							recipeMapMultiblockChemReactor = (GT_Recipe_Map) FieldUtils.getDeclaredField(GT_Recipe_Map.class, "sMultiblockChemicalRecipes", true).get(null);
+							
+							
+							
+							/**
 							 * Do Recipe Stuff
 							 */
 
 							//Set up some Variables
 							final Collection<GT_Recipe> xSingle = GT_Recipe.GT_Recipe_Map.sChemicalRecipes.mRecipeList;
-							final Collection<GT_Recipe> xMulti = GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.mRecipeList;
+							final Collection<GT_Recipe> xMulti = recipeMapMultiblockChemReactor.mRecipeList;
 							final FluidStack mNitroStack = Materials.NitroFuel.getFluid(1000);
 							GT_Recipe toRemoveSingle[] = new GT_Recipe[99];
 							GT_Recipe toRemoveMulti[] = new GT_Recipe[99];									
@@ -107,37 +122,40 @@ public class GregtechNitroDieselFix {
 								}
 							}									
 							Utils.LOG_INFO("[Nitro] Removed "+mRemovedSingle+" single block Chemical Reactor recipes.");
-
+						
 							//Remove Multi Block recipes found.
 							for (GT_Recipe multi : toRemoveMulti){
-								if (GT_Recipe.GT_Recipe_Map.sMultiblockChemicalRecipes.mRecipeList.remove(multi)){
+								if (recipeMapMultiblockChemReactor.mRecipeList.remove(multi)){
 									mRemovedMulti++;
 								}
 							}									
 							Utils.LOG_INFO("[Nitro] Removed "+mRemovedMulti+" multi block Chemical Reactor recipes.");
+							
+							Materials mGlycerol = Materials.valueOf("Glycerol");
+							Materials mLightFuel = Materials.valueOf("LightFuel");
 
 							//Build a New Recipe set
-							Materials mFuels[] = {Materials.LightFuel, Materials.Fuel, Materials.Diesel};									
+							Materials mFuels[] = {mLightFuel, Materials.Fuel};									
 							for (Materials fuel : mFuels){
 								boolean didAdd[] = new boolean[3];
 								Utils.LOG_INFO("[Nitro] Getting ready to add back in the old nitro-diesel recipe to the mixer, using "+fuel.mDefaultLocalName+" as the fuel input.");
-								didAdd[0] = GT_Values.RA.addMixerRecipe(fuel.getCells(4), Materials.Glycerol.getCells(1), GT_Values.NI, GT_Values.NI, GT_Values.NF, GT_Values.NF, mNitroFix.getCells(5), 20, 30);
-								didAdd[1] = GT_Values.RA.addMixerRecipe(fuel.getCells(4), GT_Values.NI, GT_Values.NI, GT_Values.NI, Materials.Glycerol.getFluid(1000L),mNitroFix.getFluid(5000L), ItemList.Cell_Empty.get(4L), 20, 30);
-								didAdd[2] = GT_Values.RA.addMixerRecipe(Materials.Glycerol.getCells(1), GT_Values.NI,GT_Values.NI,GT_Values.NI, fuel.getFluid(4000L),mNitroFix.getFluid(5000L), ItemList.Cell_Empty.get(1L), 20, 30);
+								didAdd[0] = GT_Values.RA.addMixerRecipe(getCells(fuel, 4), getCells(mGlycerol, 1), GT_Values.NI, GT_Values.NI, GT_Values.NF, GT_Values.NF, getCells(mNitroFix, 5), 20, 30);
+								didAdd[1] = GT_Values.RA.addMixerRecipe(getCells(fuel, 4), GT_Values.NI, GT_Values.NI, GT_Values.NI, mGlycerol.getFluid(1000L),mNitroFix.getFluid(5000L), ItemList.Cell_Empty.get(4L), 20, 30);
+								didAdd[2] = GT_Values.RA.addMixerRecipe(getCells(mGlycerol, 1), GT_Values.NI,GT_Values.NI,GT_Values.NI, fuel.getFluid(4000L),mNitroFix.getFluid(5000L), ItemList.Cell_Empty.get(1L), 20, 30);
 								Utils.LOG_INFO("[Nitro] Did the recipes add? 1: "+didAdd[0]+" |  2: "+didAdd[1]+" |  3: "+didAdd[2]);
 							}		
 
 							for (Materials fuel : mFuels){
 								boolean didAdd[] = new boolean[3];
 								Utils.LOG_INFO("[Nitro] Getting ready to add back in the old nitro-diesel recipe to the chemical reactors, using "+fuel.mDefaultLocalName+" as the fuel input.");										
-								didAdd[0] = GT_Values.RA.addChemicalRecipe(fuel.getCells(4), Materials.Glycerol.getCells(1), GT_Values.NF, GT_Values.NF, mNitroFix.getCells(5), 20, 30);
-								didAdd[1] = GT_Values.RA.addChemicalRecipe(fuel.getCells(4), GT_Values.NI, Materials.Glycerol.getFluid(1000L),mNitroFix.getFluid(5000L), ItemList.Cell_Empty.get(4L), 20, 30);
-								didAdd[2] = GT_Values.RA.addChemicalRecipe(Materials.Glycerol.getCells(1), GT_Values.NI, fuel.getFluid(4000L),mNitroFix.getFluid(5000L), ItemList.Cell_Empty.get(1L), 20, 30);
+								didAdd[0] = GT_Values.RA.addChemicalRecipe(getCells(fuel, 4), getCells(mGlycerol, 1), GT_Values.NF, GT_Values.NF, getCells(mNitroFix, 5), 20);
+								didAdd[1] = GT_Values.RA.addChemicalRecipe(getCells(fuel, 4), GT_Values.NI, mGlycerol.getFluid(1000L),mNitroFix.getFluid(5000L), ItemList.Cell_Empty.get(4L), 20);
+								didAdd[2] = GT_Values.RA.addChemicalRecipe(getCells(mGlycerol, 1), GT_Values.NI, fuel.getFluid(4000L),mNitroFix.getFluid(5000L), ItemList.Cell_Empty.get(1L), 20);
 								Utils.LOG_INFO("[Nitro] Did the recipes add? 1: "+didAdd[0]+" |  2: "+didAdd[1]+" |  3: "+didAdd[2]);
 							}	
 
 							Utils.LOG_INFO("[Nitro] Getting ready to add back in the old glycerol recipe!");
-							GT_Values.RA.addChemicalRecipe(Materials.Nitrogen.getCells(1), Materials.Carbon.getDust(1), Materials.Water.getFluid(2000L), Materials.Glycerol.getFluid(3000L), ItemList.Cell_Empty.get(1), 3000, 30);
+							GT_Values.RA.addChemicalRecipe(getCells(Materials.Nitrogen, 1), getDust(Materials.Carbon, 1), Materials.Water.getFluid(2000L), mGlycerol.getFluid(3000L), ItemList.Cell_Empty.get(1), 3000);
 							Utils.LOG_INFO("[Nitro] Added recipes.");
 
 						}
@@ -151,7 +169,17 @@ public class GregtechNitroDieselFix {
 			}			
 		}
 	}
-	
-	
-	
+
+
+	public static ItemStack getCells(Materials mat, int amount){
+		String mName = MaterialUtils.getMaterialName(mat);		
+		return ItemUtils.getItemStackOfAmountFromOreDict("cell"+mName, amount);
+	}
+
+	public static ItemStack getDust(Materials mat, int amount){
+		String mName = MaterialUtils.getMaterialName(mat);
+		return ItemUtils.getItemStackOfAmountFromOreDict("dust"+mName, amount);
+	}
+
+
 }

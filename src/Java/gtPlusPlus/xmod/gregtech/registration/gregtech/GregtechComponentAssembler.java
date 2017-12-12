@@ -10,6 +10,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_BasicMachin
 import gregtech.api.util.Recipe_GT;
 import gtPlusPlus.core.lib.CORE;
 import gtPlusPlus.core.recipe.common.CI;
+import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
 import gtPlusPlus.xmod.gregtech.api.enums.GregtechItemList;
 import net.minecraft.init.Items;
@@ -19,6 +20,12 @@ import net.minecraftforge.oredict.OreDictionary;
 public class GregtechComponentAssembler {
 
 	public static void run() {
+		
+		if (!CORE.MAIN_GREGTECH_5U_EXPERIMENTAL_FORK){
+			Utils.LOG_INFO("Component Assemblers cannot be created in 5.08.33 during the pre-release. Please wait for 1.7.0 release.");
+			return;
+		}
+		
 		GregtechItemList.Machine_LV_Component_Maker.set(new GT_MetaTileEntity_BasicMachine_GT_Recipe(985,
 				"basicmachine.componentmaker.tier.01", "Basic Component Maker", 1, "Components, Unite!",
 				Recipe_GT.Gregtech_Recipe_Map.sComponentAssemblerRecipes, 6, 1, 16000, 0, 1, "Assembler.png", "", false,
@@ -341,17 +348,20 @@ public class GregtechComponentAssembler {
 				mWT = "16";
 			else
 				mWT = "01";
+			
+			ItemStack eyeQuantum = ItemList.valueOf("QuantumEye").get(1);
+			ItemStack starQuantum = ItemList.valueOf("QuantumStar").get(1);
 
 			if (tier == 1)
 				gem = ItemUtils.getSimpleStack(Items.ender_pearl);
 			else if (tier == 2)
 				gem = ItemUtils.getSimpleStack(Items.ender_eye);
 			else if (tier == 3)
-				gem = ItemList.QuantumEye.get(1);
+				gem = eyeQuantum;
 			else if (tier == 4)
 				gem = ItemUtils.getSimpleStack(Items.nether_star);
 			else if (tier == 5)
-				gem = ItemList.QuantumStar.get(1);
+				gem = starQuantum;
 			else
 				gem = ItemUtils.getSimpleStack(Items.ender_pearl);
 

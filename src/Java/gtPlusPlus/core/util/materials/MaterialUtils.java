@@ -2,6 +2,8 @@ package gtPlusPlus.core.util.materials;
 
 import java.util.List;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
+
 import gregtech.api.enums.*;
 import gtPlusPlus.core.material.Material;
 import gtPlusPlus.core.material.state.MaterialState;
@@ -16,11 +18,11 @@ public class MaterialUtils {
 
 	@SuppressWarnings({ "rawtypes", "unused" })
 	private static Class[][] commonTypes =
-		{{Materials.class, int.class, TextureSet.class, float.class, int.class,
-			int.class, int.class, int.class, int.class, int.class, int.class,
-			String.class, int.class, int.class, int.class, int.class, boolean.class,
-			boolean.class, int.class, int.class, int.class, Dyes.class, int.class,
-			List.class , List.class}};
+{{Materials.class, int.class, TextureSet.class, float.class, int.class,
+	int.class, int.class, int.class, int.class, int.class, int.class,
+	String.class, int.class, int.class, int.class, int.class, boolean.class,
+	boolean.class, int.class, int.class, int.class, Dyes.class, int.class,
+	List.class , List.class}};
 
 	public static List<?> oreDictValuesForEntry(final String oredictName){
 		List<?> oredictItemNames;
@@ -208,5 +210,20 @@ public class MaterialUtils {
 		}
 		return null;
 	}*/
+
+
+	public static String getMaterialName(Materials mat){
+		String mName;
+		try {
+			mName = (String) FieldUtils.getDeclaredField(Materials.class, "mName", true).get(mat);
+		}
+		catch (IllegalArgumentException | IllegalAccessException e) {
+			mName = mat.name();
+		}
+		if (mName == null || mName.equals("") || mName == ""){
+			mName = mat.name();
+		}
+		return mName;
+	}
 
 }
