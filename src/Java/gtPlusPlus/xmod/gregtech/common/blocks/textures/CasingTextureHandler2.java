@@ -54,7 +54,7 @@ public class CasingTextureHandler2 {
 			case 14:
 				return TexturesGtBlock._PlaceHolder.getIcon();
 			case 15:
-				return TexturesGtBlock._PlaceHolder.getIcon();
+				return TexturesGtBlock.Casing_Machine_Farm_Manager.getIcon(); //Tree Farmer Textures
 
 			default:
 				return TexturesGtBlock.Overlay_UU_Matter.getIcon();

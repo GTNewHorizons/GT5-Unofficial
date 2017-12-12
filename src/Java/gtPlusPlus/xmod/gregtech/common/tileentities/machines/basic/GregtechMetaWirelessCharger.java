@@ -23,10 +23,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 
 public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 
 	private boolean mHasBeenMapped = false;
+	private int mCurrentDimension = 0;
+	public int mMode = 0;
 
 	public GregtechMetaWirelessCharger(final int aID, final String aName, final String aNameRegional, final int aTier, final String aDescription, final int aSlotCount) {
 		super(aID, aName, aNameRegional, aTier, aSlotCount, aDescription);
@@ -56,6 +59,10 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 
 	public int getMode(){
 		return this.mMode;
+	}
+	
+	public int getDimensionID(){
+		return this.mCurrentDimension;
 	}
 
 	public Map<UUID, EntityPlayer> getLocalMap(){
@@ -143,7 +150,7 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 	public void onScrewdriverRightClick(byte aSide, EntityPlayer aPlayer, float aX, float aY, float aZ) {
 		mWirelessChargingMap.clear();
 		mLocalChargingMap.clear();
-		
+
 		if (!this.getBaseMetaTileEntity().getWorld().playerEntities.isEmpty()){
 			for (Object mTempPlayer : this.getBaseMetaTileEntity().getWorld().playerEntities){
 				if (mTempPlayer instanceof EntityPlayer || mTempPlayer instanceof EntityPlayerMP){
@@ -152,7 +159,7 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 				}
 			}
 		}
-		
+
 		if (this.mMode >= 2){
 			this.mMode = 0;
 		}
@@ -236,8 +243,6 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 		}
 		return true;
 	}
-
-	public int mMode = 0;
 
 	@Override
 	public boolean allowPullStack(final IGregTechTileEntity aBaseMetaTileEntity, final int aIndex, final byte aSide, final ItemStack aStack) {
@@ -345,11 +350,13 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 	@Override
 	public void saveNBTData(final NBTTagCompound aNBT) {
 		aNBT.setInteger("mMode", this.mMode);
+		aNBT.setInteger("mCurrentDimension", this.mCurrentDimension);
 	}
 
 	@Override
 	public void loadNBTData(final NBTTagCompound aNBT) {
 		this.mMode = aNBT.getInteger("mMode");
+		this.mCurrentDimension = aNBT.getInteger("mCurrentDimension");
 	}
 
 	@Override
@@ -367,6 +374,10 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
 		super.onPostTick(aBaseMetaTileEntity, aTick);
 		if (this.getBaseMetaTileEntity().isServerSide()) {
+
+			if (this.mCurrentDimension != aBaseMetaTileEntity.getWorld().provider.dimensionId){
+				this.mCurrentDimension = aBaseMetaTileEntity.getWorld().provider.dimensionId;
+			}
 
 			if (!mHasBeenMapped && ChargingHelper.addEntry(getTileEntityPosition(), this)){
 				mHasBeenMapped = true;
@@ -450,9 +461,9 @@ public class GregtechMetaWirelessCharger extends GregtechMetaTileEntity {
 
 	@Override
 	public void onRemoval() {
-		
+
 		ChargingHelper.removeEntry(getTileEntityPosition(), this);
-		
+
 		mWirelessChargingMap.clear();
 		mLocalChargingMap.clear();
 		if (!this.getBaseMetaTileEntity().getWorld().playerEntities.isEmpty()){

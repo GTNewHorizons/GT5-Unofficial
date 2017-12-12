@@ -10,7 +10,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import gtPlusPlus.api.analytics.SegmentHelper;
 import gtPlusPlus.core.util.Utils;
 import net.minecraftforge.event.entity.living.ZombieEvent;
-import net.minecraftforge.event.entity.living.ZombieEvent.SummonAidEvent;
 
 public class ZombieBackupSpawnEventHandler {
 

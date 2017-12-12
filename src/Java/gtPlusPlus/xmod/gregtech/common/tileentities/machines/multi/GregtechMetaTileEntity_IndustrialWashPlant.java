@@ -90,57 +90,62 @@ extends GregtechMeta_MultiBlockBase {
 		ArrayList<ItemStack> tInputList = getStoredInputs();
 		ArrayList<FluidStack> tFluidInputs = getStoredFluids();
 		for (ItemStack tInput : tInputList) {
-			long tVoltage = getMaxInputVoltage();
-			byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
-			GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sOreWasherRecipes.findRecipe(getBaseMetaTileEntity(), this.mLastRecipe, false, gregtech.api.enums.GT_Values.V[tTier], tFluidInputs.isEmpty() ? null : new FluidStack[]{tFluidInputs.get(0)}, new ItemStack[]{tInput});
 
-			if ((tRecipe == null && !mRunningOnLoad)) {
-				this.mLastRecipe = null;
-				return false;
-			}
+			if (tInput.stackSize >= 2){
 
-			if (tRecipe != null) {
-				FluidStack[] mFluidInputList = new FluidStack[tFluidInputs.size()];
-				int tri = 0;
-				for (FluidStack f : tFluidInputs){
-					mFluidInputList[tri] = f;
-					tri++;
+				long tVoltage = getMaxInputVoltage();
+				byte tTier = (byte) Math.max(1, GT_Utility.getTier(tVoltage));
+				GT_Recipe tRecipe = GT_Recipe.GT_Recipe_Map.sOreWasherRecipes.findRecipe(getBaseMetaTileEntity(), this.mLastRecipe, false, gregtech.api.enums.GT_Values.V[tTier], tFluidInputs.isEmpty() ? null : new FluidStack[]{tFluidInputs.get(0)}, new ItemStack[]{tInput});
+
+				if ((tRecipe == null && !mRunningOnLoad)) {
+					this.mLastRecipe = null;
+					return false;
 				}
-				if (tRecipe.isRecipeInputEqual(true, mFluidInputList, tInput)) {
-					this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
-					this.mEfficiencyIncrease = 10000;
-					this.mEUt = tRecipe.mEUt;
 
-					if (tRecipe.mEUt <= 16) {
-						this.mEUt = (tRecipe.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
-						this.mMaxProgresstime = (tRecipe.mDuration / (1 << tTier - 1));
-					} else {
-						this.mEUt = tRecipe.mEUt;
-						this.mMaxProgresstime = tRecipe.mDuration;
-						while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
-							this.mEUt *= 4;
-							this.mMaxProgresstime /= 2;
-						}
+				if (tRecipe != null) {
+					FluidStack[] mFluidInputList = new FluidStack[tFluidInputs.size()];
+					int tri = 0;
+					for (FluidStack f : tFluidInputs){
+						mFluidInputList[tri] = f;
+						tri++;
 					}
-					if (this.mEUt > 0) {
-						this.mEUt = (-this.mEUt);
-					}
-					this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
-
-					if (mRunningOnLoad || tRecipe.isRecipeInputEqual(true, mFluidInputList, new ItemStack[]{tInput})) {
-						Utils.LOG_INFO("Recipe Complete.");
-						this.mLastRecipe = tRecipe;
-						this.mEUt = MathUtils.findPercentageOfInt(this.mLastRecipe.mEUt, 80);
-						this.mMaxProgresstime = MathUtils.findPercentageOfInt(this.mLastRecipe.mDuration, 20);
+					if (tRecipe.isRecipeInputEqual(true, mFluidInputList, tInput)) {
+						this.mEfficiency = (10000 - (getIdealStatus() - getRepairStatus()) * 1000);
 						this.mEfficiencyIncrease = 10000;
-						this.addOutput(tRecipe.getOutput(0));
-						this.addOutput(tRecipe.getOutput(0));
-						this.addOutput(tRecipe.getOutput(1));
-						this.addOutput(tRecipe.getOutput(1));				            
-						mRunningOnLoad = false;
-						return true;
-					}
+						this.mEUt = tRecipe.mEUt;
 
+						if (tRecipe.mEUt <= 16) {
+							this.mEUt = (tRecipe.mEUt * (1 << tTier - 1) * (1 << tTier - 1));
+							this.mMaxProgresstime = (tRecipe.mDuration / (1 << tTier - 1));
+						} else {
+							this.mEUt = tRecipe.mEUt;
+							this.mMaxProgresstime = tRecipe.mDuration;
+							while (this.mEUt <= gregtech.api.enums.GT_Values.V[(tTier - 1)]) {
+								this.mEUt *= 4;
+								this.mMaxProgresstime /= 2;
+							}
+						}
+						if (this.mEUt > 0) {
+							this.mEUt = (-this.mEUt);
+						}
+						this.mMaxProgresstime = Math.max(1, this.mMaxProgresstime);
+
+						if (mRunningOnLoad || tRecipe.isRecipeInputEqual(true, mFluidInputList, new ItemStack[]{tInput})) {
+							Utils.LOG_WARNING("Recipe Complete.");
+							this.mLastRecipe = tRecipe;
+							this.mEUt = MathUtils.findPercentageOfInt(this.mLastRecipe.mEUt, 80);
+							this.mMaxProgresstime = MathUtils.findPercentageOfInt(this.mLastRecipe.mDuration, 20);
+							this.mEfficiencyIncrease = 10000;
+							this.addOutput(tRecipe.getOutput(0));
+							this.addOutput(tRecipe.getOutput(0));
+							this.addOutput(tRecipe.getOutput(1));
+							this.addOutput(tRecipe.getOutput(1));
+							mRunningOnLoad = false;	
+							this.updateSlots();
+							return true;
+						}
+
+					}
 				}
 			}
 		}
@@ -329,7 +334,7 @@ extends GregtechMeta_MultiBlockBase {
 											for (FluidStack stored : this.getStoredFluids()){
 												if (stored.isFluidEqual(FluidUtils.getFluidStack("water", 1))){
 													if (stored.amount >= 1000){
-														//Utils.LOG_INFO("Going to try swap an air block for water from inut bus.");
+														//Utils.LOG_WARNING("Going to try swap an air block for water from inut bus.");
 														stored.amount -= 1000;
 														Block fluidUsed = null;
 														if (tBlock == Blocks.air || tBlock == Blocks.flowing_water){
@@ -349,12 +354,12 @@ extends GregtechMeta_MultiBlockBase {
 									}
 									if (tBlock == Blocks.water){
 										++tAmount;
-										//Utils.LOG_INFO("Found Water");
+										//Utils.LOG_WARNING("Found Water");
 									}
 									else if (tBlock == BlocksItems.getFluidBlock(InternalName.fluidDistilledWater)){
 										++tAmount;
 										++tAmount;
-										//Utils.LOG_INFO("Found Distilled Water");										
+										//Utils.LOG_WARNING("Found Distilled Water");										
 									}
 								}
 								else {

@@ -10,7 +10,7 @@ import forestry.core.utils.GeneticsUtil;
 import forestry.plugins.PluginManager;
 import gregtech.api.GregTech_API;
 import gregtech.api.enums.OrePrefixes;
-import gregtech.api.interfaces.IDamagableItem;
+import gregtech.api.enums.TAE;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import gregtech.api.items.GT_MetaGenerated_Tool;
@@ -38,7 +38,6 @@ import gtPlusPlus.xmod.gregtech.api.gui.GUI_TreeFarmer;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.helpers.TreeFarmHelper;
 import net.minecraft.block.Block;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -49,8 +48,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.ArrayList;
-
 public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlockBase {
 
 	/* private */ private int treeCheckTicks = 0;
@@ -58,6 +55,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 	/* private */ private int cleanupTicks = 0;
 	/* private */ public long mInternalPower = 0;
 	/* private */ private static int powerDrain = 32;
+	public final static int TEX_INDEX = 31;
 
 	private short energyHatchRetryCount = 0;
 
@@ -87,6 +85,11 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 				"Dark Purple: Dirt/Grass/Podzol/Humus",
 				"Light Blue: Fence/Fence Gate",
 				"Blue/Yellow: Controller",
+				"1x Input Bus (anywhere)",
+				"1x Output Bus (anywhere)",
+				"1x Input Hatch (anywhere)",
+				"1x Energy Hatch (anywhere)",
+				"1x Maintenance Hatch (anywhere)",
 				CORE.GT_Tooltip
 		};
 	}
@@ -309,7 +312,7 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 						}
 						//Deal with Bottom edges (Add Hatches/Busses first, othercheck make sure it's dirt) //TODO change the casings to not dirt~?
 						else if (h == 0) {
-							if ((!this.addMaintenanceToMachineList(tTileEntity, 77)) && (!this.addInputToMachineList(tTileEntity, 77)) && (!this.addOutputToMachineList(tTileEntity, 77)) && (!this.addEnergyInputToMachineList(tTileEntity, 77))) {
+							if ((!this.addMaintenanceToMachineList(tTileEntity, TAE.GTPP_INDEX(TEX_INDEX))) && (!this.addInputToMachineList(tTileEntity, TAE.GTPP_INDEX(TEX_INDEX))) && (!this.addOutputToMachineList(tTileEntity, TAE.GTPP_INDEX(TEX_INDEX))) && (!this.addEnergyInputToMachineList(tTileEntity, TAE.GTPP_INDEX(TEX_INDEX)))) {
 								if (((xDir + i) != 0) || ((zDir + j) != 0)) {//no controller
 
 									if (tTileEntity.getMetaTileID() != 752) {
@@ -416,9 +419,6 @@ public class GregtechMetaTileEntityTreeFarm extends GT_MetaTileEntity_MultiBlock
 		return false;
 	}
 
-
-
-	@SuppressWarnings("unused")
 	private boolean findLogs(final IGregTechTileEntity aBaseMetaTileEntity){
 
 		Utils.LOG_MACHINE_INFO("called findLogs()");
