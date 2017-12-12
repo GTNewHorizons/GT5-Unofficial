@@ -6,6 +6,7 @@ import com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefi
 import com.github.technus.tectech.elementalMatter.core.interfaces.iHasElementalDefinition;
 import net.minecraft.nbt.NBTTagCompound;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -162,11 +163,31 @@ public final class cElementalMutableDefinitionStackMap extends cElementalStackMa
     }
 
     public boolean removeAllAmounts(boolean testOnly, cElementalStackMap container) {
-        return removeAllAmounts(testOnly, container.values());
+        boolean test=true;
+        for (Iterator<Map.Entry<iElementalDefinition, cElementalDefinitionStack>> entries = container.map.entrySet().iterator(); entries.hasNext(); ) {
+            Map.Entry<iElementalDefinition, cElementalDefinitionStack> entry = entries.next();
+            test &= removeAmount(true, entry.getValue());
+        }
+        if (testOnly || !test) return test;
+        for (Iterator<Map.Entry<iElementalDefinition, cElementalDefinitionStack>> entries = container.map.entrySet().iterator(); entries.hasNext(); ) {
+            Map.Entry<iElementalDefinition, cElementalDefinitionStack> entry = entries.next();
+            removeAmount(false, entry.getValue());
+        }
+        return true;
     }
 
     public boolean removeAllAmounts(boolean testOnly, cElementalInstanceStackMap container) {
-        return removeAllAmounts(testOnly, container.values());
+        boolean test=true;
+        for (Iterator<Map.Entry<iElementalDefinition, cElementalInstanceStack>> entries = container.map.entrySet().iterator(); entries.hasNext(); ) {
+            Map.Entry<iElementalDefinition, cElementalInstanceStack> entry = entries.next();
+            test &= removeAmount(true, entry.getValue());
+        }
+        if (testOnly || !test) return test;
+        for (Iterator<Map.Entry<iElementalDefinition, cElementalInstanceStack>> entries = container.map.entrySet().iterator(); entries.hasNext(); ) {
+            Map.Entry<iElementalDefinition, cElementalInstanceStack> entry = entries.next();
+            test &= removeAmount(false, entry.getValue());
+        }
+        return true;
     }
 
     //Put replace

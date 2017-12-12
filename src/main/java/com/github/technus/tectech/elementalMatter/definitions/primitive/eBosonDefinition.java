@@ -14,6 +14,7 @@ public final class eBosonDefinition extends cElementalPrimitive {
     //deadEnd
     public static final cElementalDecay deadEnd = new cElementalDecay(boson_Y__, boson_Y__);
     public static final cElementalDecay deadEndHalf = new cElementalDecay(boson_Y__);
+    public static final cElementalDefinitionStack boson_Y__1=new cElementalDefinitionStack(boson_Y__,1);
 
     private eBosonDefinition(String name, String symbol, int type, float mass, int charge, int color, int ID) {
         super(name, symbol, type, mass, charge, color, ID);

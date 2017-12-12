@@ -7,6 +7,7 @@ import com.github.technus.tectech.elementalMatter.core.interfaces.iHasElementalD
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -16,7 +17,7 @@ import static com.github.technus.tectech.elementalMatter.definitions.primitive.c
  * Created by danie_000 on 22.01.2017.
  */
 public final class cElementalInstanceStackMap implements Comparable<cElementalInstanceStackMap> {
-    private TreeMap<iElementalDefinition, cElementalInstanceStack> map;
+    TreeMap<iElementalDefinition, cElementalInstanceStack> map;
 
     //Constructors
     public cElementalInstanceStackMap() {
@@ -190,11 +191,31 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
     }
 
     public boolean removeAllAmounts(boolean testOnly, cElementalStackMap container) {
-        return removeAllAmounts(testOnly, container.values());
+        boolean test=true;
+        for (Iterator<Map.Entry<iElementalDefinition, cElementalDefinitionStack>> entries = container.map.entrySet().iterator(); entries.hasNext(); ) {
+            Map.Entry<iElementalDefinition, cElementalDefinitionStack> entry = entries.next();
+            test &= removeAmount(true, entry.getValue());
+        }
+        if (testOnly || !test) return test;
+        for (Iterator<Map.Entry<iElementalDefinition, cElementalDefinitionStack>> entries = container.map.entrySet().iterator(); entries.hasNext(); ) {
+            Map.Entry<iElementalDefinition, cElementalDefinitionStack> entry = entries.next();
+            removeAmount(false, entry.getValue());
+        }
+        return true;
     }
 
     public boolean removeAllAmounts(boolean testOnly, cElementalInstanceStackMap container) {
-        return removeAllAmounts(testOnly, container.values());
+        boolean test=true;
+        for (Iterator<Map.Entry<iElementalDefinition, cElementalInstanceStack>> entries = container.map.entrySet().iterator(); entries.hasNext(); ) {
+            Map.Entry<iElementalDefinition, cElementalInstanceStack> entry = entries.next();
+            test &= removeAmount(true, entry.getValue());
+        }
+        if (testOnly || !test) return test;
+        for (Iterator<Map.Entry<iElementalDefinition, cElementalInstanceStack>> entries = container.map.entrySet().iterator(); entries.hasNext(); ) {
+            Map.Entry<iElementalDefinition, cElementalInstanceStack> entry = entries.next();
+            test &= removeAmount(false, entry.getValue());
+        }
+        return true;
     }
 
     //Remove overflow

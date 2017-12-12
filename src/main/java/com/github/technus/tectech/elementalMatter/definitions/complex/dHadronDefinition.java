@@ -33,7 +33,7 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
     private static final byte nbtType = (byte) 'h';
     //Helpers
     public static dHadronDefinition hadron_p, hadron_n, hadron_p_, hadron_n_;
-    public static cElementalDefinitionStack hadron_p1, hadron_n1, hadron_p2, hadron_n2, hadron_p3, hadron_n3;
+    public static cElementalDefinitionStack hadron_p1, hadron_n1, hadron_p2, hadron_n2, hadron_p3, hadron_n3, hadron_p5;
     private static float protonMass = 0F;
     private static float neutronMass = 0F;
 
@@ -362,6 +362,7 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
         hadron_n2 = new cElementalDefinitionStack(hadron_n, 2);
         hadron_p3 = new cElementalDefinitionStack(hadron_p, 3);
         hadron_n3 = new cElementalDefinitionStack(hadron_n, 3);
+        hadron_p5 = new cElementalDefinitionStack(hadron_p, 5);
 
         try {
             cElementalDefinition.addCreatorFromNBT(nbtType, dHadronDefinition.class.getMethod("fromNBT", NBTTagCompound.class),(byte)-64);

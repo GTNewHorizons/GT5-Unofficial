@@ -348,17 +348,16 @@ public final class dAtomDefinition extends cElementalDefinition {
     @Override
     public cElementalDecay[] getDecayArray() {
         ArrayList<cElementalDecay> decaysList=new ArrayList<>(4);
-        return getDecayArray(decaysList,decayMode);
+        return getDecayArray(decaysList,decayMode,true);
     }
 
-    private cElementalDecay[] getDecayArray(ArrayList<cElementalDecay> decaysList,int decayMode) {
+    private cElementalDecay[] getDecayArray(ArrayList<cElementalDecay> decaysList,int decayMode,boolean tryAnti) {
         if (this.type == 1) {
             switch (decayMode) {
-                case -3:
-                    if(ElectronCapture(decaysList))
-                        return decaysList.toArray(new cElementalDecay[decaysList.size()]);
                 case -2:
-                    if(PbetaDecay(decaysList))
+                    if(TecTech.Rnd.nextBoolean() && ElectronCapture(decaysList))
+                        return decaysList.toArray(new cElementalDecay[decaysList.size()]);
+                    else if(PbetaDecay(decaysList))
                         return decaysList.toArray(new cElementalDecay[decaysList.size()]);
                     break;
                 case -1:
@@ -381,11 +380,15 @@ public final class dAtomDefinition extends cElementalDefinition {
                     if(decayMode>8){
                         if(iaeaDecay(decaysList,0))
                             return decaysList.toArray(new cElementalDecay[decaysList.size()]);
-                        return getDecayArray(decaysList,decayMode-BYTE_OFFSET);
+                        return getDecayArray(decaysList,decayMode-BYTE_OFFSET,false);
                     }
             }
+            return cElementalDecay.noDecay;
+        }else if(this.type==-1){
+            dAtomDefinition anti=getAnti();
+            if(anti!=null) return anti.getDecayArray(decaysList,decayMode,false);
         }
-        return cElementalDecay.noDecay;
+        return getNaturalDecayInstant();
     }
 
     private boolean iaeaDecay(ArrayList<cElementalDecay> decaysList,long energy){
@@ -403,7 +406,7 @@ public final class dAtomDefinition extends cElementalDefinition {
     }
 
     private boolean getDecay(ArrayList<cElementalDecay> decaysList,iaeaNuclide.iaeaDecay decay){
-        cElementalMutableDefinitionStackMap withThis=elementalStacks.toMutable(),additional=new cElementalMutableDefinitionStackMap();
+        cElementalMutableDefinitionStackMap withThis=elementalStacks.toMutable(),newStuff=new cElementalMutableDefinitionStackMap();
         switch (decay.decayName){
             case "D": {
                 if (withThis.removeAllAmounts(false, deuterium.definition.getSubParticles())){
@@ -435,10 +438,10 @@ public final class dAtomDefinition extends cElementalDefinition {
             } break;
             case "14C": {
                 if (withThis.removeAllAmounts(false, carbon_14.definition.getSubParticles())){
-                    additional.putReplace(carbon_14);
+                    newStuff.putReplace(carbon_14);
                     try{
-                        additional.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,additional.toImmutable_unsafeMightLeaveExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) e.printStackTrace();
@@ -447,10 +450,10 @@ public final class dAtomDefinition extends cElementalDefinition {
             } break;
             case "24NE": {
                 if (withThis.removeAllAmounts(false, neon_24.definition.getSubParticles())){
-                    additional.putReplace(neon_24);
+                    newStuff.putReplace(neon_24);
                     try{
-                        additional.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,additional.toImmutable_unsafeMightLeaveExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) e.printStackTrace();
@@ -459,10 +462,10 @@ public final class dAtomDefinition extends cElementalDefinition {
             } break;
             case "34SI": {
                 if (withThis.removeAllAmounts(false, silicon_34.definition.getSubParticles())){
-                    additional.putReplace(silicon_34);
+                    newStuff.putReplace(silicon_34);
                     try{
-                        additional.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,additional.toImmutable_unsafeMightLeaveExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) e.printStackTrace();
@@ -470,11 +473,11 @@ public final class dAtomDefinition extends cElementalDefinition {
                 }
             } break;
             case "A": case "A?": {
-                if (withThis.removeAllAmounts(false, alpha.definition.getSubParticles())){
-                    additional.putReplace(alpha);
+                if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_n2,dHadronDefinition.hadron_p2)){
+                    newStuff.putReplace(alpha);
                     try{
-                        additional.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,additional.toImmutable_unsafeMightLeaveExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) e.printStackTrace();
@@ -484,11 +487,11 @@ public final class dAtomDefinition extends cElementalDefinition {
             case "B+": {
                 if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_p1)){
                     withThis.putUnify(dHadronDefinition.hadron_n1);
-                    additional.putReplace(eLeptonDefinition.lepton_e_1);
-                    additional.putReplace(eNeutrinoDefinition.lepton_Ve1);
+                    newStuff.putReplace(eLeptonDefinition.lepton_e_1);
+                    newStuff.putReplace(eNeutrinoDefinition.lepton_Ve1);
                     try{
-                        additional.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,additional.toImmutable_unsafeMightLeaveExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) e.printStackTrace();
@@ -498,11 +501,11 @@ public final class dAtomDefinition extends cElementalDefinition {
             case "2B+": {
                 if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_p2)){
                     withThis.putUnify(dHadronDefinition.hadron_n2);
-                    additional.putReplace(eLeptonDefinition.lepton_e_2);
-                    additional.putReplace(eNeutrinoDefinition.lepton_Ve2);
+                    newStuff.putReplace(eLeptonDefinition.lepton_e_2);
+                    newStuff.putReplace(eNeutrinoDefinition.lepton_Ve2);
                     try{
-                        additional.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,additional.toImmutable_unsafeMightLeaveExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) e.printStackTrace();
@@ -512,11 +515,11 @@ public final class dAtomDefinition extends cElementalDefinition {
             case "B-": {
                 if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_n1)){
                     withThis.putUnify(dHadronDefinition.hadron_p1);
-                    additional.putReplace(eLeptonDefinition.lepton_e1);
-                    additional.putReplace(eNeutrinoDefinition.lepton_Ve_1);
+                    newStuff.putReplace(eLeptonDefinition.lepton_e1);
+                    newStuff.putReplace(eNeutrinoDefinition.lepton_Ve_1);
                     try{
-                        additional.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,additional.toImmutable_unsafeMightLeaveExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) e.printStackTrace();
@@ -526,11 +529,11 @@ public final class dAtomDefinition extends cElementalDefinition {
             case "2B-": {
                 if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_n2)){
                     withThis.putUnify(dHadronDefinition.hadron_p2);
-                    additional.putReplace(eLeptonDefinition.lepton_e2);
-                    additional.putReplace(eNeutrinoDefinition.lepton_Ve_2);
+                    newStuff.putReplace(eLeptonDefinition.lepton_e2);
+                    newStuff.putReplace(eNeutrinoDefinition.lepton_Ve_2);
                     try{
-                        additional.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,additional.toImmutable_unsafeMightLeaveExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) e.printStackTrace();
@@ -540,10 +543,10 @@ public final class dAtomDefinition extends cElementalDefinition {
             case "EC": {
                 if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_p1,eLeptonDefinition.lepton_e1)){
                     withThis.putUnify(dHadronDefinition.hadron_n1);
-                    additional.putReplace(eNeutrinoDefinition.lepton_Ve1);
+                    newStuff.putReplace(eNeutrinoDefinition.lepton_Ve1);
                     try{
-                        additional.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,additional.toImmutable_unsafeMightLeaveExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) e.printStackTrace();
@@ -553,10 +556,10 @@ public final class dAtomDefinition extends cElementalDefinition {
             case "2EC": {
                 if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_p2,eLeptonDefinition.lepton_e2)){
                     withThis.putUnify(dHadronDefinition.hadron_n2);
-                    additional.putReplace(eNeutrinoDefinition.lepton_Ve2);
+                    newStuff.putReplace(eNeutrinoDefinition.lepton_Ve2);
                     try{
-                        additional.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,additional.toImmutable_unsafeMightLeaveExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) e.printStackTrace();
@@ -566,11 +569,11 @@ public final class dAtomDefinition extends cElementalDefinition {
             case "B++EC": case "EC+B+": {
                 if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_p2,eLeptonDefinition.lepton_e1)){
                     withThis.putUnify(dHadronDefinition.hadron_n2);
-                    additional.putReplace(eLeptonDefinition.lepton_e_1);
-                    additional.putReplace(eNeutrinoDefinition.lepton_Ve2);
+                    newStuff.putReplace(eLeptonDefinition.lepton_e_1);
+                    newStuff.putReplace(eNeutrinoDefinition.lepton_Ve2);
                     try{
-                        additional.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,additional.toImmutable_unsafeMightLeaveExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) e.printStackTrace();
@@ -578,14 +581,13 @@ public final class dAtomDefinition extends cElementalDefinition {
                 }
             } break;
             case "B+A": {
-                if (withThis.removeAllAmounts(false, alpha.definition.getSubParticles()) && withThis.removeAmount(false, dHadronDefinition.hadron_p1)){
-                    withThis.putUnify(dHadronDefinition.hadron_n1);
-                    additional.putReplace(eLeptonDefinition.lepton_e_1);
-                    additional.putReplace(eNeutrinoDefinition.lepton_Ve1);
-                    additional.putReplace(alpha);
+                if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_p3, dHadronDefinition.hadron_n1)){
+                    newStuff.putReplace(eLeptonDefinition.lepton_e_1);
+                    newStuff.putReplace(eNeutrinoDefinition.lepton_Ve1);
+                    newStuff.putReplace(alpha);
                     try{
-                        additional.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,additional.toImmutable_unsafeMightLeaveExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) e.printStackTrace();
@@ -595,12 +597,12 @@ public final class dAtomDefinition extends cElementalDefinition {
             case "B+P": {
                 if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_p2)){
                     withThis.putUnify(dHadronDefinition.hadron_n1);
-                    additional.putReplace(eLeptonDefinition.lepton_e_1);
-                    additional.putReplace(eNeutrinoDefinition.lepton_Ve1);
-                    additional.putReplace(dHadronDefinition.hadron_p1);
+                    newStuff.putReplace(eLeptonDefinition.lepton_e_1);
+                    newStuff.putReplace(eNeutrinoDefinition.lepton_Ve1);
+                    newStuff.putReplace(dHadronDefinition.hadron_p1);
                     try{
-                        additional.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,additional.toImmutable_unsafeMightLeaveExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) e.printStackTrace();
@@ -610,12 +612,12 @@ public final class dAtomDefinition extends cElementalDefinition {
             case "B+2P": {
                 if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_p3)){
                     withThis.putUnify(dHadronDefinition.hadron_n1);
-                    additional.putReplace(eLeptonDefinition.lepton_e_1);
-                    additional.putReplace(eNeutrinoDefinition.lepton_Ve1);
-                    additional.putReplace(dHadronDefinition.hadron_p2);
+                    newStuff.putReplace(eLeptonDefinition.lepton_e_1);
+                    newStuff.putReplace(eNeutrinoDefinition.lepton_Ve1);
+                    newStuff.putReplace(dHadronDefinition.hadron_p2);
                     try{
-                        additional.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,additional.toImmutable_unsafeMightLeaveExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) e.printStackTrace();
@@ -623,14 +625,13 @@ public final class dAtomDefinition extends cElementalDefinition {
                 }
             } break;
             case "B-A": {
-                if (withThis.removeAllAmounts(false, alpha.definition.getSubParticles()) && withThis.removeAmount(false,dHadronDefinition.hadron_n1)){
-                    withThis.putUnify(dHadronDefinition.hadron_p1);
-                    additional.putReplace(eLeptonDefinition.lepton_e1);
-                    additional.putReplace(eNeutrinoDefinition.lepton_Ve_1);
-                    additional.putReplace(alpha);
+                if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_n3, dHadronDefinition.hadron_p1)){
+                    newStuff.putReplace(eLeptonDefinition.lepton_e1);
+                    newStuff.putReplace(eNeutrinoDefinition.lepton_Ve_1);
+                    newStuff.putReplace(alpha);
                     try{
-                        additional.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,additional.toImmutable_unsafeMightLeaveExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) e.printStackTrace();
@@ -640,12 +641,12 @@ public final class dAtomDefinition extends cElementalDefinition {
             case "B-N": {
                 if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_n2)){
                     withThis.putUnify(dHadronDefinition.hadron_p1);
-                    additional.putReplace(eLeptonDefinition.lepton_e1);
-                    additional.putReplace(eNeutrinoDefinition.lepton_Ve_1);
-                    additional.putReplace(dHadronDefinition.hadron_n1);
+                    newStuff.putReplace(eLeptonDefinition.lepton_e1);
+                    newStuff.putReplace(eNeutrinoDefinition.lepton_Ve_1);
+                    newStuff.putReplace(dHadronDefinition.hadron_n1);
                     try{
-                        additional.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,additional.toImmutable_unsafeMightLeaveExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) e.printStackTrace();
@@ -655,12 +656,12 @@ public final class dAtomDefinition extends cElementalDefinition {
             case "B-2N": {
                 if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_n3)){
                     withThis.putUnify(dHadronDefinition.hadron_p1);
-                    additional.putReplace(eLeptonDefinition.lepton_e1);
-                    additional.putReplace(eNeutrinoDefinition.lepton_Ve_1);
-                    additional.putReplace(dHadronDefinition.hadron_n2);
+                    newStuff.putReplace(eLeptonDefinition.lepton_e1);
+                    newStuff.putReplace(eNeutrinoDefinition.lepton_Ve_1);
+                    newStuff.putReplace(dHadronDefinition.hadron_n2);
                     try{
-                        additional.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,additional.toImmutable_unsafeMightLeaveExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) e.printStackTrace();
@@ -668,14 +669,13 @@ public final class dAtomDefinition extends cElementalDefinition {
                 }
             } break;
             case "B-P": {
-                if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_n1, dHadronDefinition.hadron_p1)){
-                    withThis.putUnify(dHadronDefinition.hadron_p1);
-                    additional.putReplace(eLeptonDefinition.lepton_e1);
-                    additional.putReplace(eNeutrinoDefinition.lepton_Ve_1);
-                    additional.putReplace(dHadronDefinition.hadron_p1);
+                if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_n1)){
+                    newStuff.putReplace(eLeptonDefinition.lepton_e1);
+                    newStuff.putReplace(eNeutrinoDefinition.lepton_Ve_1);
+                    newStuff.putReplace(dHadronDefinition.hadron_p1);
                     try{
-                        additional.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,additional.toImmutable_unsafeMightLeaveExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) e.printStackTrace();
@@ -683,31 +683,66 @@ public final class dAtomDefinition extends cElementalDefinition {
                 }
             } break;
             case "ECA": {
-                if (withThis.removeAllAmounts(false, alpha.definition.getSubParticles()) && withThis.removeAllAmounts(false, dHadronDefinition.hadron_p1,eLeptonDefinition.lepton_e1)){
-                    withThis.putUnify(dHadronDefinition.hadron_n1);
-                    additional.putReplace(eNeutrinoDefinition.lepton_Ve1);
-                    additional.putReplace(alpha);
+                if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_n1,eLeptonDefinition.lepton_e1,dHadronDefinition.hadron_p3)){
+                    newStuff.putReplace(eNeutrinoDefinition.lepton_Ve1);
+                    newStuff.putReplace(alpha);
                     try{
-                        additional.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,additional.toImmutable_unsafeMightLeaveExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) e.printStackTrace();
                     }
                 }
             } break;
-            case "ECP":
-                break;
-            case "EC2P":
-                break;
-            case "ECP+EC2P":
-                break;
+            case "ECP": {
+                if (withThis.removeAllAmounts(false, eLeptonDefinition.lepton_e1,dHadronDefinition.hadron_p2)){
+                    withThis.putUnify(dHadronDefinition.hadron_n1);
+                    newStuff.putReplace(eNeutrinoDefinition.lepton_Ve1);
+                    newStuff.putReplace(dHadronDefinition.hadron_p1);
+                    try{
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
+                        return true;
+                    }catch (Exception e){
+                        if(DEBUG_MODE) e.printStackTrace();
+                    }
+                }
+            } break;
+            case "EC2P": {
+                if (withThis.removeAllAmounts(false, eLeptonDefinition.lepton_e1,dHadronDefinition.hadron_p3)){
+                    withThis.putUnify(dHadronDefinition.hadron_n1);
+                    newStuff.putReplace(eNeutrinoDefinition.lepton_Ve1);
+                    newStuff.putReplace(dHadronDefinition.hadron_p2);
+                    try{
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
+                        return true;
+                    }catch (Exception e){
+                        if(DEBUG_MODE) e.printStackTrace();
+                    }
+                }
+            } break;
+            case "ECP+EC2P": {//todo look at branching ratios
+                if (withThis.removeAllAmounts(false, eLeptonDefinition.lepton_e2,dHadronDefinition.hadron_p5)){
+                    withThis.putUnify(dHadronDefinition.hadron_n1);
+                    newStuff.putReplace(eNeutrinoDefinition.lepton_Ve2);
+                    newStuff.putReplace(dHadronDefinition.hadron_p3);
+                    try{
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
+                        return true;
+                    }catch (Exception e){
+                        if(DEBUG_MODE) e.printStackTrace();
+                    }
+                }
+            } break;
             case "N": {
                 if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_n1)){
-                    additional.putReplace(dHadronDefinition.hadron_n1);
+                    newStuff.putReplace(dHadronDefinition.hadron_n1);
                     try{
-                        additional.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,additional.toImmutable_unsafeMightLeaveExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) e.printStackTrace();
@@ -716,10 +751,10 @@ public final class dAtomDefinition extends cElementalDefinition {
             } break;
             case "2N": {
                 if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_n2)){
-                    additional.putReplace(dHadronDefinition.hadron_n2);
+                    newStuff.putReplace(dHadronDefinition.hadron_n2);
                     try{
-                        additional.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,additional.toImmutable_unsafeMightLeaveExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) e.printStackTrace();
@@ -728,10 +763,10 @@ public final class dAtomDefinition extends cElementalDefinition {
             } break;
             case "P": {
                 if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_p1)){
-                    additional.putReplace(dHadronDefinition.hadron_p1);
+                    newStuff.putReplace(dHadronDefinition.hadron_p1);
                     try{
-                        additional.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,additional.toImmutable_unsafeMightLeaveExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) e.printStackTrace();
@@ -740,10 +775,10 @@ public final class dAtomDefinition extends cElementalDefinition {
             } break;
             case "2P": {
                 if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_p2)){
-                    additional.putReplace(dHadronDefinition.hadron_p2);
+                    newStuff.putReplace(dHadronDefinition.hadron_p2);
                     try{
-                        additional.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
-                        decaysList.add(new cElementalDecay(decay.chance,additional.toImmutable_unsafeMightLeaveExposedElementalTree()));
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
                         return true;
                     }catch (Exception e){
                         if(DEBUG_MODE) e.printStackTrace();
@@ -751,20 +786,72 @@ public final class dAtomDefinition extends cElementalDefinition {
                 }
             } break;
             case "SF":
-                return Fission(decaysList,decay.chance,false,withThis);
-            case "B-F":
-                break;
-            case "ECF": case "ECSF": case "EC(+SF)":
-                break;
-            case "SF(+EC+B+)": case "SF+EC+B+":
-                break;
-            case "SF+EC+B-":
-                break;
+                if(Fission(decaysList,withThis,newStuff,decay.chance,false)) return true;
+            case "B-F": {
+                if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_n1)){
+                    withThis.putUnify(dHadronDefinition.hadron_p1);
+                    newStuff.putReplace(eLeptonDefinition.lepton_e1);
+                    newStuff.putReplace(eNeutrinoDefinition.lepton_Ve_1);
+                    try{
+                        if(Fission(decaysList,withThis,newStuff,decay.chance,false)) return true;
+                    }catch (Exception e){
+                        if(DEBUG_MODE) e.printStackTrace();
+                    }
+                }
+            } break;
+            case "ECF": case "ECSF": case "EC(+SF)": {
+                if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_p1,eLeptonDefinition.lepton_e1)){
+                    withThis.putUnify(dHadronDefinition.hadron_n1);
+                    newStuff.putReplace(eNeutrinoDefinition.lepton_Ve1);
+                    try{
+                        if(Fission(decaysList,withThis,newStuff,decay.chance,false)) return true;
+                    }catch (Exception e){
+                        if(DEBUG_MODE) e.printStackTrace();
+                    }
+                }
+            } break;
+            case "SF(+EC+B+)": case "SF+EC+B+": {
+                if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_p2,eLeptonDefinition.lepton_e1)){
+                    withThis.putUnify(dHadronDefinition.hadron_n2);
+                    newStuff.putReplace(eLeptonDefinition.lepton_e_1);
+                    newStuff.putReplace(eNeutrinoDefinition.lepton_Ve2);
+                    try{
+                        if(Fission(decaysList,withThis,newStuff,decay.chance,false)) return true;
+                    }catch (Exception e){
+                        if(DEBUG_MODE) e.printStackTrace();
+                    }
+                }
+            } break;
+            case "SF+EC+B-": {
+                if (withThis.removeAllAmounts(false, eLeptonDefinition.lepton_e1)){
+                    newStuff.putReplace(eLeptonDefinition.lepton_e1);
+                    newStuff.putReplace(eNeutrinoDefinition.lepton_Ve1);
+                    newStuff.putReplace(eNeutrinoDefinition.lepton_Ve_1);
+                    try{
+                        if(Fission(decaysList,withThis,newStuff,decay.chance,false)) return true;
+                    }catch (Exception e){
+                        if(DEBUG_MODE) e.printStackTrace();
+                    }
+                }
+            } break;
             case "IT": case "IT?": case "G":
                 decaysList.add(new cElementalDecay(decay.chance, this, eBosonDefinition.boson_Y__));
                 return true;
-            case "IT+EC+B+":
-                break;
+            case "IT+EC+B+": {
+                if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_p2,eLeptonDefinition.lepton_e1)){
+                    withThis.putUnify(dHadronDefinition.hadron_n2);
+                    newStuff.putReplace(eLeptonDefinition.lepton_e_1);
+                    newStuff.putReplace(eNeutrinoDefinition.lepton_Ve2);
+                    newStuff.putReplace(eBosonDefinition.boson_Y__1);
+                    try{
+                        newStuff.putReplace(new dAtomDefinition(withThis.toImmutable_unsafeMightLeaveExposedElementalTree()).getStackForm(1));
+                        decaysList.add(new cElementalDecay(decay.chance,newStuff.toImmutable_unsafeMightLeaveExposedElementalTree()));
+                        return true;
+                    }catch (Exception e){
+                        if(DEBUG_MODE) e.printStackTrace();
+                    }
+                }
+            } break;
             case "DEAD_END":
                 decaysList.add(deadEnd);
                 return true;
@@ -789,7 +876,7 @@ public final class dAtomDefinition extends cElementalDefinition {
 
     private boolean alphaDecay(ArrayList<cElementalDecay> decaysList) {
         final cElementalMutableDefinitionStackMap tree = elementalStacks.toMutable();
-        if (tree.removeAllAmounts(false, dHadronDefinition.hadron_n2, dHadronDefinition.hadron_p2)) {
+        if (tree.removeAllAmounts(false, alpha.definition.getSubParticles())) {
             try {
                 decaysList.add(new cElementalDecay((float) 1, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable_unsafeMightLeaveExposedElementalTree()), 1), alpha));
                 return true;
@@ -833,7 +920,7 @@ public final class dAtomDefinition extends cElementalDefinition {
         if (tree.removeAllAmounts(false, dHadronDefinition.hadron_p1,eLeptonDefinition.lepton_e1)) {
             try {
                 tree.putUnify(dHadronDefinition.hadron_n1);
-                decaysList.add(new cElementalDecay((float) 1, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable_unsafeMightLeaveExposedElementalTree()), 1), eLeptonDefinition.lepton_e_1, eNeutrinoDefinition.lepton_Ve1));
+                decaysList.add(new cElementalDecay((float) 1, new cElementalDefinitionStack(new dAtomDefinition(tree.toImmutable_unsafeMightLeaveExposedElementalTree()), 1), eNeutrinoDefinition.lepton_Ve1));
                 return true;
             } catch (Exception e) {
                 if (DEBUG_MODE) e.printStackTrace();
@@ -842,9 +929,8 @@ public final class dAtomDefinition extends cElementalDefinition {
         return false;
     }
 
-    private boolean Fission(ArrayList<cElementalDecay> decaysList,float probability,boolean spontaneousCheck, cElementalMutableDefinitionStackMap fissile) {
+    private boolean Fission(ArrayList<cElementalDecay> decaysList, cElementalMutableDefinitionStackMap fissile, cElementalMutableDefinitionStackMap particles,float probability,boolean spontaneousCheck) {
         final cElementalMutableDefinitionStackMap heavy = new cElementalMutableDefinitionStackMap();
-        final ArrayList<cElementalDefinitionStack> particles = new ArrayList<>(4);
         final double[] liquidDrop=liquidDropFunction(Math.abs(element)<=97);
 
         for(cElementalDefinitionStack stack: fissile.values()){
@@ -856,7 +942,7 @@ public final class dAtomDefinition extends cElementalDefinition {
                     double neutrals=stack.amount*liquidDrop[2];
                     int neutrals_cnt=(int)Math.floor(neutrals);
                     neutrals_cnt+=neutrals-neutrals_cnt>XSTR_INSTANCE.nextDouble()?1:0;
-                    particles.add(new cElementalDefinitionStack(stack.definition, neutrals_cnt));
+                    particles.putUnify(new cElementalDefinitionStack(stack.definition, neutrals_cnt));
 
                     int heavy_cnt=(int)Math.ceil(stack.amount*liquidDrop[1]);
                     while(heavy_cnt+neutrals_cnt>stack.amount)
@@ -878,12 +964,12 @@ public final class dAtomDefinition extends cElementalDefinition {
         }
 
         try {
-            particles.add(new cElementalDefinitionStack(new dAtomDefinition(fissile.toImmutable_unsafeMightLeaveExposedElementalTree()),1));
-            particles.add(new cElementalDefinitionStack(new dAtomDefinition(heavy.toImmutable_unsafeMightLeaveExposedElementalTree()),1));
-            decaysList.add(new cElementalDecay(0.5f, particles.toArray(new cElementalDefinitionStack[particles.size()])));
+            particles.putReplace(new cElementalDefinitionStack(new dAtomDefinition(fissile.toImmutable_unsafeMightLeaveExposedElementalTree()),1));
+            particles.putReplace(new cElementalDefinitionStack(new dAtomDefinition(heavy.toImmutable_unsafeMightLeaveExposedElementalTree()),1));
+            decaysList.add(new cElementalDecay(probability, particles.toImmutable_unsafeMightLeaveExposedElementalTree()));
             return true;
         } catch (Exception e) {
-            if (DEBUG_MODE) e.printStackTrace();
+            if(DEBUG_MODE) e.printStackTrace();
         }
         return false;
     }
@@ -996,7 +1082,7 @@ public final class dAtomDefinition extends cElementalDefinition {
     //}
 
     @Override
-    public iElementalDefinition getAnti() {
+    public dAtomDefinition getAnti() {
         cElementalMutableDefinitionStackMap anti = new cElementalMutableDefinitionStackMap();
         for (cElementalDefinitionStack stack : elementalStacks.values())
             anti.putReplace(new cElementalDefinitionStack(stack.definition.getAnti(), stack.amount));
