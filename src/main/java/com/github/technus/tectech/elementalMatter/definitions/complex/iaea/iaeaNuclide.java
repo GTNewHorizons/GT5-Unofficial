@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.TreeMap;
 
-import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefinition.STABLE_RAW_LIFE_TIME;
 
 public final class iaeaNuclide {
@@ -113,11 +112,11 @@ public final class iaeaNuclide {
     }
 
     private void getMoreData(String[] cells){
-        if(DEBUG_MODE) {
-            if (add(cells[14])) System.out.println(N + " " + Z);
-            if (add(cells[17])) System.out.println(N + " " + Z);
-            if (add(cells[20])) System.out.println(N + " " + Z);
-        }
+        //if(DEBUG_MODE) {
+        //    if (add(cells[14])) System.out.println(N + " " + Z);
+        //    if (add(cells[17])) System.out.println(N + " " + Z);
+        //    if (add(cells[20])) System.out.println(N + " " + Z);
+        //}
         new energeticState(this, halfTime,getDecaysFixed(cells[14],doubleOrNaN(cells[15],"chance1"),cells[17],doubleOrNaN(cells[18],"chance1"),cells[20],doubleOrNaN(cells[21],"chance1")));
     }
 
@@ -167,11 +166,11 @@ public final class iaeaNuclide {
                 nuclide.energeticStates = new TreeMap<>();
             }
             nuclide.energeticStates.put(energy,this);
-            if(DEBUG_MODE) {
-                if (add(cells[12])) System.out.println(nuclide.N + " " + nuclide.Z);
-                if (add(cells[15])) System.out.println(nuclide.N + " " + nuclide.Z);
-                if (add(cells[18])) System.out.println(nuclide.N + " " + nuclide.Z);
-            }
+            //if(DEBUG_MODE) {
+            //    if (add(cells[12])) System.out.println(nuclide.N + " " + nuclide.Z);
+            //    if (add(cells[15])) System.out.println(nuclide.N + " " + nuclide.Z);
+            //    if (add(cells[18])) System.out.println(nuclide.N + " " + nuclide.Z);
+            //}
             this.decaymodes=getDecaysFixed(cells[12],doubleOrNaN(cells[13],"chance 1",nuclide),cells[15],doubleOrNaN(cells[16],"chance 2",nuclide),cells[18],doubleOrNaN(cells[19],"chance 3",nuclide));
         }
 
@@ -207,13 +206,27 @@ public final class iaeaNuclide {
     }
 
     private static iaeaDecay[] getDecaysFixed(String decay1, double chance1,String decay2, double chance2,String decay3, double chance3){
+        double normalization=0,div;
+        if(decay1.length()>0 && !Double.isNaN(chance1))normalization+=chance1;
+        if(decay2.length()>0 && !Double.isNaN(chance2))normalization+=chance2;
+        if(decay3.length()>0 && !Double.isNaN(chance3))normalization+=chance3;
+        normalization/=100d;
         TreeMap<Double,iaeaDecay> decays=new TreeMap<>();
-        if(decay1.length()>0)
-            decays.put(chance1/100D,new iaeaDecay((float)(chance1/100D),decay1));
-        if(decay2.length()>0)
-            decays.put(chance2/100D,new iaeaDecay((float)(chance2/100D),decay3));
-        if(decay3.length()>0)
-            decays.put(chance3/100D,new iaeaDecay((float)(chance3/100D),decay3));
+        if(decay1.length()>0) {
+            div=chance1/normalization;
+            if(!Double.isNaN(div)) decays.put(div, new iaeaDecay((float) (div), decay1));
+        }
+        if(decay2.length()>0) {
+            div=chance2/normalization;
+            if(!Double.isNaN(div)) decays.put(div, new iaeaDecay((float) (div), decay2));
+        }
+        if(decay3.length()>0) {
+            div=chance3/normalization;
+            if(!Double.isNaN(div)) decays.put(div, new iaeaDecay((float) (div), decay3));
+        }
+        //if(DEBUG_MODE){
+        //    System.out.println("INVALID SUM?\t"+normalization+"\t"+decay1+"\t"+chance1+"\t"+decay2+"\t"+chance2+"\t"+decay3+"\t"+chance3);
+        //}
         decays.put(1D,iaeaDecay.DEAD_END);
         return decays.values().toArray(new iaeaDecay[decays.size()]);
     }
