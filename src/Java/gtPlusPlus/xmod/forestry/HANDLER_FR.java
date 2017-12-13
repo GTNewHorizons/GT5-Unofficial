@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import cpw.mods.fml.common.Optional;
 import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import gtPlusPlus.xmod.forestry.bees.custom.GTPP_Bees;
 import gtPlusPlus.xmod.forestry.bees.items.FR_ItemRegistry;
 import gtPlusPlus.xmod.forestry.bees.recipe.FR_Gregtech_Recipes;
 import net.minecraft.block.Block;
@@ -17,6 +18,9 @@ public class HANDLER_FR {
 		if (LoadedMods.Forestry){
 			FR_ItemRegistry.Register();			
 		}
+		
+		new GTPP_Bees();
+		
 	}
 
 	public static void Init(){
