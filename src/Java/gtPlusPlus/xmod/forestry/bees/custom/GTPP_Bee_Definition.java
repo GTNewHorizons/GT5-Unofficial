@@ -10,18 +10,25 @@ import forestry.apiculture.genetics.BeeDefinition;
 import forestry.apiculture.genetics.BeeVariation;
 import forestry.apiculture.genetics.IBeeDefinition;
 import forestry.core.genetics.alleles.AlleleHelper;
+import gtPlusPlus.core.item.ModItems;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.reflect.ReflectionUtils;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Locale;
 
 public enum GTPP_Bee_Definition implements IBeeDefinition {
     
 	
-	SILICON(GTPP_Branch_Definition.METAL, "Silicon", true, Utils.rgbtoHexValue(75, 75, 75), Utils.rgbtoHexValue(125, 125, 125)) {
+	SILICON(GTPP_Branch_Definition.ORGANIC, "Silicon", true, Utils.rgbtoHexValue(75, 75, 75), Utils.rgbtoHexValue(125, 125, 125)) {
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
             beeSpecies.addProduct(getSlagComb(), 0.10f);
@@ -37,7 +44,7 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
 
         @Override
         protected void registerMutations() {
-        	IBeeMutationCustom tMutation = registerMutation(getSpecies("SlimeBall"), getSpecies("StickyResin"), 10);
+        	IBeeMutationCustom tMutation = registerMutation(getGregtechBeeType("SLIMEBALL"), getGregtechBeeType("STICKYRESIN"), 10);
         }
     },
 	
@@ -57,7 +64,7 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
 
         @Override
         protected void registerMutations() {
-        	IBeeMutationCustom tMutation = registerMutation(getSpecies("SlimeBall"), getSpecies("StickyResin"), 10);
+        	IBeeMutationCustom tMutation = registerMutation(getGregtechBeeType("SLIMEBALL"), getGregtechBeeType("STICKYRESIN"), 10);
         }
     },
 	
@@ -77,7 +84,7 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
 
         @Override
         protected void registerMutations() {
-        	IBeeMutationCustom tMutation = registerMutation(getSpecies("Rubber"), getSpecies("Oil"), 10);
+        	IBeeMutationCustom tMutation = registerMutation(RUBBER.species, getGregtechBeeType("OIL"), 10);
         }
     },
 	
@@ -97,7 +104,7 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
 
         @Override
         protected void registerMutations() {
-        	IBeeMutationCustom tMutation = registerMutation(getSpecies("Rubber"), getSpecies("Plastic"), 10);
+        	IBeeMutationCustom tMutation = registerMutation(RUBBER.species, PLASTIC.species, 10);
         }
     },
 	
@@ -117,7 +124,7 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
 
         @Override
         protected void registerMutations() {
-        	IBeeMutationCustom tMutation = registerMutation(getSpecies("Ptfe"), getSpecies("Plastic"), 10);
+        	IBeeMutationCustom tMutation = registerMutation(PTFE.species, PLASTIC.species, 10);
         }
     },
 	
@@ -667,7 +674,12 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
     }
 
     protected final IBeeMutationCustom registerMutation(IAlleleBeeSpecies parent1, IAlleleBeeSpecies parent2, int chance) {
-        return BeeManager.beeMutationFactory.createMutation(parent1, parent2, getTemplate(), chance);
+        IAllele[] template = getTemplate();
+        Utils.LOG_INFO("[Bees-Debug] parent1: "+(parent1 != null));
+        Utils.LOG_INFO("[Bees-Debug] parent2: "+(parent2 != null));
+        Utils.LOG_INFO("[Bees-Debug] chance: "+(chance));
+        Utils.LOG_INFO("[Bees-Debug] template: "+(template != null));
+    	return BeeManager.beeMutationFactory.createMutation(parent1, parent2, template, chance);
     }
 
     @Override
@@ -696,10 +708,33 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
     }
 
     private static ItemStack getSlagComb(){
-    	return ItemUtils.getSimpleStack(GTPP_Bees.Comb_Slag, 1);
+    	return issStackValid(ItemUtils.getSimpleStack(GTPP_Bees.Comb_Slag, 1));
     }
     private static ItemStack getStoneComb(){
-    	return ItemUtils.getSimpleStack(GTPP_Bees.Comb_Stone, 1);
+    	return issStackValid(ItemUtils.getSimpleStack(GTPP_Bees.Comb_Stone, 1));
     }
 
+    private static ItemStack issStackValid(ItemStack result){
+    	if (result == null){
+    		return ItemUtils.getSimpleStack(ModItems.AAA_Broken);
+    	}
+    	return result;
+    }
+    
+    public static IAlleleBeeSpecies getGregtechBeeType(String name){
+    	Class<?> gtBees;    	
+		try {
+	    	Class gtBeeTypes = Class.forName("gregtech.loaders.misc.GT_BeeDefinition");
+	    	Enum gtBeeEnumObject = Enum.valueOf(gtBeeTypes, name); 	
+	    	Field gtBeesField = FieldUtils.getDeclaredField(gtBeeTypes, "species", true);
+	    	gtBeesField.setAccessible(true);
+	    	ReflectionUtils.makeAccessible(gtBeesField);
+	    	Object beeType = gtBeesField.get(gtBeeEnumObject);	    		    	
+	    	return (IAlleleBeeSpecies) beeType;
+		}		
+		catch (ClassNotFoundException | IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}    	
+    	return null;
+    }
 }
