@@ -10,9 +10,8 @@ import forestry.apiculture.genetics.BeeDefinition;
 import forestry.apiculture.genetics.BeeVariation;
 import forestry.apiculture.genetics.IBeeDefinition;
 import forestry.core.genetics.alleles.AlleleHelper;
-import gregtech.common.items.CombType;
-import gregtech.loaders.misc.GT_Bees;
 import gtPlusPlus.core.util.Utils;
+import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -25,7 +24,7 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
 	SILICON(GTPP_Branch_Definition.METAL, "Silicon", true, Utils.rgbtoHexValue(75, 75, 75), Utils.rgbtoHexValue(125, 125, 125)) {
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
-            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.10f);
+            beeSpecies.addProduct(getSlagComb(), 0.10f);
             beeSpecies.addProduct(GTPP_Bees.combs.getStackForType(CustomCombs.SILICON), 0.20f);
             beeSpecies.setHumidity(EnumHumidity.NORMAL);
             beeSpecies.setTemperature(EnumTemperature.NORMAL);
@@ -45,7 +44,7 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
 	RUBBER(GTPP_Branch_Definition.ORGANIC, "Rubber", true, Utils.rgbtoHexValue(55, 55, 55), Utils.rgbtoHexValue(75, 75, 75)) {
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
-            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.SLAG), 0.10f);
+            beeSpecies.addProduct(getSlagComb(), 0.10f);
             beeSpecies.addProduct(GTPP_Bees.combs.getStackForType(CustomCombs.RUBBER), 0.30f);
             beeSpecies.setHumidity(EnumHumidity.NORMAL);
             beeSpecies.setTemperature(EnumTemperature.NORMAL);
@@ -65,7 +64,7 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
 	PLASTIC(GTPP_Branch_Definition.ORGANIC, "Plastic", true, Utils.rgbtoHexValue(245, 245, 245), Utils.rgbtoHexValue(175, 175, 175)) {
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
-            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.30f);
+            beeSpecies.addProduct(getStoneComb(), 0.30f);
             beeSpecies.addProduct(GTPP_Bees.combs.getStackForType(CustomCombs.PLASTIC), 0.15f);
             beeSpecies.setHumidity(EnumHumidity.NORMAL);
             beeSpecies.setTemperature(EnumTemperature.NORMAL);
@@ -85,7 +84,7 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
 	PTFE(GTPP_Branch_Definition.ORGANIC, "Ptfe", true, Utils.rgbtoHexValue(150, 150, 150), Utils.rgbtoHexValue(75, 75, 75)) {
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
-            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.30f);
+            beeSpecies.addProduct(getStoneComb(), 0.30f);
             beeSpecies.addProduct(GTPP_Bees.combs.getStackForType(CustomCombs.PTFE), 0.10f);
             beeSpecies.setHumidity(EnumHumidity.NORMAL);
             beeSpecies.setTemperature(EnumTemperature.NORMAL);
@@ -105,7 +104,7 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
 	PBS(GTPP_Branch_Definition.ORGANIC, "Pbs", true, Utils.rgbtoHexValue(232, 105, 0), Utils.rgbtoHexValue(183, 55, 0)) {
         @Override
         protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
-            beeSpecies.addProduct(GT_Bees.combs.getStackForType(CombType.STONE), 0.30f);
+            beeSpecies.addProduct(getStoneComb(), 0.30f);
             beeSpecies.addProduct(GTPP_Bees.combs.getStackForType(CustomCombs.PTFE), 0.10f);
             beeSpecies.setHumidity(EnumHumidity.NORMAL);
             beeSpecies.setTemperature(EnumTemperature.NORMAL);
@@ -694,6 +693,13 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
 
     public final IBeeDefinition getRainResist() {
         return new BeeVariation.RainResist(this);
+    }
+
+    private static ItemStack getSlagComb(){
+    	return ItemUtils.getSimpleStack(GTPP_Bees.Comb_Slag, 1);
+    }
+    private static ItemStack getStoneComb(){
+    	return ItemUtils.getSimpleStack(GTPP_Bees.Comb_Stone, 1);
     }
 
 }
