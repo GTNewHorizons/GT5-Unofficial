@@ -216,11 +216,11 @@ public final class iaeaNuclide {
             div=chance1/normalization;
             decays.put(div, new iaeaDecay((float) (div), decay1));
         }
-        if(decay1.length()>0 && !Double.isNaN(chance1)) {
+        if(decay2.length()>0 && !Double.isNaN(chance1)) {
             div=chance2/normalization;
             decays.put(div, new iaeaDecay((float) (div), decay2));
         }
-        if(decay1.length()>0 && !Double.isNaN(chance1)) {
+        if(decay3.length()>0 && !Double.isNaN(chance1)) {
             div=chance3/normalization;
             decays.put(div, new iaeaDecay((float) (div), decay3));
         }
