@@ -6,14 +6,13 @@ import gtPlusPlus.core.util.Utils;
 
 public enum CustomCombs {    
     //Custom Bees
-    
+    	
     //Rubbers & Silicons
     SILICON("silicon", true, Materials.Silicon, 100),
     RUBBER("rubber", true, Materials.Rubber, 100),
-    PLASTIC("plastic", true, Materials.Plastic, 75),
-    PTFE("ptfe", true, GTPP_Bees.PTFE, 50),
-    PBS("pbs", true, GTPP_Bees.PBS, 25),
-    
+    PLASTIC("polyethylene", true, Materials.Plastic, 75),
+    PTFE("polytetrafluoroethylene", true, GTPP_Bees.PTFE, 50),
+    PBS("styrene butadiene", true, GTPP_Bees.PBS, 25),
     
     //Fuels
     BIOMASS("biomass", true, Materials.Biomass, 100),
@@ -30,7 +29,11 @@ public enum CustomCombs {
     FORCE("force", true, Materials.Force, 50),
     NIKOLITE("nikolite", true, Materials.Nikolite, 75),  
     MITHRIL("mithril", true, Materials.Mithril, 10),
-    ADAMANTIUM("adamantium", true, Materials.Adamantium, 5),   
+    ADAMANTIUM("adamantium", true, Materials.Adamantium, 5),
+    
+	//Trash
+    SALT("salt", true, Materials.Salt, 75),
+    SAND("sand", true, Materials.Sand, 100), 
     
     ;
 
@@ -39,16 +42,21 @@ public enum CustomCombs {
         {Utils.rgbtoHexValue(55, 55, 55), Utils.rgbtoHexValue(75, 75, 75)}, //RUBBER
         {Utils.rgbtoHexValue(245, 245, 245), Utils.rgbtoHexValue(175, 175, 175)}, //PLASTIC
         {Utils.rgbtoHexValue(150, 150, 150), Utils.rgbtoHexValue(75, 75, 75)}, //PTFE
-        {Utils.rgbtoHexValue(232, 105, 0), Utils.rgbtoHexValue(183, 55, 0)}, //PBS
+        {Utils.rgbtoHexValue(33, 26, 24), Utils.rgbtoHexValue(23, 16, 14)}, //PBS
         //Unused
-        {Utils.rgbtoHexValue(75, 75, 75), Utils.rgbtoHexValue(125, 125, 125)},
-        {Utils.rgbtoHexValue(75, 75, 75), Utils.rgbtoHexValue(125, 125, 125)},
-        {Utils.rgbtoHexValue(75, 75, 75), Utils.rgbtoHexValue(125, 125, 125)},
-        {Utils.rgbtoHexValue(75, 75, 75), Utils.rgbtoHexValue(125, 125, 125)},
-        {Utils.rgbtoHexValue(75, 75, 75), Utils.rgbtoHexValue(125, 125, 125)},
-        {Utils.rgbtoHexValue(75, 75, 75), Utils.rgbtoHexValue(125, 125, 125)},
-        {Utils.rgbtoHexValue(75, 75, 75), Utils.rgbtoHexValue(125, 125, 125)},
-        {Utils.rgbtoHexValue(75, 75, 75), Utils.rgbtoHexValue(125, 125, 125)},
+        {Utils.rgbtoHexValue(33, 225, 24), Utils.rgbtoHexValue(23, 175, 14)}, //Biofuel
+        {Utils.rgbtoHexValue(255, 128, 0), Utils.rgbtoHexValue(220, 156, 32)}, //Ethanol
+        {Utils.rgbtoHexValue(75, 75, 75), Utils.rgbtoHexValue(125, 125, 125)}, //
+        {Utils.rgbtoHexValue(75, 75, 75), Utils.rgbtoHexValue(125, 125, 125)}, // 
+        {Utils.rgbtoHexValue(75, 75, 75), Utils.rgbtoHexValue(125, 125, 125)}, //
+        {Utils.rgbtoHexValue(75, 75, 75), Utils.rgbtoHexValue(125, 125, 125)}, //
+        {Utils.rgbtoHexValue(30, 230, 230), Utils.rgbtoHexValue(10, 150, 150)}, // Fluorine
+        {Utils.rgbtoHexValue(250, 250, 20), Utils.rgbtoHexValue(200, 200, 5)}, // Force
+        {Utils.rgbtoHexValue(60, 180, 200), Utils.rgbtoHexValue(40, 150, 170)}, // Nikolite
+        {Utils.rgbtoHexValue(75, 75, 75), Utils.rgbtoHexValue(125, 125, 125)}, //
+        {Utils.rgbtoHexValue(75, 75, 75), Utils.rgbtoHexValue(125, 125, 125)}, //
+        {Utils.rgbtoHexValue(75, 75, 75), Utils.rgbtoHexValue(125, 125, 125)}, //
+        {Utils.rgbtoHexValue(75, 75, 75), Utils.rgbtoHexValue(125, 125, 125)}, //
         {Utils.rgbtoHexValue(75, 75, 75), Utils.rgbtoHexValue(125, 125, 125)},
             {0x666666, 0x525252},
             {0x2E8F5B, 0xDCC289},
