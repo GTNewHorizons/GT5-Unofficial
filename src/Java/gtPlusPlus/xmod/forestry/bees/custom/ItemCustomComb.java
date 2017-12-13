@@ -14,6 +14,7 @@ import gregtech.api.enums.OrePrefixes;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.util.item.ItemUtils;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -104,6 +105,7 @@ public class ItemCustomComb extends Item {
 		//addProcess(tComb, Materials.Silver, 100);
 		//addProcess(tComb, Materials.Galena, 100);
 
+		//Rubbers
 		tComb = getStackForType(CustomCombs.RUBBER);
 		addSpecialCent(tComb, GT_OreDictUnificator.get(OrePrefixes.dustTiny, Materials.Rubber, 1), 30);
 		tComb = getStackForType(CustomCombs.PLASTIC);
@@ -112,6 +114,21 @@ public class ItemCustomComb extends Item {
 		addSpecialCent(tComb, GT_OreDictUnificator.get(OrePrefixes.dustTiny, GTPP_Bees.PTFE, 1), 10);
 		tComb = getStackForType(CustomCombs.PBS);
 		addSpecialCent(tComb, GT_OreDictUnificator.get(OrePrefixes.dustTiny, GTPP_Bees.PBS, 1), 5);
+		
+		
+		//Fuels
+		tComb = getStackForType(CustomCombs.BIOMASS);
+		addSpecialCent(tComb, ItemUtils.getSimpleStack(GTPP_Bees.dropBiomassBlob), 5);
+		tComb = getStackForType(CustomCombs.PBS);
+		addSpecialCent(tComb, ItemUtils.getSimpleStack(GTPP_Bees.dropEthanolBlob), 5);
+
+		//Misc Materials
+		tComb = getStackForType(CustomCombs.FORCE);
+		addSpecialCent(tComb, ItemUtils.getSimpleStack(GTPP_Bees.dropForceGem), 5);
+		tComb = getStackForType(CustomCombs.FLUORINE);
+		addSpecialCent(tComb, ItemUtils.getSimpleStack(GTPP_Bees.dropFluorineBlob), 5);
+		tComb = getStackForType(CustomCombs.NIKOLITE);
+		addSpecialCent(tComb, ItemUtils.getSimpleStack(GTPP_Bees.dropNikoliteDust), 5);
 		
 	}
 	public void addSpecialCent(ItemStack tComb, ItemStack aOutput, int chance){

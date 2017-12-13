@@ -113,7 +113,7 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
 		@Override
 		protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
 			beeSpecies.addProduct(getStoneComb(), 0.30f);
-			beeSpecies.addProduct(GTPP_Bees.combs.getStackForType(CustomCombs.PTFE), 0.10f);
+			beeSpecies.addProduct(GTPP_Bees.combs.getStackForType(CustomCombs.PBS), 0.10f);
 			beeSpecies.setHumidity(EnumHumidity.NORMAL);
 			beeSpecies.setTemperature(EnumTemperature.NORMAL);
 		}
@@ -161,7 +161,7 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
 		@Override
 		protected void setSpeciesProperties(IAlleleBeeSpeciesCustom beeSpecies) {
 			beeSpecies.addProduct(GTPP_Bees.combs.getStackForType(CustomCombs.SAND), 0.40f);
-			beeSpecies.addProduct(GTPP_Bees.combs.getStackForType(CustomCombs.BIOMASS), 0.20f);
+			beeSpecies.addProduct(GTPP_Bees.combs.getStackForType(CustomCombs.ETHANOL), 0.20f);
 			beeSpecies.setHumidity(EnumHumidity.NORMAL);
 			beeSpecies.setTemperature(EnumTemperature.NORMAL);
 		}
@@ -173,7 +173,7 @@ public enum GTPP_Bee_Definition implements IBeeDefinition {
 
 		@Override
 		protected void registerMutations() {
-			IBeeMutationCustom tMutation = registerMutation(BIOMASS.species, getSpecies("Farmed"), 5);
+			IBeeMutationCustom tMutation = registerMutation(BIOMASS.species, getSpecies("Farmerly"), 5);
 			tMutation.restrictBiomeType(Type.FOREST);
 		}
 	},

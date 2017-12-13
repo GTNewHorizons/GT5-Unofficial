@@ -12,7 +12,7 @@ public enum CustomCombs {
     RUBBER("rubber", true, Materials.Rubber, 100),
     PLASTIC("polyethylene", true, Materials.Plastic, 75),
     PTFE("polytetrafluoroethylene", true, GTPP_Bees.PTFE, 50),
-    PBS("styrene butadiene", true, GTPP_Bees.PBS, 25),
+    PBS("styrene-butadiene", true, GTPP_Bees.PBS, 25),
     
     //Fuels
     BIOMASS("biomass", true, Materials.Biomass, 100),
@@ -51,6 +51,7 @@ public enum CustomCombs {
         {Utils.rgbtoHexValue(75, 75, 75), Utils.rgbtoHexValue(125, 125, 125)}, //
         {Utils.rgbtoHexValue(75, 75, 75), Utils.rgbtoHexValue(125, 125, 125)}, //
         {Utils.rgbtoHexValue(30, 230, 230), Utils.rgbtoHexValue(10, 150, 150)}, // Fluorine
+        {Utils.rgbtoHexValue(75, 75, 75), Utils.rgbtoHexValue(125, 125, 125)}, //
         {Utils.rgbtoHexValue(250, 250, 20), Utils.rgbtoHexValue(200, 200, 5)}, // Force
         {Utils.rgbtoHexValue(60, 180, 200), Utils.rgbtoHexValue(40, 150, 170)}, // Nikolite
         {Utils.rgbtoHexValue(75, 75, 75), Utils.rgbtoHexValue(125, 125, 125)}, //

@@ -23,11 +23,9 @@ public class BaseItemIngot_OLD extends Item{
 	public BaseItemIngot_OLD(final String unlocalizedName, final String materialName, final int colour, final int sRadioactivity) {
 		this.setUnlocalizedName(unlocalizedName);
 		this.setCreativeTab(AddToCreativeTab.tabMisc);
-		this.setUnlocalizedName(unlocalizedName);
 		this.unlocalName = unlocalizedName;
 		this.setMaxStackSize(64);
 		this.setTextureName(CORE.MODID + ":" + "itemIngot");
-		this.setMaxStackSize(64);
 		this.colour = colour;
 		this.materialName = materialName;
 		this.sRadiation = sRadioactivity;
@@ -42,7 +40,7 @@ public class BaseItemIngot_OLD extends Item{
 		if ((temp != null) && !temp.equals("")){
 			GT_OreDictUnificator.registerOre(temp, ItemUtils.getSimpleStack(this));
 		}
-		this.generateCompressorRecipe();
+		//this.generateCompressorRecipe();
 	}
 
 	@Override
