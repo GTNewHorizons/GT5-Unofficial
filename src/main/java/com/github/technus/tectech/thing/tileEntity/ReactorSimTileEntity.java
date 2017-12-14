@@ -2,13 +2,10 @@ package com.github.technus.tectech.thing.tileEntity;
 
 import com.github.technus.tectech.auxiliary.Reference;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
-import ic2.api.reactor.IReactorComponent;
 import ic2.core.IC2;
 import ic2.core.block.reactor.tileentity.TileEntityNuclearReactorElectric;
 import ic2.core.init.MainConfig;
 import ic2.core.util.ConfigUtil;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;

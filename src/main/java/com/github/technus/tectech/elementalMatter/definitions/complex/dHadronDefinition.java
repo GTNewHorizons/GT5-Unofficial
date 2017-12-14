@@ -24,8 +24,6 @@ import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.elementalMatter.definitions.complex.dAtomDefinition.transformation;
 import static com.github.technus.tectech.elementalMatter.definitions.primitive.eBosonDefinition.boson_Y__;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
-import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.SCAN_GET_MASS;
-import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.SCAN_GET_TIMESPAN_INFO;
 import static gregtech.api.enums.OrePrefixes.dust;
 
 /**

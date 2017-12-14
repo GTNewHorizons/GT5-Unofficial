@@ -222,6 +222,10 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
         return compareClassID(o);
     }
 
+    private int compareClassID(iElementalDefinition obj) {
+        return ((int) getClassType()) - obj.getClassType();
+    }
+
     @Override
     public final int hashCode() {
         return ID;
