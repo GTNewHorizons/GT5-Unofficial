@@ -3,8 +3,8 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.elementalMatter.core.containers.cElementalInstanceStack;
 import com.github.technus.tectech.elementalMatter.core.interfaces.iHasElementalDefinition;
+import com.github.technus.tectech.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.elementalMatter.core.transformations.aFluidQuantizationInfo;
 import com.github.technus.tectech.elementalMatter.core.transformations.aItemQuantizationInfo;
 import com.github.technus.tectech.elementalMatter.core.transformations.aOredictQuantizationInfo;
@@ -22,7 +22,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import static com.github.technus.tectech.Util.*;
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefinition.DEFAULT_ENERGY_LEVEL;
+import static com.github.technus.tectech.elementalMatter.core.templates.iElementalDefinition.DEFAULT_ENERGY_LEVEL;
 import static com.github.technus.tectech.elementalMatter.definitions.complex.dAtomDefinition.refMass;
 import static com.github.technus.tectech.elementalMatter.definitions.complex.dAtomDefinition.refUnstableMass;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;

@@ -1,5 +1,7 @@
 package com.github.technus.tectech.elementalMatter.core.interfaces;
 
+import com.github.technus.tectech.elementalMatter.core.templates.iElementalDefinition;
+
 /**
  * Created by danie_000 on 30.01.2017.
  */

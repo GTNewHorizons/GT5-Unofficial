@@ -1,8 +1,7 @@
 package com.github.technus.tectech.elementalMatter.core.templates;
 
-import com.github.technus.tectech.elementalMatter.core.containers.cElementalDefinitionStack;
-import com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefinition;
 import com.github.technus.tectech.elementalMatter.core.interfaces.iHasElementalDefinition;
+import com.github.technus.tectech.elementalMatter.core.stacks.cElementalDefinitionStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.lang.reflect.Method;
@@ -16,7 +15,7 @@ import static com.github.technus.tectech.elementalMatter.definitions.primitive.c
 /**
  * Created by danie_000 on 23.01.2017.
  */
-public abstract class cElementalDefinition implements iElementalDefinition {
+public abstract class cElementalDefinition extends iElementalDefinition {
     //Nothing array
     public static final iElementalDefinition[] nothing = new cElementalPrimitive[0];
 
@@ -52,10 +51,6 @@ public abstract class cElementalDefinition implements iElementalDefinition {
         //that allows neat check if the same thing and
         //top hierarchy amount can be used to store amount info
         return compareInnerContentsWithAmounts(getSubParticles().values(), o.getSubParticles().values());
-    }
-
-    private int compareClassID(iElementalDefinition obj) {
-        return ((int) getClassType()) - obj.getClassType();
     }
 
     //use only for nested operations!

@@ -2,8 +2,8 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.elementalMatter.core.containers.cElementalDefinitionStack;
-import com.github.technus.tectech.elementalMatter.core.containers.cElementalInstanceStack;
+import com.github.technus.tectech.elementalMatter.core.stacks.cElementalDefinitionStack;
+import com.github.technus.tectech.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.recipe.TT_recipe;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.block.QuantumStuffBlock;

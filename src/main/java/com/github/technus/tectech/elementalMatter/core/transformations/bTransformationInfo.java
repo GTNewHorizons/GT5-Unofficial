@@ -1,7 +1,7 @@
 package com.github.technus.tectech.elementalMatter.core.transformations;
 
-import com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefinition;
 import com.github.technus.tectech.elementalMatter.core.interfaces.iHasElementalDefinition;
+import com.github.technus.tectech.elementalMatter.core.templates.iElementalDefinition;
 import gregtech.api.enums.Materials;
 import gregtech.api.enums.OrePrefixes;
 import net.minecraft.item.ItemStack;

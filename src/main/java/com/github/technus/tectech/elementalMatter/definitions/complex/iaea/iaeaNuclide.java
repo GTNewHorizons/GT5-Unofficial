@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.TreeMap;
 
-import static com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefinition.STABLE_RAW_LIFE_TIME;
+import static com.github.technus.tectech.elementalMatter.core.templates.iElementalDefinition.STABLE_RAW_LIFE_TIME;
 
 public final class iaeaNuclide {
     public static final double AMU_TO_EV_DIV_C_C=9.31494061E08D,MICRO_AMU_TO_EV_DIV_C_C=9.31494061E02D;

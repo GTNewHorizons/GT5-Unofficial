@@ -1,8 +1,8 @@
 package com.github.technus.tectech.compatibility.thaumcraft.definitions;
 
 
-import com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefinition;
 import com.github.technus.tectech.elementalMatter.core.templates.cElementalDefinition;
+import com.github.technus.tectech.elementalMatter.core.templates.iElementalDefinition;
 
 import java.util.HashMap;
 

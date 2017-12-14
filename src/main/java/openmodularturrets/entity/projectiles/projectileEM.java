@@ -2,7 +2,7 @@ package openmodularturrets.entity.projectiles;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.elementalMatter.core.containers.cElementalInstanceStack;
+import com.github.technus.tectech.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.elementalMatter.definitions.complex.dHadronDefinition;
 import com.github.technus.tectech.elementalMatter.definitions.primitive.eQuarkDefinition;
 import gregtech.api.GregTech_API;

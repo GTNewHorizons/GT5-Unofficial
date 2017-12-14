@@ -4,7 +4,7 @@ import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.compatibility.thaumcraft.definitions.ePrimalAspectDefinition;
 import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.elementalMatter.core.containers.cElementalInstanceStack;
+import com.github.technus.tectech.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;

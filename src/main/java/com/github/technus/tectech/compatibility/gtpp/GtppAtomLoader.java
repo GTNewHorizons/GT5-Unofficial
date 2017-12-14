@@ -1,6 +1,6 @@
 package com.github.technus.tectech.compatibility.gtpp;
 
-import com.github.technus.tectech.elementalMatter.core.containers.cElementalDefinitionStack;
+import com.github.technus.tectech.elementalMatter.core.stacks.cElementalDefinitionStack;
 import gregtech.api.enums.OrePrefixes;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.MaterialGenerator;

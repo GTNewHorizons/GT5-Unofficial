@@ -1,7 +1,7 @@
 package com.github.technus.tectech.elementalMatter.definitions.primitive;
 
 import com.github.technus.tectech.elementalMatter.core.cElementalDecay;
-import com.github.technus.tectech.elementalMatter.core.containers.cElementalDefinitionStack;
+import com.github.technus.tectech.elementalMatter.core.stacks.cElementalDefinitionStack;
 import com.github.technus.tectech.elementalMatter.core.templates.cElementalPrimitive;
 
 /**

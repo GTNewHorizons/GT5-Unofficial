@@ -4,7 +4,6 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
 import com.github.technus.tectech.elementalMatter.core.cElementalDecay;
 import com.github.technus.tectech.elementalMatter.core.cElementalDefinitionStackMap;
-import com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefinition;
 import com.github.technus.tectech.elementalMatter.core.tElementalException;
 import com.github.technus.tectech.elementalMatter.core.transformations.aFluidDequantizationInfo;
 import com.github.technus.tectech.elementalMatter.core.transformations.aItemDequantizationInfo;
@@ -220,10 +219,6 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
             return 0;
         }
         return compareClassID(o);
-    }
-
-    private int compareClassID(iElementalDefinition obj) {
-        return ((int) getClassType()) - obj.getClassType();
     }
 
     @Override

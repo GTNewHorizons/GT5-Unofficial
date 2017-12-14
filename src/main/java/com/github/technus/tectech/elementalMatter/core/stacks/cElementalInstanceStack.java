@@ -1,13 +1,13 @@
-package com.github.technus.tectech.elementalMatter.core.containers;
+package com.github.technus.tectech.elementalMatter.core.stacks;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
 import com.github.technus.tectech.elementalMatter.core.cElementalDecay;
 import com.github.technus.tectech.elementalMatter.core.cElementalDefinitionStackMap;
 import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefinition;
 import com.github.technus.tectech.elementalMatter.core.interfaces.iHasElementalDefinition;
 import com.github.technus.tectech.elementalMatter.core.templates.cElementalDefinition;
+import com.github.technus.tectech.elementalMatter.core.templates.iElementalDefinition;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.ArrayList;
