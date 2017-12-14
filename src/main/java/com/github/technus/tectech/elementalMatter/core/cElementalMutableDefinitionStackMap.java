@@ -246,4 +246,10 @@ public final class cElementalMutableDefinitionStackMap extends cElementalStackMa
         }
         return new cElementalMutableDefinitionStackMap(defStacks);
     }
+
+    public void cleanUp(){
+        for(Map.Entry<iElementalDefinition, cElementalDefinitionStack> entry:map.entrySet()){
+            if(entry.getValue().amount<=0) map.remove(entry.getKey());
+        }
+    }
 }

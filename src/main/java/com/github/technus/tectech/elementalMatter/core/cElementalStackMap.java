@@ -5,7 +5,6 @@ import com.github.technus.tectech.elementalMatter.core.templates.iElementalDefin
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
-import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -117,12 +116,6 @@ abstract class cElementalStackMap implements Comparable<cElementalStackMap> {
             hash += s.definition.hashCode();
         }
         return hash;
-    }
-
-    public void cleanUp(){
-        for(Map.Entry<iElementalDefinition, cElementalDefinitionStack> entry:map.entrySet()){
-            if(entry.getValue().amount<=0) map.remove(entry.getKey());
-        }
     }
 
     public double getMass(){

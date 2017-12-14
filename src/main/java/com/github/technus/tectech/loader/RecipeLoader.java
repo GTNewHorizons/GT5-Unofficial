@@ -32,7 +32,7 @@ public class RecipeLoader implements Runnable {
                     Materials.Aluminium.getMolten(864),
                     new ItemStack(TT_Container_Casings.sHintCasingsTT, 1,i),32,120);
 
-        if (Loader.isModLoaded("dreamcraft")) new DreamCraftRecipeLoader().run();//TODO init recipes for GTNH version
-        else new BloodyRecipeLoader().run();//TODO init recipes for NON-GTNH version
+        if (Loader.isModLoaded("dreamcraft")) new DreamCraftRecipeLoader().run();//init recipes for GTNH version
+        else new BloodyRecipeLoader().run();//init recipes for NON-GTNH version
     }
 }
