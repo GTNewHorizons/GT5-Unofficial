@@ -7,6 +7,7 @@ import com.github.technus.tectech.elementalMatter.core.interfaces.iHasElementalD
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
@@ -307,6 +308,14 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         return info;
     }
 
+    public ArrayList<String> getScanInfo(int[] capabilities) {
+        ArrayList<String> list=new ArrayList<>(16);
+        for(Map.Entry<iElementalDefinition,cElementalInstanceStack> e:map.entrySet()){
+            e.getValue().addScanResults(list,capabilities);
+        }
+        return list;
+    }
+
     public cElementalInstanceStack[] values() {
         return map.values().toArray(new cElementalInstanceStack[0]);
     }
@@ -370,11 +379,13 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         return nbt;
     }
 
-    public static String[] infoFromNBT(NBTTagCompound nbt) {
-        final String[] strings = new String[nbt.getInteger("i")];
-        for (int i = 0; i < strings.length; i++)
-            strings[i] = nbt.getString(Integer.toString(i));
-        return strings;
+    public NBTTagCompound getScanInfoNBT(int[] capabilities) {
+        final NBTTagCompound nbt = new NBTTagCompound();
+        final ArrayList<String> info = getScanInfo(capabilities);
+        nbt.setInteger("i", info.size());
+        for (int i = 0; i < info.size(); i++)
+            nbt.setString(Integer.toString(i), info.get(i));
+        return nbt;
     }
 
     public NBTTagCompound toNBT() {

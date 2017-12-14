@@ -1,17 +1,22 @@
 package com.github.technus.tectech.elementalMatter.core.templates;
 
+import com.github.technus.tectech.Util;
 import com.github.technus.tectech.elementalMatter.core.containers.cElementalDefinitionStack;
 import com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefinition;
 import com.github.technus.tectech.elementalMatter.core.interfaces.iHasElementalDefinition;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.elementalMatter.definitions.primitive.cPrimitiveDefinition.nbtE__;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.SCAN_GET_MASS;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.SCAN_GET_TIMESPAN_INFO;
 
 /**
  * Created by danie_000 on 23.01.2017.

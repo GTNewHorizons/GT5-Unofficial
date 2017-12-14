@@ -4,7 +4,7 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.elementalMatter.core.cElementalDefinitionStackMap;
 import com.github.technus.tectech.elementalMatter.core.containers.cElementalDefinitionStack;
 import com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefinition;
-import com.github.technus.tectech.thing.item.DefinitionContainer_EM;
+import com.github.technus.tectech.thing.item.ElementalDefinitionContainer_EM;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_crafting;
 import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_machine;
 import gregtech.api.enums.ItemList;
@@ -104,8 +104,8 @@ public class TT_recipeAdder extends GT_RecipeAdder {
         else if(researchAmperage > Short.MAX_VALUE) researchAmperage=Short.MAX_VALUE;
         if(computationRequiredPerSec<=0) computationRequiredPerSec=1;
         else if(computationRequiredPerSec > Short.MAX_VALUE) computationRequiredPerSec=Short.MAX_VALUE;
-        ItemStack placeholder=new ItemStack(DefinitionContainer_EM.INSTANCE);
-        DefinitionContainer_EM.setContent(placeholder,new cElementalDefinitionStackMap(new cElementalDefinitionStack(aResearchEM,1)));
+        ItemStack placeholder=new ItemStack(ElementalDefinitionContainer_EM.INSTANCE);
+        ElementalDefinitionContainer_EM.setContent(placeholder,new cElementalDefinitionStackMap(new cElementalDefinitionStack(aResearchEM,1)));
         GT_Recipe thisRecipe=TT_recipe.GT_Recipe_MapTT.sScannableFakeRecipes.addFakeRecipe(false, new ItemStack[]{placeholder}, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataOrb.getWithName(1L, "Writes Research result for "+ GT_MetaTileEntity_EM_machine.machine)}, null, null, totalComputationRequired, researchEUt, researchAmperage|(computationRequiredPerSec<<16));
         TT_recipe.TT_Recipe_Map_EM.sMachineRecipesEM.add(new TT_recipe.TT_EMRecipe(false,thisRecipe,aResearchEM,aInputs,new ItemStack[]{aOutput},new ItemStack[]{ItemList.Tool_DataOrb.getWithName(1L, "Reads Research result")},
                 aFluidInputs,machineDuration,machineEUt,machineAmperage,eInputs));
@@ -123,8 +123,8 @@ public class TT_recipeAdder extends GT_RecipeAdder {
         else if(researchAmperage > Short.MAX_VALUE) researchAmperage=Short.MAX_VALUE;
         if(computationRequiredPerSec<=0) computationRequiredPerSec=1;
         else if(computationRequiredPerSec > Short.MAX_VALUE) computationRequiredPerSec=Short.MAX_VALUE;
-        ItemStack placeholder=new ItemStack(DefinitionContainer_EM.INSTANCE);
-        DefinitionContainer_EM.setContent(placeholder,new cElementalDefinitionStackMap(new cElementalDefinitionStack(aResearchEM,1)));
+        ItemStack placeholder=new ItemStack(ElementalDefinitionContainer_EM.INSTANCE);
+        ElementalDefinitionContainer_EM.setContent(placeholder,new cElementalDefinitionStackMap(new cElementalDefinitionStack(aResearchEM,1)));
         GT_Recipe thisRecipe=TT_recipe.GT_Recipe_MapTT.sScannableFakeRecipes.addFakeRecipe(false, new ItemStack[]{placeholder}, new ItemStack[]{aOutput}, new ItemStack[]{ItemList.Tool_DataOrb.getWithName(1L, "Writes Research result for "+ GT_MetaTileEntity_EM_crafting.crafter)}, null, null, totalComputationRequired, researchEUt, researchAmperage|(computationRequiredPerSec<<16));
         TT_recipe.TT_Recipe_Map_EM.sCrafterRecipesEM.add(new TT_recipe.TT_EMRecipe(false,thisRecipe,aResearchEM,null,new ItemStack[]{aOutput},new ItemStack[]{ItemList.Tool_DataOrb.getWithName(1L, "Reads Research result")},
                 null,crafterDuration,crafterEUt,crafterAmperage,eInputs,null,catalyst,check));

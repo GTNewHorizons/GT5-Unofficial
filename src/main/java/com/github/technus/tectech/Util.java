@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
@@ -814,5 +815,16 @@ public class Util {
         }
         strings[strings.length-1]=string.substring(lastEnd);
         return strings;
+    }
+
+    public static String[] infoFromNBT(NBTTagCompound nbt) {
+        final String[] strings = new String[nbt.getInteger("i")];
+        for (int i = 0; i < strings.length; i++)
+            strings[i] = nbt.getString(Integer.toString(i));
+        return strings;
+    }
+
+    public static boolean areBitsSet(int setBits,int testedValue){
+        return (testedValue&setBits)==setBits;
     }
 }

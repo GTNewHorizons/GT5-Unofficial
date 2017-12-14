@@ -1,6 +1,7 @@
 package com.github.technus.tectech.compatibility.thaumcraft.definitions;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.Util;
 import com.github.technus.tectech.elementalMatter.core.cElementalDecay;
 import com.github.technus.tectech.elementalMatter.core.cElementalDefinitionStackMap;
 import com.github.technus.tectech.elementalMatter.core.containers.cElementalDefinitionStack;
@@ -13,9 +14,12 @@ import com.github.technus.tectech.elementalMatter.core.transformations.aOredictD
 import com.github.technus.tectech.elementalMatter.definitions.primitive.eBosonDefinition;
 import net.minecraft.nbt.NBTTagCompound;
 
+import java.util.ArrayList;
+
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.compatibility.thaumcraft.definitions.AspectDefinitionCompat.aspectDefinitionCompat;
 import static com.github.technus.tectech.elementalMatter.core.cElementalDecay.noDecay;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
 
 /**
  * Created by Tec on 06.05.2017.
@@ -227,5 +231,29 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
     @Override
     public int hashCode() {
         return hash;
+    }
+
+
+
+    @Override
+    public void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel) {
+        if(Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities))
+            lines.add("CLASS = "+nbtType+" "+getClassType());
+        if(Util.areBitsSet(SCAN_GET_NOMENCLATURE+SCAN_GET_COLOR+SCAN_GET_CHARGE+SCAN_GET_MASS, capabilities)) {
+            lines.add("NAME = "+getName());
+            //lines.add("SYMBOL = "+getSymbol());
+        }
+        if(Util.areBitsSet(SCAN_GET_CHARGE,capabilities))
+            lines.add("CHARGE = "+getCharge()/3f+" eV");
+        if(Util.areBitsSet(SCAN_GET_COLOR,capabilities))
+            lines.add(getColor()<0?"NOT COLORED":"CARRIES COLOR");
+        if(Util.areBitsSet(SCAN_GET_MASS,capabilities))
+            lines.add("MASS = "+getMass()+" eV/c\u00b2");
+        //TODO decay info - no energy states info here
+        if(Util.areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)){
+            lines.add(isTimeSpanHalfLife()?"TIME SPAN IS HALF LIFE":"TIME SPAN IS LIFE TIME");
+            lines.add("TIME SPAN = "+getRawTimeSpan(energyLevel)+ " s");
+            lines.add("    "+"At current energy level");
+        }
     }
 }

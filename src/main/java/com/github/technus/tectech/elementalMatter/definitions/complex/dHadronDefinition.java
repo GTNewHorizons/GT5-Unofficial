@@ -1,6 +1,7 @@
 package com.github.technus.tectech.elementalMatter.definitions.complex;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.Util;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.elementalMatter.core.cElementalDecay;
 import com.github.technus.tectech.elementalMatter.core.cElementalDefinitionStackMap;
@@ -22,6 +23,9 @@ import java.util.ArrayList;
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.elementalMatter.definitions.complex.dAtomDefinition.transformation;
 import static com.github.technus.tectech.elementalMatter.definitions.primitive.eBosonDefinition.boson_Y__;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.SCAN_GET_MASS;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.SCAN_GET_TIMESPAN_INFO;
 import static gregtech.api.enums.OrePrefixes.dust;
 
 /**
@@ -121,30 +125,29 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
 
     @Override
     public String getName() {
+        StringBuilder name= new StringBuilder(getSimpleName());
+        for (cElementalDefinitionStack quark : quarkStacks.values()) {
+            name.append(" ").append(quark.definition.getSymbol()).append(quark.amount);
+        }
+        return name.toString();
+    }
+
+    private String getSimpleName() {
         String name;
         switch (amount) {
             case 2:
-                name = "Meson:";
-                break;
+                return "Meson";
             case 3:
-                name = "Baryon:";
-                break;
+                return "Baryon";
             case 4:
-                name = "Tetraquark:";
-                break;
+                return "Tetraquark";
             case 5:
-                name = "Pentaquark:";
-                break;
+                return "Pentaquark";
             case 6:
-                name = "Hexaquark:";
-                break;
+                return "Hexaquark";
             default:
-                name = "Hadron:";
+                return "Hadron";
         }
-        for (cElementalDefinitionStack quark : quarkStacks.values()) {
-            name += " " + quark.definition.getSymbol() + quark.amount;
-        }
-        return name;
     }
 
     @Override
@@ -391,5 +394,27 @@ public final class dHadronDefinition extends cElementalDefinition {//TODO Optimi
     @Override
     public int hashCode() {
         return hash;
+    }
+
+    @Override
+    public void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel) {
+        if(Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities))
+            lines.add("CLASS = "+nbtType+" "+getClassType());
+        if(Util.areBitsSet(SCAN_GET_NOMENCLATURE+SCAN_GET_AMOUNT, capabilities)) {
+            lines.add("NAME = "+getSimpleName());
+            //lines.add("SYMBOL = "+getSymbol());
+        }
+        if(Util.areBitsSet(SCAN_GET_CHARGE,capabilities))
+            lines.add("CHARGE = "+getCharge()/3f+" eV");
+        if(Util.areBitsSet(SCAN_GET_COLOR,capabilities))
+            lines.add(getColor()<0?"NOT COLORED":"CARRIES COLOR");
+        if(Util.areBitsSet(SCAN_GET_MASS,capabilities))
+            lines.add("MASS = "+getMass()+" eV/c\u00b2");
+        //TODO decay info - no energy states info here
+        if(Util.areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)){
+            lines.add(isTimeSpanHalfLife()?"TIME SPAN IS HALF LIFE":"TIME SPAN IS LIFE TIME");
+            lines.add("TIME SPAN = "+getRawTimeSpan(energyLevel)+ " s");
+            lines.add("    "+"At current energy level");
+        }
     }
 }

@@ -1,7 +1,7 @@
 package openmodularturrets.tileentity.turret;
 
 import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
-import com.github.technus.tectech.thing.item.DebugContainer_EM;
+import com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -54,7 +54,7 @@ public class TileTurretHeadEM extends TurretHead{
     }
 
     public Item getAmmo() {
-        return DebugContainer_EM.INSTANCE;//Placeholder item that cannot be achieved, yet still usable for debug
+        return DebugElementalInstanceContainer_EM.INSTANCE;//Placeholder item that cannot be achieved, yet still usable for debug
     }
 
     public final TurretProjectile createProjectile(World world, Entity target, ItemStack ammo) {

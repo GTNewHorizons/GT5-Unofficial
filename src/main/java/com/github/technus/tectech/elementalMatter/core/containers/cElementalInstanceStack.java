@@ -1,14 +1,19 @@
 package com.github.technus.tectech.elementalMatter.core.containers;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.Util;
 import com.github.technus.tectech.elementalMatter.core.cElementalDecay;
+import com.github.technus.tectech.elementalMatter.core.cElementalDefinitionStackMap;
 import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.elementalMatter.core.interfaces.iElementalDefinition;
 import com.github.technus.tectech.elementalMatter.core.interfaces.iHasElementalDefinition;
 import com.github.technus.tectech.elementalMatter.core.templates.cElementalDefinition;
 import net.minecraft.nbt.NBTTagCompound;
 
+import java.util.ArrayList;
+
 import static com.github.technus.tectech.elementalMatter.definitions.primitive.cPrimitiveDefinition.null__;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
 
 /**
  * Created by danie_000 on 22.10.2016.
@@ -147,7 +152,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         return decay(1F,apparentAge,postEnergize);
     }
 
-    public cElementalInstanceStackMap decay(Float lifeTimeMult, long apparentAge, long postEnergize) {
+    public cElementalInstanceStackMap decay(float lifeTimeMult, long apparentAge, long postEnergize) {
         long newEnergyLevel=postEnergize+this.energy;
         if(newEnergyLevel>0) newEnergyLevel-=1;
         else if(newEnergyLevel<0) newEnergyLevel+=1;
@@ -298,6 +303,43 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         this.energy = energy;
         this.setLifeTimeMultipleOfBaseValue(lifeTimeMul);
         return this;
+    }
+
+    public void addScanResults(ArrayList<String> lines, int[] detailsOnDepthLevels){
+        final int capabilities=detailsOnDepthLevels[0];
+        if(Util.areBitsSet(SCAN_GET_DEPTH_LEVEL,capabilities))
+            lines.add("DEPTH = "+0);
+        definition.addScanResults(lines,capabilities,energy);
+        if(Util.areBitsSet(SCAN_GET_TIMESPAN_MULT,capabilities)) {
+            lines.add("TIME SPAN MULTIPLIER = " + lifeTimeMult);
+            if(Util.areBitsSet(SCAN_GET_TIMESPAN_INFO,capabilities))
+                lines.add("TIME SPAN MULTIPLIED = "+lifeTime+" s");
+        }
+        if(Util.areBitsSet(SCAN_GET_AGE,capabilities))
+            lines.add("AGE = " + age+" s");
+        if(Util.areBitsSet(SCAN_GET_COLOR,capabilities))
+            lines.add("COLOR = "+color+" RGB or CMY");
+        if(Util.areBitsSet(SCAN_GET_ENERGY_LEVEL,capabilities))
+            lines.add("ENERGY LEVEL = "+energy);
+        if(Util.areBitsSet(SCAN_GET_AMOUNT,capabilities))
+            lines.add("AMOUNT = "+amount);
+        lines.add(null);//def separator
+        scanContents(lines,definition.getSubParticles(),1,detailsOnDepthLevels);
+    }
+
+    private void scanContents(ArrayList<String> lines, cElementalDefinitionStackMap definitions, int depth, int[] detailsOnDepthLevels){
+        if(definitions!=null && depth<detailsOnDepthLevels.length){
+            final int deeper=depth+1;
+            for(cElementalDefinitionStack definitionStack:definitions.values()) {
+                if(Util.areBitsSet(SCAN_GET_DEPTH_LEVEL,detailsOnDepthLevels[depth]))
+                    lines.add("DEPTH = " + depth);
+                definition.addScanResults(lines,detailsOnDepthLevels[depth],energy);
+                if(Util.areBitsSet(SCAN_GET_AMOUNT,detailsOnDepthLevels[depth]))
+                    lines.add("AMOUNT = "+definitionStack.amount);
+                lines.add(null);//def separator
+                scanContents(lines,definitionStack.definition.getSubParticles(),deeper,detailsOnDepthLevels);
+            }
+        }
     }
 
     public NBTTagCompound toNBT() {

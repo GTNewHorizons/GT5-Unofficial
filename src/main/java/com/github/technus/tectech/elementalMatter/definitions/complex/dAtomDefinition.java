@@ -1,6 +1,7 @@
 package com.github.technus.tectech.elementalMatter.definitions.complex;
 
 import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.Util;
 import com.github.technus.tectech.XSTR;
 import com.github.technus.tectech.compatibility.gtpp.GtppAtomLoader;
 import com.github.technus.tectech.elementalMatter.core.cElementalDecay;
@@ -29,6 +30,7 @@ import static com.github.technus.tectech.XSTR.XSTR_INSTANCE;
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.elementalMatter.definitions.primitive.eBosonDefinition.boson_Y__;
 import static com.github.technus.tectech.elementalMatter.definitions.primitive.eBosonDefinition.deadEnd;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
 import static gregtech.api.enums.OrePrefixes.dust;
 
 /**
@@ -397,7 +399,7 @@ public final class dAtomDefinition extends cElementalDefinition {
         else if(energy<=0) state = iaea.energeticStatesArray[0];
         else state=iaea.energeticStatesArray[(int)energy];
         for (int i=0;i<state.decaymodes.length;i++){
-            if(!getDecay(decaysList,state.decaymodes[i])) {
+            if(!getDecay(decaysList,state.decaymodes[i],energy)) {
                 decaysList.clear();
                 return false;
             }
@@ -405,7 +407,7 @@ public final class dAtomDefinition extends cElementalDefinition {
         return true;
     }
 
-    private boolean getDecay(ArrayList<cElementalDecay> decaysList,iaeaNuclide.iaeaDecay decay){
+    private boolean getDecay(ArrayList<cElementalDecay> decaysList,iaeaNuclide.iaeaDecay decay, long energy){
         cElementalMutableDefinitionStackMap withThis=elementalStacks.toMutable(),newStuff=new cElementalMutableDefinitionStackMap();
         switch (decay.decayName){
             case "D": {
@@ -834,9 +836,16 @@ public final class dAtomDefinition extends cElementalDefinition {
                     }
                 }
             } break;
-            case "IT": case "IT?": case "G":
-                decaysList.add(new cElementalDecay(decay.chance, this, eBosonDefinition.boson_Y__));
-                return true;
+            case "IT": case "IT?": case "G": {
+                if(energy>0){
+                    decaysList.add(new cElementalDecay(decay.chance, this, eBosonDefinition.boson_Y__));
+                    return true;
+                }else{
+                    if(DEBUG_MODE) TecTech.Logger.info("Tried to emit Gamma from ground state");
+                    decaysList.add(new cElementalDecay(decay.chance, this));
+                    return true;
+                }
+            } //break;
             case "IT+EC+B+": {
                 if (withThis.removeAllAmounts(false, dHadronDefinition.hadron_p2,eLeptonDefinition.lepton_e1)){
                     withThis.putUnify(dHadronDefinition.hadron_n2);
@@ -1053,7 +1062,7 @@ public final class dAtomDefinition extends cElementalDefinition {
     @Override
     public cElementalDecay[] getNaturalDecayInstant() {
         //disembody
-        ArrayList<cElementalDefinitionStack> decaysInto = new ArrayList<cElementalDefinitionStack>();
+        ArrayList<cElementalDefinitionStack> decaysInto = new ArrayList<>();
         for (cElementalDefinitionStack elementalStack : elementalStacks.values()) {
             if (elementalStack.definition.getType() == 1 || elementalStack.definition.getType() == -1) {
                 //covers both quarks and antiquarks
@@ -1404,5 +1413,29 @@ public final class dAtomDefinition extends cElementalDefinition {
     @Override
     public int hashCode() {
         return hash;
+    }
+
+
+
+    @Override
+    public void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel) {
+        if(Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities))
+            lines.add("CLASS = "+nbtType+" "+getClassType());
+        if(Util.areBitsSet(SCAN_GET_NOMENCLATURE+SCAN_GET_AMOUNT+SCAN_GET_COLOR+SCAN_GET_CHARGE+SCAN_GET_MASS, capabilities)) {
+            lines.add("NAME = "+getName());
+            lines.add("SYMBOL = "+getSymbol());
+        }
+        if(Util.areBitsSet(SCAN_GET_CHARGE,capabilities))
+            lines.add("CHARGE = "+getCharge()/3f+" eV");
+        if(Util.areBitsSet(SCAN_GET_COLOR,capabilities))
+            lines.add(getColor()<0?"NOT COLORED":"CARRIES COLOR");
+        if(Util.areBitsSet(SCAN_GET_MASS,capabilities))
+            lines.add("MASS = "+getMass()+" eV/c\u00b2");
+        //TODO decay info - no energy states info here
+        if(Util.areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)){
+            lines.add(isTimeSpanHalfLife()?"TIME SPAN IS HALF LIFE":"TIME SPAN IS LIFE TIME");
+            lines.add("TIME SPAN = "+getRawTimeSpan(energyLevel)+ " s");
+            lines.add("    "+"At current energy level");
+        }
     }
 }

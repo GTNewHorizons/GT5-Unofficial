@@ -80,13 +80,6 @@ abstract class cElementalStackMap implements Comparable<cElementalStackMap> {
         return nbt;
     }
 
-    public static String[] infoFromNBT(NBTTagCompound nbt) {
-        final String[] strings = new String[nbt.getInteger("i")];
-        for (int i = 0; i < strings.length; i++)
-            strings[i] = nbt.getString(Integer.toString(i));
-        return strings;
-    }
-
     public final NBTTagCompound toNBT() {
         final NBTTagCompound nbt = new NBTTagCompound();
         nbt.setInteger("i", map.size());

@@ -8,6 +8,8 @@ import com.github.technus.tectech.elementalMatter.core.transformations.aItemDequ
 import com.github.technus.tectech.elementalMatter.core.transformations.aOredictDequantizationInfo;
 import net.minecraft.nbt.NBTTagCompound;
 
+import java.util.ArrayList;
+
 /**
  * Created by danie_000 on 11.11.2016.
  */
@@ -21,6 +23,8 @@ public interface iElementalDefinition extends Comparable<iElementalDefinition>,C
     String getName();
 
     String getSymbol();
+
+    void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel);
 
     byte getType();
 

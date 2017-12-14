@@ -1,6 +1,7 @@
 package com.github.technus.tectech.thing.item;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.Util;
 import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.elementalMatter.core.interfaces.iElementalInstanceContainer;
 import com.github.technus.tectech.elementalMatter.core.tElementalException;
@@ -26,10 +27,10 @@ import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 /**
  * Created by Tec on 15.03.2017.
  */
-public class DebugContainer_EM extends Item {
-    public static DebugContainer_EM INSTANCE;
+public class DebugElementalInstanceContainer_EM extends Item {
+    public static DebugElementalInstanceContainer_EM INSTANCE;
 
-    private DebugContainer_EM() {
+    private DebugElementalInstanceContainer_EM() {
         super();
         setMaxStackSize(1);
         setUnlocalizedName("em.debugContainer");
@@ -76,7 +77,7 @@ public class DebugContainer_EM extends Item {
             NBTTagCompound tNBT = aStack.getTagCompound();
             if (tNBT != null && tNBT.hasKey("info")) {
                 aList.add("Contains:");
-                Collections.addAll(aList, cElementalInstanceStackMap.infoFromNBT(tNBT.getCompoundTag("info")));
+                Collections.addAll(aList, Util.infoFromNBT(tNBT.getCompoundTag("info")));
             } else {
                 aList.add("Container for elemental matter");
                 aList.add(EnumChatFormatting.BLUE + "Right click on elemental hatches");
@@ -87,7 +88,7 @@ public class DebugContainer_EM extends Item {
     }
 
     public static void run() {
-        INSTANCE = new DebugContainer_EM();
+        INSTANCE = new DebugElementalInstanceContainer_EM();
         GameRegistry.registerItem(INSTANCE, INSTANCE.getUnlocalizedName());
     }
 

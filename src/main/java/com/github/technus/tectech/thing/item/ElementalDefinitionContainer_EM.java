@@ -1,6 +1,7 @@
 package com.github.technus.tectech.thing.item;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.Util;
 import com.github.technus.tectech.elementalMatter.core.cElementalDefinitionStackMap;
 import com.github.technus.tectech.elementalMatter.core.tElementalException;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -19,10 +20,10 @@ import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 /**
  * Created by Tec on 15.03.2017.
  */
-public class DefinitionContainer_EM extends Item {
-    public static DefinitionContainer_EM INSTANCE;
+public class ElementalDefinitionContainer_EM extends Item {
+    public static ElementalDefinitionContainer_EM INSTANCE;
 
-    private DefinitionContainer_EM() {
+    private ElementalDefinitionContainer_EM() {
         super();
         setMaxStackSize(1);
         setUnlocalizedName("em.definitionContainer");
@@ -31,7 +32,7 @@ public class DefinitionContainer_EM extends Item {
 
     //return previous thing
     public static cElementalDefinitionStackMap setContent(ItemStack containerItem, cElementalDefinitionStackMap definitions){
-        if(containerItem.getItem() instanceof DefinitionContainer_EM) {
+        if(containerItem.getItem() instanceof ElementalDefinitionContainer_EM) {
             NBTTagCompound tNBT = containerItem.stackTagCompound;
             if (tNBT == null) tNBT=containerItem.stackTagCompound=new NBTTagCompound();
 
@@ -51,7 +52,7 @@ public class DefinitionContainer_EM extends Item {
     }
 
     public static cElementalDefinitionStackMap getContent(ItemStack containerItem){
-        if(containerItem.getItem() instanceof DefinitionContainer_EM){
+        if(containerItem.getItem() instanceof ElementalDefinitionContainer_EM){
             NBTTagCompound tNBT = containerItem.stackTagCompound;
 
             if (tNBT == null || !tNBT.hasKey("content")) return null;
@@ -65,7 +66,7 @@ public class DefinitionContainer_EM extends Item {
     }
 
     public static cElementalDefinitionStackMap clearContent(ItemStack containerItem){
-        if(containerItem.getItem() instanceof DefinitionContainer_EM){
+        if(containerItem.getItem() instanceof ElementalDefinitionContainer_EM){
             NBTTagCompound tNBT = containerItem.stackTagCompound;
             if (tNBT == null) return null;
 
@@ -91,7 +92,7 @@ public class DefinitionContainer_EM extends Item {
             NBTTagCompound tNBT = aStack.getTagCompound();
             if (tNBT != null && tNBT.hasKey("info")) {
                 aList.add("Should Contain:");
-                Collections.addAll(aList, cElementalDefinitionStackMap.infoFromNBT(tNBT.getCompoundTag("info")));
+                Collections.addAll(aList, Util.infoFromNBT(tNBT.getCompoundTag("info")));
             } else {
                 aList.add("Recipe Hint");
             }
@@ -101,7 +102,7 @@ public class DefinitionContainer_EM extends Item {
     }
 
     public static void run() {
-        INSTANCE = new DefinitionContainer_EM();
+        INSTANCE = new ElementalDefinitionContainer_EM();
         GameRegistry.registerItem(INSTANCE, INSTANCE.getUnlocalizedName());
     }
 
