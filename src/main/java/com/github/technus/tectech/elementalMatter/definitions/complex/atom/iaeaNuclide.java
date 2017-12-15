@@ -1,4 +1,4 @@
-package com.github.technus.tectech.elementalMatter.definitions.complex.iaea;
+package com.github.technus.tectech.elementalMatter.definitions.complex.atom;
 
 import com.github.technus.tectech.Util;
 import com.github.technus.tectech.auxiliary.Reference;
@@ -206,28 +206,51 @@ public final class iaeaNuclide {
     }
 
     private static iaeaDecay[] getDecaysFixed(String decay1, double chance1,String decay2, double chance2,String decay3, double chance3){
-        double normalization=0,div;
-        if(decay1.length()>0 && !Double.isNaN(chance1))normalization+=chance1;
-        if(decay2.length()>0 && !Double.isNaN(chance2))normalization+=chance2;
-        if(decay3.length()>0 && !Double.isNaN(chance3))normalization+=chance3;
-        normalization/=100d;
+        boolean do1,do2,do3;
+        do1=(decay1.length()>0 && !Double.isNaN(chance1));
+        do2=(decay2.length()>0 && !Double.isNaN(chance2));
+        do3=(decay3.length()>0 && !Double.isNaN(chance3));
         TreeMap<Double,iaeaDecay> decays=new TreeMap<>();
-        if(decay1.length()>0 && !Double.isNaN(chance1)) {
-            div=chance1/normalization;
-            decays.put(div, new iaeaDecay((float) (div), decay1));
-        }
-        if(decay2.length()>0 && !Double.isNaN(chance1)) {
-            div=chance2/normalization;
-            decays.put(div, new iaeaDecay((float) (div), decay2));
-        }
-        if(decay3.length()>0 && !Double.isNaN(chance1)) {
-            div=chance3/normalization;
-            decays.put(div, new iaeaDecay((float) (div), decay3));
+        if(do1 && do2 && chance1==100 && chance2==100 && chance3!=100){
+            decays.put(1D, new iaeaDecay(1f, decay1));
+            if(do3) {
+                chance3/=100d;
+                decays.put(chance3, new iaeaDecay((float) (chance3), decay2));
+                chance2=1d-chance3;
+            }
+            chance2/=2d;
+            decays.put(chance2, new iaeaDecay((float) (chance2), decay2));
+        }else if(do1 && chance1==100){
+            decays.put(1D, new iaeaDecay(1f, decay1));
+            if(do2) {
+                chance2/=100d;
+                decays.put(chance2, new iaeaDecay((float) (chance2), decay2));
+            }
+            if(do3) {
+                chance3 /= 100d;
+                if(do2) chance3 *= chance2;
+                decays.put(chance3, new iaeaDecay((float) (chance3), decay3));
+            }
+        }else{
+            double normalization=((do1?chance1:0)+(do2?chance2:0)+(do3?chance3:0));
+            if(do1) {
+                chance1/=normalization;
+                decays.put(chance1, new iaeaDecay((float) (chance1), decay1));
+            }
+            if(do2) {
+                chance2/=normalization;
+                decays.put(chance2, new iaeaDecay((float) (chance2), decay2));
+            }
+            if(do3) {
+                chance3/=normalization;
+                decays.put(chance3, new iaeaDecay((float) (chance3), decay3));
+            }
+            if(do1||do2||do3)
+                decays.put(1D,iaeaDecay.DEAD_END);
         }
         //if(DEBUG_MODE){
         //    System.out.println("INVALID SUM?\t"+normalization+"\t"+decay1+"\t"+chance1+"\t"+decay2+"\t"+chance2+"\t"+decay3+"\t"+chance3);
         //}
-        decays.put(1D,iaeaDecay.DEAD_END);
         return decays.values().toArray(new iaeaDecay[decays.size()]);
     }
 

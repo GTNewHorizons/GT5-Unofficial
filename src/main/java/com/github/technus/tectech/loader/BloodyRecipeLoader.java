@@ -24,7 +24,7 @@ public class BloodyRecipeLoader implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 CustomItemList.eM_Containment.get(1, o),
                 GT_ModHandler.getIC2Item("reinforcedGlass", 1L)
-        }, Materials.Trinium.getMolten(576), new ItemStack(QuantumGlassBlock.INSTANCE, 1), 200, 500000);
+        }, Materials.Osmium.getMolten(576), new ItemStack(QuantumGlassBlock.INSTANCE, 1), 200, 500000);
 
         //BLUEprint
         GT_ModHandler.addShapelessCraftingRecipe(new ItemStack(ConstructableTriggerItem.INSTANCE, 1),
@@ -83,7 +83,7 @@ public class BloodyRecipeLoader implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 CustomItemList.eM_Power.get(1, o),
                 GT_OreDictUnificator.get(OrePrefixes.plateDense, Materials.Osmiridium, 6),
-                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Trinium, 12),
+                GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Osmium, 12),
                 GT_OreDictUnificator.get(OrePrefixes.screw, Materials.TungstenSteel, 24),
                 GT_OreDictUnificator.get(OrePrefixes.ring, Materials.TungstenSteel, 24),
                 ItemList.Field_Generator_IV.get(1, o)

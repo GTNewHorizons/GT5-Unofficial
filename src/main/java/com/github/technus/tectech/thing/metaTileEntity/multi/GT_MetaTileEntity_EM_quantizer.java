@@ -23,8 +23,8 @@ import net.minecraftforge.oredict.OreDictionary;
 import static com.github.technus.tectech.Util.*;
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.elementalMatter.core.templates.iElementalDefinition.DEFAULT_ENERGY_LEVEL;
-import static com.github.technus.tectech.elementalMatter.definitions.complex.dAtomDefinition.refMass;
-import static com.github.technus.tectech.elementalMatter.definitions.complex.dAtomDefinition.refUnstableMass;
+import static com.github.technus.tectech.elementalMatter.definitions.complex.atom.dAtomDefinition.refMass;
+import static com.github.technus.tectech.elementalMatter.definitions.complex.atom.dAtomDefinition.refUnstableMass;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 

@@ -1,4 +1,4 @@
-package com.github.technus.tectech.elementalMatter.definitions.complex;
+package com.github.technus.tectech.elementalMatter.definitions.complex.atom;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
@@ -15,7 +15,7 @@ import com.github.technus.tectech.elementalMatter.core.transformations.aFluidDeq
 import com.github.technus.tectech.elementalMatter.core.transformations.aItemDequantizationInfo;
 import com.github.technus.tectech.elementalMatter.core.transformations.aOredictDequantizationInfo;
 import com.github.technus.tectech.elementalMatter.core.transformations.bTransformationInfo;
-import com.github.technus.tectech.elementalMatter.definitions.complex.iaea.iaeaNuclide;
+import com.github.technus.tectech.elementalMatter.definitions.complex.hadron.dHadronDefinition;
 import com.github.technus.tectech.elementalMatter.definitions.primitive.eBosonDefinition;
 import com.github.technus.tectech.elementalMatter.definitions.primitive.eLeptonDefinition;
 import com.github.technus.tectech.elementalMatter.definitions.primitive.eNeutrinoDefinition;
@@ -399,15 +399,15 @@ public final class dAtomDefinition extends cElementalDefinition {
         else if(energy<=0) state = iaea.energeticStatesArray[0];
         else state=iaea.energeticStatesArray[(int)energy];
         for (int i=0;i<state.decaymodes.length;i++){
-            if(!getDecay(decaysList,state.decaymodes[i],energy)) {
+            if(!getDecayFromIaea(decaysList,state.decaymodes[i],energy)) {
                 decaysList.clear();
                 return false;
             }
         }
-        return true;
+        return decaysList.size()>0;
     }
 
-    private boolean getDecay(ArrayList<cElementalDecay> decaysList,iaeaNuclide.iaeaDecay decay, long energy){
+    private boolean getDecayFromIaea(ArrayList<cElementalDecay> decaysList, iaeaNuclide.iaeaDecay decay, long energy){
         cElementalMutableDefinitionStackMap withThis=elementalStacks.toMutable(),newStuff=new cElementalMutableDefinitionStackMap();
         switch (decay.decayName){
             case "D": {

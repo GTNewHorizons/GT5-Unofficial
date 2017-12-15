@@ -1,4 +1,4 @@
-package com.github.technus.tectech.elementalMatter.definitions.complex;
+package com.github.technus.tectech.elementalMatter.definitions.complex.hadron;
 
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
@@ -21,7 +21,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.ArrayList;
 
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.elementalMatter.definitions.complex.dAtomDefinition.transformation;
+import static com.github.technus.tectech.elementalMatter.definitions.complex.atom.dAtomDefinition.transformation;
 import static com.github.technus.tectech.elementalMatter.definitions.primitive.eBosonDefinition.boson_Y__;
 import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
 import static gregtech.api.enums.OrePrefixes.dust;

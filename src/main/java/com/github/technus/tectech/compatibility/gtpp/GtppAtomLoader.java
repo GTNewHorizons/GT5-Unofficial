@@ -5,7 +5,7 @@ import gregtech.api.enums.OrePrefixes;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.MaterialGenerator;
 
-import static com.github.technus.tectech.elementalMatter.definitions.complex.dAtomDefinition.*;
+import static com.github.technus.tectech.elementalMatter.definitions.complex.atom.dAtomDefinition.*;
 
 public class GtppAtomLoader implements Runnable{
     @Override
