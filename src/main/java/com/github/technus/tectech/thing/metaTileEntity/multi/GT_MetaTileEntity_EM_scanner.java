@@ -37,11 +37,9 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileE
  */
 public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     public static final int SCAN_DO_NOTHING=0,
-            SCAN_GET_MASS=1, SCAN_GET_CHARGE=2, SCAN_GET_CLASS_TYPE=4, SCAN_GET_NOMENCLATURE=8,
-            SCAN_GET_TIMESPAN_INFO=16, SCAN_GET_DECAY_INFO=32,
+            SCAN_GET_MASS=1, SCAN_GET_CHARGE=2, SCAN_GET_CLASS_TYPE=4, SCAN_GET_NOMENCLATURE=8, SCAN_GET_TIMESPAN_INFO=16,
             SCAN_GET_AMOUNT=256, SCAN_GET_COLOR=512, SCAN_GET_ENERGY_LEVEL=1024, SCAN_GET_AGE=2048, SCAN_GET_TIMESPAN_MULT =4096,
-            SCAN_GET_ENERGY_STATES=32768, SCAN_GET_ENERGY_STATES_DECAYS=65536,
-            SCAN_GET_DEPTH_LEVEL=-2147483648;
+            SCAN_GET_DEPTH_LEVEL= 8192, SCAN_GET_ENERGY_STATES=16384;
 
     private TT_recipe.TT_EMRecipe.TT_EMRecipe eRecipe;
     private cElementalDefinitionStack objectResearched;

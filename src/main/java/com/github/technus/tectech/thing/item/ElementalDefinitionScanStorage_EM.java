@@ -45,7 +45,7 @@ public class ElementalDefinitionScanStorage_EM extends Item {
     public static void clearContent(ItemStack containerItem){
         if(containerItem.getItem() instanceof ElementalDefinitionScanStorage_EM){
             if (containerItem.stackTagCompound == null) return;
-            containerItem.stackTagCompound.removeTag("elementalInfo");
+            containerItem.stackTagCompound=null;
             return;
         }
         return;
@@ -56,7 +56,7 @@ public class ElementalDefinitionScanStorage_EM extends Item {
         aList.add(CommonValues.TEC_MARK_EM);
         try {
             if  (aStack.stackTagCompound != null &&  aStack.stackTagCompound.hasKey("elementalInfo")) {
-                aList.add("Scan result:");
+                aList.add("Contains scan result");
                 if(DEBUG_MODE)
                     Collections.addAll(aList, Util.infoFromNBT(aStack.stackTagCompound.getCompoundTag("elementalInfo")));
             } else {
@@ -82,7 +82,7 @@ public class ElementalDefinitionScanStorage_EM extends Item {
     @Override
     public IIcon getIconIndex(ItemStack itemStack) {
         NBTTagCompound tagCompound=itemStack.stackTagCompound;
-        if(tagCompound!=null && tagCompound.hasKey("info"))
+        if(tagCompound!=null && tagCompound.hasKey("elementalInfo"))
             return online;
         return offline;
     }
@@ -90,7 +90,6 @@ public class ElementalDefinitionScanStorage_EM extends Item {
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List list) {
         ItemStack that = new ItemStack(this, 1);
-        that.setTagCompound(new NBTTagCompound());
         list.add(that);
     }
 }

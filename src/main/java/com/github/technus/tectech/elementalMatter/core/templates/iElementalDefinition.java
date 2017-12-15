@@ -68,7 +68,7 @@ public abstract class iElementalDefinition implements Comparable<iElementalDefin
 
     public abstract iElementalDefinition clone();
 
-    public final int compareClassID(iElementalDefinition obj) {
+    final int compareClassID(iElementalDefinition obj) {
         return ((int) getClassType()) - obj.getClassType();
     }
 }
