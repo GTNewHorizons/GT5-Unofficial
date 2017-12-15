@@ -1,9 +1,6 @@
 package com.github.technus.tectech.elementalMatter.definitions.complex.atom;
 
 import com.github.technus.tectech.Util;
-import com.github.technus.tectech.auxiliary.Reference;
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.ResourceLocation;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -28,8 +25,7 @@ public final class iaeaNuclide {
         String line="";
 
         try {
-            ResourceLocation loc = new ResourceLocation(Reference.MODID+":nuclides.csv");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(Minecraft.getMinecraft().getResourceManager().getResource(loc).getInputStream()));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(iaeaNuclide.class.getResourceAsStream("nuclides.csv")));
             ArrayList<String[]> blockOfData=new ArrayList<>(4);
             while((line=reader.readLine())!=null) {
                 String[] split= Util.splitButDifferent(line,",");
@@ -44,32 +40,33 @@ public final class iaeaNuclide {
                 new iaeaNuclide(blockOfData.toArray(new String[0][]));
                 blockOfData.clear();
             }
+            reader.close();
         }catch (Exception e){
             System.out.println(line);
             e.printStackTrace();
         }
 
         try {
-            ResourceLocation loc = new ResourceLocation(Reference.MODID+":nuclidesTable.csv");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(Minecraft.getMinecraft().getResourceManager().getResource(loc).getInputStream()));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(iaeaNuclide.class.getResourceAsStream("nuclidesTable.csv")));
             while((line=reader.readLine())!=null) {
                 String[] split= Util.splitButDifferent(line,",");
                 if(split.length!=47) throw new Error("Invalid count ("+split.length+") of separators in IAEA nuvlidesTable database " + line);
                 get(Integer.parseInt(split[0]),Integer.parseInt(split[1])).getMoreData(split);
             }
+            reader.close();
         }catch (Exception e){
             System.out.println(line);
             e.printStackTrace();
         }
 
         try {
-            ResourceLocation loc = new ResourceLocation(Reference.MODID+":energyLevels.csv");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(Minecraft.getMinecraft().getResourceManager().getResource(loc).getInputStream()));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(iaeaNuclide.class.getResourceAsStream("energyLevels.csv")));
             while((line=reader.readLine())!=null) {
                 String[] split= Util.splitButDifferent(line,",");
                 if(split.length!=27) throw new Error("Invalid count ("+split.length+") of separators in IAEA energyLevels database " + line);
                 new energeticState(split);
             }
+            reader.close();
         }catch (Exception e){
             System.out.println(line);
             e.printStackTrace();

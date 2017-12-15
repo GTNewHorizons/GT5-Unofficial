@@ -10,6 +10,7 @@ import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.item.ConstructableTriggerItem;
 import com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM;
+import com.github.technus.tectech.thing.item.ElementalDefinitionScanStorage_EM;
 import com.github.technus.tectech.thing.item.ParametrizerMemoryCard;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.relauncher.Side;
@@ -120,6 +121,7 @@ public final class MainLoader {
         DebugElementalInstanceContainer_EM.INSTANCE.setCreativeTab(mainTab);
         ConstructableTriggerItem.INSTANCE.setCreativeTab(mainTab);
         ParametrizerMemoryCard.INSTANCE.setCreativeTab(mainTab);
+        ElementalDefinitionScanStorage_EM.INSTANCE.setCreativeTab(mainTab);
     }
 
     private void registerExtraHazmats() {

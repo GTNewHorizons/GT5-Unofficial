@@ -239,7 +239,7 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
     public void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel) {
         if(Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities))
             lines.add("CLASS = "+nbtType+" "+getClassType());
-        if(Util.areBitsSet(SCAN_GET_NOMENCLATURE+SCAN_GET_COLOR+SCAN_GET_CHARGE+SCAN_GET_MASS, capabilities)) {
+        if(Util.areBitsSet(SCAN_GET_NOMENCLATURE|SCAN_GET_CHARGE|SCAN_GET_MASS, capabilities)) {
             lines.add("NAME = "+getName());
             //lines.add("SYMBOL = "+getSymbol());
         }
