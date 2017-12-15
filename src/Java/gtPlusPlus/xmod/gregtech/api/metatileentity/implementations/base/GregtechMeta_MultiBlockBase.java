@@ -226,18 +226,18 @@ GT_MetaTileEntity_MultiBlockBase {
 		}
 
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBattery) {
-			updateTexture(aBaseCasingIndex);
+			updateTexture(aTileEntity, aBaseCasingIndex);
 			return this.mChargeHatches.add(
 					(GT_MetaTileEntity_Hatch_InputBattery) aMetaTileEntity);
 		}
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBattery) {
-			updateTexture(aBaseCasingIndex);
+			updateTexture(aTileEntity, aBaseCasingIndex);
 			return this.mDischargeHatches.add(
 					(GT_MetaTileEntity_Hatch_OutputBattery) aMetaTileEntity);
 		}
 		if (LoadedMods.TecTech){
 			if (isThisHatchMultiDynamo()) {
-				updateTexture(aBaseCasingIndex);
+				updateTexture(aTileEntity, aBaseCasingIndex);
 				return this.mMultiDynamoHatches.add(
 						(GT_MetaTileEntity_Hatch) aMetaTileEntity);
 			}
@@ -256,7 +256,7 @@ GT_MetaTileEntity_MultiBlockBase {
 			return false;
 		}
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBattery) {
-			updateTexture(aBaseCasingIndex);
+			updateTexture(aTileEntity, aBaseCasingIndex);
 			return this.mChargeHatches.add(
 					(GT_MetaTileEntity_Hatch_InputBattery) aMetaTileEntity);
 		}
@@ -273,7 +273,7 @@ GT_MetaTileEntity_MultiBlockBase {
 			return false;
 		}
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBattery) {
-			updateTexture(aBaseCasingIndex);
+			updateTexture(aTileEntity, aBaseCasingIndex);
 			return this.mDischargeHatches.add(
 					(GT_MetaTileEntity_Hatch_OutputBattery) aMetaTileEntity);
 		}
@@ -290,7 +290,7 @@ GT_MetaTileEntity_MultiBlockBase {
 			return false;
 		}
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-			updateTexture(aBaseCasingIndex);
+			updateTexture(aTileEntity, aBaseCasingIndex);
 			((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = this.getRecipeMap();
 			return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
 		}
@@ -306,7 +306,7 @@ GT_MetaTileEntity_MultiBlockBase {
 			return false;
 		}
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-			updateTexture(aBaseCasingIndex);
+			updateTexture(aTileEntity, aBaseCasingIndex);
 			return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
 		}
 		return false;
@@ -316,12 +316,15 @@ GT_MetaTileEntity_MultiBlockBase {
 	 * Enable Texture Casing Support if found in GT 5.09
 	 */
 	
-	public boolean updateTexture(int aCasingID){
+	public boolean updateTexture(final IGregTechTileEntity aTileEntity, int aCasingID){
 		try {
 			Method mProper = Class.forName("gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch").getDeclaredMethod("updateTexture", int.class);
 			if (mProper != null){
+				if (aTileEntity instanceof GT_MetaTileEntity_Hatch){				
 				mProper.setAccessible(true);
 				mProper.invoke(this, aCasingID);
+				return true;
+				}					
 			}
 			else {
 				return false;
@@ -367,7 +370,7 @@ GT_MetaTileEntity_MultiBlockBase {
 			return false;
 		}
 		if (isThisHatchMultiDynamo()) {
-			updateTexture(aBaseCasingIndex);
+			updateTexture(aTileEntity, aBaseCasingIndex);
 			return this.mMultiDynamoHatches.add((GT_MetaTileEntity_Hatch) aMetaTileEntity);
 		}
 		return false;
