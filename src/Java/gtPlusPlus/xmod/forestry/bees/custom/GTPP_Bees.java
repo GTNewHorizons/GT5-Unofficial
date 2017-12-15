@@ -17,12 +17,14 @@ import gregtech.GT_Mod;
 import gregtech.api.enums.GT_Values;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Materials;
+import gregtech.api.enums.OrePrefixes;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngot_OLD;
 import gtPlusPlus.core.item.base.misc.BaseItemMisc;
 import gtPlusPlus.core.item.base.misc.BaseItemMisc.MiscTypes;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.fluid.FluidUtils;
 import gtPlusPlus.core.util.item.ItemUtils;
+import gtPlusPlus.core.util.materials.MaterialUtils;
 import gtPlusPlus.core.util.reflect.ReflectionUtils;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -74,22 +76,31 @@ public class GTPP_Bees {
     
     private void setCustomItems() {
     	dropForceGem = new BaseItemMisc("Force", new short[]{250, 250, 20}, 64, MiscTypes.GEM, null);
+    	MaterialUtils.tryEnableMaterial(Materials.Force);
+    	MaterialUtils.tryEnableMaterialPart(OrePrefixes.dust, Materials.Force);
+    	MaterialUtils.tryEnableMaterialPart(OrePrefixes.ingot, Materials.Force);
     	dropBiomassBlob = new BaseItemMisc("Biomass", new short[]{33, 225, 24}, 64, MiscTypes.DROP, null);
     	dropEthanolBlob = new BaseItemMisc("Ethanol", new short[]{255, 128, 0}, 64, MiscTypes.DROP, null);
     	
     	//Nikolite may not exist, so lets make it.
     	dropNikoliteDust = ItemUtils.generateSpecialUseDusts("Nikolite", "Nikolite", Utils.rgbtoHexValue(60, 180, 200))[2];
+    	MaterialUtils.tryEnableMaterial(Materials.Nikolite);
+    	MaterialUtils.tryEnableMaterialPart(OrePrefixes.dust, Materials.Nikolite);
+    	MaterialUtils.tryEnableMaterialPart(OrePrefixes.ingot, Materials.Nikolite);
+    	MaterialUtils.tryEnableMaterialPart(OrePrefixes.plate, Materials.Nikolite);
+    	MaterialUtils.tryEnableMaterial(Materials.BlueAlloy);
     	if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("ingotNikolite", 1) == null){
     		new BaseItemIngot_OLD("itemIngotNikolite", "Nikolite", Utils.rgbtoHexValue(60, 180, 200), 0);
     	}
     	
     	dropFluorineBlob = new BaseItemMisc("Fluorine", new short[]{30, 230, 230}, 64, MiscTypes.DROP, null);
+    	addRecipes();
 	}
     
     private void addRecipes(){
     	addExtractorRecipe(ItemUtils.getSimpleStack(dropBiomassBlob), FluidUtils.getFluidStack("biomass", 30));
     	addExtractorRecipe(ItemUtils.getSimpleStack(dropEthanolBlob), FluidUtils.getFluidStack("ethanol", 6));
-    	addExtractorRecipe(ItemUtils.getSimpleStack(dropFluorineBlob), FluidUtils.getFluidStack("fluid.fluorine", 4));		
+    	addExtractorRecipe(ItemUtils.getSimpleStack(dropFluorineBlob), FluidUtils.getFluidStack("fluorine", 4));		
     }
     
     private boolean addExtractorRecipe(ItemStack input, FluidStack output){
