@@ -71,11 +71,11 @@ public class GTplusplus implements ActionListener {
 	public void preInit(final FMLPreInitializationEvent event) {
 		Utils.LOG_INFO("Loading " + CORE.name + " V" + CORE.VERSION);
 
-		//Get Graphics Mode.
-		CORE.mFancyGraphics = Minecraft.isFancyGraphicsEnabled();
 
 		if(!Utils.isServer()){
 			enableCustomCapes = true;
+			//Get Graphics Mode.
+			CORE.mFancyGraphics = Minecraft.isFancyGraphicsEnabled();
 		}
 
 		//Give this a go mate.

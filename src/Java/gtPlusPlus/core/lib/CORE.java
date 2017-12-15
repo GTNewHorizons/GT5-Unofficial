@@ -10,6 +10,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.mojang.authlib.GameProfile;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.GregTech_API;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.array.Pair;
@@ -44,7 +46,8 @@ public class CORE {
 
 	public static boolean DEVENV = false;
 	public static boolean DEBUG = false;
-	public static boolean mFancyGraphics;
+	@SideOnly(Side.CLIENT)
+	public static boolean mFancyGraphics = false;
 	//Only can be set in Dev, no config or setting elsewhere.
 	public static final boolean LOAD_ALL_CONTENT = false;;
 
