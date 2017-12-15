@@ -239,6 +239,15 @@ public class TreeFarmHelper {
 						else if (aStack.getItemDamage() == 140  || aStack.getDisplayName().toLowerCase().contains("gt.metatool.01.140")){
 							return SAWTOOL.BUZZSAW;
 						}
+						else if (aStack.getItemDamage() == 110  || aStack.getDisplayName().toLowerCase().contains("gt.metatool.01.110")){
+							return SAWTOOL.CHAINSAW;
+						}
+						else if (aStack.getItemDamage() == 112  || aStack.getDisplayName().toLowerCase().contains("gt.metatool.01.112")){
+							return SAWTOOL.CHAINSAW;
+						}
+						else if (aStack.getItemDamage() == 114  || aStack.getDisplayName().toLowerCase().contains("gt.metatool.01.114")){
+							return SAWTOOL.CHAINSAW;
+						}
 						else {
 							return SAWTOOL.NONE;
 						}

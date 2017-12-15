@@ -172,7 +172,7 @@ extends GregtechMeta_MultiBlockBase {
 	public void onPostTick(final IGregTechTileEntity aBaseMetaTileEntity, final long aTick) {
 		super.onPostTick(aBaseMetaTileEntity, aTick);
 
-		if (this.internalStorageTank.amount >= this.maximumFluidStorage){
+		if ((this.internalStorageTank != null) && this.internalStorageTank.amount >= this.maximumFluidStorage){
 			if (this.internalStorageTank.amount > this.maximumFluidStorage){
 				this.internalStorageTank.amount = this.maximumFluidStorage;
 			}

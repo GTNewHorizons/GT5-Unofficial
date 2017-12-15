@@ -5,8 +5,10 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import gregtech.api.enums.Materials;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.items.GT_MetaGenerated_Tool;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Input;
@@ -19,6 +21,7 @@ import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MultiMachine;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
+import gtPlusPlus.xmod.gregtech.api.items.tools.GT_MetaGenTool;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_InputBattery;
 import gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBattery;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -212,6 +215,15 @@ GT_MetaTileEntity_MultiBlockBase {
 			}
 		}
 		super.updateSlots();
+	}
+	
+	public boolean isToolCreative(ItemStack mStack){
+		Materials t1 = GT_MetaGenerated_Tool.getPrimaryMaterial(mStack);
+		Materials t2 = GT_MetaGenerated_Tool.getSecondaryMaterial(mStack);
+		if (t1 == Materials._NULL && t2 == Materials._NULL){
+			return true;
+		}
+		return false;
 	}
 
 	@Override
