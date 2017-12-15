@@ -1,5 +1,6 @@
 package gtPlusPlus.xmod.gregtech.common.tileentities.machines.multi;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import gregtech.api.GregTech_API;
@@ -8,12 +9,14 @@ import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
+import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Dynamo;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Energy;
 import gregtech.api.objects.GT_RenderedTexture;
 import gregtech.api.util.GT_Config;
 import gtPlusPlus.core.block.ModBlocks;
 import gtPlusPlus.core.lib.CORE;
+import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.GUI_MultiMachine;
@@ -34,6 +37,9 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 	protected long mTotalEnergyConsumed = 0;
 	protected long mTotalEnergyLost = 0;
 	protected long mTotalRunTime = 0;
+	
+	//TecTech Support
+	public ArrayList<GT_MetaTileEntity_Hatch> mAllDynamoHatches = new ArrayList();
 
 	public GregtechMetaTileEntity_PowerSubStationController(final int aID, final String aName, final String aNameRegional) {
 		super(aID, aName, aNameRegional);
@@ -246,14 +252,30 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 				}
 			}
 		}
+		
+		/**
+		 * TecTech Support, this allows adding Multi-Amp dynamos.
+		 */
+		if (this.mDynamoHatches.size() > 0){
+			for (GT_MetaTileEntity_Hatch_Dynamo o : this.mDynamoHatches){
+				mAllDynamoHatches.add(o);
+			}
+		}
+		if (LoadedMods.TecTech && this.mMultiDynamoHatches.size() > 0){
+			for (GT_MetaTileEntity_Hatch o : this.mMultiDynamoHatches){
+				mAllDynamoHatches.add(o);
+			}
+		}		
+		
+		
 		if ((this.mChargeHatches.size() < 1) || (this.mDischargeHatches.size() < 1)
 				|| (this.mMaintenanceHatches.size() != 1) || (this.mEnergyHatches.size() < 1)
-				|| (this.mDynamoHatches.size() < 1)) {
+				|| (this.mAllDynamoHatches.size() < 1)) {
 			Utils.LOG_MACHINE_INFO("Returned False 3");
 			Utils.LOG_MACHINE_INFO("Charge Buses: "+this.mChargeHatches.size()+" | expected: 1 | "+(this.mChargeHatches.size() != 1));
 			Utils.LOG_MACHINE_INFO("Discharge Buses: "+this.mDischargeHatches.size()+" | expected: 1 | "+(this.mDischargeHatches.size() != 1));
 			Utils.LOG_MACHINE_INFO("Energy Hatches: "+this.mEnergyHatches.size()+" | expected: >= 1 | "+(this.mEnergyHatches.size() < 1));
-			Utils.LOG_MACHINE_INFO("Dynamo Hatches: "+this.mDynamoHatches.size()+" | expected: >= 1 | "+(this.mDynamoHatches.size() < 1));
+			Utils.LOG_MACHINE_INFO("Dynamo Hatches: "+this.mAllDynamoHatches.size()+" | expected: >= 1 | "+(this.mAllDynamoHatches.size() < 1));
 			Utils.LOG_MACHINE_INFO("Maint. Hatches: "+this.mMaintenanceHatches.size()+" | expected: 1 | "+(this.mMaintenanceHatches.size() != 1));
 			return false;
 		}
@@ -265,7 +287,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 			tempAvg += re.getInputTier();
 			hatchCount++;
 		}
-		for (GT_MetaTileEntity_Hatch_Dynamo re : this.mDynamoHatches){
+		for (GT_MetaTileEntity_Hatch re : this.mAllDynamoHatches){
 			tempAvg += re.getOutputTier();
 			hatchCount++;
 		}
@@ -493,7 +515,7 @@ public class GregtechMetaTileEntity_PowerSubStationController extends GregtechMe
 			}
 			hatchCount++;
 		}
-		for (GT_MetaTileEntity_Hatch_Dynamo tHatch : this.mDynamoHatches) {
+		for (GT_MetaTileEntity_Hatch tHatch : this.mAllDynamoHatches) {
 			//Utils.LOG_INFO("Storing Power in a Dynamo Hatch");
 			if ((isValidMetaTileEntity(tHatch))	&& (tHatch.getBaseMetaTileEntity().increaseStoredEnergyUnits(tHatch.getOutputTier()*2, false))) {
 				this.setEUVar(this.getEUVar()-(tHatch.getOutputTier()*2));

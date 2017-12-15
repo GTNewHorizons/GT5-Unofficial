@@ -1,5 +1,7 @@
 package gtPlusPlus.xmod.gregtech.api.metatileentity.implementations.base;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -12,6 +14,7 @@ import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_Outpu
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch_OutputBus;
 import gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase;
 import gregtech.api.util.GT_Recipe;
+import gtPlusPlus.core.lib.LoadedMods;
 import gtPlusPlus.core.util.Utils;
 import gtPlusPlus.core.util.math.MathUtils;
 import gtPlusPlus.xmod.gregtech.api.gui.CONTAINER_MultiMachine;
@@ -223,12 +226,22 @@ GT_MetaTileEntity_MultiBlockBase {
 		}
 
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBattery) {
+			updateTexture(aBaseCasingIndex);
 			return this.mChargeHatches.add(
 					(GT_MetaTileEntity_Hatch_InputBattery) aMetaTileEntity);
 		}
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBattery) {
+			updateTexture(aBaseCasingIndex);
 			return this.mDischargeHatches.add(
 					(GT_MetaTileEntity_Hatch_OutputBattery) aMetaTileEntity);
+		}
+		if (LoadedMods.TecTech){
+			if (isThisHatchMultiDynamo()) {
+				updateTexture(aBaseCasingIndex);
+				return this.mMultiDynamoHatches.add(
+						(GT_MetaTileEntity_Hatch) aMetaTileEntity);
+			}
+			
 		}
 		return super.addToMachineList(aTileEntity, aBaseCasingIndex);
 	}
@@ -243,8 +256,7 @@ GT_MetaTileEntity_MultiBlockBase {
 			return false;
 		}
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_InputBattery) {
-			//((GT_MetaTileEntity_Hatch) aMetaTileEntity);
-			//.updateTexture(aBaseCasingIndex);
+			updateTexture(aBaseCasingIndex);
 			return this.mChargeHatches.add(
 					(GT_MetaTileEntity_Hatch_InputBattery) aMetaTileEntity);
 		}
@@ -261,8 +273,7 @@ GT_MetaTileEntity_MultiBlockBase {
 			return false;
 		}
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_OutputBattery) {
-			//((GT_MetaTileEntity_Hatch) aMetaTileEntity)
-			//.updateTexture(aBaseCasingIndex);
+			updateTexture(aBaseCasingIndex);
 			return this.mDischargeHatches.add(
 					(GT_MetaTileEntity_Hatch_OutputBattery) aMetaTileEntity);
 		}
@@ -279,7 +290,7 @@ GT_MetaTileEntity_MultiBlockBase {
 			return false;
 		}
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Input) {
-			//((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+			updateTexture(aBaseCasingIndex);
 			((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity).mRecipeMap = this.getRecipeMap();
 			return this.mInputHatches.add((GT_MetaTileEntity_Hatch_Input) aMetaTileEntity);
 		}
@@ -295,10 +306,96 @@ GT_MetaTileEntity_MultiBlockBase {
 			return false;
 		}
 		if (aMetaTileEntity instanceof GT_MetaTileEntity_Hatch_Output) {
-			//((GT_MetaTileEntity_Hatch) aMetaTileEntity).updateTexture(aBaseCasingIndex);
+			updateTexture(aBaseCasingIndex);
 			return this.mOutputHatches.add((GT_MetaTileEntity_Hatch_Output) aMetaTileEntity);
 		}
 		return false;
+	}
+	
+	/**
+	 * Enable Texture Casing Support if found in GT 5.09
+	 */
+	
+	public boolean updateTexture(int aCasingID){
+		try {
+			Method mProper = Class.forName("gregtech.api.metatileentity.implementations.GT_MetaTileEntity_Hatch").getDeclaredMethod("updateTexture", int.class);
+			if (mProper != null){
+				mProper.setAccessible(true);
+				mProper.invoke(this, aCasingID);
+			}
+			else {
+				return false;
+			}
+		}
+		catch (NoSuchMethodException | SecurityException | ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {}		
+		return false;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * TecTech Support
+	 */
+	
+	
+	/**
+	 * This is the array Used to Store the Tectech Multi-Amp hatches.
+	 */
+	
+	public ArrayList<GT_MetaTileEntity_Hatch> mMultiDynamoHatches = new ArrayList();	
+	
+	/**
+	 * TecTech Multi-Amp Dynamo Support
+	 * @param aTileEntity - The Dynamo Hatch
+	 * @param aBaseCasingIndex - Casing Texture
+	 * @return
+	 */
+	
+	public boolean addMultiAmpDynamoToMachineList(final IGregTechTileEntity aTileEntity, final int aBaseCasingIndex){
+		//GT_MetaTileEntity_Hatch_DynamoMulti
+		if (aTileEntity == null) {
+			return false;
+		}
+		final IMetaTileEntity aMetaTileEntity = aTileEntity.getMetaTileEntity();
+		if (aMetaTileEntity == null) {
+			return false;
+		}
+		if (isThisHatchMultiDynamo()) {
+			updateTexture(aBaseCasingIndex);
+			return this.mMultiDynamoHatches.add((GT_MetaTileEntity_Hatch) aMetaTileEntity);
+		}
+		return false;
+	}
+	
+	public boolean isThisHatchMultiDynamo(){
+		Class mDynamoClass;
+		try {
+			mDynamoClass = Class.forName("com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_DynamoMulti");
+			if (mDynamoClass != null){
+				if (mDynamoClass.isInstance(this)){
+					return true;
+				}
+			}
+		}
+		catch (ClassNotFoundException e) {}
+		return false;
+	}
+
+	@Override
+	public boolean addDynamoToMachineList(IGregTechTileEntity aTileEntity, int aBaseCasingIndex) {
+		if (LoadedMods.TecTech){
+			if (isThisHatchMultiDynamo()) {
+				addMultiAmpDynamoToMachineList(aTileEntity, aBaseCasingIndex);
+			}
+			
+		}
+		return super.addDynamoToMachineList(aTileEntity, aBaseCasingIndex);
 	}
 
 }
