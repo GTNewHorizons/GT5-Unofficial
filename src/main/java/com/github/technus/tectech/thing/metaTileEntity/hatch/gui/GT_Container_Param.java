@@ -62,10 +62,10 @@ public class GT_Container_Param extends GT_ContainerMetaTile_Machine {
                     paramH.param -= (aShifthold == 1 ? 16 : 4);
                     break;
                 case 1:
-                    paramH.value0i -= (aShifthold == 1 ? 512 : 64);
+                    paramH.value0i -= (aShifthold == 1 ? 4096 : 256);
                     break;
                 case 2:
-                    paramH.value1i -= (aShifthold == 1 ? 512 : 64);
+                    paramH.value1i -= (aShifthold == 1 ? 4096 : 256);
                     break;
                 case 3:
                     paramH.value0i >>= aShifthold == 1 ? 16 : 4;
@@ -88,10 +88,10 @@ public class GT_Container_Param extends GT_ContainerMetaTile_Machine {
                     paramH.param += (aShifthold == 1 ? 16 : 4);
                     break;
                 case 9:
-                    paramH.value0i += (aShifthold == 1 ? 512 : 64);
+                    paramH.value0i += (aShifthold == 1 ? 4096 : 256);
                     break;
                 case 10:
-                    paramH.value1i += (aShifthold == 1 ? 512 : 64);
+                    paramH.value1i += (aShifthold == 1 ? 4096 : 256);
                     break;
                 case 11:
                     paramH.value0i <<= aShifthold == 1 ? 16 : 4;

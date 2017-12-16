@@ -300,7 +300,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_EM,
-                Util.intToString(TecTech.Rnd.nextInt()),
+                Util.intBitsToString(TecTech.Rnd.nextInt()),
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "You need it to process the number above"
         };
     }

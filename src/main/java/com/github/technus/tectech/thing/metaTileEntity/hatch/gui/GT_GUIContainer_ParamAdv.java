@@ -20,18 +20,18 @@ public class GT_GUIContainer_ParamAdv extends GT_GUIContainerMetaTile_Machine {
             proxy.renderUnicodeString("Parameters X: " + ((GT_Container_ParamAdv) this.mContainer).param, 46, 7, 167, 0xffffff);
             Locale locale=java.util.Locale.getDefault();
             if (((GT_Container_ParamAdv) this.mContainer).usesFloats) {
-                proxy.renderUnicodeString("\u24EA\u2b07" + String.format(locale, "%+d", ((GT_Container_ParamAdv) this.mContainer).input0f), 46, 16, 167, 0x22ddff);
-                proxy.renderUnicodeString("\u2460\u2b07" + String.format(locale, "%+d", ((GT_Container_ParamAdv) this.mContainer).input1f), 46, 24, 167, 0x00ffff);
-                proxy.renderUnicodeString("\u24EA\u2b06" + String.format(locale, "%+d", ((GT_Container_ParamAdv) this.mContainer).input0f), 46, 33, 167, 0x00bbff);
-                proxy.renderUnicodeString("\u2460\u2b06" + String.format(locale, "%+d", ((GT_Container_ParamAdv) this.mContainer).input1f), 46, 41, 167, 0x0077ff);
-            } else {
                 proxy.renderUnicodeString("\u24EA\u2b07" + String.format(locale, "%+.5E", Float.intBitsToFloat(((GT_Container_ParamAdv) this.mContainer).input0f)), 46, 16, 167, 0x22ddff);
                 proxy.renderUnicodeString("\u2460\u2b07" + String.format(locale, "%+.5E", Float.intBitsToFloat(((GT_Container_ParamAdv) this.mContainer).input1f)), 46, 24, 167, 0x00ffff);
                 proxy.renderUnicodeString("\u24EA\u2b06" + String.format(locale, "%+.5E", Float.intBitsToFloat(((GT_Container_ParamAdv) this.mContainer).value0f)), 46, 33, 167, 0x00bbff);
                 proxy.renderUnicodeString("\u2460\u2b06" + String.format(locale, "%+.5E", Float.intBitsToFloat(((GT_Container_ParamAdv) this.mContainer).value1f)), 46, 41, 167, 0x0077ff);
+            } else {
+                proxy.renderUnicodeString("\u24EA\u2b07" + String.format(locale, "%+d", ((GT_Container_ParamAdv) this.mContainer).input0f), 46, 16, 167, 0x22ddff);
+                proxy.renderUnicodeString("\u2460\u2b07" + String.format(locale, "%+d", ((GT_Container_ParamAdv) this.mContainer).input1f), 46, 24, 167, 0x00ffff);
+                proxy.renderUnicodeString("\u24EA\u2b06" + String.format(locale, "%+d", ((GT_Container_ParamAdv) this.mContainer).value0f), 46, 33, 167, 0x00bbff);
+                proxy.renderUnicodeString("\u2460\u2b06" + String.format(locale, "%+d", ((GT_Container_ParamAdv) this.mContainer).value1f), 46, 41, 167, 0x0077ff);
             }
-            proxy.renderUnicodeString("\u24EA\u2b06" + Util.intToShortString(((GT_Container_ParamAdv) this.mContainer).value0f), 46, 50, 167, 0x00bbff);
-            proxy.renderUnicodeString("\u2460\u2b06" + Util.intToShortString(((GT_Container_ParamAdv) this.mContainer).value1f), 46, 58, 167, 0x0077ff);
+            proxy.renderUnicodeString("\u24EA\u2b06" + Util.intBitsToShortString0(((GT_Container_ParamAdv) this.mContainer).value0f), 46, 50, 167, 0x00bbff);
+            proxy.renderUnicodeString("\u2460\u2b06" + Util.intBitsToShortString1(((GT_Container_ParamAdv) this.mContainer).value1f), 46, 58, 167, 0x0077ff);
             proxy.renderUnicodeString("Pointer " + Integer.toHexString(((GT_Container_ParamAdv) this.mContainer).pointer | 0x10000).substring(1), 46, 66, 167, 0x0033ff);
         } else {
             proxy.renderUnicodeString("Parameters X", 46, 7, 167, 0xffffff);

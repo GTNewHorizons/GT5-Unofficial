@@ -107,11 +107,11 @@ public class ParametrizerMemoryCard extends Item {
             temp=tNBT.getInteger("value0i");
             aList.add("Value 0|I: "+EnumChatFormatting.AQUA + temp);
             aList.add("Value 0|F: "+EnumChatFormatting.AQUA + Float.intBitsToFloat(temp));
-            aList.add("Value 0|B: "+EnumChatFormatting.AQUA + Util.intToShortString(temp));
+            aList.add("Value 0|B: "+EnumChatFormatting.AQUA + Util.intBitsToShortString0(temp));
             temp=tNBT.getInteger("value1i");
             aList.add("Value 1|I: "+EnumChatFormatting.AQUA + temp);
             aList.add("Value 1|F: "+EnumChatFormatting.AQUA + Float.intBitsToFloat(temp));
-            aList.add("Value 1|B: "+EnumChatFormatting.AQUA + Util.intToShortString(temp));
+            aList.add("Value 1|B: "+EnumChatFormatting.AQUA + Util.intBitsToShortString1(temp));
             aList.add("Uses Floats: "+(tNBT.getBoolean("usesFloats")?EnumChatFormatting.GREEN+"TRUE":EnumChatFormatting.RED+"FALSE"));
         }
 

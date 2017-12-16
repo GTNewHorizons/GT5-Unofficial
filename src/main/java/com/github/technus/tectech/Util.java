@@ -31,7 +31,7 @@ import static gregtech.api.enums.GT_Values.E;
  * Created by Tec on 21.03.2017.
  */
 public class Util {
-    public static String intToString(int number) {
+    public static String intBitsToString(int number) {
         StringBuilder result = new StringBuilder();
 
         for (int i = 31; i >= 0; i--) {
@@ -46,15 +46,30 @@ public class Util {
         return result.toString();
     }
 
-    public static String intToShortString(int number) {
+    public static String intBitsToShortString0(int number) {
         StringBuilder result = new StringBuilder();
 
         for (int i = 31; i >= 0; i--) {
             int mask = 1 << i;
-            result.append((number & mask) != 0 ? "!" : ".");
+            result.append((number & mask) != 0 ? ":" : ".");
 
             if (i % 8 == 0)
-                result.append(" ");
+                result.append("|");
+        }
+        result.replace(result.length() - 1, result.length(), "");
+
+        return result.toString();
+    }
+
+    public static String intBitsToShortString1(int number) {
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 31; i >= 0; i--) {
+            int mask = 1 << i;
+            result.append((number & mask) != 0 ? ";" : ",");
+
+            if (i % 8 == 0)
+                result.append("|");
         }
         result.replace(result.length() - 1, result.length(), "");
 
