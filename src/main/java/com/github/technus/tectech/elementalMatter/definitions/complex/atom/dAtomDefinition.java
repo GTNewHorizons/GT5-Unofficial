@@ -1431,11 +1431,14 @@ public final class dAtomDefinition extends cElementalDefinition {
             lines.add(getColor()<0?"NOT COLORED":"CARRIES COLOR");
         if(Util.areBitsSet(SCAN_GET_MASS,capabilities))
             lines.add("MASS = "+getMass()+" eV/c\u00b2");
-        //TODO decay info - no energy states info here
+        if(iaeaDefinitionExistsAndHasEnergyLevels){
+            for(int i=1;i<iaea.energeticStatesArray.length;i++){
+                lines.add("ENERGY LEVEL "+i+" = "+iaea.energeticStatesArray[i].energy+" eV");
+            }
+        }
         if(Util.areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)){
-            lines.add(isTimeSpanHalfLife()?"TIME SPAN IS HALF LIFE":"TIME SPAN IS LIFE TIME");
-            lines.add("TIME SPAN = "+getRawTimeSpan(energyLevel)+ " s");
-            lines.add("    "+"At current energy level");
+            lines.add("HALF LIFE = "+getRawTimeSpan(energyLevel)+ " s");
+            lines.add("    At current energy level");
         }
     }
 }

@@ -192,10 +192,8 @@ public abstract class cElementalPrimitive extends cElementalDefinition {
             lines.add(getColor()<0?"NOT COLORED":"CARRIES COLOR");
         if(Util.areBitsSet(SCAN_GET_MASS,capabilities))
             lines.add("MASS = "+getMass()+" eV/c\u00b2");
-        //TODO decay info - no energy states info here
         if(Util.areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)){
-            lines.add(isTimeSpanHalfLife()?"TIME SPAN IS HALF LIFE":"TIME SPAN IS LIFE TIME");
-            lines.add("TIME SPAN = "+getRawTimeSpan(energyLevel)+ " s");
+            lines.add((isTimeSpanHalfLife()?"HALF LIFE = ":"LIFE TIME = ")+getRawTimeSpan(energyLevel)+ " s");
             lines.add("    "+"At current energy level");
         }
     }
