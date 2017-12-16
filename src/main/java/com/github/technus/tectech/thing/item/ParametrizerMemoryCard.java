@@ -53,15 +53,19 @@ public class ParametrizerMemoryCard extends Item {
                     if (aStack.getItemDamage()==1) {
                         //write to parametrizer
                         parametrizer.param = tNBT.getInteger("param");
-                        parametrizer.value0i = tNBT.getInteger("value0i");
-                        parametrizer.value1i = tNBT.getInteger("value1i");
-                        parametrizer.usesFloat = tNBT.getInteger("extra");
+                        if(parametrizer.setUsingFloats(tNBT.getBoolean("usesFloats"))) {
+                            parametrizer.value0i = (int)Float.intBitsToFloat(tNBT.getInteger("value0i"));
+                            parametrizer.value1i = (int)Float.intBitsToFloat(tNBT.getInteger("value1i"));
+                        }else{
+                            parametrizer.value0i = tNBT.getInteger("value0i");
+                            parametrizer.value1i = tNBT.getInteger("value1i");
+                        }
                     } else {
                         //read from parametrizer
                         tNBT.setInteger("param", parametrizer.param);
+                        tNBT.setBoolean("usesFloats", parametrizer.isUsingFloats());
                         tNBT.setInteger("value0i", parametrizer.value0i);
                         tNBT.setInteger("value1i", parametrizer.value1i);
-                        tNBT.setInteger("extra", parametrizer.usesFloat);
                     }
                     return true;
                 }
@@ -108,6 +112,7 @@ public class ParametrizerMemoryCard extends Item {
             aList.add("Value 1|I: "+EnumChatFormatting.AQUA + temp);
             aList.add("Value 1|F: "+EnumChatFormatting.AQUA + Float.intBitsToFloat(temp));
             aList.add("Value 1|B: "+EnumChatFormatting.AQUA + Util.intToShortString(temp));
+            aList.add("Uses Floats: "+(tNBT.getBoolean("usesFloats")?EnumChatFormatting.GREEN+"TRUE":EnumChatFormatting.RED+"FALSE"));
         }
 
     }

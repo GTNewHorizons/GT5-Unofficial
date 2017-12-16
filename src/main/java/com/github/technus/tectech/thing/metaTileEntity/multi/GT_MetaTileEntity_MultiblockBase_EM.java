@@ -75,8 +75,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     private final int[] iParamsOut = new int[20];//number O to parametrizers
     private final boolean[] bParamsAreFloats = new boolean[10];
 
-    private final byte[] eParamsInStatus = new byte[20];//LED status for I
-    private final byte[] eParamsOutStatus = new byte[20];//LED status for O
+    public final byte[] eParamsInStatus = new byte[20];//LED status for I
+    public final byte[] eParamsOutStatus = new byte[20];//LED status for O
     public final static byte STATUS_UNUSED = 0,
             STATUS_TOO_LOW = 1,  STATUS_LOW = 2,
             STATUS_WRONG = 3,    STATUS_OK = 4,

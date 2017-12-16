@@ -203,11 +203,12 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
         return mTier >= 10 && usesFloat;
     }
 
+    //returns - succeded
     public boolean setUsingFloats(boolean value){
         if(mTier>=10){
             usesFloat=value;
-            return value;
+            return true;
         }
-        return false;
+        return !value;
     }
 }
