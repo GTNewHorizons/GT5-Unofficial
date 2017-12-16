@@ -15,13 +15,13 @@ public class GT_GUIContainer_Param extends GT_GUIContainerMetaTile_Machine {
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
         if (this.mContainer != null) {
             proxy.renderUnicodeString("Parametrizer: " + ((GT_Container_Param) this.mContainer).param, 46, 7, 167, 0xffffff);
-            proxy.renderUnicodeString("\u24EA\u2b07" + String.format(java.util.Locale.ENGLISH, "%+.5E", ((GT_Container_Param) this.mContainer).input0f), 46, 16, 167, 0x22ddff);
-            proxy.renderUnicodeString("\u2460\u2b07" + String.format(java.util.Locale.ENGLISH, "%+.5E", ((GT_Container_Param) this.mContainer).input1f), 46, 24, 167, 0x00ffff);
-            proxy.renderUnicodeString("\u24EA\u2b06" + String.format(java.util.Locale.ENGLISH, "%+.5E", ((GT_Container_Param) this.mContainer).value0f), 46, 33, 167, 0x00bbff);
-            proxy.renderUnicodeString("\u2460\u2b06" + String.format(java.util.Locale.ENGLISH, "%+.5E", ((GT_Container_Param) this.mContainer).value1f), 46, 41, 167, 0x0077ff);
-            proxy.renderUnicodeString("M\u24EA: " + ((GT_Container_Param) this.mContainer).value0, 46, 50, 167, 0x00bbff);
-            proxy.renderUnicodeString("M\u2460: " + ((GT_Container_Param) this.mContainer).value1, 46, 58, 167, 0x0077ff);
-            proxy.renderUnicodeString("E\u24EA\u2460: " + ((GT_Container_Param) this.mContainer).exponent, 46, 66, 167, 0x0033ff);
+            proxy.renderUnicodeString("\u24EA\u2b07|F" + String.format(java.util.Locale.ENGLISH, "%+.5E", ((GT_Container_Param) this.mContainer).input0f), 46, 16, 167, 0x22ddff);
+            proxy.renderUnicodeString("\u2460\u2b07|F" + String.format(java.util.Locale.ENGLISH, "%+.5E", ((GT_Container_Param) this.mContainer).input1f), 46, 24, 167, 0x00ffff);
+            proxy.renderUnicodeString("\u24EA\u2b06|F" + String.format(java.util.Locale.ENGLISH, "%+.5E", ((GT_Container_Param) this.mContainer).value0f), 46, 33, 167, 0x00bbff);
+            proxy.renderUnicodeString("\u2460\u2b06|F" + String.format(java.util.Locale.ENGLISH, "%+.5E", ((GT_Container_Param) this.mContainer).value1f), 46, 41, 167, 0x0077ff);
+            proxy.renderUnicodeString("M\u24EA: " + ((GT_Container_Param) this.mContainer).data0, 46, 50, 167, 0x00bbff);
+            proxy.renderUnicodeString("M\u2460: " + ((GT_Container_Param) this.mContainer).data1, 46, 58, 167, 0x0077ff);
+            proxy.renderUnicodeString("E\u24EA\u2460: " + ((GT_Container_Param) this.mContainer).extra, 46, 66, 167, 0x0033ff);
         } else {
             proxy.renderUnicodeString("Parametrizer", 46, 7, 167, 0xffffff);
         }

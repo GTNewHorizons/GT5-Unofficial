@@ -15,9 +15,9 @@ import net.minecraft.item.ItemStack;
 import java.util.Iterator;
 
 public class GT_Container_Param extends GT_ContainerMetaTile_Machine {
-    public int exponent = 0;
-    public int value1 = 0;
-    public int value0 = 0;
+    public int extra = 0;
+    public int data1 = 0;
+    public int data0 = 0;
     public int param = 0;
     public float value1f = 0;
     public float value0f = 0;
@@ -131,9 +131,9 @@ public class GT_Container_Param extends GT_ContainerMetaTile_Machine {
             return;
         }
         this.param = ((GT_MetaTileEntity_Hatch_Param) this.mTileEntity.getMetaTileEntity()).param;
-        this.value0 = ((GT_MetaTileEntity_Hatch_Param) this.mTileEntity.getMetaTileEntity()).data0;
-        this.value1 = ((GT_MetaTileEntity_Hatch_Param) this.mTileEntity.getMetaTileEntity()).data1;
-        this.exponent = ((GT_MetaTileEntity_Hatch_Param) this.mTileEntity.getMetaTileEntity()).extra;
+        this.data0 = ((GT_MetaTileEntity_Hatch_Param) this.mTileEntity.getMetaTileEntity()).data0;
+        this.data1 = ((GT_MetaTileEntity_Hatch_Param) this.mTileEntity.getMetaTileEntity()).data1;
+        this.extra = ((GT_MetaTileEntity_Hatch_Param) this.mTileEntity.getMetaTileEntity()).extra;
         this.input0Bits = Float.floatToIntBits(((GT_MetaTileEntity_Hatch_Param) this.mTileEntity.getMetaTileEntity()).input1f);
         this.input1Bits = Float.floatToIntBits(((GT_MetaTileEntity_Hatch_Param) this.mTileEntity.getMetaTileEntity()).input2f);
 
@@ -142,12 +142,12 @@ public class GT_Container_Param extends GT_ContainerMetaTile_Machine {
             ICrafting var1 = (ICrafting) var2.next();
             var1.sendProgressBarUpdate(this, 100, this.param & 0xFFFF);
             var1.sendProgressBarUpdate(this, 101, this.param >>> 16);
-            var1.sendProgressBarUpdate(this, 102, this.value0 & 0xFFFF);
-            var1.sendProgressBarUpdate(this, 103, this.value0 >>> 16);
-            var1.sendProgressBarUpdate(this, 104, this.value1 & 0xFFFF);
-            var1.sendProgressBarUpdate(this, 105, this.value1 >>> 16);
-            var1.sendProgressBarUpdate(this, 106, this.exponent & 0xFFFF);
-            var1.sendProgressBarUpdate(this, 107, this.exponent >>> 16);
+            var1.sendProgressBarUpdate(this, 102, this.data0 & 0xFFFF);
+            var1.sendProgressBarUpdate(this, 103, this.data0 >>> 16);
+            var1.sendProgressBarUpdate(this, 104, this.data1 & 0xFFFF);
+            var1.sendProgressBarUpdate(this, 105, this.data1 >>> 16);
+            var1.sendProgressBarUpdate(this, 106, this.extra & 0xFFFF);
+            var1.sendProgressBarUpdate(this, 107, this.extra >>> 16);
             var1.sendProgressBarUpdate(this, 108, this.input0Bits & 0xFFFF);
             var1.sendProgressBarUpdate(this, 109, this.input0Bits >>> 16);
             var1.sendProgressBarUpdate(this, 110, this.input1Bits & 0xFFFF);
@@ -166,22 +166,22 @@ public class GT_Container_Param extends GT_ContainerMetaTile_Machine {
                 this.param = (this.param & 0xFFFF | (par2 << 16));
                 return;
             case 102:
-                this.value0 = (this.value0 & 0xFFFF0000 | par2);
+                this.data0 = (this.data0 & 0xFFFF0000 | par2);
                 break;
             case 103:
-                this.value0 = (this.value0 & 0xFFFF | (par2 << 16));
+                this.data0 = (this.data0 & 0xFFFF | (par2 << 16));
                 break;
             case 104:
-                this.value1 = (this.value1 & 0xFFFF0000 | par2);
+                this.data1 = (this.data1 & 0xFFFF0000 | par2);
                 break;
             case 105:
-                this.value1 = (this.value1 & 0xFFFF | (par2 << 16));
+                this.data1 = (this.data1 & 0xFFFF | (par2 << 16));
                 break;
             case 106:
-                this.exponent = (this.exponent & 0xFFFF0000 | par2);
+                this.extra = (this.extra & 0xFFFF0000 | par2);
                 break;
             case 107:
-                this.exponent = (this.exponent & 0xFFFF | (par2 << 16));
+                this.extra = (this.extra & 0xFFFF | (par2 << 16));
                 break;
             case 108:
                 this.input0Bits = (this.input0Bits & 0xFFFF0000 | par2);
@@ -202,7 +202,7 @@ public class GT_Container_Param extends GT_ContainerMetaTile_Machine {
             default:
                 return;
         }
-        this.value0f = (float) (this.value0 * Math.pow(2, this.exponent));
-        this.value1f = (float) (this.value1 * Math.pow(2, this.exponent));
+        this.value0f = (float) (this.data0 * Math.pow(2, this.extra));
+        this.value1f = (float) (this.data1 * Math.pow(2, this.extra));
     }
 }
