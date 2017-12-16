@@ -1050,8 +1050,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         for (GT_MetaTileEntity_Hatch_Param param : eParamHatches) {
             final int paramID = param.param;
             if (paramID < 0) continue;
-            eParamsIn[paramID] = param.value1f;
-            eParamsIn[paramID + 10] = param.value2f;
+            eParamsIn[paramID] = param.value0f;
+            eParamsIn[paramID + 10] = param.value1f;
             param.input1f = eParamsOut[paramID];
             param.input2f = eParamsOut[paramID + 10];
         }

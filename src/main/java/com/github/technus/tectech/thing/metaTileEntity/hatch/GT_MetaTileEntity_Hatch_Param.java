@@ -1,8 +1,11 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.Util;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Param;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_ParamAdv;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Param;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_ParamAdv;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -23,12 +26,12 @@ import net.minecraftforge.fluids.FluidStack;
  * Created by danie_000 on 15.12.2016.
  */
 public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
-    public int exponent = 0;
-    public int value2 = 0;
-    public int value1 = 0;
+    public int extra = 0;
+    public int data1 = 0;
+    public int data0 = 0;
     public int param = -1;
+    public float value0f = 0;
     public float value1f = 0;
-    public float value2f = 0;
     public float input1f = 0;
     public float input2f = 0;
     private static Textures.BlockIcons.CustomIcon ScreenON;
@@ -52,11 +55,13 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        if (mTier >= 10) return new GT_Container_ParamAdv(aPlayerInventory, aBaseMetaTileEntity);
         return new GT_Container_Param(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        if (mTier >= 10) return new GT_GUIContainer_ParamAdv(aPlayerInventory, aBaseMetaTileEntity);
         return new GT_GUIContainer_Param(aPlayerInventory, aBaseMetaTileEntity);
     }
 
@@ -96,12 +101,36 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
 
     @Override
     public String[] getInfoData() {
+        int temp;
+        if(mTier>=10){
+            return new String[]{
+                    "Parametrizer ID: " + EnumChatFormatting.GREEN + param,
+                    "Value 0|F: " + EnumChatFormatting.AQUA + value0f,
+                    "Value 0|I: " + EnumChatFormatting.AQUA + (temp=Float.floatToIntBits(value0f)),
+                    "Value 0|B: " + EnumChatFormatting.AQUA + Util.intToString(temp,8),
+                    "Value 1|F: " + EnumChatFormatting.BLUE + value1f,
+                    "Value 1|I: " + EnumChatFormatting.BLUE + (temp=Float.floatToIntBits(value1f)),
+                    "Value 1|B: " + EnumChatFormatting.BLUE + Util.intToString(temp,8),
+                    "Input 0|F: " + EnumChatFormatting.GOLD   + input1f,
+                    "Input 0|I: " + EnumChatFormatting.GOLD   + (temp=Float.floatToIntBits(input1f)),
+                    "Input 0|B: " + EnumChatFormatting.GOLD   + Util.intToString(temp,8),
+                    "Input 1|F: " + EnumChatFormatting.YELLOW + input2f,
+                    "Input 1|I: " + EnumChatFormatting.YELLOW + (temp=Float.floatToIntBits(input2f)),
+                    "Input 1|B: " + EnumChatFormatting.YELLOW + Util.intToString(temp,8),
+                    "Data 0|I" + data0,
+                    "Data 1|I" + data1,
+                    "Data x|I" + extra,
+            };
+        }
         return new String[]{
-                "Parameter ID: " + EnumChatFormatting.GREEN + param,
-                "Value 1: " + EnumChatFormatting.AQUA + value1f,
-                "Value 2: " + EnumChatFormatting.BLUE + value2f,
-                "Input 1: " + EnumChatFormatting.GOLD + input1f,
-                "Input 2: " + EnumChatFormatting.YELLOW + input2f
+                "Parametrizer ID: " + EnumChatFormatting.GREEN + param,
+                "Value 0|F: " + EnumChatFormatting.AQUA + value0f,
+                "Value 1|F: " + EnumChatFormatting.BLUE + value1f,
+                "Input 0|F: " + EnumChatFormatting.GOLD   + input1f,
+                "Input 1|F: " + EnumChatFormatting.YELLOW + input2f,
+                "Data 0|I" + data0,
+                "Data 1|I" + data1,
+                "Data x|I" + extra,
         };
     }
 
@@ -122,24 +151,30 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
 
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("mEXP", exponent);
-        aNBT.setInteger("mV2", value2);
-        aNBT.setInteger("mV1", value1);
+        aNBT.setInteger("mEXP", extra);
+        if(mTier>=10) {
+            aNBT.setInteger("mV2", Float.floatToIntBits(value1f));
+            aNBT.setInteger("mV1", Float.floatToIntBits(value0f));
+        }else {
+            aNBT.setInteger("mV2", data1);
+            aNBT.setInteger("mV1", data0);
+        }
         aNBT.setInteger("mParam", param);
-        //aNBT.setFloat("mI1",input1f);//no need to store this.
-        //aNBT.setFloat("mI2",input2f);
     }
 
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        exponent = aNBT.getInteger("mEXP");
-        value2 = aNBT.getInteger("mV2");
-        value1 = aNBT.getInteger("mV1");
+        extra = aNBT.getInteger("mEXP");
+        data1 = aNBT.getInteger("mV2");
+        data0 = aNBT.getInteger("mV1");
         param = aNBT.getInteger("mParam");
-        value1f = (float) (value1 * Math.pow(2, exponent));
-        value2f = (float) (value2 * Math.pow(2, exponent));
-        //input1f=aNBT.getFloat("mI1");
-        //input2f=aNBT.getFloat("mI2");
+        if(mTier>=10) {
+            value0f =Float.intBitsToFloat(data0);
+            value1f =Float.intBitsToFloat(data1);
+        }else{
+            value0f = (float) (data0 * Math.pow(2, extra));
+            value1f = (float) (data1 * Math.pow(2, extra));
+        }
     }
 
     @Override
@@ -179,7 +214,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
         return new String[]{
                 CommonValues.TEC_MARK_GENERAL,
                 mDescription,
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "E=M*C^2"
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "E=mine*craft^2"
         };
     }
 }
