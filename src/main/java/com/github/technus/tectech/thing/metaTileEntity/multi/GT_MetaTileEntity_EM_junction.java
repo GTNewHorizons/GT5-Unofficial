@@ -77,27 +77,33 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public void updateParameters_EM() {
+    public void updateParameters_EM(boolean busy) {
+        double src,dest;
         for (int i = 0; i < 10; i++) {
-            if ((int) eParamsIn[i] < 0) eParamsInStatus[i] = PARAM_TOO_LOW;
-            else if ((int) eParamsIn[i] == 0) eParamsInStatus[i] = PARAM_UNUSED;
-            else if ((int) eParamsIn[i] > eInputHatches.size()) eParamsInStatus[i] = PARAM_TOO_HIGH;
-            else eParamsInStatus[i] = PARAM_OK;
-        }
-        for (int i = 10; i < 20; i++) {
-            if (eParamsInStatus[i - 10] == PARAM_OK) {
-                if ((int) eParamsIn[i] < 0) eParamsInStatus[i] = PARAM_TOO_LOW;
-                else if ((int) eParamsIn[i] == 0) eParamsInStatus[i] = PARAM_LOW;
-                else if ((int) eParamsIn[i] > eOutputHatches.size()) eParamsInStatus[i] = PARAM_TOO_HIGH;
-                else eParamsInStatus[i] = PARAM_OK;
+            src=getParameterInSafely(i,0);
+            if (src <= 0){
+                setStatusOfParameterIn(i,0,STATUS_TOO_LOW);
+                setStatusOfParameterIn(i,1,STATUS_UNUSED);
+            } else if (src > eInputHatches.size()){
+                setStatusOfParameterIn(i,0,STATUS_TOO_HIGH);
+                setStatusOfParameterIn(i,1,STATUS_UNUSED);
+            } else if(Double.isNaN(src)){
+                setStatusOfParameterIn(i,0,STATUS_WRONG);
+                setStatusOfParameterIn(i,1,STATUS_UNUSED);
             } else {
-                eParamsInStatus[i] = PARAM_UNUSED;
+                setStatusOfParameterIn(i,0,STATUS_OK);
+                dest=getParameterInSafely(i,1);
+                if(dest<0) setStatusOfParameterIn(i,1,STATUS_TOO_LOW);
+                else if(dest==0) setStatusOfParameterIn(i,1,STATUS_LOW);
+                else if(dest>eOutputHatches.size()) setStatusOfParameterIn(i,1,STATUS_TOO_HIGH);
+                else if(Double.isNaN(dest)) setStatusOfParameterIn(i,1,STATUS_WRONG);
+                else setStatusOfParameterIn(i,1,STATUS_OK);
             }
         }
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack) {
+    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizers) {
         for (GT_MetaTileEntity_Hatch_InputElemental in : eInputHatches)
             if (in.getContainerHandler().hasStacks()) {
                 mEUt = -(int) V[8];
@@ -113,15 +119,18 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public void outputAfterRecipe_EM() {
+        double src,dest;
         for (int i = 0; i < 10; i++) {
-            final int inIndex = (int) (eParamsIn[i]) - 1;
-            if (inIndex < 0 || inIndex > eInputHatches.size()) continue;
-            final int outIndex = (int) (eParamsIn[i + 10]) - 1;
+            src=getParameterInSafely(i,0);
+            dest=getParameterInSafely(i,1);
+            final int inIndex = (int)src - 1;
+            if (inIndex < 0 || inIndex >= eInputHatches.size() || Double.isNaN(src) || Double.isNaN(dest)) continue;
+            final int outIndex = (int)dest - 1;
             GT_MetaTileEntity_Hatch_InputElemental in = eInputHatches.get(inIndex);
             if (outIndex == -1) {//param==0 -> null the content
                 cleanHatchContentEM_EM(in);
             } else {
-                if (outIndex < 0 || outIndex > eOutputHatches.size()) continue;
+                if (outIndex < 0 || outIndex >= eOutputHatches.size()) continue;
                 GT_MetaTileEntity_Hatch_OutputElemental out = eOutputHatches.get(outIndex);
                 out.getContainerHandler().putUnifyAll(in.getContainerHandler());
                 in.getContainerHandler().clear();

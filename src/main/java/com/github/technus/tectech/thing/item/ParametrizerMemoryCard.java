@@ -1,6 +1,7 @@
 package com.github.technus.tectech.thing.item;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.Util;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Param;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -52,19 +53,15 @@ public class ParametrizerMemoryCard extends Item {
                     if (aStack.getItemDamage()==1) {
                         //write to parametrizer
                         parametrizer.param = tNBT.getInteger("param");
-                        parametrizer.data0 = tNBT.getInteger("value1");
-                        parametrizer.data1 = tNBT.getInteger("value2");
-                        parametrizer.value0f = tNBT.getFloat("value1f");
-                        parametrizer.value1f = tNBT.getFloat("value2f");
-                        parametrizer.extra = tNBT.getInteger("exponent");
+                        parametrizer.value0i = tNBT.getInteger("value0i");
+                        parametrizer.value1i = tNBT.getInteger("value1i");
+                        parametrizer.usesFloat = tNBT.getInteger("extra");
                     } else {
                         //read from parametrizer
                         tNBT.setInteger("param", parametrizer.param);
-                        tNBT.setInteger("value1", parametrizer.data0);
-                        tNBT.setInteger("value2", parametrizer.data1);
-                        tNBT.setFloat("value2f", parametrizer.value1f);
-                        tNBT.setFloat("value1f", parametrizer.value0f);
-                        tNBT.setInteger("exponent", parametrizer.extra);
+                        tNBT.setInteger("value0i", parametrizer.value0i);
+                        tNBT.setInteger("value1i", parametrizer.value1i);
+                        tNBT.setInteger("extra", parametrizer.usesFloat);
                     }
                     return true;
                 }
@@ -100,13 +97,17 @@ public class ParametrizerMemoryCard extends Item {
         }
         aList.add(EnumChatFormatting.BLUE + "Sneak right click to lock/unlock");
 
+        int temp;
         if(tNBT!=null && tNBT.hasKey("param")) {
             aList.add("Hatch ID: "+EnumChatFormatting.AQUA + tNBT.getInteger("param"));
-            aList.add("Value 0|F: "+EnumChatFormatting.AQUA + tNBT.getFloat("value1f"));
-            aList.add("Value 1|F: "+EnumChatFormatting.AQUA + tNBT.getFloat("value2f"));
-            aList.add("Data 0|I: "+EnumChatFormatting.AQUA + tNBT.getInteger("value1"));
-            aList.add("Data 1|I: "+EnumChatFormatting.AQUA + tNBT.getInteger("value2"));
-            aList.add("Data x|I: "+EnumChatFormatting.AQUA + tNBT.getInteger("exponent"));
+            temp=tNBT.getInteger("value0i");
+            aList.add("Value 0|I: "+EnumChatFormatting.AQUA + temp);
+            aList.add("Value 0|F: "+EnumChatFormatting.AQUA + Float.intBitsToFloat(temp));
+            aList.add("Value 0|B: "+EnumChatFormatting.AQUA + Util.intToShortString(temp));
+            temp=tNBT.getInteger("value1i");
+            aList.add("Value 1|I: "+EnumChatFormatting.AQUA + temp);
+            aList.add("Value 1|F: "+EnumChatFormatting.AQUA + Float.intBitsToFloat(temp));
+            aList.add("Value 1|B: "+EnumChatFormatting.AQUA + Util.intToShortString(temp));
         }
 
     }

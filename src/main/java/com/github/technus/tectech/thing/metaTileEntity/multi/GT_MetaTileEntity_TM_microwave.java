@@ -34,10 +34,11 @@ import static gregtech.api.GregTech_API.sBlockCasings4;
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_MultiblockBase_EM  implements IConstructable {
-    private int powerSetting = 1000;
-    private int timerSetting = 360;
+    public final static int POWER_SETTING_DEFAULT=1000, TIMER_SETTING_DEFAULT=360;
+    private int powerSetting = POWER_SETTING_DEFAULT;
+    private int timerSetting = TIMER_SETTING_DEFAULT;
     private int timerValue = 0;
-    private boolean hasBeenPausedThisCycle =false;
+    private boolean hasBeenPausedThisCycle=false;
     private boolean flipped=false;
 
     //region Structure
@@ -72,14 +73,10 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     public GT_MetaTileEntity_TM_microwave(int aID, String aName, String aNameRegional) {
         super(aID, aName, aNameRegional);
-        eParamsIn[0] =powerSetting;
-        eParamsIn[10]=timerSetting;
     }
 
     public GT_MetaTileEntity_TM_microwave(String aName) {
         super(aName);
-        eParamsIn[0] =powerSetting;
-        eParamsIn[10]=timerSetting;
     }
 
     public IMetaTileEntity newMetaEntity(IGregTechTileEntity aTileEntity) {
@@ -103,7 +100,7 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
-        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "EMDisplay.png", false, false, true);
+        return new GT_GUIContainer_MultiMachineEM(aPlayerInventory, aBaseMetaTileEntity, this.getLocalName(), "EMDisplay.png", false, false, true);//todo texture
     }
 
     @Override
@@ -157,9 +154,13 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack) {
+    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizers) {
         hasBeenPausedThisCycle =false;
-        if(powerSetting<=300 || eParamsInStatus[0] == PARAM_TOO_HIGH || timerSetting<=0 || timerSetting>3000) return false;
+        if(noParametrizers){
+            powerSetting=POWER_SETTING_DEFAULT;
+            timerSetting=TIMER_SETTING_DEFAULT;
+        }
+        if(powerSetting<300 || timerSetting<=0 || timerSetting>3000) return false;
         if (timerValue <= 0) {
             timerValue=timerSetting;
         }
@@ -239,27 +240,36 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    public void updateParameters_EM() {
-        if (eParamsIn[0] <= 300)
-            eParamsInStatus[0] = PARAM_TOO_LOW;
-        else if (eParamsIn[0] < 1000)
-            eParamsInStatus[0] = PARAM_LOW;
-        else if (eParamsIn[0] == 1000)
-            eParamsInStatus[0] = PARAM_OK;
-        else if (eParamsIn[0] <= Integer.MAX_VALUE)
-            eParamsInStatus[0] = PARAM_HIGH;
-        else eParamsInStatus[0] = PARAM_TOO_HIGH;
+    public void updateParameters_EM(boolean machineIsBusy) {
+        double powerParameter= getParameterInSafely(0,0);
+        if (powerParameter < 300)
+            setStatusOfParameterIn(0,0, STATUS_TOO_LOW);
+        else if (powerParameter < 1000)
+            setStatusOfParameterIn(0,0, STATUS_LOW);
+        else if (powerParameter == 1000)
+            setStatusOfParameterIn(0,0, STATUS_OK);
+        else if (powerParameter==Double.POSITIVE_INFINITY)
+            setStatusOfParameterIn(0,0, STATUS_TOO_HIGH);
+        else if (Double.isNaN(powerParameter))
+            setStatusOfParameterIn(0,0, STATUS_WRONG);
+        else setStatusOfParameterOut(0,0,STATUS_HIGH);
 
-        if (eParamsIn[10] <= 1)
-            eParamsInStatus[10] = PARAM_TOO_LOW;
-        else if (eParamsIn[10] <= 3000)
-            eParamsInStatus[10] = PARAM_OK;
-        else eParamsInStatus[10] = PARAM_TOO_HIGH;
+        double timerParameter= getParameterInSafely(0,1);
+        if (timerParameter <= 1)
+            setStatusOfParameterIn(0,1,STATUS_TOO_LOW);
+        else if (timerParameter <= 3000)
+            setStatusOfParameterIn(0,0,STATUS_OK);
+        else if (Double.isNaN(timerParameter))
+            setStatusOfParameterIn(0,1,STATUS_WRONG);
+        else setStatusOfParameterIn(0,1,STATUS_TOO_HIGH);
 
-        powerSetting = (int)eParamsIn[0];
-        timerSetting = (int)eParamsIn[10];
+        setParameterOutSafely(0,0,timerValue);
+        setParameterOutSafely(0,1,timerSetting-timerValue);
 
-        eParamsOut[0] = timerValue;
+        if(machineIsBusy) return;
+
+        powerSetting = (int)powerParameter;
+        timerSetting = (int)timerParameter;
     }
 
     @Override

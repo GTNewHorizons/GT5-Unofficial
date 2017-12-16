@@ -79,7 +79,7 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack) {
+    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizers) {
         short thingsActive = 0;
         for (GT_MetaTileEntity_Hatch_InputData di : eInputData)
             if (di.q != null)
@@ -102,11 +102,14 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     public void outputAfterRecipe_EM() {
         if (eOutputData.size() > 0) {
             float total = 0;
+            double dest;
+            double weight;
             for (int i = 0; i < 10; i++) {//each param pair
-                if (eParamsIn[i] > 0 && eParamsIn[i + 10] >= 0)
-                    total += eParamsIn[i];//Total weighted div
+                dest=getParameterInSafely(i,1);
+                weight=getParameterInSafely(i,0);
+                if (weight > 0 && dest >= 0 && !Double.isNaN(dest))
+                    total += weight;//Total weighted div
             }
-            total += total / 100F;
 
             final Vec3pos pos = new Vec3pos(getBaseMetaTileEntity());
             QuantumDataPacket pack = new QuantumDataPacket(pos, 0);
@@ -119,11 +122,13 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
             long remaining = pack.computation;
 
             for (int i = 0; i < 10; i++) {
-                if (eParamsIn[i] > 0) {
-                    final int outIndex = (int) (eParamsIn[i + 10]) - 1;
-                    if (outIndex < 0 || outIndex > eOutputData.size()) continue;
+                dest=getParameterInSafely(i,1);
+                weight=getParameterInSafely(i,0);
+                if (weight > 0 && dest >= 0 && !Double.isNaN(dest)) {
+                    final int outIndex = (int)dest - 1;
+                    if (outIndex < 0 || outIndex >= eOutputData.size()) continue;
                     GT_MetaTileEntity_Hatch_OutputData out = eOutputData.get(outIndex);
-                    final long part = (long) ((pack.computation * eParamsIn[i]) / total);
+                    final long part = (long)Math.floor((pack.computation * weight) / total);
                     if (part > 0) {
                         remaining -= part;
                         if (remaining > 0)
@@ -139,20 +144,28 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     }
 
     @Override
-    public void updateParameters_EM() {
+    public void updateParameters_EM(boolean busy) {
+        double weight,dest;
         for (int i = 0; i < 10; i++) {
-            if (eParamsIn[i] < 0) eParamsInStatus[i] = PARAM_TOO_LOW;
-            else if (eParamsIn[i] == 0) eParamsInStatus[i] = PARAM_UNUSED;
-            else if (eParamsIn[i] == Float.POSITIVE_INFINITY) eParamsInStatus[i] = PARAM_TOO_HIGH;
-            else eParamsInStatus[i] = PARAM_OK;
-        }
-        for (int i = 10; i < 20; i++) {
-            if (eParamsInStatus[i - 10] == PARAM_OK) {
-                if ((int) eParamsIn[i] <= 0) eParamsInStatus[i] = PARAM_LOW;
-                else if ((int) eParamsIn[i] > eOutputData.size()) eParamsInStatus[i] = PARAM_TOO_HIGH;
-                else eParamsInStatus[i] = PARAM_OK;
-            } else {
-                eParamsInStatus[i] = PARAM_UNUSED;
+            weight=getParameterInSafely(i,0);
+            if(weight<=0) {
+                setStatusOfParameterIn(i, 0, STATUS_TOO_LOW);
+                setStatusOfParameterIn(i, 1, STATUS_UNUSED);
+            }else if (Double.isNaN(weight)) {
+                setStatusOfParameterIn(i, 0, STATUS_WRONG);
+                setStatusOfParameterIn(i, 1, STATUS_UNUSED);
+            }else {
+                setStatusOfParameterIn(i,0,STATUS_OK);
+                dest=getParameterInSafely(i,1);
+                if(dest<0)
+                    setStatusOfParameterIn(i,1,STATUS_TOO_LOW);
+                else if(dest==0)
+                    setStatusOfParameterIn(i,1,STATUS_LOW);
+                else if(dest>eOutputData.size())
+                    setStatusOfParameterIn(i,1,STATUS_TOO_HIGH);
+                else if(Double.isNaN(dest))
+                    setStatusOfParameterIn(i,1,STATUS_WRONG);
+                else setStatusOfParameterIn(i,1,STATUS_OK);
             }
         }
     }

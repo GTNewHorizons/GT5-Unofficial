@@ -40,7 +40,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     private static Textures.BlockIcons.CustomIcon ScreenON;
 
     private final ArrayList<GT_MetaTileEntity_Hatch_Rack> eRacks = new ArrayList<>();
-    private int maxTemp = 0;
+    private int maxCurrentTemp = 0;
 
     //region Structure
     private static final String[][] front = new String[][]{{"A  ", "A  ", "A. ", "A  ",},};
@@ -93,11 +93,19 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack) {
+    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizers) {
         eAvailableData = 0;
-        maxTemp = 0;
-        if(eParamsIn[0]>=0 && eParamsIn[10]>=0){
-            float eut=V[8] * eParamsIn[10];
+        maxCurrentTemp = 0;
+        double overClockRatio,overVoltageRatio;
+        if (noParametrizers) {
+            overVoltageRatio=overClockRatio=1;
+        } else {
+            overClockRatio=getParameterInSafely(0,0);
+            overVoltageRatio=getParameterInSafely(0,1);
+            if(Double.isNaN(overClockRatio) || Double.isNaN(overVoltageRatio)) return false;
+        }
+        if(overClockRatio>0 && overVoltageRatio>=0.7f && overClockRatio<=3 && overVoltageRatio<=2){
+            float eut=V[8] * (float)overVoltageRatio * (float)overClockRatio;
             if(eut<Integer.MAX_VALUE-7)
                 mEUt = -(int)eut;
             else{
@@ -111,15 +119,15 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
             short thingsActive = 0;
             int rackComputation;
 
-            for (GT_MetaTileEntity_Hatch_Rack r : eRacks) {
-                if (!isValidMetaTileEntity(r)) continue;
-                if (r.heat > maxTemp) maxTemp = r.heat;
-                rackComputation = r.tickComponents(eParamsIn[0], eParamsIn[10]);
+            for (GT_MetaTileEntity_Hatch_Rack rack : eRacks) {
+                if (!isValidMetaTileEntity(rack)) continue;
+                if (rack.heat > maxCurrentTemp) maxCurrentTemp = rack.heat;
+                rackComputation = rack.tickComponents((float) overClockRatio, (float) overVoltageRatio);
                 if (rackComputation > 0) {
                     eAvailableData += rackComputation;
                     thingsActive += 4;
                 }
-                r.getBaseMetaTileEntity().setActive(true);
+                rack.getBaseMetaTileEntity().setActive(true);
             }
 
             for (GT_MetaTileEntity_Hatch_InputData di : eInputData)
@@ -154,39 +162,51 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public void updateParameters_EM() {
-        if (eParamsIn[0] < 0)
-            eParamsInStatus[0] = PARAM_TOO_LOW;
-        else if (eParamsIn[0] < 1)
-            eParamsInStatus[0] = PARAM_LOW;
-        else if (eParamsIn[0] == 1)
-            eParamsInStatus[0] = PARAM_OK;
-        else if (eParamsIn[0] <= 3)
-            eParamsInStatus[0] = PARAM_HIGH;
-        else eParamsInStatus[0] = PARAM_TOO_HIGH;
+    public void updateParameters_EM(boolean busy) {
+        double ocRatio=getParameterInSafely(0,0);
+        if (ocRatio < 0)
+            setStatusOfParameterIn(0,0,STATUS_TOO_LOW);
+        else if (ocRatio < 1)
+            setStatusOfParameterIn(0,0,STATUS_LOW);
+        else if (ocRatio == 1)
+            setStatusOfParameterIn(0,0,STATUS_OK);
+        else if (ocRatio <= 3)
+            setStatusOfParameterIn(0,0,STATUS_HIGH);
+        else if(Double.isNaN(ocRatio))
+            setStatusOfParameterIn(0,0,STATUS_WRONG);
+        else setStatusOfParameterIn(0,0,STATUS_TOO_HIGH);
 
-        if (eParamsIn[10] < 0.7f)
-            eParamsInStatus[10] = PARAM_TOO_LOW;
-        else if (eParamsIn[10] < 0.8f)
-            eParamsInStatus[10] = PARAM_LOW;
-        else if (eParamsIn[10] <= 1.2f)
-            eParamsInStatus[10] = PARAM_OK;
-        else if (eParamsIn[10] <= 2)
-            eParamsInStatus[10] = PARAM_HIGH;
-        else eParamsInStatus[10] = PARAM_TOO_HIGH;
+        double ovRatio=getParameterInSafely(0,1);
+        if (ovRatio < 0.7f)
+            setStatusOfParameterIn(0,1,STATUS_TOO_LOW);
+        else if (ovRatio < 0.8f)
+            setStatusOfParameterIn(0,1,STATUS_LOW);
+        else if (ovRatio <= 1.2f)
+            setStatusOfParameterIn(0,1,STATUS_OK);
+        else if (ovRatio <= 2)
+            setStatusOfParameterIn(0,1,STATUS_HIGH);
+        else if(Double.isNaN(ovRatio))
+            setStatusOfParameterIn(0,1,STATUS_WRONG);
+        else setStatusOfParameterIn(0,1,STATUS_TOO_HIGH);
 
-        eParamsOut[0] = maxTemp;
-        eParamsOut[10] = eAvailableData;
+        setParameterOutSafely(0,0, maxCurrentTemp);
+        setParameterOutSafely(0,1, eAvailableData);
 
-        if (maxTemp < -10000)
-            eParamsOutStatus[0] = PARAM_TOO_LOW;
-        else if (maxTemp < 0)
-            eParamsOutStatus[0] = PARAM_LOW;
-        else if (maxTemp == 0)
-            eParamsOutStatus[0] = PARAM_OK;
-        else if (maxTemp <= 5000)
-            eParamsOutStatus[0] = PARAM_HIGH;
-        else eParamsOutStatus[0] = PARAM_TOO_HIGH;
+        if (maxCurrentTemp < -10000)
+            setStatusOfParameterOut(0,0,STATUS_TOO_LOW);
+        else if (maxCurrentTemp < 0)
+            setStatusOfParameterOut(0,0,STATUS_LOW);
+        else if (maxCurrentTemp == 0)
+            setStatusOfParameterOut(0,0,STATUS_OK);
+        else if (maxCurrentTemp <= 5000)
+            setStatusOfParameterOut(0,0,STATUS_HIGH);
+        else setStatusOfParameterOut(0,0,STATUS_TOO_HIGH);
+
+        if(!busy)
+            setStatusOfParameterOut(0,1,STATUS_WRONG);
+        else if(eAvailableData<=0)
+            setStatusOfParameterOut(0,1,STATUS_TOO_LOW);
+        else setStatusOfParameterOut(0,1,STATUS_OK);
     }
 
     @Override
@@ -280,7 +300,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     public String[] getDescription() {
         return new String[]{
                 CommonValues.TEC_MARK_EM,
-                Util.intToString(TecTech.Rnd.nextInt(), 8),
+                Util.intToString(TecTech.Rnd.nextInt()),
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "You need it to process the number above"
         };
     }

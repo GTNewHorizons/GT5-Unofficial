@@ -82,7 +82,7 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack) {
+    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizers) {
         for (GT_MetaTileEntity_Hatch_InputElemental in : eInputHatches) {
             cElementalInstanceStackMap map = in.getContainerHandler();
             for (cElementalInstanceStack stack : map.values()) {

@@ -173,7 +173,7 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
     private void LEDdrawP(int x, int y, int i, int j, byte status) {
         final int v = 192, su = 8, sv = 6, u = 11;
         switch (status) {
-            case PARAM_WRONG:
+            case STATUS_WRONG:
                 if (counter < 2) {
                     drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * j, su, sv);
                     break;
@@ -181,23 +181,23 @@ public class GT_GUIContainer_MultiMachineEM extends GT_GUIContainerMetaTile_Mach
                     drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (8 + j), su, sv);
                     break;
                 }
-            case PARAM_OK://ok
+            case STATUS_OK://ok
                 drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (4 + j), su, sv);
                 break;
-            case PARAM_TOO_LOW://too low blink
+            case STATUS_TOO_LOW://too low blink
                 if (counter < 3) {
                     drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * j, su, sv);
                     break;
                 }
-            case PARAM_LOW:// too low
+            case STATUS_LOW:// too low
                 drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (2 + j), su, sv);
                 break;
-            case PARAM_TOO_HIGH://too high blink
+            case STATUS_TOO_HIGH://too high blink
                 if (counter < 3) {
                     drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (8 + j), su, sv);
                     break;
                 }
-            case PARAM_HIGH:// too high
+            case STATUS_HIGH:// too high
                 drawTexturedModalRect(x + su * i, y + sv * j, u + su * i, v + sv * (6 + j), su, sv);
                 break;
         }
