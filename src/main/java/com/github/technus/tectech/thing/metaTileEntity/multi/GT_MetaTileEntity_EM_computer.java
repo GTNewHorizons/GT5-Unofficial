@@ -101,9 +101,15 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
         if (noParametrizers) {
             overVoltageRatio=overClockRatio=1;
         } else {
-            overClockRatio=getParameterInSafely(0,0);
-            overVoltageRatio=getParameterInSafely(0,1);
-            if(Double.isNaN(overClockRatio) || Double.isNaN(overVoltageRatio)) return false;
+            overClockRatio= getParameterIn(0,0);
+            overVoltageRatio= getParameterIn(0,1);
+            if(Double.isNaN(overClockRatio) || Double.isNaN(overVoltageRatio)) {
+                mMaxProgresstime = 0;
+                mEfficiencyIncrease = 0;
+                for (GT_MetaTileEntity_Hatch_Rack r : eRacks)
+                    r.getBaseMetaTileEntity().setActive(false);//todo might be not needed
+                return false;
+            }
         }
         if(overClockRatio>0 && overVoltageRatio>=0.7f && overClockRatio<=3 && overVoltageRatio<=2){
             float eut=V[8] * (float)overVoltageRatio * (float)overClockRatio;
@@ -114,7 +120,7 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
                 mMaxProgresstime = 0;
                 mEfficiencyIncrease = 0;
                 for (GT_MetaTileEntity_Hatch_Rack r : eRacks)
-                    r.getBaseMetaTileEntity().setActive(false);
+                    r.getBaseMetaTileEntity().setActive(false);//todo might be not needed
                 return false;
             }
             short thingsActive = 0;
@@ -164,50 +170,34 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public void updateParameters_EM(boolean busy) {
-        double ocRatio=getParameterInSafely(0,0);
-        if (ocRatio < 0)
-            setStatusOfParameterIn(0,0,STATUS_TOO_LOW);
-        else if (ocRatio < 1)
-            setStatusOfParameterIn(0,0,STATUS_LOW);
-        else if (ocRatio == 1)
-            setStatusOfParameterIn(0,0,STATUS_OK);
-        else if (ocRatio <= 3)
-            setStatusOfParameterIn(0,0,STATUS_HIGH);
-        else if(Double.isNaN(ocRatio))
-            setStatusOfParameterIn(0,0,STATUS_WRONG);
-        else setStatusOfParameterIn(0,0,STATUS_TOO_HIGH);
+        double ocRatio = getParameterIn(0, 0);
+        if (ocRatio < 0) setStatusOfParameterIn(0, 0, STATUS_TOO_LOW);
+        else if (ocRatio < 1) setStatusOfParameterIn(0, 0, STATUS_LOW);
+        else if (ocRatio == 1) setStatusOfParameterIn(0, 0, STATUS_OK);
+        else if (ocRatio <= 3) setStatusOfParameterIn(0, 0, STATUS_HIGH);
+        else if (Double.isNaN(ocRatio)) setStatusOfParameterIn(0, 0, STATUS_WRONG);
+        else setStatusOfParameterIn(0, 0, STATUS_TOO_HIGH);
 
-        double ovRatio=getParameterInSafely(0,1);
-        if (ovRatio < 0.7f)
-            setStatusOfParameterIn(0,1,STATUS_TOO_LOW);
-        else if (ovRatio < 0.8f)
-            setStatusOfParameterIn(0,1,STATUS_LOW);
-        else if (ovRatio <= 1.2f)
-            setStatusOfParameterIn(0,1,STATUS_OK);
-        else if (ovRatio <= 2)
-            setStatusOfParameterIn(0,1,STATUS_HIGH);
-        else if(Double.isNaN(ovRatio))
-            setStatusOfParameterIn(0,1,STATUS_WRONG);
-        else setStatusOfParameterIn(0,1,STATUS_TOO_HIGH);
+        double ovRatio = getParameterIn(0, 1);
+        if (ovRatio < 0.7f) setStatusOfParameterIn(0, 1, STATUS_TOO_LOW);
+        else if (ovRatio < 0.8f) setStatusOfParameterIn(0, 1, STATUS_LOW);
+        else if (ovRatio <= 1.2f) setStatusOfParameterIn(0, 1, STATUS_OK);
+        else if (ovRatio <= 2) setStatusOfParameterIn(0, 1, STATUS_HIGH);
+        else if (Double.isNaN(ovRatio)) setStatusOfParameterIn(0, 1, STATUS_WRONG);
+        else setStatusOfParameterIn(0, 1, STATUS_TOO_HIGH);
 
-        setParameterOutSafely(0,0, maxCurrentTemp);
-        setParameterOutSafely(0,1, eAvailableData);
+        setParameterOut(0, 0, maxCurrentTemp);
+        setParameterOut(0, 1, eAvailableData);
 
-        if (maxCurrentTemp < -10000)
-            setStatusOfParameterOut(0,0,STATUS_TOO_LOW);
-        else if (maxCurrentTemp < 0)
-            setStatusOfParameterOut(0,0,STATUS_LOW);
-        else if (maxCurrentTemp == 0)
-            setStatusOfParameterOut(0,0,STATUS_OK);
-        else if (maxCurrentTemp <= 5000)
-            setStatusOfParameterOut(0,0,STATUS_HIGH);
-        else setStatusOfParameterOut(0,0,STATUS_TOO_HIGH);
+        if (maxCurrentTemp < -10000) setStatusOfParameterOut(0, 0, STATUS_TOO_LOW);
+        else if (maxCurrentTemp < 0) setStatusOfParameterOut(0, 0, STATUS_LOW);
+        else if (maxCurrentTemp == 0) setStatusOfParameterOut(0, 0, STATUS_OK);
+        else if (maxCurrentTemp <= 5000) setStatusOfParameterOut(0, 0, STATUS_HIGH);
+        else setStatusOfParameterOut(0, 0, STATUS_TOO_HIGH);
 
-        if(!busy)
-            setStatusOfParameterOut(0,1,STATUS_WRONG);
-        else if(eAvailableData<=0)
-            setStatusOfParameterOut(0,1,STATUS_TOO_LOW);
-        else setStatusOfParameterOut(0,1,STATUS_OK);
+        if (!busy) setStatusOfParameterOut(0, 1, STATUS_WRONG);
+        else if (eAvailableData <= 0) setStatusOfParameterOut(0, 1, STATUS_TOO_LOW);
+        else setStatusOfParameterOut(0, 1, STATUS_OK);
     }
 
     @Override

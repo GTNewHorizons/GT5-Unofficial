@@ -102,13 +102,13 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     @Override
     public void outputAfterRecipe_EM() {
         if (eOutputData.size() > 0) {
-            float total = 0;
+            double total = 0;
             double dest;
             double weight;
             for (int i = 0; i < 10; i++) {//each param pair
-                dest=getParameterInSafely(i,1);
-                weight=getParameterInSafely(i,0);
-                if (weight > 0 && dest >= 0 && !Double.isNaN(dest))
+                dest= getParameterIn(i,1);
+                weight= getParameterIn(i,0);
+                if (weight > 0 && dest >= 0)
                     total += weight;//Total weighted div
             }
 
@@ -123,21 +123,27 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
             long remaining = pack.computation;
 
             for (int i = 0; i < 10; i++) {
-                dest=getParameterInSafely(i,1);
-                weight=getParameterInSafely(i,0);
-                if (weight > 0 && dest >= 0 && !Double.isNaN(dest)) {
+                dest= getParameterIn(i,1);
+                weight= getParameterIn(i,0);
+                if (weight > 0 && dest >= 0) {
                     final int outIndex = (int)dest - 1;
                     if (outIndex < 0 || outIndex >= eOutputData.size()) continue;
                     GT_MetaTileEntity_Hatch_OutputData out = eOutputData.get(outIndex);
-                    final long part = (long)Math.floor((pack.computation * weight) / total);
-                    if (part > 0) {
-                        remaining -= part;
-                        if (remaining > 0)
-                            out.q = new QuantumDataPacket(pack, part);
-                        else if (part + remaining > 0) {
-                            out.q = new QuantumDataPacket(pack, part + remaining);
+                    if(Double.isInfinite(total)){
+                        if(Double.isInfinite(weight)){
+                            out.q = new QuantumDataPacket(pack, remaining);
                             break;
-                        } else break;
+                        }
+                    }else{
+                        final long part = (long) Math.floor((pack.computation * weight) / total);
+                        if (part > 0) {
+                            remaining -= part;
+                            if (remaining > 0) out.q = new QuantumDataPacket(pack, part);
+                            else if (part + remaining > 0) {
+                                out.q = new QuantumDataPacket(pack, part + remaining);
+                                break;
+                            } else break;
+                        }
                     }
                 }
             }
@@ -146,27 +152,23 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
 
     @Override
     public void updateParameters_EM(boolean busy) {
-        double weight,dest;
+        double weight, dest;
         for (int i = 0; i < 10; i++) {
-            weight=getParameterInSafely(i,0);
-            if(weight<=0) {
+            weight = getParameterIn(i, 0);
+            if (weight <= 0) {
                 setStatusOfParameterIn(i, 0, STATUS_TOO_LOW);
                 setStatusOfParameterIn(i, 1, STATUS_UNUSED);
-            }else if (Double.isNaN(weight)) {
+            } else if (Double.isNaN(weight)) {
                 setStatusOfParameterIn(i, 0, STATUS_WRONG);
                 setStatusOfParameterIn(i, 1, STATUS_UNUSED);
-            }else {
-                setStatusOfParameterIn(i,0,STATUS_OK);
-                dest=getParameterInSafely(i,1);
-                if(dest<0)
-                    setStatusOfParameterIn(i,1,STATUS_TOO_LOW);
-                else if(dest==0)
-                    setStatusOfParameterIn(i,1,STATUS_LOW);
-                else if(dest>eOutputData.size())
-                    setStatusOfParameterIn(i,1,STATUS_TOO_HIGH);
-                else if(Double.isNaN(dest))
-                    setStatusOfParameterIn(i,1,STATUS_WRONG);
-                else setStatusOfParameterIn(i,1,STATUS_OK);
+            } else {
+                setStatusOfParameterIn(i, 0, STATUS_OK);
+                dest = getParameterIn(i, 1);
+                if (dest < 0) setStatusOfParameterIn(i, 1, STATUS_TOO_LOW);
+                else if (dest == 0) setStatusOfParameterIn(i, 1, STATUS_LOW);
+                else if (dest > eOutputData.size()) setStatusOfParameterIn(i, 1, STATUS_TOO_HIGH);
+                else if (Double.isNaN(dest)) setStatusOfParameterIn(i, 1, STATUS_WRONG);
+                else setStatusOfParameterIn(i, 1, STATUS_OK);
             }
         }
     }

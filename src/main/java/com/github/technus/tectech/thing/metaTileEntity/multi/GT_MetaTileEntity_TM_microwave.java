@@ -242,35 +242,27 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
 
     @Override
     public void updateParameters_EM(boolean machineIsBusy) {
-        double powerParameter= getParameterInSafely(0,0);
-        if (powerParameter < 300)
-            setStatusOfParameterIn(0,0, STATUS_TOO_LOW);
-        else if (powerParameter < 1000)
-            setStatusOfParameterIn(0,0, STATUS_LOW);
-        else if (powerParameter == 1000)
-            setStatusOfParameterIn(0,0, STATUS_OK);
-        else if (powerParameter==Double.POSITIVE_INFINITY)
-            setStatusOfParameterIn(0,0, STATUS_TOO_HIGH);
-        else if (Double.isNaN(powerParameter))
-            setStatusOfParameterIn(0,0, STATUS_WRONG);
-        else setStatusOfParameterOut(0,0,STATUS_HIGH);
+        double powerParameter = getParameterIn(0, 0);
+        if (powerParameter < 300) setStatusOfParameterIn(0, 0, STATUS_TOO_LOW);
+        else if (powerParameter < 1000) setStatusOfParameterIn(0, 0, STATUS_LOW);
+        else if (powerParameter == 1000) setStatusOfParameterIn(0, 0, STATUS_OK);
+        else if (powerParameter == Double.POSITIVE_INFINITY) setStatusOfParameterIn(0, 0, STATUS_TOO_HIGH);
+        else if (Double.isNaN(powerParameter)) setStatusOfParameterIn(0, 0, STATUS_WRONG);
+        else setStatusOfParameterOut(0, 0, STATUS_HIGH);
 
-        double timerParameter= getParameterInSafely(0,1);
-        if (timerParameter <= 1)
-            setStatusOfParameterIn(0,1,STATUS_TOO_LOW);
-        else if (timerParameter <= 3000)
-            setStatusOfParameterIn(0,0,STATUS_OK);
-        else if (Double.isNaN(timerParameter))
-            setStatusOfParameterIn(0,1,STATUS_WRONG);
-        else setStatusOfParameterIn(0,1,STATUS_TOO_HIGH);
+        double timerParameter = getParameterIn(0, 1);
+        if (timerParameter <= 1) setStatusOfParameterIn(0, 1, STATUS_TOO_LOW);
+        else if (timerParameter <= 3000) setStatusOfParameterIn(0, 0, STATUS_OK);
+        else if (Double.isNaN(timerParameter)) setStatusOfParameterIn(0, 1, STATUS_WRONG);
+        else setStatusOfParameterIn(0, 1, STATUS_TOO_HIGH);
 
-        setParameterOutSafely(0,0,timerValue);
-        setParameterOutSafely(0,1,timerSetting-timerValue);
+        setParameterOut(0, 0, timerValue);
+        setParameterOut(0, 1, timerSetting - timerValue);
 
-        if(machineIsBusy) return;
+        if (machineIsBusy) return;
 
-        powerSetting = (int)powerParameter;
-        timerSetting = (int)timerParameter;
+        powerSetting = (int) powerParameter;
+        timerSetting = (int) timerParameter;
     }
 
     @Override

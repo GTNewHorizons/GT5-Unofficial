@@ -79,26 +79,26 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public void updateParameters_EM(boolean busy) {
-        double src,dest;
+        double src, dest;
         for (int i = 0; i < 10; i++) {
-            src=getParameterInSafely(i,0);
-            if (src <= 0){
-                setStatusOfParameterIn(i,0,STATUS_TOO_LOW);
-                setStatusOfParameterIn(i,1,STATUS_UNUSED);
-            } else if (src > eInputHatches.size()){
-                setStatusOfParameterIn(i,0,STATUS_TOO_HIGH);
-                setStatusOfParameterIn(i,1,STATUS_UNUSED);
-            } else if(Double.isNaN(src)){
-                setStatusOfParameterIn(i,0,STATUS_WRONG);
-                setStatusOfParameterIn(i,1,STATUS_UNUSED);
+            src = getParameterIn(i, 0);
+            if (src <= 0) {
+                setStatusOfParameterIn(i, 0, STATUS_TOO_LOW);
+                setStatusOfParameterIn(i, 1, STATUS_UNUSED);
+            } else if (src > eInputHatches.size()) {
+                setStatusOfParameterIn(i, 0, STATUS_TOO_HIGH);
+                setStatusOfParameterIn(i, 1, STATUS_UNUSED);
+            } else if (Double.isNaN(src)) {
+                setStatusOfParameterIn(i, 0, STATUS_WRONG);
+                setStatusOfParameterIn(i, 1, STATUS_UNUSED);
             } else {
-                setStatusOfParameterIn(i,0,STATUS_OK);
-                dest=getParameterInSafely(i,1);
-                if(dest<0) setStatusOfParameterIn(i,1,STATUS_TOO_LOW);
-                else if(dest==0) setStatusOfParameterIn(i,1,STATUS_LOW);
-                else if(dest>eOutputHatches.size()) setStatusOfParameterIn(i,1,STATUS_TOO_HIGH);
-                else if(Double.isNaN(dest)) setStatusOfParameterIn(i,1,STATUS_WRONG);
-                else setStatusOfParameterIn(i,1,STATUS_OK);
+                setStatusOfParameterIn(i, 0, STATUS_OK);
+                dest = getParameterIn(i, 1);
+                if (dest < 0) setStatusOfParameterIn(i, 1, STATUS_TOO_LOW);
+                else if (dest == 0) setStatusOfParameterIn(i, 1, STATUS_LOW);
+                else if (dest > eOutputHatches.size()) setStatusOfParameterIn(i, 1, STATUS_TOO_HIGH);
+                else if (Double.isNaN(dest)) setStatusOfParameterIn(i, 1, STATUS_WRONG);
+                else setStatusOfParameterIn(i, 1, STATUS_OK);
             }
         }
     }
@@ -122,10 +122,11 @@ public class GT_MetaTileEntity_EM_junction extends GT_MetaTileEntity_MultiblockB
     public void outputAfterRecipe_EM() {
         double src,dest;
         for (int i = 0; i < 10; i++) {
-            src=getParameterInSafely(i,0);
-            dest=getParameterInSafely(i,1);
+            src= getParameterIn(i,0);
+            dest= getParameterIn(i,1);
+            if(Double.isNaN(src) || Double.isNaN(dest)) continue;
             final int inIndex = (int)src - 1;
-            if (inIndex < 0 || inIndex >= eInputHatches.size() || Double.isNaN(src) || Double.isNaN(dest)) continue;
+            if (inIndex < 0 || inIndex >= eInputHatches.size()) continue;
             final int outIndex = (int)dest - 1;
             GT_MetaTileEntity_Hatch_InputElemental in = eInputHatches.get(inIndex);
             if (outIndex == -1) {//param==0 -> null the content

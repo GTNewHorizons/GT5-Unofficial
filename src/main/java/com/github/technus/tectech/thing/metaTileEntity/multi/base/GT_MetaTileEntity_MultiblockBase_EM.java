@@ -409,7 +409,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         return bParamsAreFloats[hatchNo];
     }
 
-    public final double getParameterInSafely(int hatchNo, int paramID){
+    public final double getParameterIn(int hatchNo, int paramID){
         return bParamsAreFloats[hatchNo]?Float.intBitsToFloat(iParamsIn[hatchNo+10*paramID]):iParamsIn[hatchNo+10*paramID];
     }
 
@@ -421,7 +421,7 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
         return Float.intBitsToFloat(iParamsIn[hatchNo+10*paramID]);
     }
 
-    public final void setParameterOutSafely(int hatchNo, int paramID, double value){
+    public final void setParameterOut(int hatchNo, int paramID, double value){
         if(bParamsAreFloats[hatchNo]) {
             iParamsOut[hatchNo+10*paramID]=Float.floatToIntBits((float) value);
         }else{
@@ -1119,17 +1119,33 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     }
 
     private void hatchesStatusUpdate_EM() {
-        for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches) {
-            if (!isValidMetaTileEntity(hatch) || hatch.param < 0) continue;
-            final int paramID = hatch.param;
-            iParamsIn[paramID] = hatch.value0i;
-            iParamsIn[paramID + 10] = hatch.value1i;
-            hatch.input0i = iParamsOut[paramID];
-            hatch.input1i = iParamsOut[paramID + 10];
-            bParamsAreFloats[hatch.param]=hatch.isUsingFloats();
+        if(mMaxProgresstime==0) {
+            for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches) {
+                if (!isValidMetaTileEntity(hatch) || hatch.param < 0) continue;
+                final int paramID = hatch.param;
+                bParamsAreFloats[hatch.param] = hatch.isUsingFloats();
+                iParamsIn[paramID] = hatch.value0i;
+                iParamsIn[paramID + 10] = hatch.value1i;
+                hatch.input0i = iParamsOut[paramID];
+                hatch.input1i = iParamsOut[paramID + 10];
+            }
+        }else {//write only
+            for (GT_MetaTileEntity_Hatch_Param hatch : eParamHatches) {
+                if (!isValidMetaTileEntity(hatch) || hatch.param < 0) continue;
+                final int paramID = hatch.param;
+                if(bParamsAreFloats[hatch.param] == hatch.isUsingFloats()){
+                    hatch.input0i = iParamsOut[paramID];
+                    hatch.input1i = iParamsOut[paramID + 10];
+                }else if(hatch.isUsingFloats()){
+                    hatch.input0i = Float.floatToIntBits((float)iParamsOut[paramID]);
+                    hatch.input1i = Float.floatToIntBits((float)iParamsOut[paramID + 10]);
+                }else {
+                    hatch.input0i = (int)Float.intBitsToFloat(iParamsOut[paramID]);
+                    hatch.input1i = (int)Float.intBitsToFloat(iParamsOut[paramID + 10]);
+                }
+            }
         }
         updateParameters_EM(mMaxProgresstime>0);
-
         eAvailableData = getAvailableData_EM();
 
         for (GT_MetaTileEntity_Hatch_Uncertainty uncertainty : eUncertainHatches)
