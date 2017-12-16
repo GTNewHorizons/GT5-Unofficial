@@ -1,11 +1,11 @@
-package com.github.technus.tectech.thing.metaTileEntity.multi.gui;
+package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
 import gregtech.api.gui.GT_GUIContainerMetaTile_Machine;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.entity.player.InventoryPlayer;
 import org.lwjgl.opengl.GL11;
 
-import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_MultiblockBase_EM.*;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM.*;
 import static gregtech.api.enums.GT_Values.RES_PATH_GUI;
 
 /**

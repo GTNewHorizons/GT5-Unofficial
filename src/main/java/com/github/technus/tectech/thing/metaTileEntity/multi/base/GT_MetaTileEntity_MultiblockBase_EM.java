@@ -1,4 +1,4 @@
-package com.github.technus.tectech.thing.metaTileEntity.multi;
+package com.github.technus.tectech.thing.metaTileEntity.multi.base;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
@@ -9,8 +9,6 @@ import com.github.technus.tectech.elementalMatter.core.stacks.cElementalDefiniti
 import com.github.technus.tectech.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.elementalMatter.core.tElementalException;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.*;
-import com.github.technus.tectech.thing.metaTileEntity.multi.gui.GT_Container_MultiMachineEM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.gui.GT_GUIContainer_MultiMachineEM;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -48,7 +46,7 @@ import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texture
  */
 public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEntity_MultiBlockBase {
     protected final static Map<String, Method> adderMethodMap = new HashMap<>();
-    public static Method adderMethod;
+    private static Method adderMethod;
 
     protected cElementalInstanceStackMap[] outputEM;
 
@@ -58,15 +56,15 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     protected static Textures.BlockIcons.CustomIcon ScreenOFF;
     protected static Textures.BlockIcons.CustomIcon ScreenON;
 
-    public ArrayList<GT_MetaTileEntity_Hatch_InputElemental> eInputHatches = new ArrayList<>();
-    public ArrayList<GT_MetaTileEntity_Hatch_OutputElemental> eOutputHatches = new ArrayList<>();
-    public ArrayList<GT_MetaTileEntity_Hatch_MufflerElemental> eMufflerHatches = new ArrayList<>();
-    public ArrayList<GT_MetaTileEntity_Hatch_Param> eParamHatches = new ArrayList<>();
-    public ArrayList<GT_MetaTileEntity_Hatch_Uncertainty> eUncertainHatches = new ArrayList<>();
-    public ArrayList<GT_MetaTileEntity_Hatch_EnergyMulti> eEnergyMulti = new ArrayList<>();
-    public ArrayList<GT_MetaTileEntity_Hatch_DynamoMulti> eDynamoMulti = new ArrayList<>();
-    public ArrayList<GT_MetaTileEntity_Hatch_InputData> eInputData = new ArrayList<>();
-    public ArrayList<GT_MetaTileEntity_Hatch_OutputData> eOutputData = new ArrayList<>();
+    protected ArrayList<GT_MetaTileEntity_Hatch_InputElemental> eInputHatches = new ArrayList<>();
+    protected ArrayList<GT_MetaTileEntity_Hatch_OutputElemental> eOutputHatches = new ArrayList<>();
+    protected ArrayList<GT_MetaTileEntity_Hatch_MufflerElemental> eMufflerHatches = new ArrayList<>();
+    protected ArrayList<GT_MetaTileEntity_Hatch_Param> eParamHatches = new ArrayList<>();
+    protected ArrayList<GT_MetaTileEntity_Hatch_Uncertainty> eUncertainHatches = new ArrayList<>();
+    protected ArrayList<GT_MetaTileEntity_Hatch_EnergyMulti> eEnergyMulti = new ArrayList<>();
+    protected ArrayList<GT_MetaTileEntity_Hatch_DynamoMulti> eDynamoMulti = new ArrayList<>();
+    protected ArrayList<GT_MetaTileEntity_Hatch_InputData> eInputData = new ArrayList<>();
+    protected ArrayList<GT_MetaTileEntity_Hatch_OutputData> eOutputData = new ArrayList<>();
 
     // 0 and 10 are from first parametrizer
     // 1 and 11 are from second etc...
@@ -75,8 +73,8 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     private final int[] iParamsOut = new int[20];//number O to parametrizers
     private final boolean[] bParamsAreFloats = new boolean[10];
 
-    public final byte[] eParamsInStatus = new byte[20];//LED status for I
-    public final byte[] eParamsOutStatus = new byte[20];//LED status for O
+    final byte[] eParamsInStatus = new byte[20];//LED status for I
+    final byte[] eParamsOutStatus = new byte[20];//LED status for O
     public final static byte STATUS_UNUSED = 0,
             STATUS_TOO_LOW = 1,  STATUS_LOW = 2,
             STATUS_WRONG = 3,    STATUS_OK = 4,
@@ -85,15 +83,15 @@ public abstract class GT_MetaTileEntity_MultiblockBase_EM extends GT_MetaTileEnt
     //  1,3,5  - nok
 
     //TO ENABLE this change value in <init> to false and/or other than 0, can also be added in recipe check or whatever
-    public boolean eParameters = true, ePowerPass = false, eSafeVoid = false, eDismantleBoom = false;
-    public byte eCertainMode = 0, eCertainStatus = 0, minRepairStatus = 3;
+    protected boolean eParameters = true, ePowerPass = false, eSafeVoid = false, eDismantleBoom = false;
+    protected byte eCertainMode = 0, eCertainStatus = 0, minRepairStatus = 3;
 
     protected long eMaxAmpereFlow = 0;//don't modify! unless YOU REALLY HAVE TO
     private long maxEUinputMin = 0, maxEUinputMax = 0;
 
     public long eAmpereFlow = 1; // analogue of EU/t but for amperes used (so eu/t is actually eu*A/t) USE ONLY POSITIVE NUMBERS!
 
-    public long eRequiredData = 0; // data required to operate
+    protected long eRequiredData = 0; // data required to operate
     protected long eAvailableData = 0; // data being available
 
     private boolean explodedThisTick=false;

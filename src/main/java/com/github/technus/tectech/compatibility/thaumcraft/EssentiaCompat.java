@@ -1,7 +1,7 @@
 package com.github.technus.tectech.compatibility.thaumcraft;
 
 import com.github.technus.tectech.elementalMatter.core.stacks.cElementalInstanceStack;
-import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import net.minecraft.tileentity.TileEntity;
 
 /**
