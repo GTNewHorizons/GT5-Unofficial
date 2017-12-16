@@ -46,27 +46,12 @@ public class Util {
         return result.toString();
     }
 
-    public static String intBitsToShortString0(int number) {
+    public static String intBitsToShortString(int number) {
         StringBuilder result = new StringBuilder();
 
         for (int i = 31; i >= 0; i--) {
             int mask = 1 << i;
             result.append((number & mask) != 0 ? ":" : ".");
-
-            if (i % 8 == 0)
-                result.append("|");
-        }
-        result.replace(result.length() - 1, result.length(), "");
-
-        return result.toString();
-    }
-
-    public static String intBitsToShortString1(int number) {
-        StringBuilder result = new StringBuilder();
-
-        for (int i = 31; i >= 0; i--) {
-            int mask = 1 << i;
-            result.append((number & mask) != 0 ? ";" : ",");
 
             if (i % 8 == 0)
                 result.append("|");

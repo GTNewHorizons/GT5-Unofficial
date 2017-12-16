@@ -104,13 +104,13 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
             return new String[]{
                     "Parametrizer ID: " + EnumChatFormatting.GREEN + param,
                     "Value 0I: " + EnumChatFormatting.AQUA + value0i,
-                    "Value 0FB: " + EnumChatFormatting.AQUA + Float.intBitsToFloat(value0i)+" "+ Util.intBitsToShortString0(value0i),
+                    "Value 0FB: " + EnumChatFormatting.AQUA + Float.intBitsToFloat(value0i)+" "+ Util.intBitsToShortString(value0i),
                     "Value 1I: " + EnumChatFormatting.BLUE + value1i,
-                    "Value 1FB: " + EnumChatFormatting.BLUE + Float.intBitsToFloat(value1i)+" "+ Util.intBitsToShortString1(value1i),
+                    "Value 1FB: " + EnumChatFormatting.BLUE + Float.intBitsToFloat(value1i)+" "+ Util.intBitsToShortString(value1i),
                     "Input 0I: " + EnumChatFormatting.GOLD   + input0i,
-                    "Input 0FB: " + EnumChatFormatting.GOLD   + Float.intBitsToFloat(input0i)+" "+ Util.intBitsToShortString0(input0i),
+                    "Input 0FB: " + EnumChatFormatting.GOLD   + Float.intBitsToFloat(input0i)+" "+ Util.intBitsToShortString(input0i),
                     "Input 1I: " + EnumChatFormatting.YELLOW + input1i,
-                    "Input 1FB: " + EnumChatFormatting.YELLOW + Float.intBitsToFloat(input1i)+" "+ Util.intBitsToShortString1(input1i),
+                    "Input 1FB: " + EnumChatFormatting.YELLOW + Float.intBitsToFloat(input1i)+" "+ Util.intBitsToShortString(input1i),
             };
         return new String[]{
                 "Parametrizer ID: " + EnumChatFormatting.GREEN + param,

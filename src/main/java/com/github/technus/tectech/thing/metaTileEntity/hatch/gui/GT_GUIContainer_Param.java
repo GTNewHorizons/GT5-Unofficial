@@ -23,8 +23,8 @@ public class GT_GUIContainer_Param extends GT_GUIContainerMetaTile_Machine {
             proxy.renderUnicodeString("\u2460\u2b07" + String.format(locale, "%+d", ((GT_Container_Param) this.mContainer).input1f), 46, 24, 167, 0x00ffff);
             proxy.renderUnicodeString("\u24EA\u2b06" + String.format(locale, "%+d", ((GT_Container_Param) this.mContainer).value0f), 46, 33, 167, 0x00bbff);
             proxy.renderUnicodeString("\u2460\u2b06" + String.format(locale, "%+d", ((GT_Container_Param) this.mContainer).value1f), 46, 41, 167, 0x0077ff);
-            proxy.renderUnicodeString("\u24EA\u2b06" + Util.intBitsToShortString0(((GT_Container_Param) this.mContainer).value0f), 46, 50, 167, 0x00bbff);
-            proxy.renderUnicodeString("\u2460\u2b06" + Util.intBitsToShortString1(((GT_Container_Param) this.mContainer).value1f), 46, 58, 167, 0x0077ff);
+            proxy.renderUnicodeString("\u24EA\u2b06" + Util.intBitsToShortString(((GT_Container_Param) this.mContainer).value0f), 46, 50, 167, 0x00bbff);
+            proxy.renderUnicodeString("\u2460\u2b06" + Util.intBitsToShortString(((GT_Container_Param) this.mContainer).value1f), 46, 58, 167, 0x0077ff);
         } else {
             proxy.renderUnicodeString("Parameters", 46, 7, 167, 0xffffff);
         }
