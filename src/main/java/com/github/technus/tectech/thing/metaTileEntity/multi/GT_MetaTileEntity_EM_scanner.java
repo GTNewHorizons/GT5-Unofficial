@@ -171,18 +171,16 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         if(aBaseMetaTileEntity.isServerSide()) {
-            if (totalComputationRemaining > 0) {
+            if (totalComputationRemaining > 0 && objectResearched!=null) {
                 eRecipe = null;
-                if (objectResearched != null) {
-                    if (ItemList.Tool_DataOrb.isStackEqual(mInventory[1], false, true)) {
-                        eRecipe = TT_recipe.TT_Recipe_Map_EM.sMachineRecipesEM.findRecipe(objectResearched.definition);
+                if (ItemList.Tool_DataOrb.isStackEqual(mInventory[1], false, true)) {
+                    eRecipe = TT_recipe.TT_Recipe_Map_EM.sMachineRecipesEM.findRecipe(objectResearched.definition);
+                    if (eRecipe != null) {
+                        machineType = machine;
+                    } else {
+                        eRecipe = TT_recipe.TT_Recipe_Map_EM.sCrafterRecipesEM.findRecipe(objectResearched.definition);
                         if (eRecipe != null) {
-                            machineType = machine;
-                        } else {
-                            eRecipe = TT_recipe.TT_Recipe_Map_EM.sCrafterRecipesEM.findRecipe(objectResearched.definition);
-                            if (eRecipe != null) {
-                                machineType = crafter;
-                            }
+                            machineType = crafter;
                         }
                     }
                 }
