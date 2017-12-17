@@ -3,6 +3,7 @@ package com.github.technus.tectech;
 import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
 import com.github.technus.tectech.loader.MainLoader;
+import com.github.technus.tectech.loader.ModGuiHandler;
 import com.github.technus.tectech.proxy.CommonProxy;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
@@ -10,6 +11,7 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
 import eu.usrv.yamcore.auxiliary.IngameErrorLog;
@@ -81,6 +83,8 @@ public class TecTech {
 
         GTCustomLoader.load();
 
+
+        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new ModGuiHandler());
         proxy.registerRenderInfo();
     }
 

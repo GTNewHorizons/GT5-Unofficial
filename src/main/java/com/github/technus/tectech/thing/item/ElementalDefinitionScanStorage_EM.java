@@ -4,17 +4,20 @@ import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
 import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.loader.ModGuiHandler;
 import com.github.technus.tectech.thing.CustomItemList;
+import com.github.technus.tectech.thing.item.gui.ScanDisplayScreen;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.init.Items;
+import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
 
 import java.util.Collections;
 import java.util.List;
@@ -53,16 +56,22 @@ public class ElementalDefinitionScanStorage_EM extends Item {
         return;
     }
 
+    public static String[] getLines(ItemStack containerItem){
+        if(containerItem.stackTagCompound!=null && containerItem.stackTagCompound.hasKey("elementalInfo"))
+            return Util.infoFromNBT(containerItem.stackTagCompound.getCompoundTag("elementalInfo"));
+        return null;
+    }
+
     @Override
     public void addInformation(ItemStack aStack, EntityPlayer ep, List aList, boolean boo) {
         aList.add(CommonValues.TEC_MARK_EM);
         try {
             if  (aStack.stackTagCompound != null &&  aStack.stackTagCompound.hasKey("elementalInfo")) {
                 aList.add("Contains scan result");
-                if(DEBUG_MODE) {
-                    aList.add("DEBUG MODE INFO - U CHEATER");
-                    Collections.addAll(aList, Util.infoFromNBT(aStack.stackTagCompound.getCompoundTag("elementalInfo")));
-                }
+                //if(DEBUG_MODE) {
+                //    aList.add("DEBUG MODE INFO - U CHEATER");
+                //    Collections.addAll(aList, Util.infoFromNBT(aStack.stackTagCompound.getCompoundTag("elementalInfo")));
+                //}
             } else {
                 aList.add("Storage for matter scan data");
             }
@@ -93,8 +102,26 @@ public class ElementalDefinitionScanStorage_EM extends Item {
     }
 
     @Override
+    public IIcon getIcon(ItemStack itemStack, int pass) {
+        NBTTagCompound tagCompound=itemStack.stackTagCompound;
+        if(tagCompound!=null && tagCompound.hasKey("elementalInfo"))
+            return online;
+        return offline;
+    }
+
+    @Override
     public void getSubItems(Item item, CreativeTabs tab, List list) {
         ItemStack that = new ItemStack(this, 1);
         list.add(that);
+    }
+
+    @Override
+    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
+        if(world.isRemote){
+            NBTTagCompound tagCompound=itemStack.stackTagCompound;
+            if(tagCompound!=null && tagCompound.hasKey("elementalInfo"))
+                player.openGui(TecTech.instance, ModGuiHandler.SCAN_DISPLAY_SCREEN_ID,world,0,0,0);
+        }
+        return itemStack;
     }
 }
