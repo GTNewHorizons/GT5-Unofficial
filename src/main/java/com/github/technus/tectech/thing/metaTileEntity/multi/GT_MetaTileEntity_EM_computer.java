@@ -94,11 +94,11 @@ public class GT_MetaTileEntity_EM_computer extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizers) {
+    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizationHatches) {
         eAvailableData = 0;
         maxCurrentTemp = 0;
         double overClockRatio,overVoltageRatio;
-        if (noParametrizers) {
+        if (noParametrizationHatches) {
             overVoltageRatio=overClockRatio=1;
         } else {
             overClockRatio= getParameterIn(0,0);

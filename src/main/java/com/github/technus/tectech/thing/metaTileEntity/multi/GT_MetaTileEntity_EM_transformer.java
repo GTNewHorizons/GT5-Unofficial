@@ -112,7 +112,7 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizers) {
+    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizationHatches) {
         if (ePowerPass) {
             mEfficiencyIncrease = 10000;
             mMaxProgresstime = 20;

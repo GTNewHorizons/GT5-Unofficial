@@ -80,7 +80,7 @@ public class GT_MetaTileEntity_EM_switch extends GT_MetaTileEntity_MultiblockBas
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizers) {
+    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizationHatches) {
         short thingsActive = 0;
         for (GT_MetaTileEntity_Hatch_InputData di : eInputData)
             if (di.q != null)

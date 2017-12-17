@@ -155,9 +155,9 @@ public class GT_MetaTileEntity_TM_microwave extends GT_MetaTileEntity_Multiblock
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizers) {
+    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizationHatches) {
         hasBeenPausedThisCycle =false;
-        if(noParametrizers){
+        if(noParametrizationHatches){
             powerSetting=POWER_SETTING_DEFAULT;
             timerSetting=TIMER_SETTING_DEFAULT;
         }
