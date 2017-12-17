@@ -195,7 +195,7 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
         return new String[]{
                 CommonValues.TEC_MARK_GENERAL,
                 mDescription,
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "E=mine*craft^2"
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "E=mine*craft\u00b2"
         };
     }
 

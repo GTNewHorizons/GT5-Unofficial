@@ -91,8 +91,8 @@ public class GT_MetaTileEntity_Hatch_MufflerElemental extends GT_MetaTileEntity_
         return new String[]{
                 CommonValues.TEC_MARK_EM,
                 mDescription,
-                "Mass capacity: " + EnumChatFormatting.AQUA + String.format(java.util.Locale.ENGLISH, "%+.2E", overflowMax) + " eV/c^2",
-                "Disposal Speed: " + EnumChatFormatting.AQUA + String.format(java.util.Locale.ENGLISH, "%+.2E", overflowDisperse) + " (eV/c^2)/s",
+                "Mass capacity: " + EnumChatFormatting.AQUA + String.format(java.util.Locale.ENGLISH, "%+.2E", overflowMax) + " eV/c\u00b2",
+                "Disposal Speed: " + EnumChatFormatting.AQUA + String.format(java.util.Locale.ENGLISH, "%+.2E", overflowDisperse) + " (eV/c\u00b2)/s",
                 "DO NOT OBSTRUCT THE OUTPUT!"
         };
     }
@@ -197,9 +197,9 @@ public class GT_MetaTileEntity_Hatch_MufflerElemental extends GT_MetaTileEntity_
     public String[] getInfoData() {
         return new String[]{
                 "Contained mass:",
-                EnumChatFormatting.RED + Double.toString(overflowMatter) + EnumChatFormatting.RESET + " eV/c^2 /",
-                EnumChatFormatting.GREEN + Double.toString(overflowMax) + EnumChatFormatting.RESET + " eV/c^2",
-                "Mass Disposal speed: " + EnumChatFormatting.BLUE + Double.toString(overflowDisperse) + EnumChatFormatting.RESET + " (eV/c^2)/s"
+                EnumChatFormatting.RED + Double.toString(overflowMatter) + EnumChatFormatting.RESET + " eV/c\u00b2 /",
+                EnumChatFormatting.GREEN + Double.toString(overflowMax) + EnumChatFormatting.RESET + " eV/c\u00b2",
+                "Mass Disposal speed: " + EnumChatFormatting.BLUE + Double.toString(overflowDisperse) + EnumChatFormatting.RESET + " (eV/c\u00b2)/s"
         };
     }
 
