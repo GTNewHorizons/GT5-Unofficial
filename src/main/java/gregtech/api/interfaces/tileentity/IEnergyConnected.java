@@ -35,16 +35,13 @@ public interface IEnergyConnected extends IColoredTileEntity, IHasWorldObjectAnd
      * Sided Energy Input
      */
     public boolean inputEnergyFrom(byte aSide);
+    public boolean isEnergyInputSide(byte aSide);
 
     /**
      * Sided Energy Output
      */
     public boolean outputsEnergyTo(byte aSide);
-
-    /**
-     * Are we ready for energy state?
-     */
-    public boolean energyStateReady();
+    public boolean isEnergyOutputSide(byte aSide);
     
     /**
      * Utility for the Network

@@ -56,7 +56,6 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     protected int mAverageEUInputIndex = 0, mAverageEUOutputIndex = 0;
     protected boolean mReleaseEnergy = false;
     protected int[] mAverageEUInput = new int[]{0, 0, 0, 0, 0}, mAverageEUOutput = new int[]{0, 0, 0, 0, 0};
-    private boolean mEnergyStateReady = false;
     private boolean[] mActiveEUInputs = new boolean[]{false, false, false, false, false, false}, mActiveEUOutputs = new boolean[]{false, false, false, false, false, false};
     private byte[] mSidedRedstone = new byte[]{15, 15, 15, 15, 15, 15};
     private int[] mCoverSides = new int[]{0, 0, 0, 0, 0, 0}, mCoverData = new int[]{0, 0, 0, 0, 0, 0}, mTimeStatistics = new int[GregTech_API.TICKS_FOR_LAG_AVERAGING];
@@ -73,7 +72,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     {
         Field f = null;
 
-        try {
+        try { 
             f = EntityItem.class.getDeclaredField("field_70291_e");
             f.setAccessible(true);
         } catch (Exception e1) {
@@ -392,12 +391,6 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
                                         dropCover(i, i, true);
                             issueBlockUpdate();
                         }
-
-                        if (mTickTimer > 20) {
-                            // We're ready to tell about our energy state - Only used server side
-                            mEnergyStateReady = true;
-                        }
-
 
                         if (mTickTimer > 20 && mMetaTileEntity.isElectric()) {
                             mAcceptedAmperes = 0;
@@ -976,12 +969,6 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
-    public boolean energyStateReady() {
-    	if (!isServerSide()) return true;
-    	else return mEnergyStateReady;
-    }
-    
-    @Override
     public boolean inputEnergyFrom(byte aSide) {
         if (aSide == 6) return true;
         if (isServerSide()) return (aSide >= 0 && aSide < 6 ? mActiveEUInputs[aSide] : false) && !mReleaseEnergy;
@@ -1085,7 +1072,8 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         return Textures.BlockIcons.ERROR_RENDERING;
     }
 
-    private boolean isEnergyInputSide(byte aSide) {
+    @Override
+    public boolean isEnergyInputSide(byte aSide) {
         if (aSide >= 0 && aSide < 6) {
             if (!getCoverBehaviorAtSide(aSide).letsEnergyIn(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this))
                 return false;
@@ -1096,7 +1084,8 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         return false;
     }
 
-    private boolean isEnergyOutputSide(byte aSide) {
+    @Override
+    public boolean isEnergyOutputSide(byte aSide) {
         if (aSide >= 0 && aSide < 6) {
             if (!getCoverBehaviorAtSide(aSide).letsEnergyOut(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this))
                 return false;

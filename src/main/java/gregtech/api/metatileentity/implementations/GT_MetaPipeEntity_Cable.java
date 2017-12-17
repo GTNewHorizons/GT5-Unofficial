@@ -366,14 +366,7 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
 	            }
 	            
 	            boolean tEnergyIsConnected = tTileEntity instanceof IEnergyConnected;
-	            if (tEnergyIsConnected && GT_Mod.gregtechproxy.gt6Cable && !((IEnergyConnected )tTileEntity).energyStateReady()) {
-	            	// Server side EnergyConnected tile entities aren't ready to report their energy states for about 20 ticks
-	            	// the old GT5 style cables would always keep trying to reconnect, but the GT6 style cables only try when
-	            	// placed, forced, or when reloaded (once).  Return -1 (and don't disconnect) until the tile entity
-	            	// is ready to report it's state
-	            	rConnect = -1;
-	            }
-	            boolean tEnergyInOrOut = (((IEnergyConnected) tTileEntity).inputEnergyFrom(tSide) || ((IEnergyConnected) tTileEntity).outputsEnergyTo(tSide));
+	            boolean tEnergyInOrOut = (((IEnergyConnected) tTileEntity).isEnergyInputSide(tSide) || ((IEnergyConnected) tTileEntity).isEnergyOutputSide(tSide));
 	            
 	            boolean tIsTileEntity = tTileEntity instanceof IGregTechTileEntity;
 	            boolean tIsTileEntityCable = tIsTileEntity && ((IGregTechTileEntity) tTileEntity).getMetaTileEntity() instanceof IMetaTileEntityCable; 
@@ -408,17 +401,17 @@ public class GT_MetaPipeEntity_Cable extends MetaPipeEntity implements IMetaTile
 				}
 
 	        }
-			if(D1 && rConnect == 0) GT_Log.out.println("Self - AlwaysLookConnected:" + sAlwaysLookConnected + " LetEnergyIn:" + sLetEnergyIn + " LetEnergyOut:" + sLetEnergyOut);
-
-			
-		} else if (getBaseMetaTileEntity().getOffsetX(aSide, 1) >> 4 != getBaseMetaTileEntity().getXCoord() >> 4 
-    			|| getBaseMetaTileEntity().getOffsetZ(aSide, 1) >> 4 != getBaseMetaTileEntity().getZCoord() >> 4) 
+			if(D1 && rConnect == 0) GT_Log.out.println("Self - AlwaysLookConnected:" + sAlwaysLookConnected + " LetEnergyIn:" + sLetEnergyIn + " LetEnergyOut:" + sLetEnergyOut);			
+		} 
+		
+		if (rConnect == 0 && (getBaseMetaTileEntity().getOffsetX(aSide, 1) >> 4 != getBaseMetaTileEntity().getXCoord() >> 4 
+    			|| getBaseMetaTileEntity().getOffsetZ(aSide, 1) >> 4 != getBaseMetaTileEntity().getZCoord() >> 4)) 
 		{ 
 			// if chunk unloaded
     		rConnect = -1;
-		} else if(D1) {
-			GT_Log.out.println("tile entity NULL");
+    		if(D1)  GT_Log.out.println("Cable - Chunk not loaded, deferring (dis)connection");
 		}
+		
         if (rConnect > 0) {
         	super.connect(aSide);
         }
