@@ -95,7 +95,10 @@ public final class iaeaNuclide {
 
         String[] parts = Util.splitButDifferent(rows[0][16], "|");
         double Mass=doubleOrNaN(parts[0],"mass");
-        if(Mass!=Double.NaN) mass = (float)(Mass*MICRO_AMU_TO_EV_DIV_C_C);
+        if(!Double.isNaN(Mass)) {
+            //System.out.println("Mass =\t" + Mass+"\t"+(N+Z)+"\t"+N+"\t"+Z+"\t"+(Mass/(N+Z)));
+            mass = (float)(Mass*MICRO_AMU_TO_EV_DIV_C_C);
+        }
         else mass=Float.NaN;
 
         discovery=(short)doubleOrNaN(rows[0][18],"discovery");
@@ -128,7 +131,8 @@ public final class iaeaNuclide {
         if(s.length()>0) {
             try {
                 double value=Double.parseDouble(s);
-                return value != 0 ?value:Float.NaN;
+                if(Double.isNaN(value)) return Double.NaN;
+                return value != 0 ?value:Double.NaN;
             } catch (Exception e) {
                 System.out.println("Invalid Value " + name + " " + N + " " + Z + " " + s);
                 e.printStackTrace();

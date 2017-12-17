@@ -256,8 +256,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                         }
                         int maxDepth = 0;
                         for (int i = 0; i < 20; i++) {
-                            if (scanComplexityTemp[i] == SCAN_DO_NOTHING) continue;
-                            else {
+                            if (scanComplexityTemp[i] != SCAN_DO_NOTHING) {
                                 maxDepth = i;
                                 if(!DEBUG_MODE) scanComplexityTemp[i]&=~SCAN_GET_CLASS_TYPE;
                                 addComputationRequirements(i+1,scanComplexityTemp[i]);
@@ -268,7 +267,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                         System.arraycopy(scanComplexityTemp,0,scanComplexity,0,maxDepth);
                     }
 
-                    totalComputationRemaining = totalComputationRequired;
+                    totalComputationRemaining = totalComputationRequired*=20;
                     mMaxProgresstime = 20;//const
                     mEfficiencyIncrease = 10000;
                     quantumStuff(true);
