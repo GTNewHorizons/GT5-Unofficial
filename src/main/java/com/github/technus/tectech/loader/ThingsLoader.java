@@ -3,13 +3,11 @@ package com.github.technus.tectech.loader;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.block.QuantumStuffBlock;
+import com.github.technus.tectech.thing.block.ReactorSimBlock;
 import com.github.technus.tectech.thing.casing.GT_Block_CasingsTT;
 import com.github.technus.tectech.thing.casing.GT_Block_HintTT;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
-import com.github.technus.tectech.thing.item.ConstructableTriggerItem;
-import com.github.technus.tectech.thing.item.DebugContainer_EM;
-import com.github.technus.tectech.thing.item.DefinitionContainer_EM;
-import com.github.technus.tectech.thing.item.ParametrizerMemoryCard;
+import com.github.technus.tectech.thing.item.*;
 import cpw.mods.fml.common.Loader;
 import openmodularturrets.blocks.turretbases.TurretBaseEM;
 import openmodularturrets.blocks.turretheads.TurretHeadEM;
@@ -37,12 +35,16 @@ public class ThingsLoader implements Runnable {
             TecTech.Logger.info("TurretBaseEM registered");
         }
 
+        ReactorSimBlock.run();
+        TecTech.Logger.info("Reactor Simulator registered");
+
         ConstructableTriggerItem.run();
         ParametrizerMemoryCard.run();
-        TecTech.Logger.info("Useful item registered");
+        ElementalDefinitionScanStorage_EM.run();
+        TecTech.Logger.info("Useful Items registered");
 
-        DefinitionContainer_EM.run();
-        DebugContainer_EM.run();
+        ElementalDefinitionContainer_EM.run();
+        DebugElementalInstanceContainer_EM.run();
         TecTech.Logger.info("Debug Items registered");
     }
 }

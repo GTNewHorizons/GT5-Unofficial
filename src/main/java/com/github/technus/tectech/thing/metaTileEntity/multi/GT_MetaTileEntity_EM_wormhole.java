@@ -3,6 +3,7 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -101,7 +102,7 @@ public class GT_MetaTileEntity_EM_wormhole extends GT_MetaTileEntity_MultiblockB
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_EM,
                 "It is not full of worms.",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "It is full of anti-worms!!!"
         };

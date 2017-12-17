@@ -1,14 +1,15 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.elementalMatter.classes.aOredictDequantizationInfo;
-import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStack;
-import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackMap;
-import com.github.technus.tectech.elementalMatter.interfaces.iExchangeInfo;
-import com.github.technus.tectech.elementalMatter.interfaces.iHasElementalDefinition;
+import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.elementalMatter.core.interfaces.iExchangeInfo;
+import com.github.technus.tectech.elementalMatter.core.interfaces.iHasElementalDefinition;
+import com.github.technus.tectech.elementalMatter.core.stacks.cElementalInstanceStack;
+import com.github.technus.tectech.elementalMatter.core.transformations.aOredictDequantizationInfo;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_InputElemental;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
@@ -20,11 +21,12 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.util.ArrayList;
 
 import static com.github.technus.tectech.Util.StructureBuilder;
-import static com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition.refMass;
-import static com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition.refUnstableMass;
+import static com.github.technus.tectech.Util.V;
+import static com.github.technus.tectech.elementalMatter.core.templates.iElementalDefinition.STABLE_RAW_LIFE_TIME;
+import static com.github.technus.tectech.elementalMatter.definitions.complex.atom.dAtomDefinition.refMass;
+import static com.github.technus.tectech.elementalMatter.definitions.complex.atom.dAtomDefinition.refUnstableMass;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
-import static com.github.technus.tectech.Util.V;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -81,7 +83,7 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack) {
+    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizers) {
         for (GT_MetaTileEntity_Hatch_InputElemental in : eInputHatches) {
             cElementalInstanceStackMap map = in.getContainerHandler();
             for (cElementalInstanceStack stack : map.values()) {
@@ -89,7 +91,7 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
                 if (info != null) {
                     if (map.removeAllAmounts(false, (iHasElementalDefinition) info.input())) {
                         mOutputFluids = new FluidStack[]{(FluidStack) info.output()};
-                        startRecipe((iHasElementalDefinition) info.input());
+                        startRecipe((iHasElementalDefinition) info.input(),stack.getEnergy());
                         return true;
                     }
                 }
@@ -98,7 +100,7 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
                 if (info != null) {
                     if (map.removeAllAmounts(false, (iHasElementalDefinition) info.input())) {
                         mOutputItems = new ItemStack[]{(ItemStack) info.output()};
-                        startRecipe((iHasElementalDefinition) info.input());
+                        startRecipe((iHasElementalDefinition) info.input(),stack.getEnergy());
                         return true;
                     }
                 }
@@ -109,7 +111,7 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
                         ArrayList<ItemStack> items = OreDictionary.getOres(((aOredictDequantizationInfo) info).out);
                         if (items != null && items.size() > 0) {
                             mOutputItems = new ItemStack[]{items.get(0)};
-                            startRecipe((iHasElementalDefinition) info.input());
+                            startRecipe((iHasElementalDefinition) info.input(),stack.getEnergy());
                             return true;
                         }
                     }
@@ -121,13 +123,13 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
         return false;
     }
 
-    private void startRecipe(iHasElementalDefinition from) {
+    private void startRecipe(iHasElementalDefinition from, long energy) {
         mMaxProgresstime = 20;
         mEfficiencyIncrease = 10000;
         float mass = from.getMass();
         float euMult = mass / refMass;
         eAmpereFlow = (int) Math.ceil(euMult);
-        if (mass > refUnstableMass || from.getDefinition().getRawLifeTime() < 1.5e25f) {
+        if (mass > refUnstableMass || from.getDefinition().getRawTimeSpan(energy) < STABLE_RAW_LIFE_TIME) {
             mEUt = (int) -V[10];
         } else {
             mEUt = (int) -V[8];
@@ -137,7 +139,7 @@ public class GT_MetaTileEntity_EM_dequantizer extends GT_MetaTileEntity_Multiblo
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_EM,
                 "Transform quantum form back to...",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "regular one, but why?"
         };

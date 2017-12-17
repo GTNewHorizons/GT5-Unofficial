@@ -2,9 +2,9 @@ package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackMap;
-import com.github.technus.tectech.elementalMatter.classes.tElementalException;
-import com.github.technus.tectech.elementalMatter.interfaces.iElementalInstanceContainer;
+import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.elementalMatter.core.interfaces.iElementalInstanceContainer;
+import com.github.technus.tectech.elementalMatter.core.tElementalException;
 import com.github.technus.tectech.thing.metaTileEntity.pipe.iConnectsToEMpipe;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -108,7 +108,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
             byte Tick = (byte) (aTick % 20);
             if (DECAY_AT == Tick) {
                 purgeOverflow();
-                content.tickContent(postEnergize);//Hatches don't life time mult things
+                content.tickContentByOneSecond(1,postEnergize);//Hatches don't life time mult things
                 purgeOverflow();
             } else if (OVERFLOW_AT == Tick) {
                 if (overflowMatter <= 0) {
@@ -245,7 +245,7 @@ public abstract class GT_MetaTileEntity_Hatch_ElementalContainer extends GT_Meta
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_EM,
                 mDescription,
                 "Max stacks amount: " + EnumChatFormatting.AQUA + getMaxStacksCount(),
                 "Stack capacity: " + EnumChatFormatting.AQUA + getMaxStackSize(),

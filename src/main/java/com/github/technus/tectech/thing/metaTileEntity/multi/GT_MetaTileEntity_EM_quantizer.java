@@ -2,10 +2,16 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.elementalMatter.classes.*;
-import com.github.technus.tectech.elementalMatter.interfaces.iHasElementalDefinition;
+import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.elementalMatter.core.interfaces.iHasElementalDefinition;
+import com.github.technus.tectech.elementalMatter.core.stacks.cElementalInstanceStack;
+import com.github.technus.tectech.elementalMatter.core.transformations.aFluidQuantizationInfo;
+import com.github.technus.tectech.elementalMatter.core.transformations.aItemQuantizationInfo;
+import com.github.technus.tectech.elementalMatter.core.transformations.aOredictQuantizationInfo;
+import com.github.technus.tectech.elementalMatter.core.transformations.bTransformationInfo;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import gregtech.api.GregTech_API;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -17,8 +23,9 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import static com.github.technus.tectech.Util.*;
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition.refMass;
-import static com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition.refUnstableMass;
+import static com.github.technus.tectech.elementalMatter.core.templates.iElementalDefinition.DEFAULT_ENERGY_LEVEL;
+import static com.github.technus.tectech.elementalMatter.definitions.complex.atom.dAtomDefinition.refMass;
+import static com.github.technus.tectech.elementalMatter.definitions.complex.atom.dAtomDefinition.refUnstableMass;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 
@@ -78,14 +85,14 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_EM,
                 "Conveniently convert regular stuff into quantum form.",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "To make it more inconvenient."
         };
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack) {//TODO implement by item quantization, implement instance quantization
+    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizers) {//TODO implement by item quantization, implement instance quantization
         if (GregTech_API.sPostloadFinished) {
             ItemStack[] inI = getStoredInputs().toArray(new ItemStack[0]);
             if (inI.length > 0) {
@@ -148,7 +155,7 @@ public class GT_MetaTileEntity_EM_quantizer extends GT_MetaTileEntity_Multiblock
         float mass = into.getMass();
         float euMult = mass / refMass;
         eAmpereFlow = (int) Math.ceil(euMult);
-        if (mass > refUnstableMass || into.getDefinition().getRawLifeTime() < 1.5e25f) {
+        if (mass > refUnstableMass || into.getDefinition().getRawTimeSpan(DEFAULT_ENERGY_LEVEL) < 1.5e25f) {
             mEUt = (int) -V[10];
         } else {
             mEUt = (int) -V[8];

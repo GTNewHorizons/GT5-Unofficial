@@ -1,14 +1,25 @@
 package com.github.technus.tectech.compatibility.thaumcraft.definitions;
 
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.elementalMatter.classes.*;
-import com.github.technus.tectech.elementalMatter.definitions.eBosonDefinition;
-import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
+import com.github.technus.tectech.Util;
+import com.github.technus.tectech.elementalMatter.core.cElementalDecay;
+import com.github.technus.tectech.elementalMatter.core.cElementalDefinitionStackMap;
+import com.github.technus.tectech.elementalMatter.core.stacks.cElementalDefinitionStack;
+import com.github.technus.tectech.elementalMatter.core.tElementalException;
+import com.github.technus.tectech.elementalMatter.core.templates.cElementalDefinition;
+import com.github.technus.tectech.elementalMatter.core.templates.iElementalDefinition;
+import com.github.technus.tectech.elementalMatter.core.transformations.aFluidDequantizationInfo;
+import com.github.technus.tectech.elementalMatter.core.transformations.aItemDequantizationInfo;
+import com.github.technus.tectech.elementalMatter.core.transformations.aOredictDequantizationInfo;
+import com.github.technus.tectech.elementalMatter.definitions.primitive.eBosonDefinition;
 import net.minecraft.nbt.NBTTagCompound;
 
+import java.util.ArrayList;
+
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
-import static com.github.technus.tectech.elementalMatter.classes.cElementalDecay.noDecay;
 import static com.github.technus.tectech.compatibility.thaumcraft.definitions.AspectDefinitionCompat.aspectDefinitionCompat;
+import static com.github.technus.tectech.elementalMatter.core.cElementalDecay.noDecay;
+import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_EM_scanner.*;
 
 /**
  * Created by Tec on 06.05.2017.
@@ -56,11 +67,11 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
 
     //public but u can just try{}catch(){} the constructor it still calls this method
     private static boolean canTheyBeTogether(cElementalDefinitionStackMap stacks) {
-        int amount = 0;
+        long amount = 0;
         for (cElementalDefinitionStack aspects : stacks.values()) {
-            if (aspects.definition instanceof dComplexAspectDefinition || aspects.definition instanceof ePrimalAspectDefinition)
-                amount += aspects.amount;
-            else return false;
+            if (!(aspects.definition instanceof dComplexAspectDefinition) && !(aspects.definition instanceof ePrimalAspectDefinition))
+                return false;
+            amount += aspects.amount;
         }
         return amount==2;
     }
@@ -119,8 +130,13 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
     }
 
     @Override
-    public float getRawLifeTime() {
+    public float getRawTimeSpan(long currentEnergy) {
         return -1;
+    }
+
+    @Override
+    public boolean isTimeSpanHalfLife() {
+        return false;
     }
 
     @Override
@@ -144,8 +160,18 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
     }
 
     @Override
-    public cElementalDecay[] getEnergeticDecayInstant() {
+    public cElementalDecay[] getEnergyInducedDecay(long energyLevel) {
         return new cElementalDecay[]{new cElementalDecay(0.75F, aspectStacks), eBosonDefinition.deadEnd};
+    }
+
+    @Override
+    public float getEnergyDiffBetweenStates(long currentEnergyLevel, long newEnergyLevel) {
+        return DEFAULT_ENERGY_REQUIREMENT*(newEnergyLevel-currentEnergyLevel);
+    }
+
+    @Override
+    public boolean usesSpecialEnergeticDecayHandling() {
+        return false;
     }
 
     @Override
@@ -205,5 +231,27 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
     @Override
     public int hashCode() {
         return hash;
+    }
+
+
+
+    @Override
+    public void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel) {
+        if(Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities))
+            lines.add("CLASS = "+nbtType+" "+getClassType());
+        if(Util.areBitsSet(SCAN_GET_NOMENCLATURE|SCAN_GET_CHARGE|SCAN_GET_MASS, capabilities)) {
+            lines.add("NAME = "+getName());
+            //lines.add("SYMBOL = "+getSymbol());
+        }
+        if(Util.areBitsSet(SCAN_GET_CHARGE,capabilities))
+            lines.add("CHARGE = "+getCharge()/3f+" eV");
+        if(Util.areBitsSet(SCAN_GET_COLOR,capabilities))
+            lines.add(getColor()<0?"NOT COLORED":"CARRIES COLOR");
+        if(Util.areBitsSet(SCAN_GET_MASS,capabilities))
+            lines.add("MASS = "+getMass()+" eV/c\u00b2");
+        if(Util.areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)){
+            lines.add("LIFE TIME = "+getRawTimeSpan(energyLevel)+ " s");
+            lines.add("    "+"At current energy level");
+        }
     }
 }

@@ -1,13 +1,11 @@
 package com.github.technus.tectech.compatibility.gtpp;
 
-import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStack;
+import com.github.technus.tectech.elementalMatter.core.stacks.cElementalDefinitionStack;
 import gregtech.api.enums.OrePrefixes;
 import gtPlusPlus.core.material.ELEMENT;
 import gtPlusPlus.core.material.MaterialGenerator;
 
-import static com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition.getBestUnstableIsotope;
-import static com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition.getFirstStableIsotope;
-import static com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition.transformation;
+import static com.github.technus.tectech.elementalMatter.definitions.complex.atom.dAtomDefinition.*;
 
 public class GtppAtomLoader implements Runnable{
     @Override

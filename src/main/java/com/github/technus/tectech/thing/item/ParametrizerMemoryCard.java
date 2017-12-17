@@ -1,6 +1,7 @@
 package com.github.technus.tectech.thing.item;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.Util;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Param;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -51,20 +52,20 @@ public class ParametrizerMemoryCard extends Item {
                     NBTTagCompound tNBT=aStack.getTagCompound();
                     if (aStack.getItemDamage()==1) {
                         //write to parametrizer
-                        parametrizer.exponent = tNBT.getInteger("exponent");
-                        parametrizer.value2 = tNBT.getInteger("value2");
-                        parametrizer.value1 = tNBT.getInteger("value1");
                         parametrizer.param = tNBT.getInteger("param");
-                        parametrizer.value1f = tNBT.getFloat("value1f");
-                        parametrizer.value2f = tNBT.getFloat("value2f");
+                        if(parametrizer.setUsingFloats(tNBT.getBoolean("usesFloats"))) {
+                            parametrizer.value0i = (int)Float.intBitsToFloat(tNBT.getInteger("value0i"));
+                            parametrizer.value1i = (int)Float.intBitsToFloat(tNBT.getInteger("value1i"));
+                        }else{
+                            parametrizer.value0i = tNBT.getInteger("value0i");
+                            parametrizer.value1i = tNBT.getInteger("value1i");
+                        }
                     } else {
                         //read from parametrizer
-                        tNBT.setInteger("exponent", parametrizer.exponent);
-                        tNBT.setInteger("value2", parametrizer.value2);
-                        tNBT.setInteger("value1", parametrizer.value1);
                         tNBT.setInteger("param", parametrizer.param);
-                        tNBT.setFloat("value1f", parametrizer.value1f);
-                        tNBT.setFloat("value2f", parametrizer.value2f);
+                        tNBT.setBoolean("usesFloats", parametrizer.isUsingFloats());
+                        tNBT.setInteger("value0i", parametrizer.value0i);
+                        tNBT.setInteger("value1i", parametrizer.value1i);
                     }
                     return true;
                 }
@@ -100,13 +101,18 @@ public class ParametrizerMemoryCard extends Item {
         }
         aList.add(EnumChatFormatting.BLUE + "Sneak right click to lock/unlock");
 
+        int temp;
         if(tNBT!=null && tNBT.hasKey("param")) {
             aList.add("Hatch ID: "+EnumChatFormatting.AQUA + tNBT.getInteger("param"));
-            aList.add("Value 0: "+EnumChatFormatting.AQUA + tNBT.getFloat("value1f"));
-            aList.add("Value 1: "+EnumChatFormatting.AQUA + tNBT.getFloat("value2f"));
-            aList.add("Mantissa 0: "+EnumChatFormatting.AQUA + tNBT.getInteger("value1"));
-            aList.add("Mantissa 1: "+EnumChatFormatting.AQUA + tNBT.getInteger("value2"));
-            aList.add("Exponent: "+EnumChatFormatting.AQUA + tNBT.getInteger("exponent"));
+            temp=tNBT.getInteger("value0i");
+            aList.add("Value 0|I: "+EnumChatFormatting.AQUA + temp);
+            aList.add("Value 0|F: "+EnumChatFormatting.AQUA + Float.intBitsToFloat(temp));
+            aList.add("Value 0|B: "+EnumChatFormatting.AQUA + Util.intBitsToShortString(temp));
+            temp=tNBT.getInteger("value1i");
+            aList.add("Value 1|I: "+EnumChatFormatting.AQUA + temp);
+            aList.add("Value 1|F: "+EnumChatFormatting.AQUA + Float.intBitsToFloat(temp));
+            aList.add("Value 1|B: "+EnumChatFormatting.AQUA + Util.intBitsToShortString(temp));
+            aList.add("Uses Floats: "+(tNBT.getBoolean("usesFloats")?EnumChatFormatting.GREEN+"TRUE":EnumChatFormatting.RED+"FALSE"));
         }
 
     }

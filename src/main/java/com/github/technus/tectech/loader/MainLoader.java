@@ -9,7 +9,8 @@ import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.item.ConstructableTriggerItem;
-import com.github.technus.tectech.thing.item.DebugContainer_EM;
+import com.github.technus.tectech.thing.item.DebugElementalInstanceContainer_EM;
+import com.github.technus.tectech.thing.item.ElementalDefinitionScanStorage_EM;
 import com.github.technus.tectech.thing.item.ParametrizerMemoryCard;
 import cpw.mods.fml.common.ProgressManager;
 import cpw.mods.fml.relauncher.Side;
@@ -89,7 +90,7 @@ public final class MainLoader {
             @SideOnly(Side.CLIENT)
             @Override
             public Item getTabIconItem() {
-                return DebugContainer_EM.INSTANCE;
+                return DebugElementalInstanceContainer_EM.INSTANCE;
             }
 
             @Override
@@ -117,9 +118,10 @@ public final class MainLoader {
         QuantumGlassBlock.INSTANCE.setCreativeTab(mainTab);
         TT_Container_Casings.sBlockCasingsTT.setCreativeTab(mainTab);
         TT_Container_Casings.sHintCasingsTT.setCreativeTab(mainTab);
-        DebugContainer_EM.INSTANCE.setCreativeTab(mainTab);
+        DebugElementalInstanceContainer_EM.INSTANCE.setCreativeTab(mainTab);
         ConstructableTriggerItem.INSTANCE.setCreativeTab(mainTab);
         ParametrizerMemoryCard.INSTANCE.setCreativeTab(mainTab);
+        ElementalDefinitionScanStorage_EM.INSTANCE.setCreativeTab(mainTab);
     }
 
     private void registerExtraHazmats() {

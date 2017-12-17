@@ -4,8 +4,9 @@ import cofh.api.energy.IEnergyContainerItem;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
-import com.github.technus.tectech.thing.metaTileEntity.multi.gui.GT_Container_MultiMachineEM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.gui.GT_GUIContainer_MultiMachineEM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_Container_MultiMachineEM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_GUIContainer_MultiMachineEM;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import ic2.api.item.ElectricItem;
@@ -91,7 +92,7 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack) {
+    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizers) {
         if (itemStack != null && itemStack.stackSize == 1) {
             Item ofThis = itemStack.getItem();
             if (ofThis instanceof IElectricItem) {
@@ -132,7 +133,7 @@ public class GT_MetaTileEntity_EM_infuser extends GT_MetaTileEntity_MultiblockBa
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_GENERAL,
                 "Power Transfer Extreme!",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Insanely fast charging!",
                 EnumChatFormatting.BLUE + "Doesn't work while broken!",

@@ -1,9 +1,9 @@
 package com.github.technus.tectech.compatibility.thaumcraft.definitions;
 
-import com.github.technus.tectech.elementalMatter.classes.cElementalPrimitive;
+import com.github.technus.tectech.elementalMatter.core.templates.cElementalPrimitive;
 
-import static com.github.technus.tectech.elementalMatter.classes.cElementalDecay.noDecay;
 import static com.github.technus.tectech.compatibility.thaumcraft.definitions.AspectDefinitionCompat.aspectDefinitionCompat;
+import static com.github.technus.tectech.elementalMatter.core.cElementalDecay.noDecay;
 
 /**
  * Created by Tec on 06.05.2017.
@@ -37,6 +37,11 @@ public final class ePrimalAspectDefinition extends cElementalPrimitive implement
 
     public Object materializeIntoAspect() {
         return aspectDefinitionCompat.getAspect(this);
+    }
+
+    @Override
+    public boolean isTimeSpanHalfLife() {
+        return false;
     }
 }
 

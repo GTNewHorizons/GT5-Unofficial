@@ -5,6 +5,7 @@ import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -195,7 +196,7 @@ public class GT_MetaTileEntity_EM_collider extends GT_MetaTileEntity_MultiblockB
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_EM,
                 "Collide matter at extreme velocities.",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Faster than light!!!"
         };

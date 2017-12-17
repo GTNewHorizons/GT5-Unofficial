@@ -2,13 +2,13 @@ package com.github.technus.tectech.compatibility.thaumcraft.thing.metaTileEntity
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.TecTech;
-import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStack;
-import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackMap;
 import com.github.technus.tectech.compatibility.thaumcraft.definitions.ePrimalAspectDefinition;
+import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.casing.TT_Container_Casings;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
-import com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
@@ -19,11 +19,11 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import static com.github.technus.tectech.Util.StructureBuilder;
+import static com.github.technus.tectech.Util.V;
 import static com.github.technus.tectech.compatibility.thaumcraft.EssentiaCompat.essentiaContainerCompat;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
 import static gregtech.api.enums.GT_Values.E;
-import static com.github.technus.tectech.Util.V;
 
 /**
  * Created by danie_000 on 17.12.2016.
@@ -101,7 +101,7 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack) {
+    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizers) {
         container=essentiaContainerCompat.getContainer(this);
         if (eInputHatches.size() < 1 || container==null) {
             stopMachine();
@@ -131,7 +131,7 @@ public class GT_MetaTileEntity_EM_essentiaDequantizer extends GT_MetaTileEntity_
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_EM,
                 "Transform quantum form back to...",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "regular one, but why?"
         };

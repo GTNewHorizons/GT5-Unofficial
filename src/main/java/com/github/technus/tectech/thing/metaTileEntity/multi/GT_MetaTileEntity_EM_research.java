@@ -6,6 +6,7 @@ import com.github.technus.tectech.recipe.TT_recipe;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_Holder;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import cpw.mods.fml.common.registry.GameRegistry;
 import gregtech.api.enums.ItemList;
 import gregtech.api.enums.Textures;
@@ -176,10 +177,10 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack) {
+    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizers) {
         tRecipe=null;
         aRecipe=null;
-        if(!eHolders.isEmpty() && eHolders.get(0).mInventory[0]!=null) {
+        if(eHolders.size()>0 && eHolders.get(0).mInventory[0]!=null) {
             holdItem = eHolders.get(0).mInventory[0].copy();
             if(ItemList.Tool_DataStick.isStackEqual(itemStack, false, true)) {
                 for (GT_Recipe.GT_Recipe_AssemblyLine assRecipe : GT_Recipe.GT_Recipe_AssemblyLine.sAssemblylineRecipes) {
@@ -265,7 +266,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
 
     @Override
     public void outputAfterRecipe_EM() {
-        if(!eHolders.isEmpty()) {
+        if(eHolders.size()>0) {
             if (tRecipe != null && ItemList.Tool_DataStick.isStackEqual(mInventory[1], false, true)){
                 eHolders.get(0).getBaseMetaTileEntity().setActive(false);
                 eHolders.get(0).mInventory[0] = null;
@@ -336,7 +337,7 @@ public class GT_MetaTileEntity_EM_research extends GT_MetaTileEntity_MultiblockB
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_EM,
                 "Philosophers didn't even...",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "dream about it!"
         };

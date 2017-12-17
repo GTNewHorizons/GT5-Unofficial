@@ -86,7 +86,7 @@ public class TT_NEI_ResearchHandler extends TemplateRecipeHandler {
     public void loadCraftingRecipes(ItemStack aResult) {
         ItemData tPrefixMaterial = GT_OreDictUnificator.getAssociation(aResult);
 
-        ArrayList<ItemStack> tResults = new ArrayList();
+        ArrayList<ItemStack> tResults = new ArrayList<>();
         tResults.add(aResult);
         tResults.add(GT_OreDictUnificator.get(true, aResult));
         if ((tPrefixMaterial != null) && (!tPrefixMaterial.mBlackListed) && (!tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty())) {
@@ -120,7 +120,7 @@ public class TT_NEI_ResearchHandler extends TemplateRecipeHandler {
     public void loadUsageRecipes(ItemStack aInput) {
         ItemData tPrefixMaterial = GT_OreDictUnificator.getAssociation(aInput);
 
-        ArrayList<ItemStack> tInputs = new ArrayList();
+        ArrayList<ItemStack> tInputs = new ArrayList<>();
         tInputs.add(aInput);
         tInputs.add(GT_OreDictUnificator.get(false, aInput));
         if ((tPrefixMaterial != null) && (!tPrefixMaterial.mPrefix.mFamiliarPrefixes.isEmpty())) {
@@ -322,7 +322,7 @@ public class TT_NEI_ResearchHandler extends TemplateRecipeHandler {
             if (this.permutated) {
                 return;
             }
-            ArrayList<ItemStack> tDisplayStacks = new ArrayList();
+            ArrayList<ItemStack> tDisplayStacks = new ArrayList<>();
             for (ItemStack tStack : this.items) {
                 if (GT_Utility.isStackValid(tStack)) {
                     if (tStack.getItemDamage() == 32767) {

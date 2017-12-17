@@ -1,10 +1,11 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStack;
-import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackMap;
-import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
+import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -20,7 +21,7 @@ import net.minecraft.util.EnumChatFormatting;
 
 import static com.github.technus.tectech.Util.StructureBuilder;
 import static com.github.technus.tectech.Util.VN;
-import static com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition.stableRawLifeTime;
+import static com.github.technus.tectech.elementalMatter.core.templates.iElementalDefinition.STABLE_RAW_LIFE_TIME;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.texturePage;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -103,16 +104,16 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_EM,
                 "Is life time too long?",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Make it half-life (3) instead!"
         };
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack) {
+    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizers) {
         cElementalInstanceStackMap map= getInputsClone_EM();
-        if(map!=null && map.hasStacks() && map.getFirst().getLifeTime()<stableRawLifeTime){
+        if(map!=null && map.hasStacks() && map.getFirst().getLifeTime()< STABLE_RAW_LIFE_TIME){
             return startRecipe(map.getFirst());
         }
         mEfficiencyIncrease = 0;
@@ -128,7 +129,7 @@ public class GT_MetaTileEntity_EM_decay extends GT_MetaTileEntity_MultiblockBase
         mMaxProgresstime = 1;//(int)m3;
         mEfficiencyIncrease = 10000;
         m1 = input.getMass()/input.amount;
-        cElementalInstanceStackMap decayed=input.decayCompute(input.getDefinition().getDecayArray(),1,0,0);
+        cElementalInstanceStackMap decayed=input.decay();
         m2 = decayed.getMass()/input.amount;
         //TecTech.Logger.info("I " + input.toString());
         //TecTech.Logger.info("O " + decayed.toString());

@@ -11,7 +11,7 @@ import openmodularturrets.handler.ConfigHandler;
 import java.text.DecimalFormat;
 import java.util.List;
 
-import static com.github.technus.tectech.CommonValues.TEC_MARK;
+import static com.github.technus.tectech.CommonValues.TEC_MARK_EM;
 
 /**
  * Created by Bass on 28/07/2017.
@@ -24,7 +24,7 @@ public class TurretHeadItemEM extends ItemBlock {
     }
 
     public void addInformation(ItemStack p_77624_1_, EntityPlayer p_77624_2_, List list, boolean p_77624_4_) {
-        list.add(TEC_MARK);
+        list.add(TEC_MARK_EM);
         list.add("");
         list.add(EnumChatFormatting.GOLD + "--" + StatCollector.translateToLocal("tooltip.info") + "--");
         list.add(StatCollector.translateToLocal("tooltip.tier") + ": " + EnumChatFormatting.WHITE + "5");

@@ -11,9 +11,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -29,15 +31,30 @@ import static gregtech.api.enums.GT_Values.E;
  * Created by Tec on 21.03.2017.
  */
 public class Util {
-    public static String intToString(int number, int groupSize) {
+    public static String intBitsToString(int number) {
         StringBuilder result = new StringBuilder();
 
         for (int i = 31; i >= 0; i--) {
             int mask = 1 << i;
             result.append((number & mask) != 0 ? "1" : "0");
 
-            if (i % groupSize == 0)
+            if (i % 8 == 0)
                 result.append(" ");
+        }
+        result.replace(result.length() - 1, result.length(), "");
+
+        return result.toString();
+    }
+
+    public static String intBitsToShortString(int number) {
+        StringBuilder result = new StringBuilder();
+
+        for (int i = 31; i >= 0; i--) {
+            int mask = 1 << i;
+            result.append((number & mask) != 0 ? ":" : ".");
+
+            if (i % 8 == 0)
+                result.append("|");
         }
         result.replace(result.length() - 1, result.length(), "");
 
@@ -322,7 +339,7 @@ public class Util {
                                            TileEntity tileEntity, int facing, boolean hintsOnly) {
         if(!tileEntity.hasWorldObj()) return false;
         World world = tileEntity.getWorldObj();
-        if ((world.isRemote && !hintsOnly)||(!world.isRemote && hintsOnly)) return false;
+        if (!world.isRemote && hintsOnly) return false;
 
         //TE Rotation
 
@@ -403,7 +420,8 @@ public class Util {
                                     break;
                                 default: //check for block
                                     if ((pointer = block - '0') >= 0) {
-                                        TecTech.proxy.hint_particle(world,x, y, z, blockType[pointer], blockMeta[pointer]);
+                                        if(world.getBlock(x,y,z)!=blockType[pointer] || world.getBlockMetadata(x,y,z)!=blockMeta[pointer])
+                                            TecTech.proxy.hint_particle(world,x, y, z, blockType[pointer], blockMeta[pointer]);
                                     } else if ((pointer = block - ' ') >= 0) {
                                         switch(pointer){
                                             case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10: case 11:
@@ -424,11 +442,11 @@ public class Util {
                                     if ((pointer = block - '0') >= 0) {
                                         world.setBlock(x, y, z, blockType[pointer], blockMeta[pointer], 2);
                                     } else if ((pointer = block - ' ') >= 0) {
-                                        switch(pointer){
-                                            case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10: case 11:
-                                                world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, pointer, 2); break;
-                                            default:world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 12, 2);
-                                        }
+                                        //switch(pointer){
+                                        //    case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10: case 11:
+                                        //        world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, pointer, 2); break;
+                                        //    default:world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 12, 2);
+                                        //}
                                     } else world.setBlock(x, y, z, TT_Container_Casings.sHintCasingsTT, 15,2);
                                 }
                             }
@@ -800,5 +818,28 @@ public class Util {
         } while(l > V[i]);
 
         return i;
+    }
+
+    public static String[] splitButDifferent(String string,String delimiter){
+        String[] strings= new String[StringUtils.countMatches(string,delimiter)+1];
+        int lastEnd=0;
+        for(int i=0;i<strings.length-1;i++){
+            int nextEnd=string.indexOf(delimiter,lastEnd);
+            strings[i]=string.substring(lastEnd,nextEnd);
+            lastEnd=nextEnd+delimiter.length();
+        }
+        strings[strings.length-1]=string.substring(lastEnd);
+        return strings;
+    }
+
+    public static String[] infoFromNBT(NBTTagCompound nbt) {
+        final String[] strings = new String[nbt.getInteger("i")];
+        for (int i = 0; i < strings.length; i++)
+            strings[i] = nbt.getString(Integer.toString(i));
+        return strings;
+    }
+
+    public static boolean areBitsSet(int setBits,int testedValue){
+        return (testedValue&setBits)==setBits;
     }
 }

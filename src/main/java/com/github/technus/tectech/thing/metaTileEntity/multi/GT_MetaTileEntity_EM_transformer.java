@@ -2,8 +2,9 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
-import com.github.technus.tectech.thing.metaTileEntity.multi.gui.GT_Container_MultiMachineEM;
-import com.github.technus.tectech.thing.metaTileEntity.multi.gui.GT_GUIContainer_MultiMachineEM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_Container_MultiMachineEM;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_GUIContainer_MultiMachineEM;
 import gregtech.api.enums.Textures;
 import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
@@ -103,7 +104,7 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_GENERAL,
                 "Power substation",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "All the transformation!",
                 EnumChatFormatting.BLUE + "Only 0.78125% power loss, HAYO!",
@@ -111,7 +112,7 @@ public class GT_MetaTileEntity_EM_transformer extends GT_MetaTileEntity_Multiblo
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack) {
+    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizers) {
         if (ePowerPass) {
             mEfficiencyIncrease = 10000;
             mMaxProgresstime = 20;

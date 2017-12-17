@@ -143,7 +143,7 @@ public class GT_MetaTileEntity_DebugStructureWriter extends GT_MetaTileEntity_Ti
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_GENERAL,
                 this.mDescription,
                 EnumChatFormatting.BLUE + "Prints Multiblock NonTE structure check code",
                 EnumChatFormatting.BLUE + "ABC axises aligned to machine front"

@@ -1,11 +1,12 @@
-# TecTech [![Build Status](https://jenkins.datamats.com/buildStatus/icon?job=TecTech)](https://jenkins.datamats.com/job/TecTech)
+# TecTech [![Build Status](http://jenkins.usrv.de:8081/buildStatus/icon?job=Tec%20Tech)](http://jenkins.usrv.de:8081/job/Tec%20Tech)
 GT additions EXTREME
 
 # Jenkins Builds
+http://jenkins.usrv.de:8081/job/Tec%20Tech/
 https://jenkins.datamats.com/job/TecTech/
 
 # Runtime Dependencies?
-https://github.com/Technus/TecTech/blob/master/src/main/java/com/github/technus/tectech/TecTech.java#L26
+https://github.com/Technus/TecTech/blob/master/src/main/java/com/github/technus/tectech/TecTech.java#L30
 - Required After
 
 

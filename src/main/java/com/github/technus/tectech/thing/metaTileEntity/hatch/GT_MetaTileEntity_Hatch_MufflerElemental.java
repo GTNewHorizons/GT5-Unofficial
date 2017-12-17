@@ -24,9 +24,9 @@ import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import static com.github.technus.tectech.CommonValues.DISPERSE_AT;
+import static com.github.technus.tectech.Util.V;
 import static com.github.technus.tectech.loader.MainLoader.elementalPollution;
 import static gregtech.api.enums.Dyes.MACHINE_METAL;
-import static com.github.technus.tectech.Util.V;
 import static gregtech.api.metatileentity.implementations.GT_MetaTileEntity_MultiBlockBase.isValidMetaTileEntity;
 
 /**
@@ -89,7 +89,7 @@ public class GT_MetaTileEntity_Hatch_MufflerElemental extends GT_MetaTileEntity_
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_EM,
                 mDescription,
                 "Mass capacity: " + EnumChatFormatting.AQUA + String.format(java.util.Locale.ENGLISH, "%+.2E", overflowMax) + " eV/c^2",
                 "Disposal Speed: " + EnumChatFormatting.AQUA + String.format(java.util.Locale.ENGLISH, "%+.2E", overflowDisperse) + " (eV/c^2)/s",

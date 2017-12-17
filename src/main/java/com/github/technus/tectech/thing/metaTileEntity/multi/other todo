@@ -22,3 +22,15 @@ BlockFakeLight.java
 
 for turrets:
 floodlightb
+
+
+
+fix eu/t checks if needs maintenance!!!
+
+make microwave grinder cap autosmelting based on power
+
+
+iterative halflife formula:
+
+=prev qty* 2^(-t diff / t half)
+

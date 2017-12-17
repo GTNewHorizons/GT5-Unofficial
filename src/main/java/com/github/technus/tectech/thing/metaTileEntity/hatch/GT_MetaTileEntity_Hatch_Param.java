@@ -1,8 +1,11 @@
 package com.github.technus.tectech.thing.metaTileEntity.hatch;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.Util;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_Param;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_Container_ParamAdv;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_Param;
+import com.github.technus.tectech.thing.metaTileEntity.hatch.gui.GT_GUIContainer_ParamAdv;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import gregtech.api.enums.Textures;
@@ -23,14 +26,13 @@ import net.minecraftforge.fluids.FluidStack;
  * Created by danie_000 on 15.12.2016.
  */
 public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
-    public int exponent = 0;
-    public int value2 = 0;
-    public int value1 = 0;
+    private boolean usesFloat = false;
+    public int pointer = 0;
     public int param = -1;
-    public float value1f = 0;
-    public float value2f = 0;
-    public float input1f = 0;
-    public float input2f = 0;
+    public int value0i = 0;
+    public int value1i = 0;
+    public int input0i = 0;
+    public int input1i = 0;
     private static Textures.BlockIcons.CustomIcon ScreenON;
     private static Textures.BlockIcons.CustomIcon ScreenOFF;
 
@@ -52,11 +54,13 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
 
     @Override
     public Object getServerGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        if (mTier >= 10) return new GT_Container_ParamAdv(aPlayerInventory, aBaseMetaTileEntity);
         return new GT_Container_Param(aPlayerInventory, aBaseMetaTileEntity);
     }
 
     @Override
     public Object getClientGUI(int aID, InventoryPlayer aPlayerInventory, IGregTechTileEntity aBaseMetaTileEntity) {
+        if (mTier >= 10) return new GT_GUIContainer_ParamAdv(aPlayerInventory, aBaseMetaTileEntity);
         return new GT_GUIContainer_Param(aPlayerInventory, aBaseMetaTileEntity);
     }
 
@@ -96,12 +100,24 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
 
     @Override
     public String[] getInfoData() {
+        if(mTier>=10)
+            return new String[]{
+                    "Parametrizer ID: " + EnumChatFormatting.GREEN + param,
+                    "Value 0I: " + EnumChatFormatting.AQUA + value0i,
+                    "Value 0FB: " + EnumChatFormatting.AQUA + Float.intBitsToFloat(value0i)+" "+ Util.intBitsToShortString(value0i),
+                    "Value 1I: " + EnumChatFormatting.BLUE + value1i,
+                    "Value 1FB: " + EnumChatFormatting.BLUE + Float.intBitsToFloat(value1i)+" "+ Util.intBitsToShortString(value1i),
+                    "Input 0I: " + EnumChatFormatting.GOLD   + input0i,
+                    "Input 0FB: " + EnumChatFormatting.GOLD   + Float.intBitsToFloat(input0i)+" "+ Util.intBitsToShortString(input0i),
+                    "Input 1I: " + EnumChatFormatting.YELLOW + input1i,
+                    "Input 1FB: " + EnumChatFormatting.YELLOW + Float.intBitsToFloat(input1i)+" "+ Util.intBitsToShortString(input1i),
+            };
         return new String[]{
-                "Parameter ID: " + EnumChatFormatting.GREEN + param,
-                "Value 1: " + EnumChatFormatting.AQUA + value1f,
-                "Value 2: " + EnumChatFormatting.BLUE + value2f,
-                "Input 1: " + EnumChatFormatting.GOLD + input1f,
-                "Input 2: " + EnumChatFormatting.YELLOW + input2f
+                "Parametrizer ID: " + EnumChatFormatting.GREEN + param,
+                "Value 0I: " + EnumChatFormatting.AQUA + value0i,
+                "Value 1I: " + EnumChatFormatting.BLUE + value1i,
+                "Input 0I: " + EnumChatFormatting.GOLD   + input0i,
+                "Input 1I: " + EnumChatFormatting.YELLOW + input1i,
         };
     }
 
@@ -122,24 +138,24 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
 
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setInteger("mEXP", exponent);
-        aNBT.setInteger("mV2", value2);
-        aNBT.setInteger("mV1", value1);
-        aNBT.setInteger("mParam", param);
-        //aNBT.setFloat("mI1",input1f);//no need to store this.
-        //aNBT.setFloat("mI2",input2f);
+        aNBT.setBoolean("eFloats", usesFloat);
+        aNBT.setInteger("ePointer", pointer);
+        aNBT.setInteger("eValue0i", value0i);
+        aNBT.setInteger("eValue1i", value1i);
+        aNBT.setInteger("eInput0i", value0i);
+        aNBT.setInteger("eInput1i", value1i);
+        aNBT.setInteger("eParam", param);
     }
 
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        exponent = aNBT.getInteger("mEXP");
-        value2 = aNBT.getInteger("mV2");
-        value1 = aNBT.getInteger("mV1");
-        param = aNBT.getInteger("mParam");
-        value1f = (float) (value1 * Math.pow(2, exponent));
-        value2f = (float) (value2 * Math.pow(2, exponent));
-        //input1f=aNBT.getFloat("mI1");
-        //input2f=aNBT.getFloat("mI2");
+        usesFloat = aNBT.getBoolean("eFloats");
+        pointer = aNBT.getInteger("ePointer");
+        value0i=aNBT.getInteger("eValue0i");
+        value1i=aNBT.getInteger("eValue1i");
+        value0i=aNBT.getInteger("eInput0i");
+        value1i=aNBT.getInteger("eInput1i");
+        param = aNBT.getInteger("eParam");
     }
 
     @Override
@@ -177,9 +193,22 @@ public class GT_MetaTileEntity_Hatch_Param extends GT_MetaTileEntity_Hatch {
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_GENERAL,
                 mDescription,
-                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "E=M*C^2"
+                EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "E=mine*craft^2"
         };
+    }
+
+    public boolean isUsingFloats() {
+        return mTier >= 10 && usesFloat;
+    }
+
+    //returns - succeded
+    public boolean setUsingFloats(boolean value){
+        if(mTier>=10){
+            usesFloat=value;
+            return true;
+        }
+        return !value;
     }
 }

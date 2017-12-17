@@ -1,8 +1,8 @@
 package com.github.technus.tectech.compatibility.thaumcraft.definitions;
 
-import com.github.technus.tectech.elementalMatter.classes.cElementalDefinition;
-import com.github.technus.tectech.elementalMatter.classes.tElementalException;
-import com.github.technus.tectech.elementalMatter.interfaces.iElementalDefinition;
+import com.github.technus.tectech.elementalMatter.core.tElementalException;
+import com.github.technus.tectech.elementalMatter.core.templates.cElementalDefinition;
+import com.github.technus.tectech.elementalMatter.core.templates.iElementalDefinition;
 import thaumcraft.api.aspects.Aspect;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public final class AspectDefinitionCompatEnabled extends AspectDefinitionCompat 
 
         ArrayList<Aspect> list=Aspect.getCompoundAspects();
         Aspect[] array=list.toArray(new Aspect[0]);
-        while (!list.isEmpty()) {
+        while (list.size()>0) {
             for (Aspect aspect : array) {
                 if (list.contains(aspect)) {
                     Aspect[] content = aspect.getComponents();

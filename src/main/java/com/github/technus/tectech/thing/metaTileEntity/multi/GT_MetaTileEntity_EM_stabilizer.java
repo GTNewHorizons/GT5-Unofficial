@@ -3,6 +3,7 @@ package com.github.technus.tectech.thing.metaTileEntity.multi;
 import com.github.technus.tectech.CommonValues;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
@@ -68,7 +69,7 @@ public class GT_MetaTileEntity_EM_stabilizer extends GT_MetaTileEntity_Multibloc
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_EM,
                 "Alters time to stabilize matter",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "Wibbly wobbly timey wimey, stuff."
         };

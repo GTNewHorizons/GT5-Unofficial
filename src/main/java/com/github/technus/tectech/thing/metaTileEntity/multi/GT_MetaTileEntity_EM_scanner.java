@@ -1,14 +1,15 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
-import com.github.technus.tectech.elementalMatter.classes.cElementalDefinitionStack;
-import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStack;
-import com.github.technus.tectech.elementalMatter.classes.cElementalInstanceStackMap;
+import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.elementalMatter.core.stacks.cElementalDefinitionStack;
+import com.github.technus.tectech.elementalMatter.core.stacks.cElementalInstanceStack;
 import com.github.technus.tectech.recipe.TT_recipe;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.block.QuantumStuffBlock;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
+import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
 import gregtech.api.enums.ItemList;
 import gregtech.api.interfaces.metatileentity.IMetaTileEntity;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
@@ -25,7 +26,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import static com.github.technus.tectech.Util.StructureBuilder;
 import static com.github.technus.tectech.Util.VN;
-import static com.github.technus.tectech.elementalMatter.definitions.cPrimitiveDefinition.nbtE__;
+import static com.github.technus.tectech.elementalMatter.definitions.primitive.cPrimitiveDefinition.nbtE__;
 import static com.github.technus.tectech.recipe.TT_recipe.E_RECIPE_ID;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
 import static com.github.technus.tectech.thing.casing.TT_Container_Casings.sBlockCasingsTT;
@@ -36,6 +37,11 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileE
  * Created by danie_000 on 17.12.2016.
  */
 public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
+    public static final int SCAN_DO_NOTHING=0,
+            SCAN_GET_MASS=1, SCAN_GET_CHARGE=2, SCAN_GET_CLASS_TYPE=4, SCAN_GET_NOMENCLATURE=8, SCAN_GET_TIMESPAN_INFO=16,
+            SCAN_GET_AMOUNT=256, SCAN_GET_COLOR=512, SCAN_GET_ENERGY_LEVEL=1024, SCAN_GET_AGE=2048, SCAN_GET_TIMESPAN_MULT =4096,
+            SCAN_GET_DEPTH_LEVEL= 8192, SCAN_GET_ENERGY_STATES=16384;
+
     private TT_recipe.TT_EMRecipe.TT_EMRecipe eRecipe;
     private cElementalDefinitionStack objectResearched;
     private String machineType;
@@ -105,7 +111,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_EM,
                 "What is existing here?",
                 EnumChatFormatting.AQUA.toString() + EnumChatFormatting.BOLD + "I HAVE NO IDEA (yet)!"
         };
@@ -172,9 +178,9 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     }
 
     @Override
-    public boolean checkRecipe_EM(ItemStack itemStack) {
+    public boolean checkRecipe_EM(ItemStack itemStack, boolean noParametrizers) {
         eRecipe=null;
-        if(!eInputHatches.isEmpty() && eInputHatches.get(0).getContainerHandler().hasStacks() && !eOutputHatches.isEmpty()) {
+        if(eInputHatches.size()>0 && eInputHatches.get(0).getContainerHandler().hasStacks() && !eOutputHatches.isEmpty()) {
             cElementalInstanceStackMap researchEM = eInputHatches.get(0).getContainerHandler();
             if(ItemList.Tool_DataOrb.isStackEqual(itemStack, false, true)) {
                 GT_Recipe scannerRecipe=null;

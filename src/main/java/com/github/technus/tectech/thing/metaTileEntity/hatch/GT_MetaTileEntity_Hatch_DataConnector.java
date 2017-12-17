@@ -153,7 +153,7 @@ public abstract class GT_MetaTileEntity_Hatch_DataConnector extends GT_MetaTileE
     @Override
     public String[] getDescription() {
         return new String[]{
-                CommonValues.TEC_MARK,
+                CommonValues.TEC_MARK_EM,
                 mDescription,
                 "High speed fibre optics connector.",
                 EnumChatFormatting.AQUA + "Must be painted to work"

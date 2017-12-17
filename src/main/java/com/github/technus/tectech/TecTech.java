@@ -2,8 +2,6 @@ package com.github.technus.tectech;
 
 import com.github.technus.tectech.auxiliary.Reference;
 import com.github.technus.tectech.auxiliary.TecTechConfig;
-import com.github.technus.tectech.elementalMatter.definitions.dAtomDefinition;
-import com.github.technus.tectech.loader.AtomOverrider;
 import com.github.technus.tectech.loader.MainLoader;
 import com.github.technus.tectech.proxy.CommonProxy;
 import cpw.mods.fml.common.Loader;
@@ -30,7 +28,7 @@ import java.util.HashSet;
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 
 @Mod(modid = Reference.MODID, name = Reference.NAME, version = Reference.VERSION, dependencies = "required-after:Forge@[10.13.4.1614,);"
-        + "required-after:YAMCore@[0.5.70,);" + "required-after:gregtech;" + "after:CoFHCore;" + "after:Thaumcraft;" + "after:dreamcraft;" + "after:miscutils;")
+        + "required-after:YAMCore@[0.5.70,);" + "required-after:gregtech;" + "after:CoFHCore;" + "after:Thaumcraft;" + "after:dreamcraft;")
 public class TecTech {
     @SidedProxy(clientSide = Reference.CLIENTSIDE, serverSide = Reference.SERVERSIDE)
     public static CommonProxy proxy;
@@ -38,11 +36,11 @@ public class TecTech {
     @Instance(Reference.MODID)
     public static TecTech instance;
 
+    public static final XSTR Rnd = XSTR.XSTR_INSTANCE;
     public static final LogHelper Logger = new LogHelper(Reference.MODID);
     private static IngameErrorLog Module_AdminErrorLogs = null;
     public static MainLoader GTCustomLoader = null;
     public static TecTechConfig ModConfig;
-    public static XSTR Rnd = null;
     public static CreativeTabs mainTab = null;
 
     public static boolean hasCOFH = false, hasThaumcraft = false;
@@ -57,7 +55,6 @@ public class TecTech {
     @EventHandler
     public void PreLoad(FMLPreInitializationEvent PreEvent) {
         Logger.setDebugOutput(true);
-        Rnd = new XSTR();
 
         ModConfig = new TecTechConfig(PreEvent.getModConfigurationDirectory(), Reference.COLLECTIONNAME,
                 Reference.MODID);
@@ -74,7 +71,6 @@ public class TecTech {
 
         GTCustomLoader = new MainLoader();
 
-        dAtomDefinition.overrides.add(new AtomOverrider());
         TecTech.Logger.info("Added Atom Overrider");
     }
 
@@ -171,8 +167,6 @@ public class TecTech {
             modId = GameRegistry.findUniqueIdentifierFor(block).modId;
             if (modIDs.contains(modId)) {//Full Whitelisted Mods
                 continue;
-            } else if (modId.equals("TConstruct")) {
-                block.slipperiness = 1;//cos we know it is slippery, right Greg?
             } else if (modId.equals("OpenBlocks")) {
                 if (GameRegistry.findUniqueIdentifierFor(block).name.equals("grave"))
                     continue;
