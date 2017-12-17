@@ -21,7 +21,7 @@ public class BlockHint extends EntityFX {
         prevPosY = posY;
         prevPosZ = posZ;
         noClip = true;
-        particleMaxAge = 200 + TecTech.Rnd.nextInt(200);
+        particleMaxAge = 2000 + TecTech.Rnd.nextInt(200);
         for (int i = 0; i < 6; i++) icons[i] = block.getIcon(i, meta);
     }
 
