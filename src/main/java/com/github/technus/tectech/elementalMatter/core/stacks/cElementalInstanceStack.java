@@ -323,7 +323,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
             lines.add("ENERGY LEVEL = "+energy);
         if(Util.areBitsSet(SCAN_GET_AMOUNT,capabilities))
             lines.add("AMOUNT = "+amount);
-        lines.add(null);//def separator
+        lines.add("");//def separator
         scanContents(lines,definition.getSubParticles(),1,detailsOnDepthLevels);
     }
 
@@ -336,7 +336,7 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
                 definition.addScanResults(lines,detailsOnDepthLevels[depth],energy);
                 if(Util.areBitsSet(SCAN_GET_AMOUNT,detailsOnDepthLevels[depth]))
                     lines.add("AMOUNT = "+definitionStack.amount);
-                lines.add(null);//def separator
+                lines.add("");//def separator
                 scanContents(lines,definitionStack.definition.getSubParticles(),deeper,detailsOnDepthLevels);
             }
         }

@@ -1,8 +1,10 @@
 package com.github.technus.tectech.thing.item;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.TecTech;
 import com.github.technus.tectech.Util;
 import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
+import com.github.technus.tectech.thing.CustomItemList;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -57,8 +59,10 @@ public class ElementalDefinitionScanStorage_EM extends Item {
         try {
             if  (aStack.stackTagCompound != null &&  aStack.stackTagCompound.hasKey("elementalInfo")) {
                 aList.add("Contains scan result");
-                if(DEBUG_MODE)
+                if(DEBUG_MODE) {
+                    aList.add("DEBUG MODE INFO - U CHEATER");
                     Collections.addAll(aList, Util.infoFromNBT(aStack.stackTagCompound.getCompoundTag("elementalInfo")));
+                }
             } else {
                 aList.add("Storage for matter scan data");
             }
@@ -70,6 +74,7 @@ public class ElementalDefinitionScanStorage_EM extends Item {
     public static void run() {
         INSTANCE = new ElementalDefinitionScanStorage_EM();
         GameRegistry.registerItem(INSTANCE, INSTANCE.getUnlocalizedName());
+        CustomItemList.scanContainer.set(INSTANCE);
     }
 
     @Override

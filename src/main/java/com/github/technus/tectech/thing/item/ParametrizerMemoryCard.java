@@ -23,6 +23,7 @@ import net.minecraft.world.World;
 import java.util.List;
 
 import static com.github.technus.tectech.auxiliary.Reference.MODID;
+import static com.github.technus.tectech.thing.CustomItemList.parametrizerMemory;
 
 /**
  * Created by Tec on 15.03.2017.
@@ -120,6 +121,7 @@ public class ParametrizerMemoryCard extends Item {
     public static void run() {
         INSTANCE = new ParametrizerMemoryCard();
         GameRegistry.registerItem(INSTANCE, INSTANCE.getUnlocalizedName());
+        parametrizerMemory.set(INSTANCE);
     }
 
     @Override

@@ -1431,7 +1431,7 @@ public final class dAtomDefinition extends cElementalDefinition {
             lines.add(getColor()<0?"NOT COLORED":"CARRIES COLOR");
         if(Util.areBitsSet(SCAN_GET_MASS,capabilities))
             lines.add("MASS = "+getMass()+" eV/c\u00b2");
-        if(iaeaDefinitionExistsAndHasEnergyLevels){
+        if(iaeaDefinitionExistsAndHasEnergyLevels && Util.areBitsSet(SCAN_GET_ENERGY_STATES,capabilities)){
             for(int i=1;i<iaea.energeticStatesArray.length;i++){
                 lines.add("ENERGY LEVEL "+i+" = "+iaea.energeticStatesArray[i].energy+" eV");
             }

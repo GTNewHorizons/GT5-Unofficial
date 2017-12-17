@@ -453,6 +453,12 @@ public final class cElementalInstanceStackMap implements Comparable<cElementalIn
         return build.toString();
     }
 
+    public cElementalInstanceStackMap takeAll(){
+        TreeMap<iElementalDefinition, cElementalInstanceStack> map=this.map;
+        this.map=new TreeMap<>();
+        return new cElementalInstanceStackMap(map);
+    }
+
     public void cleanUp(){
         for(Map.Entry<iElementalDefinition, cElementalInstanceStack> entry:map.entrySet()){
             if(entry.getValue().amount<=0) map.remove(entry.getKey());

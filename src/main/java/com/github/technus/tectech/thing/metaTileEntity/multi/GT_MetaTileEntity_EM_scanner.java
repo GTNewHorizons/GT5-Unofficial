@@ -1,12 +1,17 @@
 package com.github.technus.tectech.thing.metaTileEntity.multi;
 
 import com.github.technus.tectech.CommonValues;
+import com.github.technus.tectech.TecTech;
+import com.github.technus.tectech.Util;
 import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.elementalMatter.core.stacks.cElementalDefinitionStack;
 import com.github.technus.tectech.elementalMatter.core.stacks.cElementalInstanceStack;
+import com.github.technus.tectech.elementalMatter.core.tElementalException;
 import com.github.technus.tectech.recipe.TT_recipe;
+import com.github.technus.tectech.thing.CustomItemList;
 import com.github.technus.tectech.thing.block.QuantumGlassBlock;
 import com.github.technus.tectech.thing.block.QuantumStuffBlock;
+import com.github.technus.tectech.thing.item.ElementalDefinitionScanStorage_EM;
 import com.github.technus.tectech.thing.metaTileEntity.IConstructable;
 import com.github.technus.tectech.thing.metaTileEntity.hatch.GT_MetaTileEntity_Hatch_EnergyMulti;
 import com.github.technus.tectech.thing.metaTileEntity.multi.base.GT_MetaTileEntity_MultiblockBase_EM;
@@ -25,7 +30,9 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import static com.github.technus.tectech.Util.StructureBuilder;
+import static com.github.technus.tectech.Util.V;
 import static com.github.technus.tectech.Util.VN;
+import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.elementalMatter.definitions.primitive.cPrimitiveDefinition.nbtE__;
 import static com.github.technus.tectech.recipe.TT_recipe.E_RECIPE_ID;
 import static com.github.technus.tectech.thing.casing.GT_Block_CasingsTT.textureOffset;
@@ -38,14 +45,16 @@ import static com.github.technus.tectech.thing.metaTileEntity.multi.GT_MetaTileE
  */
 public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBase_EM implements IConstructable {
     public static final int SCAN_DO_NOTHING=0,
-            SCAN_GET_MASS=1, SCAN_GET_CHARGE=2, SCAN_GET_CLASS_TYPE=4, SCAN_GET_NOMENCLATURE=8, SCAN_GET_TIMESPAN_INFO=16,
-            SCAN_GET_AMOUNT=256, SCAN_GET_COLOR=512, SCAN_GET_ENERGY_LEVEL=1024, SCAN_GET_AGE=2048, SCAN_GET_TIMESPAN_MULT =4096,
-            SCAN_GET_DEPTH_LEVEL= 8192, SCAN_GET_ENERGY_STATES=16384;
+            SCAN_GET_NOMENCLATURE=1,SCAN_GET_DEPTH_LEVEL=2,SCAN_GET_AMOUNT=4,SCAN_GET_CHARGE=8,
+            SCAN_GET_MASS=16,SCAN_GET_ENERGY_LEVEL=32,SCAN_GET_TIMESPAN_INFO=64,SCAN_GET_ENERGY_STATES=128,
+        SCAN_GET_COLOR=256,SCAN_GET_AGE=512,SCAN_GET_TIMESPAN_MULT=1024,SCAN_GET_CLASS_TYPE=2048;
 
     private TT_recipe.TT_EMRecipe.TT_EMRecipe eRecipe;
     private cElementalDefinitionStack objectResearched;
+    private cElementalInstanceStackMap objectsScanned;
     private String machineType;
-    private long computationRemaining,computationRequired;
+    private long totalComputationRemaining, totalComputationRequired;
+    private int[] scanComplexity;
 
     //region structure
     private static final String[][] shape = new String[][]{
@@ -120,22 +129,33 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     @Override
     public void saveNBTData(NBTTagCompound aNBT) {
         super.saveNBTData(aNBT);
-        aNBT.setLong("eComputationRemaining",computationRemaining);
-        aNBT.setLong("eComputationRequired",computationRequired);
+        aNBT.setLong("eComputationRemaining", totalComputationRemaining);
+        aNBT.setLong("eComputationRequired", totalComputationRequired);
         if(objectResearched!=null)
             aNBT.setTag("eObject",objectResearched.toNBT());
         else aNBT.removeTag("eObject");
+        if(scanComplexity!=null) aNBT.setIntArray("eScanComplexity",scanComplexity);
+        else aNBT.removeTag("eScanComplexity");
+        if(objectsScanned!=null) aNBT.setTag("eScanObjects",objectsScanned.toNBT());
+        else aNBT.removeTag("eScanObjects");
     }
 
     @Override
     public void loadNBTData(NBTTagCompound aNBT) {
         super.loadNBTData(aNBT);
-        computationRemaining=aNBT.getLong("eComputationRemaining");
-        computationRequired=aNBT.getLong("eComputationRequired");
+        totalComputationRemaining =aNBT.getLong("eComputationRemaining");
+        totalComputationRequired =aNBT.getLong("eComputationRequired");
         if(aNBT.hasKey("eObject")) {
             objectResearched = cElementalDefinitionStack.fromNBT(aNBT.getCompoundTag("eObject"));
             if(objectResearched.definition==nbtE__) objectResearched=null;
         }else objectResearched=null;
+        if(aNBT.hasKey("eScanComplexity")) scanComplexity=aNBT.getIntArray("eScanComplexity");
+        else scanComplexity=null;
+        try {
+            if (aNBT.hasKey("eScanObjects")) objectsScanned = cElementalInstanceStackMap.fromNBT(aNBT.getCompoundTag("eScanObjects"));
+        }catch (tElementalException e){
+            objectsScanned=new cElementalInstanceStackMap();
+        }
     }
 
     @Override
@@ -151,7 +171,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     @Override
     public void onFirstTick(IGregTechTileEntity aBaseMetaTileEntity) {
         if(aBaseMetaTileEntity.isServerSide()) {
-            if (computationRemaining > 0) {
+            if (totalComputationRemaining > 0) {
                 eRecipe = null;
                 if (objectResearched != null) {
                     if (ItemList.Tool_DataOrb.isStackEqual(mInventory[1], false, true)) {
@@ -169,7 +189,8 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                 if (eRecipe == null) {
                     quantumStuff(false);
                     objectResearched = null;
-                    computationRequired = computationRemaining = 0;
+                    eRequiredData=0;
+                    totalComputationRequired = totalComputationRemaining = 0;
                     mMaxProgresstime = 0;
                     mEfficiencyIncrease = 0;
                 } else quantumStuff(true);
@@ -185,6 +206,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
             if(ItemList.Tool_DataOrb.isStackEqual(itemStack, false, true)) {
                 GT_Recipe scannerRecipe=null;
                 for(cElementalInstanceStack stackEM:researchEM.values()){
+                    objectsScanned=null;
                     eRecipe = TT_recipe.TT_Recipe_Map_EM.sMachineRecipesEM.findRecipe(stackEM.definition);
                     if(eRecipe!=null) {
                         scannerRecipe=eRecipe.scannerRecipe;
@@ -207,8 +229,8 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                     researchEM.remove(stackEM.definition);
                 }
                 if(eRecipe!=null && scannerRecipe!=null){//make sure it werks
-                    computationRequired = computationRemaining = scannerRecipe.mDuration * 20L;
-                    mMaxProgresstime = 20;
+                    totalComputationRequired = totalComputationRemaining = scannerRecipe.mDuration * 20L;
+                    mMaxProgresstime = 20;//const
                     mEfficiencyIncrease = 10000;
                     eRequiredData = (short) (scannerRecipe.mSpecialValue >>> 16);
                     eAmpereFlow = (short) (scannerRecipe.mSpecialValue & 0xFFFF);
@@ -216,26 +238,119 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                     quantumStuff(true);
                     return true;
                 }
-            }//else{
-            //todo implement molecular in depth info scan
-            //}
+            }else if(CustomItemList.scanContainer.isStackEqual(itemStack, false, true)) {
+                eRecipe=null;
+                if(researchEM.hasStacks()) {
+                    objectsScanned = researchEM.takeAll();
+                    cleanMassEM_EM(objectsScanned.getMass());
+
+                    totalComputationRequired =0;
+                    eRequiredData=0;
+                    eAmpereFlow=objectsScanned.size() + TecTech.Rnd.next(objectsScanned.size());
+                    mEUt=-(int)V[8];
+
+                    //get depth scan complexity array
+                    {
+                        int[] scanComplexityTemp = new int[20];
+                        for (int i = 0; i < 10; i++) {
+                            scanComplexityTemp[i] = getParameterInInt(i, 0);
+                            scanComplexityTemp[i + 10] = getParameterInInt(i, 1);
+                        }
+                        int maxDepth = 0;
+                        for (int i = 0; i < 20; i++) {
+                            if (scanComplexityTemp[i] == SCAN_DO_NOTHING) continue;
+                            else {
+                                maxDepth = i;
+                                if(!DEBUG_MODE) scanComplexityTemp[i]&=~SCAN_GET_CLASS_TYPE;
+                                addComputationRequirements(i+1,scanComplexityTemp[i]);
+                            }
+                        }
+                        maxDepth+=1;//from index to len
+                        scanComplexity = new int[maxDepth];
+                        System.arraycopy(scanComplexityTemp,0,scanComplexity,0,maxDepth);
+                    }
+
+                    totalComputationRemaining = totalComputationRequired;
+                    mMaxProgresstime = 20;//const
+                    mEfficiencyIncrease = 10000;
+                    quantumStuff(true);
+                    return true;
+                }
+            }
         }
         quantumStuff(false);
         objectResearched=null;
-        computationRequired=computationRemaining=0;
+        totalComputationRemaining =0;
         mMaxProgresstime=0;
         mEfficiencyIncrease = 0;
         return false;
     }
 
+    private void addComputationRequirements(int depthPlus, int capabilities){
+        if(Util.areBitsSet(SCAN_GET_NOMENCLATURE,capabilities)){
+            totalComputationRequired +=depthPlus*5;
+            eRequiredData+=depthPlus;
+        }
+        if(Util.areBitsSet(SCAN_GET_DEPTH_LEVEL,capabilities)){
+            totalComputationRequired +=depthPlus*10;
+            eRequiredData+=depthPlus;
+
+        }
+        if(Util.areBitsSet(SCAN_GET_AMOUNT,capabilities)){
+            totalComputationRequired +=depthPlus*64;
+            eRequiredData+=depthPlus*8;
+
+        }
+        if(Util.areBitsSet(SCAN_GET_CHARGE,capabilities)){
+            totalComputationRequired +=depthPlus*128;
+            eRequiredData+=depthPlus*4;
+
+        }
+        if(Util.areBitsSet(SCAN_GET_MASS,capabilities)){
+            totalComputationRequired +=depthPlus*256;
+            eRequiredData+=depthPlus*4;
+
+        }
+        if(Util.areBitsSet(SCAN_GET_ENERGY_LEVEL,capabilities)){
+            totalComputationRequired +=depthPlus*512;
+            eRequiredData+=depthPlus*16;
+
+        }
+        if(Util.areBitsSet(SCAN_GET_TIMESPAN_INFO,capabilities)){
+            totalComputationRequired +=depthPlus*1024;
+            eRequiredData+=depthPlus*32;
+
+        }
+        if(Util.areBitsSet(SCAN_GET_ENERGY_STATES,capabilities)){
+            totalComputationRequired +=depthPlus*2048;
+            eRequiredData+=depthPlus*32;
+
+        }
+        if(Util.areBitsSet(SCAN_GET_COLOR,capabilities)){
+            totalComputationRequired +=depthPlus*1024;
+            eRequiredData+=depthPlus*48;
+
+        }
+        if(Util.areBitsSet(SCAN_GET_AGE,capabilities)){
+            totalComputationRequired +=depthPlus*2048;
+            eRequiredData+=depthPlus*64;
+
+        }
+        if(Util.areBitsSet(SCAN_GET_TIMESPAN_MULT,capabilities)){
+            totalComputationRequired +=depthPlus*2048;
+            eRequiredData+=depthPlus*64;
+
+        }
+    }
+
     @Override
     public boolean onRunningTick(ItemStack aStack) {
-        if(computationRemaining<=0) {
-            computationRemaining=0;
+        if(totalComputationRemaining <=0) {
+            totalComputationRemaining =0;
             mProgresstime=mMaxProgresstime;
             return true;
         }else{
-            computationRemaining-=eAvailableData;
+            totalComputationRemaining -=eAvailableData;
             mProgresstime=1;
             return super.onRunningTick(aStack);
         }
@@ -251,10 +366,12 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
             tNBT.setString("eMachineType", machineType);
             tNBT.setTag(E_RECIPE_ID, objectResearched.toNBT());
             tNBT.setString("author", EnumChatFormatting.BLUE + "Tec" + EnumChatFormatting.DARK_BLUE + "Tech" + EnumChatFormatting.WHITE + ' ' + machineType+ " EM Recipe Generator");
+        }else if(objectsScanned!=null && CustomItemList.scanContainer.isStackEqual(mInventory[1], false, true)){
+            ElementalDefinitionScanStorage_EM.setContent(mInventory[1],objectsScanned,scanComplexity);
         }
         quantumStuff(false);
         objectResearched=null;
-        computationRequired=computationRemaining=0;
+        totalComputationRemaining =0;
     }
 
     @Override
@@ -292,10 +409,10 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
                         " Efficiency: " + EnumChatFormatting.YELLOW + Float.toString(mEfficiency / 100.0F) + EnumChatFormatting.RESET + " %",
                 "PowerPass: " + EnumChatFormatting.BLUE + ePowerPass + EnumChatFormatting.RESET +
                         " SafeVoid: " + EnumChatFormatting.BLUE + eSafeVoid,
-                "Computation Available: " + EnumChatFormatting.GREEN + eAvailableData + EnumChatFormatting.RESET,
+                "Computation Available: " + EnumChatFormatting.GREEN + eAvailableData +EnumChatFormatting.RESET+" / "+EnumChatFormatting.YELLOW + eRequiredData + EnumChatFormatting.RESET,
                 "Computation Remaining:",
-                EnumChatFormatting.GREEN + Long.toString(computationRemaining / 20L) + EnumChatFormatting.RESET + " / " +
-                        EnumChatFormatting.YELLOW + Long.toString(computationRequired / 20L)
+                EnumChatFormatting.GREEN + Long.toString(totalComputationRemaining / 20L) + EnumChatFormatting.RESET + " / " +
+                        EnumChatFormatting.YELLOW + Long.toString(totalComputationRequired / 20L)
         };
     }
 
@@ -308,7 +425,7 @@ public class GT_MetaTileEntity_EM_scanner extends GT_MetaTileEntity_MultiblockBa
     @Override
     public void stopMachine() {
         super.stopMachine();
-        computationRequired=computationRemaining=0;
+        totalComputationRequired = totalComputationRemaining =0;
         objectResearched=null;
         quantumStuff(false);
 
