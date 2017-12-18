@@ -102,10 +102,9 @@ public class MaterialGenerator {
 					}
 				} else {
 					Item temp;
-					if (generateEverything == true){
-						Block tempBlock;
-						tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
-					}
+					Block tempBlock;
+					tempBlock = new BlockBaseModular(unlocalizedName, materialName,BlockTypes.STANDARD, Colour);
+					
 					temp = new BaseItemIngot(matInfo);
 					temp = new BaseItemDust("itemDust"+unlocalizedName, materialName, matInfo, Colour, "Dust", materialTier, sRadiation);
 					temp = new BaseItemDust("itemDustTiny"+unlocalizedName, materialName, matInfo, Colour, "Tiny", materialTier, sRadiation);
@@ -145,7 +144,7 @@ public class MaterialGenerator {
 			RecipeGen_Fluids.generateRecipes(matInfo);
 			RecipeGen_Plates.generateRecipes(matInfo);
 			RecipeGen_ShapedCrafting.generateRecipes(matInfo);
-			RecipeGen_Recycling.generateRecipes(matInfo);
+			new RecipeGen_Recycling(matInfo);
 			return true;
 		} catch (final Throwable t)
 		{
@@ -218,7 +217,7 @@ public class MaterialGenerator {
 			RecipeGen_Fluids.generateRecipes(matInfo);
 			RecipeGen_Assembler.generateRecipes(matInfo);
 			RecipeGen_DustGeneration.generateRecipes(matInfo, true);
-			RecipeGen_Recycling.generateRecipes(matInfo);
+			new RecipeGen_Recycling(matInfo);
 		} catch (final Throwable t){
 			Utils.LOG_INFO(""+matInfo.getLocalizedName()+" failed to generate.");
 		}

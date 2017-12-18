@@ -241,7 +241,7 @@ public class GregtechComponentAssembler {
 
 	private static boolean addRecipePump(int tier, Materials main, Materials pipe, Materials cable) {
 		try {
-			ItemStack cableStack = ItemUtils.getGregtechOreStack(OrePrefixes.cableGt01, main, 1);
+			ItemStack cableStack = ItemUtils.getGregtechOreStack(OrePrefixes.cableGt01, cable, 1);
 			ItemStack screwStack = ItemUtils.getGregtechOreStack(OrePrefixes.screw, main, 1);
 			ItemStack rotorStack = ItemUtils.getGregtechOreStack(OrePrefixes.rotor, main, 1);
 			ItemStack pipeStack = ItemUtils.getGregtechOreStack(OrePrefixes.pipeMedium, pipe, 1);

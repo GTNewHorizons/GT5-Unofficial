@@ -5,7 +5,7 @@ import gtPlusPlus.core.material.state.MaterialState;
 import gtPlusPlus.core.util.materials.MaterialUtils;
 
 public final class ALLOY {
-	
+
 	//Just some GT Alloys that I need within mine.
 	public static final Material BRONZE = MaterialUtils.generateMaterialFromGtENUM(Materials.Bronze);
 	public static final Material STEEL = MaterialUtils.generateMaterialFromGtENUM(Materials.Steel);
@@ -528,7 +528,7 @@ public final class ALLOY {
 					new MaterialStack(MaterialUtils.generateMaterialFromGtENUM(Materials.Kanthal), 3),
 					new MaterialStack(MaterialUtils.generateMaterialFromGtENUM(Materials.Invar), 15)
 			});
-	
+
 	public static final Material EGLIN_STEEL = new Material(
 			"Eglin Steel", //Material Name
 			MaterialState.SOLID, //State
@@ -564,8 +564,49 @@ public final class ALLOY {
 			});
 
 
+	/**
+	 * Stargate Materials - #D2FFA9 210, 255, 170
+	 */
 
-
+	public static final Material TRINIUM_TITANIUM = new Material(
+			"Trinium Titanium Alloy", //Material Name
+			MaterialState.SOLID, //State
+			new short[]{239,210,200, 0}, //Material Colour
+			-1, //Melting Point in C
+			-1, //Boiling Point in C
+			-1,
+			-1,
+			true, //Uses Blast furnace?
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().TRINIUM_REFINED, 3),
+					new MaterialStack(ELEMENT.getInstance().TITANIUM, 7)
+			});
+	public static final Material TRINIUM_NAQUADAH = new Material(
+			"Trinium Naquadah Alloy", //Material Name
+			MaterialState.SOLID, //State
+			new short[]{255, 243, 117, 0}, //Material Colour
+			-1, //Melting Point in C
+			-1, //Boiling Point in C
+			-1,
+			-1,
+			true, //Uses Blast furnace?
+			new MaterialStack[]{
+					new MaterialStack(ELEMENT.getInstance().TRINIUM_REFINED, 5),
+					new MaterialStack(ELEMENT.getInstance().NAQUADAH, 9)
+			});
+	public static final Material TRINIUM_NAQUADAH_CARBON = new Material(
+			"Trinium Naquadah Carbonite", //Material Name
+			MaterialState.SOLID, //State
+			new short[]{255, 233, 0, 0}, //Material Colour
+			-1, //Melting Point in C
+			-1, //Boiling Point in C
+			-1,
+			-1,
+			true, //Uses Blast furnace?
+			new MaterialStack[]{
+					new MaterialStack(TRINIUM_NAQUADAH, 9),
+					new MaterialStack(ELEMENT.getInstance().CARBON, 1)
+			});
 
 
 

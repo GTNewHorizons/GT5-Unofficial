@@ -28,6 +28,8 @@ public class Material {
 
 	private final Fluid vMoltenFluid;
 	private final Fluid vPlasma;
+	
+	private final boolean vGenerateCells;
 
 	protected Object dataVar = MathUtils.generateSingularRandomHexValue();
 
@@ -72,14 +74,23 @@ public class Material {
 
 	public Material(final String materialName, final MaterialState defaultState,final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final String chemicalSymbol, final int radiationLevel, final MaterialStack... inputs){
 		this(materialName, defaultState, 0, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, chemicalSymbol, radiationLevel, inputs);
+	}	
+
+	public Material(final String materialName, final MaterialState defaultState,final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final String chemicalSymbol, final int radiationLevel, boolean addCells,final MaterialStack... inputs) {
+		this (materialName, defaultState, 0, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, chemicalSymbol, radiationLevel, addCells, inputs);
 	}
 
 	public Material(final String materialName, final MaterialState defaultState, final long durability, final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final String chemicalSymbol, final int radiationLevel, final MaterialStack... inputs){
+		this (materialName, defaultState, durability, rgba, meltingPoint, boilingPoint, protons, neutrons, blastFurnace, chemicalSymbol, radiationLevel, true, inputs);
+	}
+	
+	public Material(final String materialName, final MaterialState defaultState, final long durability, final short[] rgba, final int meltingPoint, final int boilingPoint, final long protons, final long neutrons, final boolean blastFurnace, final String chemicalSymbol, final int radiationLevel, boolean generateCells, final MaterialStack... inputs){
 
 		this.unlocalizedName = Utils.sanitizeString(materialName);
 		this.localizedName = materialName;
 		this.materialState = defaultState;
 		this.RGBA = rgba;
+		this.vGenerateCells = generateCells;
 
 		//Add Components to an array.
 		if (inputs == null){
@@ -600,10 +611,10 @@ public class Material {
 			Utils.LOG_WARNING("Generating our own fluid.");
 
 			//Generate a Cell if we need to
-			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+this.getUnlocalizedName(), 1) == null){
-				@SuppressWarnings("unused")
-				final
-				Item temp = new BaseItemCell(this);
+			if (ItemUtils.getItemStackOfAmountFromOreDictNoBroken("cell"+this.getUnlocalizedName(), 1) == null){			
+				if (this.vGenerateCells){
+					final Item temp = new BaseItemCell(this);
+				}
 			}
 
 			if (this.materialState == MaterialState.SOLID){
@@ -656,6 +667,11 @@ public class Material {
 				return isValid.mPlasma;
 			}
 		}
+		
+		if (this.vGenerateCells){
+			return null;
+		}
+		
 		Utils.LOG_WARNING("Generating our own Plasma.");
 		return FluidUtils.addGTPlasma(this);
 		//return null;
