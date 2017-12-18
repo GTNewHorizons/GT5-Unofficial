@@ -37,9 +37,13 @@ public class ClientProxy extends CommonProxy implements Runnable{
 
 	private final HashSet<String> mCapeList = new HashSet<String>();
 	private final GTPP_CapeRenderer mCapeRenderer;
+	@SideOnly(Side.CLIENT)
+	public static boolean mFancyGraphics = false;
 
 	public ClientProxy(){
 		mCapeRenderer = new GTPP_CapeRenderer(mCapeList);
+		//Get Graphics Mode.
+		mFancyGraphics = Minecraft.isFancyGraphicsEnabled();
 	}
 
 	@SubscribeEvent

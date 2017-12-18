@@ -1,23 +1,14 @@
 package gtPlusPlus.xmod.forestry.bees.custom;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-import com.google.common.collect.ImmutableMap;
-
 import cpw.mods.fml.common.Loader;
-import forestry.api.apiculture.IAlleleBeeSpecies;
 import forestry.api.genetics.AlleleManager;
 import forestry.api.genetics.IAllele;
-import forestry.api.recipes.RecipeManagers;
 import gregtech.GT_Mod;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.*;
 import gtPlusPlus.core.item.base.ingots.BaseItemIngot_OLD;
 import gtPlusPlus.core.item.base.misc.BaseItemMisc;
 import gtPlusPlus.core.item.base.misc.BaseItemMisc.MiscTypes;
@@ -68,9 +59,15 @@ public class GTPP_Bees {
         	setMaterials();
         	setCustomItems();
         	
+        	try {
             combs = new ItemCustomComb();
             combs.initCombsRecipes();
-            GTPP_Bee_Definition.initBees();            
+            GTPP_Bee_Definition.initBees();    
+        	}
+        	catch (Throwable t){
+        		Utils.LOG_INFO("[Bees] Failed to load bees, probably due to an ancient forestry version");
+        		t.printStackTrace();
+        	}
         }
     }
     

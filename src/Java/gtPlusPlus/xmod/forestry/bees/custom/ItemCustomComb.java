@@ -1,16 +1,19 @@
 package gtPlusPlus.xmod.forestry.bees.custom;
 
+import java.lang.reflect.Field;
+import java.util.List;
+
+import org.apache.commons.lang3.reflect.FieldUtils;
+
 import com.google.common.collect.ImmutableMap;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.core.Tabs;
 import forestry.api.recipes.RecipeManagers;
 import gregtech.GT_Mod;
-import gregtech.api.enums.GT_Values;
-import gregtech.api.enums.ItemList;
-import gregtech.api.enums.Materials;
-import gregtech.api.enums.OrePrefixes;
+import gregtech.api.enums.*;
 import gregtech.api.util.GT_OreDictUnificator;
 import gregtech.api.util.GT_Utility;
 import gtPlusPlus.core.lib.CORE;
@@ -20,11 +23,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-
-import java.lang.reflect.Field;
-import java.util.List;
-
-import org.apache.commons.lang3.reflect.FieldUtils;
 
 public class ItemCustomComb extends Item {
 	@SideOnly(Side.CLIENT)
@@ -68,6 +66,7 @@ public class ItemCustomComb extends Item {
 		return 2;
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister par1IconRegister) {
 		this.itemIcon = par1IconRegister.registerIcon("forestry:beeCombs.0");

@@ -37,7 +37,6 @@ import gtPlusPlus.core.util.player.PlayerUtils;
 import gtPlusPlus.xmod.gregtech.common.Meta_GT_Proxy;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtBlock;
 import gtPlusPlus.xmod.gregtech.common.blocks.textures.TexturesGtTools;
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.oredict.OreDictionary;
@@ -76,8 +75,6 @@ public class GTplusplus implements ActionListener {
 
 		if(!Utils.isServer()){
 			enableCustomCapes = true;
-			//Get Graphics Mode.
-			CORE.mFancyGraphics = Minecraft.isFancyGraphicsEnabled();
 		}
 
 		//Give this a go mate.
