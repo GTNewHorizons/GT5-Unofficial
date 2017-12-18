@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
@@ -64,7 +65,8 @@ public class ElementalDefinitionScanStorage_EM extends Item {
         aList.add(CommonValues.TEC_MARK_EM);
         try {
             if  (aStack.stackTagCompound != null &&  aStack.stackTagCompound.hasKey("elementalInfo")) {
-                aList.add("Contains scan result");
+                aList.add(EnumChatFormatting.BLUE+"Contains scan result");
+                aList.add("Use to read");
                 //if(DEBUG_MODE) {
                 //    aList.add("DEBUG MODE INFO - U CHEATER");
                 //    Collections.addAll(aList, Util.infoFromNBT(aStack.stackTagCompound.getCompoundTag("elementalInfo")));

@@ -320,10 +320,9 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         if(Util.areBitsSet(SCAN_GET_COLOR,capabilities))
             lines.add("COLOR = "+color+" RGB or CMY");
         if(Util.areBitsSet(SCAN_GET_ENERGY_LEVEL,capabilities))
-            lines.add("ENERGY LEVEL = "+energy);
+            lines.add("E. LEVEL = "+energy);
         if(Util.areBitsSet(SCAN_GET_AMOUNT,capabilities))
             lines.add("AMOUNT = "+amount);
-        lines.add("");//def separator
         scanContents(lines,definition.getSubParticles(),1,detailsOnDepthLevels);
     }
 
@@ -331,12 +330,12 @@ public final class cElementalInstanceStack implements iHasElementalDefinition {
         if(definitions!=null && depth<detailsOnDepthLevels.length){
             final int deeper=depth+1;
             for(cElementalDefinitionStack definitionStack:definitions.values()) {
+                lines.add("");//def separator
                 if(Util.areBitsSet(SCAN_GET_DEPTH_LEVEL,detailsOnDepthLevels[depth]))
                     lines.add("DEPTH = " + depth);
                 definition.addScanResults(lines,detailsOnDepthLevels[depth],energy);
                 if(Util.areBitsSet(SCAN_GET_AMOUNT,detailsOnDepthLevels[depth]))
                     lines.add("AMOUNT = "+definitionStack.amount);
-                lines.add("");//def separator
                 scanContents(lines,definitionStack.definition.getSubParticles(),deeper,detailsOnDepthLevels);
             }
         }

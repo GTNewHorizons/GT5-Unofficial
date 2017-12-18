@@ -15,7 +15,7 @@ public final class CommonValues {
                     EnumChatFormatting.DARK_BLUE + "Tech" +
                     EnumChatFormatting.BLUE + ": Elemental Matter";
     public final static String BASS_MARK =
-            EnumChatFormatting.BLUE + "Bass" +
+            EnumChatFormatting.BLUE + "Tec" +
                     EnumChatFormatting.DARK_BLUE + "Tech" +
                     EnumChatFormatting.BLUE + ": Theta Movement";
 

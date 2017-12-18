@@ -233,8 +233,6 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
         return hash;
     }
 
-
-
     @Override
     public void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel) {
         if(Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities))
@@ -246,7 +244,7 @@ public final class dComplexAspectDefinition extends cElementalDefinition impleme
         if(Util.areBitsSet(SCAN_GET_CHARGE,capabilities))
             lines.add("CHARGE = "+getCharge()/3f+" eV");
         if(Util.areBitsSet(SCAN_GET_COLOR,capabilities))
-            lines.add(getColor()<0?"NOT COLORED":"CARRIES COLOR");
+            lines.add(getColor()<0?"COLORLESS":"CARRIES COLOR");
         if(Util.areBitsSet(SCAN_GET_MASS,capabilities))
             lines.add("MASS = "+getMass()+" eV/c\u00b2");
         if(Util.areBitsSet(SCAN_GET_TIMESPAN_INFO, capabilities)){

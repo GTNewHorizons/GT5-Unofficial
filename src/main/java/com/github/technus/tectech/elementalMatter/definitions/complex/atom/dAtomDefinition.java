@@ -1269,7 +1269,7 @@ public final class dAtomDefinition extends cElementalDefinition {
         transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(12), 144), dust, Materials.Magnesium,1);
         transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(13), 144), dust, Materials.Aluminium,1);
         transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(14), 144), dust, Materials.Silicon,1);
-        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(15), 144), dust, Materials.Phosphorus,1);
+        transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(15), 144), dust, Materials.Phosphor,1);
         transformation.addOredict(new cElementalDefinitionStack(getFirstStableIsotope(16), 144), dust, Materials.Sulfur,1);
         transformation.addFluid(new cElementalDefinitionStack(getFirstStableIsotope(17), 144),Materials.Chlorine.mGas.getID(), 144);
         transformation.addFluid(new cElementalDefinitionStack(getFirstStableIsotope(18), 144),Materials.Argon.mGas.getID(), 144);
@@ -1415,8 +1415,6 @@ public final class dAtomDefinition extends cElementalDefinition {
         return hash;
     }
 
-
-
     @Override
     public void addScanResults(ArrayList<String> lines, int capabilities, long energyLevel) {
         if(Util.areBitsSet(SCAN_GET_CLASS_TYPE, capabilities))
@@ -1428,7 +1426,7 @@ public final class dAtomDefinition extends cElementalDefinition {
         if(Util.areBitsSet(SCAN_GET_CHARGE,capabilities))
             lines.add("CHARGE = "+getCharge()/3f+" eV");
         if(Util.areBitsSet(SCAN_GET_COLOR,capabilities))
-            lines.add(getColor()<0?"NOT COLORED":"CARRIES COLOR");
+            lines.add(getColor()<0?"COLORLESS":"CARRIES COLOR");
         if(Util.areBitsSet(SCAN_GET_MASS,capabilities))
             lines.add("MASS = "+getMass()+" eV/c\u00b2");
         if(iaeaDefinitionExistsAndHasEnergyLevels && Util.areBitsSet(SCAN_GET_ENERGY_STATES,capabilities)){
