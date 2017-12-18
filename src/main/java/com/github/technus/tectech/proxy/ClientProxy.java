@@ -9,8 +9,6 @@ import com.github.technus.tectech.thing.block.QuantumStuffRender;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.Loader;
-import gregtech.api.enums.Textures;
-import gregtech.api.interfaces.ITexture;
 import gregtech.api.interfaces.tileentity.IGregTechTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -26,12 +24,6 @@ import openmodularturrets.TT_turret_loader;
 import org.lwjgl.opengl.GL11;
 
 public class ClientProxy extends CommonProxy {
-    @Override
-    public void addTexturePage(byte page){
-        if(Textures.BlockIcons.casingTexturePages[page]==null)
-            Textures.BlockIcons.casingTexturePages[page]=new ITexture[128];
-    }
-
     @Override
     public void registerRenderInfo() {
         QuantumGlassBlock.renderID = RenderingRegistry.getNextAvailableRenderId();

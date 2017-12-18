@@ -9,8 +9,6 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
 public class CommonProxy implements IGuiHandler {
-    public void addTexturePage(byte page){}
-
     public void registerRenderInfo() {}
 
     public void hint_particle(World world, int x, int y, int z, Block block, int meta){}

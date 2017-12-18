@@ -29,9 +29,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import static com.github.technus.tectech.Util.StructureBuilder;
-import static com.github.technus.tectech.Util.V;
-import static com.github.technus.tectech.Util.VN;
+import static com.github.technus.tectech.Util.*;
 import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 import static com.github.technus.tectech.elementalMatter.definitions.primitive.cPrimitiveDefinition.nbtE__;
 import static com.github.technus.tectech.recipe.TT_recipe.E_RECIPE_ID;

@@ -6,24 +6,21 @@ import com.github.technus.tectech.Util;
 import com.github.technus.tectech.elementalMatter.core.cElementalInstanceStackMap;
 import com.github.technus.tectech.loader.ModGuiHandler;
 import com.github.technus.tectech.thing.CustomItemList;
-import com.github.technus.tectech.thing.item.gui.ScanDisplayScreen;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-import java.util.Collections;
 import java.util.List;
 
 import static com.github.technus.tectech.auxiliary.Reference.MODID;
-import static com.github.technus.tectech.auxiliary.TecTechConfig.DEBUG_MODE;
 
 /**
  * Created by Tec on 15.03.2017.

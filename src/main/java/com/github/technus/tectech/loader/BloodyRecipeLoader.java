@@ -37,7 +37,7 @@ public class BloodyRecipeLoader implements Runnable {
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 ItemList.Circuit_Parts_GlassFiber.get(8, o),
                 GT_OreDictUnificator.get(OrePrefixes.foil, Materials.Silver, 8)
-        }, Materials.Polytetrafluoroethylene.getMolten(144), CustomItemList.DATApipe.get(1, o), 200, 30720, true);
+        }, Materials.Polytetrafluoroethylene.getMolten(144), CustomItemList.DATApipe.get(1, o), 200, 30720);
 
         //endregion
 
@@ -77,7 +77,7 @@ public class BloodyRecipeLoader implements Runnable {
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Cobalt, 64),
                 GT_OreDictUnificator.get(OrePrefixes.wireFine, Materials.Electrum, 64),
                 GT_OreDictUnificator.get(OrePrefixes.wireGt02, Materials.Superconductor, 4)
-        }, Materials.Iridium.getMolten(1296), CustomItemList.eM_Computer_Bus.get(1, o), 200, 122880, true);
+        }, Materials.Iridium.getMolten(1296), CustomItemList.eM_Computer_Bus.get(1, o), 200, 122880);
 
         //Molecular Casing
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
@@ -126,14 +126,14 @@ public class BloodyRecipeLoader implements Runnable {
                 ItemList.Hatch_Input_Bus_LuV.get(1, o),
                 ItemList.Circuit_Crystalcomputer.get(1, o),
                 CustomItemList.DATApipe.get(2, o)
-        }, Materials.Iridium.getMolten(1296), CustomItemList.dataIn_Hatch.get(1, o), 200, 122880, true);
+        }, Materials.Iridium.getMolten(1296), CustomItemList.dataIn_Hatch.get(1, o), 200, 122880);
         //Data Output
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 CustomItemList.eM_Computer_Casing.get(1, o),
                 ItemList.Hatch_Output_Bus_LuV.get(1, o),
                 ItemList.Circuit_Crystalcomputer.get(1, o),
                 CustomItemList.DATApipe.get(2, o)
-        }, Materials.Iridium.getMolten(1296), CustomItemList.dataOut_Hatch.get(1, o), 200, 122880, true);
+        }, Materials.Iridium.getMolten(1296), CustomItemList.dataOut_Hatch.get(1, o), 200, 122880);
 
         //Rack
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
@@ -141,7 +141,7 @@ public class BloodyRecipeLoader implements Runnable {
                 ItemList.Hatch_Input_Bus_ZPM.get(1, o),
                 ItemList.Circuit_Crystalcomputer.get(2, o),
                 CustomItemList.DATApipe.get(4, o)
-        }, Materials.Iridium.getMolten(1296), CustomItemList.rack_Hatch.get(1, o), 800, 122880, true);
+        }, Materials.Iridium.getMolten(1296), CustomItemList.rack_Hatch.get(1, o), 800, 122880);
 
         //Object Holder
         GT_Values.RA.addAssemblylineRecipe(ItemList.Hatch_Input_Bus_ZPM.get(1), 10000, new ItemStack[]{
@@ -175,7 +175,7 @@ public class BloodyRecipeLoader implements Runnable {
                 CustomItemList.DATApipe.get(16, o),
                 ItemList.Cover_Screen.get(1, o ),
                 new ItemStack(Blocks.stone_button, 16),
-        }, Materials.Iridium.getMolten(2592), CustomItemList.Uncertainty_Hatch.get(1, o), 1200, 122880, true);
+        }, Materials.Iridium.getMolten(2592), CustomItemList.Uncertainty_Hatch.get(1, o), 1200, 122880);
 
         //Elemental Input
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
@@ -183,21 +183,21 @@ public class BloodyRecipeLoader implements Runnable {
                 ItemList.Hatch_Input_UV.get(1, o),
                 GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Naquadah, 2),
                 ItemList.Sensor_UV.get(1, o)
-        }, Materials.Osmiridium.getMolten(1296), CustomItemList.eM_in_UV.get(1, o), 800, 500000, true);
+        }, Materials.Osmiridium.getMolten(1296), CustomItemList.eM_in_UV.get(1, o), 800, 500000);
         //Elemental Output
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 CustomItemList.eM_Containment.get(1, o),
                 ItemList.Hatch_Output_UV.get(1, o),
                 GT_OreDictUnificator.get(OrePrefixes.pipeMedium, Materials.Naquadah, 2),
                 ItemList.Emitter_UV.get(1, o)
-        }, Materials.Osmiridium.getMolten(1296), CustomItemList.eM_out_UV.get(1, o), 800, 500000, true);
+        }, Materials.Osmiridium.getMolten(1296), CustomItemList.eM_out_UV.get(1, o), 800, 500000);
         //Overflow
         GT_Values.RA.addAssemblerRecipe(new ItemStack[]{
                 CustomItemList.eM_Containment.get(1, o),
                 ItemList.Hatch_Muffler_UV.get(1, o),
                 GT_OreDictUnificator.get(OrePrefixes.pipeLarge, Materials.Naquadah, 1),
                 ItemList.Field_Generator_UV.get(1, o)
-        }, Materials.Osmiridium.getMolten(1296), CustomItemList.eM_muffler_UV.get(1, o), 800, 500000, true);
+        }, Materials.Osmiridium.getMolten(1296), CustomItemList.eM_muffler_UV.get(1, o), 800, 500000);
 
         //endregion
 
@@ -218,7 +218,7 @@ public class BloodyRecipeLoader implements Runnable {
                 ItemList.Transformer_ZPM_LuV.get(16, o),
                 ItemList.Circuit_Board_Elite.get(1, o),//?
                 GT_OreDictUnificator.get(OrePrefixes.wireGt01, Materials.Superconductor, 16),
-                ItemList.Circuit_Chip_UHPIC.get(2, o),
+                ItemList.Circuit_Chip_HPIC.get(2, o),
         }, Materials.TungstenSteel.getMolten(576), CustomItemList.Machine_Multi_Transformer.get(1, o), 400, 30720);
 
         //Network Switch

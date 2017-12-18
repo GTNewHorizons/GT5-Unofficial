@@ -69,8 +69,6 @@ public class TecTech {
             Module_AdminErrorLogs = new IngameErrorLog();
         }
 
-        proxy.addTexturePage(tectechTexturePage1);
-
         GTCustomLoader = new MainLoader();
 
         TecTech.Logger.info("Added Atom Overrider");

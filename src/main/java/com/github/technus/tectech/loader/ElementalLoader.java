@@ -4,8 +4,8 @@ import com.github.technus.tectech.compatibility.thaumcraft.definitions.dComplexA
 import com.github.technus.tectech.compatibility.thaumcraft.definitions.ePrimalAspectDefinition;
 import com.github.technus.tectech.elementalMatter.core.templates.cElementalPrimitive;
 import com.github.technus.tectech.elementalMatter.definitions.complex.atom.dAtomDefinition;
-import com.github.technus.tectech.elementalMatter.definitions.complex.hadron.dHadronDefinition;
 import com.github.technus.tectech.elementalMatter.definitions.complex.atom.iaeaNuclide;
+import com.github.technus.tectech.elementalMatter.definitions.complex.hadron.dHadronDefinition;
 import com.github.technus.tectech.elementalMatter.definitions.primitive.*;
 
 /**
