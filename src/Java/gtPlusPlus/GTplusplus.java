@@ -1,14 +1,16 @@
 package gtPlusPlus;
 
 import static gtPlusPlus.core.lib.CORE.DEBUG;
-import static gtPlusPlus.core.lib.CORE.ConfigSwitches.*;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableCustomCapes;
+import static gtPlusPlus.core.lib.CORE.ConfigSwitches.enableUpdateChecker;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
 
-import cpw.mods.fml.common.*;
+import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 import cpw.mods.fml.relauncher.Side;
@@ -184,7 +186,7 @@ public class GTplusplus implements ActionListener {
 
 	private static final void initAnalytics(){
 		SegmentAnalytics.isEnabled = CORE.ConfigSwitches.enableUpdateChecker;
-		if (PlayerUtils.isPlayerAlkalus()){
+		if (!Utils.isServer() && PlayerUtils.isPlayerAlkalus()){
 			SegmentAnalytics.isEnabled = true;
 		}
 		
