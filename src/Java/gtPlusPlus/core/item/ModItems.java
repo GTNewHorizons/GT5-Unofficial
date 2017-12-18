@@ -439,7 +439,6 @@ public final class ModItems {
 			MaterialGenerator.generateNuclearMaterial(NUCLIDE.LiFBeF2ZrF4UF4);
 			MaterialGenerator.generateNuclearMaterial(NUCLIDE.LiFBeF2ThF4UF4);
 
-
 			//Generate some Alloys
 
 			//Misc Alloys
@@ -491,6 +490,12 @@ public final class ModItems {
 			//Super Conductor
 			MaterialGenerator.generate(ALLOY.HG1223, false, false);
 
+			//Generate Fictional Materials
+			MaterialGenerator.generate(ELEMENT.getInstance().TRINIUM, false);
+			MaterialGenerator.generate(ELEMENT.getInstance().TRINIUM_REFINED, false);
+			MaterialGenerator.generate(ALLOY.TRINIUM_TITANIUM);
+			MaterialGenerator.generate(ALLOY.TRINIUM_NAQUADAH, false);
+			MaterialGenerator.generate(ALLOY.TRINIUM_NAQUADAH_CARBON);			
 
 			//Must be the final Alloy to Generate
 			MaterialGenerator.generate(ALLOY.QUANTUM);

@@ -128,4 +128,10 @@ public final class ELEMENT {
 	public final Material IGNIS = MaterialUtils.generateMaterialFromGtENUM(Materials.InfusedFire);
 	public final Material TERRA = MaterialUtils.generateMaterialFromGtENUM(Materials.InfusedEarth);
 	public final Material AQUA = MaterialUtils.generateMaterialFromGtENUM(Materials.InfusedWater);
+	
+	//Fictional	
+	public final Material NAQUADAH = MaterialUtils.generateMaterialFromGtENUM(Materials.Naquadah);
+	public final Material TRINIUM = new Material("Trinium", MaterialState.SOLID, new short[]{170, 210, 130}, 604, 4057, 181, 133, false, "Ke", 0, false);//Not a GT Inherited Material
+	public final Material TRINIUM_REFINED = new Material("Refined Trinium", MaterialState.SOLID, new short[]{210, 255, 170}, 4304, 14057, 181, 133, false, "Ke", 0, new MaterialStack[]{new MaterialStack(TRINIUM, 1)});//Not a GT Inherited Material
+	//https://github.com/Blood-Asp/GT5-Unofficial/issues/609
 }
