@@ -634,10 +634,21 @@ public class BaseMetaPipeEntity extends BaseTileEntity implements IGregTechTileE
     }
 
     @Override
+    public boolean isEnergyInputSide(byte aSide) {
+    	return false;
+    }
+    
+
+    @Override
     public boolean outputsEnergyTo(byte aSide) {
         return false;
     }
 
+    @Override
+    public boolean isEnergyOutputSide(byte aSide) {
+    	return false;
+    }
+    
     @Override
     public long getOutputAmperage() {
         return 0;

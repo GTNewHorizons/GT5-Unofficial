@@ -72,7 +72,7 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
     {
         Field f = null;
 
-        try {
+        try { 
             f = EntityItem.class.getDeclaredField("field_70291_e");
             f.setAccessible(true);
         } catch (Exception e1) {
@@ -1072,7 +1072,8 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         return Textures.BlockIcons.ERROR_RENDERING;
     }
 
-    private boolean isEnergyInputSide(byte aSide) {
+    @Override
+    public boolean isEnergyInputSide(byte aSide) {
         if (aSide >= 0 && aSide < 6) {
             if (!getCoverBehaviorAtSide(aSide).letsEnergyIn(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this))
                 return false;
@@ -1083,7 +1084,8 @@ public class BaseMetaTileEntity extends BaseTileEntity implements IGregTechTileE
         return false;
     }
 
-    private boolean isEnergyOutputSide(byte aSide) {
+    @Override
+    public boolean isEnergyOutputSide(byte aSide) {
         if (aSide >= 0 && aSide < 6) {
             if (!getCoverBehaviorAtSide(aSide).letsEnergyOut(aSide, getCoverIDAtSide(aSide), getCoverDataAtSide(aSide), this))
                 return false;
