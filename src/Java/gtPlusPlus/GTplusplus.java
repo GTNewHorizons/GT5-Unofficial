@@ -85,7 +85,7 @@ public class GTplusplus implements ActionListener {
 		//Give this a go mate.
 		initAnalytics();
 		setupMaterialBlacklist();
-		setupMaterialWhitelist();
+		//setupMaterialWhitelist();
 
 		//HTTP Requests
 		CORE.MASTER_VERSION = NetworkUtils.getContentFromURL("https://raw.githubusercontent.com/draknyte1/GTplusplus/master/Recommended.txt").toLowerCase();
